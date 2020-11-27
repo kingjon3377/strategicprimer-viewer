@@ -24,12 +24,29 @@ import strategicprimer.drivers.common {
     SimpleMultiMapModel
 }
 
+import strategicprimer.model.common.map {
+    IMutableMapNG
+}
+
 "A collection of a few methods for reading and writing map models, adding an
  additional layer of caller convenience on top of [[mapIOHelper]]."
 todo("Evaluate whether this is really desirable now that driver factories have
       their own type-specific model factory methods. Maybe take the factory
       methods as parameters in the reading methods here?")
 shared object mapReaderAdapter {
+    "Read a map from a file, wrapping any errors the process generates in a [[DriverFailedException]]
+     it returns instead."
+    shared IMutableMapNG|DriverFailedException readMap(PathWrapper file, Warning warner) {
+        try {
+            return mapIOHelper.readMap(file, warner);
+        } catch (IOException except) {
+            return DriverFailedException(except, "I/O error while reading");
+        } catch (MalformedXMLException except) {
+            return DriverFailedException(except, "Malformed XML");
+        } catch (SPFormatException except) {
+            return DriverFailedException(except, "SP map format error");
+        }
+    }
     "Read a map model from a file or a stream, wrapping any errors the process generates
      in a [[DriverFailedException]] to simplify callers."
     todo("Return exceptions instead of throwing them")

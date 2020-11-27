@@ -59,6 +59,7 @@ import strategicprimer.viewer.drivers {
 import strategicprimer.model.common.xmlio {
     warningLevels
 }
+
 import strategicprimer.drivers.gui.common {
     SPFrame,
     SPMenu
@@ -104,12 +105,15 @@ shared final class ViewerFrame extends SPFrame satisfies MapGUI {
             [ViewerModel.copyConstructor(map), options.copy()]));
     }
 
-    void setMapWrapper(IMutableMapNG map, PathWrapper file, Boolean modified) =>
-            mapModel.setMap(map, file, modified);
+    void setMapWrapper(IMutableMapNG map, PathWrapper path) => mapModel.setMap(map, path, false);
 
     void alternateAcceptDroppedFile(PathWrapper file) {
-        value newModel = mapReaderAdapter.readMapModel(file, warningLevels.default);
-        SwingUtilities.invokeLater(defer(setMapWrapper, [newModel.map, file, false]));
+        value mapOrError = mapReaderAdapter.readMap(file, warningLevels.default);
+        if (is IMutableMapNG mapOrError) {
+            SwingUtilities.invokeLater(defer(setMapWrapper, [mapOrError, file]));
+        } else {
+            // FIXME: handle error, showing it to the user or something
+        }
     }
 
     shared actual void acceptDroppedFile(PathWrapper file) {
