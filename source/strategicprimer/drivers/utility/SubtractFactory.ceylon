@@ -6,9 +6,7 @@ import strategicprimer.drivers.common {
     IDriverUsage,
     ModelDriver,
     SPOptions,
-    IDriverModel,
-    IMultiMapModel,
-    SimpleMultiMapModel
+    IDriverModel
 }
 import strategicprimer.drivers.common.cli {
     ICLIHelper
@@ -27,12 +25,12 @@ shared class SubtractFactory() satisfies ModelDriverFactory {
         "Subtract one map from another", "Remove everything known in a base map from submaps for easier comparison",
         false, false, "baseMap.xml", "operand.xml");
     shared actual ModelDriver createDriver(ICLIHelper cli, SPOptions options, IDriverModel model) {
-        if (is IMultiMapModel model) {
+        if (is UtilityDriverModel model) {
             return SubtractCLI(model);
         } else {
-            return createDriver(cli, options, SimpleMultiMapModel.copyConstructor(model));
+            return createDriver(cli, options, UtilityDriverModel.copyConstructor(model));
         }
     }
 
-    shared actual IDriverModel createModel(IMutableMapNG map, PathWrapper? path) => SimpleMultiMapModel(map, path);
+    shared actual IDriverModel createModel(IMutableMapNG map, PathWrapper? path) => UtilityDriverModel(map, path);
 }

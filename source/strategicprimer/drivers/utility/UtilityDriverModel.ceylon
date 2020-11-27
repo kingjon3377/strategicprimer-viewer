@@ -1,9 +1,11 @@
 import strategicprimer.model.common.map {
+    Direction,
     HasExtent,
     HasPopulation,
     IFixture,
     IMutableMapNG,
     Point,
+    Subsettable,
     TileFixture
 }
 
@@ -48,6 +50,14 @@ shared class UtilityDriverModel extends SimpleMultiMapModel {
     static void ifApplicable<Desired, Provided>(Anything(Desired) func)(Provided item) {
         if (is Desired item) {
             func(item);
+        }
+    }
+
+    static Boolean isSubset(IFixture one, IFixture two) {
+        if (is Subsettable<IFixture> one) {
+            return one.isSubset(two, noop);
+        } else {
+            return one == two;
         }
     }
 
@@ -177,5 +187,33 @@ shared class UtilityDriverModel extends SimpleMultiMapModel {
                  }, handlers));
         }
         return retval;
+    }
+
+    "Remove information in the main map from subordinate maps."
+    shared void subtractAtPoint(Point location) {
+        for (subMap->[path, modified] in restrictedSubordinateMaps) {
+            if (!modified) {
+                setModifiedFlag(map, true);
+            }
+            if (exists terrain = map.baseTerrain[location], exists ours = subMap.baseTerrain[location], terrain == ours) {
+                subMap.baseTerrain[location] = null;
+            }
+            subMap.removeRivers(location, *map.rivers.get(location)); // TODO: syntax sugar
+            Map<Direction, Integer> mainRoads = map.roads.getOrDefault(location, emptyMap);
+            Map<Direction, Integer> knownRoads = subMap.roads.getOrDefault(location, emptyMap);
+            for (direction->road in knownRoads) {
+                if (mainRoads.getOrDefault(direction, 0) >= road) {
+                    subMap.setRoadLevel(location, direction, 0);
+                }
+            }
+            if (map.mountainous.get(location)) { // TODO: syntax sugar
+                subMap.mountainous[location] = false;
+            }
+            for (fixture in subMap.fixtures.get(location)) { // TODO: syntax sugar
+                if (map.fixtures.get(location).any((item) => isSubset(item, fixture))) { // TODO: syntax sugar
+                    subMap.removeFixture(location, fixture);
+                }
+            }
+        }
     }
 }
