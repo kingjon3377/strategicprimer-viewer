@@ -7,9 +7,7 @@ import strategicprimer.model.common.idreg {
     createIDFactory
 }
 import strategicprimer.model.common.map {
-    Point,
-    IMutableMapNG,
-    IMapNG
+    IMutableMapNG
 }
 import strategicprimer.model.common.map.fixtures {
     Ground
@@ -25,8 +23,6 @@ import strategicprimer.model.common.xmlio {
     SPFormatException
 }
 import strategicprimer.drivers.common {
-    IMultiMapModel,
-    IDriverModel,
     ParamCount,
     UtilityDriver,
     DriverFailedException,
@@ -34,12 +30,8 @@ import strategicprimer.drivers.common {
     SPOptions,
     DriverUsage,
     IDriverUsage,
-    CLIDriver,
     DriverFactory,
-    UtilityDriverFactory,
-    ModelDriverFactory,
-    ModelDriver,
-    SimpleMultiMapModel
+    UtilityDriverFactory
 }
 import strategicprimer.drivers.common.cli {
     ICLIHelper
@@ -69,6 +61,7 @@ shared class EchoDriverFactory satisfies UtilityDriverFactory {
 """A driver that reads in maps and then writes them out again---this is primarily to make
    sure that the map format is properly read, but is also useful for correcting deprecated
    syntax. (Because of that usage, warnings are disabled.)"""
+// TODO: Should probably move to sp.drivers.utility
 shared class EchoDriver(options) satisfies UtilityDriver {
     shared actual SPOptions options;
     """Run the driver: read the map, then write it, correcting deprecated syntax and
@@ -125,77 +118,6 @@ shared class EchoDriver(options) satisfies UtilityDriver {
             }
         } else {
             throw IncorrectUsageException(EchoDriverFactory.staticUsage);
-        }
-    }
-}
-
-"A factory for a driver to fix ID mismatches between forests and Ground in the main and
- player maps."
-service(`interface DriverFactory`)
-shared class ForestFixerFactory() satisfies ModelDriverFactory {
-    shared actual IDriverUsage usage = DriverUsage(false, "fix-forests",
-        ParamCount.atLeastTwo, "Fix forest IDs",
-        "Make sure that forest IDs in submaps match the main map", false, false);
-
-    shared actual ModelDriver createDriver(ICLIHelper cli, SPOptions options,
-            IDriverModel model) {
-        if (is IMultiMapModel model) {
-            return ForestFixerDriver(cli, options, model);
-        } else {
-            return createDriver(cli, options, SimpleMultiMapModel.copyConstructor(model));
-        }
-    }
-
-    shared actual IDriverModel createModel(IMutableMapNG map, PathWrapper? path) =>
-            SimpleMultiMapModel(map, path);
-}
-
-"A driver to fix ID mismatches between forests and Ground in the main and player maps."
-shared class ForestFixerDriver(ICLIHelper cli, options, model) satisfies CLIDriver {
-    shared actual SPOptions options;
-    shared actual IMultiMapModel model;
-    {Forest*} extractForests(IMapNG map, Point location) =>
-//            map.fixtures[location].narrow<Forest>(); // TODO: syntax sugar once compiler bug fixed
-            map.fixtures.get(location).narrow<Forest>();
-    {Ground*} extractGround(IMapNG map, Point location) =>
-//            map.fixtures[location].narrow<Ground>(); // TODO: syntax sugar once compiler bug fixed
-            map.fixtures.get(location).narrow<Ground>();
-
-    shared actual void startDriver() {
-        IMutableMapNG mainMap = model.map;
-        for (map->[file, _] in model.subordinateMaps) {
-            cli.println("Starting ``file?.string
-                else "a map with no associated path"``");
-
-            for (location in map.locations) {
-                {Forest*} mainForests = extractForests(mainMap, location);
-                {Forest*} subForests = extractForests(map, location);
-                for (forest in subForests) {
-                    if (mainForests.contains(forest)) {
-                        continue ;
-                    } else if (exists matching = mainForests
-                            .find(forest.equalsIgnoringID)) {
-                        forest.id = matching.id;
-                    } else {
-                        cli.println("Unmatched forest in ``location``:``forest``");
-                        mainMap.addFixture(location, forest.copy(false));
-                    }
-                }
-
-                {Ground*} mainGround = extractGround(mainMap, location);
-                {Ground*} subGround = extractGround(map, location);
-                for (ground in subGround) {
-                    if (mainGround.contains(ground)) {
-                        continue;
-                    } else if (exists matching = mainGround
-                            .find(ground.equalsIgnoringID)) {
-                        ground.id = matching.id;
-                    } else {
-                        cli.println("Unmatched ground in ``location``: ``ground``");
-                        mainMap.addFixture(location, ground.copy(false));
-                    }
-                }
-            }
         }
     }
 }

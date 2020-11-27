@@ -3,6 +3,7 @@ import strategicprimer.model.common.map {
     HasExtent,
     HasPopulation,
     IFixture,
+    IMapNG,
     IMutableMapNG,
     Point,
     Subsettable,
@@ -24,6 +25,10 @@ import ceylon.collection {
     ArrayList
 }
 
+import strategicprimer.model.common.map.fixtures {
+    Ground
+}
+
 import strategicprimer.model.common.map.fixtures.resources {
     CacheFixture
 }
@@ -31,6 +36,10 @@ import strategicprimer.model.common.map.fixtures.resources {
 import strategicprimer.model.common.map.fixtures.mobile {
     Animal,
     IUnit
+}
+
+import strategicprimer.model.common.map.fixtures.terrain {
+    Forest
 }
 
 import strategicprimer.model.common.map.fixtures.towns {
@@ -212,6 +221,54 @@ shared class UtilityDriverModel extends SimpleMultiMapModel {
             for (fixture in subMap.fixtures.get(location)) { // TODO: syntax sugar
                 if (map.fixtures.get(location).any((item) => isSubset(item, fixture))) { // TODO: syntax sugar
                     subMap.removeFixture(location, fixture);
+                }
+            }
+        }
+    }
+
+    {Forest*} extractForests(IMapNG map, Point location) =>
+//            map.fixtures[location].narrow<Forest>(); // TODO: syntax sugar once compiler bug fixed
+            map.fixtures.get(location).narrow<Forest>();
+    {Ground*} extractGround(IMapNG map, Point location) =>
+//            map.fixtures[location].narrow<Ground>(); // TODO: syntax sugar once compiler bug fixed
+            map.fixtures.get(location).narrow<Ground>();
+
+    shared void fixForestsAndGround(Anything(String) ostream) {
+        for (map->[file, _] in subordinateMaps) {
+            ostream("Starting ``file?.string
+                else "a map with no associated path"``");
+
+            for (location in map.locations) {
+                {Forest*} mainForests = extractForests(restrictedMap, location);
+                {Forest*} subForests = extractForests(map, location);
+                for (forest in subForests) {
+                    if (mainForests.contains(forest)) {
+                        continue ;
+                    } else if (exists matching = mainForests
+                            .find(forest.equalsIgnoringID)) {
+                        forest.id = matching.id;
+                        mapModified = true;
+                    } else {
+                        ostream("Unmatched forest in ``location``:``forest``");
+                        restrictedMap.addFixture(location, forest.copy(false));
+                        mapModified = true;
+                    }
+                }
+
+                {Ground*} mainGround = extractGround(restrictedMap, location);
+                {Ground*} subGround = extractGround(map, location);
+                for (ground in subGround) {
+                    if (mainGround.contains(ground)) {
+                        continue;
+                    } else if (exists matching = mainGround
+                            .find(ground.equalsIgnoringID)) {
+                        ground.id = matching.id;
+                        mapModified = true;
+                    } else {
+                        ostream("Unmatched ground in ``location``: ``ground``");
+                        restrictedMap.addFixture(location, ground.copy(false));
+                        mapModified = true;
+                    }
                 }
             }
         }
