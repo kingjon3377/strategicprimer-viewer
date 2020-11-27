@@ -14,8 +14,7 @@ import strategicprimer.drivers.common {
     ParamCount,
     DriverFactory,
     ModelDriverFactory,
-    ModelDriver,
-    SimpleMultiMapModel
+    ModelDriver
 }
 
 import lovelace.util.common {
@@ -39,8 +38,14 @@ shared class DuplicateFixtureRemoverFactory() satisfies ModelDriverFactory {
     };
 
     shared actual ModelDriver createDriver(ICLIHelper cli, SPOptions options,
-            IDriverModel model) => DuplicateFixtureRemoverCLI(cli, model);
+            IDriverModel model) {
+        if (is UtilityDriverModel model) {
+            return DuplicateFixtureRemoverCLI(cli, model);
+        } else {
+            return createDriver(cli, options, UtilityDriverModel.copyConstructor(model));
+        }
+    }
 
     shared actual IDriverModel createModel(IMutableMapNG map, PathWrapper? path) =>
-            SimpleMultiMapModel(map, path);
+            UtilityDriverModel(map, path);
 }
