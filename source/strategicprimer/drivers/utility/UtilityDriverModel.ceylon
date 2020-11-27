@@ -1,10 +1,12 @@
 import strategicprimer.model.common.map {
     Direction,
     HasExtent,
+    HasOwner,
     HasPopulation,
     IFixture,
     IMapNG,
     IMutableMapNG,
+    Player,
     Point,
     Subsettable,
     TileFixture
@@ -43,7 +45,8 @@ import strategicprimer.model.common.map.fixtures.terrain {
 }
 
 import strategicprimer.model.common.map.fixtures.towns {
-    Fortress
+    Fortress,
+    ITownFixture
 }
 
 import ceylon.language.meta {
@@ -52,6 +55,16 @@ import ceylon.language.meta {
 
 import ceylon.language.meta.model {
     ClassOrInterface
+}
+
+import strategicprimer.drivers.exploration.common {
+    Speed,
+    surroundingPointIterable,
+    simpleMovementModel
+}
+
+import ceylon.random {
+    randomize
 }
 
 "A driver model for the various utility drivers."
@@ -68,6 +81,10 @@ shared class UtilityDriverModel extends SimpleMultiMapModel {
         } else {
             return one == two;
         }
+    }
+
+    static class Mock(owner) satisfies HasOwner {
+        shared actual Player owner;
     }
 
     shared new (IMutableMapNG map, PathWrapper? file, Boolean modified = false)
@@ -270,6 +287,63 @@ shared class UtilityDriverModel extends SimpleMultiMapModel {
                         mapModified = true;
                     }
                 }
+            }
+        }
+    }
+
+    void safeAdd(IMutableMapNG map, Player currentPlayer, Point point,
+            TileFixture fixture) {
+        if (map.fixtures.get(point).any(fixture.equals)) {
+            return;
+        } else if (is HasOwner fixture, !fixture is ITownFixture) {
+            value zeroed = fixture.copy(fixture.owner != currentPlayer);
+            if (!map.fixtures.get(point).any(zeroed.equals)) {
+                map.addFixture(point, fixture.copy(
+                    fixture.owner != currentPlayer));
+            }
+        } else {
+            value zeroed = fixture.copy(true);
+            if (!map.fixtures.get(point).any(zeroed.equals)) {
+                map.addFixture(point, fixture.copy(true));
+            }
+        }
+    }
+
+    shared void expandAroundPoint(Point center, Player currentPlayer) {
+        Mock mock = Mock(currentPlayer);
+        for (subMap->[path, modified] in restrictedSubordinateMaps) {
+            if (subMap.currentPlayer != currentPlayer) {
+                continue;
+            }
+
+            for (neighbor in surroundingPointIterable(center, subMap.dimensions)) {
+                if (!subMap.baseTerrain[neighbor] exists) {
+                    subMap.baseTerrain[neighbor] = map.baseTerrain[neighbor];
+                    //if (map.mountainous[neighbor]) { // TODO: syntax sugar once compiler bug fixed
+                    if (map.mountainous.get(neighbor)) {
+                        subMap.mountainous[neighbor] = true;
+                    }
+                }
+                MutableList<TileFixture> possibilities = ArrayList<TileFixture>();
+                //for (fixture in map.fixtures[neighbor]) {
+                for (fixture in map.fixtures.get(neighbor)) {
+                    //if (fixture is CacheFixture || subMap.fixtures[neighbor] // TODO: syntax sugar
+                    if (fixture is CacheFixture || subMap.fixtures.get(neighbor)
+                            .contains(fixture)) {
+                        continue;
+                    } else if (simpleMovementModel.shouldAlwaysNotice(mock, fixture)) {
+                        safeAdd(subMap, currentPlayer, neighbor, fixture);
+                    } else if (simpleMovementModel.shouldSometimesNotice(mock,
+                            Speed.careful, fixture)) {
+                        possibilities.add(fixture);
+                    }
+                }
+                if (exists first = randomize(possibilities).first) { // FIXME: If multiple sub-maps, this copies different fixtures to each one
+                    safeAdd(subMap, currentPlayer, neighbor, first);
+                }
+            }
+            if (!modified) {
+                setModifiedFlag(subMap, true);
             }
         }
     }
