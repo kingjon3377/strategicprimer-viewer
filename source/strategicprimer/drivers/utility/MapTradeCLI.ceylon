@@ -1,5 +1,4 @@
 import strategicprimer.drivers.common {
-    IMultiMapModel,
     FixtureMatcher,
     CLIDriver,
     SPOptions,
@@ -82,10 +81,6 @@ import ceylon.language.meta {
     type
 }
 
-import lovelace.util.common {
-    matchingValue
-}
-
 "An app to copy selected contents from one map to another."
 shared class MapTradeCLI satisfies CLIDriver {
     static {FixtureMatcher*} flatten(FixtureMatcher|{FixtureMatcher*} item) {
@@ -144,8 +139,8 @@ shared class MapTradeCLI satisfies CLIDriver {
 
     ICLIHelper cli;
     shared actual SPOptions options = emptyOptions;
-    shared actual IMultiMapModel model;
-    shared new (ICLIHelper cli, IMultiMapModel model) {
+    shared actual MapTradeModel model;
+    shared new (ICLIHelper cli, MapTradeModel model) {
         this.cli = cli;
         this.model = model;
     }
@@ -178,7 +173,7 @@ shared class MapTradeCLI satisfies CLIDriver {
         Boolean? copyPlayers = cli.inputBoolean("Copy players?");
         if (exists copyPlayers) {
             if (copyPlayers) {
-                first.players.each(second.addPlayer);
+                model.copyPlayers();
             }
         } else {
             return;
@@ -201,46 +196,16 @@ shared class MapTradeCLI satisfies CLIDriver {
         }
         Integer totalCount = first.locations.count(not(first.locationEmpty));
         variable Integer count = 1;
-        variable Boolean hasSetModifiedFlag = false;
-        void setModifiedFlag() {
-            if (!hasSetModifiedFlag) {
-                model.setModifiedFlag(second, true);
-                hasSetModifiedFlag = true;
-            }
-        }
         for (location in first.locations.filter(not(first.locationEmpty))) {
             log.debug(
                 "Copying contents at ``location``, location ``count``/``totalCount``");
-            if (!second.baseTerrain[location] exists, exists terrain =
-                    first.baseTerrain[location]) {
-                second.baseTerrain[location] = terrain;
-                setModifiedFlag();
-            }
-            //for (fixture in first.fixtures[location].filter(testFixture)) { // TODO: syntax sugar
-            for (fixture in first.fixtures.get(location).filter(testFixture)) {
-                //if (!second.fixtures[location] // TODO: syntax sugar
-                if (fixture.id >= 0, !second.fixtures.get(location)
-                        .any(matchingValue(fixture.id, TileFixture.id))) {
-                    second.addFixture(location, fixture.copy(zeroFixtures));
-                    setModifiedFlag();
-                }
-            }
+            model.copyBaseTerrainAt(location);
+            model.maybeCopyFixturesAt(location, testFixture, zeroFixtures);
             if (copyRivers) {
-                //second.addRivers(location, *first.rivers[location]); // TODO: syntax sugar
-                second.addRivers(location, *first.rivers.get(location));
-                setModifiedFlag();
+                model.copyRiversAt(location);
             }
-            if (copyRoads, exists roads = first.roads[location]) {
-                value existingRoads = second.roads[location];
-                for (direction->quality in roads) {
-                    value existingRoad = existingRoads?.get(direction);
-                    if (exists existingRoad, existingRoad >= quality) {
-                        continue;
-                    } else {
-                        second.setRoadLevel(location, direction, quality);
-                        setModifiedFlag();
-                    }
-                }
+            if (copyRoads) {
+                model.copyRoadsAt(location);
             }
             count++;
         }

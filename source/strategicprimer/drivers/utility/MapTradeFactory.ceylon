@@ -4,11 +4,9 @@ import strategicprimer.drivers.common {
     ParamCount,
     SPOptions,
     IDriverModel,
-    IMultiMapModel,
     DriverFactory,
     ModelDriverFactory,
-    ModelDriver,
-    SimpleMultiMapModel
+    ModelDriver
 }
 
 import strategicprimer.drivers.common.cli {
@@ -31,12 +29,12 @@ shared class MapTradeFactory() satisfies ModelDriverFactory {
         "destination.xml");
     shared actual ModelDriver createDriver(ICLIHelper cli, SPOptions options,
             IDriverModel model) {
-        if (is IMultiMapModel model) {
+        if (is MapTradeModel model) {
             return MapTradeCLI(cli, model);
         } else {
-            return createDriver(cli, options, SimpleMultiMapModel.copyConstructor(model));
+            return createDriver(cli, options, MapTradeModel.copyConstructor(model));
         }
     }
-    shared actual IDriverModel createModel(IMutableMapNG map, PathWrapper? path) =>
-            SimpleMultiMapModel(map, path);
+    shared actual MapTradeModel createModel(IMutableMapNG map, PathWrapper? path) =>
+            MapTradeModel(map, path);
 }
