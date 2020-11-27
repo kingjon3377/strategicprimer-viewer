@@ -54,7 +54,6 @@ import strategicprimer.drivers.common {
     IncorrectUsageException,
     SPOptionsImpl,
     CLIDriver,
-    IMultiMapModel,
     DriverFactory,
     GUIDriverFactory,
     UtilityDriverFactory,
@@ -278,13 +277,7 @@ class DriverWrapper(DriverFactory factory) {
         if (options.hasOption("--current-turn")) {
             if (is Integer currentTurn =
                     Integer.parse(options.getArgument("--current-turn"))) {
-                if (is IMultiMapModel model) {
-                    for (map->_ in model.allMaps) {
-                        map.currentTurn = currentTurn;
-                    }
-                } else {
-                    model.map.currentTurn = currentTurn;
-                }
+                model.currentTurn = currentTurn;
             }
         }
     }
