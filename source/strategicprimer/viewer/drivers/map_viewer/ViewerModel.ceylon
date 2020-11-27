@@ -15,7 +15,10 @@ import strategicprimer.drivers.common {
 }
 import strategicprimer.model.common.map {
     Point,
-    IMutableMapNG
+    IMutableMapNG,
+    River,
+    TileFixture,
+    TileType
 }
 
 "A class to encapsulate the various model-type things views need to do with maps."
@@ -269,5 +272,55 @@ shared class ViewerModel extends SimpleDriverModel satisfies IViewerModel {
         visDimensions = VisibleDimensions(0, newMap.dimensions.rows - 1, 0,
             newMap.dimensions.columns - 1);
         resetZoom();
+    }
+
+    "Set whether a tile is mountainous."
+    shared actual void setMountainous(Point location, Boolean mountainous) {
+        restrictedMap.mountainous[location] = mountainous;
+        mapModified = true; // TODO: Only set the flag if this was a change?
+    }
+
+    "Add a fixture to the map at a point."
+    shared actual void addFixture(Point location, TileFixture fixture) {
+        restrictedMap.addFixture(location, fixture);
+        mapModified = true; // TODO: If addFixture() returns Boolean, only set this flag if this was a change?
+    }
+
+    "Remove a fixture from the map at a point."
+    shared actual void removeMatchingFixtures(Point location, Boolean(TileFixture) condition) {
+        for (fixture in map.fixtures.get(location).filter(condition)) {
+            restrictedMap.removeFixture(location, fixture);
+        }
+        mapModified = true; // TODO: Only set the flag if this was a change?
+    }
+
+    "Add a bookmark at the given location."
+    shared actual void addBookmark(Point location) {
+        restrictedMap.addBookmark(location);
+        mapModified = true; // TODO: Only set the flag if this was a change?
+    }
+
+    "Remove a bookmark at the current location."
+    shared actual void removeBookmark(Point location) {
+        restrictedMap.removeBookmark(location);
+        mapModified = true; // TODO: Only set the flag if this was a change?
+    }
+
+    "Add a river at a location."
+    shared actual void addRiver(Point location, River river) {
+        restrictedMap.addRivers(location, river);
+        mapModified = true; // TODO: Only set the flag if this was a change?
+    }
+
+    "Remove a river at a location."
+    shared actual void removeRiver(Point location, River river) {
+        restrictedMap.removeRivers(location, river);
+        mapModified = true; // TODO: Only set the flag if this was a change?
+    }
+
+    "Set the map's terrain type at the given point."
+    shared actual void setBaseTerrain(Point location, TileType? terrain) {
+        restrictedMap.baseTerrain[location] = terrain;
+        mapModified = true; // TODO: Only set the flag if this was a change?
     }
 }

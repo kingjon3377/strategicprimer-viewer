@@ -1,5 +1,8 @@
 import strategicprimer.model.common.map {
-    Point
+    Point,
+    River,
+    TileFixture,
+    TileType
 }
 import strategicprimer.drivers.common {
     IDriverModel,
@@ -34,4 +37,28 @@ shared interface IViewerModel
 
     "Reset the zoom level to the default."
     shared formal void resetZoom();
+
+    "Set whether a tile is mountainous."
+    shared formal void setMountainous(Point location, Boolean mountainous);
+
+    "Add a fixture to the map at a point."
+    shared formal void addFixture(Point location, TileFixture fixture);
+
+    "Remove a fixture from the map at a point."
+    shared formal void removeMatchingFixtures(Point location, Boolean(TileFixture) condition);
+
+    "Add a bookmark at the given location."
+    shared formal void addBookmark(Point location);
+
+    "Remove a bookmark at the current location."
+    shared formal void removeBookmark(Point location);
+
+    "Add a river at a location."
+    shared formal void addRiver(Point location, River river);
+
+    "Remove a river at a location."
+    shared formal void removeRiver(Point location, River river);
+
+    "Set the map's terrain type at the given point."
+    shared formal void setBaseTerrain(Point location, TileType? terrain);
 }

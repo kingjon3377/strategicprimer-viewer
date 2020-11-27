@@ -56,9 +56,8 @@ class TerrainChangingMenu(Integer mapVersion, IViewerModel model) extends JPopup
     variable Point point = Point.invalidPoint;
     nuDialog.addNewUnitListener(object satisfies NewUnitListener {
         shared actual void addNewUnit(IUnit unit) {
-            model.map.addFixture(point, unit);
-            model.mapModified = true; // FIXME: Extract a method for the 'set modified flag, fire changes, reset interaction' procedure
-            model.selection = point;
+            model.addFixture(point, unit);
+            model.selection = point; // FIXME: Extract a method for the 'set modified flag, fire changes, reset interaction' procedure
             scs.fireChanges(null, point);
             model.interaction = null;
         }
@@ -71,9 +70,8 @@ class TerrainChangingMenu(Integer mapVersion, IViewerModel model) extends JPopup
         Point localPoint = point;
         if (localPoint.valid, exists terrain = model.map.baseTerrain[localPoint],
                 terrain != TileType.ocean) {
-            Boolean newValue = !model.map.mountainous.get(localPoint);
-            model.map.mountainous[localPoint] = newValue;
-            model.mapModified = true;
+            Boolean newValue = !model.map.mountainous.get(localPoint); // TODO: syntax sugar
+            model.setMountainous(localPoint, newValue);
             mountainItem.model.selected = newValue;
             scs.fireChanges(null, localPoint);
         }
@@ -90,14 +88,10 @@ class TerrainChangingMenu(Integer mapVersion, IViewerModel model) extends JPopup
         if (localPoint.valid, exists terrain = model.map.baseTerrain[localPoint],
                 terrain != TileType.ocean) {
             if (model.map.fixtures.get(localPoint).narrow<Hill>().empty) { // TODO: syntax sugar
-                // FIXME: get an ID factory somehow
-                model.map.addFixture(localPoint, Hill(idf.createID()));
+                model.addFixture(localPoint, Hill(idf.createID()));
             } else {
-                for (hill in model.map.fixtures.get(localPoint).narrow<Hill>()) { // TODO: syntax sugar
-                    model.map.removeFixture(localPoint, hill);
-                }
+                model.removeMatchingFixtures(localPoint, `Hill`.typeOf);
             }
-            model.mapModified = true;
             hillItem.model.selected = !model.map.fixtures.get(localPoint).empty; // TODO: syntax sugar
             scs.fireChanges(null, localPoint);
         }
@@ -111,8 +105,7 @@ class TerrainChangingMenu(Integer mapVersion, IViewerModel model) extends JPopup
     NewForestDialog nfDialog = NewForestDialog(idf);
     object newFixtureListener satisfies NewFixtureListener {
         shared actual void addNewFixture(TileFixture fixture) {
-            model.map.addFixture(point, fixture);
-            model.mapModified = true;
+            model.addFixture(point, fixture);
             model.selection = point; // TODO: We probably don't always want to do this ...
             scs.fireChanges(null, point);
             model.interaction = null;
@@ -132,14 +125,13 @@ class TerrainChangingMenu(Integer mapVersion, IViewerModel model) extends JPopup
 
     void toggleBookmarked() {
         Point localPoint = point;
-        if (localPoint in model.map.bookmarks) {
-            model.map.removeBookmark(localPoint);
+        if (localPoint in model.map.bookmarks) { // TODO: make a 'bookmarks' accessor in model?
+            model.removeBookmark(localPoint);
             bookmarkItem.model.selected = false;
         } else {
-            model.map.addBookmark(localPoint);
+            model.addBookmark(localPoint);
             bookmarkItem.model.selected = true;
         }
-        model.mapModified = true;
         scs.fireChanges(null, localPoint);
         model.interaction = null;
     }
@@ -151,13 +143,12 @@ class TerrainChangingMenu(Integer mapVersion, IViewerModel model) extends JPopup
         if (localPoint.valid, exists terrain = model.map.baseTerrain[localPoint],
                 terrain != TileType.ocean) {
             if (river in model.map.rivers.get(localPoint)) {
-                model.map.removeRivers(localPoint, river);
+                model.removeRiver(localPoint, river);
                 item.model.selected = false;
             } else {
-                model.map.addRivers(localPoint, river);
+                model.addRiver(localPoint, river);
                 item.model.selected = true;
             }
-            model.mapModified = true;
             scs.fireChanges(null, localPoint);
             model.interaction = null;
         }
@@ -182,8 +173,7 @@ class TerrainChangingMenu(Integer mapVersion, IViewerModel model) extends JPopup
     // TODO: Make some way to manipulate roads?
 
     void removeTerrain(ActionEvent event) {
-        model.map.baseTerrain[point] = null;
-        model.mapModified = true;
+        model.setBaseTerrain(point, null);
         scs.fireChanges(null, point);
         model.interaction = null;
     }
@@ -215,8 +205,7 @@ class TerrainChangingMenu(Integer mapVersion, IViewerModel model) extends JPopup
             }
             add(item);
             item.addActionListener((ActionEvent event) {
-                model.map.baseTerrain[point] = type;
-                model.mapModified = true;
+                model.setBaseTerrain(point, type);
                 scs.fireChanges(null, point);
                 model.interaction = null;
             });
