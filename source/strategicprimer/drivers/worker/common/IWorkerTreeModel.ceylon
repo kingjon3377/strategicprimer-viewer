@@ -69,8 +69,8 @@ shared interface IWorkerTreeModel
         UnitMember sibling);
 
     """Get the path to the "next" unit whose orders for the given turn either contain
-       "TODO", contain "FIXME", contain "XXX", or are empty. Returns null if no unit
-       matches those criteria."""
+       "TODO", contain "FIXME", contain "XXX", or are empty. Skips units with no members.
+       Returns null if no unit matches those criteria."""
     shared formal TreePath? nextProblem(TreePath? starting, Integer turn);
 
     "If [[arg]] is a node in the tree, return its children, if any; otherwise, return

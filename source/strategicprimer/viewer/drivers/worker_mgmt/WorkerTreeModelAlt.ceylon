@@ -468,8 +468,8 @@ shared class WorkerTreeModelAlt extends DefaultTreeModel satisfies IWorkerTreeMo
     }
 
     """Get the path to the "next" unit whose orders for the given turn either contain
-       "TODO", contain "FIXME", contain "XXX", or are empty. Returns null if no unit
-       matches those criteria."""
+       "TODO", contain "FIXME", contain "XXX", or are empty. Skips units with no members.
+       Returns null if no unit matches those criteria."""
     shared actual TreePath? nextProblem(TreePath? starting, Integer turn) {
         assert (is PlayerNode rootNode = root);
         value enumeration = rootNode.preorderEnumeration();
@@ -484,6 +484,9 @@ shared class WorkerTreeModelAlt extends DefaultTreeModel satisfies IWorkerTreeMo
             sequence = wrapped.narrow<UnitNode>().sequence();
         }
         for (node in sequence) {
+            if (node.userObjectNarrowed.empty) {
+                continue;
+            }
             String orders = node.userObjectNarrowed.getOrders(turn).lowercased;
             if (orders.empty || orders.contains("todo") || orders.contains("fixme") ||
                     orders.contains("xxx")) {
