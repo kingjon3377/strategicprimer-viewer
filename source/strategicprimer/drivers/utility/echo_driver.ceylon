@@ -61,7 +61,6 @@ shared class EchoDriverFactory satisfies UtilityDriverFactory {
 """A driver that reads in maps and then writes them out again---this is primarily to make
    sure that the map format is properly read, but is also useful for correcting deprecated
    syntax. (Because of that usage, warnings are disabled.)"""
-// TODO: Should probably move to sp.drivers.utility
 shared class EchoDriver(options) satisfies UtilityDriver {
     shared actual SPOptions options;
     """Run the driver: read the map, then write it, correcting deprecated syntax and
