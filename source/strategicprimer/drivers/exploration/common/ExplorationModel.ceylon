@@ -595,6 +595,8 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
                 retval = true;
                 mapModified = true;
             }
+        } else {
+            log.warn("Skipping because not in the main map");
         }
         return retval;
     }
