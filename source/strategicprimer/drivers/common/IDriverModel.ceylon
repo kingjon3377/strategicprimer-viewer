@@ -27,9 +27,10 @@ shared interface IDriverModel satisfies MapChangeSource&VersionChangeSource {
     shared default MapDimensions mapDimensions => map.dimensions;
 
     "The filename from which the map was loaded or to which it should be written."
-    shared formal variable PathWrapper? mapFile;
+    shared formal variable PathWrapper? mapFile; // TODO: Store as part of the map
 
     "Whether the map has been changed since it was loaded or last saved."
+    // FIXME: Needs to be stored as part of the map, since a map can be shared between multiple drivers and their models
     shared formal variable Boolean mapModified;
 
     "The current turn for the map."

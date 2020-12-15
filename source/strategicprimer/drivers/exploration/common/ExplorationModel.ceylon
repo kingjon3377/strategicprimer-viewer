@@ -90,7 +90,7 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
 //            for (fixture in map.fixtures[point].narrow<HasOwner>()) { // TODO: syntax sugar once compiler bug fixed
             for (fixture in map.fixtures.get(point).narrow<HasOwner>()) {
                 if (!fixture.owner.independent, fixture.owner != unit.owner) {
-                    process.writeLine( // FIXME: Take ICLIHelper to report this on
+                    process.writeLine( // FIXME: Make a new interface for reporting this, and write to UI in a listener
                         "Motion of ``description`` to ``dest`` could be observed by ``
                             fixture.shortDescription`` at ``point``");
                 }
@@ -616,7 +616,7 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
 
     "Copy the given rivers to sub-maps, if they are present in the main map."
     shared actual void copyRiversToSubMaps(Point location, River* rivers) {
-        {River*} actualRivers = rivers.filter(map.rivers.get(location).contains); // TODO: syntax sugaar
+        {River*} actualRivers = rivers.filter(map.rivers.get(location).contains); // TODO: syntax sugar
         for (subMap->[file, modified] in restrictedSubordinateMaps) {
             subMap.addRivers(location, *actualRivers); // TODO: Make it return Boolean if this was a change, and only set modified flag in that case
             if (!modified) {
