@@ -92,6 +92,11 @@ class HerdApplet(ITurnRunningModel model, ICLIHelper cli, IDRegistrar idf)
                     matchingValue("domesticated", Animal.status)))) {
             if (exists herdModel = herdModels[group.kind]) {
                 modelMap.put(herdModel, group);
+            } else if (exists cont = cli.inputBoolean("No model for ``group.kind``. Really skip?"), cont) {
+                continue;
+            } else {
+                cli.println("Aborting ...");
+                return null;
             }
         }
         variable Integer workerCount = unit.narrow<IWorker>().size;
