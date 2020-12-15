@@ -171,6 +171,7 @@ shared abstract class AbstractTurnApplet(ITurnRunningModel model, ICLIHelper cli
         }
     }
 
+    // FIXME: Should only look at a particular unit's location
     shared [ResourcePile*] getFoodFor(Player player, Integer turn) { // TODO: Move into the model?
         return model.map.locations.flatMap(model.map.fixtures.get).narrow<Fortress|IUnit>()
             .filter(matchingValue(player, HasOwner.owner)).flatMap(identity).narrow<ResourcePile>()
