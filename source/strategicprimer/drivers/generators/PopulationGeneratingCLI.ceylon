@@ -208,8 +208,8 @@ shared class PopulationGeneratingCLI satisfies CLIDriver {
             surroundingPointIterable(center, map.dimensions, 1)
                 .count(hasForests(kind));
 
-    Decimal perForestAcreage(Integer reserved, Integer otherForests) =>
-        decimalNumber(160 - reserved) / decimalNumber(otherForests);
+    Decimal perForestAcreage(Decimal reserved, Integer otherForests) =>
+        (decimalNumber(160) - reserved) / decimalNumber(otherForests);
 
     Number<out Anything> acreageExtent(HasExtent<out Anything> item) => item.acres;
 
@@ -223,13 +223,13 @@ shared class PopulationGeneratingCLI satisfies CLIDriver {
             assert (exists primaryForest =
                     //map.fixtures[location].narrow<Forest>().first); // TODO: syntax sugar
                     map.fixtures.get(location).narrow<Forest>().first);
-            variable Integer reserved = 0;
+            variable Decimal reserved = decimalNumber(0);
             if (primaryForest.acres.positive) {
                 cli.println("First forest at ``location`` had acreage set already.");
 //                reserved += map.fixtures[location].narrow<Forest>().map(Forest.acres) // TODO: syntax sugar
                 reserved += map.fixtures.get(location).narrow<Forest>().map(Forest.acres)
                     .filter(positiveNumber).map(decimalize)
-                    .fold(decimalNumber(0))(plus).integer;
+                    .fold(decimalNumber(0))(plus);
             }
             //{Forest*} otherForests = map.fixtures[location].narrow<Forest>() // TODO: syntax sugar
             {Forest*} otherForests = map.fixtures.get(location).narrow<Forest>()
@@ -240,43 +240,43 @@ shared class PopulationGeneratingCLI satisfies CLIDriver {
             for (town in map.fixtures.get(location).narrow<ITownFixture>()) {
                 switch (town.townSize)
                 case (TownSize.small) {
-                    reserved += 15;
+                    reserved += decimalNumber(15);
                 }
                 case (TownSize.medium) {
-                    reserved += 40;
+                    reserved += decimalNumber(40);
                 }
                 case (TownSize.large) {
-                    reserved += 80;
+                    reserved += decimalNumber(80);
                 }
             }
             //reserved += map.fixtures[location].narrow<Grove>() // TODO: syntax sugar
-            reserved += map.fixtures.get(location).narrow<Grove>()
-                    .map(Grove.population).filter(Integer.positive).fold(0)(plus) / 500;
+            reserved += decimalNumber(map.fixtures.get(location).narrow<Grove>()
+                    .map(Grove.population).filter(Integer.positive).fold(0)(plus)) / decimalNumber(500);
             //reserved += map.fixtures[location].narrow<HasExtent>() // TODO: syntax sugar
             reserved += map.fixtures.get(location).narrow<HasExtent<out Anything>>()
                     .map(acreageExtent).filter(positiveNumber).map(decimalize)
-                    .fold(decimalNumber(0))(plus).integer;
-            if (reserved >= 160) {
+                    .fold(decimalNumber(0))(plus);
+            if (reserved >= decimalNumber(160)) {
                 cli.println(
                     "The whole tile or more was reserved, despite forests, at ``location``");
                 continue;
             }
             if (otherForests.empty) {
-                Integer acreage; // FIXME: Should this be Float instead?
+                Decimal acreage;
                 if (adjacentCount > 7) {
-                    acreage = 160 - reserved;
+                    acreage = decimalNumber(160) - reserved;
                 } else if (adjacentCount > 4) {
-                    acreage = (160 - reserved) * 4 / 5;
+                    acreage = (decimalNumber(160) - reserved) * decimalNumber(4) / decimalNumber(5);
                 } else {
-                    acreage = (160 - reserved) * 2 / 5;
+                    acreage = (decimalNumber(160) - reserved) * decimalNumber(2) / decimalNumber(5);
                 }
                 model.setForestExtent(location, primaryForest, acreage);
             } else {
-                Integer acreage;
+                Decimal acreage;
                 if (adjacentCount > 4) {
-                    acreage = (160 - reserved) * 4 / 5;
+                    acreage = (decimalNumber(160) - reserved) * decimalNumber(4) / decimalNumber(5);
                 } else {
-                    acreage = (160 - reserved) * 2 / 5;
+                    acreage = (decimalNumber(160) - reserved) * decimalNumber(2) / decimalNumber(5);
                 }
                 model.setForestExtent(location, primaryForest, acreage);
                 reserved += acreage;
