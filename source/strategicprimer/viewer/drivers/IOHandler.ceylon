@@ -26,9 +26,11 @@ import strategicprimer.model.common.map {
 }
 
 import strategicprimer.drivers.common {
+    IDriverModel,
     ISPDriver,
     GUIDriver,
     ModelDriver,
+    SPOptions,
     UtilityGUI,
     MultiMapGUIDriver
 }
@@ -165,6 +167,9 @@ shared class IOHandler satisfies ActionListener {
         ViewerGUI(vgf.createModel(SPMapNG(driver.model.mapDimensions, PlayerCollection(),
             driver.model.map.currentTurn), null), driver.options.copy()).startDriver();
 
+    void openSecondaryInViewer(IDriverModel model, SPOptions options) =>
+        ViewerGUI(ViewerModel.copyConstructor(model), options.copy()).startDriver();
+
     shared actual void actionPerformed(ActionEvent event) {
         Component? source = as<Component>(event.source);
         Frame? parentWindow;
@@ -282,8 +287,7 @@ shared class IOHandler satisfies ActionListener {
         case ("open secondary map in map viewer") {
             if (is MultiMapGUIDriver driver) {
                 if (exists newModel = driver.model.fromSecondMap()) {
-                    SwingUtilities.invokeLater(defer(compose(ViewerGUI.startDriver,
-                        ViewerGUI), [ViewerModel.copyConstructor(newModel), driver.options.copy()]));
+                    SwingUtilities.invokeLater(defer(openSecondaryInViewer, [newModel, driver.options]));
                 } else {
                     log.error(
                         "IOHandler asked to 'open secondary in map viewer'; none there");
