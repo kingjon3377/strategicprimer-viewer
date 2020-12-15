@@ -550,7 +550,7 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
         } else if (is AnimalTracks fixture) {
             matching = fixture;
         } else {
-            matching = map.fixtures.get(location).find(matchingValue(fixture, TileFixture.id));
+            matching = map.fixtures.get(location).find(matchingValue(fixture.id, TileFixture.id));
         }
         if (exists matching) {
             for (subMap->[file, modified] in restrictedSubordinateMaps) {
