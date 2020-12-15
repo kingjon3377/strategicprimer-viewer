@@ -33,6 +33,7 @@ import strategicprimer.model.common.map.fixtures.mobile {
     Animal,
     AnimalTracks,
     IUnit,
+    ProxyUnit,
     MobileFixture
 }
 import strategicprimer.model.common.map.fixtures.resources {
@@ -374,6 +375,32 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
         }
     }
 
+    Boolean mapsAgreeOnLocation(IUnit unit) {
+        if (is ProxyUnit unit) {
+            if (exists first = unit.proxied.first) {
+                return mapsAgreeOnLocation(first);
+            } else {
+                return false;
+            }
+        }
+        Point mainLoc = find(unit);
+        if (!mainLoc.valid) {
+            return false;
+        }
+        for (subMap->_ in subordinateMaps) {
+            for (point in subMap.locations) {
+                if (doesLocationHaveFixture(subMap, point, unit)) {
+                    if (point != mainLoc) {
+                        return false;
+                    } else {
+                        break;
+                    }
+                }
+            }
+        }
+        return true;
+    }
+
     "The currently selected unit."
     shared actual IUnit? selectedUnit => selection.rest.first;
     "Select the given unit."
@@ -382,6 +409,9 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
         IUnit? oldSelection = selection.rest.first;
         Point loc;
         if (exists selectedUnit) {
+            if (!mapsAgreeOnLocation(selectedUnit)) {
+                log.warn("Maps containing that unit don't all agree on its location");
+            }
             log.trace("Setting a newly selected unit");
             loc = find(selectedUnit);
             if (loc.valid) {
