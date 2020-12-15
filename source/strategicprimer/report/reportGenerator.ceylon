@@ -105,7 +105,7 @@ shared object reportGenerator {
                 fixtures.remove(fixture.id);
                 continue;
             }
-            cli.println("Unhandled fixture:\t``fixture`` (ID # ``fixture.id``)"); // TODO: Use a logger instead?
+            log.warn("Unhandled fixture:\t``fixture`` (ID # ``fixture.id``)");
         }
         return builder.string;
     }

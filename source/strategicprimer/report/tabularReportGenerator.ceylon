@@ -97,7 +97,7 @@ shared object tabularReportGenerator {
             if (is TerrainFixture fixture) {
                 fixtures.remove(fixture.id);
             } else {
-                cli.println("Unhandled fixture:   ``fixture``"); // TODO: Use a logger instead?
+                log.warn("Unhandled fixture:   ``fixture``");
             }
         }
     }
