@@ -61,7 +61,6 @@ import lovelace.util.jvm {
 
 "A driver to remove duplicate hills, forests, etc. from the map (to reduce the size it
  takes up on disk and the memory and CPU it takes to deal with it)."
-// FIXME: Move map-mutating operations into a driver model
 shared class DuplicateFixtureRemoverCLI satisfies CLIDriver {
     static String memberKind(IFixture? member) {
         switch (member)
@@ -141,7 +140,7 @@ shared class DuplicateFixtureRemoverCLI satisfies CLIDriver {
     """"Remove" (at first we just report) duplicate fixtures (i.e. hills, forests of the
        same kind, oases, etc.---we use [[TileFixture.equalsIgnoringID]]) from every tile
        in a map."""
-    void removeDuplicateFixtures(IMapNG map) { // FIXME: Work through a driver model
+    void removeDuplicateFixtures(IMapNG map) {
         for (location in model.map.locations) {
             for ([deleteCallback, file, fixture, duplicates] in model.conditionallyRemoveDuplicates(location)) {
                 for (duplicate in duplicates) {
