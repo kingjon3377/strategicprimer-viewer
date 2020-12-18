@@ -258,7 +258,7 @@ class StrategyExporter(IWorkerModel model, SPOptions options)
                     }
                 }
                 for (unit in model.getUnits(currentPlayer)) {
-                    if (unit.empty) {
+                    if (unit.filter(not(`IWorker`.typeOf)).empty) {
                         continue;
                     }
                     writer.write("- With unit ");
