@@ -183,8 +183,8 @@ class TownGenerator(ICLIHelper cli) {
             CommunityStats stats) {
 //        for (item in map.fixtures[location] // TODO: syntax sugar once compiler bug fixed
         for (item in map.fixtures.get(location)
-            .narrow<ModifiableTown>().filter(matchingValue(townId,
-            ModifiableTown.id))) {
+                .narrow<ModifiableTown>().filter(matchingValue(townId,
+                ModifiableTown.id))) {
             assignStatsToTown(item, stats);
         }
     }
