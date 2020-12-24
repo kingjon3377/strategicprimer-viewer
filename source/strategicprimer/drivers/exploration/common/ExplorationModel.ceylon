@@ -541,9 +541,10 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
 //                if (map.fixtures[currentPoint] // TODO: syntax sugar once compiler bug fixed
                 if (map.fixtures.get(currentPoint)
                         .any(curry(areDiggablesEqual)(oldFixture))) {
-                    map.removeFixture(currentPoint, oldFixture);
+                    map.replace(currentPoint, oldFixture, newFixture.copy(condition));
+                } else {
+                    map.addFixture(currentPoint, newFixture.copy(condition));
                 }
-                map.addFixture(currentPoint, newFixture.copy(condition));
             }
             variable Boolean subsequent = false;
             for (subMap->[file, modifiedFlag] in restrictedAllMaps) {

@@ -58,7 +58,8 @@ shared class TurnRunningModel extends ExplorationModel satisfies ITurnRunningMod
                         Integer remaining = matching.population - reduction;
                         if (remaining.positive) {
                             value addend = matching.reduced(remaining);
-                            map.addFixture(location, addend.copy(first || zero));
+                            map.replace(location, matching, addend.copy(first || zero));
+                            continue;
                         } else if (first) {
                             all = true;
                         }
@@ -91,7 +92,8 @@ shared class TurnRunningModel extends ExplorationModel satisfies ITurnRunningMod
                     } else if (matching.acres.positive) {
                         if (decimalize(matching.acres) > reduction) {
                             value addend = matching.reduced(reduction).copy(first || zero);
-                            map.addFixture(location, addend);
+                            map.replace(location, matching, addend);
+                            continue;
                         } else if (first) {
                             all = true;
                         }
