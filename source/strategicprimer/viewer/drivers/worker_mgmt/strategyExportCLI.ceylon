@@ -20,9 +20,7 @@ import strategicprimer.drivers.common.cli {
 import strategicprimer.drivers.worker.common {
     WorkerModel
 }
-import lovelace.util.common {
-    PathWrapper
-}
+
 import strategicprimer.model.common.map {
     IMutableMapNG
 }
@@ -53,8 +51,7 @@ shared class StrategyExportFactory() satisfies ModelDriverFactory {
         }
     }
 
-    shared actual IDriverModel createModel(IMutableMapNG map, PathWrapper? path) =>
-            WorkerModel(map, path);
+    shared actual IDriverModel createModel(IMutableMapNG map) => WorkerModel(map);
 }
 
 "A command-line program to export a proto-strategy for a player from orders in a map."

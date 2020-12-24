@@ -25,7 +25,7 @@ shared class TownGeneratingCLI(ICLIHelper cli, model) satisfies CLIDriver {
         TownGenerator generator = TownGenerator(cli); // TODO: Consider combining that with this class again.
         IDRegistrar idf;
         if (is IMultiMapModel model) {
-            idf = createIDFactory(model.allMaps.map(Entry.key));
+            idf = createIDFactory(model.allMaps);
         } else {
             idf = createIDFactory(model.map);
         }

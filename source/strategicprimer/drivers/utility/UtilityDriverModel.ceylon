@@ -87,15 +87,14 @@ shared class UtilityDriverModel extends SimpleMultiMapModel {
         shared actual Player owner;
     }
 
-    shared new (IMutableMapNG map, PathWrapper? file, Boolean modified = false)
-            extends SimpleMultiMapModel(map, file, modified) {}
+    shared new (IMutableMapNG map) extends SimpleMultiMapModel(map) {}
     shared new copyConstructor(IDriverModel model)
             extends SimpleMultiMapModel.copyConstructor(model) {}
 
     "Copy rivers at the given [[location]] missing from subordinate maps, where
      they has other terrain information, from the main map."
     shared void copyRiversAt(Point location) {
-        for (subordinateMap->[file, modifiedFlag] in restrictedSubordinateMaps) {
+        for (subordinateMap in restrictedSubordinateMaps) {
             if (exists mainTerrain = map.baseTerrain[location],
                     exists subTerrain = subordinateMap.baseTerrain[location],
                     mainTerrain == subTerrain,
@@ -104,9 +103,7 @@ shared class UtilityDriverModel extends SimpleMultiMapModel {
                     subordinateMap.rivers.get(location).empty) {
                 //subordinateMap.addRivers(location, *super.map.rivers[location]); // TODO: syntax sugar
                 subordinateMap.addRivers(location, *super.map.rivers.get(location));
-                if (!modifiedFlag) {
-                    setModifiedFlag(subordinateMap, true);
-                }
+                subordinateMap.modified = true;
             }
         }
     }
@@ -118,7 +115,7 @@ shared class UtilityDriverModel extends SimpleMultiMapModel {
         MutableList<[Anything(TileFixture), PathWrapper?, TileFixture, {TileFixture+}]> duplicatesList =
             ArrayList<[Anything(TileFixture), PathWrapper?, TileFixture, {TileFixture+}]>();
         MutableList<TileFixture> checked = ArrayList<TileFixture>();
-        for (map->[file, modifiedFlag] in restrictedAllMaps) {
+        for (map in restrictedAllMaps) {
             //for (fixture in map.fixtures[location]) { // TODO: syntax sugar once compiler bug fixed
             for (fixture in map.fixtures.get(location)) {
                 checked.add(fixture);
@@ -138,7 +135,7 @@ shared class UtilityDriverModel extends SimpleMultiMapModel {
                     .select(fixture.equalsIgnoringID);
                 if (nonempty matching) {
                     duplicatesList.add([(TileFixture item) => map.removeFixture(location, item),
-                        file, fixture, matching]);
+                        map.filename, fixture, matching]);
                 }
             }
         }
@@ -201,26 +198,19 @@ shared class UtilityDriverModel extends SimpleMultiMapModel {
             Map<ClassOrInterface<IFixture>, CoalescedHolder<out IFixture, out Object>> handlers) {
         MutableList<[Anything(), String, String, {IFixture+}]> retval =
             ArrayList<[Anything(), String, String, {IFixture+}]>();
-        for (map->[file, modifiedFlag] in restrictedAllMaps) {
-            variable Boolean modFlag = modifiedFlag;
-            retval.addAll(coalesceImpl("In ``file else "a new file"``: At ``location``: ", map.fixtures.get(location), // TODO: syntax sugar
+        for (map in restrictedAllMaps) {
+            retval.addAll(coalesceImpl("In ``map.filename else "a new file"``: At ``location``: ", map.fixtures.get(location), // TODO: syntax sugar
                 ifApplicable<TileFixture, IFixture>(shuffle(curry(map.addFixture))),
-                ifApplicable<TileFixture, IFixture>(shuffle(curry(map.removeFixture))), () {
-                    if (!modFlag) {
-                        setModifiedFlag(map, true);
-                        modFlag = true;
-                     }
-                 }, handlers));
+                ifApplicable<TileFixture, IFixture>(shuffle(curry(map.removeFixture))),
+                    () => map.modified = true, handlers));
         }
         return retval;
     }
 
     "Remove information in the main map from subordinate maps."
     shared void subtractAtPoint(Point location) {
-        for (subMap->[path, modified] in restrictedSubordinateMaps) {
-            if (!modified) {
-                setModifiedFlag(map, true);
-            }
+        for (subMap in restrictedSubordinateMaps) {
+            subMap.modified = true;
             if (exists terrain = map.baseTerrain[location], exists ours = subMap.baseTerrain[location], terrain == ours) {
                 subMap.baseTerrain[location] = null;
             }
@@ -251,8 +241,8 @@ shared class UtilityDriverModel extends SimpleMultiMapModel {
             map.fixtures.get(location).narrow<Ground>();
 
     shared void fixForestsAndGround(Anything(String) ostream) {
-        for (map->[file, _] in subordinateMaps) {
-            ostream("Starting ``file?.string
+        for (map in subordinateMaps) {
+            ostream("Starting ``map.filename?.string
                 else "a map with no associated path"``");
 
             for (location in map.locations) {
@@ -311,7 +301,7 @@ shared class UtilityDriverModel extends SimpleMultiMapModel {
 
     shared void expandAroundPoint(Point center, Player currentPlayer) {
         Mock mock = Mock(currentPlayer);
-        for (subMap->[path, modified] in restrictedSubordinateMaps) {
+        for (subMap in restrictedSubordinateMaps) {
             if (subMap.currentPlayer != currentPlayer) {
                 continue;
             }
@@ -342,9 +332,7 @@ shared class UtilityDriverModel extends SimpleMultiMapModel {
                     safeAdd(subMap, currentPlayer, neighbor, first);
                 }
             }
-            if (!modified) {
-                setModifiedFlag(subMap, true);
-            }
+            subMap.modified = true;
         }
     }
 }

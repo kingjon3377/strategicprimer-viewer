@@ -57,7 +57,7 @@ import strategicprimer.model.impl.xmlio {
 class ExplorationFrame(ExplorationGUI driver, MenuBroker menuHandler)
         extends SPFrame("Exploration", driver, Dimension(768, 48), true) {
     shared actual void acceptDroppedFile(PathWrapper file) =>
-        driver.model.addSubordinateMap(mapIOHelper.readMap(file), file);
+        driver.model.addSubordinateMap(mapIOHelper.readMap(file));
     SimpleCardLayout layoutObj = SimpleCardLayout(contentPane);
     setLayout(layoutObj);
 

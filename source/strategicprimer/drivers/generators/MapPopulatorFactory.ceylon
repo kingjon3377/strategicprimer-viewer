@@ -17,11 +17,6 @@ import strategicprimer.drivers.common.cli {
     ICLIHelper
 }
 
-import lovelace.util.common {
-    PathWrapper
-}
-
-
 """A factory for a driver to add some kind of fixture to suitable tiles throughout the
    map."""
 service(`interface DriverFactory`)
@@ -47,7 +42,7 @@ shared class MapPopulatorFactory() satisfies ModelDriverFactory {
         }
     }
 
-    shared actual IPopulatorDriverModel createModel(IMutableMapNG map, PathWrapper? path) =>
-            PopulatorDriverModel(map, path);
+    shared actual IPopulatorDriverModel createModel(IMutableMapNG map) =>
+            PopulatorDriverModel(map);
 }
 

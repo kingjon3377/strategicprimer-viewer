@@ -149,7 +149,7 @@ class StatGeneratingCLI satisfies CLIDriver {
         } else {
             existing = "";
         }
-        for (map->[file, modifiedFlag] in model.allMaps) {
+        for (map in model.allMaps) {
             if (is IUnit fixture = find(map, unit.id)) {
                 Integer turn = map.currentTurn;
                 value addend = worker.copy(false);
@@ -160,9 +160,7 @@ class StatGeneratingCLI satisfies CLIDriver {
                 if (fixture.getOrders(turn).empty) {
                     fixture.setOrders(turn, "TODO: assign");
                 }
-                if (!modifiedFlag) {
-                    model.setModifiedFlag(map, true);
-                }
+                model.setMapModified(map, true);
             }
         }
     }
@@ -478,7 +476,7 @@ class StatGeneratingCLI satisfies CLIDriver {
     }
 
     shared actual void startDriver() {
-        IDRegistrar idf = createIDFactory(model.allMaps.map(Entry.key));
+        IDRegistrar idf = createIDFactory(model.allMaps);
         MutableList<Player> players = ArrayList { elements = model.playerChoices; };
         while (!players.empty, exists chosen = cli.chooseFromList(players,
                 "Which player owns the new worker(s)?",

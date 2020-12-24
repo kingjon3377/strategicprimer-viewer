@@ -18,5 +18,5 @@ shared interface GUIDriver satisfies ModelDriver {
        this driver requires at least one subordinate map; replacing the main map in the
        current window would be acceptable unless the "modified" flag is set for the
        currently-main map."""
-    shared formal void open(IMutableMapNG map, PathWrapper? path);
+    shared formal void open(IMutableMapNG map);
 }

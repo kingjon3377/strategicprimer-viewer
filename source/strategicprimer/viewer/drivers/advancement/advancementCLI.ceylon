@@ -32,9 +32,6 @@ import ceylon.collection {
     ArrayList,
     MutableList
 }
-import lovelace.util.common {
-    PathWrapper
-}
 
 "A logger."
 Logger log = logger(`module strategicprimer.viewer`);
@@ -64,8 +61,7 @@ shared class AdvancementCLIFactory() satisfies ModelDriverFactory {
         }
     }
 
-    shared actual IDriverModel createModel(IMutableMapNG map, PathWrapper? path) =>
-            WorkerModel(map, path);
+    shared actual IDriverModel createModel(IMutableMapNG map) => WorkerModel(map);
 }
 
 "The worker-advancement CLI driver."
@@ -92,9 +88,9 @@ shared class AdvancementCLI(ICLIHelper cli, options, model) satisfies CLIDriver 
                 break;
             }
         }
-        for (map->[file, modifiedFlag] in model.allMaps) {
-            if (!modifiedFlag) {
-                model.setModifiedFlag(map, true);
+        for (map in model.allMaps) {
+            if (!map.modified) {
+                model.setMapModified(map, true);
             }
         }
     }

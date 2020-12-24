@@ -1,7 +1,3 @@
-import lovelace.util.common {
-    PathWrapper
-}
-
 import strategicprimer.drivers.common {
     IDriverModel,
     SimpleDriverModel
@@ -14,11 +10,10 @@ import strategicprimer.model.common.map {
 }
 
 shared class PopulatorDriverModel extends SimpleDriverModel satisfies IPopulatorDriverModel {
-    shared new (IMutableMapNG map, PathWrapper? path, Boolean modified = false)
-        extends SimpleDriverModel(map, path, modified) {}
+    shared new (IMutableMapNG map) extends SimpleDriverModel(map) {}
 
     shared new copyConstructor(IDriverModel model)
-        extends SimpleDriverModel(model.restrictedMap, model.mapFile, model.mapModified) {}
+        extends SimpleDriverModel(model.restrictedMap) {}
 
     shared actual void addFixture(Point location, TileFixture fixture) {
         if (restrictedMap.addFixture(location, fixture)) {

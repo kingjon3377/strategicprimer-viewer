@@ -3,45 +3,31 @@ import strategicprimer.model.common.map {
     IMutableMapNG
 }
 
-import lovelace.util.common {
-    PathWrapper
-}
-
 """A driver-model for drivers that have a main map (like every driver) and any number of
    "subordinate" maps."""
 shared interface IMultiMapModel satisfies IDriverModel {
     "Add a subordinate map."
     shared formal void addSubordinateMap(
             "The map to add"
-            IMutableMapNG map,
-            "The file it was loaded from"
-            PathWrapper? file,
-            "Whether it has been modified since being loaded or last saved"
-            Boolean modified = false);
+            IMutableMapNG map);
 
-    "Subordinate maps with their filenames (and the flag of whether the map has been
-     modified since loaded or last saved), as [[Entries|Entry]]"
-    shared formal {<IMapNG->[PathWrapper?, Boolean]>*} subordinateMaps;
+    "Subordinate maps"
+    shared formal {IMapNG*} subordinateMaps;
 
-    "Subordinate maps with their filenames (and the flag of whether the map has been
-     modified since loaded or last saved), as [[Entries|Entry]]. For use by subclasses only."
-    shared formal {<IMutableMapNG->[PathWrapper?, Boolean]>*} restrictedSubordinateMaps;
+    "Subordinate maps. For use by subclasses only."
+    shared formal {IMutableMapNG*} restrictedSubordinateMaps;
 
-    "All maps with their filenames (and the flag of whether the map has been
-     modified since loaded or last saved), including the main map and the subordinate
-     maps, as [[Entries|Entry]]"
-    shared default {<IMapNG->[PathWrapper?, Boolean]>*} allMaps =>
-            subordinateMaps.follow(map->[mapFile, mapModified]);
+    "All maps."
+    shared default {IMapNG*} allMaps => subordinateMaps.follow(map);
 
-    "All maps with their filenames (and the flag of whether the map has been
-     modified since loaded or last saved), including the main map and the subordinate
-     maps, as [[Entries|Entry]]. For use by subclasses only."
-    shared default {<IMutableMapNG->[PathWrapper?, Boolean]>*} restrictedAllMaps =>
-            restrictedSubordinateMaps.follow(restrictedMap->[mapFile, mapModified]);
-
-    "Set the 'modified' flag for the given map."
-    shared formal void setModifiedFlag(IMapNG map, Boolean modified);
+    "All maps. For use by subclasses only."
+    shared default {IMutableMapNG*} restrictedAllMaps =>
+            restrictedSubordinateMaps.follow(restrictedMap);
 
     "A driver model with the second map as its first or sole map."
     shared formal IDriverModel? fromSecondMap();
+
+    "Set the modified flag on the given map."
+    deprecated("Modification to the map should ideally only come through model methods")
+    shared formal void setMapModified(IMapNG map, Boolean flag);
 }

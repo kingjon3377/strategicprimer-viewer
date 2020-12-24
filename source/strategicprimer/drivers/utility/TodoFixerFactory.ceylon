@@ -1,7 +1,3 @@
-import lovelace.util.common {
-    PathWrapper
-}
-
 import strategicprimer.drivers.common.cli {
     ICLIHelper
 }
@@ -39,6 +35,5 @@ shared class TodoFixerFactory() satisfies ModelDriverFactory {
         }
     }
 
-    shared actual IDriverModel createModel(IMutableMapNG map, PathWrapper? path) =>
-            UtilityDriverModel(map, path);
+    shared actual IDriverModel createModel(IMutableMapNG map) => UtilityDriverModel(map);
 }

@@ -17,10 +17,6 @@ import strategicprimer.drivers.common {
     ModelDriver
 }
 
-import lovelace.util.common {
-    PathWrapper
-}
-
 "A factory for a driver to remove duplicate hills, forests, etc., from the map (to reduce
  the disk space it takes up and the memory and CPU required to deal with it)."
 service(`interface DriverFactory`)
@@ -46,6 +42,5 @@ shared class DuplicateFixtureRemoverFactory() satisfies ModelDriverFactory {
         }
     }
 
-    shared actual IDriverModel createModel(IMutableMapNG map, PathWrapper? path) =>
-            UtilityDriverModel(map, path);
+    shared actual IDriverModel createModel(IMutableMapNG map) => UtilityDriverModel(map);
 }

@@ -67,13 +67,17 @@ shared object mapIOHelper {
             Warning warner = warningLevels.warn) {
         log.trace("In mapIOHelper.readMap");
         if (is PathWrapper file) {
+            IMutableMapNG retval;
             if (file.string.endsWith(".db")) {
                 log.trace("Reading from ``file`` as an SQLite database");
-                return dbReader.readMap(file, warner);
+                retval = dbReader.readMap(file, warner);
             } else {
                 log.trace("Reading from ``file``");
-                return reader.readMap(file, warner);
+                retval = reader.readMap(file, warner);
             }
+            retval.filename = file;
+            log.trace("Finished reading from ``file``");
+            return retval;
         } else {
             log.trace("Reading from a Reader");
             return reader.readMapFromStream(PathWrapper(""), file, warner);

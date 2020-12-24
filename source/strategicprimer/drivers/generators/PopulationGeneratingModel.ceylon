@@ -9,8 +9,7 @@ import strategicprimer.model.common.map {
 }
 
 import lovelace.util.common {
-    matchingValue,
-    PathWrapper
+    matchingValue
 }
 
 import strategicprimer.model.common.map.fixtures.mobile {
@@ -28,9 +27,9 @@ import strategicprimer.model.common.map.fixtures.resources {
 }
 
 shared class PopulationGeneratingModel extends SimpleDriverModel { // TODO: extend to multi-map operation
-    shared new (IMutableMapNG map, PathWrapper? path) extends SimpleDriverModel(map, path) {}
+    shared new (IMutableMapNG map) extends SimpleDriverModel(map) {}
 
-    shared new copyConstructor(IDriverModel model) extends SimpleDriverModel(model.restrictedMap, model.mapFile) {}
+    shared new copyConstructor(IDriverModel model) extends SimpleDriverModel(model.restrictedMap) {}
 
     "Set the population of [[kind]] animals (talking or not per [[talking]]) at
      [[location]] to [[population]]. Returns [[true]] if a population was in

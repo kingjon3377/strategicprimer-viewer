@@ -18,10 +18,6 @@ import strategicprimer.model.common.map {
     IMutableMapNG
 }
 
-import lovelace.util.common {
-    PathWrapper
-}
-
 "A factory for an app to report statistics on the contents of the map."
 service(`interface DriverFactory`)
 shared class CountingCLIFactory() satisfies ModelDriverFactory {
@@ -38,6 +34,6 @@ shared class CountingCLIFactory() satisfies ModelDriverFactory {
     shared actual ModelDriver createDriver(ICLIHelper cli, SPOptions options,
             IDriverModel model) => CountingCLI(cli, model);
 
-    shared actual IDriverModel createModel(IMutableMapNG map, PathWrapper? path) =>
-            SimpleDriverModel(map, path);
+    shared actual IDriverModel createModel(IMutableMapNG map) =>
+            SimpleDriverModel(map);
 }

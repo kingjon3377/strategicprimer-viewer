@@ -92,8 +92,8 @@ shared class WorkerMgmtGUIFactory() satisfies GUIDriverFactory {
         }
     }
 
-    shared actual IDriverModel createModel(IMutableMapNG map, PathWrapper? path) =>
-            WorkerModel(map, path);
+    shared actual IDriverModel createModel(IMutableMapNG map) =>
+            WorkerModel(map);
 }
 
 "A driver to start the worker management GUI."
@@ -113,8 +113,7 @@ shared class WorkerMgmtGUI(ICLIHelper cli, options, model) satisfies MultiMapGUI
         menuHandler.registerWindowShower(aboutDialog(frame, frame.windowName),
             "about");
         log.trace("Registered menu handlers");
-        if (model.allMaps.map(Entry.key).every(compose(compose(Iterable<IUnit>.empty,
-
+        if (model.allMaps.every(compose(compose(Iterable<IUnit>.empty,
                 model.getUnits), IMapNG.currentPlayer))) {
             pcml.actionPerformed(ActionEvent(frame, ActionEvent.actionFirst,
                 "change current player"));
@@ -149,12 +148,12 @@ shared class WorkerMgmtGUI(ICLIHelper cli, options, model) satisfies MultiMapGUI
         }
     }
 
-    shared actual void open(IMutableMapNG map, PathWrapper? path) {
+    shared actual void open(IMutableMapNG map) {
         if (model.mapModified) {
             SwingUtilities.invokeLater(defer(compose(WorkerMgmtGUI.startDriver,
-                WorkerMgmtGUI), [cli, options, WorkerModel(map, path)]));
+                WorkerMgmtGUI), [cli, options, WorkerModel(map)]));
         } else {
-            model.setMap(map, path);
+            model.setMap(map);
         }
     }
 }

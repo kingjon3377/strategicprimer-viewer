@@ -22,10 +22,6 @@ import strategicprimer.drivers.exploration.common {
     ExplorationModel
 }
 
-import lovelace.util.common {
-    PathWrapper
-}
-
 "A factory for a driver to generate new workers."
 service(`interface DriverFactory`)
 shared class StatGeneratingCLIFactory() satisfies ModelDriverFactory {
@@ -49,6 +45,5 @@ shared class StatGeneratingCLIFactory() satisfies ModelDriverFactory {
         }
     }
 
-    shared actual IDriverModel createModel(IMutableMapNG map, PathWrapper? path) =>
-            ExplorationModel(map, path);
+    shared actual IDriverModel createModel(IMutableMapNG map) => ExplorationModel(map);
 }

@@ -13,10 +13,6 @@ import strategicprimer.drivers.common.cli {
     ICLIHelper
 }
 
-import lovelace.util.common {
-    PathWrapper
-}
-
 import strategicprimer.model.common.map {
     IMutableMapNG
 }
@@ -38,7 +34,6 @@ shared class ForestFixerFactory() satisfies ModelDriverFactory {
         }
     }
 
-    shared actual IDriverModel createModel(IMutableMapNG map, PathWrapper? path) =>
-            UtilityDriverModel(map, path);
+    shared actual IDriverModel createModel(IMutableMapNG map) => UtilityDriverModel(map);
 }
 

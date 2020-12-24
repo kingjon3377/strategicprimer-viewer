@@ -53,8 +53,7 @@ import lovelace.util.common {
     anythingEqual,
     matchingValue,
     narrowedStream,
-    comparingOn,
-    PathWrapper
+    comparingOn
 }
 
 "Logger."
@@ -86,8 +85,7 @@ shared class WorkerModel extends SimpleMultiMapModel satisfies IWorkerModel {
 
     "The current player, subject to change by user action."
     variable Player? currentPlayerImpl = null;
-    shared new (IMutableMapNG map, PathWrapper? file)
-            extends SimpleMultiMapModel(map, file) {}
+    shared new (IMutableMapNG map) extends SimpleMultiMapModel(map) {}
     shared new copyConstructor(IDriverModel model)
             extends SimpleMultiMapModel.copyConstructor(model) {}
 
@@ -96,7 +94,7 @@ shared class WorkerModel extends SimpleMultiMapModel satisfies IWorkerModel {
         if (exists temp = currentPlayerImpl) {
             return temp;
         } else {
-            for (localMap->_ in allMaps) {
+            for (localMap in allMaps) {
                 Player temp = localMap.currentPlayer;
                 if (!getUnits(temp).empty) {
                     currentPlayerImpl = temp;
@@ -108,6 +106,8 @@ shared class WorkerModel extends SimpleMultiMapModel satisfies IWorkerModel {
             }
         }
     }
+    // Note we *deliberately* do not pass this change through to the maps; this
+    // is a read-only operation as far as the map *files* are concerned.
     assign currentPlayer {
         currentPlayerImpl = currentPlayer;
     }
@@ -124,7 +124,7 @@ shared class WorkerModel extends SimpleMultiMapModel satisfies IWorkerModel {
 
     "All the players in all the maps."
     shared actual {Player*} players =>
-            allMaps.map(Entry.key).flatMap(IMapNG.players).distinct;
+            allMaps.flatMap(IMapNG.players).distinct;
 
     "Get all the given player's units, or only those of a specified kind."
     shared actual {IUnit*} getUnits(Player player, String? kind) {
@@ -136,8 +136,7 @@ shared class WorkerModel extends SimpleMultiMapModel satisfies IWorkerModel {
             return getUnitsImpl(map.fixtures.items, player)
                 .sort(comparingOn(IUnit.name, byIncreasing(String.lowercased)));
         } else {
-            value temp = allMaps.map(Entry.key)
-                    .flatMap((indivMap) =>
+            value temp = allMaps.flatMap((indivMap) =>
                         getUnitsImpl(indivMap.fixtures.items, player));
             MutableMap<Integer, IUnit&ProxyFor<IUnit>> tempMap =
                     naturalOrderTreeMap<Integer, IUnit&ProxyFor<IUnit>>([]);
@@ -169,11 +168,9 @@ shared class WorkerModel extends SimpleMultiMapModel satisfies IWorkerModel {
             addUnitAtLocationImpl(unit, location, restrictedMap);
             mapModified = true;
         } else {
-            for (eachMap->[eachFile, modifiedFlag] in restrictedAllMaps) {
+            for (eachMap in restrictedAllMaps) {
                 addUnitAtLocationImpl(unit, location, eachMap);
-                if (!modifiedFlag) {
-                    setModifiedFlag(eachMap, true);
-                }
+                eachMap.modified = true;
             }
         }
     }
@@ -259,7 +256,7 @@ object workerModelTests {
         for ([point, fixture] in zipPairs(map.locations, shuffled)) {
             map.addFixture(point, fixture);
         }
-        IWorkerModel model = WorkerModel(map, null);
+        IWorkerModel model = WorkerModel(map);
         Boolean iterableEquality<T>(Anything one, Anything two) given T satisfies Object {
             if (is {T*} one, is {T*} two) {
                 return one.containsEvery(two) &&two.containsEvery(one);

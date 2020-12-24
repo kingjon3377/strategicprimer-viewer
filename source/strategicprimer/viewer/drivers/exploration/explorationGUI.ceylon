@@ -78,8 +78,8 @@ shared class ExplorationGUIFactory() satisfies GUIDriverFactory {
         }
     }
 
-    shared actual IDriverModel createModel(IMutableMapNG map, PathWrapper? path) =>
-            ExplorationModel(map, path);
+    shared actual IDriverModel createModel(IMutableMapNG map) =>
+            ExplorationModel(map);
 }
 
 "An object to start the exploration GUI."
@@ -112,12 +112,12 @@ class ExplorationGUI(ICLIHelper cli, options, model) satisfies MultiMapGUIDriver
         }
     }
 
-    shared actual void open(IMutableMapNG map, PathWrapper? path) {
+    shared actual void open(IMutableMapNG map) {
         if (model.mapModified) {
             SwingUtilities.invokeLater(defer(compose(ExplorationGUI.startDriver,
-                ExplorationGUI), [cli, options, ExplorationModel(map, path)]));
+                ExplorationGUI), [cli, options, ExplorationModel(map)]));
         } else {
-            model.setMap(map, path);
+            model.setMap(map);
         }
     }
 }

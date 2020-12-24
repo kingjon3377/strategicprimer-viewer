@@ -18,10 +18,6 @@ import strategicprimer.model.common.map {
     IMutableMapNG
 }
 
-import lovelace.util.common {
-    PathWrapper
-}
-
 "A factory for a driver to let the user enter or generate 'stats' for towns."
 service(`interface DriverFactory`)
 shared class TownGeneratingCLIFactory() satisfies ModelDriverFactory {
@@ -38,6 +34,5 @@ shared class TownGeneratingCLIFactory() satisfies ModelDriverFactory {
     shared actual ModelDriver createDriver(ICLIHelper cli, SPOptions options,
             IDriverModel model) => TownGeneratingCLI(cli, model);
 
-    shared actual IDriverModel createModel(IMutableMapNG map, PathWrapper? path) =>
-            SimpleMultiMapModel(map, path);
+    shared actual IDriverModel createModel(IMutableMapNG map) => SimpleMultiMapModel(map);
 }

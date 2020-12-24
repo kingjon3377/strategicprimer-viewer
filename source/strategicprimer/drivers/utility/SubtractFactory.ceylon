@@ -14,9 +14,7 @@ import strategicprimer.drivers.common.cli {
 import strategicprimer.model.common.map {
     IMutableMapNG
 }
-import lovelace.util.common {
-    PathWrapper
-}
+
 "An app to produce a difference between two maps, to aid understanding what an explorer has
  found. This modifies non-main maps in place; only run on copies or under version control!"
 service(`interface DriverFactory`)
@@ -32,5 +30,5 @@ shared class SubtractFactory() satisfies ModelDriverFactory {
         }
     }
 
-    shared actual IDriverModel createModel(IMutableMapNG map, PathWrapper? path) => UtilityDriverModel(map, path);
+    shared actual IDriverModel createModel(IMutableMapNG map) => UtilityDriverModel(map);
 }

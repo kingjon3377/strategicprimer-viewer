@@ -211,14 +211,10 @@ class ExplorationPanel(SpinnerNumberModel mpModel, ComboBoxModel<Speed> speedMod
 
     log.trace("ExplorationPanel: headerPanel layout adjusted");
 
-    IMapNG secondMap; // TODO: Add 'secondMap' field to IExplorationModel (as IMap), to improve no-second-map to a-second-map transition
-    if (exists entry = driverModel.subordinateMaps.first) {
-        secondMap = entry.key;
-    } else {
-        secondMap = driverModel.map;
-    }
+    // TODO: Add 'secondMap' field to IExplorationModel (as IMap), to improve no-second-map to a-second-map transition
+    IMapNG secondMap = driverModel.subordinateMaps.first else driverModel.map;
 
-    IDRegistrar idf = createIDFactory(driverModel.allMaps.map(Entry.key));
+    IDRegistrar idf = createIDFactory(driverModel.allMaps);
     HuntingModel huntingModel = HuntingModel(driverModel.map);
 
     log.trace("ExplorationPanel: huntingModel created");
@@ -344,8 +340,8 @@ class ExplorationPanel(SpinnerNumberModel mpModel, ComboBoxModel<Speed> speedMod
     }
 
     void markModified() {
-        for (map->_ in driverModel.allMaps) {
-            driverModel.setModifiedFlag(map, true);
+        for (map in driverModel.allMaps) {
+            driverModel.setMapModified(map, true);
         }
     }
 

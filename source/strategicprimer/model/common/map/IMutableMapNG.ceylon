@@ -1,5 +1,6 @@
 import lovelace.util.common {
-    NonNullCorrespondence
+    NonNullCorrespondence,
+    PathWrapper
 }
 import strategicprimer.model.common.map {
     TileFixture,
@@ -44,6 +45,12 @@ shared interface IMutableMapNG satisfies IMapNG {
 
     "The current turn."
     shared actual formal variable Integer currentTurn;
+
+    "The file from which the map was loaded, or to which it should be saved, if known"
+    shared actual formal variable PathWrapper? filename; // FIXME: Notify map metadata listeners when changed
+
+    "Whether the map has been modified since it was last saved."
+    shared actual formal variable Boolean modified; // FIXME: Notify map metadata listeners when changed
 
     "Add a bookmark."
     shared formal void addBookmark(

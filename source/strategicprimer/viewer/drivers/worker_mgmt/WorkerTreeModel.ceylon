@@ -117,9 +117,9 @@ class WorkerTreeModel satisfies IWorkerTreeModel {
             listeners.remove(listener);
 
     void markModified() {
-        for (map->[file, modified] in model.allMaps) {
-            if (!modified) {
-                model.setModifiedFlag(map, true);
+        for (map in model.allMaps) {
+            if (!map.modified) {
+                model.setMapModified(map, true);
             }
         }
     }

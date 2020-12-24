@@ -4,9 +4,7 @@ import strategicprimer.drivers.common.cli {
 import strategicprimer.model.common.map {
     IMutableMapNG
 }
-import lovelace.util.common {
-    PathWrapper
-}
+
 import strategicprimer.drivers.common {
     SPOptions,
     ModelDriver,
@@ -42,6 +40,6 @@ shared class ResourceAddingCLIFactory() satisfies ModelDriverFactory {
         }
     }
 
-    shared actual IDriverModel createModel(IMutableMapNG map, PathWrapper? path) =>
-        ResourceManagementDriverModel.fromMap(map, path);
+    shared actual IDriverModel createModel(IMutableMapNG map) =>
+        ResourceManagementDriverModel.fromMap(map);
 }

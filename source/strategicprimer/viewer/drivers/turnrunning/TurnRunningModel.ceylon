@@ -10,10 +10,6 @@ import strategicprimer.drivers.exploration.common {
     ExplorationModel
 }
 
-import lovelace.util.common {
-    PathWrapper
-}
-
 import strategicprimer.drivers.common {
     IDriverModel
 }
@@ -27,15 +23,14 @@ import lovelace.util.jvm {
 }
 
 shared class TurnRunningModel extends ExplorationModel satisfies ITurnRunningModel {
-    shared new (IMutableMapNG map, PathWrapper? file, Boolean modified = false)
-        extends ExplorationModel(map, file, modified) {}
+    shared new (IMutableMapNG map) extends ExplorationModel(map) {}
     shared new copyConstructor(IDriverModel model)
         extends ExplorationModel.copyConstructor(model) {}
 
     "Add a copy of the given fixture to all submaps at the given location iff no fixture
      with the same ID is already there."
     shared actual void addToSubMaps(Point point, TileFixture fixture, Boolean zero) {
-        for (map->[file, _] in restrictedSubordinateMaps) {
+        for (map in restrictedSubordinateMaps) {
             if (!map.fixtures.get(point).map(TileFixture.id).any(fixture.id.equals)) {
                 map.addFixture(point, fixture.copy(zero));
             }
@@ -49,7 +44,7 @@ shared class TurnRunningModel extends ExplorationModel satisfies ITurnRunningMod
         if (reduction.positive) {
             variable Boolean first = false;
             variable Boolean all = false;
-            for (map->[file, modified] in restrictedAllMaps) {
+            for (map in restrictedAllMaps) {
                 if (exists matching = map.fixtures.get(location).narrow<HasPopulation<out TileFixture>>()
                         .find(shuffle(curry(fixture.isSubset))(noop))) {
                     if (all) {
@@ -84,7 +79,7 @@ shared class TurnRunningModel extends ExplorationModel satisfies ITurnRunningMod
         if (reduction.positive) {
             variable Boolean first = false;
             variable Boolean all = false;
-            for (map->[file, modified] in restrictedAllMaps) {
+            for (map in restrictedAllMaps) {
                 if (exists matching = map.fixtures.get(location).narrow<HasExtent<out TileFixture>>()
                         .find(shuffle(curry(fixture.isSubset))(noop))) {
                     if (all) {

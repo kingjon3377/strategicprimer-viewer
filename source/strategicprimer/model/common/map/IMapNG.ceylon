@@ -1,5 +1,6 @@
 import lovelace.util.common {
-    NonNullCorrespondence
+    NonNullCorrespondence,
+    PathWrapper
 }
 import com.vasileff.ceylon.structures {
     Multimap
@@ -77,12 +78,18 @@ shared interface IMapNG satisfies Subsettable<IMapNG>&Identifiable {
     "All bookmarks."
     shared formal Multimap<Point, Player> allBookmarks;
 
-    "Clone the map."
+    "Clone the map." // TODO: What should this do with the filename? Take a filename parameter?
     shared formal IMapNG copy(
             """Whether to "zero" sensitive data"""
             Boolean zero,
             "The player for whom the copied map is being prepared, if any."
             Player? player);
+
+    "The file from which the map was loaded, or to which it should be saved, if known"
+    shared formal PathWrapper? filename;
+
+    "Whether the map has been modified since it was last saved."
+    shared formal Boolean modified;
 
     "A location is empty if it has no terrain, no Ground, no Forest, no rivers, no roads, no
      bookmarks, and no other fixtures"

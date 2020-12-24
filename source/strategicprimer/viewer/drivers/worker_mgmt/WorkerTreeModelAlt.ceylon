@@ -241,9 +241,9 @@ shared class WorkerTreeModelAlt extends DefaultTreeModel satisfies IWorkerTreeMo
 
     "Set the map-modified flag for every map to [[true]]."
     void markModified() {
-        for (map->[file, modified] in model.allMaps) {
-            if (!modified) {
-                model.setModifiedFlag(map, true);
+        for (map in model.allMaps) {
+            if (!map.modified) {
+                model.setMapModified(map, true);
             }
         }
     }

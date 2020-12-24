@@ -83,7 +83,7 @@ class WorkerMgmtFrame extends SPFrame satisfies PlayerChangeListener {
     shared new (SPOptions options, IWorkerModel model, MenuBroker menuHandler,
             WorkerMgmtGUI driver) extends SPFrame("Worker Management", driver,
                 Dimension(640, 480), true,
-                (file) => model.addSubordinateMap(mapIOHelper.readMap(file), file)) {
+                (file) => model.addSubordinateMap(mapIOHelper.readMap(file))) {
         this.options = options;
         this.model = model;
         this.menuHandler = menuHandler;
@@ -91,14 +91,14 @@ class WorkerMgmtFrame extends SPFrame satisfies PlayerChangeListener {
     }
 
     IMapNG mainMap = model.map;
-    IDRegistrar idf = createIDFactory(model.allMaps.map(Entry.key));
+    IDRegistrar idf = createIDFactory(model.allMaps);
     NewUnitDialog newUnitFrame = NewUnitDialog(model.currentPlayer, idf);
     IWorkerTreeModel treeModel = WorkerTreeModelAlt(model);
 
     void markModified() {
-        for (subMap->[file, modifiedFlag] in model.allMaps) {
-            if (!modifiedFlag) {
-                model.setModifiedFlag(subMap, true);
+        for (subMap in model.allMaps) {
+            if (!subMap.modified) {
+                model.setMapModified(subMap, true);
             }
         }
     }

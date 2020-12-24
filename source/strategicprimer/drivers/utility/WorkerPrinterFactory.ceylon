@@ -18,10 +18,6 @@ import strategicprimer.drivers.exploration.common {
     ExplorationModel
 }
 
-import lovelace.util.common {
-    PathWrapper
-}
-
 import strategicprimer.model.common.map {
     IMutableMapNG
 }
@@ -49,6 +45,6 @@ shared class WorkerPrinterFactory() satisfies ModelDriverFactory {
         }
     }
 
-    shared actual IDriverModel createModel(IMutableMapNG map, PathWrapper? path) =>
-            ExplorationModel(map, path);
+    shared actual IDriverModel createModel(IMutableMapNG map) =>
+            ExplorationModel(map);
 }

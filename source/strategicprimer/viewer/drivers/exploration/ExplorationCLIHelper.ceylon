@@ -127,7 +127,7 @@ shared class ExplorationCLIHelper(IExplorationModel model, ICLIHelper cli)
         SimpleApplet<[]>(model.swearVillages, "Swear any village here to the player",
             "swear"),
         SimpleApplet<[]>(model.dig, "Dig to expose some ground here", "dig"));
-    Pathfinder pather = pathfinder(model.subordinateMaps.first?.key else model.map);
+    Pathfinder pather = pathfinder(model.subordinateMaps.first else model.map);
     "If the unit has a proposed path, move one more tile along it; otherwise, ask the user
      for directions once and make that move, then return to the caller."
     // No need to set the 'modified' flag anywhere in this method, as
@@ -285,7 +285,7 @@ shared class ExplorationCLIHelper(IExplorationModel model, ICLIHelper cli)
             }
 
             if (!proposedPath.empty, automationConfig.stopAtPoint(cli,
-                model.subordinateMaps.first?.key else model.map, destPoint)) {
+                    model.subordinateMaps.first else model.map, destPoint)) {
                 proposedPath.clear();
             }
         } else {

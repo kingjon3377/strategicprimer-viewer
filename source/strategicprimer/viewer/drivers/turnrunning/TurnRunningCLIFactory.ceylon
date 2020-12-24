@@ -14,9 +14,6 @@ import strategicprimer.drivers.common.cli {
 import strategicprimer.model.common.map {
     IMutableMapNG
 }
-import lovelace.util.common {
-    PathWrapper
-}
 
 "A factory for the turn-running CLI app."
 service(`interface DriverFactory`)
@@ -41,6 +38,5 @@ shared class TurnRunningCLIFactory() satisfies ModelDriverFactory {
         }
     }
 
-    shared actual IDriverModel createModel(IMutableMapNG map, PathWrapper? path) =>
-        TurnRunningModel(map, path);
+    shared actual IDriverModel createModel(IMutableMapNG map) => TurnRunningModel(map);
 }

@@ -20,10 +20,6 @@ import strategicprimer.drivers.common.cli {
     ICLIHelper
 }
 
-import lovelace.util.common {
-    PathWrapper
-}
-
 import strategicprimer.model.common.map {
     IMutableMapNG
 }
@@ -49,6 +45,5 @@ shared class SubsetCLIFactory() satisfies ModelDriverFactory {
         }
     }
 
-    shared actual IDriverModel createModel(IMutableMapNG map, PathWrapper? path) =>
-            SimpleMultiMapModel(map, path);
+    shared actual IDriverModel createModel(IMutableMapNG map) => SimpleMultiMapModel(map);
 }

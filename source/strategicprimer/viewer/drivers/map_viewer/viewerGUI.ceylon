@@ -93,13 +93,13 @@ shared class ViewerGUIFactory() satisfies GUIDriverFactory {
         }
     }
 
-    shared actual IViewerModel createModel(IMutableMapNG map, PathWrapper? path) {
-        if (exists path) {
+    shared actual IViewerModel createModel(IMutableMapNG map) {
+        if (exists path = map.filename) {
             log.trace("Creating a viewer model for path ``path``");
         } else {
             log.trace("Creating a viewer model for a null path");
         }
-        return ViewerModel(map, path);
+        return ViewerModel(map);
     }
 }
 
@@ -222,12 +222,12 @@ shared class ViewerGUI(model, options) satisfies ViewerDriver {
         }
     }
 
-    shared actual void open(IMutableMapNG map, PathWrapper? path) {
+    shared actual void open(IMutableMapNG map) {
         if (model.mapModified) {
             SwingUtilities.invokeLater(defer(compose(ViewerGUI.startDriver,
-                ViewerGUI), [ViewerModel(map, path), options.copy()]));
+                ViewerGUI), [ViewerModel(map), options.copy()]));
         } else {
-            model.setMap(map, path);
+            model.setMap(map);
         }
     }
 }

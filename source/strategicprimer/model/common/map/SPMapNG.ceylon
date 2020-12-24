@@ -4,7 +4,8 @@ import strategicprimer.model.common.map.fixtures.mobile {
 import lovelace.util.common {
     anythingEqual,
     NonNullCorrespondence,
-    matchingValue
+    matchingValue,
+    PathWrapper
 }
 import ceylon.collection {
     MutableSet,
@@ -65,6 +66,12 @@ shared class SPMapNG satisfies IMutableMapNG {
     static Item->Key reverseEntry<Key, Item>(Key->Item entry)
             given Key satisfies Object
             given Item satisfies Object => entry.item->entry.key;
+
+    "The file from which the map was loaded, or to which it should be saved, if known"
+    shared actual variable PathWrapper? filename = null; // TODO: Require as constructor parameter?
+
+    "Whether the map has been modified since it was last saved."
+    shared actual variable Boolean modified = false; // FIXME: Make all mutating methods set this
 
     "The set of mountainous places."
     MutableSet<Point> mountains = HashSet<Point>();

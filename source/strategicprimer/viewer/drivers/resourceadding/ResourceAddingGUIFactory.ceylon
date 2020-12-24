@@ -59,6 +59,6 @@ shared class ResourceAddingGUIFactory() satisfies GUIDriverFactory {
         }
     }
 
-    shared actual IDriverModel createModel(IMutableMapNG map, PathWrapper? path) =>
-        ResourceManagementDriverModel.fromMap(map, path);
+    shared actual IDriverModel createModel(IMutableMapNG map) =>
+        ResourceManagementDriverModel.fromMap(map);
 }

@@ -23,7 +23,6 @@ import strategicprimer.model.common.map {
 }
 
 import lovelace.util.common {
-    PathWrapper,
     todo
 }
 
@@ -44,6 +43,5 @@ shared class RandomMovementFactory() satisfies ModelDriverFactory {
         }
     }
 
-    shared actual IDriverModel createModel(IMutableMapNG map, PathWrapper? path) =>
-            ExplorationModel(map, path);
+    shared actual IDriverModel createModel(IMutableMapNG map) => ExplorationModel(map);
 }

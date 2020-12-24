@@ -65,9 +65,9 @@ SPFrame&PlayerChangeListener advancementFrame(IWorkerModel model,
     IDRegistrar idf = createIDFactory(map);
 
     void markModified() {
-        for (subMap->[file, modifiedFlag] in model.allMaps) {
-            if (!modifiedFlag) {
-                model.setModifiedFlag(subMap, true);
+        for (subMap in model.allMaps) {
+            if (!subMap.modified) {
+                model.setMapModified(subMap, true);
             }
         }
     }
@@ -121,7 +121,7 @@ SPFrame&PlayerChangeListener advancementFrame(IWorkerModel model,
 
     object retval extends SPFrame("Worker Advancement", driver,
                 Dimension(640, 480), true,
-                (file) => model.addSubordinateMap(mapIOHelper.readMap(file), file))
+                (file) => model.addSubordinateMap(mapIOHelper.readMap(file))) // TODO: Convert lambda to method-reference using compose()
             satisfies PlayerChangeListener {
         shared actual void playerChanged(Player? old, Player newPlayer) {
             playerLabel.arguments = [newPlayer];

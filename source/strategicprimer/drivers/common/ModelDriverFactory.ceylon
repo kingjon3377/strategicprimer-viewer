@@ -2,7 +2,6 @@ import strategicprimer.model.common.map {
     IMutableMapNG
 }
 import lovelace.util.common {
-    PathWrapper,
     todo
 }
 import strategicprimer.drivers.common.cli {
@@ -24,7 +23,6 @@ shared interface ModelDriverFactory satisfies DriverFactory {
             IDriverModel model);
 
     "Create a model to pass to [[createDriver]]. The 'modified' flag is set to [[false]]."
-    shared default IDriverModel createModel("The map." IMutableMapNG map,
-            "The file it was loaded from" PathWrapper? path) =>
-        SimpleDriverModel(map, path);
+    shared default IDriverModel createModel("The map." IMutableMapNG map) =>
+        SimpleDriverModel(map);
 }

@@ -19,10 +19,6 @@ import strategicprimer.drivers.common.cli {
     ICLIHelper
 }
 
-import lovelace.util.common {
-    PathWrapper
-}
-
 """A factory for the driver to "query" the driver model about various things."""
 service(`interface DriverFactory`)
 shared class QueryCLIFactory() satisfies ModelDriverFactory {
@@ -33,7 +29,6 @@ shared class QueryCLIFactory() satisfies ModelDriverFactory {
     shared actual ModelDriver createDriver(ICLIHelper cli, SPOptions options,
             IDriverModel model) => QueryCLI(cli, model);
 
-    shared actual IDriverModel createModel(IMutableMapNG map, PathWrapper? path) =>
-            SimpleDriverModel(map, path);
+    shared actual IDriverModel createModel(IMutableMapNG map) => SimpleDriverModel(map);
 
 }

@@ -55,8 +55,7 @@ import ceylon.random {
 }
 import lovelace.util.common {
     anythingEqual,
-    matchingValue,
-    PathWrapper
+    matchingValue
 }
 import com.vasileff.ceylon.structures {
     Multimap
@@ -183,13 +182,12 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
     "The currently selected unit and its location."
     variable [Point, IUnit?] selection = [Point.invalidPoint, null];
 
-    shared new (IMutableMapNG map, PathWrapper? file, Boolean modified = false)
-            extends SimpleMultiMapModel(map, file, modified) {}
+    shared new (IMutableMapNG map) extends SimpleMultiMapModel(map) {}
     shared new copyConstructor(IDriverModel model)
             extends SimpleMultiMapModel.copyConstructor(model) {}
 
     "All the players shared by all the maps."
-    shared actual {Player*} playerChoices => allMaps.map(Entry.key).map(IMapNG.players)
+    shared actual {Player*} playerChoices => allMaps.map(IMapNG.players)
         .map(set).fold(set(map.players))(intersection);
 
     "Collect all the units in the main map belonging to the specified player."
@@ -253,18 +251,14 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
                     .filter(matchingValue(target, Entry<Point, TileFixture>.item));
         // TODO: Unit vision range
         {Point*} points = surroundingPointIterable(base, map.dimensions, 2);
-        for (submap->[file, flag] in restrictedSubordinateMaps) { // TODO: Can we limit use of mutability to a narrower critical section?
-            variable Boolean modifiedFlag = flag;
+        for (submap in restrictedSubordinateMaps) { // TODO: Can we limit use of mutability to a narrower critical section?
             for (point in points) {
                 for (fixture in submap.fixtures.get(point).narrow<MobileFixture>()) { // TODO: syntax sugar once bug fixed
                     for (innerPoint->match in localFind(submap, fixture)) {
                         if (innerPoint != point,
                                 !map.fixtures.get(innerPoint).contains(match)) {// TODO: syntax sugar
                             submap.removeFixture(innerPoint, match);
-                            if (!modifiedFlag) {
-                                setModifiedFlag(submap, true);
-                                modifiedFlag = true;
-                            }
+                            submap.modified = true;
                         }
                     }
                 }
@@ -317,14 +311,12 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
             removeImpl(restrictedMap, point, unit);
             restrictedMap.addFixture(dest, unit);
             mapModified = true;
-            for (subMap->[subFile, modifiedFlag] in restrictedSubordinateMaps) { // FIXME: Use copyToSubMaps()
+            for (subMap in restrictedSubordinateMaps) { // FIXME: Use copyToSubMaps()
                 if (doesLocationHaveFixture(subMap, point, unit)) {
                     ensureTerrain(map, subMap, dest);
                     removeImpl(subMap, point, unit);
                     subMap.addFixture(dest, unit);
-                    if (!modifiedFlag) {
-                        setModifiedFlag(subMap, true);
-                    }
+                    subMap.modified = true;
                 }
             }
             selection = [dest, unit];
@@ -352,11 +344,9 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
                     log.trace("Unknown reason for movement-impossible condition");
                 }
             }
-            for (subMap->[path, modifiedFlag] in restrictedSubordinateMaps) {
+            for (subMap in restrictedSubordinateMaps) {
                 ensureTerrain(map, subMap, dest);
-                if (!modifiedFlag) {
-                    setModifiedFlag(subMap, true);
-                }
+                subMap.modified = true;
             }
             fireMovementCost(1);
             throw TraversalImpossibleException();
@@ -387,7 +377,7 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
         if (!mainLoc.valid) {
             return false;
         }
-        for (subMap->_ in subordinateMaps) {
+        for (subMap in subordinateMaps) {
             for (point in subMap.locations) {
                 if (doesLocationHaveFixture(subMap, point, unit)) {
                     if (point != mainLoc) {
@@ -452,7 +442,7 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
         Point currentPoint = localSelection.first;
         if (exists unit = localSelection.rest.first) {
             Player owner = unit.owner;
-            {Village*} villages = allMaps.map(Entry.key)
+            {Village*} villages = allMaps
                 .flatMap(shuffle(compose(Multimap<Point, TileFixture>.get,
                     IMapNG.fixtures))(currentPoint))
                 .narrow<Village>().filter(compose(Player.independent, Village.owner));
@@ -460,24 +450,17 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
                 variable Boolean subordinate = false;
                 for (village in villages) {
                     village.owner = owner;
-                    for (subMap->[file, modifiedFlag] in restrictedAllMaps) {
+                    for (subMap in restrictedAllMaps) {
                         subMap.addFixture(currentPoint, village.copy(subordinate));
                         subordinate = true;
-                        if (!modifiedFlag) {
-                            setModifiedFlag(subMap, true);
-                        }
+                        subMap.modified = true;
                     }
                 }
-                // Note that we never need to call setModifiedFlag() again in this method;
-                // unless something else resets it in the middle of this (in which case
-                // we need to add the overhead of locking, or better yet put the flag
-                // directly in IMapNG and make every mutating method in IMutableMapNG set
-                // it), it's guaranteed to be 'true' for each map in allMaps already.
                 IMapNG mainMap = map;
                 {Point*} surroundingPoints =
                         surroundingPointIterable(currentPoint, mapDimensions, 1);
                 for (point in surroundingPoints) {
-                    for (subMap->[path, _] in restrictedSubordinateMaps) {
+                    for (subMap in restrictedSubordinateMaps) {
                         ensureTerrain(mainMap, subMap, point);
                         Forest? subForest =
                                 subMap.fixtures[point]?.narrow<Forest>()?.first;
@@ -495,7 +478,7 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
                         .narrow<[Point, Meadow|Grove]>().first;
                 [Point, TileFixture]? animal = surroundingFixtures
                         .narrow<[Point, Animal]>().first;
-                for (subMap->[path, _] in restrictedSubordinateMaps) {
+                for (subMap in restrictedSubordinateMaps) {
                     if (exists vegetation) {
                         subMap.addFixture(vegetation.first,
                             vegetation.rest.first.copy(true));
@@ -547,12 +530,10 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
                 }
             }
             variable Boolean subsequent = false;
-            for (subMap->[file, modifiedFlag] in restrictedAllMaps) {
+            for (subMap in restrictedAllMaps) {
                 addToMap(subMap, subsequent);
                 subsequent = true;
-                if (!modifiedFlag) {
-                    setModifiedFlag(subMap, true);
-                }
+                subMap.modified = true;
             }
             fireMovementCost(4);
         }
@@ -560,11 +541,9 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
 
     "Add the given [[unit]] at the given [[location]]."
     shared actual void addUnitAtLocation(IUnit unit, Point location) { // TODO: If more than one map, return a proxy for the units; otherwise, return the unit
-        for (indivMap->[file, modifiedFlag] in restrictedAllMaps) {
+        for (indivMap in restrictedAllMaps) {
             indivMap.addFixture(location, unit); // FIXME: Check for existing matching unit there already
-            if (!modifiedFlag) {
-                setModifiedFlag(indivMap, true);
-            }
+            indivMap.modified = true;
         }
     }
 
@@ -584,17 +563,16 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
             matching = map.fixtures.get(location).find(matchingValue(fixture.id, TileFixture.id));
         }
         if (exists matching) {
-            for (subMap->[file, modified] in restrictedSubordinateMaps) {
+            for (subMap in restrictedSubordinateMaps) {
                 retval = subMap.addFixture(location, matching.copy(zero)) || retval;
-                if (!modified) { // We do *not* use the return value because it returns false if an existing fixture was *replaced*
-                    setModifiedFlag(subMap, true);
-                }
+                // We do *not* use the return value because it returns false if an existing fixture was *replaced*
+                subMap.modified = true;
             }
 
             if (is CacheFixture matching) {
                 restrictedMap.removeFixture(location, matching); // TODO: make removeFixture() return Boolean, true if anything was removed
                 retval = true;
-                mapModified = true;
+                restrictedMap.modified = true;
             }
         } else {
             log.warn("Skipping because not in the main map");
@@ -604,32 +582,25 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
 
     "Copy any terrain, mountain, rivers, and roads from the main map to subordinate maps."
     shared actual void copyTerrainToSubMaps(Point location) {
-        for (subMap->[file, modified] in restrictedSubordinateMaps) {
-            variable Boolean modFlag = modified;
-            void setModFlag() {
-                if (!modFlag) {
-                    setModifiedFlag(subMap, true);
-                    modFlag = true;
-                }
-            }
+        for (subMap in restrictedSubordinateMaps) {
             if (map.mountainous.get(location), !subMap.mountainous.get(location)) { // TODO: syntax sugar
                 subMap.mountainous[location] = true;
-                setModFlag();
+                subMap.modified = true;
             }
             if (exists terrain = map.baseTerrain[location], !anythingEqual(terrain, subMap.baseTerrain[location])) {
                 subMap.baseTerrain[location] = terrain;
-                setModFlag();
+                subMap.modified = true;
             }
             if (!map.rivers.get(location).every(subMap.rivers.get(location).contains)) { // TODO: syntax sugar
                 subMap.addRivers(location, *map.rivers.get(location)); // TODO: syntax sugar
-                setModFlag();
+                subMap.modified = true;
             }
             value subRoads = subMap.roads[location] else emptyMap;
             if (exists roads = map.roads[location], !roads.empty) {
                 for (road->quality in roads) {
                     if ((subRoads[road] else -1) < quality) {
                         subMap.setRoadLevel(location, road, quality);
-                        setModFlag();
+                        subMap.modified = true;
                     }
                 }
             }
@@ -639,56 +610,46 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
     "Set sub-map terrain at the given location to the given type."
     deprecated("Can we redesign the fixture list to not need this for the exploration GUI?")
     shared actual void setSubMapTerrain(Point location, TileType? terrain) {
-        for (subMap->[file, modified] in restrictedSubordinateMaps) {
+        for (subMap in restrictedSubordinateMaps) {
             subMap.baseTerrain[location] = terrain;
-            if (!modified) {
-                setModifiedFlag(subMap, true);
-            }
+            subMap.modified = true;
         }
     }
 
     "Copy the given rivers to sub-maps, if they are present in the main map."
     shared actual void copyRiversToSubMaps(Point location, River* rivers) {
         {River*} actualRivers = rivers.filter(map.rivers.get(location).contains); // TODO: syntax sugar
-        for (subMap->[file, modified] in restrictedSubordinateMaps) {
+        for (subMap in restrictedSubordinateMaps) {
             subMap.addRivers(location, *actualRivers); // TODO: Make it return Boolean if this was a change, and only set modified flag in that case
-            if (!modified) {
-                setModifiedFlag(subMap, true);
-            }
+            subMap.modified = true;
         }
     }
 
     "Remove the given rivers from sub-maps."
     deprecated("Can we redesign the fixture list to not need this for the exploration GUI?")
     shared actual void removeRiversFromSubMaps(Point location, River* rivers) {
-        for (subMap->[file, modified] in restrictedSubordinateMaps) {
+        for (subMap in restrictedSubordinateMaps) {
             subMap.removeRivers(location, *rivers); // TODO: Make it return Boolean if this was a change, and only set modified flag in that case
-            if (!modified) {
-                setModifiedFlag(subMap, true);
-            }
+            subMap.modified = true;
         }
     }
 
     "Remove the given fixture from sub-maps."
     deprecated("Can we redesign the fixture list to not need this for the exploration GUI?")
     shared actual void removeFixtureFromSubMaps(Point location, TileFixture fixture) {
-        for (subMap->[file, modified] in restrictedSubordinateMaps) {
+        for (subMap in restrictedSubordinateMaps) {
             subMap.removeFixture(location, fixture); // TODO: Make it return Boolean if this was a change, and only set modified flag in that case
-            if (!modified) {
-                setModifiedFlag(subMap, true);
-            }
+            subMap.modified = true;
         }
     }
 
     "Set whether sub-maps have a mountain at the given location."
     deprecated("Can we redesign the fixture list to not need this for the exploration GUI?")
     shared actual void setMountainousInSubMap(Point location, Boolean mountainous) {
-        for (subMap->[file, modified] in restrictedSubordinateMaps) {
+        for (subMap in restrictedSubordinateMaps) {
             if (subMap.mountainous.get(location) != mountainous) { // TODO: syntax sugar
                 subMap.mountainous[location] = mountainous;
-                if (!modified) {
-                    setModifiedFlag(subMap, true);
-                }
+                subMap.modified = true;
             }
         }
     }

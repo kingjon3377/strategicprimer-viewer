@@ -18,8 +18,8 @@ shared class SubsetCLI(ICLIHelper cli, model) satisfies ReadOnlyDriver {
             cli.println("In ``filename``: ``string``");
 
     shared actual void startDriver() {
-        for (map->[file, _] in model.subordinateMaps) {
-            String filename = file?.string else "map without a filename";
+        for (map in model.subordinateMaps) {
+            String filename = map.filename?.string else "map without a filename";
             cli.print(filename, "\t...\t\t");
             if (model.map.isSubset(map, report(filename))) {
                 cli.println("OK");

@@ -102,7 +102,7 @@ shared abstract class AbstractTurnApplet(ITurnRunningModel model, ICLIHelper cli
     }
 
     shared void addResourceToMaps(FortressMember resource, Player owner, String fortName = "HQ") {
-        for (map in model.allMaps.map(Entry.key)) {
+        for (map in model.allMaps) {
             // TODO: Make a way to add to units
             Fortress hq;
             variable Fortress? fort = null;
@@ -126,7 +126,7 @@ shared abstract class AbstractTurnApplet(ITurnRunningModel model, ICLIHelper cli
     }
 
     shared void removeFoodStock(ResourcePile food, Player owner) {
-        for (map->_ in model.allMaps) {
+        for (map in model.allMaps) {
             for (container in map.locations.flatMap(map.fixtures.get).narrow<IUnit|Fortress>()
                     .filter(matchingValue(owner, HasOwner.owner))) {
                 variable Boolean found = false;
@@ -147,7 +147,7 @@ shared abstract class AbstractTurnApplet(ITurnRunningModel model, ICLIHelper cli
     }
 
     shared void reduceFoodBy(ResourcePile pile, Decimal amount, Player owner) {
-        for (map->_ in model.allMaps) {
+        for (map in model.allMaps) {
             for (container in map.locations.flatMap(map.fixtures.get).narrow<IUnit|Fortress>()
                     .filter(matchingValue(owner, HasOwner.owner))) {
                 variable Boolean found = false;

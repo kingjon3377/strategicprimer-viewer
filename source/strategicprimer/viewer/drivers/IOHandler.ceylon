@@ -20,6 +20,7 @@ import strategicprimer.model.common.xmlio {
     SPFormatException
 }
 import strategicprimer.model.common.map {
+    IMapNG,
     PlayerCollection,
     IMutableMapNG,
     SPMapNG
@@ -98,8 +99,7 @@ shared class IOHandler satisfies ActionListener {
             log.trace("main map was not modified");
         }
 
-        if (is MultiMapGUIDriver driver, driver.model.subordinateMaps.map(Entry.item)
-                .map(Tuple.last).coalesced.any(true.equals)) {
+        if (is MultiMapGUIDriver driver, driver.model.subordinateMaps.any(IMapNG.modified)) {
             log.trace("Subordinate map(s) modified.");
             Integer answer = JOptionPane.showConfirmDialog(window,
                 "Subordinate map(s) have unsaved changes. Save all before ``verb``?",
@@ -140,10 +140,10 @@ shared class IOHandler satisfies ActionListener {
         showErrorDialog(source, errorTitle, message);
     }
 
-    void loadHandlerImpl(Anything(IMutableMapNG, PathWrapper) handler, Component? source,
+    void loadHandlerImpl(Anything(IMutableMapNG) handler, Component? source,
             String errorTitle)(PathWrapper path) {
         try {
-            handler(mapIOHelper.readMap(path, warningLevels.default), path);
+            handler(mapIOHelper.readMap(path, warningLevels.default));
         } catch (IOException|SPFormatException|MalformedXMLException except) {
             handleError(except, path.string, source, errorTitle, "reading");
         }
@@ -165,7 +165,7 @@ shared class IOHandler satisfies ActionListener {
      [[SwingUtilities.invokeLater]]."
     void startNewViewerWindow(ModelDriver driver) =>
         ViewerGUI(vgf.createModel(SPMapNG(driver.model.mapDimensions, PlayerCollection(),
-            driver.model.map.currentTurn), null), driver.options.copy()).startDriver();
+            driver.model.map.currentTurn)), driver.options.copy()).startDriver();
 
     void openSecondaryInViewer(IDriverModel model, SPOptions options) =>
         ViewerGUI(ViewerModel.copyConstructor(model), options.copy()).startDriver();
@@ -201,7 +201,7 @@ shared class IOHandler satisfies ActionListener {
 
         case ("save") {
             if (is ModelDriver driver) {
-                if (exists givenFile = driver.model.mapFile) {
+                if (exists givenFile = driver.model.map.filename) {
                     try {
                         mapIOHelper.writeMap(givenFile, driver.model.map);
                         driver.model.mapModified = false;
@@ -223,7 +223,7 @@ shared class IOHandler satisfies ActionListener {
                 SPFileChooser.save(null).call((path) {
                     try {
                         mapIOHelper.writeMap(path, driver.model.map);
-                        driver.model.mapFile = path;
+                        driver.model.setMapFilename(path);
                         driver.model.mapModified = false;
                     } catch (IOException except) {
                         handleError(except, path.string, source, errorTitle,
@@ -255,11 +255,11 @@ shared class IOHandler satisfies ActionListener {
 
         case ("save all") {
             if (is MultiMapGUIDriver driver) {
-                for (map->[file, _] in driver.model.allMaps) {
-                    if (exists file) {
+                for (map in driver.model.allMaps) { // FIXME: Doesn't mapIOHelper have a method for this?
+                    if (exists file = map.filename) {
                         try {
                             mapIOHelper.writeMap(file, map);
-                            driver.model.setModifiedFlag(map, false);
+                            driver.model.setMapModified(map, false);
                         } catch (IOException except) {
                             handleError(except, file.string, source, errorTitle,
                                 "writing to");

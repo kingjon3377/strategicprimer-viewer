@@ -25,7 +25,7 @@ class ResourceAddingCLI(ICLIHelper cli, options, model) satisfies CLIDriver {
     shared actual ResourceManagementDriverModel model;
 
     ResourceAddingCLIHelper helper = ResourceAddingCLIHelper(cli,
-        createIDFactory(model.allMaps.map(Entry.key)));
+        createIDFactory(model.allMaps));
     todo("Add a loopOnPlayers() helper method to CLIDriver interface, since there are
           several disparate CLI drivers that do that.")
     shared actual void startDriver() {

@@ -50,7 +50,7 @@ todo("Tests") // This'll have to wait until eclipse/ceylon#6986 is fixed
 class TurnRunningCLI(ICLIHelper cli, model) satisfies CLIDriver {
     shared actual ITurnRunningModel model;
     shared actual SPOptions options = emptyOptions;
-    IDRegistrar idf = createIDFactory(model.allMaps.map(Entry.key));
+    IDRegistrar idf = createIDFactory(model.allMaps);
 
     Boolean unfinishedResults(Integer turn)(IUnit unit) {
         String results = unit.getResults(turn);
@@ -76,7 +76,7 @@ class TurnRunningCLI(ICLIHelper cli, model) satisfies CLIDriver {
             IUnit.owner));
 
     {IUnit*} getUnits(Player player) {
-        value temp = model.allMaps.map(Entry.key)
+        value temp = model.allMaps
             .flatMap((indivMap) => getUnitsImpl(indivMap.fixtures.items, player));
         MutableMap<Integer, IUnit&ProxyFor<IUnit>> tempMap =
             naturalOrderTreeMap<Integer, IUnit&ProxyFor<IUnit>>([]);

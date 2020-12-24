@@ -17,10 +17,6 @@ import strategicprimer.model.common.map {
     IMutableMapNG
 }
 
-import lovelace.util.common {
-    PathWrapper
-}
-
 "A driver for an app to copy selected contents from one map to another."
 service(`interface DriverFactory`)
 shared class MapTradeFactory() satisfies ModelDriverFactory {
@@ -35,6 +31,5 @@ shared class MapTradeFactory() satisfies ModelDriverFactory {
             return createDriver(cli, options, MapTradeModel.copyConstructor(model));
         }
     }
-    shared actual MapTradeModel createModel(IMutableMapNG map, PathWrapper? path) =>
-            MapTradeModel(map, path);
+    shared actual MapTradeModel createModel(IMutableMapNG map) => MapTradeModel(map);
 }

@@ -21,9 +21,7 @@ import strategicprimer.drivers.exploration.common {
     IExplorationModel,
     ExplorationModel
 }
-import lovelace.util.common {
-    PathWrapper
-}
+
 import strategicprimer.model.common.map {
     IMutableMapNG,
     Player
@@ -59,8 +57,7 @@ shared class ExplorationCLIFactory() satisfies ModelDriverFactory {
         }
     }
 
-    shared actual IDriverModel createModel(IMutableMapNG map, PathWrapper? path) =>
-            ExplorationModel(map, path);
+    shared actual IDriverModel createModel(IMutableMapNG map) => ExplorationModel(map);
 
 }
 

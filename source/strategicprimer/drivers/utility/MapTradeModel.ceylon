@@ -4,8 +4,7 @@ import strategicprimer.drivers.common {
 }
 
 import lovelace.util.common {
-    matchingValue,
-    PathWrapper
+    matchingValue
 }
 
 import strategicprimer.model.common.map {
@@ -15,8 +14,7 @@ import strategicprimer.model.common.map {
 }
 
 shared class MapTradeModel extends SimpleMultiMapModel {
-    shared new (IMutableMapNG map, PathWrapper? file, Boolean modified = false)
-            extends SimpleMultiMapModel(map, file, modified) { }
+    shared new (IMutableMapNG map) extends SimpleMultiMapModel(map) { }
     shared new copyConstructor(IDriverModel model)
             extends SimpleMultiMapModel.copyConstructor(model) {}
 
@@ -24,24 +22,22 @@ shared class MapTradeModel extends SimpleMultiMapModel {
 
     void setGlobalModifiedFlag() {
         if (!globalModifiedFlag) {
-            for (second->[file, modified] in subordinateMaps) {
-                if (!modified) {
-                    setModifiedFlag(second, true);
-                }
+            for (second in restrictedSubordinateMaps) {
+                second.modified = true;
             }
             globalModifiedFlag = true;
         }
     }
 
     shared void copyPlayers() {
-        for (second->_ in restrictedSubordinateMaps) {
+        for (second in restrictedSubordinateMaps) {
             map.players.each(second.addPlayer);
         }
         setGlobalModifiedFlag();
     }
 
     shared void copyBaseTerrainAt(Point location) {
-        for (second->_ in restrictedSubordinateMaps) {
+        for (second in restrictedSubordinateMaps) {
             if (!second.baseTerrain[location] exists, exists terrain =
                     map.baseTerrain[location]) {
                 second.baseTerrain[location] = terrain;
@@ -51,7 +47,7 @@ shared class MapTradeModel extends SimpleMultiMapModel {
     }
 
     shared void maybeCopyFixturesAt(Point location, Boolean(TileFixture) condition, Boolean zeroFixtures) {
-        for (second->_ in restrictedSubordinateMaps) {
+        for (second in restrictedSubordinateMaps) {
             //for (fixture in map.fixtures[location].filter(condition)) { // TODO: syntax sugar
             for (fixture in map.fixtures.get(location).filter(condition)) {
                 //if (!second.fixtures[location] // TODO: syntax sugar
@@ -65,7 +61,7 @@ shared class MapTradeModel extends SimpleMultiMapModel {
     }
 
     shared void copyRiversAt(Point location) {
-        for (second->_ in restrictedSubordinateMaps) {
+        for (second in restrictedSubordinateMaps) {
                 //second.addRivers(location, *map.rivers[location]); // TODO: syntax sugar
                 second.addRivers(location, *map.rivers.get(location));
                 setGlobalModifiedFlag();
@@ -74,7 +70,7 @@ shared class MapTradeModel extends SimpleMultiMapModel {
 
     shared void copyRoadsAt(Point location) {
         if (exists roads = map.roads[location]) {
-            for (second->_ in restrictedSubordinateMaps) {
+            for (second in restrictedSubordinateMaps) {
                 value existingRoads = second.roads[location];
                 for (direction->quality in roads) {
                     value existingRoad = existingRoads?.get(direction);

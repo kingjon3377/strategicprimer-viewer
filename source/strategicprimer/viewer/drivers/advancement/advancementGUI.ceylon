@@ -90,8 +90,7 @@ shared class AdvancementGUIFactory() satisfies GUIDriverFactory {
         }
     }
 
-    shared actual IDriverModel createModel(IMutableMapNG map, PathWrapper? path) =>
-            WorkerModel(map, path);
+    shared actual IDriverModel createModel(IMutableMapNG map) => WorkerModel(map);
 }
 
 "The worker-advancement GUI driver."
@@ -110,7 +109,7 @@ shared class AdvancementGUI(ICLIHelper cli, options, model) satisfies MultiMapGU
         menuHandler.register(reloadListener, "reload tree");
         menuHandler.registerWindowShower(aboutDialog(frame, frame.windowName),
             "about");
-        if (model.allMaps.map(Entry.key).every(compose(compose(Iterable<IUnit>.empty,
+        if (model.allMaps.every(compose(compose(Iterable<IUnit>.empty,
                 model.getUnits), IMapNG.currentPlayer))) {
             pcml.actionPerformed(ActionEvent(frame, ActionEvent.actionFirst,
                 "change current player"));
@@ -138,12 +137,12 @@ shared class AdvancementGUI(ICLIHelper cli, options, model) satisfies MultiMapGU
         }
     }
 
-    shared actual void open(IMutableMapNG map, PathWrapper? path) {
+    shared actual void open(IMutableMapNG map) {
         if (model.mapModified) {
             SwingUtilities.invokeLater(defer(compose(AdvancementGUI.startDriver,
-                AdvancementGUI), [cli, options, WorkerModel(map, path)]));
+                AdvancementGUI), [cli, options, WorkerModel(map)]));
         } else {
-            model.setMap(map, path);
+            model.setMap(map);
         }
     }
 }

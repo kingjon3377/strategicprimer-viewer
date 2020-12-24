@@ -82,31 +82,32 @@ shared class ViewerModel extends SimpleDriverModel satisfies IViewerModel {
     "The visible dimensions of the map."
     variable VisibleDimensions visDimensions;
 
-    shared new ("The initial map" IMutableMapNG theMap,
-        "The file it was loaded from or should be saved to" PathWrapper? file)
-            extends SimpleDriverModel(theMap, file) {
+    shared new ("The initial map" IMutableMapNG theMap)
+            extends SimpleDriverModel(theMap) {
         visDimensions = VisibleDimensions(0, theMap.dimensions.rows - 1, 0,
             theMap.dimensions.columns - 1);
     }
 
+    deprecated("Filename now stored in the map")
     shared new fromEntry(
         "An [[Entry]] of the initial map and its filename"
         IMutableMapNG->[PathWrapper?, Boolean] entry)
-            extends SimpleDriverModel(entry.key, *entry.item) {
+            extends SimpleDriverModel(entry.key) {
         visDimensions = VisibleDimensions(0, entry.key.dimensions.rows - 1, 0,
             entry.key.dimensions.columns - 1);
     }
 
+    deprecated("Filename now stored in the map")
     shared new fromPair(
         "A pair of the initial map and its filename"
         [IMutableMapNG, PathWrapper?] pair)
-            extends SimpleDriverModel(pair.first, pair.rest.first) {
+            extends SimpleDriverModel(pair.first) {
         visDimensions = VisibleDimensions(0, pair.first.dimensions.rows - 1, 0,
             pair.first.dimensions.columns - 1);
     }
 
     shared new copyConstructor(IDriverModel model)
-            extends SimpleDriverModel(model.restrictedMap, model.mapFile) {
+            extends SimpleDriverModel(model.restrictedMap) {
         if (is IViewerModel model) {
             visDimensions = model.visibleDimensions;
             selPoint = model.selection;
@@ -256,7 +257,7 @@ shared class ViewerModel extends SimpleDriverModel satisfies IViewerModel {
             gpListeners.remove(listener);
 
     shared actual String string {
-        if (exists path = mapFile) {
+        if (exists path = map.filename) {
             return "ViewerModel for ``path``";
         } else {
             return "ViewerModel for an unsaved map";
@@ -265,9 +266,8 @@ shared class ViewerModel extends SimpleDriverModel satisfies IViewerModel {
 
     "Set the map and its filename, and also clear the selection and reset the visible
      dimensions and the zoom level."
-    shared actual void setMap(IMutableMapNG newMap, PathWrapper? origin,
-            Boolean modified) {
-        super.setMap(newMap, origin, modified);
+    shared actual void setMap(IMutableMapNG newMap) {
+        super.setMap(newMap);
         clearSelection();
         visDimensions = VisibleDimensions(0, newMap.dimensions.rows - 1, 0,
             newMap.dimensions.columns - 1);

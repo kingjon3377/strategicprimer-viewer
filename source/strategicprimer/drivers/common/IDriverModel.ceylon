@@ -11,14 +11,13 @@ import lovelace.util.common {
 "An interface for driver-model objects that hold a mutable map. Interfaces deriving from
  this one will give the methods each driver needs."
 shared interface IDriverModel satisfies MapChangeSource&VersionChangeSource {
-    "Set the (main) map and its filename."
-    shared formal void setMap("The new map" IMutableMapNG newMap,
-            "The file from which it was loaded, if known" PathWrapper? origin,
-            "Whether it has been modified since it was loaded or last saved"
-            Boolean modified = false);
-
+    "Set the (main) map"
+    shared formal void setMap("The new map" IMutableMapNG newMap);
     "The (main) map."
     shared formal IMapNG map;
+
+    "Set the map filename."
+    shared formal void setMapFilename(PathWrapper filename);
 
     "The (main) map, for use by subclasses only."
     shared formal IMutableMapNG restrictedMap;
@@ -26,12 +25,11 @@ shared interface IDriverModel satisfies MapChangeSource&VersionChangeSource {
     "Its dimensions."
     shared default MapDimensions mapDimensions => map.dimensions;
 
-    "The filename from which the map was loaded or to which it should be written."
-    shared formal variable PathWrapper? mapFile; // TODO: Store as part of the map
-
     "Whether the map has been changed since it was loaded or last saved."
-    // FIXME: Needs to be stored as part of the map, since a map can be shared between multiple drivers and their models
-    shared formal variable Boolean mapModified;
+    shared default Boolean mapModified => map.modified;
+    assign mapModified {
+        restrictedMap.modified = mapModified;
+    }
 
     "The current turn for the map."
     shared formal variable Integer currentTurn;

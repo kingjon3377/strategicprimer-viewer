@@ -24,7 +24,7 @@ object directionTests {
     test
     shared void testEast() {
         IExplorationModel model = ExplorationModel(SPMapNG(MapDimensionsImpl(5, 5, 2),
-            PlayerCollection(), 0), null);
+            PlayerCollection(), 0));
         Anything(Point, Point, String) localAssert =
             directionAssert(model, Direction.east);
         localAssert(Point(0, 0), Point(0, 1), "");
@@ -38,7 +38,7 @@ object directionTests {
     test
     shared void testNorth() {
         IExplorationModel model = ExplorationModel(SPMapNG(MapDimensionsImpl(5, 5, 2),
-            PlayerCollection(), 0), null);
+            PlayerCollection(), 0));
         Anything(Point, Point, String) localAssert =
             directionAssert(model, Direction.north);
         localAssert(Point(0, 0), Point(4, 0), " in a 5x5 map");
@@ -51,7 +51,7 @@ object directionTests {
     test
     shared void testSouth() {
         IExplorationModel model = ExplorationModel(SPMapNG(MapDimensionsImpl(5, 5, 2),
-            PlayerCollection(), 0), null);
+            PlayerCollection(), 0));
         Anything(Point, Point, String) localAssert =
             directionAssert(model, Direction.south);
         localAssert(Point(0, 0), Point(1, 0), "");
@@ -65,7 +65,7 @@ object directionTests {
     test
     shared void testWest() {
         IExplorationModel model = ExplorationModel(SPMapNG(MapDimensionsImpl(5, 5, 2),
-            PlayerCollection(), 0), null);
+            PlayerCollection(), 0));
         Anything(Point, Point, String) localAssert =
             directionAssert(model, Direction.west);
         localAssert(Point(0, 0), Point(0, 4),
@@ -79,7 +79,7 @@ object directionTests {
     test
     shared void testNortheast() {
         IExplorationModel model = ExplorationModel(SPMapNG(MapDimensionsImpl(5, 5, 2),
-            PlayerCollection(), 0), null);
+            PlayerCollection(), 0));
         Anything(Point, Point, String) localAssert =
             directionAssert(model, Direction.northeast);
         localAssert(Point(0, 0), Point(4, 1),
@@ -93,7 +93,7 @@ object directionTests {
     test
     shared void testNorthwest() {
         IExplorationModel model = ExplorationModel(SPMapNG(MapDimensionsImpl(5, 5, 2),
-            PlayerCollection(), 0), null);
+            PlayerCollection(), 0));
         Anything(Point, Point, String) localAssert =
             directionAssert(model, Direction.northwest);
         localAssert(Point(0, 0), Point(4, 4),
@@ -107,7 +107,7 @@ object directionTests {
     test
     shared void testSoutheast() {
         IExplorationModel model = ExplorationModel(SPMapNG(MapDimensionsImpl(5, 5, 2),
-            PlayerCollection(), 0), null);
+            PlayerCollection(), 0));
         Anything(Point, Point, String) localAssert =
             directionAssert(model, Direction.southeast);
         localAssert(Point(0, 0), Point(1, 1), "");
@@ -121,7 +121,7 @@ object directionTests {
     test
     shared void testSouthwest() {
         IExplorationModel model = ExplorationModel(SPMapNG(MapDimensionsImpl(5, 5, 2),
-            PlayerCollection(), 0), null);
+            PlayerCollection(), 0));
         Anything(Point, Point, String) localAssert =
             directionAssert(model, Direction.southwest);
         localAssert(Point(0, 0), Point(1, 4), " in a 5x5 map");
@@ -135,7 +135,7 @@ object directionTests {
     test
     shared void testNowhere() {
         IExplorationModel model = ExplorationModel(SPMapNG(MapDimensionsImpl(5, 5, 2),
-            PlayerCollection(), 0), null);
+            PlayerCollection(), 0));
         Anything(Point, Point, String) localAssert =
             directionAssert(model, Direction.nowhere);
         localAssert(Point(0, 0), Point(0, 0), "");

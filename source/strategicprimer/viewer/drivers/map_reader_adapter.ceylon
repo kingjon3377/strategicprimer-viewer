@@ -52,11 +52,7 @@ shared object mapReaderAdapter {
     todo("Return exceptions instead of throwing them")
     shared IDriverModel readMapModel(PathWrapper|JReader file, Warning warner) {
         try {
-            if (is JReader file) {
-                return SimpleDriverModel(mapIOHelper.readMap(file, warner), null);
-            } else {
-                return SimpleDriverModel(mapIOHelper.readMap(file, warner), file);
-            }
+            return SimpleDriverModel(mapIOHelper.readMap(file, warner));
         } catch (IOException except) {
             throw DriverFailedException(except, "I/O error while reading");
         } catch (MalformedXMLException except) {
@@ -75,10 +71,10 @@ shared object mapReaderAdapter {
         variable String current = master.string;
         try {
             IMultiMapModel retval = SimpleMultiMapModel(
-                mapIOHelper.readMap(master, warner), master);
+                mapIOHelper.readMap(master, warner));
             for (file in files) {
                 current = file.string;
-                retval.addSubordinateMap(mapIOHelper.readMap(file, warner), file);
+                retval.addSubordinateMap(mapIOHelper.readMap(file, warner));
             }
             log.trace("Finished with mapReaderAdapter.readMultiMapModel");
             return retval;
@@ -96,7 +92,7 @@ shared object mapReaderAdapter {
      [[DriverFailedException]] to simplify callers."
     todo("Return exceptions instead of throwing them")
     shared void writeModel(IDriverModel model) {
-        if (exists mainFile = model.mapFile) {
+        if (exists mainFile = model.map.filename) {
             try {
                 mapIOHelper.writeMap(mainFile, model.map);
                 model.mapModified = false;
@@ -107,11 +103,11 @@ shared object mapReaderAdapter {
             log.error("Model didn't contain filename for main map, so didn't write it");
         }
         if (is IMultiMapModel model) {
-            for (map->[filename, _] in model.subordinateMaps) {
-                if (exists filename) {
+            for (map in model.subordinateMaps) {
+                if (exists filename = map.filename) {
                     try {
                         mapIOHelper.writeMap(filename, map);
-                        model.setModifiedFlag(map, false);
+                        model.setMapModified(map, false);
                     } catch (IOException except) {
                         throw DriverFailedException(except,
                             "I/O error writing to ``filename``");

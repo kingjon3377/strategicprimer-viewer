@@ -195,11 +195,9 @@ shared class DuplicateFixtureRemoverCLI satisfies CLIDriver {
     "Run the driver"
     shared actual void startDriver() {
         if (!model.subordinateMaps.empty) {
-            for (map->[file, modifiedFlag] in model.allMaps) {
+            for (map in model.allMaps) {
                 removeDuplicateFixtures(map);
-                if (!modifiedFlag) {
-                    model.setModifiedFlag(map, true);
-                }
+                model.setMapModified(map, true);
             }
         } else {
             removeDuplicateFixtures(model.map);

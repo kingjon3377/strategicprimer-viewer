@@ -15,9 +15,17 @@ import strategicprimer.model.common.map {
     PlayerCollection
 }
 import lovelace.util.common {
-    PathWrapper,
-    invoke
+    invoke,
+    PathWrapper
 }
+
+import ceylon.logging {
+    Logger,
+    logger
+}
+
+"Logger."
+Logger log = logger(`module strategicprimer.drivers.common`);
 
 "A superclass for driver-models, to handle the common details."
 shared class SimpleDriverModel satisfies IDriverModel {
@@ -33,36 +41,25 @@ shared class SimpleDriverModel satisfies IDriverModel {
     "The main map."
     variable IMutableMapNG mainMap;
 
-    "Whether the map has been changed since it was loaded or last saved."
-    variable Boolean modifiedFlag;
-
-    "The filename from which the map was loaded, if known."
-    variable PathWrapper? mainMapFile;
-
     shared new (IMutableMapNG map = SPMapNG(MapDimensionsImpl(-1, -1, -1),
-            PlayerCollection(), -1), PathWrapper? file = null, Boolean modified = false) {
+            PlayerCollection(), -1)) {
         mainMap = map;
         mapDim = mainMap.dimensions;
-        mainMapFile = file;
-        modifiedFlag = modified;
     }
 
-    shared actual Boolean mapModified => modifiedFlag;
+    shared actual Boolean mapModified => map.modified;
     assign mapModified {
-        modifiedFlag = mapModified;
-        mcListeners.map(MapChangeListener.mapMetadataChanged).each(invoke);
+        restrictedMap.modified = mapModified;
+        mcListeners.map(MapChangeListener.mapMetadataChanged).each(invoke); // FIXME: They should listen to the map, which should be a MapChangeSource
     }
 
     "Set a new main map."
-    shared actual default void setMap(IMutableMapNG newMap, PathWrapper? origin,
-            Boolean modified) {
+    shared actual default void setMap(IMutableMapNG newMap) {
         for (listener in vcListeners) {
             listener.changeVersion(mapDim.version, newMap.dimensions.version);
         }
         mainMap = newMap;
         mapDim = newMap.dimensions;
-        mainMapFile = origin;
-        mapModified = modified;
         mcListeners.map(MapChangeListener.mapChanged).each(invoke);
     }
 
@@ -74,13 +71,6 @@ shared class SimpleDriverModel satisfies IDriverModel {
 
     "The dimensions of the map."
     shared actual MapDimensions mapDimensions => mapDim;
-
-    "The filename from which the map was loaded, if known."
-    shared actual PathWrapper? mapFile => mainMapFile;
-    assign mapFile {
-        mainMapFile = mapFile;
-        mcListeners.map(MapChangeListener.mapMetadataChanged).each(invoke);
-    }
 
     "Add a map-change listener."
     shared actual void addMapChangeListener(MapChangeListener listener) =>
@@ -99,5 +89,13 @@ shared class SimpleDriverModel satisfies IDriverModel {
     shared actual default Integer currentTurn => mainMap.currentTurn;
     assign currentTurn {
         mainMap.currentTurn = currentTurn;
+        mainMap.modified = true;
+    }
+
+    shared actual void setMapFilename(PathWrapper filename) {
+        if (exists existing = map.filename) {
+            log.warn("Overwriting existing filename");
+        }
+        restrictedMap.filename = filename;
     }
 }

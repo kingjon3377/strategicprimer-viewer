@@ -76,9 +76,9 @@ shared class SPFrame(String windowTitle, ISPDriver driver, Dimension? minSize = 
         shared actual default String windowName = windowTitle)
         extends JFrame(windowTitle) satisfies ISPWindow {
     String refreshTitle() {
-        if (is ModelDriver driver, exists file = driver.model.mapFile) {
+        if (is ModelDriver driver, exists file = driver.model.map.filename) {
             String retval = "``file`` | ``windowTitle``";
-            if (driver.model.mapModified) {
+            if (driver.model.map.modified) {
                 return "*" + retval;
             } else {
                 return retval;
@@ -92,7 +92,7 @@ shared class SPFrame(String windowTitle, ISPDriver driver, Dimension? minSize = 
     if (is ModelDriver driver) {
         driver.model.addMapChangeListener(object satisfies MapChangeListener {
             void impl() {
-                if (exists file = driver.model.mapFile) {
+                if (exists file = driver.model.map.filename) {
                     rootPane.putClientProperty("Window.documentFile",
                         JPaths.get(file.string).toFile());
                 } else {

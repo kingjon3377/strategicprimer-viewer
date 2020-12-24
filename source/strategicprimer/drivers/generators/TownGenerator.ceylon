@@ -516,11 +516,9 @@ class TownGenerator(ICLIHelper cli) {
                 assignStatsToTown(town, stats);
                 model.mapModified = true;
                 if (is IMultiMapModel model) {
-                    for (subMap->[file, modifiedFlag] in model.subordinateMaps) {
+                    for (subMap in model.subordinateMaps) {
                         assignStatsInMap(subMap, location, town.id, stats);
-                        if (!modifiedFlag) {
-                            model.setModifiedFlag(subMap, true);
-                        }
+                        model.setMapModified(subMap, true);
                     }
                 }
             } else {
@@ -549,11 +547,9 @@ class TownGenerator(ICLIHelper cli) {
             }
             assignStatsToTown(town, stats);
             if (is IMultiMapModel model) {
-                for (subMap->[file, modifiedFlag] in model.subordinateMaps) {
+                for (subMap in model.subordinateMaps) {
                     assignStatsInMap(subMap, location, town.id, stats);
-                    if (!modifiedFlag) {
-                        model.setModifiedFlag(subMap, true);
-                    }
+                    model.setMapModified(subMap, true);
                 }
             }
         }

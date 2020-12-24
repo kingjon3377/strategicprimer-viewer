@@ -63,7 +63,6 @@ import ceylon.collection {
 import lovelace.util.common {
     matchingValue,
     silentListener,
-    entryMap,
     PathWrapper
 }
 import lovelace.util.jvm {
@@ -159,8 +158,8 @@ shared class ReportCLIFactory() satisfies ModelDriverFactory {
         }
     }
 
-    shared actual IDriverModel createModel(IMutableMapNG map, PathWrapper? path) =>
-            SimpleMultiMapModel(map, path);
+    shared actual IDriverModel createModel(IMutableMapNG map) =>
+            SimpleMultiMapModel(map);
 }
 
 """A driver to "serve" a report on the contents of a map on an embedded HTTP server."""
@@ -170,13 +169,13 @@ class ReportServingCLI(options, model, ICLIHelper cli) satisfies ReadOnlyDriver 
     void serveReports(Integer port, Player? currentPlayer) {
         MutableMap<Path, String> cache = HashMap<Path, String>();
         if (is IMultiMapModel model) {
-            for (map->[file, _] in model.allMaps) {
-                if (exists file, !cache.defines(parsePath(file.filename))) {
+            for (map in model.allMaps) {
+                if (exists file = map.filename, !cache.defines(parsePath(file.filename))) {
                     cache[parsePath(file.filename)] = reportGenerator.createReport(map, cli,
                         currentPlayer else map.currentPlayer);
                 }
             }
-        } else if (exists file = model.mapFile) {
+        } else if (exists file = model.map.filename) {
             cache[parsePath(file.filename)] = reportGenerator.createReport(model.map, cli,
                 currentPlayer else model.map.currentPlayer);
         }
@@ -284,14 +283,14 @@ shared class ReportCLI(options, model, ICLIHelper cli) satisfies ReadOnlyDriver 
 
     shared actual void startDriver() {
         if (is IMultiMapModel model) {
-            for (map->[file, _] in model.allMaps) {
-                Path? wrapped =
-                        if (exists file) then parsePath(file.filename) else null;
+            for (map in model.allMaps) {
+                Path? wrapped = if (exists file = map.filename)
+                    then parsePath(file.filename) else null;
                 writeReport(wrapped, map);
             }
         } else {
             writeReport(
-                if (exists file = model.mapFile)
+                if (exists file = model.map.filename)
                     then parsePath(file.filename) else null,
                 model.map);
         }
@@ -319,8 +318,7 @@ shared class TabularReportGUIFactory() satisfies GUIDriverFactory {
     shared actual GUIDriver createDriver(ICLIHelper cli, SPOptions options,
             IDriverModel model) => TabularReportGUI(cli, options, model);
 
-    shared actual IDriverModel createModel(IMutableMapNG map, PathWrapper? path) =>
-            SimpleDriverModel(map, path);
+    shared actual IDriverModel createModel(IMutableMapNG map) => SimpleDriverModel(map);
 }
 
 "A driver to show tabular reports of the contents of a player's map in a GUI."
@@ -362,8 +360,7 @@ shared class TabularReportGUI(ICLIHelper cli, options, model)
         }
     }
 
-    shared actual void open(IMutableMapNG map, PathWrapper? path) =>
-            model.setMap(map, path);
+    shared actual void open(IMutableMapNG map) => model.setMap(map);
 }
 
 "A factory for a driver to produce tabular (CSV) reports of the contents of a player's
@@ -390,28 +387,21 @@ shared class TabularReportCLIFactory() satisfies ModelDriverFactory {
         }
     }
 
-    shared actual IDriverModel createModel(IMutableMapNG map, PathWrapper? path) =>
-            SimpleMultiMapModel(map, path);
+    shared actual IDriverModel createModel(IMutableMapNG map) =>
+            SimpleMultiMapModel(map);
 }
 
 class TabularReportServingCLI(ICLIHelper cli, options, model) satisfies ReadOnlyDriver {
     shared actual SPOptions options;
     shared actual IDriverModel model;
 
-    Item->Key reverseEntry<Key, Item>(Key->Item entry)
-            given Key satisfies Object given Item satisfies Object =>
-            entry.item->entry.key;
+    <Path->IMapNG> mapToPair(IMapNG map) => parsePath(map.filename?.filename else "unknown.xml")->map;
 
     void serveReports(Integer port) {
         Map<Path, IMapNG> mapping;
         if (is IMultiMapModel model) {
-            mapping = map(model.allMaps.coalesced
-                .map(entryMap(identity<IMapNG>, Tuple<PathWrapper?|Boolean,
-            PathWrapper?, [Boolean]>.first)).map(Entry.coalesced).coalesced
-                .map(entryMap(identity<IMapNG>,
-                compose(parsePath, PathWrapper.filename)))
-                .map(reverseEntry));
-        } else if (exists path = model.mapFile) {
+            mapping = map(model.allMaps.map(mapToPair).coalesced);
+        } else if (exists path = model.map.filename) {
             mapping = map { parsePath(path.filename)->model.map };
         } else {
             mapping = map { parsePath("unknown.xml")->model.map };
@@ -447,12 +437,12 @@ class TabularReportServingCLI(ICLIHelper cli, options, model) satisfies ReadOnly
         }
 
         if (is IMultiMapModel model) {
-            for (map->[file, _] in model.allMaps) {
-                createReports(map, parsePath(file?.filename else "unknown.xml"));
+            for (map in model.allMaps) {
+                createReports(map, parsePath(map.filename?.filename else "unknown.xml"));
             }
         } else {
             createReports(model.map,
-                parsePath(model.mapFile?.filename else "unknown.xml"));
+                parsePath(model.map.filename?.filename else "unknown.xml"));
         }
 
         {Fork*} endpoints = builders
@@ -582,14 +572,14 @@ shared class TabularReportCLI(ICLIHelper cli, options, model) satisfies ReadOnly
 
     shared actual void startDriver() {
         if (is IMultiMapModel model) {
-            for (map->[file, _] in model.allMaps) {
+            for (map in model.allMaps) {
                 Path? wrapped =
-                        if (exists file) then parsePath(file.filename) else null;
+                        if (exists file = map.filename) then parsePath(file.filename) else null;
                 createReports(map, wrapped);
             }
         } else {
             createReports(model.map,
-                if (exists file = model.mapFile)
+                if (exists file = model.map.filename)
                     then parsePath(file.filename) else null);
         }
         writers.items.each(shuffle(Writer.close)());

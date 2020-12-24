@@ -126,7 +126,7 @@ class ResourceAddingGUI satisfies MultiMapGUIDriver {
      one resource and close."
     class ResourceAddingFrame(Anything(ActionEvent) menuHandler)
         extends SPFrame("Resource Entry", outer, null, true) satisfies PlayerChangeListener {
-        IDRegistrar idf = createIDFactory(model.allMaps.map(Entry.key));
+        IDRegistrar idf = createIDFactory(model.allMaps);
         variable Player currentPlayer = PlayerImpl(-1, "");
         JPanel&BoxPanel mainPanel = boxPanel(BoxAxis.pageAxis);
         InterpolatedLabel<[Player]> resourceLabel =
@@ -245,7 +245,7 @@ class ResourceAddingGUI satisfies MultiMapGUIDriver {
         }
 
         shared actual void acceptDroppedFile(PathWrapper file) =>
-            model.addSubordinateMap(mapIOHelper.readMap(file), file);
+            model.addSubordinateMap(mapIOHelper.readMap(file));
 
         add(verticalSplit(mainPanel, scrolledLog, 0.2, 0.1));
         jMenuBar = workerMenu(menuHandler, mainPanel, outer);
@@ -288,13 +288,13 @@ class ResourceAddingGUI satisfies MultiMapGUIDriver {
         }
     }
 
-    shared actual void open(IMutableMapNG map, PathWrapper? path) {
+    shared actual void open(IMutableMapNG map) {
         if (model.mapModified) {
             SwingUtilities.invokeLater(defer(compose(ResourceAddingGUI.startDriver,
                 ResourceAddingGUI), [cli, options,
-                ResourceManagementDriverModel.fromMap(map, path)]));
+                ResourceManagementDriverModel.fromMap(map)]));
         } else {
-            model.setMap(map, path);
+            model.setMap(map);
         }
     }
 }

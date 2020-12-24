@@ -38,7 +38,7 @@ shared class ExpansionDriver(ICLIHelper cli, options, model) satisfies CLIDriver
     }
 
     shared actual void startDriver() {
-        for (player in model.subordinateMaps.map(Entry.key).map(IMapNG.currentPlayer).filter(not(Player.independent))) {
+        for (player in model.subordinateMaps.map(IMapNG.currentPlayer).filter(not(Player.independent))) {
             for (point in model.map.locations.filter(containsSwornVillage(model.map, player))) {
                 model.expandAroundPoint(point, player);
             }

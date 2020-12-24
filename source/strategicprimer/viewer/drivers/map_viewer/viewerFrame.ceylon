@@ -105,12 +105,12 @@ shared final class ViewerFrame extends SPFrame satisfies MapGUI {
             [ViewerModel.copyConstructor(map), options.copy()]));
     }
 
-    void setMapWrapper(IMutableMapNG map, PathWrapper path) => mapModel.setMap(map, path, false);
+    void setMapWrapper(IMutableMapNG map) => mapModel.setMap(map); // TODO: Inline once this will compile; TODO: find MWE and report bug
 
     void alternateAcceptDroppedFile(PathWrapper file) {
         value mapOrError = mapReaderAdapter.readMap(file, warningLevels.default);
         if (is IMutableMapNG mapOrError) {
-            SwingUtilities.invokeLater(defer(setMapWrapper, [mapOrError, file]));
+            SwingUtilities.invokeLater(defer(setMapWrapper, [mapOrError]));
         } else {
             // FIXME: handle error, showing it to the user or something
         }

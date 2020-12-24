@@ -17,10 +17,6 @@ import strategicprimer.model.common.map {
     IMutableMapNG
 }
 
-import lovelace.util.common {
-    PathWrapper
-}
-
 "A factory for a driver to let the user generate animal and shrub populations, meadow and
  grove sizes, and forest acreages."
 service(`interface DriverFactory`)
@@ -44,6 +40,5 @@ shared class PopulationGeneratingCLIFactory() satisfies ModelDriverFactory {
         }
     }
 
-    shared actual IDriverModel createModel(IMutableMapNG map, PathWrapper? path) =>
-            PopulationGeneratingModel(map, path);
+    shared actual IDriverModel createModel(IMutableMapNG map) => PopulationGeneratingModel(map);
 }
