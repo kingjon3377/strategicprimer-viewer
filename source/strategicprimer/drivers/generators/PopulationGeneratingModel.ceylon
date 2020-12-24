@@ -5,8 +5,7 @@ import strategicprimer.drivers.common {
 
 import strategicprimer.model.common.map {
     IMutableMapNG,
-    Point,
-    TileFixture
+    Point
 }
 
 import lovelace.util.common {
@@ -33,12 +32,6 @@ shared class PopulationGeneratingModel extends SimpleDriverModel { // TODO: exte
 
     shared new copyConstructor(IDriverModel model) extends SimpleDriverModel(model.restrictedMap, model.mapFile) {}
 
-    "Replace an existing fixture with a replacement." // TODO: Should this be provided by IMutableMapNG instead?
-    void replace<Type>(Point location, Type original, Type replacement) given Type satisfies TileFixture {
-        restrictedMap.removeFixture(location, original); // TODO: If these methods return Boolean, make this return Boolean too based on their return values
-        restrictedMap.addFixture(location, replacement);
-    }
-
     "Set the population of [[kind]] animals (talking or not per [[talking]]) at
      [[location]] to [[population]]. Returns [[true]] if a population was in
      fact set (i.e. if there was a matching object there), [[false]] otherwise."
@@ -48,7 +41,7 @@ shared class PopulationGeneratingModel extends SimpleDriverModel { // TODO: exte
                 .filter(matchingValue(talking, Animal.talking))
                 .find(matchingValue(kind, Animal.kind))) {
             Animal replacement = animal.reduced(population);
-            replace(location, animal, replacement);
+            restrictedMap.replace(location, animal, replacement);
             return true;
         } else {
             return false;
@@ -64,7 +57,7 @@ shared class PopulationGeneratingModel extends SimpleDriverModel { // TODO: exte
         if (exists grove = map.fixtures.get(location).narrow<Grove>()
                 .find(matchingValue(kind, Grove.kind))) {
             Grove replacement = grove.reduced(population);
-            replace(location, grove, replacement);
+            restrictedMap.replace(location, grove, replacement);
             return true;
         } else {
             return false;
@@ -79,7 +72,7 @@ shared class PopulationGeneratingModel extends SimpleDriverModel { // TODO: exte
         if (exists shrub = map.fixtures.get(location).narrow<Shrub>()
                 .find(matchingValue(kind, Shrub.kind))) {
             Shrub replacement = shrub.reduced(population);
-            replace(location, shrub, replacement);
+            restrictedMap.replace(location, shrub, replacement);
             return true;
         } else {
             return false;
@@ -90,12 +83,12 @@ shared class PopulationGeneratingModel extends SimpleDriverModel { // TODO: exte
     shared void setFieldExtent(Point location, Meadow field, Float acres) {
         Meadow replacement = Meadow(field.kind, field.field, field.cultivated,
             field.id, field.status, acres);
-        replace(location, field, replacement);
+        restrictedMap.replace(location, field, replacement);
     }
 
     "Set the extent of the given [[forest]] at [[location]] to [[acres]]."
     shared void setForestExtent(Point location, Forest forest, Number<out Anything> acres) {
         Forest replacement = Forest(forest.kind, forest.rows, forest.id, acres);
-        replace(location, forest, replacement);
+        restrictedMap.replace(location, forest, replacement);
     }
 }

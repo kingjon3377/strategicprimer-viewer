@@ -501,4 +501,17 @@ shared class SPMapNG satisfies IMutableMapNG {
         }
         return retval;
     }
+
+    shared actual void replace(Point location, TileFixture original, TileFixture replacement) {
+        if (location->replacement in fixturesMap, original != replacement) {
+            removeFixture(location, original);
+        } else {
+            value existing = fixturesMap.get(location).sequence();
+            if (exists index = existing.firstIndexWhere(original.equals)) {
+                fixturesMap.replaceItems(location, existing.patch([replacement], index, 1));
+            } else {
+                addFixture(location, replacement);
+            }
+        }
+    }
 }

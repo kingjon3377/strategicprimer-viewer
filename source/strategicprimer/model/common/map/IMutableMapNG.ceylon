@@ -54,4 +54,15 @@ shared interface IMutableMapNG satisfies IMapNG {
     shared formal void removeBookmark(
         "Where to remove the bookmark" Point point,
         "The player to remove the bookmark for" Player player = currentPlayer);
+
+    "Replace [[an existing fixture|original]], if present, with [[a new
+     one|replacement]]. If [[original]] was not present, add [[replacement]]
+     anyway.  Order within the list of fixtures is of course not guaranteed,
+     but subclass implementations are encouraged to use a replace-in-place
+     operation to minimize churn in the XML serialized form."
+     // TODO: return Boolean if the map was changed?
+    shared default void replace(Point location, TileFixture original, TileFixture replacement) {
+        removeFixture(location, original);
+        addFixture(location, replacement);
+    }
 }
