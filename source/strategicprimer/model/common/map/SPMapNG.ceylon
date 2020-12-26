@@ -67,6 +67,8 @@ shared class SPMapNG satisfies IMutableMapNG {
             given Key satisfies Object
             given Item satisfies Object => entry.item->entry.key;
 
+    static Boolean withItem<Key, Item>(Item item)(Entry<Key, Item> entry) given Item satisfies Object => entry.item == item;
+
     "The file from which the map was loaded, or to which it should be saved, if known"
     shared actual variable PathWrapper? filename = null; // TODO: Require as constructor parameter?
 
@@ -170,8 +172,6 @@ shared class SPMapNG satisfies IMutableMapNG {
     "The current player."
     shared actual Player currentPlayer => playerCollection.currentPlayer;
     assign currentPlayer => playerCollection.currentPlayer = currentPlayer;
-
-    Boolean withItem<Key, Item>(Item item)(Entry<Key, Item> entry) given Item satisfies Object => entry.item == item;
 
     shared actual Set<Point> bookmarksFor(Player player) => set(bookmarksImpl.filter(withItem<Point,Player>(player)).map(Entry.key));
 
