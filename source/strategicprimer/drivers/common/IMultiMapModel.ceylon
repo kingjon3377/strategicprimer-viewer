@@ -30,4 +30,7 @@ shared interface IMultiMapModel satisfies IDriverModel {
     "Set the modified flag on the given map."
     deprecated("Modification to the map should ideally only come through model methods")
     shared formal void setMapModified(IMapNG map, Boolean flag);
+
+    "Clear the modified flag on the given map. (For the code that saves the map to file.)"
+    shared formal void clearModifiedFlag(IMapNG map);
 }

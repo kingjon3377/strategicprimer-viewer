@@ -61,4 +61,19 @@ shared class SimpleMultiMapModel extends SimpleDriverModel satisfies IMultiMapMo
             }
         }
     }
+
+    shared actual void clearModifiedFlag(IMapNG map) {
+        for (subMap in restrictedAllMaps) {
+            if (subMap === map) {
+                subMap.modified = false;
+                return;
+            }
+        }
+        for (subMap in restrictedAllMaps) {
+            if (subMap == map) {
+                subMap.modified = false;
+                return;
+            }
+        }
+    }
 }
