@@ -107,7 +107,7 @@ shared object mapReaderAdapter {
                 if (exists filename = map.filename) {
                     try {
                         mapIOHelper.writeMap(filename, map);
-                        model.setMapModified(map, false);
+                        model.clearModifiedFlag(map);
                     } catch (IOException except) {
                         throw DriverFailedException(except,
                             "I/O error writing to ``filename``");

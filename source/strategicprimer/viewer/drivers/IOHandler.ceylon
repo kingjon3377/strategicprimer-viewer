@@ -259,7 +259,7 @@ shared class IOHandler satisfies ActionListener {
                     if (exists file = map.filename) {
                         try {
                             mapIOHelper.writeMap(file, map);
-                            driver.model.setMapModified(map, false);
+                            driver.model.clearModifiedFlag(map);
                         } catch (IOException except) {
                             handleError(except, file.string, source, errorTitle,
                                 "writing to");
