@@ -119,10 +119,15 @@ class WorkerMgmtFrame extends SPFrame satisfies PlayerChangeListener {
     InterpolatedLabel<[Player]> playerLabel =
             InterpolatedLabel<[Player]>(playerLabelText, [model.currentPlayer]);
 
+    Boolean isCurrent(IUnit unit, Integer turn) =>
+        unit.getOrders(turn) == unit.getLatestOrders(turn);
+
     value ordersPanelObj = ordersPanel("Orders", mainMap.currentTurn, model.currentPlayer,
         model.getUnits, uncurry(IUnit.getLatestOrders), uncurry(IUnit.setOrders),
-        markModified);
+        isCurrent, markModified);
     tree.addTreeSelectionListener(ordersPanelObj);
+
+    Boolean trueSupplier(IUnit unit, Integer turn) => true;
 
     Anything(IUnit, Integer, String)? resultsSupplier;
     Anything() resultsModListener;
@@ -134,7 +139,7 @@ class WorkerMgmtFrame extends SPFrame satisfies PlayerChangeListener {
         resultsModListener = noop;
     }
     value resultsPanel = ordersPanel("Results", mainMap.currentTurn, model.currentPlayer,
-        model.getUnits, uncurry(IUnit.getResults), resultsSupplier, resultsModListener);
+        model.getUnits, uncurry(IUnit.getResults), resultsSupplier, trueSupplier, resultsModListener);
     tree.addTreeSelectionListener(resultsPanel);
 
     value notesPanelInstance = notesPanel(model.map.currentPlayer);

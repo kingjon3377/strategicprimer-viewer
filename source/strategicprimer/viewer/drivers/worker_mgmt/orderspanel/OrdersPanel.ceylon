@@ -28,29 +28,49 @@ import lovelace.util.common {
 import java.awt.event {
     KeyEvent
 }
+
+import java.awt {
+    Color
+}
+
 final class OrdersPanel extends BorderedPanel satisfies OrdersContainer {
+    static Color lightBlue = Color(135, 206, 250);
     variable Player currentPlayer;
     {IUnit*}(Player, String) playerUnits;
     String(IUnit, Integer) ordersSupplier;
     Anything(IUnit, Integer, String)? ordersConsumer;
+    Boolean(IUnit, Integer) isCurrent;
     Anything() modificationListener;
     SpinnerNumberModel spinnerModel;
+    Color defaultColor;
     JTextArea area;
     shared new (Integer currentTurn, Player currentPlayer,
             {IUnit*}(Player, String) playerUnits, String(IUnit, Integer) ordersSupplier,
             Anything(IUnit, Integer, String)? ordersConsumer,
+            Boolean(IUnit, Integer) isCurrent,
             Anything() modificationListener, SpinnerNumberModel spinnerModel,
             JTextArea area) extends BorderedPanel() {
         this.currentPlayer = currentPlayer;
         this.playerUnits = playerUnits;
         this.ordersSupplier = ordersSupplier;
         this.ordersConsumer = ordersConsumer;
+        this.isCurrent = isCurrent;
         this.modificationListener = modificationListener;
         this.spinnerModel = spinnerModel;
         this.area = area;
+        defaultColor = area.background;
     }
 
     variable Anything selection = null;
+
+    void fixColor() {
+        if (is IUnit sel = selection, !isCurrent(sel, spinnerModel.number.intValue())) {
+            area.background = lightBlue;
+        } else {
+            area.background = defaultColor;
+        }
+    }
+
     "If a unit is selected, change its orders to what the user wrote."
     shared actual void apply() {
         if (is IUnit sel = selection) {
@@ -58,6 +78,7 @@ final class OrdersPanel extends BorderedPanel satisfies OrdersContainer {
                 ordersConsumer(sel, spinnerModel.number.intValue(), area.text);
                 modificationListener();
             }
+            fixColor();
             parent.parent.repaint();
         }
     }
@@ -72,6 +93,7 @@ final class OrdersPanel extends BorderedPanel satisfies OrdersContainer {
             area.enabled = false;
             area.text = "";
         }
+        fixColor();
     }
 
     "Handle a changed value in the tree."
@@ -101,6 +123,7 @@ final class OrdersPanel extends BorderedPanel satisfies OrdersContainer {
     shared void focusOnArea() {
         Boolean newlyGainingFocus = !area.focusOwner;
         area.requestFocusInWindow();
+        fixColor();
         if (newlyGainingFocus) {
             area.selectAll();
         }
