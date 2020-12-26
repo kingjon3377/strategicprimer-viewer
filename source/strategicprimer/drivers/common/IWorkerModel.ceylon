@@ -43,4 +43,11 @@ shared interface IWorkerModel satisfies IMultiMapModel {
     // TODO: Return their positions with them?
     shared formal {Fortress*} getFortresses(
             "The player whose fortresses we want" Player player);
+
+    """Remove the given unit from the map. It must be empty, and may be
+       required to be owned by the current player. The operation will also fail
+       if "matching" units differ in name or kind from the provided unit.
+       Returns [[true]] if the preconditions were met and the unit was removed,
+       and [[false]] otherwise."""
+    shared formal Boolean removeUnit(IUnit unit);
 }

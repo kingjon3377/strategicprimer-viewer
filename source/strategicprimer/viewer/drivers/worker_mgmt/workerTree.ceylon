@@ -520,7 +520,12 @@ shared JTree&UnitMemberSelectionSource&UnitSelectionSource workerTree(
             retval.updateUI();
         }
 
-        shared actual void treeNodesRemoved(TreeModelEvent event) => retval.updateUI();
+        shared actual void treeNodesRemoved(TreeModelEvent event) {
+            value path = event.treePath.pathByAddingChild(event.children.array.first);
+            log.trace("About to remove this path from selection: ``path``");
+            retval.removeSelectionPath(path);
+            retval.updateUI();
+        }
         shared actual void treeNodesInserted(TreeModelEvent event) {
             if (exists path = event.treePath) {
                 retval.expandPath(path);

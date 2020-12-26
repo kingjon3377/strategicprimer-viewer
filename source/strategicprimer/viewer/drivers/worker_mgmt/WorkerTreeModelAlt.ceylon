@@ -530,4 +530,27 @@ shared class WorkerTreeModelAlt extends DefaultTreeModel satisfies IWorkerTreeMo
             process.writeErrorLine("refreshChildren() called on unit not in the tree");
         }
     }
+
+    shared actual void removeUnit(IUnit unit) {
+        log.trace("In WorkerTreeModelAlt.removeUnit");
+        if (is TreeNode playerNode = root, is KindNode kindNode = getNode(playerNode, unit.kind),
+                exists node = getNode(kindNode, unit)) {
+            Integer index = getIndexOfChild(kindNode, node);
+            log.trace("Unit is ``index``th child of unit-kind");
+            if (model.removeUnit(unit)) {
+                log.trace("Removed from the map, about to remove from the tree");
+                kindNode.remove(node);
+                fireTreeNodesRemoved(this,
+                    ObjectArray<Object>.with([playerNode, kindNode]), IntArray.with(Singleton(index)),
+                    ObjectArray<Object>.with(Singleton(node)));
+                log.trace("Finished updating the tree");
+                markModified();
+            } else {
+                log.warn("Failed to remove from the map for some reason");
+                // FIXME: Some user feedback---beep, visual beep, etc.
+            }
+        } else {
+            log.error("Tree root isn't a tree node, or tree doesn't contain that unit");
+        }
+    }
 }

@@ -34,6 +34,9 @@ shared interface IWorkerTreeModel
             "The unit to add"
             IUnit unit);
 
+    "(Try to) remove a unit (from the map, via the driver model)."
+    shared formal void removeUnit("The unit to remove" IUnit unit);
+
     "If the parameter is a node in the tree (and this implementation is one using nodes
      rather than model objects directly), return the model object it represents;
      otherwise, returns the parameter."

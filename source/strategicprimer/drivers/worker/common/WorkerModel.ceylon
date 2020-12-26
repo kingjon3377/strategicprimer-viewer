@@ -11,6 +11,7 @@ import ceylon.test {
 }
 
 import strategicprimer.model.common.map {
+    IFixture,
     IMapNG,
     IMutableMapNG,
     SPMapNG,
@@ -69,6 +70,18 @@ shared class WorkerModel extends SimpleMultiMapModel satisfies IWorkerModel {
             return fixture;
         } else {
             return Singleton(fixture);
+        }
+    }
+
+    "If the item in the entry is a [[Fortress]], return a stream of its
+     contents paired with its location; otherwise, return a [[Singleton]] of
+     the argument."
+//    see(`function flatten`)
+    static {<Point->IFixture>*} flattenEntries(Point->IFixture entry) {
+        if (is Fortress item = entry.item) {
+            return item.map((each) => entry.key->each);
+        } else {
+            return Singleton(entry);
         }
     }
 
@@ -202,6 +215,61 @@ shared class WorkerModel extends SimpleMultiMapModel satisfies IWorkerModel {
     "Get a unit by its owner and ID."
     shared actual IUnit? getUnitByID(Player owner, Integer id) =>
             getUnits(owner).find(matchingValue(id, IUnit.id));
+
+    Boolean unitMatching(IUnit unit)(Point->IFixture entry) {
+        value location->fixture = entry;
+        if (is IUnit fixture, fixture.id == unit.id, fixture.owner == unit.owner) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    """Remove the given unit from the map. It must be empty, and may be
+       required to be owned by the current player. The operation will also fail
+       if "matching" units differ in name or kind from the provided unit.
+       Returns [[true]] if the preconditions were met and the unit was removed,
+       and [[false]] otherwise. To make an edge case explicit, if there are no
+       matching units in any map the method returns [[false]]."""
+    shared actual Boolean removeUnit(IUnit unit) {
+        log.trace("In WorkerModel.removeUnit()");
+        MutableList<IMutableMapNG->[Point, IUnit]> delenda =
+            ArrayList<IMutableMapNG->[Point, IUnit]>();
+        for (map in restrictedAllMaps) {
+            if (exists location->fixture = map.fixtures.flatMap(flattenEntries)
+                    .find(unitMatching(unit))) {
+                log.trace("Map has matching unit");
+                assert (is IUnit fixture);
+                if (fixture.kind == unit.kind, fixture.name == unit.name, fixture.empty) {
+                    log.trace("Matching unit meets preconditions");
+                    delenda.add(map->[location, fixture]);
+                } else {
+                    log.warn("Matching unit in ``map.filename else "an unsaved map"`` fails preconditions for removal");
+                    return false;
+                }
+            }
+        }
+        if (delenda.empty) {
+            log.trace("No matching units");
+            return false;
+        }
+        for (map->[location, fixture] in delenda) {
+            if (fixture in map.fixtures.get(location)) { // TODO: syntax sugar
+                map.removeFixture(location, fixture);
+            } else {
+                for (fort in map.fixtures.get(location).narrow<Fortress>()) { // TODO: syntax sugar
+                    if (fixture in fort) {
+                        fort.removeMember(fixture);
+                        break;
+                    }
+                } else {
+                    log.warn("Failed to find unit to remove that we thought might be in a fortress");
+                }
+            }
+        }
+        log.trace("Finished removing matching unit(s) from map(s)");
+        return true;
+    }
 }
 
 "Test of the worker model."

@@ -356,4 +356,19 @@ class WorkerTreeModel satisfies IWorkerTreeModel {
             listener.treeStructureChanged(event);
         }
     }
+
+    shared actual void removeUnit(IUnit unit) {
+        log.trace("In WorkerTreeModel.removeUnit()");
+        TreeModelEvent event = TreeModelEvent(this, TreePath(ObjectArray<Object>.with([root, unit.kind])),
+            IntArray.with(Singleton(getIndexOfChild(unit.kind, unit))), ObjectArray<Object>.with(Singleton(unit)));
+        if (model.removeUnit(unit)) {
+            log.trace("Removed unit from the map, about to notify tree listeners");
+            for (listener in listeners) {
+                listener.treeNodesRemoved(event);
+            }
+            log.trace("Finished notifying tree listeners");
+        } else {
+            log.warn("Failed to remove from the map for some reason");
+        }
+    }
 }

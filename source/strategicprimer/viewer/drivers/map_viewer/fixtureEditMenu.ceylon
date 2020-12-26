@@ -51,7 +51,7 @@ shared class FixtureEditMenu(
         "A method to call to mark the maps as modified whenever any change is made."
         Anything() mutationListener,
         "Listeners to notify when something is renamed or changes kind."
-        IWorkerTreeModel* changeListeners) extends JPopupMenu() {
+        IWorkerTreeModel* changeListeners) extends JPopupMenu() { // FIXME: Name and varargs type don't fit usage ...
     void addMenuItem(JMenuItem item, Anything(ActionEvent) listener, Boolean enabled) {
         add(item);
         if (enabled) {
@@ -178,4 +178,26 @@ shared class FixtureEditMenu(
     }
 
     addMenuItem(JMenuItem("Sort", KeyEvent.vkR), silentListener(sortHandler), fixture is IUnit);
+
+    Boolean isEmptyUnit;
+    if (is IUnit fixture) {
+        isEmptyUnit = fixture.empty;
+    } else {
+        isEmptyUnit = false;
+    }
+
+    void removeUnitHandler() {
+        assert (is IUnit fixture);
+        Integer reply = JOptionPane.showConfirmDialog(parent,
+            "Are you sure you want to remove this ``fixture.kind`` unit, \"``fixture.name``\"?",
+            "Confirm Removal", JOptionPane.yesNoOption);
+        if (reply == JOptionPane.yesOption) {
+            for (listener in changeListeners) {
+                listener.removeUnit(fixture);
+            }
+            mutationListener();
+        }
+    }
+
+    addMenuItem(JMenuItem("Remove Unit", KeyEvent.vkM), silentListener(removeUnitHandler), isEmptyUnit);
 }
