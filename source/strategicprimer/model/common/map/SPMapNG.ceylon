@@ -124,6 +124,7 @@ shared class SPMapNG satisfies IMutableMapNG {
         shared actual Boolean defines(Point key) => key in dimensions;
         shared actual TileType? get(Point key) => terrain[key];
         shared actual void put(Point key, TileType? item) {
+            modified = true; // TODO: Only if this is a change
             if (exists item) {
                 terrain[key] = item;
             } else {
@@ -138,6 +139,7 @@ shared class SPMapNG satisfies IMutableMapNG {
         shared actual Boolean defines(Point key) => key in dimensions;
         shared actual Boolean get(Point key) => mountains.contains(key);
         shared actual void put(Point key, Boolean item) {
+            modified = true; // TODO: Only if this is a change
             if (item) {
                 mountains.add(key);
             } else {
@@ -157,6 +159,7 @@ shared class SPMapNG satisfies IMutableMapNG {
             return;
         }
         assert (quality >= 0);
+        modified = true; // TODO: Only if this is a change
         if (exists roadsAtPoint = roadsMap[point]) {
             roadsAtPoint[direction] = quality;
         } else {
@@ -179,19 +182,31 @@ shared class SPMapNG satisfies IMutableMapNG {
 
     shared actual Multimap<Point, Player> allBookmarks => bookmarksImpl; // FIXME: Somehow make it impossible to get mutable view
 
-    shared actual void addBookmark(Point point, Player player) => bookmarksImpl.put(point, player);
+    shared actual void addBookmark(Point point, Player player) {
+        modified = true; // TODO: Only if this is a change
+        bookmarksImpl.put(point, player);
+    }
 
-    shared actual void removeBookmark(Point point, Player player) => bookmarksImpl.remove(point, player);
+    shared actual void removeBookmark(Point point, Player player) {
+        modified = true; // TODO: Only if this is a change
+        bookmarksImpl.remove(point, player);
+    }
 
     "Add a player."
-    shared actual void addPlayer(Player player) => playerCollection.add(player);
+    shared actual void addPlayer(Player player) {
+        modified = true; // TODO: Only if this is a change
+        playerCollection.add(player);
+    }
 
     "Add rivers at a location."
-    shared actual void addRivers(Point location, River* addedRivers) =>
-            riversMap.putMultiple(location, addedRivers);
+    shared actual void addRivers(Point location, River* addedRivers) {
+        modified = true; // TODO: Only if this is a change
+        riversMap.putMultiple(location, addedRivers);
+    }
 
     "Remove rivers from the given location."
     shared actual void removeRivers(Point location, River* removedRivers) {
+        modified = true; // TODO: Only if this is a change
         for (river in removedRivers) {
             riversMap.remove(location, river);
         }
@@ -206,6 +221,7 @@ shared class SPMapNG satisfies IMutableMapNG {
                 Exception());
             return false;
         }
+        modified = true; // TODO: Only if this is a change
         //{TileFixture*} local = fixturesMap[location]; // TODO: syntax sugar once compiler bug fixed
         {TileFixture*} local = fixturesMap.get(location);
         if (fixture.id >= 0,
@@ -234,8 +250,10 @@ shared class SPMapNG satisfies IMutableMapNG {
     }
 
     "Remove a fixture from a location."
-    shared actual void removeFixture(Point location, TileFixture fixture) =>
-            fixturesMap.remove(location, fixture);
+    shared actual void removeFixture(Point location, TileFixture fixture) {
+        modified = true; // TODO: Only if this is a change
+        fixturesMap.remove(location, fixture);
+    }
 
     shared actual Integer hash =>
             dimensions.hash + (currentTurn.leftLogicalShift(3)) +
@@ -487,7 +505,7 @@ shared class SPMapNG satisfies IMutableMapNG {
     }
 
     "Clone a map, possibly for a specific player, who shouldn't see other players'
-     details."
+     details." // TODO: What about filename and modified flag?
     shared actual IMapNG copy(Boolean zero, Player? player) {
         IMutableMapNG retval = SPMapNG(dimensions, playerCollection.copy(),
             currentTurn);
@@ -510,6 +528,7 @@ shared class SPMapNG satisfies IMutableMapNG {
     }
 
     shared actual void replace(Point location, TileFixture original, TileFixture replacement) {
+        modified = true; // TODO: Only if this is a change
         if (location->replacement in fixturesMap, original != replacement) {
             removeFixture(location, original);
         } else {
