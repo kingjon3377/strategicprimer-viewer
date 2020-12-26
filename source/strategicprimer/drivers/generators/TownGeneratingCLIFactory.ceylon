@@ -6,8 +6,7 @@ import strategicprimer.drivers.common {
     IDriverModel,
     DriverFactory,
     ModelDriverFactory,
-    ModelDriver,
-    SimpleMultiMapModel
+    ModelDriver
 }
 
 import strategicprimer.drivers.common.cli {
@@ -32,7 +31,14 @@ shared class TownGeneratingCLIFactory() satisfies ModelDriverFactory {
     };
 
     shared actual ModelDriver createDriver(ICLIHelper cli, SPOptions options,
-            IDriverModel model) => TownGeneratingCLI(cli, model);
+            IDriverModel model) {
+        if (is PopulationGeneratingModel model) {
+            return TownGeneratingCLI(cli, model);
+        } else {
+            return createDriver(cli, options,
+                PopulationGeneratingModel.copyConstructor(model));
+        }
+    }
 
-    shared actual IDriverModel createModel(IMutableMapNG map) => SimpleMultiMapModel(map);
+    shared actual IDriverModel createModel(IMutableMapNG map) => PopulationGeneratingModel(map);
 }

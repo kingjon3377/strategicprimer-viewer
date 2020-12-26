@@ -1,8 +1,3 @@
-import strategicprimer.drivers.common {
-    IDriverModel,
-    IMultiMapModel
-}
-
 import strategicprimer.drivers.common.cli {
     ICLIHelper
 }
@@ -166,28 +161,6 @@ class TownGenerator(ICLIHelper cli) {
             narrowedStream<Point, ModifiableTown>(map.fixtures)
                 .filter(compose(matchingValue(TownStatus.active, ITownFixture.status),
                     Entry<Point, ITownFixture>.item)).sequence();
-
-    "Assign the given [[population details object|stats]] to the given town."
-    void assignStatsToTown(ModifiableTown town, CommunityStats stats) {
-        if (is AbstractTown town) {
-            town.population = stats;
-        } else {
-            town.population = stats;
-        }
-    }
-
-    "Assign the given [[population details object|stats]] to the town
-     identified by the given [[ID number|townId]] at the given [[location]] in
-     the given [[map]]."
-    void assignStatsInMap(IMapNG map, Point location, Integer townId,
-            CommunityStats stats) {
-//        for (item in map.fixtures[location] // TODO: syntax sugar once compiler bug fixed
-        for (item in map.fixtures.get(location)
-                .narrow<ModifiableTown>().filter(matchingValue(townId,
-                ModifiableTown.id))) {
-            assignStatsToTown(item, stats);
-        }
-    }
 
     "Get the fixture in the given [[map]] identified by the given [[ID
      number|id]]."
@@ -486,7 +459,7 @@ class TownGenerator(ICLIHelper cli) {
     }
 
     "Allow the user to create population details for specific towns."
-    shared void generateSpecificTowns(IDRegistrar idf, IDriverModel model) {
+    shared void generateSpecificTowns(IDRegistrar idf, PopulationGeneratingModel model) {
         while (exists input = cli.inputString("ID or name of town to create stats for: "),
                 !input.empty) {
             Point? location;
@@ -513,14 +486,7 @@ class TownGenerator(ICLIHelper cli) {
                 } else {
                     stats = generateStats(idf, location, town, model.map);
                 }
-                assignStatsToTown(town, stats);
-                model.mapModified = true;
-                if (is IMultiMapModel model) {
-                    for (subMap in model.subordinateMaps) {
-                        assignStatsInMap(subMap, location, town.id, stats);
-                        model.setMapModified(subMap, true);
-                    }
-                }
+                model.assignTownStats(location, town.id, town.name, stats);
             } else {
                 cli.println("No matching town found.");
             }
@@ -529,7 +495,7 @@ class TownGenerator(ICLIHelper cli) {
 
     "Help the user generate population details for all the towns in the map
      that don't have such details already."
-    shared void generateAllTowns(IDRegistrar idf, IDriverModel model) {
+    shared void generateAllTowns(IDRegistrar idf, PopulationGeneratingModel model) {
         for (location->town in randomize(unstattedTowns(model.map))) {
             cli.println("Next town is ``town.shortDescription``, at ``location``. ");
             CommunityStats stats;
@@ -545,13 +511,7 @@ class TownGenerator(ICLIHelper cli) {
             } else {
                 break;
             }
-            assignStatsToTown(town, stats);
-            if (is IMultiMapModel model) {
-                for (subMap in model.subordinateMaps) {
-                    assignStatsInMap(subMap, location, town.id, stats);
-                    model.setMapModified(subMap, true);
-                }
-            }
+            model.assignTownStats(location, town.id, town.name, stats);
         }
     }
 }

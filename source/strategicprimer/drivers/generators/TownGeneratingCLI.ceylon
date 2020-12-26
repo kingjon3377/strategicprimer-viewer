@@ -1,6 +1,4 @@
 import strategicprimer.drivers.common {
-    IDriverModel,
-    IMultiMapModel,
     CLIDriver,
     emptyOptions,
     SPOptions
@@ -18,17 +16,13 @@ import strategicprimer.model.common.idreg {
 "A driver to let the user enter or generate 'stats' for towns."
 // TODO: Write GUI to allow user to generate or enter town contents
 shared class TownGeneratingCLI(ICLIHelper cli, model) satisfies CLIDriver {
-    shared actual IDriverModel model;
+    shared actual PopulationGeneratingModel model;
     shared actual SPOptions options = emptyOptions;
 
     shared actual void startDriver() {
         TownGenerator generator = TownGenerator(cli); // TODO: Consider combining that with this class again.
         IDRegistrar idf;
-        if (is IMultiMapModel model) {
-            idf = createIDFactory(model.allMaps);
-        } else {
-            idf = createIDFactory(model.map);
-        }
+        idf = createIDFactory(model.allMaps);
         if (exists specific =
                 cli.inputBoolean("Enter or generate stats for just specific towns? ")) {
             if (specific) {

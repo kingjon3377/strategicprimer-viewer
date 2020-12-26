@@ -26,7 +26,16 @@ import strategicprimer.model.common.map.fixtures.resources {
     Shrub
 }
 
+import strategicprimer.model.common.map.fixtures.towns {
+    AbstractTown,
+    CommunityStats,
+    Village
+}
+
 shared class PopulationGeneratingModel extends SimpleMultiMapModel {
+    "Fortresses' [[population]] field cannot be set."
+    static alias ModifiableTown=>AbstractTown|Village;
+
     shared new (IMutableMapNG map) extends SimpleMultiMapModel(map) {}
 
     shared new copyConstructor(IDriverModel model) extends SimpleMultiMapModel(model.restrictedMap) {}
@@ -112,13 +121,37 @@ shared class PopulationGeneratingModel extends SimpleMultiMapModel {
     shared Boolean setForestExtent(Point location, Forest forest, Number<out Anything> acres) {
         variable Boolean retval = false;
         for (map in restrictedAllMaps) { // TODO: Should submaps really all get this information?
-            if (exists existing = map.fixtures.get(location).narrow<Forest>()
+            if (exists existing = map.fixtures.get(location).narrow<Forest>() // TODO: syntax sugar
                     .filter(matchingValue(forest.kind, Forest.kind))
                     .filter(matchingValue(forest.rows, Forest.rows))
                     .find(matchingValue(forest.id, Forest.id))) {
                 Forest replacement = Forest(forest.kind, forest.rows, forest.id, acres);
                 restrictedMap.replace(location, existing, replacement);
                 retval = true;
+            }
+        }
+        return retval;
+    }
+
+    "Assign the given [[population details object|stats]] to the town
+     identified by the given [[ID number|townId]] and [[name]] at the given
+     [[location]] in each map. Returns [[true]] if such a town was in any of
+     the maps, [[false]] otherwise." // TODO: Should use a copy of the stats object, not it itself
+    shared Boolean assignTownStats(Point location, Integer townId, String name,
+            CommunityStats stats) {
+        variable Boolean retval = false;
+        for (map in restrictedAllMaps) { // TODO: Should submaps really all get this information?
+            if (exists town = map.fixtures.get(location) // TODO: syntax sugar
+                    .narrow<ModifiableTown>()
+                    .filter(matchingValue(townId, ModifiableTown.id))
+                    .find(matchingValue(name, ModifiableTown.name))) {
+                if (is AbstractTown town) {
+                    town.population = stats;
+                } else {
+                    town.population = stats;
+                }
+                retval = true;
+                map.modified = true;
             }
         }
         return retval;
