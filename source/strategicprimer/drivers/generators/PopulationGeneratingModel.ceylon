@@ -4,7 +4,11 @@ import strategicprimer.drivers.common {
 }
 
 import strategicprimer.model.common.map {
+    HasOwner,
+    IFixture,
+    IMapNG,
     IMutableMapNG,
+    Player,
     Point
 }
 
@@ -13,7 +17,9 @@ import lovelace.util.common {
 }
 
 import strategicprimer.model.common.map.fixtures.mobile {
-    Animal
+    Animal,
+    IUnit,
+    IWorker
 }
 
 import strategicprimer.model.common.map.fixtures.terrain {
@@ -29,12 +35,18 @@ import strategicprimer.model.common.map.fixtures.resources {
 import strategicprimer.model.common.map.fixtures.towns {
     AbstractTown,
     CommunityStats,
+    Fortress,
     Village
 }
 
-shared class PopulationGeneratingModel extends SimpleMultiMapModel {
+shared class PopulationGeneratingModel extends SimpleMultiMapModel { // TODO: Extract interface
     "Fortresses' [[population]] field cannot be set."
     static alias ModifiableTown=>AbstractTown|Village;
+
+    "The intersection of two sets; here so it can be passed as a method reference rather
+     than a lambda in [[playerChoices]]." // TODO: Move to lovelace.util? Or is there some equivalent method-reference logic with curry() or uncurry() or some such?
+    static Set<T> intersection<T>(Set<T> one, Set<T> two) given T satisfies Object =>
+            one.intersection(two);
 
     shared new (IMutableMapNG map) extends SimpleMultiMapModel(map) {}
 
@@ -155,5 +167,61 @@ shared class PopulationGeneratingModel extends SimpleMultiMapModel {
             }
         }
         return retval;
+    }
+
+    "If the fixture is a fortress, return it; otherwise return a Singleton of
+     it. This flattens a fortress's contents into a stream of tile fixtures."
+    {IFixture*} flattenFortresses(IFixture fixture) {
+        if (is Fortress fixture) {
+            return fixture;
+        } else {
+            return Singleton(fixture);
+        }
+    }
+
+    "Add a (copy of a) worker to a unit in all maps where that unit exists."
+    shared void addWorkerToUnit(IUnit unit, IWorker worker) {
+        String existingNote;
+        if (exists temp = worker.notes.get(unit.owner), !temp.empty) {
+            existingNote = temp + " ";
+        } else {
+            existingNote = "";
+        }
+        for (map in restrictedAllMaps) {
+            if (exists localUnit = map.locations.flatMap(map.fixtures.get)
+                    .flatMap(flattenFortresses).narrow<IUnit>()
+                    .filter(matchingValue(unit.owner, IUnit.owner))
+                    .filter(matchingValue(unit.kind, IUnit.kind))
+                    .filter(matchingValue(unit.name, IUnit.name))
+                    .find(matchingValue(unit.id, IUnit.id))) {
+                Integer turn = map.currentTurn;
+                value addend = worker.copy(false);
+                if (!turn.negative) {
+                    addend.notes[localUnit.owner] = existingNote + "Newcomer in turn #``turn``.";
+                }
+                localUnit.addMember(addend);
+                if (localUnit.getOrders(turn).empty) {
+                    localUnit.setOrders(turn, "TODO: assign");
+                }
+                map.modified = true;
+            }
+        }
+    }
+
+    "All the units in the main map belonging to the specified player."
+    shared {IUnit*} getUnits(Player player) =>
+            map.fixtures.items.flatMap(flattenFortresses)
+                .narrow<IUnit>().filter(matchingValue(player, HasOwner.owner));
+
+    "All the players shared by all the maps." // TODO: Move to IMultiMapModel?
+    shared {Player*} playerChoices => allMaps.map(IMapNG.players)
+        .map(set).fold(set(map.players))(intersection);
+
+    "Add the given [[unit]] at the given [[location]]."
+    shared void addUnitAtLocation(IUnit unit, Point location) { // TODO: If more than one map, return a proxy for the units; otherwise, return the unit
+        for (indivMap in restrictedAllMaps) {
+            indivMap.addFixture(location, unit); // FIXME: Check for existing matching unit there already
+            indivMap.modified = true;
+        }
     }
 }

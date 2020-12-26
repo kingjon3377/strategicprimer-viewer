@@ -61,6 +61,7 @@ import com.vasileff.ceylon.structures {
     Multimap
 }
 
+// TODO: Make sure all methods are still used; at least one driver now uses a different model interface.
 "A model for exploration apps."
 shared class ExplorationModel extends SimpleMultiMapModel satisfies IExplorationModel {
     """A fixture is "diggable" if it is a [[MineralFixture]] or a [[Mine]]."""
@@ -186,7 +187,7 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
     shared new copyConstructor(IDriverModel model)
             extends SimpleMultiMapModel.copyConstructor(model) {}
 
-    "All the players shared by all the maps."
+    "All the players shared by all the maps." // TODO: Move to IMultiMapModel?
     shared actual {Player*} playerChoices => allMaps.map(IMapNG.players)
         .map(set).fold(set(map.players))(intersection);
 

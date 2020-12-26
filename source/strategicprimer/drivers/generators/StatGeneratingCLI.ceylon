@@ -22,9 +22,7 @@ import strategicprimer.model.common.map {
     IFixture,
     Player,
     TileFixture,
-    Point,
-    HasOwner,
-    IMapNG
+    Point
 }
 
 import strategicprimer.model.common.map.fixtures.mobile {
@@ -52,7 +50,6 @@ import strategicprimer.drivers.common.cli {
 }
 
 import strategicprimer.drivers.exploration.common {
-    IExplorationModel,
     Pathfinder,
     pathfinder
 }
@@ -95,17 +92,6 @@ class StatGeneratingCLI satisfies CLIDriver {
         return null;
     }
 
-    "Find a fixture in a map by ID number."
-    static IFixture? find(IMapNG map, Integer id) {
-        for (location in map.locations) {
-//            if (exists result = findInIterable(id, *map.fixtures[location])) { // TODO: syntax sugar once compiler bug fixed
-            if (exists result = findInIterable(id, map.fixtures.get(location))) {
-                return result;
-            }
-        }
-        return null;
-    }
-
     "Get the index of the lowest value in an array."
     static Integer getMinIndex(Integer[] array) =>
             array.indexed.max(decreasingItem)?.key else 0;
@@ -121,9 +107,9 @@ class StatGeneratingCLI satisfies CLIDriver {
     static Float villageChance(Integer days) => 0.4.powerOfInteger(days);
 
     ICLIHelper cli;
-    shared actual IExplorationModel model;
+    shared actual PopulationGeneratingModel model;
     shared actual SPOptions options = emptyOptions;
-    shared new (ICLIHelper cli, IExplorationModel model) {
+    shared new (ICLIHelper cli, PopulationGeneratingModel model) {
         this.cli = cli;
         this.model = model;
     }
@@ -137,30 +123,6 @@ class StatGeneratingCLI satisfies CLIDriver {
                 job.level += 1;
             } else {
                 break;
-            }
-        }
-    }
-
-    "Add a worker to a unit in all maps."
-    void addWorkerToUnit(IFixture unit, IWorker worker) {
-        String existing;
-        if (is HasOwner unit, exists temp = worker.notes.get(unit.owner), !temp.empty) {
-            existing = temp + " ";
-        } else {
-            existing = "";
-        }
-        for (map in model.allMaps) {
-            if (is IUnit fixture = find(map, unit.id)) {
-                Integer turn = map.currentTurn;
-                value addend = worker.copy(false);
-                if (!turn.negative) {
-                    addend.notes[fixture.owner] = existing + "Newcomer in turn #``turn``.";
-                }
-                fixture.addMember(addend);
-                if (fixture.getOrders(turn).empty) {
-                    fixture.setOrders(turn, "TODO: assign");
-                }
-                model.setMapModified(map, true);
             }
         }
     }
@@ -320,7 +282,7 @@ class StatGeneratingCLI satisfies CLIDriver {
     }
 
     "Let the user create randomly-generated workers in a specific unit."
-    void createWorkersForUnit(IDRegistrar idf, IFixture unit) {
+    void createWorkersForUnit(IDRegistrar idf, IUnit unit) {
         Integer count = cli.inputNumber("How many workers to generate? ") else 0;
         for (i in 0:count) {
             String race = raceFactory.randomRace();
@@ -343,13 +305,13 @@ class StatGeneratingCLI satisfies CLIDriver {
                 cli.print(stats.string);
             }
             enterWorkerJobs(worker, levels);
-            addWorkerToUnit(unit, worker);
+            model.addWorkerToUnit(unit, worker);
         }
     }
 
     "Let the user create randomly-generated workers, with names read from file, in a
      unit."
-    void createWorkersFromFile(IDRegistrar idf, IFixture&HasOwner unit) {
+    void createWorkersFromFile(IDRegistrar idf, IUnit unit) {
         Integer count = cli.inputNumber("How many workers to generate? ") else 0;
         Queue<String> names;
         if (exists filename = cli.inputString("Filename to load names from: ")) {
@@ -431,7 +393,7 @@ class StatGeneratingCLI satisfies CLIDriver {
                 cli.println(", ".join(zipPairs(statLabelArray,
                     stats.array.map(WorkerStats.getModifierString)).map(" ".join)));
             }
-            addWorkerToUnit(unit, worker);
+            model.addWorkerToUnit(unit, worker);
         }
     }
 
