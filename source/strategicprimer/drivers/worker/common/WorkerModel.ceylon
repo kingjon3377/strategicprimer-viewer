@@ -363,6 +363,23 @@ shared class WorkerModel extends SimpleMultiMapModel satisfies IWorkerModel {
     }
 
     shared actual {UnitMember*} dismissed => dismissedMembers;
+
+    // TODO: Notification events should come from the map, instead of here (as
+    // we might add one to this method), so UI could just call this and the
+    // tree model could listen to the map---so the worker-mgmt UI would update
+    // if a unit were added through the map-viewer UI.
+    shared actual void addUnitMember(IUnit unit, UnitMember member) {
+        for (map in restrictedAllMaps) {
+            if (exists matching = getUnitsImpl(map.fixtures.items, unit.owner)
+                    .filter(matchingValue(unit.name, IUnit.name))
+                    .filter(matchingValue(unit.kind, IUnit.kind))
+                    .find(matchingValue(unit.id, IUnit.id))) {
+                matching.addMember(member.copy(false));
+                map.modified = true;
+                continue;
+            }
+        }
+    }
 }
 
 "Test of the worker model."

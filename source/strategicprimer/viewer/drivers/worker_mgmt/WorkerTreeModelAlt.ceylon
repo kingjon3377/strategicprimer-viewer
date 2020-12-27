@@ -272,13 +272,12 @@ shared class WorkerTreeModelAlt extends DefaultTreeModel satisfies IWorkerTreeMo
                     ?.find(matchingValue(unit.kind, KindNode.userObjectNarrowed)),
                 exists unitNode = kindNode.narrow<UnitNode>().find(matchingValue(unit,
                     UnitNode.userObjectNarrowed))) {
-            unit.addMember(member);
+            model.addUnitMember(unit, member);
             MutableTreeNode newNode = UnitMemberNode(member);
-            unitNode.add(newNode);
+            unitNode.add(newNode); // FIXME: Check this doesn't also add the unit member again
             fireTreeNodesInserted(this, ObjectArray<Object>.with([root, unitNode]),
                 IntArray.with(Singleton(unitNode.childCount - 1)),
                 ObjectArray<Object>.with(Singleton(newNode)));
-            markModified();
         } else {
             log.error(
                 "Asked to add a unit member but couldn't find corresponding unit node");

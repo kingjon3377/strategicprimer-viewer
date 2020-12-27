@@ -64,4 +64,11 @@ shared interface IWorkerModel satisfies IMultiMapModel {
 
     "The unit members that have been dismissed during this session."
     shared formal {UnitMember*} dismissed;
+
+    "Add a new member to a unit."
+    shared formal void addUnitMember(
+            "The unit that should own the member"
+            IUnit unit,
+            "The member to add to the unit"
+            UnitMember member);
 }
