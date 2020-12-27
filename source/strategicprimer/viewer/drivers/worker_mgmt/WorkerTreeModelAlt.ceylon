@@ -237,7 +237,6 @@ shared class WorkerTreeModelAlt extends DefaultTreeModel satisfies IWorkerTreeMo
                     IntArray.with(Singleton(temp.childCount - 1)),
                     ObjectArray<Object>.with(Singleton(kindNode)));
             }
-            markModified();
         }
     }
 

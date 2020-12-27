@@ -156,7 +156,6 @@ class WorkerTreeModel satisfies IWorkerTreeModel {
         for (listener in listeners) {
             listener.treeNodesInserted(event);
         }
-        markModified();
     }
 
     shared actual void addNewUnit(IUnit unit) => addUnit(unit);
