@@ -196,7 +196,7 @@ class WorkerTreeModel satisfies IWorkerTreeModel {
             indices = IntArray.with(Singleton(getIndexOfChild(item.kind, item)));
             children = ObjectArray<Object>.with(Singleton(item));
         } else if (is UnitMember item,
-            exists parent = model.getUnits(player).find(containingItem(item))) {
+                exists parent = model.getUnits(player).find(containingItem(item))) {
             path = TreePath(ObjectArray<Object>.with([root, parent.kind, parent]));
             indices = IntArray.with(Singleton(getIndexOfChild(parent, item)));
             children = ObjectArray<Object>.with(Singleton(item));
@@ -227,7 +227,7 @@ class WorkerTreeModel satisfies IWorkerTreeModel {
                 getIndexOfChild(root, item.kind)]);
             children = ObjectArray<Object>.with([priorKind, item.kind]);
         } else if (is UnitMember item,
-            exists parent = model.getUnits(player).find(containingItem(item))) {
+                exists parent = model.getUnits(player).find(containingItem(item))) {
             path = TreePath(ObjectArray<Object>.with([root, parent.kind, parent]));
             indices = IntArray.with(Singleton(getIndexOfChild(parent, item)));
             children = ObjectArray<Object>.with(Singleton(item));
