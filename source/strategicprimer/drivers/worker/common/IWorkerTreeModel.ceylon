@@ -52,9 +52,9 @@ shared interface IWorkerTreeModel
     "Update the tree to reflect the fact that something's name has changed."
     shared formal void renameItem(HasMutableName item, String newName);
 
-    "Update the tree to reflect a change in something's kind. If a unit, this means it
-     has moved in the tree, since units' kinds are their parent nodes now."
-    shared formal void moveItem(HasKind kind, String priorKind);
+    "Change something's kind and update the tree. If a unit, this means moving
+     it in the tree, since units' kinds are currently their parent nodes."
+    shared formal void changeKind(HasKind item, String newKind);
 
     "Dismiss a unit member from a unit and from the player's service."
     shared formal void dismissUnitMember(UnitMember member);

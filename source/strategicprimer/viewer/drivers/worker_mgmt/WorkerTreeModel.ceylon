@@ -218,15 +218,15 @@ class WorkerTreeModel satisfies IWorkerTreeModel {
         }
     }
 
-    shared actual void moveItem(HasKind item, String priorKind) {
+    shared actual void changeKind(HasKind item, String newKind) {
         TreePath path;
         IntArray indices;
         ObjectArray<Object> children;
         if (is IUnit item) {
             path = TreePath(ObjectArray.with(Singleton(root)));
-            indices = IntArray.with([getIndexOfChild(root, priorKind),
-                getIndexOfChild(root, item.kind)]);
-            children = ObjectArray<Object>.with([priorKind, item.kind]);
+            indices = IntArray.with([getIndexOfChild(root, item.kind),
+                getIndexOfChild(root, newKind)]);
+            children = ObjectArray<Object>.with([item.kind, newKind]);
         } else if (is UnitMember item,
                 exists parent = model.getUnits(player).find(containingItem(item))) {
             path = TreePath(ObjectArray<Object>.with([root, parent.kind, parent]));
@@ -236,11 +236,11 @@ class WorkerTreeModel satisfies IWorkerTreeModel {
             // Impossible at present, so ignore
             return;
         }
+        model.changeKind(item, newKind);
         TreeModelEvent event = TreeModelEvent(this, path, indices, children);
         for (listener in listeners) {
             listener.treeNodesChanged(event);
         }
-        markModified();
     }
 
     shared actual void dismissUnitMember(UnitMember member) {

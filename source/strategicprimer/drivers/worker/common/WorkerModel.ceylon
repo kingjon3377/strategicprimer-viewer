@@ -13,6 +13,8 @@ import ceylon.test {
 }
 
 import strategicprimer.model.common.map {
+    HasKind,
+    HasMutableKind,
     HasMutableName,
     IFixture,
     IMapNG,
@@ -386,12 +388,12 @@ shared class WorkerModel extends SimpleMultiMapModel satisfies IWorkerModel {
         variable Boolean any = false;
         if (is IUnit item) {
             for (map in restrictedAllMaps) {
-                if (exists matching = getUnitsImpl(map.fixtures.items, item.owner)
+                if (is HasMutableName matching = getUnitsImpl(map.fixtures.items, item.owner)
                         .filter(matchingValue(item.name, IUnit.name))
                         .filter(matchingValue(item.kind, IUnit.kind))
                         .find(matchingValue(item.id, IUnit.id))) {
                     any = true;
-                    item.name = newName;
+                    matching.name = newName;
                     map.modified = true;
                 }
             }
@@ -406,7 +408,7 @@ shared class WorkerModel extends SimpleMultiMapModel satisfies IWorkerModel {
                         .filter(matchingValue(item.name, HasMutableName.name))
                         .find(matchingValue(item.id, UnitMember.id))) { // FIXME: We should have a firmer identification than just name and ID
                     any = true;
-                    item.name = newName;
+                    matching.name = newName;
                     map.modified = true;
                 }
             }
@@ -416,6 +418,44 @@ shared class WorkerModel extends SimpleMultiMapModel satisfies IWorkerModel {
             return any;
         } else {
             log.warn("Unable to find item to rename");
+            return false;
+        }
+    }
+
+    shared actual Boolean changeKind(HasKind item, String newKind) {
+        variable Boolean any = false;
+        if (is IUnit item) {
+            for (map in restrictedAllMaps) {
+                if (is HasMutableKind matching = getUnitsImpl(map.fixtures.items, item.owner)
+                        .filter(matchingValue(item.name, IUnit.name))
+                        .filter(matchingValue(item.kind, IUnit.kind))
+                        .find(matchingValue(item.id, IUnit.id))) {
+                    any = true;
+                    matching.kind = newKind;
+                    map.modified = true;
+                }
+            }
+            if (!any) {
+                log.warn("Unable to find unit to change kind");
+            }
+            return any;
+        } else if (is UnitMember item) {
+            for (map in restrictedAllMaps) {
+                if (exists matching = getUnitsImpl(map.fixtures.items, currentPlayer)
+                        .flatMap(identity).narrow<HasMutableKind>()
+                        .filter(matchingValue(item.kind, HasMutableKind.kind))
+                        .find(matchingValue(item.id, UnitMember.id))) { // FIXME: We should have a firmer identification than just kind and ID
+                    any = true;
+                    matching.kind = newKind;
+                    map.modified = true;
+                }
+            }
+            if (!any) {
+                log.warn("Unable to find unit member to change kind");
+            }
+            return any;
+        } else {
+            log.warn("Unable to find item to change kind");
             return false;
         }
     }

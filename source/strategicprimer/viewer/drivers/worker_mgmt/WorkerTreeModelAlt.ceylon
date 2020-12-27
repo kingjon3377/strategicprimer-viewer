@@ -303,17 +303,18 @@ shared class WorkerTreeModelAlt extends DefaultTreeModel satisfies IWorkerTreeMo
        a new one if necessary, and removing the old one if empty."""
     todo("Do we actually create a new one if necessary?",
          "Do we actually remove the old one if now empty?")
-    shared actual void moveItem(HasKind item, String priorKind) {
+    shared actual void changeKind(HasKind item, String newKind) {
         assert (is PlayerNode temp = root);
         if (is UnitMember item) {
             if (is TreeNode node = getNode(temp, item)) {
                 value path = getPathToRoot(node);
                 Integer index = getIndexOfChild(path.array.last, node);
-                // fireNodesChanged() is *correct*: a change in a unit member's kind
-                // does *not* mean any node should move.
-                fireTreeNodesChanged(this, path, IntArray.with(Singleton(index)),
-                    ObjectArray.with(Singleton(node)));
-                markModified();
+                if (model.changeKind(item, newKind)) {
+                    // fireNodesChanged() is *correct*: a change in a unit member's kind
+                    // does *not* mean any node should move.
+                    fireTreeNodesChanged(this, path, IntArray.with(Singleton(index)),
+                        ObjectArray.with(Singleton(node)));
+                }
             }
         } else if (is IUnit item) {
             if (is TreeNode node = getNode(temp, item)) {
@@ -341,6 +342,7 @@ shared class WorkerTreeModelAlt extends DefaultTreeModel satisfies IWorkerTreeMo
                         IntArray.with(Singleton(indexOne)),
                         ObjectArray.with(Singleton(node)));
                 }
+                model.changeKind(item, newKind);
                 if (is MutableTreeNode nodeTwo) {
                     Integer indexTwo = nodeTwo.childCount;
                     nodeTwo.insert(node, indexTwo);
@@ -349,14 +351,13 @@ shared class WorkerTreeModelAlt extends DefaultTreeModel satisfies IWorkerTreeMo
                         IntArray.with(Singleton(indexTwo)),
                         ObjectArray.with(Singleton(node)));
                 } else {
-                    MutableTreeNode kindNode = KindNode(item.kind, item);
+                    MutableTreeNode kindNode = KindNode(newKind, item);
                     temp.add(kindNode);
                     fireTreeNodesInserted(this,
                         ObjectArray<TreeNode>.with(Singleton(temp)),
                         IntArray.with(Singleton(getIndexOfChild(temp, kindNode))),
                         ObjectArray<Object>.with(Singleton(kindNode)));
                 }
-                markModified();
             }
         }
     }

@@ -209,9 +209,7 @@ shared JTree&UnitMemberSelectionSource&UnitSelectionSource workerTree(
                         assert (is <IUnit&HasMutableKind>[] list =
                             trans.getTransferData(UnitTransferable.flavor));
                         for (unit in list) {
-                            String priorKind = unit.kind;
-                            unit.kind = tempTarget;
-                            wtModel.moveItem(unit, priorKind);
+                            wtModel.changeKind(unit, tempTarget);
                         }
                         return true;
                     } else {

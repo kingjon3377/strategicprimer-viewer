@@ -1,4 +1,5 @@
 import strategicprimer.model.common.map {
+    HasKind,
     HasMutableName,
     Player
 }
@@ -76,4 +77,8 @@ shared interface IWorkerModel satisfies IMultiMapModel {
     "Change something's name. Returns [[true]] if we were able to find it and
      changed its name, [[false]] on failure."
     shared formal Boolean renameItem(HasMutableName item, String newName);
+
+    "Change something's kind. Returns [[true]] if we were able to find it and
+     changed its kind, [[false]] on failure."
+    shared formal Boolean changeKind(HasKind item, String newKind);
 }

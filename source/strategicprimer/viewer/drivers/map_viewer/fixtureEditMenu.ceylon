@@ -88,10 +88,8 @@ shared class FixtureEditMenu(
             JOptionPane.plainMessage, null, null, Types.nativeString(originalKind))) {
             String resultString = result.string.trimmed;
             if (resultString != originalKind.trimmed) {
-                HasMutableKind temp = fixture;
-                temp.kind = resultString;
                 for (listener in changeListeners) {
-                    listener.moveItem(fixture, originalKind);
+                    listener.changeKind(fixture, resultString);
                 }
                 mutationListener();
             }
