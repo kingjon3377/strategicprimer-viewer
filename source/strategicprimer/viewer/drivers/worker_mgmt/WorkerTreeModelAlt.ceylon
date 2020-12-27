@@ -13,15 +13,11 @@ import javax.swing.tree {
     TreePath
 }
 import ceylon.collection {
-    LinkedList,
     ArrayList,
-    Queue,
     MutableList
 }
 import strategicprimer.model.common.map.fixtures.mobile {
-    ProxyFor,
-    IUnit,
-    ProxyUnit
+    IUnit
 }
 import strategicprimer.model.common.map {
     Player,
@@ -187,59 +183,8 @@ shared class WorkerTreeModelAlt extends DefaultTreeModel satisfies IWorkerTreeMo
         model = driverModel;
     }
 
-    "Move a unit-member from one unit to another in the presence of proxies,
-     i.e. when each unit and unit-member represents corresponding units and
-     unit members in multiple maps and the same operations must be applied to
-     all of them.
-
-     The proxy code is some of the most difficult and delicate code in the
-     entire suite, and I'm *pretty* sure the algorithm this method implements
-     is correct ..."
-    todo("Add a test of this method.")
-    void moveProxied(UnitMember&ProxyFor<out UnitMember> member, ProxyUnit old,
-            ProxyUnit newOwner, UnitNode newNode, MutableTreeNode node) {
-        assert (is PlayerNode playerNode = root);
-        if (old.proxied.size == newOwner.proxied.size,
-                old.proxied.size == member.proxied.size) {
-            Queue<UnitMember>&{UnitMember*} members = LinkedList<UnitMember>();
-            Queue<IUnit>&{IUnit*} newList = LinkedList<IUnit>();
-            for ([item, innerOld, innerNew] in
-                    zip(member.proxied, zipPairs(old.proxied, newOwner.proxied))) {
-                innerOld.removeMember(item);
-                members.offer(item);
-                newList.offer(innerNew);
-            }
-            newNode.insert(node, newNode.childCount);
-            fireTreeNodesInserted(this,
-                ObjectArray<Object>.with([playerNode,
-                    getNode(playerNode, newOwner.kind), newNode]),
-                IntArray.with(Singleton(newNode.getIndex(node))),
-                ObjectArray<Object>.with(Singleton(node)));
-            for ([unit, innerMember] in zipPairs(newList, members)) {
-                unit.addMember(innerMember);
-            }
-        } else {
-            old.removeMember(member);
-            newNode.add(node);
-            fireTreeNodesInserted(this,
-                ObjectArray<Object>.with([playerNode,
-                    getNode(playerNode, newOwner.kind), newNode]),
-                IntArray.with(Singleton(newNode.getIndex(node))),
-                ObjectArray<Object>.with(Singleton(node)));
-            {UnitMember*} iter = member.proxied;
-            if (iter.empty) {
-                newOwner.addMember(member);
-            } else {
-                for (item in iter) {
-                    for (unit in newOwner.proxied) {
-                        unit.addMember(item.copy(false));
-                    }
-                }
-            }
-        }
-    }
-
     "Set the map-modified flag for every map to [[true]]."
+    deprecated("Move logic that needed this into the driver model")
     void markModified() {
         for (map in model.allMaps) {
             if (!map.modified) {
@@ -248,10 +193,8 @@ shared class WorkerTreeModelAlt extends DefaultTreeModel satisfies IWorkerTreeMo
         }
     }
 
-    "Move a unit-member from one unit to another. If all three objects are
-     proxies, we use a special algorithm that unwraps the proxies, which was
-     extracted as [[moveProxied]]. At each step in the process, notify
-     listeners of changes to the tree."
+    "Move a unit-member from one unit to another, notifying listeners of
+     changes to the tree."
     shared actual void moveMember(UnitMember member, IUnit old, IUnit newOwner) {
         assert (is TreeNode playerNode = root);
         MutableTreeNode? oldNode = getNode(playerNode, old);
@@ -265,19 +208,13 @@ shared class WorkerTreeModelAlt extends DefaultTreeModel satisfies IWorkerTreeMo
             if (exists oldNode) {
                 oldNode.remove(node);
             }
-            if (is ProxyFor<out UnitMember> member, is ProxyUnit old,
-                    is ProxyUnit newOwner) {
-                moveProxied(member, old, newOwner, newNode, node);
-            } else {
-                old.removeMember(member);
-                newNode.add(node);
-                fireTreeNodesInserted(this,
-                    ObjectArray<Object>.with([playerNode, getNode(playerNode,
-                        newOwner.kind), newNode]),
-                    IntArray.with(Singleton(newNode.getIndex(node))),
-                    ObjectArray<Object>.with(Singleton(node)));
-            }
-            markModified();
+	    model.moveMember(member, old, newOwner);
+	    newNode.insert(node, newNode.childCount);
+            fireTreeNodesInserted(this,
+                ObjectArray<Object>.with([playerNode, getNode(playerNode,
+                    newOwner.kind), newNode]),
+                IntArray.with(Singleton(newNode.getIndex(node))),
+                ObjectArray<Object>.with(Singleton(node)));
         }
     }
 

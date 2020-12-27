@@ -1,9 +1,11 @@
 import ceylon.collection {
     MutableList,
     ArrayList,
+    LinkedList,
     ListMutator,
     MutableMap,
-    naturalOrderTreeMap
+    naturalOrderTreeMap,
+    Queue
 }
 import ceylon.test {
     test,
@@ -22,6 +24,11 @@ import strategicprimer.model.common.map {
     TileFixture,
     PlayerCollection
 }
+
+import strategicprimer.model.common.map.fixtures {
+    UnitMember
+}
+
 import strategicprimer.model.common.map.fixtures.mobile {
     ProxyFor,
     IUnit,
@@ -54,7 +61,8 @@ import lovelace.util.common {
     anythingEqual,
     matchingValue,
     narrowedStream,
-    comparingOn
+    comparingOn,
+    todo
 }
 
 "Logger."
@@ -269,6 +277,68 @@ shared class WorkerModel extends SimpleMultiMapModel satisfies IWorkerModel {
         }
         log.trace("Finished removing matching unit(s) from map(s)");
         return true;
+    }
+
+    "Move a unit-member from one unit to another in the presence of proxies,
+     i.e. when each unit and unit-member represents corresponding units and
+     unit members in multiple maps and the same operations must be applied to
+     all of them.
+
+     The proxy code is some of the most difficult and delicate code in the
+     entire suite, and I'm *pretty* sure the algorithm this method implements
+     is correct ...
+
+     Returns [[true]] if our preconditions were met and so we did the move, and
+     [[false]] when preconditions were not met and the caller should fall back
+     to the non-proxy algorithm."
+    todo("Add a test of this method.")
+    Boolean moveProxied(UnitMember&ProxyFor<out UnitMember> member, ProxyUnit old,
+            ProxyUnit newOwner) {
+        if (old.proxied.size == newOwner.proxied.size,
+                old.proxied.size == member.proxied.size) {
+            Queue<UnitMember>&{UnitMember*} members = LinkedList<UnitMember>();
+            Queue<IUnit>&{IUnit*} newList = LinkedList<IUnit>();
+            for ([item, innerOld, innerNew] in
+                    zip(member.proxied, zipPairs(old.proxied, newOwner.proxied))) {
+                innerOld.removeMember(item);
+                members.offer(item);
+                newList.offer(innerNew);
+            }
+            for ([unit, innerMember] in zipPairs(newList, members)) {
+                unit.addMember(innerMember);
+            }
+            for (map in restrictedAllMaps) {
+                map.modified = true;
+            }
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    "Move a unit-member from one unit to another. If all three objects are
+     proxies, we use a special algorithm that unwraps the proxies, which was
+     extracted as [[moveProxied]]."
+    shared actual void moveMember(UnitMember member, IUnit old, IUnit newOwner) {
+        if (is ProxyFor<out UnitMember> member, is ProxyUnit old,
+                is ProxyUnit newOwner, moveProxied(member, old, newOwner)) {
+            return;
+        }
+        for (map in restrictedAllMaps) {
+            if (exists matchingOld = getUnitsImpl(map.fixtures.items, old.owner)
+                        .filter(matchingValue(old.kind, IUnit.kind))
+                        .filter(matchingValue(old.name, IUnit.name))
+                        .find(matchingValue(old.id, IUnit.id)),
+                    exists matchingMember = matchingOld.find(member.equals), // TODO: equals() isn't ideal for finding a matching member ...
+                    exists matchingNew = getUnitsImpl(map.fixtures.items, newOwner.owner)
+                        .filter(matchingValue(newOwner.kind, IUnit.kind))
+                        .filter(matchingValue(newOwner.name, IUnit.name))
+                        .find(matchingValue(newOwner.id, IUnit.id))) {
+                matchingOld.removeMember(matchingMember);
+                matchingNew.addMember(matchingMember);
+                map.modified = true;
+            }
+        }
     }
 }
 

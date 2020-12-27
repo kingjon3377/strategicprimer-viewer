@@ -1,6 +1,11 @@
 import strategicprimer.model.common.map {
     Player
 }
+
+import strategicprimer.model.common.map.fixtures {
+    UnitMember
+}
+
 import strategicprimer.model.common.map.fixtures.mobile {
     IUnit
 }
@@ -50,4 +55,7 @@ shared interface IWorkerModel satisfies IMultiMapModel {
        Returns [[true]] if the preconditions were met and the unit was removed,
        and [[false]] otherwise."""
     shared formal Boolean removeUnit(IUnit unit);
+
+    "Move a unit-member from one unit to another."
+    shared formal void moveMember(UnitMember member, IUnit old, IUnit newOwner);
 }

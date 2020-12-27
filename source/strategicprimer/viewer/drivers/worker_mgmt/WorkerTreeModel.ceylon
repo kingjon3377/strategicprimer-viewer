@@ -116,6 +116,7 @@ class WorkerTreeModel satisfies IWorkerTreeModel {
     shared actual void removeTreeModelListener(TreeModelListener listener) =>
             listeners.remove(listener);
 
+    deprecated("Move logic that needed this into the driver model")
     void markModified() {
         for (map in model.allMaps) {
             if (!map.modified) {
@@ -134,7 +135,7 @@ class WorkerTreeModel satisfies IWorkerTreeModel {
             listener.treeNodesRemoved(removedEvent);
             listener.treeStructureChanged(removedChangeEvent);
         }
-        newOwner.addMember(member);
+        model.moveMember(member, old, newOwner);
         TreeModelEvent insertedEvent = TreeModelEvent(this,
             TreePath(ObjectArray<Object>.with([ root, newOwner.kind, newOwner ])),
             IntArray.with(Singleton(getIndexOfChild(newOwner, member))),
@@ -145,7 +146,6 @@ class WorkerTreeModel satisfies IWorkerTreeModel {
             listener.treeNodesInserted(insertedEvent);
             listener.treeStructureChanged(insertedChangeEvent);
         }
-        markModified();
     }
 
     shared actual void addUnit(IUnit unit) {
