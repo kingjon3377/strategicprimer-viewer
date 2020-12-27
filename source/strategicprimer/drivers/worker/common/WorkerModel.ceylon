@@ -13,6 +13,7 @@ import ceylon.test {
 }
 
 import strategicprimer.model.common.map {
+    HasMutableName,
     IFixture,
     IMapNG,
     IMutableMapNG,
@@ -378,6 +379,44 @@ shared class WorkerModel extends SimpleMultiMapModel satisfies IWorkerModel {
                 map.modified = true;
                 continue;
             }
+        }
+    }
+
+    shared actual Boolean renameItem(HasMutableName item, String newName) {
+        variable Boolean any = false;
+        if (is IUnit item) {
+            for (map in restrictedAllMaps) {
+                if (exists matching = getUnitsImpl(map.fixtures.items, item.owner)
+//                        .filter(matchingValue(item.name, IUnit.name)) // TODO: Uncomment once callers don't set the name themselves
+                        .filter(matchingValue(item.kind, IUnit.kind))
+                        .find(matchingValue(item.id, IUnit.id))) {
+                    any = true;
+                    item.name = newName;
+                    map.modified = true;
+                }
+            }
+            if (!any) {
+                log.warn("Unable to find unit to rename");
+            }
+            return any;
+        } else if (is UnitMember item) {
+            for (map in restrictedAllMaps) {
+                if (exists matching = getUnitsImpl(map.fixtures.items, currentPlayer)
+                        .flatMap(identity).narrow<HasMutableName>()
+//                        .filter(matchingValue(item.name, HasMutableName.name)) // TODO: Uncomment once callers don't set the name themselves
+                        .find(matchingValue(item.id, UnitMember.id))) { // FIXME: We should have a firmer identification than just name and ID
+                    any = true;
+                    item.name = newName;
+                    map.modified = true;
+                }
+            }
+            if (!any) {
+                log.warn("Unable to find unit member to rename");
+            }
+            return any;
+        } else {
+            log.warn("Unable to find item to rename");
+            return false;
         }
     }
 }

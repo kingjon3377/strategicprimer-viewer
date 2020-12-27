@@ -210,11 +210,12 @@ class WorkerTreeModel satisfies IWorkerTreeModel {
             // If we see log messages, revisit.
             return;
         }
-        TreeModelEvent event = TreeModelEvent(this, path, indices, children);
-        for (listener in listeners) {
-            listener.treeNodesChanged(event);
+        if (model.renameItem(item, item.name)) { // FIXME: Pass in new name here once it's given to us
+            TreeModelEvent event = TreeModelEvent(this, path, indices, children);
+            for (listener in listeners) {
+                listener.treeNodesChanged(event);
+            }
         }
-        markModified();
     }
 
     shared actual void moveItem(HasKind item, String priorKind) {

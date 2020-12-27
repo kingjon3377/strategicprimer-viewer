@@ -286,14 +286,14 @@ shared class WorkerTreeModelAlt extends DefaultTreeModel satisfies IWorkerTreeMo
 
     "Update the tree in response to something changing its name."
     shared actual void renameItem(HasMutableName item) {
-        if (is TreeNode temp = root, exists node = getNode(temp, item)) {
+        if (is TreeNode temp = root, exists node = getNode(temp, item),
+                model.renameItem(item, item.name)) { // FIXME: pass in new name here once it's given to us
             value path = getPathToRoot(node);
             Integer index = getIndexOfChild(path[path.size - 2], node);
             fireTreeNodesChanged(this,
                 ObjectArray<Object>.with(path.array.exceptLast),
                 IntArray.with(Singleton(index)),
                 ObjectArray.with(Singleton(node)));
-            markModified();
         }
     }
 

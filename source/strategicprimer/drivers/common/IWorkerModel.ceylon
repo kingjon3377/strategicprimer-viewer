@@ -1,4 +1,5 @@
 import strategicprimer.model.common.map {
+    HasMutableName,
     Player
 }
 
@@ -71,4 +72,8 @@ shared interface IWorkerModel satisfies IMultiMapModel {
             IUnit unit,
             "The member to add to the unit"
             UnitMember member);
+
+    "Change something's name. Returns [[true]] if we were able to find it and
+     changed its name, [[false]] on failure."
+    shared formal Boolean renameItem(HasMutableName item, String newName);
 }
