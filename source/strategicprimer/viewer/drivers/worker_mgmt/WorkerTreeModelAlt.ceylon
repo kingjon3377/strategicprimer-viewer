@@ -325,7 +325,7 @@ shared class WorkerTreeModelAlt extends DefaultTreeModel satisfies IWorkerTreeMo
                 end.removeFromParent();
                 ObjectArray<Object> pathSubset;
                 if (is MutableTreeNode lastParent = pathOne.array.exceptLast.last,
-                    lastParent.childCount == 0) {
+                        lastParent.childCount == 0) {
                     assert (exists lastParentParent =
                             pathOne.array.exceptLast.exceptLast.last);
                     Integer parentIndex = lastParentParent.getIndex(lastParent);
