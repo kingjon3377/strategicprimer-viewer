@@ -387,7 +387,7 @@ shared class WorkerModel extends SimpleMultiMapModel satisfies IWorkerModel {
         if (is IUnit item) {
             for (map in restrictedAllMaps) {
                 if (exists matching = getUnitsImpl(map.fixtures.items, item.owner)
-//                        .filter(matchingValue(item.name, IUnit.name)) // TODO: Uncomment once callers don't set the name themselves
+                        .filter(matchingValue(item.name, IUnit.name))
                         .filter(matchingValue(item.kind, IUnit.kind))
                         .find(matchingValue(item.id, IUnit.id))) {
                     any = true;
@@ -403,7 +403,7 @@ shared class WorkerModel extends SimpleMultiMapModel satisfies IWorkerModel {
             for (map in restrictedAllMaps) {
                 if (exists matching = getUnitsImpl(map.fixtures.items, currentPlayer)
                         .flatMap(identity).narrow<HasMutableName>()
-//                        .filter(matchingValue(item.name, HasMutableName.name)) // TODO: Uncomment once callers don't set the name themselves
+                        .filter(matchingValue(item.name, HasMutableName.name))
                         .find(matchingValue(item.id, UnitMember.id))) { // FIXME: We should have a firmer identification than just name and ID
                     any = true;
                     item.name = newName;

@@ -69,10 +69,8 @@ shared class FixtureEditMenu(
             JOptionPane.plainMessage, null, null, Types.nativeString(originalName))) {
             String resultString = result.string.trimmed;
             if (resultString != originalName.trimmed) {
-                HasMutableName temp = fixture;
-                temp.name = resultString;
                 for (listener in changeListeners) {
-                    listener.renameItem(fixture);
+                    listener.renameItem(fixture, resultString);
                 }
                 mutationListener();
             }

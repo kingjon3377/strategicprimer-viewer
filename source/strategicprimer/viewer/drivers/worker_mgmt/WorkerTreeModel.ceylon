@@ -187,7 +187,7 @@ class WorkerTreeModel satisfies IWorkerTreeModel {
         log.trace("Notified listeners of inserted nodes");
     }
 
-    shared actual void renameItem(HasMutableName item) {
+    shared actual void renameItem(HasMutableName item, String newName) {
         TreePath path;
         IntArray indices;
         ObjectArray<Object> children;
@@ -210,7 +210,7 @@ class WorkerTreeModel satisfies IWorkerTreeModel {
             // If we see log messages, revisit.
             return;
         }
-        if (model.renameItem(item, item.name)) { // FIXME: Pass in new name here once it's given to us
+        if (model.renameItem(item, newName)) {
             TreeModelEvent event = TreeModelEvent(this, path, indices, children);
             for (listener in listeners) {
                 listener.treeNodesChanged(event);

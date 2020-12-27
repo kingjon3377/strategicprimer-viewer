@@ -50,7 +50,7 @@ shared interface IWorkerTreeModel
             UnitMember member);
 
     "Update the tree to reflect the fact that something's name has changed."
-    shared formal void renameItem(HasMutableName item);
+    shared formal void renameItem(HasMutableName item, String newName);
 
     "Update the tree to reflect a change in something's kind. If a unit, this means it
      has moved in the tree, since units' kinds are their parent nodes now."
