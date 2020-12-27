@@ -45,7 +45,6 @@ class WorkerTreeModel satisfies IWorkerTreeModel {
         this.model = model;
     }
 
-    MutableList<UnitMember> dismissedMembers = ArrayList<UnitMember>();
     MutableList<TreeModelListener> listeners = ArrayList<TreeModelListener>();
     shared actual Player root => player;
 
@@ -248,8 +247,7 @@ class WorkerTreeModel satisfies IWorkerTreeModel {
     shared actual void dismissUnitMember(UnitMember member) {
         for (unit in model.getUnits(root)) {
             if (exists index->item = unit.locate(member.equals)) {
-                dismissedMembers.add(member);
-                unit.removeMember(member);
+                model.dismissUnitMember(member);
                 TreeModelEvent event = TreeModelEvent(this,
                     TreePath(ObjectArray<Object>.with([root, unit])),
                     IntArray.with(Singleton(index)), ObjectArray.with(Singleton(member)));
@@ -258,10 +256,7 @@ class WorkerTreeModel satisfies IWorkerTreeModel {
                 }
             }
         }
-        markModified();
     }
-
-    shared actual {UnitMember*} dismissed => dismissedMembers;
 
     shared actual void addSibling(UnitMember base, UnitMember sibling) {
         for (unit in model.getUnits(root)) {

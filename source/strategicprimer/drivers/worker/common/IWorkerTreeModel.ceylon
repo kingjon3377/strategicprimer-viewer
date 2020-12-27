@@ -59,9 +59,6 @@ shared interface IWorkerTreeModel
     "Dismiss a unit member from a unit and from the player's service."
     shared formal void dismissUnitMember(UnitMember member);
 
-    "The unit members that have been dismissed during this session."
-    shared formal {UnitMember*} dismissed;
-
     "Add a unit member to the unit that contains the given member. If the base is not in
      the tree, the model is likely to simply ignore the call, but the behavior is
      undefined."

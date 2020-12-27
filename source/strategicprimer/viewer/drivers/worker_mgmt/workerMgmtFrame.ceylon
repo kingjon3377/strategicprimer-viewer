@@ -177,7 +177,7 @@ class WorkerMgmtFrame extends SPFrame satisfies PlayerChangeListener {
 
     StrategyExporter strategyExporter = StrategyExporter(model, options);
     void writeStrategy(PathWrapper file) => strategyExporter
-        .writeStrategy(parsePath(file.string).resource, treeModel.dismissed);
+        .writeStrategy(parsePath(file.string).resource, model.dismissed);
     void strategyWritingListener() => SPFileChooser.save(null,
         filteredFileChooser(false, ".", null)).call(writeStrategy);
     BorderedPanel lowerLeft = BorderedPanel.verticalPanel(

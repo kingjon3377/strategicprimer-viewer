@@ -58,4 +58,10 @@ shared interface IWorkerModel satisfies IMultiMapModel {
 
     "Move a unit-member from one unit to another."
     shared formal void moveMember(UnitMember member, IUnit old, IUnit newOwner);
+
+    "Dismiss a unit member from a unit and from the player's service."
+    shared formal void dismissUnitMember(UnitMember member);
+
+    "The unit members that have been dismissed during this session."
+    shared formal {UnitMember*} dismissed;
 }

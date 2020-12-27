@@ -106,6 +106,9 @@ shared class WorkerModel extends SimpleMultiMapModel satisfies IWorkerModel {
 
     "The current player, subject to change by user action."
     variable Player? currentPlayerImpl = null;
+
+    MutableList<UnitMember> dismissedMembers = ArrayList<UnitMember>();
+
     shared new (IMutableMapNG map) extends SimpleMultiMapModel(map) {}
     shared new copyConstructor(IDriverModel model)
             extends SimpleMultiMapModel.copyConstructor(model) {}
@@ -340,6 +343,26 @@ shared class WorkerModel extends SimpleMultiMapModel satisfies IWorkerModel {
             }
         }
     }
+
+    shared actual void dismissUnitMember(UnitMember member) {
+        variable Boolean any = false;
+        // TODO: Handle proxies specially?
+        for (map in restrictedAllMaps) {
+            for (unit in getUnitsImpl(map.fixtures.items, currentPlayer)) {
+                if (exists matching = unit.find(member.equals)) { // FIXME: equals() will really not do here ...
+                    any = true;
+                    unit.removeMember(matching);
+                    map.modified = true;
+                    break;
+                }
+            }
+        }
+        if (any) {
+            dismissedMembers.add(member);
+        }
+    }
+
+    shared actual {UnitMember*} dismissed => dismissedMembers;
 }
 
 "Test of the worker model."

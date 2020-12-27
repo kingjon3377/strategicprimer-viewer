@@ -12,10 +12,7 @@ import javax.swing.tree {
     TreeNode,
     TreePath
 }
-import ceylon.collection {
-    ArrayList,
-    MutableList
-}
+
 import strategicprimer.model.common.map.fixtures.mobile {
     IUnit
 }
@@ -176,7 +173,6 @@ shared class WorkerTreeModelAlt extends DefaultTreeModel satisfies IWorkerTreeMo
     }
 
     IWorkerModel model;
-    MutableList<UnitMember> dismissedMembers = ArrayList<UnitMember>();
     shared new (IWorkerModel driverModel)
             extends DefaultTreeModel(PlayerNode(driverModel.currentPlayer, driverModel),
                 true) {
@@ -367,8 +363,7 @@ shared class WorkerTreeModelAlt extends DefaultTreeModel satisfies IWorkerTreeMo
         }
     }
 
-    "Remove a unit-member from its parent unit, and add it to [[our list of
-     dismissed members|dismissed]]."
+    "Remove a unit-member from its parent unit."
     shared actual void dismissUnitMember(UnitMember member) {
         if (is TreeNode temp = root, exists node = getNode(temp, member)) {
             assert (is UnitNode parentNode = node.parent);
@@ -376,17 +371,12 @@ shared class WorkerTreeModelAlt extends DefaultTreeModel satisfies IWorkerTreeMo
             // itself
             value path = getPathToRoot(node);
             Integer index = getIndexOfChild(path.array.last, node);
+	    model.dismissUnitMember(member);
             parentNode.remove(node);
             fireTreeNodesRemoved(this, path, IntArray.with(Singleton(index)),
                 ObjectArray<Object>.with(Singleton(node)));
-            dismissedMembers.add(member);
-            markModified();
         }
     }
-
-    "The list of unit members that have been dismissed from their units and are
-     thus no longer anywhere in the map."
-    shared actual {UnitMember*} dismissed => dismissedMembers;
 
     "Add [[a unit-member|sibling]] to the unit containing [[the given
      unit-member]]. This is primarily used when the user asks to split an
