@@ -49,6 +49,7 @@ shared class FixtureEditMenu(
         "A source for unique-in-the-map ID numbers."
         IDRegistrar idf,
         "A method to call to mark the maps as modified whenever any change is made."
+        deprecated("All logic requiring this should be moved to the driver model")
         Anything() mutationListener,
         "Listeners to notify when something is renamed or changes kind."
         IWorkerTreeModel* changeListeners) extends JPopupMenu() { // FIXME: Name and varargs type don't fit usage ...
@@ -72,7 +73,6 @@ shared class FixtureEditMenu(
                 for (listener in changeListeners) {
                     listener.renameItem(fixture, resultString);
                 }
-                mutationListener();
             }
         }
     }
@@ -91,7 +91,6 @@ shared class FixtureEditMenu(
                 for (listener in changeListeners) {
                     listener.changeKind(fixture, resultString);
                 }
-                mutationListener();
             }
         }
     }
@@ -105,7 +104,7 @@ shared class FixtureEditMenu(
                 "Change Fixture Owner", JOptionPane.plainMessage, null,
                 ObjectArray.with(players), fixture.owner)) {
             HasMutableOwner temp = fixture;
-            temp.owner = player;
+            temp.owner = player; // FIXME: Handle through model
             mutationListener(); // TODO: Notify callers beyond this, adding methods to IWorkerTreeModel if necessary? If a unit's owner changed, it shouldn't be in the tree anymore, after all ...
         }
     }
@@ -123,7 +122,6 @@ shared class FixtureEditMenu(
             for (listener in changeListeners) {
                 listener.dismissUnitMember(fixture);
             }
-            mutationListener();
         }
     }
 
@@ -148,7 +146,6 @@ shared class FixtureEditMenu(
                 listener.dismissUnitMember(fixture);
                 listener.addSibling(split, remainder);
             }
-            mutationListener();
         }
     }
 
@@ -164,7 +161,7 @@ shared class FixtureEditMenu(
 
     void sortHandler() {
         if (is IUnit fixture) {
-            fixture.sortMembers();
+            fixture.sortMembers(); // FIXME: This should be a driver-model method
             for (listener in changeListeners) {
                 listener.refreshChildren(fixture);
             }
@@ -191,7 +188,6 @@ shared class FixtureEditMenu(
             for (listener in changeListeners) {
                 listener.removeUnit(fixture);
             }
-            mutationListener();
         }
     }
 
