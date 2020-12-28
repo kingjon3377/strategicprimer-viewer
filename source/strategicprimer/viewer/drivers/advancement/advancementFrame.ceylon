@@ -64,6 +64,7 @@ SPFrame&PlayerChangeListener advancementFrame(IWorkerModel model,
     IWorkerTreeModel treeModel = WorkerTreeModelAlt(model);
     IDRegistrar idf = createIDFactory(map);
 
+    deprecated("Operations requiring explicit handling of modification flag should be moved into the model")
     void markModified() {
         for (subMap in model.allMaps) {
             if (!subMap.modified) {

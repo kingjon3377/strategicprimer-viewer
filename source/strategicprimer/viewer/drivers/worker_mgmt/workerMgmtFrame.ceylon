@@ -95,6 +95,7 @@ class WorkerMgmtFrame extends SPFrame satisfies PlayerChangeListener {
     NewUnitDialog newUnitFrame = NewUnitDialog(model.currentPlayer, idf);
     IWorkerTreeModel treeModel = WorkerTreeModelAlt(model);
 
+    deprecated("Operations requiring explicit handling of modification flag should be moved into the model")
     void markModified() {
         for (subMap in model.allMaps) {
             if (!subMap.modified) {

@@ -339,6 +339,7 @@ class ExplorationPanel(SpinnerNumberModel mpModel, ComboBoxModel<Speed> speedMod
             SwingUtilities.invokeLater(actionPerformedImpl);
     }
 
+    deprecated("Operations requiring explicit handling of modification flag should be moved into the model")
     void markModified() {
         for (map in driverModel.allMaps) {
             driverModel.setMapModified(map, true);
