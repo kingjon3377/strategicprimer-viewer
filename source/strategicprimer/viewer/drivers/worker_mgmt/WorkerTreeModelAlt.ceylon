@@ -470,7 +470,6 @@ shared class WorkerTreeModelAlt extends DefaultTreeModel satisfies IWorkerTreeMo
                     ObjectArray<Object>.with([playerNode, kindNode]), IntArray.with(Singleton(index)),
                     ObjectArray<Object>.with(Singleton(node)));
                 log.trace("Finished updating the tree");
-                markModified();
             } else {
                 log.warn("Failed to remove from the map for some reason");
                 // FIXME: Some user feedback---beep, visual beep, etc.
