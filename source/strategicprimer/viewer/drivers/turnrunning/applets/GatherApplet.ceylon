@@ -51,7 +51,7 @@ class GatherApplet(ITurnRunningModel model, ICLIHelper cli, IDRegistrar idf)
     shared actual String? run() {
         StringBuilder buffer = StringBuilder();
         if (exists center = confirmPoint("Location to search around: "),
-            exists startingTime = cli.inputNumber("Minutes to spend gathering: ")) {
+                exists startingTime = cli.inputNumber("Minutes to spend gathering: ")) {
             variable Integer time = startingTime;
             variable {<Point->Grove|Shrub|Meadow|HuntingModel.NothingFound>*} encounters =
                 huntingModel.gather(center);
@@ -69,7 +69,7 @@ class GatherApplet(ITurnRunningModel model, ICLIHelper cli, IDRegistrar idf)
                             cli.println(
                                 "Enter details of harvest (any empty string aborts):");
                             while (exists resource =
-                                resourceAddingHelper.enterResource()) {
+                                    resourceAddingHelper.enterResource()) {
                                 if (resource.kind == "food") {
                                     resource.created = model.map.currentTurn;
                                 }
@@ -100,7 +100,7 @@ class GatherApplet(ITurnRunningModel model, ICLIHelper cli, IDRegistrar idf)
                     model.copyToSubMaps(loc, find, true);
                 }
                 if (exists addendum = cli.inputMultilineString(
-                    "Add to results about that:")) {
+                        "Add to results about that:")) {
                     buffer.append(addendum);
                 } else {
                     return null;

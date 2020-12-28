@@ -47,7 +47,7 @@ shared class AnimalReportGenerator(Comparison([Point, IFixture], [Point, IFixtur
                     } else if (item.born == currentTurn) {
                         ostream(" newborn");
                     } else if (exists maturityAge = maturityModel.maturityAges[item.kind],
-                        maturityAge <= (currentTurn - item.born)) {
+                            maturityAge <= (currentTurn - item.born)) {
                         // do nothing
                     } else {
                         ostream(" ``currentTurn - item.born``-turn-old");

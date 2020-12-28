@@ -34,7 +34,7 @@ shared class AdvancementCLIHelper(ICLIHelper cli) satisfies LevelGainSource {
         levelListeners.remove(listener);
 
     void fireLevelEvent(String workerName, String jobName, String skillName,
-        Integer gains, Integer currentLevel) {
+            Integer gains, Integer currentLevel) {
         for (listener in levelListeners) {
             listener.level(workerName, jobName, skillName, gains, currentLevel);
         }
@@ -55,7 +55,7 @@ shared class AdvancementCLIHelper(ICLIHelper cli) satisfies LevelGainSource {
                     skills.clear();
                     skills.addAll(job);
                     if (exists temp = skills.find(matchingValue(skillName,
-                        ISkill.name))) {
+                            ISkill.name))) {
                         skill = temp;
                     } else {
                         cli.println("Select the new item at the next prompt.");
@@ -96,7 +96,7 @@ shared class AdvancementCLIHelper(ICLIHelper cli) satisfies LevelGainSource {
                     skill.level);
             }
             if (exists continuation =
-                cli.inputBoolean("Select another Skill in this Job?"), continuation) {
+                    cli.inputBoolean("Select another Skill in this Job?"), continuation) {
                 // continue;
             } else {
                 break;
@@ -133,8 +133,8 @@ shared class AdvancementCLIHelper(ICLIHelper cli) satisfies LevelGainSource {
             }
             advanceJob(worker.name, job, allowExpertMentoring);
             if (exists continuation =
-                    cli.inputBoolean("Select another Job in this worker?"),
-                continuation) {
+                        cli.inputBoolean("Select another Job in this worker?"),
+                    continuation) {
                 // continue;
             } else {
                 break;
@@ -301,8 +301,8 @@ shared class AdvancementCLIHelper(ICLIHelper cli) satisfies LevelGainSource {
                     }
                     advanceWorkersInJob(job.name, *workers);
                     if (exists continuation =
-                            cli.inputBoolean("Select another Job in these workers?"),
-                        continuation) {
+                                cli.inputBoolean("Select another Job in these workers?"),
+                            continuation) {
                         // continue;
                     } else {
                         break;

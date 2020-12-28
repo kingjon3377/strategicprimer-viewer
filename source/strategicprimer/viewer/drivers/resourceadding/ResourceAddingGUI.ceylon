@@ -125,7 +125,7 @@ class ResourceAddingGUI satisfies MultiMapGUIDriver {
     "A window to let the user enter resources etc. Note that this is not a dialog to enter
      one resource and close."
     class ResourceAddingFrame(Anything(ActionEvent) menuHandler)
-        extends SPFrame("Resource Entry", outer, null, true) satisfies PlayerChangeListener {
+            extends SPFrame("Resource Entry", outer, null, true) satisfies PlayerChangeListener {
         IDRegistrar idf = createIDFactory(model.allMaps);
         variable Player currentPlayer = PlayerImpl(-1, "");
         JPanel&BoxPanel mainPanel = boxPanel(BoxAxis.pageAxis);

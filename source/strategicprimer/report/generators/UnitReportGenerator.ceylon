@@ -115,7 +115,7 @@ shared class UnitReportGenerator(Comparison([Point, IFixture], [Point, IFixture]
                        <ul>
                        """);
             void produceInner<Member>(String heading, List<Member> collection,
-                Anything(Member) generator) given Member satisfies UnitMember {
+                    Anything(Member) generator) given Member satisfies UnitMember {
                 if (!collection.empty) {
                     ostream("<li>``heading``:
                              <ul>

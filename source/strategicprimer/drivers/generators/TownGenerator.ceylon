@@ -255,7 +255,7 @@ class TownGenerator(ICLIHelper cli) {
             } else if (isNumeric(input), exists temp = parseInt(input)) {
                 field = temp;
             } else if ("nearest" == input.lowercased,
-                exists nearest = nearestFields.first) {
+                    exists nearest = nearestFields.first) {
                 nearestFields = nearestFields.rest;
                 cli.println("Nearest harvestable fixture is as follows:");
                 cli.println(nearest.shortDescription);
@@ -268,7 +268,7 @@ class TownGenerator(ICLIHelper cli) {
                 cli.println("That field is already worked by another town");
             } else if (exists fieldLoc = findLocById(map, field)) {
                 if (!bothOrNeitherOcean(map.baseTerrain[location],
-                    map.baseTerrain[fieldLoc])) {
+                        map.baseTerrain[fieldLoc])) {
                     if (exists terrain = map.baseTerrain[location],
                             terrain == TileType.ocean) {
                         cli.println(

@@ -50,7 +50,7 @@ shared class ResourceAddingGUIFactory() satisfies GUIDriverFactory {
     }
 
     shared actual GUIDriver createDriver(ICLIHelper cli, SPOptions options,
-        IDriverModel model) {
+            IDriverModel model) {
         if (is ResourceManagementDriverModel model) {
             return ResourceAddingGUI(cli, options, model);
         } else {

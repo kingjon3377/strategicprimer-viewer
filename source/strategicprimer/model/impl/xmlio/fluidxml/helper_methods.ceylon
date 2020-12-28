@@ -97,12 +97,12 @@ abstract class FluidBase {
 
     "Get a parameter from an XML tag by name."
     static Attribute? getAttributeByName(
-        "The current XML tag"
-        StartElement element,
-        "The parameter we want"
-        String param) {
+            "The current XML tag"
+            StartElement element,
+            "The parameter we want"
+            String param) {
         if (exists retval = element.getAttributeByName(
-            QName(spNamespace, param))) {
+                QName(spNamespace, param))) {
             return retval;
         } else if (exists retval = element.getAttributeByName(QName(param))) {
             // This case is split out because the JDK method isn't annotated @Nullable,

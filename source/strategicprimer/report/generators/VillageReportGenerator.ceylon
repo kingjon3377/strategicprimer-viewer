@@ -25,7 +25,7 @@ shared class VillageReportGenerator(
         extends AbstractReportGenerator<Village>(comp, dimensions, hq) {
     "Produce the report on all known villages."
     shared actual void produce(DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
-        IMapNG map, Anything(String) ostream) {
+            IMapNG map, Anything(String) ostream) {
         value villageComparator = comparing(byIncreasing(Village.name),
             byIncreasing(Village.race), byIncreasing(Village.id));
         MutableHeadedMap<Village, Point> own = HeadedMapImpl<Village, Point>(

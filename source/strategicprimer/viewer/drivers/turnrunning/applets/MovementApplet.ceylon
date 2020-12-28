@@ -53,7 +53,7 @@ class MovementApplet(ITurnRunningModel model, ICLIHelper cli, IDRegistrar idf)
         }
         MutableList<ResourcePile> resources = ArrayList { elements = fortress.narrow<ResourcePile>(); };
         while (exists chosen = chooseFromList(resources, "Resources in ``fortress.name``:", "No resources in fortress.",
-            "Resource to take (from):", false)) {
+                "Resource to take (from):", false)) {
             switch (cli.inputBooleanInSeries("Take it all?"))
             case (true) {
                 removeFoodStock(chosen, unit.owner);
@@ -62,7 +62,7 @@ class MovementApplet(ITurnRunningModel model, ICLIHelper cli, IDRegistrar idf)
             }
             case (false) {
                 if (exists amount = cli.inputDecimal("Amount to take (in ``chosen.quantity.units``):"),
-                    amount.positive) {
+                        amount.positive) {
                     reduceFoodBy(chosen, amount, unit.owner);
                     unit.addMember(ResourcePile(idf.createID(), chosen.kind, chosen.contents,
                         Quantity(amount, chosen.quantity.units)));

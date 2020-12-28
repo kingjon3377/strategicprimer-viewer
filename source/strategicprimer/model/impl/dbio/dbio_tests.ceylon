@@ -221,9 +221,9 @@ object dbio_tests {
 
     test
     shared void testCitySerialization(randomlyGenerated(1) Integer id,
-        enumeratedParameter(`class TownStatus`) TownStatus status,
-        enumeratedParameter(`class TownSize`) TownSize size,
-        randomlyGenerated(1) Integer dc) {
+            enumeratedParameter(`class TownStatus`) TownStatus status,
+            enumeratedParameter(`class TownSize`) TownSize size,
+            randomlyGenerated(1) Integer dc) {
         // TODO: We want more of the state to be random
         value town = City(status, size, dc, "name", id, PlayerImpl(0, ""));
         CommunityStats stats = CommunityStats(5);
@@ -245,9 +245,9 @@ object dbio_tests {
 
     test
     shared void testTownSerialization(randomlyGenerated(1) Integer id,
-        enumeratedParameter(`class TownStatus`) TownStatus status,
-            enumeratedParameter(`class TownSize`) TownSize size,
-        randomlyGenerated(1) Integer dc) {
+            enumeratedParameter(`class TownStatus`) TownStatus status,
+                enumeratedParameter(`class TownSize`) TownSize size,
+            randomlyGenerated(1) Integer dc) {
         // TODO: We want more of the state to be random
         value town = Town(status, size, dc, "name", id, PlayerImpl(0, ""));
         CommunityStats stats = CommunityStats(5);

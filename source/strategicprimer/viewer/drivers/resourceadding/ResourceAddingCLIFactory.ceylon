@@ -31,7 +31,7 @@ shared class ResourceAddingCLIFactory() satisfies ModelDriverFactory {
     };
 
     shared actual ModelDriver createDriver(ICLIHelper cli, SPOptions options,
-        IDriverModel model) {
+            IDriverModel model) {
         if (is ResourceManagementDriverModel model) {
             return ResourceAddingCLI(cli, options, model);
         } else {

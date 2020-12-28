@@ -34,8 +34,8 @@ object fixtureFilterTransferHandler extends TransferHandler() {
      can be coerced to be a move operation."
     shared actual Boolean canImport(TransferSupport support) {
         if (support.drop, support.isDataFlavorSupported(flavor),
-            TransferHandler.move.and(support.sourceDropActions) ==
-            TransferHandler.move) {
+                TransferHandler.move.and(support.sourceDropActions) ==
+                    TransferHandler.move) {
             support.dropAction = TransferHandler.move;
             return true;
         } else {

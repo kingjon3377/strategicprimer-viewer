@@ -39,10 +39,10 @@ shared class ResourceInputStream(String filename,
                     sourceClass.getResourceAsStream(filename)) {
                 return temp;
             } else if (exists temp = sourceClass.getResourceAsStream(
-                "/``sourceModule.name.replace(".", "/")``/``filename``")) {
+                    "/``sourceModule.name.replace(".", "/")``/``filename``")) {
                 return temp;
             } else if (exists temp = sourceClass.getResourceAsStream(
-                "``sourceModule.name.replace(".", "/")``/``filename``")) {
+                    "``sourceModule.name.replace(".", "/")``/``filename``")) {
                 return temp;
 //            } else if (exists uri = sourceModule.resourceByPath(filename)?.uri,
 //                    exists temp = Types.classForType<ResourceInputStream>()

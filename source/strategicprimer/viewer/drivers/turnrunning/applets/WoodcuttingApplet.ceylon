@@ -120,7 +120,7 @@ class WoodcuttingApplet(ITurnRunningModel model, ICLIHelper cli, IDRegistrar idf
             addResourceToMaps(ResourcePile(idf.createID(), "wood", "production-ready wood", Quantity(footage, "cubic feet")), unit.owner);
         }
         if (treeCount > 7, exists forest = chooseFromList(model.map.fixtures.get(loc).narrow<Forest>().sequence(),
-            "Forests on tile:", "No forests on tile", "Forest being cleared:", false), forest.acres.positive) {
+                "Forests on tile:", "No forests on tile", "Forest being cleared:", false), forest.acres.positive) {
             variable Decimal acres = smallest(decimalize(treeCount * 10 / 72) / decimalize(100), decimalize(forest.acres));
             switch (cli.inputBoolean("Is ``acres`` (of ``forest.acres``) cleared correct?"))
             case (true) {

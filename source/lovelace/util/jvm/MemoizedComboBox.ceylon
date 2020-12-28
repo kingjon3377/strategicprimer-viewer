@@ -17,7 +17,7 @@ import ceylon.collection {
 
 "Extends [[ImprovedComboBox]] to keep a running collection of values."
 shared class MemoizedComboBox(Anything(String) logger = log.error)
-    extends ImprovedComboBox<String>() {
+        extends ImprovedComboBox<String>() {
     "The values we've had in the past."
     MutableSet<String> values = HashSet<String>();
     "Clear the combo box, but if its value was one we haven't had previously, add it

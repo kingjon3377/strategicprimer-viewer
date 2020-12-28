@@ -175,7 +175,7 @@ abstract class HuntGeneralApplet(String verb, ITurnRunningModel model, ICLIHelpe
                     return null;
                 }
                 if (exists addendum = cli.inputMultilineString(
-                    "Add to results about that:")) {
+                        "Add to results about that:")) {
                     buffer.append(addendum);
                 } else {
                     return null;

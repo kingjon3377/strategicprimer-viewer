@@ -50,7 +50,7 @@ shared class AnimalTabularReportGenerator(Point? hq, MapDimensions dimensions,
                 } else if (item.born == currentTurn) {
                     age = "newborn";
                 } else if (exists maturityAge = maturityModel.maturityAges[item.kind],
-                    maturityAge <= (currentTurn - item.born)) {
+                        maturityAge <= (currentTurn - item.born)) {
                     age = "adult";
                 } else {
                     age = "``currentTurn - item.born`` turns";

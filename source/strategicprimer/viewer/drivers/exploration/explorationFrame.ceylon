@@ -77,7 +77,7 @@ class ExplorationFrame(ExplorationGUI driver, MenuBroker menuHandler)
     void handlePlayerChanged() {
         layoutObj.goFirst();
         if (!playerList.selectionEmpty,
-            exists newPlayer = playerList.selectedValue) {
+                exists newPlayer = playerList.selectedValue) {
             unitListModel.playerChanged(null, newPlayer);
         }
     }

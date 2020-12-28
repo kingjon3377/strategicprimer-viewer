@@ -128,12 +128,12 @@ shared JTree&UnitMemberSelectionSource&UnitSelectionSource workerTree(
 
             for (path in paths) {
                 if (exists last = path.lastPathComponent,
-                    exists parentObj = path.parentPath?.lastPathComponent) {
+                        exists parentObj = path.parentPath?.lastPathComponent) {
                     if (is IUnit parent = wtModel.getModelObject(parentObj),
-                        is UnitMember selection = wtModel.getModelObject(last)) {
+                            is UnitMember selection = wtModel.getModelObject(last)) {
                         membersToTransfer.add([selection, parent]);
                     } else if (is IUnit&HasMutableKind selection =
-                        wtModel.getModelObject(last)) {
+                            wtModel.getModelObject(last)) {
                         unitsToTransfer.add(selection);
                     } else {
                         log.info("Selection included non-UnitMember: ``
@@ -159,14 +159,14 @@ shared JTree&UnitMemberSelectionSource&UnitSelectionSource workerTree(
         "Whether a drag here is possible."
         shared actual Boolean canImport(TransferSupport support) {
             if (support.isDataFlavorSupported(UnitMemberTransferable.flavor),
-                is JTree.DropLocation dropLocation = support.dropLocation,
-                exists last = dropLocation.path?.lastPathComponent,
-                is IUnit|UnitMember lastObj = wtModel.getModelObject(last)) {
+                    is JTree.DropLocation dropLocation = support.dropLocation,
+                    exists last = dropLocation.path?.lastPathComponent,
+                    is IUnit|UnitMember lastObj = wtModel.getModelObject(last)) {
                 return true;
             } else if (support.isDataFlavorSupported(UnitTransferable.flavor),
-                is JTree.DropLocation dropLocation = support.dropLocation,
-                exists last = dropLocation.path?.lastPathComponent,
-                is String lastObj = wtModel.getModelObject(last)) {
+                    is JTree.DropLocation dropLocation = support.dropLocation,
+                    exists last = dropLocation.path?.lastPathComponent,
+                    is String lastObj = wtModel.getModelObject(last)) {
                 return true;
             } else {
                 return false;

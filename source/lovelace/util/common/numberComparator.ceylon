@@ -67,7 +67,7 @@ shared object numberComparator satisfies Comparator<Number<out Anything>> {
      function; if not, convert both to [[Float]] and return the result of comparing
      those."
     native("js") shared actual Comparison compare(Number<out Anything> one,
-        Number<out Anything> two) {
+            Number<out Anything> two) {
         if (is Integer one, is Integer two) {
             return one <=> two;
         } else if (is Float one, is Float two) {

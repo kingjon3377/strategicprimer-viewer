@@ -146,7 +146,7 @@ shared class FixtureFilterTableModel extends AbstractTableModel
                 FixtureMatcher.trivialMatcher(`Hill`),
                 FixtureMatcher.complements<Ground>(Ground.exposed, "Ground (exposed)",
                     "Ground")
-            ]) {
+                ]) {
             if (is {FixtureMatcher*} arg) {
                 matchers.addAll(arg);
             } else {

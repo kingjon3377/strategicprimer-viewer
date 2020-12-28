@@ -93,9 +93,9 @@ final class SkillAdvancementPanel extends BorderedPanel
     }
     void cancelListener(ActionEvent event) => hours.text = "";
     shared new delegate(JTextField hours, JButton okButton, JButton cancelButton)
-        extends BorderedPanel(null, FlowPanel(JLabel("Add "), hours,
-        JLabel(" hours to skill?")),
-        secondPanelFactory(okButton, cancelButton)) {
+            extends BorderedPanel(null, FlowPanel(JLabel("Add "), hours,
+                    JLabel(" hours to skill?")),
+                secondPanelFactory(okButton, cancelButton)) {
         okButton.addActionListener(okListener);
         cancelButton.addActionListener(cancelListener);
         hours.setActionCommand("OK");

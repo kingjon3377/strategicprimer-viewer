@@ -103,7 +103,7 @@ class WorkerTreeModel satisfies IWorkerTreeModel {
         } else if (is String parent, is IUnit child) {
             return model.getUnits(root, parent).locate(child.equals)?.key else -1;
         } else if (is IUnit parent,
-            exists index->ignored = parent.locate(child.equals)) {
+                exists index->ignored = parent.locate(child.equals)) {
             return index;
         } else {
             return -1;

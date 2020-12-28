@@ -65,8 +65,8 @@ shared class FixtureEditMenu(
         assert (is HasMutableName fixture);
         String originalName = fixture.name;
         if (exists result = JOptionPane.showInputDialog(parent,
-            "Fixture's new name:", "Rename Fixture",
-            JOptionPane.plainMessage, null, null, Types.nativeString(originalName))) {
+                "Fixture's new name:", "Rename Fixture",
+                JOptionPane.plainMessage, null, null, Types.nativeString(originalName))) {
             String resultString = result.string.trimmed;
             if (resultString != originalName.trimmed) {
                 for (listener in changeListeners) {
@@ -84,8 +84,8 @@ shared class FixtureEditMenu(
         assert (is HasMutableKind fixture);
         String originalKind = fixture.kind;
         if (exists result = JOptionPane.showInputDialog(parent,
-            "Fixture's new kind:", "Change Fixture Kind",
-            JOptionPane.plainMessage, null, null, Types.nativeString(originalKind))) {
+                "Fixture's new kind:", "Change Fixture Kind",
+                JOptionPane.plainMessage, null, null, Types.nativeString(originalKind))) {
             String resultString = result.string.trimmed;
             if (resultString != originalKind.trimmed) {
                 for (listener in changeListeners) {

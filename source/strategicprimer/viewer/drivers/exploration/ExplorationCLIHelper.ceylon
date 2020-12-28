@@ -300,7 +300,7 @@ shared class ExplorationCLIHelper(IExplorationModel model, ICLIHelper cli)
 
 class ExplorationAutomationConfig(shared Player player) {
     class Condition<Type>(configExplanation, stopExplanation, conditions)
-        given Type satisfies TileFixture {
+            given Type satisfies TileFixture {
         "A description to use in the question asking wheter to stop for this condition."
         shared String configExplanation;
         "A description, or a factory for a description, to use when stopping because of

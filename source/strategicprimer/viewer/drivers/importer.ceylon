@@ -184,7 +184,7 @@ class ImporterDriver satisfies UtilityDriver {
                         finalRetval.addFixture(point, Forest(forest, false,
                             idf.createID()));
                     } else if (exists forest =
-                        cli.inputString("Kind of tree for a boreal forest: ")) {
+                            cli.inputString("Kind of tree for a boreal forest: ")) {
                         finalRetval.addFixture(point,
                             Forest(forest, false, idf.createID()));
                     } else {
