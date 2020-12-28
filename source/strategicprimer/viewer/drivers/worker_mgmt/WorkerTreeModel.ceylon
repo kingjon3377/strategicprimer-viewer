@@ -261,7 +261,7 @@ class WorkerTreeModel satisfies IWorkerTreeModel {
         for (unit in model.getUnits(root)) {
             if (exists index->item = unit.locate(base.equals)) {
                 Integer existingMembersCount = unit.size;
-                unit.addMember(sibling);
+                model.addSibling(base, sibling);
                 Integer countAfterAdding = unit.size;
                 if (countAfterAdding > existingMembersCount) {
                     TreeModelEvent event = TreeModelEvent(this,
@@ -282,7 +282,6 @@ class WorkerTreeModel satisfies IWorkerTreeModel {
                 }
             }
         }
-        markModified();
     }
 
     """Get the path to the "next" unit whose orders for the given turn either contain

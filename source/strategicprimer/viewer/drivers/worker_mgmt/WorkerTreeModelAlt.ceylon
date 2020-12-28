@@ -381,15 +381,15 @@ shared class WorkerTreeModelAlt extends DefaultTreeModel satisfies IWorkerTreeMo
      unit-member]]. This is primarily used when the user asks to split an
      animal population."
     shared actual void addSibling(UnitMember base, UnitMember sibling) {
-        if (is TreeNode temp = root, exists node = getNode(temp, base)) {
-            assert (is UnitNode parentNode = node.parent);
-            UnitMemberNode childNode = UnitMemberNode(sibling);
-            parentNode.add(childNode);
-            Integer index = getIndexOfChild(parentNode, childNode);
+        UnitMemberNode childNode = UnitMemberNode(sibling);
+        // FIXME: Log and/or give UI feedback on failure of some of these conditions
+        if (is TreeNode temp = root, exists node = getNode(temp, base), is UnitNode parentNode = node.parent,
+                model.addSibling(base, sibling),
+                exists index->siblingNode = parentNode.userObjectNarrowed.locate(sibling.equals)) {
+            parentNode.insert(childNode, index);
             fireTreeNodesInserted(this, getPathToRoot(parentNode),
                 IntArray.with(Singleton(index)),
                 ObjectArray<Object>.with(Singleton(childNode)));
-            markModified();
         }
     }
 

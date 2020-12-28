@@ -459,6 +459,21 @@ shared class WorkerModel extends SimpleMultiMapModel satisfies IWorkerModel {
             return false;
         }
     }
+
+    shared actual Boolean addSibling(UnitMember existing, UnitMember sibling) {
+        variable Boolean any = false;
+        for (map in restrictedAllMaps) {
+            for (unit in getUnitsImpl(map.fixtures.items, currentPlayer)) {
+                if (existing in unit) { // TODO: look beyond equals() for matching-in-existing?
+                    unit.addMember(sibling.copy(false));
+                    any = true;
+                    map.modified = true;
+                    break;
+                }
+            }
+        }
+        return any;
+    }
 }
 
 "Test of the worker model."

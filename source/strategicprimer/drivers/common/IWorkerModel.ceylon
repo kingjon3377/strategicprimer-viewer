@@ -81,4 +81,13 @@ shared interface IWorkerModel satisfies IMultiMapModel {
     "Change something's kind. Returns [[true]] if we were able to find it and
      changed its kind, [[false]] on failure."
     shared formal Boolean changeKind(HasKind item, String newKind);
+
+    "Add a unit member to the unit that contains the given member in each map.
+     Returns [[true]] if any of the maps had a unit containing the existing
+     sibling, to which the new member was added, [[false]] otherwise."
+    shared formal Boolean addSibling(
+        "The member that is already in the tree."
+        UnitMember base,
+        "The member to add as its sibling."
+        UnitMember sibling);
 }
