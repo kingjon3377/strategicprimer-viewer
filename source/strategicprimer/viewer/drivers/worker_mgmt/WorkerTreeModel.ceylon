@@ -115,14 +115,6 @@ class WorkerTreeModel satisfies IWorkerTreeModel {
     shared actual void removeTreeModelListener(TreeModelListener listener) =>
             listeners.remove(listener);
 
-    deprecated("Move logic that needed this into the driver model")
-    void markModified() {
-        for (map in model.allMaps) {
-            if (!map.modified) {
-                model.setMapModified(map, true);
-            }
-        }
-    }
     shared actual void moveMember(UnitMember member, IUnit old, IUnit newOwner) {
         Integer oldIndex = getIndexOfChild(old, member);
         TreeModelEvent removedEvent = TreeModelEvent(this,

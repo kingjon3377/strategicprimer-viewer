@@ -179,16 +179,6 @@ shared class WorkerTreeModelAlt extends DefaultTreeModel satisfies IWorkerTreeMo
         model = driverModel;
     }
 
-    "Set the map-modified flag for every map to [[true]]."
-    deprecated("Move logic that needed this into the driver model")
-    void markModified() {
-        for (map in model.allMaps) {
-            if (!map.modified) {
-                model.setMapModified(map, true);
-            }
-        }
-    }
-
     "Move a unit-member from one unit to another, notifying listeners of
      changes to the tree."
     shared actual void moveMember(UnitMember member, IUnit old, IUnit newOwner) {
