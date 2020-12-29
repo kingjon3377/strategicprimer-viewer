@@ -14,7 +14,9 @@ import strategicprimer.model.common.map.fixtures.mobile {
 }
 import strategicprimer.model.common.map {
     HasMutableName,
-    HasKind
+    HasMutableOwner,
+    HasKind,
+    Player
 }
 
 "An interface for worker tree-models, adding methods to the [[TreeModel]] interface."
@@ -79,4 +81,7 @@ shared interface IWorkerTreeModel
 
     "Refresh the children of the given tree-member, usually because it has been sorted."
     shared formal void refreshChildren(IUnit parent);
+
+    "Change the owner of the given item."
+    shared formal void changeOwner(HasMutableOwner item, Player newOwner);
 }

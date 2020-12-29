@@ -19,6 +19,7 @@ import strategicprimer.model.common.map.fixtures.mobile {
 import strategicprimer.model.common.map {
     Player,
     HasMutableName,
+    HasMutableOwner,
     HasKind
 }
 import strategicprimer.drivers.worker.common {
@@ -466,6 +467,26 @@ shared class WorkerTreeModelAlt extends DefaultTreeModel satisfies IWorkerTreeMo
             }
         } else {
             log.error("Tree root isn't a tree node, or tree doesn't contain that unit");
+        }
+    }
+
+    shared actual void changeOwner(HasMutableOwner item, Player newOwner) {
+        if (is IUnit item, item.owner == model.currentPlayer, is TreeNode playerNode = root,
+                is KindNode kindNode = getNode(playerNode, item.kind),
+                exists node = getNode(kindNode, item)) {
+            Integer index = getIndexOfChild(kindNode, node);
+            if (model.changeOwner(item, newOwner)) {
+                kindNode.remove(node);
+                fireTreeNodesRemoved(this,
+                    ObjectArray<Object>.with([playerNode, kindNode]), IntArray.with(Singleton(index)),
+                    ObjectArray<Object>.with(Singleton(node)));
+            } else {
+                log.warn("Failed to change unit's owner");
+                // FIXME: Some user feedback---beep, visual beep, etc.
+            }
+        } else { // FIXME: Also check the case where newOwner is the current player
+            // TODO: Log when preconditions other than 'is a unit' and 'the current player is involved' aren't met
+            model.changeOwner(item, newOwner);
         }
     }
 }

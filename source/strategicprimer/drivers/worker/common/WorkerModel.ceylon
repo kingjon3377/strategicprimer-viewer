@@ -16,6 +16,7 @@ import strategicprimer.model.common.map {
     HasKind,
     HasMutableKind,
     HasMutableName,
+    HasMutableOwner,
     IFixture,
     IMapNG,
     IMutableMapNG,
@@ -470,6 +471,33 @@ shared class WorkerModel extends SimpleMultiMapModel satisfies IWorkerModel {
                     map.modified = true;
                     break;
                 }
+            }
+        }
+        return any;
+    }
+
+    {IFixture*} flattenIncluding(IFixture fixture) {
+        if (is {IFixture*} fixture) {
+            return fixture.follow(fixture);
+        } else {
+            return Singleton(fixture);
+        }
+    }
+
+    "Change the owner of the given item in all maps. Returns [[true]] if this
+     succeeded in any map, [[false]] otherwise."
+    shared actual Boolean changeOwner(HasMutableOwner item, Player newOwner) {
+        variable Boolean any = false;
+        for (map in restrictedAllMaps) {
+            if (exists matching = map.fixtures.items.flatMap(flattenIncluding)
+                    .flatMap(flattenIncluding).narrow<HasMutableOwner>()
+                    .find(item.equals)) { // TODO: equals() is not the best way to find it ...
+                if (!newOwner in map.players) {
+                    map.addPlayer(newOwner);
+                }
+                matching.owner = map.players.getPlayer(newOwner.playerId);
+                map.modified = true;
+                any = true;
             }
         }
         return any;

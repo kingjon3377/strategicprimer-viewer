@@ -40,6 +40,7 @@ import lovelace.util.common {
     todo
 }
 
+// FIXME: This probably no longer works outside the worker-mgmt app
 "A pop-up menu to let the user edit a fixture."
 shared class FixtureEditMenu(
         "The fixture to be edited. Its type determines what menu items are enabled."
@@ -103,9 +104,9 @@ shared class FixtureEditMenu(
         if (is Player player = JOptionPane.showInputDialog(parent, "Fixture's new owner:",
                 "Change Fixture Owner", JOptionPane.plainMessage, null,
                 ObjectArray.with(players), fixture.owner)) {
-            HasMutableOwner temp = fixture;
-            temp.owner = player; // FIXME: Handle through model
-            mutationListener(); // TODO: Notify callers beyond this, adding methods to IWorkerTreeModel if necessary? If a unit's owner changed, it shouldn't be in the tree anymore, after all ...
+            for (listener in changeListeners) {
+                listener.changeOwner(fixture, player);
+            }
         }
     }
 

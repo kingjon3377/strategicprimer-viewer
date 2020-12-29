@@ -1,6 +1,7 @@
 import strategicprimer.model.common.map {
     HasKind,
     HasMutableName,
+    HasMutableOwner,
     Player
 }
 
@@ -90,4 +91,8 @@ shared interface IWorkerModel satisfies IMultiMapModel {
         UnitMember base,
         "The member to add as its sibling."
         UnitMember sibling);
+
+    "Change the owner of the given item in all maps. Returns [[true]] if this
+     succeeded in any map, [[false]] otherwise."
+    shared formal Boolean changeOwner(HasMutableOwner item, Player newOwner);
 }

@@ -24,6 +24,7 @@ import strategicprimer.model.common.map.fixtures.mobile {
 import strategicprimer.model.common.map {
     Player,
     HasMutableName,
+    HasMutableOwner,
     HasKind
 }
 import strategicprimer.drivers.worker.common {
@@ -344,6 +345,7 @@ class WorkerTreeModel satisfies IWorkerTreeModel {
 
     shared actual void removeUnit(IUnit unit) {
         log.trace("In WorkerTreeModel.removeUnit()");
+        // TODO: What if it's the only unit with this kind?
         TreeModelEvent event = TreeModelEvent(this, TreePath(ObjectArray<Object>.with([root, unit.kind])),
             IntArray.with(Singleton(getIndexOfChild(unit.kind, unit))), ObjectArray<Object>.with(Singleton(unit)));
         if (model.removeUnit(unit)) {
@@ -354,6 +356,21 @@ class WorkerTreeModel satisfies IWorkerTreeModel {
             log.trace("Finished notifying tree listeners");
         } else {
             log.warn("Failed to remove from the map for some reason");
+        }
+    }
+
+    shared actual void changeOwner(HasMutableOwner item, Player newOwner) {
+        if (is IUnit item, item.owner == root) {
+        // TODO: What if it's the only unit with this kind?
+            TreeModelEvent event = TreeModelEvent(this, TreePath(ObjectArray<Object>.with([root, item.kind])),
+                IntArray.with(Singleton(getIndexOfChild(item.kind, item))), ObjectArray<Object>.with(Singleton(item)));
+            if (model.changeOwner(item, newOwner)) {
+                for (listener in listeners) {
+                    listener.treeNodesRemoved(event);
+                }
+            }
+        } else { // FIXME: Also check the case where newOwner is the current player
+            model.changeOwner(item, newOwner);
         }
     }
 }
