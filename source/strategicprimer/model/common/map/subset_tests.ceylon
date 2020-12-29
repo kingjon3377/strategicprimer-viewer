@@ -77,6 +77,7 @@ object subsetTests {
     "A test of [[PlayerCollection]]'s subset feature"
     test
     shared void testPlayerCollectionSubset() {
+	// TODO: Make a way to initialize one declaratively
         IMutablePlayerCollection firstCollection = PlayerCollection();
         firstCollection.add(PlayerImpl(1, "one"));
         IMutablePlayerCollection secondCollection = PlayerCollection();

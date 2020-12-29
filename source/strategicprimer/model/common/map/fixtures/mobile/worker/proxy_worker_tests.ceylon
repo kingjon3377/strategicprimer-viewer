@@ -15,6 +15,7 @@ import strategicprimer.model.common.map {
 import strategicprimer.model.common.map.fixtures.mobile {
     IUnit,
     Unit,
+    IMutableWorker,
     IWorker,
     Worker,
     ProxyUnit
@@ -24,8 +25,7 @@ import strategicprimer.model.common.map.fixtures.mobile.worker {
     Job,
     Skill,
     ISkill,
-    ProxyWorker,
-    IJob
+    ProxyWorker
 }
 
 import lovelace.util.common {
@@ -60,14 +60,14 @@ object proxyWorkerTests {
      unit, works properly."
     test
     shared void testProxyWorker() {
-        IWorker firstWorker = Worker("one", "human", 1, Job("jobOne", 1,
+        IMutableWorker firstWorker = Worker("one", "human", 1, Job("jobOne", 1,
             Skill("skillOne", 0, 5), Skill("skillTwo", 2, 6)));
-        IWorker secondWorker = Worker("two", "elf", 2, Job("jobTwo", 1,
+        IMutableWorker secondWorker = Worker("two", "elf", 2, Job("jobTwo", 1,
             Skill("skillThree", 1, 19), Skill("skillFour", 0, 99)));
-        IWorker thirdWorker = Worker("three", "dwarf", 5);
-        IWorker proxy = ProxyWorker.fromWorkers(firstWorker, secondWorker, thirdWorker);
+        IMutableWorker thirdWorker = Worker("three", "dwarf", 5);
+        IMutableWorker proxy = ProxyWorker.fromWorkers(firstWorker, secondWorker, thirdWorker);
         for (job in proxy) {
-            for (skill in job) {
+            for (skill in job.narrow<IMutableSkill>()) {
                 skill.addHours(10, 100);
             }
         }
@@ -122,7 +122,7 @@ object proxyWorkerTests {
             assert (is IWorker member);
             //noinspection unchecked
             for (job in member) {
-                for (skill in job) {
+                for (skill in job.narrow<IMutableSkill>()) {
                     skill.addHours(10, 100);
                 }
             }
@@ -166,7 +166,7 @@ object proxyWorkerTests {
         proxy.addProxied(unitTwo);
         ProxyWorker meta = ProxyWorker.fromUnit(proxy);
         for (job in meta) {
-            for (skill in job) {
+            for (skill in job.narrow<IMutableSkill>()) {
                 skill.addHours(10, 100);
             }
         }
@@ -201,8 +201,8 @@ object proxyWorkerTests {
         Boolean nonemptySkill(ISkill skill) => !skill.empty;
         ISkill skillOne = Skill("skillOne", 0, 10);
         ISkill skillTwo = Skill("skillOne", 0, 10);
-        IJob jobOne = Job("jobOne", 0, skillOne, Skill("skillTwo", 2, 5));
-        IJob jobTwo = Job("jobOne", 0, skillTwo, Skill("skillThree", 1, 8),
+        IMutableJob jobOne = Job("jobOne", 0, skillOne, Skill("skillTwo", 2, 5));
+        IMutableJob jobTwo = Job("jobOne", 0, skillTwo, Skill("skillThree", 1, 8),
             Skill("skillFour", 5, 0));
         assertTrue(jobTwo.map(ISkill.name).any("skillFour".equals),
             "Extra skill is present at first");
@@ -215,7 +215,7 @@ object proxyWorkerTests {
             "Common skill is present at first");
         assertTrue(jobTwo.map(ISkill.name).any("skillOne".equals),
             "Common skill is present at first");
-        IJob proxyJob = ProxyJob("jobOne", true, workerOne, workerTwo);
+        IMutableJob proxyJob = ProxyJob("jobOne", true, workerOne, workerTwo);
         proxyJob.removeSkill(Skill("skillOne", 0, 10));
         assertFalse(jobOne.map(ISkill.name).any("skillOne".equals),
             "Common skill isn't there after being removed");

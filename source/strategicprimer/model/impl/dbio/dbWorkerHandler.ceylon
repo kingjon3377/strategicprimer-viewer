@@ -26,6 +26,7 @@ import strategicprimer.model.common.map.fixtures.mobile {
 }
 import strategicprimer.model.common.map.fixtures.mobile.worker {
     WorkerStats,
+    IMutableJob,
     Job,
     Skill
 }
@@ -154,8 +155,9 @@ object dbWorkerHandler extends AbstractDatabaseWriter<IWorker, IUnit>()
             Map<String, Object> row, Warning warner) {
         assert (is Integer id = row["worker"], exists worker = workers[id],
             is String job = row["associated_job"], is String skill = row["skill"],
-            is Integer level = row["level"], is Integer hours = row["hours"]);
-        worker.getJob(job).addSkill(Skill(skill, level, hours));
+            is Integer level = row["level"], is Integer hours = row["hours"],
+            is IMutableJob jobObj = worker.getJob(job));
+        jobObj.addSkill(Skill(skill, level, hours));
     }
 
     void readWorkerNotes(IMapNG map, Map<Integer, Worker> workers)(Map<String, Object> row, Warning warner) {

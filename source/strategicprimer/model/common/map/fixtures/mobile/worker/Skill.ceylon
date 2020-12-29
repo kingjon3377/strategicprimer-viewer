@@ -1,5 +1,5 @@
 "A skill a worker has experience or training in."
-shared class Skill(name, skillLevel, time) satisfies ISkill {
+shared class Skill(name, skillLevel, time) satisfies IMutableSkill {
     "The name of the skill."
     shared actual String name;
 

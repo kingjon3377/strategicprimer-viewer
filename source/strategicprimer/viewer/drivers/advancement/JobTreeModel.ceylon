@@ -9,6 +9,7 @@ import javax.swing.event {
     TreeModelEvent
 }
 import strategicprimer.model.common.map.fixtures.mobile {
+    IMutableWorker,
     IWorker
 }
 import strategicprimer.viewer.drivers.worker_mgmt {
@@ -33,6 +34,7 @@ import ceylon.collection {
 }
 import strategicprimer.model.common.map.fixtures.mobile.worker {
     IJob,
+    IMutableJob,
     Job,
     Skill,
     ISkill
@@ -104,7 +106,7 @@ class JobTreeModel() satisfies TreeModel&UnitMemberListener&AddRemoveListener {
     todo("Show error dialog, or at least visual-beep, instead of just logging warnings?")
     shared actual void add(String category, String addendum) {
         if ("job" == category) {
-            if (exists currentRoot = localRoot) {
+            if (is IMutableWorker currentRoot = localRoot) {
                 IJob job = Job(addendum, 0);
                 Integer childCount = getChildCount(currentRoot);
                 currentRoot.addJob(job);
@@ -116,7 +118,7 @@ class JobTreeModel() satisfies TreeModel&UnitMemberListener&AddRemoveListener {
             }
         } else if ("skill" == category) {
             if (exists selectionPath = selectionModel.selectionPath,
-                    is IJob job = selectionPath.lastPathComponent) {
+                    is IMutableJob job = selectionPath.lastPathComponent) {
                 ISkill skill = Skill(addendum, 0, 0);
                 Integer childCount = getChildCount(job);
                 job.addSkill(skill);

@@ -31,6 +31,7 @@ import lovelace.util.common {
 }
 
 import strategicprimer.model.common.map.fixtures.mobile.worker {
+    IMutableSkill,
     ISkill,
     IJob
 }
@@ -56,7 +57,7 @@ final class SkillAdvancementPanel extends BorderedPanel
         }
     }
     late JTextField hours;
-    variable ISkill? skill = null;
+    variable IMutableSkill? skill = null;
     variable IJob? job = null;
     variable IWorker? worker = null;
     late MutableList<LevelGainListener> listeners = ArrayList<LevelGainListener>(); // TODO: Report bug in runtime causing NPE on access without `late`
@@ -107,7 +108,12 @@ final class SkillAdvancementPanel extends BorderedPanel
     }
     shared new () extends delegate(JTextField(3), JButton("OK"), JButton("Cancel")) {}
     shared actual void selectSkill(ISkill? selectedSkill) {
-        skill = selectedSkill;
+        if (is IMutableSkill? selectedSkill) {
+            skill = selectedSkill;
+        } else {
+            log.warn("Tried to select immutable skill");
+            skill = null;
+        }
         if (selectedSkill exists) {
             hours.requestFocusInWindow();
         }

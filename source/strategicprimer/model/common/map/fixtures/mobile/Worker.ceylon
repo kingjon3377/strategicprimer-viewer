@@ -30,7 +30,7 @@ import ceylon.collection {
  [[TileFixture|strategicprimer.model.common.map::TileFixture]]: these should only be part
  of a unit, not as a top-level tag."
 todo("Convert some other [[MobileFixture]]s similarly?")
-shared class Worker satisfies IWorker&HasPortrait {
+shared class Worker satisfies IMutableWorker&HasPortrait {
     "Whether neither of two collections of Jobs contains a nonempty Job the other does
      not."
     static Boolean jobSetsEqual({IJob*} first, {IJob*} second) =>

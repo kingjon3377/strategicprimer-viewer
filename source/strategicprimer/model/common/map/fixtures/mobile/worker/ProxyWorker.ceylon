@@ -6,6 +6,7 @@ import ceylon.collection {
 }
 
 import strategicprimer.model.common.map {
+    HasMutableImage,
     Player,
     IFixture
 }
@@ -13,6 +14,7 @@ import strategicprimer.model.common.map.fixtures {
     UnitMember
 }
 import strategicprimer.model.common.map.fixtures.mobile {
+    IMutableWorker,
     IUnit,
     ProxyFor,
     IWorker
@@ -36,7 +38,7 @@ Logger log = logger(`module strategicprimer.model.common`);
 
 "An IWorker implementation to make the UI able to operate on all of a unit's workers at
  once."
-shared class ProxyWorker satisfies UnitMember&IWorker&ProxyFor<IWorker> {
+shared class ProxyWorker satisfies UnitMember&IMutableWorker&ProxyFor<IWorker> {
     "If false, this is representing all the workers in a single unit; if true, it is
      representing the corresponding workers in corresponding units in different maps."
     shared actual Boolean parallel;
@@ -186,7 +188,11 @@ shared class ProxyWorker satisfies UnitMember&IWorker&ProxyFor<IWorker> {
     assign image {
         log.warn("image setter called on a ProxyWorker");
         for (worker in workers) {
-            worker.image = image;
+            if (is HasMutableImage worker) {
+                worker.image = image;
+            } else {
+                log.warn("A proxied worker had an immutable image");
+            }
         }
     }
 

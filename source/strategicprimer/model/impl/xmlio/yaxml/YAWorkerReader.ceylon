@@ -22,6 +22,7 @@ import strategicprimer.model.common.map.fixtures.mobile {
 import strategicprimer.model.common.map.fixtures.mobile.worker {
     WorkerStats,
     Job,
+    IMutableJob,
     IJob,
     Skill,
     ISkill
@@ -116,7 +117,7 @@ class YAWorkerReader extends YAAbstractReader<IWorker> {
     IJob parseJob(StartElement element, QName parent, {XMLEvent*} stream) {
         requireTag(element, parent, "job");
         expectAttributes(element, "name", "level");
-        IJob retval = Job(getParameter(element, "name"),
+        IMutableJob retval = Job(getParameter(element, "name"),
             getIntegerParameter(element, "level"));
         for (event in stream) {
             if (is StartElement event, isSupportedNamespace(event.name)) {

@@ -35,6 +35,7 @@ import strategicprimer.model.common.map.fixtures.mobile {
 import strategicprimer.model.common.map.fixtures.mobile.worker {
     WorkerStats,
     IJob,
+    IMutableJob,
     raceFactory,
     Job
 }
@@ -119,8 +120,12 @@ class StatGeneratingCLI satisfies CLIDriver {
         for (i in 0:levels) {
             if (exists jobName =
                     cli.inputString("Which Job does worker have a level in? ")) {
-                IJob job = worker.getJob(jobName);
-                job.level += 1;
+                if (is IMutableJob job = worker.getJob(jobName)) {
+                    job.level += 1;
+                } else {
+                    log.warn("Job was not mutable ... try again");
+                    continue;
+                }
             } else {
                 break;
             }

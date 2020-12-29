@@ -30,6 +30,7 @@ import strategicprimer.model.common.map.fixtures.mobile {
 }
 import strategicprimer.model.common.map.fixtures.mobile.worker {
     IJob,
+    IMutableJob,
     Job,
     WorkerStats,
     ISkill,
@@ -95,7 +96,7 @@ object unitMemberHandler extends FluidBase() {
             IPlayerCollection players, Warning warner, IDRegistrar idFactory) {
         requireTag(element, parent, "job");
         expectAttributes(element, warner, "name", "level");
-        IJob retval = Job(getAttribute(element, "name"),
+        IMutableJob retval = Job(getAttribute(element, "name"),
             getIntegerAttribute(element, "level"));
         for (event in stream) {
             if (is StartElement event, isSPStartElement(event)) {
