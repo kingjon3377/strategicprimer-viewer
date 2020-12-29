@@ -115,15 +115,12 @@ JComponent&VersionChangeListener&SelectionChangeListener detailPanel(
         shared actual void cursorPointChanged(Point? old, Point newCursor) {}
     }
 
-    void markModified() => model.mapModified = true;
-
     SwingList<TileFixture>&SelectionChangeListener fixtureListObject =
             fixtureList(retval,
                 FixtureListModel(model.map.fixtures.get, model.map.baseTerrain.get,
                     model.map.rivers.get, model.map.mountainous.get, (point) => null,
                     null, null, null, null, null, null, sortOrder), // TODO: implementations instead of null?
-                createIDFactory(model.map), markModified,
-                    model.map.players);
+                createIDFactory(model.map), model.map.players);
 
     retval.delegate = fixtureListObject;
 

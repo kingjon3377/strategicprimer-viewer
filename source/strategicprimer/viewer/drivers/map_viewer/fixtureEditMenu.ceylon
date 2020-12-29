@@ -49,9 +49,6 @@ shared class FixtureEditMenu(
         {Player*} players,
         "A source for unique-in-the-map ID numbers."
         IDRegistrar idf,
-        "A method to call to mark the maps as modified whenever any change is made."
-        deprecated("All logic requiring this should be moved to the driver model")
-        Anything() mutationListener,
         "Listeners to notify when something is renamed or changes kind."
         IWorkerTreeModel* changeListeners) extends JPopupMenu() { // FIXME: Name and varargs type don't fit usage ...
     void addMenuItem(JMenuItem item, Anything(ActionEvent) listener, Boolean enabled) {

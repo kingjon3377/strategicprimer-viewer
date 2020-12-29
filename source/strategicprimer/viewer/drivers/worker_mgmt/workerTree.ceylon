@@ -100,9 +100,7 @@ shared JTree&UnitMemberSelectionSource&UnitSelectionSource workerTree(
            remaining work or if a unit named "unassigned" is nonempty"""
         Boolean orderCheck,
         "The factory to use to generate ID numbers."
-        IDRegistrar idf,
-        "A method to call if the user does something to modify the maps."
-        Anything() mutationListener) {
+        IDRegistrar idf) {
     DefaultTreeCellRenderer defaultStorer = DefaultTreeCellRenderer();
 
     value statReferencesList = [["Str", WorkerStats.strength],
@@ -553,7 +551,7 @@ shared JTree&UnitMemberSelectionSource&UnitSelectionSource workerTree(
                     exists pathEnd = retval
                         .getClosestPathForLocation(event.x, event.y)?.lastPathComponent,
                     is IFixture obj = wtModel.getModelObject(pathEnd)) {
-                FixtureEditMenu(obj, players, idf, mutationListener, wtModel)
+                FixtureEditMenu(obj, players, idf, wtModel)
                     .show(event.component, event.x, event.y);
             }
         }

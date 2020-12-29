@@ -75,7 +75,7 @@ SPFrame&PlayerChangeListener advancementFrame(IWorkerModel model,
 
     JTree&UnitMemberSelectionSource&UnitSelectionSource tree = workerTree(treeModel,
         model.players, defer(compose(IMapNG.currentTurn, IWorkerModel.map), [model]),
-        false, idf, markModified);
+        false, idf);
 
     WorkerCreationListener newWorkerListener = WorkerCreationListener(treeModel,
         idf);

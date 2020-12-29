@@ -339,13 +339,6 @@ class ExplorationPanel(SpinnerNumberModel mpModel, ComboBoxModel<Speed> speedMod
             SwingUtilities.invokeLater(actionPerformedImpl);
     }
 
-    deprecated("Operations requiring explicit handling of modification flag should be moved into the model")
-    void markModified() {
-        for (map in driverModel.allMaps) {
-            driverModel.setMapModified(map, true);
-        }
-    }
-
     AnimalTracks? createNull(Point point) => null;
 
     for (direction in sort(`Direction`.caseValues)) {
@@ -354,7 +347,7 @@ class ExplorationPanel(SpinnerNumberModel mpModel, ComboBoxModel<Speed> speedMod
             fixtureList(tilesPanel, FixtureListModel(driverModel.map.fixtures.get, driverModel.map.baseTerrain.get,
                     driverModel.map.rivers.get, driverModel.map.mountainous.get, tracksCreator,
                     null, null, null, null, null, null, increasing<TileFixture>), // TODO: Replace nulls with implementations?
-                idf, markModified, driverModel.map.players);
+                idf, driverModel.map.players);
         tilesPanel.add(JScrollPane(mainList));
 
         log.trace("ExplorationPanel: main list set up for ``direction``");
@@ -385,7 +378,7 @@ class ExplorationPanel(SpinnerNumberModel mpModel, ComboBoxModel<Speed> speedMod
                     secondMap.rivers.get, secondMap.mountainous.get, createNull, driverModel.setSubMapTerrain,
                     driverModel.copyRiversToSubMaps, driverModel.setMountainousInSubMap, driverModel.copyToSubMaps,
                     driverModel.removeRiversFromSubMaps, driverModel.removeFixtureFromSubMaps, increasing<TileFixture>),
-                idf, markModified, secondMap.players);
+                idf, secondMap.players);
         tilesPanel.add(JScrollPane(secList));
 
         log.trace("ExploratonPanel: Second list set up for ``direction``");

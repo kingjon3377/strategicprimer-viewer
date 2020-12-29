@@ -105,7 +105,7 @@ class WorkerMgmtFrame extends SPFrame satisfies PlayerChangeListener {
     }
 
     value tree = workerTree(treeModel, model.players,
-        defer(IMapNG.currentTurn, [mainMap]), true, idf, markModified);
+        defer(IMapNG.currentTurn, [mainMap]), true, idf);
     newUnitFrame.addNewUnitListener(treeModel);
 
     Integer keyMask = platform.shortcutMask;

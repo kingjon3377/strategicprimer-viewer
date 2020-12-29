@@ -66,7 +66,7 @@ import strategicprimer.model.common.map.fixtures.mobile {
 todo("Try to work around that to fool the typechecker into allowing it")
 shared SwingList<TileFixture>&DragGestureListener&SelectionChangeListener fixtureList(
         JComponent parentComponent, FixtureListModel listModel, IDRegistrar idf,
-        Anything() mutationListener, {Player*} players) {
+        {Player*} players) {
     object retval extends SwingList<TileFixture>(listModel)
             satisfies DragGestureListener&SelectionChangeListener {
         cellRenderer = FixtureCellRenderer();
@@ -108,8 +108,8 @@ shared SwingList<TileFixture>&DragGestureListener&SelectionChangeListener fixtur
                 if (event.popupTrigger, event.clickCount == 1) {
                     Integer index = locationToIndex(event.point);
                     if ((0:listModel.size).contains(index)) {
-                        FixtureEditMenu(listModel.getElementAt(index), players, idf,
-                            mutationListener).show(event.component, event.x, event.y);
+                        FixtureEditMenu(listModel.getElementAt(index), players,
+                            idf).show(event.component, event.x, event.y);
                     }
                 }
             }
