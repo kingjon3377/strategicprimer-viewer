@@ -489,4 +489,10 @@ shared class WorkerTreeModelAlt extends DefaultTreeModel satisfies IWorkerTreeMo
             model.changeOwner(item, newOwner);
         }
     }
+
+    shared actual void sortMembers(IUnit fixture) {
+        if (model.sortFixtureContents(fixture)) {
+            refreshChildren(fixture);
+        }
+    }
 }

@@ -502,6 +502,21 @@ shared class WorkerModel extends SimpleMultiMapModel satisfies IWorkerModel {
         }
         return any;
     }
+
+    shared actual Boolean sortFixtureContents(IUnit fixture) {
+        variable Boolean any = false;
+        for (map in restrictedAllMaps) {
+            if (exists matching = getUnitsImpl(map.fixtures.items, currentPlayer)
+                    .filter(matchingValue(fixture.name, IUnit.name))
+                    .filter(matchingValue(fixture.kind, IUnit.kind))
+                    .find(matchingValue(fixture.id, IUnit.id))) {
+                matching.sortMembers();
+                map.modified = true;
+                any = true;
+            }
+        }
+        return any;
+    }
 }
 
 "Test of the worker model."

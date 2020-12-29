@@ -95,4 +95,9 @@ shared interface IWorkerModel satisfies IMultiMapModel {
     "Change the owner of the given item in all maps. Returns [[true]] if this
      succeeded in any map, [[false]] otherwise."
     shared formal Boolean changeOwner(HasMutableOwner item, Player newOwner);
+
+    "Sort the members of the given unit in all maps. Returns [[true]] if any
+     map contained a matching unit, [[false]] otherwise."
+    // TODO: Also support fortresses, and any other fixtures-containing-fixtures as they come to exist
+    shared formal Boolean sortFixtureContents(IUnit fixture);
 }

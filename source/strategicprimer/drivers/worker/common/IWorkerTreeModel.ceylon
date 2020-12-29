@@ -84,4 +84,7 @@ shared interface IWorkerTreeModel
 
     "Change the owner of the given item."
     shared formal void changeOwner(HasMutableOwner item, Player newOwner);
+
+    "Sort the contents of the given unit."
+    shared formal void sortMembers(IUnit fixture);
 }

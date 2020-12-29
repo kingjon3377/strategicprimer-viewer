@@ -162,11 +162,9 @@ shared class FixtureEditMenu(
 
     void sortHandler() {
         if (is IUnit fixture) {
-            fixture.sortMembers(); // FIXME: This should be a driver-model method
             for (listener in changeListeners) {
-                listener.refreshChildren(fixture);
+                listener.sortMembers(fixture);
             }
-            mutationListener();
         }
         // TODO: Allow sorting fortresses as well.
     }
