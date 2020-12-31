@@ -1,6 +1,7 @@
 import strategicprimer.model.common.map {
     HasExtent,
     HasPopulation,
+    IFixture,
     IMutableMapNG,
     Point,
     TileFixture
@@ -22,7 +23,48 @@ import lovelace.util.jvm {
     decimalize
 }
 
+import strategicprimer.model.common.map.fixtures.mobile {
+    IMutableWorker,
+    IUnit,
+    IWorker
+}
+
+import lovelace.util.common {
+    matchingValue
+}
+
+import strategicprimer.model.common.map.fixtures.mobile.worker {
+    IJob,
+    IMutableJob,
+    IMutableSkill,
+    ISkill,
+    Job,
+    Skill
+}
+
+import strategicprimer.model.common.map.fixtures.towns {
+    Fortress
+}
+
+import ceylon.logging {
+    Logger,
+    logger
+}
+
+"Logger."
+Logger log = logger(`module strategicprimer.viewer`);
+
 shared class TurnRunningModel extends ExplorationModel satisfies ITurnRunningModel {
+    "If [[fixture]] is a [[Fortress]], return it; otherwise, return a Singleton
+     containing it. This is intended to be used in [[Iterable.flatMap]]."
+    static {IFixture*} unflattenNonFortresses(TileFixture fixture) {
+        if (is Fortress fixture) {
+            return fixture;
+        } else {
+            return Singleton(fixture);
+        }
+    }
+
     shared new (IMutableMapNG map) extends ExplorationModel(map) {}
     shared new copyConstructor(IDriverModel model)
         extends ExplorationModel.copyConstructor(model) {}
@@ -104,5 +146,100 @@ shared class TurnRunningModel extends ExplorationModel satisfies ITurnRunningMod
                 first = false;
             }
         }
+    }
+
+    "Add a Job to the matching worker in all maps. Returns [[true]] if a
+     matching worker was found in at least one map, [[false]] otherwise. If
+     an existing Job by that name already existed, it is left alone."
+    shared actual Boolean addJobToWorker(IWorker worker, String jobName) {
+        variable Boolean any = false;
+        for (map in restrictedAllMaps) {
+            if (exists matching = map.fixtures.items.flatMap(unflattenNonFortresses).narrow<IUnit>()
+                    .filter(matchingValue(map.currentPlayer, IUnit.owner))
+                    .flatMap(identity).narrow<IMutableWorker>()
+                    .filter(matchingValue(worker.race, IWorker.race))
+                    .filter(matchingValue(worker.name, IWorker.name))
+                    .find(matchingValue(worker.id, IWorker.id))) {
+                if (!matching.any(matchingValue(jobName, IJob.name))) {
+                    map.modified = true;
+                    matching.addJob(Job(jobName, 0));
+                }
+                any = true;
+            }
+        }
+        return any;
+    }
+
+    "Add hours to a Skill to the specified Job in the matching worker in all
+     maps.  Returns [[true]] if a matching worker was found in at least one
+     map, [[false]] otherwise. If the worker doesn't have that Skill in that
+     Job, it is added first; if the worker doesn't have that Job, it is added
+     first as in [[addJobToWorker]], then the skill is added to it. The
+     [[contextValue]] is passed to
+     [[strategicprimer.model.common.map.fixtures.mobile.worker::IMutableSkill.addHours]];
+     it should be a random number between 0 and 99."
+    shared actual Boolean addHoursToSkill(IWorker worker, String jobName, String skillName,
+            Integer hours, Integer contextValue) {
+        variable Boolean any = false;
+        for (map in restrictedAllMaps) {
+            if (exists matching = map.fixtures.items.flatMap(unflattenNonFortresses).narrow<IUnit>()
+                    .filter(matchingValue(map.currentPlayer, IUnit.owner))
+                    .flatMap(identity).narrow<IMutableWorker>()
+                    .filter(matchingValue(worker.race, IWorker.race))
+                    .filter(matchingValue(worker.name, IWorker.name))
+                    .find(matchingValue(worker.id, IWorker.id))) {
+                map.modified = true;
+                any = true;
+                IMutableJob job;
+                if (exists temp = matching.narrow<IMutableJob>()
+                        .find(matchingValue(jobName, IJob.name))) {
+                    job = temp;
+                } else {
+                    job = Job(jobName, 0);
+                    matching.addJob(job);
+                }
+                IMutableSkill skill;
+                if (exists temp = job.narrow<IMutableSkill>()
+                        .find(matchingValue(skillName, ISkill.name))) {
+                    skill = temp;
+                } else {
+                    skill = Skill(skillName, 0, 0);
+                    job.addSkill(skill);
+                }
+                skill.addHours(hours, contextValue);
+            }
+        }
+        return any;
+    }
+
+    "Replace [[one skill|delenda]] with [[another|replacement]] in the specified job
+     in the specified worker in all maps. Unlike [[addHoursToSkill]], if a map does
+     not have an *equal* Job in the matching worker, that map is completely
+     skipped.  If the replacement is already present, just remove the first
+     skill. Returns [[true]] if the operation was carried out in any of the
+     maps, [[false]] otherwise."
+    shared actual Boolean replaceSkillInJob(IWorker worker, String jobName, ISkill delenda,
+            ISkill replacement) {
+        variable Boolean any = false;
+        for (map in restrictedAllMaps) {
+            if (exists matchingWorker = map.fixtures.items.flatMap(unflattenNonFortresses).narrow<IUnit>()
+                    .filter(matchingValue(map.currentPlayer, IUnit.owner))
+                    .flatMap(identity).narrow<IMutableWorker>()
+                    .filter(matchingValue(worker.race, IWorker.race))
+                    .filter(matchingValue(worker.name, IWorker.name))
+                    .find(matchingValue(worker.id, IWorker.id))) {
+                if (exists matchingJob = matchingWorker.narrow<IMutableJob>()
+                            .find(matchingValue(jobName, IJob.name)),
+                        exists matchingSkill = matchingJob.find(delenda.equals)) {
+                    map.modified = true;
+                    any = true;
+                    matchingJob.removeSkill(matchingSkill);
+                    matchingJob.addSkill(replacement.copy());
+                } else {
+                    log.warn("No matching skill in matching worker");
+                }
+            }
+        }
+        return any;
     }
 }

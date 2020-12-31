@@ -22,7 +22,7 @@ import strategicprimer.model.common.map.fixtures.towns {
 "A driver model for the worker management app and the advancement app, aiming
  to provide a hierarchical view of the units in the map and their members,
  regardless of their location."
-shared interface IWorkerModel satisfies IMultiMapModel {
+shared interface IWorkerModel satisfies IMultiMapModel&IAdvancementModel {
     "All the players in all the maps."
     shared formal {Player*} players;
 

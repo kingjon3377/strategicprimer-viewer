@@ -35,7 +35,9 @@ import strategicprimer.model.common.map.fixtures {
 
 import strategicprimer.model.common.map.fixtures.mobile {
     ProxyFor,
+    IMutableWorker,
     IUnit,
+    IWorker,
     Unit,
     ProxyUnit,
     AnimalImpl
@@ -67,6 +69,15 @@ import lovelace.util.common {
     narrowedStream,
     comparingOn,
     todo
+}
+
+import strategicprimer.model.common.map.fixtures.mobile.worker {
+    IJob,
+    IMutableJob,
+    IMutableSkill,
+    ISkill,
+    Job,
+    Skill
 }
 
 "Logger."
@@ -513,6 +524,98 @@ shared class WorkerModel extends SimpleMultiMapModel satisfies IWorkerModel {
                 matching.sortMembers();
                 map.modified = true;
                 any = true;
+            }
+        }
+        return any;
+    }
+
+    "Add a Job to the matching worker in all maps. Returns [[true]] if a
+     matching worker was found in at least one map, [[false]] otherwise. If
+     an existing Job by that name already existed, it is left alone."
+    shared actual Boolean addJobToWorker(IWorker worker, String jobName) {
+        variable Boolean any = false;
+        for (map in restrictedAllMaps) {
+            if (exists matching = getUnitsImpl(map.fixtures.items, currentPlayer)
+                    .flatMap(identity).narrow<IMutableWorker>()
+                    .filter(matchingValue(worker.race, IWorker.race))
+                    .filter(matchingValue(worker.name, IWorker.name))
+                    .find(matchingValue(worker.id, IWorker.id))) {
+                if (!matching.any(matchingValue(jobName, IJob.name))) {
+                    map.modified = true;
+                    matching.addJob(Job(jobName, 0));
+                }
+                any = true;
+            }
+        }
+        return any;
+    }
+
+    "Add hours to a Skill to the specified Job in the matching worker in all
+     maps.  Returns [[true]] if a matching worker was found in at least one
+     map, [[false]] otherwise. If the worker doesn't have that Skill in that
+     Job, it is added first; if the worker doesn't have that Job, it is added
+     first as in [[addJobToWorker]], then the skill is added to it. The
+     [[contextValue]] is passed to
+     [[strategicprimer.model.common.map.fixtures.mobile.worker::IMutableSkill.addHours]];
+     it should be a random number between 0 and 99."
+    shared actual Boolean addHoursToSkill(IWorker worker, String jobName, String skillName,
+            Integer hours, Integer contextValue) {
+        variable Boolean any = false;
+        for (map in restrictedAllMaps) {
+            if (exists matching = getUnitsImpl(map.fixtures.items, currentPlayer)
+                    .flatMap(identity).narrow<IMutableWorker>()
+                    .filter(matchingValue(worker.race, IWorker.race))
+                    .filter(matchingValue(worker.name, IWorker.name))
+                    .find(matchingValue(worker.id, IWorker.id))) {
+                map.modified = true;
+                any = true;
+                IMutableJob job;
+                if (exists temp = matching.narrow<IMutableJob>()
+                        .find(matchingValue(jobName, IJob.name))) {
+                    job = temp;
+                } else {
+                    job = Job(jobName, 0);
+                    matching.addJob(job);
+                }
+                IMutableSkill skill;
+                if (exists temp = job.narrow<IMutableSkill>()
+                        .find(matchingValue(skillName, ISkill.name))) {
+                    skill = temp;
+                } else {
+                    skill = Skill(skillName, 0, 0);
+                    job.addSkill(skill);
+                }
+                skill.addHours(hours, contextValue);
+            }
+        }
+        return any;
+    }
+
+    "Replace [[one skill|delenda]] with [[another|replacement]] in the specified job
+     in the specified worker in all maps. Unlike [[addHoursToSkill]], if a map does
+     not have an *equal* Job in the matching worker, that map is completely
+     skipped.  If the replacement is already present, just remove the first
+     skill. Returns [[true]] if the operation was carried out in any of the
+     maps, [[false]] otherwise."
+    shared actual Boolean replaceSkillInJob(IWorker worker, String jobName, ISkill delenda,
+            ISkill replacement) {
+        variable Boolean any = false;
+        for (map in restrictedAllMaps) {
+            if (exists matchingWorker = getUnitsImpl(map.fixtures.items, currentPlayer)
+                    .flatMap(identity).narrow<IMutableWorker>()
+                    .filter(matchingValue(worker.race, IWorker.race))
+                    .filter(matchingValue(worker.name, IWorker.name))
+                    .find(matchingValue(worker.id, IWorker.id))) {
+                if (exists matchingJob = matchingWorker.narrow<IMutableJob>()
+                            .find(matchingValue(jobName, IJob.name)),
+                        exists matchingSkill = matchingJob.find(delenda.equals)) {
+                    map.modified = true;
+                    any = true;
+                    matchingJob.removeSkill(matchingSkill);
+                    matchingJob.addSkill(replacement.copy());
+                } else {
+                    log.warn("No matching skill in matching worker");
+                }
             }
         }
         return any;

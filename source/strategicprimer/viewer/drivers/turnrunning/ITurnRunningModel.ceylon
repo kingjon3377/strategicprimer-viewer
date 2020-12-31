@@ -13,8 +13,12 @@ import ceylon.decimal {
     Decimal
 }
 
+import strategicprimer.drivers.common {
+    IAdvancementModel
+}
+
 "A model for turn-running apps."
-shared interface ITurnRunningModel satisfies IExplorationModel {
+shared interface ITurnRunningModel satisfies IExplorationModel&IAdvancementModel {
     "Add a copy of the given fixture to all submaps at the given location iff no fixture
      with the same ID is already there."
     shared formal void addToSubMaps(Point location, TileFixture fixture, Boolean zero);
