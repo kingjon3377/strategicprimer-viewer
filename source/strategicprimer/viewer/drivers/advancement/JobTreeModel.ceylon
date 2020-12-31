@@ -2,6 +2,7 @@ import strategicprimer.model.common.map {
     HasName
 }
 import lovelace.util.common {
+    matchingValue,
     todo
 }
 import javax.swing.event {
@@ -9,7 +10,6 @@ import javax.swing.event {
     TreeModelEvent
 }
 import strategicprimer.model.common.map.fixtures.mobile {
-    IMutableWorker,
     IWorker
 }
 import strategicprimer.viewer.drivers.worker_mgmt {
@@ -34,15 +34,15 @@ import ceylon.collection {
 }
 import strategicprimer.model.common.map.fixtures.mobile.worker {
     IJob,
-    IMutableJob,
-    Job,
-    Skill,
     ISkill
 }
 
-// FIXME: Take a driver model (IAdvancementModel, probably) and go through there instead of modifying workers, jobs, etc., ourselves
+import strategicprimer.drivers.common {
+    IAdvancementModel
+}
+
 "A model for a tree of a worker's Jobs and Skills."
-class JobTreeModel() satisfies TreeModel&UnitMemberListener&AddRemoveListener {
+class JobTreeModel(IAdvancementModel driverModel) satisfies TreeModel&UnitMemberListener&AddRemoveListener {
     MutableList<TreeModelListener> listeners = ArrayList<TreeModelListener>();
 
     "The worker whom the Jobs and Skills describe."
@@ -107,26 +107,34 @@ class JobTreeModel() satisfies TreeModel&UnitMemberListener&AddRemoveListener {
     todo("Show error dialog, or at least visual-beep, instead of just logging warnings?")
     shared actual void add(String category, String addendum) {
         if ("job" == category) {
-            if (is IMutableWorker currentRoot = localRoot) {
-                IJob job = Job(addendum, 0);
+            if (exists currentRoot = localRoot) {
                 Integer childCount = getChildCount(currentRoot);
-                currentRoot.addJob(job);
-                fireTreeNodesInserted(TreeModelEvent(this, TreePath(currentRoot),
-                    IntArray.with(Singleton(childCount)),
-                    ObjectArray.with(Singleton(job))));
+                if (driverModel.addJobToWorker(currentRoot, addendum),
+                        exists job = currentRoot.find(matchingValue(addendum, IJob.name))) {
+                    // TODO: Check for no-op before firing event ...
+                    fireTreeNodesInserted(TreeModelEvent(this, TreePath(currentRoot),
+                        IntArray.with(Singleton(childCount)),
+                        ObjectArray.with(Singleton(job))));
+                } else {
+                    log.warn("Worker not found");
+                }
             } else {
                 log.warn("Can't add a new Job when no worker selected");
             }
         } else if ("skill" == category) {
-            if (exists selectionPath = selectionModel.selectionPath,
-                    is IMutableJob job = selectionPath.lastPathComponent) {
-                ISkill skill = Skill(addendum, 0, 0);
+            if (exists currentRoot = localRoot,
+                    exists selectionPath = selectionModel.selectionPath,
+                    is IJob job = selectionPath.lastPathComponent) {
                 Integer childCount = getChildCount(job);
-                job.addSkill(skill);
-                fireTreeNodesInserted(TreeModelEvent(this,
-                    TreePath(ObjectArray<Object>.with([localRoot, job])),
-                    IntArray.with(Singleton(childCount)),
-                    ObjectArray.with(Singleton(skill))));
+                if (driverModel.addHoursToSkill(currentRoot, job.name, addendum, 0, 200),
+                        exists skill = job.find(matchingValue(addendum, ISkill.name))) {
+                    fireTreeNodesInserted(TreeModelEvent(this,
+                        TreePath(ObjectArray<Object>.with([localRoot, job])),
+                        IntArray.with(Singleton(childCount)),
+                        ObjectArray.with(Singleton(skill))));
+                } else {
+                    log.warn("Worker not found, or skill-adding otherwise failed");
+                }
             } else {
                 log.warn("Can't add a new Skill when no Job selected");
             }

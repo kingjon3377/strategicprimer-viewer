@@ -82,13 +82,14 @@ SPFrame&PlayerChangeListener advancementFrame(IWorkerModel model,
 
     tree.addUnitSelectionListener(newWorkerListener);
 
+    deprecated("Modification flag should be sufficiently handled in the driver model")
     object flaggingListener satisfies LevelGainListener&AddRemoveListener {
         shared actual void add(String category, String addendum) => markModified();
         shared actual void level(String workerName, String jobName, String skillName,
             Integer gains, Integer currentLevel) => markModified();
     }
 
-    JobTreeModel jobsTreeModel = JobTreeModel();
+    JobTreeModel jobsTreeModel = JobTreeModel(model);
     tree.addUnitMemberListener(jobsTreeModel);
 
     JPanel&AddRemoveSource jobAdditionPanel = itemAdditionPanel("job");
