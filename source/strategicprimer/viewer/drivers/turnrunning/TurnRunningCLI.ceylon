@@ -96,7 +96,7 @@ class TurnRunningCLI(ICLIHelper cli, model) satisfies CLIDriver {
             byIncreasing(String.lowercased)));
     }
 
-    AdvancementCLIHelper advancementCLI = AdvancementCLIHelper(cli);
+    AdvancementCLIHelper advancementCLI = AdvancementCLIHelper(model, cli);
     AppletChooser<TurnApplet> appletChooser =
         AppletChooser<TurnApplet>(cli, *`module strategicprimer.viewer`
             .findServiceProviders(`TurnAppletFactory`).map((factory) => factory.create(model, cli, idf)));

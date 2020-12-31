@@ -11,24 +11,24 @@ import lovelace.util.common {
     matchingValue
 }
 import strategicprimer.model.common.map.fixtures.mobile {
-    IMutableWorker,
     IWorker,
     IUnit
 }
 import strategicprimer.model.common.map.fixtures.mobile.worker {
     ProxyWorker,
-    Job,
     IJob,
-    IMutableJob,
     ProxyJob,
-    IMutableSkill,
     ISkill,
     Skill
 }
 
+import strategicprimer.drivers.common {
+    IAdvancementModel
+}
+
 "Logic extracted from the advancement CLI so it can be used by the turn-running CLI as
  well."
-shared class AdvancementCLIHelper(ICLIHelper cli) satisfies LevelGainSource {
+shared class AdvancementCLIHelper(IAdvancementModel model, ICLIHelper cli) satisfies LevelGainSource {
     MutableList<LevelGainListener> levelListeners = ArrayList<LevelGainListener>();
 
     shared actual void addLevelGainListener(LevelGainListener listener) =>
@@ -44,19 +44,19 @@ shared class AdvancementCLIHelper(ICLIHelper cli) satisfies LevelGainSource {
     }
 
     "Let the user add hours to a Skill or Skills in a Job."
-    void advanceJob(String workerName, IMutableJob job, Boolean allowExpertMentoring) {
-        MutableList<IMutableSkill> skills = ArrayList{ elements = job.narrow<IMutableSkill>(); };
+    void advanceJob(IWorker worker, IJob job, Boolean allowExpertMentoring) {
+        MutableList<ISkill> skills = ArrayList{ elements = job; };
         while (true) {
             value chosen = cli.chooseFromList(skills, "Skills in Job:",
                 "No existing Skills.", "Skill to advance: ", false);
-            IMutableSkill skill;
+            ISkill skill;
             if (exists temp = chosen.item) {
                 skill = temp;
             } else if (chosen.key <= skills.size) {
                 if (exists skillName = cli.inputString("Name of new Skill: ")) {
-                    job.addSkill(Skill(skillName, 0, 0));
+                    model.addHoursToSkill(worker, job.name, skillName, 0, 200); // TODO: Have a better way to add the skill without any hours, or else rework this method
                     skills.clear();
-                    skills.addAll(job.narrow<IMutableSkill>());
+                    skills.addAll(job);
                     if (exists temp = skills.find(matchingValue(skillName,
                             ISkill.name))) {
                         skill = temp;
@@ -82,20 +82,22 @@ shared class AdvancementCLIHelper(ICLIHelper cli) satisfies LevelGainSource {
                     remaining = 0;
                 }
                 while (remaining > 0) {
-                    skill.addHours(Integer.largest(remaining, hoursPerHour),
+                    model.addHoursToSkill(worker, job.name, skill.name,
+                        Integer.largest(remaining, hoursPerHour),
                         singletonRandom.nextInteger(100));
                     remaining -= hoursPerHour;
                 }
             } else {
                 for (hour in 0:hours) {
-                    skill.addHours(1, singletonRandom.nextInteger(100));
+                    model.addHoursToSkill(worker, job.name, skill.name, 1,
+                        singletonRandom.nextInteger(100));
                 }
             }
             if (skill.level != oldLevel) {
                 String count = (skill.level - oldLevel == 1) then "a level"
                     else (skill.level - oldLevel).string + " levels";
-                cli.println("``workerName`` gained ``count`` in ``skill.name``");
-                fireLevelEvent(workerName, job.name, skill.name, skill.level - oldLevel,
+                cli.println("``worker.name`` gained ``count`` in ``skill.name``");
+                fireLevelEvent(worker.name, job.name, skill.name, skill.level - oldLevel,
                     skill.level);
             }
             if (exists continuation =
@@ -108,12 +110,12 @@ shared class AdvancementCLIHelper(ICLIHelper cli) satisfies LevelGainSource {
     }
 
     "Let the user add experience to a worker."
-    void advanceSingleWorker(IMutableWorker worker, Boolean allowExpertMentoring) {
-        MutableList<IMutableJob> jobs = ArrayList { elements = worker.narrow<IMutableJob>(); };
+    void advanceSingleWorker(IWorker worker, Boolean allowExpertMentoring) {
+        MutableList<IJob> jobs = ArrayList { elements = worker; };
         while (true) {
             value chosen = cli.chooseFromList(jobs,
                 "Jobs in worker:", "No existing Jobs.", "Job to advance: ", false);
-            IMutableJob job;
+            IJob job;
             if (exists temp = chosen.item) {
                 job = temp;
             } else if (chosen.key <= jobs.size ) {
@@ -122,9 +124,9 @@ shared class AdvancementCLIHelper(ICLIHelper cli) satisfies LevelGainSource {
                     return;
                 }
                 assert (exists jobName);
-                worker.addJob(Job(jobName, 0));
+                model.addJobToWorker(worker, jobName);
                 jobs.clear();
-                jobs.addAll(worker.narrow<IMutableJob>());
+                jobs.addAll(worker);
                 if (exists temp = jobs.find(matchingValue(jobName, IJob.name))) {
                     job = temp;
                 } else {
@@ -134,7 +136,7 @@ shared class AdvancementCLIHelper(ICLIHelper cli) satisfies LevelGainSource {
             } else {
                 break;
             }
-            advanceJob(worker.name, job, allowExpertMentoring);
+            advanceJob(worker, job, allowExpertMentoring);
             if (exists continuation =
                         cli.inputBoolean("Select another Job in this worker?"),
                     continuation) {
@@ -147,13 +149,14 @@ shared class AdvancementCLIHelper(ICLIHelper cli) satisfies LevelGainSource {
 
     "Let the user add experience in a single Skill to all of a list of workers."
     todo("Support expert mentoring")
-    void advanceWorkersInSkill(String jobName, String skillName, IMutableWorker* workers) {
+    void advanceWorkersInSkill(String jobName, String skillName, IWorker* workers) {
         Integer hours = cli.inputNumber("Hours of experience to add: ") else 0;
         for (worker in workers) {
-            assert (is IMutableJob job = worker.getJob(jobName));
-            assert (is IMutableSkill skill = job.getSkill(skillName));
+            IJob job = worker.getJob(jobName);
+            ISkill skill = job.getSkill(skillName);
             Integer oldLevel = skill.level;
-            skill.addHours(hours, singletonRandom.nextInteger(100));
+            model.addHoursToSkill(worker, jobName, skillName, hours,
+                singletonRandom.nextInteger(100));
             if (skill.level != oldLevel) {
                 if (oldLevel == 0, skill.name == "miscellaneous") {
                     Boolean? chooseAnother =
@@ -166,24 +169,25 @@ shared class AdvancementCLIHelper(ICLIHelper cli) satisfies LevelGainSource {
                     case (true) {}
                     MutableList<String> gains = ArrayList<String>();
                     for (i in 0:skill.level) {
-                        IMutableSkill replacement;
-                        Integer->IMutableSkill? choice = cli.chooseFromList(
-                            job.narrow<IMutableSkill>()
-                                .select(not(matchingValue("miscellaneous", ISkill.name))),
+                        ISkill replacement;
+                        Integer->ISkill? choice = cli.chooseFromList(
+                            job.select(not(matchingValue("miscellaneous", ISkill.name))),
                             "Skill to gain level in:", "No other skill", "Chosen skill:",
                             false);
                         if (exists chosenSkill = choice.item) {
                             replacement = chosenSkill;
-                            replacement.addHours(100, 0);
+                            model.replaceSkillInJob(worker, job.name, skill, replacement);
+                            model.addHoursToSkill(worker, job.name, replacement.name,
+                                100, 0);
+                            // FIXME: Add to [[gains]]? The listener should cover that already, but in practice it doesn't.
                         } else if (exists replacementName =
                                 cli.inputString("Skill to gain level in: ")) {
                             replacement = Skill(replacementName, 1, 0);
-                            job.addSkill(replacement);
+                            model.replaceSkillInJob(worker, job.name, skill, replacement);
                             gains.add(replacementName);
                         } else {
                             return;
                         }
-                        job.removeSkill(skill);
                     }
                     for (name->count in gains.frequencies()) {
                         if (count == 1) {
@@ -204,17 +208,10 @@ shared class AdvancementCLIHelper(ICLIHelper cli) satisfies LevelGainSource {
         }
     }
 
-    "Ensure that there is a Job by the given name in each worker, and return a
-     collection of those Jobs."
-    // FIXME: Test that this actually works when some workers lack the Job!
-    {IJob*} getWorkerJobs(String jobName, IWorker* workers) =>
-        workers.map(shuffle(IWorker.getJob)(jobName)).distinct;
-
     "Let the user add experience in a given Job to all of a list of workers."
-    void advanceWorkersInJob(String jobName, IMutableWorker* workers) {
-        {IMutableJob*} jobs = getWorkerJobs(jobName, *workers).narrow<IMutableJob>();
-        MutableList<IMutableSkill> skills = ArrayList {
-            elements = ProxyJob(jobName, false, *workers).narrow<IMutableSkill>();
+    void advanceWorkersInJob(String jobName, IWorker* workers) {
+        MutableList<ISkill> skills = ArrayList {
+            elements = ProxyJob(jobName, false, *workers);
         };
         while (true) {
             value chosen = cli.chooseFromList(skills,
@@ -224,11 +221,11 @@ shared class AdvancementCLIHelper(ICLIHelper cli) satisfies LevelGainSource {
                 skill = temp;
             } else if (chosen.key <= skills.size ) {
                 if (exists skillName = cli.inputString("Name of new Skill: ")) {
-                    for (job in jobs) {
-                        job.addSkill(Skill(skillName, 0, 0));
+                    for (worker in workers) {
+                        model.addHoursToSkill(worker, jobName, skillName, 0, 200);
                     }
                     skills.clear();
-                    skills.addAll(ProxyJob(jobName, false, *workers).narrow<IMutableSkill>());
+                    skills.addAll(ProxyJob(jobName, false, *workers));
                     if (exists temp =
                             skills.find(matchingValue(skillName, ISkill.name))) {
                         skill = temp;
@@ -254,7 +251,7 @@ shared class AdvancementCLIHelper(ICLIHelper cli) satisfies LevelGainSource {
 
     "Let the user add experience to a worker or workers in a unit."
     shared void advanceWorkersInUnit(IUnit unit, Boolean allowExpertMentoring) {
-        MutableList<IMutableWorker> workers = ArrayList { elements = unit.narrow<IMutableWorker>(); };
+        MutableList<IWorker> workers = ArrayList { elements = unit.narrow<IWorker>(); };
         Boolean? individualAdvancement =
             cli.inputBooleanInSeries("Add experience to workers individually? ");
         switch (individualAdvancement)
@@ -275,8 +272,8 @@ shared class AdvancementCLIHelper(ICLIHelper cli) satisfies LevelGainSource {
             if (workers.empty) {
                 cli.println("No workers in unit.");
             } else {
-                MutableList<IMutableJob> jobs =
-                    ArrayList { elements = ProxyWorker.fromUnit(unit).narrow<IMutableJob>(); };
+                MutableList<IJob> jobs =
+                    ArrayList { elements = ProxyWorker.fromUnit(unit); };
                 while (true) {
                     value chosen = cli.chooseFromList(jobs, "Jobs in workers:",
                         "No existing jobs.", "Job to advance: ", false);
@@ -290,10 +287,10 @@ shared class AdvancementCLIHelper(ICLIHelper cli) satisfies LevelGainSource {
                         }
                         assert (exists jobName);
                         for (worker in workers) {
-                            worker.addJob(Job(jobName, 0));
+                            model.addJobToWorker(worker, jobName);
                         }
                         jobs.clear();
-                        jobs.addAll(ProxyWorker.fromUnit(unit).narrow<IMutableJob>());
+                        jobs.addAll(ProxyWorker.fromUnit(unit));
                         if (exists temp = jobs.find(matchingValue(jobName, IJob.name))) {
                             job = temp;
                         } else {

@@ -69,7 +69,7 @@ shared class AdvancementCLI(ICLIHelper cli, options, model) satisfies CLIDriver 
     shared actual SPOptions options;
     shared actual IWorkerModel model;
 
-    AdvancementCLIHelper helper = AdvancementCLIHelper(cli);
+    AdvancementCLIHelper helper = AdvancementCLIHelper(model, cli);
 
     "Let the user add experience to a player's workers."
     void advanceWorkers(IWorkerModel model, Player player, Boolean allowExpertMentoring) {
@@ -86,11 +86,6 @@ shared class AdvancementCLI(ICLIHelper cli, options, model) satisfies CLIDriver 
                 // continue;
             } else {
                 break;
-            }
-        }
-        for (map in model.allMaps) {
-            if (!map.modified) {
-                model.setMapModified(map, true);
             }
         }
     }
