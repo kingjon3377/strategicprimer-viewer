@@ -31,7 +31,6 @@ import lovelace.util.common {
 }
 
 import strategicprimer.model.common.map.fixtures.mobile.worker {
-    IMutableSkill,
     ISkill,
     IJob
 }
@@ -43,6 +42,10 @@ import strategicprimer.model.common.map.fixtures {
 }
 import strategicprimer.model.common.map.fixtures.mobile {
     IWorker
+}
+
+import strategicprimer.drivers.common {
+    IAdvancementModel
 }
 
 "A panel to let a user add hours of experience to a Skill."
@@ -57,12 +60,13 @@ final class SkillAdvancementPanel extends BorderedPanel
         }
     }
     late JTextField hours;
-    variable IMutableSkill? skill = null;
+    late IAdvancementModel model;
+    variable ISkill? skill = null;
     variable IJob? job = null;
     variable IWorker? worker = null;
     late MutableList<LevelGainListener> listeners = ArrayList<LevelGainListener>(); // TODO: Report bug in runtime causing NPE on access without `late`
     void okListener(ActionEvent event) {
-        if (exists local = skill) {
+        if (exists localWorker = worker, exists localJob = job, exists local = skill) {
             Integer level = local.level;
             if (is Integer number = Integer.parse(hours.text)) {
                 // TODO: Make frequency of leveling checks (i.e. size of hour-chunks to
@@ -72,7 +76,7 @@ final class SkillAdvancementPanel extends BorderedPanel
                 // multiple "hours" per hour, and they should only check for a level with
                 // each *actual* hour.
                 for (hour in 0:number) {
-                    local.addHours(1, singletonRandom.nextInteger(100));
+                    model.addHoursToSkill(localWorker, localJob.name, local.name, 1, singletonRandom.nextInteger(100));
                 }
             } else {
                 showErrorDialog(hours, "Strategic Primer Worker Advancement",
@@ -83,20 +87,22 @@ final class SkillAdvancementPanel extends BorderedPanel
             if (newLevel != level) {
                 for (listener in listeners) {
                     // TODO: What if it's a proxy for all workers in a unit?
-                    listener.level(worker?.name else "unknown", job?.name else "unknown",
+                    listener.level(localWorker.name, localJob.name,
                         local.name, newLevel - level, newLevel);
                 }
             }
-        }
+        } // FIXME: Better diagnostics on which condition of 'if' failed in an 'else' clause
         // Clear if OK and no skill selected, on Cancel, and after successfully adding
         // skill
         hours.text = "";
     }
     void cancelListener(ActionEvent event) => hours.text = "";
-    shared new delegate(JTextField hours, JButton okButton, JButton cancelButton)
+    shared new delegate(IAdvancementModel model, JTextField hours, JButton okButton,
+                JButton cancelButton)
             extends BorderedPanel(null, FlowPanel(JLabel("Add "), hours,
                     JLabel(" hours to skill?")),
                 secondPanelFactory(okButton, cancelButton)) {
+        this.model = model;
         okButton.addActionListener(okListener);
         cancelButton.addActionListener(cancelListener);
         hours.setActionCommand("OK");
@@ -106,14 +112,10 @@ final class SkillAdvancementPanel extends BorderedPanel
         preferredSize = Dimension(220, 60);
         maximumSize = Dimension(240, 60);
     }
-    shared new () extends delegate(JTextField(3), JButton("OK"), JButton("Cancel")) {}
+    shared new (IAdvancementModel model)
+            extends delegate(model, JTextField(3), JButton("OK"), JButton("Cancel")) {}
     shared actual void selectSkill(ISkill? selectedSkill) {
-        if (is IMutableSkill? selectedSkill) {
-            skill = selectedSkill;
-        } else {
-            log.warn("Tried to select immutable skill");
-            skill = null;
-        }
+        skill = selectedSkill;
         if (selectedSkill exists) {
             hours.requestFocusInWindow();
         }

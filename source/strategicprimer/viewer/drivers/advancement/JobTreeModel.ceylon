@@ -40,6 +40,7 @@ import strategicprimer.model.common.map.fixtures.mobile.worker {
     ISkill
 }
 
+// FIXME: Take a driver model (IAdvancementModel, probably) and go through there instead of modifying workers, jobs, etc., ourselves
 "A model for a tree of a worker's Jobs and Skills."
 class JobTreeModel() satisfies TreeModel&UnitMemberListener&AddRemoveListener {
     MutableList<TreeModelListener> listeners = ArrayList<TreeModelListener>();
