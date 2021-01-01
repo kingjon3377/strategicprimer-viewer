@@ -19,7 +19,7 @@ import strategicprimer.drivers.common {
 }
 
 import strategicprimer.model.common.map.fixtures {
-    ResourcePile
+    IResourcePile
 }
 
 "A model for turn-running apps."
@@ -38,19 +38,19 @@ shared interface ITurnRunningModel satisfies IExplorationModel&IAdvancementModel
             HasExtent<out HasExtent<out Anything>&TileFixture>&TileFixture fixture,
             Boolean zero, Decimal reduction);
 
-    "Reduce the matching [[resource|ResourcePile]], in a
+    "Reduce the matching [[resource|IResourcePile]], in a
      [[unit|strategicprimer.model.common.map.fixtures.mobile::IUnit]] or
      [[fortress|strategicprimer.model.common.map.fixtures.towns::Fortress]]
      owned by [[the specified player|owner]], by [[the specified
-     amount|amount]]. Returns [[true]] if any matched in any of the maps,
-     [[false]] otherwise."
-    shared formal Boolean reduceResourceBy(ResourcePile resource, Decimal amount, Player owner);
+     amount|amount]]. Returns [[true]] if any (mutable) resource piles matched
+     in any of the maps, [[false]] otherwise."
+    shared formal Boolean reduceResourceBy(IResourcePile resource, Decimal amount, Player owner);
 
-    "Remove the given [[resource|ResourcePile]] from a
+    "Remove the given [[resource|IResourcePile]] from a
      [[unit|strategicprimer.model.common.map.fixtures.mobile::IUnit]] or
      [[fortress|strategicprimer.model.common.map.fixtures.towns::Fortress]]
      owned by [[the specified player|owner]] in all maps. Returns [[true]] if
      any matched in any of the maps, [[false]] otherwise."
     deprecated("Use [[reduceResourceBy]] when possible instead.")
-    shared formal Boolean removeResource(ResourcePile resource, Player owner);
+    shared formal Boolean removeResource(IResourcePile resource, Player owner);
 }

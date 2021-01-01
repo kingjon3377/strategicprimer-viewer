@@ -10,7 +10,8 @@ import strategicprimer.model.common.map {
     IMutableMapNG
 }
 import strategicprimer.model.common.map.fixtures {
-    ResourcePile,
+    IResourcePile,
+    ResourcePileImpl,
     Quantity
 }
 import strategicprimer.model.common.map.fixtures.mobile {
@@ -25,7 +26,7 @@ import strategicprimer.model.common.xmlio {
 }
 
 object dbResourcePileHandler
-        extends AbstractDatabaseWriter<ResourcePile, IUnit|Fortress>()
+        extends AbstractDatabaseWriter<IResourcePile, IUnit|Fortress>()
         satisfies MapContentsReader {
     shared actual {String+} initializers = [
         """CREATE TABLE IF NOT EXISTS resource_piles (
@@ -41,7 +42,7 @@ object dbResourcePileHandler
            );"""
     ];
 
-    shared actual void write(Sql db, ResourcePile obj, IUnit|Fortress context) =>
+    shared actual void write(Sql db, IResourcePile obj, IUnit|Fortress context) =>
         db.Insert("""INSERT INTO resource_piles (parent, id, kind, contents, quantity,
                          units, created, image)
                      VALUES(?, ?, ?, ?, ?, ?, ?, ?);""")
@@ -66,7 +67,7 @@ object dbResourcePileHandler
             assert (exists num = parseDecimal(qtyString));
             quantity = num;
         }
-        value pile = ResourcePile(id, kind, contents, Quantity(quantity, units));
+        value pile = ResourcePileImpl(id, kind, contents, Quantity(quantity, units));
         if (is String image) {
             pile.image = image;
         }

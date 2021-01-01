@@ -6,7 +6,7 @@ import strategicprimer.model.common.idreg {
     IDRegistrar
 }
 import strategicprimer.model.common.map.fixtures {
-    ResourcePile,
+    ResourcePileImpl,
     Quantity
 }
 import ceylon.decimal {
@@ -117,7 +117,7 @@ class WoodcuttingApplet(ITurnRunningModel model, ICLIHelper cli, IDRegistrar idf
         }
         if (footage.positive) {
             assert (exists unit = model.selectedUnit);
-            addResourceToMaps(ResourcePile(idf.createID(), "wood", "production-ready wood", Quantity(footage, "cubic feet")), unit.owner);
+            addResourceToMaps(ResourcePileImpl(idf.createID(), "wood", "production-ready wood", Quantity(footage, "cubic feet")), unit.owner);
         }
         if (treeCount > 7, exists forest = chooseFromList(model.map.fixtures.get(loc).narrow<Forest>().sequence(),
                 "Forests on tile:", "No forests on tile", "Forest being cleared:", false), forest.acres.positive) {

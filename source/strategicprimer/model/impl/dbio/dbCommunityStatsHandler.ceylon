@@ -11,7 +11,7 @@ import strategicprimer.model.common.map {
     IMutableMapNG
 }
 import strategicprimer.model.common.map.fixtures {
-    ResourcePile,
+    ResourcePileImpl,
     Quantity
 }
 import strategicprimer.model.common.map.fixtures.towns {
@@ -123,7 +123,7 @@ object dbCommunityStatsHandler
             assert (is Decimal num = parseDecimal(qtyString));
             quantity = num;
         }
-        value pile = ResourcePile(id, kind, contents, Quantity(quantity, units));
+        value pile = ResourcePileImpl(id, kind, contents, Quantity(quantity, units));
         if (is Integer created) {
             pile.created = created;
         }
@@ -145,7 +145,7 @@ object dbCommunityStatsHandler
             assert (is Decimal num = parseDecimal(qtyString));
             quantity = num;
         }
-        value pile = ResourcePile(id, kind, contents, Quantity(quantity, units));
+        value pile = ResourcePileImpl(id, kind, contents, Quantity(quantity, units));
         if (is Integer created) {
             pile.created = created;
         }

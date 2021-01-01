@@ -10,8 +10,10 @@ import strategicprimer.model.common.idreg {
     IDRegistrar
 }
 import strategicprimer.model.common.map.fixtures {
-    ResourcePile,
-    Quantity
+    IMutableResourcePile,
+    IResourcePile,
+    Quantity,
+    ResourcePileImpl
 }
 import strategicprimer.model.common.xmlio {
     Warning
@@ -19,13 +21,13 @@ import strategicprimer.model.common.xmlio {
 
 "A reader for resource piles."
 class YAResourcePileReader(Warning warning, IDRegistrar idRegistrar)
-        extends YAAbstractReader<ResourcePile>(warning, idRegistrar) {
-    shared actual ResourcePile read(StartElement element, QName parent,
+        extends YAAbstractReader<IResourcePile>(warning, idRegistrar) {
+    shared actual IMutableResourcePile read(StartElement element, QName parent,
             {XMLEvent*} stream) {
         requireTag(element, parent, "resource");
         expectAttributes(element, "quantity", "kind", "contents", "unit", "created",
             "id", "image");
-        ResourcePile retval = ResourcePile(getOrGenerateID(element),
+        IMutableResourcePile retval = ResourcePileImpl(getOrGenerateID(element),
             getParameter(element, "kind"), getParameter(element, "contents"),
             Quantity(getNumericParameter(element, "quantity"),
                 getParameter(element, "unit", "")));
@@ -39,7 +41,7 @@ class YAResourcePileReader(Warning warning, IDRegistrar idRegistrar)
 
     shared actual Boolean isSupportedTag(String tag) =>
             "resource" == tag.lowercased;
-    shared actual void write(Anything(String) ostream, ResourcePile obj,
+    shared actual void write(Anything(String) ostream, IResourcePile obj,
             Integer indent) {
         writeTag(ostream, "resource", indent);
         writeProperty(ostream, "id", obj.id);
@@ -54,5 +56,5 @@ class YAResourcePileReader(Warning warning, IDRegistrar idRegistrar)
         closeLeafTag(ostream);
     }
 
-    shared actual Boolean canWrite(Object obj) => obj is ResourcePile;
+    shared actual Boolean canWrite(Object obj) => obj is IResourcePile;
 }

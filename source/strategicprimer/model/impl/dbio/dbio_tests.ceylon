@@ -35,7 +35,7 @@ import strategicprimer.model.common.map {
     TileType
 }
 import strategicprimer.model.common.map.fixtures {
-    ResourcePile,
+    ResourcePileImpl,
     Quantity,
     Implement,
     Ground,
@@ -207,13 +207,13 @@ object dbio_tests {
         stats.addWorkedField(13);
         stats.setSkillLevel("skillOne", 2);
         stats.setSkillLevel("skillTwo", 5);
-        stats.yearlyProduction.add(ResourcePile(1, "first", "first detail",
+        stats.yearlyProduction.add(ResourcePileImpl(1, "first", "first detail",
             Quantity(5, "pounds")));
-        stats.yearlyProduction.add(ResourcePile(2, "second", "second detail",
+        stats.yearlyProduction.add(ResourcePileImpl(2, "second", "second detail",
             Quantity(decimalNumber(1) / decimalNumber(2), "quarts")));
-        stats.yearlyConsumption.add(ResourcePile(3, "third", "third detail",
+        stats.yearlyConsumption.add(ResourcePileImpl(3, "third", "third detail",
             Quantity(8, "pecks")));
-        stats.yearlyConsumption.add(ResourcePile(4, "fourth", "fourth detail",
+        stats.yearlyConsumption.add(ResourcePileImpl(4, "fourth", "fourth detail",
             Quantity(decimalNumber(5) / decimalNumber(4), "square feet")));
         town.population = stats;
         assertFixtureSerialization(town);
@@ -231,13 +231,13 @@ object dbio_tests {
         stats.addWorkedField(13);
         stats.setSkillLevel("skillOne", 2);
         stats.setSkillLevel("skillTwo", 5);
-        stats.yearlyProduction.add(ResourcePile(1, "first", "first detail",
+        stats.yearlyProduction.add(ResourcePileImpl(1, "first", "first detail",
             Quantity(5, "pounds")));
-        stats.yearlyProduction.add(ResourcePile(2, "second", "second detail",
+        stats.yearlyProduction.add(ResourcePileImpl(2, "second", "second detail",
             Quantity(decimalNumber(1) / decimalNumber(2), "quarts")));
-        stats.yearlyConsumption.add(ResourcePile(3, "third", "third detail",
+        stats.yearlyConsumption.add(ResourcePileImpl(3, "third", "third detail",
             Quantity(8, "pecks")));
-        stats.yearlyConsumption.add(ResourcePile(4, "fourth", "fourth detail",
+        stats.yearlyConsumption.add(ResourcePileImpl(4, "fourth", "fourth detail",
             Quantity(decimalNumber(5) / decimalNumber(4), "square feet")));
         town.population = stats;
         assertFixtureSerialization(town);
@@ -255,13 +255,13 @@ object dbio_tests {
         stats.addWorkedField(13);
         stats.setSkillLevel("skillOne", 2);
         stats.setSkillLevel("skillTwo", 5);
-        stats.yearlyProduction.add(ResourcePile(1, "first", "first detail",
+        stats.yearlyProduction.add(ResourcePileImpl(1, "first", "first detail",
             Quantity(5, "pounds")));
-        stats.yearlyProduction.add(ResourcePile(2, "second", "second detail",
+        stats.yearlyProduction.add(ResourcePileImpl(2, "second", "second detail",
             Quantity(decimalNumber(1) / decimalNumber(2), "quarts")));
-        stats.yearlyConsumption.add(ResourcePile(3, "third", "third detail",
+        stats.yearlyConsumption.add(ResourcePileImpl(3, "third", "third detail",
             Quantity(8, "pecks")));
-        stats.yearlyConsumption.add(ResourcePile(4, "fourth", "fourth detail",
+        stats.yearlyConsumption.add(ResourcePileImpl(4, "fourth", "fourth detail",
             Quantity(decimalNumber(5) / decimalNumber(4), "square feet")));
         town.population = stats;
         assertFixtureSerialization(town);
@@ -309,11 +309,11 @@ object dbio_tests {
         value unit = Unit(owner, "unitKind", "unitName", id + 2);
         unit.addMember(Worker("workerName", "human", id + 3, Job("jobName", 2)));
         unit.addMember(Sphinx(id + 5));
-        unit.addMember(ResourcePile(id + 6, "resource kind", "resource contents",
+        unit.addMember(ResourcePileImpl(id + 6, "resource kind", "resource contents",
             Quantity(8, "counts")));
         fortress.addMember(unit);
         fortress.addMember(Implement("equipment", id + 4, 2));
-        fortress.addMember(ResourcePile(id + 7, "second resource", "second contents",
+        fortress.addMember(ResourcePileImpl(id + 7, "second resource", "second contents",
             Quantity(decimalNumber(3) / decimalNumber(4), "gallon")));
         assertFixtureSerialization(fortress);
     }

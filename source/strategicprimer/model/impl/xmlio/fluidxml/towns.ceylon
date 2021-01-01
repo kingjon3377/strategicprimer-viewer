@@ -44,7 +44,7 @@ import ceylon.collection {
     LinkedList
 }
 import strategicprimer.model.common.map.fixtures {
-    ResourcePile
+    IMutableResourcePile
 }
 
 object fluidTownHandler extends FluidBase() {
@@ -227,7 +227,7 @@ object fluidTownHandler extends FluidBase() {
                 }
                 case ("resource") {
                     assert (exists top = stack.top);
-                    Anything(ResourcePile) lambda;
+                    Anything(IMutableResourcePile) lambda;
                     switch (current)
                     case ("production") {
                         lambda = retval.yearlyProduction.add;

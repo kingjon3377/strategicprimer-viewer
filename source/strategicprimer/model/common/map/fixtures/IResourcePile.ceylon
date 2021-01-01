@@ -4,7 +4,7 @@ import lovelace.util.common {
 
 import strategicprimer.model.common.map {
     IFixture,
-    HasMutableImage,
+    HasImage,
     HasKind
 }
 import strategicprimer.model.common.map.fixtures {
@@ -15,44 +15,21 @@ import strategicprimer.model.common.map.fixtures {
 
 "A quantity of some kind of resource."
 todo("More members?")
-// FIXME: Make an interface, with mutator methods split to a mutator interface
-shared class ResourcePile(id, kind, contents, quantity)
-        satisfies UnitMember&FortressMember&HasKind&HasMutableImage {
-    shared actual String plural = "Resource Piles";
-
-    "The ID # of the resource pile."
-    shared actual Integer id;
-
-    "What general kind of thing is in the resource pile."
-    shared actual String kind;
-
+shared interface IResourcePile
+        satisfies UnitMember&FortressMember&HasKind&HasImage&Identifiable {
     "What specific kind of thing is in the resource pile."
-    shared variable String contents;
+    shared formal String contents;
 
     "How much of that thing is in the pile, including units."
-    shared variable Quantity quantity;
+    shared formal Quantity quantity;
 
-    "The filename of an image to use as an icon for this instance."
-    shared actual variable String image = "";
-
-    variable Integer createdTurn = -1;
     "The turn on which the resource was created."
-    shared Integer created => createdTurn;
+    shared formal Integer created;
 
-    assign created {
-        if (created < 0) {
-            createdTurn = -1;
-        } else {
-            createdTurn = created;
-        }
-    }
-
-    shared actual String defaultImage = "resource.png";
-
-    "If we ignore ID, a fixture is equal iff it is a ResourcePile with the same kind and
-     contents, of the same age, with equal quantity."
+    "If we ignore ID, a fixture is equal iff it is an IResourcePile with the
+     same kind and contents, of the same age, with equal quantity."
     shared actual Boolean equalsIgnoringID(IFixture fixture) {
-        if (is ResourcePile fixture) {
+        if (is IResourcePile fixture) {
             return fixture.kind == kind && fixture.contents == contents &&
                 fixture.quantity == quantity && fixture.created == created;
         } else {
@@ -60,11 +37,11 @@ shared class ResourcePile(id, kind, contents, quantity)
         }
     }
 
-    "A fixture is a subset iff it is a ResourcePile of the same kind, contents, and age,
-     with the same ID, and its quantity is a subset of ours."
+    "A fixture is a subset iff it is an IResourcePile of the same kind,
+     contents, and age, with the same ID, and its quantity is a subset of ours."
     shared actual Boolean isSubset(IFixture obj, Anything(String) report) {
         if (obj.id == id) {
-            if (is ResourcePile obj) {
+            if (is IResourcePile obj) {
                 variable Boolean retval = true;
                 Anything(String) localReport = compose(report,
                     "In Resource Pile, ID #``id``: ".plus);
@@ -94,19 +71,10 @@ shared class ResourcePile(id, kind, contents, quantity)
         }
     }
 
-    "Clone the object."
-    shared actual ResourcePile copy(Boolean zero) {
-        ResourcePile retval = ResourcePile(id, kind, contents, quantity);
-        if (!zero) {
-            retval.created = created;
-        }
-        return retval;
-    }
-
     shared actual Integer hash => id;
 
     shared actual Boolean equals(Object obj) {
-        if (is ResourcePile obj) {
+        if (is IResourcePile obj) {
             return id == obj.id && equalsIgnoringID(obj);
         } else {
             return false;
@@ -122,4 +90,7 @@ shared class ResourcePile(id, kind, contents, quantity)
                 "" else " from turn ``created``"``";
         }
     }
+
+    "Clone the object."
+    shared actual formal IResourcePile copy(Boolean zero);
 }

@@ -5,8 +5,9 @@ import strategicprimer.model.common.idreg {
     IDRegistrar
 }
 import strategicprimer.model.common.map.fixtures {
+    IMutableResourcePile,
     Quantity,
-    ResourcePile,
+    ResourcePileImpl,
     Implement
 }
 import com.vasileff.ceylon.structures {
@@ -83,7 +84,7 @@ shared class ResourceAddingCLIHelper(ICLIHelper cli, IDRegistrar idf) {
     }
 
     "Ask the user to enter a resource, which is returned; [[null]] is returned on EOF."
-    shared ResourcePile? enterResource() {
+    shared IMutableResourcePile? enterResource() {
         if (exists kind = getResourceKind(),
                 exists origContents = getResourceContents(kind),
                 exists units = getResourceUnits(origContents),
@@ -102,7 +103,7 @@ shared class ResourceAddingCLIHelper(ICLIHelper cli, IDRegistrar idf) {
             }
             if (exists quantity = cli.inputDecimal("Quantity in ``units``?"),
                     quantity.positive) {
-                value retval = ResourcePile(idf.createID(), kind, contents,
+                value retval = ResourcePileImpl(idf.createID(), kind, contents,
                     Quantity(quantity, units));
                 switch (value setCreated = cli.inputBooleanInSeries("Set created date?",
                     "created" + origContents))

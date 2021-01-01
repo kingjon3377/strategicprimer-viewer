@@ -15,7 +15,7 @@ import strategicprimer.model.common.map {
     IMapNG
 }
 import strategicprimer.model.common.map.fixtures {
-    ResourcePile,
+    IResourcePile,
     FortressMember,
     Implement,
     UnitMember
@@ -89,8 +89,8 @@ shared class UnitReportGenerator(Comparison([Point, IFixture], [Point, IFixture]
         if (!item.empty) {
             MutableList<IWorker> workers = ArrayList<IWorker>();
             MutableList<Implement> equipment = ArrayList<Implement>();
-            MutableMultimap<String, ResourcePile> resources =
-                    HashMultimap<String, ResourcePile>();
+            MutableMultimap<String, IResourcePile> resources =
+                    HashMultimap<String, IResourcePile>();
             MutableList<Animal> animals = ArrayList<Animal>();
             MutableList<UnitMember> others = ArrayList<UnitMember>();
             for (member in item) {
@@ -98,7 +98,7 @@ shared class UnitReportGenerator(Comparison([Point, IFixture], [Point, IFixture]
                     workers.add(member);
                 } else if (is Implement member) {
                     equipment.add(member);
-                } else if (is ResourcePile member) {
+                } else if (is IResourcePile member) {
                     resources.put(member.kind, member);
                 } else if (is Animal member) {
                     if (exists existing = animals.findAndRemoveFirst(
@@ -151,7 +151,7 @@ shared class UnitReportGenerator(Comparison([Point, IFixture], [Point, IFixture]
                          <ul>
                          ");
                 for (kind->list in resources.asMap) {
-                    produceInner(kind, list.sequence(), (ResourcePile member) =>
+                    produceInner(kind, list.sequence(), (IResourcePile member) =>
                         memberReportGenerator.produceSingle(fixtures, map, ostream,
                         member, loc));
                 }

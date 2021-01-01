@@ -17,8 +17,10 @@ import strategicprimer.model.common.map {
     IPlayerCollection
 }
 import strategicprimer.model.common.map.fixtures {
-    ResourcePile,
+    IMutableResourcePile,
+    IResourcePile,
     Quantity,
+    ResourcePileImpl,
     Implement
 }
 import strategicprimer.model.common.map.fixtures.resources {
@@ -45,14 +47,14 @@ import strategicprimer.model.impl.xmlio.exceptions {
 }
 
 object fluidResourceHandler extends FluidBase() {
-    shared ResourcePile readResource(StartElement element, QName parent,
+    shared IMutableResourcePile readResource(StartElement element, QName parent,
             {XMLEvent*} stream, IPlayerCollection players, Warning warner,
             IDRegistrar idFactory) {
         requireTag(element, parent, "resource");
         expectAttributes(element, warner, "quantity", "kind", "contents", "unit",
             "created", "id", "image");
         spinUntilEnd(element.name, stream);
-        ResourcePile retval = ResourcePile(
+        IMutableResourcePile retval = ResourcePileImpl(
             getOrGenerateID(element, warner, idFactory),
             getAttribute(element, "kind"),
             getAttribute(element, "contents"),
@@ -248,7 +250,7 @@ object fluidResourceHandler extends FluidBase() {
         }
     }
 
-    shared void writeResource(XMLStreamWriter ostream, ResourcePile obj, Integer indent) {
+    shared void writeResource(XMLStreamWriter ostream, IResourcePile obj, Integer indent) {
         writeTag(ostream, "resource", indent, true);
         writeAttributes(ostream, "id"->obj.id, "kind"->obj.kind,
             "contents"->obj.contents, "quantity"->obj.quantity.number,

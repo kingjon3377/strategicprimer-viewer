@@ -19,7 +19,7 @@ import strategicprimer.model.common.map {
 }
 import strategicprimer.model.common.map.fixtures {
     Implement,
-    ResourcePile,
+    IResourcePile,
     FortressMember
 }
 import strategicprimer.model.common.map.fixtures.mobile {
@@ -114,15 +114,15 @@ shared class FortressReportGenerator(
         }
         MutableList<IUnit> units = ArrayList<IUnit>();
         MutableList<Implement> equipment = ArrayList<Implement>();
-        MutableMultimap<String, ResourcePile> resources =
-                ArrayListMultimap<String, ResourcePile>();
+        MutableMultimap<String, IResourcePile> resources =
+                ArrayListMultimap<String, IResourcePile>();
         MutableList<FortressMember> contents = ArrayList<FortressMember>();
         for (member in item) {
             if (is IUnit member) {
                 units.add(member);
             } else if (is Implement member) {
                 equipment.add(member);
-            } else if (is ResourcePile member) {
+            } else if (is IResourcePile member) {
                 resources.put(member.kind, member);
             } else {
                 contents.add(member);

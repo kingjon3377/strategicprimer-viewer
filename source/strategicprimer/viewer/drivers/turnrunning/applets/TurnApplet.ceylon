@@ -20,8 +20,8 @@ import strategicprimer.model.common.map.fixtures.towns {
 }
 import strategicprimer.model.common.map.fixtures {
     FortressMember,
-    Quantity,
-    ResourcePile
+    IResourcePile,
+    Quantity
 }
 import strategicprimer.model.common.map.fixtures.mobile {
     IUnit
@@ -120,11 +120,11 @@ shared abstract class AbstractTurnApplet(ITurnRunningModel model, ICLIHelper cli
     }
 
     // FIXME: Should only look at a particular unit's location
-    shared [ResourcePile*] getFoodFor(Player player, Integer turn) { // TODO: Move into the model?
+    shared [IResourcePile*] getFoodFor(Player player, Integer turn) { // TODO: Move into the model?
         return model.map.locations.flatMap(model.map.fixtures.get).narrow<Fortress|IUnit>()
-            .filter(matchingValue(player, HasOwner.owner)).flatMap(identity).narrow<ResourcePile>()
-            .filter(matchingValue("food", ResourcePile.kind)).filter(matchingValue("pounds",
-                compose(Quantity.units, ResourcePile.quantity))).filter((r) => r.created <= turn).sequence();
+            .filter(matchingValue(player, HasOwner.owner)).flatMap(identity).narrow<IResourcePile>()
+            .filter(matchingValue("food", IResourcePile.kind)).filter(matchingValue("pounds",
+                compose(Quantity.units, IResourcePile.quantity))).filter((r) => r.created <= turn).sequence();
     }
 
 }

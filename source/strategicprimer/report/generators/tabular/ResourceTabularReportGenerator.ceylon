@@ -20,17 +20,17 @@ import strategicprimer.model.common.map {
 }
 import strategicprimer.model.common.map.fixtures {
     Implement,
-    ResourcePile
+    IResourcePile
 }
 import strategicprimer.model.common.map.fixtures.resources {
     CacheFixture
 }
 
 "A tabular report generator for resources, including [[caches|CacheFixture]],
- [[resource piles|ResourcePile]], and [[equipment|Implement]]."
+ [[resource piles|IResourcePile]], and [[equipment|Implement]]."
 shared class ResourceTabularReportGenerator(Point? hq, MapDimensions dimensions)
-        extends AbstractTableGenerator<Implement|CacheFixture|ResourcePile>()
-        satisfies ITableGenerator<Implement|CacheFixture|ResourcePile> {
+        extends AbstractTableGenerator<Implement|CacheFixture|IResourcePile>()
+        satisfies ITableGenerator<Implement|CacheFixture|IResourcePile> {
     "The file-name to (by default) write this table to."
     shared actual String tableName = "resources";
     "The header row for this table."
@@ -47,17 +47,12 @@ shared class ResourceTabularReportGenerator(Point? hq, MapDimensions dimensions)
     "Create a GUI table row representing the given fixture."
     shared actual [{String+}+] produce(
             DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
-            Implement|CacheFixture|ResourcePile item, Integer key, Point loc,
+            Implement|CacheFixture|IResourcePile item, Integer key, Point loc,
             Map<Integer, Integer> parentMap) {
         String kind;
         String quantity;
         String specifics;
         switch (item)
-        case (is ResourcePile) {
-            kind = item.kind;
-            quantity = item.quantity.string;
-            specifics = item.contents;
-        }
         case (is Implement) {
             kind = "equipment";
             quantity = item.count.string;
@@ -68,28 +63,24 @@ shared class ResourceTabularReportGenerator(Point? hq, MapDimensions dimensions)
             quantity = "---";
             specifics = item.contents;
         }
+        else case (is IResourcePile) {
+            kind = item.kind;
+            quantity = item.quantity.string;
+            specifics = item.contents;
+        }
         fixtures.remove(key);
         return [[distanceString(loc, hq, dimensions), locationString(loc),
             kind, quantity, specifics]];
     }
 
-    Comparison compareItems(Implement|CacheFixture|ResourcePile first,
-            Implement|CacheFixture|ResourcePile second) {
+    Comparison compareItems(Implement|CacheFixture|IResourcePile first,
+            Implement|CacheFixture|IResourcePile second) {
         switch (first)
-        case (is ResourcePile) {
-            if (is ResourcePile second) {
-                return comparing(byIncreasing(ResourcePile.kind),
-                    byIncreasing(ResourcePile.contents),
-                    byDecreasing(ResourcePile.quantity))(first, second);
-            } else {
-                return smaller;
-            }
-        }
         case (is Implement) {
             if (is Implement second) {
                 return comparing(byIncreasing(Implement.kind),
                     byDecreasing(Implement.count))(first, second);
-            } else if (is ResourcePile second) {
+            } else if (is IResourcePile second) {
                 return larger;
             } else {
                 return smaller;
@@ -103,12 +94,21 @@ shared class ResourceTabularReportGenerator(Point? hq, MapDimensions dimensions)
                 return larger;
             }
         }
+        else case (is IResourcePile) {
+            if (is IResourcePile second) {
+                return comparing(byIncreasing(IResourcePile.kind),
+                    byIncreasing(IResourcePile.contents),
+                    byDecreasing(IResourcePile.quantity))(first, second);
+            } else {
+                return smaller;
+            }
+        }
     }
 
     "Compare two Point-fixture pairs."
     shared actual Comparison comparePairs(
-            [Point, Implement|CacheFixture|ResourcePile] one,
-            [Point, Implement|CacheFixture|ResourcePile] two) =>
+            [Point, Implement|CacheFixture|IResourcePile] one,
+            [Point, Implement|CacheFixture|IResourcePile] two) =>
         comparing(comparingOn(pairPoint, distanceComparator),
             comparingOn(pairFixture, compareItems))(one, two);
 
@@ -116,10 +116,10 @@ shared class ResourceTabularReportGenerator(Point? hq, MapDimensions dimensions)
     shared actual void produceTable(Anything(String) ostream,
             DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
             Map<Integer, Integer> parentMap) {
-        {[Integer, [Point, CacheFixture|Implement|ResourcePile]]*} values =
-                narrowedStream<Integer, [Point, CacheFixture|Implement|ResourcePile]>
+        {[Integer, [Point, CacheFixture|Implement|IResourcePile]]*} values =
+                narrowedStream<Integer, [Point, CacheFixture|Implement|IResourcePile]>
                     (fixtures).sort(comparingOn(
-                        Entry<Integer, [Point, CacheFixture|Implement|ResourcePile]>.item,
+                        Entry<Integer, [Point, CacheFixture|Implement|IResourcePile]>.item,
                         comparePairs)).map(Entry.pair);
         writeRow(ostream, headerRow.first, *headerRow.rest);
         MutableMap<[Point, String], Integer> implementCounts =
@@ -136,11 +136,11 @@ shared class ResourceTabularReportGenerator(Point? hq, MapDimensions dimensions)
                 implementCounts[[loc, fixture.kind]] = num + fixture.count;
                 fixtures.remove(key);
             } case (is CacheFixture) {
-                // FIXME: combine with ResourcePile case once eclipse/ceylon#7372 fixed
+                // FIXME: combine with IResourcePile case once eclipse/ceylon#7372 fixed
                 value [row, *_] = produce(fixtures, fixture, key, loc, parentMap);
                 writeRow(ostream, row.first, *row.rest);
                 fixtures.remove(key);
-            } case (is ResourcePile) {
+            } else case (is IResourcePile) {
                 value [row, *_] = produce(fixtures, fixture, key, loc, parentMap);
                 writeRow(ostream, row.first, *row.rest);
                 fixtures.remove(key);

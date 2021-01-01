@@ -22,7 +22,7 @@ import strategicprimer.model.common.map {
 }
 import strategicprimer.model.common.map.fixtures {
     Implement,
-    ResourcePile,
+    IResourcePile,
     UnitMember
 }
 import strategicprimer.model.common.map.fixtures.mobile {
@@ -244,7 +244,7 @@ class StrategyExporter(IWorkerModel model, SPOptions options)
                             writer.writeLine(item.string); // FIXME: This is egregiously verbose ("An implement of kind ...")
                         }
                     }
-                    for (kind->resources in fortress.narrow<ResourcePile>().group(ResourcePile.kind)) {
+                    for (kind->resources in fortress.narrow<IResourcePile>().group(IResourcePile.kind)) {
                         writer.write("  - ");
                         writer.write(kind);
                         writer.writeLine(":");
@@ -253,7 +253,7 @@ class StrategyExporter(IWorkerModel model, SPOptions options)
                             writer.writeLine(pile.string); // FIXME: This is egregiously verbose ("A pile of ...")
                         }
                     }
-                    if (fortress.size > fortress.narrow<Implement|ResourcePile|IUnit>().size) {
+                    if (fortress.size > fortress.narrow<Implement|IResourcePile|IUnit>().size) {
                         process.writeErrorLine("Unhandled members in ``fortress.name``"); // TODO: Take ICLIHelper to report diagnostics on
                     }
                 }

@@ -63,7 +63,8 @@ import strategicprimer.model.common.map {
 import strategicprimer.model.common.map.fixtures {
     TextFixture,
     Implement,
-    ResourcePile,
+    IMutableResourcePile,
+    ResourcePileImpl,
     Ground,
     Quantity
 }
@@ -482,9 +483,9 @@ object xmlTests {
         pop.addWorkedField(workedField);
         // TODO: Here and below, randomize strings in production, consumption, and skills
         // TODO: We'd like to randomize number of skills, number of worked fields, etc.
-        pop.yearlyProduction.add(ResourcePile(producedId, "prodKind", "production",
+        pop.yearlyProduction.add(ResourcePileImpl(producedId, "prodKind", "production",
             Quantity(producedQty, "single units")));
-        pop.yearlyConsumption.add(ResourcePile(consumedId, "consKind", "consumption",
+        pop.yearlyConsumption.add(ResourcePileImpl(consumedId, "consKind", "consumption",
             Quantity(consumedQty, "double units")));
         assertSerialization("Village stats can have both production and consumption",
             village);
@@ -541,7 +542,7 @@ object xmlTests {
         CommunityStats population = CommunityStats(populationSize);
         population.addWorkedField(workedField);
         population.setSkillLevel("citySkill", skillLevel);
-        population.yearlyConsumption.add(ResourcePile(producedId, "cityResource",
+        population.yearlyConsumption.add(ResourcePileImpl(producedId, "cityResource",
             "citySpecific", Quantity(producedQty, "cityUnit")));
         city.population = population;
         assertSerialization("Community-stats can be serialized", population);
@@ -590,7 +591,7 @@ object xmlTests {
         population.addWorkedField(7);
         population.addWorkedField(12);
         population.setSkillLevel("fortSkill", 3);
-        population.yearlyProduction.add(ResourcePile(5, "fortResource", "fortSpecific",
+        population.yearlyProduction.add(ResourcePileImpl(5, "fortResource", "fortSpecific",
             Quantity(1, "fortUnit")));
         fourthFort.population = population;
         assertSerialization("Fortification can have community-stats", fourthFort);
@@ -634,9 +635,9 @@ object xmlTests {
         population.addWorkedField(23);
         population.setSkillLevel("townSkill", 3);
         population.setSkillLevel("secondSkill", 5);
-        population.yearlyProduction.add(ResourcePile(5, "townResource", "townSpecific",
+        population.yearlyProduction.add(ResourcePileImpl(5, "townResource", "townSpecific",
             Quantity(1, "TownUnit")));
-        population.yearlyProduction.add(ResourcePile(8, "townResource", "secondSpecific",
+        population.yearlyProduction.add(ResourcePileImpl(8, "townResource", "secondSpecific",
             Quantity(2, "townUnit")));
         fourthTown.population = population;
         assertSerialization("Fortification can have community-stats", fourthTown);
@@ -1341,15 +1342,15 @@ object xmlTests {
         firstFort.addMember(Implement("implKindTwo", 8));
         assertSerialization("[[Implement]] can be more than one in one object",
             firstFort);
-        firstFort.addMember(ResourcePile(3, "generalKind", "specificKind",
+        firstFort.addMember(ResourcePileImpl(3, "generalKind", "specificKind",
             Quantity(10, "each")));
-        assertSerialization("[[Fortress]] can have a [[ResourcePile]] as a member",
+        assertSerialization("[[Fortress]] can have a [[strategicprimer.model.common.fixtures::ResourcePile]] as a member",
             firstFort);
-        ResourcePile resource = ResourcePile(4, "generalKind", "specificKind",
+        IMutableResourcePile resource = ResourcePileImpl(4, "generalKind", "specificKind",
             Quantity(15, "pounds"));
         resource.created = 5;
         assertSerialization("Resource pile can know what turn it was created", resource);
-        assertSerialization("Resource pile can have non-integer quantity", ResourcePile(5,
+        assertSerialization("Resource pile can have non-integer quantity", ResourcePileImpl(5,
             "resourceKind", "specificKind2",
             Quantity(decimalNumber(3) / decimalNumber(2), "cubic feet")));
     }

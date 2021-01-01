@@ -16,8 +16,10 @@ import strategicprimer.model.common.map {
 }
 
 import strategicprimer.model.common.map.fixtures {
-    ResourcePile,
+    IMutableResourcePile,
+    IResourcePile,
     Quantity,
+    ResourcePileImpl,
     Implement
 }
 
@@ -67,11 +69,11 @@ shared class DuplicateFixtureRemoverCLI satisfies CLIDriver {
         case (is AnimalImpl|Implement|Forest|Grove|Meadow) {
             return member.kind;
         }
-        case (is ResourcePile) {
-            return member.contents;
-        }
         case (null) {
             return "null";
+        }
+        else case (is IResourcePile) {
+            return member.contents;
         }
         else {
             return member.string;
@@ -100,11 +102,11 @@ shared class DuplicateFixtureRemoverCLI satisfies CLIDriver {
 
     "Combine like resources into a single resource pile. We assume that all resources have
      the same kind, contents, units, and created date."
-    static ResourcePile combineResources({ResourcePile*} list) {
+    static IResourcePile combineResources({IResourcePile*} list) {
         assert (exists top = list.first);
-        ResourcePile combined = ResourcePile(top.id, top.kind,
+        IMutableResourcePile combined = ResourcePileImpl(top.id, top.kind,
             top.contents, Quantity(list
-                .map(ResourcePile.quantity).map(Quantity.number)
+                .map(IResourcePile.quantity).map(Quantity.number)
                 .map(decimalize).fold(decimalNumber(0))(plus),
                 top.quantity.units));
         combined.created = top.created;
@@ -158,7 +160,7 @@ shared class DuplicateFixtureRemoverCLI satisfies CLIDriver {
     void coalesceResources(Point location) {
         Map<ClassOrInterface<IFixture>, CoalescedHolder<out IFixture, out Object>> mapping
                 = simpleMap(
-            `ResourcePile`->CoalescedHolder<ResourcePile, [String, String, String,
+            `IResourcePile`->CoalescedHolder<IResourcePile, [String, String, String,
                     Integer]>(
                 (pile) => [pile.kind, pile.contents, pile.quantity.units, pile.created],
                 combineResources),

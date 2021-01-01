@@ -44,7 +44,7 @@ import ceylon.random {
     DefaultRandom
 }
 import strategicprimer.model.common.map.fixtures {
-    ResourcePile
+    IMutableResourcePile
 }
 import ceylon.collection {
     Stack,
@@ -135,7 +135,7 @@ class YATownReader(Warning warner, IDRegistrar idRegistrar, IPlayerCollection pl
                 }
                 case ("resource") {
                     assert (exists top = stack.top);
-                    Anything(ResourcePile) lambda;
+                    Anything(IMutableResourcePile) lambda;
                     switch (current)
                     case ("production") {
                         lambda = retval.yearlyProduction.add;

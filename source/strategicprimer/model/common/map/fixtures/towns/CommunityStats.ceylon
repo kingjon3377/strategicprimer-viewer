@@ -9,7 +9,7 @@ import lovelace.util.common {
     todo
 }
 import strategicprimer.model.common.map.fixtures {
-    ResourcePile
+    IResourcePile
 }
 import strategicprimer.model.common.map {
     Subsettable
@@ -79,13 +79,13 @@ shared class CommunityStats(populationCount) satisfies Subsettable<CommunityStat
     "The set of resources produced each year."
     todo("Should we really expose this as a [[MutableSet]], instead of merely a [[Set]]
           modified by mutators on this class?")
-    shared MutableSet<ResourcePile> yearlyProduction = HashSet<ResourcePile>();
+    shared MutableSet<IResourcePile> yearlyProduction = HashSet<IResourcePile>();
 
     "The set of resources consumed each year. (Though substitutions of like resources are
      to be expected.)"
     todo("Should we really expose this as a [[MutableSet]], instead of merely a [[Set]]
           modified by mutators on this class?")
-    shared MutableSet<ResourcePile> yearlyConsumption = HashSet<ResourcePile>();
+    shared MutableSet<IResourcePile> yearlyConsumption = HashSet<IResourcePile>();
 
     shared actual String string {
         StringBuilder builder = StringBuilder();
@@ -139,7 +139,7 @@ shared class CommunityStats(populationCount) satisfies Subsettable<CommunityStat
                 for (resource in other.yearlyProduction) {
                     if (yearlyProduction.contains(resource) || yearlyProduction.any(
                             shuffle(curry(shuffle(
-                                ResourcePile.isSubset)))(noop)(resource))) {
+                                IResourcePile.isSubset)))(noop)(resource))) {
                         continue;
                     } else {
                         report("Produces a resource we don't, or more than we do: ``
@@ -150,7 +150,7 @@ shared class CommunityStats(populationCount) satisfies Subsettable<CommunityStat
                 for (resource in other.yearlyConsumption) {
                     if (yearlyConsumption.contains(resource) || yearlyConsumption.any(
                             shuffle(curry(shuffle(
-                                ResourcePile.isSubset)))(noop)(resource))) {
+                                IResourcePile.isSubset)))(noop)(resource))) {
                         continue;
                     } else {
                         report("Consumes a resource we don't, or more than we do: ``

@@ -11,8 +11,8 @@ import lovelace.util.jvm {
 }
 
 import strategicprimer.model.common.map.fixtures {
-    Quantity,
-    ResourcePile
+    IResourcePile,
+    Quantity
 }
 
 class FoodType {
@@ -52,7 +52,7 @@ class FoodType {
     // TODO: Add additional cases
     shared new other extends delegate(null, null, null, null, null, null, "other") {}
 
-    shared Boolean? hasSpoiled(ResourcePile pile, Integer turn, ICLIHelper cli) {
+    shared Boolean? hasSpoiled(IResourcePile pile, Integer turn, ICLIHelper cli) {
         Integer age = turn - pile.created;
         if (turn < 0 || pile.created < 0) { // Either corrupt turn information or non-spoiling rations
             return false;

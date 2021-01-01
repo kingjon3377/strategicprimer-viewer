@@ -17,7 +17,7 @@ import strategicprimer.model.common.map {
 }
 import strategicprimer.model.common.map.fixtures {
     Implement,
-    ResourcePile,
+    IResourcePile,
     Quantity,
     UnitMember
 }
@@ -241,15 +241,15 @@ shared class Unit(owner, kind, name, id) satisfies IMutableUnit&HasPortrait {
             }
         } else if (is Implement two) {
             return larger;
-        } else if (is ResourcePile one) {
-            if (is ResourcePile two) {
-                return comparing(comparingOn(ResourcePile.kind, increasing<String>),
-                    comparingOn(ResourcePile.contents, increasing<String>), comparingOn(ResourcePile.quantity,
+        } else if (is IResourcePile one) {
+            if (is IResourcePile two) {
+                return comparing(comparingOn(IResourcePile.kind, increasing<String>),
+                    comparingOn(IResourcePile.contents, increasing<String>), comparingOn(IResourcePile.quantity,
                         decreasing<Quantity>))(one, two);
             } else {
                 return larger;
             }
-        } else if (is ResourcePile two) {
+        } else if (is IResourcePile two) {
             return larger;
         } else {
             process.writeErrorLine("Unhandled unit-member in sorting");

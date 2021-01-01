@@ -21,7 +21,8 @@ import strategicprimer.model.common.map {
 }
 
 import strategicprimer.model.common.map.fixtures {
-    ResourcePile,
+    IResourcePile,
+    ResourcePileImpl,
     Quantity
 }
 
@@ -298,7 +299,7 @@ class TownGenerator(ICLIHelper cli) {
                 exists contents = cli.inputString("Specific kind of resource: "),
                 exists quantity = cli.inputDecimal("Quantity of the resource produced: "),
                 exists units = cli.inputString("Units of that quantity: ")) {
-            ResourcePile pile = ResourcePile(idf.createID(), kind, contents,
+            IResourcePile pile = ResourcePileImpl(idf.createID(), kind, contents,
                 Quantity(quantity, units));
             retval.yearlyProduction.add(pile);
         }
@@ -308,7 +309,7 @@ class TownGenerator(ICLIHelper cli) {
                 exists contents = cli.inputString("Specific kind of resource: "),
                 exists quantity = cli.inputDecimal("Quantity of the resource consumed: "),
                 exists units = cli.inputString("Units of that quantity: ")) {
-            retval.yearlyConsumption.add(ResourcePile(idf.createID(), kind, contents,
+            retval.yearlyConsumption.add(ResourcePileImpl(idf.createID(), kind, contents,
                 Quantity(quantity, units)));
         }
 
@@ -428,7 +429,7 @@ class TownGenerator(ICLIHelper cli) {
             .take(resourceCount);
         for (field in workedFields) {
             retval.addWorkedField(field.id);
-            retval.yearlyProduction.add(ResourcePile(idf.createID(),
+            retval.yearlyProduction.add(ResourcePileImpl(idf.createID(),
                 getHarvestableKind(field), getHarvestedProduct(field),
                 Quantity(1, "unit")));
         }
@@ -436,24 +437,24 @@ class TownGenerator(ICLIHelper cli) {
         for (skill->level in retval.highestSkillLevels) {
             String tableName = "``skill``_production";
             if (runner.hasTable(tableName)) {
-                retval.yearlyProduction.add(ResourcePile(idf.createID(), "unknown",
+                retval.yearlyProduction.add(ResourcePileImpl(idf.createID(), "unknown",
                     runner.consultTable(tableName, location, map.baseTerrain[location],
                         map.mountainous.get(location), map.fixtures.get(location), // TODO: syntax sugar once compiler bug fixed
                         map.dimensions),
                     Quantity(2.power(level - 1), (level == 1) then "unit" else "units")));
             } else {
-                retval.yearlyProduction.add(ResourcePile(idf.createID(), "unknown",
+                retval.yearlyProduction.add(ResourcePileImpl(idf.createID(), "unknown",
                     "product of ``skill``", Quantity(1, "unit")));
             }
         }
 
         assert (exists consumptionTable = consumption[consumptionTableName]);
         for ([quantity, kind, resource] in consumptionTable) {
-            retval.yearlyConsumption.add(ResourcePile(idf.createID(), kind, resource,
+            retval.yearlyConsumption.add(ResourcePileImpl(idf.createID(), kind, resource,
                 quantity));
         }
 
-        retval.yearlyConsumption.add(ResourcePile(idf.createID(), "food", "various",
+        retval.yearlyConsumption.add(ResourcePileImpl(idf.createID(), "food", "various",
             Quantity(4 * 14 * population, "pounds")));
         return retval;
     }

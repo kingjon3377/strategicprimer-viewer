@@ -48,7 +48,8 @@ import strategicprimer.model.common.map.fixtures.terrain {
 }
 
 import strategicprimer.model.common.map.fixtures {
-    ResourcePile
+    IResourcePile,
+    ResourcePileImpl
 }
 
 import strategicprimer.drivers.exploration.old {
@@ -138,7 +139,7 @@ shared class TodoFixerCLI(ICLIHelper cli, model) satisfies CLIDriver {
     }
 
     Boolean productionContainsHash([Point, CommunityStats] pair) =>
-                pair.rest.first.yearlyProduction.map(ResourcePile.contents).any(shuffle(String.contains)('#'));
+                pair.rest.first.yearlyProduction.map(IResourcePile.contents).any(shuffle(String.contains)('#'));
 
     Boolean anyEmptySkills([Point, CommunityStats] pair) =>
                 pair.rest.first.highestSkillLevels.map(Entry.key).any(String.empty);
@@ -186,10 +187,10 @@ shared class TodoFixerCLI(ICLIHelper cli, model) satisfies CLIDriver {
             for ([loc, population] in brokenTownContents) {
                 value production = population.yearlyProduction;
                 for (resource in production.filter(compose(shuffle(String.contains)('#'),
-                        ResourcePile.contents)).sequence()) {
+                        IResourcePile.contents)).sequence()) {
                     assert (exists table = resource.contents
                         .split('#'.equals, true, true).sequence()[1]);
-                    value replacement = ResourcePile(resource.id, resource.kind,
+                    value replacement = ResourcePileImpl(resource.id, resource.kind,
                         eRunner.recursiveConsultTable(table, loc, map.baseTerrain[loc],
                             //map.mountainous[loc],  map.fixtures[loc], // TODO: syntax sugar once compiler bug fixed
                             map.mountainous.get(loc),  map.fixtures.get(loc),

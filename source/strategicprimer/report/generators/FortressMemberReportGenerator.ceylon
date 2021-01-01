@@ -15,7 +15,7 @@ import strategicprimer.model.common.map {
     IMapNG
 }
 import strategicprimer.model.common.map.fixtures {
-    ResourcePile,
+    IResourcePile,
     Implement,
     FortressMember
 }
@@ -33,13 +33,20 @@ shared class FortressMemberReportGenerator(
     shared actual void produceSingle(
             DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
             IMapNG map, Anything(String) ostream, FortressMember item, Point loc) {
-        assert (is IUnit|ResourcePile|Implement item);
+        assert (is IUnit|IResourcePile|Implement item);
         if (is IUnit item) {
             UnitReportGenerator(pairComparator, currentPlayer, dimensions,
                 currentTurn, hq).produceSingle(fixtures, map, ostream, item, loc);
         } else {
             switch (item)
-            case (is ResourcePile) {
+            case (is Implement) {
+                fixtures.remove(item.id);
+                ostream("Equipment: ``item.kind``");
+                if (item.count > 1) {
+                    ostream(" (``item.count``)");
+                }
+            }
+            else case (is IResourcePile) {
                 fixtures.remove(item.id);
                 if (item.quantity.units.empty) {
                     ostream("A pile of ``item.quantity`` ``item.contents`` (``item
@@ -51,12 +58,6 @@ shared class FortressMemberReportGenerator(
                 }
                 if (item.created >= 0) {
                     ostream(" from turn ``item.created``");
-                }
-            } case (is Implement) {
-                fixtures.remove(item.id);
-                ostream("Equipment: ``item.kind``");
-                if (item.count > 1) {
-                    ostream(" (``item.count``)");
                 }
             }
         }
@@ -73,21 +74,21 @@ shared class FortressMemberReportGenerator(
                     comparing(byIncreasing(Implement.kind),
                         byDecreasing(Implement.count),
                         byIncreasing(Implement.id)));
-        MutableMap<String, MutableHeadedMap<ResourcePile, Point>> resources =
-                HashMap<String, MutableHeadedMap<ResourcePile, Point>>();
-        for ([loc, item] in fixtures.items.narrow<[Point, ResourcePile|Implement]>()
+        MutableMap<String, MutableHeadedMap<IResourcePile, Point>> resources =
+                HashMap<String, MutableHeadedMap<IResourcePile, Point>>();
+        for ([loc, item] in fixtures.items.narrow<[Point, IResourcePile|Implement]>()
                 .sort(pairComparator)) {
-            if (is ResourcePile resource = item) {
-                MutableHeadedMap<ResourcePile, Point> pileMap;
+            if (is IResourcePile resource = item) {
+                MutableHeadedMap<IResourcePile, Point> pileMap;
                 if (exists temp = resources[resource.kind]) {
                     pileMap = temp;
                 } else {
-                    pileMap = HeadedMapImpl<ResourcePile, Point>("``resource.kind``:",
-                        comparing(byIncreasing(ResourcePile.kind),
-                            byIncreasing(ResourcePile.contents),
-                            byDecreasing(ResourcePile.quantity),
-                            byIncreasing(ResourcePile.created),
-                            byIncreasing(ResourcePile.id)));
+                    pileMap = HeadedMapImpl<IResourcePile, Point>("``resource.kind``:",
+                        comparing(byIncreasing(IResourcePile.kind),
+                            byIncreasing(IResourcePile.contents),
+                            byDecreasing(IResourcePile.quantity),
+                            byIncreasing(IResourcePile.created),
+                            byIncreasing(IResourcePile.id)));
                     resources[resource.kind] = pileMap;
                 }
                 pileMap[resource] = loc;

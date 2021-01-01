@@ -36,7 +36,7 @@ import strategicprimer.model.common.map {
 import strategicprimer.model.common.map.fixtures {
     UnitMember,
     Implement,
-    ResourcePile
+    IResourcePile
 }
 import strategicprimer.model.common.map.fixtures.mobile {
     IWorker,
@@ -210,7 +210,7 @@ JPanel&UnitMemberListener memberDetailPanel(JPanel resultsPanel, JPanel notesPan
             for (label in statLabels) {
                 label.arguments = [null];
             }
-        } else if (is ResourcePile local) {
+        } else if (is IResourcePile local) {
             typeLabel.text = "Resource";
             nameLabel.text = "";
             kindLabel.text = "``local.quantity`` ``local.contents`` (``local.kind``)";

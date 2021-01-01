@@ -33,7 +33,7 @@ import strategicprimer.model.common.map {
 }
 import strategicprimer.model.common.map.fixtures {
     Implement,
-    ResourcePile,
+    IResourcePile,
     TextFixture,
     Ground
 }
@@ -383,7 +383,7 @@ shared class SPFluidWriter() satisfies SPWriter {
         `TextFixture`->castingWriter<TextFixture>(
             fluidExplorableHandler.writeTextFixture),
         `Implement`->castingWriter<Implement>(fluidResourceHandler.writeImplement),
-        `ResourcePile`->castingWriter<ResourcePile>(fluidResourceHandler.writeResource),
+        `IResourcePile`->castingWriter<IResourcePile>(fluidResourceHandler.writeResource),
         `CacheFixture`->castingWriter<CacheFixture>(fluidResourceHandler.writeCache),
         `Meadow`->castingWriter<Meadow>(fluidResourceHandler.writeMeadow),
         `Grove`->castingWriter<Grove>(fluidResourceHandler.writeGrove),

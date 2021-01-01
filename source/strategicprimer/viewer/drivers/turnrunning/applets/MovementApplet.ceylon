@@ -22,8 +22,9 @@ import strategicprimer.model.common.map.fixtures.mobile {
     IMutableUnit
 }
 import strategicprimer.model.common.map.fixtures {
+    IResourcePile,
     Quantity,
-    ResourcePile
+    ResourcePileImpl
 }
 import ceylon.collection {
     ArrayList,
@@ -51,12 +52,12 @@ class MovementApplet(ITurnRunningModel model, ICLIHelper cli, IDRegistrar idf)
         if (is Null fortress) {
             return;
         }
-        MutableList<ResourcePile> resources = ArrayList { elements = fortress.narrow<ResourcePile>(); };
+        MutableList<IResourcePile> resources = ArrayList { elements = fortress.narrow<IResourcePile>(); };
         while (exists chosen = chooseFromList(resources, "Resources in ``fortress.name``:", "No resources in fortress.",
                 "Resource to take (from):", false)) {
             switch (cli.inputBooleanInSeries("Take it all?"))
             case (true) {
-                model.removeResource(chosen, unit.owner); // FIXME: Add transferResource(ResourcePile from, IUnit|Fortress to) to model
+                model.removeResource(chosen, unit.owner); // FIXME: Add transferResource(IResourcePile from, IUnit|Fortress to) to model
                 unit.addMember(chosen);
                 resources.remove(chosen);
             }
@@ -64,10 +65,10 @@ class MovementApplet(ITurnRunningModel model, ICLIHelper cli, IDRegistrar idf)
                 if (exists amount = cli.inputDecimal("Amount to take (in ``chosen.quantity.units``):"),
                         amount.positive) {
                     model.reduceResourceBy(chosen, amount, unit.owner);
-                    unit.addMember(ResourcePile(idf.createID(), chosen.kind, chosen.contents,
+                    unit.addMember(ResourcePileImpl(idf.createID(), chosen.kind, chosen.contents,
                         Quantity(amount, chosen.quantity.units)));
                     resources.clear();
-                    resources.addAll(fortress.narrow<ResourcePile>());
+                    resources.addAll(fortress.narrow<IResourcePile>());
                 }
             }
             case (null) {

@@ -58,7 +58,7 @@ import strategicprimer.model.common.xmlio {
 }
 
 import strategicprimer.model.common.map.fixtures {
-    ResourcePile
+    IResourcePile
 }
 
 import ceylon.decimal {
@@ -183,7 +183,7 @@ shared class MapCheckerCLI satisfies UtilityDriver {
 
     static Boolean resourcePlaceholderChecker(TileType terrain, Point context,
             IFixture fixture, Warning warner) {
-        if (is ResourcePile fixture) {
+        if (is IResourcePile fixture) {
             if (placeholderKinds.contains(fixture.kind)) {
                 warner.handle(SPContentWarning(context,
                     "Resource pile, ID #``fixture.id``, has placeholder kind: ``fixture

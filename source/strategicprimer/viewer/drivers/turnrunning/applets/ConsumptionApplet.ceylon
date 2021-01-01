@@ -11,7 +11,7 @@ import strategicprimer.model.common.map.fixtures.mobile {
 }
 
 import strategicprimer.model.common.map.fixtures {
-    ResourcePile
+    IResourcePile
 }
 
 import ceylon.decimal {
@@ -35,7 +35,7 @@ shared class ConsumptionApplet(ITurnRunningModel model, ICLIHelper cli, IDRegist
 
     shared actual String description = "Determine the food consumed by a unit.";
 
-    String describeFood(ResourcePile food) {
+    String describeFood(IResourcePile food) {
         if (food.created.negative) {
             return "``food.quantity.number`` ``food.quantity.units`` of ``food.contents``";
         } else {

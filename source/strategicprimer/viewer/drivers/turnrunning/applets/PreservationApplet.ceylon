@@ -5,8 +5,10 @@ import strategicprimer.model.common.idreg {
     IDRegistrar
 }
 import strategicprimer.model.common.map.fixtures {
-    ResourcePile,
-    Quantity
+    IMutableResourcePile,
+    IResourcePile,
+    Quantity,
+    ResourcePileImpl
 }
 import ceylon.collection {
     MutableList,
@@ -32,7 +34,7 @@ class PreservationApplet(ITurnRunningModel model, ICLIHelper cli, IDRegistrar id
 
     shared actual String description => "Convert food into less-perishable form.";
 
-    String describePile(ResourcePile pile) {
+    String describePile(IResourcePile pile) {
         if (pile.created.negative) {
             return "``pile.quantity`` of ``pile.contents``";
         } else {
@@ -68,7 +70,7 @@ class PreservationApplet(ITurnRunningModel model, ICLIHelper cli, IDRegistrar id
             } else {
                 return null;
             }
-            ResourcePile converted = ResourcePile(idf.createID(), "food", convertedForm, Quantity(newPounds, "pounds"));
+            IMutableResourcePile converted = ResourcePileImpl(idf.createID(), "food", convertedForm, Quantity(newPounds, "pounds"));
             converted.created = turn;
             switch (cli.inputBoolean("Use all ``item.quantity``?"))
             case (true) {
