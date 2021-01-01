@@ -39,8 +39,7 @@ abstract class HuntGeneralApplet(String verb, ITurnRunningModel model, ICLIHelpe
     String populationDescription(Animal animal) {
         if (animal.population > 1) {
             return "a group of perhaps ``animal.population
-//              `` ``animalPlurals[animal.kind]``"; // TODO: syntax sugar
-            `` ``animalPlurals.get(animal.kind)``";
+                `` ``animalPlurals.get(animal.kind)``"; // TODO: syntax sugar
         } else {
             return animal.kind;
         }
