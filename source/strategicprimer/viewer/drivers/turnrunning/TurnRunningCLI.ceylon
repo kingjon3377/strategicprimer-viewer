@@ -14,7 +14,6 @@ import ceylon.collection {
     naturalOrderTreeMap
 }
 import strategicprimer.model.common.map.fixtures.mobile {
-    IMutableUnit,
     IUnit,
     ProxyUnit,
     ProxyFor
@@ -199,8 +198,8 @@ class TurnRunningCLI(ICLIHelper cli, model) satisfies CLIDriver {
         if (exists player = cli.chooseFromList(model.playerChoices.sequence(),
                 "Players in the maps:", "No players found", "Player to run:",
                 false).item) {
-            MutableList<IMutableUnit> units = ArrayList {
-                elements = getUnits(player).narrow<IMutableUnit>().filter(unfinishedResults(currentTurn));
+            MutableList<IUnit> units = ArrayList {
+                elements = getUnits(player).narrow<IUnit>().filter(unfinishedResults(currentTurn));
             };
             while (true) {
                 value index->unit = cli.chooseFromList(units,
@@ -209,7 +208,7 @@ class TurnRunningCLI(ICLIHelper cli, model) satisfies CLIDriver {
                     "Unit to run:", false);
                 if (exists unit) {
                     String results = createResults(unit, currentTurn);
-                    unit.setResults(currentTurn, results);
+                    model.setUnitResults(unit, currentTurn, results);
                     if (!unfinishedResults(currentTurn)(unit)) {
                         units.delete(index);
                     }
