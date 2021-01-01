@@ -72,7 +72,7 @@ class PreservationApplet(ITurnRunningModel model, ICLIHelper cli, IDRegistrar id
             converted.created = turn;
             switch (cli.inputBoolean("Use all ``item.quantity``?"))
             case (true) {
-                super.removeFoodStock(item, unit.owner);
+                model.removeResource(item, unit.owner);
             }
             case (false) {
                 if (exists subtrahend = cli.inputDecimal("How many ``item.quantity.units`` to use?"), subtrahend.positive) {

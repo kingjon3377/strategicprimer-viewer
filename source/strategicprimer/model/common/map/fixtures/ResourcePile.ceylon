@@ -15,6 +15,7 @@ import strategicprimer.model.common.map.fixtures {
 
 "A quantity of some kind of resource."
 todo("More members?")
+// FIXME: Make an interface, with mutator methods split to a mutator interface
 shared class ResourcePile(id, kind, contents, quantity)
         satisfies UnitMember&FortressMember&HasKind&HasMutableImage {
     shared actual String plural = "Resource Piles";

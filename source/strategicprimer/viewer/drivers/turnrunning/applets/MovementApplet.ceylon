@@ -56,7 +56,7 @@ class MovementApplet(ITurnRunningModel model, ICLIHelper cli, IDRegistrar idf)
                 "Resource to take (from):", false)) {
             switch (cli.inputBooleanInSeries("Take it all?"))
             case (true) {
-                removeFoodStock(chosen, unit.owner);
+                model.removeResource(chosen, unit.owner); // FIXME: Add transferResource(ResourcePile from, IUnit|Fortress to) to model
                 unit.addMember(chosen);
                 resources.remove(chosen);
             }

@@ -24,7 +24,6 @@ import strategicprimer.model.common.map.fixtures {
     ResourcePile
 }
 import strategicprimer.model.common.map.fixtures.mobile {
-    IMutableUnit,
     IUnit
 }
 
@@ -117,27 +116,6 @@ shared abstract class AbstractTurnApplet(ITurnRunningModel model, ICLIHelper cli
                 }
             }
             hq.addMember(resource);
-        }
-    }
-
-    shared void removeFoodStock(ResourcePile food, Player owner) {
-        for (map in model.allMaps) {
-            for (container in map.locations.flatMap(map.fixtures.get).narrow<IMutableUnit|Fortress>()
-                    .filter(matchingValue(owner, HasOwner.owner))) {
-                variable Boolean found = false;
-                for (item in container.narrow<ResourcePile>()) {
-                    if (food.isSubset(item, noop)) { // TODO: is that the right way around?
-                        switch (container)
-                        case (is IMutableUnit) { container.removeMember(item); }
-                        else case (is Fortress) { container.removeMember(item); }
-                        found = true;
-                        break;
-                    }
-                }
-                if (found) {
-                    break;
-                }
-            }
         }
     }
 

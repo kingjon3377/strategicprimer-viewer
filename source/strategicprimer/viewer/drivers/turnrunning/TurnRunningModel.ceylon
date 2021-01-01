@@ -294,4 +294,35 @@ shared class TurnRunningModel extends ExplorationModel satisfies ITurnRunningMod
         }
         return any;
     }
+
+    "Remove the given [[resource|ResourcePile]] from a
+     [[unit|strategicprimer.model.common.map.fixtures.mobile::IUnit]] or
+     [[fortress|strategicprimer.model.common.map.fixtures.towns::Fortress]]
+     owned by [[the specified player|owner]] in all maps. Returns [[true]] if
+     any matched in any of the maps, [[false]] otherwise."
+    deprecated("Use [[reduceResourceBy]] when possible instead.")
+    shared actual Boolean removeResource(ResourcePile resource, Player owner) {
+        variable Boolean any = false;
+        for (map in restrictedAllMaps) {
+            for (container in map.fixtures.items.flatMap(partiallyFlattenFortresses)
+                    .narrow<IMutableUnit|Fortress>().filter(matchingValue(owner, HasOwner.owner))) {
+                variable Boolean found = false;
+                for (item in container.narrow<ResourcePile>()) {
+                    if (resource.isSubset(item, noop)) { // TODO: is that the right way around?
+                        switch (container)
+                        case (is IMutableUnit) { container.removeMember(item); }
+                        else case (is Fortress) { container.removeMember(item); }
+                        map.modified = true;
+                        any = true;
+                        found = true;
+                        break;
+                    }
+                }
+                if (found) {
+                    break;
+                }
+            }
+        }
+        return any;
+    }
 }

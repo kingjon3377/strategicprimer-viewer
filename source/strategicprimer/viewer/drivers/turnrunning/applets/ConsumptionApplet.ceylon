@@ -64,14 +64,14 @@ shared class ConsumptionApplet(ITurnRunningModel model, ICLIHelper cli, IDRegist
                 switch (cli.inputBooleanInSeries("Consume all of the ``food.contents``?",
                     "consume-all-of"))
                 case (true) {
-                    removeFoodStock(food, localUnit.owner);
+                    model.removeResource(food, localUnit.owner);
                     remainingConsumption -= decimalize(food.quantity.number);
                     continue;
                 }
                 case (false) { // TODO: extract this as a function?
                     value amountToConsume = cli.inputDecimal("How many pounds of the ``food.contents`` to consume:");
                     if (exists amountToConsume, amountToConsume >= decimalize(food.quantity.number)) {
-                        removeFoodStock(food, localUnit.owner);
+                        model.removeResource(food, localUnit.owner);
                         remainingConsumption -= decimalize(food.quantity.number);
                         continue;
                     } else if (exists amountToConsume) {
