@@ -1,8 +1,10 @@
 import strategicprimer.model.common.map {
     HasExtent,
+    HasOwner,
     HasPopulation,
     IFixture,
     IMutableMapNG,
+    Player,
     Point,
     TileFixture
 }
@@ -25,6 +27,7 @@ import lovelace.util.jvm {
 
 import strategicprimer.model.common.map.fixtures.mobile {
     IMutableWorker,
+    IMutableUnit,
     IUnit,
     IWorker
 }
@@ -51,6 +54,11 @@ import ceylon.logging {
     logger
 }
 
+import strategicprimer.model.common.map.fixtures {
+    Quantity,
+    ResourcePile
+}
+
 "Logger."
 Logger log = logger(`module strategicprimer.viewer`);
 
@@ -60,6 +68,16 @@ shared class TurnRunningModel extends ExplorationModel satisfies ITurnRunningMod
     static {IFixture*} unflattenNonFortresses(TileFixture fixture) {
         if (is Fortress fixture) {
             return fixture;
+        } else {
+            return Singleton(fixture);
+        }
+    }
+
+    "If [[fixture]] is a fortress, return a stream of it and its contents; otherwise,
+     return a singleton containing the fixture. This is intended to be used in [[Iterable.flatMap]]."
+    static {IFixture*} partiallyFlattenFortresses(TileFixture fixture) {
+        if (is Fortress fixture) {
+            return fixture.follow(fixture);
         } else {
             return Singleton(fixture);
         }
@@ -237,6 +255,40 @@ shared class TurnRunningModel extends ExplorationModel satisfies ITurnRunningMod
                     matchingJob.addSkill(replacement.copy());
                 } else {
                     log.warn("No matching skill in matching worker");
+                }
+            }
+        }
+        return any;
+    }
+
+    "Reduce the matching [[resource|ResourcePile]], in a
+     [[unit|strategicprimer.model.common.map.fixtures.mobile::IUnit]] or
+     [[fortress|Fortress]] owned by [[the specified player|owner]], by [[the
+     specified amount|amount]]. Returns [[true]] if any matched in any of the
+     maps, [[false]] otherwise."
+    shared actual Boolean reduceResourceBy(ResourcePile resource, Decimal amount, Player owner) {
+        variable Boolean any = false;
+        for (map in restrictedAllMaps) {
+            for (container in map.fixtures.items.flatMap(partiallyFlattenFortresses)
+                    .narrow<IMutableUnit|Fortress>().filter(matchingValue(owner, HasOwner.owner))) {
+                variable Boolean found = false;
+                for (item in container.narrow<ResourcePile>()) {
+                    if (resource.isSubset(item, noop)) { // TODO: is that the right way around?
+                        if (decimalize(item.quantity.number) <= amount) {
+                            switch (container)
+                            case (is IMutableUnit) { container.removeMember(item); }
+                            else case (is Fortress) { container.removeMember(item); }
+                        } else {
+                            item.quantity = Quantity(decimalize(item.quantity.number) - amount, resource.quantity.units);
+                        }
+                        map.modified = true;
+                        any = true;
+                        found = true;
+                        break;
+                    }
+                }
+                if (found) {
+                    break;
                 }
             }
         }

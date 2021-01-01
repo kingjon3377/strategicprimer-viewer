@@ -45,7 +45,7 @@ shared class SpoilageApplet(ITurnRunningModel model, ICLIHelper cli, IDRegistrar
                         buffer.append(" pounds of ");
                         buffer.append(food.string);
                         buffer.append(" spoiled.\n\n");
-                        reduceFoodBy(food, spoilage, owner);
+                        model.reduceResourceBy(food, spoilage, owner);
                     } else {
                         log.warn("Non-numeric spoilage amount");
                         return null;

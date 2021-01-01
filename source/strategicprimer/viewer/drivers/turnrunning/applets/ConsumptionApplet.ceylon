@@ -75,7 +75,7 @@ shared class ConsumptionApplet(ITurnRunningModel model, ICLIHelper cli, IDRegist
                         remainingConsumption -= decimalize(food.quantity.number);
                         continue;
                     } else if (exists amountToConsume) {
-                        reduceFoodBy(food, amountToConsume, localUnit.owner);
+                        model.reduceResourceBy(food, amountToConsume, localUnit.owner);
                         remainingConsumption -= amountToConsume;
                         continue;
                     } else {
@@ -87,17 +87,17 @@ shared class ConsumptionApplet(ITurnRunningModel model, ICLIHelper cli, IDRegist
             switch (cli.inputBooleanInSeries("Eat all remaining ``remainingConsumption`` from the ``food.contents``?",
                 "all-remaining"))
             case (true) {
-                reduceFoodBy(food, remainingConsumption, localUnit.owner);
+                model.reduceResourceBy(food, remainingConsumption, localUnit.owner);
                 remainingConsumption = decimalize(0);
             }
             case (false) { // TODO: extract this as a function?
                 value amountToConsume = cli.inputDecimal("How many pounds of the ``food.contents`` to consume:");
                 if (exists amountToConsume, amountToConsume >= remainingConsumption) {
-                    reduceFoodBy(food, remainingConsumption, localUnit.owner);
+                    model.reduceResourceBy(food, remainingConsumption, localUnit.owner);
                     remainingConsumption = decimalize(0);
                     continue;
                 } else if (exists amountToConsume) {
-                    reduceFoodBy(food, amountToConsume, localUnit.owner);
+                    model.reduceResourceBy(food, amountToConsume, localUnit.owner);
                     remainingConsumption -= amountToConsume;
                     continue;
                 } else {

@@ -63,7 +63,7 @@ class MovementApplet(ITurnRunningModel model, ICLIHelper cli, IDRegistrar idf)
             case (false) {
                 if (exists amount = cli.inputDecimal("Amount to take (in ``chosen.quantity.units``):"),
                         amount.positive) {
-                    reduceFoodBy(chosen, amount, unit.owner);
+                    model.reduceResourceBy(chosen, amount, unit.owner);
                     unit.addMember(ResourcePile(idf.createID(), chosen.kind, chosen.contents,
                         Quantity(amount, chosen.quantity.units)));
                     resources.clear();

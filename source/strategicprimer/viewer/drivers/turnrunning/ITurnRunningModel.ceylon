@@ -1,6 +1,7 @@
 import strategicprimer.model.common.map {
     HasExtent,
     HasPopulation,
+    Player,
     Point,
     TileFixture
 }
@@ -15,6 +16,10 @@ import ceylon.decimal {
 
 import strategicprimer.drivers.common {
     IAdvancementModel
+}
+
+import strategicprimer.model.common.map.fixtures {
+    ResourcePile
 }
 
 "A model for turn-running apps."
@@ -32,4 +37,12 @@ shared interface ITurnRunningModel satisfies IExplorationModel&IAdvancementModel
     shared formal void reduceExtent(Point location,
             HasExtent<out HasExtent<out Anything>&TileFixture>&TileFixture fixture,
             Boolean zero, Decimal reduction);
+
+    "Reduce the matching [[resource|ResourcePile]], in a
+     [[unit|strategicprimer.model.common.map.fixtures.mobile::IUnit]] or
+     [[fortress|strategicprimer.model.common.map.fixtures.towns::Fortress]]
+     owned by [[the specified player|owner]], by [[the specified
+     amount|amount]]. Returns [[true]] if any matched in any of the maps,
+     [[false]] otherwise."
+    shared formal Boolean reduceResourceBy(ResourcePile resource, Decimal amount, Player owner);
 }

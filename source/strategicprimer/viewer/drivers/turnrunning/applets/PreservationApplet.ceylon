@@ -76,7 +76,7 @@ class PreservationApplet(ITurnRunningModel model, ICLIHelper cli, IDRegistrar id
             }
             case (false) {
                 if (exists subtrahend = cli.inputDecimal("How many ``item.quantity.units`` to use?"), subtrahend.positive) {
-                    super.reduceFoodBy(item, subtrahend, unit.owner);
+                    model.reduceResourceBy(item, subtrahend, unit.owner);
                 } else {
                     return null;
                 }
