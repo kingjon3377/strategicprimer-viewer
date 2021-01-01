@@ -12,6 +12,7 @@ import strategicprimer.model.common.map {
     IMutableMapNG
 }
 import strategicprimer.model.common.map.fixtures.mobile {
+    IMutableUnit,
     IUnit,
     Animal,
     maturityModel,
@@ -102,7 +103,7 @@ object dbAnimalHandler extends AbstractDatabaseWriter<Animal|AnimalTracks, Point
             map.addFixture(Point(row, column), animal);
         } else {
             assert (is Integer parentId = dbRow["parent"],
-                is IUnit parent = findById(map, parentId, warner));
+                is IMutableUnit parent = findById(map, parentId, warner));
             parent.addMember(animal);
         }
     }

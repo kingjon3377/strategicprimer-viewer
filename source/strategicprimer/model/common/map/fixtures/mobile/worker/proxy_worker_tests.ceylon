@@ -13,7 +13,7 @@ import strategicprimer.model.common.map {
     PlayerImpl
 }
 import strategicprimer.model.common.map.fixtures.mobile {
-    IUnit,
+    IMutableUnit,
     Unit,
     IMutableWorker,
     IWorker,
@@ -109,8 +109,8 @@ object proxyWorkerTests {
         IWorker oneOrig = firstWorker.copy(false);
         IWorker twoOrig = secondWorker.copy(false);
         Player player = PlayerImpl(3, "");
-        IUnit unitOne = Unit(player, "unitKInd", "unitName", 4);
-        IUnit unitTwo = unitOne.copy(false);
+        IMutableUnit unitOne = Unit(player, "unitKInd", "unitName", 4);
+        IMutableUnit unitTwo = unitOne.copy(false);
         unitOne.addMember(firstWorker);
         unitOne.addMember(secondWorker);
         unitTwo.addMember(oneCopy);
@@ -155,8 +155,8 @@ object proxyWorkerTests {
         IWorker oneOrig = firstWorker.copy(false);
         IWorker twoOrig = secondWorker.copy(false);
         Player player = PlayerImpl(3, "");
-        IUnit unitOne = Unit(player, "unitKInd", "unitName", 4);
-        IUnit unitTwo = unitOne.copy(false);
+        IMutableUnit unitOne = Unit(player, "unitKInd", "unitName", 4);
+        IMutableUnit unitTwo = unitOne.copy(false);
         unitOne.addMember(firstWorker);
         unitOne.addMember(secondWorker);
         unitTwo.addMember(oneCopy);
@@ -236,11 +236,11 @@ object proxyWorkerTests {
         IWorker workerEight = Worker("a", "human", 6);
         IWorker workerNine = Worker("a", "human", 6);
         value player = PlayerImpl(1, "player");
-        IUnit unitOne = Unit(player, "unit", "unit", 7);
+        IMutableUnit unitOne = Unit(player, "unit", "unit", 7);
         for (worker in [workerOne, workerThree, workerFour, workerFive, workerSeven, workerEight]) {
             unitOne.addMember(worker);
         }
-        IUnit unitTwo = Unit(player, "unit", "unit", 7);
+        IMutableUnit unitTwo = Unit(player, "unit", "unit", 7);
         for (worker in [workerTwo, workerSix, workerNine]) {
             unitTwo.addMember(worker);
         }

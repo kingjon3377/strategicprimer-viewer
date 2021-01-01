@@ -12,6 +12,7 @@ import strategicprimer.model.common.map.fixtures.mobile {
     AnimalTracks,
     Animal,
     AnimalImpl,
+    IMutableUnit,
     IUnit,
     animalPlurals
 }
@@ -49,7 +50,8 @@ abstract class HuntGeneralApplet(String verb, ITurnRunningModel model, ICLIHelpe
 
     shared Boolean? handleCapture(Animal find) {
         if (exists unit = chooseFromList(
-                model.getUnits(model.selectedUnit?.owner else model.map.currentPlayer).sequence(),
+                    model.getUnits(model.selectedUnit?.owner else model.map.currentPlayer)
+                .narrow<IMutableUnit>().sequence(),
                 "Available Units:", "No units", "Unit to add animals to:", false, describeUnit)) {
             if (exists num = cli.inputNumber("Number captured:")) {
                 if (!num.positive) {

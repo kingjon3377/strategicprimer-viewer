@@ -24,9 +24,9 @@ import strategicprimer.model.common.map.fixtures.mobile {
 test
 void testProxyDismissal() {
     Player player = PlayerImpl(1, "player");
-    IUnit firstUnit = Unit(player, "unitKind", "unitName", 2);
-    IUnit secondUnit = Unit(player, "unitKind", "unitName", 2);
-    IUnit thirdUnit = Unit(player, "unitKind", "unitName", 2);
+    IMutableUnit firstUnit = Unit(player, "unitKind", "unitName", 2);
+    IMutableUnit secondUnit = Unit(player, "unitKind", "unitName", 2);
+    IMutableUnit thirdUnit = Unit(player, "unitKind", "unitName", 2);
     IWorker firstWorkerOne = Worker("first", "firstRace", 3);
     IWorker secondWorkerOne = Worker("first", "firstRace", 3);
     IWorker thirdWorkerOne = Worker("first", "firstRace", 3);
@@ -45,7 +45,7 @@ void testProxyDismissal() {
     thirdUnit.addMember(thirdWorkerOne);
     thirdUnit.addMember(thirdWorkerTwo);
     thirdUnit.addMember(thirdWorkerThree);
-    IUnit&ProxyFor<IUnit> proxyUnit = ProxyUnit.fromParallelMaps(2);
+    IMutableUnit&ProxyFor<IUnit> proxyUnit = ProxyUnit.fromParallelMaps(2);
     proxyUnit.addProxied(firstUnit);
     proxyUnit.addProxied(secondUnit);
     assertEquals(firstUnit, secondUnit, "Two units in proxy are initially equal");

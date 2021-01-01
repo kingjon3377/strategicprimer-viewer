@@ -13,6 +13,7 @@ import strategicprimer.model.common.map {
     Point
 }
 import strategicprimer.model.common.map.fixtures.mobile {
+    IMutableUnit,
     IUnit,
     Unit
 }
@@ -90,13 +91,13 @@ object dbUnitHandler extends AbstractDatabaseWriter<IUnit, Point|Fortress>()
         }
     }
 
-    void readOrders(IUnit unit)(Map<String, Object> ordersRow, Warning warner) {
+    void readOrders(IMutableUnit unit)(Map<String, Object> ordersRow, Warning warner) {
         assert (is Integer|SqlNull turn = ordersRow["turn"],
             is String orders = ordersRow["orders"]);
         unit.setOrders(as<Integer>(turn) else -1, orders);
     }
 
-    void readResults(IUnit unit)(Map<String, Object> resultsRow, Warning warner) {
+    void readResults(IMutableUnit unit)(Map<String, Object> resultsRow, Warning warner) {
         assert (is Integer|SqlNull turn = resultsRow["turn"],
             is String results = resultsRow["results"]);
         unit.setResults(as<Integer>(turn) else -1, results);

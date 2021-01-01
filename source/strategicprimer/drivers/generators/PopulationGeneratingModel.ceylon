@@ -18,6 +18,7 @@ import lovelace.util.common {
 
 import strategicprimer.model.common.map.fixtures.mobile {
     Animal,
+    IMutableUnit,
     IUnit,
     IWorker
 }
@@ -189,7 +190,7 @@ shared class PopulationGeneratingModel extends SimpleMultiMapModel { // TODO: Ex
         }
         for (map in restrictedAllMaps) {
             if (exists localUnit = map.locations.flatMap(map.fixtures.get)
-                    .flatMap(flattenFortresses).narrow<IUnit>()
+                    .flatMap(flattenFortresses).narrow<IMutableUnit>()
                     .filter(matchingValue(unit.owner, IUnit.owner))
                     .filter(matchingValue(unit.kind, IUnit.kind))
                     .filter(matchingValue(unit.name, IUnit.name))

@@ -19,7 +19,7 @@ import strategicprimer.model.common.idreg {
     IDRegistrar
 }
 import strategicprimer.model.common.map.fixtures.mobile {
-    IUnit
+    IMutableUnit
 }
 import strategicprimer.model.common.map.fixtures {
     Quantity,
@@ -47,7 +47,7 @@ class MovementApplet(ITurnRunningModel model, ICLIHelper cli, IDRegistrar idf)
     shared actual [String+] commands = ["move"];
     shared actual String description = "move a unit";
 
-    void packFood(Fortress? fortress, IUnit unit) {
+    void packFood(Fortress? fortress, IMutableUnit unit) {
         if (is Null fortress) {
             return;
         }
@@ -86,9 +86,11 @@ class MovementApplet(ITurnRunningModel model, ICLIHelper cli, IDRegistrar idf)
             Point oldPosition = model.selectedUnitLocation;
             explorationCLI.moveOneStep();
             Point newPosition = model.selectedUnitLocation;
-            if (model.map.fixtures.get(oldPosition).narrow<Fortress>().any(matchingValue(mover.owner, HasOwner.owner)),
-                !model.map.fixtures.get(newPosition).narrow<Fortress>().any(matchingValue(mover.owner,
-                    HasOwner.owner))) {
+            if (is IMutableUnit mover,
+                    model.map.fixtures.get(oldPosition).narrow<Fortress>().any(matchingValue(mover.owner,
+                        HasOwner.owner)),
+                    !model.map.fixtures.get(newPosition).narrow<Fortress>().any(matchingValue(mover.owner,
+                        HasOwner.owner))) {
                 switch (pack = cli.inputBooleanInSeries("Leaving a fortress. Take provisions along?"))
                 case (true) {
                     packFood(model.map.fixtures.get(oldPosition).narrow<Fortress>().find(

@@ -35,6 +35,7 @@ import strategicprimer.model.common.map.fixtures {
 
 import strategicprimer.model.common.map.fixtures.mobile {
     ProxyFor,
+    IMutableUnit,
     IMutableWorker,
     IUnit,
     IWorker,
@@ -315,12 +316,17 @@ shared class WorkerModel extends SimpleMultiMapModel satisfies IWorkerModel {
         if (old.proxied.size == newOwner.proxied.size,
                 old.proxied.size == member.proxied.size) {
             Queue<UnitMember>&{UnitMember*} members = LinkedList<UnitMember>();
-            Queue<IUnit>&{IUnit*} newList = LinkedList<IUnit>();
+            Queue<IMutableUnit>&{IMutableUnit*} newList = LinkedList<IMutableUnit>();
             for ([item, innerOld, innerNew] in
                     zip(member.proxied, zipPairs(old.proxied, newOwner.proxied))) {
-                innerOld.removeMember(item);
-                members.offer(item);
-                newList.offer(innerNew);
+                if (is IMutableUnit innerOld, is IMutableUnit innerNew) {
+                    innerOld.removeMember(item);
+                    members.offer(item);
+                    newList.offer(innerNew);
+                } else {
+                    log.warn("Immutable unit in moveProxied()");
+                    return false;
+                }
             }
             for ([unit, innerMember] in zipPairs(newList, members)) {
                 unit.addMember(innerMember);
@@ -344,11 +350,13 @@ shared class WorkerModel extends SimpleMultiMapModel satisfies IWorkerModel {
         }
         for (map in restrictedAllMaps) {
             if (exists matchingOld = getUnitsImpl(map.fixtures.items, old.owner)
+                        .narrow<IMutableUnit>()
                         .filter(matchingValue(old.kind, IUnit.kind))
                         .filter(matchingValue(old.name, IUnit.name))
                         .find(matchingValue(old.id, IUnit.id)),
                     exists matchingMember = matchingOld.find(member.equals), // TODO: equals() isn't ideal for finding a matching member ...
                     exists matchingNew = getUnitsImpl(map.fixtures.items, newOwner.owner)
+                        .narrow<IMutableUnit>()
                         .filter(matchingValue(newOwner.kind, IUnit.kind))
                         .filter(matchingValue(newOwner.name, IUnit.name))
                         .find(matchingValue(newOwner.id, IUnit.id))) {
@@ -363,7 +371,8 @@ shared class WorkerModel extends SimpleMultiMapModel satisfies IWorkerModel {
         variable Boolean any = false;
         // TODO: Handle proxies specially?
         for (map in restrictedAllMaps) {
-            for (unit in getUnitsImpl(map.fixtures.items, currentPlayer)) {
+            for (unit in getUnitsImpl(map.fixtures.items, currentPlayer)
+                    .narrow<IMutableUnit>()) {
                 if (exists matching = unit.find(member.equals)) { // FIXME: equals() will really not do here ...
                     any = true;
                     unit.removeMember(matching);
@@ -386,6 +395,7 @@ shared class WorkerModel extends SimpleMultiMapModel satisfies IWorkerModel {
     shared actual void addUnitMember(IUnit unit, UnitMember member) {
         for (map in restrictedAllMaps) {
             if (exists matching = getUnitsImpl(map.fixtures.items, unit.owner)
+                    .narrow<IMutableUnit>()
                     .filter(matchingValue(unit.name, IUnit.name))
                     .filter(matchingValue(unit.kind, IUnit.kind))
                     .find(matchingValue(unit.id, IUnit.id))) {
@@ -475,7 +485,8 @@ shared class WorkerModel extends SimpleMultiMapModel satisfies IWorkerModel {
     shared actual Boolean addSibling(UnitMember existing, UnitMember sibling) {
         variable Boolean any = false;
         for (map in restrictedAllMaps) {
-            for (unit in getUnitsImpl(map.fixtures.items, currentPlayer)) {
+            for (unit in getUnitsImpl(map.fixtures.items, currentPlayer)
+                    .narrow<IMutableUnit>()) {
                 if (existing in unit) { // TODO: look beyond equals() for matching-in-existing?
                     unit.addMember(sibling.copy(false));
                     any = true;
@@ -518,6 +529,7 @@ shared class WorkerModel extends SimpleMultiMapModel satisfies IWorkerModel {
         variable Boolean any = false;
         for (map in restrictedAllMaps) {
             if (exists matching = getUnitsImpl(map.fixtures.items, currentPlayer)
+                    .narrow<IMutableUnit>()
                     .filter(matchingValue(fixture.name, IUnit.name))
                     .filter(matchingValue(fixture.kind, IUnit.kind))
                     .find(matchingValue(fixture.id, IUnit.id))) {

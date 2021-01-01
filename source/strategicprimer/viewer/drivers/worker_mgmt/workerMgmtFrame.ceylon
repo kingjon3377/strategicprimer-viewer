@@ -52,6 +52,7 @@ import strategicprimer.model.common.map {
     IMapNG
 }
 import strategicprimer.model.common.map.fixtures.mobile {
+    IMutableUnit,
     IUnit
 }
 import strategicprimer.viewer.drivers.map_viewer {
@@ -124,16 +125,16 @@ class WorkerMgmtFrame extends SPFrame satisfies PlayerChangeListener {
         unit.getOrders(turn) == unit.getLatestOrders(turn);
 
     value ordersPanelObj = ordersPanel("Orders", mainMap.currentTurn, model.currentPlayer,
-        model.getUnits, uncurry(IUnit.getLatestOrders), uncurry(IUnit.setOrders),
+        model.getUnits, uncurry(IUnit.getLatestOrders), uncurry(IMutableUnit.setOrders),
         isCurrent, markModified);
     tree.addTreeSelectionListener(ordersPanelObj);
 
     Boolean trueSupplier(IUnit unit, Integer turn) => true;
 
-    Anything(IUnit, Integer, String)? resultsSupplier;
+    Anything(IMutableUnit, Integer, String)? resultsSupplier;
     Anything() resultsModListener;
     if ("true" == options.getArgument("--edit-results")) {
-        resultsSupplier = uncurry(IUnit.setResults);
+        resultsSupplier = uncurry(IMutableUnit.setResults);
         resultsModListener = markModified;
     } else {
         resultsSupplier = null;

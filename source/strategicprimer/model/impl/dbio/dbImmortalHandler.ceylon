@@ -16,6 +16,7 @@ import strategicprimer.model.common.map {
 }
 import strategicprimer.model.common.map.fixtures.mobile {
     Immortal,
+    IMutableUnit,
     IUnit,
     SimpleImmortal,
     Centaur,
@@ -178,7 +179,7 @@ object dbImmortalHandler extends AbstractDatabaseWriter<Immortal, Point|IUnit>()
             map.addFixture(Point(row, column), immortal);
         } else {
             assert (is Integer parentId = dbRow["parent"],
-                is IUnit parent = findById(map, parentId, warner));
+                is IMutableUnit parent = findById(map, parentId, warner));
             parent.addMember(immortal);
         }
     }
@@ -211,7 +212,7 @@ object dbImmortalHandler extends AbstractDatabaseWriter<Immortal, Point|IUnit>()
             map.addFixture(Point(row, column), immortal);
         } else {
             assert (is Integer parentId = dbRow["parent"],
-                is IUnit parent = findById(map, parentId, warner));
+                is IMutableUnit parent = findById(map, parentId, warner));
             parent.addMember(immortal);
         }
     }

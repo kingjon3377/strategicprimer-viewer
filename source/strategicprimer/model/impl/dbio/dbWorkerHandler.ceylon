@@ -20,6 +20,7 @@ import strategicprimer.model.common.map {
     IMutableMapNG
 }
 import strategicprimer.model.common.map.fixtures.mobile {
+    IMutableUnit,
     IUnit,
     IWorker,
     Worker
@@ -117,7 +118,7 @@ object dbWorkerHandler extends AbstractDatabaseWriter<IWorker, IUnit>()
     void readWorkerStats(IMutableMapNG map, MutableMap<Integer, Worker> workers)(
             Map<String, Object> row, Warning warner) {
         assert (is Integer unitId = row["unit"],
-            is IUnit unit = super.findById(map, unitId, warner),
+            is IMutableUnit unit = super.findById(map, unitId, warner),
             is Integer id = row["id"], is String name = row["name"],
             is String race = row["race"], is String|SqlNull image = row["image"],
             is String|SqlNull portrait = row["portrait"],

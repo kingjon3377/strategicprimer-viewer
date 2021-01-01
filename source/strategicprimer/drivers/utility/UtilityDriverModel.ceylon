@@ -37,6 +37,7 @@ import strategicprimer.model.common.map.fixtures.resources {
 
 import strategicprimer.model.common.map.fixtures.mobile {
     Animal,
+    IMutableUnit,
     IUnit
 }
 
@@ -151,7 +152,7 @@ shared class UtilityDriverModel extends SimpleMultiMapModel {
             if (is {IFixture*} fixture) {
                 String shortDesc = as<TileFixture>(fixture)?.shortDescription
                     else fixture.string;
-                if (is IUnit fixture) {
+                if (is IMutableUnit fixture) {
                     retval.addAll(coalesceImpl("``context``In ``shortDesc``: ", fixture,
                         ifApplicable(fixture.addMember), ifApplicable(fixture.removeMember), setModFlag, handlers));
                 } else if (is Fortress fixture) {

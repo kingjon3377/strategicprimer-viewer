@@ -14,6 +14,7 @@ import javax.swing.tree {
 }
 
 import strategicprimer.model.common.map.fixtures.mobile {
+    IMutableUnit,
     IUnit
 }
 import strategicprimer.model.common.map {
@@ -89,7 +90,7 @@ shared class WorkerTreeModelAlt extends DefaultTreeModel satisfies IWorkerTreeMo
             extends WorkerTreeNode<UnitMember>(member, false) { }
 
     "A class for tree-nodes representing units."
-    shared static class UnitNode(IUnit unit) extends WorkerTreeNode<IUnit>(unit) {
+    shared static class UnitNode(IMutableUnit unit) extends WorkerTreeNode<IMutableUnit>(unit) {
         for (index->member in unit.indexed) {
             insert(UnitMemberNode(member), index);
         }
@@ -126,7 +127,7 @@ shared class WorkerTreeModelAlt extends DefaultTreeModel satisfies IWorkerTreeMo
 
     """A class for tree-nodes representing unit kinds, grouping units sharing a
        "kind" (in practice an administrative classification) in the tree."""
-    shared static class KindNode(String kind, IUnit* units)
+    shared static class KindNode(String kind, IMutableUnit* units)
             extends WorkerTreeNode<String>(kind) {
         for (index->unit in units.indexed) {
             insert(UnitNode(unit), index);
@@ -142,7 +143,7 @@ shared class WorkerTreeModelAlt extends DefaultTreeModel satisfies IWorkerTreeMo
     static class PlayerNode(Player player, IWorkerModel model)
             extends WorkerTreeNode<Player>(player) {
         for (index->kind in model.getUnitKinds(player).indexed) {
-            insert(KindNode(kind, *model.getUnits(player, kind)), index);
+            insert(KindNode(kind, *model.getUnits(player, kind).narrow<IMutableUnit>()), index);
         }
         if (childCount == 0) {
             log.warn("No unit kinds in player node for player ``player``");
@@ -210,7 +211,7 @@ shared class WorkerTreeModelAlt extends DefaultTreeModel satisfies IWorkerTreeMo
     shared actual void addUnit(IUnit unit) {
         model.addUnit(unit);
         assert (is PlayerNode temp = root);
-        if (exists matchingUnit = model.getUnitByID(temp.userObjectNarrowed, unit.id)) {
+        if (is IMutableUnit matchingUnit = model.getUnitByID(temp.userObjectNarrowed, unit.id)) {
             MutableTreeNode node = UnitNode(matchingUnit);
             String kind = unit.kind;
             for (child in temp) {
@@ -307,7 +308,7 @@ shared class WorkerTreeModelAlt extends DefaultTreeModel satisfies IWorkerTreeMo
                         ObjectArray.with(Singleton(node)));
                 }
             }
-        } else if (is IUnit item) {
+        } else if (is IMutableUnit item) {
             if (is TreeNode node = getNode(temp, item)) {
                 value pathOne = getPathToRoot(node);
                 Integer indexOne = getIndexOfChild(pathOne.array.exceptLast.last, node);
@@ -350,6 +351,8 @@ shared class WorkerTreeModelAlt extends DefaultTreeModel satisfies IWorkerTreeMo
                         ObjectArray<Object>.with(Singleton(kindNode)));
                 }
             }
+        } else if (is IUnit item) {
+            log.warn("Tried to change kind of immutable unit");
         }
     }
 

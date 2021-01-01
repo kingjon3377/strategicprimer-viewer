@@ -5,10 +5,6 @@ import ceylon.language {
     createMap=map
 }
 
-import lovelace.util.common {
-    todo
-}
-
 import strategicprimer.model.common.map {
     HasImage,
     IFixture,
@@ -22,8 +18,6 @@ import strategicprimer.model.common.map.fixtures {
 }
 
 "An interface for units."
-todo("Move [[setOrders]], [[setResults]], [[addMember]], and
-      [[removeMember]] to a 'mutable' interface?")
 shared interface IUnit satisfies MobileFixture&HasImage&HasKind&HasName&
         {UnitMember*}&FortressMember&HasOwner {
     "The unit's orders history, a mapping from turns to the orders for those turns."
@@ -32,17 +26,11 @@ shared interface IUnit satisfies MobileFixture&HasImage&HasKind&HasName&
     "Get the unit's orders for the given turn."
     shared formal String getOrders(Integer turn);
 
-    "Set the unit's orders for a turn."
-    shared formal void setOrders(Integer turn, String newOrders);
-
     "The unit's results for the given turn."
     shared formal String getResults(Integer turn);
 
     "The unit's results history, a mapping from turns to the results for those turns."
     shared formal SortedMap<Integer, String> allResults;
-
-    "Set the unit's results for a turn."
-    shared formal void setResults(Integer turn, String newResults);
 
     "The unit's latest orders as of the given turn."
     shared default String getLatestOrders(Integer turn) =>
@@ -67,12 +55,6 @@ shared interface IUnit satisfies MobileFixture&HasImage&HasKind&HasName&
 
     "A verbose description of the unit."
     shared formal String verbose;
-
-    "Add a member."
-    shared formal void addMember(UnitMember member);
-
-    "Remove a member"
-    shared formal void removeMember(UnitMember member);
 
     "Clone the unit."
     shared formal actual IUnit copy(Boolean zero);
@@ -133,7 +115,4 @@ shared interface IUnit satisfies MobileFixture&HasImage&HasKind&HasName&
             return false;
         }
     }
-
-    "Change the internal order of members to be sorted. Sort order is implementation-defined."
-    shared formal void sortMembers();
 }

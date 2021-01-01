@@ -22,6 +22,7 @@ import strategicprimer.model.common.map.fixtures {
     UnitMember
 }
 import strategicprimer.model.common.map.fixtures.mobile {
+    IMutableUnit,
     IUnit,
     Unit
 }
@@ -58,7 +59,7 @@ class YAUnitReader(Warning warner, IDRegistrar idRegistrar, IPlayerCollection pl
     }
 
     "Parse orders for a unit for a specified turn."
-    void parseOrders(StartElement element, IUnit unit, {XMLEvent*} stream) {
+    void parseOrders(StartElement element, IMutableUnit unit, {XMLEvent*} stream) {
         expectAttributes(element, "turn");
         Integer turn = getIntegerParameter(element, "turn", -1);
         StringBuilder builder = StringBuilder();
@@ -75,7 +76,7 @@ class YAUnitReader(Warning warner, IDRegistrar idRegistrar, IPlayerCollection pl
     }
 
     "Parse results for a unit for a specified turn."
-    void parseResults(StartElement element, IUnit unit, {XMLEvent*} stream) {
+    void parseResults(StartElement element, IMutableUnit unit, {XMLEvent*} stream) {
         expectAttributes(element, "turn");
         Integer turn = getIntegerParameter(element, "turn", -1);
         StringBuilder builder = StringBuilder();

@@ -14,6 +14,7 @@ import strategicprimer.model.common.map.fixtures {
     Quantity
 }
 import strategicprimer.model.common.map.fixtures.mobile {
+    IMutableUnit,
     IUnit
 }
 import strategicprimer.model.common.map.fixtures.towns {
@@ -52,7 +53,7 @@ object dbResourcePileHandler
 
     void readResourcePile(IMutableMapNG map)(Map<String, Object> row, Warning warner) {
         assert (is Integer parentId = row["parent"],
-            is IUnit|Fortress parent = findById(map, parentId, warner),
+            is IMutableUnit|Fortress parent = findById(map, parentId, warner),
             is Integer id = row["id"], is String kind = row["kind"],
             is String contents = row["contents"],
             is String qtyString = row["quantity"], is String units = row ["units"],
@@ -72,7 +73,7 @@ object dbResourcePileHandler
         if (is Integer created) {
             pile.created = created;
         }
-        if (is IUnit parent) {
+        if (is IMutableUnit parent) {
             parent.addMember(pile);
         } else {
             parent.addMember(pile);

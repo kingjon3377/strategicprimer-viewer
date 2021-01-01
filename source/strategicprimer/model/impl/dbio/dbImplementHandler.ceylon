@@ -10,6 +10,7 @@ import strategicprimer.model.common.map.fixtures {
     Implement
 }
 import strategicprimer.model.common.map.fixtures.mobile {
+    IMutableUnit,
     IUnit
 }
 import strategicprimer.model.common.map.fixtures.towns {
@@ -41,14 +42,14 @@ object dbImplementHandler extends AbstractDatabaseWriter<Implement, IUnit|Fortre
 
     void readImplement(IMutableMapNG map)(Map<String, Object> row, Warning warner) {
         assert (is Integer parentId = row["parent"],
-            is IUnit|Fortress parent = findById(map, parentId, warner),
+            is IMutableUnit|Fortress parent = findById(map, parentId, warner),
             is Integer id = row["id"], is String kind = row["kind"],
             is Integer count = row["count"], is String|SqlNull image = row["image"]);
         value implement = Implement(kind, id, count);
         if (is String image) {
             implement.image = image;
         }
-        if (is IUnit parent) {
+        if (is IMutableUnit parent) {
             parent.addMember(implement);
         } else {
             parent.addMember(implement);

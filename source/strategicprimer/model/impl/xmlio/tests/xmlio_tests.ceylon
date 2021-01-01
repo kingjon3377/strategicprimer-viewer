@@ -77,6 +77,7 @@ import strategicprimer.model.common.map.fixtures.mobile {
     Centaur,
     Unit,
     SimpleImmortal,
+    IMutableUnit,
     IUnit,
     Giant,
     Fairy,
@@ -1210,7 +1211,7 @@ object xmlTests {
      [[units|IUnit]]."
     test
     shared void testUnitMemberSerialization() {
-        IUnit firstUnit = Unit(PlayerImpl(1, ""), "unitType", "unitName", 1);
+        IMutableUnit firstUnit = Unit(PlayerImpl(1, ""), "unitType", "unitName", 1);
         firstUnit.addMember(AnimalImpl("animal", true, "wild", 2));
         assertSerialization("Unit can have an animal as a member", firstUnit);
         firstUnit.addMember(Worker("worker", "human", 3));
@@ -1244,8 +1245,8 @@ object xmlTests {
     test
     shared void testOrdersSerialization() {
         Player player = PlayerImpl(0, "");
-        IUnit firstUnit = Unit(player, "kind of unit", "name of unit", 2);
-        IUnit secondUnit = Unit(player, "kind of unit", "name of unit", 2);
+        IMutableUnit firstUnit = Unit(player, "kind of unit", "name of unit", 2);
+        IMutableUnit secondUnit = Unit(player, "kind of unit", "name of unit", 2);
         secondUnit.setOrders(-1, "some orders");
         assertEquals(firstUnit, secondUnit, "Orders have no effect on equals");
         assertSerialization("Orders don't mess up deserialization", secondUnit);

@@ -36,7 +36,8 @@ import ceylon.language {
 }
 
 "A proxy for units in multiple maps, or all a player's units of one kind."
-shared class ProxyUnit satisfies IUnit&ProxyFor<IUnit>&HasMutableKind&HasMutableImage
+// TODO: Drop inheritance of IMutableUnit as soon as we can.
+shared class ProxyUnit satisfies IMutableUnit&ProxyFor<IUnit>&HasMutableKind&HasMutableImage
         &HasMutableName&HasMutableOwner {
     "If true, we are proxying parallel units in different maps; if false, multiple units
      of the same kind owned by one player."
@@ -72,7 +73,7 @@ shared class ProxyUnit satisfies IUnit&ProxyFor<IUnit>&HasMutableKind&HasMutable
     "All results shared by all the proxied units."
     shared actual SortedMap<Integer, String> allResults => mergeMaps(IUnit.allResults);
 
-    shared actual IUnit copy(Boolean zero) {
+    shared actual IMutableUnit copy(Boolean zero) {
         ProxyUnit retval;
         if (parallel) {
             assert (is Integer temp = identifier);
@@ -256,13 +257,21 @@ shared class ProxyUnit satisfies IUnit&ProxyFor<IUnit>&HasMutableKind&HasMutable
 
     shared actual void setOrders(Integer turn, String newOrders) {
         for (unit in proxiedList) {
-            unit.setOrders(turn, newOrders);
+            if (is IMutableUnit unit) {
+                unit.setOrders(turn, newOrders);
+            } else {
+                log.warn("Can't set orders in an immutable unit");
+            }
         }
     }
 
     shared actual void setResults(Integer turn, String newResults) {
         for (unit in proxiedList) {
-            unit.setResults(turn, newResults);
+            if (is IMutableUnit unit) {
+                unit.setResults(turn, newResults);
+            } else {
+                log.warn("Can't set results in an immutable unit");
+            }
         }
     }
 
@@ -286,7 +295,11 @@ shared class ProxyUnit satisfies IUnit&ProxyFor<IUnit>&HasMutableKind&HasMutable
                 if (member.parallel) {
                     if (member.proxied.size == proxiedList.size) {
                         for ([unit, item] in zipPairs(proxiedList, member.proxied)) {
-                            unit.addMember(item);
+                            if (is IMutableUnit unit) {
+                                unit.addMember(item);
+                            } else {
+                                log.warn("Can't add corresponding proxied unit member to immutable unit");
+                            }
                         }
                     } else {
                         log.warn(
@@ -294,7 +307,11 @@ shared class ProxyUnit satisfies IUnit&ProxyFor<IUnit>&HasMutableKind&HasMutable
                         if (exists real = member.proxied.first) {
                             for (unit in proxiedList) {
                                 if (!unit.any(real.equals)) {
-                                    unit.addMember(member.copy(false));
+                                    if (is IMutableUnit unit) {
+                                        unit.addMember(member.copy(false));
+                                    } else {
+                                        log.warn("Can't add (proxying) member to immutable unit");
+                                    }
                                 }
                             }
                         } else {
@@ -307,7 +324,11 @@ shared class ProxyUnit satisfies IUnit&ProxyFor<IUnit>&HasMutableKind&HasMutable
             } else {
                 for (unit in proxiedList) {
                     if (!unit.any(member.equals)) {
-                        unit.addMember(member.copy(false));
+                        if (is IMutableUnit unit) {
+                            unit.addMember(member.copy(false));
+                        } else {
+                            log.warn("Can't add (non-proxying) member to immutable unit");
+                        }
                     }
                 }
             }
@@ -321,12 +342,20 @@ shared class ProxyUnit satisfies IUnit&ProxyFor<IUnit>&HasMutableKind&HasMutable
             variable Boolean anyFound = false;
             for (unit in proxiedList) {
                 if (exists found = unit.find(member.equals)) {
-                    unit.removeMember(found);
+                    if (is IMutableUnit unit) {
+                        unit.removeMember(found);
+                    } else {
+                        log.warn("Can't remove (non-proxied) member from immutable unit");
+                    }
                     anyFound = true;
                 } else if (is ProxyFor<out UnitMember> member, member.parallel) {
                     for (submember in member.proxied) {
                         if (exists found = unit.find(submember.equals)) {
-                            unit.removeMember(found);
+                            if (is IMutableUnit unit) {
+                                unit.removeMember(found);
+                            } else {
+                                log.warn("Can't remove (proxied) member from immutable unit");
+                            }
                             anyFound = true;
                             break;
                         }
@@ -379,7 +408,11 @@ shared class ProxyUnit satisfies IUnit&ProxyFor<IUnit>&HasMutableKind&HasMutable
 
     shared actual void sortMembers() {
         for (proxiedUnit in proxied) {
-            proxiedUnit.sortMembers();
+            if (is IMutableUnit proxiedUnit) {
+                proxiedUnit.sortMembers();
+            } else {
+                log.warn("Can't sort members in immutable unit");
+            }
         }
         cachedIterable = [];
     }

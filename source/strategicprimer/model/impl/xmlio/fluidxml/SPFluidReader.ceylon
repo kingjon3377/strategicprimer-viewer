@@ -67,6 +67,7 @@ import strategicprimer.model.common.map.fixtures {
     TextFixture
 }
 import strategicprimer.model.common.map.fixtures.mobile {
+    IMutableUnit,
     IUnit,
     Unit,
     Giant,
@@ -409,14 +410,14 @@ shared class SPFluidReader() satisfies IMapReader&ISPReader {
         return retval;
     }
 
-    void parseOrders(StartElement element, IUnit unit, {XMLEvent*} stream,
+    void parseOrders(StartElement element, IMutableUnit unit, {XMLEvent*} stream,
             Warning warner) {
         expectAttributes(element, warner, "turn");
         Integer turn = getIntegerAttribute(element, "turn", -1, warner);
         unit.setOrders(turn, getTextUntil(element.name, stream));
     }
 
-    void parseResults(StartElement element, IUnit unit, {XMLEvent*} stream,
+    void parseResults(StartElement element, IMutableUnit unit, {XMLEvent*} stream,
             Warning warner) {
         expectAttributes(element, warner, "turn");
         Integer turn = getIntegerAttribute(element, "turn", -1, warner);

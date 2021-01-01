@@ -7,6 +7,7 @@ import strategicprimer.model.common.map {
     Player
 }
 import strategicprimer.model.common.map.fixtures.mobile {
+    IMutableUnit,
     IUnit,
     ProxyUnit
 }
@@ -38,7 +39,7 @@ final class OrdersPanel extends BorderedPanel satisfies OrdersContainer {
     variable Player currentPlayer;
     {IUnit*}(Player, String) playerUnits;
     String(IUnit, Integer) ordersSupplier;
-    Anything(IUnit, Integer, String)? ordersConsumer;
+    Anything(IMutableUnit, Integer, String)? ordersConsumer;
     Boolean(IUnit, Integer) isCurrent;
     Anything() modificationListener;
     SpinnerNumberModel spinnerModel;
@@ -46,7 +47,7 @@ final class OrdersPanel extends BorderedPanel satisfies OrdersContainer {
     JTextArea area;
     shared new (Integer currentTurn, Player currentPlayer,
             {IUnit*}(Player, String) playerUnits, String(IUnit, Integer) ordersSupplier,
-            Anything(IUnit, Integer, String)? ordersConsumer,
+            Anything(IMutableUnit, Integer, String)? ordersConsumer,
             Boolean(IUnit, Integer) isCurrent,
             Anything() modificationListener, SpinnerNumberModel spinnerModel,
             JTextArea area) extends BorderedPanel() {
@@ -73,7 +74,7 @@ final class OrdersPanel extends BorderedPanel satisfies OrdersContainer {
 
     "If a unit is selected, change its orders to what the user wrote."
     shared actual void apply() {
-        if (is IUnit sel = selection) {
+        if (is IMutableUnit sel = selection) {
             if (exists ordersConsumer) {
                 ordersConsumer(sel, spinnerModel.number.intValue(), area.text);
                 modificationListener();
