@@ -31,6 +31,10 @@ import strategicprimer.model.common.map.fixtures.towns {
     Fortress
 }
 
+import lovelace.util.common {
+    matchingValue
+}
+
 "A model for turn-running apps."
 shared interface ITurnRunningModel satisfies IExplorationModel&IAdvancementModel {
     "Add a copy of the given fixture to all submaps at the given location iff no fixture
@@ -82,4 +86,20 @@ shared interface ITurnRunningModel satisfies IExplorationModel&IAdvancementModel
       constructor, to better fit the needs of *our* callers."
     shared formal Boolean addAnimal(IUnit container, String kind, String status, Integer id,
         Integer population = 1, Integer born = -1);
+
+    "Find the given player's HQ in the main map. If it can't find a
+     [[fortress|Fortress]] with the given name, return *a* fortress of that
+     player. If it can't find even one, return [[null]]."
+    shared default Fortress? findHQ(Player player, String fortressName = "HQ") {
+        variable Fortress? retval = null;
+        for (fortress in map.fixtures.items.narrow<Fortress>()
+                .filter(matchingValue(player, Fortress.owner))) {
+            if (fortress.name == fortressName) { // TODO: Take the name as a parameter, for maximum flexibility
+                return fortress;
+            } else if (!retval exists) {
+                retval = fortress;
+            }
+        }
+        return retval;
+    }
 }
