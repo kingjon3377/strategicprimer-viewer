@@ -14,7 +14,6 @@ import lovelace.util.jvm {
     ListenedButton
 }
 import strategicprimer.model.common.map.fixtures.mobile {
-    IMutableUnit,
     IUnit
 }
 import strategicprimer.model.common.map {
@@ -26,7 +25,7 @@ import strategicprimer.model.common.map {
 shared JPanel&OrdersContainer ordersPanel(String description, Integer currentTurn,
         Player currentPlayer, {IUnit*}(Player, String) playerUnits,
         String(IUnit, Integer) ordersSupplier,
-        Anything(IMutableUnit, Integer, String)? ordersConsumer,
+        Anything(IUnit, Integer, String)? ordersConsumer,
         Boolean(IUnit, Integer) isCurrent,
         Anything() modificationListener) {
     JTextArea area = JTextArea();
