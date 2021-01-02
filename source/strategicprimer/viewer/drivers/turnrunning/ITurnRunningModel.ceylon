@@ -65,11 +65,6 @@ shared interface ITurnRunningModel satisfies IExplorationModel&IAdvancementModel
     deprecated("Use [[reduceResourceBy]] when possible instead.")
     shared formal Boolean removeResource(IResourcePile resource, Player owner);
 
-    "Set the given unit's results for the given turn to the given text. Returns
-     [[true]] if a matching (and mutable) unit was found in at least one map,
-     [[false]] otherwise."
-    shared formal Boolean setUnitResults(IUnit unit, Integer turn, String results);
-
     "Add a resource with the given ID, kind, contents, quantity, and (if
      provided) created date in the given unit or fortress in all maps.
      Returns [[true]] if a matching (and mutable) unit or fortress was found in

@@ -1,4 +1,5 @@
 import strategicprimer.model.common.map.fixtures.mobile {
+    IUnit,
     IWorker
 }
 
@@ -37,4 +38,14 @@ shared interface IAdvancementModel satisfies IDriverModel {
      maps, [[false]] otherwise."
     shared formal Boolean replaceSkillInJob(IWorker worker, String jobName, ISkill delenda,
         ISkill replacement);
+
+    "Set the given unit's orders for the given turn to the given text. Returns
+     [[true]] if a matching (and mutable) unit was found in at least one map,
+     [[false]] otherwise."
+    shared formal Boolean setUnitOrders(IUnit unit, Integer turn, String results);
+
+    "Set the given unit's results for the given turn to the given text. Returns
+     [[true]] if a matching (and mutable) unit was found in at least one map,
+     [[false]] otherwise."
+    shared formal Boolean setUnitResults(IUnit unit, Integer turn, String results);
 }

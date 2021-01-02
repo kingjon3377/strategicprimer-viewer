@@ -632,6 +632,44 @@ shared class WorkerModel extends SimpleMultiMapModel satisfies IWorkerModel {
         }
         return any;
     }
+
+    "Set the given unit's orders for the given turn to the given text. Returns
+     [[true]] if a matching (and mutable) unit was found in at least one map,
+     [[false]] otherwise."
+    shared actual Boolean setUnitOrders(IUnit unit, Integer turn, String results) {
+        variable Boolean any = false;
+        for (map in restrictedAllMaps) {
+            if (exists matching = map.fixtures.items.flatMap(flatten)
+                    .narrow<IMutableUnit>().filter(matchingValue(unit.owner, IUnit.owner))
+                    .filter(matchingValue(unit.kind, IUnit.kind))
+                    .filter(matchingValue(unit.name, IUnit.name))
+                    .find(matchingValue(unit.id, IUnit.id))) {
+                matching.setOrders(turn, results);
+                map.modified = true;
+                any = true;
+            }
+        }
+        return any;
+    }
+
+    "Set the given unit's results for the given turn to the given text. Returns
+     [[true]] if a matching (and mutable) unit was found in at least one map,
+     [[false]] otherwise."
+    shared actual Boolean setUnitResults(IUnit unit, Integer turn, String results) {
+        variable Boolean any = false;
+        for (map in restrictedAllMaps) {
+            if (exists matching = map.fixtures.items.flatMap(flatten)
+                    .narrow<IMutableUnit>().filter(matchingValue(unit.owner, IUnit.owner))
+                    .filter(matchingValue(unit.kind, IUnit.kind))
+                    .filter(matchingValue(unit.name, IUnit.name))
+                    .find(matchingValue(unit.id, IUnit.id))) {
+                matching.setResults(turn, results);
+                map.modified = true;
+                any = true;
+            }
+        }
+        return any;
+    }
 }
 
 "Test of the worker model."
