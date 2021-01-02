@@ -5,10 +5,8 @@ import strategicprimer.model.common.idreg {
     IDRegistrar
 }
 import strategicprimer.model.common.map.fixtures {
-    IMutableResourcePile,
     IResourcePile,
-    Quantity,
-    ResourcePileImpl
+    Quantity
 }
 import ceylon.collection {
     MutableList,
@@ -70,8 +68,6 @@ class PreservationApplet(ITurnRunningModel model, ICLIHelper cli, IDRegistrar id
             } else {
                 return null;
             }
-            IMutableResourcePile converted = ResourcePileImpl(idf.createID(), "food", convertedForm, Quantity(newPounds, "pounds"));
-            converted.created = turn;
             switch (cli.inputBoolean("Use all ``item.quantity``?"))
             case (true) {
                 model.removeResource(item, unit.owner);
@@ -84,7 +80,9 @@ class PreservationApplet(ITurnRunningModel model, ICLIHelper cli, IDRegistrar id
                 }
             }
             case (null) { return null; }
-            super.addResourceToMaps(converted, unit.owner);
+            // TODO: findHQ() should instead take the unit and find the fortress in the same tile, if any
+            model.addResource(model.findHQ(unit.owner) else unit, idf.createID(), "food",
+                convertedForm, Quantity(newPounds, "pounds"), turn);
             if (exists results = cli.inputMultilineString("Description for results:")) {
                 builder.append(results);
             } else {
