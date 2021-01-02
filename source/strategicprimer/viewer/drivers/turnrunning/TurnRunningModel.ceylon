@@ -27,6 +27,7 @@ import lovelace.util.jvm {
 }
 
 import strategicprimer.model.common.map.fixtures.mobile {
+    AnimalImpl,
     IMutableWorker,
     IMutableUnit,
     IUnit,
@@ -371,6 +372,34 @@ shared class TurnRunningModel extends ExplorationModel satisfies ITurnRunningMod
                 }
                 map.modified = true;
                 any = true;
+            }
+        }
+        return any;
+    }
+
+    "Add a non-talking animal population to the given unit in all maps. Returns
+     [[true]] if the input makes sense and a matching (and mutable) unit was
+     found in at least one map, [[false]] otherwise.
+
+     Note the last two parameters are *reversed* from the
+      [[strategicprimer.model.common.map.fixtures.mobile::AnimalImpl]]
+      constructor, to better fit the needs of *our* callers."
+    shared actual Boolean addAnimal(IUnit container, String kind, String status, Integer id,
+            Integer population, Integer born) {
+        if (!population.positive) {
+            return false;
+        }
+        value animal = AnimalImpl(kind, false, status, id, born, population);
+        variable Boolean any = false;
+        for (map in restrictedAllMaps) {
+            if (exists matching = map.fixtures.items.flatMap(unflattenNonFortresses)
+                    .narrow<IMutableUnit>().filter(matchingValue(container.owner, IUnit.owner))
+                    .filter(matchingValue(container.kind, IUnit.kind))
+                    .filter(matchingValue(container.name, IUnit.name))
+                    .find(matchingValue(container.id, IUnit.id))) {
+                matching.addMember(animal.copy(false));
+                any = true;
+                map.modified = true;
             }
         }
         return any;

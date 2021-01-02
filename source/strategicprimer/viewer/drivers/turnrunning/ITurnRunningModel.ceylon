@@ -72,4 +72,14 @@ shared interface ITurnRunningModel satisfies IExplorationModel&IAdvancementModel
      at least one map, [[false]] otherwise."
     shared formal Boolean addResource(IUnit|Fortress container, Integer id, String kind, String contents,
         Quantity quantity, Integer? createdDate = null);
+
+    "Add a non-talking animal population to the given unit in all maps. Returns
+     [[true]] if the input makes sense and a matching (and mutable) unit was
+     found in at least one map, [[false]] otherwise.
+
+     Note the last two parameters are *reversed* from the
+      [[strategicprimer.model.common.map.fixtures.mobile::AnimalImpl]]
+      constructor, to better fit the needs of *our* callers."
+    shared formal Boolean addAnimal(IUnit container, String kind, String status, Integer id,
+        Integer population = 1, Integer born = -1);
 }
