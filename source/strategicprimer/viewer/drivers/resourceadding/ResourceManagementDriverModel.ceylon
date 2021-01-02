@@ -7,12 +7,20 @@ import strategicprimer.drivers.common {
 }
 
 import strategicprimer.model.common.map.fixtures {
-    FortressMember
+    FortressMember,
+    IMutableResourcePile,
+    IResourcePile,
+    Quantity,
+    ResourcePileImpl
 }
 import strategicprimer.model.common.map {
     IMapNG,
     Player,
     IMutableMapNG
+}
+
+import ceylon.decimal {
+    Decimal
 }
 
 "A driver model for resource-entering drivers."
@@ -34,6 +42,16 @@ class ResourceManagementDriverModel extends SimpleMultiMapModel {
                 map.modified = true;
             } // TODO: Else log why we're skipping the map
         }
+    }
+
+    shared IResourcePile addResourcePile(Player player, Integer id, String kind, String resource, Decimal quantity, String units,
+            Integer? created) {
+        IMutableResourcePile pile = ResourcePileImpl(id, kind, resource, Quantity(quantity, units));
+        if (exists created) {
+            pile.created = created;
+        }
+        addResource(pile, player);
+        return pile;
     }
 
     "Add a resource to a player's HQ in a particular map."

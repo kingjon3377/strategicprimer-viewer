@@ -27,9 +27,7 @@ import strategicprimer.viewer.drivers {
     IOHandler
 }
 import strategicprimer.model.common.map.fixtures {
-    IMutableResourcePile,
-    Quantity,
-    ResourcePileImpl,
+    IResourcePile,
     Implement
 }
 import strategicprimer.model.common.idreg {
@@ -181,10 +179,8 @@ class ResourceAddingGUI satisfies MultiMapGUIDriver {
             }
 
             if (exists qty = parseDecimal(resourceQuantityModel.number.string)) {
-                IMutableResourcePile pile = ResourcePileImpl(idf.createID(), kind, resource,
-                    Quantity(qty, units));
-                pile.created = resourceCreatedModel.number.intValue();
-                model.addResource(pile, currentPlayer);
+                IResourcePile pile = model.addResourcePile(currentPlayer, idf.createID(), kind, resource,
+                    qty, units, resourceCreatedModel.number.intValue());
                 logAddition(logLabel, currentPlayer, pile.string);
                 for (box in [ resourceKindBox, resourceBox, resourceUnitsBox ]) {
                     box.checkAndClear();
