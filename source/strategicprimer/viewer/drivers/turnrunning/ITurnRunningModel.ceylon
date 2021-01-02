@@ -102,4 +102,13 @@ shared interface ITurnRunningModel satisfies IExplorationModel&IAdvancementModel
         }
         return retval;
     }
+
+    "Transfer [[quantity]] units from [[a resource|from]] to (if not all of it)
+     another resource in [[a unit or fortress|to]] in all maps. If this leaves
+     any behind in any map, [[id]] will be called exactly once to generate the
+     ID number for the resource in the destination in maps where that is the
+     case. Returns [[true]] if a matching resource and destination are found
+     (and the transfer occurs) in any map, [[false]] otherwise."
+    shared formal Boolean transferResource(IResourcePile from, IUnit|Fortress to,
+        Decimal quantity, Integer() id);
 }

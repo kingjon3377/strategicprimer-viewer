@@ -404,4 +404,64 @@ shared class TurnRunningModel extends ExplorationModel satisfies ITurnRunningMod
         }
         return any;
     }
+
+    "Transfer [[quantity]] units from [[a resource|from]] to (if not all of it)
+     another resource in [[a unit or fortress|to]] in all maps. If this leaves
+     any behind in any map, [[id]] will be called exactly once to generate the
+     ID number for the resource in the destination in maps where that is the
+     case. Returns [[true]] if a matching (mutable) resource and destination
+     are found (and the transfer occurs) in any map, [[false]] otherwise."
+    shared actual Boolean transferResource(IResourcePile from, IUnit|Fortress to,
+            Decimal quantity, Integer() idFactory) {
+        variable Boolean any = false;
+        variable Integer? generatedId = null;
+        Integer id() {
+            if (exists temp = generatedId) {
+                return temp;
+            } else {
+                Integer temp = idFactory();
+                generatedId = temp;
+                return temp;
+            }
+        }
+        for (map in restrictedAllMaps) {
+            for (container in map.fixtures.items.flatMap(partiallyFlattenFortresses)
+                    .narrow<IMutableUnit|Fortress>().filter(matchingValue(to.owner, HasOwner.owner))) {
+                if (exists matching = container.narrow<IMutableResourcePile>()
+                            .filter(matchingValue(from.kind, IResourcePile.kind))
+                            .filter(matchingValue(from.contents, IResourcePile.contents))
+                            .filter(matchingValue(from.created, IResourcePile.created))
+                            .filter(matchingValue(from.quantity.units, compose(Quantity.units,
+                                IResourcePile.quantity)))
+                            .find(matchingValue(from.id, IResourcePile.id)),
+                        exists destination = map.fixtures.items.flatMap(partiallyFlattenFortresses)
+                            .narrow<IMutableUnit|Fortress>()
+                            .filter(matchingValue(to.name, HasName.name))
+                            .find(matchingValue(to.id, TileFixture.id))) {
+                    map.modified = true;
+                    if (quantity >= decimalize(matching.quantity.number)) {
+                        if (is Fortress container) { // TODO: Combine with other block when a supertype is added for this method
+                            container.removeMember(matching);
+                        } else {
+                            container.removeMember(matching);
+                        }
+                        if (is Fortress destination) {
+                            destination.addMember(matching);
+                        } else {
+                            destination.addMember(matching);
+                        }
+                    } else {
+                        IMutableResourcePile split = ResourcePileImpl(id(), matching.kind, matching.contents,
+                            Quantity(quantity, matching.quantity.units));
+                        split.created = matching.created;
+                        matching.quantity = Quantity(decimalize(matching.quantity.number) - quantity,
+                            matching.quantity.units);
+                    }
+                    any = true;
+                    break;
+                }
+            }
+        }
+        return any;
+    }
 }
