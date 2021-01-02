@@ -18,9 +18,7 @@ import strategicprimer.model.common.map.fixtures.mobile {
     IUnit
 }
 import strategicprimer.model.common.map.fixtures {
-    IMutableResourcePile,
-    Quantity,
-    ResourcePileImpl
+    Quantity
 }
 import strategicprimer.drivers.query {
     MammalModel,
@@ -196,10 +194,9 @@ class HerdApplet(ITurnRunningModel model, ICLIHelper cli, IDRegistrar idf)
             addToOrders(Float.format(pounds, 0, 1));
             addLineToOrders(" lbs, of ``resourceProduced``.");
             if (exists home) {
-                IMutableResourcePile createdResource = ResourcePileImpl(idf.createID(), "food", resourceProduced,
-                    production); // FIXME: 'production' is in gallons; we want only pound-denominated food resources in the map
-                createdResource.created = model.map.currentTurn;
-                home.addMember(createdResource);
+                // FIXME: 'production' is in gallons; we want only pound-denominated food resources in the map
+                // TODO: If 'home' is null, should probably add to the unit itself ...
+                model.addResource(home, idf.createID(), "food", resourceProduced, production, model.map.currentTurn);
             }
         }
         addToOrders("In all, tending the animals took ``inHours(minutesSpent)``.");
