@@ -11,8 +11,6 @@ import ceylon.numeric.float {
 import strategicprimer.model.common.map.fixtures.mobile {
     AnimalTracks,
     Animal,
-    AnimalImpl,
-    IMutableUnit,
     IUnit,
     animalPlurals
 }
@@ -50,14 +48,10 @@ abstract class HuntGeneralApplet(String verb, ITurnRunningModel model, ICLIHelpe
     shared Boolean? handleCapture(Animal find) {
         if (exists unit = chooseFromList(
                     model.getUnits(model.selectedUnit?.owner else model.map.currentPlayer)
-                .narrow<IMutableUnit>().sequence(),
+                .narrow<IUnit>().sequence(),
                 "Available Units:", "No units", "Unit to add animals to:", false, describeUnit)) {
             if (exists num = cli.inputNumber("Number captured:")) {
-                if (!num.positive) {
-                    return false;
-                }
-                unit.addMember(AnimalImpl(find.kind, false, "wild", idf.createID(), -1, num));
-                return true;
+                return model.addAnimal(unit, find.kind, "wild", idf.createID(), num);
             } else {
                 return null;
             }
