@@ -367,7 +367,7 @@ shared class WorkerTreeModelAlt extends DefaultTreeModel satisfies IWorkerTreeMo
             // itself
             value path = getPathToRoot(node);
             Integer index = getIndexOfChild(path.array.last, node);
-	    model.dismissUnitMember(member);
+            model.dismissUnitMember(member);
             parentNode.remove(node);
             fireTreeNodesRemoved(this, path, IntArray.with(Singleton(index)),
                 ObjectArray<Object>.with(Singleton(node)));
