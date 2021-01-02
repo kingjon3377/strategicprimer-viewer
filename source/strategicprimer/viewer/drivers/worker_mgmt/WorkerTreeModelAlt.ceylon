@@ -14,7 +14,6 @@ import javax.swing.tree {
 }
 
 import strategicprimer.model.common.map.fixtures.mobile {
-    IMutableUnit,
     IUnit
 }
 import strategicprimer.model.common.map {
@@ -90,16 +89,18 @@ shared class WorkerTreeModelAlt extends DefaultTreeModel satisfies IWorkerTreeMo
             extends WorkerTreeNode<UnitMember>(member, false) { }
 
     "A class for tree-nodes representing units."
-    shared static class UnitNode(IMutableUnit unit) extends WorkerTreeNode<IMutableUnit>(unit) {
+    shared static class UnitNode(IUnit unit) extends WorkerTreeNode<IUnit>(unit) {
         for (index->member in unit.indexed) {
             insert(UnitMemberNode(member), index);
         }
 
-        "Add a child. If it is a [[UnitMemberNode]], also add the unit-member
-         it represents to the unit this node represents."
+        "Add a child. If it is a [[UnitMemberNode]], also check that the unit
+         member it represents is already in the unit this node represents."
         shared actual void add(MutableTreeNode child) {
             if (is UnitMemberNode child) {
-                unit.addMember(child.userObjectNarrowed);
+                if (!child.userObjectNarrowed in unit) {
+                    log.warn("Adding UnitMemberNode when its object is not in the unit");
+                }
             } else {
                 log.info("Added a non-UnitMemberNode to a UnitNode");
             }
@@ -110,7 +111,9 @@ shared class WorkerTreeModelAlt extends DefaultTreeModel satisfies IWorkerTreeMo
          unit-member it represents from the unit this node represents."
         shared actual void remove(MutableTreeNode child) {
             if (is UnitMemberNode child) {
-                unit.removeMember(child.userObjectNarrowed);
+                if (child.userObjectNarrowed in unit) {
+                    log.warn("Removing UnitMemberNode when its object is still in the unit");
+                }
             } else {
                 log.warn("Asked to remove non-UnitMember child from UnitNode");
             }
@@ -127,7 +130,7 @@ shared class WorkerTreeModelAlt extends DefaultTreeModel satisfies IWorkerTreeMo
 
     """A class for tree-nodes representing unit kinds, grouping units sharing a
        "kind" (in practice an administrative classification) in the tree."""
-    shared static class KindNode(String kind, IMutableUnit* units)
+    shared static class KindNode(String kind, IUnit* units)
             extends WorkerTreeNode<String>(kind) {
         for (index->unit in units.indexed) {
             insert(UnitNode(unit), index);
@@ -143,7 +146,7 @@ shared class WorkerTreeModelAlt extends DefaultTreeModel satisfies IWorkerTreeMo
     static class PlayerNode(Player player, IWorkerModel model)
             extends WorkerTreeNode<Player>(player) {
         for (index->kind in model.getUnitKinds(player).indexed) {
-            insert(KindNode(kind, *model.getUnits(player, kind).narrow<IMutableUnit>()), index);
+            insert(KindNode(kind, *model.getUnits(player, kind).narrow<IUnit>()), index);
         }
         if (childCount == 0) {
             log.warn("No unit kinds in player node for player ``player``");
@@ -211,7 +214,7 @@ shared class WorkerTreeModelAlt extends DefaultTreeModel satisfies IWorkerTreeMo
     shared actual void addUnit(IUnit unit) {
         model.addUnit(unit);
         assert (is PlayerNode temp = root);
-        if (is IMutableUnit matchingUnit = model.getUnitByID(temp.userObjectNarrowed, unit.id)) {
+        if (is IUnit matchingUnit = model.getUnitByID(temp.userObjectNarrowed, unit.id)) {
             MutableTreeNode node = UnitNode(matchingUnit);
             String kind = unit.kind;
             for (child in temp) {
@@ -266,7 +269,7 @@ shared class WorkerTreeModelAlt extends DefaultTreeModel satisfies IWorkerTreeMo
                     UnitNode.userObjectNarrowed))) {
             model.addUnitMember(unit, member);
             MutableTreeNode newNode = UnitMemberNode(member);
-            unitNode.add(newNode); // FIXME: Check this doesn't also add the unit member again
+            unitNode.add(newNode);
             fireTreeNodesInserted(this, ObjectArray<Object>.with([root, unitNode]),
                 IntArray.with(Singleton(unitNode.childCount - 1)),
                 ObjectArray<Object>.with(Singleton(newNode)));
@@ -308,7 +311,7 @@ shared class WorkerTreeModelAlt extends DefaultTreeModel satisfies IWorkerTreeMo
                         ObjectArray.with(Singleton(node)));
                 }
             }
-        } else if (is IMutableUnit item) {
+        } else if (is IUnit item) {
             if (is TreeNode node = getNode(temp, item)) {
                 value pathOne = getPathToRoot(node);
                 Integer indexOne = getIndexOfChild(pathOne.array.exceptLast.last, node);
