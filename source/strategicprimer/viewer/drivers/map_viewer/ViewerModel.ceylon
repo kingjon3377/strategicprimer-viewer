@@ -4,8 +4,7 @@ import ceylon.collection {
 }
 
 import lovelace.util.common {
-    todo,
-    PathWrapper
+    todo
 }
 
 import strategicprimer.drivers.common {
@@ -86,24 +85,6 @@ shared class ViewerModel extends SimpleDriverModel satisfies IViewerModel {
             extends SimpleDriverModel(theMap) {
         visDimensions = VisibleDimensions(0, theMap.dimensions.rows - 1, 0,
             theMap.dimensions.columns - 1);
-    }
-
-    deprecated("Filename now stored in the map")
-    shared new fromEntry(
-        "An [[Entry]] of the initial map and its filename"
-        IMutableMapNG->[PathWrapper?, Boolean] entry)
-            extends SimpleDriverModel(entry.key) {
-        visDimensions = VisibleDimensions(0, entry.key.dimensions.rows - 1, 0,
-            entry.key.dimensions.columns - 1);
-    }
-
-    deprecated("Filename now stored in the map")
-    shared new fromPair(
-        "A pair of the initial map and its filename"
-        [IMutableMapNG, PathWrapper?] pair)
-            extends SimpleDriverModel(pair.first) {
-        visDimensions = VisibleDimensions(0, pair.first.dimensions.rows - 1, 0,
-            pair.first.dimensions.columns - 1);
     }
 
     shared new copyConstructor(IDriverModel model)
