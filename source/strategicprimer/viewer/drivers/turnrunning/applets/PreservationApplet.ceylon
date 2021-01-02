@@ -20,6 +20,10 @@ import strategicprimer.viewer.drivers.turnrunning {
     ITurnRunningModel
 }
 
+import lovelace.util.jvm {
+    decimalize
+}
+
 service(`interface TurnAppletFactory`)
 shared class PreservationAppletFactory() satisfies TurnAppletFactory {
     shared actual TurnApplet create(ITurnRunningModel model, ICLIHelper cli, IDRegistrar idf) =>
@@ -68,18 +72,20 @@ class PreservationApplet(ITurnRunningModel model, ICLIHelper cli, IDRegistrar id
             } else {
                 return null;
             }
+            Decimal subtrahend;
             switch (cli.inputBoolean("Use all ``item.quantity``?"))
             case (true) {
-                model.removeResource(item, unit.owner);
+                subtrahend = decimalize(item.quantity.number);
             }
             case (false) {
-                if (exists subtrahend = cli.inputDecimal("How many ``item.quantity.units`` to use?"), subtrahend.positive) {
-                    model.reduceResourceBy(item, subtrahend, unit.owner);
+                if (exists temp = cli.inputDecimal("How many ``item.quantity.units`` to use?"), temp.positive) {
+                    subtrahend = temp;
                 } else {
                     return null;
                 }
             }
             case (null) { return null; }
+            model.reduceResourceBy(item, subtrahend, unit.owner);
             // TODO: findHQ() should instead take the unit and find the fortress in the same tile, if any
             model.addResource(model.findHQ(unit.owner) else unit, idf.createID(), "food",
                 convertedForm, Quantity(newPounds, "pounds"), turn);
