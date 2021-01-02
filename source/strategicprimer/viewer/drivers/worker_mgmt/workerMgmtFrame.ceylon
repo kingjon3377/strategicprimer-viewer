@@ -95,15 +95,6 @@ class WorkerMgmtFrame extends SPFrame satisfies PlayerChangeListener {
     NewUnitDialog newUnitFrame = NewUnitDialog(model.currentPlayer, idf);
     IWorkerTreeModel treeModel = WorkerTreeModelAlt(model);
 
-    deprecated("Operations requiring explicit handling of modification flag should be moved into the model")
-    void markModified() {
-        for (subMap in model.allMaps) {
-            if (!subMap.modified) {
-                model.setMapModified(subMap, true);
-            }
-        }
-    }
-
     value tree = workerTree(treeModel, model.players,
         defer(IMapNG.currentTurn, [mainMap]), true, idf);
     newUnitFrame.addNewUnitListener(treeModel);
@@ -125,22 +116,19 @@ class WorkerMgmtFrame extends SPFrame satisfies PlayerChangeListener {
 
     value ordersPanelObj = ordersPanel("Orders", mainMap.currentTurn, model.currentPlayer,
         model.getUnits, uncurry(IUnit.getLatestOrders), model.setUnitOrders,
-        isCurrent, markModified);
+        isCurrent);
     tree.addTreeSelectionListener(ordersPanelObj);
 
     Boolean trueSupplier(IUnit unit, Integer turn) => true;
 
     Anything(IUnit, Integer, String)? resultsSupplier;
-    Anything() resultsModListener;
     if ("true" == options.getArgument("--edit-results")) {
         resultsSupplier = model.setUnitResults;
-        resultsModListener = markModified;
     } else {
         resultsSupplier = null;
-        resultsModListener = noop;
     }
     value resultsPanel = ordersPanel("Results", mainMap.currentTurn, model.currentPlayer,
-        model.getUnits, uncurry(IUnit.getResults), resultsSupplier, trueSupplier, resultsModListener);
+        model.getUnits, uncurry(IUnit.getResults), resultsSupplier, trueSupplier);
     tree.addTreeSelectionListener(resultsPanel);
 
     value notesPanelInstance = notesPanel(model.map.currentPlayer);

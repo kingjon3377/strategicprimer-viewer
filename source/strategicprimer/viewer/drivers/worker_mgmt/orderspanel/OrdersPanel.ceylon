@@ -40,22 +40,20 @@ final class OrdersPanel extends BorderedPanel satisfies OrdersContainer {
     String(IUnit, Integer) ordersSupplier;
     Anything(IUnit, Integer, String)? ordersConsumer;
     Boolean(IUnit, Integer) isCurrent;
-    Anything() modificationListener;
+
     SpinnerNumberModel spinnerModel;
     Color defaultColor;
     JTextArea area;
     shared new (Integer currentTurn, Player currentPlayer,
             {IUnit*}(Player, String) playerUnits, String(IUnit, Integer) ordersSupplier,
             Anything(IUnit, Integer, String)? ordersConsumer,
-            Boolean(IUnit, Integer) isCurrent,
-            Anything() modificationListener, SpinnerNumberModel spinnerModel,
+            Boolean(IUnit, Integer) isCurrent, SpinnerNumberModel spinnerModel,
             JTextArea area) extends BorderedPanel() {
         this.currentPlayer = currentPlayer;
         this.playerUnits = playerUnits;
         this.ordersSupplier = ordersSupplier;
         this.ordersConsumer = ordersConsumer;
         this.isCurrent = isCurrent;
-        this.modificationListener = modificationListener;
         this.spinnerModel = spinnerModel;
         this.area = area;
         defaultColor = area.background;
@@ -76,7 +74,6 @@ final class OrdersPanel extends BorderedPanel satisfies OrdersContainer {
         if (is IUnit sel = selection) {
             if (exists ordersConsumer) {
                 ordersConsumer(sel, spinnerModel.number.intValue(), area.text);
-                modificationListener();
             }
             fixColor();
             parent.parent.repaint();

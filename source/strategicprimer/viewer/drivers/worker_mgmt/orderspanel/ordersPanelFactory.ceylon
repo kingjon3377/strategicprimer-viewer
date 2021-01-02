@@ -26,8 +26,7 @@ shared JPanel&OrdersContainer ordersPanel(String description, Integer currentTur
         Player currentPlayer, {IUnit*}(Player, String) playerUnits,
         String(IUnit, Integer) ordersSupplier,
         Anything(IUnit, Integer, String)? ordersConsumer,
-        Boolean(IUnit, Integer) isCurrent,
-        Anything() modificationListener) {
+        Boolean(IUnit, Integer) isCurrent) {
     JTextArea area = JTextArea();
 
     Integer minimumTurn = (currentTurn<0) then currentTurn else - 1;
@@ -36,7 +35,7 @@ shared JPanel&OrdersContainer ordersPanel(String description, Integer currentTur
         maximumTurn, 1);
 
     value retval = OrdersPanel(currentTurn, currentPlayer, playerUnits, ordersSupplier,
-        ordersConsumer, isCurrent, modificationListener, spinnerModel, area);
+        ordersConsumer, isCurrent, spinnerModel, area);
 
     String topLabel;
     if (description == "Orders") {
