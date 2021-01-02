@@ -6,7 +6,6 @@ import ceylon.collection {
 }
 
 import strategicprimer.model.common.map {
-    HasMutableImage,
     Player,
     IFixture
 }
@@ -14,7 +13,6 @@ import strategicprimer.model.common.map.fixtures {
     UnitMember
 }
 import strategicprimer.model.common.map.fixtures.mobile {
-    IMutableWorker,
     IUnit,
     ProxyFor,
     IWorker
@@ -25,8 +23,7 @@ import ceylon.logging {
 }
 import lovelace.util.common {
     anythingEqual,
-    matchingValue,
-    todo
+    matchingValue
 }
 import strategicprimer.model.common.map.fixtures.mobile.worker {
     IJob,
@@ -38,7 +35,7 @@ Logger log = logger(`module strategicprimer.model.common`);
 
 "An IWorker implementation to make the UI able to operate on all of a unit's workers at
  once."
-shared class ProxyWorker satisfies UnitMember&IMutableWorker&ProxyFor<IWorker> {
+shared class ProxyWorker satisfies UnitMember&IWorker&ProxyFor<IWorker> {
     "If false, this is representing all the workers in a single unit; if true, it is
      representing the corresponding workers in corresponding units in different maps."
     shared actual Boolean parallel;
@@ -121,19 +118,6 @@ shared class ProxyWorker satisfies UnitMember&IMutableWorker&ProxyFor<IWorker> {
 
     shared actual Iterator<IJob> iterator() => proxyJobs.iterator();
 
-    todo("FIXME: This ignores the content of [[the Job|job]]! Which means it
-          still works even if it's a [[ProxyJob]] itself, but still ...")
-    shared actual Boolean addJob(IJob job) {
-        if (jobNames.contains(job.name)) {
-            return false;
-        } else {
-            value proxy = ProxyJob(job.name, parallel, *workers);
-            jobNames.add(proxy.name);
-            proxyJobs.add(proxy);
-            return true;
-        }
-    }
-
     shared actual Boolean isSubset(IFixture obj, Anything(String) report) {
         report("isSubset called on ProxyWorker");
         return false;
@@ -185,16 +169,6 @@ shared class ProxyWorker satisfies UnitMember&IMutableWorker&ProxyFor<IWorker> {
     }
 
     shared actual String image => getConsensus(IWorker.image) else "";
-    assign image {
-        log.warn("image setter called on a ProxyWorker");
-        for (worker in workers) {
-            if (is HasMutableImage worker) {
-                worker.image = image;
-            } else {
-                log.warn("A proxied worker had an immutable image");
-            }
-        }
-    }
 
     shared actual String race => getConsensus(IWorker.race) else "proxied";
 
