@@ -19,11 +19,16 @@ import strategicprimer.drivers.common {
 }
 
 import strategicprimer.model.common.map.fixtures {
-    IResourcePile
+    IResourcePile,
+    Quantity
 }
 
 import strategicprimer.model.common.map.fixtures.mobile {
     IUnit
+}
+
+import strategicprimer.model.common.map.fixtures.towns {
+    Fortress
 }
 
 "A model for turn-running apps."
@@ -60,4 +65,11 @@ shared interface ITurnRunningModel satisfies IExplorationModel&IAdvancementModel
      [[true]] if a matching (and mutable) unit was found in at least one map,
      [[false]] otherwise."
     shared formal Boolean setUnitResults(IUnit unit, Integer turn, String results);
+
+    "Add a resource with the given ID, kind, contents, quantity, and (if
+     provided) created date in the given unit or fortress in all maps.
+     Returns [[true]] if a matching (and mutable) unit or fortress was found in
+     at least one map, [[false]] otherwise."
+    shared formal Boolean addResource(IUnit|Fortress container, Integer id, String kind, String contents,
+        Quantity quantity, Integer? createdDate = null);
 }

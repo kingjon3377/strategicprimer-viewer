@@ -1,5 +1,6 @@
 import strategicprimer.model.common.map {
     HasExtent,
+    HasName,
     HasOwner,
     HasPopulation,
     IFixture,
@@ -57,7 +58,8 @@ import ceylon.logging {
 import strategicprimer.model.common.map.fixtures {
     IMutableResourcePile,
     IResourcePile,
-    Quantity
+    Quantity,
+    ResourcePileImpl
 }
 
 "Logger."
@@ -339,6 +341,34 @@ shared class TurnRunningModel extends ExplorationModel satisfies ITurnRunningMod
                     .filter(matchingValue(unit.name, IUnit.name))
                     .find(matchingValue(unit.id, IUnit.id))) {
                 matching.setResults(turn, results);
+                map.modified = true;
+                any = true;
+            }
+        }
+        return any;
+    }
+
+    "Add a resource with the given ID, kind, contents, quantity, and (if
+     provided) created date in the given unit or fortress in all maps.
+     Returns [[true]] if a matching (and mutable) unit or fortress was found in
+     at least one map, [[false]] otherwise."
+    shared actual Boolean addResource(IUnit|Fortress container, Integer id, String kind, String contents,
+            Quantity quantity, Integer? createdDate) {
+        variable Boolean any = false;
+        IMutableResourcePile resource = ResourcePileImpl(id, kind, contents, quantity);
+        if (exists createdDate) {
+            resource.created = createdDate;
+        }
+        for (map in restrictedAllMaps) {
+            if (exists matching = map.fixtures.items.flatMap(partiallyFlattenFortresses)
+                    .narrow<IMutableUnit|Fortress>()
+                    .filter(matchingValue(container.name, HasName.name))
+                    .find(matchingValue(container.id, TileFixture.id))) {
+                if (is Fortress matching) {
+                    matching.addMember(resource.copy(false));
+                } else {
+                    matching.addMember(resource.copy(false));
+                }
                 map.modified = true;
                 any = true;
             }
