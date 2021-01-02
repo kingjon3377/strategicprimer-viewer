@@ -19,12 +19,10 @@ import strategicprimer.model.common.idreg {
     IDRegistrar
 }
 import strategicprimer.model.common.map.fixtures.mobile {
-    IMutableUnit
+    IUnit
 }
 import strategicprimer.model.common.map.fixtures {
-    IResourcePile,
-    Quantity,
-    ResourcePileImpl
+    IResourcePile
 }
 import ceylon.collection {
     ArrayList,
@@ -33,6 +31,10 @@ import ceylon.collection {
 
 import strategicprimer.viewer.drivers.turnrunning {
     ITurnRunningModel
+}
+
+import lovelace.util.jvm {
+    decimalize
 }
 
 service(`interface TurnAppletFactory`)
@@ -48,7 +50,7 @@ class MovementApplet(ITurnRunningModel model, ICLIHelper cli, IDRegistrar idf)
     shared actual [String+] commands = ["move"];
     shared actual String description = "move a unit";
 
-    void packFood(Fortress? fortress, IMutableUnit unit) {
+    void packFood(Fortress? fortress, IUnit unit) {
         if (is Null fortress) {
             return;
         }
@@ -57,16 +59,13 @@ class MovementApplet(ITurnRunningModel model, ICLIHelper cli, IDRegistrar idf)
                 "Resource to take (from):", false)) {
             switch (cli.inputBooleanInSeries("Take it all?"))
             case (true) {
-                model.removeResource(chosen, unit.owner); // FIXME: Add transferResource(IResourcePile from, IUnit|Fortress to) to model
-                unit.addMember(chosen);
+                model.transferResource(chosen, unit, decimalize(chosen.quantity.number), idf.createID);
                 resources.remove(chosen);
             }
             case (false) {
                 if (exists amount = cli.inputDecimal("Amount to take (in ``chosen.quantity.units``):"),
                         amount.positive) {
-                    model.reduceResourceBy(chosen, amount, unit.owner);
-                    unit.addMember(ResourcePileImpl(idf.createID(), chosen.kind, chosen.contents,
-                        Quantity(amount, chosen.quantity.units)));
+                    model.transferResource(chosen, unit, amount, idf.createID);
                     resources.clear();
                     resources.addAll(fortress.narrow<IResourcePile>());
                 }
@@ -87,8 +86,7 @@ class MovementApplet(ITurnRunningModel model, ICLIHelper cli, IDRegistrar idf)
             Point oldPosition = model.selectedUnitLocation;
             explorationCLI.moveOneStep();
             Point newPosition = model.selectedUnitLocation;
-            if (is IMutableUnit mover,
-                    model.map.fixtures.get(oldPosition).narrow<Fortress>().any(matchingValue(mover.owner,
+            if (model.map.fixtures.get(oldPosition).narrow<Fortress>().any(matchingValue(mover.owner,
                         HasOwner.owner)),
                     !model.map.fixtures.get(newPosition).narrow<Fortress>().any(matchingValue(mover.owner,
                         HasOwner.owner))) {
