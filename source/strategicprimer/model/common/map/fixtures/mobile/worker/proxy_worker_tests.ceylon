@@ -2,8 +2,7 @@ import ceylon.test {
     assertEquals,
     test,
     assertNotEquals,
-    assertTrue,
-    assertFalse
+    assertTrue
 }
 
 import strategicprimer.model.common.map {
@@ -19,10 +18,8 @@ import strategicprimer.model.common.map.fixtures.mobile {
     ProxyUnit
 }
 import strategicprimer.model.common.map.fixtures.mobile.worker {
-    ProxyJob,
     Job,
-    Skill,
-    ISkill
+    Skill
 }
 
 "Tests that the proxy classes work as expected."
@@ -80,33 +77,5 @@ object proxyWorkerTests {
                 Job("jobOne", 1, Skill("skillOne", 0, 5),
                     Skill("skillTwo", 2, 6)));
             assertEquals(worker.copy(false), worker, "Worker copy should still be equal");
-    }
-
-    "Test that removing a Skill from workers via a proxy works properly."
-    test
-    shared void testRemoval() {
-        Boolean nonemptySkill(ISkill skill) => !skill.empty;
-        ISkill skillOne = Skill("skillOne", 0, 10);
-        ISkill skillTwo = Skill("skillOne", 0, 10);
-        IMutableJob jobOne = Job("jobOne", 0, skillOne, Skill("skillTwo", 2, 5));
-        IMutableJob jobTwo = Job("jobOne", 0, skillTwo, Skill("skillThree", 1, 8),
-            Skill("skillFour", 5, 0));
-        assertTrue(jobTwo.map(ISkill.name).any("skillFour".equals),
-            "Extra skill is present at first");
-        jobTwo.removeSkill(Skill("skillFour", 5, 0));
-        assertFalse(jobTwo.filter(nonemptySkill).map(ISkill.name).any("skillFour".equals),
-            "Extra skill isn't present after being removed");
-        IWorker workerOne = Worker("workerName", "workerRace", 1, jobOne);
-        IWorker workerTwo = Worker("workerName", "workerRace", 1, jobTwo);
-        assertTrue(jobOne.map(ISkill.name).any("skillOne".equals),
-            "Common skill is present at first");
-        assertTrue(jobTwo.map(ISkill.name).any("skillOne".equals),
-            "Common skill is present at first");
-        IMutableJob proxyJob = ProxyJob("jobOne", true, workerOne, workerTwo);
-        proxyJob.removeSkill(Skill("skillOne", 0, 10));
-        assertFalse(jobOne.map(ISkill.name).any("skillOne".equals),
-            "Common skill isn't there after being removed");
-        assertFalse(jobTwo.map(ISkill.name).any("skillOne".equals),
-            "Common skill isn't there after being removed");
     }
 }

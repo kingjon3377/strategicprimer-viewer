@@ -19,7 +19,7 @@ import strategicprimer.model.common.map.fixtures.mobile {
 
 "An IJob implementation to let the Job tree operate on a whole unit at once."
 shared class ProxyJob(name, parallel, IWorker* proxiedWorkers)
-        satisfies IMutableJob&ProxyFor<IJob> {
+        satisfies IJob&ProxyFor<IJob> {
     """If false, the worker containing this is representing all the workers in a single
        unit; if true, it is representing corresponding workers in corresponding units in
        different maps. Thus, if true, we should use the same "random" seed repeatedly in
@@ -43,7 +43,7 @@ shared class ProxyJob(name, parallel, IWorker* proxiedWorkers)
             unmodified = false;
         }
         if (unmodified) {
-            if (is IMutableWorker worker) {
+            if (is IMutableWorker worker) { // FIXME: This can't still be needed, can it?
                 IMutableJob job = Job(name, 0);
                 worker.addJob(job);
                 proxiedJobs.add(worker.find(matchingValue(name, IJob.name)) else job);
@@ -70,37 +70,8 @@ shared class ProxyJob(name, parallel, IWorker* proxiedWorkers)
 
     shared actual Iterator<ISkill> iterator() => proxiedSkills.iterator();
 
-    "Add a skill; returns false if we were already proxying a skill by that name, and true
-     otherwise."
-    shared actual void addSkill(ISkill skill) {
-        if (!proxiedSkills.map(ISkill.name).any(skill.name.equals)) {
-            for (proxiedJob in proxiedJobs) {
-                if (!proxiedJob.map(ISkill.name).any(skill.name.equals)) {
-                    if (is IMutableJob proxiedJob) {
-                        proxiedJob.addSkill(skill.copy());
-                    } else {
-                        log.warn("Can't add skill to immutable job");
-                    }
-                }
-            }
-            proxiedSkills.add(ProxySkill(skill.name, parallel, *proxiedJobs));
-        }
-    }
-
     "The lowest level among proxied jobs."
     shared actual Integer level => Integer.min(proxiedJobs.map(IJob.level)) else 0;
-
-    "Set the proxied jobs' level."
-    assign level {
-        log.warn("ProxyJob.level assigned");
-        for (job in proxiedJobs) {
-            if (is IMutableJob job) {
-                job.level = level;
-            } else {
-                log.warn("Can't assign level in immutable job");
-            }
-        }
-    }
 
     "Delegates to [[name]]."
     todo("Indicate we're a proxy?")
@@ -144,18 +115,5 @@ shared class ProxyJob(name, parallel, IWorker* proxiedWorkers)
         value retval = ProxySkill(skillName, parallel, *proxiedJobs);
         proxiedSkills.add(retval);
         return retval;
-    }
-
-    shared actual void removeSkill(ISkill skill) {
-        if (exists local = proxiedSkills.find(skill.equals)) {
-            proxiedSkills.remove(local);
-        }
-        for (job in proxiedJobs) {
-            if (is IMutableJob job) {
-                job.removeSkill(skill);
-            } else {
-                log.warn("Can't remove skill from immutable job");
-            }
-        }
     }
 }
