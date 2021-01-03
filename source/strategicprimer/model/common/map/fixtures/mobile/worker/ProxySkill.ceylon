@@ -10,15 +10,11 @@ import lovelace.util.common {
 import strategicprimer.model.common.map.fixtures.mobile {
     ProxyFor
 }
-import ceylon.random {
-    DefaultRandom,
-    Random
-}
 
 "An implementation of ISkill whose operations act on multiple workers at once."
 todo("Figure out how we can make this satisfy ProxyFor<ISkill>?")
 class ProxySkill(name, parallel, IJob* proxiedJobsStream)
-        satisfies IMutableSkill&ProxyFor<IJob> {
+        satisfies ISkill&ProxyFor<IJob> {
     """If false, the worker containing this is representing all the workers in a single
        unit; if true, it is representing corresponding workers in corresponding units in
        different maps. Thus, if true, we should use the same "random" seed repeatedly in
@@ -56,60 +52,6 @@ class ProxySkill(name, parallel, IJob* proxiedJobsStream)
     shared actual Integer hours {
         return Integer.max(proxiedJobs.flatMap(identity).filter(notThis)
             .filter(matchingValue(name, ISkill.name)).map(ISkill.hours)) else 0;
-    }
-
-    "Add hours to the proxied skills."
-    shared actual void addHours(Integer hours, Integer condition) {
-        if (parallel) {
-            for (job in proxiedJobs) {
-                variable Boolean unmodified = true;
-                for (skill in job.filter(notThis)) {
-                    if (skill.name == name) {
-                        if (is IMutableSkill skill) {
-                            skill.addHours(hours, condition);
-                        } else {
-                            log.warn("Can't add hours to immutable skill");
-                        }
-                        unmodified = false;
-                    }
-                }
-                if (unmodified) {
-                    if (is IMutableJob job) {
-                        IMutableSkill skill = Skill(name, 0, 0);
-                        skill.addHours(hours, condition);
-                        job.addSkill(skill);
-                    } else {
-                        log.warn("Can't add new skill to immutable job");
-                    }
-                }
-            }
-        } else {
-            Random random = DefaultRandom(condition);
-            for (job in proxied) {
-                variable Boolean unmodified = true;
-                for (skill in job.filter(notThis)) {
-                    if (skill.name == name) {
-                        if (is IMutableSkill skill) {
-                            skill.addHours(hours, random.nextInteger(100));
-                        } else {
-                            log.warn("Can't add hours to immutable skill");
-                        }
-                        unmodified = false;
-                    }
-                }
-                if (unmodified) {
-                    if (is IMutableJob job) {
-                        IMutableSkill skill = Skill(name, 0, 0);
-                        job.addSkill(skill);
-                        (job.narrow<IMutableSkill>()
-                                .find(matchingValue(name, ISkill.name)) else skill)
-                            .addHours(hours, random.nextInteger(100));
-                    } else {
-                        log.warn("Can't add new skill to immutable job");
-                    }
-                }
-            }
-        }
     }
 
     "The name of the skills."
