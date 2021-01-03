@@ -15,7 +15,7 @@ todo("We'd like to be able to have
       members (directly or in [[CommunityStats]]) to represent villagers that
       players have been informed about by name.")
 shared class Village(status, name, id, owner, race)
-        satisfies ITownFixture&HasMutableImage&IFixture&Subsettable<IFixture> {
+        satisfies IMutableTownFixture&HasMutableImage&IFixture&Subsettable<IFixture> {
     "The status of the village."
     shared actual TownStatus status;
 

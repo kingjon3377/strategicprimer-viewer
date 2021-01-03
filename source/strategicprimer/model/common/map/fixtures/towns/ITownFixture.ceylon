@@ -2,11 +2,11 @@ import strategicprimer.model.common.map {
     TileFixture,
     HasPortrait,
     HasName,
-    HasMutableOwner
+    HasOwner
 }
 
 "An interface for towns and similar fixtures."
-shared interface ITownFixture satisfies TileFixture&HasName&HasMutableOwner&HasPortrait {
+shared interface ITownFixture satisfies TileFixture&HasName&HasOwner&HasPortrait {
     "The status of the town."
     shared formal TownStatus status;
 

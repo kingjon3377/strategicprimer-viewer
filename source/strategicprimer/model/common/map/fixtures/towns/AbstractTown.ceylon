@@ -12,7 +12,7 @@ import strategicprimer.model.common.map {
 
 "An abstract superclass for towns etc."
 shared abstract class AbstractTown(status, townSize, name, owner, dc)
-        satisfies HasMutableImage&ITownFixture&Subsettable<AbstractTown> {
+        satisfies HasMutableImage&IMutableTownFixture&Subsettable<AbstractTown> {
     "The status of the town, fortification, or city"
     shared actual TownStatus status;
 

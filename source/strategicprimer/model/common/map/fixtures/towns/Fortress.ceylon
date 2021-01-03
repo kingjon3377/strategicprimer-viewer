@@ -30,7 +30,7 @@ import strategicprimer.model.common.map.fixtures.mobile {
   may have fortresses on the same tile."
 todo("FIXME: We need something about buildings yet")
 shared class Fortress(owner, name, id, townSize = TownSize.small)
-        satisfies HasMutableImage&ITownFixture&HasMutableName&
+        satisfies HasMutableImage&IMutableTownFixture&HasMutableName&
         {FortressMember*}&IFixture&Subsettable<IFixture> {
     "The player who owns the fortress."
     shared actual variable Player owner;
