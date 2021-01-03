@@ -1,5 +1,6 @@
 "An interface for the representation of a player in the game."
-shared interface Player satisfies Comparable<Player>&HasName&HasPortrait {
+// TODO: Split mutability into separate interface (or just move down to impl?)
+shared interface Player satisfies Comparable<Player>&HasName&HasMutablePortrait {
     "The player's ID number."
     shared formal Integer playerId;
 

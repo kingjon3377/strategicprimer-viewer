@@ -1,5 +1,6 @@
 import strategicprimer.model.common.map {
-    HasMutableOwner
+    HasMutableOwner,
+    HasMutablePortrait
 }
-shared interface IMutableTownFixture satisfies ITownFixture&HasMutableOwner {
+shared interface IMutableTownFixture satisfies ITownFixture&HasMutableOwner&HasMutablePortrait {
 }

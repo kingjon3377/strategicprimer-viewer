@@ -44,6 +44,7 @@ import strategicprimer.model.common.idreg {
     DuplicateIDException
 }
 import strategicprimer.model.common.map {
+    HasMutablePortrait,
     HasPortrait,
     Player,
     MutablePlayer,
@@ -334,7 +335,7 @@ object xmlTests {
     "Assert that the given object, if serialized and deserialized, will have its portrait
      property preserved. We modify that property, but set it back to the original value
      before exiting this method."
-    void assertPortraitSerialization(String message, HasPortrait obj) {
+    void assertPortraitSerialization(String message, HasMutablePortrait obj) {
         String oldPortrait = obj.portrait;
         for (reader in readers) {
             for (deprecated in `Boolean`.caseValues) {

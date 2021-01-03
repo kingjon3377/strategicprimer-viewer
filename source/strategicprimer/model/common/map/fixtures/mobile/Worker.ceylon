@@ -12,7 +12,7 @@ import lovelace.util.common {
 import strategicprimer.model.common.map {
     IFixture,
     Player,
-    HasPortrait
+    HasMutablePortrait
 }
 
 import strategicprimer.model.common.map.fixtures.mobile.worker {
@@ -30,7 +30,8 @@ import ceylon.collection {
  [[TileFixture|strategicprimer.model.common.map::TileFixture]]: these should only be part
  of a unit, not as a top-level tag."
 todo("Convert some other [[MobileFixture]]s similarly?")
-shared class Worker satisfies IMutableWorker&HasPortrait {
+// FIXME: Make IWorker satisfy HasPortrait and IMutableWorker satisfy HasMutablePortrait
+shared class Worker satisfies IMutableWorker&HasMutablePortrait {
     "Whether neither of two collections of Jobs contains a nonempty Job the other does
      not."
     static Boolean jobSetsEqual({IJob*} first, {IJob*} second) =>

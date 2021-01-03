@@ -10,7 +10,7 @@ import lovelace.util.common {
     ArraySet
 }
 import strategicprimer.model.common.map {
-    HasPortrait,
+    HasMutablePortrait,
     IFixture,
     TileFixture,
     Player
@@ -34,8 +34,8 @@ Logger log = logger(`module strategicprimer.model.common`);
 
 "A unit in the map."
 todo("FIXME: we need more members: something about stats; what else?")
-// TODO: Once HasPortrait is split into mutable and non-mutating halves, move the non-mutating reference to IUnit and the mutator to IMutableUnit
-shared class Unit(owner, kind, name, id) satisfies IMutableUnit&HasPortrait {
+// FIXME: Make IUnit satisfiy HasPortrait and IMutableUnit HasMutablePortrait
+shared class Unit(owner, kind, name, id) satisfies IMutableUnit&HasMutablePortrait {
     "The unit's orders. This is serialized to and from XML, but does not affect equality
      or hashing, and is not printed in [[string]]."
     SortedMap<Integer, String>&MutableMap<Integer, String> orders =
