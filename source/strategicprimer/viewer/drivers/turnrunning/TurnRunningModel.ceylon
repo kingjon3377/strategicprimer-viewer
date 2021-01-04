@@ -58,6 +58,7 @@ import ceylon.logging {
 }
 
 import strategicprimer.model.common.map.fixtures {
+    FortressMember,
     IMutableResourcePile,
     IResourcePile,
     Quantity,
@@ -482,6 +483,38 @@ shared class TurnRunningModel extends ExplorationModel satisfies ITurnRunningMod
                     break;
                 }
             }
+        }
+        return any;
+    }
+
+    "Add (a copy of) an existing resource to the fortress belonging to the
+     given player with the given name, or failing that to any fortress
+     belonging to the given player, in all maps. Returns [[true]] if a matching
+     (and mutable) fortress ws found in at least one map, [[false]] otherwise."
+    // TODO: Make a way to add to units
+    shared actual Boolean addExistingResource(FortressMember resource, Player owner, String fortName) {
+        variable Boolean any = false;
+        for (map in restrictedAllMaps) {
+            IMutableFortress result;
+            variable IMutableFortress? temp = null;
+            for (item in map.fixtures.items.narrow<IMutableFortress>()
+                    .filter(matchingValue(owner, IMutableFortress.owner))) {
+                if (item.name == fortName) {
+                    result = item;
+                    break;
+                } else if (!temp exists) {
+                    temp = item;
+                }
+            } else {
+                if (exists fortress = temp) {
+                    result = fortress;
+                } else {
+                    continue;
+                }
+            }
+            any = true;
+            map.modified = true;
+            result.addMember(resource.copy(false));
         }
         return any;
     }

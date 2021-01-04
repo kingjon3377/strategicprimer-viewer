@@ -16,8 +16,7 @@ import lovelace.util.common {
     matchingValue
 }
 import strategicprimer.model.common.map.fixtures.towns {
-    IFortress,
-    IMutableFortress
+    IFortress
 }
 import strategicprimer.model.common.map.fixtures {
     FortressMember,
@@ -96,29 +95,9 @@ shared abstract class AbstractTurnApplet(ITurnRunningModel model, ICLIHelper cli
         model.reducePopulation(point, fixture, zero, count);
     }
 
-    shared void addResourceToMaps(FortressMember resource, Player owner, String fortName = "HQ") {
-        for (map in model.allMaps) {
-            // TODO: Make a way to add to units
-            IMutableFortress hq;
-            variable IMutableFortress? fort = null;
-            for (fortress in map.fixtures.items.narrow<IMutableFortress>()
-                    .filter(matchingValue(owner, IMutableFortress.owner))) {
-                if (fortress.name == fortName) {
-                    hq = fortress;
-                    break;
-                } else if (!fort exists) {
-                    fort = fortress;
-                }
-            } else {
-                if (exists fortress = fort) {
-                    hq = fortress;
-                } else {
-                    continue;
-                }
-            }
-            hq.addMember(resource);
-        }
-    }
+    deprecated("Use model.addExistingResource if caller has model reference")
+    shared void addResourceToMaps(FortressMember resource, Player owner, String fortName = "HQ")
+        => model.addExistingResource(resource, owner, fortName);
 
     // FIXME: Should only look at a particular unit's location
     shared [IResourcePile*] getFoodFor(Player player, Integer turn) { // TODO: Move into the model?

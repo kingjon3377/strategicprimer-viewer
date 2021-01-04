@@ -19,6 +19,7 @@ import strategicprimer.drivers.common {
 }
 
 import strategicprimer.model.common.map.fixtures {
+    FortressMember,
     IResourcePile,
     Quantity
 }
@@ -71,6 +72,13 @@ shared interface ITurnRunningModel satisfies IExplorationModel&IAdvancementModel
      at least one map, [[false]] otherwise."
     shared formal Boolean addResource(IUnit|IFortress container, Integer id, String kind, String contents,
         Quantity quantity, Integer? createdDate = null);
+
+    "Add (a copy of) an existing resource to the fortress belonging to the
+     given player with the given name, or failing that to any fortress
+     belonging to the given player, in all maps. Returns [[true]] if a matching
+     (and mutable) fortress ws found in at least one map, [[false]] otherwise."
+    // TODO: Make a way to add to units
+    shared formal Boolean addExistingResource(FortressMember resource, Player owner, String fortName = "HQ");
 
     "Add a non-talking animal population to the given unit in all maps. Returns
      [[true]] if the input makes sense and a matching (and mutable) unit was
