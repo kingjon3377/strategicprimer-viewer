@@ -75,7 +75,7 @@ class HerdApplet(ITurnRunningModel model, ICLIHelper cli, IDRegistrar idf)
         StringBuilder buffer = StringBuilder();
         IFortress? home = containingFortress(unit);
         for (kind in unit.narrow<Animal>().filter((animal) => ["domesticated", "tame"].contains(animal.status))
-                .map(Animal.kind).distinct .filter(not(herdModels.keys.contains))) {
+                .map(Animal.kind).distinct.filter(not(herdModels.keys.contains))) {
             if (exists herdModel = chooseHerdModel(kind)) {
                 herdModels[kind] = herdModel;
             } else if (exists cont = cli.inputBoolean("Skip?"), cont) {
