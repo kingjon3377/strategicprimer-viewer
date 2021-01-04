@@ -6,7 +6,7 @@ import lovelace.util.common {
     matchingValue
 }
 import strategicprimer.model.common.map.fixtures.towns {
-    Fortress
+    IFortress
 }
 import strategicprimer.model.common.map {
     HasOwner,
@@ -50,7 +50,7 @@ class MovementApplet(ITurnRunningModel model, ICLIHelper cli, IDRegistrar idf)
     shared actual [String+] commands = ["move"];
     shared actual String description = "move a unit";
 
-    void packFood(Fortress? fortress, IUnit unit) {
+    void packFood(IFortress? fortress, IUnit unit) {
         if (is Null fortress) {
             return;
         }
@@ -86,13 +86,13 @@ class MovementApplet(ITurnRunningModel model, ICLIHelper cli, IDRegistrar idf)
             Point oldPosition = model.selectedUnitLocation;
             explorationCLI.moveOneStep();
             Point newPosition = model.selectedUnitLocation;
-            if (model.map.fixtures.get(oldPosition).narrow<Fortress>().any(matchingValue(mover.owner,
+            if (model.map.fixtures.get(oldPosition).narrow<IFortress>().any(matchingValue(mover.owner,
                         HasOwner.owner)),
-                    !model.map.fixtures.get(newPosition).narrow<Fortress>().any(matchingValue(mover.owner,
+                    !model.map.fixtures.get(newPosition).narrow<IFortress>().any(matchingValue(mover.owner,
                         HasOwner.owner))) {
                 switch (pack = cli.inputBooleanInSeries("Leaving a fortress. Take provisions along?"))
                 case (true) {
-                    packFood(model.map.fixtures.get(oldPosition).narrow<Fortress>().find(
+                    packFood(model.map.fixtures.get(oldPosition).narrow<IFortress>().find(
                         matchingValue(mover.owner, HasOwner.owner)), mover);
                 }
                 case (false) {}

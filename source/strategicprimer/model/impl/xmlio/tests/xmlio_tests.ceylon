@@ -121,7 +121,9 @@ import strategicprimer.model.common.map.fixtures.towns {
     Town,
     Fortification,
     City,
-    Fortress,
+    FortressImpl,
+    IFortress,
+    IMutableFortress,
     CommunityStats
 }
 import strategicprimer.model.impl.xmlio {
@@ -783,7 +785,7 @@ object xmlTests {
         IMutableMapNG thirdMap = createSimpleMap(Point(4, 4),
             Point(3, 3)->TileType.jungle);
         Player playerOne = PlayerImpl(2, "");
-        Fortress fort = Fortress(playerOne, "fortOne", 1,
+        IMutableFortress fort = FortressImpl(playerOne, "fortOne", 1,
             TownSize.small);
         fort.addMember(Unit(playerOne, "unitTwo", "secondUnit", 2));
         thirdMap.addFixture(Point(3, 3), fort);
@@ -1331,21 +1333,21 @@ object xmlTests {
         assertSerialization("Second [[Portal]] serialization test", fourth);
     }
 
-    "Test that [[Fortress]] contents other than units are properly
+    "Test that [[fortress|IFortress]] contents other than units are properly
      (de)serialized."
     todo("Split resource details testing into a separate test")
     test
     shared void testFortressMemberSerialization() {
-        Fortress firstFort = Fortress(PlayerImpl(1, ""), "fortName", 1, TownSize.small);
+        IMutableFortress firstFort = FortressImpl(PlayerImpl(1, ""), "fortName", 1, TownSize.small);
         firstFort.addMember(Implement("implKind", 2));
-        assertSerialization("[[Fortress]] can have an [[Implement]] as a member",
+        assertSerialization("[[Fortress|IFortress]] can have an [[Implement]] as a member",
             firstFort);
         firstFort.addMember(Implement("implKindTwo", 8));
         assertSerialization("[[Implement]] can be more than one in one object",
             firstFort);
         firstFort.addMember(ResourcePileImpl(3, "generalKind", "specificKind",
             Quantity(10, "each")));
-        assertSerialization("[[Fortress]] can have a [[strategicprimer.model.common.fixtures::ResourcePile]] as a member",
+        assertSerialization("[[Fortress|IFortress]] can have a [[strategicprimer.model.common.fixtures::ResourcePile]] as a member",
             firstFort);
         IMutableResourcePile resource = ResourcePileImpl(4, "generalKind", "specificKind",
             Quantity(15, "pounds"));
@@ -1521,7 +1523,7 @@ object xmlTests {
             rows, id, decimalNumber(3).divided(decimalNumber(2))));
     }
 
-    "Test [[Fortress]] (de)serialization in the simplest cases."
+    "Test [[fortress|IFortress]] (de)serialization in the simplest cases."
     test
     shared void testFortressSerialization(
             randomlyGenerated(2) Integer id,
@@ -1530,20 +1532,20 @@ object xmlTests {
         // pass a set of players in
         Player firstPlayer = PlayerImpl(1, "");
         assertSerialization("First test of ``size`` Fortress serialization",
-            Fortress(firstPlayer, "one", id, size));
+            FortressImpl(firstPlayer, "one", id, size));
         assertSerialization("Second test of ``size`` Fortress serialization",
-            Fortress(firstPlayer, "two", id, size));
+            FortressImpl(firstPlayer, "two", id, size));
         Player secondPlayer = PlayerImpl(2, "");
-        Fortress five = Fortress(secondPlayer, "five", id, TownSize.small);
+        IMutableFortress five = FortressImpl(secondPlayer, "five", id, TownSize.small);
         five.addMember(Unit(secondPlayer, "unitOne", "unitTwo", 1));
         assertSerialization("Fifth test of Fortress serialization", five);
-        assertUnwantedChild<Fortress>("<fortress><hill /></fortress>", null);
-        assertMissingProperty<Fortress>("<fortress />", "owner",
-            Fortress(PlayerImpl(-1, ""), "", 0, TownSize.small));
-        assertMissingProperty<Fortress>("""<fortress owner="1" />""", "name",
-            Fortress(PlayerImpl(1, ""), "", 0, TownSize.small));
-        assertMissingProperty<Fortress>("""<fortress owner="1" name="name" />""",
-            "id", Fortress(PlayerImpl(1, ""), "name", 0, TownSize.small));
+        assertUnwantedChild<IFortress>("<fortress><hill /></fortress>", null);
+        assertMissingProperty<IFortress>("<fortress />", "owner",
+            FortressImpl(PlayerImpl(-1, ""), "", 0, TownSize.small));
+        assertMissingProperty<IFortress>("""<fortress owner="1" />""", "name",
+            FortressImpl(PlayerImpl(1, ""), "", 0, TownSize.small));
+        assertMissingProperty<IFortress>("""<fortress owner="1" name="name" />""",
+            "id", FortressImpl(PlayerImpl(1, ""), "name", 0, TownSize.small));
         assertImageSerialization("Fortress image property is preserved", five);
     }
 

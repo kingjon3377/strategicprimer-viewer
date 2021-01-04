@@ -78,7 +78,7 @@ import strategicprimer.model.common.map.fixtures.towns {
     TownSize,
     Village,
     AbstractTown,
-    Fortress,
+    IFortress,
     CommunityStats
 }
 import strategicprimer.model.impl.xmlio {
@@ -239,7 +239,7 @@ shared class SPFluidWriter() satisfies SPWriter {
         }
     }
 
-    void writeFortress(XMLStreamWriter ostream, Fortress obj, Integer indentation) {
+    void writeFortress(XMLStreamWriter ostream, IFortress obj, Integer indentation) {
         writeTag(ostream, "fortress", indentation, false);
         writeAttributes(ostream, "owner"->obj.owner.playerId);
         writeNonEmptyAttributes(ostream, "name"->obj.name);
@@ -396,7 +396,7 @@ shared class SPFluidWriter() satisfies SPWriter {
         `ISkill`->castingWriter<ISkill>(unitMemberHandler.writeSkill),
         `WorkerStats`->castingWriter<WorkerStats>(unitMemberHandler.writeStats),
         `IUnit`->castingWriter<IUnit>(writeUnit),
-        `Fortress`->castingWriter<Fortress>(writeFortress),
+        `IFortress`->castingWriter<IFortress>(writeFortress),
         `Village`->castingWriter<Village>(fluidTownHandler.writeVillage),
         `AbstractTown`->castingWriter<AbstractTown>(fluidTownHandler.writeTown),
         `IMapNG`->castingWriter<IMapNG>(writeMap),

@@ -16,7 +16,8 @@ import lovelace.util.common {
     matchingValue
 }
 import strategicprimer.model.common.map.fixtures.towns {
-    Fortress
+    IFortress,
+    IMutableFortress
 }
 import strategicprimer.model.common.map.fixtures {
     FortressMember,
@@ -98,10 +99,10 @@ shared abstract class AbstractTurnApplet(ITurnRunningModel model, ICLIHelper cli
     shared void addResourceToMaps(FortressMember resource, Player owner, String fortName = "HQ") {
         for (map in model.allMaps) {
             // TODO: Make a way to add to units
-            Fortress hq;
-            variable Fortress? fort = null;
-            for (fortress in map.fixtures.items.narrow<Fortress>()
-                    .filter(matchingValue(owner, Fortress.owner))) {
+            IMutableFortress hq;
+            variable IMutableFortress? fort = null;
+            for (fortress in map.fixtures.items.narrow<IMutableFortress>()
+                    .filter(matchingValue(owner, IMutableFortress.owner))) {
                 if (fortress.name == fortName) {
                     hq = fortress;
                     break;
@@ -121,7 +122,7 @@ shared abstract class AbstractTurnApplet(ITurnRunningModel model, ICLIHelper cli
 
     // FIXME: Should only look at a particular unit's location
     shared [IResourcePile*] getFoodFor(Player player, Integer turn) { // TODO: Move into the model?
-        return model.map.locations.flatMap(model.map.fixtures.get).narrow<Fortress|IUnit>()
+        return model.map.locations.flatMap(model.map.fixtures.get).narrow<IFortress|IUnit>()
             .filter(matchingValue(player, HasOwner.owner)).flatMap(identity).narrow<IResourcePile>()
             .filter(matchingValue("food", IResourcePile.kind)).filter(matchingValue("pounds",
                 compose(Quantity.units, IResourcePile.quantity))).filter((r) => r.created <= turn).sequence();

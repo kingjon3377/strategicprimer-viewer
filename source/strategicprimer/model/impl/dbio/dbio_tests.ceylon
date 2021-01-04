@@ -101,7 +101,7 @@ import strategicprimer.model.common.map.fixtures.towns {
     CommunityStats,
     City,
     Town,
-    Fortress,
+    FortressImpl,
     Village
 }
 import strategicprimer.model.common.xmlio {
@@ -305,7 +305,7 @@ object dbio_tests {
             randomlyGenerated(2) Integer id,
             enumeratedParameter(`class TownSize`) TownSize size) {
         Player owner = PlayerImpl(1, "owner");
-        value fortress = Fortress(owner, "fortress", id, size);
+        value fortress = FortressImpl(owner, "fortress", id, size);
         value unit = Unit(owner, "unitKind", "unitName", id + 2);
         unit.addMember(Worker("workerName", "human", id + 3, Job("jobName", 2)));
         unit.addMember(Sphinx(id + 5));

@@ -96,7 +96,9 @@ import strategicprimer.model.common.map.fixtures.terrain {
     Oasis
 }
 import strategicprimer.model.common.map.fixtures.towns {
-    Fortress,
+    FortressImpl,
+    IFortress,
+    IMutableFortress,
     TownSize
 }
 import strategicprimer.model.impl.xmlio {
@@ -222,8 +224,8 @@ shared class SPFluidReader() satisfies IMapReader&ISPReader {
         if (is River child) {
             map.addRivers(currentTile, child);
         } else if (is TileFixture child) {
-            if (is Fortress child, map.fixtures.get(currentTile).narrow<Fortress>()
-                    .any(matchingValue(child.owner, Fortress.owner))) {
+            if (is IFortress child, map.fixtures.get(currentTile).narrow<IFortress>()
+                    .any(matchingValue(child.owner, IFortress.owner))) {
                 warner.handle(UnwantedChildException.withMessage(parent.name, element,
                         "Multiple fortresses owned by same player on same tile"));
             }
@@ -475,17 +477,17 @@ shared class SPFluidReader() satisfies IMapReader&ISPReader {
         return retval;
     }
 
-    Fortress readFortress(StartElement element, QName parent, {XMLEvent*} stream,
+    IFortress readFortress(StartElement element, QName parent, {XMLEvent*} stream,
             IMutablePlayerCollection players, Warning warner, IDRegistrar idFactory) {
         requireTag(element, parent, "fortress");
         requireNonEmptyAttribute(element, "owner", false, warner);
         requireNonEmptyAttribute(element, "name", false, warner);
         expectAttributes(element, warner, "owner", "name", "id", "size", "status",
             "image", "portrait");
-        Fortress retval;
+        IMutableFortress retval;
         value size = TownSize.parse(getAttribute(element, "size", "small"));
         if (is TownSize size) {
-            retval = Fortress(
+            retval = FortressImpl(
                 getPlayerOrIndependent(element, warner, players),
                 getAttribute(element, "name", ""),
                 getOrGenerateID(element, warner, idFactory), size);

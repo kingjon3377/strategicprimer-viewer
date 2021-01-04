@@ -8,14 +8,15 @@ import strategicprimer.model.common.map {
     IMutableMapNG
 }
 import strategicprimer.model.common.map.fixtures.towns {
-    Fortress,
+    FortressImpl,
+    IFortress,
     TownSize
 }
 import strategicprimer.model.common.xmlio {
     Warning
 }
 
-object dbFortressHandler extends AbstractDatabaseWriter<Fortress, Point>()
+object dbFortressHandler extends AbstractDatabaseWriter<IFortress, Point>()
         satisfies MapContentsReader {
     shared actual {String+} initializers = [
         """CREATE TABLE IF NOT EXISTS fortresses (
@@ -31,7 +32,7 @@ object dbFortressHandler extends AbstractDatabaseWriter<Fortress, Point>()
            );"""
     ];
 
-    shared actual void write(Sql db, Fortress obj, Point context) {
+    shared actual void write(Sql db, IFortress obj, Point context) {
         db.Insert("""INSERT INTO fortresses (row, column, owner, name, size, id, image,
                           portrait)
                      VALUES(?, ?, ?, ?, ?, ?, ?, ?);""")
@@ -49,7 +50,7 @@ object dbFortressHandler extends AbstractDatabaseWriter<Fortress, Point>()
             is TownSize size = TownSize.parse(sizeString), is Integer id = dbRow["id"],
             is String|SqlNull image = dbRow["image"],
             is String|SqlNull portrait = dbRow["portrait"]);
-        value fortress = Fortress(map.players.getPlayer(ownerId), name, id, size);
+        value fortress = FortressImpl(map.players.getPlayer(ownerId), name, id, size);
         if (is String image) {
             fortress.image = image;
         }

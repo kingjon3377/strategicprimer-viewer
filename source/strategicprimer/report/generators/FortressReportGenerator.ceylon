@@ -31,7 +31,7 @@ import strategicprimer.model.common.map.fixtures.terrain {
     Forest
 }
 import strategicprimer.model.common.map.fixtures.towns {
-    Fortress
+    IFortress
 }
 
 import com.vasileff.ceylon.structures {
@@ -43,7 +43,7 @@ import com.vasileff.ceylon.structures {
 shared class FortressReportGenerator(
         Comparison([Point, IFixture], [Point, IFixture]) comp, Player currentPlayer,
         MapDimensions dimensions, Integer currentTurn, Point? hq = null)
-        extends AbstractReportGenerator<Fortress>(comp, dimensions, hq) {
+        extends AbstractReportGenerator<IFortress>(comp, dimensions, hq) {
     IReportGenerator<IUnit> urg =
             UnitReportGenerator(comp, currentPlayer, dimensions, currentTurn, hq);
     IReportGenerator<FortressMember> memberReportGenerator =
@@ -96,7 +96,7 @@ shared class FortressReportGenerator(
      removed from the collection."
     shared actual void produceSingle(
             DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
-            IMapNG map, Anything(String) ostream, Fortress item, Point loc) {
+            IMapNG map, Anything(String) ostream, IFortress item, Point loc) {
         ostream("<h5>Fortress ``item.name`` belonging to ");
         ostream((item.owner == currentPlayer) then "you" else item.owner.string);
         ostream("</h5>
@@ -166,9 +166,9 @@ shared class FortressReportGenerator(
      removed from the collection."
     shared actual void produce(DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
             IMapNG map, Anything(String) ostream) {
-        MutableMap<Fortress, Point> ours = HashMap<Fortress, Point>();
-        MutableMap<Fortress, Point> others = HashMap<Fortress, Point>();
-        for ([loc, fort] in fixtures.items.narrow<[Point, Fortress]>()
+        MutableMap<IFortress, Point> ours = HashMap<IFortress, Point>();
+        MutableMap<IFortress, Point> others = HashMap<IFortress, Point>();
+        for ([loc, fort] in fixtures.items.narrow<[Point, IFortress]>()
                 .sort(pairComparator)) {
             if (currentPlayer == fort.owner) {
                 ours[fort] = loc;

@@ -45,7 +45,7 @@ import strategicprimer.drivers.exploration.common {
 }
 import strategicprimer.model.common.map.fixtures.towns {
     Village,
-    Fortress,
+    IFortress,
     AbstractTown,
     TownStatus
 }
@@ -325,7 +325,7 @@ class ExplorationAutomationConfig(shared Player player) {
             map.fixtures.get(point).any(allConditions);
     }
     {Condition<out TileFixture>+} conditions =
-        [Condition<Fortress>("at others' fortresses",
+        [Condition<IFortress>("at others' fortresses",
                 (fixture) => "a fortress belonging to " + fixture.owner.string),
             Condition<AbstractTown>("at active towns",
                     (fixture) => "a ``fixture.townSize`` active ``fixture.kind``",

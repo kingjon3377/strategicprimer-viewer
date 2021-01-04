@@ -6,7 +6,7 @@ import lovelace.util.common {
     matchingValue
 }
 import strategicprimer.model.common.map.fixtures.towns {
-    Fortress
+    IFortress
 }
 import strategicprimer.model.common.map.fixtures.mobile.worker {
     IJob
@@ -57,9 +57,9 @@ class HerdApplet(ITurnRunningModel model, ICLIHelper cli, IDRegistrar idf)
     shared actual String description = "milk or gather eggs from animals";
 
     // TODO: Pull up to AbstractTurnApplet for use by other applets?
-    Fortress? containingFortress(IUnit unit) =>
-        model.map.fixtures.get(model.find(unit)).narrow<Fortress>()
-            .find(matchingValue(unit.owner, Fortress.owner));
+    IFortress? containingFortress(IUnit unit) =>
+        model.map.fixtures.get(model.find(unit)).narrow<IFortress>()
+            .find(matchingValue(unit.owner, IFortress.owner));
 
     MutableMap<String, HerdModel> herdModels = HashMap<String, HerdModel>();
     HerdModel? chooseHerdModel(String animal) => cli.chooseFromList(
@@ -73,7 +73,7 @@ class HerdApplet(ITurnRunningModel model, ICLIHelper cli, IDRegistrar idf)
     shared actual String? run() {
         assert (exists unit = model.selectedUnit);
         StringBuilder buffer = StringBuilder();
-        Fortress? home = containingFortress(unit);
+        IFortress? home = containingFortress(unit);
         for (kind in unit.narrow<Animal>().filter((animal) => ["domesticated", "tame"].contains(animal.status))
                 .map(Animal.kind).distinct .filter(not(herdModels.keys.contains))) {
             if (exists herdModel = chooseHerdModel(kind)) {

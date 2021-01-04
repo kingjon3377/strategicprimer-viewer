@@ -36,7 +36,7 @@ import strategicprimer.model.common.map.fixtures.resources {
 import strategicprimer.model.common.map.fixtures.towns {
     AbstractTown,
     CommunityStats,
-    Fortress,
+    IFortress,
     Village
 }
 
@@ -173,7 +173,7 @@ shared class PopulationGeneratingModel extends SimpleMultiMapModel { // TODO: Ex
     "If the fixture is a fortress, return it; otherwise return a Singleton of
      it. This flattens a fortress's contents into a stream of tile fixtures."
     {IFixture*} flattenFortresses(IFixture fixture) {
-        if (is Fortress fixture) {
+        if (is IFortress fixture) {
             return fixture;
         } else {
             return Singleton(fixture);

@@ -18,7 +18,8 @@ import strategicprimer.model.common.map.fixtures.mobile {
     Unit
 }
 import strategicprimer.model.common.map.fixtures.towns {
-    Fortress
+    IFortress,
+    IMutableFortress
 }
 import strategicprimer.model.common.xmlio {
     Warning
@@ -28,7 +29,7 @@ import lovelace.util.common {
     as
 }
 
-object dbUnitHandler extends AbstractDatabaseWriter<IUnit, Point|Fortress>()
+object dbUnitHandler extends AbstractDatabaseWriter<IUnit, Point|IFortress>()
         satisfies MapContentsReader {
     shared actual {String+} initializers = [
         """CREATE TABLE IF NOT EXISTS units (
@@ -56,7 +57,7 @@ object dbUnitHandler extends AbstractDatabaseWriter<IUnit, Point|Fortress>()
            );"""
     ];
 
-    shared actual void write(Sql db, IUnit obj, Point|Fortress context) {
+    shared actual void write(Sql db, IUnit obj, Point|IFortress context) {
         value unit = db.Insert("""INSERT INTO units (row, column, parent, owner, kind,
                                       name, id, image, portrait)
                                   VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?);""");
@@ -123,7 +124,7 @@ object dbUnitHandler extends AbstractDatabaseWriter<IUnit, Point|Fortress>()
             map.addFixture(Point(row, column), unit);
         } else {
             assert (is Integer parentNum = dbRow["parent"],
-                is Fortress parent = super.findById(map, parentNum, warner));
+                is IMutableFortress parent = super.findById(map, parentNum, warner));
             parent.addMember(unit);
         }
     }

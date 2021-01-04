@@ -60,7 +60,7 @@ import strategicprimer.model.common.map.fixtures.explorable {
 }
 
 import strategicprimer.model.common.map.fixtures.towns {
-    Fortress,
+    IFortress,
     AbstractTown,
     TownStatus,
     Village
@@ -189,7 +189,7 @@ class CountingCLI(ICLIHelper cli, model) satisfies ReadOnlyDriver {
 
         cli.println("Active Communities:");
         cli.println();
-        cli.println("- ``allFixtures.narrow<Fortress>().size`` fortresses");
+        cli.println("- ``allFixtures.narrow<IFortress>().size`` fortresses");
         cli.println("- ``allFixtures.narrow<AbstractTown>()
             .filter(matchingValue(TownStatus.active, AbstractTown.status))
             .size`` active towns, cities, or fortifications of any size");
@@ -212,7 +212,7 @@ class CountingCLI(ICLIHelper cli, model) satisfies ReadOnlyDriver {
 
         MappedCounter<IWorker, String, Integer> workers = simpleCounter(IWorker.race);
         allFixtures.narrow<IUnit>().flatMap(identity).narrow<IWorker>().each(workers.add);
-        allFixtures.narrow<Fortress>().flatMap(identity).narrow<IUnit>().flatMap(identity)
+        allFixtures.narrow<IFortress>().flatMap(identity).narrow<IUnit>().flatMap(identity)
             .narrow<IWorker>().each(workers.add);
         printSummary(workers, "Worker Races:");
 
@@ -226,14 +226,14 @@ class CountingCLI(ICLIHelper cli, model) satisfies ReadOnlyDriver {
                     Accumulator<Integer>, 0);
         allFixtures.narrow<Animal>().filter(not(Animal.talking)).each(animals.add);
         allFixtures.narrow<IUnit>().flatMap(identity).narrow<Animal>().each(animals.add);
-        allFixtures.narrow<Fortress>().flatMap(identity).narrow<IUnit>().flatMap(identity)
+        allFixtures.narrow<IFortress>().flatMap(identity).narrow<IUnit>().flatMap(identity)
             .narrow<Animal>().each(animals.add);
         animals.addDirectly("various talking animals", allFixtures.narrow<Animal>()
             .filter(Animal.talking).size);
         printSummary(animals, "Animals");
 
         value remaining =
-                allFixtures.filter(exclude<Animal|Shrub|Grove|Meadow|Immortal|Fortress
+                allFixtures.filter(exclude<Animal|Shrub|Grove|Meadow|Immortal|IFortress
                     |IUnit|AbstractTown|Village|Portal|AdventureFixture|CacheFixture|Mine|
                     MineralVein|StoneDeposit|Ground|Forest|Hill|Oasis|AnimalTracks|Cave|
                     Battlefield>);

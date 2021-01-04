@@ -14,13 +14,14 @@ import strategicprimer.model.common.map.fixtures.mobile {
     IUnit
 }
 import strategicprimer.model.common.map.fixtures.towns {
-    Fortress
+    IFortress,
+    IMutableFortress
 }
 import strategicprimer.model.common.xmlio {
     Warning
 }
 
-object dbImplementHandler extends AbstractDatabaseWriter<Implement, IUnit|Fortress>()
+object dbImplementHandler extends AbstractDatabaseWriter<Implement, IUnit|IFortress>()
         satisfies MapContentsReader {
     shared actual {String+} initializers = [
         """CREATE TABLE IF NOT EXISTS implements (
@@ -32,7 +33,7 @@ object dbImplementHandler extends AbstractDatabaseWriter<Implement, IUnit|Fortre
            );"""
     ];
 
-    shared actual void write(Sql db, Implement obj, IUnit|Fortress context) {
+    shared actual void write(Sql db, Implement obj, IUnit|IFortress context) {
         db.Insert("""INSERT INTO implements (parent, id, kind, count, image)
                      VALUES(?, ?, ?, ?, ?);""")
                 .execute(context.id, obj.id, obj.kind, obj.count, obj.image);
@@ -42,7 +43,7 @@ object dbImplementHandler extends AbstractDatabaseWriter<Implement, IUnit|Fortre
 
     void readImplement(IMutableMapNG map)(Map<String, Object> row, Warning warner) {
         assert (is Integer parentId = row["parent"],
-            is IMutableUnit|Fortress parent = findById(map, parentId, warner),
+            is IMutableUnit|IMutableFortress parent = findById(map, parentId, warner),
             is Integer id = row["id"], is String kind = row["kind"],
             is Integer count = row["count"], is String|SqlNull image = row["image"]);
         value implement = Implement(kind, id, count);

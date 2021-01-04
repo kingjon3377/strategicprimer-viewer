@@ -47,8 +47,9 @@ import strategicprimer.model.common.map.fixtures.terrain {
     Forest
 }
 import strategicprimer.model.common.map.fixtures.towns {
+    IMutableFortress,
     Village,
-    Fortress
+    IFortress
 }
 import ceylon.random {
     randomize
@@ -107,7 +108,7 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
             if (unit == fixture) {
                 outside = true;
                 break;
-            } else if (is Fortress fixture, exists item = fixture.find(unit.equals)) {
+            } else if (is IMutableFortress fixture, exists item = fixture.find(unit.equals)) {
                 fixture.removeMember(item);
                 return;
             }
@@ -166,10 +167,10 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
     static Set<T> intersection<T>(Set<T> one, Set<T> two) given T satisfies Object =>
             one.intersection(two);
 
-    "If [[fixture]] is a [[Fortress]], return it; otherwise, return a Singleton
+    "If [[fixture]] is a [[fortress|IFortress]], return it; otherwise, return a Singleton
      containing it. This is intended to be used in [[Iterable.flatMap]]."
     static {IFixture*} unflattenNonFortresses(TileFixture fixture) {
-        if (is Fortress fixture) {
+        if (is IFortress fixture) {
             return fixture;
         } else {
             return Singleton(fixture);

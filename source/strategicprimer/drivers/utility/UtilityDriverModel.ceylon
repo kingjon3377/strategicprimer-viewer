@@ -46,7 +46,7 @@ import strategicprimer.model.common.map.fixtures.terrain {
 }
 
 import strategicprimer.model.common.map.fixtures.towns {
-    Fortress,
+    IMutableFortress,
     ITownFixture
 }
 
@@ -155,7 +155,7 @@ shared class UtilityDriverModel extends SimpleMultiMapModel {
                 if (is IMutableUnit fixture) {
                     retval.addAll(coalesceImpl("``context``In ``shortDesc``: ", fixture,
                         ifApplicable(fixture.addMember), ifApplicable(fixture.removeMember), setModFlag, handlers));
-                } else if (is Fortress fixture) {
+                } else if (is IMutableFortress fixture) {
                     retval.addAll(coalesceImpl("``context``In ``shortDesc``: ", fixture,
                         ifApplicable(fixture.addMember), ifApplicable(fixture.removeMember), setModFlag, handlers));
                 }

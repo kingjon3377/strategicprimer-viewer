@@ -13,12 +13,12 @@ import strategicprimer.model.common.map {
     Point
 }
 import strategicprimer.model.common.map.fixtures.towns {
-    Fortress
+    IFortress
 }
 
 "A tabular report generator for fortresses."
 shared class FortressTabularReportGenerator(Player player, Point? hq,
-        MapDimensions dimensions) extends AbstractTableGenerator<Fortress>() {
+        MapDimensions dimensions) extends AbstractTableGenerator<IFortress>() {
     "The header fields are Distance, Location, Owner, and Name."
     shared actual [String+] headerRow = ["Distance", "Location", "Owner", "Name"];
 
@@ -35,7 +35,7 @@ shared class FortressTabularReportGenerator(Player player, Point? hq,
     "Create a GUI table row representing the fortress."
     shared actual [{String+}+] produce(
             DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
-            Fortress item, Integer key, Point loc, Map<Integer, Integer> parentMap) {
+            IFortress item, Integer key, Point loc, Map<Integer, Integer> parentMap) {
         {String+} retval = [distanceString(loc, hq, dimensions), locationString(loc),
             ownerString(player, item.owner), item.name];
         // Players shouldn't be able to see the contents of others' fortresses
@@ -49,7 +49,7 @@ shared class FortressTabularReportGenerator(Player player, Point? hq,
 
     "Compare two fortresses based on whether they are owned by the player for whom the
      report is being produced."
-    Comparison compareOwners(Fortress one, Fortress two) {
+    Comparison compareOwners(IFortress one, IFortress two) {
         if (player == one.owner, player != two.owner) {
             return smaller;
         } else if (player == two.owner, player != one.owner) {
@@ -60,7 +60,7 @@ shared class FortressTabularReportGenerator(Player player, Point? hq,
     }
 
     "Compare two fortresses' names, with a special case so HQ goes at the top."
-    Comparison compareNames(Fortress one, Fortress two) {
+    Comparison compareNames(IFortress one, IFortress two) {
         if ("HQ" == one.name, "HQ" != two.name) {
             return smaller;
         } else if ("HQ" == two.name, "HQ" != one.name) {
@@ -70,11 +70,11 @@ shared class FortressTabularReportGenerator(Player player, Point? hq,
         }
     }
 
-    "Compare two Point-Fortress pairs."
-    shared actual Comparison comparePairs([Point, Fortress] one, [Point, Fortress] two) =>
+    "Compare two Point-IFortress pairs."
+    shared actual Comparison comparePairs([Point, IFortress] one, [Point, IFortress] two) =>
         comparing(comparingOn(pairFixture, compareOwners),
                 comparingOn(pairPoint, distanceComparator),
                 comparingOn(pairFixture, compareNames),
-                byIncreasing(compose(Fortress.owner, pairFixture)))
+                byIncreasing(compose(IFortress.owner, pairFixture)))
             (one, two);
 }

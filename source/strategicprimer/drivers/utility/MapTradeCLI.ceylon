@@ -22,7 +22,7 @@ import ceylon.collection {
 
 import strategicprimer.model.common.map.fixtures.towns {
     AbstractTown,
-    Fortress,
+    IFortress,
     Village
 }
 
@@ -95,7 +95,7 @@ shared class MapTradeCLI satisfies CLIDriver {
             FixtureMatcher.complements<IUnit>(not(
                     compose(Player.independent, IUnit.owner)),
                 "Units", "Independent Units"),
-            FixtureMatcher.trivialMatcher(`Fortress`, "Fortresses"),
+            FixtureMatcher.trivialMatcher(`IFortress`, "Fortresses"),
             FixtureMatcher.trivialMatcher(`TextFixture`, "Arbitrary-Text Notes"),
             FixtureMatcher.trivialMatcher(`Portal`),
             FixtureMatcher.trivialMatcher(`Oasis`, "Oases"),

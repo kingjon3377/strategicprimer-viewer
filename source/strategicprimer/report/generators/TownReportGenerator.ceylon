@@ -18,7 +18,7 @@ import strategicprimer.model.common.map {
 import strategicprimer.model.common.map.fixtures.towns {
     TownStatus,
     ITownFixture,
-    Fortress,
+    IFortress,
     Village,
     AbstractTown
 }
@@ -47,14 +47,10 @@ shared class TownReportGenerator(Comparison([Point, IFixture], [Point, IFixture]
     shared actual void produceSingle(
             DelayedRemovalMap<Integer,[Point, IFixture]> fixtures,
             IMapNG map, Anything(String) ostream, ITownFixture item, Point loc) {
-        assert (is Village|Fortress|AbstractTown item);
+        assert (is Village|IFortress|AbstractTown item);
         switch (item)
         case (is Village) {
             VillageReportGenerator(comp, currentPlayer, dimensions, hq)
-                .produceSingle(fixtures, map, ostream, item, loc);
-        }
-        case (is Fortress) {
-            FortressReportGenerator(comp, currentPlayer, dimensions, currentTurn, hq)
                 .produceSingle(fixtures, map, ostream, item, loc);
         }
         case (is AbstractTown) {
@@ -70,6 +66,10 @@ shared class TownReportGenerator(Comparison([Point, IFixture], [Point, IFixture]
                     item.owner``");
             }
             ostream(" ``distanceString(loc)``");
+        }
+        else case (is IFortress) {
+            FortressReportGenerator(comp, currentPlayer, dimensions, currentTurn, hq)
+                .produceSingle(fixtures, map, ostream, item, loc);
         }
     }
 

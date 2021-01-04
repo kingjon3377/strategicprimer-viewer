@@ -19,7 +19,7 @@ import strategicprimer.model.common.map.fixtures.mobile {
     ProxyFor
 }
 import strategicprimer.model.common.map.fixtures.towns {
-    Fortress
+    IFortress
 }
 import lovelace.util.common {
     matchingValue,
@@ -57,11 +57,11 @@ class TurnRunningCLI(ICLIHelper cli, model) satisfies CLIDriver {
         return results.empty || results.lowercased.containsAny(["fixme", "todo", "xxx"]);
     }
 
-    "If [[the argument|fixture]] is a [[Fortress]], return it; otherwise,
+    "If [[the argument|fixture]] is a [[fortress|IFortress]], return it; otherwise,
      return a [[Singleton]] of the argument. This allows callers to get a
      flattened stream of units, including those in fortresses."
     {Anything*} flatten(Anything fixture) {
-        if (is Fortress fixture) {
+        if (is IFortress fixture) {
             return fixture;
         } else {
             return Singleton(fixture);

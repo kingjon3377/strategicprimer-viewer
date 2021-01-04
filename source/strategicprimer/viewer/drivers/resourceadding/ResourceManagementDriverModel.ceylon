@@ -1,5 +1,5 @@
 import strategicprimer.model.common.map.fixtures.towns {
-    Fortress
+    IMutableFortress
 }
 import strategicprimer.drivers.common {
     SimpleMultiMapModel,
@@ -56,7 +56,7 @@ class ResourceManagementDriverModel extends SimpleMultiMapModel {
 
     "Add a resource to a player's HQ in a particular map."
     shared void addResourceToMap(FortressMember resource, IMapNG map, Player player) {
-        for (fixture in map.fixtures.items.narrow<Fortress>()) {
+        for (fixture in map.fixtures.items.narrow<IMutableFortress>()) {
             if ("HQ" == fixture.name, player.playerId == fixture.owner.playerId) {
                 fixture.addMember(resource);
             } // TODO: Set modified flag for that map

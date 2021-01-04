@@ -19,7 +19,7 @@ import strategicprimer.model.common.map {
 }
 
 import strategicprimer.model.common.map.fixtures.towns {
-    Fortress
+    IFortress
 }
 
 import ceylon.collection {
@@ -33,9 +33,9 @@ object reportGeneratorHelper {
      if not found."
     shared Point? findHQ(IMapNG map, Player player) {
         variable Point? retval = null;
-        for (location->fixture in narrowedStream<Point, Fortress>(map.fixtures)
-                .filter(compose(matchingValue(player, Fortress.owner),
-                    Entry<Point, Fortress>.item))) {
+        for (location->fixture in narrowedStream<Point, IFortress>(map.fixtures)
+                .filter(compose(matchingValue(player, IFortress.owner),
+                    Entry<Point, IFortress>.item))) {
             if ("hq" == fixture.name.lowercased) {
                 return location;
             } else if (location.valid, !retval exists) {

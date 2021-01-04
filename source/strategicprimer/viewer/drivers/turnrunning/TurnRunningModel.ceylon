@@ -48,7 +48,8 @@ import strategicprimer.model.common.map.fixtures.mobile.worker {
 }
 
 import strategicprimer.model.common.map.fixtures.towns {
-    Fortress
+    IFortress,
+    IMutableFortress
 }
 
 import ceylon.logging {
@@ -67,10 +68,10 @@ import strategicprimer.model.common.map.fixtures {
 Logger log = logger(`module strategicprimer.viewer`);
 
 shared class TurnRunningModel extends ExplorationModel satisfies ITurnRunningModel {
-    "If [[fixture]] is a [[Fortress]], return it; otherwise, return a Singleton
+    "If [[fixture]] is a [[fortress|IFortress]], return it; otherwise, return a Singleton
      containing it. This is intended to be used in [[Iterable.flatMap]]."
     static {IFixture*} unflattenNonFortresses(TileFixture fixture) {
-        if (is Fortress fixture) {
+        if (is IFortress fixture) {
             return fixture;
         } else {
             return Singleton(fixture);
@@ -80,7 +81,7 @@ shared class TurnRunningModel extends ExplorationModel satisfies ITurnRunningMod
     "If [[fixture]] is a fortress, return a stream of it and its contents; otherwise,
      return a singleton containing the fixture. This is intended to be used in [[Iterable.flatMap]]."
     static {IFixture*} partiallyFlattenFortresses(TileFixture fixture) {
-        if (is Fortress fixture) {
+        if (is IFortress fixture) {
             return fixture.follow(fixture);
         } else {
             return Singleton(fixture);
@@ -267,21 +268,21 @@ shared class TurnRunningModel extends ExplorationModel satisfies ITurnRunningMod
 
     "Reduce the matching [[resource|IResourcePile]], in a
      [[unit|strategicprimer.model.common.map.fixtures.mobile::IUnit]] or
-     [[fortress|Fortress]] owned by [[the specified player|owner]], by [[the
+     [[fortress|IFortress]] owned by [[the specified player|owner]], by [[the
      specified amount|amount]]. Returns [[true]] if any (mutable) resource
      piles matched in any of the maps, [[false]] otherwise."
     shared actual Boolean reduceResourceBy(IResourcePile resource, Decimal amount, Player owner) {
         variable Boolean any = false;
         for (map in restrictedAllMaps) {
             for (container in map.fixtures.items.flatMap(partiallyFlattenFortresses)
-                    .narrow<IMutableUnit|Fortress>().filter(matchingValue(owner, HasOwner.owner))) {
+                    .narrow<IMutableUnit|IMutableFortress>().filter(matchingValue(owner, HasOwner.owner))) {
                 variable Boolean found = false;
                 for (item in container.narrow<IMutableResourcePile>()) {
                     if (resource.isSubset(item, noop)) { // TODO: is that the right way around?
                         if (decimalize(item.quantity.number) <= amount) {
                             switch (container)
                             case (is IMutableUnit) { container.removeMember(item); }
-                            else case (is Fortress) { container.removeMember(item); }
+                            else case (is IMutableFortress) { container.removeMember(item); }
                         } else {
                             item.quantity = Quantity(decimalize(item.quantity.number) - amount, resource.quantity.units);
                         }
@@ -301,7 +302,7 @@ shared class TurnRunningModel extends ExplorationModel satisfies ITurnRunningMod
 
     "Remove the given [[resource|IResourcePile]] from a
      [[unit|strategicprimer.model.common.map.fixtures.mobile::IUnit]] or
-     [[fortress|strategicprimer.model.common.map.fixtures.towns::Fortress]]
+     [[fortress|strategicprimer.model.common.map.fixtures.towns::IFortress]]
      owned by [[the specified player|owner]] in all maps. Returns [[true]] if
      any matched in any of the maps, [[false]] otherwise."
     deprecated("Use [[reduceResourceBy]] when possible instead.")
@@ -309,13 +310,13 @@ shared class TurnRunningModel extends ExplorationModel satisfies ITurnRunningMod
         variable Boolean any = false;
         for (map in restrictedAllMaps) {
             for (container in map.fixtures.items.flatMap(partiallyFlattenFortresses)
-                    .narrow<IMutableUnit|Fortress>().filter(matchingValue(owner, HasOwner.owner))) {
+                    .narrow<IMutableUnit|IMutableFortress>().filter(matchingValue(owner, HasOwner.owner))) {
                 variable Boolean found = false;
                 for (item in container.narrow<IResourcePile>()) {
                     if (resource.isSubset(item, noop)) { // TODO: is that the right way around?
                         switch (container)
                         case (is IMutableUnit) { container.removeMember(item); }
-                        else case (is Fortress) { container.removeMember(item); }
+                        else case (is IMutableFortress) { container.removeMember(item); }
                         map.modified = true;
                         any = true;
                         found = true;
@@ -372,7 +373,7 @@ shared class TurnRunningModel extends ExplorationModel satisfies ITurnRunningMod
      provided) created date in the given unit or fortress in all maps.
      Returns [[true]] if a matching (and mutable) unit or fortress was found in
      at least one map, [[false]] otherwise."
-    shared actual Boolean addResource(IUnit|Fortress container, Integer id, String kind, String contents,
+    shared actual Boolean addResource(IUnit|IFortress container, Integer id, String kind, String contents,
             Quantity quantity, Integer? createdDate) {
         variable Boolean any = false;
         IMutableResourcePile resource = ResourcePileImpl(id, kind, contents, quantity);
@@ -381,10 +382,10 @@ shared class TurnRunningModel extends ExplorationModel satisfies ITurnRunningMod
         }
         for (map in restrictedAllMaps) {
             if (exists matching = map.fixtures.items.flatMap(partiallyFlattenFortresses)
-                    .narrow<IMutableUnit|Fortress>()
+                    .narrow<IMutableUnit|IMutableFortress>()
                     .filter(matchingValue(container.name, HasName.name))
                     .find(matchingValue(container.id, TileFixture.id))) {
-                if (is Fortress matching) {
+                if (is IMutableFortress matching) {
                     matching.addMember(resource.copy(false));
                 } else {
                     matching.addMember(resource.copy(false));
@@ -430,7 +431,7 @@ shared class TurnRunningModel extends ExplorationModel satisfies ITurnRunningMod
      ID number for the resource in the destination in maps where that is the
      case. Returns [[true]] if a matching (mutable) resource and destination
      are found (and the transfer occurs) in any map, [[false]] otherwise."
-    shared actual Boolean transferResource(IResourcePile from, IUnit|Fortress to,
+    shared actual Boolean transferResource(IResourcePile from, IUnit|IFortress to,
             Decimal quantity, Integer() idFactory) {
         variable Boolean any = false;
         variable Integer? generatedId = null;
@@ -445,7 +446,8 @@ shared class TurnRunningModel extends ExplorationModel satisfies ITurnRunningMod
         }
         for (map in restrictedAllMaps) {
             for (container in map.fixtures.items.flatMap(partiallyFlattenFortresses)
-                    .narrow<IMutableUnit|Fortress>().filter(matchingValue(to.owner, HasOwner.owner))) {
+                    .narrow<IMutableUnit|IMutableFortress>()
+		    .filter(matchingValue(to.owner, HasOwner.owner))) {
                 if (exists matching = container.narrow<IMutableResourcePile>()
                             .filter(matchingValue(from.kind, IResourcePile.kind))
                             .filter(matchingValue(from.contents, IResourcePile.contents))
@@ -454,17 +456,17 @@ shared class TurnRunningModel extends ExplorationModel satisfies ITurnRunningMod
                                 IResourcePile.quantity)))
                             .find(matchingValue(from.id, IResourcePile.id)),
                         exists destination = map.fixtures.items.flatMap(partiallyFlattenFortresses)
-                            .narrow<IMutableUnit|Fortress>()
+                            .narrow<IMutableUnit|IMutableFortress>()
                             .filter(matchingValue(to.name, HasName.name))
                             .find(matchingValue(to.id, TileFixture.id))) {
                     map.modified = true;
                     if (quantity >= decimalize(matching.quantity.number)) {
-                        if (is Fortress container) { // TODO: Combine with other block when a supertype is added for this method
+                        if (is IMutableFortress container) { // TODO: Combine with other block when a supertype is added for this method
                             container.removeMember(matching);
                         } else {
                             container.removeMember(matching);
                         }
-                        if (is Fortress destination) {
+                        if (is IMutableFortress destination) {
                             destination.addMember(matching);
                         } else {
                             destination.addMember(matching);

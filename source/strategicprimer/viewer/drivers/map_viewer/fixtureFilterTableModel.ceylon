@@ -81,7 +81,7 @@ import strategicprimer.model.common.map.fixtures.terrain {
 import strategicprimer.model.common.map.fixtures.towns {
     Village,
     AbstractTown,
-    Fortress,
+    IFortress,
     TownStatus
 }
 import strategicprimer.drivers.common {
@@ -101,7 +101,7 @@ shared class FixtureFilterTableModel extends AbstractTableModel
         for (arg in [
                 FixtureMatcher.complements<IUnit>(compose(not(Player.independent),
                     IUnit.owner), "Units", "Independent Units"),
-                FixtureMatcher.trivialMatcher(`Fortress`, "Fortresses"),
+                FixtureMatcher.trivialMatcher(`IFortress`, "Fortresses"),
                 FixtureMatcher.complements<AbstractTown>(matchingValue(TownStatus.active,
                         AbstractTown.status),
                     "Active Cities, Towns, & Fortifications",

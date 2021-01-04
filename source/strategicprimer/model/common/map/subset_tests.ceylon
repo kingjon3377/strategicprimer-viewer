@@ -43,7 +43,9 @@ import strategicprimer.model.common.map.fixtures.terrain {
 }
 import strategicprimer.model.common.map.fixtures.towns {
     TownSize,
-    Fortress,
+    FortressImpl,
+    IFortress,
+    IMutableFortress,
     AbstractTown,
     TownStatus,
     Fortification,
@@ -99,46 +101,46 @@ object subsetTests {
             "Two is subset of self");
     }
 
-    "Assert that neither of two [[fortresses|Fortress]] is a subset of the
+    "Assert that neither of two [[fortresses|IFortress]] is a subset of the
      other."
-    void requireMatching(Fortress one, Fortress two, String what) {
-        assertNotSubset<Fortress, IFixture>(one, two,
+    void requireMatching(IFortress one, IFortress two, String what) {
+        assertNotSubset<IFortress, IFixture>(one, two,
             "Subset requires ``what``, first test");
-        assertNotSubset<Fortress, IFixture>(two, one,
+        assertNotSubset<IFortress, IFixture>(two, one,
             "Subset requires ``what``, second test");
     }
 
-    "A test of [[Fortress]]'s subset feature."
+    "A test of [[a fortress's|IFortress]] subset feature."
     test
     shared void testFortressSubset() {
         Integer fortId = 1;
-        Fortress firstFort = Fortress(PlayerImpl(1, "one"), "fOne", fortId,
+        IFortress firstFort = FortressImpl(PlayerImpl(1, "one"), "fOne", fortId,
             TownSize.small);
         requireMatching(firstFort,
-            Fortress(PlayerImpl(2, "two"), "fOne", fortId, TownSize.small), "same owner");
+            FortressImpl(PlayerImpl(2, "two"), "fOne", fortId, TownSize.small), "same owner");
         requireMatching(firstFort,
-            Fortress(PlayerImpl(1, "one"), "fTwo", fortId, TownSize.small), "same name");
+            FortressImpl(PlayerImpl(1, "one"), "fTwo", fortId, TownSize.small), "same name");
         requireMatching(firstFort,
-            Fortress(PlayerImpl(1, "one"), "fOne", 3, TownSize.small),
+            FortressImpl(PlayerImpl(1, "one"), "fOne", 3, TownSize.small),
             "identity or ID equality");
-        Fortress fifthFort = Fortress(PlayerImpl(1, "one"), "fOne", fortId,
+        IMutableFortress fifthFort = FortressImpl(PlayerImpl(1, "one"), "fOne", fortId,
             TownSize.small);
         fifthFort.addMember(Unit(PlayerImpl(2, "two"), "unit_type", "unit_name", 4));
-        assertIsSubset<Fortress, IFixture>(fifthFort, firstFort,
+        assertIsSubset<IFortress, IFixture>(fifthFort, firstFort,
             "Fortress without is a subset of fortress with unit");
-        assertNotSubset<Fortress, IFixture>(firstFort, fifthFort,
+        assertNotSubset<IFortress, IFixture>(firstFort, fifthFort,
             "Fortress with is not a subset of fortress without unit");
-        Fortress sixthFort = Fortress(PlayerImpl(1, "one"), "unknown", fortId,
+        IFortress sixthFort = FortressImpl(PlayerImpl(1, "one"), "unknown", fortId,
             TownSize.small);
-        assertIsSubset<Fortress, IFixture>(firstFort, sixthFort,
+        assertIsSubset<IFortress, IFixture>(firstFort, sixthFort,
             """Fortress named "unknown" can be subset""");
-        assertNotSubset<Fortress, IFixture>(sixthFort, firstFort,
+        assertNotSubset<IFortress, IFixture>(sixthFort, firstFort,
             """"unknown" is not commutative""");
-        Fortress seventhFort = Fortress(PlayerImpl(1, "one"), "unknown", fortId,
+        IFortress seventhFort = FortressImpl(PlayerImpl(1, "one"), "unknown", fortId,
             TownSize.medium);
-        assertNotSubset<Fortress, IFixture>(sixthFort, seventhFort,
+        assertNotSubset<IFortress, IFixture>(sixthFort, seventhFort,
             "Different size breaks Fortress subset");
-        assertNotSubset<Fortress, IFixture>(seventhFort, sixthFort,
+        assertNotSubset<IFortress, IFixture>(seventhFort, sixthFort,
             "Different size breaks Fortress subset");
     }
 

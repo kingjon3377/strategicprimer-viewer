@@ -49,8 +49,10 @@ import strategicprimer.model.common.map.fixtures.terrain {
     Forest
 }
 import strategicprimer.model.common.map.fixtures.towns {
+    IFortress,
+    IMutableFortress,
     TownSize,
-    Fortress
+    FortressImpl
 }
 import strategicprimer.drivers.common {
     SimpleMultiMapModel,
@@ -86,23 +88,23 @@ Logger log = logger(`module strategicprimer.drivers.worker.common`);
 
 "A model to underlie the advancement GUI, etc."
 shared class WorkerModel extends SimpleMultiMapModel satisfies IWorkerModel {
-    "If [[the argument|fixture]] is a [[Fortress]], return it; otherwise,
+    "If [[the argument|fixture]] is a [[fortress|IFortress]], return it; otherwise,
      return a [[Singleton]] of the argument. This allows callers to get a
      flattened stream of units, including those in fortresses."
     static {Anything*} flatten(Anything fixture) {
-        if (is Fortress fixture) {
+        if (is IFortress fixture) {
             return fixture;
         } else {
             return Singleton(fixture);
         }
     }
 
-    "If the item in the entry is a [[Fortress]], return a stream of its
+    "If the item in the entry is a [[fortress|IFortress]], return a stream of its
      contents paired with its location; otherwise, return a [[Singleton]] of
      the argument."
 //    see(`function flatten`)
     static {<Point->IFixture>*} flattenEntries(Point->IFixture entry) {
-        if (is Fortress item = entry.item) {
+        if (is IFortress item = entry.item) {
             return item.map((each) => entry.key->each);
         } else {
             return Singleton(entry);
@@ -113,7 +115,7 @@ shared class WorkerModel extends SimpleMultiMapModel satisfies IWorkerModel {
     static void addUnitAtLocationImpl(IUnit unit, Point location, IMutableMapNG map) {
         //if (exists fortress = map.fixtures[location] // TODO: syntax sugar once compiler bug fixed
         if (exists fortress = map.fixtures.get(location)
-                .narrow<Fortress>().find(matchingValue(unit.owner, Fortress.owner))) {
+                .narrow<IMutableFortress>().find(matchingValue(unit.owner, IFortress.owner))) {
             fortress.addMember(unit.copy(false));
         } else {
             map.addFixture(location, unit.copy(false));
@@ -159,8 +161,8 @@ shared class WorkerModel extends SimpleMultiMapModel satisfies IWorkerModel {
                 .filter(compose(matchingValue(player.playerId, Player.playerId),
                     IUnit.owner));
 
-    shared actual {Fortress*} getFortresses(Player player) =>
-            map.fixtures.items.narrow<Fortress>().filter(matchingValue(player, Fortress.owner));
+    shared actual {IFortress*} getFortresses(Player player) =>
+            map.fixtures.items.narrow<IFortress>().filter(matchingValue(player, IFortress.owner));
 
     "All the players in all the maps."
     shared actual {Player*} players =>
@@ -217,10 +219,10 @@ shared class WorkerModel extends SimpleMultiMapModel satisfies IWorkerModel {
 
     "Add a unit to all the maps, at the location of its owner's HQ in the main map."
     shared actual void addUnit(IUnit unit) {
-        variable [Fortress, Point]? temp = null;
-        for (point->fixture in narrowedStream<Point, Fortress>(map.fixtures)
+        variable [IMutableFortress, Point]? temp = null;
+        for (point->fixture in narrowedStream<Point, IMutableFortress>(map.fixtures)
                 .filter(compose(matchingValue(unit.owner.playerId, Player.playerId),
-                    compose(Fortress.owner, Entry<Point, Fortress>.item)))) {
+                    compose(IFortress.owner, Entry<Point, IFortress>.item)))) {
             if ("HQ" == fixture.name) {
                 addUnitAtLocation(unit, point);
                 return;
@@ -284,7 +286,7 @@ shared class WorkerModel extends SimpleMultiMapModel satisfies IWorkerModel {
             if (fixture in map.fixtures.get(location)) { // TODO: syntax sugar
                 map.removeFixture(location, fixture);
             } else {
-                for (fort in map.fixtures.get(location).narrow<Fortress>()) { // TODO: syntax sugar
+                for (fort in map.fixtures.get(location).narrow<IMutableFortress>()) { // TODO: syntax sugar
                     if (fixture in fort) {
                         fort.removeMember(fixture);
                         break;
@@ -709,7 +711,7 @@ object workerModelTests {
         addItem(Unit(playerTwo, "two", "unitTwo", 3), fixtures, listTwo);
         Player playerThree = PlayerImpl(2, "player3");
         Player playerFour = PlayerImpl(3, "player4");
-        Fortress fort = Fortress(playerFour, "fort", 4, TownSize.small);
+        IMutableFortress fort = FortressImpl(playerFour, "fort", 4, TownSize.small);
         IUnit unit = Unit(playerThree, "three", "unitThree", 5);
         fort.addMember(unit);
         MutableList<IUnit> listThree = ArrayList<IUnit>();

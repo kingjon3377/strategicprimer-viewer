@@ -16,7 +16,7 @@ import strategicprimer.drivers.common {
     IMultiMapModel
 }
 import strategicprimer.model.common.map.fixtures.towns {
-    Fortress
+    IFortress
 }
 
 "A driver model for the worker management app and the advancement app, aiming
@@ -49,7 +49,7 @@ shared interface IWorkerModel satisfies IMultiMapModel&IAdvancementModel {
 
     "The fortresses belonging to the current player."
     // TODO: Return their positions with them?
-    shared formal {Fortress*} getFortresses(
+    shared formal {IFortress*} getFortresses(
             "The player whose fortresses we want" Player player);
 
     """Remove the given unit from the map. It must be empty, and may be

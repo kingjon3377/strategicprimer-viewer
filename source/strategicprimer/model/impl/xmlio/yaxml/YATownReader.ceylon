@@ -22,10 +22,12 @@ import strategicprimer.model.common.map.fixtures.mobile.worker {
     raceFactory
 }
 import strategicprimer.model.common.map.fixtures.towns {
+    FortressImpl,
+    IFortress,
     TownStatus,
     TownSize,
     ITownFixture,
-    Fortress,
+    IMutableFortress,
     Village,
     AbstractTown,
     City,
@@ -252,10 +254,10 @@ class YATownReader(Warning warner, IDRegistrar idRegistrar, IPlayerCollection pl
             "image");
         requireNonEmptyParameter(element, "owner", false);
         requireNonEmptyParameter(element, "name", false);
-        Fortress retval;
+        IMutableFortress retval;
         value size = TownSize.parse(getParameter(element, "size", "small"));
         if (is TownSize size) {
-            retval = Fortress(getOwnerOrIndependent(element),
+            retval = FortressImpl(getOwnerOrIndependent(element),
                 getParameter(element, "name", ""), getOrGenerateID(element),
                 size);
         } else {
@@ -357,7 +359,7 @@ class YATownReader(Warning warner, IDRegistrar idRegistrar, IPlayerCollection pl
     }
 
     shared actual void write(Anything(String) ostream, ITownFixture obj, Integer tabs) {
-        assert (is AbstractTown|Village|Fortress obj);
+        assert (is AbstractTown|Village|IFortress obj);
         switch (obj)
         case (is AbstractTown) {
             writeAbstractTown(ostream, obj, tabs);
@@ -379,7 +381,7 @@ class YATownReader(Warning warner, IDRegistrar idRegistrar, IPlayerCollection pl
                 closeLeafTag(ostream);
             }
         }
-        case (is Fortress) {
+        else case (is IFortress) {
             writeTag(ostream, "fortress", tabs);
             writeProperty(ostream, "owner", obj.owner.playerId);
             writeNonemptyProperty(ostream, "name", obj.name);

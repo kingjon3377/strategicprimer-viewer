@@ -59,7 +59,7 @@ import strategicprimer.model.common.map.fixtures.mobile {
     immortalAnimals
 }
 import strategicprimer.model.common.map.fixtures.towns {
-    Fortress
+    IFortress
 }
 import ceylon.language.meta.model {
     ClassOrInterface
@@ -281,9 +281,9 @@ class YAMapReader("The Warning instance to use" Warning warner,
                     } else {
                         assert (exists top = tagStack.top);
                         value child = parseFixture(event, top, stream);
-                        if (is Fortress child, retval.fixtures.get(localPoint) // TODO: syntax sugar
-                                .narrow<Fortress>()
-                                .any(matchingValue(child.owner, Fortress.owner))) {
+                        if (is IFortress child, retval.fixtures.get(localPoint) // TODO: syntax sugar
+                                .narrow<IFortress>()
+                                .any(matchingValue(child.owner, IFortress.owner))) {
                             warner.handle(UnwantedChildException.withMessage(top, event,
                                     "Multiple fortresses owned by one player on a tile"));
                         }

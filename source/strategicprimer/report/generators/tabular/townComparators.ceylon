@@ -18,8 +18,9 @@ import strategicprimer.model.common.map {
 import strategicprimer.model.common.map.fixtures.towns {
     TownStatus,
     TownSize,
+    FortressImpl,
     ITownFixture,
-    Fortress,
+    IFortress,
     Village,
     City,
     Town,
@@ -37,13 +38,13 @@ object townComparators {
      are, putting fortresses before cities before towns before fortifications before
      villages."
     shared Comparison compareTownKind(ITownFixture one, ITownFixture two) {
-        if (one is Fortress) {
-            if (two is Fortress) {
+        if (one is IFortress) {
+            if (two is IFortress) {
                 return equal;
             } else {
                 return smaller;
             }
-        } else if (two is Fortress) {
+        } else if (two is IFortress) {
             return larger;
         } else if (one is City) {
             if (two is City) {
@@ -96,30 +97,30 @@ object townComparators {
             }
             input.add(Village(status, "inputVillage", id++, owner, "inputRace"));
         }
-        input.add(Fortress(owner, "inputFortress", id++, TownSize.small));
+        input.add(FortressImpl(owner, "inputFortress", id++, TownSize.small));
         input.add(City(TownStatus.active, TownSize.large, -1, "inputCityTwo", id++, owner));
-        input.add(Fortress(owner, "inputFortressTwo", id++, TownSize.small));
+        input.add(FortressImpl(owner, "inputFortressTwo", id++, TownSize.small));
         input.add(Town(TownStatus.ruined, TownSize.medium, -1, "inputTownTwo", id++, owner));
         input.add(Fortification(TownStatus.burned, TownSize.small, -1,
             "inputFortificationTwo", id++, owner));
         input.add(Village(TownStatus.abandoned, "inputVillageTwo", id++, owner, "inputRace"));
-        input.add(Fortress(owner, "inputFortressThree", id++, TownSize.medium));
-        input.add(Fortress(owner, "inputFortressFour", id, TownSize.large));
+        input.add(FortressImpl(owner, "inputFortressThree", id++, TownSize.medium));
+        input.add(FortressImpl(owner, "inputFortressFour", id, TownSize.large));
         {ITownFixture*} shuffled = randomize(input);
-        [ITownFixture*] expected = [Fortress(owner, "inputFortressFour", 47, TownSize.large),
+        [ITownFixture*] expected = [FortressImpl(owner, "inputFortressFour", 47, TownSize.large),
             City(TownStatus.active, TownSize.large, -1, "inputCity",
                 7, owner),
             City(TownStatus.active, TownSize.large, -1, "inputCityTwo", 41, owner),
             Town(TownStatus.active, TownSize.large, -1, "inputTown", 6, owner),
             Fortification(TownStatus.active, TownSize.large, -1, "inputFortification", 8,
                 owner),
-            Fortress(owner, "inputFortressThree", 46, TownSize.medium),
+            FortressImpl(owner, "inputFortressThree", 46, TownSize.medium),
             City(TownStatus.active, TownSize.medium, -1, "inputCity", 4, owner),
             Town(TownStatus.active, TownSize.medium, -1, "inputTown", 3, owner),
             Fortification(TownStatus.active, TownSize.medium, -1, "inputFortification", 5,
                 owner),
-            Fortress(owner, "inputFortress", 40, TownSize.small),
-            Fortress(owner, "inputFortressTwo", 42, TownSize.small),
+            FortressImpl(owner, "inputFortress", 40, TownSize.small),
+            FortressImpl(owner, "inputFortressTwo", 42, TownSize.small),
             City(TownStatus.active, TownSize.small, -1, "inputCity", 1, owner),
             Town(TownStatus.active, TownSize.small, -1, "inputTown", 0, owner),
             Fortification(TownStatus.active, TownSize.small, -1, "inputFortification", 2,
