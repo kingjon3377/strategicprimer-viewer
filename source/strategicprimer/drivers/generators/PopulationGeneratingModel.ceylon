@@ -19,6 +19,7 @@ import lovelace.util.common {
 import strategicprimer.model.common.map.fixtures.mobile {
     Animal,
     IMutableUnit,
+    IMutableWorker,
     IUnit,
     IWorker
 }
@@ -38,6 +39,12 @@ import strategicprimer.model.common.map.fixtures.towns {
     CommunityStats,
     IFortress,
     Village
+}
+
+import strategicprimer.model.common.map.fixtures.mobile.worker {
+    IJob,
+    IMutableJob,
+    Job
 }
 
 shared class PopulationGeneratingModel extends SimpleMultiMapModel { // TODO: Extract interface
@@ -224,5 +231,37 @@ shared class PopulationGeneratingModel extends SimpleMultiMapModel { // TODO: Ex
             indivMap.addFixture(location, unit); // FIXME: Check for existing matching unit there already
             indivMap.modified = true;
         }
+    }
+
+    "Add a level in a [[job|IJob]] to a [[worker|IWorker]]. Returns [[true]] if
+     a matching mutable Job in a matching worker was found, or created in a
+     matching mutable worker, in at least one map, [[false]] otherwise."
+    shared Boolean addJobLevel(IUnit unit, IWorker worker, String jobName) {
+        variable Boolean any = false;
+        for (map in restrictedAllMaps) {
+            for (container in map.fixtures.items.flatMap(flattenFortresses)
+                    .narrow<IUnit>().filter(matchingValue(unit.owner, IUnit.owner))) {
+                if (exists matching = container.narrow<IWorker>()
+                        .filter(matchingValue(worker.race, IWorker.race))
+                        .filter(matchingValue(worker.name, IWorker.name))
+                        .find(matchingValue(worker.id, IWorker.id))) {
+                    if (exists job = worker.narrow<IMutableJob>()
+                            .find(matchingValue(jobName, IJob.name))) {
+                        job.level += 1;
+                    } else if (is IMutableJob job = worker.getJob(jobName)) {
+                        job.level += 1;
+                    } else if (is IMutableWorker matching,
+                            !matching.any(matchingValue(jobName, IJob.name))) {
+                        matching.addJob(Job(jobName, 1));
+                    } else {
+                        continue;
+                    }
+                    any = true;
+                    map.modified = true;
+                    break;
+                }
+            }
+        }
+        return any;
     }
 }

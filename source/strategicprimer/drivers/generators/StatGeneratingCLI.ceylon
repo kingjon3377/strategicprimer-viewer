@@ -35,7 +35,6 @@ import strategicprimer.model.common.map.fixtures.mobile {
 import strategicprimer.model.common.map.fixtures.mobile.worker {
     WorkerStats,
     IJob,
-    IMutableJob,
     raceFactory,
     Job
 }
@@ -116,15 +115,12 @@ class StatGeneratingCLI satisfies CLIDriver {
     }
 
     "Let the user enter which Jobs a worker's levels are in."
-    void enterWorkerJobs(IWorker worker, Integer levels) {
+    void enterWorkerJobs(IUnit unit, IWorker worker, Integer levels) {
         for (i in 0:levels) {
             if (exists jobName =
                     cli.inputString("Which Job does worker have a level in? ")) {
-                if (is IMutableJob job = worker.getJob(jobName)) {
-                    job.level += 1;
-                } else {
-                    log.warn("Job was not mutable ... try again");
-                    continue;
+                if (!model.addJobLevel(unit, worker, jobName)) {
+                    log.warn("Adding or incrementing Job failed somehow ...");
                 }
             } else {
                 break;
@@ -309,8 +305,8 @@ class StatGeneratingCLI satisfies CLIDriver {
                 cli.println("Generated stats:");
                 cli.print(stats.string);
             }
-            enterWorkerJobs(worker, levels);
             model.addWorkerToUnit(unit, worker);
+            enterWorkerJobs(unit, worker, levels);
         }
     }
 
@@ -377,6 +373,7 @@ class StatGeneratingCLI satisfies CLIDriver {
             Worker worker;
             if (exists home) {
                 worker = generateWorkerFrom(home, name, idf);
+                model.addWorkerToUnit(unit, worker);
             } else {
                 String race = raceFactory.randomRace();
                 cli.println("Worker ``name`` is a ``race``");
@@ -393,12 +390,12 @@ class StatGeneratingCLI satisfies CLIDriver {
                     cli.println("Generated stats:");
                     cli.print(stats.string);
                 }
-                enterWorkerJobs(worker, levels);
+                model.addWorkerToUnit(unit, worker);
+                enterWorkerJobs(unit, worker, levels);
                 cli.println("``name`` is a ``race`` Stats:");
                 cli.println(", ".join(zipPairs(statLabelArray,
                     stats.array.map(WorkerStats.getModifierString)).map(" ".join)));
             }
-            model.addWorkerToUnit(unit, worker);
         }
     }
 
