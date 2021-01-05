@@ -37,7 +37,9 @@ class SimpleProductApplet(String name, shared actual String description, ITurnRu
             return null;
         }
         while (another, exists resource = raHelper.enterResource()) {
-            super.addResourceToMaps(resource, model.selectedUnit?.owner else model.map.currentPlayer);
+            if (!model.addExistingResource(resource, model.selectedUnit?.owner else model.map.currentPlayer)) {
+                cli.println("Failed to find a fortress to add to in any map");
+            }
             if (is Boolean resp = cli.inputBoolean("Add another resource?")) {
                 another = resp;
             } else {

@@ -117,7 +117,11 @@ class WoodcuttingApplet(ITurnRunningModel model, ICLIHelper cli, IDRegistrar idf
         }
         if (footage.positive) {
             assert (exists unit = model.selectedUnit);
-            addResourceToMaps(ResourcePileImpl(idf.createID(), "wood", "production-ready wood", Quantity(footage, "cubic feet")), unit.owner);
+            // FIXME: Use model.addResource() rather than creating pile here ourselves
+            if (!model.addExistingResource(ResourcePileImpl(idf.createID(), "wood", "production-ready wood",
+                    Quantity(footage, "cubic feet")), unit.owner)) {
+                cli.println("Failed to find a fortress to add to in any map");
+            }
         }
         if (treeCount > 7, exists forest = chooseFromList(model.map.fixtures.get(loc).narrow<Forest>().sequence(),
                 "Forests on tile:", "No forests on tile", "Forest being cleared:", false), forest.acres.positive) {

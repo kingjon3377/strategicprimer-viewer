@@ -73,7 +73,9 @@ class GatherApplet(ITurnRunningModel model, ICLIHelper cli, IDRegistrar idf)
                                 if (resource.kind == "food") {
                                     resource.created = model.map.currentTurn;
                                 }
-                                addResourceToMaps(resource, unit.owner);
+                                if (!model.addExistingResource(resource, unit.owner)) {
+                                    cli.println("Failed to find a fortress to add to in any map");
+                                }
                             }
                         }
                         Integer cost = cli.inputNumber("Time to gather: ")

@@ -19,7 +19,6 @@ import strategicprimer.model.common.map.fixtures.towns {
     IFortress
 }
 import strategicprimer.model.common.map.fixtures {
-    FortressMember,
     IResourcePile,
     Quantity
 }
@@ -94,10 +93,6 @@ shared abstract class AbstractTurnApplet(ITurnRunningModel model, ICLIHelper cli
             "How many ``plural`` to remove: ") else 0, fixture.population);
         model.reducePopulation(point, fixture, zero, count);
     }
-
-    deprecated("Use model.addExistingResource if caller has model reference")
-    shared void addResourceToMaps(FortressMember resource, Player owner, String fortName = "HQ")
-        => model.addExistingResource(resource, owner, fortName);
 
     // FIXME: Should only look at a particular unit's location
     shared [IResourcePile*] getFoodFor(Player player, Integer turn) { // TODO: Move into the model?

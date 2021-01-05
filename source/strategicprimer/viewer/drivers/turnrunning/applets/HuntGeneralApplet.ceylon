@@ -84,7 +84,9 @@ abstract class HuntGeneralApplet(String verb, ITurnRunningModel model, ICLIHelpe
             if (resource.kind == "food") {
                 resource.created = model.map.currentTurn;
             }
-            addResourceToMaps(resource, owner);
+            if (!model.addExistingResource(resource, owner)) {
+                cli.println("Failed to find a fortress to add to in any map");
+            }
         }
     }
 
