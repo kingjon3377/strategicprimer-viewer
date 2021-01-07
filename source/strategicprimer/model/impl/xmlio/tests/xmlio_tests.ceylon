@@ -566,18 +566,16 @@ object xmlTests {
     }
 
     "Test basic [[Fortification]] (de)serialization."
-    todo("Split and further randomize this and further tests")
     test
     shared void testFortificationSerialization(
             enumeratedParameter(`class TownSize`) TownSize size,
-            enumeratedParameter(`class TownStatus`) TownStatus status) {
+            enumeratedParameter(`class TownStatus`) TownStatus status,
+            randomlyGenerated(1) Integer id, randomlyGenerated(1) Integer dc,
+            fewParameters(`value treeTypes`, 2) String name) {
         Player owner = PlayerImpl(-1, "");
-        assertSerialization("First Fortification serialization test, status ``status
-            ``, size ``size``", Fortification(status, size, 10, "one", 0, owner));
-        assertSerialization(
-            "Second Fortification serialization test, status ``status``, size ``size``",
-            Fortification(status, size, 40, "two", 1, owner));
-        Fortification thirdFort = Fortification(status, size, 30, "", 3, owner);
+        assertSerialization("Fortification serialization",
+            Fortification(status, size, dc, name, id, owner));
+        Fortification fort = Fortification(status, size, 30, "", 3, owner);
         assertUnwantedChild<Fortification>(
             "<fortification status=\"``status``\" size=\"``size``\" name=\"name\"
                 dc=\"0\"><troll /></fortification>", null);
@@ -586,18 +584,34 @@ object xmlTests {
              name=\"name\" dc=\"0\" id=\"0\" />", "owner",
             Fortification(status, size, 0, "name", 0,
                 PlayerImpl(-1, "Independent")));
-        assertImageSerialization("Fortification image property is preserved", thirdFort);
-        assertPortraitSerialization("Fortification portrait property is preserved",
-            thirdFort);
-        Fortification fourthFort = Fortification(status, size, 40, "fortName", 4, owner);
-        CommunityStats population = CommunityStats(3);
-        population.addWorkedField(7);
-        population.addWorkedField(12);
-        population.setSkillLevel("fortSkill", 3);
-        population.yearlyProduction.add(ResourcePileImpl(5, "fortResource", "fortSpecific",
-            Quantity(1, "fortUnit")));
-        fourthFort.population = population;
-        assertSerialization("Fortification can have community-stats", fourthFort);
+        assertImageSerialization("Fortification image property is preserved", fort);
+        assertPortraitSerialization("Fortification portrait property is preserved", fort);
+    }
+
+    "Test (de)serialization of [[fortifications'|Fortification]] [[population
+     details|CommunityStats]]."
+    test
+    shared void testFortificationPopulationSerialization(
+            fewParameters(`value treeTypes`, 2) String name,
+            enumeratedParameter(`class TownSize`) TownSize size,
+            enumeratedParameter(`class TownStatus`) TownStatus status,
+            fewParameters(`value races`, 3) String race, randomlyGenerated(1) Integer id,
+            randomlyGenerated(1) Integer dc,
+            randomlyGenerated(1) Integer populationSize,
+            randomlyGenerated(1) Integer workedField,
+            randomlyGenerated(1) Integer skillLevel,
+            randomlyGenerated(1) Integer producedId,
+            randomlyGenerated(1) Integer producedQty) {
+        Player owner = PlayerImpl(-1, "");
+        Fortification fort = Fortification(status, size, dc, name, id, owner);
+        CommunityStats population = CommunityStats(populationSize);
+        population.addWorkedField(workedField);
+        population.addWorkedField((workedField * 13) % 31);
+        population.setSkillLevel("fortSkill", skillLevel);
+        population.yearlyProduction.add(ResourcePileImpl(producedId, "fortResource",
+            "fortSpecific", Quantity(1, "fortUnit")));
+        fort.population = population;
+        assertSerialization("Fortification can have community-stats", fort);
     }
 
     "Test that deserializing a [[Town]] without a name triggers a warning."
@@ -612,7 +626,7 @@ object xmlTests {
     }
 
     "Test basic [[Town]] (de)serialization."
-    todo("Split and further randomize this test")
+    todo("Split and further randomize this and further test")
     test
     shared void testTownSerialization(enumeratedParameter(`class TownSize`) TownSize size,
             enumeratedParameter(`class TownStatus`) TownStatus status) {
