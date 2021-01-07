@@ -32,7 +32,6 @@ import ceylon.language {
 }
 
 "A proxy for units in multiple maps, or all a player's units of one kind."
-// TODO: Drop inheritance of IMutableUnit as soon as we can.
 shared class ProxyUnit satisfies IUnit&ProxyFor<IUnit> {
     "If true, we are proxying parallel units in different maps; if false, multiple units
      of the same kind owned by one player."
