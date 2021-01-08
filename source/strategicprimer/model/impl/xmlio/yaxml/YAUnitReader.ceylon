@@ -15,8 +15,7 @@ import strategicprimer.model.common.idreg {
     IDRegistrar
 }
 import strategicprimer.model.common.map {
-    IPlayerCollection,
-    HasPortrait
+    IPlayerCollection
 }
 import strategicprimer.model.common.map.fixtures {
     UnitMember
@@ -178,9 +177,7 @@ class YAUnitReader(Warning warner, IDRegistrar idRegistrar, IPlayerCollection pl
         writeNonemptyProperty(ostream, "name", obj.name);
         writeProperty(ostream, "id", obj.id);
         writeImageXML(ostream, obj);
-        if (is HasPortrait obj) {
-            writeNonemptyProperty(ostream, "portrait", obj.portrait);
-        }
+        writeNonemptyProperty(ostream, "portrait", obj.portrait);
         if (obj.empty && obj.allOrders.empty && obj.allResults.empty) {
             closeLeafTag(ostream);
         } else {

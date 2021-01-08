@@ -9,7 +9,6 @@ import java.sql {
 
 import strategicprimer.model.common.map {
     IMutableMapNG,
-    HasPortrait,
     Point
 }
 import strategicprimer.model.common.map.fixtures.mobile {
@@ -66,12 +65,7 @@ object dbUnitHandler extends AbstractDatabaseWriter<IUnit, Point|IFortress>()
         value result = db.Insert(
             """INSERT INTO results (unit, turn, result) VALUES(?, ?, ?);""");
         db.transaction(() {
-            String|SqlNull portrait;
-            if (is HasPortrait obj) {
-                portrait = obj.portrait;
-            } else {
-                portrait = SqlNull(Types.varchar);
-            }
+            String portrait = obj.portrait;
             if (is Point context) {
                 unit.execute(context.row, context.column, SqlNull(Types.integer),
                     obj.owner.playerId, obj.kind, obj.name, obj.id, obj.image, portrait);

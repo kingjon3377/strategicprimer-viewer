@@ -193,6 +193,8 @@ shared class ProxyUnit satisfies IUnit&ProxyFor<IUnit> {
 
     shared actual String name => getConsensus(IUnit.name) else "proxied";
 
+    shared actual String portrait => getConsensus(IUnit.portrait) else "";
+
     shared actual Player owner => getConsensus(IUnit.owner) else defaultPlayer;
 
     shared actual Boolean isSubset(IFixture obj, Anything(String) report) {

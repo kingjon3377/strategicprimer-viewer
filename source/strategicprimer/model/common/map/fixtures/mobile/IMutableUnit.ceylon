@@ -6,12 +6,13 @@ import strategicprimer.model.common.map {
     HasMutableImage,
     HasMutableKind,
     HasMutableName,
-    HasMutableOwner
+    HasMutableOwner,
+    HasMutablePortrait
 }
 
 "An interface for mutator methods on units."
 shared interface IMutableUnit
-        satisfies IUnit&HasMutableKind&HasMutableName&HasMutableImage&HasMutableOwner {
+        satisfies IUnit&HasMutableKind&HasMutableName&HasMutableImage&HasMutableOwner&HasMutablePortrait {
     "Set the unit's orders for a turn."
     shared formal void setOrders(Integer turn, String newOrders);
 

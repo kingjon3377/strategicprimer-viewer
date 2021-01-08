@@ -10,7 +10,8 @@ import strategicprimer.model.common.map {
     IFixture,
     HasKind,
     HasName,
-    HasOwner
+    HasOwner,
+    HasPortrait
 }
 import strategicprimer.model.common.map.fixtures {
     UnitMember,
@@ -19,7 +20,7 @@ import strategicprimer.model.common.map.fixtures {
 
 "An interface for units."
 shared interface IUnit satisfies MobileFixture&HasImage&HasKind&HasName&
-        {UnitMember*}&FortressMember&HasOwner {
+        {UnitMember*}&FortressMember&HasOwner&HasPortrait {
     "The unit's orders history, a mapping from turns to the orders for those turns."
     shared formal SortedMap<Integer, String> allOrders;
 

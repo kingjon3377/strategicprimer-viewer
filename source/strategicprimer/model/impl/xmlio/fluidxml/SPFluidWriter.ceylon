@@ -20,7 +20,6 @@ import javax.xml.stream {
 import strategicprimer.model.common.map {
     HasKind,
     HasImage,
-    HasPortrait,
     Player,
     MapDimensions,
     IFixture,
@@ -220,9 +219,7 @@ shared class SPFluidWriter() satisfies SPWriter {
         writeNonEmptyAttributes(ostream, "kind"->obj.kind, "name"->obj.name);
         writeAttributes(ostream, "id"->obj.id);
         writeImage(ostream, obj);
-        if (is HasPortrait obj) {
-            writeNonEmptyAttributes(ostream, "portrait"->obj.portrait);
-        }
+        writeNonEmptyAttributes(ostream, "portrait"->obj.portrait);
         for (turn->orders in obj.allOrders) {
             writeUnitOrders(ostream, indentation + 1, turn, "orders", orders.trimmed);
         }
