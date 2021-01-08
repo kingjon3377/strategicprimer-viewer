@@ -48,6 +48,26 @@ class GatherApplet(ITurnRunningModel model, ICLIHelper cli, IDRegistrar idf)
         }
     }
 
+    String toHours(Integer minutes) {
+        if (minutes.negative) {
+            return "negative " + toHours(minutes.negated);
+        } else if (minutes.zero) {
+            return "no time";
+        } else if (minutes == 1) {
+            return "1 minute";
+        } else if (minutes < 60) {
+            return minutes.string + " minutes";
+        } else if (minutes == 60) {
+            return "1 hour";
+        } else if (minutes < 120) {
+            return "1 hour, " + toHours(minutes.modulo(60));
+        } else if (60.divides(minutes)) {
+            return (minutes / 60).string + " hours";
+        } else {
+            return (minutes / 60).string + " hours, " + toHours(minutes.modulo(60));
+        }
+    }
+
     shared actual String? run() {
         StringBuilder buffer = StringBuilder();
         if (exists center = confirmPoint("Location to search around: "),
@@ -55,12 +75,17 @@ class GatherApplet(ITurnRunningModel model, ICLIHelper cli, IDRegistrar idf)
             variable Integer time = startingTime;
             variable {<Point->Grove|Shrub|Meadow|HuntingModel.NothingFound>*} encounters =
                 huntingModel.gather(center);
+            variable Integer noResultsTime = 0;
             while (time > 0, exists loc->find = encounters.first) {
                 encounters = encounters.rest;
-                if (is HuntingModel.NothingFound find) { // TODO: We'd like to combine consecutive 'no result' results before telling the user about them.
-                    cli.println("Found nothing for the next ``noResultCost`` minutes.");
+                if (is HuntingModel.NothingFound find) {
+                    noResultsTime += noResultCost;
                     time -= noResultCost;
                 } else {
+                    if (noResultsTime.positive) {
+                        cli.println("Found nothing for the next ``toHours(noResultsTime)``"); // TODO: Add to results?
+                        noResultsTime = 0;
+                    }
                     switch (cli.inputBooleanInSeries(
                         "Gather from ``find.shortDescription````meadowStatus(find)``?",
                         find.kind))
@@ -107,6 +132,9 @@ class GatherApplet(ITurnRunningModel model, ICLIHelper cli, IDRegistrar idf)
                 } else {
                     return null;
                 }
+            }
+            if (noResultsTime.positive) {
+                cli.println("Found nothing for the next ``toHours(noResultsTime)``"); // TODO: Add to results?
             }
         }
         return buffer.string.trimmed;
