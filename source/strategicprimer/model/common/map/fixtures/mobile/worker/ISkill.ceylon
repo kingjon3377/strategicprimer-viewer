@@ -1,13 +1,9 @@
-import lovelace.util.common {
-    todo
-}
 import strategicprimer.model.common.map {
     Subsettable,
     HasName
 }
 
 "An interface for Skills."
-todo("Split mutators into a separate interface?")
 shared interface ISkill satisfies HasName&Subsettable<ISkill> {
     "How many levels the worker has in the skill."
     shared formal Integer level;
