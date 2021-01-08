@@ -97,7 +97,7 @@ shared interface ITurnRunningModel satisfies IExplorationModel&IAdvancementModel
         variable IFortress? retval = null;
         for (fortress in map.fixtures.items.narrow<IFortress>()
                 .filter(matchingValue(player, IFortress.owner))) {
-            if (fortress.name == fortressName) { // TODO: Take the name as a parameter, for maximum flexibility
+            if (fortress.name == fortressName) {
                 return fortress;
             } else if (!retval exists) {
                 retval = fortress;
