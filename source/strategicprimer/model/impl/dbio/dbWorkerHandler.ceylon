@@ -15,7 +15,6 @@ import strategicprimer.model.common.idreg {
     DuplicateIDException
 }
 import strategicprimer.model.common.map {
-    HasPortrait,
     IMapNG,
     IMutableMapNG
 }
@@ -87,12 +86,7 @@ object dbWorkerHandler extends AbstractDatabaseWriter<IWorker, IUnit>()
                    hours)
                VALUES(?, ?, ?, ?, ?);""");
         db.transaction(() {
-            String|SqlNull portrait;
-            if (is HasPortrait obj) {
-                portrait = obj.portrait;
-            } else {
-                portrait = SqlNull(Types.varchar);
-            }
+            String portrait = obj.portrait;
             if (exists stats = obj.stats) {
                 worker.execute(context.id, obj.id, obj.name, obj.race, obj.image,
                     portrait, stats.hitPoints, stats.maxHitPoints, stats.strength,

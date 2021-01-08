@@ -7,11 +7,12 @@ import lovelace.util.common {
 }
 
 import strategicprimer.model.common.map {
-    HasMutableImage
+    HasMutableImage,
+    HasMutablePortrait
 }
 
 "Mutator operations for [[IWorker]]."
-shared interface IMutableWorker satisfies IWorker&HasMutableImage {
+shared interface IMutableWorker satisfies IWorker&HasMutableImage&HasMutablePortrait {
     "Add a Job. Returns whether the number of Jobs changed as a result of this.
 
      Note that this does not guarantee that the worker will contain this Job object, nor

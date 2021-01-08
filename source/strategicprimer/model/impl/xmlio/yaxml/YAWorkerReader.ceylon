@@ -12,8 +12,7 @@ import strategicprimer.model.common.idreg {
     IDRegistrar
 }
 import strategicprimer.model.common.map {
-    IPlayerCollection,
-    HasPortrait
+    IPlayerCollection
 }
 import strategicprimer.model.common.map.fixtures.mobile {
     IWorker,
@@ -187,9 +186,7 @@ class YAWorkerReader extends YAAbstractReader<IWorker> {
         }
         writeProperty(ostream, "id", obj.id);
         writeImageXML(ostream, obj);
-        if (is HasPortrait obj) {
-            writeNonemptyProperty(ostream, "portrait", obj.portrait);
-        }
+        writeNonemptyProperty(ostream, "portrait", obj.portrait);
         if (!obj.empty || obj.stats exists || !obj.notesPlayers.empty) {
             finishParentTag(ostream);
             writeStats(ostream, obj.stats, indent + 1);

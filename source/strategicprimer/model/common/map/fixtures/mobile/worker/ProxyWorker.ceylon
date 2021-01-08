@@ -174,6 +174,8 @@ shared class ProxyWorker satisfies UnitMember&IWorker&ProxyFor<IWorker> {
 
     shared actual String name => getConsensus(IWorker.name) else "proxied";
 
+    shared actual String portrait => getConsensus(IWorker.portrait) else "";
+
     shared actual IJob getJob(String jobName) {
         if (exists retval = proxyJobs.find(matchingValue(jobName, IJob.name))) {
             return retval;

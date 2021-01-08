@@ -2,7 +2,8 @@ import strategicprimer.model.common.map {
     HasImage,
     HasName,
     HasNotes,
-    HasKind
+    HasKind,
+    HasPortrait
 }
 import strategicprimer.model.common.map.fixtures {
     UnitMember
@@ -13,7 +14,7 @@ import strategicprimer.model.common.map.fixtures.mobile.worker {
 }
 
 "An interface for Workers."
-shared interface IWorker satisfies UnitMember&{IJob*}&HasName&HasKind&HasImage&HasNotes {
+shared interface IWorker satisfies UnitMember&{IJob*}&HasName&HasKind&HasImage&HasNotes&HasPortrait {
     "The worker's race."
     shared formal String race;
 

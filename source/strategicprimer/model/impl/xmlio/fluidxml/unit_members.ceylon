@@ -15,8 +15,7 @@ import strategicprimer.model.common.idreg {
     IDRegistrar
 }
 import strategicprimer.model.common.map {
-    IPlayerCollection,
-    HasPortrait
+    IPlayerCollection
 }
 import strategicprimer.model.common.map.fixtures.mobile {
     IWorker,
@@ -156,9 +155,7 @@ object unitMemberHandler extends FluidBase() {
         }
         writeAttributes(ostream, "id"->obj.id);
         writeImage(ostream, obj);
-        if (is HasPortrait obj) {
-            writeNonEmptyAttributes(ostream, "portrait"->obj.portrait);
-        }
+        writeNonEmptyAttributes(ostream, "portrait"->obj.portrait);
         if (exists stats) {
             writeStats(ostream, stats, indentation + 1);
         }
