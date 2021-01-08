@@ -23,6 +23,10 @@ import ceylon.decimal {
     Decimal
 }
 
+import lovelace.util.common {
+    matchingValue
+}
+
 "A driver model for resource-entering drivers."
 class ResourceManagementDriverModel extends SimpleMultiMapModel {
     shared new fromMap(IMutableMapNG map) extends SimpleMultiMapModel(map) { }
@@ -37,8 +41,12 @@ class ResourceManagementDriverModel extends SimpleMultiMapModel {
         for (map in restrictedAllMaps) {
             Player mapPlayer = map.currentPlayer;
             if (mapPlayer.independent || mapPlayer.playerId < 0 ||
-                    mapPlayer.playerId == player.playerId) {
-                addResourceToMap(resource.copy(false), map, player);
+                    mapPlayer.playerId == player.playerId,
+                    exists fortress = map.fixtures.items.narrow<IMutableFortress>()
+                        .filter(matchingValue("HQ", IMutableFortress.name))
+                        .find(matchingValue(mapPlayer.playerId,
+                            compose(Player.playerId, IMutableFortress.owner)))) {
+                fortress.addMember(resource);
                 map.modified = true;
             } // TODO: Else log why we're skipping the map
         }
@@ -52,15 +60,6 @@ class ResourceManagementDriverModel extends SimpleMultiMapModel {
         }
         addResource(pile, player);
         return pile;
-    }
-
-    "Add a resource to a player's HQ in a particular map."
-    shared void addResourceToMap(FortressMember resource, IMapNG map, Player player) {
-        for (fixture in map.fixtures.items.narrow<IMutableFortress>()) {
-            if ("HQ" == fixture.name, player.playerId == fixture.owner.playerId) {
-                fixture.addMember(resource);
-            } // TODO: Set modified flag for that map
-        }
     }
 
     "Get the current player. If none is current, returns null."
