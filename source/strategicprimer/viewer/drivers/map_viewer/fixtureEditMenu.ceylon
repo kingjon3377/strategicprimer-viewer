@@ -40,7 +40,6 @@ import lovelace.util.common {
     todo
 }
 
-// FIXME: This probably no longer works outside the worker-mgmt app
 "A pop-up menu to let the user edit a fixture."
 shared class FixtureEditMenu(
         "The fixture to be edited. Its type determines what menu items are enabled."
