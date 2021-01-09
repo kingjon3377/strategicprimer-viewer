@@ -21,7 +21,7 @@ import strategicprimer.model.common.map.fixtures {
 }
 
 import strategicprimer.drivers.worker.common {
-    IWorkerTreeModel
+    IFixtureEditHelper
 }
 import strategicprimer.model.common.map.fixtures.mobile {
     IUnit,
@@ -50,7 +50,7 @@ shared class FixtureEditMenu(
         "A source for unique-in-the-map ID numbers."
         IDRegistrar idf,
         "Listeners to notify when something is renamed or changes kind."
-        IWorkerTreeModel* changeListeners) extends JPopupMenu() { // FIXME: Name and varargs type don't fit usage ...
+        IFixtureEditHelper* changeListeners) extends JPopupMenu() { // FIXME: Name and varargs type don't fit usage ...
     void addMenuItem(JMenuItem item, Anything(ActionEvent) listener, Boolean enabled) {
         add(item);
         if (enabled) {
@@ -137,7 +137,7 @@ shared class FixtureEditMenu(
                 num < fixture.population) {
             Integer orig = fixture.population;
             Integer remaining = orig - num;
-            Animal split = fixture.reduced(num, idf.createID());
+            Animal split = fixture.reduced(num, idf.createID()); // TODO: Add helper for this to IFixtureEditHelper
             Animal remainder = fixture.reduced(remaining);
             for (listener in changeListeners) {
                 listener.addSibling(fixture, split);
