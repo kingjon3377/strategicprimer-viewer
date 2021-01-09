@@ -6,13 +6,14 @@ import strategicprimer.model.common.map {
 }
 import strategicprimer.drivers.common {
     IDriverModel,
+    IFixtureEditingModel,
     SelectionChangeSource
 }
 
 "An interface for a model behind the map viewer, handling the selected tile and visible
  dimensions."
 shared interface IViewerModel
-        satisfies IDriverModel&SelectionChangeSource&GraphicalParamsSource {
+        satisfies IDriverModel&SelectionChangeSource&GraphicalParamsSource&IFixtureEditingModel {
     "The coordinates of the currently selected tile."
     shared formal variable Point selection;
 
