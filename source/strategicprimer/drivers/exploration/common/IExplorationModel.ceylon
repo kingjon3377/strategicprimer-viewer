@@ -1,4 +1,5 @@
 import strategicprimer.drivers.common {
+    IFixtureEditingModel,
     SelectionChangeSource,
     IMultiMapModel
 }
@@ -16,7 +17,7 @@ import strategicprimer.model.common.map.fixtures.mobile {
 
 "A model for exploration apps."
 shared interface IExplorationModel
-        satisfies IMultiMapModel&SelectionChangeSource&MovementCostSource {
+        satisfies IMultiMapModel&SelectionChangeSource&MovementCostSource&IFixtureEditingModel {
     "Players that are shared by all the maps."
     shared formal {Player*} playerChoices;
 

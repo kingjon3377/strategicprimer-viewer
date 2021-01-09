@@ -15,6 +15,10 @@ import strategicprimer.model.common.map {
     FakeFixture,
     IFixture,
     Player,
+    HasKind,
+    HasMutableKind,
+    HasMutableName,
+    HasMutableOwner,
     HasOwner,
     MapDimensions,
     Point,
@@ -27,11 +31,13 @@ import strategicprimer.model.common.map {
 }
 import strategicprimer.model.common.map.fixtures {
     Ground,
-    MineralFixture
+    MineralFixture,
+    UnitMember
 }
 import strategicprimer.model.common.map.fixtures.mobile {
     Animal,
     AnimalTracks,
+    IMutableUnit,
     IUnit,
     ProxyUnit,
     MobileFixture
@@ -67,6 +73,25 @@ import com.vasileff.ceylon.structures {
 shared class ExplorationModel extends SimpleMultiMapModel satisfies IExplorationModel {
     """A fixture is "diggable" if it is a [[MineralFixture]] or a [[Mine]]."""
     static Boolean isDiggable(TileFixture fixture) => fixture is MineralFixture|Mine;
+
+    static {IFixture*} flattenIncluding(IFixture fixture) {
+        if (is {IFixture*} fixture) {
+            return fixture.follow(fixture);
+        } else {
+            return Singleton(fixture);
+        }
+    }
+
+    "If the item in the entry is a [[fortress|IFortress]], return a stream of its
+     contents paired with its location; otherwise, return a [[Singleton]] of
+     the argument."
+    static {<Point->IFixture>*} flattenEntries(Point->IFixture entry) {
+        if (is IFortress item = entry.item) {
+            return item.map((each) => entry.key->each);
+        } else {
+            return Singleton(entry);
+        }
+    }
 
     """Check whether two fixtures are "equal enough" for the purposes of updating a map
        after digging. This method is needed because equals() in
@@ -654,5 +679,272 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
                 subMap.modified = true;
             }
         }
+    }
+
+    "Move a unit-member from one unit to another."
+    shared actual void moveMember(UnitMember member, IUnit old, IUnit newOwner) {
+        for (map in restrictedAllMaps) {
+            if (exists matchingOld = map.fixtures.items.flatMap(unflattenNonFortresses)
+                        .narrow<IMutableUnit>()
+                        .filter(matchingValue(old.owner, HasOwner.owner))
+                        .filter(matchingValue(old.kind, IUnit.kind))
+                        .filter(matchingValue(old.name, IUnit.name))
+                        .find(matchingValue(old.id, IUnit.id)),
+                    exists matchingMember = matchingOld.find(member.equals), // TODO: equals() isn't ideal for finding a matching member ...
+                    exists matchingNew = map.fixtures.items.flatMap(unflattenNonFortresses)
+                        .narrow<IMutableUnit>()
+                        .filter(matchingValue(newOwner.owner, HasOwner.owner))
+                        .filter(matchingValue(newOwner.kind, IUnit.kind))
+                        .filter(matchingValue(newOwner.name, IUnit.name))
+                        .find(matchingValue(newOwner.id, IUnit.id))) {
+                matchingOld.removeMember(matchingMember);
+                matchingNew.addMember(matchingMember);
+                map.modified = true;
+            }
+        }
+    }
+
+    Boolean unitMatching(IUnit unit)(Point->IFixture entry) {
+        value location->fixture = entry;
+        if (is IUnit fixture, fixture.id == unit.id, fixture.owner == unit.owner) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    """Remove the given unit from the map. It must be empty, and may be
+       required to be owned by the current player. The operation will also fail
+       if "matching" units differ in name or kind from the provided unit.
+       Returns [[true]] if the preconditions were met and the unit was removed,
+       and [[false]] otherwise. To make an edge case explicit, if there are no
+       matching units in any map the method returns [[false]]."""
+    shared actual Boolean removeUnit(IUnit unit) {
+        log.trace("In ExplorationModel.removeUnit()");
+        MutableList<IMutableMapNG->[Point, IUnit]> delenda =
+            ArrayList<IMutableMapNG->[Point, IUnit]>();
+        for (map in restrictedAllMaps) {
+            if (exists location->fixture = map.fixtures.flatMap(flattenEntries)
+                    .find(unitMatching(unit))) {
+                log.trace("Map has matching unit");
+                assert (is IUnit fixture);
+                if (fixture.kind == unit.kind, fixture.name == unit.name, fixture.empty) {
+                    log.trace("Matching unit meets preconditions");
+                    delenda.add(map->[location, fixture]);
+                } else {
+                    log.warn("Matching unit in ``map.filename else "an unsaved map"`` fails preconditions for removal");
+                    return false;
+                }
+            }
+        }
+        if (delenda.empty) {
+            log.trace("No matching units");
+            return false;
+        }
+        for (map->[location, fixture] in delenda) {
+            if (fixture in map.fixtures.get(location)) { // TODO: syntax sugar
+                map.removeFixture(location, fixture);
+            } else {
+                for (fort in map.fixtures.get(location).narrow<IMutableFortress>()) { // TODO: syntax sugar
+                    if (fixture in fort) {
+                        fort.removeMember(fixture);
+                        break;
+                    }
+                } else {
+                    log.warn("Failed to find unit to remove that we thought might be in a fortress");
+                }
+            }
+        }
+        log.trace("Finished removing matching unit(s) from map(s)");
+        return true;
+    }
+
+    shared actual void addUnitMember(IUnit unit, UnitMember member) {
+        for (map in restrictedAllMaps) {
+            if (exists matching = map.fixtures.items.flatMap(unflattenNonFortresses)
+                    .narrow<IMutableUnit>()
+                    .filter(matchingValue(unit.owner, HasOwner.owner))
+                    .filter(matchingValue(unit.name, IUnit.name))
+                    .filter(matchingValue(unit.kind, IUnit.kind))
+                    .find(matchingValue(unit.id, IUnit.id))) {
+                matching.addMember(member.copy(false));
+                map.modified = true;
+                continue;
+            }
+        }
+    }
+
+    Boolean matchingPlayer(HasOwner fixture) {
+        value [unit, currentPlayer] = selection;
+        if (exists currentPlayer) {
+            return fixture.owner == currentPlayer;
+        } else {
+            return false;
+        }
+    }
+
+    shared actual Boolean renameItem(HasMutableName item, String newName) {
+        variable Boolean any = false;
+        if (is IUnit item) {
+            for (map in restrictedAllMaps) {
+                if (is HasMutableName matching = map.fixtures.items.flatMap(unflattenNonFortresses)
+                        .narrow<IUnit>()
+                        .filter(matchingValue(item.owner, HasOwner.owner))
+                        .filter(matchingValue(item.name, IUnit.name))
+                        .filter(matchingValue(item.kind, IUnit.kind))
+                        .find(matchingValue(item.id, IUnit.id))) {
+                    any = true;
+                    matching.name = newName;
+                    map.modified = true;
+                }
+            }
+            if (!any) {
+                log.warn("Unable to find unit to rename");
+            }
+            return any;
+        } else if (is UnitMember item) {
+            for (map in restrictedAllMaps) {
+                if (exists matching = map.fixtures.items.flatMap(unflattenNonFortresses)
+                        .narrow<IUnit>()
+                        .filter(matchingPlayer)
+                        .flatMap(identity).narrow<HasMutableName>()
+                        .filter(matchingValue(item.name, HasMutableName.name))
+                        .find(matchingValue(item.id, UnitMember.id))) { // FIXME: We should have a firmer identification than just name and ID
+                    any = true;
+                    matching.name = newName;
+                    map.modified = true;
+                }
+            }
+            if (!any) {
+                log.warn("Unable to find unit member to rename");
+            }
+            return any;
+        } else {
+            log.warn("Unable to find item to rename");
+            return false;
+        }
+    }
+
+    shared actual Boolean changeKind(HasKind item, String newKind) {
+        variable Boolean any = false;
+        if (is IUnit item) {
+            for (map in restrictedAllMaps) {
+                if (is HasMutableKind matching = map.fixtures.items.flatMap(unflattenNonFortresses)
+                        .narrow<IUnit>()
+                        .filter(matchingValue(item.owner, HasOwner.owner))
+                        .filter(matchingValue(item.name, IUnit.name))
+                        .filter(matchingValue(item.kind, IUnit.kind))
+                        .find(matchingValue(item.id, IUnit.id))) {
+                    any = true;
+                    matching.kind = newKind;
+                    map.modified = true;
+                }
+            }
+            if (!any) {
+                log.warn("Unable to find unit to change kind");
+            }
+            return any;
+        } else if (is UnitMember item) {
+            for (map in restrictedAllMaps) {
+                if (exists matching = map.fixtures.items.flatMap(unflattenNonFortresses)
+                        .narrow<IUnit>()
+                        .filter(matchingPlayer)
+                        .flatMap(identity).narrow<HasMutableKind>()
+                        .filter(matchingValue(item.kind, HasMutableKind.kind))
+                        .find(matchingValue(item.id, UnitMember.id))) { // FIXME: We should have a firmer identification than just kind and ID
+                    any = true;
+                    matching.kind = newKind;
+                    map.modified = true;
+                }
+            }
+            if (!any) {
+                log.warn("Unable to find unit member to change kind");
+            }
+            return any;
+        } else {
+            log.warn("Unable to find item to change kind");
+            return false;
+        }
+    }
+
+    // TODO: Keep a list of dismissed members
+    shared actual void dismissUnitMember(UnitMember member) {
+        for (map in restrictedAllMaps) {
+            for (unit in map.fixtures.items.flatMap(unflattenNonFortresses)
+                    .narrow<IMutableUnit>().filter(matchingPlayer)) {
+                if (exists matching = unit.find(member.equals)) { // FIXME: equals() will really not do here ...
+                    unit.removeMember(matching);
+                    map.modified = true;
+                    break;
+                }
+            }
+        }
+    }
+
+    shared actual Boolean addSibling(UnitMember existing, UnitMember sibling) {
+        variable Boolean any = false;
+        for (map in restrictedAllMaps) {
+            for (unit in map.fixtures.items.flatMap(unflattenNonFortresses)
+                    .narrow<IMutableUnit>().filter(matchingPlayer)) {
+                if (existing in unit) { // TODO: look beyond equals() for matching-in-existing?
+                    unit.addMember(sibling.copy(false));
+                    any = true;
+                    map.modified = true;
+                    break;
+                }
+            }
+        }
+        return any;
+    }
+
+    "Change the owner of the given item in all maps. Returns [[true]] if this
+     succeeded in any map, [[false]] otherwise."
+    shared actual Boolean changeOwner(HasMutableOwner item, Player newOwner) {
+        variable Boolean any = false;
+        for (map in restrictedAllMaps) {
+            if (exists matching = map.fixtures.items.flatMap(flattenIncluding)
+                    .flatMap(flattenIncluding).narrow<HasMutableOwner>()
+                    .find(item.equals)) { // TODO: equals() is not the best way to find it ...
+                if (!newOwner in map.players) {
+                    map.addPlayer(newOwner);
+                }
+                matching.owner = map.players.getPlayer(newOwner.playerId);
+                map.modified = true;
+                any = true;
+            }
+        }
+        return any;
+    }
+
+    shared actual Boolean sortFixtureContents(IUnit fixture) {
+        variable Boolean any = false;
+        for (map in restrictedAllMaps) {
+            if (exists matching = map.fixtures.items.flatMap(unflattenNonFortresses)
+                    .narrow<IMutableUnit>().filter(matchingPlayer)
+                    .filter(matchingValue(fixture.name, IUnit.name))
+                    .filter(matchingValue(fixture.kind, IUnit.kind))
+                    .find(matchingValue(fixture.id, IUnit.id))) {
+                matching.sortMembers();
+                map.modified = true;
+                any = true;
+            }
+        }
+        return any;
+    }
+
+    shared actual void addUnit(IUnit unit) {
+        variable Point hqLoc = Point.invalidPoint;
+        for (location in map.locations) {
+            if (exists fortress = map.fixtures.get(location).narrow<IFortress>()
+                    .find(matchingValue(unit.owner, HasOwner.owner))) {
+                if (fortress.name == "HQ") {
+                    hqLoc = location;
+                    break;
+                } else if (!hqLoc.valid) {
+                    hqLoc = location;
+                }
+            }
+        }
+        addUnitAtLocation(unit, hqLoc);
     }
 }
