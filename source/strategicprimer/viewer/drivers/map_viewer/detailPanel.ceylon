@@ -40,7 +40,7 @@ import java.awt {
 }
 import strategicprimer.drivers.common {
     VersionChangeListener,
-    IDriverModel,
+    IFixtureEditingModel,
     SelectionChangeListener
 }
 import strategicprimer.model.common.idreg {
@@ -53,12 +53,16 @@ import strategicprimer.model.common.map.fixtures.mobile {
     IUnit
 }
 
+import strategicprimer.drivers.worker.common {
+    IFixtureEditHelper
+}
+
 "A panel to show the details of a tile, using a list rather than sub-panels with chits
  for its fixtures."
 todo("Separate controller functionality from presentation",
      "Try to convert back to a class")
 JComponent&VersionChangeListener&SelectionChangeListener detailPanel(
-        variable Integer version, IDriverModel model,
+        variable Integer version, IFixtureEditingModel model,
         Comparison(TileFixture, TileFixture) sortOrder) {
     JComponent keyElement(Integer version, TileType? type) {
         JPanel&BoxPanel retval = boxPanel(BoxAxis.lineAxis);
@@ -115,12 +119,14 @@ JComponent&VersionChangeListener&SelectionChangeListener detailPanel(
         shared actual void cursorPointChanged(Point? old, Point newCursor) {}
     }
 
+    IFixtureEditHelper feh = FixtureEditHelper(model);
+
     SwingList<TileFixture>&SelectionChangeListener fixtureListObject =
             fixtureList(retval,
                 FixtureListModel(model.map.fixtures.get, model.map.baseTerrain.get,
                     model.map.rivers.get, model.map.mountainous.get, (point) => null,
                     null, null, null, null, null, null, sortOrder), // TODO: implementations instead of null?
-                createIDFactory(model.map), model.map.players);
+                feh, createIDFactory(model.map), model.map.players);
 
     retval.delegate = fixtureListObject;
 

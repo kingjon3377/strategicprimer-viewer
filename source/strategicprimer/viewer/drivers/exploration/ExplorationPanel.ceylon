@@ -34,6 +34,7 @@ import java.awt.event {
     ActionListener
 }
 import strategicprimer.viewer.drivers.map_viewer {
+    FixtureEditHelper,
     FixtureFilterTableModel,
     FixtureListModel,
     fixtureList
@@ -92,6 +93,10 @@ import ceylon.collection {
 import lovelace.util.common {
     todo,
     simpleMap
+}
+
+import strategicprimer.drivers.worker.common {
+    IFixtureEditHelper
 }
 
 todo("try to split controller-functionality from presentation")
@@ -341,13 +346,15 @@ class ExplorationPanel(SpinnerNumberModel mpModel, ComboBoxModel<Speed> speedMod
 
     AnimalTracks? createNull(Point point) => null;
 
+    IFixtureEditHelper feh = FixtureEditHelper(driverModel);
+
     for (direction in sort(`Direction`.caseValues)) {
         log.trace("ExplorationPanel: Starting to initialize for ``direction``");
         SwingList<TileFixture>&SelectionChangeListener mainList =
             fixtureList(tilesPanel, FixtureListModel(driverModel.map.fixtures.get, driverModel.map.baseTerrain.get,
                     driverModel.map.rivers.get, driverModel.map.mountainous.get, tracksCreator,
                     null, null, null, null, null, null, increasing<TileFixture>), // TODO: Replace nulls with implementations?
-                idf, driverModel.map.players);
+                feh, idf, driverModel.map.players);
         tilesPanel.add(JScrollPane(mainList));
 
         log.trace("ExplorationPanel: main list set up for ``direction``");
@@ -378,7 +385,7 @@ class ExplorationPanel(SpinnerNumberModel mpModel, ComboBoxModel<Speed> speedMod
                     secondMap.rivers.get, secondMap.mountainous.get, createNull, driverModel.setSubMapTerrain,
                     driverModel.copyRiversToSubMaps, driverModel.setMountainousInSubMap, driverModel.copyToSubMaps,
                     driverModel.removeRiversFromSubMaps, driverModel.removeFixtureFromSubMaps, increasing<TileFixture>),
-                idf, secondMap.players);
+                feh, idf, secondMap.players);
         tilesPanel.add(JScrollPane(secList));
 
         log.trace("ExploratonPanel: Second list set up for ``direction``");

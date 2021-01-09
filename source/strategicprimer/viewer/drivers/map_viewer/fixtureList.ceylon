@@ -60,12 +60,16 @@ import strategicprimer.model.common.map.fixtures.mobile {
     IUnit
 }
 
+import strategicprimer.drivers.worker.common {
+    IFixtureEditHelper
+}
+
 "A visual list-based representation of the contents of a tile."
 // Can't make a class (yet) because the createDefaultDragGestureRecognizer() line would
 // have an unavoidable 'this' reference
 todo("Try to work around that to fool the typechecker into allowing it")
 shared SwingList<TileFixture>&DragGestureListener&SelectionChangeListener fixtureList(
-        JComponent parentComponent, FixtureListModel listModel, IDRegistrar idf,
+        JComponent parentComponent, FixtureListModel listModel, IFixtureEditHelper feh, IDRegistrar idf,
         {Player*} players) {
     object retval extends SwingList<TileFixture>(listModel)
             satisfies DragGestureListener&SelectionChangeListener {
@@ -109,7 +113,7 @@ shared SwingList<TileFixture>&DragGestureListener&SelectionChangeListener fixtur
                     Integer index = locationToIndex(event.point);
                     if ((0:listModel.size).contains(index)) {
                         FixtureEditMenu(listModel.getElementAt(index), players,
-                            idf).show(event.component, event.x, event.y);
+                            idf, feh).show(event.component, event.x, event.y);
                     }
                 }
             }

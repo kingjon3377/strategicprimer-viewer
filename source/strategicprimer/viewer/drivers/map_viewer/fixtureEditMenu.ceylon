@@ -50,7 +50,7 @@ shared class FixtureEditMenu(
         "A source for unique-in-the-map ID numbers."
         IDRegistrar idf,
         "Listeners to notify when something is renamed or changes kind."
-        IFixtureEditHelper* changeListeners) extends JPopupMenu() { // FIXME: Name and varargs type don't fit usage ...
+        IFixtureEditHelper handler) extends JPopupMenu() {
     void addMenuItem(JMenuItem item, Anything(ActionEvent) listener, Boolean enabled) {
         add(item);
         if (enabled) {
@@ -68,9 +68,7 @@ shared class FixtureEditMenu(
                 JOptionPane.plainMessage, null, null, Types.nativeString(originalName))) {
             String resultString = result.string.trimmed;
             if (resultString != originalName.trimmed) {
-                for (listener in changeListeners) {
-                    listener.renameItem(fixture, resultString);
-                }
+                handler.renameItem(fixture, resultString);
             }
         }
     }
@@ -86,9 +84,7 @@ shared class FixtureEditMenu(
                 JOptionPane.plainMessage, null, null, Types.nativeString(originalKind))) {
             String resultString = result.string.trimmed;
             if (resultString != originalKind.trimmed) {
-                for (listener in changeListeners) {
-                    listener.changeKind(fixture, resultString);
-                }
+                handler.changeKind(fixture, resultString);
             }
         }
     }
@@ -101,9 +97,7 @@ shared class FixtureEditMenu(
         if (is Player player = JOptionPane.showInputDialog(parent, "Fixture's new owner:",
                 "Change Fixture Owner", JOptionPane.plainMessage, null,
                 ObjectArray.with(players), fixture.owner)) {
-            for (listener in changeListeners) {
-                listener.changeOwner(fixture, player);
-            }
+            handler.changeOwner(fixture, player);
         }
     }
 
@@ -117,9 +111,7 @@ shared class FixtureEditMenu(
             "Are you sure you want to dismiss ``name``?",
             "Confirm Dismissal", JOptionPane.yesNoOption);
         if (reply == JOptionPane.yesOption) {
-            for (listener in changeListeners) {
-                listener.dismissUnitMember(fixture);
-            }
+            handler.dismissUnitMember(fixture);
         }
     }
 
@@ -139,11 +131,9 @@ shared class FixtureEditMenu(
             Integer remaining = orig - num;
             Animal split = fixture.reduced(num, idf.createID()); // TODO: Add helper for this to IFixtureEditHelper
             Animal remainder = fixture.reduced(remaining);
-            for (listener in changeListeners) {
-                listener.addSibling(fixture, split);
-                listener.dismissUnitMember(fixture);
-                listener.addSibling(split, remainder);
-            }
+            handler.addSibling(fixture, split);
+            handler.dismissUnitMember(fixture);
+            handler.addSibling(split, remainder);
         }
     }
 
@@ -159,9 +149,7 @@ shared class FixtureEditMenu(
 
     void sortHandler() {
         if (is IUnit fixture) {
-            for (listener in changeListeners) {
-                listener.sortMembers(fixture);
-            }
+            handler.sortMembers(fixture);
         }
         // TODO: Allow sorting fortresses as well.
     }
@@ -181,9 +169,7 @@ shared class FixtureEditMenu(
             "Are you sure you want to remove this ``fixture.kind`` unit, \"``fixture.name``\"?",
             "Confirm Removal", JOptionPane.yesNoOption);
         if (reply == JOptionPane.yesOption) {
-            for (listener in changeListeners) {
-                listener.removeUnit(fixture);
-            }
+            handler.removeUnit(fixture);
         }
     }
 
