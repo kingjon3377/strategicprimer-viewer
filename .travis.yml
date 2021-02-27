@@ -16,7 +16,7 @@ before_install:
 install: true
 before-script:
 - test -f export_viewer.xml && mv export_viewer.xml build.xml || true
-script: "./run_tests.sh"
+script: travis_wait "./run_tests.sh"
 before_deploy:
 - "./build_release.sh"
 env:
