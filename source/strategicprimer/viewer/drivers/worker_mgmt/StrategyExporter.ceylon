@@ -168,27 +168,42 @@ class StrategyExporter(IWorkerModel model, SPOptions options)
             }
             writer.writeLine("Turn ``turn``]");
             writer.writeLine();
-            writer.writeLine("Inventions: TODO: any?");
+            writer.writeLine("## Inventions:");
+            writer.writeLine();
+            writer.writeLine("TODO: any?");
             writer.writeLine();
 
             if (!dismissed.empty) {
-                writer.write("Dismissed workers etc.: ");
-                writer.write(", ".join(dismissed.map(workerString)));
+                writer.writeLine("## Dismissed workers etc.: ");
                 writer.writeLine();
+                writer.writeLine(", ".join(dismissed.map(workerString)));
                 writer.writeLine();
             }
 
-            writer.writeLine("Workers:");
+            writer.writeLine("## Workers:");
             writer.writeLine();
             for (kind->list in unitsByKind.asMap) {
                 if (list.empty) {
                     continue;
                 }
-                writer.writeLine("* ``kind``:");
+                writer.writeLine("### ``kind``:");
+                writer.writeLine();
                 for (unit in list) {
-                    writer.write("  - ``unit.name``");
-                    if (!unit.empty) {
+                    writer.write("#### ``unit.name``");
+                    Boolean alreadyWroteMembers;
+                    if (!unit.empty, unit.rest.empty) {
+                        // TODO: Support the 'one person plus equipment/animals' case, and maybe the 'leader and helpers' case
                         writer.write(" [");
+                        writeMember(writer, unit.first);
+                        writer.writeLine("]");
+                        alreadyWroteMembers = true;
+                    } else {
+                        writer.writeLine(":");
+                        alreadyWroteMembers = false;
+                    }
+                    writer.writeLine();
+                    if (!unit.empty, !alreadyWroteMembers) {
+                        writer.write("- Members: ");
                         if (unit.size > 4,
                                 "true" == options
                                     .getArgument("--summarize-large-units")) {
@@ -200,10 +215,11 @@ class StrategyExporter(IWorkerModel model, SPOptions options)
                                 writeMember(writer, member);
                             }
                         }
-                        writer.write("]");
+                        writer.writeLine();
+                        writer.writeLine();
                     }
                     if (options.hasOption("--results")) {
-                        writer.write(": ");
+                        writer.write("- Orders: ");
                         if (exists unitOrders = orders[unit], !unitOrders.empty) {
                             writer.writeLine(unitOrders);
                         } else {
@@ -218,9 +234,8 @@ class StrategyExporter(IWorkerModel model, SPOptions options)
                         }
                         writer.writeLine();
                         writer.writeLine("TODO: advancement");
-                    } else {
-                        writer.writeLine(":");
                         writer.writeLine();
+                    } else {
                         if (exists unitOrders = orders[unit], !unitOrders.empty) {
                             writer.writeLine(unitOrders);
                         } else {
@@ -231,25 +246,25 @@ class StrategyExporter(IWorkerModel model, SPOptions options)
                 }
             }
             if (options.hasOption("--results")) {
-                writer.writeLine("Resources:");
+                writer.writeLine("## Resources:");
                 writer.writeLine();
                 for (fortress in model.getFortresses(currentPlayer)) {
-                    writer.write("- In ");
+                    writer.write("### In ");
                     writer.writeLine(fortress.name);
                     value equipment = fortress.narrow<Implement>();
                     if (!equipment.empty) {
-                        writer.writeLine("  - Equipment not in a unit:");
+                        writer.writeLine("- Equipment not in a unit:");
                         for (item in equipment) {
-                            writer.write("    - ");
+                            writer.write("  - ");
                             writer.writeLine(item.string); // FIXME: This is egregiously verbose ("An implement of kind ...")
                         }
                     }
                     for (kind->resources in fortress.narrow<IResourcePile>().group(IResourcePile.kind)) {
-                        writer.write("  - ");
+                        writer.write("- "); // TODO: Markdown header instead?
                         writer.write(kind);
                         writer.writeLine(":");
                         for (pile in resources) {
-                            writer.write("    - ");
+                            writer.write("  - ");
                             writer.writeLine(pile.string); // FIXME: This is egregiously verbose ("A pile of ...")
                         }
                     }
