@@ -76,7 +76,7 @@
   <macrodef name="x-rebuild" description="Rebuild the Ceylon code if anything's changed">
     <sequential>
       <ceylon-compile src="${ceylon.source.dir}" resource="${ceylon.resource.dir}"
-                      encoding="UTF-8" pack200="true" verbose="${ceylon.verbosity}" >
+                      encoding="UTF-8" pack200="true">
           <moduleset>
               <sourcemodules dir="${ceylon.source.dir}" />
           </moduleset>
