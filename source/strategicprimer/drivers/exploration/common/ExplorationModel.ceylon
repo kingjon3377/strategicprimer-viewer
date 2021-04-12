@@ -342,7 +342,7 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
             removeImpl(restrictedMap, point, unit);
             restrictedMap.addFixture(dest, unit);
             mapModified = true;
-            for (subMap in restrictedSubordinateMaps) { // FIXME: Use copyToSubMaps()
+            for (subMap in restrictedSubordinateMaps) {
                 if (doesLocationHaveFixture(subMap, point, unit)) {
                     ensureTerrain(map, subMap, dest);
                     removeImpl(subMap, point, unit);
