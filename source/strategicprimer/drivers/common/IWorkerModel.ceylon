@@ -2,10 +2,6 @@ import strategicprimer.model.common.map {
     Player
 }
 
-import strategicprimer.model.common.map.fixtures {
-    UnitMember
-}
-
 import strategicprimer.model.common.map.fixtures.mobile {
     IUnit
 }
@@ -45,8 +41,4 @@ shared interface IWorkerModel satisfies IMultiMapModel&IAdvancementModel&IFixtur
     // TODO: Return their positions with them?
     shared formal {IFortress*} getFortresses(
             "The player whose fortresses we want" Player player);
-
-    "The unit members that have been dismissed during this session."
-    // TODO: Move to IFixtureEditingModel, since dismissUnitMember() got moved there?
-    shared formal {UnitMember*} dismissed;
 }

@@ -1,6 +1,8 @@
 import ceylon.collection {
+    ArrayList,
+    HashSet,
     MutableList,
-    ArrayList
+    MutableSet
 }
 
 import lovelace.util.common {
@@ -89,6 +91,9 @@ shared class ViewerModel extends SimpleDriverModel satisfies IViewerModel {
 
     "The object to handle notifying selection-change listeners."
     SelectionChangeSupport scs = SelectionChangeSupport();
+
+    "Previously dismissed members."
+    MutableSet<UnitMember> dismissedMembers = HashSet<UnitMember>();
 
     "The current zoom level."
     variable Integer _zoomLevel = defaultZoomLevel;
@@ -509,18 +514,20 @@ shared class ViewerModel extends SimpleDriverModel satisfies IViewerModel {
         }
     }
 
-    // TODO: Keep a list of dismissed members
     shared actual void dismissUnitMember(UnitMember member) {
         for (unit in map.fixtures.items.flatMap(unflattenNonFortresses)
                 .narrow<IMutableUnit>()
                 .filter(matchingValue(map.players.currentPlayer, HasOwner.owner))) {
             if (exists matching = unit.find(member.equals)) { // FIXME: equals() will really not do here ...
                 unit.removeMember(matching);
+                dismissedMembers.add(member);
                 restrictedMap.modified = true;
                 break;
             }
         }
     }
+
+    shared actual {UnitMember*} dismissed => dismissedMembers;
 
     shared actual Boolean addSibling(UnitMember existing, UnitMember sibling) {
         for (unit in map.fixtures.items.flatMap(unflattenNonFortresses)

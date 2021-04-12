@@ -62,4 +62,7 @@ shared interface IFixtureEditingModel satisfies IDriverModel {
      map contained a matching unit, [[false]] otherwise."
     // TODO: Also support fortresses, and any other fixtures-containing-fixtures as they come to exist
     shared formal Boolean sortFixtureContents(IUnit fixture);
+
+    "The unit members that have been dismissed during this session."
+    shared formal {UnitMember*} dismissed;
 }

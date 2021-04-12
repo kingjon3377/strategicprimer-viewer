@@ -1,6 +1,8 @@
 import ceylon.collection {
     ArrayList,
-    MutableList
+    HashSet,
+    MutableList,
+    MutableSet
 }
 import ceylon.numeric.float {
     ceiling
@@ -201,6 +203,8 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
             return Singleton(fixture);
         }
     }
+
+    MutableSet<UnitMember> dismissedMembers = HashSet<UnitMember>();
 
     MutableList<MovementCostListener> mcListeners = ArrayList<MovementCostListener>();
     MutableList<SelectionChangeListener> scListeners =
@@ -874,12 +878,15 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
                     .narrow<IMutableUnit>().filter(matchingPlayer)) {
                 if (exists matching = unit.find(member.equals)) { // FIXME: equals() will really not do here ...
                     unit.removeMember(matching);
+                    dismissedMembers.add(member);
                     map.modified = true;
                     break;
                 }
             }
         }
     }
+
+    shared actual {UnitMember*} dismissed => dismissedMembers;
 
     shared actual Boolean addSibling(UnitMember existing, UnitMember sibling) {
         variable Boolean any = false;
