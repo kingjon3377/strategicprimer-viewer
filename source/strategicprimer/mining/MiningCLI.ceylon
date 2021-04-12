@@ -56,7 +56,7 @@ shared class MiningCLI(ICLIHelper cli, options) satisfies UtilityDriver {
                 mineKind = MineKind.normal;
             }
 
-            MiningModel model = MiningModel(initial, seed, mineKind);
+            MiningModel model = MiningModel(initial, seed, mineKind, cli);
             value [lowerRightRow, lowerRightColumn] = model.maximumPoint;
 
             value path = parsePath(filename);

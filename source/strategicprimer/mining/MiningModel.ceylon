@@ -10,6 +10,10 @@ import ceylon.random {
     Random
 }
 
+import strategicprimer.drivers.common.cli {
+    ICLIHelper
+}
+
 "Kinds of mines we know how to create."
 class MineKind of normal | banded {
     """"Normal," which *tries* to create randomly-branching "veins"."""
@@ -21,13 +25,15 @@ class MineKind of normal | banded {
 "A class to model the distribution of a mineral to be mined. Note that the constructor
  can be *very* computationally expensive!"
 native("jvm")
-class MiningModel(initial, seed, kind) {
+class MiningModel(initial, seed, kind, cli) {
     "The status to give the mine's starting point."
     LodeStatus initial;
     "A number to seed the RNG"
     Integer seed;
     "What kind of mine to model."
     MineKind kind;
+    "CLI to use for output"
+    ICLIHelper cli;
 
     "The points we have generated so far and the lode-status of those points."
     MutableMap<[Integer, Integer], LodeStatus> unnormalized =
@@ -87,9 +93,9 @@ class MiningModel(initial, seed, kind) {
     while (exists point = queue.accept()) {
         counter++;
         if (100000.divides(counter)) {
-            process.writeLine(point.string); // TODO: Take ICLIHelper instead of using stdout
+            cli.println(point.string);
         } else if (1000.divides(counter)) {
-            process.write(".");
+            cli.print(".");
         }
         // Limit the size of the output spreadsheet.
         if (point.first.magnitude > 200 || getColumn(point).magnitude > 100) {
@@ -99,9 +105,9 @@ class MiningModel(initial, seed, kind) {
             modelPoint(point);
         }
     }
-    process.writeLine();
+    cli.println();
 
-    process.writeLine("Pruned ``pruneCounter`` branches beyond our boundaries");
+    cli.println("Pruned ``pruneCounter`` branches beyond our boundaries");
     for (row->points in unnormalized.keys.group(Tuple.first).sort(decreasingKey)) {
         if (!points.map(unnormalized.get).coalesced.empty) {
             break;
