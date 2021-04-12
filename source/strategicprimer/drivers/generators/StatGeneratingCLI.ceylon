@@ -19,7 +19,6 @@ import strategicprimer.model.common.idreg {
 }
 
 import strategicprimer.model.common.map {
-    IFixture,
     Player,
     TileFixture,
     Point
@@ -78,19 +77,6 @@ Logger log = logger(`module strategicprimer.drivers.generators`);
 // FIXME: Write stat-generating GUI
 class StatGeneratingCLI satisfies CLIDriver {
     static String[6] statLabelArray = ["Str", "Dex", "Con", "Int", "Wis", "Cha"];
-
-    "Find a fixture in a given iterable with the given ID."
-    static IFixture? findInIterable(Integer id, {IFixture*} fixtures) { // TODO: Take two parameter lists, so we can convert the loop in find() to an Iterable.map().find() call.
-        for (fixture in fixtures) {
-            if (fixture.id == id) {
-                return fixture;
-            } else if (is {IFixture*} fixture,
-                    exists result = findInIterable(id, fixture)) {
-                return result;
-            }
-        }
-        return null;
-    }
 
     "Get the index of the lowest value in an array."
     static Integer getMinIndex(Integer[] array) =>
