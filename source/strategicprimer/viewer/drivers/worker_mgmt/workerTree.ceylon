@@ -88,6 +88,29 @@ import java.lang {
     JString=String
 }
 
+"An enumeration of possible reasons for changing the highlighting of a unit."
+class ShadingReason of todo|fixme|missing satisfies Comparable<ShadingReason> {
+    Integer ordinal;
+    shared Color color;
+    "When orders are empty (in the current turn)."
+    shared new missing {
+        ordinal = 0;
+        color = Color(184, 224, 249);
+    }
+    """When orders contain "TODO" or "XXX"."""
+    shared new todo {
+        ordinal = 1;
+        color = Color.yellow;
+    }
+    """When orders contain "FIXME"."""
+    shared new fixme {
+        ordinal = 2;
+        color = Color.pink;
+    }
+
+    shared actual Comparison compare(ShadingReason other) => ordinal <=> other.ordinal;
+}
+
 "A tree of a player's units."
 shared JTree&UnitMemberSelectionSource&UnitSelectionSource workerTree(
         "The tree model"
@@ -286,9 +309,11 @@ shared JTree&UnitMemberSelectionSource&UnitSelectionSource workerTree(
             }
         }
 
-        "Returns [[true]] if orders contain FIXME, [[false]], if orders contain TODO or
-         XXX, and [[null]] otherwise."
-        Boolean? shouldChangeBackground(String|JString|IUnit item) {
+        "Returns [[ShadingReason.fixme]] if orders contain FIXME,
+         [[ShadingReason.todo]] if orders contain TODO or XXX,
+         [[ShadingReason.missing]] if orders are empty, and [[null]]
+         otherwise."
+        ShadingReason? shouldChangeBackground(String|JString|IUnit item) {
             switch (item)
             case (is IUnit) {
                 if (item.empty) {
@@ -296,22 +321,26 @@ shared JTree&UnitMemberSelectionSource&UnitSelectionSource workerTree(
                 }
                 String orders = item.getLatestOrders(turnSource()).lowercased;
                 if (orders.contains("fixme")) {
-                    return true;
+                    return ShadingReason.fixme;
                 } else if (orders.contains("todo") || orders.contains("xxx")) {
-                    return false;
+                    return ShadingReason.todo;
+                } else if (orders.empty || item.getOrders(turnSource()).empty) {
+                    return ShadingReason.missing;
                 } else {
                     return null;
                 }
             }
             else {
-                variable Boolean? retval = null;
+                variable ShadingReason? retval = null;
                 for (unit in wtModel.childrenOf(item).map(wtModel.getModelObject)
                         .narrow<IUnit>()) {
                     if (exists unitPaint = shouldChangeBackground(unit)) {
-                        if (unitPaint) {
-                            return true;
+                        if (unitPaint == ShadingReason.fixme) {
+                            return unitPaint;
+                        } else if (exists temp = retval) {
+                            retval = largest(temp, unitPaint);
                         } else {
-                            retval = false;
+                            retval = unitPaint;
                         }
                     }
                 }
@@ -329,8 +358,7 @@ shared JTree&UnitMemberSelectionSource&UnitSelectionSource workerTree(
             if (is HasImage internal, is JLabel component) {
                 component.icon = getIcon(internal);
             }
-            variable Boolean shouldWarn = false;
-            variable Boolean shouldError = false;
+            variable ShadingReason? background = null;
             if (is IWorker internal, is JLabel component) {
                 if ("human" == internal.race) {
                     component.text = "<html><p>``internal
@@ -364,31 +392,26 @@ shared JTree&UnitMemberSelectionSource&UnitSelectionSource workerTree(
                     component.text = "``internal.name`` (``internal.narrow<IWorker>()
                         .size`` workers)";
                 }
-                switch (result = shouldChangeBackground(internal))
-                case (true) {
-                    shouldError = true;
-                    shouldWarn = false;
+                if (exists result = shouldChangeBackground(internal)) {
+                    if (exists temp = background) {
+                        background = largest(result, temp);
+                    } else {
+                        background = result;
+                    }
                 }
-                case (false) { shouldWarn = true; }
-                case (null) {}
             } else if (orderCheck, is String|JString internal) {
-                switch (result = shouldChangeBackground(internal))
-                case (true) {
-                    shouldError = true;
-                    shouldWarn = false;
+                if (exists result = shouldChangeBackground(internal)) {
+                    if (exists temp = background) {
+                        background = largest(result, temp);
+                    } else {
+                        background = result;
+                    }
                 }
-                case (false) { shouldWarn = true; }
-                case (null) {}
             }
             if (is DefaultTreeCellRenderer component) {
-                if (shouldError) {
-                    component.backgroundSelectionColor = Color.pink;
-                    component.backgroundNonSelectionColor = Color.pink;
-                    component.textSelectionColor = Color.black;
-                    component.textNonSelectionColor = Color.black;
-                } else if (shouldWarn) {
-                    component.backgroundSelectionColor = Color.yellow;
-                    component.backgroundNonSelectionColor = Color.yellow;
+                if (exists temp = background) {
+                    component.backgroundSelectionColor = temp.color;
+                    component.backgroundNonSelectionColor = temp.color;
                     component.textSelectionColor = Color.black;
                     component.textNonSelectionColor = Color.black;
                 } else {
