@@ -49,10 +49,11 @@ import com.vasileff.ceylon.structures {
 
 """A report generator for [["immortals"|Immortal]]---dragons, fairies, centaurs, and
    such."""
-shared class ImmortalsReportGenerator(
-        Comparison([Point, IFixture], [Point, IFixture]) comp, MapDimensions dimensions,
-        Point? hq = null)
-        extends AbstractReportGenerator<Immortal>(comp, dimensions, hq) {
+shared class ImmortalsReportGenerator extends AbstractReportGenerator<Immortal> {
+
+    shared new (Comparison([Point, IFixture], [Point, IFixture]) comp, MapDimensions dimensions,
+            Point? hq = null) extends AbstractReportGenerator<Immortal>(comp, dimensions, hq) {}
+
     "Produce a report on an individual immortal."
     shared actual void produceSingle(
             DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
