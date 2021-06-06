@@ -134,9 +134,7 @@ shared class FixtureListModel(Iterable<TileFixture>(Point) fixturesSource, TileT
         }
     }
 
-    Integer adjustedIndex(Integer index) {
-        return index + cachedTerrainList.size;
-    }
+    Integer adjustedIndex(Integer index) => index + cachedTerrainList.size;
 
     "Returns true if the operation is accepted (succeeded), false if it is
      rejected (failed). For now no-op operations are treated as successes."
