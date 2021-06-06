@@ -39,9 +39,7 @@ shared final class CLIHelper(istream = process.readLine, ostream = process.write
                 intervals[string] = lines + newlines;
             }
         }
-        for (part in text) {
-            ostream(part);
-        }
+	text.each(ostream);
     }
 
     "Print the specified string, then a newline."
