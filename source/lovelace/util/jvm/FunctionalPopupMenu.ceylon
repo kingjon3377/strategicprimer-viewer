@@ -6,6 +6,7 @@ import javax.swing {
 shared class FunctionalPopupMenu extends JPopupMenu {
     shared new (JMenuItem* items) extends JPopupMenu() {
         for (item in items) {
+	    // Can't use items.each(add) because add() is overloaded
             add(item);
         }
     }

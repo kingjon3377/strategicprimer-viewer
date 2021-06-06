@@ -8,6 +8,7 @@ import javax.swing {
  initializer parameters."
 shared class FlowPanel(Component* components) extends JPanel() {
     for (component in components) {
+	// Can't use items.each(add) because add() is overloaded
         add(component);
     }
 }
