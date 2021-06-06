@@ -12,7 +12,5 @@ shared class ForestFixerDriver(ICLIHelper cli, options, model) satisfies CLIDriv
     shared actual SPOptions options;
     shared actual UtilityDriverModel model;
 
-    shared actual void startDriver() {
-        model.fixForestsAndGround(cli.println);
-    }
+    shared actual void startDriver() => model.fixForestsAndGround(cli.println);
 }
