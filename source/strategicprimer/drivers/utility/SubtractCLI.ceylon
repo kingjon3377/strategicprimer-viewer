@@ -9,9 +9,5 @@ import strategicprimer.drivers.common {
 shared class SubtractCLI(shared actual UtilityDriverModel model) satisfies CLIDriver {
     shared actual SPOptions options = emptyOptions;
 
-    shared actual void startDriver() {
-        for (loc in model.map.locations) {
-            model.subtractAtPoint(loc);
-        }
-    }
+    shared actual void startDriver() => model.map.locations.each(model.subtractAtPoint);
 }
