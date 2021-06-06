@@ -287,9 +287,7 @@ shared class TodoFixerCLI(ICLIHelper cli, model) satisfies CLIDriver {
                 fixAllVillages(map);
                 model.setMapModified(map, true);
             }
-            for (location in model.map.locations) {
-                model.copyRiversAt(location);
-            }
+	    model.map.locations.each(model.copyRiversAt);
         } else {
             fixAllUnits(model.map);
             fixAllVillages(model.map);
