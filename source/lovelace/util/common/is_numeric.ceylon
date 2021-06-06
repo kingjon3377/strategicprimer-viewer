@@ -79,13 +79,9 @@ native("js") object numParsingHelper {
         }
     }
     shared native("js") test
-    void testJVMIsNumeric() {
-        assumeTrue(false);
-    }
+    void testJVMIsNumeric() => assumeTrue(false);
     shared native("js") test
-    void testJVMParseInt() {
-        assumeTrue(false);
-    }
+    void testJVMParseInt() => assumeTrue(false);
 }
 "Whether the given string contains numeric data"
 shared Boolean isNumeric(String string) => numParsingHelper.isNumeric(string);
