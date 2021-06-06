@@ -196,7 +196,5 @@ class WorkerCreationListener(IWorkerTreeModel model, IDRegistrar factory)
     }
 
     "Update our currently-selected-unit reference."
-    shared actual void selectUnit(IUnit? unit) {
-        selectedUnit = unit;
-    }
+    shared actual void selectUnit(IUnit? unit) => selectedUnit = unit;
 }
