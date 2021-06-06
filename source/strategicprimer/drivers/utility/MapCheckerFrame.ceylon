@@ -56,9 +56,8 @@ class MapCheckerFrame(ISPDriver driver) extends SPFrame("Strategic Primer Map Ch
 
     MapCheckerCLI mapCheckerCLI = MapCheckerCLI(outHandler, errHandler);
 
-    shared void check(PathWrapper filename) {
-        mapCheckerCLI.check(filename, warningLevels.custom(customPrinter));
-    }
+    shared void check(PathWrapper filename) =>
+            mapCheckerCLI.check(filename, warningLevels.custom(customPrinter));
 
     shared actual void acceptDroppedFile(PathWrapper file) => check(file);
 }
