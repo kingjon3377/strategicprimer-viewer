@@ -57,8 +57,23 @@ class StrategyExporter(IWorkerModel model, SPOptions options)
             } else {
                 jobs = member.filter(compose(Integer.positive, IJob.level));
             }
+            variable Boolean needsClosingParen = false;
+            if (exists mount = member.mount) {
+                writer.write(" (on ");
+                writer.write(mount.kind);
+                needsClosingParen = true;
+            }
             if (!jobs.empty) {
-                writer.write(" (``", ".join(jobs.map(jobString))``)");
+                if (needsClosingParen) {
+                    writer.write("; ");
+                } else {
+                    writer.write(" (");
+                }
+                writer.write(", ".join(jobs.map(jobString)));
+                needsClosingParen = true;
+            }
+            if (needsClosingParen) {
+                writer.write(")");
             }
         } else if (is Animal member) {
             if (member.population > 1) {
