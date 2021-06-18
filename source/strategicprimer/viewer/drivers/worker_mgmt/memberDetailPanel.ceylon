@@ -165,12 +165,19 @@ JPanel&UnitMemberListener memberDetailPanel(JPanel resultsPanel, JPanel notesPan
             for (label in statLabels) {
                 label.arguments = [stats];
             }
+            if (exists mount = local.mount) {
+                jobsPanel.add(JLabel("Mounted on ``mount.kind``"));
+            }
             for (job in local.filter(not(IJob.emptyJob))) {
                 JLabel label = JLabel("``job.name`` ``job.level``");
                 if (exists firstSkill = job.first) {
                     label.toolTipText = "Skills" + ", ".join(job.map(skillString));
                 }
                 jobsPanel.add(label);
+            }
+            // TODO: Make a separate panel?
+            for (item in local.equipment) {
+                jobsPanel.add(JLabel(item.string));
             }
         } else if (is Animal local) {
 //            String plural = animalPlurals[local.kind]; // TODO: syntax sugar once compiler bug fixed
