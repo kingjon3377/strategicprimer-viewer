@@ -392,6 +392,19 @@ object dbio_tests {
         assertFixtureSerialization(unit);
     }
 
+    // No idea if this will work, or even compile ...
+    test
+    shared void testWorkerEquipment(randomlyGenerated(3) Integer id) {
+        value worker = Worker("worker name", "elf", id);
+        worker.mount = AnimalImpl("animal kind", false, "tame", id + 1);
+        worker.addEquipment(Implement("equipment kind one", id + 2));
+        worker.addEquipment(Implement("equipment kind two", id + 3));
+        Player owner = PlayerImpl(1, "owner");
+        value unit = Unit(owner, "unitKind", "unitName", id + 5);
+        unit.addMember(worker);
+        assertFixtureSerialization(unit);
+    }
+
     test
     shared void testVillageSerialization(
         enumeratedParameter(`class TownStatus`) TownStatus status,

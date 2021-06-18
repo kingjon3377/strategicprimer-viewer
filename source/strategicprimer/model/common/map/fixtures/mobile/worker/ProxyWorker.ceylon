@@ -10,9 +10,11 @@ import strategicprimer.model.common.map {
     IFixture
 }
 import strategicprimer.model.common.map.fixtures {
+    Implement,
     UnitMember
 }
 import strategicprimer.model.common.map.fixtures.mobile {
+    Animal,
     IUnit,
     ProxyFor,
     IWorker
@@ -49,6 +51,10 @@ shared class ProxyWorker satisfies UnitMember&IWorker&ProxyFor<IWorker> {
     "The workers being proxied."
     MutableList<IWorker> workers = ArrayList<IWorker>();
 
+    "Equipment held by all the workers. (Cache, more or less.)"
+    // TODO: Should this be the union instead?
+    MutableList<Implement> equipmentImpl = ArrayList<Implement>();
+
     "Cached stats for the workers. Null if there are no workers being proxied or if they
      do not share identical stats."
     variable WorkerStats? statsCache;
@@ -73,6 +79,11 @@ shared class ProxyWorker satisfies UnitMember&IWorker&ProxyFor<IWorker> {
         for (job in jobNames) {
             proxyJobs.add(ProxyJob(job, false, *workers));
         }
+        for (item in unit.narrow<IWorker>().flatMap(IWorker.equipment)) {
+            if (unit.narrow<IWorker>().map(IWorker.equipment).every(shuffle(Category<Implement>.contains)(item))) {
+                equipmentImpl.add(item);
+            }
+        }
     }
 
     shared new fromWorkers(IWorker* proxiedWorkers) extends noop(true) {
@@ -81,8 +92,12 @@ shared class ProxyWorker satisfies UnitMember&IWorker&ProxyFor<IWorker> {
             WorkerStats? priorStats = statsCache;
             if (workers.empty) {
                 statsCache = tempStats;
-            } else if (!anythingEqual(tempStats, priorStats)) {
-                statsCache = null;
+                equipmentImpl.addAll(worker.equipment);
+            } else {
+                if (!anythingEqual(tempStats, priorStats)) {
+                    statsCache = null;
+                }
+                equipmentImpl.removeWhere(not(worker.equipment.contains));
             }
             workers.add(worker);
             jobNames.addAll(worker.map(IJob.name));
@@ -131,12 +146,16 @@ shared class ProxyWorker satisfies UnitMember&IWorker&ProxyFor<IWorker> {
         WorkerStats? priorStats = statsCache;
         if (workers.empty) {
             statsCache = tempStats;
-        } else if (exists tempStats) {
-            if (exists priorStats, tempStats != priorStats) {
+            equipmentImpl.addAll(item.equipment);
+        } else {
+            if (exists tempStats) {
+                if (exists priorStats, tempStats != priorStats) {
+                    statsCache = null;
+                }
+            } else if (exists priorStats) {
                 statsCache = null;
             }
-        } else if (exists priorStats) {
-            statsCache = null;
+            equipmentImpl.removeWhere(not(item.equipment.contains));
         }
         workers.add(item);
         for (job in item) {
@@ -206,4 +225,8 @@ shared class ProxyWorker satisfies UnitMember&IWorker&ProxyFor<IWorker> {
     }
 
     shared actual {Integer*} notesPlayers => set(proxied.flatMap(IWorker.notesPlayers));
+
+    shared actual {Implement*} equipment => equipmentImpl;
+
+    shared actual Animal? mount => getNullableConsensus(IWorker.mount);
 }

@@ -46,7 +46,8 @@ import strategicprimer.model.common.map.fixtures.towns {
 
 import strategicprimer.model.common.map.fixtures.mobile {
     Animal,
-    IMutableUnit
+    IMutableUnit,
+    IMutableWorker
 }
 
 import strategicprimer.model.common.map.fixtures {
@@ -175,13 +176,23 @@ object dbMapReader {
         log.trace("Finished reading the map except adding members to parents");
 
         for (parentId->member in containees) {
-            assert (is IMutableFortress|IMutableUnit|AbstractTown|Village parent = containers[parentId]);
+            assert (is IMutableFortress|IMutableUnit|IMutableWorker|AbstractTown|Village parent = containers[parentId]);
             if (is IMutableFortress parent) {
                 assert (is FortressMember member);
                 parent.addMember(member);
             } else if (is IMutableUnit parent) {
                 assert (is UnitMember member);
                 parent.addMember(member);
+            } else if (is IMutableWorker parent) {
+                assert (is Animal|Implement member);
+                switch (member)
+                case (is Animal) {
+                    assert (!parent.mount exists);
+                    parent.mount = member;
+                }
+                case (is Implement) {
+                    parent.addEquipment(member);
+                }
             } else if (is AbstractTown parent) {
                 assert (is CommunityStats member, !parent.population exists);
                 parent.population = member;

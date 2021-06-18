@@ -64,9 +64,22 @@ object unitMemberHandler extends FluidBase() {
                     players, warner, idFactory); }
                 case ("note") { retval.notes.put(players.getPlayer(getIntegerAttribute(event, "player")),
                     readNote(event, element.name, stream, warner)); }
+                case ("animal") {
+                    if (retval.mount exists) {
+                        throw UnwantedChildException(element.name, event);
+                    } else if (is Animal animal = readAnimal(event, element.name, stream, players, warner, idFactory)) {
+                        retval.mount = animal;
+                    } else {
+                        throw UnwantedChildException(event.name, element);
+                    }
+                }
+                case ("implement") {
+                    retval.addEquipment(fluidResourceHandler.readImplement(event, element.name, stream,
+                        players, warner, idFactory));
+                }
                 else {
                     throw UnwantedChildException.listingExpectedTags(element.name, event,
-                        ["job", "stats", "note"]);
+                        ["job", "stats", "note", "animal", "implement"]);
                 }
             } else if (is EndElement event, element.name == event.name) {
                 break;
@@ -146,6 +159,7 @@ object unitMemberHandler extends FluidBase() {
 
     shared void writeWorker(XMLStreamWriter ostream, IWorker obj, Integer indentation) {
         WorkerStats? stats = obj.stats;
+        Animal? mount = obj.mount;
         {IJob*} jobs = obj.filter(not(IJob.emptyJob));
         Boolean hasJobs = !jobs.empty;
         writeTag(ostream, "worker", indentation, !hasJobs && !stats exists);
@@ -159,6 +173,12 @@ object unitMemberHandler extends FluidBase() {
         if (exists stats) {
             writeStats(ostream, stats, indentation + 1);
         }
+        if (exists mount) {
+            writeAnimal(ostream, mount, indentation + 1);
+        }
+        for (item in obj.equipment) {
+            fluidResourceHandler.writeImplement(ostream, item, indentation + 1);
+        }
         for (job in jobs) {
             writeJob(ostream, job, indentation + 1);
         }
@@ -166,7 +186,8 @@ object unitMemberHandler extends FluidBase() {
             assert (exists note = obj.notes.get(player));
             writeNote(ostream, player, note, indentation +1);
         }
-        if (hasJobs || stats exists || !obj.notesPlayers.empty) {
+        if (hasJobs || mount exists || stats exists || !obj.equipment.empty ||
+                !obj.notesPlayers.empty) {
             indent(ostream, indentation);
             ostream.writeEndElement();
         }

@@ -57,6 +57,7 @@ import lovelace.util.common {
     enumeratedParameter
 }
 
+// TODO: Add test of Worker subset logic
 "A collection of tests of the subset-checking features."
 object subsetTests {
     """Assert that [[two]] is a "strict subset," by our loose definition, of

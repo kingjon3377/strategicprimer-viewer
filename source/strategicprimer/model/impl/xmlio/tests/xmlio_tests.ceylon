@@ -1249,6 +1249,11 @@ object xmlTests {
         assertImageSerialization("Worker image property is preserved", secondWorker);
         secondWorker.addJob(Job("seventh", 1));
         assertSerialization("Worker can have Job with no skills yet", secondWorker);
+        secondWorker.mount = AnimalImpl("animal", false, "tame", 11);
+        assertSerialization("Worker can have a mount", secondWorker);
+        secondWorker.addEquipment(Implement("implKind", 12));
+        secondWorker.addEquipment(Implement("implKindTwo", 13));
+        assertSerialization("Worker can have equipment", secondWorker);
         assertUnwantedChild<IMapNG>(
             """<map version="2" rows="1" columns="1">
                <tile row="0" column="0" kind="plains">

@@ -101,12 +101,19 @@ object dbWorkerHandler extends AbstractDatabaseWriter<IWorker, IUnit>()
                 worker.execute(context.id, obj.id, obj.name, obj.race, obj.image,
                     portrait, *Singleton(SqlNull(Types.integer)).cycled.take(8));
             }
+            // Worker notes are handled by SPDatabaseWriter.
             for (job in obj) {
                 jobRow.execute(obj.id, job.name, job.level);
                 for (skill in job) {
                     skillRow.execute(obj.id, job.name, skill.name, skill.level,
                         skill.hours);
                 }
+            }
+            if (exists mount = obj.mount) {
+                dbAnimalHandler.write(db, mount, obj);
+            }
+            for (item in obj.equipment) {
+                dbImplementHandler.write(db, item, obj);
             }
             return true;
         });

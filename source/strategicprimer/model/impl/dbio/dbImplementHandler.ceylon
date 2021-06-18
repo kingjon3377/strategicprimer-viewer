@@ -11,7 +11,8 @@ import strategicprimer.model.common.map.fixtures {
     Implement
 }
 import strategicprimer.model.common.map.fixtures.mobile {
-    IUnit
+    IUnit,
+    IWorker
 }
 import strategicprimer.model.common.map.fixtures.towns {
     IFortress
@@ -28,7 +29,7 @@ import com.vasileff.ceylon.structures {
     MutableMultimap
 }
 
-object dbImplementHandler extends AbstractDatabaseWriter<Implement, IUnit|IFortress>()
+object dbImplementHandler extends AbstractDatabaseWriter<Implement, IUnit|IFortress|IWorker>()
         satisfies MapContentsReader {
     shared actual {String+} initializers = [
         """CREATE TABLE IF NOT EXISTS implements (
@@ -40,7 +41,7 @@ object dbImplementHandler extends AbstractDatabaseWriter<Implement, IUnit|IFortr
            );"""
     ];
 
-    shared actual void write(Sql db, Implement obj, IUnit|IFortress context) {
+    shared actual void write(Sql db, Implement obj, IUnit|IFortress|IWorker context) {
         db.Insert("""INSERT INTO implements (parent, id, kind, count, image)
                      VALUES(?, ?, ?, ?, ?);""")
                 .execute(context.id, obj.id, obj.kind, obj.count, obj.image);

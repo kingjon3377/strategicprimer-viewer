@@ -17,7 +17,8 @@ import strategicprimer.model.common.map.fixtures.mobile {
     Animal,
     maturityModel,
     AnimalImpl,
-    AnimalTracks
+    AnimalTracks,
+    IWorker
 }
 import strategicprimer.model.common.xmlio {
     Warning
@@ -35,7 +36,7 @@ import com.vasileff.ceylon.structures {
     MutableMultimap
 }
 
-object dbAnimalHandler extends AbstractDatabaseWriter<Animal|AnimalTracks, Point|IUnit>()
+object dbAnimalHandler extends AbstractDatabaseWriter<Animal|AnimalTracks, Point|IUnit|IWorker>()
         satisfies MapContentsReader {
     Integer|SqlNull born(Animal animal) {
         if (exists maturityAge = maturityModel.maturityAges[animal.kind],
@@ -72,7 +73,7 @@ object dbAnimalHandler extends AbstractDatabaseWriter<Animal|AnimalTracks, Point
            );"""
     ];
 
-    shared actual void write(Sql db, Animal|AnimalTracks obj, Point|IUnit context) {
+    shared actual void write(Sql db, Animal|AnimalTracks obj, Point|IUnit|IWorker context) {
         if (is AnimalTracks obj) {
             "We assume that animal tracks can't occur inside a unit."
             assert (is Point context);

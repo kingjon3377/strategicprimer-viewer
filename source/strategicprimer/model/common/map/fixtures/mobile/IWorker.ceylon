@@ -6,6 +6,7 @@ import strategicprimer.model.common.map {
     HasPortrait
 }
 import strategicprimer.model.common.map.fixtures {
+    Implement,
     UnitMember
 }
 import strategicprimer.model.common.map.fixtures.mobile.worker {
@@ -32,4 +33,11 @@ shared interface IWorker satisfies UnitMember&{IJob*}&HasName&HasKind&HasImage&H
     shared formal IJob getJob(String jobName);
 
     shared actual String plural => "Workers";
+
+    "The animal, if any, this worker is personally mounted on."
+    shared formal Animal? mount;
+
+    "Any equipment associated with this worker personally. (Generally not much
+     more than clothing.)"
+    shared formal {Implement*} equipment;
 }

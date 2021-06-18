@@ -20,9 +20,15 @@ import strategicprimer.model.common.map.fixtures.mobile.worker {
     IJob
 }
 import ceylon.collection {
+    ArrayList,
+    MutableList,
     MutableMap,
     HashMap,
     MutableSet
+}
+
+import strategicprimer.model.common.map.fixtures {
+    Implement
 }
 
 "A worker (or soldier) in a unit. This is deliberately not a
@@ -41,6 +47,8 @@ shared class Worker satisfies IMutableWorker {
 
     "The notes players have associaed with this worker"
     MutableMap<Integer, String> notesImpl = HashMap<Integer, String>();
+
+    MutableList<Implement> equipmentImpl = ArrayList<Implement>();
 
     "The worker's ID number."
     shared actual Integer id;
@@ -77,10 +85,14 @@ shared class Worker satisfies IMutableWorker {
     "An iterator over the worker's Jobs."
     shared actual Iterator<IJob> iterator() => jobSet.iterator();
 
+    shared actual variable Animal? mount = null;
+
     shared actual Boolean equalsIgnoringID(IFixture fixture) {
         if (is IWorker fixture) {
             return fixture.name == name && jobSetsEqual(jobSet, fixture)
-                && fixture.race == race && anythingEqual(stats, fixture.stats);
+                && fixture.race == race && anythingEqual(stats, fixture.stats)
+                && set(fixture.equipment) == set(equipmentImpl)
+                && anythingEqual(mount, fixture.mount);
         } else {
             return false;
         }
@@ -135,6 +147,21 @@ shared class Worker satisfies IMutableWorker {
                         retval = false;
                     }
                 }
+                if (exists theirMount = obj.mount) {
+                    if (exists ourMount = mount, ourMount != theirMount) {
+                        localReport("Mounts differ");
+                        retval = false;
+                    } else if (!mount exists) {
+                        localReport("Has mount we don't");
+                        retval = false;
+                    }
+                }
+                for (item in obj.equipment) {
+                    if (!item in equipment) {
+                        localReport("Extra equipment: ``item``");
+                        retval = false;
+                    }
+                }
                 return retval;
             } else {
                 report("For ID #``id``, different kinds of members");
@@ -158,6 +185,12 @@ shared class Worker satisfies IMutableWorker {
                 if (!job.emptyJob) {
                     retval.addJob(job.copy());
                 }
+            }
+            if (exists temp = mount) {
+                retval.mount = temp.copy(zero);
+            }
+            for (item in equipment) {
+                retval.addEquipment(item.copy(zero));
             }
         }
         return retval;
@@ -198,4 +231,10 @@ shared class Worker satisfies IMutableWorker {
     }
 
     shared actual {Integer*} notesPlayers => notesImpl.keys;
+
+    shared actual {Implement*} equipment => equipmentImpl;
+
+    shared actual void addEquipment(Implement item) => equipmentImpl.add(item);
+
+    shared actual void removeEquipment(Implement item) => equipmentImpl.remove(item);
 }

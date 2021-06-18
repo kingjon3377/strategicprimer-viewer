@@ -11,6 +11,10 @@ import strategicprimer.model.common.map {
     HasMutablePortrait
 }
 
+import strategicprimer.model.common.map.fixtures {
+    Implement
+}
+
 "Mutator operations for [[IWorker]]."
 shared interface IMutableWorker satisfies IWorker&HasMutableImage&HasMutablePortrait {
     "Add a Job. Returns whether the number of Jobs changed as a result of this.
@@ -23,4 +27,14 @@ shared interface IMutableWorker satisfies IWorker&HasMutableImage&HasMutablePort
           by this name", "Make void instead of Boolean?")
     shared formal Boolean addJob(IJob job);
 
+    "The animal, if any, this worker is personally mounted on."
+    shared actual formal variable Animal? mount;
+
+    "Add an item of equipment that is associated with this worker personally."
+    todo("Return whether it was already associated with the worker?")
+    shared formal void addEquipment(Implement item);
+
+    "Remove an item of equipment from this worker."
+    todo("Make this return the actual item that was removed?")
+    shared formal void removeEquipment(Implement item);
 }

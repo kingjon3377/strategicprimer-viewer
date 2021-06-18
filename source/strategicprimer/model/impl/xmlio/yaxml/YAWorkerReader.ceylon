@@ -15,6 +15,7 @@ import strategicprimer.model.common.map {
     IPlayerCollection
 }
 import strategicprimer.model.common.map.fixtures.mobile {
+    Animal,
     IWorker,
     Worker
 }
@@ -73,10 +74,14 @@ class YAWorkerReader extends YAAbstractReader<IWorker> {
 
     Warning warner;
     IPlayerCollection players;
+    YAMobileReader mobileReader;
+    YAImplementReader implementReader;
     shared new (Warning warning, IDRegistrar idRegistrar, IPlayerCollection players)
             extends YAAbstractReader<IWorker>(warning, idRegistrar) {
         warner = warning;
         this.players = players;
+        mobileReader = YAMobileReader(warner, idRegistrar);
+        implementReader = YAImplementReader(warner, idRegistrar);
     }
 
     WorkerStats parseStats(StartElement element, QName parent,
@@ -166,9 +171,17 @@ class YAWorkerReader extends YAAbstractReader<IWorker> {
                 } else if ("note" == event.name.localPart.lowercased) {
                     retval.notes.put(players.getPlayer(getIntegerParameter(event, "player")),
                         readNote(event, element.name,stream));
+                } else if ("animal" == event.name.localPart.lowercased, !retval.mount exists) {
+                    if (is Animal animal = mobileReader.read(event, element.name, stream)) {
+                        retval.mount = animal;
+                    } else {
+                        throw UnwantedChildException(event.name, element);
+                    }
+                } else if ("implement" == event.name.localPart.lowercased) {
+                    retval.addEquipment(implementReader.read(event, element.name, stream));
                 } else {
                     throw UnwantedChildException.listingExpectedTags(element.name, event,
-                        ["job", "stats"]);
+                        ["job", "stats", "note", "animal", "implement"]);
                 }
             } else if (isMatchingEnd(element.name, event)) {
                 break;
@@ -187,9 +200,15 @@ class YAWorkerReader extends YAAbstractReader<IWorker> {
         writeProperty(ostream, "id", obj.id);
         writeImageXML(ostream, obj);
         writeNonemptyProperty(ostream, "portrait", obj.portrait);
-        if (!obj.empty || obj.stats exists || !obj.notesPlayers.empty) {
+        if (!obj.empty || obj.stats exists || !obj.notesPlayers.empty || obj.mount exists || !obj.equipment.empty) {
             finishParentTag(ostream);
             writeStats(ostream, obj.stats, indent + 1);
+            if (exists mount = obj.mount) {
+                mobileReader.write(ostream, mount, indent + 1);
+            }
+            for (item in obj.equipment) {
+                implementReader.write(ostream, item, indent + 1);
+            }
             for (job in obj) {
                 writeJob(ostream, job, indent + 1);
             }
