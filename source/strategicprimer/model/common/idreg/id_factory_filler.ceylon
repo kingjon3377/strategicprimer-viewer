@@ -6,6 +6,10 @@ import strategicprimer.model.common.map.fixtures.towns {
     ITownFixture
 }
 
+import strategicprimer.model.common.map.fixtures.mobile {
+    IWorker
+}
+
 "Fill a new ID factory from the given map."
 shared IDRegistrar createIDFactory(IMapNG|{IMapNG*}|{IFixture*} arg) {
     IDRegistrar retval = IDFactory();
@@ -35,6 +39,12 @@ void recursiveRegister(IDRegistrar factory, IMapNG|{IMapNG*}|{IFixture*} arg) {
             if (is ITownFixture fixture, exists population = fixture.population) {
                 recursiveRegister(factory, population.yearlyProduction);
                 recursiveRegister(factory, population.yearlyConsumption);
+            }
+            if (is IWorker fixture) {
+                if (exists mount = fixture.mount) {
+                    recursiveRegister(factory, Singleton(mount));
+                }
+                recursiveRegister(factory, fixture.equipment);
             }
         }
     }
