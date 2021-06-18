@@ -129,6 +129,7 @@ import lovelace.util.common {
 
 "Tests of the SQLite database I/O functionality."
 todo("All tests should be more robust, as if developed test-first")
+// TODO: Figure out a way to share tests with the XML serialization tests
 object dbio_tests {
     SQLiteDataSource source = SQLiteDataSource();
     source.url = "jdbc:sqlite:file::memory:";

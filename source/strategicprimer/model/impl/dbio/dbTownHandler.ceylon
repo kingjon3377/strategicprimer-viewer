@@ -9,6 +9,7 @@ import java.sql {
 
 import strategicprimer.model.common.map {
     IMutableMapNG,
+    IFixture,
     Player,
     Point
 }
@@ -24,6 +25,14 @@ import strategicprimer.model.common.map.fixtures.towns {
 }
 import strategicprimer.model.common.xmlio {
     Warning
+}
+
+import ceylon.collection {
+    MutableMap
+}
+
+import com.vasileff.ceylon.structures {
+    MutableMultimap
 }
 
 object dbTownHandler extends AbstractDatabaseWriter<AbstractTown, Point>()
@@ -61,7 +70,8 @@ object dbTownHandler extends AbstractDatabaseWriter<AbstractTown, Point>()
         }
     }
 
-    void readTown(IMutableMapNG map)(Map<String, Object> dbRow, Warning warner) {
+    void readTown(IMutableMapNG map, MutableMap<Integer, IFixture> containers,
+            MutableMultimap<Integer, Object> containees)(Map<String, Object> dbRow, Warning warner) {
         assert (is Integer row = dbRow["row"], is Integer column = dbRow["column"],
             is Integer id = dbRow["id"], is String kind = dbRow["kind"],
             is String statusString = dbRow["status"],
@@ -94,12 +104,17 @@ object dbTownHandler extends AbstractDatabaseWriter<AbstractTown, Point>()
             town.portrait = portrait;
         }
         if (is Integer population) {
-            town.population = CommunityStats(population);
+            // Don't add it directly because it's also read in the
+            // CommunityStats handler, which needs to get it out of the
+            // containees to avoid conflicts.
+            containees.put(id, CommunityStats(population));
         }
         map.addFixture(Point(row, column), town);
+        containers.put(id, town);
     }
 
-    shared actual void readMapContents(Sql db, IMutableMapNG map, Warning warner) =>
-            handleQueryResults(db, warner, "towns", readTown(map),
-                """SELECT * FROM towns""");
+    shared actual void readMapContents(Sql db, IMutableMapNG map, MutableMap<Integer, IFixture> containers,
+            MutableMultimap<Integer, Object> containees, Warning warner) =>
+                handleQueryResults(db, warner, "towns", readTown(map, containers, containees),
+                    """SELECT * FROM towns""");
 }

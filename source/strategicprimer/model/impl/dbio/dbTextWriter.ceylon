@@ -9,6 +9,7 @@ import java.sql {
 
 import strategicprimer.model.common.map {
     Point,
+    IFixture,
     IMutableMapNG
 }
 
@@ -21,6 +22,14 @@ import strategicprimer.model.common.xmlio {
 
 import lovelace.util.common {
     as
+}
+
+import ceylon.collection {
+    MutableMap
+}
+
+import com.vasileff.ceylon.structures {
+    MutableMultimap
 }
 
 object dbTextHandler extends AbstractDatabaseWriter<TextFixture, Point>()
@@ -58,7 +67,8 @@ object dbTextHandler extends AbstractDatabaseWriter<TextFixture, Point>()
         map.addFixture(Point(row, column), fixture);
     }
 
-    shared actual void readMapContents(Sql db, IMutableMapNG map, Warning warner) =>
-            handleQueryResults(db, warner, "text notes", readTextNote(map),
-                """SELECT * FROM text_notes""");
+    shared actual void readMapContents(Sql db, IMutableMapNG map, MutableMap<Integer, IFixture> containers,
+            MutableMultimap<Integer, Object> containees, Warning warner) =>
+                handleQueryResults(db, warner, "text notes", readTextNote(map),
+                    """SELECT * FROM text_notes""");
 }

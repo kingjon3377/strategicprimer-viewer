@@ -10,10 +10,12 @@ import strategicprimer.model.common.xmlio {
     Warning
 }
 
+deprecated("I think this is now unused")
 object dbMemoizer {
     MutableMap<[IMapNG, Integer], IFixture> cache =
             HashMap<[IMapNG, Integer], IFixture>();
 
+    deprecated("I think this is now unused")
     shared IFixture findById(IMapNG map, Integer id, MapContentsReader context,
             Warning warner) {
         if (exists retval = cache[[map, id]]) {

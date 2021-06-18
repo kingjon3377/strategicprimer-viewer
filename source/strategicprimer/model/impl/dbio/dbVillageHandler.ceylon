@@ -9,6 +9,7 @@ import java.sql {
 
 import strategicprimer.model.common.map {
     Point,
+    IFixture,
     IMutableMapNG
 }
 
@@ -19,6 +20,14 @@ import strategicprimer.model.common.map.fixtures.towns {
 }
 import strategicprimer.model.common.xmlio {
     Warning
+}
+
+import ceylon.collection {
+    MutableMap
+}
+
+import com.vasileff.ceylon.structures {
+    MutableMultimap
 }
 
 object dbVillageHandler extends AbstractDatabaseWriter<Village, Point>()
@@ -52,7 +61,8 @@ object dbVillageHandler extends AbstractDatabaseWriter<Village, Point>()
         }
     }
 
-    void readVillage(IMutableMapNG map)(Map<String, Object> dbRow, Warning warner) {
+    void readVillage(IMutableMapNG map,
+            MutableMap<Integer, IFixture> containers)(Map<String, Object> dbRow, Warning warner) {
         assert (is Integer row = dbRow["row"], is Integer column = dbRow["column"],
             is String statusString = dbRow["status"],
             is TownStatus status = TownStatus.parse(statusString),
@@ -72,9 +82,11 @@ object dbVillageHandler extends AbstractDatabaseWriter<Village, Point>()
             village.population = CommunityStats(population);
         }
         map.addFixture(Point(row, column), village);
+        containers.put(id, village);
     }
 
-    shared actual void readMapContents(Sql db, IMutableMapNG map, Warning warner) =>
-            handleQueryResults(db, warner, "villages", readVillage(map),
-                """SELECT * from villages""");
+    shared actual void readMapContents(Sql db, IMutableMapNG map, MutableMap<Integer, IFixture> containers,
+            MutableMultimap<Integer, Object> containees, Warning warner) =>
+                handleQueryResults(db, warner, "villages", readVillage(map, containers),
+                    """SELECT * from villages""");
 }

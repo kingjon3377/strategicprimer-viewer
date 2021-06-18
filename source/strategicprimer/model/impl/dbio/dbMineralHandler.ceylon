@@ -5,6 +5,7 @@ import ceylon.dbc {
 
 import strategicprimer.model.common.map {
     Point,
+    IFixture,
     IMutableMapNG
 }
 
@@ -15,6 +16,14 @@ import strategicprimer.model.common.map.fixtures.resources {
 }
 import strategicprimer.model.common.xmlio {
     Warning
+}
+
+import ceylon.collection {
+    MutableMap
+}
+
+import com.vasileff.ceylon.structures {
+    MutableMultimap
 }
 
 object dbMineralHandler extends AbstractDatabaseWriter<MineralVein|StoneDeposit, Point>()
@@ -75,7 +84,8 @@ object dbMineralHandler extends AbstractDatabaseWriter<MineralVein|StoneDeposit,
         map.addFixture(Point(row, column), stone);
     }
 
-    shared actual void readMapContents(Sql db, IMutableMapNG map, Warning warner) {
+    shared actual void readMapContents(Sql db, IMutableMapNG map, MutableMap<Integer, IFixture> containers,
+            MutableMultimap<Integer, Object> containees, Warning warner) {
         handleQueryResults(db, warner, "stone deposits", readStoneDeposit(map),
             """SELECT row, column, id, kind, dc, image FROM minerals
                WHERE type = 'stone'""");

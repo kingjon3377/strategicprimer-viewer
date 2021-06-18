@@ -7,6 +7,7 @@ import ceylon.decimal {
 }
 
 import strategicprimer.model.common.map {
+    IFixture,
     IMutableMapNG
 }
 import strategicprimer.model.common.map.fixtures {
@@ -15,15 +16,21 @@ import strategicprimer.model.common.map.fixtures {
     Quantity
 }
 import strategicprimer.model.common.map.fixtures.mobile {
-    IMutableUnit,
     IUnit
 }
 import strategicprimer.model.common.map.fixtures.towns {
-    IFortress,
-    IMutableFortress
+    IFortress
 }
 import strategicprimer.model.common.xmlio {
     Warning
+}
+
+import ceylon.collection {
+    MutableMap
+}
+
+import com.vasileff.ceylon.structures {
+    MutableMultimap
 }
 
 object dbResourcePileHandler
@@ -51,11 +58,10 @@ object dbResourcePileHandler
                         obj.quantity.number.string, obj.quantity.units, obj.created,
                         obj.image);
 
-    shared actual void readMapContents(Sql db, IMutableMapNG map, Warning warner) {}
-
-    void readResourcePile(IMutableMapNG map)(Map<String, Object> row, Warning warner) {
+    void readResourcePile(IMutableMapNG map,
+            MutableMultimap<Integer, Object> containees)(Map<String, Object> row,
+            Warning warner) {
         assert (is Integer parentId = row["parent"],
-            is IMutableUnit|IMutableFortress parent = findById(map, parentId, warner),
             is Integer id = row["id"], is String kind = row["kind"],
             is String contents = row["contents"],
             is String qtyString = row["quantity"], is String units = row ["units"],
@@ -75,14 +81,11 @@ object dbResourcePileHandler
         if (is Integer created) {
             pile.created = created;
         }
-        if (is IMutableUnit parent) {
-            parent.addMember(pile);
-        } else {
-            parent.addMember(pile);
-        }
+        containees.put(parentId, pile);
     }
 
-    shared actual void readExtraMapContents(Sql db, IMutableMapNG map, Warning warner) =>
-            handleQueryResults(db, warner, "resource piles", readResourcePile(map),
+    shared actual void readMapContents(Sql db, IMutableMapNG map, MutableMap<Integer, IFixture> containers,
+                MutableMultimap<Integer, Object> containees, Warning warner) =>
+            handleQueryResults(db, warner, "resource piles", readResourcePile(map, containees),
                 """SELECT * FROM resource_piles""");
 }

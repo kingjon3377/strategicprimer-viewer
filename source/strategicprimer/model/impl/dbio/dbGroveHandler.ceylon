@@ -5,6 +5,7 @@ import ceylon.dbc {
 
 import strategicprimer.model.common.map {
     Point,
+    IFixture,
     IMutableMapNG
 }
 import strategicprimer.model.common.map.fixtures.resources {
@@ -12,6 +13,14 @@ import strategicprimer.model.common.map.fixtures.resources {
 }
 import strategicprimer.model.common.xmlio {
     Warning
+}
+
+import ceylon.collection {
+    MutableMap
+}
+
+import com.vasileff.ceylon.structures {
+    MutableMultimap
 }
 
 object dbGroveHandler extends AbstractDatabaseWriter<Grove, Point>()
@@ -62,7 +71,8 @@ object dbGroveHandler extends AbstractDatabaseWriter<Grove, Point>()
         map.addFixture(Point(row, column), grove);
     }
 
-    shared actual void readMapContents(Sql db, IMutableMapNG map, Warning warner) =>
-            handleQueryResults(db, warner, "groves", readGrove(map),
-                """SELECT * FROM groves""");
+    shared actual void readMapContents(Sql db, IMutableMapNG map, MutableMap<Integer, IFixture> containers,
+            MutableMultimap<Integer, Object> containees, Warning warner) =>
+                handleQueryResults(db, warner, "groves", readGrove(map),
+                    """SELECT * FROM groves""");
 }

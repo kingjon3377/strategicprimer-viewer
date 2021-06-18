@@ -15,11 +15,11 @@ import strategicprimer.model.common.idreg {
     DuplicateIDException
 }
 import strategicprimer.model.common.map {
+    IFixture,
     IMapNG,
     IMutableMapNG
 }
 import strategicprimer.model.common.map.fixtures.mobile {
-    IMutableUnit,
     IUnit,
     IWorker,
     Worker
@@ -32,6 +32,10 @@ import strategicprimer.model.common.map.fixtures.mobile.worker {
 }
 import strategicprimer.model.common.xmlio {
     Warning
+}
+
+import com.vasileff.ceylon.structures {
+    MutableMultimap
 }
 
 object dbWorkerHandler extends AbstractDatabaseWriter<IWorker, IUnit>()
@@ -71,7 +75,8 @@ object dbWorkerHandler extends AbstractDatabaseWriter<IWorker, IUnit>()
                skill VARCHAR(32) NOT NULL,
                level INTEGER NOT NULL check(level >= 0),
                hours INTEGER NOT NULL check(hours >= 0)
-           );"""
+           );""",
+           *dbAnimalHandler.initializers.chain(dbImplementHandler.initializers)
     ];
 
     shared actual void write(Sql db, IWorker obj, IUnit context) {
@@ -107,12 +112,9 @@ object dbWorkerHandler extends AbstractDatabaseWriter<IWorker, IUnit>()
         });
     }
 
-    shared actual void readMapContents(Sql db, IMutableMapNG map, Warning warner) {}
-
-    void readWorkerStats(IMutableMapNG map, MutableMap<Integer, Worker> workers)(
-            Map<String, Object> row, Warning warner) {
+    void readWorkerStats(IMutableMapNG map, MutableMap<Integer, Worker> workers,
+            MutableMultimap<Integer, Object> containees)(Map<String, Object> row, Warning warner) {
         assert (is Integer unitId = row["unit"],
-            is IMutableUnit unit = super.findById(map, unitId, warner),
             is Integer id = row["id"], is String name = row["name"],
             is String race = row["race"], is String|SqlNull image = row["image"],
             is String|SqlNull portrait = row["portrait"],
@@ -136,7 +138,7 @@ object dbWorkerHandler extends AbstractDatabaseWriter<IWorker, IUnit>()
             warner.handle(DuplicateIDException(id));
         }
         workers[id] = worker;
-        unit.addMember(worker);
+        containees.put(unitId, worker);
     }
 
     void readJobLevel(IMutableMapNG map, Map<Integer, Worker> workers)(
@@ -162,9 +164,10 @@ object dbWorkerHandler extends AbstractDatabaseWriter<IWorker, IUnit>()
         }
     }
 
-    shared actual void readExtraMapContents(Sql db, IMutableMapNG map, Warning warner) {
+    shared actual void readMapContents(Sql db, IMutableMapNG map, MutableMap<Integer, IFixture> containers,
+            MutableMultimap<Integer, Object> containees, Warning warner) {
         MutableMap<Integer, Worker> workers = HashMap<Integer, Worker>();
-        handleQueryResults(db, warner, "worker stats", readWorkerStats(map, workers),
+        handleQueryResults(db, warner, "worker stats", readWorkerStats(map, workers, containees),
             """SELECT * FROM workers""");
         handleQueryResults(db, warner, "Job levels", readJobLevel(map, workers),
             """SELECT * FROM worker_job_levels""");
@@ -172,5 +175,6 @@ object dbWorkerHandler extends AbstractDatabaseWriter<IWorker, IUnit>()
             """SELECT * FROM worker_skill_levels""");
         handleQueryResults(db, warner, "Worker notes", readWorkerNotes(map, workers),
             """SELECT * FROM notes""");
+        containers.putAll(workers);
     }
 }

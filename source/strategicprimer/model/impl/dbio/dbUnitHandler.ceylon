@@ -8,6 +8,7 @@ import java.sql {
 }
 
 import strategicprimer.model.common.map {
+    IFixture,
     IMutableMapNG,
     Point
 }
@@ -17,8 +18,7 @@ import strategicprimer.model.common.map.fixtures.mobile {
     Unit
 }
 import strategicprimer.model.common.map.fixtures.towns {
-    IFortress,
-    IMutableFortress
+    IFortress
 }
 import strategicprimer.model.common.xmlio {
     Warning
@@ -26,6 +26,14 @@ import strategicprimer.model.common.xmlio {
 
 import lovelace.util.common {
     as
+}
+
+import ceylon.collection {
+    MutableMap
+}
+
+import com.vasileff.ceylon.structures {
+    MutableMultimap
 }
 
 object dbUnitHandler extends AbstractDatabaseWriter<IUnit, Point|IFortress>()
@@ -98,7 +106,9 @@ object dbUnitHandler extends AbstractDatabaseWriter<IUnit, Point|IFortress>()
         unit.setResults(as<Integer>(turn) else -1, results);
     }
 
-    void readUnit(IMutableMapNG map, Sql db)(Map<String, Object> dbRow, Warning warner) {
+    void readUnit(IMutableMapNG map, Sql db, MutableMap<Integer, IFixture> containers,
+            MutableMultimap<Integer, Object> containees)(Map<String, Object> dbRow,
+            Warning warner) {
         assert (is Integer ownerNum = dbRow["owner"], is String kind = dbRow["kind"],
             is String name = dbRow["name"], is Integer id = dbRow["id"],
             is String|SqlNull image = dbRow["image"],
@@ -117,19 +127,15 @@ object dbUnitHandler extends AbstractDatabaseWriter<IUnit, Point|IFortress>()
         if (is Integer row = dbRow["row"], is Integer column = dbRow["column"]) {
             map.addFixture(Point(row, column), unit);
         } else {
-            assert (is Integer parentNum = dbRow["parent"],
-                is IMutableFortress parent = super.findById(map, parentNum, warner));
-            parent.addMember(unit);
+            assert (is Integer parentNum = dbRow["parent"]);
+            containees.put(parentNum, unit);
         }
+        containers.put(id, unit);
     }
 
-    shared actual void readMapContents(Sql db, IMutableMapNG map, Warning warner) =>
-            handleQueryResults(db, warner, "units outside fortresses",
-                readUnit(map, db),
-                """SELECT * FROM units WHERE row IS NOT NULL""");
-
-    shared actual void readExtraMapContents(Sql db, IMutableMapNG map, Warning warner) =>
-            handleQueryResults(db, warner, "units in fortresses",
-                readUnit(map, db),
-                """SELECT * FROM units WHERE parent IS NOT NULL""");
+    shared actual void readMapContents(Sql db, IMutableMapNG map, MutableMap<Integer, IFixture> containers,
+            MutableMultimap<Integer, Object> containees, Warning warner) =>
+                handleQueryResults(db, warner, "units",
+                    readUnit(map, db, containers, containees),
+                    """SELECT * FROM units""");
 }

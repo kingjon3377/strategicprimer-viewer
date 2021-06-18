@@ -9,6 +9,7 @@ import ceylon.decimal {
 
 import strategicprimer.model.common.map {
     Point,
+    IFixture,
     IMutableMapNG
 }
 import strategicprimer.model.common.map.fixtures.terrain {
@@ -16,6 +17,14 @@ import strategicprimer.model.common.map.fixtures.terrain {
 }
 import strategicprimer.model.common.xmlio {
     Warning
+}
+
+import ceylon.collection {
+    MutableMap
+}
+
+import com.vasileff.ceylon.structures {
+    MutableMultimap
 }
 
 object dbForestHandler extends AbstractDatabaseWriter<Forest, Point>()
@@ -59,7 +68,8 @@ object dbForestHandler extends AbstractDatabaseWriter<Forest, Point>()
         map.addFixture(Point(row, column), forest);
     }
 
-    shared actual void readMapContents(Sql db, IMutableMapNG map, Warning warner) =>
-            handleQueryResults(db, warner, "forests", readForest(map),
-                """SELECT * FROM forests""");
+    shared actual void readMapContents(Sql db, IMutableMapNG map, MutableMap<Integer, IFixture> containers,
+            MutableMultimap<Integer, Object> containees, Warning warner) =>
+                handleQueryResults(db, warner, "forests", readForest(map),
+                    """SELECT * FROM forests""");
 }

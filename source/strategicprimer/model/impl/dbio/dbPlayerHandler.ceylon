@@ -4,6 +4,7 @@ import ceylon.dbc {
 }
 
 import strategicprimer.model.common.map {
+    IFixture,
     IMapNG,
     IMutableMapNG,
     Player,
@@ -19,6 +20,14 @@ import java.sql {
 }
 import lovelace.util.common {
     as
+}
+
+import ceylon.collection {
+    MutableMap
+}
+
+import com.vasileff.ceylon.structures {
+    MutableMultimap
 }
 
 object dbPlayerHandler extends AbstractDatabaseWriter<Player, IMapNG>()
@@ -63,7 +72,8 @@ object dbPlayerHandler extends AbstractDatabaseWriter<Player, IMapNG>()
         map.addPlayer(player);
     }
 
-    shared actual void readMapContents(Sql db, IMutableMapNG map, Warning warner) =>
-            handleQueryResults(db, warner, "players", readPlayer(map),
-                """SELECT * FROM players""");
+    shared actual void readMapContents(Sql db, IMutableMapNG map, MutableMap<Integer, IFixture> containers,
+            MutableMultimap<Integer, Object> containees, Warning warner) =>
+                handleQueryResults(db, warner, "players", readPlayer(map),
+                    """SELECT * FROM players""");
 }

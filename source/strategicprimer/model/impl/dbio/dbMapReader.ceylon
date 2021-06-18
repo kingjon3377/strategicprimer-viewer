@@ -13,6 +13,7 @@ import strategicprimer.model.common.map {
     PlayerImpl,
     MutablePlayer,
     Point,
+    IFixture,
     TileType,
     River,
     IMutablePlayerCollection,
@@ -24,6 +25,34 @@ import strategicprimer.model.common.xmlio {
 }
 import strategicprimer.model.impl.xmlio.exceptions {
     MapVersionException
+}
+
+import ceylon.collection {
+    HashMap,
+    MutableMap
+}
+
+import com.vasileff.ceylon.structures {
+    HashMultimap,
+    MutableMultimap
+}
+
+import strategicprimer.model.common.map.fixtures.towns {
+    AbstractTown,
+    CommunityStats,
+    IMutableFortress,
+    Village
+}
+
+import strategicprimer.model.common.map.fixtures.mobile {
+    Animal,
+    IMutableUnit
+}
+
+import strategicprimer.model.common.map.fixtures {
+    FortressMember,
+    Implement,
+    UnitMember
 }
 
 object dbMapReader {
@@ -127,9 +156,13 @@ object dbMapReader {
                 is Integer playerNum = dbRow["player"]);
             retval.addBookmark(Point(row, column), players.getPlayer(playerNum));
         }
+        MutableMap<Integer, IFixture> containers = HashMap<Integer, IFixture>();
+        MutableMultimap<Integer, Object> containees =
+            HashMultimap<Integer, Object>();
+
         for (reader in readers) {
             try {
-                reader.readMapContents(db, retval, warner);
+                reader.readMapContents(db, retval, containers, containees, warner);
             } catch (SQLException exception) {
                 if (exception.message.contains("no such table")) {
                     continue;
@@ -138,18 +171,28 @@ object dbMapReader {
                 }
             }
         }
-        for (reader in readers) {
-            try {
-                reader.readExtraMapContents(db, retval, warner);
-            } catch (SQLException exception) {
-                if (exception.message.contains("no such table")) {
-                    continue;
-                } else {
-                    throw exception;
-                }
+
+        log.trace("Finished reading the map except adding members to parents");
+
+        for (parentId->member in containees) {
+            assert (is IMutableFortress|IMutableUnit|AbstractTown|Village parent = containers[parentId]);
+            if (is IMutableFortress parent) {
+                assert (is FortressMember member);
+                parent.addMember(member);
+            } else if (is IMutableUnit parent) {
+                assert (is UnitMember member);
+                parent.addMember(member);
+            } else if (is AbstractTown parent) {
+                assert (is CommunityStats member, !parent.population exists);
+                parent.population = member;
+            } else if (is Village parent) {
+                assert (is CommunityStats member, !parent.population exists);
+                parent.population = member;
+            } else {
+                assert(false);
             }
         }
-        log.trace("Finished reading the map");
+        log.trace("Finished adding members to parents");
         return retval;
     }
 }

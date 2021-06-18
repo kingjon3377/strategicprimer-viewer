@@ -5,6 +5,7 @@ import ceylon.dbc {
 
 import strategicprimer.model.common.map {
     Point,
+    IFixture,
     IMutableMapNG
 }
 import strategicprimer.model.common.map.fixtures.explorable {
@@ -13,6 +14,14 @@ import strategicprimer.model.common.map.fixtures.explorable {
 }
 import strategicprimer.model.common.xmlio {
     Warning
+}
+
+import ceylon.collection {
+    MutableMap
+}
+
+import com.vasileff.ceylon.structures {
+    MutableMultimap
 }
 
 object dbExplorableHandler extends AbstractDatabaseWriter<Cave|Battlefield, Point>()
@@ -70,7 +79,8 @@ object dbExplorableHandler extends AbstractDatabaseWriter<Cave|Battlefield, Poin
         map.addFixture(Point(row, column), battlefield);
     }
 
-    shared actual void readMapContents(Sql db, IMutableMapNG map, Warning warner) {
+    shared actual void readMapContents(Sql db, IMutableMapNG map, MutableMap<Integer, IFixture> containers,
+            MutableMultimap<Integer, Object> containees, Warning warner) {
         handleQueryResults(db, warner, "caves", readCave(map),
             """SELECT * FROM caves""");
         handleQueryResults(db, warner, "battlefields", readBattlefield(map),

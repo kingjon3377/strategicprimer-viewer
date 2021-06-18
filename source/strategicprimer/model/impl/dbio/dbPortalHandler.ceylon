@@ -9,6 +9,7 @@ import java.sql {
 
 import strategicprimer.model.common.map {
     Point,
+    IFixture,
     IMutableMapNG
 }
 
@@ -17,6 +18,14 @@ import strategicprimer.model.common.map.fixtures.explorable {
 }
 import strategicprimer.model.common.xmlio {
     Warning
+}
+
+import ceylon.collection {
+    MutableMap
+}
+
+import com.vasileff.ceylon.structures {
+    MutableMultimap
 }
 
 import lovelace.util.common {
@@ -71,7 +80,8 @@ object dbPortalHandler extends AbstractDatabaseWriter<Portal, Point>()
         map.addFixture(Point(row, column), portal);
     }
 
-    shared actual void readMapContents(Sql db, IMutableMapNG map, Warning warner) =>
-            handleQueryResults(db, warner, "portals", readPortal(map),
-                """SELECT * FROM portals""");
+    shared actual void readMapContents(Sql db, IMutableMapNG map, MutableMap<Integer, IFixture> containers,
+            MutableMultimap<Integer, Object> containees, Warning warner) =>
+                handleQueryResults(db, warner, "portals", readPortal(map),
+                    """SELECT * FROM portals""");
 }

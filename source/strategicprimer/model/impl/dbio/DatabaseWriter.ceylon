@@ -2,6 +2,7 @@ import ceylon.dbc {
     Sql
 }
 
+// TODO: Can we get rid of the Context parameter? Is it ever not a subtype of IFixture?
 interface DatabaseWriter<in Item, in Context>
         given Item satisfies Object given Context satisfies Object {
     "Set up the tables that this writer uses on the given connection. Should be a no-op

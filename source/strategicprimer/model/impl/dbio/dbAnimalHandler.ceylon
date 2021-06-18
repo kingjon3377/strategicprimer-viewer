@@ -9,10 +9,10 @@ import java.sql {
 
 import strategicprimer.model.common.map {
     Point,
+    IFixture,
     IMutableMapNG
 }
 import strategicprimer.model.common.map.fixtures.mobile {
-    IMutableUnit,
     IUnit,
     Animal,
     maturityModel,
@@ -25,6 +25,14 @@ import strategicprimer.model.common.xmlio {
 
 import lovelace.util.common {
     as
+}
+
+import ceylon.collection {
+    MutableMap
+}
+
+import com.vasileff.ceylon.structures {
+    MutableMultimap
 }
 
 object dbAnimalHandler extends AbstractDatabaseWriter<Animal|AnimalTracks, Point|IUnit>()
@@ -88,7 +96,8 @@ object dbAnimalHandler extends AbstractDatabaseWriter<Animal|AnimalTracks, Point
         }
     }
 
-    void readAnimal(IMutableMapNG map)(Map<String, Object> dbRow, Warning warner) {
+    void readAnimal(IMutableMapNG map,
+            MutableMultimap<Integer, Object> containees)(Map<String, Object> dbRow, Warning warner) {
         assert (is String kind = dbRow["kind"],
             is Boolean talking = dbMapReader.databaseBoolean(dbRow["talking"]),
             is String status = dbRow["status"], is Integer|SqlNull born = dbRow["born"],
@@ -102,9 +111,8 @@ object dbAnimalHandler extends AbstractDatabaseWriter<Animal|AnimalTracks, Point
         if (is Integer row = dbRow["row"], is Integer column = dbRow["column"]) {
             map.addFixture(Point(row, column), animal);
         } else {
-            assert (is Integer parentId = dbRow["parent"],
-                is IMutableUnit parent = findById(map, parentId, warner));
-            parent.addMember(animal);
+            assert (is Integer parentId = dbRow["parent"]);
+            containees.put(parentId, animal);
         }
     }
 
@@ -118,14 +126,11 @@ object dbAnimalHandler extends AbstractDatabaseWriter<Animal|AnimalTracks, Point
         map.addFixture(Point(row, column), track);
     }
 
-    shared actual void readMapContents(Sql db, IMutableMapNG map, Warning warner) {
-        handleQueryResults(db, warner, "animal populations", readAnimal(map),
-            """SELECT * FROM animals WHERE row IS NOT NULL""");
+    shared actual void readMapContents(Sql db, IMutableMapNG map, MutableMap<Integer, IFixture> containers,
+            MutableMultimap<Integer, Object> containees, Warning warner) {
+        handleQueryResults(db, warner, "animal populations", readAnimal(map, containees),
+            """SELECT * FROM animals""");
         handleQueryResults(db, warner, "animal tracks", readTracks(map),
             """SELECT * FROM tracks""");
     }
-
-    shared actual void readExtraMapContents(Sql db, IMutableMapNG map, Warning warner) =>
-            handleQueryResults(db, warner, "animals in units", readAnimal(map),
-                """SELECT * FROM animals WHERE parent IS NOT NULL""");
 }

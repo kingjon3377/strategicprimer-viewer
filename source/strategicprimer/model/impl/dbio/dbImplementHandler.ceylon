@@ -4,21 +4,28 @@ import ceylon.dbc {
 }
 
 import strategicprimer.model.common.map {
+    IFixture,
     IMutableMapNG
 }
 import strategicprimer.model.common.map.fixtures {
     Implement
 }
 import strategicprimer.model.common.map.fixtures.mobile {
-    IMutableUnit,
     IUnit
 }
 import strategicprimer.model.common.map.fixtures.towns {
-    IFortress,
-    IMutableFortress
+    IFortress
 }
 import strategicprimer.model.common.xmlio {
     Warning
+}
+
+import ceylon.collection {
+    MutableMap
+}
+
+import com.vasileff.ceylon.structures {
+    MutableMultimap
 }
 
 object dbImplementHandler extends AbstractDatabaseWriter<Implement, IUnit|IFortress>()
@@ -39,25 +46,21 @@ object dbImplementHandler extends AbstractDatabaseWriter<Implement, IUnit|IFortr
                 .execute(context.id, obj.id, obj.kind, obj.count, obj.image);
     }
 
-    shared actual void readMapContents(Sql db, IMutableMapNG map, Warning warner) {}
-
-    void readImplement(IMutableMapNG map)(Map<String, Object> row, Warning warner) {
+    void readImplement(IMutableMapNG map,
+            MutableMultimap<Integer, Object> containees)(Map<String, Object> row,
+            Warning warner) {
         assert (is Integer parentId = row["parent"],
-            is IMutableUnit|IMutableFortress parent = findById(map, parentId, warner),
             is Integer id = row["id"], is String kind = row["kind"],
             is Integer count = row["count"], is String|SqlNull image = row["image"]);
         value implement = Implement(kind, id, count);
         if (is String image) {
             implement.image = image;
         }
-        if (is IMutableUnit parent) {
-            parent.addMember(implement);
-        } else {
-            parent.addMember(implement);
-        }
+        containees.put(parentId, implement);
     }
 
-    shared actual void readExtraMapContents(Sql db, IMutableMapNG map, Warning warner) =>
-            handleQueryResults(db, warner, "pieces of equipment",
-                readImplement(map), """SELECT * FROM implements""");
+    shared actual void readMapContents(Sql db, IMutableMapNG map, MutableMap<Integer, IFixture> containers,
+            MutableMultimap<Integer, Object> containees, Warning warner) =>
+                handleQueryResults(db, warner, "pieces of equipment",
+                    readImplement(map, containees), """SELECT * FROM implements""");
 }

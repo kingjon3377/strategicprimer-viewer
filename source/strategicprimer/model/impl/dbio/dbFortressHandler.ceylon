@@ -5,6 +5,7 @@ import ceylon.dbc {
 
 import strategicprimer.model.common.map {
     Point,
+    IFixture,
     IMutableMapNG
 }
 import strategicprimer.model.common.map.fixtures.towns {
@@ -14,6 +15,14 @@ import strategicprimer.model.common.map.fixtures.towns {
 }
 import strategicprimer.model.common.xmlio {
     Warning
+}
+
+import ceylon.collection {
+    MutableMap
+}
+
+import com.vasileff.ceylon.structures {
+    MutableMultimap
 }
 
 object dbFortressHandler extends AbstractDatabaseWriter<IFortress, Point>()
@@ -43,7 +52,9 @@ object dbFortressHandler extends AbstractDatabaseWriter<IFortress, Point>()
         }
     }
 
-    void readFortress(IMutableMapNG map)(Map<String, Object> dbRow, Warning warner) {
+    void readFortress(IMutableMapNG map,
+            MutableMap<Integer, IFixture> containers)(Map<String, Object> dbRow,
+            Warning warner) {
         assert (is Integer row = dbRow["row"], is Integer column = dbRow["column"],
             is Integer ownerId = dbRow["owner"], is String name = dbRow["name"],
             is String sizeString = dbRow["size"],
@@ -58,9 +69,11 @@ object dbFortressHandler extends AbstractDatabaseWriter<IFortress, Point>()
             fortress.portrait = portrait;
         }
         map.addFixture(Point(row, column), fortress);
+        containers.put(id, fortress);
     }
 
-    shared actual void readMapContents(Sql db, IMutableMapNG map, Warning warner) =>
-            handleQueryResults(db, warner, "fortresses", readFortress(map),
-                """SELECT * FROM fortresses""");
+    shared actual void readMapContents(Sql db, IMutableMapNG map, MutableMap<Integer, IFixture> containers,
+            MutableMultimap<Integer, Object> containees, Warning warner) =>
+                handleQueryResults(db, warner, "fortresses", readFortress(map, containers),
+                    """SELECT * FROM fortresses""");
 }

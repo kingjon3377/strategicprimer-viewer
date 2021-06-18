@@ -5,6 +5,7 @@ import ceylon.dbc {
 
 import strategicprimer.model.common.map {
     IMutableMapNG,
+    IFixture,
     TileFixture,
     HasMutableImage,
     Point
@@ -15,6 +16,14 @@ import strategicprimer.model.common.map.fixtures.terrain {
 }
 import strategicprimer.model.common.xmlio {
     Warning
+}
+
+import ceylon.collection {
+    MutableMap
+}
+
+import com.vasileff.ceylon.structures {
+    MutableMultimap
 }
 
 object dbSimpleTerrainHandler extends AbstractDatabaseWriter<Hill|Oasis, Point>()
@@ -69,7 +78,8 @@ object dbSimpleTerrainHandler extends AbstractDatabaseWriter<Hill|Oasis, Point>(
         map.addFixture(Point(row, column), fixture);
     }
 
-    shared actual void readMapContents(Sql db, IMutableMapNG map, Warning warner) =>
-            handleQueryResults(db, warner, "simple terrain fixtures",
-                readSimpleTerrain(map), """SELECT * FROM simple_terrain""");
+    shared actual void readMapContents(Sql db, IMutableMapNG map, MutableMap<Integer, IFixture> containers,
+            MutableMultimap<Integer, Object> containees, Warning warner) =>
+                handleQueryResults(db, warner, "simple terrain fixtures",
+                    readSimpleTerrain(map), """SELECT * FROM simple_terrain""");
 }

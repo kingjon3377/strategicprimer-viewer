@@ -11,12 +11,12 @@ import java.sql {
 import strategicprimer.model.common.map {
     IMutableMapNG,
     Point,
+    IFixture,
     HasKind,
     HasMutableImage
 }
 import strategicprimer.model.common.map.fixtures.mobile {
     Immortal,
-    IMutableUnit,
     IUnit,
     SimpleImmortal,
     Centaur,
@@ -35,6 +35,14 @@ import strategicprimer.model.common.map.fixtures.mobile {
 }
 import strategicprimer.model.common.xmlio {
     Warning
+}
+
+import ceylon.collection {
+    MutableMap
+}
+
+import com.vasileff.ceylon.structures {
+    MutableMultimap
 }
 
 object dbImmortalHandler extends AbstractDatabaseWriter<Immortal, Point|IUnit>()
@@ -135,7 +143,8 @@ object dbImmortalHandler extends AbstractDatabaseWriter<Immortal, Point|IUnit>()
         }
     }
 
-    void readSimpleImmortal(IMutableMapNG map)(Map<String, Object> dbRow,
+    void readSimpleImmortal(IMutableMapNG map,
+            MutableMultimap<Integer, Object> containees)(Map<String, Object> dbRow,
             Warning warner) {
         assert (is String type = dbRow["type"], is Integer id = dbRow["id"],
             is String|SqlNull image = dbRow["image"]);
@@ -178,13 +187,13 @@ object dbImmortalHandler extends AbstractDatabaseWriter<Immortal, Point|IUnit>()
         if (is Integer row = dbRow["row"], is Integer column = dbRow["column"]) {
             map.addFixture(Point(row, column), immortal);
         } else {
-            assert (is Integer parentId = dbRow["parent"],
-                is IMutableUnit parent = findById(map, parentId, warner));
-            parent.addMember(immortal);
+            assert (is Integer parentId = dbRow["parent"]);
+            containees.put(parentId, immortal);
         }
     }
 
-    void readKindedImmortal(IMutableMapNG map)(Map<String, Object> dbRow,
+    void readKindedImmortal(IMutableMapNG map,
+            MutableMultimap<Integer, Object> containees)(Map<String, Object> dbRow,
             Warning warner) {
         assert (is String type = dbRow["type"], is String kind = dbRow["kind"],
             is Integer id = dbRow["id"], is String|SqlNull image = dbRow["image"]);
@@ -211,25 +220,16 @@ object dbImmortalHandler extends AbstractDatabaseWriter<Immortal, Point|IUnit>()
         if (is Integer row = dbRow["row"], is Integer column = dbRow["column"]) {
             map.addFixture(Point(row, column), immortal);
         } else {
-            assert (is Integer parentId = dbRow["parent"],
-                is IMutableUnit parent = findById(map, parentId, warner));
-            parent.addMember(immortal);
+            assert (is Integer parentId = dbRow["parent"]);
+            containees.put(parentId, immortal);
         }
     }
 
-    shared actual void readMapContents(Sql db, IMutableMapNG map, Warning warner) {
-        handleQueryResults(db, warner, "simple immortals", readSimpleImmortal(map),
-            """SELECT * FROM simple_immortals WHERE row IS NOT NULL""");
-        handleQueryResults(db, warner, "immortals with kinds", readKindedImmortal(map),
-            """SELECT * FROM kinded_immortals WHERE row IS NOT NULL""");
-    }
-
-    shared actual void readExtraMapContents(Sql db, IMutableMapNG map, Warning warner) {
-        handleQueryResults(db, warner, "simple immortals in units",
-            readSimpleImmortal(map),
-            """SELECT * FROM simple_immortals WHERE parent IS NOT NULL""");
-        handleQueryResults(db, warner, "immortals with kinds in units",
-            readKindedImmortal(map),
-            """SELECT * FROM kinded_immortals WHERE parent IS NOT NULL""");
+    shared actual void readMapContents(Sql db, IMutableMapNG map, MutableMap<Integer, IFixture> containers,
+            MutableMultimap<Integer, Object> containees, Warning warner) {
+        handleQueryResults(db, warner, "simple immortals", readSimpleImmortal(map, containees),
+            """SELECT * FROM simple_immortals""");
+        handleQueryResults(db, warner, "immortals with kinds", readKindedImmortal(map, containees),
+            """SELECT * FROM kinded_immortals""");
     }
 }

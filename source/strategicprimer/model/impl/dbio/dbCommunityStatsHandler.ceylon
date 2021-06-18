@@ -8,6 +8,7 @@ import ceylon.decimal {
 }
 
 import strategicprimer.model.common.map {
+    IFixture,
     IMutableMapNG
 }
 import strategicprimer.model.common.map.fixtures {
@@ -20,6 +21,14 @@ import strategicprimer.model.common.map.fixtures.towns {
 }
 import strategicprimer.model.common.xmlio {
     Warning
+}
+
+import ceylon.collection {
+    MutableMap
+}
+
+import com.vasileff.ceylon.structures {
+    MutableMultimap
 }
 
 object dbCommunityStatsHandler
@@ -91,31 +100,42 @@ object dbCommunityStatsHandler
         });
     }
 
-    shared actual void readMapContents(Sql db, IMutableMapNG map, Warning warner) {}
+    void readTownPopulations(IMutableMapNG map,
+            MutableMultimap<Integer, Object> containees)(Map<String, Object> row,
+            Warning warner) {
+        assert (is Integer id = row["id"], is Integer population = row["population"]);
+        if (containees.get(id).narrow<CommunityStats>().empty) {
+            containees.put(id, CommunityStats(population));
+        }
+    }
 
-    void readTownExpertise(IMutableMapNG map)(Map<String, Object> row, Warning warner) {
+    void readTownExpertise(IMutableMapNG map,
+            MutableMultimap<Integer, Object> containees)(Map<String, Object> row,
+            Warning warner) {
         assert (is Integer townId = row["town"],
-            is ITownFixture town = findById(map, townId, warner),
-            exists population = town.population, is String skill = row["skill"],
+            exists population = containees.get(townId).narrow<CommunityStats>().first,
+            is String skill = row["skill"],
             is Integer level = row["level"]);
         population.setSkillLevel(skill, level);
     }
 
-    void readWorkedResource(IMutableMapNG map)(Map<String, Object> row, Warning warner) {
+    void readWorkedResource(IMutableMapNG map,
+            MutableMultimap<Integer, Object> containees)(Map<String, Object> row,
+            Warning warner) {
         assert (is Integer townId = row["town"],
-            is ITownFixture town = findById(map, townId, warner),
-            exists population = town.population, is Integer resource = row["resource"]);
+            exists population = containees.get(townId).narrow<CommunityStats>().first,
+            is Integer resource = row["resource"]);
         population.addWorkedField(resource);
     }
 
-    void readProducedResource(IMutableMapNG map)(Map<String, Object> row,
+    void readProducedResource(IMutableMapNG map,
+            MutableMultimap<Integer, Object> containees)(Map<String, Object> row,
             Warning warner) {
         assert (is Integer townId = row["town"],
-            is ITownFixture town = findById(map, townId, warner),
-            exists population = town.population, is Integer id = row["id"],
-            is String kind = row["kind"], is String contents = row["contents"],
-            is String qtyString = row["quantity"], is String units = row["units"],
-            is Integer|SqlNull created = row["created"]);
+            exists population = containees.get(townId).narrow<CommunityStats>().first,
+            is Integer id = row["id"], is String kind = row["kind"],
+            is String contents = row["contents"], is String qtyString = row["quantity"],
+            is String units = row["units"], is Integer|SqlNull created = row["created"]);
         Number<out Anything> quantity;
         if (is Integer num = Integer.parse(qtyString)) {
             quantity = num;
@@ -130,14 +150,14 @@ object dbCommunityStatsHandler
         population.yearlyProduction.add(pile);
     }
 
-    void readConsumedResource(IMutableMapNG map)(Map<String, Object> row,
+    void readConsumedResource(IMutableMapNG map,
+            MutableMultimap<Integer, Object> containees)(Map<String, Object> row,
             Warning warner) {
         assert (is Integer townId = row["town"],
-            is ITownFixture town = findById(map, townId, warner),
-            exists population = town.population, is Integer id = row["id"],
-            is String kind = row["kind"], is String contents = row["contents"],
-            is String qtyString = row["quantity"], is String units = row["units"],
-            is Integer|SqlNull created = row["created"]);
+            exists population = containees.get(townId).narrow<CommunityStats>().first,
+            is Integer id = row["id"], is String kind = row["kind"],
+            is String contents = row["contents"], is String qtyString = row["quantity"],
+            is String units = row["units"], is Integer|SqlNull created = row["created"]);
         Number<out Anything> quantity;
         if (is Integer num = Integer.parse(qtyString)) {
             quantity = num;
@@ -152,14 +172,17 @@ object dbCommunityStatsHandler
         population.yearlyConsumption.add(pile);
     }
 
-    shared actual void readExtraMapContents(Sql db, IMutableMapNG map, Warning warner) {
+    shared actual void readMapContents(Sql db, IMutableMapNG map, MutableMap<Integer, IFixture> containers,
+            MutableMultimap<Integer, Object> containees, Warning warner) {
+        handleQueryResults(db, warner,  "town populations", readTownPopulations(map, containees),
+            """SELECT * FROM towns WHERE population IS NOT NULL""");
         handleQueryResults(db, warner, "town expertise levels",
-            readTownExpertise(map), """SELECT * FROM town_expertise""");
+            readTownExpertise(map, containees), """SELECT * FROM town_expertise""");
         handleQueryResults(db, warner, "town worked resources",
-            readWorkedResource(map), """SELECT * FROM town_worked_resources""");
+            readWorkedResource(map, containees), """SELECT * FROM town_worked_resources""");
         handleQueryResults(db, warner, "town produced resources",
-            readProducedResource(map), """SELECT * FROM town_production""");
+            readProducedResource(map, containees), """SELECT * FROM town_production""");
         handleQueryResults(db, warner, "town consumed resources",
-            readConsumedResource(map), """SELECT * FROM town_consumption""");
+            readConsumedResource(map, containees), """SELECT * FROM town_consumption""");
     }
 }
