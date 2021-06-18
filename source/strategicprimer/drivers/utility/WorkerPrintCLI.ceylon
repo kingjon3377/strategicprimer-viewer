@@ -43,6 +43,10 @@ class WorkerPrintCLI satisfies ReadOnlyDriver {
                 cli.print(" (", worker.race, ")");
             }
 
+            if (exists mount = worker.mount) {
+                cli.print(" (mounted on ", mount.kind, ")");
+            }
+
             {IJob*} jobs = worker.filter(compose(Integer.positive, IJob.level));
             if (!jobs.empty) {
                 cli.print(" (", ", ".join(jobs.map(jobString)), ")");
