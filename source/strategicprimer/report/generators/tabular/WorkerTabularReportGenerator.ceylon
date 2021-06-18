@@ -1,6 +1,7 @@
 import lovelace.util.common {
     DelayedRemovalMap,
-    comparingOn
+    comparingOn,
+    todo
 }
 
 import strategicprimer.model.common {
@@ -20,6 +21,7 @@ import strategicprimer.model.common.map.fixtures.mobile.worker {
 
 "A report generator for workers. We do not cover Jobs or Skills; see
  [[SkillTabularReportGenerator]] for that."
+todo("Should probably include something about mount and/or equipment")
 shared class WorkerTabularReportGenerator(Point? hq, MapDimensions dimensions)
         extends AbstractTableGenerator<IWorker>()
         satisfies ITableGenerator<IWorker> {

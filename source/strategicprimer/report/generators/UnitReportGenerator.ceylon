@@ -42,9 +42,9 @@ shared class UnitReportGenerator(Comparison([Point, IFixture], [Point, IFixture]
     IReportGenerator</*Animal|AnimalTracks*/AnimalOrTracks> animalReportGenerator =
             AnimalReportGenerator(comp, dimensions, currentTurn, hq);
     IReportGenerator<IWorker> ourWorkerReportGenerator = WorkerReportGenerator(comp,
-        true, dimensions, currentPlayer, hq);
+        true, dimensions, currentPlayer, currentTurn, hq);
     IReportGenerator<IWorker> otherWorkerReportGenerator = WorkerReportGenerator(comp,
-        false, dimensions, currentPlayer, hq);
+        false, dimensions, currentPlayer, currentTurn, hq);
 
     "Produce the sub-sub-report about a unit's orders and results."
     void produceOrders(IUnit item, Anything(String) formatter) {

@@ -27,6 +27,10 @@ import ceylon.collection {
     HashMap
 }
 
+import strategicprimer.model.common.map.fixtures.mobile {
+    IWorker
+}
+
 "An encapsulation of helper methods for report generators."
 object reportGeneratorHelper {
     "Find the location of the given player's HQ in the given map, or [[null]]
@@ -72,6 +76,13 @@ object reportGeneratorHelper {
             }
             if (is {IFixture*} fixture) {
                 for (inner in fixture) {
+                    addToMap(location, inner);
+                }
+            } else if (is IWorker fixture) {
+                if (exists mount = fixture.mount) {
+                    addToMap(location, mount);
+                }
+                for (inner in fixture.equipment) {
                     addToMap(location, inner);
                 }
             }

@@ -21,8 +21,12 @@ import strategicprimer.model.common.map.fixtures.mobile.worker {
 
 "A report generator for Workers."
 class WorkerReportGenerator(Comparison([Point, IFixture], [Point, IFixture]) comp,
-            Boolean details, MapDimensions dimensions, Player currentPlayer, Point? hq = null)
+            Boolean details, MapDimensions dimensions, Player currentPlayer, Integer currentTurn,
+            Point? hq = null)
         extends AbstractReportGenerator<IWorker>(comp, dimensions, hq) {
+    value animalReportGenerator = AnimalReportGenerator(comp, dimensions, currentTurn, hq);
+    value equipmentReportGenerator = FortressMemberReportGenerator(comp, currentPlayer, dimensions,
+            currentTurn, hq);
     "Produce the sub-sub-report on a worker's stats."
     String statsString(WorkerStats stats) {
         return "He or she has the following stats: ``stats.hitPoints`` / ``stats
@@ -62,6 +66,19 @@ class WorkerReportGenerator(Comparison([Point, IFixture], [Point, IFixture]) com
             }
             ostream("""</ul>
                    """);
+        }
+        if (details, exists mount = worker.mount) {
+            ostream("(S)he is mounted on the following animal:");
+            animalReportGenerator.produceSingle(fixtures, map, ostream, mount, loc);
+        }
+        if (details, !worker.equipment.empty) {
+            ostream("""(S)he has the following personal equipment:
+                       <ul>
+                       """);
+            for (item in worker.equipment) {
+                ostream("<li>");
+                equipmentReportGenerator.produceSingle(fixtures, map, ostream, item, loc);
+            }
         }
         if (details, exists note = worker.notes.get(currentPlayer), !note.empty) {
             ostream("<p>``note``</p>
