@@ -42,6 +42,7 @@ import strategicprimer.model.common.map.fixtures.resources {
 }
 
 import strategicprimer.model.common.map.fixtures.towns {
+    IFortress,
     Village,
     ITownFixture,
     TownSize
@@ -58,6 +59,7 @@ import strategicprimer.model.common.xmlio {
 }
 
 import strategicprimer.model.common.map.fixtures {
+    Implement,
     IResourcePile
 }
 
@@ -82,6 +84,10 @@ shared class MapCheckerCLI satisfies UtilityDriver {
 
     static class SPContentWarning(Point context, String message)
             extends Exception("At ``context``: ``message``") { }
+
+    "Kinds of [[Implement]]s that should probably be assigned to a worker, or at least in a unit,
+     not directly in a fortress."
+    static [String*] personalEquipment = []; // TODO: Fill in this list
 
     static class OwnerChecker(IMapNG map) {
         shared Boolean check(TileType terrain, Point context, IFixture fixture,
@@ -176,6 +182,20 @@ shared class MapCheckerCLI satisfies UtilityDriver {
             }
         }
         return retval;
+    }
+
+    static Boolean personalEquipmentCheck(TileType terrain, Point context, IFixture fixture,
+            Warning warner) {
+        if (is IFortress fixture,
+                exists matching = fixture.narrow<Implement>().map(Implement.kind)
+                    .find(personalEquipment.contains)) {
+            // TODO: Loop through all?
+            warner.handle(SPContentWarning(context,
+                "'Personal equipment' (``matching``) directly in fortress"));
+            return true;
+        } else {
+            return false;
+        }
     }
 
     static {String+} placeholderKinds = [ "various", "unknown" ];
@@ -274,7 +294,8 @@ shared class MapCheckerCLI satisfies UtilityDriver {
     }
 
     static {Checker+} extraChecks = [ lateriteChecker, aquaticVillageChecker,
-        suspiciousSkillCheck, resourcePlaceholderChecker, oasisChecker ];
+        suspiciousSkillCheck, resourcePlaceholderChecker, oasisChecker,
+        personalEquipmentCheck ];
 
     static Boolean contentCheck(Checker checker, TileType terrain, Point context,
             Warning warner, IFixture* list) {
