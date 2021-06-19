@@ -87,7 +87,9 @@ shared class MapCheckerCLI satisfies UtilityDriver {
 
     "Kinds of [[Implement]]s that should probably be assigned to a worker, or at least in a unit,
      not directly in a fortress."
-    static [String*] personalEquipment = []; // TODO: Fill in this list
+    static [String*] personalEquipment = ["leather waterskin", "waterskin", "water skin", "leather water skin",
+        "water-skin", "leather water-skin", "leather satchel", "satchel", "woolen cloak", "leather boots",
+        "pair leather boots", "woolen tunic", "linen tunic" ];
 
     static class OwnerChecker(IMapNG map) {
         shared Boolean check(TileType terrain, Point context, IFixture fixture,
