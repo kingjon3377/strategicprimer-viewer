@@ -16,5 +16,5 @@ module strategicprimer.model.common "0.4.9019" {
     import ceylon.whole ceylonVersion;
     native("jvm") import ceylon.decimal ceylonVersion;
 //    native("jvm") import maven:"com.zaxxer:SparseBitSet" "1.2";
-    native("jvm") import maven:"org.roaringbitmap:RoaringBitmap" "0.9.14";
+    native("jvm") import maven:"org.roaringbitmap:RoaringBitmap" "0.9.15";
 }
