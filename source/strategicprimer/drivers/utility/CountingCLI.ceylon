@@ -10,6 +10,7 @@ import strategicprimer.drivers.common.cli {
 }
 
 import strategicprimer.model.common.map {
+    IFixture,
     IMapNG,
     TileType,
     River,
@@ -39,7 +40,10 @@ import lovelace.util.jvm {
 }
 
 import strategicprimer.model.common.map.fixtures {
-    Ground
+    Ground,
+    Implement,
+    IResourcePile,
+    Quantity
 }
 
 import strategicprimer.model.common.map.fixtures.resources {
@@ -87,18 +91,26 @@ class CountingCLI(ICLIHelper cli, model) satisfies ReadOnlyDriver {
 
     void printSummary<Base, Key, Count>(MappedCounter<Base, Key, Count> counter,
             String(Count)|String total,
-            String(Key->Count) each = parameterizedCountSpaceKey<Key, Count>)
+            String(Key->Count) each = parameterizedCountSpaceKey<Key, Count>, Integer indent = 0)
             given Base satisfies Object given Key satisfies Object
             given Count satisfies Number<Count> {
         if (counter.total.positive) {
+            if (indent.positive) {
+                cli.print("  ".repeat(indent - 1));
+                cli.print("- ");
+            }
             if (is String total) {
                 cli.println(total);
             } else {
                 cli.println(total(counter.total));
             }
-            cli.println();
-            counter.map(each).each(cli.println);
-            cli.println();
+            if (!indent.positive) {
+                cli.println();
+            }
+            counter.map(each).map("  ".repeat(indent).plus).each(cli.println);
+            if (!indent.positive) {
+                cli.println();
+            }
         }
     }
 
@@ -132,6 +144,25 @@ class CountingCLI(ICLIHelper cli, model) satisfies ReadOnlyDriver {
 
     String townSummary(AbstractTown t) => "``t.status`` ``t.townSize`` ``t.kind``";
 
+    {Anything*} flatten(Anything item) {
+        // Note that workers are counted separately, so while we include their equipment and mounts we don't include them.
+        if (is IWorker item) {
+            return item.flatMap(flatten).chain(item.equipment).follow(item.mount).coalesced;
+        } else if (is {Anything*} item) {
+            return item.flatMap(flatten).follow(item);
+        } else {
+            return Singleton(item);
+        }
+    }
+
+    String resourcePileKeyExtractor(IResourcePile pile) {
+        if (pile.quantity.units in pile.contents || pile.contents in pile.quantity.units) {
+            return pile.contents;
+        } else {
+            return pile.quantity.units + " " + pile.contents;
+        }
+    }
+
     shared actual void startDriver() { // TODO: Reduce duplication
         IMapNG map = model.map;
         cli.println(
@@ -143,7 +174,7 @@ class CountingCLI(ICLIHelper cli, model) satisfies ReadOnlyDriver {
             cli.println("- ``count`` are ``type``");
         }
         cli.println();
-        {TileFixture*} allFixtures = map.locations.flatMap(map.fixtures.get);
+        {IFixture*} allFixtures = map.locations.flatMap(map.fixtures.get).flatMap(flatten).narrow<IFixture>();
         MappedCounter<Forest, String, Decimal> forests = MappedCounter(Forest.kind,
             compose(decimalize, Forest.acres), Accumulator<Decimal>, decimalNumber(0));
         allFixtures.narrow<Forest>().each(forests.add);
@@ -187,6 +218,7 @@ class CountingCLI(ICLIHelper cli, model) satisfies ReadOnlyDriver {
         adventures.addDirectly("Cave system", allFixtures.narrow<Cave>().size);
         printSummary(adventures, "Adventure Hooks and Portals:", kindColonCount);
 
+        // TODO: We'd like to count active towns' populations.
         cli.println("Active Communities:");
         cli.println();
         cli.println("- ``allFixtures.narrow<IFortress>().size`` fortresses");
@@ -225,25 +257,50 @@ class CountingCLI(ICLIHelper cli, model) satisfies ReadOnlyDriver {
                 MappedCounter<Animal, String, Integer>(Animal.kind, Animal.population,
                     Accumulator<Integer>, 0);
         allFixtures.narrow<Animal>().filter(not(Animal.talking)).each(animals.add);
-        allFixtures.narrow<IUnit>().flatMap(identity).narrow<Animal>().each(animals.add);
-        allFixtures.narrow<IFortress>().flatMap(identity).narrow<IUnit>().flatMap(identity)
-            .narrow<Animal>().each(animals.add);
         animals.addDirectly("various talking animals", allFixtures.narrow<Animal>()
             .filter(Animal.talking).size);
         printSummary(animals, "Animals");
+
+        MappedCounter<Implement, String, Integer> equipment =
+                MappedCounter<Implement, String, Integer>(Implement.kind, Implement.population,
+                    Accumulator<Integer>, 0);
+        allFixtures.narrow<Implement>().each(equipment.add);
+        printSummary(equipment, "Equipment");
+
+        value groupedResources = allFixtures.narrow<IResourcePile>().group(IResourcePile.kind);
+
+        if (!groupedResources.empty) {
+            cli.println("Resources:");
+            for (kind->list in groupedResources) {
+                value counter = MappedCounter<IResourcePile, String, Decimal>(resourcePileKeyExtractor,
+                    compose(decimalize, compose(Quantity.number, IResourcePile.quantity)),
+                    Accumulator<Decimal>, decimalize(0));
+                list.each(counter.add);
+                printSummary { // Using positional syntax so we can specify an indent without the 'each' parameter.
+                    counter = counter;
+                    total = kind;
+                    indent = 1;
+                };
+            }
+        }
 
         value remaining =
                 allFixtures.filter(exclude<Animal|Shrub|Grove|Meadow|Immortal|IFortress
                     |IUnit|AbstractTown|Village|Portal|AdventureFixture|CacheFixture|Mine|
                     MineralVein|StoneDeposit|Ground|Forest|Hill|Oasis|AnimalTracks|Cave|
-                    Battlefield>);
+                    Battlefield|Implement|IResourcePile>);
 
         if (!remaining.empty) {
             cli.println();
             cli.println("Remaining fixtures:");
             cli.println();
             for (fixture in remaining) {
-                cli.println("- ``fixture.shortDescription``");
+                cli.print("- ");
+                if (is TileFixture fixture) {
+                    cli.println(fixture.shortDescription); // TODO: Move this up to IFixture?
+                } else {
+                    cli.println(fixture.string);
+                }
             }
         }
     }
