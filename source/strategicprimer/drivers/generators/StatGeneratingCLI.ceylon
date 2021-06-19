@@ -240,8 +240,8 @@ class StatGeneratingCLI satisfies CLIDriver {
                 return worker;
             } else {
                 assert (exists training = singletonRandom.nextElement(candidates));
+                worker.addJob(training);
                 while (true) {
-                    worker.addJob(training);
                     WorkerStats stats = createWorkerStats(village.race, training.level);
                     cli.println(
                         "``name``, a ``village.race``, is a level-``training.level`` ``
