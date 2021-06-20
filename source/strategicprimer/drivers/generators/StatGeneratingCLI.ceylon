@@ -25,6 +25,7 @@ import strategicprimer.model.common.map {
 }
 
 import strategicprimer.model.common.map.fixtures.mobile {
+    AnimalImpl,
     IUnit,
     Unit,
     Worker,
@@ -68,6 +69,10 @@ import lovelace.util.common {
 
 import strategicprimer.model.common.map.fixtures.towns {
     Village
+}
+
+import strategicprimer.model.common.map.fixtures {
+    Implement
 }
 
 "A logger."
@@ -252,9 +257,23 @@ class StatGeneratingCLI satisfies CLIDriver {
                         cli.inputBoolean("Do those stats fit that profile?"));
                     if (acceptance) {
                         worker.stats = stats;
-                        return worker;
+                        break;
                     }
                 }
+                assert (exists hasMount = cli.inputBooleanInSeries("Is the worker mounted?"));
+                if (hasMount, exists mountKind = cli.inputString("Kind of mount: "), !mountKind.empty) {
+                    worker.mount = AnimalImpl(mountKind, false, "tame", idf.createID());
+                }
+                // FIXME: Add, and report on, standard equipment (some should be "most probably" rather than every time) without asking
+                variable String equipmentPrompt = "Does the worker have any equipment?";
+                variable Boolean?(String) equipmentQuery = cli.inputBooleanInSeries;
+                while (exists hasEquipment = equipmentQuery(equipmentPrompt), hasEquipment,
+                        exists equipment = cli.inputString("Kind of equipment: "), !equipment.empty) {
+                    worker.addEquipment(Implement(equipment, idf.createID()));
+                    equipmentPrompt = "Does the worker have any more equipment?";
+                    equipmentQuery = cli.inputBoolean;
+                }
+                return worker;
 
             }
         } else {
@@ -264,6 +283,7 @@ class StatGeneratingCLI satisfies CLIDriver {
             cli.println("``name`` is a ``village.race`` from ``village.name``. Stats:");
             cli.println(", ".join(zipPairs(statLabelArray,
                 stats.array.map(WorkerStats.getModifierString)).map(" ".join)));
+            // FIXME: Add, and report on, standard equipment (some should be "most probably" rather than every time)
             return worker;
         }
     }
