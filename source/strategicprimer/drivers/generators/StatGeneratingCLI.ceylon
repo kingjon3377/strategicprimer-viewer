@@ -264,8 +264,30 @@ class StatGeneratingCLI satisfies CLIDriver {
                 if (hasMount, exists mountKind = cli.inputString("Kind of mount: "), !mountKind.empty) {
                     worker.mount = AnimalImpl(mountKind, false, "tame", idf.createID());
                 }
-                // FIXME: Add, and report on, standard equipment (some should be "most probably" rather than every time) without asking
                 variable String equipmentPrompt = "Does the worker have any equipment?";
+                assert (exists woolen = cli.inputBooleanInSeries("Is the worker's tunic woolen rather than linen?"));
+                worker.addEquipment(Implement((woolen) then "woolen tunic" else "linen tunic", idf.createID()));
+                if ((worker.map(IJob.level).reduce(plus) else 0) > 1 || singletonRandom.nextFloat() < 0.9) {
+                    worker.addEquipment(Implement("woolen cloak", idf.createID()));
+                } else {
+                    cli.println("Not adding woolen cloak");
+                }
+                if ((worker.map(IJob.level).reduce(plus) else 0) > 1 || singletonRandom.nextFloat() < 0.8) {
+                    worker.addEquipment(Implement("pair leather boots", idf.createID()));
+                } else {
+                    cli.println("Not adding leather boots");
+                }
+                if ((worker.map(IJob.level).reduce(plus) else 0) > 1 || singletonRandom.nextFloat() < 0.75) {
+                    worker.addEquipment(Implement("leather satchel", idf.createID()));
+                } else {
+                    cli.println("Not adding leather satchel");
+                }
+                if ((worker.map(IJob.level).reduce(plus) else 0) > 1 || singletonRandom.nextFloat() < 0.75) {
+                    worker.addEquipment(Implement("leather waterskin", idf.createID()));
+                } else {
+                    cli.println("Not adding leather waterskin");
+                }
+                // TODO: Should probably automatically add some job-specific equipment
                 variable Boolean?(String) equipmentQuery = cli.inputBooleanInSeries;
                 while (exists hasEquipment = equipmentQuery(equipmentPrompt), hasEquipment,
                         exists equipment = cli.inputString("Kind of equipment: "), !equipment.empty) {
@@ -283,7 +305,20 @@ class StatGeneratingCLI satisfies CLIDriver {
             cli.println("``name`` is a ``village.race`` from ``village.name``. Stats:");
             cli.println(", ".join(zipPairs(statLabelArray,
                 stats.array.map(WorkerStats.getModifierString)).map(" ".join)));
-            // FIXME: Add, and report on, standard equipment (some should be "most probably" rather than every time)
+            assert (exists woolen = cli.inputBooleanInSeries("Is the worker's tunic woolen rather than linen?"));
+            worker.addEquipment(Implement((woolen) then "woolen tunic" else "linen tunic", idf.createID()));
+            if (singletonRandom.nextFloat() < 0.9) {
+                worker.addEquipment(Implement("woolen cloak", idf.createID()));
+            }
+            if (singletonRandom.nextFloat() < 0.8) {
+                worker.addEquipment(Implement("pair leather boots", idf.createID()));
+            }
+            if (singletonRandom.nextFloat() < 0.75) {
+                worker.addEquipment(Implement("leather satchel", idf.createID()));
+            }
+            if (singletonRandom.nextFloat() < 0.75) {
+                worker.addEquipment(Implement("leather waterskin", idf.createID()));
+            }
             return worker;
         }
     }
