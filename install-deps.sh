@@ -34,3 +34,4 @@ find source/ -name module.ceylon -exec grep -h maven: {} + | grep -v '^/' | \
 		sort -u | while read -r dependency; do
 	mvn -B --no-transfer-progress dependency:get -Dartifact="${dependency}" || exit 2
 done
+ceylon-${CEYLON_VERSION}/ceylon import-jar --descriptor=lib/takes.properties org.takes:takes/1.19 ~/.m2/repository/org/takes/takes/1.19/takes-1.19.jar
