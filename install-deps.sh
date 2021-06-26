@@ -34,4 +34,11 @@ find source/ -name module.ceylon -exec grep -h maven: {} + | grep -v '^/' | \
 		sort -u | while read -r dependency; do
 	mvn -B --no-transfer-progress dependency:get -Dartifact="${dependency}" || exit 2
 done
+# Takes dependencies that earlier command doesn't pull in
+for dependency in com.jcabi:jcabi-http:1.17.1 maven:com.jcabi:jcabi-xml:0.17.2 \
+		maven:com.restfb:restfb:2.0.0-rc.3 maven:log4j:log4j:1.2.17 \
+		maven:org.apache.velocity:velocity-engine-core:2.0 \
+		maven:org.hamcrest:hamcrest-library:1.3 maven:org.slf4j:slf4j-api:1.8.0-alpha2 ; do
+	mvn -B --no-transfer-progress dependency:get -Dartifact="${dependency}" || exit 2
+done
 "ceylon-${CEYLON_VERSION}/bin/ceylon" import-jar --descriptor=lib/takes.properties org.takes:takes/1.19 ~/.m2/repository/org/takes/takes/1.19/takes-1.19.jar
