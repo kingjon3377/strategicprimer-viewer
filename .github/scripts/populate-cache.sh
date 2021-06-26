@@ -4,6 +4,6 @@ if curl -s --head --request GET \
 		grep -v -q "200 OK"; then
 	# Herd is down
 	echo "Cache URL we have is '${CEYLON_DEPS_CACHE_URL}'"
-	wget "${CEYLON_DEPS_CACHE_URL}" -O ceylon-deps.tar.gz || exit 1
+	youtube-dl "${CEYLON_DEPS_CACHE_URL}" || exit 1
 	tar xzf ceylon-deps.tar.gz
 fi
