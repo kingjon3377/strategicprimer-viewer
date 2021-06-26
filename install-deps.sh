@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 set -ex
 if test -f "${GITHUB_WORKSPACE}/dependencies.sh"; then
 	# shellcheck source=./dependencies.sh
@@ -36,12 +36,23 @@ find source/ -name module.ceylon -exec grep -h maven: {} + | grep -v '^/' | \
 done
 # Takes dependencies that earlier command doesn't pull in
 for dependency in com.jcabi:jcabi-http:1.17.1 com.jcabi:jcabi-xml:0.17.2 \
-		com.jcabi.incubator:xembly:0.22 \
+		com.jcabi.incubator:xembly:0.22 com.sun.mail:javax.mail:jar:1.6.2 \
 		com.restfb:restfb:2.0.0-rc.3 log4j:log4j:1.2.17 \
 		org.apache.velocity:velocity-engine-core:2.0 \
 		org.hamcrest:hamcrest-library:1.3 org.slf4j:slf4j-api:1.8.0-alpha2 ; do
 	mvn -B --no-transfer-progress dependency:get -Dartifact="${dependency}" || exit 2
 done
-"ceylon-${CEYLON_VERSION}/bin/ceylon" import-jar --descriptor=lib/log4j.properties log4j:log4j/1.2.17 ~/.m2/repository/log4j/log4j/1.2.17/log4j-1.2.17.jar
-"ceylon-${CEYLON_VERSION}/bin/ceylon" import-jar --descriptor=lib/jcabi-http.properties com.jcabi:jcabi-http/1.17.1 ~/.m2/repository/com/jcabi/jcabi-http/1.17.1/jcabi-http-1.17.1.jar
-"ceylon-${CEYLON_VERSION}/bin/ceylon" import-jar --descriptor=lib/takes.properties org.takes:takes/1.19 ~/.m2/repository/org/takes/takes/1.19/takes-1.19.jar
+import_jar() {
+	if test -f "lib/${2}.properties";then
+		descriptor=("--descriptor=lib/${2}.properties")
+	else
+		descriptor=()
+	fi
+	"ceylon-${CEYLON_VERSION}/bin/ceylon" import-jar "${descriptor[@]}" "${1}:${2}/${3}" "${HOME}/.m2/repository/$(echo "${1}" | tr . /)/${2}/${3}/${2}-${3}.jar"
+}
+import_jar javax.jms javax.jms-api 2.0.1
+import_jar com.sun.mail javax.mail 1.6.2
+import_jar javax.mail javax.mail-api 1.6.2
+import_jar log4j log4j 1.2.17
+import_jar com.jcabi jcabi-http 1.17.1
+import_jar org.takes takes 1.19
