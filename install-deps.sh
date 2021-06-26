@@ -37,6 +37,7 @@ done
 # Takes dependencies that earlier command doesn't pull in
 for dependency in com.jcabi:jcabi-http:1.17.1 com.jcabi:jcabi-xml:0.17.2 \
 		com.jcabi.incubator:xembly:0.22 com.sun.mail:javax.mail:1.6.2 \
+		javax.jms:javax.jms-api:2.0.1 javax.mail:javax.mail-api:1.6.2 \
 		com.restfb:restfb:2.0.0-rc.3 log4j:log4j:1.2.17 \
 		org.apache.velocity:velocity-engine-core:2.0 \
 		org.hamcrest:hamcrest-library:1.3 org.slf4j:slf4j-api:1.8.0-alpha2 ; do
