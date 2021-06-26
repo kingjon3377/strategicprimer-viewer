@@ -17,13 +17,11 @@ wget "https://github.com/UltraMixer/JarBundler/releases/download/${JARBUNDLER_VE
 		-O "${HOME}/.ant/lib/jarbundler-core-${JARBUNDLER_VERSION}.jar"
 wget "https://github.com/mickleness/pumpernickel/raw/master/release/jars/Pumpernickel.jar"
 wget "https://repo.maven.apache.org/maven2/com/yuvimasory/orange-extensions/${ORANGE_VERSION}/orange-extensions-${ORANGE_VERSION}.jar"
-sudo apt-get update -qq
-sudo apt-get install genisoimage
 wget "https://github.com/tofi86/universalJavaApplicationStub/archive/v${APP_STUB_VERSION}.tar.gz" -O \
 		"universalJavaApplicationStub-${APP_STUB_VERSION}.tar.gz"
 tar xzf "universalJavaApplicationStub-${APP_STUB_VERSION}.tar.gz"
-if test -n "${TRAVIS_TAG}"; then
-	echo "${TRAVIS_TAG}" | sed 's@^v[0-9]\.[0-9]\.\([0-9]*\|[0-9]*\.[0-9]*\|[0-9]*[-_]rc[0-9]*\)$@s:SNAPSHOT:\1:@' | \
+if test -n "${GITHUB_REF}"; then
+	echo "${GITHUB_REF}" | sed 's@^refs/tags/v\([0-9]\.[0-9]\.[0-9]*\|[0-9]*\.[0-9]*\|[0-9]*[-_]rc[0-9]*\)$@s:SNAPSHOT:\1:@' | \
 		sed -f - -i version.properties
 fi
 wget "https://ceylon-lang.org/download/dist/$(echo "${CEYLON_VERSION}"|sed 's@\.@_@g')" \

@@ -1,0 +1,41 @@
+name: Build and Test
+on:
+  push:
+  pull_request:
+  schedule:
+    - cron: '15 5 3 * *'
+jobs:
+  build_and_test:
+    runs-on: ubuntu-latest
+      - uses: actions/checkout@v2
+      - name: Set up Java
+        uses: actions/setup-java@v2
+        with:
+          java-version: 8
+          distribution: 'adopt'
+      - name: Install packaged dependencies
+        run: sudo apt-get install ant-optional ant-contrib libc6:i386 icnsutils icoutils genisoimage
+      - name: Install unpackaged dependencies
+        shell: bash
+        run: ./install-deps.sh
+      - name: Build and test
+        shell: bash
+        run: ./run_tests.sh
+      - if: startsWith(github.ref, 'refs/tags/')
+        name: Build release
+        shell: bash
+        run: ./build_release.sh
+      - if: startsWith(github.ref, 'refs/tags/')
+        name: Upload release
+        uses: softprops/action-gh-release@v1
+        env:
+          GIT_NAME: Github Actions
+          GIT_EMAIL: kingjon3377+travis@gmail.com
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          prerelease: $({ contains(github.ref, '-rc') || contains(github.ref, '_rc') })
+          files: |
+            release/viewer-*.t*z*
+            release/viewer-*.dmg
+            release/viewer-*.exe
+            release/viewer-*.jar
