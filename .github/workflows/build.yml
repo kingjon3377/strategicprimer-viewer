@@ -29,8 +29,6 @@ jobs:
         if: steps.cache.outputs.cache-hit != 'true'
         shell: bash
         run: .github/scripts/populate-cache.sh
-        with:
-          CEYLON_DEPS_CACHE_URL: $({ secrets.CEYLON_DEPS_CACHE })
         env:
           CEYLON_DEPS_CACHE_URL: $({ secrets.CEYLON_DEPS_CACHE })
       - name: Build and test
