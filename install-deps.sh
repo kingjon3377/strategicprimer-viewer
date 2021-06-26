@@ -50,7 +50,10 @@ import_jar() {
 	else
 		descriptor=()
 	fi
-	"ceylon-${CEYLON_VERSION}/bin/ceylon" import-jar "${descriptor[@]}" "${1}:${2}/${3}" "${HOME}/.m2/repository/$(echo "${1}" | tr . /)/${2}/${3}/${2}-${3}.jar"
+	if ! "ceylon-${CEYLON_VERSION}/bin/ceylon" import-jar "${descriptor[@]}" "${1}:${2}/${3}" "${HOME}/.m2/repository/$(echo "${1}" | tr . /)/${2}/${3}/${2}-${3}.jar"; then
+		echo "Failed in ${2}"
+		return 2
+	fi
 }
 import_jar javax.jms javax.jms-api 2.0.1
 import_jar com.sun.mail javax.mail 1.6.2
@@ -62,6 +65,7 @@ import_jar com.jcabi jcabi-immutable 1.5
 import_jar com.jcabi jcabi-xml 0.17.1
 import_jar com.fasterxml.jackson.core jackson-core 2.7.6
 import_jar com.google.guava guava 30.1.1-jre
+import_jar org.hamcrest hamcrest 1.3
 import_jar com.jcabi jcabi-matchers 1.5.3
 import_jar com.sun.grizzly grizzly-servlet-webserver 1.9.64
 import_jar javax.xml.bind jaxb-api 2.2.12
