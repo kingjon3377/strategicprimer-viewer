@@ -1,10 +1,10 @@
 #!/bin/sh
 set -ex
-if test -f "${TRAVIS_BUILD_DIR}/dependencies.sh"; then
+if test -f "${GITHUB_WORKSPACE}/dependencies.sh"; then
 	# shellcheck source=./dependencies.sh
-	. "${TRAVIS_BUILD_DIR}/dependencies.sh"
-elif test -f dependencies.sh; then
-	. dependencies.sh
+	. "${GITHUB_WORKSPACE}/dependencies.sh"
+elif test -f ./dependencies.sh; then
+	. ./dependencies.sh
 else
 	echo "Can't find dependencies.sh" 1>&2
 	exit 1
