@@ -10,4 +10,5 @@ if curl -s --head --request GET \
 	fi
 	gdown "${CEYLON_DEPS_CACHE_URL}" || exit 1
 	tar xzf ceylon-deps.tar.gz
+	cp -r .ceylon/cache .ceylon/repo
 fi
