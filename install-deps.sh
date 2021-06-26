@@ -26,7 +26,7 @@ if test -n "${GITHUB_REF}"; then
 fi
 wget -nv "https://ceylon-lang.org/download/dist/$(echo "${CEYLON_VERSION}"|sed 's@\.@_@g')" \
 	--output-document=ceylon.zip
-unzip ceylon.zip
+unzip -q ceylon.zip
 # Work around eclipse/ceylon#7462
 find source/ -name module.ceylon -exec grep -h maven: {} + | grep -v '^/' | \
 		sed -e 's@native("jvm")@@' \
