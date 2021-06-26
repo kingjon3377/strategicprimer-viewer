@@ -42,6 +42,6 @@ for dependency in com.jcabi:jcabi-http:1.17.1 com.jcabi:jcabi-xml:0.17.2 \
 		org.hamcrest:hamcrest-library:1.3 org.slf4j:slf4j-api:1.8.0-alpha2 ; do
 	mvn -B --no-transfer-progress dependency:get -Dartifact="${dependency}" || exit 2
 done
-"ceylon-${CEYLON_VERSION}/bin/ceylon" import-jar log4j:log4j/1.2.17 ~/.m2/repository/log4j/1.2.17/log4j-1.2.17.jar
+"ceylon-${CEYLON_VERSION}/bin/ceylon" import-jar log4j:log4j/1.2.17 ~/.m2/repository/log4j/log4j/1.2.17/log4j-1.2.17.jar
 "ceylon-${CEYLON_VERSION}/bin/ceylon" import-jar com.jcabi:jcabi-http/1.17.1 ~/.m2/repository/com/jcabi/jcabi-http/1.17.1/jcabi-http-1.17.1.jar
 "ceylon-${CEYLON_VERSION}/bin/ceylon" import-jar --descriptor=lib/takes.properties org.takes:takes/1.19 ~/.m2/repository/org/takes/takes/1.19/takes-1.19.jar
