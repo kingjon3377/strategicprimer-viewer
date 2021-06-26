@@ -15,7 +15,7 @@ jobs:
           java-version: 8
           distribution: 'adopt'
       - name: Install packaged dependencies
-        run: sudo apt-get install ant-optional ant-contrib icnsutils icoutils genisoimage youtube-dl
+        run: sudo apt-get install ant-optional ant-contrib icnsutils icoutils genisoimage python3-pip
       - name: Install unpackaged dependencies
         shell: bash
         run: ./install-deps.sh
