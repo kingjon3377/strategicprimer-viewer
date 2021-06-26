@@ -32,5 +32,5 @@ find source/ -name module.ceylon -exec grep -h maven: {} + | grep -v '^/' | \
 		sed -e 's@native("jvm")@@' \
 			-e 's@^[         ]*import maven:"\([^"]*\)" "\([^"]*\)";$@\1:\2@' | \
 		sort -u | while read -r dependency; do
-	mvn dependency:get -Dartifact="${dependency}" || exit 2
+	mvn -B --no-transfer-progress dependency:get -Dartifact="${dependency}" || exit 2
 done
