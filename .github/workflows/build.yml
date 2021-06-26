@@ -24,13 +24,13 @@ jobs:
         uses: actions/cache@v2
         with:
           path: .ceylon/cache
-          key: $({ hashFiles('**/module.ceylon') })
+          key: ${{ hashFiles('**/module.ceylon') }}
       - name: Populate Ceylon modules cache if Herd down
         if: steps.cache.outputs.cache-hit != 'true'
         shell: bash
         run: .github/scripts/populate-cache.sh
         env:
-          CEYLON_DEPS_CACHE_URL: $({ secrets.CEYLON_DEPS_CACHE })
+          CEYLON_DEPS_CACHE_URL: ${{ secrets.CEYLON_DEPS_CACHE }}
       - name: Build and test
         shell: bash
         run: ./run_tests.sh
@@ -46,7 +46,7 @@ jobs:
           GIT_EMAIL: kingjon3377+travis@gmail.com
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          prerelease: $({ contains(github.ref, '-rc') || contains(github.ref, '_rc') })
+          prerelease: ${{ contains(github.ref, '-rc') || contains(github.ref, '_rc') }}
           files: |
             release/viewer-*.t*z*
             release/viewer-*.dmg
