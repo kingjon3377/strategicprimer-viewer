@@ -5,6 +5,9 @@ if curl -s --head --request GET \
 	# Herd is down
 	pip install gdown
 	echo "Cache URL we have is '${CEYLON_DEPS_CACHE_URL}'"
+	if echo "${CEYLON_DEPS_CACHE_URL}" | grep -q '^https://drive.google.com/file/d/';then
+		CEYLON_DEPS_CACHE_URL=$(echo "${CEYLON_DEPS_CACHE_URL}" | sed 's@file/d/\([^/]*\)/view$@uc?id=\1@')
+	fi
 	gdown "${CEYLON_DEPS_CACHE_URL}" || exit 1
 	tar xzf ceylon-deps.tar.gz
 fi
