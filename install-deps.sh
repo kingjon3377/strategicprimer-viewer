@@ -44,6 +44,9 @@ for dependency in com.jcabi:jcabi-http:1.17.1 com.jcabi:jcabi-xml:0.17.2 \
 	mvn -B --no-transfer-progress dependency:get -Dartifact="${dependency}" || exit 2
 done
 import_jar() {
+	if ! test -f "${HOME}/.m2/repository/$(echo "${1}" | tr . /)/${2}/${3}/${2}-${3}.jar"; then
+		mvn -B --no-transfer-progress dependency:get -Dartifact="${1}:${2}:${3}" || exit 2
+	fi
 	if test -f "lib/${2}.properties";then
 		descriptor=("--descriptor=lib/${2}.properties")
 	else
@@ -55,5 +58,18 @@ import_jar javax.jms javax.jms-api 2.0.1
 import_jar com.sun.mail javax.mail 1.6.2
 import_jar javax.mail javax.mail-api 1.6.2
 import_jar log4j log4j 1.2.17
+import_jar com.fasterxml.jackson.core jackson-databind 2.7.6
+import_jar com.jcabi jcabi-aspects 0.23.1
+import_jar com.jcabi jcabi-immutable 1.5
+import_jar com.jcabi jcabi-xml 0.17.1
+import_jar com.fasterxml.jackson.core jackson-core 2.7.6
+import_jar com.google.guava guava 30.1.1-jre
+import_jar com.jcabi jcabi-matchers 1.5.3
+import_jar com.sun.grizzly grizzly-servlet-webserver 1.9.64
+import_jar javax.xml.bind jaxb-api 2.2.12
+import_jar javax.xml.bind jsr173_api 1.0
+import_jar org.apache.httpcomponents httpclient 4.5.1
+import_jar org.apache.httpcomponents httpcore 4.4.4
+import_jar org.jsoup jsoup 1.8.3
 import_jar com.jcabi jcabi-http 1.17.1
 import_jar org.takes takes 1.19
