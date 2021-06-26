@@ -27,3 +27,10 @@ fi
 wget "https://ceylon-lang.org/download/dist/$(echo "${CEYLON_VERSION}"|sed 's@\.@_@g')" \
 	--output-document=ceylon.zip
 unzip ceylon.zip
+# Work around eclipse/ceylon#7462
+find source/ -name module.ceylon -exec grep -h maven: {} + | grep -v '^/' | \
+		sed -e 's@native("jvm")@@' \
+			-e 's@^[         ]*import maven:"\([^"]*\)" "\([^"]*\)";$@\1:\2@' | \
+		sort -u | while read -r dependency; do
+	mvn dependency:get -Dartifact="${dependency}" || exit 2
+done
