@@ -28,7 +28,7 @@ jobs:
       - name: Populate Ceylon modules cache if Herd down
         if: steps.cache.outputs.cache-hit != 'true'
         shell: bash
-        run: ./populate-cache.sh
+        run: .github/scripts/populate-cache.sh
       - name: Build and test
         shell: bash
         run: ./run_tests.sh
