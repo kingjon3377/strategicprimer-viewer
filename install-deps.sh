@@ -78,6 +78,11 @@ import_jar javax.xml.bind jaxb-api 2.2.12
 import_jar javax.xml.bind jsr173_api 1.0
 import_jar org.apache.httpcomponents httpcore 4.4.4
 import_jar commons-codec commons-codec 1.15
+import_jar avalon-framework avalon-framework 4.1.3 --force
+import_jar javax.servlet javax.servlet-api 4.0.0
+import_jar logkit logkit 1.0.1
+import_jar avalon-framework avalon-framework 4.1.3
+import_jar commons-logging commons-logging 1.0.4
 import_jar org.apache.httpcomponents httpclient 4.5.1
 import_jar org.jsoup jsoup 1.8.3
 import_jar javax.json javax.json-api 1.0
