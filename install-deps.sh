@@ -50,8 +50,13 @@ import_jar() {
 	else
 		descriptor=()
 	fi
-	if ! "ceylon-${CEYLON_VERSION}/bin/ceylon" import-jar "${descriptor[@]}" "${1}:${2}/${3}" "${HOME}/.m2/repository/$(echo "${1}" | tr . /)/${2}/${3}/${2}-${3}.jar" ${4}; then
-		echo "Failed in ${2}"
+	if test "${1}" = "${2}"; then
+		import_as="${1}"
+	else
+		import_as="${1}:${2}"
+	fi
+	if ! "ceylon-${CEYLON_VERSION}/bin/ceylon" import-jar "${descriptor[@]}" "${import_as}/${3}" "${HOME}/.m2/repository/$(echo "${1}" | tr . /)/${2}/${3}/${2}-${3}.jar" ${4}; then
+		echo "Failed in ${import_as}"
 		return 2
 	fi
 }
