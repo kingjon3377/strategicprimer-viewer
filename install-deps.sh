@@ -46,7 +46,7 @@ import_jar() {
 	fi
 	case "${2}" in
 	orange-extensions|RoaringBitmap|takes|sqlite-jdbc) import_as="${1}:${2}" ;;
-	*) import_as="${1}" ;;
+	*) import_as="${2}" ;;
 	esac
 	if ! "ceylon-${CEYLON_VERSION}/bin/ceylon" import-jar "${descriptor[@]}" "${import_as}/${3}" "${HOME}/.m2/repository/$(echo "${1}" | tr . /)/${2}/${3}/${2}-${3}.jar" ${4}; then
 		echo "Failed in ${import_as}"
