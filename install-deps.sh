@@ -80,6 +80,7 @@ import_jar org.apache.httpcomponents httpcore 4.4.4
 import_jar commons-codec commons-codec 1.15
 import_jar org.apache.httpcomponents httpclient 4.5.1
 import_jar org.jsoup jsoup 1.8.3
+import_jar javax.json javax.json-api 1.0
 import_jar com.jcabi jcabi-http 1.17.1
 import_jar com.jcabi jcabi-matchers 1.5.3
 import_jar com.jcabi.incubator xembly 0.22
