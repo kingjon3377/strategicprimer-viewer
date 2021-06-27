@@ -59,13 +59,13 @@ import_jar javax.jms javax.jms-api 2.0.1
 import_jar com.sun.mail javax.mail 1.6.2
 import_jar javax.mail javax.mail-api 1.6.2
 import_jar log4j log4j 1.2.17
+import_jar com.fasterxml.jackson.core jackson-annotations 2.7.6
 import_jar com.fasterxml.jackson.core jackson-databind 2.7.6
 import_jar com.jcabi jcabi-aspects 0.23.1
 import_jar com.jcabi jcabi-immutable 1.5
 import_jar com.jcabi jcabi-xml 0.17.1
 import_jar com.fasterxml.jackson.core jackson-core 2.7.6
 import_jar com.google.guava guava 30.1.1-jre
-import_jar org.hamcrest hamcrest 1.3
 import_jar com.jcabi jcabi-matchers 1.5.3
 import_jar com.sun.grizzly grizzly-servlet-webserver 1.9.64
 import_jar javax.xml.bind jaxb-api 2.2.12
