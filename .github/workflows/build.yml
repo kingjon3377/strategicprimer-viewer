@@ -19,6 +19,8 @@ jobs:
       - name: Install unpackaged dependencies
         shell: bash
         run: ./install-deps.sh
+        env:
+          GITHUB_REF: ${{ github.ref }}
       - name: Populate Ceylon modules cache if Herd down
         shell: bash
         run: .github/scripts/populate-cache.sh
