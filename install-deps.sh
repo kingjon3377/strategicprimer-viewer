@@ -20,10 +20,9 @@ wget -nv "https://repo.maven.apache.org/maven2/com/yuvimasory/orange-extensions/
 wget -nv "https://github.com/tofi86/universalJavaApplicationStub/archive/v${APP_STUB_VERSION}.tar.gz" -O \
 		"universalJavaApplicationStub-${APP_STUB_VERSION}.tar.gz"
 tar xzf "universalJavaApplicationStub-${APP_STUB_VERSION}.tar.gz"
-if test -n "${GITHUB_REF}"; then
-	echo "${GITHUB_REF}" | sed 's@^refs/tags/v\([0-9]\.[0-9]\.[0-9]*\|[0-9]*\.[0-9]*\|[0-9]*[-_]rc[0-9]*\)$@s:SNAPSHOT:\1:@' | \
-		sed -f - -i version.properties
-fi
+case "${GITHUB_REF:-none}" in
+refs/tags/v*) sed -i -e "s@SNAPSHOT@${GITHUB_REF#refs/tags/v}@" version.properties ;;
+esac
 wget -nv "https://ceylon-lang.org/download/dist/$(echo "${CEYLON_VERSION}"|sed 's@\.@_@g')" \
 	--output-document=ceylon.zip
 unzip -q ceylon.zip
