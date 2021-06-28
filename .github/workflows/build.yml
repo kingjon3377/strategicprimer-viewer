@@ -19,14 +19,7 @@ jobs:
       - name: Install unpackaged dependencies
         shell: bash
         run: ./install-deps.sh
-      - name: Cache Ceylon modules
-        id: cache
-        uses: actions/cache@v2
-        with:
-          path: .ceylon/cache
-          key: ${{ hashFiles('**/module.ceylon') }}
       - name: Populate Ceylon modules cache if Herd down
-        if: steps.cache.outputs.cache-hit != 'true'
         shell: bash
         run: .github/scripts/populate-cache.sh
         env:
