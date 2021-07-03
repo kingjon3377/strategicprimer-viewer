@@ -54,7 +54,7 @@ shared class AdvancementCLIHelper(IAdvancementModel model, ICLIHelper cli) satis
                 skill = temp;
             } else if (chosen.key <= skills.size) {
                 if (exists skillName = cli.inputString("Name of new Skill: ")) {
-                    model.addHoursToSkill(worker, job.name, skillName, 0, 200); // TODO: Have a better way to add the skill without any hours, or else rework this method
+                    model.addSkillToWorker(worker, job.name, skillName);
                     skills.clear();
                     skills.addAll(job);
                     if (exists temp = skills.find(matchingValue(skillName,
@@ -222,7 +222,7 @@ shared class AdvancementCLIHelper(IAdvancementModel model, ICLIHelper cli) satis
             } else if (chosen.key <= skills.size ) {
                 if (exists skillName = cli.inputString("Name of new Skill: ")) {
                     for (worker in workers) {
-                        model.addHoursToSkill(worker, jobName, skillName, 0, 200);
+                        model.addSkillToWorker(worker, jobName, skillName);
                     }
                     skills.clear();
                     skills.addAll(ProxyJob(jobName, false, *workers));
