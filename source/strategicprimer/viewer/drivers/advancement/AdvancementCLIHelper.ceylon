@@ -221,9 +221,7 @@ shared class AdvancementCLIHelper(IAdvancementModel model, ICLIHelper cli) satis
             } else if (chosen.key <= skills.size ) {
                 if (exists skillName = cli.inputString("Name of new Skill: ")) {
                     model.addSkillToAllWorkers(unit, jobName, skillName);
-                    skills.clear();
-                    skills.addAll(unit.narrow<IWorker>().flatMap(shuffle(IWorker.getJob)(jobName))
-                        .map(ISkill.name).distinct);
+		    skills.add(skillName);
                     skill = skillName;
                 } else {
                     return;
@@ -282,9 +280,7 @@ shared class AdvancementCLIHelper(IAdvancementModel model, ICLIHelper cli) satis
                         for (worker in workers) {
                             model.addJobToWorker(worker, jobName);
                         }
-                        jobs.clear();
-                        jobs.addAll(unit.narrow<IWorker>().flatMap(identity)
-                            .map(IJob.name).distinct);
+			jobs.add(jobName);
                         job = jobName;
                     } else {
                         break;
