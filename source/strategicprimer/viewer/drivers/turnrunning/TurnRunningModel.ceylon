@@ -350,7 +350,9 @@ shared class TurnRunningModel extends ExplorationModel satisfies ITurnRunningMod
                     .narrow<IMutableUnit|IMutableFortress>().filter(matchingValue(owner, HasOwner.owner))) {
                 variable Boolean found = false;
                 for (item in container.narrow<IMutableResourcePile>()) {
-                    if (resource.isSubset(item, noop)) { // TODO: is that the right way around?
+                    if (resource.isSubset(item, noop) ||
+                            (resource.kind == item.kind && resource.contents == item.contents
+                                && resource.id == item.id)) {
                         if (decimalize(item.quantity.number) <= amount) {
                             switch (container)
                             case (is IMutableUnit) { container.removeMember(item); }
