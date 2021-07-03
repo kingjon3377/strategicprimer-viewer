@@ -48,26 +48,6 @@ class GatherApplet(ITurnRunningModel model, ICLIHelper cli, IDRegistrar idf)
         }
     }
 
-    String toHours(Integer minutes) {
-        if (minutes.negative) {
-            return "negative " + toHours(minutes.negated);
-        } else if (minutes.zero) {
-            return "no time";
-        } else if (minutes == 1) {
-            return "1 minute";
-        } else if (minutes < 60) {
-            return minutes.string + " minutes";
-        } else if (minutes == 60) {
-            return "1 hour";
-        } else if (minutes < 120) {
-            return "1 hour, " + toHours(minutes.modulo(60));
-        } else if (60.divides(minutes)) {
-            return (minutes / 60).string + " hours";
-        } else {
-            return (minutes / 60).string + " hours, " + toHours(minutes.modulo(60));
-        }
-    }
-
     shared actual String? run() {
         StringBuilder buffer = StringBuilder();
         if (exists center = confirmPoint("Location to search around: "),
@@ -83,7 +63,7 @@ class GatherApplet(ITurnRunningModel model, ICLIHelper cli, IDRegistrar idf)
                     time -= noResultCost;
                 } else {
                     if (noResultsTime.positive) {
-                        cli.println("Found nothing for the next ``toHours(noResultsTime)``"); // TODO: Add to results?
+                        cli.println("Found nothing for the next ``inHours(noResultsTime)``"); // TODO: Add to results?
                         noResultsTime = 0;
                     }
                     switch (cli.inputBooleanInSeries(
@@ -134,7 +114,7 @@ class GatherApplet(ITurnRunningModel model, ICLIHelper cli, IDRegistrar idf)
                 }
             }
             if (noResultsTime.positive) {
-                cli.println("Found nothing for the next ``toHours(noResultsTime)``"); // TODO: Add to results?
+                cli.println("Found nothing for the next ``inHours(noResultsTime)``"); // TODO: Add to results?
             }
         }
         return buffer.string.trimmed;

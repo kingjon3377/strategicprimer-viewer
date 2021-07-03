@@ -41,10 +41,22 @@ shared interface TurnApplet satisfies Applet<[]> {
     shared actual Anything?() invoke => run;
 
     shared default String inHours(Integer minutes) {
-        if (minutes < 60) {
-            return "``minutes`` minutes";
+        if (minutes.negative) {
+            return "negative " + inHours(minutes.negated);
+        } else if (minutes.zero) {
+            return "no time";
+        } else if (minutes == 1) {
+            return "1 minute";
+        } else if (minutes < 60) {
+            return minutes.string + " minutes";
+        } else if (minutes == 60) {
+            return "1 hour";
+        } else if (minutes < 120) {
+            return "1 hour, " + inHours(minutes.modulo(60));
+        } else if (60.divides(minutes)) {
+            return (minutes / 60).string + " hours";
         } else {
-            return "``minutes / 60`` hours, ``minutes % 60`` minutes";
+            return (minutes / 60).string + " hours, " + inHours(minutes.modulo(60));
         }
     }
 }
