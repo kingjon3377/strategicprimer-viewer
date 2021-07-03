@@ -203,6 +203,7 @@ object dbMapReader {
                 assert(false);
             }
         }
+        retval.modified = false;
         log.trace("Finished adding members to parents");
         return retval;
     }

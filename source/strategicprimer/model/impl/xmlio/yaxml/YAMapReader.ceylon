@@ -322,6 +322,7 @@ class YAMapReader("The Warning instance to use" Warning warner,
         } else {
             warner.handle(MissingPropertyException(mapTag, "current_player"));
         }
+        retval.modified = false;
         return retval;
     }
 
