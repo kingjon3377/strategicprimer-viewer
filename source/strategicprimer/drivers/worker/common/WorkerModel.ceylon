@@ -64,6 +64,8 @@ import ceylon.logging {
     logger
 }
 import ceylon.random {
+    DefaultRandom,
+    Random,
     randomize
 }
 import lovelace.util.common {
@@ -564,6 +566,54 @@ shared class WorkerModel extends SimpleMultiMapModel satisfies IWorkerModel {
         return any;
     }
 
+    "Add a skill, without any hours in it, to the specified worker in the
+     specified Job in all maps. Returns [[true]] if a matching worker was found
+     in at least one map, [[false]] otherwise. If no existing Job by that name
+     already exists, a zero-level Job with that name is added first. If a Skill
+     by that name already exists in the corresponding Job, it is left alone."
+    shared actual Boolean addSkillToWorker(IWorker worker, String jobName, String skillName) {
+        variable Boolean any = false;
+        for (map in restrictedAllMaps) {
+            if (exists matching = getUnitsImpl(map.fixtures.items, currentPlayer)
+                    .flatMap(identity).narrow<IMutableWorker>()
+                    .filter(matchingValue(worker.race, IWorker.race))
+                    .filter(matchingValue(worker.name, IWorker.name))
+                    .find(matchingValue(worker.id, IWorker.id))) {
+                if (exists job = matching.narrow<IMutableJob>()
+                        .find(matchingValue(jobName, IJob.name))) {
+                    if (!job.any(matchingValue(skillName, ISkill.name))) {
+                        map.modified = true;
+                        job.addSkill(Skill(skillName, 0, 0));
+                    }
+                } else {
+                    map.modified = true;
+                    Job job = Job(jobName, 0);
+                    job.addSkill(Skill(skillName, 0, 0));
+                    matching.addJob(job);
+                }
+                any = true;
+            }
+        }
+        return any;
+    }
+
+    "Add a skill, without any hours in it, to all workers in the specified Job
+     in all maps. Returns [[true]] if at least one matching worker was found in
+     at least one map, [[false]] otherwise. If a worker is in a different unit
+     in some map, the Skill is still added to it. If no existing Job by that
+     name already exists, a zero-level Job with that name is added first. If a
+     Skill by that name already exists in the corresponding Job, it is left
+     alone."
+    shared actual Boolean addSkillToAllWorkers(IUnit unit, String jobName, String skillName) {
+        variable Boolean any = false;
+        for (worker in unit.narrow<IWorker>()) {
+            if (addSkillToWorker(worker, jobName, skillName)) {
+                any = true;
+            }
+        }
+        return any;
+    }
+
     "Add hours to a Skill to the specified Job in the matching worker in all
      maps.  Returns [[true]] if a matching worker was found in at least one
      map, [[false]] otherwise. If the worker doesn't have that Skill in that
@@ -600,6 +650,28 @@ shared class WorkerModel extends SimpleMultiMapModel satisfies IWorkerModel {
                     job.addSkill(skill);
                 }
                 skill.addHours(hours, contextValue);
+            }
+        }
+        return any;
+    }
+
+    "Add hours to a Skill to the specified Job in all workers in the given unit
+     in all maps. (If a worker is in a different unit in some maps, that worker
+     will still receive the hours.) Returns [[true]] if at least one worker
+     received hours, [[false]] otherwise. If a worker doesn't have that skill
+     in that Job, it is added first; if it doesn't have that Job, it is added
+     first as in [[addJobToWorker]], then the skill is added to it. The
+     [[contextValue]] is used to calculate a new value passed to
+     [[strategicprimer.model.common.map.fixtures.mobile.worker::IMutableSkill.addHours]]
+     for each worker."
+    // TODO: Take a level-up listener?
+    shared actual Boolean addHoursToSkillInAll(IUnit unit, String jobName, String skillName,
+            Integer hours, Integer contextValue) {
+        variable Boolean any = false;
+        Random rng = DefaultRandom(contextValue);
+        for (worker in unit.narrow<IWorker>()) {
+            if (addHoursToSkill(worker, jobName, skillName, hours, rng.nextInteger(100))) {
+                any = true;
             }
         }
         return any;

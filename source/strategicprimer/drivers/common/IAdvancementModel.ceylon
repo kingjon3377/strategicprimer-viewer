@@ -18,6 +18,22 @@ shared interface IAdvancementModel satisfies IDriverModel {
     // TODO: Allow caller to create a non-zero-level Job?
     shared formal Boolean addJobToWorker(IWorker worker, String jobName);
 
+    "Add a skill, without any hours in it, to the specified worker in the
+     specified Job in all maps. Returns [[true]] if a matching worker was found
+     in at least one map, [[false]] otherwise. If no existing Job by that name
+     already exists, a zero-level Job with that name is added first. If a Skill
+     by that name already exists in the corresponding Job, it is left alone."
+    shared formal Boolean addSkillToWorker(IWorker worker, String jobName, String skillName);
+
+    "Add a skill, without any hours in it, to all workers in the specified Job
+     in all maps. Returns [[true]] if at least one matching worker was found in
+     at least one map, [[false]] otherwise. If a worker is in a different unit
+     in some map, the Skill is still added to it. If no existing Job by that
+     name already exists, a zero-level Job with that name is added first. If a
+     Skill by that name already exists in the corresponding Job, it is left
+     alone."
+    shared formal Boolean addSkillToAllWorkers(IUnit unit, String jobName, String skillName);
+
     "Add hours to a Skill to the specified Job in the matching worker in all
      maps.  Returns [[true]] if a matching worker was found in at least one
      map, [[false]] otherwise. If the worker doesn't have that Skill in that
@@ -28,6 +44,19 @@ shared interface IAdvancementModel satisfies IDriverModel {
      it should be a random number between 0 and 99."
     // TODO: Take a level-up listener?
     shared formal Boolean addHoursToSkill(IWorker worker, String jobName, String skillName,
+        Integer hours, Integer contextValue);
+
+    "Add hours to a Skill to the specified Job in all workers in the given unit
+     in all maps. (If a worker is in a different unit in some maps, that worker
+     will still receive the hours.) Returns [[true]] if at least one worker
+     received hours, [[false]] otherwise. If a worker doesn't have that skill
+     in that Job, it is added first; if it doesn't have that Job, it is added
+     first as in [[addJobToWorker]], then the skill is added to it. The
+     [[contextValue]] is used to calculate a new value passed to
+     [[strategicprimer.model.common.map.fixtures.mobile.worker::IMutableSkill.addHours]]
+     for each worker."
+    // TODO: Take a level-up listener?
+    shared formal Boolean addHoursToSkillInAll(IUnit unit, String jobName, String skillName,
         Integer hours, Integer contextValue);
 
     "Replace [[one skill|delenda]] with [[another|replacement]] in the specified job
