@@ -7,8 +7,7 @@ import strategicprimer.model.common.map {
     Player
 }
 import strategicprimer.model.common.map.fixtures.mobile {
-    IUnit,
-    ProxyUnit
+    IUnit
 }
 import javax.swing {
     SpinnerNumberModel,
@@ -64,6 +63,14 @@ final class OrdersPanel extends BorderedPanel satisfies OrdersContainer {
     void fixColor() {
         if (is IUnit sel = selection, !isCurrent(sel, spinnerModel.number.intValue())) {
             area.background = lightBlue;
+        } else if (is String sel = selection) {
+            for (unit in playerUnits(currentPlayer, sel)) {
+                if (!isCurrent(unit, spinnerModel.number.intValue())) {
+                    area.background = lightBlue;
+                    return;
+                }
+            }
+            area.background = defaultColor;
         } else {
             area.background = defaultColor;
         }
@@ -77,6 +84,14 @@ final class OrdersPanel extends BorderedPanel satisfies OrdersContainer {
             }
             fixColor();
             parent.parent.repaint();
+        } else if (is String sel = selection) {
+            if (exists ordersConsumer) {
+                for (unit in playerUnits(currentPlayer, sel)) {
+                    ordersConsumer(unit, spinnerModel.number.intValue(), area.text);
+                }
+            }
+            fixColor();
+            parent.parent.repaint();
         }
     }
 
@@ -86,6 +101,21 @@ final class OrdersPanel extends BorderedPanel satisfies OrdersContainer {
         if (is IUnit sel = selection) {
             area.enabled = true;
             area.text = ordersSupplier(sel, spinnerModel.number.intValue());
+        } else if (is String sel = selection) {
+            area.enabled = true;
+            variable String? orders = null;
+            for (unit in playerUnits(currentPlayer, sel)) {
+                if (exists temp = orders) {
+                    if (temp != ordersSupplier(unit, spinnerModel.number.intValue())) {
+                        area.text = "";
+                        fixColor();
+                        return;
+                    }
+                } else {
+                    orders = ordersSupplier(unit, spinnerModel.number.intValue());
+                }
+            }
+            area.text = orders else "";
         } else {
             area.enabled = false;
             area.text = "";
@@ -103,13 +133,7 @@ final class OrdersPanel extends BorderedPanel satisfies OrdersContainer {
             } else {
                 temp = sel;
             }
-            if (is String temp) {
-                ProxyUnit proxyUnit = ProxyUnit.forKind(temp);
-                playerUnits(currentPlayer, temp).each(proxyUnit.addProxied);
-                selection = proxyUnit;
-            } else {
-                selection = temp;
-            }
+            selection = temp;
             revert();
         }
     }
