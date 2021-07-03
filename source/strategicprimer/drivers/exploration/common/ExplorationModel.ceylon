@@ -41,7 +41,7 @@ import strategicprimer.model.common.map.fixtures.mobile {
     AnimalTracks,
     IMutableUnit,
     IUnit,
-    ProxyUnit,
+    ProxyFor,
     MobileFixture
 }
 import strategicprimer.model.common.map.fixtures.resources {
@@ -397,7 +397,7 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
     }
 
     Boolean mapsAgreeOnLocation(IUnit unit) {
-        if (is ProxyUnit unit) {
+        if (is ProxyFor<IUnit> unit) {
             if (exists first = unit.proxied.first) {
                 return mapsAgreeOnLocation(first);
             } else {
