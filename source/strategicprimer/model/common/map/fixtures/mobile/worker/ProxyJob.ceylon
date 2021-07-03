@@ -49,6 +49,7 @@ shared class ProxyJob(name, parallel, IWorker* proxiedWorkers)
                 proxiedJobs.add(worker.find(matchingValue(name, IJob.name)) else job);
             } else {
                 log.warn("Can't add job to immutable worker");
+		log.trace("Stack trace", Exception());
             }
         }
     }
