@@ -94,8 +94,8 @@ shared class Unit(owner, kind, name, id) satisfies IMutableUnit {
     "Add a member."
     shared actual void addMember(UnitMember member) {
         if (is ProxyFor<out Anything> member) {
-            log.error("ProxyWorker added to Unit",
-                AssertionError("ProxyWorker added to Unit"));
+            log.error("Proxy member added to Unit",
+                AssertionError("Proxy member added to Unit"));
         }
         members.add(member);
     }
