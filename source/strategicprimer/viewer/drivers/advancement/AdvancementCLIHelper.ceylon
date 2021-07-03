@@ -15,9 +15,7 @@ import strategicprimer.model.common.map.fixtures.mobile {
     IUnit
 }
 import strategicprimer.model.common.map.fixtures.mobile.worker {
-    ProxyWorker,
     IJob,
-    ProxyJob,
     ISkill,
     Skill
 }
@@ -209,37 +207,31 @@ shared class AdvancementCLIHelper(IAdvancementModel model, ICLIHelper cli) satis
     }
 
     "Let the user add experience in a given Job to all of a list of workers."
-    void advanceWorkersInJob(String jobName, IWorker* workers) {
-        MutableList<ISkill> skills = ArrayList {
-            elements = ProxyJob(jobName, false, *workers);
+    void advanceWorkersInJob(String jobName, IUnit unit) {
+        MutableList<String> skills = ArrayList {
+            elements = unit.narrow<IWorker>().flatMap(shuffle(IWorker.getJob)(jobName))
+                .map(ISkill.name).distinct;
         };
         while (true) {
-            value chosen = cli.chooseFromList(skills,
+            value chosen = cli.chooseStringFromList(skills.sequence(),
                 "Skills in Jobs:", "No existing skills.", "Skill to advance: ", false);
-            ISkill skill;
+            String skill;
             if (exists temp = chosen.item) {
                 skill = temp;
             } else if (chosen.key <= skills.size ) {
                 if (exists skillName = cli.inputString("Name of new Skill: ")) {
-                    for (worker in workers) {
-                        model.addSkillToWorker(worker, jobName, skillName);
-                    }
+                    model.addSkillToAllWorkers(unit, jobName, skillName);
                     skills.clear();
-                    skills.addAll(ProxyJob(jobName, false, *workers));
-                    if (exists temp =
-                            skills.find(matchingValue(skillName, ISkill.name))) {
-                        skill = temp;
-                    } else {
-                        cli.println("Select the new item at the next prompt.");
-                        continue;
-                    }
+                    skills.addAll(unit.narrow<IWorker>().flatMap(shuffle(IWorker.getJob)(jobName))
+                        .map(ISkill.name).distinct);
+                    skill = skillName;
                 } else {
                     return;
                 }
             } else {
                 break;
             }
-            advanceWorkersInSkill(jobName, skill.name, *workers);
+            advanceWorkersInSkill(jobName, skill, *unit.narrow<IWorker>());
             if (exists continuation =
                     cli.inputBoolean("Select another Skill in this Job?"), continuation) {
                 // continue;
@@ -272,12 +264,13 @@ shared class AdvancementCLIHelper(IAdvancementModel model, ICLIHelper cli) satis
             if (workers.empty) {
                 cli.println("No workers in unit.");
             } else {
-                MutableList<IJob> jobs =
-                    ArrayList { elements = ProxyWorker.fromUnit(unit); };
+                MutableList<String> jobs = ArrayList {
+                    elements = unit.narrow<IWorker>().flatMap(identity).map(IJob.name).distinct;
+                };
                 while (true) {
-                    value chosen = cli.chooseFromList(jobs, "Jobs in workers:",
+                    value chosen = cli.chooseStringFromList(jobs.sequence(), "Jobs in workers:",
                         "No existing jobs.", "Job to advance: ", false);
-                    IJob job;
+                    String job;
                     if (exists temp = chosen.item) {
                         job = temp;
                     } else if (chosen.key<=jobs.size) {
@@ -290,17 +283,13 @@ shared class AdvancementCLIHelper(IAdvancementModel model, ICLIHelper cli) satis
                             model.addJobToWorker(worker, jobName);
                         }
                         jobs.clear();
-                        jobs.addAll(ProxyWorker.fromUnit(unit));
-                        if (exists temp = jobs.find(matchingValue(jobName, IJob.name))) {
-                            job = temp;
-                        } else {
-                            cli.println("Select the new item at the next prompt.");
-                            continue;
-                        }
+                        jobs.addAll(unit.narrow<IWorker>().flatMap(identity)
+                            .map(IJob.name).distinct);
+                        job = jobName;
                     } else {
                         break;
                     }
-                    advanceWorkersInJob(job.name, *workers);
+                    advanceWorkersInJob(job, unit);
                     if (exists continuation =
                                 cli.inputBoolean("Select another Job in these workers?"),
                             continuation) {
