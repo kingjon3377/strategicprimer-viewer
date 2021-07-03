@@ -46,7 +46,7 @@ class SimpleProductApplet(String name, shared actual String description, ITurnRu
                 return null;
             }
         }
-        if (exists addendum = cli.inputMultilineString("Desription of results:")) {
+        if (exists addendum = cli.inputMultilineString("Description of results:")) {
             builder.append(addendum);
             return builder.string;
         } else {
