@@ -25,6 +25,7 @@ import strategicprimer.model.common.map {
 }
 
 import strategicprimer.model.common.map.fixtures.mobile {
+    IUnit,
     IWorker,
     AnimalTracks
 }
@@ -240,6 +241,21 @@ shared class MapCheckerCLI satisfies UtilityDriver {
         }
     }
 
+    static Boolean noResultsCheck(TileType terrain, Point context, IFixture fixture,
+            Warning warner) {
+        if (is IUnit unit = fixture, !unit.empty,
+                exists turn = Integer.max(unit.allOrders.keys)) {
+            value results = unit.getResults(turn).lowercased;
+            if (results.empty || results.contains("todo") ||
+                    results.contains("fixme")) {
+                warner.handle(SPContentWarning(context,
+                    "Unit ``unit.name`` [``unit.kind``] (ID #``unit.id``), has orders but no results for turn ``turn``."));
+                return true;
+            }
+        }
+        return false;
+    }
+
     static Boolean positiveAcres(HasExtent<out Anything> item) => item.acres.positive;
     static Boolean acreageChecker(Point context, Warning warner, {IFixture*} fixtures) {
         variable Float total = 0.0;
@@ -297,7 +313,7 @@ shared class MapCheckerCLI satisfies UtilityDriver {
 
     static {Checker+} extraChecks = [ lateriteChecker, aquaticVillageChecker,
         suspiciousSkillCheck, resourcePlaceholderChecker, oasisChecker,
-        personalEquipmentCheck ];
+        personalEquipmentCheck, noResultsCheck ];
 
     static Boolean contentCheck(Checker checker, TileType terrain, Point context,
             Warning warner, IFixture* list) {
