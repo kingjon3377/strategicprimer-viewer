@@ -184,7 +184,6 @@ shared class TurnRunningModel extends ExplorationModel satisfies ITurnRunningMod
         variable Boolean any = false;
         for (map in restrictedAllMaps) {
             if (exists matching = map.fixtures.items.flatMap(unflattenNonFortresses).narrow<IUnit>()
-                    .filter(matchingValue(map.currentPlayer, IUnit.owner))
                     .flatMap(identity).narrow<IMutableWorker>()
                     .filter(matchingValue(worker.race, IWorker.race))
                     .filter(matchingValue(worker.name, IWorker.name))
@@ -208,7 +207,6 @@ shared class TurnRunningModel extends ExplorationModel satisfies ITurnRunningMod
         variable Boolean any = false;
         for (map in restrictedAllMaps) {
             if (exists matching = map.fixtures.items.flatMap(unflattenNonFortresses).narrow<IUnit>()
-                    .filter(matchingValue(map.currentPlayer, IUnit.owner))
                     .flatMap(identity).narrow<IMutableWorker>()
                     .filter(matchingValue(worker.race, IWorker.race))
                     .filter(matchingValue(worker.name, IWorker.name))
@@ -282,7 +280,6 @@ shared class TurnRunningModel extends ExplorationModel satisfies ITurnRunningMod
         variable Boolean any = false;
         for (map in restrictedAllMaps) {
             if (exists matching = map.fixtures.items.flatMap(unflattenNonFortresses).narrow<IUnit>()
-                    .filter(matchingValue(map.currentPlayer, IUnit.owner))
                     .flatMap(identity).narrow<IMutableWorker>()
                     .filter(matchingValue(worker.race, IWorker.race))
                     .filter(matchingValue(worker.name, IWorker.name))
@@ -322,7 +319,6 @@ shared class TurnRunningModel extends ExplorationModel satisfies ITurnRunningMod
         variable Boolean any = false;
         for (map in restrictedAllMaps) {
             if (exists matchingWorker = map.fixtures.items.flatMap(unflattenNonFortresses).narrow<IUnit>()
-                    .filter(matchingValue(map.currentPlayer, IUnit.owner))
                     .flatMap(identity).narrow<IMutableWorker>()
                     .filter(matchingValue(worker.race, IWorker.race))
                     .filter(matchingValue(worker.name, IWorker.name))
