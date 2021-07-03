@@ -162,10 +162,28 @@ abstract class HuntGeneralApplet(String verb, ITurnRunningModel model, ICLIHelpe
             variable Integer time = startingTime;
             variable {<Point->Animal|AnimalTracks|HuntingModel.NothingFound>*} encounters
                 = encounterSrc(center);
+            variable Integer noResultsTime = 0;
             while (time > 0, exists loc->find = encounters.first) {
                 cli.print(inHours(time));
                 cli.println(" remaining.");
                 encounters = encounters.rest;
+                if (is HuntingModel.NothingFound find) {
+                    noResultsTime += noResultCost;
+                    time -= noResultCost;
+                    if (!time.positive) {
+                        cli.println("Found nothing for the next ``inHours(noResultsTime)``");
+                    }
+                    continue;
+                } else if (noResultsTime.positive) {
+                    cli.println("Found nothing for the next ``inHours(noResultsTime)``");
+                    if (exists addendum = cli.inputMultilineString(
+                            "Add to results about that:")) {
+                        buffer.append(addendum);
+                    } else {
+                        return null;
+                    }
+                    noResultsTime = 0;
+                }
                 if (exists cost = handleEncounter(buffer, time, loc, find)) {
                     time -= cost;
                 } else {
