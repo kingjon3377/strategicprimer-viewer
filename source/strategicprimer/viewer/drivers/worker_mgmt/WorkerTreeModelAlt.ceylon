@@ -39,6 +39,12 @@ import strategicprimer.drivers.common {
 }
 
 "An alternative implementation of the worker tree model."
+todo("Nodes should store 'keys', i.e. [id, owner, name, kind] for units, rather
+      than model objects directly, to ease the elimination of proxies.  We may
+      need to alter the driver model to make that work. Once that's in place
+      we'll get rid of [[WorkerTreeModel]].",
+     "We want to add Fortress and Unit-Group levels to the tree",
+     "We want a way for the user to manage 'personal equipment'")
 shared class WorkerTreeModelAlt extends DefaultTreeModel satisfies IWorkerTreeModel {
     "A base class for all nodes in the tree in this implementation of the tree model."
     shared static class WorkerTreeNode<NodeObject>(NodeObject userObj,
