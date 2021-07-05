@@ -149,6 +149,9 @@ shared class AdvancementCLIHelper(IAdvancementModel model, ICLIHelper cli) satis
     todo("Support expert mentoring")
     void advanceWorkersInSkill(String jobName, String skillName, IWorker* workers) {
         Integer hours = cli.inputNumber("Hours of experience to add: ") else 0;
+        if (!hours.positive) {
+            return;
+        }
         for (worker in workers) {
             IJob job = worker.getJob(jobName);
             ISkill skill = job.getSkill(skillName);
