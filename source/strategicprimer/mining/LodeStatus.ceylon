@@ -99,11 +99,11 @@ LodeStatus? parseLodeStatus(String status) {
     switch (status.lowercased)
     case ("none") { return null; }
     case ("minimal") { return LodeStatus.minimal; }
-    case ("verypoor") { return LodeStatus.veryPoor; }
+    case ("verypoor"|"very-poor") { return LodeStatus.veryPoor; }
     case ("poor") { return LodeStatus.poor; }
     case ("fair") { return LodeStatus.fair; }
     case ("good") { return LodeStatus.good; }
-    case ("verygood") { return LodeStatus.veryGood; }
-    case ("motherlode") { return LodeStatus.motherLode; }
+    case ("verygood"|"very-good") { return LodeStatus.veryGood; }
+    case ("motherlode"|"mother-lode") { return LodeStatus.motherLode; }
     else { return null; }
 }
