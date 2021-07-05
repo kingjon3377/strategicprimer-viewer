@@ -111,7 +111,8 @@ shared abstract class AbstractTurnApplet(ITurnRunningModel model, ICLIHelper cli
         return model.map.locations.flatMap(model.map.fixtures.get).narrow<IFortress|IUnit>()
             .filter(matchingValue(player, HasOwner.owner)).flatMap(identity).narrow<IResourcePile>()
             .filter(matchingValue("food", IResourcePile.kind)).filter(matchingValue("pounds",
-                compose(Quantity.units, IResourcePile.quantity))).filter((r) => r.created <= turn).sequence();
+                compose(Quantity.units, IResourcePile.quantity))).filter((r) => r.created <= turn)
+            .sort(byIncreasing(IResourcePile.created)).sequence();
     }
 
 }
