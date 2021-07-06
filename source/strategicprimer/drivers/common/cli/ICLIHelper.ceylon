@@ -116,6 +116,9 @@ shared interface ICLIHelper {
             "The prompt to use to prompt the user."
             String prompt) {
         print(prompt);
+        if (exists last = prompt.last, !last.whitespace) {
+            print(" ");
+        }
         if (exists row = inputNumber("Row: "), exists column = inputNumber("Column: ")) {
             return Point(row, column);
         } else {
