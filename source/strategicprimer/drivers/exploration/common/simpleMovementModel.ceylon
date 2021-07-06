@@ -100,8 +100,9 @@ shared object simpleMovementModel {
         if (exists terrain) {
             if (TileType.ocean == terrain) {
                 return runtime.maxArraySize;
-            } else if (forest || mountain || !fixtures.narrow<Forest|Hill>().empty ||
-                    TileType.desert == terrain) {
+            } else if (forest || mountain || !fixtures.narrow<Hill>().empty ||
+                    !fixtures.narrow<Forest>().filter(not(Forest.rows)).empty ||
+		    TileType.desert == terrain) {
                 return (river) then 2 else 3;
             } else if (TileType.jungle == terrain || TileType.swamp == terrain) {
                 return (river) then 4 else 6;
