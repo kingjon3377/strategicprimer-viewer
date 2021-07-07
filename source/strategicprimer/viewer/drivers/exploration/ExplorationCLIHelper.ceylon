@@ -308,6 +308,7 @@ class ExplorationAutomationConfig(shared Player player) {
         shared String|String(Type) stopExplanation;
         "Returns true when a tile fixture matches all of these conditions."
         Boolean(Type)* conditions;
+        variable Type? matched = null;
         Boolean allConditions(TileFixture fixture) {
             if (is Type fixture) {
                 for (condition in conditions) {
@@ -315,6 +316,7 @@ class ExplorationAutomationConfig(shared Player player) {
                         return false;
                     }
                 }
+                matched = fixture;
                 return true;
             } else {
                 return false;
@@ -323,6 +325,19 @@ class ExplorationAutomationConfig(shared Player player) {
         "Returns true when the given tile matches this condition."
         shared Boolean matches(IMapNG map, Point point) =>
             map.fixtures.get(point).any(allConditions);
+        "The description of the fixture that matched, if any, so caller
+         doesn't have to figure out which fixture matched to use [[stopExplanation]]."
+        shared String explain() {
+            if (exists temp = matched) {
+                if (is String stopExplanation) {
+                    return stopExplanation;
+                } else {
+                    return stopExplanation(temp);
+                }
+            } else {
+                return "";
+            }
+        }
     }
     {Condition<out TileFixture>+} conditions =
         [Condition<IFortress>("at others' fortresses",
@@ -372,7 +387,7 @@ class ExplorationAutomationConfig(shared Player player) {
         if (exists matchingCondition = localEnabledConditions
                 .find(matchesCondition(map, point))) {
             cli.println("There is ``matchingCondition
-                .stopExplanation`` here, so the explorer stops.");
+                .explain()`` here, so the explorer stops.");
             return true;
         } else {
             return false;
