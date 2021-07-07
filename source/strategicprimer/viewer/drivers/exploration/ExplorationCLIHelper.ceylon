@@ -53,6 +53,14 @@ import strategicprimer.drivers.common {
     SelectionChangeListener
 }
 
+import ceylon.decimal {
+    Decimal
+}
+
+import lovelace.util.jvm {
+    decimalize
+}
+
 "The logic split out of [[ExplorationCLI]], some also used in
  [[strategicprimer.viewer.drivers.turnrunning::TurnRunningCLI]]"
 shared class ExplorationCLIHelper(IExplorationModel model, ICLIHelper cli)
@@ -94,10 +102,10 @@ shared class ExplorationCLIHelper(IExplorationModel model, ICLIHelper cli)
     }
 
     variable Integer totalMP = 0;
-    variable Integer runningTotal = 0;
-    shared Integer movement => runningTotal;
+    variable Decimal runningTotal = decimalize(0);
+    shared Integer movement => runningTotal.integer; // TODO: or do we want to expose Decimal here as well?
 
-    shared actual void deduct(Integer cost) => runningTotal -= cost;
+    shared actual void deduct(Number<out Anything> cost) => runningTotal -= decimalize(cost);
 
     MutableList<Point>&Queue<Point> proposedPath = ArrayList<Point>();
     variable ExplorationAutomationConfig automationConfig =
@@ -116,7 +124,8 @@ shared class ExplorationCLIHelper(IExplorationModel model, ICLIHelper cli)
             cli.println("):");
             cli.println(newSelection.verbose);
             if (exists number = cli.inputNumber("MP the unit has: ")) {
-                runningTotal = totalMP = number;
+                totalMP = number;
+                runningTotal = decimalize(number);
             }
             if (automationConfig.player != newSelection.owner) {
                 automationConfig = ExplorationAutomationConfig(newSelection.owner);
@@ -147,10 +156,10 @@ shared class ExplorationCLIHelper(IExplorationModel model, ICLIHelper cli)
                         proposedDestination`` isn't adjacent to ``point``");
                     return;
                 }
-                cli.println("``runningTotal``/``totalMP`` MP remaining. Current speed: ``
+                cli.println("``runningTotal.integer``/``totalMP`` MP remaining. Current speed: ``
                     speed.shortName``.");
             } else {
-                cli.println("``runningTotal``/``totalMP`` MP remaining. Current speed: ``
+                cli.println("``runningTotal.integer``/``totalMP`` MP remaining. Current speed: ``
                     speed.shortName``.");
                 cli.printlnAtInterval(usage);
                 Integer directionNum = cli.inputNumber("Direction to move: ") else -1;
@@ -178,11 +187,11 @@ shared class ExplorationCLIHelper(IExplorationModel model, ICLIHelper cli)
                         }
                         return;
                     } else {
-                        runningTotal = 0;
+                        runningTotal = decimalize(0);
                         return;
                     }
                 }
-                else { runningTotal = 0; return; }
+                else { runningTotal = decimalize(0); return; }
             }
 
             Point destPoint = model.getDestination(point, direction);

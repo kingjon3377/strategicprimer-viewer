@@ -2,6 +2,7 @@ import lovelace.util.jvm {
     BorderedPanel,
     createMenuItem,
     createHotKey,
+    decimalize,
     ListenedButton,
     InterpolatedLabel,
     FunctionalPopupMenu,
@@ -25,7 +26,7 @@ import strategicprimer.model.common.map.fixtures.towns {
     Village
 }
 import java.lang {
-    JInteger=Integer,
+    JDouble=Double,
     IntArray
 }
 import java.awt.event {
@@ -125,8 +126,8 @@ class ExplorationPanel(SpinnerNumberModel mpModel, ComboBoxModel<Speed> speedMod
         Direction.nowhere->key(KeyEvent.vkNumpad5)
     );
     object movementDeductionTracker satisfies MovementCostListener {
-        shared actual void deduct(Integer cost) =>
-            mpModel.\ivalue =JInteger.valueOf(mpModel.number.intValue() - cost);
+        shared actual void deduct(Number<out Anything> cost) =>
+            mpModel.\ivalue = JDouble.valueOf(mpModel.number.doubleValue() - decimalize(cost).float);
     }
     driverModel.addMovementCostListener(movementDeductionTracker);
     // TODO: Cache selected unit here instead of always referring to it via the model?

@@ -33,7 +33,7 @@ shared interface IExplorationModel
      move in MP, which we also tell listeners about."
     throws(`class TraversalImpossibleException`,
         "if movement in the specified direction is impossible")
-    shared formal Integer move(Direction direction, Speed speed);
+    shared formal Number<out Anything> move(Direction direction, Speed speed);
 
     "Given a starting point and a direction, get the next point in that direction."
     shared formal Point getDestination(Point point, Direction direction);

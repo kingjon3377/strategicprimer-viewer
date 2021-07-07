@@ -4,5 +4,5 @@ shared interface MovementCostListener {
     "Account for a movement."
     shared formal void deduct(
             "How many movement points the movement or action cost"
-            Integer cost);
+            Number<out Anything> cost);
 }

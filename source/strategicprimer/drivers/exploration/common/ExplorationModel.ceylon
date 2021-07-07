@@ -4,9 +4,6 @@ import ceylon.collection {
     MutableList,
     MutableSet
 }
-import ceylon.numeric.float {
-    ceiling
-}
 
 import strategicprimer.drivers.common {
     SimpleMultiMapModel,
@@ -243,7 +240,7 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
     }
 
     "Tell listeners to deduct a cost from their movement-point totals."
-    void fireMovementCost(Integer cost) {
+    void fireMovementCost(Number<out Anything> cost) {
         for (listener in mcListeners) {
             listener.deduct(cost);
         }
@@ -306,7 +303,7 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
      move in MP, which we also tell listeners about."
     throws(`class TraversalImpossibleException`,
         "if movement in the specified direction is impossible")
-    shared actual Integer move(
+    shared actual Number<out Anything> move(
             "The direction to move"
             Direction direction,
             "How hastily the explorer is moving"
@@ -338,7 +335,7 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
 //                        map.rivers[dest]), fixtures);
                         map.rivers.get(dest)), fixtures);
             }
-            Integer retval = (ceiling(base * speed.mpMultiplier) + 0.1).integer;
+            Float retval = (base * speed.mpMultiplier) + 0.1;
             removeImpl(restrictedMap, point, unit);
             restrictedMap.addFixture(dest, unit);
             mapModified = true;
