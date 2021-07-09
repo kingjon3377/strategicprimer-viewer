@@ -82,6 +82,7 @@ shared class ExplorationCLIHelper(IExplorationModel model, ICLIHelper cli)
     "Copy the given fixture to subordinate maps and print it to the output stream."
     void printAndTransferFixture(Point destPoint, TileFixture? fixture, HasOwner mover, Boolean automatic) {
         if (exists fixture) {
+            cli.print("- ");
             if (automatic) {
                 cli.print(fixture.string);
                 cli.println(" (automatically)");
