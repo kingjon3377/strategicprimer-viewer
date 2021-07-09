@@ -39,10 +39,10 @@ https://shinecycle.wordpress.com/tag/assistive/)) or examining the commits in
 this repository.  Interested developers or users can help by reporting issues,
 requesting features, or contributing patches.
 
-Changes to the project are automatically tested using Travis Continuous
-Integration: [![Build
-Status](https://travis-ci.org/kingjon3377/strategicprimer-viewer.svg?branch=master)
-](https://travis-ci.org/kingjon3377/strategicprimer-viewer)
+Changes to the project are automatically tested using Github Actions continuous
+integration: [![Build
+Status](https://github.com/kingjon3377/strategicprimer-viewer/actions/workflows/build.yml/badge.svg)
+](https://github.com/kingjon3377/strategicprimer-viewer/actions/workflows/build.yml)
 
 ### Dependencies and Building from Source
 
