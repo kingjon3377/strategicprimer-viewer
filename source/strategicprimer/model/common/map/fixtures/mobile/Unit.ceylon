@@ -6,7 +6,6 @@ import ceylon.collection {
 
 import lovelace.util.common {
     todo,
-    comparingOn,
     ArraySet
 }
 import strategicprimer.model.common.map {
@@ -17,7 +16,6 @@ import strategicprimer.model.common.map {
 import strategicprimer.model.common.map.fixtures {
     Implement,
     IResourcePile,
-    Quantity,
     UnitMember
 }
 import strategicprimer.model.common.map.fixtures.mobile {
@@ -223,8 +221,8 @@ shared class Unit(owner, kind, name, id) satisfies IMutableUnit {
             return larger;
         } else if (is Animal one) {
             if (is Animal two) {
-                return comparing(comparingOn(Animal.kind, increasing<String>),
-                    comparingOn(Animal.population, decreasing<Integer>))(one, two);
+                return comparing(byIncreasing(Animal.kind),
+                    byDecreasing(Animal.population))(one, two);
             } else {
                 return smaller;
             }
@@ -232,8 +230,8 @@ shared class Unit(owner, kind, name, id) satisfies IMutableUnit {
             return larger;
         } else if (is Implement one) {
             if (is Implement two) {
-                return comparing(comparingOn(Implement.kind, increasing<String>),
-                    comparingOn(Implement.population, decreasing<Integer>))(one, two);
+                return comparing(byIncreasing(Implement.kind),
+                    byDecreasing(Implement.population))(one, two);
             } else {
                 return smaller;
             }
@@ -241,9 +239,9 @@ shared class Unit(owner, kind, name, id) satisfies IMutableUnit {
             return larger;
         } else if (is IResourcePile one) {
             if (is IResourcePile two) {
-                return comparing(comparingOn(IResourcePile.kind, increasing<String>),
-                    comparingOn(IResourcePile.contents, increasing<String>), comparingOn(IResourcePile.quantity,
-                        decreasing<Quantity>))(one, two);
+                return comparing(byIncreasing(IResourcePile.kind),
+                    byIncreasing(IResourcePile.contents),
+		    byDecreasing(IResourcePile.quantity))(one, two);
             } else {
                 return larger;
             }

@@ -95,8 +95,7 @@ import lovelace.util.common {
     todo,
     simpleMap,
     TypeStream,
-    MalformedXMLException,
-    comparingOn
+    MalformedXMLException
 }
 import strategicprimer.model.impl.xmlio.fluidxml {
     FluidBase { ... }
@@ -302,7 +301,7 @@ shared class SPFluidWriter() satisfies SPWriter {
                         writeSPObjectImpl(ostream, river, indentation + 4);
                     }
                     for (direction->quality in obj.roads.getOrDefault(loc, [])
-                            .sort(comparingOn(Entry<Direction,Integer>.key, increasing<Direction>))) {
+                            .sort(byIncreasing(Entry<Direction,Integer>.key))) {
                         writeTag(ostream, "road", indentation + 4, true);
                         writeAttributes(ostream, "direction"->direction.string, "quality"->quality);
                     }

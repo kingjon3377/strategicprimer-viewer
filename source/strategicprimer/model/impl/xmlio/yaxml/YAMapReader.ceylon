@@ -65,8 +65,7 @@ import ceylon.language.meta.model {
     ClassOrInterface
 }
 import lovelace.util.common {
-    matchingValue,
-    comparingOn
+    matchingValue
 }
 
 // TODO: Use the one in the Animal maturityModel instead of here?
@@ -405,7 +404,7 @@ class YAMapReader("The Warning instance to use" Warning warner,
                         writeRiver(ostream, river, tabs + 4);
                     }
                     for (direction->quality in obj.roads.getOrDefault(loc, [])
-                            .sort(comparingOn(Entry<Direction,Integer>.key, increasing<Direction>))) {
+                            .sort(byIncreasing(Entry<Direction,Integer>.key))) {
                         eolIfNeeded(needEol, ostream);
                         needEol = false;
                         writeTag(ostream, "road", tabs + 4);
