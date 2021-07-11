@@ -147,7 +147,7 @@ shared object simpleMovementModel {
     "Get the highest Perception score of any member of the unit"
     todo("This does not properly handle the unusual case of a very unobservant unit")
     Integer highestPerception(IUnit unit) =>
-        unit.narrow<IWorker>().map(getPerception).max(increasing) else 0;
+        Integer.max(unit.narrow<IWorker>().map(getPerception)) else 0;
     "Get a worker's Perception score."
     Integer getPerception(IWorker worker) {
         Integer ability;

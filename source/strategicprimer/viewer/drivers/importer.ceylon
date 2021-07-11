@@ -152,8 +152,8 @@ class ImporterDriver satisfies UtilityDriver {
                 mapRow++;
             }
             IMutableMapNG finalRetval = SPMapNG(MapDimensionsImpl(
-                    (retval.keys.map(Point.row).max(increasing) else 0) + 1,
-                    (retval.keys.map(Point.column).max(increasing) else 0) + 1, 2),
+                    (Integer.max(retval.keys.map(Point.row)) else 0) + 1,
+                    (Integer.max(retval.keys.map(Point.column)) else 0) + 1, 2),
                 PlayerCollection(), -1);
             for (point->type in retval) {
                 log.trace("Setting ``point`` to ``type``");
