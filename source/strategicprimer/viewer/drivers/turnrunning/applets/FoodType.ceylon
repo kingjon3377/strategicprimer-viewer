@@ -15,7 +15,7 @@ import strategicprimer.model.common.map.fixtures {
     Quantity
 }
 
-class FoodType {
+class FoodType of milk | meat | grain | slowFruit | quickFruit | other {
     shared static FoodType? askFoodType(ICLIHelper cli, String foodKind) {
         for (type in `FoodType`.caseValues) {
             switch (cli.inputBooleanInSeries("Is it ``type``?", foodKind + type.string))
@@ -33,24 +33,62 @@ class FoodType {
     shared Decimal? fractionSpoilingDaily;
     shared Decimal? minimumSpoilage;
     shared actual String string;
-    new delegate(Integer? keepsFor, Integer? keepsForIfCool, Integer? keepsForRefrig,
-            Integer? keepsForFrozen, Decimal? fracSpoilingDaily, Decimal? minSpoilage,
-            String str) {
-        this.keepsFor = keepsFor;
-        this.keepsForIfCool = keepsForIfCool;
-        this.keepsForRefrigerated = keepsForRefrig;
-        this.keepsForFrozen = keepsForFrozen;
-        this.fractionSpoilingDaily = fracSpoilingDaily;
-        this.minimumSpoilage = minSpoilage;
-        string = str;
+
+    shared new milk {
+        keepsFor = 2;
+        keepsForIfCool = 3;
+        keepsForRefrigerated = 4;
+        keepsForFrozen = null;
+        fractionSpoilingDaily = decimalize(0.5);
+        minimumSpoilage = decimalize(8);
+        string = "milk";
     }
-    shared new milk extends delegate(2, 3, 4, null, decimalize(0.5), decimalize(8), "milk") {}
-    shared new meat extends delegate(2, 3, 4, 8, decimalize(0.25), decimalize(2), "meat") {}
-    shared new grain extends delegate(7, 10, null, null, decimalize(0.125), decimalize(1), "grain") {}
-    shared new slowFruit extends delegate(6, 8, 12, null, decimalize(0.125), decimalize(1), "slow-spoiling fruit") {}
-    shared new quickFruit extends delegate(3, 6, 8, null, decimalize(0.25), decimalize(1), "fast-spoiling fruit") {}
+    shared new meat {
+        keepsFor = 2;
+        keepsForIfCool = 3;
+        keepsForRefrigerated = 4;
+        keepsForFrozen = 8;
+        fractionSpoilingDaily = decimalize(0.25);
+        minimumSpoilage = decimalize(2);
+        string = "meat";
+    }
+    shared new grain {
+        keepsFor = 7;
+        keepsForIfCool = 10;
+        keepsForRefrigerated = null;
+        keepsForFrozen = null;
+        fractionSpoilingDaily = decimalize(0.125);
+        minimumSpoilage = decimalize(1);
+        string = "grain";
+    }
+    shared new slowFruit {
+        keepsFor = 6;
+        keepsForIfCool = 8;
+        keepsForRefrigerated = 12;
+        keepsForFrozen = null;
+        fractionSpoilingDaily = decimalize(0.125);
+        minimumSpoilage = decimalize(1);
+        string = "slow-spoiling fruit";
+    }
+    shared new quickFruit {
+        keepsFor = 3;
+        keepsForIfCool = 6;
+        keepsForRefrigerated = 8;
+        keepsForFrozen = null;
+        fractionSpoilingDaily = decimalize(0.25);
+        minimumSpoilage = decimalize(1);
+        string = "fast-spoiling fruit";
+    }
     // TODO: Add additional cases
-    shared new other extends delegate(null, null, null, null, null, null, "other") {}
+    shared new other {
+        keepsFor = null;
+        keepsForIfCool = null;
+        keepsForRefrigerated = null;
+        keepsForFrozen = null;
+        fractionSpoilingDaily = null;
+        minimumSpoilage = null;
+        string = "other";
+    }
 
     shared Boolean? hasSpoiled(IResourcePile pile, Integer turn, ICLIHelper cli) {
         Integer age = turn - pile.created;
