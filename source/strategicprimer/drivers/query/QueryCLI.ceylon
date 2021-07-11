@@ -5,7 +5,8 @@ import strategicprimer.model.common.map {
     TileType,
     MapDimensions,
     Point,
-    IMapNG
+    IMapNG,
+    TileFixture
 }
 
 import ceylon.collection {
@@ -112,6 +113,32 @@ shared class QueryCLI satisfies ReadOnlyDriver {
                 "Owner of workers to count: ", true).item) {
             Integer count = countWorkersInIterable(player, map.fixtures.items);
             cli.println("``player.name`` has ``count`` workers");
+        }
+    }
+
+    void findVillagesWithExpertise() {
+        if (exists skill = cli.inputString("Job to look for: ")?.lowercased,
+                exists point = cli.inputPoint("Central point for search: ")) {
+            // FIXME: also limit search radius
+            for (loc->fixture in map.fixtures.sort(byIncreasing((Point l->TileFixture f) => distance(point, l, map.dimensions)))) {
+                if (is ITownFixture town = fixture, exists population = town.population) {
+                    value delta = distance(point, loc, map.dimensions);
+                    for (expert->level in population.highestSkillLevels) {
+                        if (expert.lowercased.contains(skill)) {
+                            cli.print("- At ");
+                            cli.print(town.name);
+                            cli.print(", at ");
+                            cli.print(loc.string);
+                            cli.print(" (");
+                            cli.print(Float.format(delta, 0, 1));
+                            cli.print(" tiles away), a level-");
+                            cli.print(level.string);
+                            cli.print(" ");
+                            cli.println(expert);
+                        }
+                    }
+                }
+            }
         }
     }
 
@@ -258,7 +285,8 @@ shared class QueryCLI satisfies ReadOnlyDriver {
             "Count how many workers belong to a player", "count"),
         SimpleApplet(findUnexploredCommand,
             "Find the nearest unexplored tile not behind water.", "unexplored"),
-        SimpleApplet(tradeCommand, "Suggest possible trading partners.", "trade"));
+        SimpleApplet(tradeCommand, "Suggest possible trading partners.", "trade"),
+        SimpleApplet(findVillagesWithExpertise, "Find villages with a skill", "village-skill"));
 
     "Accept and respond to commands."
     shared actual void startDriver() {
