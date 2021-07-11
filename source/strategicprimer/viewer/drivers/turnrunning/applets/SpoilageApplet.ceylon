@@ -37,7 +37,7 @@ shared class SpoilageApplet(ITurnRunningModel model, ICLIHelper cli, IDRegistrar
             }
             cli.print("Food is ");
             cli.println(food.string);
-            if (exists type = FoodType.askFoodType(cli, food.kind)) {
+            if (exists type = FoodType.askFoodType(cli, food.contents)) {
                 switch (type.hasSpoiled(food, turn, cli))
                 case (true) {
                     if (exists spoilage = type.amountSpoiling(food.quantity, cli)) {
