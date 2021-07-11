@@ -18,7 +18,7 @@ import strategicprimer.model.common.map.fixtures {
 class FoodType of milk | meat | grain | slowFruit | quickFruit | other {
     shared static FoodType? askFoodType(ICLIHelper cli, String foodKind) {
         for (type in `FoodType`.caseValues) {
-            switch (cli.inputBooleanInSeries("Is it ``type``?", foodKind + type.string))
+            switch (cli.inputBooleanInSeries("Is \"``foodKind``\" ``type``?", foodKind + type.string))
             case (true) { return type; }
             case (false) { continue; }
             case (null) { return null; }
