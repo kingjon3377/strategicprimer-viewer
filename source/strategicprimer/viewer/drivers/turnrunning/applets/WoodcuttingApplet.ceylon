@@ -128,7 +128,7 @@ class WoodcuttingApplet(ITurnRunningModel model, ICLIHelper cli, IDRegistrar idf
             variable Decimal acres = smallest(decimalize(treeCount * 10 / 72) / decimalize(100), decimalize(forest.acres));
             switch (cli.inputBoolean("Is ``acres`` (of ``forest.acres``) cleared correct?"))
             case (true) {
-                builder.append(", clearing ``acres`` acres (~ ``(acres * decimalize(43560)).integer``) of land.`");
+                builder.append(", clearing ``acres`` acres (~ ``(acres * decimalize(43560)).integer`` sq ft) of land.`");
             }
             case (false) {
                 if (exists str = cli.inputMultilineString("Descriptoin of cleared land:")) {
