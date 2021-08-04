@@ -131,7 +131,7 @@ class WoodcuttingApplet(ITurnRunningModel model, ICLIHelper cli, IDRegistrar idf
                 builder.append(", clearing ``acres`` acres (~ ``(acres * decimalize(43560)).integer`` sq ft) of land.`");
             }
             case (false) {
-                if (exists str = cli.inputMultilineString("Descriptoin of cleared land:")) {
+                if (exists str = cli.inputMultilineString("Description of cleared land:")) {
                     builder.append(str);
                 } else {
                     return null;
