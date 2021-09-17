@@ -40,3 +40,4 @@ modules/*
 .swp
 .swo
 resource/strategicprimer/viewer/invocation
+*/target/
