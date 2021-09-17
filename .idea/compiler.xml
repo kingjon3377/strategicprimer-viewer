@@ -16,36 +16,20 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="drivers.common" />
-        <module name="drivers.exploration.common" />
-        <module name="drivers.exploration.old" />
-        <module name="drivers.generators" />
         <module name="drivers.gui.common" />
-        <module name="drivers.query" />
         <module name="drivers.utility" />
+        <module name="drivers.exploration.old" />
         <module name="drivers.worker.common" />
-        <module name="lovelace-util" />
         <module name="main" />
         <module name="mining" />
-        <module name="model" />
+        <module name="drivers.generators" />
+        <module name="lovelace-util" />
+        <module name="drivers.common" />
+        <module name="drivers.query" />
         <module name="report" />
+        <module name="model" />
+        <module name="drivers.exploration.common" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name="assistive-programs" target="11" />
-      <module name="drivers.common" target="11" />
-      <module name="drivers.exploration.common" target="11" />
-      <module name="drivers.exploration.old" target="11" />
-      <module name="drivers.generators" target="11" />
-      <module name="drivers.gui.common" target="11" />
-      <module name="drivers.query" target="11" />
-      <module name="drivers.utility" target="11" />
-      <module name="drivers.worker.common" target="11" />
-      <module name="lovelace-util" target="11" />
-      <module name="main" target="11" />
-      <module name="mining" target="11" />
-      <module name="model" target="11" />
-      <module name="report" target="11" />
-    </bytecodeTargetLevel>
   </component>
 </project>
