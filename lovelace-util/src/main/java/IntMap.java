@@ -2,6 +2,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.AbstractMap;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -92,6 +93,8 @@ public class IntMap<Item> extends AbstractMap<Integer, Item> implements DelayedR
 
 	@Override
 	public final @NotNull Set<Entry<Integer, Item>> entrySet() {
-		return backing.entrySet().stream().filter(entry -> !toRemove.contains(entry.getKey())).collect(Collectors.toUnmodifiableSet());
+//		TODO: Switch to Collectors.toUnmodifiableSet() once JDK version bumped to 10+
+//		return backing.entrySet().stream().filter(entry -> !toRemove.contains(entry.getKey())).collect(Collectors.toUnmodifiableSet());
+		return Collections.unmodifiableSet(backing.entrySet().stream().filter(entry -> !toRemove.contains(entry.getKey())).collect(Collectors.toSet()));
 	}
 }
