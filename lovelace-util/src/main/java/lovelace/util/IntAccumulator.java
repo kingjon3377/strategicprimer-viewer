@@ -1,3 +1,5 @@
+package lovelace.util;
+
 /**
  * An implementation of {@link Accumulator} for integers.
  */

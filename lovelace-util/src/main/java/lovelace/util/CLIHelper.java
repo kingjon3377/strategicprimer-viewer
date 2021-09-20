@@ -1,3 +1,5 @@
+package lovelace.util;
+
 import org.javatuples.Pair;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;

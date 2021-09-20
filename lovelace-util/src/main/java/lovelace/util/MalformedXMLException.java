@@ -1,3 +1,5 @@
+package lovelace.util;
+
 /**
  * A class of exception to throw when asked to parse (or produce) XML that is syntactically malformed.
  *

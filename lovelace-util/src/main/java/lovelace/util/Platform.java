@@ -1,3 +1,5 @@
+package lovelace.util;
+
 import java.awt.event.InputEvent;
 
 import javax.swing.JButton;

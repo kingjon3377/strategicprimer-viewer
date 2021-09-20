@@ -1,3 +1,5 @@
+package lovelace.util;
+
 import java.nio.file.Path;
 
 /**

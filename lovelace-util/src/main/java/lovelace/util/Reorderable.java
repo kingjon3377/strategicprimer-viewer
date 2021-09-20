@@ -1,3 +1,5 @@
+package lovelace.util;
+
 /**
  * An interface for list-like things that can be reordered.
  */

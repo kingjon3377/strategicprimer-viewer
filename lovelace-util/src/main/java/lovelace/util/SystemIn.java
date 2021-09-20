@@ -1,3 +1,5 @@
+package lovelace.util;
+
 import java.io.FilterInputStream;
 import java.io.InputStream;
 

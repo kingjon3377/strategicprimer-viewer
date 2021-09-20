@@ -1,3 +1,5 @@
+package lovelace.util;
+
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import java.awt.event.ActionEvent;

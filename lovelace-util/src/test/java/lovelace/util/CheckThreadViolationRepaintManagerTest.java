@@ -1,3 +1,5 @@
+package lovelace.util;
+
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.JButton;

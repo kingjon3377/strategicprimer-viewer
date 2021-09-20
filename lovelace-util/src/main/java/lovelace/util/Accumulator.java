@@ -1,3 +1,4 @@
+package lovelace.util;
 /**
  * An interface to hold a mutable value, accept modifications to it, and report its current value.
  */

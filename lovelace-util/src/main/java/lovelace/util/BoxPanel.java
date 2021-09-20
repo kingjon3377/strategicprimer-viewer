@@ -1,3 +1,5 @@
+package lovelace.util;
+
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.Box;

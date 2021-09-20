@@ -1,3 +1,5 @@
+package lovelace.util;
+
 import javax.swing.DefaultListModel;
 
 /**
