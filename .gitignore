@@ -39,5 +39,5 @@ modules/*
 /.exploded/
 .swp
 .swo
-resource/strategicprimer/viewer/invocation
+main/resource/invocation
 */target/
