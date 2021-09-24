@@ -27,6 +27,11 @@
           <version>${junit.jupiter.version}</version>
           <scope>test</scope>
         </dependency>
+        <dependency>
+          <groupId>com.github.strategic-primer</groupId>
+          <artifactId>lovelace-util</artifactId>
+          <version>${version}</version>
+        </dependency>
     </dependencies>
 
 </project>
