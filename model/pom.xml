@@ -32,6 +32,11 @@
           <artifactId>lovelace-util</artifactId>
           <version>${version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.javatuples</groupId>
+            <artifactId>javatuples</artifactId>
+            <version>${javatuples.version}</version>
+        </dependency>
     </dependencies>
 
 </project>

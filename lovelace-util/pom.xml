@@ -20,7 +20,7 @@
         <dependency>
             <groupId>org.javatuples</groupId>
             <artifactId>javatuples</artifactId>
-            <version>1.2</version>
+            <version>${javatuples.version}</version>
         </dependency>
         <dependency>
           <groupId>org.junit.jupiter</groupId>

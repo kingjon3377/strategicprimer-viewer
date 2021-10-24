@@ -14,6 +14,7 @@
 	<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <junit.platform.version>1.8.0</junit.platform.version>
         <junit.jupiter.version>5.8.0</junit.jupiter.version>
+	<javatuples.version>1.2</javatuples.version>
     </properties>
 
     <packaging>pom</packaging>
