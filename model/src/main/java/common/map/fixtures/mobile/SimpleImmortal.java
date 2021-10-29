@@ -5,40 +5,15 @@ import common.map.HasMutableImage;
 import common.map.IFixture;
 
 import java.util.function.Consumer;
-import java.util.function.IntFunction;
 
 /**
- * An immortal that used to be represented as an {@link Animal animal} in the
- * past.  This class is provided, instead of making them additional subclasses
- * of {@link SimpleImmortal}, to ease the handling of old map files by
- * XML-reading code.
- *
- * TODO: Merge with/make subclass of SimpleImmortal?
+ * An abstract base class for immortals that don't have any state other than
+ * their ID, so their further implementation can be trivial.
  */
-public /* sealed */ abstract class ImmortalAnimal
-		/* of Snowbird|Thunderbird|Pegasus|Unicorn|Kraken */
+public abstract /* sealed */ class SimpleImmortal
+		/* of Sphinx|Djinn|Griffin| Minotaur|Ogre|Phoenix|Simurgh|Troll */
 		implements Immortal, HasMutableImage, HasKind {
-	/**
-	 * Get an immortal constructor for the given kind.
-	 */
-	public static IntFunction<ImmortalAnimal> parse(String kind) {
-		switch (kind) {
-			case "snowbird":
-				return Snowbird::new;
-			case "thunderbird":
-				return Thunderbird::new;
-			case "pegasus":
-				return Pegasus::new;
-			case "unicorn":
-				return Unicorn::new;
-			case "kraken":
-				return Kraken::new;
-			default:
-				throw new IllegalArgumentException("Unknown immortal-animal kind " + kind);
-		}
-	}
-
-	protected ImmortalAnimal(String kind, String plural, int dc, int id) {
+	protected SimpleImmortal(String kind, String plural, int dc, int id) {
 		this.kind = kind;
 		this.plural = plural;
 		this.dc = dc;
@@ -85,6 +60,15 @@ public /* sealed */ abstract class ImmortalAnimal
 	}
 
 	/**
+	 * A short description of the fixture. Expected to be overridden by
+	 * subclasses which take "an" instead of "a".
+	 */
+	@Override
+	public String getShortDescription() {
+		return "a " + kind;
+	}
+
+	/**
 	 * The plural of the immortal's kind.
 	 */
 	private final String plural;
@@ -95,15 +79,6 @@ public /* sealed */ abstract class ImmortalAnimal
 	@Override
 	public final String getPlural() {
 		return plural;
-	}
-
-	/**
-	 * A short description of the fixture. Expected to be overridden by
-	 * subclasses which take "an" instead of "a".
-	 */
-	@Override
-	public String getShortDescription() {
-		return "a " + kind;
 	}
 
 	/**
@@ -131,7 +106,7 @@ public /* sealed */ abstract class ImmortalAnimal
 	 * Clone the object.
 	 */
 	@Override
-	public abstract ImmortalAnimal copy(boolean zero);
+	public abstract SimpleImmortal copy(boolean zero);
 
 	@Override
 	public final String toString() {
@@ -148,9 +123,9 @@ public /* sealed */ abstract class ImmortalAnimal
 
 	@Override
 	public final boolean equals(Object obj) {
-		if (obj instanceof ImmortalAnimal) {
-			return ((ImmortalAnimal) obj).getId() == id &&
-				kind.equals(((ImmortalAnimal) obj).getKind());
+		if (obj instanceof SimpleImmortal) {
+			return ((SimpleImmortal) obj).getId() == id &&
+				kind.equals(((SimpleImmortal) obj).getKind());
 		} else {
 			return false;
 		}
@@ -166,8 +141,8 @@ public /* sealed */ abstract class ImmortalAnimal
 	 */
 	@Override
 	public final boolean equalsIgnoringID(IFixture fixture) {
-		if (fixture instanceof ImmortalAnimal) {
-			return ((ImmortalAnimal) fixture).getKind().equals(kind);
+		if (fixture instanceof SimpleImmortal) {
+			return ((SimpleImmortal) fixture).getKind().equals(kind);
 		} else {
 			return false;
 		}
@@ -179,8 +154,8 @@ public /* sealed */ abstract class ImmortalAnimal
 	@Override
 	public final boolean isSubset(IFixture obj, Consumer<String> report) {
 		if (obj.getId() == id) {
-			if (obj instanceof ImmortalAnimal &&
-					((ImmortalAnimal) obj).getKind().equals(kind)) {
+			if (obj instanceof SimpleImmortal &&
+					((SimpleImmortal) obj).getKind().equals(kind)) {
 				return true;
 			} else {
 				report.accept(String.format("For ID #%d, different kinds of members", id));
