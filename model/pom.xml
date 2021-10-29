@@ -37,6 +37,16 @@
             <artifactId>javatuples</artifactId>
             <version>${javatuples.version}</version>
         </dependency>
+	<!-- <dependency>
+            <groupId>com.zaxxer</groupId>
+            <artifactId>SparseBitSet</artifactId>
+            <version>1.2</version>
+        </dependency> -->
+	<dependency>
+            <groupId>org.roaringbitmap</groupId>
+            <artifactId>RoaringBitmap</artifactId>
+            <version>0.9.15</version>
+        </dependency>
     </dependencies>
 
 </project>
