@@ -30,7 +30,7 @@
         <dependency>
           <groupId>com.github.strategic-primer</groupId>
           <artifactId>lovelace-util</artifactId>
-          <version>${version}</version>
+          <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>org.javatuples</groupId>
