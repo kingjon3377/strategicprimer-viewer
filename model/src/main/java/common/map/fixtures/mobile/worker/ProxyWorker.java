@@ -19,6 +19,7 @@ import common.map.fixtures.UnitMember;
 import common.map.fixtures.mobile.IUnit;
 import common.map.fixtures.mobile.ProxyFor;
 import common.map.fixtures.mobile.IWorker;
+import common.map.fixtures.mobile.WorkerProxy;
 import java.util.logging.Logger;
 import common.map.fixtures.mobile.worker.IJob;
 import common.map.fixtures.mobile.worker.ProxyJob;
@@ -28,7 +29,7 @@ import org.jetbrains.annotations.Nullable;
 /**
  * An IWorker implementation to make the UI able to operate on all of a unit's workers at once.
  */
-public class ProxyWorker implements UnitMember, IWorker, ProxyFor<IWorker> {
+public class ProxyWorker implements WorkerProxy {
 	/**
 	 * Logger.
 	 */

@@ -12,7 +12,7 @@ import java.util.logging.Logger;
 /**
  * A proxy for non-worker unit members.
  */
-class ProxyMember implements UnitMember, ProxyFor<UnitMember> {
+class ProxyMember implements UnitMemberProxy<UnitMember> {
 	private static final Logger LOGGER = Logger.getLogger(ProxyMember.class.getName());
 	private final List<UnitMember> proxiedMembers = new ArrayList<>();
 

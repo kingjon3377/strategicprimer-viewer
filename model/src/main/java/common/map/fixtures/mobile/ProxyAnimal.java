@@ -11,7 +11,7 @@ import common.map.IFixture;
 /**
  * A proxy for corresponding animal populations in different maps.
  */
-/* default */ final class ProxyAnimal implements Animal, ProxyFor<Animal> {
+/* default */ final class ProxyAnimal implements AnimalProxy {
 
 	public ProxyAnimal(Animal... proxiedAnimals) {
 		animals = new ArrayList<>();
@@ -91,10 +91,10 @@ import common.map.IFixture;
 
 	@Override
 	public Animal combined(Animal addend) {
-		if (addend instanceof ProxyFor/*<Animal>*/ && ((ProxyFor<Animal>) addend).isParallel()) {
+		if (addend instanceof AnimalProxy && ((AnimalProxy) addend).isParallel()) {
 			List<Animal> interim = new ArrayList<>();
 			Iterator<Animal> ours = getProxied().iterator();
-			Iterator<Animal> theirs = ((ProxyFor<Animal>) addend).getProxied().iterator();
+			Iterator<Animal> theirs = ((AnimalProxy) addend).getProxied().iterator();
 			while (ours.hasNext() && theirs.hasNext()) {
 				interim.add(ours.next().combined(theirs.next()));
 			}
