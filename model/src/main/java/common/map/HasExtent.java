@@ -93,6 +93,26 @@ public interface HasExtent<Self extends HasExtent<Self>> extends IFixture, Subse
 	}
 
 	/**
+	 * @param num a number
+	 * @return the additive inverse of that number
+	 */
+	static Number negate(Number num) {
+		if (num instanceof Integer) {
+			return 0 - (Integer) num;
+		} else if (num instanceof Long) {
+			return 0L - (Long) num;
+		} else if (num instanceof BigInteger) {
+			return ((BigInteger) num).negate();
+		} else if (num instanceof Float || num instanceof Double) {
+			return 0.0 - num.doubleValue();
+		} else if (num instanceof BigDecimal) {
+			return ((BigDecimal) num).negate();
+		} else {
+			throw new IllegalStateException("Unhandled Number subclass");
+		}
+	}
+
+	/**
 	 * The number of acres the fixture extends over.
 	 */
 	Number getAcres();
