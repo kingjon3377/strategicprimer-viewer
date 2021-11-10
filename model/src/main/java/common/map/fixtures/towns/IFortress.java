@@ -20,22 +20,6 @@ public interface IFortress extends HasImage, ITownFixture, HasName,
 	@Override
 	IFortress copy(boolean zero);
 
-	/* FIXME: Move to FortressImpl (and any other implementation) when porting that
-	@Override
-	public boolean equals(Object obj) {
-		if (obj instanceof IFortress) {
-			return equalsIgnoringID((IFortress) obj) && id == ((IFortress) obj).id;
-		} else {
-			return false;
-		}
-	}
-
-	@Override
-	public int hashCode() {
-		return id;
-	}
-	*/
-
 	/**
 	 * The filename of the image to use as an icon when no per-instance icon has been specified.
 	 *
