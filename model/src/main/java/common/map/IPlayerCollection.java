@@ -26,4 +26,9 @@ public interface IPlayerCollection extends Iterable<Player>, Subsettable<Iterabl
 	 * Clone the collection.
 	 */
 	IPlayerCollection copy();
+
+	/**
+	 * Whether we contain all players in the given collection.
+	 */
+	boolean containsAll(IPlayerCollection other);
 }

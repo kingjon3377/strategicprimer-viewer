@@ -1,6 +1,7 @@
 package common.map;
 
 import java.util.function.Consumer;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.TreeMap;
@@ -188,5 +189,16 @@ public class PlayerCollection implements IMutablePlayerCollection {
 		} else {
 			return false;
 		}
+	}
+
+	@Override
+	public boolean containsAll(IPlayerCollection other) {
+		Collection<Player> collection = players.values();
+		for (Player player : other) {
+			if (!collection.contains(player)) {
+				return false;
+			}
+		}
+		return true;
 	}
 }
