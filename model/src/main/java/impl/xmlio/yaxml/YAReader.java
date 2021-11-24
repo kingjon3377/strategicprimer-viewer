@@ -8,17 +8,13 @@ import java.io.IOException;
 import javax.xml.namespace.QName;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
+import static impl.xmlio.SPWriter.IOConsumer;
 
 /**
  * An interface for XML readers that can read multiple related types, in the
  * sixth generation of SP XML I/O ("yet another SP XML reader").
  */
 public interface YAReader<Item, Value> {
-	@FunctionalInterface
-	static interface IOConsumer<Type> {
-		void accept(Type item) throws IOException;
-	}
-
 	/**
 	 * Read an object from XML.
 	 *

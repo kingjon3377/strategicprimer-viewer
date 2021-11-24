@@ -81,7 +81,7 @@ import static impl.xmlio.fluidxml.FluidBase.*;
 
 import java.util.Map;
 import java.util.regex.Pattern;
-import java.util.function.Consumer;
+import static impl.xmlio.SPWriter.IOConsumer;
 import java.util.function.Predicate;
 import java.util.stream.StreamSupport;
 import java.util.stream.Stream;

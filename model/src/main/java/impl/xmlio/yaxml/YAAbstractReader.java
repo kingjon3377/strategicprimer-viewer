@@ -32,7 +32,7 @@ import static impl.xmlio.ISPReader.SP_NAMESPACE;
 
 import java.util.List;
 import java.util.Collections;
-import static impl.xmlio.yaxml.YAReader.IOConsumer;
+import static impl.xmlio.SPWriter.IOConsumer;
 import java.util.Arrays;
 import java.util.stream.Stream;
 import java.util.stream.Collectors;

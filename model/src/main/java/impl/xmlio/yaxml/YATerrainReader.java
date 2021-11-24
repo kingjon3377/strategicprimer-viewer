@@ -6,7 +6,7 @@ import javax.xml.stream.events.XMLEvent;
 import java.io.IOException;
 
 import common.xmlio.SPFormatException;
-import static impl.xmlio.yaxml.YAReader.IOConsumer;
+import static impl.xmlio.SPWriter.IOConsumer;
 
 import common.map.HasExtent;
 import common.map.HasImage;

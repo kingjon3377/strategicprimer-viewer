@@ -11,7 +11,7 @@ import common.map.Player;
 import common.map.PlayerImpl;
 import common.xmlio.Warning;
 
-import static impl.xmlio.yaxml.YAReader.IOConsumer;
+import static impl.xmlio.SPWriter.IOConsumer;
 
 /**
  * A reader for {@link Player}s."

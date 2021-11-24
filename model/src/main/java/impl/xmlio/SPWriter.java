@@ -12,6 +12,11 @@ import lovelace.util.MalformedXMLException;
  * An interface for map (and other SP XML) writers.
  */
 public interface SPWriter {
+	@FunctionalInterface
+	static interface IOConsumer<Type> {
+		void accept(Type item) throws IOException;
+	}
+
 	/**
 	 * Write a map to file
 	 * @param file The file or stream to write to.
