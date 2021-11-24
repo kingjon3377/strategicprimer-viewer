@@ -29,7 +29,7 @@ public interface SPWriter {
 	 * @param stream The file or stream to write to.
 	 * @param map The map to write
 	 */
-	void write(Consumer<String> stream, IMapNG map) throws MalformedXMLException;
+	void write(IOConsumer<String> stream, IMapNG map) throws MalformedXMLException, IOException;
 
 	/**
 	 * Write an object to a file.
@@ -39,5 +39,5 @@ public interface SPWriter {
 	/**
 	 * Write an object to a file or stream.
 	 */
-	void writeSPObject(Consumer<String> stream, Object obj) throws MalformedXMLException;
+	void writeSPObject(IOConsumer<String> stream, Object obj) throws MalformedXMLException, IOException;
 }

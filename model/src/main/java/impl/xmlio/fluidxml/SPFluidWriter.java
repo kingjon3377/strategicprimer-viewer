@@ -112,7 +112,8 @@ public class SPFluidWriter implements SPWriter {
 	}
 
 	@Override
-	public void writeSPObject(Consumer<String> ostream, Object obj) throws MalformedXMLException {
+	public void writeSPObject(IOConsumer<String> ostream, Object obj)
+			throws MalformedXMLException, IOException {
 		XMLOutputFactory xof = XMLOutputFactory.newInstance();
 		StringWriter writer = new StringWriter();
 		try {
@@ -134,13 +135,7 @@ public class SPFluidWriter implements SPWriter {
 	@Override
 	public void writeSPObject(Path file, Object obj) throws MalformedXMLException, IOException {
 		try (BufferedWriter writer = Files.newBufferedWriter(file, StandardCharsets.UTF_8)) {
-			writeSPObject(str -> {
-					try {
-						writer.write(str);
-					} catch (IOException except) {
-						throw new RuntimeException(except);
-					}
-				}, obj);
+			writeSPObject(writer::write, obj);
 		}
 	}
 
@@ -150,7 +145,7 @@ public class SPFluidWriter implements SPWriter {
 	}
 
 	@Override
-	public void write(Consumer<String> arg, IMapNG map) throws MalformedXMLException {
+	public void write(IOConsumer<String> arg, IMapNG map) throws MalformedXMLException, IOException {
 		writeSPObject(arg, map);
 	}
 
