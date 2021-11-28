@@ -52,5 +52,10 @@
 	    <artifactId>sqlite-jdbc</artifactId>
 	    <version>3.34.0</version>
 	</dependency>
+	<dependency>
+	   <groupId>com.github.buckelieg</groupId>
+	   <artifactId>jdbc-fn</artifactId>
+	   <version>0.3</version>
+	</dependency>
     </dependencies>
 </project>
