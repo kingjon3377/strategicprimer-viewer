@@ -39,5 +39,5 @@ modules/*
 /.exploded/
 .swp
 .swo
-main/resource/invocation
+main/src/main/resources/invocation
 */target/
