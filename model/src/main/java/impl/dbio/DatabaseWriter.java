@@ -19,8 +19,6 @@ interface DatabaseWriter<Item, Context> {
 	 * <code>obj instanceof Item &amp;&amp; context instanceof
 	 * Context</code>, but we can't write that here in Java as type
 	 * parameters aren't reified.
-	 *
-	 * TODO: Maybe make AbstractDatabaseWriter take Class parameters and use Class::isInstance there?
 	 */
 	boolean canWrite(Object obj, Object context);
 
