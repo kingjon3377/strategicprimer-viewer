@@ -22,7 +22,6 @@ import java.util.Map;
 
 final class DBAnimalHandler extends AbstractDatabaseWriter<AnimalOrTracks, /*Point|IUnit*/Object>
 		implements MapContentsReader {
-	public static int currentTurn = -1; // FIXME: Move to DBMapWriter once it's ported
 	public DBAnimalHandler() {
 		super(AnimalOrTracks.class, Object.class);
 	}
@@ -38,7 +37,7 @@ final class DBAnimalHandler extends AbstractDatabaseWriter<AnimalOrTracks, /*Poi
 		Map<String, Integer> model = MaturityModel.getMaturityAges();
 		if (model.containsKey(animal.getKind())) {
 			int maturityAge = model.get(animal.getKind());
-			if (maturityAge <= (currentTurn - animal.getBorn())) {
+			if (maturityAge <= (DBMapWriter.currentTurn - animal.getBorn())) {
 				return Optional.empty();
 			}
 		}
