@@ -14,5 +14,27 @@
     <artifactId>drivers.common</artifactId>
     <version>0.5-SNAPSHOT</version>
 
-
+    <dependencies>
+        <dependency>
+            <groupId>org.jetbrains</groupId>
+            <artifactId>annotations</artifactId>
+            <version>${jetbrains.annotations.version}</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+          <groupId>com.github.strategic-primer</groupId>
+          <artifactId>lovelace-util</artifactId>
+          <version>${project.version}</version>
+        </dependency>
+        <dependency>
+          <groupId>com.github.strategic-primer</groupId>
+          <artifactId>model</artifactId>
+          <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.javatuples</groupId>
+            <artifactId>javatuples</artifactId>
+            <version>${javatuples.version}</version>
+        </dependency>
+    </dependencies>
 </project>

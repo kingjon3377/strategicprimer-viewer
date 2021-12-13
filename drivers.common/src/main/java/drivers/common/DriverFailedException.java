@@ -1,3 +1,5 @@
+package drivers.common;
+
 /**
  * An exception to throw whenever a driver fails, so drivers only have to directly handle one exception class.
  */
