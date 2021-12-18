@@ -16,6 +16,7 @@
         <junit.jupiter.version>5.8.0</junit.jupiter.version>
 	<javatuples.version>1.2</javatuples.version>
 	<jetbrains.annotations.version>22.0.0</jetbrains.annotations.version>
+	<auto-service.version>1.0.1</auto-service.version>
     </properties>
 
     <packaging>pom</packaging>
@@ -45,6 +46,18 @@
 	  <configuration>
 	    <trimStackTrace>false</trimStackTrace>
 	  </configuration>
+        </plugin>
+        <plugin>
+          <artifactId>maven-compiler-plugin</artifactId>
+          <configuration>
+            <annotationProcessorPaths>
+              <path>
+                <groupId>com.google.auto.service</groupId>
+                <artifactId>auto-service</artifactId>
+                <version>${auto-service.version}</version>
+              </path>
+            </annotationProcessorPaths>
+          </configuration>
         </plugin>
       </plugins>
     </build>
