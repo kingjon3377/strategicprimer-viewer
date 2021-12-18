@@ -25,5 +25,15 @@
           <artifactId>drivers.common</artifactId>
           <version>${project.version}</version>
         </dependency>
+        <dependency>
+          <groupId>com.google.auto.service</groupId>
+          <artifactId>auto-service</artifactId>
+          <version>${auto-service.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.javatuples</groupId>
+            <artifactId>javatuples</artifactId>
+            <version>${javatuples.version}</version>
+        </dependency>
     </dependencies>
 </project>
