@@ -14,7 +14,7 @@ import javax.sql.DataSource;
 import common.map.HasNotes;
 import common.map.IMapNG;
 import java.nio.file.Path;
-import static impl.xmlio.SPWriter.IOConsumer;
+import lovelace.util.IOConsumer;
 import java.util.Collections;
 import java.util.Arrays;
 

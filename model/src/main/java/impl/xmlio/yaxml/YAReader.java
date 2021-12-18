@@ -8,7 +8,7 @@ import java.io.IOException;
 import javax.xml.namespace.QName;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
-import static impl.xmlio.SPWriter.IOConsumer;
+import lovelace.util.IOConsumer;
 
 /**
  * An interface for XML readers that can read multiple related types, in the

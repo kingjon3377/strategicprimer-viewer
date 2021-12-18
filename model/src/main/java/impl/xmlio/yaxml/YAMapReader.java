@@ -12,7 +12,7 @@ import javax.xml.stream.events.EndElement;
 import javax.xml.stream.events.Characters;
 import java.io.IOException;
 
-import static impl.xmlio.SPWriter.IOConsumer;
+import lovelace.util.IOConsumer;
 import common.xmlio.SPFormatException;
 import common.idreg.IDRegistrar;
 import common.map.Player;

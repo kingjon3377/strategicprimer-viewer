@@ -13,7 +13,7 @@ import common.map.fixtures.explorable.Cave;
 import common.xmlio.Warning;
 import impl.xmlio.exceptions.UnsupportedTagException;
 
-import static impl.xmlio.SPWriter.IOConsumer;
+import lovelace.util.IOConsumer;
 
 /**
  * A reader for Caves and Battlefields.

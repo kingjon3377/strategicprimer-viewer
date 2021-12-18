@@ -24,7 +24,7 @@ import impl.xmlio.exceptions.UnwantedChildException;
 import common.map.fixtures.towns.CommunityStats;
 import java.util.HashMap;
 import java.util.Map;
-import static impl.xmlio.SPWriter.IOConsumer;
+import lovelace.util.IOConsumer;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;

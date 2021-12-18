@@ -10,6 +10,7 @@ import java.nio.file.Paths;
 import java.nio.file.Path;
 import java.nio.file.Files;
 import lovelace.util.MalformedXMLException;
+import lovelace.util.IOConsumer;
 
 /**
  * Sixth generation SP XML writer.

@@ -12,7 +12,7 @@ import common.map.Player;
 import common.map.fixtures.explorable.AdventureFixture;
 import common.xmlio.Warning;
 
-import static impl.xmlio.SPWriter.IOConsumer;
+import lovelace.util.IOConsumer;
 
 /**
  * A reader for adventure hooks.

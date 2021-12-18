@@ -3,6 +3,7 @@ package impl.xmlio;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.function.Consumer;
+import lovelace.util.IOConsumer;
 
 import common.map.IMapNG;
 
@@ -12,11 +13,6 @@ import lovelace.util.MalformedXMLException;
  * An interface for map (and other SP XML) writers.
  */
 public interface SPWriter {
-	@FunctionalInterface
-	static interface IOConsumer<Type> {
-		void accept(Type item) throws IOException;
-	}
-
 	/**
 	 * Write a map to file
 	 * @param file The file or stream to write to.

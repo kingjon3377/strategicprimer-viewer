@@ -5,7 +5,7 @@ import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 import java.io.IOException;
 
-import static impl.xmlio.SPWriter.IOConsumer;
+import lovelace.util.IOConsumer;
 import common.xmlio.SPFormatException;
 import common.idreg.IDRegistrar;
 import common.map.fixtures.IMutableResourcePile;

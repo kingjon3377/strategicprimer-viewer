@@ -10,7 +10,7 @@ import common.idreg.IDRegistrar;
 import common.map.fixtures.explorable.Portal;
 import common.xmlio.Warning;
 
-import static impl.xmlio.SPWriter.IOConsumer;
+import lovelace.util.IOConsumer;
 
 /**
  * A reader for portals.

@@ -6,7 +6,7 @@ import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.EndElement;
 import java.io.IOException;
 
-import static impl.xmlio.SPWriter.IOConsumer;
+import lovelace.util.IOConsumer;
 import common.xmlio.SPFormatException;
 import lovelace.util.MalformedXMLException;
 import common.idreg.IDRegistrar;

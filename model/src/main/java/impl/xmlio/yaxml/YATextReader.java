@@ -7,7 +7,7 @@ import javax.xml.stream.events.Characters;
 import java.io.IOException;
 
 import common.xmlio.SPFormatException;
-import static impl.xmlio.SPWriter.IOConsumer;
+import lovelace.util.IOConsumer;
 
 import common.idreg.IDRegistrar;
 import common.map.fixtures.TextFixture;
