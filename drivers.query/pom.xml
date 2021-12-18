@@ -14,5 +14,21 @@
     <artifactId>drivers.query</artifactId>
     <version>0.5-SNAPSHOT</version>
 
-
+    <dependencies>
+        <dependency>
+          <groupId>com.github.strategic-primer</groupId>
+          <artifactId>model</artifactId>
+          <version>${project.version}</version>
+        </dependency>
+        <dependency>
+          <groupId>com.github.strategic-primer</groupId>
+          <artifactId>drivers.common</artifactId>
+          <version>${project.version}</version>
+        </dependency>
+        <dependency>
+          <groupId>com.github.strategic-primer</groupId>
+          <artifactId>drivers.exploration.common</artifactId>
+          <version>${project.version}</version>
+        </dependency>
+    </dependencies>
 </project>
