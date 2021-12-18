@@ -26,6 +26,8 @@ public class ImprovedComboBox<Element> extends JComboBox<Element> {
 	 * visible, treat it like Enter.
 	 *
 	 * @author http://stackoverflow.com/a/24336768
+	 *
+	 * TODO: Maybe move to new "third-party" module
 	 */
 	@Override
 	public void processKeyEvent(final KeyEvent event) {
@@ -34,7 +36,7 @@ public class ImprovedComboBox<Element> extends JComboBox<Element> {
 			return;
 		}
 		if (isPopupVisible()) {
-	    		Object source = event.getSource();
+			Object source = event.getSource();
 			if (source instanceof Component) {
 				super.processKeyEvent(new KeyEvent((Component) source, event.getID(),
 					event.getWhen(), 0, KeyEvent.VK_ENTER, KeyEvent.CHAR_UNDEFINED));

@@ -21,6 +21,8 @@ import java.lang.ref.WeakReference;
  * @author Scott Delap
  * @author Alexander Potochkin
  * @author https://swinghelper.dev.java.net/
+ *
+ * FIXME: Move to new "third-party" module, along with code for Window menu as Pumpernickel is not Maven-friendly
  */
 public class CheckThreadViolationRepaintManager extends RepaintManager {
 	/**
