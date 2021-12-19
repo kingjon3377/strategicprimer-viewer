@@ -37,6 +37,8 @@ public interface ITableGenerator<T extends IFixture> {
 
 	static final Logger LOGGER = Logger.getLogger(ITableGenerator.class.getName());
 
+	// TODO: Should actually be a Predicate<IFixture> canHandle(), most
+	// likely, in the absence of reified union types.
 	Class<T> narrowedClass();
 
 	/**
