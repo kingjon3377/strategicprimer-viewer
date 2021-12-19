@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
-import java.util.SortedMap;
+import java.util.NavigableMap;
 import java.util.TreeMap;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -62,8 +62,8 @@ public class ProxyUnit implements IUnit, ProxyFor<IUnit> {
 		return Objects.equals(earlier, later) ? earlier : "";
 	}
 
-	SortedMap<Integer, String> mergeMaps(Function<IUnit, SortedMap<Integer, String>> method) {
-		return proxiedList.stream().map(method).map(SortedMap::entrySet).flatMap(Set::stream)
+	NavigableMap<Integer, String> mergeMaps(Function<IUnit, NavigableMap<Integer, String>> method) {
+		return proxiedList.stream().map(method).map(NavigableMap::entrySet).flatMap(Set::stream)
 			.collect(Collectors.toMap(Entry::getKey, Entry::getValue, ProxyUnit::mergeHelper,
 				TreeMap::new));
 	}
@@ -101,7 +101,7 @@ public class ProxyUnit implements IUnit, ProxyFor<IUnit> {
 	 * All orders shared by all the proxied units.
 	 */
 	@Override
-	public SortedMap<Integer, String> getAllOrders() {
+	public NavigableMap<Integer, String> getAllOrders() {
 		return mergeMaps(IUnit::getAllOrders);
 	}
 
@@ -109,7 +109,7 @@ public class ProxyUnit implements IUnit, ProxyFor<IUnit> {
 	 * All results shared by all the proxied units.
 	 */
 	@Override
-	public SortedMap<Integer, String> getAllResults() {
+	public NavigableMap<Integer, String> getAllResults() {
 		return mergeMaps(IUnit::getAllResults);
 	}
 

@@ -4,7 +4,7 @@ import java.util.Comparator;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.SortedMap;
+import java.util.NavigableMap;
 import java.util.TreeMap;
 
 import lovelace.util.ArraySet;
@@ -45,13 +45,13 @@ public final class Unit implements IMutableUnit {
 	 * The unit's orders. This is serialized to and from XML, but does not
 	 * affect equality or hashing, and is not printed in {@link toString}.
 	 */
-	private final SortedMap<Integer, String> orders = new TreeMap<>();
+	private final NavigableMap<Integer, String> orders = new TreeMap<>();
 
 	/**
 	 * The unit's results. This is serialized to and from XML, but does not
 	 * affect equality or hashing, and is not printed in {@link toString}.
 	 */
-	private final SortedMap<Integer, String> results = new TreeMap<>();
+	private final NavigableMap<Integer, String> results = new TreeMap<>();
 
 	/**
 	 * The members of the unit.
@@ -186,16 +186,16 @@ public final class Unit implements IMutableUnit {
 	 * The unit's orders for all turns.
 	 */
 	@Override
-	public SortedMap<Integer, String> getAllOrders() {
-		return Collections.unmodifiableSortedMap(orders);
+	public NavigableMap<Integer, String> getAllOrders() {
+		return Collections.unmodifiableNavigableMap(orders);
 	}
 
 	/**
 	 * The unit's results for all turns.
 	 */
 	@Override
-	public SortedMap<Integer, String> getAllResults() {
-		return Collections.unmodifiableSortedMap(results);
+	public NavigableMap<Integer, String> getAllResults() {
+		return Collections.unmodifiableNavigableMap(results);
 	}
 
 	/**

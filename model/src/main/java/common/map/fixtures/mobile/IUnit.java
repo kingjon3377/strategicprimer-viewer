@@ -1,6 +1,6 @@
 package common.map.fixtures.mobile;
 
-import java.util.SortedMap;
+import java.util.NavigableMap;
 
 import common.map.HasImage;
 import common.map.IFixture;
@@ -26,7 +26,7 @@ public interface IUnit extends MobileFixture, HasImage, HasKind, HasName,
 	/**
 	 * The unit's orders history, a mapping from turns to the orders for those turns.
 	 */
-	SortedMap<Integer, String> getAllOrders();
+	NavigableMap<Integer, String> getAllOrders();
 
 	/**
 	 * Get the unit's orders for the given turn.
@@ -41,7 +41,7 @@ public interface IUnit extends MobileFixture, HasImage, HasKind, HasName,
 	/**
 	 * The unit's results history, a mapping from turns to the results for those turns.
 	 */
-	SortedMap<Integer, String> getAllResults();
+	NavigableMap<Integer, String> getAllResults();
 
 	/**
 	 * The unit's latest orders as of the given turn.
