@@ -1,3 +1,5 @@
+package drivers.exploration.old;
+
 /**
  * An exception to throw when a table is missing.
  */
