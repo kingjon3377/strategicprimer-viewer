@@ -17,12 +17,13 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.StreamSupport;
 import java.util.function.Consumer;
+import common.map.fixtures.FixtureIterable;
 
 /**
  * An interface for units.
  */
 public interface IUnit extends MobileFixture, HasImage, HasKind, HasName,
-		Iterable<UnitMember>, FortressMember, HasOwner, HasPortrait {
+		FixtureIterable<UnitMember>, FortressMember, HasOwner, HasPortrait {
 	/**
 	 * The unit's orders history, a mapping from turns to the orders for those turns.
 	 */

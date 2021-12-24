@@ -4,7 +4,7 @@ import common.map.Point;
 import common.map.IFixture;
 import common.map.IMapNG;
 import common.map.fixtures.towns.ITownFixture;
-import common.map.fixtures.mobile.IWorker;
+import common.map.fixtures.FixtureIterable;
 
 public final class IDFactoryFiller {
 	/**
@@ -42,8 +42,8 @@ public final class IDFactoryFiller {
 				// is unused
 				factory.register(id);
 			}
-			if (fixture instanceof Iterable && !(fixture instanceof IWorker)) { // FIXME: FixtureIterable once that's here, but we'll also need to cover IUnit and IFortress, right?
-				recursiveRegister(factory, (Iterable<? extends IFixture>) fixture);
+			if (fixture instanceof FixtureIterable) {
+				recursiveRegister(factory, (FixtureIterable<?>) fixture);
 			}
 			if (fixture instanceof ITownFixture && ((ITownFixture) fixture).getPopulation() != null) {
 				recursiveRegister(factory, ((ITownFixture) fixture).getPopulation().getYearlyProduction());

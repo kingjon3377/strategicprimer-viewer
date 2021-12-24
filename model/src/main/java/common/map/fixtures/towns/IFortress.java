@@ -5,6 +5,7 @@ import common.map.Subsettable;
 import common.map.HasName;
 import common.map.HasImage;
 import common.map.fixtures.FortressMember;
+import common.map.fixtures.FixtureIterable;
 
 /**
  * A fortress on the map. A player can only have one fortress per tile, but
@@ -13,7 +14,7 @@ import common.map.fixtures.FortressMember;
  * FIXME: We need something about buildings yet
  */
 public interface IFortress extends HasImage, ITownFixture, HasName,
-		Iterable<FortressMember>, IFixture, Subsettable<IFixture> {
+		FixtureIterable<FortressMember>, IFixture, Subsettable<IFixture> {
 	/**
 	 * Clone the fortress.
 	 */
