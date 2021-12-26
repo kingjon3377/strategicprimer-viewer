@@ -1,3 +1,5 @@
+package exploration.common;
+
 /**
  * An exception thrown to signal traversal is impossible.
  *
