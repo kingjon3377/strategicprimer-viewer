@@ -36,5 +36,10 @@
           <version>${junit.jupiter.version}</version>
           <scope>test</scope>
         </dependency>
+        <dependency>
+          <groupId>com.google.auto.service</groupId>
+          <artifactId>auto-service</artifactId>
+          <version>${auto-service.version}</version>
+        </dependency>
     </dependencies>
 </project>
