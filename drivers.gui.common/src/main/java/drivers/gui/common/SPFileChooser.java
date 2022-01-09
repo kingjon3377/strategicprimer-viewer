@@ -5,7 +5,7 @@ import org.jetbrains.annotations.Nullable;
 import javax.swing.JFileChooser;
 import lovelace.util.FileChooser;
 import lovelace.util.Platform;
-import lovelace.util.Either;
+import either.Either;
 
 import java.awt.FileDialog;
 import java.awt.Frame;

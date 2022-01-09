@@ -1,4 +1,4 @@
-package lovelace.util;
+package either;
 
 import java.util.Optional;
 import java.util.function.Function;
@@ -6,8 +6,6 @@ import java.util.function.Function;
 /**
  * Helper class for cases where we were using Ceylon's union types and can't easily refactor to
  * avoid that requirement.
- *
- * FIXME: Move to new "third-party" module, along with code for Window menu as Pumpernickel is not Maven-friendly
  *
  * @author https://stackoverflow.com/users/464306/gdejohn (CC BY-SA 3.0)
  */

@@ -49,7 +49,7 @@ import java.util.logging.Logger;
 import common.map.fixtures.towns.ITownFixture;
 import common.map.fixtures.towns.TownStatus;
 import common.map.fixtures.towns.Village;
-import lovelace.util.Either;
+import either.Either;
 
 /**
  * A driver for 'querying' the driver model about various things.

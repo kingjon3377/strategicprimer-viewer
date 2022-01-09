@@ -2,7 +2,7 @@ package drivers.common.cli;
 
 import java.util.Map;
 import java.util.HashMap;
-import lovelace.util.Either;
+import either.Either;
 import java.util.Collections;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;

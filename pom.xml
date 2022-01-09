@@ -35,6 +35,7 @@
         <module>report</module>
         <module>main</module>
         <module>lovelace-util</module>
+	<module>third-party</module>
     </modules>
 
     <build>

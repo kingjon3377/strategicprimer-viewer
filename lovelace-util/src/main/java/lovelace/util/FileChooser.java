@@ -21,6 +21,7 @@ import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 import java.util.logging.Level;
 import java.util.function.Consumer;
+import either.Either;
 
 /**
  * A wrapper around the {@link JFileChooser Swing} and {@link FileDialog AWT} file-choosers.
