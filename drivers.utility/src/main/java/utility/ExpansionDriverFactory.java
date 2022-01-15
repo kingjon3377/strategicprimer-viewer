@@ -1,0 +1,47 @@
+package utility;
+
+import common.map.IMutableMapNG;
+
+import drivers.common.IDriverModel;
+import drivers.common.SPOptions;
+import drivers.common.ParamCount;
+import drivers.common.IDriverUsage;
+import drivers.common.DriverUsage;
+import drivers.common.DriverFactory;
+import drivers.common.ModelDriverFactory;
+import drivers.common.ModelDriver;
+
+import drivers.common.cli.ICLIHelper;
+
+import com.google.auto.service.AutoService;
+
+/**
+ * A factory for a driver to update a player's map to include a certain minimum
+ * distance around allied villages.
+ */
+@AutoService(DriverFactory.class)
+public class ExpansionDriverFactory implements ModelDriverFactory {
+	private static final IDriverUsage USAGE = new DriverUsage(false, "expand", ParamCount.AtLeastTwo,
+		"Expand a player's map.",
+		"Ensure a player's map covers all terrain allied villages can see.", true,
+		false, "--current-turn=NN");
+
+	@Override
+	public IDriverUsage getUsage() {
+		return USAGE;
+	}
+
+	@Override
+	public ModelDriver createDriver(ICLIHelper cli, SPOptions options, IDriverModel model) {
+		if (model instanceof UtilityDriverModel) {
+			return new ExpansionDriver(cli, options, (UtilityDriverModel) model);
+		} else {
+			return createDriver(cli, options, new UtilityDriverModel(model));
+		}
+	}
+
+	@Override
+	public IDriverModel createModel(IMutableMapNG map) {
+		return new UtilityDriverModel(map);
+	}
+}
