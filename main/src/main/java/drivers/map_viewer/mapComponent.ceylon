@@ -47,12 +47,6 @@ import java.awt.image {
     BufferedImage
 }
 
-"An interface for a UI representing a map."
-shared interface MapGUI {
-    "The driver model the GUI represents."
-    shared formal IViewerModel mapModel;
-}
-
 "A component to display the map, even a large one, without the performance problems that
  came from drawing the entire map every time and letting Java manage the scrolling or,
  worse, instantiating a GUITile object for every visible tile every time the map was

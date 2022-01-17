@@ -17,12 +17,6 @@ import java.awt {
     Component
 }
 
-"An interface for the method to get the tool-tip message for the location the mouse
- cursor is over."
-interface ToolTipSource {
-    shared formal String? getToolTipText(MouseEvent event);
-}
-
 "A mouse listener for the map panel, to show the terrain-changing menu as needed."
 class ComponentMouseListener(IViewerModel model, Boolean(TileFixture) zof,
             Comparison(TileFixture, TileFixture) comparator) extends MouseAdapter()
