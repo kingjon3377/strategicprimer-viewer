@@ -1,0 +1,167 @@
+package drivers.turnrunning.applets;
+
+import java.util.ArrayList;
+import common.map.fixtures.UnitMember;
+import common.map.fixtures.FortressMember;
+import common.map.IMapNG;
+import java.util.Optional;
+import java.util.stream.StreamSupport;
+import common.map.fixtures.FixtureIterable;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+import org.javatuples.Pair;
+import java.util.List;
+import drivers.common.cli.ICLIHelper;
+import drivers.common.cli.Applet;
+import common.idreg.IDRegistrar;
+import common.map.Point;
+import common.map.Player;
+import common.map.TileFixture;
+import common.map.HasPopulation;
+import common.map.HasOwner;
+
+import common.map.fixtures.towns.IFortress;
+import common.map.fixtures.IResourcePile;
+import common.map.fixtures.Quantity;
+import common.map.fixtures.mobile.IUnit;
+
+import drivers.turnrunning.ITurnRunningModel;
+
+import org.jetbrains.annotations.Nullable;
+
+
+// TODO: Most of these 'default' functions should probably go into a 'TurnRunningModel' interface
+public abstract class AbstractTurnApplet implements TurnApplet {
+	public AbstractTurnApplet(ITurnRunningModel model, ICLIHelper cli, IDRegistrar idf) {
+		this.model = model;
+		this.cli = cli;
+		this.idf = idf;
+	}
+
+	private final ITurnRunningModel model;
+	private final ICLIHelper cli;
+	private final IDRegistrar idf;
+
+	// This was "shared" in Ceylon, but I expect only subclasses will be able to use it.
+	protected <Type> @Nullable Type chooseFromList(List<Type> items, String description, String none,
+			String prompt, boolean auto) {
+		return chooseFromList(items, description, none, prompt, auto, Object::toString);
+	}
+
+	// This was "shared" in Ceylon, but I expect only subclasses will be able to use it.
+	protected <Type> @Nullable Type chooseFromList(List<Type> items, String description, String none,
+			String prompt, boolean auto, Function<? super Type, String> converter) {
+		Pair<Integer, String> entry = cli.chooseStringFromList(
+			items.stream().map(converter).collect(Collectors.toList()), description,
+			none, prompt, auto);
+		if (entry.getValue1() != null) {
+			return items.get(entry.getValue0());
+		} else {
+			return null;
+		}
+	}
+
+	// This was "shared" in Ceylon, but I expect only subclasses will be able to use it.
+	@Nullable
+	protected Point confirmPoint(String prompt) {
+		Point retval = cli.inputPoint(prompt);
+		if (retval == null) {
+			return null;
+		}
+		Point selectedLocation = model.getSelectedUnitLocation();
+		if (selectedLocation.isValid()) {
+			Boolean confirmation = cli.inputBoolean(
+				String.format("%s is %0.1f away. Is that right?", retval,
+					model.getMapDimensions().distance(retval, selectedLocation)));
+			if (confirmation != null && confirmation) {
+				return retval;
+			} else {
+				return null;
+			}
+		} else {
+			cli.println("No base location, so can't estimate distance.");
+			return retval;
+		}
+	}
+	// TODO: These should be configurable, either by callers or the user's SPOptions
+	protected final int encountersPerHour = 4;
+	protected final int noResultCost = 60 / encountersPerHour;
+
+	/**
+	 * Reduce the population of a group of plants, animals, etc., and copy
+	 * the reduced form into all subordinate maps.
+	 */
+	protected <T extends HasPopulation<? extends TileFixture>&TileFixture> void reducePopulation(
+			Point point, T fixture, String plural, Boolean zero) {
+		int count = Math.min(
+			Optional.ofNullable(cli.inputNumber(String.format(
+				"How many %s to remove: ", plural))).orElse(0), fixture.getPopulation());
+		model.reducePopulation(point, fixture, zero, count);
+	}
+
+	// FIXME: Should only look at a particular unit's location
+	// TODO: Move into the model?
+	// FIXME: Stream-based version doesn't count food inside units inside fortresses
+	protected List<IResourcePile> getFoodFor(Player player, int turn) {
+/*		return StreamSupport.stream(model.getMap().getLocations().spliterator(), true)
+			.flatMap(l -> model.getMap().getFixtures(l).stream())
+			.filter(f -> f instanceof IFortress || f instanceof IUnit)
+			.filter(f -> player.equals(((HasOwner) f).getOwner()))
+			.map(FixtureIterable.class::cast)
+			.flatMap(f -> StreamSupport.stream(f.spliterator(), true))
+			.filter(IResourcePile.class::isInstance)
+//			.<IResourcePile>map(IResourcePile.class::cast)
+			.map(x -> (IResourcePile) x)
+			.filter((IResourcePile r) -> "food".equals(r.getKind()))
+			.filter((IResourcePile r) -> "pounds".equals(r.getQuantity().getUnits()))
+			.filter((IResourcePile r) -> r.getCreated() <= turn)
+			.collect(Collectors.<IResourcePile>toList()); */ // Doesn't compile, with impossible errors
+		final List<IResourcePile> retval = new ArrayList<>();
+		IMapNG map = model.getMap();
+		for (Point loc : map.getLocations()) {
+			for (TileFixture fix : map.getFixtures(loc)) {
+				if (fix instanceof IFortress) {
+					for (FortressMember member : (IFortress) fix) {
+						if (member instanceof IResourcePile) {
+							IResourcePile pile = (IResourcePile) member;
+							if ("food".equals(pile.getKind()) &&
+									"pounds".equals(pile.getQuantity()
+										.getUnits()) &&
+									pile.getCreated() <= turn) {
+								retval.add(pile);
+							}
+						} else if (member instanceof IUnit) {
+							for (UnitMember inner : (IUnit) member) {
+								if (inner instanceof IResourcePile) {
+									IResourcePile pile =
+										(IResourcePile) inner;
+									if ("food".equals(pile.getKind()) &&
+											"pounds".equals(
+												pile.getQuantity()
+													.getUnits()) &&
+											pile.getCreated()
+												<= turn) {
+										retval.add(pile);
+									}
+								}
+							}
+						}
+					}
+				} else if (fix instanceof IUnit) {
+					for (UnitMember inner : (IUnit) fix) {
+						if (inner instanceof IResourcePile) {
+							IResourcePile pile = (IResourcePile) inner;
+							if ("food".equals(pile.getKind()) &&
+									"pounds".equals(pile.getQuantity()
+											.getUnits()) &&
+									pile.getCreated() <= turn) {
+								retval.add(pile);
+							}
+						}
+					}
+				}
+			}
+		}
+		return retval;
+	}
+}
