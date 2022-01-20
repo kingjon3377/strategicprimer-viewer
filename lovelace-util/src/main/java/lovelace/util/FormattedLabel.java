@@ -4,10 +4,8 @@ import javax.swing.JLabel;
 
 /**
  * A JLabel that takes a format string in its constructor and later takes format-string arguments to produce its text.
- *
- * TODO: Rename back to FormattedLabel
  */
-public class InterpolatedLabel extends JLabel {
+public class FormattedLabel extends JLabel {
 	private static final long serialVersionUID = 1;
 	private final String formatString;
 	/**
@@ -15,7 +13,7 @@ public class InterpolatedLabel extends JLabel {
 	 * @param defaultArguments The arguments to plug into the format string
 	 * to produce the label's initial text.
 	 */
-	public InterpolatedLabel(String formatString, Object... defaultArguments) {
+	public FormattedLabel(String formatString, Object... defaultArguments) {
 		super(String.format(formatString, defaultArguments));
 		this.formatString = formatString;
 	}
