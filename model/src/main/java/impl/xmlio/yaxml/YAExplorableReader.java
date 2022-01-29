@@ -13,7 +13,7 @@ import common.map.fixtures.explorable.Cave;
 import common.xmlio.Warning;
 import impl.xmlio.exceptions.UnsupportedTagException;
 
-import lovelace.util.IOConsumer;
+import lovelace.util.ThrowingConsumer;
 
 /**
  * A reader for Caves and Battlefields.
@@ -54,7 +54,7 @@ import lovelace.util.IOConsumer;
 	}
 
 	@Override
-	public void write(IOConsumer<String> ostream, ExplorableFixture obj, int indent) 
+	public void write(ThrowingConsumer<String, IOException> ostream, ExplorableFixture obj, int indent)
 			throws IOException {
 		if (obj instanceof Battlefield) {
 			writeTag(ostream, "battlefield", indent);

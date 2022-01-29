@@ -3,13 +3,13 @@ package report.generators;
 import org.jetbrains.annotations.Nullable;
 import org.javatuples.Pair;
 import org.javatuples.Triplet;
-import lovelace.util.IOConsumer;
+import lovelace.util.ThrowingConsumer;
 import java.io.IOException;
 import java.util.Comparator;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.stream.Collectors;
-import lovelace.util.IOTriConsumer;
+import lovelace.util.ThrowingTriConsumer;
 
 import lovelace.util.DelayedRemovalMap;
 
@@ -42,7 +42,7 @@ public class VillageReportGenerator extends AbstractReportGenerator<Village> {
 	 * Produce the report on all known villages.
 	 */
 	public void produce(DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-			IMapNG map, IOConsumer<String> ostream) throws IOException {
+			IMapNG map, ThrowingConsumer<String, IOException> ostream) throws IOException {
 		Comparator<Village> villageComparator = Comparator.comparing(Village::getName)
 			.thenComparing(Comparator.comparing(Village::getRace))
 			.thenComparing(Comparator.comparing(Village::getId));
@@ -78,7 +78,7 @@ public class VillageReportGenerator extends AbstractReportGenerator<Village> {
 		}
 		Comparator<Pair<? super Village, Point>> byDistance = Comparator.comparing(Pair::getValue1,
 			distComparator);
-		IOTriConsumer<Village, Point, IOConsumer<String>> writer =
+		ThrowingTriConsumer<Village, Point, ThrowingConsumer<String, IOException>, IOException> writer =
 			defaultFormatter(fixtures, map);
 		writeMap(ostream, own, writer, byDistance);
 		writeMap(ostream, independents, writer, byDistance);
@@ -98,7 +98,7 @@ public class VillageReportGenerator extends AbstractReportGenerator<Village> {
 	 */
 	@Override
 	public void produceSingle(DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-			IMapNG map, IOConsumer<String> ostream, Village item, Point loc)
+			IMapNG map, ThrowingConsumer<String, IOException> ostream, Village item, Point loc)
 			throws IOException {
 		fixtures.remove(item.getId());
 		ostream.accept("At ");

@@ -6,7 +6,7 @@ import javax.xml.stream.events.XMLEvent;
 import java.io.IOException;
 
 import common.xmlio.SPFormatException;
-import lovelace.util.IOConsumer;
+import lovelace.util.ThrowingConsumer;
 
 import common.idreg.IDRegistrar;
 import common.map.fixtures.Ground;
@@ -43,7 +43,7 @@ import common.xmlio.Warning;
 	}
 
 	@Override
-	public void write(IOConsumer<String> ostream, Ground obj, int indent) throws IOException {
+	public void write(ThrowingConsumer<String, IOException> ostream, Ground obj, int indent) throws IOException {
 		writeTag(ostream, "ground", indent);
 		writeProperty(ostream, "kind", obj.getKind());
 		writeProperty(ostream, "exposed", Boolean.toString(obj.isExposed()));

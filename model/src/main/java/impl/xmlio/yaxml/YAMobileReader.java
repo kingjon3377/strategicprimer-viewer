@@ -11,7 +11,7 @@ import java.util.HashSet;
 import java.util.function.IntFunction;
 import java.io.IOException;
 
-import lovelace.util.IOConsumer;
+import lovelace.util.ThrowingConsumer;
 import common.xmlio.SPFormatException;
 import common.idreg.IDRegistrar;
 import common.map.HasMutableImage;
@@ -201,7 +201,7 @@ import common.xmlio.Warning;
 	}
 
 	@Override
-	public void write(IOConsumer<String> ostream, MobileFixture obj, int indent) throws IOException {
+	public void write(ThrowingConsumer<String, IOException> ostream, MobileFixture obj, int indent) throws IOException {
 		if (obj instanceof IUnit) {
 			throw new IllegalArgumentException("Unit handled elsewhere");
 		} else if (obj instanceof AnimalTracks) {

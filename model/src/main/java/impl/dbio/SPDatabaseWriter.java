@@ -14,7 +14,8 @@ import javax.sql.DataSource;
 import common.map.HasNotes;
 import common.map.IMapNG;
 import java.nio.file.Path;
-import lovelace.util.IOConsumer;
+import lovelace.util.ThrowingConsumer;
+import java.io.IOException;
 import java.util.Collections;
 import java.util.Arrays;
 
@@ -116,7 +117,7 @@ public final class SPDatabaseWriter implements SPWriter {
 	}
 
 	@Override
-	public void writeSPObject(IOConsumer<String> arg, Object obj) {
+	public void writeSPObject(ThrowingConsumer<String, IOException> arg, Object obj) {
 		throw new UnsupportedOperationException(
 			"SPDatabaseWriter can only write to a database file, not to a stream");
 	}
@@ -127,7 +128,7 @@ public final class SPDatabaseWriter implements SPWriter {
 	}
 
 	@Override
-	public void write(IOConsumer<String> arg, IMapNG map) {
+	public void write(ThrowingConsumer<String, IOException> arg, IMapNG map) {
 		writeSPObject(arg, map);
 	}
 

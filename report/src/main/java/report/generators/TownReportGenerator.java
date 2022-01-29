@@ -3,7 +3,7 @@ package report.generators;
 import org.jetbrains.annotations.Nullable;
 import org.javatuples.Pair;
 import org.javatuples.Triplet;
-import lovelace.util.IOConsumer;
+import lovelace.util.ThrowingConsumer;
 import java.io.IOException;
 import java.util.Comparator;
 import java.util.Map;
@@ -81,7 +81,7 @@ public class TownReportGenerator extends AbstractReportGenerator<ITownFixture> {
 	 */
 	@Override
 	public void produceSingle(DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-			IMapNG map, IOConsumer<String> ostream, ITownFixture item, Point loc) 
+			IMapNG map, ThrowingConsumer<String, IOException> ostream, ITownFixture item, Point loc)
 			throws IOException {
 		if (item instanceof Village) {
 			new VillageReportGenerator(comp, currentPlayer, dimensions, hq)
@@ -133,7 +133,7 @@ public class TownReportGenerator extends AbstractReportGenerator<ITownFixture> {
 	 */
 	@Override
 	public void produce(DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-			IMapNG map, IOConsumer<String> ostream) throws IOException {
+			IMapNG map, ThrowingConsumer<String, IOException> ostream) throws IOException {
 		HeadedMap<ITownFixture, Point> abandoned =
 			new HeadedMapImpl<>("<h5>Abandoned Communities</h5>");
 		HeadedMap<ITownFixture, Point> active =

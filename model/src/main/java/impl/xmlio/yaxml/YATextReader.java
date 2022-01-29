@@ -7,7 +7,7 @@ import javax.xml.stream.events.Characters;
 import java.io.IOException;
 
 import common.xmlio.SPFormatException;
-import lovelace.util.IOConsumer;
+import lovelace.util.ThrowingConsumer;
 
 import common.idreg.IDRegistrar;
 import common.map.fixtures.TextFixture;
@@ -49,7 +49,7 @@ import impl.xmlio.exceptions.UnwantedChildException;
 	}
 
 	@Override
-	public void write(IOConsumer<String> ostream, TextFixture obj, int indent) throws IOException {
+	public void write(ThrowingConsumer<String, IOException> ostream, TextFixture obj, int indent) throws IOException {
 		writeTag(ostream, "text", indent);
 		if (obj.getTurn() != -1) {
 			writeProperty(ostream, "turn", obj.getTurn());

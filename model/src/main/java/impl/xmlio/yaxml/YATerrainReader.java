@@ -6,7 +6,7 @@ import javax.xml.stream.events.XMLEvent;
 import java.io.IOException;
 
 import common.xmlio.SPFormatException;
-import lovelace.util.IOConsumer;
+import lovelace.util.ThrowingConsumer;
 
 import common.map.HasExtent;
 import common.map.HasImage;
@@ -76,7 +76,7 @@ import java.util.Set;
 	}
 
 	@Override
-	public void write(IOConsumer<String> ostream, TerrainFixture obj, int indent) throws IOException {
+	public void write(ThrowingConsumer<String, IOException> ostream, TerrainFixture obj, int indent) throws IOException {
 		if (obj instanceof Forest) {
 			writeTag(ostream, "forest", indent);
 			writeProperty(ostream, "kind", ((Forest) obj).getKind());

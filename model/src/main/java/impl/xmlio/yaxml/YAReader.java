@@ -8,7 +8,7 @@ import java.io.IOException;
 import javax.xml.namespace.QName;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
-import lovelace.util.IOConsumer;
+import lovelace.util.ThrowingConsumer;
 
 /**
  * An interface for XML readers that can read multiple related types, in the
@@ -34,7 +34,7 @@ public interface YAReader<Item, Value> {
 	 * @param obj The object to write
 	 * @param indentation The current indentation level
 	 */
-	void write(IOConsumer<String> ostream, Value obj, int indentation) throws IOException;
+	void write(ThrowingConsumer<String, IOException> ostream, Value obj, int indentation) throws IOException;
 
 	/**
 	 * Whether we can read the given tag.
@@ -51,7 +51,7 @@ public interface YAReader<Item, Value> {
 	 * right type but the typechecker doesn't. This will probably cause a
 	 * ClassCastException if the types don't in fact match.
 	 */
-	default void writeRaw(IOConsumer<String> ostream, Object obj, int indentation) throws IOException {
+	default void writeRaw(ThrowingConsumer<String, IOException> ostream, Object obj, int indentation) throws IOException {
 		write(ostream, (Value) obj, indentation);
 	}
 }

@@ -50,7 +50,7 @@ public final class ReportGenerator {
 			DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures, IMapNG map,
 			Player player, IReportGenerator<?>... generators) throws IOException {
 		for (IReportGenerator<?> generator : generators) {
-			// TODO: change "IOConsumer" to "Consumer" in interface (and drop "throws IOException")
+			// TODO: change "ThrowingConsumer" to "Consumer" in interface (and drop "throws IOException")
 			generator.produce(fixtures, map, builder::append);
 			fixtures.coalesce();
 		}

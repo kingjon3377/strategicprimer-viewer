@@ -3,7 +3,7 @@ package report.generators;
 import org.jetbrains.annotations.Nullable;
 import org.javatuples.Pair;
 import org.javatuples.Triplet;
-import lovelace.util.IOConsumer;
+import lovelace.util.ThrowingConsumer;
 import java.io.IOException;
 import java.util.Comparator;
 import java.util.List;
@@ -90,7 +90,7 @@ public class FortressReportGenerator extends AbstractReportGenerator<IFortress> 
 	 *
 	 * TODO: Can this be static?
 	 */
-	private void riversToString(IOConsumer<String> formatter, Collection<River> rivers) throws IOException {
+	private void riversToString(ThrowingConsumer<String, IOException> formatter, Collection<River> rivers) throws IOException {
 		Set<River> set = EnumSet.noneOf(River.class);
 		set.addAll(rivers);
 		if (set.contains(River.Lake)) {
@@ -110,7 +110,7 @@ public class FortressReportGenerator extends AbstractReportGenerator<IFortress> 
 
 	private static <Type extends IFixture> void printList(
 			DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-			IOConsumer<String> ostream, IMapNG map, Collection<? extends Type> list,
+			ThrowingConsumer<String, IOException> ostream, IMapNG map, Collection<? extends Type> list,
 			String header, IReportGenerator<Type> helper, Point loc) throws IOException {
 		if (!list.isEmpty()) {
 			ostream.accept("<li>");
@@ -134,7 +134,7 @@ public class FortressReportGenerator extends AbstractReportGenerator<IFortress> 
 	 */
 	@Override
 	public void produceSingle(DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-			IMapNG map, IOConsumer<String> ostream, IFortress item, Point loc) 
+			IMapNG map, ThrowingConsumer<String, IOException> ostream, IFortress item, Point loc)
 			throws IOException {
 		ostream.accept("<h5>Fortress ");
 		ostream.accept(item.getName());
@@ -206,7 +206,7 @@ public class FortressReportGenerator extends AbstractReportGenerator<IFortress> 
 	 */
 	@Override
 	public void produce(DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-			IMapNG map, IOConsumer<String> ostream) throws IOException {
+			IMapNG map, ThrowingConsumer<String, IOException> ostream) throws IOException {
 		Map<IFortress, Point> ours = new HashMap<>();
 		Map<IFortress, Point> others = new HashMap<>();
 		for (Pair<Point, IFortress> pair : fixtures.values().stream()

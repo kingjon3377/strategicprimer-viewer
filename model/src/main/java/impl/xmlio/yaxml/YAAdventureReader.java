@@ -12,7 +12,7 @@ import common.map.Player;
 import common.map.fixtures.explorable.AdventureFixture;
 import common.xmlio.Warning;
 
-import lovelace.util.IOConsumer;
+import lovelace.util.ThrowingConsumer;
 
 /**
  * A reader for adventure hooks.
@@ -50,7 +50,7 @@ import lovelace.util.IOConsumer;
 	 * Write an adventure to XML.
 	 */
 	@Override
-	public void write(IOConsumer<String> ostream, AdventureFixture obj, int indent) 
+	public void write(ThrowingConsumer<String, IOException> ostream, AdventureFixture obj, int indent)
 			throws IOException {
 		writeTag(ostream, "adventure", indent);
 		writeProperty(ostream, "id", obj.getId());

@@ -81,7 +81,7 @@ import static impl.xmlio.fluidxml.FluidBase.*;
 
 import java.util.Map;
 import java.util.regex.Pattern;
-import lovelace.util.IOConsumer;
+import lovelace.util.ThrowingConsumer;
 import java.util.function.Predicate;
 import java.util.stream.StreamSupport;
 import java.util.stream.Stream;
@@ -112,7 +112,7 @@ public class SPFluidWriter implements SPWriter {
 	}
 
 	@Override
-	public void writeSPObject(IOConsumer<String> ostream, Object obj)
+	public void writeSPObject(ThrowingConsumer<String, IOException> ostream, Object obj)
 			throws MalformedXMLException, IOException {
 		XMLOutputFactory xof = XMLOutputFactory.newInstance();
 		StringWriter writer = new StringWriter();
@@ -145,7 +145,7 @@ public class SPFluidWriter implements SPWriter {
 	}
 
 	@Override
-	public void write(IOConsumer<String> arg, IMapNG map) throws MalformedXMLException, IOException {
+	public void write(ThrowingConsumer<String, IOException> arg, IMapNG map) throws MalformedXMLException, IOException {
 		writeSPObject(arg, map);
 	}
 

@@ -3,11 +3,10 @@ package report.generators;
 import org.jetbrains.annotations.Nullable;
 import org.javatuples.Pair;
 import org.javatuples.Triplet;
-import lovelace.util.IOConsumer;
 import java.util.List;
 import java.util.Comparator;
 import java.io.IOException;
-import lovelace.util.IOConsumer;
+import lovelace.util.ThrowingConsumer;
 import java.util.stream.Collectors;
 import java.util.Arrays;
 
@@ -43,7 +42,7 @@ public class ExplorableReportGenerator extends AbstractReportGenerator<Explorabl
 	 */
 	@Override
 	public void produceSingle(DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-			IMapNG map, IOConsumer<String> ostream, ExplorableFixture item, Point loc) 
+			IMapNG map, ThrowingConsumer<String, IOException> ostream, ExplorableFixture item, Point loc)
 			throws IOException {
 		if (item instanceof Cave) {
 			fixtures.remove(item.getId());
@@ -71,7 +70,7 @@ public class ExplorableReportGenerator extends AbstractReportGenerator<Explorabl
 	 */
 	@Override
 	public void produce(DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-			IMapNG map, IOConsumer<String> ostream) throws IOException {
+			IMapNG map, ThrowingConsumer<String, IOException> ostream) throws IOException {
 		List<Point> portals = new PointList("Portals to other worlds: ");
 		List<Point> battles = new PointList("Signs of long-ago battles on the following tiles:");
 		List<Point> caves = new PointList("Caves beneath the following tiles: ");

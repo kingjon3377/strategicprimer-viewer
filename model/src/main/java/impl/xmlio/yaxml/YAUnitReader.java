@@ -6,7 +6,7 @@ import javax.xml.stream.events.XMLEvent;
 import javax.xml.stream.events.Characters;
 import java.io.IOException;
 
-import lovelace.util.IOConsumer;
+import lovelace.util.ThrowingConsumer;
 import common.xmlio.SPFormatException;
 import common.idreg.IDRegistrar;
 import common.map.IPlayerCollection;
@@ -163,7 +163,7 @@ import lovelace.util.MalformedXMLException;
 		return "unit".equalsIgnoreCase(tag);
 	}
 
-	public void writeOrders(IOConsumer<String> ostream, String tag, int turn, String orders,
+	public void writeOrders(ThrowingConsumer<String, IOException> ostream, String tag, int turn, String orders,
 			int indent) throws IOException {
 		if (orders.isEmpty()) {
 			return;
@@ -177,7 +177,7 @@ import lovelace.util.MalformedXMLException;
 		closeTag(ostream, 0, tag);
 	}
 
-	private void writeChild(IOConsumer<String> ostream, UnitMember child, Integer indent)
+	private void writeChild(ThrowingConsumer<String, IOException> ostream, UnitMember child, Integer indent)
 			throws IOException {
 		for (YAReader<?, ?> reader : readers) {
 			if (reader.canWrite(child)) {
@@ -191,7 +191,7 @@ import lovelace.util.MalformedXMLException;
 	}
 
 	@Override
-	public void write(IOConsumer<String> ostream, IUnit obj, int indent) throws IOException {
+	public void write(ThrowingConsumer<String, IOException> ostream, IUnit obj, int indent) throws IOException {
 		writeTag(ostream, "unit", indent);
 		writeProperty(ostream, "owner", obj.getOwner().getPlayerId());
 		writeNonemptyProperty(ostream, "kind", obj.getKind());

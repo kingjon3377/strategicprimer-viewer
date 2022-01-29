@@ -11,7 +11,7 @@ import common.map.Player;
 import common.map.PlayerImpl;
 import common.xmlio.Warning;
 
-import lovelace.util.IOConsumer;
+import lovelace.util.ThrowingConsumer;
 
 /**
  * A reader for {@link Player}s."
@@ -46,7 +46,7 @@ import lovelace.util.IOConsumer;
 	}
 
 	@Override
-	public void write(IOConsumer<String> ostream, Player obj, int indent) throws IOException {
+	public void write(ThrowingConsumer<String, IOException> ostream, Player obj, int indent) throws IOException {
 		if (!obj.getName().isEmpty()) {
 			writeTag(ostream, "player", indent);
 			writeProperty(ostream, "number", obj.getPlayerId());

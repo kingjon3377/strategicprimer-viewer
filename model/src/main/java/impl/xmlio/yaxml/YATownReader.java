@@ -6,7 +6,7 @@ import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.EndElement;
 import java.io.IOException;
 
-import lovelace.util.IOConsumer;
+import lovelace.util.ThrowingConsumer;
 import common.xmlio.SPFormatException;
 import lovelace.util.MalformedXMLException;
 import common.idreg.IDRegistrar;
@@ -335,7 +335,7 @@ import java.util.logging.Logger;
 		return retval;
 	}
 
-	private void writeAbstractTown(IOConsumer<String> ostream, AbstractTown obj, int tabs)
+	private void writeAbstractTown(ThrowingConsumer<String, IOException> ostream, AbstractTown obj, int tabs)
 			throws IOException {
 		writeTag(ostream, obj.getKind(), tabs);
 		writeProperty(ostream, "status", obj.getStatus().toString());
@@ -355,7 +355,7 @@ import java.util.logging.Logger;
 		}
 	}
 
-	public void writeCommunityStats(IOConsumer<String> ostream, CommunityStats obj, int tabs) 
+	public void writeCommunityStats(ThrowingConsumer<String, IOException> ostream, CommunityStats obj, int tabs)
 			throws IOException {
 		writeTag(ostream, "population", tabs);
 		writeProperty(ostream, "size", obj.getPopulation());
@@ -413,7 +413,7 @@ import java.util.logging.Logger;
 	}
 
 	@Override
-	public void write(IOConsumer<String> ostream, ITownFixture obj, int tabs) throws IOException {
+	public void write(ThrowingConsumer<String, IOException> ostream, ITownFixture obj, int tabs) throws IOException {
 		if (obj instanceof AbstractTown) {
 			writeAbstractTown(ostream, (AbstractTown) obj, tabs);
 		} else if (obj instanceof Village) {

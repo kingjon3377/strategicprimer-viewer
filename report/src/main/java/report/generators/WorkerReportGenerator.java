@@ -3,7 +3,7 @@ package report.generators;
 import org.jetbrains.annotations.Nullable;
 import org.javatuples.Pair;
 import org.javatuples.Triplet;
-import lovelace.util.IOConsumer;
+import lovelace.util.ThrowingConsumer;
 import java.io.IOException;
 import java.util.Comparator;
 import lovelace.util.DelayedRemovalMap;
@@ -49,7 +49,7 @@ import common.map.fixtures.mobile.worker.IJob;
 
 	/**
 	 * Produce the sub-sub-report on a worker's stats.
-	 * TODO: Take IOConsumer instead of returning String
+	 * TODO: Take ThrowingConsumer instead of returning String
 	 */
 	private static String statsString(WorkerStats stats) {
 		return String.format("He or she has the following stats: %d / %d Hit Points, Strength %s, Dexterity %s, Constitution %s, Intelligence %s, Wisdom %s, Charisma %s",
@@ -59,14 +59,14 @@ import common.map.fixtures.mobile.worker.IJob;
 			mod(stats.getCharisma()));
 	}
 
-	// TODO: take IOConsumer instead of returning String
+	// TODO: take ThrowingConsumer instead of returning String
 	private static String skillString(ISkill skill) {
 		return skill.getName() + " " + Integer.toString(skill.getLevel());
 	}
 
 	/**
 	 * Produce text describing the given Skills.
-	 * TODO: Take IOConsumer instead of returning String?
+	 * TODO: Take ThrowingConsumer instead of returning String?
 	 */
 	private String skills(Iterable<ISkill> job) {
 		return (job.iterator().hasNext()) ? StreamSupport.stream(job.spliterator(), false)
@@ -80,7 +80,7 @@ import common.map.fixtures.mobile.worker.IJob;
 	 */
 	@Override
 	public void produceSingle(DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-			IMapNG map, IOConsumer<String> ostream, IWorker worker, Point loc) 
+			IMapNG map, ThrowingConsumer<String, IOException> ostream, IWorker worker, Point loc)
 			throws IOException {
 		ostream.accept(worker.getName());
 		ostream.accept(", a ");
@@ -127,7 +127,7 @@ import common.map.fixtures.mobile.worker.IJob;
 	 */
 	@Override
 	public void produce(DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-			IMapNG map, IOConsumer<String> ostream) throws IOException {
+			IMapNG map, ThrowingConsumer<String, IOException> ostream) throws IOException {
 		List<Pair<IWorker, Point>> workers = fixtures.values().stream()
 			.filter(p -> p.getValue1() instanceof IWorker)
 			.sorted(pairComparator)

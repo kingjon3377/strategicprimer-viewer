@@ -3,7 +3,7 @@ package report.generators;
 import org.jetbrains.annotations.Nullable;
 import org.javatuples.Pair;
 import org.javatuples.Triplet;
-import lovelace.util.IOConsumer;
+import lovelace.util.ThrowingConsumer;
 import java.io.IOException;
 import java.util.Comparator;
 import java.util.Map;
@@ -62,7 +62,7 @@ public class ImmortalsReportGenerator extends AbstractReportGenerator<Immortal> 
 	 */
 	@Override
 	public void produceSingle(DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-			IMapNG map, IOConsumer<String> ostream, Immortal item, Point loc) 
+			IMapNG map, ThrowingConsumer<String, IOException> ostream, Immortal item, Point loc)
 			throws IOException {
 		fixtures.remove(item.getId());
 		ostream.accept("At ");
@@ -78,7 +78,7 @@ public class ImmortalsReportGenerator extends AbstractReportGenerator<Immortal> 
 	 */
 	@Override
 	public void produce(DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-			IMapNG map, IOConsumer<String> ostream) throws IOException {
+			IMapNG map, ThrowingConsumer<String, IOException> ostream) throws IOException {
 		Map<Class<? extends IFixture>, BiConsumer<String, Point>> meta = new HashMap<>();
 		Map<String, List<Point>> simples = new HashMap<>();
 		BiConsumer<Class<? extends Immortal>, String> handleSimple =

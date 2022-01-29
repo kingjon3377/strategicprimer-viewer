@@ -1,5 +1,6 @@
 package report;
 
+import lovelace.util.ThrowingFunction;
 import org.jetbrains.annotations.Nullable;
 import org.javatuples.Pair;
 import java.util.List;
@@ -17,7 +18,7 @@ import javax.swing.JLabel;
 import lovelace.util.DelayedRemovalMap;
 import lovelace.util.Platform;
 import lovelace.util.BorderedPanel;
-import lovelace.util.IOConsumer;
+import lovelace.util.ThrowingConsumer;
 
 import common.map.Player;
 import common.map.IFixture;
@@ -65,9 +66,10 @@ public final class TabularReportGenerator {
 	/**
 	 * A method to produce tabular reports based on a map for a player.
 	 *
-	 * TODO: Does the consumer really need to be IOConsumer here either?
+	 * TODO: Does the consumer really need to be ThrowingConsumer here either?
 	 */
-	public static void createTabularReports(IMapNG map, Function<String, IOConsumer<String>> source,
+	public static void createTabularReports(IMapNG map,
+	        ThrowingFunction<String, ThrowingConsumer<String, IOException>, IOException> source,
 			ICLIHelper cli) throws IOException {
 		DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures =
 			ReportGeneratorHelper.getFixtures(map);
@@ -135,9 +137,9 @@ public final class TabularReportGenerator {
 	/**
 	 * A method to produce tabular reports and add them to a GUI.
 	 * @param consumer The way to add the tables to the GUI
-	 * @param The map to base the reports on
+	 * @param map The map to base the reports on
 	 */
-	public void createGUITabularReports(BiConsumer<String, Component> consumer, IMapNG map) 
+	public static void createGUITabularReports(BiConsumer<String, Component> consumer, IMapNG map)
 			throws IOException {
 		DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures =
 			ReportGeneratorHelper.getFixtures(map);

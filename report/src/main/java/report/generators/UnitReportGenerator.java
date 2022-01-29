@@ -3,7 +3,7 @@ package report.generators;
 import org.jetbrains.annotations.Nullable;
 import org.javatuples.Pair;
 import org.javatuples.Triplet;
-import lovelace.util.IOConsumer;
+import lovelace.util.ThrowingConsumer;
 import java.io.IOException;
 import java.util.Comparator;
 import java.util.List;
@@ -63,7 +63,7 @@ public class UnitReportGenerator extends AbstractReportGenerator<IUnit> {
 	/**
 	 * Produce the sub-sub-report about a unit's orders and results.
 	 */
-	private void produceOrders(IUnit item, IOConsumer<String> formatter) throws IOException {
+	private void produceOrders(IUnit item, ThrowingConsumer<String, IOException> formatter) throws IOException {
 		if (!item.getAllOrders().isEmpty() || !item.getAllResults().isEmpty()) {
 			formatter.accept("Orders and Results:<ul>");
 			formatter.accept(System.lineSeparator());
@@ -111,8 +111,8 @@ public class UnitReportGenerator extends AbstractReportGenerator<IUnit> {
 
 	private <Member extends UnitMember> void produceInner(
 			DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-			IOConsumer<String> ostream, String heading, List<Member> collection,
-			IOConsumer<Member> generator) throws IOException {
+			ThrowingConsumer<String, IOException> ostream, String heading, List<Member> collection,
+			ThrowingConsumer<Member, IOException> generator) throws IOException {
 		if (!collection.isEmpty()) {
 			ostream.accept("<li>");
 			ostream.accept(heading);
@@ -140,7 +140,7 @@ public class UnitReportGenerator extends AbstractReportGenerator<IUnit> {
 	 */
 	@Override
 	public void produceSingle(DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-			IMapNG map, IOConsumer<String> ostream, IUnit item, Point loc) 
+			IMapNG map, ThrowingConsumer<String, IOException> ostream, IUnit item, Point loc)
 			throws IOException {
 		ostream.accept("Unit ");
 		ostream.accept(item.getName());
@@ -227,7 +227,7 @@ public class UnitReportGenerator extends AbstractReportGenerator<IUnit> {
 	}
 
 	private void unitFormatter(DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-			IMapNG map, IUnit unit, Point loc, IOConsumer<String> formatter) 
+			IMapNG map, IUnit unit, Point loc, ThrowingConsumer<String, IOException> formatter)
 			throws IOException {
 		formatter.accept("At ");
 		formatter.accept(loc.toString());
@@ -240,7 +240,7 @@ public class UnitReportGenerator extends AbstractReportGenerator<IUnit> {
 	 */
 	@Override
 	public void produce(DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-			IMapNG map, IOConsumer<String> ostream) throws IOException {
+			IMapNG map, ThrowingConsumer<String, IOException> ostream) throws IOException {
 		HeadedMap<IUnit, Point> foreign = new HeadedMapImpl<>("<h5>Foreign Units</h5>");
 		HeadedMap<IUnit, Point> ours = new HeadedMapImpl<>("<h5>Your units</h5>");
 		for (Pair<Point, IUnit> pair : fixtures.values().stream()

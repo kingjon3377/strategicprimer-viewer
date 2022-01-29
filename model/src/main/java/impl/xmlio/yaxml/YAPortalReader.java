@@ -10,7 +10,7 @@ import common.idreg.IDRegistrar;
 import common.map.fixtures.explorable.Portal;
 import common.xmlio.Warning;
 
-import lovelace.util.IOConsumer;
+import lovelace.util.ThrowingConsumer;
 
 /**
  * A reader for portals.
@@ -33,7 +33,7 @@ import lovelace.util.IOConsumer;
 	}
 
 	@Override
-	public void write(IOConsumer<String> ostream, Portal obj, int indent) throws IOException {
+	public void write(ThrowingConsumer<String, IOException> ostream, Portal obj, int indent) throws IOException {
 		writeTag(ostream, "portal", indent);
 		writeProperty(ostream, "world", obj.getDestinationWorld());
 		writeProperty(ostream, "row", obj.getDestinationCoordinates().getRow());

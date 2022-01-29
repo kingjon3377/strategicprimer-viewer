@@ -10,7 +10,7 @@ import java.util.HashMap;
 import java.util.Comparator;
 
 import lovelace.util.DelayedRemovalMap;
-import lovelace.util.IOConsumer;
+import lovelace.util.ThrowingConsumer;
 
 import common.DistanceComparator;
 
@@ -156,7 +156,7 @@ public class ResourceTabularReportGenerator
 	 * Write rows for equipment, counting multiple identical Implements in one line.
 	 */
 	@Override
-	public void produceTable(IOConsumer<String> ostream,
+	public void produceTable(ThrowingConsumer<String, IOException> ostream,
 			DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
 			Map<Integer, Integer> parentMap) throws IOException {
 		Iterable<Triplet<Integer, Point, TileFixture>> values = fixtures.entrySet().stream()

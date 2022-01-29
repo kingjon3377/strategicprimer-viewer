@@ -24,7 +24,7 @@ import impl.xmlio.exceptions.UnwantedChildException;
 import common.map.fixtures.towns.CommunityStats;
 import java.util.HashMap;
 import java.util.Map;
-import lovelace.util.IOConsumer;
+import lovelace.util.ThrowingConsumer;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -129,7 +129,7 @@ import java.util.Collections;
 	 *
 	 * @throws IOException on I/O error
 	 */
-	private void writeAllRivers(IOConsumer<String> ostream, Iterable<River> rivers, int indent) 
+	private void writeAllRivers(ThrowingConsumer<String, IOException> ostream, Iterable<River> rivers, int indent)
 			throws IOException {
 		for (River river : StreamSupport.stream(rivers.spliterator(), false).sorted()
 				.collect(Collectors.toList())) {
@@ -147,7 +147,7 @@ import java.util.Collections;
 	 * @param obj The object to write
 	 * @param indent The current indentation level
 	 */
-	public void write(IOConsumer<String> ostream, Object obj, int indent) throws IOException {
+	public void write(ThrowingConsumer<String, IOException> ostream, Object obj, int indent) throws IOException {
 		Class<?> cls = obj.getClass();
 		if (obj instanceof River) {
 			mapReader.writeRiver(ostream, (River) obj, indent);

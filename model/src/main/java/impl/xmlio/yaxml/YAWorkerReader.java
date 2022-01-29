@@ -8,7 +8,7 @@ import javax.xml.stream.events.Characters;
 import javax.xml.stream.events.XMLEvent;
 import java.io.IOException;
 
-import lovelace.util.IOConsumer;
+import lovelace.util.ThrowingConsumer;
 import common.xmlio.SPFormatException;
 import common.idreg.IDRegistrar;
 import common.map.IPlayerCollection;
@@ -28,7 +28,7 @@ import common.map.Player;
  * A reader for workers.
  */
 /* package */ class YAWorkerReader extends YAAbstractReader<IWorker, IWorker> {
-	public static void writeSkill(IOConsumer<String> ostream, ISkill obj, int indent) 
+	public static void writeSkill(ThrowingConsumer<String, IOException> ostream, ISkill obj, int indent)
 			throws IOException {
 		if (!obj.isEmpty()) {
 			writeTag(ostream, "skill", indent);
@@ -39,7 +39,7 @@ import common.map.Player;
 		}
 	}
 
-	public static void writeJob(IOConsumer<String> ostream, IJob obj, int indent) 
+	public static void writeJob(ThrowingConsumer<String, IOException> ostream, IJob obj, int indent)
 			throws IOException {
 		if (obj.getLevel() <= 0 && obj.isEmpty()) {
 			return;
@@ -58,7 +58,7 @@ import common.map.Player;
 		}
 	}
 
-	private static void writeNote(IOConsumer<String> ostream, int player, String note, int indent) 
+	private static void writeNote(ThrowingConsumer<String, IOException> ostream, int player, String note, int indent)
 			throws IOException {
 		writeTag(ostream, "note", indent);
 		writeProperty(ostream, "player", player);
@@ -143,7 +143,7 @@ import common.map.Player;
 		return retval;
 	}
 
-	private void writeStats(IOConsumer<String> ostream, @Nullable WorkerStats stats, int indent) 
+	private void writeStats(ThrowingConsumer<String, IOException> ostream, @Nullable WorkerStats stats, int indent)
 			throws IOException {
 		if (stats != null) {
 			writeTag(ostream, "stats", indent);
@@ -196,7 +196,7 @@ import common.map.Player;
 	}
 
 	@Override
-	public void write(IOConsumer<String> ostream, IWorker obj, int indent) throws IOException {
+	public void write(ThrowingConsumer<String, IOException> ostream, IWorker obj, int indent) throws IOException {
 		writeTag(ostream, "worker", indent);
 		writeProperty(ostream, "name", obj.getName());
 		if (!"human".equals(obj.getRace())) {

@@ -10,8 +10,8 @@ import common.map.IFixture;
 import common.map.IMapNG;
 import java.util.Map;
 import java.util.List;
-import lovelace.util.IOConsumer;
-import lovelace.util.IOTriConsumer;
+import lovelace.util.ThrowingConsumer;
+import lovelace.util.ThrowingTriConsumer;
 import java.util.Comparator;
 import java.util.stream.Stream;
 import java.util.stream.Collectors;
@@ -48,7 +48,7 @@ public interface IReportGenerator<T extends IFixture> {
 	 * @param ostream The stream to write to
 	 */
 	void produce(DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-		IMapNG map, IOConsumer<String> ostream) throws IOException;
+		IMapNG map, ThrowingConsumer<String, IOException> ostream) throws IOException;
 
 	/**
 	 * Write a (sub-)report on a single item to a stream.
@@ -62,12 +62,12 @@ public interface IReportGenerator<T extends IFixture> {
 	 * @param loc Its location
 	 */
 	void produceSingle(DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-		IMapNG map, IOConsumer<String> ostream, T item, Point loc) throws IOException;
+		IMapNG map, ThrowingConsumer<String, IOException> ostream, T item, Point loc) throws IOException;
 
 	/**
 	 * A factory for a default formatter for {@link writeMap}.
 	 */
-	default IOTriConsumer<T, Point, IOConsumer<String>> defaultFormatter(
+	default ThrowingTriConsumer<T, Point, ThrowingConsumer<String, IOException>, IOException> defaultFormatter(
 			DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures, IMapNG map) {
 		return (item, loc, formatter) ->
 			produceSingle(fixtures, map, formatter, item, loc);
@@ -86,9 +86,9 @@ public interface IReportGenerator<T extends IFixture> {
 	 * @param lambda The method to write each item.
 	 * @param An optional sorting method to run the map through before printing.
 	 */
-	default <Key extends IFixture> void writeMap(IOConsumer<String> ostream,
+	default <Key extends IFixture> void writeMap(ThrowingConsumer<String, IOException> ostream,
 			HeadedMap<? extends Key, Point> map,
-			IOTriConsumer<? super Key, Point, IOConsumer<String>> lambda,
+			ThrowingTriConsumer<? super Key, Point, ThrowingConsumer<String, IOException>, IOException> lambda,
 			Comparator<Pair<? super Key, Point>> sorter) throws IOException {
 		if (!map.isEmpty()) {
 			ostream.accept(String.format("%s%n<ul>%n", map.getHeader()));
@@ -115,9 +115,9 @@ public interface IReportGenerator<T extends IFixture> {
 	 * @param lambda The method to write each item.
 	 * @param An optional sorting method to run the map through before printing.
 	 */
-	default <Key extends IFixture> void writeMap(IOConsumer<String> ostream,
+	default <Key extends IFixture> void writeMap(ThrowingConsumer<String, IOException> ostream,
 			HeadedMap<? extends Key, Point> map,
-			IOTriConsumer<? super Key, Point, IOConsumer<String>> lambda)
+			ThrowingTriConsumer<? super Key, Point, ThrowingConsumer<String, IOException>, IOException> lambda)
 			throws IOException {
 		if (!map.isEmpty()) {
 			ostream.accept(String.format("%s%n<ul>%n", map.getHeader()));

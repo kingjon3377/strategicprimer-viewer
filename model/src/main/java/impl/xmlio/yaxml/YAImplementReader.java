@@ -6,7 +6,7 @@ import javax.xml.stream.events.XMLEvent;
 import java.io.IOException;
 
 import common.xmlio.SPFormatException;
-import lovelace.util.IOConsumer;
+import lovelace.util.ThrowingConsumer;
 
 import common.idreg.IDRegistrar;
 import common.map.fixtures.Implement;
@@ -38,7 +38,7 @@ import common.xmlio.Warning;
 	}
 
 	@Override
-	public void write(IOConsumer<String> ostream, Implement obj, int indent) throws IOException{
+	public void write(ThrowingConsumer<String, IOException> ostream, Implement obj, int indent) throws IOException{
 		writeTag(ostream, "implement", indent);
 		writeProperty(ostream, "kind", obj.getKind());
 		writeProperty(ostream, "id", obj.getId());

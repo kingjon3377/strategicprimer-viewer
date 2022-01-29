@@ -5,7 +5,7 @@ import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 import java.io.IOException;
 
-import lovelace.util.IOConsumer;
+import lovelace.util.ThrowingConsumer;
 import common.xmlio.SPFormatException;
 import common.idreg.IDRegistrar;
 import common.map.fixtures.IMutableResourcePile;
@@ -45,7 +45,7 @@ import common.xmlio.Warning;
 	}
 
 	@Override
-	public void write(IOConsumer<String> ostream, IResourcePile obj, int indent) throws IOException {
+	public void write(ThrowingConsumer<String, IOException> ostream, IResourcePile obj, int indent) throws IOException {
 		writeTag(ostream, "resource", indent);
 		writeProperty(ostream, "id", obj.getId());
 		writeProperty(ostream, "kind", obj.getKind());

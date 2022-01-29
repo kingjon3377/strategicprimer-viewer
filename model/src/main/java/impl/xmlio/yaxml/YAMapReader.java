@@ -12,7 +12,7 @@ import javax.xml.stream.events.EndElement;
 import javax.xml.stream.events.Characters;
 import java.io.IOException;
 
-import lovelace.util.IOConsumer;
+import lovelace.util.ThrowingConsumer;
 import common.xmlio.SPFormatException;
 import common.idreg.IDRegistrar;
 import common.map.Player;
@@ -118,7 +118,7 @@ import java.util.function.Predicate;
 	/**
 	 * Write a newline if needed.
 	 */
-	private void eolIfNeeded(boolean needEol, IOConsumer<String> writer) throws IOException {
+	private void eolIfNeeded(boolean needEol, ThrowingConsumer<String, IOException> writer) throws IOException {
 		if (needEol) {
 			writer.accept(System.lineSeparator());
 		}
@@ -146,7 +146,7 @@ import java.util.function.Predicate;
 	/**
 	 * Write a river.
 	 */
-	public void writeRiver(IOConsumer<String> ostream, River obj, int indent) throws IOException {
+	public void writeRiver(ThrowingConsumer<String, IOException> ostream, River obj, int indent) throws IOException {
 		if (River.Lake.equals(obj)) {
 			writeTag(ostream, "lake", indent);
 		} else {
@@ -370,7 +370,7 @@ import java.util.function.Predicate;
 	/**
 	 * Write a child object
 	 */
-	private void writeChild(IOConsumer<String> ostream, TileFixture child, int tabs) 
+	private void writeChild(ThrowingConsumer<String, IOException> ostream, TileFixture child, int tabs)
 			throws IOException {
 		Class<? extends TileFixture> cls = child.getClass();
 		if (writerCache.containsKey(cls)) {
@@ -398,7 +398,7 @@ import java.util.function.Predicate;
 	 * Write a map.
 	 */
 	@Override
-	public void write(IOConsumer<String> ostream, IMapNG obj, int tabs) throws IOException {
+	public void write(ThrowingConsumer<String, IOException> ostream, IMapNG obj, int tabs) throws IOException {
 		writeTag(ostream, "view", tabs);
 		writeProperty(ostream, "current_player", obj.getCurrentPlayer().getPlayerId());
 		writeProperty(ostream, "current_turn", obj.getCurrentTurn());

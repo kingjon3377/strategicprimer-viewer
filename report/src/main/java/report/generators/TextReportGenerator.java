@@ -3,7 +3,7 @@ package report.generators;
 import org.jetbrains.annotations.Nullable;
 import org.javatuples.Pair;
 import org.javatuples.Triplet;
-import lovelace.util.IOConsumer;
+import lovelace.util.ThrowingConsumer;
 import java.io.IOException;
 import java.util.Comparator;
 import lovelace.util.DelayedRemovalMap;
@@ -37,7 +37,7 @@ public class TextReportGenerator extends AbstractReportGenerator<TextFixture> {
 	 */
 	@Override
 	public void produceSingle(DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-			IMapNG map, IOConsumer<String> ostream, TextFixture item, Point loc) 
+			IMapNG map, ThrowingConsumer<String, IOException> ostream, TextFixture item, Point loc)
 			throws IOException {
 		ostream.accept("At ");
 		ostream.accept(loc.toString());
@@ -61,7 +61,7 @@ public class TextReportGenerator extends AbstractReportGenerator<TextFixture> {
 	 */
 	@Override
 	public void produce(DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-			IMapNG map, IOConsumer<String> ostream) throws IOException {
+			IMapNG map, ThrowingConsumer<String, IOException> ostream) throws IOException {
 		List<Triplet<Integer, Point, TextFixture>> items =
 			fixtures.entrySet().stream()
 				.filter(e -> e.getValue().getValue1() instanceof TextFixture)

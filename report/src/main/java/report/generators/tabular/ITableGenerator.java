@@ -1,7 +1,7 @@
 package report.generators.tabular;
 
 import java.io.IOException;
-import lovelace.util.IOConsumer;
+import lovelace.util.ThrowingConsumer;
 import org.jetbrains.annotations.Nullable;
 
 import lovelace.util.DelayedRemovalMap;
@@ -45,7 +45,7 @@ public interface ITableGenerator<T extends IFixture> {
 	 * Produce a tabular report on a particular category of fixtures in the
 	 * map, and remove all fixtures covered in the table from the collection.
 	 */
-	default void produceTable(IOConsumer<String> ostream, DelayedRemovalMap<Integer,
+	default void produceTable(ThrowingConsumer<String, IOException> ostream, DelayedRemovalMap<Integer,
 			Pair<Point, IFixture>> fixtures, Map<Integer, Integer> parentMap)
 			throws IOException {
 		Class<T> cls = narrowedClass();
@@ -222,7 +222,7 @@ public interface ITableGenerator<T extends IFixture> {
 	 * the field delimiter, with the last field followed by the row
 	 * delimiter.
 	 */
-	default void writeRow(IOConsumer<String> ostream, String... fields) throws IOException {
+	default void writeRow(ThrowingConsumer<String, IOException> ostream, String... fields) throws IOException {
 		boolean firstField = true;
 		for (String field : fields) {
 			if (firstField) {

@@ -9,7 +9,7 @@ import java.util.Set;
 import java.util.HashSet;
 import java.util.ArrayList;
 import java.util.List;
-import lovelace.util.IOConsumer;
+import lovelace.util.ThrowingConsumer;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.text.ParseException;
@@ -153,14 +153,14 @@ public final class ExplorationRunner {
 	/**
 	 * Print the names of any tables that are called but don't exist yet.
 	 */
-	public void verboseRecursiveCheck(String table, IOConsumer<String> ostream) throws IOException {
+	public void verboseRecursiveCheck(String table, ThrowingConsumer<String, IOException> ostream) throws IOException {
 		verboseRecursiveCheck(table, ostream, new HashSet<>());
 	}
 
 	/**
 	 * Print the names of any tables that are called but don't exist yet.
 	 */
-	public void verboseRecursiveCheck(String table, IOConsumer<String> ostream, Set<String> state) 
+	public void verboseRecursiveCheck(String table, ThrowingConsumer<String, IOException> ostream, Set<String> state)
 			throws IOException {
 		if (!state.contains(table)) {
 			state.add(table);
@@ -184,7 +184,7 @@ public final class ExplorationRunner {
 	/**
 	 * Print the names of any tables that are called but don't exist yet.
 	 */
-	public void verboseGlobalRecursiveCheck(IOConsumer<String> ostream) throws IOException {
+	public void verboseGlobalRecursiveCheck(ThrowingConsumer<String, IOException> ostream) throws IOException {
 		Set<String> state = new HashSet<>();
 		for (String table : tables.keySet()) {
 			verboseRecursiveCheck(table, ostream, state);

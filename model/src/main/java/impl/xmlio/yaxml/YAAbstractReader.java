@@ -32,7 +32,7 @@ import static impl.xmlio.ISPReader.SP_NAMESPACE;
 
 import java.util.List;
 import java.util.Collections;
-import lovelace.util.IOConsumer;
+import lovelace.util.ThrowingConsumer;
 import java.util.Arrays;
 import java.util.stream.Stream;
 import java.util.stream.Collectors;
@@ -155,7 +155,7 @@ abstract class YAAbstractReader<Item, Value> implements YAReader<Item, Value> {
 	/**
 	 * Append the given number of tabs to the stream.
 	 */
-	protected static void indent(IOConsumer<String> ostream, int tabs) throws IOException {
+	protected static void indent(ThrowingConsumer<String, IOException> ostream, int tabs) throws IOException {
 		ostream.accept(String.join("", Collections.nCopies(tabs, "\t")));
 	}
 
@@ -195,7 +195,7 @@ abstract class YAAbstractReader<Item, Value> implements YAReader<Item, Value> {
 	/**
 	 * Write a property to XML.
 	 */
-	protected static void writeProperty(IOConsumer<String> ostream, String name, String val)
+	protected static void writeProperty(ThrowingConsumer<String, IOException> ostream, String name, String val)
 			throws IOException {
 		ostream.accept(String.format(" %s=\"%s\"", simpleQuote(name, '='), simpleQuote(val, '"')));
 	}
@@ -203,7 +203,7 @@ abstract class YAAbstractReader<Item, Value> implements YAReader<Item, Value> {
 	/**
 	 * Write a property to XML.
 	 */
-	protected static void writeProperty(IOConsumer<String> ostream, String name, int val)
+	protected static void writeProperty(ThrowingConsumer<String, IOException> ostream, String name, int val)
 			throws IOException {
 		writeProperty(ostream, name, Integer.toString(val));
 	}
@@ -211,7 +211,7 @@ abstract class YAAbstractReader<Item, Value> implements YAReader<Item, Value> {
 	/**
 	 * Write a property to XML only if its value is nonempty.
 	 */
-	protected static void writeNonemptyProperty(IOConsumer<String> ostream, String name, String val)
+	protected static void writeNonemptyProperty(ThrowingConsumer<String, IOException> ostream, String name, String val)
 			throws IOException {
 		if (!val.isEmpty()) {
 			writeProperty(ostream, name, val);
@@ -222,7 +222,7 @@ abstract class YAAbstractReader<Item, Value> implements YAReader<Item, Value> {
 	 * Write the image property to XML if the object's image is nonempty
 	 * and differs from the default.
 	 */
-	protected static void writeImageXML(IOConsumer<String> ostream, HasImage obj) 
+	protected static void writeImageXML(ThrowingConsumer<String, IOException> ostream, HasImage obj)
 			throws IOException {
 		String image = obj.getImage();
 		if (!image.equals(obj.getDefaultImage())) {
@@ -338,7 +338,7 @@ abstract class YAAbstractReader<Item, Value> implements YAReader<Item, Value> {
 	 * write the right-bracket to close the tag. If `tabs` is 0, emit a
 	 * namespace declaration as well.
 	 */
-	protected static void writeTag(IOConsumer<String> ostream, String tag, int tabs)
+	protected static void writeTag(ThrowingConsumer<String, IOException> ostream, String tag, int tabs)
 			throws IOException {
 		indent(ostream, tabs);
 		ostream.accept(String.format("<%s", simpleQuote(tag, '>')));
@@ -350,21 +350,21 @@ abstract class YAAbstractReader<Item, Value> implements YAReader<Item, Value> {
 	/**
 	 * Close a tag with a right-bracket and add a newline.
 	 */
-	protected static void finishParentTag(IOConsumer<String> ostream) throws IOException {
+	protected static void finishParentTag(ThrowingConsumer<String, IOException> ostream) throws IOException {
 		ostream.accept(">" + System.lineSeparator());
 	}
 
 	/**
 	 * Close a 'leaf' tag and add a newline.
 	 */
-	protected static void closeLeafTag(IOConsumer<String> ostream) throws IOException {
+	protected static void closeLeafTag(ThrowingConsumer<String, IOException> ostream) throws IOException {
 		ostream.accept(" />" + System.lineSeparator());
 	}
 
 	/**
 	 * Write a closing tag to the stream, optionally indented, and followed by a newline.
 	 */
-	protected static void closeTag(IOConsumer<String> ostream, int tabs, String tag) 
+	protected static void closeTag(ThrowingConsumer<String, IOException> ostream, int tabs, String tag)
 			throws IOException {
 		if (tabs > 0) {
 			indent(ostream, tabs);

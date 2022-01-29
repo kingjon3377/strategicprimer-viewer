@@ -10,7 +10,7 @@ import java.nio.file.Paths;
 import java.nio.file.Path;
 import java.nio.file.Files;
 import lovelace.util.MalformedXMLException;
-import lovelace.util.IOConsumer;
+import lovelace.util.ThrowingConsumer;
 
 /**
  * Sixth generation SP XML writer.
@@ -40,7 +40,7 @@ public class YAXMLWriter implements SPWriter {
 	 * @param obj The object to write
 	 */
 	@Override
-	public void writeSPObject(IOConsumer<String> arg, Object obj) throws IOException {
+	public void writeSPObject(ThrowingConsumer<String, IOException> arg, Object obj) throws IOException {
 		wrapped.write(arg, obj, 0);
 	}
 
@@ -64,7 +64,7 @@ public class YAXMLWriter implements SPWriter {
 	 * @param map The map to write.
 	 */
 	@Override
-	public void write(IOConsumer<String> arg, IMapNG map) throws IOException {
+	public void write(ThrowingConsumer<String, IOException> arg, IMapNG map) throws IOException {
 		writeSPObject(arg, map);
 	}
 }

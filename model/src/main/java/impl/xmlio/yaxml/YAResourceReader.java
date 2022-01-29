@@ -5,7 +5,7 @@ import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 import java.io.IOException;
 
-import lovelace.util.IOConsumer;
+import lovelace.util.ThrowingConsumer;
 import common.xmlio.SPFormatException;
 import common.idreg.IDRegistrar;
 import common.map.HasExtent;
@@ -157,7 +157,7 @@ import java.util.Collections;
 	}
 
 	@Override
-	public void write(IOConsumer<String> ostream, HarvestableFixture obj, int indent)
+	public void write(ThrowingConsumer<String, IOException> ostream, HarvestableFixture obj, int indent)
 			throws IOException {
 		if (obj instanceof CacheFixture) {
 			writeTag(ostream, "cache", indent);

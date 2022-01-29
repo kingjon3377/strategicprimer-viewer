@@ -10,7 +10,7 @@ import java.nio.file.DirectoryStream;
 import java.util.stream.Stream;
 import java.util.stream.Collectors;
 
-import lovelace.util.IOConsumer;
+import lovelace.util.ThrowingConsumer;
 import drivers.common.DriverFailedException;
 import drivers.common.UtilityDriver;
 import drivers.common.IncorrectUsageException;
@@ -24,8 +24,8 @@ import java.util.Collections;
  * "exploration results" framework I implemented.
  */
 public class TableDebugger implements UtilityDriver {
-	private final IOConsumer<String> ostream;
-	public TableDebugger(IOConsumer<String> ostream) {
+	private final ThrowingConsumer<String, IOException> ostream;
+	public TableDebugger(ThrowingConsumer<String, IOException> ostream) {
 		this.ostream = ostream;
 	}
 
