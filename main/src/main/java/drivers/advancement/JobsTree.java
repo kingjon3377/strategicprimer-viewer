@@ -1,0 +1,100 @@
+package drivers.advancement;
+
+import org.jetbrains.annotations.Nullable;
+
+import javax.swing.event.TreeModelListener;
+import javax.swing.event.TreeModelEvent;
+import javax.swing.event.TreeSelectionEvent;
+
+import javax.swing.JTree;
+
+import javax.swing.tree.TreePath;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
+import common.map.fixtures.mobile.worker.ISkill;
+import common.map.fixtures.mobile.worker.IJob;
+
+/**
+ * A tree representing a worker's Jobs and Skills.
+ *
+ * TODO: Can we split our special code out of this class, perhaps into a
+ * TreeSelectionModel, so we can make callers use a bog-standard JTree?
+ */
+/* package */ class JobsTree extends JTree implements SkillSelectionSource {
+	public JobsTree(JobTreeModel jtModel) {
+		super(jtModel);
+
+		jtModel.setSelectionModel(getSelectionModel());
+
+		setRootVisible(false);
+
+		for (int i = 0; i < getRowCount(); i++) {
+			expandRow(i);
+		}
+
+		setShowsRootHandles(true);
+		selectionModel.addTreeSelectionListener(this::handleTreeSelectionChange);
+
+		jtModel.addTreeModelListener(new TreeModelListener() {
+				@Override
+				public void treeStructureChanged(TreeModelEvent event) {
+					Optional.ofNullable(event.getTreePath())
+						.map(TreePath::getParentPath)
+						.ifPresent(path -> expandPath(path));
+					// FIXME: Why this loop here?
+					for (int i = 0; i < getRowCount(); i++) {
+						expandRow(i);
+					}
+				}
+				
+				@Override
+				public void treeNodesRemoved(TreeModelEvent event) { }
+				
+				@Override
+				public void treeNodesInserted(TreeModelEvent event) {
+					expandPath(event.getTreePath());
+					expandPath(event.getTreePath().getParentPath());
+				}
+
+				@Override
+				public void treeNodesChanged(TreeModelEvent event) {
+					expandPath(event.getTreePath().getParentPath());
+				}
+			});
+	}
+
+	private final List<SkillSelectionListener> listeners = new ArrayList<>();
+
+	@Override
+	public void addSkillSelectionListener(SkillSelectionListener listener) {
+		listeners.add(listener);
+	}
+
+	@Override
+	public void removeSkillSelectionListener(SkillSelectionListener listener) {
+		listeners.remove(listener);
+	}
+
+	private void handleTreeSelectionChange(TreeSelectionEvent event) {
+		@Nullable ISkill retval;
+		@Nullable IJob job;
+		TreePath selectionPath = event.getNewLeadSelectionPath();
+		if (selectionPath != null && selectionPath.getLastPathComponent() instanceof ISkill) {
+			retval = (ISkill) selectionPath.getLastPathComponent();
+			Object[] path = selectionPath.getPath();
+			// TODO: Check that length >= 2
+			job = Optional.ofNullable(path[path.length - 2]).filter(IJob.class::isInstance)
+				.map(IJob.class::cast).orElse(null);
+		} else {
+			retval = null;
+			job = null;
+		}
+		for (SkillSelectionListener listener : listeners) {
+			listener.selectJob(job);
+			listener.selectSkill(retval);
+		}
+	}
+}
