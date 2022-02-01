@@ -1,0 +1,30 @@
+package drivers.exploration;
+
+import javax.swing.DefaultListModel;
+
+import common.map.Player;
+
+import drivers.common.MapChangeListener;
+
+import exploration.common.IExplorationModel;
+
+/**
+ * A list model for players in the exploration GUI.
+ */
+/* package */ class PlayerListModel extends DefaultListModel<Player> implements MapChangeListener {
+	public PlayerListModel(IExplorationModel model) {
+		this.model = model;
+		model.getPlayerChoices().forEach(this::addElement);
+	}
+
+	private final IExplorationModel model;
+
+	@Override
+	public void mapChanged() {
+		clear();
+		model.getPlayerChoices().forEach(this::addElement);
+	}
+
+	@Override
+	public void mapMetadataChanged() {}
+}
