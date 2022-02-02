@@ -54,6 +54,7 @@ import lovelace.util.ComponentParentStream;
  */
 public class IOHandler implements ActionListener {
 	private static final Logger LOGGER = Logger.getLogger(IOHandler.class.getName());
+	// TODO: Instead of this, make ViewerGUIFactory the sole implementation of a service (@AutoService takes an array of classes) and use the same ServiceProvider API as the app-chooser will use to pick apps. This will let GUI apps other than the map viewer, and this class, move to separate modules from the map viewer.
 	private final TriFunction<ICLIHelper, SPOptions, IDriverModel, GUIDriver> viewerGUIFactory;
 	private final ISPDriver driver;
 	private final ICLIHelper cli;
