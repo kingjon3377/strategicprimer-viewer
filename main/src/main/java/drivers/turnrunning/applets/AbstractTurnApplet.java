@@ -108,7 +108,7 @@ public abstract class AbstractTurnApplet implements TurnApplet {
 			.filter(f -> f instanceof IFortress || f instanceof IUnit)
 			.filter(f -> player.equals(((HasOwner) f).getOwner()))
 			.map(FixtureIterable.class::cast)
-			.flatMap(f -> StreamSupport.stream(f.spliterator(), true))
+			.flatMap(f -> f.stream())
 			.filter(IResourcePile.class::isInstance)
 //			.<IResourcePile>map(IResourcePile.class::cast)
 			.map(x -> (IResourcePile) x)

@@ -233,8 +233,7 @@ import common.map.fixtures.mobile.worker.IJob;
 					writer.write(unit.getName());
 					if (unit.iterator().hasNext()) {
 						writer.write(" [");
-						if (StreamSupport.stream(unit.spliterator(), false)
-									.count() > 4L &&
+						if (unit.stream().count() > 4L &&
 								"true".equals(options
 									.getArgument(
 										"--summarize-large-units"))) {
@@ -296,8 +295,7 @@ import common.map.fixtures.mobile.worker.IJob;
 					writer.write(fortress.getName());
 					writer.newLine();
 					List<Implement> equipment =
-						StreamSupport.stream(fortress.spliterator(), true)
-							.filter(Implement.class::isInstance)
+						fortress.stream().filter(Implement.class::isInstance)
 							.map(Implement.class::cast)
 							.collect(Collectors.toList());
 					if (!equipment.isEmpty()) {
@@ -310,8 +308,7 @@ import common.map.fixtures.mobile.worker.IJob;
 						}
 					}
 					for (Map.Entry<String, List<IResourcePile>> entry :
-							StreamSupport.stream(fortress.spliterator(), false)
-								.filter(IResourcePile.class::isInstance)
+							fortress.stream().filter(IResourcePile.class::isInstance)
 								.map(IResourcePile.class::cast)
 								.collect(Collectors.groupingBy(
 									IResourcePile::getKind))
@@ -328,8 +325,7 @@ import common.map.fixtures.mobile.worker.IJob;
 							writer.newLine();
 						}
 					}
-					if (!StreamSupport.stream(fortress.spliterator(), false)
-							.allMatch(f -> f instanceof Implement ||
+					if (!fortress.stream().allMatch(f -> f instanceof Implement ||
 								f instanceof IResourcePile ||
 								f instanceof IUnit)) {
 						System.err.printf("Unhandled members in %s%n",
@@ -337,8 +333,7 @@ import common.map.fixtures.mobile.worker.IJob;
 					}
 				}
 				for (IUnit unit : model.getUnits(currentPlayer)) {
-					if (StreamSupport.stream(unit.spliterator(), true)
-							.allMatch(IWorker.class::isInstance)) {
+					if (unit.stream().allMatch(IWorker.class::isInstance)) {
 						continue;
 					}
 					writer.write("- With unit ");

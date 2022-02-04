@@ -285,7 +285,7 @@ public class AdvancementCLIHelper implements LevelGainSource {
 	 * Let the user add experience to a worker or workers in a unit.
 	 */
 	public void advanceWorkersInUnit(IUnit unit, boolean allowExpertMentoring) {
-		List<IWorker> workers = new ArrayList<>(StreamSupport.stream(unit.spliterator(), false)
+		List<IWorker> workers = new ArrayList<>(unit.stream()
 			.filter(IWorker.class::isInstance).map(IWorker.class::cast).collect(Collectors.toList()));
 		Boolean individualAdvancement = cli.inputBooleanInSeries("Add experience to workers individually? ");
 		if (individualAdvancement == null) {

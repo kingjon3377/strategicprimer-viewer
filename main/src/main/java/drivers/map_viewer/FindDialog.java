@@ -188,8 +188,7 @@ import java.util.function.Predicate;
 			if (matchesSimple(pattern, idNum, fixture, caseSensitivity)) {
 				return true;
 			} else if (fixture instanceof FixtureIterable) {
-				return StreamSupport.stream(((FixtureIterable) fixture).spliterator(), true)
-					.anyMatch(matches(pattern, idNum, caseSensitivity));
+				return ((FixtureIterable<?>) fixture).stream().anyMatch(matches(pattern, idNum, caseSensitivity));
 			} else {
 				return false;
 			}

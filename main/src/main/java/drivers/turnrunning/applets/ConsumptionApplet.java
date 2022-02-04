@@ -16,7 +16,6 @@ import static lovelace.util.Decimalize.decimalize;
 import drivers.turnrunning.ITurnRunningModel;
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.StreamSupport;
 import org.jetbrains.annotations.Nullable;
 
 /**
@@ -87,8 +86,7 @@ public class ConsumptionApplet extends AbstractTurnApplet {
 		if (localUnit == null) {
 			return null;
 		}
-		final long workers = StreamSupport.stream(localUnit.spliterator(), false)
-			.filter(IWorker.class::isInstance).count();
+		final long workers = localUnit.stream().filter(IWorker.class::isInstance).count();
 		BigDecimal remainingConsumption = new BigDecimal(4 * workers);
 		BigDecimal zero = new BigDecimal(0);
 		while (remainingConsumption.compareTo(zero) > 1) { // TODO: extract loop body as a function?

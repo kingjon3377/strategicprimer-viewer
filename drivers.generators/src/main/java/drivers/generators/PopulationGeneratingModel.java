@@ -217,8 +217,7 @@ public class PopulationGeneratingModel extends SimpleMultiMapModel { // TODO: Ex
 	 */
 	private static Stream<IFixture> flattenFortresses(IFixture fixture) {
 		if (fixture instanceof IFortress) {
-			return StreamSupport.stream(((IFortress) fixture).spliterator(), true)
-				.map(IFixture.class::cast);
+			return ((IFortress) fixture).stream().map(IFixture.class::cast);
 		} else {
 			return Stream.of(fixture);
 		}
@@ -320,9 +319,8 @@ public class PopulationGeneratingModel extends SimpleMultiMapModel { // TODO: Ex
 					.filter(IUnit.class::isInstance).map(IUnit.class::cast)
 					.filter(u -> u.getOwner().equals(unit.getOwner()))
 					.collect(Collectors.toList())) {
-				Optional<IWorker> matching = 
-					StreamSupport.stream(container.spliterator(), true)
-						.filter(IWorker.class::isInstance).map(IWorker.class::cast)
+				Optional<IWorker> matching =
+					container.stream().filter(IWorker.class::isInstance).map(IWorker.class::cast)
 						.filter(w -> worker.getRace().equals(w.getRace()))
 						.filter(w -> worker.getName().equals(w.getName()))
 						.filter(w -> worker.getId() == w.getId())

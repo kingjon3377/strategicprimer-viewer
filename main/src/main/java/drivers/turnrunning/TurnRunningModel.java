@@ -52,7 +52,7 @@ public class TurnRunningModel extends ExplorationModel implements ITurnRunningMo
 	 */
 	private static Stream<IFixture> unflattenNonFortresses(TileFixture fixture) {
 		if (fixture instanceof IFortress) {
-			return StreamSupport.stream(((IFortress) fixture).spliterator(), false).map(IFixture.class::cast);
+			return ((IFortress) fixture).stream().map(IFixture.class::cast);
 		} else {
 			return Stream.of(fixture);
 		}
@@ -65,8 +65,7 @@ public class TurnRunningModel extends ExplorationModel implements ITurnRunningMo
 	 */
 	private static Stream<IFixture> partiallyFlattenFortresses(TileFixture fixture) {
 		if (fixture instanceof IFortress) {
-			return Stream.concat(Stream.of(fixture),
-				StreamSupport.stream(((IFortress) fixture).spliterator(), false));
+			return Stream.concat(Stream.of(fixture), ((IFortress) fixture).stream());
 		} else {
 			return Stream.of(fixture);
 		}
@@ -197,7 +196,7 @@ public class TurnRunningModel extends ExplorationModel implements ITurnRunningMo
 				.flatMap(l -> map.getFixtures(l).stream()).flatMap(TurnRunningModel::unflattenNonFortresses)
 				.filter(IUnit.class::isInstance).map(IUnit.class::cast)
 				.filter(u -> u.getOwner().equals(map.getCurrentPlayer()))
-				.flatMap(u -> StreamSupport.stream(u.spliterator(), true))
+				.flatMap(u -> u.stream())
 				.filter(IMutableWorker.class::isInstance).map(IMutableWorker.class::cast)
 				.filter(w -> w.getRace().equals(worker.getRace()))
 				.filter(w -> w.getName().equals(worker.getName()))
@@ -231,8 +230,7 @@ public class TurnRunningModel extends ExplorationModel implements ITurnRunningMo
 			IMutableWorker matching = StreamSupport.stream(map.getLocations().spliterator(), true)
 				.flatMap(l -> map.getFixtures(l).stream()).flatMap(TurnRunningModel::unflattenNonFortresses)
 				.filter(IUnit.class::isInstance).map(IUnit.class::cast)
-				.filter(u -> u.getOwner().equals(map.getCurrentPlayer()))
-				.flatMap(u -> StreamSupport.stream(u.spliterator(), true))
+				.filter(u -> u.getOwner().equals(map.getCurrentPlayer())).flatMap(u -> u.stream())
 				.filter(IMutableWorker.class::isInstance).map(IMutableWorker.class::cast)
 				.filter(w -> w.getRace().equals(worker.getRace()))
 				.filter(w -> w.getName().equals(worker.getName()))
@@ -282,8 +280,7 @@ public class TurnRunningModel extends ExplorationModel implements ITurnRunningMo
 			IMutableWorker matching = StreamSupport.stream(map.getLocations().spliterator(), true)
 				.flatMap(l -> map.getFixtures(l).stream()).flatMap(TurnRunningModel::unflattenNonFortresses)
 				.filter(IUnit.class::isInstance).map(IUnit.class::cast)
-				.filter(u -> u.getOwner().equals(map.getCurrentPlayer()))
-				.flatMap(u -> StreamSupport.stream(u.spliterator(), true))
+				.filter(u -> u.getOwner().equals(map.getCurrentPlayer())).flatMap(u -> u.stream())
 				.filter(IMutableWorker.class::isInstance).map(IMutableWorker.class::cast)
 				.filter(w -> w.getRace().equals(worker.getRace()))
 				.filter(w -> w.getName().equals(worker.getName()))
@@ -327,7 +324,7 @@ public class TurnRunningModel extends ExplorationModel implements ITurnRunningMo
 					.filter(FixtureIterable.class::isInstance).map(FixtureIterable.class::cast)
 					.collect(Collectors.toList())) {
 				boolean found = false;
-				for (IMutableResourcePile item : StreamSupport.stream(container.spliterator(), false)
+				for (IMutableResourcePile item : container.stream()
 						.filter(IMutableResourcePile.class::isInstance)
 						.map(IMutableResourcePile.class::cast)
 						.collect(Collectors.toList())) {
@@ -381,7 +378,7 @@ public class TurnRunningModel extends ExplorationModel implements ITurnRunningMo
 					.filter(FixtureIterable.class::isInstance).map(FixtureIterable.class::cast)
 					.collect(Collectors.toList())) {
 				boolean found = false;
-				for (IMutableResourcePile item : StreamSupport.stream(container.spliterator(), false)
+				for (IMutableResourcePile item : container.stream()
 						.filter(IMutableResourcePile.class::isInstance)
 						.map(IMutableResourcePile.class::cast)
 						.collect(Collectors.toList())) {
@@ -632,7 +629,7 @@ public class TurnRunningModel extends ExplorationModel implements ITurnRunningMo
 					.map(HasOwner.class::cast)
 					.filter(f -> f.getOwner().equals(to.getOwner()))
 					.map(FixtureIterable.class::cast).collect(Collectors.toList())) {
-				IMutableResourcePile matching = StreamSupport.stream(container.spliterator(), false)
+				IMutableResourcePile matching = container.stream()
 					.filter(IMutableResourcePile.class::isInstance).map(IMutableResourcePile.class::cast)
 					.filter(r -> r.getKind().equals(from.getKind()))
 					.filter(r -> r.getContents().equals(from.getContents()))
@@ -707,7 +704,7 @@ public class TurnRunningModel extends ExplorationModel implements ITurnRunningMo
 					.map(HasOwner.class::cast)
 					.filter(f -> f.getOwner().equals(to.getOwner()))
 					.map(FixtureIterable.class::cast).collect(Collectors.toList())) {
-				IMutableResourcePile matching = StreamSupport.stream(container.spliterator(), false)
+				IMutableResourcePile matching = container.stream()
 					.filter(IMutableResourcePile.class::isInstance).map(IMutableResourcePile.class::cast)
 					.filter(r -> r.getKind().equals(from.getKind()))
 					.filter(r -> r.getContents().equals(from.getContents()))

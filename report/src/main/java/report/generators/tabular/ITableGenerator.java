@@ -55,11 +55,13 @@ public interface ITableGenerator<T extends IFixture> {
 				(T) e.getValue().getValue1()))
 			.sorted(Comparator.comparing(Triplet::removeFrom0, this::comparePairs))
 			.collect(Collectors.toList());
+		// TODO: declare getHeaderRow() to return List
 		writeRow(ostream, StreamSupport.stream(getHeaderRow().spliterator(), false)
 			.toArray(String[]::new));
 		for (Triplet<Integer, Point, T> triplet : values) {
 			for (Iterable<String> row : produce(fixtures, triplet.getValue2(),
 					triplet.getValue0(), triplet.getValue1(), parentMap)) {
+				// TODO: Declare produce() to produce List, not just Iterable
 				writeRow(ostream, StreamSupport.stream(row.spliterator(), false)
 					.toArray(String[]::new));
 			}

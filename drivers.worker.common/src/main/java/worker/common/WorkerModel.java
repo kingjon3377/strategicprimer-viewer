@@ -79,7 +79,7 @@ public class WorkerModel extends SimpleMultiMapModel implements IWorkerModel {
 	 */
 	private static Stream<?> flatten(Object fixture) {
 		if (fixture instanceof IFortress) {
-			return StreamSupport.stream(((IFortress) fixture).spliterator(), false);
+			return ((IFortress) fixture).stream();
 		} else {
 			return Stream.of(fixture);
 		}
@@ -93,8 +93,7 @@ public class WorkerModel extends SimpleMultiMapModel implements IWorkerModel {
 	private static Stream<Pair<Point, IFixture>> flattenEntries(Point point,
 			IFixture fixture) {
 		if (fixture instanceof IFortress) {
-			return StreamSupport.stream(((IFortress) fixture).spliterator(), false)
-				.map(m -> Pair.with(point, m));
+			return ((IFortress) fixture).stream().map(m -> Pair.with(point, m));
 		} else {
 			return Stream.of(Pair.with(point, fixture));
 		}
@@ -372,8 +371,7 @@ public class WorkerModel extends SimpleMultiMapModel implements IWorkerModel {
 						.filter(IMutableFortress.class::isInstance)
 						.map(IMutableFortress.class::cast)
 						.collect(Collectors.toList())) {
-					if (StreamSupport.stream(fort.spliterator(), true)
-							.anyMatch(fixture::equals)) {
+					if (fort.stream().anyMatch(fixture::equals)) {
 						any = true;
 						fort.removeMember(fixture);
 						break;
@@ -473,9 +471,7 @@ public class WorkerModel extends SimpleMultiMapModel implements IWorkerModel {
 				.filter(u -> u.getId() == old.getId())
 				.findAny().orElse(null);
 			if (matchingOld != null) {
-				UnitMember matchingMember = StreamSupport.stream(matchingOld.spliterator(),
-						false)
-					.filter(member::equals) // TODO: equals() isn't ideal for finding a matching member ...
+				UnitMember matchingMember = matchingOld.stream().filter(member::equals) // TODO: equals() isn't ideal for finding a matching member ...
 					.findAny().orElse(null);
 				IMutableUnit matchingNew = getUnitsImpl(StreamSupport.stream(
 						map.getLocations().spliterator(), true)
@@ -508,8 +504,7 @@ public class WorkerModel extends SimpleMultiMapModel implements IWorkerModel {
 						getCurrentPlayer()).stream()
 					.filter(IMutableUnit.class::isInstance)
 					.map(IMutableUnit.class::cast).collect(Collectors.toList())) {
-				UnitMember matching = StreamSupport.stream(unit.spliterator(), false)
-					.filter(member::equals) // FIXME: equals() will really not do here ...
+				UnitMember matching = unit.stream().filter(member::equals) // FIXME: equals() will really not do here ...
 					.findAny().orElse(null);
 				if (matching != null) {
 					any = true;
@@ -586,8 +581,7 @@ public class WorkerModel extends SimpleMultiMapModel implements IWorkerModel {
 								map.getLocations().spliterator(), true)
 							.flatMap(l -> map.getFixtures(l).stream())
 							.collect(Collectors.toList()), getCurrentPlayer())
-						.stream().flatMap(u ->
-							StreamSupport.stream(u.spliterator(), false))
+						.stream().flatMap(u -> u.stream())
 						.filter(HasMutableName.class::isInstance)
 						.filter(m -> m.getId() == ((UnitMember) item).getId())
 						.filter(m -> ((HasMutableName) m).getName()
@@ -639,8 +633,7 @@ public class WorkerModel extends SimpleMultiMapModel implements IWorkerModel {
 						StreamSupport.stream(map.getLocations().spliterator(), true)
 							.flatMap(l -> map.getFixtures(l).stream())
 							.collect(Collectors.toList()), getCurrentPlayer())
-					.stream().flatMap(u ->
-						StreamSupport.stream(u.spliterator(), false))
+					.stream().flatMap(u -> u.stream())
 					.filter(m -> m.getId() == ((UnitMember) item).getId())
 					.filter(HasMutableKind.class::isInstance)
 					.map(HasMutableKind.class::cast)
@@ -672,8 +665,7 @@ public class WorkerModel extends SimpleMultiMapModel implements IWorkerModel {
 						.collect(Collectors.toList()), getCurrentPlayer())
 					.stream().filter(IMutableUnit.class::isInstance)
 					.map(IMutableUnit.class::cast).collect(Collectors.toList())) {
-				if (StreamSupport.stream(unit.spliterator(), true)
-						.anyMatch(existing::equals)) {
+				if (unit.stream().anyMatch(existing::equals)) {
 					// TODO: look beyond equals() for matching-in-existing?
 					unit.addMember(sibling.copy(false));
 					any = true;
@@ -687,8 +679,7 @@ public class WorkerModel extends SimpleMultiMapModel implements IWorkerModel {
 
 	private static Stream<IFixture> flattenIncluding(IFixture fixture) {
 		if (fixture instanceof FixtureIterable) {
-			return Stream.concat(Stream.of(fixture),
-				StreamSupport.stream(((FixtureIterable) fixture).spliterator(), false));
+			return Stream.concat(Stream.of(fixture), ((FixtureIterable<?>) fixture).stream());
 		} else {
 			return Stream.of(fixture);
 		}
@@ -756,8 +747,7 @@ public class WorkerModel extends SimpleMultiMapModel implements IWorkerModel {
 				StreamSupport.stream(map.getLocations().spliterator(), true)
 					.flatMap(l -> map.getFixtures(l).stream())
 					.collect(Collectors.toList()), getCurrentPlayer()).stream()
-				.flatMap(u -> StreamSupport.stream(u.spliterator(), true))
-				.filter(IMutableWorker.class::isInstance)
+				.flatMap(u -> u.stream()).filter(IMutableWorker.class::isInstance)
 				.map(IMutableWorker.class::cast)
 				.filter(w -> w.getRace().equals(worker.getRace()))
 				.filter(w -> w.getName().equals(worker.getName()))
@@ -794,8 +784,7 @@ public class WorkerModel extends SimpleMultiMapModel implements IWorkerModel {
 				StreamSupport.stream(map.getLocations().spliterator(), true)
 					.flatMap(l -> map.getFixtures(l).stream())
 					.collect(Collectors.toList()), getCurrentPlayer()).stream()
-				.flatMap(u -> StreamSupport.stream(u.spliterator(), true))
-				.filter(IMutableWorker.class::isInstance)
+				.flatMap(u -> u.stream()).filter(IMutableWorker.class::isInstance)
 				.map(IMutableWorker.class::cast)
 				.filter(w -> w.getRace().equals(worker.getRace()))
 				.filter(w -> w.getName().equals(worker.getName()))
@@ -850,7 +839,7 @@ public class WorkerModel extends SimpleMultiMapModel implements IWorkerModel {
 				StreamSupport.stream(map.getLocations().spliterator(), true)
 					.flatMap(l -> map.getFixtures(l).stream())
 					.collect(Collectors.toList()), getCurrentPlayer()).stream()
-				.flatMap(u -> StreamSupport.stream(u.spliterator(), true))
+				.flatMap(u -> u.stream())
 				.filter(IMutableWorker.class::isInstance)
 				.map(IMutableWorker.class::cast)
 				.filter(w -> w.getRace().equals(worker.getRace()))

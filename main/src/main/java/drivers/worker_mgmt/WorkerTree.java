@@ -562,8 +562,7 @@ public class WorkerTree extends JTree implements UnitMemberSelectionSource, Unit
 				} else {
 					((DefaultTreeCellRenderer) component).setText(String.format(
 						"%s (%d workers)", unit.getName(),
-						StreamSupport.stream(unit.spliterator(), false)
-							.filter(IWorker.class::isInstance).count()));
+						unit.stream().filter(IWorker.class::isInstance).count()));
 				}
 				Boolean result = shouldChangeBackground(unit);
 				if (result != null) {

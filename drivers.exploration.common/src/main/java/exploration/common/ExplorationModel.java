@@ -76,8 +76,7 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 
 	private static Stream<IFixture> flattenIncluding(IFixture fixture) {
 		if (fixture instanceof FixtureIterable) {
-			return Stream.concat(Stream.of(fixture),
-				StreamSupport.stream(((FixtureIterable<?>) fixture).spliterator(), false));
+			return Stream.concat(Stream.of(fixture), ((FixtureIterable<?>) fixture).stream());
 		} else {
 			return Stream.of(fixture);
 		}
@@ -90,8 +89,8 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 	 */
 	private static Iterable<Pair<Point, IFixture>> flattenEntries(Pair<Point, IFixture> entry) {
 		if (entry.getValue1() instanceof IFortress) {
-			return StreamSupport.stream(((IFortress) entry.getValue1()).spliterator(), false)
-				.map(IFixture.class::cast).map(each -> Pair.with(entry.getValue0(), each))
+			return ((IFortress) entry.getValue1()).stream().map(IFixture.class::cast)
+					.map(each -> Pair.with(entry.getValue0(), each))
 				.collect(Collectors.toList());
 		} else {
 			return Collections.singleton(entry);
@@ -146,8 +145,7 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 				outside = true;
 				break;
 			} else if (fixture instanceof IMutableFortress) {
-				Optional<FortressMember> item = StreamSupport.stream(
-						((IFortress) fixture).spliterator(), true)
+				Optional<FortressMember> item = ((IMutableFortress) fixture).stream()
 					.filter(unit::equals).findAny();
 				if (item.isPresent()) {
 					((IMutableFortress) fixture).removeMember(item.get());
@@ -232,8 +230,7 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 	 */
 	private static Stream<IFixture> unflattenNonFortresses(TileFixture fixture) {
 		if (fixture instanceof IFortress) {
-			return StreamSupport.stream(((IFortress) fixture).spliterator(), false)
-				.map(IFixture.class::cast);
+			return ((IFortress) fixture).stream().map(IFixture.class::cast);
 		} else {
 			return Stream.of(fixture);
 		}
@@ -877,8 +874,7 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 					u.getName().equals(old.getName()) && u.getId() == old.getId())
 				.findAny();
 			Optional<UnitMember> matchingMember =
-				matchingOld.flatMap(u -> StreamSupport.stream(u.spliterator(), true)
-					.filter(member::equals) // TODO: equals() isn't ideal for finding a matching member ...
+				matchingOld.flatMap(u -> u.stream().filter(member::equals) // TODO: equals() isn't ideal for finding a matching member ...
 					.findAny());
 			Optional<IMutableUnit> matchingNew =
 				StreamSupport.stream(map.getLocations().spliterator(),
@@ -967,8 +963,7 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 						.filter(IMutableFortress.class::isInstance)
 						.map(IMutableFortress.class::cast)
 						.collect(Collectors.toList())) {
-					if (StreamSupport.stream(fort.spliterator(), true)
-							.anyMatch(fixture::equals)) {
+					if (fort.stream().anyMatch(fixture::equals)) {
 						fort.removeMember((FortressMember) fixture);
 						any = true;
 						break;
@@ -1050,8 +1045,7 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 						.flatMap(l -> map.getFixtures(l).stream())
 						.flatMap(ExplorationModel::unflattenNonFortresses)
 						.filter(IUnit.class::isInstance).map(IUnit.class::cast)
-						.filter(this::matchingPlayer)
-						.flatMap(u -> StreamSupport.stream(u.spliterator(), true))
+						.filter(this::matchingPlayer).flatMap(u -> u.stream())
 						.filter(HasMutableName.class::isInstance)
 						.map(HasMutableName.class::cast)
 						.filter(u -> u.getName().equals(
@@ -1107,7 +1101,7 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 						.flatMap(ExplorationModel::unflattenNonFortresses)
 						.filter(IUnit.class::isInstance).map(IUnit.class::cast)
 						.filter(this::matchingPlayer)
-						.flatMap(u -> StreamSupport.stream(u.spliterator(), true))
+						.flatMap(u -> u.stream())
 						.filter(HasMutableKind.class::isInstance)
 						.map(HasMutableKind.class::cast)
 						.filter(m -> m.getKind().equals(item.getKind()))
@@ -1139,8 +1133,7 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 					.filter(IMutableUnit.class::isInstance)
 					.map(IMutableUnit.class::cast)
 					.filter(this::matchingPlayer).collect(Collectors.toList())) {
-				Optional<UnitMember> matching = StreamSupport.stream(unit.spliterator(), true)
-					.filter(member::equals).findAny();
+				Optional<UnitMember> matching = unit.stream().filter(member::equals).findAny();
 				if (matching.isPresent()) { // FIXME: equals() will really not do here ...
 					unit.removeMember(matching.get());
 					map.setModified(true);
@@ -1160,8 +1153,7 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 					.filter(IMutableUnit.class::isInstance)
 					.map(IMutableUnit.class::cast)
 					.filter(this::matchingPlayer).collect(Collectors.toList())) {
-				if (StreamSupport.stream(unit.spliterator(), true)
-						.anyMatch(existing::equals)) { // TODO: look beyond equals() for matching-in-existing?
+				if (unit.stream().anyMatch(existing::equals)) { // TODO: look beyond equals() for matching-in-existing?
 					unit.addMember(sibling.copy(false));
 					any = true;
 					map.setModified(true);

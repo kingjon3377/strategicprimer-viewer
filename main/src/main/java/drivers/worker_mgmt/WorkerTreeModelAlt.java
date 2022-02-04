@@ -152,8 +152,7 @@ public class WorkerTreeModelAlt extends DefaultTreeModel implements IWorkerTreeM
 		@Override
 		public void add(MutableTreeNode child) {
 			if (child instanceof UnitMemberNode) {
-				if (!StreamSupport.stream(unit.spliterator(), true)
-						.anyMatch(
+				if (!unit.stream().anyMatch(
 							((UnitMemberNode) child).getUserObject()::equals)) {
 					LOGGER.warning(
 						"Adding UnitMemberNode when its object is not in the unit");
@@ -173,8 +172,7 @@ public class WorkerTreeModelAlt extends DefaultTreeModel implements IWorkerTreeM
 		@Override
 		public void remove(MutableTreeNode child) {
 			if (child instanceof UnitMemberNode) {
-				if (StreamSupport.stream(unit.spliterator(), true)
-						.anyMatch(
+				if (unit.stream().anyMatch(
 							((UnitMemberNode) child).getUserObject()::equals)) {
 					LOGGER.warning(
 						"Removing UnitMemberNode when member is still in the unit");

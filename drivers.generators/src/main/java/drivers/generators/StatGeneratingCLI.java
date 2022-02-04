@@ -87,8 +87,7 @@ import common.map.fixtures.towns.Village;
 				return fixture;
 			} else if (fixture instanceof FixtureIterable) {
 				IFixture result = findInIterable(id,
-					StreamSupport.stream(((FixtureIterable<?>) fixture).spliterator(),
-						false).toArray(IFixture[]::new));
+						((FixtureIterable<?>) fixture).stream().toArray(IFixture[]::new));
 				if (result != null) {
 					return result;
 				}

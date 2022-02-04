@@ -62,8 +62,7 @@ public class ViewerModel extends SimpleDriverModel implements IViewerModel {
 
 	private static Stream<IFixture> flattenIncluding(IFixture fixture) {
 		if (fixture instanceof FixtureIterable) {
-			return Stream.concat(Stream.of(fixture),
-				StreamSupport.stream(((FixtureIterable) fixture).spliterator(), false));
+			return Stream.concat(Stream.of(fixture), ((FixtureIterable<?>) fixture).stream());
 		} else {
 			return Stream.of(fixture);
 		}
@@ -76,8 +75,7 @@ public class ViewerModel extends SimpleDriverModel implements IViewerModel {
 	 */
 	private static Stream<Pair<Point, IFixture>> flattenEntries(Pair<Point, IFixture> entry) {
 		if (entry.getValue1() instanceof IFortress) {
-			return StreamSupport.stream(((IFortress) entry.getValue1()).spliterator(), false)
-				.map(m -> Pair.with(entry.getValue0(), (IFixture) m));
+			return ((IFortress) entry.getValue1()).stream().map(m -> Pair.with(entry.getValue0(), (IFixture) m));
 		} else {
 			return Stream.of(entry);
 		}
@@ -90,8 +88,7 @@ public class ViewerModel extends SimpleDriverModel implements IViewerModel {
 	 */
 	private static Stream<IFixture> unflattenNonFortresses(TileFixture fixture) {
 		if (fixture instanceof IFortress) {
-			return StreamSupport.stream(((IFortress) fixture).spliterator(), false)
-				.map(IFixture.class::cast);
+			return ((IFortress) fixture).stream().map(IFixture.class::cast);
 		} else {
 			return Stream.<IFixture>of(fixture);
 		}
@@ -496,8 +493,7 @@ public class ViewerModel extends SimpleDriverModel implements IViewerModel {
 			.filter(u -> newOwner.getKind().equals(u.getKind()))
 			.filter(u -> newOwner.getName().equals(u.getName()))
 			.filter(u -> newOwner.getId() == u.getId()).findAny().orElse(null);
-		UnitMember matchingMember = Optional.ofNullable(matchingOld)
-			.map(u -> StreamSupport.stream(u.spliterator(), false)).orElse(Stream.empty())
+		UnitMember matchingMember = Optional.ofNullable(matchingOld).map(u -> u.stream()).orElse(Stream.empty())
 			.filter(member::equals).findAny().orElse(null); // TODO: equals() isn't ideal for finding a matching member ...
 		if (matchingOld != null && matchingMember != null && matchingNew != null) {
 			matchingOld.removeMember(matchingMember);
@@ -548,8 +544,7 @@ public class ViewerModel extends SimpleDriverModel implements IViewerModel {
 							.filter(IMutableFortress.class::isInstance)
 							.map(IMutableFortress.class::cast)
 							.collect(Collectors.toList())) {
-						if (StreamSupport.stream(fort.spliterator(), false)
-								.anyMatch(fixture::equals)) {
+						if (fort.stream().anyMatch(fixture::equals)) {
 							fort.removeMember(fixture);
 							getRestrictedMap().setModified(true);
 							LOGGER.finer(
@@ -622,7 +617,7 @@ public class ViewerModel extends SimpleDriverModel implements IViewerModel {
 					.filter(IUnit.class::isInstance).map(IUnit.class::cast)
 					.filter(u -> getMap().getPlayers().getCurrentPlayer()
 						.equals(u.getOwner()))
-					.flatMap(u -> StreamSupport.stream(u.spliterator(), false))
+					.flatMap(u -> u.stream())
 					.filter(HasMutableName.class::isInstance)
 					.map(HasMutableName.class::cast)
 					.filter(m -> m.getName().equals(item.getName()))
@@ -674,7 +669,7 @@ public class ViewerModel extends SimpleDriverModel implements IViewerModel {
 					.filter(IUnit.class::isInstance).map(IUnit.class::cast)
 					.filter(u -> getMap().getPlayers().getCurrentPlayer()
 						.equals(u.getOwner()))
-					.flatMap(u -> StreamSupport.stream(u.spliterator(), false))
+					.flatMap(u -> u.stream())
 					.filter(HasMutableKind.class::isInstance)
 					.map(HasMutableKind.class::cast)
 					.filter(m -> m.getKind().equals(item.getKind()))
@@ -704,8 +699,7 @@ public class ViewerModel extends SimpleDriverModel implements IViewerModel {
 				.filter(IMutableUnit.class::isInstance).map(IMutableUnit.class::cast)
 				.filter(u -> getMap().getPlayers().getCurrentPlayer().equals(u.getOwner()))
 				.collect(Collectors.toList())) {
-			UnitMember matching = StreamSupport.stream(unit.spliterator(), true)
-				.filter(member::equals) // FIXME: equals() will really not do here ...
+			UnitMember matching = unit.stream().filter(member::equals) // FIXME: equals() will really not do here ...
 				.findAny().orElse(null);
 			if (matching != null) {
 				unit.removeMember(matching);
@@ -723,8 +717,7 @@ public class ViewerModel extends SimpleDriverModel implements IViewerModel {
 				.filter(IMutableUnit.class::isInstance).map(IMutableUnit.class::cast)
 				.filter(u -> getMap().getPlayers().getCurrentPlayer().equals(u.getOwner()))
 				.collect(Collectors.toList())) {
-			if (StreamSupport.stream(unit.spliterator(), true)
-					.anyMatch(existing::equals)) { // TODO: look beyond equals() for matching-in-existing?
+			if (unit.stream().anyMatch(existing::equals)) { // TODO: look beyond equals() for matching-in-existing?
 				unit.addMember(sibling.copy(false));
 				getRestrictedMap().setModified(true);
 				return true;

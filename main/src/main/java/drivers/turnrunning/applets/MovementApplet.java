@@ -49,7 +49,7 @@ import static lovelace.util.Decimalize.decimalize;
 		if (fortress == null) {
 			return;
 		}
-		List<IResourcePile> resources = new ArrayList(StreamSupport.stream(fortress.spliterator(), false)
+		List<IResourcePile> resources = new ArrayList(fortress.stream()
 			.filter(IResourcePile.class::isInstance).map(IResourcePile.class::cast)
 			.collect(Collectors.toList()));
 		while (true) {
@@ -73,8 +73,7 @@ import static lovelace.util.Decimalize.decimalize;
 				if (amount != null && amount.compareTo(BigDecimal.ZERO) > 0) {
 					model.transferResource(chosen, unit, amount, idf::createID);
 					resources.clear();
-					StreamSupport.stream(fortress.spliterator(), false)
-						.filter(IResourcePile.class::isInstance).map(IResourcePile.class::cast)
+					fortress.stream().filter(IResourcePile.class::isInstance).map(IResourcePile.class::cast)
 						.forEach(r -> resources.add(r));
 				}
 			}

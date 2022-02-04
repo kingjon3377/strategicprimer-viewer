@@ -18,7 +18,6 @@ import java.util.function.Consumer;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import java.util.stream.StreamSupport;
 import org.jetbrains.annotations.Nullable;
 import query.HerdModel;
 import query.MammalModel;
@@ -76,7 +75,7 @@ import query.SmallAnimalModel;
 		IUnit unit = model.getSelectedUnit();
 		StringBuilder buffer = new StringBuilder();
 		@Nullable IFortress home = containingFortress(unit);
-		for (String kind : StreamSupport.stream(unit.spliterator(), false)
+		for (String kind : unit.stream()
 				.filter(Animal.class::isInstance).map(Animal.class::cast)
 				.filter(animal -> "domesticated".equals(animal.getStatus()) ||
 					"tame".equals(animal.getStatus()))
@@ -97,7 +96,7 @@ import query.SmallAnimalModel;
 		}
 		// TODO: Use a multimap
 		final Map<HerdModel, List<Animal>> modelMap = new HashMap<>();
-		for (Animal group : StreamSupport.stream(unit.spliterator(), false)
+		for (Animal group : unit.stream()
 				.filter(Animal.class::isInstance).map(Animal.class::cast)
 				.filter(a -> "tame".equals(a.getStatus()) ||
 						"domesticated".equals(a.getStatus()))
@@ -123,8 +122,7 @@ import query.SmallAnimalModel;
 				return null;
 			}
 		}
-		long workerCount = StreamSupport.stream(unit.spliterator(), false)
-			.filter(IWorker.class::isInstance).map(IWorker.class::cast).count();
+		long workerCount = unit.stream().filter(IWorker.class::isInstance).map(IWorker.class::cast).count();
 		Integer addendum = cli.inputNumber(String.format(
 			"%d workers in this unit. Any additional workers to account for:", workerCount));
 		if (addendum != null && addendum >= 0) {
@@ -132,7 +130,7 @@ import query.SmallAnimalModel;
 		} else {
 			return null;
 		}
-		final boolean experts = StreamSupport.stream(unit.spliterator(), false)
+		final boolean experts = unit.stream()
 			.filter(IWorker.class::isInstance).map(IWorker.class::cast)
 			.mapToInt(w -> w.getJob("herder").getLevel()).anyMatch(l -> l > 5);
 		int minutesSpent = 0;

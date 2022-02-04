@@ -21,7 +21,6 @@ import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
-import java.util.stream.StreamSupport;
 
 /**
  * A unit in the map.
@@ -247,11 +246,14 @@ public final class Unit implements IMutableUnit {
 		return members.iterator();
 	}
 
+	@Override
+	public Stream<UnitMember> stream() {
+		return members.stream();
+	}
+
 	/**
 	 * An object is equal iff it is a IUnit owned by the same player, with
 	 * the same kind, ID, and name, and with equal members.
-	 *
-	 * FIXME: Add stream() method to our interfaces that extend Iterable, to replace StreamSupport calls.
 	 */
 	@Override
 	public boolean equals(Object obj) {
@@ -260,10 +262,8 @@ public final class Unit implements IMutableUnit {
 				kind.equals(((IUnit) obj).getKind()) &&
 				name.equals(((IUnit) obj).getName()) &&
 				((IUnit) obj).getId() == id &&
-				members.containsAll(StreamSupport.stream(((IUnit) obj).spliterator(), true)
-					.collect(Collectors.toList())) &&
-				StreamSupport.stream(((IUnit) obj).spliterator(), true)
-					.collect(Collectors.toList()).containsAll(members);
+				members.containsAll(((IUnit) obj).stream().collect(Collectors.toList())) &&
+				((IUnit) obj).stream().collect(Collectors.toList()).containsAll(members);
 		} else {
 			return false;
 		}
@@ -313,8 +313,7 @@ public final class Unit implements IMutableUnit {
 				((IUnit) fixture).getKind().equals(kind) &&
 				((IUnit) fixture).getName().equals(name)) {
 			for (UnitMember member : this) {
-				if (!StreamSupport.stream(((IUnit) fixture).spliterator(), true)
-						.anyMatch(member::equalsIgnoringID)) {
+				if (!((IUnit) fixture).stream().anyMatch(member::equalsIgnoringID)) {
 					return false;
 				}
 			}

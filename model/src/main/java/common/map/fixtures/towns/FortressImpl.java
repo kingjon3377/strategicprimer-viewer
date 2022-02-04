@@ -7,7 +7,7 @@ import java.util.Map;
 import java.util.Set;
 
 import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
+import java.util.stream.Stream;
 
 import common.map.IFixture;
 import common.map.TileFixture;
@@ -211,11 +211,15 @@ public class FortressImpl implements IMutableFortress {
 	}
 
 	@Override
+	public Stream<FortressMember> stream() {
+		return members.stream();
+	}
+
+	@Override
 	public boolean equalsIgnoringID(IFixture fixture) {
 		if (fixture instanceof IFortress) {
 			Set<FortressMember> theirs =
-				StreamSupport.stream(((IFortress) fixture).spliterator(), true)
-					.collect(Collectors.toSet());
+				((IFortress) fixture).stream().collect(Collectors.toSet());
 			return name.equals(((IFortress) fixture).getName()) &&
 				owner.getPlayerId() == ((IFortress) fixture).getOwner().getPlayerId() &&
 				members.containsAll(theirs) && theirs.containsAll(members);

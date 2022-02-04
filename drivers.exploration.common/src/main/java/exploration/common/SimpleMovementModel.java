@@ -155,7 +155,7 @@ public final class SimpleMovementModel {
 	 * TODO: This does not properly handle the unusual case of a very unobservant unit
 	 */
 	private static int highestPerception(IUnit unit) {
-		return StreamSupport.stream(unit.spliterator(), true).filter(IWorker.class::isInstance)
+		return unit.stream().filter(IWorker.class::isInstance)
 			.map(IWorker.class::cast).mapToInt(SimpleMovementModel::getPerception)
 			.max().orElse(0);
 	}

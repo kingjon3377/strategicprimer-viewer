@@ -1,6 +1,7 @@
 package common.map.fixtures;
 
 import common.map.IFixture;
+import java.util.stream.Stream;
 
 /**
  * A (marker) interface for fixtures that contain other fixtures in a way we
@@ -9,4 +10,5 @@ import common.map.IFixture;
  * Iterable} but iterate over something other than {@link IFixture fixtures}.
  */
 public interface FixtureIterable<Type extends IFixture> extends Iterable<Type> {
+	Stream<Type> stream();
 }

@@ -52,8 +52,7 @@ import java.util.Arrays;
 	}
 
 	private void printWorkers(IUnit unit) {
-		for (IWorker worker : StreamSupport.stream(unit.spliterator(), false)
-				.filter(IWorker.class::isInstance).map(IWorker.class::cast)
+		for (IWorker worker : unit.stream().filter(IWorker.class::isInstance).map(IWorker.class::cast)
 				.collect(Collectors.toList())) { // TODO: avoid collector
 			cli.print("- ", worker.getName());
 			if (!"human".equals(worker.getRace())) {

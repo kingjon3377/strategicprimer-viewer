@@ -16,7 +16,6 @@ import java.util.Comparator;
 import java.util.Map;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.stream.StreamSupport;
 
 /**
  * A tabular report generator for fortresses.
@@ -72,8 +71,7 @@ public class FortressTabularReportGenerator implements ITableGenerator<IFortress
 		// Players shouldn't be able to see the contents of others' fortresses
 		// in other tables.
 		if (!player.equals(item.getOwner())) {
-			StreamSupport.stream(item.spliterator(), true).map(IFixture::getId)
-				.forEach(fixtures::remove);
+			item.stream().map(IFixture::getId).forEach(fixtures::remove);
 		}
 		fixtures.remove(key);
 		return Collections.singleton(retval);

@@ -32,6 +32,8 @@ import org.jetbrains.annotations.Nullable;
 public class Worker implements IMutableWorker {
 	/**
 	 * Whether neither of two collections of Jobs contains a nonempty Job the other does not.
+	 *
+	 * FIXME: Take Collection, not Iterable, to avoid StreamSupport wrapper
 	 */
 	private static boolean jobSetsEqual(Iterable<IJob> first, Iterable<IJob> second) {
 		Collection<IJob> firstFiltered = StreamSupport.stream(first.spliterator(), true)

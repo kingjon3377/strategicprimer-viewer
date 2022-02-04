@@ -15,7 +15,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-import java.util.stream.StreamSupport;
 import java.util.function.Consumer;
 import common.map.fixtures.FixtureIterable;
 
@@ -127,8 +126,7 @@ public interface IUnit extends MobileFixture, HasImage, HasKind, HasName,
 					return false;
 				}
 				Map<Integer, UnitMember> ours =
-					StreamSupport.stream(spliterator(), true)
-					.collect(Collectors.toMap(m -> m.getId(), m -> m));
+					stream().collect(Collectors.toMap(m -> m.getId(), m -> m));
 				boolean retval = true;
 				Consumer<String> localReport =
 					s -> report.accept(String.format("In unit of %s (%s) (ID #%d):\t%s",

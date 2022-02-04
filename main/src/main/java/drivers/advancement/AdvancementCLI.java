@@ -62,8 +62,7 @@ public class AdvancementCLI implements CLIDriver {
 	 */
 	private void advanceWorkers(IWorkerModel model, Player player, boolean allowExpertMentoring) {
 		List<IUnit> units = new ArrayList<>(StreamSupport.stream(model.getUnits(player).spliterator(), false)
-			.filter(u -> StreamSupport.stream(u.spliterator(), false).anyMatch(IWorker.class::isInstance))
-			.collect(Collectors.toList()));
+			.filter(u -> u.stream().anyMatch(IWorker.class::isInstance)).collect(Collectors.toList()));
 		while (!units.isEmpty()) {
 			IUnit chosen = cli.chooseFromList(units, String.format("%s's units:", player.getName()),
 				"No unadvanced units remain.", "Chosen unit:", false).getValue1();

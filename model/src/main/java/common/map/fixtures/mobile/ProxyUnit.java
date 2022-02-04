@@ -30,6 +30,8 @@ import common.map.fixtures.mobile.IUnit;
 import common.map.fixtures.mobile.ProxyMember;
 import common.map.fixtures.mobile.IWorker;
 import common.map.fixtures.mobile.worker.ProxyWorker;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 /**
  * A proxy for units in multiple maps, or all a player's units of one kind.
@@ -241,6 +243,11 @@ public class ProxyUnit implements IUnit, ProxyFor<IUnit> {
 			cachedIterable = ((Map<Integer, UnitMember>) ((Map<Integer, ? extends UnitMember>) map)).values();
 			return cachedIterable.iterator();
 		}
+	}
+
+	@Override
+	public Stream<UnitMember> stream() {
+		return StreamSupport.stream(spliterator(), false);
 	}
 
 	@Override

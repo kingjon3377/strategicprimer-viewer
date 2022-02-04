@@ -80,7 +80,7 @@ import org.javatuples.Pair;
 	 */
 	private static Stream<IFixture> flatten(IFixture fixture) {
 		if (fixture instanceof IFortress) {
-			return StreamSupport.stream(((IFortress) fixture).spliterator(), false).map(IFixture.class::cast);
+			return ((IFortress) fixture).stream().map(IFixture.class::cast);
 		} else {
 			return Stream.of(fixture);
 		}

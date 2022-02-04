@@ -30,7 +30,7 @@ import java.util.stream.Collectors;
 /* package */ class WorkerTreeModel implements IWorkerTreeModel {
 	private static final Logger LOGGER = Logger.getLogger(WorkerTreeModel.class.getName());
 	private static Predicate<IUnit> containingItem(UnitMember item) {
-		return unit -> StreamSupport.stream(unit.spliterator(), true).anyMatch(item::equals);
+		return unit -> unit.stream().anyMatch(item::equals);
 	}
 
 	private Player player;
@@ -61,8 +61,7 @@ import java.util.stream.Collectors;
 					model.getUnits(player, (String) parent).spliterator(), false)
 				.collect(Collectors.toList()).get(index);
 		} else if (parent instanceof IUnit) {
-			return StreamSupport.stream(((IUnit) parent).spliterator(), false)
-				.collect(Collectors.toList()).get(index);
+			return ((IUnit) parent).stream().collect(Collectors.toList()).get(index);
 		} else {
 			throw new ArrayIndexOutOfBoundsException("Unrecognized parent");
 		}
@@ -78,7 +77,7 @@ import java.util.stream.Collectors;
 			return (int) StreamSupport.stream(model.getUnits(player,
 				(String) parent).spliterator(), false).count();
 		} else if (parent instanceof IUnit) {
-			return (int) StreamSupport.stream(((IUnit) parent).spliterator(), false).count();
+			return (int) ((IUnit) parent).stream().count();
 		} else {
 			throw new IllegalArgumentException("Not a possible member of the tree");
 		}
@@ -113,8 +112,7 @@ import java.util.stream.Collectors;
 					model.getUnits(player, (String) parent).spliterator(), false)
 				.collect(Collectors.toList()).indexOf(child);
 		} else if (parent instanceof IUnit) {
-			return StreamSupport.stream(((IUnit) parent).spliterator(), false)
-				.collect(Collectors.toList()).indexOf(child);
+			return ((IUnit) parent).stream().collect(Collectors.toList()).indexOf(child);
 		} else {
 			return -1;
 		}
@@ -301,12 +299,10 @@ import java.util.stream.Collectors;
 	@Override
 	public void addSibling(UnitMember base, UnitMember sibling) {
 		for (IUnit unit : model.getUnits(player)) {
-			if (StreamSupport.stream(unit.spliterator(), false).anyMatch(base::equals)) {
-				int existingMembersCount = (int) StreamSupport.stream(unit.spliterator(),
-					false).count();
+			if (unit.stream().anyMatch(base::equals)) {
+				int existingMembersCount = (int) unit.stream().count();
 				model.addSibling(base, sibling);
-				int countAfterAdding = (int) StreamSupport.stream(unit.spliterator(),
-					false).count();
+				int countAfterAdding = (int) unit.stream().count();
 				TreeModelEvent event;
 				if (countAfterAdding > existingMembersCount) {
 					event = new TreeModelEvent(this,
