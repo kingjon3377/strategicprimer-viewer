@@ -38,16 +38,14 @@ public final class ProxyJob implements IJob, ProxyFor<IJob> {
 					unmodified = false;
 				}
 			}
-			if (unmodified) { // TODO: Reduce block depth by combining conditions, then repeating this condition in else block
-				if (worker instanceof IMutableWorker) { // FIXME: This can't still be needed, can it?
-					final IMutableJob job = new Job(name, 0);
-					((IMutableWorker) worker).addJob(job);
-					proxiedJobs.add(StreamSupport.stream(worker.spliterator(), false)
-						.filter(j -> name.equals(j.getName()))
-						.findAny().orElse(job));
-				} else {
-					LOGGER.warning("Can't add job to immutable worker");
-				}
+			if (unmodified && worker instanceof IMutableWorker) { // FIXME: This can't still be needed, can it?
+				final IMutableJob job = new Job(name, 0);
+				((IMutableWorker) worker).addJob(job);
+				proxiedJobs.add(StreamSupport.stream(worker.spliterator(), false)
+					.filter(j -> name.equals(j.getName()))
+					.findAny().orElse(job));
+			} else if (unmodified) {
+				LOGGER.warning("Can't add job to immutable worker");
 			}
 		}
 
