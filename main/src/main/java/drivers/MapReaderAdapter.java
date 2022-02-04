@@ -95,7 +95,7 @@ public class MapReaderAdapter {
 	 * Read several maps into a driver model, wrapping any errors in a
 	 * (thrown) DriverFailedException to simplify callers.
 	 */
-	public static IMultiMapModel readMultiMapModel(Warning warner, Path master, Path... files) 
+	public static IMultiMapModel readMultiMapModel(Warning warner, Path master, Path... files)
 			throws DriverFailedException {
 		LOGGER.finer("In MapReaderAdapter.readMultiMapModel");
 		String current = master.toString();
@@ -109,6 +109,7 @@ public class MapReaderAdapter {
 			LOGGER.finer("Finished with mapReaderAdapter.readMultiMapModel");
 			return retval;
 		} catch (MissingFileException|FileNotFoundException|NoSuchFileException except) {
+			// TODO: Catch FNFE as close to source as possible and convert to NoSuchFileException, to preserve filename as a field of the exception
 			throw new DriverFailedException(except, "File not found: " + current);
 		} catch (IOException except) {
 			throw new DriverFailedException(except, "I/O error reading from file " + current);
