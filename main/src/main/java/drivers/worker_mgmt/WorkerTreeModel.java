@@ -441,7 +441,7 @@ import java.util.stream.Collectors;
 			// TODO: What if it's the only unit with this kind?
 			TreeModelEvent event = new TreeModelEvent(this,
 				new TreePath(new Object[] { player, ((IUnit) item).getKind() }),
-				new int[] { getIndexOfChild(((IUnit) item).getKind(), item) }, 
+				new int[] { getIndexOfChild(((IUnit) item).getKind(), item) },
 				new Object[] { item });
 			if (model.changeOwner(item, newOwner)) {
 				for (TreeModelListener listener : listeners) {

@@ -40,7 +40,7 @@ public class WorkerTreeModelAlt extends DefaultTreeModel implements IWorkerTreeM
 	 *
 	 * TODO: Does this really need to be public, or just protected?
 	 */
-	public static class WorkerTreeNode<NodeObject> extends DefaultMutableTreeNode 
+	public static class WorkerTreeNode<NodeObject> extends DefaultMutableTreeNode
 			implements Iterable<TreeNode> {
 		public WorkerTreeNode(Class<NodeObject> cls, NodeObject userObj) {
 			this(cls, userObj, true);
@@ -315,7 +315,7 @@ public class WorkerTreeModelAlt extends DefaultTreeModel implements IWorkerTreeM
 					any = true;
 					break;
 				}
-			} 
+			}
 			if (!any) {
 				KindNode kindNode = new KindNode(kind, matchingUnit);
 				temp.add(kindNode);

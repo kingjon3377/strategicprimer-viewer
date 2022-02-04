@@ -551,7 +551,7 @@ public class ViewerModel extends SimpleDriverModel implements IViewerModel {
 								"Finished removing matching unit from map");
 							return true;
 						}
-					} 
+					}
 					LOGGER.warning(
 						"Failed to find unit to remove that we thought might be in a fortress");
 					return false;

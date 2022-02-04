@@ -478,7 +478,7 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 			if (doesLocationHaveFixture(getMap(), point, fixture)) {
 				return point;
 			}
-		} 
+		}
 		return Point.INVALID_POINT;
 	}
 
@@ -638,7 +638,7 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 					StreamSupport.stream(surroundingFixtures.spliterator(), false)
 						.filter(p -> p.getValue1() instanceof Meadow ||
 							p.getValue1() instanceof Grove).findFirst();
-				Optional<Pair<Point, TileFixture>> animal = 
+				Optional<Pair<Point, TileFixture>> animal =
 					StreamSupport.stream(surroundingFixtures.spliterator(), false)
 						.filter(p -> p.getValue1() instanceof Animal).findFirst();
 				for (IMutableMapNG subMap : getRestrictedSubordinateMaps()) {
@@ -869,7 +869,7 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 					true).flatMap(l -> map.getFixtures(l).stream())
 				.flatMap(ExplorationModel::unflattenNonFortresses)
 				.filter(IMutableUnit.class::isInstance).map(IMutableUnit.class::cast)
-				.filter(u -> u.getOwner().equals(old.getOwner()) && 
+				.filter(u -> u.getOwner().equals(old.getOwner()) &&
 					u.getKind().equals(old.getKind()) &&
 					u.getName().equals(old.getName()) && u.getId() == old.getId())
 				.findAny();
@@ -881,7 +881,7 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 					true).flatMap(l -> map.getFixtures(l).stream())
 				.flatMap(ExplorationModel::unflattenNonFortresses)
 				.filter(IMutableUnit.class::isInstance).map(IMutableUnit.class::cast)
-				.filter(u -> u.getOwner().equals(newOwner.getOwner()) && 
+				.filter(u -> u.getOwner().equals(newOwner.getOwner()) &&
 					u.getKind().equals(newOwner.getKind()) &&
 					u.getName().equals(newOwner.getName()) &&
 					u.getId() == newOwner.getId())

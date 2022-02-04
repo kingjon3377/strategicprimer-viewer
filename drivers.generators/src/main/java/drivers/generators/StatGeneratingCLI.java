@@ -137,7 +137,7 @@ import common.map.fixtures.towns.Village;
 
 	private final ICLIHelper cli;
 	private final PopulationGeneratingModel model;
-	
+
 	@Override
 	public PopulationGeneratingModel getModel() {
 		return model;

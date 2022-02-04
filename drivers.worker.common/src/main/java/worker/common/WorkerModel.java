@@ -144,7 +144,7 @@ public class WorkerModel extends SimpleMultiMapModel implements IWorkerModel {
 					currentPlayerImpl = temp;
 					return temp;
 				}
-			} 
+			}
 			currentPlayerImpl = getMap().getCurrentPlayer();
 			return currentPlayerImpl;
 		}
@@ -311,7 +311,7 @@ public class WorkerModel extends SimpleMultiMapModel implements IWorkerModel {
 	}
 
 	private BiPredicate<Point, IFixture> unitMatching(IUnit unit) {
-		return (point, fixture) -> 
+		return (point, fixture) ->
 			fixture instanceof IUnit && fixture.getId() == unit.getId() &&
 				((IUnit) fixture).getOwner().equals(unit.getOwner());
 	}
