@@ -58,10 +58,6 @@ public final class FileSplitter {
 			Function<String, Type> factory) throws IOException {
 		Iterable<String> textContent =
 			FileContentsReader.readFileContents(FileSplitter.class, filename);
-		Map<String, Type> retval = new HashMap<>();
-		for (String line : textContent) {
-			String[] split = line.split("\t");
-		}
 		return StreamSupport.stream(textContent.spliterator(), false)
 			.map(FileSplitter::splitOnFirstTab)
 			.map(str -> lineToEntry(str, factory))
