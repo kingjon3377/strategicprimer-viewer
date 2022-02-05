@@ -36,18 +36,16 @@ public class MemoizedComboBox extends ImprovedComboBox<String> {
 	 * previously, add it to the drop-down list.
 	 */
 	public void checkAndClear() {
-		final Object selectedItem = getSelectedItem();
+		final String selectedItem = getSelectedItem();
 		if (selectedItem == null) {
 			return;
-		} else if (selectedItem instanceof String) {
-			String item = ((String) selectedItem).trim();
+		} else {
+			String item = selectedItem.trim();
 			if (!item.isEmpty() && !values.contains(item)) {
 				values.add(item);
 				addItem(item);
 			}
 			setSelectedItem(null);
-		} else {
-			throw new IllegalStateException("Only supports Strings");
 		}
 	}
 

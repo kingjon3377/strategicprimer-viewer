@@ -484,7 +484,7 @@ public class WorkerTreeModelAlt extends DefaultTreeModel implements IWorkerTreeM
 	@Override
 	public void dismissUnitMember(final UnitMember member) {
 		TreeNode temp = (TreeNode) getRoot();
-		TreeNode node = getNode(temp, member);
+		MutableTreeNode node = getNode(temp, member);
 		if (node instanceof MutableTreeNode) {
 			UnitNode parentNode = (UnitNode) node.getParent();
 			// Note that getPathToRoot() returns a path that does
@@ -492,7 +492,7 @@ public class WorkerTreeModelAlt extends DefaultTreeModel implements IWorkerTreeM
 			TreeNode[] path = getPathToRoot(node);
 			int index = getIndexOfChild(path[path.length - 1], node);
 			model.dismissUnitMember(member);
-			parentNode.remove((MutableTreeNode) node);
+			parentNode.remove(node);
 			fireTreeNodesRemoved(this, path, new int[] { index },
 				new Object[] { node });
 		}
