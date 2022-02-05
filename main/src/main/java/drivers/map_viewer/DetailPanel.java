@@ -50,7 +50,6 @@ import worker.common.IFixtureEditHelper;
  */
 /* package */ class DetailPanel extends JSplitPane implements VersionChangeListener, SelectionChangeListener {
 	protected static final Logger LOGGER = Logger.getLogger(DetailPanel.class.getName());
-	private int version;
 	private final IFixtureEditingModel model;
 	private final Comparator<TileFixture> sortOrder;
 
@@ -61,7 +60,6 @@ import worker.common.IFixtureEditHelper;
 
 	public DetailPanel(final int version, final IFixtureEditingModel model, final Comparator<TileFixture> sortOrder) {
 		super(JSplitPane.HORIZONTAL_SPLIT, true);
-		this.version = version;
 		this.model = model;
 		this.sortOrder = sortOrder;
 		keyPanel = new KeyPanel(version);
