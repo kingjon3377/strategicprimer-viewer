@@ -678,15 +678,12 @@ public class WorkerTree extends JTree implements UnitMemberSelectionSource, Unit
 
 		private void handleMouseEvent(MouseEvent event) {
 			if (event.isPopupTrigger() && event.getClickCount() == 1) {
-				IFixture obj = Optional.ofNullable(tree
-						.getClosestPathForLocation(event.getX(), event.getY()))
-					.map(TreePath::getLastPathComponent).map(wtModel::getModelObject)
-					.filter(IFixture.class::isInstance).map(IFixture.class::cast)
-					.orElse(null);
-				if (obj != null) {
-					new FixtureEditMenu(obj, players, idf, wtModel)
-						.show(event.getComponent(), event.getX(), event.getY());
-				}
+				Optional.ofNullable(tree
+								.getClosestPathForLocation(event.getX(), event.getY()))
+						.map(TreePath::getLastPathComponent).map(wtModel::getModelObject)
+						.filter(IFixture.class::isInstance).map(IFixture.class::cast)
+						.ifPresent(obj -> new FixtureEditMenu(obj, players, idf, wtModel)
+								.show(event.getComponent(), event.getX(), event.getY()));
 			}
 		}
 

@@ -151,12 +151,7 @@ import org.jetbrains.annotations.Nullable;
 	public BigDecimal amountSpoiling(Quantity qty, ICLIHelper cli) {
 		BigDecimal amt = decimalize(qty.getNumber());
 		BigDecimal fractional = Optional.ofNullable(fractionSpoilingDaily).map(amt::multiply).orElse(null);
-		BigDecimal retval = Stream.of(fractional, minimumSpoilage).filter(Objects::nonNull)
-			.max(Comparator.naturalOrder()).orElse(null);
-		if (retval == null) {
-			return cli.inputDecimal("How many pounds spoil?");
-		} else {
-			return retval;
-		}
+		return Stream.of(fractional, minimumSpoilage).filter(Objects::nonNull)
+				.max(Comparator.naturalOrder()).orElseGet(() -> cli.inputDecimal("How many pounds spoil?"));
 	}
 }

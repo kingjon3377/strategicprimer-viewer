@@ -466,16 +466,14 @@ public class TurnRunningModel extends ExplorationModel implements ITurnRunningMo
 		IMutableResourcePile resource = new ResourcePileImpl(id, kind, contents, quantity);
 		for (IMutableMapNG map : getRestrictedAllMaps()) {
 			// TODO: Match the unit on owner and kind as well as name and ID?
-			IMutableUnit matching = map.streamLocations()
-				.flatMap(l -> map.getFixtures(l).stream()).flatMap(TurnRunningModel::unflattenNonFortresses)
-				.filter(IMutableUnit.class::isInstance).map(IMutableUnit.class::cast)
+			map.streamLocations()
+					.flatMap(l -> map.getFixtures(l).stream()).flatMap(TurnRunningModel::unflattenNonFortresses)
+					.filter(IMutableUnit.class::isInstance).map(IMutableUnit.class::cast)
 //				.filter(u -> u.getOwner().equals(container.getOwner()))
 //				.filter(u -> u.getKind().equals(container.getKind()))
-				.filter(u -> u.getName().equals(container.getName()))
-				.filter(u -> u.getId() == container.getId()).findAny().orElse(null);
-			if (matching != null) {
-				matching.addMember(resource.copy(false));
-			}
+					.filter(u -> u.getName().equals(container.getName()))
+					.filter(u -> u.getId() == container.getId()).findAny()
+					.ifPresent(matching -> matching.addMember(resource.copy(false)));
 			map.setModified(true);
 			any = true;
 		}
@@ -493,13 +491,11 @@ public class TurnRunningModel extends ExplorationModel implements ITurnRunningMo
 		IMutableResourcePile resource = new ResourcePileImpl(id, kind, contents, quantity);
 		for (IMutableMapNG map : getRestrictedAllMaps()) {
 			// TODO: Match the fortress on owner as well as name and ID?
-			IMutableFortress matching = map.streamLocations()
-				.filter(IMutableFortress.class::isInstance).map(IMutableFortress.class::cast)
-				.filter(f -> f.getName().equals(container.getName()))
-				.filter(f -> f.getId() == container.getId()).findAny().orElse(null);
-			if (matching != null) {
-				matching.addMember(resource.copy(false));
-			}
+			map.streamLocations()
+					.filter(IMutableFortress.class::isInstance).map(IMutableFortress.class::cast)
+					.filter(f -> f.getName().equals(container.getName()))
+					.filter(f -> f.getId() == container.getId()).findAny()
+					.ifPresent(matching -> matching.addMember(resource.copy(false)));
 			map.setModified(true);
 			any = true;
 		}
@@ -520,16 +516,14 @@ public class TurnRunningModel extends ExplorationModel implements ITurnRunningMo
 		resource.setCreated(createdDate);
 		for (IMutableMapNG map : getRestrictedAllMaps()) {
 			// TODO: Match the unit on owner and kind as well as name and ID?
-			IMutableUnit matching = map.streamLocations()
-				.flatMap(l -> map.getFixtures(l).stream()).flatMap(TurnRunningModel::unflattenNonFortresses)
-				.filter(IMutableUnit.class::isInstance).map(IMutableUnit.class::cast)
+			map.streamLocations()
+					.flatMap(l -> map.getFixtures(l).stream()).flatMap(TurnRunningModel::unflattenNonFortresses)
+					.filter(IMutableUnit.class::isInstance).map(IMutableUnit.class::cast)
 //				.filter(u -> u.getOwner().equals(container.getOwner()))
 //				.filter(u -> u.getKind().equals(container.getKind()))
-				.filter(u -> u.getName().equals(container.getName()))
-				.filter(u -> u.getId() == container.getId()).findAny().orElse(null);
-			if (matching != null) {
-				matching.addMember(resource.copy(false));
-			}
+					.filter(u -> u.getName().equals(container.getName()))
+					.filter(u -> u.getId() == container.getId()).findAny()
+					.ifPresent(matching -> matching.addMember(resource.copy(false)));
 			map.setModified(true);
 			any = true;
 		}
@@ -550,13 +544,11 @@ public class TurnRunningModel extends ExplorationModel implements ITurnRunningMo
 		resource.setCreated(createdDate);
 		for (IMutableMapNG map : getRestrictedAllMaps()) {
 			// TODO: Match the fortress on owner as well as name and ID?
-			IMutableFortress matching = map.streamLocations()
-				.filter(IMutableFortress.class::isInstance).map(IMutableFortress.class::cast)
-				.filter(f -> f.getName().equals(container.getName()))
-				.filter(f -> f.getId() == container.getId()).findAny().orElse(null);
-			if (matching != null) {
-				matching.addMember(resource.copy(false));
-			}
+			map.streamLocations()
+					.filter(IMutableFortress.class::isInstance).map(IMutableFortress.class::cast)
+					.filter(f -> f.getName().equals(container.getName()))
+					.filter(f -> f.getId() == container.getId()).findAny()
+					.ifPresent(matching -> matching.addMember(resource.copy(false)));
 			map.setModified(true);
 			any = true;
 		}
