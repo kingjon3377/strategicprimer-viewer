@@ -11,14 +11,14 @@ public class FixtureMatcher {
 	/**
 	 * Factory method for a matcher that matches every tile fixture of the given type.
 	 */
-	public static FixtureMatcher trivialMatcher(Class<? extends TileFixture> type) {
+	public static FixtureMatcher trivialMatcher(final Class<? extends TileFixture> type) {
 		return trivialMatcher(type, type.getName() + "s");
 	}
 
 	/**
 	 * Factory method for a matcher that matches every tile fixture of the given type.
 	 */
-	public static FixtureMatcher trivialMatcher(Class<? extends TileFixture> type, String description) {
+	public static FixtureMatcher trivialMatcher(final Class<? extends TileFixture> type, final String description) {
 		return new FixtureMatcher(type::isInstance, description);
 	}
 
@@ -27,8 +27,8 @@ public class FixtureMatcher {
 	 * type that additionally match the given predicate.
 	 */
 	public static <FixtureType extends TileFixture> FixtureMatcher simpleMatcher(
-			Class<FixtureType> type, Predicate<FixtureType> method, String description) {
-		Predicate<TileFixture> predicate = (fixture) -> 
+			final Class<FixtureType> type, final Predicate<FixtureType> method, final String description) {
+		Predicate<TileFixture> predicate = (fixture) ->
 			type.isInstance(fixture) && method.test((FixtureType) fixture);
 		return new FixtureMatcher(predicate, description);
 	}
@@ -38,8 +38,8 @@ public class FixtureMatcher {
 	 * that match and that do not match the given predicate.
 	 */
 	public static <FixtureType extends TileFixture> Iterable<FixtureMatcher> complements(
-			Class<FixtureType> cls, Predicate<FixtureType> method, String firstDescription,
-			String secondDescription) {
+			final Class<FixtureType> cls, final Predicate<FixtureType> method, final String firstDescription,
+			final String secondDescription) {
 		return Arrays.asList(FixtureMatcher.<FixtureType>simpleMatcher(cls, method, firstDescription),
 			FixtureMatcher.<FixtureType>simpleMatcher(cls, method.negate(), secondDescription));
 	}
@@ -49,7 +49,7 @@ public class FixtureMatcher {
 	/**
 	 * Whether this matcher matches (applies to) the given fixture.
 	 */
-	public boolean matches(TileFixture fixture) {
+	public boolean matches(final TileFixture fixture) {
 		return matchesImpl.test(fixture);
 	}
 
@@ -68,7 +68,7 @@ public class FixtureMatcher {
 	/**
 	 * Whether fixtures that this matcher matches should be displayed.
 	 */
-	public void setDisplayed(boolean displayed) {
+	public void setDisplayed(final boolean displayed) {
 		this.displayed = displayed;
 	}
 
@@ -86,7 +86,7 @@ public class FixtureMatcher {
 		return description;
 	}
 
-	public FixtureMatcher(Predicate<TileFixture> predicate, String desc) {
+	public FixtureMatcher(final Predicate<TileFixture> predicate, final String desc) {
 		matchesImpl = predicate;
 		description = desc;
 	}

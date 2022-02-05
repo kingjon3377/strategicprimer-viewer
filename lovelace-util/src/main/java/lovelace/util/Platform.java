@@ -23,7 +23,7 @@ public final class Platform {
 	 * @deprecated Just use {@link JComponent.putClientProperty(String, String)}.
 	 */
 	@Deprecated
-	public static void setStringProperty(JComponent component, String key, String val) {
+	public static void setStringProperty(final JComponent component, final String key, final String val) {
 		component.putClientProperty(key, val);
 	}
 
@@ -62,7 +62,7 @@ public final class Platform {
 	/**
 	 * Make buttons segmented on Mac. Does nothing if zero or one buttons, or if not on Mac.
 	 */
-	public static void makeButtonsSegmented(JButton... buttons) {
+	public static void makeButtonsSegmented(final JButton... buttons) {
 		if (SYSTEM_IS_MAC && buttons.length > 1) {
 			final JButton first = buttons[0];
 			first.putClientProperty("JButton.buttonType", "segmented");
@@ -85,7 +85,7 @@ public final class Platform {
 	/**
 	 * Whether the current platform's hotkey is pressed in the given event.
 	 */
-	public static boolean isHotKeyPressed(InputEvent event) {
+	public static boolean isHotKeyPressed(final InputEvent event) {
 		if (SYSTEM_IS_MAC) {
 			return event.isMetaDown();
 		} else {

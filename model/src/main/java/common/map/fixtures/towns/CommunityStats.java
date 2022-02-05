@@ -26,7 +26,7 @@ import org.jetbrains.annotations.Nullable;
  * TODO: Convert to immutable with copy-with-mutation methods?
  */
 public final class CommunityStats implements Subsettable<@Nullable CommunityStats> {
-	public CommunityStats(int population) {
+	public CommunityStats(final int population) {
 		setPopulation(population);
 	}
 	/**
@@ -48,7 +48,7 @@ public final class CommunityStats implements Subsettable<@Nullable CommunityStat
 	/**
 	 * Set the population. Cannot be negative
 	 */
-	public void setPopulation(int population) {
+	public void setPopulation(final int population) {
 		if (population < 0) {
 			throw new IllegalArgumentException("Population cannot be negative");
 		}
@@ -67,7 +67,7 @@ public final class CommunityStats implements Subsettable<@Nullable CommunityStat
 	/**
 	 * Set the highest level in the community for the given Job
 	 */
-	public void setSkillLevel(String skill, int level) {
+	public void setSkillLevel(final String skill, final int level) {
 		if (level < 0) {
 			throw new IllegalArgumentException(
 				"Skill level cannot be negative; zero removes the skill entirely");
@@ -110,7 +110,7 @@ public final class CommunityStats implements Subsettable<@Nullable CommunityStat
 	 * Add a field (or orchard, or other harvestable resource source) (ID
 	 * number) to the collection of worked fields.
 	 */
-	public void addWorkedField(int fieldID) {
+	public void addWorkedField(final int fieldID) {
 		workedFieldIDs.add(fieldID);
 	}
 
@@ -118,7 +118,7 @@ public final class CommunityStats implements Subsettable<@Nullable CommunityStat
 	 * Remove a harvestable resource source (ID number) from the collection
 	 * of such sources worked by this community
 	 */
-	public void removeWorkedField(int fieldID) {
+	public void removeWorkedField(final int fieldID) {
 		workedFieldIDs.remove(fieldID);
 	}
 
@@ -186,7 +186,7 @@ public final class CommunityStats implements Subsettable<@Nullable CommunityStat
 	}
 
 	@Override
-	public boolean equals(Object that) {
+	public boolean equals(final Object that) {
 		if (that instanceof CommunityStats) {
 			return population == ((CommunityStats) that).getPopulation() &&
 				skillLevels.equals(((CommunityStats) that).getHighestSkillLevels()) &&
@@ -199,7 +199,7 @@ public final class CommunityStats implements Subsettable<@Nullable CommunityStat
 	}
 
 	@Override
-	public boolean isSubset(@Nullable CommunityStats other, Consumer<String> report) {
+	public boolean isSubset(@Nullable final CommunityStats other, final Consumer<String> report) {
 		if (other != null) {
 			if (population < other.getPopulation()) {
 				report.accept("Population is larger");

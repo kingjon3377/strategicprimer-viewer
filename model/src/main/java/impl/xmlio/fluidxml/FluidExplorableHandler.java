@@ -22,9 +22,9 @@ import common.xmlio.SPFormatException;
 import lovelace.util.MalformedXMLException;
 
 /* package */ class FluidExplorableHandler extends FluidBase {
-	public static AdventureFixture readAdventure(StartElement element, QName parent,
-			Iterable<XMLEvent> stream, IPlayerCollection players, Warning warner,
-			IDRegistrar idFactory) throws SPFormatException {
+	public static AdventureFixture readAdventure(final StartElement element, final QName parent,
+	                                             final Iterable<XMLEvent> stream, final IPlayerCollection players, final Warning warner,
+	                                             final IDRegistrar idFactory) throws SPFormatException {
 		requireTag(element, parent, "adventure");
 		expectAttributes(element, warner, "owner", "brief", "full", "id", "image");
 		Player player;
@@ -41,9 +41,9 @@ import lovelace.util.MalformedXMLException;
 		return retval;
 	}
 
-	public static Portal readPortal(StartElement element, QName parent,
-			Iterable<XMLEvent> stream, IPlayerCollection players, Warning warner,
-			IDRegistrar idFactory) throws SPFormatException {
+	public static Portal readPortal(final StartElement element, final QName parent,
+	                                final Iterable<XMLEvent> stream, final IPlayerCollection players, final Warning warner,
+	                                final IDRegistrar idFactory) throws SPFormatException {
 		requireTag(element, parent, "portal");
 		expectAttributes(element, warner, "row", "column", "world", "id", "image");
 		Point location = new Point(getIntegerAttribute(element, "row"),
@@ -55,8 +55,8 @@ import lovelace.util.MalformedXMLException;
 		return retval;
 	}
 
-	public static Cave readCave(StartElement element, QName parent, Iterable<XMLEvent> stream,
-			IPlayerCollection players, Warning warner, IDRegistrar idFactory)
+	public static Cave readCave(final StartElement element, final QName parent, final Iterable<XMLEvent> stream,
+	                            final IPlayerCollection players, final Warning warner, final IDRegistrar idFactory)
 			throws SPFormatException {
 		requireTag(element, parent, "cave");
 		expectAttributes(element, warner, "id", "dc", "image");
@@ -66,9 +66,9 @@ import lovelace.util.MalformedXMLException;
 		return setImage(retval, element, warner);
 	}
 
-	public static Battlefield readBattlefield(StartElement element, QName parent,
-			Iterable<XMLEvent> stream, IPlayerCollection players, Warning warner,
-			IDRegistrar idFactory) throws SPFormatException {
+	public static Battlefield readBattlefield(final StartElement element, final QName parent,
+	                                          final Iterable<XMLEvent> stream, final IPlayerCollection players, final Warning warner,
+	                                          final IDRegistrar idFactory) throws SPFormatException {
 		requireTag(element, parent, "battlefield");
 		expectAttributes(element, warner, "id", "dc", "image");
 		int idNum = getOrGenerateID(element, warner, idFactory);
@@ -77,17 +77,17 @@ import lovelace.util.MalformedXMLException;
 		return setImage(retval, element, warner);
 	}
 
-	public static TextFixture readTextFixture(StartElement element, QName parent,
-			Iterable<XMLEvent> stream, IPlayerCollection players, Warning warner,
-			IDRegistrar idFactory) throws SPFormatException {
+	public static TextFixture readTextFixture(final StartElement element, final QName parent,
+	                                          final Iterable<XMLEvent> stream, final IPlayerCollection players, final Warning warner,
+	                                          final IDRegistrar idFactory) throws SPFormatException {
 		requireTag(element, parent, "text");
 		expectAttributes(element, warner, "turn", "image");
 		return setImage(new TextFixture(getTextUntil(element.getName(), stream),
 			getIntegerAttribute(element, "turn", -1, warner)), element, warner);
 	}
 
-	public static void writeAdventure(XMLStreamWriter ostream, AdventureFixture obj,
-			int indent) throws MalformedXMLException {
+	public static void writeAdventure(final XMLStreamWriter ostream, final AdventureFixture obj,
+	                                  final int indent) throws MalformedXMLException {
 		writeTag(ostream, "adventure", indent, true);
 		writeAttributes(ostream, Pair.with("id", obj.getId()));
 		if (!obj.getOwner().isIndependent()) {
@@ -98,7 +98,7 @@ import lovelace.util.MalformedXMLException;
 		writeImage(ostream, obj);
 	}
 
-	public static void writePortal(XMLStreamWriter ostream, Portal obj, int indent)
+	public static void writePortal(final XMLStreamWriter ostream, final Portal obj, final int indent)
 			throws MalformedXMLException {
 		writeTag(ostream, "portal", indent, true);
 		writeAttributes(ostream, Pair.with("world", obj.getDestinationWorld()),
@@ -108,22 +108,22 @@ import lovelace.util.MalformedXMLException;
 		writeImage(ostream, obj);
 	}
 
-	public static void writeCave(XMLStreamWriter ostream, Cave obj, int indent)
+	public static void writeCave(final XMLStreamWriter ostream, final Cave obj, final int indent)
 			throws MalformedXMLException {
 		writeTag(ostream, "cave", indent, true);
 		writeAttributes(ostream, Pair.with("dc", obj.getDC()), Pair.with("id", obj.getId()));
 		writeImage(ostream, obj);
 	}
 
-	public static void writeBattlefield(XMLStreamWriter ostream, Battlefield obj,
-			int indent) throws MalformedXMLException {
+	public static void writeBattlefield(final XMLStreamWriter ostream, final Battlefield obj,
+	                                    final int indent) throws MalformedXMLException {
 		writeTag(ostream, "battlefield", indent, true);
 		writeAttributes(ostream, Pair.with("dc", obj.getDC()), Pair.with("id", obj.getId()));
 		writeImage(ostream, obj);
 	}
 
-	public static void writeTextFixture(XMLStreamWriter ostream, TextFixture obj,
-			int indent) throws MalformedXMLException {
+	public static void writeTextFixture(final XMLStreamWriter ostream, final TextFixture obj,
+	                                    final int indent) throws MalformedXMLException {
 		writeTag(ostream, "text", indent, false);
 		if (obj.getTurn() != -1) {
 			writeAttributes(ostream, Pair.with("turn", obj.getTurn()));
@@ -132,7 +132,7 @@ import lovelace.util.MalformedXMLException;
 		try {
 			ostream.writeCharacters(obj.getText().trim());
 			ostream.writeEndElement();
-		} catch (XMLStreamException except) {
+		} catch (final XMLStreamException except) {
 			throw new MalformedXMLException(except);
 		}
 	}

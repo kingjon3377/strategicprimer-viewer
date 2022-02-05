@@ -22,17 +22,17 @@ import lovelace.util.ThrowingConsumer;
  * the too-general ExplorableFixture as the type parameter here.
  */
 /* package */ class YAExplorableReader extends YAAbstractReader<ExplorableFixture, ExplorableFixture> {
-	public YAExplorableReader(Warning warning, IDRegistrar idRegistrar) {
+	public YAExplorableReader(final Warning warning, final IDRegistrar idRegistrar) {
 		super(warning, idRegistrar);
 	}
 
 	@Override
-	public boolean isSupportedTag(String tag) {
+	public boolean isSupportedTag(final String tag) {
 		return "cave".equalsIgnoreCase(tag) || "battlefield".equalsIgnoreCase(tag);
 	}
 
 	@Override
-	public ExplorableFixture read(StartElement element, QName parent, Iterable<XMLEvent> stream)
+	public ExplorableFixture read(final StartElement element, final QName parent, final Iterable<XMLEvent> stream)
 			throws SPFormatException {
 		requireTag(element, parent, "battlefield", "cave");
 		expectAttributes(element, "id", "dc", "image");
@@ -54,7 +54,7 @@ import lovelace.util.ThrowingConsumer;
 	}
 
 	@Override
-	public void write(ThrowingConsumer<String, IOException> ostream, ExplorableFixture obj, int indent)
+	public void write(final ThrowingConsumer<String, IOException> ostream, final ExplorableFixture obj, final int indent)
 			throws IOException {
 		if (obj instanceof Battlefield) {
 			writeTag(ostream, "battlefield", indent);
@@ -70,7 +70,7 @@ import lovelace.util.ThrowingConsumer;
 	}
 
 	@Override
-	public boolean canWrite(Object obj) {
+	public boolean canWrite(final Object obj) {
 		return obj instanceof Cave || obj instanceof Battlefield;
 	}
 }

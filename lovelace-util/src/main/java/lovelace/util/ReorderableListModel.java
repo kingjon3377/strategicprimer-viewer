@@ -10,14 +10,14 @@ import javax.swing.DefaultListModel;
 public class ReorderableListModel<Element> extends DefaultListModel<Element> implements Reorderable {
 	private static final long serialVersionUID = 1;
 	@SafeVarargs
-	public ReorderableListModel(Element... initialElements) {
+	public ReorderableListModel(final Element... initialElements) {
 		for (Element element : initialElements) {
 			addElement(element);
 		}
 	}
 
 	@Override
-	public void reorder(int fromIndex, int toIndex) {
+	public void reorder(final int fromIndex, final int toIndex) {
 		if (fromIndex != toIndex) {
 			if (fromIndex > toIndex) {
 				add(toIndex, remove(fromIndex));

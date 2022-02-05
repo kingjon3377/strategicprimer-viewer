@@ -31,8 +31,8 @@ public class CoalescedHolder<Type extends IFixture, Key> implements Iterable<Lis
 
 	private final IntFunction<Type[]> arrayConstructor;
 
-	public CoalescedHolder(Class<Type> cls, IntFunction<Type[]> arrayConstructor,
-			Function<Type, Key> extractor, Combiner<Type> combiner) {
+	public CoalescedHolder(final Class<Type> cls, final IntFunction<Type[]> arrayConstructor,
+	                       final Function<Type, Key> extractor, final Combiner<Type> combiner) {
 		this.cls = cls;
 		this.extractor = extractor;
 		this.combiner = combiner;
@@ -41,7 +41,7 @@ public class CoalescedHolder<Type extends IFixture, Key> implements Iterable<Lis
 
 	private final Map<Key, List<Type>> map = new HashMap<>();
 
-	public boolean defines(Type key) {
+	public boolean defines(final Type key) {
 		return true;
 	}
 
@@ -51,11 +51,11 @@ public class CoalescedHolder<Type extends IFixture, Key> implements Iterable<Lis
 		return plural;
 	}
 
-	public void setPlural(String plural) {
+	public void setPlural(final String plural) {
 		this.plural = plural;
 	}
 
-	public List<Type> get(Type item) {
+	public List<Type> get(final Type item) {
 		Key key = extractor.apply(item);
 		plural = item.getPlural();
 		if (map.containsKey(key)) {
@@ -71,13 +71,13 @@ public class CoalescedHolder<Type extends IFixture, Key> implements Iterable<Lis
 		return map.values().stream().map(Collections::unmodifiableList).iterator();
 	}
 
-	public void addIfType(Object item) {
+	public void addIfType(final Object item) {
 		if (cls.isInstance(item)) {
 			get((Type) item).add((Type) item);
 		}
 	}
 
-	public Type combineRaw(IFixture... list) {
+	public Type combineRaw(final IFixture... list) {
 		return combiner.combine(Arrays.stream(list).toArray(arrayConstructor));
 	}
 }

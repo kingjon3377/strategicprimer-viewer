@@ -6,7 +6,7 @@ package lovelace.util;
 public class LongAccumulator implements Accumulator<Long> {
 	private long count;
 
-	public LongAccumulator(long count) {
+	public LongAccumulator(final long count) {
 		this.count = count;
 	}
 

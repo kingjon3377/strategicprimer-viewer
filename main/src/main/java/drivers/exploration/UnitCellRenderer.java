@@ -14,8 +14,8 @@ import org.jetbrains.annotations.Nullable;
 	private static DefaultListCellRenderer DEFAULT_RENDERER = new DefaultListCellRenderer();
 
 	@Override
-	public Component getListCellRendererComponent(@Nullable JList<? extends IUnit> list, @Nullable IUnit val,
-	                                              int index, boolean isSelected, boolean cellHasFocus) {
+	public Component getListCellRendererComponent(@Nullable final JList<? extends IUnit> list, @Nullable final IUnit val,
+	                                              final int index, final boolean isSelected, final boolean cellHasFocus) {
 		Component retval = DEFAULT_RENDERER.getListCellRendererComponent(list, val, index,
 			isSelected, cellHasFocus);
 		if (val != null && retval instanceof JLabel) {

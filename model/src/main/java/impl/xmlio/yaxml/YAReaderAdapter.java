@@ -44,7 +44,7 @@ import java.util.Collections;
 		this(Warning.getDefaultHandler());
 	}
 
-	public YAReaderAdapter(Warning warning) {
+	public YAReaderAdapter(final Warning warning) {
 		this(warning, new IDFactory());
 	}
 
@@ -52,7 +52,7 @@ import java.util.Collections;
 	 * @param warning The Warning instance to use
 	 * @param idFactory The factory for ID numbers
 	 */
-	public YAReaderAdapter(Warning warning, IDRegistrar idFactory) {
+	public YAReaderAdapter(final Warning warning, final IDRegistrar idFactory) {
 		players = new PlayerCollection();
 		mapReader = new YAMapReader(warning, idFactory, players);
 		townReader = new YATownReader(warning, idFactory, players);
@@ -97,7 +97,7 @@ import java.util.Collections;
 	 *
 	 * @throws SPFormatException on SP format problems
 	 */
-	public Object parse(StartElement element, QName parent, Iterable<XMLEvent> stream)
+	public Object parse(final StartElement element, final QName parent, final Iterable<XMLEvent> stream)
 			throws SPFormatException, MalformedXMLException {
 		// Since all implementations of necessity check the tag's namespace, we leave that
 		// to them.
@@ -131,7 +131,7 @@ import java.util.Collections;
 	 *
 	 * @throws IOException on I/O error
 	 */
-	private void writeAllRivers(ThrowingConsumer<String, IOException> ostream, Iterable<River> rivers, int indent)
+	private void writeAllRivers(final ThrowingConsumer<String, IOException> ostream, final Iterable<River> rivers, final int indent)
 			throws IOException {
 		for (River river : StreamSupport.stream(rivers.spliterator(), false).sorted()
 				.collect(Collectors.toList())) {
@@ -149,7 +149,7 @@ import java.util.Collections;
 	 * @param obj The object to write
 	 * @param indent The current indentation level
 	 */
-	public void write(ThrowingConsumer<String, IOException> ostream, Object obj, int indent) throws IOException {
+	public void write(final ThrowingConsumer<String, IOException> ostream, final Object obj, final int indent) throws IOException {
 		Class<?> cls = obj.getClass();
 		if (obj instanceof River) {
 			mapReader.writeRiver(ostream, (River) obj, indent);

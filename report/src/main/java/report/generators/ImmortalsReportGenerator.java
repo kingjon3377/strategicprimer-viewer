@@ -48,12 +48,12 @@ import common.map.fixtures.mobile.Pegasus;
  */
 public class ImmortalsReportGenerator extends AbstractReportGenerator<Immortal> {
 
-	public ImmortalsReportGenerator(Comparator<Pair<Point, IFixture>> comp, MapDimensions dimensions) {
+	public ImmortalsReportGenerator(final Comparator<Pair<Point, IFixture>> comp, final MapDimensions dimensions) {
 		this(comp, dimensions, null);
 	}
 
-	public ImmortalsReportGenerator(Comparator<Pair<Point, IFixture>> comp, MapDimensions dimensions,
-			@Nullable Point hq) {
+	public ImmortalsReportGenerator(final Comparator<Pair<Point, IFixture>> comp, final MapDimensions dimensions,
+	                                @Nullable final Point hq) {
 		super(comp, dimensions, hq);
 	}
 
@@ -61,8 +61,8 @@ public class ImmortalsReportGenerator extends AbstractReportGenerator<Immortal> 
 	 * Produce a report on an individual immortal.
 	 */
 	@Override
-	public void produceSingle(DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-			IMapNG map, ThrowingConsumer<String, IOException> ostream, Immortal item, Point loc)
+	public void produceSingle(final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
+	                          final IMapNG map, final ThrowingConsumer<String, IOException> ostream, final Immortal item, final Point loc)
 			throws IOException {
 		fixtures.remove(item.getId());
 		ostream.accept("At ");
@@ -77,8 +77,8 @@ public class ImmortalsReportGenerator extends AbstractReportGenerator<Immortal> 
 	 * Produce a report on all immortals.
 	 */
 	@Override
-	public void produce(DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-			IMapNG map, ThrowingConsumer<String, IOException> ostream) throws IOException {
+	public void produce(final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
+	                    final IMapNG map, final ThrowingConsumer<String, IOException> ostream) throws IOException {
 		Map<Class<? extends IFixture>, BiConsumer<String, Point>> meta = new HashMap<>();
 		Map<String, List<Point>> simples = new HashMap<>();
 		BiConsumer<Class<? extends Immortal>, String> handleSimple =

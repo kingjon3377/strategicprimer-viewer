@@ -21,7 +21,7 @@ public final class AssertAny {
 	public static class MultipleFailureException extends AssertionFailedError {
 		private static final long serialVersionUID = 0L;
 		private final List<AssertionFailedError> failures;
-		public MultipleFailureException(List<AssertionFailedError> list, String message) {
+		public MultipleFailureException(final List<AssertionFailedError> list, final String message) {
 			super(message, list.get(0));
 			this.failures = list;
 		}
@@ -36,13 +36,13 @@ public final class AssertAny {
 	 * @param message the message describing the problem
 	 * @param assertions the gorup of assertions
 	 */
-	public static void assertAny(String message, Runnable... assertions) {
+	public static void assertAny(final String message, final Runnable... assertions) {
 		List<AssertionFailedError> failures = new ArrayList<>();
 		for (Runnable assertion : assertions) {
 			try {
 				assertion.run();
 				return;
-			} catch (AssertionFailedError failure) {
+			} catch (final AssertionFailedError failure) {
 				failures.add(failure);
 			}
 		}
@@ -54,13 +54,13 @@ public final class AssertAny {
 	 *
 	 * @param assertions the gorup of assertions
 	 */
-	public static void assertAny(Runnable... assertions) {
+	public static void assertAny(final Runnable... assertions) {
 		List<AssertionFailedError> failures = new ArrayList<>();
 		for (Runnable assertion : assertions) {
 			try {
 				assertion.run();
 				return;
-			} catch (AssertionFailedError failure) {
+			} catch (final AssertionFailedError failure) {
 				failures.add(failure);
 			}
 		}

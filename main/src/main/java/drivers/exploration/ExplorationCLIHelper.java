@@ -49,7 +49,7 @@ public class ExplorationCLIHelper implements MovementCostListener, SelectionChan
 	private final IExplorationModel model;
 	private final ICLIHelper cli;
 	private final HuntingModel huntingModel;
-	public ExplorationCLIHelper(IExplorationModel model, ICLIHelper cli) {
+	public ExplorationCLIHelper(final IExplorationModel model, final ICLIHelper cli) {
 		this.model = model;
 		this.cli = cli;
 		this.huntingModel = new HuntingModel(model.getMap());
@@ -81,8 +81,8 @@ public class ExplorationCLIHelper implements MovementCostListener, SelectionChan
 	/**
 	 * Copy the given fixture to subordinate maps and print it to the output stream.
 	 */
-	private void printAndTransferFixture(Point destPoint, @Nullable TileFixture fixture, HasOwner mover,
-	                                     boolean automatic) {
+	private void printAndTransferFixture(final Point destPoint, @Nullable final TileFixture fixture, final HasOwner mover,
+	                                     final boolean automatic) {
 		if (fixture != null) {
 			if (automatic) {
 				cli.print(fixture.toString());
@@ -111,7 +111,7 @@ public class ExplorationCLIHelper implements MovementCostListener, SelectionChan
 	}
 
 	@Override
-	public void deduct(int cost) {
+	public void deduct(final int cost) {
 		runningTotal -= cost;
 	}
 
@@ -129,7 +129,7 @@ public class ExplorationCLIHelper implements MovementCostListener, SelectionChan
 	 * When the selected unit changes, print the unit's details and ask how many MP the unit has.
 	 */
 	@Override
-	public void selectedUnitChanged(@Nullable IUnit old, @Nullable IUnit newSelection) {
+	public void selectedUnitChanged(@Nullable final IUnit old, @Nullable final IUnit newSelection) {
 		if (newSelection != null) { // TODO What if old == newSelection?
 			cli.print("Details of the unit (apparently at ");
 			cli.print(model.getSelectedUnitLocation().toString());
@@ -239,7 +239,7 @@ public class ExplorationCLIHelper implements MovementCostListener, SelectionChan
 			Point destPoint = model.getDestination(point, direction);
 			try {
 				model.move(direction, speed);
-			} catch (TraversalImpossibleException except) {
+			} catch (final TraversalImpossibleException except) {
 				LOGGER.fine("Attempted movement to impossible destination");
 				cli.println("That direction is impassable; we've made sure all maps show that at a cost of 1 MP");
 				return;
@@ -363,11 +363,11 @@ public class ExplorationCLIHelper implements MovementCostListener, SelectionChan
 	}
 
 	@Override
-	public void selectedPointChanged(@Nullable Point previousSelection, Point newSelection) {}
+	public void selectedPointChanged(@Nullable final Point previousSelection, final Point newSelection) {}
 
 	@Override
 	public void interactionPointChanged() {}
 
 	@Override
-	public void cursorPointChanged(@Nullable Point previousCursor, Point newCursor) {}
+	public void cursorPointChanged(@Nullable final Point previousCursor, final Point newCursor) {}
 }

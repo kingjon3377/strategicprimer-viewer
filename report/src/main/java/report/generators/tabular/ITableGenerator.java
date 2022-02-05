@@ -45,8 +45,8 @@ public interface ITableGenerator<T extends IFixture> {
 	 * Produce a tabular report on a particular category of fixtures in the
 	 * map, and remove all fixtures covered in the table from the collection.
 	 */
-	default void produceTable(ThrowingConsumer<String, IOException> ostream, DelayedRemovalMap<Integer,
-			Pair<Point, IFixture>> fixtures, Map<Integer, Integer> parentMap)
+	default void produceTable(final ThrowingConsumer<String, IOException> ostream, final DelayedRemovalMap<Integer,
+			Pair<Point, IFixture>> fixtures, final Map<Integer, Integer> parentMap)
 			throws IOException {
 		Class<T> cls = narrowedClass();
 		Iterable<Triplet<Integer, Point, T>> values = fixtures.entrySet().stream()
@@ -74,8 +74,8 @@ public interface ITableGenerator<T extends IFixture> {
 	 * map, in the format of a model for a Swing JTable, and remove all
 	 * fixtures covered in the table from the collection.
 	 */
-	default TableModel produceTableModel(DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-			Map<Integer, Integer> parentMap) {
+	default TableModel produceTableModel(final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
+	                                     final Map<Integer, Integer> parentMap) {
 		Class<T> cls = narrowedClass();
 		Iterable<Triplet<Integer, Point, T>> values = fixtures.entrySet().stream()
 			.filter(e -> cls.isInstance(e.getValue().getValue1()))
@@ -121,7 +121,7 @@ public interface ITableGenerator<T extends IFixture> {
 	 * base. The default implementation returns the <em>square</em> of the
 	 * distance, for efficiency.
 	 */
-	default int distance(Point first, Point second, MapDimensions dimensions) {
+	default int distance(final Point first, final Point second, final MapDimensions dimensions) {
 		int colDistRaw = Math.abs(first.getColumn() - second.getColumn());
 		int rowDistRaw = Math.abs(first.getRow() - second.getRow());
 		int colDist;
@@ -145,8 +145,8 @@ public interface ITableGenerator<T extends IFixture> {
 	 * just takes the square root of {@link distance} and formats it,
 	 * unless one or both of the points is null or invalid, in which case it prints "unknown" instead.
 	 */
-	default String distanceString(@Nullable Point first, @Nullable Point second,
-			MapDimensions dimensions) {
+	default String distanceString(@Nullable final Point first, @Nullable final Point second,
+	                              final MapDimensions dimensions) {
 		if (first != null && second != null && first.isValid() && second.isValid()) {
 			return String.format("%1.1f", Math.sqrt(distance(first, second, dimensions)));
 		} else {
@@ -158,7 +158,7 @@ public interface ITableGenerator<T extends IFixture> {
 	 * If the given {@link location point} is valid, return its {@link
 	 * Point#toString} string representation}; otherwise, return "unknown".
 	 */
-	default String locationString(Point location) {
+	default String locationString(final Point location) {
 		return (location.isValid()) ? location.toString() : "unknown";
 	}
 
@@ -177,14 +177,14 @@ public interface ITableGenerator<T extends IFixture> {
 	/**
 	 * The Point in a Point-fixture pair. TODO: Remove this, right?
 	 */
-	default Point pairPoint(Pair<Point, T> pair) {
+	default Point pairPoint(final Pair<Point, T> pair) {
 		return pair.getValue0();
 	}
 
 	/**
 	 * The fixture in a Point-fixture pair. TODO: Remove this, right?
 	 */
-	default T pairFixture(Pair<Point, T> pair) {
+	default T pairFixture(final Pair<Point, T> pair) {
 		return pair.getValue1();
 	}
 
@@ -193,7 +193,7 @@ public interface ITableGenerator<T extends IFixture> {
 	 * currentPlayer, "Independent" if an independent player, or otherwise
 	 * the player's name.
 	 */
-	default String ownerString(Player currentPlayer, Player owner) {
+	default String ownerString(final Player currentPlayer, final Player owner) {
 		if (currentPlayer.equals(owner)) {
 			return "You";
 		} else if (owner.isIndependent()) {
@@ -224,7 +224,7 @@ public interface ITableGenerator<T extends IFixture> {
 	 * the field delimiter, with the last field followed by the row
 	 * delimiter.
 	 */
-	default void writeRow(ThrowingConsumer<String, IOException> ostream, String... fields) throws IOException {
+	default void writeRow(final ThrowingConsumer<String, IOException> ostream, final String... fields) throws IOException {
 		boolean firstField = true;
 		for (String field : fields) {
 			if (firstField) {

@@ -20,14 +20,14 @@ public final class AnimalDiscoveryDCs {
 			return FileSplitter.getFileContents(
 				"animal_data/discovery_dc.txt",
 				Integer::parseInt);
-		} catch (IOException except) {
+		} catch (final IOException except) {
 			throw new RuntimeException(except);
 		}
 	}
 
 	private static final Map<String, Integer> DCS = initDcs();
 
-	public static int get(String key) {
+	public static int get(final String key) {
 		if (DCS.containsKey(key)) {
 			return DCS.get(key);
 		} else {
@@ -35,7 +35,7 @@ public final class AnimalDiscoveryDCs {
 		}
 	}
 
-	public static boolean containsKey(String key) {
+	public static boolean containsKey(final String key) {
 		return DCS.containsKey(key);
 	}
 }

@@ -64,7 +64,7 @@ final class DBTownHandler extends AbstractDatabaseWriter<AbstractTown, Point> im
 		new DBCommunityStatsHandler();
 
 	@Override
-	public void write(DB db, AbstractTown obj, Point context) {
+	public void write(final DB db, final AbstractTown obj, final Point context) {
 		db.update(INSERT_SQL, context.getRow(), context.getColumn(), obj.getId(), obj.getKind(),
 			obj.getStatus().toString(), obj.getTownSize().toString(), obj.getDC(), obj.getName(),
 			obj.getOwner().getPlayerId(), obj.getImage(), obj.getPortrait(),
@@ -77,7 +77,7 @@ final class DBTownHandler extends AbstractDatabaseWriter<AbstractTown, Point> im
 		}
 	}
 
-	private TryBiConsumer<Map<String, Object>, Warning, Exception> readTown(IMutableMapNG map) {
+	private TryBiConsumer<Map<String, Object>, Warning, Exception> readTown(final IMutableMapNG map) {
 		return (dbRow, warner) -> {
 			int row = (Integer) dbRow.get("row");
 			int column = (Integer) dbRow.get("column");
@@ -120,14 +120,14 @@ final class DBTownHandler extends AbstractDatabaseWriter<AbstractTown, Point> im
 	}
 
 	@Override
-	public void readMapContents(DB db, IMutableMapNG map, Warning warner) {
+	public void readMapContents(final DB db, final IMutableMapNG map, final Warning warner) {
 		try {
 			handleQueryResults(db, warner, "towns", readTown(map),
 				"SELECT * FROM towns");
-		} catch (RuntimeException except) {
+		} catch (final RuntimeException except) {
 			// Don't wrap RuntimeExceptions in RuntimeException
 			throw except;
-		} catch (Exception except) {
+		} catch (final Exception except) {
 			// FIXME Antipattern
 			throw new RuntimeException(except);
 		}

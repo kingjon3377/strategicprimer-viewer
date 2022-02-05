@@ -16,7 +16,7 @@ public final class IntTransferable implements Transferable {
 	 * @param flavor the {@link flavor DataFlavor} we should advertise support for
 	 * @param payload the integer to transfer
 	 */
-	public IntTransferable(DataFlavor flavor, int payload) {
+	public IntTransferable(final DataFlavor flavor, final int payload) {
 		this.flavor = flavor;
 		this.payload = payload;
 	}
@@ -33,7 +33,7 @@ public final class IntTransferable implements Transferable {
 	 * Only the provided {@link flavor} is supported.
 	 */
 	@Override
-	public boolean isDataFlavorSupported(DataFlavor possibility) {
+	public boolean isDataFlavorSupported(final DataFlavor possibility) {
 		return Objects.equals(flavor, possibility);
 	}
 
@@ -42,7 +42,7 @@ public final class IntTransferable implements Transferable {
 	 * payload}; otherwise throw an {@link UnsupportedFlavorException}.
 	 */
 	@Override
-	public Integer getTransferData(DataFlavor wantedFlavor) throws UnsupportedFlavorException {
+	public Integer getTransferData(final DataFlavor wantedFlavor) throws UnsupportedFlavorException {
 		if (Objects.equals(flavor, wantedFlavor)) {
 			return Integer.valueOf(payload);
 		} else {
@@ -70,7 +70,7 @@ public final class IntTransferable implements Transferable {
 	 * An object is equal iff it is an IntTransferable with the same {@link flavor} and {@link payload}.
 	 */
 	@Override
-	public boolean equals(Object that) {
+	public boolean equals(final Object that) {
 		return that instanceof IntTransferable &&
 			Objects.equals(((IntTransferable) that).payload, payload) &&
 			Objects.equals(((IntTransferable) that).flavor, flavor);

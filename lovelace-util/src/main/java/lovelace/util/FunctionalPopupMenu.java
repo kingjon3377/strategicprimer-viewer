@@ -8,7 +8,7 @@ import javax.swing.JMenuItem;
  */
 public class FunctionalPopupMenu extends JPopupMenu {
 	private static final long serialVersionUID = 1;
-	public FunctionalPopupMenu(JMenuItem... items) {
+	public FunctionalPopupMenu(final JMenuItem... items) {
 		for (JMenuItem item : items) {
 			add(item);
 		}

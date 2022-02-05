@@ -43,7 +43,7 @@ public final class Warning {
 		return defaultHandler;
 	}
 
-	public static void setDefaultHandler(Warning handler) {
+	public static void setDefaultHandler(final Warning handler) {
 		defaultHandler = handler;
 	}
 
@@ -53,15 +53,15 @@ public final class Warning {
 	 * Handle a warning, such as if a particular map-format construct is
 	 * deprecated.
 	 */
-	public void handle(Throwable warning) {
+	public void handle(final Throwable warning) {
 		impl.accept(warning);
 	}
 
-	public Warning(Consumer<Throwable> impl) {
+	public Warning(final Consumer<Throwable> impl) {
 		this.impl = impl;
 	}
 
-	public Warning(Consumer<String> handler, boolean ignored) {
+	public Warning(final Consumer<String> handler, final boolean ignored) {
 		this.impl = t -> {
 			if (t instanceof SPFormatException) {
 				handler.accept("SP format warning: " + t.getMessage());
@@ -71,7 +71,7 @@ public final class Warning {
 		};
 	}
 
-	private static void warn(Throwable warning) {
+	private static void warn(final Throwable warning) {
 		if (warning instanceof SPFormatException || warning instanceof DuplicateIDException) {
 			LOGGER.warning(warning.getMessage());
 		} else {
@@ -79,7 +79,7 @@ public final class Warning {
 		}
 	}
 
-	private static void die(Throwable warning) {
+	private static void die(final Throwable warning) {
 		throw new RuntimeException(warning);
 	}
 }

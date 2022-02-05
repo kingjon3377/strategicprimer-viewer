@@ -23,7 +23,7 @@ import java.util.HashMap;
  * Logic extracted from {@link ResourceAddingCLI} that's also useful in the turn-running app.
  */
 public class ResourceAddingCLIHelper {
-	public ResourceAddingCLIHelper(ICLIHelper cli, IDRegistrar idf) {
+	public ResourceAddingCLIHelper(final ICLIHelper cli, final IDRegistrar idf) {
 		this.cli = cli;
 		this.idf = idf;
 	}
@@ -60,7 +60,7 @@ public class ResourceAddingCLIHelper {
 	 * resource kind. Returns null on EOF.
 	 */
 	@Nullable
-	private String getResourceContents(String kind) {
+	private String getResourceContents(final String kind) {
 		List<String> list = resourceContents.getOrDefault(kind, new ArrayList<>());
 		String one = cli.chooseStringFromList(list,
 			"Possible resources in the ``kind`` category:",
@@ -81,7 +81,7 @@ public class ResourceAddingCLIHelper {
 	 * Ask the user to choose units for a type of resource. Returns null on EOF.
 	 */
 	@Nullable
-	private String getResourceUnits(String resource) {
+	private String getResourceUnits(final String resource) {
 		if (resourceUnits.containsKey(resource)) {
 			String unit = resourceUnits.get(resource);
 			Boolean resp = cli.inputBooleanInSeries(

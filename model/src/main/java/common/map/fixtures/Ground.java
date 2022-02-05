@@ -7,7 +7,7 @@ import common.map.HasMutableImage;
  * A TileFixture to represent the basic rock beneath the tile, possibly exposed.
  */
 public class Ground implements MineralFixture, HasMutableImage {
-	public Ground(int id, String kind, boolean exposed) {
+	public Ground(final int id, final String kind, final boolean exposed) {
 		this.id = id;
 		this.kind = kind;
 		this.exposed = exposed;
@@ -43,7 +43,7 @@ public class Ground implements MineralFixture, HasMutableImage {
 	/**
 	 * Set whether the ground is exposed.
 	 */
-	public void setExposed(boolean exposed) {
+	public void setExposed(final boolean exposed) {
 		this.exposed = exposed;
 	}
 
@@ -67,7 +67,7 @@ public class Ground implements MineralFixture, HasMutableImage {
 	 * @deprecated I don't know why this was variable, but I've ported it as such just in case
 	 */
 	@Deprecated
-	public void setId(int id) {
+	public void setId(final int id) {
 		this.id = id;
 	}
 
@@ -88,7 +88,7 @@ public class Ground implements MineralFixture, HasMutableImage {
 	 * Set the filename of an image to use as an icon for this instance.
 	 */
 	@Override
-	public void setImage(String image) {
+	public void setImage(final String image) {
 		this.image = image;
 	}
 
@@ -96,7 +96,7 @@ public class Ground implements MineralFixture, HasMutableImage {
 	 * Clone the object.
 	 */
 	@Override
-	public Ground copy(boolean zero) {
+	public Ground copy(final boolean zero) {
 		Ground retval = new Ground(id, kind, exposed);
 		retval.setImage(image);
 		return retval;
@@ -115,7 +115,7 @@ public class Ground implements MineralFixture, HasMutableImage {
 	 * neither are exposed, and it has the same ID.
 	 */
 	@Override
-	public boolean equals(Object obj) {
+	public boolean equals(final Object obj) {
 		if (this == obj) {
 			return true;
 		} else if (obj instanceof Ground) {
@@ -146,7 +146,7 @@ public class Ground implements MineralFixture, HasMutableImage {
 	 * kind and either both or neither are exposed.
 	 */
 	@Override
-	public boolean equalsIgnoringID(IFixture fixture) {
+	public boolean equalsIgnoringID(final IFixture fixture) {
 		if (this == fixture) {
 			return true;
 		} else if (fixture instanceof Ground) {

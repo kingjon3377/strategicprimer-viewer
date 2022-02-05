@@ -17,17 +17,17 @@ public class SPOptionsImpl implements SPOptions {
 
 	// TODO: Take Map<String, String> instead and use options.putAll()?
 	@SafeVarargs
-	public SPOptionsImpl(Map.Entry<String, String>... existing) {
+	public SPOptionsImpl(final Map.Entry<String, String>... existing) {
 		for (Map.Entry<String, String> entry : existing) {
 			options.put(entry.getKey(), entry.getValue());
 		}
 	}
 
-	public void addOption(String option) {
+	public void addOption(final String option) {
 		addOption(option, "true");
 	}
 
-	public void addOption(String option, String argument) {
+	public void addOption(final String option, final String argument) {
 		if ("false".equals(argument)) {
 			options.remove(option);
 		} else {
@@ -36,12 +36,12 @@ public class SPOptionsImpl implements SPOptions {
 	}
 
 	@Override
-	public boolean hasOption(String option) {
+	public boolean hasOption(final String option) {
 		return options.containsKey(option);
 	}
 
 	@Override
-	public String getArgument(String option) {
+	public String getArgument(final String option) {
 		return options.getOrDefault(option, "false");
 	}
 

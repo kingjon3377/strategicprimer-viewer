@@ -30,8 +30,8 @@ import java.util.function.Consumer;
  */
 /* package */ class ComponentMouseListener extends MouseAdapter implements ToolTipSource {
 	private static final Logger LOGGER = Logger.getLogger(ComponentMouseListener.class.getName());
-	public ComponentMouseListener(IViewerModel model, Predicate<TileFixture> zof,
-			Comparator<TileFixture> comparator) {
+	public ComponentMouseListener(final IViewerModel model, final Predicate<TileFixture> zof,
+	                              final Comparator<TileFixture> comparator) {
 		this.model = model;
 		this.zof = zof;
 		this.comparator = comparator;
@@ -46,7 +46,7 @@ import java.util.function.Consumer;
 
 	private final TerrainChangingMenu menu;
 
-	private String terrainFixturesAndTop(Point point) {
+	private String terrainFixturesAndTop(final Point point) {
 		IMapNG map = model.getMap();
 		StringBuilder builder = new StringBuilder();
 		Consumer<TileFixture> c = fixture -> {
@@ -64,7 +64,7 @@ import java.util.function.Consumer;
 		return builder.toString();
 	}
 
-	private Point pointFor(MouseEvent event) {
+	private Point pointFor(final MouseEvent event) {
 		java.awt.Point eventPoint = event.getPoint();
 		MapDimensions mapDimensions = model.getMapDimensions();
 		int tileSize = scaleZoom(model.getZoomLevel(), mapDimensions.getVersion());
@@ -75,7 +75,7 @@ import java.util.function.Consumer;
 
 	@Override
 	@Nullable
-	public String getToolTipText(MouseEvent event) {
+	public String getToolTipText(final MouseEvent event) {
 		MapDimensions mapDimensions = model.getMapDimensions();
 		Point point = pointFor(event);
 		if (point.isValid() && point.getRow() < mapDimensions.getRows() &&
@@ -92,7 +92,7 @@ import java.util.function.Consumer;
 	}
 
 	@Override
-	public void mouseClicked(MouseEvent event) {
+	public void mouseClicked(final MouseEvent event) {
 		event.getComponent().requestFocusInWindow();
 		MapDimensions mapDimensions = model.getMapDimensions();
 		Point point = pointFor(event);
@@ -109,7 +109,7 @@ import java.util.function.Consumer;
 	}
 
 	@Override
-	public void mousePressed(MouseEvent event) {
+	public void mousePressed(final MouseEvent event) {
 		if (event.isPopupTrigger()) {
 			model.setInteraction(pointFor(event));
 			menu.show(event.getComponent(), event.getX(), event.getY());
@@ -117,14 +117,14 @@ import java.util.function.Consumer;
 	}
 
 	@Override
-	public void mouseReleased(MouseEvent event) {
+	public void mouseReleased(final MouseEvent event) {
 		if (event.isPopupTrigger()) {
 			model.setInteraction(pointFor(event));
 			menu.show(event.getComponent(), event.getX(), event.getY());
 		}
 	}
 
-	private Pair<Integer, Integer> screenPointFor(Point point) {
+	private Pair<Integer, Integer> screenPointFor(final Point point) {
 		MapDimensions mapDimensions = model.getMapDimensions();
 		int tileSize = scaleZoom(model.getZoomLevel(), mapDimensions.getVersion());
 		VisibleDimensions visibleDimensions = model.getVisibleDimensions();
@@ -133,7 +133,7 @@ import java.util.function.Consumer;
 			(point.getRow() - visibleDimensions.getMinimumRow()) * tileSize + tileSize / 2);
 	}
 
-	public void showMenuAtSelection(@Nullable Component parent) {
+	public void showMenuAtSelection(@Nullable final Component parent) {
 		model.setInteraction(model.getSelection());
 		Pair<Integer, Integer> pair = screenPointFor(model.getSelection());
 		menu.show(parent, pair.getValue0(), pair.getValue1());

@@ -29,7 +29,7 @@ public class TypesafeXMLEventReader implements Iterator<XMLEvent>, Closeable {
 	private final Queue<Closeable> closeHandles = new LinkedList<>();
 	private boolean closed = false;
 
-	public TypesafeXMLEventReader (XMLEventReader reader, Closeable... closeMethods) {
+	public TypesafeXMLEventReader (final XMLEventReader reader, final Closeable... closeMethods) {
 		wrapped = reader;
 		if (reader instanceof Closeable) { // TODO: AutoCloseable instead?
 			closeHandles.add((Closeable) reader);
@@ -39,7 +39,7 @@ public class TypesafeXMLEventReader implements Iterator<XMLEvent>, Closeable {
 		}
 	}
 
-	public TypesafeXMLEventReader(Reader reader, Closeable... closeMethods)
+	public TypesafeXMLEventReader(final Reader reader, final Closeable... closeMethods)
 			throws MalformedXMLException {
 		try {
 			XMLInputFactory factory = XMLInputFactory.newInstance();
@@ -47,7 +47,7 @@ public class TypesafeXMLEventReader implements Iterator<XMLEvent>, Closeable {
 			factory.setProperty("javax.xml.stream.isSupportingExternalEntities",
 				Boolean.FALSE);
 			wrapped = factory.createXMLEventReader(reader);
-		} catch (XMLStreamException except) {
+		} catch (final XMLStreamException except) {
 			throw new MalformedXMLException(except);
 		}
 		closeHandles.add(reader);
@@ -63,7 +63,7 @@ public class TypesafeXMLEventReader implements Iterator<XMLEvent>, Closeable {
 	public void close() throws IOException {
 		try {
 			wrapped.close();
-		} catch (XMLStreamException except) {
+		} catch (final XMLStreamException except) {
 			throw new IOException(except);
 		}
 		for (Closeable handle : closeHandles) {
@@ -96,7 +96,7 @@ public class TypesafeXMLEventReader implements Iterator<XMLEvent>, Closeable {
 					close();
 					throw new NoSuchElementException();
 				}
-			} catch (XMLStreamException exception) {
+			} catch (final XMLStreamException exception) {
 				Throwable cause = exception.getCause();
 				if (cause instanceof MalformedInputException) {
 					throw new RuntimeException(new MalformedXMLException(cause,
@@ -104,7 +104,7 @@ public class TypesafeXMLEventReader implements Iterator<XMLEvent>, Closeable {
 				} else {
 					throw new RuntimeException(new MalformedXMLException(exception));
 				}
-			} catch (IOException except) {
+			} catch (final IOException except) {
 				throw new RuntimeException(except);
 			}
 		}

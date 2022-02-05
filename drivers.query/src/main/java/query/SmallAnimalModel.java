@@ -78,14 +78,14 @@ public enum SmallAnimalModel implements HerdModel {
 		return 20;
 	}
 
-	private SmallAnimalModel(int timePerHead, String nomen, int extraInterval) {
+	private SmallAnimalModel(final int timePerHead, final String nomen, final int extraInterval) {
 		name = nomen;
 		dailyTimePerHead = timePerHead;
 		extraChoresInterval = extraInterval;
 	}
 
 	@Override
-	public int dailyTime(int heads) {
+	public int dailyTime(final int heads) {
 		return heads * dailyTimePerHead + getDailyTimeFloor();
 	}
 }

@@ -11,7 +11,7 @@ import drivers.common.SPOptions;
  * copies or under version control!
  */
 public class SubtractCLI implements CLIDriver {
-	public SubtractCLI(UtilityDriverModel model) {
+	public SubtractCLI(final UtilityDriverModel model) {
 		this.model = model;
 	}
 

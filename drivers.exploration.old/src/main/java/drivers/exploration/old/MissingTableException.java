@@ -9,7 +9,7 @@ public class MissingTableException extends Exception {
 	 */
 	private final String table;
 
-	public MissingTableException(String table) {
+	public MissingTableException(final String table) {
 		super("Missing table" + table);
 		this.table = table;
 	}

@@ -22,7 +22,7 @@ import drivers.gui.common.SPFrame;
  * TODO: Merge into MapCheckerGUI
  */
 /* package */ class MapCheckerFrame extends SPFrame {
-	public MapCheckerFrame(ISPDriver driver) {
+	public MapCheckerFrame(final ISPDriver driver) {
 		super("Strategic Primer Map Checker", driver, new Dimension(640, 320), true, x -> {},
 			"Map Checker");
 		this.driver = driver;
@@ -33,19 +33,19 @@ import drivers.gui.common.SPFrame;
 
 	private final ISPDriver driver;
 	private final StreamingLabel label = new StreamingLabel();
-	private void printParagraph(String paragraph) {
+	private void printParagraph(final String paragraph) {
 		printParagraph(paragraph, LabelTextColor.BLACK);
 	}
 
-	private void printParagraph(String paragraph, LabelTextColor color) {
+	private void printParagraph(final String paragraph, final LabelTextColor color) {
 		label.append(String.format("<p style=\"color:%s\">%s</p>", color, paragraph));
 	}
 
-	void customPrinter(String string) {
+	void customPrinter(final String string) {
 		printParagraph(string, LabelTextColor.YELLOW);
 	}
 
-	private void outHandler(String text) {
+	private void outHandler(final String text) {
 		if (text.startsWith("No errors")) {
 			printParagraph(text, LabelTextColor.GREEN);
 		} else {
@@ -53,18 +53,18 @@ import drivers.gui.common.SPFrame;
 		}
 	}
 
-	private void errHandler(String text) {
+	private void errHandler(final String text) {
 		printParagraph(text, LabelTextColor.RED);
 	}
 
 	private final MapCheckerCLI mapCheckerCLI = new MapCheckerCLI(this::outHandler, this::errHandler);
 
-	public void check(Path filename) {
+	public void check(final Path filename) {
 		mapCheckerCLI.check(filename, new Warning(this::customPrinter, true));
 	}
 
 	@Override
-	public void acceptDroppedFile(Path file) {
+	public void acceptDroppedFile(final Path file) {
 		check(file);
 	}
 }

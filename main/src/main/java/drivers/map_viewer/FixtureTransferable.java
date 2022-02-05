@@ -14,7 +14,7 @@ import common.map.TileFixture;
 
 	private final TileFixture payload;
 
-	public FixtureTransferable(TileFixture data) {
+	public FixtureTransferable(final TileFixture data) {
 		payload = data;
 	}
 
@@ -24,12 +24,12 @@ import common.map.TileFixture;
 	}
 
 	@Override
-	public boolean isDataFlavorSupported(DataFlavor candidate) {
+	public boolean isDataFlavorSupported(final DataFlavor candidate) {
 		return FLAVOR.equals(candidate);
 	}
 
 	@Override
-	public TileFixture getTransferData(DataFlavor candidate) throws UnsupportedFlavorException {
+	public TileFixture getTransferData(final DataFlavor candidate) throws UnsupportedFlavorException {
 		if (FLAVOR.equals(candidate)) {
 			return payload;
 		} else {
@@ -43,7 +43,7 @@ import common.map.TileFixture;
 	}
 
 	@Override
-	public boolean equals(Object that) {
+	public boolean equals(final Object that) {
 		return that instanceof FixtureTransferable &&
 			((FixtureTransferable) that).payload.equals(payload);
 	}

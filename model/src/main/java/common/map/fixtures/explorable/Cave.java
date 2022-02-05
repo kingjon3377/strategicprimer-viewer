@@ -6,7 +6,7 @@ import common.map.IFixture;
  * "There are extensive caves beneath this tile".
  */
 public class Cave implements ExplorableFixture {
-	public Cave(int dc, int id) {
+	public Cave(final int dc, final int id) {
 		this.dc = dc;
 		this.id = id;
 	}
@@ -54,7 +54,7 @@ public class Cave implements ExplorableFixture {
 	 * Set the filename of an image to use as an icon for this instance.
 	 */
 	@Override
-	public void setImage(String image) {
+	public void setImage(final String image) {
 		this.image = image;
 	}
 
@@ -62,14 +62,14 @@ public class Cave implements ExplorableFixture {
 	 * Clone the object.
 	 */
 	@Override
-	public Cave copy(boolean zero) {
+	public Cave copy(final boolean zero) {
 		Cave retval = new Cave((zero) ? 0 : dc, id);
 		retval.setImage(image);
 		return retval;
 	}
 
 	@Override
-	public boolean equals(Object obj) {
+	public boolean equals(final Object obj) {
 		if (this == obj) {
 			return true;
 		} else if (obj instanceof Cave) {
@@ -93,7 +93,7 @@ public class Cave implements ExplorableFixture {
 	 * If we ignore ID (and DC), all caves are equal.
 	 */
 	@Override
-	public boolean equalsIgnoringID(IFixture fixture) {
+	public boolean equalsIgnoringID(final IFixture fixture) {
 		return fixture instanceof Cave;
 	}
 

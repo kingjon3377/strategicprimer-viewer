@@ -49,7 +49,7 @@ public final class ImageLoader {
 	/**
 	 * Create a very simple background icon for a terrain type
 	 */
-	private static Icon createTerrainIcon(TileType tileType) {
+	private static Icon createTerrainIcon(final TileType tileType) {
 		BufferedImage retval = new BufferedImage(FIXTURE_ICON_SIZE, FIXTURE_ICON_SIZE,
 			BufferedImage.TYPE_INT_ARGB);
 		Graphics pen = retval.createGraphics();
@@ -86,7 +86,7 @@ public final class ImageLoader {
 	 *
 	 * @throws IOException If no reader could read the file (or the file does not exist)
 	 */
-	public static Image loadImage(String file) throws IOException {
+	public static Image loadImage(final String file) throws IOException {
 		if (IMAGE_CACHE.containsKey(file)) {
 			return IMAGE_CACHE.get(file);
 		} else {
@@ -108,7 +108,7 @@ public final class ImageLoader {
 	 *
 	 * @throws IOException If not in the cache and can't be loaded from file
 	 */
-	public static Icon loadIcon(String file) throws IOException {
+	public static Icon loadIcon(final String file) throws IOException {
 		if (ICON_CACHE.containsKey(file)) {
 			return ICON_CACHE.get(file);
 		} else {
@@ -130,7 +130,7 @@ public final class ImageLoader {
 	public static class ColorHelper {
 		private static final Logger LOGGER = Logger.getLogger(ColorHelper.class.getName());
 		private ColorHelper() {}
-		private static String wrap(String wrapped) {
+		private static String wrap(final String wrapped) {
 			return "<html><p>" + wrapped + "</p></html>";
 		}
 
@@ -181,7 +181,7 @@ public final class ImageLoader {
 			COLORS = Collections.unmodifiableMap(colors);
 		}
 
-		public static boolean supportsType(int version, TileType type) {
+		public static boolean supportsType(final int version, final TileType type) {
 			return COLORS.getOrDefault(version, Collections.emptyMap()).containsKey(type);
 		}
 
@@ -191,7 +191,7 @@ public final class ImageLoader {
 		 * support that tile type. TODO: throw instead, as we used to do in Java?
 		 */
 		@Nullable
-		public static Color get(int version, @Nullable TileType type) {
+		public static Color get(final int version, @Nullable final TileType type) {
 			if (type == null) {
 				return null;
 			} else if (COLORS.containsKey(version)) {
@@ -216,7 +216,7 @@ public final class ImageLoader {
 		 * type. TODO: throw on not-found instead of returning null?
 		 */
 		@Nullable
-		public static String getDescription(@Nullable TileType type) {
+		public static String getDescription(@Nullable final TileType type) {
 			if (type == null) {
 				return "Unknown";
 			} else if (DESCRIPTIONS.containsKey(type)) {
@@ -233,7 +233,7 @@ public final class ImageLoader {
 		 * null?
 		 */
 		@Nullable
-		public static Color getFeatureColor(TileFixture fixture) {
+		public static Color getFeatureColor(final TileFixture fixture) {
 			if (FEATURE_COLORS.containsKey(fixture.getClass())) {
 				return FEATURE_COLORS.get(fixture.getClass());
 			} else {

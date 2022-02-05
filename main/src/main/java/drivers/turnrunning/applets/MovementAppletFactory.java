@@ -25,7 +25,7 @@ import com.google.auto.service.AutoService;
 @AutoService(TurnAppletFactory.class)
 public class MovementAppletFactory implements TurnAppletFactory {
 	@Override
-	public TurnApplet create(ITurnRunningModel model, ICLIHelper cli, IDRegistrar idf) {
+	public TurnApplet create(final ITurnRunningModel model, final ICLIHelper cli, final IDRegistrar idf) {
 		return new MovementApplet(model, cli, idf);
 	}
 }

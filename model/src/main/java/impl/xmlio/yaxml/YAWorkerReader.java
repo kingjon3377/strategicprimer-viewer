@@ -28,7 +28,7 @@ import common.map.Player;
  * A reader for workers.
  */
 /* package */ class YAWorkerReader extends YAAbstractReader<IWorker, IWorker> {
-	public static void writeSkill(ThrowingConsumer<String, IOException> ostream, ISkill obj, int indent)
+	public static void writeSkill(final ThrowingConsumer<String, IOException> ostream, final ISkill obj, final int indent)
 			throws IOException {
 		if (!obj.isEmpty()) {
 			writeTag(ostream, "skill", indent);
@@ -39,7 +39,7 @@ import common.map.Player;
 		}
 	}
 
-	public static void writeJob(ThrowingConsumer<String, IOException> ostream, IJob obj, int indent)
+	public static void writeJob(final ThrowingConsumer<String, IOException> ostream, final IJob obj, final int indent)
 			throws IOException {
 		if (obj.getLevel() <= 0 && obj.isEmpty()) {
 			return;
@@ -58,7 +58,7 @@ import common.map.Player;
 		}
 	}
 
-	private static void writeNote(ThrowingConsumer<String, IOException> ostream, int player, String note, int indent)
+	private static void writeNote(final ThrowingConsumer<String, IOException> ostream, final int player, final String note, final int indent)
 			throws IOException {
 		writeTag(ostream, "note", indent);
 		writeProperty(ostream, "player", player);
@@ -69,7 +69,7 @@ import common.map.Player;
 
 	private Warning warner;
 	private IPlayerCollection players;
-	public YAWorkerReader (Warning warning, IDRegistrar idRegistrar, IPlayerCollection players) {
+	public YAWorkerReader (final Warning warning, final IDRegistrar idRegistrar, final IPlayerCollection players) {
 		super(warning, idRegistrar);
 		warner = warning;
 		this.players = players;
@@ -80,7 +80,7 @@ import common.map.Player;
 		int apply(Type item) throws SPFormatException;
 	}
 
-	private WorkerStats parseStats(StartElement element, QName parent, Iterable<XMLEvent> stream) 
+	private WorkerStats parseStats(final StartElement element, final QName parent, final Iterable<XMLEvent> stream)
 			throws SPFormatException {
 		requireTag(element, parent, "stats");
 		expectAttributes(element, "hp", "max", "str", "dex", "con", "int", "wis", "cha");
@@ -92,7 +92,7 @@ import common.map.Player;
 		return retval;
 	}
 
-	private ISkill parseSkill(StartElement element, QName parent) throws SPFormatException {
+	private ISkill parseSkill(final StartElement element, final QName parent) throws SPFormatException {
 		requireTag(element, parent, "skill");
 		expectAttributes(element, "name", "level", "hours");
 		// TODO: Should require no children, right? So spinUntilEnd() here, not in the caller?
@@ -100,7 +100,7 @@ import common.map.Player;
 			getIntegerParameter(element, "hours"));
 	}
 
-	private String readNote(StartElement element, QName parent, Iterable<XMLEvent> stream) 
+	private String readNote(final StartElement element, final QName parent, final Iterable<XMLEvent> stream)
 			throws SPFormatException {
 		requireTag(element, parent, "note");
 		expectAttributes(element, "player");
@@ -118,7 +118,7 @@ import common.map.Player;
 		return retval.toString().trim();
 	}
 
-	private IJob parseJob(StartElement element, QName parent, Iterable<XMLEvent> stream) 
+	private IJob parseJob(final StartElement element, final QName parent, final Iterable<XMLEvent> stream)
 			throws SPFormatException {
 		requireTag(element, parent, "job");
 		expectAttributes(element, "name", "level");
@@ -143,7 +143,7 @@ import common.map.Player;
 		return retval;
 	}
 
-	private void writeStats(ThrowingConsumer<String, IOException> ostream, @Nullable WorkerStats stats, int indent)
+	private void writeStats(final ThrowingConsumer<String, IOException> ostream, @Nullable final WorkerStats stats, final int indent)
 			throws IOException {
 		if (stats != null) {
 			writeTag(ostream, "stats", indent);
@@ -160,7 +160,7 @@ import common.map.Player;
 	}
 
 	@Override
-	public IWorker read(StartElement element, QName parent, Iterable<XMLEvent> stream) 
+	public IWorker read(final StartElement element, final QName parent, final Iterable<XMLEvent> stream)
 			throws SPFormatException {
 		requireTag(element, parent, "worker");
 		expectAttributes(element, "name", "race", "image", "portrait", "id");
@@ -196,7 +196,7 @@ import common.map.Player;
 	}
 
 	@Override
-	public void write(ThrowingConsumer<String, IOException> ostream, IWorker obj, int indent) throws IOException {
+	public void write(final ThrowingConsumer<String, IOException> ostream, final IWorker obj, final int indent) throws IOException {
 		writeTag(ostream, "worker", indent);
 		writeProperty(ostream, "name", obj.getName());
 		if (!"human".equals(obj.getRace())) {
@@ -222,12 +222,12 @@ import common.map.Player;
 	}
 
 	@Override
-	public boolean isSupportedTag(String tag) {
+	public boolean isSupportedTag(final String tag) {
 		return "worker".equalsIgnoreCase(tag);
 	}
 
 	@Override
-	public boolean canWrite(Object obj) {
+	public boolean canWrite(final Object obj) {
 		return obj instanceof IWorker;
 	}
 }

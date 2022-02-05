@@ -29,10 +29,10 @@ public class MapCheckerGUI implements UtilityGUI {
 
 	private boolean initialized = false;
 
-	private static final <T> void noop(T t) {}
+	private static final <T> void noop(final T t) {}
 
 	@Override
-	public void startDriver(String... args) {
+	public void startDriver(final String... args) {
 		if (!initialized) {
 			initialized = true;
 			window = new MapCheckerFrame(this);
@@ -48,7 +48,7 @@ public class MapCheckerGUI implements UtilityGUI {
 	}
 
 	@Override
-	public void open(Path path) {
+	public void open(final Path path) {
 		window.check(path);
 	}
 }

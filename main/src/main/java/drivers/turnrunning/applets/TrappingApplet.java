@@ -21,7 +21,7 @@ import org.javatuples.Pair;
 import org.jetbrains.annotations.Nullable;
 
 /* package */ class TrappingApplet extends HuntGeneralApplet {
-	public TrappingApplet(ITurnRunningModel model, ICLIHelper cli, IDRegistrar idf) {
+	public TrappingApplet(final ITurnRunningModel model, final ICLIHelper cli, final IDRegistrar idf) {
 		super("trap", model, cli, idf);
 	}
 
@@ -41,7 +41,7 @@ import org.jetbrains.annotations.Nullable;
 			Collections.unmodifiableList(Arrays.asList(TrapperCommand.values()));
 
 	@Nullable
-	private Integer handleFound(Point center, Point loc, Animal item) {
+	private Integer handleFound(final Point center, final Point loc, final Animal item) {
 		int cost;
 		cli.println(String.format("Found either %s or evidence of it escaping.", item.getKind()));
 		Integer num = cli.inputNumber("How long to check and deal with the animal? ");

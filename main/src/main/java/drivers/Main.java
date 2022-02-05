@@ -69,7 +69,7 @@ public class Main {
 	private static final Logger LOGGER = Logger.getLogger(Main.class.getName());
 	private Main() {}
 
-	public static void main(String... args) {
+	public static void main(final String... args) {
 		// TODO: Any logger setup we're going to do should go here.
 		System.setProperty("com.apple.mrj.application.apple.menu.about.name", "SP Helpers");
 		System.setProperty("apple.awt.application.name", "SP Helpers");
@@ -99,11 +99,11 @@ public class Main {
 		final AppStarter appStarter = new AppStarter();
 		try {
 			appStarter.startDriverOnArguments(new CLIHelper(), options, args);
-		} catch (IncorrectUsageException except) {
+		} catch (final IncorrectUsageException except) {
 			IDriverUsage usage = except.getCorrectUsage();
 			System.err.println(new AppChooserState().usageMessage(usage, options.hasOption("--verbose")));
 			System.exit(1);
-		} catch (DriverFailedException except) {
+		} catch (final DriverFailedException except) {
 			LOGGER.log(Level.SEVERE, except.getMessage(),
 				Optional.ofNullable(except.getCause()).orElse(except));
 				System.exit(2);

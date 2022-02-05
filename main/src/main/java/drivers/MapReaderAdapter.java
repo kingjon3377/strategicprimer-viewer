@@ -41,16 +41,16 @@ public class MapReaderAdapter {
 	 * a {@link DriverFailedException} it throws instead. (It was returned
 	 * in Ceylon, but there's no easy way to do that in Java.)
 	 */
-	public static IMutableMapNG readMap(Path file, Warning warner) throws DriverFailedException {
+	public static IMutableMapNG readMap(final Path file, final Warning warner) throws DriverFailedException {
 		try {
 			return MapIOHelper.readMap(file, warner);
 		} catch (MissingFileException|FileNotFoundException|NoSuchFileException except) {
 			throw new DriverFailedException(except, "File not found");
-		} catch (IOException except) {
+		} catch (final IOException except) {
 			throw new DriverFailedException(except, "I/O error while reading");
-		} catch (MalformedXMLException except) {
+		} catch (final MalformedXMLException except) {
 			throw new DriverFailedException(except, "Malformed XML");
-		} catch (SPFormatException except) {
+		} catch (final SPFormatException except) {
 			throw new DriverFailedException(except, "SP map format error");
 		}
 	}
@@ -60,16 +60,16 @@ public class MapReaderAdapter {
 	 * process generates in a (thrown) {@link DriverFailedException} to
 	 * simplify callers.
 	 */
-	public static IDriverModel readMapModel(Path file, Warning warner) throws DriverFailedException {
+	public static IDriverModel readMapModel(final Path file, final Warning warner) throws DriverFailedException {
 		try {
 			return new SimpleDriverModel(MapIOHelper.readMap(file, warner));
 		} catch (MissingFileException|FileNotFoundException|NoSuchFileException except) {
 			throw new DriverFailedException(except, "File not found");
-		} catch (IOException except) {
+		} catch (final IOException except) {
 			throw new DriverFailedException(except, "I/O error while reading");
-		} catch (MalformedXMLException except) {
+		} catch (final MalformedXMLException except) {
 			throw new DriverFailedException(except, "Malformed XML");
-		} catch (SPFormatException except) {
+		} catch (final SPFormatException except) {
 			throw new DriverFailedException(except, "SP map format error");
 		}
 	}
@@ -79,14 +79,14 @@ public class MapReaderAdapter {
 	 * process generates in a (thrown) {@link DriverFailedException} to
 	 * simplify callers.
 	 */
-	public static IDriverModel readMapModel(Reader stream, Warning warner) throws DriverFailedException {
+	public static IDriverModel readMapModel(final Reader stream, final Warning warner) throws DriverFailedException {
 		try {
 			return new SimpleDriverModel(MapIOHelper.readMap(stream, warner));
-		} catch (IOException except) {
+		} catch (final IOException except) {
 			throw new DriverFailedException(except, "I/O error while reading");
-		} catch (MalformedXMLException except) {
+		} catch (final MalformedXMLException except) {
 			throw new DriverFailedException(except, "Malformed XML");
-		} catch (SPFormatException except) {
+		} catch (final SPFormatException except) {
 			throw new DriverFailedException(except, "SP map format error");
 		}
 	}
@@ -95,7 +95,7 @@ public class MapReaderAdapter {
 	 * Read several maps into a driver model, wrapping any errors in a
 	 * (thrown) DriverFailedException to simplify callers.
 	 */
-	public static IMultiMapModel readMultiMapModel(Warning warner, Path master, Path... files)
+	public static IMultiMapModel readMultiMapModel(final Warning warner, final Path master, final Path... files)
 			throws DriverFailedException {
 		LOGGER.finer("In MapReaderAdapter.readMultiMapModel");
 		String current = master.toString();
@@ -111,11 +111,11 @@ public class MapReaderAdapter {
 		} catch (MissingFileException|FileNotFoundException|NoSuchFileException except) {
 			// TODO: Catch FNFE as close to source as possible and convert to NoSuchFileException, to preserve filename as a field of the exception
 			throw new DriverFailedException(except, "File not found: " + current);
-		} catch (IOException except) {
+		} catch (final IOException except) {
 			throw new DriverFailedException(except, "I/O error reading from file " + current);
-		} catch (MalformedXMLException except) {
+		} catch (final MalformedXMLException except) {
 			throw new DriverFailedException(except, "Malformed XML in " + current);
-		} catch (SPFormatException except) {
+		} catch (final SPFormatException except) {
 			throw new DriverFailedException(except, "SP map format error in " + current);
 		}
 	}
@@ -124,16 +124,16 @@ public class MapReaderAdapter {
 	 * Write maps from a map model back to file, wrapping any errors in a
 	 * (thrown) {@link DriverFailedException} to simplify callers.
 	 */
-	public static void writeModel(IDriverModel model) throws DriverFailedException{
+	public static void writeModel(final IDriverModel model) throws DriverFailedException{
 		Path mainFile = model.getMap().getFilename();
 		if (mainFile != null) { // TODO: invert
 			try {
 				MapIOHelper.writeMap(mainFile, model.getMap());
 				model.setMapModified(false);
-			} catch (MalformedXMLException except) {
+			} catch (final MalformedXMLException except) {
 				throw new DriverFailedException(except,
 					"Malformed XML while writing " + mainFile);
-			} catch (IOException except) {
+			} catch (final IOException except) {
 				throw new DriverFailedException(except, "I/O error writing to " + mainFile);
 			}
 		} else {
@@ -146,10 +146,10 @@ public class MapReaderAdapter {
 					try {
 						MapIOHelper.writeMap(filename, map);
 						((IMultiMapModel) model).clearModifiedFlag(map);
-					} catch (MalformedXMLException except) {
+					} catch (final MalformedXMLException except) {
 						throw new DriverFailedException(except,
 							"Malformed XML while writing " + filename);
-					} catch (IOException except) {
+					} catch (final IOException except) {
 						throw new DriverFailedException(except,
 							"I/O error writing to " + filename);
 					}

@@ -18,8 +18,8 @@ public class Fortification extends AbstractTown {
 	 * @param id The fortification's ID number
 	 * @param player The owner of the fortification
 	 */
-	public Fortification(TownStatus townStatus, TownSize size, int discoverDC,
-			String townName, int id, Player player) {
+	public Fortification(final TownStatus townStatus, final TownSize size, final int discoverDC,
+	                     final String townName, final int id, final Player player) {
 		super(townStatus, size, townName, player, discoverDC);
 		this.id = id;
 	}
@@ -53,7 +53,7 @@ public class Fortification extends AbstractTown {
 	}
 
 	@Override
-	public Fortification copy(boolean zero) {
+	public Fortification copy(final boolean zero) {
 		final Fortification retval = new Fortification(getStatus(), getTownSize(),
 			(zero) ? 0 : getDC(), getName(), id, getOwner());
 		retval.setImage(getImage());

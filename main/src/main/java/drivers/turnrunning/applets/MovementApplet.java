@@ -18,7 +18,7 @@ import org.jetbrains.annotations.Nullable;
 import static lovelace.util.Decimalize.decimalize;
 
 /* package */ class MovementApplet extends AbstractTurnApplet {
-	public MovementApplet(ITurnRunningModel model, ICLIHelper cli, IDRegistrar idf) {
+	public MovementApplet(final ITurnRunningModel model, final ICLIHelper cli, final IDRegistrar idf) {
 		super(model, cli, idf);
 		this.model = model;
 		this.cli = cli;
@@ -44,7 +44,7 @@ import static lovelace.util.Decimalize.decimalize;
 		return "move a unit";
 	}
 
-	private void packFood(@Nullable IFortress fortress, IUnit unit) {
+	private void packFood(@Nullable final IFortress fortress, final IUnit unit) {
 		if (fortress == null) {
 			return;
 		}

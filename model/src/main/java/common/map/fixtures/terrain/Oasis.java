@@ -8,7 +8,7 @@ import common.map.HasMutableImage;
  * An oasis on the map.
  */
 public class Oasis implements TerrainFixture, HasMutableImage {
-	public Oasis(int id) {
+	public Oasis(final int id) {
 		this.id = id;
 	}
 
@@ -42,7 +42,7 @@ public class Oasis implements TerrainFixture, HasMutableImage {
 	 * The filename of an image to use as an icon for this instance.
 	 */
 	@Override
-	public void setImage(String image) {
+	public void setImage(final String image) {
 		this.image = image;
 	}
 
@@ -57,7 +57,7 @@ public class Oasis implements TerrainFixture, HasMutableImage {
 	}
 
 	@Override
-	public boolean equals(Object obj) {
+	public boolean equals(final Object obj) {
 		if (obj instanceof Oasis) {
 			return ((Oasis) obj).getId() == id;
 		} else {
@@ -71,7 +71,7 @@ public class Oasis implements TerrainFixture, HasMutableImage {
 	}
 
 	@Override
-	public boolean equalsIgnoringID(IFixture fixture) {
+	public boolean equalsIgnoringID(final IFixture fixture) {
 		return fixture instanceof Oasis;
 	}
 
@@ -86,7 +86,7 @@ public class Oasis implements TerrainFixture, HasMutableImage {
 	}
 
 	@Override
-	public Oasis copy(boolean zero) {
+	public Oasis copy(final boolean zero) {
 		final Oasis retval = new Oasis(id);
 		retval.setImage(image);
 		return retval;

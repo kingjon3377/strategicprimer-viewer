@@ -35,7 +35,7 @@ import common.map.fixtures.mobile.worker.IJob;
  * A class to write a proto-strategy to file.
  */
 /* package */ class StrategyExporter implements PlayerChangeListener {
-	public StrategyExporter(IWorkerModel model, SPOptions options) {
+	public StrategyExporter(final IWorkerModel model, final SPOptions options) {
 		this.model = model;
 		this.options = options;
 		currentPlayer = model.getCurrentPlayer();
@@ -47,15 +47,15 @@ import common.map.fixtures.mobile.worker.IJob;
 	private Player currentPlayer;
 
 	@Override
-	public void playerChanged(@Nullable Player old, Player newPlayer) {
+	public void playerChanged(@Nullable final Player old, final Player newPlayer) {
 		currentPlayer = newPlayer;
 	}
 
-	private static String jobString(IJob job) {
+	private static String jobString(final IJob job) {
 		return String.format("%s %d", job.getName(), job.getLevel());
 	}
 
-	private void writeMember(Writer writer, @Nullable UnitMember member) throws IOException {
+	private void writeMember(final Writer writer, @Nullable final UnitMember member) throws IOException {
 		if (member instanceof IWorker) {
 			IWorker worker = (IWorker) member;
 			writer.write(worker.getName());
@@ -95,7 +95,7 @@ import common.map.fixtures.mobile.worker.IJob;
 		}
 	}
 
-	private void summarizeUnitMembers(Writer writer, IUnit unit) throws IOException {
+	private void summarizeUnitMembers(final Writer writer, final IUnit unit) throws IOException {
 		List<IWorker> leveledWorkers = new ArrayList<IWorker>();
 		List<UnitMember> nonWorkers = new ArrayList<UnitMember>();
 		List<IWorker> unleveledWorkers = new ArrayList<IWorker>();
@@ -148,7 +148,7 @@ import common.map.fixtures.mobile.worker.IJob;
 		}
 	}
 
-	private static String workerString(@Nullable UnitMember member) {
+	private static String workerString(@Nullable final UnitMember member) {
 		if (member instanceof HasName) {
 			return ((HasName) member).getName();
 		} else if (member == null) {
@@ -158,7 +158,7 @@ import common.map.fixtures.mobile.worker.IJob;
 		}
 	}
 
-	public void writeStrategy(Path path, Iterable<UnitMember> dismissed) throws IOException {
+	public void writeStrategy(final Path path, final Iterable<UnitMember> dismissed) throws IOException {
 		try (BufferedWriter writer = Files.newBufferedWriter(path, StandardCharsets.UTF_8)) {
 			String playerName = currentPlayer.getName();
 			int turn = model.getMap().getCurrentTurn();

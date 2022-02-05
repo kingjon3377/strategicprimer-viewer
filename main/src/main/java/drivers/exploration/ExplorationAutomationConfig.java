@@ -21,7 +21,7 @@ import java.util.function.Predicate;
 import org.jetbrains.annotations.Nullable;
 
 /* package */ class ExplorationAutomationConfig {
-	public ExplorationAutomationConfig(Player player) {
+	public ExplorationAutomationConfig(final Player player) {
 		this.player = player;
 		conditions = Collections.unmodifiableList(
 			Arrays.asList(new Condition<IFortress>("at others' fortresses",
@@ -63,8 +63,8 @@ import org.jetbrains.annotations.Nullable;
 		 * @param stopExplanation A description to use when stopping because of this condition.
 		 * @param conditions Returns true when a tile fixture matches all of these conditions.
 		 */
-		public Condition(String configExplanation, String stopExplanation, Class<Type> cls,
-				Predicate<Type>... conditions) {
+		public Condition(final String configExplanation, final String stopExplanation, final Class<Type> cls,
+		                 final Predicate<Type>... conditions) {
 			this.configExplanation = configExplanation;
 			this.stopExplanation = ignored -> stopExplanation;
 			this.conditions = Collections.unmodifiableList(Arrays.asList(conditions));
@@ -76,8 +76,8 @@ import org.jetbrains.annotations.Nullable;
 		 * @param stopExplanation A factory for a description to use when stopping because of this condition.
 		 * @param conditions Returns true when a tile fixture matches all of these conditions.
 		 */
-		public Condition(String configExplanation, Function<Type, String> stopExplanation,
-				Class<Type> cls, Predicate<Type>... conditions) {
+		public Condition(final String configExplanation, final Function<Type, String> stopExplanation,
+		                 final Class<Type> cls, final Predicate<Type>... conditions) {
 			this.configExplanation = configExplanation;
 			this.stopExplanation = stopExplanation;
 			this.conditions = Collections.unmodifiableList(Arrays.asList(conditions));
@@ -115,7 +115,7 @@ import org.jetbrains.annotations.Nullable;
 		 */
 		private final List<Predicate<Type>> conditions;
 
-		private boolean allConditions(TileFixture fixture) {
+		private boolean allConditions(final TileFixture fixture) {
 			if (cls.isInstance(fixture)) {
 				for (Predicate<Type> condition : conditions) {
 					if (!condition.test((Type) fixture)) {
@@ -131,7 +131,7 @@ import org.jetbrains.annotations.Nullable;
 		/**
 		 * Returns true when the given tile matches this condition.
 		 */
-		public boolean matches(IMapNG map, Point point) {
+		public boolean matches(final IMapNG map, final Point point) {
 			return map.getFixtures(point).stream().anyMatch(this::allConditions);
 		}
 	}
@@ -142,11 +142,11 @@ import org.jetbrains.annotations.Nullable;
 	private List<Condition<? extends TileFixture>> enabledConditions = null;
 
 	// TODO: inline into callers
-	private BiPredicate<IMapNG, Point> matchesCondition(Condition<? extends TileFixture> condition) {
+	private BiPredicate<IMapNG, Point> matchesCondition(final Condition<? extends TileFixture> condition) {
 		return condition::matches;
 	}
 
-	public boolean stopAtPoint(ICLIHelper cli, IMapNG map, Point point) {
+	public boolean stopAtPoint(final ICLIHelper cli, final IMapNG map, final Point point) {
 		List<Condition<? extends TileFixture>> localEnabledConditions;
 		if (enabledConditions != null) { // TODO: invert
 			localEnabledConditions = enabledConditions;

@@ -16,7 +16,7 @@ import worker.common.IFixtureEditHelper;
 import drivers.common.IFixtureEditingModel;
 
 public class FixtureEditHelper implements IFixtureEditHelper {
-	public FixtureEditHelper(IFixtureEditingModel model) {
+	public FixtureEditHelper(final IFixtureEditingModel model) {
 		this.model = model;
 	}
 
@@ -26,7 +26,7 @@ public class FixtureEditHelper implements IFixtureEditHelper {
 	 * Move a member between units.
 	 */
 	@Override
-	public void moveMember(UnitMember member, IUnit old, IUnit newOwner) {
+	public void moveMember(final UnitMember member, final IUnit old, final IUnit newOwner) {
 		model.moveMember(member, old, newOwner);
 	}
 
@@ -34,7 +34,7 @@ public class FixtureEditHelper implements IFixtureEditHelper {
 	 * Add a new unit, and also handle adding it to the map (via the driver model).
 	 */
 	@Override
-	public void addUnit(IUnit unit) {
+	public void addUnit(final IUnit unit) {
 		model.addUnit(unit);
 	}
 
@@ -42,7 +42,7 @@ public class FixtureEditHelper implements IFixtureEditHelper {
 	 * (Try to) remove a unit (from the map, via the driver model).
 	 */
 	@Override
-	public void removeUnit(IUnit unit) {
+	public void removeUnit(final IUnit unit) {
 		model.removeUnit(unit);
 	}
 
@@ -50,14 +50,14 @@ public class FixtureEditHelper implements IFixtureEditHelper {
 	 * Add a new member to a unit.
 	 */
 	@Override
-	public void addUnitMember(IUnit unit, UnitMember member) {
+	public void addUnitMember(final IUnit unit, final UnitMember member) {
 		model.addUnitMember(unit, member);
 	}
 
 	/**
 	 * Change something's name.
 	 */
-	public void renameItem(HasMutableName item, String newName) {
+	public void renameItem(final HasMutableName item, final String newName) {
 		model.renameItem(item, newName);
 	}
 
@@ -67,7 +67,7 @@ public class FixtureEditHelper implements IFixtureEditHelper {
 	 * their parent nodes.
 	 */
 	@Override
-	public void changeKind(HasKind item, String newKind) {
+	public void changeKind(final HasKind item, final String newKind) {
 		model.changeKind(item, newKind);
 	}
 
@@ -75,7 +75,7 @@ public class FixtureEditHelper implements IFixtureEditHelper {
 	 * Dismiss a unit member from a unit and from the player's service.
 	 */
 	@Override
-	public void dismissUnitMember(UnitMember member) {
+	public void dismissUnitMember(final UnitMember member) {
 		model.dismissUnitMember(member);
 	}
 
@@ -85,7 +85,7 @@ public class FixtureEditHelper implements IFixtureEditHelper {
 	 * call, but the behavior is undefined.
 	 */
 	@Override
-	public void addSibling(UnitMember base, UnitMember sibling) {
+	public void addSibling(final UnitMember base, final UnitMember sibling) {
 		model.addSibling(base, sibling);
 	}
 
@@ -93,7 +93,7 @@ public class FixtureEditHelper implements IFixtureEditHelper {
 	 * Change the owner of the given item.
 	 */
 	@Override
-	public void changeOwner(HasMutableOwner item, Player newOwner) {
+	public void changeOwner(final HasMutableOwner item, final Player newOwner) {
 		model.changeOwner(item, newOwner);
 	}
 
@@ -101,7 +101,7 @@ public class FixtureEditHelper implements IFixtureEditHelper {
 	 * Sort the contents of the given unit.
 	 */
 	@Override
-	public void sortMembers(IUnit fixture) {
+	public void sortMembers(final IUnit fixture) {
 		model.sortFixtureContents(fixture);
 	}
 
@@ -115,10 +115,10 @@ public class FixtureEditHelper implements IFixtureEditHelper {
 	 * Add a new unit.
 	 */
 	@Override
-	public void addNewUnit(IUnit unit) {
+	public void addNewUnit(final IUnit unit) {
 		addUnit(unit);
 	}
 
 	@Override
-	public void playerChanged(@Nullable Player previousCurrent, Player newCurrent) {} // TODO: Do we need to implement this?
+	public void playerChanged(@Nullable final Player previousCurrent, final Player newCurrent) {} // TODO: Do we need to implement this?
 }

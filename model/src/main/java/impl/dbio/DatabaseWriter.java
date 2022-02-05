@@ -27,7 +27,7 @@ interface DatabaseWriter<Item, Context> {
 	 * right type but the typechecker doesn't. This will probably crash the
 	 * program if the types don't in fact match.
 	 */
-	default void writeRaw(DB db, Object obj, Object context) {
+	default void writeRaw(final DB db, final Object obj, final Object context) {
 		write(db, (Item) obj, (Context) context);
 	}
 }

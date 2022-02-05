@@ -20,7 +20,7 @@ public class BoxPanel extends JPanel {
 		PageAxis(BoxLayout.PAGE_AXIS);
 		public final int axis;
 
-		BoxAxis(int axis) {
+		BoxAxis(final int axis) {
 			this.axis = axis;
 		}
 	}
@@ -31,7 +31,7 @@ public class BoxPanel extends JPanel {
 	@NotNull
 	private final BoxAxis axis;
 
-	public BoxPanel(@NotNull BoxAxis layoutAxis) {
+	public BoxPanel(@NotNull final BoxAxis layoutAxis) {
 		this.axis = layoutAxis;
 		setLayout(new BoxLayout(this, axis.axis));
 	}
@@ -53,7 +53,7 @@ public class BoxPanel extends JPanel {
 	/**
 	 * Add a rigid (fixed-size) area between components.
 	 */
-	public final void addRigidArea(int dimension) {
+	public final void addRigidArea(final int dimension) {
 		Dimension dimensionObject;
 		switch (axis) {
 			case LineAxis:
@@ -70,7 +70,7 @@ public class BoxPanel extends JPanel {
 
 	/* Create a panel laid out by a {@link }BoxLayout} on the line axis, with glue at each end and a
 	small rigid area between each component. */
-	public static BoxPanel centeredHorizontalBox(Component... items) {
+	public static BoxPanel centeredHorizontalBox(final Component... items) {
 		final BoxPanel retval = new BoxPanel(BoxAxis.LineAxis);
 		retval.addGlue();
 		boolean first = true;
@@ -90,7 +90,7 @@ public class BoxPanel extends JPanel {
 	 * Create a panel laid out by a {@link BoxLayout} in the page axis, with glue at each end and between each
 	 * component.
 	 */
-	public static BoxPanel verticalBox(Component... items) {
+	public static BoxPanel verticalBox(final Component... items) {
 		final BoxPanel retval = new BoxPanel(BoxAxis.PageAxis);
 		retval.addGlue();
 		boolean first = true;

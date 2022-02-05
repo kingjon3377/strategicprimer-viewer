@@ -47,7 +47,7 @@ final class DBPortalHandler extends AbstractDatabaseWriter<Portal, Point> implem
 
 
 	@Override
-	public void write(DB db, Portal obj, Point context) {
+	public void write(final DB db, final Portal obj, final Point context) {
 		Integer destinationRow;
 		Integer destinationColumn;
 		if (obj.getDestinationCoordinates().isValid()) {
@@ -62,7 +62,7 @@ final class DBPortalHandler extends AbstractDatabaseWriter<Portal, Point> implem
 			destinationColumn).execute();
 	}
 
-	private TryBiConsumer<Map<String, Object>, Warning, Exception> readPortal(IMutableMapNG map) {
+	private TryBiConsumer<Map<String, Object>, Warning, Exception> readPortal(final IMutableMapNG map) {
 		return (dbRow, warner) -> {
 			int row = (Integer) dbRow.get("row");
 			int column = (Integer) dbRow.get("column");
@@ -82,14 +82,14 @@ final class DBPortalHandler extends AbstractDatabaseWriter<Portal, Point> implem
 	}
 
 	@Override
-	public void readMapContents(DB db, IMutableMapNG map, Warning warner) {
+	public void readMapContents(final DB db, final IMutableMapNG map, final Warning warner) {
 		try {
 			handleQueryResults(db, warner, "portals", readPortal(map),
 				"SELECT * FROM portals");
-		} catch (RuntimeException except) {
+		} catch (final RuntimeException except) {
 			// Don't wrap RuntimeExceptions in RuntimeException
 			throw except;
-		} catch (Exception except) {
+		} catch (final Exception except) {
 			// FIXME Antipattern
 			throw new RuntimeException(except);
 		}

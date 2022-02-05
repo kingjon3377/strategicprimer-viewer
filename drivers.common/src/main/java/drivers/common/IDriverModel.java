@@ -46,7 +46,7 @@ public interface IDriverModel extends MapChangeSource, VersionChangeSource {
 		return getMap().isModified();
 	}
 
-	default void setMapModified(boolean mapModified) {
+	default void setMapModified(final boolean mapModified) {
 		getRestrictedMap().setModified(mapModified);
 	}
 

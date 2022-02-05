@@ -22,7 +22,7 @@ import lovelace.util.Platform;
  * {@link showWindow} method so calling code doesn't have to create a lambda to show a dialog.
  */
 public class SPDialog extends JDialog {
-	public SPDialog(@Nullable Frame parentFrame, String title) {
+	public SPDialog(@Nullable final Frame parentFrame, final String title) {
 		super(parentFrame, title);
 		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 		MenuUtils.createHotKey(getRootPane(), "close", (ignored) -> dispose(),

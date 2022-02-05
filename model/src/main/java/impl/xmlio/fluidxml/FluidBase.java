@@ -57,7 +57,7 @@ import org.jetbrains.annotations.Nullable;
 	 * @param parent The parent tag.
 	 * @param tags The tags we accept here
 	 */
-	protected static void requireTag(StartElement element, QName parent, String... tags)
+	protected static void requireTag(final StartElement element, final QName parent, final String... tags)
 			throws SPFormatException {
 		if (!SP_NAMESPACE.equals(element.getName().getNamespaceURI()) &&
 				!XMLConstants.NULL_NS_URI.equals(element.getName().getNamespaceURI())) {
@@ -76,7 +76,7 @@ import org.jetbrains.annotations.Nullable;
 	 * @param param The parameter we want
 	 */
 	@Nullable
-	private static Attribute getAttributeByName(StartElement element, String param) {
+	private static Attribute getAttributeByName(final StartElement element, final String param) {
 		Attribute retval = element.getAttributeByName(new QName(SP_NAMESPACE, param));
 		if (retval == null) {
 			retval = element.getAttributeByName(new QName(param));
@@ -90,7 +90,7 @@ import org.jetbrains.annotations.Nullable;
 	 * @param element The current tag.
 	 * @param param The parameter we want to get.
 	 */
-	protected static String getAttribute(StartElement element, String param, String defaultValue) {
+	protected static String getAttribute(final StartElement element, final String param, final String defaultValue) {
 		Attribute attr = getAttributeByName(element, param);
 		String retval = null;
 		if (attr != null) {
@@ -110,7 +110,7 @@ import org.jetbrains.annotations.Nullable;
 	 * @param element The current tag.
 	 * @param param The parameter we want to get.
 	 */
-	protected static String getAttribute(StartElement element, String param) throws SPFormatException {
+	protected static String getAttribute(final StartElement element, final String param) throws SPFormatException {
 		Attribute attr = getAttributeByName(element, param);
 		if (attr == null) {
 			throw new MissingPropertyException(element, param);
@@ -133,8 +133,8 @@ import org.jetbrains.annotations.Nullable;
 	 * @param param The parameter we want to get
 	 * @param default The value to return if the tag doesn't have that parameter
 	 */
-	protected static boolean getBooleanAttribute(StartElement element, String param,
-			boolean defaultValue) {
+	protected static boolean getBooleanAttribute(final StartElement element, final String param,
+	                                             final boolean defaultValue) {
 		return getBooleanAttribute(element, param, defaultValue, Warning.WARN);
 	}
 
@@ -148,8 +148,8 @@ import org.jetbrains.annotations.Nullable;
 	 * @param default The value to return if the tag doesn't have that parameter
 	 * @param warner The {@link Warning} instance to use if the attribute was present but non-Boolean but a default was provided
 	 */
-	protected static boolean getBooleanAttribute(StartElement element, String param,
-			boolean defaultValue, Warning warner) {
+	protected static boolean getBooleanAttribute(final StartElement element, final String param,
+	                                             final boolean defaultValue, final Warning warner) {
 		Attribute attr = getAttributeByName(element, param);
 		if (attr == null) {
 			return defaultValue;
@@ -177,7 +177,7 @@ import org.jetbrains.annotations.Nullable;
 	 * @param element The current tag.
 	 * @param param The parameter we want to get
 	 */
-	protected static boolean getBooleanAttribute(StartElement element, String param)
+	protected static boolean getBooleanAttribute(final StartElement element, final String param)
 			throws SPFormatException {
 		Attribute attr = getAttributeByName(element, param);
 		if (attr == null) {
@@ -210,8 +210,8 @@ import org.jetbrains.annotations.Nullable;
 	 *
 	 * TODO: Split into "require" and "recommend" method rather than having Boolean parameter?
 	 */
-	protected static void requireNonEmptyAttribute(StartElement element, String param,
-			boolean mandatory, Warning warner) throws SPFormatException {
+	protected static void requireNonEmptyAttribute(final StartElement element, final String param,
+	                                               final boolean mandatory, final Warning warner) throws SPFormatException {
 		if (getAttribute(element, param, "").isEmpty()) {
 			SPFormatException except = new MissingPropertyException(element, param);
 			if (mandatory) {
@@ -225,7 +225,7 @@ import org.jetbrains.annotations.Nullable;
 	/**
 	 * Whether the given XML element is a {@link StartElement} and in a namespace we support.
 	 */
-	protected static boolean isSPStartElement(XMLEvent element) {
+	protected static boolean isSPStartElement(final XMLEvent element) {
 		if (element instanceof StartElement &&
 			(SP_NAMESPACE.equals(((StartElement) element).getName().getNamespaceURI()) ||
 				XMLConstants.NULL_NS_URI.equals(((StartElement) element).getName()
@@ -245,7 +245,7 @@ import org.jetbrains.annotations.Nullable;
 	 * @param tag The tag the caller is currently parsing, whose matching end-tag we're looking for
 	 * @param reader the stream of XML
 	 */
-	protected static void spinUntilEnd(QName tag, Iterable<XMLEvent> reader)
+	protected static void spinUntilEnd(final QName tag, final Iterable<XMLEvent> reader)
 			throws SPFormatException {
 		for (XMLEvent event : reader) {
 			if (event instanceof StartElement && isSPStartElement(event)) {
@@ -263,7 +263,7 @@ import org.jetbrains.annotations.Nullable;
 	 * @param element The current tag
 	 * @param param The parameter we want
 	 */
-	protected static boolean hasAttribute(StartElement element, String param) {
+	protected static boolean hasAttribute(final StartElement element, final String param) {
 		return getAttributeByName(element, param) != null;
 	}
 
@@ -276,8 +276,8 @@ import org.jetbrains.annotations.Nullable;
 	 * @param warner The Warning instance to use if hte tag doesn't specify an ID
 	 * @param idFactory The factory to use to register an existing ID or get a new one
 	 */
-	protected static int getOrGenerateID(StartElement element, Warning warner,
-			IDRegistrar idFactory) throws SPFormatException {
+	protected static int getOrGenerateID(final StartElement element, final Warning warner,
+	                                     final IDRegistrar idFactory) throws SPFormatException {
 		if (hasAttribute(element, "id")) {
 			try {
 				return idFactory.register(
@@ -306,8 +306,8 @@ import org.jetbrains.annotations.Nullable;
 	 * @param deprecated The deprecated name of the parameter
 	 * @param warner The Warning instance to use
 	 */
-	protected static String getAttrWithDeprecatedForm(StartElement element, String preferred,
-			String deprecated, Warning warner) throws SPFormatException {
+	protected static String getAttrWithDeprecatedForm(final StartElement element, final String preferred,
+	                                                  final String deprecated, final Warning warner) throws SPFormatException {
 		if (hasAttribute(element, preferred)) {
 			return getAttribute(element, preferred);
 		} else if (hasAttribute(element, deprecated)) {
@@ -325,7 +325,7 @@ import org.jetbrains.annotations.Nullable;
 	 * @param ostream The stream to write the tabs to.
 	 * @param tabs The number of tabs to write.
 	 */
-	protected static void indent(XMLStreamWriter ostream, int tabs) throws MalformedXMLException {
+	protected static void indent(final XMLStreamWriter ostream, final int tabs) throws MalformedXMLException {
 		if (tabs < 0) {
 			throw new IllegalArgumentException("Cannot write a negative number of tabs.");
 		}
@@ -334,7 +334,7 @@ import org.jetbrains.annotations.Nullable;
 			for (int i = 0; i < tabs; i++) {
 				ostream.writeCharacters("\t");
 			}
-		} catch (XMLStreamException except) {
+		} catch (final XMLStreamException except) {
 			throw new MalformedXMLException(except);
 		}
 	}
@@ -346,8 +346,8 @@ import org.jetbrains.annotations.Nullable;
 	 * @param ostream The stream to write to
 	 * @param items The names and values of the attributes to write.
 	 */
-	protected static void writeNonEmptyAttributes(XMLStreamWriter ostream,
-			Pair<String, String>... items) throws MalformedXMLException {
+	protected static void writeNonEmptyAttributes(final XMLStreamWriter ostream,
+	                                              final Pair<String, String>... items) throws MalformedXMLException {
 		try {
 			for (Pair<String, String> pair : items) {
 				if (!pair.getValue1().isEmpty()) {
@@ -355,7 +355,7 @@ import org.jetbrains.annotations.Nullable;
 						pair.getValue1());
 				}
 			}
-		} catch (XMLStreamException except) {
+		} catch (final XMLStreamException except) {
 			throw new MalformedXMLException(except);
 		}
 	}
@@ -367,7 +367,7 @@ import org.jetbrains.annotations.Nullable;
 	 * @param ostream The stream to write to
 	 * @param obj The object being written out that might have a custom image
 	 */
-	protected static void writeImage(XMLStreamWriter ostream, HasImage obj)
+	protected static void writeImage(final XMLStreamWriter ostream, final HasImage obj)
 			throws MalformedXMLException {
 		String image = obj.getImage();
 		// FIXME: Should also skip empty image
@@ -383,7 +383,7 @@ import org.jetbrains.annotations.Nullable;
 	 * @param string The text to parse
 	 * @param location The current location in the XML.
 	 */
-	private static Integer parseInt(String string, Location location) throws ParseException {
+	private static Integer parseInt(final String string, final Location location) throws ParseException {
 		return NUM_PARSER.parse(string).intValue();
 	}
 
@@ -400,7 +400,7 @@ import org.jetbrains.annotations.Nullable;
 	 * @param parameter The name of the desired parameter
 	 * @param defaultValue The number to return if the parameter doesn't exist
 	 */
-	public static int getIntegerAttribute(StartElement tag, String parameter, int defaultValue)
+	public static int getIntegerAttribute(final StartElement tag, final String parameter, final int defaultValue)
 			throws SPFormatException {
 		return getIntegerAttribute(tag, parameter, defaultValue, Warning.WARN);
 	}
@@ -415,8 +415,8 @@ import org.jetbrains.annotations.Nullable;
 	 * @param defaultValue The number to return if the parameter doesn't exist
 	 * @param warner The {@link Warning} instance to use if input is malformed
 	 */
-	protected static int getIntegerAttribute(StartElement tag, String parameter, int defaultValue,
-			Warning warner) {
+	protected static int getIntegerAttribute(final StartElement tag, final String parameter, final int defaultValue,
+	                                         final Warning warner) {
 		Attribute attr = getAttributeByName(tag, parameter);
 		if (attr == null) {
 			return defaultValue;
@@ -427,7 +427,7 @@ import org.jetbrains.annotations.Nullable;
 		}
 		try {
 			return parseInt(val, tag.getLocation());
-		} catch (ParseException except) {
+		} catch (final ParseException except) {
 			warner.handle(except);
 			return defaultValue;
 		}
@@ -444,7 +444,7 @@ import org.jetbrains.annotations.Nullable;
 	 * @param tag The tag to get the parameter from
 	 * @param parameter The name of the desired parameter
 	 */
-	public static int getIntegerAttribute(StartElement tag, String parameter)
+	public static int getIntegerAttribute(final StartElement tag, final String parameter)
 			throws SPFormatException {
 		Attribute attr = getAttributeByName(tag, parameter);
 		if (attr == null) {
@@ -456,7 +456,7 @@ import org.jetbrains.annotations.Nullable;
 		}
 		try {
 			return parseInt(val, tag.getLocation());
-		} catch (ParseException except) {
+		} catch (final ParseException except) {
 			throw new MissingPropertyException(tag, parameter, except);
 		}
 	}
@@ -472,8 +472,8 @@ import org.jetbrains.annotations.Nullable;
 	 * @param parameter The name of the desired parameter
 	 * @param defaultValue The number to return if the parameter doesn't exist
 	 */
-	protected static Number getNumericAttribute(StartElement tag, String parameter,
-			Number defaultValue) throws SPFormatException {
+	protected static Number getNumericAttribute(final StartElement tag, final String parameter,
+	                                            final Number defaultValue) throws SPFormatException {
 		return getNumericAttribute(tag, parameter, defaultValue, Warning.WARN);
 	}
 
@@ -489,8 +489,8 @@ import org.jetbrains.annotations.Nullable;
 	 * @param defaultValue The number to return if the parameter doesn't exist
 	 * @param warner The {@link Warning} instance to use if input is malformed
 	 */
-	protected static Number getNumericAttribute(StartElement tag, String parameter,
-			Number defaultValue, Warning warner) throws SPFormatException {
+	protected static Number getNumericAttribute(final StartElement tag, final String parameter,
+	                                            final Number defaultValue, final Warning warner) throws SPFormatException {
 		Attribute attr = getAttributeByName(tag, parameter);
 		if (attr == null) {
 			return defaultValue;
@@ -502,13 +502,13 @@ import org.jetbrains.annotations.Nullable;
 		if (val.contains(".")) {
 			try {
 				return new BigDecimal(val);
-			} catch (NumberFormatException except) {
+			} catch (final NumberFormatException except) {
 				throw new MissingPropertyException(tag, parameter, except);
 			}
 		} else {
 			try {
 				return parseInt(val, tag.getLocation());
-			} catch (ParseException except) {
+			} catch (final ParseException except) {
 				throw new MissingPropertyException(tag, parameter, except);
 			}
 		}
@@ -524,7 +524,7 @@ import org.jetbrains.annotations.Nullable;
 	 * @param tag The tag to get the parameter from
 	 * @param parameter The name of the desired parameter
 	 */
-	protected static Number getNumericAttribute(StartElement tag, String parameter)
+	protected static Number getNumericAttribute(final StartElement tag, final String parameter)
 			throws SPFormatException {
 		Attribute attr = getAttributeByName(tag, parameter);
 		if (attr == null) {
@@ -537,13 +537,13 @@ import org.jetbrains.annotations.Nullable;
 		if (val.contains(".")) {
 			try {
 				return new BigDecimal(val);
-			} catch (NumberFormatException except) {
+			} catch (final NumberFormatException except) {
 				throw new MissingPropertyException(tag, parameter, except);
 			}
 		} else {
 			try {
 				return parseInt(val, tag.getLocation());
-			} catch (ParseException except) {
+			} catch (final ParseException except) {
 				throw new MissingPropertyException(tag, parameter, except);
 			}
 		}
@@ -560,7 +560,7 @@ import org.jetbrains.annotations.Nullable;
 	 * @param indentation The indentation level. If positive, write a newline before indenting; if zero, write a default-namespace declaration.
 	 * @param leaf Whether to automatically close the tag
 	 */
-	protected static void writeTag(XMLStreamWriter ostream, String tag, int indentation, boolean leaf)
+	protected static void writeTag(final XMLStreamWriter ostream, final String tag, final int indentation, final boolean leaf)
 			throws MalformedXMLException {
 		if (indentation < 0) {
 			throw new IllegalArgumentException("Indentation cannot be negative");
@@ -577,7 +577,7 @@ import org.jetbrains.annotations.Nullable;
 			if (indentation == 0) {
 				ostream.writeDefaultNamespace(SP_NAMESPACE);
 			}
-		} catch (XMLStreamException except) {
+		} catch (final XMLStreamException except) {
 			throw new MalformedXMLException(except);
 		}
 	}
@@ -590,7 +590,7 @@ import org.jetbrains.annotations.Nullable;
 	 * @param attributes The name and values of the attributes to write.
 	 * Only supports String, boolean, and numeric attributes.
 	 */
-	protected static void writeAttributes(XMLStreamWriter ostream, Pair<String, ?>... attributes)
+	protected static void writeAttributes(final XMLStreamWriter ostream, final Pair<String, ?>... attributes)
 			throws MalformedXMLException {
 		try {
 			for (Pair<String, ?> pair : attributes) {
@@ -616,7 +616,7 @@ import org.jetbrains.annotations.Nullable;
 					ostream.writeAttribute(SP_NAMESPACE, name, item.toString());
 				}
 			}
-		} catch (XMLStreamException except) {
+		} catch (final XMLStreamException except) {
 			throw new MalformedXMLException(except);
 		}
 	}
@@ -631,8 +631,8 @@ import org.jetbrains.annotations.Nullable;
 	 * @param warner The Warning instance to use
 	 * @param players The collection of players to refer to
 	 */
-	protected static Player getPlayerOrIndependent(StartElement element, Warning warner,
-			IPlayerCollection players) throws SPFormatException {
+	protected static Player getPlayerOrIndependent(final StartElement element, final Warning warner,
+	                                               final IPlayerCollection players) throws SPFormatException {
 		if (hasAttribute(element, "owner")) {
 			return players.getPlayer(getIntegerAttribute(element, "owner"));
 		} else {
@@ -647,7 +647,7 @@ import org.jetbrains.annotations.Nullable;
 	 * @param element The current XML tag
 	 * @param warner The Warning instance to use if the object can't have an image but the XML specifies one
 	 */
-	protected static <Type> Type setImage(Type obj, StartElement element, Warning warner) {
+	protected static <Type> Type setImage(final Type obj, final StartElement element, final Warning warner) {
 		if (obj instanceof HasMutableImage) {
 			((HasMutableImage) obj).setImage(getAttribute(element, "image", ""));
 		} else if (hasAttribute(element, "image")) {
@@ -664,7 +664,7 @@ import org.jetbrains.annotations.Nullable;
 	 * @param tag The name of the tag whose closing tag we're waitng for
 	 * @param stream The stream of XML elements to sift through
 	 */
-	protected static String getTextUntil(QName tag, Iterable<XMLEvent> stream)
+	protected static String getTextUntil(final QName tag, final Iterable<XMLEvent> stream)
 			throws SPFormatException {
 		StringBuilder builder = new StringBuilder();
 		for (XMLEvent event : stream) {
@@ -683,8 +683,8 @@ import org.jetbrains.annotations.Nullable;
 	/**
 	 * A helper method to allow the writer methods to require a specific type.
 	 */
-	protected static <Type> FluidXMLWriter<Object> castingWriter(FluidXMLWriter<Type> wrapped,
-			Class<Type> cls) {
+	protected static <Type> FluidXMLWriter<Object> castingWriter(final FluidXMLWriter<Type> wrapped,
+	                                                             final Class<Type> cls) {
 		return (writer, obj, indent) -> {
 			if (!cls.isInstance(obj)) {
 				throw new IllegalArgumentException("Can only write " + cls.getName());
@@ -693,7 +693,7 @@ import org.jetbrains.annotations.Nullable;
 		};
 	}
 
-	private static boolean isSupportedNamespace(QName name) {
+	private static boolean isSupportedNamespace(final QName name) {
 		return SP_NAMESPACE.equals(name.getNamespaceURI()) ||
 			XMLConstants.NULL_NS_URI.equals(name.getNamespaceURI());
 	}
@@ -701,8 +701,8 @@ import org.jetbrains.annotations.Nullable;
 	/**
 	 * Warn if any unsupported attribute is on this tag.
 	 */
-	protected static void expectAttributes(StartElement element, Warning warner,
-			String... attributes) {
+	protected static void expectAttributes(final StartElement element, final Warning warner,
+	                                       final String... attributes) {
 		List<String> local = Stream.of(attributes).map(String::toLowerCase)
 			.collect(Collectors.toList());
 		for (Attribute attribute : new IteratorWrapper<>(

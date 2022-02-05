@@ -17,7 +17,7 @@ import common.map.fixtures.mobile.ProxyFor;
  * TODO: Figure out how we can make this satisfy ProxyFor&lt;ISkill&gt;?
  */
 /* package */ class ProxySkill implements ISkill, ProxyFor<IJob> {
-	public ProxySkill(String name, boolean parallel, IJob... proxiedJobs) {
+	public ProxySkill(final String name, final boolean parallel, final IJob... proxiedJobs) {
 		this.parallel = parallel;
 		this.proxiedJobs = new ArrayList<>(Arrays.asList(proxiedJobs));
 		this.name = name;
@@ -110,7 +110,7 @@ import common.map.fixtures.mobile.ProxyFor;
 	 * Add a Job to the list of Jobs we're proxying a skill for.
 	 */
 	@Override
-	public void addProxied(IJob item) {
+	public void addProxied(final IJob item) {
 		proxiedJobs.add(item);
 	}
 
@@ -136,13 +136,13 @@ import common.map.fixtures.mobile.ProxyFor;
 	}
 
 	@Override
-	public boolean isSubset(ISkill obj, Consumer<String> report) {
+	public boolean isSubset(final ISkill obj, final Consumer<String> report) {
 		report.accept("isSubset called on ProxySkill");
 		return false;
 	}
 
 	@Override
-	public boolean equals(Object that) {
+	public boolean equals(final Object that) {
 		if (that instanceof ISkill) {
 			return name.equals(((ISkill) that).getName()) &&
 				((ISkill) that).getLevel() == getLevel() &&

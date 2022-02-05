@@ -15,21 +15,21 @@ public abstract class Either<A, B> {
 	public abstract <C> C either(Function<? super A, ? extends C> left,
 		Function<? super B, ? extends C> right);
 
-	public static <A, B> Either<A, B> left(A value) {
+	public static <A, B> Either<A, B> left(final A value) {
 		return new Either<A, B>() {
 			@Override
-			public <C> C either(Function<? super A, ? extends C> left,
-					Function<? super B, ? extends C> right) {
+			public <C> C either(final Function<? super A, ? extends C> left,
+			                    final Function<? super B, ? extends C> right) {
 				return left.apply(value);
 			}
 		};
 	}
 
-	public static <A, B> Either<A, B> right(B value) {
+	public static <A, B> Either<A, B> right(final B value) {
 		return new Either<A, B>() {
 			@Override
-			public <C> C either(Function<? super A, ? extends C> left,
-					Function<? super B, ? extends C> right) {
+			public <C> C either(final Function<? super A, ? extends C> left,
+			                    final Function<? super B, ? extends C> right) {
 				return right.apply(value);
 			}
 		};

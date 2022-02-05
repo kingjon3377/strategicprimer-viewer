@@ -94,7 +94,7 @@ import worker.common.IFixtureEditHelper;
  */
 /* package */ class ExplorationPanel extends BorderedPanel implements SelectionChangeListener {
 	private static final Logger LOGGER = Logger.getLogger(ExplorationPanel.class.getName());
-	private static KeyStroke key(int code) {
+	private static KeyStroke key(final int code) {
 		return KeyStroke.getKeyStroke(code, 0);
 	}
 	private final IExplorationModel driverModel;
@@ -102,14 +102,14 @@ import worker.common.IFixtureEditHelper;
 	private final Supplier<Speed> speedSource;
 	private final SpinnerNumberModel mpModel;
 
-	private void movementDeductionTracker(int cost) {
+	private void movementDeductionTracker(final int cost) {
 		mpModel.setValue(mpModel.getNumber().intValue() - cost);
 	}
 
-	public ExplorationPanel(SpinnerNumberModel mpModel, ComboBoxModel<Speed> speedModel,
-			JPanel headerPanel, FunctionalGroupLayout headerLayout,
-			JPanel tilesPanel, IExplorationModel driverModel,
-			Runnable explorerChangeButtonListener) {
+	public ExplorationPanel(final SpinnerNumberModel mpModel, final ComboBoxModel<Speed> speedModel,
+	                        final JPanel headerPanel, final FunctionalGroupLayout headerLayout,
+	                        final JPanel tilesPanel, final IExplorationModel driverModel,
+	                        final Runnable explorerChangeButtonListener) {
 		super(verticalSplit(headerPanel, tilesPanel));
 		this.driverModel = driverModel;
 		this.mpModel = mpModel;
@@ -242,7 +242,7 @@ import worker.common.IFixtureEditHelper;
 
 	// TODO: Cache selected unit here instead of always referring to it via the model?
 	@Override
-	public void selectedUnitChanged(@Nullable IUnit old, @Nullable IUnit newSelection) {}
+	public void selectedUnitChanged(@Nullable final IUnit old, @Nullable final IUnit newSelection) {}
 
 	private final FormattedLabel locLabel = new FormattedLabel(
 		"<html><body>Currently exploring %s; click a tile to explore it. Selected fixtures in its left-hand list will be 'discovered'.</body></html>", Point.INVALID_POINT);
@@ -255,7 +255,7 @@ import worker.common.IFixtureEditHelper;
 
 	// TODO: What do we need to do to make this static?
 	private class SpeedChangeListener implements ListDataListener {
-		public SpeedChangeListener(SelectionChangeListener scs) {
+		public SpeedChangeListener(final SelectionChangeListener scs) {
 			this.scs = scs;
 		}
 
@@ -267,7 +267,7 @@ import worker.common.IFixtureEditHelper;
 			return point;
 		}
 
-		public void setPoint(Point point) {
+		public void setPoint(final Point point) {
 			this.point = point;
 		}
 
@@ -276,17 +276,17 @@ import worker.common.IFixtureEditHelper;
 		}
 
 		@Override
-		public void contentsChanged(ListDataEvent event) {
+		public void contentsChanged(final ListDataEvent event) {
 			apply();
 		}
 
 		@Override
-		public void intervalAdded(ListDataEvent event) {
+		public void intervalAdded(final ListDataEvent event) {
 			apply();
 		}
 
 		@Override
-		public void intervalRemoved(ListDataEvent event) {
+		public void intervalRemoved(final ListDataEvent event) {
 			apply();
 		}
 	}
@@ -294,7 +294,7 @@ import worker.common.IFixtureEditHelper;
 	private final Map<Direction, SpeedChangeListener> speedChangeListeners = new HashMap<>();
 
 	@Override
-	public void selectedPointChanged(@Nullable Point old, Point newPoint) {
+	public void selectedPointChanged(@Nullable final Point old, final Point newPoint) {
 		if (old != null && old.equals(newPoint)) {
 			return;
 		}
@@ -323,7 +323,7 @@ import worker.common.IFixtureEditHelper;
 	// TODO: Move as many fields as possible into the constructor, to minimize class footprint
 
 	@Nullable
-	private AnimalTracks tracksCreator(Point point) {
+	private AnimalTracks tracksCreator(final Point point) {
 		TileType terrain = driverModel.getMap().getBaseTerrain(point);
 		if (terrain != null) { // TODO: invert
 			LOGGER.finer("In ExplorationPanel.tracksCreator");
@@ -350,9 +350,9 @@ import worker.common.IFixtureEditHelper;
 
 	// TODO: Try to make this static
 	private class ExplorationClickListener implements SelectionChangeSource, ActionListener {
-		public ExplorationClickListener(IExplorationModel driverModel, SelectionChangeListener outer,
-		                                MovementCostListener movementDeductionTracker, Direction direction,
-		                                FixtureList mainList) {
+		public ExplorationClickListener(final IExplorationModel driverModel, final SelectionChangeListener outer,
+		                                final MovementCostListener movementDeductionTracker, final Direction direction,
+		                                final FixtureList mainList) {
 			this.direction = direction;
 			this.mainList = mainList;
 			this.driverModel = driverModel;
@@ -377,12 +377,12 @@ import worker.common.IFixtureEditHelper;
 		private final List<SelectionChangeListener> selectionListeners = new ArrayList<>();
 
 		@Override
-		public void addSelectionChangeListener(SelectionChangeListener listener) {
+		public void addSelectionChangeListener(final SelectionChangeListener listener) {
 			selectionListeners.add(listener);
 		}
 
 		@Override
-		public void removeSelectionChangeListener(SelectionChangeListener listener) {
+		public void removeSelectionChangeListener(final SelectionChangeListener listener) {
 			selectionListeners.remove(listener);
 		}
 
@@ -408,7 +408,7 @@ import worker.common.IFixtureEditHelper;
 		/**
 		 * Copy fixtures from the given list to subordinate maps.
 		 */
-		private void discoverFixtures(Iterable<TileFixture> fixtures) {
+		private void discoverFixtures(final Iterable<TileFixture> fixtures) {
 			Point destPoint = driverModel.getSelectedUnitLocation();
 			Player player = Optional.ofNullable(driverModel.getSelectedUnit())
 				.map(IUnit::getOwner).orElse(new PlayerImpl(- 1, "no-one"));
@@ -441,7 +441,7 @@ import worker.common.IFixtureEditHelper;
 			List<TileFixture> fixtures = getSelectedValuesList();
 			try {
 				driverModel.move(Direction.Nowhere, speedSource.get());
-			} catch (TraversalImpossibleException except) {
+			} catch (final TraversalImpossibleException except) {
 				LOGGER.log(Level.SEVERE, "\"Traversal impossible\" going nowhere", except);
 			}
 			discoverFixtures(fixtures);
@@ -465,7 +465,7 @@ import worker.common.IFixtureEditHelper;
 					driverModel.move(direction, speedSource.get());
 					discoverFixtures(fixtures);
 				}
-			} catch (TraversalImpossibleException except) {
+			} catch (final TraversalImpossibleException except) {
 				LOGGER.log(Level.FINE, "Attempted movement to impassable destination",
 					except);
 				Point selection = driverModel.getSelectedUnitLocation();
@@ -478,18 +478,18 @@ import worker.common.IFixtureEditHelper;
 		}
 
 		@Override
-		public void actionPerformed(ActionEvent event) {
+		public void actionPerformed(final ActionEvent event) {
 			SwingUtilities.invokeLater(this::actionPerformedImpl);
 		}
 	}
 
 	@Nullable
-	private AnimalTracks createNull(Point point) {
+	private AnimalTracks createNull(final Point point) {
 		return null;
 	}
 
 	@Override
 	public void interactionPointChanged() {}
 	@Override
-	public void cursorPointChanged(@Nullable Point oldCursor, Point newCursor) {}
+	public void cursorPointChanged(@Nullable final Point oldCursor, final Point newCursor) {}
 }

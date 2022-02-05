@@ -13,7 +13,7 @@ import common.map.HasMutableImage;
  * TODO: Convert to a boolean property of the tile instead of a fixture, like mountains?
  */
 public class Hill implements TerrainFixture, HasMutableImage {
-	public Hill(int id) {
+	public Hill(final int id) {
 		this.id = id;
 	}
 
@@ -47,7 +47,7 @@ public class Hill implements TerrainFixture, HasMutableImage {
 	 * The filename of an image to use as an icon for this instance.
 	 */
 	@Override
-	public void setImage(String image) {
+	public void setImage(final String image) {
 		this.image = image;
 	}
 
@@ -62,7 +62,7 @@ public class Hill implements TerrainFixture, HasMutableImage {
 	}
 
 	@Override
-	public boolean equals(Object obj) {
+	public boolean equals(final Object obj) {
 		if (obj instanceof Hill) {
 			return ((Hill) obj).getId() == id;
 		} else {
@@ -76,7 +76,7 @@ public class Hill implements TerrainFixture, HasMutableImage {
 	}
 
 	@Override
-	public boolean equalsIgnoringID(IFixture fixture) {
+	public boolean equalsIgnoringID(final IFixture fixture) {
 		return fixture instanceof Hill;
 	}
 
@@ -91,7 +91,7 @@ public class Hill implements TerrainFixture, HasMutableImage {
 	}
 
 	@Override
-	public Hill copy(boolean zero) {
+	public Hill copy(final boolean zero) {
 		final Hill retval = new Hill(id);
 		retval.setImage(image);
 		return retval;

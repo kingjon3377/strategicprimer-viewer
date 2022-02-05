@@ -20,7 +20,7 @@ import org.jetbrains.annotations.Nullable;
  */
 public class Village implements IMutableTownFixture, HasMutableImage, IFixture,
 		Subsettable<IFixture> {
-	public Village(TownStatus status, String name, int id, Player owner, String race) {
+	public Village(final TownStatus status, final String name, final int id, final Player owner, final String race) {
 		this.status = status;
 		this.name = name;
 		this.id = id;
@@ -84,7 +84,7 @@ public class Village implements IMutableTownFixture, HasMutableImage, IFixture,
 	 * Set the player the village has pledged to serve and support, if any.
 	 */
 	@Override
-	public void setOwner(Player owner) {
+	public void setOwner(final Player owner) {
 		this.owner = owner;
 	}
 
@@ -107,7 +107,7 @@ public class Village implements IMutableTownFixture, HasMutableImage, IFixture,
 	/**
 	 * The dominant race of the village.
 	 */
-	public void setRace(String race) {
+	public void setRace(final String race) {
 		this.race = race;
 	}
 
@@ -128,7 +128,7 @@ public class Village implements IMutableTownFixture, HasMutableImage, IFixture,
 	 * Set the filename of an image to use as an icon for this instance.
 	 */
 	@Override
-	public void setImage(String image) {
+	public void setImage(final String image) {
 		this.image = image;
 	}
 
@@ -157,7 +157,7 @@ public class Village implements IMutableTownFixture, HasMutableImage, IFixture,
 	 * A filename of an image to use as a portrait of the village.
 	 */
 	@Override
-	public void setPortrait(String portrait) {
+	public void setPortrait(final String portrait) {
 		this.portrait = portrait;
 	}
 
@@ -179,7 +179,7 @@ public class Village implements IMutableTownFixture, HasMutableImage, IFixture,
 	/**
 	 * The contents of the village.
 	 */
-	public void setPopulation(@Nullable CommunityStats population) {
+	public void setPopulation(@Nullable final CommunityStats population) {
 		this.population = population;
 	}
 
@@ -213,7 +213,7 @@ public class Village implements IMutableTownFixture, HasMutableImage, IFixture,
 	 * An object is equal if it is a Village with the same status, ID, name, race, and owner.
 	 */
 	@Override
-	public boolean equals(Object obj) {
+	public boolean equals(final Object obj) {
 		if (obj instanceof Village && status.equals(((Village) obj).getStatus()) &&
 				name.equals(((Village) obj).getName()) && id == ((Village) obj).getId() &&
 				owner.equals(((Village) obj).getOwner()) &&
@@ -237,7 +237,7 @@ public class Village implements IMutableTownFixture, HasMutableImage, IFixture,
 	 * same status, owner, and race.
 	 */
 	@Override
-	public boolean equalsIgnoringID(IFixture fixture) {
+	public boolean equalsIgnoringID(final IFixture fixture) {
 		if (fixture instanceof Village && status.equals(((Village) fixture).getStatus()) &&
 				name.equals(((Village) fixture).getName()) &&
 				owner.equals(((Village) fixture).getOwner())) {
@@ -267,7 +267,7 @@ public class Village implements IMutableTownFixture, HasMutableImage, IFixture,
 	 * village's population details are a "subset" of the other's.)
 	 */
 	@Override
-	public boolean isSubset(IFixture obj, Consumer<String> report) {
+	public boolean isSubset(final IFixture obj, final Consumer<String> report) {
 		if (obj instanceof Village) {
 			if (id != ((Village) obj).getId()) {
 				report.accept("IDs differ");
@@ -338,7 +338,7 @@ public class Village implements IMutableTownFixture, HasMutableImage, IFixture,
 	 * Clone the object.
 	 */
 	@Override
-	public Village copy(boolean zero) {
+	public Village copy(final boolean zero) {
 		final Village retval = new Village(status, name, id, owner, race);
 		retval.setImage(image);
 		if (!zero) {

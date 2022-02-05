@@ -24,7 +24,7 @@ public class MenuBroker implements ActionListener {
 	/**
 	 * Rgister a listener for a series of action commands.
 	 */
-	public void register(ActionListener listener, String... actions) {
+	public void register(final ActionListener listener, final String... actions) {
 		for (String action : actions) {
 			mapping.put(action.toLowerCase(), listener);
 		}
@@ -33,14 +33,14 @@ public class MenuBroker implements ActionListener {
 	/**
 	 * Register a listener for an action command that shows the given window.
 	 */
-	public void registerWindowShower(Window window, String... actions) {
+	public void registerWindowShower(final Window window, final String... actions) {
 		register((event) -> window.setVisible(true), actions);
 	}
 
 	/**
 	 * Register a listener for an action command that shows the given window.
 	 */
-	public void registerWindowShower(Supplier<Window> window, String... actions) {
+	public void registerWindowShower(final Supplier<Window> window, final String... actions) {
 		register((event) -> window.get().setVisible(true), actions);
 	}
 
@@ -49,7 +49,7 @@ public class MenuBroker implements ActionListener {
 	 * handle its action command. If none is registered, log a warning.
 	 */
 	@Override
-	public void actionPerformed(ActionEvent event) {
+	public void actionPerformed(final ActionEvent event) {
 		String action = event.getActionCommand();
 		if (mapping.containsKey(action.toLowerCase())) {
 			ActionListener listener = mapping.get(action.toLowerCase());

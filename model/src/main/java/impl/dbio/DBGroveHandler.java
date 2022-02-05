@@ -40,13 +40,13 @@ final class DBGroveHandler extends AbstractDatabaseWriter<Grove, Point> implemen
 			"VALUES(?, ?, ?, ?, ?, ?, ?, ?);";
 
 	@Override
-	public void write(DB db, Grove obj, Point context) {
+	public void write(final DB db, final Grove obj, final Point context) {
 		db.update(INSERT_SQL, context.getRow(), context.getColumn(), obj.getId(),
 			(obj.isOrchard()) ? "orchard" : "grove", obj.getKind(), obj.isCultivated(),
 			obj.getPopulation(), obj.getImage());
 	}
 
-	private TryBiConsumer<Map<String, Object>, Warning, Exception> readGrove(IMutableMapNG map) {
+	private TryBiConsumer<Map<String, Object>, Warning, Exception> readGrove(final IMutableMapNG map) {
 		return (dbRow, warner) -> {
 			int row = (Integer) dbRow.get("row");
 			int column = (Integer) dbRow.get("column");
@@ -77,14 +77,14 @@ final class DBGroveHandler extends AbstractDatabaseWriter<Grove, Point> implemen
 	}
 
 	@Override
-	public void readMapContents(DB db, IMutableMapNG map, Warning warner) {
+	public void readMapContents(final DB db, final IMutableMapNG map, final Warning warner) {
 		try {
 			handleQueryResults(db, warner, "groves", readGrove(map),
 				"SELECT * FROM groves");
-		} catch (RuntimeException except) {
+		} catch (final RuntimeException except) {
 			// Don't wrap RuntimeExceptions in RuntimeException
 			throw except;
-		} catch (Exception except) {
+		} catch (final Exception except) {
 			// FIXME Antipattern
 			throw new RuntimeException(except);
 		}

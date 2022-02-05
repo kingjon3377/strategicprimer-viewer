@@ -10,7 +10,7 @@ import java.util.function.Consumer;
  * A fairy.
  */
 public class Fairy implements Immortal, HasMutableImage, HasKind {
-	public Fairy(String kind, int id) {
+	public Fairy(final String kind, final int id) {
 		this.kind = kind;
 		this.id = id;
 	}
@@ -58,12 +58,12 @@ public class Fairy implements Immortal, HasMutableImage, HasKind {
 	 * @param image The filename of an image to use as an icon for this instance.
 	 */
 	@Override
-	public void setImage(String image) {
+	public void setImage(final String image) {
 		this.image = image;
 	}
 
 	@Override
-	public Fairy copy(boolean zero) {
+	public Fairy copy(final boolean zero) {
 		Fairy retval = new Fairy(kind, id);
 		retval.setImage(image);
 		return retval;
@@ -85,7 +85,7 @@ public class Fairy implements Immortal, HasMutableImage, HasKind {
 	}
 
 	@Override
-	public boolean equals(Object obj) {
+	public boolean equals(final Object obj) {
 		if (obj instanceof Fairy) {
 			return ((Fairy) obj).getKind().equals(kind) && ((Fairy) obj).getId() == id;
 		} else {
@@ -99,7 +99,7 @@ public class Fairy implements Immortal, HasMutableImage, HasKind {
 	}
 
 	@Override
-	public boolean equalsIgnoringID(IFixture fixture) {
+	public boolean equalsIgnoringID(final IFixture fixture) {
 		if (fixture instanceof Fairy) {
 			return ((Fairy) fixture).getKind().equals(kind);
 		} else {
@@ -108,7 +108,7 @@ public class Fairy implements Immortal, HasMutableImage, HasKind {
 	}
 
 	@Override
-	public boolean isSubset(IFixture obj, Consumer<String> report) {
+	public boolean isSubset(final IFixture obj, final Consumer<String> report) {
 		if (obj.getId() == id) {
 			if (obj instanceof Fairy) {
 				if (((Fairy) obj).getKind().equals(kind)) {

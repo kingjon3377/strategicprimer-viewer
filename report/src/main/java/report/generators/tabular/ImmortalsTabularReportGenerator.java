@@ -24,7 +24,7 @@ public class ImmortalsTabularReportGenerator implements ITableGenerator<Immortal
 		return Immortal.class;
 	}
 
-	public ImmortalsTabularReportGenerator(@Nullable Point hq, MapDimensions dimensions) {
+	public ImmortalsTabularReportGenerator(@Nullable final Point hq, final MapDimensions dimensions) {
 		this.hq = hq;
 		this.dimensions = dimensions;
 		if (hq == null) {
@@ -60,8 +60,8 @@ public class ImmortalsTabularReportGenerator implements ITableGenerator<Immortal
 	 */
 	@Override
 	public Iterable<Iterable<String>> produce(
-			DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-			Immortal item, int key, Point loc, Map<Integer, Integer> parentMap) {
+			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
+			final Immortal item, final int key, final Point loc, final Map<Integer, Integer> parentMap) {
 		fixtures.remove(key);
 		return Collections.singleton(Arrays.asList(distanceString(loc, hq, dimensions),
 			locationString(loc), item.toString()));
@@ -71,7 +71,7 @@ public class ImmortalsTabularReportGenerator implements ITableGenerator<Immortal
 	 * Compare two Point-fixture pairs.
 	 */
 	@Override
-	public int comparePairs(Pair<Point, Immortal> one, Pair<Point, Immortal> two) {
+	public int comparePairs(final Pair<Point, Immortal> one, final Pair<Point, Immortal> two) {
 		return Comparator.<Pair<Point, Immortal>, Point>comparing(Pair::getValue0, distanceComparator)
 			.thenComparing(p -> p.getValue1().getClass().hashCode())
 			.thenComparing(p -> p.getValue1().hashCode()).compare(one, two);

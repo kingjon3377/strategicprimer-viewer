@@ -9,7 +9,7 @@ import org.jetbrains.annotations.NotNull;
  * integers are in the range. (Replacement for Ceylon's {@code Range<Integer>}.)
  */
 public class Range implements Iterable<Integer> {
-	public Range(int lowerBound, int upperBound) {
+	public Range(final int lowerBound, final int upperBound) {
 		if (upperBound < lowerBound) {
 			throw new IllegalArgumentException(
 				"Upper bound must be greater than or equal to lower bound");
@@ -46,7 +46,7 @@ public class Range implements Iterable<Integer> {
 	private static class RangeIterator implements Iterator<Integer> {
 		int current;
 		int upperBound;
-		public RangeIterator(Range range) {
+		public RangeIterator(final Range range) {
 			this.current = range.lowerBound - 1;
 			this.upperBound = range.upperBound;
 		}

@@ -53,7 +53,7 @@ import java.util.function.Consumer;
  */
 /* package */ class WorkerCreationListener implements ActionListener, UnitSelectionListener {
 	private static final Logger LOGGER = Logger.getLogger(WorkerCreationListener.class.getName());
-	public WorkerCreationListener(IWorkerTreeModel model, IDRegistrar factory) {
+	public WorkerCreationListener(final IWorkerTreeModel model, final IDRegistrar factory) {
 		this.model = model;
 		this.factory = factory;
 		workerCreationFrame = new WorkerCreationFrame(factory, this::addNewWorker);
@@ -68,7 +68,7 @@ import java.util.function.Consumer;
 	@Nullable
 	private IUnit selectedUnit = null;
 
-	public void addNewWorker(IWorker worker) {
+	public void addNewWorker(final IWorker worker) {
 		if (selectedUnit != null) {
 			model.addUnitMember(selectedUnit, worker);
 		} else {
@@ -94,7 +94,7 @@ import java.util.function.Consumer;
 		private final IDRegistrar factory;
 		private final Consumer<IWorker> addNewWorker;
 
-		public WorkerCreationFrame(IDRegistrar factory, Consumer<IWorker> addNewWorker) {
+		public WorkerCreationFrame(final IDRegistrar factory, final Consumer<IWorker> addNewWorker) {
 			super("Create Worker");
 			this.factory = factory;
 			this.addNewWorker = addNewWorker;
@@ -201,7 +201,7 @@ import java.util.function.Consumer;
 			}
 		}
 
-		private void addLabeledField(JPanel panel, String text, JComponent field) {
+		private void addLabeledField(final JPanel panel, final String text, final JComponent field) {
 			panel.add(new JLabel(text));
 			panel.add(field);
 			if (field instanceof JTextField) {
@@ -222,7 +222,7 @@ import java.util.function.Consumer;
 	}
 
 	@Override
-	public void actionPerformed(ActionEvent event) {
+	public void actionPerformed(final ActionEvent event) {
 		if (event.getActionCommand().toLowerCase().startsWith("add worker")) {
 			workerCreationFrame.revert();
 			workerCreationFrame.setVisible(true);
@@ -233,7 +233,7 @@ import java.util.function.Consumer;
 	 * Update our currently-selected-unit reference.
 	 */
 	@Override
-	public void selectUnit(@Nullable IUnit unit) {
+	public void selectUnit(@Nullable final IUnit unit) {
 		selectedUnit = unit;
 	}
 }

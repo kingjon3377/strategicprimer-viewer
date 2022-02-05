@@ -104,13 +104,13 @@ public class WindowMenu extends JMenu {
 	private JFrame myFrame = null;
 
 	private ChangeListener changeListener = new ChangeListener() {
-		public void stateChanged(ChangeEvent e) {
+		public void stateChanged(final ChangeEvent e) {
 			SwingUtilities.invokeLater(updateRunnable);
 		}
 	};
 
 	ActionListener actionListener = new ActionListener() {
-		public void actionPerformed(ActionEvent e) {
+		public void actionPerformed(final ActionEvent e) {
 			Object src = e.getSource();
 			if (src == minimizeItem) {
 				myFrame.setExtendedState(Frame.ICONIFIED);
@@ -136,7 +136,7 @@ public class WindowMenu extends JMenu {
 	 * @param frame
 	 *            the frame that this menu belongs to.
 	 */
-	public WindowMenu(JFrame frame) {
+	public WindowMenu(final JFrame frame) {
 		this(frame, new JMenuItem[] {});
 	}
 
@@ -148,7 +148,7 @@ public class WindowMenu extends JMenu {
 	 * @param extraItems
 	 *            an optional array of extra items to put in this menu.
 	 */
-	public WindowMenu(JFrame frame, JMenuItem... extraItems) {
+	public WindowMenu(final JFrame frame, final JMenuItem... extraItems) {
 		super("Window");
 		minimizeItem.addActionListener(actionListener);
 		bringItem.addActionListener(actionListener);

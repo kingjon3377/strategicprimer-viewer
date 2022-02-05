@@ -12,8 +12,8 @@ import java.nio.file.Paths;
 import java.util.stream.Collectors;
 
 public final class FileContentsReader {
-	public static Iterable<String> readFileContents(Class<?> cls,
-			String filename) throws IOException {
+	public static Iterable<String> readFileContents(final Class<?> cls,
+	                                                final String filename) throws IOException {
 		final Path onDisk = Paths.get(filename);
 		if (Files.isReadable(onDisk)) {
 			return Files.readAllLines(onDisk,

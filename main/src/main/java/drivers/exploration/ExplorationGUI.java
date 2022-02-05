@@ -47,7 +47,7 @@ import common.map.IMutableMapNG;
  */
 /* package */ class ExplorationGUI implements IExplorationGUI {
 	private static final Logger LOGGER = Logger.getLogger(ExplorationGUI.class.getName());
-	public ExplorationGUI(ICLIHelper cli, SPOptions options, IExplorationModel model) {
+	public ExplorationGUI(final ICLIHelper cli, final SPOptions options, final IExplorationModel model) {
 		this.cli = cli;
 		this.options = options;
 		this.model = model;
@@ -68,14 +68,14 @@ import common.map.IMutableMapNG;
 		return options;
 	}
 
-	private void createWindow(MenuBroker menuHandler) {
+	private void createWindow(final MenuBroker menuHandler) {
 		// FIXME: Try to remove the use of 'this' here
 		SPFrame frame = new ExplorationFrame(this, menuHandler);
 		frame.addWindowListener(new WindowCloseListener(menuHandler::actionPerformed));
 		try {
 			menuHandler.registerWindowShower(new AboutDialog(frame,
 				frame.getWindowName()), "about");
-		} catch (IOException except) {
+		} catch (final IOException except) {
 			LOGGER.log(Level.SEVERE, "I/O error while loading About dialog text", except);
 			// But go on anyway
 		}
@@ -98,7 +98,7 @@ import common.map.IMutableMapNG;
 	public Iterable<Path> askUserForFiles() {
 		try {
 			return SPFileChooser.open((Path) null).getFiles();
-		} catch (FileChooser.ChoiceInterruptedException except) {
+		} catch (final FileChooser.ChoiceInterruptedException except) {
 			// TODO: throw DriverFailedException
 			LOGGER.log(Level.WARNING, "Choice interrupted or user didn't choose", except);
 			return Collections.emptyList();
@@ -106,7 +106,7 @@ import common.map.IMutableMapNG;
 	}
 
 	@Override
-	public void open(IMutableMapNG map) {
+	public void open(final IMutableMapNG map) {
 		if (model.isMapModified()) {
 			SwingUtilities.invokeLater(() -> new ExplorationGUI(cli, options,
 				new ExplorationModel(map)).startDriver());

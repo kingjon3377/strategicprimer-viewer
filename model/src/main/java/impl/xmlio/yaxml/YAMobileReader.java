@@ -50,7 +50,7 @@ import common.xmlio.Warning;
  * A reader for "mobile fixtures"
  */
 /* package */ class YAMobileReader extends YAAbstractReader<MobileFixture, MobileFixture> {
-	public YAMobileReader(Warning warning, IDRegistrar idRegistrar) {
+	public YAMobileReader(final Warning warning, final IDRegistrar idRegistrar) {
 		super(warning, idRegistrar);
 	}
 
@@ -101,7 +101,7 @@ import common.xmlio.Warning;
 		return Collections.unmodifiableMap(retval);
 	}
 
-	private MobileFixture createAnimal(StartElement element) throws SPFormatException {
+	private MobileFixture createAnimal(final StartElement element) throws SPFormatException {
 		String tag = element.getName().getLocalPart().toLowerCase(); // TODO: drop toLowerCase if we can use equalsIgnoreCase() everywhere below
 		String kind;
 		boolean tracks;
@@ -144,7 +144,7 @@ import common.xmlio.Warning;
 		}
 	}
 
-	private MobileFixture readSimple(String tag, int idNum) {
+	private MobileFixture readSimple(final String tag, final int idNum) {
 		if (!SIMPLES.containsKey(tag)) {
 			throw new IllegalArgumentException("Only works for simple immortals");
 		}
@@ -152,7 +152,7 @@ import common.xmlio.Warning;
 	}
 
 	@Override
-	public boolean isSupportedTag(String tag) {
+	public boolean isSupportedTag(final String tag) {
 		return SUPPORTED_TAGS.stream().anyMatch(tag::equalsIgnoreCase);
 	}
 
@@ -161,14 +161,14 @@ import common.xmlio.Warning;
 		MobileFixture apply(String str, int num);
 	}
 
-	private MobileFixture twoParam(StartElement element, StringIntConstructor constr)
+	private MobileFixture twoParam(final StartElement element, final StringIntConstructor constr)
 			throws SPFormatException {
 		expectAttributes(element, "id", "kind", "image");
 		return constr.apply(getParameter(element, "kind"), getOrGenerateID(element));
 	}
 
 	@Override
-	public MobileFixture read(StartElement element, QName parent, Iterable<XMLEvent> stream)
+	public MobileFixture read(final StartElement element, final QName parent, final Iterable<XMLEvent> stream)
 			throws SPFormatException {
 		requireTag(element, parent, SUPPORTED_TAGS.toArray(new String[0]));
 		MobileFixture retval;
@@ -201,7 +201,7 @@ import common.xmlio.Warning;
 	}
 
 	@Override
-	public void write(ThrowingConsumer<String, IOException> ostream, MobileFixture obj, int indent) throws IOException {
+	public void write(final ThrowingConsumer<String, IOException> ostream, final MobileFixture obj, final int indent) throws IOException {
 		if (obj instanceof IUnit) {
 			throw new IllegalArgumentException("Unit handled elsewhere");
 		} else if (obj instanceof AnimalTracks) {
@@ -256,7 +256,7 @@ import common.xmlio.Warning;
 	}
 
 	@Override
-	public boolean canWrite(Object obj) {
+	public boolean canWrite(final Object obj) {
 		return obj instanceof MobileFixture && !(obj instanceof IUnit);
 	}
 }

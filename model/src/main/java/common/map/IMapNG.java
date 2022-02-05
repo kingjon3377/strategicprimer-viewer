@@ -136,7 +136,7 @@ public interface IMapNG extends Subsettable<IMapNG> {
 	 * A location is empty if it has no terrain, no Ground, no Forest, no
 	 * rivers, no roads, no bookmarks, and no other fixtures
 	 */
-	default boolean isLocationEmpty(Point location) {
+	default boolean isLocationEmpty(final Point location) {
 		if (getBaseTerrain(location) != null) {
 			return false;
 		} else if (isMountainous(location)) {

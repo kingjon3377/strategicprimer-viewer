@@ -48,7 +48,7 @@ import java.util.function.Predicate;
  */
 /* package */ class FindDialog extends SPDialog {
 	private static final Logger LOGGER = Logger.getLogger(FindDialog.class.getName());
-	public FindDialog(Frame parent, IViewerModel model) {
+	public FindDialog(final Frame parent, final IViewerModel model) {
 		super(parent, "Find");
 		this.model = model;
 		this.parent = parent;
@@ -110,7 +110,7 @@ import java.util.function.Predicate;
 	/**
 	 * Whether the fixture has a name matching the given pattern.
 	 */
-	private boolean matchesName(String pattern, IFixture fixture, boolean caseSensitivity) {
+	private boolean matchesName(final String pattern, final IFixture fixture, final boolean caseSensitivity) {
 		if (fixture instanceof HasName) {
 			String name = (caseSensitivity) ? ((HasName) fixture).getName() :
 				((HasName) fixture).getName().toLowerCase();
@@ -123,7 +123,7 @@ import java.util.function.Predicate;
 	/**
 	 * Whether the fixture has a kind matching the given pattern.
 	 */
-	private boolean matchesKind(String pattern, IFixture fixture, boolean caseSensitivity) {
+	private boolean matchesKind(final String pattern, final IFixture fixture, final boolean caseSensitivity) {
 		if (fixture instanceof HasKind) {
 			String kind = (caseSensitivity) ? ((HasKind) fixture).getKind() :
 				((HasKind) fixture).getKind().toLowerCase();
@@ -136,8 +136,8 @@ import java.util.function.Predicate;
 	/**
 	 * Whether the fixture has an owner matching the given pattern.
 	 */
-	private boolean matchesOwner(String pattern, @Nullable Integer idNum, IFixture fixture,
-			boolean caseSensitivity) {
+	private boolean matchesOwner(final String pattern, @Nullable final Integer idNum, final IFixture fixture,
+	                             final boolean caseSensitivity) {
 		if (fixture instanceof HasOwner) {
 			Player owner = ((HasOwner) fixture).getOwner();
 			String ownerName = (caseSensitivity) ? owner.getName() :
@@ -161,8 +161,8 @@ import java.util.function.Predicate;
 	/**
 	 * Whether the fixture matches the pattern in any of our simple ways.
 	 */
-	private boolean matchesSimple(String pattern, @Nullable Integer idNum, IFixture fixture,
-			boolean caseSensitivity) {
+	private boolean matchesSimple(final String pattern, @Nullable final Integer idNum, final IFixture fixture,
+	                              final boolean caseSensitivity) {
 		if (pattern.isEmpty()) {
 			return true;
 		} else if (fixture instanceof TileFixture &&
@@ -182,8 +182,8 @@ import java.util.function.Predicate;
 	/**
 	 * Whether the given fixture matches the given pattern in any way we recognize.
 	 */
-	private Predicate<IFixture> matches(String pattern, @Nullable Integer idNum,
-			boolean caseSensitivity) {
+	private Predicate<IFixture> matches(final String pattern, @Nullable final Integer idNum,
+	                                    final boolean caseSensitivity) {
 		return fixture -> {
 			if (matchesSimple(pattern, idNum, fixture, caseSensitivity)) {
 				return true;
@@ -195,8 +195,8 @@ import java.util.function.Predicate;
 		};
 	}
 
-	private Predicate<Point> matchesPoint(String pattern, @Nullable Integer id,
-			boolean caseSensitivity) {
+	private Predicate<Point> matchesPoint(final String pattern, @Nullable final Integer id,
+	                                      final boolean caseSensitivity) {
 		return point -> {
 			if (((caseSensitivity && "bookmark".equals(pattern)) ||
 						(!caseSensitivity &&
@@ -230,7 +230,7 @@ import java.util.function.Predicate;
 		Integer idNum = null;
 		try {
 			idNum = Integer.parseInt(pattern);
-		} catch (NumberFormatException ignored) {
+		} catch (final NumberFormatException ignored) {
 			// ignore non-numeric patterns
 		}
 		Point result = StreamSupport.stream(new PointIterable(model.getMapDimensions(),
@@ -262,7 +262,7 @@ import java.util.function.Predicate;
 		searchField.setText("");
 	}
 
-	private void populate(Object fixture) {
+	private void populate(final Object fixture) {
 		if (fixture instanceof TileFixture) {
 			filterList.shouldDisplay((TileFixture) fixture);
 		} else if (fixture instanceof Iterable) {

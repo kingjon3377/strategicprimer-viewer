@@ -83,7 +83,7 @@ public enum Speed implements HasName {
 		return shortName;
 	}
 
-	private Speed(double multMod, int addMod, String desc) {
+	private Speed(final double multMod, final int addMod, final String desc) {
 		mpMultiplier = multMod;
 		perceptionModifier = addMod;
 		String perceptionString = (addMod >= 0) ? String.format("+%d", addMod) :
@@ -101,7 +101,7 @@ public enum Speed implements HasName {
 	}
 
 	// FIXME: Make sure we use this wherever comparisons had been implicit
-	public static int comparePerception(Speed one, Speed two) {
+	public static int comparePerception(final Speed one, final Speed two) {
 		return Integer.compare(one.perceptionModifier, two.perceptionModifier);
 	}
 }

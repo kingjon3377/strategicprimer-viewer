@@ -21,14 +21,14 @@ public interface MapDimensions {
 	 */
 	int getVersion();
 
-	default boolean contains(Point point) {
+	default boolean contains(final Point point) {
 		return point.isValid() && point.getRow() < getRows() && point.getColumn() < getColumns();
 	}
 
 	/**
 	 * The distance between two points in a map with these dimensions.
 	 */
-	default double distance(Point first, Point second) {
+	default double distance(final Point first, final Point second) {
 		int rawXDiff = first.getRow() - second.getRow();
 		int rawYDiff = first.getColumn() - second.getColumn();
 		int xDiff;

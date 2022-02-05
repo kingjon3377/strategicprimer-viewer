@@ -28,7 +28,7 @@ public class TownComparators {
 	 * what kind of town they are, putting fortresses before cities before
 	 * towns before fortifications before villages.
 	 */
-	public static int compareTownKind(ITownFixture one, ITownFixture two) {
+	public static int compareTownKind(final ITownFixture one, final ITownFixture two) {
 		if (one instanceof IFortress) {
 			if (two instanceof IFortress) {
 				return 0;
@@ -71,7 +71,7 @@ public class TownComparators {
 	/**
 	 * A total ordering for towns.
 	 */
-	public static int compareTowns(ITownFixture one, ITownFixture two) {
+	public static int compareTowns(final ITownFixture one, final ITownFixture two) {
 		return Comparator.comparing(ITownFixture::getStatus)
 			.thenComparing(Comparator.comparing(ITownFixture::getTownSize,
 				Comparator.reverseOrder()))

@@ -18,13 +18,13 @@ import common.map.MapDimensions;
  */
 class MockTable implements EncounterTable {
 	private final Deque<String> queue = new LinkedList<>();
-	public MockTable(String... values) {
+	public MockTable(final String... values) {
 		Stream.of(values).forEach(queue::addLast);
 	}
 
 	@Override
-	public String generateEvent(Point point, @Nullable TileType terrain, boolean mountainous, 
-			Iterable<TileFixture> fixtures, MapDimensions mapDimensions) {
+	public String generateEvent(final Point point, @Nullable final TileType terrain, final boolean mountainous,
+	                            final Iterable<TileFixture> fixtures, final MapDimensions mapDimensions) {
 		return queue.removeFirst();
 	}
 

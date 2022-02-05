@@ -35,7 +35,7 @@ public class Worker implements IMutableWorker {
 	 *
 	 * FIXME: Take Collection, not Iterable, to avoid StreamSupport wrapper
 	 */
-	private static boolean jobSetsEqual(Iterable<IJob> first, Iterable<IJob> second) {
+	private static boolean jobSetsEqual(final Iterable<IJob> first, final Iterable<IJob> second) {
 		Collection<IJob> firstFiltered = StreamSupport.stream(first.spliterator(), true)
 			.filter(j -> !j.isEmpty()).collect(Collectors.toList());
 		Collection<IJob> secondFiltered = StreamSupport.stream(second.spliterator(), true)
@@ -92,7 +92,7 @@ public class Worker implements IMutableWorker {
 		return race;
 	}
 
-	public Worker(String name, String race, int id, IJob... jobs) {
+	public Worker(final String name, final String race, final int id, final IJob... jobs) {
 		this.name = name;
 		this.race = race;
 		this.id = id;
@@ -117,7 +117,7 @@ public class Worker implements IMutableWorker {
 	/**
 	 * Set the worker's stats.
 	 */
-	public void setStats(@Nullable WorkerStats stats) {
+	public void setStats(@Nullable final WorkerStats stats) {
 		this.stats = stats;
 	}
 
@@ -138,7 +138,7 @@ public class Worker implements IMutableWorker {
 	 * Set the filename of an image to use as an icon for this instance.
 	 */
 	@Override
-	public void setImage(String image) {
+	public void setImage(final String image) {
 		this.image = image;
 	}
 
@@ -159,7 +159,7 @@ public class Worker implements IMutableWorker {
 	 * Set the filename of an image to use as a portrait for the worker.
 	 */
 	@Override
-	public void setPortrait(String portrait) {
+	public void setPortrait(final String portrait) {
 		this.portrait = portrait;
 	}
 
@@ -167,7 +167,7 @@ public class Worker implements IMutableWorker {
 	 * Add a Job.
 	 */
 	@Override
-	public boolean addJob(IJob job) {
+	public boolean addJob(final IJob job) {
 		final int size = jobSet.size();
 		jobSet.add(job);
 		return size != jobSet.size();
@@ -182,7 +182,7 @@ public class Worker implements IMutableWorker {
 	}
 
 	@Override
-	public boolean equalsIgnoringID(IFixture fixture) {
+	public boolean equalsIgnoringID(final IFixture fixture) {
 		if (fixture instanceof IWorker) {
 			return ((IWorker) fixture).getName().equals(name) &&
 				jobSetsEqual(jobSet, ((IWorker) fixture)) &&
@@ -194,7 +194,7 @@ public class Worker implements IMutableWorker {
 	}
 
 	@Override
-	public boolean equals(Object obj) {
+	public boolean equals(final Object obj) {
 		if (obj instanceof IWorker) {
 			return ((IWorker) obj).getId() == id && equalsIgnoringID((IWorker) obj);
 		} else {
@@ -231,7 +231,7 @@ public class Worker implements IMutableWorker {
 	 * of our corresponding Jobs.
 	 */
 	@Override
-	public boolean isSubset(IFixture obj, Consumer<String> report) {
+	public boolean isSubset(final IFixture obj, final Consumer<String> report) {
 		if (obj.getId() == id) {
 			if (obj instanceof IWorker) {
 				Consumer<String> localReport =
@@ -277,7 +277,7 @@ public class Worker implements IMutableWorker {
 	 * Clone the object.
 	 */
 	@Override
-	public Worker copy(boolean zero) {
+	public Worker copy(final boolean zero) {
 		final Worker retval = new Worker(name, race, id);
 		retval.setImage(image);
 		if (!zero) {
@@ -299,7 +299,7 @@ public class Worker implements IMutableWorker {
 	 * newly-constructed one if it didn't have one.
 	 */
 	@Override
-	public IJob getJob(String name) {
+	public IJob getJob(final String name) {
 		Optional<IJob> maybe = jobSet.stream().filter(j -> name.equals(j.getName())).findAny();
 		if (maybe.isPresent()) {
 			return maybe.get();
@@ -311,7 +311,7 @@ public class Worker implements IMutableWorker {
 	}
 
 	@Override
-	public String getNote(Player player) {
+	public String getNote(final Player player) {
 		if (notesImpl.containsKey(player.getPlayerId())) {
 			return notesImpl.get(player.getPlayerId());
 		} else {
@@ -320,7 +320,7 @@ public class Worker implements IMutableWorker {
 	}
 
 	@Override
-	public String getNote(int player) {
+	public String getNote(final int player) {
 		if (notesImpl.containsKey(player)) {
 			return notesImpl.get(player);
 		} else {
@@ -329,7 +329,7 @@ public class Worker implements IMutableWorker {
 	}
 
 	@Override
-	public void setNote(Player player, String note) {
+	public void setNote(final Player player, final String note) {
 		if (note.isEmpty()) {
 			notesImpl.remove(player.getPlayerId());
 		} else {

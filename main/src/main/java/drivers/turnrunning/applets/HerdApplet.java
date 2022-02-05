@@ -26,7 +26,7 @@ import query.SmallAnimalModel;
 
 /* package */ class HerdApplet extends AbstractTurnApplet {
 	private static final Logger LOGGER = Logger.getLogger(HerdApplet.class.getName());
-	public HerdApplet(ITurnRunningModel model, ICLIHelper cli, IDRegistrar idf) {
+	public HerdApplet(final ITurnRunningModel model, final ICLIHelper cli, final IDRegistrar idf) {
 		super(model, cli, idf);
 		this.model = model;
 		this.cli = cli;
@@ -52,7 +52,7 @@ import query.SmallAnimalModel;
 
 	// TODO: Pull up to AbstractTurnApplet for use by other applets?
 	@Nullable
-	private IFortress containingFortress(IUnit unit) {
+	private IFortress containingFortress(final IUnit unit) {
 		return model.getMap().getFixtures(model.find(unit)).stream().filter(IFortress.class::isInstance)
 			.map(IFortress.class::cast).filter(f -> f.getOwner().equals(unit.getOwner()))
 			.findAny().orElse(null);
@@ -61,7 +61,7 @@ import query.SmallAnimalModel;
 	private final Map<String, HerdModel> herdModels = new HashMap<>();
 
 	@Nullable
-	private HerdModel chooseHerdModel(String animal) {
+	private HerdModel chooseHerdModel(final String animal) {
 		return cli.chooseFromList(Stream.concat(Stream.of(MammalModel.values()), Stream.concat(
 				Stream.of(PoultryModel.values()), Stream.of(SmallAnimalModel.values())))
 				.collect(Collectors.toList()),

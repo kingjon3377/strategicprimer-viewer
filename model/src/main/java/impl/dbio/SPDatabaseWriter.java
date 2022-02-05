@@ -27,7 +27,7 @@ public final class SPDatabaseWriter implements SPWriter {
 
 	private final Map<Path, DB> connections = new HashMap<>();
 
-	private DataSource getBaseConnection(Path path) {
+	private DataSource getBaseConnection(final Path path) {
 		SQLiteDataSource retval = new SQLiteDataSource();
 		if (path.toString().isEmpty()) {
 			LOGGER.info("Trying to set up an in-memory database");
@@ -40,7 +40,7 @@ public final class SPDatabaseWriter implements SPWriter {
 	}
 
 	// TODO: Rename to getDB
-	private DB getSQL(Path path) {
+	private DB getSQL(final Path path) {
 		if (connections.containsKey(path)) {
 			return connections.get(path);
 		} else {
@@ -76,7 +76,7 @@ public final class SPDatabaseWriter implements SPWriter {
 	private static final String INSERT_NOTE =
 		"INSERT INTO notes (fixture, player, note) VALUES(?, ?, ?)";
 
-	public void writeSPObjectInContext(DB sql, Object obj, Object context) {
+	public void writeSPObjectInContext(final DB sql, final Object obj, final Object context) {
 		if (!notesInitialized.contains(sql)) {
 			sql.transaction(db -> {
 					db.script(NOTES_SCHEMA).execute();
@@ -111,28 +111,28 @@ public final class SPDatabaseWriter implements SPWriter {
 	}
 
 	@Override
-	public void writeSPObject(Path arg, Object obj) {
+	public void writeSPObject(final Path arg, final Object obj) {
 		DB db = getSQL(arg);
 		writeSPObjectInContext(db, obj, obj);
 	}
 
 	@Override
-	public void writeSPObject(ThrowingConsumer<String, IOException> arg, Object obj) {
+	public void writeSPObject(final ThrowingConsumer<String, IOException> arg, final Object obj) {
 		throw new UnsupportedOperationException(
 			"SPDatabaseWriter can only write to a database file, not to a stream");
 	}
 
 	@Override
-	public void write(Path arg, IMapNG map) {
+	public void write(final Path arg, final IMapNG map) {
 		writeSPObject(arg, map);
 	}
 
 	@Override
-	public void write(ThrowingConsumer<String, IOException> arg, IMapNG map) {
+	public void write(final ThrowingConsumer<String, IOException> arg, final IMapNG map) {
 		writeSPObject(arg, map);
 	}
 
-	public void writeToDatabase(DB db, IMapNG map) {
+	public void writeToDatabase(final DB db, final IMapNG map) {
 		writeSPObjectInContext(db, map, map);
 	}
 }

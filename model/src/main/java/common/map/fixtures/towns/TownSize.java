@@ -8,7 +8,7 @@ public enum TownSize {
 	Medium("medium"),
 	Large("large");
 
-	private TownSize(String str) {
+	private TownSize(final String str) {
 		string = str;
 	}
 
@@ -18,7 +18,7 @@ public enum TownSize {
 		return string;
 	}
 
-	public static TownSize parseTownSize(String size) {
+	public static TownSize parseTownSize(final String size) {
 		switch (size) {
 		case "small":
 			return TownSize.Small;

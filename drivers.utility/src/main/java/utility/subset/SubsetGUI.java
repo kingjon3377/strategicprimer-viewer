@@ -31,7 +31,7 @@ import drivers.gui.common.SPMenu;
  * TODO: Unify with {@link SubsetCLI}, like the map-checker GUI
  */
 public class SubsetGUI implements UtilityGUI {
-	public SubsetGUI(ICLIHelper cli, SPOptions options) {
+	public SubsetGUI(final ICLIHelper cli, final SPOptions options) {
 		this.cli = cli;
 		this.options = options;
 	}
@@ -48,10 +48,10 @@ public class SubsetGUI implements UtilityGUI {
 
 	private boolean initialized = false;
 
-	private static <T> void noop(T t) { }
+	private static <T> void noop(final T t) { }
 
 	@Override
-	public void startDriver(String... args) throws DriverFailedException {
+	public void startDriver(final String... args) throws DriverFailedException {
 		if (args.length == 0) {
 			throw new IncorrectUsageException(SubsetGUIFactory.USAGE);
 		}
@@ -70,18 +70,18 @@ public class SubsetGUI implements UtilityGUI {
 			frame.loadMain(Paths.get(first));
 		} catch (MissingFileException|NoSuchFileException|FileNotFoundException except) {
 			throw new DriverFailedException(except, String.format("File %s not found", first));
-		} catch (IOException except) {
+		} catch (final IOException except) {
 			throw new DriverFailedException(except, "I/O error loading main map " + first);
-		} catch (MalformedXMLException except) {
+		} catch (final MalformedXMLException except) {
 			throw new DriverFailedException(except, "Malformed XML in main map " + first);
-		} catch (SPFormatException except) {
+		} catch (final SPFormatException except) {
 			throw new DriverFailedException(except, "Invalid SP XML in main  map " + first);
 		}
 		Stream.of(args).skip(1).map(Paths::get).forEach(frame::testFile);
 	}
 
 	@Override
-	public void open(Path path) {
+	public void open(final Path path) {
 		frame.testFile(path);
 	}
 }

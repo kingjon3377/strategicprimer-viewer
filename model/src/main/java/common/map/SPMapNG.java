@@ -56,7 +56,7 @@ public class SPMapNG implements IMutableMapNG {
 	/**
 	 * Whether the given fixture should be zeroed out if the map is for the given player.
 	 */
-	private static boolean shouldZero(TileFixture fixture, @Nullable Player player) {
+	private static boolean shouldZero(final TileFixture fixture, @Nullable final Player player) {
 		if (player != null && fixture instanceof HasOwner) {
 			return player.equals(((HasOwner) fixture).getOwner());
 		} else {
@@ -68,7 +68,7 @@ public class SPMapNG implements IMutableMapNG {
 	 * If either of the provided fixtures is a subset of the other, return
 	 * true; otherwise return false.
 	 */
-	private static boolean subsetCheck(TileFixture one, TileFixture two) {
+	private static boolean subsetCheck(final TileFixture one, final TileFixture two) {
 		// FIXME: Reintroduce SubsettableFixture as a fixing of Subsettable<IFixture> for us to test here and probably elsewhere
 		if (one instanceof Subsettable && ((Subsettable<IFixture>) one).isSubset(two, x -> {})) {
 			return true;
@@ -99,7 +99,7 @@ public class SPMapNG implements IMutableMapNG {
 	 * Set the file from which the map was loaded, or to which it should be saved, if known
 	 */
 	@Override
-	public void setFilename(@Nullable Path filename) {
+	public void setFilename(@Nullable final Path filename) {
 		this.filename = filename;
 	}
 
@@ -120,7 +120,7 @@ public class SPMapNG implements IMutableMapNG {
 	 * Set whether the map has been modified since it was last saved.
 	 */
 	@Override
-	public void setModified(boolean modified) {
+	public void setModified(final boolean modified) {
 		this.modified = modified;
 	}
 
@@ -177,7 +177,7 @@ public class SPMapNG implements IMutableMapNG {
 	 * The current turn.
 	 */
 	@Override
-	public void setCurrentTurn(int currentTurn) {
+	public void setCurrentTurn(final int currentTurn) {
 		this.currentTurn = currentTurn;
 	}
 
@@ -186,7 +186,7 @@ public class SPMapNG implements IMutableMapNG {
 	 */
 	private final Map<Point, Set<Player>> bookmarksImpl = new HashMap<>();
 
-	public SPMapNG(MapDimensions dimensions, IMutablePlayerCollection players, int turn) {
+	public SPMapNG(final MapDimensions dimensions, final IMutablePlayerCollection players, final int turn) {
 		mapDimensions = dimensions;
 		playerCollection = players;
 		currentTurn = turn;
@@ -241,7 +241,7 @@ public class SPMapNG implements IMutableMapNG {
 	 */
 	@Override
 	@Nullable
-	public TileType getBaseTerrain(Point key) {
+	public TileType getBaseTerrain(final Point key) {
 		return terrain.get(key);
 	}
 
@@ -250,7 +250,7 @@ public class SPMapNG implements IMutableMapNG {
 	 */
 	@Override
 	@Nullable
-	public TileType setBaseTerrain(Point key, @Nullable TileType item) {
+	public TileType setBaseTerrain(final Point key, @Nullable final TileType item) {
 		modified = true; // TODO: Only if this is a change
 		@Nullable TileType retval = getBaseTerrain(key);
 		if (item == null) {
@@ -265,12 +265,12 @@ public class SPMapNG implements IMutableMapNG {
 	 * Whether the given location is mountainous.
 	 */
 	@Override
-	public boolean isMountainous(Point key) {
+	public boolean isMountainous(final Point key) {
 		return mountains.contains(key);
 	}
 
 	@Override
-	public boolean setMountainous(Point key, boolean item) {
+	public boolean setMountainous(final Point key, final boolean item) {
 		modified = true; // TODO: Only if this is a change
 		boolean retval = isMountainous(key);
 		if (item) {
@@ -285,7 +285,7 @@ public class SPMapNG implements IMutableMapNG {
 	 * The rivers, if any, at the given location.
 	 */
 	@Override
-	public Collection<River> getRivers(Point location) {
+	public Collection<River> getRivers(final Point location) {
 		if (riversMap.containsKey(location)) {
 			return Collections.unmodifiableSet(riversMap.get(location));
 		} else {
@@ -297,7 +297,7 @@ public class SPMapNG implements IMutableMapNG {
 	 * The directions and quality levels of roads at various locations.
 	 */
 	@Override
-	public Map<Direction, Integer> getRoads(Point location) {
+	public Map<Direction, Integer> getRoads(final Point location) {
 		if (roadsMap.containsKey(location)) {
 			return Collections.unmodifiableMap(roadsMap.get(location));
 		} else {
@@ -306,7 +306,7 @@ public class SPMapNG implements IMutableMapNG {
 	}
 
 	@Override
-	public void setRoadLevel(Point point, Direction direction, int quality) {
+	public void setRoadLevel(final Point point, final Direction direction, final int quality) {
 		if (direction.equals(Direction.Nowhere)) {
 			return;
 		} else if (quality < 0) {
@@ -326,7 +326,7 @@ public class SPMapNG implements IMutableMapNG {
 	 * The tile fixtures (other than rivers and mountains) at the given location.
 	 */
 	@Override
-	public Collection<TileFixture> getFixtures(Point location) {
+	public Collection<TileFixture> getFixtures(final Point location) {
 		if (fixturesMap.containsKey(location)) {
 			return Collections.unmodifiableCollection(fixturesMap.get(location));
 		} else {
@@ -343,13 +343,13 @@ public class SPMapNG implements IMutableMapNG {
 	}
 
 	@Override
-	public void setCurrentPlayer(Player currentPlayer) {
+	public void setCurrentPlayer(final Player currentPlayer) {
 		// FIXME: Should set 'modified' flag
 		playerCollection.setCurrentPlayer(currentPlayer);
 	}
 
 	@Override
-	public Set<Point> getBookmarksFor(Player player) {
+	public Set<Point> getBookmarksFor(final Player player) {
 		return bookmarksImpl.entrySet().stream().filter(e -> e.getValue().contains(player))
 			.map(Map.Entry::getKey).collect(Collectors.toSet());
 	}
@@ -360,7 +360,7 @@ public class SPMapNG implements IMutableMapNG {
 	}
 
 	@Override
-	public Collection<Player> getAllBookmarks(Point location) {
+	public Collection<Player> getAllBookmarks(final Point location) {
 		if (bookmarksImpl.containsKey(location)) {
 			return Collections.unmodifiableCollection(bookmarksImpl.get(location));
 		} else {
@@ -369,7 +369,7 @@ public class SPMapNG implements IMutableMapNG {
 	}
 
 	@Override
-	public void addBookmark(Point point, Player player) {
+	public void addBookmark(final Point point, final Player player) {
 		modified = true; // TODO: Only if this is a change
 		Set<Player> marks;
 		if (bookmarksImpl.containsKey(point)) {
@@ -382,7 +382,7 @@ public class SPMapNG implements IMutableMapNG {
 	}
 
 	@Override
-	public void removeBookmark(Point point, Player player) {
+	public void removeBookmark(final Point point, final Player player) {
 		modified = true; // TODO: Only if this is a change
 		if (bookmarksImpl.containsKey(point)) {
 			Set<Player> marks = bookmarksImpl.get(point);
@@ -399,7 +399,7 @@ public class SPMapNG implements IMutableMapNG {
 	 * Add a player.
 	 */
 	@Override
-	public void addPlayer(Player player) {
+	public void addPlayer(final Player player) {
 		modified = true; // TODO: Only if this is a change
 		playerCollection.add(player);
 	}
@@ -408,7 +408,7 @@ public class SPMapNG implements IMutableMapNG {
 	 * Add rivers at a location.
 	 */
 	@Override
-	public void addRivers(Point location, River... addedRivers) {
+	public void addRivers(final Point location, final River... addedRivers) {
 		modified = true; // TODO: Only if this is a change
 		final Set<River> set;
 		if (riversMap.containsKey(location)) {
@@ -426,7 +426,7 @@ public class SPMapNG implements IMutableMapNG {
 	 * Remove rivers from the given location.
 	 */
 	@Override
-	public void removeRivers(Point location, River... removedRivers) {
+	public void removeRivers(final Point location, final River... removedRivers) {
 		modified = true; // TODO: Only if this is a change
 		if (riversMap.containsKey(location)) {
 			final Set<River> set = riversMap.get(location);
@@ -446,7 +446,7 @@ public class SPMapNG implements IMutableMapNG {
 	 * this point" set has an additional member as a result of this.
 	 */
 	@Override
-	public boolean addFixture(Point location, TileFixture fixture) {
+	public boolean addFixture(final Point location, final TileFixture fixture) {
 		if (fixture instanceof FakeFixture) {
 			LOGGER.severe("Fake fixture passed to SPMapNG.addFixture()");
 			LOGGER.log(Level.FINE, "Stack trace for fake fixture in SPMapNG.addFixture()",
@@ -493,7 +493,7 @@ public class SPMapNG implements IMutableMapNG {
 	 * Remove a fixture from a location.
 	 */
 	@Override
-	public void removeFixture(Point location, TileFixture fixture) {
+	public void removeFixture(final Point location, final TileFixture fixture) {
 		modified = true; // TODO: Only if this is a change
 		if (fixturesMap.containsKey(location)) {
 			final List<TileFixture> local = fixturesMap.get(location);
@@ -512,7 +512,7 @@ public class SPMapNG implements IMutableMapNG {
 	}
 
 	@Override
-	public boolean equals(Object obj) {
+	public boolean equals(final Object obj) {
 		if (obj instanceof IMapNG) {
 			if (getDimensions().equals(((IMapNG) obj).getDimensions()) &&
 					getPlayers().containsAll(((IMapNG) obj).getPlayers()) &&
@@ -591,9 +591,9 @@ public class SPMapNG implements IMutableMapNG {
 	// FIXME: Inline this into all callers, or figure out what's missing
 	// FIXME: Remove 'movedFrom' once that's converted to a member function
 	private <Target extends IFixture, SubsetType extends Subsettable<Target>>
-		boolean testAgainstList(Target desideratum, Point location,
-			Collection<Pair<SubsetType, Point>> list, Consumer<String> ostream,
-			BiPredicate<Point, TileFixture> movedFrom) {
+		boolean testAgainstList(final Target desideratum, final Point location,
+		                        final Collection<Pair<SubsetType, Point>> list, final Consumer<String> ostream,
+		                        final BiPredicate<Point, TileFixture> movedFrom) {
 		int count = 0;
 		boolean unmatched = true;
 		@Nullable SubsetType match = null;
@@ -647,7 +647,7 @@ public class SPMapNG implements IMutableMapNG {
 	 * except for those cases we deliberately ignore.
 	 */
 	@Override
-	public boolean isSubset(IMapNG obj, Consumer<String> report) {
+	public boolean isSubset(final IMapNG obj, final Consumer<String> report) {
 		if (getDimensions().equals(obj.getDimensions())) {
 			boolean retval = playerCollection.isSubset(obj.getPlayers(), report);
 			// Declared here to avoid object allocations in the loop.
@@ -806,7 +806,7 @@ public class SPMapNG implements IMutableMapNG {
 	 * FIXME: (In the interface) split with-player and without-player into separate signatures
 	 */
 	@Override
-	public IMapNG copy(boolean zero, @Nullable Player player) {
+	public IMapNG copy(final boolean zero, @Nullable final Player player) {
 		final IMutableMapNG retval = new SPMapNG(getDimensions(), playerCollection.copy(),
 			currentTurn);
 		for (Point point : getLocations()) {
@@ -825,7 +825,7 @@ public class SPMapNG implements IMutableMapNG {
 	}
 
 	@Override
-	public void replace(Point location, TileFixture original, TileFixture replacement) {
+	public void replace(final Point location, final TileFixture original, final TileFixture replacement) {
 		modified = true; // TODO: Only if this is a change
 		if (getFixtures(location).contains(replacement) && !original.equals(replacement)) {
 			removeFixture(location, original);

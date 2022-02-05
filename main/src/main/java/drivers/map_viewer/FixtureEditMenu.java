@@ -37,8 +37,8 @@ public class FixtureEditMenu extends JPopupMenu {
 	 * @param idf A source for unique-in-the-map ID numbers.
 	 * @param handler Listeners to notify when something is renamed or changes kind.
 	 */
-	public FixtureEditMenu(IFixture fixture, Iterable<Player> players, IDRegistrar idf,
-			IFixtureEditHelper handler) {
+	public FixtureEditMenu(final IFixture fixture, final Iterable<Player> players, final IDRegistrar idf,
+	                       final IFixtureEditHelper handler) {
 		this.fixture = fixture;
 		this.players = players;
 		this.idf = idf;
@@ -80,7 +80,7 @@ public class FixtureEditMenu extends JPopupMenu {
 	private final IDRegistrar idf;
 	private final IFixtureEditHelper handler;
 
-	private void addMenuItem(JMenuItem item, ActionListener listener, boolean enabled) {
+	private void addMenuItem(final JMenuItem item, final ActionListener listener, final boolean enabled) {
 		add(item);
 		if (enabled) {
 			item.addActionListener(listener);
@@ -150,7 +150,7 @@ public class FixtureEditMenu extends JPopupMenu {
 			int num;
 			try {
 				num = Integer.parseInt(((String) result).trim());
-			} catch (NumberFormatException except) {
+			} catch (final NumberFormatException except) {
 				// FIXME: Log the failure
 				return;
 			}

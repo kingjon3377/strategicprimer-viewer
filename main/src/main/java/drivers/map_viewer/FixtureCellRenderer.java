@@ -73,7 +73,7 @@ import java.util.logging.Level;
 	 *
 	 * FIXME: Move to third-party module
 	 */
-	private static void setComponentPreferredSize(JComponent component, int width) {
+	private static void setComponentPreferredSize(final JComponent component, final int width) {
 		View view = (View) component.getClientProperty(BasicHTML.propertyKey);
 		view.setSize((float) width, (float) 0.0);
 		int wid = (int) Math.ceil(view.getPreferredSpan(View.X_AXIS));
@@ -83,7 +83,7 @@ import java.util.logging.Level;
 
 	private static final Icon DEFAULT_FIXTURE_ICON = createDefaultFixtureIcon();
 
-	private Icon getIcon(HasImage obj) {
+	private Icon getIcon(final HasImage obj) {
 		String image = obj.getImage();
 		String actualImage;
 		if (image.isEmpty() || MISSING_FILENAMES.contains(image)) {
@@ -101,15 +101,15 @@ import java.util.logging.Level;
 			LOGGER.log(Level.FINE, "With stack trace", except);
 			MISSING_FILENAMES.add(actualImage);
 			return DEFAULT_FIXTURE_ICON;
-		} catch (IOException except) {
+		} catch (final IOException except) {
 			LOGGER.log(Level.SEVERE, "I/O error reading image", except);
 			return DEFAULT_FIXTURE_ICON;
 		}
 	}
 
 	@Override
-	public Component getListCellRendererComponent(JList<? extends TileFixture> list,
-			TileFixture val, int index, boolean isSelected, boolean cellHasFocus) {
+	public Component getListCellRendererComponent(final JList<? extends TileFixture> list,
+	                                              final TileFixture val, final int index, final boolean isSelected, final boolean cellHasFocus) {
 		JLabel component = (JLabel) DEFAULT_RENDERER.getListCellRendererComponent(list,
 			val, index, isSelected, cellHasFocus);
 		component.setText(String.format("<html><p>%s</p></html>", val.getShortDescription()));

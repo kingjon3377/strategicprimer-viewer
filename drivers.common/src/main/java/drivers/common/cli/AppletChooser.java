@@ -17,7 +17,7 @@ import org.jetbrains.annotations.Nullable;
  */
 public class AppletChooser<AppletClass extends Applet> {
 	@SafeVarargs
-	public AppletChooser(ICLIHelper cli, AppletClass... applets) {
+	public AppletChooser(final ICLIHelper cli, final AppletClass... applets) {
 		this.cli = cli;
 		Map<String, AppletClass> temp = new HashMap<String, AppletClass>();
 		for (AppletClass applet : applets) {

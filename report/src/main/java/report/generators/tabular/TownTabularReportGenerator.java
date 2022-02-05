@@ -26,7 +26,7 @@ public class TownTabularReportGenerator implements ITableGenerator<AbstractTown>
 		return AbstractTown.class;
 	}
 
-	public TownTabularReportGenerator(Player player, @Nullable Point hq, MapDimensions dimensions) {
+	public TownTabularReportGenerator(final Player player, @Nullable final Point hq, final MapDimensions dimensions) {
 		this.player = player;
 		this.hq = hq;
 		this.dimensions = dimensions;
@@ -65,8 +65,8 @@ public class TownTabularReportGenerator implements ITableGenerator<AbstractTown>
 	 */
 	@Override
 	public Iterable<Iterable<String>> produce(
-			DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-			AbstractTown item, int key, Point loc, Map<Integer, Integer> parentMap) {
+			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
+			final AbstractTown item, final int key, final Point loc, final Map<Integer, Integer> parentMap) {
 		fixtures.remove(key);
 		return Collections.singleton(Arrays.asList(distanceString(loc, hq, dimensions),
 			locationString(loc), ownerString(player, item.getOwner()), item.getKind(),
@@ -80,7 +80,7 @@ public class TownTabularReportGenerator implements ITableGenerator<AbstractTown>
 	 * fortifications together, and so on.
 	 */
 	@Override
-	public int comparePairs(Pair<Point, AbstractTown> one, Pair<Point, AbstractTown> two) {
+	public int comparePairs(final Pair<Point, AbstractTown> one, final Pair<Point, AbstractTown> two) {
 		return Comparator.<Pair<Point, AbstractTown>, AbstractTown>comparing(Pair::getValue1, TownComparators::compareTownKind)
 			.thenComparing(Comparator.comparing(Pair::getValue0, distanceComparator))
 			.thenComparing(Comparator.comparing(Pair::getValue1,

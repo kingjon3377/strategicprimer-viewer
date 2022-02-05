@@ -101,19 +101,19 @@ public class TabularReportGUIFactory implements GUIDriverFactory {
 	public Iterable<Path> askUserForFiles() {
 		try {
 			return SPFileChooser.open((Path) null).getFiles();
-		} catch (FileChooser.ChoiceInterruptedException except) {
+		} catch (final FileChooser.ChoiceInterruptedException except) {
 			LOGGER.log(Level.WARNING, "Choice interrupted or user didn't choose", except);
 			return Collections.emptyList();
 		}
 	}
 
 	@Override
-	public GUIDriver createDriver(ICLIHelper cli, SPOptions options, IDriverModel model) {
+	public GUIDriver createDriver(final ICLIHelper cli, final SPOptions options, final IDriverModel model) {
 		return new TabularReportGUI(cli, options, model);
 	}
 
 	@Override
-	public IDriverModel createModel(IMutableMapNG map) {
+	public IDriverModel createModel(final IMutableMapNG map) {
 		return new SimpleDriverModel(map);
 	}
 }

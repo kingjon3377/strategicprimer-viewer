@@ -35,7 +35,7 @@ public class RandomMovementFactory implements ModelDriverFactory {
 	}
 
 	@Override
-	public ModelDriver createDriver(ICLIHelper cli, SPOptions options, IDriverModel model) {
+	public ModelDriver createDriver(final ICLIHelper cli, final SPOptions options, final IDriverModel model) {
 		if (model instanceof IExplorationModel) {
 			return new RandomMovementCLI(cli, options, (IExplorationModel) model);
 		} else {
@@ -44,7 +44,7 @@ public class RandomMovementFactory implements ModelDriverFactory {
 	}
 
 	@Override
-	public IDriverModel createModel(IMutableMapNG map) {
+	public IDriverModel createModel(final IMutableMapNG map) {
 		return new ExplorationModel(map);
 	}
 }

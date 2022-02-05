@@ -12,7 +12,7 @@ import java.util.stream.StreamSupport;
  * A Job a worker can work at or have training or experience in.
  */
 public final class Job implements IMutableJob {
-	public Job(String name, int levelNum, ISkill... skills) {
+	public Job(final String name, final int levelNum, final ISkill... skills) {
 		this.name = name;
 		setLevel(levelNum);
 		for (ISkill skill : skills) {
@@ -59,7 +59,7 @@ public final class Job implements IMutableJob {
 	 * TODO: Remove this in Java?
 	 */
 	@Override
-	public void setLevel(int level) {
+	public void setLevel(final int level) {
 		if (level < 0) {
 			throw new IllegalArgumentException("Job level cannot be negative");
 		}
@@ -72,7 +72,7 @@ public final class Job implements IMutableJob {
 	 * TODO: What should we do with matching but non-equal skill?
 	 */
 	@Override
-	public void addSkill(ISkill skill) {
+	public void addSkill(final ISkill skill) {
 		if (skillSet.containsKey(skill.getName()) &&
 				Objects.equals(skill, skillSet.get(skill.getName()))) {
 			return;
@@ -81,7 +81,7 @@ public final class Job implements IMutableJob {
 		}
 	}
 
-	private ISkill copySkill(ISkill skill) {
+	private ISkill copySkill(final ISkill skill) {
 		return skill.copy();
 	}
 
@@ -109,7 +109,7 @@ public final class Job implements IMutableJob {
 	 * TODO: Specify IJob instead of the Job class?
 	 */
 	@Override
-	public boolean equals(Object obj) {
+	public boolean equals(final Object obj) {
 		if (obj instanceof Job) {
 			return name.equals(((Job) obj).getName()) && levelNum == ((Job) obj).getLevel() &&
 				StreamSupport.stream(((Job) obj).spliterator(), true)
@@ -129,7 +129,7 @@ public final class Job implements IMutableJob {
 	 * TODO: Perhaps a lower-level Job with extra skills should still be a subset?
 	 */
 	@Override
-	public boolean isSubset(IJob obj, Consumer<String> report) {
+	public boolean isSubset(final IJob obj, final Consumer<String> report) {
 		if (!name.equals(obj.getName())) {
 			report.accept("Passed Jobs with different names");
 			return false;
@@ -179,7 +179,7 @@ public final class Job implements IMutableJob {
 	 * Get a Skill by name, or a newly-constructed empty one if we didn't have one.
 	 */
 	@Override
-	public ISkill getSkill(String skillName) {
+	public ISkill getSkill(final String skillName) {
 		if (skillSet.containsKey(skillName)) {
 			return skillSet.get(skillName);
 		} else {
@@ -193,7 +193,7 @@ public final class Job implements IMutableJob {
 	 * Remove a Skill from the Job.
 	 */
 	@Override
-	public void removeSkill(ISkill skill) {
+	public void removeSkill(final ISkill skill) {
 		skillSet.remove(skill.getName(), skill);
 	}
 }

@@ -86,18 +86,18 @@ public class MapCheckerCLI implements UtilityDriver {
 	}
 
 	private static class SPContentWarning extends Exception {
-		public SPContentWarning(Point context, String message) {
+		public SPContentWarning(final Point context, final String message) {
 			super(String.format("At %s: %s", context, message));
 		}
 	}
 
 	private static class OwnerChecker {
 		private final IMapNG map;
-		public OwnerChecker(IMapNG map) {
+		public OwnerChecker(final IMapNG map) {
 			this.map = map;
 		}
 
-		public boolean check(TileType terrain, Point context, IFixture fixture, Warning warner) {
+		public boolean check(final TileType terrain, final Point context, final IFixture fixture, final Warning warner) {
 			boolean retval = false;
 			if (fixture instanceof HasOwner) {
 				if (((HasOwner) fixture).getOwner().getName().trim().isEmpty()) {
@@ -120,8 +120,8 @@ public class MapCheckerCLI implements UtilityDriver {
 		}
 	}
 
-	private static boolean lateriteChecker(TileType terrain, Point context, IFixture fixture,
-			Warning warner) {
+	private static boolean lateriteChecker(final TileType terrain, final Point context, final IFixture fixture,
+	                                       final Warning warner) {
 		if (fixture instanceof StoneDeposit &&
 				StoneKind.Laterite.equals(((StoneDeposit) fixture).getStone()) &&
 				!TileType.Jungle.equals(terrain)) {
@@ -132,8 +132,8 @@ public class MapCheckerCLI implements UtilityDriver {
 		}
 	}
 
-	private static boolean oasisChecker(TileType terrain, Point context, IFixture fixture,
-			Warning warner) {
+	private static boolean oasisChecker(final TileType terrain, final Point context, final IFixture fixture,
+	                                    final Warning warner) {
 		if (fixture instanceof Oasis && !TileType.Desert.equals(terrain)) {
 			warner.handle(new SPContentWarning(context, "Oasis in non-desert"));
 			return true;
@@ -142,8 +142,8 @@ public class MapCheckerCLI implements UtilityDriver {
 		}
 	}
 
-	private static boolean animalTracksChecker(TileType terrain, Point context, IFixture fixture,
-			Warning warner) {
+	private static boolean animalTracksChecker(final TileType terrain, final Point context, final IFixture fixture,
+	                                           final Warning warner) {
 		if (fixture instanceof AnimalTracks) {
 			warner.handle(new SPContentWarning(context,
 				"Animal tracks in map suspected to be main"));
@@ -153,8 +153,8 @@ public class MapCheckerCLI implements UtilityDriver {
 		}
 	}
 
-	private static boolean aquaticVillageChecker(TileType terrain, Point context,
-			IFixture fixture, Warning warner) {
+	private static boolean aquaticVillageChecker(final TileType terrain, final Point context,
+	                                             final IFixture fixture, final Warning warner) {
 		if (fixture instanceof Village &&
 				LandRaces.LAND_RACES.contains(((Village) fixture).getRace()) &&
 				TileType.Ocean.equals(terrain)) {
@@ -165,7 +165,7 @@ public class MapCheckerCLI implements UtilityDriver {
 		}
 	}
 
-	private static boolean suspiciousSkill(IJob job) {
+	private static boolean suspiciousSkill(final IJob job) {
 		if (StreamSupport.stream(job.spliterator(), false).count() > 1) {
 			return false;
 		} else {
@@ -174,8 +174,8 @@ public class MapCheckerCLI implements UtilityDriver {
 		}
 	}
 
-	private static boolean suspiciousSkillCheck(TileType terrain, Point context, IFixture fixture,
-			Warning warner) {
+	private static boolean suspiciousSkillCheck(final TileType terrain, final Point context, final IFixture fixture,
+	                                            final Warning warner) {
 		boolean retval = false;
 		if (fixture instanceof IWorker) {
 			if (StreamSupport.stream(((IWorker) fixture).spliterator(), true)
@@ -206,8 +206,8 @@ public class MapCheckerCLI implements UtilityDriver {
 	private static final List<String> PLACEHOLDER_UNITS = Collections.unmodifiableList(Arrays.asList(
 		"unit", "units"));
 
-	private static boolean resourcePlaceholderChecker(TileType terrain, Point context,
-			IFixture fixture, Warning warner) {
+	private static boolean resourcePlaceholderChecker(final TileType terrain, final Point context,
+	                                                  final IFixture fixture, final Warning warner) {
 		if (fixture instanceof IResourcePile) {
 			if (PLACEHOLDER_KINDS.contains(((IResourcePile) fixture).getKind())) {
 				warner.handle(new SPContentWarning(context, String.format(
@@ -247,12 +247,12 @@ public class MapCheckerCLI implements UtilityDriver {
 		}
 	}
 
-	private static boolean positiveAcres(HasExtent<?> item) {
+	private static boolean positiveAcres(final HasExtent<?> item) {
 		return item.getAcres().doubleValue() > 0.0;
 	}
 
-	private static boolean acreageChecker(Point context, Warning warner,
-			Iterable<? extends IFixture> fixtures) {
+	private static boolean acreageChecker(final Point context, final Warning warner,
+	                                      final Iterable<? extends IFixture> fixtures) {
 		double total = 0.0;
 		boolean retval = false;
 		// TODO: Take Collection, not Iterable (and for other such functions)
@@ -302,8 +302,8 @@ public class MapCheckerCLI implements UtilityDriver {
 		MapCheckerCLI::suspiciousSkillCheck,
 		MapCheckerCLI::resourcePlaceholderChecker, MapCheckerCLI::oasisChecker));
 
-	private static boolean contentCheck(Checker checker, TileType terrain, Point context,
-			Warning warner, Iterable<? extends IFixture> list) {
+	private static boolean contentCheck(final Checker checker, final TileType terrain, final Point context,
+	                                    final Warning warner, final Iterable<? extends IFixture> list) {
 		boolean retval = false;
 		for (IFixture fixture : list) {
 			if (fixture instanceof FixtureIterable) {
@@ -323,36 +323,36 @@ public class MapCheckerCLI implements UtilityDriver {
 		return EmptyOptions.EMPTY_OPTIONS;
 	}
 
-	public MapCheckerCLI(Consumer<String> stdout, Consumer<String> stderr) {
+	public MapCheckerCLI(final Consumer<String> stdout, final Consumer<String> stderr) {
 		this.stdout = stdout;
 		this.stderr = stderr;
 	}
 
-	public void check(Path file) {
+	public void check(final Path file) {
 		check(file, new Warning(System.out::println, true));
 	}
 
-	public void check(Path file, Warning warner) {
+	public void check(final Path file, final Warning warner) {
 		stdout.accept("Starting " + file);
 		IMapNG map;
 		try {
 			map = MapIOHelper.readMap(file, warner);
-		} catch (MissingFileException except) {
+		} catch (final MissingFileException except) {
 			stderr.accept(file + " not found");
 			LOGGER.severe(file + " not found");
 			LOGGER.log(Level.FINE, "Full stack trace of file-not-found:", except);
 			return;
-		} catch (IOException except) {
+		} catch (final IOException except) {
 			stderr.accept("I/O error reading " + file);
 			LOGGER.severe(String.format("I/O error reading %s: %s", file, except.getMessage()));
 			LOGGER.log(Level.FINE, "Full stack trace of I/O error", except);
 			return;
-		} catch (MalformedXMLException except) {
+		} catch (final MalformedXMLException except) {
 			stderr.accept("Malformed XML in " + file);
 			LOGGER.severe(String.format("Malformed XML in %s: %s", file, except.getMessage()));
 			LOGGER.log(Level.FINE, "Full stack trace of malformed-XML error", except);
 			return;
-		} catch (SPFormatException except) {
+		} catch (final SPFormatException except) {
 			stderr.accept("SP map format error in " + file);
 			LOGGER.severe(String.format("SP map format error in %s: %s", file,
 				except.getMessage()));
@@ -409,7 +409,7 @@ public class MapCheckerCLI implements UtilityDriver {
 	}
 
 	@Override
-	public void startDriver(String... args) {
+	public void startDriver(final String... args) {
 		// TODO: Convert to stream/functional form?
 		for (String filename : args) {
 			if (filename == null) {

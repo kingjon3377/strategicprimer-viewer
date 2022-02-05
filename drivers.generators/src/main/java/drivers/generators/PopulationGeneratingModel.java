@@ -48,18 +48,18 @@ public class PopulationGeneratingModel extends SimpleMultiMapModel { // TODO: Ex
 	 * TODO: Move * to lovelace.util? Or is there some equivalent
 	 * method-reference logic with curry() or uncurry() or some such?
 	 */
-	private static <T> Set<T> intersection(Set<T> one, Set<T> two) {
+	private static <T> Set<T> intersection(final Set<T> one, final Set<T> two) {
 		Set<T> retval = new HashSet<T>(one);
 		retval.retainAll(two);
 		return retval;
 	}
 
-	public PopulationGeneratingModel(IMutableMapNG map) {
+	public PopulationGeneratingModel(final IMutableMapNG map) {
 		super(map);
 	}
 
 	// TODO: Make a static copyConstructor() method delegating to a private constructor method instead?
-	public PopulationGeneratingModel(IDriverModel model) {
+	public PopulationGeneratingModel(final IDriverModel model) {
 		super(model.getRestrictedMap());
 	}
 
@@ -69,7 +69,7 @@ public class PopulationGeneratingModel extends SimpleMultiMapModel { // TODO: Ex
 	 * true if a population was in fact set (i.e. if there was a matching
 	 * object there in any of the maps), false otherwise.
 	 */
-	public boolean setAnimalPopulation(Point location, boolean talking, String kind, int population) {
+	public boolean setAnimalPopulation(final Point location, final boolean talking, final String kind, final int population) {
 		boolean retval = false;
 		for (IMutableMapNG map : getRestrictedAllMaps()) { // TODO: Should submaps really all get this information?
 			Optional<Animal> animal = map.getFixtures(location).stream()
@@ -92,7 +92,7 @@ public class PopulationGeneratingModel extends SimpleMultiMapModel { // TODO: Ex
 	 * was in fact set (i.e. if there was a matching grove or orchard there
 	 * in any of the maps), false otherwise.
 	 */
-	public boolean setGrovePopulation(Point location, String kind, int population) {
+	public boolean setGrovePopulation(final Point location, final String kind, final int population) {
 		boolean retval = false;
 		for (IMutableMapNG map : getRestrictedAllMaps()) { // TODO: Should submaps really all get this information?
 			Optional<Grove> grove = map.getFixtures(location).stream()
@@ -114,7 +114,7 @@ public class PopulationGeneratingModel extends SimpleMultiMapModel { // TODO: Ex
 	 * (i.e. there were in fact matching shrubs there in any of the maps),
 	 * false otherwise.
 	 */
-	public boolean setShrubPopulation(Point location, String kind, int population) {
+	public boolean setShrubPopulation(final Point location, final String kind, final int population) {
 		boolean retval = false;
 		for (IMutableMapNG map : getRestrictedAllMaps()) { // TODO: Should submaps really all get this information?
 			Optional<Shrub> shrub = map.getFixtures(location).stream()
@@ -135,7 +135,7 @@ public class PopulationGeneratingModel extends SimpleMultiMapModel { // TODO: Ex
 	 * location} to {@link acres} in maps where that field or meadow is
 	 * known. Returns true if any of the maps had it at that location, false otherwise.
 	 */
-	public boolean setFieldExtent(Point location, Meadow field, double acres) {
+	public boolean setFieldExtent(final Point location, final Meadow field, final double acres) {
 		boolean retval = false;
 		for (IMutableMapNG map : getRestrictedAllMaps()) { // TODO: Should submaps really all get this information?
 			Optional<Meadow> existing = map.getFixtures(location).stream()
@@ -161,7 +161,7 @@ public class PopulationGeneratingModel extends SimpleMultiMapModel { // TODO: Ex
 	 * {@link acres} in maps where that forest is known. Returns true if
 	 * any of the maps had it at that location, false otherwise.
 	 */
-	public boolean setForestExtent(Point location, Forest forest, Number acres) {
+	public boolean setForestExtent(final Point location, final Forest forest, final Number acres) {
 		boolean retval = false;
 		for (IMutableMapNG map : getRestrictedAllMaps()) { // TODO: Should submaps really all get this information?
 			Optional<Forest> existing = map.getFixtures(location).stream()
@@ -188,7 +188,7 @@ public class PopulationGeneratingModel extends SimpleMultiMapModel { // TODO: Ex
 	 *
 	 * TODO: Should use a copy of the stats object, not it itself
 	 */
-	public boolean assignTownStats(Point location, int townId, String name, CommunityStats stats) {
+	public boolean assignTownStats(final Point location, final int townId, final String name, final CommunityStats stats) {
 		boolean retval = false;
 		for (IMutableMapNG map : getRestrictedAllMaps()) { // TODO: Should submaps really all get this information?
 			Optional<ITownFixture> town = map.getFixtures(location).stream()
@@ -215,7 +215,7 @@ public class PopulationGeneratingModel extends SimpleMultiMapModel { // TODO: Ex
 	 * otherwise return a stream containing only the fixture. This flattens
 	 * a fortress's contents into a stream of tile fixtures.
 	 */
-	private static Stream<IFixture> flattenFortresses(IFixture fixture) {
+	private static Stream<IFixture> flattenFortresses(final IFixture fixture) {
 		if (fixture instanceof IFortress) {
 			return ((IFortress) fixture).stream().map(IFixture.class::cast);
 		} else {
@@ -226,7 +226,7 @@ public class PopulationGeneratingModel extends SimpleMultiMapModel { // TODO: Ex
 	/**
 	 * Add a (copy of a) worker to a unit in all maps where that unit exists.
 	 */
-	public void addWorkerToUnit(IUnit unit, IWorker worker) {
+	public void addWorkerToUnit(final IUnit unit, final IWorker worker) {
 		String existingNote;
 		if (!worker.getNote(unit.getOwner()).isEmpty()) { // TODO: invert
 			existingNote = String.format("%s ", worker.getNote(unit.getOwner()));
@@ -263,7 +263,7 @@ public class PopulationGeneratingModel extends SimpleMultiMapModel { // TODO: Ex
 	/**
 	 * All the units in the main map belonging to the specified player.
 	 */
-	public Iterable<IUnit> getUnits(Player player) {
+	public Iterable<IUnit> getUnits(final Player player) {
 		return getMap().streamLocations()
 			.flatMap(l -> getMap().getFixtures(l).stream())
 			.flatMap(PopulationGeneratingModel::flattenFortresses)
@@ -296,7 +296,7 @@ public class PopulationGeneratingModel extends SimpleMultiMapModel { // TODO: Ex
 	 *
 	 * TODO: If more than one map, return a proxy for the units; otherwise, return the unit
 	 */
-	public void addUnitAtLocation(IUnit unit, Point location) {
+	public void addUnitAtLocation(final IUnit unit, final Point location) {
 		for (IMutableMapNG indivMap : getRestrictedAllMaps()) {
 			indivMap.addFixture(location, unit); // FIXME: Check for existing matching unit there already
 			indivMap.setModified(true);
@@ -309,7 +309,7 @@ public class PopulationGeneratingModel extends SimpleMultiMapModel { // TODO: Ex
 	 * found, or created in a matching mutable worker, in at least one map,
 	 * false otherwise.
 	 */
-	public boolean addJobLevel(IUnit unit, IWorker worker, String jobName) {
+	public boolean addJobLevel(final IUnit unit, final IWorker worker, final String jobName) {
 		boolean any = false;
 		for (IMutableMapNG map : getRestrictedAllMaps()) {
 			for (IUnit container : map.streamLocations()

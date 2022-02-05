@@ -85,7 +85,7 @@ import org.takes.http.Exit;
  */
 public class TabularReportCLI implements ReadOnlyDriver {
 	private static final Logger LOGGER = Logger.getLogger(TabularReportCLI.class.getName());
-	public TabularReportCLI(ICLIHelper cli, SPOptions options, IDriverModel model) {
+	public TabularReportCLI(final ICLIHelper cli, final SPOptions options, final IDriverModel model) {
 		this.cli = cli;
 		this.options = options;
 		this.model = model;
@@ -107,7 +107,7 @@ public class TabularReportCLI implements ReadOnlyDriver {
 
 	private final Map<String, BufferedWriter> writers = new HashMap<>();
 
-	private ThrowingFunction<String, ThrowingConsumer<String, IOException>, IOException> filenameFunction(Path base) {
+	private ThrowingFunction<String, ThrowingConsumer<String, IOException>, IOException> filenameFunction(final Path base) {
 		String baseName = base.getFileName().toString();
 		return tableName -> {
 			String key = String.format("%s.%s.csv", baseName, tableName);
@@ -122,7 +122,7 @@ public class TabularReportCLI implements ReadOnlyDriver {
 		};
 	}
 
-	private void createReports(IMapNG map, @Nullable Path mapFile) throws DriverFailedException {
+	private void createReports(final IMapNG map, @Nullable final Path mapFile) throws DriverFailedException {
 		if (mapFile != null) { // TODO: invert
 			try {
 				TabularReportGenerator.createTabularReports(map,
@@ -151,7 +151,7 @@ public class TabularReportCLI implements ReadOnlyDriver {
 				for (BufferedWriter writer : writers.values()) {
 					writer.close();
 				}
-			} catch (IOException except) {
+			} catch (final IOException except) {
 				LOGGER.log(Level.SEVERE, "I/O error closing writer(s)", except);
 			}
 		}

@@ -18,7 +18,7 @@ import common.map.fixtures.mobile.AnimalImpl;
 	 * Hares won't appear in mountains, forests, or ocean.
 	 */
 	@Override
-	public boolean isSuitable(IMapNG map, Point location) {
+	public boolean isSuitable(final IMapNG map, final Point location) {
 		TileType terrain = map.getBaseTerrain(location);
 		return terrain != null && !map.isMountainous(location) &&
 			!TileType.Ocean.equals(terrain) &&
@@ -31,7 +31,7 @@ import common.map.fixtures.mobile.AnimalImpl;
 	}
 
 	@Override
-	public void create(Point location, IPopulatorDriverModel model, IDRegistrar idf) {
+	public void create(final Point location, final IPopulatorDriverModel model, final IDRegistrar idf) {
 		model.addFixture(location, new AnimalImpl("hare", false, "wild", idf.createID()));
 	}
 }

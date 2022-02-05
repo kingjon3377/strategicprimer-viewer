@@ -28,7 +28,7 @@ public final class Point implements Comparable<Point> {
 		return column;
 	}
 
-	public Point(int row, int column) {
+	public Point(final int row, final int column) {
 		this.row = row;
 		this.column = column;
 		string = String.format("(%d, %d)", row, column);
@@ -40,7 +40,7 @@ public final class Point implements Comparable<Point> {
 	public static final Point INVALID_POINT = new Point(-1, -1);
 
 	@Override
-	public boolean equals(Object obj) {
+	public boolean equals(final Object obj) {
 		if (this == obj) {
 			return true;
 		} else if (obj instanceof Point) {
@@ -66,7 +66,7 @@ public final class Point implements Comparable<Point> {
 	 * Compare to another point, by first row and then column.
 	 */
 	@Override
-	public int compareTo(Point point) {
+	public int compareTo(final Point point) {
 		int rowComparison = Integer.compare(row, point.getRow());
 		if (rowComparison == 0) {
 			return Integer.compare(column, point.getColumn());

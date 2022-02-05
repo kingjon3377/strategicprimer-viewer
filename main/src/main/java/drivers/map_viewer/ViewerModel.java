@@ -60,7 +60,7 @@ public class ViewerModel extends SimpleDriverModel implements IViewerModel {
 	 */
 	public static final int JUMP_INTERVAL = 5;
 
-	private static Stream<IFixture> flattenIncluding(IFixture fixture) {
+	private static Stream<IFixture> flattenIncluding(final IFixture fixture) {
 		if (fixture instanceof FixtureIterable) {
 			return Stream.concat(Stream.of(fixture), ((FixtureIterable<?>) fixture).stream());
 		} else {
@@ -73,7 +73,7 @@ public class ViewerModel extends SimpleDriverModel implements IViewerModel {
 	 * stream of its contents paired with its location; otherwise, return a
 	 * [[Singleton]] of the argument.
 	 */
-	private static Stream<Pair<Point, IFixture>> flattenEntries(Pair<Point, IFixture> entry) {
+	private static Stream<Pair<Point, IFixture>> flattenEntries(final Pair<Point, IFixture> entry) {
 		if (entry.getValue1() instanceof IFortress) {
 			return ((IFortress) entry.getValue1()).stream().map(m -> Pair.with(entry.getValue0(), (IFixture) m));
 		} else {
@@ -86,7 +86,7 @@ public class ViewerModel extends SimpleDriverModel implements IViewerModel {
 	 * return a Singleton containing it. This is intended to be used in
 	 * [[Iterable.flatMap]].
 	 */
-	private static Stream<IFixture> unflattenNonFortresses(TileFixture fixture) {
+	private static Stream<IFixture> unflattenNonFortresses(final TileFixture fixture) {
 		if (fixture instanceof IFortress) {
 			return ((IFortress) fixture).stream().map(IFixture.class::cast);
 		} else {
@@ -171,14 +171,14 @@ public class ViewerModel extends SimpleDriverModel implements IViewerModel {
 	/**
 	 * @param theMap The initial map
 	 */
-	public ViewerModel(IMutableMapNG theMap) {
+	public ViewerModel(final IMutableMapNG theMap) {
 		super(theMap);
 		visDimensions = new VisibleDimensions(0, theMap.getDimensions().getRows() - 1,
 			0, theMap.getDimensions().getColumns() - 1);
 	}
 
 	// TODO: Provide static method copyConstructor() calling this?
-	public ViewerModel(IDriverModel model) {
+	public ViewerModel(final IDriverModel model) {
 		super(model.getRestrictedMap());
 		if (model instanceof IViewerModel) {
 			IViewerModel vm = (IViewerModel) model;
@@ -201,7 +201,7 @@ public class ViewerModel extends SimpleDriverModel implements IViewerModel {
 	}
 
 	@Override
-	public void setVisibleDimensions(VisibleDimensions visibleDimensions) {
+	public void setVisibleDimensions(final VisibleDimensions visibleDimensions) {
 		if (!visDimensions.equals(visibleDimensions)) {
 			VisibleDimensions oldDimensions = visDimensions;
 			visDimensions = visibleDimensions;
@@ -306,7 +306,7 @@ public class ViewerModel extends SimpleDriverModel implements IViewerModel {
 	}
 
 	@Override
-	public void setCursor(Point cursor) {
+	public void setCursor(final Point cursor) {
 		Point oldCursor = cursorPoint;
 		cursorPoint = cursor;
 		scs.fireCursorChanges(oldCursor, cursor);
@@ -321,7 +321,7 @@ public class ViewerModel extends SimpleDriverModel implements IViewerModel {
 	}
 
 	@Override
-	public void setSelection(Point selection) {
+	public void setSelection(final Point selection) {
 		Point oldSel = selPoint;
 		selPoint = selection;
 		if (selection.isValid()) {
@@ -345,7 +345,7 @@ public class ViewerModel extends SimpleDriverModel implements IViewerModel {
 	}
 
 	@Override
-	public void setInteraction(@Nullable Point interaction) {
+	public void setInteraction(@Nullable final Point interaction) {
 		interactionPoint = interaction;
 		scs.fireInteraction();
 	}
@@ -359,22 +359,22 @@ public class ViewerModel extends SimpleDriverModel implements IViewerModel {
 	}
 
 	@Override
-	public void addSelectionChangeListener(SelectionChangeListener listener) {
+	public void addSelectionChangeListener(final SelectionChangeListener listener) {
 		scs.addSelectionChangeListener(listener);
 	}
 
 	@Override
-	public void removeSelectionChangeListener(SelectionChangeListener listener) {
+	public void removeSelectionChangeListener(final SelectionChangeListener listener) {
 		scs.removeSelectionChangeListener(listener);
 	}
 
 	@Override
-	public void addGraphicalParamsListener(GraphicalParamsListener listener) {
+	public void addGraphicalParamsListener(final GraphicalParamsListener listener) {
 		gpListeners.add(listener);
 	}
 
 	@Override
-	public void removeGraphicalParamsListener(GraphicalParamsListener listener) {
+	public void removeGraphicalParamsListener(final GraphicalParamsListener listener) {
 		gpListeners.remove(listener);
 	}
 
@@ -389,7 +389,7 @@ public class ViewerModel extends SimpleDriverModel implements IViewerModel {
 	 * the visible dimensions and the zoom level.
 	 */
 	@Override
-	public void setMap(IMutableMapNG newMap) {
+	public void setMap(final IMutableMapNG newMap) {
 		super.setMap(newMap);
 		clearSelection();
 		visDimensions = new VisibleDimensions(0, newMap.getDimensions().getRows() - 1, 0,
@@ -401,7 +401,7 @@ public class ViewerModel extends SimpleDriverModel implements IViewerModel {
 	 * Set whether a tile is mountainous.
 	 */
 	@Override
-	public void setMountainous(Point location, boolean mountainous) {
+	public void setMountainous(final Point location, final boolean mountainous) {
 		getRestrictedMap().setMountainous(location, mountainous);
 		setMapModified(true); // TODO: Only set the flag if this was a change?
 	}
@@ -410,7 +410,7 @@ public class ViewerModel extends SimpleDriverModel implements IViewerModel {
 	 * Add a fixture to the map at a point.
 	 */
 	@Override
-	public void addFixture(Point location, TileFixture fixture) {
+	public void addFixture(final Point location, final TileFixture fixture) {
 		getRestrictedMap().addFixture(location, fixture);
 		setMapModified(true); // TODO: If addFixture() returns Boolean, only set this flag if this was a change?
 	}
@@ -419,7 +419,7 @@ public class ViewerModel extends SimpleDriverModel implements IViewerModel {
 	 * Remove a fixture from the map at a point.
 	 */
 	@Override
-	public void removeMatchingFixtures(Point location, Predicate<TileFixture> condition) {
+	public void removeMatchingFixtures(final Point location, final Predicate<TileFixture> condition) {
 		for (TileFixture fixture : getMap().getFixtures(location).stream().filter(condition)
 				.collect(Collectors.toList())) { // TODO: try to avoid collector step
 			getRestrictedMap().removeFixture(location, fixture);
@@ -431,7 +431,7 @@ public class ViewerModel extends SimpleDriverModel implements IViewerModel {
 	 * Add a bookmark at the given location.
 	 */
 	@Override
-	public void addBookmark(Point location) {
+	public void addBookmark(final Point location) {
 		getRestrictedMap().addBookmark(location);
 		setMapModified(true); // TODO: Only set the flag if this was a change?
 	}
@@ -440,7 +440,7 @@ public class ViewerModel extends SimpleDriverModel implements IViewerModel {
 	 * Remove a bookmark at the current location.
 	 */
 	@Override
-	public void removeBookmark(Point location) {
+	public void removeBookmark(final Point location) {
 		getRestrictedMap().removeBookmark(location);
 		setMapModified(true); // TODO: Only set the flag if this was a change?
 	}
@@ -449,7 +449,7 @@ public class ViewerModel extends SimpleDriverModel implements IViewerModel {
 	 * Add a river at a location.
 	 */
 	@Override
-	public void addRiver(Point location, River river) {
+	public void addRiver(final Point location, final River river) {
 		getRestrictedMap().addRivers(location, river);
 		setMapModified(true); // TODO: Only set the flag if this was a change?
 	}
@@ -458,7 +458,7 @@ public class ViewerModel extends SimpleDriverModel implements IViewerModel {
 	 * Remove a river at a location.
 	 */
 	@Override
-	public void removeRiver(Point location, River river) {
+	public void removeRiver(final Point location, final River river) {
 		getRestrictedMap().removeRivers(location, river);
 		setMapModified(true); // TODO: Only set the flag if this was a change?
 	}
@@ -467,7 +467,7 @@ public class ViewerModel extends SimpleDriverModel implements IViewerModel {
 	 * Set the map's terrain type at the given point.
 	 */
 	@Override
-	public void setBaseTerrain(Point location, @Nullable TileType terrain) {
+	public void setBaseTerrain(final Point location, @Nullable final TileType terrain) {
 		getRestrictedMap().setBaseTerrain(location, terrain);
 		setMapModified(true); // TODO: Only set the flag if this was a change?
 	}
@@ -476,7 +476,7 @@ public class ViewerModel extends SimpleDriverModel implements IViewerModel {
 	 * Move a unit-member from one unit to another.
 	 */
 	@Override
-	public void moveMember(UnitMember member, IUnit old, IUnit newOwner) {
+	public void moveMember(final UnitMember member, final IUnit old, final IUnit newOwner) {
 		IMutableUnit matchingOld = getMap().streamLocations()
 			.flatMap(l -> getMap().getFixtures(l).stream())
 			.flatMap(ViewerModel::unflattenNonFortresses)
@@ -502,7 +502,7 @@ public class ViewerModel extends SimpleDriverModel implements IViewerModel {
 		}
 	}
 
-	private Predicate<Pair<Point, IFixture>> unitMatching(IUnit unit) {
+	private Predicate<Pair<Point, IFixture>> unitMatching(final IUnit unit) {
 		return entry -> {
 			IFixture fixture = entry.getValue1();
 			return fixture instanceof IUnit && fixture.getId() == unit.getId() &&
@@ -519,7 +519,7 @@ public class ViewerModel extends SimpleDriverModel implements IViewerModel {
 	 * if there are no matching units in any map the method returns false.
 	 */
 	@Override
-	public boolean removeUnit(IUnit unit) {
+	public boolean removeUnit(final IUnit unit) {
 		LOGGER.finer("In ViewerModel.removeUnit()");
 		Pair<Point, IFixture> pair = getMap().streamLocations()
 				.flatMap(l -> getMap().getFixtures(l).stream()
@@ -569,7 +569,7 @@ public class ViewerModel extends SimpleDriverModel implements IViewerModel {
 	}
 
 	@Override
-	public void addUnitMember(IUnit unit, UnitMember member) {
+	public void addUnitMember(final IUnit unit, final UnitMember member) {
 		IMutableUnit matching = getMap().streamLocations()
 			.flatMap(l -> getMap().getFixtures(l).stream())
 			.flatMap(ViewerModel::unflattenNonFortresses)
@@ -589,7 +589,7 @@ public class ViewerModel extends SimpleDriverModel implements IViewerModel {
 	}
 
 	@Override
-	public boolean renameItem(HasMutableName item, String newName) {
+	public boolean renameItem(final HasMutableName item, final String newName) {
 		if (item instanceof IUnit) {
 			IUnit matching = getMap().streamLocations()
 				.flatMap(l -> getMap().getFixtures(l).stream())
@@ -637,7 +637,7 @@ public class ViewerModel extends SimpleDriverModel implements IViewerModel {
 	}
 
 	@Override
-	public boolean changeKind(HasKind item, String newKind) {
+	public boolean changeKind(final HasKind item, final String newKind) {
 		if (item instanceof IUnit) {
 			// TODO: Extract this pipeline to a method
 			IUnit matching = getMap().streamLocations()
@@ -689,7 +689,7 @@ public class ViewerModel extends SimpleDriverModel implements IViewerModel {
 
 	// TODO: Keep a list of dismissed members
 	@Override
-	public void dismissUnitMember(UnitMember member) {
+	public void dismissUnitMember(final UnitMember member) {
 		for (IMutableUnit unit : getMap().streamLocations()
 				.flatMap(l -> getMap().getFixtures(l).stream())
 				.flatMap(ViewerModel::unflattenNonFortresses)
@@ -707,7 +707,7 @@ public class ViewerModel extends SimpleDriverModel implements IViewerModel {
 	}
 
 	@Override
-	public boolean addSibling(UnitMember existing, UnitMember sibling) {
+	public boolean addSibling(final UnitMember existing, final UnitMember sibling) {
 		for (IMutableUnit unit : getMap().streamLocations()
 				.flatMap(l -> getMap().getFixtures(l).stream())
 				.flatMap(ViewerModel::unflattenNonFortresses)
@@ -728,7 +728,7 @@ public class ViewerModel extends SimpleDriverModel implements IViewerModel {
 	 * this succeeded in any map, [[false]] otherwise.
 	 */
 	@Override
-	public boolean changeOwner(HasMutableOwner item, Player newOwner) {
+	public boolean changeOwner(final HasMutableOwner item, final Player newOwner) {
 		HasMutableOwner matching = getMap().streamLocations()
 			.flatMap(l -> getMap().getFixtures(l).stream())
 			.flatMap(ViewerModel::flattenIncluding).flatMap(ViewerModel::flattenIncluding)
@@ -748,7 +748,7 @@ public class ViewerModel extends SimpleDriverModel implements IViewerModel {
 	}
 
 	@Override
-	public boolean sortFixtureContents(IUnit fixture) {
+	public boolean sortFixtureContents(final IUnit fixture) {
 		IMutableUnit matching = getMap().streamLocations()
 			.flatMap(l -> getMap().getFixtures(l).stream())
 			.flatMap(ViewerModel::unflattenNonFortresses)
@@ -767,7 +767,7 @@ public class ViewerModel extends SimpleDriverModel implements IViewerModel {
 	}
 
 	@Override
-	public void addUnit(IUnit unit) {
+	public void addUnit(final IUnit unit) {
 		Point hqLoc = Point.INVALID_POINT;
 		for (Point location : getMap().getLocations()) {
 			IFortress fortress = getMap().getFixtures(location).stream()

@@ -33,14 +33,14 @@ interface MapContentsReader {
 	 * Read non-direct contents---that is, unit and fortress members and
 	 * the like. Because in many cases this doesn't apply, it's by default a noop.
 	 */
-	default void readExtraMapContents(DB db, IMutableMapNG map, Warning warner) {}
+	default void readExtraMapContents(final DB db, final IMutableMapNG map, final Warning warner) {}
 
 	/**
 	 * Find a tile fixture or unit or fortress member within a given stream
 	 * of such objects by its ID, if present.
 	 */
 	@Nullable
-	default IFixture findByIdImpl(Iterable<IFixture> stream, int id) {
+	default IFixture findByIdImpl(final Iterable<IFixture> stream, final int id) {
 		for (IFixture fixture : stream) {
 			if (fixture.getId() == id) {
 				return fixture;
@@ -57,7 +57,7 @@ interface MapContentsReader {
 	/**
 	 * Find a tile fixture or unit or fortress member by ID.
 	 */
-	default IFixture findById(IMapNG map, int id, Warning warner) {
+	default IFixture findById(final IMapNG map, final int id, final Warning warner) {
 		return DBMemoizer.findById(map, id, this, warner);
 	}
 
@@ -66,9 +66,9 @@ interface MapContentsReader {
 	 *
 	 * FIXME: Narrow TryBiConsumer exception type arg and the exception type declared to be thrown here
 	 */
-	default void handleQueryResults(DB db, Warning warner, String description,
-			TryBiConsumer<Map<String, Object>, Warning, Exception> handler, String query,
-			Object... args) throws Exception {
+	default void handleQueryResults(final DB db, final Warning warner, final String description,
+	                                final TryBiConsumer<Map<String, Object>, Warning, Exception> handler, final String query,
+	                                final Object... args) throws Exception {
 		LOGGER.fine("About to read " + description);
 		Accumulator<Integer> count = new IntAccumulator(0);
 		db.select(query, args).execute().forEach(handler.andThen((m, w) -> {

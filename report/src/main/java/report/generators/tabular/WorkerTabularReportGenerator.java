@@ -33,7 +33,7 @@ public class WorkerTabularReportGenerator implements ITableGenerator<IWorker> {
 	@Nullable
 	private final Point hq;
 	private final MapDimensions dimensions;
-	public WorkerTabularReportGenerator(@Nullable Point hq, MapDimensions dimensions) {
+	public WorkerTabularReportGenerator(@Nullable final Point hq, final MapDimensions dimensions) {
 		this.hq = hq;
 		this.dimensions = dimensions;
 		if (hq == null) {
@@ -67,8 +67,8 @@ public class WorkerTabularReportGenerator implements ITableGenerator<IWorker> {
 	 */
 	@Override
 	public Iterable<Iterable<String>> produce(
-			DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures, IWorker item,
-			int key, Point loc, Map<Integer, Integer> parentMap) {
+			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures, final IWorker item,
+			final int key, final Point loc, final Map<Integer, Integer> parentMap) {
 		fixtures.remove(key);
 		WorkerStats stats = item.getStats();
 		if (stats == null) {
@@ -91,7 +91,7 @@ public class WorkerTabularReportGenerator implements ITableGenerator<IWorker> {
 	 * Compare two worker-location pairs.
 	 */
 	@Override
-	public int comparePairs(Pair<Point, IWorker> one, Pair<Point, IWorker> two) {
+	public int comparePairs(final Pair<Point, IWorker> one, final Pair<Point, IWorker> two) {
 		return Comparator.<Pair<Point, IWorker>, Point>comparing(Pair::getValue0, distanceComparator)
 			.thenComparing(Comparator.comparing(p -> p.getValue1().getName()))
 			.compare(one, two);

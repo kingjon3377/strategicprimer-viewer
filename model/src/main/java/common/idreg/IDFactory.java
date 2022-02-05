@@ -24,7 +24,7 @@ public final class IDFactory implements IDRegistrar {
 	 * Whether the given ID is unused.
 	 */
 	@Override
-	public boolean isIDUnused(int id) {
+	public boolean isIDUnused(final int id) {
 		return id >= 0 && !usedIDs.contains(id);
 	}
 
@@ -33,7 +33,7 @@ public final class IDFactory implements IDRegistrar {
 	 * to report if it has already been registered.
 	 */
 	@Override
-	public int register(int id, Warning warning, @Nullable Location location) {
+	public int register(final int id, final Warning warning, @Nullable final Location location) {
 		if (id >= 0) {
 			if (usedIDs.contains(id)) {
 				if (location != null) {

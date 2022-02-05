@@ -17,14 +17,14 @@ public final class WorkerStats {
 	 * The modifier for (effect of) the given stat value: (stat - 10) / 2,
 	 * always rounding down.
 	 */
-	public static int getModifier(int stat) {
+	public static int getModifier(final int stat) {
 		return stat / 2 - statBasis / 2;
 	}
 
 	/**
 	 * The modifier string for a stat with the given value.
 	 */
-	public static String getModifierString(int stat) {
+	public static String getModifierString(final int stat) {
 		int modifier = getModifier(stat);
 		return (modifier >= 0) ? "+" + modifier : Integer.toString(modifier);
 	}
@@ -128,8 +128,8 @@ public final class WorkerStats {
 	/**
 	 * Main constructor, taking all the stats.
 	 */
-	public WorkerStats(int hp, int maxHP, int str, int dex, int con,
-			int intel, int wis, int cha) {
+	public WorkerStats(final int hp, final int maxHP, final int str, final int dex, final int con,
+	                   final int intel, final int wis, final int cha) {
 		hitPoints = hp;
 		maxHitPoints = maxHP;
 		strength = str;
@@ -143,8 +143,8 @@ public final class WorkerStats {
 	/**
 	 * Constructor for making a stat-adjustments version, so omitting HP.
 	 */
-	public static WorkerStats factory(int str, int dex, int con,
-			int intel, int wis, int cha) {
+	public static WorkerStats factory(final int str, final int dex, final int con,
+	                                  final int intel, final int wis, final int cha) {
 		return new WorkerStats(0, 0, str, dex, con, intel, wis, cha);
 	}
 
@@ -155,7 +155,7 @@ public final class WorkerStats {
 	 * @param base A set of base stats to use for the other stats.
 	 * @param A set of adjustments to add to those stats.
 	 */
-	public static WorkerStats adjusted(int hp, WorkerStats base, WorkerStats adjustment) {
+	public static WorkerStats adjusted(final int hp, final WorkerStats base, final WorkerStats adjustment) {
 		return new WorkerStats(hp, hp, base.strength + adjustment.strength,
 			base.dexterity + adjustment.dexterity,
 			base.constitution + adjustment.constitution,
@@ -167,7 +167,7 @@ public final class WorkerStats {
 	/**
 	 * Given an RNG, produce a random set of stats, with HP set to 0.
 	 */
-	public static WorkerStats random(IntSupplier rng) {
+	public static WorkerStats random(final IntSupplier rng) {
 		return factory(rng.getAsInt(), rng.getAsInt(), rng.getAsInt(), rng.getAsInt(),
 			rng.getAsInt(), rng.getAsInt());
 	}
@@ -181,7 +181,7 @@ public final class WorkerStats {
 	}
 
 	@Override
-	public boolean equals(Object obj) {
+	public boolean equals(final Object obj) {
 		if (obj instanceof WorkerStats) {
 			return hitPoints == ((WorkerStats) obj).hitPoints &&
 				maxHitPoints == ((WorkerStats) obj).maxHitPoints &&

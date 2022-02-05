@@ -11,7 +11,7 @@ import common.map.fixtures.MineralFixture;
  * TODO: Support non-exposed deposits
  */
 public class StoneDeposit implements HarvestableFixture, MineralFixture {
-	public StoneDeposit(StoneKind stone, int dc, int id) {
+	public StoneDeposit(final StoneKind stone, final int dc, final int id) {
 		this.stone = stone;
 		this.dc = dc;
 		this.id = id;
@@ -76,7 +76,7 @@ public class StoneDeposit implements HarvestableFixture, MineralFixture {
 	 * Set the filename of an image to use as an icon for this instance.
 	 */
 	@Override
-	public void setImage(String image) {
+	public void setImage(final String image) {
 		this.image = image;
 	}
 
@@ -84,14 +84,14 @@ public class StoneDeposit implements HarvestableFixture, MineralFixture {
 	 * Clone the object.
 	 */
 	@Override
-	public StoneDeposit copy(boolean zero) {
+	public StoneDeposit copy(final boolean zero) {
 		final StoneDeposit retval = new StoneDeposit(stone, (zero) ? 0 : dc, id);
 		retval.setImage(image);
 		return retval;
 	}
 
 	@Override
-	public boolean equals(Object obj) {
+	public boolean equals(final Object obj) {
 		if (obj instanceof StoneDeposit) {
 			return ((StoneDeposit) obj).getStone().equals(stone) &&
 				((StoneDeposit) obj).getId() == id;
@@ -119,7 +119,7 @@ public class StoneDeposit implements HarvestableFixture, MineralFixture {
 	}
 
 	@Override
-	public boolean equalsIgnoringID(IFixture fixture) {
+	public boolean equalsIgnoringID(final IFixture fixture) {
 		if (fixture instanceof StoneDeposit) {
 			return ((StoneDeposit) fixture).getStone().equals(stone);
 		} else {

@@ -16,7 +16,7 @@ public class ShowErrorDialog {
 	 * @param message The error message to show the user.
 	 */
 	@Deprecated
-	public static void showErrorDialog(@Nullable Component parent, String title, String message) {
+	public static void showErrorDialog(@Nullable final Component parent, final String title, final String message) {
 		JOptionPane.showMessageDialog(parent, message, title, JOptionPane.ERROR_MESSAGE);
 	}
 }

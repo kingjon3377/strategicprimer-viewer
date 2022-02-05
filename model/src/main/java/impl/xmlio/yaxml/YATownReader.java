@@ -49,7 +49,7 @@ import java.util.logging.Logger;
  */
 /* package */ class YATownReader extends YAAbstractReader<ITownFixture, ITownFixture> {
 	private static final Logger LOGGER = Logger.getLogger(YATownReader.class.getName());
-	public YATownReader(Warning warner, IDRegistrar idRegistrar, IPlayerCollection players) {
+	public YATownReader(final Warning warner, final IDRegistrar idRegistrar, final IPlayerCollection players) {
 		super(warner, idRegistrar);
 		resourceReader = new YAResourcePileReader(warner, idRegistrar);
 		memberReaders = Collections.unmodifiableList(Arrays.asList(new YAUnitReader(warner,
@@ -70,7 +70,7 @@ import java.util.logging.Logger;
 	 * If the tag has an "owner" parameter, return the player it indicates;
 	 * otherwise trigger a warning and return the "independent" player.
 	 */
-	private Player getOwnerOrIndependent(StartElement element) throws SPFormatException {
+	private Player getOwnerOrIndependent(final StartElement element) throws SPFormatException {
 		if (hasParameter(element, "owner")) {
 			return players.getPlayer(getIntegerParameter(element, "owner"));
 		} else {
@@ -79,7 +79,7 @@ import java.util.logging.Logger;
 		}
 	}
 
-	private static List<String> expectedCommunityStatsTags(String parent) {
+	private static List<String> expectedCommunityStatsTags(final String parent) {
 		switch (parent) {
 		case "population":
 			return Arrays.asList("expertise", "claim", "production", "consumption");
@@ -94,8 +94,8 @@ import java.util.logging.Logger;
 		}
 	}
 
-	public CommunityStats parseCommunityStats(StartElement element, QName parent,
-			Iterable<XMLEvent> stream) throws SPFormatException, MalformedXMLException {
+	public CommunityStats parseCommunityStats(final StartElement element, final QName parent,
+	                                          final Iterable<XMLEvent> stream) throws SPFormatException, MalformedXMLException {
 		requireTag(element, parent, "population");
 		expectAttributes(element, "size");
 		final CommunityStats retval = new CommunityStats(getIntegerParameter(element, "size"));
@@ -194,7 +194,7 @@ import java.util.logging.Logger;
 		return retval;
 	}
 
-	private ITownFixture parseVillage(StartElement element, Iterable<XMLEvent> stream)
+	private ITownFixture parseVillage(final StartElement element, final Iterable<XMLEvent> stream)
 			throws SPFormatException, MalformedXMLException {
 		expectAttributes(element, "status", "name", "race", "image", "portrait", "id", "owner");
 		requireNonEmptyParameter(element, "name", false);
@@ -202,7 +202,7 @@ import java.util.logging.Logger;
 		TownStatus status;
 		try {
 			status = TownStatus.parse(getParameter(element, "status"));
-		} catch (IllegalArgumentException except) {
+		} catch (final IllegalArgumentException except) {
 			throw new MissingPropertyException(element, "status", except);
 		}
 		Village retval = new Village(status, getParameter(element, "name", ""), idNum,
@@ -227,7 +227,7 @@ import java.util.logging.Logger;
 		return retval;
 	}
 
-	private ITownFixture parseTown(StartElement element, Iterable<XMLEvent> stream)
+	private ITownFixture parseTown(final StartElement element, final Iterable<XMLEvent> stream)
 			throws SPFormatException, MalformedXMLException {
 		expectAttributes(element, "name", "status", "size", "dc", "id", "image", "owner",
 			"portrait");
@@ -236,13 +236,13 @@ import java.util.logging.Logger;
 		TownStatus status;
 		try {
 			status = TownStatus.parse(getParameter(element, "status"));
-		} catch (IllegalArgumentException except) {
+		} catch (final IllegalArgumentException except) {
 			throw new MissingPropertyException(element, "status", except);
 		}
 		TownSize size;
 		try {
 			size = TownSize.parseTownSize(getParameter(element, "size"));
-		} catch (IllegalArgumentException except) {
+		} catch (final IllegalArgumentException except) {
 			throw new MissingPropertyException(element, "size", except);
 		}
 		int dc = getIntegerParameter(element, "dc");
@@ -282,7 +282,7 @@ import java.util.logging.Logger;
 		return retval;
 	}
 
-	private ITownFixture parseFortress(StartElement element, Iterable<XMLEvent> stream)
+	private ITownFixture parseFortress(final StartElement element, final Iterable<XMLEvent> stream)
 			throws SPFormatException, MalformedXMLException {
 		expectAttributes(element, "owner", "name", "size", "status", "id", "portrait", "image");
 		requireNonEmptyParameter(element, "owner", false);
@@ -291,7 +291,7 @@ import java.util.logging.Logger;
 		TownSize size;
 		try {
 			size = TownSize.parseTownSize(getParameter(element, "size", "small"));
-		} catch (IllegalArgumentException except) {
+		} catch (final IllegalArgumentException except) {
 			throw new MissingPropertyException(element, "size", except);
 		}
 		retval = new FortressImpl(getOwnerOrIndependent(element),
@@ -330,7 +330,7 @@ import java.util.logging.Logger;
 		return retval;
 	}
 
-	private void writeAbstractTown(ThrowingConsumer<String, IOException> ostream, AbstractTown obj, int tabs)
+	private void writeAbstractTown(final ThrowingConsumer<String, IOException> ostream, final AbstractTown obj, final int tabs)
 			throws IOException {
 		writeTag(ostream, obj.getKind(), tabs);
 		writeProperty(ostream, "status", obj.getStatus().toString());
@@ -350,7 +350,7 @@ import java.util.logging.Logger;
 		}
 	}
 
-	public void writeCommunityStats(ThrowingConsumer<String, IOException> ostream, CommunityStats obj, int tabs)
+	public void writeCommunityStats(final ThrowingConsumer<String, IOException> ostream, final CommunityStats obj, final int tabs)
 			throws IOException {
 		writeTag(ostream, "population", tabs);
 		writeProperty(ostream, "size", obj.getPopulation());
@@ -388,13 +388,13 @@ import java.util.logging.Logger;
 	}
 
 	@Override
-	public boolean isSupportedTag(String tag) {
+	public boolean isSupportedTag(final String tag) {
 		return Arrays.asList("village", "fortress", "town", "city", "fortification")
 			.contains(tag.toLowerCase());
 	}
 
 	@Override
-	public ITownFixture read(StartElement element, QName parent, Iterable<XMLEvent> stream)
+	public ITownFixture read(final StartElement element, final QName parent, final Iterable<XMLEvent> stream)
 			throws SPFormatException, MalformedXMLException {
 		requireTag(element, parent, "village", "fortress", "town", "city", "fortification");
 		switch (element.getName().getLocalPart().toLowerCase()) {
@@ -408,7 +408,7 @@ import java.util.logging.Logger;
 	}
 
 	@Override
-	public void write(ThrowingConsumer<String, IOException> ostream, ITownFixture obj, int tabs) throws IOException {
+	public void write(final ThrowingConsumer<String, IOException> ostream, final ITownFixture obj, final int tabs) throws IOException {
 		if (obj instanceof AbstractTown) {
 			writeAbstractTown(ostream, (AbstractTown) obj, tabs);
 		} else if (obj instanceof Village) {
@@ -461,7 +461,7 @@ import java.util.logging.Logger;
 	}
 
 	@Override
-	public boolean canWrite(Object obj) {
+	public boolean canWrite(final Object obj) {
 		return obj instanceof ITownFixture;
 	}
 }

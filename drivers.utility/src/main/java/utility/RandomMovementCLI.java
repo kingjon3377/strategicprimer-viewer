@@ -21,7 +21,7 @@ import java.util.Random;
  * An app to move independent units around at random.
  */
 /* package */ class RandomMovementCLI implements CLIDriver {
-	public RandomMovementCLI(ICLIHelper cli, SPOptions options, IExplorationModel model) {
+	public RandomMovementCLI(final ICLIHelper cli, final SPOptions options, final IExplorationModel model) {
 		this.cli = cli;
 		this.options = options;
 		this.model = model;
@@ -56,7 +56,7 @@ import java.util.Random;
 			for (int i = 0; i < steps; i++) {
 				try {
 					model.move(directions[rng.nextInt(directions.length)], Speed.Normal);
-				} catch (TraversalImpossibleException except) {
+				} catch (final TraversalImpossibleException except) {
 					continue;
 				}
 			}

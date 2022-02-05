@@ -54,8 +54,8 @@ import exploration.common.SimpleMovementModel;
  * A driver model for the various utility drivers.
  */
 public class UtilityDriverModel extends SimpleMultiMapModel {
-	private static <Desired, Provided> Consumer<Provided> ifApplicable(Consumer<Desired> func,
-			Class<Desired> cls) {
+	private static <Desired, Provided> Consumer<Provided> ifApplicable(final Consumer<Desired> func,
+	                                                                   final Class<Desired> cls) {
 		return (item) -> {
 			if (cls.isInstance(item)) {
 				func.accept((Desired) item);
@@ -63,7 +63,7 @@ public class UtilityDriverModel extends SimpleMultiMapModel {
 		};
 	}
 
-	private static boolean isSubset(IFixture one, IFixture two) {
+	private static boolean isSubset(final IFixture one, final IFixture two) {
 		if (one instanceof Subsettable) { // TODO: Extract SubsettableFixture interface
 			return ((Subsettable<IFixture>) one).isSubset(two, s -> {});
 		} else {
@@ -72,7 +72,7 @@ public class UtilityDriverModel extends SimpleMultiMapModel {
 	}
 
 	private static class Mock implements HasOwner {
-		public Mock(Player owner) {
+		public Mock(final Player owner) {
 			this.owner = owner;
 		}
 
@@ -84,11 +84,11 @@ public class UtilityDriverModel extends SimpleMultiMapModel {
 		}
 	}
 
-	public UtilityDriverModel(IMutableMapNG map) {
+	public UtilityDriverModel(final IMutableMapNG map) {
 		super(map);
 	}
 
-	public UtilityDriverModel(IDriverModel model) { // TODO: Make protected/private and provide static copyConstructor() instead?
+	public UtilityDriverModel(final IDriverModel model) { // TODO: Make protected/private and provide static copyConstructor() instead?
 		super(model);
 	}
 
@@ -96,7 +96,7 @@ public class UtilityDriverModel extends SimpleMultiMapModel {
 	 * Copy rivers at the given {@link location} missing from subordinate
 	 * maps, where they have other terrain information, from the main map.
 	 */
-	public void copyRiversAt(Point location) {
+	public void copyRiversAt(final Point location) {
 		IMapNG map = getMap();
 		for (IMutableMapNG subordinateMap : getRestrictedSubordinateMaps()) {
 			TileType mainTerrain = map.getBaseTerrain(location);
@@ -117,7 +117,7 @@ public class UtilityDriverModel extends SimpleMultiMapModel {
 	 * caller of this asks the user for approval.
 	 */
 	public Iterable<Quartet<Consumer<TileFixture>, @Nullable Path, TileFixture, Iterable<? extends TileFixture>>>
-			conditionallyRemoveDuplicates(Point location) {
+			conditionallyRemoveDuplicates(final Point location) {
 		List<Quartet<Consumer<TileFixture>, @Nullable Path, TileFixture, Iterable<? extends TileFixture>>>
 			duplicatesList = new ArrayList<>();
 		List<TileFixture> checked = new ArrayList<>();
@@ -151,9 +151,9 @@ public class UtilityDriverModel extends SimpleMultiMapModel {
 	}
 
 	private List<Quartet<Runnable, String, String, Iterable<? extends IFixture>>> coalesceImpl(
-			String context, Iterable<? extends IFixture> stream, Consumer<IFixture> add,
-			Consumer<IFixture> remove, Runnable setModFlag,
-			Map<Class<? extends IFixture>, CoalescedHolder<? extends IFixture, ?>> handlers) {
+			final String context, final Iterable<? extends IFixture> stream, final Consumer<IFixture> add,
+			final Consumer<IFixture> remove, final Runnable setModFlag,
+			final Map<Class<? extends IFixture>, CoalescedHolder<? extends IFixture, ?>> handlers) {
 		List<Quartet<Runnable, String, String, Iterable<? extends IFixture>>> retval =
 			new ArrayList<>();
 		for (IFixture fixture : stream) {
@@ -220,8 +220,8 @@ public class UtilityDriverModel extends SimpleMultiMapModel {
 	 * operation; the initial caller of this ask the user for approval.
 	 */
 	public Iterable<Quartet<Runnable, String, String, Iterable<? extends IFixture>>>
-			conditionallyCoalesceResources(Point location,
-				Map<Class<? extends IFixture>,
+			conditionallyCoalesceResources(final Point location,
+			                               final Map<Class<? extends IFixture>,
 					CoalescedHolder<? extends IFixture, ?>> handlers) {
 		List<Quartet<Runnable, String, String, Iterable<? extends IFixture>>> retval = new ArrayList<>();
 		for (IMutableMapNG map : getRestrictedAllMaps()) {
@@ -241,7 +241,7 @@ public class UtilityDriverModel extends SimpleMultiMapModel {
 	/**
 	 * Remove information in the main map from subordinate maps.
 	 */
-	public void subtractAtPoint(Point location) {
+	public void subtractAtPoint(final Point location) {
 		IMapNG map = getMap();
 		for (IMutableMapNG subMap : getRestrictedSubordinateMaps()) {
 			subMap.setModified(true);
@@ -273,17 +273,17 @@ public class UtilityDriverModel extends SimpleMultiMapModel {
 		}
 	}
 
-	private static List<Forest> extractForests(IMapNG map, Point location) {
+	private static List<Forest> extractForests(final IMapNG map, final Point location) {
 		return map.getFixtures(location).stream().filter(Forest.class::isInstance)
 			.map(Forest.class::cast).collect(Collectors.toList());
 	}
 
-	private static List<Ground> extractGround(IMapNG map, Point location) {
+	private static List<Ground> extractGround(final IMapNG map, final Point location) {
 		return map.getFixtures(location).stream().filter(Ground.class::isInstance)
 			.map(Ground.class::cast).collect(Collectors.toList());
 	}
 
-	public void fixForestsAndGround(Consumer<String> ostream) {
+	public void fixForestsAndGround(final Consumer<String> ostream) {
 		for (IMapNG map : getSubordinateMaps()) {
 			ostream.accept(String.format("Starting %s",
 				Optional.ofNullable(map.getFilename())
@@ -331,7 +331,7 @@ public class UtilityDriverModel extends SimpleMultiMapModel {
 		}
 	}
 
-	private void safeAdd(IMutableMapNG map, Player currentPlayer, Point point, TileFixture fixture) {
+	private void safeAdd(final IMutableMapNG map, final Player currentPlayer, final Point point, final TileFixture fixture) {
 		if (map.getFixtures(point).stream().anyMatch(fixture::equals)) {
 			return;
 		} else if (fixture instanceof HasOwner && !(fixture instanceof ITownFixture)) {
@@ -350,7 +350,7 @@ public class UtilityDriverModel extends SimpleMultiMapModel {
 		}
 	}
 
-	public void expandAroundPoint(Point center, Player currentPlayer) {
+	public void expandAroundPoint(final Point center, final Player currentPlayer) {
 		Mock mock = new Mock(currentPlayer);
 		IMapNG map = getMap();
 		for (IMutableMapNG subMap : getRestrictedSubordinateMaps()) {

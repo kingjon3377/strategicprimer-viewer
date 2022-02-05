@@ -17,7 +17,7 @@ import java.io.IOException;
  */
 public class UtilityMenuHandler {
 	private static final Logger LOGGER = Logger.getLogger(UtilityMenuHandler.class.getName());
-	public UtilityMenuHandler(UtilityGUI driver, SPFrame window) {
+	public UtilityMenuHandler(final UtilityGUI driver, final SPFrame window) {
 		this.driver = driver;
 		this.window = window;
 		if (Platform.SYSTEM_IS_MAC) {
@@ -38,7 +38,7 @@ public class UtilityMenuHandler {
 	private void aboutHandler() {
 		try {
 			new AboutDialog(window, window.getWindowName()).setVisible(true);
-		} catch (IOException except) {
+		} catch (final IOException except) {
 			LOGGER.log(Level.SEVERE, "I/O error reading About dialog contents", except);
 			// FIXME: Show an error dialog
 		}
@@ -47,7 +47,7 @@ public class UtilityMenuHandler {
 	/**
 	 * Show the About dialog (as a response to the About item in the Mac app-menu being chosen).
 	 */
-	private void macAboutHandler(AppEvent.AboutEvent event) {
+	private void macAboutHandler(final AppEvent.AboutEvent event) {
 		aboutHandler();
 	}
 
@@ -56,7 +56,7 @@ public class UtilityMenuHandler {
 	 *
 	 * TODO: Most of this logic should be called on the EDT
 	 */
-	public void handleEvent(ActionEvent event) {
+	public void handleEvent(final ActionEvent event) {
 		String command = event.getActionCommand().toLowerCase();
 		switch (command) {
 		case "load":

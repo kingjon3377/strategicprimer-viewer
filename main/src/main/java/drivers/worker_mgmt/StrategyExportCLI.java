@@ -23,7 +23,7 @@ import common.map.IMutableMapNG;
  * A command-line program to export a proto-strategy for a player from orders in a map.
  */
 public class StrategyExportCLI implements ReadOnlyDriver {
-	public StrategyExportCLI(SPOptions options, IWorkerModel model) {
+	public StrategyExportCLI(final SPOptions options, final IWorkerModel model) {
 		this.options = options;
 		this.model = model;
 	}
@@ -47,7 +47,7 @@ public class StrategyExportCLI implements ReadOnlyDriver {
 			try {
 				new StrategyExporter(model, options).writeStrategy(Paths.get(
 					options.getArgument("--export")), Collections.emptyList());
-			} catch (IOException except) {
+			} catch (final IOException except) {
 				throw new DriverFailedException(except, "I/O error writing to file");
 			}
 		} else {

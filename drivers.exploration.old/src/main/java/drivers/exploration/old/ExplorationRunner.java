@@ -58,7 +58,7 @@ public final class ExplorationRunner {
 	 * @throws MissingTableException if there is no table by that name
 	 */
 	// Used by the table debugger.
-	/* package */ EncounterTable getTable(String name) throws MissingTableException {
+	/* package */ EncounterTable getTable(final String name) throws MissingTableException {
 		return Optional.ofNullable(tables.get(name))
 			.orElseThrow(() -> new MissingTableException(name));
 	}
@@ -66,14 +66,14 @@ public final class ExplorationRunner {
 	/**
 	 * Whether we have a table of the given name.
 	 */
-	public boolean hasTable(String name) {
+	public boolean hasTable(final String name) {
 		return tables.containsKey(name);
 	}
 
 	/**
 	 * Split a string on hash-marks.
 	 */
-	private static List<String> splitOnHash(String string) {
+	private static List<String> splitOnHash(final String string) {
 		return Arrays.asList(string.split("#", 3));
 	}
 
@@ -84,8 +84,8 @@ public final class ExplorationRunner {
 	 * than two hash marks in any given String, or if either is at the
 	 * beginning or end of the string, since we use {@link String#split}.
 	 */
-	public String recursiveConsultTable(String table, Point location, @Nullable TileType terrain,
-			boolean mountainous, Iterable<TileFixture> fixtures, MapDimensions mapDimensions)
+	public String recursiveConsultTable(final String table, final Point location, @Nullable final TileType terrain,
+	                                    final boolean mountainous, final Iterable<TileFixture> fixtures, final MapDimensions mapDimensions)
 			throws MissingTableException {
 		String result = consultTable(table, location, terrain, mountainous, fixtures, mapDimensions);
 		if (result.contains("#")) {
@@ -110,7 +110,7 @@ public final class ExplorationRunner {
 	 * Check whether a table contains recursive calls to a table that
 	 * doesn't exist.
 	 */
-	public boolean recursiveCheck(String table) {
+	public boolean recursiveCheck(final String table) {
 		return recursiveCheck(table, new HashSet<>());
 	}
 
@@ -118,7 +118,7 @@ public final class ExplorationRunner {
 	 * Check whether a table contains recursive calls to a table that
 	 * doesn't exist.
 	 */
-	private boolean recursiveCheck(String table, Set<String> state) {
+	private boolean recursiveCheck(final String table, final Set<String> state) {
 		if (state.contains(table)) {
 			return false;
 		}
@@ -131,7 +131,7 @@ public final class ExplorationRunner {
 						return true;
 					}
 				}
-			} catch (MissingTableException except) {
+			} catch (final MissingTableException except) {
 				LOGGER.log(Level.INFO, "Missing table " + table, except);
 				return true;
 			}
@@ -153,14 +153,14 @@ public final class ExplorationRunner {
 	/**
 	 * Print the names of any tables that are called but don't exist yet.
 	 */
-	public void verboseRecursiveCheck(String table, ThrowingConsumer<String, IOException> ostream) throws IOException {
+	public void verboseRecursiveCheck(final String table, final ThrowingConsumer<String, IOException> ostream) throws IOException {
 		verboseRecursiveCheck(table, ostream, new HashSet<>());
 	}
 
 	/**
 	 * Print the names of any tables that are called but don't exist yet.
 	 */
-	public void verboseRecursiveCheck(String table, ThrowingConsumer<String, IOException> ostream, Set<String> state)
+	public void verboseRecursiveCheck(final String table, final ThrowingConsumer<String, IOException> ostream, final Set<String> state)
 			throws IOException {
 		if (!state.contains(table)) {
 			state.add(table);
@@ -172,7 +172,7 @@ public final class ExplorationRunner {
 								splitOnHash(string).get(1), ostream, state);
 						}
 					}
-				} catch (MissingTableException except) {
+				} catch (final MissingTableException except) {
 					ostream.accept(except.getTable());
 				}
 			} else {
@@ -184,7 +184,7 @@ public final class ExplorationRunner {
 	/**
 	 * Print the names of any tables that are called but don't exist yet.
 	 */
-	public void verboseGlobalRecursiveCheck(ThrowingConsumer<String, IOException> ostream) throws IOException {
+	public void verboseGlobalRecursiveCheck(final ThrowingConsumer<String, IOException> ostream) throws IOException {
 		Set<String> state = new HashSet<>();
 		for (String table : tables.keySet()) {
 			verboseRecursiveCheck(table, ostream, state);
@@ -204,8 +204,8 @@ public final class ExplorationRunner {
 	 * @param fixtures Any fixtures there
 	 * @param mapDimensions The dimensions of the map
 	 */
-	public String consultTable(String table, Point location, @Nullable TileType terrain,
-			boolean mountainous, Iterable<TileFixture> fixtures, MapDimensions mapDimensions)
+	public String consultTable(final String table, final Point location, @Nullable final TileType terrain,
+	                           final boolean mountainous, final Iterable<TileFixture> fixtures, final MapDimensions mapDimensions)
 			throws MissingTableException {
 		return getTable(table).generateEvent(location, terrain, mountainous, fixtures,
 			mapDimensions);
@@ -220,8 +220,8 @@ public final class ExplorationRunner {
 	 * @param fixtures Any fixtures there
 	 * @param mapDimensions The dimensions of the map
 	 */
-	public String getPrimaryRock(Point location, TileType terrain, boolean mountainous,
-				Iterable<TileFixture> fixtures, MapDimensions mapDimensions)
+	public String getPrimaryRock(final Point location, final TileType terrain, final boolean mountainous,
+	                             final Iterable<TileFixture> fixtures, final MapDimensions mapDimensions)
 			throws MissingTableException {
 		return consultTable("major_rock", location, terrain, mountainous, fixtures, mapDimensions);
 	}
@@ -235,8 +235,8 @@ public final class ExplorationRunner {
 	 * @param fixtures Any fixtures there
 	 * @param mapDimensions The dimensions of the map
 	 */
-	public String getPrimaryTree(Point location, TileType terrain, boolean mountainous,
-			Iterable<TileFixture> fixtures, MapDimensions mapDimensions)
+	public String getPrimaryTree(final Point location, final TileType terrain, final boolean mountainous,
+	                             final Iterable<TileFixture> fixtures, final MapDimensions mapDimensions)
 			throws MissingTableException {
 		switch (terrain) {
 		case Steppe:
@@ -266,8 +266,8 @@ public final class ExplorationRunner {
 	 * @param fixtures Any fixtures there
 	 * @param mapDimensions The dimensions of the map
 	 */
-	public String defaultResults(Point location, TileType terrain, boolean mountainous,
-			Iterable<TileFixture> fixtures, MapDimensions mapDimensions)
+	public String defaultResults(final Point location, final TileType terrain, final boolean mountainous,
+	                             final Iterable<TileFixture> fixtures, final MapDimensions mapDimensions)
 			throws MissingTableException {
 		if (StreamSupport.stream(fixtures.spliterator(), true).anyMatch(Forest.class::isInstance)
 				&& (terrain.equals(TileType.Steppe) || terrain.equals(TileType.Plains))) {
@@ -284,14 +284,14 @@ public final class ExplorationRunner {
 	/**
 	 * Add a table.
 	 */
-	/* package */ void loadTable(String name, EncounterTable table) {
+	/* package */ void loadTable(final String name, final EncounterTable table) {
 		tables.put(name, table);
 	}
 
 	/**
 	 * Load a table from a data stream into the runner.
 	 */
-	/* package */ void loadTableFromDataStream(Iterator<String> source, String name)
+	/* package */ void loadTableFromDataStream(final Iterator<String> source, final String name)
 			throws IOException {
 		if (source.hasNext()) {
 			String line = source.next();
@@ -306,7 +306,7 @@ public final class ExplorationRunner {
 					int rows;
 					try {
 						rows = Integer.parseInt(firstLine);
-					} catch (NumberFormatException except) {
+					} catch (final NumberFormatException except) {
 						throw new IllegalArgumentException(
 							"File doesn't start with number of rows of quadrants", except);
 					}
@@ -338,7 +338,7 @@ public final class ExplorationRunner {
 						int leftNum;
 						try {
 							leftNum = Integer.parseInt(left);
-						} catch (NumberFormatException except) {
+						} catch (final NumberFormatException except) {
 							throw new IllegalArgumentException(
 								"Non-numeric data");
 						}
@@ -396,7 +396,7 @@ public final class ExplorationRunner {
 	 * Load a table from file into the runner. If the file<em>name</em> is
 	 * provided, as a Tuple, the name is relative to a <pre>tables/</pre> directory.
 	 */
-	public void loadTableFromFile(Path file) throws IOException {
+	public void loadTableFromFile(final Path file) throws IOException {
 		if (Files.exists(file)) {
 			List<String> lines = Files.readAllLines(file, StandardCharsets.UTF_8);
 			loadTableFromDataStream(lines.iterator(), file.getFileName().toString());
@@ -409,7 +409,7 @@ public final class ExplorationRunner {
 		}
 	}
 
-	public void loadTableFromFile(Class<?> cls, String file) throws IOException {
+	public void loadTableFromFile(final Class<?> cls, final String file) throws IOException {
 		loadTableFromDataStream(FileContentsReader.readFileContents(
 			cls, "tables/" + file).iterator(), file);
 	}
@@ -419,14 +419,14 @@ public final class ExplorationRunner {
 	 *
 	 * @throws MissingTableException if that table has not been loaded
 	 */
-	public Iterable<String> getTableContents(String table) throws MissingTableException {
+	public Iterable<String> getTableContents(final String table) throws MissingTableException {
 		return getTable(table).getAllEvents();
 	}
 
 	/**
 	 * Load all tables in the specified path into the runner.
 	 */
-	public void loadAllTables(Path path) throws IOException {
+	public void loadAllTables(final Path path) throws IOException {
 		try (DirectoryStream<Path> stream = Files.newDirectoryStream(path)) {
 			for (Path child : stream) {
 				if (Files.isHidden(child)) { // TODO: Also exclude dotfiles on Windows?
@@ -436,7 +436,7 @@ public final class ExplorationRunner {
 				} else {
 					try {
 						loadTableFromFile(child);
-					} catch (Exception except) {
+					} catch (final Exception except) {
 						LOGGER.severe(String.format(
 							"Error loading %s, continuing ...",
 							child.getFileName().toString()));

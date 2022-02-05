@@ -21,12 +21,12 @@ import common.map.fixtures.TextFixture;
  */
 public class TextReportGenerator extends AbstractReportGenerator<TextFixture> {
 
-	public TextReportGenerator(Comparator<Pair<Point, IFixture>> comp, MapDimensions dimensions) {
+	public TextReportGenerator(final Comparator<Pair<Point, IFixture>> comp, final MapDimensions dimensions) {
 		this(comp, dimensions, null);
 	}
 
-	public TextReportGenerator(Comparator<Pair<Point, IFixture>> comp, MapDimensions dimensions,
-			@Nullable Point hq) {
+	public TextReportGenerator(final Comparator<Pair<Point, IFixture>> comp, final MapDimensions dimensions,
+	                           @Nullable final Point hq) {
 		super(comp, dimensions, hq);
 	}
 
@@ -36,8 +36,8 @@ public class TextReportGenerator extends AbstractReportGenerator<TextFixture> {
 	 * doesn't know the synthetic ID number that was assigned to it.
 	 */
 	@Override
-	public void produceSingle(DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-			IMapNG map, ThrowingConsumer<String, IOException> ostream, TextFixture item, Point loc)
+	public void produceSingle(final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
+	                          final IMapNG map, final ThrowingConsumer<String, IOException> ostream, final TextFixture item, final Point loc)
 			throws IOException {
 		ostream.accept("At ");
 		ostream.accept(loc.toString());
@@ -51,8 +51,8 @@ public class TextReportGenerator extends AbstractReportGenerator<TextFixture> {
 		ostream.accept(item.getText());
 	}
 
-	private static int compareTurn(Triplet<Integer, Point, TextFixture> one,
-			Triplet<Integer, Point, TextFixture> two) {
+	private static int compareTurn(final Triplet<Integer, Point, TextFixture> one,
+	                               final Triplet<Integer, Point, TextFixture> two) {
 		return Integer.compare(one.getValue2().getTurn(), two.getValue2().getTurn());
 	}
 
@@ -60,8 +60,8 @@ public class TextReportGenerator extends AbstractReportGenerator<TextFixture> {
 	 * Produce the part of the report dealing with arbitrary-text notes.
 	 */
 	@Override
-	public void produce(DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-			IMapNG map, ThrowingConsumer<String, IOException> ostream) throws IOException {
+	public void produce(final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
+	                    final IMapNG map, final ThrowingConsumer<String, IOException> ostream) throws IOException {
 		List<Triplet<Integer, Point, TextFixture>> items =
 			fixtures.entrySet().stream()
 				.filter(e -> e.getValue().getValue1() instanceof TextFixture)

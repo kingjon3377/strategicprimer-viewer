@@ -4,7 +4,7 @@ package common.map;
  * An encapsulation of a map's dimensions (and its map version as well).
  */
 public final class MapDimensionsImpl implements MapDimensions {
-	public MapDimensionsImpl(int rows, int columns, int version) {
+	public MapDimensionsImpl(final int rows, final int columns, final int version) {
 		this.rows = rows;
 		this.columns = columns;
 		this.version = version;
@@ -50,7 +50,7 @@ public final class MapDimensionsImpl implements MapDimensions {
 	}
 
 	@Override
-	public boolean equals(Object obj) {
+	public boolean equals(final Object obj) {
 		if (this == obj) {
 			return true;
 		} else if (obj instanceof MapDimensions) {

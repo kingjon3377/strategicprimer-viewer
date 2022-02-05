@@ -87,26 +87,26 @@ import java.io.FileNotFoundException;
 	private static final Logger LOGGER = Logger.getLogger(ResourceAddingGUI.class.getName());
 
 	// TODO: Probably move inside frame class
-	private static JPanel pairPanel(Component first, Component second) {
+	private static JPanel pairPanel(final Component first, final Component second) {
 		return BorderedPanel.verticalPanel(first, null, second);
 	}
 
 	private static final String CSS = "color:black; margin-bottom: 0.5em; margin-top: 0.5em;";
 
-	private static void logAddition(StreamingLabel logLabel, Player currentPlayer, String addend) {
+	private static void logAddition(final StreamingLabel logLabel, final Player currentPlayer, final String addend) {
 		logLabel.append(String.format("<p style=\"%s\">Added %s for %s</p>", CSS,
 			addend, currentPlayer.getName()));
 	}
 
 	private static final String ERROR_CSS = "color:red; margin-bottom: 0.5em; margin-top: 0.5em;";
 
-	private static Consumer<String> logError(StreamingLabel logLabel) {
+	private static Consumer<String> logError(final StreamingLabel logLabel) {
 		return message -> logLabel.append(String.format("<p style=\"%s\">%s</p>",
 			ERROR_CSS, message));
 	}
 
-	private static void addListenerToField(JSpinner field, ActionListener listener,
-			StreamingLabel logLabel) {
+	private static void addListenerToField(final JSpinner field, final ActionListener listener,
+	                                       final StreamingLabel logLabel) {
 		if (field.getEditor() instanceof JTextField) {
 			((JTextField) field.getEditor()).addActionListener(listener);
 		} else if (field.getEditor() instanceof JSpinner.DefaultEditor) {
@@ -135,7 +135,7 @@ import java.io.FileNotFoundException;
 		return options;
 	}
 
-	public ResourceAddingGUI(ICLIHelper cli, SPOptions options, ResourceManagementDriverModel model) {
+	public ResourceAddingGUI(final ICLIHelper cli, final SPOptions options, final ResourceManagementDriverModel model) {
 		this.cli = cli;
 		this.options = options;
 		this.model = model;
@@ -171,7 +171,7 @@ import java.io.FileNotFoundException;
 
 		private final JSpinner implementQuantityField;
 
-		public ResourceAddingFrame(ActionListener menuHandler, MultiMapGUIDriver outer) {
+		public ResourceAddingFrame(final ActionListener menuHandler, final MultiMapGUIDriver outer) {
 			super("Resource Entry", outer, null, true);
 			this.menuHandler = menuHandler;
 			idf = new IDFactoryFiller().createIDFactory(
@@ -253,7 +253,7 @@ import java.io.FileNotFoundException;
 			playerIsDefault = false;
 		}
 
-		private void resourceListener(ActionEvent ignored) {
+		private void resourceListener(final ActionEvent ignored) {
 			confirmPlayer();
 			String kind = resourceKindBox.getSelectedString();
 			String resource = resourceBox.getSelectedString();
@@ -273,7 +273,7 @@ import java.io.FileNotFoundException;
 			try {
 				// TODO: Can't we pass the number to BigDecimal directly?
 				qty = new BigDecimal(resourceQuantityModel.getNumber().toString());
-			} catch (NumberFormatException except) {
+			} catch (final NumberFormatException except) {
 				logLabel.appendLine("Failed to convert quantity into the form we need.");
 				return;
 			}
@@ -287,7 +287,7 @@ import java.io.FileNotFoundException;
 			resourceQuantityModel.setValue(0);
 		}
 
-		private void implementListener(ActionEvent ignored) { // Param required for use in fields
+		private void implementListener(final ActionEvent ignored) { // Param required for use in fields
 			confirmPlayer();
 			String kind = implementKindBox.getSelectedString();
 			if (kind.isEmpty()) {
@@ -303,39 +303,39 @@ import java.io.FileNotFoundException;
 		}
 
 		@Override
-		public void playerChanged(@Nullable Player old, Player newPlayer) {
+		public void playerChanged(@Nullable final Player old, final Player newPlayer) {
 			currentPlayer = newPlayer;
 			resourceLabel.setArguments(currentPlayer.getName());
 			implementLabel.setArguments(currentPlayer.getName());
 		}
 
 		@Override
-		public void acceptDroppedFile(Path file) {
+		public void acceptDroppedFile(final Path file) {
 			try {
 				model.addSubordinateMap(MapIOHelper.readMap(file));
-			} catch (SPFormatException except) {
+			} catch (final SPFormatException except) {
 				// FIXME: Report error to the user (via the streaming-log panel)
 				LOGGER.log(Level.SEVERE, "SP map format error", except);
 			} catch (MissingFileException|NoSuchFileException|FileNotFoundException except) {
 				// FIXME: Report error to the user (via the streaming-log panel)
 				LOGGER.log(Level.SEVERE, "Dropped file couldn't be found", except);
-			} catch (IOException except) {
+			} catch (final IOException except) {
 				// FIXME: Report error to the user (via the streaming-log panel)
 				LOGGER.log(Level.SEVERE, "I/O error reading map file", except);
-			} catch (MalformedXMLException except) {
+			} catch (final MalformedXMLException except) {
 				// FIXME: Report error to the user (via the streaming-log panel)
 				LOGGER.log(Level.SEVERE, "Dropped file contained malformed XML", except);
 			}
 		}
 	}
 
-	private void startDriverImpl(PlayerChangeMenuListener pcml, MenuBroker menuHandler) {
+	private void startDriverImpl(final PlayerChangeMenuListener pcml, final MenuBroker menuHandler) {
 		ResourceAddingFrame frame = new ResourceAddingFrame(menuHandler::actionPerformed, this);
 		frame.addWindowListener(new WindowCloseListener(menuHandler::actionPerformed));
 		try {
 			menuHandler.registerWindowShower(new AboutDialog(frame,
 				frame.getWindowName()), "about");
-		} catch (IOException except) {
+		} catch (final IOException except) {
 			LOGGER.log(Level.SEVERE, "I/O error loading about dialog text", except);
 			// But the About dialog isn't critical, so go on ...
 		}
@@ -361,7 +361,7 @@ import java.io.FileNotFoundException;
 	public Iterable<Path> askUserForFiles() {
 		try {
 			return SPFileChooser.open((Path) null).getFiles();
-		} catch (FileChooser.ChoiceInterruptedException except) {
+		} catch (final FileChooser.ChoiceInterruptedException except) {
 			// TODO: throw DriverFailedException once interface declares it
 			LOGGER.log(Level.WARNING, "Choice interrupted or user didn't choose", except);
 			return Collections.emptyList();
@@ -369,7 +369,7 @@ import java.io.FileNotFoundException;
 	}
 
 	@Override
-	public void open(IMutableMapNG map) {
+	public void open(final IMutableMapNG map) {
 		if (model.isMapModified()) {
 			SwingUtilities.invokeLater(() -> new ResourceAddingGUI(cli, options,
 				new ResourceManagementDriverModel(map)).startDriver());

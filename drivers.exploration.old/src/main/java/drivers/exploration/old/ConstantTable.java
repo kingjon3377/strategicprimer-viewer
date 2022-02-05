@@ -13,13 +13,13 @@ import java.util.Set;
  */
 class ConstantTable implements EncounterTable {
 	private final String constant;
-	public ConstantTable(String constant) {
+	public ConstantTable(final String constant) {
 		this.constant = constant;
 	}
 
 	@Override
-	public String generateEvent(Point point, @Nullable TileType terrain, boolean mountainous, 
-			Iterable<TileFixture> fixtures, MapDimensions dimensions) {
+	public String generateEvent(final Point point, @Nullable final TileType terrain, final boolean mountainous,
+	                            final Iterable<TileFixture> fixtures, final MapDimensions dimensions) {
 		return constant;
 	}
 

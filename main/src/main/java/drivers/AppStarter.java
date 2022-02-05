@@ -76,11 +76,11 @@ import org.jetbrains.annotations.Nullable;
 	private final Map<String, Iterable<DriverFactory>> driverCache =
 			new AppChooserState().createCache(); // TODO: Can we, and should we, inline that into here?
 
-	private static boolean includeInCLIList(DriverFactory driver) {
+	private static boolean includeInCLIList(final DriverFactory driver) {
 		return driver.getUsage().includeInList(false);
 	}
 
-	public void startDriverOnArguments(ICLIHelper cli, SPOptions options, String... args) throws DriverFailedException {
+	public void startDriverOnArguments(final ICLIHelper cli, final SPOptions options, final String... args) throws DriverFailedException {
 		LOGGER.finer("Inside AppStarter#startDriver()");
 		boolean gui = !GraphicsEnvironment.isHeadless();
 		SPOptionsImpl currentOptions = new SPOptionsImpl(StreamSupport.stream(options.spliterator(), false).toArray((Map.Entry[]::new)));

@@ -60,14 +60,14 @@ public final class MapIOHelper {
 	/**
 	 * Turn a series of Strings into a series of equvalent Paths.
 	 */
-	public static Iterable<Path> namesToFiles(String... names) {
+	public static Iterable<Path> namesToFiles(final String... names) {
 		return Stream.of(names).map(Paths::get).collect(Collectors.toList());
 	}
 
 	/**
 	 * Read a map from a file.
 	 */
-	public static IMutableMapNG readMap(Path file)
+	public static IMutableMapNG readMap(final Path file)
 			throws SPFormatException, IOException, MissingFileException, MalformedXMLException {
 		return readMap(file, Warning.WARN);
 	}
@@ -75,7 +75,7 @@ public final class MapIOHelper {
 	/**
 	 * Read a map from a file.
 	 */
-	public static IMutableMapNG readMap(Path file, Warning warner)
+	public static IMutableMapNG readMap(final Path file, final Warning warner)
 			throws SPFormatException, IOException, MissingFileException, MalformedXMLException {
 		LOGGER.fine("In mapIOHelper.readMap");
 		IMutableMapNG retval;
@@ -95,7 +95,7 @@ public final class MapIOHelper {
 	/**
 	 * Read a map from a stream.
 	 */
-	public static IMutableMapNG readMap(Reader stream)
+	public static IMutableMapNG readMap(final Reader stream)
 			throws SPFormatException, MalformedXMLException, IOException {
 		return readMap(stream, Warning.WARN);
 	}
@@ -103,7 +103,7 @@ public final class MapIOHelper {
 	/**
 	 * Read a map from a stream.
 	 */
-	public static IMutableMapNG readMap(Reader stream, Warning warner)
+	public static IMutableMapNG readMap(final Reader stream, final Warning warner)
 			throws SPFormatException, MalformedXMLException, IOException {
 		LOGGER.fine("In mapIOHelper.readMap");
 		LOGGER.fine("Reading from a Reader");
@@ -113,7 +113,7 @@ public final class MapIOHelper {
 	/**
 	 * Write a map to file.
 	 */
-	public static void writeMap(Path file, IMapNG map) throws IOException, MalformedXMLException {
+	public static void writeMap(final Path file, final IMapNG map) throws IOException, MalformedXMLException {
 		if (file.toString().endsWith(".db") || file.toString().isEmpty()) {
 			LOGGER.fine(String.format("Writing to %s as an SQLite database", file.toString()));
 			DB_WRITER.write(file, map);

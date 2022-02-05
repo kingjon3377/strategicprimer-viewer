@@ -41,11 +41,11 @@ import java.math.BigInteger;
  * battlefields, which aren't really).
  */
 public class HarvestableReportGenerator extends AbstractReportGenerator<HarvestableFixture> {
-	private static String populationCountString(HasPopulation<?> item, String singular) {
+	private static String populationCountString(final HasPopulation<?> item, final String singular) {
 		return populationCountString(item, singular, singular + "s");
 	}
 
-	private static String populationCountString(HasPopulation<?> item, String singular, String plural) {
+	private static String populationCountString(final HasPopulation<?> item, final String singular, final String plural) {
 		if (item.getPopulation() <= 0) {
 			return "";
 		} else if (item.getPopulation() == 1) {
@@ -62,7 +62,7 @@ public class HarvestableReportGenerator extends AbstractReportGenerator<Harvesta
 		// TODO: call for comma groupings to the left of the decimal?
 	}
 
-	private static String acreageString(HasExtent<?> item) {
+	private static String acreageString(final HasExtent<?> item) {
 		if (item.getAcres().doubleValue() > 0.0) {
 			return String.format(" (%s acres)", NUM_FORMAT.format(item.getAcres()));
 		} else {
@@ -70,20 +70,20 @@ public class HarvestableReportGenerator extends AbstractReportGenerator<Harvesta
 		}
 	}
 
-	public HarvestableReportGenerator(Comparator<Pair<Point, IFixture>> comp,
-			MapDimensions dimensions) {
+	public HarvestableReportGenerator(final Comparator<Pair<Point, IFixture>> comp,
+	                                  final MapDimensions dimensions) {
 		this(comp, dimensions, null);
 	}
 
-	public HarvestableReportGenerator(Comparator<Pair<Point, IFixture>> comp,
-			MapDimensions dimensions, @Nullable Point hq) {
+	public HarvestableReportGenerator(final Comparator<Pair<Point, IFixture>> comp,
+	                                  final MapDimensions dimensions, @Nullable final Point hq) {
 		super(comp, dimensions, hq);
 	}
 
 	/**
 	 * Convert a Map (in Ceylon before the port, a Multimap) from kinds to Points to a HtmlList.
 	 */
-	private static HeadedList<String> mapToList(Map<String, List<Point>> map, String heading) {
+	private static HeadedList<String> mapToList(final Map<String, List<Point>> map, final String heading) {
 		return map.entrySet().stream()
 			.filter(e -> !e.getValue().isEmpty())
 			.map(e -> String.format("%s: at %s", e.getKey(), commaSeparatedList(e.getValue())))
@@ -98,8 +98,8 @@ public class HarvestableReportGenerator extends AbstractReportGenerator<Harvesta
 	 * HarvestableFixture} interface, are <em>not</em> handled here.
 	 */
 	@Override
-	public void produceSingle(DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-			IMapNG map, ThrowingConsumer<String, IOException> ostream, HarvestableFixture item, Point loc)
+	public void produceSingle(final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
+	                          final IMapNG map, final ThrowingConsumer<String, IOException> ostream, final HarvestableFixture item, final Point loc)
 			throws IOException {
 		if (!(item instanceof CacheFixture || item instanceof Grove || item instanceof Meadow
 				|| item instanceof Mine || item instanceof MineralVein
@@ -153,8 +153,8 @@ public class HarvestableReportGenerator extends AbstractReportGenerator<Harvesta
 	 * been handled already.
 	 */
 	@Override
-	public void produce(DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-			IMapNG map, ThrowingConsumer<String, IOException> ostream) throws IOException {
+	public void produce(final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
+	                    final IMapNG map, final ThrowingConsumer<String, IOException> ostream) throws IOException {
 		Map<String, List<Point>> stone = new HashMap<>();
 		Map<String, List<Point>> shrubs = new HashMap<>();
 		Map<String, List<Point>> minerals = new HashMap<>();

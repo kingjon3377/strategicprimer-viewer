@@ -34,7 +34,7 @@ public class ExplorableTabularReportGenerator
 		return TileFixture.class;
 	}
 
-	public ExplorableTabularReportGenerator(Player player, @Nullable Point hq, MapDimensions dimensions) {
+	public ExplorableTabularReportGenerator(final Player player, @Nullable final Point hq, final MapDimensions dimensions) {
 		this.player = player;
 		this.hq = hq;
 		this.dimensions = dimensions;
@@ -74,9 +74,9 @@ public class ExplorableTabularReportGenerator
 	 */
 	@Override
 	public Iterable<Iterable<String>> produce(
-			DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-			/*ExplorableFixture|TextFixture*/TileFixture item, int key, Point loc,
-			Map<Integer, Integer> parentMap) {
+			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
+			/*ExplorableFixture|TextFixture*/final TileFixture item, final int key, final Point loc,
+			final Map<Integer, Integer> parentMap) {
 		String brief;
 		String owner;
 		String longDesc;
@@ -127,8 +127,8 @@ public class ExplorableTabularReportGenerator
 	 * Compare two Point-fixture pairs.
 	 */
 	@Override
-	public int comparePairs(Pair<Point, /*ExplorableFixture|TextFixture*/TileFixture> one,
-			Pair<Point, /*ExplorableFixture|TextFixture*/TileFixture> two) {
+	public int comparePairs(final Pair<Point, /*ExplorableFixture|TextFixture*/TileFixture> one,
+	                        final Pair<Point, /*ExplorableFixture|TextFixture*/TileFixture> two) {
 		return Comparator.<Pair<Point, TileFixture>, Point>comparing(Pair::getValue0, distanceComparator)
 			.thenComparing(p -> p.getValue1().toString()).compare(one, two);
 	}

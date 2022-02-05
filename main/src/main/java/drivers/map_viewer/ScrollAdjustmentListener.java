@@ -32,7 +32,7 @@ import java.util.logging.Level;
 
 	private final IViewerModel model;
 
-	public ScrollAdjustmentListener(IViewerModel model) {
+	public ScrollAdjustmentListener(final IViewerModel model) {
 		this.model = model;
 	}
 
@@ -50,11 +50,11 @@ import java.util.logging.Level;
 	}
 
 	// FIXME: Do we really need to expose the setter to all clients?
-	public void setAdjusting(boolean adjusting) {
+	public void setAdjusting(final boolean adjusting) {
 		this.adjusting = adjusting;
 	}
 
-	public void horizontalScroll(ChangeEvent event) {
+	public void horizontalScroll(final ChangeEvent event) {
 		BoundedRangeModel source = (BoundedRangeModel) event.getSource();
 		if (adjusting) {
 			LOGGER.finer(
@@ -112,7 +112,7 @@ import java.util.logging.Level;
 		adjusting = oldAdjusting;
 	}
 
-	public void verticalScroll(ChangeEvent event) {
+	public void verticalScroll(final ChangeEvent event) {
 		BoundedRangeModel source = (BoundedRangeModel) event.getSource();
 		if (adjusting) {
 			// TODO: We'd like to do *some* handling, in case the user is dragging the tongue. Mutex flag again?

@@ -13,14 +13,14 @@ public class FormattedLabel extends JLabel {
 	 * @param defaultArguments The arguments to plug into the format string
 	 * to produce the label's initial text.
 	 */
-	public FormattedLabel(String formatString, Object... defaultArguments) {
+	public FormattedLabel(final String formatString, final Object... defaultArguments) {
 		super(String.format(formatString, defaultArguments));
 		this.formatString = formatString;
 	}
 	/**
 	 * Change the arguments and regenerate the label's text.
 	 */
-	public void setArguments(Object... arguments) {
+	public void setArguments(final Object... arguments) {
 		setText(String.format(formatString, arguments));
 	}
 }

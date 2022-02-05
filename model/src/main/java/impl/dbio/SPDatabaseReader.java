@@ -24,7 +24,7 @@ public class SPDatabaseReader implements IMapReader {
 
 	private final Map<Path, DB> connections = new HashMap<>();
 
-	private DataSource getBaseConnection(Path path) {
+	private DataSource getBaseConnection(final Path path) {
 		SQLiteDataSource retval = new SQLiteDataSource();
 		if (path.toString().isEmpty()) {
 			LOGGER.info("Trying to set up an (empty) in-memory database for reading");
@@ -37,7 +37,7 @@ public class SPDatabaseReader implements IMapReader {
 	}
 
 	// TODO: Rename to getDB
-	private DB getSQL(Path path) {
+	private DB getSQL(final Path path) {
 		if (connections.containsKey(path)) {
 			return connections.get(path);
 		} else {
@@ -50,17 +50,17 @@ public class SPDatabaseReader implements IMapReader {
 	private final DBMapReader dbMapReader = new DBMapReader();
 
 	@Override
-	public IMutableMapNG readMap(Path file, Warning warner) {
+	public IMutableMapNG readMap(final Path file, final Warning warner) {
 		DB db = getSQL(file);
 		return dbMapReader.readMap(db, warner);
 	}
 
 	@Override
-	public IMutableMapNG readMapFromStream(Path file, Reader istream, Warning warner) {
+	public IMutableMapNG readMapFromStream(final Path file, final Reader istream, final Warning warner) {
 		throw new UnsupportedOperationException("Can't read a database from a stream");
 	}
 
-	public IMutableMapNG readMapFromDatabase(DB db, Warning warner) {
+	public IMutableMapNG readMapFromDatabase(final DB db, final Warning warner) {
 		return dbMapReader.readMap(db, warner);
 	}
 }

@@ -13,7 +13,7 @@ import common.map.HasKind;
  */
 public class AnimalTracks implements HasMutableImage, HasKind, MobileFixture,
 		AnimalOrTracks {
-	public AnimalTracks(String kind) {
+	public AnimalTracks(final String kind) {
 		this.kind = kind;
 	}
 
@@ -59,7 +59,7 @@ public class AnimalTracks implements HasMutableImage, HasKind, MobileFixture,
 	}
 
 	@Override
-	public boolean equals(Object other) {
+	public boolean equals(final Object other) {
 		if (this == other) {
 			return true;
 		} else if (other instanceof AnimalTracks) {
@@ -70,7 +70,7 @@ public class AnimalTracks implements HasMutableImage, HasKind, MobileFixture,
 	}
 
 	@Override
-	public boolean equalsIgnoringID(IFixture other) {
+	public boolean equalsIgnoringID(final IFixture other) {
 		return equals(other);
 	}
 
@@ -88,7 +88,7 @@ public class AnimalTracks implements HasMutableImage, HasKind, MobileFixture,
 	}
 
 	@Override
-	public AnimalTracks copy(boolean zero) {
+	public AnimalTracks copy(final boolean zero) {
 		return new AnimalTracks(kind);
 	}
 
@@ -100,12 +100,12 @@ public class AnimalTracks implements HasMutableImage, HasKind, MobileFixture,
 	}
 
 	@Override
-	public void setImage(String image) {
+	public void setImage(final String image) {
 		this.image = image;
 	}
 
 	@Override
-	public boolean isSubset(IFixture fixture, Consumer<String> report) {
+	public boolean isSubset(final IFixture fixture, final Consumer<String> report) {
 		if (fixture instanceof AnimalTracks) {
 			if (((AnimalTracks) fixture).getKind().equals(kind)) {
 				return true;

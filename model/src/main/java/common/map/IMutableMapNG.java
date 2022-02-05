@@ -92,7 +92,7 @@ public interface IMutableMapNG extends IMapNG {
 	 *
 	 * @param point Where to place the bookmark
 	 */
-	default void addBookmark(Point point) {
+	default void addBookmark(final Point point) {
 		addBookmark(point, getCurrentPlayer());
 	}
 
@@ -107,7 +107,7 @@ public interface IMutableMapNG extends IMapNG {
 	 * Remove a bookmark for the current player.
 	 * @param point Where to remove the bookmark
 	 */
-	default void removeBookmark(Point point) {
+	default void removeBookmark(final Point point) {
 		removeBookmark(point, getCurrentPlayer());
 	}
 
@@ -121,7 +121,7 @@ public interface IMutableMapNG extends IMapNG {
 	 *
 	 * TODO: return boolean if the map was changed?
 	 */
-	default void replace(Point location, TileFixture original, TileFixture replacement) {
+	default void replace(final Point location, final TileFixture original, final TileFixture replacement) {
 		removeFixture(location, original);
 		addFixture(location, replacement);
 	}

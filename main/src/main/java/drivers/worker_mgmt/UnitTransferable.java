@@ -22,7 +22,7 @@ import common.map.HasMutableKind;
 /* package */ class UnitTransferable implements Transferable {
 	public static final DataFlavor FLAVOR = new DataFlavor(List.class, "List<IUnit>");
 	private final List<IUnit> payload;
-	public UnitTransferable(IUnit... data) {
+	public UnitTransferable(final IUnit... data) {
 		if (!Stream.of(data).allMatch(HasMutableKind.class::isInstance)) {
 			throw new IllegalArgumentException("All transferred units must have mutable kind.");
 		}
@@ -35,12 +35,12 @@ import common.map.HasMutableKind;
 	}
 
 	@Override
-	public boolean isDataFlavorSupported(DataFlavor candidate) {
+	public boolean isDataFlavorSupported(final DataFlavor candidate) {
 		return FLAVOR.equals(candidate);
 	}
 
 	@Override
-	public List<IUnit> getTransferData(DataFlavor candidate)
+	public List<IUnit> getTransferData(final DataFlavor candidate)
 			throws UnsupportedFlavorException {
 		if (FLAVOR.equals(candidate)) {
 			return Collections.unmodifiableList(payload);
@@ -55,7 +55,7 @@ import common.map.HasMutableKind;
 	}
 
 	@Override
-	public boolean equals(Object that) {
+	public boolean equals(final Object that) {
 		if (that instanceof UnitTransferable) {
 			return payload.equals(((UnitTransferable) that).payload);
 		} else {

@@ -44,7 +44,7 @@ public class WorkerMgmtGUI implements MultiMapGUIDriver, WorkerGUI {
 	 */
 	private static final Logger LOGGER = Logger.getLogger(WorkerMgmtGUIFactory.class.getName());
 
-	public WorkerMgmtGUI(ICLIHelper cli, SPOptions options, IWorkerModel model) {
+	public WorkerMgmtGUI(final ICLIHelper cli, final SPOptions options, final IWorkerModel model) {
 		this.cli = cli;
 		this.options = options;
 		this.model = model;
@@ -66,7 +66,7 @@ public class WorkerMgmtGUI implements MultiMapGUIDriver, WorkerGUI {
 		return model;
 	}
 
-	private void createWindow(MenuBroker menuHandler, PlayerChangeMenuListener pcml)
+	private void createWindow(final MenuBroker menuHandler, final PlayerChangeMenuListener pcml)
 			throws DriverFailedException {
 		LOGGER.finer("Inside GUI creation lambda");
 		WorkerMgmtFrame frame = new WorkerMgmtFrame(options, model, menuHandler, this);
@@ -78,7 +78,7 @@ public class WorkerMgmtGUI implements MultiMapGUIDriver, WorkerGUI {
 		try {
 			menuHandler.registerWindowShower(new AboutDialog(frame,
 				frame.getWindowName()), "about");
-		} catch (IOException except) {
+		} catch (final IOException except) {
 			LOGGER.log(Level.SEVERE, "I/O error setting up About dialog", except);
 		}
 		LOGGER.finer("Registered menu handlers");
@@ -95,7 +95,7 @@ public class WorkerMgmtGUI implements MultiMapGUIDriver, WorkerGUI {
 		LOGGER.finer("Window should now be visible");
 	}
 
-	private void reload(WorkerMgmtFrame frame) { // TODO: inline into (sole?) caller?
+	private void reload(final WorkerMgmtFrame frame) { // TODO: inline into (sole?) caller?
 		frame.playerChanged(model.getCurrentPlayer(), model.getCurrentPlayer());
 	}
 
@@ -111,11 +111,11 @@ public class WorkerMgmtGUI implements MultiMapGUIDriver, WorkerGUI {
 			SwingUtilities.invokeLater(() -> {
 					try {
 						createWindow(menuHandler, pcml);
-					} catch (DriverFailedException except) {
+					} catch (final DriverFailedException except) {
 						throw new RuntimeException(except);
 					}
 				});
-		} catch (RuntimeException except) {
+		} catch (final RuntimeException except) {
 			if (except.getCause() instanceof DriverFailedException) {
 				throw (DriverFailedException) except.getCause();
 			} else {
@@ -132,20 +132,20 @@ public class WorkerMgmtGUI implements MultiMapGUIDriver, WorkerGUI {
 	public Iterable<Path> askUserForFiles() {
 		try {
 			return SPFileChooser.open((Path) null).getFiles();
-		} catch (FileChooser.ChoiceInterruptedException except) {
+		} catch (final FileChooser.ChoiceInterruptedException except) {
 			LOGGER.log(Level.FINE, "Choice interrupted or user didn't choose", except);
 			return Collections.emptyList();
 		}
 	}
 
 	@Override
-	public void open(IMutableMapNG map) {
+	public void open(final IMutableMapNG map) {
 		if (model.isMapModified()) {
 			SwingUtilities.invokeLater(() -> {
 					try {
 						new WorkerMgmtGUI(cli, options, new WorkerModel(map))
 							.startDriver();
-					} catch (DriverFailedException except) {
+					} catch (final DriverFailedException except) {
 						// FIXME: Show error dialog
 						LOGGER.log(Level.SEVERE, "Failed to open new window",
 							except);

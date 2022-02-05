@@ -12,13 +12,13 @@ import common.map.MapDimensions;
  * closer appearing multiple times. The default radius is 2.
  */
 public class SurroundingPointIterable implements Iterable<Point> {
-	public SurroundingPointIterable(Point startingPoint, MapDimensions dimensions) {
+	public SurroundingPointIterable(final Point startingPoint, final MapDimensions dimensions) {
 		this(startingPoint, dimensions, 2);
 	}
 
 	private final MapDimensions dimensions;
 
-	public SurroundingPointIterable(Point startingPoint, MapDimensions dimensions, int radius) {
+	public SurroundingPointIterable(final Point startingPoint, final MapDimensions dimensions, final int radius) {
 		this.dimensions = dimensions;
 		for (int inner = radius; inner >= 0; inner--) {
 			int lowerBound = 0 - inner;
@@ -32,7 +32,7 @@ public class SurroundingPointIterable implements Iterable<Point> {
 		}
 	}
 
-	private int roundColumn(int column) {
+	private int roundColumn(final int column) {
 		if (column < 0) {
 			return dimensions.getColumns() + column; // TODO: Should probably pass to roundColumn(), inc case column is -1000 or something.
 		} else {
@@ -40,7 +40,7 @@ public class SurroundingPointIterable implements Iterable<Point> {
 		}
 	}
 
-	private int roundRow(int row) {
+	private int roundRow(final int row) {
 		if (row < 0) {
 			return dimensions.getRows() + row;
 		} else {

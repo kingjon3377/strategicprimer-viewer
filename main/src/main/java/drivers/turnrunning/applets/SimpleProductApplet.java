@@ -23,8 +23,8 @@ import org.jetbrains.annotations.Nullable;
 	private final IDRegistrar idf;
 	private final ResourceAddingCLIHelper raHelper;
 
-	public SimpleProductApplet(String name, String description, ITurnRunningModel model, ICLIHelper cli,
-			IDRegistrar idf) {
+	public SimpleProductApplet(final String name, final String description, final ITurnRunningModel model, final ICLIHelper cli,
+	                           final IDRegistrar idf) {
 		super(model, cli, idf);
 		this.name = name;
 		commands = Collections.singletonList(name);

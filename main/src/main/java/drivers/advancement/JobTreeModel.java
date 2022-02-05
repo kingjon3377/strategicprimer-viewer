@@ -37,7 +37,7 @@ import java.util.stream.StreamSupport;
 /* package */ class JobTreeModel implements TreeModel, UnitMemberListener, AddRemoveListener {
 	private static final Logger LOGGER = Logger.getLogger(JobTreeModel.class.getName());
 
-	public JobTreeModel(IAdvancementModel driverModel) {
+	public JobTreeModel(final IAdvancementModel driverModel) {
 		this.driverModel = driverModel;
 	}
 
@@ -53,7 +53,7 @@ import java.util.stream.StreamSupport;
 
 	private TreeSelectionModel selectionModel; // TODO: refactor so this can be provided in the constructor, if possible; it's currently provided by the tree, to whose constructor this tree-model object is passed
 
-	public void setSelectionModel(TreeSelectionModel selectionModel) {
+	public void setSelectionModel(final TreeSelectionModel selectionModel) {
 		this.selectionModel = selectionModel;
 	}
 
@@ -64,7 +64,7 @@ import java.util.stream.StreamSupport;
 	}
 
 	@Override
-	public HasName getChild(Object parent, int index) {
+	public HasName getChild(final Object parent, final int index) {
 		if (index >= 0 && (parent instanceof IWorker || parent instanceof IJob)) {
 			return StreamSupport.stream(
 					((Iterable<? extends HasName>) parent).spliterator(), false)
@@ -77,7 +77,7 @@ import java.util.stream.StreamSupport;
 	}
 
 	@Override
-	public int getChildCount(Object parent) {
+	public int getChildCount(final Object parent) {
 		if (parent instanceof IWorker || parent instanceof IJob) {
 			return (int) StreamSupport.stream(
 					((Iterable<? extends HasName>) parent).spliterator(), false)
@@ -90,7 +90,7 @@ import java.util.stream.StreamSupport;
 	}
 
 	@Override
-	public boolean isLeaf(Object node) {
+	public boolean isLeaf(final Object node) {
 		if (node instanceof IWorker || node instanceof IJob) {
 			return false;
 		} else {
@@ -104,12 +104,12 @@ import java.util.stream.StreamSupport;
 	 * TODO: Implement if necessary
 	 */
 	@Override
-	public void valueForPathChanged(TreePath path, Object newValue) {
+	public void valueForPathChanged(final TreePath path, final Object newValue) {
 		LOGGER.severe("valueForPathChanged needs to be implemented");
 	}
 
 	@Override
-	public int getIndexOfChild(Object parent, Object child) {
+	public int getIndexOfChild(final Object parent, final Object child) {
 		if (parent instanceof IWorker || parent instanceof IJob) {
 			int i = 0;
 			for (Object ch : (Iterable<? extends HasName>) parent) {
@@ -123,22 +123,22 @@ import java.util.stream.StreamSupport;
 	}
 
 	@Override
-	public void addTreeModelListener(TreeModelListener listener) {
+	public void addTreeModelListener(final TreeModelListener listener) {
 		listeners.add(listener);
 	}
 
 	@Override
-	public void removeTreeModelListener(TreeModelListener listener) {
+	public void removeTreeModelListener(final TreeModelListener listener) {
 		listeners.remove(listener);
 	}
 
-	private void fireTreeNodesInserted(TreeModelEvent event) {
+	private void fireTreeNodesInserted(final TreeModelEvent event) {
 		for (TreeModelListener listener : listeners) {
 			listener.treeNodesInserted(event);
 		}
 	}
 
-	private void fireTreeStructureChanged(TreeModelEvent event) {
+	private void fireTreeStructureChanged(final TreeModelEvent event) {
 		for (TreeModelListener listener : listeners) {
 			listener.treeStructureChanged(event);
 		}
@@ -150,7 +150,7 @@ import java.util.stream.StreamSupport;
 	 * TODO: Show error dialog, or at least visual-beep, instead of just logging warnings?
 	 */
 	@Override
-	public void add(String category, String addendum) {
+	public void add(final String category, final String addendum) {
 		IWorker currentRoot = localRoot;
 		if ("job".equals(category)) {
 			if (currentRoot != null) { // TODO: invert?
@@ -207,7 +207,7 @@ import java.util.stream.StreamSupport;
 	 * Change what unit member is currently selected
 	 */
 	@Override
-	public void memberSelected(@Nullable UnitMember old, @Nullable UnitMember selected) {
+	public void memberSelected(@Nullable final UnitMember old, @Nullable final UnitMember selected) {
 		if (selected instanceof IWorker) {
 			localRoot = (IWorker) selected;
 			fireTreeStructureChanged(new TreeModelEvent(this, new TreePath(selected)));

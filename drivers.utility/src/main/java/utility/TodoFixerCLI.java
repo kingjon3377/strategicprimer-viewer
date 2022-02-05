@@ -50,7 +50,7 @@ import java.util.Objects;
  * FIXME: Move mutation operations into a driver model
  */
 public class TodoFixerCLI implements CLIDriver {
-	public TodoFixerCLI(ICLIHelper cli, UtilityDriverModel model) {
+	public TodoFixerCLI(final ICLIHelper cli, final UtilityDriverModel model) {
 		this.cli = cli;
 		this.model = model;
 	}
@@ -109,7 +109,7 @@ public class TodoFixerCLI implements CLIDriver {
 	 *
 	 * We don't just use TileType because we need mountains and forests in ver-2 maps.
 	 */
-	private SimpleTerrain getTerrain(IMapNG map, Point location) {
+	private SimpleTerrain getTerrain(final IMapNG map, final Point location) {
 		TileType terrain = map.getBaseTerrain(location);
 		if (terrain == null) {
 			return SimpleTerrain.Unforested;
@@ -154,7 +154,7 @@ public class TodoFixerCLI implements CLIDriver {
 		}
 	}
 
-	private String simpleTerrain(IMapNG map, Point loc) {
+	private String simpleTerrain(final IMapNG map, final Point loc) {
 		TileType terrain = map.getBaseTerrain(loc);
 		if (TileType.Ocean.equals(terrain)) {
 			return "ocean";
@@ -167,13 +167,13 @@ public class TodoFixerCLI implements CLIDriver {
 		}
 	}
 
-	private static boolean productionContainsHash(Pair<Point, CommunityStats> pair) {
+	private static boolean productionContainsHash(final Pair<Point, CommunityStats> pair) {
 		return pair.getValue1().getYearlyProduction().stream().map(IResourcePile::getContents)
 			.anyMatch(s -> s.contains("#"));
 	}
 
 	// TODO: Check against the Ceylon code to see if this is right.
-	private static boolean anyEmptySkills(Pair<Point, CommunityStats> pair) {
+	private static boolean anyEmptySkills(final Pair<Point, CommunityStats> pair) {
 		return pair.getValue1().getHighestSkillLevels().keySet().stream()
 			.anyMatch(String::isEmpty);
 	}
@@ -181,7 +181,7 @@ public class TodoFixerCLI implements CLIDriver {
 	/**
 	 * Search for and fix aquatic villages with non-aquatic races.
 	 */
-	private void fixAllVillages(IMapNG map) throws MissingTableException, IOException {
+	private void fixAllVillages(final IMapNG map) throws MissingTableException, IOException {
 		List<Village> villages = map.streamLocations()
 			.filter(l -> TileType.Ocean.equals(map.getBaseTerrain(l)))
 			.flatMap(l -> map.getFixtures(l).stream())
@@ -284,7 +284,7 @@ public class TodoFixerCLI implements CLIDriver {
 	/**
 	 * Fix a stubbed-out kind for a unit.
 	 */
-	private void fixUnit(Unit unit, SimpleTerrain terrain) {
+	private void fixUnit(final Unit unit, final SimpleTerrain terrain) {
 		Random rng = new Random(unit.getId());
 		count++;
 		List<String> jobList;
@@ -324,7 +324,7 @@ public class TodoFixerCLI implements CLIDriver {
 	/**
 	 * Search for and fix units with kinds missing.
 	 */
-	private void fixAllUnits(IMapNG map) {
+	private void fixAllUnits(final IMapNG map) {
 		totalCount = map.streamLocations()
 			.flatMap(l -> map.getFixtures(l).stream())
 			.filter(Unit.class::isInstance).map(Unit.class::cast) // FIXME: IMutableUnit, surely?
@@ -346,10 +346,10 @@ public class TodoFixerCLI implements CLIDriver {
 				fixAllUnits(map);
 				try {
 					fixAllVillages(map);
-				} catch (IOException except) {
+				} catch (final IOException except) {
 					throw new DriverFailedException(except,
 						"I/O error loading data from disk");
-				} catch (MissingTableException except) {
+				} catch (final MissingTableException except) {
 					throw new DriverFailedException(except,
 						"Missing data file");
 				}
@@ -362,10 +362,10 @@ public class TodoFixerCLI implements CLIDriver {
 			fixAllUnits(model.getMap());
 			try {
 				fixAllVillages(model.getMap());
-			} catch (IOException except) {
+			} catch (final IOException except) {
 				throw new DriverFailedException(except,
 					"I/O error loading data from disk");
-			} catch (MissingTableException except) {
+			} catch (final MissingTableException except) {
 				throw new DriverFailedException(except,
 					"Missing data file");
 			}

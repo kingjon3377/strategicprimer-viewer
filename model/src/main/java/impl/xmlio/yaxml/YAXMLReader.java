@@ -46,7 +46,7 @@ public class YAXMLReader implements IMapReader, ISPReader {
 	 * Ceylon we did {@code assert (is Element retval}
 	 */
 	@Override
-	public <Element> Element readXML(Path file, Reader istream, Warning warner)
+	public <Element> Element readXML(final Path file, final Reader istream, final Warning warner)
 			throws SPFormatException, MalformedXMLException, IOException {
 		try (TypesafeXMLEventReader reader = new TypesafeXMLEventReader(istream)) {
 			Iterable<XMLEvent> eventReader = new IteratorWrapper(reader);
@@ -72,7 +72,7 @@ public class YAXMLReader implements IMapReader, ISPReader {
 	 * @throws ClassCastException if reader does not produce the requested type
 	 */
 	@Override
-	public IMutableMapNG readMapFromStream(Path file, Reader istream, Warning warner)
+	public IMutableMapNG readMapFromStream(final Path file, final Reader istream, final Warning warner)
 			throws SPFormatException, MalformedXMLException, IOException {
 		return this.<IMutableMapNG>readXML(file, istream, warner);
 	}
@@ -87,7 +87,7 @@ public class YAXMLReader implements IMapReader, ISPReader {
 	 * @param warner The Warning instance to use for warnings
 	 */
 	@Override
-	public IMutableMapNG readMap(Path file, Warning warner)
+	public IMutableMapNG readMap(final Path file, final Warning warner)
 			throws IOException, MalformedXMLException, SPFormatException, MissingFileException {
 		try (Reader istream = Files.newBufferedReader(file, StandardCharsets.UTF_8)) {
 			return readMapFromStream(file, istream, warner);

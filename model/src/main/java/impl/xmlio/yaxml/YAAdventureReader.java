@@ -19,16 +19,16 @@ import lovelace.util.ThrowingConsumer;
  */
 /* package */ class YAAdventureReader extends YAAbstractReader<AdventureFixture, AdventureFixture> {
 	private final IPlayerCollection players;
-	public YAAdventureReader(Warning warner, IDRegistrar idFactory, IPlayerCollection players) {
+	public YAAdventureReader(final Warning warner, final IDRegistrar idFactory, final IPlayerCollection players) {
 		super(warner, idFactory);
 		this.players = players;
 	}
-	
+
 	/**
 	 * Read an adventure from XML.
 	 */
 	@Override
-	public AdventureFixture read(StartElement element, QName parent, Iterable<XMLEvent> stream) 
+	public AdventureFixture read(final StartElement element, final QName parent, final Iterable<XMLEvent> stream)
 			throws SPFormatException {
 		requireTag(element, parent, "adventure");
 		expectAttributes(element, "owner", "brief", "full", "image", "id");
@@ -50,7 +50,7 @@ import lovelace.util.ThrowingConsumer;
 	 * Write an adventure to XML.
 	 */
 	@Override
-	public void write(ThrowingConsumer<String, IOException> ostream, AdventureFixture obj, int indent)
+	public void write(final ThrowingConsumer<String, IOException> ostream, final AdventureFixture obj, final int indent)
 			throws IOException {
 		writeTag(ostream, "adventure", indent);
 		writeProperty(ostream, "id", obj.getId());
@@ -64,12 +64,12 @@ import lovelace.util.ThrowingConsumer;
 	}
 
 	@Override
-	public boolean isSupportedTag(String tag) {
+	public boolean isSupportedTag(final String tag) {
 		return "adventure".equalsIgnoreCase(tag);
 	}
 
 	@Override
-	public boolean canWrite(Object obj) {
+	public boolean canWrite(final Object obj) {
 		return obj instanceof AdventureFixture;
 	}
 }

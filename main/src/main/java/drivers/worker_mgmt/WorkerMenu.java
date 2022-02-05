@@ -17,8 +17,8 @@ public class WorkerMenu {
 	 * to, which should close on "Close"
 	 * @param driver The current driver
 	 */
-	public static JMenuBar workerMenu(ActionListener handler, Component component,
-			ISPDriver driver) {
+	public static JMenuBar workerMenu(final ActionListener handler, final Component component,
+	                                  final ISPDriver driver) {
 		return SPMenu.forWindowContaining(component, SPMenu.createFileMenu(handler, driver),
 			SPMenu.disabledMenu(SPMenu.createMapMenu(handler, driver)),
 			SPMenu.createViewMenu(handler, driver));

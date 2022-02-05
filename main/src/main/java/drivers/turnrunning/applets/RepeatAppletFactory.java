@@ -8,7 +8,7 @@ import drivers.turnrunning.ITurnRunningModel;
 @AutoService(TurnAppletFactory.class)
 public class RepeatAppletFactory implements TurnAppletFactory {
 	@Override
-	public TurnApplet create(ITurnRunningModel model, ICLIHelper cli, IDRegistrar idf) {
+	public TurnApplet create(final ITurnRunningModel model, final ICLIHelper cli, final IDRegistrar idf) {
 		return new RepeatApplet(model, cli, idf);
 	}
 }

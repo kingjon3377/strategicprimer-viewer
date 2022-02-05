@@ -38,7 +38,7 @@ import java.util.logging.Logger;
 	 * Find the location of the given player's HQ in the given map, or null if not found.
 	 */
 	@Nullable
-	public static Point findHQ(IMapNG map, Player player) {
+	public static Point findHQ(final IMapNG map, final Player player) {
 		Point retval = null;
 		for (Point location : map.getLocations()) {
 			for (TileFixture fixture : map.getFixtures(location)) {
@@ -55,8 +55,8 @@ import java.util.logging.Logger;
 		return retval;
 	}
 
-	private static void addToMap(Point location, IFixture fixture, IDRegistrar idf,
-			DelayedRemovalMap<Integer, Pair<Point, IFixture>> mapping) {
+	private static void addToMap(final Point location, final IFixture fixture, final IDRegistrar idf,
+	                             final DelayedRemovalMap<Integer, Pair<Point, IFixture>> mapping) {
 		if (fixture instanceof TileFixture || fixture.getId() >= 0) {
 			int key = checkID(idf, fixture);
 			Pair<Point, IFixture> val = Pair.with(location, fixture);
@@ -73,7 +73,7 @@ import java.util.logging.Logger;
 		}
 	}
 
-	private static int checkID(IDRegistrar idf, IFixture fixture) {
+	private static int checkID(final IDRegistrar idf, final IFixture fixture) {
 		if (fixture.getId() < 0) {
 			return idf.createID();
 		} else {
@@ -85,7 +85,7 @@ import java.util.logging.Logger;
 	 * Create a mapping from ID numbers to Pairs of fixtures and their
 	 * location for all fixtures in the map.
 	 */
-	public static DelayedRemovalMap<Integer, Pair<Point, IFixture>> getFixtures(IMapNG map) {
+	public static DelayedRemovalMap<Integer, Pair<Point, IFixture>> getFixtures(final IMapNG map) {
 		final DelayedRemovalMap<Integer, Pair<Point, IFixture>> retval = new IntMap<>();
 		IDRegistrar idf = new IDFactoryFiller().createIDFactory(map);
 		for (Point location : map.getLocations()) {
@@ -96,8 +96,8 @@ import java.util.logging.Logger;
 		return retval;
 	}
 
-	private static void parentMapImpl(Map<Integer, Integer> retval, IFixture parent,
-			Iterable<? extends IFixture> stream) {
+	private static void parentMapImpl(final Map<Integer, Integer> retval, final IFixture parent,
+	                                  final Iterable<? extends IFixture> stream) {
 		for (IFixture fixture : stream) {
 			retval.put(fixture.getId(), parent.getId());
 			if (fixture instanceof FixtureIterable) {
@@ -109,7 +109,7 @@ import java.util.logging.Logger;
 	/**
 	 * Create a mapping from child ID numbers to parent ID numbers.
 	 */
-	public static Map<Integer, Integer> getParentMap(IMapNG map) {
+	public static Map<Integer, Integer> getParentMap(final IMapNG map) {
 		Map<Integer, Integer> retval = new HashMap<>();
 		for (Point location : map.getLocations()) {
 			for (TileFixture fixture : map.getFixtures(location)) {

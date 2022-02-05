@@ -13,13 +13,13 @@ public final class AnimalPlurals {
 	private static Map<String, String> initPlurals() {
 		try {
 			return FileSplitter.getFileContents("animal_data/plurals.txt", str -> str);
-		} catch (IOException except) {
+		} catch (final IOException except) {
 			throw new RuntimeException(except);
 		}
 	}
 	private static final Map<String, String> PLURALS = initPlurals();
 
-	public static String get(String key) {
+	public static String get(final String key) {
 		if (PLURALS.containsKey(key)) {
 			return PLURALS.get(key);
 		} else {
@@ -27,7 +27,7 @@ public final class AnimalPlurals {
 		}
 	}
 
-	public static boolean hasKey(String key) {
+	public static boolean hasKey(final String key) {
 		return PLURALS.containsKey(key);
 	}
 }

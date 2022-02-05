@@ -18,7 +18,7 @@ public final class StreamingLabel extends JEditorPane {
 		public String getColorName() {
 			return colorName;
 		}
-		private LabelTextColor(String color) {
+		private LabelTextColor(final String color) {
 			colorName = color;
 		}
 	}
@@ -35,7 +35,7 @@ public final class StreamingLabel extends JEditorPane {
 	/**
 	 * Add text to the label.
 	 */
-	public void append(String string) {
+	public void append(final String string) {
 		buffer.append(string);
 		setText("<html><body bgcolor=\"#ffffff\">" + buffer + "</body></html>");
 		repaint();
@@ -44,7 +44,7 @@ public final class StreamingLabel extends JEditorPane {
 	/**
 	 * Add text to the label, followed by a newline.
 	 */
-	public void appendLine(String string) {
+	public void appendLine(final String string) {
 		buffer.append(string);
 		buffer.append("<br />");
 		setText("<html><body bgcolor=\"#ffffff\">" + buffer + "</body></html>");

@@ -9,7 +9,7 @@ import java.util.Objects;
  * TODO: Tests
  */
 public class VisibleDimensions {
-	public VisibleDimensions(int minimumRow, int maximumRow, int minimumColumn, int maximumColumn) {
+	public VisibleDimensions(final int minimumRow, final int maximumRow, final int minimumColumn, final int maximumColumn) {
 		this.minimumRow = minimumRow;
 		this.maximumRow = maximumRow;
 		this.minimumColumn = minimumColumn;
@@ -111,7 +111,7 @@ public class VisibleDimensions {
 	}
 
 	@Override
-	public boolean equals(Object that) {
+	public boolean equals(final Object that) {
 		if (that instanceof VisibleDimensions && // TODO: just return this Boolean expression
 				((VisibleDimensions) that).minimumRow == minimumRow &&
 				((VisibleDimensions) that).maximumRow == maximumRow &&

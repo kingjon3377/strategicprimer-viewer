@@ -16,12 +16,12 @@ import common.xmlio.Warning;
  * A reader for {@link Implement}s.
  */
 /* package */ class YAImplementReader extends YAAbstractReader<Implement, Implement> {
-	public YAImplementReader(Warning warning, IDRegistrar idRegistrar) {
+	public YAImplementReader(final Warning warning, final IDRegistrar idRegistrar) {
 		super(warning, idRegistrar);
 	}
 
 	@Override
-	public Implement read(StartElement element, QName parent, Iterable<XMLEvent> stream) 
+	public Implement read(final StartElement element, final QName parent, final Iterable<XMLEvent> stream)
 			throws SPFormatException {
 		requireTag(element, parent, "implement");
 		expectAttributes(element, "kind", "id", "image");
@@ -33,12 +33,12 @@ import common.xmlio.Warning;
 	}
 
 	@Override
-	public boolean isSupportedTag(String tag) {
+	public boolean isSupportedTag(final String tag) {
 		return "implement".equalsIgnoreCase(tag);
 	}
 
 	@Override
-	public void write(ThrowingConsumer<String, IOException> ostream, Implement obj, int indent) throws IOException{
+	public void write(final ThrowingConsumer<String, IOException> ostream, final Implement obj, final int indent) throws IOException{
 		writeTag(ostream, "implement", indent);
 		writeProperty(ostream, "kind", obj.getKind());
 		writeProperty(ostream, "id", obj.getId());
@@ -50,7 +50,7 @@ import common.xmlio.Warning;
 	}
 
 	@Override
-	public boolean canWrite(Object obj) {
+	public boolean canWrite(final Object obj) {
 		return obj instanceof Implement;
 	}
 }

@@ -48,7 +48,7 @@ import drivers.gui.common.SPDialog;
 	private final JCheckBoxMenuItem bookmarkItem = new JCheckBoxMenuItem("Bookmarked");
 	private final Map<River, JCheckBoxMenuItem> riverItems = new HashMap<>();
 
-	public TerrainChangingMenu(int mapVersion, IViewerModel model) {
+	public TerrainChangingMenu(final int mapVersion, final IViewerModel model) {
 		// TODO: Pass checkbox models into methods, not the items themselves?
 		this.mapVersion = mapVersion;
 		this.model = model;
@@ -56,7 +56,7 @@ import drivers.gui.common.SPDialog;
 		nuDialog = new NewUnitDialog(model.getMap().getCurrentPlayer(), idf);
 		nuDialog.addNewUnitListener(new NewUnitListener() { // TODO: convert to lambda?
 				@Override
-				public void addNewUnit(IUnit unit) {
+				public void addNewUnit(final IUnit unit) {
 					model.addFixture(point, unit);
 					model.setSelection(point); // FIXME: Extract a method for the 'set modified flag, fire changes, reset interaction' procedure
 					scs.fireChanges(null, point);
@@ -154,7 +154,7 @@ import drivers.gui.common.SPDialog;
 		model.setInteraction(null);
 	}
 
-	private void newFixture(TileFixture fixture) {
+	private void newFixture(final TileFixture fixture) {
 		model.addFixture(point, fixture);
 		model.setSelection(point); // TODO: We probably don't always want to do this ...
 		scs.fireChanges(null, point);
@@ -178,7 +178,7 @@ import drivers.gui.common.SPDialog;
 		model.setInteraction(null);
 	}
 
-	private Runnable toggleRiver(River river, JCheckBoxMenuItem item) {
+	private Runnable toggleRiver(final River river, final JCheckBoxMenuItem item) {
 		return () -> {
 			Point localPoint = point;
 			TileType terrain = model.getMap().getBaseTerrain(localPoint);
@@ -196,13 +196,13 @@ import drivers.gui.common.SPDialog;
 		};
 	}
 
-	private void removeTerrain(ActionEvent event) { // TODO: Why take the event here?
+	private void removeTerrain(final ActionEvent event) { // TODO: Why take the event here?
 		model.setBaseTerrain(point, null);
 		scs.fireChanges(null, point);
 		model.setInteraction(null);
 	}
 
-	private void updateForVersion(int version) {
+	private void updateForVersion(final int version) {
 		removeAll();
 		add(bookmarkItem);
 		add(textNoteItem);
@@ -268,15 +268,15 @@ import drivers.gui.common.SPDialog;
 	}
 
 	@Override
-	public void changeVersion(int old, int newVersion) {
+	public void changeVersion(final int old, final int newVersion) {
 		updateForVersion(newVersion);
 	}
 
 	@Override
-	public void selectedPointChanged(@Nullable Point old, Point newPoint) {}
+	public void selectedPointChanged(@Nullable final Point old, final Point newPoint) {}
 
 	@Override
-	public void cursorPointChanged(@Nullable Point old, Point newCursor) {}
+	public void cursorPointChanged(@Nullable final Point old, final Point newCursor) {}
 
 	@Override
 	public void interactionPointChanged() {
@@ -322,6 +322,6 @@ import drivers.gui.common.SPDialog;
 	}
 
 	@Override
-	public void selectedUnitChanged(@Nullable IUnit oldSelection, @Nullable IUnit newSelection) {}
+	public void selectedUnitChanged(@Nullable final IUnit oldSelection, @Nullable final IUnit newSelection) {}
 }
 

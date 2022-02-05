@@ -24,7 +24,7 @@ public interface ModelDriverFactory extends DriverFactory {
 	 * Create a model to pass to {@link createDriver}. The 'modified' flag is set to false.
 	 * @param map The map
 	 */
-	default IDriverModel createModel(IMutableMapNG map) {
+	default IDriverModel createModel(final IMutableMapNG map) {
 		return new SimpleDriverModel(map);
 	}
 }

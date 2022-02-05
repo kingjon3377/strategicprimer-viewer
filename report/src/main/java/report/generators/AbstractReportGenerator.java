@@ -51,8 +51,8 @@ public abstract class AbstractReportGenerator<Type extends IFixture> implements 
 	 * calculations. Usually the location of the headquarters of the player
 	 * for whom the report is being prepared.
 	 */
-	public AbstractReportGenerator(Comparator<Pair<Point, IFixture>> pairComparator,
-			@Nullable MapDimensions mapDimensions, @Nullable Point referencePoint) {
+	public AbstractReportGenerator(final Comparator<Pair<Point, IFixture>> pairComparator,
+	                               @Nullable final MapDimensions mapDimensions, @Nullable final Point referencePoint) {
 		this.pairComparator = pairComparator;
 		if (referencePoint == null) {
 			distComparator = (one, two) -> 0;
@@ -78,7 +78,7 @@ public abstract class AbstractReportGenerator<Type extends IFixture> implements 
 			return header;
 		}
 
-		public HtmlList(String header, Collection<String> initial) {
+		public HtmlList(final String header, final Collection<String> initial) {
 			super(initial);
 			this.header = header;
 		}
@@ -110,7 +110,7 @@ public abstract class AbstractReportGenerator<Type extends IFixture> implements 
 	 * representations, with "and" before the final item and a special
 	 * no-comma case for a list of only two items.
 	 */
-	protected static String commaSeparatedList(List<?> list) {
+	protected static String commaSeparatedList(final List<?> list) {
 		if (list.isEmpty()) {
 			return "";
 		} else if (list.size() == 1) {
@@ -135,7 +135,7 @@ public abstract class AbstractReportGenerator<Type extends IFixture> implements 
 	 * representations, with "and" before the final item and a special
 	 * no-comma case for a list of only two items.
 	 */
-	protected static String commaSeparatedList(Object... list) {
+	protected static String commaSeparatedList(final Object... list) {
 		if (list.length == 0) {
 			return "";
 		} else if (list.length == 1) {
@@ -171,7 +171,7 @@ public abstract class AbstractReportGenerator<Type extends IFixture> implements 
 		/**
 		 * @param header The "header" to print before the points in the list.
 		 */
-		public PointList(String header) {
+		public PointList(final String header) {
 			this.header = header;
 		}
 
@@ -200,7 +200,7 @@ public abstract class AbstractReportGenerator<Type extends IFixture> implements 
 		/**
 		 * @param header The header to prepend to the items in {@link toString}.
 		 */
-		public HeadedMapImpl(String header) {
+		public HeadedMapImpl(final String header) {
 			this.header = header;
 			wrapped = new HashMap<>();
 		}
@@ -208,7 +208,7 @@ public abstract class AbstractReportGenerator<Type extends IFixture> implements 
 		/**
 		 * @param header The header to prepend to the items in {@link toString}.
 		 */
-		public HeadedMapImpl(String header, Map<Key, Value> initial) {
+		public HeadedMapImpl(final String header, final Map<Key, Value> initial) {
 			this.header = header;
 			wrapped = new HashMap<>(initial);
 		}
@@ -218,7 +218,7 @@ public abstract class AbstractReportGenerator<Type extends IFixture> implements 
 		 * @param comparator A comparator to sort the map by.
 		 * @param initial Initial entries in the map
 		 */
-		public HeadedMapImpl(String header, Comparator<Key> comparator) {
+		public HeadedMapImpl(final String header, final Comparator<Key> comparator) {
 			this.header = header;
 			wrapped = new TreeMap<Key, Value>(comparator);
 		}
@@ -228,7 +228,7 @@ public abstract class AbstractReportGenerator<Type extends IFixture> implements 
 		 * @param comparator A comparator to sort the map by.
 		 * @param initial Initial entries in the map
 		 */
-		public HeadedMapImpl(String header, Comparator<Key> comparator, Map<Key, Value> initial) {
+		public HeadedMapImpl(final String header, final Comparator<Key> comparator, final Map<Key, Value> initial) {
 			this.header = header;
 			wrapped = new TreeMap<Key, Value>(comparator);
 			wrapped.putAll(initial);
@@ -250,7 +250,7 @@ public abstract class AbstractReportGenerator<Type extends IFixture> implements 
 		}
 
 		@Override
-		public boolean equals(Object that) {
+		public boolean equals(final Object that) {
 			return wrapped.equals(that);
 		}
 
@@ -260,13 +260,13 @@ public abstract class AbstractReportGenerator<Type extends IFixture> implements 
 		}
 
 		@Override
-		public boolean containsKey(Object key) {
+		public boolean containsKey(final Object key) {
 			return wrapped.containsKey(key);
 		}
 
 		@Override
 		@Nullable
-		public Value get(Object key) {
+		public Value get(final Object key) {
 			return wrapped.get(key);
 		}
 
@@ -277,13 +277,13 @@ public abstract class AbstractReportGenerator<Type extends IFixture> implements 
 
 		@Override
 		@Nullable
-		public Value put(Key key, Value item) {
+		public Value put(final Key key, final Value item) {
 			return wrapped.put(key, item);
 		}
 
 		@Override
 		@Nullable
-		public Value remove(Object key) {
+		public Value remove(final Object key) {
 			return wrapped.remove(key);
 		}
 
@@ -298,12 +298,12 @@ public abstract class AbstractReportGenerator<Type extends IFixture> implements 
 		}
 
 		@Override
-		public void putAll(Map<? extends Key, ? extends Value> map) {
+		public void putAll(final Map<? extends Key, ? extends Value> map) {
 			wrapped.putAll(map);
 		}
 
 		@Override
-		public boolean containsValue(Object obj) {
+		public boolean containsValue(final Object obj) {
 			return wrapped.containsValue(obj);
 		}
 	}

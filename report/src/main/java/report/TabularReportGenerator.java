@@ -68,9 +68,9 @@ public final class TabularReportGenerator {
 	 *
 	 * TODO: Does the consumer really need to be ThrowingConsumer here either?
 	 */
-	public static void createTabularReports(IMapNG map,
-	        ThrowingFunction<String, ThrowingConsumer<String, IOException>, IOException> source,
-			ICLIHelper cli) throws IOException {
+	public static void createTabularReports(final IMapNG map,
+	                                        final ThrowingFunction<String, ThrowingConsumer<String, IOException>, IOException> source,
+	                                        final ICLIHelper cli) throws IOException {
 		DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures =
 			ReportGeneratorHelper.getFixtures(map);
 		Map<Integer, Integer> parentMap = ReportGeneratorHelper.getParentMap(map);
@@ -113,7 +113,7 @@ public final class TabularReportGenerator {
 	 *
 	 * TODO: Provide a richer model so this becomes unnecessary
 	 */
-	private static int sorter(Object one, Object two) {
+	private static int sorter(final Object one, final Object two) {
 		String actualOne;
 		String actualTwo;
 		if (one instanceof String) {
@@ -129,7 +129,7 @@ public final class TabularReportGenerator {
 		try {
 			return Double.compare(NUM_FORMAT.parse(actualOne).doubleValue(),
 				NUM_FORMAT.parse(actualTwo).doubleValue());
-		} catch (Exception except) {
+		} catch (final Exception except) {
 			return actualOne.compareTo(actualTwo);
 		}
 	}
@@ -139,7 +139,7 @@ public final class TabularReportGenerator {
 	 * @param consumer The way to add the tables to the GUI
 	 * @param map The map to base the reports on
 	 */
-	public static void createGUITabularReports(BiConsumer<String, Component> consumer, IMapNG map)
+	public static void createGUITabularReports(final BiConsumer<String, Component> consumer, final IMapNG map)
 			throws IOException {
 		DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures =
 			ReportGeneratorHelper.getFixtures(map);

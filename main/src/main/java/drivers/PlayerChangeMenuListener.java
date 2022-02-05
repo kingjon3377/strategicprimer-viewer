@@ -23,7 +23,7 @@ import common.map.Player;
  * A class to respond to "change current player" menu items.
  */
 public class PlayerChangeMenuListener implements ActionListener, PlayerChangeSource {
-	public PlayerChangeMenuListener(IDriverModel model) {
+	public PlayerChangeMenuListener(final IDriverModel model) {
 		this.model = model;
 	}
 
@@ -32,12 +32,12 @@ public class PlayerChangeMenuListener implements ActionListener, PlayerChangeSou
 	private final List<PlayerChangeListener> listeners = new ArrayList<>();
 
 	@Override
-	public void addPlayerChangeListener(PlayerChangeListener listener) {
+	public void addPlayerChangeListener(final PlayerChangeListener listener) {
 		listeners.add(listener);
 	}
 
 	@Override
-	public void removePlayerChangeListener(PlayerChangeListener listener) {
+	public void removePlayerChangeListener(final PlayerChangeListener listener) {
 		listeners.remove(listener);
 	}
 
@@ -48,7 +48,7 @@ public class PlayerChangeMenuListener implements ActionListener, PlayerChangeSou
 	 * away the results of the intermediate steps.
 	 */
 	@Nullable
-	private Frame getContainingFrame(@Nullable Component component) {
+	private Frame getContainingFrame(@Nullable final Component component) {
 		Component temp = component;
 		while (temp != null) {
 			if (temp instanceof Frame) {
@@ -68,7 +68,7 @@ public class PlayerChangeMenuListener implements ActionListener, PlayerChangeSou
 	 * user has done so, notify all listeners of the change.
 	 */
 	@Override
-	public void actionPerformed(ActionEvent event) {
+	public void actionPerformed(final ActionEvent event) {
 		Player currentPlayer;
 		Iterable<Player> players;
 		if (model instanceof IWorkerModel) {

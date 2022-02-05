@@ -13,14 +13,14 @@ import java.util.logging.Logger;
  */
 public class WindowCloseListener extends WindowAdapter {
 	private static final Logger LOGGER = Logger.getLogger(WindowCloseListener.class.getName());
-	public WindowCloseListener(ActionListener menuListener) {
+	public WindowCloseListener(final ActionListener menuListener) {
 		this.menuListener = menuListener;
 	}
 
 	private final ActionListener menuListener;
 
 	@Override
-	public void windowClosing(WindowEvent evt) {
+	public void windowClosing(final WindowEvent evt) {
 		LOGGER.fine("About to send synthetic Close menu event");
 		menuListener.actionPerformed(new ActionEvent(evt.getSource(),
 			ActionEvent.ACTION_FIRST, "Close"));

@@ -50,7 +50,7 @@ import common.map.fixtures.terrain.Forest;
  * it).
  */
 public class DuplicateFixtureRemoverCLI implements CLIDriver {
-	private static String memberKind(@Nullable IFixture member) {
+	private static String memberKind(@Nullable final IFixture member) {
 		if (member instanceof AnimalImpl || member instanceof Implement ||
 				member instanceof Forest || member instanceof Grove ||
 				member instanceof Meadow) {
@@ -67,21 +67,21 @@ public class DuplicateFixtureRemoverCLI implements CLIDriver {
 	/**
 	 * A two-parameter wrapper around {@link HasExtent#combined}.
 	 */
-	private static <Type extends HasExtent<Type>> Type combineExtentImpl(Type one, Type two) {
+	private static <Type extends HasExtent<Type>> Type combineExtentImpl(final Type one, final Type two) {
 		return one.combined(two);
 	}
 
 	/**
 	 * A two-parameter wrapper around {@link HasPopulation#combined}.
 	 */
-	private static <Type extends HasPopulation<Type>> Type combine(Type one, Type two) {
+	private static <Type extends HasPopulation<Type>> Type combine(final Type one, final Type two) {
 		return one.combined(two);
 	}
 
 	/**
 	 * Combine like extents into a single object. We assume all are identical except for acreage.
 	 */
-	private static <Type extends HasExtent<Type>> Type combineExtents(Type[] list) {
+	private static <Type extends HasExtent<Type>> Type combineExtents(final Type[] list) {
 		return Stream.of(list).reduce(DuplicateFixtureRemoverCLI::combineExtentImpl)
 			.orElseThrow(() -> new IllegalArgumentException("Can't combine an empty list"));
 	}
@@ -92,13 +92,13 @@ public class DuplicateFixtureRemoverCLI implements CLIDriver {
 	 * the same domestication status and turn of birth) except for
 	 * population.
 	 */
-	private static <Type extends HasPopulation<Type>> Type combinePopulations(Type[] list) {
+	private static <Type extends HasPopulation<Type>> Type combinePopulations(final Type[] list) {
 		return Stream.of(list).reduce(DuplicateFixtureRemoverCLI::combine)
 			.orElseThrow(() -> new IllegalArgumentException("Can't combine an empty list"));
 	}
 
 	// FIXME Move to lovelace.util
-	private static BigDecimal decimalize(Number number) {
+	private static BigDecimal decimalize(final Number number) {
 		if (number instanceof Integer || number instanceof Long
 				|| number instanceof Short || number instanceof Byte) {
 			return BigDecimal.valueOf(number.longValue());
@@ -114,7 +114,7 @@ public class DuplicateFixtureRemoverCLI implements CLIDriver {
 	 * all resources have the same kind, contents, units, and created
 	 * date.
 	 */
-	private static IResourcePile combineResources(IResourcePile[] list) {
+	private static IResourcePile combineResources(final IResourcePile[] list) {
 		if (list.length == 0) {
 			throw new IllegalArgumentException("Can't combine an empty list");
 		}
@@ -139,7 +139,7 @@ public class DuplicateFixtureRemoverCLI implements CLIDriver {
 		return EmptyOptions.EMPTY_OPTIONS;
 	}
 
-	public DuplicateFixtureRemoverCLI(ICLIHelper cli, UtilityDriverModel model) {
+	public DuplicateFixtureRemoverCLI(final ICLIHelper cli, final UtilityDriverModel model) {
 		this.cli = cli;
 		this.model = model;
 	}
@@ -150,7 +150,7 @@ public class DuplicateFixtureRemoverCLI implements CLIDriver {
 	 * {@link matching} is null, return false.
 	 */
 	@Nullable
-	private Boolean approveRemoval(Point location, TileFixture fixture, @Nullable TileFixture matching) {
+	private Boolean approveRemoval(final Point location, final TileFixture fixture, @Nullable final TileFixture matching) {
 		if (matching != null) {
 			String fCls = fixture.getClass().getName();
 			String mCls = matching.getClass().getName();
@@ -169,7 +169,7 @@ public class DuplicateFixtureRemoverCLI implements CLIDriver {
 	 * hills, forests of the same kind, oases, etc.---we use {@link
 	 * TileFixture#equalsIgnoringID}) from every tile in a map.
 	 */
-	private void removeDuplicateFixtures(IMapNG map) {
+	private void removeDuplicateFixtures(final IMapNG map) {
 		for (Point location : model.getMap().getLocations()) {
 			for (Quartet<Consumer<TileFixture>, @Nullable Path, TileFixture,
 					Iterable<? extends TileFixture>> q :
@@ -194,7 +194,7 @@ public class DuplicateFixtureRemoverCLI implements CLIDriver {
 	/**
 	 * Offer to combine like resources in a unit or fortress.
 	 */
-	private void coalesceResources(Point location) {
+	private void coalesceResources(final Point location) {
 		Map<Class<? extends IFixture>, CoalescedHolder<? extends IFixture, ?>> mapping =
 			new HashMap<>();
 		mapping.put(IResourcePile.class, new CoalescedHolder<IResourcePile,

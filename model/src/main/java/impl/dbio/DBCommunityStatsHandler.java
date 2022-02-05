@@ -74,7 +74,7 @@ final class DBCommunityStatsHandler extends AbstractDatabaseWriter<CommunityStat
 			"VALUES(?, ?, ?, ?, ?, ?, ?);";
 
 	@Override
-	public void write(DB db, CommunityStats obj, ITownFixture context) {
+	public void write(final DB db, final CommunityStats obj, final ITownFixture context) {
 		db.transaction(sql -> {
 				for (Map.Entry<String, Integer> entry :
 						obj.getHighestSkillLevels().entrySet()) {
@@ -105,9 +105,9 @@ final class DBCommunityStatsHandler extends AbstractDatabaseWriter<CommunityStat
 	}
 
 	@Override
-	public void readMapContents(DB db, IMutableMapNG map, Warning warner) {}
+	public void readMapContents(final DB db, final IMutableMapNG map, final Warning warner) {}
 
-	private TryBiConsumer<Map<String, Object>, Warning, Exception> readTownExpertise(IMutableMapNG map) {
+	private TryBiConsumer<Map<String, Object>, Warning, Exception> readTownExpertise(final IMutableMapNG map) {
 		return (dbRow, warner) -> {
 			int townId = (Integer) dbRow.get("town");
 			ITownFixture town = (ITownFixture) findById(map, townId, warner);
@@ -118,7 +118,7 @@ final class DBCommunityStatsHandler extends AbstractDatabaseWriter<CommunityStat
 		};
 	}
 
-	private TryBiConsumer<Map<String, Object>, Warning, Exception> readWorkedResource(IMutableMapNG map) {
+	private TryBiConsumer<Map<String, Object>, Warning, Exception> readWorkedResource(final IMutableMapNG map) {
 		return (dbRow, warner) -> {
 			int townId = (Integer) dbRow.get("town");
 			ITownFixture town = (ITownFixture) findById(map, townId, warner);
@@ -129,7 +129,7 @@ final class DBCommunityStatsHandler extends AbstractDatabaseWriter<CommunityStat
 	}
 
 	private TryBiConsumer<Map<String, Object>, Warning, Exception>
-			readProducedResource(IMutableMapNG map) {
+			readProducedResource(final IMutableMapNG map) {
 		return (dbRow, warner) -> {
 			int townId = (Integer) dbRow.get("town");
 			ITownFixture town = (ITownFixture) findById(map, townId, warner);
@@ -143,7 +143,7 @@ final class DBCommunityStatsHandler extends AbstractDatabaseWriter<CommunityStat
 			Number quantity;
 			try {
 				quantity = Integer.parseInt(qtyString);
-			} catch (NumberFormatException except) {
+			} catch (final NumberFormatException except) {
 				quantity = new BigDecimal(qtyString);
 			}
 			IMutableResourcePile pile =
@@ -156,7 +156,7 @@ final class DBCommunityStatsHandler extends AbstractDatabaseWriter<CommunityStat
 	}
 
 	private TryBiConsumer<Map<String, Object>, Warning, Exception>
-			readConsumedResource(IMutableMapNG map) {
+			readConsumedResource(final IMutableMapNG map) {
 		return (dbRow, warner) -> {
 			int townId = (Integer) dbRow.get("town");
 			ITownFixture town = (ITownFixture) findById(map, townId, warner);
@@ -170,7 +170,7 @@ final class DBCommunityStatsHandler extends AbstractDatabaseWriter<CommunityStat
 			Number quantity;
 			try {
 				quantity = Integer.parseInt(qtyString);
-			} catch (NumberFormatException except) {
+			} catch (final NumberFormatException except) {
 				quantity = new BigDecimal(qtyString);
 			}
 			IMutableResourcePile pile =
@@ -183,7 +183,7 @@ final class DBCommunityStatsHandler extends AbstractDatabaseWriter<CommunityStat
 	}
 
 	@Override
-	public void readExtraMapContents(DB db, IMutableMapNG map, Warning warner) {
+	public void readExtraMapContents(final DB db, final IMutableMapNG map, final Warning warner) {
 		try {
 			handleQueryResults(db, warner, "town expertise levels",
 				readTownExpertise(map), "SELECT * FROM town_expertise");
@@ -193,10 +193,10 @@ final class DBCommunityStatsHandler extends AbstractDatabaseWriter<CommunityStat
 				readProducedResource(map), "SELECT * FROM town_production");
 			handleQueryResults(db, warner, "town consumed resources",
 				readConsumedResource(map), "SELECT * FROM town_consumption");
-		} catch (RuntimeException except) {
+		} catch (final RuntimeException except) {
 			// Don't wrap RuntimeExceptions in RuntimeException
 			throw except;
-		} catch (Exception except) {
+		} catch (final Exception except) {
 			// FIXME Antipattern
 			throw new RuntimeException(except);
 		}

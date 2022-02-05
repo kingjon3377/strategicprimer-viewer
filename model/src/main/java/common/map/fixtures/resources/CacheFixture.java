@@ -6,7 +6,7 @@ import common.map.IFixture;
  * A cache (of vegetables, or a hidden treasure, or ...) on a tile.
  */
 public class CacheFixture implements HarvestableFixture {
-	public CacheFixture(String kind, String contents, int id) {
+	public CacheFixture(final String kind, final String contents, final int id) {
 		this.kind = kind;
 		this.contents = contents;
 		this.id = id;
@@ -77,7 +77,7 @@ public class CacheFixture implements HarvestableFixture {
 	 * Set the filename of an image to use as an icon for this instance.
 	 */
 	@Override
-	public void setImage(String image) {
+	public void setImage(final String image) {
 		this.image = image;
 	}
 
@@ -85,7 +85,7 @@ public class CacheFixture implements HarvestableFixture {
 	 * Clone the object.
 	 */
 	@Override
-	public CacheFixture copy(boolean zero) {
+	public CacheFixture copy(final boolean zero) {
 		CacheFixture retval = new CacheFixture(kind, contents, id);
 		retval.setImage(image);
 		return retval;
@@ -107,7 +107,7 @@ public class CacheFixture implements HarvestableFixture {
 	}
 
 	@Override
-	public boolean equals(Object obj) {
+	public boolean equals(final Object obj) {
 		if (obj instanceof CacheFixture) {
 			return ((CacheFixture) obj).getId() == id &&
 				kind.equals(((CacheFixture) obj).getKind()) &&
@@ -123,7 +123,7 @@ public class CacheFixture implements HarvestableFixture {
 	}
 
 	@Override
-	public boolean equalsIgnoringID(IFixture fixture) {
+	public boolean equalsIgnoringID(final IFixture fixture) {
 		if (fixture instanceof CacheFixture) {
 			return ((CacheFixture) fixture).getKind().equals(kind) &&
 				((CacheFixture) fixture).getContents().equals(contents);

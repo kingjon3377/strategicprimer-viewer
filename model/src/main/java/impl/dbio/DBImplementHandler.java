@@ -26,7 +26,7 @@ final class DBImplementHandler extends AbstractDatabaseWriter<Implement, /*IUnit
 	}
 
 	@Override
-	public boolean canWrite(Object obj, Object context) {
+	public boolean canWrite(final Object obj, final Object context) {
 		return obj instanceof Implement && (context instanceof IFortress || context instanceof IUnit);
 	}
 
@@ -49,15 +49,15 @@ final class DBImplementHandler extends AbstractDatabaseWriter<Implement, /*IUnit
 			"VALUES(?, ?, ?, ?, ?);";
 
 	@Override
-	public void write(DB db, Implement obj, TileFixture context) {
+	public void write(final DB db, final Implement obj, final TileFixture context) {
 		db.update(INSERT_SQL, context.getId(), obj.getId(), obj.getKind(), obj.getCount(),
 			obj.getImage()).execute();
 	}
 
 	@Override
-	public void readMapContents(DB db, IMutableMapNG map, Warning warner) {}
+	public void readMapContents(final DB db, final IMutableMapNG map, final Warning warner) {}
 
-	private TryBiConsumer<Map<String, Object>, Warning, Exception> readImplement(IMutableMapNG map) {
+	private TryBiConsumer<Map<String, Object>, Warning, Exception> readImplement(final IMutableMapNG map) {
 		return (dbRow, warner) -> {
 			int parentId = (Integer) dbRow.get("parent");
 			IFixture parent = findById(map, parentId, warner);
@@ -81,14 +81,14 @@ final class DBImplementHandler extends AbstractDatabaseWriter<Implement, /*IUnit
 	}
 
 	@Override
-	public void readExtraMapContents(DB db, IMutableMapNG map, Warning warner) {
+	public void readExtraMapContents(final DB db, final IMutableMapNG map, final Warning warner) {
 		try {
 			handleQueryResults(db, warner, "pieces of equipment",
 				readImplement(map), "SELECT * FROM implements");
-		} catch (RuntimeException except) {
+		} catch (final RuntimeException except) {
 			// Don't wrap RuntimeExceptions in RuntimeException
 			throw except;
-		} catch (Exception except) {
+		} catch (final Exception except) {
 			// FIXME Antipattern
 			throw new RuntimeException(except);
 		}

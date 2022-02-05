@@ -87,7 +87,7 @@ import org.takes.http.Exit;
 
 /* package */ class TabularReportServingCLI implements ReadOnlyDriver {
 	private static final Logger LOGGER = Logger.getLogger(TabularReportServingCLI.class.getName());
-	public TabularReportServingCLI(ICLIHelper cli, SPOptions options, IDriverModel model) {
+	public TabularReportServingCLI(final ICLIHelper cli, final SPOptions options, final IDriverModel model) {
 		this.cli = cli;
 		this.options = options;
 		this.model = model;
@@ -107,7 +107,7 @@ import org.takes.http.Exit;
 		return model;
 	}
 
-	private void serveReports(int port) throws DriverFailedException {
+	private void serveReports(final int port) throws DriverFailedException {
 		Map<Path, IMapNG> mapping;
 		if (model instanceof IMultiMapModel) {
 			mapping = StreamSupport.stream(
@@ -230,7 +230,7 @@ import org.takes.http.Exit;
 					new FkRegex("/index.html", new RsHtml(rootDocument.toString()))),
 					Stream.concat(tocs.stream(), endpoints.stream())).toArray(Fork[]::new)), port)
 				.start(Exit.NEVER);
-		} catch (IOException except) {
+		} catch (final IOException except) {
 			throw new DriverFailedException(except, "I/O error while serving files");
 		}
 	}
@@ -241,7 +241,7 @@ import org.takes.http.Exit;
 		int port;
 		try {
 			port = Integer.parseInt(portArgument);
-		} catch (NumberFormatException except) {
+		} catch (final NumberFormatException except) {
 			if (!portArgument.equals("true")) {
 				LOGGER.warning("Port must be a number");
 				LOGGER.log(Level.FINER, "Stack trace of port parse failure", except);

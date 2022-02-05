@@ -42,8 +42,8 @@ import java.util.stream.Collectors;
 	// FIXME: Extract a common readAbstractTown() method taking the
 	// expected tag and a constructor reference, since readTown(),
 	// readFortification(), and readCity() are very nearly identical
-	public static Town readTown(StartElement element, QName parent, Iterable<XMLEvent> stream,
-			IPlayerCollection players, Warning warner, IDRegistrar idFactory)
+	public static Town readTown(final StartElement element, final QName parent, final Iterable<XMLEvent> stream,
+	                            final IPlayerCollection players, final Warning warner, final IDRegistrar idFactory)
 			throws SPFormatException {
 		requireTag(element, parent, "town");
 		expectAttributes(element, warner, "name", "size", "status", "dc", "id",
@@ -52,13 +52,13 @@ import java.util.stream.Collectors;
 		TownSize size;
 		try {
 			size = TownSize.parseTownSize(getAttribute(element, "size"));
-		} catch (IllegalArgumentException except) {
+		} catch (final IllegalArgumentException except) {
 			throw new MissingPropertyException(element, "size", except);
 		}
 		TownStatus status;
 		try {
 			status = TownStatus.parse(getAttribute(element, "status"));
-		} catch (IllegalArgumentException except) {
+		} catch (final IllegalArgumentException except) {
 			throw new MissingPropertyException(element, "status", except);
 		}
 		Town fix = new Town(status, size, getIntegerAttribute(element, "dc"),
@@ -83,9 +83,9 @@ import java.util.stream.Collectors;
 		return setImage(fix, element, warner);
 	}
 
-	public static Fortification readFortification(StartElement element, QName parent,
-			Iterable<XMLEvent> stream, IPlayerCollection players, Warning warner,
-			IDRegistrar idFactory) throws SPFormatException {
+	public static Fortification readFortification(final StartElement element, final QName parent,
+	                                              final Iterable<XMLEvent> stream, final IPlayerCollection players, final Warning warner,
+	                                              final IDRegistrar idFactory) throws SPFormatException {
 		requireTag(element, parent, "fortification");
 		expectAttributes(element, warner, "name", "size", "status", "dc", "id",
 			"portrait", "image", "owner");
@@ -93,13 +93,13 @@ import java.util.stream.Collectors;
 		TownSize size;
 		try {
 			size = TownSize.parseTownSize(getAttribute(element, "size"));
-		} catch (IllegalArgumentException except) {
+		} catch (final IllegalArgumentException except) {
 			throw new MissingPropertyException(element, "size", except);
 		}
 		TownStatus status;
 		try {
 			status = TownStatus.parse(getAttribute(element, "status"));
-		} catch (IllegalArgumentException except) {
+		} catch (final IllegalArgumentException except) {
 			throw new MissingPropertyException(element, "status", except);
 		}
 		Fortification fix = new Fortification(status, size,
@@ -125,8 +125,8 @@ import java.util.stream.Collectors;
 		return setImage(fix, element, warner);
 	}
 
-	public static City readCity(StartElement element, QName parent, Iterable<XMLEvent> stream,
-			IPlayerCollection players, Warning warner, IDRegistrar idFactory)
+	public static City readCity(final StartElement element, final QName parent, final Iterable<XMLEvent> stream,
+	                            final IPlayerCollection players, final Warning warner, final IDRegistrar idFactory)
 			throws SPFormatException {
 		requireTag(element, parent, "city");
 		expectAttributes(element, warner, "name", "size", "status", "dc", "id",
@@ -135,13 +135,13 @@ import java.util.stream.Collectors;
 		TownSize size;
 		try {
 			size = TownSize.parseTownSize(getAttribute(element, "size"));
-		} catch (IllegalArgumentException except) {
+		} catch (final IllegalArgumentException except) {
 			throw new MissingPropertyException(element, "size", except);
 		}
 		TownStatus status;
 		try {
 			status = TownStatus.parse(getAttribute(element, "status"));
-		} catch (IllegalArgumentException except) {
+		} catch (final IllegalArgumentException except) {
 			throw new MissingPropertyException(element, "status", except);
 		}
 		City fix = new City(status, size, getIntegerAttribute(element, "dc"),
@@ -166,8 +166,8 @@ import java.util.stream.Collectors;
 		return setImage(fix, element, warner);
 	}
 
-	public static Village readVillage(StartElement element, QName parent, Iterable<XMLEvent> stream,
-			IPlayerCollection players, Warning warner, IDRegistrar idFactory) 
+	public static Village readVillage(final StartElement element, final QName parent, final Iterable<XMLEvent> stream,
+	                                  final IPlayerCollection players, final Warning warner, final IDRegistrar idFactory)
 			throws SPFormatException {
 		requireTag(element, parent, "village");
 		expectAttributes(element, warner, "status", "race", "owner", "id", "image",
@@ -177,7 +177,7 @@ import java.util.stream.Collectors;
 		TownStatus status;
 		try {
 			status = TownStatus.parse(getAttribute(element, "status"));
-		} catch (IllegalArgumentException except) {
+		} catch (final IllegalArgumentException except) {
 			throw new MissingPropertyException(element, "status", except);
 		}
 		Village retval = new Village(status, getAttribute(element, "name", ""), idNum,
@@ -202,9 +202,9 @@ import java.util.stream.Collectors;
 		return setImage(retval, element, warner);
 	}
 
-	public static CommunityStats readCommunityStats(StartElement element, QName parent,
-			Iterable<XMLEvent> stream, IPlayerCollection players, Warning warner,
-			IDRegistrar idFactory) throws SPFormatException {
+	public static CommunityStats readCommunityStats(final StartElement element, final QName parent,
+	                                                final Iterable<XMLEvent> stream, final IPlayerCollection players, final Warning warner,
+	                                                final IDRegistrar idFactory) throws SPFormatException {
 		requireTag(element, parent, "population");
 		expectAttributes(element, warner, "size");
 		CommunityStats retval = new CommunityStats(getIntegerAttribute(element, "size"));
@@ -278,7 +278,7 @@ import java.util.stream.Collectors;
 		return retval;
 	}
 
-	public static void writeVillage(XMLStreamWriter ostream, Village obj, int indent)
+	public static void writeVillage(final XMLStreamWriter ostream, final Village obj, final int indent)
 			throws MalformedXMLException {
 		writeTag(ostream, "village", indent, obj.getPopulation() == null);
 		writeAttributes(ostream, Pair.with("status", obj.getStatus().toString()));
@@ -292,13 +292,13 @@ import java.util.stream.Collectors;
 			writeCommunityStats(ostream, obj.getPopulation(), indent);
 			try {
 				ostream.writeEndElement();
-			} catch (XMLStreamException except) {
+			} catch (final XMLStreamException except) {
 				throw new MalformedXMLException(except);
 			}
 		}
 	}
 
-	public static void writeTown(XMLStreamWriter ostream, AbstractTown obj, int indent) 
+	public static void writeTown(final XMLStreamWriter ostream, final AbstractTown obj, final int indent)
 			throws MalformedXMLException {
 		writeTag(ostream, obj.getKind(), indent, obj.getPopulation() == null);
 		writeAttributes(ostream, Pair.with("status", obj.getStatus().toString()),
@@ -312,14 +312,14 @@ import java.util.stream.Collectors;
 			writeCommunityStats(ostream, obj.getPopulation(), indent);
 			try {
 				ostream.writeEndElement();
-			} catch (XMLStreamException except) {
+			} catch (final XMLStreamException except) {
 				throw new MalformedXMLException(except);
 			}
 		}
 	}
 
-	public static void writeCommunityStats(XMLStreamWriter ostream, CommunityStats obj,
-			int indent) throws MalformedXMLException {
+	public static void writeCommunityStats(final XMLStreamWriter ostream, final CommunityStats obj,
+	                                       final int indent) throws MalformedXMLException {
 		writeTag(ostream, "population", indent, false);
 		writeAttributes(ostream, Pair.with("size", obj.getPopulation()));
 		for (Map.Entry<String, Integer> entry : obj.getHighestSkillLevels().entrySet()
@@ -340,7 +340,7 @@ import java.util.stream.Collectors;
 			}
 			try {
 				ostream.writeEndElement();
-			} catch (XMLStreamException except) {
+			} catch (final XMLStreamException except) {
 				throw new MalformedXMLException(except);
 			}
 		}
@@ -351,13 +351,13 @@ import java.util.stream.Collectors;
 			}
 			try {
 				ostream.writeEndElement();
-			} catch (XMLStreamException except) {
+			} catch (final XMLStreamException except) {
 				throw new MalformedXMLException(except);
 			}
 		}
 		try {
 			ostream.writeEndElement();
-		} catch (XMLStreamException except) {
+		} catch (final XMLStreamException except) {
 			throw new MalformedXMLException(except);
 		}
 	}

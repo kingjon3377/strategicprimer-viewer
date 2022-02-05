@@ -93,7 +93,7 @@ public enum TileType implements HasName {
 		return Collections.unmodifiableSet(versions);
 	}
 
-	private TileType(String desc, String xmlDesc, int... vers) {
+	private TileType(final String desc, final String xmlDesc, final int... vers) {
 		string = desc;
 		xml = xmlDesc;
 		for (int ver : vers) {
@@ -104,7 +104,7 @@ public enum TileType implements HasName {
 	/**
 	 * Whether this the given map version supports this tile type.
 	 */
-	public boolean isSupportedByVersion(int version) {
+	public boolean isSupportedByVersion(final int version) {
 		return versions.contains(version);
 	}
 
@@ -121,14 +121,14 @@ public enum TileType implements HasName {
 	 *
 	 * TODO: Write tests for this
 	 */
-	public static Iterable<TileType> getValuesForVersion(int version) {
+	public static Iterable<TileType> getValuesForVersion(final int version) {
 		return Stream.of(values()).filter((t) -> t.isSupportedByVersion(version)).collect(Collectors.toList());
 	}
 
 	/**
 	 * Parse an XML representation of a tile type.
 	 */
-	public static TileType parse(String xml) throws ParseException {
+	public static TileType parse(final String xml) throws ParseException {
 		return Stream.of(values()).filter((t) -> xml.equals(t.getXml())).findAny()
 			.orElseThrow(() -> new ParseException("Failed to parse TileType from " + xml, -1));
 	}

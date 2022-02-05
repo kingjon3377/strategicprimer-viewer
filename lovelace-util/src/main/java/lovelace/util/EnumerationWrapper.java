@@ -17,7 +17,7 @@ import java.util.Iterator;
 public final class EnumerationWrapper<Element> implements Iterator<Element> {
 	private final Enumeration<?> wrapped;
 
-	public EnumerationWrapper(Enumeration<?> enumeration) {
+	public EnumerationWrapper(final Enumeration<?> enumeration) {
 		wrapped = enumeration;
 	}
 

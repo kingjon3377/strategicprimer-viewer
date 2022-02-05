@@ -24,7 +24,7 @@ import org.jetbrains.annotations.Nullable;
 	Other(null, null, null, null, null, null, "other");
 
 	@Nullable
-	public static FoodType askFoodType(ICLIHelper cli, String foodKind) {
+	public static FoodType askFoodType(final ICLIHelper cli, final String foodKind) {
 		for (FoodType type : FoodType.values()) {
 			Boolean resp = cli.inputBooleanInSeries(String.format("Is it %s?", type),
 				foodKind + type);
@@ -92,10 +92,10 @@ import org.jetbrains.annotations.Nullable;
 		return string;
     	}
 
-	private FoodType(@Nullable Integer keepsFor, @Nullable Integer keepsForIfCool,
-			@Nullable Integer keepsForRefrig, @Nullable Integer keepsForFrozen,
-			@Nullable BigDecimal fracSpoilingDaily, @Nullable BigDecimal minSpoilage,
-			String str) {
+	private FoodType(@Nullable final Integer keepsFor, @Nullable final Integer keepsForIfCool,
+	                 @Nullable final Integer keepsForRefrig, @Nullable final Integer keepsForFrozen,
+	                 @Nullable final BigDecimal fracSpoilingDaily, @Nullable final BigDecimal minSpoilage,
+	                 final String str) {
 		this.keepsFor = keepsFor;
 		this.keepsForIfCool = keepsForIfCool;
 		this.keepsForRefrigerated = keepsForRefrig;
@@ -106,7 +106,7 @@ import org.jetbrains.annotations.Nullable;
 	}
 
 	@Nullable
-	public Boolean hasSpoiled(IResourcePile pile, int turn, ICLIHelper cli) {
+	public Boolean hasSpoiled(final IResourcePile pile, final int turn, final ICLIHelper cli) {
 		int age = turn - pile.getCreated();
 		if (turn < 0 || pile.getCreated() < 0) { // Either corrupt turn information or non-spoiling rations
 			return false;
@@ -148,7 +148,7 @@ import org.jetbrains.annotations.Nullable;
 	}
 
 	@Nullable
-	public BigDecimal amountSpoiling(Quantity qty, ICLIHelper cli) {
+	public BigDecimal amountSpoiling(final Quantity qty, final ICLIHelper cli) {
 		BigDecimal amt = decimalize(qty.getNumber());
 		BigDecimal fractional = Optional.ofNullable(fractionSpoilingDaily).map(amt::multiply).orElse(null);
 		return Stream.of(fractional, minimumSpoilage).filter(Objects::nonNull)

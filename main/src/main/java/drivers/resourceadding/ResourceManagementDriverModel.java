@@ -28,11 +28,11 @@ import java.math.BigDecimal;
 	// TODO: Make these private and expose them as fromMap() and
 	// fromDriverModel() static factory methods, as they were (in effect)
 	// in Ceylon?
-	public ResourceManagementDriverModel(IMutableMapNG map) {
+	public ResourceManagementDriverModel(final IMutableMapNG map) {
 		super(map);
 	}
 
-	public ResourceManagementDriverModel(IDriverModel driverModel) {
+	public ResourceManagementDriverModel(final IDriverModel driverModel) {
 		super(driverModel);
 	}
 
@@ -50,7 +50,7 @@ import java.math.BigDecimal;
 	 *
 	 * TODO: Use the "HQ or, failing that, any other fortress" algorithm used by other driver models.
 	 */
-	public void addResource(FortressMember resource, Player player) {
+	public void addResource(final FortressMember resource, final Player player) {
 		for (IMutableMapNG map : getRestrictedAllMaps()) {
 			Player mapPlayer = map.getCurrentPlayer();
 			// FIXME: It looks like this always skips the main map because the map player is independent there ...
@@ -72,8 +72,8 @@ import java.math.BigDecimal;
 		}
 	}
 
-	public IResourcePile addResourcePile(Player player, int id, String kind, String resource,
-			BigDecimal quantity, String units, @Nullable Integer created) {
+	public IResourcePile addResourcePile(final Player player, final int id, final String kind, final String resource,
+	                                     final BigDecimal quantity, final String units, @Nullable final Integer created) {
 		IMutableResourcePile pile = new ResourcePileImpl(id, kind, resource,
 			new Quantity(quantity, units));
 		if (created != null) {

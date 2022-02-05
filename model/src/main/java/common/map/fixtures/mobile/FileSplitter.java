@@ -26,7 +26,7 @@ public final class FileSplitter {
 	/**
 	 * Split a line on its first tab.
 	 */
-	static String[] splitOnFirstTab(String line) {
+	static String[] splitOnFirstTab(final String line) {
 		return line.split("\t", 2);
 	}
 	/**
@@ -34,7 +34,7 @@ public final class FileSplitter {
 	 * first field as the key and passing the second (presumed only) field
 	 * through the provided method to get the item.
 	 */
-	static <Type> Pair<String, Type> lineToEntry(String[] line, Function<String, Type> factory) {
+	static <Type> Pair<String, Type> lineToEntry(final String[] line, final Function<String, Type> factory) {
 		if (line.length == 0) {
 			throw new IllegalArgumentException("Empty line");
 		}
@@ -54,8 +54,8 @@ public final class FileSplitter {
 	 * first field) to values (the remainder passed through the provided
 	 * factory).
 	 */
-	public static <Type> Map<String, Type> getFileContents(String filename,
-			Function<String, Type> factory) throws IOException {
+	public static <Type> Map<String, Type> getFileContents(final String filename,
+	                                                       final Function<String, Type> factory) throws IOException {
 		Iterable<String> textContent =
 			FileContentsReader.readFileContents(FileSplitter.class, filename);
 		return StreamSupport.stream(textContent.spliterator(), false)

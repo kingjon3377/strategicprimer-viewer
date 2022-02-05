@@ -29,7 +29,7 @@ import java.util.Arrays;
 	private static List<String> statLabelArray = Collections.unmodifiableList(Arrays.asList("Str",
 		"Dex", "Con", "Int", "Wis", "Cha"));
 
-	private static String jobString(IJob job) {
+	private static String jobString(final IJob job) {
 		return String.format("%s %d", job.getName(), job.getLevel());
 	}
 
@@ -46,12 +46,12 @@ import java.util.Arrays;
 		return EmptyOptions.EMPTY_OPTIONS;
 	}
 
-	public WorkerPrintCLI(ICLIHelper cli, IExplorationModel model) {
+	public WorkerPrintCLI(final ICLIHelper cli, final IExplorationModel model) {
 		this.cli = cli;
 		this.model = model;
 	}
 
-	private void printWorkers(IUnit unit) {
+	private void printWorkers(final IUnit unit) {
 		for (IWorker worker : unit.stream().filter(IWorker.class::isInstance).map(IWorker.class::cast)
 				.collect(Collectors.toList())) { // TODO: avoid collector
 			cli.print("- ", worker.getName());

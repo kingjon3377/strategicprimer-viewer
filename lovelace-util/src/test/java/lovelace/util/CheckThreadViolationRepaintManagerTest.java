@@ -39,7 +39,7 @@ public class CheckThreadViolationRepaintManagerTest {
 				JButton localTest = test = new JButton();
 				localTest.setSize(100, 100);
 			});
-		} catch (Exception except) {
+		} catch (final Exception except) {
 			except.printStackTrace();
 		}
 		JButton localTest = test;

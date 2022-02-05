@@ -19,12 +19,12 @@ public final class EmptyOptions implements SPOptions {
 	}
 
 	@Override
-	public String getArgument(String option) {
+	public String getArgument(final String option) {
 		return "false";
 	}
 
 	@Override
-	public boolean hasOption(String option) {
+	public boolean hasOption(final String option) {
 		return false;
 	}
 

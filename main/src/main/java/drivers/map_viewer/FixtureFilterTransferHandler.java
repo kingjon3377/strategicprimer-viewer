@@ -33,7 +33,7 @@ import drivers.common.FixtureMatcher;
 	 * it is or can be coerced to be a move operation.
 	 */
 	@Override
-	public boolean canImport(TransferSupport support) {
+	public boolean canImport(final TransferSupport support) {
 		if (support.isDrop() && support.isDataFlavorSupported(FLAVOR) &&
 				((TransferHandler.MOVE & support.getSourceDropActions()) ==
 					TransferHandler.MOVE)) {
@@ -49,7 +49,7 @@ import drivers.common.FixtureMatcher;
 	 * or a {@link JTable}.
 	 */
 	@Override
-	public Transferable createTransferable(JComponent component) {
+	public Transferable createTransferable(final JComponent component) {
 		if (component instanceof JList) {
 			return new IntTransferable(FLAVOR, ((JList<?>) component).getSelectedIndex());
 		} else if (component instanceof JTable) {
@@ -63,7 +63,7 @@ import drivers.common.FixtureMatcher;
 	 * This listener only allows move operations.
 	 */
 	@Override
-	public int getSourceActions(JComponent component) {
+	public int getSourceActions(final JComponent component) {
 		return TransferHandler.MOVE;
 	}
 
@@ -71,7 +71,7 @@ import drivers.common.FixtureMatcher;
 	 * Handle a drop.
 	 */
 	@Override
-	public boolean importData(TransferSupport support) {
+	public boolean importData(final TransferSupport support) {
 		if (!support.isDrop()) {
 			return false;
 		}

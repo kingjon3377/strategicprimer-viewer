@@ -21,7 +21,7 @@ public /* sealed */ abstract class ImmortalAnimal
 	/**
 	 * Get an immortal constructor for the given kind.
 	 */
-	public static IntFunction<ImmortalAnimal> parse(String kind) {
+	public static IntFunction<ImmortalAnimal> parse(final String kind) {
 		switch (kind) {
 			case "snowbird":
 				return Snowbird::new;
@@ -38,7 +38,7 @@ public /* sealed */ abstract class ImmortalAnimal
 		}
 	}
 
-	protected ImmortalAnimal(String kind, String plural, int dc, int id) {
+	protected ImmortalAnimal(final String kind, final String plural, final int dc, final int id) {
 		this.kind = kind;
 		this.plural = plural;
 		this.dc = dc;
@@ -123,7 +123,7 @@ public /* sealed */ abstract class ImmortalAnimal
 	 * Set the filename of an image to use as an icon for this instance.
 	 */
 	@Override
-	public final void setImage(String image) {
+	public final void setImage(final String image) {
 		this.image = image;
 	}
 
@@ -147,7 +147,7 @@ public /* sealed */ abstract class ImmortalAnimal
 	}
 
 	@Override
-	public final boolean equals(Object obj) {
+	public final boolean equals(final Object obj) {
 		if (obj instanceof ImmortalAnimal) {
 			return ((ImmortalAnimal) obj).getId() == id &&
 				kind.equals(((ImmortalAnimal) obj).getKind());
@@ -165,7 +165,7 @@ public /* sealed */ abstract class ImmortalAnimal
 	 * If we ignore ID, all simple immortals of a given kind are equal.
 	 */
 	@Override
-	public final boolean equalsIgnoringID(IFixture fixture) {
+	public final boolean equalsIgnoringID(final IFixture fixture) {
 		if (fixture instanceof ImmortalAnimal) {
 			return ((ImmortalAnimal) fixture).getKind().equals(kind);
 		} else {
@@ -177,7 +177,7 @@ public /* sealed */ abstract class ImmortalAnimal
 	 * A fixture is a subset iff it is equal.
 	 */
 	@Override
-	public final boolean isSubset(IFixture obj, Consumer<String> report) {
+	public final boolean isSubset(final IFixture obj, final Consumer<String> report) {
 		if (obj.getId() == id) {
 			if (obj instanceof ImmortalAnimal &&
 					((ImmortalAnimal) obj).getKind().equals(kind)) {

@@ -26,7 +26,7 @@ public class ConsumptionApplet extends AbstractTurnApplet {
 	private final ICLIHelper cli;
 	private final IDRegistrar idf;
 
-	public ConsumptionApplet(ITurnRunningModel model, ICLIHelper cli, IDRegistrar idf) {
+	public ConsumptionApplet(final ITurnRunningModel model, final ICLIHelper cli, final IDRegistrar idf) {
 		super(model, cli, idf);
 		this.model = model;
 		this.cli = cli;
@@ -41,7 +41,7 @@ public class ConsumptionApplet extends AbstractTurnApplet {
 		return turn;
 	}
 
-	public void setTurn(int turn) {
+	public void setTurn(final int turn) {
 		this.turn = turn;
 	}
 
@@ -53,7 +53,7 @@ public class ConsumptionApplet extends AbstractTurnApplet {
 		return unit;
 	}
 
-	public void setUnit(@Nullable IUnit unit) {
+	public void setUnit(@Nullable final IUnit unit) {
 		this.unit = unit;
 	}
 
@@ -69,7 +69,7 @@ public class ConsumptionApplet extends AbstractTurnApplet {
 		return "Determine the food consumed by a unit.";
 	}
 
-	private static String describeFood(IResourcePile food) {
+	private static String describeFood(final IResourcePile food) {
 		if (food.getCreated() < 0) {
 			return String.format("%.2f %s of %s", food.getQuantity().getNumber(),
 				food.getQuantity().getUnits(), food.getContents());

@@ -31,12 +31,12 @@ public class CountingCLIFactory implements ModelDriverFactory {
 	}
 
 	@Override
-	public ModelDriver createDriver(ICLIHelper cli, SPOptions options, IDriverModel model) {
+	public ModelDriver createDriver(final ICLIHelper cli, final SPOptions options, final IDriverModel model) {
 		return new CountingCLI(cli, model);
 	}
 
 	@Override
-	public IDriverModel createModel(IMutableMapNG map) {
+	public IDriverModel createModel(final IMutableMapNG map) {
 		return new SimpleDriverModel(map);
 	}
 }

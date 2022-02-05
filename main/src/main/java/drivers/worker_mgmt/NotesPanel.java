@@ -25,7 +25,7 @@ public final class NotesPanel extends BorderedPanel
 	private final JButton notesRevertButton = new JButton("Revert");
 	private final JPanel notesButtonPanel;
 
-	public NotesPanel(Player currentPlayer) {
+	public NotesPanel(final Player currentPlayer) {
 		Platform.makeButtonsSegmented(notesApplyButton, notesRevertButton);
 		if (Platform.SYSTEM_IS_MAC) {
 			notesButtonPanel = centeredHorizontalBox(notesRevertButton, notesApplyButton);
@@ -61,7 +61,7 @@ public final class NotesPanel extends BorderedPanel
 	}
 
 	@Override
-	public void memberSelected(@Nullable UnitMember previousSelection, @Nullable UnitMember selected) {
+	public void memberSelected(@Nullable final UnitMember previousSelection, @Nullable final UnitMember selected) {
 		if (!Objects.equals(selected, current)) {
 			if (selected instanceof HasNotes) {
 				current = (HasNotes) selected;
@@ -80,7 +80,7 @@ public final class NotesPanel extends BorderedPanel
 	}
 
 	@Override
-	public void playerChanged(@Nullable Player previousCurrent, Player newCurrent) {
+	public void playerChanged(@Nullable final Player previousCurrent, final Player newCurrent) {
 		if (!player.equals(newCurrent)) {
 			player = newCurrent;
 			notesArea.setText("");

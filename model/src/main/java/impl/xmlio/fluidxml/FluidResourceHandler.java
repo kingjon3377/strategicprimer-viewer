@@ -34,9 +34,9 @@ import lovelace.util.MalformedXMLException;
 import common.map.HasExtent;
 
 /* package */ class FluidResourceHandler extends FluidBase {
-	public static IMutableResourcePile readResource(StartElement element, QName parent,
-			Iterable<XMLEvent> stream, IPlayerCollection players, Warning warner,
-			IDRegistrar idFactory) throws SPFormatException {
+	public static IMutableResourcePile readResource(final StartElement element, final QName parent,
+	                                                final Iterable<XMLEvent> stream, final IPlayerCollection players, final Warning warner,
+	                                                final IDRegistrar idFactory) throws SPFormatException {
 		requireTag(element, parent, "resource");
 		expectAttributes(element, warner, "quantity", "kind", "contents", "unit",
 			"created", "id", "image");
@@ -53,9 +53,9 @@ import common.map.HasExtent;
 		return setImage(retval, element, warner);
 	}
 
-	public static Implement readImplement(StartElement element, QName parent,
-			Iterable<XMLEvent> stream, IPlayerCollection players, Warning warner,
-			IDRegistrar idFactory) throws SPFormatException {
+	public static Implement readImplement(final StartElement element, final QName parent,
+	                                      final Iterable<XMLEvent> stream, final IPlayerCollection players, final Warning warner,
+	                                      final IDRegistrar idFactory) throws SPFormatException {
 		requireTag(element, parent, "implement");
 		expectAttributes(element, warner, "kind", "id", "count", "image");
 		spinUntilEnd(element.getName(), stream);
@@ -64,9 +64,9 @@ import common.map.HasExtent;
 			getIntegerAttribute(element, "count", 1, warner)), element, warner);
 	}
 
-	public static CacheFixture readCache(StartElement element, QName parent,
-			Iterable<XMLEvent> stream, IPlayerCollection players, Warning warner,
-			IDRegistrar idFactory) throws SPFormatException {
+	public static CacheFixture readCache(final StartElement element, final QName parent,
+	                                     final Iterable<XMLEvent> stream, final IPlayerCollection players, final Warning warner,
+	                                     final IDRegistrar idFactory) throws SPFormatException {
 		requireTag(element, parent, "cache");
 		expectAttributes(element, warner, "kind", "contents", "id", "image");
 		// We want to transition from arbitrary-String 'contents' to sub-tags. As a first
@@ -94,8 +94,8 @@ import common.map.HasExtent;
 			element, warner);
 	}
 
-	public static Grove readGrove(StartElement element, QName parent, Iterable<XMLEvent> stream,
-			IPlayerCollection players, Warning warner, IDRegistrar idFactory)
+	public static Grove readGrove(final StartElement element, final QName parent, final Iterable<XMLEvent> stream,
+	                              final IPlayerCollection players, final Warning warner, final IDRegistrar idFactory)
 			throws SPFormatException {
 		requireTag(element, parent, "grove");
 		expectAttributes(element, warner, "cultivated", "wild", "kind", "tree", "id",
@@ -117,8 +117,8 @@ import common.map.HasExtent;
 					"count", -1)), element, warner);
 	}
 
-	public static Grove readOrchard(StartElement element, QName parent, Iterable<XMLEvent> stream,
-			IPlayerCollection players, Warning warner, IDRegistrar idFactory)
+	public static Grove readOrchard(final StartElement element, final QName parent, final Iterable<XMLEvent> stream,
+	                                final IPlayerCollection players, final Warning warner, final IDRegistrar idFactory)
 			throws SPFormatException {
 		requireTag(element, parent, "orchard");
 		expectAttributes(element, warner, "cultivated", "wild", "kind", "tree", "id",
@@ -140,8 +140,8 @@ import common.map.HasExtent;
 					"count", -1)), element, warner);
 	}
 
-	public static Meadow readMeadow(StartElement element, QName parent, Iterable<XMLEvent> stream,
-			IPlayerCollection players, Warning warner, IDRegistrar idFactory) 
+	public static Meadow readMeadow(final StartElement element, final QName parent, final Iterable<XMLEvent> stream,
+	                                final IPlayerCollection players, final Warning warner, final IDRegistrar idFactory)
 			throws SPFormatException {
 		requireTag(element, parent, "meadow");
 		expectAttributes(element, warner, "status", "kind", "cultivated", "id", "image",
@@ -155,7 +155,7 @@ import common.map.HasExtent;
 		try {
 			status = FieldStatus.parse(getAttribute(element, "status",
 				FieldStatus.random(id).toString()));
-		} catch (IllegalArgumentException except) {
+		} catch (final IllegalArgumentException except) {
 			throw new MissingPropertyException(element, "status", except);
 		}
 		return setImage(new Meadow(getAttribute(element, "kind"), false,
@@ -163,8 +163,8 @@ import common.map.HasExtent;
 			getNumericAttribute(element, "acres", -1)), element, warner);
 	}
 
-	public static Meadow readField(StartElement element, QName parent, Iterable<XMLEvent> stream,
-			IPlayerCollection players, Warning warner, IDRegistrar idFactory)
+	public static Meadow readField(final StartElement element, final QName parent, final Iterable<XMLEvent> stream,
+	                               final IPlayerCollection players, final Warning warner, final IDRegistrar idFactory)
 			throws SPFormatException {
 		requireTag(element, parent, "field");
 		expectAttributes(element, warner, "status", "kind", "cultivated", "id", "image",
@@ -178,7 +178,7 @@ import common.map.HasExtent;
 		try {
 			status = FieldStatus.parse(getAttribute(element, "status",
 				FieldStatus.random(id).toString()));
-		} catch (IllegalArgumentException except) {
+		} catch (final IllegalArgumentException except) {
 			throw new MissingPropertyException(element, "status", except);
 		}
 		return setImage(new Meadow(getAttribute(element, "kind"), true,
@@ -186,8 +186,8 @@ import common.map.HasExtent;
 			getNumericAttribute(element, "acres", -1)), element, warner);
 	}
 
-	public static Mine readMine(StartElement element, QName parent, Iterable<XMLEvent> stream,
-			IPlayerCollection players, Warning warner, IDRegistrar idFactory) 
+	public static Mine readMine(final StartElement element, final QName parent, final Iterable<XMLEvent> stream,
+	                            final IPlayerCollection players, final Warning warner, final IDRegistrar idFactory)
 			throws SPFormatException {
 		requireTag(element, parent, "mine");
 		expectAttributes(element, warner, "status", "kind", "product", "id", "image");
@@ -195,7 +195,7 @@ import common.map.HasExtent;
 		TownStatus status;
 		try {
 			status = TownStatus.parse(getAttribute(element, "status"));
-		} catch (IllegalArgumentException except) {
+		} catch (final IllegalArgumentException except) {
 			throw new MissingPropertyException(element, "status", except);
 		}
 		return setImage(
@@ -204,8 +204,8 @@ import common.map.HasExtent;
 				warner);
 		}
 
-	public static MineralVein readMineral(StartElement element, QName parent, Iterable<XMLEvent> stream,
-			IPlayerCollection players, Warning warner, IDRegistrar idFactory) 
+	public static MineralVein readMineral(final StartElement element, final QName parent, final Iterable<XMLEvent> stream,
+	                                      final IPlayerCollection players, final Warning warner, final IDRegistrar idFactory)
 			throws SPFormatException {
 		requireTag(element, parent, "mineral");
 		expectAttributes(element, warner, "kind", "mineral", "exposed", "dc", "id", "image");
@@ -218,8 +218,8 @@ import common.map.HasExtent;
 				getOrGenerateID(element, warner, idFactory)), element, warner);
 	}
 
-	public static Shrub readShrub(StartElement element, QName parent, Iterable<XMLEvent> stream,
-			IPlayerCollection players, Warning warner, IDRegistrar idFactory) 
+	public static Shrub readShrub(final StartElement element, final QName parent, final Iterable<XMLEvent> stream,
+	                              final IPlayerCollection players, final Warning warner, final IDRegistrar idFactory)
 			throws SPFormatException {
 		requireTag(element, parent, "shrub");
 		expectAttributes(element, warner, "kind", "shrub", "id", "image", "count");
@@ -230,8 +230,8 @@ import common.map.HasExtent;
 				"count", -1)), element, warner);
 	}
 
-	public static StoneDeposit readStone(StartElement element, QName parent, Iterable<XMLEvent> stream,
-			IPlayerCollection players, Warning warner, IDRegistrar idFactory) 
+	public static StoneDeposit readStone(final StartElement element, final QName parent, final Iterable<XMLEvent> stream,
+	                                     final IPlayerCollection players, final Warning warner, final IDRegistrar idFactory)
 			throws SPFormatException {
 		requireTag(element, parent, "stone");
 		expectAttributes(element, warner, "kind", "stone", "dc", "id", "image");
@@ -239,7 +239,7 @@ import common.map.HasExtent;
 		StoneKind stone;
 		try {
 			stone = StoneKind.parse(getAttrWithDeprecatedForm(element, "kind", "stone", warner));
-		} catch (IllegalArgumentException except) {
+		} catch (final IllegalArgumentException except) {
 			throw new MissingPropertyException(element, "kind", except);
 		}
 			return setImage(
@@ -248,7 +248,7 @@ import common.map.HasExtent;
 					getOrGenerateID(element, warner, idFactory)), element, warner);
 	}
 
-	public static void writeResource(XMLStreamWriter ostream, IResourcePile obj, int indent)
+	public static void writeResource(final XMLStreamWriter ostream, final IResourcePile obj, final int indent)
 			throws MalformedXMLException {
 		writeTag(ostream, "resource", indent, true);
 		writeAttributes(ostream, Pair.with("id", obj.getId()), Pair.with("kind", obj.getKind()),
@@ -261,7 +261,7 @@ import common.map.HasExtent;
 		writeImage(ostream, obj);
 	}
 
-	public static void writeImplement(XMLStreamWriter ostream, Implement obj, int indent)
+	public static void writeImplement(final XMLStreamWriter ostream, final Implement obj, final int indent)
 			throws MalformedXMLException {
 		writeTag(ostream, "implement", indent, true);
 		writeAttributes(ostream, Pair.with("kind", obj.getKind()), Pair.with("id", obj.getId()));
@@ -271,7 +271,7 @@ import common.map.HasExtent;
 		writeImage(ostream, obj);
 	}
 
-	public static void writeCache(XMLStreamWriter ostream, CacheFixture obj, int indent)
+	public static void writeCache(final XMLStreamWriter ostream, final CacheFixture obj, final int indent)
 			throws MalformedXMLException {
 		writeTag(ostream, "cache", indent, true);
 		writeAttributes(ostream, Pair.with("kind", obj.getKind()),
@@ -279,7 +279,7 @@ import common.map.HasExtent;
 		writeImage(ostream, obj);
 	}
 
-	public static void writeMeadow(XMLStreamWriter ostream, Meadow obj, int indent) 
+	public static void writeMeadow(final XMLStreamWriter ostream, final Meadow obj, final int indent)
 			throws MalformedXMLException {
 		writeTag(ostream, (obj.isField()) ? "field" : "meadow", indent, true);
 		writeAttributes(ostream, Pair.with("kind", obj.getKind()),
@@ -291,7 +291,7 @@ import common.map.HasExtent;
 		writeImage(ostream, obj);
 	}
 
-	public static void writeGrove(XMLStreamWriter ostream, Grove obj, int indent) 
+	public static void writeGrove(final XMLStreamWriter ostream, final Grove obj, final int indent)
 			throws MalformedXMLException {
 		writeTag(ostream, (obj.isOrchard()) ? "orchard" : "grove", indent, true);
 		writeAttributes(ostream, Pair.with("cultivated", obj.isCultivated()),
@@ -302,7 +302,7 @@ import common.map.HasExtent;
 		writeImage(ostream, obj);
 	}
 
-	public static void writeMine(XMLStreamWriter ostream, Mine obj, int indent) 
+	public static void writeMine(final XMLStreamWriter ostream, final Mine obj, final int indent)
 			throws MalformedXMLException {
 		writeTag(ostream, "mine", indent, true);
 		writeAttributes(ostream, Pair.with("kind", obj.getKind()),
@@ -310,7 +310,7 @@ import common.map.HasExtent;
 		writeImage(ostream, obj);
 	}
 
-	public static void writeMineral(XMLStreamWriter ostream, MineralVein obj, int indent)
+	public static void writeMineral(final XMLStreamWriter ostream, final MineralVein obj, final int indent)
 			throws MalformedXMLException {
 		writeTag(ostream, "mineral", indent, true);
 		writeAttributes(ostream, Pair.with("kind", obj.getKind()),
@@ -319,7 +319,7 @@ import common.map.HasExtent;
 		writeImage(ostream, obj);
 	}
 
-	public static void writeStone(XMLStreamWriter ostream, StoneDeposit obj, int indent) 
+	public static void writeStone(final XMLStreamWriter ostream, final StoneDeposit obj, final int indent)
 			throws MalformedXMLException {
 		writeTag(ostream, "stone", indent, true);
 		writeAttributes(ostream, Pair.with("kind", obj.getStone().toString()),
@@ -327,7 +327,7 @@ import common.map.HasExtent;
 		writeImage(ostream, obj);
 	}
 
-	public static void writeShrub(XMLStreamWriter ostream, Shrub obj, int indent) 
+	public static void writeShrub(final XMLStreamWriter ostream, final Shrub obj, final int indent)
 			throws MalformedXMLException {
 		writeTag(ostream, "shrub", indent, true);
 		writeAttributes(ostream, Pair.with("kind", obj.getKind()), Pair.with("id", obj.getId()));

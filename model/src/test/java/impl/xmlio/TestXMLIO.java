@@ -175,8 +175,8 @@ public final class TestXMLIO {
 	 */
 	@SafeVarargs
 	private final <Type, Expectation extends Exception> void assertFormatIssue(
-				ISPReader reader, String xml, @Nullable Type desideratum,
-				Class<Expectation> exceptionClass, Consumer<Expectation>... checks)
+			final ISPReader reader, final String xml, @Nullable final Type desideratum,
+			final Class<Expectation> exceptionClass, final Consumer<Expectation>... checks)
 			throws SPFormatException, MalformedXMLException, IOException {
 		if (desideratum != null) { // TODO: invert condition
 			try (StringReader stringReader = new StringReader(xml)) {
@@ -188,13 +188,13 @@ public final class TestXMLIO {
 			try (StringReader stringReader = new StringReader(xml)) {
 				reader.<Type>readXML(FAKE_FILENAME, stringReader, Warning.DIE);
 				fail("Expected a fatal warning");
-			} catch (RuntimeException except) {
+			} catch (final RuntimeException except) {
 				Throwable cause = except.getCause();
 				assertTrue(exceptionClass.isInstance(cause), "Exception should be of the right type");
 				for (Consumer<Expectation> check : checks) {
 					check.accept((Expectation) cause);
 				}
-			} catch (Throwable except) {
+			} catch (final Throwable except) {
 				assertTrue(exceptionClass.isInstance(except), "Exception should be of the right type");
 				for (Consumer<Expectation> check : checks) {
 					check.accept((Expectation) except);
@@ -205,7 +205,7 @@ public final class TestXMLIO {
 				reader.<Type>readXML(FAKE_FILENAME, stringReader, Warning.IGNORE);
 				fail(String.format("Expected a(n) %s to be thrown",
 					exceptionClass.getName()));
-			} catch (Exception except) {
+			} catch (final Exception except) {
 				assertTrue(exceptionClass.isInstance(except), "Exception should be of the right type");
 				for (Consumer<Expectation> check : checks) {
 					check.accept((Expectation) except);
@@ -220,7 +220,7 @@ public final class TestXMLIO {
 	 * assert that it'll pass with warnings disabled but fail with warnings
 	 * made fatal.
 	 */
-	private <Type> void assertUnsupportedTag(String xml, String tag, @Nullable Type desideratum)
+	private <Type> void assertUnsupportedTag(final String xml, final String tag, @Nullable final Type desideratum)
 			throws SPFormatException, MalformedXMLException, IOException {
 		for (ISPReader reader : spReaders) {
 			this.<Type, UnsupportedTagException> assertFormatIssue(reader, xml, desideratum,
@@ -236,7 +236,7 @@ public final class TestXMLIO {
 	 * assert that it'll pass with warnings disabled but fail with warnings
 	 * made fatal.
 	 */
-	private <Type> void assertUnwantedChild(String xml, @Nullable Type desideratum)
+	private <Type> void assertUnwantedChild(final String xml, @Nullable final Type desideratum)
 			throws SPFormatException, MalformedXMLException, IOException {
 		for (ISPReader reader : spReaders) {
 			this.<Type, UnwantedChildException>assertFormatIssue(reader, xml, desideratum,
@@ -250,8 +250,8 @@ public final class TestXMLIO {
 	 * assert that it'll pass with warnings disabled but object with them
 	 * made fatal.
 	 */
-	private <Type> void assertMissingProperty(String xml, String property,
-				@Nullable Type desideratum)
+	private <Type> void assertMissingProperty(final String xml, final String property,
+	                                          @Nullable final Type desideratum)
 			throws SPFormatException, MalformedXMLException, IOException {
 		for (ISPReader reader : spReaders) {
 			this.<Type, MissingPropertyException>assertFormatIssue(reader, xml, desideratum,
@@ -264,7 +264,7 @@ public final class TestXMLIO {
 	/**
 	 * Assert that reading the given XML will give a MissingChildException.
 	 */
-	private <Type> void assertMissingChild(String xml)
+	private <Type> void assertMissingChild(final String xml)
 			throws SPFormatException, MalformedXMLException, IOException {
 		for (ISPReader reader : spReaders) {
 			this.<Type, MissingChildException>assertFormatIssue(reader, xml, null,
@@ -278,8 +278,8 @@ public final class TestXMLIO {
 	 * assert that it'll pass with warnings disabled but object with them
 	 * made fatal.
 	 */
-	private <Type> void assertDeprecatedProperty(String xml, String deprecated, String preferred,
-				String tag, @Nullable Type desideratum)
+	private <Type> void assertDeprecatedProperty(final String xml, final String deprecated, final String preferred,
+	                                             final String tag, @Nullable final Type desideratum)
 			throws SPFormatException, MalformedXMLException, IOException {
 		for (ISPReader reader : spReaders) {
 			this.<Type, DeprecatedPropertyException>assertFormatIssue(reader, xml, desideratum,
@@ -303,7 +303,7 @@ public final class TestXMLIO {
 	 * @param obj The object to serialize
 	 * @param deprecated Whether to use the deprecated i.e. one-generation-back writer
 	 */
-	private String createSerializedForm(Object obj, boolean deprecated)
+	private String createSerializedForm(final Object obj, final boolean deprecated)
 			throws SPFormatException, MalformedXMLException, IOException {
 		final StringBuilder writer = new StringBuilder();
 		if (deprecated) {
@@ -317,7 +317,7 @@ public final class TestXMLIO {
 	/**
 	 * Assert that the serialized form of the given object will deserialize without error.
 	 */
-	private void assertSerialization(String message, Object obj)
+	private void assertSerialization(final String message, final Object obj)
 			throws SPFormatException, MalformedXMLException, IOException {
 		assertSerialization(message, obj, Warning.DIE);
 	}
@@ -325,7 +325,7 @@ public final class TestXMLIO {
 	/**
 	 * Assert that the serialized form of the given object will deserialize without error.
 	 */
-	private void assertSerialization(String message, Object obj, Warning warner)
+	private void assertSerialization(final String message, final Object obj, final Warning warner)
 			throws SPFormatException, MalformedXMLException, IOException {
 		for (ISPReader reader : spReaders) {
 			try (StringReader stringReader =
@@ -345,7 +345,7 @@ public final class TestXMLIO {
 	 * Assert that the serialized form of the given object, using both
 	 * writers, will contain the given string.
 	 */
-	private void assertSerializedFormContains(Object obj, String expected, String message)
+	private void assertSerializedFormContains(final Object obj, final String expected, final String message)
 			throws SPFormatException, MalformedXMLException, IOException {
 		// TODO: Is there a JUnit assertContains() or similar?
 		assertTrue(createSerializedForm(obj, false).contains(expected), message);
@@ -357,7 +357,7 @@ public final class TestXMLIO {
 	 * have its image property preserved. We modify that property, but set
 	 * it back to the original value before exiting this method.
 	 */
-	private void assertImageSerialization(String message, HasMutableImage obj)
+	private void assertImageSerialization(final String message, final HasMutableImage obj)
 			throws SPFormatException, MalformedXMLException, IOException {
 		String oldImage = obj.getImage();
 		for (ISPReader reader : spReaders) {
@@ -385,7 +385,7 @@ public final class TestXMLIO {
 	 *
 	 * TODO: Initialize with some notes, or add assertions that some initialization has taken place
 	 */
-	private void assertNotesSerialization(String message, HasNotes obj)
+	private void assertNotesSerialization(final String message, final HasNotes obj)
 			throws SPFormatException, MalformedXMLException, IOException {
 		for (ISPReader reader : spReaders) {
 			for (Boolean deprecated : Arrays.asList(false, true)) {
@@ -411,7 +411,7 @@ public final class TestXMLIO {
 	 * have its portrait property preserved. We modify that property, but
 	 * set it back to the original value before exiting this method.
 	 */
-	private void assertPortraitSerialization(String message, HasMutablePortrait obj)
+	private void assertPortraitSerialization(final String message, final HasMutablePortrait obj)
 			throws SPFormatException, MalformedXMLException, IOException {
 		String oldPortrait = obj.getPortrait();
 		for (ISPReader reader : spReaders) {
@@ -431,8 +431,8 @@ public final class TestXMLIO {
 		obj.setPortrait(oldPortrait);
 	}
 
-	private <Type> void assertForwardDeserialization(String message, String xml,
-				Predicate<Type> assertion)
+	private <Type> void assertForwardDeserialization(final String message, final String xml,
+	                                                 final Predicate<Type> assertion)
 			throws SPFormatException, MalformedXMLException, IOException {
 		assertForwardDeserialization(message, xml, assertion, Warning.DIE);
 	}
@@ -449,8 +449,8 @@ public final class TestXMLIO {
 	 * @param assertion A lambda to check the state of the deserialized object
 	 * @param warner The warning level to use for this assertion
 	 */
-	private <Type> void assertForwardDeserialization(String message, String xml,
-				Predicate<Type> assertion, Warning warner)
+	private <Type> void assertForwardDeserialization(final String message, final String xml,
+	                                                 final Predicate<Type> assertion, final Warning warner)
 			throws SPFormatException, MalformedXMLException, IOException {
 		for (ISPReader reader : spReaders) {
 			try (StringReader stringReader = new StringReader(xml)) {
@@ -467,8 +467,8 @@ public final class TestXMLIO {
 	 * @param secondForm The second serialized form
 	 * @param warningLevel The warning level to use
 	 */
-	private void assertEquivalentForms(String message, String firstForm, String secondForm,
-			Warning warningLevel) throws SPFormatException, MalformedXMLException, IOException {
+	private void assertEquivalentForms(final String message, final String firstForm, final String secondForm,
+	                                   final Warning warningLevel) throws SPFormatException, MalformedXMLException, IOException {
 		for (ISPReader reader : spReaders) {
 			try (StringReader firstReader = new StringReader(firstForm);
 					StringReader secondReader = new StringReader(secondForm)) {
@@ -482,7 +482,7 @@ public final class TestXMLIO {
 	/**
 	 * Assert that a map is properly deserialized (by the main map-deserialization methods).
 	 */
-	private void assertMapDeserialization(String message, IMapNG expected, String xml)
+	private void assertMapDeserialization(final String message, final IMapNG expected, final String xml)
 			throws SPFormatException, MalformedXMLException, IOException {
 		for (IMapReader reader : mapReaders) {
 			try (StringReader stringReader = new StringReader(xml)) {
@@ -495,7 +495,7 @@ public final class TestXMLIO {
 	/**
 	 * Assert that the given XML will produce warnings about duplicate IDs.
 	 */
-	private <Type> void assertDuplicateID(String xml, Type desideratum)
+	private <Type> void assertDuplicateID(final String xml, final Type desideratum)
 			throws SPFormatException, MalformedXMLException, IOException {
 		for (ISPReader reader : spReaders) {
 			this.<Type, DuplicateIDException>assertFormatIssue(reader, xml, desideratum,
@@ -504,7 +504,7 @@ public final class TestXMLIO {
 	}
 
 	@SafeVarargs
-	private static final Predicate<Throwable> instanceOfAny(Class<? extends Throwable>... types) {
+	private static final Predicate<Throwable> instanceOfAny(final Class<? extends Throwable>... types) {
 		return (except) -> {
 			for (Class<? extends Throwable> type : types) {
 				if (type.isInstance(except)) {
@@ -522,7 +522,7 @@ public final class TestXMLIO {
 	 * Assert that a given piece of XML will fail to deserialize with XML
 	 * format errors, not SP format errors.
 	 */
-	private void assertInvalid(String xml)
+	private void assertInvalid(final String xml)
 			throws SPFormatException, MalformedXMLException, IOException {
 		for (ISPReader reader : spReaders) {
 			this.<Object, Exception>assertFormatIssue(reader, xml, null, Exception.class,
@@ -539,7 +539,7 @@ public final class TestXMLIO {
 	/**
 	 * Encapsulate the given string in a "tile" tag inside a "map" tag.
 	 */
-	private static String encapsulateTileString(String str) {
+	private static String encapsulateTileString(final String str) {
 		return String.format("<map version=\"2\" rows=\"2\" columns=\"2\">%n<tile row=\"1\" column=\"1\" kind=\"plains\">%s</tile></map>", str);
 	}
 
@@ -566,7 +566,7 @@ public final class TestXMLIO {
 	 */
 	@ParameterizedTest
 	@MethodSource
-	public void testVillageWantsName(TownStatus status, int id, String race, boolean deprecatedWriter)
+	public void testVillageWantsName(final TownStatus status, final int id, final String race, final boolean deprecatedWriter)
 			throws SPFormatException, MalformedXMLException, IOException {
 		final Village village = new Village(status, "", id, new PlayerImpl(-1, ""), race);
 		assertMissingProperty(createSerializedForm(village, deprecatedWriter), "name", village);
@@ -585,7 +585,7 @@ public final class TestXMLIO {
 	 */
 	@ParameterizedTest
 	@MethodSource
-	public void testBasicVillageSerialization(String name, TownStatus status, String race, int id)
+	public void testBasicVillageSerialization(final String name, final TownStatus status, final String race, final int id)
 			throws SPFormatException, MalformedXMLException, IOException {
 		Player owner = new PlayerImpl(-1, "");
 		Village village = new Village(status, name, id, owner, race);
@@ -619,9 +619,9 @@ public final class TestXMLIO {
 	 */
 	@ParameterizedTest
 	@MethodSource
-	public void testVillagePopulationSerialization(TownStatus status, String race, int id,
-				int populationSize, int workedField, int producedId, int producedQty,
-				int consumedId, int consumedQty)
+	public void testVillagePopulationSerialization(final TownStatus status, final String race, final int id,
+	                                               final int populationSize, final int workedField, final int producedId, final int producedQty,
+	                                               final int consumedId, final int consumedQty)
 			throws SPFormatException, MalformedXMLException, IOException {
 		assumeTrue(populationSize >= 0, "Population can't be negative");
 		assumeTrue(workedField >= 0, "Field ID won't ever be negative");
@@ -660,8 +660,8 @@ public final class TestXMLIO {
 	 */
 	@ParameterizedTest
 	@MethodSource
-	public void testCityWantsName(TownSize size, TownStatus status, int id, int dc,
-				boolean deprecatedWriter)
+	public void testCityWantsName(final TownSize size, final TownStatus status, final int id, final int dc,
+	                              final boolean deprecatedWriter)
 			throws SPFormatException, MalformedXMLException, IOException {
 		City city = new City(status, size, dc, "", id, new PlayerImpl(-1, ""));
 		assertMissingProperty(createSerializedForm(city, deprecatedWriter), "name", city);
@@ -680,7 +680,7 @@ public final class TestXMLIO {
 	 */
 	@ParameterizedTest
 	@MethodSource
-	public void testCitySerialization(TownSize size, TownStatus status, int id, int dc, String name)
+	public void testCitySerialization(final TownSize size, final TownStatus status, final int id, final int dc, final String name)
 			throws SPFormatException, MalformedXMLException, IOException {
 		Player owner = new PlayerImpl(-1, "");
 		assertSerialization("City serialization", new City(status, size, dc, name, id, owner));
@@ -711,9 +711,9 @@ public final class TestXMLIO {
 	 */
 	@ParameterizedTest
 	@MethodSource
-	public void testCityPopulationSerialization(String name, TownSize size, TownStatus status,
-				String race, int id, int dc, int populationSize, int workedField,
-				int skillLevel, int producedId, int producedQty)
+	public void testCityPopulationSerialization(final String name, final TownSize size, final TownStatus status,
+	                                            final String race, final int id, final int dc, final int populationSize, final int workedField,
+	                                            final int skillLevel, final int producedId, final int producedQty)
 			throws SPFormatException, MalformedXMLException, IOException {
 		assumeTrue(populationSize >= 0, "Population can't be negative");
 		assumeTrue(workedField >= 0, "Field ID won't ever be negative");
@@ -738,8 +738,8 @@ public final class TestXMLIO {
 	 */
 	@ParameterizedTest
 	@MethodSource("testCityWantsName")
-	public void testFortificationWantsName(TownSize size, TownStatus status, int id, int dc,
-				boolean deprecatedWriter)
+	public void testFortificationWantsName(final TownSize size, final TownStatus status, final int id, final int dc,
+	                                       final boolean deprecatedWriter)
 			throws SPFormatException, MalformedXMLException, IOException {
 		Fortification fort = new Fortification(status, size, dc, "", id, new PlayerImpl(-1, ""));
 		assertMissingProperty(createSerializedForm(fort, deprecatedWriter), "name", fort);
@@ -750,8 +750,8 @@ public final class TestXMLIO {
 	 */
 	@ParameterizedTest
 	@MethodSource("testCitySerialization")
-	public void testFortificationSerialization(TownSize size, TownStatus status, int id, int dc,
-			String name) throws SPFormatException, MalformedXMLException, IOException {
+	public void testFortificationSerialization(final TownSize size, final TownStatus status, final int id, final int dc,
+	                                           final String name) throws SPFormatException, MalformedXMLException, IOException {
 		Player owner = new PlayerImpl(-1, "");
 		assertSerialization("Fortification serialization",
 			new Fortification(status, size, dc, name, id, owner));
@@ -773,9 +773,9 @@ public final class TestXMLIO {
 	 */
 	@ParameterizedTest
 	@MethodSource("testCityPopulationSerialization")
-	public void testFortificationPopulationSerialization(String name, TownSize size, TownStatus status,
-				String race, int id, int dc, int populationSize, int workedField,
-				int skillLevel, int producedId, int producedQty)
+	public void testFortificationPopulationSerialization(final String name, final TownSize size, final TownStatus status,
+	                                                     final String race, final int id, final int dc, final int populationSize, final int workedField,
+	                                                     final int skillLevel, final int producedId, final int producedQty)
 			throws SPFormatException, MalformedXMLException, IOException {
 		assumeTrue(populationSize >= 0, "Population can't be negative");
 		assumeTrue(workedField >= 0, "Field ID won't ever be negative");
@@ -799,8 +799,8 @@ public final class TestXMLIO {
 	 */
 	@ParameterizedTest
 	@MethodSource("testCityWantsName")
-	public void testTownWantsName(TownSize size, TownStatus status, int id, int dc,
-				boolean deprecatedWriter)
+	public void testTownWantsName(final TownSize size, final TownStatus status, final int id, final int dc,
+	                              final boolean deprecatedWriter)
 			throws SPFormatException, MalformedXMLException, IOException {
 		Town town = new Town(status, size, dc, "", id, new PlayerImpl(-1, ""));
 		assertMissingProperty(createSerializedForm(town, deprecatedWriter), "name", town);
@@ -813,7 +813,7 @@ public final class TestXMLIO {
 	 */
 	@ParameterizedTest
 	@MethodSource("testCitySerialization")
-	public void testTownSerialization(TownSize size, TownStatus status, int id, int dc, String name)
+	public void testTownSerialization(final TownSize size, final TownStatus status, final int id, final int dc, final String name)
 			throws SPFormatException, MalformedXMLException, IOException {
 		Player owner = new PlayerImpl(-1, "");
 		assertSerialization("Town serialization test", new Town(status, size, dc, name, id, owner));
@@ -845,7 +845,7 @@ public final class TestXMLIO {
 	 */
 	@ParameterizedTest
 	@EnumSource(StoneKind.class)
-	public void testStoneSerialization(StoneKind kind)
+	public void testStoneSerialization(final StoneKind kind)
 			throws SPFormatException, MalformedXMLException, IOException {
 		assertSerialization("First StoneDeposit test, kind: " + kind, new StoneDeposit(kind, 8, 1));
 		assertSerialization("Second StoneDeposit test, kind: " + kind, new StoneDeposit(kind, 15, 2));
@@ -862,7 +862,7 @@ public final class TestXMLIO {
 	 */
 	@ParameterizedTest
 	@MethodSource
-	public void testOldStoneIdiom(StoneKind kind, boolean deprecatedWriter)
+	public void testOldStoneIdiom(final StoneKind kind, final boolean deprecatedWriter)
 			throws SPFormatException, MalformedXMLException, IOException {
 		StoneDeposit thirdDeposit = new StoneDeposit(kind, 10, 3);
 		this.<StoneDeposit>assertDeprecatedProperty(
@@ -875,7 +875,7 @@ public final class TestXMLIO {
 	 */
 	@ParameterizedTest
 	@EnumSource(StoneKind.class)
-	public void testStoneSerializationErrors(StoneKind kind)
+	public void testStoneSerializationErrors(final StoneKind kind)
 			throws SPFormatException, MalformedXMLException, IOException {
 		this.<StoneDeposit>assertUnwantedChild(String.format(
 			"<stone kind=\"%s\" dc=\"10\"><troll /></stone>", kind.toString()), null);
@@ -890,7 +890,7 @@ public final class TestXMLIO {
 	/**
 	 * A factory to encapsulate rivers in a simple map.
 	 */
-	private static IMapNG encapsulateRivers(Point point, River... rivers) {
+	private static IMapNG encapsulateRivers(final Point point, final River... rivers) {
 		IMutableMapNG retval = new SPMapNG(new MapDimensionsImpl(point.getRow() + 1,
 			point.getColumn() + 1, 2), new PlayerCollection(), -1);
 		retval.setBaseTerrain(point, TileType.Plains);
@@ -901,7 +901,7 @@ public final class TestXMLIO {
 	/**
 	 * Create a simple map.
 	 */
-	private static IMutableMapNG createSimpleMap(Point dims, Pair<Point, TileType>... terrain) {
+	private static IMutableMapNG createSimpleMap(final Point dims, final Pair<Point, TileType>... terrain) {
 		final IMutableMapNG retval = new SPMapNG(new MapDimensionsImpl(dims.getRow(),
 			dims.getColumn(), 2), new PlayerCollection(), -1);
 		for (Pair<Point, TileType> pair : terrain) {
@@ -934,7 +934,7 @@ public final class TestXMLIO {
 	 */
 	@ParameterizedTest
 	@EnumSource(River.class)
-	public void testSimpleRiverSerialization(River river)
+	public void testSimpleRiverSerialization(final River river)
 			throws SPFormatException, MalformedXMLException, IOException {
 		assertSerialization("River alone", river);
 		Point loc = new Point(0, 0);
@@ -1029,7 +1029,7 @@ public final class TestXMLIO {
 	 */
 	@ParameterizedTest
 	@MethodSource
-	public void testTileDeprecatedIdiom(TileType terrain, boolean deprecatedWriter)
+	public void testTileDeprecatedIdiom(final TileType terrain, final boolean deprecatedWriter)
 			throws SPFormatException, MalformedXMLException, IOException {
 		final IMapNG map = createSimpleMap(new Point(5, 5), Pair.with(new Point(4, 4), terrain));
 		assertDeprecatedProperty(createSerializedForm(map, deprecatedWriter)
@@ -1111,7 +1111,7 @@ public final class TestXMLIO {
 	 */
 	@ParameterizedTest
 	@MethodSource
-	public void testTileSerializationThree(boolean deprecatedWriter)
+	public void testTileSerializationThree(final boolean deprecatedWriter)
 			throws SPFormatException, MalformedXMLException, IOException {
 		final IMutableMapNG six = new SPMapNG(new MapDimensionsImpl(2, 2, 2),
 			new PlayerCollection(), 5);
@@ -1307,7 +1307,7 @@ public final class TestXMLIO {
 	 */
 	@ParameterizedTest
 	@MethodSource
-	public void testGroveSerialization(boolean fruit, boolean cultivated, String trees, int id)
+	public void testGroveSerialization(final boolean fruit, final boolean cultivated, final String trees, final int id)
 			throws SPFormatException, MalformedXMLException, IOException {
 		assertSerialization("Test of Grove serialization", new Grove(fruit, cultivated, trees, id));
 		this.<Grove>assertUnwantedChild("<grove wild=\"true\" kind=\"kind\"><troll /></grove>", null);
@@ -1343,8 +1343,8 @@ public final class TestXMLIO {
 	 */
 	@ParameterizedTest
 	@MethodSource
-	public void testMeadowSerialization(int id, FieldStatus status, String kind, boolean field,
-				boolean cultivated)
+	public void testMeadowSerialization(final int id, final FieldStatus status, final String kind, final boolean field,
+	                                    final boolean cultivated)
 			throws SPFormatException, MalformedXMLException, IOException {
 		assertSerialization("Test of Meadow serialization",
 			new Meadow(kind, field, cultivated, id, status));
@@ -1379,8 +1379,8 @@ public final class TestXMLIO {
 	 */
 	@ParameterizedTest
 	@MethodSource
-	public void testMineSerialization(int id, String kind, TownStatus status,
-				boolean deprecatedWriter)
+	public void testMineSerialization(final int id, final String kind, final TownStatus status,
+	                                  final boolean deprecatedWriter)
 			throws SPFormatException, MalformedXMLException, IOException {
 		Mine mine = new Mine(kind, status, id);
 		assertSerialization("Test of Mine serialization", mine);
@@ -1409,7 +1409,7 @@ public final class TestXMLIO {
 	 */
 	@ParameterizedTest
 	@MethodSource
-	public void testShrubSerialization(int id, String kind, boolean deprecatedWriter)
+	public void testShrubSerialization(final int id, final String kind, final boolean deprecatedWriter)
 			throws SPFormatException, MalformedXMLException, IOException {
 		Shrub shrub = new Shrub(kind, id);
 		assertSerialization("First test of Shrub serialization", shrub);
@@ -1436,7 +1436,7 @@ public final class TestXMLIO {
 	 */
 	@ParameterizedTest
 	@MethodSource
-	public void testTextSerialization(int baseTurn, String text)
+	public void testTextSerialization(final int baseTurn, final String text)
 			throws SPFormatException, MalformedXMLException, IOException {
 		int turn = baseTurn - 2; // Make sure negative turns occasionally get checked.
 		TextFixture testee = new TextFixture(text, turn);
@@ -1482,7 +1482,7 @@ public final class TestXMLIO {
 	 */
 	@ParameterizedTest
 	@MethodSource
-	public void testUnitWarnings( boolean deprecatedWriter, int id, String name, String kind)
+	public void testUnitWarnings(final boolean deprecatedWriter, final int id, final String name, final String kind)
 			throws SPFormatException, MalformedXMLException, IOException {
 		// TODO: should probably test spaces in name and kind
 		this.<IUnit>assertUnwantedChild("<unit><unit /></unit>", null);
@@ -1582,7 +1582,7 @@ public final class TestXMLIO {
 	 */
 	@ParameterizedTest
 	@MethodSource
-	public void testQuoting(int id)
+	public void testQuoting(final int id)
 			throws SPFormatException, MalformedXMLException, IOException {
 		Player player = new PlayerImpl(0, "");
 		Unit unit = new Unit(player, "kind of unit", "name of unit", id);
@@ -1604,7 +1604,7 @@ public final class TestXMLIO {
 	 */
 	@ParameterizedTest
 	@MethodSource("testQuoting")
-	public void testUnitPortraitSerialization(int id)
+	public void testUnitPortraitSerialization(final int id)
 			throws SPFormatException, MalformedXMLException, IOException {
 		Unit unit = new Unit(new PlayerImpl(1, ""), "kind", "name", id);
 		unit.setPortrait("portraitFile");
@@ -1623,7 +1623,7 @@ public final class TestXMLIO {
 	 */
 	@ParameterizedTest
 	@MethodSource
-	public void testAdventureSerialization(int idOne, int idTwo)
+	public void testAdventureSerialization(final int idOne, final int idTwo)
 			throws SPFormatException, MalformedXMLException, IOException {
 		Player independent = new PlayerImpl(1, "independent");
 		AdventureFixture first = new AdventureFixture(independent, "first hook brief",
@@ -1685,7 +1685,7 @@ public final class TestXMLIO {
 	 */
 	@ParameterizedTest
 	@MethodSource
-	public void testAnimalTracksSerialization(String kind)
+	public void testAnimalTracksSerialization(final String kind)
 			throws SPFormatException, MalformedXMLException, IOException {
 		assertSerialization("Test of animal-track serialization", new AnimalTracks(kind));
 		this.<AnimalTracks>assertUnwantedChild(
@@ -1711,7 +1711,7 @@ public final class TestXMLIO {
 	 */
 	@ParameterizedTest
 	@MethodSource
-	public void testAnimalSerialization(int id, String status, String kind, boolean talking)
+	public void testAnimalSerialization(final int id, final String status, final String kind, final boolean talking)
 			throws SPFormatException, MalformedXMLException, IOException {
 		assertSerialization("Test of Animal serialization",
 			new AnimalImpl(kind, talking, status, id));
@@ -1762,7 +1762,7 @@ public final class TestXMLIO {
 	 */
 	@ParameterizedTest
 	@MethodSource
-	public void testImmortalAnimalDeserialization( String animal, int id)
+	public void testImmortalAnimalDeserialization(final String animal, final int id)
 			throws SPFormatException, MalformedXMLException, IOException {
 		assertEquivalentForms(animal + " as animal deserializes to immortal",
 			String.format("<%s id=\"%d\" />", animal, id),
@@ -1781,7 +1781,7 @@ public final class TestXMLIO {
 	 */
 	@ParameterizedTest
 	@MethodSource
-	public void testCacheSerialization(int id, String kind, String contents)
+	public void testCacheSerialization(final int id, final String kind, final String contents)
 			throws SPFormatException, MalformedXMLException, IOException {
 		CacheFixture testee = new CacheFixture(kind, contents, id);
 		assertSerialization("Test of Cache serialization", testee);
@@ -1808,7 +1808,7 @@ public final class TestXMLIO {
 	 */
 	@ParameterizedTest
 	@MethodSource
-	public void testCentaurSerialization(int id, String kind)
+	public void testCentaurSerialization(final int id, final String kind)
 			throws SPFormatException, MalformedXMLException, IOException {
 		Centaur testee = new Centaur(kind, id);
 		assertSerialization("Test of Centaur serialization", testee);
@@ -1825,7 +1825,7 @@ public final class TestXMLIO {
 	 */
 	@ParameterizedTest
 	@MethodSource("testCentaurSerialization")
-	public void testDragonSerialization(int id, String kind)
+	public void testDragonSerialization(final int id, final String kind)
 			throws SPFormatException, MalformedXMLException, IOException {
 		Dragon testee = new Dragon(kind, id);
 		assertSerialization("Test of Dragon serialization", testee);
@@ -1842,7 +1842,7 @@ public final class TestXMLIO {
 	 */
 	@ParameterizedTest
 	@MethodSource("testCentaurSerialization")
-	public void testFairySerialization(int id, String kind)
+	public void testFairySerialization(final int id, final String kind)
 			throws SPFormatException, MalformedXMLException, IOException {
 		Fairy testee = new Fairy(kind, id);
 		assertSerialization("Test of Fairy serialization", testee);
@@ -1867,7 +1867,7 @@ public final class TestXMLIO {
 	 */
 	@ParameterizedTest
 	@MethodSource
-	public void testForestSerialization(int id, String kind, boolean rows)
+	public void testForestSerialization(final int id, final String kind, final boolean rows)
 			throws SPFormatException, MalformedXMLException, IOException {
 		Forest testee = new Forest(kind, rows, id);
 		assertSerialization("Test of Forest serialization", testee);
@@ -1906,7 +1906,7 @@ public final class TestXMLIO {
 	 */
 	@ParameterizedTest
 	@MethodSource
-	public void testFortressSerialization(int id, TownSize size)
+	public void testFortressSerialization(final int id, final TownSize size)
 			throws SPFormatException, MalformedXMLException, IOException {
 		// Can't give player names because our test environment doesn't
 		// let us pass a set of players in
@@ -1934,7 +1934,7 @@ public final class TestXMLIO {
 	 */
 	@ParameterizedTest
 	@MethodSource("testCentaurSerialization")
-	public void testGiantSerialization(int id, String kind)
+	public void testGiantSerialization(final int id, final String kind)
 			throws SPFormatException, MalformedXMLException, IOException {
 		Giant testee = new Giant(kind, id);
 		assertSerialization("Test of Giant serialization", testee);
@@ -1957,7 +1957,7 @@ public final class TestXMLIO {
 	 */
 	@ParameterizedTest
 	@MethodSource
-	public void testGroundSerialization(int id)
+	public void testGroundSerialization(final int id)
 			throws SPFormatException, MalformedXMLException, IOException {
 		assertSerialization("First test of Ground serialization", new Ground(id, "one", true));
 		Point loc = new Point(0, 0);
@@ -2032,8 +2032,8 @@ public final class TestXMLIO {
 	 */
 	@ParameterizedTest
 	@MethodSource
-	public void testSimpleImageSerialization(IntFunction<? extends HasMutableImage> constructor,
-				int id)
+	public void testSimpleImageSerialization(final IntFunction<? extends HasMutableImage> constructor,
+	                                         final int id)
 			throws SPFormatException, MalformedXMLException, IOException {
 		HasMutableImage item = constructor.apply(id);
 		assertImageSerialization("Image property is preserved", item);
@@ -2044,7 +2044,7 @@ public final class TestXMLIO {
 	 */
 	@ParameterizedTest
 	@MethodSource("testSimpleImageSerialization")
-	public void testSimpleSerialization(IntFunction<? extends HasImage> constructor, int id)
+	public void testSimpleSerialization(final IntFunction<? extends HasImage> constructor, final int id)
 			throws SPFormatException, MalformedXMLException, IOException {
 		HasImage item = constructor.apply(id);
 		if (item instanceof HasKind) {
@@ -2073,7 +2073,7 @@ public final class TestXMLIO {
 	 */
 	@ParameterizedTest
 	@MethodSource
-	public void testCaveSerialization(int dc, int id)
+	public void testCaveSerialization(final int dc, final int id)
 			throws SPFormatException, MalformedXMLException, IOException {
 		assertSerialization("Cave serialization test", new Cave(dc, id));
 		this.<Cave>assertUnwantedChild(String.format("<cave dc=\"%d\"><troll /></cave>", dc), null);
@@ -2097,8 +2097,8 @@ public final class TestXMLIO {
 	 */
 	@ParameterizedTest
 	@MethodSource
-	public void testMineralSerialization(int dc, int id, String kind, boolean exposed,
-				boolean deprecatedWriter)
+	public void testMineralSerialization(final int dc, final int id, final String kind, final boolean exposed,
+	                                     final boolean deprecatedWriter)
 			throws SPFormatException, MalformedXMLException, IOException {
 		MineralVein secondVein = new MineralVein(kind, exposed, dc, id);
 		assertSerialization("MineralVein serialization", secondVein);
@@ -2129,7 +2129,7 @@ public final class TestXMLIO {
 	 */
 	@ParameterizedTest
 	@MethodSource("testCaveSerialization")
-	public void testBattlefieldSerialization(int dc, int id)
+	public void testBattlefieldSerialization(final int dc, final int id)
 			throws SPFormatException, MalformedXMLException, IOException {
 		assertSerialization("Battlefield serialization test", new Battlefield(dc, id));
 		this.<Battlefield>assertUnwantedChild(
@@ -2176,7 +2176,7 @@ public final class TestXMLIO {
 	 */
 	@ParameterizedTest
 	@MethodSource
-	public void testElsewhere(int id)
+	public void testElsewhere(final int id)
 			throws SPFormatException, MalformedXMLException, IOException {
 		IMutableMapNG map = createSimpleMap(new Point(1, 1));
 		map.addFixture(Point.INVALID_POINT, new Ogre(id));
@@ -2194,7 +2194,7 @@ public final class TestXMLIO {
 	 */
 	@ParameterizedTest
 	@MethodSource
-	public void testBookmarkSerialization(boolean deprecatedReader, boolean deprecatedWriter)
+	public void testBookmarkSerialization(final boolean deprecatedReader, final boolean deprecatedWriter)
 			throws SPFormatException, MalformedXMLException, IOException {
 		IMutableMapNG map = new SPMapNG(new MapDimensionsImpl(1, 1, 2), new PlayerCollection(), 1);
 		Player player = map.getPlayers().getPlayer(1);
@@ -2228,8 +2228,8 @@ public final class TestXMLIO {
 	 */
 	@ParameterizedTest
 	@MethodSource
-	public void testRoadSerialization(Direction directionOne, int qualityOne, Direction directionTwo,
-				int qualityTwo)
+	public void testRoadSerialization(final Direction directionOne, final int qualityOne, final Direction directionTwo,
+	                                  final int qualityTwo)
 			throws SPFormatException, MalformedXMLException, IOException {
 		assumeFalse(directionOne.equals(directionTwo),  "We can't have the same direction twice");
 		assumeTrue(qualityOne >= 0, "Road quality can't be negative");

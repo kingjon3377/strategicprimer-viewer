@@ -59,14 +59,14 @@ public class WorkerMgmtGUIFactory implements GUIDriverFactory {
 	public Iterable<Path> askUserForFiles() {
 		try {
 			return SPFileChooser.open((Path) null).getFiles();
-		} catch (FileChooser.ChoiceInterruptedException except) {
+		} catch (final FileChooser.ChoiceInterruptedException except) {
 			LOGGER.log(Level.FINE, "Choice interrupted or user didn't choose", except);
 			return Collections.emptyList();
 		}
 	}
 
 	@Override
-	public GUIDriver createDriver(ICLIHelper cli, SPOptions options, IDriverModel model) {
+	public GUIDriver createDriver(final ICLIHelper cli, final SPOptions options, final IDriverModel model) {
 		if (model instanceof IWorkerModel) {
 			return new WorkerMgmtGUI(cli, options, (IWorkerModel) model);
 		} else {
@@ -75,7 +75,7 @@ public class WorkerMgmtGUIFactory implements GUIDriverFactory {
 	}
 
 	@Override
-	public IDriverModel createModel(IMutableMapNG map) {
+	public IDriverModel createModel(final IMutableMapNG map) {
 		return new WorkerModel(map);
 	}
 }

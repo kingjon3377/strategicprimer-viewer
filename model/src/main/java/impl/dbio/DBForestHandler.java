@@ -40,12 +40,12 @@ final class DBForestHandler extends AbstractDatabaseWriter<Forest, Point> implem
 		"INSERT INTO forests(row, column, id, kind, rows, acres, image) VALUES(?, ?, ?, ?, ?, ?, ?);";
 
 	@Override
-	public void write(DB db, Forest obj, Point context) {
+	public void write(final DB db, final Forest obj, final Point context) {
 		db.update(INSERT_SQL, context.getRow(), context.getColumn(), obj.getId(), obj.getKind(),
 			obj.isRows(), obj.getAcres().toString(), obj.getImage()).execute();
 	}
 
-	private TryBiConsumer<Map<String, Object>, Warning, Exception> readForest(IMutableMapNG map) {
+	private TryBiConsumer<Map<String, Object>, Warning, Exception> readForest(final IMutableMapNG map) {
 		return (dbRow, warner) -> {
 			int row = (Integer) dbRow.get("row");
 			int column = (Integer) dbRow.get("column");
@@ -58,7 +58,7 @@ final class DBForestHandler extends AbstractDatabaseWriter<Forest, Point> implem
 			Number acres;
 			try {
 				acres = Integer.parseInt(acresString);
-			} catch (NumberFormatException except) {
+			} catch (final NumberFormatException except) {
 				acres = new BigDecimal(acresString);
 			}
 			Forest forest = new Forest(kind, rows, id, acres);
@@ -70,14 +70,14 @@ final class DBForestHandler extends AbstractDatabaseWriter<Forest, Point> implem
 	}
 
 	@Override
-	public void readMapContents(DB db, IMutableMapNG map, Warning warner) {
+	public void readMapContents(final DB db, final IMutableMapNG map, final Warning warner) {
 		try {
 			handleQueryResults(db, warner, "forests", readForest(map),
 				"SELECT * FROM forests");
-		} catch (RuntimeException except) {
+		} catch (final RuntimeException except) {
 			// Don't wrap RuntimeExceptions in RuntimeException
 			throw except;
-		} catch (Exception except) {
+		} catch (final Exception except) {
 			// FIXME Antipattern
 			throw new RuntimeException(except);
 		}

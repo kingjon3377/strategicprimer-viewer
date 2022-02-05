@@ -33,7 +33,7 @@ import java.util.logging.Logger;
  */
 /* package */ class SubsetFrame extends SPFrame {
 	private static final Logger LOGGER = Logger.getLogger(SubsetFrame.class.getName());
-	public SubsetFrame(ISPDriver driver) {
+	public SubsetFrame(final ISPDriver driver) {
 		super("Subset Tester", driver, new Dimension(640, 320), true);
 		this.driver = driver;
 		label = new StreamingLabel();
@@ -46,12 +46,12 @@ import java.util.logging.Logger;
 
 	private class HtmlWriter {
 		private final String filename;
-		public HtmlWriter(String filename) {
+		public HtmlWriter(final String filename) {
 			this.filename = filename;
 		}
 		private boolean lineStart = true;
 		private final Pattern matcher = Pattern.compile(System.lineSeparator());
-		public void write(String string) {
+		public void write(final String string) {
 			if (lineStart) {
 				label.append("<p style=\"color:black\">");
 			}
@@ -62,17 +62,17 @@ import java.util.logging.Logger;
 		}
 	}
 
-	private void printParagraph(String paragraph) {
+	private void printParagraph(final String paragraph) {
 		printParagraph(paragraph, LabelTextColor.BLACK);
 	}
 
-	private void printParagraph(String paragraph, LabelTextColor color) {
+	private void printParagraph(final String paragraph, final LabelTextColor color) {
 		label.append(String.format("<p style=\"color:%s\">%s</p>", color, paragraph));
 	}
 
 	private IMapNG mainMap = new SPMapNG(new MapDimensionsImpl(0, 0, 2), new PlayerCollection(), -1);
 
-	public void loadMain(IMapNG arg) {
+	public void loadMain(final IMapNG arg) {
 		mainMap = arg;
 		printParagraph("<span style=\"color:green\">OK</span> if strict subset, " +
 					"<span style=\"color:yellow\">WARN</span> if apparently not (but " +
@@ -83,7 +83,7 @@ import java.util.logging.Logger;
 	/**
 	 * Test a map against the main map, to see if it's a strict subset of it.
 	 */
-	public void testMap(IMapNG map, @Nullable Path file) {
+	public void testMap(final IMapNG map, @Nullable final Path file) {
 		String filename;
 		if (file != null) { // TODO: invert?
 			filename = file.toString();
@@ -101,27 +101,27 @@ import java.util.logging.Logger;
 	}
 
 	// FIXME: Do the wrapping-to-DriverFailedException operation here to limit "throws" declaration
-	public void loadMain(Path arg) throws MissingFileException, NoSuchFileException, 
+	public void loadMain(final Path arg) throws MissingFileException, NoSuchFileException,
 			FileNotFoundException, MalformedXMLException, SPFormatException, IOException {
 		try {
 			mainMap = MapIOHelper.readMap(arg, Warning.IGNORE);
 		} catch (MissingFileException|NoSuchFileException|FileNotFoundException except) {
 			printParagraph(String.format("File %s not found", arg), LabelTextColor.RED);
 			throw except;
-		} catch (MalformedXMLException except) {
+		} catch (final MalformedXMLException except) {
 			printParagraph(String.format(
 				"ERROR: Malformed XML in %s; see following error message for details", arg),
 				LabelTextColor.RED);
 			printParagraph(except.getMessage(), LabelTextColor.RED);
 			throw except;
-		} catch (SPFormatException except) {
+		} catch (final SPFormatException except) {
 			printParagraph(String.format(
 					"ERROR: SP map format error at line %d in file %s; see following error message for details",
 					except.getLine(), arg),
 				LabelTextColor.RED);
 			printParagraph(except.getMessage(), LabelTextColor.RED);
 			throw except;
-		} catch (IOException except) {
+		} catch (final IOException except) {
 			printParagraph("ERROR: I/O error reading file " + arg, LabelTextColor.RED);
 			throw except;
 		}
@@ -136,7 +136,7 @@ import java.util.logging.Logger;
 	 * a strict subset. This method "eats" (but logs) all (anticipated)
 	 * errors in reading the file.
 	 */
-	public void testFile(Path path) {
+	public void testFile(final Path path) {
 		printParagraph(String.format("Testing %s ...", path));
 		IMapNG map;
 		try {
@@ -145,17 +145,17 @@ import java.util.logging.Logger;
 			printParagraph("FAIL: File not found", LabelTextColor.RED);
 			LOGGER.log(Level.SEVERE, path + " not found", except);
 			return;
-		} catch (IOException except) {
+		} catch (final IOException except) {
 			printParagraph("FAIL: I/O error reading file", LabelTextColor.RED);
 			LOGGER.log(Level.SEVERE, "I/O error reading " + path, except);
 			return;
-		} catch (MalformedXMLException except) {
+		} catch (final MalformedXMLException except) {
 			printParagraph("FAIL: Malformed XML; see following error message for details",
 				LabelTextColor.RED);
 			printParagraph(except.getMessage(), LabelTextColor.RED);
 			LOGGER.log(Level.SEVERE, "Malformed XML in file " + path, except);
 			return;
-		} catch (SPFormatException except) {
+		} catch (final SPFormatException except) {
 			printParagraph(String.format(
 					"FAIL: SP map format error at line %d; see following error message for details",
 					except.getLine()),
@@ -168,7 +168,7 @@ import java.util.logging.Logger;
 	}
 
 	@Override
-	public void acceptDroppedFile(Path file) {
+	public void acceptDroppedFile(final Path file) {
 		testFile(file);
 	}
 }

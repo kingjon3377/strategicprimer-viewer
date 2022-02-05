@@ -10,7 +10,7 @@ import common.map.fixtures.towns.TownStatus;
  * A mine---a source of mineral resources.
  */
 public class Mine implements HarvestableFixture, MineralFixture {
-	public Mine(String kind, TownStatus status, int id) {
+	public Mine(final String kind, final TownStatus status, final int id) {
 		this.kind = kind;
 		this.status = status;
 		this.id = id;
@@ -71,7 +71,7 @@ public class Mine implements HarvestableFixture, MineralFixture {
 	 * Set the filename of an image to use as an icon for this instance.
 	 */
 	@Override
-	public void setImage(String image) {
+	public void setImage(final String image) {
 		this.image = image;
 	}
 
@@ -92,7 +92,7 @@ public class Mine implements HarvestableFixture, MineralFixture {
 	 * Clone the object.
 	 */
 	@Override
-	public Mine copy(boolean zero) {
+	public Mine copy(final boolean zero) {
 		final Mine retval = new Mine(kind, status, id);
 		retval.setImage(image);
 		return retval;
@@ -104,7 +104,7 @@ public class Mine implements HarvestableFixture, MineralFixture {
 	}
 
 	@Override
-	public boolean equals(Object obj) {
+	public boolean equals(final Object obj) {
 		if (obj instanceof Mine) {
 			return kind.equals(((Mine) obj).getKind()) &&
 				status.equals(((Mine) obj).getStatus()) &&
@@ -120,7 +120,7 @@ public class Mine implements HarvestableFixture, MineralFixture {
 	}
 
 	@Override
-	public boolean equalsIgnoringID(IFixture fixture) {
+	public boolean equalsIgnoringID(final IFixture fixture) {
 		if (fixture instanceof Mine) {
 		return kind.equals(((Mine) fixture).getKind()) &&
 			status.equals(((Mine) fixture).getStatus());

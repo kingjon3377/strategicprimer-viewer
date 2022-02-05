@@ -38,7 +38,7 @@ import drivers.common.IAdvancementModel;
  */
 /* package */ final class SkillAdvancementPanel extends BorderedPanel
 		implements SkillSelectionListener, LevelGainSource, UnitMemberListener {
-	private static JPanel secondPanelFactory(JButton... buttons) {
+	private static JPanel secondPanelFactory(final JButton... buttons) {
 		Platform.makeButtonsSegmented(buttons);
 		if (Platform.SYSTEM_IS_MAC) {
 			return centeredHorizontalBox(buttons);
@@ -62,7 +62,7 @@ import drivers.common.IAdvancementModel;
 
 	private final List<LevelGainListener> listeners = new ArrayList<>();
 
-	private void okListener(ActionEvent event) {
+	private void okListener(final ActionEvent event) {
 		// TODO: In Ceylon we assigned all of these to local variables, as the typechecker
 		// enforced thread-safety of reading mutable nullable variables; we should really
 		// do the same here to avoid TOCTOU races
@@ -71,7 +71,7 @@ import drivers.common.IAdvancementModel;
 			int number;
 			try {
 				number = Integer.parseInt(hours.getText());
-			} catch (NumberFormatException except) {
+			} catch (final NumberFormatException except) {
 				showErrorDialog(hours, "Strategic Primer Worker Advancement",
 					"Hours to add must be a number");
 				return;
@@ -99,19 +99,19 @@ import drivers.common.IAdvancementModel;
 		hours.setText("");
 	}
 
-	private void cancelListener(ActionEvent event) {
+	private void cancelListener(final ActionEvent event) {
 		hours.setText("");
 	}
 
 	// FIXME: Remove if never called
-	public static SkillAdvancementPanel delegate(IAdvancementModel model, JTextField hours,
-			JButton okButton, JButton cancelButton) {
+	public static SkillAdvancementPanel delegate(final IAdvancementModel model, final JTextField hours,
+	                                             final JButton okButton, final JButton cancelButton) {
 		return new SkillAdvancementPanel(model, hours, okButton, cancelButton);
 	}
 
 	// FIXME: Inline into public constructor if static factory is never called
-	private SkillAdvancementPanel(IAdvancementModel model, JTextField hours, JButton okButton,
-			JButton cancelButton) {
+	private SkillAdvancementPanel(final IAdvancementModel model, final JTextField hours, final JButton okButton,
+	                              final JButton cancelButton) {
 		super(null, new FlowPanel(new JLabel("Add "), hours, new JLabel(" hours to skill?")),
 			secondPanelFactory(okButton, cancelButton));
 		this.model = model;
@@ -125,12 +125,12 @@ import drivers.common.IAdvancementModel;
 		setMaximumSize(new Dimension(240, 60));
 	}
 
-	public SkillAdvancementPanel(IAdvancementModel model) {
+	public SkillAdvancementPanel(final IAdvancementModel model) {
 		this(model, new JTextField(3), new JButton("OK"), new JButton("Cancel"));
 	}
 
 	@Override
-	public void selectSkill(@Nullable ISkill selectedSkill) {
+	public void selectSkill(@Nullable final ISkill selectedSkill) {
 		skill = selectedSkill;
 		if (selectedSkill != null) {
 			hours.requestFocusInWindow();
@@ -138,23 +138,23 @@ import drivers.common.IAdvancementModel;
 	}
 
 	@Override
-	public void selectJob(@Nullable IJob selectedJob) {
+	public void selectJob(@Nullable final IJob selectedJob) {
 		job = selectedJob;
 	}
 
 	@Override
-	public void addLevelGainListener(LevelGainListener listener) {
+	public void addLevelGainListener(final LevelGainListener listener) {
 		listeners.add(listener);
 	}
 
 	@Override
-	public void removeLevelGainListener(LevelGainListener listener) {
+	public void removeLevelGainListener(final LevelGainListener listener) {
 		listeners.remove(listener);
 	}
 
 	@Override
-	public void memberSelected(@Nullable UnitMember previousSelection,
-			@Nullable UnitMember selected) {
+	public void memberSelected(@Nullable final UnitMember previousSelection,
+			@Nullable final UnitMember selected) {
 		if (selected instanceof IWorker) {
 			worker = (IWorker) selected;
 		} else {

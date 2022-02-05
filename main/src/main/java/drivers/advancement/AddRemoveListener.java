@@ -18,5 +18,5 @@ public interface AddRemoveListener {
 	 *
 	 * @param category What kind of thing is being removed
 	 */
-	default void remove(String category) {}
+	default void remove(final String category) {}
 }

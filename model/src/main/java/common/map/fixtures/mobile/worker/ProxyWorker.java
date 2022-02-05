@@ -74,12 +74,12 @@ public class ProxyWorker implements WorkerProxy {
 	@Nullable
 	private WorkerStats statsCache;
 
-	private ProxyWorker(boolean parallelProxy) {
+	private ProxyWorker(final boolean parallelProxy) {
 		parallel = parallelProxy;
 		statsCache = null;
 	}
 
-	public ProxyWorker(IUnit unit) {
+	public ProxyWorker(final IUnit unit) {
 		this(false);
 		for (UnitMember member : unit) {
 			if (member instanceof IWorker) {
@@ -101,7 +101,7 @@ public class ProxyWorker implements WorkerProxy {
 		}
 	}
 
-	public ProxyWorker(IWorker... proxiedWorkers) {
+	public ProxyWorker(final IWorker... proxiedWorkers) {
 		this(true);
 		for (IWorker worker : proxiedWorkers) {
 				WorkerStats tempStats = (worker).getStats();
@@ -121,7 +121,7 @@ public class ProxyWorker implements WorkerProxy {
 	}
 
 	@Override
-	public IWorker copy(boolean zero) {
+	public IWorker copy(final boolean zero) {
 		ProxyWorker retval = new ProxyWorker(parallel);
 		for (IWorker worker : workers) {
 			retval.addProxied(worker.copy(zero));
@@ -144,7 +144,7 @@ public class ProxyWorker implements WorkerProxy {
 	}
 
 	@Override
-	public boolean equalsIgnoringID(IFixture fixture) {
+	public boolean equalsIgnoringID(final IFixture fixture) {
 		if (fixture instanceof ProxyWorker) {
 			return parallel == ((ProxyWorker) fixture).parallel &&
 				proxyJobs.equals(((ProxyWorker) fixture).proxyJobs);
@@ -159,13 +159,13 @@ public class ProxyWorker implements WorkerProxy {
 	}
 
 	@Override
-	public boolean isSubset(IFixture obj, Consumer<String> report) {
+	public boolean isSubset(final IFixture obj, final Consumer<String> report) {
 		report.accept("isSubset called on ProxyWorker");
 		return false;
 	}
 
 	@Override
-	public void addProxied(IWorker item) {
+	public void addProxied(final IWorker item) {
 		if (item == this) {
 			return;
 		}
@@ -247,7 +247,7 @@ public class ProxyWorker implements WorkerProxy {
 	}
 
 	@Override
-	public IJob getJob(String jobName) {
+	public IJob getJob(final String jobName) {
 		Optional<ProxyJob> temp =
 			proxyJobs.stream().filter(j -> jobName.equals(j.getName())).findAny();
 		if (temp.isPresent()) {
@@ -267,19 +267,19 @@ public class ProxyWorker implements WorkerProxy {
 	}
 
 	@Override
-	public String getNote(Player player) {
+	public String getNote(final Player player) {
 		String retval = getConsensus(worker -> worker.getNote(player));
 		return (retval == null) ? "" : retval;
 	}
 
 	@Override
-	public String getNote(int player) {
+	public String getNote(final int player) {
 		String retval = getConsensus(worker -> worker.getNote(player));
 		return (retval == null) ? "" : retval;
 	}
 
 	@Override
-	public void setNote(Player key, String item) {
+	public void setNote(final Player key, final String item) {
 		for (IWorker proxy : workers) {
 			proxy.setNote(key, item);
 		}

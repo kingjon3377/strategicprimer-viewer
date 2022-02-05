@@ -18,7 +18,7 @@ public class TestProxyAnimal {
 	 */
 	@ParameterizedTest
 	@MethodSource
-	public void testProxyAnimalReduction(int id, int newId) {
+	public void testProxyAnimalReduction(final int id, final int newId) {
 		// TODO: should take population of original and population to test as parameters?
 		Animal base = new AnimalImpl("test", false, "status", id, -1, 12);
 		ProxyAnimal proxy = new ProxyAnimal(base, base.copy(false), base.copy(false));
@@ -40,7 +40,7 @@ public class TestProxyAnimal {
 		Integer prev;
 
 		@Override
-		public Stream<Arguments> apply(Integer curr) {
+		public Stream<Arguments> apply(final Integer curr) {
 			if (prev == null) {
 				prev = curr;
 				return Stream.empty();

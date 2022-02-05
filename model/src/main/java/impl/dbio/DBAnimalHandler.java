@@ -27,13 +27,13 @@ final class DBAnimalHandler extends AbstractDatabaseWriter<AnimalOrTracks, /*Poi
 	}
 
 	@Override
-	public boolean canWrite(Object obj, Object context) {
+	public boolean canWrite(final Object obj, final Object context) {
 		return (obj instanceof Animal || obj instanceof AnimalTracks) &&
 			(context instanceof Point || context instanceof IUnit);
 	}
 
 
-	private static Optional<Integer> born(Animal animal) {
+	private static Optional<Integer> born(final Animal animal) {
 		Map<String, Integer> model = MaturityModel.getMaturityAges();
 		if (model.containsKey(animal.getKind())) {
 			int maturityAge = model.get(animal.getKind());
@@ -81,7 +81,7 @@ final class DBAnimalHandler extends AbstractDatabaseWriter<AnimalOrTracks, /*Poi
 		"talking, status, born, count, id, image) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
 
 	@Override
-	public void write(DB db, AnimalOrTracks obj, Object context) {
+	public void write(final DB db, final AnimalOrTracks obj, final Object context) {
 		if (!((context instanceof Point) || (context instanceof IUnit))) {
 			throw new IllegalArgumentException("context must be a point or a unit");
 		}
@@ -109,7 +109,7 @@ final class DBAnimalHandler extends AbstractDatabaseWriter<AnimalOrTracks, /*Poi
 	}
 
 	private TryBiConsumer<Map<String, Object>, Warning, Exception>
-			readAnimal(IMutableMapNG map) {
+			readAnimal(final IMutableMapNG map) {
 		return (dbRow, warner) -> {
 			String kind = (String) dbRow.get("kind");
 			Boolean talking = /* DBMapReader.databaseBoolean(dbRow.get("talking")) */ // FIXME
@@ -136,7 +136,7 @@ final class DBAnimalHandler extends AbstractDatabaseWriter<AnimalOrTracks, /*Poi
 	}
 
 	private static TryBiConsumer<Map<String, Object>, Warning, Exception>
-			readTracks(IMutableMapNG map) {
+			readTracks(final IMutableMapNG map) {
 		return (dbRow, warner) -> {
 			int row = (Integer) dbRow.get("row");
 			int column = (Integer) dbRow.get("column");
@@ -151,30 +151,30 @@ final class DBAnimalHandler extends AbstractDatabaseWriter<AnimalOrTracks, /*Poi
 	}
 
 	@Override
-	public void readMapContents(DB db, IMutableMapNG map, Warning warner) {
+	public void readMapContents(final DB db, final IMutableMapNG map, final Warning warner) {
 		try {
 			handleQueryResults(db, warner, "animal populations", readAnimal(map),
 				"SELECT * FROM animals WHERE row IS NOT NULL");
 			handleQueryResults(db, warner, "animal tracks", readTracks(map),
 				"SELECT * FROM tracks");
-		} catch (RuntimeException except) {
+		} catch (final RuntimeException except) {
 			// Don't wrap RuntimeExceptions in RuntimeException
 			throw except;
-		} catch (Exception except) {
+		} catch (final Exception except) {
 			// FIXME Antipattern
 			throw new RuntimeException(except);
 		}
 	}
 
 	@Override
-	public void readExtraMapContents(DB db, IMutableMapNG map, Warning warner) {
+	public void readExtraMapContents(final DB db, final IMutableMapNG map, final Warning warner) {
 		try {
 			handleQueryResults(db, warner, "animals in units", readAnimal(map),
 				"SELECT * FROM animals WHERE parent IS NOT NULL");
-		} catch (RuntimeException except) {
+		} catch (final RuntimeException except) {
 			// Don't wrap RuntimeExceptions in RuntimeException
 			throw except;
-		} catch (Exception except) {
+		} catch (final Exception except) {
 			// FIXME Antipattern
 			throw new RuntimeException(except);
 		}

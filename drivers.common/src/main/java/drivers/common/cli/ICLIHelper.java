@@ -95,7 +95,7 @@ public interface ICLIHelper {
 	/**
 	 * Returns null if {@link input} is "quit" and false otherwise.
 	 */
-	default @Nullable Boolean defaultQuitHandler(String input) {
+	default @Nullable Boolean defaultQuitHandler(final String input) {
 		if ("quit".equals(input)) {
 			return null;
 		} else {
@@ -109,7 +109,7 @@ public interface ICLIHelper {
 	 *
 	 * @param prompt The prompt to prompt the user with.
 	 */
-	default @Nullable Boolean inputBoolean(String prompt) {
+	default @Nullable Boolean inputBoolean(final String prompt) {
 		return inputBoolean(prompt, s -> defaultQuitHandler(s));
 	}
 
@@ -133,7 +133,7 @@ public interface ICLIHelper {
 	 * @param quitResultFactory A function to produce null (to return) if
 	 * an input should short-circuit the loop.
 	 */
-	default @Nullable Boolean inputBooleanInSeries(String prompt) {
+	default @Nullable Boolean inputBooleanInSeries(final String prompt) {
 		return inputBooleanInSeries(prompt, prompt);
 	}
 
@@ -147,7 +147,7 @@ public interface ICLIHelper {
 	 * @param quitResultFactory A function to produce null (to return) if
 	 * an input should short-circuit the loop.
 	 */
-	default @Nullable Boolean inputBooleanInSeries(String prompt, String key) {
+	default @Nullable Boolean inputBooleanInSeries(final String prompt, final String key) {
 		return inputBooleanInSeries(prompt, key, s -> defaultQuitHandler(s));
 	}
 
@@ -194,7 +194,7 @@ public interface ICLIHelper {
 	 * @param line The line to print
 	 * @param interval The minimum number of lines between occurrences
 	 */
-	default void printlnAtInterval(String line) {
+	default void printlnAtInterval(final String line) {
 		printlnAtInterval(line, 30);
 	}
 
@@ -214,7 +214,7 @@ public interface ICLIHelper {
 	 *
 	 * @param prompt The prompt to use to prompt the user.
 	 */
-	default @Nullable Point inputPoint(String prompt) {
+	default @Nullable Point inputPoint(final String prompt) {
 		print(prompt);
 		Integer row = inputNumber("Row: ");
 		if (row != null) {

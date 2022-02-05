@@ -15,12 +15,12 @@ import java.awt.event.ActionListener;
 public class ActionWrapper extends AbstractAction {
 	private final ActionListener wrapped;
 
-	public ActionWrapper(ActionListener wrappedListener) {
+	public ActionWrapper(final ActionListener wrappedListener) {
 		wrapped = wrappedListener;
 	}
 
 	@Override
-	public void actionPerformed(ActionEvent event) {
+	public void actionPerformed(final ActionEvent event) {
 		wrapped.actionPerformed(event);
 	}
 }

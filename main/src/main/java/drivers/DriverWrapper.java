@@ -28,11 +28,11 @@ import java.util.stream.StreamSupport;
 /* package */ class DriverWrapper {
 	private static final Logger LOGGER = Logger.getLogger(DriverWrapper.class.getName());
 	private final DriverFactory factory;
-	public DriverWrapper(DriverFactory factory) {
+	public DriverWrapper(final DriverFactory factory) {
 		this.factory = factory;
 	}
 
-	private boolean enoughArguments(int argc) {
+	private boolean enoughArguments(final int argc) {
 		if (argc < 0) {
 			throw new IllegalArgumentException("Negative arg counts don't make sense");
 		}
@@ -48,7 +48,7 @@ import java.util.stream.StreamSupport;
 		}
 	}
 
-	private boolean tooManyArguments(int argc) {
+	private boolean tooManyArguments(final int argc) {
 		if (argc < 0) {
 			throw new IllegalArgumentException("Negative arg counts don't make sense");
 		}
@@ -66,13 +66,13 @@ import java.util.stream.StreamSupport;
 		}
 	}
 
-	private void checkArguments(String... args) throws IncorrectUsageException {
+	private void checkArguments(final String... args) throws IncorrectUsageException {
 		if (!enoughArguments(args.length) || tooManyArguments(args.length)) {
 			throw new IncorrectUsageException(factory.getUsage());
 		}
 	}
 
-	private List<Path> extendArguments(String... args) throws IncorrectUsageException {
+	private List<Path> extendArguments(final String... args) throws IncorrectUsageException {
 		if (factory instanceof GUIDriverFactory) {
 			final List<Path> files = new ArrayList<>();
 			if (args.length > 0) {
@@ -102,17 +102,17 @@ import java.util.stream.StreamSupport;
 		}
 	}
 
-	private static void fixCurrentTurn(SPOptions options, IDriverModel model) {
+	private static void fixCurrentTurn(final SPOptions options, final IDriverModel model) {
 		if (options.hasOption("--current-turn")) {
 			try {
 				model.setCurrentTurn(Integer.parseInt(options.getArgument("--current-turn")));
-			} catch (NumberFormatException except) {
+			} catch (final NumberFormatException except) {
 				LOGGER.warning("Non-numeric current turn argument");
 			}
 		}
 	}
 
-	public void startCatchingErrors(ICLIHelper cli, SPOptions options, String... args) {
+	public void startCatchingErrors(final ICLIHelper cli, final SPOptions options, final String... args) {
 		try {
 			if (factory instanceof UtilityDriverFactory) {
 				checkArguments(args);
@@ -150,10 +150,10 @@ import java.util.stream.StreamSupport;
 			} else {
 				throw new DriverFailedException(new IllegalStateException("Unhandled driver class"));
 			}
-		} catch (IncorrectUsageException except) {
+		} catch (final IncorrectUsageException except) {
 			cli.println(new AppChooserState().usageMessage(except.getCorrectUsage(),
 				options.getArgument("--verbose") == "true"));
-		} catch (DriverFailedException except) {
+		} catch (final DriverFailedException except) {
 			Throwable cause = except.getCause();
 			if (cause instanceof SPFormatException) {
 				LOGGER.severe(cause.getMessage());
@@ -162,7 +162,7 @@ import java.util.stream.StreamSupport;
 			} else {
 				LOGGER.log(Level.SEVERE, "Driver failed:", except);
 			}
-		} catch (Exception except) {
+		} catch (final Exception except) {
 			LOGGER.log(Level.SEVERE, except.getMessage(), except);
 		}
 	}

@@ -54,7 +54,7 @@ import impl.xmlio.MapIOHelper;
 	private final UnitListModel unitListModel;
 	private final JList<IUnit> unitList;
 
-	public ExplorationFrame(IExplorationGUI driver, MenuBroker menuHandler) {
+	public ExplorationFrame(final IExplorationGUI driver, final MenuBroker menuHandler) {
 		super("Exploration", driver, new Dimension(768, 48), true);
 		this.driver = driver;
 		this.menuHandler = menuHandler;
@@ -117,17 +117,17 @@ import impl.xmlio.MapIOHelper;
 	}
 
 	@Override
-	public void acceptDroppedFile(Path file) {
+	public void acceptDroppedFile(final Path file) {
 		try {
 			driver.getModel().addSubordinateMap(MapIOHelper.readMap(file));
 			// FIXME: THrow DriverFailedException and/or show error dialog on error
-		} catch (SPFormatException except) {
+		} catch (final SPFormatException except) {
 			LOGGER.log(Level.SEVERE, "SP format error in dropped file " + file, except);
-		} catch (NoSuchFileException| FileNotFoundException|MissingFileException except) {
+		} catch (final NoSuchFileException| FileNotFoundException|MissingFileException except) {
 			LOGGER.log(Level.SEVERE, "Dropped file not found: " + file, except);
-		} catch (IOException except) {
+		} catch (final IOException except) {
 			LOGGER.log(Level.SEVERE, "I/O error reading dropped file", except);
-		} catch (MalformedXMLException except) {
+		} catch (final MalformedXMLException except) {
 			LOGGER.log(Level.SEVERE, "Malformed XML in dropped file", except);
 		}
 	}

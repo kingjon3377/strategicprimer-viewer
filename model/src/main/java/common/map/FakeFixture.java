@@ -26,7 +26,7 @@ public interface FakeFixture extends TileFixture, HasImage {
 	 */
 	@Override
 	@Deprecated
-	default boolean equalsIgnoringID(IFixture fixture) {
+	default boolean equalsIgnoringID(final IFixture fixture) {
 		LOGGER.warning("equalsIgnoringID() called on a fake fixture");
 		return equals(fixture);
 	}
@@ -57,7 +57,7 @@ public interface FakeFixture extends TileFixture, HasImage {
 	 */
 	@Override
 	@Deprecated
-	default int compareTo(TileFixture fixture) {
+	default int compareTo(final TileFixture fixture) {
 		LOGGER.warning("compare() called on a fake fixture");
 		return TileFixture.super.compareTo(fixture);
 	}

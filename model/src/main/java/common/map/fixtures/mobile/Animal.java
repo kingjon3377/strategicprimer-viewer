@@ -63,13 +63,13 @@ public interface Animal extends AnimalOrTracks, MobileFixture, HasImage,
 	/**
 	 * Whether another animal is equal except its ID and population count.
 	 */
-	default boolean equalExceptPopulation(Animal other) {
+	default boolean equalExceptPopulation(final Animal other) {
 		return getKind().equals(other.getKind()) && isTalking() == other.isTalking() &&
 			getStatus().equals(other.getStatus()) && getBorn() == other.getBorn();
 	}
 
 	@Override
-	default boolean equalsIgnoringID(IFixture fixture) {
+	default boolean equalsIgnoringID(final IFixture fixture) {
 		return fixture instanceof Animal && equalExceptPopulation((Animal) fixture) &&
 			getPopulation() == ((Animal) fixture).getPopulation();
 	}
@@ -84,7 +84,7 @@ public interface Animal extends AnimalOrTracks, MobileFixture, HasImage,
 	Animal combined(Animal addend);
 
 	@Override
-	default boolean isSubset(IFixture obj, Consumer<String> report) {
+	default boolean isSubset(final IFixture obj, final Consumer<String> report) {
 		if (obj.getId() == getId()) {
 			if (obj instanceof Animal) {
 				if (!getKind().equals(((Animal) obj).getKind())) {

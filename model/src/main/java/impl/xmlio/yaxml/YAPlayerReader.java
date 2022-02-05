@@ -16,12 +16,12 @@ import lovelace.util.ThrowingConsumer;
 /**
  * A reader for {@link Player}s."
 /* package */ class YAPlayerReader extends YAAbstractReader<Player, Player> {
-	public YAPlayerReader(Warning warning, IDRegistrar idRegistrar) {
+	public YAPlayerReader(final Warning warning, final IDRegistrar idRegistrar) {
 		super(warning, idRegistrar);
 	}
 
 	@Override
-	public Player read(StartElement element, QName parent, Iterable<XMLEvent> stream)
+	public Player read(final StartElement element, final QName parent, final Iterable<XMLEvent> stream)
 			throws SPFormatException {
 		requireTag(element, parent, "player");
 		expectAttributes(element, "number", "code_name", "portrait", "country");
@@ -41,12 +41,12 @@ import lovelace.util.ThrowingConsumer;
 	}
 
 	@Override
-	public boolean isSupportedTag(String tag) {
+	public boolean isSupportedTag(final String tag) {
 		return "player".equalsIgnoreCase(tag);
 	}
 
 	@Override
-	public void write(ThrowingConsumer<String, IOException> ostream, Player obj, int indent) throws IOException {
+	public void write(final ThrowingConsumer<String, IOException> ostream, final Player obj, final int indent) throws IOException {
 		if (!obj.getName().isEmpty()) {
 			writeTag(ostream, "player", indent);
 			writeProperty(ostream, "number", obj.getPlayerId());
@@ -61,7 +61,7 @@ import lovelace.util.ThrowingConsumer;
 	}
 
 	@Override
-	public boolean canWrite(Object obj) {
+	public boolean canWrite(final Object obj) {
 		return obj instanceof Player;
 	}
 }

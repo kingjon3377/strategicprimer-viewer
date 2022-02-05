@@ -60,11 +60,11 @@ public class ProxyUnit implements IUnit, ProxyFor<IUnit> {
 
 	private Iterable<UnitMember> cachedIterable = Collections.emptyList();
 
-	private static String mergeHelper(String earlier, String later) {
+	private static String mergeHelper(final String earlier, final String later) {
 		return Objects.equals(earlier, later) ? earlier : "";
 	}
 
-	NavigableMap<Integer, String> mergeMaps(Function<IUnit, NavigableMap<Integer, String>> method) {
+	NavigableMap<Integer, String> mergeMaps(final Function<IUnit, NavigableMap<Integer, String>> method) {
 		return proxiedList.stream().map(method).map(NavigableMap::entrySet).flatMap(Set::stream)
 			.collect(Collectors.toMap(Entry::getKey, Entry::getValue, ProxyUnit::mergeHelper,
 				TreeMap::new));
@@ -84,7 +84,7 @@ public class ProxyUnit implements IUnit, ProxyFor<IUnit> {
 	/**
 	 * Constructor for units from parallel maps.
 	 */
-	public ProxyUnit(int idNum) {
+	public ProxyUnit(final int idNum) {
 		commonID = idNum;
 		parallel = true;
 		commonKind = null;
@@ -93,7 +93,7 @@ public class ProxyUnit implements IUnit, ProxyFor<IUnit> {
 	/**
 	 * Constructor for units sharing a kind.
 	 */
-	public ProxyUnit(String unitKind) {
+	public ProxyUnit(final String unitKind) {
 		commonID = null;
 		commonKind = unitKind;
 		parallel = false;
@@ -116,7 +116,7 @@ public class ProxyUnit implements IUnit, ProxyFor<IUnit> {
 	}
 
 	@Override
-	public IUnit copy(boolean zero) {
+	public IUnit copy(final boolean zero) {
 		final ProxyUnit retval;
 		if (parallel) {
 			retval = new ProxyUnit(commonID);
@@ -167,7 +167,7 @@ public class ProxyUnit implements IUnit, ProxyFor<IUnit> {
 	}
 
 	@Override
-	public boolean equalsIgnoringID(IFixture fixture) {
+	public boolean equalsIgnoringID(final IFixture fixture) {
 		LOGGER.severe("ProxyUnit.equalsIgnoringID called");
 		if (fixture instanceof ProxyUnit) {
 			return proxiedList.stream().allMatch(m -> (((ProxyUnit) fixture).proxiedList.stream().anyMatch(m::equals))); // TODO: Should check the converse as well
@@ -177,7 +177,7 @@ public class ProxyUnit implements IUnit, ProxyFor<IUnit> {
 	}
 
 	@Override
-	public int compareTo(TileFixture fixture) {
+	public int compareTo(final TileFixture fixture) {
 		LOGGER.warning("ProxyUnit.compare called");
 		return IUnit.super.compareTo(fixture);
 	}
@@ -269,19 +269,19 @@ public class ProxyUnit implements IUnit, ProxyFor<IUnit> {
 	}
 
 	@Override
-	public boolean isSubset(IFixture obj, Consumer<String> report) {
+	public boolean isSubset(final IFixture obj, final Consumer<String> report) {
 		report.accept("Called ProxyUnit.isSubset()");
 		return IUnit.super.isSubset(obj, s -> report.accept("In proxy unit:\t" + s));
 	}
 
 	@Override
-	public String getOrders(int turn) {
+	public String getOrders(final int turn) {
 		String retval = getConsensus(u -> u.getOrders(turn));
 		return retval == null ? "" : retval;
 	}
 
 	@Override
-	public String getResults(int turn) {
+	public String getResults(final int turn) {
 		String retval = getConsensus(u -> u.getResults(turn));
 		return retval == null ? "" : retval;
 	}
@@ -313,7 +313,7 @@ public class ProxyUnit implements IUnit, ProxyFor<IUnit> {
 	}
 
 	@Override
-	public boolean equals(Object obj) {
+	public boolean equals(final Object obj) {
 		if (obj instanceof ProxyUnit) {
 			return parallel == ((ProxyUnit) obj).parallel &&
 				Objects.equals(commonID, ((ProxyUnit) obj).commonID) &&
@@ -340,7 +340,7 @@ public class ProxyUnit implements IUnit, ProxyFor<IUnit> {
 	 * Proxy an additonal unit.
 	 */
 	@Override
-	public void addProxied(IUnit item) {
+	public void addProxied(final IUnit item) {
 		if (item == this) {
 			return;
 		} else if (parallel && item.getId() != commonID) {

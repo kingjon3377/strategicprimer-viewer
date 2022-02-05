@@ -17,8 +17,8 @@ public final class FunctionalGroupLayout extends GroupLayout {
 	 * signature in Java.
 	 */
 	private static <SpecificGroup extends Group> SpecificGroup
-			initializeGroup(SpecificGroup group,
-				Object... components) {
+			initializeGroup(final SpecificGroup group,
+			                final Object... components) {
 		for (Object component : components) {
 			if (component instanceof Component) {
 				group.addComponent((Component) component);
@@ -39,7 +39,7 @@ public final class FunctionalGroupLayout extends GroupLayout {
 	 * instances, even though this cannot be expressed in the function
 	 * signature in Java.
 	 */
-	public ParallelGroup parallelGroupOf(Object... components) {
+	public ParallelGroup parallelGroupOf(final Object... components) {
 		return initializeGroup(createParallelGroup(), components);
 	}
 	/**
@@ -48,7 +48,7 @@ public final class FunctionalGroupLayout extends GroupLayout {
 	 * instances, even though this cannot be expressed in the function
 	 * signature in Java.
 	 */
-	public SequentialGroup sequentialGroupOf(Object... components) {
+	public SequentialGroup sequentialGroupOf(final Object... components) {
 		return initializeGroup(createSequentialGroup(), components);
 	}
 
@@ -60,8 +60,8 @@ public final class FunctionalGroupLayout extends GroupLayout {
 	 *
 	 * TODO: Create an enum for the configuration, so we don't have to take Boolean constructor parameters.
 	 */
-	public FunctionalGroupLayout(Container host, boolean autoCreateGaps,
-			boolean autoCreateContainerGaps) {
+	public FunctionalGroupLayout(final Container host, final boolean autoCreateGaps,
+	                             final boolean autoCreateContainerGaps) {
 		super(host);
 		super.setAutoCreateGaps(autoCreateGaps);
 		super.setAutoCreateContainerGaps(autoCreateContainerGaps);
@@ -72,7 +72,7 @@ public final class FunctionalGroupLayout extends GroupLayout {
 	 * @param host The container to lay out.
 	 * @param autoCreateGaps Whether to automatically create gaps between components.
 	 */
-	public FunctionalGroupLayout(Container host, boolean autoCreateGaps) {
+	public FunctionalGroupLayout(final Container host, final boolean autoCreateGaps) {
 		this(host, autoCreateGaps, false);
 	}
 
@@ -80,7 +80,7 @@ public final class FunctionalGroupLayout extends GroupLayout {
 	 * Constructor variant defaulting to not creating gaps or container gaps.
 	 * @param host The container to lay out.
 	 */
-	public FunctionalGroupLayout(Container host) {
+	public FunctionalGroupLayout(final Container host) {
 		this(host, false);
 	}
 }

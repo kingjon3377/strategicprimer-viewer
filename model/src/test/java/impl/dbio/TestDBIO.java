@@ -161,7 +161,7 @@ public final class TestDBIO {
 		source.setUrl("jdbc:sqlite:file::memory:?cache=shared");
 	}
 
-	private IMapNG assertDatabaseSerialization(IMapNG map) {
+	private IMapNG assertDatabaseSerialization(final IMapNG map) {
 		DB db = new DB(() -> connection);
 		writer.writeToDatabase(db, map);
 		IMapNG deserialized = reader.readMapFromDatabase(db, Warning.DIE);
@@ -170,7 +170,7 @@ public final class TestDBIO {
 	}
 
 	private <FixtureType extends TileFixture> FixtureType
-			assertFixtureSerialization(FixtureType fixture) {
+			assertFixtureSerialization(final FixtureType fixture) {
 		MapDimensions dimensions = new MapDimensionsImpl(2, 2, 2);
 		IMutableMapNG firstMap = new SPMapNG(dimensions, new PlayerCollection(), -1);
 		firstMap.addFixture(new Point(0, 0), fixture);
@@ -195,7 +195,7 @@ public final class TestDBIO {
 
 	@ParameterizedTest
 	@MethodSource("fewIntegers")
-	public void testAdventureSerialization(int id) {
+	public void testAdventureSerialization(final int id) {
 		assertFixtureSerialization(new AdventureFixture(new PlayerImpl(1, "independent"),
 			"hook brief", "hook full", id));
 	}
@@ -209,7 +209,7 @@ public final class TestDBIO {
 
 	@ParameterizedTest
 	@MethodSource
-	public void testPortalSerialization(int id, int row, int column) {
+	public void testPortalSerialization(final int id, final int row, final int column) {
 		assertFixtureSerialization(new Portal("portal dest", new Point(row, column), id));
 	}
 
@@ -220,7 +220,7 @@ public final class TestDBIO {
 
 	@ParameterizedTest
 	@MethodSource
-	public void testAnimalSerialization(int id, boolean talking) {
+	public void testAnimalSerialization(final int id, final boolean talking) {
 		assertFixtureSerialization(new AnimalImpl("animal kind", talking, "status", id, -1, 1));
 	}
 
@@ -231,7 +231,7 @@ public final class TestDBIO {
 
 	@ParameterizedTest
 	@MethodSource("fewIntegers")
-	public void testCacheSerialization(int id) {
+	public void testCacheSerialization(final int id) {
 		assertFixtureSerialization(new CacheFixture("kind", "contents", id));
 	}
 
@@ -242,13 +242,13 @@ public final class TestDBIO {
 
 	@ParameterizedTest
 	@MethodSource
-	public void testCaveSerialization(int id, int dc) {
+	public void testCaveSerialization(final int id, final int dc) {
 		assertFixtureSerialization(new Cave(dc, id));
 	}
 
 	@ParameterizedTest
 	@MethodSource("testCaveSerialization")
-	public void testBattlefieldSerialization(int id, int dc) {
+	public void testBattlefieldSerialization(final int id, final int dc) {
 		assertFixtureSerialization(new Battlefield(dc, id));
 	}
 
@@ -262,7 +262,7 @@ public final class TestDBIO {
 
 	@ParameterizedTest
 	@MethodSource("testCitySerialization")
-	public void testFortificationSerialization(int id, TownStatus status, TownSize size, int dc) {
+	public void testFortificationSerialization(final int id, final TownStatus status, final TownSize size, final int dc) {
 		// TODO: We want more of the state to be random
 		Fortification town = new Fortification(status, size, dc, "name", id, new PlayerImpl(0, ""));
 		CommunityStats stats = new CommunityStats(5);
@@ -284,7 +284,7 @@ public final class TestDBIO {
 
 	@ParameterizedTest
 	@MethodSource
-	public void testCitySerialization(int id, TownStatus status, TownSize size, int dc) {
+	public void testCitySerialization(final int id, final TownStatus status, final TownSize size, final int dc) {
 		// TODO: We want more of the state to be random
 		City town = new City(status, size, dc, "name", id, new PlayerImpl(0, ""));
 		CommunityStats stats = new CommunityStats(5);
@@ -306,7 +306,7 @@ public final class TestDBIO {
 
 	@ParameterizedTest
 	@MethodSource("testCitySerialization")
-	public void testTownSerialization(int id, TownStatus status, TownSize size, int dc) {
+	public void testTownSerialization(final int id, final TownStatus status, final TownSize size, final int dc) {
 		// TODO: We want more of the state to be random
 		Town town = new Town(status, size, dc, "name", id, new PlayerImpl(0, ""));
 		CommunityStats stats = new CommunityStats(5);
@@ -336,16 +336,16 @@ public final class TestDBIO {
 
 	@ParameterizedTest
 	@MethodSource
-	public void testMeadowSerialization(boolean field, boolean cultivated, int id, FieldStatus status,
-			int acres) {
+	public void testMeadowSerialization(final boolean field, final boolean cultivated, final int id, final FieldStatus status,
+	                                    final int acres) {
 		assertFixtureSerialization(new Meadow("kind", field, cultivated, id, status, acres));
 	}
 
 	// TODO: Combine with testMeadowSerialization()?
 	@ParameterizedTest
 	@MethodSource("testMeadowSerialization")
-	public void testFractionalMeadowSerialization(boolean field, boolean cultivated, int id,
-			FieldStatus status, int acres) {
+	public void testFractionalMeadowSerialization(final boolean field, final boolean cultivated, final int id,
+	                                              final FieldStatus status, final int acres) {
 		assertFixtureSerialization(new Meadow("kind", field, cultivated, id, status,
 			new BigDecimal(acres).add(new BigDecimal(1).divide(new BigDecimal(2)))));
 	}
@@ -358,13 +358,13 @@ public final class TestDBIO {
 
 	@ParameterizedTest
 	@MethodSource
-	public void testForestSerialization(boolean rows, int id, int acres) {
+	public void testForestSerialization(final boolean rows, final int id, final int acres) {
 		assertFixtureSerialization(new Forest("kind", rows, id, acres));
 	}
 
 	@ParameterizedTest
 	@MethodSource("testForestSerialization")
-	public void testFractionalForestSerialization(boolean rows, int id, int acres) {
+	public void testFractionalForestSerialization(final boolean rows, final int id, final int acres) {
 		assertFixtureSerialization(new Forest("kind", rows, id,
 			new BigDecimal(acres).add(new BigDecimal(1).divide(new BigDecimal(4)))));
 	}
@@ -376,7 +376,7 @@ public final class TestDBIO {
 
 	@ParameterizedTest
 	@MethodSource
-	public void testFortressSerialization(int id, TownSize size) {
+	public void testFortressSerialization(final int id, final TownSize size) {
 		Player owner = new PlayerImpl(1, "owner");
 		IMutableFortress fortress = new FortressImpl(owner, "fortress", id, size);
 		IMutableUnit unit = new Unit(owner, "unitKind", "unitName", id + 2);
@@ -392,7 +392,7 @@ public final class TestDBIO {
 	}
 
 	// TODO: Move to lovelace.util
-	static <T> Collector<T, ?, Stream<T>> toShuffledStream(int limit) {
+	static <T> Collector<T, ?, Stream<T>> toShuffledStream(final int limit) {
 		return Collectors.collectingAndThen(Collectors.toList(), collected -> {
 			Collections.shuffle(collected);
 			return collected.stream().limit(limit);
@@ -408,7 +408,7 @@ public final class TestDBIO {
 
 	@ParameterizedTest
 	@MethodSource
-	public void testGroundSerialization(int id, boolean exposed, String kind) {
+	public void testGroundSerialization(final int id, final boolean exposed, final String kind) {
 		assertFixtureSerialization(new Ground(id, kind, exposed));
 	}
 
@@ -422,8 +422,8 @@ public final class TestDBIO {
 
 	@ParameterizedTest
 	@MethodSource
-	public void testGroveSerialization(boolean orchard, boolean cultivated, int id, int count,
-			String kind) {
+	public void testGroveSerialization(final boolean orchard, final boolean cultivated, final int id, final int count,
+	                                   final String kind) {
 		assertFixtureSerialization(new Grove(orchard, cultivated, kind, id, count));
 	}
 
@@ -435,7 +435,7 @@ public final class TestDBIO {
 
 	@ParameterizedTest
 	@MethodSource
-	public void testSimpleImmortalSerialization(IntFunction<Immortal> constructor, int id) {
+	public void testSimpleImmortalSerialization(final IntFunction<Immortal> constructor, final int id) {
 		assertFixtureSerialization(constructor.apply(id));
 	}
 
@@ -448,8 +448,8 @@ public final class TestDBIO {
 
 	@ParameterizedTest
 	@MethodSource
-	public void testKindedImmortalSerialization(StringIntConstructor<Immortal> constructor, int id,
-			String kind) {
+	public void testKindedImmortalSerialization(final StringIntConstructor<Immortal> constructor, final int id,
+	                                            final String kind) {
 		assertFixtureSerialization(constructor.apply(kind, id));
 	}
 
@@ -462,7 +462,7 @@ public final class TestDBIO {
 
 	@ParameterizedTest
 	@MethodSource
-	public void testMineSerialization(TownStatus status, int id, String kind) {
+	public void testMineSerialization(final TownStatus status, final int id, final String kind) {
 		assertFixtureSerialization(new Mine(kind, status, id));
 	}
 
@@ -476,7 +476,7 @@ public final class TestDBIO {
 
 	@ParameterizedTest
 	@MethodSource
-	public void testMineralSerialization(boolean exposed, int dc, int id, String kind) {
+	public void testMineralSerialization(final boolean exposed, final int dc, final int id, final String kind) {
 		assertFixtureSerialization(new MineralVein(kind, exposed, dc, id));
 	}
 
@@ -489,7 +489,7 @@ public final class TestDBIO {
 
 	@ParameterizedTest
 	@MethodSource
-	public void testStoneSerialization(StoneKind kind, int dc, int id) {
+	public void testStoneSerialization(final StoneKind kind, final int dc, final int id) {
 		assertFixtureSerialization(new StoneDeposit(kind, dc, id));
 	}
 
@@ -502,7 +502,7 @@ public final class TestDBIO {
 
 	@ParameterizedTest
 	@MethodSource
-	public void testShrubSerialization(int id, int count, String kind) {
+	public void testShrubSerialization(final int id, final int count, final String kind) {
 		assertFixtureSerialization(new Shrub(kind, id, count));
 	}
 
@@ -514,20 +514,20 @@ public final class TestDBIO {
 
 	@ParameterizedTest
 	@MethodSource
-	public void testSimpleTerrainSerialization(IntFunction<TerrainFixture> constructor, int id) {
+	public void testSimpleTerrainSerialization(final IntFunction<TerrainFixture> constructor, final int id) {
 		assertFixtureSerialization(constructor.apply(id));
 	}
 
 	// TODO: randomize text
 	@ParameterizedTest
 	@MethodSource("fewIntegers")
-	public void testTextSerialization(int turn) {
+	public void testTextSerialization(final int turn) {
 		assertFixtureSerialization(new TextFixture("test text", turn - 1));
 	}
 
 	@ParameterizedTest
 	@MethodSource("fewIntegers")
-	public void testUnitSerialization(int id) {
+	public void testUnitSerialization(final int id) {
 		Player owner = new PlayerImpl(1, "owner");
 		IMutableUnit unit = new Unit(owner, "unitKind", "unitName", id);
 		unit.addMember(new Worker("worker name", "elf", id + 1, new Job("job name", 2,
@@ -547,7 +547,7 @@ public final class TestDBIO {
 
 	@ParameterizedTest
 	@MethodSource
-	public void testVillageSerialization(TownStatus status, int id, String race) {
+	public void testVillageSerialization(final TownStatus status, final int id, final String race) {
 		assertFixtureSerialization(new Village(status, "village name", id,
 			new PlayerImpl(1, "player name"), race));
 	}
@@ -561,7 +561,7 @@ public final class TestDBIO {
 
 	@ParameterizedTest
 	@MethodSource
-	public void testNotesSerialization(int id, int player, String note) {
+	public void testNotesSerialization(final int id, final int player, final String note) {
 		Worker worker = new Worker("test worker", "human", id);
 		Player playerObj = new PlayerImpl(player, "");
 		worker.setNote(playerObj, note);
@@ -598,8 +598,8 @@ public final class TestDBIO {
 
 	@ParameterizedTest
 	@MethodSource
-	public void testRoadSerialization(Direction directionOne, int qualityOne, Direction directionTwo,
-			int qualityTwo) {
+	public void testRoadSerialization(final Direction directionOne, final int qualityOne, final Direction directionTwo,
+	                                  final int qualityTwo) {
 		assumeFalse(directionOne.equals(directionTwo),  "We can't have the same direction twice");
 		IMutableMapNG map = new SPMapNG(new MapDimensionsImpl(1, 1, 2), new PlayerCollection(), 1);
 		map.setBaseTerrain(new Point(0, 0), TileType.Plains);

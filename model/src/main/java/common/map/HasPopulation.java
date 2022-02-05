@@ -22,7 +22,7 @@ public interface HasPopulation<Self extends HasPopulation<Self>> extends IFixtur
 	 * Return a copy of this object, except with its population the
 	 * specified value instead of its current value.
 	 */
-	default Self reduced(int newPopulation) {
+	default Self reduced(final int newPopulation) {
 		return reduced(newPopulation, getId());
 	}
 

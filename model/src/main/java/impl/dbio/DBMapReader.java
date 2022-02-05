@@ -49,7 +49,7 @@ final class DBMapReader {
 	 * SQLite stores Boolean values, convert to the equivalent Boolean and
 	 * return that; otherwise, return the original value.
 	 */
-	public Object databaseBoolean(Object field) {
+	public Object databaseBoolean(final Object field) {
 		if (field instanceof Integer) {
 			if (((Integer) field).intValue() == 0) {
 				return false;
@@ -63,7 +63,7 @@ final class DBMapReader {
 		}
 	}
 
-	public IMutableMapNG readMap(DB db, Warning warner) {
+	public IMutableMapNG readMap(final DB db, final Warning warner) {
 		// FIXME: Better exception
 		Map<String, Object> metadata = db.select(
 				"SELECT version, rows, columns, current_turn FROM metadata LIMIT 1")
@@ -107,7 +107,7 @@ final class DBMapReader {
 				if (terrainString != null && !terrainString.isEmpty()) {
 					try {
 						retval.setBaseTerrain(location, TileType.parse(terrainString));
-					} catch (ParseException except) {
+					} catch (final ParseException except) {
 						throw new IllegalArgumentException(except);
 					}
 				}
@@ -150,7 +150,7 @@ final class DBMapReader {
 		for (MapContentsReader reader : readers) {
 			try {
 				reader.readMapContents(db, retval, warner);
-			} catch (Exception exception) {
+			} catch (final Exception exception) {
 				if (exception.getMessage().contains("no such table")) {
 					continue;
 				} else {
@@ -162,7 +162,7 @@ final class DBMapReader {
 		for (MapContentsReader reader : readers) {
 			try {
 				reader.readExtraMapContents(db, retval, warner);
-			} catch (Exception exception) {
+			} catch (final Exception exception) {
 				if (exception.getMessage().contains("no such table")) {
 					continue;
 				} else if (exception instanceof RuntimeException) {

@@ -63,8 +63,8 @@ public final class SubsetTest {
 	 * Assert that {@link two} is a "strict subset," by our loose definition, of {@link one}.
 	 */
 	private static <SpecificType, GeneralType extends Subsettable<SpecificType>>
-			void assertIsSubset(GeneralType one, SpecificType two, String message,
-				Consumer<String> ostream) {
+			void assertIsSubset(final GeneralType one, final SpecificType two, final String message,
+			                    final Consumer<String> ostream) {
 		assertTrue(one.isSubset(two, ostream), message);
 	}
 
@@ -73,12 +73,12 @@ public final class SubsetTest {
 	 * of {@link one}.
 	 */
 	private static <SpecificType, GeneralType extends Subsettable<SpecificType>>
-			void assertNotSubset(GeneralType one, SpecificType two, String message,
-				Consumer<String> ostream) {
+			void assertNotSubset(final GeneralType one, final SpecificType two, final String message,
+			                     final Consumer<String> ostream) {
 		assertFalse(one.isSubset(two, ostream), message);
 	}
 
-	private static void noop(String str) {}
+	private static void noop(final String str) {}
 
 	/**
 	 * A test of {@link PlayerCollection}'s subset feature
@@ -110,7 +110,7 @@ public final class SubsetTest {
 	/**
 	 * Assert that neither of two {@link IFortress fortresses} is a subset of the other.
 	 */
-	private static void requireMatching(IFortress one, IFortress two, String what) {
+	private static void requireMatching(final IFortress one, final IFortress two, final String what) {
 		assertNotSubset(one, two,
 			String.format("Subset requires %s, first test", what), SubsetTest::noop);
 		assertNotSubset(two, one,
@@ -158,7 +158,7 @@ public final class SubsetTest {
 	/**
 	 * Create a map with the given terrain.
 	 */
-	private static IMutableMapNG createMap(Pair<Point, TileType>... terrain) {
+	private static IMutableMapNG createMap(final Pair<Point, TileType>... terrain) {
 		final IMutableMapNG retval = new SPMapNG(new MapDimensionsImpl(2, 2, 2),
 			new PlayerCollection(), -1);
 		for (Pair<Point, TileType> pair : terrain) {
@@ -306,7 +306,7 @@ public final class SubsetTest {
 	 */
 	@ParameterizedTest
 	@MethodSource("townParameters")
-	public void testTownSubsets(TownSize size, TownStatus status) {
+	public void testTownSubsets(final TownSize size, final TownStatus status) {
 		TownSize differentSize;
 		TownStatus differentStatus;
 		final Player playerOne = new PlayerImpl(0, "playerOne");
@@ -374,7 +374,7 @@ public final class SubsetTest {
 	 */
 	@ParameterizedTest
 	@MethodSource("townParameters")
-	public void testCitySubsets(TownSize size, TownStatus status) {
+	public void testCitySubsets(final TownSize size, final TownStatus status) {
 		TownSize differentSize;
 		TownStatus differentStatus;
 		final Player playerOne = new PlayerImpl(0, "playerOne");
@@ -443,7 +443,7 @@ public final class SubsetTest {
 	 */
 	@ParameterizedTest
 	@MethodSource("townParameters")
-	public void testFortificationSubsets(TownSize size, TownStatus status) {
+	public void testFortificationSubsets(final TownSize size, final TownStatus status) {
 		TownSize differentSize;
 		TownStatus differentStatus;
 		final Player playerOne = new PlayerImpl(0, "playerOne");

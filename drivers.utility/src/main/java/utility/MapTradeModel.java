@@ -15,11 +15,11 @@ import common.map.Point;
 import common.map.TileFixture;
 
 public class MapTradeModel extends SimpleMultiMapModel {
-	public MapTradeModel(IMutableMapNG map) {
+	public MapTradeModel(final IMutableMapNG map) {
 		super(map);
 	}
 
-	public MapTradeModel(IDriverModel model) {
+	public MapTradeModel(final IDriverModel model) {
 		super(model);
 	}
 
@@ -41,7 +41,7 @@ public class MapTradeModel extends SimpleMultiMapModel {
 		setGlobalModifiedFlag();
 	}
 
-	public void copyBaseTerrainAt(Point location) {
+	public void copyBaseTerrainAt(final Point location) {
 		IMapNG map = getMap();
 		for (IMutableMapNG second : getRestrictedSubordinateMaps()) {
 			TileType terrain = map.getBaseTerrain(location);
@@ -52,8 +52,8 @@ public class MapTradeModel extends SimpleMultiMapModel {
 		}
 	}
 
-	public void maybeCopyFixturesAt(Point location, Predicate<TileFixture> condition,
-			boolean zeroFixtures) {
+	public void maybeCopyFixturesAt(final Point location, final Predicate<TileFixture> condition,
+	                                final boolean zeroFixtures) {
 		IMapNG map = getMap();
 		for (IMutableMapNG second : getRestrictedSubordinateMaps()) {
 			for (TileFixture fixture : map.getFixtures(location).stream().filter(condition)
@@ -68,7 +68,7 @@ public class MapTradeModel extends SimpleMultiMapModel {
 		}
 	}
 
-	public void copyRiversAt(Point location) {
+	public void copyRiversAt(final Point location) {
 		IMapNG map = getMap();
 		for (IMutableMapNG second : getRestrictedSubordinateMaps()) {
 			second.addRivers(location, map.getRivers(location).toArray(new River[0]));
@@ -76,7 +76,7 @@ public class MapTradeModel extends SimpleMultiMapModel {
 		}
 	}
 
-	public void copyRoadsAt(Point location) {
+	public void copyRoadsAt(final Point location) {
 		IMapNG map = getMap();
 		if (!map.getRoads(location).isEmpty()) {
 			Map<Direction, Integer> roads = map.getRoads(location);

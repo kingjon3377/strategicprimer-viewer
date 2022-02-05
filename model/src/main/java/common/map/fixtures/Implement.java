@@ -14,13 +14,13 @@ import java.util.function.Consumer;
  * TODO: More members?
  */
 public class Implement implements UnitMember, FortressMember, HasKind, HasMutableImage, HasPopulation<Implement> {
-	public Implement(String kind, int id, int count) {
+	public Implement(final String kind, final int id, final int count) {
 		this.kind = kind;
 		this.id = id;
 		this.count = count;
 	}
 
-	public Implement(String kind, int id) {
+	public Implement(final String kind, final int id) {
 		this(kind, id, 1);
 	}
 
@@ -89,7 +89,7 @@ public class Implement implements UnitMember, FortressMember, HasKind, HasMutabl
 	 * Set the filename of an image to use as an icon for this instance.
 	 */
 	@Override
-	public void setImage(String image) {
+	public void setImage(final String image) {
 		this.image = image;
 	}
 
@@ -97,7 +97,7 @@ public class Implement implements UnitMember, FortressMember, HasKind, HasMutabl
 	 * If we ignore ID, a fixture is equal iff itis an Implement of the same kind.
 	 */
 	@Override
-	public boolean equalsIgnoringID(IFixture fixture) {
+	public boolean equalsIgnoringID(final IFixture fixture) {
 		if (this == fixture) {
 			return true;
 		} else if (fixture instanceof Implement) {
@@ -111,7 +111,7 @@ public class Implement implements UnitMember, FortressMember, HasKind, HasMutabl
 	 * A fixture is a subset iff it is equal.
 	 */
 	@Override
-	public boolean isSubset(IFixture obj, Consumer<String> report) {
+	public boolean isSubset(final IFixture obj, final Consumer<String> report) {
 		if (this == obj) {
 			return true;
 		} else if (obj.getId() == id) {
@@ -138,17 +138,17 @@ public class Implement implements UnitMember, FortressMember, HasKind, HasMutabl
 	}
 
 	@Override
-	public Implement copy(boolean zero) {
+	public Implement copy(final boolean zero) {
 		return new Implement(kind, id, count);
 	}
 
 	@Override
-	public Implement reduced(int newPopulation, int newId) {
+	public Implement reduced(final int newPopulation, final int newId) {
 		return new Implement(kind, newId, newPopulation);
 	}
 
 	@Override
-	public Implement combined(Implement addend) {
+	public Implement combined(final Implement addend) {
 		return new Implement(kind, id, Math.max(0, count) + Math.max(0, addend.getCount()));
 	}
 
@@ -158,7 +158,7 @@ public class Implement implements UnitMember, FortressMember, HasKind, HasMutabl
 	}
 
 	@Override
-	public boolean equals(Object obj) {
+	public boolean equals(final Object obj) {
 		if (this == obj) {
 			return true;
 		} else if (obj instanceof Implement) {

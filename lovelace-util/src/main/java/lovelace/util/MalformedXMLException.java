@@ -7,15 +7,15 @@ package lovelace.util;
  */
 @Deprecated
 public class MalformedXMLException extends Exception {
-	public MalformedXMLException(Throwable cause, String message) {
+	public MalformedXMLException(final Throwable cause, final String message) {
 		super(message, cause);
 	}
 
-	public MalformedXMLException(Throwable cause) {
+	public MalformedXMLException(final Throwable cause) {
 		this(cause, cause.getMessage());
 	}
 
-	public MalformedXMLException(String message) {
+	public MalformedXMLException(final String message) {
 		super(message);
 	}
 }

@@ -29,7 +29,7 @@ public class DiggableTabularReportGenerator implements ITableGenerator<MineralFi
 		return MineralFixture.class;
 	}
 
-	public DiggableTabularReportGenerator(@Nullable Point hq, MapDimensions dimensions) {
+	public DiggableTabularReportGenerator(@Nullable final Point hq, final MapDimensions dimensions) {
 		this.hq = hq;
 		this.dimensions = dimensions;
 		if (hq == null) {
@@ -67,8 +67,8 @@ public class DiggableTabularReportGenerator implements ITableGenerator<MineralFi
 	 */
 	@Override
 	public Iterable<Iterable<String>> produce(
-			DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures, MineralFixture item,
-			int key, Point loc, Map<Integer, Integer> parentMap) {
+			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures, final MineralFixture item,
+			final int key, final Point loc, final Map<Integer, Integer> parentMap) {
 		String classField;
 		String statusField;
 		if (item instanceof Ground) {
@@ -97,7 +97,7 @@ public class DiggableTabularReportGenerator implements ITableGenerator<MineralFi
 	 * TODO: Make this return Comparator in the interface, and not take 'one' and 'two' here?
 	 */
 	@Override
-	public int comparePairs(Pair<Point, MineralFixture> one, Pair<Point, MineralFixture> two) {
+	public int comparePairs(final Pair<Point, MineralFixture> one, final Pair<Point, MineralFixture> two) {
 		return Comparator.<Pair<Point, MineralFixture>, String>comparing(p -> p.getValue1().getKind())
 			.thenComparing(Pair::getValue0, distanceComparator)
 			.thenComparing(p -> p.getValue1().hashCode()).compare(one, two);

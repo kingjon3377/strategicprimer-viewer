@@ -11,7 +11,7 @@ import java.util.function.Consumer;
  * TODO: Convert Boolean fields to enums.
  */
 public class Grove implements HarvestableFixture, HasPopulation<Grove> {
-	public Grove(boolean orchard, boolean cultivated, String kind, int id, int population) {
+	public Grove(final boolean orchard, final boolean cultivated, final String kind, final int id, final int population) {
 		this.orchard = orchard;
 		this.cultivated = cultivated;
 		this.kind = kind;
@@ -19,7 +19,7 @@ public class Grove implements HarvestableFixture, HasPopulation<Grove> {
 		this.population = population;
 	}
 
-	public Grove(boolean orchard, boolean cultivated, String kind, int id) {
+	public Grove(final boolean orchard, final boolean cultivated, final String kind, final int id) {
 		this(orchard, cultivated, kind, id, -1);
 	}
 
@@ -90,7 +90,7 @@ public class Grove implements HarvestableFixture, HasPopulation<Grove> {
 	 * Set the filename of an image to use as an icon for this instance.
 	 */
 	@Override
-	public void setImage(String image) {
+	public void setImage(final String image) {
 		this.image = image;
 	}
 
@@ -108,7 +108,7 @@ public class Grove implements HarvestableFixture, HasPopulation<Grove> {
 	}
 
 	@Override
-	public Grove copy(boolean zero) {
+	public Grove copy(final boolean zero) {
 		final Grove retval = new Grove(orchard, cultivated, kind, id,
 			(zero) ? -1 : population);
 		retval.setImage(image);
@@ -116,12 +116,12 @@ public class Grove implements HarvestableFixture, HasPopulation<Grove> {
 	}
 
 	@Override
-	public Grove reduced(int newPopulation, int newId) {
+	public Grove reduced(final int newPopulation, final int newId) {
 		return new Grove(orchard, cultivated, kind, newId, newPopulation);
 	}
 
 	@Override
-	public Grove combined(Grove addend) {
+	public Grove combined(final Grove addend) {
 		return new Grove(orchard, cultivated, kind, id,
 			Math.max(population, 0) + Math.max(addend.getPopulation(), 0));
 	}
@@ -158,7 +158,7 @@ public class Grove implements HarvestableFixture, HasPopulation<Grove> {
 	}
 
 	@Override
-	public boolean equals(Object obj) {
+	public boolean equals(final Object obj) {
 		if (obj instanceof Grove) {
 			return kind.equals(((Grove) obj).getKind()) &&
 				orchard == ((Grove) obj).isOrchard() &&
@@ -176,7 +176,7 @@ public class Grove implements HarvestableFixture, HasPopulation<Grove> {
 	}
 
 	@Override
-	public boolean equalsIgnoringID(IFixture fixture) {
+	public boolean equalsIgnoringID(final IFixture fixture) {
 		if (fixture instanceof Grove) {
 			return kind.equals(((Grove) fixture).getKind()) &&
 				orchard == ((Grove) fixture).isOrchard() &&
@@ -188,7 +188,7 @@ public class Grove implements HarvestableFixture, HasPopulation<Grove> {
 	}
 
 	@Override
-	public boolean isSubset(IFixture other, Consumer<String> report) {
+	public boolean isSubset(final IFixture other, final Consumer<String> report) {
 		if (other.getId() != id) {
 			report.accept("Different IDs");
 			return false;

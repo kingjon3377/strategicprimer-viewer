@@ -33,7 +33,7 @@ import java.util.logging.Level;
  */
 /* package */ class ScrollListener implements MapChangeListener, SelectionChangeListener,
 		GraphicalParamsListener {
-	private static int constrainToRange(int val, int min, int max) {
+	private static int constrainToRange(final int val, final int min, final int max) {
 		if (val < min) {
 			return min;
 		} else if (val > max) {
@@ -51,7 +51,7 @@ import java.util.logging.Level;
 
 	// Can't take scroll-bar models instead of scroll bars because we have
 	// to set up input verifiers as well.
-	public ScrollListener(IViewerModel mapModel, JScrollBar horizontal, JScrollBar vertical) {
+	public ScrollListener(final IViewerModel mapModel, final JScrollBar horizontal, final JScrollBar vertical) {
 		model = mapModel;
 		visibleDimensions = mapModel.getVisibleDimensions();
 		mapDimensions = mapModel.getMapDimensions();
@@ -82,8 +82,8 @@ import java.util.logging.Level;
 	 * component. This only works if that component is laid out using a
 	 * {@link BorderLayout} and doesn't already have members at page-end and line-end.
 	 */
-	private ScrollListener(IViewerModel mapModel, BorderedPanel component, JScrollBar horizontalBar,
-			JScrollBar verticalBar) {
+	private ScrollListener(final IViewerModel mapModel, final BorderedPanel component, final JScrollBar horizontalBar,
+	                       final JScrollBar verticalBar) {
 		this(mapModel, horizontalBar, verticalBar);
 		if (component.getPageEnd() != null || component.getLineEnd() != null) {
 			throw new IllegalArgumentException(
@@ -93,13 +93,13 @@ import java.util.logging.Level;
 		component.setLineEnd(verticalBar);
 	}
 
-	public static ScrollListener createScrollBars(IViewerModel mapModel, BorderedPanel component) {
+	public static ScrollListener createScrollBars(final IViewerModel mapModel, final BorderedPanel component) {
 		return new ScrollListener(mapModel, component, new JScrollBar(Adjustable.HORIZONTAL),
 			new JScrollBar(Adjustable.VERTICAL));
 	}
 
-	private int countChanges(BoundedRangeModel model, int val, int extent,
-			int minimum, int maximum) {
+	private int countChanges(final BoundedRangeModel model, final int val, final int extent,
+	                         final int minimum, final int maximum) {
 		int retval = 0;
 		if (model.getValue() != val) {
 			retval++;
@@ -116,8 +116,8 @@ import java.util.logging.Level;
 		return retval;
 	}
 
-	private void setRangeProperties(BoundedRangeModel model, int val, int extent,
-			int minimum, int maximum) {
+	private void setRangeProperties(final BoundedRangeModel model, final int val, final int extent,
+	                                final int minimum, final int maximum) {
 		int differences = countChanges(model, val, minimum, extent, maximum);
 		if (differences <= 0) {
 			return;
@@ -149,7 +149,7 @@ import java.util.logging.Level;
 	 * Handle a change in visible dimensions.
 	 */
 	@Override
-	public void dimensionsChanged(VisibleDimensions oldDimensions, VisibleDimensions newDimensions) {
+	public void dimensionsChanged(final VisibleDimensions oldDimensions, final VisibleDimensions newDimensions) {
 		if (mutex) {
 			mutex = false;
 			visibleDimensions = newDimensions;
@@ -168,13 +168,13 @@ import java.util.logging.Level;
 	 * dimensionsChanged} to be called.
 	 */
 	@Override
-	public void tileSizeChanged(int oldSize, int newSize) { }
+	public void tileSizeChanged(final int oldSize, final int newSize) { }
 
 	/**
 	 * Handle a change to the cursor location.
 	 */
 	@Override
-	public void cursorPointChanged(@Nullable Point previous, Point newCursor) {
+	public void cursorPointChanged(@Nullable final Point previous, final Point newCursor) {
 		VisibleDimensions temp = model.getVisibleDimensions();
 		if (!temp.getColumns().contains(newCursor.getColumn()) &&
 				horizontalBarModel.getValue() != Math.max(newCursor.getColumn(), 0)) {
@@ -190,7 +190,7 @@ import java.util.logging.Level;
 	 * Scrolling deals only with the cursor location, not with the selection.
 	 */
 	@Override
-	public void selectedPointChanged(@Nullable Point previousSelection, Point newSelection) {}
+	public void selectedPointChanged(@Nullable final Point previousSelection, final Point newSelection) {}
 
 	/**
 	 * Handle notification that a new map was loaded.
@@ -211,7 +211,7 @@ import java.util.logging.Level;
 	public void mapMetadataChanged() {}
 
 	@Override
-	public void selectedUnitChanged(@Nullable IUnit oldSelection, @Nullable IUnit newSelection) {}
+	public void selectedUnitChanged(@Nullable final IUnit oldSelection, @Nullable final IUnit newSelection) {}
 
 	@Override
 	public void interactionPointChanged() {}

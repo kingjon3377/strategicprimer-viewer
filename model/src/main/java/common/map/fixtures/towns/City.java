@@ -14,8 +14,8 @@ public class City extends AbstractTown {
 	 * @param id The city's ID number
 	 * @param player The owner of the city
 	 */
-	public City(TownStatus townStatus, TownSize size, int discoverDC,
-			String townName, int id, Player player) {
+	public City(final TownStatus townStatus, final TownSize size, final int discoverDC,
+	            final String townName, final int id, final Player player) {
 		super(townStatus, size, townName, player, discoverDC);
 		this.id = id;
 	}
@@ -49,7 +49,7 @@ public class City extends AbstractTown {
 	}
 
 	@Override
-	public City copy(boolean zero) {
+	public City copy(final boolean zero) {
 		final City retval = new City(getStatus(), getTownSize(), (zero) ? 0 : getDC(),
 			getName(), id, getOwner());
 		retval.setImage(getImage());

@@ -72,12 +72,12 @@ import java.awt.image.BufferedImage;
 		return backgroundImage;
 	}
 
-	public void setBackgroundImage(@Nullable BufferedImage backgroundImage) {
+	public void setBackgroundImage(@Nullable final BufferedImage backgroundImage) {
 		this.backgroundImage = backgroundImage;
 	}
 
-	public MapComponent(IViewerModel model, Predicate<TileFixture> zof,
-			Iterable<FixtureMatcher> matchers) { // FIXME: Create an interface extending both Iterable and Comparator, and make FixtureFixtureTableModel, FixtureFilterListModel, etc., implement it, and take it here instead of taking Iterable and casting to Comparator
+	public MapComponent(final IViewerModel model, final Predicate<TileFixture> zof,
+	                    final Iterable<FixtureMatcher> matchers) { // FIXME: Create an interface extending both Iterable and Comparator, and make FixtureFixtureTableModel, FixtureFilterListModel, etc., implement it, and take it here instead of taking Iterable and casting to Comparator
 		mapModel = model;
 		cml = new ComponentMouseListener(model, zof, (Comparator<TileFixture>) matchers);
 		dsl = new DirectionSelectionChanger(model);
@@ -93,7 +93,7 @@ import java.awt.image.BufferedImage;
 		localInputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_T, 0), "show-terrain-menu");
 		localActionMap.put("show-terrain-menu", new AbstractAction() {
 				@Override
-				public void actionPerformed(ActionEvent event) {
+				public void actionPerformed(final ActionEvent event) {
 					cml.showMenuAtSelection(Optional.ofNullable(event.getSource())
 						.filter(Component.class::isInstance)
 						.map(Component.class::cast).orElse(null));
@@ -105,7 +105,7 @@ import java.awt.image.BufferedImage;
 		setToolTipText("");
 		addMouseMotionListener(new MouseMotionAdapter() {
 				@Override
-				public void mouseMoved(MouseEvent event) {
+				public void mouseMoved(final MouseEvent event) {
 					repaint();
 				}
 			});
@@ -118,7 +118,7 @@ import java.awt.image.BufferedImage;
 		return scaleZoom(mapModel.getZoomLevel(), mapModel.getMapDimensions().getVersion());
 	}
 
-	private Rectangle boundsCheck(@Nullable Rectangle rect) {
+	private Rectangle boundsCheck(@Nullable final Rectangle rect) {
 		if (rect != null) { // TODO: invert
 			return rect;
 		} else {
@@ -161,17 +161,17 @@ import java.awt.image.BufferedImage;
 
 	@Override
 	@Nullable
-	public String getToolTipText(MouseEvent event) {
+	public String getToolTipText(final MouseEvent event) {
 		return cml.getToolTipText(event);
 	}
 
 	@Override
-	public void dimensionsChanged(VisibleDimensions oldDim, VisibleDimensions newDim) {
+	public void dimensionsChanged(final VisibleDimensions oldDim, final VisibleDimensions newDim) {
 		repaint();
 	}
 
-	private void paintTile(Graphics pen, int tileSize, Point point, int row, int column,
-			boolean selected) {
+	private void paintTile(final Graphics pen, final int tileSize, final Point point, final int row, final int column,
+	                       final boolean selected) {
 		if (!mapModel.getMap().getDimensions().contains(point)) {
 			return;
 		}
@@ -209,7 +209,7 @@ import java.awt.image.BufferedImage;
 	 * repaint} that takes coordinates, passing the coordinates describing
 	 * the point.
 	 */
-	private void repaintPoint(Point point) {
+	private void repaintPoint(final Point point) {
 		VisibleDimensions visibleDimensions = mapModel.getVisibleDimensions();
 		int row = Math.max(point.getRow(), 0);
 		int column = Math.max(point.getColumn(), 0);
@@ -222,7 +222,7 @@ import java.awt.image.BufferedImage;
 	}
 
 	@Override
-	public void selectedPointChanged(@Nullable Point old, Point newPoint) {
+	public void selectedPointChanged(@Nullable final Point old, final Point newPoint) {
 		SwingUtilities.invokeLater(this::requestFocusInWindow);
 		if (isSelectionVisible()) {
 			if (old != null && !old.equals(newPoint)) {
@@ -236,12 +236,12 @@ import java.awt.image.BufferedImage;
 	}
 
 	@Override
-	public void cursorPointChanged(@Nullable Point old, Point newCursor) {} // TODO: check visibility of cursor point here?
+	public void cursorPointChanged(@Nullable final Point old, final Point newCursor) {} // TODO: check visibility of cursor point here?
 
 	@Override
 	public void mapChanged() {}
 
-	private void drawBackgroundImage(Graphics context, int tileSize) {
+	private void drawBackgroundImage(final Graphics context, final int tileSize) {
 		BufferedImage temp = backgroundImage;
 		if (temp != null) { // TODO: invert
 			VisibleDimensions visibleDimensions = mapModel.getVisibleDimensions();
@@ -265,8 +265,8 @@ import java.awt.image.BufferedImage;
 	}
 
 	// FIXME: Are these map or screen coordinates? If screen coordinates, what are they relative to?
-	private void drawMapPortion(Graphics context, int tileSize, int minX, int minY,
-			int maxX, int maxY) {
+	private void drawMapPortion(final Graphics context, final int tileSize, final int minX, final int minY,
+	                            final int maxX, final int maxY) {
 		final int minRow = mapModel.getVisibleDimensions().getMinimumRow();
 		final int maxRow = mapModel.getVisibleDimensions().getMaximumRow();
 		final int minCol = mapModel.getVisibleDimensions().getMinimumColumn();
@@ -287,7 +287,7 @@ import java.awt.image.BufferedImage;
 	}
 
 	@Override
-	public void paint(Graphics pen) {
+	public void paint(final Graphics pen) {
 		super.paint(pen);
 		Graphics context = pen.create();
 		try {
@@ -315,22 +315,22 @@ import java.awt.image.BufferedImage;
 	public void interactionPointChanged() {}
 
 	@Override
-	public void selectedUnitChanged(@Nullable IUnit old, @Nullable IUnit newUnit) {}
+	public void selectedUnitChanged(@Nullable final IUnit old, @Nullable final IUnit newUnit) {}
 
 	private static class MapSizeListener extends ComponentAdapter {
 		private final IViewerModel mapModel;
 		private final JComponent outer;
 		private IntSupplier tileSizeFactory;
 
-		public MapSizeListener(IViewerModel mapModel, JComponent parent,
-				IntSupplier tileSizeFactory) {
+		public MapSizeListener(final IViewerModel mapModel, final JComponent parent,
+		                       final IntSupplier tileSizeFactory) {
 			this.mapModel = mapModel;
 			outer = parent;
 			this.tileSizeFactory = tileSizeFactory;
 		}
 
 		// TODO: Split the difference instead of only expanding/contracting on  'max' side
-		private Pair<Integer, Integer> constrain(int total, int visible, int oldMinimum) {
+		private Pair<Integer, Integer> constrain(final int total, final int visible, final int oldMinimum) {
 			if (visible >= total) {
 				return Pair.with(0, total - 1);
 			} else if (oldMinimum + visible >= total) {
@@ -340,14 +340,14 @@ import java.awt.image.BufferedImage;
 			}
 		}
 
-		private Quartet<Integer, Integer, Integer, Integer> concat(Pair<Integer, Integer> one,
-				Pair<Integer, Integer> two) {
+		private Quartet<Integer, Integer, Integer, Integer> concat(final Pair<Integer, Integer> one,
+		                                                           final Pair<Integer, Integer> two) {
 			return Quartet.with(one.getValue0(), one.getValue1(), two.getValue0(),
 				two.getValue1());
 		}
 
 		@Override
-		public void componentResized(ComponentEvent event) {
+		public void componentResized(final ComponentEvent event) {
 			final int tileSize = tileSizeFactory.getAsInt();
 			int visibleColumns = outer.getWidth() / tileSize;
 			int visibleRows = outer.getHeight() / tileSize;
@@ -368,7 +368,7 @@ import java.awt.image.BufferedImage;
 		}
 
 		@Override
-		public void componentShown(ComponentEvent event) {
+		public void componentShown(final ComponentEvent event) {
 			componentResized(event);
 		}
 	}
@@ -376,7 +376,7 @@ import java.awt.image.BufferedImage;
 	private final MapSizeListener mapSizeListener;
 
 	@Override
-	public void tileSizeChanged(int olSize, int newSize) {
+	public void tileSizeChanged(final int olSize, final int newSize) {
 		ComponentEvent event = new ComponentEvent(this, ComponentEvent.COMPONENT_RESIZED);
 		for (ComponentListener listener : getComponentListeners()) {
 			listener.componentResized(event);

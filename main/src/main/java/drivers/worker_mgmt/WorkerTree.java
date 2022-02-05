@@ -89,8 +89,8 @@ public class WorkerTree extends JTree implements UnitMemberSelectionSource, Unit
 	 * is nonempty TODO: enum instead of boolean
 	 * @param idf The factory to use to generate ID numbers.
 	 */
-	public WorkerTree(IWorkerTreeModel wtModel, Iterable<Player> players, IntSupplier turnSource,
-			boolean orderCheck, IDRegistrar idf) {
+	public WorkerTree(final IWorkerTreeModel wtModel, final Iterable<Player> players, final IntSupplier turnSource,
+	                  final boolean orderCheck, final IDRegistrar idf) {
 		// TODO: Assign such parameters as are actually used outside initialization to fields.
 		setModel(wtModel);
 		this.wtModel = wtModel;
@@ -118,14 +118,14 @@ public class WorkerTree extends JTree implements UnitMemberSelectionSource, Unit
 	}
 
 	private static Function<Pair<String, ToIntFunction<WorkerStats>>, String> statHelper(
-			WorkerStats stats) {
+			final WorkerStats stats) {
 		return pair -> String.format("%s %s", pair.getValue0(),
 			WorkerStats.getModifierString(pair.getValue1().applyAsInt(stats)));
 	}
 
 	@Override
 	@Nullable
-	public String getToolTipText(MouseEvent event) {
+	public String getToolTipText(final MouseEvent event) {
 		if (getRowForLocation(event.getX(), event.getY()) == -1) {
 			return null;
 		}
@@ -145,26 +145,26 @@ public class WorkerTree extends JTree implements UnitMemberSelectionSource, Unit
 	private final List<UnitMemberListener> memberListeners = new ArrayList<>();
 
 	@Override
-	public void addUnitMemberListener(UnitMemberListener listener) {
+	public void addUnitMemberListener(final UnitMemberListener listener) {
 		memberListeners.add(listener);
 	}
 
 	@Override
-	public void addUnitSelectionListener(UnitSelectionListener listener) {
+	public void addUnitSelectionListener(final UnitSelectionListener listener) {
 		selectionListeners.add(listener);
 	}
 
 	@Override
-	public void removeUnitMemberListener(UnitMemberListener listener) {
+	public void removeUnitMemberListener(final UnitMemberListener listener) {
 		memberListeners.remove(listener);
 	}
 
 	@Override
-	public void removeUnitSelectionListener(UnitSelectionListener listener) {
+	public void removeUnitSelectionListener(final UnitSelectionListener listener) {
 		selectionListeners.remove(listener);
 	}
 
-	private void treeSelectionChanged(TreeSelectionEvent event) {
+	private void treeSelectionChanged(final TreeSelectionEvent event) {
 		Object sel = Optional.ofNullable(event.getNewLeadSelectionPath())
 			.map(TreePath::getLastPathComponent).map(wtModel::getModelObject).orElse(null);
 		if (sel instanceof IUnit) {
@@ -208,9 +208,9 @@ public class WorkerTree extends JTree implements UnitMemberSelectionSource, Unit
 		private final Predicate<TreePath> isExpanded;
 		private final TreeSelectionModel selectionModel;
 		private final Consumer<TreePath> collapsePath;
-		public WorkerTreeTransferHandler(IWorkerTreeModel wtModel,
-				TreeSelectionModel selectionModel, Predicate<TreePath> isExpanded,
-				Consumer<TreePath> collapsePath) {
+		public WorkerTreeTransferHandler(final IWorkerTreeModel wtModel,
+		                                 final TreeSelectionModel selectionModel, final Predicate<TreePath> isExpanded,
+		                                 final Consumer<TreePath> collapsePath) {
 			this.wtModel = wtModel;
 			this.isExpanded = isExpanded;
 			this.selectionModel = selectionModel;
@@ -220,7 +220,7 @@ public class WorkerTree extends JTree implements UnitMemberSelectionSource, Unit
 		 * Unit members can only be moved, not copied or linked.
 		 */
 		@Override
-		public int getSourceActions(JComponent component) {
+		public int getSourceActions(final JComponent component) {
 			return TransferHandler.MOVE;
 		}
 
@@ -235,7 +235,7 @@ public class WorkerTree extends JTree implements UnitMemberSelectionSource, Unit
 		 */
 		@Override
 		@Nullable
-		public Transferable createTransferable(JComponent component) {
+		public Transferable createTransferable(final JComponent component) {
 			TreePath[] paths = selectionModel.getSelectionPaths();
 			List<Pair<UnitMember, IUnit>> membersToTransfer = new ArrayList<>();
 			List<IUnit> unitsToTransfer = new ArrayList<>();
@@ -278,7 +278,7 @@ public class WorkerTree extends JTree implements UnitMemberSelectionSource, Unit
 		 * Whether a drag here is possible.
 		 */
 		@Override
-		public boolean canImport(TransferSupport support) {
+		public boolean canImport(final TransferSupport support) {
 			if (support.isDataFlavorSupported(UnitMemberTransferable.FLAVOR) &&
 					support.getDropLocation() instanceof JTree.DropLocation &&
 					((JTree.DropLocation) support.getDropLocation()).getPath() != null) {
@@ -308,7 +308,7 @@ public class WorkerTree extends JTree implements UnitMemberSelectionSource, Unit
 		 * Handle a drop.
 		 */
 		@Override
-		public boolean importData(TransferSupport support) {
+		public boolean importData(final TransferSupport support) {
 			if (canImport(support) &&
 					support.getDropLocation() instanceof JTree.DropLocation &&
 					((JTree.DropLocation) support.getDropLocation()).getPath() != null) {
@@ -358,11 +358,11 @@ public class WorkerTree extends JTree implements UnitMemberSelectionSource, Unit
 					} else {
 						return false;
 					}
-				} catch (UnsupportedFlavorException except) {
+				} catch (final UnsupportedFlavorException except) {
 					LOGGER.log(Level.SEVERE, "Impossible unsupported data flavor",
 						except);
 					return false;
-				} catch (IOException except) {
+				} catch (final IOException except) {
 					LOGGER.log(Level.SEVERE, "I/O error in transfer after we checked",
 						except);
 					return false;
@@ -375,8 +375,8 @@ public class WorkerTree extends JTree implements UnitMemberSelectionSource, Unit
 
 	// TODO: Move this class to its own file?
 	private static class UnitMemberCellRenderer extends DefaultTreeCellRenderer {
-		public UnitMemberCellRenderer(IWorkerTreeModel wtModel, IntSupplier turnSource,
-				boolean orderCheck) {
+		public UnitMemberCellRenderer(final IWorkerTreeModel wtModel, final IntSupplier turnSource,
+		                              final boolean orderCheck) {
 			this.wtModel = wtModel;
 			this.turnSource = turnSource;
 			this.orderCheck = orderCheck;
@@ -414,24 +414,24 @@ public class WorkerTree extends JTree implements UnitMemberSelectionSource, Unit
 		private static Icon DEFAULT_FIXTURE_ICON = createDefaultFixtureIcon();
 
 		@Nullable
-		private static Icon getIconForFile(String filename) {
+		private static Icon getIconForFile(final String filename) {
 			try {
 				return ImageLoader.loadIcon(filename);
 			}  catch (FileNotFoundException|NoSuchFileException except) {
 				LOGGER.severe(String.format("Image file images/%s not found`", filename));
 				LOGGER.log(Level.FINE, "with stack trace", except);
 				return null;
-			} catch (IOException except) {
+			} catch (final IOException except) {
 				LOGGER.log(Level.SEVERE, "I/O error reading image", except);
 				return null;
 			}
 		}
 
-		private static String jobString(IJob job) {
+		private static String jobString(final IJob job) {
 			return String.format("%s %d", job.getName(), job.getLevel());
 		}
 
-		private static String jobCSL(IWorker worker) {
+		private static String jobCSL(final IWorker worker) {
 			if (StreamSupport.stream(worker.spliterator(), true).allMatch(IJob::isEmpty)) {
 				return "";
 			} else {
@@ -443,7 +443,7 @@ public class WorkerTree extends JTree implements UnitMemberSelectionSource, Unit
 		}
 
 		// TODO: may need to rename to avoid collision with superclass method
-		private static Icon getIcon(HasImage obj) {
+		private static Icon getIcon(final HasImage obj) {
 			String image = obj.getImage();
 			if (!image.isEmpty()) {
 				Icon icon = getIconForFile(image);
@@ -465,7 +465,7 @@ public class WorkerTree extends JTree implements UnitMemberSelectionSource, Unit
 		 * TODO: Convert to enum
 		 */
 		@Nullable
-		private Boolean shouldChangeBackground(IUnit item) {
+		private Boolean shouldChangeBackground(final IUnit item) {
 			if (item.isEmpty()) {
 				return null;
 			}
@@ -487,7 +487,7 @@ public class WorkerTree extends JTree implements UnitMemberSelectionSource, Unit
 		 * TODO: Convert to enum
 		 */
 		@Nullable
-		private Boolean shouldChangeBackground(String item) {
+		private Boolean shouldChangeBackground(final String item) {
 			Boolean retval = null;
 			// TODO: Can we avoid the collector step?
 			// TODO: Add streamChildrenOf() method to IWorkerTreeModel?
@@ -510,8 +510,8 @@ public class WorkerTree extends JTree implements UnitMemberSelectionSource, Unit
 		// to bother in Java; that *should* never happen, and in Ceylon the first statement
 		// of the method was to assert both are non-null.
 		@Override
-		public Component getTreeCellRendererComponent(JTree tree, Object item, boolean selected,
-				boolean expanded, boolean leaf, int row, boolean hasFocus) {
+		public Component getTreeCellRendererComponent(final JTree tree, final Object item, final boolean selected,
+		                                              final boolean expanded, final boolean leaf, final int row, final boolean hasFocus) {
 			Component component = super.getTreeCellRendererComponent(tree, item,
 				selected, expanded, leaf, row, hasFocus);
 			Object internal = Optional.of(item).filter(DefaultMutableTreeNode.class::isInstance)
@@ -611,14 +611,14 @@ public class WorkerTree extends JTree implements UnitMemberSelectionSource, Unit
 	private static class TreeModelHandler implements TreeModelListener {
 		// TODO: Combine with some other class? Probably the tree itself.
 
-		public TreeModelHandler(JTree tree) {
+		public TreeModelHandler(final JTree tree) {
 			this.tree = tree;
 		}
 
 		private final JTree tree;
 
 		@Override
-		public void treeStructureChanged(TreeModelEvent event) {
+		public void treeStructureChanged(final TreeModelEvent event) {
 			TreePath path = event.getTreePath();
 			TreePath parent = Optional.ofNullable(path)
 				.map(TreePath::getParentPath).orElse(null);
@@ -634,7 +634,7 @@ public class WorkerTree extends JTree implements UnitMemberSelectionSource, Unit
 		}
 
 		@Override
-		public void treeNodesRemoved(TreeModelEvent event) {
+		public void treeNodesRemoved(final TreeModelEvent event) {
 			TreePath path = event.getTreePath().pathByAddingChild(event.getChildren()[0]);
 			LOGGER.finer("About to remove this path from selection: " + path);
 			tree.removeSelectionPath(path);
@@ -642,7 +642,7 @@ public class WorkerTree extends JTree implements UnitMemberSelectionSource, Unit
 		}
 
 		@Override
-		public void treeNodesInserted(TreeModelEvent event) {
+		public void treeNodesInserted(final TreeModelEvent event) {
 			TreePath path = event.getTreePath();
 			if (path != null) {
 				tree.expandPath(path);
@@ -655,7 +655,7 @@ public class WorkerTree extends JTree implements UnitMemberSelectionSource, Unit
 		}
 
 		@Override
-		public void treeNodesChanged(TreeModelEvent event) {
+		public void treeNodesChanged(final TreeModelEvent event) {
 			Optional.ofNullable(event.getTreePath()).map(TreePath::getParentPath)
 				.ifPresent(tree::expandPath);
 			tree.updateUI();
@@ -663,8 +663,8 @@ public class WorkerTree extends JTree implements UnitMemberSelectionSource, Unit
 	}
 
 	private static class TreeMouseListener extends MouseAdapter {
-		public TreeMouseListener(JTree tree, Iterable<Player> players, IWorkerTreeModel wtModel,
-				IDRegistrar idf) {
+		public TreeMouseListener(final JTree tree, final Iterable<Player> players, final IWorkerTreeModel wtModel,
+		                         final IDRegistrar idf) {
 			this.tree = tree;
 			this.wtModel = wtModel;
 			this.idf = idf;
@@ -676,7 +676,7 @@ public class WorkerTree extends JTree implements UnitMemberSelectionSource, Unit
 		private final IDRegistrar idf;
 		private final Iterable<Player> players;
 
-		private void handleMouseEvent(MouseEvent event) {
+		private void handleMouseEvent(final MouseEvent event) {
 			if (event.isPopupTrigger() && event.getClickCount() == 1) {
 				Optional.ofNullable(tree
 								.getClosestPathForLocation(event.getX(), event.getY()))
@@ -688,17 +688,17 @@ public class WorkerTree extends JTree implements UnitMemberSelectionSource, Unit
 		}
 
 		@Override
-		public void mouseClicked(MouseEvent event) {
+		public void mouseClicked(final MouseEvent event) {
 			handleMouseEvent(event);
 		}
 
 		@Override
-		public void mousePressed(MouseEvent event) {
+		public void mousePressed(final MouseEvent event) {
 			handleMouseEvent(event);
 		}
 
 		@Override
-		public void mouseReleased(MouseEvent event) {
+		public void mouseReleased(final MouseEvent event) {
 			handleMouseEvent(event);
 		}
 	}

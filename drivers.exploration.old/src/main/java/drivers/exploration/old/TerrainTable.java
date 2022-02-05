@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
  */
 class TerrainTable implements EncounterTable {
 	private final Map<String, String> mapping = new HashMap<>();
-	public TerrainTable(Pair<String, String>... items) {
+	public TerrainTable(final Pair<String, String>... items) {
 		Set<String> types = Stream.concat(Stream.of(TileType.values()).map(TileType::getXml),
 				Stream.of("mountain", "boreal_forest", "temperate_forest"))
 			.collect(Collectors.toSet());
@@ -35,8 +35,8 @@ class TerrainTable implements EncounterTable {
 	}
 
 	@Override
-	public String generateEvent(Point point, @Nullable TileType terrain, boolean mountainous,
-			Iterable<TileFixture> fixtures, MapDimensions mapDimensions) {
+	public String generateEvent(final Point point, @Nullable final TileType terrain, final boolean mountainous,
+	                            final Iterable<TileFixture> fixtures, final MapDimensions mapDimensions) {
 		if (terrain == null) {
 			throw new IllegalArgumentException(
 				"Terrain table can only account for visible terrain");

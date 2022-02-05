@@ -43,7 +43,7 @@ final class DBImmortalHandler extends AbstractDatabaseWriter<Immortal, /*Point|I
 	}
 
 	@Override
-	public boolean canWrite(Object obj, Object context) {
+	public boolean canWrite(final Object obj, final Object context) {
 		return obj instanceof Immortal && (context instanceof Point || context instanceof IUnit);
 	}
 
@@ -83,7 +83,7 @@ final class DBImmortalHandler extends AbstractDatabaseWriter<Immortal, /*Point|I
 		return INITIALIZERS;
 	}
 
-	private static boolean containsSimpleImmortals(String s) {
+	private static boolean containsSimpleImmortals(final String s) {
 		return s.contains("simple_immortals");
 	}
 
@@ -105,7 +105,7 @@ final class DBImmortalHandler extends AbstractDatabaseWriter<Immortal, /*Point|I
 		"INSERT INTO kinded_immortals (row, column, parent, type, kind, id, image) " +
 			"VALUES(?, ?, ?, ?, ?, ?, ?);";
 	@Override
-	public void write(DB db, Immortal obj, Object context) {
+	public void write(final DB db, final Immortal obj, final Object context) {
 		if (obj instanceof SimpleImmortal || obj instanceof ImmortalAnimal) {
 			try {
 				if (context instanceof Point) {
@@ -120,7 +120,7 @@ final class DBImmortalHandler extends AbstractDatabaseWriter<Immortal, /*Point|I
 				} else {
 					throw new IllegalArgumentException("context must be Point or IUnit");
 				}
-			} catch (Exception except) {
+			} catch (final Exception except) {
 				if (except.getMessage().contains("constraint failed: simple_immortals)")) {
 					db.transaction(sql -> {
 						for (String initializer : refreshSimpleSchema()) {
@@ -161,7 +161,7 @@ final class DBImmortalHandler extends AbstractDatabaseWriter<Immortal, /*Point|I
 	}
 
 	private TryBiConsumer<Map<String, Object>, Warning, Exception>
-			readSimpleImmortal(IMutableMapNG map) {
+			readSimpleImmortal(final IMutableMapNG map) {
 		return (dbRow, warner) -> {
 			String type = (String) dbRow.get("type");
 			int id = (Integer) dbRow.get("id");
@@ -211,7 +211,7 @@ final class DBImmortalHandler extends AbstractDatabaseWriter<Immortal, /*Point|I
 	}
 
 	private TryBiConsumer<Map<String, Object>, Warning, Exception>
-			readKindedImmortal(IMutableMapNG map) {
+			readKindedImmortal(final IMutableMapNG map) {
 		return (dbRow, warner) -> {
 			String type = (String) dbRow.get("type");
 			String kind = (String) dbRow.get("kind");
@@ -250,23 +250,23 @@ final class DBImmortalHandler extends AbstractDatabaseWriter<Immortal, /*Point|I
 	}
 
 	@Override
-	public void readMapContents(DB db, IMutableMapNG map, Warning warner) {
+	public void readMapContents(final DB db, final IMutableMapNG map, final Warning warner) {
 		try {
 			handleQueryResults(db, warner, "simple immortals", readSimpleImmortal(map),
 				"SELECT * FROM simple_immortals WHERE row IS NOT NULL");
 			handleQueryResults(db, warner, "immortals with kinds", readKindedImmortal(map),
 				"SELECT * FROM kinded_immortals WHERE row IS NOT NULL");
-		} catch (RuntimeException except) {
+		} catch (final RuntimeException except) {
 			// Don't wrap RuntimeExceptions in RuntimeException
 			throw except;
-		} catch (Exception except) {
+		} catch (final Exception except) {
 			// FIXME Antipattern
 			throw new RuntimeException(except);
 		}
 	}
 
 	@Override
-	public void readExtraMapContents(DB db, IMutableMapNG map, Warning warner) {
+	public void readExtraMapContents(final DB db, final IMutableMapNG map, final Warning warner) {
 		try {
 			handleQueryResults(db, warner, "simple immortals in units",
 				readSimpleImmortal(map),
@@ -274,10 +274,10 @@ final class DBImmortalHandler extends AbstractDatabaseWriter<Immortal, /*Point|I
 			handleQueryResults(db, warner, "immortals with kinds in units",
 				readKindedImmortal(map),
 				"SELECT * FROM kinded_immortals WHERE parent IS NOT NULL");
-		} catch (RuntimeException except) {
+		} catch (final RuntimeException except) {
 			// Don't wrap RuntimeExceptions in RuntimeException
 			throw except;
-		} catch (Exception except) {
+		} catch (final Exception except) {
 			// FIXME Antipattern
 			throw new RuntimeException(except);
 		}

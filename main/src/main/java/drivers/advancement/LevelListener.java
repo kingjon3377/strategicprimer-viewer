@@ -28,7 +28,7 @@ import common.map.fixtures.mobile.worker.IJob;
 	private ISkill skill = null;
 
 	@Override
-	public void selectSkill(@Nullable ISkill selectedSkill) {
+	public void selectSkill(@Nullable final ISkill selectedSkill) {
 		skill = selectedSkill;
 	}
 
@@ -38,10 +38,10 @@ import common.map.fixtures.mobile.worker.IJob;
 	 * TODO: Probably should
 	 */
 	@Override
-	public void selectJob(@Nullable IJob selectedJob) {}
+	public void selectJob(@Nullable final IJob selectedJob) {}
 
 	@Override
-	public void memberSelected(@Nullable UnitMember old, @Nullable UnitMember selected) {
+	public void memberSelected(@Nullable final UnitMember old, @Nullable final UnitMember selected) {
 		worker = selected;
 	}
 
@@ -49,7 +49,7 @@ import common.map.fixtures.mobile.worker.IJob;
 	 * Wrapper around {@link HasName#getName} that also handles non-{@link
 	 * HasName} objects using their {@link Object#toString toString} method.
 	 */
-	private static String getName(Object named) {
+	private static String getName(final Object named) {
 		if (named instanceof HasName) {
 			return ((HasName) named).getName();
 		} else {
@@ -65,7 +65,7 @@ import common.map.fixtures.mobile.worker.IJob;
 	 * to the shared copies throughout the method.
 	 */
 	@Override
-	public void level(String workerName, String jobName, String skillName, int gains, int currentLevel) {
+	public void level(final String workerName, final String jobName, final String skillName, final int gains, final int currentLevel) {
 		String actualWorkerName;
 		String actualSkillName;
 		if (!workerName.isEmpty() && !"unknown".equals(workerName)) {

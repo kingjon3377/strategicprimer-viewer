@@ -49,7 +49,7 @@ public class CropTabularReportGenerator implements ITableGenerator</*Forest|Shru
 	/**
 	 * Produce a {@link String} representation of a {@link Number}, limiting it to two decimal places.
 	 */
-	private static String truncatedNumberString(Number number) {
+	private static String truncatedNumberString(final Number number) {
 		return NUM_FORMAT.format(number);
 	}
 
@@ -58,7 +58,7 @@ public class CropTabularReportGenerator implements ITableGenerator</*Forest|Shru
 	private final MapDimensions dimensions;
 	private final Comparator<Point> distanceComparator;
 
-	public CropTabularReportGenerator(@Nullable Point hq, MapDimensions dimensions) {
+	public CropTabularReportGenerator(@Nullable final Point hq, final MapDimensions dimensions) {
 		this.hq = hq;
 		this.dimensions = dimensions;
 		if (hq == null) {
@@ -90,9 +90,9 @@ public class CropTabularReportGenerator implements ITableGenerator</*Forest|Shru
 	 */
 	@Override
 	public Iterable<Iterable<String>> produce(
-			DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-			/*Forest|Shrub|Meadow|Grove*/ TileFixture item, int key, Point loc,
-			Map<Integer, Integer> parentMap) {
+			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
+			/*Forest|Shrub|Meadow|Grove*/ final TileFixture item, final int key, final Point loc,
+			final Map<Integer, Integer> parentMap) {
 		if (!(item instanceof Forest || item instanceof Shrub || item instanceof Meadow ||
 				item instanceof Grove)) {
 			return Collections.emptyList();
@@ -159,8 +159,8 @@ public class CropTabularReportGenerator implements ITableGenerator</*Forest|Shru
 	 * Compare two Point-fixture pairs.
 	 */
 	@Override
-	public int comparePairs(Pair<Point, /*Forest|Shrub|Meadow|Grove*/TileFixture> one,
-			Pair<Point, /*Forest|Shrub|Meadow|Grove*/TileFixture> two) {
+	public int comparePairs(final Pair<Point, /*Forest|Shrub|Meadow|Grove*/TileFixture> one,
+	                        final Pair<Point, /*Forest|Shrub|Meadow|Grove*/TileFixture> two) {
 		return Comparator.<Pair<Point, TileFixture>, String>comparing(p -> ((HasKind) p.getValue1()).getKind())
 			.thenComparing(Comparator.comparing(Pair::getValue0, distanceComparator))
 			.thenComparing(p -> p.getValue1().getClass().hashCode())

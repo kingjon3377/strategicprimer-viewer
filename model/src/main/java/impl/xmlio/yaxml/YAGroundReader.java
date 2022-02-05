@@ -16,12 +16,12 @@ import common.xmlio.Warning;
  * A reader for {@link Ground}.
  */
 /* package */ class YAGroundReader extends YAAbstractReader<Ground, Ground> {
-	public YAGroundReader(Warning warning, IDRegistrar idRegistrar) {
+	public YAGroundReader(final Warning warning, final IDRegistrar idRegistrar) {
 		super(warning, idRegistrar);
 	}
 
 	@Override
-	public Ground read(StartElement element, QName parent, Iterable<XMLEvent> stream) 
+	public Ground read(final StartElement element, final QName parent, final Iterable<XMLEvent> stream)
 			throws SPFormatException {
 		requireTag(element, parent, "ground");
 		expectAttributes(element, "kind", "ground", "exposed", "id", "image");
@@ -38,12 +38,12 @@ import common.xmlio.Warning;
 	}
 
 	@Override
-	public boolean isSupportedTag(String tag) {
+	public boolean isSupportedTag(final String tag) {
 		return "ground".equalsIgnoreCase(tag);
 	}
 
 	@Override
-	public void write(ThrowingConsumer<String, IOException> ostream, Ground obj, int indent) throws IOException {
+	public void write(final ThrowingConsumer<String, IOException> ostream, final Ground obj, final int indent) throws IOException {
 		writeTag(ostream, "ground", indent);
 		writeProperty(ostream, "kind", obj.getKind());
 		writeProperty(ostream, "exposed", Boolean.toString(obj.isExposed()));
@@ -53,7 +53,7 @@ import common.xmlio.Warning;
 	}
 
 	@Override
-	public boolean canWrite(Object obj) {
+	public boolean canWrite(final Object obj) {
 		return obj instanceof Ground;
 	}
 }

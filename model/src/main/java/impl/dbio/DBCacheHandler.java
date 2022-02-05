@@ -36,12 +36,12 @@ final class DBCacheHandler extends AbstractDatabaseWriter<CacheFixture, Point> i
 		"INSERT INTO caches(row, column, id, kind, contents, image) VALUES(?, ?, ?, ?, ?, ?);";
 
 	@Override
-	public void write(DB db, CacheFixture obj, Point context) {
+	public void write(final DB db, final CacheFixture obj, final Point context) {
 		db.update(INSERT_SQL, context.getRow(), context.getColumn(), obj.getId(), obj.getKind(),
 			obj.getContents(), obj.getImage()).execute();
 	}
 
-	private TryBiConsumer<Map<String, Object>, Warning, Exception> readCache(IMutableMapNG map) {
+	private TryBiConsumer<Map<String, Object>, Warning, Exception> readCache(final IMutableMapNG map) {
 		return (dbRow, warner) -> {
 			int row = (Integer) dbRow.get("row");
 			int column = (Integer) dbRow.get("column");
@@ -58,14 +58,14 @@ final class DBCacheHandler extends AbstractDatabaseWriter<CacheFixture, Point> i
 	}
 
 	@Override
-	public void readMapContents(DB db, IMutableMapNG map, Warning warner) {
+	public void readMapContents(final DB db, final IMutableMapNG map, final Warning warner) {
 		try {
 			handleQueryResults(db, warner, "caches", readCache(map),
 				"SELECT * FROM caches");
-		} catch (RuntimeException except) {
+		} catch (final RuntimeException except) {
 			// Don't wrap RuntimeExceptions in RuntimeException
 			throw except;
-		} catch (Exception except) {
+		} catch (final Exception except) {
 			// FIXME Antipattern
 			throw new RuntimeException(except);
 		}

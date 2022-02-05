@@ -62,8 +62,8 @@ public class FixtureList extends JList<TileFixture>
 	private final IFixtureEditHelper feh;
 	private final IDRegistrar idf;
 	private final Iterable<Player> players;
-	public FixtureList(JComponent parentComponent, FixtureListModel listModel,
-			IFixtureEditHelper feh, IDRegistrar idf, Iterable<Player> players) {
+	public FixtureList(final JComponent parentComponent, final FixtureListModel listModel,
+	                   final IFixtureEditHelper feh, final IDRegistrar idf, final Iterable<Player> players) {
 		this.parentComponent = parentComponent;
 		this.listModel = listModel;
 		this.feh = feh;
@@ -85,13 +85,13 @@ public class FixtureList extends JList<TileFixture>
 	}
 
 	@Override
-	public void selectedUnitChanged(@Nullable IUnit old, @Nullable IUnit newSel) {}
+	public void selectedUnitChanged(@Nullable final IUnit old, @Nullable final IUnit newSel) {}
 
 	@Override
-	public void cursorPointChanged(@Nullable Point old, Point newCursor) {}
+	public void cursorPointChanged(@Nullable final Point old, final Point newCursor) {}
 
 	@Override
-	public void dragGestureRecognized(DragGestureEvent event) {
+	public void dragGestureRecognized(final DragGestureEvent event) {
 		List<TileFixture> selection = getSelectedValuesList();
 		if (!selection.isEmpty()) {
 			Transferable payload;
@@ -106,7 +106,7 @@ public class FixtureList extends JList<TileFixture>
 	}
 
 	@Override
-	public boolean equals(Object that) {
+	public boolean equals(final Object that) {
 		if (that instanceof JList) {
 			return getModel().equals(((JList<?>) that).getModel());
 		} else {
@@ -120,7 +120,7 @@ public class FixtureList extends JList<TileFixture>
 	}
 
 	@Override
-	public void selectedPointChanged(@Nullable Point old, Point newPoint) {
+	public void selectedPointChanged(@Nullable final Point old, final Point newPoint) {
 		SwingUtilities.invokeLater(() -> listModel.selectedPointChanged(old, newPoint));
 	}
 
@@ -131,7 +131,7 @@ public class FixtureList extends JList<TileFixture>
 
 	// TODO: Try to make static, taking necessary dependencies as parameters
 	private class FixtureMouseListener extends MouseAdapter {
-		private void handleMouseEvent(MouseEvent event) {
+		private void handleMouseEvent(final MouseEvent event) {
 			if (event.isPopupTrigger() && event.getClickCount() == 1) {
 				int index = locationToIndex(event.getPoint());
 				if (index >= 0 && index < listModel.getSize()) {
@@ -143,17 +143,17 @@ public class FixtureList extends JList<TileFixture>
 		}
 
 		@Override
-		public void mouseClicked(MouseEvent event) {
+		public void mouseClicked(final MouseEvent event) {
 			handleMouseEvent(event);
 		}
 
 		@Override
-		public void mousePressed(MouseEvent event) {
+		public void mousePressed(final MouseEvent event) {
 			handleMouseEvent(event);
 		}
 
 		@Override
-		public void mouseReleased(MouseEvent event) {
+		public void mouseReleased(final MouseEvent event) {
 			handleMouseEvent(event);
 		}
 	}
@@ -161,7 +161,7 @@ public class FixtureList extends JList<TileFixture>
 	// TODO: Try to make static, taking necessary dependencies as parameters
 	private class DropListener extends DropTargetAdapter {
 		// TODO: Figure out how to skip all this (return true) on non-local drags
-		private boolean isXfrFromOutside(DropTargetEvent dtde) {
+		private boolean isXfrFromOutside(final DropTargetEvent dtde) {
 			if (dtde.getSource() instanceof Component &&
 					parentComponent.isAncestorOf((Component) dtde.getSource())) {
 				return false;
@@ -170,7 +170,7 @@ public class FixtureList extends JList<TileFixture>
 			}
 		}
 
-		private void handleDrag(DropTargetDragEvent dtde) {
+		private void handleDrag(final DropTargetDragEvent dtde) {
 			if ((dtde.getDropAction() & DnDConstants.ACTION_COPY) != 0 &&
 					(dtde.getCurrentDataFlavorsAsList()
 							.contains(FixtureTransferable.FLAVOR) ||
@@ -184,21 +184,21 @@ public class FixtureList extends JList<TileFixture>
 		}
 
 		@Override
-		public void dragEnter(DropTargetDragEvent dtde) {
+		public void dragEnter(final DropTargetDragEvent dtde) {
 			handleDrag(dtde);
 		}
 
 		@Override
-		public void dragOver(DropTargetDragEvent dtde) {
+		public void dragOver(final DropTargetDragEvent dtde) {
 			handleDrag(dtde);
 		}
 
 		@Override
-		public void dropActionChanged(DropTargetDragEvent dtde) {
+		public void dropActionChanged(final DropTargetDragEvent dtde) {
 			handleDrag(dtde);
 		}
 
-		private void handleDrop(Transferable trans) throws UnsupportedFlavorException, IOException {
+		private void handleDrop(final Transferable trans) throws UnsupportedFlavorException, IOException {
 			DataFlavor[] flavors = trans.getTransferDataFlavors();
 			for (DataFlavor flavor : Optional.ofNullable(flavors)
 					.orElseGet(() -> new DataFlavor[0])) {
@@ -227,7 +227,7 @@ public class FixtureList extends JList<TileFixture>
 		}
 
 		@Override
-		public void drop(DropTargetDropEvent dtde) {
+		public void drop(final DropTargetDropEvent dtde) {
 			if (isXfrFromOutside(dtde)) { // TODO: invert to reduce indentation?
 				for (DataFlavor flavor : dtde.getCurrentDataFlavorsAsList()) {
 					if (Stream.of(FixtureTransferable.FLAVOR,
@@ -240,11 +240,11 @@ public class FixtureList extends JList<TileFixture>
 								handleDrop(t);
 							}
 							return;
-						} catch (UnsupportedFlavorException except) {
+						} catch (final UnsupportedFlavorException except) {
 							LOGGER.log(Level.SEVERE,
 								"Unsupported flavor when it said it was supported",
 								except);
-						} catch (IOException except) {
+						} catch (final IOException except) {
 							LOGGER.log(Level.SEVERE,
 								"I/O error getting the data", except);
 						}

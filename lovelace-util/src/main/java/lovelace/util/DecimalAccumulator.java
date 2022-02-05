@@ -8,7 +8,7 @@ import java.math.BigDecimal;
 public class DecimalAccumulator implements Accumulator<BigDecimal> {
 	private BigDecimal count;
 
-	public DecimalAccumulator(BigDecimal count) {
+	public DecimalAccumulator(final BigDecimal count) {
 		this.count = count;
 	}
 

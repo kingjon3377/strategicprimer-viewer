@@ -35,7 +35,7 @@ public final class Quantity implements Subsettable<Quantity>, Comparable<Quantit
 		return units;
 	}
 
-	public Quantity(Number number, String units) {
+	public Quantity(final Number number, final String units) {
 		this.number = number;
 		this.units = units;
 	}
@@ -59,7 +59,7 @@ public final class Quantity implements Subsettable<Quantity>, Comparable<Quantit
 	 * or a lesser quantity.
 	 */
 	@Override
-	public boolean isSubset(Quantity obj, Consumer<String> report) {
+	public boolean isSubset(final Quantity obj, final Consumer<String> report) {
 		if (units.equals(obj.getUnits())) {
 			if (new NumberComparator().compare(number, obj.getNumber()) < 0) {
 				report.accept("Has greater quantity than we do");
@@ -74,7 +74,7 @@ public final class Quantity implements Subsettable<Quantity>, Comparable<Quantit
 	}
 
 	@Override
-	public boolean equals(Object obj) {
+	public boolean equals(final Object obj) {
 		if (this == obj) {
 			return true;
 		} else if (obj instanceof Quantity) {
@@ -91,7 +91,7 @@ public final class Quantity implements Subsettable<Quantity>, Comparable<Quantit
 	}
 
 	@Override
-	public int compareTo(Quantity quantity) {
+	public int compareTo(final Quantity quantity) {
 		return Comparator.comparing(Quantity::getUnits)
 			.thenComparing(Quantity::getNumber, new NumberComparator())
 			.compare(this, quantity);

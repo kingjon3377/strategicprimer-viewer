@@ -29,8 +29,8 @@ class QuadrantTable implements EncounterTable {
 	Map<MapDimensions, Map<Point, String>> quadrants = new HashMap<>();
 
 	// TODO: static?
-	private Map<Point, String> valuesFor(MapDimensions dimensions, List<String> possResults,
-			int quadrantRowCount) {
+	private Map<Point, String> valuesFor(final MapDimensions dimensions, final List<String> possResults,
+	                                     final int quadrantRowCount) {
 		// Instance variables passed in because we want to call this from the
 		// second constructor.
 		if (quadrants.containsKey(dimensions)) {
@@ -68,18 +68,18 @@ class QuadrantTable implements EncounterTable {
 	 */
 	private final int quadrantRows;
 
-	public QuadrantTable(int rows, String... items) {
+	public QuadrantTable(final int rows, final String... items) {
 		possibleResults = Collections.unmodifiableList(Arrays.asList(items));
 		quadrantRows = rows;
 	}
 
-	private QuadrantTable (int mapRows, int mapColumns, int rows, String... items) {
+	private QuadrantTable (final int mapRows, final int mapColumns, final int rows, final String... items) {
 		this(rows, items);
 		MapDimensions dimensions = new MapDimensionsImpl(mapRows, mapColumns, 2);
 		quadrants.put(dimensions, valuesFor(dimensions, possibleResults, rows));
 	}
 
-	public static QuadrantTable forDimensions(int mapRows, int mapColumns, int rows, String... items) {
+	public static QuadrantTable forDimensions(final int mapRows, final int mapColumns, final int rows, final String... items) {
 		return new QuadrantTable(mapRows, mapColumns, rows, items);
 	}
 
@@ -87,7 +87,7 @@ class QuadrantTable implements EncounterTable {
 	 * Get the item in the table at the quadrant containing the given row
 	 * and column in a map of the specified dimensions.
 	 */
-	public String getQuadrantValue(int row, int column, MapDimensions mapDimensions) {
+	public String getQuadrantValue(final int row, final int column, final MapDimensions mapDimensions) {
 		final Map<Point, String> resultsMap = valuesFor(mapDimensions, possibleResults,
 			quadrantRows);
 		Point bestKey = Point.INVALID_POINT;
@@ -108,8 +108,8 @@ class QuadrantTable implements EncounterTable {
 	}
 
 	@Override
-	public String generateEvent(Point point, @Nullable TileType terrain, boolean mountainous, 
-			Iterable<TileFixture> fixtures, MapDimensions mapDimensions) {
+	public String generateEvent(final Point point, @Nullable final TileType terrain, final boolean mountainous,
+	                            final Iterable<TileFixture> fixtures, final MapDimensions mapDimensions) {
 		return getQuadrantValue(point.getRow(), point.getColumn(), mapDimensions);
 	}
 

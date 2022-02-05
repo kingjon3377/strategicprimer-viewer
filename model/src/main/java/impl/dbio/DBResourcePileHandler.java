@@ -31,7 +31,7 @@ final class DBResourcePileHandler
 	}
 
 	@Override
-	public boolean canWrite(Object obj, Object context) {
+	public boolean canWrite(final Object obj, final Object context) {
 		return obj instanceof IResourcePile &&
 			(context instanceof IFortress || context instanceof IUnit);
 	}
@@ -59,16 +59,16 @@ final class DBResourcePileHandler
 			"VALUES(?, ?, ?, ?, ?, ?, ?, ?);";
 
 	@Override
-	public void write(DB db, IResourcePile obj, TileFixture context) {
+	public void write(final DB db, final IResourcePile obj, final TileFixture context) {
 		db.update(INSERT_SQL, context.getId(), obj.getId(), obj.getKind(), obj.getContents(),
 			obj.getQuantity().getNumber().toString(), obj.getQuantity().getUnits(),
 			obj.getCreated(), obj.getImage()).execute();
 	}
 
 	@Override
-	public void readMapContents(DB db, IMutableMapNG map, Warning warner) {}
+	public void readMapContents(final DB db, final IMutableMapNG map, final Warning warner) {}
 
-	private TryBiConsumer<Map<String, Object>, Warning, Exception> readResourcePile(IMutableMapNG map) {
+	private TryBiConsumer<Map<String, Object>, Warning, Exception> readResourcePile(final IMutableMapNG map) {
 		return (dbRow, warner) -> {
 			int parentId = (Integer) dbRow.get("parent");
 			TileFixture parent = (TileFixture) findById(map, parentId, warner);
@@ -82,7 +82,7 @@ final class DBResourcePileHandler
 			Number quantity;
 			try {
 				quantity = Integer.parseInt(qtyString);
-			} catch (NumberFormatException except) {
+			} catch (final NumberFormatException except) {
 				quantity = new BigDecimal(qtyString);
 			}
 			IMutableResourcePile pile = new ResourcePileImpl(id, kind, contents,
@@ -104,14 +104,14 @@ final class DBResourcePileHandler
 	}
 
 	@Override
-	public void readExtraMapContents(DB db, IMutableMapNG map, Warning warner) {
+	public void readExtraMapContents(final DB db, final IMutableMapNG map, final Warning warner) {
 		try {
 			handleQueryResults(db, warner, "resource piles", readResourcePile(map),
 				"SELECT * FROM resource_piles");
-		} catch (RuntimeException except) {
+		} catch (final RuntimeException except) {
 			// Don't wrap RuntimeExceptions in RuntimeException
 			throw except;
-		} catch (Exception except) {
+		} catch (final Exception except) {
 			// FIXME Antipattern
 			throw new RuntimeException(except);
 		}

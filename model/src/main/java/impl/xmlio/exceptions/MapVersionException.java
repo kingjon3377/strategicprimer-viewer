@@ -8,7 +8,7 @@ import javax.xml.stream.events.StartElement;
  * An exception to indicate that a map file specified a map version not supported by the code reading it.
  */
 public class MapVersionException extends SPFormatException {
-	private static String messageFragment(int minimum, int maximum) {
+	private static String messageFragment(final int minimum, final int maximum) {
 		if (minimum == maximum) {
 			return ": must be " + minimum;
 		} else {
@@ -22,7 +22,7 @@ public class MapVersionException extends SPFormatException {
 	 * @param minimum the lowest version the code supports
 	 * @param maximum the highest version the code supports
 	 */
-	public MapVersionException(StartElement context, int version, int minimum, int maximum) {
+	public MapVersionException(final StartElement context, final int version, final int minimum, final int maximum) {
 		super(String.format("Unsupported map version %d in tag %s%s", version,
 			context.getName().getLocalPart(), messageFragment(minimum, maximum)),
 			context.getLocation().getLineNumber(), context.getLocation().getColumnNumber());
@@ -33,7 +33,7 @@ public class MapVersionException extends SPFormatException {
 	 * @param minimum the lowest version the code supports
 	 * @param maximum the highest version the code supports
 	 */
-	private MapVersionException(int version, int minimum, int maximum) {
+	private MapVersionException(final int version, final int minimum, final int maximum) {
 		super(String.format("Unsupported SP map version %d%s", version,
 			messageFragment(minimum, maximum)), -1, -1);
 	}
@@ -43,7 +43,7 @@ public class MapVersionException extends SPFormatException {
 	 * @param minimum the lowest version the code supports
 	 * @param maximum the highest version the code supports
 	 */
-	public static MapVersionException nonXML(int version, int minimum, int maximum) {
+	public static MapVersionException nonXML(final int version, final int minimum, final int maximum) {
 		return new MapVersionException(version, minimum, maximum);
 	}
 }

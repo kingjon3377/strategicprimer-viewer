@@ -9,7 +9,7 @@ public enum TownStatus {
 	Ruined("ruined"),
 	Burned("burned");
 	
-	private TownStatus(String str) {
+	private TownStatus(final String str) {
 		string = str;
 	}
 
@@ -20,7 +20,7 @@ public enum TownStatus {
 		return string;
 	}
 
-	public static TownStatus parse(String status) {
+	public static TownStatus parse(final String status) {
 		switch (status) {
 		case "active":
 			return TownStatus.Active;

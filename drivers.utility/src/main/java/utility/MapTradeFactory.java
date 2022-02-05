@@ -30,7 +30,7 @@ public class MapTradeFactory implements ModelDriverFactory {
 	}
 
 	@Override
-	public ModelDriver createDriver(ICLIHelper cli, SPOptions options, IDriverModel model) {
+	public ModelDriver createDriver(final ICLIHelper cli, final SPOptions options, final IDriverModel model) {
 		if (model instanceof MapTradeModel) { // TODO: If any options, print a warning (here and in other empty-options drivers
 			return new MapTradeCLI(cli, (MapTradeModel) model);
 		} else {
@@ -39,7 +39,7 @@ public class MapTradeFactory implements ModelDriverFactory {
 	}
 
 	@Override
-	public MapTradeModel createModel(IMutableMapNG map) {
+	public MapTradeModel createModel(final IMutableMapNG map) {
 		return new MapTradeModel(map);
 	}
 }

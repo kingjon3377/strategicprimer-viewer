@@ -10,7 +10,7 @@ public final class IDFactoryFiller {
 	/**
 	 * Fill a new ID factory from the given map.
 	 */
-	public IDRegistrar createIDFactory(IMapNG... arg) {
+	public IDRegistrar createIDFactory(final IMapNG... arg) {
 		final IDRegistrar retval = new IDFactory();
 		for (IMapNG map : arg) {
 			recursiveRegister(retval, map);
@@ -21,19 +21,19 @@ public final class IDFactoryFiller {
 	/**
 	 * Fill a new ID factory from the given map.
 	 */
-	public IDRegistrar createIDFactory(Iterable<? extends IFixture> arg) {
+	public IDRegistrar createIDFactory(final Iterable<? extends IFixture> arg) {
 		final IDRegistrar retval = new IDFactory();
 		recursiveRegister(retval, arg);
 		return retval;
 	}
 
-	void recursiveRegister(IDRegistrar factory, IMapNG map) {
+	void recursiveRegister(final IDRegistrar factory, final IMapNG map) {
 		for (Point loc : map.getLocations()) {
 			recursiveRegister(factory, map.getFixtures(loc));
 		}
 	}
 
-	void recursiveRegister(IDRegistrar factory, Iterable<? extends IFixture> arg) {
+	void recursiveRegister(final IDRegistrar factory, final Iterable<? extends IFixture> arg) {
 		for (IFixture fixture : arg) {
 			int id = fixture.getId();
 			if (factory.isIDUnused(id)) {

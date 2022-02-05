@@ -40,12 +40,12 @@ final class DBMineHandler extends AbstractDatabaseWriter<Mine, Point> implements
 		"INSERT INTO mines (row, column, id, kind, status, image) VALUES(?, ?, ?, ?, ?, ?);";
 
 	@Override
-	public void write(DB db, Mine obj, Point context) {
+	public void write(final DB db, final Mine obj, final Point context) {
 		db.update(INSERT_SQL, context.getRow(), context.getColumn(), obj.getId(), obj.getKind(),
 			obj.getStatus().toString(), obj.getImage());
 	}
 
-	private TryBiConsumer<Map<String, Object>, Warning, Exception> readMine(IMutableMapNG map) {
+	private TryBiConsumer<Map<String, Object>, Warning, Exception> readMine(final IMutableMapNG map) {
 		return (dbRow, warner) -> {
 			int row = (Integer) dbRow.get("row");
 			int column = (Integer) dbRow.get("column");
@@ -62,14 +62,14 @@ final class DBMineHandler extends AbstractDatabaseWriter<Mine, Point> implements
 	}
 
 	@Override
-	public void readMapContents(DB db, IMutableMapNG map, Warning warner) {
+	public void readMapContents(final DB db, final IMutableMapNG map, final Warning warner) {
 		try {
 			handleQueryResults(db, warner, "mines", readMine(map),
 				"SELECT * FROM mines");
-		} catch (RuntimeException except) {
+		} catch (final RuntimeException except) {
 			// Don't wrap RuntimeExceptions in RuntimeException
 			throw except;
-		} catch (Exception except) {
+		} catch (final Exception except) {
 			// FIXME Antipattern
 			throw new RuntimeException(except);
 		}

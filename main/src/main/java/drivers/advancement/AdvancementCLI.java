@@ -33,7 +33,7 @@ import java.util.List;
  * The worker-advancement CLI driver.
  */
 public class AdvancementCLI implements CLIDriver {
-	public AdvancementCLI(ICLIHelper cli, SPOptions options, IWorkerModel model) {
+	public AdvancementCLI(final ICLIHelper cli, final SPOptions options, final IWorkerModel model) {
 		this.cli = cli;
 		this.options = options;
 		this.model = model;
@@ -60,7 +60,7 @@ public class AdvancementCLI implements CLIDriver {
 	/**
 	 * Let the user add experience to a player's workers.
 	 */
-	private void advanceWorkers(IWorkerModel model, Player player, boolean allowExpertMentoring) {
+	private void advanceWorkers(final IWorkerModel model, final Player player, final boolean allowExpertMentoring) {
 		List<IUnit> units = new ArrayList<>(StreamSupport.stream(model.getUnits(player).spliterator(), false)
 			.filter(u -> u.stream().anyMatch(IWorker.class::isInstance)).collect(Collectors.toList()));
 		while (!units.isEmpty()) {

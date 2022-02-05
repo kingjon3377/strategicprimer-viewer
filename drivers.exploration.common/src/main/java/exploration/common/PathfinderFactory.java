@@ -22,7 +22,7 @@ public final class PathfinderFactory {
 	 * just in case I decide to do some caching between runs at some point)
 	 * of an implementation of Dijkstra's shortest-path algorithm.
 	 */
-	public static Pathfinder pathfinder(IMapNG map) {
+	public static Pathfinder pathfinder(final IMapNG map) {
 		if (pathfinderCache.containsKey(map)) {
 			return pathfinderCache.get(map);
 		} else {

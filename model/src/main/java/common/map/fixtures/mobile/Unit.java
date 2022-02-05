@@ -33,7 +33,7 @@ public final class Unit implements IMutableUnit {
 	 */
 	private static final Logger LOGGER = Logger.getLogger(Unit.class.getName());
 
-	public Unit(Player owner, String kind, String name, int id) {
+	public Unit(final Player owner, final String kind, final String name, final int id) {
 		this.owner = owner;
 		this.kind = kind;
 		this.name = name;
@@ -87,7 +87,7 @@ public final class Unit implements IMutableUnit {
 	 * Set the filename of an image to use as an icon for this instance.
 	 */
 	@Override
-	public void setImage(String image) {
+	public void setImage(final String image) {
 		this.image = image;
 	}
 
@@ -108,7 +108,7 @@ public final class Unit implements IMutableUnit {
 	 * Set the player that owns the unit.
 	 */
 	@Override
-	public void setOwner(Player owner) {
+	public void setOwner(final Player owner) {
 		this.owner = owner;
 	}
 
@@ -133,7 +133,7 @@ public final class Unit implements IMutableUnit {
 	 * Set what kind of unit this is.
 	 */
 	@Override
-	public void setKind(String kind) {
+	public void setKind(final String kind) {
 		this.kind = kind;
 	}
 
@@ -156,7 +156,7 @@ public final class Unit implements IMutableUnit {
 	 * Set the name of this unit.
 	 */
 	@Override
-	public void setName(String name) {
+	public void setName(final String name) {
 		this.name = name;
 	}
 
@@ -177,7 +177,7 @@ public final class Unit implements IMutableUnit {
 	 * Set the filename of an image to use as a portrait for the unit.
 	 */
 	@Override
-	public void setPortrait(String portrait) {
+	public void setPortrait(final String portrait) {
 		this.portrait = portrait;
 	}
 
@@ -205,7 +205,7 @@ public final class Unit implements IMutableUnit {
 	 * but not *their* details?
 	 */
 	@Override
-	public Unit copy(boolean zero) {
+	public Unit copy(final boolean zero) {
 		Unit retval = new Unit(owner, kind, name, id);
 		if (!zero) {
 			retval.orders.putAll(orders);
@@ -222,7 +222,7 @@ public final class Unit implements IMutableUnit {
 	 * Add a member.
 	 */
 	@Override
-	public void addMember(UnitMember member) {
+	public void addMember(final UnitMember member) {
 		if (member instanceof ProxyFor) {
 			LOGGER.log(Level.SEVERE, "ProxyWorker added to Unit",
 				new IllegalStateException("ProxyWorker added to Unit"));
@@ -234,7 +234,7 @@ public final class Unit implements IMutableUnit {
 	 * Remove a member.
 	 */
 	@Override
-	public void removeMember(UnitMember member) {
+	public void removeMember(final UnitMember member) {
 		members.remove(member);
 	}
 
@@ -256,7 +256,7 @@ public final class Unit implements IMutableUnit {
 	 * the same kind, ID, and name, and with equal members.
 	 */
 	@Override
-	public boolean equals(Object obj) {
+	public boolean equals(final Object obj) {
 		if (obj instanceof IUnit) {
 			return ((IUnit) obj).getOwner().getPlayerId() == owner.getPlayerId() &&
 				kind.equals(((IUnit) obj).getKind()) &&
@@ -307,7 +307,7 @@ public final class Unit implements IMutableUnit {
 	 * that are not equal-ignoring-ID to any member of the other.
 	 */
 	@Override
-	public boolean equalsIgnoringID(IFixture fixture) {
+	public boolean equalsIgnoringID(final IFixture fixture) {
 		if (fixture instanceof IUnit &&
 				((IUnit) fixture).getOwner().getPlayerId() == owner.getPlayerId() &&
 				((IUnit) fixture).getKind().equals(kind) &&
@@ -332,7 +332,7 @@ public final class Unit implements IMutableUnit {
 	 * Set orders for a turn.
 	 */
 	@Override
-	public void setOrders(int turn, String newOrders) {
+	public void setOrders(final int turn, final String newOrders) {
 		orders.put(turn, newOrders);
 	}
 
@@ -340,7 +340,7 @@ public final class Unit implements IMutableUnit {
 	 * Get orders for a turn.
 	 */
 	@Override
-	public String getOrders(int turn) {
+	public String getOrders(final int turn) {
 		if (orders.containsKey(turn)) {
 			return orders.get(turn);
 		} else if (turn < 0 && orders.containsKey(-1)) {
@@ -354,7 +354,7 @@ public final class Unit implements IMutableUnit {
 	 * Set results for a turn.
 	 */
 	@Override
-	public void setResults(int turn, String newResults) {
+	public void setResults(final int turn, final String newResults) {
 		results.put(turn, newResults);
 	}
 
@@ -362,7 +362,7 @@ public final class Unit implements IMutableUnit {
 	 * Get results for a turn.
 	 */
 	@Override
-	public String getResults(int turn) {
+	public String getResults(final int turn) {
 		if (results.containsKey(turn)) {
 			return results.get(turn);
 		} else if (turn < 0 && results.containsKey(-1)) {
@@ -396,7 +396,7 @@ public final class Unit implements IMutableUnit {
 			IntStream.of(25 - members.size())).min().orElse(25 - members.size());
 	}
 
-	private static int memberComparison(UnitMember one, UnitMember two) {
+	private static int memberComparison(final UnitMember one, final UnitMember two) {
 		if (one instanceof IWorker) {
 			if (two instanceof IWorker) {
 				return ((IWorker) one).getName().compareTo(((IWorker) two).getName());

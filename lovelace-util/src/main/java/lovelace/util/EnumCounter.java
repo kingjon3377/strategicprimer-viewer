@@ -16,7 +16,7 @@ import java.util.Optional;
 public class EnumCounter<Type> {
 	private final Map<Type, Accumulator<Integer>> counts = new HashMap<>();
 
-	private void count(Type item) {
+	private void count(final Type item) {
 		if (counts.containsKey(item)) {
 			counts.get(item).add(1);
 		} else {
@@ -28,7 +28,7 @@ public class EnumCounter<Type> {
 	 * Count the provided items.
 	 */
 	@SafeVarargs
-	public final void countMany(Type... values) {
+	public final void countMany(final Type... values) {
 		for (Type item : values) {
 			count(item);
 		}
@@ -37,7 +37,7 @@ public class EnumCounter<Type> {
 	/**
 	 * Get the count for a given value.
 	 */
-	public int getCount(Type item) {
+	public int getCount(final Type item) {
 		return Optional.ofNullable(counts.get(item)).map(Accumulator::getSum).orElse(0);
 	}
 

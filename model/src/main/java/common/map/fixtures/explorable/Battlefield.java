@@ -6,7 +6,7 @@ import common.map.IFixture;
  * "There are the signs of a long-ago battle here"
  */
 public class Battlefield implements ExplorableFixture {
-	public Battlefield(int dc, int id) {
+	public Battlefield(final int dc, final int id) {
 		this.dc = dc;
 		this.id = id;
 	}
@@ -54,7 +54,7 @@ public class Battlefield implements ExplorableFixture {
 	 * Set the filename of an image to use as an icon for this instance.
 	 */
 	@Override
-	public void setImage(String image) {
+	public void setImage(final String image) {
 		this.image = image;
 	}
 
@@ -62,14 +62,14 @@ public class Battlefield implements ExplorableFixture {
 	 * Clone the object.
 	 */
 	@Override
-	public Battlefield copy(boolean zero) {
+	public Battlefield copy(final boolean zero) {
 		Battlefield retval = new Battlefield((zero) ? 0 : dc, id);
 		retval.setImage(image);
 		return retval;
 	}
 
 	@Override
-	public boolean equals(Object obj) {
+	public boolean equals(final Object obj) {
 		if (this == obj) {
 			return true;
 		} else if (obj instanceof Battlefield) {
@@ -88,7 +88,7 @@ public class Battlefield implements ExplorableFixture {
 	 * If we ignore ID, all Battlefields are equal.
 	 */
 	@Override
-	public boolean equalsIgnoringID(IFixture fixture) {
+	public boolean equalsIgnoringID(final IFixture fixture) {
 		return fixture instanceof Battlefield;
 	}
 

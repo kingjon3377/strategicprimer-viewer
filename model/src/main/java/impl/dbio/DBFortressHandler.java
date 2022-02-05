@@ -21,7 +21,7 @@ import common.xmlio.Warning;
 import common.map.fixtures.FortressMember;
 
 final class DBFortressHandler extends AbstractDatabaseWriter<IFortress, Point> implements MapContentsReader {
-	public DBFortressHandler(SPDatabaseWriter parent) {
+	public DBFortressHandler(final SPDatabaseWriter parent) {
 		super(IFortress.class, Point.class);
 		this.parent = parent;
 	}
@@ -54,7 +54,7 @@ final class DBFortressHandler extends AbstractDatabaseWriter<IFortress, Point> i
 			"VALUES(?, ?, ?, ?, ?, ?, ?, ?);";
 
 	@Override
-	public void write(DB db, IFortress obj, Point context) {
+	public void write(final DB db, final IFortress obj, final Point context) {
 		db.update(INSERT_SQL, context.getRow(), context.getColumn(), obj.getOwner().getPlayerId(),
 			obj.getName(), obj.getTownSize().toString(), obj.getId(), obj.getImage(),
 			obj.getPortrait()).execute();
@@ -63,7 +63,7 @@ final class DBFortressHandler extends AbstractDatabaseWriter<IFortress, Point> i
 		}
 	}
 
-	private TryBiConsumer<Map<String, Object>, Warning, Exception> readFortress(IMutableMapNG map) {
+	private TryBiConsumer<Map<String, Object>, Warning, Exception> readFortress(final IMutableMapNG map) {
 		return (dbRow, warner) -> {
 			int row = (Integer) dbRow.get("row");
 			int column = (Integer) dbRow.get("column");
@@ -86,14 +86,14 @@ final class DBFortressHandler extends AbstractDatabaseWriter<IFortress, Point> i
 	}
 
 	@Override
-	public void readMapContents(DB db, IMutableMapNG map, Warning warner) {
+	public void readMapContents(final DB db, final IMutableMapNG map, final Warning warner) {
 		try {
 			handleQueryResults(db, warner, "fortresses", readFortress(map),
 				"SELECT * FROM fortresses");
-		} catch (RuntimeException except) {
+		} catch (final RuntimeException except) {
 			// Don't wrap RuntimeExceptions in RuntimeException
 			throw except;
-		} catch (Exception except) {
+		} catch (final Exception except) {
 			// FIXME Antipattern
 			throw new RuntimeException(except);
 		}

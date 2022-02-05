@@ -20,7 +20,7 @@ import org.javatuples.Pair;
 import org.jetbrains.annotations.Nullable;
 
 /* package */ class GatherApplet extends AbstractTurnApplet {
-	public GatherApplet(ITurnRunningModel model, ICLIHelper cli, IDRegistrar idf) {
+	public GatherApplet(final ITurnRunningModel model, final ICLIHelper cli, final IDRegistrar idf) {
 		super(model, cli, idf);
 		this.model = model;
 		this.cli = cli;
@@ -50,7 +50,7 @@ import org.jetbrains.annotations.Nullable;
 	/**
 	 * If argument is a meadow, its status in the format used below; otherwise the empty string.
 	 */
-	private static String meadowStatus(Object argument) {
+	private static String meadowStatus(final Object argument) {
 		if (argument instanceof Meadow) {
 			return String.format("(%s)", ((Meadow) argument).getStatus());
 		} else {
@@ -58,7 +58,7 @@ import org.jetbrains.annotations.Nullable;
 		}
 	}
 
-	private static String toHours(int minutes) {
+	private static String toHours(final int minutes) {
 		if (minutes < 0) {
 			return "negative " + toHours(0 - minutes);
 		} else if (minutes == 0) {

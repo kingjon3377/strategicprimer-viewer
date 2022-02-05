@@ -76,7 +76,7 @@ public class TestWorkerModel {
 	/**
 	 * Helper method: Flatten any proxies in the list by replacing them with what they are proxies for.
 	 */
-	private <T> Iterable<T> filterProxies(Iterable<T> list, Class<? extends ProxyFor> cls) {
+	private <T> Iterable<T> filterProxies(final Iterable<T> list, final Class<? extends ProxyFor> cls) {
 		List<T> retval = new ArrayList<T>();
 		for (T item : list) {
 			if (cls.isInstance(item)) {
@@ -92,13 +92,13 @@ public class TestWorkerModel {
 	 * Helper method: Add an item to multiple lists at once.
 	 */
 	@SafeVarargs
-	private final <T> void addItem(T item, List<? super T>... lists) {
+	private final <T> void addItem(final T item, final List<? super T>... lists) {
 		for (List<? super T> list : lists) {
 			list.add(item);
 		}
 	}
 
-	private boolean iterableEquality(Object one, Object two) {
+	private boolean iterableEquality(final Object one, final Object two) {
 		if (one instanceof Iterable && two instanceof Iterable) {
 			List<Object> listOne = StreamSupport.stream(((Iterable<?>) one).spliterator(), false)
 				.collect(Collectors.toList());

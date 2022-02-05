@@ -26,7 +26,7 @@ public final class MenuUtils {
 		public int getMask() {
 			return mask;
 		}
-		private HotKeyModifier(int mask) {
+		private HotKeyModifier(final int mask) {
 			this.mask = mask;
 		}
 	}
@@ -34,7 +34,7 @@ public final class MenuUtils {
 	/**
 	 * Create a key-stroke representing a hot-key accelerator.
 	 */
-	public static KeyStroke createAccelerator(int key, HotKeyModifier... modifiers) {
+	public static KeyStroke createAccelerator(final int key, final HotKeyModifier... modifiers) {
 		return KeyStroke.getKeyStroke(key, Stream.of(modifiers).mapToInt(HotKeyModifier::getMask).reduce(Toolkit.getDefaultToolkit().getMenuShortcutKeyMask(), (a, b) -> a | b));
 	}
 
@@ -47,8 +47,8 @@ public final class MenuUtils {
 	 * @param condition See {@link JComponent#getInputMap(Integer)}
 	 * @param keys the keys to use as hot-keys.
 	 */
-	public static void createHotKey(JComponent component, String action, ActionListener handler,
-			int condition, KeyStroke... keys) {
+	public static void createHotKey(final JComponent component, final String action, final ActionListener handler,
+	                                final int condition, final KeyStroke... keys) {
 		createHotKey(component, action, new ActionWrapper(handler), condition, keys);
 	}
 
@@ -61,8 +61,8 @@ public final class MenuUtils {
 	 * @param condition See {@link JComponent#getInputMap(int)}
 	 * @param keys the keys to use as hot-keys.
 	 */
-	public static void createHotKey(JComponent component, String action, Action handler,
-			int condition, KeyStroke... keys) {
+	public static void createHotKey(final JComponent component, final String action, final Action handler,
+	                                final int condition, final KeyStroke... keys) {
 		InputMap inputMap = component.getInputMap(condition);
 		for (KeyStroke key : keys) {
 			inputMap.put(key, action);
@@ -80,8 +80,8 @@ public final class MenuUtils {
 	 *
 	 * Only the first accelerator is shown in the menu, but all are listened for.
 	 */
-	public static JMenuItem createMenuItem(String item, int mnemonic, String description,
-			Runnable listener, KeyStroke... accelerators) {
+	public static JMenuItem createMenuItem(final String item, final int mnemonic, final String description,
+	                                       final Runnable listener, final KeyStroke... accelerators) {
 		return createMenuItem(item, mnemonic, description, (event) -> listener.run(), accelerators);
 	}
 
@@ -95,8 +95,8 @@ public final class MenuUtils {
 	 *
 	 * Only the first accelerator is shown in the menu, but all are listened for.
 	 */
-	public static JMenuItem createMenuItem(String item, int mnemonic, String description,
-			ActionListener listener, KeyStroke... accelerators) {
+	public static JMenuItem createMenuItem(final String item, final int mnemonic, final String description,
+	                                       final ActionListener listener, final KeyStroke... accelerators) {
 		JMenuItem menuItem = new JMenuItem(item, mnemonic);
 		if (accelerators.length > 0) {
 			menuItem.setAccelerator(accelerators[0]);

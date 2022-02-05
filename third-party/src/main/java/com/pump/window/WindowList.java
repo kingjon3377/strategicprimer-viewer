@@ -58,7 +58,7 @@ public class WindowList {
 		WeakReference<?>[] invisibleFrames = new WeakReference<?>[0];
 		WeakReference<?>[] iconifiedFrames = new WeakReference<?>[0];
 
-		public void eventDispatched(AWTEvent e) {
+		public void eventDispatched(final AWTEvent e) {
 			if (e instanceof WindowEvent) {
 
 				boolean changed = false;
@@ -143,7 +143,7 @@ public class WindowList {
 			}
 		};
 
-		private WeakReference<?>[] wrap(Object[] array) {
+		private WeakReference<?>[] wrap(final Object[] array) {
 			WeakReference<?>[] references = new WeakReference[array.length];
 			for (int a = 0; a < references.length; a++) {
 				references[a] = new WeakReference<Object>(array[a]);
@@ -151,7 +151,7 @@ public class WindowList {
 			return references;
 		}
 
-		private boolean arrayEquals(Object[] obj1, WeakReference<?>[] obj2) {
+		private boolean arrayEquals(final Object[] obj1, final WeakReference<?>[] obj2) {
 			if (obj1.length != obj2.length)
 				return false;
 			for (int a = 0; a < obj1.length; a++) {
@@ -197,8 +197,8 @@ public class WindowList {
 	 *            if this is false then only visible Windows will be returned.
 	 *            Otherwise all Windows will be returned.
 	 */
-	public static Window[] getWindows(boolean sortByLayer,
-			boolean includeInvisible) {
+	public static Window[] getWindows(final boolean sortByLayer,
+	                                  final boolean includeInvisible) {
 		ArrayList<WeakReference<Window>> list = sortByLayer ? windowLayerList
 				: windowList;
 		List<Window> returnValue = new ArrayList<Window>();
@@ -235,8 +235,8 @@ public class WindowList {
 	 * @param includeIconified
 	 *            if this is true then iconified Frames will be returned.
 	 */
-	public static Frame[] getFrames(boolean sortByLayer,
-			boolean includeInvisible, boolean includeIconified) {
+	public static Frame[] getFrames(final boolean sortByLayer,
+	                                final boolean includeInvisible, final boolean includeIconified) {
 		ArrayList<WeakReference<Window>> list = sortByLayer ? windowLayerList
 				: windowList;
 		List<Frame> returnValue = new ArrayList<Frame>();
@@ -271,7 +271,7 @@ public class WindowList {
 	 * @param l
 	 *            a new ChangeListener.
 	 */
-	public static void addChangeListener(ChangeListener l) {
+	public static void addChangeListener(final ChangeListener l) {
 		if (changeListeners.contains(l))
 			return;
 		changeListeners.add(l);
@@ -280,7 +280,7 @@ public class WindowList {
 	/**
 	 * Remove a ChangeListener.
 	 */
-	public static void removeChangeListener(ChangeListener l) {
+	public static void removeChangeListener(final ChangeListener l) {
 		changeListeners.remove(l);
 	}
 
@@ -289,7 +289,7 @@ public class WindowList {
 			ChangeListener l = changeListeners.get(a);
 			try {
 				l.stateChanged(new ChangeEvent(WindowList.class));
-			} catch (Throwable t) {
+			} catch (final Throwable t) {
 				t.printStackTrace();
 			}
 		}

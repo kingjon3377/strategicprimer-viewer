@@ -6,7 +6,7 @@ package drivers.common;
 public class IncorrectUsageException extends DriverFailedException {
 	private static final long serialVersionUID = 1L;
 
-	public IncorrectUsageException(IDriverUsage correctUsage) {
+	public IncorrectUsageException(final IDriverUsage correctUsage) {
 		super(new IllegalArgumentException("Incorrect usage"), "Incorrect usage");
 		this.correctUsage = correctUsage;
 	}

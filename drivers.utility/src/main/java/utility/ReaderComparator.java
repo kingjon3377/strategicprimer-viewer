@@ -30,7 +30,7 @@ import java.util.stream.Collectors;
  * A driver for comparing map readers.
  */
 public class ReaderComparator implements UtilityDriver {
-	private static String readAll(Path path) throws IOException {
+	private static String readAll(final Path path) throws IOException {
 		return String.join("\n", Files.readAllLines(path, StandardCharsets.UTF_8));
 	}
 
@@ -40,7 +40,7 @@ public class ReaderComparator implements UtilityDriver {
 	}
 
 	private final ICLIHelper cli;
-	public ReaderComparator(ICLIHelper cli) {
+	public ReaderComparator(final ICLIHelper cli) {
 		this.cli = cli;
 	}
 
@@ -48,7 +48,7 @@ public class ReaderComparator implements UtilityDriver {
 	 * Compare the two readers' performance on the given files.
 	 */
 	@Override
-	public void startDriver(String... args) throws DriverFailedException {
+	public void startDriver(final String... args) throws DriverFailedException {
 		IMapReader readerOne = TestReaderFactory.getOldMapReader();
 		IMapReader readerTwo = TestReaderFactory.getNewMapReader();
 		SPWriter writerOne = TestReaderFactory.getOldWriter();
@@ -60,7 +60,7 @@ public class ReaderComparator implements UtilityDriver {
 			String contents;
 			try {
 				contents = readAll(path);
-			} catch (IOException except) {
+			} catch (final IOException except) {
 				throw new DriverFailedException(except, "I/O error reading file");
 			}
 			long readStartOne = System.nanoTime();
@@ -68,13 +68,13 @@ public class ReaderComparator implements UtilityDriver {
 			try {
 				mapOne = readerOne.readMapFromStream(path,
 					new StringReader(contents), warner);
-			} catch (SPFormatException except) {
+			} catch (final SPFormatException except) {
 				throw new DriverFailedException(except,
 					"Fatal SP format error reported by first reader");
-			} catch (MalformedXMLException except) {
+			} catch (final MalformedXMLException except) {
 				throw new DriverFailedException(except,
 					"Malformed XML reported by first reader");
-			} catch (IOException except) {
+			} catch (final IOException except) {
 				throw new DriverFailedException(except,
 					"I/O error thrown by first reader");
 			}
@@ -85,13 +85,13 @@ public class ReaderComparator implements UtilityDriver {
 			try {
 				mapTwo = readerTwo.readMapFromStream(path,
 					new StringReader(contents), warner);
-			} catch (SPFormatException except) {
+			} catch (final SPFormatException except) {
 				throw new DriverFailedException(except,
 					"Fatal SP format error reported by second reader");
-			} catch (MalformedXMLException except) {
+			} catch (final MalformedXMLException except) {
 				throw new DriverFailedException(except,
 					"Malformed XML reported by second reader");
-			} catch (IOException except) {
+			} catch (final IOException except) {
 				throw new DriverFailedException(except,
 					"I/O error thrown by second reader");
 			}
@@ -106,10 +106,10 @@ public class ReaderComparator implements UtilityDriver {
 			long writeStartOne = System.nanoTime();
 			try {
 				writerOne.write(outOne::append, mapOne);
-			} catch (MalformedXMLException except) {
+			} catch (final MalformedXMLException except) {
 				throw new DriverFailedException(except,
 					"First writer produced malformed XML");
-			} catch (IOException except) {
+			} catch (final IOException except) {
 				throw new DriverFailedException(except,
 					"I/O error reported by first writer");
 			}
@@ -119,10 +119,10 @@ public class ReaderComparator implements UtilityDriver {
 			long writeStartTwo = System.nanoTime();
 			try {
 				writerTwo.write(outTwo::append, mapTwo);
-			} catch (MalformedXMLException except) {
+			} catch (final MalformedXMLException except) {
 				throw new DriverFailedException(except,
 					"Second writer produced malformed XML");
-			} catch (IOException except) {
+			} catch (final IOException except) {
 				throw new DriverFailedException(except,
 					"I/O error reported by second writer");
 			}

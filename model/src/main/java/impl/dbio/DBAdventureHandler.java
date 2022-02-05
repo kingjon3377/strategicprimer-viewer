@@ -32,19 +32,19 @@ final class DBAdventureHandler extends AbstractDatabaseWriter<AdventureFixture, 
 		return INITIALIZERS;
 	}
 
-	private static final String INSERT_QUERY = 
+	private static final String INSERT_QUERY =
 		"INSERT INTO adventures (row, column, id, brief, full, owner, image) " +
 			"VALUES(?, ?, ?, ?, ?, ?, ?);";
 
 	@Override
-	public void write(DB db, AdventureFixture obj, Point context) {
+	public void write(final DB db, final AdventureFixture obj, final Point context) {
 		db.update(INSERT_QUERY, context.getRow(), context.getColumn(), obj.getId(),
 			obj.getBriefDescription(), obj.getFullDescription(), obj.getOwner().getPlayerId(),
 			obj.getImage()).execute();
 	}
 
 	private static TryBiConsumer<Map<String, Object>, Warning, Exception>
-			readAdventure(IMutableMapNG map) {
+			readAdventure(final IMutableMapNG map) {
 		return (dbRow, warner) -> {
 			int row = (Integer) dbRow.get("row");
 //			int row = Integer.parseInt(dbRow.get("row"));
@@ -67,14 +67,14 @@ final class DBAdventureHandler extends AbstractDatabaseWriter<AdventureFixture, 
 	}
 
 	@Override
-	public void readMapContents(DB db, IMutableMapNG map, Warning warner) {
+	public void readMapContents(final DB db, final IMutableMapNG map, final Warning warner) {
 		try {
 			handleQueryResults(db, warner, "adventures", readAdventure(map),
 				"SELECT * FROM adventures");
-		} catch (RuntimeException except) {
+		} catch (final RuntimeException except) {
 			// Don't wrap RuntimeExceptions in RuntimeException
 			throw except;
-		} catch (Exception except) {
+		} catch (final Exception except) {
 			// FIXME Antipattern
 			throw new RuntimeException(except);
 		}

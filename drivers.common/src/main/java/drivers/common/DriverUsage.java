@@ -123,16 +123,16 @@ public class DriverUsage implements IDriverUsage {
 		return supportedOptions;
 	}
 
-	public DriverUsage(boolean graphical, String invocation, ParamCount paramsWanted,
-			String shortDescription, String longDescription, boolean includeInCLIList,
-			boolean includeInGUIList) {
+	public DriverUsage(final boolean graphical, final String invocation, final ParamCount paramsWanted,
+	                   final String shortDescription, final String longDescription, final boolean includeInCLIList,
+	                   final boolean includeInGUIList) {
 		this(graphical, invocation, paramsWanted, shortDescription, longDescription,
 			includeInCLIList, includeInGUIList, "filename.xml");
 	}
 
-	public DriverUsage(boolean graphical, String invocation, ParamCount paramsWanted,
-			String shortDescription, String longDescription, boolean includeInCLIList,
-			boolean includeInGUIList, String firstParamDescription) {
+	public DriverUsage(final boolean graphical, final String invocation, final ParamCount paramsWanted,
+	                   final String shortDescription, final String longDescription, final boolean includeInCLIList,
+	                   final boolean includeInGUIList, final String firstParamDescription) {
 		this(graphical, invocation, paramsWanted, shortDescription, longDescription,
 			includeInCLIList, includeInGUIList, firstParamDescription, "filename.xml");
 	}
@@ -152,10 +152,10 @@ public class DriverUsage implements IDriverUsage {
 	 * parameters after the first should be described similarly.)
 	 * @param supportedOptions The options this driver supports.
 	 */
-	public DriverUsage(boolean graphical, String invocation, ParamCount paramsWanted,
-			String shortDescription, String longDescription, boolean includeInCLIList,
-			boolean includeInGUIList, String firstParamDescription,
-			String subsequentParamDescription, String... supportedOptions) {
+	public DriverUsage(final boolean graphical, final String invocation, final ParamCount paramsWanted,
+	                   final String shortDescription, final String longDescription, final boolean includeInCLIList,
+	                   final boolean includeInGUIList, final String firstParamDescription,
+	                   final String subsequentParamDescription, final String... supportedOptions) {
 		this.graphical = graphical;
 		this.invocation = invocation;
 		this.paramsWanted = paramsWanted;
@@ -169,7 +169,7 @@ public class DriverUsage implements IDriverUsage {
 	}
 
 	@Override
-	public final boolean includeInList(boolean gui) {
+	public final boolean includeInList(final boolean gui) {
 		return (gui) ? includeInGUIList : includeInCLIList;
 	}
 }

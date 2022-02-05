@@ -24,7 +24,7 @@ import java.util.logging.Logger;
 public final class ProxyJob implements IJob, ProxyFor<IJob> {
 	private static final Logger LOGGER = Logger.getLogger(ProxyJob.class.getName());
 
-	public ProxyJob(String name, boolean parallel, IWorker... proxiedWorkers) {
+	public ProxyJob(final String name, final boolean parallel, final IWorker... proxiedWorkers) {
 		this.parallel = parallel;
 		this.name = name;
 
@@ -97,7 +97,7 @@ public final class ProxyJob implements IJob, ProxyFor<IJob> {
 		return name;
 	}
 
-	private ProxySkill proxyForSkill(String skill) {
+	private ProxySkill proxyForSkill(final String skill) {
 		final IJob[] temp = new IJob[proxiedJobs.size()];
 		return new ProxySkill(skill, parallel, proxiedJobs.toArray(temp));
 	}
@@ -141,7 +141,7 @@ public final class ProxyJob implements IJob, ProxyFor<IJob> {
 	}
 
 	@Override
-	public boolean isSubset(IJob obj, Consumer<String> report) {
+	public boolean isSubset(final IJob obj, final Consumer<String> report) {
 		report.accept("\tisSubset called on ProxyJob");
 		return false;
 	}
@@ -150,7 +150,7 @@ public final class ProxyJob implements IJob, ProxyFor<IJob> {
 	 * Proxy an additional Job.
 	 */
 	@Override
-	public void addProxied(IJob item) {
+	public void addProxied(final IJob item) {
 		if (item == this || !name.equals(item.getName())) {
 			return;
 		}
@@ -190,7 +190,7 @@ public final class ProxyJob implements IJob, ProxyFor<IJob> {
 	 * Get a Skill by name.
 	 */
 	@Override
-	public ISkill getSkill(String skillName) {
+	public ISkill getSkill(final String skillName) {
 		final Optional<ProxySkill> matching = proxiedSkills.stream()
 			.filter(s -> skillName.equals(s.getName())).findAny();
 		if (matching.isPresent()) {

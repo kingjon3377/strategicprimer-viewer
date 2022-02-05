@@ -57,7 +57,7 @@ import java.awt.image.BufferedImage;
 public final class ViewerFrame extends SPFrame implements MapGUI {
 	private static final Logger LOGGER = Logger.getLogger(ViewerFrame.class.getName());
 
-	private static JFrame containingWindow(Component component) {
+	private static JFrame containingWindow(final Component component) {
 		if (component instanceof JFrame) {
 			return (JFrame) component;
 		} else {
@@ -83,8 +83,8 @@ public final class ViewerFrame extends SPFrame implements MapGUI {
 	private final ViewerDriver driver;
 	private final Function<IDriverModel, ViewerDriver> driverFactory;
 
-	public ViewerFrame(IViewerModel model, ActionListener menuListener, ViewerDriver driver,
-			Function<IDriverModel, ViewerDriver> driverFactory) {
+	public ViewerFrame(final IViewerModel model, final ActionListener menuListener, final ViewerDriver driver,
+	                   final Function<IDriverModel, ViewerDriver> driverFactory) {
 		super("Map Viewer", driver);
 		mapModel = model;
 		menuHandler = menuListener;
@@ -120,11 +120,11 @@ public final class ViewerFrame extends SPFrame implements MapGUI {
 			SPMenu.createViewMenu(menuHandler, driver)));
 	}
 
-	private void acceptDroppedFileImpl(Path file) {
+	private void acceptDroppedFileImpl(final Path file) {
 		IDriverModel map;
 		try {
 			map = MapReaderAdapter.readMapModel(file, Warning.getDefaultHandler());
-		} catch (DriverFailedException except) {
+		} catch (final DriverFailedException except) {
 			// FIXME: Show error dialog, depending on what the error was
 			LOGGER.log(Level.SEVERE, "Driver failed", except.getCause());
 			return;
@@ -132,7 +132,7 @@ public final class ViewerFrame extends SPFrame implements MapGUI {
 		SwingUtilities.invokeLater(() -> {
 				try {
 					driverFactory.apply(map).startDriver();
-				} catch (DriverFailedException except) {
+				} catch (final DriverFailedException except) {
 					// FIXME: Show error dialog, depending on what the error was
 					LOGGER.log(Level.SEVERE, "Driver failed", except.getCause());
 					return;
@@ -140,16 +140,16 @@ public final class ViewerFrame extends SPFrame implements MapGUI {
 			});
 	}
 
-	private void setMapWrapper(IMutableMapNG map) {
+	private void setMapWrapper(final IMutableMapNG map) {
 		mapModel.setMap(map); // FIXME: inline into caller(s); this was separated out because of a Ceylon compiler bug
 	}
 
-	private void alternateAcceptDroppedFile(Path file) {
+	private void alternateAcceptDroppedFile(final Path file) {
 		try {
 			IMutableMapNG mapOrError = MapReaderAdapter.readMap(file,
 				Warning.getDefaultHandler());
 			SwingUtilities.invokeLater(() -> mapModel.setMap(mapOrError));
-		} catch (DriverFailedException except) {
+		} catch (final DriverFailedException except) {
 			// FIXME: handle error, showing it to the user or something
 		}
 	}
@@ -158,7 +158,7 @@ public final class ViewerFrame extends SPFrame implements MapGUI {
 	// or something; the threads here prevent loading from completely
 	// freezing the UI, but it still can look like nothing's happened.
 	@Override
-	public void acceptDroppedFile(Path file) {
+	public void acceptDroppedFile(final Path file) {
 		if (mapModel.isMapModified()) {
 			new Thread(() -> acceptDroppedFileImpl(file)).start();
 		} else {
@@ -173,16 +173,16 @@ public final class ViewerFrame extends SPFrame implements MapGUI {
 
 	private final MapComponent mapPanel;
 
-	@Nullable 
+	@Nullable
 	public BufferedImage getBackgroundImage() {
 		return mapPanel.getBackgroundImage();
 	}
 
-	public void setBackgroundImage(BufferedImage backgroundImage) {
+	public void setBackgroundImage(final BufferedImage backgroundImage) {
 		mapPanel.setBackgroundImage(backgroundImage);
 	}
 
-	private void repaintMapPanel(TableModelEvent event) {
+	private void repaintMapPanel(final TableModelEvent event) {
 		mapPanel.repaint();
 	}
 
@@ -229,7 +229,7 @@ public final class ViewerFrame extends SPFrame implements MapGUI {
 	 */
 	private static class WindowSizeListener extends WindowAdapter {
 		private final JComponent mapPanel;
-		public WindowSizeListener(JComponent mapPanel) {
+		public WindowSizeListener(final JComponent mapPanel) {
 			this.mapPanel = mapPanel;
 		}
 
@@ -245,12 +245,12 @@ public final class ViewerFrame extends SPFrame implements MapGUI {
 		}
 
 		@Override
-		public void windowDeiconified(WindowEvent event) {
+		public void windowDeiconified(final WindowEvent event) {
 			recalculate();
 		}
 
 		@Override
-		public void windowStateChanged(WindowEvent event) {
+		public void windowStateChanged(final WindowEvent event) {
 			recalculate();
 		}
 	}

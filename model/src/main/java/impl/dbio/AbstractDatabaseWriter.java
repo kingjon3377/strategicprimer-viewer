@@ -6,7 +6,7 @@ import java.util.HashSet;
 import java.util.logging.Logger;
 
 abstract class AbstractDatabaseWriter<Item, Context> implements DatabaseWriter<Item, Context> {
-	protected AbstractDatabaseWriter(Class<Item> itemClass, Class<Context> contextClass) {
+	protected AbstractDatabaseWriter(final Class<Item> itemClass, final Class<Context> contextClass) {
 		this.itemClass = itemClass;
 		this.contextClass = contextClass;
 	}
@@ -17,7 +17,7 @@ abstract class AbstractDatabaseWriter<Item, Context> implements DatabaseWriter<I
 	private final Class<Context> contextClass;
 
 	@Override
-	public boolean canWrite(Object obj, Object context) {
+	public boolean canWrite(final Object obj, final Object context) {
 		return itemClass.isInstance(obj) && contextClass.isInstance(context);
 	}
 
@@ -33,7 +33,7 @@ abstract class AbstractDatabaseWriter<Item, Context> implements DatabaseWriter<I
 	private final Set<DB> connections = new HashSet<>();
 
 	@Override
-	public void initialize(DB sql) {
+	public void initialize(final DB sql) {
 		if (!connections.contains(sql)) {
 			sql.transaction(db -> {
 				for (String initializer : getInitializers()) {

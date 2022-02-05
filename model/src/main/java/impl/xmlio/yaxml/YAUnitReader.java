@@ -27,7 +27,7 @@ import lovelace.util.MalformedXMLException;
  * A reader for units.
  */
 /* package */ class YAUnitReader extends YAAbstractReader<IUnit, IUnit> {
-	public YAUnitReader(Warning warner, IDRegistrar idRegistrar, IPlayerCollection players) {
+	public YAUnitReader(final Warning warner, final IDRegistrar idRegistrar, final IPlayerCollection players) {
 		super(warner, idRegistrar);
 		this.players = players;
 		this.warner = warner;
@@ -49,14 +49,14 @@ import lovelace.util.MalformedXMLException;
 	 * Parse the kind of unit, from the "kind" or deprecated "type"
 	 * parameter, but merely warn if neither is present.
 	 */
-	private String parseKind(StartElement element) throws SPFormatException {
+	private String parseKind(final StartElement element) throws SPFormatException {
 		try {
 			String retval = getParamWithDeprecatedForm(element, "kind", "type");
 			if (retval.isEmpty()) {
 				warner.handle(new MissingPropertyException(element, "kind"));
 			}
 			return retval;
-		} catch (MissingPropertyException except) {
+		} catch (final MissingPropertyException except) {
 			warner.handle(except);
 			return "";
 		}
@@ -65,7 +65,7 @@ import lovelace.util.MalformedXMLException;
 	/**
 	 * Parse orders for a unit for a specified turn.
 	 */
-	private void parseOrders(StartElement element, IMutableUnit unit, Iterable<XMLEvent> stream)
+	private void parseOrders(final StartElement element, final IMutableUnit unit, final Iterable<XMLEvent> stream)
 			throws SPFormatException {
 		expectAttributes(element, "turn");
 		int turn = getIntegerParameter(element, "turn", -1);
@@ -85,7 +85,7 @@ import lovelace.util.MalformedXMLException;
 	/**
 	 * Parse results for a unit for a specified turn.
 	 */
-	private void parseResults(StartElement element, IMutableUnit unit, Iterable<XMLEvent> stream) 
+	private void parseResults(final StartElement element, final IMutableUnit unit, final Iterable<XMLEvent> stream)
 			throws SPFormatException {
 		expectAttributes(element, "turn");
 		int turn = getIntegerParameter(element, "turn", -1);
@@ -102,7 +102,7 @@ import lovelace.util.MalformedXMLException;
 		unit.setResults(turn, builder.toString().trim());
 	}
 
-	private UnitMember parseChild(StartElement element, QName parent, Iterable<XMLEvent> stream) 
+	private UnitMember parseChild(final StartElement element, final QName parent, final Iterable<XMLEvent> stream)
 			throws SPFormatException, MalformedXMLException {
 		String name = element.getName().getLocalPart().toLowerCase();
 		for (YAReader<?, ?> reader : readers) {
@@ -114,12 +114,12 @@ import lovelace.util.MalformedXMLException;
 					throw new UnwantedChildException(parent, element);
 				}
 			}
-		} 
+		}
 		throw new UnwantedChildException(parent, element);
 	}
 
 	@Override
-	public IUnit read(StartElement element, QName parent, Iterable<XMLEvent> stream) 
+	public IUnit read(final StartElement element, final QName parent, final Iterable<XMLEvent> stream)
 			throws SPFormatException, MalformedXMLException {
 		requireTag(element, parent, "unit");
 		expectAttributes(element, "name", "owner", "image", "portrait", "kind", "id", "type");
@@ -159,12 +159,12 @@ import lovelace.util.MalformedXMLException;
 	}
 
 	@Override
-	public boolean isSupportedTag(String tag) {
+	public boolean isSupportedTag(final String tag) {
 		return "unit".equalsIgnoreCase(tag);
 	}
 
-	public void writeOrders(ThrowingConsumer<String, IOException> ostream, String tag, int turn, String orders,
-			int indent) throws IOException {
+	public void writeOrders(final ThrowingConsumer<String, IOException> ostream, final String tag, final int turn, final String orders,
+	                        final int indent) throws IOException {
 		if (orders.isEmpty()) {
 			return;
 		}
@@ -177,7 +177,7 @@ import lovelace.util.MalformedXMLException;
 		closeTag(ostream, 0, tag);
 	}
 
-	private void writeChild(ThrowingConsumer<String, IOException> ostream, UnitMember child, Integer indent)
+	private void writeChild(final ThrowingConsumer<String, IOException> ostream, final UnitMember child, final Integer indent)
 			throws IOException {
 		for (YAReader<?, ?> reader : readers) {
 			if (reader.canWrite(child)) {
@@ -191,7 +191,7 @@ import lovelace.util.MalformedXMLException;
 	}
 
 	@Override
-	public void write(ThrowingConsumer<String, IOException> ostream, IUnit obj, int indent) throws IOException {
+	public void write(final ThrowingConsumer<String, IOException> ostream, final IUnit obj, final int indent) throws IOException {
 		writeTag(ostream, "unit", indent);
 		writeProperty(ostream, "owner", obj.getOwner().getPlayerId());
 		writeNonemptyProperty(ostream, "kind", obj.getKind());
@@ -218,7 +218,7 @@ import lovelace.util.MalformedXMLException;
 	}
 
 	@Override
-	public boolean canWrite(Object obj) {
+	public boolean canWrite(final Object obj) {
 		return obj instanceof IUnit;
 	}
 }

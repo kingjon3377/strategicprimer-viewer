@@ -60,9 +60,9 @@ public class IOHandler implements ActionListener {
 	private final ICLIHelper cli;
 
 	// FIXME: Make viewerGUIFactory optional?
-	public IOHandler(ISPDriver driver,
-			TriFunction<ICLIHelper, SPOptions, IDriverModel, GUIDriver> viewerGUIFactory,
-			ICLIHelper cli) {
+	public IOHandler(final ISPDriver driver,
+	                 final TriFunction<ICLIHelper, SPOptions, IDriverModel, GUIDriver> viewerGUIFactory,
+	                 final ICLIHelper cli) {
 		this.driver = driver;
 		this.viewerGUIFactory = viewerGUIFactory;
 		this.cli = cli;
@@ -72,8 +72,8 @@ public class IOHandler implements ActionListener {
 	 * If any files are marked as modified, ask the user whether to save
 	 * them before closing/quitting.
 	 */
-	private void maybeSave(String verb, @Nullable Frame window, @Nullable Component source,
-			Runnable ifNotCanceled) { // TODO: Use the possibly-throwing interface from j.u.concurrent?
+	private void maybeSave(final String verb, @Nullable final Frame window, @Nullable final Component source,
+	                       final Runnable ifNotCanceled) { // TODO: Use the possibly-throwing interface from j.u.concurrent?
 		ModelDriver md = (ModelDriver) driver;
 		LOGGER.finer("Checking if we need to save ...");
 		if (md.getModel().isMapModified()) {
@@ -128,8 +128,8 @@ public class IOHandler implements ActionListener {
 		ifNotCanceled.run();
 	}
 
-	private void handleError(Exception except, String filename, @Nullable Component source,
-			String errorTitle, String verb) {
+	private void handleError(final Exception except, final String filename, @Nullable final Component source,
+	                         final String errorTitle, final String verb) {
 		String message;
 		if (except instanceof MalformedXMLException) {
 			message = "Malformed XML in " + filename;
@@ -146,8 +146,8 @@ public class IOHandler implements ActionListener {
 		ShowErrorDialog.showErrorDialog(source, errorTitle, message);
 	}
 
-	private Consumer<Path> loadHandlerImpl(Consumer<IMutableMapNG> handler, @Nullable Component source,
-			String errorTitle) {
+	private Consumer<Path> loadHandlerImpl(final Consumer<IMutableMapNG> handler, @Nullable final Component source,
+	                                       final String errorTitle) {
 		return path -> {
 			try {
 				handler.accept(MapIOHelper.readMap(path, Warning.getDefaultHandler()));
@@ -157,7 +157,7 @@ public class IOHandler implements ActionListener {
 		};
 	}
 
-	private void loadHandler(@Nullable Component source, String errorTitle) {
+	private void loadHandler(@Nullable final Component source, final String errorTitle) {
 		if (driver instanceof GUIDriver) {
 			SPFileChooser.open((Path) null)
 				.call(loadHandlerImpl(((GUIDriver) driver)::open, source,
@@ -174,30 +174,30 @@ public class IOHandler implements ActionListener {
 	 * as that represented by the given driver's model. Should be run on
 	 * the EDT, i.e. using {@link SwingUtilities#invokeLater}.
 	 */
-	private void startNewViewerWindow(ModelDriver driver) {
+	private void startNewViewerWindow(final ModelDriver driver) {
 		try {
 			viewerGUIFactory.apply(cli, driver.getOptions().copy(),
 					new ViewerModel(new SPMapNG(driver.getModel().getMapDimensions(),
 						new PlayerCollection(),
 						driver.getModel().getMap().getCurrentTurn())))
 				.startDriver();
-		} catch (DriverFailedException except) {
+		} catch (final DriverFailedException except) {
 			// FIXME: show error dialog
 			LOGGER.log(Level.SEVERE, "Driver failed", except);
 		}
 	}
 
-	private void openSecondaryInViewer(IDriverModel model, SPOptions options) {
+	private void openSecondaryInViewer(final IDriverModel model, final SPOptions options) {
 		try {
 			viewerGUIFactory.apply(cli, options.copy(), new ViewerModel(model)).startDriver();
-		} catch (DriverFailedException except) {
+		} catch (final DriverFailedException except) {
 			// FIXME: show error dialog
 			LOGGER.log(Level.SEVERE, "Driver failed", except);
 		}
 	}
 
 	@Override
-	public void actionPerformed(ActionEvent event) {
+	public void actionPerformed(final ActionEvent event) {
 		Component source = Optional.ofNullable(event.getSource())
 			.filter(Component.class::isInstance).map(Component.class::cast).orElse(null);
 		Frame parentWindow;
@@ -320,7 +320,7 @@ public class IOHandler implements ActionListener {
 								new ViewerModel(((ModelDriver) driver)
 									.getModel()))
 							.startDriver();
-					} catch (DriverFailedException except) {
+					} catch (final DriverFailedException except) {
 						// FIXME: Log and show error dialog instead
 						throw new RuntimeException(except);
 					}

@@ -101,9 +101,9 @@ import java.nio.charset.StandardCharsets;
  * The main reader-from-XML class in the 'fluid XML' implementation.
  */
 public class SPFluidReader implements IMapReader, ISPReader {
-	private Object readSPObject(StartElement element, QName parent,
-			Iterable<XMLEvent> stream, IMutablePlayerCollection players, Warning warner,
-			IDRegistrar idFactory) throws SPFormatException {
+	private Object readSPObject(final StartElement element, final QName parent,
+	                            final Iterable<XMLEvent> stream, final IMutablePlayerCollection players, final Warning warner,
+	                            final IDRegistrar idFactory) throws SPFormatException {
 		String namespace = element.getName().getNamespaceURI();
 		String tag = element.getName().getLocalPart().toLowerCase();
 		if (namespace.isEmpty() || namespace.equals(SP_NAMESPACE) ||
@@ -125,13 +125,13 @@ public class SPFluidReader implements IMapReader, ISPReader {
 		private final String tag;
 		private final IntFunction<Object> factory;
 
-		public SimpleFixtureReader(String tag, IntFunction<Object> factory) {
+		public SimpleFixtureReader(final String tag, final IntFunction<Object> factory) {
 			this.tag = tag;
 			this.factory = factory;
 		}
 
-		public Object reader(StartElement element, QName parent, Iterable<XMLEvent> stream,
-				IMutablePlayerCollection players, Warning warner, IDRegistrar idFactory)
+		public Object reader(final StartElement element, final QName parent, final Iterable<XMLEvent> stream,
+		                     final IMutablePlayerCollection players, final Warning warner, final IDRegistrar idFactory)
 				throws SPFormatException {
 			requireTag(element, parent, tag);
 			expectAttributes(element, warner, "id", "image");
@@ -153,13 +153,13 @@ public class SPFluidReader implements IMapReader, ISPReader {
 	private static class SimpleHasKindReader {
 		private final String tag;
 		private final HasKindFactory factory;
-		public SimpleHasKindReader(String tag, HasKindFactory factory) {
+		public SimpleHasKindReader(final String tag, final HasKindFactory factory) {
 			this.tag = tag;
 			this.factory = factory;
 		}
 
-		public Object reader(StartElement element, QName parent, Iterable<XMLEvent> stream,
-				IMutablePlayerCollection players, Warning warner, IDRegistrar idFactory)
+		public Object reader(final StartElement element, final QName parent, final Iterable<XMLEvent> stream,
+		                     final IMutablePlayerCollection players, final Warning warner, final IDRegistrar idFactory)
 				throws SPFormatException {
 			requireTag(element, parent, tag);
 			expectAttributes(element, warner, "id", "kind", "image");
@@ -173,7 +173,7 @@ public class SPFluidReader implements IMapReader, ISPReader {
 		}
 	}
 
-	private static StartElement firstStartElement(Iterable<XMLEvent> stream, StartElement parent)
+	private static StartElement firstStartElement(final Iterable<XMLEvent> stream, final StartElement parent)
 			throws SPFormatException {
 		for (XMLEvent event : stream) {
 			if (event instanceof StartElement && isSPStartElement((StartElement) event)) {
@@ -183,7 +183,7 @@ public class SPFluidReader implements IMapReader, ISPReader {
 		throw new MissingChildException(parent);
 	}
 
-	private static boolean isFutureTag(StartElement tag, Warning warner) {
+	private static boolean isFutureTag(final StartElement tag, final Warning warner) {
 		if (FUTURE_TAGS.contains(tag.getName().getLocalPart().toLowerCase())) {
 			warner.handle(UnsupportedTagException.future(tag));
 			return true;
@@ -194,9 +194,9 @@ public class SPFluidReader implements IMapReader, ISPReader {
 
 	// TODO: make following methods static if it will compile
 
-	private void parseTileChild(IMutableMapNG map, StartElement parent,
-			Iterable<XMLEvent> stream, IMutablePlayerCollection players, Warning warner,
-			IDRegistrar idFactory, Point currentTile, StartElement element)
+	private void parseTileChild(final IMutableMapNG map, final StartElement parent,
+	                            final Iterable<XMLEvent> stream, final IMutablePlayerCollection players, final Warning warner,
+	                            final IDRegistrar idFactory, final Point currentTile, final StartElement element)
 			throws SPFormatException {
 		String type = element.getName().getLocalPart().toLowerCase();
 		if (isFutureTag(element, warner)) {
@@ -219,7 +219,7 @@ public class SPFluidReader implements IMapReader, ISPReader {
 			Direction direction;
 			try {
 				direction = Direction.parse(getAttribute(element, "direction"));
-			} catch (IllegalArgumentException except) {
+			} catch (final IllegalArgumentException except) {
 				throw new MissingPropertyException(element, "direction", except);
 			}
 			map.setRoadLevel(currentTile, direction, getIntegerAttribute(element, "quality"));
@@ -245,8 +245,8 @@ public class SPFluidReader implements IMapReader, ISPReader {
 		}
 	}
 
-	private void parseTile(IMutableMapNG map, StartElement element, Iterable<XMLEvent> stream,
-			IMutablePlayerCollection players, Warning warner, IDRegistrar idFactory)
+	private void parseTile(final IMutableMapNG map, final StartElement element, final Iterable<XMLEvent> stream,
+	                       final IMutablePlayerCollection players, final Warning warner, final IDRegistrar idFactory)
 			throws SPFormatException {
 		expectAttributes(element, warner, "row", "column", "kind", "type");
 		Point loc = new Point(getIntegerAttribute(element, "row"),
@@ -257,7 +257,7 @@ public class SPFluidReader implements IMapReader, ISPReader {
 			try {
 				map.setBaseTerrain(loc, TileType.parse(getAttrWithDeprecatedForm(element,
 					"kind", "type", warner)));
-			} catch (ParseException except) {
+			} catch (final ParseException except) {
 				warner.handle(new MissingPropertyException(element, "kind", except));
 			}
 		} else {
@@ -280,8 +280,8 @@ public class SPFluidReader implements IMapReader, ISPReader {
 		}
 	}
 
-	private void parseElsewhere(IMutableMapNG map, StartElement element, Iterable<XMLEvent> stream,
-			IMutablePlayerCollection players, Warning warner, IDRegistrar idFactory)
+	private void parseElsewhere(final IMutableMapNG map, final StartElement element, final Iterable<XMLEvent> stream,
+	                            final IMutablePlayerCollection players, final Warning warner, final IDRegistrar idFactory)
 			throws SPFormatException {
 		expectAttributes(element, warner);
 		Point loc = Point.INVALID_POINT;
@@ -302,8 +302,8 @@ public class SPFluidReader implements IMapReader, ISPReader {
 		}
 	}
 
-	private IMutableMapNG readMapOrViewTag(StartElement element, QName parent, Iterable<XMLEvent> stream,
-			IMutablePlayerCollection players, Warning warner, IDRegistrar idFactory)
+	private IMutableMapNG readMapOrViewTag(final StartElement element, final QName parent, final Iterable<XMLEvent> stream,
+	                                       final IMutablePlayerCollection players, final Warning warner, final IDRegistrar idFactory)
 			throws SPFormatException {
 		requireTag(element, parent, "map", "view");
 		int currentTurn;
@@ -399,8 +399,8 @@ public class SPFluidReader implements IMapReader, ISPReader {
 		return retval;
 	}
 
-	private Player readPlayer(StartElement element, QName parent, Iterable<XMLEvent> stream,
-			IMutablePlayerCollection players, Warning warner, IDRegistrar idFactory)
+	private Player readPlayer(final StartElement element, final QName parent, final Iterable<XMLEvent> stream,
+	                          final IMutablePlayerCollection players, final Warning warner, final IDRegistrar idFactory)
 			throws SPFormatException {
 		requireTag(element, parent, "player");
 		requireNonEmptyAttribute(element, "number", true, warner);
@@ -437,22 +437,22 @@ public class SPFluidReader implements IMapReader, ISPReader {
 		return retval;
 	}
 
-	private void parseOrders(StartElement element, IMutableUnit unit, Iterable<XMLEvent> stream,
-			Warning warner) throws SPFormatException {
+	private void parseOrders(final StartElement element, final IMutableUnit unit, final Iterable<XMLEvent> stream,
+	                         final Warning warner) throws SPFormatException {
 		expectAttributes(element, warner, "turn");
 		int turn = getIntegerAttribute(element, "turn", -1, warner);
 		unit.setOrders(turn, getTextUntil(element.getName(), stream));
 	}
 
-	private void parseResults(StartElement element, IMutableUnit unit, Iterable<XMLEvent> stream,
-			Warning warner) throws SPFormatException {
+	private void parseResults(final StartElement element, final IMutableUnit unit, final Iterable<XMLEvent> stream,
+	                          final Warning warner) throws SPFormatException {
 		expectAttributes(element, warner, "turn");
 		int turn = getIntegerAttribute(element, "turn", -1, warner);
 		unit.setResults(turn, getTextUntil(element.getName(), stream));
 	}
 
-	private IUnit readUnit(StartElement element, QName parent, Iterable<XMLEvent> stream,
-			IMutablePlayerCollection players, Warning warner, IDRegistrar idFactory)
+	private IUnit readUnit(final StartElement element, final QName parent, final Iterable<XMLEvent> stream,
+	                       final IMutablePlayerCollection players, final Warning warner, final IDRegistrar idFactory)
 			throws SPFormatException {
 		requireTag(element, parent, "unit");
 		requireNonEmptyAttribute(element, "name", false, warner);
@@ -462,7 +462,7 @@ public class SPFluidReader implements IMapReader, ISPReader {
 		String temp = null;
 		try {
 			temp = getAttrWithDeprecatedForm(element, "kind", "type", warner);
-		} catch (MissingPropertyException except) {
+		} catch (final MissingPropertyException except) {
 			warner.handle(except);
 		}
 		String kind = temp == null ? "" : temp;
@@ -508,8 +508,8 @@ public class SPFluidReader implements IMapReader, ISPReader {
 		return retval;
 	}
 
-	private IFortress readFortress(StartElement element, QName parent, Iterable<XMLEvent> stream,
-			IMutablePlayerCollection players, Warning warner, IDRegistrar idFactory)
+	private IFortress readFortress(final StartElement element, final QName parent, final Iterable<XMLEvent> stream,
+	                               final IMutablePlayerCollection players, final Warning warner, final IDRegistrar idFactory)
 			throws SPFormatException {
 		requireTag(element, parent, "fortress");
 		requireNonEmptyAttribute(element, "owner", false, warner);
@@ -519,7 +519,7 @@ public class SPFluidReader implements IMapReader, ISPReader {
 		TownSize size;
 		try {
 			size = TownSize.parseTownSize(getAttribute(element, "size", "small"));
-		} catch (IllegalArgumentException except) {
+		} catch (final IllegalArgumentException except) {
 			throw new MissingPropertyException(element, "size", except);
 		}
 		IMutableFortress retval = new FortressImpl(
@@ -627,7 +627,7 @@ public class SPFluidReader implements IMapReader, ISPReader {
 	}
 
 	@Override
-	public <Type> Type readXML(Path file, Reader istream, Warning warner)
+	public <Type> Type readXML(final Path file, final Reader istream, final Warning warner)
 			throws SPFormatException, MalformedXMLException {
 		try (TypesafeXMLEventReader reader = new TypesafeXMLEventReader(istream)) {
 			Iterable<XMLEvent> eventReader = new IteratorWrapper(reader);
@@ -640,14 +640,14 @@ public class SPFluidReader implements IMapReader, ISPReader {
 						new QName("root"), eventReader, players, warner, idFactory);
 				}
 			}
-		} catch (IOException except) {
+		} catch (final IOException except) {
 			throw new MalformedXMLException(except);
 		}
 		throw new MalformedXMLException("XML stream didn't contain a start element");
 	}
 
 	@Override
-	public IMutableMapNG readMap(Path file, Warning warner)
+	public IMutableMapNG readMap(final Path file, final Warning warner)
 			throws IOException, MissingFileException, SPFormatException, MalformedXMLException {
 		try (BufferedReader istream = Files.newBufferedReader(file, StandardCharsets.UTF_8)) {
 			return readMapFromStream(file, istream, warner);
@@ -657,7 +657,7 @@ public class SPFluidReader implements IMapReader, ISPReader {
 	}
 
 	@Override
-	public IMutableMapNG readMapFromStream(Path file, Reader istream, Warning warner)
+	public IMutableMapNG readMapFromStream(final Path file, final Reader istream, final Warning warner)
 			throws SPFormatException, MalformedXMLException {
 		return this.<IMutableMapNG>readXML(file, istream, warner);
 	}

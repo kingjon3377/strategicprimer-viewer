@@ -108,7 +108,7 @@ public interface ITurnRunningModel extends IExplorationModel, IAdvancementModel 
 	 *
 	 * TODO: Make a way to add to units
 	 */
-	default boolean addExistingResource(FortressMember resource, Player owner) {
+	default boolean addExistingResource(final FortressMember resource, final Player owner) {
 		return addExistingResource(resource, owner, "HQ");
 	}
 
@@ -139,7 +139,7 @@ public interface ITurnRunningModel extends IExplorationModel, IAdvancementModel 
 	 * Returns true if the input makes sense and a matching (and mutable)
 	 * unit was found in at least one map, false otherwise.
 	 */
-	default boolean addAnimal(IUnit container, String kind, String status, int id, int population) {
+	default boolean addAnimal(final IUnit container, final String kind, final String status, final int id, final int population) {
 		return addAnimal(container, kind, status, id, population, -1);
 	}
 
@@ -148,7 +148,7 @@ public interface ITurnRunningModel extends IExplorationModel, IAdvancementModel 
 	 * Returns true if the input makes sense and a matching (and mutable)
 	 * unit was found in at least one map, false otherwise.
 	 */
-	default boolean addAnimal(IUnit container, String kind, String status, int id) {
+	default boolean addAnimal(final IUnit container, final String kind, final String status, final int id) {
 		return addAnimal(container, kind, status, id, 1);
 	}
 
@@ -158,7 +158,7 @@ public interface ITurnRunningModel extends IExplorationModel, IAdvancementModel 
 	 * that player. If it can't find even one, return null.
 	 */
 	@Nullable
-	default IFortress findHQ(Player player) {
+	default IFortress findHQ(final Player player) {
 		return findHQ(player, "HQ");
 	}
 
@@ -169,7 +169,7 @@ public interface ITurnRunningModel extends IExplorationModel, IAdvancementModel 
 	 * it can't find even one, return null.
 	 */
 	@Nullable
-	default IFortress findHQ(Player player, String fortressName) {
+	default IFortress findHQ(final Player player, final String fortressName) {
 		IFortress retval = null;
 		IMapNG map = getMap();
 		for (IFortress fortress : map.streamLocations()

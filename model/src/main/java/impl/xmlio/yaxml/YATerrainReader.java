@@ -27,7 +27,7 @@ import java.util.Set;
  * A reader for [[TerrainFixture]]s.
  */
 /* package */ class YATerrainReader extends YAAbstractReader<TerrainFixture, TerrainFixture> {
-	public YATerrainReader(Warning warning, IDRegistrar idRegistrar) {
+	public YATerrainReader(final Warning warning, final IDRegistrar idRegistrar) {
 		super(warning, idRegistrar);
 	}
 
@@ -36,12 +36,12 @@ import java.util.Set;
 		"hill", "oasis").collect(Collectors.toSet()));
 
 	@Override
-	public boolean isSupportedTag(String tag) {
+	public boolean isSupportedTag(final String tag) {
 		return supportedTags.contains(tag.toLowerCase());
 	}
 
 	@Override
-	public TerrainFixture read(StartElement element, QName parent, Iterable<XMLEvent> stream)
+	public TerrainFixture read(final StartElement element, final QName parent, final Iterable<XMLEvent> stream)
 			throws SPFormatException {
 		// TODO: Provide requireTag() taking Iterable so we don't have to convert to array
 		requireTag(element, parent, supportedTags.toArray(new String[0]));
@@ -77,7 +77,7 @@ import java.util.Set;
 	}
 
 	@Override
-	public void write(ThrowingConsumer<String, IOException> ostream, TerrainFixture obj, int indent) throws IOException {
+	public void write(final ThrowingConsumer<String, IOException> ostream, final TerrainFixture obj, final int indent) throws IOException {
 		if (obj instanceof Forest) {
 			writeTag(ostream, "forest", indent);
 			writeProperty(ostream, "kind", ((Forest) obj).getKind());
@@ -102,7 +102,7 @@ import java.util.Set;
 	}
 
 	@Override
-	public boolean canWrite(Object obj) {
+	public boolean canWrite(final Object obj) {
 		return obj instanceof TerrainFixture;
 	}
 }

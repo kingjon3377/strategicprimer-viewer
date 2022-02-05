@@ -17,7 +17,7 @@ public final class MaturityModel {
 		try {
 			return FileSplitter.getFileContents("animal_data/maturity.txt",
 				Integer::parseInt);
-		} catch (IOException except) {
+		} catch (final IOException except) {
 			throw new RuntimeException(except);
 		}
 	}
@@ -32,7 +32,7 @@ public final class MaturityModel {
 		return currentTurnLocal;
 	}
 
-	public static void setCurrentTurn(int currentTurn) {
+	public static void setCurrentTurn(final int currentTurn) {
 		if (currentTurnLocal < 0) {
 			currentTurnLocal = currentTurn;
 		}

@@ -42,13 +42,13 @@ public class TownReportGenerator extends AbstractReportGenerator<ITownFixture> {
 	@Nullable
 	private final Point hq;
 
-	public TownReportGenerator(Comparator<Pair<Point, IFixture>> comp, Player currentPlayer,
-			MapDimensions dimensions, int currentTurn) {
+	public TownReportGenerator(final Comparator<Pair<Point, IFixture>> comp, final Player currentPlayer,
+	                           final MapDimensions dimensions, final int currentTurn) {
 		this(comp, currentPlayer, dimensions, currentTurn, null);
 	}
 
-	public TownReportGenerator(Comparator<Pair<Point, IFixture>> comp, Player currentPlayer,
-			MapDimensions dimensions, int currentTurn, @Nullable Point hq) {
+	public TownReportGenerator(final Comparator<Pair<Point, IFixture>> comp, final Player currentPlayer,
+	                           final MapDimensions dimensions, final int currentTurn, @Nullable final Point hq) {
 		super(comp, dimensions, hq);
 		this.currentPlayer = currentPlayer;
 		this.currentTurn = currentTurn;
@@ -62,9 +62,9 @@ public class TownReportGenerator extends AbstractReportGenerator<ITownFixture> {
 	 *
 	 * TODO: Can we make this static?
 	 */
-	private <T> void separateByStatus(Map<TownStatus, T> mapping,
-			Collection<Pair<Point, IFixture>> collection,
-			BiConsumer<T, Pair<Point, ITownFixture>> func) {
+	private <T> void separateByStatus(final Map<TownStatus, T> mapping,
+	                                  final Collection<Pair<Point, IFixture>> collection,
+	                                  final BiConsumer<T, Pair<Point, ITownFixture>> func) {
 		collection.stream().filter(p -> p.getValue1() instanceof AbstractTown)
 				.sorted(pairComparator)
 				.map(p -> Pair.with(p.getValue0(), (ITownFixture) p.getValue1()))
@@ -80,8 +80,8 @@ public class TownReportGenerator extends AbstractReportGenerator<ITownFixture> {
 	 * report-generating class. We remove the town from the set of fixtures.
 	 */
 	@Override
-	public void produceSingle(DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-			IMapNG map, ThrowingConsumer<String, IOException> ostream, ITownFixture item, Point loc)
+	public void produceSingle(final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
+	                          final IMapNG map, final ThrowingConsumer<String, IOException> ostream, final ITownFixture item, final Point loc)
 			throws IOException {
 		if (item instanceof Village) {
 			new VillageReportGenerator(comp, currentPlayer, dimensions, hq)
@@ -121,8 +121,8 @@ public class TownReportGenerator extends AbstractReportGenerator<ITownFixture> {
 		}
 	}
 
-	private static void separateByStatusInner(Map<ITownFixture, Point> mapping,
-			Pair<Point, ITownFixture> pair) {
+	private static void separateByStatusInner(final Map<ITownFixture, Point> mapping,
+	                                          final Pair<Point, ITownFixture> pair) {
 		mapping.put(pair.getValue1(), pair.getValue0());
 	}
 
@@ -132,8 +132,8 @@ public class TownReportGenerator extends AbstractReportGenerator<ITownFixture> {
 	 * the town from the set of fixtures.
 	 */
 	@Override
-	public void produce(DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-			IMapNG map, ThrowingConsumer<String, IOException> ostream) throws IOException {
+	public void produce(final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
+	                    final IMapNG map, final ThrowingConsumer<String, IOException> ostream) throws IOException {
 		HeadedMap<ITownFixture, Point> abandoned =
 			new HeadedMapImpl<>("<h5>Abandoned Communities</h5>");
 		HeadedMap<ITownFixture, Point> active =

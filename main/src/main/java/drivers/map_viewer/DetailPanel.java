@@ -59,7 +59,7 @@ import worker.common.IFixtureEditHelper;
 	private final FormattedLabel header = new FormattedLabel(
 		"<html><body><p>Contents of the tile at %s:</p></body></html>", Point.INVALID_POINT);
 
-	public DetailPanel(int version, IFixtureEditingModel model, Comparator<TileFixture> sortOrder) {
+	public DetailPanel(final int version, final IFixtureEditingModel model, final Comparator<TileFixture> sortOrder) {
 		super(JSplitPane.HORIZONTAL_SPLIT, true);
 		this.version = version;
 		this.model = model;
@@ -88,7 +88,7 @@ import worker.common.IFixtureEditHelper;
 		setDividerLocation(0.9);
 	}
 
-	private static JComponent keyElement(int version, @Nullable TileType type) {
+	private static JComponent keyElement(final int version, @Nullable final TileType type) {
 		BoxPanel retval = new BoxPanel(BoxAxis.LineAxis);
 		retval.addGlue();
 		retval.addRigidArea(7);
@@ -112,7 +112,7 @@ import worker.common.IFixtureEditHelper;
 	}
 
 	private static class KeyPanel extends JPanel implements VersionChangeListener {
-		public KeyPanel(int version) {
+		public KeyPanel(final int version) {
 			super(new GridLayout(0, 4));
 			Dimension size = new Dimension((int) keyElement(version, null)
 					.getMinimumSize().getWidth() * 4,
@@ -122,7 +122,7 @@ import worker.common.IFixtureEditHelper;
 		}
 
 		@Override
-		public void changeVersion(int old, int newVersion) {
+		public void changeVersion(final int old, final int newVersion) {
 			removeAll();
 			for (TileType type : TileType.getValuesForVersion(newVersion)) {
 				add(keyElement(newVersion, type));
@@ -133,18 +133,18 @@ import worker.common.IFixtureEditHelper;
 	private final SelectionChangeListener delegate;
 
 	@Override
-	public void changeVersion(int old, int newVersion) {
+	public void changeVersion(final int old, final int newVersion) {
 		keyPanel.changeVersion(old, newVersion);
 	}
 
 	@Override
-	public void selectedPointChanged(@Nullable Point old, Point newPoint) {
+	public void selectedPointChanged(@Nullable final Point old, final Point newPoint) {
 		delegate.selectedPointChanged(old, newPoint);
 		header.setArguments(newPoint);
 	}
 
 	@Override
-	public void selectedUnitChanged(@Nullable IUnit old, @Nullable IUnit newUnit) {
+	public void selectedUnitChanged(@Nullable final IUnit old, @Nullable final IUnit newUnit) {
 		delegate.selectedUnitChanged(old, newUnit);
 	}
 
@@ -152,7 +152,7 @@ import worker.common.IFixtureEditHelper;
 	public void interactionPointChanged() {}
 
 	@Override
-	public void cursorPointChanged(@Nullable Point old, Point newCursor) {}
+	public void cursorPointChanged(@Nullable final Point old, final Point newCursor) {}
 
 	private final PortraitComponent portrait;
 
@@ -160,7 +160,7 @@ import worker.common.IFixtureEditHelper;
 		private static final long serialVersionUID = 1L;
 		private final JList<TileFixture> fixtureListObject;
 
-		public PortraitComponent(JList<TileFixture> fixtureList) {
+		public PortraitComponent(final JList<TileFixture> fixtureList) {
 			fixtureListObject = fixtureList;
 		}
 
@@ -168,7 +168,7 @@ import worker.common.IFixtureEditHelper;
 		private Image portrait = null;
 
 		@Override
-		public void paintComponent(Graphics pen) {
+		public void paintComponent(final Graphics pen) {
 			super.paintComponent(pen);
 			if (portrait != null) {
 				pen.drawImage(portrait, 0, 0, getWidth(), getHeight(), this);
@@ -176,7 +176,7 @@ import worker.common.IFixtureEditHelper;
 		}
 
 		@Override
-		public void valueChanged(ListSelectionEvent event) {
+		public void valueChanged(final ListSelectionEvent event) {
 			List<TileFixture> selections =
 				fixtureListObject.getSelectedValuesList();
 			portrait = null;
@@ -189,7 +189,7 @@ import worker.common.IFixtureEditHelper;
 							portrait = ImageLoader.loadImage(portraitName);
 							repaint();
 							return;
-						} catch (IOException except) {
+						} catch (final IOException except) {
 							LOGGER.log(Level.WARNING,
 								"I/O error loading portrait", except);
 						}
@@ -201,7 +201,7 @@ import worker.common.IFixtureEditHelper;
 							try {
 								portrait = ImageLoader
 									.loadImage(playerPortraitName);
-							} catch (IOException except) {
+							} catch (final IOException except) {
 								LOGGER.log(Level.WARNING,
 									"I/O error loading player portrait",
 									except);

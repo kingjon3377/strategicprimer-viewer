@@ -90,7 +90,7 @@ final class DBWorkerHandler extends AbstractDatabaseWriter<IWorker, IUnit> imple
 			"VALUES(?, ?, ?, ?, ?);";
 
 	@Override
-	public void write(DB db, IWorker obj, IUnit context) {
+	public void write(final DB db, final IWorker obj, final IUnit context) {
 		db.transaction(sql -> {
 			String portrait = obj.getPortrait();
 			WorkerStats stats = obj.getStats();
@@ -120,10 +120,10 @@ final class DBWorkerHandler extends AbstractDatabaseWriter<IWorker, IUnit> imple
 	}
 
 	@Override
-	public void readMapContents(DB db, IMutableMapNG map, Warning warner) {}
+	public void readMapContents(final DB db, final IMutableMapNG map, final Warning warner) {}
 
 	private TryBiConsumer<Map<String, Object>, Warning, Exception>
-			readWorkerStats(IMutableMapNG map, Map<Integer, Worker> workers) {
+			readWorkerStats(final IMutableMapNG map, final Map<Integer, Worker> workers) {
 		return (dbRow, warner) -> {
 			IMutableUnit unit = (IMutableUnit) findById(map, (Integer) dbRow.get("unit"),
 				warner);
@@ -159,7 +159,7 @@ final class DBWorkerHandler extends AbstractDatabaseWriter<IWorker, IUnit> imple
 	}
 
 	private TryBiConsumer<Map<String, Object>, Warning, Exception>
-			readJobLevel(IMutableMapNG map, Map<Integer, Worker> workers) {
+			readJobLevel(final IMutableMapNG map, final Map<Integer, Worker> workers) {
 		return (dbRow, warner) -> {
 			int id = (Integer) dbRow.get("worker");
 			Worker worker = workers.get(id);
@@ -170,7 +170,7 @@ final class DBWorkerHandler extends AbstractDatabaseWriter<IWorker, IUnit> imple
 	}
 
 	private TryBiConsumer<Map<String, Object>, Warning, Exception>
-			readSkillLevel(IMutableMapNG map, Map<Integer, Worker> workers) {
+			readSkillLevel(final IMutableMapNG map, final Map<Integer, Worker> workers) {
 		return (dbRow, warner) -> {
 			int id = (Integer) dbRow.get("worker");
 			Worker worker = workers.get(id);
@@ -183,7 +183,7 @@ final class DBWorkerHandler extends AbstractDatabaseWriter<IWorker, IUnit> imple
 	}
 
 	private TryBiConsumer<Map<String, Object>, Warning, Exception>
-			readWorkerNotes(IMapNG map, Map<Integer, Worker> workers) {
+			readWorkerNotes(final IMapNG map, final Map<Integer, Worker> workers) {
 		return (dbRow, warner) -> {
 			int id = (Integer) dbRow.get("fixture");
 			Worker worker = workers.get(id);
@@ -196,7 +196,7 @@ final class DBWorkerHandler extends AbstractDatabaseWriter<IWorker, IUnit> imple
 	}
 
 	@Override
-	public void readExtraMapContents(DB db, IMutableMapNG map, Warning warner) {
+	public void readExtraMapContents(final DB db, final IMutableMapNG map, final Warning warner) {
 		Map<Integer, Worker> workers = new HashMap<Integer, Worker>();
 		try {
 			handleQueryResults(db, warner, "worker stats", readWorkerStats(map, workers),
@@ -207,10 +207,10 @@ final class DBWorkerHandler extends AbstractDatabaseWriter<IWorker, IUnit> imple
 				"SELECT * FROM worker_skill_levels");
 			handleQueryResults(db, warner, "Worker notes", readWorkerNotes(map, workers),
 				"SELECT * FROM notes");
-		} catch (RuntimeException except) {
+		} catch (final RuntimeException except) {
 			// Don't wrap RuntimeExceptions in RuntimeException
 			throw except;
-		} catch (Exception except) {
+		} catch (final Exception except) {
 			// FIXME Antipattern
 			throw new RuntimeException(except);
 		}

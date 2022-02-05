@@ -9,7 +9,7 @@ import common.map.fixtures.MineralFixture;
  * A vein of a mineral.
  */
 public class MineralVein implements HarvestableFixture, MineralFixture {
-	public MineralVein(String kind, boolean exposed, int dc, int id) {
+	public MineralVein(final String kind, final boolean exposed, final int dc, final int id) {
 		this.kind = kind;
 		this.exposed = exposed;
 		this.dc = dc;
@@ -53,7 +53,7 @@ public class MineralVein implements HarvestableFixture, MineralFixture {
 	 * and make callers remove the non-exposed and add the exposed version
 	 * back.
 	 */
-	public void setExposed(boolean exposed) {
+	public void setExposed(final boolean exposed) {
 		this.exposed = exposed;
 	}
 
@@ -104,19 +104,19 @@ public class MineralVein implements HarvestableFixture, MineralFixture {
 	 * Set the filename of an image to use as an icon for this instance.
 	 */
 	@Override
-	public void setImage(String image) {
+	public void setImage(final String image) {
 		this.image = image;
 	}
 
 	@Override
-	public MineralVein copy(boolean zero) {
+	public MineralVein copy(final boolean zero) {
 		final MineralVein retval = new MineralVein(kind, exposed, (zero) ? 0 : dc, id);
 		retval.setImage(image);
 		return retval;
 	}
 
 	@Override
-	public boolean equalsIgnoringID(IFixture fixture) {
+	public boolean equalsIgnoringID(final IFixture fixture) {
 		if (fixture instanceof MineralVein) {
 			return kind.equals(((MineralVein) fixture).getKind()) &&
 				exposed == ((MineralVein) fixture).isExposed();
@@ -126,7 +126,7 @@ public class MineralVein implements HarvestableFixture, MineralFixture {
 	}
 
 	@Override
-	public boolean equals(Object obj) {
+	public boolean equals(final Object obj) {
 		if (obj instanceof MineralVein && equalsIgnoringID((MineralVein) obj)) {
 			return ((MineralVein) obj).getId() == id;
 		} else {

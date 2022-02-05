@@ -67,7 +67,7 @@ public class FixtureFilterTableModel extends AbstractTableModel
 		implements Reorderable, ZOrderFilter, Iterable<FixtureMatcher>, Comparator<TileFixture> {
 	private final List<FixtureMatcher> matchers = new ArrayList<>();
 
-	private static <T> Predicate<T> not(Predicate<T> p) {
+	private static <T> Predicate<T> not(final Predicate<T> p) {
 		return t -> !p.test(t);
 	}
 
@@ -134,7 +134,7 @@ public class FixtureFilterTableModel extends AbstractTableModel
 	}
 
 	@Override
-	public Object getValueAt(int rowIndex, int columnIndex) {
+	public Object getValueAt(final int rowIndex, final int columnIndex) {
 		if (rowIndex >= 0 && rowIndex < matchers.size()) {
 			FixtureMatcher matcher = matchers.get(rowIndex);
 			switch (columnIndex) {
@@ -151,7 +151,7 @@ public class FixtureFilterTableModel extends AbstractTableModel
 	}
 
 	@Override
-	public String getColumnName(int column) {
+	public String getColumnName(final int column) {
 		switch (column) {
 		case 0:
 			return "Visible";
@@ -163,7 +163,7 @@ public class FixtureFilterTableModel extends AbstractTableModel
 	}
 
 	@Override
-	public Class<?> getColumnClass(int columnIndex) {
+	public Class<?> getColumnClass(final int columnIndex) {
 		switch (columnIndex) {
 		case 0:
 			return Boolean.class;
@@ -175,12 +175,12 @@ public class FixtureFilterTableModel extends AbstractTableModel
 	}
 
 	@Override
-	public boolean isCellEditable(int rowIndex, int columnIndex) {
+	public boolean isCellEditable(final int rowIndex, final int columnIndex) {
 		return columnIndex == 0; // TODO: restrict to existing rows as well?
 	}
 
 	@Override
-	public void setValueAt(Object val, int rowIndex, int columnIndex) {
+	public void setValueAt(final Object val, final int rowIndex, final int columnIndex) {
 		if (columnIndex == 0 && rowIndex >= 0 && rowIndex < matchers.size()) {
 			FixtureMatcher matcher = matchers.get(rowIndex);
 			matcher.setDisplayed((Boolean) val);
@@ -189,7 +189,7 @@ public class FixtureFilterTableModel extends AbstractTableModel
 	}
 
 	@Override
-	public void reorder(int fromIndex, int toIndex) {
+	public void reorder(final int fromIndex, final int toIndex) {
 		if (fromIndex != toIndex) {
 			int actual;
 			if (fromIndex < toIndex) {
@@ -205,7 +205,7 @@ public class FixtureFilterTableModel extends AbstractTableModel
 	}
 
 	@Override
-	public boolean shouldDisplay(TileFixture fixture) {
+	public boolean shouldDisplay(final TileFixture fixture) {
 		for (FixtureMatcher matcher : matchers) {
 			if (matcher.matches(fixture)) {
 				return matcher.isDisplayed();
@@ -224,7 +224,7 @@ public class FixtureFilterTableModel extends AbstractTableModel
 	}
 
 	@Override
-	public int compare(TileFixture first, TileFixture second) {
+	public int compare(final TileFixture first, final TileFixture second) {
 		for (FixtureMatcher matcher : matchers) {
 			if (!matcher.isDisplayed()) {
 				continue;

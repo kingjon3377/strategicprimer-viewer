@@ -73,7 +73,7 @@ import java.math.BigDecimal;
 /* package */ class TownGenerator {
 	private static final Logger LOGGER = Logger.getLogger(TownGenerator.class.getName());
 
-	public TownGenerator(ICLIHelper cli) throws MissingTableException, IOException {
+	public TownGenerator(final ICLIHelper cli) throws MissingTableException, IOException {
 		this.cli = cli;
 		runner = initProduction(); // TODO: pull its contents up?
 		consumption = initConsumption(); // TODO: inline that?
@@ -155,7 +155,7 @@ import java.math.BigDecimal;
 	 * alias nor use a union type in Java and so use the nearest supertype,
 	 * {@link ITownFixture}.
 	 */
-	List<Pair<Point, ITownFixture>> unstattedTowns(IMapNG map) {
+	List<Pair<Point, ITownFixture>> unstattedTowns(final IMapNG map) {
 		return map.streamLocations()
 			.flatMap(l -> map.getFixtures(l).stream().filter(ITownFixture.class::isInstance)
 				.map(ITownFixture.class::cast)
@@ -170,7 +170,7 @@ import java.math.BigDecimal;
 	 * TODO: search inside fortresses and units
 	 */
 	@Nullable
-	private IFixture findByID(IMapNG map, int id) {
+	private IFixture findByID(final IMapNG map, final int id) {
 		return map.streamLocations().flatMap(l -> map.getFixtures(l).stream())
 			.filter(f -> f.getId() == id)
 			.findAny().orElse(null);
@@ -183,7 +183,7 @@ import java.math.BigDecimal;
 	 * TODO: search inside fortresses and units
 	 */
 	@Nullable
-	private Point findLocById(IMapNG map, int id) {
+	private Point findLocById(final IMapNG map, final int id) {
 		return map.streamLocations()
 			.filter(l -> map.getFixtures(l).stream().anyMatch(f -> f.getId() == id))
 			.findAny().orElse(null);
@@ -193,7 +193,7 @@ import java.math.BigDecimal;
 	 * Whether, in the given {@link map}, any town claims a resource
 	 * identified by the given {@link id ID number}.
 	 */
-	private boolean isClaimedField(IMapNG map, int id) {
+	private boolean isClaimedField(final IMapNG map, final int id) {
 		return map.streamLocations().flatMap(l -> map.getFixtures(l).stream())
 			.filter(ITownFixture.class::isInstance).map(ITownFixture.class::cast)
 			.map(ITownFixture::getPopulation).filter(Objects::nonNull)
@@ -206,7 +206,7 @@ import java.math.BigDecimal;
 	 * refers to {@link HarvestableFixture a resource that can be worked}
 	 * that {@link isClaimedField is presently unclaimed}.
 	 */
-	private boolean isUnclaimedField(IMapNG map, int id) {
+	private boolean isUnclaimedField(final IMapNG map, final int id) {
 		return !isClaimedField(map, id) && findByID(map, id) instanceof HarvestableFixture;
 	}
 
@@ -214,7 +214,7 @@ import java.math.BigDecimal;
 	 * If both arguments exist and are ocean, return true; if one is ocean
 	 * and the other is not, return false; otherwise, return true.
 	 */
-	private boolean bothOrNeitherOcean(@Nullable TileType one, @Nullable TileType two) {
+	private boolean bothOrNeitherOcean(@Nullable final TileType one, @Nullable final TileType two) {
 		if (TileType.Ocean.equals(one)) {
 			return TileType.Ocean.equals(two);
 		} else if (TileType.Ocean.equals(two)) {
@@ -229,7 +229,7 @@ import java.math.BigDecimal;
 	 * unexposed mineral vein, an uncultivated field or meadow, an
 	 * uncultivated grove or orchard, an abandoned mine, or a cache is not claimable.
 	 */
-	private boolean isReallyClaimable(HarvestableFixture fix) {
+	private boolean isReallyClaimable(final HarvestableFixture fix) {
 		if (fix instanceof MineralVein) {
 			return ((MineralVein) fix).isExposed();
 		} else if (fix instanceof Meadow) {
@@ -251,7 +251,7 @@ import java.math.BigDecimal;
 	/**
 	 * Find the nearest claimable resources to the given location.
 	 */
-	private List<HarvestableFixture> findNearestFields(IMapNG map, Point location) {
+	private List<HarvestableFixture> findNearestFields(final IMapNG map, final Point location) {
 		TileType base = map.getBaseTerrain(location);
 		if (base != null) { // TODO: invert
 			return StreamSupport.stream(new SurroundingPointIterable(location,
@@ -269,8 +269,8 @@ import java.math.BigDecimal;
 	/**
 	 * Have the user enter expertise levels and claimed resources for a town.
 	 */
-	private CommunityStats enterStats(ICLIHelper cli, IDRegistrar idf, IMapNG map, Point location,
-			/*ModifiableTown*/ ITownFixture town) {
+	private CommunityStats enterStats(final ICLIHelper cli, final IDRegistrar idf, final IMapNG map, final Point location,
+			/*ModifiableTown*/ final ITownFixture town) {
 		CommunityStats retval = new CommunityStats(Optional.ofNullable(
 			cli.inputNumber("Population: ")).orElse(0));
 		cli.println("Now enter Skill levels, the highest in the community for each Job.");
@@ -388,7 +388,7 @@ import java.math.BigDecimal;
 	 *
 	 * TODO: Provide and use lookup tables for specific crops to avoid miscategorizations
 	 */
-	private String getHarvestableKind(HarvestableFixture fixture) {
+	private String getHarvestableKind(final HarvestableFixture fixture) {
 		if (fixture instanceof Grove) {
 			return (((Grove) fixture).isOrchard()) ? "food" : "wood";
 		} else if (fixture instanceof Meadow) {
@@ -406,7 +406,7 @@ import java.math.BigDecimal;
 	/**
 	 * What specific resource the given harvestable fixture will produce.
 	 */
-	private String getHarvestedProduct(HarvestableFixture fixture) {
+	private String getHarvestedProduct(final HarvestableFixture fixture) {
 		return fixture.getKind();
 	}
 
@@ -417,7 +417,7 @@ import java.math.BigDecimal;
 
 	@FunctionalInterface
 	private static interface RepeatedRoller {
-		default int repeatedlyRoll(int count, int die) {
+		default int repeatedlyRoll(final int count, final int die) {
 			return repeatedlyRoll(count, die, 0);
 		}
 
@@ -433,8 +433,8 @@ import java.math.BigDecimal;
 	 * To ensure consistency between runs of this algorithm, we seed the
 	 * random number generator with the town's ID.
 	 */
-	private CommunityStats generateStats(IDRegistrar idf, Point location, ITownFixture town,
-			IMapNG map) throws MissingTableException {
+	private CommunityStats generateStats(final IDRegistrar idf, final Point location, final ITownFixture town,
+	                                     final IMapNG map) throws MissingTableException {
 		final Random rng = new Random(town.getId());
 		/**
 		 * A die roll using our pre-seeded RNG.
@@ -545,7 +545,7 @@ import java.math.BigDecimal;
 							map.getFixtures(location), map.getDimensions()),
 						new Quantity(Math.pow(2, level - 1),
 							(level == 1) ? "unit" : "units")));
-				} catch (MissingTableException except) {
+				} catch (final MissingTableException except) {
 					LOGGER.log(Level.WARNING, "Missing table", except);
 					retval.getYearlyProduction().add(new ResourcePileImpl(
 						idf.createID(), "unknown", "product of " + skill,
@@ -575,7 +575,7 @@ import java.math.BigDecimal;
 	/**
 	 * Allow the user to create population details for specific towns.
 	 */
-	public void generateSpecificTowns(IDRegistrar idf, PopulationGeneratingModel model) {
+	public void generateSpecificTowns(final IDRegistrar idf, final PopulationGeneratingModel model) {
 		while (true) {
 			String input = cli.inputString("ID or name of town to create stats for: ");
 			if (input == null || input.trim().isEmpty()) {
@@ -612,7 +612,7 @@ import java.math.BigDecimal;
 				} else {
 					cli.println("No matching town found.");
 				}
-			} catch (MissingTableException except) {
+			} catch (final MissingTableException except) {
 				LOGGER.log(Level.SEVERE, "Missing table file", except);
 				return;
 			}
@@ -623,7 +623,7 @@ import java.math.BigDecimal;
 	 * Help the user generate population details for all the towns in the
 	 * map that don't have such details already.
 	 */
-	public void generateAllTowns(IDRegistrar idf, PopulationGeneratingModel model) {
+	public void generateAllTowns(final IDRegistrar idf, final PopulationGeneratingModel model) {
 		List<Pair<Point, ITownFixture>> list = unstattedTowns(model.getMap());
 		Collections.shuffle(list);
 		for (Pair<Point, ITownFixture> pair : list) {
@@ -644,7 +644,7 @@ import java.math.BigDecimal;
 				}
 				model.setMapModified(true);
 				model.assignTownStats(location, town.getId(), town.getName(), stats);
-			} catch (MissingTableException except) {
+			} catch (final MissingTableException except) {
 				LOGGER.log(Level.SEVERE, "Missing table file", except);
 				break;
 			}

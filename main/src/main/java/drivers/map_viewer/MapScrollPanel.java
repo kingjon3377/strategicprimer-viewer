@@ -10,7 +10,7 @@ import lovelace.util.BorderedPanel;
  * TODO: convert (back) to static method in MapComponent or some such?
  */
 /* package */ class MapScrollPanel extends BorderedPanel {
-	public MapScrollPanel(IViewerModel model, JComponent component) {
+	public MapScrollPanel(final IViewerModel model, final JComponent component) {
 		super(component, null, null, null, null);
 		ScrollListener scrollListener = ScrollListener.createScrollBars(model, this);
 		model.addGraphicalParamsListener(scrollListener);

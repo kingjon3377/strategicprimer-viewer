@@ -83,7 +83,7 @@ import org.takes.http.Exit;
  */
 public class TabularReportGUI implements GUIDriver {
 	private static final Logger LOGGER = Logger.getLogger(TabularReportGUI.class.getName());
-	public TabularReportGUI(ICLIHelper cli, SPOptions options, IDriverModel model) {
+	public TabularReportGUI(final ICLIHelper cli, final SPOptions options, final IDriverModel model) {
 		this.cli = cli;
 		this.options = options;
 		this.model = model;
@@ -113,7 +113,7 @@ public class TabularReportGUI implements GUIDriver {
 				frame.removeAll();
 				try {
 					TabularReportGenerator.createGUITabularReports(frame::addTab, model.getMap());
-				} catch (IOException except) {
+				} catch (final IOException except) {
 					// FIXME: Show error dialog
 					LOGGER.log(Level.SEVERE, "I/O error while generating tabular reports", except);
 				}
@@ -142,14 +142,14 @@ public class TabularReportGUI implements GUIDriver {
 	public Iterable<Path> askUserForFiles() {
 		try {
 			return SPFileChooser.open((Path) null).getFiles();
-		} catch (FileChooser.ChoiceInterruptedException except) {
+		} catch (final FileChooser.ChoiceInterruptedException except) {
 			LOGGER.log(Level.WARNING, "Choice interrupted or user didn't choose", except);
 			return Collections.emptyList();
 		}
 	}
 
 	@Override
-	public void open(IMutableMapNG map) {
+	public void open(final IMutableMapNG map) {
 		model.setMap(map);
 	}
 }

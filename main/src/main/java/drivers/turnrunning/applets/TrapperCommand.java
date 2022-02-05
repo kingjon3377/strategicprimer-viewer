@@ -14,7 +14,7 @@ import common.map.HasName;
 	EasyReset("Reset a foothold trap, e.g."),
 	Quit("Quit");
 
-	private TrapperCommand(String name) {
+	private TrapperCommand(final String name) {
 		this.name = name;
 	}
 

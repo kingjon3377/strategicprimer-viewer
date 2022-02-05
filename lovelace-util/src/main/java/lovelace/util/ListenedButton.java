@@ -13,7 +13,7 @@ public class ListenedButton extends JButton {
 	/**
 	 * @param text The text to put on the button
 	 */
-	public ListenedButton(String text, ActionListener... listeners) {
+	public ListenedButton(final String text, final ActionListener... listeners) {
 		super(text);
 		for (ActionListener listener : listeners) {
 			addActionListener(listener);

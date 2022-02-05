@@ -18,14 +18,14 @@ import org.jetbrains.annotations.Nullable;
 /* package */ class UnitListModel extends DefaultListModel<IUnit> implements PlayerChangeListener {
 	private static final Logger LOGGER = Logger.getLogger(UnitListModel.class.getName());
 
-	public UnitListModel(IExplorationModel model) {
+	public UnitListModel(final IExplorationModel model) {
 		this.model = model;
 	}
 
 	private final IExplorationModel model;
 
 	@Override
-	public void playerChanged(@Nullable Player old, Player newPlayer) {
+	public void playerChanged(@Nullable final Player old, final Player newPlayer) {
 		LOGGER.finer("Regenerating UnitListModel"); // TODO: move to below equality check?
 		if (old != null && old.equals(newPlayer)) {
 			return;

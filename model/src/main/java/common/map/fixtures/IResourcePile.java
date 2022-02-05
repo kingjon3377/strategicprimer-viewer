@@ -32,7 +32,7 @@ public interface IResourcePile extends UnitMember, FortressMember, HasKind, HasI
 	 * the same kind and contents, of the same age, with equal quantity.
 	 */
 	@Override
-	default boolean equalsIgnoringID(IFixture fixture) {
+	default boolean equalsIgnoringID(final IFixture fixture) {
 		if (fixture instanceof IResourcePile) {
 			return ((IResourcePile) fixture).getKind().equals(getKind()) &&
 				((IResourcePile) fixture).getContents().equals(getContents()) &&
@@ -49,7 +49,7 @@ public interface IResourcePile extends UnitMember, FortressMember, HasKind, HasI
 	 * ours.
 	 */
 	@Override
-	default boolean isSubset(IFixture obj, Consumer<String> report) {
+	default boolean isSubset(final IFixture obj, final Consumer<String> report) {
 		if (obj.getId() == getId()) {
 			if (obj instanceof IResourcePile) {
 				boolean retval = true;

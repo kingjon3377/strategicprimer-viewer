@@ -46,7 +46,7 @@ public interface IUnit extends MobileFixture, HasImage, HasKind, HasName,
 	/**
 	 * The unit's latest orders as of the given turn.
 	 */
-	default String getLatestOrders(int turn) {
+	default String getLatestOrders(final int turn) {
 		// map(i -> turn - i - 1) should reverse the range's order:
 		// e.g. it maps (-1, 0, 1, 2, 3) to (3, 2, 1, 0, -1)
 		return IntStream.rangeClosed(-1, turn).map(i -> turn - i - 1)
@@ -58,7 +58,7 @@ public interface IUnit extends MobileFixture, HasImage, HasKind, HasName,
 	/**
 	 * The unit's latest results as of the given turn.
 	 */
-	default String getLatestResults(int turn) {
+	default String getLatestResults(final int turn) {
 		// Reversing the order of the range as in getLatestOrders()
 		return IntStream.rangeClosed(-1, turn).map(i -> turn - i - 1)
 			.mapToObj(getAllResults()::get).filter(Objects::nonNull)
@@ -69,7 +69,7 @@ public interface IUnit extends MobileFixture, HasImage, HasKind, HasName,
 	/**
 	 * Get the latest turn that the given orders were the current orders.
 	 */
-	default int getOrdersTurn(String orders) {
+	default int getOrdersTurn(final String orders) {
 		int retval = -1;
 		for (Map.Entry<Integer, String> entry : getAllOrders().entrySet()) {
 			if (orders.equals(entry.getValue()) && entry.getKey() > retval) {
@@ -109,7 +109,7 @@ public interface IUnit extends MobileFixture, HasImage, HasKind, HasName,
 	 * either equal or themselves subsets.
 	 */
 	@Override
-	default boolean isSubset(IFixture obj, Consumer<String> report) {
+	default boolean isSubset(final IFixture obj, final Consumer<String> report) {
 		if (obj.getId() == getId()) {
 			if (obj instanceof IUnit) {
 				Consumer<String> localSimpleReport =

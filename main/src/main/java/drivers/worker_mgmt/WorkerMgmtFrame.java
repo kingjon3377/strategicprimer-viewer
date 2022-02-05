@@ -68,8 +68,8 @@ import drivers.worker_mgmt.orderspanel.OrdersPanel;
 	private final WorkerMgmtGUI driver;
 	private final WorkerTree tree;
 
-	public WorkerMgmtFrame(SPOptions options, IWorkerModel model, MenuBroker menuHandler,
-			WorkerMgmtGUI driver) {
+	public WorkerMgmtFrame(final SPOptions options, final IWorkerModel model, final MenuBroker menuHandler,
+	                       final WorkerMgmtGUI driver) {
 		super("Worker Management", driver, new Dimension(640, 480), true,
 			(file) -> model.addSubordinateMap(MapIOHelper.readMap(file)));
 		this.options = options;
@@ -146,7 +146,7 @@ import drivers.worker_mgmt.orderspanel.OrdersPanel;
 
 		addWindowListener(new WindowAdapter() {
 			@Override
-			public void windowClosed(WindowEvent event) {
+			public void windowClosed(final WindowEvent event) {
 				newUnitFrame.dispose();
 			}
 		});
@@ -167,7 +167,7 @@ import drivers.worker_mgmt.orderspanel.OrdersPanel;
 	private final NewUnitDialog newUnitFrame;
 	private final IWorkerTreeModel treeModel;
 
-	private static boolean isCurrent(IUnit unit, int turn) {
+	private static boolean isCurrent(final IUnit unit, final int turn) {
 		return unit.getOrders(turn).equals(unit.getLatestOrders(turn));
 	}
 
@@ -201,10 +201,10 @@ import drivers.worker_mgmt.orderspanel.OrdersPanel;
 
 	private final StrategyExporter strategyExporter;
 
-	private void writeStrategy(Path file) {
+	private void writeStrategy(final Path file) {
 		try {
 			strategyExporter.writeStrategy(file, model.getDismissed());
-		} catch (IOException except) {
+		} catch (final IOException except) {
 			// FIXME: Show error dialog
 			LOGGER.log(Level.SEVERE, "I/O error while trying to write strategy", except);
 		}
@@ -223,7 +223,7 @@ import drivers.worker_mgmt.orderspanel.OrdersPanel;
 	private final List<PlayerChangeListener> pcListeners;
 
 	@Override
-	public void playerChanged(@Nullable Player old, Player newPlayer) {
+	public void playerChanged(@Nullable final Player old, final Player newPlayer) {
 		for (PlayerChangeListener listener : pcListeners) {
 			listener.playerChanged(old, newPlayer);
 		}

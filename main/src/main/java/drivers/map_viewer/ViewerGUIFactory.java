@@ -61,7 +61,7 @@ public class ViewerGUIFactory implements GUIDriverFactory {
 	public Iterable<Path> askUserForFiles() {
 		try {
 			return SPFileChooser.open((Path) null).getFiles();
-		} catch (FileChooser.ChoiceInterruptedException except) {
+		} catch (final FileChooser.ChoiceInterruptedException except) {
 			// TODO: Add "throws DriverFailedException" to interface instead of just logging?
 			LOGGER.log(Level.SEVERE, "Choice interrupted or user didn't choose", except);
 			return Collections.emptyList();
@@ -69,12 +69,12 @@ public class ViewerGUIFactory implements GUIDriverFactory {
 	}
 
 	@Override
-	public GUIDriver createDriver(ICLIHelper cli, SPOptions options, IDriverModel model) {
+	public GUIDriver createDriver(final ICLIHelper cli, final SPOptions options, final IDriverModel model) {
 		return ViewerGUI.createDriver(cli, options, model);
 	}
 
 	@Override
-	public IViewerModel createModel(IMutableMapNG map) {
+	public IViewerModel createModel(final IMutableMapNG map) {
 		Path path = map.getFilename();
 		if (path != null) {
 			LOGGER.finer("Creating a viewer model for path " + path);

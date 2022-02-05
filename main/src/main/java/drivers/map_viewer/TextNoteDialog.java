@@ -30,7 +30,7 @@ import java.util.function.IntSupplier;
 public class TextNoteDialog extends SPDialog implements NewFixtureSource {
 	private final IntSupplier currentTurn;
 
-	public TextNoteDialog(IntSupplier currentTurn) {
+	public TextNoteDialog(final IntSupplier currentTurn) {
 		super(null, "Add Text Note");
 		this.currentTurn = currentTurn;
 		noteField.setLineWrap(true);
@@ -55,12 +55,12 @@ public class TextNoteDialog extends SPDialog implements NewFixtureSource {
 	private final List<NewFixtureListener> listeners = new ArrayList<>();
 
 	@Override
-	public void addNewFixtureListener(NewFixtureListener listener) {
+	public void addNewFixtureListener(final NewFixtureListener listener) {
 		listeners.add(listener);
 	}
 
 	@Override
-	public void removeNewFixtureListener(NewFixtureListener listener) {
+	public void removeNewFixtureListener(final NewFixtureListener listener) {
 		listeners.remove(listener);
 	}
 

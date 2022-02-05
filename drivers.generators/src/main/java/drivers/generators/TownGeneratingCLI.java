@@ -21,7 +21,7 @@ import java.util.stream.StreamSupport;
  * TODO: Write GUI to allow user to generate or enter town contents
  */
 public class TownGeneratingCLI implements CLIDriver {
-	public TownGeneratingCLI(ICLIHelper cli, PopulationGeneratingModel model) {
+	public TownGeneratingCLI(final ICLIHelper cli, final PopulationGeneratingModel model) {
 		this.cli = cli;
 		this.model = model;
 	}
@@ -44,9 +44,9 @@ public class TownGeneratingCLI implements CLIDriver {
 		TownGenerator generator;
 		try {
 			generator = new TownGenerator(cli); // TODO: Consider combining that with this class again.
-		} catch (MissingTableException except) {
+		} catch (final MissingTableException except) {
 			throw new DriverFailedException(except, "Missing table file(s)");
-		} catch (IOException except) {
+		} catch (final IOException except) {
 			throw new DriverFailedException(except, "I/O error initializing generator");
 		}
 		IDRegistrar idf = new IDFactoryFiller().createIDFactory(StreamSupport.stream(

@@ -21,7 +21,7 @@ final class DBExplorableHandler extends AbstractDatabaseWriter<ExplorableFixture
 	}
 
 	@Override
-	public boolean canWrite(Object obj, Object context) {
+	public boolean canWrite(final Object obj, final Object context) {
 		return (obj instanceof Battlefield || obj instanceof Cave) && context instanceof Point;
 	}
 
@@ -53,7 +53,7 @@ final class DBExplorableHandler extends AbstractDatabaseWriter<ExplorableFixture
 		"INSERT INTO battlefields (row, column, id, dc, image) VALUES(?, ?, ?, ?, ?);";
 
 	@Override
-	public void write(DB db, ExplorableFixture obj, Point context) {
+	public void write(final DB db, final ExplorableFixture obj, final Point context) {
 		String sql;
 		if (obj instanceof Cave) {
 			sql = CAVE_INSERT;
@@ -66,7 +66,7 @@ final class DBExplorableHandler extends AbstractDatabaseWriter<ExplorableFixture
 			obj.getImage()).execute();
 	}
 
-	private TryBiConsumer<Map<String, Object>, Warning, Exception> readCave(IMutableMapNG map) {
+	private TryBiConsumer<Map<String, Object>, Warning, Exception> readCave(final IMutableMapNG map) {
 		return (dbRow, warner) -> {
 			int row = (Integer) dbRow.get("row");
 			int column = (Integer) dbRow.get("column");
@@ -81,7 +81,7 @@ final class DBExplorableHandler extends AbstractDatabaseWriter<ExplorableFixture
 		};
 	}
 
-	private TryBiConsumer<Map<String, Object>, Warning, Exception> readBattlefield(IMutableMapNG map) {
+	private TryBiConsumer<Map<String, Object>, Warning, Exception> readBattlefield(final IMutableMapNG map) {
 		return (dbRow, warner) -> {
 			int row = (Integer) dbRow.get("row");
 			int column = (Integer) dbRow.get("column");
@@ -97,16 +97,16 @@ final class DBExplorableHandler extends AbstractDatabaseWriter<ExplorableFixture
 	}
 
 	@Override
-	public void readMapContents(DB db, IMutableMapNG map, Warning warner) {
+	public void readMapContents(final DB db, final IMutableMapNG map, final Warning warner) {
 		try {
 			handleQueryResults(db, warner, "caves", readCave(map),
 				"SELECT * FROM caves");
 			handleQueryResults(db, warner, "battlefields", readBattlefield(map),
 				"SELECT * FROM battlefields");
-		} catch (RuntimeException except) {
+		} catch (final RuntimeException except) {
 			// Don't wrap RuntimeExceptions in RuntimeException
 			throw except;
-		} catch (Exception except) {
+		} catch (final Exception except) {
 			// FIXME Antipattern
 			throw new RuntimeException(except);
 		}

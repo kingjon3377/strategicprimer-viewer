@@ -66,7 +66,7 @@ import common.map.fixtures.mobile.AnimalTracks;
  * An app to report statistics on the contents of the map.
  */
 /* package */ class CountingCLI implements ReadOnlyDriver {
-	public CountingCLI(ICLIHelper cli, IDriverModel model) {
+	public CountingCLI(final ICLIHelper cli, final IDriverModel model) {
 		this.cli = cli;
 		this.model = model;
 	}
@@ -86,23 +86,23 @@ import common.map.fixtures.mobile.AnimalTracks;
 	}
 
 	private static <Key, Count extends Number> String
-			parameterizedCountSpaceKey(Pair<Key, Count> entry) {
+			parameterizedCountSpaceKey(final Pair<Key, Count> entry) {
 		return String.format("- %s %s", entry.getValue1(), entry.getValue0());
 	}
 
 	private <Base, Key, Count extends Number&Comparable<Count>> void printSummary(
-			MappedCounter<Base, Key, Count> counter, String total) {
+			final MappedCounter<Base, Key, Count> counter, final String total) {
 		printSummary(counter, total, CountingCLI::parameterizedCountSpaceKey);
 	}
 
 	private <Base, Key, Count extends Number&Comparable<Count>> void printSummary(
-			MappedCounter<Base, Key, Count> counter, Function<Count, String> total) {
+			final MappedCounter<Base, Key, Count> counter, final Function<Count, String> total) {
 		printSummary(counter, total, CountingCLI::parameterizedCountSpaceKey);
 	}
 
 	private <Base, Key, Count extends Number&Comparable<Count>> void printSummary(
-			MappedCounter<Base, Key, Count> counter, String total,
-			Function<Pair<Key, Count>, String> each) {
+			final MappedCounter<Base, Key, Count> counter, final String total,
+			final Function<Pair<Key, Count>, String> each) {
 		if (counter.getTotal().doubleValue() > 0.0) {
 			cli.println(total);
 			cli.println();
@@ -113,8 +113,8 @@ import common.map.fixtures.mobile.AnimalTracks;
 	}
 
 	private <Base, Key, Count extends Number&Comparable<Count>> void printSummary(
-			MappedCounter<Base, Key, Count> counter, Function<Count, String> total,
-			Function<Pair<Key, Count>, String> each) {
+			final MappedCounter<Base, Key, Count> counter, final Function<Count, String> total,
+			final Function<Pair<Key, Count>, String> each) {
 		if (counter.getTotal().doubleValue() > 0.0) {
 			cli.println(total.apply(counter.getTotal()));
 			cli.println();
@@ -124,66 +124,66 @@ import common.map.fixtures.mobile.AnimalTracks;
 	}
 
 	private <Type> MappedCounter<Type, String, Integer>
-			simpleCounter(Function<Type, String> keyExtractor) {
+			simpleCounter(final Function<Type, String> keyExtractor) {
 		return new MappedCounter<Type, String, Integer>(keyExtractor, t -> 1, IntAccumulator::new, 0);
 	}
 
-	private <Type> void countSimply(Class<Type> cls, Iterable<?> stream, String title,
-			Function<Type, String> extractor) {
+	private <Type> void countSimply(final Class<Type> cls, final Iterable<?> stream, final String title,
+	                                final Function<Type, String> extractor) {
 		MappedCounter<Type, String, Integer> counter = simpleCounter(extractor);
 		StreamSupport.stream(stream.spliterator(), false).filter(cls::isInstance)
 			.map(cls::cast).forEach(counter::add);
 		printSummary(counter, title);
 	}
 
-	private static <Type> Predicate<Object> exclude(Class<Type> cls) {
+	private static <Type> Predicate<Object> exclude(final Class<Type> cls) {
 		return obj -> !cls.isInstance(obj);
 	}
 
-	private static String reportForestTotal(BigDecimal total) {
+	private static String reportForestTotal(final BigDecimal total) {
 		return String.format("There are %s acres of forest, including:", total);
 	}
 
 	// TODO: take Collection for these
-	private static boolean hasLake(Iterable<River> iter) {
+	private static boolean hasLake(final Iterable<River> iter) {
 		return StreamSupport.stream(iter.spliterator(), true).anyMatch(River.Lake::equals);
 	}
 
-	private static boolean withNonLake(Iterable<River> iter) {
+	private static boolean withNonLake(final Iterable<River> iter) {
 		return StreamSupport.stream(iter.spliterator(), true).anyMatch(r -> !River.Lake.equals(r));
 	}
 
-	private static String countOfKind(Pair<String, ? extends Number> pair) {
+	private static String countOfKind(final Pair<String, ? extends Number> pair) {
 		String key = pair.getValue0();
 		Number item = pair.getValue1();
 		return String.format("- %s of %s", item, key);
 	}
 
-	private static String countTilesWithKind(Pair<String, Integer> entry) {
+	private static String countTilesWithKind(final Pair<String, Integer> entry) {
 		return String.format("- %s tiles with %s", entry.getValue1(), entry.getValue0());
 	}
 
-	private static String kindColonCount(Pair<String, Integer> entry) {
+	private static String kindColonCount(final Pair<String, Integer> entry) {
 		return String.format("- %s: %s", entry.getValue0(), entry.getValue1());
 	}
 
-	private static String countSpaceKind(Pair<String, Integer> entry) {
+	private static String countSpaceKind(final Pair<String, Integer> entry) {
 		return String.format("  - %s %s", entry.getValue1(), entry.getValue0());
 	}
 
-	private static String townSummary(AbstractTown t) {
+	private static String townSummary(final AbstractTown t) {
 		return String.format("%s %s %s", t.getStatus(), t.getTownSize(), t.getKind());
 	}
 
-	private static <T> Predicate<T> negate(Predicate<T> pred) {
+	private static <T> Predicate<T> negate(final Predicate<T> pred) {
 		return t -> !pred.test(t);
 	}
 
-	private static Predicate<TileFixture> notA(Class<? extends TileFixture> cls) {
+	private static Predicate<TileFixture> notA(final Class<? extends TileFixture> cls) {
 		return negate(cls::isInstance);
 	}
 
-	private static BigDecimal decimalize(Number number) {
+	private static BigDecimal decimalize(final Number number) {
 		if (number instanceof Integer || number instanceof Long
 				|| number instanceof Short || number instanceof Byte) {
 			return BigDecimal.valueOf(number.longValue());

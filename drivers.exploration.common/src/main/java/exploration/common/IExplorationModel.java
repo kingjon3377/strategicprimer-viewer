@@ -97,7 +97,7 @@ public interface IExplorationModel extends IMultiMapModel, SelectionChangeSource
 	 * Default to removing sensitive information from the copies.  Returns
 	 * true if we think this changed anything in any of the sub-maps.
 	 */
-	default boolean copyToSubMaps(Point location, TileFixture fixture) {
+	default boolean copyToSubMaps(final Point location, final TileFixture fixture) {
 		return copyToSubMaps(location, fixture, true);
 	}
 

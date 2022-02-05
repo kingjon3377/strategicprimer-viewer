@@ -31,19 +31,19 @@ import common.map.fixtures.mobile.worker.IJob;
 	private final boolean details;
 	private final Player currentPlayer;
 
-	public WorkerReportGenerator(Comparator<Pair<Point, IFixture>> comp, boolean details,
-			MapDimensions dimensions, Player currentPlayer) {
+	public WorkerReportGenerator(final Comparator<Pair<Point, IFixture>> comp, final boolean details,
+	                             final MapDimensions dimensions, final Player currentPlayer) {
 		this(comp, details, dimensions, currentPlayer, null);
 	}
 
-	public WorkerReportGenerator(Comparator<Pair<Point, IFixture>> comp, boolean details,
-			MapDimensions dimensions, Player currentPlayer, @Nullable Point hq) {
+	public WorkerReportGenerator(final Comparator<Pair<Point, IFixture>> comp, final boolean details,
+	                             final MapDimensions dimensions, final Player currentPlayer, @Nullable final Point hq) {
 		super(comp, dimensions, hq);
 		this.details = details;
 		this.currentPlayer = currentPlayer;
 	}
 
-	private static String mod(int stat) {
+	private static String mod(final int stat) {
 		return WorkerStats.getModifierString(stat);
 	}
 
@@ -51,7 +51,7 @@ import common.map.fixtures.mobile.worker.IJob;
 	 * Produce the sub-sub-report on a worker's stats.
 	 * TODO: Take ThrowingConsumer instead of returning String
 	 */
-	private static String statsString(WorkerStats stats) {
+	private static String statsString(final WorkerStats stats) {
 		return String.format("He or she has the following stats: %d / %d Hit Points, Strength %s, Dexterity %s, Constitution %s, Intelligence %s, Wisdom %s, Charisma %s",
 			stats.getHitPoints(), stats.getMaxHitPoints(), mod(stats.getStrength()),
 			mod(stats.getDexterity()), mod(stats.getConstitution()),
@@ -60,7 +60,7 @@ import common.map.fixtures.mobile.worker.IJob;
 	}
 
 	// TODO: take ThrowingConsumer instead of returning String
-	private static String skillString(ISkill skill) {
+	private static String skillString(final ISkill skill) {
 		return skill.getName() + " " + Integer.toString(skill.getLevel());
 	}
 
@@ -68,7 +68,7 @@ import common.map.fixtures.mobile.worker.IJob;
 	 * Produce text describing the given Skills.
 	 * TODO: Take ThrowingConsumer instead of returning String?
 	 */
-	private String skills(Iterable<ISkill> job) {
+	private String skills(final Iterable<ISkill> job) {
 		return (job.iterator().hasNext()) ? StreamSupport.stream(job.spliterator(), false)
 			.map(WorkerReportGenerator::skillString)
 			.collect(Collectors.joining(", ", "(", ")")) : "";
@@ -79,8 +79,8 @@ import common.map.fixtures.mobile.worker.IJob;
 	 * middle of a paragraph or bullet point).
 	 */
 	@Override
-	public void produceSingle(DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-			IMapNG map, ThrowingConsumer<String, IOException> ostream, IWorker worker, Point loc)
+	public void produceSingle(final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
+	                          final IMapNG map, final ThrowingConsumer<String, IOException> ostream, final IWorker worker, final Point loc)
 			throws IOException {
 		ostream.accept(worker.getName());
 		ostream.accept(", a ");
@@ -126,8 +126,8 @@ import common.map.fixtures.mobile.worker.IJob;
 	 * called, but we'll implement it properly anyway.
 	 */
 	@Override
-	public void produce(DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-			IMapNG map, ThrowingConsumer<String, IOException> ostream) throws IOException {
+	public void produce(final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
+	                    final IMapNG map, final ThrowingConsumer<String, IOException> ostream) throws IOException {
 		List<Pair<IWorker, Point>> workers = fixtures.values().stream()
 			.filter(p -> p.getValue1() instanceof IWorker)
 			.sorted(pairComparator)

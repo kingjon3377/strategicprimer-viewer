@@ -10,7 +10,7 @@ import common.map.Point;
  */
 public class Portal implements ExplorableFixture, IFixture, Subsettable<IFixture> {
 
-	public Portal(String destinationWorld, Point destinationCoordinates, int id) {
+	public Portal(final String destinationWorld, final Point destinationCoordinates, final int id) {
 		this.destinationWorld = destinationWorld;
 		this.destinationCoordinates = destinationCoordinates;
 		this.id = id;
@@ -62,7 +62,7 @@ public class Portal implements ExplorableFixture, IFixture, Subsettable<IFixture
 	 * TODO: Use Null instead of an invalid Point?
 	 * TODO: "Combine with destinationWorld in a Tuple?
 	 */
-	public void setDestinationCoordinates(Point destinationCoordinates) {
+	public void setDestinationCoordinates(final Point destinationCoordinates) {
 		this.destinationCoordinates = destinationCoordinates;
 	}
 
@@ -96,12 +96,12 @@ public class Portal implements ExplorableFixture, IFixture, Subsettable<IFixture
 	 * Set the filename of an image to use as an icon for this instance.
 	 */
 	@Override
-	public void setImage(String image) {
+	public void setImage(final String image) {
 		this.image = image;
 	}
 
 	@Override
-	public Portal copy(boolean zero) {
+	public Portal copy(final boolean zero) {
 		Portal retval = new Portal((zero) ? "unknown" : destinationWorld,
 			(zero) ? Point.INVALID_POINT : destinationCoordinates, id);
 		retval.setImage(image);
@@ -124,7 +124,7 @@ public class Portal implements ExplorableFixture, IFixture, Subsettable<IFixture
 	}
 
 	@Override
-	public boolean equalsIgnoringID(IFixture fixture) {
+	public boolean equalsIgnoringID(final IFixture fixture) {
 		if (this == fixture) {
 			return true;
 		} else if (fixture instanceof Portal) {
@@ -136,7 +136,7 @@ public class Portal implements ExplorableFixture, IFixture, Subsettable<IFixture
 	}
 
 	@Override
-	public boolean equals(Object obj) {
+	public boolean equals(final Object obj) {
 		if (this == obj) {
 			return true;
 		} else if (obj instanceof Portal) {
@@ -160,7 +160,7 @@ public class Portal implements ExplorableFixture, IFixture, Subsettable<IFixture
 	 * TODO: Test this
 	 */
 	@Override
-	public boolean isSubset(IFixture obj, Consumer<String> report) {
+	public boolean isSubset(final IFixture obj, final Consumer<String> report) {
 		if (obj.getId() == id) {
 			if (obj instanceof Portal) {
 				Consumer<String> localReport =

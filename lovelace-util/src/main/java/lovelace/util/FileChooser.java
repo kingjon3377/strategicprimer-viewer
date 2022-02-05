@@ -48,7 +48,7 @@ public class FileChooser {
 			super("No file was selected");
 		}
 
-		public ChoiceInterruptedException(@Nullable Throwable cause) {
+		public ChoiceInterruptedException(@Nullable final Throwable cause) {
 			super(cause == null ? "No file was selected" :
 				"Choice of a file was interrupted by an exception:", cause);
 		}
@@ -57,7 +57,7 @@ public class FileChooser {
 	/**
 	 * Convert the type returned by the file-chooser to the type we expose in return types.
 	 */
-	private static Path fileToPath(File file) {
+	private static Path fileToPath(final File file) {
 		return file.toPath();
 	}
 
@@ -98,8 +98,8 @@ public class FileChooser {
 
 	// We don't provide a constructor taking FileDialog and approveText, as it's (unfortunately)
 	// not possible to use a "custom" action with the AWT interface.
-	protected FileChooser(ChooserMode mode, JFileChooser fileChooser, String approveText,
-			@Nullable Path loc) {
+	protected FileChooser(final ChooserMode mode, final JFileChooser fileChooser, final String approveText,
+	                      @Nullable final Path loc) {
 		switch (mode) {
 		case Open: case Save:
 			throw new IllegalArgumentException("Approve text only supported for custom dialog");
@@ -120,7 +120,7 @@ public class FileChooser {
 		}
 	}
 
-	protected FileChooser(ChooserMode mode, JFileChooser fileChooser, @Nullable Path loc) {
+	protected FileChooser(final ChooserMode mode, final JFileChooser fileChooser, @Nullable final Path loc) {
 		switch (mode) {
 		case Open:
 			LOGGER.fine("FileChooser invoked for the Open dialog using Swing JFileChooser");
@@ -154,7 +154,7 @@ public class FileChooser {
 		}
 	}
 
-	protected FileChooser(ChooserMode mode, FileDialog fileChooser, @Nullable Path loc) {
+	protected FileChooser(final ChooserMode mode, final FileDialog fileChooser, @Nullable final Path loc) {
 		switch (mode) {
 		case Open:
 			LOGGER.fine("FileChooser invoked for the Open dialog using AWT FileDialog");
@@ -196,43 +196,43 @@ public class FileChooser {
 		}
 	}
 
-	public static FileChooser open(JFileChooser fileChooser, @Nullable Path loc) {
+	public static FileChooser open(final JFileChooser fileChooser, @Nullable final Path loc) {
 		return new FileChooser(ChooserMode.Open, fileChooser, loc);
 	}
 
-	public static FileChooser open(FileDialog fileChooser, @Nullable Path loc) {
+	public static FileChooser open(final FileDialog fileChooser, @Nullable final Path loc) {
 		return new FileChooser(ChooserMode.Open, fileChooser, loc);
 	}
 
-	public static FileChooser open(JFileChooser fileChooser) {
+	public static FileChooser open(final JFileChooser fileChooser) {
 		return new FileChooser(ChooserMode.Open, fileChooser, null);
 	}
 
-	public static FileChooser open(FileDialog fileChooser) {
+	public static FileChooser open(final FileDialog fileChooser) {
 		return new FileChooser(ChooserMode.Open, fileChooser, null);
 	}
 
-	public static FileChooser save(JFileChooser fileChooser, @Nullable Path loc) {
+	public static FileChooser save(final JFileChooser fileChooser, @Nullable final Path loc) {
 		return new FileChooser(ChooserMode.Save, fileChooser, loc);
 	}
 
-	public static FileChooser save(FileDialog fileChooser, @Nullable Path loc) {
+	public static FileChooser save(final FileDialog fileChooser, @Nullable final Path loc) {
 		return new FileChooser(ChooserMode.Save, fileChooser, loc);
 	}
 
-	public static FileChooser save(JFileChooser fileChooser) {
+	public static FileChooser save(final JFileChooser fileChooser) {
 		return new FileChooser(ChooserMode.Save, fileChooser, null);
 	}
 
-	public static FileChooser save(FileDialog fileChooser) {
+	public static FileChooser save(final FileDialog fileChooser) {
 		return new FileChooser(ChooserMode.Save, fileChooser, null);
 	}
 
-	public static FileChooser custom(JFileChooser fileChooser, String approveText, @Nullable Path loc) {
+	public static FileChooser custom(final JFileChooser fileChooser, final String approveText, @Nullable final Path loc) {
 		return new FileChooser(ChooserMode.Custom, fileChooser, approveText, loc);
 	}
 
-	public static FileChooser custom(JFileChooser fileChooser, String approveText) {
+	public static FileChooser custom(final JFileChooser fileChooser, final String approveText) {
 		return new FileChooser(ChooserMode.Custom, fileChooser, approveText, null);
 	}
 
@@ -241,14 +241,14 @@ public class FileChooser {
 	 * the implementation-detail exceptions that are commonly thrown to the
 	 * caller.
 	 */
-	private void invoke(Runnable runnable) throws ChoiceInterruptedException {
+	private void invoke(final Runnable runnable) throws ChoiceInterruptedException {
 		try {
 			LOGGER.fine("FileChooser.invoke(): About to invoke the provided function");
 			SwingUtilities.invokeAndWait(runnable);
-		} catch (InvocationTargetException except) {
+		} catch (final InvocationTargetException except) {
 			throw new ChoiceInterruptedException(
 				Optional.ofNullable(except.getCause()).orElse(except));
-		} catch (InterruptedException except) {
+		} catch (final InterruptedException except) {
 			throw new ChoiceInterruptedException(except);
 		}
 	}
@@ -332,7 +332,7 @@ public class FileChooser {
 	 * Set the stored file(s) to the given Iterable.
 	 * TODO: Take Collection
 	 */
-	public void setFiles(Iterable<Path> files) {
+	public void setFiles(final Iterable<Path> files) {
 		storedFile = StreamSupport.stream(files.spliterator(), false).collect(Collectors.toList());
 	}
 
@@ -341,10 +341,10 @@ public class FileChooser {
 	 * each file to the given consumer. If the operation is canceled, do
 	 * nothing.
 	 */
-	public void call(Consumer<Path> consumer) {
+	public void call(final Consumer<Path> consumer) {
 		try {
 			getFiles().forEach(consumer);
-		} catch (ChoiceInterruptedException exception) {
+		} catch (final ChoiceInterruptedException exception) {
 			LOGGER.log(Level.INFO, "Choice interrupted or user failed to choose", exception);
 		}
 	}

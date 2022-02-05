@@ -11,7 +11,7 @@ import java.util.Comparator;
  * point (such as a player's HQ).
  */
 public final class DistanceComparator implements Comparator<Point> {
-	public DistanceComparator(Point base, @Nullable MapDimensions dimensions) {
+	public DistanceComparator(final Point base, @Nullable final MapDimensions dimensions) {
 		this.base = base;
 		this.dimensions = dimensions;
 	}
@@ -32,7 +32,7 @@ public final class DistanceComparator implements Comparator<Point> {
 	 * to the given point: in fact the *square* of the distance, to avoid
 	 * taking an expensive square root.
 	 */
-	private int distance(Point point) {
+	private int distance(final Point point) {
 		int colDistRaw = Math.abs(point.getColumn() - base.getColumn());
 		int rowDistRaw = Math.abs(point.getRow() - base.getRow());
 		int colDist;
@@ -54,7 +54,7 @@ public final class DistanceComparator implements Comparator<Point> {
 	 * Compare two points on the basis of distance from the base point.
 	 */
 	@Override
-	public int compare(Point firstPoint, Point secondPoint) {
+	public int compare(final Point firstPoint, final Point secondPoint) {
 		return Integer.compare(distance(firstPoint), distance(secondPoint));
 	}
 
@@ -62,7 +62,7 @@ public final class DistanceComparator implements Comparator<Point> {
 	 * Returns a String describing how far a point is from "HQ", which the
 	 * base point is presumed to be.
 	 */
-	public String distanceString(Point point) {
+	public String distanceString(final Point point) {
 		return distanceString(point, "HQ");
 	}
 
@@ -70,7 +70,7 @@ public final class DistanceComparator implements Comparator<Point> {
 	 * Returns a String describing how far a point is from the base point,
 	 * described with the given name.
 	 */
-	public String distanceString(Point point, String name) {
+	public String distanceString(final Point point, final String name) {
 		int dist = distance(point);
 		if (dist < 0) {
 			throw new IllegalStateException("Negative distance");

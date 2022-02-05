@@ -35,16 +35,16 @@ import java.util.logging.Level;
 	private final IntSupplier mapDimension;
 	private final String dimension;
 
-	private ScrollInputVerifier(IntSupplier mapDimension, String dimension) {
+	private ScrollInputVerifier(final IntSupplier mapDimension, final String dimension) {
 		this.mapDimension = mapDimension;
 		this.dimension = dimension;
 	}
 
-	public static ScrollInputVerifier horizontal(Supplier<MapDimensions> mapDimsSource) {
+	public static ScrollInputVerifier horizontal(final Supplier<MapDimensions> mapDimsSource) {
 		return new ScrollInputVerifier(() -> mapDimsSource.get().getColumns(), "horizontal");
 	}
 
-	public static ScrollInputVerifier vertical(Supplier<MapDimensions> mapDimsSource) {
+	public static ScrollInputVerifier vertical(final Supplier<MapDimensions> mapDimsSource) {
 		return new ScrollInputVerifier(() -> mapDimsSource.get().getRows(), "vertical");
 	}
 
@@ -52,7 +52,7 @@ import java.util.logging.Level;
 	 * A scrollbar is valid if its value is between 0 and the size of the map.
 	 */
 	@Override
-	public boolean verify(JComponent input) {
+	public boolean verify(final JComponent input) {
 		if (input instanceof JScrollBar) {
 			JScrollBar jsb = (JScrollBar) input;
 			if (jsb.getValue() >= 0 && jsb.getValue() < mapDimension.getAsInt()) {

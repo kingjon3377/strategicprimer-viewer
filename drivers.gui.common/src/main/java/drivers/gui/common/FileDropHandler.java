@@ -29,20 +29,20 @@ import drivers.common.MapChangeListener;
 	 */
 	private static final Logger LOGGER = Logger.getLogger(FileDropHandler.class.getName());
 
-	public FileDropHandler(SPFrame app) {
+	public FileDropHandler(final SPFrame app) {
 		this.app = app;
 	}
 
 	private SPFrame app;
 
 	@Override
-	public boolean canImport(TransferSupport support) {
+	public boolean canImport(final TransferSupport support) {
 		return support.isDrop() && app != null && app.supportsDroppedFiles() &&
 			support.isDataFlavorSupported(DataFlavor.javaFileListFlavor);
 	}
 
 	@Override
-	public boolean importData(TransferSupport support) {
+	public boolean importData(final TransferSupport support) {
 		if (!canImport(support)) {
 			return false;
 		}
@@ -50,7 +50,7 @@ import drivers.common.MapChangeListener;
 		try {
 			payload = (List<File>) support.getTransferable().getTransferData(
 				DataFlavor.javaFileListFlavor);
-		} catch (Exception except) {
+		} catch (final Exception except) {
 			LOGGER.log(Level.WARNING, "Caught an exception trying to unmarshall dropped files",
 				except);
 			return false;
@@ -58,16 +58,16 @@ import drivers.common.MapChangeListener;
 		for (File file : payload) {
 			try {
 				app.acceptDroppedFile(file.toPath());
-			} catch (SPFormatException except) {
+			} catch (final SPFormatException except) {
 				LOGGER.log(Level.WARNING, "SP format error in dropped file", except);
 				return false;
-			} catch (MissingFileException except) { // FIXME: Or more-standard equivalents
+			} catch (final MissingFileException except) { // FIXME: Or more-standard equivalents
 				LOGGER.log(Level.WARNING, "Dropped file not actually present", except);
 				return false;
-			} catch (MalformedXMLException except) {
+			} catch (final MalformedXMLException except) {
 				LOGGER.log(Level.WARNING, "Malformed XML in dropped file", except);
 				return false;
-			} catch (IOException except) {
+			} catch (final IOException except) {
 				LOGGER.log(Level.WARNING, "I/O error reading dropped file", except);
 				return false;
 			}

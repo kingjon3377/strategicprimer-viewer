@@ -31,7 +31,7 @@ public class SkillTabularReportGenerator implements ITableGenerator<IWorker> {
 	 * For this purpose, compare by worker name only.
 	 */
 	@Override
-	public int comparePairs(Pair<Point, IWorker> one, Pair<Point, IWorker> two) {
+	public int comparePairs(final Pair<Point, IWorker> one, final Pair<Point, IWorker> two) {
 		return one.getValue1().getName().compareTo(two.getValue1().getName());
 	}
 
@@ -42,8 +42,8 @@ public class SkillTabularReportGenerator implements ITableGenerator<IWorker> {
 
 	@Override
 	public Iterable<Iterable<String>> produce(
-			DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures, IWorker item,
-			int key, Point loc, Map<Integer, Integer> parentMap) {
+			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures, final IWorker item,
+			final int key, final Point loc, final Map<Integer, Integer> parentMap) {
 		List<Iterable<String>> retval = new ArrayList<>();
 		String unitId = Optional.ofNullable(parentMap.get(item.getId()))
 			.map(Object::toString).orElse("---");

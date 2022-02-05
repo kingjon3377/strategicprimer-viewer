@@ -28,7 +28,7 @@ import org.jetbrains.annotations.Nullable;
  */
 /* package */ class RandomDiscoverySelector implements SelectionChangeListener {
 	private boolean outsideCritical = true;
-	public RandomDiscoverySelector(IExplorationModel driverModel, FixtureList mainList, Supplier<Speed> speedSource) {
+	public RandomDiscoverySelector(final IExplorationModel driverModel, final FixtureList mainList, final Supplier<Speed> speedSource) {
 		this.driverModel = driverModel;
 		this.mainList = mainList;
 		this.speedSource = speedSource;
@@ -65,16 +65,16 @@ import org.jetbrains.annotations.Nullable;
 	}
 
 	@Override
-	public void selectedPointChanged(@Nullable Point old, Point newPoint) {
+	public void selectedPointChanged(@Nullable final Point old, final Point newPoint) {
 		SwingUtilities.invokeLater(this::selectedPointChangedImpl);
 	}
 
 	@Override
-	public void selectedUnitChanged(@Nullable IUnit old, @Nullable IUnit newSel) {}
+	public void selectedUnitChanged(@Nullable final IUnit old, @Nullable final IUnit newSel) {}
 
 	@Override
 	public void interactionPointChanged() {}
 
 	@Override
-	public void cursorPointChanged(@Nullable Point old, Point newCursor) {}
+	public void cursorPointChanged(@Nullable final Point old, final Point newCursor) {}
 }

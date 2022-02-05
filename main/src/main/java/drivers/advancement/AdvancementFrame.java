@@ -48,7 +48,7 @@ import drivers.gui.common.MenuBroker;
 /* package */ class AdvancementFrame extends SPFrame implements PlayerChangeListener {
 	private final FormattedLabel playerLabel;
 	private final IWorkerTreeModel treeModel;
-	public AdvancementFrame(IWorkerModel model, MenuBroker menuHandler, ModelDriver driver) {
+	public AdvancementFrame(final IWorkerModel model, final MenuBroker menuHandler, final ModelDriver driver) {
 		super("Worker Advancement", driver, new Dimension(640, 480), true,
 			(file) -> model.addSubordinateMap(MapIOHelper.readMap(file)));
 		IMapNG map = model.getMap();
@@ -110,7 +110,7 @@ import drivers.gui.common.MenuBroker;
 	}
 
 	@Override
-	public void playerChanged(@Nullable Player old, Player newPlayer) {
+	public void playerChanged(@Nullable final Player old, final Player newPlayer) {
 		playerLabel.setArguments(newPlayer.getName());
 		treeModel.playerChanged(old, newPlayer);
 	}
@@ -120,7 +120,7 @@ import drivers.gui.common.MenuBroker;
 		return "Worker Advancement";
 	}
 
-	private static JLabel html(String string) {
+	private static JLabel html(final String string) {
 		return new JLabel(String.format("<html><p align=\"left\">%s</p></html>", string));
 	}
 }

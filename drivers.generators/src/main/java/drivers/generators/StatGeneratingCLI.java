@@ -81,7 +81,7 @@ import common.map.fixtures.towns.Village;
 	 * Find a fixture in a given iterable with the given ID.
 	 */
 	@Nullable
-	private static IFixture findInIterable(Integer id, IFixture... fixtures) {
+	private static IFixture findInIterable(final Integer id, final IFixture... fixtures) {
 		for (IFixture fixture : fixtures) {
 			if (fixture.getId() == id) {
 				return fixture;
@@ -99,7 +99,7 @@ import common.map.fixtures.towns.Village;
 	/**
 	 * Get the index of the lowest value in an array.
 	 */
-	private static int getMinIndex(int... array) {
+	private static int getMinIndex(final int... array) {
 		int lowest = Integer.MAX_VALUE;
 		int index = -1;
 		int i = 0;
@@ -116,7 +116,7 @@ import common.map.fixtures.towns.Village;
 	/**
 	 * Simulate a die-roll.
 	 */
-	private static int die(int max) {
+	private static int die(final int max) {
 		return SingletonRandom.SINGLETON_RANDOM.nextInt(max) + 1;
 	}
 
@@ -131,7 +131,7 @@ import common.map.fixtures.towns.Village;
 	 * The chance that someone from a village located a {@link days}-day
 	 * journey away will come as a volunteer.
 	 */
-	private static double villageChance(int days) {
+	private static double villageChance(final int days) {
 		return Math.pow(0.4, days);
 	}
 
@@ -148,7 +148,7 @@ import common.map.fixtures.towns.Village;
 		return EmptyOptions.EMPTY_OPTIONS;
 	}
 
-	public StatGeneratingCLI(ICLIHelper cli, PopulationGeneratingModel model) {
+	public StatGeneratingCLI(final ICLIHelper cli, final PopulationGeneratingModel model) {
 		this.cli = cli;
 		this.model = model;
 	}
@@ -156,7 +156,7 @@ import common.map.fixtures.towns.Village;
 	/**
 	 * Let the user enter which Jobs a worker's levels are in.
 	 */
-	private void enterWorkerJobs(IUnit unit, IWorker worker, int levels) {
+	private void enterWorkerJobs(final IUnit unit, final IWorker worker, final int levels) {
 		for (int i = 0; i < levels; i++) {
 			String jobName = cli.inputString("Which Job does worker have a level in? ");
 			if (jobName != null) { // TODO: invert
@@ -178,7 +178,7 @@ import common.map.fixtures.towns.Village;
 	 * Get from the cache, or if not present there ask the user, if a
 	 * newcomer has come from the given village recently.
 	 */
-	private boolean hasLeviedRecently(Village village) {
+	private boolean hasLeviedRecently(final Village village) {
 		if (excludedVillages.containsKey(village)) {
 			return excludedVillages.get(village);
 		} else {
@@ -197,7 +197,7 @@ import common.map.fixtures.towns.Village;
 	/**
 	 * Load racial stat bonuses for the given race from the cache, or if not present there from file.
 	 */
-	WorkerStats loadRacialBonus(String race) {
+	WorkerStats loadRacialBonus(final String race) {
 		if (racialBonuses.containsKey(race)) {
 			return racialBonuses.get(race);
 		}
@@ -214,10 +214,10 @@ import common.map.fixtures.towns.Village;
 				temp[4], temp[5]);
 			racialBonuses.put(race, retval);
 			return retval;
-		} catch (NoSuchFileException except) {
+		} catch (final NoSuchFileException except) {
 			LOGGER.warning("No stat adjustments found for " + race);
 			return WorkerStats.factory(0, 0, 0, 0, 0, 0);
-		} catch (IOException except) {
+		} catch (final IOException except) {
 			LOGGER.warning("I/O error reading stat adjustments for " + race);
 			return WorkerStats.factory(0, 0, 0, 0, 0, 0);
 		}
@@ -231,7 +231,7 @@ import common.map.fixtures.towns.Village;
 	/**
 	 * Create randomly-generated stats for a worker, with racial adjustments applied.
 	 */
-	private WorkerStats createWorkerStats(String race, int levels) {
+	private WorkerStats createWorkerStats(final String race, final int levels) {
 		WorkerStats base = WorkerStats.random(StatGeneratingCLI::threeDeeSix);
 		int lowestScore = getMinIndex(base.array());
 		WorkerStats racialBonus;
@@ -289,7 +289,7 @@ import common.map.fixtures.towns.Village;
 	/**
 	 * Generate a worker with race and Job levels based on the population of the given village.
 	 */
-	private Worker generateWorkerFrom(Village village, String name, IDRegistrar idf) {
+	private Worker generateWorkerFrom(final Village village, final String name, final IDRegistrar idf) {
 		Worker worker = new Worker(name, village.getRace(), idf.createID());
 		worker.setNote(village.getOwner(), String.format("From %s.", village.getName()));
 		if (village.getPopulation() != null) {
@@ -405,7 +405,7 @@ import common.map.fixtures.towns.Village;
 	/**
 	 * Let the user create randomly-generated workers in a specific unit.
 	 */
-	private void createWorkersForUnit(IDRegistrar idf, IUnit unit) {
+	private void createWorkersForUnit(final IDRegistrar idf, final IUnit unit) {
 		int count = Optional.ofNullable(cli.inputNumber("How many workers to generate? ")).orElse(0);
 		for (int i = 0; i < count; i++) {
 			String race = RaceFactory.randomRace();
@@ -437,7 +437,7 @@ import common.map.fixtures.towns.Village;
 	/**
 	 * Let the user create randomly-generated workers, with names read from file, in a unit.
 	 */
-	private void createWorkersFromFile(IDRegistrar idf, IUnit unit) throws IOException {
+	private void createWorkersFromFile(final IDRegistrar idf, final IUnit unit) throws IOException {
 		int count = Optional.ofNullable(cli.inputNumber("How many workers to generate? ")).orElse(0);
 		Deque<String> names;
 		String filename = cli.inputString("Filename to load names from: ");
@@ -552,7 +552,7 @@ import common.map.fixtures.towns.Village;
 	 * Allow the user to create randomly-generated workers belonging to a
 	 * particular player.
 	 */
-	private void createWorkersForPlayer(IDRegistrar idf, Player player) throws IOException {
+	private void createWorkersForPlayer(final IDRegistrar idf, final Player player) throws IOException {
 		List<IUnit> units = new ArrayList<>(StreamSupport.stream(
 			model.getUnits(player).spliterator(), false).collect(Collectors.toList()));
 		while (true) {
@@ -613,7 +613,7 @@ import common.map.fixtures.towns.Village;
 			while (true) {
 				try {
 					createWorkersForPlayer(idf, chosen);
-				} catch (IOException except) {
+				} catch (final IOException except) {
 					throw new DriverFailedException(except, "I/O error");
 				}
 				Boolean continuation = cli.inputBoolean("Add more workers to another unit?");

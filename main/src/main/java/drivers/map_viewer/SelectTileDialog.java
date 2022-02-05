@@ -39,7 +39,7 @@ import common.map.Point;
 
 	private final IViewerModel model;
 
-	public SelectTileDialog(@Nullable Frame parentFrame, IViewerModel model) {
+	public SelectTileDialog(@Nullable final Frame parentFrame, final IViewerModel model) {
 		super(parentFrame, "Go To ...");
 		this.model = model;
 
@@ -97,7 +97,7 @@ import common.map.Point;
 	private final JLabel errorLabel = new JLabel(
 		"This text should vanish from this label before it appears.");
 
-	private NumberState checkNumber(String text, int bound) {
+	private NumberState checkNumber(final String text, final int bound) {
 		try {
 			int number = NUM_PARSER.parse(text).intValue();
 			if (number < 0) {
@@ -107,14 +107,14 @@ import common.map.Point;
 			} else {
 				return NumberState.Valid;
 			}
-		} catch (ParseException except) {
+		} catch (final ParseException except) {
 			LOGGER.log(Level.FINE, "Non-numeric input", except);
 			return NumberState.NonNumeric;
 		}
 	}
 
 	// TODO: put into NumberState, as a method taking int (for the overflow case)?
-	private static String getErrorMessage(NumberState state, int bound) {
+	private static String getErrorMessage(final NumberState state, final int bound) {
 		switch (state) {
 		case Valid:
 			return "";
@@ -129,7 +129,7 @@ import common.map.Point;
 		}
 	}
 
-	private void handleOK(ActionEvent ignored) { // Param needed because added to two JTextFields
+	private void handleOK(final ActionEvent ignored) { // Param needed because added to two JTextFields
 		String rowText = rowField.getText();
 		String columnText = columnField.getText();
 		errorLabel.setText("");
@@ -154,7 +154,7 @@ import common.map.Point;
 			try {
 				model.setSelection(new Point(NUM_PARSER.parse(rowText).intValue(),
 					NUM_PARSER.parse(columnText).intValue()));
-			} catch (ParseException except) {
+			} catch (final ParseException except) {
 				LOGGER.log(Level.SEVERE,
 					"Parse failure after we checked input was numeric", except);
 				// TODO: return here, surely?

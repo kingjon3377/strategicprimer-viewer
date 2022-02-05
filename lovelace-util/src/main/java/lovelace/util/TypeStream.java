@@ -15,7 +15,7 @@ public class TypeStream implements Iterable<Class<?>> {
 	private final Object obj;
 	private final List<Class<?>> cache = new LinkedList<>();
 
-	public TypeStream(Object obj) {
+	public TypeStream(final Object obj) {
 		this.obj = obj;
 	}
 
@@ -31,7 +31,7 @@ public class TypeStream implements Iterable<Class<?>> {
 		private final Set<Class<?>> classes = new HashSet<>();
 		private final Queue<Class<?>> queue = new LinkedList<>();
 
-		public TypeIterator(Object obj, List<Class<?>> cache) {
+		public TypeIterator(final Object obj, final List<Class<?>> cache) {
 			this.obj = obj;
 			this.cache = cache;
 			ourCopy = new LinkedList<>(cache);

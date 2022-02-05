@@ -13,14 +13,14 @@ import java.util.function.Consumer;
  * A forest on a tile.
  */
 public class Forest implements TerrainFixture, HasMutableImage, HasKind, HasExtent<Forest> {
-	public Forest(String kind, boolean rows, int id, Number acres) {
+	public Forest(final String kind, final boolean rows, final int id, final Number acres) {
 		this.kind = kind;
 		this.rows = rows;
 		this.id = id;
 		this.acres = acres;
 	}
 
-	public Forest(String kind, boolean rows, int id) {
+	public Forest(final String kind, final boolean rows, final int id) {
 		this(kind, rows, id, -1);
 	}
 
@@ -62,7 +62,7 @@ public class Forest implements TerrainFixture, HasMutableImage, HasKind, HasExte
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(final int id) {
 		this.id = id;
 	}
 
@@ -83,7 +83,7 @@ public class Forest implements TerrainFixture, HasMutableImage, HasKind, HasExte
 	 * Set the filename of an image to use as an icon for this instance.
 	 */
 	@Override
-	public void setImage(String image) {
+	public void setImage(final String image) {
 		this.image = image;
 	}
 
@@ -104,7 +104,7 @@ public class Forest implements TerrainFixture, HasMutableImage, HasKind, HasExte
 	 * Clone the forest.
 	 */
 	@Override
-	public Forest copy(boolean zero) {
+	public Forest copy(final boolean zero) {
 		final Forest retval = new Forest(kind, rows, id, (zero) ? -1 : acres);
 		retval.setImage(image);
 		return retval;
@@ -121,7 +121,7 @@ public class Forest implements TerrainFixture, HasMutableImage, HasKind, HasExte
 	}
 
 	@Override
-	public boolean equals(Object obj) {
+	public boolean equals(final Object obj) {
 		if (obj instanceof Forest) {
 			return ((Forest) obj).getId() == id &&
 				kind.equals(((Forest) obj).getKind()) &&
@@ -138,7 +138,7 @@ public class Forest implements TerrainFixture, HasMutableImage, HasKind, HasExte
 	}
 
 	@Override
-	public boolean equalsIgnoringID(IFixture fixture) {
+	public boolean equalsIgnoringID(final IFixture fixture) {
 		if (fixture instanceof Forest) {
 			return ((Forest) fixture).getKind().equals(kind) &&
 				((Forest) fixture).isRows() == rows &&
@@ -176,7 +176,7 @@ public class Forest implements TerrainFixture, HasMutableImage, HasKind, HasExte
 	}
 
 	@Override
-	public boolean isSubset(IFixture other, Consumer<String> report) {
+	public boolean isSubset(final IFixture other, final Consumer<String> report) {
 		if (id != other.getId()) {
 			report.accept("Different IDs");
 			return false;
@@ -209,12 +209,12 @@ public class Forest implements TerrainFixture, HasMutableImage, HasKind, HasExte
 	}
 
 	@Override
-	public Forest combined(Forest other) {
+	public Forest combined(final Forest other) {
 		return new Forest(kind, rows, id, HasExtent.sum(acres, other.getAcres()));
 	}
 
 	@Override
-	public Forest reduced(Number subtrahend) {
+	public Forest reduced(final Number subtrahend) {
 		return new Forest(kind, rows, id, HasExtent.sum(acres, HasExtent.negate(subtrahend)));
 	}
 }

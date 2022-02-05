@@ -70,11 +70,11 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 	/**
 	 * A fixture is "diggable" if it is a {@link MineralFixture} or a {@link Mine}.
 	 */
-	private static boolean isDiggable(TileFixture fixture) {
+	private static boolean isDiggable(final TileFixture fixture) {
 		return fixture instanceof MineralFixture || fixture instanceof Mine;
 	}
 
-	private static Stream<IFixture> flattenIncluding(IFixture fixture) {
+	private static Stream<IFixture> flattenIncluding(final IFixture fixture) {
 		if (fixture instanceof FixtureIterable) {
 			return Stream.concat(Stream.of(fixture), ((FixtureIterable<?>) fixture).stream());
 		} else {
@@ -87,7 +87,7 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 	 * stream of its contents paired with its location; otherwise, return a
 	 * {@link Singleton} of the argument.
 	 */
-	private static Iterable<Pair<Point, IFixture>> flattenEntries(Pair<Point, IFixture> entry) {
+	private static Iterable<Pair<Point, IFixture>> flattenEntries(final Pair<Point, IFixture> entry) {
 		if (entry.getValue1() instanceof IFortress) {
 			return ((IFortress) entry.getValue1()).stream().map(IFixture.class::cast)
 					.map(each -> Pair.with(entry.getValue0(), each))
@@ -103,7 +103,7 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 	 * in {@link common.map.fixtures.resources.StoneDeposit} and {@link
 	 * common.map.fixtures.resources.MineralVein} compares DCs.
 	 */
-	private static boolean areDiggablesEqual(IFixture firstFixture, IFixture secondFixture) {
+	private static boolean areDiggablesEqual(final IFixture firstFixture, final IFixture secondFixture) {
 		return Objects.equals(firstFixture, secondFixture) ||
 			Objects.equals(firstFixture.copy(true), secondFixture.copy(true));
 	}
@@ -113,7 +113,7 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 	 * (non-independent) player (which at present means the unit is moving
 	 * <em>to</em> a tile two or fewer tiles away from the watcher), print a message saying so to stdout.
 	 */
-	private static void checkAllNearbyWatchers(IMapNG map, IUnit unit, Point dest) {
+	private static void checkAllNearbyWatchers(final IMapNG map, final IUnit unit, final Point dest) {
 		MapDimensions dimensions = map.getDimensions();
 		String description;
 		if (unit.getOwner().isIndependent()) {
@@ -138,7 +138,7 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 	/**
 	 * Remove a unit from a location, even if it's in a fortress.
 	 */
-	private static void removeImpl(IMutableMapNG map, Point point, IUnit unit) {
+	private static void removeImpl(final IMutableMapNG map, final Point point, final IUnit unit) {
 		boolean outside = false;
 		for (TileFixture fixture : map.getFixtures(point)) {
 			if (Objects.equals(unit, fixture)) {
@@ -161,7 +161,7 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 	/**
 	 * Ensure that a given map has at least terrain information for the specified location.
 	 */
-	private static void ensureTerrain(IMapNG mainMap, IMutableMapNG map, Point point) {
+	private static void ensureTerrain(final IMapNG mainMap, final IMutableMapNG map, final Point point) {
 		if (map.getBaseTerrain(point) == null) {
 			map.setBaseTerrain(point, mainMap.getBaseTerrain(point));
 		}
@@ -175,7 +175,7 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 	/**
 	 * Whether the given fixture is contained in the given stream.
 	 */
-	private static boolean doesStreamContainFixture(Iterable<? extends IFixture> stream, IFixture fixture) {
+	private static boolean doesStreamContainFixture(final Iterable<? extends IFixture> stream, final IFixture fixture) {
 		for (IFixture member : stream) {
 			if (Objects.equals(member, fixture)) {
 				return true;
@@ -190,7 +190,7 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 	/**
 	 * Whether the given fixture is at the given location in the given map.
 	 */
-	private static boolean doesLocationHaveFixture(IMapNG map, Point point, TileFixture fixture) {
+	private static boolean doesLocationHaveFixture(final IMapNG map, final Point point, final TileFixture fixture) {
 		return doesStreamContainFixture(map.getFixtures(point), fixture);
 	}
 
@@ -199,7 +199,7 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 	 * @param number The number to increment
 	 * @param max The maximum number we want to return
 	 */
-	private static int increment(int number, int max) {
+	private static int increment(final int number, final int max) {
 		return (number >= max) ? 0 : (number + 1);
 	}
 
@@ -209,7 +209,7 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 	 * @param number The number to decrement
 	 * @param max The number to "underflow" to
 	 */
-	private static int decrement(int number, int max) {
+	private static int decrement(final int number, final int max) {
 		return (number <= 0) ? max : (number - 1);
 	}
 
@@ -217,7 +217,7 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 	 * The intersection of two sets; here so it can be passed as a method
 	 * reference rather than a lambda in {@link playerChoices}.
 	 */
-	private static <T> Set<T> intersection(Set<T> one, Set<T> two) {
+	private static <T> Set<T> intersection(final Set<T> one, final Set<T> two) {
 		Set<T> retval = new HashSet<>(one);
 		retval.retainAll(two);
 		return retval;
@@ -228,7 +228,7 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 	 * otherwise, return a stream containing only it. This is intended to
 	 * be used in {@link Stream#flatMap}.
 	 */
-	private static Stream<IFixture> unflattenNonFortresses(TileFixture fixture) {
+	private static Stream<IFixture> unflattenNonFortresses(final TileFixture fixture) {
 		if (fixture instanceof IFortress) {
 			return ((IFortress) fixture).stream().map(IFixture.class::cast);
 		} else {
@@ -244,12 +244,12 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 	 */
 	private Pair<Point, @Nullable IUnit> selection = Pair.with(Point.INVALID_POINT, (IUnit) null);
 
-	public ExplorationModel(IMutableMapNG map) {
+	public ExplorationModel(final IMutableMapNG map) {
 		super(map);
 	}
 
 	// TODO: Make private and provide static copyConstructor method instead of making this public?
-	public ExplorationModel(IDriverModel model) {
+	public ExplorationModel(final IDriverModel model) {
 		super(model);
 	}
 
@@ -274,7 +274,7 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 	 * Collect all the units in the main map belonging to the specified player.
 	 */
 	@Override
-	public Iterable<IUnit> getUnits(Player player) {
+	public Iterable<IUnit> getUnits(final Player player) {
 		return getMap().streamLocations()
 			.flatMap(l -> getMap().getFixtures(l).stream())
 			.flatMap(ExplorationModel::unflattenNonFortresses)
@@ -287,7 +287,7 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 	/**
 	 * Tell listeners that the selected point changed.
 	 */
-	private void fireSelectionChange(Point old, Point newSelection) {
+	private void fireSelectionChange(final Point old, final Point newSelection) {
 		for (SelectionChangeListener listener : scListeners) {
 			LOGGER.fine("Notifying a listener of selected-point change");
 			listener.selectedPointChanged(old, newSelection);
@@ -297,7 +297,7 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 	/**
 	 * Tell listeners that the selected unit changed.
 	 */
-	private void fireSelectedUnitChange(@Nullable IUnit old, @Nullable IUnit newSelection) {
+	private void fireSelectedUnitChange(@Nullable final IUnit old, @Nullable final IUnit newSelection) {
 		for (SelectionChangeListener listener : scListeners) {
 			LOGGER.fine("Notifying a listener of selected-unit change");
 			listener.selectedUnitChanged(old, newSelection);
@@ -307,7 +307,7 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 	/**
 	 * Tell listeners to deduct a cost from their movement-point totals.
 	 */
-	private void fireMovementCost(int cost) {
+	private void fireMovementCost(final int cost) {
 		for (MovementCostListener listener : mcListeners) {
 			listener.deduct(cost);
 		}
@@ -317,7 +317,7 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 	 * Get the location one tile in the given direction from the given point.
 	 */
 	@Override
-	public Point getDestination(Point point, Direction direction) {
+	public Point getDestination(final Point point, final Direction direction) {
 		MapDimensions dims = getMapDimensions();
 		int maxColumn = dims.getColumns() - 1;
 		int maxRow = dims.getRows() - 1;
@@ -347,7 +347,7 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 		}
 	}
 
-	private void fixMovedUnits(Point base) {
+	private void fixMovedUnits(final Point base) {
 		BiFunction<IMapNG, TileFixture, Iterable<Pair<Point, TileFixture>>> localFind =
 			(mapParam, target) -> mapParam.streamLocations()
 				.flatMap(l -> mapParam.getFixtures(l).stream().map(f -> Pair.with(l, f)))
@@ -392,7 +392,7 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 	 * @param speed How hastily the explorer is moving
 	 */
 	@Override
-	public int move(Direction direction, Speed speed) throws TraversalImpossibleException {
+	public int move(final Direction direction, final Speed speed) throws TraversalImpossibleException {
 		Pair<Point, @Nullable IUnit> local = selection;
 		Point point = local.getValue0();
 		IUnit unit = local.getValue1();
@@ -473,7 +473,7 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 	 * "equal to" the specified one.
 	 */
 	@Override
-	public Point find(TileFixture fixture) {
+	public Point find(final TileFixture fixture) {
 		for (Point point : getMap().getLocations()) {
 			if (doesLocationHaveFixture(getMap(), point, fixture)) {
 				return point;
@@ -482,7 +482,7 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 		return Point.INVALID_POINT;
 	}
 
-	private boolean mapsAgreeOnLocation(IUnit unit) {
+	private boolean mapsAgreeOnLocation(final IUnit unit) {
 		if (unit instanceof ProxyUnit) {
 			if (((ProxyUnit) unit).getProxied().iterator().hasNext()) {
 				return mapsAgreeOnLocation(((ProxyUnit) unit).getProxied().iterator().next());
@@ -520,7 +520,7 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 	 * Select the given unit.
 	 */
 	@Override
-	public void setSelectedUnit(@Nullable IUnit selectedUnit) {
+	public void setSelectedUnit(@Nullable final IUnit selectedUnit) {
 		Point oldLoc = selection.getValue0();
 		IUnit oldSelection = selection.getValue1();
 		Point loc;
@@ -556,7 +556,7 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 	 * Add a selection-change listener.
 	 */
 	@Override
-	public void addSelectionChangeListener(SelectionChangeListener listener) {
+	public void addSelectionChangeListener(final SelectionChangeListener listener) {
 		scListeners.add(listener);
 	}
 
@@ -564,7 +564,7 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 	 * Remove a selection-change listener.
 	 */
 	@Override
-	public void removeSelectionChangeListener(SelectionChangeListener listener) {
+	public void removeSelectionChangeListener(final SelectionChangeListener listener) {
 		scListeners.remove(listener);
 	}
 
@@ -572,7 +572,7 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 	 * Add a movement-cost listener.
 	 */
 	@Override
-	public void addMovementCostListener(MovementCostListener listener) {
+	public void addMovementCostListener(final MovementCostListener listener) {
 		mcListeners.add(listener);
 	}
 
@@ -580,7 +580,7 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 	 * Remove a movement-cost listener.
 	 */
 	@Override
-	public void removeMovementCostListener(MovementCostListener listener) {
+	public void removeMovementCostListener(final MovementCostListener listener) {
 		mcListeners.remove(listener);
 	}
 
@@ -708,7 +708,7 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 	 * Add the given {@link unit} at the given {@link location}.
 	 */
 	@Override
-	public void addUnitAtLocation(IUnit unit, Point location) { // TODO: If more than one map, return a proxy for the units; otherwise, return the unit
+	public void addUnitAtLocation(final IUnit unit, final Point location) { // TODO: If more than one map, return a proxy for the units; otherwise, return the unit
 		for (IMutableMapNG indivMap : getRestrictedAllMaps()) {
 			indivMap.addFixture(location, unit); // FIXME: Check for existing matching unit there already
 			indivMap.setModified(true);
@@ -722,7 +722,7 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 	 * sensitive information from the copies.
 	 */
 	@Override
-	public boolean copyToSubMaps(Point location, TileFixture fixture, boolean zero) {
+	public boolean copyToSubMaps(final Point location, final TileFixture fixture, final boolean zero) {
 		@Nullable TileFixture matching;
 		boolean retval = false;
 		if (fixture instanceof FakeFixture) {
@@ -756,7 +756,7 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 	 * Copy any terrain, mountain, rivers, and roads from the main map to subordinate maps.
 	 */
 	@Override
-	public void copyTerrainToSubMaps(Point location) {
+	public void copyTerrainToSubMaps(final Point location) {
 		for (IMutableMapNG subMap : getRestrictedSubordinateMaps()) {
 			if (getMap().isMountainous(location) && !subMap.isMountainous(location)) {
 				subMap.setMountainous(location, true);
@@ -793,7 +793,7 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 	 */
 	@Deprecated
 	@Override
-	public void setSubMapTerrain(Point location, @Nullable TileType terrain) {
+	public void setSubMapTerrain(final Point location, @Nullable final TileType terrain) {
 		for (IMutableMapNG subMap : getRestrictedSubordinateMaps()) {
 			subMap.setBaseTerrain(location, terrain);
 			subMap.setModified(true);
@@ -804,7 +804,7 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 	 * Copy the given rivers to sub-maps, if they are present in the main map.
 	 */
 	@Override
-	public void copyRiversToSubMaps(Point location, River... rivers) {
+	public void copyRiversToSubMaps(final Point location, final River... rivers) {
 		Collection<River> actualRivers = EnumSet.copyOf(Stream.of(rivers)
 			.collect(Collectors.toList()));
 		actualRivers.retainAll(getMap().getRivers(location));
@@ -821,7 +821,7 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 	 */
 	@Deprecated
 	@Override
-	public void removeRiversFromSubMaps(Point location, River... rivers) {
+	public void removeRiversFromSubMaps(final Point location, final River... rivers) {
 		for (IMutableMapNG subMap : getRestrictedSubordinateMaps()) {
 			subMap.removeRivers(location, rivers); // TODO: Make it return Boolean if this was a change, and only set modified flag in that case
 			subMap.setModified(true);
@@ -835,7 +835,7 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 	 */
 	@Deprecated
 	@Override
-	public void removeFixtureFromSubMaps(Point location, TileFixture fixture) {
+	public void removeFixtureFromSubMaps(final Point location, final TileFixture fixture) {
 		for (IMutableMapNG subMap : getRestrictedSubordinateMaps()) {
 			subMap.removeFixture(location, fixture); // TODO: Make it return Boolean if this was a change, and only set modified flag in that case
 			subMap.setModified(true);
@@ -849,7 +849,7 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 	 */
 	@Deprecated
 	@Override
-	public void setMountainousInSubMap(Point location, boolean mountainous) {
+	public void setMountainousInSubMap(final Point location, final boolean mountainous) {
 		for (IMutableMapNG subMap : getRestrictedSubordinateMaps()) {
 			if (subMap.isMountainous(location) != mountainous) {
 				subMap.setMountainous(location, mountainous);
@@ -862,7 +862,7 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 	 * Move a unit-member from one unit to another.
 	 */
 	@Override
-	public void moveMember(UnitMember member, IUnit old, IUnit newOwner) {
+	public void moveMember(final UnitMember member, final IUnit old, final IUnit newOwner) {
 		for (IMutableMapNG map : getRestrictedSubordinateMaps()) {
 			Optional<IMutableUnit> matchingOld = map.streamLocations()
 					.flatMap(l -> map.getFixtures(l).stream())
@@ -893,7 +893,7 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 		}
 	}
 
-	private Predicate<Pair<Point, TileFixture>> unitMatching(IUnit unit) {
+	private Predicate<Pair<Point, TileFixture>> unitMatching(final IUnit unit) {
 		return (pair) -> {
 			Point location = pair.getValue0();
 			IFixture fixture = pair.getValue1();
@@ -917,7 +917,7 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 	 * FIXME: Should also support removing a unit that's in a fortress
 	 */
 	@Override
-	public boolean removeUnit(IUnit unit) {
+	public boolean removeUnit(final IUnit unit) {
 		LOGGER.fine("In ExplorationModel.removeUnit()");
 		List<Pair<IMutableMapNG, Pair<Point, IUnit>>> delenda = new ArrayList<>();
 		for (IMutableMapNG map : getRestrictedAllMaps()) {
@@ -976,7 +976,7 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 	}
 
 	@Override
-	public void addUnitMember(IUnit unit, UnitMember member) {
+	public void addUnitMember(final IUnit unit, final UnitMember member) {
 		for (IMutableMapNG map : getRestrictedAllMaps()) {
 			Optional<IMutableUnit> matching = map.streamLocations()
 					.flatMap(l -> map.getFixtures(l).stream())
@@ -996,7 +996,7 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 		}
 	}
 
-	boolean matchingPlayer(HasOwner fixture) {
+	boolean matchingPlayer(final HasOwner fixture) {
 		Pair<Point, @Nullable IUnit> selection = this.selection; // TODO: Ceylon used "value", so may have been wrong here
 		IUnit unit = selection.getValue1();
 		Player currentPlayer = Optional.ofNullable(unit).map(IUnit::getOwner).orElse(null);
@@ -1008,7 +1008,7 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 	}
 
 	@Override
-	public boolean renameItem(HasMutableName item, String newName) {
+	public boolean renameItem(final HasMutableName item, final String newName) {
 		boolean any = false;
 		if (item instanceof IUnit) {
 			for (IMutableMapNG map : getRestrictedAllMaps()) {
@@ -1063,7 +1063,7 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 	}
 
 	@Override
-	public boolean changeKind(HasKind item, String newKind) {
+	public boolean changeKind(final HasKind item, final String newKind) {
 		boolean any = false;
 		if (item instanceof IUnit) {
 			for (IMutableMapNG map : getRestrictedAllMaps()) {
@@ -1117,7 +1117,7 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 
 	// TODO: Keep a list of dismissed members
 	@Override
-	public void dismissUnitMember(UnitMember member) {
+	public void dismissUnitMember(final UnitMember member) {
 		for (IMutableMapNG map : getRestrictedAllMaps()) {
 			for (IMutableUnit unit : map.streamLocations()
 					.flatMap(l -> map.getFixtures(l).stream())
@@ -1136,7 +1136,7 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 	}
 
 	@Override
-	public boolean addSibling(UnitMember existing, UnitMember sibling) {
+	public boolean addSibling(final UnitMember existing, final UnitMember sibling) {
 		boolean any = false;
 		for (IMutableMapNG map : getRestrictedAllMaps()) {
 			for (IMutableUnit unit : map.streamLocations()
@@ -1161,7 +1161,7 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 	 * succeeded in any map, false otherwise.
 	 */
 	@Override
-	public boolean changeOwner(HasMutableOwner item, Player newOwner) {
+	public boolean changeOwner(final HasMutableOwner item, final Player newOwner) {
 		boolean any = false;
 		for (IMutableMapNG map : getRestrictedAllMaps()) {
 			Optional<HasMutableOwner> matching = map.streamLocations()
@@ -1184,7 +1184,7 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 	}
 
 	@Override
-	public boolean sortFixtureContents(IUnit fixture) {
+	public boolean sortFixtureContents(final IUnit fixture) {
 		boolean any = false;
 		for (IMutableMapNG map : getRestrictedAllMaps()) {
 			Optional<IMutableUnit> matching = map.streamLocations()
@@ -1207,7 +1207,7 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 	}
 
 	@Override
-	public void addUnit(IUnit unit) {
+	public void addUnit(final IUnit unit) {
 		Point hqLoc = Point.INVALID_POINT;
 		for (Point location : getMap().getLocations()) {
 			Optional<IFortress> fortress = getMap().getFixtures(location).stream()

@@ -39,7 +39,7 @@ final class DBTextHandler extends AbstractDatabaseWriter<TextFixture, Point> imp
 	}
 
 	@Override
-	public void write(DB db, TextFixture obj, Point context) {
+	public void write(final DB db, final TextFixture obj, final Point context) {
 		Integer turn;
 		if (obj.getTurn() >= 0) {
 			turn = obj.getTurn();
@@ -51,7 +51,7 @@ final class DBTextHandler extends AbstractDatabaseWriter<TextFixture, Point> imp
 			.execute();
 	}
 
-	private TryBiConsumer<Map<String, Object>, Warning, Exception> readTextNote(IMutableMapNG map) {
+	private TryBiConsumer<Map<String, Object>, Warning, Exception> readTextNote(final IMutableMapNG map) {
 		return (dbRow, warner) -> {
 			int row = (Integer) dbRow.get("row");
 			int column = (Integer) dbRow.get("column");
@@ -67,14 +67,14 @@ final class DBTextHandler extends AbstractDatabaseWriter<TextFixture, Point> imp
 	}
 
 	@Override
-	public void readMapContents(DB db, IMutableMapNG map, Warning warner) {
+	public void readMapContents(final DB db, final IMutableMapNG map, final Warning warner) {
 		try {
 			handleQueryResults(db, warner, "text notes", readTextNote(map),
 				"SELECT * FROM text_notes");
-		} catch (RuntimeException except) {
+		} catch (final RuntimeException except) {
 			// Don't wrap RuntimeExceptions in RuntimeException
 			throw except;
-		} catch (Exception except) {
+		} catch (final Exception except) {
 			// FIXME Antipattern
 			throw new RuntimeException(except);
 		}

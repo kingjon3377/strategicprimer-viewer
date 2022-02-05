@@ -22,8 +22,8 @@ import java.util.stream.StreamSupport;
 import java.util.stream.Collectors;
 
 /* package */ class FluidTerrainHandler extends FluidBase {
-	public static Ground readGround(StartElement element, QName parent, Iterable<XMLEvent> stream,
-			IPlayerCollection players, Warning warner, IDRegistrar idFactory) 
+	public static Ground readGround(final StartElement element, final QName parent, final Iterable<XMLEvent> stream,
+	                                final IPlayerCollection players, final Warning warner, final IDRegistrar idFactory)
 			throws SPFormatException {
 		requireTag(element, parent, "ground");
 		expectAttributes(element, warner, "id", "kind", "ground", "image", "exposed");
@@ -37,8 +37,8 @@ import java.util.stream.Collectors;
 			element, warner);
 	}
 
-	public static Forest readForest(StartElement element, QName parent, Iterable<XMLEvent> stream,
-			IPlayerCollection players, Warning warner, IDRegistrar idFactory) 
+	public static Forest readForest(final StartElement element, final QName parent, final Iterable<XMLEvent> stream,
+	                                final IPlayerCollection players, final Warning warner, final IDRegistrar idFactory)
 			throws SPFormatException {
 		requireTag(element, parent, "forest");
 		expectAttributes(element, warner, "id", "kind", "rows", "image", "acres");
@@ -53,7 +53,7 @@ import java.util.stream.Collectors;
 		return setImage(retval, element, warner);
 	}
 
-	public static void writeGround(XMLStreamWriter ostream, Ground obj, int indent) 
+	public static void writeGround(final XMLStreamWriter ostream, final Ground obj, final int indent)
 			throws MalformedXMLException {
 		writeTag(ostream, "ground", indent, true);
 		writeAttributes(ostream, Pair.with("kind", obj.getKind()),
@@ -61,7 +61,7 @@ import java.util.stream.Collectors;
 		writeImage(ostream, obj);
 	}
 
-	public static void writeForest(XMLStreamWriter ostream, Forest obj, int indent) 
+	public static void writeForest(final XMLStreamWriter ostream, final Forest obj, final int indent)
 			throws MalformedXMLException {
 		writeTag(ostream, "forest", indent, true);
 		writeAttributes(ostream, Pair.with("kind", obj.getKind()));
@@ -75,8 +75,8 @@ import java.util.stream.Collectors;
 		writeImage(ostream, obj);
 	}
 
-	public static River readLake(StartElement element, QName parent, Iterable<XMLEvent> stream,
-			IPlayerCollection players, Warning warner, IDRegistrar idFactory)
+	public static River readLake(final StartElement element, final QName parent, final Iterable<XMLEvent> stream,
+	                             final IPlayerCollection players, final Warning warner, final IDRegistrar idFactory)
 			throws SPFormatException {
 		requireTag(element, parent, "lake");
 		expectAttributes(element, warner);
@@ -84,8 +84,8 @@ import java.util.stream.Collectors;
 		return River.Lake;
 	}
 
-	public static River readRiver(StartElement element, QName parent, Iterable<XMLEvent> stream,
-			IPlayerCollection players, Warning warner, IDRegistrar idFactory) 
+	public static River readRiver(final StartElement element, final QName parent, final Iterable<XMLEvent> stream,
+	                              final IPlayerCollection players, final Warning warner, final IDRegistrar idFactory)
 			throws SPFormatException {
 		requireTag(element, parent, "river");
 		expectAttributes(element, warner, "direction");
@@ -97,7 +97,7 @@ import java.util.stream.Collectors;
 		}
 	}
 
-	public static void writeRiver(XMLStreamWriter ostream, River obj, int indent)
+	public static void writeRiver(final XMLStreamWriter ostream, final River obj, final int indent)
 			throws MalformedXMLException {
 		if (River.Lake.equals(obj)) {
 			writeTag(ostream, "lake", indent, true);
@@ -107,7 +107,7 @@ import java.util.stream.Collectors;
 		}
 	}
 
-	public static void writeRivers(XMLStreamWriter ostream, Iterable<River> obj, int indent) 
+	public static void writeRivers(final XMLStreamWriter ostream, final Iterable<River> obj, final int indent)
 			throws MalformedXMLException {
 		for (River river : StreamSupport.stream(obj.spliterator(), false).sorted()
 				.collect(Collectors.toList())) {

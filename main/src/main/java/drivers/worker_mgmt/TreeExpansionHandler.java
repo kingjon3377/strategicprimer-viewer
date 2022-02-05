@@ -7,7 +7,7 @@ import javax.swing.tree.TreePath;
  * A class to handle "expand all," "collapse all," etc.
  */
 public class TreeExpansionHandler implements TreeExpansionOrderListener {
-	public TreeExpansionHandler(JTree tree) {
+	public TreeExpansionHandler(final JTree tree) {
 		this.tree = tree;
 	}
 
@@ -45,7 +45,7 @@ public class TreeExpansionHandler implements TreeExpansionOrderListener {
 	 * @param levels How many levels from the root, inclusive, to expand.
 	 */
 	@Override
-	public void expandSome(int levels) {
+	public void expandSome(final int levels) {
 		int i = 0;
 		while (i < tree.getRowCount()) {
 			TreePath path = tree.getPathForRow(i);

@@ -32,7 +32,7 @@ import lovelace.util.ListenedButton;
 
 /* package */ class AppChooserGUI implements UtilityGUI {
 	private static final Logger LOGGER = Logger.getLogger(AppChooserGUI.class.getName());
-	public AppChooserGUI(ICLIHelper cli, SPOptions options) {
+	public AppChooserGUI(final ICLIHelper cli, final SPOptions options) {
 		this.cli = cli;
 		this.options = options;
 	}
@@ -47,12 +47,12 @@ import lovelace.util.ListenedButton;
 
 	private final List<String> additionalFiles = new ArrayList<>();
 
-	boolean includeInGUIList(DriverFactory driver) {
+	boolean includeInGUIList(final DriverFactory driver) {
 		return driver.getUsage().includeInList(true);
 	}
 
 	@Override
-	public void startDriver(String... args) {
+	public void startDriver(final String... args) {
 		final JEditorPane tempComponent = new JEditorPane();
 		final Font font = tempComponent.getFont();
 		final Graphics2D pen = (Graphics2D) new BufferedImage(1, 1, BufferedImage.TYPE_INT_RGB).createGraphics();
@@ -98,7 +98,7 @@ import lovelace.util.ListenedButton;
 	}
 
 	@Override
-	public void open(Path path) {
+	public void open(final Path path) {
 		additionalFiles.add(path.toString());
 	}
 }

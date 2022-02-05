@@ -6,7 +6,7 @@ import common.map.HasMutableImage;
  * An animal or population of animals in the map.
  */
 public class AnimalImpl implements Animal, HasMutableImage {
-	public AnimalImpl(String kind, boolean talking, String status, int id, int born, int population) {
+	public AnimalImpl(final String kind, final boolean talking, final String status, final int id, final int born, final int population) {
 		this.kind = kind;
 		this.talking = talking;
 		this.status = status;
@@ -15,11 +15,11 @@ public class AnimalImpl implements Animal, HasMutableImage {
 		this.population = population;
 	}
 
-	public AnimalImpl(String kind, boolean talking, String status, int id, int born) {
+	public AnimalImpl(final String kind, final boolean talking, final String status, final int id, final int born) {
 		this(kind, talking, status, id, born, 1);
 	}
 
-	public AnimalImpl(String kind, boolean talking, String status, int id) {
+	public AnimalImpl(final String kind, final boolean talking, final String status, final int id) {
 		this(kind, talking, status, id, -1, 1);
 	}
 
@@ -65,7 +65,7 @@ public class AnimalImpl implements Animal, HasMutableImage {
 	/**
 	 * Set the domestication status of the animal.
 	 */
-	public void setStatus(String status) {
+	public void setStatus(final String status) {
 		this.status = status;
 	}
 
@@ -86,7 +86,7 @@ public class AnimalImpl implements Animal, HasMutableImage {
 	 * The filename of an image to use as an icon for this instance.
 	 */
 	@Override
-	public void setImage(String image) {
+	public void setImage(final String image) {
 		this.image = image;
 	}
 
@@ -119,7 +119,7 @@ public class AnimalImpl implements Animal, HasMutableImage {
 	/**
 	 * Set the turn the animal was born, or -1 if it is an adult
 	 */
-	public void setBorn(int born) {
+	public void setBorn(final int born) {
 		this.born = born;
 	}
 
@@ -142,7 +142,7 @@ public class AnimalImpl implements Animal, HasMutableImage {
 	 * TODO: change, here and elsewhere, so that "unknown" is -1 population
 	 */
 	@Override
-	public Animal copy(boolean zero) {
+	public Animal copy(final boolean zero) {
 		AnimalImpl retval = new AnimalImpl(kind, talking, status, id,
 			(zero) ? -1 : born, (zero) ? 1 : population);
 		retval.setImage(image);
@@ -150,12 +150,12 @@ public class AnimalImpl implements Animal, HasMutableImage {
 	}
 
 	@Override
-	public Animal reduced(int newPopulation, int newId) {
+	public Animal reduced(final int newPopulation, final int newId) {
 		return new AnimalImpl(kind, talking, status, newId, born, newPopulation);
 	}
 
 	@Override
-	public Animal combined(Animal addend) {
+	public Animal combined(final Animal addend) {
 		return new AnimalImpl(kind, talking, status, id, born,
 			Math.max(0, population) + Math.max(0, addend.getPopulation()));
 	}
@@ -186,7 +186,7 @@ public class AnimalImpl implements Animal, HasMutableImage {
 	 * or neither are talking, and their IDs are equal.
 	 */
 	@Override
-	public boolean equals(Object obj) {
+	public boolean equals(final Object obj) {
 		if (this == obj) {
 			return true;
 		} else if (obj instanceof Animal) {

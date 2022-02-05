@@ -40,7 +40,7 @@ import java.util.Arrays;
 			Pair.with(KeyEvent.VK_NUMPAD3, "down-right"),
 			Pair.with(KeyEvent.VK_NUMPAD1, "down-left")));
 
-	private static Runnable join(Runnable first, Runnable second) {
+	private static Runnable join(final Runnable first, final Runnable second) {
 		return () -> {
 			first.run();
 			second.run();
@@ -80,7 +80,7 @@ import java.util.Arrays;
 			Pair.with(KeyEvent.VK_CIRCUMFLEX, "caret"), Pair.with((int) '#', "end"),
 			Pair.with((int) '^', "caret")));
 
-	protected static void repeatVoid(Runnable func, int times) {
+	protected static void repeatVoid(final Runnable func, final int times) {
 		for (int i = 0; i < times; i++) {
 			func.run();
 		}
@@ -90,23 +90,23 @@ import java.util.Arrays;
 		private final Runnable action;
 		private final int num;
 
-		public DirectionListener(Runnable action, int num) {
+		public DirectionListener(final Runnable action, final int num) {
 			this.action = action;
 			this.num = num;
 		}
 
-		public DirectionListener(Runnable action) {
+		public DirectionListener(final Runnable action) {
 			this(action, 1);
 		}
 
 		@Override
-		public void actionPerformed(ActionEvent event) {
+		public void actionPerformed(final ActionEvent event) {
 			repeatVoid(action, num); // TODO: inline that here?
 		}
 	}
 
-	public static void setUpArrowListeners(DirectionSelectionChanger selListener,
-			InputMap inputMap, ActionMap actionMap) {
+	public static void setUpArrowListeners(final DirectionSelectionChanger selListener,
+	                                       final InputMap inputMap, final ActionMap actionMap) {
 		int fiveMask =
 			(Platform.SYSTEM_IS_MAC) ? InputEvent.ALT_DOWN_MASK : InputEvent.CTRL_DOWN_MASK;
 		for (Pair<Integer, String> pair : ARROW_INPUTS) {

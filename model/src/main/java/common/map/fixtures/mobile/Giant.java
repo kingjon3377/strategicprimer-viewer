@@ -10,7 +10,7 @@ import java.util.function.Consumer;
  * A giant.
  */
 public class Giant implements Immortal, HasMutableImage, HasKind {
-	public Giant(String kind, int id) {
+	public Giant(final String kind, final int id) {
 		this.kind = kind;
 		this.id = id;
 	}
@@ -58,12 +58,12 @@ public class Giant implements Immortal, HasMutableImage, HasKind {
 	 * @param image The filename of an image to use as an icon for this instance.
 	 */
 	@Override
-	public void setImage(String image) {
+	public void setImage(final String image) {
 		this.image = image;
 	}
 
 	@Override
-	public Giant copy(boolean zero) {
+	public Giant copy(final boolean zero) {
 		Giant retval = new Giant(kind, id);
 		retval.setImage(image);
 		return retval;
@@ -85,7 +85,7 @@ public class Giant implements Immortal, HasMutableImage, HasKind {
 	}
 
 	@Override
-	public boolean equals(Object obj) {
+	public boolean equals(final Object obj) {
 		if (obj instanceof Giant) {
 			return ((Giant) obj).getKind().equals(kind) && ((Giant) obj).getId() == id;
 		} else {
@@ -99,7 +99,7 @@ public class Giant implements Immortal, HasMutableImage, HasKind {
 	}
 
 	@Override
-	public boolean equalsIgnoringID(IFixture fixture) {
+	public boolean equalsIgnoringID(final IFixture fixture) {
 		if (fixture instanceof Giant) {
 			return ((Giant) fixture).getKind().equals(kind);
 		} else {
@@ -108,7 +108,7 @@ public class Giant implements Immortal, HasMutableImage, HasKind {
 	}
 
 	@Override
-	public boolean isSubset(IFixture obj, Consumer<String> report) {
+	public boolean isSubset(final IFixture obj, final Consumer<String> report) {
 		if (obj.getId() == id) {
 			if (obj instanceof Giant) {
 				if (((Giant) obj).getKind().equals(kind)) {

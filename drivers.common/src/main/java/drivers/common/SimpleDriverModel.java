@@ -47,7 +47,7 @@ public class SimpleDriverModel implements IDriverModel {
 		this(new SPMapNG(new MapDimensionsImpl(-1, -1, -1), new PlayerCollection(), -1));
 	}
 
-	public SimpleDriverModel(IMutableMapNG map) {
+	public SimpleDriverModel(final IMutableMapNG map) {
 		mainMap = map;
 		mapDim = mainMap.getDimensions();
 	}
@@ -58,7 +58,7 @@ public class SimpleDriverModel implements IDriverModel {
 	}
 
 	@Override
-	public final void setMapModified(boolean mapModified) {
+	public final void setMapModified(final boolean mapModified) {
 		mainMap.setModified(mapModified);
 		for (MapChangeListener listener : mcListeners) {
 			listener.mapMetadataChanged();
@@ -69,7 +69,7 @@ public class SimpleDriverModel implements IDriverModel {
 	 * Set a new main map.
 	 */
 	@Override
-	public void setMap(IMutableMapNG newMap) {
+	public void setMap(final IMutableMapNG newMap) {
 		for (VersionChangeListener listener : vcListeners) {
 			listener.changeVersion(mapDim.getVersion(), newMap.getDimensions().getVersion());
 		}
@@ -109,7 +109,7 @@ public class SimpleDriverModel implements IDriverModel {
 	 * Add a map-change listener.
 	 */
 	@Override
-	public final void addMapChangeListener(MapChangeListener listener) {
+	public final void addMapChangeListener(final MapChangeListener listener) {
 		mcListeners.add(listener);
 	}
 
@@ -117,7 +117,7 @@ public class SimpleDriverModel implements IDriverModel {
 	 * Remove a map-change listener.
 	 */
 	@Override
-	public final void removeMapChangeListener(MapChangeListener listener) {
+	public final void removeMapChangeListener(final MapChangeListener listener) {
 		mcListeners.remove(listener);
 	}
 
@@ -125,7 +125,7 @@ public class SimpleDriverModel implements IDriverModel {
 	 * Add a version-change listener.
 	 */
 	@Override
-	public final void addVersionChangeListener(VersionChangeListener listener) {
+	public final void addVersionChangeListener(final VersionChangeListener listener) {
 		vcListeners.add(listener);
 	}
 
@@ -133,7 +133,7 @@ public class SimpleDriverModel implements IDriverModel {
 	 * Remove a version-change listener.
 	 */
 	@Override
-	public final void removeVersionChangeListener(VersionChangeListener listener) {
+	public final void removeVersionChangeListener(final VersionChangeListener listener) {
 		vcListeners.remove(listener);
 	}
 
@@ -143,13 +143,13 @@ public class SimpleDriverModel implements IDriverModel {
 	}
 
 	@Override
-	public void setCurrentTurn(int currentTurn) {
+	public void setCurrentTurn(final int currentTurn) {
 		mainMap.setCurrentTurn(currentTurn);
 		mainMap.setModified(true);
 	}
 
 	@Override
-	public final void setMapFilename(Path filename) {
+	public final void setMapFilename(final Path filename) {
 		if (mainMap.getFilename() != null) {
 			LOGGER.warning("Overwriting existing filename");
 		}

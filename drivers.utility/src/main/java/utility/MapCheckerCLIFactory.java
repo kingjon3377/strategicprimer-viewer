@@ -27,7 +27,7 @@ public class MapCheckerCLIFactory implements UtilityDriverFactory {
 	}
 
 	@Override
-	public UtilityDriver createDriver(ICLIHelper cli, SPOptions options) {
+	public UtilityDriver createDriver(final ICLIHelper cli, final SPOptions options) {
 		return new MapCheckerCLI(cli::println, cli::println);
 	}
 }

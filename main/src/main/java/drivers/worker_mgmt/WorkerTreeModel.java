@@ -29,14 +29,14 @@ import java.util.stream.Collectors;
  */
 /* package */ class WorkerTreeModel implements IWorkerTreeModel {
 	private static final Logger LOGGER = Logger.getLogger(WorkerTreeModel.class.getName());
-	private static Predicate<IUnit> containingItem(UnitMember item) {
+	private static Predicate<IUnit> containingItem(final UnitMember item) {
 		return unit -> unit.stream().anyMatch(item::equals);
 	}
 
 	private Player player;
 	private final IWorkerModel model;
 
-	public WorkerTreeModel(Player player, IWorkerModel model) {
+	public WorkerTreeModel(final Player player, final IWorkerModel model) {
 		this.player = player;
 		this.model = model;
 	}
@@ -51,7 +51,7 @@ import java.util.stream.Collectors;
 	// TODO: We want to add a 'Fortress' level to the tree
 
 	@Override
-	public Object getChild(Object parent, int index) {
+	public Object getChild(final Object parent, final int index) {
 		// TODO: Make IWorkerModel methods return List to simplify this?
 		if (parent instanceof Player) {
 			return StreamSupport.stream(model.getUnitKinds((Player) parent).spliterator(), false)
@@ -68,7 +68,7 @@ import java.util.stream.Collectors;
 	}
 
 	@Override
-	public int getChildCount(Object parent) {
+	public int getChildCount(final Object parent) {
 		if (parent instanceof Player) {
 			return (int) StreamSupport.stream(model.getUnitKinds((Player) parent).spliterator(),
 				false).count();
@@ -84,7 +84,7 @@ import java.util.stream.Collectors;
 	}
 
 	@Override
-	public boolean isLeaf(Object node) {
+	public boolean isLeaf(final Object node) {
 		// TODO: condense further
 		if (node instanceof Player || node instanceof IUnit || node instanceof String) {
 			return false;
@@ -94,12 +94,12 @@ import java.util.stream.Collectors;
 	}
 
 	@Override
-	public void valueForPathChanged(TreePath path, Object newValue) {
+	public void valueForPathChanged(final TreePath path, final Object newValue) {
 		LOGGER.severe("valueForPathChanged needs to be implemented");
 	}
 
 	@Override
-	public int getIndexOfChild(Object parent, Object child) {
+	public int getIndexOfChild(final Object parent, final Object child) {
 		if (parent instanceof Player && child instanceof IUnit) {
 			// FIXME: This case shouldn't be allowed, right?
 			return StreamSupport.stream(model.getUnits((Player) parent).spliterator(), false)
@@ -119,17 +119,17 @@ import java.util.stream.Collectors;
 	}
 
 	@Override
-	public void addTreeModelListener(TreeModelListener listener) {
+	public void addTreeModelListener(final TreeModelListener listener) {
 		listeners.add(listener);
 	}
 
 	@Override
-	public void removeTreeModelListener(TreeModelListener listener) {
+	public void removeTreeModelListener(final TreeModelListener listener) {
 		listeners.remove(listener);
 	}
 
 	@Override
-	public void moveMember(UnitMember member, IUnit old, IUnit newOwner) {
+	public void moveMember(final UnitMember member, final IUnit old, final IUnit newOwner) {
 		int oldIndex = getIndexOfChild(old, member);
 		TreeModelEvent removedEvent = new TreeModelEvent(this,
 			new TreePath(new Object[] { player, old.getKind(), old }),
@@ -153,7 +153,7 @@ import java.util.stream.Collectors;
 	}
 
 	@Override
-	public void addUnit(IUnit unit) {
+	public void addUnit(final IUnit unit) {
 		model.addUnit(unit);
 		TreePath path = new TreePath(new Object[] { player, unit.getKind() });
 		int[] indices = new int[] {
@@ -167,12 +167,12 @@ import java.util.stream.Collectors;
 	}
 
 	@Override
-	public void addNewUnit(IUnit unit) {
+	public void addNewUnit(final IUnit unit) {
 		addUnit(unit);
 	}
 
 	@Override
-	public void playerChanged(@Nullable Player old, Player newPlayer) {
+	public void playerChanged(@Nullable final Player old, final Player newPlayer) {
 		player = newPlayer;
 		TreeModelEvent event = new TreeModelEvent(this, new TreePath(getRoot()));
 		for (TreeModelListener listener : listeners) {
@@ -186,12 +186,12 @@ import java.util.stream.Collectors;
 	}
 
 	@Override
-	public Object getModelObject(Object obj) {
+	public Object getModelObject(final Object obj) {
 		return obj;
 	}
 
 	@Override
-	public void addUnitMember(IUnit unit, UnitMember member) {
+	public void addUnitMember(final IUnit unit, final UnitMember member) {
 		LOGGER.finer("In WorkerTreeModel.addUnitMember");
 		model.addUnitMember(unit, member);
 		LOGGER.finer("Added member to unit");
@@ -206,7 +206,7 @@ import java.util.stream.Collectors;
 	}
 
 	@Override
-	public void renameItem(HasMutableName item, String newName) {
+	public void renameItem(final HasMutableName item, final String newName) {
 		TreePath path;
 		int[] indices;
 		Object[] children;
@@ -244,7 +244,7 @@ import java.util.stream.Collectors;
 	}
 
 	@Override
-	public void changeKind(HasKind item, String newKind) {
+	public void changeKind(final HasKind item, final String newKind) {
 		TreePath path;
 		int[] indices;
 		Object[] children;
@@ -277,7 +277,7 @@ import java.util.stream.Collectors;
 	}
 
 	@Override
-	public void dismissUnitMember(UnitMember member) {
+	public void dismissUnitMember(final UnitMember member) {
 		for (IUnit unit : model.getUnits(player)) {
 			int index = 0;
 			for (UnitMember item : unit) {
@@ -297,7 +297,7 @@ import java.util.stream.Collectors;
 	}
 
 	@Override
-	public void addSibling(UnitMember base, UnitMember sibling) {
+	public void addSibling(final UnitMember base, final UnitMember sibling) {
 		for (IUnit unit : model.getUnits(player)) {
 			if (unit.stream().anyMatch(base::equals)) {
 				int existingMembersCount = (int) unit.stream().count();
@@ -331,7 +331,7 @@ import java.util.stream.Collectors;
 	 */
 	@Override
 	@Nullable
-	public TreePath nextProblem(@Nullable TreePath starting, int turn) {
+	public TreePath nextProblem(@Nullable final TreePath starting, final int turn) {
 		Iterable<IUnit> sequence;
 		boolean leading;
 		Predicate<IUnit> leadingFilter;
@@ -395,7 +395,7 @@ import java.util.stream.Collectors;
 	public void mapMetadataChanged() {}
 
 	@Override
-	public Iterable<Object> childrenOf(Object obj) {
+	public Iterable<Object> childrenOf(final Object obj) {
 		if (obj instanceof Player) {
 			return (Iterable<Object>) ((Iterable<?>) model.getUnitKinds((Player) obj));
 		} else if (obj instanceof String) {
@@ -408,7 +408,7 @@ import java.util.stream.Collectors;
 	}
 
 	@Override
-	public void refreshChildren(IUnit parent) {
+	public void refreshChildren(final IUnit parent) {
 		TreeModelEvent event = new TreeModelEvent(this, new TreePath(
 			new Object[] { player, parent.getKind(), parent }));
 		for (TreeModelListener listener : listeners) {
@@ -417,7 +417,7 @@ import java.util.stream.Collectors;
 	}
 
 	@Override
-	public void removeUnit(IUnit unit) {
+	public void removeUnit(final IUnit unit) {
 		LOGGER.finer("In WorkerTreeModel.removeUnit()");
 		// FIXME: What if it's the only unit with this kind?
 		TreeModelEvent event = new TreeModelEvent(this,
@@ -436,7 +436,7 @@ import java.util.stream.Collectors;
 	}
 
 	@Override
-	public void changeOwner(HasMutableOwner item, Player newOwner) {
+	public void changeOwner(final HasMutableOwner item, final Player newOwner) {
 		if (item instanceof IUnit && item.getOwner().equals(player)) {
 			// TODO: What if it's the only unit with this kind?
 			TreeModelEvent event = new TreeModelEvent(this,
@@ -454,7 +454,7 @@ import java.util.stream.Collectors;
 	}
 
 	@Override
-	public void sortMembers(IUnit fixture) {
+	public void sortMembers(final IUnit fixture) {
 		if (model.sortFixtureContents(fixture)) {
 			refreshChildren(fixture);
 		}

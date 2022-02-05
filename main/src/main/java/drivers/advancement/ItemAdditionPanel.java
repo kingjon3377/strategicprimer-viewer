@@ -29,7 +29,7 @@ import lovelace.util.SimpleCardLayout;
 	/**
 	 * @param what What we're adding
 	 */
-	public ItemAdditionPanel(String what) {
+	public ItemAdditionPanel(final String what) {
 		this.what = what;
 		layoutObj = new SimpleCardLayout(this);
 		setPanelSizes(this);
@@ -75,18 +75,18 @@ import lovelace.util.SimpleCardLayout;
 	private final JTextField field = new JTextField(10);
 
 	@Override
-	public void addAddRemoveListener(AddRemoveListener listener) {
+	public void addAddRemoveListener(final AddRemoveListener listener) {
 		listeners.add(listener);
 	}
 
 	@Override
-	public void removeAddRemoveListener(AddRemoveListener listener) {
+	public void removeAddRemoveListener(final AddRemoveListener listener) {
 		listeners.remove(listener);
 	}
 
 	private final SimpleCardLayout layoutObj;
 
-	private static void setPanelSizes(JPanel panel) {
+	private static void setPanelSizes(final JPanel panel) {
 		panel.setMinimumSize(new Dimension(60, 40));
 		panel.setPreferredSize(new Dimension(80, 50));
 		panel.setMaximumSize(new Dimension(90, 50));

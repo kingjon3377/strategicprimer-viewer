@@ -24,7 +24,7 @@ import common.xmlio.Warning;
 import common.map.fixtures.UnitMember;
 
 final class DBUnitHandler extends AbstractDatabaseWriter<IUnit, Object> implements MapContentsReader {
-	public DBUnitHandler(SPDatabaseWriter parent) {
+	public DBUnitHandler(final SPDatabaseWriter parent) {
 		super(IUnit.class, Object.class);
 		this.parent = parent;
 	}
@@ -35,7 +35,7 @@ final class DBUnitHandler extends AbstractDatabaseWriter<IUnit, Object> implemen
 	private final SPDatabaseWriter parent;
 
 	@Override
-	public boolean canWrite(Object obj, Object context) {
+	public boolean canWrite(final Object obj, final Object context) {
 		return obj instanceof IUnit && (context instanceof Point || context instanceof IFortress);
 	}
 
@@ -80,7 +80,7 @@ final class DBUnitHandler extends AbstractDatabaseWriter<IUnit, Object> implemen
 		"INSERT INTO results (unit, turn, result) VALUES(?, ?, ?);";
 
 	@Override
-	public void write(DB db, IUnit obj, Object context) {
+	public void write(final DB db, final IUnit obj, final Object context) {
 		db.transaction(sql -> {
 				String portrait = obj.getPortrait();
 				if (context instanceof Point) {
@@ -111,7 +111,7 @@ final class DBUnitHandler extends AbstractDatabaseWriter<IUnit, Object> implemen
 		}
 	}
 
-	private TryBiConsumer<Map<String, Object>, Warning, Exception> readOrders(IMutableUnit unit) {
+	private TryBiConsumer<Map<String, Object>, Warning, Exception> readOrders(final IMutableUnit unit) {
 		return (dbRow, warner) -> {
 			Integer turn = (Integer) dbRow.get("turn");
 			String orders = (String) dbRow.get("orders");
@@ -119,7 +119,7 @@ final class DBUnitHandler extends AbstractDatabaseWriter<IUnit, Object> implemen
 		};
 	}
 
-	private TryBiConsumer<Map<String, Object>, Warning, Exception> readResults(IMutableUnit unit) {
+	private TryBiConsumer<Map<String, Object>, Warning, Exception> readResults(final IMutableUnit unit) {
 		return (dbRow, warner) -> {
 			Integer turn = (Integer) dbRow.get("turn");
 			String results = (String) dbRow.get("results");
@@ -127,7 +127,7 @@ final class DBUnitHandler extends AbstractDatabaseWriter<IUnit, Object> implemen
 		};
 	}
 
-	private TryBiConsumer<Map<String, Object>, Warning, Exception> readUnit(IMutableMapNG map, DB db) {
+	private TryBiConsumer<Map<String, Object>, Warning, Exception> readUnit(final IMutableMapNG map, final DB db) {
 		return (dbRow, warner) -> {
 			int ownerNum = (Integer) dbRow.get("owner");
 			String kind = (String) dbRow.get("kind");
@@ -159,28 +159,28 @@ final class DBUnitHandler extends AbstractDatabaseWriter<IUnit, Object> implemen
 	}
 
 	@Override
-	public void readMapContents(DB db, IMutableMapNG map, Warning warner) {
+	public void readMapContents(final DB db, final IMutableMapNG map, final Warning warner) {
 		try {
 			handleQueryResults(db, warner, "units outside fortresses",
 				readUnit(map, db), "SELECT * FROM units WHERE row IS NOT NULL");
-		} catch (RuntimeException except) {
+		} catch (final RuntimeException except) {
 			// Don't wrap RuntimeExceptions in RuntimeException
 			throw except;
-		} catch (Exception except) {
+		} catch (final Exception except) {
 			// FIXME Antipattern
 			throw new RuntimeException(except);
 		}
 	}
 
 	@Override
-	public void readExtraMapContents(DB db, IMutableMapNG map, Warning warner) {
+	public void readExtraMapContents(final DB db, final IMutableMapNG map, final Warning warner) {
 		try {
 			handleQueryResults(db, warner, "units in fortresses",
 				readUnit(map, db), "SELECT * FROM units WHERE parent IS NOT NULL");
-		} catch (RuntimeException except) {
+		} catch (final RuntimeException except) {
 			// Don't wrap RuntimeExceptions in RuntimeException
 			throw except;
-		} catch (Exception except) {
+		} catch (final Exception except) {
 			// FIXME Antipattern
 			throw new RuntimeException(except);
 		}

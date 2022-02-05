@@ -28,7 +28,7 @@ final class DBSimpleTerrainHandler extends AbstractDatabaseWriter<TerrainFixture
 	}
 
 	@Override
-	public boolean canWrite(Object obj, Object context) {
+	public boolean canWrite(final Object obj, final Object context) {
 		return (obj instanceof Hill || obj instanceof Oasis) && context instanceof Point;
 	}
 
@@ -48,7 +48,7 @@ final class DBSimpleTerrainHandler extends AbstractDatabaseWriter<TerrainFixture
 	}
 
 	@Override
-	public void write(DB db, TerrainFixture obj, Point context) {
+	public void write(final DB db, final TerrainFixture obj, final Point context) {
 		final String type;
 		if (obj instanceof Hill) {
 			type = "hill";
@@ -62,7 +62,7 @@ final class DBSimpleTerrainHandler extends AbstractDatabaseWriter<TerrainFixture
 			((HasImage) obj).getImage()).execute();
 	}
 
-	private TryBiConsumer<Map<String, Object>, Warning, Exception> readSimpleTerrain(IMutableMapNG map) {
+	private TryBiConsumer<Map<String, Object>, Warning, Exception> readSimpleTerrain(final IMutableMapNG map) {
 		return (dbRow, warner) -> {
 			int row = (Integer) dbRow.get("row");
 			int column = (Integer) dbRow.get("column");
@@ -91,14 +91,14 @@ final class DBSimpleTerrainHandler extends AbstractDatabaseWriter<TerrainFixture
 	}
 
 	@Override
-	public void readMapContents(DB db, IMutableMapNG map, Warning warner) {
+	public void readMapContents(final DB db, final IMutableMapNG map, final Warning warner) {
 		try {
 			handleQueryResults(db, warner, "simple terrain fixtures",
 				readSimpleTerrain(map), "SELECT * FROM simple_terrain");
-		} catch (RuntimeException except) {
+		} catch (final RuntimeException except) {
 			// Don't wrap RuntimeExceptions in RuntimeException
 			throw except;
-		} catch (Exception except) {
+		} catch (final Exception except) {
 			// FIXME Antipattern
 			throw new RuntimeException(except);
 		}

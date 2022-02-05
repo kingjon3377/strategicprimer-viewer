@@ -29,7 +29,7 @@ public class PlayerCollection implements IMutablePlayerCollection {
 	 * Get a player by ID number.
 	 */
 	@Override
-	public Player getPlayer(int player) {
+	public Player getPlayer(final int player) {
 		if (players.containsKey(player)) {
 			return players.get(player);
 		} else if (player < 0) {
@@ -53,7 +53,7 @@ public class PlayerCollection implements IMutablePlayerCollection {
 	 * A player collection is a subset if it has no players we don't.
 	 */
 	@Override
-	public boolean isSubset(Iterable<Player> obj, Consumer<String> report) {
+	public boolean isSubset(final Iterable<Player> obj, final Consumer<String> report) {
 		boolean retval = true;
 		for (Player player : obj) {
 			if (!players.containsValue(player)) {
@@ -91,7 +91,7 @@ public class PlayerCollection implements IMutablePlayerCollection {
 	 * Add a player to the collection.
 	 */
 	@Override
-	public void add(Player player) {
+	public void add(final Player player) {
 		if (player.isIndependent()) {
 			independentPlayer = player;
 		}
@@ -105,7 +105,7 @@ public class PlayerCollection implements IMutablePlayerCollection {
 	 * Remove a player from the collection.
 	 */
 	@Override
-	public void remove(Player obj) {
+	public void remove(final Player obj) {
 		remove(obj.getPlayerId());
 	}
 
@@ -113,7 +113,7 @@ public class PlayerCollection implements IMutablePlayerCollection {
 	 * Remove a player from the collection.
 	 */
 	@Override
-	public void remove(int obj) {
+	public void remove(final int obj) {
 		if (players.containsKey(obj)) {
 			Player removed = players.remove(obj);
 			if (independentPlayer.equals(removed)) {
@@ -156,7 +156,7 @@ public class PlayerCollection implements IMutablePlayerCollection {
 	 * Set the current player.
 	 */
 	@Override
-	public void setCurrentPlayer(Player currentPlayer) {
+	public void setCurrentPlayer(final Player currentPlayer) {
 		Player oldCurrent = current;
 		if (oldCurrent instanceof MutablePlayer) {
 			((MutablePlayer) oldCurrent).setCurrent(false);
@@ -180,7 +180,7 @@ public class PlayerCollection implements IMutablePlayerCollection {
 	 * players we have.
 	 */
 	@Override
-	public boolean equals(Object obj) {
+	public boolean equals(final Object obj) {
 		if (obj == this) {
 			return true;
 		} else if (obj instanceof IPlayerCollection) {
@@ -192,7 +192,7 @@ public class PlayerCollection implements IMutablePlayerCollection {
 	}
 
 	@Override
-	public boolean containsAll(IPlayerCollection other) {
+	public boolean containsAll(final IPlayerCollection other) {
 		Collection<Player> collection = players.values();
 		for (Player player : other) {
 			if (!collection.contains(player)) {

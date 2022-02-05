@@ -36,13 +36,13 @@ import common.map.fixtures.mobile.AnimalOrTracks;
  */
 public class UnitReportGenerator extends AbstractReportGenerator<IUnit> {
 
-	public UnitReportGenerator(Comparator<Pair<Point, IFixture>> comp, Player currentPlayer,
-			MapDimensions dimensions, int currentTurn) {
+	public UnitReportGenerator(final Comparator<Pair<Point, IFixture>> comp, final Player currentPlayer,
+	                           final MapDimensions dimensions, final int currentTurn) {
 		this(comp, currentPlayer, dimensions, currentTurn, null);
 	}
 
-	public UnitReportGenerator(Comparator<Pair<Point, IFixture>> comp, Player currentPlayer,
-			MapDimensions dimensions, int currentTurn, @Nullable Point hq) {
+	public UnitReportGenerator(final Comparator<Pair<Point, IFixture>> comp, final Player currentPlayer,
+	                           final MapDimensions dimensions, final int currentTurn, @Nullable final Point hq) {
 		super(comp, dimensions, hq);
 		memberReportGenerator = new FortressMemberReportGenerator(comp, currentPlayer, dimensions,
 			currentTurn, hq);
@@ -54,7 +54,7 @@ public class UnitReportGenerator extends AbstractReportGenerator<IUnit> {
 		this.currentPlayer = currentPlayer;
 	}
 
-	private final IReportGenerator<FortressMember> memberReportGenerator; 
+	private final IReportGenerator<FortressMember> memberReportGenerator;
 	private final IReportGenerator</*Animal|AnimalTracks*/AnimalOrTracks> animalReportGenerator;
 	private final IReportGenerator<IWorker> ourWorkerReportGenerator;
 	private final IReportGenerator<IWorker> otherWorkerReportGenerator;
@@ -63,7 +63,7 @@ public class UnitReportGenerator extends AbstractReportGenerator<IUnit> {
 	/**
 	 * Produce the sub-sub-report about a unit's orders and results.
 	 */
-	private void produceOrders(IUnit item, ThrowingConsumer<String, IOException> formatter) throws IOException {
+	private void produceOrders(final IUnit item, final ThrowingConsumer<String, IOException> formatter) throws IOException {
 		if (!item.getAllOrders().isEmpty() || !item.getAllResults().isEmpty()) {
 			formatter.accept("Orders and Results:<ul>");
 			formatter.accept(System.lineSeparator());
@@ -99,7 +99,7 @@ public class UnitReportGenerator extends AbstractReportGenerator<IUnit> {
 		}
 	}
 
-	private static <T> @Nullable T findAndRemoveFirst(List<T> list, Predicate<T> predicate) {
+	private static <T> @Nullable T findAndRemoveFirst(final List<T> list, final Predicate<T> predicate) {
 		for (T item : list) {
 			if (predicate.test(item)) {
 				list.remove(item);
@@ -110,9 +110,9 @@ public class UnitReportGenerator extends AbstractReportGenerator<IUnit> {
 	}
 
 	private <Member extends UnitMember> void produceInner(
-			DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-			ThrowingConsumer<String, IOException> ostream, String heading, List<Member> collection,
-			ThrowingConsumer<Member, IOException> generator) throws IOException {
+			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
+			final ThrowingConsumer<String, IOException> ostream, final String heading, final List<Member> collection,
+			final ThrowingConsumer<Member, IOException> generator) throws IOException {
 		if (!collection.isEmpty()) {
 			ostream.accept("<li>");
 			ostream.accept(heading);
@@ -139,8 +139,8 @@ public class UnitReportGenerator extends AbstractReportGenerator<IUnit> {
 	 * middle of a paragraph or bullet point).
 	 */
 	@Override
-	public void produceSingle(DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-			IMapNG map, ThrowingConsumer<String, IOException> ostream, IUnit item, Point loc)
+	public void produceSingle(final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
+	                          final IMapNG map, final ThrowingConsumer<String, IOException> ostream, final IUnit item, final Point loc)
 			throws IOException {
 		ostream.accept("Unit ");
 		ostream.accept(item.getName());
@@ -226,8 +226,8 @@ public class UnitReportGenerator extends AbstractReportGenerator<IUnit> {
 		fixtures.remove(item.getId());
 	}
 
-	private void unitFormatter(DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-			IMapNG map, IUnit unit, Point loc, ThrowingConsumer<String, IOException> formatter)
+	private void unitFormatter(final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
+	                           final IMapNG map, final IUnit unit, final Point loc, final ThrowingConsumer<String, IOException> formatter)
 			throws IOException {
 		formatter.accept("At ");
 		formatter.accept(loc.toString());
@@ -239,8 +239,8 @@ public class UnitReportGenerator extends AbstractReportGenerator<IUnit> {
 	 * Produce the part of the report on all units not covered as part of fortresses.
 	 */
 	@Override
-	public void produce(DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-			IMapNG map, ThrowingConsumer<String, IOException> ostream) throws IOException {
+	public void produce(final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
+	                    final IMapNG map, final ThrowingConsumer<String, IOException> ostream) throws IOException {
 		HeadedMap<IUnit, Point> foreign = new HeadedMapImpl<>("<h5>Foreign Units</h5>");
 		HeadedMap<IUnit, Point> ours = new HeadedMapImpl<>("<h5>Your units</h5>");
 		for (Pair<Point, IUnit> pair : fixtures.values().stream()

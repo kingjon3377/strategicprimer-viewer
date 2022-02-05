@@ -18,12 +18,12 @@ import common.xmlio.Warning;
  * A reader for resource piles.
  */
 /* package */ class YAResourcePileReader extends YAAbstractReader<IResourcePile, IResourcePile> {
-	public YAResourcePileReader(Warning warning, IDRegistrar idRegistrar) {
+	public YAResourcePileReader(final Warning warning, final IDRegistrar idRegistrar) {
 		super(warning, idRegistrar);
 	}
 
 	@Override
-	public IMutableResourcePile read(StartElement element, QName parent, Iterable<XMLEvent> stream) 
+	public IMutableResourcePile read(final StartElement element, final QName parent, final Iterable<XMLEvent> stream)
 			throws SPFormatException {
 		requireTag(element, parent, "resource");
 		expectAttributes(element, "quantity", "kind", "contents", "unit", "created", "id", "image");
@@ -40,12 +40,12 @@ import common.xmlio.Warning;
 	}
 
 	@Override
-	public boolean isSupportedTag(String tag) {
+	public boolean isSupportedTag(final String tag) {
 		return "resource".equalsIgnoreCase(tag);
 	}
 
 	@Override
-	public void write(ThrowingConsumer<String, IOException> ostream, IResourcePile obj, int indent) throws IOException {
+	public void write(final ThrowingConsumer<String, IOException> ostream, final IResourcePile obj, final int indent) throws IOException {
 		writeTag(ostream, "resource", indent);
 		writeProperty(ostream, "id", obj.getId());
 		writeProperty(ostream, "kind", obj.getKind());
@@ -60,7 +60,7 @@ import common.xmlio.Warning;
 	}
 
 	@Override
-	public boolean canWrite(Object obj) {
+	public boolean canWrite(final Object obj) {
 		return obj instanceof IResourcePile;
 	}
 }

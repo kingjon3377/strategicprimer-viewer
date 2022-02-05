@@ -28,7 +28,7 @@ import java.util.stream.Collectors;
 		return rivers;
 	}
 
-	public RiverFixture(River... rivers) {
+	public RiverFixture(final River... rivers) {
 		EnumSet<River> temp = EnumSet.noneOf(River.class);
 		for (River river : rivers) {
 			temp.add(river);
@@ -45,13 +45,13 @@ import java.util.stream.Collectors;
 	 */
 	@Deprecated
 	@Override
-	public RiverFixture copy(boolean zero) {
+	public RiverFixture copy(final boolean zero) {
 		LOGGER.log(Level.WARNING, "TileTypeFixture.copy called", new Exception("dummy"));
 		return new RiverFixture(rivers.toArray(new River[0]));
 	}
 
 	@Override
-	public boolean equals(Object obj) {
+	public boolean equals(final Object obj) {
 		return obj instanceof RiverFixture && rivers.containsAll(((RiverFixture) obj).rivers) &&
 			((RiverFixture) obj).rivers.containsAll(rivers);
 	}

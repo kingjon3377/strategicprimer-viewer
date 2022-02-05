@@ -23,7 +23,7 @@ public interface TileFixture extends IFixture, Comparable<TileFixture> {
 	 * Compare to another fixture.
 	 */
 	@Override
-	default int compareTo(TileFixture other) {
+	default int compareTo(final TileFixture other) {
 		return Integer.compare(hashCode(), other.hashCode());
 	}
 

@@ -46,13 +46,13 @@ final class DBFieldHandler extends AbstractDatabaseWriter<Meadow, Point> impleme
 			"VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?);";
 
 	@Override
-	public void write(DB db, Meadow obj, Point context) {
+	public void write(final DB db, final Meadow obj, final Point context) {
 		db.update(INSERT_SQL, context.getRow(), context.getColumn(), obj.getId(),
 			(obj.isField()) ? "field" : "meadow", obj.getKind(), obj.isCultivated(),
 			obj.getStatus().toString(), obj.getAcres().toString(), obj.getImage());
 	}
 
-	private TryBiConsumer<Map<String, Object>, Warning, Exception> readMeadow(IMutableMapNG map) {
+	private TryBiConsumer<Map<String, Object>, Warning, Exception> readMeadow(final IMutableMapNG map) {
 		return (dbRow, warner) -> {
 			int row = (Integer) dbRow.get("row");
 			int column = (Integer) dbRow.get("column");
@@ -67,7 +67,7 @@ final class DBFieldHandler extends AbstractDatabaseWriter<Meadow, Point> impleme
 			Number acres;
 			try {
 				acres = Integer.parseInt(acresString);
-			} catch (NumberFormatException except) {
+			} catch (final NumberFormatException except) {
 				acres = new BigDecimal(acresString);
 			}
 			final boolean field;
@@ -90,14 +90,14 @@ final class DBFieldHandler extends AbstractDatabaseWriter<Meadow, Point> impleme
 	}
 
 	@Override
-	public void readMapContents(DB db, IMutableMapNG map, Warning warner) {
+	public void readMapContents(final DB db, final IMutableMapNG map, final Warning warner) {
 		try {
 			handleQueryResults(db, warner, "meadows", readMeadow(map),
 				"SELECT * FROM fields");
-		} catch (RuntimeException except) {
+		} catch (final RuntimeException except) {
 			// Don't wrap RuntimeExceptions in RuntimeException
 			throw except;
-		} catch (Exception except) {
+		} catch (final Exception except) {
 			// FIXME Antipattern
 			throw new RuntimeException(except);
 		}

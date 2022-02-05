@@ -37,7 +37,7 @@ import static lovelace.util.NumParsingHelper.parseInt;
  * to handle other kinds of fixtures
  */
 public class NewUnitDialog extends SPDialog implements NewUnitSource, PlayerChangeListener {
-	public NewUnitDialog(Player player, IDRegistrar idf) {
+	public NewUnitDialog(final Player player, final IDRegistrar idf) {
 		super(null, "Add a New Unit");
 		this.player = player;
 		this.idf = idf;
@@ -73,17 +73,17 @@ public class NewUnitDialog extends SPDialog implements NewUnitSource, PlayerChan
 		new JFormattedTextField(NumberFormat.getIntegerInstance());
 
 	@Override
-	public void playerChanged(@Nullable Player old, Player newPlayer) {
+	public void playerChanged(@Nullable final Player old, final Player newPlayer) {
 		player = newPlayer;
 	}
 
 	@Override
-	public void addNewUnitListener(NewUnitListener listener) {
+	public void addNewUnitListener(final NewUnitListener listener) {
 		listeners.add(listener);
 	}
 
 	@Override
-	public void removeNewUnitListener(NewUnitListener listener) {
+	public void removeNewUnitListener(final NewUnitListener listener) {
 		listeners.remove(listener);
 	}
 
@@ -130,7 +130,7 @@ public class NewUnitDialog extends SPDialog implements NewUnitSource, PlayerChan
 		}
 	}
 
-	private void setupField(JTextField field) {
+	private void setupField(final JTextField field) {
 		field.setActionCommand("OK");
 		field.addActionListener(ignored -> okListener());
 		add(field);

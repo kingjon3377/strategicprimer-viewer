@@ -28,8 +28,8 @@ public class AnimalTabularReportGenerator implements ITableGenerator<AnimalOrTra
 		return AnimalOrTracks.class;
 	}
 
-	public AnimalTabularReportGenerator(@Nullable Point hq, MapDimensions dimensions,
-			int currentTurn) {
+	public AnimalTabularReportGenerator(@Nullable final Point hq, final MapDimensions dimensions,
+	                                    final int currentTurn) {
 		this.hq = hq;
 		this.dimensions = dimensions;
 		this.currentTurn = currentTurn;
@@ -63,8 +63,8 @@ public class AnimalTabularReportGenerator implements ITableGenerator<AnimalOrTra
 	 */
 	@Override
 	public Iterable<Iterable<String>> produce(
-			DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-			AnimalOrTracks item, int key, Point loc, Map<Integer, Integer> parentMap) {
+			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
+			final AnimalOrTracks item, final int key, final Point loc, final Map<Integer, Integer> parentMap) {
 		String kind;
 		String age;
 		String population;
@@ -114,7 +114,7 @@ public class AnimalTabularReportGenerator implements ITableGenerator<AnimalOrTra
 	 * Compare two pairs of Animals and locations.
 	 */
 	@Override
-	public int comparePairs(Pair<Point, AnimalOrTracks> one, Pair<Point, AnimalOrTracks> two) {
+	public int comparePairs(final Pair<Point, AnimalOrTracks> one, final Pair<Point, AnimalOrTracks> two) {
 		int cmp;
 		if (hq != null) {
 			cmp = new DistanceComparator(hq, dimensions).compare(one.getValue0(),

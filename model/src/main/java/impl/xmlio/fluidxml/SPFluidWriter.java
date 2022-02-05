@@ -100,7 +100,7 @@ public class SPFluidWriter implements SPWriter {
 
 	private static int currentTurn = -1;
 
-	private void writeSPObjectImpl(XMLStreamWriter ostream, Object obj, int indentation)
+	private void writeSPObjectImpl(final XMLStreamWriter ostream, final Object obj, final int indentation)
 			throws MalformedXMLException {
 		for (Class<?> type : new TypeStream(obj)) {
 			if (writers.containsKey(type)) {
@@ -112,7 +112,7 @@ public class SPFluidWriter implements SPWriter {
 	}
 
 	@Override
-	public void writeSPObject(ThrowingConsumer<String, IOException> ostream, Object obj)
+	public void writeSPObject(final ThrowingConsumer<String, IOException> ostream, final Object obj)
 			throws MalformedXMLException, IOException {
 		XMLOutputFactory xof = XMLOutputFactory.newInstance();
 		StringWriter writer = new StringWriter();
@@ -123,7 +123,7 @@ public class SPFluidWriter implements SPWriter {
 			xsw.writeEndDocument();
 			xsw.flush();
 			xsw.close();
-		} catch (XMLStreamException except) {
+		} catch (final XMLStreamException except) {
 			throw new MalformedXMLException(except);
 		}
 		for (String line : writer.toString().split(System.lineSeparator())) {
@@ -133,26 +133,26 @@ public class SPFluidWriter implements SPWriter {
 	}
 
 	@Override
-	public void writeSPObject(Path file, Object obj) throws MalformedXMLException, IOException {
+	public void writeSPObject(final Path file, final Object obj) throws MalformedXMLException, IOException {
 		try (BufferedWriter writer = Files.newBufferedWriter(file, StandardCharsets.UTF_8)) {
 			writeSPObject(writer::write, obj);
 		}
 	}
 
 	@Override
-	public void write(Path arg, IMapNG map) throws MalformedXMLException, IOException {
+	public void write(final Path arg, final IMapNG map) throws MalformedXMLException, IOException {
 		writeSPObject(arg, map);
 	}
 
 	@Override
-	public void write(ThrowingConsumer<String, IOException> arg, IMapNG map) throws MalformedXMLException, IOException {
+	public void write(final ThrowingConsumer<String, IOException> arg, final IMapNG map) throws MalformedXMLException, IOException {
 		writeSPObject(arg, map);
 	}
 
 	/**
 	 * TODO: Does this really need to be an instance (non-static) method?
 	 */
-	private void writePlayer(XMLStreamWriter ostream, Player obj, int indentation)
+	private void writePlayer(final XMLStreamWriter ostream, final Player obj, final int indentation)
 			throws MalformedXMLException {
 		if (!obj.getName().isEmpty()) {
 			writeTag(ostream, "player", indentation, true);
@@ -166,7 +166,7 @@ public class SPFluidWriter implements SPWriter {
 	}
 
 	private static class SimpleFixtureWriter<Type> implements FluidXMLWriter {
-		public SimpleFixtureWriter(Class<Type> cls, String tag) {
+		public SimpleFixtureWriter(final Class<Type> cls, final String tag) {
 			this.cls = cls;
 			this.tag = tag;
 		}
@@ -175,7 +175,7 @@ public class SPFluidWriter implements SPWriter {
 		private final String tag;
 
 		@Override
-		public void write(XMLStreamWriter ostream, Object obj, int indentation)
+		public void write(final XMLStreamWriter ostream, final Object obj, final int indentation)
 				throws MalformedXMLException {
 			if (!cls.isInstance(obj)) {
 				throw new IllegalArgumentException("Can only write " + cls.getName());
@@ -197,8 +197,8 @@ public class SPFluidWriter implements SPWriter {
 		}
 	}
 
-	private void writeUnitOrders(XMLStreamWriter ostream, int indentation, int turn,
-				String tag, String text) throws MalformedXMLException {
+	private void writeUnitOrders(final XMLStreamWriter ostream, final int indentation, final int turn,
+	                             final String tag, final String text) throws MalformedXMLException {
 		// assert (tag == "orders" || tag == "results");
 		if (text.isEmpty()) {
 			return;
@@ -210,12 +210,12 @@ public class SPFluidWriter implements SPWriter {
 		try {
 			ostream.writeCharacters(text);
 			ostream.writeEndElement();
-		} catch (XMLStreamException except) {
+		} catch (final XMLStreamException except) {
 			throw new MalformedXMLException(except);
 		}
 	}
 
-	private void writeUnit(XMLStreamWriter ostream, IUnit obj, int indentation)
+	private void writeUnit(final XMLStreamWriter ostream, final IUnit obj, final int indentation)
 			throws MalformedXMLException {
 		boolean empty = obj.isEmpty() &&
 			obj.getAllOrders().values().stream().allMatch(String::isEmpty) &&
@@ -242,13 +242,13 @@ public class SPFluidWriter implements SPWriter {
 			indent(ostream, indentation);
 			try {
 				ostream.writeEndElement();
-			} catch (XMLStreamException except) {
+			} catch (final XMLStreamException except) {
 				throw new MalformedXMLException(except);
 			}
 		}
 	}
 
-	private void writeFortress(XMLStreamWriter ostream, IFortress obj, int indentation)
+	private void writeFortress(final XMLStreamWriter ostream, final IFortress obj, final int indentation)
 			throws MalformedXMLException {
 		writeTag(ostream, "fortress", indentation, false);
 		writeAttributes(ostream, Pair.with("owner", obj.getOwner().getPlayerId()));
@@ -267,12 +267,12 @@ public class SPFluidWriter implements SPWriter {
 		}
 		try {
 			ostream.writeEndElement();
-		} catch (XMLStreamException except) {
+		} catch (final XMLStreamException except) {
 			throw new MalformedXMLException(except);
 		}
 	}
 
-	private void writeMap(XMLStreamWriter ostream, IMapNG obj, int indentation)
+	private void writeMap(final XMLStreamWriter ostream, final IMapNG obj, final int indentation)
 			throws MalformedXMLException {
 		writeTag(ostream, "view", indentation, false);
 		writeAttributes(ostream, Pair.with("current_player", obj.getCurrentPlayer().getPlayerId()),
@@ -359,7 +359,7 @@ public class SPFluidWriter implements SPWriter {
 					}
 					try {
 						ostream.writeEndElement();
-					} catch (XMLStreamException except) {
+					} catch (final XMLStreamException except) {
 						throw new MalformedXMLException(except);
 					}
 				}
@@ -368,7 +368,7 @@ public class SPFluidWriter implements SPWriter {
 				indent(ostream, indentation + 2);
 				try {
 					ostream.writeEndElement();
-				} catch (XMLStreamException except) {
+				} catch (final XMLStreamException except) {
 					throw new MalformedXMLException(except);
 				}
 			}
@@ -386,7 +386,7 @@ public class SPFluidWriter implements SPWriter {
 			indent(ostream, indentation + 2);
 			try {
 				ostream.writeEndElement();
-			} catch (XMLStreamException except) {
+			} catch (final XMLStreamException except) {
 				throw new MalformedXMLException(except);
 			}
 		}
@@ -395,15 +395,15 @@ public class SPFluidWriter implements SPWriter {
 			ostream.writeEndElement();
 			indent(ostream, indentation);
 			ostream.writeEndElement();
-		} catch (XMLStreamException except) {
+		} catch (final XMLStreamException except) {
 			throw new MalformedXMLException(except);
 		}
 	}
 
 	private final Map<Class<?>, FluidXMLWriter<?>> writers;
 
-	private static <Type> void addWriterToMap(Map<Class<?>, FluidXMLWriter<?>> map,
-			Class<Type> cls, FluidXMLWriter<Type> writer) {
+	private static <Type> void addWriterToMap(final Map<Class<?>, FluidXMLWriter<?>> map,
+	                                          final Class<Type> cls, final FluidXMLWriter<Type> writer) {
 		map.put(cls, writer);
 	}
 

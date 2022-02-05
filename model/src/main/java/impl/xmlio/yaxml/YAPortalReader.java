@@ -16,12 +16,12 @@ import lovelace.util.ThrowingConsumer;
  * A reader for portals.
  */
 /* package */ class YAPortalReader extends YAAbstractReader<Portal, Portal> {
-	public YAPortalReader(Warning warning, IDRegistrar idRegistrar) {
+	public YAPortalReader(final Warning warning, final IDRegistrar idRegistrar) {
 		super(warning, idRegistrar);
 	}
 
 	@Override
-	public Portal read(StartElement element, QName parent, Iterable<XMLEvent> stream) 
+	public Portal read(final StartElement element, final QName parent, final Iterable<XMLEvent> stream)
 			throws SPFormatException {
 		requireTag(element, parent, "portal");
 		expectAttributes(element, "world", "row", "column", "id", "image");
@@ -33,7 +33,7 @@ import lovelace.util.ThrowingConsumer;
 	}
 
 	@Override
-	public void write(ThrowingConsumer<String, IOException> ostream, Portal obj, int indent) throws IOException {
+	public void write(final ThrowingConsumer<String, IOException> ostream, final Portal obj, final int indent) throws IOException {
 		writeTag(ostream, "portal", indent);
 		writeProperty(ostream, "world", obj.getDestinationWorld());
 		writeProperty(ostream, "row", obj.getDestinationCoordinates().getRow());
@@ -44,12 +44,12 @@ import lovelace.util.ThrowingConsumer;
 	}
 
 	@Override
-	public boolean isSupportedTag(String tag) {
+	public boolean isSupportedTag(final String tag) {
 		return "portal".equalsIgnoreCase(tag);
 	}
 
 	@Override
-	public boolean canWrite(Object obj) {
+	public boolean canWrite(final Object obj) {
 		return obj instanceof Portal;
 	}
 }

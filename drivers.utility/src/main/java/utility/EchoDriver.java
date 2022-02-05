@@ -37,7 +37,7 @@ import com.google.auto.service.AutoService;
  * are disabled.)
  */
 public class EchoDriver implements UtilityDriver {
-	public EchoDriver(SPOptions options) {
+	public EchoDriver(final SPOptions options) {
 		this.options = options;
 	}
 
@@ -53,20 +53,20 @@ public class EchoDriver implements UtilityDriver {
 	 * syntax and forest and Ground IDs.
 	 */
 	@Override
-	public void startDriver(String... args) throws DriverFailedException {
+	public void startDriver(final String... args) throws DriverFailedException {
 		if (args.length == 2) {
 			String inArg = args[0];
 			String outArg = args[1];
 			IMutableMapNG map;
 			try {
 				map = MapIOHelper.readMap(Paths.get(inArg), Warning.IGNORE);
-			} catch (MissingFileException except) {
+			} catch (final MissingFileException except) {
 				throw new DriverFailedException(except, "No such file " + inArg);
-			} catch (IOException except) {
+			} catch (final IOException except) {
 				throw new DriverFailedException(except, "I/O error reading file " + inArg);
-			} catch (MalformedXMLException except) {
+			} catch (final MalformedXMLException except) {
 				throw new DriverFailedException(except, "Malformed XML in " + inArg);
-			} catch (SPFormatException except) {
+			} catch (final SPFormatException except) {
 				throw new DriverFailedException(except, "SP map format error in " + inArg);
 			}
 			IDRegistrar idFactory = new IDFactoryFiller().createIDFactory(map);
@@ -102,7 +102,7 @@ public class EchoDriver implements UtilityDriver {
 					int currentTurn = Integer.parseInt(
 						options.getArgument("--current-turn"));
 					map.setCurrentTurn(currentTurn);
-				} catch (NumberFormatException except) {
+				} catch (final NumberFormatException except) {
 					Warning.getDefaultHandler().handle(new Exception(
 						"--current-turn must be an integer"));
 				}
@@ -110,9 +110,9 @@ public class EchoDriver implements UtilityDriver {
 
 			try {
 				MapIOHelper.writeMap(Paths.get(outArg), map);
-			} catch (MalformedXMLException except) {
+			} catch (final MalformedXMLException except) {
 				throw new DriverFailedException(except, "Malformed XML writing " + outArg);
-			} catch (IOException except) {
+			} catch (final IOException except) {
 				throw new DriverFailedException(except, "I/O error writing " + outArg);
 			}
 		} else {

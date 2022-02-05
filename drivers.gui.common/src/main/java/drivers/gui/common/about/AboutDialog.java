@@ -27,7 +27,7 @@ import lovelace.util.FileContentsReader;
  * FIXME: Credits for other images?
  */
 public class AboutDialog extends SPDialog {
-	public AboutDialog(@Nullable Component parentComponent, @Nullable String app) throws IOException {
+	public AboutDialog(@Nullable final Component parentComponent, @Nullable final String app) throws IOException {
 		super(parentComponent instanceof Frame ? (Frame) parentComponent : null, "About");
 		setLayout(new BorderLayout()); // TODO: Use a BorderedPanel for contentPane
 		Iterable<String> resource = FileContentsReader.readFileContents(AboutDialog.class,

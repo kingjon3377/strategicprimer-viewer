@@ -51,9 +51,9 @@ public class SPFrame extends JFrame implements ISPWindow {
 	 * @param supportsDroppedFiles Whether this app supports having files dropped on it.
 	 * @param windowName The name of the window, for use in customizing the About dialog
 	 */
-	public SPFrame(String windowTitle, ISPDriver driver, @Nullable Dimension minSize,
-			boolean supportsDroppedFiles, IDroppedFileHandler droppedFileHandler,
-			String windowName) {
+	public SPFrame(final String windowTitle, final ISPDriver driver, @Nullable final Dimension minSize,
+	               final boolean supportsDroppedFiles, final IDroppedFileHandler droppedFileHandler,
+	               final String windowName) {
 		super(windowTitle);
 		this.windowTitle = windowTitle;
 		this.driver = driver;
@@ -93,21 +93,21 @@ public class SPFrame extends JFrame implements ISPWindow {
 		return supportsDroppedFiles;
 	}
 
-	public SPFrame(String windowTitle, ISPDriver driver, @Nullable Dimension minSize,
-			boolean supportsDroppedFiles, IDroppedFileHandler droppedFileHandler) {
+	public SPFrame(final String windowTitle, final ISPDriver driver, @Nullable final Dimension minSize,
+	               final boolean supportsDroppedFiles, final IDroppedFileHandler droppedFileHandler) {
 		this(windowTitle, driver, minSize, supportsDroppedFiles, droppedFileHandler, windowTitle);
 	}
 
-	public SPFrame(String windowTitle, ISPDriver driver, @Nullable Dimension minSize,
-			boolean supportsDroppedFiles) {
+	public SPFrame(final String windowTitle, final ISPDriver driver, @Nullable final Dimension minSize,
+	               final boolean supportsDroppedFiles) {
 		this(windowTitle, driver, minSize, supportsDroppedFiles, p -> {});
 	}
 
-	public SPFrame(String windowTitle, ISPDriver driver, @Nullable Dimension minSize) {
+	public SPFrame(final String windowTitle, final ISPDriver driver, @Nullable final Dimension minSize) {
 		this(windowTitle, driver, minSize, false);
 	}
 
-	public SPFrame(String windowTitle, ISPDriver driver) {
+	public SPFrame(final String windowTitle, final ISPDriver driver) {
 		this(windowTitle, driver, null);
 	}
 
@@ -130,7 +130,7 @@ public class SPFrame extends JFrame implements ISPWindow {
 	/**
 	 * Handle a dropped file.
 	 */
-	public void acceptDroppedFile(Path file) throws SPFormatException, IOException,
+	public void acceptDroppedFile(final Path file) throws SPFormatException, IOException,
 			MissingFileException, MalformedXMLException { // TODO: Wrap MalformedXMLException (or whatever it wraps) in SPFormatException (subclass) in MapIOHelper or elsewhere, to reduce exception-declaration surface
 		droppedFileHandler.accept(file);
 	}

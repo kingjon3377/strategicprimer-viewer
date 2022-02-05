@@ -53,8 +53,8 @@ public final class CLITest {
 	 * was as expected" and "CLIHelper output was as expected"
 	 * respectively), but I won't add overloads for that unless I have to.
 	 */
-	<T> void assertCLI(Function<ICLIHelper, T> method, List<String> input, String expectedOutput,
-			T expectedResult, String resultMessage, String outputMessage) {
+	<T> void assertCLI(final Function<ICLIHelper, T> method, final List<String> input, final String expectedOutput,
+	                   final T expectedResult, final String resultMessage, final String outputMessage) {
 		StringBuilder ostream = new StringBuilder();
 		ICLIHelper cli = new CLIHelper(new LinkedList<>(input)::pollFirst, ostream::append);
 		assertEquals(expectedResult, method.apply(cli), resultMessage);
@@ -190,7 +190,7 @@ public final class CLITest {
 	 */
 	@ParameterizedTest
 	@MethodSource("truePossibilities")
-	public void testInputBooleanSimpleTrue(String arg) {
+	public void testInputBooleanSimpleTrue(final String arg) {
 		assertCLI(cli -> cli.inputBoolean("bool prompt"), Arrays.asList(arg),
 			"bool prompt ", true, "inputBoolean returns true on " + arg,
 			"inputBoolean displays prompt");
@@ -205,7 +205,7 @@ public final class CLITest {
 	 */
 	@ParameterizedTest
 	@MethodSource("falsePossibilities")
-	public void testInputBooleanSimpleFalse(String arg) {
+	public void testInputBooleanSimpleFalse(final String arg) {
 		assertCLI(cli -> cli.inputBoolean("prompt two"), Arrays.asList(arg),
 			"prompt two ", false, "inputBoolean returns false on " + arg,
 			"inputBoolean displays prompt");
@@ -228,7 +228,7 @@ public final class CLITest {
 	 */
 	@ParameterizedTest
 	@MethodSource("truePossibilities")
-	public void testInputBooleanInSeriesSimpleTrue(String arg) {
+	public void testInputBooleanInSeriesSimpleTrue(final String arg) {
 		assertCLI(cli -> cli.inputBooleanInSeries("bool prompt"), Arrays.asList(arg),
 			"bool prompt ", true,
 			String.format("inputBooleanInSeries returns true on '%s`", arg),
@@ -240,7 +240,7 @@ public final class CLITest {
 	 */
 	@ParameterizedTest
 	@MethodSource("falsePossibilities")
-	public void testInputBooleanInSeriesSimpleFalse(String arg) {
+	public void testInputBooleanInSeriesSimpleFalse(final String arg) {
 		assertCLI(cli -> cli.inputBooleanInSeries("prompt two"), Arrays.asList(arg),
 			"prompt two ", false, "inputBooleanInSeries returns false on " + arg,
 			"inputBooleanInSeries displays prompt");

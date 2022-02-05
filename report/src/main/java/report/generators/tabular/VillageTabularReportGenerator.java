@@ -25,7 +25,7 @@ public class VillageTabularReportGenerator implements ITableGenerator<Village> {
 		return Village.class;
 	}
 
-	public VillageTabularReportGenerator(Player player, @Nullable Point hq, MapDimensions dimensions) {
+	public VillageTabularReportGenerator(final Player player, @Nullable final Point hq, final MapDimensions dimensions) {
 		this.player = player;
 		this.hq = hq;
 		this.dimensions = dimensions;
@@ -64,8 +64,8 @@ public class VillageTabularReportGenerator implements ITableGenerator<Village> {
 	 */
 	@Override
 	public Iterable<Iterable<String>> produce(
-			DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures, Village item,
-			int key, Point loc, Map<Integer, Integer> parentMap) {
+			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures, final Village item,
+			final int key, final Point loc, final Map<Integer, Integer> parentMap) {
 		fixtures.remove(key);
 		return Collections.singleton(Arrays.asList(distanceString(loc, hq, dimensions),
 			locationString(loc), ownerString(player, item.getOwner()), item.getName()));
@@ -75,7 +75,7 @@ public class VillageTabularReportGenerator implements ITableGenerator<Village> {
 	 * Compare two location-and-village pairs.
 	 */
 	@Override
-	public int comparePairs(Pair<Point, Village> one, Pair<Point, Village> two) {
+	public int comparePairs(final Pair<Point, Village> one, final Pair<Point, Village> two) {
 		return Comparator.<Pair<Point, Village>, Point>comparing(Pair::getValue0, distanceComparator)
 			.thenComparing(Comparator.comparing(Pair::getValue1,
 				Comparator.comparing(Village::getOwner)

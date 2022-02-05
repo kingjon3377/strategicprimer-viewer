@@ -19,7 +19,7 @@ import java.util.logging.Level;
 	 */
 	@Deprecated
 	@Override
-	public MountainFixture copy(boolean zero) {
+	public MountainFixture copy(final boolean zero) {
 		LOGGER.log(Level.WARNING, "TileTypeFixture.copy called", new Exception("dummy"));
 		return new MountainFixture();
 	}
@@ -43,7 +43,7 @@ import java.util.logging.Level;
 	}
 
 	@Override
-	public boolean equals(Object that) {
+	public boolean equals(final Object that) {
 		return that instanceof MountainFixture;
 	}
 

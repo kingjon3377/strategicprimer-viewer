@@ -46,9 +46,9 @@ public final class ReportGenerator {
 	 * Produces sub-reports, appending them to the buffer and calling
 	 * {@link DelayedRemovalMap#coalesce} on the fixtures collection after each.
 	 */
-	private static void createSubReports(StringBuilder builder,
-			DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures, IMapNG map,
-			Player player, IReportGenerator<?>... generators) throws IOException {
+	private static void createSubReports(final StringBuilder builder,
+	                                     final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures, final IMapNG map,
+	                                     final Player player, final IReportGenerator<?>... generators) throws IOException {
 		for (IReportGenerator<?> generator : generators) {
 			// TODO: change "ThrowingConsumer" to "Consumer" in interface (and drop "throws IOException")
 			generator.produce(fixtures, map, builder::append);
@@ -56,11 +56,11 @@ public final class ReportGenerator {
 		}
 	}
 
-	private static <Type> int compareToEqual(Type one, Type two) {
+	private static <Type> int compareToEqual(final Type one, final Type two) {
 		return 0;
 	}
 
-	public static String createReport(IMapNG map, ICLIHelper cli) throws IOException {
+	public static String createReport(final IMapNG map, final ICLIHelper cli) throws IOException {
 		return createReport(map, cli, map.getCurrentPlayer());
 	}
 
@@ -70,7 +70,7 @@ public final class ReportGenerator {
 	 * TODO: Consider generating Markdown instead of HTML. OTOH, we'd have
 	 * to keep a list nesting level parameter or something.
 	 */
-	public static String createReport(IMapNG map, ICLIHelper cli, Player player) 
+	public static String createReport(final IMapNG map, final ICLIHelper cli, final Player player)
 			throws IOException {
 		MapDimensions dimensions = map.getDimensions();
 		StringBuilder builder = new StringBuilder();

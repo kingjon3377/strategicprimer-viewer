@@ -14,7 +14,7 @@ public class Centaur implements Immortal, HasMutableImage, HasKind {
 	 * @param kind what kind of centaur
 	 * @param id ID number
 	 */
-	public Centaur(String kind, int id) {
+	public Centaur(final String kind, final int id) {
 		this.kind = kind;
 		this.id = id;
 	}
@@ -62,12 +62,12 @@ public class Centaur implements Immortal, HasMutableImage, HasKind {
 	 * @param image The filename of an image to use as an icon for this instance.
 	 */
 	@Override
-	public void setImage(String image) {
+	public void setImage(final String image) {
 		this.image = image;
 	}
 
 	@Override
-	public Centaur copy(boolean zero) {
+	public Centaur copy(final boolean zero) {
 		Centaur retval = new Centaur(kind, id);
 		retval.setImage(image);
 		return retval;
@@ -89,7 +89,7 @@ public class Centaur implements Immortal, HasMutableImage, HasKind {
 	}
 
 	@Override
-	public boolean equals(Object obj) {
+	public boolean equals(final Object obj) {
 		if (obj instanceof Centaur) {
 			return ((Centaur) obj).getKind().equals(kind) && ((Centaur) obj).getId() == id;
 		} else {
@@ -103,7 +103,7 @@ public class Centaur implements Immortal, HasMutableImage, HasKind {
 	}
 
 	@Override
-	public boolean equalsIgnoringID(IFixture fixture) {
+	public boolean equalsIgnoringID(final IFixture fixture) {
 		if (fixture instanceof Centaur) {
 			return ((Centaur) fixture).getKind().equals(kind);
 		} else {
@@ -112,7 +112,7 @@ public class Centaur implements Immortal, HasMutableImage, HasKind {
 	}
 
 	@Override
-	public boolean isSubset(IFixture obj, Consumer<String> report) {
+	public boolean isSubset(final IFixture obj, final Consumer<String> report) {
 		if (obj.getId() == id) {
 			if (obj instanceof Centaur) {
 				if (((Centaur) obj).getKind().equals(kind)) {

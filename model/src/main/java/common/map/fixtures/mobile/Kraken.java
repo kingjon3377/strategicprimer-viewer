@@ -1,12 +1,12 @@
 package common.map.fixtures.mobile;
 
 public class Kraken extends ImmortalAnimal {
-	public Kraken(int id) {
+	public Kraken(final int id) {
 		super("kraken", "Krakens", 30, id);
 	}
 
 	@Override
-	public Kraken copy(boolean zero) {
+	public Kraken copy(final boolean zero) {
 		return new Kraken(getId());
 	}
 }

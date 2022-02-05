@@ -34,8 +34,8 @@ class MappedCounter<Base, Key, Count extends Number&Comparable<Count>> implement
 	 * @param A constructor for an accumulator for the count type.
 	 * @param zero Zero in the count type.
 	 */
-	public MappedCounter(Function<Base, Key> keyExtractor, Function<Base, Count> countExtractor,
-			Function<Count,Accumulator<Count>> factory, Count zero) {
+	public MappedCounter(final Function<Base, Key> keyExtractor, final Function<Base, Count> countExtractor,
+	                     final Function<Count,Accumulator<Count>> factory, final Count zero) {
 		this.keyExtractor = keyExtractor;
 		this.countExtractor = countExtractor;
 		this.factory = factory;
@@ -52,7 +52,7 @@ class MappedCounter<Base, Key, Count extends Number&Comparable<Count>> implement
 	/**
 	 * Increment the count for the given key by the given amount.
 	 */
-	public void addDirectly(Key key, Count addend) {
+	public void addDirectly(final Key key, final Count addend) {
 		if (totals.containsKey(key)) {
 			totals.get(key).add(addend);
 		} else {
@@ -63,7 +63,7 @@ class MappedCounter<Base, Key, Count extends Number&Comparable<Count>> implement
 	/**
 	 * Increment the count for the key and by the quantity extracted from the given object.
 	 */
-	public void add(Base obj) {
+	public void add(final Base obj) {
 		addDirectly(keyExtractor.apply(obj), countExtractor.apply(obj));
 	}
 
@@ -77,7 +77,7 @@ class MappedCounter<Base, Key, Count extends Number&Comparable<Count>> implement
 			.iterator();
 	}
 
-	private Count plus(Count one, Count two) {
+	private Count plus(final Count one, final Count two) {
 		if (one instanceof Integer) {
 			return (Count) Integer.valueOf(((Integer) one).intValue() +
 				((Integer) two).intValue());

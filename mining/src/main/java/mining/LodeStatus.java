@@ -49,7 +49,7 @@ enum LodeStatus {
 	 * TODO: support hyphenated "very" statuses
 	 */
 	@Nullable
-	public static LodeStatus parse(String str) {
+	public static LodeStatus parse(final String str) {
 		switch (str.toLowerCase()) {
 		case "none":
 			return null;
@@ -110,15 +110,15 @@ enum LodeStatus {
 		return notHigherProbability;
 	}
 
-	private LodeStatus(int qty) {
+	private LodeStatus(final int qty) {
 		this(qty, 0.5);
 	}
 
-	private LodeStatus(int qty, double lowerChance) {
+	private LodeStatus(final int qty, final double lowerChance) {
 		this(qty, lowerChance, 0.8);
 	}
 
-	private LodeStatus(int qty, double lowerChance, double notHigherChance) {
+	private LodeStatus(final int qty, final double lowerChance, final double notHigherChance) {
 		ratio = qty;
 		lowerProbability = lowerChance;
 		notHigherProbability = notHigherChance;
@@ -180,7 +180,7 @@ enum LodeStatus {
 	 * @param rng The random-number-generating function to use
 	 */
 	@Nullable
-	public LodeStatus adjacent(DoubleSupplier rng) {
+	public LodeStatus adjacent(final DoubleSupplier rng) {
 		double rand = rng.getAsDouble();
 		if (rand < lowerProbability) {
 			return getLower();
@@ -196,7 +196,7 @@ enum LodeStatus {
 	 * "banded" (for example sand) mine to one with this status.
 	 */
 	@Nullable
-	public LodeStatus bandedAdjacent(Random rng) {
+	public LodeStatus bandedAdjacent(final Random rng) {
 		return adjacent(rng::nextGaussian);
 	}
 
@@ -207,7 +207,7 @@ enum LodeStatus {
 		* LodeStatus#ratio} is <em>less</em> than the latter's.
 		*/
 		@Override
-		public int compare(LodeStatus one, LodeStatus two) {
+		public int compare(final LodeStatus one, final LodeStatus two) {
 			return Integer.compare(two.getRatio(), one.getRatio());
 		}
 	}

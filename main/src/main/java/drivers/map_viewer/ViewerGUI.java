@@ -49,7 +49,7 @@ public class ViewerGUI implements ViewerDriver {
 
 	private final ICLIHelper cli;
 
-	public ViewerGUI(IViewerModel model, SPOptions options, ICLIHelper cli) {
+	public ViewerGUI(final IViewerModel model, final SPOptions options, final ICLIHelper cli) {
 		LOGGER.finer("In ViewerGUI constructor");
 		this.model = model;
 		this.options = options;
@@ -127,7 +127,7 @@ public class ViewerGUI implements ViewerDriver {
 	@Nullable
 	private FindDialog finder = null;
 
-	private FindDialog getFindDialog(ViewerFrame parent) {
+	private FindDialog getFindDialog(final ViewerFrame parent) {
 		FindDialog temp = finder;
 		if (temp != null) {
 			return temp;
@@ -138,11 +138,11 @@ public class ViewerGUI implements ViewerDriver {
 		}
 	}
 
-	private ViewerGUI factory(IDriverModel model) {
+	private ViewerGUI factory(final IDriverModel model) {
 		return new ViewerGUI(new ViewerModel(model), options.copy(), cli);
 	}
 
-	private void createWindow(MenuBroker menuHandler) {
+	private void createWindow(final MenuBroker menuHandler) {
 		ViewerFrame frame = new ViewerFrame(model, menuHandler::actionPerformed, this, this::factory);
 		String backgroundFile = options.getArgument("--background");
 		if (!backgroundFile.isEmpty() && !"false".equals(backgroundFile)) {
@@ -151,7 +151,7 @@ public class ViewerGUI implements ViewerDriver {
 			} catch (FileNotFoundException|NoSuchFileException except) {
 				LOGGER.severe("Background image file not found");
 				LOGGER.log(Level.FINE, "Stack trace for background missing", except);
-			} catch (IOException except) {
+			} catch (final IOException except) {
 				LOGGER.log(Level.SEVERE, "I/O error reading background image", except);
 			}
 		}
@@ -164,7 +164,7 @@ public class ViewerGUI implements ViewerDriver {
 		try {
 			menuHandler.registerWindowShower(new AboutDialog(frame, frame.getWindowName()),
 				"about");
-		} catch (IOException except) {
+		} catch (final IOException except) {
 			LOGGER.log(Level.SEVERE, "I/O error loading About dialog contents", except);
 		}
 		// TODO: We'd like to have the starting position stored in the map
@@ -182,7 +182,7 @@ public class ViewerGUI implements ViewerDriver {
 					LOGGER.warning(
 						"Starting coordinates must be within the map's dimensions");
 				}
-			} catch (NumberFormatException except) {
+			} catch (final NumberFormatException except) {
 				LOGGER.warning(
 					"Arguments to --starting-row and --starting-column must be numeric");
 			}
@@ -195,8 +195,8 @@ public class ViewerGUI implements ViewerDriver {
 		frame.showWindow();
 	}
 
-	/* package */ static final ViewerGUI createDriver(ICLIHelper cli, SPOptions options,
-			IDriverModel model) {
+	/* package */ static final ViewerGUI createDriver(final ICLIHelper cli, final SPOptions options,
+	                                                  final IDriverModel model) {
 		if (model instanceof IViewerModel) {
 			LOGGER.finer("Creating a viewer-GUI instance for a model of the proper type");
 				return new ViewerGUI((IViewerModel) model, options, cli);
@@ -227,14 +227,14 @@ public class ViewerGUI implements ViewerDriver {
 	public Iterable<Path> askUserForFiles() {
 		try {
 			return SPFileChooser.open((Path) null).getFiles();
-		} catch (FileChooser.ChoiceInterruptedException except) {
+		} catch (final FileChooser.ChoiceInterruptedException except) {
 			LOGGER.log(Level.WARNING, "Choice interrupted or user failed to choose", except);
 			return Collections.emptyList();
 		}
 	}
 
 	@Override
-	public void open(IMutableMapNG map) {
+	public void open(final IMutableMapNG map) {
 		if (model.isMapModified()) {
 			SwingUtilities.invokeLater(() -> new ViewerGUI(new ViewerModel(map),
 				options.copy(), cli).startDriver());

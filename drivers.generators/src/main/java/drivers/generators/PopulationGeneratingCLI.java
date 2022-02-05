@@ -49,14 +49,14 @@ public class PopulationGeneratingCLI implements CLIDriver {
 	/**
 	 * Whether the given number is positive.
 	 */
-	private static boolean positiveNumber(Number number) {
+	private static boolean positiveNumber(final Number number) {
 		return number.doubleValue() > 0.0;
 	}
 
 	/**
 	 * Whether the given number is negative.
 	 */
-	private static boolean negativeNumber(Number number) {
+	private static boolean negativeNumber(final Number number) {
 		return number.doubleValue() < 0.0;
 	}
 
@@ -72,7 +72,7 @@ public class PopulationGeneratingCLI implements CLIDriver {
 		return EmptyOptions.EMPTY_OPTIONS;
 	}
 
-	public PopulationGeneratingCLI(ICLIHelper cli, PopulationGeneratingModel model) {
+	public PopulationGeneratingCLI(final ICLIHelper cli, final PopulationGeneratingModel model) {
 		this.cli = cli;
 		this.model = model;
 		this.map = model.getMap();
@@ -83,7 +83,7 @@ public class PopulationGeneratingCLI implements CLIDriver {
 	/**
 	 * Generate {@link Animal} populations.
 	 */
-	private void generateAnimalPopulations(boolean talking, String kind) {
+	private void generateAnimalPopulations(final boolean talking, final String kind) {
 		// We assume there is at most one population of each kind of animal per tile.
 		final List<Point> locations = map.streamLocations()
 			.filter(l -> map.getFixtures(l).stream()
@@ -133,7 +133,7 @@ public class PopulationGeneratingCLI implements CLIDriver {
 	/**
 	 * Generate {@link Grove grove and orchard} populations.
 	 */
-	private void generateGroveCounts(String kind) {
+	private void generateGroveCounts(final String kind) {
 		// We assume there is at most one grove or orchard of each kind per tile.
 		final List<Point> locations = map.streamLocations()
 			.filter(l -> map.getFixtures(l).stream()
@@ -170,7 +170,7 @@ public class PopulationGeneratingCLI implements CLIDriver {
 	/**
 	 * Generate {@link Shrub} populations.
 	 */
-	private void generateShrubCounts(String kind) {
+	private void generateShrubCounts(final String kind) {
 		// We assume there is at most one population of each kind of shrub per tile.
 		final List<Point> locations = map.streamLocations()
 			.filter(l -> map.getFixtures(l).stream()
@@ -227,7 +227,7 @@ public class PopulationGeneratingCLI implements CLIDriver {
 	/**
 	 * Whether any of the fixtures on the given tile are forests of the given kind.
 	 */
-	private Predicate<Point> hasForests(String kind) {
+	private Predicate<Point> hasForests(final String kind) {
 		return (point) -> map.getFixtures(point).stream().filter(Forest.class::isInstance)
 			.map(Forest.class::cast).anyMatch(f -> kind.equals(f.getKind()));
 	}
@@ -235,19 +235,19 @@ public class PopulationGeneratingCLI implements CLIDriver {
 	/**
 	 * How many tiles adjacent to the given location have forests of the given kind.
 	 */
-	private int countAdjacentForests(Point center, String kind) {
+	private int countAdjacentForests(final Point center, final String kind) {
 		return (int) StreamSupport.stream(
 				new SurroundingPointIterable(center, map.getDimensions(), 1)
 					.spliterator(), true)
 			.filter(hasForests(kind)).count();
 	}
 
-	private BigDecimal perForestAcreage(BigDecimal reserved, int otherForests) {
+	private BigDecimal perForestAcreage(final BigDecimal reserved, final int otherForests) {
 		return new BigDecimal(160).subtract(reserved)
 			.divide(new BigDecimal(otherForests), RoundingMode.HALF_EVEN);
 	}
 
-	private Number acreageExtent(HasExtent<?> item) {
+	private Number acreageExtent(final HasExtent<?> item) {
 		return item.getAcres();
 	}
 

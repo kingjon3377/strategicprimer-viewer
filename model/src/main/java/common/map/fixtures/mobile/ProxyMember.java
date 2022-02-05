@@ -19,17 +19,17 @@ class ProxyMember implements UnitMemberProxy<UnitMember> {
 	private ProxyMember() {
 	}
 
-	public ProxyMember(UnitMember member) {
+	public ProxyMember(final UnitMember member) {
 		proxiedMembers.add(member);
 	}
 
 	@Override
-	public void addProxied(UnitMember item) {
+	public void addProxied(final UnitMember item) {
 		proxiedMembers.add(item);
 	}
 
 	@Override
-	public ProxyMember copy(boolean zero) {
+	public ProxyMember copy(final boolean zero) {
 		ProxyMember retval = new ProxyMember();
 		for (UnitMember member : proxiedMembers) {
 			retval.addProxied(member.copy(zero));
@@ -38,7 +38,7 @@ class ProxyMember implements UnitMemberProxy<UnitMember> {
 	}
 
 	@Override
-	public boolean equalsIgnoringID(IFixture fixture) {
+	public boolean equalsIgnoringID(final IFixture fixture) {
 		LOGGER.warning("ProxyMember.equalsIgnoringID() called");
 		if (fixture instanceof ProxyMember) {
 			return ((ProxyMember) fixture).proxiedMembers.equals(proxiedMembers); // TODO: Shouldn't depend on order, right?
@@ -48,7 +48,7 @@ class ProxyMember implements UnitMemberProxy<UnitMember> {
 	}
 
 	@Override
-	public boolean isSubset(IFixture fixture, Consumer<String> report) {
+	public boolean isSubset(final IFixture fixture, final Consumer<String> report) {
 		report.accept("isSubset called on ProxyMember");
 		return false;
 	}

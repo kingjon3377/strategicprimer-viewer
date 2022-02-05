@@ -18,17 +18,17 @@ import impl.xmlio.exceptions.UnwantedChildException;
  * A reader for arbitrary-text notes.
  */
 /* package */ class YATextReader extends YAAbstractReader<TextFixture, TextFixture> {
-	public YATextReader(Warning warning, IDRegistrar idRegistrar) {
+	public YATextReader(final Warning warning, final IDRegistrar idRegistrar) {
 		super(warning, idRegistrar);
 	}
 
 	@Override
-	public boolean isSupportedTag(String tag) {
+	public boolean isSupportedTag(final String tag) {
 		return "text".equalsIgnoreCase(tag);
 	}
 
 	@Override
-	public TextFixture read(StartElement element, QName parent, Iterable<XMLEvent> stream) 
+	public TextFixture read(final StartElement element, final QName parent, final Iterable<XMLEvent> stream)
 			throws SPFormatException {
 		requireTag(element, parent, "text");
 		expectAttributes(element, "turn", "image");
@@ -49,7 +49,7 @@ import impl.xmlio.exceptions.UnwantedChildException;
 	}
 
 	@Override
-	public void write(ThrowingConsumer<String, IOException> ostream, TextFixture obj, int indent) throws IOException {
+	public void write(final ThrowingConsumer<String, IOException> ostream, final TextFixture obj, final int indent) throws IOException {
 		writeTag(ostream, "text", indent);
 		if (obj.getTurn() != -1) {
 			writeProperty(ostream, "turn", obj.getTurn());
@@ -61,7 +61,7 @@ import impl.xmlio.exceptions.UnwantedChildException;
 	}
 
 	@Override
-	public boolean canWrite(Object obj) {
+	public boolean canWrite(final Object obj) {
 		return obj instanceof TextFixture;
 	}
 }

@@ -10,13 +10,13 @@ import java.util.function.Consumer;
  * or their aquatic equivalents, on a tile.
  */
 public class Shrub implements HarvestableFixture, HasPopulation<Shrub> {
-	public Shrub(String kind, int id, int population) {
+	public Shrub(final String kind, final int id, final int population) {
 		this.kind = kind;
 		this.id = id;
 		this.population = population;
 	}
 
-	public Shrub(String kind, int id) {
+	public Shrub(final String kind, final int id) {
 		this(kind, id, -1);
 	}
 
@@ -63,7 +63,7 @@ public class Shrub implements HarvestableFixture, HasPopulation<Shrub> {
 	 * The filename of an image to use as an icon for this instance.
 	 */
 	@Override
-	public void setImage(String image) {
+	public void setImage(final String image) {
 		this.image = image;
 	}
 
@@ -81,19 +81,19 @@ public class Shrub implements HarvestableFixture, HasPopulation<Shrub> {
 	}
 
 	@Override
-	public Shrub copy(boolean zero) {
+	public Shrub copy(final boolean zero) {
 		final Shrub retval = new Shrub(kind, id, (zero) ? -1 : population);
 		retval.setImage(image);
 		return retval;
 	}
 
 	@Override
-	public Shrub reduced(int newPopulation, int newId) {
+	public Shrub reduced(final int newPopulation, final int newId) {
 		return new Shrub(kind, newId, newPopulation);
 	}
 
 	@Override
-	public Shrub combined(Shrub addend) {
+	public Shrub combined(final Shrub addend) {
 		return new Shrub(kind, id,
 			Math.max(0, population) + Math.max(0, addend.getPopulation()));
 	}
@@ -109,7 +109,7 @@ public class Shrub implements HarvestableFixture, HasPopulation<Shrub> {
 	}
 
 	@Override
-	public boolean equals(Object obj) {
+	public boolean equals(final Object obj) {
 		if (obj instanceof Shrub) {
 			return ((Shrub) obj).getId() == id &&
 				((Shrub) obj).getKind().equals(kind) &&
@@ -125,7 +125,7 @@ public class Shrub implements HarvestableFixture, HasPopulation<Shrub> {
 	}
 
 	@Override
-	public boolean equalsIgnoringID(IFixture fixture) {
+	public boolean equalsIgnoringID(final IFixture fixture) {
 		if (fixture instanceof Shrub) {
 			return kind.equals(((Shrub) fixture).getKind()) &&
 				population == ((Shrub) fixture).getPopulation();
@@ -149,7 +149,7 @@ public class Shrub implements HarvestableFixture, HasPopulation<Shrub> {
 	}
 
 	@Override
-	public boolean isSubset(IFixture other, Consumer<String> report) {
+	public boolean isSubset(final IFixture other, final Consumer<String> report) {
 		if (other.getId() != id) {
 			report.accept("Different IDs");
 			return false;

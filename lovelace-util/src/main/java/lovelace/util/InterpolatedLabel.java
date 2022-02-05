@@ -19,12 +19,12 @@ public class InterpolatedLabel<T> extends JLabel {
 	 * @param defaultArgument The argument to pass to the function to
 	 * produce the label's initial text.
 	 */
-	public InterpolatedLabel(Function<? super T, String> function, T defaultArgument) {
+	public InterpolatedLabel(final Function<? super T, String> function, final T defaultArgument) {
 		super(function.apply(defaultArgument));
 		this.function = function;
 	}
 
-	public void setArgument(T argument) {
+	public void setArgument(final T argument) {
 		setText(function.apply(argument));
 	}
 }

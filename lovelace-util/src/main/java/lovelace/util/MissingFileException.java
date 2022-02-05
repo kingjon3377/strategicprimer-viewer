@@ -9,11 +9,11 @@ import java.nio.file.Path;
  */
 @Deprecated
 public class MissingFileException extends Exception {
-	public MissingFileException(Path filename, Throwable cause) {
+	public MissingFileException(final Path filename, final Throwable cause) {
 		super(String.format("File %s not found", filename.toString()), cause);
 	}
 
-	public MissingFileException(Path filename) {
+	public MissingFileException(final Path filename) {
 		super(String.format("File %s not found", filename.toString()));
 	}
 }

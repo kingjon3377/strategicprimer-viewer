@@ -82,7 +82,7 @@ public enum MammalModel implements HerdModel {
 	/**
 	 * @param production The amount produced per head per turn, in gallons
 	 */
-	private MammalModel(double production, int dailyTimePerHead, String nomen) {
+	private MammalModel(final double production, final int dailyTimePerHead, final String nomen) {
 		this.dailyTimePerHead = dailyTimePerHead;
 		productionPerHead = new Quantity(production, "gallons");
 		name = nomen;
@@ -93,7 +93,7 @@ public enum MammalModel implements HerdModel {
 	 * many animals per herder.
 	 */
 	@Override
-	public int dailyTime(int heads) {
+	public int dailyTime(final int heads) {
 		return heads * dailyTimePerHead + getDailyTimeFloor();
 	}
 
@@ -101,7 +101,7 @@ public enum MammalModel implements HerdModel {
 	 * How much time, in minutes, an expert herder must spend on a flock
 	 * with this many animals per herder.
 	 */
-	public int dailyExpertTime(int heads) {
+	public int dailyExpertTime(final int heads) {
 		return heads * (dailyTimePerHead - 10) + getDailyTimeFloor();
 	}
 }

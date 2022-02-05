@@ -39,13 +39,13 @@ import common.map.fixtures.towns.IFortress;
  * A report generator for fortresses.
  */
 public class FortressReportGenerator extends AbstractReportGenerator<IFortress> {
-	public FortressReportGenerator(Comparator<Pair<Point, IFixture>> comp, Player currentPlayer,
-			MapDimensions dimensions, int currentTurn) {
+	public FortressReportGenerator(final Comparator<Pair<Point, IFixture>> comp, final Player currentPlayer,
+	                               final MapDimensions dimensions, final int currentTurn) {
 		this(comp, currentPlayer, dimensions, currentTurn, null);
 	}
 
-	public FortressReportGenerator(Comparator<Pair<Point, IFixture>> comp, Player currentPlayer,
-			MapDimensions dimensions, Integer currentTurn, @Nullable Point hq) {
+	public FortressReportGenerator(final Comparator<Pair<Point, IFixture>> comp, final Player currentPlayer,
+	                               final MapDimensions dimensions, final Integer currentTurn, @Nullable final Point hq) {
 		super(comp, dimensions, hq);
 		urg = new UnitReportGenerator(comp, currentPlayer, dimensions, currentTurn, hq);
 		memberReportGenerator = new FortressMemberReportGenerator(comp, currentPlayer, dimensions,
@@ -58,8 +58,8 @@ public class FortressReportGenerator extends AbstractReportGenerator<IFortress> 
 	private final Player currentPlayer;
 
 	// TODO: Can this be static?
-	private String terrain(IMapNG map, Point point,
-			DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures) {
+	private String terrain(final IMapNG map, final Point point,
+	                       final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures) {
 		StringBuilder builder = new StringBuilder();
 		builder.append("Surrounding terrain: ");
 		builder.append(Optional.ofNullable(map.getBaseTerrain(point)).map(Object::toString)
@@ -90,7 +90,7 @@ public class FortressReportGenerator extends AbstractReportGenerator<IFortress> 
 	 *
 	 * TODO: Can this be static?
 	 */
-	private void riversToString(ThrowingConsumer<String, IOException> formatter, Collection<River> rivers) throws IOException {
+	private void riversToString(final ThrowingConsumer<String, IOException> formatter, final Collection<River> rivers) throws IOException {
 		Set<River> set = EnumSet.noneOf(River.class);
 		set.addAll(rivers);
 		if (set.contains(River.Lake)) {
@@ -109,9 +109,9 @@ public class FortressReportGenerator extends AbstractReportGenerator<IFortress> 
 	}
 
 	private static <Type extends IFixture> void printList(
-			DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-			ThrowingConsumer<String, IOException> ostream, IMapNG map, Collection<? extends Type> list,
-			String header, IReportGenerator<Type> helper, Point loc) throws IOException {
+			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
+			final ThrowingConsumer<String, IOException> ostream, final IMapNG map, final Collection<? extends Type> list,
+			final String header, final IReportGenerator<Type> helper, final Point loc) throws IOException {
 		if (!list.isEmpty()) {
 			ostream.accept("<li>");
 			ostream.accept(header);
@@ -133,8 +133,8 @@ public class FortressReportGenerator extends AbstractReportGenerator<IFortress> 
 	 * this report are removed from the collection.
 	 */
 	@Override
-	public void produceSingle(DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-			IMapNG map, ThrowingConsumer<String, IOException> ostream, IFortress item, Point loc)
+	public void produceSingle(final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
+	                          final IMapNG map, final ThrowingConsumer<String, IOException> ostream, final IFortress item, final Point loc)
 			throws IOException {
 		ostream.accept("<h5>Fortress ");
 		ostream.accept(item.getName());
@@ -205,8 +205,8 @@ public class FortressReportGenerator extends AbstractReportGenerator<IFortress> 
 	 * this report are removed from the collection.
 	 */
 	@Override
-	public void produce(DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-			IMapNG map, ThrowingConsumer<String, IOException> ostream) throws IOException {
+	public void produce(final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
+	                    final IMapNG map, final ThrowingConsumer<String, IOException> ostream) throws IOException {
 		Map<IFortress, Point> ours = new HashMap<>();
 		Map<IFortress, Point> others = new HashMap<>();
 		for (Pair<Point, IFortress> pair : fixtures.values().stream()

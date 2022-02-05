@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
 
 	private List<Transferable> payload;
 
-	public CurriedFixtureTransferable(TileFixture... list) {
+	public CurriedFixtureTransferable(final TileFixture... list) {
 		payload = Collections.unmodifiableList(Stream.of(list)
 			.map(FixtureTransferable::new).collect(Collectors.toList()));
 	}
@@ -33,12 +33,12 @@ import java.util.stream.Collectors;
 	}
 
 	@Override
-	public boolean isDataFlavorSupported(DataFlavor candidate) {
+	public boolean isDataFlavorSupported(final DataFlavor candidate) {
 		return FLAVOR.equals(candidate);
 	}
 
 	@Override
-	public List<Transferable> getTransferData(DataFlavor candidate) throws UnsupportedFlavorException {
+	public List<Transferable> getTransferData(final DataFlavor candidate) throws UnsupportedFlavorException {
 		if (FLAVOR.equals(candidate)) {
 			return payload;
 		} else {

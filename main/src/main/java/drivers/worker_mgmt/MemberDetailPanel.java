@@ -53,7 +53,7 @@ import java.util.logging.Level;
  */
 public class MemberDetailPanel extends BorderedPanel implements UnitMemberListener {
 	private static final Logger LOGGER = Logger.getLogger(MemberDetailPanel.class.getName());
-	public MemberDetailPanel(JPanel resultsPanel, JPanel notesPanel) { // TODO: Move initialization of those into here?
+	public MemberDetailPanel(final JPanel resultsPanel, final JPanel notesPanel) { // TODO: Move initialization of those into here?
 		JPanel statPanel = new JPanel();
 		FunctionalGroupLayout statLayout = new FunctionalGroupLayout(statPanel, true, true);
 		statPanel.setLayout(statLayout);
@@ -139,7 +139,7 @@ public class MemberDetailPanel extends BorderedPanel implements UnitMemberListen
 
 	private final PortraitComponent portraitComponent = new PortraitComponent();
 
-	private static Function<@Nullable WorkerStats, String> labelFormat(ToIntFunction<WorkerStats> stat) {
+	private static Function<@Nullable WorkerStats, String> labelFormat(final ToIntFunction<WorkerStats> stat) {
 		return (stats) -> {
 			if (stats == null) {
 				return "";
@@ -149,13 +149,13 @@ public class MemberDetailPanel extends BorderedPanel implements UnitMemberListen
 		};
 	}
 
-	private static InterpolatedLabel<@Nullable WorkerStats> statLabel(ToIntFunction<WorkerStats> stat) {
+	private static InterpolatedLabel<@Nullable WorkerStats> statLabel(final ToIntFunction<WorkerStats> stat) {
 		return new InterpolatedLabel<>(labelFormat(stat), (WorkerStats) null);
 	}
 
 	private final List<InterpolatedLabel<@Nullable WorkerStats>> statLabels;
 
-	private static JLabel caption(String string) {
+	private static JLabel caption(final String string) {
 		return new JLabel("<html><b>" + string + ":</b></html>");
 	}
 
@@ -163,12 +163,12 @@ public class MemberDetailPanel extends BorderedPanel implements UnitMemberListen
 		@Nullable
 		private Image portrait = null;
 
-		public void setPortrait(Image portrait) {
+		public void setPortrait(final Image portrait) {
 			this.portrait = portrait;
 		}
 
 		@Override
-		public void paintComponent(Graphics pen) {
+		public void paintComponent(final Graphics pen) {
 			super.paintComponent(pen);
 			if (portrait != null) {
 				pen.drawImage(portrait, 0, 0, getWidth(), getHeight(), this);
@@ -180,7 +180,7 @@ public class MemberDetailPanel extends BorderedPanel implements UnitMemberListen
 	private UnitMember current = null;
 
 
-	private static String skillString(ISkill skill) {
+	private static String skillString(final ISkill skill) {
 		return skill.getName() + " " + skill.getLevel();
 	}
 
@@ -281,7 +281,7 @@ public class MemberDetailPanel extends BorderedPanel implements UnitMemberListen
 			if (!portraitName.isEmpty()) {
 				try {
 					portraitComponent.setPortrait(ImageLoader.loadImage(portraitName));
-				} catch (IOException except) {
+				} catch (final IOException except) {
 					LOGGER.log(Level.WARNING, "Failed to load portrait", except);
 				}
 			}
@@ -290,7 +290,7 @@ public class MemberDetailPanel extends BorderedPanel implements UnitMemberListen
 	}
 
 	@Override
-	public void memberSelected(@Nullable UnitMember old, @Nullable UnitMember selected) {
+	public void memberSelected(@Nullable final UnitMember old, @Nullable final UnitMember selected) {
 		if (selected instanceof ProxyFor) {
 			if (((ProxyFor<? extends UnitMember>) selected).isParallel()) {
 				Iterator<? extends UnitMember> proxied =

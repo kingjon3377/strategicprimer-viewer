@@ -18,7 +18,7 @@ import common.map.fixtures.mobile.IUnit;
 	public static final DataFlavor FLAVOR = new DataFlavor(List.class, "List<UnitMember>");
 
 	private final List<Pair<UnitMember, IUnit>> payload;
-	public UnitMemberTransferable(Pair<UnitMember, IUnit>... data) {
+	public UnitMemberTransferable(final Pair<UnitMember, IUnit>... data) {
 		payload = Arrays.asList(data);
 	}
 
@@ -28,12 +28,12 @@ import common.map.fixtures.mobile.IUnit;
 	}
 
 	@Override
-	public boolean isDataFlavorSupported(DataFlavor candidate) {
+	public boolean isDataFlavorSupported(final DataFlavor candidate) {
 		return FLAVOR.equals(candidate);
 	}
 
 	@Override
-	public List<Pair<UnitMember, IUnit>> getTransferData(DataFlavor candidate)
+	public List<Pair<UnitMember, IUnit>> getTransferData(final DataFlavor candidate)
 			throws UnsupportedFlavorException {
 		if (FLAVOR.equals(candidate)) {
 			return Collections.unmodifiableList(payload);
@@ -48,7 +48,7 @@ import common.map.fixtures.mobile.IUnit;
 	}
 
 	@Override
-	public boolean equals(Object that) {
+	public boolean equals(final Object that) {
 		if (that instanceof UnitMemberTransferable) {
 			return payload.equals(((UnitMemberTransferable) that).payload);
 		} else {

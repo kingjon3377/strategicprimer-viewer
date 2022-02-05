@@ -56,7 +56,7 @@ public class HuntingModel {
 		}
 
 		@Override
-		public NothingFound copy(boolean zero) {
+		public NothingFound copy(final boolean zero) {
 			return this;
 		}
 
@@ -81,7 +81,7 @@ public class HuntingModel {
 		}
 
 		@Override
-		public boolean equalsIgnoringID(IFixture fixture) {
+		public boolean equalsIgnoringID(final IFixture fixture) {
 			return equals(fixture);
 		}
 	}
@@ -100,11 +100,11 @@ public class HuntingModel {
 	 * of the points, and better than a cubic trend curve for all but the
 	 * origin.
 	 */
-	public static double processingTime(int weight) {
+	public static double processingTime(final int weight) {
 		return 0.855 + 0.0239 * weight - 0.000000872 * weight * weight;
 	}
 
-	private static int dcIfFound(TileFixture/*|NothingFound*/ item) {
+	private static int dcIfFound(final TileFixture/*|NothingFound*/ item) {
 		if (item instanceof NothingFound) {
 			return 60;
 		} else {
@@ -118,8 +118,8 @@ public class HuntingModel {
 	 * from a given stream with {@link NothingFound} interspersed in a given percentage.
 	 */
 	private static class ResultIterator<Type> implements Iterator<Type> {
-		public ResultIterator(Collection<Type> stream, double nothingProportion, Type nothingValue,
-				ToIntFunction<Type> dcGetter) {
+		public ResultIterator(final Collection<Type> stream, final double nothingProportion, final Type nothingValue,
+		                      final ToIntFunction<Type> dcGetter) {
 			this.stream = new ArrayList<>(stream);
 			this.nothingProportion = nothingProportion;
 			this.nothingValue = nothingValue;
@@ -159,9 +159,9 @@ public class HuntingModel {
 	}
 
 	private static class ResultStream<Type> implements Iterable<Type> {
-		public ResultStream(Collection<Type> stream,
-				double nothingProportion, Type nothingValue,
-				ToIntFunction<Type> dcGetter) {
+		public ResultStream(final Collection<Type> stream,
+		                    final double nothingProportion, final Type nothingValue,
+		                    final ToIntFunction<Type> dcGetter) {
 			this.stream = stream;
 			this.nothingProportion = nothingProportion;
 			this.nothingValue = nothingValue;
@@ -189,8 +189,8 @@ public class HuntingModel {
 		private final Type nothingValue;
 		private int counter = 0;
 		private boolean switched = false;
-		public FiniteResultIterator(Iterable<Type> stream, double nothingProportion,
-				Type nothingValue) {
+		public FiniteResultIterator(final Iterable<Type> stream, final double nothingProportion,
+		                            final Type nothingValue) {
 			wrapped = stream.iterator();
 			this.nothingProportion = nothingProportion;
 			this.nothingValue = nothingValue;
@@ -225,8 +225,8 @@ public class HuntingModel {
 		private final Iterable<Type> stream;
 		private final double nothingProportion;
 		private final Type nothingValue;
-		public FiniteResultStream(Iterable<Type> stream, double nothingProportion,
-				Type nothingValue) {
+		public FiniteResultStream(final Iterable<Type> stream, final double nothingProportion,
+		                          final Type nothingValue) {
 			this.stream = stream;
 			this.nothingProportion = nothingProportion;
 			this.nothingValue = nothingValue;
@@ -243,7 +243,7 @@ public class HuntingModel {
 	 */
 	private final IMapNG map;
 
-	public HuntingModel(IMapNG map) {
+	public HuntingModel(final IMapNG map) {
 		this.map = map;
 		fishKinds = map.streamLocations()
 			.filter(l -> TileType.Ocean.equals(map.getBaseTerrain(l)))
@@ -265,7 +265,7 @@ public class HuntingModel {
 	 *
 	 * TODO: Return Stream instead of collect()ing?
 	 */
-	private final Collection<Animal> baseAnimals(Point point) {
+	private final Collection<Animal> baseAnimals(final Point point) {
 		return map.getFixtures(point).stream().filter(Animal.class::isInstance)
 			.map(Animal.class::cast).filter(((Predicate<Animal>) Animal::isTalking).negate())
 			.collect(Collectors.toList());
@@ -276,7 +276,7 @@ public class HuntingModel {
 	 *
 	 * TODO: Return Stream instead of collect()ing?
 	 */
-	private final Collection<TileFixture> animals(Point point) {
+	private final Collection<TileFixture> animals(final Point point) {
 		return baseAnimals(point).stream().filter(a -> !fishKinds.contains(a.getKind()))
 			.collect(Collectors.toList());
 	}
@@ -286,7 +286,7 @@ public class HuntingModel {
 	 *
 	 * TODO: Return Stream instead of collect()ing?
 	 */
-	private final Collection<TileFixture> waterAnimals(Point point) {
+	private final Collection<TileFixture> waterAnimals(final Point point) {
 		return baseAnimals(point).stream().filter(a -> fishKinds.contains(a.getKind()))
 			.collect(Collectors.toList());
 	}
@@ -298,7 +298,7 @@ public class HuntingModel {
 	 *
 	 * TODO: Return Stream instead of collect()ing?
 	 */
-	private Collection<TileFixture> plants(Point point) {
+	private Collection<TileFixture> plants(final Point point) {
 		Collection<TileFixture> retval = map.getFixtures(point).stream()
 			.filter(f -> f instanceof Grove || f instanceof Meadow || f instanceof Shrub)
 			.collect(Collectors.toList());
@@ -322,7 +322,7 @@ public class HuntingModel {
 	 * TODO: Stream instead of Collection?
 	 */
 	private Function<Point, Collection<Pair<Point, TileFixture>>> chooseFromMapImpl(
-			Function<Point, Collection<TileFixture>> chosenMap) {
+			final Function<Point, Collection<TileFixture>> chosenMap) {
 		return loc -> chosenMap.apply(loc).stream().map(f -> Pair.with(loc, f))
 			.collect(Collectors.toList());
 	}
@@ -332,8 +332,8 @@ public class HuntingModel {
 	 * @param point Whereabouts to search
 	 * @param chosenMap Filter/provider to use to find the animals.
 	 */
-	private Iterable<Pair<Point, TileFixture>> chooseFromMap(Point point,
-			Function<Point, Collection<TileFixture>> chosenMap) {
+	private Iterable<Pair<Point, TileFixture>> chooseFromMap(final Point point,
+	                                                         final Function<Point, Collection<TileFixture>> chosenMap) {
 		return new ResultStream<>(StreamSupport.stream(
 					new SurroundingPointIterable(point, dimensions).spliterator(), true)
 				.map(chooseFromMapImpl(chosenMap)).flatMap(c -> c.stream())
@@ -353,7 +353,7 @@ public class HuntingModel {
 	 *
 	 * @param point Whereabouts to search
 	 */
-	public Iterable<Pair<Point, TileFixture>> hunt(Point point) {
+	public Iterable<Pair<Point, TileFixture>> hunt(final Point point) {
 		return chooseFromMap(point, this::animals);
 	}
 
@@ -363,14 +363,14 @@ public class HuntingModel {
 	 *
 	 * @param point Whereabouts to search
 	 */
-	public Iterable<Pair<Point, TileFixture>> fish(Point point) {
+	public Iterable<Pair<Point, TileFixture>> fish(final Point point) {
 		return chooseFromMap(point, this::waterAnimals);
 	}
 
 	/**
 	 * Given a location, return the stream of gathering results from just that tile.
 	 */
-	private Collection<Pair<Point, TileFixture>> gatherImpl(Point point) {
+	private Collection<Pair<Point, TileFixture>> gatherImpl(final Point point) {
 		return plants(point).stream().map(f -> Pair.with(point, f)).collect(Collectors.toList());
 	}
 
@@ -382,7 +382,7 @@ public class HuntingModel {
 	 *
 	 * @param point Whereabouts to search
 	 */
-	public Iterable<Pair<Point, TileFixture>> gather(Point point) {
+	public Iterable<Pair<Point, TileFixture>> gather(final Point point) {
 		List<Pair<Point, TileFixture>> retval = StreamSupport.stream(
 				new SurroundingPointIterable(point, dimensions).spliterator(), true)
 			.flatMap(p -> gatherImpl(p).stream()).collect(Collectors.toList());

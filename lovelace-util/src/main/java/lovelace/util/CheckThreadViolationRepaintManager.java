@@ -31,7 +31,7 @@ public class CheckThreadViolationRepaintManager extends RepaintManager {
 	 * @param c          the component in which the violation was found
 	 * @param stackTrace the stack trace to report
 	 */
-	static void violationFound(JComponent c, StackTraceElement... stackTrace) {
+	static void violationFound(final JComponent c, final StackTraceElement... stackTrace) {
 		System.out.println();
 		System.out.println("EDT violation detected");
 		System.out.println(c.toString());
@@ -55,7 +55,7 @@ public class CheckThreadViolationRepaintManager extends RepaintManager {
 	/**
 	 * @param shouldCompleteCheck Whether to run the complete check (recommended)
 	 */
-	public CheckThreadViolationRepaintManager(boolean shouldCompleteCheck) {
+	public CheckThreadViolationRepaintManager(final boolean shouldCompleteCheck) {
 		completeCheck = shouldCompleteCheck;
 		lastComponent = null;
 	}
@@ -67,7 +67,7 @@ public class CheckThreadViolationRepaintManager extends RepaintManager {
 	/**
 	 * Check thread violations for a component.
 	 */
-	void checkThreadViolations(JComponent c) {
+	void checkThreadViolations(final JComponent c) {
 		if (!SwingUtilities.isEventDispatchThread() && (completeCheck || c.isShowing())) {
 			boolean repaint = false;
 			boolean fromSwing = false;
@@ -127,7 +127,7 @@ public class CheckThreadViolationRepaintManager extends RepaintManager {
 	 */
 	@Override
 	public void addDirtyRegion(@Nullable final JComponent component,
-					int x, int y, int w, int h) {
+	                           final int x, final int y, final int w, final int h) {
 		if (component != null) {
 			checkThreadViolations(component);
 			super.addDirtyRegion(component, x, y, w, h);

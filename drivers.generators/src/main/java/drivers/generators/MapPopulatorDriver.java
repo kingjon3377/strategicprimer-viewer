@@ -21,7 +21,7 @@ import java.util.Collections;
  */
 // TODO: Write GUI equivalent of Map Populator Driver
 public class MapPopulatorDriver implements CLIDriver {
-	public MapPopulatorDriver(ICLIHelper cli, SPOptions options, IPopulatorDriverModel model) {
+	public MapPopulatorDriver(final ICLIHelper cli, final SPOptions options, final IPopulatorDriverModel model) {
 		this.cli = cli;
 		this.options = options;
 		this.model = model;
@@ -54,7 +54,7 @@ public class MapPopulatorDriver implements CLIDriver {
 	/**
 	 * Populate the map. You shouldn't need to customize this.
 	 */
-	private void populate(IPopulatorDriverModel model) {
+	private void populate(final IPopulatorDriverModel model) {
 		IDRegistrar idf = new IDFactoryFiller().createIDFactory(model.getMap());
 		List<Point> locations = model.getMap().streamLocations().collect(Collectors.toList());
 		Collections.shuffle(locations);

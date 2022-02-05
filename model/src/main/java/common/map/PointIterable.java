@@ -35,14 +35,14 @@ public class PointIterable implements Iterable<Point> {
 	@Nullable
 	private final Point selection;
 
-	public PointIterable(MapDimensions dimensions, boolean forwards, boolean horizontal, Point selection) {
+	public PointIterable(final MapDimensions dimensions, final boolean forwards, final boolean horizontal, final Point selection) {
 		this.dimensions = dimensions;
 		this.forwards = forwards;
 		this.horizontal = horizontal;
 		this.selection = selection;
 	}
 
-	public PointIterable(MapDimensions dimensions, boolean forwards, boolean horizontal) {
+	public PointIterable(final MapDimensions dimensions, final boolean forwards, final boolean horizontal) {
 		this.dimensions = dimensions;
 		this.forwards = forwards;
 		this.horizontal = horizontal;
@@ -74,7 +74,7 @@ public class PointIterable implements Iterable<Point> {
 		/**
 		 * If {@link item} is zero or positive, return it; otherwise, return {@link wrap}.
 		 */
-		int wrap(int item, int wrap) {
+		int wrap(final int item, final int wrap) {
 			return (item < 0) ? wrap : item;
 		}
 

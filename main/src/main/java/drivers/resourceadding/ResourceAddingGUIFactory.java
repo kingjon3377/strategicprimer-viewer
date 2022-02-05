@@ -49,14 +49,14 @@ public class ResourceAddingGUIFactory implements GUIDriverFactory {
 	public Iterable<Path> askUserForFiles() { // TODO: Make interface declare DriverFailedException instead of just logging it
 		try {
 			return SPFileChooser.open((Path) null).getFiles();
-		} catch (FileChooser.ChoiceInterruptedException except) {
+		} catch (final FileChooser.ChoiceInterruptedException except) {
 			LOGGER.log(Level.WARNING, "Choice interrupted or user didn't choose", except);
 			return Collections.emptyList();
 		}
 	}
 
 	@Override
-	public GUIDriver createDriver(ICLIHelper cli, SPOptions options, IDriverModel model) {
+	public GUIDriver createDriver(final ICLIHelper cli, final SPOptions options, final IDriverModel model) {
 		if (model instanceof ResourceManagementDriverModel) {
 			return new ResourceAddingGUI(cli, options, (ResourceManagementDriverModel) model);
 		} else {
@@ -65,7 +65,7 @@ public class ResourceAddingGUIFactory implements GUIDriverFactory {
 	}
 
 	@Override
-	public IDriverModel createModel(IMutableMapNG map) {
+	public IDriverModel createModel(final IMutableMapNG map) {
 		return new ResourceManagementDriverModel(map);
 	}
 }

@@ -26,7 +26,7 @@ import drivers.common.FixtureMatcher;
 	private final IMapNG master;
 	private final IMapNG subordinate;
 
-	public DualTileButton(IMapNG master, IMapNG subordinate, Iterable<FixtureMatcher> matchers) {
+	public DualTileButton(final IMapNG master, final IMapNG subordinate, final Iterable<FixtureMatcher> matchers) {
 		this.master = master;
 		this.subordinate = subordinate;
 		helper = new Ver2TileDrawHelper(this, fix -> true,
@@ -37,13 +37,13 @@ import drivers.common.FixtureMatcher;
 		return localPoint;
 	}
 
-	public void setPoint(Point point) {
+	public void setPoint(final Point point) {
 		localPoint = point;
 		repaint();
 	}
 
 	@Override
-	public void paintComponent(Graphics pen) {
+	public void paintComponent(final Graphics pen) {
 		super.paintComponent(pen);
 		Coordinate origin = new Coordinate(0, 0);
 		Coordinate dimensions = new Coordinate(getWidth(), getHeight());

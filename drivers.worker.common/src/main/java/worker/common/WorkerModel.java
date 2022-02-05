@@ -77,7 +77,7 @@ public class WorkerModel extends SimpleMultiMapModel implements IWorkerModel {
 	 * containing only the argument. This allows callers to get a flattened
 	 * stream of units, including those in fortresses.
 	 */
-	private static Stream<?> flatten(Object fixture) {
+	private static Stream<?> flatten(final Object fixture) {
 		if (fixture instanceof IFortress) {
 			return ((IFortress) fixture).stream();
 		} else {
@@ -90,8 +90,8 @@ public class WorkerModel extends SimpleMultiMapModel implements IWorkerModel {
 	 * stream of its contents paired with its location; otherwise, return a
 	 * [[Singleton]] of the argument.
 	 */
-	private static Stream<Pair<Point, IFixture>> flattenEntries(Point point,
-			IFixture fixture) {
+	private static Stream<Pair<Point, IFixture>> flattenEntries(final Point point,
+	                                                            final IFixture fixture) {
 		if (fixture instanceof IFortress) {
 			return ((IFortress) fixture).stream().map(m -> Pair.with(point, m));
 		} else {
@@ -102,7 +102,7 @@ public class WorkerModel extends SimpleMultiMapModel implements IWorkerModel {
 	/**
 	 * Add the given unit at the given location in the given map.
 	 */
-	private static void addUnitAtLocationImpl(IUnit unit, Point location, IMutableMapNG map) {
+	private static void addUnitAtLocationImpl(final IUnit unit, final Point location, final IMutableMapNG map) {
 		IMutableFortress fortress = map.getFixtures(location).stream()
 			.filter(IMutableFortress.class::isInstance).map(IMutableFortress.class::cast)
 			.filter(f -> f.getOwner().equals(unit.getOwner())).findAny().orElse(null);
@@ -121,12 +121,12 @@ public class WorkerModel extends SimpleMultiMapModel implements IWorkerModel {
 
 	private final List<UnitMember> dismissedMembers = new ArrayList<>();
 
-	public WorkerModel(IMutableMapNG map) {
+	public WorkerModel(final IMutableMapNG map) {
 		super(map);
 	}
 
 	// TODO: Provide copyConstructor() static factory method?
-	public WorkerModel(IDriverModel model) {
+	public WorkerModel(final IDriverModel model) {
 		super(model);
 	}
 
@@ -156,14 +156,14 @@ public class WorkerModel extends SimpleMultiMapModel implements IWorkerModel {
 	 * operation as far as the map <em>files</em> are concerned.
 	 */
 	@Override
-	public void setCurrentPlayer(Player currentPlayer) {
+	public void setCurrentPlayer(final Player currentPlayer) {
 		currentPlayerImpl = currentPlayer;
 	}
 
 	/**
 	 * Flatten and filter the stream to include only units, and only those owned by the given player.
 	 */
-	private List<IUnit> getUnitsImpl(Iterable<?> iter, Player player) {
+	private List<IUnit> getUnitsImpl(final Iterable<?> iter, final Player player) {
 		return StreamSupport.stream(iter.spliterator(), false).flatMap(WorkerModel::flatten)
 			.filter(IUnit.class::isInstance).map(IUnit.class::cast)
 			.filter(u -> u.getOwner().getPlayerId() == player.getPlayerId())
@@ -171,7 +171,7 @@ public class WorkerModel extends SimpleMultiMapModel implements IWorkerModel {
 	}
 
 	@Override
-	public Iterable<IFortress> getFortresses(Player player) {
+	public Iterable<IFortress> getFortresses(final Player player) {
 		return getMap().streamLocations()
 			.flatMap(l -> getMap().getFixtures(l).stream())
 			.filter(IFortress.class::isInstance).map(IFortress.class::cast)
@@ -193,7 +193,7 @@ public class WorkerModel extends SimpleMultiMapModel implements IWorkerModel {
 	 * Get all the given player's units, or only those of a specified kind.
 	 */
 	@Override
-	public Iterable<IUnit> getUnits(Player player, String kind) {
+	public Iterable<IUnit> getUnits(final Player player, final String kind) {
 		return StreamSupport.stream(getUnits(player).spliterator(), false)
 			.filter(u -> kind.equals(u.getKind())).collect(Collectors.toList());
 	}
@@ -202,7 +202,7 @@ public class WorkerModel extends SimpleMultiMapModel implements IWorkerModel {
 	 * Get all the given player's units, or only those of a specified kind.
 	 */
 	@Override
-	public Iterable<IUnit> getUnits(Player player) {
+	public Iterable<IUnit> getUnits(final Player player) {
 		if (!getSubordinateMaps().iterator().hasNext()) {
 			// Just in case I missed something in the proxy implementation, make sure
 			// things work correctly when there's only one map.
@@ -240,7 +240,7 @@ public class WorkerModel extends SimpleMultiMapModel implements IWorkerModel {
 	 * All the "kinds" of units the given player has.
 	 */
 	@Override
-	public Iterable<String> getUnitKinds(Player player) {
+	public Iterable<String> getUnitKinds(final Player player) {
 		return StreamSupport.stream(getUnits(player).spliterator(), false)
 			.map(IUnit::getKind).distinct().sorted(String.CASE_INSENSITIVE_ORDER)
 			.collect(Collectors.toList());
@@ -251,7 +251,7 @@ public class WorkerModel extends SimpleMultiMapModel implements IWorkerModel {
 	 *
 	 * FIXME: Should copy into subordinate maps, and return either the unit (in one-map case) or a proxy
 	 */
-	private void addUnitAtLocation(IUnit unit, Point location) {
+	private void addUnitAtLocation(final IUnit unit, final Point location) {
 		if (!getSubordinateMaps().iterator().hasNext()) {
 			addUnitAtLocationImpl(unit, location, getRestrictedMap());
 			setMapModified(true);
@@ -267,7 +267,7 @@ public class WorkerModel extends SimpleMultiMapModel implements IWorkerModel {
 	 * Add a unit to all the maps, at the location of its owner's HQ in the main map.
 	 */
 	@Override
-	public void addUnit(IUnit unit) {
+	public void addUnit(final IUnit unit) {
 		Pair<IMutableFortress, Point> temp = null;
 		for (Pair<Point, IMutableFortress> pair : getMap().streamLocations()
 				.flatMap(l -> getMap().getFixtures(l).stream()
@@ -303,12 +303,12 @@ public class WorkerModel extends SimpleMultiMapModel implements IWorkerModel {
 	 */
 	@Override
 	@Nullable
-	public IUnit getUnitByID(Player owner, int id) {
+	public IUnit getUnitByID(final Player owner, final int id) {
 		return StreamSupport.stream(getUnits(owner).spliterator(), true)
 			.filter(u -> u.getId() == id).findAny().orElse(null);
 	}
 
-	private BiPredicate<Point, IFixture> unitMatching(IUnit unit) {
+	private BiPredicate<Point, IFixture> unitMatching(final IUnit unit) {
 		return (point, fixture) ->
 			fixture instanceof IUnit && fixture.getId() == unit.getId() &&
 				((IUnit) fixture).getOwner().equals(unit.getOwner());
@@ -323,7 +323,7 @@ public class WorkerModel extends SimpleMultiMapModel implements IWorkerModel {
 	 * there are no matching units in any map the method returns false.
 	 */
 	@Override
-	public boolean removeUnit(IUnit unit) {
+	public boolean removeUnit(final IUnit unit) {
 		LOGGER.fine("In WorkerModel.removeUnit()");
 		List<Pair<IMutableMapNG, Pair<Point, IUnit>>> delenda = new ArrayList<>();
 		for (IMutableMapNG map : getRestrictedAllMaps()) {
@@ -384,7 +384,7 @@ public class WorkerModel extends SimpleMultiMapModel implements IWorkerModel {
 		return true;
 	}
 
-	private static int iterableSize(Iterable<?> iter) {
+	private static int iterableSize(final Iterable<?> iter) {
 		return (int) StreamSupport.stream(iter.spliterator(), true).count();
 	}
 
@@ -404,8 +404,8 @@ public class WorkerModel extends SimpleMultiMapModel implements IWorkerModel {
 	 *
 	 * TODO: Add a test of this method.
 	 */
-	private boolean moveProxied(/*UnitMember&*/ProxyFor<? extends UnitMember> member, ProxyUnit old,
-			ProxyUnit newOwner) {
+	private boolean moveProxied(/*UnitMember&*/final ProxyFor<? extends UnitMember> member, final ProxyUnit old,
+	                                           final ProxyUnit newOwner) {
 		if (iterableSize(old.getProxied()) == iterableSize(newOwner.getProxied()) &&
 				iterableSize(old.getProxied()) == iterableSize(member.getProxied())) {
 			LinkedList<UnitMember> memberProxied = new LinkedList<UnitMember>(
@@ -450,7 +450,7 @@ public class WorkerModel extends SimpleMultiMapModel implements IWorkerModel {
 	 * which was extracted as {@link moveProxied}.
 	 */
 	@Override
-	public void moveMember(UnitMember member, IUnit old, IUnit newOwner) {
+	public void moveMember(final UnitMember member, final IUnit old, final IUnit newOwner) {
 		if (member instanceof ProxyFor && old instanceof ProxyUnit &&
 				newOwner instanceof ProxyUnit &&
 				moveProxied((ProxyFor<? extends UnitMember>) member, (ProxyUnit) old,
@@ -490,7 +490,7 @@ public class WorkerModel extends SimpleMultiMapModel implements IWorkerModel {
 	}
 
 	@Override
-	public void dismissUnitMember(UnitMember member) {
+	public void dismissUnitMember(final UnitMember member) {
 		boolean any = false;
 		// TODO: Handle proxies specially?
 		for (IMutableMapNG map : getRestrictedAllMaps()) {
@@ -525,7 +525,7 @@ public class WorkerModel extends SimpleMultiMapModel implements IWorkerModel {
 	// the tree model could listen to the map---so the worker-mgmt UI would
 	// update if a unit were added through the map-viewer UI.
 	@Override
-	public void addUnitMember(IUnit unit, UnitMember member) {
+	public void addUnitMember(final IUnit unit, final UnitMember member) {
 		for (IMutableMapNG map : getRestrictedAllMaps()) {
 			IMutableUnit matching = getUnitsImpl(map.streamLocations()
 						.flatMap(l -> map.getFixtures(l).stream())
@@ -545,7 +545,7 @@ public class WorkerModel extends SimpleMultiMapModel implements IWorkerModel {
 	}
 
 	@Override
-	public boolean renameItem(HasMutableName item, String newName) {
+	public boolean renameItem(final HasMutableName item, final String newName) {
 		boolean any = false;
 		if (item instanceof IUnit) {
 			for (IMutableMapNG map : getRestrictedAllMaps()) {
@@ -597,7 +597,7 @@ public class WorkerModel extends SimpleMultiMapModel implements IWorkerModel {
 	}
 
 	@Override
-	public boolean changeKind(HasKind item, String newKind) {
+	public boolean changeKind(final HasKind item, final String newKind) {
 		boolean any = false;
 		if (item instanceof IUnit) {
 			for (IMutableMapNG map : getRestrictedAllMaps()) {
@@ -647,7 +647,7 @@ public class WorkerModel extends SimpleMultiMapModel implements IWorkerModel {
 	}
 
 	@Override
-	public boolean addSibling(UnitMember existing, UnitMember sibling) {
+	public boolean addSibling(final UnitMember existing, final UnitMember sibling) {
 		boolean any = false;
 		for (IMutableMapNG map : getRestrictedAllMaps()) {
 			for (IMutableUnit unit : getUnitsImpl(map.streamLocations()
@@ -667,7 +667,7 @@ public class WorkerModel extends SimpleMultiMapModel implements IWorkerModel {
 		return any;
 	}
 
-	private static Stream<IFixture> flattenIncluding(IFixture fixture) {
+	private static Stream<IFixture> flattenIncluding(final IFixture fixture) {
 		if (fixture instanceof FixtureIterable) {
 			return Stream.concat(Stream.of(fixture), ((FixtureIterable<?>) fixture).stream());
 		} else {
@@ -680,7 +680,7 @@ public class WorkerModel extends SimpleMultiMapModel implements IWorkerModel {
 	 * succeeded in any map, false otherwise.
 	 */
 	@Override
-	public boolean changeOwner(HasMutableOwner item, Player newOwner) {
+	public boolean changeOwner(final HasMutableOwner item, final Player newOwner) {
 		boolean any = false;
 		for (IMutableMapNG map : getRestrictedAllMaps()) {
 			HasMutableOwner matching = map.streamLocations()
@@ -703,7 +703,7 @@ public class WorkerModel extends SimpleMultiMapModel implements IWorkerModel {
 	}
 
 	@Override
-	public boolean sortFixtureContents(IUnit fixture) {
+	public boolean sortFixtureContents(final IUnit fixture) {
 		boolean any = false;
 		for (IMutableMapNG map : getRestrictedAllMaps()) {
 			IMutableUnit matching = getUnitsImpl(map.streamLocations()
@@ -729,7 +729,7 @@ public class WorkerModel extends SimpleMultiMapModel implements IWorkerModel {
 	 * If an existing Job by that name already existed, it is left alone.
 	 */
 	@Override
-	public boolean addJobToWorker(IWorker worker, String jobName) {
+	public boolean addJobToWorker(final IWorker worker, final String jobName) {
 		boolean any = false;
 		for (IMutableMapNG map : getRestrictedAllMaps()) {
 			IMutableWorker matching = getUnitsImpl(map.streamLocations()
@@ -764,8 +764,8 @@ public class WorkerModel extends SimpleMultiMapModel implements IWorkerModel {
 	 * be a random number between 0 and 99.
 	 */
 	@Override
-	public boolean addHoursToSkill(IWorker worker, String jobName, String skillName, int hours,
-			int contextValue) {
+	public boolean addHoursToSkill(final IWorker worker, final String jobName, final String skillName, final int hours,
+	                               final int contextValue) {
 		boolean any = false;
 		for (IMutableMapNG map : getRestrictedAllMaps()) {
 			IMutableWorker matching = getUnitsImpl(map.streamLocations()
@@ -818,8 +818,8 @@ public class WorkerModel extends SimpleMultiMapModel implements IWorkerModel {
 	 * the maps, false otherwise.
 	 */
 	@Override
-	public boolean replaceSkillInJob(IWorker worker, String jobName, ISkill delenda,
-			ISkill replacement) {
+	public boolean replaceSkillInJob(final IWorker worker, final String jobName, final ISkill delenda,
+	                                 final ISkill replacement) {
 		boolean any = false;
 		for (IMutableMapNG map : getRestrictedAllMaps()) {
 			IMutableWorker matchingWorker = getUnitsImpl(map.streamLocations()
@@ -863,7 +863,7 @@ public class WorkerModel extends SimpleMultiMapModel implements IWorkerModel {
 	 * least one map, false otherwise.
 	 */
 	@Override
-	public boolean setUnitOrders(IUnit unit, int turn, String results) {
+	public boolean setUnitOrders(final IUnit unit, final int turn, final String results) {
 		boolean any = false;
 		for (IMutableMapNG map : getRestrictedAllMaps()) {
 			// TODO: Why not use getUnitsImpl?
@@ -890,7 +890,7 @@ public class WorkerModel extends SimpleMultiMapModel implements IWorkerModel {
 	 * one map, false otherwise.
 	 */
 	@Override
-	public boolean setUnitResults(IUnit unit, int turn, String results) {
+	public boolean setUnitResults(final IUnit unit, final int turn, final String results) {
 		boolean any = false;
 		for (IMutableMapNG map : getRestrictedAllMaps()) {
 			// TODO: Why not use getUnitsImpl?

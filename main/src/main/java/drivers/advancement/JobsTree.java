@@ -24,7 +24,7 @@ import common.map.fixtures.mobile.worker.IJob;
  * TreeSelectionModel, so we can make callers use a bog-standard JTree?
  */
 /* package */ class JobsTree extends JTree implements SkillSelectionSource {
-	public JobsTree(JobTreeModel jtModel) {
+	public JobsTree(final JobTreeModel jtModel) {
 		super(jtModel);
 
 		jtModel.setSelectionModel(getSelectionModel());
@@ -40,7 +40,7 @@ import common.map.fixtures.mobile.worker.IJob;
 
 		jtModel.addTreeModelListener(new TreeModelListener() {
 				@Override
-				public void treeStructureChanged(TreeModelEvent event) {
+				public void treeStructureChanged(final TreeModelEvent event) {
 					Optional.ofNullable(event.getTreePath())
 						.map(TreePath::getParentPath)
 						.ifPresent(path -> expandPath(path));
@@ -49,18 +49,18 @@ import common.map.fixtures.mobile.worker.IJob;
 						expandRow(i);
 					}
 				}
-				
+
 				@Override
-				public void treeNodesRemoved(TreeModelEvent event) { }
-				
+				public void treeNodesRemoved(final TreeModelEvent event) { }
+
 				@Override
-				public void treeNodesInserted(TreeModelEvent event) {
+				public void treeNodesInserted(final TreeModelEvent event) {
 					expandPath(event.getTreePath());
 					expandPath(event.getTreePath().getParentPath());
 				}
 
 				@Override
-				public void treeNodesChanged(TreeModelEvent event) {
+				public void treeNodesChanged(final TreeModelEvent event) {
 					expandPath(event.getTreePath().getParentPath());
 				}
 			});
@@ -69,16 +69,16 @@ import common.map.fixtures.mobile.worker.IJob;
 	private final List<SkillSelectionListener> listeners = new ArrayList<>();
 
 	@Override
-	public void addSkillSelectionListener(SkillSelectionListener listener) {
+	public void addSkillSelectionListener(final SkillSelectionListener listener) {
 		listeners.add(listener);
 	}
 
 	@Override
-	public void removeSkillSelectionListener(SkillSelectionListener listener) {
+	public void removeSkillSelectionListener(final SkillSelectionListener listener) {
 		listeners.remove(listener);
 	}
 
-	private void handleTreeSelectionChange(TreeSelectionEvent event) {
+	private void handleTreeSelectionChange(final TreeSelectionEvent event) {
 		@Nullable ISkill retval;
 		@Nullable IJob job;
 		TreePath selectionPath = event.getNewLeadSelectionPath();

@@ -20,7 +20,7 @@ import static lovelace.util.Decimalize.decimalize;
 	private final ICLIHelper cli;
 	private final IDRegistrar idf;
 
-	public PreservationApplet(ITurnRunningModel model, ICLIHelper cli, IDRegistrar idf) {
+	public PreservationApplet(final ITurnRunningModel model, final ICLIHelper cli, final IDRegistrar idf) {
 		super(model, cli, idf);
 		this.model = model;
 		this.cli = cli;
@@ -39,7 +39,7 @@ import static lovelace.util.Decimalize.decimalize;
 		return "Convert food into less-perishable form.";
 	}
 
-	private static String describePile(IResourcePile pile) {
+	private static String describePile(final IResourcePile pile) {
 		if (pile.getCreated() < 0) {
 			return String.format("%s of %s", pile.getQuantity(), pile.getContents());
 		} else {

@@ -41,12 +41,12 @@ final class DBShrubHandler extends AbstractDatabaseWriter<Shrub, Point> implemen
 		"INSERT INTO shrubs (row, column, id, kind, count, image) VALUES(?, ?, ?, ?, ?, ?);";
 
 	@Override
-	public void write(DB db, Shrub obj, Point context) {
+	public void write(final DB db, final Shrub obj, final Point context) {
 		db.update(INSERT_SQL, context.getRow(), context.getColumn(), obj.getId(), obj.getKind(),
 			obj.getPopulation(), obj.getImage()).execute();
 	}
 
-	private TryBiConsumer<Map<String, Object>, Warning, Exception> readShrub(IMutableMapNG map) {
+	private TryBiConsumer<Map<String, Object>, Warning, Exception> readShrub(final IMutableMapNG map) {
 		return (dbRow, warner) -> {
 			int row = (Integer) dbRow.get("row");
 			int column = (Integer) dbRow.get("column");
@@ -63,14 +63,14 @@ final class DBShrubHandler extends AbstractDatabaseWriter<Shrub, Point> implemen
 	}
 
 	@Override
-	public void readMapContents(DB db, IMutableMapNG map, Warning warner) {
+	public void readMapContents(final DB db, final IMutableMapNG map, final Warning warner) {
 		try {
 			handleQueryResults(db, warner, "shrubs", readShrub(map),
 				"SELECT * FROM shrubs");
-		} catch (RuntimeException except) {
+		} catch (final RuntimeException except) {
 			// Don't wrap RuntimeExceptions in RuntimeException
 			throw except;
-		} catch (Exception except) {
+		} catch (final Exception except) {
 			// FIXME Antipattern
 			throw new RuntimeException(except);
 		}

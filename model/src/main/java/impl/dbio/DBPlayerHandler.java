@@ -42,11 +42,11 @@ final class DBPlayerHandler extends AbstractDatabaseWriter<Player, IMapNG> imple
 		"INSERT INTO players (id, codename, current, portrait, country) VALUES(?, ?, ?, ?, ?);";
 
 	@Override
-	public void write(DB db, Player obj, IMapNG context) {
+	public void write(final DB db, final Player obj, final IMapNG context) {
 		try {
 			db.update(INSERT_SQL, obj.getPlayerId(), obj.getName(), obj.isCurrent(),
 				obj.getPortrait(), obj.getCountry()).execute();
-		} catch (Exception except) {
+		} catch (final Exception except) {
 			if (except.getMessage().contains("table players has no column named country)")) {
 				db.script("ALTER TABLE players ADD COLUMN country VARCHAR(64)").execute();
 				write(db, obj, context);
@@ -56,7 +56,7 @@ final class DBPlayerHandler extends AbstractDatabaseWriter<Player, IMapNG> imple
 		}
 	}
 
-	private TryBiConsumer<Map<String, Object>, Warning, Exception> readPlayer(IMutableMapNG map) {
+	private TryBiConsumer<Map<String, Object>, Warning, Exception> readPlayer(final IMutableMapNG map) {
 		return (dbRow, warner) -> {
 			int id = (Integer) dbRow.get("id");
 			String name = (String) dbRow.get("codename");
@@ -74,14 +74,14 @@ final class DBPlayerHandler extends AbstractDatabaseWriter<Player, IMapNG> imple
 	}
 
 	@Override
-	public void readMapContents(DB db, IMutableMapNG map, Warning warner) {
+	public void readMapContents(final DB db, final IMutableMapNG map, final Warning warner) {
 		try {
 			handleQueryResults(db, warner, "players", readPlayer(map),
 				"SELECT * FROM players");
-		} catch (RuntimeException except) {
+		} catch (final RuntimeException except) {
 			// Don't wrap RuntimeExceptions in RuntimeException
 			throw except;
-		} catch (Exception except) {
+		} catch (final Exception except) {
 			// FIXME Antipattern
 			throw new RuntimeException(except);
 		}

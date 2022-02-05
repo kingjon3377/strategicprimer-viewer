@@ -27,7 +27,7 @@ public class RaceFactory {
 	 *
 	 * @param random The RNG to use to determine the result.
 	 */
-	public static String randomRace(Random random) {
+	public static String randomRace(final Random random) {
 		return RACES.get(random.nextInt(RACES.size()));
 	}
 

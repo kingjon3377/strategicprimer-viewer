@@ -32,7 +32,7 @@ import java.util.Collections;
  * A reader for resource-bearing [[strategicprimer.model.common.map::TileFixture]]s.
  */
 /* package */ class YAResourceReader extends YAAbstractReader<HarvestableFixture, HarvestableFixture> {
-	public YAResourceReader(Warning warner, IDRegistrar idRegistrar) {
+	public YAResourceReader(final Warning warner, final IDRegistrar idRegistrar) {
 		super(warner, idRegistrar);
 		this.warner = warner;
 	}
@@ -43,7 +43,7 @@ import java.util.Collections;
 		Arrays.asList("cache", "grove", "orchard", "field", "meadow", "mine", "mineral",
 			"shrub", "stone")));
 
-	private HarvestableFixture createMeadow(StartElement element, boolean field, int idNum)
+	private HarvestableFixture createMeadow(final StartElement element, final boolean field, final int idNum)
 			throws SPFormatException {
 		expectAttributes(element, "status", "kind", "id", "cultivated", "image", "acres");
 		requireNonEmptyParameter(element, "status", false);
@@ -52,7 +52,7 @@ import java.util.Collections;
 			// TODO: add FieldStatus.parse() overload taking FieldStatus as default
 			status = FieldStatus.parse(getParameter(element, "status",
 				FieldStatus.random(idNum).toString()));
-		} catch (IllegalArgumentException except) {
+		} catch (final IllegalArgumentException except) {
 			throw new MissingPropertyException(element, "status", except);
 		}
 		return new Meadow(getParameter(element, "kind"), field,
@@ -60,7 +60,7 @@ import java.util.Collections;
 			getNumericParameter(element, "acres", -1));
 	}
 
-	private boolean isCultivated(StartElement element) throws SPFormatException {
+	private boolean isCultivated(final StartElement element) throws SPFormatException {
 		if (hasParameter(element, "cultivated")) {
 			return getBooleanParameter(element, "cultivated");
 		} else if (hasParameter(element, "wild")) {
@@ -74,7 +74,7 @@ import java.util.Collections;
 	/**
 	 * TODO: Inline?
 	 */
-	private HarvestableFixture createGrove(StartElement element, boolean orchard, int idNum)
+	private HarvestableFixture createGrove(final StartElement element, final boolean orchard, final int idNum)
 			throws SPFormatException {
 		expectAttributes(element, "kind", "tree", "cultivated", "wild", "id", "image", "count");
 		return new Grove(orchard, isCultivated(element),
@@ -83,12 +83,12 @@ import java.util.Collections;
 	}
 
 	@Override
-	public boolean isSupportedTag(String tag) {
+	public boolean isSupportedTag(final String tag) {
 		return SUPPORTED_TAGS.contains(tag.toLowerCase());
 	}
 
 	@Override
-	public HarvestableFixture read(StartElement element, QName parent, Iterable<XMLEvent> stream)
+	public HarvestableFixture read(final StartElement element, final QName parent, final Iterable<XMLEvent> stream)
 			throws SPFormatException {
 		requireTag(element, parent, SUPPORTED_TAGS.toArray(new String[0]));
 		int idNum = getOrGenerateID(element);
@@ -118,7 +118,7 @@ import java.util.Collections;
 			TownStatus status;
 			try {
 				status = TownStatus.parse(getParameter(element, "status"));
-			} catch (IllegalArgumentException except) {
+			} catch (final IllegalArgumentException except) {
 				throw new MissingPropertyException(element, "status", except);
 			}
 			retval = new Mine(getParamWithDeprecatedForm(element, "kind", "product"),
@@ -143,7 +143,7 @@ import java.util.Collections;
 			StoneKind stone;
 			try {
 				stone = StoneKind.parse(getParamWithDeprecatedForm(element, "kind", "stone"));
-			} catch (IllegalArgumentException except) {
+			} catch (final IllegalArgumentException except) {
 				throw new MissingPropertyException(element, "kind", except);
 			}
 			retval = new StoneDeposit(stone, getIntegerParameter(element, "dc"), idNum);
@@ -157,7 +157,7 @@ import java.util.Collections;
 	}
 
 	@Override
-	public void write(ThrowingConsumer<String, IOException> ostream, HarvestableFixture obj, int indent)
+	public void write(final ThrowingConsumer<String, IOException> ostream, final HarvestableFixture obj, final int indent)
 			throws IOException {
 		if (obj instanceof CacheFixture) {
 			writeTag(ostream, "cache", indent);
@@ -206,7 +206,7 @@ import java.util.Collections;
 	}
 
 	@Override
-	public boolean canWrite(Object obj) {
+	public boolean canWrite(final Object obj) {
 		return obj instanceof HarvestableFixture;
 	}
 }

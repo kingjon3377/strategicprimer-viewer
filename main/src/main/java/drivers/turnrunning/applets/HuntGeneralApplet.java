@@ -38,7 +38,7 @@ import org.jetbrains.annotations.Nullable;
 	protected final IDRegistrar idf;
 	protected final String verb;
 
-	public HuntGeneralApplet(String verb, ITurnRunningModel model, ICLIHelper cli, IDRegistrar idf) {
+	public HuntGeneralApplet(final String verb, final ITurnRunningModel model, final ICLIHelper cli, final IDRegistrar idf) {
 		super(model, cli, idf);
 		huntingModel = new HuntingModel(model.getMap());
 		resourceAddingHelper = new ResourceAddingCLIHelper(cli, idf);
@@ -51,7 +51,7 @@ import org.jetbrains.annotations.Nullable;
 	/**
 	 * A description of what could be a single animal or a population of animals.
 	 */
-	private static String populationDescription(Animal animal) {
+	private static String populationDescription(final Animal animal) {
 		if (animal.getPopulation() > 1) {
 			return String.format("a group of perhaps %d %s", animal.getPopulation(),
 				AnimalPlurals.get(animal.getKind()));
@@ -60,12 +60,12 @@ import org.jetbrains.annotations.Nullable;
 		}
 	}
 
-	private static String describeUnit(IUnit unit) {
+	private static String describeUnit(final IUnit unit) {
 		return String.format("%s (%s)", unit.getName(), unit.getKind());
 	}
 
 	@Nullable
-	protected Boolean handleCapture(Animal find) {
+	protected Boolean handleCapture(final Animal find) {
 		final IUnit unit = chooseFromList(StreamSupport.stream(model.getUnits(Optional
 						.ofNullable(model.getSelectedUnit()).map(IUnit::getOwner)
 					.orElse(model.getMap().getCurrentPlayer())).spliterator(), false)
@@ -105,7 +105,7 @@ import org.jetbrains.annotations.Nullable;
 		return cost;
 	}
 
-	protected void resourceEntry(Player owner) {
+	protected void resourceEntry(final Player owner) {
 		cli.println("Enter resources produced (any empty string aborts):");
 		while (true) {
 			final IMutableResourcePile resource = resourceAddingHelper.enterResource();
@@ -122,7 +122,7 @@ import org.jetbrains.annotations.Nullable;
 	}
 
 	@Nullable
-	private Integer handleFight(Point loc, Animal find, int time) {
+	private Integer handleFight(final Point loc, final Animal find, final int time) {
 		int cost;
 		Integer temp = cli.inputNumber(String.format("Time to %s: ", verb));
 		if (temp == null) {
@@ -162,8 +162,8 @@ import org.jetbrains.annotations.Nullable;
 	}
 
 	@Nullable
-	private Integer handleEncounter(StringBuilder buffer, int time, Point loc,
-			/*Animal|AnimalTracks|HuntingModel.NothingFound*/ TileFixture find) {
+	private Integer handleEncounter(final StringBuilder buffer, final int time, final Point loc,
+			/*Animal|AnimalTracks|HuntingModel.NothingFound*/ final TileFixture find) {
 		if (find instanceof HuntingModel.NothingFound) {
 			cli.println(String.format("Found nothing for the next %d minutes.", noResultCost));
 			return noResultCost;
@@ -193,7 +193,7 @@ import org.jetbrains.annotations.Nullable;
 	// Note that the intended return type of encounterSrc::apply is Pair<Point, Animal|AnimalTracks|NothingFound>,
 	// but Java doesn't offer union types.
 	@Nullable
-	protected String impl(String command, Function<Point, Iterable<Pair<Point, TileFixture>>> encounterSrc) {
+	protected String impl(final String command, final Function<Point, Iterable<Pair<Point, TileFixture>>> encounterSrc) {
 		final StringBuilder buffer = new StringBuilder();
 		final Point center = confirmPoint("Location to search around: ");
 		if (center == null) {

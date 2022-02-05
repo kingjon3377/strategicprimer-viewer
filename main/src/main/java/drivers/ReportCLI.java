@@ -82,7 +82,7 @@ import org.takes.http.Exit;
  */
 public class ReportCLI implements ReadOnlyDriver {
 	private static final Logger LOGGER = Logger.getLogger(ReportCLI.class.getName());
-	public ReportCLI(SPOptions options, IDriverModel model, ICLIHelper cli) {
+	public ReportCLI(final SPOptions options, final IDriverModel model, final ICLIHelper cli) {
 		this.options = options;
 		this.model = model;
 		this.cli = cli;
@@ -102,14 +102,14 @@ public class ReportCLI implements ReadOnlyDriver {
 		return model;
 	}
 
-	private void writeReport(@Nullable Path filename, IMapNG map) throws IOException {
+	private void writeReport(@Nullable final Path filename, final IMapNG map) throws IOException {
 		if (filename != null) { // TODO: invert
 			Player player;
 			if (options.hasOption("--player")) {
 				try {
 					player = map.getPlayers().getPlayer(Integer.parseInt(
 						options.getArgument("--player")));
-				} catch (NumberFormatException except) {
+				} catch (final NumberFormatException except) {
 					LOGGER.log(Level.WARNING, "Non-numeric player", except);
 					player = map.getCurrentPlayer();
 				}
@@ -145,7 +145,7 @@ public class ReportCLI implements ReadOnlyDriver {
 			} else {
 				writeReport(model.getMap().getFilename(), model.getMap());
 			}
-		} catch (IOException except) {
+		} catch (final IOException except) {
 			throw new DriverFailedException(except, "I/O error while writing report(s)");
 		}
 	}

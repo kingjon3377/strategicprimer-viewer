@@ -5,7 +5,7 @@ import java.math.BigInteger;
 import java.util.Comparator;
 
 /**
- * A class providing a comparison for [[Numbers|Number]] of unknown or varied types. 
+ * A class providing a comparison for [[Numbers|Number]] of unknown or varied types.
  */
 public class NumberComparator implements Comparator<Number> {
 	/**
@@ -14,7 +14,7 @@ public class NumberComparator implements Comparator<Number> {
 	 * return the result of comparing those.
 	 */
 	@Override
-	public int compare(Number one, Number two) {
+	public int compare(final Number one, final Number two) {
 		if ((one instanceof Integer || one instanceof Long) &&
 				(two instanceof Integer || two instanceof Long)) {
 			return Long.compare(one.longValue(), two.longValue());

@@ -55,8 +55,8 @@ public class DrawHelperComparator implements UtilityDriver {
 	/**
 	 * The first test: Basic drawing.
 	 */
-	private static long first(TileDrawHelper helper, IMapNG map, int reps,
-			int tileSize) {
+	private static long first(final TileDrawHelper helper, final IMapNG map, final int reps,
+	                          final int tileSize) {
 		MapDimensions mapDimensions = map.getDimensions();
 		BufferedImage image = new BufferedImage(tileSize * mapDimensions.getColumns(),
 			tileSize * mapDimensions.getRows(), BufferedImage.TYPE_INT_RGB);
@@ -77,7 +77,7 @@ public class DrawHelperComparator implements UtilityDriver {
 	/**
 	 * Second test: Basic drawing, reusing Graphics.
 	 */
-	private static long second(TileDrawHelper helper, IMapNG map, int reps, int tileSize) {
+	private static long second(final TileDrawHelper helper, final IMapNG map, final int reps, final int tileSize) {
 		MapDimensions mapDimensions = map.getDimensions();
 		BufferedImage image = new BufferedImage(tileSize * mapDimensions.getColumns(),
 			tileSize * mapDimensions.getRows(), BufferedImage.TYPE_INT_RGB);
@@ -102,7 +102,7 @@ public class DrawHelperComparator implements UtilityDriver {
 	/**
 	 * Third test, part one: iterating.
 	 */
-	private static long thirdOne(TileDrawHelper helper, IMapNG map, int reps, int tileSize) {
+	private static long thirdOne(final TileDrawHelper helper, final IMapNG map, final int reps, final int tileSize) {
 		MapDimensions mapDimensions = map.getDimensions();
 		BufferedImage image = new BufferedImage(tileSize * mapDimensions.getColumns(),
 			tileSize * mapDimensions.getRows(), BufferedImage.TYPE_INT_RGB);
@@ -124,7 +124,7 @@ public class DrawHelperComparator implements UtilityDriver {
 		return end - start;
 	}
 
-	private static long thirdTwo(TileDrawHelper helper, IMapNG map, int reps, int tileSize) {
+	private static long thirdTwo(final TileDrawHelper helper, final IMapNG map, final int reps, final int tileSize) {
 		MapDimensions mapDimensions = map.getDimensions();
 		BufferedImage image = new BufferedImage(tileSize * mapDimensions.getColumns(),
 			tileSize * mapDimensions.getRows(), BufferedImage.TYPE_INT_RGB);
@@ -159,12 +159,12 @@ public class DrawHelperComparator implements UtilityDriver {
 			Pair.with("3a. Ordered iteration vs filtering: Iteration", DrawHelperComparator::thirdOne),
 			Pair.with("3b. Ordered iteration vs filtering: Filtering", DrawHelperComparator::thirdTwo)));
 
-	private static boolean dummyObserver(@Nullable Image image, int infoflags,
-			int xCoordinate, int yCoordinate, int width, int height) {
+	private static boolean dummyObserver(@Nullable final Image image, final int infoflags,
+	                                     final int xCoordinate, final int yCoordinate, final int width, final int height) {
 		return false;
 	}
 
-	private static boolean dummyFilter(@Nullable TileFixture fix) {
+	private static boolean dummyFilter(@Nullable final TileFixture fix) {
 		return true;
 	}
 
@@ -177,7 +177,7 @@ public class DrawHelperComparator implements UtilityDriver {
 
 	private final Map<Triplet<String, String, String>, LongAccumulator> results = new HashMap<>();
 
-	private final LongAccumulator getResultsAccumulator(String file, String testee, String test) {
+	private final LongAccumulator getResultsAccumulator(final String file, final String testee, final String test) {
 		final Triplet<String, String, String> tuple = Triplet.with(file, testee, test);
 		if (results.containsKey(tuple)) {
 			return results.get(tuple);
@@ -196,12 +196,12 @@ public class DrawHelperComparator implements UtilityDriver {
 		return options;
 	}
 
-	public DrawHelperComparator(ICLIHelper cli, SPOptions options) {
+	public DrawHelperComparator(final ICLIHelper cli, final SPOptions options) {
 		this.cli = cli;
 		this.options = options;
 	}
 
-	private final long printStats(String prefix, long total, int reps) {
+	private final long printStats(final String prefix, final long total, final int reps) {
 		cli.println(String.format("%s\t%d, average of %d ms.", prefix, total, total / reps)); // TODO: quotient should give sub-decimal precision
 		return total;
 	}
@@ -209,7 +209,7 @@ public class DrawHelperComparator implements UtilityDriver {
 	/**
 	 * Run all the tests on the specified map.
 	 */
-	private void runAllTests(IMapNG map, String fileName, int repetitions) {
+	private void runAllTests(final IMapNG map, final String fileName, final int repetitions) {
 		for (Pair<String, TestInterface> pair : TESTS) {
 			String testDesc = pair.getValue0();
 			TestInterface test = pair.getValue1();
@@ -242,7 +242,7 @@ public class DrawHelperComparator implements UtilityDriver {
 	 * Run the tests.
 	 */
 	@Override
-	public void startDriver(String... args) throws DriverFailedException {
+	public void startDriver(final String... args) throws DriverFailedException {
 		if (args.length == 0) {
 			throw new IncorrectUsageException(DrawHelperComparatorFactory.USAGE);
 		}
@@ -252,13 +252,13 @@ public class DrawHelperComparator implements UtilityDriver {
 			IMapNG map = null;
 			try {
 				map = MapIOHelper.readMap(path, Warning.IGNORE);
-			} catch (SPFormatException except) {
+			} catch (final SPFormatException except) {
 				throw new DriverFailedException(except, "SP map format error in " + arg);
-			} catch (MissingFileException|FileNotFoundException|NoSuchFileException except) {
+			} catch (final MissingFileException|FileNotFoundException|NoSuchFileException except) {
 				throw new DriverFailedException(except, arg + " not found");
-			} catch (IOException except) {
+			} catch (final IOException except) {
 				throw new DriverFailedException(except, "I/O error while reading " + arg);
-			} catch (MalformedXMLException except) {
+			} catch (final MalformedXMLException except) {
 				throw new DriverFailedException(except, "Malformed XML in " + arg);
 			}
 			mapSizes.put(arg, (int) map.streamLocations().count());
@@ -280,7 +280,7 @@ public class DrawHelperComparator implements UtilityDriver {
 						Optional.ofNullable(mapSizes.get(file)).map(x -> x.toString()).orElse(""),
 						helper, test, Integer.toString(REPS), total.getSum().toString()));
 				}
-			} catch (IOException except) {
+			} catch (final IOException except) {
 				throw new DriverFailedException(except, "I/O error while writing results");
 			}
 		}

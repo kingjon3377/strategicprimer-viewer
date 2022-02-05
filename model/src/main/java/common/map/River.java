@@ -22,7 +22,7 @@ public enum River {
 	 */
 	Lake("lake");
 
-	private River(String description) {
+	private River(final String description) {
 		this.description = description;
 		string = description.substring(0, 1).toUpperCase() + description.substring(1);
 
@@ -53,7 +53,7 @@ public enum River {
 	/**
 	 * Get the river matching the given description.
 	 */
-	public static River parse(String description) throws ParseException {
+	public static River parse(final String description) throws ParseException {
 		Optional<River> retval = Stream.of(values())
 			.filter((r) -> description.equals(r.description)).findAny();
 		if (retval.isPresent()) {

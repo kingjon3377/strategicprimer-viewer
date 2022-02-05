@@ -32,7 +32,7 @@ public class SPFileChooser extends FileChooser {
 	 *
 	 * @param allowMultiple Whether to allow multi-selection.
 	 */
-	public static Either<JFileChooser, FileDialog> filteredFileChooser(boolean allowMultiple) {
+	public static Either<JFileChooser, FileDialog> filteredFileChooser(final boolean allowMultiple) {
 		return filteredFileChooser(allowMultiple, ".");
 	}
 
@@ -45,8 +45,8 @@ public class SPFileChooser extends FileChooser {
 	 * @param allowMultiple Whether to allow multi-selection.
 	 * @param current The current directory. TODO: Take as Path instead?
 	 */
-	public static Either<JFileChooser, FileDialog> filteredFileChooser(boolean allowMultiple,
-			String current) {
+	public static Either<JFileChooser, FileDialog> filteredFileChooser(final boolean allowMultiple,
+	                                                                   final String current) {
 		return filteredFileChooser(allowMultiple, current, MAP_EXTENSIONS_FILTER);
 	}
 
@@ -60,8 +60,8 @@ public class SPFileChooser extends FileChooser {
 	 * @param current The current directory. TODO: Take as Path instead?
 	 * @param filter The filter to apply, if any.
 	 */
-	public static Either<JFileChooser, FileDialog> filteredFileChooser(boolean allowMultiple,
-			String current, @Nullable FileFilter filter) {
+	public static Either<JFileChooser, FileDialog> filteredFileChooser(final boolean allowMultiple,
+	                                                                   final String current, @Nullable final FileFilter filter) {
 		if (Platform.SYSTEM_IS_MAC) {
 			FileDialog retval = new FileDialog((Frame) null);
 			if (filter != null) {
@@ -77,37 +77,37 @@ public class SPFileChooser extends FileChooser {
 		}
 	}
 
-	protected SPFileChooser(ChooserMode mode, JFileChooser fileChooser, String approveText,
-			@Nullable Path loc) {
+	protected SPFileChooser(final ChooserMode mode, final JFileChooser fileChooser, final String approveText,
+	                        @Nullable final Path loc) {
 		super(mode, fileChooser, approveText, loc);
 	}
 
-	protected SPFileChooser(ChooserMode mode, JFileChooser fileChooser, @Nullable Path loc) {
+	protected SPFileChooser(final ChooserMode mode, final JFileChooser fileChooser, @Nullable final Path loc) {
 		super(mode, fileChooser, loc);
 	}
 
-	protected SPFileChooser(ChooserMode mode, FileDialog fileChooser, @Nullable Path loc) {
+	protected SPFileChooser(final ChooserMode mode, final FileDialog fileChooser, @Nullable final Path loc) {
 		super(mode, fileChooser, loc);
 	}
 
 	/**
 	 * Constructor for a filtered "Open" dialog.
 	 */
-	public static SPFileChooser open(@Nullable Path loc, JFileChooser fileChooser) {
+	public static SPFileChooser open(@Nullable final Path loc, final JFileChooser fileChooser) {
 		return new SPFileChooser(ChooserMode.Open, fileChooser, loc);
 	}
 
 	/**
 	 * Constructor for a filtered "Open" dialog.
 	 */
-	public static SPFileChooser open(@Nullable Path loc, FileDialog fileChooser) {
+	public static SPFileChooser open(@Nullable final Path loc, final FileDialog fileChooser) {
 		return new SPFileChooser(ChooserMode.Open, fileChooser, loc);
 	}
 
 	/**
 	 * Constructor for a filtered "Open" dialog.
 	 */
-	public static SPFileChooser open(@Nullable Path loc) {
+	public static SPFileChooser open(@Nullable final Path loc) {
 		Either<JFileChooser, FileDialog> fc = filteredFileChooser(true);
 		if (fc.fromLeft().isPresent()) {
 			return open(loc, fc.fromLeft().get());
@@ -126,21 +126,21 @@ public class SPFileChooser extends FileChooser {
 	/**
 	 * Constructor for a filtered "Save" dialog.
 	 */
-	public static SPFileChooser save(@Nullable Path loc, JFileChooser fileChooser) {
+	public static SPFileChooser save(@Nullable final Path loc, final JFileChooser fileChooser) {
 		return new SPFileChooser(ChooserMode.Save, fileChooser, loc);
 	}
 
 	/**
 	 * Constructor for a filtered "Save" dialog.
 	 */
-	public static SPFileChooser save(@Nullable Path loc, FileDialog fileChooser) {
+	public static SPFileChooser save(@Nullable final Path loc, final FileDialog fileChooser) {
 		return new SPFileChooser(ChooserMode.Save, fileChooser, loc);
 	}
 
 	/**
 	 * Constructor for a filtered "Save" dialog.
 	 */
-	public static SPFileChooser save(@Nullable Path loc, Either<JFileChooser, FileDialog> fileChooser) {
+	public static SPFileChooser save(@Nullable final Path loc, final Either<JFileChooser, FileDialog> fileChooser) {
 		if (fileChooser.fromLeft().isPresent()) {
 			return save(loc, fileChooser.fromLeft().get());
 		} else {
@@ -151,15 +151,15 @@ public class SPFileChooser extends FileChooser {
 	/**
 	 * Constructor for a filtered "Save" dialog.
 	 */
-	public static SPFileChooser save(@Nullable Path loc) {
+	public static SPFileChooser save(@Nullable final Path loc) {
 		return save(loc, filteredFileChooser(true));
 	}
 
 	/**
 	 * Constructor for a filtered custom-verb dialog.
 	 */
-	public static SPFileChooser custom(@Nullable Path loc, String approveText,
-			JFileChooser fileChooser) {
+	public static SPFileChooser custom(@Nullable final Path loc, final String approveText,
+	                                   final JFileChooser fileChooser) {
 		return new SPFileChooser(ChooserMode.Custom, fileChooser, approveText, loc);
 	}
 
@@ -169,7 +169,7 @@ public class SPFileChooser extends FileChooser {
 	 * return a standard save dialog instead of failing (since AWT doesn't
 	 * support custom-verb dialogs).
 	 */
-	public static SPFileChooser custom(@Nullable Path loc, String approveText) {
+	public static SPFileChooser custom(@Nullable final Path loc, final String approveText) {
 		Either<JFileChooser, FileDialog> fc = filteredFileChooser(true);
 		if (fc.fromLeft().isPresent()) {
 			return custom(loc, approveText, fc.fromLeft().get());

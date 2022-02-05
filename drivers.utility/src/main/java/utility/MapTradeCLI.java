@@ -130,18 +130,18 @@ public class MapTradeCLI implements CLIDriver {
 		return model;
 	}
 
-	public MapTradeCLI(ICLIHelper cli, MapTradeModel model) {
+	public MapTradeCLI(final ICLIHelper cli, final MapTradeModel model) {
 		this.cli = cli;
 		this.model = model;
 	}
 
 	private final List<FixtureMatcher> matchers = new ArrayList<>(initializeMatchers());
 
-	void askAbout(FixtureMatcher matcher) {
+	void askAbout(final FixtureMatcher matcher) {
 		askAbout(matcher, "include");
 	}
 
-	private void askAbout(FixtureMatcher matcher, String key) {
+	private void askAbout(final FixtureMatcher matcher, final String key) {
 		Boolean retval = cli.inputBooleanInSeries(String.format("Include %s items?",
 			matcher.getDescription()), key);
 		if (retval == null) {
@@ -150,7 +150,7 @@ public class MapTradeCLI implements CLIDriver {
 		matcher.setDisplayed(retval);
 	}
 
-	private boolean testFixture(TileFixture fixture) {
+	private boolean testFixture(final TileFixture fixture) {
 		for (FixtureMatcher matcher : matchers) {
 			if (matcher.matches(fixture)) {
 				return matcher.isDisplayed();

@@ -64,7 +64,7 @@ import org.jetbrains.annotations.Nullable;
 		BorealForest("boreal forest"),
 		TemperateForest("temperate forest");
 
-		private ImportableTerrain(String name) {
+		private ImportableTerrain(final String name) {
 			this.name = name;
 		}
 
@@ -76,7 +76,7 @@ import org.jetbrains.annotations.Nullable;
 		}
 	}
 
-	private static String pixelString(int pixel) {
+	private static String pixelString(final int pixel) {
 		return String.format("(%d, %d, %d)", (pixel >> 16) & 0xFF, (pixel >> 8) & 0xFF, pixel & 0xFF);
 	}
 
@@ -90,7 +90,7 @@ import org.jetbrains.annotations.Nullable;
 		return options;
 	}
 
-	public ImporterDriver(ICLIHelper cli, SPOptions options) {
+	public ImporterDriver(final ICLIHelper cli, final SPOptions options) {
 		this.cli = cli;
 		this.options = options;
 		terrains = Collections.unmodifiableList(Stream.concat(Stream.of(TileType.values()),
@@ -98,13 +98,13 @@ import org.jetbrains.annotations.Nullable;
 	}
 
 	@Nullable
-	private /*TileType|ImportableTerrain?*/ HasName askFor(int color) {
+	private /*TileType|ImportableTerrain?*/ HasName askFor(final int color) {
 		return cli.chooseFromList(terrains, "Tile type represented by " + pixelString(color),
 				"No tile types found to choose from", "Tile type:", false).getValue1();
 	}
 
 	@Nullable
-	private static Range customRange(int base, int span, int max) {
+	private static Range customRange(final int base, final int span, final int max) {
 		if (base + span > max + 1) {
 			return new Range(base, max - 1);
 		} else {
@@ -115,7 +115,7 @@ import org.jetbrains.annotations.Nullable;
 	private final IDRegistrar idf = new IDFactory();
 
 	@Nullable
-	private String findAdjacentForest(IMapNG map, Point location) {
+	private String findAdjacentForest(final IMapNG map, final Point location) {
 		List<Forest> forests = StreamSupport.stream(
 						new SurroundingPointIterable(location, map.getDimensions(), 1).spliterator(), false)
 				.flatMap(l -> map.getFixtures(l).stream())
@@ -126,11 +126,11 @@ import org.jetbrains.annotations.Nullable;
 	}
 
 	@Override
-	public void startDriver(String... args) throws DriverFailedException {
+	public void startDriver(final String... args) throws DriverFailedException {
 		int size;
 		try {
 			size = Integer.parseInt(options.getArgument("--size"));
-		} catch (NumberFormatException except) {
+		} catch (final NumberFormatException except) {
 			throw new DriverFailedException(except, "--size argument must be numeric");
 		}
 		LOGGER.fine("--size parameter is " + size);
@@ -138,13 +138,13 @@ import org.jetbrains.annotations.Nullable;
 			ResourceInputStream res = null;
 			try {
 				res = new ResourceInputStream(arg, ImporterDriver.class);
-			} catch (FileNotFoundException except) {
+			} catch (final FileNotFoundException except) {
 				throw new DriverFailedException(except, "Image file not found");
 			}
 			BufferedImage image = null;
 			try {
 				image = ImageIO.read(res);
-			} catch (IOException except) {
+			} catch (final IOException except) {
 				throw new DriverFailedException(except, "I/O error reading image");
 			}
 			final int width = image.getWidth();
@@ -244,9 +244,9 @@ import org.jetbrains.annotations.Nullable;
 				}
 				try {
 					MapIOHelper.writeMap(Paths.get(arg + ".xml"), finalRetval);
-				} catch (IOException except) {
+				} catch (final IOException except) {
 					throw new DriverFailedException(except, "I/O error while writing map");
-				} catch (MalformedXMLException except) {
+				} catch (final MalformedXMLException except) {
 					throw new DriverFailedException(except, "Map writer produced invalid XML");
 				}
 			}

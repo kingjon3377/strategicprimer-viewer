@@ -5,7 +5,7 @@ import java.util.Collections;
 import java.util.List;
 
 public class SimpleApplet implements Applet {
-	public SimpleApplet(Runnable invoke, String description, String... commands) {
+	public SimpleApplet(final Runnable invoke, final String description, final String... commands) {
 		this.impl = invoke;
 		this.description = description;
 		this.commands = Collections.unmodifiableList(Arrays.asList(commands));

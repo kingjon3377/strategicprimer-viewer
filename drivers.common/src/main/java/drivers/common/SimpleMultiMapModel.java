@@ -34,7 +34,7 @@ public class SimpleMultiMapModel extends SimpleDriverModel implements IMultiMapM
 		return Collections.unmodifiableList(subordinateMapsList);
 	}
 
-	public SimpleMultiMapModel(IMutableMapNG map) {
+	public SimpleMultiMapModel(final IMutableMapNG map) {
 		super(map);
 	}
 
@@ -43,7 +43,7 @@ public class SimpleMultiMapModel extends SimpleDriverModel implements IMultiMapM
 	 * Ceylon; should we make it private here and provide a static method
 	 * instead?
 	 */
-	public SimpleMultiMapModel(IDriverModel model) {
+	public SimpleMultiMapModel(final IDriverModel model) {
 		super(model.getRestrictedMap());
 		if (model instanceof IMultiMapModel) {
 			// TODO: Condense with Iterable.forEach()?
@@ -54,7 +54,7 @@ public class SimpleMultiMapModel extends SimpleDriverModel implements IMultiMapM
 	}
 
 	@Override
-	public final void addSubordinateMap(IMutableMapNG map) {
+	public final void addSubordinateMap(final IMutableMapNG map) {
 		subordinateMapsList.add(map);
 	}
 
@@ -80,7 +80,7 @@ public class SimpleMultiMapModel extends SimpleDriverModel implements IMultiMapM
 	}
 
 	@Override
-	public final void setCurrentTurn(int currentTurn) {
+	public final void setCurrentTurn(final int currentTurn) {
 		for (IMutableMapNG map : getRestrictedAllMaps()) {
 			map.setCurrentTurn(currentTurn);
 			map.setModified(true);
@@ -88,7 +88,7 @@ public class SimpleMultiMapModel extends SimpleDriverModel implements IMultiMapM
 	}
 
 	@Override
-	public final void setMapModified(IMapNG map, boolean flag) {
+	public final void setMapModified(final IMapNG map, final boolean flag) {
 		for (IMutableMapNG subMap : getRestrictedAllMaps()) {
 			if (subMap == map) {
 				subMap.setModified(flag);
@@ -104,7 +104,7 @@ public class SimpleMultiMapModel extends SimpleDriverModel implements IMultiMapM
 	}
 
 	@Override
-	public final void clearModifiedFlag(IMapNG map) {
+	public final void clearModifiedFlag(final IMapNG map) {
 		setMapModified(map, false);
 	}
 }

@@ -22,7 +22,7 @@ import common.map.TileFixture;
 import common.map.Point;
 
 final class DBMapWriter extends AbstractDatabaseWriter<IMutableMapNG, IMapNG> {
-	public DBMapWriter(SPDatabaseWriter parent, AbstractDatabaseWriter<Player, IMapNG> playerWriter) {
+	public DBMapWriter(final SPDatabaseWriter parent, final AbstractDatabaseWriter<Player, IMapNG> playerWriter) {
 		super(IMutableMapNG.class, IMapNG.class);
 		this.parent = parent;
 		this.playerWriter = playerWriter;
@@ -84,11 +84,11 @@ final class DBMapWriter extends AbstractDatabaseWriter<IMutableMapNG, IMapNG> {
 	private static final String INSERT_BOOKMARK =
 		"INSERT INTO bookmarks (row, column, player) VALUES(?, ?, ?)";
 
-	private static final String INSERT_ROADS = 
+	private static final String INSERT_ROADS =
 		"INSERT INTO roads (row, column, direction, quality) VALUES(?, ?, ?, ?)";
 
 	@Override
-	public void write(DB db, IMutableMapNG obj, IMapNG context) {
+	public void write(final DB db, final IMutableMapNG obj, final IMapNG context) {
 		db.update("INSERT INTO metadata (version, rows, columns, current_turn) VALUES(?, ?, ?, ?)",
 			obj.getDimensions().getVersion(), obj.getDimensions().getRows(),
 			obj.getDimensions().getColumns(), obj.getCurrentTurn()).execute();

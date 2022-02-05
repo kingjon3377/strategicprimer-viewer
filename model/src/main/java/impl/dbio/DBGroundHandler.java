@@ -36,12 +36,12 @@ final class DBGroundHandler extends AbstractDatabaseWriter<Ground, Point> implem
 		"INSERT INTO ground (row, column, id, kind, exposed, image) VALUES(?, ?, ?, ?, ?, ?);";
 
 	@Override
-	public void write(DB db, Ground obj, Point context) {
+	public void write(final DB db, final Ground obj, final Point context) {
 		db.update(INSERT_SQL, context.getRow(), context.getColumn(), obj.getId(), obj.getKind(),
 			obj.isExposed(), obj.getImage());
 	}
 
-	private TryBiConsumer<Map<String, Object>, Warning, Exception> readGround(IMutableMapNG map) {
+	private TryBiConsumer<Map<String, Object>, Warning, Exception> readGround(final IMutableMapNG map) {
 		return (dbRow, warner) -> {
 			int row = (Integer) dbRow.get("row");
 			int column = (Integer) dbRow.get("column");
@@ -59,14 +59,14 @@ final class DBGroundHandler extends AbstractDatabaseWriter<Ground, Point> implem
 	}
 
 	@Override
-	public void readMapContents(DB db, IMutableMapNG map, Warning warner) {
+	public void readMapContents(final DB db, final IMutableMapNG map, final Warning warner) {
 		try {
 			handleQueryResults(db, warner, "ground", readGround(map),
 				"SELECT * FROM ground");
-		} catch (RuntimeException except) {
+		} catch (final RuntimeException except) {
 			// Don't wrap RuntimeExceptions in RuntimeException
 			throw except;
-		} catch (Exception except) {
+		} catch (final Exception except) {
 			// FIXME Antipattern
 			throw new RuntimeException(except);
 		}

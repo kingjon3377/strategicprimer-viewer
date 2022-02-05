@@ -38,7 +38,7 @@ public interface ISkill extends HasName, Subsettable<ISkill> {
 	 * and if equal level equal or lower hours.
 	 */
 	@Override
-	default boolean isSubset(ISkill obj, Consumer<String> report) {
+	default boolean isSubset(final ISkill obj, final Consumer<String> report) {
 		if (obj.getName().equals(getName())) {
 			if (obj.getLevel() > getLevel()) {
 				report.accept("Extra level(s) in " + getName());

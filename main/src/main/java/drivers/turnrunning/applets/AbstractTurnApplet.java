@@ -32,7 +32,7 @@ import org.jetbrains.annotations.Nullable;
 
 // TODO: Most of these 'default' functions should probably go into a 'TurnRunningModel' interface
 public abstract class AbstractTurnApplet implements TurnApplet {
-	public AbstractTurnApplet(ITurnRunningModel model, ICLIHelper cli, IDRegistrar idf) {
+	public AbstractTurnApplet(final ITurnRunningModel model, final ICLIHelper cli, final IDRegistrar idf) {
 		this.model = model;
 		this.cli = cli;
 		this.idf = idf;
@@ -43,14 +43,14 @@ public abstract class AbstractTurnApplet implements TurnApplet {
 	private final IDRegistrar idf;
 
 	// This was "shared" in Ceylon, but I expect only subclasses will be able to use it.
-	protected <Type> @Nullable Type chooseFromList(List<Type> items, String description, String none,
-			String prompt, boolean auto) {
+	protected <Type> @Nullable Type chooseFromList(final List<Type> items, final String description, final String none,
+	                                               final String prompt, final boolean auto) {
 		return chooseFromList(items, description, none, prompt, auto, Object::toString);
 	}
 
 	// This was "shared" in Ceylon, but I expect only subclasses will be able to use it.
-	protected <Type> @Nullable Type chooseFromList(List<Type> items, String description, String none,
-			String prompt, boolean auto, Function<? super Type, String> converter) {
+	protected <Type> @Nullable Type chooseFromList(final List<Type> items, final String description, final String none,
+	                                               final String prompt, final boolean auto, final Function<? super Type, String> converter) {
 		Pair<Integer, String> entry = cli.chooseStringFromList(
 			items.stream().map(converter).collect(Collectors.toList()), description,
 			none, prompt, auto);
@@ -63,7 +63,7 @@ public abstract class AbstractTurnApplet implements TurnApplet {
 
 	// This was "shared" in Ceylon, but I expect only subclasses will be able to use it.
 	@Nullable
-	protected Point confirmPoint(String prompt) {
+	protected Point confirmPoint(final String prompt) {
 		Point retval = cli.inputPoint(prompt);
 		if (retval == null) {
 			return null;
@@ -92,7 +92,7 @@ public abstract class AbstractTurnApplet implements TurnApplet {
 	 * the reduced form into all subordinate maps.
 	 */
 	protected <T extends HasPopulation<? extends TileFixture>&TileFixture> void reducePopulation(
-			Point point, T fixture, String plural, Boolean zero) {
+			final Point point, final T fixture, final String plural, final Boolean zero) {
 		int count = Math.min(
 			Optional.ofNullable(cli.inputNumber(String.format(
 				"How many %s to remove: ", plural))).orElse(0), fixture.getPopulation());
@@ -102,7 +102,7 @@ public abstract class AbstractTurnApplet implements TurnApplet {
 	// FIXME: Should only look at a particular unit's location
 	// TODO: Move into the model?
 	// FIXME: Stream-based version doesn't count food inside units inside fortresses
-	protected List<IResourcePile> getFoodFor(Player player, int turn) {
+	protected List<IResourcePile> getFoodFor(final Player player, final int turn) {
 /*		return model.getMap().streamLocations()
 			.flatMap(l -> model.getMap().getFixtures(l).stream())
 			.filter(f -> f instanceof IFortress || f instanceof IUnit)

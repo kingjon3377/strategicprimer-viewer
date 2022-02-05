@@ -12,7 +12,7 @@ import java.util.stream.StreamSupport;
 import org.jetbrains.annotations.Nullable;
 
 /* package */class RepeatApplet implements TurnApplet {
-	public RepeatApplet(ITurnRunningModel model, ICLIHelper cli, IDRegistrar idf) {
+	public RepeatApplet(final ITurnRunningModel model, final ICLIHelper cli, final IDRegistrar idf) {
 		this.model = model;
 		this.cli = cli;
 		this.idf = idf;
@@ -37,11 +37,11 @@ import org.jetbrains.annotations.Nullable;
 		return "Run multiple commands for a single unit";
 	}
 
-	private static boolean isNotRepeat(TurnAppletFactory factory) {
+	private static boolean isNotRepeat(final TurnAppletFactory factory) {
 		return !(factory instanceof RepeatAppletFactory);
 	}
 
-	private TurnApplet getApplet(TurnAppletFactory factory) {
+	private TurnApplet getApplet(final TurnAppletFactory factory) {
 		return factory.create(model, cli, idf);
 	}
 

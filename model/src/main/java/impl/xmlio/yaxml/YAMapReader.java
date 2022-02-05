@@ -62,7 +62,7 @@ import java.util.function.Predicate;
 	 * @param idRegistrar The factory for ID numbers
 	 * @param players The map's collection of players
 	 */
-	public YAMapReader(Warning warner, IDRegistrar idRegistrar, IMutablePlayerCollection players) {
+	public YAMapReader(final Warning warner, final IDRegistrar idRegistrar, final IMutablePlayerCollection players) {
 		super(warner, idRegistrar);
 		playerReader = new YAPlayerReader(warner, idRegistrar);
 		readers = Collections.unmodifiableList(Arrays.asList(
@@ -104,7 +104,7 @@ import java.util.function.Predicate;
 	/**
 	 * Get the first open-tag event in our namespace in the stream.
 	 */
-	private StartElement getFirstStartElement(Iterable<XMLEvent> stream, StartElement parent)
+	private StartElement getFirstStartElement(final Iterable<XMLEvent> stream, final StartElement parent)
 			throws SPFormatException, MalformedXMLException {
 		for (XMLEvent element : stream) {
 			if (element instanceof StartElement &&
@@ -118,7 +118,7 @@ import java.util.function.Predicate;
 	/**
 	 * Write a newline if needed.
 	 */
-	private void eolIfNeeded(boolean needEol, ThrowingConsumer<String, IOException> writer) throws IOException {
+	private void eolIfNeeded(final boolean needEol, final ThrowingConsumer<String, IOException> writer) throws IOException {
 		if (needEol) {
 			writer.accept(System.lineSeparator());
 		}
@@ -128,7 +128,7 @@ import java.util.function.Predicate;
 	 * Parse a river from XML. The caller is now responsible for advancing
 	 * the stream past the closing tag.
 	 */
-	public River parseRiver(StartElement element, QName parent) throws SPFormatException {
+	public River parseRiver(final StartElement element, final QName parent) throws SPFormatException {
 		requireTag(element, parent, "river", "lake");
 		if ("lake".equalsIgnoreCase(element.getName().getLocalPart())) {
 			expectAttributes(element);
@@ -146,7 +146,7 @@ import java.util.function.Predicate;
 	/**
 	 * Write a river.
 	 */
-	public void writeRiver(ThrowingConsumer<String, IOException> ostream, River obj, int indent) throws IOException {
+	public void writeRiver(final ThrowingConsumer<String, IOException> ostream, final River obj, final int indent) throws IOException {
 		if (River.Lake.equals(obj)) {
 			writeTag(ostream, "lake", indent);
 		} else {
@@ -159,7 +159,7 @@ import java.util.function.Predicate;
 	/**
 	 * Parse what should be a [[TileFixture]] from the XML.
 	 */
-	private TileFixture parseFixture(StartElement element, QName parent, Iterable<XMLEvent> stream)
+	private TileFixture parseFixture(final StartElement element, final QName parent, final Iterable<XMLEvent> stream)
 			throws SPFormatException, MalformedXMLException {
 		String name = element.getName().getLocalPart();
 		if (readerCache.containsKey(name.toLowerCase())) {
@@ -190,7 +190,7 @@ import java.util.function.Predicate;
 	 * Read a map from XML.
 	 */
 	@Override
-	public IMutableMapNG read(StartElement element, QName parent, Iterable<XMLEvent> stream)
+	public IMutableMapNG read(final StartElement element, final QName parent, final Iterable<XMLEvent> stream)
 			throws SPFormatException, MalformedXMLException {
 		requireTag(element, parent, "map", "view");
 		int currentTurn;
@@ -306,7 +306,7 @@ import java.util.function.Predicate;
 							direction = Direction.parse(
 								getParameter((StartElement) event,
 									"direction"));
-						} catch (IllegalArgumentException except) {
+						} catch (final IllegalArgumentException except) {
 							throw new MissingPropertyException(
 								(StartElement) event, "direction", except);
 						}
@@ -370,7 +370,7 @@ import java.util.function.Predicate;
 	/**
 	 * Write a child object
 	 */
-	private void writeChild(ThrowingConsumer<String, IOException> ostream, TileFixture child, int tabs)
+	private void writeChild(final ThrowingConsumer<String, IOException> ostream, final TileFixture child, final int tabs)
 			throws IOException {
 		Class<? extends TileFixture> cls = child.getClass();
 		if (writerCache.containsKey(cls)) {
@@ -390,7 +390,7 @@ import java.util.function.Predicate;
 	}
 
 	// FIXME: Probably remove, as we won't use in the Java port
-	private boolean validPoint(Map.Entry<Point, TileFixture> entry) {
+	private boolean validPoint(final Map.Entry<Point, TileFixture> entry) {
 		return entry.getKey().isValid();
 	}
 
@@ -398,7 +398,7 @@ import java.util.function.Predicate;
 	 * Write a map.
 	 */
 	@Override
-	public void write(ThrowingConsumer<String, IOException> ostream, IMapNG obj, int tabs) throws IOException {
+	public void write(final ThrowingConsumer<String, IOException> ostream, final IMapNG obj, final int tabs) throws IOException {
 		writeTag(ostream, "view", tabs);
 		writeProperty(ostream, "current_player", obj.getCurrentPlayer().getPlayerId());
 		writeProperty(ostream, "current_turn", obj.getCurrentTurn());
@@ -519,12 +519,12 @@ import java.util.function.Predicate;
 	}
 
 	@Override
-	public boolean isSupportedTag(String tag) {
+	public boolean isSupportedTag(final String tag) {
 		return "map".equalsIgnoreCase(tag) || "view".equalsIgnoreCase(tag);
 	}
 
 	@Override
-	public boolean canWrite(Object obj) {
+	public boolean canWrite(final Object obj) {
 		return obj instanceof IMapNG;
 	}
 }

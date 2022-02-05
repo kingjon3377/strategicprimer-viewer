@@ -32,7 +32,7 @@ public class DirectionTest {
 	/**
 	 * A custom assertion for these tests.
 	 */
-	private static DirectionAssertion directionAssert(IExplorationModel model, Direction direction) {
+	private static DirectionAssertion directionAssert(final IExplorationModel model, final Direction direction) {
 		return (source, destination, extraMessage) ->
 			assertEquals(destination, model.getDestination(source, direction),
 				String.format("%s of %s%s is %s", direction, source,

@@ -27,12 +27,12 @@ import common.map.fixtures.explorable.ExplorableFixture;
  */
 public class ExplorableReportGenerator extends AbstractReportGenerator<ExplorableFixture> {
 	private final Player currentPlayer;
-	public ExplorableReportGenerator(Comparator<Pair<Point, IFixture>> comp, Player currentPlayer,
-			MapDimensions dimensions) {
+	public ExplorableReportGenerator(final Comparator<Pair<Point, IFixture>> comp, final Player currentPlayer,
+	                                 final MapDimensions dimensions) {
 		this(comp, currentPlayer, dimensions, null);
 	}
-	public ExplorableReportGenerator(Comparator<Pair<Point, IFixture>> comp, Player currentPlayer,
-			MapDimensions dimensions, @Nullable Point hq) {
+	public ExplorableReportGenerator(final Comparator<Pair<Point, IFixture>> comp, final Player currentPlayer,
+	                                 final MapDimensions dimensions, @Nullable final Point hq) {
 		super(comp, dimensions, hq);
 		this.currentPlayer = currentPlayer;
 	}
@@ -41,8 +41,8 @@ public class ExplorableReportGenerator extends AbstractReportGenerator<Explorabl
 	 * Produces a more verbose sub-report on a cave, battlefield, or portal.
 	 */
 	@Override
-	public void produceSingle(DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-			IMapNG map, ThrowingConsumer<String, IOException> ostream, ExplorableFixture item, Point loc)
+	public void produceSingle(final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
+	                          final IMapNG map, final ThrowingConsumer<String, IOException> ostream, final ExplorableFixture item, final Point loc)
 			throws IOException {
 		if (item instanceof Cave) {
 			fixtures.remove(item.getId());
@@ -69,8 +69,8 @@ public class ExplorableReportGenerator extends AbstractReportGenerator<Explorabl
 	 * Produces the report on all caves, battlefields, and portals.
 	 */
 	@Override
-	public void produce(DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-			IMapNG map, ThrowingConsumer<String, IOException> ostream) throws IOException {
+	public void produce(final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
+	                    final IMapNG map, final ThrowingConsumer<String, IOException> ostream) throws IOException {
 		List<Point> portals = new PointList("Portals to other worlds: ");
 		List<Point> battles = new PointList("Signs of long-ago battles on the following tiles:");
 		List<Point> caves = new PointList("Caves beneath the following tiles: ");

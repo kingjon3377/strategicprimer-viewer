@@ -56,7 +56,7 @@ import java.util.stream.StreamSupport;
  */
 public class AdvancementGUI implements MultiMapGUIDriver, WorkerGUI {
 	private static final Logger LOGGER = Logger.getLogger(AdvancementGUI.class.getName());
-	public AdvancementGUI(ICLIHelper cli, SPOptions options, IWorkerModel model) {
+	public AdvancementGUI(final ICLIHelper cli, final SPOptions options, final IWorkerModel model) {
 		this.cli = cli;
 		this.options = options;
 		this.model = model;
@@ -77,18 +77,18 @@ public class AdvancementGUI implements MultiMapGUIDriver, WorkerGUI {
 		return model;
 	}
 
-	private void reload(PlayerChangeListener frame) {
+	private void reload(final PlayerChangeListener frame) {
 		frame.playerChanged(model.getCurrentPlayer(), model.getCurrentPlayer());
 	}
 
-	private void createWindow(MenuBroker menuHandler, PlayerChangeMenuListener pcml) {
+	private void createWindow(final MenuBroker menuHandler, final PlayerChangeMenuListener pcml) {
 		AdvancementFrame frame = new AdvancementFrame(model, menuHandler, this);
 		frame.addWindowListener(new WindowCloseListener(menuHandler::actionPerformed));
 		pcml.addPlayerChangeListener(frame);
 		menuHandler.register(ignored -> reload(frame), "reload tree");
 		try {
 			menuHandler.registerWindowShower(new AboutDialog(frame, frame.getWindowName()), "about");
-		} catch (IOException except) {
+		} catch (final IOException except) {
 			LOGGER.log(Level.SEVERE, "I/O error loading About dialog text", except);
 			// But this isn't a blocker to the driver as a whole, so keep going.
 		}
@@ -119,7 +119,7 @@ public class AdvancementGUI implements MultiMapGUIDriver, WorkerGUI {
 	public Iterable<Path> askUserForFiles() {
 		try {
 			return SPFileChooser.open((Path) null).getFiles();
-		} catch (FileChooser.ChoiceInterruptedException except) {
+		} catch (final FileChooser.ChoiceInterruptedException except) {
 			// TODO: throw as DriverFailedException once interface permits
 			LOGGER.log(Level.WARNING, "Choice interrupted or user didn't choose", except);
 			return Collections.emptyList();
@@ -127,7 +127,7 @@ public class AdvancementGUI implements MultiMapGUIDriver, WorkerGUI {
 	}
 
 	@Override
-	public void open(IMutableMapNG map) {
+	public void open(final IMutableMapNG map) {
 		if (model.isMapModified()) {
 			SwingUtilities.invokeLater(() -> new AdvancementGUI(cli, options,
 				new WorkerModel(map)).startDriver());

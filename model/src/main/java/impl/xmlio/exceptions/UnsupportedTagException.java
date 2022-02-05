@@ -14,18 +14,18 @@ public class UnsupportedTagException extends SPFormatException {
 	 */
 	private final QName tag;
 
-	private UnsupportedTagException(String format, StartElement tag) {
+	private UnsupportedTagException(final String format, final StartElement tag) {
 		super(String.format(format, tag.getName().getLocalPart()),
 			tag.getLocation().getLineNumber(), tag.getLocation().getColumnNumber());
 		this.tag = tag.getName();
 	}
 
-	public static UnsupportedTagException future(StartElement unexpectedTag) {
+	public static UnsupportedTagException future(final StartElement unexpectedTag) {
 		return new UnsupportedTagException("Unexpected tag %s; probably a more recent map format than we support",
 			unexpectedTag);
 	}
 
-	public static UnsupportedTagException obsolete(StartElement unexpectedTag) {
+	public static UnsupportedTagException obsolete(final StartElement unexpectedTag) {
 		return new UnsupportedTagException("No-longer-supported tag %s", unexpectedTag);
 	}
 

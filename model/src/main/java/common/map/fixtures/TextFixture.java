@@ -10,7 +10,7 @@ import common.map.HasMutableImage;
  * on <em>which turn</em> encounters happened.
  */
 public final class TextFixture implements TileFixture, HasMutableImage {
-	public TextFixture(String text, int turn) {
+	public TextFixture(final String text, final int turn) {
 		this.text = text;
 		this.turn = turn;
 	}
@@ -56,7 +56,7 @@ public final class TextFixture implements TileFixture, HasMutableImage {
 	 * Set the filename of an image to use as an icon for this instance.
 	 */
 	@Override
-	public void setImage(String image) {
+	public void setImage(final String image) {
 		this.image = image;
 	}
 
@@ -64,7 +64,7 @@ public final class TextFixture implements TileFixture, HasMutableImage {
 	 * Clone the object.
 	 */
 	@Override
-	public TextFixture copy(boolean zero) {
+	public TextFixture copy(final boolean zero) {
 		TextFixture retval = new TextFixture(text, turn);
 		retval.setImage(image);
 		return retval;
@@ -86,7 +86,7 @@ public final class TextFixture implements TileFixture, HasMutableImage {
 	}
 
 	@Override
-	public boolean equals(Object obj) {
+	public boolean equals(final Object obj) {
 		if (this == obj) {
 			return true;
 		} else if (obj instanceof TextFixture) {
@@ -114,7 +114,7 @@ public final class TextFixture implements TileFixture, HasMutableImage {
 	 * Since text fixtures don't have an ID, this can simply delegate to equals()
 	 */
 	@Override
-	public boolean equalsIgnoringID(IFixture fixture) {
+	public boolean equalsIgnoringID(final IFixture fixture) {
 		return equals(fixture);
 	}
 

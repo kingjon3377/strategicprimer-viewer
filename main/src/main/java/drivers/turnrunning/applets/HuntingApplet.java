@@ -22,7 +22,7 @@ import java.util.List;
 import org.jetbrains.annotations.Nullable;
 
 /* package */ class HuntingApplet extends HuntGeneralApplet {
-	public HuntingApplet(ITurnRunningModel model, ICLIHelper cli, IDRegistrar idf) {
+	public HuntingApplet(final ITurnRunningModel model, final ICLIHelper cli, final IDRegistrar idf) {
 		super("fight and process", model, cli, idf);
 	}
 

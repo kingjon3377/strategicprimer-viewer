@@ -124,18 +124,18 @@ import org.javatuples.Pair;
 	/**
 	 * Create the usage message for a particular driver.
 	 */
-	public String usageMessage(IDriverUsage usage, boolean verbose) {
+	public String usageMessage(final IDriverUsage usage, final boolean verbose) {
 		StringBuilder builder = new StringBuilder();
 		builder.append("Usage: ");
 		String mainInvocation;
 		try (BufferedReader reader = new BufferedReader(new InputStreamReader(
 				new ResourceInputStream("invocation", AppChooserState.class)))) {
 			mainInvocation = reader.lines().collect(Collectors.joining(System.lineSeparator())).trim();
-		} catch (FileNotFoundException | NoSuchFileException except) {
+		} catch (final FileNotFoundException | NoSuchFileException except) {
 			LOGGER.warning("Invocation file not found");
 			LOGGER.log(Level.FINER, "Stack trace for invocation-not-found", except);
 			mainInvocation = "java -jar viewer-VERSION.jar";
-		} catch (IOException except) {
+		} catch (final IOException except) {
 			LOGGER.log(Level.SEVERE, "I/O error reading invocation file", except);
 			mainInvocation = "java -jar viewer-VERSION.jar";
 		}
@@ -184,23 +184,23 @@ import org.javatuples.Pair;
 			return builder.toString();
 	}
 
-	public static void handleDroppedFiles(AppEvent.OpenFilesEvent openFilesEvent) {
+	public static void handleDroppedFiles(final AppEvent.OpenFilesEvent openFilesEvent) {
 		SPFrame topWindow = Stream.of(WindowList.getWindows(true, false)).filter(SPFrame.class::isInstance)
 			.map(SPFrame.class::cast).reduce((first, second) -> second).orElse(null);
 		if (topWindow != null) {
 			for (File file : openFilesEvent.getFiles()) {
 				try {
 					topWindow.acceptDroppedFile(file.toPath());
-				} catch (SPFormatException except) {
+				} catch (final SPFormatException except) {
 					showErrorDialog(topWindow, "Strategic Primer Map Format Error", except.getMessage());
 					LOGGER.severe(except.getMessage());
-				} catch (FileNotFoundException|NoSuchFileException|MissingFileException except) {
+				} catch (final FileNotFoundException|NoSuchFileException|MissingFileException except) {
 					showErrorDialog(topWindow, "File Not Found", except.getMessage());
 					LOGGER.log(Level.SEVERE, "Dropped file not found", except);
-				} catch (IOException except) {
+				} catch (final IOException except) {
 					showErrorDialog(topWindow, "I/O Error", except.getMessage());
 					LOGGER.log(Level.SEVERE, "I/O error reading dropped file", except.getMessage());
-				} catch (MalformedXMLException except) {
+				} catch (final MalformedXMLException except) {
 					showErrorDialog(topWindow, "Strategic Primer Map Format Error", except.getMessage());
 					LOGGER.log(Level.SEVERE, "Malformed XML in " + file, except);
 				}

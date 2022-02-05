@@ -33,7 +33,7 @@ public interface TurnApplet extends Applet {
 		run();
 	}
 
-	default String inHours(int minutes) {
+	default String inHours(final int minutes) {
 		if (minutes < 60) {
 			return String.format("%d minutes", minutes);
 		} else {

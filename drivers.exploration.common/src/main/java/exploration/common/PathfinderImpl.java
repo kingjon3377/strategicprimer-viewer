@@ -22,23 +22,23 @@ import java.util.stream.StreamSupport;
 
 /* package */ class PathfinderImpl implements Pathfinder {
 	private static final Logger LOGGER = Logger.getLogger(PathfinderImpl.class.getName());
-	public PathfinderImpl(IMapNG map) {
+	public PathfinderImpl(final IMapNG map) {
 		this.map = map;
 	}
 	private final IMapNG map;
 	private final Map<Pair<Point, Point>, Integer> tentativeDistances = new HashMap<>();
-	private Predicate<Map.Entry<Pair<Point, Point>, Integer>> forUs(Point base, Set<Point> unvisited) {
+	private Predicate<Map.Entry<Pair<Point, Point>, Integer>> forUs(final Point base, final Set<Point> unvisited) {
 		return entry -> entry.getKey().getValue0().equals(base) &&
 			unvisited.contains(entry.getKey().getValue1());
 	}
 
 	@Nullable
-	private Point nextUnvisited(Point base, Set<Point> unvisited) {
+	private Point nextUnvisited(final Point base, final Set<Point> unvisited) {
 		return tentativeDistances.entrySet().stream().filter(forUs(base, unvisited)).min(Comparator.comparing(Map.Entry::getValue))
 			.map(Map.Entry::getKey).map(Pair::getValue1).orElse(null);
 	}
 
-	private static Direction getDirection(Point one, Point two) {
+	private static Direction getDirection(final Point one, final Point two) {
 		if (one.getRow() < two.getRow()) {
 			if (one.getColumn() < two.getColumn()) {
 				return Direction.Northeast;
@@ -71,7 +71,7 @@ import java.util.stream.StreamSupport;
 	 * points, using Dijkstra's algorithm.
 	 */
 	@Override
-	public Pair<Integer, Iterable<Point>> getTravelDistance(Point start, Point end) {
+	public Pair<Integer, Iterable<Point>> getTravelDistance(final Point start, final Point end) {
 		final Set<Point> unvisited = new HashSet<>();
 		for (Point point : map.getLocations()) {
 			unvisited.add(point);

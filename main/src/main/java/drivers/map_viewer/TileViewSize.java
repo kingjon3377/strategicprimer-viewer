@@ -16,7 +16,7 @@ package drivers.map_viewer;
 	 *
 	 * TODO: tests
 	 */
-	public static int scaleZoom(int zoomLevel, int mapVersion) {
+	public static int scaleZoom(final int zoomLevel, final int mapVersion) {
 		switch (mapVersion) {
 		case 1:
 			return zoomLevel * 2;

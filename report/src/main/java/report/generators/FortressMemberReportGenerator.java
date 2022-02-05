@@ -33,13 +33,13 @@ public class FortressMemberReportGenerator extends AbstractReportGenerator<Fortr
 	@Nullable
 	private final Point hq;
 
-	public FortressMemberReportGenerator(Comparator<Pair<Point, IFixture>> comp, Player currentPlayer,
-			MapDimensions dimensions, int currentTurn) {
+	public FortressMemberReportGenerator(final Comparator<Pair<Point, IFixture>> comp, final Player currentPlayer,
+	                                     final MapDimensions dimensions, final int currentTurn) {
 		this(comp, currentPlayer, dimensions, currentTurn, null);
 	}
 
-	public FortressMemberReportGenerator(Comparator<Pair<Point, IFixture>> comp, Player currentPlayer,
-			MapDimensions dimensions, int currentTurn, @Nullable Point hq) {
+	public FortressMemberReportGenerator(final Comparator<Pair<Point, IFixture>> comp, final Player currentPlayer,
+	                                     final MapDimensions dimensions, final int currentTurn, @Nullable final Point hq) {
 		super(comp, dimensions, hq);
 		this.currentPlayer = currentPlayer;
 		this.dimensions = dimensions;
@@ -52,8 +52,8 @@ public class FortressMemberReportGenerator extends AbstractReportGenerator<Fortr
 	 * fixtures referred to in this report are removed from the collection.
 	 */
 	@Override
-	public void produceSingle(DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-			IMapNG map, ThrowingConsumer<String, IOException> ostream, FortressMember item, Point loc)
+	public void produceSingle(final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
+	                          final IMapNG map, final ThrowingConsumer<String, IOException> ostream, final FortressMember item, final Point loc)
 			throws IOException {
 	//	assert (is IUnit|IResourcePile|Implement item);
 		if (item instanceof IUnit) {
@@ -97,8 +97,8 @@ public class FortressMemberReportGenerator extends AbstractReportGenerator<Fortr
 	 * handle this properly anyway.
 	 */
 	@Override
-	public void produce(DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-			IMapNG map, ThrowingConsumer<String, IOException> ostream) throws IOException {
+	public void produce(final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
+	                    final IMapNG map, final ThrowingConsumer<String, IOException> ostream) throws IOException {
 		HeadedMap<Implement, Point> equipment = new HeadedMapImpl<>("<li>Equipment:",
 			Comparator.comparing(Implement::getKind)
 				.thenComparing(Comparator.comparing(Implement::getCount,

@@ -26,7 +26,7 @@ public final class MiningCLI implements UtilityDriver {
 	private final SPOptions options;
 	private final ICLIHelper cli;
 
-	public MiningCLI(ICLIHelper cli, SPOptions options) {
+	public MiningCLI(final ICLIHelper cli, final SPOptions options) {
 		this.cli = cli;
 		this.options = options;
 	}
@@ -37,7 +37,7 @@ public final class MiningCLI implements UtilityDriver {
 	}
 
 	@Override
-	public void startDriver(String... args) throws DriverFailedException {
+	public void startDriver(final String... args) throws DriverFailedException {
 		if (args.length != 2) {
 			throw new IncorrectUsageException(MiningCLIFactory.USAGE);
 		}
@@ -47,7 +47,7 @@ public final class MiningCLI implements UtilityDriver {
 		if (options.hasOption("--seed")) {
 			try {
 				seed = Long.parseLong(options.getArgument("--seed"));
-			} catch (NumberFormatException except) {
+			} catch (final NumberFormatException except) {
 				throw new DriverFailedException(except, "Seed must be numeric");
 			}
 		} else {
@@ -95,7 +95,7 @@ public final class MiningCLI implements UtilityDriver {
 				}
 				writer.write(System.lineSeparator());
 			}
-		} catch (IOException except) {
+		} catch (final IOException except) {
 			throw new DriverFailedException(except);
 		}
 	}

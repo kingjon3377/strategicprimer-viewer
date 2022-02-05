@@ -25,7 +25,7 @@ import java.util.Collections;
  */
 public class TableDebugger implements UtilityDriver {
 	private final ThrowingConsumer<String, IOException> ostream;
-	public TableDebugger(ThrowingConsumer<String, IOException> ostream) {
+	public TableDebugger(final ThrowingConsumer<String, IOException> ostream) {
 		this.ostream = ostream;
 	}
 
@@ -43,8 +43,8 @@ public class TableDebugger implements UtilityDriver {
 	 * @param tableName The name of that table
 	 * @param set The set of tables already on the stack, to prevent infinite recursion
 	 */
-	private void debugSingleTable(ExplorationRunner runner, String before, String after,
-			EncounterTable table, String tableName, Collection<EncounterTable> set)
+	private void debugSingleTable(final ExplorationRunner runner, final String before, final String after,
+	                              final EncounterTable table, final String tableName, final Collection<EncounterTable> set)
 			throws IOException, MissingTableException {
 		if (set.contains(table)) {
 			ostream.accept(String.format("table %s is already on the stack, skipping ...",
@@ -68,7 +68,7 @@ public class TableDebugger implements UtilityDriver {
 	}
 
 	@Override
-	public void startDriver(String... args) throws DriverFailedException {
+	public void startDriver(final String... args) throws DriverFailedException {
 		if (args.length > 0) {
 			throw new IncorrectUsageException(TableDebuggerFactory.USAGE);
 		} else if (!Files.isDirectory(Paths.get("tables"))) {

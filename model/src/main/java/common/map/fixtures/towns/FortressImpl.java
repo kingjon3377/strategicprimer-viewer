@@ -26,14 +26,14 @@ import java.util.function.Consumer;
  * FIXME: We need something about buildings yet
  */
 public class FortressImpl implements IMutableFortress {
-	public FortressImpl(Player owner, String name, int id, TownSize townSize) {
+	public FortressImpl(final Player owner, final String name, final int id, final TownSize townSize) {
 		this.owner = owner;
 		this.name = name;
 		this.id = id;
 		this.townSize = townSize;
 	}
 
-	public FortressImpl(Player owner, String name, int id) {
+	public FortressImpl(final Player owner, final String name, final int id) {
 		this(owner, name, id, TownSize.Small);
 	}
 
@@ -54,7 +54,7 @@ public class FortressImpl implements IMutableFortress {
 	 * Set the player who owns the fortress.
 	 */
 	@Override
-	public void setOwner(Player owner) {
+	public void setOwner(final Player owner) {
 		this.owner = owner;
 	}
 
@@ -75,7 +75,7 @@ public class FortressImpl implements IMutableFortress {
 	 * Set the name of the fortress.
 	 */
 	@Override
-	public void setName(String name) {
+	public void setName(final String name) {
 		this.name = name;
 	}
 
@@ -143,7 +143,7 @@ public class FortressImpl implements IMutableFortress {
 	 * Set the filename of an image to use as an icon for this instance.
 	 */
 	@Override
-	public void setImage(String image) {
+	public void setImage(final String image) {
 		this.image = image;
 	}
 
@@ -164,7 +164,7 @@ public class FortressImpl implements IMutableFortress {
 	 * Set the name of an image to use as a portrait.
 	 */
 	@Override
-	public void setPortrait(String portrait) {
+	public void setPortrait(final String portrait) {
 		this.portrait = portrait;
 	}
 
@@ -172,7 +172,7 @@ public class FortressImpl implements IMutableFortress {
 	 * Add a member to the fortress.
 	 */
 	@Override
-	public void addMember(FortressMember member) {
+	public void addMember(final FortressMember member) {
 		members.add(member);
 	}
 
@@ -180,7 +180,7 @@ public class FortressImpl implements IMutableFortress {
 	 * Remove a member from the fortress.
 	 */
 	@Override
-	public void removeMember(FortressMember member) {
+	public void removeMember(final FortressMember member) {
 		members.remove(member);
 	}
 
@@ -188,7 +188,7 @@ public class FortressImpl implements IMutableFortress {
 	 * Clone the fortress.
 	 */
 	@Override
-	public IMutableFortress copy(boolean zero) {
+	public IMutableFortress copy(final boolean zero) {
 		final IMutableFortress retval;
 		if (zero) {
 			retval = new FortressImpl(owner, "unknown", id, townSize);
@@ -216,7 +216,7 @@ public class FortressImpl implements IMutableFortress {
 	}
 
 	@Override
-	public boolean equalsIgnoringID(IFixture fixture) {
+	public boolean equalsIgnoringID(final IFixture fixture) {
 		if (fixture instanceof IFortress) {
 			Set<FortressMember> theirs =
 				((IFortress) fixture).stream().collect(Collectors.toSet());
@@ -267,7 +267,7 @@ public class FortressImpl implements IMutableFortress {
 	 * equal to, or a subset of, one of our members.
 	 */
 	@Override
-	public boolean isSubset(IFixture obj, Consumer<String> report) {
+	public boolean isSubset(final IFixture obj, final Consumer<String> report) {
 		if (!(obj instanceof IFortress)) {
 			report.accept("Incompatible type to Fortress");
 			return false;
@@ -317,7 +317,7 @@ public class FortressImpl implements IMutableFortress {
 	}
 
 	@Override
-	public boolean equals(Object obj) {
+	public boolean equals(final Object obj) {
 		if (obj instanceof IFortress) {
 			return equalsIgnoringID((IFortress) obj) && id == ((IFortress) obj).getId();
 		} else {

@@ -12,7 +12,7 @@ public interface HasExtent<Self extends HasExtent<Self>> extends IFixture, Subse
 	/**
 	 * Determine whether the given number is positive.
 	 */
-	static boolean isPositive(Number number) {
+	static boolean isPositive(final Number number) {
 		if (number instanceof Integer) {
 			return number.intValue() > 0;
 		} else if (number instanceof Long) {
@@ -35,7 +35,7 @@ public interface HasExtent<Self extends HasExtent<Self>> extends IFixture, Subse
 	 * implementations of this interface, if one and only one is negative,
 	 * it is treated as zero.
 	 */
-	static Number sum(Number one, Number two) {
+	static Number sum(final Number one, final Number two) {
 		if (isPositive(one) && !isPositive(two)) {
 			return one;
 		} else if (isPositive(two) && !isPositive(one)) {
@@ -96,7 +96,7 @@ public interface HasExtent<Self extends HasExtent<Self>> extends IFixture, Subse
 	 * @param num a number
 	 * @return the additive inverse of that number
 	 */
-	static Number negate(Number num) {
+	static Number negate(final Number num) {
 		if (num instanceof Integer) {
 			return 0 - (Integer) num;
 		} else if (num instanceof Long) {

@@ -26,7 +26,7 @@ final class DBMineralHandler extends AbstractDatabaseWriter<MineralFixture, Poin
 	}
 
 	@Override
-	public boolean canWrite(Object obj, Object context) {
+	public boolean canWrite(final Object obj, final Object context) {
 		return (obj instanceof MineralVein || obj instanceof StoneDeposit) &&
 			context instanceof Point;
 	}
@@ -52,7 +52,7 @@ final class DBMineralHandler extends AbstractDatabaseWriter<MineralFixture, Poin
 		"INSERT INTO minerals (row, column, type, id, kind, exposed, dc, image) " +
 			"VALUES(?, ?, ?, ?, ?, ?, ?, ?);";
 	@Override
-	public void write(DB db, MineralFixture obj, Point context) {
+	public void write(final DB db, final MineralFixture obj, final Point context) {
 		String type;
 		boolean exposed;
 		if (obj instanceof MineralVein) {
@@ -68,7 +68,7 @@ final class DBMineralHandler extends AbstractDatabaseWriter<MineralFixture, Poin
 			obj.getId(), obj.getKind(), exposed, obj.getDC(), ((HasImage) obj).getImage());
 	}
 
-	private TryBiConsumer<Map<String, Object>, Warning, Exception> readMineralVein(IMutableMapNG map) {
+	private TryBiConsumer<Map<String, Object>, Warning, Exception> readMineralVein(final IMutableMapNG map) {
 		return (dbRow, warner) -> {
 			int row = (Integer) dbRow.get("row");
 			int column = (Integer) dbRow.get("column");
@@ -86,7 +86,7 @@ final class DBMineralHandler extends AbstractDatabaseWriter<MineralFixture, Poin
 		};
 	}
 
-	private TryBiConsumer<Map<String, Object>, Warning, Exception> readStoneDeposit(IMutableMapNG map) {
+	private TryBiConsumer<Map<String, Object>, Warning, Exception> readStoneDeposit(final IMutableMapNG map) {
 		return (dbRow, warner) -> {
 			int row = (Integer) dbRow.get("row");
 			int column = (Integer) dbRow.get("column");
@@ -103,17 +103,17 @@ final class DBMineralHandler extends AbstractDatabaseWriter<MineralFixture, Poin
 	}
 
 	@Override
-	public void readMapContents(DB db, IMutableMapNG map, Warning warner) {
+	public void readMapContents(final DB db, final IMutableMapNG map, final Warning warner) {
 		try {
 			handleQueryResults(db, warner, "stone deposits", readStoneDeposit(map),
 				"SELECT row, column, id, kind, dc, image FROM minerals WHERE type = 'stone'");
 			handleQueryResults(db, warner, "mineral veins", readMineralVein(map),
 				"SELECT row, column, id, kind, exposed, dc, image FROM minerals " +
 					"WHERE type = 'mineral'");
-		} catch (RuntimeException except) {
+		} catch (final RuntimeException except) {
 			// Don't wrap RuntimeExceptions in RuntimeException
 			throw except;
-		} catch (Exception except) {
+		} catch (final Exception except) {
 			// FIXME Antipattern
 			throw new RuntimeException(except);
 		}

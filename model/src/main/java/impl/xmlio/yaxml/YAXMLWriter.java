@@ -26,7 +26,7 @@ public class YAXMLWriter implements SPWriter {
 	 * @param obj The object to write
 	 */
 	@Override
-	public void writeSPObject(Path arg, Object obj) throws IOException {
+	public void writeSPObject(final Path arg, final Object obj) throws IOException {
 		try (BufferedWriter writer = Files.newBufferedWriter(arg, StandardCharsets.UTF_8)) {
 			writeSPObject(writer::write, obj);
 		}
@@ -40,7 +40,7 @@ public class YAXMLWriter implements SPWriter {
 	 * @param obj The object to write
 	 */
 	@Override
-	public void writeSPObject(ThrowingConsumer<String, IOException> arg, Object obj) throws IOException {
+	public void writeSPObject(final ThrowingConsumer<String, IOException> arg, final Object obj) throws IOException {
 		wrapped.write(arg, obj, 0);
 	}
 
@@ -52,7 +52,7 @@ public class YAXMLWriter implements SPWriter {
 	 * @param map The map to write.
 	 */
 	@Override
-	public void write(Path arg, IMapNG map) throws IOException {
+	public void write(final Path arg, final IMapNG map) throws IOException {
 		writeSPObject(arg, map);
 	}
 
@@ -64,7 +64,7 @@ public class YAXMLWriter implements SPWriter {
 	 * @param map The map to write.
 	 */
 	@Override
-	public void write(ThrowingConsumer<String, IOException> arg, IMapNG map) throws IOException {
+	public void write(final ThrowingConsumer<String, IOException> arg, final IMapNG map) throws IOException {
 		writeSPObject(arg, map);
 	}
 }

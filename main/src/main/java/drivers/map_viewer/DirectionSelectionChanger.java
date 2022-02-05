@@ -16,7 +16,7 @@ import common.map.Point;
  * TODO: Add withRow() and withColumn() methods to Point to condense the below slightly?
  */
 /* package */ class DirectionSelectionChanger implements MouseWheelListener {
-	public DirectionSelectionChanger(IViewerModel model) {
+	public DirectionSelectionChanger(final IViewerModel model) {
 		this.model = model;
 	}
 	
@@ -27,14 +27,14 @@ import common.map.Point;
 	 *
 	 * TODO: boolean to enum
 	 */
-	private Point get(boolean selection) {
+	private Point get(final boolean selection) {
 		return (selection) ? model.getSelection() : model.getCursor();
 	}
 
 	/**
 	 * Assign the given point correctly for the given mode.
 	 */
-	private void set(boolean selection, Point point) {
+	private void set(final boolean selection, final Point point) {
 		if (selection) {
 			model.setSelection(point);
 		} else {
@@ -52,7 +52,7 @@ import common.map.Point;
 	/**
 	 * Move the cursor up a row.
 	 */
-	public void up(boolean selection) {
+	public void up(final boolean selection) {
 		Point old = get(selection);
 		if (old.getRow() > 0) {
 			set(selection, new Point(old.getRow() - 1, old.getColumn()));
@@ -69,7 +69,7 @@ import common.map.Point;
 	/**
 	 * Move the cursor left a column.
 	 */
-	public void left(boolean selection) {
+	public void left(final boolean selection) {
 		Point old = get(selection);
 		if (old.getColumn() > 0) {
 			set(selection, new Point(old.getRow(), old.getColumn() - 1));
@@ -86,7 +86,7 @@ import common.map.Point;
 	/**
 	 * Move the cursor down a row.
 	 */
-	public void down(boolean selection) {
+	public void down(final boolean selection) {
 		Point old = get(selection);
 		if (old.getRow() < model.getMapDimensions().getRows() - 1) {
 			set(selection, new Point(old.getRow() + 1, old.getColumn()));
@@ -103,7 +103,7 @@ import common.map.Point;
 	/**
 	 * Move the cursor right a column.
 	 */
-	public void right(boolean selection) {
+	public void right(final boolean selection) {
 		Point old = get(selection);
 		if (old.getColumn()<model.getMapDimensions().getColumns() - 1) {
 			set(selection, new Point(old.getRow(), old.getColumn() + 1));
@@ -167,7 +167,7 @@ import common.map.Point;
 	 *
 	 * TODO: Boolean parameters should be enums instead
 	 */
-	private void scroll(boolean horizontal, boolean forward, int count) {
+	private void scroll(final boolean horizontal, final boolean forward, final int count) {
 		BooleanConsumer func;
 		if (horizontal && forward) {
 			func = this::right;
@@ -189,7 +189,7 @@ import common.map.Point;
 	 * pressed, and vertically otherwise.
 	 */
 	@Override
-	public void mouseWheelMoved(MouseWheelEvent event) {
+	public void mouseWheelMoved(final MouseWheelEvent event) {
 		if (Platform.isHotKeyPressed(event)) {
 			// Zoom if Command-scroll/Control-scroll
 			final int count = event.getWheelRotation(); // TODO: pull count variable to top of method

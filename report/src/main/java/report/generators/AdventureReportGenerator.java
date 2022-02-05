@@ -20,13 +20,13 @@ import common.map.fixtures.explorable.AdventureFixture;
  */
 public class AdventureReportGenerator extends AbstractReportGenerator<AdventureFixture> {
 
-	public AdventureReportGenerator(Comparator<Pair<Point, IFixture>> comp, Player currentPlayer,
-			MapDimensions dimensions) {
+	public AdventureReportGenerator(final Comparator<Pair<Point, IFixture>> comp, final Player currentPlayer,
+	                                final MapDimensions dimensions) {
 		this(comp, currentPlayer, dimensions, null);
 	}
 
-	public AdventureReportGenerator(Comparator<Pair<Point, IFixture>> comp, Player currentPlayer,
-			MapDimensions dimensions, @Nullable Point hq) {
+	public AdventureReportGenerator(final Comparator<Pair<Point, IFixture>> comp, final Player currentPlayer,
+	                                final MapDimensions dimensions, @Nullable final Point hq) {
 		super(comp, dimensions, hq);
 		this.currentPlayer = currentPlayer;
 	}
@@ -37,8 +37,8 @@ public class AdventureReportGenerator extends AbstractReportGenerator<AdventureF
 	 * Produce the report on all adventure hooks in the map.
 	 */
 	@Override
-	public void produce(DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures, IMapNG map,
-			ThrowingConsumer<String, IOException> ostream) throws IOException {
+	public void produce(final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures, final IMapNG map,
+	                    final ThrowingConsumer<String, IOException> ostream) throws IOException {
 		super.<AdventureFixture>writeMap(ostream, fixtures.values().stream()
 				.filter(p -> p.getValue1() instanceof AdventureFixture)
 				.sorted(pairComparator)
@@ -54,8 +54,8 @@ public class AdventureReportGenerator extends AbstractReportGenerator<AdventureF
 	 * Produce a more verbose sub-report on an adventure hook.
 	 */
 	@Override
-	public void produceSingle(DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-			IMapNG map, ThrowingConsumer<String, IOException> ostream, AdventureFixture item, Point loc)
+	public void produceSingle(final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
+	                          final IMapNG map, final ThrowingConsumer<String, IOException> ostream, final AdventureFixture item, final Point loc)
 			throws IOException {
 		fixtures.remove(item.getId());
 		ostream.accept(item.getBriefDescription());

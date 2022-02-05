@@ -7,7 +7,7 @@ package common.map.fixtures;
  */
 public final class ResourcePileImpl implements IMutableResourcePile {
 
-	public ResourcePileImpl(int id, String kind, String contents, Quantity quantity) {
+	public ResourcePileImpl(final int id, final String kind, final String contents, final Quantity quantity) {
 		this.id = id;
 		this.kind = kind;
 		this.contents = contents;
@@ -62,7 +62,7 @@ public final class ResourcePileImpl implements IMutableResourcePile {
 	 * Set what specific kind of thing is in the resource pile.
 	 */
 	@Override
-	public void setContents(String contents) {
+	public void setContents(final String contents) {
 		this.contents = contents;
 	}
 
@@ -82,7 +82,7 @@ public final class ResourcePileImpl implements IMutableResourcePile {
 	/**
 	 * Set how much of that thing is in the pile, including units.
 	 */
-	public void setQuantity(Quantity quantity) {
+	public void setQuantity(final Quantity quantity) {
 		this.quantity = quantity;
 	}
 
@@ -103,7 +103,7 @@ public final class ResourcePileImpl implements IMutableResourcePile {
 	 * Set the filename of an image to use as an icon for this instance.
 	 */
 	@Override
-	public void setImage(String image) {
+	public void setImage(final String image) {
 		this.image = image;
 	}
 
@@ -121,7 +121,7 @@ public final class ResourcePileImpl implements IMutableResourcePile {
 	}
 
 	@Override
-	public void setCreated(int created) {
+	public void setCreated(final int created) {
 		if (created < 0) {
 			createdTurn = -1;
 		} else {
@@ -140,7 +140,7 @@ public final class ResourcePileImpl implements IMutableResourcePile {
 	 * TODO: If {@link zero}, probably shouldn't expose <em>precise</em> quantity.
 	 */
 	@Override
-	public ResourcePileImpl copy(boolean zero) {
+	public ResourcePileImpl copy(final boolean zero) {
 		ResourcePileImpl retval = new ResourcePileImpl(id, kind, contents, quantity);
 		if (!zero) {
 			retval.setCreated(createdTurn);
@@ -154,7 +154,7 @@ public final class ResourcePileImpl implements IMutableResourcePile {
 	}
 
 	@Override
-	public boolean equals(Object obj) {
+	public boolean equals(final Object obj) {
 		if (this == obj) {
 			return true;
 		} else if (obj instanceof IResourcePile) {

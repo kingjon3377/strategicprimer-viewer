@@ -8,13 +8,13 @@ import org.jetbrains.annotations.Nullable;
  */
 public final class PlayerImpl implements MutablePlayer {
 
-	public PlayerImpl(int playerId, String name, String country) {
+	public PlayerImpl(final int playerId, final String name, final String country) {
 		this.playerId = playerId;
 		this.name = name;
 		this.country = country;
 	}
 
-	public PlayerImpl(int playerId, String name) {
+	public PlayerImpl(final int playerId, final String name) {
 		this.playerId = playerId;
 		this.name = name;
 		this.country = null;
@@ -62,7 +62,7 @@ public final class PlayerImpl implements MutablePlayer {
 	}
 
 	@Override
-	public void setCurrent(boolean current) {
+	public void setCurrent(final boolean current) {
 		this.current = current;
 	}
 
@@ -103,7 +103,7 @@ public final class PlayerImpl implements MutablePlayer {
 	}
 
 	@Override
-	public int compareTo(Player player) {
+	public int compareTo(final Player player) {
 		return Integer.compare(playerId, player.getPlayerId());
 	}
 
@@ -127,7 +127,7 @@ public final class PlayerImpl implements MutablePlayer {
 	}
 
 	@Override
-	public void setPortrait(String portrait) {
+	public void setPortrait(final String portrait) {
 		this.portrait = portrait;
 	}
 }

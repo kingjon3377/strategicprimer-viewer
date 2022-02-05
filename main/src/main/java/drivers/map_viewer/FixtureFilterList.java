@@ -42,14 +42,14 @@ import java.util.function.Predicate;
 		setDragEnabled(true);
 	}
 
-	private static final <T> Predicate<T> not(Predicate<T> p) {
+	private static final <T> Predicate<T> not(final Predicate<T> p) {
 		return t -> !p.test(t);
 	}
 
 	private final DefaultListModel<FixtureMatcher> matcherListModel;
 
 	@Override
-	public boolean shouldDisplay(TileFixture fixture) {
+	public boolean shouldDisplay(final TileFixture fixture) {
 		for (int i = 0; i < matcherListModel.getSize(); i++) {
 			FixtureMatcher matcher = matcherListModel.getElementAt(i);
 			if (matcher.matches(fixture)) {
@@ -72,8 +72,8 @@ import java.util.function.Predicate;
 
 	private static final DefaultListCellRenderer DEFAULT_RENDERER = new DefaultListCellRenderer();
 
-	private Component renderCell(JList<? extends FixtureMatcher> list, FixtureMatcher item,
-			int index, boolean isSelected, boolean cellHasFocus) {
+	private Component renderCell(final JList<? extends FixtureMatcher> list, final FixtureMatcher item,
+	                             final int index, final boolean isSelected, final boolean cellHasFocus) {
 		Component retval = DEFAULT_RENDERER.getListCellRendererComponent(list, item,
 			index, isSelected, cellHasFocus);
 		if (retval instanceof JLabel) {

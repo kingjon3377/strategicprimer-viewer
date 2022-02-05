@@ -50,8 +50,8 @@ public class SPMenu extends JMenuBar {
 	 * given menu-item; regardless, return the menu item.
 	 */
 	@SafeVarargs
-	private static JMenuItem enabledForDriver(JMenuItem item, ISPDriver driver,
-			Class<? extends ISPDriver>... types) {
+	private static JMenuItem enabledForDriver(final JMenuItem item, final ISPDriver driver,
+	                                          final Class<? extends ISPDriver>... types) {
 		boolean any = false;
 		for (Class<?> type : types) {
 			if (type.isInstance(driver)) {
@@ -70,8 +70,8 @@ public class SPMenu extends JMenuBar {
 	 * given menu item; regardless, return the menu item.
 	 */
 	@SafeVarargs
-	private static JMenuItem disabledForDriver(JMenuItem item, ISPDriver driver,
-			Class<? extends ISPDriver>... types) {
+	private static JMenuItem disabledForDriver(final JMenuItem item, final ISPDriver driver,
+	                                           final Class<? extends ISPDriver>... types) {
 		boolean any = false;
 		for (Class<?> type : types) {
 			if (type.isInstance(driver)) {
@@ -88,7 +88,7 @@ public class SPMenu extends JMenuBar {
 	/**
 	 * Create the File menu.
 	 */
-	public static JMenu createFileMenu(ActionListener handler, ISPDriver driver) {
+	public static JMenu createFileMenu(final ActionListener handler, final ISPDriver driver) {
 		JMenu fileMenu = new JMenu("File");
 		fileMenu.setMnemonic(KeyEvent.VK_F);
 		fileMenu.add(enabledForDriver(createMenuItem("New", KeyEvent.VK_N,
@@ -175,7 +175,7 @@ public class SPMenu extends JMenuBar {
 	/**
 	 * Create the "Map" menu, including go-to-tile, find, and zooming functions.
 	 */
-	public static JMenu createMapMenu(ActionListener handler, ISPDriver driver) {
+	public static JMenu createMapMenu(final ActionListener handler, final ISPDriver driver) {
 		JMenu retval = new JMenu("Map");
 		retval.setMnemonic(KeyEvent.VK_M);
 
@@ -229,7 +229,7 @@ public class SPMenu extends JMenuBar {
 	/**
 	 * Create the "View" menu.
 	 */
-	public static JMenu createViewMenu(ActionListener handler, ISPDriver driver) {
+	public static JMenu createViewMenu(final ActionListener handler, final ISPDriver driver) {
 		JMenu viewMenu = new JMenu("View");
 		viewMenu.setMnemonic(KeyEvent.VK_E);
 
@@ -260,19 +260,19 @@ public class SPMenu extends JMenuBar {
 	/**
 	 * Disable a menu and return it.
 	 */
-	public static JMenu disabledMenu(JMenu menu) {
+	public static JMenu disabledMenu(final JMenu menu) {
 		menu.setEnabled(false);
 		return menu;
 	}
 
-	public SPMenu(JMenu... menus) {
+	public SPMenu(final JMenu... menus) {
 		for (JMenu menu : menus) {
 			add(menu);
 		}
 	}
 
 	// The boolean parameter is to make the overload unambiguous; JMenu is a subtype of Component ...
-	private SPMenu(boolean ignored, Component component, JMenu... menus) {
+	private SPMenu(final boolean ignored, final Component component, final JMenu... menus) {
 		this(menus);
 		// TODO: Add stream() to ComponentParentStream
 		add(new WindowMenu(StreamSupport.stream(new ComponentParentStream(component).spliterator(),
@@ -280,7 +280,7 @@ public class SPMenu extends JMenuBar {
 				.map(JFrame.class::cast).findAny().orElse(null)));
 	}
 
-	public static SPMenu forWindowContaining(Component component, JMenu... menus) {
+	public static SPMenu forWindowContaining(final Component component, final JMenu... menus) {
 		return new SPMenu(false, component, menus);
 	}
 }

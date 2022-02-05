@@ -21,7 +21,7 @@ public enum Direction implements Comparable<Direction> {
 	Southwest("southwest"),
 	South("south"),
 	Southeast("southeast");
-	private Direction(String string) {
+	private Direction(final String string) {
 		this.string = string;
 	}
 	/**
@@ -35,7 +35,7 @@ public enum Direction implements Comparable<Direction> {
 	public String toString() {
 		return string;
 	}
-	public static @Nullable Direction parse(String direction) {
+	public static @Nullable Direction parse(final String direction) {
 		return Stream.of(Direction.values())
 			.filter((dir) -> Objects.equals(dir.toString(), direction))
 			.findAny().orElse(null);

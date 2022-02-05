@@ -37,7 +37,7 @@ public final class CLIHelper implements ICLIHelper {
 		void write(String string) throws IOException;
 	}
 
-	public CLIHelper(IOSource istream, IOSink ostream) {
+	public CLIHelper(final IOSource istream, final IOSink ostream) {
 		this.istream = istream;
 		this.ostream = ostream;
 	}
@@ -68,7 +68,7 @@ public final class CLIHelper implements ICLIHelper {
 	 * Print the specified string.
 	 */
 	@Override
-	public void print(String... text) {
+	public void print(final String... text) {
 		long newlines = Stream.of(text)
 			.mapToLong(s -> s.chars().filter(c -> c == '\n' || c == '\r').count()).sum();
 		if (newlines > 0) {
@@ -77,7 +77,7 @@ public final class CLIHelper implements ICLIHelper {
 		for (String part : text) {
 			try {
 				ostream.write(part);
-			} catch (IOException except) {
+			} catch (final IOException except) {
 				LOGGER.log(Level.WARNING, "I/O error", except);
 				return;
 			}
@@ -88,7 +88,7 @@ public final class CLIHelper implements ICLIHelper {
 	 * Print the specified string, then a newline.
 	 */
 	@Override
-	public void println(String line) {
+	public void println(final String line) {
 		print(line);
 		print(System.lineSeparator());
 	}
@@ -96,7 +96,7 @@ public final class CLIHelper implements ICLIHelper {
 	/**
 	 * Print a prompt, adding whitespace if the prompt didn't end with it.
 	 */
-	private void writePrompt(String prompt) {
+	private void writePrompt(final String prompt) {
 		print(prompt);
 		if (!prompt.isEmpty() && !Character.isWhitespace(prompt.charAt(prompt.length() - 1))) {
 			print(" ");
@@ -107,7 +107,7 @@ public final class CLIHelper implements ICLIHelper {
 	 * Ask the user a yes-or-no question. Returns null on EOF.
 	 */
 	@Override
-	public Boolean inputBoolean(String prompt, TrinaryPredicate<String> quitResultFactory) {
+	public Boolean inputBoolean(final String prompt, final TrinaryPredicate<String> quitResultFactory) {
 		while (true) {
 			String input = Optional.ofNullable(inputString(prompt))
 				.map(String::toLowerCase).orElse(null);
@@ -131,7 +131,7 @@ public final class CLIHelper implements ICLIHelper {
 	 *
 	 * TODO: Take Iterable instead of List?
 	 */
-	private <Element> void printList(List<? extends Element> list, Function<Element, String> func) {
+	private <Element> void printList(final List<? extends Element> list, final Function<Element, String> func) {
 		int index = 0;
 		for (Element item : list) {
 			println(String.format("%d: %s", index, func.apply(item)));
@@ -142,9 +142,9 @@ public final class CLIHelper implements ICLIHelper {
 	/**
 	 * Implementation of {@link chooseFromList} and {@link chooseStringFromList}.
 	 */
-	private <Element> Pair<Integer, @Nullable Element> chooseFromListImpl(List<? extends Element> items,
-			String description, String none, String prompt, boolean auto,
-			Function<? super Element, String> func) {
+	private <Element> Pair<Integer, @Nullable Element> chooseFromListImpl(final List<? extends Element> items,
+	                                                                      final String description, final String none, final String prompt, final boolean auto,
+	                                                                      final Function<? super Element, String> func) {
 		if (items.isEmpty()) {
 			println(none);
 			return Pair.with(-1, null);
@@ -172,8 +172,8 @@ public final class CLIHelper implements ICLIHelper {
 	 */
 	@Override
 	public <Element extends HasName> Pair<Integer, @Nullable Element> chooseFromList(
-			List<? extends Element> list, String description, String none, String prompt,
-			boolean auto) {
+			final List<? extends Element> list, final String description, final String none, final String prompt,
+			final boolean auto) {
 		return chooseFromListImpl(list, description, none, prompt, auto, HasName::getName);
 	}
 
@@ -183,7 +183,7 @@ public final class CLIHelper implements ICLIHelper {
 	private @Nullable String readLine() {
 		try {
 			return istream.readLine();
-		} catch (IOException except) {
+		} catch (final IOException except) {
 			LOGGER.log(Level.WARNING, "I/O error", except);
 			return null;
 		}
@@ -194,7 +194,7 @@ public final class CLIHelper implements ICLIHelper {
 	 * integer is entered, then return it. Returns null on EOF.
 	 */
 	@Override
-	public @Nullable Integer inputNumber(String prompt) {
+	public @Nullable Integer inputNumber(final String prompt) {
 		int retval = -1;
 		while (retval < 0) {
 			writePrompt(prompt);
@@ -217,7 +217,7 @@ public final class CLIHelper implements ICLIHelper {
 	 * decimal number is entered, then return it. Returns null on EOF.
 	 */
 	@Override
-	public @Nullable BigDecimal inputDecimal(String prompt) {
+	public @Nullable BigDecimal inputDecimal(final String prompt) {
 		final BigDecimal zero = BigDecimal.ZERO;
 		BigDecimal retval = zero.subtract(BigDecimal.ONE);
 		while (retval.compareTo(zero) < 0) {
@@ -228,7 +228,7 @@ public final class CLIHelper implements ICLIHelper {
 			}
 			try {
 				retval = new BigDecimal(input.trim());
-			} catch (NumberFormatException except) {
+			} catch (final NumberFormatException except) {
 				println("Invalid number.");
 				LOGGER.log(Level.FINER, "Invalid number", except);
 			}
@@ -241,7 +241,7 @@ public final class CLIHelper implements ICLIHelper {
 	 * and trailing whitespace. Returns null on EOF (or other I/O error).
 	 */
 	@Override
-	public @Nullable String inputString(String prompt) {
+	public @Nullable String inputString(final String prompt) {
 		writePrompt(prompt);
 		return Optional.ofNullable(readLine()).map(String::trim).orElse(null);
 	}
@@ -250,8 +250,8 @@ public final class CLIHelper implements ICLIHelper {
 	 * Ask the user a yes-or-no question, allowing yes-to-all or no-to-all to skip further questions.
 	 */
 	@Override
-	public @Nullable Boolean inputBooleanInSeries(String prompt, String key,
-			TrinaryPredicate<String> quitResultFactory) {
+	public @Nullable Boolean inputBooleanInSeries(final String prompt, final String key,
+	                                              final TrinaryPredicate<String> quitResultFactory) {
 		if (seriesState.containsKey(key)) {
 			writePrompt(prompt);
 			boolean retval = seriesState.get(key);
@@ -290,8 +290,8 @@ public final class CLIHelper implements ICLIHelper {
 	 * Have the user choose an item from a list.
 	 */
 	@Override
-	public Pair<Integer, @Nullable String> chooseStringFromList(List<String> items,
-			String description, String none, String prompt, boolean auto) {
+	public Pair<Integer, @Nullable String> chooseStringFromList(final List<String> items,
+	                                                            final String description, final String none, final String prompt, final boolean auto) {
 		return chooseFromListImpl(items, description, none, prompt, auto, s -> s);
 	}
 
@@ -299,7 +299,7 @@ public final class CLIHelper implements ICLIHelper {
 	 * Ask the user for a multiline string.
 	 */
 	@Override
-	public @Nullable String inputMultilineString(String prompt) {
+	public @Nullable String inputMultilineString(final String prompt) {
 		StringBuilder builder = new StringBuilder();
 		printlnAtInterval("Type . on a line by itself to end input, or , to start over.");
 		while (true) {
@@ -329,7 +329,7 @@ public final class CLIHelper implements ICLIHelper {
 	}
 
 	@Override
-	public void printlnAtInterval(String line, int interval) {
+	public void printlnAtInterval(final String line, final int interval) {
 		if (intervals.containsKey(line) && intervals.get(line) < interval) {
 			// do nothing
 		} else {

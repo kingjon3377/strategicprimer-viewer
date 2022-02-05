@@ -29,7 +29,7 @@ import org.jetbrains.annotations.Nullable;
  * Logic extracted from the advancement CLI so it can be used by the turn-running CLI as well.
  */
 public class AdvancementCLIHelper implements LevelGainSource {
-	public AdvancementCLIHelper(IAdvancementModel model, ICLIHelper cli) {
+	public AdvancementCLIHelper(final IAdvancementModel model, final ICLIHelper cli) {
 		this.cli = cli;
 		this.model = model;
 	}
@@ -40,17 +40,17 @@ public class AdvancementCLIHelper implements LevelGainSource {
 	private final List<LevelGainListener> levelListeners = new ArrayList<>();
 
 	@Override
-	public void addLevelGainListener(LevelGainListener listener) {
+	public void addLevelGainListener(final LevelGainListener listener) {
 		levelListeners.add(listener);
 	}
 
 	@Override
-	public void removeLevelGainListener(LevelGainListener listener) {
+	public void removeLevelGainListener(final LevelGainListener listener) {
 		levelListeners.remove(listener);
 	}
 
-	private void fireLevelEvent(String workerName, String jobName, String skillName,
-			int gains, int currentLevel) {
+	private void fireLevelEvent(final String workerName, final String jobName, final String skillName,
+	                            final int gains, final int currentLevel) {
 		for (LevelGainListener listener : levelListeners) {
 			listener.level(workerName, jobName, skillName, gains, currentLevel);
 		}
@@ -61,7 +61,7 @@ public class AdvancementCLIHelper implements LevelGainSource {
 	 *
 	 * TODO: Avoid Boolean parameters
 	 */
-	private void advanceJob(IWorker worker, IJob job, boolean allowExpertMentoring) {
+	private void advanceJob(final IWorker worker, final IJob job, final boolean allowExpertMentoring) {
 		List<ISkill> skills = new ArrayList<>(StreamSupport.stream(job.spliterator(), false)
 			.collect(Collectors.toList()));
 		while (true) {
@@ -130,7 +130,7 @@ public class AdvancementCLIHelper implements LevelGainSource {
 	/**
 	 * Let the user add experience to a worker.
 	 */
-	private void advanceSingleWorker(IWorker worker, boolean allowExpertMentoring) {
+	private void advanceSingleWorker(final IWorker worker, final boolean allowExpertMentoring) {
 		List<IJob> jobs = new ArrayList<>(StreamSupport.stream(worker.spliterator(), false)
 			.collect(Collectors.toList()));
 		while (true) {
@@ -171,7 +171,7 @@ public class AdvancementCLIHelper implements LevelGainSource {
 	 *
 	 * TODO: Support expert mentoring
 	 */
-	private void advanceWorkersInSkill(String jobName, String skillName, IWorker... workers) {
+	private void advanceWorkersInSkill(final String jobName, final String skillName, final IWorker... workers) {
 		int hours = Optional.ofNullable(cli.inputNumber("Hours of experience to add: ")).orElse(0);
 		for (IWorker worker : workers) {
 			IJob job = worker.getJob(jobName);
@@ -243,7 +243,7 @@ public class AdvancementCLIHelper implements LevelGainSource {
 	/**
 	 * Let the user add experience in a given Job to all of a list of workers.
 	 */
-	private void advanceWorkersInJob(String jobName, IWorker... workers) {
+	private void advanceWorkersInJob(final String jobName, final IWorker... workers) {
 		List<ISkill> skills = new ArrayList<>(StreamSupport.stream(
 			new ProxyJob(jobName, false, workers).spliterator(), false).collect(Collectors.toList()));
 		while (true) {
@@ -284,7 +284,7 @@ public class AdvancementCLIHelper implements LevelGainSource {
 	/**
 	 * Let the user add experience to a worker or workers in a unit.
 	 */
-	public void advanceWorkersInUnit(IUnit unit, boolean allowExpertMentoring) {
+	public void advanceWorkersInUnit(final IUnit unit, final boolean allowExpertMentoring) {
 		List<IWorker> workers = new ArrayList<>(unit.stream()
 			.filter(IWorker.class::isInstance).map(IWorker.class::cast).collect(Collectors.toList()));
 		Boolean individualAdvancement = cli.inputBooleanInSeries("Add experience to workers individually? ");

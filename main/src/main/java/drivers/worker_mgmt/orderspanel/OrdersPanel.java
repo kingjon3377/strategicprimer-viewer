@@ -59,10 +59,10 @@ public class OrdersPanel extends BorderedPanel implements OrdersContainer {
 	private final Color defaultColor;
 	private final JTextArea area = new JTextArea();
 
-	public OrdersPanel(String description, int currentTurn, Player currentPlayer,
-			BiFunction<Player, String, Iterable<IUnit>> playerUnits,
-			IOrdersSupplier ordersSupplier, @Nullable IOrdersConsumer ordersConsumer,
-			IIsCurrent isCurrent) {
+	public OrdersPanel(final String description, final int currentTurn, final Player currentPlayer,
+	                   final BiFunction<Player, String, Iterable<IUnit>> playerUnits,
+	                   final IOrdersSupplier ordersSupplier, @Nullable final IOrdersConsumer ordersConsumer,
+	                   final IIsCurrent isCurrent) {
 		this.currentPlayer = currentPlayer;
 		this.playerUnits = playerUnits;
 		this.ordersSupplier = ordersSupplier;
@@ -162,7 +162,7 @@ public class OrdersPanel extends BorderedPanel implements OrdersContainer {
 	 * Handle a changed value in the tree.
 	 */
 	@Override
-	public void valueChanged(TreeSelectionEvent event) {
+	public void valueChanged(final TreeSelectionEvent event) {
 		TreePath selectedPath = event.getNewLeadSelectionPath();
 		if (selectedPath != null) {
 			Object sel = selectedPath.getLastPathComponent();
@@ -185,7 +185,7 @@ public class OrdersPanel extends BorderedPanel implements OrdersContainer {
 	}
 
 	@Override
-	public void playerChanged(@Nullable Player old, Player newPlayer) {
+	public void playerChanged(@Nullable final Player old, final Player newPlayer) {
 		currentPlayer = newPlayer;
 	}
 
@@ -199,7 +199,7 @@ public class OrdersPanel extends BorderedPanel implements OrdersContainer {
 	}
 
 	@Override
-	public boolean selectText(String selection) {
+	public boolean selectText(final String selection) {
 		String text = area.getText().toLowerCase();
 		int index = text.indexOf(selection.toLowerCase());
 		if (index < 0) {

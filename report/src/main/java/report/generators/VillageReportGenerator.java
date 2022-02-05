@@ -27,13 +27,13 @@ public class VillageReportGenerator extends AbstractReportGenerator<Village> {
 
 	private final Player currentPlayer;
 
-	public VillageReportGenerator(Comparator<Pair<Point, IFixture>> comp, Player currentPlayer,
-			MapDimensions dimensions) {
+	public VillageReportGenerator(final Comparator<Pair<Point, IFixture>> comp, final Player currentPlayer,
+	                              final MapDimensions dimensions) {
 		this(comp, currentPlayer, dimensions, null);
 	}
 
-	public VillageReportGenerator(Comparator<Pair<Point, IFixture>> comp, Player currentPlayer,
-			MapDimensions dimensions, @Nullable Point hq) {
+	public VillageReportGenerator(final Comparator<Pair<Point, IFixture>> comp, final Player currentPlayer,
+	                              final MapDimensions dimensions, @Nullable final Point hq) {
 		super(comp, dimensions, hq);
 		this.currentPlayer = currentPlayer;
 	}
@@ -41,8 +41,8 @@ public class VillageReportGenerator extends AbstractReportGenerator<Village> {
 	/**
 	 * Produce the report on all known villages.
 	 */
-	public void produce(DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-			IMapNG map, ThrowingConsumer<String, IOException> ostream) throws IOException {
+	public void produce(final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
+	                    final IMapNG map, final ThrowingConsumer<String, IOException> ostream) throws IOException {
 		Comparator<Village> villageComparator = Comparator.comparing(Village::getName)
 			.thenComparing(Comparator.comparing(Village::getRace))
 			.thenComparing(Comparator.comparing(Village::getId));
@@ -97,8 +97,8 @@ public class VillageReportGenerator extends AbstractReportGenerator<Village> {
 	 * that).
 	 */
 	@Override
-	public void produceSingle(DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-			IMapNG map, ThrowingConsumer<String, IOException> ostream, Village item, Point loc)
+	public void produceSingle(final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
+	                          final IMapNG map, final ThrowingConsumer<String, IOException> ostream, final Village item, final Point loc)
 			throws IOException {
 		fixtures.remove(item.getId());
 		ostream.accept("At ");

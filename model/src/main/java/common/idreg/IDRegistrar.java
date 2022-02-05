@@ -27,11 +27,11 @@ public interface IDRegistrar {
 	 */
 	int register(int id, Warning warning, @Nullable Location location);
 
-	default int register(int id, Warning warning) {
+	default int register(final int id, final Warning warning) {
 		return register(id, warning, null);
 	}
 
-	default int register(int id) {
+	default int register(final int id) {
 		return register(id, Warning.getDefaultHandler(), null);
 	}
 

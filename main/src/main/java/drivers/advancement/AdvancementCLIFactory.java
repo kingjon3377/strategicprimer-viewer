@@ -44,7 +44,7 @@ public class AdvancementCLIFactory implements ModelDriverFactory {
 	}
 
 	@Override
-	public ModelDriver createDriver(ICLIHelper cli, SPOptions options, IDriverModel model) {
+	public ModelDriver createDriver(final ICLIHelper cli, final SPOptions options, final IDriverModel model) {
 		if (model instanceof IWorkerModel) {
 			return new AdvancementCLI(cli, options, (IWorkerModel) model);
 		} else {
@@ -53,7 +53,7 @@ public class AdvancementCLIFactory implements ModelDriverFactory {
 	}
 
 	@Override
-	public IDriverModel createModel(IMutableMapNG map) {
+	public IDriverModel createModel(final IMutableMapNG map) {
 		return new WorkerModel(map);
 	}
 }

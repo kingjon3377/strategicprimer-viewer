@@ -16,7 +16,7 @@ public enum StoneKind {
 	Laterite("laterite"),
 	Shale("shale");
 
-	private StoneKind(String str) {
+	private StoneKind(final String str) {
 		string = str;
 	}
 
@@ -25,7 +25,7 @@ public enum StoneKind {
 		return string;
 	}
 
-	public static StoneKind parse(String stone) {
+	public static StoneKind parse(final String stone) {
 		// TODO: Replace with a HashMap cache?
 		for (StoneKind kind : values()) {
 			if (stone.equals(kind.toString())) {

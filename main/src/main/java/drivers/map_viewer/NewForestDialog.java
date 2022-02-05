@@ -31,7 +31,7 @@ import java.math.BigDecimal;
  * A dialog to let the user add a new forest to a tile.
  */
 public class NewForestDialog extends SPDialog implements NewFixtureSource {
-	public NewForestDialog(IDRegistrar idf) {
+	public NewForestDialog(final IDRegistrar idf) {
 		super(null, "Add a New Forest");
 		this.idf = idf;
 		setLayout(new GridLayout(0, 2));
@@ -68,12 +68,12 @@ public class NewForestDialog extends SPDialog implements NewFixtureSource {
 	private final List<NewFixtureListener> listeners = new ArrayList<>();
 
 	@Override
-	public void addNewFixtureListener(NewFixtureListener listener) {
+	public void addNewFixtureListener(final NewFixtureListener listener) {
 		listeners.add(listener);
 	}
 
 	@Override
-	public void removeNewFixtureListener(NewFixtureListener listener) {
+	public void removeNewFixtureListener(final NewFixtureListener listener) {
 		listeners.remove(listener);
 	}
 
@@ -93,7 +93,7 @@ public class NewForestDialog extends SPDialog implements NewFixtureSource {
 		} else if (!acresString.isEmpty()) {
 			try {
 				new BigDecimal(acresString);
-			} catch (NumberFormatException except) {
+			} catch (final NumberFormatException except) {
 				acresField.requestFocusInWindow();
 				return;
 			}
@@ -114,7 +114,7 @@ public class NewForestDialog extends SPDialog implements NewFixtureSource {
 			BigDecimal acres;
 			try {
 				acres = new BigDecimal(acresString);
-			} catch (NumberFormatException except) {
+			} catch (final NumberFormatException except) {
 				acres = new BigDecimal(-1);
 			}
 			Forest forest = new Forest(kind, rowsField.getModel().isSelected(), idNum, acres);
@@ -128,7 +128,7 @@ public class NewForestDialog extends SPDialog implements NewFixtureSource {
 		}
 	}
 
-	private void setupField(JTextField field) {
+	private void setupField(final JTextField field) {
 		field.setActionCommand("OK");
 		field.addActionListener(ignored -> okListener());
 		add(field);

@@ -13,9 +13,9 @@ import java.util.NoSuchElementException;
  */
 public final class ConcatIterable<T> implements Iterable<T> {
 	private final List<Iterable<? extends T>> wrapped;
-	
+
 	@SafeVarargs
-	public ConcatIterable(Iterable<? extends T>... iterables) {
+	public ConcatIterable(final Iterable<? extends T>... iterables) {
 		List<Iterable<? extends T>> temp = new ArrayList<>();
 		for (Iterable<? extends T> iter : iterables) {
 			temp.add(iter);
@@ -31,7 +31,7 @@ public final class ConcatIterable<T> implements Iterable<T> {
 	private static class ConcatIterator<T> implements Iterator<T> {
 		private final Deque<Iterator<? extends T>> wrapped = new LinkedList<>();
 
-		public ConcatIterator(List<Iterable<? extends T>> wrapped) {
+		public ConcatIterator(final List<Iterable<? extends T>> wrapped) {
 			for (Iterable<? extends T> it : wrapped) {
 				this.wrapped.addLast(it.iterator());
 			}

@@ -12,7 +12,7 @@ import exploration.common.IExplorationModel;
  * A list model for players in the exploration GUI.
  */
 /* package */ class PlayerListModel extends DefaultListModel<Player> implements MapChangeListener {
-	public PlayerListModel(IExplorationModel model) {
+	public PlayerListModel(final IExplorationModel model) {
 		this.model = model;
 		model.getPlayerChoices().forEach(this::addElement);
 	}

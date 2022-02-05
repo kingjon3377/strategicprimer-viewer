@@ -16,7 +16,7 @@ public class ImprovedComboBox<Element> extends JComboBox<Element> {
 	public ImprovedComboBox() {
 		setEditable(true);
 	}
-	public ImprovedComboBox(ComboBoxModel<Element> boxModel) {
+	public ImprovedComboBox(final ComboBoxModel<Element> boxModel) {
 		super(boxModel);
 		setEditable(true);
 	}

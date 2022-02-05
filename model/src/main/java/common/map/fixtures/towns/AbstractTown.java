@@ -17,7 +17,7 @@ import org.jetbrains.annotations.Nullable;
 public abstract class AbstractTown implements HasMutableImage,
 		IMutableTownFixture, Subsettable<AbstractTown> {
 	// TODO: Should probably take ID as a constructor parameter too?
-	protected AbstractTown(TownStatus status, TownSize townSize, String name, Player owner, int dc) {
+	protected AbstractTown(final TownStatus status, final TownSize townSize, final String name, final Player owner, final int dc) {
 		this.status = status;
 		this.townSize = townSize;
 		this.name = name;
@@ -81,7 +81,7 @@ public abstract class AbstractTown implements HasMutableImage,
 	 * The player that owns the town, fortification, or city
 	 */
 	@Override
-	public final void setOwner(Player owner) {
+	public final void setOwner(final Player owner) {
 		this.owner = owner;
 	}
 
@@ -121,7 +121,7 @@ public abstract class AbstractTown implements HasMutableImage,
 	 * Set the filename of an image to use as an icon for this instance.
 	 */
 	@Override
-	public final void setImage(String image) {
+	public final void setImage(final String image) {
 		this.image = image;
 	}
 
@@ -142,7 +142,7 @@ public abstract class AbstractTown implements HasMutableImage,
 	 * A filename of an image to use as a portrait.
 	 */
 	@Override
-	public final void setPortrait(String portrait) {
+	public final void setPortrait(final String portrait) {
 		this.portrait = portrait;
 	}
 
@@ -164,12 +164,12 @@ public abstract class AbstractTown implements HasMutableImage,
 	/**
 	 * The contents of the town.
 	 */
-	public final void setPopulation(@Nullable CommunityStats population) {
+	public final void setPopulation(@Nullable final CommunityStats population) {
 		this.population = population;
 	}
 
 	@Override
-	public final boolean isSubset(AbstractTown other, Consumer<String> report) {
+	public final boolean isSubset(final AbstractTown other, final Consumer<String> report) {
 		if (getId() != other.getId()) {
 			report.accept("Fixtures' ID #s differ");
 			return false;
@@ -211,7 +211,7 @@ public abstract class AbstractTown implements HasMutableImage,
 	/**
 	 * A helper method for equals() that checks everything except the type of the object.
 	 */
-	protected final boolean equalsContents(AbstractTown fixture) {
+	protected final boolean equalsContents(final AbstractTown fixture) {
 		return fixture.getTownSize().equals(townSize) &&
 			fixture.getName().equals(name) && fixture.getStatus().equals(status) &&
 			fixture.getOwner().equals(owner) &&
@@ -219,7 +219,7 @@ public abstract class AbstractTown implements HasMutableImage,
 	}
 
 	@Override
-	public boolean equals(Object obj) {
+	public boolean equals(final Object obj) {
 		if (obj instanceof AbstractTown) {
 			return getId() == ((AbstractTown) obj).getId() &&
 				equalsContents((AbstractTown) obj);
@@ -230,7 +230,7 @@ public abstract class AbstractTown implements HasMutableImage,
 
 	// TODO: Make this final? Or make this final and merge it with equalsContents()?
 	@Override
-	public boolean equalsIgnoringID(IFixture fixture) {
+	public boolean equalsIgnoringID(final IFixture fixture) {
 		if (fixture instanceof AbstractTown) {
 			return equalsContents((AbstractTown) fixture);
 		} else {

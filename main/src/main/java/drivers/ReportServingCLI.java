@@ -84,7 +84,7 @@ import org.takes.http.Exit;
  */
 /* package */ class ReportServingCLI implements ReadOnlyDriver {
 	private static final Logger LOGGER = Logger.getLogger(ReportServingCLI.class.getName());
-	public ReportServingCLI(SPOptions options, IDriverModel model, ICLIHelper cli) {
+	public ReportServingCLI(final SPOptions options, final IDriverModel model, final ICLIHelper cli) {
 		this.options = options;
 		this.model = model;
 		this.cli = cli;
@@ -104,7 +104,7 @@ import org.takes.http.Exit;
 		return model;
 	}
 
-	private void serveReports(int port, @Nullable Player currentPlayer) throws DriverFailedException {
+	private void serveReports(final int port, @Nullable final Player currentPlayer) throws DriverFailedException {
 		Map<Path, String> cache = new HashMap<Path, String>();
 		if (model instanceof IMultiMapModel) {
 			for (IMapNG map : ((IMultiMapModel) model).getAllMaps()) {
@@ -114,7 +114,7 @@ import org.takes.http.Exit;
 					try {
 						cache.put(file, ReportGenerator.createReport(map, cli,
 							Optional.of(currentPlayer).orElse(map.getCurrentPlayer())));
-					} catch (IOException except) {
+					} catch (final IOException except) {
 						throw new DriverFailedException(except, "I/O error while creating report(s)");
 					}
 				}
@@ -123,7 +123,7 @@ import org.takes.http.Exit;
 			try {
 				cache.put(model.getMap().getFilename(), ReportGenerator.createReport(model.getMap(), cli,
 					Optional.of(currentPlayer).orElse(model.getMap().getCurrentPlayer())));
-			} catch (IOException except) {
+			} catch (final IOException except) {
 				throw new DriverFailedException(except, "I/O error while creating report(s)");
 			}
 		}
@@ -169,7 +169,7 @@ import org.takes.http.Exit;
 			try {
 				new FtBasic(new TkFork(Stream.concat(Stream.of(rootHandler), endpoints.stream()).toArray(Fork[]::new)),
 					port).start(Exit.NEVER);
-			} catch (IOException except) {
+			} catch (final IOException except) {
 				throw new DriverFailedException(except, "I/O error while serving report");
 			}
 		}
@@ -181,7 +181,7 @@ import org.takes.http.Exit;
 		int port;
 		try {
 			port = Integer.parseInt(portArgument);
-		} catch (NumberFormatException except) {
+		} catch (final NumberFormatException except) {
 			if (!"true".equals(portArgument)) {
 				LOGGER.warning("Port must be a number");
 				LOGGER.log(Level.FINER, "Stack trace of port parse failure", except);
@@ -192,7 +192,7 @@ import org.takes.http.Exit;
 		try {
 			player = model.getMap().getPlayers().getPlayer(
 				Integer.parseInt(options.getArgument("--player")));
-		} catch (NumberFormatException except) {
+		} catch (final NumberFormatException except) {
 			player = null;
 		}
 		serveReports(port, player);

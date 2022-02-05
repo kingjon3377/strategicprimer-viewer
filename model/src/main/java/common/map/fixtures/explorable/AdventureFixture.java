@@ -12,7 +12,7 @@ import common.map.Player;
  * side of the world.
  */
 public class AdventureFixture implements ExplorableFixture, HasMutableOwner, IFixture, Subsettable<IFixture> {
-	public AdventureFixture(Player owner, String briefDescription, String fullDescription, int id) {
+	public AdventureFixture(final Player owner, final String briefDescription, final String fullDescription, final int id) {
 		this.owner = owner;
 		this.briefDescription = briefDescription;
 		this.fullDescription = fullDescription;
@@ -73,7 +73,7 @@ public class AdventureFixture implements ExplorableFixture, HasMutableOwner, IFi
 	 * Set the filename of an image to use as an icon for this instance.
 	 */
 	@Override
-	public void setImage(String image) {
+	public void setImage(final String image) {
 		this.image = image;
 	}
 
@@ -94,7 +94,7 @@ public class AdventureFixture implements ExplorableFixture, HasMutableOwner, IFi
 	 * Set the player that has undertaken the adventure.
 	 */
 	@Override
-	public void setOwner(Player owner) {
+	public void setOwner(final Player owner) {
 		this.owner = owner;
 	}
 
@@ -102,7 +102,7 @@ public class AdventureFixture implements ExplorableFixture, HasMutableOwner, IFi
 	 * Clone the fixture.
 	 */
 	@Override
-	public AdventureFixture copy(boolean zero) {
+	public AdventureFixture copy(final boolean zero) {
 		AdventureFixture retval = new AdventureFixture(owner, briefDescription,
 			fullDescription, id);
 		retval.setImage(image);
@@ -128,7 +128,7 @@ public class AdventureFixture implements ExplorableFixture, HasMutableOwner, IFi
 	}
 
 	@Override
-	public boolean equalsIgnoringID(IFixture fixture) {
+	public boolean equalsIgnoringID(final IFixture fixture) {
 		if (this == fixture) {
 			return true;
 		} else if (fixture instanceof AdventureFixture) {
@@ -143,7 +143,7 @@ public class AdventureFixture implements ExplorableFixture, HasMutableOwner, IFi
 	}
 
 	@Override
-	public boolean equals(Object obj) {
+	public boolean equals(final Object obj) {
 		if (this == obj) {
 			return true;
 		} else if (obj instanceof AdventureFixture) {
@@ -179,7 +179,7 @@ public class AdventureFixture implements ExplorableFixture, HasMutableOwner, IFi
 	}
 
 	@Override
-	public boolean isSubset(IFixture obj, Consumer<String> report) {
+	public boolean isSubset(final IFixture obj, final Consumer<String> report) {
 		if (obj.getId() == id) {
 			if (obj instanceof AdventureFixture) {
 				Consumer<String> localReport =

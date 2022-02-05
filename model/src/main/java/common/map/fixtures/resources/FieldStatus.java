@@ -26,7 +26,7 @@ public enum FieldStatus {
 	 */
 	Bearing("bearing");
 	private final String string;
-	private FieldStatus(String str) {
+	private FieldStatus(final String str) {
 		string = str;
 	}
 	@Override
@@ -34,12 +34,12 @@ public enum FieldStatus {
 		return string;
 	}
 
-	public static FieldStatus random(int seed) {
+	public static FieldStatus random(final int seed) {
 		FieldStatus[] statuses = FieldStatus.values();
 		return statuses[new Random(seed).nextInt(statuses.length)];
 	}
 
-	public static FieldStatus parse(String status) {
+	public static FieldStatus parse(final String status) {
 		// TODO: Have HashMap cache to speed this up?
 		for (FieldStatus val : values()) {
 			if (status.equals(val.toString())) {

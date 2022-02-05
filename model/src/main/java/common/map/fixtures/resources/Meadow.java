@@ -12,7 +12,7 @@ import java.util.function.Consumer;
  * TODO: Implement that effect
  */
 public class Meadow implements HarvestableFixture, HasExtent<Meadow> {
-	public Meadow(String kind, boolean field, boolean cultivated, int id, FieldStatus status, Number acres) {
+	public Meadow(final String kind, final boolean field, final boolean cultivated, final int id, final FieldStatus status, final Number acres) {
 		this.kind = kind;
 		this.field = field;
 		this.cultivated = cultivated;
@@ -21,7 +21,7 @@ public class Meadow implements HarvestableFixture, HasExtent<Meadow> {
 		this.acres = acres;
 	}
 
-	public Meadow(String kind, boolean field, boolean cultivated, int id, FieldStatus status) {
+	public Meadow(final String kind, final boolean field, final boolean cultivated, final int id, final FieldStatus status) {
 		this(kind, field, cultivated, id, status, -1);
 	}
 
@@ -110,7 +110,7 @@ public class Meadow implements HarvestableFixture, HasExtent<Meadow> {
 	 * The filename of an image to use as an icon for this instance.
 	 */
 	@Override
-	public void setImage(String image) {
+	public void setImage(final String image) {
 		this.image = image;
 	}
 
@@ -128,7 +128,7 @@ public class Meadow implements HarvestableFixture, HasExtent<Meadow> {
 	}
 
 	@Override
-	public Meadow copy(boolean zero) {
+	public Meadow copy(final boolean zero) {
 		Meadow retval = new Meadow(kind, field, cultivated, id, status,
 			(zero) ? -1 : acres);
 		retval.setImage(image);
@@ -167,7 +167,7 @@ public class Meadow implements HarvestableFixture, HasExtent<Meadow> {
 	}
 
 	@Override
-	public boolean equals(Object obj) {
+	public boolean equals(final Object obj) {
 		if (obj instanceof Meadow) {
 			// TODO: Make NumberComparator.compare() static first, with the dynamic one delegating?
 			return kind.equals(((Meadow) obj).getKind()) &&
@@ -182,7 +182,7 @@ public class Meadow implements HarvestableFixture, HasExtent<Meadow> {
 	}
 
 	@Override
-	public boolean equalsIgnoringID(IFixture fixture) {
+	public boolean equalsIgnoringID(final IFixture fixture) {
 		if (fixture instanceof Meadow) {
 			return kind.equals(((Meadow) fixture).getKind()) &&
 				field == ((Meadow) fixture).isField() &&
@@ -195,7 +195,7 @@ public class Meadow implements HarvestableFixture, HasExtent<Meadow> {
 	}
 
 	@Override
-	public boolean isSubset(IFixture other, Consumer<String> report) {
+	public boolean isSubset(final IFixture other, final Consumer<String> report) {
 		if (other.getId() != id) {
 			report.accept("IDs differ");
 			return false;
@@ -256,12 +256,12 @@ public class Meadow implements HarvestableFixture, HasExtent<Meadow> {
 	}
 
 	@Override
-	public Meadow combined(Meadow other) {
+	public Meadow combined(final Meadow other) {
 		return new Meadow(kind, field, cultivated, id, status, HasExtent.sum(acres, other.getAcres()));
 	}
 
 	@Override
-	public Meadow reduced(Number subtrahend) {
+	public Meadow reduced(final Number subtrahend) {
 		return new Meadow(kind, field, cultivated, id, status, HasExtent.sum(acres, HasExtent.negate(subtrahend)));
 	}
 }

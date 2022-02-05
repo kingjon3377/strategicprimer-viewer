@@ -13,7 +13,7 @@ import common.map.IFixture;
  */
 /* default */ final class ProxyAnimal implements AnimalProxy {
 
-	public ProxyAnimal(Animal... proxiedAnimals) {
+	public ProxyAnimal(final Animal... proxiedAnimals) {
 		animals = new ArrayList<>();
 		Stream.of(proxiedAnimals).forEach(animals::add);
 	}
@@ -33,13 +33,13 @@ import common.map.IFixture;
 	private final List<Animal> animals;
 
 	@Override
-	public boolean isSubset(IFixture obj, Consumer<String> report) {
+	public boolean isSubset(final IFixture obj, final Consumer<String> report) {
 		report.accept("isSubset called on ProxyAnimal");
 		return false;
 	}
 
 	@Override
-	public void addProxied(Animal item) {
+	public void addProxied(final Animal item) {
 		if (item == this) {
 			return;
 		}
@@ -53,7 +53,7 @@ import common.map.IFixture;
 	}
 
 	@Override
-	public Animal copy(boolean zero) {
+	public Animal copy(final boolean zero) {
 		return new ProxyAnimal(animals.stream().map((a) -> a.copy(zero)).toArray(Animal[]::new));
 	}
 
@@ -85,12 +85,12 @@ import common.map.IFixture;
 	}
 
 	@Override
-	public Animal reduced(int newPopulation, int newId) {
+	public Animal reduced(final int newPopulation, final int newId) {
 		return new ProxyAnimal(animals.stream().map((a) -> a.reduced(newPopulation, newId)).toArray(Animal[]::new));
 	}
 
 	@Override
-	public Animal combined(Animal addend) {
+	public Animal combined(final Animal addend) {
 		if (addend instanceof AnimalProxy && ((AnimalProxy) addend).isParallel()) {
 			List<Animal> interim = new ArrayList<>();
 			Iterator<Animal> ours = getProxied().iterator();
@@ -137,7 +137,7 @@ import common.map.IFixture;
 	 * or neither are talking, and their IDs are equal.
 	 */
 	@Override
-	public boolean equals(Object obj) {
+	public boolean equals(final Object obj) {
 		if (this == obj) {
 			return true;
 		} else if (obj instanceof Animal) {

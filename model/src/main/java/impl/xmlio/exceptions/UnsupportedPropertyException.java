@@ -19,7 +19,7 @@ public class UnsupportedPropertyException extends SPFormatException {
 	 */
 	private final QName tag;
 
-	public UnsupportedPropertyException(StartElement context, String param) {
+	public UnsupportedPropertyException(final StartElement context, final String param) {
 		super(String.format("Unsupported property %s in tag %s", param,
 			context.getName().getLocalPart()), context.getLocation().getLineNumber(),
 			context.getLocation().getColumnNumber());
@@ -27,7 +27,7 @@ public class UnsupportedPropertyException extends SPFormatException {
 		tag = context.getName();
 	}
 
-	private UnsupportedPropertyException(StartElement tag, String param, String context) {
+	private UnsupportedPropertyException(final StartElement tag, final String param, final String context) {
 		super(String.format("Unsupported property %s in tag %s %s", param,
 			tag.getName().getLocalPart(), context), tag.getLocation().getLineNumber(),
 			tag.getLocation().getColumnNumber());
@@ -38,7 +38,7 @@ public class UnsupportedPropertyException extends SPFormatException {
 	/**
 	 * A variation for when a property is *conditionally* supported.
 	 */
-	public static UnsupportedPropertyException inContext(StartElement tag, String param, String context) {
+	public static UnsupportedPropertyException inContext(final StartElement tag, final String param, final String context) {
 		return new UnsupportedPropertyException(tag, param, context);
 	}
 

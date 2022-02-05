@@ -16,7 +16,7 @@ public final class NumParsingHelper {
 	/**
 	 * Whether the given string contains numeric data, such as will be successfully parsed by {@link parseInt}.
 	 */
-	public static boolean isNumeric(String string) {
+	public static boolean isNumeric(final String string) {
 		try {
 			PARSER.parse(string);
 			return true;
@@ -29,7 +29,7 @@ public final class NumParsingHelper {
 	/**
 	 * Parse an integer, which may contain commas, returning an empty Optional if non-numeric.
 	 */
-	public static OptionalInt parseInt(String string) {
+	public static OptionalInt parseInt(final String string) {
 		try {
 			return OptionalInt.of(PARSER.parse(string).intValue());
 		} catch (NumberFormatException|ParseException except) {

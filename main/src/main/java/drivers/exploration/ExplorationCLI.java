@@ -34,7 +34,7 @@ import common.map.fixtures.mobile.IUnit;
  */
 /* package */ class ExplorationCLI implements CLIDriver {
 	private static final Logger LOGGER = Logger.getLogger(ExplorationCLI.class.getName());
-	public ExplorationCLI(ICLIHelper cli, IExplorationModel model) {
+	public ExplorationCLI(final ICLIHelper cli, final IExplorationModel model) {
 		this.cli = cli;
 		this.model = model;
 	}
@@ -65,7 +65,7 @@ import common.map.fixtures.mobile.IUnit;
 	 * Have the user choose a unit belonging to that player.
 	 */
 	@Nullable
-	public IUnit chooseUnit(Player player) {
+	public IUnit chooseUnit(final Player player) {
 		return cli.chooseFromList(StreamSupport.stream(model.getUnits(player).spliterator(), false)
 				.collect(Collectors.toList()), "Player's units:",
 			"That player has no units in the master map", "Chosen unit: ", true).getValue1();

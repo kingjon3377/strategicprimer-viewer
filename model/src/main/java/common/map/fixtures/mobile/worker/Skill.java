@@ -6,7 +6,7 @@ import java.util.function.Consumer;
  * A skill a worker has experience or training in.
  */
 public final class Skill implements IMutableSkill {
-	public Skill(String name, int skillLevel, int time) {
+	public Skill(final String name, final int skillLevel, final int time) {
 		this.name = name;
 		this.skillLevel = skillLevel;
 		this.time = time;
@@ -63,7 +63,7 @@ public final class Skill implements IMutableSkill {
 	 * An object is equal iff it is a Skill with the same name, level, and number of hours.
 	 */
 	@Override
-	public boolean equals(Object obj) {
+	public boolean equals(final Object obj) {
 		if (obj instanceof ISkill) {
 			return name.equals(((ISkill) obj).getName()) &&
 				skillLevel == ((ISkill) obj).getLevel() &&
@@ -82,7 +82,7 @@ public final class Skill implements IMutableSkill {
 	 * Add hours of training or experience.
 	 */
 	@Override
-	public void addHours(int hours, int condition) {
+	public void addHours(final int hours, final int condition) {
 		time += hours;
 		if (condition <= time) {
 			skillLevel++;

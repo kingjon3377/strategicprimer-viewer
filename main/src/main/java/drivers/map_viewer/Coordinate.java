@@ -8,7 +8,7 @@ package drivers.map_viewer;
  * TODO: Test performance implications of that
  */
 public class Coordinate {
-	public Coordinate(int x, int y) {
+	public Coordinate(final int x, final int y) {
 		this.x = x;
 		this.y = y;
 	}

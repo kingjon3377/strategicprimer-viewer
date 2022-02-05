@@ -29,7 +29,7 @@ public class SummonMenuItem extends JCheckBoxMenuItem {
 	Frame frame;
 
 	ActionListener actionListener = new ActionListener() {
-		public void actionPerformed(ActionEvent e) {
+		public void actionPerformed(final ActionEvent e) {
 			frame.toFront();
 			if (frame.getExtendedState() == Frame.ICONIFIED)
 				frame.setExtendedState(Frame.NORMAL);
@@ -43,14 +43,14 @@ public class SummonMenuItem extends JCheckBoxMenuItem {
 	 * @param f
 	 *            the frame to bring to front when this menu item is activated
 	 */
-	public SummonMenuItem(Frame f) {
+	public SummonMenuItem(final Frame f) {
 		super();
 		frame = f;
 		addActionListener(actionListener);
 		updateText();
 
 		frame.addPropertyChangeListener("title", new PropertyChangeListener() {
-			public void propertyChange(PropertyChangeEvent e) {
+			public void propertyChange(final PropertyChangeEvent e) {
 				updateText();
 			}
 		});

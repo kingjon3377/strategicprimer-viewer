@@ -14,7 +14,7 @@ public class MissingChildException extends SPFormatException {
 	 */
 	private final QName tag;
 
-	public MissingChildException(StartElement context) {
+	public MissingChildException(final StartElement context) {
 		super(String.format("Tag %s missing a child", context.getName().getLocalPart()),
 			context.getLocation().getLineNumber(), context.getLocation().getColumnNumber());
 		tag = context.getName();

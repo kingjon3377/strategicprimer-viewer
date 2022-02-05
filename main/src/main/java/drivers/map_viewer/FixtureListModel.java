@@ -46,17 +46,17 @@ public class FixtureListModel implements ListModel<TileFixture>, SelectionChange
 	private final @Nullable BiConsumer<Point, TileFixture> removeFixture;
 	private final Comparator<TileFixture> comparator;
 
-	public FixtureListModel(Function<Point, Collection<TileFixture>> fixturesSource,
-			Function<Point, @Nullable TileType> terrainSource,
-			Function<Point, Collection<River>> riversSource, Predicate<Point> mountainSource,
-			Function<Point, @Nullable AnimalTracks> tracksSource,
-			@Nullable BiConsumer<Point, TileType> terrainSink,
-			@Nullable BiConsumer<Point, River[]> addRivers,
-			@Nullable BiConsumer<Point, Boolean> mountainSink,
-			@Nullable BiPredicate<Point, TileFixture> addFixtureLambda,
-			@Nullable BiConsumer<Point, River[]> removeRivers,
-			@Nullable BiConsumer<Point, TileFixture> removeFixture,
-			Comparator<TileFixture> comparator) {
+	public FixtureListModel(final Function<Point, Collection<TileFixture>> fixturesSource,
+	                        final Function<Point, @Nullable TileType> terrainSource,
+	                        final Function<Point, Collection<River>> riversSource, final Predicate<Point> mountainSource,
+	                        final Function<Point, @Nullable AnimalTracks> tracksSource,
+	                        @Nullable final BiConsumer<Point, TileType> terrainSink,
+	                        @Nullable final BiConsumer<Point, River[]> addRivers,
+	                        @Nullable final BiConsumer<Point, Boolean> mountainSink,
+	                        @Nullable final BiPredicate<Point, TileFixture> addFixtureLambda,
+	                        @Nullable final BiConsumer<Point, River[]> removeRivers,
+	                        @Nullable final BiConsumer<Point, TileFixture> removeFixture,
+	                        final Comparator<TileFixture> comparator) {
 		this.fixturesSource = fixturesSource;
 		this.terrainSource = terrainSource;
 		this.riversSource = riversSource;
@@ -79,10 +79,10 @@ public class FixtureListModel implements ListModel<TileFixture>, SelectionChange
 	private List<TileFixture> cachedTerrainList = Collections.emptyList();
 
 	@Override
-	public void selectedUnitChanged(@Nullable IUnit oldSelection, @Nullable IUnit newSelection) {}
+	public void selectedUnitChanged(@Nullable final IUnit oldSelection, @Nullable final IUnit newSelection) {}
 
 	@Override
-	public void cursorPointChanged(@Nullable Point old, Point newCursor) {}
+	public void cursorPointChanged(@Nullable final Point old, final Point newCursor) {}
 
 	/**
 	 * Any animal tracks that have been "added" to the current tile but kept out of the map.
@@ -92,12 +92,12 @@ public class FixtureListModel implements ListModel<TileFixture>, SelectionChange
 	private final List<ListDataListener> listDataListeners = new ArrayList<>();
 
 	@Override
-	public void addListDataListener(ListDataListener listener) {
+	public void addListDataListener(final ListDataListener listener) {
 		listDataListeners.add(listener);
 	}
 
 	@Override
-	public void removeListDataListener(ListDataListener listener) {
+	public void removeListDataListener(final ListDataListener listener) {
 		listDataListeners.remove(listener);
 	}
 
@@ -106,7 +106,7 @@ public class FixtureListModel implements ListModel<TileFixture>, SelectionChange
 		return fixturesSource.apply(point).size() + currentTracks.size() + cachedTerrainList.size();
 	}
 
-	private void fireIntervalReplaced(Range oldRange, Range newRange) {
+	private void fireIntervalReplaced(final Range oldRange, final Range newRange) {
 		ListDataEvent removeEvent = new ListDataEvent(this, ListDataEvent.INTERVAL_REMOVED,
 			oldRange.getLowerBound(), oldRange.getUpperBound());
 		ListDataEvent addEvent = new ListDataEvent(this, ListDataEvent.INTERVAL_ADDED,
@@ -117,7 +117,7 @@ public class FixtureListModel implements ListModel<TileFixture>, SelectionChange
 		}
 	}
 
-	private void fireContentsChanged(Range range) {
+	private void fireContentsChanged(final Range range) {
 		ListDataEvent event = new ListDataEvent(this, ListDataEvent.CONTENTS_CHANGED,
 			range.getLowerBound(), range.getUpperBound());
 		for (ListDataListener listener : listDataListeners) {
@@ -125,7 +125,7 @@ public class FixtureListModel implements ListModel<TileFixture>, SelectionChange
 		}
 	}
 
-	private void fireIntervalAdded(Range range) {
+	private void fireIntervalAdded(final Range range) {
 		ListDataEvent event = new ListDataEvent(this, ListDataEvent.INTERVAL_ADDED,
 			range.getLowerBound(), range.getUpperBound());
 		for (ListDataListener listener : listDataListeners) {
@@ -133,7 +133,7 @@ public class FixtureListModel implements ListModel<TileFixture>, SelectionChange
 		}
 	}
 
-	private void fireIntervalRemoved(Range range) {
+	private void fireIntervalRemoved(final Range range) {
 		ListDataEvent event = new ListDataEvent(this, ListDataEvent.INTERVAL_REMOVED,
 			range.getLowerBound(), range.getUpperBound());
 		for (ListDataListener listener : listDataListeners) {
@@ -142,7 +142,7 @@ public class FixtureListModel implements ListModel<TileFixture>, SelectionChange
 	}
 
 	@Override
-	public void selectedPointChanged(@Nullable Point old, Point newPoint) {
+	public void selectedPointChanged(@Nullable final Point old, final Point newPoint) {
 		LOGGER.finer("Starting FixtureListModel.selectedPointChanged");
 		int oldSize = getSize();
 		cachedTerrainList = Collections.emptyList();
@@ -176,7 +176,7 @@ public class FixtureListModel implements ListModel<TileFixture>, SelectionChange
 	}
 
 	@Override
-	public TileFixture getElementAt(int index) {
+	public TileFixture getElementAt(final int index) {
 		List<TileFixture> main = new ArrayList<>(fixturesSource.apply(point));
 		main.sort(comparator); // TODO: cache this?
 		if (index < 0) {
@@ -192,11 +192,11 @@ public class FixtureListModel implements ListModel<TileFixture>, SelectionChange
 		}
 	}
 
-	private int adjustedIndex(int index) {
+	private int adjustedIndex(final int index) {
 		return index + cachedTerrainList.size();
 	}
 
-	private static <U, T extends U> int indexOf(Collection<U> collection, T item) {
+	private static <U, T extends U> int indexOf(final Collection<U> collection, final T item) {
 		if (collection instanceof List) {
 			return ((List<U>) collection).indexOf(item);
 		} else {
@@ -212,7 +212,7 @@ public class FixtureListModel implements ListModel<TileFixture>, SelectionChange
 	 * TODO: Provide a way of pre-rejecting operations, so drag-and-drop
 	 * failures can be warned about before the drop
 	 */
-	public boolean addFixture(TileFixture fixture) {
+	public boolean addFixture(final TileFixture fixture) {
 		if (fixture instanceof TileTypeFixture) {
 			TileType existingTerrain = terrainSource.apply(point);
 			TileTypeFixture ttf = (TileTypeFixture) fixture;
@@ -304,7 +304,7 @@ public class FixtureListModel implements ListModel<TileFixture>, SelectionChange
 	/**
 	 * Remove the specified items from the tile and the list.
 	 */
-	public boolean removeAll(Collection<? extends TileFixture> fixtures) {
+	public boolean removeAll(final Collection<? extends TileFixture> fixtures) {
 		boolean retval = true;
 		for (TileFixture fixture : fixtures) {
 			if (fixture instanceof TileTypeFixture) {

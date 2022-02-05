@@ -31,7 +31,7 @@ public class MapPopulatorFactory implements ModelDriverFactory {
 	}
 
 	@Override
-	public ModelDriver createDriver(ICLIHelper cli, SPOptions options, IDriverModel model) {
+	public ModelDriver createDriver(final ICLIHelper cli, final SPOptions options, final IDriverModel model) {
 		if (model instanceof IPopulatorDriverModel) {
 			return new MapPopulatorDriver(cli, options, (IPopulatorDriverModel) model);
 		} else {
@@ -40,7 +40,7 @@ public class MapPopulatorFactory implements ModelDriverFactory {
 	}
 
 	@Override
-	public IPopulatorDriverModel createModel(IMutableMapNG map) {
+	public IPopulatorDriverModel createModel(final IMutableMapNG map) {
 		return new PopulatorDriverModel(map);
 	}
 }

@@ -50,7 +50,7 @@ public class TurnRunningModel extends ExplorationModel implements ITurnRunningMo
 	 * of its contents; otherwise, return stream containing only it. This
 	 * is intended to be used in {@link Stream#flatMap}.
 	 */
-	private static Stream<IFixture> unflattenNonFortresses(TileFixture fixture) {
+	private static Stream<IFixture> unflattenNonFortresses(final TileFixture fixture) {
 		if (fixture instanceof IFortress) {
 			return ((IFortress) fixture).stream().map(IFixture.class::cast);
 		} else {
@@ -63,7 +63,7 @@ public class TurnRunningModel extends ExplorationModel implements ITurnRunningMo
 	 * of it and its contents; otherwise, return a stream of only it. This
 	 * is intended to be used in {@link Stream#flatMap}.
 	 */
-	private static Stream<IFixture> partiallyFlattenFortresses(TileFixture fixture) {
+	private static Stream<IFixture> partiallyFlattenFortresses(final TileFixture fixture) {
 		if (fixture instanceof IFortress) {
 			return Stream.concat(Stream.of(fixture), ((IFortress) fixture).stream());
 		} else {
@@ -71,12 +71,12 @@ public class TurnRunningModel extends ExplorationModel implements ITurnRunningMo
 		}
 	}
 
-	public TurnRunningModel(IMutableMapNG map) {
+	public TurnRunningModel(final IMutableMapNG map) {
 		super(map);
 	}
 
 	// TODO: provide copyConstructor static factory?
-	public TurnRunningModel(IDriverModel model) {
+	public TurnRunningModel(final IDriverModel model) {
 		super(model);
 	}
 
@@ -85,7 +85,7 @@ public class TurnRunningModel extends ExplorationModel implements ITurnRunningMo
 	 * iff no fixture with the same ID is already there.
 	 */
 	@Override
-	public void addToSubMaps(Point point, TileFixture fixture, boolean zero) {
+	public void addToSubMaps(final Point point, final TileFixture fixture, final boolean zero) {
 		for (IMutableMapNG map : getRestrictedSubordinateMaps()) {
 			if (map.getFixtures(point).stream().mapToInt(TileFixture::getId)
 					.noneMatch(i -> fixture.getId() == i)) {
@@ -100,7 +100,7 @@ public class TurnRunningModel extends ExplorationModel implements ITurnRunningMo
 	 */
 	@Override
 	public <T extends HasPopulation<? extends TileFixture>&TileFixture>
-			void reducePopulation(Point location, T fixture, boolean zero, int reduction) {
+			void reducePopulation(final Point location, final T fixture, final boolean zero, final int reduction) {
 		if (reduction > 0) {
 			boolean first = false;
 			boolean all = false;
@@ -147,7 +147,7 @@ public class TurnRunningModel extends ExplorationModel implements ITurnRunningMo
 	 */
 	@Override
 	public <T extends HasExtent<? extends TileFixture>&TileFixture>
-		void reduceExtent(Point location, T fixture, boolean zero, BigDecimal reduction) {
+		void reduceExtent(final Point location, final T fixture, final boolean zero, final BigDecimal reduction) {
 		if (reduction.compareTo(BigDecimal.ZERO) > 0) {
 			boolean first = false;
 			boolean all = false;
@@ -189,7 +189,7 @@ public class TurnRunningModel extends ExplorationModel implements ITurnRunningMo
 	 * an existing Job by that name already existed, it is left alone.
 	 */
 	@Override
-	public boolean addJobToWorker(IWorker worker, String jobName) {
+	public boolean addJobToWorker(final IWorker worker, final String jobName) {
 		boolean any = false;
 		for (IMutableMapNG map : getRestrictedAllMaps()) {
 			IMutableWorker matching = map.streamLocations()
@@ -224,7 +224,7 @@ public class TurnRunningModel extends ExplorationModel implements ITurnRunningMo
 	 * be a random number between 0 and 99.
 	 */
 	@Override
-	public boolean addHoursToSkill(IWorker worker, String jobName, String skillName, int hours, int contextValue) {
+	public boolean addHoursToSkill(final IWorker worker, final String jobName, final String skillName, final int hours, final int contextValue) {
 		boolean any = false;
 		for (IMutableMapNG map : getRestrictedAllMaps()) {
 			IMutableWorker matching = map.streamLocations()
@@ -274,7 +274,7 @@ public class TurnRunningModel extends ExplorationModel implements ITurnRunningMo
 	 * out in any of the maps, false otherwise.
 	 */
 	@Override
-	public boolean replaceSkillInJob(IWorker worker, String jobName, ISkill delenda, ISkill replacement) {
+	public boolean replaceSkillInJob(final IWorker worker, final String jobName, final ISkill delenda, final ISkill replacement) {
 		boolean any = false;
 		for (IMutableMapNG map : getRestrictedAllMaps()) {
 			IMutableWorker matching = map.streamLocations()
@@ -314,7 +314,7 @@ public class TurnRunningModel extends ExplorationModel implements ITurnRunningMo
 	 * matched in any of the maps, false otherwise.
 	 */
 	@Override
-	public boolean reduceResourceBy(IResourcePile resource, BigDecimal amount, Player owner) {
+	public boolean reduceResourceBy(final IResourcePile resource, final BigDecimal amount, final Player owner) {
 		boolean any = false;
 		for (IMutableMapNG map : getRestrictedAllMaps()) {
 			for (FixtureIterable<?> container : map.streamLocations()
@@ -368,7 +368,7 @@ public class TurnRunningModel extends ExplorationModel implements ITurnRunningMo
 	 */
 	@Deprecated
 	@Override
-	public boolean removeResource(IResourcePile resource, Player owner) {
+	public boolean removeResource(final IResourcePile resource, final Player owner) {
 		boolean any = false;
 		for (IMutableMapNG map : getRestrictedAllMaps()) {
 			for (FixtureIterable<?> container : map.streamLocations()
@@ -411,7 +411,7 @@ public class TurnRunningModel extends ExplorationModel implements ITurnRunningMo
 	 * one map, false otherwise.
 	 */
 	@Override
-	public boolean setUnitOrders(IUnit unit, int turn, String results) {
+	public boolean setUnitOrders(final IUnit unit, final int turn, final String results) {
 		boolean any = false;
 		for (IMutableMapNG map : getRestrictedAllMaps()) {
 			IMutableUnit matching = map.streamLocations()
@@ -436,7 +436,7 @@ public class TurnRunningModel extends ExplorationModel implements ITurnRunningMo
 	 * one map, false otherwise.
 	 */
 	@Override
-	public boolean setUnitResults(IUnit unit, int turn, String results) {
+	public boolean setUnitResults(final IUnit unit, final int turn, final String results) {
 		boolean any = false;
 		for (IMutableMapNG map : getRestrictedAllMaps()) {
 			IMutableUnit matching = map.streamLocations()
@@ -461,7 +461,7 @@ public class TurnRunningModel extends ExplorationModel implements ITurnRunningMo
 	 * mutable) unit was found in at least one map, false otherwise.
 	 */
 	@Override
-	public boolean addResource(IUnit container, int id, String kind, String contents, Quantity quantity) {
+	public boolean addResource(final IUnit container, final int id, final String kind, final String contents, final Quantity quantity) {
 		boolean any = false;
 		IMutableResourcePile resource = new ResourcePileImpl(id, kind, contents, quantity);
 		for (IMutableMapNG map : getRestrictedAllMaps()) {
@@ -486,7 +486,7 @@ public class TurnRunningModel extends ExplorationModel implements ITurnRunningMo
 	 * mutable) fortress was found in at least one map, false otherwise.
 	 */
 	@Override
-	public boolean addResource(IFortress container, int id, String kind, String contents, Quantity quantity) {
+	public boolean addResource(final IFortress container, final int id, final String kind, final String contents, final Quantity quantity) {
 		boolean any = false;
 		IMutableResourcePile resource = new ResourcePileImpl(id, kind, contents, quantity);
 		for (IMutableMapNG map : getRestrictedAllMaps()) {
@@ -509,8 +509,8 @@ public class TurnRunningModel extends ExplorationModel implements ITurnRunningMo
 	 * otherwise.
 	 */
 	@Override
-	public boolean addResource(IUnit container, int id, String kind, String contents, Quantity quantity,
-			int createdDate) {
+	public boolean addResource(final IUnit container, final int id, final String kind, final String contents, final Quantity quantity,
+	                           final int createdDate) {
 		boolean any = false;
 		IMutableResourcePile resource = new ResourcePileImpl(id, kind, contents, quantity);
 		resource.setCreated(createdDate);
@@ -537,8 +537,8 @@ public class TurnRunningModel extends ExplorationModel implements ITurnRunningMo
 	 * otherwise.
 	 */
 	@Override
-	public boolean addResource(IFortress container, int id, String kind, String contents, Quantity quantity,
-			int createdDate) {
+	public boolean addResource(final IFortress container, final int id, final String kind, final String contents, final Quantity quantity,
+	                           final int createdDate) {
 		boolean any = false;
 		IMutableResourcePile resource = new ResourcePileImpl(id, kind, contents, quantity);
 		resource.setCreated(createdDate);
@@ -564,7 +564,7 @@ public class TurnRunningModel extends ExplorationModel implements ITurnRunningMo
 	 * common.map.fixtures.mobile.AnimalImpl} constructor, to better fit the needs of <em>our</em> callers.
 	 */
 	@Override
-	public boolean addAnimal(IUnit container, String kind, String status, int id, int population, int born) {
+	public boolean addAnimal(final IUnit container, final String kind, final String status, final int id, final int population, final int born) {
 		if (population <= 0) {
 			return false;
 		}
@@ -596,7 +596,7 @@ public class TurnRunningModel extends ExplorationModel implements ITurnRunningMo
 	 * the transfer occurs) in any map, false otherwise.
 	 */
 	@Override
-	public boolean transferResource(IResourcePile from, IUnit to, BigDecimal quantity, IntSupplier idFactory) {
+	public boolean transferResource(final IResourcePile from, final IUnit to, final BigDecimal quantity, final IntSupplier idFactory) {
 		boolean any = false;
 		IntSupplier id = new IntSupplier() {
 			private Integer generatedId = null;
@@ -671,7 +671,7 @@ public class TurnRunningModel extends ExplorationModel implements ITurnRunningMo
 	 * transfer occurs) in any map, false otherwise.
 	 */
 	@Override
-	public boolean transferResource(IResourcePile from, IFortress to, BigDecimal quantity, IntSupplier idFactory) {
+	public boolean transferResource(final IResourcePile from, final IFortress to, final BigDecimal quantity, final IntSupplier idFactory) {
 		boolean any = false;
 		IntSupplier id = new IntSupplier() {
 			Integer generatedId = null;
@@ -745,7 +745,7 @@ public class TurnRunningModel extends ExplorationModel implements ITurnRunningMo
 	 */
 	// TODO: Make a way to add to units
 	@Override
-	public boolean addExistingResource(FortressMember resource, Player owner, String fortName) {
+	public boolean addExistingResource(final FortressMember resource, final Player owner, final String fortName) {
 		boolean any = false;
 		for (IMutableMapNG map : getRestrictedAllMaps()) {
 			Supplier<Stream<IMutableFortress>> supp =

@@ -68,7 +68,7 @@ public interface IReportGenerator<T extends IFixture> {
 	 * A factory for a default formatter for {@link writeMap}.
 	 */
 	default ThrowingTriConsumer<T, Point, ThrowingConsumer<String, IOException>, IOException> defaultFormatter(
-			DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures, IMapNG map) {
+			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures, final IMapNG map) {
 		return (item, loc, formatter) ->
 			produceSingle(fixtures, map, formatter, item, loc);
 	}
@@ -86,10 +86,10 @@ public interface IReportGenerator<T extends IFixture> {
 	 * @param lambda The method to write each item.
 	 * @param An optional sorting method to run the map through before printing.
 	 */
-	default <Key extends IFixture> void writeMap(ThrowingConsumer<String, IOException> ostream,
-			HeadedMap<? extends Key, Point> map,
-			ThrowingTriConsumer<? super Key, Point, ThrowingConsumer<String, IOException>, IOException> lambda,
-			Comparator<Pair<? super Key, Point>> sorter) throws IOException {
+	default <Key extends IFixture> void writeMap(final ThrowingConsumer<String, IOException> ostream,
+	                                             final HeadedMap<? extends Key, Point> map,
+	                                             final ThrowingTriConsumer<? super Key, Point, ThrowingConsumer<String, IOException>, IOException> lambda,
+	                                             final Comparator<Pair<? super Key, Point>> sorter) throws IOException {
 		if (!map.isEmpty()) {
 			ostream.accept(String.format("%s%n<ul>%n", map.getHeader()));
 			List<Pair<Key, Point>> sorted = map.entrySet().stream()
@@ -115,9 +115,9 @@ public interface IReportGenerator<T extends IFixture> {
 	 * @param lambda The method to write each item.
 	 * @param An optional sorting method to run the map through before printing.
 	 */
-	default <Key extends IFixture> void writeMap(ThrowingConsumer<String, IOException> ostream,
-			HeadedMap<? extends Key, Point> map,
-			ThrowingTriConsumer<? super Key, Point, ThrowingConsumer<String, IOException>, IOException> lambda)
+	default <Key extends IFixture> void writeMap(final ThrowingConsumer<String, IOException> ostream,
+	                                             final HeadedMap<? extends Key, Point> map,
+	                                             final ThrowingTriConsumer<? super Key, Point, ThrowingConsumer<String, IOException>, IOException> lambda)
 			throws IOException {
 		if (!map.isEmpty()) {
 			ostream.accept(String.format("%s%n<ul>%n", map.getHeader()));

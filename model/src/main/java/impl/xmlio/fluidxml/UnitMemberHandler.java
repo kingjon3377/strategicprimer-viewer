@@ -42,8 +42,8 @@ import common.map.fixtures.mobile.Immortal;
 import javax.xml.stream.XMLStreamException;
 
 /* package */ class UnitMemberHandler extends FluidBase {
-	public static Worker readWorker(StartElement element, QName parent, Iterable<XMLEvent> stream,
-			IPlayerCollection players, Warning warner, IDRegistrar idFactory)
+	public static Worker readWorker(final StartElement element, final QName parent, final Iterable<XMLEvent> stream,
+	                                final IPlayerCollection players, final Warning warner, final IDRegistrar idFactory)
 			throws SPFormatException {
 		requireTag(element, parent, "worker");
 		expectAttributes(element, warner, "name", "race", "portrait", "id", "image");
@@ -83,8 +83,8 @@ import javax.xml.stream.XMLStreamException;
 		return retval;
 	}
 
-	private static String readNote(StartElement element, QName parent, Iterable<XMLEvent> stream,
-			Warning warner) throws SPFormatException {
+	private static String readNote(final StartElement element, final QName parent, final Iterable<XMLEvent> stream,
+	                               final Warning warner) throws SPFormatException {
 		requireTag(element, parent, "note");
 		expectAttributes(element, warner, "player");
 		final StringBuilder retval = new StringBuilder();
@@ -101,8 +101,8 @@ import javax.xml.stream.XMLStreamException;
 		return retval.toString().trim();
 	}
 
-	public static IJob readJob(StartElement element, QName parent, Iterable<XMLEvent> stream,
-			IPlayerCollection players, Warning warner, IDRegistrar idFactory) 
+	public static IJob readJob(final StartElement element, final QName parent, final Iterable<XMLEvent> stream,
+	                           final IPlayerCollection players, final Warning warner, final IDRegistrar idFactory)
 			throws SPFormatException {
 		requireTag(element, parent, "job");
 		expectAttributes(element, warner, "name", "level");
@@ -115,7 +115,7 @@ import javax.xml.stream.XMLStreamException;
 					retval.addSkill(readSkill((StartElement) event, element.getName(),
 						stream, players, warner, idFactory));
 				} else {
-					throw UnwantedChildException.listingExpectedTags(element.getName(), 
+					throw UnwantedChildException.listingExpectedTags(element.getName(),
 						(StartElement) event, "skill");
 				}
 			} else if (event instanceof  EndElement &&
@@ -126,8 +126,8 @@ import javax.xml.stream.XMLStreamException;
 		return retval;
 	}
 
-	public static ISkill readSkill(StartElement element, QName parent, Iterable<XMLEvent> stream,
-			IPlayerCollection players, Warning warner, IDRegistrar idFactory) 
+	public static ISkill readSkill(final StartElement element, final QName parent, final Iterable<XMLEvent> stream,
+	                               final IPlayerCollection players, final Warning warner, final IDRegistrar idFactory)
 			throws SPFormatException {
 		requireTag(element, parent, "skill");
 		expectAttributes(element, warner, "name", "level", "hours");
@@ -138,8 +138,8 @@ import javax.xml.stream.XMLStreamException;
 			getIntegerAttribute(element, "hours"));
 	}
 
-	public static WorkerStats readStats(StartElement element, QName parent, Iterable<XMLEvent> stream,
-			IPlayerCollection players, Warning warner, IDRegistrar idFactory) 
+	public static WorkerStats readStats(final StartElement element, final QName parent, final Iterable<XMLEvent> stream,
+	                                    final IPlayerCollection players, final Warning warner, final IDRegistrar idFactory)
 			throws SPFormatException {
 		requireTag(element, parent, "stats");
 		expectAttributes(element, warner, "hp", "max", "str", "dex", "con", "int",
@@ -155,7 +155,7 @@ import javax.xml.stream.XMLStreamException;
 			getIntegerAttribute(element, "cha"));
 	}
 
-	public static void writeWorker(XMLStreamWriter ostream, IWorker obj, int indentation)
+	public static void writeWorker(final XMLStreamWriter ostream, final IWorker obj, final int indentation)
 			throws MalformedXMLException {
 		WorkerStats stats = obj.getStats();
 		List<IJob> jobs = StreamSupport.stream(obj.spliterator(), true)
@@ -182,25 +182,25 @@ import javax.xml.stream.XMLStreamException;
 			indent(ostream, indentation);
 			try {
 				ostream.writeEndElement();
-			} catch (XMLStreamException except) {
+			} catch (final XMLStreamException except) {
 				throw new MalformedXMLException(except);
 			}
 		}
 	}
 
-	private static void writeNote(XMLStreamWriter ostream, int player, String note, int indentation)
+	private static void writeNote(final XMLStreamWriter ostream, final int player, final String note, final int indentation)
 			throws MalformedXMLException {
 		writeTag(ostream, "note", indentation, false);
 		writeAttributes(ostream, Pair.with("player", player));
 		try {
 			ostream.writeCharacters(note);
 			ostream.writeEndElement();
-		} catch (XMLStreamException except) {
+		} catch (final XMLStreamException except) {
 			throw new MalformedXMLException(except);
 		}
 	}
 
-	public static void writeStats(XMLStreamWriter ostream, WorkerStats obj, int indentation) 
+	public static void writeStats(final XMLStreamWriter ostream, final WorkerStats obj, final int indentation)
 			throws MalformedXMLException {
 		writeTag(ostream, "stats", indentation, true);
 		writeAttributes(ostream, Pair.with("hp", obj.getHitPoints()),
@@ -210,7 +210,7 @@ import javax.xml.stream.XMLStreamException;
 			Pair.with("wis", obj.getWisdom()), Pair.with("cha", obj.getCharisma()));
 	}
 
-	public static void writeJob(XMLStreamWriter ostream, IJob obj, int indentation)
+	public static void writeJob(final XMLStreamWriter ostream, final IJob obj, final int indentation)
 			throws MalformedXMLException {
 		boolean hasSkills = !obj.isEmpty();
 		if (obj.getLevel() <= 0 && !hasSkills) {
@@ -226,13 +226,13 @@ import javax.xml.stream.XMLStreamException;
 			indent(ostream, indentation);
 			try {
 				ostream.writeEndElement();
-			} catch (XMLStreamException except) {
+			} catch (final XMLStreamException except) {
 				throw new MalformedXMLException(except);
 			}
 		}
 	}
 
-	public static void writeSkill(XMLStreamWriter ostream, ISkill obj, int indentation) 
+	public static void writeSkill(final XMLStreamWriter ostream, final ISkill obj, final int indentation)
 			throws MalformedXMLException {
 		if (!obj.isEmpty()) {
 			writeTag(ostream, "skill", indentation, true);
@@ -242,9 +242,9 @@ import javax.xml.stream.XMLStreamException;
 	}
 
 	// TODO: split into Animal and Tracks methods, if at all possible
-	public static AnimalOrTracks readAnimal(StartElement element, QName parent,
-			Iterable<XMLEvent> stream, IPlayerCollection players, Warning warner,
-			IDRegistrar idFactory) throws SPFormatException {
+	public static AnimalOrTracks readAnimal(final StartElement element, final QName parent,
+	                                        final Iterable<XMLEvent> stream, final IPlayerCollection players, final Warning warner,
+	                                        final IDRegistrar idFactory) throws SPFormatException {
 		requireTag(element, parent, "animal");
 		String tag = element.getName().getLocalPart().toLowerCase();
 		String kind;
@@ -300,14 +300,14 @@ import javax.xml.stream.XMLStreamException;
 		}
 	}
 
-	public static void writeAnimalTracks(XMLStreamWriter ostream, AnimalTracks obj,
-			int indentation) throws MalformedXMLException {
+	public static void writeAnimalTracks(final XMLStreamWriter ostream, final AnimalTracks obj,
+	                                     final int indentation) throws MalformedXMLException {
 		writeTag(ostream, "animal", indentation, true);
 		writeAttributes(ostream, Pair.with("kind", obj.getKind()), Pair.with("traces", true));
 		writeImage(ostream, obj);
 	}
 
-	public static void writeAnimal(XMLStreamWriter ostream, Animal obj, int indentation) 
+	public static void writeAnimal(final XMLStreamWriter ostream, final Animal obj, final int indentation)
 			throws MalformedXMLException {
 		writeTag(ostream, "animal", indentation, true);
 		writeAttributes(ostream, Pair.with("kind", obj.getKind()));
@@ -336,7 +336,7 @@ import javax.xml.stream.XMLStreamException;
 		writeImage(ostream, obj);
 	}
 
-	public static void writeSimpleImmortal(XMLStreamWriter ostream, Immortal obj, int indentation)
+	public static void writeSimpleImmortal(final XMLStreamWriter ostream, final Immortal obj, final int indentation)
 			throws MalformedXMLException {
 		// TODO: split this method so we can get this back in the type system
 		if (!(obj instanceof SimpleImmortal || obj instanceof ImmortalAnimal)) {

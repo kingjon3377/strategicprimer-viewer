@@ -34,7 +34,7 @@ import java.util.stream.Collectors;
 
 	private final Random rng;
 
-	private void unnormalizedSet(Pair<Integer, Integer> loc, @Nullable LodeStatus status) {
+	private void unnormalizedSet(final Pair<Integer, Integer> loc, @Nullable final LodeStatus status) {
 		if (status == null) {
 			unnormalized.remove(loc);
 		} else {
@@ -48,14 +48,14 @@ import java.util.stream.Collectors;
 
 	private final Function<LodeStatus, @Nullable LodeStatus> verticalGenerator;
 
-	private static int getColumn(Pair<Integer, Integer> pair) {
+	private static int getColumn(final Pair<Integer, Integer> pair) {
 		return pair.getValue1();
 	}
 
 	/**
 	 * Generate a value for the given point, and add its neighbors to the queue.
 	 */
-	private void modelPoint(int row, int column) {
+	private void modelPoint(final int row, final int column) {
 		Pair<Integer, Integer> point = Pair.with(row, column);
 		Pair<Integer, Integer> left = Pair.with(row, column - 1);
 		Pair<Integer, Integer> down = Pair.with(row + 1, column);
@@ -88,7 +88,7 @@ import java.util.stream.Collectors;
 
 	private final int maximumColumn;
 
-	private static <K, V> SortedMap<K, V> treeMap(Map<K, V> map, Comparator<K> comparator) {
+	private static <K, V> SortedMap<K, V> treeMap(final Map<K, V> map, final Comparator<K> comparator) {
 		final SortedMap<K, V> retval = new TreeMap<>(comparator);
 		retval.putAll(map);
 		return retval;
@@ -99,7 +99,7 @@ import java.util.stream.Collectors;
 	 * @param seed A number to seed the RNG
 	 * @param kind What kind of mine to model
 	 */
-	public MiningModel(LodeStatus initial, long seed, MineKind kind) {
+	public MiningModel(final LodeStatus initial, final long seed, final MineKind kind) {
 		unnormalized.put(Pair.with(0, 0), initial);
 		queue.offerLast(Pair.with(0, 0));
 		rng = new Random(seed);
@@ -204,7 +204,7 @@ import java.util.stream.Collectors;
 	}
 
 	@Nullable
-	public LodeStatus statusAt(int row, int column) {
+	public LodeStatus statusAt(final int row, final int column) {
 		return data.get(Pair.with(row, column));
 	}
 }

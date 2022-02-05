@@ -54,15 +54,15 @@ public final class SimpleMovementModel {
 	/**
 	 * Whether land movement is possible on the given terrain.
 	 */
-	public static boolean landMovementPossible(TileType terrain) {
+	public static boolean landMovementPossible(final TileType terrain) {
 		return !TileType.Ocean.equals(terrain);
 	}
 
 	/**
 	 * Whether rivers in either the source or the destination will speed travel in the given direction.
 	 */
-	public static boolean riversSpeedTravel(Direction direction, Collection<River> source,
-			Collection<River> dest) {
+	public static boolean riversSpeedTravel(final Direction direction, final Collection<River> source,
+	                                        final Collection<River> dest) {
 		final Predicate<Direction> recurse = partial -> riversSpeedTravel(partial, source, dest);
 		switch (direction) {
 		case North:
@@ -99,8 +99,8 @@ public final class SimpleMovementModel {
 	 * @param river Whether the location has a river that reduces cost
 	 * @param fixtures The fixtures at the location TODO: Iterable instead of varargs?
 	 */
-	public static int movementCost(@Nullable TileType terrain, boolean forest, boolean mountain,
-			boolean river, Iterable<TileFixture> fixtures) {
+	public static int movementCost(@Nullable final TileType terrain, final boolean forest, final boolean mountain,
+	                               final boolean river, final Iterable<TileFixture> fixtures) {
 		if (terrain == null) {
 			return Integer.MAX_VALUE - 1;
 		} else if (TileType.Ocean.equals(terrain)) {
@@ -132,8 +132,8 @@ public final class SimpleMovementModel {
 	 * @param speed How fast the unit is moving
 	 * @param fixture The fixture the unit might be noticing
 	 */
-	public static boolean shouldSometimesNotice(HasOwner unit, Speed speed,
-			@Nullable TileFixture fixture) {
+	public static boolean shouldSometimesNotice(final HasOwner unit, final Speed speed,
+	                                            @Nullable final TileFixture fixture) {
 		if (fixture == null) {
 			return false;
 		} else if (unit.equals(fixture)) {
@@ -154,7 +154,7 @@ public final class SimpleMovementModel {
 	 *
 	 * TODO: This does not properly handle the unusual case of a very unobservant unit
 	 */
-	private static int highestPerception(IUnit unit) {
+	private static int highestPerception(final IUnit unit) {
 		return unit.stream().filter(IWorker.class::isInstance)
 			.map(IWorker.class::cast).mapToInt(SimpleMovementModel::getPerception)
 			.max().orElse(0);
@@ -163,7 +163,7 @@ public final class SimpleMovementModel {
 	/**
 	 * Get a worker's Perception score.
 	 */
-	private static int getPerception(IWorker worker) {
+	private static int getPerception(final IWorker worker) {
 		int ability = Optional.ofNullable(worker.getStats())
 			.map(WorkerStats::getWisdom).orElse(0);
 		int ranks = StreamSupport.stream(worker.spliterator(), true)
@@ -179,7 +179,7 @@ public final class SimpleMovementModel {
 	 * TODO: Very-observant units should "always" notice some things that
 	 * others might "sometimes" notice.
 	 */
-	public static boolean shouldAlwaysNotice(HasOwner unit, @Nullable TileFixture fixture) {
+	public static boolean shouldAlwaysNotice(final HasOwner unit, @Nullable final TileFixture fixture) {
 		if (fixture instanceof ITownFixture) {
 			return ((ITownFixture) fixture).getOwner().equals(unit.getOwner());
 		} else {
@@ -193,8 +193,8 @@ public final class SimpleMovementModel {
 	 * instead of TileFixtures, we take a function for getting the fixtures
 	 * out of the list.
 	 */
-	public static <Element> Iterable<Element> selectNoticed(List<Element> possibilities,
-			Function<Element, TileFixture> getter, IUnit mover, Speed speed) {
+	public static <Element> Iterable<Element> selectNoticed(final List<Element> possibilities,
+	                                                        final Function<Element, TileFixture> getter, final IUnit mover, final Speed speed) {
 		List<Element> local = new ArrayList<>(possibilities);
 		Collections.shuffle(local);
 		int perception = highestPerception(mover) + speed.getPerceptionModifier();

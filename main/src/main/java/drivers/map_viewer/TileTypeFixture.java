@@ -17,7 +17,7 @@ import java.util.logging.Level;
 		return tileType;
 	}
 
-	public TileTypeFixture(TileType tileType) {
+	public TileTypeFixture(final TileType tileType) {
 		this.tileType = tileType;
 	}
 
@@ -30,13 +30,13 @@ import java.util.logging.Level;
 	 */
 	@Deprecated
 	@Override
-	public TileTypeFixture copy(boolean zero) {
+	public TileTypeFixture copy(final boolean zero) {
 		LOGGER.log(Level.WARNING, "TileTypeFixture.copy called", new Exception("dummy"));
 		return new TileTypeFixture(tileType);
 	}
 
 	@Override
-	public boolean equals(Object obj) {
+	public boolean equals(final Object obj) {
 		return obj instanceof TileTypeFixture && ((TileTypeFixture) obj).tileType.equals(tileType);
 	}
 

@@ -22,7 +22,7 @@ public class UnwantedChildException extends SPFormatException {
 	 */
 	private final QName child;
 
-	private UnwantedChildException(QName parent, QName child, Location location, Throwable cause) {
+	private UnwantedChildException(final QName parent, final QName child, final Location location, final Throwable cause) {
 		super(String.format("Unexpected child %s in tag %s", child.getLocalPart(),
 			parent.getLocalPart()), location.getLineNumber(), location.getColumnNumber());
 		tag = parent;
@@ -36,7 +36,7 @@ public class UnwantedChildException extends SPFormatException {
 	 * @param location where this occurred
 	 * @param cause why this occurred
 	 */
-	public static UnwantedChildException childInTag(QName parent, QName child, Location location, Throwable cause) {
+	public static UnwantedChildException childInTag(final QName parent, final QName child, final Location location, final Throwable cause) {
 		return new UnwantedChildException(parent, child, location, cause);
 	}
 
@@ -45,7 +45,7 @@ public class UnwantedChildException extends SPFormatException {
 	 * @param child The unwanted child
 	 * @param cause Another exception that caused this one
 	 */
-	public UnwantedChildException(QName parent, StartElement child, Throwable cause) {
+	public UnwantedChildException(final QName parent, final StartElement child, final Throwable cause) {
 		super(String.format("Unexpected child %s in tag %s", child.getName().getLocalPart(),
 			parent.getLocalPart()), child.getLocation().getLineNumber(),
 			child.getLocation().getColumnNumber(), cause);
@@ -57,7 +57,7 @@ public class UnwantedChildException extends SPFormatException {
 	 * @param parent The current tag
 	 * @param child The unwanted child
 	 */
-	public UnwantedChildException(QName parent, StartElement child) {
+	public UnwantedChildException(final QName parent, final StartElement child) {
 		super(String.format("Unexpected child %s in tag %s", child.getName().getLocalPart(),
 			parent.getLocalPart()), child.getLocation().getLineNumber(),
 			child.getLocation().getColumnNumber());
@@ -68,7 +68,7 @@ public class UnwantedChildException extends SPFormatException {
 	/**
 	 * Copy-constructor-with-replacement, for cases where the original thrower didn't know the parent tag.
 	 */
-	public UnwantedChildException(QName parent, UnwantedChildException except) {
+	public UnwantedChildException(final QName parent, final UnwantedChildException except) {
 		super(String.format("Unexpected child %s in tag %s", except.getChild().getLocalPart(),
 			parent.getLocalPart()), except.getLine(), except.getColumn());
 		tag = parent;
@@ -78,7 +78,7 @@ public class UnwantedChildException extends SPFormatException {
 	/**
 	 * Where the caller asserted that a tag was one of a specified list.
 	 */
-	private UnwantedChildException(QName parent, StartElement child, String[] expected) {
+	private UnwantedChildException(final QName parent, final StartElement child, final String[] expected) {
 		super(String.format("Unexpected child %s in tag %s, expecting one of the following: %s",
 			child.getName().getLocalPart(), parent.getLocalPart(),
 						String.join(", ", expected)),
@@ -93,7 +93,7 @@ public class UnwantedChildException extends SPFormatException {
 	 * @param child the unwanted child
 	 * @param expected what could have appeared here without triggering the error
 	 */
-	public static UnwantedChildException listingExpectedTags(QName parent, StartElement child, String... expected) {
+	public static UnwantedChildException listingExpectedTags(final QName parent, final StartElement child, final String... expected) {
 		return new UnwantedChildException(parent, child, expected);
 	}
 
@@ -106,7 +106,7 @@ public class UnwantedChildException extends SPFormatException {
 	 * @param parent the current tag
 	 * @param child the unwanted child
 	 */
-	private UnwantedChildException(StartElement child, QName parent) {
+	private UnwantedChildException(final StartElement child, final QName parent) {
 		super(String.format("Unexpected child, from unknown namespace, %s:%s in tag %s",
 				child.getName().getPrefix(), child.getName().getLocalPart(),
 				parent.getLocalPart()),
@@ -121,7 +121,7 @@ public class UnwantedChildException extends SPFormatException {
 	 * @param parent the current tag
 	 * @param child the unwanted child
 	 */
-	public static UnwantedChildException unexpectedNamespace(QName parent, StartElement child) {
+	public static UnwantedChildException unexpectedNamespace(final QName parent, final StartElement child) {
 		return new UnwantedChildException(child, parent);
 	}
 
@@ -131,7 +131,7 @@ public class UnwantedChildException extends SPFormatException {
 	 * @param child the unwanted child
 	 * @param message the additional message
 	 */
-	public UnwantedChildException(QName parent, StartElement child, String message) {
+	public UnwantedChildException(final QName parent, final StartElement child, final String message) {
 		super(String.format("Unexpected child %s in tag %s: %s",
 				child.getName().getLocalPart(), parent.getLocalPart(), message),
 			child.getLocation().getLineNumber(), child.getLocation().getColumnNumber());

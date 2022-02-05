@@ -13,7 +13,7 @@ import java.util.function.Consumer;
 public abstract /* sealed */ class SimpleImmortal
 		/* of Sphinx|Djinn|Griffin| Minotaur|Ogre|Phoenix|Simurgh|Troll */
 		implements Immortal, HasMutableImage, HasKind {
-	protected SimpleImmortal(String kind, String plural, int dc, int id) {
+	protected SimpleImmortal(final String kind, final String plural, final int dc, final int id) {
 		this.kind = kind;
 		this.plural = plural;
 		this.dc = dc;
@@ -98,7 +98,7 @@ public abstract /* sealed */ class SimpleImmortal
 	 * Set the filename of an image to use as an icon for this instance.
 	 */
 	@Override
-	public final void setImage(String image) {
+	public final void setImage(final String image) {
 		this.image = image;
 	}
 
@@ -122,7 +122,7 @@ public abstract /* sealed */ class SimpleImmortal
 	}
 
 	@Override
-	public final boolean equals(Object obj) {
+	public final boolean equals(final Object obj) {
 		if (obj instanceof SimpleImmortal) {
 			return ((SimpleImmortal) obj).getId() == id &&
 				kind.equals(((SimpleImmortal) obj).getKind());
@@ -140,7 +140,7 @@ public abstract /* sealed */ class SimpleImmortal
 	 * If we ignore ID, all simple immortals of a given kind are equal.
 	 */
 	@Override
-	public final boolean equalsIgnoringID(IFixture fixture) {
+	public final boolean equalsIgnoringID(final IFixture fixture) {
 		if (fixture instanceof SimpleImmortal) {
 			return ((SimpleImmortal) fixture).getKind().equals(kind);
 		} else {
@@ -152,7 +152,7 @@ public abstract /* sealed */ class SimpleImmortal
 	 * A fixture is a subset iff it is equal.
 	 */
 	@Override
-	public final boolean isSubset(IFixture obj, Consumer<String> report) {
+	public final boolean isSubset(final IFixture obj, final Consumer<String> report) {
 		if (obj.getId() == id) {
 			if (obj instanceof SimpleImmortal &&
 					((SimpleImmortal) obj).getKind().equals(kind)) {

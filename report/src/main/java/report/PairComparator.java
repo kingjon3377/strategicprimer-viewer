@@ -11,7 +11,7 @@ import java.util.Comparator;
 public final class PairComparator<First, Second> implements Comparator<Pair<First, Second>> {
 	private final Comparator<First> first;
 	private final Comparator<Second> second;
-	public PairComparator(Comparator<First> first, Comparator<Second> second) {
+	public PairComparator(final Comparator<First> first, final Comparator<Second> second) {
 		this.first = first;
 		this.second = second;
 	}
@@ -23,7 +23,7 @@ public final class PairComparator<First, Second> implements Comparator<Pair<Firs
 	 * TODO: May need wildcards somewhere in the type signatures here ...
 	 */
 	@Override
-	public int compare(Pair<First, Second> one, Pair<First, Second> two) {
+	public int compare(final Pair<First, Second> one, final Pair<First, Second> two) {
 		int retval = first.compare(one.getValue0(), two.getValue0());
 		if (retval == 0) {
 			return second.compare(one.getValue1(), two.getValue1());

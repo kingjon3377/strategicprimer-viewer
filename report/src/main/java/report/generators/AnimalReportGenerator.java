@@ -28,13 +28,13 @@ import common.map.fixtures.mobile.AnimalOrTracks;
  * A report generator for sightings of animals.
  */
 public class AnimalReportGenerator extends AbstractReportGenerator</*Animal|AnimalTracks*/AnimalOrTracks> {
-	public AnimalReportGenerator(Comparator<Pair<Point, IFixture>> comp, MapDimensions dimensions,
-			int currentTurn) {
+	public AnimalReportGenerator(final Comparator<Pair<Point, IFixture>> comp, final MapDimensions dimensions,
+	                             final int currentTurn) {
 		this(comp, dimensions, currentTurn, null);
 	}
 
-	public AnimalReportGenerator(Comparator<Pair<Point, IFixture>> comp, MapDimensions dimensions,
-			int currentTurn, @Nullable Point hq) {
+	public AnimalReportGenerator(final Comparator<Pair<Point, IFixture>> comp, final MapDimensions dimensions,
+	                             final int currentTurn, @Nullable final Point hq) {
 		super(comp, dimensions, hq);
 		this.currentTurn = currentTurn;
 	}
@@ -47,9 +47,9 @@ public class AnimalReportGenerator extends AbstractReportGenerator</*Animal|Anim
 	 * some other reason the player is allowed to see the precise count of the population.
 	 */
 	@Override
-	public void produceSingle(DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-			IMapNG map, ThrowingConsumer<String, IOException> ostream,
-			/*Animal|AnimalTracks*/AnimalOrTracks item, Point loc) throws IOException {
+	public void produceSingle(final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
+	                          final IMapNG map, final ThrowingConsumer<String, IOException> ostream,
+			/*Animal|AnimalTracks*/final AnimalOrTracks item, final Point loc) throws IOException {
 		// TODO: Extract helper method for the "At (loc):" idiom
 		ostream.accept("At ");
 		ostream.accept(loc.toString());
@@ -99,8 +99,8 @@ public class AnimalReportGenerator extends AbstractReportGenerator</*Animal|Anim
 	 * Produce the sub-report about animals.
 	 */
 	@Override
-	public void produce(DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures, IMapNG map,
-			ThrowingConsumer<String, IOException> ostream) throws IOException {
+	public void produce(final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures, final IMapNG map,
+	                    final ThrowingConsumer<String, IOException> ostream) throws IOException {
 		// TODO: Use a multimap, either from Guava or a custom impl in lovelace.util
 		final Map<String, List<Point>> items = new HashMap<>();
 		for (Triplet<Integer, Point, AnimalOrTracks> triplet : fixtures.entrySet().stream()

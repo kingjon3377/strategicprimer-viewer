@@ -31,7 +31,7 @@ import org.jetbrains.annotations.Nullable;
 	private final ICLIHelper cli;
 	private final IDRegistrar idf;
 
-	public WoodcuttingApplet(ITurnRunningModel model, ICLIHelper cli, IDRegistrar idf) {
+	public WoodcuttingApplet(final ITurnRunningModel model, final ICLIHelper cli, final IDRegistrar idf) {
 		super(model, cli, idf);
 		this.model = model;
 		this.cli = cli;
@@ -52,7 +52,7 @@ import org.jetbrains.annotations.Nullable;
 
 	// TODO: To simplify our lives in the crippled type-system of Java, make HasPopulation and HasExtent extend TileFixture
 	private <T extends HasExtent<? extends TileFixture>&TileFixture> void
-			reduceExtent(Point point, T fixture, BigDecimal acres) {
+			reduceExtent(final Point point, final T fixture, final BigDecimal acres) {
 		model.reduceExtent(point, fixture, true, acres);
 	}
 

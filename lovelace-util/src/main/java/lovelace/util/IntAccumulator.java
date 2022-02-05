@@ -6,7 +6,7 @@ package lovelace.util;
 public class IntAccumulator implements Accumulator<Integer> {
 	private int count;
 
-	public IntAccumulator(int count) {
+	public IntAccumulator(final int count) {
 		this.count = count;
 	}
 

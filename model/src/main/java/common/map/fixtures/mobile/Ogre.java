@@ -1,12 +1,12 @@
 package common.map.fixtures.mobile;
 
 public class Ogre extends SimpleImmortal {
-	public Ogre(int id) {
+	public Ogre(final int id) {
 		super("ogre", "Ogres", 28, id);
 	}
 
 	@Override
-	public Ogre copy(boolean zero) {
+	public Ogre copy(final boolean zero) {
 		return new Ogre(getId());
 	}
 

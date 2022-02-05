@@ -21,7 +21,7 @@ import drivers.common.cli.ICLIHelper;
  * FIXME: Write GUI for map-expanding driver
  */
 public class ExpansionDriver implements CLIDriver {
-	public ExpansionDriver(ICLIHelper cli, SPOptions options, UtilityDriverModel model) {
+	public ExpansionDriver(final ICLIHelper cli, final SPOptions options, final UtilityDriverModel model) {
 		this.cli = cli;
 		this.options = options;
 		this.model = model;
@@ -41,13 +41,13 @@ public class ExpansionDriver implements CLIDriver {
 		return model;
 	}
 
-	private Predicate<Point> containsSwornVillage(IMapNG map, Player currentPlayer) {
+	private Predicate<Point> containsSwornVillage(final IMapNG map, final Player currentPlayer) {
 		return (point) -> map.getFixtures(point).stream().filter(ITownFixture.class::isInstance)
 			.map(ITownFixture.class::cast).map(HasOwner::getOwner)
 			.anyMatch(currentPlayer::equals);
 	}
 
-	private static <T> Predicate<T> not(Predicate<T> pred) {
+	private static <T> Predicate<T> not(final Predicate<T> pred) {
 		return t -> !pred.test(t);
 	}
 

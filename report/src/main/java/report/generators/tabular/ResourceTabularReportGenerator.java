@@ -39,7 +39,7 @@ public class ResourceTabularReportGenerator
 		return TileFixture.class;
 	}
 
-	public ResourceTabularReportGenerator(@Nullable Point hq, MapDimensions dimensions) {
+	public ResourceTabularReportGenerator(@Nullable final Point hq, final MapDimensions dimensions) {
 		this.hq = hq;
 		this.dimensions = dimensions;
 		if (hq == null) {
@@ -76,9 +76,9 @@ public class ResourceTabularReportGenerator
 	 */
 	@Override
 	public Iterable<Iterable<String>> produce(
-			DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-			/*Implement|CacheFixture|IResourcePile*/TileFixture item, int key, Point loc,
-			Map<Integer, Integer> parentMap) {
+			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
+			/*Implement|CacheFixture|IResourcePile*/final TileFixture item, final int key, final Point loc,
+			final Map<Integer, Integer> parentMap) {
 		String kind;
 		String quantity;
 		String specifics;
@@ -102,8 +102,8 @@ public class ResourceTabularReportGenerator
 			locationString(loc), kind, quantity, specifics));
 	}
 
-	private static int compareItems(/*Implement|CacheFixture|IResourcePile*/TileFixture first,
-			/*Implement|CacheFixture|IResourcePile*/TileFixture second) {
+	private static int compareItems(/*Implement|CacheFixture|IResourcePile*/final TileFixture first,
+			/*Implement|CacheFixture|IResourcePile*/final TileFixture second) {
 		if (first instanceof Implement) {
 			if (second instanceof Implement) {
 				return Comparator.comparing(Implement::getKind)
@@ -144,8 +144,8 @@ public class ResourceTabularReportGenerator
 	 */
 	@Override
 	public int comparePairs(
-			Pair<Point, /*Implement|CacheFixture|IResourcePile*/TileFixture> one,
-			Pair<Point, /*Implement|CacheFixture|IResourcePile*/TileFixture> two) {
+			final Pair<Point, /*Implement|CacheFixture|IResourcePile*/TileFixture> one,
+			final Pair<Point, /*Implement|CacheFixture|IResourcePile*/TileFixture> two) {
 		return Comparator.<Pair<Point, TileFixture>, Point>comparing(Pair::getValue0, distanceComparator)
 			.thenComparing(Comparator.comparing(Pair::getValue1,
 				ResourceTabularReportGenerator::compareItems))
@@ -156,9 +156,9 @@ public class ResourceTabularReportGenerator
 	 * Write rows for equipment, counting multiple identical Implements in one line.
 	 */
 	@Override
-	public void produceTable(ThrowingConsumer<String, IOException> ostream,
-			DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-			Map<Integer, Integer> parentMap) throws IOException {
+	public void produceTable(final ThrowingConsumer<String, IOException> ostream,
+	                         final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
+	                         final Map<Integer, Integer> parentMap) throws IOException {
 		Iterable<Triplet<Integer, Point, TileFixture>> values = fixtures.entrySet().stream()
 			.filter(e -> e instanceof CacheFixture || e instanceof Implement ||
 				e instanceof IResourcePile)

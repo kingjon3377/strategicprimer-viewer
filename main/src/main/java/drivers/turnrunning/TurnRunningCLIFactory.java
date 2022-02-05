@@ -30,7 +30,7 @@ public class TurnRunningCLIFactory implements ModelDriverFactory {
 	}
 
 	@Override
-	public ModelDriver createDriver(ICLIHelper cli, SPOptions options, IDriverModel model) {
+	public ModelDriver createDriver(final ICLIHelper cli, final SPOptions options, final IDriverModel model) {
 		if (model instanceof ITurnRunningModel) {
 			return new TurnRunningCLI(cli, (ITurnRunningModel) model);
 		} else {
@@ -39,7 +39,7 @@ public class TurnRunningCLIFactory implements ModelDriverFactory {
 	}
 
 	@Override
-	public IDriverModel createModel(IMutableMapNG map) {
+	public IDriverModel createModel(final IMutableMapNG map) {
 		return new TurnRunningModel(map);
 	}
 }

@@ -65,7 +65,7 @@ public class QueryCLI implements ReadOnlyDriver {
 	/**
 	 * Count the workers in an Iterable belonging to a player.
 	 */
-	private static int countWorkersInIterable(Player player, Iterable<? extends IFixture> fixtures) {
+	private static int countWorkersInIterable(final Player player, final Iterable<? extends IFixture> fixtures) {
 		int retval = 0;
 		for (IFixture fixture : fixtures) {
 			if (fixture instanceof IWorker && fixtures instanceof HasOwner &&
@@ -81,7 +81,7 @@ public class QueryCLI implements ReadOnlyDriver {
 	/**
 	 * The distance between two points in a map with the given dimensions.
 	 */
-	private static double distance(Point base, Point destination, MapDimensions dimensions) {
+	private static double distance(final Point base, final Point destination, final MapDimensions dimensions) {
 		return dimensions.distance(base, destination);
 	}
 
@@ -101,7 +101,7 @@ public class QueryCLI implements ReadOnlyDriver {
 		return EmptyOptions.EMPTY_OPTIONS;
 	}
 
-	public QueryCLI(ICLIHelper cli, IDriverModel model) {
+	public QueryCLI(final ICLIHelper cli, final IDriverModel model) {
 		this.cli = cli;
 		this.model = model;
 		map = model.getMap();
@@ -128,7 +128,7 @@ public class QueryCLI implements ReadOnlyDriver {
 	/**
 	 * Count the workers belonging to a player.
 	 */
-	private void countWorkers(List<Player> players) {
+	private void countWorkers(final List<Player> players) {
 		Player player = cli.chooseFromList(players, "Players in the map:", "Map contains no players",
 			"Owner of workers to count: ", true).getValue1();
 		if (player != null) {
@@ -167,7 +167,7 @@ public class QueryCLI implements ReadOnlyDriver {
 	 * of the sole caller, this method accepts null, and does nothing when
 	 * that is the parameter.
 	 */
-	private void fortressInfo(@Nullable Point location) {
+	private void fortressInfo(@Nullable final Point location) {
 		if (location != null) {
 			cli.println(String.format("Terrain is %s",
 				Optional.ofNullable(map.getBaseTerrain(location))
@@ -193,7 +193,7 @@ public class QueryCLI implements ReadOnlyDriver {
 	 * Find the nearest obviously-reachable unexplored location.
 	 */
 	@Nullable
-	private Point findUnexplored(Point base) {
+	private Point findUnexplored(final Point base) {
 		Deque<Point> queue = new LinkedList<>();
 		queue.addLast(base);
 		MapDimensions dimensions = map.getDimensions();
@@ -226,7 +226,7 @@ public class QueryCLI implements ReadOnlyDriver {
 	 * Print a list of active towns within the given distance of the given
 	 * base that produce any resources, and what resources they produce.
 	 */
-	private void suggestTrade(Point base, int distance) {
+	private void suggestTrade(final Point base, final int distance) {
 		DistanceComparator comparator = new DistanceComparator(base, map.getDimensions());
 		for (Point location : StreamSupport.stream(new SurroundingPointIterable(base,
 				map.getDimensions(), distance).spliterator(), true).distinct()

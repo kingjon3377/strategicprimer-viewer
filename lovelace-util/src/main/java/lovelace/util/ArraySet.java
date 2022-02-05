@@ -18,7 +18,7 @@ public class ArraySet<Element> extends AbstractSet<Element> {
 		impl = new ArrayList<>();
 	}
 
-	public ArraySet(Collection<Element> initial) {
+	public ArraySet(final Collection<Element> initial) {
 		impl = new ArrayList<>(initial);
 	}
 
@@ -36,7 +36,7 @@ public class ArraySet<Element> extends AbstractSet<Element> {
 
 	/* Add an element, and return true, only if it is not already in the set. */
 	@Override
-	public boolean add(Element element) {
+	public boolean add(final Element element) {
 		if (impl.contains(element)) {
 			return false;
 		} else {
@@ -47,7 +47,7 @@ public class ArraySet<Element> extends AbstractSet<Element> {
 
 	/* Remove an element. Returns true if it was actually in the set. */
 	@Override
-	public boolean remove(Object element) {
+	public boolean remove(final Object element) {
 		return impl.remove(element);
 	}
 
@@ -58,7 +58,7 @@ public class ArraySet<Element> extends AbstractSet<Element> {
 	}
 
 	/* Sort the underlying array by {@link the given comparison function|comparing} */
-	public void sort(Comparator<Element> comparing) {
+	public void sort(final Comparator<Element> comparing) {
 		impl.sort(comparing);
 	}
 }

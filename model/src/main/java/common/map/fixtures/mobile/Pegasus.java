@@ -1,12 +1,12 @@
 package common.map.fixtures.mobile;
 
 public class Pegasus extends ImmortalAnimal {
-	public Pegasus(int id) {
+	public Pegasus(final int id) {
 		super("pegasus", "Pegasi", 29, id);
 	}
 
 	@Override
-	public Pegasus copy(boolean zero) {
+	public Pegasus copy(final boolean zero) {
 		return new Pegasus(getId());
 	}
 }

@@ -95,8 +95,8 @@ public enum PoultryModel implements HerdModel {
 	/**
 	 * @param production The number of eggs produced per head per turn.
 	 */
-	private PoultryModel(double production, double poundsCoefficient, int dailyTimePerHead,
-			int extraChoresInterval, String nomen) {
+	private PoultryModel(final double production, final double poundsCoefficient, final int dailyTimePerHead,
+	                     final int extraChoresInterval, final String nomen) {
 		this.poundsCoefficient = poundsCoefficient;
 		this.dailyTimePerHead = dailyTimePerHead;
 		this.extraChoresInterval = extraChoresInterval;
@@ -108,7 +108,7 @@ public enum PoultryModel implements HerdModel {
 	 * How much time, in minutes, herders must spend on a flock with this many animals per herder.
 	 */
 	@Override
-	public int dailyTime(int heads) {
+	public int dailyTime(final int heads) {
 		return heads * dailyTimePerHead;
 	}
 
@@ -116,7 +116,7 @@ public enum PoultryModel implements HerdModel {
 	 * How much time, in minutes, herders must spend on a flock with this
 	 * many animals per head on "extra chores" days.
 	 */
-	public int dailyExtraTime(int heads) {
+	public int dailyExtraTime(final int heads) {
 		return heads * getExtraTimePerHead();
 	}
 }

@@ -34,7 +34,7 @@ import org.javatuples.Pair;
 
 // TODO: Tests
 /* package */ class TurnRunningCLI implements CLIDriver {
-	public TurnRunningCLI(ICLIHelper cli, ITurnRunningModel model) {
+	public TurnRunningCLI(final ICLIHelper cli, final ITurnRunningModel model) {
 		this.cli = cli;
 		this.model = model;
 		idf = new IDFactoryFiller().createIDFactory(StreamSupport.stream(model.getAllMaps().spliterator(), false)
@@ -64,7 +64,7 @@ import org.javatuples.Pair;
 
 	private final IDRegistrar idf;
 
-	private Predicate<IUnit> unfinishedResults(int turn) {
+	private Predicate<IUnit> unfinishedResults(final int turn) {
 		return unit -> {
 			String results = unit.getResults(turn).toLowerCase();
 			return results.isEmpty() || results.contains("fixme") || results.contains("todo") ||
@@ -78,7 +78,7 @@ import org.javatuples.Pair;
 	 * containing only the argument. This allows callers to get a flattened
 	 * stream of units, including those in fortresses.
 	 */
-	private static Stream<IFixture> flatten(IFixture fixture) {
+	private static Stream<IFixture> flatten(final IFixture fixture) {
 		if (fixture instanceof IFortress) {
 			return ((IFortress) fixture).stream().map(IFixture.class::cast);
 		} else {
@@ -89,12 +89,12 @@ import org.javatuples.Pair;
 	/**
 	 * Flatten and filter the stream to include only units, and only those owned by the given player.
 	 */
-	private static Stream<IUnit> getUnitsImpl(Stream<? extends IFixture> s, Player player) {
+	private static Stream<IUnit> getUnitsImpl(final Stream<? extends IFixture> s, final Player player) {
 		return s.flatMap(TurnRunningCLI::flatten).filter(IUnit.class::isInstance).map(IUnit.class::cast)
 			.filter(u -> player.equals(u.getOwner()));
 	}
 
-	private Stream<IUnit> getUnits(Player player) {
+	private Stream<IUnit> getUnits(final Player player) {
 		final List<IUnit> temp = StreamSupport.stream(model.getAllMaps().spliterator(), false)
 			.flatMap(indivMap -> getUnitsImpl(indivMap.streamLocations()
 				.flatMap(l -> indivMap.getFixtures(l).stream()), player)).collect(Collectors.toList());
@@ -122,7 +122,7 @@ import org.javatuples.Pair;
 
 	private final SpoilageApplet spoilageApplet;
 
-	private String createResults(IUnit unit, int turn) {
+	private String createResults(final IUnit unit, final int turn) {
 		if (unit instanceof ProxyUnit) {
 			model.setSelectedUnit(((ProxyUnit) unit).getProxied().iterator().next());
 		} else {

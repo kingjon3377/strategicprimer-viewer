@@ -11,8 +11,8 @@ import javax.swing.JComponent;
  */
 /* package */ class KeyElementComponent extends JComponent {
 	private static final long serialVersionUID = 1L;
-	public KeyElementComponent(Color color, Dimension minimum, Dimension preferred,
-			Dimension maximum) {
+	public KeyElementComponent(final Color color, final Dimension minimum, final Dimension preferred,
+	                           final Dimension maximum) {
 		setMinimumSize(minimum);
 		setPreferredSize(preferred);
 		setMaximumSize(maximum);
@@ -22,7 +22,7 @@ import javax.swing.JComponent;
 	private final Color color;
 
 	@Override
-	public void paint(Graphics pen) {
+	public void paint(final Graphics pen) {
 		Graphics context = pen.create();
 		try {
 			context.setColor(color);

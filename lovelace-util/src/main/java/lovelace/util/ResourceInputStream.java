@@ -15,15 +15,15 @@ import java.io.IOException;
  */
 public class ResourceInputStream extends InputStream {
 	private final InputStream wrapped;
-	public ResourceInputStream(String filename) throws FileNotFoundException {
+	public ResourceInputStream(final String filename) throws FileNotFoundException {
 		this(filename, ResourceInputStream.class);
 	}
 
-	public ResourceInputStream(String filename, Class<?> sourceClass) throws FileNotFoundException {
+	public ResourceInputStream(final String filename, final Class<?> sourceClass) throws FileNotFoundException {
 		InputStream temp;
 		try {
 			temp = new BufferedInputStream(new FileInputStream(filename));
-		} catch (FileNotFoundException except) {
+		} catch (final FileNotFoundException except) {
 			temp = sourceClass.getResourceAsStream(filename);
 			if (temp == null) {
 				throw except;
@@ -44,7 +44,7 @@ public class ResourceInputStream extends InputStream {
 	 * Read from the wrapped stream into a provided buffer.
 	 */
 	@Override
-	public int read(byte[] buf) throws IOException {
+	public int read(final byte[] buf) throws IOException {
 		return wrapped.read(buf);
 	}
 
@@ -52,7 +52,7 @@ public class ResourceInputStream extends InputStream {
 	 * Read from the wrapped stream into a provided buffer at some offset.
 	 */
 	@Override
-	public int read(byte[] buf, int off, int len) throws IOException {
+	public int read(final byte[] buf, final int off, final int len) throws IOException {
 		return wrapped.read(buf, off, len);
 	}
 
@@ -60,7 +60,7 @@ public class ResourceInputStream extends InputStream {
 	 * Skip some bytes in the wrapped stream.
 	 */
 	@Override
-	public long skip(long num) throws IOException {
+	public long skip(final long num) throws IOException {
 		return wrapped.skip(num);
 	}
 

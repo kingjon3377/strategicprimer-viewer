@@ -11,7 +11,7 @@ import java.util.Iterator;
 public final class IteratorWrapper<Element> implements Iterable<Element> {
 	private final Iterator<Element> wrapped;
 
-	public IteratorWrapper(Iterator<Element> wrapped) {
+	public IteratorWrapper(final Iterator<Element> wrapped) {
 		this.wrapped = wrapped;
 	}
 

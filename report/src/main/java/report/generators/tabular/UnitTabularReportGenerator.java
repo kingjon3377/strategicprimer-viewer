@@ -33,7 +33,7 @@ public class UnitTabularReportGenerator implements ITableGenerator<IUnit> {
 	@Nullable private final Point hq;
 	private final MapDimensions dimensions;
 
-	public UnitTabularReportGenerator(Player player, @Nullable Point hq, MapDimensions dimensions) {
+	public UnitTabularReportGenerator(final Player player, @Nullable final Point hq, final MapDimensions dimensions) {
 		this.player = player;
 		this.hq = hq;
 		this.dimensions = dimensions;
@@ -68,8 +68,8 @@ public class UnitTabularReportGenerator implements ITableGenerator<IUnit> {
 	 */
 	@Override
 	public Iterable<Iterable<String>> produce(
-			DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures, IUnit item,
-			int key, Point loc, Map<Integer, Integer> parentMap) {
+			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures, final IUnit item,
+			final int key, final Point loc, final Map<Integer, Integer> parentMap) {
 		Iterable<String> retval = Arrays.asList(distanceString(loc, hq, dimensions),
 			locationString(loc), ownerString(player, item.getOwner()), item.getKind(),
 			item.getName(),
@@ -93,7 +93,7 @@ public class UnitTabularReportGenerator implements ITableGenerator<IUnit> {
 	 * Compare two location-unit pairs.
 	 */
 	@Override
-	public int comparePairs(Pair<Point, IUnit> one, Pair<Point, IUnit> two) {
+	public int comparePairs(final Pair<Point, IUnit> one, final Pair<Point, IUnit> two) {
 		return Comparator.<Pair<Point, IUnit>, Point>comparing(Pair::getValue0, distanceComparator)
 			.thenComparing(Pair::getValue1,
 				Comparator.comparing(IUnit::getOwner)
