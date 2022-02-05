@@ -46,7 +46,7 @@ public class ExpansionDriver implements CLIDriver {
 			.map(ITownFixture.class::cast).map(HasOwner::getOwner)
 			.anyMatch(currentPlayer::equals);
 	}
-	
+
 	private static <T> Predicate<T> not(Predicate<T> pred) {
 		return t -> !pred.test(t);
 	}

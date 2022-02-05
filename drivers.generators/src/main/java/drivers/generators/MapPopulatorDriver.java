@@ -26,7 +26,7 @@ public class MapPopulatorDriver implements CLIDriver {
 		this.options = options;
 		this.model = model;
 	}
-	
+
 	private final ICLIHelper cli;
 	private final SPOptions options;
 

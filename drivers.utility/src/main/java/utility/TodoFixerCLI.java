@@ -268,7 +268,7 @@ public class TodoFixerCLI implements CLIDriver {
 						population.getHighestSkillLevels().get(newSkill) >= level) {
 					int existingLevel = population.getHighestSkillLevels().get(newSkill);
 					newSkill = eRunner.recursiveConsultTable("regional_specialty", loc,
-						map.getBaseTerrain(loc), map.isMountainous(loc), 
+						map.getBaseTerrain(loc), map.isMountainous(loc),
 						map.getFixtures(loc), map.getDimensions());
 				}
 				if (population.getHighestSkillLevels().containsKey(newSkill) &&

@@ -47,7 +47,7 @@ public class HuntingModel {
 	public static final class NothingFound implements TileFixture {
 		private NothingFound() {
 		}
-		
+
 		public static final NothingFound INSTANCE = new NothingFound();
 
 		@Override

@@ -122,7 +122,7 @@ public class MapTradeCLI implements CLIDriver {
 	public SPOptions getOptions() {
 		return EmptyOptions.EMPTY_OPTIONS;
 	}
-	
+
 	private final MapTradeModel model;
 
 	@Override

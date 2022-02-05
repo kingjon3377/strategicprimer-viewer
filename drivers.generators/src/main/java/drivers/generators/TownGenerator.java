@@ -169,7 +169,7 @@ import java.math.BigDecimal;
 	 *
 	 * TODO: search inside fortresses and units
 	 */
-	@Nullable 
+	@Nullable
 	private IFixture findByID(IMapNG map, int id) {
 		return map.streamLocations().flatMap(l -> map.getFixtures(l).stream())
 			.filter(f -> f.getId() == id)

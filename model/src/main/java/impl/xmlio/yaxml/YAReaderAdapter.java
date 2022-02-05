@@ -178,7 +178,7 @@ import java.util.Collections;
 					reader.writeRaw(ostream, obj, indent);
 					return;
 				}
-			} 
+			}
 			throw new IllegalArgumentException(String.format("After checking %d readers, don't know how to write a %s",
 				readers.size(), cls.getName()));
 		}
