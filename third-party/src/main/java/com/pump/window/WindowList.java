@@ -49,9 +49,9 @@ import javax.swing.event.ChangeListener;
  */
 public class WindowList {
 
-	private static ArrayList<ChangeListener> changeListeners = new ArrayList<ChangeListener>();
+	private static final ArrayList<ChangeListener> changeListeners = new ArrayList<ChangeListener>();
 
-	private static AWTEventListener windowListener = new AWTEventListener() {
+	private static final AWTEventListener windowListener = new AWTEventListener() {
 		WeakReference<?>[] visibleWindows = new WeakReference<?>[0];
 		WeakReference<?>[] invisibleWindows = new WeakReference<?>[0];
 		WeakReference<?>[] visibleFrames = new WeakReference<?>[0];
@@ -110,7 +110,7 @@ public class WindowList {
 			}
 		}
 
-		Runnable proofRunnable = new Runnable() {
+		final Runnable proofRunnable = new Runnable() {
 			public void run() {
 				boolean changed = false;
 
@@ -166,12 +166,12 @@ public class WindowList {
 	 * References to every Window that has been activated, in order of when they
 	 * were made active.
 	 */
-	private static ArrayList<WeakReference<Window>> windowLayerList = new ArrayList<WeakReference<Window>>();
+	private static final ArrayList<WeakReference<Window>> windowLayerList = new ArrayList<WeakReference<Window>>();
 	/**
 	 * References to every Window that has been activated, in order of
 	 * z-layering.
 	 */
-	private static ArrayList<WeakReference<Window>> windowList = new ArrayList<WeakReference<Window>>();
+	private static final ArrayList<WeakReference<Window>> windowList = new ArrayList<WeakReference<Window>>();
 
 	static {
 		Toolkit.getDefaultToolkit().addAWTEventListener(windowListener,

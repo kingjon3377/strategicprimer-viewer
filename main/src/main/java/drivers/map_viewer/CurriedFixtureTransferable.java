@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 	public static final DataFlavor FLAVOR =
 		new DataFlavor(CurriedFixtureTransferable.class, "CurriedTransferable");
 
-	private List<Transferable> payload;
+	private final List<Transferable> payload;
 
 	public CurriedFixtureTransferable(final TileFixture... list) {
 		payload = Collections.unmodifiableList(Stream.of(list)

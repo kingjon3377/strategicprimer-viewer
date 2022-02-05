@@ -95,8 +95,8 @@ public class DrawHelperComparator implements UtilityDriver {
 		return end - start;
 	}
 
-	private static Range testRowSpan = new Range(20, 40); // TODO: randomize these a bit?
-	private static Range testColSpan = new Range(55, 82);
+	private static final Range testRowSpan = new Range(20, 40); // TODO: randomize these a bit?
+	private static final Range testColSpan = new Range(55, 82);
 
 	/**
 	 * Third test, part one: iterating.

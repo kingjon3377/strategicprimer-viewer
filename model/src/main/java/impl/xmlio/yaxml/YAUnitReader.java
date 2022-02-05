@@ -40,10 +40,10 @@ import lovelace.util.MalformedXMLException;
 			new YAImplementReader(warner, idRegistrar)));
 	}
 
-	private IPlayerCollection players;
-	private Warning warner;
+	private final IPlayerCollection players;
+	private final Warning warner;
 
-	private List<YAReader<?, ?>> readers;
+	private final List<YAReader<?, ?>> readers;
 
 	/**
 	 * Parse the kind of unit, from the "kind" or deprecated "type"

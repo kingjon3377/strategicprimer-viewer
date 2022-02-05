@@ -26,9 +26,9 @@ public class SummonMenuItem extends JCheckBoxMenuItem {
 
 	private static final long serialVersionUID = 1L;
 
-	Frame frame;
+	private final Frame frame;
 
-	ActionListener actionListener = new ActionListener() {
+	private final ActionListener actionListener = new ActionListener() {
 		public void actionPerformed(final ActionEvent e) {
 			frame.toFront();
 			if (frame.getExtendedState() == Frame.ICONIFIED)

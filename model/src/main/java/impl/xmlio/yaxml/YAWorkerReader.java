@@ -66,8 +66,8 @@ import impl.xmlio.exceptions.UnwantedChildException;
 		closeTag(ostream, 0, "note");
 	}
 
-	private Warning warner;
-	private IPlayerCollection players;
+	private final Warning warner;
+	private final IPlayerCollection players;
 	public YAWorkerReader (final Warning warning, final IDRegistrar idRegistrar, final IPlayerCollection players) {
 		super(warning, idRegistrar);
 		warner = warning;

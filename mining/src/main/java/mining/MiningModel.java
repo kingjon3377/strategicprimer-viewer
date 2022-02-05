@@ -42,7 +42,7 @@ import java.util.stream.Collectors;
 		}
 	}
 
-	Deque<Pair<Integer, Integer>> queue = new LinkedList<>();
+	private final Deque<Pair<Integer, Integer>> queue = new LinkedList<>();
 
 	private final Function<LodeStatus, @Nullable LodeStatus> horizontalGenerator;
 

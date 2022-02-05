@@ -25,7 +25,7 @@ import java.util.logging.Level;
 		this.app = app;
 	}
 
-	private SPFrame app;
+	private final SPFrame app;
 
 	@Override
 	public boolean canImport(final TransferSupport support) {

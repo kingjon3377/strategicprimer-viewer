@@ -70,7 +70,7 @@ import common.map.fixtures.towns.Village;
 	 */
 	private static final Logger LOGGER = Logger.getLogger(StatGeneratingCLI.class.getName());
 
-	private static List<String> statLabelArray = Collections.unmodifiableList(Arrays.asList("Str",
+	private static final List<String> statLabelArray = Collections.unmodifiableList(Arrays.asList("Str",
 		"Dex", "Con", "Int", "Wis", "Cha"));
 
 	/**

@@ -11,7 +11,7 @@ public final class WorkerStats {
 	 * The basis of stats: every two points more than this is worth +1, and
 	 * every two points less is worth -1.
 	 */
-	private static int statBasis = 10;
+	private static final int statBasis = 10;
 
 	/**
 	 * The modifier for (effect of) the given stat value: (stat - 10) / 2,

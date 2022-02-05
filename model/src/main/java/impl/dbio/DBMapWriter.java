@@ -69,7 +69,7 @@ final class DBMapWriter extends AbstractDatabaseWriter<IMutableMapNG, IMapNG> {
 		return INITIALIZERS;
 	}
 
-	private AbstractDatabaseWriter<Player, IMapNG> playerWriter;
+	private final AbstractDatabaseWriter<Player, IMapNG> playerWriter;
 
 	private static final String INSERT_TERRAIN =
 		"INSERT INTO terrain (row, column, terrain, mountainous, north_river, " +

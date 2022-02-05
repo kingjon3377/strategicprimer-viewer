@@ -319,7 +319,7 @@ import java.awt.image.BufferedImage;
 	private static class MapSizeListener extends ComponentAdapter {
 		private final IViewerModel mapModel;
 		private final JComponent outer;
-		private IntSupplier tileSizeFactory;
+		private final IntSupplier tileSizeFactory;
 
 		public MapSizeListener(final IViewerModel mapModel, final JComponent parent,
 		                       final IntSupplier tileSizeFactory) {

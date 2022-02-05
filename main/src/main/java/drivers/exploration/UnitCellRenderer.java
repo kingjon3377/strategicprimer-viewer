@@ -11,7 +11,7 @@ import java.awt.Component;
 import org.jetbrains.annotations.Nullable;
 
 /* package */ class UnitCellRenderer implements ListCellRenderer<IUnit> {
-	private static DefaultListCellRenderer DEFAULT_RENDERER = new DefaultListCellRenderer();
+	private static final DefaultListCellRenderer DEFAULT_RENDERER = new DefaultListCellRenderer();
 
 	@Override
 	public Component getListCellRendererComponent(@Nullable final JList<? extends IUnit> list, @Nullable final IUnit val,

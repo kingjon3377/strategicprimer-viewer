@@ -26,7 +26,7 @@ class QuadrantTable implements EncounterTable {
 	/**
 	 * The collection of collections of results.
 	 */
-	Map<MapDimensions, Map<Point, String>> quadrants = new HashMap<>();
+	private final Map<MapDimensions, Map<Point, String>> quadrants = new HashMap<>();
 
 	// TODO: static?
 	private Map<Point, String> valuesFor(final MapDimensions dimensions, final List<String> possResults,

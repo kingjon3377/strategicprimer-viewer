@@ -70,7 +70,7 @@ public final class PlayerImpl implements MutablePlayer {
 	 * The country the player is associated with.
 	 */
 	@Nullable
-	private String country;
+	private final String country;
 
 	/**
 	 * The country the player is associated with.

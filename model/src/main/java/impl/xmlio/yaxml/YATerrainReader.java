@@ -32,7 +32,7 @@ import java.util.Set;
 	}
 
 	// TODO: This seems overkill for this (in Java)
-	private Set<String> supportedTags = Collections.unmodifiableSet(Stream.of("forest",
+	private final Set<String> supportedTags = Collections.unmodifiableSet(Stream.of("forest",
 		"hill", "oasis").collect(Collectors.toSet()));
 
 	@Override

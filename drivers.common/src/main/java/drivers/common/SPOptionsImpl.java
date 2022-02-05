@@ -13,7 +13,7 @@ import java.util.Iterator;
  * TODO: Make class final?
  */
 public class SPOptionsImpl implements SPOptions {
-	Map<String, String> options = new HashMap<String, String>();
+	private final Map<String, String> options = new HashMap<String, String>();
 
 	// TODO: Take Map<String, String> instead and use options.putAll()?
 	@SafeVarargs

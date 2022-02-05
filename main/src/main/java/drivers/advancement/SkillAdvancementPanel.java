@@ -47,9 +47,8 @@ import drivers.common.IAdvancementModel;
 		}
 	}
 
-	// TODO: can we make these final? They had to be 'late' in Ceylon
-	private JTextField hours; // FIXME: Why not use a spinner?
-	private IAdvancementModel model;
+	private final JTextField hours; // FIXME: Why not use a spinner?
+	private final IAdvancementModel model;
 
 	@Nullable
 	private ISkill skill = null;

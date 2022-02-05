@@ -134,14 +134,14 @@ import common.map.HasKind;
 // TODO: Make methods static where possible
 // FIXME: A lot of the assertions in this class have expected and actual values backwards
 public final class TestXMLIO {
-	private static Set<String> races = Collections.unmodifiableSet(new HashSet<>(RaceFactory.RACES));
-	private static List<String> animalStatuses = Collections.unmodifiableList(Arrays.asList(
+	private static final Set<String> races = Collections.unmodifiableSet(new HashSet<>(RaceFactory.RACES));
+	private static final List<String> animalStatuses = Collections.unmodifiableList(Arrays.asList(
 		"wild", "semi-domesticated", "domesticated", "tame"));
-	private static List<String> treeTypes = Collections.unmodifiableList(Arrays.asList("oak",
+	private static final List<String> treeTypes = Collections.unmodifiableList(Arrays.asList("oak",
 		"larch", "terebinth", "elm", "skybroom", "silver maple"));
-	private static List<String> fieldTypes = Collections.unmodifiableList(Arrays.asList("wheat",
+	private static final List<String> fieldTypes = Collections.unmodifiableList(Arrays.asList("wheat",
 		"amaranth", "bluegrass", "corn", "winter wheat"));
-	private static List<String> minerals = Collections.unmodifiableList(Arrays.asList("coal",
+	private static final List<String> minerals = Collections.unmodifiableList(Arrays.asList("coal",
 		"platinum", "oil", "diamonds", "natural gas"));
 
 	/**

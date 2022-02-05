@@ -69,16 +69,16 @@ public class WindowMenu extends JMenu {
 	private static final long serialVersionUID = 1L;
 
 	/** The menu item that minimizes this window. */
-	JMenuItem minimizeItem = new JMenuItem("Minimize");
+	final JMenuItem minimizeItem = new JMenuItem("Minimize");
 
 	/**
 	 * The "Bright All to Front" menu item. TODO: this is implemented hackish-ly
 	 * and causes windows to flicker over one another. I'm not sure it's worth
 	 * keeping; for now the lines that add it to the menu are commented out.
 	 */
-	JMenuItem bringItem = new JMenuItem("Bring All To Front");
+	final JMenuItem bringItem = new JMenuItem("Bring All To Front");
 
-	Runnable updateRunnable = new Runnable() {
+	final Runnable updateRunnable = new Runnable() {
 		public void run() {
 			removeAll();
 			add(minimizeItem);
@@ -103,13 +103,13 @@ public class WindowMenu extends JMenu {
 
 	private JFrame myFrame = null;
 
-	private ChangeListener changeListener = new ChangeListener() {
+	private final ChangeListener changeListener = new ChangeListener() {
 		public void stateChanged(final ChangeEvent e) {
 			SwingUtilities.invokeLater(updateRunnable);
 		}
 	};
 
-	ActionListener actionListener = new ActionListener() {
+	final ActionListener actionListener = new ActionListener() {
 		public void actionPerformed(final ActionEvent e) {
 			Object src = e.getSource();
 			if (src == minimizeItem) {
@@ -128,7 +128,7 @@ public class WindowMenu extends JMenu {
 		}
 	};
 
-	JMenuItem[] customItems;
+	final JMenuItem[] customItems;
 
 	/**
 	 * Creates a new WindowMenu for a specific JFrame.

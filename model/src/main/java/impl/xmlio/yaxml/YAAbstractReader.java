@@ -382,11 +382,11 @@ abstract class YAAbstractReader<Item, Value> implements YAReader<Item, Value> {
 	/**
 	 * The Warning instance to use.
 	 */
-	private Warning warner;
+	private final Warning warner;
 	/**
 	 * The factory for ID numbers
 	 */
-	private IDRegistrar idf;
+	private final IDRegistrar idf;
 
 	protected YAAbstractReader(final Warning warning, final IDRegistrar idRegistrar) {
 		warner = warning;

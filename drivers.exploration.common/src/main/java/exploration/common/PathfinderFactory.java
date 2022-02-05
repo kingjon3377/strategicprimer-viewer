@@ -8,7 +8,7 @@ import java.util.logging.Logger;
 public final class PathfinderFactory {
 	private PathfinderFactory() {}
 	private static Logger LOGGER = Logger.getLogger(PathfinderFactory.class.getName());
-	private static Map<IMapNG, Pathfinder> pathfinderCache = new HashMap<>();
+	private static final Map<IMapNG, Pathfinder> pathfinderCache = new HashMap<>();
 
 	/**
 	 * An encapsulation (for ease of importing in the Ceylon version, and

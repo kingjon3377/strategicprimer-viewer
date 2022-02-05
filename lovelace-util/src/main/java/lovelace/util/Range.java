@@ -44,8 +44,8 @@ public class Range implements Iterable<Integer> {
 	}
 
 	private static class RangeIterator implements Iterator<Integer> {
-		int current;
-		int upperBound;
+		private int current;
+		private final int upperBound;
 		public RangeIterator(final Range range) {
 			this.current = range.lowerBound - 1;
 			this.upperBound = range.upperBound;

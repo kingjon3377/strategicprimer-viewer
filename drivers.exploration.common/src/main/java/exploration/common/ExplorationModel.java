@@ -66,7 +66,7 @@ import common.map.fixtures.towns.IFortress;
  * A model for exploration apps.
  */
 public class ExplorationModel extends SimpleMultiMapModel implements IExplorationModel {
-	private static Logger LOGGER = Logger.getLogger(ExplorationModel.class.getName());
+	private static final Logger LOGGER = Logger.getLogger(ExplorationModel.class.getName());
 	/**
 	 * A fixture is "diggable" if it is a {@link MineralFixture} or a {@link Mine}.
 	 */

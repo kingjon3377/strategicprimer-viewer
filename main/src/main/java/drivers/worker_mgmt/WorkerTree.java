@@ -77,7 +77,7 @@ public class WorkerTree extends JTree implements UnitMemberSelectionSource, Unit
 			Pair.with("Wis", WorkerStats::getWisdom),
 			Pair.with("Cha", WorkerStats::getCharisma)));
 
-	private IWorkerTreeModel wtModel;
+	private final IWorkerTreeModel wtModel;
 
 	/**
 	 * @param wtModel The tree model
@@ -410,7 +410,7 @@ public class WorkerTree extends JTree implements UnitMemberSelectionSource, Unit
 			return new ImageIcon(temp);
 		}
 
-		private static Icon DEFAULT_FIXTURE_ICON = createDefaultFixtureIcon();
+		private static final Icon DEFAULT_FIXTURE_ICON = createDefaultFixtureIcon();
 
 		@Nullable
 		private static Icon getIconForFile(final String filename) {

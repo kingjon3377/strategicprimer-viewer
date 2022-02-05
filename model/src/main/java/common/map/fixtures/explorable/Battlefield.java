@@ -14,7 +14,7 @@ public class Battlefield implements ExplorableFixture {
 	/**
 	 * The required Perception check result to discover the battlefield.
 	 */
-	private int dc;
+	private final int dc;
 
 	/**
 	 * The required Perception check result to discover the battlefield.

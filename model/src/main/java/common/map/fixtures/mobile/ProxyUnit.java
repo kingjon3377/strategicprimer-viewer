@@ -67,13 +67,13 @@ public class ProxyUnit implements IUnit, ProxyFor<IUnit> {
 	/**
 	 * If we're proxying parallel units, they all share this ID. If not, this is null.
 	 */
-	private Integer commonID;
+	private final Integer commonID;
 
 	/**
 	 * If we're proxying all units of a given kind, it's this kind; if
 	 * we're proxying parallel units, this is null.
 	 */
-	private String commonKind;
+	private final String commonKind;
 
 	/**
 	 * Constructor for units from parallel maps.

@@ -32,7 +32,7 @@ import java.util.stream.Collectors;
 public final class ImageLoader {
 	private ImageLoader() {
 	}
-	private static Logger LOGGER = Logger.getLogger(ImageLoader.class.getName());
+	private static final Logger LOGGER = Logger.getLogger(ImageLoader.class.getName());
 
 	static {
 		LOGGER.fine(Stream.of(ImageIO.getReaderFileSuffixes()).filter(Objects::nonNull)

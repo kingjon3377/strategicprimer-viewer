@@ -37,7 +37,7 @@ import java.util.Collections;
 		this.warner = warner;
 	}
 
-	private Warning warner;
+	private final Warning warner;
 
 	private static final Set<String> SUPPORTED_TAGS = Collections.unmodifiableSet(new HashSet<>(
 		Arrays.asList("cache", "grove", "orchard", "field", "meadow", "mine", "mineral",

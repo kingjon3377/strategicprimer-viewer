@@ -136,9 +136,9 @@ public final class TestDBIO {
 
 	private final SQLiteDataSource source;
 
-	private SPDatabaseWriter writer = new SPDatabaseWriter();
+	private final SPDatabaseWriter writer = new SPDatabaseWriter();
 
-	private SPDatabaseReader reader = new SPDatabaseReader();
+	private final SPDatabaseReader reader = new SPDatabaseReader();
 
 	private Connection connection;
 
