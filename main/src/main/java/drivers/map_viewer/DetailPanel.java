@@ -180,7 +180,7 @@ import worker.common.IFixtureEditHelper;
 			List<TileFixture> selections =
 				fixtureListObject.getSelectedValuesList();
 			portrait = null;
-			if (!selections.isEmpty() && selections.size() == 1) {
+			if (selections.size() == 1) {
 				TileFixture selectedValue = selections.get(0);
 				if (selectedValue instanceof HasPortrait) {
 					String portraitName = ((HasPortrait) selectedValue).getPortrait();
