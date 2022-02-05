@@ -355,8 +355,7 @@ import java.util.logging.Logger;
 		writeProperty(ostream, "size", obj.getPopulation());
 		finishParentTag(ostream);
 		for (Map.Entry<String, Integer> entry : obj.getHighestSkillLevels().entrySet().stream()
-				.sorted(Comparator.comparing(Map.Entry::getKey, Comparator.naturalOrder()))
-					.collect(Collectors.toList())) {
+				.sorted(Map.Entry.comparingByKey(Comparator.naturalOrder())).collect(Collectors.toList())) {
 			writeTag(ostream, "expertise", tabs + 1);
 			writeProperty(ostream, "skill", entry.getKey());
 			writeProperty(ostream, "level", entry.getValue());

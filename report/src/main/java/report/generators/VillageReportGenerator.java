@@ -43,8 +43,8 @@ public class VillageReportGenerator extends AbstractReportGenerator<Village> {
 	public void produce(final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
 	                    final IMapNG map, final ThrowingConsumer<String, IOException> ostream) throws IOException {
 		Comparator<Village> villageComparator = Comparator.comparing(Village::getName)
-			.thenComparing(Comparator.comparing(Village::getRace))
-			.thenComparing(Comparator.comparing(Village::getId));
+			.thenComparing(Village::getRace)
+			.thenComparing(Village::getId);
 		HeadedMap<Village, Point> own = new HeadedMapImpl<>(
 			"<h4>Villages pledged to your service:</h4>", villageComparator);
 		HeadedMap<Village, Point> independents = new HeadedMapImpl<>(

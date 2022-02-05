@@ -100,9 +100,9 @@ public class FortressMemberReportGenerator extends AbstractReportGenerator<Fortr
 	                    final IMapNG map, final ThrowingConsumer<String, IOException> ostream) throws IOException {
 		HeadedMap<Implement, Point> equipment = new HeadedMapImpl<>("<li>Equipment:",
 			Comparator.comparing(Implement::getKind)
-				.thenComparing(Comparator.comparing(Implement::getCount,
-					Comparator.reverseOrder()))
-				.thenComparing(Comparator.comparing(Implement::getId)));
+				.thenComparing(Implement::getCount,
+					Comparator.reverseOrder())
+				.thenComparing(Implement::getId));
 		Map<String, HeadedMap<IResourcePile, Point>> resources = new HashMap<>();
 		for (Pair<Point, FortressMember> pair : fixtures.values().stream()
 				.filter(p -> p.getValue1() instanceof IResourcePile ||

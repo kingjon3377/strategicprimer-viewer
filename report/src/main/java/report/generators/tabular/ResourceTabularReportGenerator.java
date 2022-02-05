@@ -105,8 +105,7 @@ public class ResourceTabularReportGenerator
 		if (first instanceof Implement) {
 			if (second instanceof Implement) {
 				return Comparator.comparing(Implement::getKind)
-					.thenComparing(Comparator.comparing(Implement::getCount,
-						Comparator.reverseOrder()))
+					.thenComparing(Implement::getCount, Comparator.reverseOrder())
 					.compare((Implement) first, (Implement) second);
 			} else if (second instanceof IResourcePile) {
 				return 1;
@@ -125,8 +124,7 @@ public class ResourceTabularReportGenerator
 			if (second instanceof IResourcePile) {
 				return Comparator.comparing(IResourcePile::getKind)
 					.thenComparing(IResourcePile::getContents)
-					.thenComparing(Comparator.comparing(IResourcePile::getQuantity,
-						Comparator.reverseOrder()))
+					.thenComparing(IResourcePile::getQuantity, Comparator.reverseOrder())
 					.compare((IResourcePile) first, (IResourcePile) second);
 			} else {
 				return -1;
@@ -145,8 +143,8 @@ public class ResourceTabularReportGenerator
 			final Pair<Point, /*Implement|CacheFixture|IResourcePile*/TileFixture> one,
 			final Pair<Point, /*Implement|CacheFixture|IResourcePile*/TileFixture> two) {
 		return Comparator.<Pair<Point, TileFixture>, Point>comparing(Pair::getValue0, distanceComparator)
-			.thenComparing(Comparator.comparing(Pair::getValue1,
-				ResourceTabularReportGenerator::compareItems))
+			.thenComparing(Pair::getValue1,
+				ResourceTabularReportGenerator::compareItems)
 			.compare(one, two);
 	}
 

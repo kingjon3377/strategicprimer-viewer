@@ -93,7 +93,6 @@ public class WorkerTabularReportGenerator implements ITableGenerator<IWorker> {
 	@Override
 	public int comparePairs(final Pair<Point, IWorker> one, final Pair<Point, IWorker> two) {
 		return Comparator.<Pair<Point, IWorker>, Point>comparing(Pair::getValue0, distanceComparator)
-			.thenComparing(Comparator.comparing(p -> p.getValue1().getName()))
-			.compare(one, two);
+			.thenComparing(p -> p.getValue1().getName()).compare(one, two);
 	}
 }

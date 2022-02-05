@@ -69,9 +69,8 @@ public class TextReportGenerator extends AbstractReportGenerator<TextFixture> {
 					(TextFixture) e.getValue().getValue1()))
 				.sorted(((Comparator<Triplet<Integer, Point, TextFixture>>)
 						TextReportGenerator::compareTurn)
-					.thenComparing(Comparator.comparing(t ->
-							Pair.with(t.getValue1(), (IFixture) t.getValue2()),
-						pairComparator))
+					.thenComparing(t -> Pair.with(t.getValue1(), (IFixture) t.getValue2()),
+						pairComparator)
 					.thenComparing(t -> t.getValue2().getText()))
 				.collect(Collectors.toList());
 		if (!items.isEmpty()) {

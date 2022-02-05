@@ -65,9 +65,8 @@ public class TownComparators {
 	 */
 	public static int compareTowns(final ITownFixture one, final ITownFixture two) {
 		return Comparator.comparing(ITownFixture::getStatus)
-			.thenComparing(Comparator.comparing(ITownFixture::getTownSize,
-				Comparator.reverseOrder()))
+			.thenComparing(ITownFixture::getTownSize, Comparator.reverseOrder())
 			.thenComparing(TownComparators::compareTownKind)
-			.thenComparing(Comparator.comparing(ITownFixture::getName)).compare(one, two);
+			.thenComparing(ITownFixture::getName).compare(one, two);
 	}
 }

@@ -105,7 +105,7 @@ public class AnimalReportGenerator extends AbstractReportGenerator</*Animal|Anim
 		final Map<String, List<Point>> items = new HashMap<>();
 		for (Triplet<Integer, Point, AnimalOrTracks> triplet : fixtures.entrySet().stream()
 				.filter(e -> e.getValue().getValue1() instanceof AnimalOrTracks)
-				.sorted(Comparator.comparing(Map.Entry::getValue, pairComparator))
+				.sorted(Map.Entry.comparingByValue(pairComparator))
 				.map(e -> Triplet.with(e.getKey(), e.getValue().getValue0(),
 					(AnimalOrTracks) e.getValue().getValue1()))
 				.collect(Collectors.toList())) {
