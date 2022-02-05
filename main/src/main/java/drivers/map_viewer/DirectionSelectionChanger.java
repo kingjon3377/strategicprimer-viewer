@@ -19,7 +19,7 @@ import common.map.Point;
 	public DirectionSelectionChanger(final IViewerModel model) {
 		this.model = model;
 	}
-	
+
 	private final IViewerModel model;
 
 	/**

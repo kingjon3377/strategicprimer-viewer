@@ -48,7 +48,7 @@ public final class PlayerImpl implements MutablePlayer {
 
 	/**
 	 * Whether this is the current player or not.
-	 * 
+	 *
 	 * TODO: Should this really be encapsulated in Player, not PlayerCollection?"
 	 */
 	private boolean current = false;

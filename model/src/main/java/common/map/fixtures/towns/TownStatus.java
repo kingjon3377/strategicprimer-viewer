@@ -8,7 +8,7 @@ public enum TownStatus {
 	Abandoned("abandoned"),
 	Ruined("ruined"),
 	Burned("burned");
-	
+
 	private TownStatus(final String str) {
 		string = str;
 	}

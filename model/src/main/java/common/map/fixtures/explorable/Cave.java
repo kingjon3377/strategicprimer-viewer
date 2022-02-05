@@ -98,7 +98,7 @@ public class Cave implements ExplorableFixture {
 	}
 
 	/**
-	 * @author MrBeast 
+	 * @author MrBeast
 	 * @see http://opengameart.org/content/cave-tileset-0
 	 */
 	@Override

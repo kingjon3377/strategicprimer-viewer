@@ -14,7 +14,7 @@ public class PointIterable implements Iterable<Point> {
 	 * The dimensions of the map we're a view of.
 	 */
 	private final MapDimensions dimensions;
-	
+
 	/**
 	 * Whether we should search forwards (if true) or backwards (if false).
 	 *

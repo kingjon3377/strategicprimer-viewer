@@ -136,7 +136,7 @@ import common.map.Point;
 		MapDimensions dimensions = model.getMapDimensions();
 		NumberState columnState = checkNumber(columnText, dimensions.getColumns() - 1);
 		if (!NumberState.Valid.equals(columnState)) {
-			errorLabel.setText(errorLabel.getText() + "Column" + 
+			errorLabel.setText(errorLabel.getText() + "Column" +
 				getErrorMessage(columnState, dimensions.getColumns()));
 			columnField.setText("-1");
 			columnField.selectAll();

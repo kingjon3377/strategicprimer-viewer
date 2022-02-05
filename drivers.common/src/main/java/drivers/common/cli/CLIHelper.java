@@ -257,7 +257,7 @@ public final class CLIHelper implements ICLIHelper {
 			boolean retval = seriesState.get(key);
 			println(retval ? "yes" : "no");
 			return retval;
-		} // else 
+		} // else
 		while (true) {
 			String input = Optional.ofNullable(inputString(prompt))
 				.map(String::toLowerCase).orElse(null);

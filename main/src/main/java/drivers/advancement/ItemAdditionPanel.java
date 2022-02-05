@@ -35,8 +35,8 @@ import lovelace.util.SimpleCardLayout;
 		setPanelSizes(this);
 		JPanel first = new BoxPanel(BoxAxis.LineAxis);
 		first.add(new ListenedButton("+", ignored -> {
-				// I had wondered if Component.requestFocusInWindow() would make CardLayout 
-				// flip to the card containing the component, but it apparently doesn't 
+				// I had wondered if Component.requestFocusInWindow() would make CardLayout
+				// flip to the card containing the component, but it apparently doesn't
 				// work that way.
 				layoutObj.goNext();
 				field.requestFocusInWindow();

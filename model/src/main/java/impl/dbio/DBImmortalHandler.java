@@ -36,7 +36,7 @@ import common.map.fixtures.mobile.Troll;
 import common.map.fixtures.mobile.ImmortalAnimal;
 import common.xmlio.Warning;
 
-final class DBImmortalHandler extends AbstractDatabaseWriter<Immortal, /*Point|IUnit*/ Object> 
+final class DBImmortalHandler extends AbstractDatabaseWriter<Immortal, /*Point|IUnit*/ Object>
 		implements MapContentsReader {
 	public DBImmortalHandler() {
 		super(Immortal.class, Object.class);

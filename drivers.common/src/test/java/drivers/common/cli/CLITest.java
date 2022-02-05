@@ -104,7 +104,7 @@ public final class CLITest {
 			"chooseFromList prompts again when negative index given");
 		assertCLI(cli -> cli.<Player>chooseFromList(Arrays.asList(new PlayerImpl(1, "one"),
 			new PlayerImpl(2, "two")), "test desc", "none present", "prompt", false),
-			Arrays.asList("3"), String.format("test desc%n0: one%n1: two%nprompt "), 
+			Arrays.asList("3"), String.format("test desc%n0: one%n1: two%nprompt "),
 			Pair.with(3, null), "chooseFromList allows too-large choice",
 			"chooseFromList allows too-large choice");
 		assertCLI(cli -> cli.<Player>chooseFromList(Arrays.asList(new PlayerImpl(1, "one"),
@@ -264,7 +264,7 @@ public final class CLITest {
 		StringBuilder ostream = new StringBuilder();
 		ICLIHelper cli = new CLIHelper(new LinkedList<>(Arrays.asList("all"))::pollFirst,
 			ostream::append);
-		assertEquals(true, cli.inputBooleanInSeries("prompt four "), 
+		assertEquals(true, cli.inputBooleanInSeries("prompt four "),
 			"inputBooleanInSeries allows yes-to-all");
 		assertEquals(true, cli.inputBooleanInSeries("prompt four "),
 			"inputBooleanInSeries honors yes-to-all when prompt is the same");
@@ -326,12 +326,12 @@ public final class CLITest {
 			"chooseStringFromList prompts the user");
 		assertCLI(cli -> cli.chooseStringFromList(Arrays.asList("one", "two", "three"),
 			"test desc", "none present", "prompt two", true), Arrays.asList("1"),
-			String.format("test desc%n0: one%n1: two%n2: three%nprompt two "), 
+			String.format("test desc%n0: one%n1: two%n2: three%nprompt two "),
 			Pair.with(1, "two"), "chooseStringFromList chooses the one specified by the user",
 			"chooseStringFromList prompts the user");
 		assertCLI(cli -> cli.chooseStringFromList(Arrays.asList("one"), "test desc",
-			"none present", "prompt", true), Collections.emptyList(), 
-			String.format("test desc%nAutomatically choosing only item, one.%n"), 
+			"none present", "prompt", true), Collections.emptyList(),
+			String.format("test desc%nAutomatically choosing only item, one.%n"),
 			Pair.with(0, "one"),
 			"chooseStringFromList automatically chooses only choice when told to",
 			"chooseStringFromList automatically chose only choice");
@@ -353,17 +353,17 @@ public final class CLITest {
 			"chooseStringFromList doesn't auto-choose when more than one item",
 			"chooseStringFromList doesn't auto-choose when more than one item");
 		assertCLI(cli -> cli.chooseStringFromList(Arrays.asList("one", "two"),
-			"test desc", "none present", "prompt", false), Arrays.asList("-1", "0"), 
+			"test desc", "none present", "prompt", false), Arrays.asList("-1", "0"),
 			String.format("test desc%n0: one%n1: two%nprompt prompt "), Pair.with(0, "one"),
 			"chooseStringFromList prompts again when negative index given",
 			"chooseStringFromList prompts again when negative index given");
-		assertCLI(cli -> cli.chooseStringFromList(Arrays.asList("one", "two"), "test desc", 
+		assertCLI(cli -> cli.chooseStringFromList(Arrays.asList("one", "two"), "test desc",
 			"none present", "prompt", false), Arrays.asList("3"),
 			String.format("test desc%n0: one%n1: two%nprompt "), Pair.with(3, null),
 			"chooseStringFromList allows too-large choice",
 			"chooseStringFromList allows too-large choice");
 		assertCLI(cli -> cli.chooseStringFromList(Collections.emptyList(), "test desc",
-			"none present", "prompt", false), Collections.emptyList(), 
+			"none present", "prompt", false), Collections.emptyList(),
 			String.format("none present%n"), Pair.with(-1, null),
 			"chooseStringFromList handles empty list",
 			"chooseStringFromList handles empty list");

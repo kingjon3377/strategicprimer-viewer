@@ -27,7 +27,7 @@ public class ResourceAddingCLIHelper {
 		this.cli = cli;
 		this.idf = idf;
 	}
-	
+
 	private final ICLIHelper cli;
 	private final IDRegistrar idf;
 
@@ -41,7 +41,7 @@ public class ResourceAddingCLIHelper {
 	 */
 	@Nullable
 	private String getResourceKind() {
-		String one = cli.chooseStringFromList(new ArrayList<>(resourceKinds), 
+		String one = cli.chooseStringFromList(new ArrayList<>(resourceKinds),
 			"Possible kinds of resources:", "No resource kinds entered yet",
 			"Chosen kind: ", false).getValue1();
 		if (one != null) {

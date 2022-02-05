@@ -36,7 +36,7 @@ public interface IExplorationModel extends IMultiMapModel, SelectionChangeSource
 	 * terrain information showing that, then re-throw the exception;
 	 * callers should deduct a minimal MP cost (though we notify listeners
 	 * of that cost). We return the cost of the move in MP, which we also tell listeners about.
-	 * 
+	 *
 	 * @throws TraversalImpossibleException if movement in the specified direction is impossible
 	 */
 	int move(Direction direction, Speed speed) throws TraversalImpossibleException;

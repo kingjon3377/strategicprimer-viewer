@@ -24,7 +24,7 @@ public class TownGeneratingCLIFactory implements ModelDriverFactory {
 		ParamCount.AtLeastOne,
 		"Enter or generate stats and contents for towns and villages",
 		"Enter or generate stats and contents for towns and villages", true, false);
-	
+
 	@Override
 	public final IDriverUsage getUsage() {
 		return USAGE;
