@@ -275,8 +275,7 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 	 */
 	@Override
 	public Iterable<IUnit> getUnits(final Player player) {
-		return getMap().streamLocations()
-			.flatMap(l -> getMap().getFixtures(l).stream())
+		return getMap().streamAllFixtures()
 			.flatMap(ExplorationModel::unflattenNonFortresses)
 			.filter(IUnit.class::isInstance)
 			.map(IUnit.class::cast)
@@ -864,8 +863,7 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 	@Override
 	public void moveMember(final UnitMember member, final IUnit old, final IUnit newOwner) {
 		for (IMutableMapNG map : getRestrictedSubordinateMaps()) {
-			Optional<IMutableUnit> matchingOld = map.streamLocations()
-					.flatMap(l -> map.getFixtures(l).stream())
+			Optional<IMutableUnit> matchingOld = map.streamAllFixtures()
 				.flatMap(ExplorationModel::unflattenNonFortresses)
 				.filter(IMutableUnit.class::isInstance).map(IMutableUnit.class::cast)
 				.filter(u -> u.getOwner().equals(old.getOwner()) &&
@@ -875,8 +873,7 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 			Optional<UnitMember> matchingMember =
 				matchingOld.flatMap(u -> u.stream().filter(member::equals) // TODO: equals() isn't ideal for finding a matching member ...
 					.findAny());
-			Optional<IMutableUnit> matchingNew = map.streamLocations()
-						.flatMap(l -> map.getFixtures(l).stream())
+			Optional<IMutableUnit> matchingNew = map.streamAllFixtures()
 				.flatMap(ExplorationModel::unflattenNonFortresses)
 				.filter(IMutableUnit.class::isInstance).map(IMutableUnit.class::cast)
 				.filter(u -> u.getOwner().equals(newOwner.getOwner()) &&
@@ -978,8 +975,7 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 	@Override
 	public void addUnitMember(final IUnit unit, final UnitMember member) {
 		for (IMutableMapNG map : getRestrictedAllMaps()) {
-			Optional<IMutableUnit> matching = map.streamLocations()
-					.flatMap(l -> map.getFixtures(l).stream())
+			Optional<IMutableUnit> matching = map.streamAllFixtures()
 					.flatMap(ExplorationModel::unflattenNonFortresses)
 					.filter(IMutableUnit.class::isInstance)
 					.map(IMutableUnit.class::cast)
@@ -1012,8 +1008,7 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 		boolean any = false;
 		if (item instanceof IUnit) {
 			for (IMutableMapNG map : getRestrictedAllMaps()) {
-				Optional<HasMutableName> matching = map.streamLocations()
-						.flatMap(l -> map.getFixtures(l).stream())
+				Optional<HasMutableName> matching = map.streamAllFixtures()
 						.flatMap(ExplorationModel::unflattenNonFortresses)
 						.filter(IUnit.class::isInstance)
 						.filter(HasMutableName.class::isInstance)
@@ -1035,8 +1030,7 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 			return any;
 		} else if (item instanceof UnitMember) {
 			for (IMutableMapNG map : getRestrictedAllMaps()) {
-				Optional<HasMutableName> matching = map.streamLocations()
-						.flatMap(l -> map.getFixtures(l).stream())
+				Optional<HasMutableName> matching = map.streamAllFixtures()
 						.flatMap(ExplorationModel::unflattenNonFortresses)
 						.filter(IUnit.class::isInstance).map(IUnit.class::cast)
 						.filter(this::matchingPlayer).flatMap(u -> u.stream())
@@ -1067,8 +1061,7 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 		boolean any = false;
 		if (item instanceof IUnit) {
 			for (IMutableMapNG map : getRestrictedAllMaps()) {
-				Optional<HasMutableKind> matching = map.streamLocations()
-						.flatMap(l -> map.getFixtures(l).stream())
+				Optional<HasMutableKind> matching = map.streamAllFixtures()
 						.flatMap(ExplorationModel::unflattenNonFortresses)
 						.filter(IUnit.class::isInstance).map(IUnit.class::cast)
 						.filter(u -> u.getOwner().equals(((IUnit) item).getOwner()))
@@ -1088,8 +1081,7 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 			return any;
 		} else if (item instanceof UnitMember) {
 			for (IMutableMapNG map : getRestrictedAllMaps()) {
-				Optional<HasMutableKind> matching = map.streamLocations()
-						.flatMap(l -> map.getFixtures(l).stream())
+				Optional<HasMutableKind> matching = map.streamAllFixtures()
 						.flatMap(ExplorationModel::unflattenNonFortresses)
 						.filter(IUnit.class::isInstance).map(IUnit.class::cast)
 						.filter(this::matchingPlayer)
@@ -1119,8 +1111,7 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 	@Override
 	public void dismissUnitMember(final UnitMember member) {
 		for (IMutableMapNG map : getRestrictedAllMaps()) {
-			for (IMutableUnit unit : map.streamLocations()
-					.flatMap(l -> map.getFixtures(l).stream())
+			for (IMutableUnit unit : map.streamAllFixtures()
 					.flatMap(ExplorationModel::unflattenNonFortresses)
 					.filter(IMutableUnit.class::isInstance)
 					.map(IMutableUnit.class::cast)
@@ -1139,8 +1130,7 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 	public boolean addSibling(final UnitMember existing, final UnitMember sibling) {
 		boolean any = false;
 		for (IMutableMapNG map : getRestrictedAllMaps()) {
-			for (IMutableUnit unit : map.streamLocations()
-					.flatMap(l -> map.getFixtures(l).stream())
+			for (IMutableUnit unit : map.streamAllFixtures()
 					.flatMap(ExplorationModel::unflattenNonFortresses)
 					.filter(IMutableUnit.class::isInstance)
 					.map(IMutableUnit.class::cast)
@@ -1164,8 +1154,7 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 	public boolean changeOwner(final HasMutableOwner item, final Player newOwner) {
 		boolean any = false;
 		for (IMutableMapNG map : getRestrictedAllMaps()) {
-			Optional<HasMutableOwner> matching = map.streamLocations()
-					.flatMap(l -> map.getFixtures(l).stream())
+			Optional<HasMutableOwner> matching = map.streamAllFixtures()
 					.flatMap(ExplorationModel::flattenIncluding).flatMap(ExplorationModel::flattenIncluding)
 					.filter(HasMutableOwner.class::isInstance)
 					.map(HasMutableOwner.class::cast)
@@ -1187,8 +1176,7 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 	public boolean sortFixtureContents(final IUnit fixture) {
 		boolean any = false;
 		for (IMutableMapNG map : getRestrictedAllMaps()) {
-			Optional<IMutableUnit> matching = map.streamLocations()
-					.flatMap(l -> map.getFixtures(l).stream())
+			Optional<IMutableUnit> matching = map.streamAllFixtures()
 					.flatMap(ExplorationModel::unflattenNonFortresses)
 					.filter(IMutableUnit.class::isInstance)
 					.map(IMutableUnit.class::cast)

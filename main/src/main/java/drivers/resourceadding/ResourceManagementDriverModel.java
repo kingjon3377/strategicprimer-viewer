@@ -55,8 +55,7 @@ import java.math.BigDecimal;
 			// FIXME: It looks like this always skips the main map because the map player is independent there ...
 			if (mapPlayer.isIndependent() || mapPlayer.getPlayerId() < 0 ||
 					mapPlayer.getPlayerId() == player.getPlayerId()) {
-				IMutableFortress fortress = map.streamLocations()
-						.flatMap(l -> map.getFixtures(l).stream())
+				IMutableFortress fortress = map.streamAllFixtures()
 						.filter(IMutableFortress.class::isInstance)
 						.map(IMutableFortress.class::cast)
 						.filter(f -> "HQ".equals(f.getName()))

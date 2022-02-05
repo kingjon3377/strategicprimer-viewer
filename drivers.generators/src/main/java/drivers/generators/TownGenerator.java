@@ -168,7 +168,7 @@ import java.math.BigDecimal;
 	 */
 	@Nullable
 	private IFixture findByID(final IMapNG map, final int id) {
-		return map.streamLocations().flatMap(l -> map.getFixtures(l).stream())
+		return map.streamAllFixtures()
 			.filter(f -> f.getId() == id)
 			.findAny().orElse(null);
 	}
@@ -191,7 +191,7 @@ import java.math.BigDecimal;
 	 * identified by the given {@link id ID number}.
 	 */
 	private boolean isClaimedField(final IMapNG map, final int id) {
-		return map.streamLocations().flatMap(l -> map.getFixtures(l).stream())
+		return map.streamAllFixtures()
 			.filter(ITownFixture.class::isInstance).map(ITownFixture.class::cast)
 			.map(ITownFixture::getPopulation).filter(Objects::nonNull)
 			.flatMap(t -> StreamSupport.stream(t.getWorkedFields().spliterator(), true))

@@ -132,8 +132,7 @@ public class QueryCLI implements ReadOnlyDriver {
 		Player player = cli.chooseFromList(players, "Players in the map:", "Map contains no players",
 			"Owner of workers to count: ", true).getValue1();
 		if (player != null) {
-			int count = countWorkersInIterable(player, map.streamLocations()
-					.flatMap(l -> map.getFixtures(l).stream())
+			int count = countWorkersInIterable(player, map.streamAllFixtures()
 					.collect(Collectors.toList()));
 			cli.println(String.format("%s has %d workers", player.getName(), count));
 		}

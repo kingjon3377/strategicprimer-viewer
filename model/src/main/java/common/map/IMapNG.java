@@ -87,6 +87,15 @@ public interface IMapNG extends Subsettable<IMapNG> {
 	Collection<TileFixture> getFixtures(Point location);
 
 	/**
+	 * A stream of all the tile-fixtures in all the locations in the map.
+	 *
+	 * TODO: Should this be extended to include non-"tile" fixtures inside fortresses and units?
+	 */
+	default Stream<TileFixture> streamAllFixtures() {
+		return streamLocations().flatMap(l -> getFixtures(l).stream());
+	}
+
+	/**
 	 * The current turn.
 	 */
 	int getCurrentTurn();

@@ -192,8 +192,8 @@ public class TurnRunningModel extends ExplorationModel implements ITurnRunningMo
 	public boolean addJobToWorker(final IWorker worker, final String jobName) {
 		boolean any = false;
 		for (IMutableMapNG map : getRestrictedAllMaps()) {
-			IMutableWorker matching = map.streamLocations()
-				.flatMap(l -> map.getFixtures(l).stream()).flatMap(TurnRunningModel::unflattenNonFortresses)
+			IMutableWorker matching = map.streamAllFixtures()
+				.flatMap(TurnRunningModel::unflattenNonFortresses)
 				.filter(IUnit.class::isInstance).map(IUnit.class::cast)
 				.filter(u -> u.getOwner().equals(map.getCurrentPlayer()))
 				.flatMap(u -> u.stream())
@@ -227,8 +227,8 @@ public class TurnRunningModel extends ExplorationModel implements ITurnRunningMo
 	public boolean addHoursToSkill(final IWorker worker, final String jobName, final String skillName, final int hours, final int contextValue) {
 		boolean any = false;
 		for (IMutableMapNG map : getRestrictedAllMaps()) {
-			IMutableWorker matching = map.streamLocations()
-				.flatMap(l -> map.getFixtures(l).stream()).flatMap(TurnRunningModel::unflattenNonFortresses)
+			IMutableWorker matching = map.streamAllFixtures()
+				.flatMap(TurnRunningModel::unflattenNonFortresses)
 				.filter(IUnit.class::isInstance).map(IUnit.class::cast)
 				.filter(u -> u.getOwner().equals(map.getCurrentPlayer())).flatMap(u -> u.stream())
 				.filter(IMutableWorker.class::isInstance).map(IMutableWorker.class::cast)
@@ -277,8 +277,8 @@ public class TurnRunningModel extends ExplorationModel implements ITurnRunningMo
 	public boolean replaceSkillInJob(final IWorker worker, final String jobName, final ISkill delenda, final ISkill replacement) {
 		boolean any = false;
 		for (IMutableMapNG map : getRestrictedAllMaps()) {
-			IMutableWorker matching = map.streamLocations()
-				.flatMap(l -> map.getFixtures(l).stream()).flatMap(TurnRunningModel::unflattenNonFortresses)
+			IMutableWorker matching = map.streamAllFixtures()
+				.flatMap(TurnRunningModel::unflattenNonFortresses)
 				.filter(IUnit.class::isInstance).map(IUnit.class::cast)
 				.filter(u -> u.getOwner().equals(map.getCurrentPlayer())).flatMap(u -> u.stream())
 				.filter(IMutableWorker.class::isInstance).map(IMutableWorker.class::cast)
@@ -317,8 +317,8 @@ public class TurnRunningModel extends ExplorationModel implements ITurnRunningMo
 	public boolean reduceResourceBy(final IResourcePile resource, final BigDecimal amount, final Player owner) {
 		boolean any = false;
 		for (IMutableMapNG map : getRestrictedAllMaps()) {
-			for (FixtureIterable<?> container : map.streamLocations()
-					.flatMap(l -> map.getFixtures(l).stream()).flatMap(TurnRunningModel::partiallyFlattenFortresses)
+			for (FixtureIterable<?> container : map.streamAllFixtures()
+					.flatMap(TurnRunningModel::partiallyFlattenFortresses)
 					.filter(HasOwner.class::isInstance).map(HasOwner.class::cast)
 					.filter(f -> f.getOwner().equals(owner))
 					.filter(FixtureIterable.class::isInstance).map(FixtureIterable.class::cast)
@@ -371,8 +371,8 @@ public class TurnRunningModel extends ExplorationModel implements ITurnRunningMo
 	public boolean removeResource(final IResourcePile resource, final Player owner) {
 		boolean any = false;
 		for (IMutableMapNG map : getRestrictedAllMaps()) {
-			for (FixtureIterable<?> container : map.streamLocations()
-					.flatMap(l -> map.getFixtures(l).stream()).flatMap(TurnRunningModel::partiallyFlattenFortresses)
+			for (FixtureIterable<?> container : map.streamAllFixtures()
+					.flatMap(TurnRunningModel::partiallyFlattenFortresses)
 					.filter(HasOwner.class::isInstance).map(HasOwner.class::cast)
 					.filter(f -> f.getOwner().equals(owner))
 					.filter(FixtureIterable.class::isInstance).map(FixtureIterable.class::cast)
@@ -414,8 +414,8 @@ public class TurnRunningModel extends ExplorationModel implements ITurnRunningMo
 	public boolean setUnitOrders(final IUnit unit, final int turn, final String results) {
 		boolean any = false;
 		for (IMutableMapNG map : getRestrictedAllMaps()) {
-			IMutableUnit matching = map.streamLocations()
-				.flatMap(l -> map.getFixtures(l).stream()).flatMap(TurnRunningModel::unflattenNonFortresses)
+			IMutableUnit matching = map.streamAllFixtures()
+				.flatMap(TurnRunningModel::unflattenNonFortresses)
 				.filter(IMutableUnit.class::isInstance).map(IMutableUnit.class::cast)
 				.filter(u -> u.getOwner().equals(unit.getOwner()))
 				.filter(u -> u.getKind().equals(unit.getKind()))
@@ -439,8 +439,8 @@ public class TurnRunningModel extends ExplorationModel implements ITurnRunningMo
 	public boolean setUnitResults(final IUnit unit, final int turn, final String results) {
 		boolean any = false;
 		for (IMutableMapNG map : getRestrictedAllMaps()) {
-			IMutableUnit matching = map.streamLocations()
-				.flatMap(l -> map.getFixtures(l).stream()).flatMap(TurnRunningModel::unflattenNonFortresses)
+			IMutableUnit matching = map.streamAllFixtures()
+				.flatMap(TurnRunningModel::unflattenNonFortresses)
 				.filter(IMutableUnit.class::isInstance).map(IMutableUnit.class::cast)
 				.filter(u -> u.getOwner().equals(unit.getOwner()))
 				.filter(u -> u.getKind().equals(unit.getKind()))
@@ -466,8 +466,8 @@ public class TurnRunningModel extends ExplorationModel implements ITurnRunningMo
 		IMutableResourcePile resource = new ResourcePileImpl(id, kind, contents, quantity);
 		for (IMutableMapNG map : getRestrictedAllMaps()) {
 			// TODO: Match the unit on owner and kind as well as name and ID?
-			map.streamLocations()
-					.flatMap(l -> map.getFixtures(l).stream()).flatMap(TurnRunningModel::unflattenNonFortresses)
+			map.streamAllFixtures()
+					.flatMap(TurnRunningModel::unflattenNonFortresses)
 					.filter(IMutableUnit.class::isInstance).map(IMutableUnit.class::cast)
 //				.filter(u -> u.getOwner().equals(container.getOwner()))
 //				.filter(u -> u.getKind().equals(container.getKind()))
@@ -516,8 +516,8 @@ public class TurnRunningModel extends ExplorationModel implements ITurnRunningMo
 		resource.setCreated(createdDate);
 		for (IMutableMapNG map : getRestrictedAllMaps()) {
 			// TODO: Match the unit on owner and kind as well as name and ID?
-			map.streamLocations()
-					.flatMap(l -> map.getFixtures(l).stream()).flatMap(TurnRunningModel::unflattenNonFortresses)
+			map.streamAllFixtures()
+					.flatMap(TurnRunningModel::unflattenNonFortresses)
 					.filter(IMutableUnit.class::isInstance).map(IMutableUnit.class::cast)
 //				.filter(u -> u.getOwner().equals(container.getOwner()))
 //				.filter(u -> u.getKind().equals(container.getKind()))
@@ -571,8 +571,8 @@ public class TurnRunningModel extends ExplorationModel implements ITurnRunningMo
 		Animal animal = new AnimalImpl(kind, false, status, id, born, population);
 		boolean any = false;
 		for (IMutableMapNG map : getRestrictedAllMaps()) {
-			IMutableUnit matching = map.streamLocations()
-				.flatMap(l -> map.getFixtures(l).stream()).flatMap(TurnRunningModel::unflattenNonFortresses)
+			IMutableUnit matching = map.streamAllFixtures()
+				.flatMap(TurnRunningModel::unflattenNonFortresses)
 				.filter(IMutableUnit.class::isInstance).map(IMutableUnit.class::cast)
 				.filter(u -> u.getOwner().equals(container.getOwner()))
 				.filter(u -> u.getKind().equals(container.getKind()))
@@ -613,8 +613,7 @@ public class TurnRunningModel extends ExplorationModel implements ITurnRunningMo
 		};
 
 		for (IMutableMapNG map : getRestrictedAllMaps()) {
-			for (FixtureIterable<?> container : map.streamLocations()
-					.flatMap(l -> map.getFixtures(l).stream())
+			for (FixtureIterable<?> container : map.streamAllFixtures()
 					.flatMap(TurnRunningModel::partiallyFlattenFortresses)
 					.filter(FixtureIterable.class::isInstance)
 					.filter(HasOwner.class::isInstance)
@@ -629,8 +628,8 @@ public class TurnRunningModel extends ExplorationModel implements ITurnRunningMo
 					.filter(r -> r.getQuantity().getUnits().equals(from.getQuantity().getUnits()))
 					.filter(r -> r.getId() == from.getId()).findAny().orElse(null);
 				// TODO: Match destination by owner and kind, not just name and ID?
-				IMutableUnit destination = map.streamLocations()
-					.flatMap(l -> map.getFixtures(l).stream()).flatMap(TurnRunningModel::partiallyFlattenFortresses)
+				IMutableUnit destination = map.streamAllFixtures()
+					.flatMap(TurnRunningModel::partiallyFlattenFortresses)
 					.filter(IMutableUnit.class::isInstance).map(IMutableUnit.class::cast)
 					.filter(u -> u.getName().equals(to.getName()))
 					.filter(u -> u.getId() == to.getId()).findAny().orElse(null);
@@ -688,8 +687,7 @@ public class TurnRunningModel extends ExplorationModel implements ITurnRunningMo
 		};
 
 		for (IMutableMapNG map : getRestrictedAllMaps()) {
-			for (FixtureIterable<?> container : map.streamLocations()
-					.flatMap(l -> map.getFixtures(l).stream())
+			for (FixtureIterable<?> container : map.streamAllFixtures()
 					.flatMap(TurnRunningModel::partiallyFlattenFortresses)
 					.filter(FixtureIterable.class::isInstance)
 					.filter(HasOwner.class::isInstance)
@@ -704,8 +702,7 @@ public class TurnRunningModel extends ExplorationModel implements ITurnRunningMo
 					.filter(r -> r.getQuantity().getUnits().equals(from.getQuantity().getUnits()))
 					.filter(r -> r.getId() == from.getId()).findAny().orElse(null);
 				// TODO: Match destination by owner and kind, not just name and ID?
-				IMutableFortress destination = map.streamLocations()
-					.flatMap(l -> map.getFixtures(l).stream())
+				IMutableFortress destination = map.streamAllFixtures()
 					.filter(IMutableFortress.class::isInstance).map(IMutableFortress.class::cast)
 					.filter(f -> f.getName().equals(to.getName()))
 					.filter(f -> f.getId() == to.getId()).findAny().orElse(null);
@@ -749,7 +746,7 @@ public class TurnRunningModel extends ExplorationModel implements ITurnRunningMo
 		boolean any = false;
 		for (IMutableMapNG map : getRestrictedAllMaps()) {
 			Supplier<Stream<IMutableFortress>> supp =
-				() -> map.streamLocations().flatMap(l -> map.getFixtures(l).stream())
+				() -> map.streamAllFixtures()
 					.filter(IMutableFortress.class::isInstance).map(IMutableFortress.class::cast)
 					.filter(f -> f.getOwner().equals(owner));
 			IMutableFortress result = supp.get().filter(f -> fortName.equals(f.getName())).findAny()

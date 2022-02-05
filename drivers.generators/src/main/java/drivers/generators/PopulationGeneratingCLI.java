@@ -355,8 +355,7 @@ public class PopulationGeneratingCLI implements CLIDriver {
 
 	@Override
 	public void startDriver() {
-		for (String kind : map.streamLocations()
-				.flatMap(l -> model.getMap().getFixtures(l).stream())
+		for (String kind : map.streamAllFixtures()
 				.filter(Animal.class::isInstance).map(Animal.class::cast)
 				.filter(a -> a.getPopulation() <= 0).map(Animal::getKind).distinct()
 				.collect(Collectors.toList())) {
@@ -364,12 +363,10 @@ public class PopulationGeneratingCLI implements CLIDriver {
 			generateAnimalPopulations(false, kind);
 		}
 		// TODO: filter these to only those without un-counted instances?
-		map.streamLocations()
-			.flatMap(l -> model.getMap().getFixtures(l).stream())
+		map.streamAllFixtures()
 			.filter(Grove.class::isInstance).map(Grove.class::cast)
 			.map(Grove::getKind).distinct().forEach(this::generateGroveCounts);
-		map.streamLocations()
-			.flatMap(l -> model.getMap().getFixtures(l).stream())
+		map.streamAllFixtures()
 			.filter(Shrub.class::isInstance).map(Shrub.class::cast)
 			.map(Shrub::getKind).distinct().forEach(this::generateShrubCounts);
 		generateFieldExtents();

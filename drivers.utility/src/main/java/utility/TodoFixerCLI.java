@@ -325,8 +325,7 @@ public class TodoFixerCLI implements CLIDriver {
 	 * Search for and fix units with kinds missing.
 	 */
 	private void fixAllUnits(final IMapNG map) {
-		totalCount = map.streamLocations()
-			.flatMap(l -> map.getFixtures(l).stream())
+		totalCount = map.streamAllFixtures()
 			.filter(Unit.class::isInstance).map(Unit.class::cast) // FIXME: IMutableUnit, surely?
 			.filter(u -> "TODO".equals(u.getKind())).count();
 		for (Point point : map.getLocations()) {

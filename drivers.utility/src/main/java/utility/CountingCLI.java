@@ -208,8 +208,7 @@ import common.map.fixtures.mobile.AnimalTracks;
 			cli.println(String.format("- %d are %s", entry.getValue1(), entry.getValue0()));
 		}
 		cli.println();
-		List<TileFixture> allFixtures = StreamSupport.stream(map.getLocations().spliterator(), true)
-			.flatMap(l -> map.getFixtures(l).stream()).collect(Collectors.toList());
+		List<TileFixture> allFixtures = map.streamAllFixtures().collect(Collectors.toList());
 		MappedCounter<Forest, String, BigDecimal> forests = new MappedCounter<>(Forest::getKind,
 			f -> decimalize(f.getAcres()), DecimalAccumulator::new, BigDecimal.ZERO);
 		allFixtures.stream().filter(Forest.class::isInstance).map(Forest.class::cast)

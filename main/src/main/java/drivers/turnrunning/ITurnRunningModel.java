@@ -172,8 +172,7 @@ public interface ITurnRunningModel extends IExplorationModel, IAdvancementModel 
 	default IFortress findHQ(final Player player, final String fortressName) {
 		IFortress retval = null;
 		IMapNG map = getMap();
-		for (IFortress fortress : map.streamLocations()
-				.flatMap(l -> map.getFixtures(l).stream())
+		for (IFortress fortress : map.streamAllFixtures()
 				.filter(IFortress.class::isInstance).map(IFortress.class::cast)
 				.filter(f -> player.equals(f.getOwner()))
 				.collect(Collectors.toList())) {

@@ -268,8 +268,7 @@ import java.util.function.Predicate;
 	}
 
 	private void populateAll() {
-		model.getMap().streamLocations().flatMap(l -> model.getMap().getFixtures(l).stream())
-			.forEach(this::populate);
+		model.getMap().streamAllFixtures().forEach(this::populate);
 	}
 
 	private final JScrollPane scrollPane;
