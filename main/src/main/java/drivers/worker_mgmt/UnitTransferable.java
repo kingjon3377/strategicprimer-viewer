@@ -40,7 +40,7 @@ import common.map.HasMutableKind;
 	}
 
 	@Override
-	public List<IUnit> getTransferData(DataFlavor candidate) 
+	public List<IUnit> getTransferData(DataFlavor candidate)
 			throws UnsupportedFlavorException {
 		if (FLAVOR.equals(candidate)) {
 			return Collections.unmodifiableList(payload);

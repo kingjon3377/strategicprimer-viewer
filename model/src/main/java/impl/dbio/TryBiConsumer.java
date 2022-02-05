@@ -17,7 +17,7 @@ interface TryBiConsumer<T1, T2, E extends Throwable> {
 
 	static <T1, T2, E extends Throwable> TryBiConsumer<T1, T2, E> of(
 			TryBiConsumer<T1, T2, E> tryConsumer) {
-		return Objects.requireNonNull(tryConsumer);	
+		return Objects.requireNonNull(tryConsumer);
 	}
 
 	default TryBiConsumer<T1, T2, E> andThen(TryBiConsumer<? super T1, ? super T2, E> after) throws E {

@@ -1,10 +1,10 @@
 /**
  * This software is released as part of the Pumpernickel project.
- * 
+ *
  * All com.pump resources in the Pumpernickel project are distributed under the
  * MIT License:
  * https://raw.githubusercontent.com/mickleness/pumpernickel/master/License.txt
- * 
+ *
  * More information about the Pumpernickel project is available here:
  * https://mickleness.github.io/pumpernickel/
  */
@@ -185,7 +185,7 @@ public class WindowList {
 
 	/**
 	 * Returns a list of windows.
-	 * 
+	 *
 	 * @param sortByLayer
 	 *            whether to sort by layer or origin. If this is true, then the
 	 *            lowest index corresponds to the window farthest behind; the
@@ -220,7 +220,7 @@ public class WindowList {
 
 	/**
 	 * Returns a list of frames.
-	 * 
+	 *
 	 * @param sortByLayer
 	 *            whether to sort by layer or origin. If this is true, then the
 	 *            lowest index corresponds to the frame farthest behind; the
@@ -267,7 +267,7 @@ public class WindowList {
 	 * <P>
 	 * This listener will be notified when new windows are activated, layering
 	 * of windows changes, or windows close.
-	 * 
+	 *
 	 * @param l
 	 *            a new ChangeListener.
 	 */

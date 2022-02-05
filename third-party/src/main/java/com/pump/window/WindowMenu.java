@@ -1,10 +1,10 @@
 /**
  * This software is released as part of the Pumpernickel project.
- * 
+ *
  * All com.pump resources in the Pumpernickel project are distributed under the
  * MIT License:
  * https://raw.githubusercontent.com/mickleness/pumpernickel/master/License.txt
- * 
+ *
  * More information about the Pumpernickel project is available here:
  * https://mickleness.github.io/pumpernickel/
  */
@@ -51,7 +51,7 @@ import javax.swing.event.ChangeListener;
  * 3. Holding down the option/alt key doesn't toggle menu items like "Minimize".
  * I was able to implement this when a JMenuBar is placed in the JFrame, but not
  * when the screen menubar is used.
- * 
+ *
  * <P>
  * So ironically: I can get more Mac-like behavior on non-Macs. (Which defeats
  * the purpose.) But in the mean time: really all I personally need from my
@@ -132,7 +132,7 @@ public class WindowMenu extends JMenu {
 
 	/**
 	 * Creates a new WindowMenu for a specific JFrame.
-	 * 
+	 *
 	 * @param frame
 	 *            the frame that this menu belongs to.
 	 */
@@ -142,7 +142,7 @@ public class WindowMenu extends JMenu {
 
 	/**
 	 * Creates a new WindowMenu for a specific JFrame.
-	 * 
+	 *
 	 * @param frame
 	 *            the frame that this menu belongs to.
 	 * @param extraItems
