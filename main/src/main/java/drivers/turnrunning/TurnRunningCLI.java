@@ -96,7 +96,7 @@ import org.javatuples.Pair;
 
 	private Stream<IUnit> getUnits(Player player) {
 		final List<IUnit> temp = StreamSupport.stream(model.getAllMaps().spliterator(), false)
-			.flatMap(indivMap -> getUnitsImpl(StreamSupport.stream(indivMap.getLocations().spliterator(), false)
+			.flatMap(indivMap -> getUnitsImpl(indivMap.streamLocations()
 				.flatMap(l -> indivMap.getFixtures(l).stream()), player)).collect(Collectors.toList());
 		final Map<Integer, ProxyUnit> tempMap = new TreeMap<>();
 		for (IUnit unit : temp) {

@@ -242,10 +242,10 @@ public class HuntingModel {
 	 * The map to hunt in.
 	 */
 	private final IMapNG map;
-	
+
 	public HuntingModel(IMapNG map) {
 		this.map = map;
-		fishKinds = StreamSupport.stream(map.getLocations().spliterator(), true)
+		fishKinds = map.streamLocations()
 			.filter(l -> TileType.Ocean.equals(map.getBaseTerrain(l)))
 			.flatMap(l -> map.getFixtures(l).stream())
 			.filter(Animal.class::isInstance)
@@ -311,6 +311,7 @@ public class HuntingModel {
 		} else {
 			nothingProportion = 0.5;
 		}
+		// TODO: Add stream() methods to the "Stream" inner classes
 		return StreamSupport.stream(new FiniteResultStream<>(retval, nothingProportion,
 			NothingFound.INSTANCE).spliterator(), false).collect(Collectors.toList());
 	}

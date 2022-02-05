@@ -38,7 +38,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.Files;
 import org.javatuples.Pair;
-import java.util.stream.StreamSupport;
 import java.util.stream.Collectors;
 import java.util.Objects;
 
@@ -182,7 +181,7 @@ public class TodoFixerCLI implements CLIDriver {
 	 * Search for and fix aquatic villages with non-aquatic races.
 	 */
 	private void fixAllVillages(IMapNG map) throws MissingTableException, IOException {
-		List<Village> villages = StreamSupport.stream(map.getLocations().spliterator(), true)
+		List<Village> villages = map.streamLocations()
 			.filter(l -> TileType.Ocean.equals(map.getBaseTerrain(l)))
 			.flatMap(l -> map.getFixtures(l).stream())
 			.filter(Village.class::isInstance).map(Village.class::cast)
@@ -214,7 +213,7 @@ public class TodoFixerCLI implements CLIDriver {
 		}
 
 		List<Pair<Point, CommunityStats>> brokenTownContents =
-			StreamSupport.stream(map.getLocations().spliterator(), true)
+			map.streamLocations()
 				.flatMap(l -> map.getFixtures(l).stream()
 					.filter(ITownFixture.class::isInstance)
 					.map(ITownFixture.class::cast)
@@ -246,7 +245,7 @@ public class TodoFixerCLI implements CLIDriver {
 		}
 
 		List<Pair<Point, CommunityStats>> brokenExpertise =
-			StreamSupport.stream(map.getLocations().spliterator(), true)
+			map.streamLocations()
 				.flatMap(l -> map.getFixtures(l).stream()
 					.filter(ITownFixture.class::isInstance)
 					.map(ITownFixture.class::cast)
@@ -325,7 +324,7 @@ public class TodoFixerCLI implements CLIDriver {
 	 * Search for and fix units with kinds missing.
 	 */
 	private void fixAllUnits(IMapNG map) {
-		totalCount = StreamSupport.stream(map.getLocations().spliterator(), false)
+		totalCount = map.streamLocations()
 			.flatMap(l -> map.getFixtures(l).stream())
 			.filter(Unit.class::isInstance).map(Unit.class::cast) // FIXME: IMutableUnit, surely?
 			.filter(u -> "TODO".equals(u.getKind())).count();

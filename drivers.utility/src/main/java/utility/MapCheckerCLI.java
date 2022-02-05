@@ -255,6 +255,7 @@ public class MapCheckerCLI implements UtilityDriver {
 			Iterable<? extends IFixture> fixtures) {
 		double total = 0.0;
 		boolean retval = false;
+		// TODO: Take Collection, not Iterable (and for other such functions)
 		for (HasExtent<?> fixture : StreamSupport.stream(fixtures.spliterator(), false)
 				.filter(HasExtent.class::isInstance).map(HasExtent.class::cast)
 				.filter(MapCheckerCLI::positiveAcres)
@@ -386,8 +387,7 @@ public class MapCheckerCLI implements UtilityDriver {
 		}
 
 		if (file.toString().contains("world_turn")) {
-			for (Pair<Point, TileFixture> pair :
-					StreamSupport.stream(map.getLocations().spliterator(), true)
+			for (Pair<Point, TileFixture> pair : map.streamLocations()
 						.flatMap(l -> map.getFixtures(l).stream()
 							.map(f -> Pair.with(l, f)))
 						.collect(Collectors.toList())) {

@@ -131,7 +131,7 @@ public class SPFluidReader implements IMapReader, ISPReader {
 		}
 
 		public Object reader(StartElement element, QName parent, Iterable<XMLEvent> stream,
-				IMutablePlayerCollection players, Warning warner, IDRegistrar idFactory) 
+				IMutablePlayerCollection players, Warning warner, IDRegistrar idFactory)
 				throws SPFormatException {
 			requireTag(element, parent, tag);
 			expectAttributes(element, warner, "id", "image");
@@ -159,7 +159,7 @@ public class SPFluidReader implements IMapReader, ISPReader {
 		}
 
 		public Object reader(StartElement element, QName parent, Iterable<XMLEvent> stream,
-				IMutablePlayerCollection players, Warning warner, IDRegistrar idFactory) 
+				IMutablePlayerCollection players, Warning warner, IDRegistrar idFactory)
 				throws SPFormatException {
 			requireTag(element, parent, tag);
 			expectAttributes(element, warner, "id", "kind", "image");
@@ -173,7 +173,7 @@ public class SPFluidReader implements IMapReader, ISPReader {
 		}
 	}
 
-	private static StartElement firstStartElement(Iterable<XMLEvent> stream, StartElement parent) 
+	private static StartElement firstStartElement(Iterable<XMLEvent> stream, StartElement parent)
 			throws SPFormatException {
 		for (XMLEvent event : stream) {
 			if (event instanceof StartElement && isSPStartElement((StartElement) event)) {
@@ -230,6 +230,7 @@ public class SPFluidReader implements IMapReader, ISPReader {
 			map.addRivers(currentTile, (River) child);
 		} else if (child instanceof TileFixture) {
 			if (child instanceof IFortress &&
+						// TODO: Just use getFixtures().stream()
 					StreamSupport.stream(map.getFixtures(currentTile).spliterator(),
 							true)
 						.filter(IFortress.class::isInstance)
@@ -246,7 +247,7 @@ public class SPFluidReader implements IMapReader, ISPReader {
 	}
 
 	private void parseTile(IMutableMapNG map, StartElement element, Iterable<XMLEvent> stream,
-			IMutablePlayerCollection players, Warning warner, IDRegistrar idFactory) 
+			IMutablePlayerCollection players, Warning warner, IDRegistrar idFactory)
 			throws SPFormatException {
 		expectAttributes(element, warner, "row", "column", "kind", "type");
 		Point loc = new Point(getIntegerAttribute(element, "row"),
@@ -281,7 +282,7 @@ public class SPFluidReader implements IMapReader, ISPReader {
 	}
 
 	private void parseElsewhere(IMutableMapNG map, StartElement element, Iterable<XMLEvent> stream,
-			IMutablePlayerCollection players, Warning warner, IDRegistrar idFactory) 
+			IMutablePlayerCollection players, Warning warner, IDRegistrar idFactory)
 			throws SPFormatException {
 		expectAttributes(element, warner);
 		Point loc = Point.INVALID_POINT;
@@ -303,7 +304,7 @@ public class SPFluidReader implements IMapReader, ISPReader {
 	}
 
 	private IMutableMapNG readMapOrViewTag(StartElement element, QName parent, Iterable<XMLEvent> stream,
-			IMutablePlayerCollection players, Warning warner, IDRegistrar idFactory) 
+			IMutablePlayerCollection players, Warning warner, IDRegistrar idFactory)
 			throws SPFormatException {
 		requireTag(element, parent, "map", "view");
 		int currentTurn;
@@ -400,7 +401,7 @@ public class SPFluidReader implements IMapReader, ISPReader {
 	}
 
 	private Player readPlayer(StartElement element, QName parent, Iterable<XMLEvent> stream,
-			IMutablePlayerCollection players, Warning warner, IDRegistrar idFactory) 
+			IMutablePlayerCollection players, Warning warner, IDRegistrar idFactory)
 			throws SPFormatException {
 		requireTag(element, parent, "player");
 		requireNonEmptyAttribute(element, "number", true, warner);
@@ -452,7 +453,7 @@ public class SPFluidReader implements IMapReader, ISPReader {
 	}
 
 	private IUnit readUnit(StartElement element, QName parent, Iterable<XMLEvent> stream,
-			IMutablePlayerCollection players, Warning warner, IDRegistrar idFactory) 
+			IMutablePlayerCollection players, Warning warner, IDRegistrar idFactory)
 			throws SPFormatException {
 		requireTag(element, parent, "unit");
 		requireNonEmptyAttribute(element, "name", false, warner);
@@ -509,7 +510,7 @@ public class SPFluidReader implements IMapReader, ISPReader {
 	}
 
 	private IFortress readFortress(StartElement element, QName parent, Iterable<XMLEvent> stream,
-			IMutablePlayerCollection players, Warning warner, IDRegistrar idFactory) 
+			IMutablePlayerCollection players, Warning warner, IDRegistrar idFactory)
 			throws SPFormatException {
 		requireTag(element, parent, "fortress");
 		requireNonEmptyAttribute(element, "owner", false, warner);

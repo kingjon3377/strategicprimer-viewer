@@ -477,7 +477,7 @@ public class ViewerModel extends SimpleDriverModel implements IViewerModel {
 	 */
 	@Override
 	public void moveMember(UnitMember member, IUnit old, IUnit newOwner) {
-		IMutableUnit matchingOld = StreamSupport.stream(getMap().getLocations().spliterator(), true)
+		IMutableUnit matchingOld = getMap().streamLocations()
 			.flatMap(l -> getMap().getFixtures(l).stream())
 			.flatMap(ViewerModel::unflattenNonFortresses)
 			.filter(IMutableUnit.class::isInstance).map(IMutableUnit.class::cast)
@@ -485,7 +485,7 @@ public class ViewerModel extends SimpleDriverModel implements IViewerModel {
 			.filter(u -> old.getKind().equals(u.getKind()))
 			.filter(u -> old.getName().equals(u.getName()))
 			.filter(u -> old.getId() == u.getId()).findAny().orElse(null);
-		IMutableUnit matchingNew = StreamSupport.stream(getMap().getLocations().spliterator(), true)
+		IMutableUnit matchingNew = getMap().streamLocations()
 			.flatMap(l -> getMap().getFixtures(l).stream())
 			.flatMap(ViewerModel::unflattenNonFortresses)
 			.filter(IMutableUnit.class::isInstance).map(IMutableUnit.class::cast)
@@ -521,8 +521,7 @@ public class ViewerModel extends SimpleDriverModel implements IViewerModel {
 	@Override
 	public boolean removeUnit(IUnit unit) {
 		LOGGER.finer("In ViewerModel.removeUnit()");
-		Pair<Point, IFixture> pair =
-			StreamSupport.stream(getMap().getLocations().spliterator(), true)
+		Pair<Point, IFixture> pair = getMap().streamLocations()
 				.flatMap(l -> getMap().getFixtures(l).stream()
 					.map(f -> Pair.<Point, IFixture>with(l, f)))
 				.flatMap(ViewerModel::flattenEntries).filter(unitMatching(unit))
@@ -571,7 +570,7 @@ public class ViewerModel extends SimpleDriverModel implements IViewerModel {
 
 	@Override
 	public void addUnitMember(IUnit unit, UnitMember member) {
-		IMutableUnit matching = StreamSupport.stream(getMap().getLocations().spliterator(), false)
+		IMutableUnit matching = getMap().streamLocations()
 			.flatMap(l -> getMap().getFixtures(l).stream())
 			.flatMap(ViewerModel::unflattenNonFortresses)
 			.filter(IMutableUnit.class::isInstance).map(IMutableUnit.class::cast)
@@ -592,7 +591,7 @@ public class ViewerModel extends SimpleDriverModel implements IViewerModel {
 	@Override
 	public boolean renameItem(HasMutableName item, String newName) {
 		if (item instanceof IUnit) {
-			IUnit matching = StreamSupport.stream(getMap().getLocations().spliterator(), false)
+			IUnit matching = getMap().streamLocations()
 				.flatMap(l -> getMap().getFixtures(l).stream())
 				.flatMap(ViewerModel::unflattenNonFortresses)
 				.filter(IUnit.class::isInstance).map(IUnit.class::cast)
@@ -610,8 +609,7 @@ public class ViewerModel extends SimpleDriverModel implements IViewerModel {
 				return false;
 			}
 		} else if (item instanceof UnitMember) {
-			HasMutableName matching =
-				StreamSupport.stream(getMap().getLocations().spliterator(), false)
+			HasMutableName matching = getMap().streamLocations()
 					.flatMap(l -> getMap().getFixtures(l).stream())
 					.flatMap(ViewerModel::unflattenNonFortresses)
 					.filter(IUnit.class::isInstance).map(IUnit.class::cast)
@@ -642,7 +640,7 @@ public class ViewerModel extends SimpleDriverModel implements IViewerModel {
 	public boolean changeKind(HasKind item, String newKind) {
 		if (item instanceof IUnit) {
 			// TODO: Extract this pipeline to a method
-			IUnit matching = StreamSupport.stream(getMap().getLocations().spliterator(), false)
+			IUnit matching = getMap().streamLocations()
 				.flatMap(l -> getMap().getFixtures(l).stream())
 				.flatMap(ViewerModel::unflattenNonFortresses)
 				.filter(IUnit.class::isInstance).map(IUnit.class::cast)
@@ -662,8 +660,7 @@ public class ViewerModel extends SimpleDriverModel implements IViewerModel {
 		} else if (item instanceof UnitMember) {
 			// TODO: Extract parts of this pipeline to a method, passing in the class to narrow
 			// to and relevant predicate(s).
-			HasMutableKind matching =
-				StreamSupport.stream(getMap().getLocations().spliterator(), false)
+			HasMutableKind matching = getMap().streamLocations()
 					.flatMap(l -> getMap().getFixtures(l).stream())
 					.flatMap(ViewerModel::unflattenNonFortresses)
 					.filter(IUnit.class::isInstance).map(IUnit.class::cast)
@@ -693,7 +690,7 @@ public class ViewerModel extends SimpleDriverModel implements IViewerModel {
 	// TODO: Keep a list of dismissed members
 	@Override
 	public void dismissUnitMember(UnitMember member) {
-		for (IMutableUnit unit : StreamSupport.stream(getMap().getLocations().spliterator(), true)
+		for (IMutableUnit unit : getMap().streamLocations()
 				.flatMap(l -> getMap().getFixtures(l).stream())
 				.flatMap(ViewerModel::unflattenNonFortresses)
 				.filter(IMutableUnit.class::isInstance).map(IMutableUnit.class::cast)
@@ -711,7 +708,7 @@ public class ViewerModel extends SimpleDriverModel implements IViewerModel {
 
 	@Override
 	public boolean addSibling(UnitMember existing, UnitMember sibling) {
-		for (IMutableUnit unit : StreamSupport.stream(getMap().getLocations().spliterator(), true)
+		for (IMutableUnit unit : getMap().streamLocations()
 				.flatMap(l -> getMap().getFixtures(l).stream())
 				.flatMap(ViewerModel::unflattenNonFortresses)
 				.filter(IMutableUnit.class::isInstance).map(IMutableUnit.class::cast)
@@ -732,7 +729,7 @@ public class ViewerModel extends SimpleDriverModel implements IViewerModel {
 	 */
 	@Override
 	public boolean changeOwner(HasMutableOwner item, Player newOwner) {
-		HasMutableOwner matching = StreamSupport.stream(getMap().getLocations().spliterator(), true)
+		HasMutableOwner matching = getMap().streamLocations()
 			.flatMap(l -> getMap().getFixtures(l).stream())
 			.flatMap(ViewerModel::flattenIncluding).flatMap(ViewerModel::flattenIncluding)
 			.filter(HasMutableOwner.class::isInstance).map(HasMutableOwner.class::cast)
@@ -752,7 +749,7 @@ public class ViewerModel extends SimpleDriverModel implements IViewerModel {
 
 	@Override
 	public boolean sortFixtureContents(IUnit fixture) {
-		IMutableUnit matching = StreamSupport.stream(getMap().getLocations().spliterator(), false)
+		IMutableUnit matching = getMap().streamLocations()
 			.flatMap(l -> getMap().getFixtures(l).stream())
 			.flatMap(ViewerModel::unflattenNonFortresses)
 			.filter(IMutableUnit.class::isInstance).map(IMutableUnit.class::cast)

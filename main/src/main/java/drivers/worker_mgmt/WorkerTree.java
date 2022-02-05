@@ -492,6 +492,7 @@ public class WorkerTree extends JTree implements UnitMemberSelectionSource, Unit
 		private Boolean shouldChangeBackground(String item) {
 			Boolean retval = null;
 			// TODO: Can we avoid the collector step?
+			// TODO: Add streamChildrenOf() method to IWorkerTreeModel?
 			for (IUnit unit : StreamSupport.stream(wtModel.childrenOf(item).spliterator(), false)
 					.map(wtModel::getModelObject).filter(IUnit.class::isInstance)
 					.map(IUnit.class::cast).collect(Collectors.toList())) {

@@ -119,6 +119,7 @@ import java.util.stream.StreamSupport;
 				int estimate = tentativeDistances.get(Pair.with(start, neighbor));
 				int tentativeDistance = currentDistance +
 					SimpleMovementModel.movementCost(map.getBaseTerrain(neighbor),
+						// TODO: Use getFixtures().stream()
 						StreamSupport.stream(map.getFixtures(neighbor).spliterator(),
 							true).anyMatch(Forest.class::isInstance),
 						map.isMountainous(neighbor),

@@ -271,8 +271,7 @@ import java.util.function.Predicate;
 	}
 
 	private void populateAll() {
-		StreamSupport.stream(model.getMap().getLocations().spliterator(), false)
-			.flatMap(l -> model.getMap().getFixtures(l).stream())
+		model.getMap().streamLocations().flatMap(l -> model.getMap().getFixtures(l).stream())
 			.forEach(this::populate);
 	}
 

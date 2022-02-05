@@ -233,6 +233,7 @@ public class DuplicateFixtureRemoverCLI implements CLIDriver {
 			Iterable<? extends IFixture> fixtures = q.getValue3();
 			cli.print(context);
 			cli.println(String.format("The following %s can be combined:", plural));
+			// TODO: Make model.conditionallyCoalesceResources() return Collection rather than Iterable
 			StreamSupport.stream(fixtures.spliterator(), false).map(Object::toString)
 				.forEach(cli::println);
 			Boolean resp = cli.inputBooleanInSeries("Combine them? ",

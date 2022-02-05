@@ -452,8 +452,7 @@ import common.map.fixtures.towns.Village;
 			return;
 		}
 		Point hqLoc;
-		Optional<Point> found =
-			StreamSupport.stream(model.getMap().getLocations().spliterator(), true)
+		Optional<Point> found = model.getMap().streamLocations()
 				.flatMap(l -> model.getMap().getFixtures(l).stream()
 					.map(f -> Pair.with(l, f)))
 				.filter(pair -> pair.getValue1().getId() == unit.getId()) // TODO: look in forts too
@@ -473,8 +472,7 @@ import common.map.fixtures.towns.Village;
 		Function<Point, Pair<Integer, Double>> travelDistance =
 			(dest) -> Pair.with(pather.getTravelDistance(hqLoc, dest).getValue0(),
 				model.getMapDimensions().distance(hqLoc, dest));
-		List<Triplet<Integer, Double, Village>> villages =
-			StreamSupport.stream(model.getMap().getLocations().spliterator(), true)
+		List<Triplet<Integer, Double, Village>> villages = model.getMap().streamLocations()
 				.flatMap(l -> model.getMap().getFixtures(l).stream()
 					.filter(Village.class::isInstance).map(Village.class::cast)
 					.filter(v -> v.getOwner().equals(unit.getOwner()))

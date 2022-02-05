@@ -106,6 +106,7 @@ import common.map.fixtures.mobile.AnimalTracks;
 		if (counter.getTotal().doubleValue() > 0.0) {
 			cli.println(total);
 			cli.println();
+			// TODO: Add stream() to MappedCounter
 			StreamSupport.stream(counter.spliterator(), false).map(each).forEach(cli::println);
 			cli.println();
 		}
@@ -143,6 +144,7 @@ import common.map.fixtures.mobile.AnimalTracks;
 		return String.format("There are %s acres of forest, including:", total);
 	}
 
+	// TODO: take Collection for these
 	private static boolean hasLake(Iterable<River> iter) {
 		return StreamSupport.stream(iter.spliterator(), true).anyMatch(River.Lake::equals);
 	}
@@ -198,7 +200,7 @@ import common.map.fixtures.mobile.AnimalTracks;
 		cli.println(String.format("There are %d tiles in all.",
 			map.getDimensions().getRows() * map.getDimensions().getColumns()));
 		EnumCounter<TileType> tileTypeCounts = new EnumCounter<TileType>();
-		tileTypeCounts.countMany(StreamSupport.stream(map.getLocations().spliterator(), true)
+		tileTypeCounts.countMany(map.streamLocations()
 			.map(map::getBaseTerrain).filter(Objects::nonNull).toArray(TileType[]::new));
 		cli.println();
 		for (Pair<TileType, Integer> entry : StreamSupport.stream(
@@ -220,22 +222,19 @@ import common.map.fixtures.mobile.AnimalTracks;
 
 		cli.println("Terrain fixtures:");
 		cli.println();
-		List<Collection<TileFixture>> separateTiles =
-			StreamSupport.stream(map.getLocations().spliterator(), false)
+		List<Collection<TileFixture>> separateTiles = map.streamLocations()
 				.map(map::getFixtures).collect(Collectors.toList());
 		cli.println(String.format("- %d hilly tiles",
 			separateTiles.stream().filter(c -> c.stream().anyMatch(Hill.class::isInstance))
 				.count()));
-		cli.println(String.format("- %d mountainous tiles",
-			StreamSupport.stream(map.getLocations().spliterator(), false)
+		cli.println(String.format("- %d mountainous tiles", map.streamLocations()
 				.filter(map::isMountainous).count()));
 		cli.println(String.format("- %d at least partly forested tiles",
 			separateTiles.stream().filter(c -> c.stream().anyMatch(Forest.class::isInstance))
 				.count()));
 		cli.println(String.format("- %d oases", separateTiles.stream()
 			.filter(c -> c.stream().anyMatch(Oasis.class::isInstance)).count()));
-		List<Collection<River>> tilesRivers =
-			StreamSupport.stream(map.getLocations().spliterator(), false)
+		List<Collection<River>> tilesRivers = map.streamLocations()
 				.map(map::getRivers).collect(Collectors.toList());
 		cli.println(String.format("- %d lakes",
 			tilesRivers.stream().filter(CountingCLI::hasLake).count()));

@@ -237,6 +237,7 @@ public class FixtureListModel implements ListModel<TileFixture>, SelectionChange
 			Collection<River> existingRivers = riversSource.apply(point);
 			RiverFixture rf = (RiverFixture) fixture;
 			if (existingRivers.iterator().hasNext()) {
+				// TODO: Use stream()
 				Collection<River> coll = StreamSupport.stream(existingRivers.spliterator(),
 					false).collect(Collectors.toList());
 				if (coll.containsAll(rf.getRivers())) {

@@ -159,7 +159,7 @@ import java.util.function.Predicate;
 	/**
 	 * Parse what should be a [[TileFixture]] from the XML.
 	 */
-	private TileFixture parseFixture(StartElement element, QName parent, Iterable<XMLEvent> stream) 
+	private TileFixture parseFixture(StartElement element, QName parent, Iterable<XMLEvent> stream)
 			throws SPFormatException, MalformedXMLException {
 		String name = element.getName().getLocalPart();
 		if (readerCache.containsKey(name.toLowerCase())) {
@@ -190,7 +190,7 @@ import java.util.function.Predicate;
 	 * Read a map from XML.
 	 */
 	@Override
-	public IMutableMapNG read(StartElement element, QName parent, Iterable<XMLEvent> stream) 
+	public IMutableMapNG read(StartElement element, QName parent, Iterable<XMLEvent> stream)
 			throws SPFormatException, MalformedXMLException {
 		requireTag(element, parent, "map", "view");
 		int currentTurn;
@@ -466,6 +466,7 @@ import java.util.function.Predicate;
 					// To avoid breaking map-format-conversion tests, and to
 					// avoid churn in existing maps, put the first Ground and Forest
 					// before other fixtures.
+					// TODO: Just use obj.getFixtures().stream()
 					Ground ground = StreamSupport.stream(
 							obj.getFixtures(loc).spliterator(), false)
 						.filter(Ground.class::isInstance).map(Ground.class::cast)
@@ -475,6 +476,7 @@ import java.util.function.Predicate;
 						needEol = false;
 						writeChild(ostream, ground, tabs + 4);
 					}
+					// TODO: Just use obj.getFixtures().stream()
 					Forest forest = StreamSupport.stream(
 							obj.getFixtures(loc).spliterator(), false)
 						.filter(Forest.class::isInstance).map(Forest.class::cast)
@@ -502,15 +504,13 @@ import java.util.function.Predicate;
 				closeTag(ostream, tabs + 2, "row");
 			}
 		}
-		if (StreamSupport.stream(obj.getLocations().spliterator(), true)
-				.filter(((Predicate<Point>) Point::isValid).negate())
+		if (obj.streamLocations().filter(((Predicate<Point>) Point::isValid).negate())
 				.map(obj::getFixtures)
 				.anyMatch(((Predicate<Collection<TileFixture>>) Collection::isEmpty)
 					.negate())) {
 			writeTag(ostream, "elsewhere", tabs + 2);
 			finishParentTag(ostream);
-			for (TileFixture fixture : StreamSupport.stream(
-					obj.getLocations().spliterator(), true)
+			for (TileFixture fixture : obj.streamLocations()
 					.filter(((Predicate<Point>) Point::isValid).negate())
 					.flatMap(p -> obj.getFixtures(p).stream())
 					.collect(Collectors.toList())) {

@@ -225,6 +225,18 @@ public class SPMapNG implements IMutableMapNG {
 	}
 
 	/**
+	 * Stream the locations in the map.
+	 */
+	@Override
+	public Stream<Point> streamLocations() {
+		// TODO: Add stream() to PointIterable
+		return Stream.concat(
+				StreamSupport.stream(new PointIterable(getDimensions(), true, true).spliterator(),
+						false),
+				fixturesMap.keySet().stream()).distinct();
+	}
+
+	/**
 	 * The base terrain at the given location.
 	 */
 	@Override

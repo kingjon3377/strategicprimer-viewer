@@ -127,6 +127,8 @@ import java.util.Collections;
 	 *
 	 * TODO: Test this
 	 *
+	 * TODO: Take Collection, not just Iterable
+	 *
 	 * @throws IOException on I/O error
 	 */
 	private void writeAllRivers(ThrowingConsumer<String, IOException> ostream, Iterable<River> rivers, int indent)

@@ -327,9 +327,10 @@ public class FileChooser {
 			throw new ChoiceInterruptedException();
 		}
 	}
-	
+
 	/**
 	 * Set the stored file(s) to the given Iterable.
+	 * TODO: Take Collection
 	 */
 	public void setFiles(Iterable<Path> files) {
 		storedFile = StreamSupport.stream(files.spliterator(), false).collect(Collectors.toList());

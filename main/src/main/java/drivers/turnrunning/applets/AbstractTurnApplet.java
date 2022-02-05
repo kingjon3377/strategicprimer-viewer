@@ -103,7 +103,7 @@ public abstract class AbstractTurnApplet implements TurnApplet {
 	// TODO: Move into the model?
 	// FIXME: Stream-based version doesn't count food inside units inside fortresses
 	protected List<IResourcePile> getFoodFor(Player player, int turn) {
-/*		return StreamSupport.stream(model.getMap().getLocations().spliterator(), true)
+/*		return model.getMap().streamLocations()
 			.flatMap(l -> model.getMap().getFixtures(l).stream())
 			.filter(f -> f instanceof IFortress || f instanceof IUnit)
 			.filter(f -> player.equals(((HasOwner) f).getOwner()))

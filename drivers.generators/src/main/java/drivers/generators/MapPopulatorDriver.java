@@ -13,7 +13,6 @@ import lovelace.util.SingletonRandom;
 import java.util.List;
 import common.map.Point;
 import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 import java.util.Collections;
 
 /**
@@ -57,8 +56,7 @@ public class MapPopulatorDriver implements CLIDriver {
 	 */
 	private void populate(IPopulatorDriverModel model) {
 		IDRegistrar idf = new IDFactoryFiller().createIDFactory(model.getMap());
-		List<Point> locations = StreamSupport.stream(model.getMap().getLocations().spliterator(),
-			true).collect(Collectors.toList());
+		List<Point> locations = model.getMap().streamLocations().collect(Collectors.toList());
 		Collections.shuffle(locations);
 		for (Point location : locations) {
 			if (populator.isSuitable(model.getMap(), location)) {

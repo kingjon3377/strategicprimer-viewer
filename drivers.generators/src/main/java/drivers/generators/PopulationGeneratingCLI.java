@@ -85,7 +85,7 @@ public class PopulationGeneratingCLI implements CLIDriver {
 	 */
 	private void generateAnimalPopulations(boolean talking, String kind) {
 		// We assume there is at most one population of each kind of animal per tile.
-		final List<Point> locations = StreamSupport.stream(map.getLocations().spliterator(), true)
+		final List<Point> locations = map.streamLocations()
 			.filter(l -> map.getFixtures(l).stream()
 				.filter(Animal.class::isInstance).map(Animal.class::cast)
 				.filter(a -> a.isTalking() == talking)
@@ -135,7 +135,7 @@ public class PopulationGeneratingCLI implements CLIDriver {
 	 */
 	private void generateGroveCounts(String kind) {
 		// We assume there is at most one grove or orchard of each kind per tile.
-		final List<Point> locations = StreamSupport.stream(map.getLocations().spliterator(), true)
+		final List<Point> locations = map.streamLocations()
 			.filter(l -> map.getFixtures(l).stream()
 				.filter(Grove.class::isInstance).map(Grove.class::cast)
 				.filter(g -> kind.equals(g.getKind()))
@@ -172,7 +172,7 @@ public class PopulationGeneratingCLI implements CLIDriver {
 	 */
 	private void generateShrubCounts(String kind) {
 		// We assume there is at most one population of each kind of shrub per tile.
-		final List<Point> locations = StreamSupport.stream(map.getLocations().spliterator(), true)
+		final List<Point> locations = map.streamLocations()
 			.filter(l -> map.getFixtures(l).stream()
 				.filter(Shrub.class::isInstance).map(Shrub.class::cast)
 				.filter(s -> kind.equals(s.getKind()))
@@ -208,8 +208,7 @@ public class PopulationGeneratingCLI implements CLIDriver {
 	 * Generate {@link Meadow field and meadow} acreages.
 	 */
 	private void generateFieldExtents() {
-		final List<Pair<Point, Meadow>> entries = StreamSupport.stream(
-				map.getLocations().spliterator(), true)
+		final List<Pair<Point, Meadow>> entries = map.streamLocations()
 			.flatMap(l -> map.getFixtures(l).stream()
 				.filter(Meadow.class::isInstance).map(Meadow.class::cast)
 				.filter(m -> m.getAcres().doubleValue() < 0.0)
@@ -256,8 +255,7 @@ public class PopulationGeneratingCLI implements CLIDriver {
 	 * Generate {@link Forest} acreages.
 	 */
 	private void generateForestExtents() {
-		final List<Point> locations = StreamSupport.stream(
-				map.getLocations().spliterator(), true)
+		final List<Point> locations = map.streamLocations()
 			.filter(l -> map.getFixtures(l).stream()
 				.filter(Forest.class::isInstance).map(Forest.class::cast)
 				.anyMatch(f -> f.getAcres().doubleValue() <= 0.0))
@@ -358,7 +356,7 @@ public class PopulationGeneratingCLI implements CLIDriver {
 
 	@Override
 	public void startDriver() {
-		for (String kind : StreamSupport.stream(model.getMap().getLocations().spliterator(), true)
+		for (String kind : map.streamLocations()
 				.flatMap(l -> model.getMap().getFixtures(l).stream())
 				.filter(Animal.class::isInstance).map(Animal.class::cast)
 				.filter(a -> a.getPopulation() <= 0).map(Animal::getKind).distinct()
@@ -367,11 +365,11 @@ public class PopulationGeneratingCLI implements CLIDriver {
 			generateAnimalPopulations(false, kind);
 		}
 		// TODO: filter these to only those without un-counted instances?
-		StreamSupport.stream(model.getMap().getLocations().spliterator(), true)
+		map.streamLocations()
 			.flatMap(l -> model.getMap().getFixtures(l).stream())
 			.filter(Grove.class::isInstance).map(Grove.class::cast)
 			.map(Grove::getKind).distinct().forEach(this::generateGroveCounts);
-		StreamSupport.stream(model.getMap().getLocations().spliterator(), true)
+		map.streamLocations()
 			.flatMap(l -> model.getMap().getFixtures(l).stream())
 			.filter(Shrub.class::isInstance).map(Shrub.class::cast)
 			.map(Shrub::getKind).distinct().forEach(this::generateShrubCounts);

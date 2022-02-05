@@ -156,7 +156,7 @@ import java.math.BigDecimal;
 	 * {@link ITownFixture}.
 	 */
 	List<Pair<Point, ITownFixture>> unstattedTowns(IMapNG map) {
-		return StreamSupport.stream(map.getLocations().spliterator(), true)
+		return map.streamLocations()
 			.flatMap(l -> map.getFixtures(l).stream().filter(ITownFixture.class::isInstance)
 				.map(ITownFixture.class::cast)
 				.filter(t -> TownStatus.Active.equals(t.getStatus()))
@@ -171,8 +171,7 @@ import java.math.BigDecimal;
 	 */
 	@Nullable 
 	private IFixture findByID(IMapNG map, int id) {
-		return StreamSupport.stream(map.getLocations().spliterator(), true)
-			.flatMap(l -> map.getFixtures(l).stream())
+		return map.streamLocations().flatMap(l -> map.getFixtures(l).stream())
 			.filter(f -> f.getId() == id)
 			.findAny().orElse(null);
 	}
@@ -185,7 +184,7 @@ import java.math.BigDecimal;
 	 */
 	@Nullable
 	private Point findLocById(IMapNG map, int id) {
-		return StreamSupport.stream(map.getLocations().spliterator(), true)
+		return map.streamLocations()
 			.filter(l -> map.getFixtures(l).stream().anyMatch(f -> f.getId() == id))
 			.findAny().orElse(null);
 	}
@@ -195,8 +194,7 @@ import java.math.BigDecimal;
 	 * identified by the given {@link id ID number}.
 	 */
 	private boolean isClaimedField(IMapNG map, int id) {
-		return StreamSupport.stream(map.getLocations().spliterator(), true)
-			.flatMap(l -> map.getFixtures(l).stream())
+		return map.streamLocations().flatMap(l -> map.getFixtures(l).stream())
 			.filter(ITownFixture.class::isInstance).map(ITownFixture.class::cast)
 			.map(ITownFixture::getPopulation).filter(Objects::nonNull)
 			.flatMap(t -> StreamSupport.stream(t.getWorkedFields().spliterator(), true))

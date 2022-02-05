@@ -234,8 +234,7 @@ public class PopulationGeneratingModel extends SimpleMultiMapModel { // TODO: Ex
 			existingNote = "";
 		}
 		for (IMutableMapNG map : getRestrictedAllMaps()) {
-			Optional<IMutableUnit> localUnit =
-				StreamSupport.stream(map.getLocations().spliterator(), true)
+			Optional<IMutableUnit> localUnit = map.streamLocations()
 					.flatMap(l -> map.getFixtures(l).stream())
 					.flatMap(PopulationGeneratingModel::flattenFortresses)
 					.filter(IMutableUnit.class::isInstance)
@@ -265,7 +264,7 @@ public class PopulationGeneratingModel extends SimpleMultiMapModel { // TODO: Ex
 	 * All the units in the main map belonging to the specified player.
 	 */
 	public Iterable<IUnit> getUnits(Player player) {
-		return StreamSupport.stream(getMap().getLocations().spliterator(), true)
+		return getMap().streamLocations()
 			.flatMap(l -> getMap().getFixtures(l).stream())
 			.flatMap(PopulationGeneratingModel::flattenFortresses)
 			.filter(IUnit.class::isInstance).map(IUnit.class::cast)
@@ -313,7 +312,7 @@ public class PopulationGeneratingModel extends SimpleMultiMapModel { // TODO: Ex
 	public boolean addJobLevel(IUnit unit, IWorker worker, String jobName) {
 		boolean any = false;
 		for (IMutableMapNG map : getRestrictedAllMaps()) {
-			for (IUnit container : StreamSupport.stream(map.getLocations().spliterator(), true)
+			for (IUnit container : map.streamLocations()
 					.flatMap(l -> map.getFixtures(l).stream())
 					.flatMap(PopulationGeneratingModel::flattenFortresses)
 					.filter(IUnit.class::isInstance).map(IUnit.class::cast)

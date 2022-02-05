@@ -3,7 +3,6 @@ package utility;
 import java.util.logging.Logger;
 import java.util.Collections;
 import common.map.Point;
-import java.util.stream.StreamSupport;
 import java.util.stream.Collectors;
 import drivers.common.FixtureMatcher;
 import drivers.common.CLIDriver;
@@ -197,7 +196,7 @@ public class MapTradeCLI implements CLIDriver {
 		} else {
 			zeroFixtures = false;
 		}
-		final long totalCount = StreamSupport.stream(first.getLocations().spliterator(), true)
+		final long totalCount = first.streamLocations()
 			.filter(l -> !first.isLocationEmpty(l)).count();
 		int count = 1;
 		for (Point location : first.getLocations()) {

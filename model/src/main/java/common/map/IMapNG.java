@@ -4,6 +4,7 @@ import java.nio.file.Path;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Stream;
 import org.jetbrains.annotations.Nullable;
 
 /**
@@ -47,9 +48,13 @@ public interface IMapNG extends Subsettable<IMapNG> {
 	 * outside the dimensions of the map even if callers have modified
 	 * them, but <em>should</em> include all points within the dimensions of the
 	 * map even if they are "empty".
-	 * TODO: Should this be a Stream instead? Or should we provide a locationStream() method?
 	 */
 	Iterable<Point> getLocations();
+
+	/**
+	 * A stream of the locations in the map, the same as provided in {@link getLocations}.
+	 */
+	Stream<Point> streamLocations();
 
 	/**
 	 * The base terrain at the given location.

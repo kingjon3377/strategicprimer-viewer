@@ -45,6 +45,7 @@ public class EnumCounter<Type> {
 	 * Get all values and counts.
 	 */
 	public Iterable<Pair<Type, Integer>> getAllCounts() {
+		// FIXME: Just counts.entrySet().stream()
 		return StreamSupport.stream(counts.entrySet().spliterator(), true)
 			.map(e -> Pair.with(e.getKey(), e.getValue().getSum()))
 			.collect(Collectors.toList());

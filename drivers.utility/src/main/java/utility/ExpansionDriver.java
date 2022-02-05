@@ -56,8 +56,8 @@ public class ExpansionDriver implements CLIDriver {
 		for (Player player : StreamSupport.stream(model.getSubordinateMaps().spliterator(), false)
 				.map(IMapNG::getCurrentPlayer).filter(not(Player::isIndependent))
 				.collect(Collectors.toList())) { // TODO: Why not distinct()?
-			for (Point point : StreamSupport.stream(model.getMap().getLocations().spliterator(),
-					false).filter(containsSwornVillage(model.getMap(), player))
+			for (Point point : model.getMap().streamLocations()
+					.filter(containsSwornVillage(model.getMap(), player))
 					.collect(Collectors.toList())) {
 				model.expandAroundPoint(point, player);
 			}

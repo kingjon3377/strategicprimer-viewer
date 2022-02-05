@@ -3,7 +3,6 @@ package drivers.turnrunning;
 import org.jetbrains.annotations.Nullable;
 
 import common.map.IMapNG;
-import java.util.stream.StreamSupport;
 import java.util.stream.Collectors;
 import java.util.function.IntSupplier;
 import common.map.HasExtent;
@@ -173,7 +172,7 @@ public interface ITurnRunningModel extends IExplorationModel, IAdvancementModel 
 	default IFortress findHQ(Player player, String fortressName) {
 		IFortress retval = null;
 		IMapNG map = getMap();
-		for (IFortress fortress : StreamSupport.stream(map.getLocations().spliterator(), true)
+		for (IFortress fortress : map.streamLocations()
 				.flatMap(l -> map.getFixtures(l).stream())
 				.filter(IFortress.class::isInstance).map(IFortress.class::cast)
 				.filter(f -> player.equals(f.getOwner()))

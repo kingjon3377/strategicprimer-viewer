@@ -215,10 +215,10 @@ public class SPFluidWriter implements SPWriter {
 		}
 	}
 
-	private void writeUnit(XMLStreamWriter ostream, IUnit obj, int indentation) 
+	private void writeUnit(XMLStreamWriter ostream, IUnit obj, int indentation)
 			throws MalformedXMLException {
 		boolean empty = obj.isEmpty() &&
-			obj.getAllOrders().values().stream().allMatch(String::isEmpty) && 
+			obj.getAllOrders().values().stream().allMatch(String::isEmpty) &&
 			obj.getAllResults().values().stream().allMatch(String::isEmpty);
 		writeTag(ostream, "unit", indentation, empty);
 		writeAttributes(ostream, Pair.with("owner", obj.getOwner().getPlayerId()));
@@ -248,7 +248,7 @@ public class SPFluidWriter implements SPWriter {
 		}
 	}
 
-	private void writeFortress(XMLStreamWriter ostream, IFortress obj, int indentation) 
+	private void writeFortress(XMLStreamWriter ostream, IFortress obj, int indentation)
 			throws MalformedXMLException {
 		writeTag(ostream, "fortress", indentation, false);
 		writeAttributes(ostream, Pair.with("owner", obj.getOwner().getPlayerId()));
@@ -333,6 +333,7 @@ public class SPFluidWriter implements SPWriter {
 					// To avoid breaking map-format-conversion tests, and to
 					// avoid churn in existing maps, put the first Ground and Forest
 					// before other fixtures.
+					// TODO: Just use getFixtures().stream()
 					Ground ground = StreamSupport.stream(
 							obj.getFixtures(loc).spliterator(), false)
 						.filter(Ground.class::isInstance).map(Ground.class::cast)
@@ -341,6 +342,7 @@ public class SPFluidWriter implements SPWriter {
 						anyContents = true;
 						writeSPObjectImpl(ostream, ground, indentation + 4);
 					}
+					// TODO: Just use getFixtures().stream()
 					Forest forest = StreamSupport.stream(
 							obj.getFixtures(loc).spliterator(), false)
 						.filter(Forest.class::isInstance).map(Forest.class::cast)
@@ -375,14 +377,13 @@ public class SPFluidWriter implements SPWriter {
 				}
 			}
 		}
-		if (StreamSupport.stream(obj.getLocations().spliterator(), false)
-				.filter(((Predicate<Point>) Point::isValid).negate())
+		if (obj.streamLocations().filter(((Predicate<Point>) Point::isValid).negate())
 				.map(obj::getFixtures).anyMatch(((Predicate<Collection<TileFixture>>)
 					Collection::isEmpty).negate())) {
 			writeTag(ostream, "elsewhere", indentation +2, false);
-			for (TileFixture fixture : StreamSupport.stream(obj.getLocations().spliterator(),
-						false)
+			for (TileFixture fixture : obj.streamLocations()
 					.filter(((Predicate<Point>) Point::isValid).negate())
+					// TODO: Just use obj.getFixtures().stream()
 					.flatMap(p -> StreamSupport.stream(obj.getFixtures(p)
 						.spliterator(), false))
 					.collect(Collectors.toList())) {
