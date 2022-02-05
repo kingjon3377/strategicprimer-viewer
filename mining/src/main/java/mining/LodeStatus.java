@@ -166,7 +166,6 @@ enum LodeStatus {
 		case Good:
 			return VeryGood;
 		case VeryGood:
-			return MotherLode;
 		case MotherLode:
 			return MotherLode;
 		default:
