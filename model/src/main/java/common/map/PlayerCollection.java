@@ -59,7 +59,7 @@ public class PlayerCollection implements IMutablePlayerCollection {
 			if (!players.containsValue(player)) {
 				if (players.containsKey(player.getPlayerId())) {
 					Player match = players.get(player.getPlayerId());
-					if (player.getName().isEmpty() || "unknown".equals(player.getName().toLowerCase())) {
+					if (player.getName().isEmpty() || "unknown".equalsIgnoreCase(player.getName())) {
 						continue;
 					} else {
 						report.accept(String.format(
@@ -163,7 +163,7 @@ public class PlayerCollection implements IMutablePlayerCollection {
 		} else {
 			LOGGER.warning("Previous current player wasn't mutable");
 		}
-		if (players.values().contains(currentPlayer)) {
+		if (players.containsValue(currentPlayer)) {
 			current = currentPlayer;
 		} else { // TODO: Why not add()?
 			current = players.values().stream().filter((p) -> p.getPlayerId() == currentPlayer.getPlayerId()).findAny().orElse(currentPlayer);

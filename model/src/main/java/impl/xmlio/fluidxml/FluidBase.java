@@ -158,9 +158,9 @@ import org.jetbrains.annotations.Nullable;
 		if (val == null || val.isEmpty()) {
 			return defaultValue;
 		}
-		if ("true".equals(val.toLowerCase())) {
+		if ("true".equalsIgnoreCase(val)) {
 			return true;
-		} else if ("false".equals(val.toLowerCase())) {
+		} else if ("false".equalsIgnoreCase(val)) {
 			return false;
 		} else {
 			warner.handle(new MissingPropertyException(element, param,
@@ -187,9 +187,9 @@ import org.jetbrains.annotations.Nullable;
 		if (val == null || val.isEmpty()) {
 			throw new MissingPropertyException(element, param);
 		}
-		if ("true".equals(val.toLowerCase())) {
+		if ("true".equalsIgnoreCase(val)) {
 			return true;
-		} else if ("false".equals(val.toLowerCase())) {
+		} else if ("false".equalsIgnoreCase(val)) {
 			return false;
 		} else {
 			throw new MissingPropertyException(element, param,

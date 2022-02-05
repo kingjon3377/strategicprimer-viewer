@@ -1730,13 +1730,13 @@ public final class TestXMLIO {
 		this.<Animal>assertForwardDeserialization("Namespaced attribute", String.format(
 			"<animal xmlns:sp=\"%s\" sp:kind=\"%s\" sp:talking=\"%b\" sp:traces=\"false\"" +
 				" sp:status=\"%s\" sp:id=\"%d\" />", SP_NAMESPACE, kind, talking,
-				status.toString(), id),
+						status, id),
 			new AnimalImpl(kind, talking, status, id)::equals);
 		assertEquivalentForms("Supports 'traces=\"false\"'",
 			String.format("<animal kind=\"%s\" status=\"%s\" id=\"%d\" />", kind,
-				status.toString(), id),
+					status, id),
 			String.format("<animal kind=\"%s\" traces=\"false\" status=\"%s\" id=\"%d\" />",
-				kind, status.toString(), id), Warning.DIE);
+				kind, status, id), Warning.DIE);
 		assertSerialization("Animal age is preserved",
 			new AnimalImpl("youngKind", talking, status, id, 8));
 		assertSerialization("Animal population count is preserved",

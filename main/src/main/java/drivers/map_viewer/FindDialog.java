@@ -142,7 +142,7 @@ import java.util.function.Predicate;
 			if (idNum != null && (owner.getPlayerId() == idNum.intValue() ||
 					ownerName.contains(pattern))) {
 				return true;
-			} else if ("me".equals(pattern.toLowerCase()) && owner.isCurrent()) {
+			} else if ("me".equalsIgnoreCase(pattern) && owner.isCurrent()) {
 				return true;
 			} else if (Arrays.asList("none", "independent").contains(pattern.toLowerCase()) &&
 					owner.isIndependent()) { // TODO: reverse conditions for speed

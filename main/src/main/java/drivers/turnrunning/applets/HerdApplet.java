@@ -80,7 +80,7 @@ import query.SmallAnimalModel;
 				.filter(animal -> "domesticated".equals(animal.getStatus()) ||
 					"tame".equals(animal.getStatus()))
 				.map(Animal::getKind).distinct()
-				.filter(k -> !herdModels.keySet().contains(k))
+				.filter(k -> !herdModels.containsKey(k))
 				.collect(Collectors.toList())) {
 			HerdModel herdModel = chooseHerdModel(kind);
 			if (herdModel == null) {

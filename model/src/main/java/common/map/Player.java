@@ -23,7 +23,7 @@ public interface Player extends Comparable<Player>, HasName, HasMutablePortrait 
 	 * unowned fixtures.
 	 */
 	default boolean isIndependent() {
-		return "independent".equals(getName().toLowerCase());
+		return "independent".equalsIgnoreCase(getName());
 	}
 
 	/**
