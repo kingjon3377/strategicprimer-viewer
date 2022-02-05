@@ -58,8 +58,13 @@ public final class MiningCLI implements UtilityDriver {
 		if (initial == null) {
 			try {
 				int index = Integer.parseInt(second);
-				initial = LodeStatus.values()[index];
-			} catch (NumberFormatException|ArrayIndexOutOfBoundsException except) {
+				if (index >= 0 && index < LodeStatus.values().length) {
+					initial = LodeStatus.values()[index];
+				} else {
+					throw new DriverFailedException(new ArrayIndexOutOfBoundsException(),
+							"Status must be valid status or the index of a valid status");
+				}
+			} catch (NumberFormatException except) {
 				throw new DriverFailedException(except,
 					"Status must be a valid status or the index of a valid status");
 			}
