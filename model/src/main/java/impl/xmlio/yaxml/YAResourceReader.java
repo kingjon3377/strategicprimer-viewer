@@ -88,7 +88,7 @@ import java.util.Collections;
 	}
 
 	@Override
-	public HarvestableFixture read(StartElement element, QName parent, Iterable<XMLEvent> stream) 
+	public HarvestableFixture read(StartElement element, QName parent, Iterable<XMLEvent> stream)
 			throws SPFormatException {
 		requireTag(element, parent, SUPPORTED_TAGS.toArray(new String[0]));
 		int idNum = getOrGenerateID(element);

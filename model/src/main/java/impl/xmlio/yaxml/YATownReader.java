@@ -81,7 +81,7 @@ import java.util.logging.Logger;
 
 	private static List<String> expectedCommunityStatsTags(String parent) {
 		switch (parent) {
-		case "population": 
+		case "population":
 			return Arrays.asList("expertise", "claim", "production", "consumption");
 		case "claim":
 		case "expertise":
@@ -394,7 +394,7 @@ import java.util.logging.Logger;
 	}
 
 	@Override
-	public ITownFixture read(StartElement element, QName parent, Iterable<XMLEvent> stream) 
+	public ITownFixture read(StartElement element, QName parent, Iterable<XMLEvent> stream)
 			throws SPFormatException, MalformedXMLException {
 		requireTag(element, parent, "village", "fortress", "town", "city", "fortification");
 		switch (element.getName().getLocalPart().toLowerCase()) {

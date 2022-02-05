@@ -85,7 +85,7 @@ public final class ExplorationRunner {
 	 * beginning or end of the string, since we use {@link String#split}.
 	 */
 	public String recursiveConsultTable(String table, Point location, @Nullable TileType terrain,
-			boolean mountainous, Iterable<TileFixture> fixtures, MapDimensions mapDimensions) 
+			boolean mountainous, Iterable<TileFixture> fixtures, MapDimensions mapDimensions)
 			throws MissingTableException {
 		String result = consultTable(table, location, terrain, mountainous, fixtures, mapDimensions);
 		if (result.contains("#")) {
@@ -108,7 +108,7 @@ public final class ExplorationRunner {
 
 	/**
 	 * Check whether a table contains recursive calls to a table that
-	 * doesn't exist. 
+	 * doesn't exist.
 	 */
 	public boolean recursiveCheck(String table) {
 		return recursiveCheck(table, new HashSet<>());
@@ -116,7 +116,7 @@ public final class ExplorationRunner {
 
 	/**
 	 * Check whether a table contains recursive calls to a table that
-	 * doesn't exist. 
+	 * doesn't exist.
 	 */
 	private boolean recursiveCheck(String table, Set<String> state) {
 		if (state.contains(table)) {
@@ -205,7 +205,7 @@ public final class ExplorationRunner {
 	 * @param mapDimensions The dimensions of the map
 	 */
 	public String consultTable(String table, Point location, @Nullable TileType terrain,
-			boolean mountainous, Iterable<TileFixture> fixtures, MapDimensions mapDimensions) 
+			boolean mountainous, Iterable<TileFixture> fixtures, MapDimensions mapDimensions)
 			throws MissingTableException {
 		return getTable(table).generateEvent(location, terrain, mountainous, fixtures,
 			mapDimensions);
@@ -221,7 +221,7 @@ public final class ExplorationRunner {
 	 * @param mapDimensions The dimensions of the map
 	 */
 	public String getPrimaryRock(Point location, TileType terrain, boolean mountainous,
-				Iterable<TileFixture> fixtures, MapDimensions mapDimensions) 
+				Iterable<TileFixture> fixtures, MapDimensions mapDimensions)
 			throws MissingTableException {
 		return consultTable("major_rock", location, terrain, mountainous, fixtures, mapDimensions);
 	}
@@ -236,7 +236,7 @@ public final class ExplorationRunner {
 	 * @param mapDimensions The dimensions of the map
 	 */
 	public String getPrimaryTree(Point location, TileType terrain, boolean mountainous,
-			Iterable<TileFixture> fixtures, MapDimensions mapDimensions) 
+			Iterable<TileFixture> fixtures, MapDimensions mapDimensions)
 			throws MissingTableException {
 		switch (terrain) {
 		case Steppe:
@@ -267,7 +267,7 @@ public final class ExplorationRunner {
 	 * @param mapDimensions The dimensions of the map
 	 */
 	public String defaultResults(Point location, TileType terrain, boolean mountainous,
-			Iterable<TileFixture> fixtures, MapDimensions mapDimensions) 
+			Iterable<TileFixture> fixtures, MapDimensions mapDimensions)
 			throws MissingTableException {
 		if (StreamSupport.stream(fixtures.spliterator(), true).anyMatch(Forest.class::isInstance)
 				&& (terrain.equals(TileType.Steppe) || terrain.equals(TileType.Plains))) {
@@ -342,7 +342,7 @@ public final class ExplorationRunner {
 							throw new IllegalArgumentException(
 								"Non-numeric data");
 						}
-						listR.add(Pair.with(leftNum, 
+						listR.add(Pair.with(leftNum,
 							Stream.of(splitted).skip(1)
 								.collect(Collectors.joining(" "))));
 						loadTable(name, new RandomTable(
