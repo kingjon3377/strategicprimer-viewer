@@ -70,7 +70,7 @@ public class OrdersPanel extends BorderedPanel implements OrdersContainer {
 		this.isCurrent = isCurrent;
 
 		int minimumTurn = (currentTurn < 0) ? currentTurn : -1;
-		int maximumTurn = (currentTurn > 100) ? currentTurn : 100;
+		int maximumTurn = Math.max(currentTurn, 100);
 		spinnerModel = new SpinnerNumberModel(currentTurn, minimumTurn, maximumTurn, 1);
 		defaultColor = area.getBackground();
 

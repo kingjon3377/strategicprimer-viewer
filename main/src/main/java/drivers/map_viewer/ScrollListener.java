@@ -26,10 +26,8 @@ import common.map.fixtures.mobile.IUnit;
 	private static int constrainToRange(final int val, final int min, final int max) {
 		if (val < min) {
 			return min;
-		} else if (val > max) {
-			return max;
 		} else {
-			return val;
+			return Math.min(val, max);
 		}
 	}
 
