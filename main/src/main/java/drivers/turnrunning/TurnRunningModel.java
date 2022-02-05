@@ -87,8 +87,8 @@ public class TurnRunningModel extends ExplorationModel implements ITurnRunningMo
 	@Override
 	public void addToSubMaps(Point point, TileFixture fixture, boolean zero) {
 		for (IMutableMapNG map : getRestrictedSubordinateMaps()) {
-			if (!map.getFixtures(point).stream().mapToInt(TileFixture::getId)
-					.anyMatch(i -> fixture.getId() == i)) {
+			if (map.getFixtures(point).stream().mapToInt(TileFixture::getId)
+					.noneMatch(i -> fixture.getId() == i)) {
 				map.addFixture(point, fixture.copy(zero));
 			}
 		}

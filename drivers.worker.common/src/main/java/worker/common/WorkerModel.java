@@ -385,7 +385,7 @@ public class WorkerModel extends SimpleMultiMapModel implements IWorkerModel {
 	}
 
 	private static int iterableSize(Iterable<?> iter) {
-		return StreamSupport.stream(iter.spliterator(), true).collect(Collectors.toList()).size();
+		return (int) StreamSupport.stream(iter.spliterator(), true).count();
 	}
 
 	/**
@@ -690,8 +690,8 @@ public class WorkerModel extends SimpleMultiMapModel implements IWorkerModel {
 				.filter(item::equals) // TODO: equals() is not the best way to find it ...
 				.findAny().orElse(null);
 			if (matching != null) {
-				if (!StreamSupport.stream(map.getPlayers().spliterator(), true)
-						.anyMatch(newOwner::equals)) {
+				if (StreamSupport.stream(map.getPlayers().spliterator(), true)
+						.noneMatch(newOwner::equals)) {
 					map.addPlayer(newOwner);
 				}
 				matching.setOwner(map.getPlayers().getPlayer(newOwner.getPlayerId()));
@@ -742,8 +742,8 @@ public class WorkerModel extends SimpleMultiMapModel implements IWorkerModel {
 				.filter(w -> w.getId() == worker.getId())
 				.findAny().orElse(null);
 			if (matching != null) {
-				if (!StreamSupport.stream(matching.spliterator(), true)
-						.anyMatch(j -> jobName.equals(j.getName()))) {
+				if (StreamSupport.stream(matching.spliterator(), true)
+						.noneMatch(j -> jobName.equals(j.getName()))) {
 					map.setModified(true);
 					matching.addJob(new Job(jobName, 0));
 				}

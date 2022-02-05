@@ -31,8 +31,7 @@ import java.util.stream.Collectors;
  */
 public class ReaderComparator implements UtilityDriver {
 	private static String readAll(Path path) throws IOException {
-		return Files.readAllLines(path, StandardCharsets.UTF_8).stream()
-			.collect(Collectors.joining("\n"));
+		return String.join("\n", Files.readAllLines(path, StandardCharsets.UTF_8));
 	}
 
 	@Override

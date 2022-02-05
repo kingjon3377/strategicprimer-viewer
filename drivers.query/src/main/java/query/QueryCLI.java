@@ -219,8 +219,7 @@ public class QueryCLI implements ReadOnlyDriver {
 			}
 			considered.add(current);
 		}
-		return retval.stream().sorted(new DistanceComparator(base, dimensions))
-			.findFirst().orElse(null);
+		return retval.stream().min(new DistanceComparator(base, dimensions)).orElse(null);
 	}
 
 	/**

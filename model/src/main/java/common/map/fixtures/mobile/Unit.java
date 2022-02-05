@@ -313,12 +313,12 @@ public final class Unit implements IMutableUnit {
 				((IUnit) fixture).getKind().equals(kind) &&
 				((IUnit) fixture).getName().equals(name)) {
 			for (UnitMember member : this) {
-				if (!((IUnit) fixture).stream().anyMatch(member::equalsIgnoringID)) {
+				if (((IUnit) fixture).stream().noneMatch(member::equalsIgnoringID)) {
 					return false;
 				}
 			}
 			for (UnitMember member : (IUnit) fixture) {
-				if (!members.stream().anyMatch(member::equalsIgnoringID)) {
+				if (members.stream().noneMatch(member::equalsIgnoringID)) {
 					return false;
 				}
 			}

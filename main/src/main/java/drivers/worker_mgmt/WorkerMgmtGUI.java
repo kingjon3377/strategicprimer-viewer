@@ -83,7 +83,7 @@ public class WorkerMgmtGUI implements MultiMapGUIDriver, WorkerGUI {
 		}
 		LOGGER.finer("Registered menu handlers");
 		if (StreamSupport.stream(model.getAllMaps().spliterator(), false)
-				.allMatch(m -> !model.getUnits(m.getCurrentPlayer())
+				.noneMatch(m -> model.getUnits(m.getCurrentPlayer())
 					// TODO: Change to use isEmpty() once return type is List
 					.iterator().hasNext())) {
 			pcml.actionPerformed(new ActionEvent(frame, ActionEvent.ACTION_FIRST,

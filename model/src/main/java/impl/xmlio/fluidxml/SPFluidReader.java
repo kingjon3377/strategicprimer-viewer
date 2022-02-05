@@ -231,8 +231,7 @@ public class SPFluidReader implements IMapReader, ISPReader {
 		} else if (child instanceof TileFixture) {
 			if (child instanceof IFortress &&
 						// TODO: Just use getFixtures().stream()
-					StreamSupport.stream(map.getFixtures(currentTile).spliterator(),
-							true)
+					map.getFixtures(currentTile).stream()
 						.filter(IFortress.class::isInstance)
 						.map(IFortress.class::cast)
 						.anyMatch(f -> f.getOwner()

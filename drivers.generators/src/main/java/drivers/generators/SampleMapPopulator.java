@@ -22,7 +22,7 @@ import common.map.fixtures.mobile.AnimalImpl;
 		TileType terrain = map.getBaseTerrain(location);
 		return terrain != null && !map.isMountainous(location) && 
 			!TileType.Ocean.equals(terrain) &&
-			!map.getFixtures(location).stream().anyMatch(Forest.class::isInstance);
+				       map.getFixtures(location).stream().noneMatch(Forest.class::isInstance);
 	}
 
 	@Override

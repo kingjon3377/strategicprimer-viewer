@@ -34,8 +34,7 @@ import java.util.stream.StreamSupport;
 
 	@Nullable
 	private Point nextUnvisited(Point base, Set<Point> unvisited) {
-		return tentativeDistances.entrySet().stream().filter(forUs(base, unvisited))
-			.sorted(Comparator.comparing(Map.Entry::getValue)).findFirst()
+		return tentativeDistances.entrySet().stream().filter(forUs(base, unvisited)).min(Comparator.comparing(Map.Entry::getValue))
 			.map(Map.Entry::getKey).map(Pair::getValue1).orElse(null);
 	}
 
@@ -120,8 +119,7 @@ import java.util.stream.StreamSupport;
 				int tentativeDistance = currentDistance +
 					SimpleMovementModel.movementCost(map.getBaseTerrain(neighbor),
 						// TODO: Use getFixtures().stream()
-						StreamSupport.stream(map.getFixtures(neighbor).spliterator(),
-							true).anyMatch(Forest.class::isInstance),
+						map.getFixtures(neighbor).stream().anyMatch(Forest.class::isInstance),
 						map.isMountainous(neighbor),
 						SimpleMovementModel.riversSpeedTravel(
 							getDirection(current, neighbor),

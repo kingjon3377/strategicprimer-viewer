@@ -1,6 +1,7 @@
 package drivers;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import java.util.Optional;
@@ -82,10 +83,10 @@ public class Main {
 		System.setProperty("apple.laf.useScreenMenuBar", "true");
 		// TODO: While we're at it, also set up something to save *all* (our) log messages to a file as well.
 		final Logger rootLog = Logger.getLogger("");
-		if (Stream.of(args).anyMatch("--trace"::equals)) {
+		if (Arrays.asList(args).contains("--trace")) {
 			rootLog.setLevel(Level.FINER);
 			rootLog.getHandlers()[0].setLevel(Level.FINER);
-		} else if (Stream.of(args).anyMatch("--debug"::equals)) {
+		} else if (Arrays.asList(args).contains("--debug")) {
 			rootLog.setLevel(Level.FINE);
 			rootLog.getHandlers()[0].setLevel(Level.FINE);
 		}

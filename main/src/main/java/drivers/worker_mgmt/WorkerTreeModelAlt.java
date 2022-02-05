@@ -152,7 +152,7 @@ public class WorkerTreeModelAlt extends DefaultTreeModel implements IWorkerTreeM
 		@Override
 		public void add(MutableTreeNode child) {
 			if (child instanceof UnitMemberNode) {
-				if (!unit.stream().anyMatch(
+				if (unit.stream().noneMatch(
 							((UnitMemberNode) child).getUserObject()::equals)) {
 					LOGGER.warning(
 						"Adding UnitMemberNode when its object is not in the unit");

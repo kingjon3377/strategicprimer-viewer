@@ -333,18 +333,14 @@ public class SPFluidWriter implements SPWriter {
 					// To avoid breaking map-format-conversion tests, and to
 					// avoid churn in existing maps, put the first Ground and Forest
 					// before other fixtures.
-					// TODO: Just use getFixtures().stream()
-					Ground ground = StreamSupport.stream(
-							obj.getFixtures(loc).spliterator(), false)
+					Ground ground = obj.getFixtures(loc).stream()
 						.filter(Ground.class::isInstance).map(Ground.class::cast)
 						.findFirst().orElse(null);
 					if (ground != null) {
 						anyContents = true;
 						writeSPObjectImpl(ostream, ground, indentation + 4);
 					}
-					// TODO: Just use getFixtures().stream()
-					Forest forest = StreamSupport.stream(
-							obj.getFixtures(loc).spliterator(), false)
+					Forest forest = obj.getFixtures(loc).stream()
 						.filter(Forest.class::isInstance).map(Forest.class::cast)
 						.findFirst().orElse(null);
 					if (forest != null) {
@@ -383,9 +379,7 @@ public class SPFluidWriter implements SPWriter {
 			writeTag(ostream, "elsewhere", indentation +2, false);
 			for (TileFixture fixture : obj.streamLocations()
 					.filter(((Predicate<Point>) Point::isValid).negate())
-					// TODO: Just use obj.getFixtures().stream()
-					.flatMap(p -> StreamSupport.stream(obj.getFixtures(p)
-						.spliterator(), false))
+					.flatMap(p -> obj.getFixtures(p).stream())
 					.collect(Collectors.toList())) {
 				writeSPObjectImpl(ostream, fixture, indentation + 3);
 			}

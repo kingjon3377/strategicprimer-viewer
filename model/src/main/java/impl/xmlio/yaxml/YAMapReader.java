@@ -466,9 +466,7 @@ import java.util.function.Predicate;
 					// To avoid breaking map-format-conversion tests, and to
 					// avoid churn in existing maps, put the first Ground and Forest
 					// before other fixtures.
-					// TODO: Just use obj.getFixtures().stream()
-					Ground ground = StreamSupport.stream(
-							obj.getFixtures(loc).spliterator(), false)
+					Ground ground = obj.getFixtures(loc).stream()
 						.filter(Ground.class::isInstance).map(Ground.class::cast)
 						.findFirst().orElse(null);
 					if (ground != null) {
@@ -476,9 +474,7 @@ import java.util.function.Predicate;
 						needEol = false;
 						writeChild(ostream, ground, tabs + 4);
 					}
-					// TODO: Just use obj.getFixtures().stream()
-					Forest forest = StreamSupport.stream(
-							obj.getFixtures(loc).spliterator(), false)
+					Forest forest = obj.getFixtures(loc).stream()
 						.filter(Forest.class::isInstance).map(Forest.class::cast)
 						.findFirst().orElse(null);
 					if (forest != null) {

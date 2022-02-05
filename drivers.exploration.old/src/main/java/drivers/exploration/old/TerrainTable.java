@@ -1,5 +1,6 @@
 package drivers.exploration.old;
 
+import java.util.HashSet;
 import org.javatuples.Pair;
 import org.jetbrains.annotations.Nullable;
 import common.map.TileType;
@@ -63,7 +64,7 @@ class TerrainTable implements EncounterTable {
 
 	@Override
 	public Set<String> getAllEvents() {
-		return mapping.values().stream().collect(Collectors.toSet());
+		return new HashSet<>(mapping.values());
 	}
 
 	@Override

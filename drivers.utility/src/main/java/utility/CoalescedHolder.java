@@ -78,6 +78,6 @@ public class CoalescedHolder<Type extends IFixture, Key> implements Iterable<Lis
 	}
 
 	public Type combineRaw(IFixture... list) {
-		return combiner.combine(Arrays.asList(list).stream().toArray(arrayConstructor));
+		return combiner.combine(Arrays.stream(list).toArray(arrayConstructor));
 	}
 }

@@ -64,7 +64,7 @@ import org.jetbrains.annotations.Nullable;
 			throw UnwantedChildException.unexpectedNamespace(parent, element);
 		}
 		final String localName = element.getName().getLocalPart().toLowerCase();
-		if (!Stream.of(tags).map(String::toLowerCase).anyMatch(localName::equals)) {
+		if (Stream.of(tags).noneMatch(localName::equalsIgnoreCase)) {
 			throw UnwantedChildException.listingExpectedTags(parent, element, tags);
 		}
 	}

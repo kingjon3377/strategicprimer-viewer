@@ -106,9 +106,9 @@ public class MapCheckerCLI implements UtilityDriver {
 							((HasOwner) fixture).getOwner())));
 					retval = true;
 				}
-				if (!StreamSupport.stream(map.getPlayers().spliterator(), true)
+				if (StreamSupport.stream(map.getPlayers().spliterator(), true)
 						.mapToInt(Player::getPlayerId)
-						.anyMatch(n -> ((HasOwner) fixture)
+						.noneMatch(n -> ((HasOwner) fixture)
 							.getOwner().getPlayerId() == n)) {
 					warner.handle(new SPContentWarning(context, String.format(
 						"Fixture owned by %s, not known by the map",

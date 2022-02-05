@@ -18,8 +18,7 @@ final class DBMemoizer {
 			return cache.get(Pair.with(map, id));
 		} else {
 			IFixture retval = context.findByIdImpl(map.streamLocations()
-					// TODO: Use getFixtures().stream()
-					.flatMap(p -> StreamSupport.stream(map.getFixtures(p).spliterator(), true))
+					.flatMap(p -> map.getFixtures(p).stream())
 						.collect(Collectors.toList()), id);
 			if (retval == null) {
 				throw new IllegalStateException("Memoizer didn't find value to memoize");

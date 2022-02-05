@@ -1172,7 +1172,7 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 					.filter(item::equals) // TODO: equals() is not the best way to find it ...
 					.findAny();
 			if (matching.isPresent()) {
-				if (!StreamSupport.stream(map.getPlayers().spliterator(), true).anyMatch(newOwner::equals)) { // FIXME: Add contains() method to IPlayerCollection and use that instead
+				if (StreamSupport.stream(map.getPlayers().spliterator(), true).noneMatch(newOwner::equals)) { // FIXME: Add contains() method to IPlayerCollection and use that instead
 					map.addPlayer(newOwner);
 				}
 				matching.get().setOwner(map.getPlayers().getPlayer(newOwner.getPlayerId()));

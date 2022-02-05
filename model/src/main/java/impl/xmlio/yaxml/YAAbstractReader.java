@@ -77,13 +77,13 @@ abstract class YAAbstractReader<Item, Value> implements YAReader<Item, Value> {
 	/**
 	 * Require that an element be one of the specified tags.
 	 */
-	protected static void requireTag(StartElement element, QName parent, String... tags) 
+	protected static void requireTag(StartElement element, QName parent, String... tags)
 			throws SPFormatException {
 		if (!isSupportedNamespace(element.getName())) {
 			throw UnwantedChildException.unexpectedNamespace(parent, element);
 		}
 		String elementTag = element.getName().getLocalPart();
-		if (!Stream.of(tags).anyMatch(elementTag::equalsIgnoreCase)) {
+		if (Stream.of(tags).noneMatch(elementTag::equalsIgnoreCase)) {
 			// While we'd like tests to exercise this, we're always careful to only call
 			// readers when we know they support the tag ...
 			throw UnwantedChildException.listingExpectedTags(parent, element, tags);
@@ -425,12 +425,12 @@ abstract class YAAbstractReader<Item, Value> implements YAReader<Item, Value> {
 
 	/**
 	 * Read a parameter from XML whose value must be a boolean.
-	 * 
+	 *
 	 * Note that unlike in Ceylon, we can't use {@link
 	 * Boolean#parseBoolean} because it doesn't object to non-boolean
 	 * input, just returns false for everything but "true".
 	 */
-	protected boolean getBooleanParameter(StartElement element, String parameter) 
+	protected boolean getBooleanParameter(StartElement element, String parameter)
 			throws SPFormatException {
 		Attribute attr = getAttributeByName(element, parameter);
 		if (attr != null) {

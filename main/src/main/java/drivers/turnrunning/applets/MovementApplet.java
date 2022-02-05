@@ -94,9 +94,9 @@ import static lovelace.util.Decimalize.decimalize;
 			IFortress startingFort = model.getMap().getFixtures(oldPosition).stream()
 				.filter(IFortress.class::isInstance).map(IFortress.class::cast)
 				.filter(f -> f.getOwner().equals(mover.getOwner())).findAny().orElse(null);
-			if (startingFort != null && !model.getMap().getFixtures(newPosition).stream()
+			if (startingFort != null && model.getMap().getFixtures(newPosition).stream()
 					.filter(IFortress.class::isInstance).map(IFortress.class::cast)
-					.anyMatch(f -> f.getOwner().equals(mover.getOwner()))) {
+					.noneMatch(f -> f.getOwner().equals(mover.getOwner()))) {
 				Boolean pack = cli.inputBooleanInSeries("Leaving a fortress. Take provisions along?");
 				if (pack == null) {
 					return null;

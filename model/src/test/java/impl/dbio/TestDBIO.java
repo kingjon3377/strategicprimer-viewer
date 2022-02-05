@@ -184,8 +184,8 @@ public final class TestDBIO {
 		IMapNG deserializedSecond = assertDatabaseSerialization(secondMap);
 		assertNotEquals(deserializedFirst, deserializedSecond);
 		FixtureType retval =
-			(FixtureType) StreamSupport.stream(deserializedFirst.getFixtures(new Point(0, 0))
-				.spliterator(), false).findFirst().get();
+			(FixtureType) deserializedFirst.getFixtures(new Point(0, 0))
+				.stream().findFirst().get();
 		return retval;
 	}
 

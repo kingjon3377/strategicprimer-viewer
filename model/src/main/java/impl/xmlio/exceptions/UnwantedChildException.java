@@ -81,7 +81,7 @@ public class UnwantedChildException extends SPFormatException {
 	private UnwantedChildException(QName parent, StartElement child, String[] expected) {
 		super(String.format("Unexpected child %s in tag %s, expecting one of the following: %s",
 			child.getName().getLocalPart(), parent.getLocalPart(),
-			Stream.of(expected).collect(Collectors.joining(", "))),
+						String.join(", ", expected)),
 			child.getLocation().getLineNumber(), child.getLocation().getColumnNumber());
 		tag = parent;
 		this.child = child.getName();

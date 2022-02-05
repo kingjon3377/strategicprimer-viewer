@@ -172,8 +172,9 @@ public class TodoFixerCLI implements CLIDriver {
 			.anyMatch(s -> s.contains("#"));
 	}
 
+	// TODO: Check against the Ceylon code to see if this is right.
 	private static boolean anyEmptySkills(Pair<Point, CommunityStats> pair) {
-		return pair.getValue1().getHighestSkillLevels().entrySet().stream().map(Map.Entry::getKey)
+		return pair.getValue1().getHighestSkillLevels().keySet().stream()
 			.anyMatch(String::isEmpty);
 	}
 

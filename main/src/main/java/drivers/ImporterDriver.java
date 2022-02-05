@@ -169,8 +169,7 @@ import org.jetbrains.annotations.Nullable;
 
 					Pair<Integer, Integer> dominant =
 							StreamSupport.stream(counter.getAllCounts().spliterator(), false)
-									.sorted(Comparator.comparing(Pair::getValue1, Comparator.reverseOrder()))
-									.findFirst().orElse(null);
+									.min(Comparator.comparing(Pair::getValue1, Comparator.reverseOrder())).orElse(null);
 					if (dominant != null) {
 						if (mapping.containsKey(dominant.getValue0())) {
 							HasName type = mapping.get(dominant.getValue0());

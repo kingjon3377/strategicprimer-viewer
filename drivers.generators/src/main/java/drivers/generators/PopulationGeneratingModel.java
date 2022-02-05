@@ -339,10 +339,8 @@ public class PopulationGeneratingModel extends SimpleMultiMapModel { // TODO: Ex
 						((IMutableJob) queriedJob)
 							.setLevel(queriedJob.getLevel() + 1);
 					} else if (matching.get() instanceof IMutableWorker &&
-							!StreamSupport.stream(
-									matching.get().spliterator(), true)
-								.anyMatch(j -> j.getName()
-									.equals(jobName))) {
+							StreamSupport.stream(matching.get().spliterator(), true)
+									.noneMatch(j -> j.getName().equals(jobName))) {
 						((IMutableWorker) matching.get())
 							.addJob(new Job(jobName, 1));
 					} else {

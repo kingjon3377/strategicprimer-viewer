@@ -18,13 +18,13 @@ public class RaceFactory {
 	 * except human, which is more likely than the others put together.
 	 */
 	public static final List<String> RACES = Collections.unmodifiableList(
-		Stream.concat(Arrays.asList("dwarf", "elf", "gnome", "half-elf", "Danan").stream(),
+		Stream.concat(Stream.of("dwarf", "elf", "gnome", "half-elf", "Danan"),
 			Stream.generate(() -> "human")).limit(20)
 			.collect(Collectors.toList()));
 
 	/**
 	 * Select a race at random.
-	 * 
+	 *
 	 * @param random The RNG to use to determine the result.
 	 */
 	public static String randomRace(Random random) {
