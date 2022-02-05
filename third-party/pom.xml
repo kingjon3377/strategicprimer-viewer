@@ -17,6 +17,12 @@
             <version>${jetbrains.annotations.version}</version>
             <scope>compile</scope>
         </dependency>
+        <dependency>
+            <groupId>org.eclipse.jdt</groupId>
+            <artifactId>org.eclipse.jdt.annotation</artifactId>
+            <version>2.2.600</version>
+            <scope>compile</scope>
+        </dependency>
     </dependencies>
 
     <properties>
