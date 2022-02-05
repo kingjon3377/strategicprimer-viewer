@@ -388,7 +388,7 @@ abstract class YAAbstractReader<Item, Value> implements YAReader<Item, Value> {
 	 * The factory for ID numbers
 	 */
 	private IDRegistrar idf;
-	
+
 	protected YAAbstractReader(Warning warning, IDRegistrar idRegistrar) {
 		warner = warning;
 		idf = idRegistrar;

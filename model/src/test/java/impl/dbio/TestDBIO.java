@@ -351,7 +351,7 @@ public final class TestDBIO {
 	}
 
 	private static Stream<Arguments> testForestSerialization() {
-		return Stream.of(true, false).flatMap(a -> 
+		return Stream.of(true, false).flatMap(a ->
 			SINGLETON_RANDOM.ints().boxed().limit(1).flatMap(b ->
 				SINGLETON_RANDOM.ints().boxed().limit(1).map(c -> Arguments.of(a, b, c))));
 	}
@@ -467,7 +467,7 @@ public final class TestDBIO {
 	}
 
 	private static Stream<Arguments> testMineralSerialization() {
-		return Stream.of(true, false).flatMap(a -> 
+		return Stream.of(true, false).flatMap(a ->
 			SINGLETON_RANDOM.ints().boxed().limit(2).flatMap(b ->
 				SINGLETON_RANDOM.ints().boxed().limit(2).flatMap(c ->
 					races.stream().collect(toShuffledStream(1)).map(d ->

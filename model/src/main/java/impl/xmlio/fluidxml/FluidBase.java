@@ -465,7 +465,7 @@ import org.jetbrains.annotations.Nullable;
 	 * Parse an XML parameter whose value can be an Integer or a Decimal.
 	 *
 	 * TODO: Replace this with a conversion function passed to {@link getAttribute}
-	 * 
+	 *
 	 * @throws SPFormatException if the tag's value is non-numeric or
 	 * otherwise malformed
 	 * @param tag The tag to get the parameter from
@@ -481,7 +481,7 @@ import org.jetbrains.annotations.Nullable;
 	 * Parse an XML parameter whose value can be an Integer or a Decimal.
 	 *
 	 * TODO: Replace this with a conversion function passed to {@link getAttribute}
-	 * 
+	 *
 	 * @throws SPFormatException if the tag's value is non-numeric or
 	 * otherwise malformed
 	 * @param tag The tag to get the parameter from
@@ -518,7 +518,7 @@ import org.jetbrains.annotations.Nullable;
 	 * Parse an XML parameter whose value can be an Integer or a Decimal.
 	 *
 	 * TODO: Replace this with a conversion function passed to {@link getAttribute}
-	 * 
+	 *
 	 * @throws SPFormatException if the tag doesn't have that parameter, or
 	 * if its value is non-numeric or otherwise malformed
 	 * @param tag The tag to get the parameter from
@@ -590,7 +590,7 @@ import org.jetbrains.annotations.Nullable;
 	 * @param attributes The name and values of the attributes to write.
 	 * Only supports String, boolean, and numeric attributes.
 	 */
-	protected static void writeAttributes(XMLStreamWriter ostream, Pair<String, ?>... attributes) 
+	protected static void writeAttributes(XMLStreamWriter ostream, Pair<String, ?>... attributes)
 			throws MalformedXMLException {
 		try {
 			for (Pair<String, ?> pair : attributes) {

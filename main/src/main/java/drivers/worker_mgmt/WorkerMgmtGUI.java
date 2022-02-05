@@ -49,7 +49,7 @@ public class WorkerMgmtGUI implements MultiMapGUIDriver, WorkerGUI {
 		this.options = options;
 		this.model = model;
 	}
-	
+
 	private final ICLIHelper cli;
 
 	private final SPOptions options;
