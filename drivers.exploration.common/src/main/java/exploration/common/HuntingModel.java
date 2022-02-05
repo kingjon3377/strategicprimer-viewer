@@ -346,7 +346,7 @@ public class HuntingModel {
 	 * tile. About half will be "nothing". May be an infinite stream.
 	 *
 	 * If Java supported union types the fixture type would be
-	 * <code>Animal|AnimalTracks|NothingFound</code>.
+	 * {@code Animal|AnimalTracks|NothingFound}.
 	 *
 	 * TODO: We'd like to allow callers(?) to specify a proportion that
 	 * *should* be tracks, perhaps replacing some of the NothingFound

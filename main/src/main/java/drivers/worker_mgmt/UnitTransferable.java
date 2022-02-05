@@ -13,7 +13,7 @@ import common.map.HasMutableKind;
 /**
  * A class to transfer a Unit (to change its kind) by drag-and-drop.
  *
- * In Ceylon the type of items in the payload was <code>IUnit&amp;HasMutableKind</code>;
+ * In Ceylon the type of items in the payload was {@code IUnit&HasMutableKind};
  * in Java we can't make the type as seen by the type system to be that precise, so callers
  * may have to explicitly cast transferred objects to HasMutableKind.
  *

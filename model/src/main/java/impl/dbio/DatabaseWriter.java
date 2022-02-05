@@ -15,9 +15,9 @@ interface DatabaseWriter<Item, Context> {
 	void write(DB db, Item obj, Context context);
 
 	/**
-	 * Whether we can write the given object. Should generally be equivalent to 
-	 * <code>obj instanceof Item &amp;&amp; context instanceof
-	 * Context</code>, but we can't write that here in Java as type
+	 * Whether we can write the given object. Should generally be equivalent to
+	 * {@code obj instanceof Item && context instanceof
+	 * Context}, but we can't write that here in Java as type
 	 * parameters aren't reified.
 	 */
 	boolean canWrite(Object obj, Object context);

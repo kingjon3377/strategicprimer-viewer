@@ -212,7 +212,7 @@ public class SPMapNG implements IMutableMapNG {
 	 * The locations in the map.
 	 *
 	 * In Ceylon this only gave valid locations, but the serialization code
-	 * could get invalid-but-used points from <code>fixtures.keys</code>;
+	 * could get invalid-but-used points from {@code fixtures.keys};
 	 * we include the invalid-but-apparently-used points here in Java
 	 * because we don't expose fixtures as a Map now.
 	 */

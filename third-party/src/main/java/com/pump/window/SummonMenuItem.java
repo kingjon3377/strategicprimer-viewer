@@ -19,8 +19,8 @@ import java.beans.PropertyChangeListener;
 import javax.swing.JCheckBoxMenuItem;
 
 /**
- * This menu item calls <code>Frame.toFront()</code> when the item is selected.
- * 
+ * This menu item calls {@code Frame.toFront()} when the item is selected.
+ *
  */
 public class SummonMenuItem extends JCheckBoxMenuItem {
 
@@ -38,8 +38,8 @@ public class SummonMenuItem extends JCheckBoxMenuItem {
 	};
 
 	/**
-	 * Create a new <code>SummonMenuItem</code>.
-	 * 
+	 * Create a new {@code SummonMenuItem}.
+	 *
 	 * @param f
 	 *            the frame to bring to front when this menu item is activated
 	 */

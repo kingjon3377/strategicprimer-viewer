@@ -166,7 +166,7 @@ public final class TestXMLIO {
 	/**
 	 * Assert that the given XML will produce the given kind of warning and
 	 * that the warning satisfies the given additional assertions. If
-	 * {@link desideratum} is <code>null</code>, assert that the exception
+	 * {@link desideratum} is {@code null}, assert that the exception
 	 * is always thrown; if not, assert that the XML will fail with
 	 * warnings made fatal, but will pass and produce {@link desideratum}
 	 * with warnings ignored.
@@ -1124,7 +1124,7 @@ public final class TestXMLIO {
 
 	/**
 	 * Test that tags we intend to possibly support in the future (or
-	 * include in the XML for readability, like <code>row</code>) are
+	 * include in the XML for readability, like {@code row}) are
 	 * properly skipped when deserializing.
 	 */
 	@Test

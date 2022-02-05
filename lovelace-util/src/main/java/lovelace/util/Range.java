@@ -6,7 +6,7 @@ import org.jetbrains.annotations.NotNull;
 
 /**
  * A class encapsulating a range of integers, to fluently test whether other
- * integers are in the range. (Replacement for Ceylon's <code>Range&lt;Integer&gt;</code>.)
+ * integers are in the range. (Replacement for Ceylon's {@code Range<Integer>}.)
  */
 public class Range implements Iterable<Integer> {
 	public Range(int lowerBound, int upperBound) {

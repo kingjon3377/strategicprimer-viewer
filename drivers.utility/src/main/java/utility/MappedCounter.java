@@ -24,7 +24,7 @@ import java.util.HashMap;
  * TODO: Move to lovelace.util? (If so, leave Key as-is.)
  *
  * N.B. in Ceylon the type bound for Count was that it satisfy
- * <code>Summable&lt;Count&gt;&amp;Comparable&lt;Count&gt;</code>
+ * {@code Summable<Count>&Comparable<Count>}
  */
 class MappedCounter<Base, Key, Count extends Number&Comparable<Count>> implements Iterable<Pair<Key, Count>> {
 	/**

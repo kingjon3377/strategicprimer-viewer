@@ -43,7 +43,7 @@ import javax.swing.event.ChangeListener;
  * feature. <BR>
  * 2. Window titles do not have a bullet displayed next to their name when they
  * have unsaved changes, or a diamond displayed next to their name when
- * minimized. I started to develop a <code>FrameMenuItemUI</code> to address
+ * minimized. I started to develop a {@code FrameMenuItemUI} to address
  * this problem, but then realized that if a Java program on Mac uses the screen
  * menubar (which is the preferred behavior): customized MenuItemUI's are
  * ignored. Apple does some slight-of-hand and maps every JMenuItem to some sort
@@ -59,7 +59,7 @@ import javax.swing.event.ChangeListener;
  * <P>
  * This can't run inside a Java sandbox because it refers to the WindowList
  * which invokes
- * <code>Toolkit.getDefaultToolkit().addAWTEventListener(..)</code>.
+ * {@code Toolkit.getDefaultToolkit().addAWTEventListener(..)}.
  *
  * @see <a href=
  *      "https://javagraphics.blogspot.com/2008/11/windows-adding-window-menu.html">Windows:

@@ -39,7 +39,7 @@ public class SimpleMultiMapModel extends SimpleDriverModel implements IMultiMapM
 	}
 
 	/**
-	 * TODO: This was a named constructor (<code>copyConstructor</code>) in
+	 * TODO: This was a named constructor ({@code copyConstructor}) in
 	 * Ceylon; should we make it private here and provide a static method
 	 * instead?
 	 */

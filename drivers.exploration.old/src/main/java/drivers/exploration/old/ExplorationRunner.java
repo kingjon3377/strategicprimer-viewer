@@ -79,7 +79,7 @@ public final class ExplorationRunner {
 
 	/**
 	 * Consult a table, and if a result indicates recursion, perform it.
-	 * Recursion is indicated by hash-marks (<code>#</code>) around the
+	 * Recursion is indicated by hash-marks ({@code #}) around the
 	 * name of the table to call; results are undefined if there are more
 	 * than two hash marks in any given String, or if either is at the
 	 * beginning or end of the string, since we use {@link String#split}.

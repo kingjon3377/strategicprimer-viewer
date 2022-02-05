@@ -8,7 +8,7 @@ import buckelieg.jdbc.fn.TryConsumer;
 /**
  * @see buckelieg.jdbc.fn.TryConsumer
  *
- * @author Jonathan Lovelace (skeleton, <code>accept</code>, <code>partial</code>)
+ * @author Jonathan Lovelace (skeleton, {@code accept}, <code>partial</code>)
  * @author rest adapted from @buckelieg/jdbc-fn TryConsumer
  */
 @FunctionalInterface

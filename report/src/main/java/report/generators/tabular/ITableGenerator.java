@@ -165,7 +165,7 @@ public interface ITableGenerator<T extends IFixture> {
 	/**
 	 * The header row to print at the top of the report, listing what the fields represent.
 	 *
-	 * TODO: Specify List instead of Iterable? Ceylon had <code>[String+]</code>.
+	 * TODO: Specify List instead of Iterable? Ceylon had {@code [String+]}.
 	 */
 	Iterable<String> getHeaderRow();
 

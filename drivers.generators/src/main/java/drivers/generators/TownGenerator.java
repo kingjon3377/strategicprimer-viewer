@@ -150,7 +150,7 @@ import java.math.BigDecimal;
 	/**
 	 * The (for now active) towns in the given map that don't have 'stats'
 	 * yet. In Ceylon the "town" type was the alias
-	 * <code>ModifiableTown</code>, defined as the union of {@link
+	 * {@code ModifiableTown}, defined as the union of {@link
 	 * AbstractTown} and {@link Village}, but we can neither define an
 	 * alias nor use a union type in Java and so use the nearest supertype,
 	 * {@link ITownFixture}.
@@ -427,7 +427,7 @@ import java.math.BigDecimal;
 	/**
 	 * Generate expertise and production and consumption data for the given town.
 	 *
-	 * Note that in Ceylon the type of {@link town} was <code>AbstractTown|Village</code>,
+	 * Note that in Ceylon the type of {@link town} was {@code AbstractTown|Village},
 	 * excluding fortresses.
 	 *
 	 * To ensure consistency between runs of this algorithm, we seed the

@@ -21,7 +21,7 @@ import java.nio.charset.MalformedInputException;
  * A wrapper around {@link XMLEventReader} that hides its "raw type" from callers.
  * Also contains factory methods so callers don't need to deal *at all* with
  * the object this wraps. If the provided reader is {@link Closeable}, we call
- * its <code>close</code> method before flipping {@link hasNext} to false.
+ * its {@code close} method before flipping {@link hasNext} to false.
  * Callers can also pass in additional methods to call at that point.
  */
 public class TypesafeXMLEventReader implements Iterator<XMLEvent>, Closeable {

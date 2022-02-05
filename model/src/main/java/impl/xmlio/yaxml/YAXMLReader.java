@@ -43,7 +43,7 @@ public class YAXMLReader implements IMapReader, ISPReader {
 	 * @throws ClassCastException if reader does not produce the requested type
 	 *
 	 * TODO: take Class so we can check and throw a different exception? In
-	 * Ceylon we did <code>assert (is Element retval</code>
+	 * Ceylon we did {@code assert (is Element retval}
 	 */
 	@Override
 	public <Element> Element readXML(Path file, Reader istream, Warning warner)

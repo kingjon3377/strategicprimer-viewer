@@ -32,20 +32,20 @@ import javax.swing.event.ChangeListener;
  * By "origin" I mean: when that window was first activated. This serves as a
  * running list of windows in the order they were used.
  * <P>
- * All windows are tracked by <code>WeakReferences</code>, just to make sure
+ * All windows are tracked by {@code WeakReferences}, just to make sure
  * this static monitor doesn't accidentally let windows linger in memory that
  * should otherwise be marked for garbage collection.
  * <P>
- * The layering is monitored by an <code>AWTEventListener</code> that listens
- * for all <code>WindowEvent.WINDOW_ACTIVATED</code> events. Whenever a window
+ * The layering is monitored by an {@code AWTEventListener} that listens
+ * for all {@code WindowEvent.WINDOW_ACTIVATED} events. Whenever a window
  * is activated: it gets put on the top of the stack of windows.
  * <P>
  * When any change occurs to any of the lists in this class: the
- * <code>ChangeListeners</code> are notified.
+ * {@code ChangeListeners} are notified.
  * <P>
  * This can't run inside a Java sandbox because it invokes
- * <code>Toolkit.getDefaultToolkit().addAWTEventListener(..)</code>.
- * 
+ * {@code Toolkit.getDefaultToolkit().addAWTEventListener(..)}.
+ *
  */
 public class WindowList {
 
