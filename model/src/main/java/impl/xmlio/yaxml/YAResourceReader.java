@@ -29,7 +29,7 @@ import java.util.HashSet;
 import java.util.Collections;
 
 /**
- * A reader for resource-bearing [[strategicprimer.model.common.map::TileFixture]]s.
+ * A reader for resource-bearing {@link common.map.TileFixture}s.
  */
 /* package */ class YAResourceReader extends YAAbstractReader<HarvestableFixture, HarvestableFixture> {
 	public YAResourceReader(final Warning warner, final IDRegistrar idRegistrar) {

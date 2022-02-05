@@ -157,7 +157,7 @@ import java.util.function.Predicate;
 	}
 
 	/**
-	 * Parse what should be a [[TileFixture]] from the XML.
+	 * Parse what should be a {@link TileFixture} from the XML.
 	 */
 	private TileFixture parseFixture(final StartElement element, final QName parent, final Iterable<XMLEvent> stream)
 			throws SPFormatException, MalformedXMLException {

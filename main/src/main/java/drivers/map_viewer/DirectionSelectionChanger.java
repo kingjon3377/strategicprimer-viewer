@@ -9,9 +9,9 @@ import common.map.Point;
 
 /**
  * A class for moving the cursor around the single-component map UI, including
- * scrolling using a mouse wheel. When methods (e.g. [[up]]) are called with
- * the default [[true]], they move the selection; when they are called with
- * [[false]], they scroll the window but do not move the selection.
+ * scrolling using a mouse wheel. When methods (e.g. {@link up} are called with
+ * the default true, they move the selection; when they are called with
+ * false, they scroll the window but do not move the selection.
  *
  * TODO: Add withRow() and withColumn() methods to Point to condense the below slightly?
  */

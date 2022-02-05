@@ -24,7 +24,7 @@ import java.util.Collections;
 import java.util.Set;
 
 /**
- * A reader for [[TerrainFixture]]s.
+ * A reader for {@link TerrainFixture}s.
  */
 /* package */ class YATerrainReader extends YAAbstractReader<TerrainFixture, TerrainFixture> {
 	public YATerrainReader(final Warning warning, final IDRegistrar idRegistrar) {

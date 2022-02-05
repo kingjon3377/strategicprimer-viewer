@@ -69,9 +69,9 @@ public class ViewerModel extends SimpleDriverModel implements IViewerModel {
 	}
 
 	/**
-	 * If the item in the entry is a [[fortress|IFortress]], return a
+	 * If the item in the entry is a {@link IFortress fortress}, return a
 	 * stream of its contents paired with its location; otherwise, return a
-	 * [[Singleton]] of the argument.
+	 * stream of the provided entry alone.
 	 */
 	private static Stream<Pair<Point, IFixture>> flattenEntries(final Pair<Point, IFixture> entry) {
 		if (entry.getValue1() instanceof IFortress) {
@@ -82,9 +82,9 @@ public class ViewerModel extends SimpleDriverModel implements IViewerModel {
 	}
 
 	/**
-	 * If [[fixture]] is a [[fortress|IFortress]], return it; otherwise,
+	 * If {@link fixture} is a {@link IFortress fortress}, return it; otherwise,
 	 * return a Singleton containing it. This is intended to be used in
-	 * [[Iterable.flatMap]].
+	 * {@link Iterable#flatMap}.
 	 */
 	private static Stream<IFixture> unflattenNonFortresses(final TileFixture fixture) {
 		if (fixture instanceof IFortress) {
@@ -724,8 +724,8 @@ public class ViewerModel extends SimpleDriverModel implements IViewerModel {
 	}
 
 	/**
-	 * Change the owner of the given item in all maps. Returns [[true]] if
-	 * this succeeded in any map, [[false]] otherwise.
+	 * Change the owner of the given item in all maps. Returns true if
+	 * this succeeded in any map, false otherwise.
 	 */
 	@Override
 	public boolean changeOwner(final HasMutableOwner item, final Player newOwner) {

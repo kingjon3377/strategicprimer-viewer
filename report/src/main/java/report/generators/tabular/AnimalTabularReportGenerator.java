@@ -126,7 +126,7 @@ public class AnimalTabularReportGenerator implements ITableGenerator<AnimalOrTra
 			// We'd like to extract the comparison on type to a function, which
 			// we would pass in to comparing() with the distance function above
 			// to reduce nesting, but there's too much here that can only be applied
-			// if both are [[Animal]]s or both are [[AnimalTracks]].
+			// if both are {@link Animal}s or both are {@link AnimalTracks}.
 			if (one.getValue1() instanceof Animal) {
 				if (two.getValue1() instanceof Animal) {
 					return Comparator.comparing(Animal::isTalking)

@@ -5,7 +5,7 @@ import java.math.BigInteger;
 import java.util.Comparator;
 
 /**
- * A class providing a comparison for [[Numbers|Number]] of unknown or varied types.
+ * A class providing a comparison for {@link Number numbers} of unknown or varied types.
  */
 public class NumberComparator implements Comparator<Number> {
 	/**

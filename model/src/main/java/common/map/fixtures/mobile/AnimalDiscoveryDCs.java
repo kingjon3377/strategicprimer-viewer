@@ -6,7 +6,7 @@ import java.util.Map;
 /**
  * Discovery DCs for animal populations based on the kind of animal, loaded
  * from file, and if not present there defaulting to what had been the flat
- * constant DC for the [[Animal]] type.
+ * constant DC for the {@link Animal} type.
  *
  * TODO: While better than a per-<em>class</em> constant, this is still an
  * inferior solution: instead, load animals' <em>categories</em> (bird, fish,

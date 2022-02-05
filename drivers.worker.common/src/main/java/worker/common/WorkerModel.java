@@ -86,9 +86,9 @@ public class WorkerModel extends SimpleMultiMapModel implements IWorkerModel {
 	}
 
 	/**
-	 * If the item in the entry is a [[fortress|IFortress]], return a
+	 * If the item in the entry is a {@link IFortress fortress}, return a
 	 * stream of its contents paired with its location; otherwise, return a
-	 * [[Singleton]] of the argument.
+	 * stream of just it.
 	 */
 	private static Stream<Pair<Point, IFixture>> flattenEntries(final Point point,
 	                                                            final IFixture fixture) {

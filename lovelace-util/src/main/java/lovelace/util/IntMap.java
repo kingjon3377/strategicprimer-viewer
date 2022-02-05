@@ -48,7 +48,7 @@ public class IntMap<Item> extends AbstractMap<Integer, Item> implements DelayedR
 	}
 
 	/**
-	 * If the given key is in the to-remove list, returns [[null]]; otherwise, returns the value, if any, associated
+	 * If the given key is in the to-remove list, returns null; otherwise, returns the value, if any, associated
 	 * with it in the backing map.
 	 */
 	@Override
@@ -78,7 +78,7 @@ public class IntMap<Item> extends AbstractMap<Integer, Item> implements DelayedR
 
 	/**
 	 * Add the given key to the to-remove list. If it was already there (the entry 'had been removed' already), or
-	 * there was no value associated with that key, return [[null]]; otherwise, return the value that had been
+	 * there was no value associated with that key, return null; otherwise, return the value that had been
 	 * associated with the key.
 	 */
 	@Override

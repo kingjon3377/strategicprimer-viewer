@@ -43,7 +43,7 @@ import java.util.stream.Collectors;
 public class PopulationGeneratingModel extends SimpleMultiMapModel { // TODO: Extract interface
 	/**
 	 * The intersection of two sets; here so it can be passed as a method
-	 * reference rather than a lambda in [[playerChoices]].
+	 * reference rather than a lambda in {@link playerChoices}.
 	 *
 	 * TODO: Move * to lovelace.util? Or is there some equivalent
 	 * method-reference logic with curry() or uncurry() or some such?

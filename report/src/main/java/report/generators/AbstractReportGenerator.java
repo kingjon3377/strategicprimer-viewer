@@ -42,7 +42,7 @@ public abstract class AbstractReportGenerator<Type extends IFixture> implements 
 	protected final Function<Point, String> distanceString;
 
 	/**
-	 * @param pairComparator A comparator of [[Point]]-fixture pairs.
+	 * @param pairComparator A comparator of {@link Point}-fixture pairs.
 	 * @param mapDimensions The dimensions of the map. If null, {@link
 	 * distComparator} and {@link distanceString} will give inaccurate
 	 * results whenever the shortest distance between two points involves

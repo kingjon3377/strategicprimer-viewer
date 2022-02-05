@@ -168,7 +168,7 @@ public final class SubsetTest {
 	}
 
 	/**
-	 * Test the [[IMapNG]] subset feature
+	 * Test the {@link IMapNG} subset feature
 	 */
 	@Test
 	public void testMapSubset() {
