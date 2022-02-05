@@ -1,7 +1,5 @@
 package drivers.map_viewer;
 
-import javax.swing.event.ChangeEvent;
-
 import org.jetbrains.annotations.Nullable;
 
 import java.awt.BorderLayout;
@@ -16,17 +14,9 @@ import drivers.common.MapChangeListener;
 import drivers.common.SelectionChangeListener;
 
 import javax.swing.JScrollBar;
-import javax.swing.JComponent;
 import javax.swing.BoundedRangeModel;
-import javax.swing.InputVerifier;
 
 import common.map.fixtures.mobile.IUnit;
-
-import java.util.function.IntSupplier;
-import java.util.function.Supplier;
-
-import java.util.logging.Logger;
-import java.util.logging.Level;
 
 /**
  * A class to change the visible area of the map based on the user's use of the scrollbars.

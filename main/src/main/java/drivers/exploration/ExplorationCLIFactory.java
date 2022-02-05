@@ -1,6 +1,5 @@
 package drivers.exploration;
 
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import drivers.common.DriverUsage;
@@ -8,11 +7,9 @@ import drivers.common.ParamCount;
 import drivers.common.IDriverUsage;
 import drivers.common.SPOptions;
 import drivers.common.IDriverModel;
-import drivers.common.CLIDriver;
 import drivers.common.DriverFactory;
 import drivers.common.ModelDriverFactory;
 import drivers.common.ModelDriver;
-import drivers.common.EmptyOptions;
 
 import drivers.common.cli.ICLIHelper;
 
@@ -20,9 +17,6 @@ import exploration.common.IExplorationModel;
 import exploration.common.ExplorationModel;
 
 import common.map.IMutableMapNG;
-import common.map.Player;
-
-import common.map.fixtures.mobile.IUnit;
 
 import com.google.auto.service.AutoService;
 

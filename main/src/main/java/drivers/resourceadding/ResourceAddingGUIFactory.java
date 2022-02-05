@@ -17,7 +17,6 @@ import drivers.common.DriverFactory;
 import drivers.common.ParamCount;
 import drivers.common.IDriverUsage;
 import drivers.common.IDriverModel;
-import drivers.common.DriverFailedException;
 import drivers.common.GUIDriver;
 
 import java.util.logging.Logger;

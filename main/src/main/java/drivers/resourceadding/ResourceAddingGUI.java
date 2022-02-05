@@ -43,7 +43,6 @@ import drivers.worker_mgmt.WorkerMenu;
 import drivers.common.PlayerChangeListener;
 import drivers.common.SPOptions;
 import drivers.common.MultiMapGUIDriver;
-import drivers.common.DriverFailedException;
 
 import drivers.gui.common.MenuBroker;
 import drivers.gui.common.SPFrame;
@@ -54,7 +53,6 @@ import javax.swing.SpinnerNumberModel;
 import javax.swing.JTextField;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JSpinner;
 import javax.swing.SwingUtilities;

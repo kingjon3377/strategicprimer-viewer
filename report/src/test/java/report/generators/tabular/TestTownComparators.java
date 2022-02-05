@@ -4,15 +4,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static org.junit.jupiter.api.Assertions.assertIterableEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assumptions.assumeTrue;
-import org.junit.jupiter.params.provider.MethodSource;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.Arguments;
+
 import org.junit.jupiter.api.Test;
 
 import common.map.Player;
@@ -21,7 +13,6 @@ import common.map.fixtures.towns.TownStatus;
 import common.map.fixtures.towns.TownSize;
 import common.map.fixtures.towns.FortressImpl;
 import common.map.fixtures.towns.ITownFixture;
-import common.map.fixtures.towns.IFortress;
 import common.map.fixtures.towns.Village;
 import common.map.fixtures.towns.City;
 import common.map.fixtures.towns.Town;

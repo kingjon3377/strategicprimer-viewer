@@ -3,8 +3,6 @@ package impl.dbio;
 import buckelieg.jdbc.fn.DB;
 
 import java.util.Collections;
-import java.util.Arrays;
-import java.util.Optional;
 import java.util.Map;
 
 import common.map.Point;

@@ -29,8 +29,6 @@ import java.io.IOException;
 import java.util.Set;
 import java.util.HashSet;
 
-import lovelace.util.MissingFileException;
-
 import java.util.logging.Logger;
 import java.util.logging.Level;
 

@@ -3,7 +3,6 @@ package utility;
 import org.javatuples.Pair;
 import java.util.function.Function;
 import lovelace.util.Accumulator;
-import lovelace.util.EnumCounter;
 import java.math.BigInteger;
 import java.math.BigDecimal;
 import java.util.Iterator;

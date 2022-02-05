@@ -5,7 +5,6 @@ import org.jetbrains.annotations.Nullable;
 import org.javatuples.Pair;
 import java.util.List;
 import java.util.ArrayList;
-import java.util.Comparator;
 
 import java.awt.Component;
 
@@ -43,7 +42,6 @@ import javax.swing.table.TableRowSorter;
 import javax.swing.table.TableModel;
 import drivers.common.cli.ICLIHelper;
 import java.util.logging.Logger;
-import java.util.function.Function;
 import java.util.function.BiConsumer;
 import java.io.IOException;
 import java.text.NumberFormat;

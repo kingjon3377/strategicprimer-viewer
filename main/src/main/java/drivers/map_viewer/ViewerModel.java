@@ -22,7 +22,6 @@ import common.map.HasKind;
 import common.map.HasMutableKind;
 import common.map.HasMutableName;
 import common.map.HasMutableOwner;
-import common.map.HasOwner;
 import common.map.IFixture;
 import common.map.IMutableMapNG;
 import common.map.Player;

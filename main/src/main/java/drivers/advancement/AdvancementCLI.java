@@ -1,27 +1,15 @@
 package drivers.advancement;
 
-import drivers.common.IDriverModel;
-import drivers.common.DriverUsage;
-import drivers.common.ParamCount;
-import drivers.common.IDriverUsage;
 import drivers.common.SPOptions;
 import drivers.common.CLIDriver;
-import drivers.common.ModelDriver;
-import drivers.common.DriverFactory;
-import drivers.common.ModelDriverFactory;
 import drivers.common.IWorkerModel;
 
 import drivers.common.cli.ICLIHelper;
 
 import common.map.Player;
-import common.map.IMutableMapNG;
 
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
-import worker.common.WorkerModel;
-
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import common.map.fixtures.mobile.IWorker;
 import common.map.fixtures.mobile.IUnit;

@@ -9,10 +9,8 @@ import org.javatuples.Pair;
 import java.io.IOException;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static org.junit.jupiter.api.Assertions.assertIterableEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.fail;
 import static org.junit.jupiter.api.Assumptions.assumeTrue;
 import static org.junit.jupiter.api.Assumptions.assumeFalse;
@@ -99,10 +97,9 @@ import common.map.fixtures.towns.FortressImpl;
 import common.map.fixtures.towns.IFortress;
 import common.map.fixtures.towns.IMutableFortress;
 import common.map.fixtures.towns.CommunityStats;
-import impl.xmlio.ISPReader;
+
 import static impl.xmlio.ISPReader.SP_NAMESPACE;
-import impl.xmlio.IMapReader;
-import impl.xmlio.TestReaderFactory;
+
 import common.xmlio.Warning;
 import impl.xmlio.exceptions.UnsupportedTagException;
 import impl.xmlio.exceptions.UnwantedChildException;

@@ -1,10 +1,8 @@
 package drivers;
 
 import java.nio.file.Path;
-import java.nio.file.Paths;
 
 import java.util.Collection;
-import java.util.List;
 import java.util.LinkedList;
 import java.util.Set;
 import java.util.HashSet;

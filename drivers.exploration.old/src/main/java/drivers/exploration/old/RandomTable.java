@@ -2,7 +2,6 @@ package drivers.exploration.old;
 
 import org.javatuples.Pair;
 import org.jetbrains.annotations.Nullable;
-import java.util.Map;
 import common.map.TileType;
 import common.map.Point;
 import common.map.MapDimensions;

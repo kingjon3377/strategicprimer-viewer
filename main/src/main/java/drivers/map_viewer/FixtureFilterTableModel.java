@@ -11,7 +11,6 @@ import java.util.Comparator;
 import lovelace.util.Reorderable;
 
 import common.map.TileFixture;
-import common.map.Player;
 import common.map.fixtures.TextFixture;
 import common.map.fixtures.Ground;
 

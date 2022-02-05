@@ -9,7 +9,6 @@ import common.map.fixtures.UnitMember;
 import javax.swing.tree.TreePath;
 
 import java.util.logging.Logger;
-import java.util.logging.Level;
 import java.util.ArrayList;
 import java.util.List;
 import common.map.fixtures.mobile.IUnit;

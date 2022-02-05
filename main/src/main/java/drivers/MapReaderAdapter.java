@@ -5,7 +5,6 @@ import java.io.FileNotFoundException;
 import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 import java.util.logging.Logger;
-import java.util.logging.Level;
 import java.io.IOException;
 import java.io.Reader;
 

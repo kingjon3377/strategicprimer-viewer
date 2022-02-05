@@ -83,23 +83,16 @@ import common.xmlio.Warning;
 import common.map.fixtures.towns.IMutableFortress;
 import common.map.fixtures.mobile.IMutableUnit;
 
-import java.io.IOException;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static org.junit.jupiter.api.Assertions.assertIterableEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.fail;
-import static org.junit.jupiter.api.Assumptions.assumeTrue;
 import static org.junit.jupiter.api.Assumptions.assumeFalse;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
-import org.junit.jupiter.params.provider.EnumSource;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
-import static lovelace.util.AssertAny.assertAny;
 import org.junit.jupiter.api.Disabled;
 
 import java.util.Collection;
@@ -107,10 +100,8 @@ import java.util.Collections;
 import java.util.Arrays;
 import java.util.function.IntFunction;
 import java.util.stream.Stream;
-import java.util.stream.StreamSupport;
 import java.util.stream.Collectors;
 import java.util.stream.Collector;
-import java.util.Set;
 import java.util.HashSet;
 import common.map.fixtures.TerrainFixture;
 

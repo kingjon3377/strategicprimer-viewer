@@ -5,7 +5,6 @@ import drivers.exploration.old.MissingTableException;
 import java.util.Optional;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 import java.util.stream.Collectors;
 import java.util.Objects;
@@ -23,9 +22,7 @@ import common.map.fixtures.towns.Village;
 import common.map.fixtures.towns.TownSize;
 
 import common.map.IFixture;
-import common.map.TileFixture;
 import common.map.Point;
-import common.map.HasName;
 import common.map.TileType;
 import common.map.IMapNG;
 

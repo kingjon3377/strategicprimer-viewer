@@ -4,8 +4,6 @@ import common.map.IFixture;
 import common.map.HasPopulation;
 import common.map.HasMutableImage;
 import common.map.HasKind;
-import common.map.fixtures.UnitMember;
-import common.map.fixtures.FortressMember;
 import java.util.function.Consumer;
 
 /**

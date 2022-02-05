@@ -1,30 +1,15 @@
 package drivers.map_viewer;
 
-import javax.swing.event.ChangeEvent;
-
-import java.awt.BorderLayout;
-import java.awt.Adjustable;
-
 import common.map.MapDimensions;
-import common.map.Point;
-
-import lovelace.util.BorderedPanel;
-
-import drivers.common.MapChangeListener;
-import drivers.common.SelectionChangeListener;
 
 import javax.swing.JScrollBar;
 import javax.swing.JComponent;
-import javax.swing.BoundedRangeModel;
 import javax.swing.InputVerifier;
-
-import common.map.fixtures.mobile.IUnit;
 
 import java.util.function.IntSupplier;
 import java.util.function.Supplier;
 
 import java.util.logging.Logger;
-import java.util.logging.Level;
 
 /**
  * A class, formerly static within {@link ScrollListener}, to verify that

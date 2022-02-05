@@ -9,7 +9,6 @@ import common.map.IMapNG;
 import common.map.TileFixture;
 import common.map.IFixture;
 import common.map.fixtures.mobile.Animal;
-import common.map.fixtures.mobile.AnimalTracks;
 import common.map.fixtures.resources.Grove;
 import common.map.fixtures.resources.Shrub;
 import common.map.fixtures.resources.Meadow;

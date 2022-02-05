@@ -18,7 +18,6 @@ import javax.xml.stream.events.Attribute;
 import common.idreg.IDRegistrar;
 import common.map.Point;
 import common.map.HasImage;
-import static impl.xmlio.ISPReader.SP_NAMESPACE;
 import common.xmlio.Warning;
 import common.xmlio.SPFormatException;
 import impl.xmlio.exceptions.UnwantedChildException;

@@ -24,7 +24,6 @@ import common.map.fixtures.terrain.Forest;
 import exploration.common.SurroundingPointIterable;
 
 import common.map.fixtures.towns.ITownFixture;
-import common.map.fixtures.towns.TownSize;
 
 import java.math.BigDecimal;
 

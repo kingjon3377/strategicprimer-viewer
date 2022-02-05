@@ -3,13 +3,11 @@ package impl.xmlio.yaxml;
 import java.io.Reader;
 import java.io.IOException;
 import java.io.FileNotFoundException;
-import java.nio.file.Paths;
 import java.nio.file.Path;
 import java.nio.file.Files;
 import java.nio.file.NoSuchFileException;
 
 import javax.xml.namespace.QName;
-import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.XMLEvent;
 import javax.xml.stream.events.StartElement;
 

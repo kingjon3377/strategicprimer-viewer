@@ -4,13 +4,9 @@ import buckelieg.jdbc.fn.DB;
 
 import java.util.Collections;
 import java.util.Arrays;
-import java.util.Optional;
 import java.util.Map;
 import java.util.List;
 import java.util.stream.Collectors;
-
-import java.sql.Types;
-import java.sql.SQLException;
 
 import common.map.IMutableMapNG;
 import common.map.Point;

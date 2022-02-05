@@ -22,7 +22,6 @@ import common.map.fixtures.mobile.worker.Skill;
 import common.map.fixtures.mobile.worker.ISkill;
 import common.xmlio.Warning;
 import impl.xmlio.exceptions.UnwantedChildException;
-import common.map.Player;
 
 /**
  * A reader for workers.

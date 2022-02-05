@@ -4,20 +4,9 @@ import java.io.IOException;
 import java.util.Collections;
 import java.nio.file.Paths;
 import drivers.common.DriverFailedException;
-import drivers.common.IDriverModel;
-import drivers.common.DriverUsage;
-import drivers.common.ParamCount;
-import drivers.common.IDriverUsage;
 import drivers.common.SPOptions;
 import drivers.common.ReadOnlyDriver;
-import drivers.common.ModelDriverFactory;
-import drivers.common.DriverFactory;
-import drivers.common.ModelDriver;
 import drivers.common.IWorkerModel;
-import drivers.common.cli.ICLIHelper;
-import worker.common.WorkerModel;
-
-import common.map.IMutableMapNG;
 
 /**
  * A command-line program to export a proto-strategy for a player from orders in a map.

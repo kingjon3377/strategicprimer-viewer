@@ -1,7 +1,6 @@
 package report.generators.tabular;
 
 import org.javatuples.Pair;
-import org.jetbrains.annotations.Nullable;
 
 import common.map.IFixture;
 import common.map.Point;

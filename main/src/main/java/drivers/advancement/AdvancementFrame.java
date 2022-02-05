@@ -4,16 +4,14 @@ import org.jetbrains.annotations.Nullable;
 
 import java.awt.Dimension;
 
-import javax.swing.JPanel;
 import javax.swing.JLabel;
-import javax.swing.JTree;
 import javax.swing.JScrollPane;
 
 import lovelace.util.ListenedButton;
 import lovelace.util.BorderedPanel;
 import static lovelace.util.FunctionalSplitPane.verticalSplit;
 import static lovelace.util.FunctionalSplitPane.horizontalSplit;
-import lovelace.util.InterpolatedLabel;
+
 import lovelace.util.FormattedLabel;
 
 import common.idreg.IDFactoryFiller;
@@ -21,15 +19,12 @@ import common.idreg.IDRegistrar;
 
 import common.map.IMapNG;
 import common.map.Player;
-import common.map.PlayerImpl;
 
 import static drivers.worker_mgmt.WorkerMenu.workerMenu;
 import drivers.worker_mgmt.TreeExpansionOrderListener;
 import drivers.worker_mgmt.WorkerTreeModelAlt;
 import drivers.worker_mgmt.TreeExpansionHandler;
 import drivers.worker_mgmt.WorkerTree;
-import drivers.worker_mgmt.UnitMemberSelectionSource;
-import drivers.worker_mgmt.UnitSelectionSource;
 
 import worker.common.IWorkerTreeModel;
 

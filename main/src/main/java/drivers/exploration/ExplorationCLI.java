@@ -1,6 +1,5 @@
 package drivers.exploration;
 
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.jetbrains.annotations.Nullable;
@@ -8,23 +7,14 @@ import org.jetbrains.annotations.Nullable;
 import java.util.stream.StreamSupport;
 import java.util.stream.Collectors;
 
-import drivers.common.DriverUsage;
-import drivers.common.ParamCount;
-import drivers.common.IDriverUsage;
 import drivers.common.SPOptions;
-import drivers.common.IDriverModel;
 import drivers.common.CLIDriver;
-import drivers.common.DriverFactory;
-import drivers.common.ModelDriverFactory;
-import drivers.common.ModelDriver;
 import drivers.common.EmptyOptions;
 
 import drivers.common.cli.ICLIHelper;
 
 import exploration.common.IExplorationModel;
-import exploration.common.ExplorationModel;
 
-import common.map.IMutableMapNG;
 import common.map.Player;
 
 import common.map.fixtures.mobile.IUnit;

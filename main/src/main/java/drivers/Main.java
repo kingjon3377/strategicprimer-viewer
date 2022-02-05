@@ -1,69 +1,24 @@
 package drivers;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 import java.util.Optional;
 import java.util.logging.Logger;
 import java.util.logging.Level;
 
-import java.awt.GraphicsEnvironment;
-import java.awt.GridLayout;
-import java.awt.Dimension;
-import java.awt.Graphics2D;
-
-import java.io.IOException;
-
-import java.util.stream.Stream;
 import javax.swing.UIManager;
-import javax.swing.SwingUtilities;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JLabel;
-import javax.swing.JEditorPane;
-
-import static lovelace.util.ShowErrorDialog.showErrorDialog;
 
 import javax.swing.UnsupportedLookAndFeelException;
-import lovelace.util.BorderedPanel;
 import lovelace.util.Platform;
-import lovelace.util.ListenedButton;
 
-import drivers.common.IDriverModel;
 import drivers.common.IDriverUsage;
-import drivers.common.SPOptions;
-import drivers.common.ParamCount;
 import drivers.common.DriverFailedException;
 import drivers.common.IncorrectUsageException;
 import drivers.common.SPOptionsImpl;
-import drivers.common.CLIDriver;
-import drivers.common.DriverFactory;
-import drivers.common.GUIDriverFactory;
-import drivers.common.UtilityDriverFactory;
-import drivers.common.ModelDriverFactory;
-import drivers.common.UtilityGUI;
 
-import drivers.common.cli.ICLIHelper;
 import drivers.common.cli.CLIHelper;
 
-import com.apple.eawt.AppEvent;
 import com.apple.eawt.Application;
-
-import com.pump.window.WindowList;
-
-import drivers.gui.common.SPFrame;
-import drivers.gui.common.WindowCloseListener;
-import drivers.gui.common.SPMenu;
-
-import common.xmlio.SPFormatException;
-import common.xmlio.Warning;
-
-import lovelace.util.MissingFileException;
-
-import java.awt.image.BufferedImage;
-
-import impl.xmlio.MapIOHelper;
 
 public class Main {
 	private static final Logger LOGGER = Logger.getLogger(Main.class.getName());

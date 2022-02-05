@@ -1,7 +1,5 @@
 package common.map.fixtures.mobile.worker;
 
-import java.util.function.Consumer;
-
 /**
  * A skill a worker has experience or training in.
  */

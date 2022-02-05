@@ -7,7 +7,6 @@ import java.util.HashMap;
 import common.xmlio.Warning;
 
 import org.javatuples.Pair;
-import java.util.stream.StreamSupport;
 import java.util.stream.Collectors;
 
 final class DBMemoizer {

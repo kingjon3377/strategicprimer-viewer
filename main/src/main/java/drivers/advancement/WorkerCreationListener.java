@@ -41,7 +41,6 @@ import worker.common.IWorkerTreeModel;
 import lovelace.util.SingletonRandom;
 
 import java.util.logging.Logger;
-import java.util.logging.Level;
 
 import java.util.Arrays;
 

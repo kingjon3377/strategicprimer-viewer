@@ -9,7 +9,7 @@ import java.util.HashMap;
 import common.map.HasName;
 import static lovelace.util.NumParsingHelper.isNumeric;
 import static lovelace.util.NumParsingHelper.parseInt;
-import lovelace.util.SystemIn;
+
 import java.util.List;
 import java.util.function.Function;
 import java.io.IOException;

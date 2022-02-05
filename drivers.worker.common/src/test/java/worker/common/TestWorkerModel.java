@@ -6,31 +6,14 @@ import java.util.Objects;
 import java.util.Collections;
 import java.util.Iterator;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static org.junit.jupiter.api.Assertions.assertIterableEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assumptions.assumeTrue;
-import org.junit.jupiter.params.provider.MethodSource;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.Arguments;
+
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
 import java.util.ArrayList;
 import java.util.LinkedList;
-import java.util.Map;
-import java.util.TreeMap;
-import java.util.Deque;
 
-import common.map.HasKind;
-import common.map.HasMutableKind;
-import common.map.HasMutableName;
-import common.map.HasMutableOwner;
-import common.map.IFixture;
-import common.map.IMapNG;
 import common.map.IMutableMapNG;
 import common.map.SPMapNG;
 import common.map.Point;
@@ -40,34 +23,18 @@ import common.map.PlayerImpl;
 import common.map.TileFixture;
 import common.map.PlayerCollection;
 
-import common.map.fixtures.UnitMember;
-
 import common.map.fixtures.mobile.ProxyFor;
-import common.map.fixtures.mobile.IMutableUnit;
-import common.map.fixtures.mobile.IMutableWorker;
 import common.map.fixtures.mobile.IUnit;
-import common.map.fixtures.mobile.IWorker;
 import common.map.fixtures.mobile.Unit;
 import common.map.fixtures.mobile.ProxyUnit;
 import common.map.fixtures.mobile.AnimalImpl;
 import common.map.fixtures.terrain.Oasis;
 import common.map.fixtures.terrain.Hill;
 import common.map.fixtures.terrain.Forest;
-import common.map.fixtures.towns.IFortress;
 import common.map.fixtures.towns.IMutableFortress;
 import common.map.fixtures.towns.TownSize;
 import common.map.fixtures.towns.FortressImpl;
-import drivers.common.SimpleMultiMapModel;
-import drivers.common.IDriverModel;
 import drivers.common.IWorkerModel;
-import java.util.logging.Logger;
-
-import common.map.fixtures.mobile.worker.IJob;
-import common.map.fixtures.mobile.worker.IMutableJob;
-import common.map.fixtures.mobile.worker.IMutableSkill;
-import common.map.fixtures.mobile.worker.ISkill;
-import common.map.fixtures.mobile.worker.Job;
-import common.map.fixtures.mobile.worker.Skill;
 
 /**
  * Test of the worker model.

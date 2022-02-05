@@ -1,7 +1,5 @@
 package drivers.exploration.old;
 
-import org.jetbrains.annotations.Nullable;
-import org.javatuples.Pair;
 import drivers.common.IDriverUsage;
 import drivers.common.DriverUsage;
 import drivers.common.SPOptions;

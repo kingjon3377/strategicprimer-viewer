@@ -3,7 +3,6 @@ package utility;
 import java.util.logging.Logger;
 import java.util.Collections;
 import common.map.Point;
-import java.util.stream.Collectors;
 import drivers.common.FixtureMatcher;
 import drivers.common.CLIDriver;
 import drivers.common.SPOptions;
@@ -13,7 +12,6 @@ import drivers.common.cli.ICLIHelper;
 
 import common.map.IMapNG;
 import common.map.TileFixture;
-import common.map.Player;
 
 import java.util.ArrayList;
 import java.util.List;

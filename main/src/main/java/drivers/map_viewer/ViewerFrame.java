@@ -9,10 +9,8 @@ import drivers.common.DriverFailedException;
 import org.jetbrains.annotations.Nullable;
 import java.awt.Dimension;
 import java.awt.Component;
-import java.awt.Container;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowAdapter;
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JPanel;
@@ -27,7 +25,6 @@ import javax.swing.SwingUtilities;
 import javax.swing.JFrame;
 
 import javax.swing.event.TableModelEvent;
-import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableColumn;
 
 import java.nio.file.Path;
@@ -38,11 +35,7 @@ import static lovelace.util.FunctionalSplitPane.horizontalSplit;
 import lovelace.util.BorderedPanel;
 import static lovelace.util.FunctionalSplitPane.verticalSplit;
 
-import drivers.common.VersionChangeListener;
-import drivers.common.SelectionChangeListener;
 import drivers.common.FixtureMatcher;
-import drivers.common.SPOptions;
-import common.map.TileFixture;
 import common.map.IMutableMapNG;
 import drivers.MapReaderAdapter;
 import common.xmlio.Warning;

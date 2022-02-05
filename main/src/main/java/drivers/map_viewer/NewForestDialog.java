@@ -21,7 +21,6 @@ import static lovelace.util.NumParsingHelper.parseInt;
 
 import common.map.fixtures.terrain.Forest;
 import java.awt.GridLayout;
-import java.awt.Container;
 import java.awt.Dimension;
 import lovelace.util.ListenedButton;
 import lovelace.util.Platform;

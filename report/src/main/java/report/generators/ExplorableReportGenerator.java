@@ -2,7 +2,6 @@ package report.generators;
 
 import org.jetbrains.annotations.Nullable;
 import org.javatuples.Pair;
-import org.javatuples.Triplet;
 import java.util.List;
 import java.util.Comparator;
 import java.io.IOException;

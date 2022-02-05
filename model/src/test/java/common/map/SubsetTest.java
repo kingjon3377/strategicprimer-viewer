@@ -4,11 +4,9 @@ import org.javatuples.Pair;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static org.junit.jupiter.api.Assertions.assertIterableEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assumptions.assumeTrue;
+
 import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -16,21 +14,6 @@ import org.junit.jupiter.api.Test;
 
 import java.util.stream.Stream;
 
-import common.map.Subsettable;
-import common.map.TileFixture;
-import common.map.PlayerImpl;
-import common.map.IFixture;
-import common.map.Player;
-import common.map.Point;
-import common.map.River;
-import common.map.TileType;
-import common.map.IPlayerCollection;
-import common.map.IMutablePlayerCollection;
-import common.map.PlayerCollection;
-import common.map.MapDimensionsImpl;
-import common.map.IMutableMapNG;
-import common.map.IMapNG;
-import common.map.SPMapNG;
 import common.map.fixtures.TextFixture;
 import common.map.fixtures.mobile.Worker;
 import common.map.fixtures.mobile.Unit;

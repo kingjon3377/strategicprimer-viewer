@@ -9,12 +9,9 @@ import java.awt.Frame;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 
-import java.util.regex.Pattern;
-
 import javax.swing.JEditorPane;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.JScrollPane;
-import javax.swing.JDialog;
 import lovelace.util.ListenedButton;
 import lovelace.util.BoxPanel;
 import lovelace.util.Platform;

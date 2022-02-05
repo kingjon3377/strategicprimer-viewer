@@ -9,7 +9,6 @@ import java.util.Collections;
 import java.util.function.Supplier;
 import javax.swing.ListModel;
 import javax.swing.SwingUtilities;
-import javax.swing.JList;
 
 import common.map.TileFixture;
 import common.map.Point;

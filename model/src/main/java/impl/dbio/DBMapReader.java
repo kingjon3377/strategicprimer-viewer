@@ -2,8 +2,6 @@ package impl.dbio;
 
 import buckelieg.jdbc.fn.DB;
 
-import java.sql.SQLException;
-
 import common.map.IMutableMapNG;
 import common.map.SPMapNG;
 import common.map.MapDimensionsImpl;
@@ -19,12 +17,9 @@ import common.xmlio.Warning;
 import impl.xmlio.exceptions.MapVersionException;
 
 import java.util.Collections;
-import java.util.Collection;
 import java.util.Arrays;
-import java.util.Optional;
 import java.util.Map;
 import java.util.List;
-import java.util.stream.Collectors;
 import java.util.logging.Logger;
 import java.text.ParseException;
 

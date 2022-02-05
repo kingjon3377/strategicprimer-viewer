@@ -21,8 +21,6 @@ import common.map.fixtures.towns.IFortress;
 import java.util.Map;
 import java.util.HashMap;
 
-import java.util.function.ToIntFunction;
-import java.util.function.BiConsumer;
 import java.util.logging.Logger;
 
 /**

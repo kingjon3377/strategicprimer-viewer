@@ -2,7 +2,6 @@ package utility;
 
 import java.util.Objects;
 import org.javatuples.Pair;
-import java.util.Map;
 import java.util.Comparator;
 import drivers.common.IDriverModel;
 import drivers.common.ReadOnlyDriver;
@@ -15,9 +14,7 @@ import common.map.IMapNG;
 import common.map.TileType;
 import common.map.River;
 import common.map.TileFixture;
-import common.map.Player;
 
-import lovelace.util.Accumulator;
 import lovelace.util.IntAccumulator;
 import lovelace.util.DecimalAccumulator;
 import lovelace.util.EnumCounter;

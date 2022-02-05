@@ -3,16 +3,9 @@ package impl.dbio;
 import buckelieg.jdbc.fn.DB;
 
 import java.util.Collections;
-import java.util.Arrays;
-import java.util.Optional;
 import java.util.Map;
-import java.util.List;
-import java.util.stream.Collectors;
-
-import java.math.BigDecimal;
 
 import common.map.IMutableMapNG;
-import common.map.TileFixture;
 import common.map.HasImage;
 import common.map.HasMutableImage;
 import common.map.Point;

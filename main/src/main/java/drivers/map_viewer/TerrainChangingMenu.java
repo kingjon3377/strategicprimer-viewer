@@ -13,7 +13,6 @@ import javax.swing.JCheckBoxMenuItem;
 
 import drivers.common.VersionChangeListener;
 import drivers.common.SelectionChangeListener;
-import drivers.common.NewFixtureListener;
 import worker.common.NewUnitListener;
 import common.idreg.IDFactoryFiller;
 import common.idreg.IDRegistrar;
@@ -26,7 +25,6 @@ import common.map.fixtures.mobile.IUnit;
 import java.util.Map;
 import java.util.HashMap;
 import common.map.fixtures.terrain.Hill;
-import drivers.gui.common.SPDialog;
 
 /**
  * A popup menu to let the user change a tile's terrain type, or add a unit.

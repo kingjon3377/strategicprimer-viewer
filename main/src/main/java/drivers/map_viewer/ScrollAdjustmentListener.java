@@ -2,30 +2,12 @@ package drivers.map_viewer;
 
 import org.jetbrains.annotations.Nullable;
 
-import java.awt.BorderLayout;
-import java.awt.Adjustable;
-
-import common.map.MapDimensions;
 import common.map.Point;
 
-import lovelace.util.BorderedPanel;
-
-import drivers.common.MapChangeListener;
-import drivers.common.SelectionChangeListener;
-
-import javax.swing.JScrollBar;
-import javax.swing.JComponent;
 import javax.swing.BoundedRangeModel;
-import javax.swing.InputVerifier;
-
-import common.map.fixtures.mobile.IUnit;
-
-import java.util.function.IntSupplier;
-import java.util.function.Supplier;
 
 import javax.swing.event.ChangeEvent;
 import java.util.logging.Logger;
-import java.util.logging.Level;
 
 /* package */ class ScrollAdjustmentListener { // FIXME: Listen to some events so we can reset on map or selected point change
 	private static final Logger LOGGER = Logger.getLogger(ScrollAdjustmentListener.class.getName());

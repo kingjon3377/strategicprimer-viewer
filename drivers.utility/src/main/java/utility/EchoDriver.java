@@ -1,11 +1,9 @@
 package utility;
 
-import lovelace.util.MalformedXMLException;
 import java.nio.file.Paths;
 import java.io.IOException;
 import lovelace.util.MissingFileException;
 
-import java.text.ParseException;
 import common.map.Point;
 import common.map.TileFixture;
 import common.idreg.IDRegistrar;
@@ -16,19 +14,11 @@ import common.map.fixtures.terrain.Forest;
 import impl.xmlio.MapIOHelper;
 import common.xmlio.Warning;
 import common.xmlio.SPFormatException;
-import drivers.common.ParamCount;
 import drivers.common.UtilityDriver;
 import drivers.common.DriverFailedException;
 import drivers.common.IncorrectUsageException;
 import drivers.common.SPOptions;
-import drivers.common.DriverUsage;
-import drivers.common.IDriverUsage;
-import drivers.common.DriverFactory;
-import drivers.common.UtilityDriverFactory;
-import drivers.common.cli.ICLIHelper;
 import lovelace.util.MalformedXMLException;
-
-import com.google.auto.service.AutoService;
 
 /**
  * A driver that reads in maps and then writes them out again---this is

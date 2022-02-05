@@ -17,7 +17,6 @@ import drivers.common.DriverFailedException;
 import common.map.IMapNG;
 import common.map.IFixture;
 import common.map.Player;
-import common.map.TileFixture;
 import common.map.Point;
 
 import common.map.fixtures.mobile.IUnit;
@@ -44,16 +43,13 @@ import exploration.common.PathfinderFactory;
 
 import java.util.Optional;
 import java.util.logging.Logger;
-import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 import java.util.stream.Collectors;
 import java.util.Collections;
-import java.util.stream.IntStream;
 import java.util.function.IntConsumer;
 import java.util.function.Function;
 import java.util.Arrays;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.NoSuchFileException;
 

@@ -8,36 +8,7 @@ import drivers.common.UtilityDriverFactory;
 import drivers.common.DriverUsage;
 import drivers.common.ParamCount;
 
-import java.awt.image.BufferedImage;
-
-import java.util.Map;
-import java.util.HashMap;
-
 import drivers.common.cli.ICLIHelper;
-
-import lovelace.util.ResourceInputStream;
-
-import javax.imageio.ImageIO;
-
-import lovelace.util.EnumCounter;
-
-import common.map.TileType;
-import common.map.Point;
-import common.map.IMutableMapNG;
-import common.map.SPMapNG;
-import common.map.MapDimensionsImpl;
-import common.map.PlayerCollection;
-import common.map.HasName;
-import common.map.IMapNG;
-
-import impl.xmlio.MapIOHelper;
-
-import common.idreg.IDRegistrar;
-import common.idreg.IDFactory;
-
-import common.map.fixtures.terrain.Forest;
-
-import exploration.common.SurroundingPointIterable;
 
 import com.google.auto.service.AutoService;
 

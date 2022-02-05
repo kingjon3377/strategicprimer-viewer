@@ -13,7 +13,6 @@ import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.events.XMLEvent;
 import java.util.Queue;
 import java.util.LinkedList;
-import lovelace.util.MalformedXMLException;
 
 import java.nio.charset.MalformedInputException;
 

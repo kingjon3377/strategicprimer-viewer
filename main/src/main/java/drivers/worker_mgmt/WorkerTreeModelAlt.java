@@ -28,7 +28,6 @@ import lovelace.util.IteratorWrapper;
 import lovelace.util.EnumerationWrapper;
 import drivers.common.IWorkerModel;
 import java.util.logging.Logger;
-import java.util.logging.Level;
 
 /**
  * An alternative implementation of the worker tree model.

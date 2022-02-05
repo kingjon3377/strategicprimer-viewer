@@ -20,7 +20,6 @@ import java.io.IOException;
 import java.awt.Image;
 import java.awt.Graphics;
 
-import lovelace.util.MissingFileException;
 import java.util.logging.Logger;
 import java.util.Objects;
 import java.util.stream.Stream;

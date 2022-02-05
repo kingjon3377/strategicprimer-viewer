@@ -3,11 +3,7 @@ package impl.dbio;
 import buckelieg.jdbc.fn.DB;
 
 import java.util.Collections;
-import java.util.Arrays;
-import java.util.Optional;
 import java.util.Map;
-import java.util.List;
-import java.util.stream.Collectors;
 
 import common.map.IMapNG;
 import common.map.IMutableMapNG;
@@ -16,8 +12,6 @@ import common.map.Player;
 import common.map.PlayerImpl;
 
 import common.xmlio.Warning;
-import java.sql.Types;
-import java.sql.SQLException;
 
 final class DBPlayerHandler extends AbstractDatabaseWriter<Player, IMapNG> implements MapContentsReader {
 	public DBPlayerHandler() {

@@ -1,7 +1,5 @@
 package common.map.fixtures.resources;
 
-import java.util.function.Consumer;
-
 import common.map.IFixture;
 import common.map.fixtures.MineralFixture;
 import common.map.fixtures.towns.TownStatus;

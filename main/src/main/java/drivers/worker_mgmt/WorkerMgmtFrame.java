@@ -2,13 +2,11 @@ package drivers.worker_mgmt;
 
 import java.util.logging.Level;
 import java.io.IOException;
-import common.xmlio.SPFormatException;
 import java.util.logging.Logger;
 import drivers.gui.common.SPFileChooser;
 import java.util.stream.StreamSupport;
 import java.util.Collections;
 import javax.swing.JButton;
-import javax.swing.JTree;
 import java.util.Arrays;
 import java.util.List;
 import org.jetbrains.annotations.Nullable;
@@ -19,10 +17,8 @@ import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowAdapter;
-import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 
-import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JComponent;
 import javax.swing.KeyStroke;
@@ -36,7 +32,6 @@ import static lovelace.util.FunctionalSplitPane.verticalSplit;
 import lovelace.util.Platform;
 import lovelace.util.ListenedButton;
 import lovelace.util.BorderedPanel;
-import lovelace.util.InterpolatedLabel;
 import lovelace.util.FormattedLabel;
 
 import drivers.common.SPOptions;
@@ -54,7 +49,7 @@ import impl.xmlio.MapIOHelper;
 import drivers.gui.common.SPFrame;
 import drivers.gui.common.MenuBroker;
 import static drivers.gui.common.SPFileChooser.filteredFileChooser;
-import either.Either;
+
 import drivers.worker_mgmt.orderspanel.OrdersPanel;
 
 /**

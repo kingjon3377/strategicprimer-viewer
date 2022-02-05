@@ -3,7 +3,6 @@ package drivers.exploration;
 import common.xmlio.SPFormatException;
 import java.awt.Dimension;
 import java.awt.GridLayout;
-import java.awt.Container;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;

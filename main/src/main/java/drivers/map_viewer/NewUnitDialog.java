@@ -6,7 +6,6 @@ import java.util.List;
 
 import java.awt.Dimension;
 import java.awt.GridLayout;
-import java.awt.Container;
 import java.text.NumberFormat;
 
 import javax.swing.JButton;

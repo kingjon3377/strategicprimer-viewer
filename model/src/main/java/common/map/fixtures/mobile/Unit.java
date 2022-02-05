@@ -3,7 +3,6 @@ package common.map.fixtures.mobile;
 import java.util.Comparator;
 import java.util.Collections;
 import java.util.Iterator;
-import java.util.Map;
 import java.util.NavigableMap;
 import java.util.TreeMap;
 
@@ -13,9 +12,7 @@ import common.map.TileFixture;
 import common.map.Player;
 import common.map.fixtures.Implement;
 import common.map.fixtures.IResourcePile;
-import common.map.fixtures.Quantity;
 import common.map.fixtures.UnitMember;
-import common.map.fixtures.mobile.ProxyFor;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;

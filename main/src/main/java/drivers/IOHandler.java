@@ -3,7 +3,6 @@ package drivers;
 import drivers.common.DriverFailedException;
 import drivers.common.cli.ICLIHelper;
 import lovelace.util.TriFunction;
-import drivers.common.GUIDriverFactory;
 import lovelace.util.MissingFileException;
 import org.jetbrains.annotations.Nullable;
 

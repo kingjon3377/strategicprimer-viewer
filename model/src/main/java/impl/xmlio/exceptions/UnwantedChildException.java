@@ -5,8 +5,6 @@ import common.xmlio.SPFormatException;
 import javax.xml.namespace.QName;
 import javax.xml.stream.Location;
 import javax.xml.stream.events.StartElement;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * A custom exception for when a tag has a child tag it can't handle.

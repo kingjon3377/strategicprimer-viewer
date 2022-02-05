@@ -1,15 +1,8 @@
 package exploration.common;
 
-import java.util.Set;
 import java.util.Map;
-import java.util.HashSet;
 import java.util.HashMap;
-import java.util.ArrayList;
-import java.util.List;
 import common.map.IMapNG;
-import common.map.Direction;
-import common.map.Point;
-import common.map.fixtures.terrain.Forest;
 import java.util.logging.Logger;
 
 public final class PathfinderFactory {

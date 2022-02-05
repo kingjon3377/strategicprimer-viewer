@@ -7,16 +7,11 @@ import java.util.Collection;
 import java.util.Arrays;
 import java.util.Optional;
 import java.util.Map;
-import java.util.List;
-import java.util.stream.Collectors;
-
-import java.math.BigDecimal;
 
 import common.map.IMutableMapNG;
 import common.map.IMapNG;
 import common.map.River;
 import common.map.Player;
-import common.map.TileType;
 import common.map.Direction;
 import common.map.TileFixture;
 import common.map.Point;

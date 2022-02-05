@@ -12,7 +12,6 @@ import common.map.MapDimensions;
 import common.map.Point;
 import common.map.TileFixture;
 import common.map.fixtures.TextFixture;
-import common.map.fixtures.explorable.ExplorableFixture;
 import common.map.fixtures.explorable.Cave;
 import common.map.fixtures.explorable.Portal;
 import common.map.fixtures.explorable.AdventureFixture;

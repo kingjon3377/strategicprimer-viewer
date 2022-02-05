@@ -4,9 +4,7 @@ import org.javatuples.Pair;
 
 import java.io.IOException;
 import java.io.BufferedReader;
-import java.io.InputStream;
 import java.text.ParseException;
-import java.util.stream.StreamSupport;
 import java.util.function.IntFunction;
 
 import java.util.Arrays;
@@ -19,13 +17,11 @@ import java.util.LinkedList;
 import java.io.Reader;
 import java.io.FileNotFoundException;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.nio.file.Files;
 import java.nio.file.NoSuchFileException;
 
 import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
-import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 import javax.xml.stream.events.Characters;

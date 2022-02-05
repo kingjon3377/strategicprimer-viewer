@@ -29,7 +29,6 @@ import common.xmlio.Warning;
 import impl.xmlio.exceptions.MissingPropertyException;
 import impl.xmlio.exceptions.UnwantedChildException;
 import java.util.Random;
-import common.map.fixtures.IMutableResourcePile;
 import java.util.Deque;
 import java.util.LinkedList;
 import java.util.function.Consumer;

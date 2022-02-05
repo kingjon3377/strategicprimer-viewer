@@ -5,11 +5,8 @@ import java.util.Arrays;
 import common.map.fixtures.FixtureIterable;
 import java.util.stream.StreamSupport;
 import java.util.logging.Logger;
-import java.util.logging.Level;
-import java.nio.file.Path;
 import org.jetbrains.annotations.Nullable;
 
-import java.awt.Component;
 import java.awt.Frame;
 
 import javax.swing.JTextField;

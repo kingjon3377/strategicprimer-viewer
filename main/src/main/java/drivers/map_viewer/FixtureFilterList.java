@@ -7,7 +7,6 @@ import javax.swing.JList;
 import javax.swing.DefaultListModel;
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.ListSelectionModel;
-import javax.swing.ListCellRenderer;
 import javax.swing.DropMode;
 
 import lovelace.util.ReorderableListModel;

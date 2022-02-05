@@ -2,9 +2,7 @@ package drivers.gui.common;
 
 import com.pump.window.WindowList;
 import com.pump.window.WindowMenu;
-import com.apple.eawt.QuitResponse;
 import com.apple.eawt.Application;
-import com.apple.eawt.AppEvent;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import drivers.common.ISPDriver;

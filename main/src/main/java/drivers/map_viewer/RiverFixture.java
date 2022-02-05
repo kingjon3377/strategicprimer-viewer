@@ -3,7 +3,6 @@ package drivers.map_viewer;
 import common.map.River;
 import common.map.FakeFixture;
 
-import java.util.logging.Logger;
 import java.util.logging.Level;
 
 import java.util.Set;

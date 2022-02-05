@@ -17,7 +17,6 @@ import lovelace.util.ListenedButton;
 import lovelace.util.BorderedPanel;
 import lovelace.util.Platform;
 
-import java.awt.Container;
 import java.awt.Dimension;
 
 import java.util.function.IntSupplier;

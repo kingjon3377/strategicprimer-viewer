@@ -7,11 +7,6 @@ import drivers.common.EmptyOptions;
 import drivers.common.SPOptions;
 
 import drivers.gui.common.WindowCloseListener;
-import drivers.gui.common.WindowCloseListener;
-import drivers.gui.common.WindowCloseListener;
-import drivers.gui.common.WindowCloseListener;
-import drivers.gui.common.WindowCloseListener;
-import drivers.gui.common.WindowCloseListener;
 import drivers.gui.common.SPMenu;
 import drivers.gui.common.UtilityMenuHandler;
 import java.util.stream.Stream;

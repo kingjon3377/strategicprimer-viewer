@@ -3,7 +3,6 @@ package common.idreg;
 import org.roaringbitmap.RoaringBitmap;
 
 import common.xmlio.Warning;
-import common.idreg.DuplicateIDException;
 
 import javax.xml.stream.Location;
 

@@ -12,7 +12,6 @@ import java.util.List;
 import lovelace.util.ThrowingConsumer;
 import java.util.Arrays;
 import java.util.Iterator;
-import java.text.ParseException;
 
 import lovelace.util.FileContentsReader;
 

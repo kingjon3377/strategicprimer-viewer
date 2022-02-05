@@ -1,21 +1,13 @@
 package report.generators.tabular;
 
-import java.util.List;
-import java.util.ArrayList;
 import java.util.Comparator;
 
-import common.map.Player;
-import common.map.PlayerImpl;
-import common.map.fixtures.towns.TownStatus;
-import common.map.fixtures.towns.TownSize;
-import common.map.fixtures.towns.FortressImpl;
 import common.map.fixtures.towns.ITownFixture;
 import common.map.fixtures.towns.IFortress;
 import common.map.fixtures.towns.Village;
 import common.map.fixtures.towns.City;
 import common.map.fixtures.towns.Town;
 import common.map.fixtures.towns.Fortification;
-import java.util.Collections;
 
 /**
  * A class to provide {@link compareTowns a total ordering} for {@link

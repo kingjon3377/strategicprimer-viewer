@@ -4,13 +4,6 @@ import common.idreg.IDRegistrar;
 
 import drivers.common.cli.ICLIHelper;
 
-import exploration.common.HuntingModel;
-
-import common.map.Point;
-
-import common.map.fixtures.mobile.AnimalTracks;
-import common.map.fixtures.mobile.Animal;
-
 import drivers.turnrunning.ITurnRunningModel;
 
 import com.google.auto.service.AutoService;

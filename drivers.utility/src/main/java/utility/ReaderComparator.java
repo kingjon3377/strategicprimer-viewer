@@ -24,7 +24,6 @@ import drivers.common.SPOptions;
 import drivers.common.EmptyOptions;
 
 import drivers.common.cli.ICLIHelper;
-import java.util.stream.Collectors;
 
 /**
  * A driver for comparing map readers.

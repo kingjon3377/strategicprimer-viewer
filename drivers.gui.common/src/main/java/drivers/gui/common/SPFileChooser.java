@@ -11,7 +11,6 @@ import java.awt.FileDialog;
 import java.awt.Frame;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
-import java.io.FilenameFilter;
 import java.io.File;
 
 /**

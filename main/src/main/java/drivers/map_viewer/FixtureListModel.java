@@ -2,8 +2,6 @@ package drivers.map_viewer;
 
 import org.jetbrains.annotations.Nullable;
 
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 import java.util.Collection;
 import lovelace.util.Range;
 import common.map.Point;
@@ -26,7 +24,6 @@ import java.util.function.BiConsumer;
 import java.util.Comparator;
 import java.util.Collections;
 import java.util.logging.Logger;
-import java.util.logging.Level;
 
 /**
  * A model for the list-based representation of the contents of a tile.

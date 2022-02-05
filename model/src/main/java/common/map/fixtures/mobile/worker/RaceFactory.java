@@ -1,11 +1,9 @@
 package common.map.fixtures.mobile.worker;
 
 import lovelace.util.SingletonRandom;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
-import java.util.function.UnaryOperator;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 

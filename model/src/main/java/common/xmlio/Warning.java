@@ -4,7 +4,6 @@ import common.idreg.DuplicateIDException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.function.Consumer;
-import common.xmlio.SPFormatException;
 
 /**
  * A slightly-customizable warning-handling interface.

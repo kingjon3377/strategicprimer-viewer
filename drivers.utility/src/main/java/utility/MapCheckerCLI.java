@@ -1,7 +1,6 @@
 package utility;
 
 import common.map.fixtures.towns.CommunityStats;
-import common.map.fixtures.mobile.worker.WorkerStats;
 import common.map.fixtures.FixtureIterable;
 import java.util.Arrays;
 import common.map.TileFixture;
@@ -45,7 +44,6 @@ import common.map.fixtures.resources.Grove;
 
 import common.map.fixtures.towns.Village;
 import common.map.fixtures.towns.ITownFixture;
-import common.map.fixtures.towns.TownSize;
 
 import impl.xmlio.MapIOHelper;
 
@@ -53,10 +51,6 @@ import common.xmlio.Warning;
 import common.xmlio.SPFormatException;
 
 import common.map.fixtures.IResourcePile;
-
-import java.math.BigDecimal;
-
-import java.math.BigInteger;
 
 import common.map.fixtures.terrain.Hill;
 import common.map.fixtures.terrain.Oasis;

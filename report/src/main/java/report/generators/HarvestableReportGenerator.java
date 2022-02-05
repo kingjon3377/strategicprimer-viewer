@@ -2,7 +2,6 @@ package report.generators;
 
 import org.jetbrains.annotations.Nullable;
 import org.javatuples.Pair;
-import org.javatuples.Triplet;
 import lovelace.util.ThrowingConsumer;
 import java.io.IOException;
 import java.util.Comparator;
@@ -32,9 +31,6 @@ import common.map.fixtures.resources.Grove;
 import common.map.fixtures.resources.HarvestableFixture;
 
 import java.text.NumberFormat;
-import java.math.BigDecimal;
-import java.util.logging.Logger;
-import java.math.BigInteger;
 
 /**
  * A report generator for harvestable fixtures (other than caves and

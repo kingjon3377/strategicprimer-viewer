@@ -9,7 +9,6 @@ import org.jetbrains.annotations.Nullable;
 import org.javatuples.Pair;
 
 import java.util.logging.Logger;
-import java.util.logging.Level;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 

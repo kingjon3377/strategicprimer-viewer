@@ -31,21 +31,6 @@ import java.util.function.BiPredicate;
 
 import common.map.fixtures.towns.AbstractTown;
 
-import common.map.IFixture;
-import common.map.Subsettable;
-import common.map.TileFixture;
-import common.map.Player;
-import common.map.MapDimensions;
-import common.map.TileType;
-import common.map.Point;
-import common.map.River;
-import common.map.PointIterable;
-import common.map.HasOwner;
-import common.map.IMutablePlayerCollection;
-import common.map.IPlayerCollection;
-
-import lovelace.util.ArraySet;
-
 import org.jetbrains.annotations.Nullable;
 
 /**

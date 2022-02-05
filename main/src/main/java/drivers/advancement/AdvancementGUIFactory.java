@@ -1,41 +1,23 @@
 package drivers.advancement;
 
 import java.util.Collections;
-import javax.swing.SwingUtilities;
 
 import drivers.common.ParamCount;
 import drivers.common.IDriverUsage;
 import drivers.common.SPOptions;
 import drivers.common.DriverUsage;
 import drivers.common.IDriverModel;
-import drivers.common.DriverFailedException;
-import drivers.common.PlayerChangeListener;
 import drivers.common.GUIDriver;
 import drivers.common.DriverFactory;
 import drivers.common.GUIDriverFactory;
-import drivers.common.MultiMapGUIDriver;
 import drivers.common.IWorkerModel;
-import drivers.common.WorkerGUI;
 
 import drivers.common.cli.ICLIHelper;
 
 import worker.common.WorkerModel;
 
-import drivers.gui.common.about.AboutDialog;
-
-import drivers.PlayerChangeMenuListener;
-import drivers.IOHandler;
-
-import drivers.gui.common.SPFrame;
-import drivers.gui.common.WindowCloseListener;
-import drivers.gui.common.MenuBroker;
 import drivers.gui.common.SPFileChooser;
 
-import common.map.fixtures.mobile.IUnit;
-
-import java.awt.event.ActionEvent;
-
-import common.map.IMapNG;
 import common.map.IMutableMapNG;
 
 import lovelace.util.FileChooser;

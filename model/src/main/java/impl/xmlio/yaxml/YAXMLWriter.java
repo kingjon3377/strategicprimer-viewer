@@ -6,10 +6,8 @@ import java.io.IOException;
 
 import common.map.IMapNG;
 import impl.xmlio.SPWriter;
-import java.nio.file.Paths;
 import java.nio.file.Path;
 import java.nio.file.Files;
-import lovelace.util.MalformedXMLException;
 import lovelace.util.ThrowingConsumer;
 
 /**

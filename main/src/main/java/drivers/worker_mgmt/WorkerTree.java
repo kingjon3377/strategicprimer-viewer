@@ -21,7 +21,6 @@ import common.map.HasMutableKind;
 import common.map.Player;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeModelEvent;
-import javax.swing.event.TreeSelectionListener;
 import javax.swing.event.TreeModelListener;
 import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;

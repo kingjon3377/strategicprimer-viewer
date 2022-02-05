@@ -2,8 +2,6 @@ package impl.dbio;
 
 import buckelieg.jdbc.fn.DB;
 
-import java.sql.Types;
-
 import common.map.Point;
 import common.map.IMutableMapNG;
 import common.map.fixtures.mobile.IMutableUnit;

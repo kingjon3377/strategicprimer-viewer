@@ -2,7 +2,6 @@ package impl.xmlio;
 
 import java.io.IOException;
 import java.nio.file.Path;
-import java.util.function.Consumer;
 import lovelace.util.ThrowingConsumer;
 
 import common.map.IMapNG;

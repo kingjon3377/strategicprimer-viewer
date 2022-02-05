@@ -14,7 +14,6 @@ import lovelace.util.BorderedPanel;
 import static lovelace.util.MenuUtils.createMenuItem;
 import static lovelace.util.MenuUtils.createHotKey;
 import lovelace.util.ListenedButton;
-import lovelace.util.InterpolatedLabel;
 import lovelace.util.FormattedLabel;
 import lovelace.util.FunctionalPopupMenu;
 import lovelace.util.ImprovedComboBox;
@@ -65,7 +64,6 @@ import javax.swing.event.ListDataListener;
 import javax.swing.event.ListDataEvent;
 
 import javax.swing.ListModel;
-import javax.swing.JList;
 import javax.swing.JScrollPane;
 import javax.swing.JPopupMenu;
 import javax.swing.JComponent;

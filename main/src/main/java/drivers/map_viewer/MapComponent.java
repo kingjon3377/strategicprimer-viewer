@@ -4,7 +4,6 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.function.IntSupplier;
 import java.awt.event.ComponentListener;
-import drivers.common.IDriverModel;
 import java.awt.Image;
 import javax.swing.ActionMap;
 import javax.swing.InputMap;

@@ -1,6 +1,5 @@
 package report.generators;
 
-import org.jetbrains.annotations.Nullable;
 import org.javatuples.Pair;
 import java.io.IOException;
 import lovelace.util.DelayedRemovalMap;
@@ -13,7 +12,6 @@ import java.util.List;
 import lovelace.util.ThrowingConsumer;
 import lovelace.util.ThrowingTriConsumer;
 import java.util.Comparator;
-import java.util.stream.Stream;
 import java.util.stream.Collectors;
 
 /**

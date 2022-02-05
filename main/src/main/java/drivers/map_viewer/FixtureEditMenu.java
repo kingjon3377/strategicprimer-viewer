@@ -2,7 +2,6 @@ package drivers.map_viewer;
 
 import java.util.stream.StreamSupport;
 import java.util.Optional;
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 
@@ -22,7 +21,6 @@ import common.map.fixtures.mobile.IUnit;
 import common.map.fixtures.mobile.Animal;
 import common.idreg.IDRegistrar;
 import java.util.logging.Logger;
-import java.util.logging.Level;
 
 /**
  * A pop-up menu to let the user edit a fixture.

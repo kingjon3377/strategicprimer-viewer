@@ -27,7 +27,6 @@ import common.map.fixtures.mobile.worker.ISkill;
 import drivers.common.IAdvancementModel;
 
 import java.util.logging.Logger;
-import java.util.logging.Level;
 
 import java.util.stream.StreamSupport;
 

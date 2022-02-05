@@ -4,31 +4,20 @@ import java.util.Collections;
 
 import java.nio.file.Path;
 
-import javax.swing.SwingUtilities;
-
 import drivers.common.DriverUsage;
 import drivers.common.ParamCount;
 import drivers.common.IDriverUsage;
 import drivers.common.SPOptions;
 import drivers.common.IDriverModel;
-import drivers.common.DriverFailedException;
 import drivers.common.GUIDriver;
 import drivers.common.DriverFactory;
 import drivers.common.GUIDriverFactory;
-import drivers.common.MultiMapGUIDriver;
 
 import drivers.common.cli.ICLIHelper;
-
-import drivers.gui.common.about.AboutDialog;
-
-import drivers.IOHandler;
 
 import exploration.common.IExplorationModel;
 import exploration.common.ExplorationModel;
 
-import drivers.gui.common.SPFrame;
-import drivers.gui.common.WindowCloseListener;
-import drivers.gui.common.MenuBroker;
 import drivers.gui.common.SPFileChooser;
 
 import lovelace.util.FileChooser;

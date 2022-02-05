@@ -2,7 +2,6 @@ package report.generators;
 
 import org.jetbrains.annotations.Nullable;
 import org.javatuples.Pair;
-import org.javatuples.Triplet;
 import lovelace.util.ThrowingConsumer;
 import java.io.IOException;
 import java.util.Comparator;

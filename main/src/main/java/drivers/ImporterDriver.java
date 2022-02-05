@@ -1,12 +1,8 @@
 package drivers;
 
-import drivers.common.DriverFactory;
 import drivers.common.DriverFailedException;
 import drivers.common.UtilityDriver;
 import drivers.common.SPOptions;
-import drivers.common.UtilityDriverFactory;
-import drivers.common.DriverUsage;
-import drivers.common.ParamCount;
 
 import java.awt.image.BufferedImage;
 

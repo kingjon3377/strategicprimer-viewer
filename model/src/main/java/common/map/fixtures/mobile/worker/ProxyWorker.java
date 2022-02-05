@@ -17,12 +17,9 @@ import common.map.Player;
 import common.map.IFixture;
 import common.map.fixtures.UnitMember;
 import common.map.fixtures.mobile.IUnit;
-import common.map.fixtures.mobile.ProxyFor;
 import common.map.fixtures.mobile.IWorker;
 import common.map.fixtures.mobile.WorkerProxy;
 import java.util.logging.Logger;
-import common.map.fixtures.mobile.worker.IJob;
-import common.map.fixtures.mobile.worker.ProxyJob;
 
 import org.jetbrains.annotations.Nullable;
 

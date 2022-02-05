@@ -15,7 +15,6 @@ import common.map.fixtures.IResourcePile;
 import common.map.fixtures.Quantity;
 import common.map.fixtures.ResourcePileImpl;
 
-import common.map.IMapNG;
 import common.map.Player;
 import common.map.IMutableMapNG;
 

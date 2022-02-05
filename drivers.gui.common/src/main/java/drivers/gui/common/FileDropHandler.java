@@ -4,21 +4,13 @@ import lovelace.util.MalformedXMLException;
 import lovelace.util.MissingFileException;
 import java.io.IOException;
 import common.xmlio.SPFormatException;
-import java.awt.Dimension;
-import java.nio.file.Paths;
 
-import javax.swing.JFrame;
-import javax.swing.WindowConstants;
 import javax.swing.TransferHandler;
-import javax.swing.SwingUtilities;
 import java.awt.datatransfer.DataFlavor;
 import java.io.File;
 import java.util.List;
 import java.util.logging.Logger;
 import java.util.logging.Level;
-import drivers.common.ISPDriver;
-import drivers.common.ModelDriver;
-import drivers.common.MapChangeListener;
 
 /**
  * A {@link TransferHandler} to allow SP apps to accept dropped files.

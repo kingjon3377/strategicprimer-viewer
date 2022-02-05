@@ -1,7 +1,5 @@
 package impl.xmlio;
 
-import impl.xmlio.ISPReader;
-import impl.xmlio.SPWriter;
 import impl.xmlio.fluidxml.SPFluidReader;
 import impl.xmlio.fluidxml.SPFluidWriter;
 import impl.xmlio.yaxml.YAXMLReader;

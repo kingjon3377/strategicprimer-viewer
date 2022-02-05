@@ -12,13 +12,11 @@ import common.map.IMapNG;
 import common.map.Direction;
 import common.map.Point;
 import common.map.fixtures.terrain.Forest;
-import java.util.logging.Logger;
 import java.util.function.Predicate;
 import java.util.Comparator;
 import java.util.Collections;
 import java.util.Optional;
 import java.util.logging.Logger;
-import java.util.stream.StreamSupport;
 
 /* package */ class PathfinderImpl implements Pathfinder {
 	private static final Logger LOGGER = Logger.getLogger(PathfinderImpl.class.getName());

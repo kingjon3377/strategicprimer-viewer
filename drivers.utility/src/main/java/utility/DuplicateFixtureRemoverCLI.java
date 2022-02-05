@@ -3,7 +3,6 @@ package utility;
 import java.util.stream.Stream;
 import org.jetbrains.annotations.Nullable;
 
-import common.map.TileFixture;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.stream.StreamSupport;

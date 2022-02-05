@@ -4,32 +4,21 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import java.nio.file.Path;
-import javax.swing.SwingUtilities;
 
 import drivers.common.IDriverModel;
 import drivers.common.IDriverUsage;
 import drivers.common.DriverUsage;
 import drivers.common.SPOptions;
 import drivers.common.ParamCount;
-import drivers.common.DriverFailedException;
 import drivers.common.GUIDriver;
 import drivers.common.DriverFactory;
 import drivers.common.GUIDriverFactory;
-import drivers.common.ViewerDriver;
 import drivers.common.cli.ICLIHelper;
-import common.map.MapDimensions;
-import common.map.Point;
 import common.map.IMutableMapNG;
-import drivers.gui.common.about.AboutDialog;
-import drivers.gui.common.WindowCloseListener;
-import drivers.gui.common.MenuBroker;
 import drivers.gui.common.SPFileChooser;
 
 import lovelace.util.FileChooser;
 
-import javax.imageio.ImageIO;
-
-import java.io.File;
 import java.util.Collections;
 
 import com.google.auto.service.AutoService;

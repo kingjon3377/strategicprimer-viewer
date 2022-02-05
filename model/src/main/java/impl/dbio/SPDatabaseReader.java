@@ -6,13 +6,10 @@ import impl.xmlio.IMapReader;
 import common.xmlio.Warning;
 import common.map.IMutableMapNG;
 import java.io.Reader;
-import java.io.FileNotFoundException;
 import org.sqlite.SQLiteDataSource;
 import java.util.Map;
 import java.util.HashMap;
 import javax.sql.DataSource;
-import lovelace.util.MissingFileException;
-import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 import java.util.logging.Logger;
 

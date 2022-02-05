@@ -33,12 +33,9 @@ import common.map.fixtures.TerrainFixture;
 
 import drivers.common.FixtureMatcher;
 
-import lovelace.util.MissingFileException;
 import java.util.function.Predicate;
-import java.util.Optional;
 import java.util.List;
 import java.util.stream.StreamSupport;
-import java.util.stream.Stream;
 import java.util.stream.Collectors;
 import java.util.logging.Logger;
 import java.util.logging.Level;

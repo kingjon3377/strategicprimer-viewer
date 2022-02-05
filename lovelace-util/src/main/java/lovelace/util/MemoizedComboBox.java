@@ -1,7 +1,6 @@
 package lovelace.util;
 
 import javax.swing.JTextField;
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.function.Consumer;
 import java.util.HashSet;
