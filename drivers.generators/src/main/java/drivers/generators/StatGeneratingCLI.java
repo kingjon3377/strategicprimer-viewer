@@ -209,7 +209,7 @@ import common.map.fixtures.towns.Village;
 			for (String line : textContent) {
 				parsed.add(Integer.parseInt(line.trim()));
 			}
-			Integer[] temp = parsed.stream().toArray(Integer[]::new);
+			Integer[] temp = parsed.toArray(new Integer[0]);
 			WorkerStats retval = WorkerStats.factory(temp[0], temp[1], temp[2], temp[3],
 				temp[4], temp[5]);
 			racialBonuses.put(race, retval);

@@ -338,7 +338,7 @@ public class AdvancementCLIHelper implements LevelGainSource {
 				} else {
 					break;
 				}
-				advanceWorkersInJob(job.getName(), workers.stream().toArray(IWorker[]::new));
+				advanceWorkersInJob(job.getName(), workers.toArray(new IWorker[0]));
 				Boolean continuation = cli.inputBoolean("Select another Job in these workers?");
 				if (continuation == null || !continuation) {
 					break;

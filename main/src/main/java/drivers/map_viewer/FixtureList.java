@@ -99,7 +99,7 @@ public class FixtureList extends JList<TileFixture>
 				payload = new FixtureTransferable(selection.get(0));
 			} else {
 				payload = new CurriedFixtureTransferable(
-					selection.stream().toArray(TileFixture[]::new));
+						selection.toArray(new TileFixture[0]));
 			}
 			event.startDrag(null, payload);
 		}

@@ -43,7 +43,8 @@ import java.util.Set;
 	@Override
 	public TerrainFixture read(StartElement element, QName parent, Iterable<XMLEvent> stream)
 			throws SPFormatException {
-		requireTag(element, parent, supportedTags.stream().toArray(String[]::new));
+		// TODO: Provide requireTag() taking Iterable so we don't have to convert to array
+		requireTag(element, parent, supportedTags.toArray(new String[0]));
 		TerrainFixture retval;
 		switch (element.getName().getLocalPart().toLowerCase()) {
 		case "forest":

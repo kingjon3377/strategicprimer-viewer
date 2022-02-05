@@ -113,8 +113,7 @@ import java.util.logging.Logger;
 					if (current != null) { // FIXME: Swap if/else in these cases
 						throw UnwantedChildException.listingExpectedTags(
 							stack.peekFirst().getName(), (StartElement) event,
-							expectedCommunityStatsTags(current).stream()
-								.toArray(String[]::new));
+								expectedCommunityStatsTags(current).toArray(new String[0]));
 					} else {
 						expectAttributes((StartElement) event, "skill", "level");
 						retval.setSkillLevel(getParameter((StartElement) event,
@@ -128,8 +127,7 @@ import java.util.logging.Logger;
 					if (current != null) {
 						throw UnwantedChildException.listingExpectedTags(
 							stack.peekFirst().getName(), (StartElement) event,
-							expectedCommunityStatsTags(current).stream()
-								.toArray(String[]::new));
+								expectedCommunityStatsTags(current).toArray(new String[0]));
 					} else {
 						expectAttributes((StartElement) event, "resource");
 						retval.addWorkedField(getIntegerParameter(
@@ -143,8 +141,7 @@ import java.util.logging.Logger;
 					if (current != null) {
 						throw UnwantedChildException.listingExpectedTags(
 							stack.peekFirst().getName(), (StartElement) event,
-							expectedCommunityStatsTags(current).stream()
-								.toArray(String[]::new));
+								expectedCommunityStatsTags(current).toArray(new String[0]));
 					} else {
 						expectAttributes((StartElement) event);
 						stack.addFirst((StartElement) event);
@@ -163,9 +160,8 @@ import java.util.logging.Logger;
 					default:
 						throw UnwantedChildException.listingExpectedTags(
 							stack.peekFirst().getName(), (StartElement) event,
-							expectedCommunityStatsTags(current == null ?
-									"population" : current)
-								.stream().toArray(String[]::new));
+								expectedCommunityStatsTags(current == null ?
+										                           "population" : current).toArray(new String[0]));
 					}
 					lambda.accept(resourceReader.read((StartElement) event,
 						stack.peekFirst().getName(), stream));
@@ -174,10 +170,9 @@ import java.util.logging.Logger;
 					throw UnwantedChildException.listingExpectedTags(
 						stack.isEmpty() ? element.getName() :
 							stack.peekFirst().getName(),
-						(StartElement) event, 
-						expectedCommunityStatsTags(current == null ?
-								"population" : current)
-								.stream().toArray(String[]::new));
+						(StartElement) event,
+							expectedCommunityStatsTags(current == null ?
+									                           "population" : current).toArray(new String[0]));
 				}
 			} else if (event instanceof EndElement && !stack.isEmpty() &&
 					((EndElement) event).getName()

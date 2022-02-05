@@ -168,7 +168,7 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 		if (mainMap.isMountainous(point)) {
 			map.setMountainous(point, true);
 		}
-		map.addRivers(point, mainMap.getRivers(point).stream().toArray(River[]::new));
+		map.addRivers(point, mainMap.getRivers(point).toArray(new River[0]));
 		// TODO: Should we copy roads here?
 	}
 
@@ -769,8 +769,7 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 				subMap.setModified(true);
 			}
 			if (!getMap().getRivers(location).containsAll(subMap.getRivers(location))) {
-				subMap.addRivers(location, getMap().getRivers(location).stream()
-					.toArray(River[]::new));
+				subMap.addRivers(location, getMap().getRivers(location).toArray(new River[0]));
 				subMap.setModified(true);
 			}
 			Map<Direction, Integer> subRoads = subMap.getRoads(location);
@@ -810,7 +809,7 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 			.collect(Collectors.toList()));
 		actualRivers.retainAll(getMap().getRivers(location));
 		for (IMutableMapNG subMap : getRestrictedSubordinateMaps()) {
-			subMap.addRivers(location, actualRivers.stream().toArray(River[]::new)); // TODO: Make it return Boolean if this was a change, and only set modified flag in that case
+			subMap.addRivers(location, actualRivers.toArray(new River[0])); // TODO: Make it return Boolean if this was a change, and only set modified flag in that case
 			subMap.setModified(true);
 		}
 	}

@@ -47,7 +47,7 @@ import java.util.stream.Collectors;
 	@Override
 	public RiverFixture copy(boolean zero) {
 		LOGGER.log(Level.WARNING, "TileTypeFixture.copy called", new Exception("dummy"));
-		return new RiverFixture(rivers.stream().toArray(River[]::new));
+		return new RiverFixture(rivers.toArray(new River[0]));
 	}
 
 	@Override

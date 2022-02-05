@@ -814,7 +814,7 @@ public class SPMapNG implements IMutableMapNG {
 				retval.setBaseTerrain(point, terrain.get(point));
 			}
 			retval.setMountainous(point, isMountainous(point));
-			retval.addRivers(point, getRivers(point).stream().toArray(River[]::new));
+			retval.addRivers(point, getRivers(point).toArray(new River[0]));
 			// TODO: what other fixtures should we zero, or skip?
 			for (TileFixture fixture : getFixtures(point)) {
 				retval.addFixture(point,

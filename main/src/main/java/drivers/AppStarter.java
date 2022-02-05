@@ -197,7 +197,7 @@ import org.jetbrains.annotations.Nullable;
 //				try {
 				SwingUtilities.invokeLater(
 						() -> new AppChooserGUI(cli, currentOptionsTyped)
-								.startDriver(others.stream().toArray(String[]::new)));
+								.startDriver(others.toArray(new String[0])));
 //				} catch (DriverFailedException except) {
 //					LOGGER.log(Level.SEVERE, except.getMessage(), except);
 //					SwingUtilities.invokeLater(() -> showErrorDialog(null,
@@ -211,7 +211,7 @@ import org.jetbrains.annotations.Nullable;
 						true).getValue1();
 				if (chosenDriver != null) {
 					new DriverWrapper(chosenDriver).startCatchingErrors(cli, options,
-							others.stream().toArray(String[]::new));
+							others.toArray(new String[0]));
 				}
 			}
 		}

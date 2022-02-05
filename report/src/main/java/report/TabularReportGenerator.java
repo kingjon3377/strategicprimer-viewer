@@ -197,7 +197,7 @@ public final class TabularReportGenerator {
 		if (!unhandled.isEmpty()) {
 			consumer.accept("other", BorderedPanel.verticalPanel(
 				new JLabel("Fixtures not covered in any of the reports:"),
-				new JList<String>(unhandled.stream().toArray(String[]::new)), null));
+				new JList<String>(unhandled.toArray(new String[0])), null));
 		}
 	}
 }

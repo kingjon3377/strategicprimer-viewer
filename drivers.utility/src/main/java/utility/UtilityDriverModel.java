@@ -105,7 +105,7 @@ public class UtilityDriverModel extends SimpleMultiMapModel {
 					!map.getRivers(location).isEmpty() &&
 					subordinateMap.getRivers(location).isEmpty()) {
 				subordinateMap.addRivers(location,
-					map.getRivers(location).stream().toArray(River[]::new));
+						map.getRivers(location).toArray(new River[0]));
 				subordinateMap.setModified(true);
 			}
 		}
@@ -142,7 +142,7 @@ public class UtilityDriverModel extends SimpleMultiMapModel {
 					.collect(Collectors.toList());
 				if (!matching.isEmpty()) {
 					duplicatesList.add(Quartet.with(
-						item -> map.removeFixture(location, item), 
+						item -> map.removeFixture(location, item),
 						map.getFilename(), fixture, matching));
 				}
 			}
@@ -204,7 +204,7 @@ public class UtilityDriverModel extends SimpleMultiMapModel {
 				}
 				retval.add(Quartet.with(() -> {
 						IFixture combined = handler.combineRaw(
-							list.stream().toArray(IFixture[]::new));
+								list.toArray(new IFixture[0]));
 						list.forEach(remove);
 						add.accept(combined);
 						setModFlag.run();
@@ -251,7 +251,7 @@ public class UtilityDriverModel extends SimpleMultiMapModel {
 				subMap.setBaseTerrain(location, null);
 			}
 			subMap.removeRivers(location,
-				map.getRivers(location).stream().toArray(River[]::new));
+					map.getRivers(location).toArray(new River[0]));
 			Map<Direction, Integer> mainRoads = map.getRoads(location);
 			Map<Direction, Integer> knownRoads = subMap.getRoads(location);
 			for (Map.Entry<Direction, Integer> entry : knownRoads.entrySet()) {

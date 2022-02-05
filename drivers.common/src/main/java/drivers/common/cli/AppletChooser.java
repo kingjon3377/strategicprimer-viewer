@@ -45,7 +45,7 @@ public class AppletChooser<AppletClass extends Applet> {
 	private void usageMessage() {
 		cli.println("The following commands are supported:");
 		for (AppletClass applet : applets) {
-			cli.print(String.join(", ", applet.getCommands().stream().toArray(String[]::new)));
+			cli.print(String.join(", ", applet.getCommands().toArray(new String[0])));
 			cli.println(applet.getDescription());
 		}
 		cli.println("help, ?: Print this list of commands.");

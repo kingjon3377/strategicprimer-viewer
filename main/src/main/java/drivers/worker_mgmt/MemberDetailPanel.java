@@ -110,7 +110,7 @@ public class MemberDetailPanel extends BorderedPanel implements UnitMemberListen
 			kindLabel, jobsPanel);
 		statLayout.linkSize(strCaption, dexCaption, conCaption, intCaption,
 			wisCaption, chaCaption);
-		statLayout.linkSize(statLabels.stream().toArray(InterpolatedLabel[]::new));
+		statLayout.linkSize(statLabels.toArray(new InterpolatedLabel[0]));
 		statLayout.linkSize(SwingConstants.VERTICAL, typeCaption, typeLabel);
 		statLayout.linkSize(SwingConstants.VERTICAL, nameCaption, nameLabel);
 		statLayout.linkSize(SwingConstants.VERTICAL, kindCaption, kindLabel);
