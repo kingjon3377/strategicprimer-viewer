@@ -154,7 +154,7 @@ public class TownReportGenerator extends AbstractReportGenerator<ITownFixture> {
 			ostream.accept(System.lineSeparator());
 			for (HeadedMap<ITownFixture, Point> mapping :
 					Arrays.asList(abandoned, active, burned, ruined)) {
-				super.<ITownFixture>writeMap(ostream, mapping, super.<ITownFixture>defaultFormatter(fixtures, map));
+				super.writeMap(ostream, mapping, super.defaultFormatter(fixtures, map));
 			}
 		}
 	}

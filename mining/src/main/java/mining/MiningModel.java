@@ -144,9 +144,9 @@ import java.util.stream.Collectors;
 		// supposed to do? On porting back to Java it looks like it's
 		// guaranteed to break on the first iteration in all three loops ...
 		SortedMap<Integer, List<Pair<Integer, Integer>>> byRow =
-			MiningModel.<Integer, List<Pair<Integer, Integer>>>treeMap(unnormalized.keySet()
+			MiningModel.treeMap(unnormalized.keySet()
 					.stream().collect(Collectors.<Pair<Integer, Integer>, Integer>groupingBy(Pair::getValue0)),
-				Comparator.<Integer>reverseOrder());
+				Comparator.reverseOrder());
 		for (Map.Entry<Integer, List<Pair<Integer, Integer>>> entry : byRow.entrySet()) {
 			int row = entry.getKey();
 			List<Pair<Integer, Integer>> points = entry.getValue();

@@ -177,7 +177,7 @@ public final class TestXMLIO {
 			throws SPFormatException, MalformedXMLException, IOException {
 		if (desideratum != null) { // TODO: invert condition
 			try (StringReader stringReader = new StringReader(xml)) {
-				Type returned = reader.<Type>readXML(FAKE_FILENAME, stringReader,
+				Type returned = reader.readXML(FAKE_FILENAME, stringReader,
 					Warning.IGNORE);
 				assertEquals(desideratum, returned,
 					"Parsed value should be as expected with warnings ignored.");
@@ -220,7 +220,7 @@ public final class TestXMLIO {
 	private <Type> void assertUnsupportedTag(final String xml, final String tag, @Nullable final Type desideratum)
 			throws SPFormatException, MalformedXMLException, IOException {
 		for (ISPReader reader : spReaders) {
-			this.<Type, UnsupportedTagException> assertFormatIssue(reader, xml, desideratum,
+			this.assertFormatIssue(reader, xml, desideratum,
 				UnsupportedTagException.class,
 				(except) -> assertEquals(tag, except.getTag().getLocalPart(),
 					"Unsupported tag was the tag we expected"));
@@ -236,7 +236,7 @@ public final class TestXMLIO {
 	private <Type> void assertUnwantedChild(final String xml, @Nullable final Type desideratum)
 			throws SPFormatException, MalformedXMLException, IOException {
 		for (ISPReader reader : spReaders) {
-			this.<Type, UnwantedChildException>assertFormatIssue(reader, xml, desideratum,
+			this.assertFormatIssue(reader, xml, desideratum,
 				UnwantedChildException.class);
 		}
 	}
@@ -251,7 +251,7 @@ public final class TestXMLIO {
 	                                          @Nullable final Type desideratum)
 			throws SPFormatException, MalformedXMLException, IOException {
 		for (ISPReader reader : spReaders) {
-			this.<Type, MissingPropertyException>assertFormatIssue(reader, xml, desideratum,
+			this.assertFormatIssue(reader, xml, desideratum,
 				MissingPropertyException.class,
 				(except) -> assertEquals(property, except.getParam(),
 					"Missing property should be the one we're expecting"));
@@ -279,7 +279,7 @@ public final class TestXMLIO {
 	                                             final String tag, @Nullable final Type desideratum)
 			throws SPFormatException, MalformedXMLException, IOException {
 		for (ISPReader reader : spReaders) {
-			this.<Type, DeprecatedPropertyException>assertFormatIssue(reader, xml, desideratum,
+			this.assertFormatIssue(reader, xml, desideratum,
 				DeprecatedPropertyException.class,
 				(except) -> {
 					assertEquals(deprecated, except.getOld(),
@@ -327,12 +327,12 @@ public final class TestXMLIO {
 		for (ISPReader reader : spReaders) {
 			try (StringReader stringReader =
 					new StringReader(createSerializedForm(obj, false))) {
-				assertEquals(obj, reader.<Object>readXML(FAKE_FILENAME, stringReader,
+				assertEquals(obj, reader.readXML(FAKE_FILENAME, stringReader,
 					warner), message);
 			}
 			try (StringReader stringReader =
 					new StringReader(createSerializedForm(obj, true))) {
-				assertEquals(obj, reader.<Object>readXML(FAKE_FILENAME, stringReader,
+				assertEquals(obj, reader.readXML(FAKE_FILENAME, stringReader,
 					warner), message);
 			}
 		}
@@ -388,7 +388,7 @@ public final class TestXMLIO {
 			for (Boolean deprecated : Arrays.asList(false, true)) {
 				try (StringReader stringReader =
 						new StringReader(createSerializedForm(obj, deprecated))) {
-					HasNotes read = reader.<HasNotes>readXML(FAKE_FILENAME,
+					HasNotes read = reader.readXML(FAKE_FILENAME,
 						stringReader, Warning.IGNORE);
 					for (Integer player : obj.getNotesPlayers()) {
 						assertEquals(obj.getNote(player), read.getNote(player),
@@ -451,7 +451,7 @@ public final class TestXMLIO {
 			throws SPFormatException, MalformedXMLException, IOException {
 		for (ISPReader reader : spReaders) {
 			try (StringReader stringReader = new StringReader(xml)) {
-				assertTrue(assertion.test(reader.<Type>readXML(FAKE_FILENAME, stringReader,
+				assertTrue(assertion.test(reader.readXML(FAKE_FILENAME, stringReader,
 					warner)), message);
 			}
 		}
@@ -469,8 +469,8 @@ public final class TestXMLIO {
 		for (ISPReader reader : spReaders) {
 			try (StringReader firstReader = new StringReader(firstForm);
 					StringReader secondReader = new StringReader(secondForm)) {
-				assertEquals(reader.<Object>readXML(FAKE_FILENAME, firstReader, warningLevel),
-					reader.<Object>readXML(FAKE_FILENAME, secondReader, warningLevel),
+				assertEquals((Object) reader.readXML(FAKE_FILENAME, firstReader, warningLevel),
+					reader.readXML(FAKE_FILENAME, secondReader, warningLevel),
 					message);
 			}
 		}
@@ -495,7 +495,7 @@ public final class TestXMLIO {
 	private <Type> void assertDuplicateID(final String xml, final Type desideratum)
 			throws SPFormatException, MalformedXMLException, IOException {
 		for (ISPReader reader : spReaders) {
-			this.<Type, DuplicateIDException>assertFormatIssue(reader, xml, desideratum,
+			this.assertFormatIssue(reader, xml, desideratum,
 				DuplicateIDException.class);
 		}
 	}
@@ -522,7 +522,7 @@ public final class TestXMLIO {
 	private void assertInvalid(final String xml)
 			throws SPFormatException, MalformedXMLException, IOException {
 		for (ISPReader reader : spReaders) {
-			this.<Object, Exception>assertFormatIssue(reader, xml, null, Exception.class,
+			this.assertFormatIssue(reader, xml, null, Exception.class,
 				except -> assertTrue(instanceOfAny(NoSuchElementException.class,
 						IllegalArgumentException.class,
 						MalformedXMLException.class,
@@ -591,10 +591,10 @@ public final class TestXMLIO {
 		this.<Village>assertUnwantedChild(String.format(
 			"<village status=\"%s\"><village /></village>", status.toString()), null);
 		this.<Village>assertMissingProperty("<village />", "status", null);
-		this.<Village>assertMissingProperty(String.format(
+		this.assertMissingProperty(String.format(
 			"<village name=\"%s\" status=\"%s\" />", name, status.toString()), "id",
 			new Village(status, name, 0, new PlayerImpl(-1, "Independent"), "dwarf"));
-		this.<Village>assertMissingProperty(String.format(
+		this.assertMissingProperty(String.format(
 				"<village race=\"%s\" name=\"%s\" status=\"%s\" id=\"%d\" />", race,
 				name, status.toString(), id),
 			"owner", new Village(status, name, id, new PlayerImpl(-1, "Independent"), race));
@@ -685,7 +685,7 @@ public final class TestXMLIO {
 		this.<City>assertUnwantedChild(String.format(
 			"<city status=\"%s\" size=\"%s\" name=\"%s\" dc=\"%d\"><troll /></city>",
 			status.toString(), size.toString(), name, dc), null);
-		this.<City>assertMissingProperty(String.format(
+		this.assertMissingProperty(String.format(
 			"<city status=\"%s\" size=\"%s\" name=\"%s\" dc=\"%d\" id=\"%d\" />",
 			status.toString(), size.toString(), name, dc, id), "owner",
 			new City(status, size, dc, name, id, new PlayerImpl(-1, "Independent")));
@@ -756,7 +756,7 @@ public final class TestXMLIO {
 		this.<Fortification>assertUnwantedChild(String.format(
 			"<fortification status=\"%s\" size=\"%s\" name=\"%s\" dc=\"%d\"><troll /></fortification>",
 			status.toString(), size.toString(), name, dc), null);
-		this.<Fortification>assertMissingProperty(String.format(
+		this.assertMissingProperty(String.format(
 				"<fortification status=\"%s\" size=\"%s\" name=\"%s\" dc=\"%d\" id=\"%d\" />",
 				status.toString(), size.toString(), name, dc, id), "owner",
 			new Fortification(status, size, dc, name, id, new PlayerImpl(-1, "Independent")));
@@ -818,7 +818,7 @@ public final class TestXMLIO {
 		this.<Town>assertUnwantedChild(String.format(
 			"<town status=\"%s\" size=\"%s\" name=\"%s\" dc=\"%s\"><troll /></town>",
 			status.toString(), size.toString(), name, dc), null);
-		this.<Town>assertMissingProperty(String.format(
+		this.assertMissingProperty(String.format(
 				"<town status=\"%s\" size=\"%s\" name=\"%s\" dc=\"%d\" id=\"%d\" />",
 				status.toString(), size.toString(), name, dc, id), "owner",
 			new Town(status, size, dc, name, id, new PlayerImpl(-1, "Independent")));
@@ -862,7 +862,7 @@ public final class TestXMLIO {
 	public void testOldStoneIdiom(final StoneKind kind, final boolean deprecatedWriter)
 			throws SPFormatException, MalformedXMLException, IOException {
 		StoneDeposit thirdDeposit = new StoneDeposit(kind, 10, 3);
-		this.<StoneDeposit>assertDeprecatedProperty(
+		this.assertDeprecatedProperty(
 			createSerializedForm(thirdDeposit, deprecatedWriter)
 				.replace("kind", "stone"), "stone", "kind", "stone", thirdDeposit);
 	}
@@ -879,7 +879,7 @@ public final class TestXMLIO {
 		this.<StoneDeposit>assertMissingProperty(String.format(
 			"<stone kind=\"%s\" />", kind.toString()), "dc", null);
 		this.<StoneDeposit>assertMissingProperty("<stone dc=\"10\" />", "kind", null);
-		this.<StoneDeposit>assertMissingProperty(String.format(
+		this.assertMissingProperty(String.format(
 				"<stone kind=\"%s\" dc=\"0\" />", kind.toString()), "id",
 			new StoneDeposit(kind, 0, 0));
 	}
@@ -1310,11 +1310,11 @@ public final class TestXMLIO {
 		this.<Grove>assertUnwantedChild("<grove wild=\"true\" kind=\"kind\"><troll /></grove>", null);
 		this.<Grove>assertMissingProperty("<grove />", "cultivated", null);
 		this.<Grove>assertMissingProperty("<grove wild=\"false\" />", "kind", null);
-		this.<Grove>assertDeprecatedProperty("<grove cultivated=\"true\" tree=\"tree\" id=\"0\" />",
+		this.assertDeprecatedProperty("<grove cultivated=\"true\" tree=\"tree\" id=\"0\" />",
 			"tree", "kind", "grove", new Grove(false, true, "tree", 0));
-		this.<Grove>assertMissingProperty("<grove cultivated=\"true\" kind=\"kind\" />", "id",
+		this.assertMissingProperty("<grove cultivated=\"true\" kind=\"kind\" />", "id",
 			new Grove(false, true, "kind", 0));
-		this.<Grove>assertDeprecatedProperty("<grove wild=\"true\" kind=\"tree\" id=\"0\" />",
+		this.assertDeprecatedProperty("<grove wild=\"true\" kind=\"tree\" id=\"0\" />",
 			"wild", "cultivated", "grove", new Grove(false, false, "tree", 0));
 		assertEquivalentForms("Assert that wild is the inverse of cultivated",
 			"<grove wild=\"true\" kind=\"tree\" id=\"0\" />",
@@ -1349,9 +1349,9 @@ public final class TestXMLIO {
 			"<meadow kind=\"flax\" cultivated=\"false\"><troll /></meadow>", null);
 		this.<Meadow>assertMissingProperty("<meadow cultivated=\"false\" />", "kind", null);
 		this.<Meadow>assertMissingProperty("<meadow kind=\"flax\" />", "cultivated", null);
-		this.<Meadow>assertMissingProperty("<field kind=\"kind\" cultivated=\"true\" />", "id",
+		this.assertMissingProperty("<field kind=\"kind\" cultivated=\"true\" />", "id",
 			new Meadow("kind", true, true, 0, FieldStatus.random(0)));
-		this.<Meadow>assertMissingProperty("<field kind=\"kind\" cultivated=\"true\" id=\"0\" />",
+		this.assertMissingProperty("<field kind=\"kind\" cultivated=\"true\" id=\"0\" />",
 			"status", new Meadow("kind", true, true, 0, FieldStatus.random(0)));
 		assertImageSerialization("Meadow image property is preserved",
 			new Meadow(kind, field, cultivated, id, status));
@@ -1389,7 +1389,7 @@ public final class TestXMLIO {
 		this.<Mine>assertMissingProperty(String.format("<mine status=\"%s\" />", status.toString()),
 			"kind", null);
 		this.<Mine>assertMissingProperty(String.format("<mine kind=\"%s\" />", kind), "status", null);
-		this.<Mine>assertMissingProperty(
+		this.assertMissingProperty(
 			String.format("<mine kind=\"%s\" status=\"%s\" />", kind, status.toString()), "id",
 			new Mine(kind, status, 0));
 		assertImageSerialization("Mine image property is preserved", mine);
@@ -1416,7 +1416,7 @@ public final class TestXMLIO {
 		this.<Shrub>assertUnwantedChild(String.format(
 			"<shrub kind=\"%s\"><troll /></shrub>", kind), null);
 		this.<Shrub>assertMissingProperty("<shrub />", "kind", null);
-		this.<Shrub>assertMissingProperty(String.format(
+		this.assertMissingProperty(String.format(
 			"<shrub kind=\"%s\" />", kind), "id", new Shrub(kind, 0));
 		assertImageSerialization("Shrub image property is preserved", shrub);
 		assertSerialization("Shrub can have 'count' property", new Shrub(kind, id, 3));
@@ -1788,7 +1788,7 @@ public final class TestXMLIO {
 			String.format("<cache contents=\"%s\" />", contents), "kind", null);
 		this.<CacheFixture>assertMissingProperty(
 			String.format("<cache kind=\"%s\" />", kind), "contents", null);
-		this.<CacheFixture>assertMissingProperty(
+		this.assertMissingProperty(
 			String.format("<cache kind=\"%s\" contents=\"%s\" />", kind, contents),
 			"id", new CacheFixture(kind, contents, 0));
 		assertImageSerialization("Cache image property is preserved", testee);
@@ -1812,7 +1812,7 @@ public final class TestXMLIO {
 		this.<Centaur>assertUnwantedChild(String.format(
 			"<centaur kind=\"%s\"><troll /></centaur>", kind), null);
 		this.<Centaur>assertMissingProperty("<centaur />", "kind", null);
-		this.<Centaur>assertMissingProperty(String.format("<centaur kind=\"%s\" />", kind), "id",
+		this.assertMissingProperty(String.format("<centaur kind=\"%s\" />", kind), "id",
 			new Centaur(kind, 0));
 		assertImageSerialization("Centaur image property is preserved", testee);
 	}
@@ -1829,7 +1829,7 @@ public final class TestXMLIO {
 		assertSerialization("Dragon with no kind (de-)serialization", new Dragon("", id));
 		this.<Dragon>assertUnwantedChild("<dragon kind=\"ice\"><hill /></dragon>", null);
 		this.<Dragon>assertMissingProperty("<dragon />", "kind", null);
-		this.<Dragon>assertMissingProperty(String.format("<dragon kind=\"%s\" />", kind), "id",
+		this.assertMissingProperty(String.format("<dragon kind=\"%s\" />", kind), "id",
 			new Dragon(kind, 0));
 		assertImageSerialization("Dragon image property is preserved", testee);
 	}
@@ -1846,7 +1846,7 @@ public final class TestXMLIO {
 		this.<Fairy>assertUnwantedChild(String.format("<fairy kind=\"%s\"><hill /></fairy>", kind),
 			null);
 		this.<Fairy>assertMissingProperty("<fairy />", "kind", null);
-		this.<Fairy>assertMissingProperty(String.format("<fairy kind=\"%s\" />", kind), "id",
+		this.assertMissingProperty(String.format("<fairy kind=\"%s\" />", kind), "id",
 			new Fairy(kind, 0));
 		assertImageSerialization("Fairy image property is preserved", testee);
 	}
@@ -1938,7 +1938,7 @@ public final class TestXMLIO {
 		this.<Giant>assertUnwantedChild(String.format(
 			"<giant kind=\"%s\"><hill /></giant>", kind), null);
 		this.<Giant>assertMissingProperty("<giant />", "kind", null);
-		this.<Giant>assertMissingProperty(String.format(
+		this.assertMissingProperty(String.format(
 			"<giant kind=\"%s\" />", kind), "id", new Giant(kind, 0));
 		assertImageSerialization("Giant image property is preserved", testee);
 	}
@@ -1987,7 +1987,7 @@ public final class TestXMLIO {
 			"<ground kind=\"sand\" exposed=\"true\"><hill /></ground>", null);
 		this.<Ground>assertMissingProperty("<ground />", "kind", null);
 		this.<Ground>assertMissingProperty("<ground kind=\"ground\" />", "exposed", null);
-		this.<Ground>assertDeprecatedProperty(
+		this.assertDeprecatedProperty(
 			"<ground ground=\"ground\" exposed=\"true\" />", "ground", "kind", "ground",
 			new Ground(-1, "ground", true));
 		assertImageSerialization("Ground image property is preserved",
@@ -2046,14 +2046,14 @@ public final class TestXMLIO {
 		HasImage item = constructor.apply(id);
 		if (item instanceof HasKind) {
 			assertSerialization(((HasKind) item).getKind() + " serialization", item);
-			this.<HasKind>assertMissingProperty(String.format("<%s />",
+			this.assertMissingProperty(String.format("<%s />",
 				((HasKind) item).getKind()), "id", (HasKind) constructor.apply(0));
 		} else if (item instanceof Hill) {
 			assertSerialization("Hill serialization", item);
-			this.<Hill>assertMissingProperty("<hill />", "id", new Hill(0));
+			this.assertMissingProperty("<hill />", "id", new Hill(0));
 		} else if (item instanceof Oasis) {
 			assertSerialization("Hill serialization", item);
-			this.<Oasis>assertMissingProperty("<oasis />", "id", new Oasis(0));
+			this.assertMissingProperty("<oasis />", "id", new Oasis(0));
 		} else {
 			fail("Unhandled type");
 		}
@@ -2075,7 +2075,7 @@ public final class TestXMLIO {
 		assertSerialization("Cave serialization test", new Cave(dc, id));
 		this.<Cave>assertUnwantedChild(String.format("<cave dc=\"%d\"><troll /></cave>", dc), null);
 		this.<Cave>assertMissingProperty("<cave />", "dc", null);
-		this.<Cave>assertMissingProperty(String.format("<cave dc=\"%d\" />", dc), "id",
+		this.assertMissingProperty(String.format("<cave dc=\"%d\" />", dc), "id",
 			new Cave(dc, 0));
 		assertImageSerialization("Cave image property is preserved", new Cave(dc, id));
 	}
@@ -2115,7 +2115,7 @@ public final class TestXMLIO {
 		this.<MineralVein>assertMissingProperty(
 			String.format("<mineral dc=\"%d\" kind=\"%s\" />", dc, kind),
 			"exposed", null);
-		this.<MineralVein>assertMissingProperty(
+		this.assertMissingProperty(
 			String.format("<mineral kind=\"%s\" exposed=\"%b\" dc=\"%d\" />", kind, exposed, dc),
 			"id", new MineralVein(kind, exposed, dc, 0));
 		assertImageSerialization("Mineral image property is preserved", secondVein);
@@ -2132,7 +2132,7 @@ public final class TestXMLIO {
 		this.<Battlefield>assertUnwantedChild(
 			String.format("<battlefield dc=\"%d\"><hill /></battlefield>", dc), null);
 		this.<Battlefield>assertMissingProperty("<battlefield />", "dc", null);
-		this.<Battlefield>assertMissingProperty(
+		this.assertMissingProperty(
 			String.format("<battlefield dc=\"%d\" />", dc), "id", new Battlefield(dc, 0));
 		assertImageSerialization("Battlefield image property is preserved",
 			new Battlefield(dc, id));

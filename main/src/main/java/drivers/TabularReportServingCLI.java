@@ -192,7 +192,7 @@ import org.takes.http.Exit;
 		LOGGER.info("About to start serving on port ``port``");
 		try {
 			new FtBasic(
-				new TkFork(Stream.<Fork>concat(Stream.<Fork>of(new FkRegex("/", new RsHtml(rootDocument.toString())),
+				new TkFork(Stream.concat(Stream.<Fork>of(new FkRegex("/", new RsHtml(rootDocument.toString())),
 					new FkRegex("/index.html", new RsHtml(rootDocument.toString()))),
 					Stream.concat(tocs.stream(), endpoints.stream())).toArray(Fork[]::new)), port)
 				.start(Exit.NEVER);

@@ -33,7 +33,7 @@ public class AppletChooser<AppletClass extends Applet> {
 			}
 		}
 		commands = Collections.unmodifiableMap(temp);
-		this.applets = Collections.unmodifiableList(Arrays.<AppletClass>asList(applets));
+		this.applets = Collections.unmodifiableList(Arrays.asList(applets));
 	}
 
 	private final ICLIHelper cli;
@@ -67,14 +67,14 @@ public class AppletChooser<AppletClass extends Applet> {
 		String command = Optional.ofNullable(cli.inputString("Command:"))
 			.map(String::toLowerCase).orElse(null);
 		if (command == null) {
-			return Either.<AppletClass, Boolean>right(false);
+			return Either.right(false);
 		} else {
 			List<Map.Entry<String, AppletClass>> matches =
 				commands.entrySet().stream().filter(e -> e.getKey().startsWith(command))
 					.collect(Collectors.toList());
 			if ("quit".startsWith(command) || "exit".startsWith(command)) {
 				if (matches.isEmpty()) {
-					return Either.<AppletClass, Boolean>right(false);
+					return Either.right(false);
 				} else {
 					cli.println("That command was ambiguous between the following:");
 					cli.println(String.join(", ",
@@ -87,11 +87,11 @@ public class AppletChooser<AppletClass extends Applet> {
 				}
 			} else if ("?".equals(command)) {
 				usageMessage();
-				return Either.<AppletClass, Boolean>right(true);
+				return Either.right(true);
 			} else if ("help".startsWith(command)) {
 				if (matches.isEmpty()) {
 					usageMessage();
-					return Either.<AppletClass, Boolean>right(true);
+					return Either.right(true);
 				} else {
 					cli.println("That command was ambiguous between the following:");
 					cli.print("help, ");
@@ -111,7 +111,7 @@ public class AppletChooser<AppletClass extends Applet> {
 				usageMessage();
 				return null;
 			} else {
-				return Either.<AppletClass, Boolean>left(matches.get(0).getValue());
+				return Either.left(matches.get(0).getValue());
 			}
 		}
 	}

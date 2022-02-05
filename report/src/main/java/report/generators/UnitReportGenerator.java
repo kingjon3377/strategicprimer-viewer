@@ -193,12 +193,12 @@ public class UnitReportGenerator extends AbstractReportGenerator<IUnit> {
 			} else {
 				workerReportGenerator = otherWorkerReportGenerator;
 			}
-			this.<IWorker>produceInner(fixtures, ostream, "Workers", workers, (worker) ->
+			this.produceInner(fixtures, ostream, "Workers", workers, (worker) ->
 				workerReportGenerator.produceSingle(fixtures, map, ostream, worker, loc));
-			this.<Animal>produceInner(fixtures, ostream, "Animals", animals,
+			this.produceInner(fixtures, ostream, "Animals", animals,
 				(animal) -> animalReportGenerator
 					.produceSingle(fixtures, map, ostream, animal, loc));
-			this.<Implement>produceInner(fixtures, ostream, "Equipment", equipment, (member) ->
+			this.produceInner(fixtures, ostream, "Equipment", equipment, (member) ->
 				memberReportGenerator.produceSingle(fixtures, map, ostream, member, loc));
 			if (!resources.isEmpty()) {
 				ostream.accept("<li>Resources:");
@@ -216,7 +216,7 @@ public class UnitReportGenerator extends AbstractReportGenerator<IUnit> {
 				ostream.accept("</li>");
 				ostream.accept(System.lineSeparator());
 			}
-			this.<UnitMember>produceInner(fixtures, ostream, "Others", others,
+			this.produceInner(fixtures, ostream, "Others", others,
 				(it) -> ostream.accept(it.toString()));
 			ostream.accept("</ul>");
 			ostream.accept(System.lineSeparator());

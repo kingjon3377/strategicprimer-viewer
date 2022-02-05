@@ -23,7 +23,7 @@ public class SimpleMultiMapModel extends SimpleDriverModel implements IMultiMapM
 	 */
 	@Override
 	public final Iterable<IMapNG> getSubordinateMaps() {
-		return Collections.<IMapNG>unmodifiableList(subordinateMapsList);
+		return Collections.unmodifiableList(subordinateMapsList);
 	}
 
 	/**

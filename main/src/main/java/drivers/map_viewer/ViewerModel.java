@@ -89,7 +89,7 @@ public class ViewerModel extends SimpleDriverModel implements IViewerModel {
 		if (fixture instanceof IFortress) {
 			return ((IFortress) fixture).stream().map(IFixture.class::cast);
 		} else {
-			return Stream.<IFixture>of(fixture);
+			return Stream.of(fixture);
 		}
 	}
 

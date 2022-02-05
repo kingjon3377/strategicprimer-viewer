@@ -76,7 +76,7 @@ public class ExplorableReportGenerator extends AbstractReportGenerator<Explorabl
 		for (Pair<Point, ExplorableFixture> pair : fixtures.values().stream()
 				.filter(p -> p.getValue1() instanceof ExplorableFixture)
 				.sorted(pairComparator)
-				.map(p -> Pair.<Point, ExplorableFixture>with(p.getValue0(),
+				.map(p -> Pair.with(p.getValue0(),
 					(ExplorableFixture) p.getValue1()))
 				.collect(Collectors.toList())) {
 			Point loc = pair.getValue0();

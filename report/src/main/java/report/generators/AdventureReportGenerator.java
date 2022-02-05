@@ -39,7 +39,7 @@ public class AdventureReportGenerator extends AbstractReportGenerator<AdventureF
 	@Override
 	public void produce(final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures, final IMapNG map,
 	                    final ThrowingConsumer<String, IOException> ostream) throws IOException {
-		super.<AdventureFixture>writeMap(ostream, fixtures.values().stream()
+		super.writeMap(ostream, fixtures.values().stream()
 				.filter(p -> p.getValue1() instanceof AdventureFixture)
 				.sorted(pairComparator)
 				.collect(Collectors.toMap(p -> (AdventureFixture) p.getValue1(),

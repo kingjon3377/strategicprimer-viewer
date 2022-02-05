@@ -213,7 +213,7 @@ import common.map.fixtures.mobile.AnimalTracks;
 			f -> decimalize(f.getAcres()), DecimalAccumulator::new, BigDecimal.ZERO);
 		allFixtures.stream().filter(Forest.class::isInstance).map(Forest.class::cast)
 			.forEach(forests::add);
-		this.<Forest, String, BigDecimal>printSummary(forests,
+		this.printSummary(forests,
 			CountingCLI::reportForestTotal, CountingCLI::countOfKind);
 
 		cli.println("Terrain fixtures:");
@@ -242,7 +242,7 @@ import common.map.fixtures.mobile.AnimalTracks;
 		MappedCounter<Ground, String, Integer> ground = simpleCounter(Ground::getKind);
 		allFixtures.stream().filter(Ground.class::isInstance).map(Ground.class::cast)
 			.forEach(ground::add);
-		this.<Ground, String, Integer>printSummary(ground,
+		this.printSummary(ground,
 			"Ground (bedrock) (counting exposed/not separately):",
 			CountingCLI::countTilesWithKind);
 
