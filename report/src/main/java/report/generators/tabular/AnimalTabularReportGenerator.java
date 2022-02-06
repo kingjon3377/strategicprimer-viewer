@@ -47,7 +47,7 @@ public class AnimalTabularReportGenerator implements ITableGenerator<AnimalOrTra
 	 * The header row for the table.
 	 */
 	@Override
-	public Iterable<String> getHeaderRow() {
+	public List<String> getHeaderRow() {
 		return Arrays.asList("Distance", "Location", "Number", "Kind", "Age");
 	}
 

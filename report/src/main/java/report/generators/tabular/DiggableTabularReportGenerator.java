@@ -49,7 +49,7 @@ public class DiggableTabularReportGenerator implements ITableGenerator<MineralFi
 	 * The header row for the table.
 	 */
 	@Override
-	public Iterable<String> getHeaderRow() {
+	public List<String> getHeaderRow() {
 		return Arrays.asList("Distance", "Location", "Kind", "Product", "Status");
 	}
 

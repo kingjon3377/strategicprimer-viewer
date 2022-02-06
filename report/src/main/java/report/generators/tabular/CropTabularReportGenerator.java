@@ -71,7 +71,7 @@ public class CropTabularReportGenerator implements ITableGenerator</*Forest|Shru
 	 * The header row for the table.
 	 */
 	@Override
-	public Iterable<String> getHeaderRow() {
+	public List<String> getHeaderRow() {
 		return Arrays.asList("Distance", "Location", "Kind", "Size", "Size Unit", "Cultivation",
 			"Status", "Crop");
 	}

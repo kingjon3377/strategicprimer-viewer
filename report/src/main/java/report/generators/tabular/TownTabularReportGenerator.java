@@ -55,7 +55,7 @@ public class TownTabularReportGenerator implements ITableGenerator<AbstractTown>
 	 * The header row for this table.
 	 */
 	@Override
-	public Iterable<String> getHeaderRow() {
+	public List<String> getHeaderRow() {
 		return Arrays.asList("Distance", "Location", "Owner", "Kind", "Size", "Status", "Name");
 	}
 

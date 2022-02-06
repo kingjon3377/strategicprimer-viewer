@@ -46,7 +46,7 @@ public class VillageTabularReportGenerator implements ITableGenerator<Village> {
 	 * The header of this table.
 	 */
 	@Override
-	public Iterable<String> getHeaderRow() {
+	public List<String> getHeaderRow() {
 		return Arrays.asList("Distance", "Location", "Owner", "Name");
 	}
 

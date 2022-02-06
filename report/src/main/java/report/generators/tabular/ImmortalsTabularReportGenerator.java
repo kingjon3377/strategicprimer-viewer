@@ -42,7 +42,7 @@ public class ImmortalsTabularReportGenerator implements ITableGenerator<Immortal
 	 * The header row for this table.
 	 */
 	@Override
-	public Iterable<String> getHeaderRow() {
+	public List<String> getHeaderRow() {
 		return Arrays.asList("Distance", "Location", "Immortal");
 	}
 

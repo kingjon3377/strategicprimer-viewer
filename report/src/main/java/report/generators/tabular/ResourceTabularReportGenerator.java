@@ -64,7 +64,7 @@ public class ResourceTabularReportGenerator
 	 * The header row for this table.
 	 */
 	@Override
-	public Iterable<String> getHeaderRow() {
+	public List<String> getHeaderRow() {
 		return Arrays.asList("Distance", "Location", "Kind", "Quantity", "Specifics");
 	}
 
@@ -163,8 +163,7 @@ public class ResourceTabularReportGenerator
 				(TileFixture) e.getValue().getValue1()))
 			.sorted(Comparator.comparing(Triplet::removeFrom0, this::comparePairs))
 			.collect(Collectors.toList());
-		writeRow(ostream, StreamSupport.stream(getHeaderRow().spliterator(), false).
-			toArray(String[]::new));
+		writeRow(ostream, getHeaderRow().toArray(new String[0]));
 		Map<Pair<Point, String>, Integer> implementCounts = new HashMap<>();
 		for (Triplet<Integer, Point, TileFixture> triplet : values) {
 			int key = triplet.getValue0();

@@ -54,7 +54,7 @@ public class ExplorableTabularReportGenerator
 	 * The header row for the table.
 	 */
 	@Override
-	public Iterable<String> getHeaderRow() {
+	public List<String> getHeaderRow() {
 		return Arrays.asList("Distance", "Location", "Brief Description", "Claimed By",
 			"Long Description");
 	}

@@ -48,7 +48,7 @@ public class WorkerTabularReportGenerator implements ITableGenerator<IWorker> {
 	 * The header row of the table.
 	 */
 	@Override
-	public Iterable<String> getHeaderRow() {
+	public List<String> getHeaderRow() {
 		return Arrays.asList("Distance", "Location", "Name", "Race",
 			"HP", "Max HP", "Str", "Dex", "Con", "Int", "Wis", "Cha");
 	}

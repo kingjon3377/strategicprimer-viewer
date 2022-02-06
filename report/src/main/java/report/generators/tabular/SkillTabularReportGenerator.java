@@ -35,7 +35,7 @@ public class SkillTabularReportGenerator implements ITableGenerator<IWorker> {
 	}
 
 	@Override
-	public Iterable<String> getHeaderRow() {
+	public List<String> getHeaderRow() {
 		return Arrays.asList("Worker", "Job", "Skill", "Containing Unit ID #");
 	}
 

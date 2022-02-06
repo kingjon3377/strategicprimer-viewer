@@ -56,9 +56,7 @@ public interface ITableGenerator<T extends IFixture> {
 				(T) e.getValue().getValue1()))
 			.sorted(Comparator.comparing(Triplet::removeFrom0, this::comparePairs))
 			.collect(Collectors.toList());
-		// TODO: declare getHeaderRow() to return List
-		writeRow(ostream, StreamSupport.stream(getHeaderRow().spliterator(), false)
-			.toArray(String[]::new));
+		writeRow(ostream, getHeaderRow().toArray(new String[0]));
 		for (Triplet<Integer, Point, T> triplet : values) {
 			for (List<String> row : produce(fixtures, triplet.getValue2(),
 					triplet.getValue0(), triplet.getValue1(), parentMap)) {
@@ -82,8 +80,7 @@ public interface ITableGenerator<T extends IFixture> {
 				(T) e.getValue().getValue1()))
 			.sorted(Comparator.comparing(Triplet::removeFrom0, this::comparePairs))
 			.collect(Collectors.toList());
-		DefaultTableModel retval = new DefaultTableModel(StreamSupport.stream(
-			getHeaderRow().spliterator(), false).toArray(Object[]::new), 0);
+		DefaultTableModel retval = new DefaultTableModel(getHeaderRow().toArray(), 0);
 		int count = 0;
 		for (Triplet<Integer, Point, T> triplet : values) {
 			for (List<String> row : produce(fixtures, triplet.getValue2(),
@@ -163,10 +160,8 @@ public interface ITableGenerator<T extends IFixture> {
 
 	/**
 	 * The header row to print at the top of the report, listing what the fields represent.
-	 *
-	 * TODO: Specify List instead of Iterable? Ceylon had {@code [String+]}.
 	 */
-	Iterable<String> getHeaderRow();
+	List<String> getHeaderRow();
 
 	/**
 	 * Compare two Point-fixture pairs.
