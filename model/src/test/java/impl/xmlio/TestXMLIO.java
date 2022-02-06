@@ -9,6 +9,7 @@ import org.javatuples.Pair;
 import java.io.IOException;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNotSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.fail;
@@ -2208,7 +2209,7 @@ public final class TestXMLIO {
 				new StringReader(createSerializedForm(map, deprecatedWriter))) {
 			deserialized = reader.readMapFromStream(FAKE_FILENAME, stringReader, Warning.DIE);
 		}
-		assertFalse(map == deserialized, "Deserialization doesn't just return the input");
+		assertNotSame(map, deserialized, "Deserialization doesn't just return the input");
 		assertTrue(deserialized.getBookmarks().contains(new Point(0, 0)),
 			"Deserialized map has the bookmark we saved");
 	}

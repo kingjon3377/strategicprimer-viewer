@@ -85,6 +85,7 @@ import common.map.fixtures.mobile.IMutableUnit;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNotSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assumptions.assumeFalse;
@@ -574,7 +575,7 @@ public final class TestDBIO {
 			"Map by default has no bookmarks");
 		map.addBookmark(new Point(0, 0));
 		IMutableMapNG deserialized = (IMutableMapNG) assertDatabaseSerialization(map);
-		assertFalse(map == deserialized, "Deserialization doesn't just return the input");
+		assertNotSame(map, deserialized, "Deserialization doesn't just return the input");
 		assertTrue(deserialized.getBookmarks().contains(new Point(0, 0)),
 			"Deserialized map has the bookmark we saved");
 	}
