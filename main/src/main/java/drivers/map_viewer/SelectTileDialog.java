@@ -134,7 +134,7 @@ import common.map.Point;
 		errorLabel.setText("");
 		MapDimensions dimensions = model.getMapDimensions();
 		NumberState columnState = checkNumber(columnText, dimensions.getColumns() - 1);
-		if (!NumberState.Valid.equals(columnState)) {
+		if (NumberState.Valid != columnState) {
 			errorLabel.setText(errorLabel.getText() + "Column" +
 				getErrorMessage(columnState, dimensions.getColumns()));
 			columnField.setText("-1");
@@ -142,14 +142,14 @@ import common.map.Point;
 		}
 
 		NumberState rowState = checkNumber(rowText, dimensions.getRows() - 1);
-		if (!NumberState.Valid.equals(rowState)) {
+		if (NumberState.Valid != rowState) {
 			errorLabel.setText(errorLabel.getText() + "Row " +
 				getErrorMessage(rowState, dimensions.getRows()));
 			rowField.setText("-1");
 			rowField.selectAll();
 		}
 
-		if (NumberState.Valid.equals(rowState) && NumberState.Valid.equals(columnState)) {
+		if (NumberState.Valid == rowState && NumberState.Valid == columnState) {
 			try {
 				model.setSelection(new Point(NUM_PARSER.parse(rowText).intValue(),
 					NUM_PARSER.parse(columnText).intValue()));

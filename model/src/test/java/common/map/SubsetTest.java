@@ -296,12 +296,12 @@ public final class SubsetTest {
 		final Player playerOne = new PlayerImpl(0, "playerOne");
 		final Player playerTwo = new PlayerImpl(1, "playerTwo");
 		final Player independent = new PlayerImpl(2, "independent");
-		if (size.equals(TownSize.Small)) {
+		if (size == TownSize.Small) {
 			differentSize = TownSize.Large;
 		} else {
 			differentSize = TownSize.Small;
 		}
-		if (status.equals(TownStatus.Active)) {
+		if (status == TownStatus.Active) {
 			differentStatus = TownStatus.Ruined;
 		} else {
 			differentStatus = TownStatus.Active;
@@ -364,12 +364,12 @@ public final class SubsetTest {
 		final Player playerOne = new PlayerImpl(0, "playerOne");
 		final Player playerTwo = new PlayerImpl(1, "playerTwo");
 		final Player independent = new PlayerImpl(2, "independent");
-		if (size.equals(TownSize.Small)) {
+		if (size == TownSize.Small) {
 			differentSize = TownSize.Large;
 		} else {
 			differentSize = TownSize.Small;
 		}
-		if (status.equals(TownStatus.Active)) {
+		if (status == TownStatus.Active) {
 			differentStatus = TownStatus.Ruined;
 		} else {
 			differentStatus = TownStatus.Active;
@@ -433,12 +433,12 @@ public final class SubsetTest {
 		final Player playerOne = new PlayerImpl(0, "playerOne");
 		final Player playerTwo = new PlayerImpl(1, "playerTwo");
 		final Player independent = new PlayerImpl(2, "independent");
-		if (size.equals(TownSize.Small)) {
+		if (size == TownSize.Small) {
 			differentSize = TownSize.Large;
 		} else {
 			differentSize = TownSize.Small;
 		}
-		if (status.equals(TownStatus.Active)) {
+		if (status == TownStatus.Active) {
 			differentStatus = TownStatus.Ruined;
 		} else {
 			differentStatus = TownStatus.Active;

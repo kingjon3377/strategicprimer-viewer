@@ -142,7 +142,7 @@ public class PopulationGeneratingModel extends SimpleMultiMapModel { // TODO: Ex
 				.filter(m -> field.getKind().equals(m.getKind()))
 				.filter(m -> field.isField() == m.isField())
 				.filter(m -> field.isCultivated() == m.isCultivated())
-				.filter(m -> field.getStatus().equals(m.getStatus()))
+				.filter(m -> field.getStatus() == m.getStatus())
 				.filter(m -> field.getId() == m.getId())
 				.findAny(); // TODO: only match without an existing extent?
 			if (existing.isPresent()) {

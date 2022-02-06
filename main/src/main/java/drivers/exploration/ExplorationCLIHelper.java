@@ -227,7 +227,7 @@ public class ExplorationCLIHelper implements MovementCostListener, SelectionChan
 					.findAny().orElse(Direction.Nowhere);
 				if (proposedDestination.equals(point)) {
 					return;
-				} else if (Direction.Nowhere.equals(direction)) {
+				} else if (Direction.Nowhere == direction) {
 					cli.println(String.format("Next step %s isn't adjacent to %s",
 						proposedDestination, point));
 					return;
@@ -261,7 +261,7 @@ public class ExplorationCLIHelper implements MovementCostListener, SelectionChan
 
 			// Since not-visible terrain is impassable, by this point we know the tile is visible.
 			TileType terrain = map.getBaseTerrain(destPoint);
-			if (TileType.Ocean.equals(terrain)) {
+			if (TileType.Ocean == terrain) {
 				tracksAnimal = huntingModel.fish(destPoint).iterator().next().getValue1();
 			} else {
 				tracksAnimal = huntingModel.hunt(destPoint).iterator().next().getValue1();
@@ -273,7 +273,7 @@ public class ExplorationCLIHelper implements MovementCostListener, SelectionChan
 				allFixtures.add(tracksAnimal.copy(false));
 			}
 
-			if (Direction.Nowhere.equals(direction)) {
+			if (Direction.Nowhere == direction) {
 				while (true) {
 				Boolean response = cli.inputBooleanInSeries("Take an action here?");
 				if (response == null) {
@@ -315,7 +315,7 @@ public class ExplorationCLIHelper implements MovementCostListener, SelectionChan
 			boolean anyRivers;
 			if (rivers.contains(River.Lake)) {
 				anyRivers = true;
-				if (rivers.stream().anyMatch(r -> !River.Lake.equals(r))) {
+				if (rivers.stream().anyMatch(r -> River.Lake != r)) {
 					cli.print(" with a lake and (a) river(s) flowing ");
 				} else {
 					cli.print(" with a lake");
@@ -326,7 +326,7 @@ public class ExplorationCLIHelper implements MovementCostListener, SelectionChan
 			} else {
 				anyRivers = false;
 			}
-			cli.println(rivers.stream().filter(r -> !River.Lake.equals(r)).map(River::toString)
+			cli.println(rivers.stream().filter(r -> River.Lake != r).map(River::toString)
 				.collect(Collectors.joining(", ")));
 
 			if (!map.getRoads(destPoint).isEmpty()) {

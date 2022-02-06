@@ -245,7 +245,7 @@ public class HuntingModel {
 	public HuntingModel(final IMapNG map) {
 		this.map = map;
 		fishKinds = map.streamLocations()
-			.filter(l -> TileType.Ocean.equals(map.getBaseTerrain(l)))
+			.filter(l -> TileType.Ocean == map.getBaseTerrain(l))
 			.flatMap(l -> map.getFixtures(l).stream())
 			.filter(Animal.class::isInstance)
 			.map(Animal.class::cast)
@@ -303,9 +303,9 @@ public class HuntingModel {
 			.collect(Collectors.toList());
 		double nothingProportion;
 		TileType tileType = map.getBaseTerrain(point);
-		if (TileType.Desert.equals(tileType) || TileType.Tundra.equals(tileType)) {
+		if (TileType.Desert == tileType || TileType.Tundra == tileType) {
 			nothingProportion = 0.75;
-		} else if (TileType.Jungle.equals(tileType)) {
+		} else if (TileType.Jungle == tileType) {
 			nothingProportion = 1.0 / 3.0;
 		} else {
 			nothingProportion = 0.5;

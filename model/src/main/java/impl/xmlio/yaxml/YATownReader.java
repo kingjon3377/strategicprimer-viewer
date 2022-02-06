@@ -429,7 +429,7 @@ import java.util.logging.Logger;
 			writeTag(ostream, "fortress", tabs);
 			writeProperty(ostream, "owner", ((IFortress) obj).getOwner().getPlayerId());
 			writeNonemptyProperty(ostream, "name", ((IFortress) obj).getName());
-			if (!TownSize.Small.equals(((IFortress) obj).getTownSize())) {
+			if (TownSize.Small != ((IFortress) obj).getTownSize()) {
 				writeProperty(ostream, "size", ((IFortress) obj).getTownSize().toString());
 			}
 			writeProperty(ostream, "id", ((IFortress) obj).getId());

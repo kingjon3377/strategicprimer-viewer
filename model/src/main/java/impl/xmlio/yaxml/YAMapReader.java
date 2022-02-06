@@ -145,7 +145,7 @@ import java.util.function.Predicate;
 	 * Write a river.
 	 */
 	public void writeRiver(final ThrowingConsumer<String, IOException> ostream, final River obj, final int indent) throws IOException {
-		if (River.Lake.equals(obj)) {
+		if (River.Lake == obj) {
 			writeTag(ostream, "lake", indent);
 		} else {
 			writeTag(ostream, "river", indent);

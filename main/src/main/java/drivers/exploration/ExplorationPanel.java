@@ -197,7 +197,7 @@ import worker.common.IFixtureEditHelper;
 
 			ExplorationClickListener ecl = new ExplorationClickListener(driverModel, this, this::movementDeductionTracker,
 					direction, mainList);
-			if (Direction.Nowhere.equals(direction)) {
+			if (Direction.Nowhere == direction) {
 				dtb.setComponentPopupMenu(ecl.getExplorerActionsMenu());
 			}
 			createHotKey(dtb, direction.toString(), ecl, JComponent.WHEN_IN_FOCUSED_WINDOW,
@@ -329,7 +329,7 @@ import worker.common.IFixtureEditHelper;
 		}
 		LOGGER.finer("In ExplorationPanel.tracksCreator");
 		Function<Point, Iterable<Pair<Point, TileFixture>>> source;
-		if (TileType.Ocean.equals(terrain)) {
+		if (TileType.Ocean == terrain) {
 			source = huntingModel::fish;
 		} else {
 			source = huntingModel::hunt;
@@ -457,7 +457,7 @@ import worker.common.IFixtureEditHelper;
 		private void actionPerformedImpl() {
 			try {
 				List<TileFixture> fixtures = getSelectedValuesList();
-				if (Direction.Nowhere.equals(direction)) {
+				if (Direction.Nowhere == direction) {
 					explorerActionsMenu.show(mainList, mainList.getWidth(), 0);
 				} else {
 					driverModel.move(direction, speedSource.get());

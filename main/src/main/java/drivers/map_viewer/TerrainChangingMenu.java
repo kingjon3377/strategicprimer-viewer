@@ -124,7 +124,7 @@ import common.map.fixtures.terrain.Hill;
 	private void toggleMountains() {
 		Point localPoint = point;
 		TileType terrain = model.getMap().getBaseTerrain(localPoint);
-		if (localPoint.isValid() && terrain != null && !TileType.Ocean.equals(terrain)) {
+		if (localPoint.isValid() && terrain != null && TileType.Ocean != terrain) {
 			boolean newValue = !model.getMap().isMountainous(localPoint); // TODO: syntax sugar
 			model.setMountainous(localPoint, newValue);
 			mountainItem.getModel().setSelected(newValue);
@@ -136,7 +136,7 @@ import common.map.fixtures.terrain.Hill;
 	private void toggleHill() {
 		Point localPoint = point;
 		TileType terrain = model.getMap().getBaseTerrain(localPoint);
-		if (localPoint.isValid() && terrain != null && !TileType.Ocean.equals(terrain)) {
+		if (localPoint.isValid() && terrain != null && TileType.Ocean != terrain) {
 			if (model.getMap().getFixtures(localPoint).stream()
 					.noneMatch(Hill.class::isInstance)) {
 				model.addFixture(localPoint, new Hill(idf.createID()));
@@ -178,7 +178,7 @@ import common.map.fixtures.terrain.Hill;
 		return () -> {
 			Point localPoint = point;
 			TileType terrain = model.getMap().getBaseTerrain(localPoint);
-			if (localPoint.isValid() && terrain != null && !TileType.Ocean.equals(terrain)) {
+			if (localPoint.isValid() && terrain != null && TileType.Ocean != terrain) {
 				if (model.getMap().getRivers(localPoint).contains(river)) {
 					model.removeRiver(localPoint, river);
 					item.getModel().setSelected(false);
@@ -287,7 +287,7 @@ import common.map.fixtures.terrain.Hill;
 		} else {
 			newUnitItem.setEnabled(false);
 		}
-		if (point.isValid() && terrain != null && !TileType.Ocean.equals(terrain)) {
+		if (point.isValid() && terrain != null && TileType.Ocean != terrain) {
 			mountainItem.getModel().setSelected(model.getMap().isMountainous(point));
 			mountainItem.setEnabled(true);
 			hillItem.getModel().setSelected(model.getMap().getFixtures(point).stream()
@@ -301,7 +301,7 @@ import common.map.fixtures.terrain.Hill;
 			hillItem.setEnabled(false);
 			newForestItem.setEnabled(false);
 		}
-		if (point.isValid() && terrain != null && !TileType.Ocean.equals(terrain)) {
+		if (point.isValid() && terrain != null && TileType.Ocean != terrain) {
 			// TODO: combine with earlier if(s)
 			Collection<River> rivers = model.getMap().getRivers(point);
 			for (Map.Entry<River, JCheckBoxMenuItem> entry : riverItems.entrySet()) {

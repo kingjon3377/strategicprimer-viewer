@@ -101,7 +101,7 @@ public class UtilityDriverModel extends SimpleMultiMapModel {
 		for (IMutableMapNG subordinateMap : getRestrictedSubordinateMaps()) {
 			TileType mainTerrain = map.getBaseTerrain(location);
 			TileType subTerrain = subordinateMap.getBaseTerrain(location);
-			if (mainTerrain != null && subTerrain != null && mainTerrain.equals(subTerrain) &&
+			if (mainTerrain != null && subTerrain != null && mainTerrain == subTerrain &&
 					!map.getRivers(location).isEmpty() &&
 					subordinateMap.getRivers(location).isEmpty()) {
 				subordinateMap.addRivers(location,
@@ -247,7 +247,7 @@ public class UtilityDriverModel extends SimpleMultiMapModel {
 			subMap.setModified(true);
 			TileType terrain = map.getBaseTerrain(location);
 			TileType ours = subMap.getBaseTerrain(location);
-			if (terrain != null && ours != null && terrain.equals(ours)) {
+			if (terrain != null && ours != null && terrain == ours) {
 				subMap.setBaseTerrain(location, null);
 			}
 			subMap.removeRivers(location,

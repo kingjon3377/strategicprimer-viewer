@@ -269,7 +269,7 @@ public final class ExplorationRunner {
 	                             final Iterable<TileFixture> fixtures, final MapDimensions mapDimensions)
 			throws MissingTableException {
 		if (StreamSupport.stream(fixtures.spliterator(), true).anyMatch(Forest.class::isInstance)
-				&& (terrain.equals(TileType.Steppe) || terrain.equals(TileType.Plains))) {
+				&& (terrain == TileType.Steppe || terrain == TileType.Plains)) {
 			return String.format(
 				"The primary rock type here is %s.%nThe main kind of tree here is %s.%n",
 				getPrimaryRock(location, terrain, mountainous, fixtures, mapDimensions),

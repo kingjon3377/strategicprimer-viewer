@@ -591,13 +591,13 @@ public final class TestDBIO {
 	@MethodSource
 	public void testRoadSerialization(final Direction directionOne, final int qualityOne, final Direction directionTwo,
 	                                  final int qualityTwo) {
-		assumeFalse(directionOne.equals(directionTwo),  "We can't have the same direction twice");
+		assumeFalse(directionOne == directionTwo,  "We can't have the same direction twice");
 		IMutableMapNG map = new SPMapNG(new MapDimensionsImpl(1, 1, 2), new PlayerCollection(), 1);
 		map.setBaseTerrain(new Point(0, 0), TileType.Plains);
-		if (!Direction.Nowhere.equals(directionOne)) {
+		if (Direction.Nowhere != directionOne) {
 			map.setRoadLevel(new Point(0, 0), directionOne, qualityOne);
 		}
-		if (!Direction.Nowhere.equals(directionTwo)) {
+		if (Direction.Nowhere != directionTwo) {
 			map.setRoadLevel(new Point(0, 0), directionTwo, qualityTwo);
 		}
 		assertDatabaseSerialization(map);

@@ -292,7 +292,7 @@ public class SPMapNG implements IMutableMapNG {
 
 	@Override
 	public void setRoadLevel(final Point point, final Direction direction, final int quality) {
-		if (direction.equals(Direction.Nowhere)) {
+		if (direction == Direction.Nowhere) {
 			return;
 		} else if (quality < 0) {
 			throw new IllegalArgumentException("Road quality must be nonnegative");
@@ -505,8 +505,7 @@ public class SPMapNG implements IMutableMapNG {
 					currentTurn == ((IMapNG) obj).getCurrentTurn() &&
 					getCurrentPlayer().equals(((IMapNG) obj).getCurrentPlayer())) {
 				for (Point point : getLocations()) {
-					if (!Objects.equals(getBaseTerrain(point),
-								((IMapNG) obj).getBaseTerrain(point)) ||
+					if (getBaseTerrain(point) != ((IMapNG) obj).getBaseTerrain(point) ||
 							isMountainous(point) !=
 								((IMapNG) obj).isMountainous(point) ||
 							!getRivers(point).equals(
@@ -700,8 +699,7 @@ public class SPMapNG implements IMutableMapNG {
 						"At %s:\t%s", point.toString(), str));
 				if (obj.getBaseTerrain(point) != null) {
 					if (terrain.containsKey(point)) {
-						if (!getBaseTerrain(point)
-								.equals(obj.getBaseTerrain(point))) {
+						if (getBaseTerrain(point) != obj.getBaseTerrain(point)) {
 							localReport.accept("Base terrain differs");
 							retval = false;
 							continue;

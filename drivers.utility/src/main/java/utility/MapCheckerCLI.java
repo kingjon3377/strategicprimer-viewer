@@ -118,8 +118,8 @@ public class MapCheckerCLI implements UtilityDriver {
 	private static boolean lateriteChecker(final TileType terrain, final Point context, final IFixture fixture,
 	                                       final Warning warner) {
 		if (fixture instanceof StoneDeposit &&
-				StoneKind.Laterite.equals(((StoneDeposit) fixture).getStone()) &&
-				!TileType.Jungle.equals(terrain)) {
+				    StoneKind.Laterite == ((StoneDeposit) fixture).getStone() &&
+				    TileType.Jungle != terrain) {
 			warner.handle(new SPContentWarning(context, "Laterite stone in non-jungle"));
 			return true;
 		} else {
@@ -129,7 +129,7 @@ public class MapCheckerCLI implements UtilityDriver {
 
 	private static boolean oasisChecker(final TileType terrain, final Point context, final IFixture fixture,
 	                                    final Warning warner) {
-		if (fixture instanceof Oasis && !TileType.Desert.equals(terrain)) {
+		if (fixture instanceof Oasis && TileType.Desert != terrain) {
 			warner.handle(new SPContentWarning(context, "Oasis in non-desert"));
 			return true;
 		} else {
@@ -152,7 +152,7 @@ public class MapCheckerCLI implements UtilityDriver {
 	                                             final IFixture fixture, final Warning warner) {
 		if (fixture instanceof Village &&
 				LandRaces.LAND_RACES.contains(((Village) fixture).getRace()) &&
-				TileType.Ocean.equals(terrain)) {
+				    TileType.Ocean == terrain) {
 			warner.handle(new SPContentWarning(context, "Aquatic village has non-aquatic race"));
 			return true;
 		} else {

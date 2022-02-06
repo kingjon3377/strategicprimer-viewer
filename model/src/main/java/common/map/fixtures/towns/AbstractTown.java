@@ -183,11 +183,11 @@ public abstract class AbstractTown implements HasMutableImage,
 		Consumer<String> localReport = s -> report.accept(String.format(
 			"In %s %s, ID #%d:\t%s", getKind(), name, getId(), s));
 		boolean retval = true;
-		if (!status.equals(other.getStatus())) {
+		if (status != other.getStatus()) {
 			localReport.accept("Town status differs");
 			retval = false;
 		}
-		if (!townSize.equals(other.getTownSize())) {
+		if (townSize != other.getTownSize()) {
 			localReport.accept("Town size differs");
 			retval = false;
 		}
@@ -212,8 +212,8 @@ public abstract class AbstractTown implements HasMutableImage,
 	 * A helper method for equals() that checks everything except the type of the object.
 	 */
 	protected final boolean equalsContents(final AbstractTown fixture) {
-		return fixture.getTownSize().equals(townSize) &&
-			fixture.getName().equals(name) && fixture.getStatus().equals(status) &&
+		return fixture.getTownSize() == townSize &&
+			fixture.getName().equals(name) && fixture.getStatus() == status &&
 			fixture.getOwner().equals(owner) &&
 			Objects.equals(population, fixture.getPopulation());
 	}

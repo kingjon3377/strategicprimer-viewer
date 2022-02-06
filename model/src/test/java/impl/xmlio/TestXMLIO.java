@@ -2229,15 +2229,15 @@ public final class TestXMLIO {
 	public void testRoadSerialization(final Direction directionOne, final int qualityOne, final Direction directionTwo,
 	                                  final int qualityTwo)
 			throws SPFormatException, MalformedXMLException, IOException {
-		assumeFalse(directionOne.equals(directionTwo),  "We can't have the same direction twice");
+		assumeFalse(directionOne == directionTwo,  "We can't have the same direction twice");
 		assumeTrue(qualityOne >= 0, "Road quality can't be negative");
 		assumeTrue(qualityTwo >= 0, "Road quality can't be negative");
 		IMutableMapNG map = createSimpleMap(new Point(1, 1),
 			Pair.with(new Point(0, 0), TileType.Plains));
-		if (!Direction.Nowhere.equals(directionOne)) {
+		if (Direction.Nowhere != directionOne) {
 			map.setRoadLevel(new Point(0, 0), directionOne, qualityOne);
 		}
-		if (!Direction.Nowhere.equals(directionTwo)) {
+		if (Direction.Nowhere != directionTwo) {
 			map.setRoadLevel(new Point(0, 0), directionTwo, qualityTwo);
 		}
 		assertSerialization("Map with roads is serialized properly.", map, Warning.DIE);

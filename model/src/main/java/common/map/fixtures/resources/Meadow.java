@@ -172,7 +172,7 @@ public class Meadow implements HarvestableFixture, HasExtent<Meadow> {
 			// TODO: Make NumberComparator.compare() static first, with the dynamic one delegating?
 			return kind.equals(((Meadow) obj).getKind()) &&
 				field == ((Meadow) obj).isField() &&
-				status.equals(((Meadow) obj).getStatus()) &&
+					       status == ((Meadow) obj).getStatus() &&
 				cultivated == ((Meadow) obj).isCultivated() &&
 				id == ((Meadow) obj).getId() &&
 				new NumberComparator().compare(acres, ((Meadow) obj).getAcres()) == 0;
@@ -186,7 +186,7 @@ public class Meadow implements HarvestableFixture, HasExtent<Meadow> {
 		if (fixture instanceof Meadow) {
 			return kind.equals(((Meadow) fixture).getKind()) &&
 				field == ((Meadow) fixture).isField() &&
-				status.equals(((Meadow) fixture).getStatus()) &&
+					       status == ((Meadow) fixture).getStatus() &&
 				cultivated == ((Meadow) fixture).isCultivated() &&
 				new NumberComparator().compare(acres, ((Meadow) fixture).getAcres()) == 0;
 		} else {
@@ -218,7 +218,7 @@ public class Meadow implements HarvestableFixture, HasExtent<Meadow> {
 					kind, id, s));
 			}
 			boolean retval = true;
-			if (!status.equals(((Meadow) other).getStatus())) {
+			if (status != ((Meadow) other).getStatus()) {
 				localReport.accept("Field status differs");
 				retval = false;
 			}

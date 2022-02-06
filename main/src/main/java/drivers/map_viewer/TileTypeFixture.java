@@ -37,7 +37,7 @@ import java.util.logging.Level;
 
 	@Override
 	public boolean equals(final Object obj) {
-		return obj instanceof TileTypeFixture && ((TileTypeFixture) obj).tileType.equals(tileType);
+		return obj instanceof TileTypeFixture && ((TileTypeFixture) obj).tileType == tileType;
 	}
 
 	@Override

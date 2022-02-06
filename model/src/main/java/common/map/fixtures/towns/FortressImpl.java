@@ -277,7 +277,7 @@ public class FortressImpl implements IMutableFortress {
 			report.accept("ID mismatch between Fortresses");
 			return false;
 		}
-		if (!townSize.equals(fort.getTownSize())) {
+		if (townSize != fort.getTownSize()) {
 			report.accept("Size mismatch between Fortresses");
 			return false;
 		}

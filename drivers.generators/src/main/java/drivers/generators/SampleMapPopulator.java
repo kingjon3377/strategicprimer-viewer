@@ -21,7 +21,7 @@ import common.map.fixtures.mobile.AnimalImpl;
 	public boolean isSuitable(final IMapNG map, final Point location) {
 		TileType terrain = map.getBaseTerrain(location);
 		return terrain != null && !map.isMountainous(location) &&
-			!TileType.Ocean.equals(terrain) &&
+				       TileType.Ocean != terrain &&
 				       map.getFixtures(location).stream().noneMatch(Forest.class::isInstance);
 	}
 

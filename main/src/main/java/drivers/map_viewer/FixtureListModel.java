@@ -214,7 +214,7 @@ public class FixtureListModel implements ListModel<TileFixture>, SelectionChange
 			TileType existingTerrain = terrainSource.apply(point);
 			TileTypeFixture ttf = (TileTypeFixture) fixture;
 			if (existingTerrain != null) {
-				if (existingTerrain.equals(ttf.getTileType())) {
+				if (existingTerrain == ttf.getTileType()) {
 					return true;
 				} else if (terrainSink != null) {
 					terrainSink.accept(point, ttf.getTileType());
@@ -307,8 +307,8 @@ public class FixtureListModel implements ListModel<TileFixture>, SelectionChange
 			if (fixture instanceof TileTypeFixture) {
 				TileType currentTerrain = terrainSource.apply(point);
 				if (currentTerrain != null &&
-						currentTerrain.equals(((TileTypeFixture) fixture)
-							.getTileType())) {
+						    currentTerrain == ((TileTypeFixture) fixture)
+								    .getTileType()) {
 					if (terrainSink != null) {
 						terrainSink.accept(point, null);
 						fireIntervalRemoved(new Range(0, 0));

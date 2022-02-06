@@ -156,7 +156,7 @@ import java.math.BigDecimal;
 		return map.streamLocations()
 			.flatMap(l -> map.getFixtures(l).stream().filter(ITownFixture.class::isInstance)
 				.map(ITownFixture.class::cast)
-				.filter(t -> TownStatus.Active.equals(t.getStatus()))
+				.filter(t -> TownStatus.Active == t.getStatus())
 				.map(f -> Pair.with(l, f)))
 			.collect(Collectors.toList());
 	}
@@ -212,9 +212,9 @@ import java.math.BigDecimal;
 	 * and the other is not, return false; otherwise, return true.
 	 */
 	private boolean bothOrNeitherOcean(@Nullable final TileType one, @Nullable final TileType two) {
-		if (TileType.Ocean.equals(one)) {
-			return TileType.Ocean.equals(two);
-		} else if (TileType.Ocean.equals(two)) {
+		if (TileType.Ocean == one) {
+			return TileType.Ocean == two;
+		} else if (TileType.Ocean == two) {
 			return false;
 		} else {
 			return true;
@@ -234,7 +234,7 @@ import java.math.BigDecimal;
 		} else if (fix instanceof Grove) {
 			return ((Grove) fix).isCultivated();
 		} else if (fix instanceof Mine) {
-			return TownStatus.Active.equals(((Mine) fix).getStatus());
+			return TownStatus.Active == ((Mine) fix).getStatus();
 		} else if (fix instanceof CacheFixture) {
 			return false;
 		} else if (fix instanceof Shrub || fix instanceof StoneDeposit) {
@@ -310,7 +310,7 @@ import java.math.BigDecimal;
 			} else if (fieldLoc != null) {
 				if (!bothOrNeitherOcean(map.getBaseTerrain(location),
 						map.getBaseTerrain(fieldLoc))) {
-					if (TileType.Ocean.equals(map.getBaseTerrain(location))) {
+					if (TileType.Ocean == map.getBaseTerrain(location)) {
 						cli.println(
 							"That would be a land resource worked by an aquatic town.");
 					} else {
@@ -454,7 +454,7 @@ import java.math.BigDecimal;
 		IntSupplier skillLevelSource;
 		int resourceCount;
 		if (town instanceof Village) {
-			if (!TownSize.Small.equals(town.getTownSize())) {
+			if (TownSize.Small != town.getTownSize()) {
 				throw new IllegalStateException(
 					"Don't know how to handle non-small villages");
 			}
@@ -493,7 +493,7 @@ import java.math.BigDecimal;
 		if (terrain == null) {
 			skillTable = "plains_skills";
 			consumptionTableName = "plains";
-		} else if (TileType.Ocean.equals(terrain)) {
+		} else if (TileType.Ocean == terrain) {
 			skillTable = "ocean_skills";
 			consumptionTableName = "ocean";
 		} else if (map.isMountainous(location)) {

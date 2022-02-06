@@ -206,7 +206,7 @@ public class QueryCLI implements ReadOnlyDriver {
 			} else if (currentTerrain == null) {
 				retval.add(current);
 			} else {
-				if (!TileType.Ocean.equals(currentTerrain)) {
+				if (TileType.Ocean != currentTerrain) {
 					double baseDistance = distance(base, current, dimensions);
 					for (Point neighbor : new SurroundingPointIterable(current,
 							dimensions, 1)) {
@@ -233,7 +233,7 @@ public class QueryCLI implements ReadOnlyDriver {
 			for (ITownFixture town : map.getFixtures(location).stream()
 					.filter(ITownFixture.class::isInstance)
 					.map(ITownFixture.class::cast).collect(Collectors.toList())) {
-				if (TownStatus.Active.equals(town.getStatus()) &&
+				if (TownStatus.Active == town.getStatus() &&
 						town.getPopulation() != null &&
 						!town.getPopulation().getYearlyProduction().isEmpty()) {
 					cli.print("At ", location.toString());

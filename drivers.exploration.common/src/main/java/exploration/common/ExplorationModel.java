@@ -403,8 +403,8 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 		TileType startingTerrain = getMap().getBaseTerrain(point);
 		if (terrain != null && startingTerrain != null &&
 				((SimpleMovementModel.landMovementPossible(terrain) &&
-					!TileType.Ocean.equals(startingTerrain)) ||
-				(TileType.Ocean.equals(startingTerrain) &&
+						  TileType.Ocean != startingTerrain) ||
+				(TileType.Ocean == startingTerrain &&
 					terrain == TileType.Ocean))) {
 			int base;
 			if (dest.equals(point)) {
@@ -444,13 +444,13 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 				LOGGER.fine("Main map doesn't have terrain for destination");
 			} else {
 				if (SimpleMovementModel.landMovementPossible(terrain) &&
-						TileType.Ocean.equals(startingTerrain)) {
+						    TileType.Ocean == startingTerrain) {
 					LOGGER.fine("Starting in ocean, trying to get to " + terrain);
-				} else if (TileType.Ocean.equals(startingTerrain) &&
-						!TileType.Ocean.equals(terrain)) {
+				} else if (TileType.Ocean == startingTerrain &&
+						                                                                                              TileType.Ocean != terrain) {
 					LOGGER.fine("Land movement not possible from ocean to " + terrain);
-				} else if (!TileType.Ocean.equals(startingTerrain) &&
-						TileType.Ocean.equals(terrain)) {
+				} else if (TileType.Ocean != startingTerrain &&
+						           TileType.Ocean == terrain) {
 					LOGGER.fine(String.format("Starting in %s, trying to get to ocean",
 						startingTerrain));
 				} else {
@@ -763,7 +763,7 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 			}
 			TileType terrain = getMap().getBaseTerrain(location);
 			if (terrain != null &&
-					!terrain.equals(subMap.getBaseTerrain(location))) {
+					    terrain != subMap.getBaseTerrain(location)) {
 				subMap.setBaseTerrain(location, terrain);
 				subMap.setModified(true);
 			}

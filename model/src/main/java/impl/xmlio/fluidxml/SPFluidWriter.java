@@ -251,7 +251,7 @@ public class SPFluidWriter implements SPWriter {
 		writeTag(ostream, "fortress", indentation, false);
 		writeAttributes(ostream, Pair.with("owner", obj.getOwner().getPlayerId()));
 		writeNonEmptyAttributes(ostream, Pair.with("name", obj.getName()));
-		if (!TownSize.Small.equals(obj.getTownSize())) {
+		if (TownSize.Small != obj.getTownSize()) {
 			writeAttributes(ostream, Pair.with("size", obj.getTownSize().toString()));
 		}
 		writeAttributes(ostream, Pair.with("id", obj.getId()));

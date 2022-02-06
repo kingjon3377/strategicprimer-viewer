@@ -118,7 +118,7 @@ import java.util.stream.StreamSupport;
 				((UtilityDriverFactory) factory).createDriver(cli, options).startDriver(args);
 			} else if (factory instanceof ModelDriverFactory) { // TODO: refactor to avoid successive instanceof tests
 				if (factory instanceof GUIDriverFactory) {
-					if (ParamCount.One.equals(factory.getUsage().getParamsWanted()) && args.length > 1) {
+					if (ParamCount.One == factory.getUsage().getParamsWanted() && args.length > 1) {
 						for (String arg : args) {
 							startCatchingErrors(cli, options, arg);
 						}

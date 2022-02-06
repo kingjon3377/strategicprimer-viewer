@@ -113,7 +113,7 @@ import org.jetbrains.annotations.Nullable;
 		while (time > 0) {
 			final TrapperCommand command = cli.chooseFromList(trapperCommands, prompt,
 				"Oops! No commands", "Next action: ", false).getValue1();
-			if (command == null || TrapperCommand.Quit.equals(command)) {
+			if (command == null || TrapperCommand.Quit == command) {
 				break;
 			}
 			boolean out = false;

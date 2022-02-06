@@ -99,7 +99,7 @@ import java.util.stream.Collectors;
 
 	public static void writeRiver(final XMLStreamWriter ostream, final River obj, final int indent)
 			throws MalformedXMLException {
-		if (River.Lake.equals(obj)) {
+		if (River.Lake == obj) {
 			writeTag(ostream, "lake", indent, true);
 		} else {
 			writeTag(ostream, "river", indent, true);

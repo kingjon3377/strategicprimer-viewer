@@ -55,7 +55,7 @@ public final class SimpleMovementModel {
 	 * Whether land movement is possible on the given terrain.
 	 */
 	public static boolean landMovementPossible(final TileType terrain) {
-		return !TileType.Ocean.equals(terrain);
+		return TileType.Ocean != terrain;
 	}
 
 	/**
@@ -103,16 +103,16 @@ public final class SimpleMovementModel {
 	                               final boolean river, final Iterable<TileFixture> fixtures) {
 		if (terrain == null) {
 			return Integer.MAX_VALUE - 1;
-		} else if (TileType.Ocean.equals(terrain)) {
+		} else if (TileType.Ocean == terrain) {
 			return Integer.MAX_VALUE - 1;
 		} else if (forest || mountain || Stream.of(fixtures)
 					.anyMatch(fix -> fix instanceof Forest || fix instanceof Hill) ||
-				TileType.Desert.equals(terrain)) {
+				           TileType.Desert == terrain) {
 			return (river) ? 2 : 3;
-		} else if (TileType.Jungle.equals(terrain) || TileType.Swamp.equals(terrain)) {
+		} else if (TileType.Jungle == terrain || TileType.Swamp == terrain) {
 			return (river) ? 4 : 6;
-		} else if (TileType.Steppe.equals(terrain) || TileType.Plains.equals(terrain) ||
-				TileType.Tundra.equals(terrain)) {
+		} else if (TileType.Steppe == terrain || TileType.Plains == terrain ||
+				           TileType.Tundra == terrain) {
 			return (river) ? 1 : 2;
 		} else {
 			throw new IllegalStateException("Unhandled terrain type");

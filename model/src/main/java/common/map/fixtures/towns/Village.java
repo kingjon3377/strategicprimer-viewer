@@ -214,7 +214,7 @@ public class Village implements IMutableTownFixture, HasMutableImage, IFixture,
 	 */
 	@Override
 	public boolean equals(final Object obj) {
-		if (obj instanceof Village && status.equals(((Village) obj).getStatus()) &&
+		if (obj instanceof Village && status == ((Village) obj).getStatus() &&
 				name.equals(((Village) obj).getName()) && id == ((Village) obj).getId() &&
 				owner.equals(((Village) obj).getOwner()) &&
 				race.equals(((Village) obj).getRace())) {
@@ -238,7 +238,7 @@ public class Village implements IMutableTownFixture, HasMutableImage, IFixture,
 	 */
 	@Override
 	public boolean equalsIgnoringID(final IFixture fixture) {
-		if (fixture instanceof Village && status.equals(((Village) fixture).getStatus()) &&
+		if (fixture instanceof Village && status == ((Village) fixture).getStatus() &&
 				name.equals(((Village) fixture).getName()) &&
 				owner.equals(((Village) fixture).getOwner())) {
 			return Objects.equals(population, ((Village) fixture).getPopulation());
@@ -271,7 +271,7 @@ public class Village implements IMutableTownFixture, HasMutableImage, IFixture,
 		if (obj instanceof Village) {
 			if (id != ((Village) obj).getId()) {
 				report.accept("IDs differ");
-			} else if (!status.equals(((Village) obj).getStatus())) {
+			} else if (status != ((Village) obj).getStatus()) {
 				report.accept(String.format("In village (ID #%d):\tVillage status differs",
 					id));
 			} else if (name.equals(((Village) obj).getName())) {
@@ -311,7 +311,7 @@ public class Village implements IMutableTownFixture, HasMutableImage, IFixture,
 	 */
 	@Override
 	public int getDC() {
-		if (TownStatus.Active.equals(status)) {
+		if (TownStatus.Active == status) {
 			if (population == null) {
 				return 15;
 			} else if (population.getPopulation() < 10) {

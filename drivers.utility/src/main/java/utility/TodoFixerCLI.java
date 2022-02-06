@@ -156,7 +156,7 @@ public class TodoFixerCLI implements CLIDriver {
 
 	private String simpleTerrain(final IMapNG map, final Point loc) {
 		TileType terrain = map.getBaseTerrain(loc);
-		if (TileType.Ocean.equals(terrain)) {
+		if (TileType.Ocean == terrain) {
 			return "ocean";
 		} else if (map.isMountainous(loc)) {
 			return "mountain";
@@ -183,7 +183,7 @@ public class TodoFixerCLI implements CLIDriver {
 	 */
 	private void fixAllVillages(final IMapNG map) throws MissingTableException, IOException {
 		List<Village> villages = map.streamLocations()
-			.filter(l -> TileType.Ocean.equals(map.getBaseTerrain(l)))
+			.filter(l -> TileType.Ocean == map.getBaseTerrain(l))
 			.flatMap(l -> map.getFixtures(l).stream())
 			.filter(Village.class::isInstance).map(Village.class::cast)
 			.filter(v -> LandRaces.LAND_RACES.contains(v.getRace()))

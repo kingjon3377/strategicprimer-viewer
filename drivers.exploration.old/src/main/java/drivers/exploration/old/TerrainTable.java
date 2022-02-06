@@ -47,9 +47,9 @@ class TerrainTable implements EncounterTable {
 			.anyMatch(Forest.class::isInstance);
 		if (mountainous) {
 			actual = "mountain";
-		} else if (TileType.Plains.equals(terrain) && forested) {
+		} else if (TileType.Plains == terrain && forested) {
 			actual = "temperate_forest";
-		} else if (TileType.Steppe.equals(terrain) && forested) {
+		} else if (TileType.Steppe == terrain && forested) {
 			actual = "boreal_forest";
 		} else {
 			actual = terrain.getXml();

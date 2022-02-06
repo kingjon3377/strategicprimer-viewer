@@ -148,7 +148,7 @@ import common.map.fixtures.mobile.AnimalTracks;
 	}
 
 	private static boolean withNonLake(final Iterable<River> iter) {
-		return StreamSupport.stream(iter.spliterator(), true).anyMatch(r -> !River.Lake.equals(r));
+		return StreamSupport.stream(iter.spliterator(), true).anyMatch(r -> River.Lake != r);
 	}
 
 	private static String countOfKind(final Pair<String, ? extends Number> pair) {
@@ -275,7 +275,7 @@ import common.map.fixtures.mobile.AnimalTracks;
 		cli.println(String.format("- %d active towns, cities, or fortifications of any size",
 			allFixtures.stream().filter(AbstractTown.class::isInstance)
 				.map(AbstractTown.class::cast)
-				.filter(t -> TownStatus.Active.equals(t.getStatus())).count()));
+				.filter(t -> TownStatus.Active == t.getStatus()).count()));
 
 		MappedCounter<Village, String, Integer> villages = simpleCounter(Village::getRace);
 		allFixtures.stream().filter(Village.class::isInstance).map(Village.class::cast)
@@ -285,7 +285,7 @@ import common.map.fixtures.mobile.AnimalTracks;
 		MappedCounter<AbstractTown, String, Integer> inactiveTowns = simpleCounter(
 			CountingCLI::townSummary);
 		allFixtures.stream().filter(AbstractTown.class::isInstance).map(AbstractTown.class::cast)
-			.filter(t -> !TownStatus.Active.equals(t.getStatus())).forEach(inactiveTowns::add);
+			.filter(t -> TownStatus.Active != t.getStatus()).forEach(inactiveTowns::add);
 		printSummary(inactiveTowns, "Inactive Communities:");
 
 		MappedCounter<IUnit, String, Integer> independentUnits =
