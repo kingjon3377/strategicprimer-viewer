@@ -5,6 +5,7 @@ import buckelieg.jdbc.fn.DB;
 import common.map.IFixture;
 import common.map.IMutableMapNG;
 import common.map.IMapNG;
+import common.map.fixtures.FixtureIterable;
 import common.xmlio.Warning;
 
 import org.jetbrains.annotations.Nullable;
@@ -44,8 +45,8 @@ interface MapContentsReader {
 		for (IFixture fixture : stream) {
 			if (fixture.getId() == id) {
 				return fixture;
-			} else if (fixture instanceof Iterable) { // TODO: FixtureIterable once in place
-				IFixture retval = findByIdImpl((Iterable<IFixture>) fixture, id);
+			} else if (fixture instanceof FixtureIterable) {
+				IFixture retval = findByIdImpl((FixtureIterable<IFixture>) fixture, id);
 				if (retval != null) {
 					return retval;
 				}
