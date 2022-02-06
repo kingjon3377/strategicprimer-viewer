@@ -317,10 +317,9 @@ import java.util.function.Predicate;
 									getIntegerParameter((StartElement) event, "quality"));
 							break;
 						default:
-							QName top = tagStack.peekFirst(); // TODO: probably remove
+							QName top = tagStack.peekFirst();
 
-							TileFixture child = parseFixture((StartElement) event,
-									tagStack.peekFirst(), stream);
+							TileFixture child = parseFixture((StartElement) event, top, stream);
 							if (child instanceof IFortress &&
 									    retval.getFixtures(point).stream()
 											    .filter(IFortress.class::isInstance)
@@ -328,7 +327,7 @@ import java.util.function.Predicate;
 											    .map(IFortress::getOwner)
 											    .anyMatch(((IFortress) child).getOwner()::equals)) {
 								warner.handle(new UnwantedChildException(
-										tagStack.peekFirst(), (StartElement) event,
+										top, (StartElement) event,
 										"Multiple fortresses owned by one player on a tile"));
 							}
 							retval.addFixture(point, child);
