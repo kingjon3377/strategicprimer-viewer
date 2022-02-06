@@ -377,7 +377,7 @@ public class WorkerTreeModelAlt extends DefaultTreeModel implements IWorkerTreeM
 			.findAny().orElse(null);
 		UnitNode unitNode = Optional.ofNullable(kindNode).map(WorkerTreeNode::stream)
 			.orElse(Stream.empty()).filter(UnitNode.class::isInstance).map(UnitNode.class::cast)
-			.filter(n -> unit.getKind().equals(n.getUserObject())).findAny().orElse(null);
+			.filter(n -> unit.equals(n.getUserObject())).findAny().orElse(null);
 		if (kindNode != null && unitNode != null) {
 			model.addUnitMember(unit, member);
 			MutableTreeNode newNode = new UnitMemberNode(member);
