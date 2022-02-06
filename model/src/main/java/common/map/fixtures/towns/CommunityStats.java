@@ -1,5 +1,6 @@
 package common.map.fixtures.towns;
 
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -102,7 +103,7 @@ public final class CommunityStats implements Subsettable<@Nullable CommunityStat
 	 *
 	 * TODO: Use a BitSet/RoaringBitMap?
 	 */
-	public Iterable<Integer> getWorkedFields() {
+	public Collection<Integer> getWorkedFields() {
 		return Collections.unmodifiableSet(workedFieldIDs);
 	}
 
@@ -204,10 +205,7 @@ public final class CommunityStats implements Subsettable<@Nullable CommunityStat
 			if (population < other.getPopulation()) {
 				report.accept("Population is larger");
 				return false;
-			} else if (!workedFieldIDs.containsAll(StreamSupport
-					.stream(other.getWorkedFields().spliterator(), true)
-					.collect(Collectors.toList()))) {
-				// TODO: drop the stream() once we get getWorkedFields() to return Collection.
+			} else if (!workedFieldIDs.containsAll(other.getWorkedFields())) {
 				report.accept("Has worked fields we don't");
 				return false;
 			} else {

@@ -194,7 +194,7 @@ import java.math.BigDecimal;
 		return map.streamAllFixtures()
 			.filter(ITownFixture.class::isInstance).map(ITownFixture.class::cast)
 			.map(ITownFixture::getPopulation).filter(Objects::nonNull)
-			.flatMap(t -> StreamSupport.stream(t.getWorkedFields().spliterator(), true))
+			.flatMap(t -> t.getWorkedFields().stream())
 			.anyMatch(n -> id == n);
 	}
 
