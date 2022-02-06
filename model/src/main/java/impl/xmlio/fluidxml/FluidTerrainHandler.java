@@ -19,7 +19,6 @@ import impl.xmlio.exceptions.MissingPropertyException;
 import common.xmlio.SPFormatException;
 import lovelace.util.MalformedXMLException;
 import common.map.HasExtent;
-import java.util.stream.StreamSupport;
 import java.util.stream.Collectors;
 
 /* package */ class FluidTerrainHandler extends FluidBase {

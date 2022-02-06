@@ -3,7 +3,6 @@ package drivers.generators;
 import drivers.common.IDriverModel;
 import drivers.common.SimpleMultiMapModel;
 
-import common.map.HasOwner;
 import common.map.IFixture;
 import common.map.IMapNG;
 import common.map.IMutableMapNG;

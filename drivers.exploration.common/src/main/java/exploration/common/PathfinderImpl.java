@@ -13,7 +13,6 @@ import common.map.Direction;
 import common.map.Point;
 import common.map.fixtures.terrain.Forest;
 import java.util.function.Predicate;
-import java.util.Comparator;
 import java.util.Collections;
 import java.util.Optional;
 import java.util.logging.Logger;

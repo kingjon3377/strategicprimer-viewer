@@ -25,7 +25,6 @@ import common.map.TileFixture;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 /**
  * A tabular report generator for resources, including {@link CacheFixture
