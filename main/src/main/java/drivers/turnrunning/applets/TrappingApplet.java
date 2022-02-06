@@ -168,6 +168,9 @@ import org.jetbrains.annotations.Nullable;
 			default:
 				throw new IllegalStateException("Exhaustive switch wasn't");
 			}
+			if (out) {
+				break;
+			}
 			cli.print(inHours(time));
 			cli.println(" remaining.");
 			String addendum = cli.inputMultilineString("Add to results about that:");
