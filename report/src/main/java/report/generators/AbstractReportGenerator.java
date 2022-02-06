@@ -250,7 +250,7 @@ public abstract class AbstractReportGenerator<Type extends IFixture> implements 
 
 		@Override
 		public boolean equals(final Object that) {
-			return wrapped.equals(that);
+			return that instanceof HeadedMap && wrapped.equals(that);
 		}
 
 		@Override
