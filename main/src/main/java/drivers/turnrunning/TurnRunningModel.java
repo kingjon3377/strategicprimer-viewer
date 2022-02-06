@@ -598,19 +598,7 @@ public class TurnRunningModel extends ExplorationModel implements ITurnRunningMo
 	@Override
 	public boolean transferResource(final IResourcePile from, final IUnit to, final BigDecimal quantity, final IntSupplier idFactory) {
 		boolean any = false;
-		IntSupplier id = new IntSupplier() {
-			private Integer generatedId = null;
-			@Override
-			public int getAsInt() {
-				if (generatedId != null) {
-					return generatedId;
-				} else {
-					int temp = idFactory.getAsInt();
-					generatedId = temp;
-					return temp;
-				}
-			}
-		};
+		IntSupplier id = new GenerateOnce(idFactory);
 
 		for (IMutableMapNG map : getRestrictedAllMaps()) {
 			for (FixtureIterable<?> container : map.streamAllFixtures()
@@ -672,19 +660,7 @@ public class TurnRunningModel extends ExplorationModel implements ITurnRunningMo
 	@Override
 	public boolean transferResource(final IResourcePile from, final IFortress to, final BigDecimal quantity, final IntSupplier idFactory) {
 		boolean any = false;
-		IntSupplier id = new IntSupplier() {
-			Integer generatedId = null;
-			@Override
-			public int getAsInt() {
-				if (generatedId != null) {
-					return generatedId;
-				} else {
-					int temp = idFactory.getAsInt();
-					generatedId = temp;
-					return temp;
-				}
-			}
-		};
+		IntSupplier id = new GenerateOnce(idFactory);
 
 		for (IMutableMapNG map : getRestrictedAllMaps()) {
 			for (FixtureIterable<?> container : map.streamAllFixtures()
@@ -759,5 +735,26 @@ public class TurnRunningModel extends ExplorationModel implements ITurnRunningMo
 			result.addMember(resource.copy(false));
 		}
 		return any;
+	}
+
+	private static class GenerateOnce implements IntSupplier {
+		private final IntSupplier idFactory;
+		Integer generatedId;
+
+		public GenerateOnce(final IntSupplier idFactory) {
+			this.idFactory = idFactory;
+			generatedId = null;
+		}
+
+		@Override
+		public int getAsInt() {
+			if (generatedId != null) {
+				return generatedId;
+			} else {
+				int temp = idFactory.getAsInt();
+				generatedId = temp;
+				return temp;
+			}
+		}
 	}
 }
