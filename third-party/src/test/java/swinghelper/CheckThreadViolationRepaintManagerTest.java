@@ -1,4 +1,4 @@
-package lovelace.util;
+package swinghelper;
 
 import org.jetbrains.annotations.Nullable;
 
