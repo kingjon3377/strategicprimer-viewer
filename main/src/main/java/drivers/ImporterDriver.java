@@ -60,7 +60,7 @@ import org.jetbrains.annotations.Nullable;
 		BorealForest("boreal forest"),
 		TemperateForest("temperate forest");
 
-		private ImportableTerrain(final String name) {
+		ImportableTerrain(final String name) {
 			this.name = name;
 		}
 

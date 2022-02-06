@@ -83,7 +83,7 @@ public enum Speed implements HasName {
 		return shortName;
 	}
 
-	private Speed(final double multMod, final int addMod, final String desc) {
+	Speed(final double multMod, final int addMod, final String desc) {
 		mpMultiplier = multMod;
 		perceptionModifier = addMod;
 		String perceptionString = (addMod >= 0) ? String.format("+%d", addMod) :

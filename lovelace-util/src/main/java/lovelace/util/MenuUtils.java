@@ -25,7 +25,7 @@ public final class MenuUtils {
 		public int getMask() {
 			return mask;
 		}
-		private HotKeyModifier(final int mask) {
+		HotKeyModifier(final int mask) {
 			this.mask = mask;
 		}
 	}

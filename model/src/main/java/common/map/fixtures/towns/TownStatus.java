@@ -9,7 +9,7 @@ public enum TownStatus {
 	Ruined("ruined"),
 	Burned("burned");
 
-	private TownStatus(final String str) {
+	TownStatus(final String str) {
 		string = str;
 	}
 

@@ -8,7 +8,7 @@ public enum TownSize {
 	Medium("medium"),
 	Large("large");
 
-	private TownSize(final String str) {
+	TownSize(final String str) {
 		string = str;
 	}
 

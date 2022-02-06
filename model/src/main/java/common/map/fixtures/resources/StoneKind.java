@@ -16,7 +16,7 @@ public enum StoneKind {
 	Laterite("laterite"),
 	Shale("shale");
 
-	private StoneKind(final String str) {
+	StoneKind(final String str) {
 		string = str;
 	}
 

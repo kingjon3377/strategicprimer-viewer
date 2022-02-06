@@ -22,7 +22,7 @@ public enum River {
 	 */
 	Lake("lake");
 
-	private River(final String description) {
+	River(final String description) {
 		this.description = description;
 		string = description.substring(0, 1).toUpperCase() + description.substring(1);
 

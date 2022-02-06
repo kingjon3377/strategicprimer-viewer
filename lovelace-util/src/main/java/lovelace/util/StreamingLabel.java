@@ -18,7 +18,7 @@ public final class StreamingLabel extends JEditorPane {
 		public String getColorName() {
 			return colorName;
 		}
-		private LabelTextColor(final String color) {
+		LabelTextColor(final String color) {
 			colorName = color;
 		}
 	}

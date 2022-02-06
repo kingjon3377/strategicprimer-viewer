@@ -82,7 +82,7 @@ public enum MammalModel implements HerdModel {
 	/**
 	 * @param production The amount produced per head per turn, in gallons
 	 */
-	private MammalModel(final double production, final int dailyTimePerHead, final String nomen) {
+	MammalModel(final double production, final int dailyTimePerHead, final String nomen) {
 		this.dailyTimePerHead = dailyTimePerHead;
 		productionPerHead = new Quantity(production, "gallons");
 		name = nomen;

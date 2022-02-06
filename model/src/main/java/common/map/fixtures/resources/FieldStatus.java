@@ -26,7 +26,7 @@ public enum FieldStatus {
 	 */
 	Bearing("bearing");
 	private final String string;
-	private FieldStatus(final String str) {
+	FieldStatus(final String str) {
 		string = str;
 	}
 	@Override

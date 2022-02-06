@@ -21,7 +21,7 @@ public enum Direction implements Comparable<Direction> {
 	Southwest("southwest"),
 	South("south"),
 	Southeast("southeast");
-	private Direction(final String string) {
+	Direction(final String string) {
 		this.string = string;
 	}
 	/**

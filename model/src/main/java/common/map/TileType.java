@@ -93,7 +93,7 @@ public enum TileType implements HasName {
 		return Collections.unmodifiableSet(versions);
 	}
 
-	private TileType(final String desc, final String xmlDesc, final int... vers) {
+	TileType(final String desc, final String xmlDesc, final int... vers) {
 		string = desc;
 		xml = xmlDesc;
 		for (int ver : vers) {

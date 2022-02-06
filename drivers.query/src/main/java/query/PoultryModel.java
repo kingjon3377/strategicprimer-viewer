@@ -95,8 +95,8 @@ public enum PoultryModel implements HerdModel {
 	/**
 	 * @param production The number of eggs produced per head per turn.
 	 */
-	private PoultryModel(final double production, final double poundsCoefficient, final int dailyTimePerHead,
-	                     final int extraChoresInterval, final String nomen) {
+	PoultryModel(final double production, final double poundsCoefficient, final int dailyTimePerHead,
+	             final int extraChoresInterval, final String nomen) {
 		this.poundsCoefficient = poundsCoefficient;
 		this.dailyTimePerHead = dailyTimePerHead;
 		this.extraChoresInterval = extraChoresInterval;

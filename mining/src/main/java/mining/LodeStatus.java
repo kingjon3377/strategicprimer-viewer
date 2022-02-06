@@ -110,15 +110,15 @@ enum LodeStatus {
 		return notHigherProbability;
 	}
 
-	private LodeStatus(final int qty) {
+	LodeStatus(final int qty) {
 		this(qty, 0.5);
 	}
 
-	private LodeStatus(final int qty, final double lowerChance) {
+	LodeStatus(final int qty, final double lowerChance) {
 		this(qty, lowerChance, 0.8);
 	}
 
-	private LodeStatus(final int qty, final double lowerChance, final double notHigherChance) {
+	LodeStatus(final int qty, final double lowerChance, final double notHigherChance) {
 		ratio = qty;
 		lowerProbability = lowerChance;
 		notHigherProbability = notHigherChance;

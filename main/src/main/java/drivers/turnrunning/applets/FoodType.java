@@ -92,10 +92,10 @@ import org.jetbrains.annotations.Nullable;
 		return string;
     	}
 
-	private FoodType(@Nullable final Integer keepsFor, @Nullable final Integer keepsForIfCool,
-	                 @Nullable final Integer keepsForRefrig, @Nullable final Integer keepsForFrozen,
-	                 @Nullable final BigDecimal fracSpoilingDaily, @Nullable final BigDecimal minSpoilage,
-	                 final String str) {
+	FoodType(@Nullable final Integer keepsFor, @Nullable final Integer keepsForIfCool,
+	         @Nullable final Integer keepsForRefrig, @Nullable final Integer keepsForFrozen,
+	         @Nullable final BigDecimal fracSpoilingDaily, @Nullable final BigDecimal minSpoilage,
+	         final String str) {
 		this.keepsFor = keepsFor;
 		this.keepsForIfCool = keepsForIfCool;
 		this.keepsForRefrigerated = keepsForRefrig;
