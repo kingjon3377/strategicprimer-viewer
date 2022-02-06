@@ -1,5 +1,6 @@
 package report.generators.tabular;
 
+import java.util.List;
 import org.javatuples.Pair;
 import org.jetbrains.annotations.Nullable;
 
@@ -63,10 +64,10 @@ public class FortressTabularReportGenerator implements ITableGenerator<IFortress
 	 * Create a table row representing the fortress.
 	 */
 	@Override
-	public Iterable<Iterable<String>> produce(
+	public List<List<String>> produce(
 			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
 			final IFortress item, final int key, final Point loc, final Map<Integer, Integer> parentMap) {
-		Iterable<String> retval = Arrays.asList(distanceString(loc, hq, dimensions),
+		List<String> retval = Arrays.asList(distanceString(loc, hq, dimensions),
 			locationString(loc), ownerString(player, item.getOwner()), item.getName());
 		// Players shouldn't be able to see the contents of others' fortresses
 		// in other tables.
@@ -74,7 +75,7 @@ public class FortressTabularReportGenerator implements ITableGenerator<IFortress
 			item.stream().map(IFixture::getId).forEach(fixtures::remove);
 		}
 		fixtures.remove(key);
-		return Collections.singleton(retval);
+		return Collections.singletonList(retval);
 	}
 
 	/**

@@ -1,6 +1,7 @@
 package report.generators.tabular;
 
 import java.io.IOException;
+import java.util.List;
 import org.javatuples.Pair;
 import org.javatuples.Triplet;
 import org.jetbrains.annotations.Nullable;
@@ -73,7 +74,7 @@ public class ResourceTabularReportGenerator
 	 * Create a table row representing the given fixture.
 	 */
 	@Override
-	public Iterable<Iterable<String>> produce(
+	public List<List<String>> produce(
 			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
 			/*Implement|CacheFixture|IResourcePile*/final TileFixture item, final int key, final Point loc,
 			final Map<Integer, Integer> parentMap) {
@@ -96,7 +97,7 @@ public class ResourceTabularReportGenerator
 			return Collections.emptyList();
 		}
 		fixtures.remove(key);
-		return Collections.singleton(Arrays.asList(distanceString(loc, hq, dimensions),
+		return Collections.singletonList(Arrays.asList(distanceString(loc, hq, dimensions),
 			locationString(loc), kind, quantity, specifics));
 	}
 
@@ -180,9 +181,8 @@ public class ResourceTabularReportGenerator
 					num + ((Implement) fixture).getCount());
 				fixtures.remove(key);
 			} else {
-				for (Iterable<String> row : produce(fixtures, fixture, key, loc, parentMap)) {
-					writeRow(ostream, StreamSupport.stream(row.spliterator(), false)
-						.toArray(String[]::new));
+				for (List<String> row : produce(fixtures, fixture, key, loc, parentMap)) {
+					writeRow(ostream, row.toArray(new String[0]));
 					fixtures.remove(key);
 				}
 			}

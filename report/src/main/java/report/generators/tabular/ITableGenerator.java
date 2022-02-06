@@ -1,6 +1,7 @@
 package report.generators.tabular;
 
 import java.io.IOException;
+import java.util.List;
 import lovelace.util.ThrowingConsumer;
 import org.jetbrains.annotations.Nullable;
 
@@ -59,11 +60,9 @@ public interface ITableGenerator<T extends IFixture> {
 		writeRow(ostream, StreamSupport.stream(getHeaderRow().spliterator(), false)
 			.toArray(String[]::new));
 		for (Triplet<Integer, Point, T> triplet : values) {
-			for (Iterable<String> row : produce(fixtures, triplet.getValue2(),
+			for (List<String> row : produce(fixtures, triplet.getValue2(),
 					triplet.getValue0(), triplet.getValue1(), parentMap)) {
-				// TODO: Declare produce() to produce List, not just Iterable
-				writeRow(ostream, StreamSupport.stream(row.spliterator(), false)
-					.toArray(String[]::new));
+				writeRow(ostream, row.toArray(new String[0]));
 			}
 		}
 		fixtures.coalesce();
@@ -87,11 +86,11 @@ public interface ITableGenerator<T extends IFixture> {
 			getHeaderRow().spliterator(), false).toArray(Object[]::new), 0);
 		int count = 0;
 		for (Triplet<Integer, Point, T> triplet : values) {
-			for (Iterable<String> row : produce(fixtures, triplet.getValue2(),
+			for (List<String> row : produce(fixtures, triplet.getValue2(),
 					triplet.getValue0(), triplet.getValue1(), parentMap)) {
 				// TODO: We'd like special handling of numeric fields ...
-				retval.addRow(StreamSupport.stream(
-					row.spliterator(), false).toArray(String[]::new));
+				// TODO: Offer a version of addRow() that takes a List?
+				retval.addRow(row.toArray(new String[0]));
 				count++;
 			}
 		}
@@ -112,8 +111,8 @@ public interface ITableGenerator<T extends IFixture> {
 	 * @param loc The location of this item in the map.
 	 * @param parentMap The mapping from children's to parents' IDs
 	 */
-	Iterable<Iterable<String>> produce(DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-		T item, int key, Point loc, Map<Integer, Integer> parentMap);
+	List<List<String>> produce(DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
+	                           T item, int key, Point loc, Map<Integer, Integer> parentMap);
 
 	/**
 	 * Given two points, return a number sufficiently proportional to the

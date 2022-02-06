@@ -40,10 +40,10 @@ public class SkillTabularReportGenerator implements ITableGenerator<IWorker> {
 	}
 
 	@Override
-	public Iterable<Iterable<String>> produce(
+	public List<List<String>> produce(
 			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures, final IWorker item,
 			final int key, final Point loc, final Map<Integer, Integer> parentMap) {
-		List<Iterable<String>> retval = new ArrayList<>();
+		List<List<String>> retval = new ArrayList<>();
 		String unitId = Optional.ofNullable(parentMap.get(item.getId()))
 			.map(Object::toString).orElse("---");
 		for (IJob job : item) {

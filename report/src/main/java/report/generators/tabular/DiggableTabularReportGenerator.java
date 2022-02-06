@@ -1,5 +1,6 @@
 package report.generators.tabular;
 
+import java.util.List;
 import org.javatuples.Pair;
 import org.jetbrains.annotations.Nullable;
 
@@ -66,7 +67,7 @@ public class DiggableTabularReportGenerator implements ITableGenerator<MineralFi
 	 * Create a table row representing a fixture.
 	 */
 	@Override
-	public Iterable<Iterable<String>> produce(
+	public List<List<String>> produce(
 			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures, final MineralFixture item,
 			final int key, final Point loc, final Map<Integer, Integer> parentMap) {
 		String classField;
@@ -87,7 +88,7 @@ public class DiggableTabularReportGenerator implements ITableGenerator<MineralFi
 			return Collections.emptyList();
 		}
 		fixtures.remove(key);
-		return Collections.singleton(Arrays.asList(distanceString(loc, hq, dimensions),
+		return Collections.singletonList(Arrays.asList(distanceString(loc, hq, dimensions),
 			locationString(loc), classField, item.getKind(), statusField));
 	}
 

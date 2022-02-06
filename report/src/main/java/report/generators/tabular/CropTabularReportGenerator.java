@@ -1,5 +1,6 @@
 package report.generators.tabular;
 
+import java.util.List;
 import org.javatuples.Pair;
 import org.jetbrains.annotations.Nullable;
 
@@ -87,7 +88,7 @@ public class CropTabularReportGenerator implements ITableGenerator</*Forest|Shru
 	 * Create a table row representing the crop.
 	 */
 	@Override
-	public Iterable<Iterable<String>> produce(
+	public List<List<String>> produce(
 			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
 			/*Forest|Shrub|Meadow|Grove*/ final TileFixture item, final int key, final Point loc,
 			final Map<Integer, Integer> parentMap) {
@@ -149,7 +150,7 @@ public class CropTabularReportGenerator implements ITableGenerator</*Forest|Shru
 			return Collections.emptyList();
 		}
 		fixtures.remove(key);
-		return Collections.singleton(Arrays.asList(distanceString(loc, hq, dimensions),
+		return Collections.singletonList(Arrays.asList(distanceString(loc, hq, dimensions),
 			locationString(loc), kind, size, sizeUnit, cultivation, status, crop));
 	}
 

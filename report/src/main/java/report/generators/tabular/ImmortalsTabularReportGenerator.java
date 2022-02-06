@@ -1,5 +1,6 @@
 package report.generators.tabular;
 
+import java.util.List;
 import org.javatuples.Pair;
 import org.jetbrains.annotations.Nullable;
 
@@ -59,11 +60,11 @@ public class ImmortalsTabularReportGenerator implements ITableGenerator<Immortal
 	 * Create a table row representing the given fixture.
 	 */
 	@Override
-	public Iterable<Iterable<String>> produce(
+	public List<List<String>> produce(
 			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
 			final Immortal item, final int key, final Point loc, final Map<Integer, Integer> parentMap) {
 		fixtures.remove(key);
-		return Collections.singleton(Arrays.asList(distanceString(loc, hq, dimensions),
+		return Collections.singletonList(Arrays.asList(distanceString(loc, hq, dimensions),
 			locationString(loc), item.toString()));
 	}
 

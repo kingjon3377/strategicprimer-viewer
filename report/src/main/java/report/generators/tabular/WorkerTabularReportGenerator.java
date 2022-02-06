@@ -1,5 +1,6 @@
 package report.generators.tabular;
 
+import java.util.List;
 import org.javatuples.Pair;
 import org.jetbrains.annotations.Nullable;
 
@@ -66,18 +67,18 @@ public class WorkerTabularReportGenerator implements ITableGenerator<IWorker> {
 	 * Create a GUI table row representing a worker.
 	 */
 	@Override
-	public Iterable<Iterable<String>> produce(
+	public List<List<String>> produce(
 			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures, final IWorker item,
 			final int key, final Point loc, final Map<Integer, Integer> parentMap) {
 		fixtures.remove(key);
 		WorkerStats stats = item.getStats();
 		if (stats == null) {
-			return Collections.singleton(Stream.concat(Stream.of(
+			return Collections.singletonList(Stream.concat(Stream.of(
 					distanceString(loc, hq, dimensions), locationString(loc),
 					item.getName(), item.getRace()),
 				Stream.generate(() -> "---").limit(9)).collect(Collectors.toList()));
 		} else {
-			return Collections.singleton(Stream.concat(Stream.of(
+			return Collections.singletonList(Stream.concat(Stream.of(
 					distanceString(loc, hq, dimensions), locationString(loc),
 					item.getName(), item.getRace(),
 					Integer.toString(stats.getHitPoints()),

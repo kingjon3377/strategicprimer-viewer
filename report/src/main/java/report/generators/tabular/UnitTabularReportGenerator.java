@@ -1,5 +1,6 @@
 package report.generators.tabular;
 
+import java.util.List;
 import org.javatuples.Pair;
 import org.jetbrains.annotations.Nullable;
 
@@ -67,10 +68,10 @@ public class UnitTabularReportGenerator implements ITableGenerator<IUnit> {
 	 * Create a GUI table row representing the unit.
 	 */
 	@Override
-	public Iterable<Iterable<String>> produce(
+	public List<List<String>> produce(
 			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures, final IUnit item,
 			final int key, final Point loc, final Map<Integer, Integer> parentMap) {
-		Iterable<String> retval = Arrays.asList(distanceString(loc, hq, dimensions),
+		List<String> retval = Arrays.asList(distanceString(loc, hq, dimensions),
 			locationString(loc), ownerString(player, item.getOwner()), item.getKind(),
 			item.getName(),
 			Optional.ofNullable(item.getAllOrders().lastEntry())
@@ -86,7 +87,7 @@ public class UnitTabularReportGenerator implements ITableGenerator<IUnit> {
 			}
 		}
 		fixtures.remove(key);
-		return Collections.singleton(retval);
+		return Collections.singletonList(retval);
 	}
 
 	/**

@@ -1,5 +1,6 @@
 package report.generators.tabular;
 
+import java.util.List;
 import org.javatuples.Pair;
 import lovelace.util.DelayedRemovalMap;
 
@@ -62,7 +63,7 @@ public class AnimalTabularReportGenerator implements ITableGenerator<AnimalOrTra
 	 * Create a table row representing the given animal.
 	 */
 	@Override
-	public Iterable<Iterable<String>> produce(
+	public List<List<String>> produce(
 			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
 			final AnimalOrTracks item, final int key, final Point loc, final Map<Integer, Integer> parentMap) {
 		String kind;
@@ -106,7 +107,7 @@ public class AnimalTabularReportGenerator implements ITableGenerator<AnimalOrTra
 			population = "---";
 		}
 		fixtures.remove(key);
-		return Collections.singleton(Arrays.asList(distanceString(loc, hq, dimensions),
+		return Collections.singletonList(Arrays.asList(distanceString(loc, hq, dimensions),
 			locationString(loc), population, kind, age));
 	}
 
