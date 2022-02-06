@@ -109,7 +109,7 @@ public class CheckThreadViolationRepaintManager extends RepaintManager {
 	 * @param component the component to add
 	 */
 	@Override
-	public void addInvalidComponent(@Nullable final JComponent component) {
+	public synchronized void addInvalidComponent(@Nullable final JComponent component) {
 		if (component != null) {
 			checkThreadViolations(component);
 			super.addInvalidComponent(component);
