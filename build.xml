@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
-<project default="all" name="SP viewer" xmlns:cs="antlib:com.puppycrawl.tools.checkstyle"
-    xmlns:if="ant:if" xmlns:unless="ant:unless">
+<project default="all" name="SP viewer"
+         xmlns:if="ant:if" xmlns:unless="ant:unless">
   <target name="all" depends="clean,release" />
   <property file="build.properties" />
   <tstamp />
