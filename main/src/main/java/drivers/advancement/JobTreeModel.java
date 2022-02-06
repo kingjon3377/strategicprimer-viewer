@@ -1,5 +1,6 @@
 package drivers.advancement;
 
+import javax.swing.tree.DefaultTreeSelectionModel;
 import org.jetbrains.annotations.Nullable;
 
 import common.map.HasName;
@@ -50,7 +51,7 @@ import java.util.stream.StreamSupport;
 	@Nullable
 	private IWorker localRoot = null;
 
-	private TreeSelectionModel selectionModel; // TODO: refactor so this can be provided in the constructor, if possible; it's currently provided by the tree, to whose constructor this tree-model object is passed
+	private TreeSelectionModel selectionModel = new DefaultTreeSelectionModel(); // TODO: refactor so this can be provided in the constructor, if possible; it's currently provided by the tree, to whose constructor this tree-model object is passed
 
 	public void setSelectionModel(final TreeSelectionModel selectionModel) {
 		this.selectionModel = selectionModel;
