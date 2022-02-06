@@ -1071,10 +1071,10 @@ public final class TestXMLIO {
 		assertAny("Multiple units", () -> assertEquals(xmlTwoLogical, serializedForm),
 			() -> assertEquals(xmlTwoAlphabetical, serializedForm),
 			() -> assertEquals(xmlTwoLogical.replaceAll("\" />", "\"/>"), serializedForm));
-		assertEquals(createSerializedForm(createSimpleMap(new Point(1, 1)), true),
-			String.format("<view xmlns=\"%s\" current_player=\"-1\" current_turn=\"-1\">%n" +
-				"\t<map version=\"2\" rows=\"1\" columns=\"1\">%n" +
-				"\t</map>%n</view>%n", SP_NAMESPACE),
+		assertEquals(String.format("<view xmlns=\"%s\" current_player=\"-1\" current_turn=\"-1\">%n" +
+			"\t<map version=\"2\" rows=\"1\" columns=\"1\">%n" +
+			"\t</map>%n</view>%n", SP_NAMESPACE),
+				createSerializedForm(createSimpleMap(new Point(1, 1)), true),
 			"Shouldn't print empty not-visible tiles");
 		String emptySerializedForm = createSerializedForm(createSimpleMap(new Point(1, 1)), false);
 		String firstPossibility = String.format(
