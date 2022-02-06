@@ -57,7 +57,7 @@ public class WorkerTreeModelAlt extends DefaultTreeModel implements IWorkerTreeM
 		 */
 		@Override
 		public final Iterator<TreeNode> iterator() {
-			return new EnumerationWrapper<TreeNode>(children());
+			return new EnumerationWrapper<>(children());
 		}
 
 		/**

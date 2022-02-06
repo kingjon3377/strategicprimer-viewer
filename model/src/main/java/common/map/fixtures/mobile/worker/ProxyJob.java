@@ -50,8 +50,8 @@ public final class ProxyJob implements IJob, ProxyFor<IJob> {
 			}
 		}
 
-		proxiedSkills = new ArrayList<ProxySkill>(skillNames.stream().map(this::proxyForSkill)
-			.collect(Collectors.toList()));
+		proxiedSkills = new ArrayList<>(skillNames.stream().map(this::proxyForSkill)
+				.collect(Collectors.toList()));
 	}
 
 	/**

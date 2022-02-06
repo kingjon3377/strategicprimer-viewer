@@ -56,7 +56,7 @@ public final class CommunityStats implements Subsettable<@Nullable CommunityStat
 		this.population = population;
 	}
 
-	private final Map<String, Integer> skillLevels = new HashMap<String, Integer>();
+	private final Map<String, Integer> skillLevels = new HashMap<>();
 
 	/**
 	 * The highest Job (skill) levels in the community.
@@ -90,7 +90,7 @@ public final class CommunityStats implements Subsettable<@Nullable CommunityStat
 	 *
 	 * TODO: Use a BitSet/RoaringBitMap?
 	 */
-	private final Set<Integer> workedFieldIDs = new HashSet<Integer>();
+	private final Set<Integer> workedFieldIDs = new HashSet<>();
 
 	/**
 	 * ID numbers of fields, orchards, and the like that this community
@@ -128,7 +128,7 @@ public final class CommunityStats implements Subsettable<@Nullable CommunityStat
 	 *
 	 * FIXME: Provide necessary mutator methods, so getter can wrap in unmodifiableSet
 	 */
-	private final Set<IResourcePile> yearlyProduction = new HashSet<IResourcePile>();
+	private final Set<IResourcePile> yearlyProduction = new HashSet<>();
 
 	/**
 	 * The set of resources produced each year.
@@ -144,7 +144,7 @@ public final class CommunityStats implements Subsettable<@Nullable CommunityStat
 	 *
 	 * FIXME: Provide necessary mutator methods, so getter can wrap in unmodifiableSet
 	 */
-	private final Set<IResourcePile> yearlyConsumption = new HashSet<IResourcePile>();
+	private final Set<IResourcePile> yearlyConsumption = new HashSet<>();
 
 	/**
 	 * The set of resources consumed each year. (Though substitutions of

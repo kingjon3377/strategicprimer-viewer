@@ -44,7 +44,7 @@ public class TestWorkerModel {
 	 * Helper method: Flatten any proxies in the list by replacing them with what they are proxies for.
 	 */
 	private <T> Iterable<T> filterProxies(final Iterable<T> list, final Class<? extends ProxyFor> cls) {
-		List<T> retval = new ArrayList<T>();
+		List<T> retval = new ArrayList<>();
 		for (T item : list) {
 			if (cls.isInstance(item)) {
 				((ProxyFor<? extends T>) item).getProxied().forEach(retval::add);
@@ -88,7 +88,7 @@ public class TestWorkerModel {
 		List<IUnit> listOne = new ArrayList<>();
 		Player playerOne = new PlayerImpl(0, "player1");
 		addItem(new Unit(playerOne, "one", "unitOne", 2), fixtures, listOne);
-		List<IUnit> listTwo = new ArrayList<IUnit>();
+		List<IUnit> listTwo = new ArrayList<>();
 		Player playerTwo = new PlayerImpl(1, "player2");
 		addItem(new Unit(playerTwo, "two", "unitTwo", 3), fixtures, listTwo);
 		Player playerThree = new PlayerImpl(2, "player3");

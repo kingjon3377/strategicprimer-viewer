@@ -40,9 +40,9 @@ import org.javatuples.Pair;
 		idf = new IDFactoryFiller().createIDFactory(StreamSupport.stream(model.getAllMaps().spliterator(), false)
 				.toArray(IMapNG[]::new));
 		advancementCLI = new AdvancementCLIHelper(model, cli);
-		appletChooser = new AppletChooser<TurnApplet>(cli,
-			StreamSupport.stream(ServiceLoader.load(TurnAppletFactory.class).spliterator(), false)
-				.map(factory -> factory.create(model, cli, idf)).toArray(TurnApplet[]::new));
+		appletChooser = new AppletChooser<>(cli,
+				StreamSupport.stream(ServiceLoader.load(TurnAppletFactory.class).spliterator(), false)
+						.map(factory -> factory.create(model, cli, idf)).toArray(TurnApplet[]::new));
 		consumptionApplet = new ConsumptionApplet(model, cli, idf);
 		spoilageApplet = new SpoilageApplet(model, cli, idf);
 	}

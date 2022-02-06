@@ -115,7 +115,7 @@ public class ExplorationCLIHelper implements MovementCostListener, SelectionChan
 		runningTotal -= cost;
 	}
 
-	private final LinkedList<Point> proposedPath = new LinkedList<Point>();
+	private final LinkedList<Point> proposedPath = new LinkedList<>();
 
 	private ExplorationAutomationConfig automationConfig;
 

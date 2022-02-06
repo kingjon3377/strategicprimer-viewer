@@ -49,7 +49,7 @@ public class PopulationGeneratingModel extends SimpleMultiMapModel { // TODO: Ex
 	 * method-reference logic with curry() or uncurry() or some such?
 	 */
 	private static <T> Set<T> intersection(final Set<T> one, final Set<T> two) {
-		Set<T> retval = new HashSet<T>(one);
+		Set<T> retval = new HashSet<>(one);
 		retval.retainAll(two);
 		return retval;
 	}

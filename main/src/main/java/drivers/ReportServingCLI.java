@@ -70,7 +70,7 @@ import org.takes.http.Exit;
 	}
 
 	private void serveReports(final int port, @Nullable final Player currentPlayer) throws DriverFailedException {
-		Map<Path, String> cache = new HashMap<Path, String>();
+		Map<Path, String> cache = new HashMap<>();
 		if (model instanceof IMultiMapModel) {
 			for (IMapNG map : ((IMultiMapModel) model).getAllMaps()) {
 				Path file = map.getFilename();

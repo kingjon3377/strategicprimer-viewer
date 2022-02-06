@@ -96,7 +96,7 @@ public class Worker implements IMutableWorker {
 		this.name = name;
 		this.race = race;
 		this.id = id;
-		jobSet = new ArraySet<IJob>(Arrays.asList(jobs));
+		jobSet = new ArraySet<>(Arrays.asList(jobs));
 	}
 
 	/**

@@ -162,7 +162,7 @@ public final class TabularReportGenerator {
 		for (ITableGenerator<?> generator : generators) {
 			TableModel tableModel = generator.produceTableModel(fixtures, parentMap);
 			JTable table = new JTable(tableModel);
-			TableRowSorter<TableModel> modelSorter = new TableRowSorter<TableModel>(tableModel);
+			TableRowSorter<TableModel> modelSorter = new TableRowSorter<>(tableModel);
 			int i = 0;
 			for (String column : generator.getHeaderRow()) {
 				if ("distance".equalsIgnoreCase(column)) {
@@ -195,7 +195,7 @@ public final class TabularReportGenerator {
 		if (!unhandled.isEmpty()) {
 			consumer.accept("other", BorderedPanel.verticalPanel(
 				new JLabel("Fixtures not covered in any of the reports:"),
-				new JList<String>(unhandled.toArray(new String[0])), null));
+					new JList<>(unhandled.toArray(new String[0])), null));
 		}
 	}
 }

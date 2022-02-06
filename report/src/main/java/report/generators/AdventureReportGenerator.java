@@ -45,8 +45,8 @@ public class AdventureReportGenerator extends AbstractReportGenerator<AdventureF
 				.collect(Collectors.toMap(p -> (AdventureFixture) p.getValue1(),
 					Pair::getValue0, (u, v) -> {
 						throw new IllegalStateException("Duplicates in stream"); },
-					() -> new HeadedMapImpl<AdventureFixture, Point>(
-						"<h4>Possible Adventures</h4>"))),
+					() -> new HeadedMapImpl<>(
+							"<h4>Possible Adventures</h4>"))),
 			defaultFormatter(fixtures, map));
 	}
 

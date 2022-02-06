@@ -636,7 +636,7 @@ public class SPMapNG implements IMutableMapNG {
 		if (getDimensions().equals(obj.getDimensions())) {
 			boolean retval = playerCollection.isSubset(obj.getPlayers(), report);
 			// Declared here to avoid object allocations in the loop.
-			List<TileFixture> ourFixtures = new ArrayList<TileFixture>();
+			List<TileFixture> ourFixtures = new ArrayList<>();
 			// TODO: Use Guava Multimap for this
 			Map<Integer, List<Pair<Subsettable<IFixture>, Point>>> ourSubsettables =
 				new HashMap<>();

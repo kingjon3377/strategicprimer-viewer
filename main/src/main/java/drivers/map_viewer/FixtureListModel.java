@@ -145,8 +145,8 @@ public class FixtureListModel implements ListModel<TileFixture>, SelectionChange
 		cachedTerrainList = Collections.emptyList();
 		TileType terrain = terrainSource.apply(newPoint);
 		if (terrain != null) {
-			cachedTerrainList = new ArrayList<TileFixture>(Collections.singleton(
-				new TileTypeFixture(terrain)));
+			cachedTerrainList = new ArrayList<>(Collections.singleton(
+					new TileTypeFixture(terrain)));
 		}
 		LOGGER.finer("FixtureListModel.selectedPointChanged: Accounted for base terrain");
 		Collection<River> rivers = riversSource.apply(newPoint);
@@ -197,7 +197,7 @@ public class FixtureListModel implements ListModel<TileFixture>, SelectionChange
 		if (collection instanceof List) {
 			return ((List<U>) collection).indexOf(item);
 		} else {
-			return new ArrayList<U>(collection).indexOf(item);
+			return new ArrayList<>(collection).indexOf(item);
 		}
 	}
 

@@ -16,9 +16,9 @@ import org.jetbrains.annotations.Nullable;
 		this.model = model;
 		this.cli = cli;
 		this.idf = idf;
-		appletChooser = new AppletChooser<TurnApplet>(cli,
-			StreamSupport.stream(ServiceLoader.load(TurnAppletFactory.class).spliterator(), false)
-				.filter(RepeatApplet::isNotRepeat).map(this::getApplet).toArray(TurnApplet[]::new));
+		appletChooser = new AppletChooser<>(cli,
+				StreamSupport.stream(ServiceLoader.load(TurnAppletFactory.class).spliterator(), false)
+						.filter(RepeatApplet::isNotRepeat).map(this::getApplet).toArray(TurnApplet[]::new));
 	}
 
 	private final ITurnRunningModel model;

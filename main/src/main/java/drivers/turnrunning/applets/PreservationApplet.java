@@ -53,7 +53,7 @@ import static lovelace.util.Decimalize.decimalize;
 	public String run() {
 		final StringBuilder builder = new StringBuilder();
 		IUnit unit = model.getSelectedUnit();
-		final List<String> foods = new ArrayList<String>();
+		final List<String> foods = new ArrayList<>();
 		while (true) {
 			// TODO: should verb be "preserve" or "cook" instead of "convert"?
 			final IResourcePile item = chooseFromList(getFoodFor(unit.getOwner(),

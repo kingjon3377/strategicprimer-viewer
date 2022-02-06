@@ -288,7 +288,7 @@ import common.map.fixtures.towns.Village;
 		Worker worker = new Worker(name, village.getRace(), idf.createID());
 		worker.setNote(village.getOwner(), String.format("From %s.", village.getName()));
 		if (village.getPopulation() != null) {
-			List<IJob> candidates = new ArrayList<IJob>();
+			List<IJob> candidates = new ArrayList<>();
 			for (Map.Entry<String, Integer> entry :
 					village.getPopulation().getHighestSkillLevels().entrySet()) {
 				String job = entry.getKey();

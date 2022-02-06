@@ -196,33 +196,31 @@ public class DuplicateFixtureRemoverCLI implements CLIDriver {
 	private void coalesceResources(final Point location) {
 		Map<Class<? extends IFixture>, CoalescedHolder<? extends IFixture, ?>> mapping =
 			new HashMap<>();
-		mapping.put(IResourcePile.class, new CoalescedHolder<IResourcePile,
-				Quartet<String, String, String, Integer>>(IResourcePile.class,
-			IResourcePile[]::new,
-			pile -> Quartet.with(pile.getKind(), pile.getContents(),
-				pile.getQuantity().getUnits(), pile.getCreated()),
-			DuplicateFixtureRemoverCLI::combineResources));
-		mapping.put(Animal.class, new CoalescedHolder<Animal, Triplet<String, String, Integer>>(
-			Animal.class, Animal[]::new,
-			animal -> Triplet.with(animal.getKind(), animal.getStatus(), animal.getBorn()),
-			DuplicateFixtureRemoverCLI::combinePopulations));
-		mapping.put(Implement.class, new CoalescedHolder<Implement, String>(Implement.class,
-			Implement[]::new, Implement::getKind,
-			DuplicateFixtureRemoverCLI::combinePopulations));
-		mapping.put(Forest.class, new CoalescedHolder<Forest, Pair<String, Boolean>>(
-			Forest.class, Forest[]::new, forest -> Pair.with(forest.getKind(), forest.isRows()),
-			DuplicateFixtureRemoverCLI::combineExtents));
-		mapping.put(Grove.class, new CoalescedHolder<Grove, Triplet<Boolean, Boolean, String>>(
-			Grove.class, Grove[]::new,
-			grove -> Triplet.with(grove.isOrchard(), grove.isCultivated(), grove.getKind()),
-			DuplicateFixtureRemoverCLI::combinePopulations));
-		mapping.put(Meadow.class, new CoalescedHolder<Meadow,
-			Quartet<String, Boolean, Boolean, FieldStatus>>(Meadow.class, Meadow[]::new,
-				meadow -> Quartet.with(meadow.getKind(), meadow.isField(),
-					meadow.isCultivated(), meadow.getStatus()),
+		mapping.put(IResourcePile.class, new CoalescedHolder<>(IResourcePile.class,
+				IResourcePile[]::new,
+				pile -> Quartet.with(pile.getKind(), pile.getContents(),
+						pile.getQuantity().getUnits(), pile.getCreated()),
+				DuplicateFixtureRemoverCLI::combineResources));
+		mapping.put(Animal.class, new CoalescedHolder<>(
+				Animal.class, Animal[]::new,
+				animal -> Triplet.with(animal.getKind(), animal.getStatus(), animal.getBorn()),
+				DuplicateFixtureRemoverCLI::combinePopulations));
+		mapping.put(Implement.class, new CoalescedHolder<>(Implement.class,
+				Implement[]::new, Implement::getKind,
+				DuplicateFixtureRemoverCLI::combinePopulations));
+		mapping.put(Forest.class, new CoalescedHolder<>(
+				Forest.class, Forest[]::new, forest -> Pair.with(forest.getKind(), forest.isRows()),
 				DuplicateFixtureRemoverCLI::combineExtents));
-		mapping.put(Shrub.class, new CoalescedHolder<Shrub, String>(Shrub.class, Shrub[]::new,
-			Shrub::getKind, DuplicateFixtureRemoverCLI::combinePopulations));
+		mapping.put(Grove.class, new CoalescedHolder<>(
+				Grove.class, Grove[]::new,
+				grove -> Triplet.with(grove.isOrchard(), grove.isCultivated(), grove.getKind()),
+				DuplicateFixtureRemoverCLI::combinePopulations));
+		mapping.put(Meadow.class, new CoalescedHolder<>(Meadow.class, Meadow[]::new,
+				meadow -> Quartet.with(meadow.getKind(), meadow.isField(),
+						meadow.isCultivated(), meadow.getStatus()),
+				DuplicateFixtureRemoverCLI::combineExtents));
+		mapping.put(Shrub.class, new CoalescedHolder<>(Shrub.class, Shrub[]::new,
+				Shrub::getKind, DuplicateFixtureRemoverCLI::combinePopulations));
 
 		for (Quartet<Runnable, String, String, Iterable<? extends IFixture>> q :
 				model.conditionallyCoalesceResources(location, mapping)) {

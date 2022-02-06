@@ -23,9 +23,9 @@ import java.util.function.Predicate;
  */
 /* package */ class FixtureFilterList extends JList<FixtureMatcher> implements ZOrderFilter {
 	public FixtureFilterList() {
-		matcherListModel = new ReorderableListModel<FixtureMatcher>(
+		matcherListModel = new ReorderableListModel<>(
 				FixtureMatcher.simpleMatcher(Ground.class, Ground::isExposed,
-					"Ground (exposed)"),
+						"Ground (exposed)"),
 				FixtureMatcher.simpleMatcher(Ground.class, not(Ground::isExposed), "Ground"),
 				FixtureMatcher.simpleMatcher(Grove.class, Grove::isOrchard, "Orchards"),
 				FixtureMatcher.simpleMatcher(Grove.class, not(Grove::isOrchard), "Groves"),

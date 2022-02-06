@@ -123,7 +123,7 @@ import common.map.fixtures.mobile.AnimalTracks;
 
 	private <Type> MappedCounter<Type, String, Integer>
 			simpleCounter(final Function<Type, String> keyExtractor) {
-		return new MappedCounter<Type, String, Integer>(keyExtractor, t -> 1, IntAccumulator::new, 0);
+		return new MappedCounter<>(keyExtractor, t -> 1, IntAccumulator::new, 0);
 	}
 
 	private <Type> void countSimply(final Class<Type> cls, final Iterable<?> stream, final String title,
@@ -197,7 +197,7 @@ import common.map.fixtures.mobile.AnimalTracks;
 		IMapNG map = model.getMap();
 		cli.println(String.format("There are %d tiles in all.",
 			map.getDimensions().getRows() * map.getDimensions().getColumns()));
-		EnumCounter<TileType> tileTypeCounts = new EnumCounter<TileType>();
+		EnumCounter<TileType> tileTypeCounts = new EnumCounter<>();
 		tileTypeCounts.countMany(map.streamLocations()
 			.map(map::getBaseTerrain).filter(Objects::nonNull).toArray(TileType[]::new));
 		cli.println();

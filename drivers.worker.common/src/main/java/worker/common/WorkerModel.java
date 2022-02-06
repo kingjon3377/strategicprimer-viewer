@@ -392,9 +392,9 @@ public class WorkerModel extends SimpleMultiMapModel implements IWorkerModel {
 	                                           final ProxyUnit newOwner) {
 		if (old.getProxied().size() == newOwner.getProxied().size() &&
 				old.getProxied().size() == member.getProxied().size()) {
-			LinkedList<UnitMember> memberProxied = new LinkedList<UnitMember>(member.getProxied());
-			LinkedList<IUnit> oldProxied = new LinkedList<IUnit>(old.getProxied());
-			LinkedList<IUnit> newProxied = new LinkedList<IUnit>(newOwner.getProxied());
+			LinkedList<UnitMember> memberProxied = new LinkedList<>(member.getProxied());
+			LinkedList<IUnit> oldProxied = new LinkedList<>(old.getProxied());
+			LinkedList<IUnit> newProxied = new LinkedList<>(newOwner.getProxied());
 			Deque<UnitMember> members = new LinkedList<>();
 			Deque<IMutableUnit> newList = new LinkedList<>();
 			while (!memberProxied.isEmpty() && !oldProxied.isEmpty() && !newProxied.isEmpty()) {

@@ -65,12 +65,12 @@ import impl.xmlio.MapIOHelper;
 		JSpinner mpField = new JSpinner(mpModel);
 
 		unitListModel = new UnitListModel(driver.getModel());
-		unitList = new JList<IUnit>(unitListModel);
+		unitList = new JList<>(unitListModel);
 
 		PlayerListModel playerListModel = new PlayerListModel(driver.getModel());
-		playerList = new JList<Player>(playerListModel);
+		playerList = new JList<>(playerListModel);
 
-		ComboBoxModel<Speed> speedModel = new DefaultComboBoxModel<Speed>(Speed.values());
+		ComboBoxModel<Speed> speedModel = new DefaultComboBoxModel<>(Speed.values());
 		driver.getModel().addMapChangeListener(playerListModel);
 
 		playerList.addListSelectionListener(ignored -> handlePlayerChanged());
@@ -101,7 +101,7 @@ import impl.xmlio.MapIOHelper;
 				new JScrollPane(unitList), BorderedPanel.verticalPanel(
 					BorderedPanel.horizontalPanel(new JLabel("Unit's Movement Points"), null, mpField),
 					BorderedPanel.horizontalPanel(new JLabel("Unit's Relative Speed"),
-						null, new ImprovedComboBox<Speed>(speedModel)),
+						null, new ImprovedComboBox<>(speedModel)),
 					new ListenedButton("Start exploring!", ignored -> buttonListener()))))));
 
 		add(explorationPanel);

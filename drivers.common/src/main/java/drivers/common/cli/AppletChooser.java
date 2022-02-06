@@ -19,7 +19,7 @@ public class AppletChooser<AppletClass extends Applet> {
 	@SafeVarargs
 	public AppletChooser(final ICLIHelper cli, final AppletClass... applets) {
 		this.cli = cli;
-		Map<String, AppletClass> temp = new HashMap<String, AppletClass>();
+		Map<String, AppletClass> temp = new HashMap<>();
 		for (AppletClass applet : applets) {
 			for (String command : applet.getCommands()) {
 				if ("help".equals(command) || "quit".equals(command) ||

@@ -24,30 +24,30 @@ import org.jetbrains.annotations.Nullable;
 	public ExplorationAutomationConfig(final Player player) {
 		this.player = player;
 		conditions = Collections.unmodifiableList(
-			Arrays.asList(new Condition<IFortress>("at others' fortresses",
-					fixture -> "a fortress belonging to " + fixture.getOwner(), IFortress.class),
-				new Condition<AbstractTown>("at active towns",
-					fixture -> String.format("a %s active %s", fixture.getTownSize(), fixture.getKind()),
-					AbstractTown.class, t -> TownStatus.Active.equals(t.getStatus())),
-				new Condition<AbstractTown>("at inactive towns",
-					fixture -> String.format("a %s %s %s", fixture.getTownSize(), AbstractTown.class,
-						fixture.getStatus(), fixture.getKind()),
-					AbstractTown.class, t -> !TownStatus.Active.equals(t.getStatus())),
-				new Condition<Village>("at independent villages", "an independent village",
-					Village.class, v -> v.getOwner().isIndependent()),
-				new Condition<Village>("at other players' villages", "another player's village",
-					Village.class, v -> !v.getOwner().equals(this.player), v -> !v.getOwner().isIndependent()),
+			Arrays.asList(new Condition<>("at others' fortresses",
+							fixture -> "a fortress belonging to " + fixture.getOwner(), IFortress.class),
+					new Condition<>("at active towns",
+							fixture -> String.format("a %s active %s", fixture.getTownSize(), fixture.getKind()),
+							AbstractTown.class, t -> TownStatus.Active.equals(t.getStatus())),
+					new Condition<>("at inactive towns",
+							fixture -> String.format("a %s %s %s", fixture.getTownSize(), AbstractTown.class,
+									fixture.getStatus(), fixture.getKind()),
+							AbstractTown.class, t -> !TownStatus.Active.equals(t.getStatus())),
+					new Condition<>("at independent villages", "an independent village",
+							Village.class, v -> v.getOwner().isIndependent()),
+					new Condition<>("at other players' villages", "another player's village",
+							Village.class, v -> !v.getOwner().equals(this.player), v -> !v.getOwner().isIndependent()),
 				// TODO: For "your villages" (and perhaps other towns), include name in stop message
-				new Condition<Village>("at villages sworn to you", "one of your villages",
-					Village.class, v -> v.getOwner().equals(this.player)),
-				new Condition<IUnit>("on meeting other players' units",
-					unit -> "a unit belonging to " + unit.getOwner(), IUnit.class,
-					u -> !u.getOwner().equals(this.player), u -> !u.getOwner().isIndependent()),
-				new Condition<IUnit>("on meeting independent units", "an independent unit", IUnit.class,
-					// TODO: Provide helper default methods isIndependent() and sameOwner() in HasOwner?
-					u -> u.getOwner().isIndependent()),
-				new Condition<Immortal>("on meeting an immortal", i -> "a(n) " + i.getShortDescription(),
-					Immortal.class)));
+					new Condition<>("at villages sworn to you", "one of your villages",
+							Village.class, v -> v.getOwner().equals(this.player)),
+					new Condition<>("on meeting other players' units",
+							unit -> "a unit belonging to " + unit.getOwner(), IUnit.class,
+							u -> !u.getOwner().equals(this.player), u -> !u.getOwner().isIndependent()),
+					new Condition<>("on meeting independent units", "an independent unit", IUnit.class,
+							// TODO: Provide helper default methods isIndependent() and sameOwner() in HasOwner?
+							u -> u.getOwner().isIndependent()),
+					new Condition<>("on meeting an immortal", i -> "a(n) " + i.getShortDescription(),
+							Immortal.class)));
 	}
 
 	private final Player player;

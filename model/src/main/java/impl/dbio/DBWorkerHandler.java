@@ -191,7 +191,7 @@ final class DBWorkerHandler extends AbstractDatabaseWriter<IWorker, IUnit> imple
 
 	@Override
 	public void readExtraMapContents(final DB db, final IMutableMapNG map, final Warning warner) {
-		Map<Integer, Worker> workers = new HashMap<Integer, Worker>();
+		Map<Integer, Worker> workers = new HashMap<>();
 		try {
 			handleQueryResults(db, warner, "worker stats", readWorkerStats(map, workers),
 				"SELECT * FROM workers");

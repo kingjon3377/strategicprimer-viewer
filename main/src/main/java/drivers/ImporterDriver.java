@@ -156,7 +156,7 @@ import org.jetbrains.annotations.Nullable;
 				int baseColumn = 0;
 				int mapColumn = 0;
 				while (baseColumn < width) {
-					EnumCounter<Integer> counter = new EnumCounter<Integer>();
+					EnumCounter<Integer> counter = new EnumCounter<>();
 					for (int row : customRange(baseRow, size, height)) {
 						for (int column : customRange(baseColumn, size, width)) {
 							counter.countMany(image.getRGB(row, column));

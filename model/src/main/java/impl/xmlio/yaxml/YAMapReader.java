@@ -221,7 +221,7 @@ import java.util.function.Predicate;
 			dimensions = new MapDimensionsImpl(readDimensions.getRows(),
 				readDimensions.getColumns(), 2);
 		}
-		final Deque<QName> tagStack = new LinkedList<QName>();
+		final Deque<QName> tagStack = new LinkedList<>();
 		tagStack.addFirst(element.getName());
 		tagStack.addFirst(mapTag.getName());
 		final IMutableMapNG retval = new SPMapNG(dimensions, players, currentTurn);

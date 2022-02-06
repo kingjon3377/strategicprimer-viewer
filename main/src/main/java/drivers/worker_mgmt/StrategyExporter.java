@@ -95,9 +95,9 @@ import common.map.fixtures.mobile.worker.IJob;
 	}
 
 	private void summarizeUnitMembers(final Writer writer, final IUnit unit) throws IOException {
-		List<IWorker> leveledWorkers = new ArrayList<IWorker>();
-		List<UnitMember> nonWorkers = new ArrayList<UnitMember>();
-		List<IWorker> unleveledWorkers = new ArrayList<IWorker>();
+		List<IWorker> leveledWorkers = new ArrayList<>();
+		List<UnitMember> nonWorkers = new ArrayList<>();
+		List<IWorker> unleveledWorkers = new ArrayList<>();
 		for (UnitMember member : unit) {
 			if (member instanceof IWorker) {
 				if (StreamSupport.stream(((IWorker) member).spliterator(), false)

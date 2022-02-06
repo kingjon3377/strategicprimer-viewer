@@ -417,12 +417,12 @@ public class SPFluidWriter implements SPWriter {
 		addWriterToMap(temp, Animal.class, UnitMemberHandler::writeAnimal);
 		addWriterToMap(temp, AnimalTracks.class, UnitMemberHandler::writeAnimalTracks);
 		for (SimpleFixtureWriter writer : Arrays.asList(
-				new SimpleFixtureWriter<Hill>(Hill.class, "hill"),
-				new SimpleFixtureWriter<Oasis>(Oasis.class, "oasis"),
-				new SimpleFixtureWriter<Centaur>(Centaur.class, "centaur"),
-				new SimpleFixtureWriter<Dragon>(Dragon.class, "dragon"),
-				new SimpleFixtureWriter<Fairy>(Fairy.class, "fairy"),
-				new SimpleFixtureWriter<Giant>(Giant.class, "giant"))) {
+				new SimpleFixtureWriter<>(Hill.class, "hill"),
+				new SimpleFixtureWriter<>(Oasis.class, "oasis"),
+				new SimpleFixtureWriter<>(Centaur.class, "centaur"),
+				new SimpleFixtureWriter<>(Dragon.class, "dragon"),
+				new SimpleFixtureWriter<>(Fairy.class, "fairy"),
+				new SimpleFixtureWriter<>(Giant.class, "giant"))) {
 			temp.put(writer.getType(), writer);
 		}
 		addWriterToMap(temp, SimpleImmortal.class, UnitMemberHandler::writeSimpleImmortal);

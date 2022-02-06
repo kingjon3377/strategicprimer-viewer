@@ -31,10 +31,10 @@ public class ResourceAddingCLIHelper {
 	private final ICLIHelper cli;
 	private final IDRegistrar idf;
 
-	private final Set<String> resourceKinds = new HashSet<String>();
+	private final Set<String> resourceKinds = new HashSet<>();
 	// TODO: Use a multimap once we get a handle on a suitable library
 	private final Map<String, List<String>> resourceContents = new HashMap<>();
-	private final Map<String, String> resourceUnits = new HashMap<String, String>();
+	private final Map<String, String> resourceUnits = new HashMap<>();
 
 	/**
 	 * Ask the user to choose or enter a resource kind. Returns null on EOF.

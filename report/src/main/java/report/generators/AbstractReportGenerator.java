@@ -219,7 +219,7 @@ public abstract class AbstractReportGenerator<Type extends IFixture> implements 
 		 */
 		public HeadedMapImpl(final String header, final Comparator<Key> comparator) {
 			this.header = header;
-			wrapped = new TreeMap<Key, Value>(comparator);
+			wrapped = new TreeMap<>(comparator);
 		}
 
 		/**
@@ -229,7 +229,7 @@ public abstract class AbstractReportGenerator<Type extends IFixture> implements 
 		 */
 		public HeadedMapImpl(final String header, final Comparator<Key> comparator, final Map<Key, Value> initial) {
 			this.header = header;
-			wrapped = new TreeMap<Key, Value>(comparator);
+			wrapped = new TreeMap<>(comparator);
 			wrapped.putAll(initial);
 		}
 
