@@ -2,6 +2,7 @@ package mining;
 
 import java.io.IOException;
 import java.io.BufferedWriter;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.Files;
@@ -87,7 +88,7 @@ public final class MiningCLI implements UtilityDriver {
 			throw new DriverFailedException(new Exception(
 				String.format("Output file %s already exists", filename)));
 		}
-		try (BufferedWriter writer = Files.newBufferedWriter(path, Charset.forName("UTF-8"))) {
+		try (BufferedWriter writer = Files.newBufferedWriter(path, StandardCharsets.UTF_8)) {
 			for (int row = 0; row <= lowerRightRow; row++) {
 				for (int col = 0; col <= lowerRightColumn; col++) {
 					LodeStatus status = model.statusAt(row, col);
