@@ -150,9 +150,8 @@ import java.util.stream.Collectors;
 	public void addUnit(final IUnit unit) {
 		model.addUnit(unit);
 		TreePath path = new TreePath(new Object[] { player, unit.getKind() });
-		int[] indices = new int[] {
-				model.getUnits(player, unit.getKind()).size()};
-		Object[] children = new Object[] { unit };
+		int[] indices = { model.getUnits(player, unit.getKind()).size()};
+		Object[] children = { unit };
 		TreeModelEvent event = new TreeModelEvent(this, path, indices, children);
 		for (TreeModelListener listener : listeners) {
 			listener.treeNodesInserted(event);
