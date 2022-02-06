@@ -20,6 +20,7 @@ import java.util.Set;
 class RandomTable implements EncounterTable {
 	private final List<Pair<Integer, String>> table;
 
+	@SafeVarargs
 	public RandomTable(final Pair<Integer, String>... items) {
 		if (items.length == 0) {
 			throw new IllegalArgumentException("Need at least one item");

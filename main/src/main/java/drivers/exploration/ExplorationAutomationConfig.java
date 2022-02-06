@@ -63,6 +63,7 @@ import org.jetbrains.annotations.Nullable;
 		 * @param stopExplanation A description to use when stopping because of this condition.
 		 * @param conditions Returns true when a tile fixture matches all of these conditions.
 		 */
+		@SafeVarargs
 		public Condition(final String configExplanation, final String stopExplanation, final Class<Type> cls,
 		                 final Predicate<Type>... conditions) {
 			this.configExplanation = configExplanation;
@@ -76,6 +77,7 @@ import org.jetbrains.annotations.Nullable;
 		 * @param stopExplanation A factory for a description to use when stopping because of this condition.
 		 * @param conditions Returns true when a tile fixture matches all of these conditions.
 		 */
+		@SafeVarargs
 		public Condition(final String configExplanation, final Function<Type, String> stopExplanation,
 		                 final Class<Type> cls, final Predicate<Type>... conditions) {
 			this.configExplanation = configExplanation;

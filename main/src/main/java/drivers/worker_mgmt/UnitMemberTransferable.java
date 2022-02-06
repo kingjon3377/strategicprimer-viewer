@@ -17,6 +17,7 @@ import common.map.fixtures.mobile.IUnit;
 	public static final DataFlavor FLAVOR = new DataFlavor(List.class, "List<UnitMember>");
 
 	private final List<Pair<UnitMember, IUnit>> payload;
+	@SafeVarargs
 	public UnitMemberTransferable(final Pair<UnitMember, IUnit>... data) {
 		payload = Arrays.asList(data);
 	}

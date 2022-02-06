@@ -21,6 +21,7 @@ import java.util.stream.Collectors;
  */
 class TerrainTable implements EncounterTable {
 	private final Map<String, String> mapping = new HashMap<>();
+	@SafeVarargs
 	public TerrainTable(final Pair<String, String>... items) {
 		Set<String> types = Stream.concat(Stream.of(TileType.values()).map(TileType::getXml),
 				Stream.of("mountain", "boreal_forest", "temperate_forest"))

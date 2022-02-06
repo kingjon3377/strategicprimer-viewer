@@ -346,6 +346,7 @@ import org.jetbrains.annotations.Nullable;
 	 * @param ostream The stream to write to
 	 * @param items The names and values of the attributes to write.
 	 */
+	@SafeVarargs
 	protected static void writeNonEmptyAttributes(final XMLStreamWriter ostream,
 	                                              final Pair<String, String>... items) throws MalformedXMLException {
 		try {
@@ -590,6 +591,7 @@ import org.jetbrains.annotations.Nullable;
 	 * @param attributes The name and values of the attributes to write.
 	 * Only supports String, boolean, and numeric attributes.
 	 */
+	@SafeVarargs
 	protected static void writeAttributes(final XMLStreamWriter ostream, final Pair<String, ?>... attributes)
 			throws MalformedXMLException {
 		try {

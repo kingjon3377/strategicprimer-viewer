@@ -898,6 +898,7 @@ public final class TestXMLIO {
 	/**
 	 * Create a simple map.
 	 */
+	@SafeVarargs
 	private static IMutableMapNG createSimpleMap(final Point dims, final Pair<Point, TileType>... terrain) {
 		final IMutableMapNG retval = new SPMapNG(new MapDimensionsImpl(dims.getRow(),
 			dims.getColumn(), 2), new PlayerCollection(), -1);

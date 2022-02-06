@@ -141,6 +141,7 @@ public final class SubsetTest {
 	/**
 	 * Create a map with the given terrain.
 	 */
+	@SafeVarargs
 	private static IMutableMapNG createMap(final Pair<Point, TileType>... terrain) {
 		final IMutableMapNG retval = new SPMapNG(new MapDimensionsImpl(2, 2, 2),
 			new PlayerCollection(), -1);
