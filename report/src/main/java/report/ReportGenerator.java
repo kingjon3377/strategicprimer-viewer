@@ -86,7 +86,7 @@ public final class ReportGenerator {
 			comparator = new PairComparator<>(ReportGenerator::compareToEqual,
 				Comparator.comparing(IFixture::hashCode));
 		} else {
-			comparator = new PairComparator(new DistanceComparator(hq, dimensions),
+			comparator = new PairComparator<>(new DistanceComparator(hq, dimensions),
 				Comparator.comparing(IFixture::hashCode));
 		}
 		int currentTurn = map.getCurrentTurn();

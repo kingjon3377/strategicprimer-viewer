@@ -626,7 +626,7 @@ public class SPFluidReader implements IMapReader, ISPReader {
 	public <Type> Type readXML(final Path file, final Reader istream, final Warning warner)
 			throws SPFormatException, MalformedXMLException {
 		try (TypesafeXMLEventReader reader = new TypesafeXMLEventReader(istream)) {
-			Iterable<XMLEvent> eventReader = new IteratorWrapper(reader);
+			Iterable<XMLEvent> eventReader = new IteratorWrapper<>(reader);
 			IMutablePlayerCollection players = new PlayerCollection();
 			IDRegistrar idFactory = new IDFactory();
 			for (XMLEvent event : eventReader) {

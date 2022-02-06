@@ -72,7 +72,7 @@ public class QueryCLI implements ReadOnlyDriver {
 					player.equals(((HasOwner) fixtures).getOwner())) {
 				retval++;
 			} else if (fixture instanceof FixtureIterable) {
-				retval += countWorkersInIterable(player, (FixtureIterable) fixture);
+				retval += countWorkersInIterable(player, (FixtureIterable<?>) fixture);
 			}
 		}
 		return retval;
@@ -107,7 +107,7 @@ public class QueryCLI implements ReadOnlyDriver {
 		map = model.getMap();
 		huntModel = new HuntingModel(map);
 		pather = PathfinderFactory.pathfinder(map);
-		appletChooser = new AppletChooser(cli,
+		appletChooser = new AppletChooser<>(cli,
 			new SimpleApplet(() -> fortressInfo(cli.inputPoint("Location of fortress?")),
 				"Show what a player automatically knows about a fortress's tile.",
 					"fortress"),

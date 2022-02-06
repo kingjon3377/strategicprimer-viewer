@@ -43,7 +43,7 @@ public class TestWorkerModel {
 	/**
 	 * Helper method: Flatten any proxies in the list by replacing them with what they are proxies for.
 	 */
-	private <T> Iterable<T> filterProxies(final Iterable<T> list, final Class<? extends ProxyFor> cls) {
+	private <T> Iterable<T> filterProxies(final Iterable<T> list, final Class<? extends ProxyFor<?>> cls) {
 		List<T> retval = new ArrayList<>();
 		for (T item : list) {
 			if (cls.isInstance(item)) {

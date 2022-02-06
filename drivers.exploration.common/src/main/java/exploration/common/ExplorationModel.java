@@ -180,7 +180,7 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 			if (Objects.equals(member, fixture)) {
 				return true;
 			} else if (member instanceof FixtureIterable &&
-					doesStreamContainFixture((FixtureIterable) member, fixture)) {
+					doesStreamContainFixture((FixtureIterable<?>) member, fixture)) {
 				return true;
 			}
 		}

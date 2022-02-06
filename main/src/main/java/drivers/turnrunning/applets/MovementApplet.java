@@ -48,7 +48,7 @@ import static lovelace.util.Decimalize.decimalize;
 		if (fortress == null) {
 			return;
 		}
-		List<IResourcePile> resources = new ArrayList(fortress.stream()
+		List<IResourcePile> resources = new ArrayList<>(fortress.stream()
 			.filter(IResourcePile.class::isInstance).map(IResourcePile.class::cast)
 			.collect(Collectors.toList()));
 		while (true) {

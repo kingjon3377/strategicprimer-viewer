@@ -57,7 +57,7 @@ public class ExplorationCLIHelper implements MovementCostListener, SelectionChan
 			model.getSubordinateMaps().iterator().next() : model.getMap());
 		automationConfig = new ExplorationAutomationConfig(model.getMap()
 			.getCurrentPlayer());
-		appletChooser = new AppletChooser(this.cli,
+		appletChooser = new AppletChooser<>(this.cli,
 			new SimpleApplet(model::swearVillages, "Swear any village here to the player", "swear"),
 			new SimpleApplet(model::dig, "Dig to expose some ground here", "dig"));
 	}

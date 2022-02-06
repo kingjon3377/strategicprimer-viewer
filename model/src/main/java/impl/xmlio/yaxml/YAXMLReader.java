@@ -47,7 +47,7 @@ public class YAXMLReader implements IMapReader, ISPReader {
 	public <Element> Element readXML(final Path file, final Reader istream, final Warning warner)
 			throws SPFormatException, MalformedXMLException, IOException {
 		try (TypesafeXMLEventReader reader = new TypesafeXMLEventReader(istream)) {
-			Iterable<XMLEvent> eventReader = new IteratorWrapper(reader);
+			Iterable<XMLEvent> eventReader = new IteratorWrapper<>(reader);
 			IDRegistrar idFactory = new IDFactory();
 			for (XMLEvent event : eventReader) {
 				if (event instanceof StartElement) { // TODO: Check namespace, surely?

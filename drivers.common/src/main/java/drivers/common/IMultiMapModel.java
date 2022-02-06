@@ -36,14 +36,14 @@ public interface IMultiMapModel extends IDriverModel {
 	 * All maps.
 	 */
 	default Iterable<IMapNG> getAllMaps() {
-		return new ConcatIterable(Collections.singleton(getMap()), getSubordinateMaps());
+		return new ConcatIterable<>(Collections.singleton(getMap()), getSubordinateMaps());
 	}
 
 	/**
 	 * All maps. For use by subclasses only.
 	 */
 	default Iterable<IMutableMapNG> getRestrictedAllMaps() {
-		return new ConcatIterable(Collections.singleton(getRestrictedMap()),
+		return new ConcatIterable<>(Collections.singleton(getRestrictedMap()),
 			getRestrictedSubordinateMaps());
 	}
 

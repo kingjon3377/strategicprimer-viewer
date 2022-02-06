@@ -173,7 +173,7 @@ public class HuntingModel {
 
 		@Override
 		public Iterator<Type> iterator() {
-			return new ResultIterator(stream, nothingProportion, nothingValue, dcGetter);
+			return new ResultIterator<>(stream, nothingProportion, nothingValue, dcGetter);
 		}
 	}
 
@@ -233,7 +233,7 @@ public class HuntingModel {
 
 		@Override
 		public Iterator<Type> iterator() {
-			return new FiniteResultIterator(stream, nothingProportion, nothingValue);
+			return new FiniteResultIterator<>(stream, nothingProportion, nothingValue);
 		}
 	}
 

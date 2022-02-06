@@ -302,7 +302,7 @@ public class MapCheckerCLI implements UtilityDriver {
 		for (IFixture fixture : list) {
 			if (fixture instanceof FixtureIterable) {
 				retval = contentCheck(checker, terrain, context, warner,
-					(FixtureIterable) fixture) || retval;
+					(FixtureIterable<?>) fixture) || retval;
 			}
 			retval = checker.check(terrain, context, fixture, warner) || retval;
 		}

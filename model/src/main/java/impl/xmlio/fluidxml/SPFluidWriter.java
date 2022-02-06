@@ -163,7 +163,7 @@ public class SPFluidWriter implements SPWriter {
 		}
 	}
 
-	private static class SimpleFixtureWriter<Type> implements FluidXMLWriter {
+	private static class SimpleFixtureWriter<Type> implements FluidXMLWriter<Type> {
 		public SimpleFixtureWriter(final Class<Type> cls, final String tag) {
 			this.cls = cls;
 			this.tag = tag;
@@ -416,7 +416,7 @@ public class SPFluidWriter implements SPWriter {
 		addWriterToMap(temp, Forest.class, FluidTerrainHandler::writeForest);
 		addWriterToMap(temp, Animal.class, UnitMemberHandler::writeAnimal);
 		addWriterToMap(temp, AnimalTracks.class, UnitMemberHandler::writeAnimalTracks);
-		for (SimpleFixtureWriter writer : Arrays.asList(
+		for (SimpleFixtureWriter<?> writer : Arrays.asList(
 				new SimpleFixtureWriter<>(Hill.class, "hill"),
 				new SimpleFixtureWriter<>(Oasis.class, "oasis"),
 				new SimpleFixtureWriter<>(Centaur.class, "centaur"),

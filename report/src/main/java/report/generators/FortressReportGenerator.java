@@ -172,7 +172,7 @@ public class FortressReportGenerator extends AbstractReportGenerator<IFortress> 
 			} else if (member instanceof Implement) {
 				equipment.add((Implement) member);
 			} else if (member instanceof IResourcePile) {
-				List list = Optional.ofNullable(resources
+				List<IResourcePile> list = Optional.ofNullable(resources
 					.get(((IResourcePile) member).getKind()))
 						.orElseGet(ArrayList::new);
 				list.add((IResourcePile) member);

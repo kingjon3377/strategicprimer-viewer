@@ -198,7 +198,7 @@ public class TestExplorationRunner {
 			"quadrant table can use alternate dimensions");
 		assertThrows(IllegalArgumentException.class,
 			() -> runner.loadTableFromDataStream(
-				new LinkedList(Arrays.asList("quadrant")).iterator(),
+				new LinkedList<>(Arrays.asList("quadrant")).iterator(),
 				"testLoadQuadrantTable().illegal"));
 	}
 
