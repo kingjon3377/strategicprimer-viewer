@@ -121,8 +121,8 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 		} else {
 			description = unit.getShortDescription();
 		}
-		for (Point point : StreamSupport.stream(new SurroundingPointIterable(dest, dimensions)
-				.spliterator(), false).distinct().collect(Collectors.toList())) {
+		for (Point point : new SurroundingPointIterable(dest, dimensions).stream().distinct()
+				.collect(Collectors.toList())) {
 			for (TileFixture fixture : map.getFixtures(point)) {
 				if (fixture instanceof HasOwner &&
 						!((HasOwner) fixture).getOwner().isIndependent() &&

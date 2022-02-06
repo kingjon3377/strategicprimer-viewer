@@ -112,8 +112,8 @@ import org.jetbrains.annotations.Nullable;
 
 	@Nullable
 	private String findAdjacentForest(final IMapNG map, final Point location) {
-		List<Forest> forests = StreamSupport.stream(
-						new SurroundingPointIterable(location, map.getDimensions(), 1).spliterator(), false)
+		List<Forest> forests =
+						new SurroundingPointIterable(location, map.getDimensions(), 1).stream()
 				.flatMap(l -> map.getFixtures(l).stream())
 				.filter(Forest.class::isInstance).map(Forest.class::cast)
 				.collect(Collectors.toList());

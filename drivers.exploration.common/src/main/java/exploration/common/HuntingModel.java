@@ -333,8 +333,8 @@ public class HuntingModel {
 	 */
 	private Iterable<Pair<Point, TileFixture>> chooseFromMap(final Point point,
 	                                                         final Function<Point, Collection<TileFixture>> chosenMap) {
-		return new ResultStream<>(StreamSupport.stream(
-					new SurroundingPointIterable(point, dimensions).spliterator(), true)
+		return new ResultStream<>(
+					new SurroundingPointIterable(point, dimensions).stream()
 				.map(chooseFromMapImpl(chosenMap)).flatMap(Collection::stream)
 				.collect(Collectors.toList()), 0.5,
 			Pair.with(point, NothingFound.INSTANCE), p -> dcIfFound(p.getValue1()));
@@ -382,8 +382,8 @@ public class HuntingModel {
 	 * @param point Whereabouts to search
 	 */
 	public Iterable<Pair<Point, TileFixture>> gather(final Point point) {
-		List<Pair<Point, TileFixture>> retval = StreamSupport.stream(
-				new SurroundingPointIterable(point, dimensions).spliterator(), true)
+		List<Pair<Point, TileFixture>> retval =
+				new SurroundingPointIterable(point, dimensions).stream()
 			.flatMap(p -> gatherImpl(p).stream()).collect(Collectors.toList());
 		return () -> new PairIterator(retval);
 	}

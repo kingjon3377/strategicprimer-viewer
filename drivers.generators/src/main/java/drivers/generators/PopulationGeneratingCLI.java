@@ -235,9 +235,8 @@ public class PopulationGeneratingCLI implements CLIDriver {
 	 * How many tiles adjacent to the given location have forests of the given kind.
 	 */
 	private int countAdjacentForests(final Point center, final String kind) {
-		return (int) StreamSupport.stream(
-				new SurroundingPointIterable(center, map.getDimensions(), 1)
-					.spliterator(), true)
+		return (int)
+				new SurroundingPointIterable(center, map.getDimensions(), 1).stream()
 			.filter(hasForests(kind)).count();
 	}
 

@@ -227,8 +227,8 @@ public class QueryCLI implements ReadOnlyDriver {
 	 */
 	private void suggestTrade(final Point base, final int distance) {
 		DistanceComparator comparator = new DistanceComparator(base, map.getDimensions());
-		for (Point location : StreamSupport.stream(new SurroundingPointIterable(base,
-				map.getDimensions(), distance).spliterator(), true).distinct()
+		for (Point location : new SurroundingPointIterable(base,
+				map.getDimensions(), distance).stream().distinct()
 				.sorted(comparator).collect(Collectors.toList())) { // TODO: can we combine loops?
 			for (ITownFixture town : map.getFixtures(location).stream()
 					.filter(ITownFixture.class::isInstance)

@@ -253,8 +253,8 @@ import java.math.BigDecimal;
 		if (base == null) {
 			return Collections.emptyList();
 		} else {
-			return StreamSupport.stream(new SurroundingPointIterable(location,
-					map.getDimensions(), 10).spliterator(), true).distinct()
+			return new SurroundingPointIterable(location,
+					map.getDimensions(), 10).stream().distinct()
 				.filter(l -> bothOrNeitherOcean(base, map.getBaseTerrain(l)))
 				.flatMap(l -> map.getFixtures(l).stream())
 				.filter(HarvestableFixture.class::isInstance)

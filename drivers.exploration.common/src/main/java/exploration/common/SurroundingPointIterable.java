@@ -6,6 +6,8 @@ import java.util.Iterator;
 
 import common.map.Point;
 import common.map.MapDimensions;
+import java.util.Spliterator;
+import java.util.stream.Stream;
 
 /**
  * A stream of the points in a square surrounding a point, with points that are
@@ -53,5 +55,14 @@ public class SurroundingPointIterable implements Iterable<Point> {
 	@Override
 	public Iterator<Point> iterator() {
 		return points.iterator();
+	}
+
+	public Stream<Point> stream() {
+		return points.stream();
+	}
+
+	@Override
+	public Spliterator<Point> spliterator() {
+		return Iterable.super.spliterator();
 	}
 }
