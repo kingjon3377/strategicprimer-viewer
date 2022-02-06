@@ -469,16 +469,19 @@ import java.math.BigDecimal;
 				skillCount = repeatedlyRoll.repeatedlyRoll(3, 4);
 				skillLevelSource = () -> repeatedlyRoll.repeatedlyRoll(2, 6);
 				resourceCount = repeatedlyRoll.repeatedlyRoll(2, 3);
+				break;
 			case Medium:
 				population = repeatedlyRoll.repeatedlyRoll(20, 20, 50);
 				skillCount = repeatedlyRoll.repeatedlyRoll(4, 6);
 				skillLevelSource = () -> repeatedlyRoll.repeatedlyRoll(3, 6);
 				resourceCount = repeatedlyRoll.repeatedlyRoll(2, 6);
+				break;
 			case Large:
 				population = repeatedlyRoll.repeatedlyRoll(23, 100, 200);
 				skillCount = repeatedlyRoll.repeatedlyRoll(6, 8);
 				skillLevelSource = () -> repeatedlyRoll.repeatedlyRoll(3, 8);
 				resourceCount = repeatedlyRoll.repeatedlyRoll(4, 6);
+				break;
 			default:
 				throw new IllegalStateException("Non-exhaustive switch");
 			}
