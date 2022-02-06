@@ -116,9 +116,9 @@ import java.util.Arrays;
 			inputMap.put(KeyStroke.getKeyStroke(stroke, fiveMask), "ctrl-" + action);
 		}
 
-		/**
-		 * Strings representing arrow-key key codes and the actions
-		 * that should be mapped to them.
+		/*
+		  Strings representing arrow-key key codes and the actions
+		  that should be mapped to them.
 		 */
 		List<Pair<String, Runnable>> arrowActions = Arrays.asList(
 			Pair.with("up", selListener::up),
