@@ -61,7 +61,7 @@ public class SummonMenuItem extends JCheckBoxMenuItem {
 
 	private void updateText() {
 		String text = frame.getTitle();
-		if (text == null || text.trim().length() == 0)
+		if (text == null || text.trim().isEmpty())
 			text = "Untitled";
 		setText(text);
 	}
