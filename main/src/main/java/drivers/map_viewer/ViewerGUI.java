@@ -136,7 +136,7 @@ public class ViewerGUI implements ViewerDriver {
 	}
 
 	private void createWindow(final MenuBroker menuHandler) {
-		ViewerFrame frame = new ViewerFrame(model, menuHandler::actionPerformed, this, this::factory);
+		ViewerFrame frame = new ViewerFrame(model, menuHandler, this, this::factory);
 		String backgroundFile = options.getArgument("--background");
 		if (!backgroundFile.isEmpty() && !"false".equals(backgroundFile)) {
 			try {
@@ -148,7 +148,7 @@ public class ViewerGUI implements ViewerDriver {
 				LOGGER.log(Level.SEVERE, "I/O error reading background image", except);
 			}
 		}
-		frame.addWindowListener(new WindowCloseListener(menuHandler::actionPerformed));
+		frame.addWindowListener(new WindowCloseListener(menuHandler));
 		SelectTileDialog selectTileDialogInstance = new SelectTileDialog(frame, model);
 		menuHandler.registerWindowShower(selectTileDialogInstance, "go to tile");
 		selectTileDialogInstance.dispose();

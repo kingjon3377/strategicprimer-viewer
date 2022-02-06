@@ -80,7 +80,7 @@ import java.awt.image.BufferedImage;
 		mapModel = model;
 		cml = new ComponentMouseListener(model, zof, (Comparator<TileFixture>) matchers);
 		dsl = new DirectionSelectionChanger(model);
-		helper = new Ver2TileDrawHelper(this::imageUpdate, zof, matchers);
+		helper = new Ver2TileDrawHelper(this, zof, matchers);
 		setDoubleBuffered(true);
 
 		addMouseListener(cml);
