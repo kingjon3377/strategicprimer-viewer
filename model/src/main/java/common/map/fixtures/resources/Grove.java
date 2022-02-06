@@ -133,22 +133,23 @@ public class Grove implements HarvestableFixture, HasPopulation<Grove> {
 
 	@Override
 	public String getShortDescription() {
+		String type;
+		String cultivation;
 		String retval;
 		if (cultivated) {
-			if (orchard) {
-				retval = "Cultivated %s orchard";
-			} else {
-				retval = "Cultivated %s grove";
-			}
-		} else if (orchard) {
-			retval = "Wild %s orchard";
+			cultivation = "Cultivated";
 		} else {
-			retval = "Wild %s grove";
+			cultivation = "Wild";
+		}
+		if (orchard) {
+			type = "orchard";
+		} else {
+			type = "grove";
 		}
 		if (population < 0) {
-			return String.format(retval, kind);
+			return String.format("%s %s %s", cultivation, kind, type);
 		} else {
-			return String.format(retval + " of %d trees", kind, population);
+			return String.format("%s %s %s of %d trees", cultivation, kind, type, population);
 		}
 	}
 
