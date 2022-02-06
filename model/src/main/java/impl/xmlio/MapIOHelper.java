@@ -1,5 +1,6 @@
 package impl.xmlio;
 
+import java.util.List;
 import java.util.logging.Logger;
 
 import java.nio.file.Paths;
@@ -60,7 +61,7 @@ public final class MapIOHelper {
 	/**
 	 * Turn a series of Strings into a series of equvalent Paths.
 	 */
-	public static Iterable<Path> namesToFiles(final String... names) {
+	public static List<Path> namesToFiles(final String... names) {
 		return Stream.of(names).map(Paths::get).collect(Collectors.toList());
 	}
 

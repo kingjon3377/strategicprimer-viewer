@@ -95,8 +95,7 @@ import java.util.stream.StreamSupport;
 			}
 			return files;
 		} else if (args.length > 0) {
-			return StreamSupport.stream(MapIOHelper.namesToFiles(args).spliterator(), false)
-				.collect(Collectors.toList());
+			return MapIOHelper.namesToFiles(args);
 		} else {
 			return Collections.emptyList();
 		}
@@ -136,8 +135,7 @@ import java.util.stream.StreamSupport;
 					checkArguments(args);
 					// FIXME: What if a model driver had paramsWanted as None or Any, and args is empty?
 					// In Ceylon we asserted args was nonempty, but didn't address this case
-					List<Path> files = StreamSupport.stream(MapIOHelper.namesToFiles(args).spliterator(), false)
-							                   .collect(Collectors.toList());
+					List<Path> files = MapIOHelper.namesToFiles(args);
 					IMultiMapModel model = MapReaderAdapter.readMultiMapModel(Warning.WARN,
 						files.get(0), files.stream().skip(1).toArray(Path[]::new));
 					fixCurrentTurn(options, model);
