@@ -60,7 +60,6 @@
                 <version>${auto-service.version}</version>
               </path>
             </annotationProcessorPaths>
-            <overwrite>true</overwrite><!-- https://stackoverflow.com/a/22666285 -->
           </configuration>
         </plugin>
       </plugins>
