@@ -281,50 +281,58 @@ import java.util.function.Predicate;
 					tagStack.addFirst(((StartElement) event).getName());
 					warner.handle(UnsupportedTagException.obsolete((StartElement) event));
 				} else if (point != null) {
-					if ("lake".equals(type) || "river".equals(type)) {
-						retval.addRivers(point,
-							parseRiver((StartElement) event,
-								tagStack.peekFirst()));
-						spinUntilEnd(((StartElement) event).getName(), stream);
-					} else if ("mountain".equals(type)) {
-						tagStack.addFirst(((StartElement) event).getName());
-						retval.setMountainous(point, true);
-					} else if ("bookmark".equals(type)) {
-						tagStack.addFirst(((StartElement) event).getName());
-						expectAttributes((StartElement) event, "player");
-						retval.addBookmark(point,
-							players.getPlayer(getIntegerParameter(
-								(StartElement) event, "player")));
-					} else if ("road".equals(type)) {
-						tagStack.addFirst(((StartElement) event).getName());
-						expectAttributes((StartElement) event, "direction",
-							"quality");
-						Direction direction;
-						try {
-							direction = Direction.parse(
-								getParameter((StartElement) event,
-									"direction"));
-						} catch (final IllegalArgumentException except) {
-							throw new MissingPropertyException(
-								(StartElement) event, "direction", except);
-						}
-						retval.setRoadLevel(point, direction,
-							getIntegerParameter((StartElement) event, "quality"));
-					} else {
-						QName top = tagStack.peekFirst(); // TODO: probably remove
-						TileFixture child = parseFixture((StartElement) event,
-							tagStack.peekFirst(), stream);
-						if (child instanceof IFortress &&
-								retval.getFixtures(point).stream()
-									.filter(IFortress.class::isInstance)
-									.map(IFortress.class::cast)
-									.map(IFortress::getOwner)
-									.anyMatch(((IFortress) child).getOwner()::equals)) {
-							warner.handle(new UnwantedChildException(
-								tagStack.peekFirst(), (StartElement) event,
-								"Multiple fortresses owned by one player on a tile"));
-						}
-						retval.addFixture(point, child);
+					switch (type) {
+						case "lake":
+						case "river":
+							retval.addRivers(point,
+									parseRiver((StartElement) event,
+											tagStack.peekFirst()));
+							spinUntilEnd(((StartElement) event).getName(), stream);
+							break;
+						case "mountain":
+							tagStack.addFirst(((StartElement) event).getName());
+							retval.setMountainous(point, true);
+							break;
+						case "bookmark":
+							tagStack.addFirst(((StartElement) event).getName());
+							expectAttributes((StartElement) event, "player");
+							retval.addBookmark(point,
+									players.getPlayer(getIntegerParameter(
+											(StartElement) event, "player")));
+							break;
+						case "road":
+							tagStack.addFirst(((StartElement) event).getName());
+							expectAttributes((StartElement) event, "direction",
+									"quality");
+							Direction direction;
+							try {
+								direction = Direction.parse(
+										getParameter((StartElement) event,
+												"direction"));
+							} catch (final IllegalArgumentException except) {
+								throw new MissingPropertyException(
+										(StartElement) event, "direction", except);
+							}
+							retval.setRoadLevel(point, direction,
+									getIntegerParameter((StartElement) event, "quality"));
+							break;
+						default:
+							QName top = tagStack.peekFirst(); // TODO: probably remove
+
+							TileFixture child = parseFixture((StartElement) event,
+									tagStack.peekFirst(), stream);
+							if (child instanceof IFortress &&
+									    retval.getFixtures(point).stream()
+											    .filter(IFortress.class::isInstance)
+											    .map(IFortress.class::cast)
+											    .map(IFortress::getOwner)
+											    .anyMatch(((IFortress) child).getOwner()::equals)) {
+								warner.handle(new UnwantedChildException(
+										tagStack.peekFirst(), (StartElement) event,
+										"Multiple fortresses owned by one player on a tile"));
+							}
+							retval.addFixture(point, child);
+							break;
 					}
 				} else {
 					// fixture outside tile
