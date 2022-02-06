@@ -14,7 +14,7 @@ public class VisibleDimensions {
 		this.maximumRow = maximumRow;
 		this.minimumColumn = minimumColumn;
 		this.maximumColumn = maximumColumn;
-		rows = new Range(minimumRow, maximumRow);;
+		rows = new Range(minimumRow, maximumRow);
 		columns = new Range(minimumColumn, maximumColumn);
 	}
 

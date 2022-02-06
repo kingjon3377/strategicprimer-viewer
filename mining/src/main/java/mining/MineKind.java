@@ -10,5 +10,5 @@ package mining;
 	/**
 	 * A mine which emphasizes layers, such as a sand mine.
 	 */
-	Banded;
+	Banded
 }

@@ -34,7 +34,7 @@ import common.map.Point;
 
 	private static final Logger LOGGER = Logger.getLogger(SelectTileDialog.class.getName());
 
-	private enum NumberState { Valid, NonNumeric, Negative, Overflow; }
+	private enum NumberState { Valid, NonNumeric, Negative, Overflow}
 
 	private final IViewerModel model;
 

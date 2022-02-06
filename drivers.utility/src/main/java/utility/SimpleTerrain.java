@@ -15,5 +15,5 @@ package utility;
 	/**
 	 * Ocean.
 	 */
-	Ocean;
+	Ocean
 }
