@@ -52,15 +52,13 @@ import common.map.fixtures.terrain.Hill;
 		this.model = model;
 		idf = new IDFactoryFiller().createIDFactory(model.getMap());
 		nuDialog = new NewUnitDialog(model.getMap().getCurrentPlayer(), idf);
-		nuDialog.addNewUnitListener(new NewUnitListener() { // TODO: convert to lambda?
-				@Override
-				public void addNewUnit(final IUnit unit) {
-					model.addFixture(point, unit);
-					model.setSelection(point); // FIXME: Extract a method for the 'set modified flag, fire changes, reset interaction' procedure
-					scs.fireChanges(null, point);
-					model.setInteraction(null);
-				}
-			});
+		// TODO: convert to lambda?
+		nuDialog.addNewUnitListener(unit -> {
+			model.addFixture(point, unit);
+			model.setSelection(point); // FIXME: Extract a method for the 'set modified flag, fire changes, reset interaction' procedure
+			scs.fireChanges(null, point);
+			model.setInteraction(null);
+		});
 
 		mountainItem.setMnemonic(KeyEvent.VK_M);
 		mountainItem.addActionListener(ignored -> toggleMountains());

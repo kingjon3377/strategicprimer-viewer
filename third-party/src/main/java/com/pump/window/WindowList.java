@@ -110,36 +110,34 @@ public class WindowList {
 			}
 		}
 
-		final Runnable proofRunnable = new Runnable() {
-			public void run() {
-				boolean changed = false;
+		final Runnable proofRunnable = () -> {
+			boolean changed = false;
 
-				Window[] newVisibleWindows = getWindows(false, false);
-				Window[] newInvisibleWindows = getWindows(false, true);
-				Frame[] newVisibleFrames = getFrames(false, false, false);
-				Frame[] newInvisibleFrames = getFrames(false, true, false);
-				Frame[] newIconifiedFrames = getFrames(false, false, true);
+			Window[] newVisibleWindows = getWindows(false, false);
+			Window[] newInvisibleWindows = getWindows(false, true);
+			Frame[] newVisibleFrames = getFrames(false, false, false);
+			Frame[] newInvisibleFrames = getFrames(false, true, false);
+			Frame[] newIconifiedFrames = getFrames(false, false, true);
 
-				if (arrayEquals(newVisibleWindows, visibleWindows) == false)
-					changed = true;
-				if (arrayEquals(newInvisibleWindows, invisibleWindows) == false)
-					changed = true;
-				if (arrayEquals(newVisibleFrames, visibleFrames) == false)
-					changed = true;
-				if (arrayEquals(newInvisibleFrames, invisibleFrames) == false)
-					changed = true;
-				if (arrayEquals(newIconifiedFrames, iconifiedFrames) == false)
-					changed = true;
+			if (arrayEquals(newVisibleWindows, visibleWindows) == false)
+				changed = true;
+			if (arrayEquals(newInvisibleWindows, invisibleWindows) == false)
+				changed = true;
+			if (arrayEquals(newVisibleFrames, visibleFrames) == false)
+				changed = true;
+			if (arrayEquals(newInvisibleFrames, invisibleFrames) == false)
+				changed = true;
+			if (arrayEquals(newIconifiedFrames, iconifiedFrames) == false)
+				changed = true;
 
-				visibleWindows = wrap(newVisibleWindows);
-				invisibleWindows = wrap(newInvisibleWindows);
-				visibleFrames = wrap(newVisibleFrames);
-				invisibleFrames = wrap(newInvisibleFrames);
-				iconifiedFrames = wrap(newIconifiedFrames);
+			visibleWindows = wrap(newVisibleWindows);
+			invisibleWindows = wrap(newInvisibleWindows);
+			visibleFrames = wrap(newVisibleFrames);
+			invisibleFrames = wrap(newInvisibleFrames);
+			iconifiedFrames = wrap(newIconifiedFrames);
 
-				if (changed) {
-					fireChangeListeners();
-				}
+			if (changed) {
+				fireChangeListeners();
 			}
 		};
 

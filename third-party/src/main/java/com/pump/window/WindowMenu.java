@@ -103,26 +103,20 @@ public class WindowMenu extends JMenu {
 
 	private JFrame myFrame = null;
 
-	private final ChangeListener changeListener = new ChangeListener() {
-		public void stateChanged(final ChangeEvent e) {
-			SwingUtilities.invokeLater(updateRunnable);
-		}
-	};
+	private final ChangeListener changeListener = e -> SwingUtilities.invokeLater(updateRunnable);
 
-	final ActionListener actionListener = new ActionListener() {
-		public void actionPerformed(final ActionEvent e) {
-			Object src = e.getSource();
-			if (src == minimizeItem) {
-				myFrame.setExtendedState(Frame.ICONIFIED);
-			} else if (src == bringItem) {
-				Frame[] frames = WindowList.getFrames(false, false, true);
-				for (int a = 0; a < frames.length; a++) {
-					if (frames[a].isVisible() || frames[a]
-							.getExtendedState() == Frame.ICONIFIED) {
-						frames[a].toFront();
-						if (frames[a].getExtendedState() == Frame.ICONIFIED)
-							frames[a].setExtendedState(Frame.NORMAL);
-					}
+	final ActionListener actionListener = e -> {
+		Object src = e.getSource();
+		if (src == minimizeItem) {
+			myFrame.setExtendedState(Frame.ICONIFIED);
+		} else if (src == bringItem) {
+			Frame[] frames = WindowList.getFrames(false, false, true);
+			for (int a = 0; a < frames.length; a++) {
+				if (frames[a].isVisible() || frames[a]
+						.getExtendedState() == Frame.ICONIFIED) {
+					frames[a].toFront();
+					if (frames[a].getExtendedState() == Frame.ICONIFIED)
+						frames[a].setExtendedState(Frame.NORMAL);
 				}
 			}
 		}

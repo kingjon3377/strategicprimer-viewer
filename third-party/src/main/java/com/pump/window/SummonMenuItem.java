@@ -49,11 +49,7 @@ public class SummonMenuItem extends JCheckBoxMenuItem {
 		addActionListener(actionListener);
 		updateText();
 
-		frame.addPropertyChangeListener("title", new PropertyChangeListener() {
-			public void propertyChange(final PropertyChangeEvent e) {
-				updateText();
-			}
-		});
+		frame.addPropertyChangeListener("title", e -> updateText());
 
 		// this UI is buggy, and has issues.
 		// the main issue is that it won't even show up on Macs

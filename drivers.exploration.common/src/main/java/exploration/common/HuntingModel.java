@@ -385,21 +385,16 @@ public class HuntingModel {
 		List<Pair<Point, TileFixture>> retval = StreamSupport.stream(
 				new SurroundingPointIterable(point, dimensions).spliterator(), true)
 			.flatMap(p -> gatherImpl(p).stream()).collect(Collectors.toList());
-		// TODO: Make named and static classes for this
-		return new Iterable<Pair<Point, TileFixture>>() {
+		// TODO: Make named and static class for this
+		return () -> new Iterator<Pair<Point, TileFixture>>() {
 			@Override
-			public Iterator<Pair<Point, TileFixture>> iterator() {
-				return new Iterator<Pair<Point, TileFixture>>() {
-					@Override
-					public boolean hasNext() {
-						return true;
-					}
-					@Override
-					public Pair<Point, TileFixture> next() {
-						return retval.get(SingletonRandom.SINGLETON_RANDOM
-							.nextInt(retval.size()));
-					}
-				};
+			public boolean hasNext() {
+				return true;
+			}
+			@Override
+			public Pair<Point, TileFixture> next() {
+				return retval.get(SingletonRandom.SINGLETON_RANDOM
+					.nextInt(retval.size()));
 			}
 		};
 	}
