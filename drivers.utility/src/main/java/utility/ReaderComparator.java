@@ -30,7 +30,7 @@ import drivers.common.cli.ICLIHelper;
  */
 public class ReaderComparator implements UtilityDriver {
 	private static String readAll(final Path path) throws IOException {
-		return String.join("\n", Files.readAllLines(path, StandardCharsets.UTF_8));
+		return String.join(System.lineSeparator(), Files.readAllLines(path, StandardCharsets.UTF_8));
 	}
 
 	@Override

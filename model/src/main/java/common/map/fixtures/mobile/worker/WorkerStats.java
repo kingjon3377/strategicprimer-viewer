@@ -206,7 +206,7 @@ public final class WorkerStats {
 
 	@Override
 	public String toString() {
-		return String.format("HP: %d / %d\nStr: %d\nDex: %d\nCon: %d\nInt: %d\nWis: %d\nCha: %d\n",
+		return String.format("HP: %d / %d%nStr: %d%nDex: %d%nCon: %d%nInt: %d%nWis: %d%nCha: %d%n",
 			hitPoints, maxHitPoints, strength, dexterity, constitution, intelligence,
 			wisdom, charisma);
 	}

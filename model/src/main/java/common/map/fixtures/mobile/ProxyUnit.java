@@ -286,7 +286,7 @@ public class ProxyUnit implements IUnit, ProxyFor<IUnit> {
 		if (parallel) {
 			Iterator<IUnit> iterator = proxiedList.iterator();
 			if (iterator.hasNext()) {
-				return "A proxy for units in several maps, such as the following:\n" +
+				return "A proxy for units in several maps, such as the following:" + System.lineSeparator() +
 					iterator.next().getVerbose();
 			} else {
 				return "A proxy for units in several maps, but no units yet.";
