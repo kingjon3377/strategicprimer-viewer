@@ -17,7 +17,7 @@ public class SPDatabaseReader implements IMapReader {
 	/**
 	 * A logger.
 	 */
-	private static final Logger LOGGER = Logger.getLogger(SPDatabaseWriter.class.getName());
+	private static final Logger LOGGER = Logger.getLogger(SPDatabaseReader.class.getName());
 
 	private final Map<Path, DB> connections = new HashMap<>();
 

@@ -32,7 +32,7 @@ public class WorkerMgmtGUI implements MultiMapGUIDriver, WorkerGUI {
 	/**
 	 * A logger.
 	 */
-	private static final Logger LOGGER = Logger.getLogger(WorkerMgmtGUIFactory.class.getName());
+	private static final Logger LOGGER = Logger.getLogger(WorkerMgmtGUI.class.getName());
 
 	public WorkerMgmtGUI(final ICLIHelper cli, final SPOptions options, final IWorkerModel model) {
 		this.cli = cli;
