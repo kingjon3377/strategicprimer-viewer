@@ -20,11 +20,7 @@ public final class AnimalPlurals {
 	private static final Map<String, String> PLURALS = initPlurals();
 
 	public static String get(final String key) {
-		if (PLURALS.containsKey(key)) {
-			return PLURALS.get(key);
-		} else {
-			return key;
-		}
+		return PLURALS.getOrDefault(key, key);
 	}
 
 	public static boolean hasKey(final String key) {

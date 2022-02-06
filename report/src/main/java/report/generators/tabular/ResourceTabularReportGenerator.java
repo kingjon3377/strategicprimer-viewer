@@ -171,11 +171,7 @@ public class ResourceTabularReportGenerator
 			TileFixture fixture = triplet.getValue2();
 			if (fixture instanceof Implement) {
 				int num;
-				if (implementCounts.containsKey(Pair.with(loc, ((Implement) fixture).getKind()))) {
-					num = implementCounts.get(Pair.with(loc, ((Implement) fixture).getKind()));
-				} else {
-					num = 0;
-				}
+				num = implementCounts.getOrDefault(Pair.with(loc, ((Implement) fixture).getKind()), 0);
 				implementCounts.put(Pair.with(loc, ((Implement) fixture).getKind()),
 					num + ((Implement) fixture).getCount());
 				fixtures.remove(key);

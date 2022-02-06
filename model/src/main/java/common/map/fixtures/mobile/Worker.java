@@ -312,20 +312,14 @@ public class Worker implements IMutableWorker {
 
 	@Override
 	public String getNote(final Player player) {
-		if (notesImpl.containsKey(player.getPlayerId())) {
-			return notesImpl.get(player.getPlayerId());
-		} else {
-			return ""; // TODO: is this right?
-		}
+		// TODO: is "" right?
+		return notesImpl.getOrDefault(player.getPlayerId(), "");
 	}
 
 	@Override
 	public String getNote(final int player) {
-		if (notesImpl.containsKey(player)) {
-			return notesImpl.get(player);
-		} else {
-			return ""; // TODO: is this right?
-		}
+		// TODO: is "" right?
+		return notesImpl.getOrDefault(player, "");
 	}
 
 	@Override

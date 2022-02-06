@@ -28,11 +28,7 @@ public final class AnimalDiscoveryDCs {
 	private static final Map<String, Integer> DCS = initDcs();
 
 	public static int get(final String key) {
-		if (DCS.containsKey(key)) {
-			return DCS.get(key);
-		} else {
-			return 22;
-		}
+		return DCS.getOrDefault(key, 22);
 	}
 
 	public static boolean containsKey(final String key) {
