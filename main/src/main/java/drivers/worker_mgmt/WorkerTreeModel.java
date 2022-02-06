@@ -56,9 +56,7 @@ import java.util.stream.Collectors;
 			return StreamSupport.stream(model.getUnitKinds((Player) parent).spliterator(), false)
 				.collect(Collectors.toList()).get(index);
 		} else if (parent instanceof String) {
-			return StreamSupport.stream(
-					model.getUnits(player, (String) parent).spliterator(), false)
-				.collect(Collectors.toList()).get(index);
+			return new ArrayList<>(model.getUnits(player, (String) parent)).get(index);
 		} else if (parent instanceof IUnit) {
 			return ((IUnit) parent).stream().collect(Collectors.toList()).get(index);
 		} else {
@@ -73,8 +71,7 @@ import java.util.stream.Collectors;
 				false).count();
 		} else if (parent instanceof String && StreamSupport.stream(
 				model.getUnitKinds(player).spliterator(), false).anyMatch(parent::equals)) {
-			return (int) StreamSupport.stream(model.getUnits(player,
-				(String) parent).spliterator(), false).count();
+			return model.getUnits(player, (String) parent).size();
 		} else if (parent instanceof IUnit) {
 			return (int) ((IUnit) parent).stream().count();
 		} else {
@@ -107,9 +104,7 @@ import java.util.stream.Collectors;
 			return StreamSupport.stream(model.getUnitKinds((Player) parent).spliterator(), false)
 				.collect(Collectors.toList()).indexOf(child);
 		} else if (parent instanceof String && child instanceof IUnit) {
-			return StreamSupport.stream(
-					model.getUnits(player, (String) parent).spliterator(), false)
-				.collect(Collectors.toList()).indexOf(child);
+			return new ArrayList<>(model.getUnits(player, (String) parent)).indexOf(child);
 		} else if (parent instanceof IUnit) {
 			return ((IUnit) parent).stream().collect(Collectors.toList()).indexOf(child);
 		} else {
@@ -156,8 +151,7 @@ import java.util.stream.Collectors;
 		model.addUnit(unit);
 		TreePath path = new TreePath(new Object[] { player, unit.getKind() });
 		int[] indices = new int[] {
-			(int) StreamSupport.stream(model.getUnits(player, unit.getKind()).spliterator(),
-				false).count() };
+				model.getUnits(player, unit.getKind()).size()};
 		Object[] children = new Object[] { unit };
 		TreeModelEvent event = new TreeModelEvent(this, path, indices, children);
 		for (TreeModelListener listener : listeners) {

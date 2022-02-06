@@ -221,8 +221,7 @@ public class WorkerTreeModelAlt extends DefaultTreeModel implements IWorkerTreeM
 			int index = 0;
 			for (String kind : model.getUnitKinds(player)) {
 				insert(new KindNode(kind,
-					StreamSupport.stream(model.getUnits(player, kind)
-							.spliterator(), false)
+					model.getUnits(player, kind).stream()
 						.filter(IUnit.class::isInstance)
 						.map(IUnit.class::cast)
 						.toArray(IUnit[]::new)), index);

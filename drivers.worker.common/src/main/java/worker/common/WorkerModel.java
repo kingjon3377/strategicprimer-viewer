@@ -1,5 +1,6 @@
 package worker.common;
 
+import java.util.Collection;
 import java.util.function.BiPredicate;
 import java.util.Collections;
 import java.util.Optional;
@@ -192,7 +193,7 @@ public class WorkerModel extends SimpleMultiMapModel implements IWorkerModel {
 	 * Get all the given player's units, or only those of a specified kind.
 	 */
 	@Override
-	public Iterable<IUnit> getUnits(final Player player, final String kind) {
+	public Collection<IUnit> getUnits(final Player player, final String kind) {
 		return StreamSupport.stream(getUnits(player).spliterator(), false)
 			.filter(u -> kind.equals(u.getKind())).collect(Collectors.toList());
 	}

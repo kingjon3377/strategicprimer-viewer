@@ -1,5 +1,6 @@
 package drivers.worker_mgmt.orderspanel;
 
+import java.util.Collection;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.tree.TreePath;
@@ -32,7 +33,7 @@ public class OrdersPanel extends BorderedPanel implements OrdersContainer {
 	private static final Color LIGHT_BLUE = new Color(135, 206, 250);
 	private Player currentPlayer;
 
-	private final BiFunction<Player, String, Iterable<IUnit>> playerUnits;
+	private final BiFunction<Player, String, Collection<IUnit>> playerUnits;
 
 	@FunctionalInterface
 	public static interface IOrdersSupplier { // TODO: Move elsewhere; TODO: just use BiFunction<IUnit, Integer, String>? (See what callers try to pass in)
@@ -60,7 +61,7 @@ public class OrdersPanel extends BorderedPanel implements OrdersContainer {
 	private final JTextArea area = new JTextArea();
 
 	public OrdersPanel(final String description, final int currentTurn, final Player currentPlayer,
-	                   final BiFunction<Player, String, Iterable<IUnit>> playerUnits,
+	                   final BiFunction<Player, String, Collection<IUnit>> playerUnits,
 	                   final IOrdersSupplier ordersSupplier, @Nullable final IOrdersConsumer ordersConsumer,
 	                   final IIsCurrent isCurrent) {
 		this.currentPlayer = currentPlayer;

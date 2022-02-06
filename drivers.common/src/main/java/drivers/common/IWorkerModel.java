@@ -1,5 +1,6 @@
 package drivers.common;
 
+import java.util.Collection;
 import org.jetbrains.annotations.Nullable;
 
 import common.map.Player;
@@ -31,7 +32,7 @@ public interface IWorkerModel extends  IMultiMapModel, IAdvancementModel, IFixtu
 	 * @param player The player whose units we want
 	 * @param kind Which "kind" to restrict to
 	 */
-	Iterable<IUnit> getUnits(Player player, String kind);
+	Collection<IUnit> getUnits(Player player, String kind);
 
 	/**
 	 * The "kinds" of units that the given player has.
