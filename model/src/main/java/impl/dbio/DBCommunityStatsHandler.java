@@ -4,6 +4,7 @@ import buckelieg.jdbc.fn.DB;
 
 import java.util.Collections;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 import java.math.BigDecimal;
 
@@ -22,7 +23,7 @@ final class DBCommunityStatsHandler extends AbstractDatabaseWriter<CommunityStat
 		super(CommunityStats.class, ITownFixture.class);
 	}
 
-	private static final Iterable<String> INITIALIZERS = Collections.unmodifiableList(Arrays.asList(
+	private static final List<String> INITIALIZERS = Collections.unmodifiableList(Arrays.asList(
 		"CREATE TABLE IF NOT EXISTS town_expertise (" +
 			"    town INTEGER NOT NULL," +
 			"    skill VARCHAR(255) NOT NULL," +
@@ -54,7 +55,7 @@ final class DBCommunityStatsHandler extends AbstractDatabaseWriter<CommunityStat
 			");"));
 
 	@Override
-	public Iterable<String> getInitializers() {
+	public List<String> getInitializers() {
 		return INITIALIZERS;
 	}
 

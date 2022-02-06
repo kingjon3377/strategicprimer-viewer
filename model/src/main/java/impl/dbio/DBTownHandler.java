@@ -3,6 +3,7 @@ package impl.dbio;
 import buckelieg.jdbc.fn.DB;
 
 import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 import java.util.Map;
 
@@ -25,7 +26,7 @@ final class DBTownHandler extends AbstractDatabaseWriter<AbstractTown, Point> im
 		super(AbstractTown.class, Point.class);
 	}
 
-	private static final Iterable<String> INITIALIZERS = Collections.singleton(
+	private static final List<String> INITIALIZERS = Collections.singletonList(
 		"CREATE TABLE IF NOT EXISTS towns (" +
 			"    row INTEGER NOT NULL," +
 			"    column INTEGER NOT NULL," +
@@ -45,7 +46,7 @@ final class DBTownHandler extends AbstractDatabaseWriter<AbstractTown, Point> im
 			");");
 
 	@Override
-	public Iterable<String> getInitializers() {
+	public List<String> getInitializers() {
 		return INITIALIZERS;
 	}
 

@@ -75,7 +75,7 @@ final class DBImmortalHandler extends AbstractDatabaseWriter<Immortal, /*Point|I
 			");"));
 
 	@Override
-	public Iterable<String> getInitializers() {
+	public List<String> getInitializers() {
 		return INITIALIZERS;
 	}
 
@@ -83,7 +83,7 @@ final class DBImmortalHandler extends AbstractDatabaseWriter<Immortal, /*Point|I
 		return s.contains("simple_immortals");
 	}
 
-	private static Iterable<String> refreshSimpleSchema() {
+	private static List<String> refreshSimpleSchema() {
 		return INITIALIZERS.stream().filter(DBImmortalHandler::containsSimpleImmortals)
 			.map(s -> s.replaceAll("simple_immortals ", "simple_immortals_replacement "))
 			.map(s -> s +

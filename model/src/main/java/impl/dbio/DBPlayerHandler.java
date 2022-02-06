@@ -3,6 +3,7 @@ package impl.dbio;
 import buckelieg.jdbc.fn.DB;
 
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 
 import common.map.IMapNG;
@@ -18,7 +19,7 @@ final class DBPlayerHandler extends AbstractDatabaseWriter<Player, IMapNG> imple
 		super(Player.class, IMapNG.class);
 	}
 
-	private static final Iterable<String> INITIALIZERS = Collections.singleton(
+	private static final List<String> INITIALIZERS = Collections.singletonList(
 		"CREATE TABLE IF NOT EXISTS players (" +
 			"    id INTEGER NOT NULL," +
 			"    codename VARCHAR(64) NOT NULL," +
@@ -28,7 +29,7 @@ final class DBPlayerHandler extends AbstractDatabaseWriter<Player, IMapNG> imple
 			");");
 
 	@Override
-	public Iterable<String> getInitializers() {
+	public List<String> getInitializers() {
 		return INITIALIZERS;
 	}
 

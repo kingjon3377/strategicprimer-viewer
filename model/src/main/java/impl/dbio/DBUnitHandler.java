@@ -4,6 +4,7 @@ import buckelieg.jdbc.fn.DB;
 
 import java.util.Collections;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 import common.map.IMutableMapNG;
@@ -32,7 +33,7 @@ final class DBUnitHandler extends AbstractDatabaseWriter<IUnit, Object> implemen
 		return obj instanceof IUnit && (context instanceof Point || context instanceof IFortress);
 	}
 
-	private static final Iterable<String> INITIALIZERS = Collections.unmodifiableList(Arrays.asList(
+	private static final List<String> INITIALIZERS = Collections.unmodifiableList(Arrays.asList(
 		"CREATE TABLE IF NOT EXISTS units (" +
 			"    row INTEGER," +
 			"    column INTEGER CHECK ((row IS NOT NULL AND column IS NOT NULL) OR" +
@@ -58,7 +59,7 @@ final class DBUnitHandler extends AbstractDatabaseWriter<IUnit, Object> implemen
 			");"));
 
 	@Override
-	public Iterable<String> getInitializers() {
+	public List<String> getInitializers() {
 		return INITIALIZERS;
 	}
 

@@ -15,6 +15,7 @@ import common.xmlio.Warning;
 
 import java.util.Collections;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 import java.util.Map;
 
@@ -42,7 +43,7 @@ final class DBAnimalHandler extends AbstractDatabaseWriter<AnimalOrTracks, /*Poi
 		return Optional.of(animal.getBorn());
 	}
 
-	private static final Iterable<String> INITIALIZERS = Collections.unmodifiableList(
+	private static final List<String> INITIALIZERS = Collections.unmodifiableList(
 		Arrays.asList("CREATE TABLE IF NOT EXISTS animals (" +
 				"    row INTEGER," +
 				"    column INTEGER" +
@@ -68,7 +69,7 @@ final class DBAnimalHandler extends AbstractDatabaseWriter<AnimalOrTracks, /*Poi
 				");"));
 
 	@Override
-	public Iterable<String> getInitializers() {
+	public List<String> getInitializers() {
 		return INITIALIZERS;
 	}
 

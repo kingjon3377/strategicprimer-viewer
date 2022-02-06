@@ -3,6 +3,7 @@ package impl.dbio;
 import buckelieg.jdbc.fn.DB;
 
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 
 import common.map.Point;
@@ -16,7 +17,7 @@ final class DBTextHandler extends AbstractDatabaseWriter<TextFixture, Point> imp
 		super(TextFixture.class, Point.class);
 	}
 
-	private static final Iterable<String> INITIALIZERS = Collections.singleton(
+	private static final List<String> INITIALIZERS = Collections.singletonList(
 		"CREATE TABLE IF NOT EXISTS text_notes (" +
 			"    row INTEGER NOT NULL," +
 			"    column INTEGER NOT NULL," +
@@ -26,7 +27,7 @@ final class DBTextHandler extends AbstractDatabaseWriter<TextFixture, Point> imp
 			");");
 
 	@Override
-	public Iterable<String> getInitializers() {
+	public List<String> getInitializers() {
 		return INITIALIZERS;
 	}
 

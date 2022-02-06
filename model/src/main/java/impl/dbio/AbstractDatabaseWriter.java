@@ -1,6 +1,7 @@
 package impl.dbio;
 
 import buckelieg.jdbc.fn.DB;
+import java.util.List;
 import java.util.Set;
 import java.util.HashSet;
 import java.util.logging.Logger;
@@ -24,7 +25,7 @@ abstract class AbstractDatabaseWriter<Item, Context> implements DatabaseWriter<I
 	/**
 	 * SQL to run to initialize the needed tables.
 	 */
-	public abstract Iterable<String> getInitializers();
+	public abstract List<String> getInitializers();
 
 	/**
 	 * Database connections that we've been initialized for.

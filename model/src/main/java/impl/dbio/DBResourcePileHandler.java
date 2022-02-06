@@ -3,6 +3,7 @@ package impl.dbio;
 import buckelieg.jdbc.fn.DB;
 
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 
 import java.math.BigDecimal;
@@ -32,7 +33,7 @@ final class DBResourcePileHandler
 			(context instanceof IFortress || context instanceof IUnit);
 	}
 
-	private static final Iterable<String> INITIALIZERS = Collections.singleton(
+	private static final List<String> INITIALIZERS = Collections.singletonList(
 		"CREATE TABLE IF NOT EXISTS resource_piles (" +
 			"    parent INTEGER NOT NULL," +
 			"    id INTEGER NOT NULL," +
@@ -46,7 +47,7 @@ final class DBResourcePileHandler
 			");");
 
 	@Override
-	public Iterable<String> getInitializers() {
+	public List<String> getInitializers() {
 		return INITIALIZERS;
 	}
 

@@ -3,6 +3,7 @@ package impl.dbio;
 import buckelieg.jdbc.fn.DB;
 
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 
 import java.math.BigDecimal;
@@ -17,7 +18,7 @@ final class DBForestHandler extends AbstractDatabaseWriter<Forest, Point> implem
 		super(Forest.class, Point.class);
 	}
 
-	private static final Iterable<String> INITIALIZERS = Collections.singleton(
+	private static final List<String> INITIALIZERS = Collections.singletonList(
 		"CREATE TABLE IF NOT EXISTS forests (" +
 			"    row INTEGER NOT NULL," +
 			"    column INTEGER NOT NULL," +
@@ -30,7 +31,7 @@ final class DBForestHandler extends AbstractDatabaseWriter<Forest, Point> implem
 			");");
 
 	@Override
-	public Iterable<String> getInitializers() {
+	public List<String> getInitializers() {
 		return INITIALIZERS;
 	}
 

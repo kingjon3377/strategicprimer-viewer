@@ -4,6 +4,7 @@ import buckelieg.jdbc.fn.DB;
 
 import java.util.Collections;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 import common.map.Point;
@@ -24,7 +25,7 @@ final class DBExplorableHandler extends AbstractDatabaseWriter<ExplorableFixture
 		return (obj instanceof Battlefield || obj instanceof Cave) && context instanceof Point;
 	}
 
-	private static final Iterable<String> INITIALIZERS = Collections.unmodifiableList(Arrays.asList(
+	private static final List<String> INITIALIZERS = Collections.unmodifiableList(Arrays.asList(
 		"CREATE TABLE IF NOT EXISTS caves (" +
 			"    row INTEGER NOT NULL," +
 			"    column INTEGER NOT NULL," +
@@ -41,7 +42,7 @@ final class DBExplorableHandler extends AbstractDatabaseWriter<ExplorableFixture
 			");"));
 
 	@Override
-	public Iterable<String> getInitializers() {
+	public List<String> getInitializers() {
 		return INITIALIZERS;
 	}
 

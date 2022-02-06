@@ -5,6 +5,7 @@ import buckelieg.jdbc.fn.DB;
 import java.util.Collections;
 import java.util.Arrays;
 
+import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
 
@@ -28,7 +29,7 @@ final class DBWorkerHandler extends AbstractDatabaseWriter<IWorker, IUnit> imple
 		super(IWorker.class, IUnit.class);
 	}
 
-	private static final Iterable<String> INITIALIZERS = Collections.unmodifiableList(Arrays.asList(
+	private static final List<String> INITIALIZERS = Collections.unmodifiableList(Arrays.asList(
 		"CREATE TABLE IF NOT EXISTS workers (" +
 			"   unit INTEGER NOT NULL," +
 			"   id INTEGER NOT NULL," +
@@ -66,7 +67,7 @@ final class DBWorkerHandler extends AbstractDatabaseWriter<IWorker, IUnit> imple
 			");"));
 
 	@Override
-	public Iterable<String> getInitializers() {
+	public List<String> getInitializers() {
 		return INITIALIZERS;
 	}
 

@@ -5,6 +5,7 @@ import buckelieg.jdbc.fn.DB;
 import java.util.Collections;
 import java.util.Collection;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 import java.util.Map;
 
@@ -30,7 +31,7 @@ final class DBMapWriter extends AbstractDatabaseWriter<IMutableMapNG, IMapNG> {
 
 	public static int currentTurn = -1; // TODO: Make private and provide accessor---other classes don't need to write, right?
 
-	private static final Iterable<String> INITIALIZERS = Collections.unmodifiableList(Arrays.asList(
+	private static final List<String> INITIALIZERS = Collections.unmodifiableList(Arrays.asList(
 		"CREATE TABLE IF NOT EXISTS metadata (" +
 			"    version INTEGER NOT NULL," +
 			"    rows INTEGER NOT NULL," +
@@ -65,7 +66,7 @@ final class DBMapWriter extends AbstractDatabaseWriter<IMutableMapNG, IMapNG> {
 			")"));
 
 	@Override
-	public Iterable<String> getInitializers() {
+	public List<String> getInitializers() {
 		return INITIALIZERS;
 	}
 

@@ -8,6 +8,7 @@ import common.map.fixtures.explorable.AdventureFixture;
 import common.xmlio.Warning;
 
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 
 final class DBAdventureHandler extends AbstractDatabaseWriter<AdventureFixture, Point>
@@ -16,7 +17,7 @@ final class DBAdventureHandler extends AbstractDatabaseWriter<AdventureFixture, 
 		super(AdventureFixture.class, Point.class);
 	}
 
-	private static final Iterable<String> INITIALIZERS = Collections.singleton(
+	private static final List<String> INITIALIZERS = Collections.singletonList(
 		"CREATE TABLE IF NOT EXISTS adventures (" +
 			"    row INTEGER NOT NULL," +
 			"    column INTEGER NOT NULL," +
@@ -28,7 +29,7 @@ final class DBAdventureHandler extends AbstractDatabaseWriter<AdventureFixture, 
 			");");
 
 	@Override
-	public Iterable<String> getInitializers() {
+	public List<String> getInitializers() {
 		return INITIALIZERS;
 	}
 
