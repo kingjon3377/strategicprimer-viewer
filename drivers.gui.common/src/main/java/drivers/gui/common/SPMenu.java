@@ -93,17 +93,14 @@ public class SPMenu extends JMenuBar {
 			"Create a new, empty map the same size as the current one", handler,
 			createAccelerator(KeyEvent.VK_N)), driver, ViewerDriver.class));
 
-		String desc;
 		String loadCaption;
 		String saveCaption;
 		String saveAsCaption;
 		if (driver instanceof MultiMapGUIDriver) {
-			desc = "the main";
 			loadCaption = "Load the main map from file";
 			saveCaption = "Save the main map to the file it was loaded from";
 			saveAsCaption = "Save the main map to file";
 		} else {
-			desc = "the";
 			loadCaption = "Load a map from file";
 			saveCaption = "Save the map to the file it was loaded from";
 			saveAsCaption = "Save the map to file";
