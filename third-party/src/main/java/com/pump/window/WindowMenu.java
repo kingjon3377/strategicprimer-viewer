@@ -84,18 +84,19 @@ public class WindowMenu extends JMenu {
 			add(minimizeItem);
 			if (customItems.length != 0) {
 				addSeparator();
-				for (int a = 0; a < customItems.length; a++) {
-					if (customItems[a] != null)
-						add(customItems[a]);
+				// TODO (JL): Convert to Stream operation with Optional.nonNull and forEach
+				for (final JMenuItem customItem : customItems) {
+					if (customItem != null)
+						add(customItem);
 				}
 			}
 			addSeparator();
 			add(bringItem);
 			addSeparator();
 			Frame[] frames = WindowList.getFrames(false, false, true);
-			for (int a = 0; a < frames.length; a++) {
-				JCheckBoxMenuItem item = new SummonMenuItem(frames[a]);
-				item.setSelected(frames[a] == myFrame);
+			for (final Frame frame : frames) {
+				JCheckBoxMenuItem item = new SummonMenuItem(frame);
+				item.setSelected(frame == myFrame);
 				add(item);
 			}
 		}
@@ -111,12 +112,12 @@ public class WindowMenu extends JMenu {
 			myFrame.setExtendedState(Frame.ICONIFIED);
 		} else if (src == bringItem) {
 			Frame[] frames = WindowList.getFrames(false, false, true);
-			for (int a = 0; a < frames.length; a++) {
-				if (frames[a].isVisible() || frames[a]
+			for (final Frame frame : frames) {
+				if (frame.isVisible() || frame
 						.getExtendedState() == Frame.ICONIFIED) {
-					frames[a].toFront();
-					if (frames[a].getExtendedState() == Frame.ICONIFIED)
-						frames[a].setExtendedState(Frame.NORMAL);
+					frame.toFront();
+					if (frame.getExtendedState() == Frame.ICONIFIED)
+						frame.setExtendedState(Frame.NORMAL);
 				}
 			}
 		}

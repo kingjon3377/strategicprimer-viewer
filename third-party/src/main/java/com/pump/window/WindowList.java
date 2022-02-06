@@ -67,8 +67,7 @@ public class WindowList {
 					Window window = (Window) (e.getSource());
 
 					updateWindowList: {
-						for (int a = 0; a < windowList.size(); a++) {
-							Reference<Window> r = windowList.get(a);
+						for (Reference<Window> r : windowList) {
 							if (r.get() == window) {
 								break updateWindowList;
 							}
@@ -283,8 +282,7 @@ public class WindowList {
 	}
 
 	static void fireChangeListeners() {
-		for (int a = 0; a < changeListeners.size(); a++) {
-			ChangeListener l = changeListeners.get(a);
+		for (ChangeListener l : changeListeners) {
 			try {
 				l.stateChanged(new ChangeEvent(WindowList.class));
 			} catch (final Throwable t) {
