@@ -150,7 +150,7 @@ import java.util.stream.StreamSupport;
 			}
 		} catch (final IncorrectUsageException except) {
 			cli.println(new AppChooserState().usageMessage(except.getCorrectUsage(),
-				options.getArgument("--verbose") == "true"));
+					"true".equals(options.getArgument("--verbose"))));
 		} catch (final DriverFailedException except) {
 			Throwable cause = except.getCause();
 			if (cause instanceof SPFormatException) {

@@ -118,10 +118,10 @@ public interface IUnit extends MobileFixture, HasImage, HasKind, HasName,
 				if (getOwner().getPlayerId() != ((IUnit) obj).getOwner().getPlayerId()) {
 					localSimpleReport.accept("Owners differ");
 					return false;
-				} else if (getName() != ((IUnit) obj).getName()) {
+				} else if (!getName().equals(((IUnit) obj).getName())) {
 					localSimpleReport.accept("Names differ");
 					return false;
-				} else if (getKind() != ((IUnit) obj).getKind()) {
+				} else if (!getKind().equals(((IUnit) obj).getKind())) {
 					localSimpleReport.accept("Kinds differ");
 					return false;
 				}
