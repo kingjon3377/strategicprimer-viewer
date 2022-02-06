@@ -1,6 +1,7 @@
 package common.map.fixtures.mobile;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import common.map.IFixture;
@@ -54,7 +55,7 @@ class ProxyMember implements UnitMemberProxy<UnitMember> {
 	}
 
 	@Override
-	public Iterable<UnitMember> getProxied() {
+	public Collection<UnitMember> getProxied() {
 		return new ArrayList<>(proxiedMembers);
 	}
 

@@ -1,5 +1,6 @@
 package common.map.fixtures.mobile;
 
+import java.util.Collection;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.function.Function;
@@ -16,7 +17,7 @@ public interface ProxyFor<Type> /* implements Type */ {
 	/**
 	 * Get the proxied items. This should probably only ever be used in tests, or in proxies managing nexted proxies.
 	 */
-	Iterable<Type> getProxied();
+	Collection<Type> getProxied();
 
 	/**
 	 * If there is consensus among proxied items on the given property,

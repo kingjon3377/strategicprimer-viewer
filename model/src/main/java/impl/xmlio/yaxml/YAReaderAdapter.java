@@ -154,7 +154,7 @@ import java.util.Collections;
 		if (obj instanceof River) {
 			mapReader.writeRiver(ostream, (River) obj, indent);
 		} else if (obj instanceof ProxyFor<?>) {
-			if (!((ProxyFor<?>) obj).getProxied().iterator().hasNext()) {
+			if (((ProxyFor<?>) obj).getProxied().isEmpty()) {
 				throw new IllegalArgumentException(
 					"To write a proxy object, it has to be proxying for at least one object.");
 			}

@@ -2,6 +2,7 @@ package common.map.fixtures.mobile.worker;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 
 import java.util.function.Consumer;
@@ -118,7 +119,7 @@ import common.map.fixtures.mobile.ProxyFor;
 	 * a {@link ProxyFor<ISkill>} instead of a {@link ProxyFor<IJob>}.
 	 */
 	@Override
-	public Iterable<IJob> getProxied() {
+	public Collection<IJob> getProxied() {
 		// Don't return it directly so further changes here won't
 		// propagate; in Ceylon we used .sequence().
 		return new ArrayList<>(proxiedJobs);

@@ -1,5 +1,6 @@
 package common.map.fixtures.mobile;
 
+import java.util.Collection;
 import java.util.function.Consumer;
 import java.util.stream.Stream;
 import java.util.Optional;
@@ -80,7 +81,7 @@ import common.map.IFixture;
 	}
 
 	@Override
-	public Iterable<Animal> getProxied() {
+	public Collection<Animal> getProxied() {
 		return animals;
 	}
 

@@ -1,6 +1,7 @@
 package common.map.fixtures.mobile.worker;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -196,7 +197,7 @@ public class ProxyWorker implements WorkerProxy {
 	}
 
 	@Override
-	public Iterable<IWorker> getProxied() {
+	public Collection<IWorker> getProxied() {
 		return new ArrayList<>(workers);
 	}
 

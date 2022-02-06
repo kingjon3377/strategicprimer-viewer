@@ -2,6 +2,7 @@ package common.map.fixtures.mobile;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -296,7 +297,7 @@ public class ProxyUnit implements IUnit, ProxyFor<IUnit> {
 	}
 
 	@Override
-	public Iterable<IUnit> getProxied() {
+	public Collection<IUnit> getProxied() {
 		return new ArrayList<>(proxiedList);
 	}
 

@@ -483,7 +483,7 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 
 	private boolean mapsAgreeOnLocation(final IUnit unit) {
 		if (unit instanceof ProxyUnit) {
-			if (((ProxyUnit) unit).getProxied().iterator().hasNext()) {
+			if (!((ProxyUnit) unit).getProxied().isEmpty()) {
 				return mapsAgreeOnLocation(((ProxyUnit) unit).getProxied().iterator().next());
 			} else {
 				return false;

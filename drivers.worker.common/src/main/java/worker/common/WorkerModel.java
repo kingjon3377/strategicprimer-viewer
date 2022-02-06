@@ -390,15 +390,11 @@ public class WorkerModel extends SimpleMultiMapModel implements IWorkerModel {
 	 */
 	private boolean moveProxied(/*UnitMember&*/final ProxyFor<? extends UnitMember> member, final ProxyUnit old,
 	                                           final ProxyUnit newOwner) {
-		if (iterableSize(old.getProxied()) == iterableSize(newOwner.getProxied()) &&
-				iterableSize(old.getProxied()) == iterableSize(member.getProxied())) {
-			LinkedList<UnitMember> memberProxied = new LinkedList<UnitMember>(
-				StreamSupport.stream(member.getProxied().spliterator(), false)
-					.collect(Collectors.toList()));
-			LinkedList<IUnit> oldProxied = new LinkedList<IUnit>(StreamSupport.stream(
-				old.getProxied().spliterator(), false).collect(Collectors.toList()));
-			LinkedList<IUnit> newProxied = new LinkedList<IUnit>(StreamSupport.stream(
-				newOwner.getProxied().spliterator(), false).collect(Collectors.toList()));
+		if (old.getProxied().size() == newOwner.getProxied().size() &&
+				old.getProxied().size() == member.getProxied().size()) {
+			LinkedList<UnitMember> memberProxied = new LinkedList<UnitMember>(member.getProxied());
+			LinkedList<IUnit> oldProxied = new LinkedList<IUnit>(old.getProxied());
+			LinkedList<IUnit> newProxied = new LinkedList<IUnit>(newOwner.getProxied());
 			Deque<UnitMember> members = new LinkedList<>();
 			Deque<IMutableUnit> newList = new LinkedList<>();
 			while (!memberProxied.isEmpty() && !oldProxied.isEmpty() && !newProxied.isEmpty()) {
