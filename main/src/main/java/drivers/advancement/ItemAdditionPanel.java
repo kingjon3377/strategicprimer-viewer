@@ -23,7 +23,7 @@ import lovelace.util.SimpleCardLayout;
  * TODO: At least make a FlipPanel (JPanel laid out by CardLayout with methods
  * to flip forward and back) this can inherit from
  *
- * Or <strike>try to convert back to a class now we have</strike> merge with(?) SimpleCardLayout
+ * Or <del>try to convert back to a class now we have</del> merge with(?) SimpleCardLayout
  */
 /* package */ class ItemAdditionPanel extends JPanel implements AddRemoveSource {
 	/**
