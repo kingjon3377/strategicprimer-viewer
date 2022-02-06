@@ -115,6 +115,8 @@ public class HuntingModel {
 	 * An infinite iterator consisting of items taken randomly, but in
 	 * proportions such that lower-discovery-DC items are found more often,
 	 * from a given stream with {@link NothingFound} interspersed in a given percentage.
+	 *
+	 * TODO: Migrate callers to use Supplier instead?
 	 */
 	private static class ResultIterator<Type> implements Iterator<Type> {
 		public ResultIterator(final Collection<Type> stream, final double nothingProportion, final Type nothingValue,
@@ -139,6 +141,12 @@ public class HuntingModel {
 			return stream.get(SingletonRandom.SINGLETON_RANDOM.nextInt(stream.size()));
 		}
 
+		/**
+		 * This never throws (and so the warning is suppressed) because it is an <em>infinite</em> iterator.
+		 *
+		 * @return an item selected randomly (see {@link ResultIterator} class documentation)
+		 */
+		@SuppressWarnings("IteratorNextCanNotThrowNoSuchElementException")
 		@Override
 		public Type next() {
 			if (SingletonRandom.SINGLETON_RANDOM.nextDouble() < nothingProportion) {
@@ -388,6 +396,7 @@ public class HuntingModel {
 		return () -> new PairIterator(retval);
 	}
 
+	 // TODO: Migrate callers to use Supplier instead?
 	private static class PairIterator implements Iterator<Pair<Point, TileFixture>> {
 		private final List<Pair<Point, TileFixture>> retval;
 
@@ -400,6 +409,12 @@ public class HuntingModel {
 			return true;
 		}
 
+		/**
+		 * This never throws (and so the warning is suppressed) because it is an <em>infinite</em> iterator.
+		 *
+		 * @return a random item from the list.
+		 */
+		@SuppressWarnings("IteratorNextCanNotThrowNoSuchElementException")
 		@Override
 		public Pair<Point, TileFixture> next() {
 			return retval.get(SingletonRandom.SINGLETON_RANDOM.nextInt(retval.size()));
