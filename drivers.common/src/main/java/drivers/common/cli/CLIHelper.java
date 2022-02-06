@@ -264,24 +264,22 @@ public final class CLIHelper implements ICLIHelper {
 			if (input == null || quitResultFactory.test(input) == null) {
 				return null;
 			}
-			if ("all".equals(input) || "ya".equals(input) || "ta".equals(input) ||
-					"always".equals(input)) {
-				seriesState.put(key, true);
-				return true;
-			} else if ("none".equals(input) || "na".equals(input) ||
-					"fa".equals(input) || "never".equals(input)) {
-				seriesState.put(key, false);
-				return false;
-			} else if ("yes".equals(input) || "true".equals(input) ||
-					"y".equals(input) || "t".equals(input)) {
-				return true;
-			} else if ("no".equals(input) || "false".equals(input) ||
-					"n".equals(input) || "f".equals(input)) {
-				return false;
-			} else {
-				println("Please enter \"yes\", \"no\", \"true\", or \"false\", the first");
-				println("character of any of those, or \"all\", \"none\", \"always\", or");
-				println("\"never\" to use the same answer for all further questions.");
+			switch (input) {
+				case "all": case "ya": case "ta": case "always":
+					seriesState.put(key, true);
+					return true;
+				case "none": case "na": case "fa": case "never":
+					seriesState.put(key, false);
+					return false;
+				case "yes": case "true": case "y": case "t":
+					return true;
+				case "no": case "false": case "n": case "f":
+					return false;
+				default:
+					println("Please enter \"yes\", \"no\", \"true\", or \"false\", the first");
+					println("character of any of those, or \"all\", \"none\", \"always\", or");
+					println("\"never\" to use the same answer for all further questions.");
+					break;
 			}
 		}
 	}
