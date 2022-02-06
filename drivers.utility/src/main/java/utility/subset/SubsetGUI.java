@@ -24,6 +24,7 @@ import drivers.common.cli.ICLIHelper;
 import drivers.gui.common.WindowCloseListener;
 import drivers.gui.common.UtilityMenuHandler;
 import drivers.gui.common.SPMenu;
+import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * A driver to check whether player maps are subsets of the main map and display the results graphically.
@@ -44,6 +45,7 @@ public class SubsetGUI implements UtilityGUI {
 		return options;
 	}
 
+	@Nullable
 	private SubsetFrame frame;
 
 	private boolean initialized = false;
@@ -55,7 +57,7 @@ public class SubsetGUI implements UtilityGUI {
 		if (args.length == 0) {
 			throw new IncorrectUsageException(SubsetGUIFactory.USAGE);
 		}
-		if (!initialized) { // FIXME: Move this initialization into the constructor, since Java is less strict about 'this' usage in initializers.
+		if (!initialized || frame == null) { // FIXME: Move this initialization into the constructor, since Java is less strict about 'this' usage in initializers.
 			initialized = true;
 			frame = new SubsetFrame(this);
 			frame.setJMenuBar(SPMenu.forWindowContaining(frame.getContentPane(),
@@ -82,6 +84,8 @@ public class SubsetGUI implements UtilityGUI {
 
 	@Override
 	public void open(final Path path) {
-		frame.testFile(path);
+		if (frame != null) {
+			frame.testFile(path);
+		}
 	}
 }
