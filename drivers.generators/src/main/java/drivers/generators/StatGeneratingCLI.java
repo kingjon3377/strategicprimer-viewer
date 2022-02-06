@@ -578,10 +578,8 @@ import common.map.fixtures.towns.Village;
 			} else {
 				createWorkersForUnit(idf, item);
 			}
-			if (Optional.ofNullable(cli.inputBoolean("Choose another unit? "))
+			if (!Optional.ofNullable(cli.inputBoolean("Choose another unit? "))
 					.orElse(false)) {
-				// continue;
-			} else {
 				break;
 			}
 		}
@@ -615,10 +613,8 @@ import common.map.fixtures.towns.Village;
 					break;
 				}
 			}
-			if (Optional.ofNullable(cli.inputBoolean("Choose another player?"))
+			if (!Optional.ofNullable(cli.inputBoolean("Choose another player?"))
 					.orElse(false)) {
-				// continue;
-			} else {
 				break;
 			}
 		}

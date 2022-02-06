@@ -224,11 +224,8 @@ import common.xmlio.Warning;
 				int currentTurn = MaturityModel.getCurrentTurn();
 				// Write turn-of-birth if and only if it is fewer turns before the current
 				// turn than this kind of animal's age of maturity.
-				if (maturity.containsKey(((Animal) obj).getKind()) &&
-						maturity.get(((Animal) obj).getKind()) <=
-							(currentTurn - ((Animal) obj).getBorn())) {
-					// do nothing
-				} else {
+				if (!maturity.containsKey(((Animal) obj).getKind()) ||
+							maturity.get(((Animal) obj).getKind()) > (currentTurn - ((Animal) obj).getBorn())) {
 					writeProperty(ostream, "born", ((Animal) obj).getBorn());
 				}
 			}

@@ -68,13 +68,9 @@ public class AnimalReportGenerator extends AbstractReportGenerator</*Animal|Anim
 					ostream.accept(" unborn");
 				} else if (animal.getBorn() == currentTurn) {
 					ostream.accept(" newborn");
-				} else if (MaturityModel.getMaturityAges().containsKey(animal.getKind()) &&
-						MaturityModel.getMaturityAges().get(animal.getKind()) <=
-							(currentTurn - animal.getBorn())) {
-					// do nothing
-				} else {
-					ostream.accept(String.format(" %d-turn-old",
-						currentTurn - animal.getBorn()));
+				} else if (!MaturityModel.getMaturityAges().containsKey(animal.getKind()) ||
+						           MaturityModel.getMaturityAges().get(animal.getKind()) > (currentTurn - animal.getBorn())) {
+					ostream.accept(String.format(" %d-turn-old", currentTurn - animal.getBorn()));
 				}
 			}
 			ostream.accept(" ");

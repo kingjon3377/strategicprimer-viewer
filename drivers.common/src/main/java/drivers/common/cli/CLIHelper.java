@@ -328,9 +328,7 @@ public final class CLIHelper implements ICLIHelper {
 
 	@Override
 	public void printlnAtInterval(final String line, final int interval) {
-		if (intervals.containsKey(line) && intervals.get(line) < interval) {
-			// do nothing
-		} else {
+		if (!intervals.containsKey(line) || intervals.get(line) >= interval) {
 			println(line);
 			intervals.put(line, 0L);
 		}

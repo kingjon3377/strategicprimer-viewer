@@ -321,12 +321,9 @@ import javax.xml.stream.XMLStreamException;
 		if (obj.getBorn() >= 0) {
 			// Write turn-of-birth if and only if it is fewer turns before the current
 			// turn than this kind of animal's age of maturity.
-			if (MaturityModel.getCurrentTurn() >= 0 &&
-					MaturityModel.getMaturityAges().containsKey(obj.getKind()) &&
-					MaturityModel.getMaturityAges().get(obj.getKind()) <=
-						(MaturityModel.getCurrentTurn() - obj.getBorn())) {
-				// do nothing
-			} else {
+			if (MaturityModel.getCurrentTurn() < 0 ||
+					    !MaturityModel.getMaturityAges().containsKey(obj.getKind()) ||
+					    MaturityModel.getMaturityAges().get(obj.getKind()) > (MaturityModel.getCurrentTurn() - obj.getBorn())) {
 				writeAttributes(ostream, Pair.with("born", obj.getBorn()));
 			}
 		}
