@@ -252,8 +252,7 @@ import worker.common.IFixtureEditHelper;
 
 	private final Iterable<FixtureMatcher> matchers = new FixtureFilterTableModel();
 
-	// TODO: What do we need to do to make this static?
-	private class SpeedChangeListener implements ListDataListener {
+	private static class SpeedChangeListener implements ListDataListener {
 		public SpeedChangeListener(final SelectionChangeListener scs) {
 			this.scs = scs;
 		}

@@ -56,8 +56,7 @@ import org.jetbrains.annotations.Nullable;
 		return player;
 	}
 
-	// TODO: What does this need to become static?
-	private class Condition<Type extends TileFixture> {
+	private static class Condition<Type extends TileFixture> {
 		/**
 		 * @param configExplanation A description to use in the question asking whether to stop for this condition.
 		 * @param stopExplanation A description to use when stopping because of this condition.
