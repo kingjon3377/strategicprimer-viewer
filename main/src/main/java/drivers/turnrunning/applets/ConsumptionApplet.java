@@ -71,10 +71,10 @@ public class ConsumptionApplet extends AbstractTurnApplet {
 
 	private static String describeFood(final IResourcePile food) {
 		if (food.getCreated() < 0) {
-			return String.format("%.2f %s of %s", food.getQuantity().getNumber(),
+			return String.format("%.2f %s of %s", food.getQuantity().getNumber().doubleValue(),
 				food.getQuantity().getUnits(), food.getContents());
 		} else {
-			return String.format("%.2f %s of %s (turn #%d)",  food.getQuantity().getNumber(),
+			return String.format("%.2f %s of %s (turn #%d)",  food.getQuantity().getNumber().doubleValue(),
 				food.getQuantity().getUnits(), food.getContents(), food.getCreated());
 		}
 	}

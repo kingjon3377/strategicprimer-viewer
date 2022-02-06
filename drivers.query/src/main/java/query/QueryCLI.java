@@ -154,7 +154,7 @@ public class QueryCLI implements ReadOnlyDriver {
 					.getValue0()));
 			} else {
 				cli.print("Distance (as the crow files, in tiles):\t");
-				cli.println(String.format("%0.0f", distance(start, end,
+				cli.println(String.format("%.0f", distance(start, end,
 					map.getDimensions())));
 			}
 		}

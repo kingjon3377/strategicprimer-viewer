@@ -258,7 +258,7 @@ public class MapCheckerCLI implements UtilityDriver {
 		}
 		if (total > 160.0) {
 			warner.handle(new SPContentWarning(context, String.format(
-				"More explicit acres (%0.1f) than tile should allow", total)));
+				"More explicit acres (%.1f) than tile should allow", total)));
 			return true;
 		}
 		for (ITownFixture fixture : fixtures.stream()
@@ -283,7 +283,7 @@ public class MapCheckerCLI implements UtilityDriver {
 			.mapToInt(Grove::getPopulation).filter(p -> p > 0).sum() / 500.0);
 		if (total > 160.0) {
 			warner.handle(new SPContentWarning(context, String.format(
-				"Counting towns and groves, more acres (%0.1f) used than tile should allow",
+				"Counting towns and groves, more acres (%.1f) used than tile should allow",
 				total)));
 			return true;
 		} else {

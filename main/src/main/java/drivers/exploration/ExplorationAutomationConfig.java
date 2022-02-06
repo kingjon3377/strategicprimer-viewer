@@ -30,7 +30,7 @@ import org.jetbrains.annotations.Nullable;
 							fixture -> String.format("a %s active %s", fixture.getTownSize(), fixture.getKind()),
 							AbstractTown.class, t -> TownStatus.Active == t.getStatus()),
 					new Condition<>("at inactive towns",
-							fixture -> String.format("a %s %s %s", fixture.getTownSize(), AbstractTown.class,
+							fixture -> String.format("a %s %s %s", fixture.getTownSize(),
 									fixture.getStatus(), fixture.getKind()),
 							AbstractTown.class, t -> TownStatus.Active != t.getStatus()),
 					new Condition<>("at independent villages", "an independent village",

@@ -216,7 +216,7 @@ import query.SmallAnimalModel;
 				return null;
 			}
 			addLineToOrders.accept(String.format("This produced %.1f %s, %.1f lbs, of %s.",
-				production.getNumber().doubleValue(), pounds, resourceProduced));
+				production.getNumber().doubleValue(), production.getUnits(), pounds, resourceProduced));
 			if (home != null) {
 				// FIXME: 'production' is in gallons; we want only pound-denominated food resources in the map
 				// TODO: If 'home' is null, should probably add to the unit itself ...

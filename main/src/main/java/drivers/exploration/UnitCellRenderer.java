@@ -19,7 +19,7 @@ import org.jetbrains.annotations.Nullable;
 		Component retval = DEFAULT_RENDERER.getListCellRendererComponent(list, val, index,
 			isSelected, cellHasFocus);
 		if (val != null && retval instanceof JLabel) {
-			((JLabel) retval).setText(String.format("% (%s)", val.getName(), val.getKind()));
+			((JLabel) retval).setText(String.format("%s (%s)", val.getName(), val.getKind()));
 		}
 		return retval;
 	}

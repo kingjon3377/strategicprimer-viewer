@@ -66,7 +66,7 @@ public abstract class AbstractTurnApplet implements TurnApplet {
 		Point selectedLocation = model.getSelectedUnitLocation();
 		if (selectedLocation.isValid()) {
 			Boolean confirmation = cli.inputBoolean(
-				String.format("%s is %0.1f away. Is that right?", retval,
+				String.format("%s is %.1f away. Is that right?", retval,
 					model.getMapDimensions().distance(retval, selectedLocation)));
 			if (confirmation != null && confirmation) {
 				return retval;
