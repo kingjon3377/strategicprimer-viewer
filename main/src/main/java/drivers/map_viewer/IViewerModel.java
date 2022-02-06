@@ -14,7 +14,7 @@ import drivers.common.SelectionChangeSource;
 /**
  * An interface for a model behind the map viewer, handling the selected tile and visible dimensions.
  */
-public interface IViewerModel extends IDriverModel, SelectionChangeSource, GraphicalParamsSource,
+public interface IViewerModel extends SelectionChangeSource, GraphicalParamsSource,
 		IFixtureEditingModel {
 	/**
 	 * The coordinates of the currently selected tile.
