@@ -223,8 +223,7 @@ import org.javatuples.Pair;
 		if (player == null) {
 			return;
 		}
-		List<IUnit> units = new ArrayList<>(
-			getUnits(player).filter(unfinishedResults(currentTurn)).collect(Collectors.toList()));
+		List<IUnit> units = getUnits(player).filter(unfinishedResults(currentTurn)).collect(Collectors.toList());
 		while (true) {
 			Pair<Integer, IUnit> pair = cli.chooseFromList(units,
 				String.format("Units belonging to %s:", player),

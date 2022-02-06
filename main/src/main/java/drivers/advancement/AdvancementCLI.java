@@ -49,8 +49,8 @@ public class AdvancementCLI implements CLIDriver {
 	 * Let the user add experience to a player's workers.
 	 */
 	private void advanceWorkers(final IWorkerModel model, final Player player, final boolean allowExpertMentoring) {
-		List<IUnit> units = new ArrayList<>(StreamSupport.stream(model.getUnits(player).spliterator(), false)
-			.filter(u -> u.stream().anyMatch(IWorker.class::isInstance)).collect(Collectors.toList()));
+		List<IUnit> units = StreamSupport.stream(model.getUnits(player).spliterator(), false)
+				.filter(u -> u.stream().anyMatch(IWorker.class::isInstance)).collect(Collectors.toList());
 		while (!units.isEmpty()) {
 			IUnit chosen = cli.chooseFromList(units, String.format("%s's units:", player.getName()),
 				"No unadvanced units remain.", "Chosen unit:", false).getValue1();
@@ -71,8 +71,7 @@ public class AdvancementCLI implements CLIDriver {
 	 */
 	@Override
 	public void startDriver() {
-		List<Player> playerList = new ArrayList<>(StreamSupport.stream(model.getPlayers().spliterator(), false)
-			.collect(Collectors.toList()));
+		List<Player> playerList = StreamSupport.stream(model.getPlayers().spliterator(), false).collect(Collectors.toList());
 		while (!playerList.isEmpty()) {
 			Player chosen = cli.chooseFromList(playerList, "Available players:", "No players found.",
 				"Chosen player:", false).getValue1();

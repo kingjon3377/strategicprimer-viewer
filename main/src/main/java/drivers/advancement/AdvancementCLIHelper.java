@@ -62,8 +62,7 @@ public class AdvancementCLIHelper implements LevelGainSource {
 	 * TODO: Avoid Boolean parameters
 	 */
 	private void advanceJob(final IWorker worker, final IJob job, final boolean allowExpertMentoring) {
-		List<ISkill> skills = new ArrayList<>(StreamSupport.stream(job.spliterator(), false)
-			.collect(Collectors.toList()));
+		List<ISkill> skills = StreamSupport.stream(job.spliterator(), false).collect(Collectors.toList());
 		while (true) {
 			Pair<Integer, @Nullable ISkill> chosen = cli.chooseFromList(skills, "Skills in Job:",
 				"No existing Skills.", "Skill to advance: ", false);
@@ -131,8 +130,7 @@ public class AdvancementCLIHelper implements LevelGainSource {
 	 * Let the user add experience to a worker.
 	 */
 	private void advanceSingleWorker(final IWorker worker, final boolean allowExpertMentoring) {
-		List<IJob> jobs = new ArrayList<>(StreamSupport.stream(worker.spliterator(), false)
-			.collect(Collectors.toList()));
+		List<IJob> jobs = StreamSupport.stream(worker.spliterator(), false).collect(Collectors.toList());
 		while (true) {
 			Pair<Integer, @Nullable IJob> chosen = cli.chooseFromList(jobs,
 				"Jobs in worker:", "No existing Jobs.", "Job to advance: ", false);
@@ -244,8 +242,8 @@ public class AdvancementCLIHelper implements LevelGainSource {
 	 * Let the user add experience in a given Job to all of a list of workers.
 	 */
 	private void advanceWorkersInJob(final String jobName, final IWorker... workers) {
-		List<ISkill> skills = new ArrayList<>(StreamSupport.stream(
-			new ProxyJob(jobName, false, workers).spliterator(), false).collect(Collectors.toList()));
+		List<ISkill> skills = StreamSupport.stream(
+				new ProxyJob(jobName, false, workers).spliterator(), false).collect(Collectors.toList());
 		while (true) {
 			Pair<Integer, @Nullable ISkill> chosen = cli.chooseFromList(skills,
 				"Skills in Jobs:", "No existing skills.", "Skill to advance: ", false);
@@ -285,8 +283,8 @@ public class AdvancementCLIHelper implements LevelGainSource {
 	 * Let the user add experience to a worker or workers in a unit.
 	 */
 	public void advanceWorkersInUnit(final IUnit unit, final boolean allowExpertMentoring) {
-		List<IWorker> workers = new ArrayList<>(unit.stream()
-			.filter(IWorker.class::isInstance).map(IWorker.class::cast).collect(Collectors.toList()));
+		List<IWorker> workers = unit.stream()
+				.filter(IWorker.class::isInstance).map(IWorker.class::cast).collect(Collectors.toList());
 		Boolean individualAdvancement = cli.inputBooleanInSeries("Add experience to workers individually? ");
 		if (individualAdvancement == null) {
 			return;
@@ -309,8 +307,7 @@ public class AdvancementCLIHelper implements LevelGainSource {
 				cli.println("No workers in unit.");
 				return;
 			}
-			List<IJob> jobs = new ArrayList<>(StreamSupport.stream(new ProxyWorker(unit).spliterator(), false)
-				.collect(Collectors.toList()));
+			List<IJob> jobs = StreamSupport.stream(new ProxyWorker(unit).spliterator(), false).collect(Collectors.toList());
 			while (true) {
 				Pair<Integer, @Nullable IJob> chosen = cli.chooseFromList(jobs, "Jobs in workers:",
 					"No existing jobs.", "Job to advance: ", false);

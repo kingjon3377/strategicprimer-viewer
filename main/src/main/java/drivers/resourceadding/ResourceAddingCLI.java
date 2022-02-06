@@ -54,8 +54,8 @@ import common.map.fixtures.Implement;
 	 */
 	@Override
 	public void startDriver() {
-		List<Player> players = new ArrayList<>(StreamSupport.stream(model.getPlayers().spliterator(),
-			false).collect(Collectors.toList()));
+		List<Player> players = StreamSupport.stream(model.getPlayers().spliterator(),
+				false).collect(Collectors.toList());
 		while (!players.isEmpty()) {
 			Player chosen = cli.chooseFromList(players, "Players in the maps:",
 				"No players found.", "Player to add resources for: ", false).getValue1();

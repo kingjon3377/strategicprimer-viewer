@@ -666,8 +666,8 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 		Point currentPoint = selection.getValue0();
 		if (currentPoint.isValid()) {
 			IMutableMapNG mainMap = getRestrictedMap();
-			List<TileFixture> diggables = new ArrayList<>(mainMap.getFixtures(currentPoint)
-				.stream().filter(ExplorationModel::isDiggable).collect(Collectors.toList()));
+			List<TileFixture> diggables = mainMap.getFixtures(currentPoint)
+					.stream().filter(ExplorationModel::isDiggable).collect(Collectors.toList());
 			if (diggables.isEmpty()) {
 				return;
 			}

@@ -20,8 +20,8 @@ import java.util.stream.Collectors;
 	 * Get the last {@link count} path elements in {@link file the given path}.
 	 */
 	private static String suffix(final Path file, final int count) {
-		LinkedList<Path> list = new LinkedList<>(StreamSupport.stream(file.spliterator(), false)
-			.collect(Collectors.toList()));
+		LinkedList<Path> list = StreamSupport.stream(file.spliterator(), false)
+				.collect(Collectors.toCollection(LinkedList::new));
 		while (list.size() > count) {
 			list.removeFirst();
 		}

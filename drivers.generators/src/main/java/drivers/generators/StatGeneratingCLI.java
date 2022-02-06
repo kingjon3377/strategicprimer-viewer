@@ -545,8 +545,8 @@ import common.map.fixtures.towns.Village;
 	 * particular player.
 	 */
 	private void createWorkersForPlayer(final IDRegistrar idf, final Player player) throws IOException {
-		List<IUnit> units = new ArrayList<>(StreamSupport.stream(
-			model.getUnits(player).spliterator(), false).collect(Collectors.toList()));
+		List<IUnit> units = StreamSupport.stream(
+				model.getUnits(player).spliterator(), false).collect(Collectors.toList());
 		while (true) {
 			Pair<Integer, @Nullable IUnit> chosen = cli.chooseFromList(units,
 				"Which unit contains the worker in question? (Select -1 to create new.)",
@@ -592,8 +592,8 @@ import common.map.fixtures.towns.Village;
 		IDRegistrar idf = new IDFactoryFiller().createIDFactory(
 			StreamSupport.stream(model.getAllMaps().spliterator(), false)
 				.toArray(IMapNG[]::new));
-		List<Player> players = new ArrayList<>(StreamSupport.stream(
-			model.getPlayerChoices().spliterator(), false).collect(Collectors.toList()));
+		List<Player> players = StreamSupport.stream(
+				model.getPlayerChoices().spliterator(), false).collect(Collectors.toList());
 		while (!players.isEmpty()) {
 			Player chosen = cli.chooseFromList(players, "Which player owns the new worker(s)?",
 				"There are no players shared by all the maps.", "Player selection: ",

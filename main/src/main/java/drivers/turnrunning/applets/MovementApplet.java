@@ -48,9 +48,8 @@ import static lovelace.util.Decimalize.decimalize;
 		if (fortress == null) {
 			return;
 		}
-		List<IResourcePile> resources = new ArrayList<>(fortress.stream()
-			.filter(IResourcePile.class::isInstance).map(IResourcePile.class::cast)
-			.collect(Collectors.toList()));
+		List<IResourcePile> resources = fortress.stream()
+				.filter(IResourcePile.class::isInstance).map(IResourcePile.class::cast).collect(Collectors.toList());
 		while (true) {
 			IResourcePile chosen =
 				chooseFromList(resources, "Resources in ``fortress.name``:", "No resources in fortress.",
