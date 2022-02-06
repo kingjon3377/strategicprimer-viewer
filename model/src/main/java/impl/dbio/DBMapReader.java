@@ -46,9 +46,9 @@ final class DBMapReader {
 	 */
 	public Object databaseBoolean(final Object field) {
 		if (field instanceof Integer) {
-			if (((Integer) field).intValue() == 0) {
+			if ((Integer) field == 0) {
 				return false;
-			} else if (((Integer) field).intValue() == 1) {
+			} else if ((Integer) field == 1) {
 				return true;
 			} else {
 				return field;

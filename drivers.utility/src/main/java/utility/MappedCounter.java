@@ -78,16 +78,13 @@ class MappedCounter<Base, Key, Count extends Number&Comparable<Count>> implement
 
 	private Count plus(final Count one, final Count two) {
 		if (one instanceof Integer) {
-			return (Count) Integer.valueOf(((Integer) one).intValue() +
-				((Integer) two).intValue());
+			return (Count) Integer.valueOf((Integer) one + (Integer) two);
 		} else if (one instanceof Long) {
-			return (Count) Long.valueOf(((Long) one).longValue() + ((Long) two).longValue());
+			return (Count) Long.valueOf((Long) one + (Long) two);
 		} else if (one instanceof Double) {
-			return (Count) Double.valueOf(((Double) one).doubleValue() +
-				((Double) two).doubleValue());
+			return (Count) Double.valueOf((Double) one + (Double) two);
 		} else if (one instanceof Float) {
-			return (Count) Float.valueOf(((Float) one).floatValue() +
-				((Float) two).floatValue());
+			return (Count) Float.valueOf((Float) one + (Float) two);
 		} else if (one instanceof BigInteger) {
 			return (Count) ((BigInteger) one).add((BigInteger) two);
 		} else if (one instanceof BigDecimal) {

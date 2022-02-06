@@ -139,7 +139,7 @@ import java.util.function.Predicate;
 			Player owner = ((HasOwner) fixture).getOwner();
 			String ownerName = (caseSensitivity) ? owner.getName() :
 				owner.getName().toLowerCase();
-			if (idNum != null && (owner.getPlayerId() == idNum.intValue() ||
+			if (idNum != null && (owner.getPlayerId() == idNum ||
 					ownerName.contains(pattern))) {
 				return true;
 			} else if ("me".equalsIgnoreCase(pattern) && owner.isCurrent()) {
@@ -165,7 +165,7 @@ import java.util.function.Predicate;
 		} else if (fixture instanceof TileFixture &&
 				!filterList.shouldDisplay((TileFixture) fixture)) {
 			return false;
-		} else if (idNum != null && idNum.intValue() == fixture.getId()) {
+		} else if (idNum != null && idNum == fixture.getId()) {
 			return true;
 		} else if (matchesName(pattern, fixture, caseSensitivity) ||
 				matchesKind(pattern, fixture, caseSensitivity) ||

@@ -579,7 +579,7 @@ import common.map.fixtures.towns.Village;
 				createWorkersForUnit(idf, item);
 			}
 			if (Optional.ofNullable(cli.inputBoolean("Choose another unit? "))
-					.orElse(false).booleanValue()) {
+					.orElse(false)) {
 				// continue;
 			} else {
 				break;
@@ -616,7 +616,7 @@ import common.map.fixtures.towns.Village;
 				}
 			}
 			if (Optional.ofNullable(cli.inputBoolean("Choose another player?"))
-					.orElse(false).booleanValue()) {
+					.orElse(false)) {
 				// continue;
 			} else {
 				break;

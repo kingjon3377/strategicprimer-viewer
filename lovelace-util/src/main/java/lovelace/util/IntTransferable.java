@@ -44,7 +44,7 @@ public final class IntTransferable implements Transferable {
 	@Override
 	public Integer getTransferData(final DataFlavor wantedFlavor) throws UnsupportedFlavorException {
 		if (Objects.equals(flavor, wantedFlavor)) {
-			return Integer.valueOf(payload);
+			return payload;
 		} else {
 			throw new UnsupportedFlavorException(wantedFlavor);
 		}

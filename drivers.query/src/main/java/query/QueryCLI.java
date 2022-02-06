@@ -311,10 +311,10 @@ public class QueryCLI implements ReadOnlyDriver {
 		while (true) {
 			Either<SimpleApplet, Boolean> selection = appletChooser.chooseApplet();
 			if (selection == null || (selection.fromRight().isPresent() &&
-					selection.fromRight().get().booleanValue())) {
+					                          selection.fromRight().get())) {
 				continue;
 			} else if (selection.fromRight().isPresent() &&
-					!selection.fromRight().get().booleanValue()) {
+					!selection.fromRight().get()) {
 				break;
 			} else if (selection.fromLeft().isPresent()) {
 				selection.fromLeft().get().invoke();

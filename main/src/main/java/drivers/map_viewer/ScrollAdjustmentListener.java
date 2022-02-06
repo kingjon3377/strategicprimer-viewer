@@ -74,7 +74,7 @@ import java.util.logging.Logger;
 			newDimensions = new VisibleDimensions(oldDimensions.getMinimumRow(),
 				oldDimensions.getMaximumRow(), newMinColumn, newMaxColumn);
 		} else {
-			if (oldColumn.intValue() == newValue) {
+			if (oldColumn == newValue) {
 				LOGGER.finer(
 					"Horizontal scroll to same value, possibly reentrant. Skipping ...");
 				return;
@@ -114,7 +114,7 @@ import java.util.logging.Logger;
 			LOGGER.warning("Tried to scroll too far down, skipping ...");
 			return;
 		} else if (oldRow != null) {
-			if (oldRow.intValue() == newValue) {
+			if (oldRow == newValue) {
 				LOGGER.finer(
 					"Vertical scroll to same value, possibly reentrant. Skipping ...");
 				return;
