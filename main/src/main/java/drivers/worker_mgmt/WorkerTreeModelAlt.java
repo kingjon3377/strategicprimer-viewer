@@ -463,17 +463,17 @@ public class WorkerTreeModelAlt extends DefaultTreeModel implements IWorkerTreeM
 					new Object[] { node });
 			}
 			model.changeKind(item, newKind);
-			if (nodeTwo != null) { // TODO: invert
-				int indexTwo = nodeTwo.getChildCount();
-				nodeTwo.insert(node, indexTwo);
-				fireTreeNodesInserted(this, new Object[] { root, nodeTwo },
-					new int[] { indexTwo }, new Object[] { node });
-			} else {
+			if (nodeTwo == null) {
 				MutableTreeNode kindNode = new KindNode(newKind, (IUnit) item);
 				temp.add(kindNode);
 				fireTreeNodesInserted(this, new Object[] { temp },
 					new int[] { getIndexOfChild(temp, kindNode) },
 					new Object[] { kindNode });
+			} else {
+				int indexTwo = nodeTwo.getChildCount();
+				nodeTwo.insert(node, indexTwo);
+				fireTreeNodesInserted(this, new Object[] { root, nodeTwo },
+					new int[] { indexTwo }, new Object[] { node });
 			}
 		}
 	}
@@ -543,16 +543,16 @@ public class WorkerTreeModelAlt extends DefaultTreeModel implements IWorkerTreeM
 		Iterable<WorkerTreeNode<?>> sequence;
 		boolean leading;
 		WorkerTreeNode<?> toTrim;
-		if (starting != null) { // TODO: invert
+		if (starting == null) {
+			sequence = wrapped;
+			leading = false;
+			toTrim = null;
+		} else {
 			toTrim = (WorkerTreeNode<?>) starting.getLastPathComponent();
 			sequence = Stream.concat(StreamSupport.stream(wrapped.spliterator(), false),
 					StreamSupport.stream(wrapped.spliterator(), false))
 				.collect(Collectors.toList());
 			leading = true;
-		} else {
-			sequence = wrapped;
-			leading = false;
-			toTrim = null;
 		}
 		// if starting non-null, skip any leading instances of 'last'.
 		// Thereafter, in any case, only look at UnitNode instances.

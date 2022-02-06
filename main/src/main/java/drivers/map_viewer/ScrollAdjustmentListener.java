@@ -54,20 +54,7 @@ import java.util.logging.Logger;
 				oldDimensions.getColumns().size())) {
 			LOGGER.warning("Tried to scroll too far to the right, skipping ...");
 			return;
-		} else if (oldColumn != null) { // TODO: invert
-			if (oldColumn.intValue() == newValue) {
-				LOGGER.finer(
-					"Horizontal scroll to same value, possibly reentrant. Skipping ...");
-				return;
-			}
-			int offset = newValue - oldColumn;
-			LOGGER.fine(String.format("User scrolled horizontally by %d tiles, to %d.",
-				offset, newValue));
-			oldColumn = newValue;
-			newDimensions = new VisibleDimensions(oldDimensions.getMinimumRow(),
-				oldDimensions.getMaximumRow(), oldDimensions.getMinimumColumn() + offset,
-				oldDimensions.getMaximumColumn() + offset);
-		} else {
+		} else if (oldColumn == null) {
 			int newMinColumn;
 			int newMaxColumn;
 			if (oldDimensions.getMinimumColumn() > newValue) {
@@ -86,6 +73,19 @@ import java.util.logging.Logger;
 			oldColumn = newValue;
 			newDimensions = new VisibleDimensions(oldDimensions.getMinimumRow(),
 				oldDimensions.getMaximumRow(), newMinColumn, newMaxColumn);
+		} else {
+			if (oldColumn.intValue() == newValue) {
+				LOGGER.finer(
+					"Horizontal scroll to same value, possibly reentrant. Skipping ...");
+				return;
+			}
+			int offset = newValue - oldColumn;
+			LOGGER.fine(String.format("User scrolled horizontally by %d tiles, to %d.",
+				offset, newValue));
+			oldColumn = newValue;
+			newDimensions = new VisibleDimensions(oldDimensions.getMinimumRow(),
+				oldDimensions.getMaximumRow(), oldDimensions.getMinimumColumn() + offset,
+				oldDimensions.getMaximumColumn() + offset);
 		}
 		boolean oldAdjusting = adjusting;
 		adjusting = true;

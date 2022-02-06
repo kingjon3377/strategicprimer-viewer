@@ -260,17 +260,17 @@ public class MemberDetailPanel extends BorderedPanel implements UnitMemberListen
 			for (InterpolatedLabel<@Nullable WorkerStats> label : statLabels) {
 				label.setArgument(null);
 			}
-		} else if (local != null) { // TODO: invert
-			typeLabel.setText("Unknown");
+		} else if (local == null) {
+			typeLabel.setText("");
 			nameLabel.setText("");
-			kindLabel.setText(local.getClass().getName());
+			kindLabel.setText("");
 			for (InterpolatedLabel<@Nullable WorkerStats> label : statLabels) {
 				label.setArgument(null);
 			}
 		} else {
-			typeLabel.setText("");
+			typeLabel.setText("Unknown");
 			nameLabel.setText("");
-			kindLabel.setText("");
+			kindLabel.setText(local.getClass().getName());
 			for (InterpolatedLabel<@Nullable WorkerStats> label : statLabels) {
 				label.setArgument(null);
 			}

@@ -148,9 +148,7 @@ import org.jetbrains.annotations.Nullable;
 
 	public boolean stopAtPoint(final ICLIHelper cli, final IMapNG map, final Point point) {
 		List<Condition<? extends TileFixture>> localEnabledConditions;
-		if (enabledConditions != null) { // TODO: invert
-			localEnabledConditions = enabledConditions;
-		} else {
+		if (enabledConditions == null) {
 			List<Condition<? extends TileFixture>> temp = new ArrayList<>();
 			for (Condition<? extends TileFixture> condition : conditions) {
 				Boolean resp = cli.inputBooleanInSeries("Stop for instructions " +
@@ -164,6 +162,8 @@ import org.jetbrains.annotations.Nullable;
 			}
 			localEnabledConditions = Collections.unmodifiableList(temp);
 			enabledConditions = localEnabledConditions;
+		} else {
+			localEnabledConditions = enabledConditions;
 		}
 		Condition<? extends TileFixture> matchingCondition = localEnabledConditions.stream()
 			.filter(c -> c.matches(map, point)).findFirst().orElse(null);

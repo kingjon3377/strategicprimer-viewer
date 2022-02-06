@@ -242,21 +242,21 @@ public class TurnRunningModel extends ExplorationModel implements ITurnRunningMo
 				IMutableJob temp = StreamSupport.stream(matching.spliterator(), false)
 						.filter(IMutableJob.class::isInstance).map(IMutableJob.class::cast)
 						.filter(j -> jobName.equals(j.getName())).findAny().orElse(null);
-				if (temp != null) { // TODO: invert
-					job = temp;
-				} else {
+				if (temp == null) {
 					job = new Job(jobName, 0);
 					matching.addJob(job); // FIXME: addJob() is documented to not guarantee to reuse the object
+				} else {
+					job = temp;
 				}
 				IMutableSkill skill;
 				IMutableSkill tSkill = StreamSupport.stream(job.spliterator(), false)
 					.filter(IMutableSkill.class::isInstance).map(IMutableSkill.class::cast)
 					.filter(s -> skillName.equals(s.getName())).findAny().orElse(null);
-				if (tSkill != null) { // TODO: invert
-					skill = tSkill;
-				} else {
+				if (tSkill == null) {
 					skill = new Skill(skillName, 0, 0);
 					job.addSkill(skill); // FIXME: IIRC addSkill() is documented to not guarantee to reuse the object
+				} else {
+					skill = tSkill;
 				}
 				skill.addHours(hours, contextValue);
 			}

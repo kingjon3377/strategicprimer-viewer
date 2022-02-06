@@ -298,13 +298,13 @@ public class UtilityDriverModel extends SimpleMultiMapModel {
 					}
 					Forest matching = mainForests.stream()
 						.filter(forest::equalsIgnoringID).findAny().orElse(null);
-					if (matching != null) { // TODO: invert
-						forest.setId(matching.getId());
-						setMapModified(true);
-					} else {
+					if (matching == null) {
 						ostream.accept(String.format("Unmatched forest in %s: %s",
 							location, forest));
 						getRestrictedMap().addFixture(location, forest.copy(false));
+						setMapModified(true);
+					} else {
+						forest.setId(matching.getId());
 						setMapModified(true);
 					}
 				}
@@ -317,13 +317,13 @@ public class UtilityDriverModel extends SimpleMultiMapModel {
 					}
 					Ground matching = mainGround.stream()
 						.filter(ground::equalsIgnoringID).findAny().orElse(null);
-					if (matching != null) { // TODO: invert
-						ground.setId(matching.getId());
-						setMapModified(true);
-					} else {
+					if (matching == null) {
 						ostream.accept(String.format("Unmatched ground in %s: %s",
 							location, ground));
 						getRestrictedMap().addFixture(location, ground.copy(false));
+						setMapModified(true);
+					} else {
+						ground.setId(matching.getId());
 						setMapModified(true);
 					}
 				}

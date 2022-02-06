@@ -106,16 +106,16 @@ import org.takes.http.Exit;
 
 		ThrowingBiConsumer<IMapNG, @Nullable Path, DriverFailedException> createReports =
 			(map, mapFile) -> {
-				if (mapFile != null) { // TODO: invert
+				if (mapFile == null) {
+					LOGGER.severe("Asked to create reports from map with no filename");
+					// TODO: Pass in "unknown.xml", surely?
+				} else {
 					try {
 						TabularReportGenerator.createTabularReports(map,
 							filenameFunction.apply(mapFile), cli);
 					} catch (IOException|IOError except) {
 						throw new DriverFailedException(except);
 					}
-				} else {
-					LOGGER.severe("Asked to create reports from map with no filename");
-					// TODO: Pass in "unknown.xml", surely?
 				}
 			};
 

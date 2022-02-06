@@ -152,7 +152,9 @@ import java.util.stream.StreamSupport;
 	public void add(final String category, final String addendum) {
 		IWorker currentRoot = localRoot;
 		if ("job".equals(category)) {
-			if (currentRoot != null) { // TODO: invert?
+			if (currentRoot == null) {
+				LOGGER.warning("Can't add a new Job when no worker selected");
+			} else {
 				int childCount = getChildCount(currentRoot);
 				if (driverModel.addJobToWorker(currentRoot, addendum)) {
 					IJob job = StreamSupport.stream(currentRoot.spliterator(), false)
@@ -169,8 +171,6 @@ import java.util.stream.StreamSupport;
 				} else {
 					LOGGER.warning("Worker not found");
 				}
-			} else {
-				LOGGER.warning("Can't add a new Job when no worker selected");
 			}
 		} else if ("skill".equals(category)) {
 			TreePath selectionPath = selectionModel.getSelectionPath();

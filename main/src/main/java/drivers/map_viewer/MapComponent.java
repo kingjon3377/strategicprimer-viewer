@@ -118,12 +118,12 @@ import java.awt.image.BufferedImage;
 	}
 
 	private Rectangle boundsCheck(@Nullable final Rectangle rect) {
-		if (rect != null) { // TODO: invert
-			return rect;
-		} else {
+		if (rect == null) {
 			VisibleDimensions dimensions = mapModel.getVisibleDimensions();
 			return new Rectangle(0, 0, dimensions.getWidth() * getTileSize(),
 				dimensions.getHeight() * getTileSize());
+		} else {
+			return rect;
 		}
 	}
 
@@ -242,7 +242,10 @@ import java.awt.image.BufferedImage;
 
 	private void drawBackgroundImage(final Graphics context, final int tileSize) {
 		BufferedImage temp = backgroundImage;
-		if (temp != null) { // TODO: invert
+		if (temp == null) {
+			context.setColor(Color.white); // TODO: save and restore afterwards?
+			context.fillRect(0, 0, getWidth(), getHeight());
+		} else {
 			VisibleDimensions visibleDimensions = mapModel.getVisibleDimensions();
 			MapDimensions mapDimensions = mapModel.getMapDimensions();
 			double horizontalScaling = ((double) temp.getWidth()) / mapDimensions.getColumns();
@@ -257,9 +260,6 @@ import java.awt.image.BufferedImage;
 				Math.min(temp.getHeight() - y - 1, sliceHeight));
 			context.drawImage(sliced, 0, 0, visibleDimensions.getWidth() * tileSize,
 				visibleDimensions.getHeight() * tileSize, null); // TODO: supply observer
-		} else {
-			context.setColor(Color.white); // TODO: save and restore afterwards?
-			context.fillRect(0, 0, getWidth(), getHeight());
 		}
 	}
 

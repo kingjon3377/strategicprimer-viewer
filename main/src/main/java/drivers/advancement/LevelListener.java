@@ -70,17 +70,17 @@ import common.map.fixtures.mobile.worker.IJob;
 		String actualSkillName;
 		if (!workerName.isEmpty() && !"unknown".equals(workerName)) {
 			actualWorkerName = workerName;
-		} else if (worker != null) { // TODO: invert?
-			actualWorkerName = getName(worker);
-		} else {
+		} else if (worker == null) {
 			return;
+		} else {
+			actualWorkerName = getName(worker);
 		}
 		if (!skillName.isEmpty() && !"unknown".equals(skillName)) {
 			actualSkillName = skillName;
-		} else if (skill != null) { // TODO: invert?
-			actualSkillName = getName(skill);
-		} else {
+		} else if (skill == null) {
 			return;
+		} else {
+			actualSkillName = getName(skill);
 		}
 		String count = (gains == 1) ? "a level" : gains + " levels";
 		System.out.printf("%s gained %s in %s", actualWorkerName, count, actualSkillName); // TODO: Take ICLIHelper instead of using stdout

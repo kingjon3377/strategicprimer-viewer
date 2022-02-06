@@ -155,12 +155,10 @@ import common.map.fixtures.towns.Village;
 	private void enterWorkerJobs(final IUnit unit, final IWorker worker, final int levels) {
 		for (int i = 0; i < levels; i++) {
 			String jobName = cli.inputString("Which Job does worker have a level in? ");
-			if (jobName != null) { // TODO: invert
-				if (!model.addJobLevel(unit, worker, jobName)) {
-					LOGGER.warning("Adding or incrementing Job failed somehow ...");
-				}
-			} else {
+			if (jobName == null) {
 				break;
+			} else if (!model.addJobLevel(unit, worker, jobName)) {
+				LOGGER.warning("Adding or incrementing Job failed somehow ...");
 			}
 		}
 	}
@@ -407,11 +405,10 @@ import common.map.fixtures.towns.Village;
 			String race = RaceFactory.randomRace();
 			Worker worker;
 			String name = cli.inputString(String.format("Work is a %s. Worker name: ", race));
-			if (name != null) { // TODO: invert
-				worker = new Worker(name, race, idf.createID());
-			} else {
+			if (name == null) {
 				break;
 			}
+			worker = new Worker(name, race, idf.createID());
 			int levels = (int) SingletonRandom.SINGLETON_RANDOM.ints().filter(n -> n < 20)
 				.limit(3).filter(n -> n == 0).count();
 			if (levels == 1) {
@@ -437,15 +434,13 @@ import common.map.fixtures.towns.Village;
 		int count = Optional.ofNullable(cli.inputNumber("How many workers to generate? ")).orElse(0);
 		Deque<String> names;
 		String filename = cli.inputString("Filename to load names from: ");
-		if (filename != null) { // TODO: invert
-			if (Files.exists(Paths.get(filename))) {
-				names = new LinkedList<>(Files.readAllLines(Paths.get(filename)));
-			} else {
-				names = new LinkedList<>();
-				cli.println("No such file.");
-			}
-		} else {
+		if (filename == null) {
 			return;
+		} else if (Files.exists(Paths.get(filename))) {
+			names = new LinkedList<>(Files.readAllLines(Paths.get(filename)));
+		} else {
+			names = new LinkedList<>();
+			cli.println("No such file.");
 		}
 		Point hqLoc;
 		Optional<Point> found = model.getMap().streamLocations()
@@ -458,10 +453,10 @@ import common.map.fixtures.towns.Village;
 		} else {
 			cli.println("That unit's location not found in main map.");
 			Point point = cli.inputPoint("Location to use for village distances:");
-			if (point != null) { // TODO: invert
-				hqLoc = point;
-			} else {
+			if (point == null) {
 				return;
+			} else {
+				hqLoc = point;
 			}
 		}
 		Pathfinder pather = PathfinderFactory.pathfinder(model.getMap());
@@ -506,10 +501,7 @@ import common.map.fixtures.towns.Village;
 				}
 			}
 			Worker worker;
-			if (home != null) { // TODO: invert
-				worker = generateWorkerFrom(home, name, idf);
-				model.addWorkerToUnit(unit, worker);
-			} else {
+			if (home == null) {
 				String race = RaceFactory.randomRace();
 				cli.println(String.format("Worker %s is a %s", name, race));
 				worker = new Worker(name, race, idf.createID());
@@ -540,6 +532,9 @@ import common.map.fixtures.towns.Village;
 							WorkerStats.getModifierString(statArray[j])));
 					}
 				}
+			} else {
+				worker = generateWorkerFrom(home, name, idf);
+				model.addWorkerToUnit(unit, worker);
 			}
 		}
 	}
@@ -562,13 +557,13 @@ import common.map.fixtures.towns.Village;
 				Point point = cli.inputPoint("Where to put new unit? ");
 				String kind = point == null ? null : cli.inputString("Kind of unit: ");
 				String name = kind == null ? null : cli.inputString("Unit name: ");
-				if (point != null && kind != null && name != null) { // TODO: invert?
+				if (point == null || kind == null || name == null) {
+					return;
+				} else {
 					IUnit temp = new Unit(player, kind, name, idf.createID());
 					model.addUnitAtLocation(temp, point);
 					units.add(temp);
 					item = temp;
-				} else {
-					return;
 				}
 			} else {
 				break;

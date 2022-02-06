@@ -348,7 +348,12 @@ public class IOHandler implements ActionListener {
 			break;
 
 		case "close":
-			if (parentWindow != null) { // TODO: invert
+			if (parentWindow == null) {
+				LOGGER.severe("IOHandler asked to close but couldn't get current window");
+				LOGGER.fine("Event details: " + event);
+				LOGGER.fine("Source: " + source);
+				LOGGER.log(Level.FINER, "Stack trace:", new Exception("Stack trace"));
+			} else {
 				if (driver instanceof ModelDriver) {
 					LOGGER.finer("This operates on a model, maybe we should save ...");
 					maybeSave("closing", parentWindow, source, parentWindow::dispose);
@@ -358,11 +363,6 @@ public class IOHandler implements ActionListener {
 				} else {
 					LOGGER.severe("IOHandler asked to close in unsupported app");
 				}
-			} else {
-				LOGGER.severe("IOHandler asked to close but couldn't get current window");
-				LOGGER.fine("Event details: " + event);
-				LOGGER.fine("Source: " + source);
-				LOGGER.log(Level.FINER, "Stack trace:", new Exception("Stack trace"));
 			}
 			break;
 

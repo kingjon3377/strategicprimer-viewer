@@ -228,10 +228,10 @@ public class PopulationGeneratingModel extends SimpleMultiMapModel { // TODO: Ex
 	 */
 	public void addWorkerToUnit(final IUnit unit, final IWorker worker) {
 		String existingNote;
-		if (!worker.getNote(unit.getOwner()).isEmpty()) { // TODO: invert
-			existingNote = String.format("%s ", worker.getNote(unit.getOwner()));
-		} else {
+		if (worker.getNote(unit.getOwner()).isEmpty()) {
 			existingNote = "";
+		} else {
+			existingNote = String.format("%s ", worker.getNote(unit.getOwner()));
 		}
 		for (IMutableMapNG map : getRestrictedAllMaps()) {
 			Optional<IMutableUnit> localUnit = map.streamAllFixtures()

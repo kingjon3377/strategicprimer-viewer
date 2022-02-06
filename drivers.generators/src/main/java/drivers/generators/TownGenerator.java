@@ -250,7 +250,9 @@ import java.math.BigDecimal;
 	 */
 	private List<HarvestableFixture> findNearestFields(final IMapNG map, final Point location) {
 		TileType base = map.getBaseTerrain(location);
-		if (base != null) { // TODO: invert
+		if (base == null) {
+			return Collections.emptyList();
+		} else {
 			return StreamSupport.stream(new SurroundingPointIterable(location,
 					map.getDimensions(), 10).spliterator(), true).distinct()
 				.filter(l -> bothOrNeitherOcean(base, map.getBaseTerrain(l)))
@@ -258,8 +260,6 @@ import java.math.BigDecimal;
 				.filter(HarvestableFixture.class::isInstance)
 				.map(HarvestableFixture.class::cast).filter(this::isReallyClaimable)
 				.collect(Collectors.toList());
-		} else {
-			return Collections.emptyList();
 		}
 	}
 
@@ -490,20 +490,18 @@ import java.math.BigDecimal;
 		String skillTable;
 		String consumptionTableName;
 		TileType terrain = map.getBaseTerrain(location);
-		if (terrain != null) { // TODO: invert
-			if (TileType.Ocean.equals(terrain)) {
-				skillTable = "ocean_skills";
-				consumptionTableName = "ocean";
-			} else if (map.isMountainous(location)) {
-				skillTable = "mountain_skills";
-				consumptionTableName = "mountain";
-			} else if (map.getFixtures(location).stream().anyMatch(Forest.class::isInstance)) {
-				skillTable = "forest_skills";
-				consumptionTableName = "forest";
-			} else {
-				skillTable = "plains_skills";
-				consumptionTableName = "plains";
-			}
+		if (terrain == null) {
+			skillTable = "plains_skills";
+			consumptionTableName = "plains";
+		} else if (TileType.Ocean.equals(terrain)) {
+			skillTable = "ocean_skills";
+			consumptionTableName = "ocean";
+		} else if (map.isMountainous(location)) {
+			skillTable = "mountain_skills";
+			consumptionTableName = "mountain";
+		} else if (map.getFixtures(location).stream().anyMatch(Forest.class::isInstance)) {
+			skillTable = "forest_skills";
+			consumptionTableName = "forest";
 		} else {
 			skillTable = "plains_skills";
 			consumptionTableName = "plains";
@@ -598,7 +596,9 @@ import java.math.BigDecimal;
 				town = temp.map(Pair::getValue1).orElse(null);
 			}
 			try {
-				if (town != null && location != null) { // TODO: invert?
+				if (town == null || location == null) {
+					cli.println("No matching town found.");
+				} else {
 					CommunityStats stats;
 					if (cli.inputBooleanInSeries("Enter stats rather than generating them? ")) {
 						stats = enterStats(cli, idf, model.getMap(), location, town);
@@ -606,8 +606,6 @@ import java.math.BigDecimal;
 						stats = generateStats(idf, location, town, model.getMap());
 					}
 					model.assignTownStats(location, town.getId(), town.getName(), stats);
-				} else {
-					cli.println("No matching town found.");
 				}
 			} catch (final MissingTableException except) {
 				LOGGER.log(Level.SEVERE, "Missing table file", except);

@@ -203,7 +203,9 @@ public class QueryCLI implements ReadOnlyDriver {
 			TileType currentTerrain = map.getBaseTerrain(current);
 			if (considered.contains(current)) {
 				continue;
-			} else if (currentTerrain != null) { // TODO: invert
+			} else if (currentTerrain == null) {
+				retval.add(current);
+			} else {
 				if (!TileType.Ocean.equals(currentTerrain)) {
 					double baseDistance = distance(base, current, dimensions);
 					for (Point neighbor : new SurroundingPointIterable(current,
@@ -213,8 +215,6 @@ public class QueryCLI implements ReadOnlyDriver {
 						}
 					}
 				}
-			} else {
-				retval.add(current);
 			}
 			considered.add(current);
 		}
@@ -281,12 +281,12 @@ public class QueryCLI implements ReadOnlyDriver {
 		Point base = cli.inputPoint("Starting point? ");
 		if (base != null) {
 			Point unexplored = findUnexplored(base);
-			if (unexplored != null) { // TODO: invert
+			if (unexplored == null) {
+				cli.println("No unexplored tiles found.");
+			} else {
 				double distanceTo = distance(base, unexplored, map.getDimensions());
 				cli.println(String.format("Nearest unexplored tile is %s, %s tiles away",
 					unexplored, ONE_PLACE_FORMAT.format(distanceTo)));
-			} else {
-				cli.println("No unexplored tiles found.");
 			}
 		}
 	}

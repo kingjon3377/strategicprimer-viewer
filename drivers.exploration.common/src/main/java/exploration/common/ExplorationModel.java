@@ -496,10 +496,10 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 		for (IMapNG subMap : getSubordinateMaps()) {
 			for (Point point : subMap.getLocations()) {
 				if (doesLocationHaveFixture(subMap, point, unit)) {
-					if (!point.equals(mainLoc)) { // TODO: invert
-						return false;
-					} else {
+					if (point.equals(mainLoc)) {
 						break;
+					} else {
+						return false;
 					}
 				}
 			}
@@ -523,7 +523,10 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 		Point oldLoc = selection.getValue0();
 		IUnit oldSelection = selection.getValue1();
 		Point loc;
-		if (selectedUnit != null) { // TODO: invert
+		if (selectedUnit == null) {
+			LOGGER.fine("Unsetting currently-selected-unit property");
+			loc = Point.INVALID_POINT;
+		} else {
 			if (!mapsAgreeOnLocation(selectedUnit)) {
 				LOGGER.warning("Maps containing that unit don't all agree on its location");
 			}
@@ -534,9 +537,6 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 			} else {
 				LOGGER.fine("Not found using our 'find' method");
 			}
-		} else {
-			LOGGER.fine("Unsetting currently-selected-unit property");
-			loc = Point.INVALID_POINT;
 		}
 		selection = Pair.with(loc, selectedUnit);
 		fireSelectionChange(oldLoc, loc);
@@ -996,10 +996,10 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 		Pair<Point, @Nullable IUnit> selection = this.selection; // TODO: Ceylon used "value", so may have been wrong here
 		IUnit unit = selection.getValue1();
 		Player currentPlayer = Optional.ofNullable(unit).map(IUnit::getOwner).orElse(null);
-		if (currentPlayer != null) { // TODO: invert
-			return fixture.getOwner().equals(currentPlayer);
-		} else {
+		if (currentPlayer == null) {
 			return false;
+		} else {
+			return fixture.getOwner().equals(currentPlayer);
 		}
 	}
 

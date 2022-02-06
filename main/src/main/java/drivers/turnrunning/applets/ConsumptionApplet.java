@@ -112,15 +112,14 @@ public class ConsumptionApplet extends AbstractTurnApplet {
 				} else { // TODO: extract this as a function?
 					BigDecimal amountToConsume = cli.inputDecimal(String.format(
 						"How many pounds of the %s to consume:", food.getContents()));
-					if (amountToConsume != null) { // TODO: invert
-						BigDecimal minuend = amountToConsume.min(decimalize(
-							food.getQuantity().getNumber()));
-						model.reduceResourceBy(food, minuend, localUnit.getOwner());
-						remainingConsumption = remainingConsumption.subtract(minuend);
-						continue;
-					} else {
+					if (amountToConsume == null) {
 						return null;
 					}
+					BigDecimal minuend = amountToConsume.min(decimalize(
+						food.getQuantity().getNumber()));
+					model.reduceResourceBy(food, minuend, localUnit.getOwner());
+					remainingConsumption = remainingConsumption.subtract(minuend);
+					continue;
 				}
 			} // else
 			Boolean resp = cli.inputBooleanInSeries(String.format("Eat all remaining %s from the %s?",

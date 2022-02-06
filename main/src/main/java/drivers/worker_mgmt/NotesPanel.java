@@ -45,10 +45,10 @@ public final class NotesPanel extends BorderedPanel
 	}
 
 	private void saveNotes() {
-		if (current != null) { // TODO: invert (here and in revertNotes())
-			current.setNote(player, notesArea.getText().trim());
-		} else {
+		if (current == null) {
 			Toolkit.getDefaultToolkit().beep();
+		} else {
+			current.setNote(player, notesArea.getText().trim());
 		}
 	}
 

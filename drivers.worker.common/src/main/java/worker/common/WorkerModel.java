@@ -135,9 +135,7 @@ public class WorkerModel extends SimpleMultiMapModel implements IWorkerModel {
 	 */
 	@Override
 	public Player getCurrentPlayer() {
-		if (currentPlayerImpl != null) { // TODO: invert
-			return currentPlayerImpl;
-		} else {
+		if (currentPlayerImpl == null) {
 			for (IMapNG localMap : getAllMaps()) {
 				Player temp = localMap.getCurrentPlayer();
 				if (getUnits(temp).iterator().hasNext()) {
@@ -146,6 +144,8 @@ public class WorkerModel extends SimpleMultiMapModel implements IWorkerModel {
 				}
 			}
 			currentPlayerImpl = getMap().getCurrentPlayer();
+			return currentPlayerImpl;
+		} else {
 			return currentPlayerImpl;
 		}
 	}

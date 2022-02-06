@@ -175,7 +175,18 @@ public final class TestXMLIO {
 			final ISPReader reader, final String xml, @Nullable final Type desideratum,
 			final Class<Expectation> exceptionClass, final Consumer<Expectation>... checks)
 			throws SPFormatException, MalformedXMLException, IOException {
-		if (desideratum != null) { // TODO: invert condition
+		if (desideratum == null) {
+			try (StringReader stringReader = new StringReader(xml)) {
+				reader.<Type>readXML(FAKE_FILENAME, stringReader, Warning.IGNORE);
+				fail(String.format("Expected a(n) %s to be thrown",
+					exceptionClass.getName()));
+			} catch (final Exception except) {
+				assertTrue(exceptionClass.isInstance(except), "Exception should be of the right type");
+				for (Consumer<Expectation> check : checks) {
+					check.accept((Expectation) except);
+				}
+			}
+		} else {
 			try (StringReader stringReader = new StringReader(xml)) {
 				Type returned = reader.readXML(FAKE_FILENAME, stringReader,
 					Warning.IGNORE);
@@ -192,17 +203,6 @@ public final class TestXMLIO {
 					check.accept((Expectation) cause);
 				}
 			} catch (final Throwable except) {
-				assertTrue(exceptionClass.isInstance(except), "Exception should be of the right type");
-				for (Consumer<Expectation> check : checks) {
-					check.accept((Expectation) except);
-				}
-			}
-		} else {
-			try (StringReader stringReader = new StringReader(xml)) {
-				reader.<Type>readXML(FAKE_FILENAME, stringReader, Warning.IGNORE);
-				fail(String.format("Expected a(n) %s to be thrown",
-					exceptionClass.getName()));
-			} catch (final Exception except) {
 				assertTrue(exceptionClass.isInstance(except), "Exception should be of the right type");
 				for (Consumer<Expectation> check : checks) {
 					check.accept((Expectation) except);

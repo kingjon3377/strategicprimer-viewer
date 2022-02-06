@@ -117,13 +117,7 @@ import org.jetbrains.annotations.Nullable;
 			currentDriver = null;
 		}
 		if (currentOptions.hasOption("--help")) {
-			if (currentDriver != null) { // TODO: invert
-				IDriverUsage currentUsage = currentDriver.getUsage();
-				LOGGER.finer("Giving usage information for selected driver");
-				// TODO: Can we and should we move the usageMessage() method into this class?
-				System.out.println(new AppChooserState().usageMessage(currentUsage,
-						"true".equals(options.getArgument("--verbose"))));
-			} else {
+			if (currentDriver == null) {
 				LOGGER.finer("No driver selected, so giving choices.");
 				System.out.println("Strategic Primer assistive programs suite");
 				System.out.println("No app specified; use one of the following invocations:");
@@ -141,6 +135,12 @@ import org.jetbrains.annotations.Nullable;
 					System.out.print(": ");
 					System.out.println(invocationExample);
 				}
+			} else {
+				IDriverUsage currentUsage = currentDriver.getUsage();
+				LOGGER.finer("Giving usage information for selected driver");
+				// TODO: Can we and should we move the usageMessage() method into this class?
+				System.out.println(new AppChooserState().usageMessage(currentUsage,
+						"true".equals(options.getArgument("--verbose"))));
 			}
 		} else if (currentDriver != null) {
 			LOGGER.finer("Starting chosen app.");

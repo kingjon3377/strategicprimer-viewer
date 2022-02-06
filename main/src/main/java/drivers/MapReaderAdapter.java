@@ -125,7 +125,9 @@ public class MapReaderAdapter {
 	 */
 	public static void writeModel(final IDriverModel model) throws DriverFailedException{
 		Path mainFile = model.getMap().getFilename();
-		if (mainFile != null) { // TODO: invert
+		if (mainFile == null) {
+			LOGGER.severe("Model didn't contain filename for main map, so didn't write it");
+		} else {
 			try {
 				MapIOHelper.writeMap(mainFile, model.getMap());
 				model.setMapModified(false);
@@ -135,13 +137,13 @@ public class MapReaderAdapter {
 			} catch (final IOException except) {
 				throw new DriverFailedException(except, "I/O error writing to " + mainFile);
 			}
-		} else {
-			LOGGER.severe("Model didn't contain filename for main map, so didn't write it");
 		}
 		if (model instanceof IMultiMapModel) {
 			for (IMapNG map : ((IMultiMapModel) model).getSubordinateMaps()) {
 				Path filename = map.getFilename();
-				if (filename != null) { // TODO: invert (and 'continue' to reduce indent)
+				if (filename == null) {
+					LOGGER.severe("A map didn't have a filename, and so wasn't written.");
+				} else {
 					try {
 						MapIOHelper.writeMap(filename, map);
 						((IMultiMapModel) model).clearModifiedFlag(map);
@@ -152,8 +154,6 @@ public class MapReaderAdapter {
 						throw new DriverFailedException(except,
 							"I/O error writing to " + filename);
 					}
-				} else {
-					LOGGER.severe("A map didn't have a filename, and so wasn't written.");
 				}
 			}
 		}

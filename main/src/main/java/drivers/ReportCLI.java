@@ -53,7 +53,9 @@ public class ReportCLI implements ReadOnlyDriver {
 	}
 
 	private void writeReport(@Nullable final Path filename, final IMapNG map) throws IOException {
-		if (filename != null) { // TODO: invert
+		if (filename == null) {
+			LOGGER.severe("Asked to make report from map with no filename");
+		} else {
 			Player player;
 			if (options.hasOption("--player")) {
 				try {
@@ -80,8 +82,6 @@ public class ReportCLI implements ReadOnlyDriver {
 					StandardOpenOption.CREATE_NEW)) {
 				writer.write(ReportGenerator.createReport(map, cli, player));
 			}
-		} else {
-			LOGGER.severe("Asked to make report from map with no filename");
 		}
 	}
 

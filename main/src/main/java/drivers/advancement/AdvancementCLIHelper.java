@@ -72,20 +72,20 @@ public class AdvancementCLIHelper implements LevelGainSource {
 				skill = chosen.getValue1();
 			} else if (chosen.getValue0() <= skills.size()) {
 				String skillName = cli.inputString("Name of new Skill: ");
-				if (skillName != null) { // TODO: invert?
+				if (skillName == null) {
+					return;
+				} else {
 					model.addHoursToSkill(worker, job.getName(), skillName, 0, 200); // TODO: Have a better way to add the skill without any hours, or else rework this method
 					skills.clear();
 					job.forEach(skills::add);
 					ISkill temp = skills.stream().filter(s -> skillName.equals(s.getName()))
 						.findFirst().orElse(null);
-					if (temp != null) { // TODO: invert
-						skill = temp;
-					} else {
+					if (temp == null) {
 						cli.println("Select the new item at the next prompt.");
 						continue;
+					} else {
+						skill = temp;
 					}
-				} else {
-					return;
 				}
 			} else {
 				break;
@@ -252,7 +252,9 @@ public class AdvancementCLIHelper implements LevelGainSource {
 			ISkill skill;
 			if (chosen.getValue1() != null) {
 				skill = chosen.getValue1();
-			} else if (chosen.getValue0() <= skills.size()) { // TODO: invert?
+			} else if (chosen.getValue0() > skills.size()) {
+				break;
+			} else {
 				String skillName = cli.inputString("Name of the new skill: ");
 				if (skillName == null) {
 					return;
@@ -264,14 +266,12 @@ public class AdvancementCLIHelper implements LevelGainSource {
 				new ProxyJob(jobName, false, workers).forEach(skills::add);
 				ISkill temp = skills.stream().filter(s -> skillName.equals(s.getName()))
 					.findAny().orElse(null);
-				if (temp != null) { // TODO: invert
-					skill = temp;
-				} else {
+				if (temp == null) {
 					cli.println("Select the new item at the next prompt.");
 					continue;
+				} else {
+					skill = temp;
 				}
-			} else {
-				break;
 			}
 			advanceWorkersInSkill(jobName, skill.getName(), workers);
 			Boolean continuation = cli.inputBoolean("Select another Skill in this Job?");
@@ -317,7 +317,9 @@ public class AdvancementCLIHelper implements LevelGainSource {
 				IJob job;
 				if (chosen.getValue1() != null) {
 					job = chosen.getValue1();
-				} else if (chosen.getValue0() <= jobs.size()) { // TODO: invert
+				} else if (chosen.getValue0() > jobs.size()) {
+					break;
+				} else {
 					String jobName = cli.inputString("Name of new Job: ");
 					if (jobName == null) {
 						return;
@@ -329,14 +331,12 @@ public class AdvancementCLIHelper implements LevelGainSource {
 					new ProxyWorker(unit).forEach(jobs::add);
 					IJob temp = jobs.stream().filter(j -> jobName.equals(j.getName()))
 						.findFirst().orElse(null);
-					if (temp != null) { // TODO: invert
-						job = temp;
-					} else {
+					if (temp == null) {
 						cli.println("Select the new item at the next prompt.");
 						continue;
+					} else {
+						job = temp;
 					}
-				} else {
-					break;
 				}
 				advanceWorkersInJob(job.getName(), workers.toArray(new IWorker[0]));
 				Boolean continuation = cli.inputBoolean("Select another Job in these workers?");

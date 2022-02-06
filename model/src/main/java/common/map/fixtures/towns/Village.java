@@ -312,22 +312,20 @@ public class Village implements IMutableTownFixture, HasMutableImage, IFixture,
 	@Override
 	public int getDC() {
 		if (TownStatus.Active.equals(status)) {
-			if (population != null) { // TODO: Invert this to reduce nesting
-				if (population.getPopulation() < 10) {
-					return 20;
-				} else if (population.getPopulation() < 15) {
-					return 17;
-				} else if (population.getPopulation() < 20) {
-					return 15;
-				} else if (population.getPopulation() < 50) {
-					return 12;
-				} else if (population.getPopulation() < 100) {
-					return 10;
-				} else {
-					return 5;
-				}
-			} else {
+			if (population == null) {
 				return 15;
+			} else if (population.getPopulation() < 10) {
+				return 20;
+			} else if (population.getPopulation() < 15) {
+				return 17;
+			} else if (population.getPopulation() < 20) {
+				return 15;
+			} else if (population.getPopulation() < 50) {
+				return 12;
+			} else if (population.getPopulation() < 100) {
+				return 10;
+			} else {
+				return 5;
 			}
 		} else {
 			return 30;

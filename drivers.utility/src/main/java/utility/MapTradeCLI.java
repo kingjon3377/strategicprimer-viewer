@@ -170,12 +170,10 @@ public class MapTradeCLI implements CLIDriver {
 		}
 		IMapNG second = model.getSubordinateMaps().iterator().next();
 		Boolean copyPlayers = cli.inputBoolean("Copy players?");
-		if (copyPlayers != null) { // TODO: invert
-			if (copyPlayers) {
-				model.copyPlayers();
-			}
-		} else {
+		if (copyPlayers == null) {
 			return;
+		} else if (copyPlayers) {
+			model.copyPlayers();
 		}
 		Boolean copyRivers = cli.inputBoolean("Include rivers?");
 		if (copyRivers == null) {

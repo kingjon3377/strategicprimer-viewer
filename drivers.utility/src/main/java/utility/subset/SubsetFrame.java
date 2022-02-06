@@ -85,12 +85,12 @@ import java.util.logging.Logger;
 	 */
 	public void testMap(final IMapNG map, @Nullable final Path file) {
 		String filename;
-		if (file != null) { // TODO: invert?
-			filename = file.toString();
-		} else {
+		if (file == null) {
 			LOGGER.warning("Given a map with no filename");
 			printParagraph("Given a map with no filename", LabelTextColor.YELLOW);
 			filename = "an unnamed file";
+		} else {
+			filename = file.toString();
 		}
 		printParagraph(String.format("Testing %s ...", filename));
 		if (mainMap.isSubset(map, new HtmlWriter(filename)::write)) {

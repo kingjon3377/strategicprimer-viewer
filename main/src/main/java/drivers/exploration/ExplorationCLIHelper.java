@@ -162,20 +162,7 @@ public class ExplorationCLIHelper implements MovementCostListener, SelectionChan
 			Point point = model.getSelectedUnitLocation();
 			Direction direction;
 			Point proposedDestination = proposedPath.pollFirst();
-			if (proposedDestination != null) { // TODO: invert
-				direction = Stream.of(Direction.values())
-					.filter(d -> proposedDestination.equals(model.getDestination(point, d)))
-					.findAny().orElse(Direction.Nowhere);
-				if (proposedDestination.equals(point)) {
-					return;
-				} else if (Direction.Nowhere.equals(direction)) {
-					cli.println(String.format("Next step %s isn't adjacent to %s",
-						proposedDestination, point));
-					return;
-				}
-				cli.println(String.format("%d/%d MP remaining. Current speed: %s.",
-					runningTotal, totalMP, speed.getShortName()));
-			} else {
+			if (proposedDestination == null) {
 				cli.println(String.format("%d/%d MP remaining. Current speed: %s.",
 					runningTotal, totalMP, speed.getShortName()));
 				cli.printlnAtInterval(usage);
@@ -213,7 +200,11 @@ public class ExplorationCLIHelper implements MovementCostListener, SelectionChan
 					break;
 				case 10:
 					Point destination = cli.inputPoint("Location to move toward: ");
-					if (destination != null) { // TODO: invert
+					if (destination == null) {
+						// EOF
+						runningTotal = 0;
+						return;
+					} else {
 						Pair<Integer, Iterable<Point>> pair =
 							pather.getTravelDistance(point, destination);
 						int cost = pair.getValue0();
@@ -225,15 +216,24 @@ public class ExplorationCLIHelper implements MovementCostListener, SelectionChan
 							path.forEach(proposedPath::addLast);
 						}
 						return;
-					} else {
-						// EOF
-						runningTotal = 0;
-						return;
 					}
-				default:
+					default:
 					runningTotal = 0;
 					return;
 				}
+			} else {
+				direction = Stream.of(Direction.values())
+					.filter(d -> proposedDestination.equals(model.getDestination(point, d)))
+					.findAny().orElse(Direction.Nowhere);
+				if (proposedDestination.equals(point)) {
+					return;
+				} else if (Direction.Nowhere.equals(direction)) {
+					cli.println(String.format("Next step %s isn't adjacent to %s",
+						proposedDestination, point));
+					return;
+				}
+				cli.println(String.format("%d/%d MP remaining. Current speed: %s.",
+					runningTotal, totalMP, speed.getShortName()));
 			}
 
 			Point destPoint = model.getDestination(point, direction);

@@ -323,24 +323,23 @@ import worker.common.IFixtureEditHelper;
 	@Nullable
 	private AnimalTracks tracksCreator(final Point point) {
 		TileType terrain = driverModel.getMap().getBaseTerrain(point);
-		if (terrain != null) { // TODO: invert
-			LOGGER.finer("In ExplorationPanel.tracksCreator");
-			Function<Point, Iterable<Pair<Point, TileFixture>>> source;
-			if (TileType.Ocean.equals(terrain)) {
-				source = huntingModel::fish;
-			} else {
-				source = huntingModel::hunt;
-			}
-			LOGGER.finer("ExplorationPanel.tracksCreator: Determined which source to use");
-			TileFixture animal = source.apply(point).iterator().next().getValue1();
-			LOGGER.finer("ExplorationPanel.tracksCreator: Got first item from source");
-			if (animal instanceof Animal) {
-				return new AnimalTracks(((Animal) animal).getKind());
-			} else if (animal instanceof AnimalTracks) {
-				return ((AnimalTracks) animal).copy(true);
-			} else {
-				return null;
-			}
+		if (terrain == null) {
+			return null;
+		}
+		LOGGER.finer("In ExplorationPanel.tracksCreator");
+		Function<Point, Iterable<Pair<Point, TileFixture>>> source;
+		if (TileType.Ocean.equals(terrain)) {
+			source = huntingModel::fish;
+		} else {
+			source = huntingModel::hunt;
+		}
+		LOGGER.finer("ExplorationPanel.tracksCreator: Determined which source to use");
+		TileFixture animal = source.apply(point).iterator().next().getValue1();
+		LOGGER.finer("ExplorationPanel.tracksCreator: Got first item from source");
+		if (animal instanceof Animal) {
+			return new AnimalTracks(((Animal) animal).getKind());
+		} else if (animal instanceof AnimalTracks) {
+			return ((AnimalTracks) animal).copy(true);
 		} else {
 			return null;
 		}
