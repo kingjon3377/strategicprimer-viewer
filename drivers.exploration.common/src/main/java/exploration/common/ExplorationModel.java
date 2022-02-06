@@ -641,14 +641,10 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 					StreamSupport.stream(surroundingFixtures.spliterator(), false)
 						.filter(p -> p.getValue1() instanceof Animal).findFirst();
 				for (IMutableMapNG subMap : getRestrictedSubordinateMaps()) {
-					if (vegetation.isPresent()) {
-						subMap.addFixture(vegetation.get().getValue0(),
-							vegetation.get().getValue1().copy(true));
-					}
-					if (animal.isPresent()) {
-						subMap.addFixture(animal.get().getValue0(),
-							animal.get().getValue1().copy(true));
-					}
+					vegetation.ifPresent(objects -> subMap.addFixture(objects.getValue0(),
+							objects.getValue1().copy(true)));
+					animal.ifPresent(objects -> subMap.addFixture(objects.getValue0(),
+							objects.getValue1().copy(true)));
 				}
 			}
 			fireMovementCost(5);
