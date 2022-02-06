@@ -208,7 +208,7 @@ import org.takes.http.Exit;
 		try {
 			port = Integer.parseInt(portArgument);
 		} catch (final NumberFormatException except) {
-			if (!portArgument.equals("true")) {
+			if (!"true".equals(portArgument)) {
 				LOGGER.warning("Port must be a number");
 				LOGGER.log(Level.FINER, "Stack trace of port parse failure", except);
 			}

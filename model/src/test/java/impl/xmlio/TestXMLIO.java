@@ -1566,7 +1566,7 @@ public final class TestXMLIO {
 			"Serialized form contains new results too");
 		this.<IUnit>assertForwardDeserialization("Orders can be read without tags",
 			"<unit name=\"name\" kind=\"kind\" id=\"1\" owner=\"-1\">Orders orders</unit>",
-			(unit) -> unit.getOrders(-1).equals("Orders orders"));
+			(unit) -> "Orders orders".equals(unit.getOrders(-1)));
 	}
 
 	private static Stream<Arguments> testQuoting() {

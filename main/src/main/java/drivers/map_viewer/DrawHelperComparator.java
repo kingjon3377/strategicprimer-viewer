@@ -266,7 +266,7 @@ public class DrawHelperComparator implements UtilityDriver {
 			runAllTests(map, filename, REPS);
 		}
 		String reportFilename = options.getArgument("--report");
-		if (!reportFilename.equals("false")) {
+		if (!"false".equals(reportFilename)) {
 			try (PrintWriter writer = new PrintWriter(Files.newBufferedWriter(Paths.get(reportFilename)))) {
 				writer.println("Filename,# Tile,DrawHelper Tested,Test Case,Repetitions,Time (ns)");
 				for (Map.Entry<Triplet<String, String, String>, LongAccumulator> entry :

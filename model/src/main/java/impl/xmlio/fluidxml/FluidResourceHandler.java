@@ -74,8 +74,8 @@ import common.map.HasExtent;
 		// such children are detected, instead of aborting.
 		for (XMLEvent event : stream) {
 			if (event instanceof StartElement && isSPStartElement((StartElement) event)) {
-				if (((StartElement) event).getName().getLocalPart().equalsIgnoreCase("resource") ||
-						((StartElement) event).getName().getLocalPart().equalsIgnoreCase("implement")) {
+				if ("resource".equalsIgnoreCase(((StartElement) event).getName().getLocalPart()) ||
+						"implement".equalsIgnoreCase(((StartElement) event).getName().getLocalPart())) {
 					warner.handle(new UnwantedChildException(element.getName(),
 						(StartElement) event));
 				} else {
