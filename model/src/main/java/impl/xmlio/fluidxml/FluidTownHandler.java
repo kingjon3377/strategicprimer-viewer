@@ -323,7 +323,7 @@ import java.util.stream.Collectors;
 		writeTag(ostream, "population", indent, false);
 		writeAttributes(ostream, Pair.with("size", obj.getPopulation()));
 		for (Map.Entry<String, Integer> entry : obj.getHighestSkillLevels().entrySet()
-				.stream().sorted((one, two) -> one.getKey().compareTo(two.getKey()))
+				.stream().sorted(Map.Entry.comparingByKey())
 				.collect(Collectors.toList())) {
 			writeTag(ostream, "expertise", indent + 1, true);
 			writeAttributes(ostream, Pair.with("skill", entry.getKey()),

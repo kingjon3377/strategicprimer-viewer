@@ -1,5 +1,6 @@
 package drivers.generators;
 
+import java.util.Comparator;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
@@ -469,7 +470,7 @@ import common.map.fixtures.towns.Village;
 					.filter(v -> v.getOwner().equals(unit.getOwner()))
 					.map(v -> Pair.with(l, v)))
 				.map(p -> travelDistance.apply(p.getValue0()).addAt2(p.getValue1()))
-				.sorted((a, b) -> Integer.compare(a.getValue0(), b.getValue0()))
+				.sorted(Comparator.comparingInt(Triplet::getValue0))
 				.collect(Collectors.toList());
 		int mpPerDay = Optional.ofNullable(cli.inputNumber("MP per day for village volunteers:"))
 			.orElse(-1);
