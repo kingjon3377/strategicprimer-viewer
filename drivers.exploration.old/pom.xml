@@ -10,7 +10,6 @@
         <version>0.5-SNAPSHOT</version>
     </parent>
 
-    <groupId>com.github.strategic-primer</groupId>
     <artifactId>drivers.exploration.old</artifactId>
     <version>0.5-SNAPSHOT</version>
 
