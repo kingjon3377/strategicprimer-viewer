@@ -199,7 +199,7 @@ public class FixtureFilterTableModel extends AbstractTableModel
 			FixtureMatcher val = matchers.remove(fromIndex);
 			matchers.add(toIndex, val);
 			fireTableRowsDeleted(fromIndex, fromIndex);
-			fireTableRowsInserted(toIndex, toIndex);
+			fireTableRowsInserted(toIndex, actual);
 		}
 	}
 
