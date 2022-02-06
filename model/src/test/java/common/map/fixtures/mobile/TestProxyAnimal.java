@@ -2,6 +2,8 @@ package common.map.fixtures.mobile;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import org.eclipse.jdt.annotation.Nullable;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -37,6 +39,7 @@ public class TestProxyAnimal {
 	 * @by Jonathan Lovelace (adapting to Arguments of ints)
 	 */
 	private static class PairCollater implements Function<Integer, Stream<Arguments>> {
+		@Nullable
 		Integer prev;
 
 		@Override
