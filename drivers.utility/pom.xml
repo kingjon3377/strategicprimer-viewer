@@ -45,7 +45,6 @@
           <artifactId>drivers.exploration.common</artifactId>
           <version>${project.version}</version>
         </dependency>
-	<!-- TODO: Depends on Pumpernickel -->
 	<dependency>
 	  <groupId>com.massisframework</groupId>
 	  <artifactId>orange-extensions</artifactId>
