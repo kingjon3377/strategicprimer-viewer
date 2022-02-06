@@ -38,7 +38,7 @@ import org.jetbrains.annotations.Nullable;
 	protected final IDRegistrar idf;
 	protected final String verb;
 
-	public HuntGeneralApplet(final String verb, final ITurnRunningModel model, final ICLIHelper cli, final IDRegistrar idf) {
+	protected HuntGeneralApplet(final String verb, final ITurnRunningModel model, final ICLIHelper cli, final IDRegistrar idf) {
 		super(model, cli, idf);
 		huntingModel = new HuntingModel(model.getMap());
 		resourceAddingHelper = new ResourceAddingCLIHelper(cli, idf);

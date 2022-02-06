@@ -27,7 +27,7 @@ import org.jetbrains.annotations.Nullable;
 
 // TODO: Most of these 'default' functions should probably go into a 'TurnRunningModel' interface
 public abstract class AbstractTurnApplet implements TurnApplet {
-	public AbstractTurnApplet(final ITurnRunningModel model, final ICLIHelper cli, final IDRegistrar idf) {
+	protected AbstractTurnApplet(final ITurnRunningModel model, final ICLIHelper cli, final IDRegistrar idf) {
 		this.model = model;
 		this.cli = cli;
 		this.idf = idf;

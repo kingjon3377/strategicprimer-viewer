@@ -18,13 +18,13 @@ public abstract class SPFormatException extends Exception {
 	 * @param column The column of the XML file where the mistake begins.
 	 */
 	// TODO: Take Location instead of row and column number, now we don't have to worry about possible JS interop anymore
-	public SPFormatException(final String errorMessage, final int line, final int column) {
+	protected SPFormatException(final String errorMessage, final int line, final int column) {
 		super(String.format("Incorrect SP XML at line %d, column %d: %s", line, column, errorMessage));
 		this.line = line;
 		this.column = column;
 	}
 
-	public SPFormatException(final String errorMessage, final int line, final int column, final Throwable errorCause) {
+	protected SPFormatException(final String errorMessage, final int line, final int column, final Throwable errorCause) {
 		super(String.format("Incorrect SP XML at line %d, column %d: %s", line, column, errorMessage), errorCause);
 		this.line = line;
 		this.column = column;

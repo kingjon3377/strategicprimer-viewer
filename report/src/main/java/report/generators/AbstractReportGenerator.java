@@ -50,7 +50,7 @@ public abstract class AbstractReportGenerator<Type extends IFixture> implements 
 	 * calculations. Usually the location of the headquarters of the player
 	 * for whom the report is being prepared.
 	 */
-	public AbstractReportGenerator(final Comparator<Pair<Point, IFixture>> pairComparator,
+	protected AbstractReportGenerator(final Comparator<Pair<Point, IFixture>> pairComparator,
 	                               @Nullable final MapDimensions mapDimensions, @Nullable final Point referencePoint) {
 		this.pairComparator = pairComparator;
 		if (referencePoint == null) {
