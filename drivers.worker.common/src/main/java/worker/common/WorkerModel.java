@@ -547,7 +547,7 @@ public class WorkerModel extends SimpleMultiMapModel implements IWorkerModel {
 				UnitMember matching =
 					getUnitsImpl(map.streamAllFixtures()
 							.collect(Collectors.toList()), getCurrentPlayer())
-						.stream().flatMap(u -> u.stream())
+						.stream().flatMap(FixtureIterable::stream)
 						.filter(HasMutableName.class::isInstance)
 						.filter(m -> m.getId() == ((UnitMember) item).getId())
 						.filter(m -> ((HasMutableName) m).getName()
@@ -595,7 +595,7 @@ public class WorkerModel extends SimpleMultiMapModel implements IWorkerModel {
 			for (IMutableMapNG map : getRestrictedAllMaps()) {
 				HasMutableKind matching = getUnitsImpl(map.streamAllFixtures()
 							.collect(Collectors.toList()), getCurrentPlayer())
-					.stream().flatMap(u -> u.stream())
+					.stream().flatMap(FixtureIterable::stream)
 					.filter(m -> m.getId() == ((UnitMember) item).getId())
 					.filter(HasMutableKind.class::isInstance)
 					.map(HasMutableKind.class::cast)
@@ -703,7 +703,7 @@ public class WorkerModel extends SimpleMultiMapModel implements IWorkerModel {
 		for (IMutableMapNG map : getRestrictedAllMaps()) {
 			IMutableWorker matching = getUnitsImpl(map.streamAllFixtures()
 					.collect(Collectors.toList()), getCurrentPlayer()).stream()
-				.flatMap(u -> u.stream()).filter(IMutableWorker.class::isInstance)
+				.flatMap(FixtureIterable::stream).filter(IMutableWorker.class::isInstance)
 				.map(IMutableWorker.class::cast)
 				.filter(w -> w.getRace().equals(worker.getRace()))
 				.filter(w -> w.getName().equals(worker.getName()))
@@ -738,7 +738,7 @@ public class WorkerModel extends SimpleMultiMapModel implements IWorkerModel {
 		for (IMutableMapNG map : getRestrictedAllMaps()) {
 			IMutableWorker matching = getUnitsImpl(map.streamAllFixtures()
 					.collect(Collectors.toList()), getCurrentPlayer()).stream()
-				.flatMap(u -> u.stream()).filter(IMutableWorker.class::isInstance)
+				.flatMap(FixtureIterable::stream).filter(IMutableWorker.class::isInstance)
 				.map(IMutableWorker.class::cast)
 				.filter(w -> w.getRace().equals(worker.getRace()))
 				.filter(w -> w.getName().equals(worker.getName()))
@@ -791,7 +791,7 @@ public class WorkerModel extends SimpleMultiMapModel implements IWorkerModel {
 		for (IMutableMapNG map : getRestrictedAllMaps()) {
 			IMutableWorker matchingWorker = getUnitsImpl(map.streamAllFixtures()
 					.collect(Collectors.toList()), getCurrentPlayer()).stream()
-				.flatMap(u -> u.stream())
+				.flatMap(FixtureIterable::stream)
 				.filter(IMutableWorker.class::isInstance)
 				.map(IMutableWorker.class::cast)
 				.filter(w -> w.getRace().equals(worker.getRace()))

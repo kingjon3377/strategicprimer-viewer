@@ -335,7 +335,7 @@ public class HuntingModel {
 	                                                         final Function<Point, Collection<TileFixture>> chosenMap) {
 		return new ResultStream<>(StreamSupport.stream(
 					new SurroundingPointIterable(point, dimensions).spliterator(), true)
-				.map(chooseFromMapImpl(chosenMap)).flatMap(c -> c.stream())
+				.map(chooseFromMapImpl(chosenMap)).flatMap(Collection::stream)
 				.collect(Collectors.toList()), 0.5,
 			Pair.with(point, NothingFound.INSTANCE), p -> dcIfFound(p.getValue1()));
 	}

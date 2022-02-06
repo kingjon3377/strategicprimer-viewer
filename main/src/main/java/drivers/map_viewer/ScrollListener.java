@@ -50,14 +50,14 @@ import common.map.fixtures.mobile.IUnit;
 			Math.min(mapDimensions.getColumns(), visibleDimensions.getWidth()), 0,
 			mapDimensions.getColumns(), false);
 		horizontal.setInputVerifier(
-			ScrollInputVerifier.horizontal(() -> mapModel.getMapDimensions()));
+			ScrollInputVerifier.horizontal(mapModel::getMapDimensions));
 		verticalBarModel = vertical.getModel();
 		verticalBarModel.setRangeProperties(constrainToRange(cursor.getRow(), 0,
 				mapDimensions.getRows() - 1),
 			Math.min(mapDimensions.getRows(), visibleDimensions.getHeight()), 0,
 			mapDimensions.getRows(), false);
 		vertical.setInputVerifier(ScrollInputVerifier.vertical(
-			() -> mapModel.getMapDimensions()));
+				mapModel::getMapDimensions));
 
 		ScrollAdjustmentListener adjustmentListener = new ScrollAdjustmentListener(model);
 

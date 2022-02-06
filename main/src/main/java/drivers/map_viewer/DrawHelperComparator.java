@@ -276,7 +276,7 @@ public class DrawHelperComparator implements UtilityDriver {
 					String test = entry.getKey().getValue2();
 					LongAccumulator total = entry.getValue();
 					writer.println(String.join(",", file,
-						Optional.ofNullable(mapSizes.get(file)).map(x -> x.toString()).orElse(""),
+						Optional.ofNullable(mapSizes.get(file)).map(Object::toString).orElse(""),
 						helper, test, Integer.toString(REPS), total.getSum().toString()));
 				}
 			} catch (final IOException except) {

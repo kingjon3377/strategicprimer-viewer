@@ -1033,7 +1033,7 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 				Optional<HasMutableName> matching = map.streamAllFixtures()
 						.flatMap(ExplorationModel::unflattenNonFortresses)
 						.filter(IUnit.class::isInstance).map(IUnit.class::cast)
-						.filter(this::matchingPlayer).flatMap(u -> u.stream())
+						.filter(this::matchingPlayer).flatMap(FixtureIterable::stream)
 						.filter(HasMutableName.class::isInstance)
 						.map(HasMutableName.class::cast)
 						.filter(u -> u.getName().equals(
@@ -1085,7 +1085,7 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 						.flatMap(ExplorationModel::unflattenNonFortresses)
 						.filter(IUnit.class::isInstance).map(IUnit.class::cast)
 						.filter(this::matchingPlayer)
-						.flatMap(u -> u.stream())
+						.flatMap(FixtureIterable::stream)
 						.filter(HasMutableKind.class::isInstance)
 						.map(HasMutableKind.class::cast)
 						.filter(m -> m.getKind().equals(item.getKind()))

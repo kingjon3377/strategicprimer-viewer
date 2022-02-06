@@ -126,7 +126,7 @@ public interface IUnit extends MobileFixture, HasImage, HasKind, HasName,
 					return false;
 				}
 				Map<Integer, UnitMember> ours =
-					stream().collect(Collectors.toMap(m -> m.getId(), m -> m));
+					stream().collect(Collectors.toMap(IFixture::getId, m -> m));
 				boolean retval = true;
 				Consumer<String> localReport =
 					s -> report.accept(String.format("In unit of %s (%s) (ID #%d):\t%s",

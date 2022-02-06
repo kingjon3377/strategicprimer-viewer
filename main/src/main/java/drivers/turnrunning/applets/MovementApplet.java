@@ -73,7 +73,7 @@ import static lovelace.util.Decimalize.decimalize;
 					model.transferResource(chosen, unit, amount, idf::createID);
 					resources.clear();
 					fortress.stream().filter(IResourcePile.class::isInstance).map(IResourcePile.class::cast)
-						.forEach(r -> resources.add(r));
+						.forEach(resources::add);
 				}
 			}
 		}

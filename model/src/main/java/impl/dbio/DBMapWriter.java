@@ -2,6 +2,7 @@ package impl.dbio;
 
 import buckelieg.jdbc.fn.DB;
 
+import common.map.TileType;
 import java.util.Collections;
 import java.util.Collection;
 import java.util.Arrays;
@@ -99,7 +100,7 @@ final class DBMapWriter extends AbstractDatabaseWriter<IMutableMapNG, IMapNG> {
 			Collection<River> rivers = obj.getRivers(location);
 			db.update(INSERT_TERRAIN, location.getRow(), location.getColumn(),
 				Optional.ofNullable(obj.getBaseTerrain(location))
-					.map(t -> t.getXml()).orElse(""),
+					.map(TileType::getXml).orElse(""),
 				obj.isMountainous(location), rivers.contains(River.North),
 				rivers.contains(River.South), rivers.contains(River.East),
 				rivers.contains(River.West), rivers.contains(River.Lake)).execute();

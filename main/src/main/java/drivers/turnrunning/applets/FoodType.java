@@ -140,7 +140,7 @@ import org.jetbrains.annotations.Nullable;
 				return false;
 			}
 		}
-		if (Stream.of(keepsFor, keepsForIfCool, keepsForRefrigerated, keepsForFrozen).allMatch(x -> x == null)) {
+		if (Stream.of(keepsFor, keepsForIfCool, keepsForRefrigerated, keepsForFrozen).allMatch(Objects::isNull)) {
 			return cli.inputBooleanInSeries("Has this spoiled?", pile.getKind() + string + "other");
 		} else {
 			return true;

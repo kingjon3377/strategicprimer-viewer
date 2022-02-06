@@ -1569,7 +1569,7 @@ public final class TestXMLIO {
 	}
 
 	private static Stream<Arguments> testQuoting() {
-		return SINGLETON_RANDOM.ints().boxed().limit(3).map(n -> Arguments.of(n));
+		return SINGLETON_RANDOM.ints().boxed().limit(3).map(Arguments::of);
 	}
 
 	/**
@@ -1672,7 +1672,7 @@ public final class TestXMLIO {
 	}
 
 	private static Stream<Arguments> testAnimalTracksSerialization() {
-		return treeTypes.stream().collect(toShuffledStream()).limit(2).map(t -> Arguments.of(t));
+		return treeTypes.stream().collect(toShuffledStream()).limit(2).map(Arguments::of);
 	}
 
 	/**
@@ -1944,7 +1944,7 @@ public final class TestXMLIO {
 	}
 
 	private static Stream<Arguments> testGroundSerialization() {
-		return SINGLETON_RANDOM.ints().boxed().limit(3).map(a -> Arguments.of(a));
+		return SINGLETON_RANDOM.ints().boxed().limit(3).map(Arguments::of);
 	}
 
 	/**
@@ -2165,7 +2165,7 @@ public final class TestXMLIO {
 	}
 
 	private static Stream<Arguments> testElsewhere() {
-		return SINGLETON_RANDOM.ints().boxed().limit(2).map(a -> Arguments.of(a));
+		return SINGLETON_RANDOM.ints().boxed().limit(2).map(Arguments::of);
 	}
 
 	/**

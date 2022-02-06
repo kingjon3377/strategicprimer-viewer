@@ -182,7 +182,7 @@ import java.util.stream.Collectors;
 			.mapToInt(Integer::intValue).min().orElse(0);
 		data = Collections.unmodifiableMap(unnormalized.entrySet().stream().collect(
 			Collectors.toMap(e -> Pair.with(e.getKey().getValue0(),
-				e.getKey().getValue1() - minimumColumn), e -> e.getValue())));
+				e.getKey().getValue1() - minimumColumn), Map.Entry::getValue)));
 		maximumRow = data.keySet().stream().map(Pair::getValue0).mapToInt(Integer::intValue)
 			.max().orElse(0);
 		maximumColumn = data.keySet().stream().map(Pair::getValue1).mapToInt(Integer::intValue)

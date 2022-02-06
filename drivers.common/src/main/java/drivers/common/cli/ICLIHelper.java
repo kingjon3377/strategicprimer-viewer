@@ -110,7 +110,7 @@ public interface ICLIHelper {
 	 * @param prompt The prompt to prompt the user with.
 	 */
 	default @Nullable Boolean inputBoolean(final String prompt) {
-		return inputBoolean(prompt, s -> defaultQuitHandler(s));
+		return inputBoolean(prompt, this::defaultQuitHandler);
 	}
 
 	/**
@@ -148,7 +148,7 @@ public interface ICLIHelper {
 	 * an input should short-circuit the loop.
 	 */
 	default @Nullable Boolean inputBooleanInSeries(final String prompt, final String key) {
-		return inputBooleanInSeries(prompt, key, s -> defaultQuitHandler(s));
+		return inputBooleanInSeries(prompt, key, this::defaultQuitHandler);
 	}
 
 	/**

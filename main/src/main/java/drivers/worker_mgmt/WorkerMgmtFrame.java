@@ -79,7 +79,7 @@ import drivers.worker_mgmt.orderspanel.OrdersPanel;
 		treeModel = new WorkerTreeModelAlt(model); // TODO: Try with WorkerTreeModel again?
 
 		tree = new WorkerTree(treeModel, model.getPlayers(),
-			() -> mainMap.getCurrentTurn(), true, idf);
+				mainMap::getCurrentTurn, true, idf);
 		newUnitFrame.addNewUnitListener(treeModel);
 
 		int keyMask = Platform.SHORTCUT_MASK;
@@ -90,7 +90,7 @@ import drivers.worker_mgmt.orderspanel.OrdersPanel;
 		playerLabel = new FormattedLabel(String.format("Units belonging to %%s: (%sU)",
 			Platform.SHORTCUT_DESCRIPTION), model.getCurrentPlayer().getName());
 		ordersPanelObj = new OrdersPanel("Orders", mainMap.getCurrentTurn(),
-			model.getCurrentPlayer(), model::getUnits, (unit, turn) -> unit.getLatestOrders(turn),
+			model.getCurrentPlayer(), model::getUnits, IUnit::getLatestOrders,
 			model::setUnitOrders, WorkerMgmtFrame::isCurrent); // TODO: inline isCurrent?
 		tree.addTreeSelectionListener(ordersPanelObj);
 
@@ -103,7 +103,7 @@ import drivers.worker_mgmt.orderspanel.OrdersPanel;
 			resultsSupplier = null;
 		}
 		OrdersPanel resultsPanel = new OrdersPanel("Results", mainMap.getCurrentTurn(),
-			model.getCurrentPlayer(), model::getUnits, (unit, turn) -> unit.getResults(turn),
+			model.getCurrentPlayer(), model::getUnits, IUnit::getResults,
 			resultsSupplier, trueSupplier);
 		tree.addTreeSelectionListener(resultsPanel);
 

@@ -1,5 +1,6 @@
 package utility;
 
+import common.map.fixtures.FixtureIterable;
 import java.util.Objects;
 import org.javatuples.Pair;
 import java.util.Comparator;
@@ -295,12 +296,12 @@ import common.map.fixtures.mobile.AnimalTracks;
 
 		MappedCounter<IWorker, String, Integer> workers = simpleCounter(IWorker::getRace);
 		allFixtures.stream().filter(IUnit.class::isInstance).map(IUnit.class::cast)
-			.flatMap(u -> u.stream())
+			.flatMap(FixtureIterable::stream)
 			.filter(IWorker.class::isInstance).map(IWorker.class::cast).forEach(workers::add);
 		allFixtures.stream().filter(IFortress.class::isInstance).map(IFortress.class::cast)
-			.flatMap(f -> f.stream())
+			.flatMap(FixtureIterable::stream)
 			.filter(IUnit.class::isInstance).map(IUnit.class::cast)
-			.flatMap(u -> u.stream())
+			.flatMap(FixtureIterable::stream)
 			.filter(IWorker.class::isInstance).map(IWorker.class::cast).forEach(workers::add);
 		printSummary(workers, "Worker Races:");
 
@@ -314,12 +315,12 @@ import common.map.fixtures.mobile.AnimalTracks;
 		allFixtures.stream().filter(Animal.class::isInstance).map(Animal.class::cast)
 			.filter(a -> !a.isTalking()).forEach(animals::add);
 		allFixtures.stream().filter(IUnit.class::isInstance).map(IUnit.class::cast)
-			.flatMap(u -> u.stream())
+			.flatMap(FixtureIterable::stream)
 			.filter(Animal.class::isInstance).map(Animal.class::cast).forEach(animals::add);
 		allFixtures.stream().filter(IFortress.class::isInstance).map(IFortress.class::cast)
-			.flatMap(f -> f.stream())
+			.flatMap(FixtureIterable::stream)
 			.filter(IUnit.class::isInstance).map(IUnit.class::cast)
-			.flatMap(u -> u.stream())
+			.flatMap(FixtureIterable::stream)
 			.filter(Animal.class::isInstance).map(Animal.class::cast).forEach(animals::add);
 		animals.addDirectly("various talking animals", (int) allFixtures.stream()
 			.filter(Animal.class::isInstance).map(Animal.class::cast).filter(Animal::isTalking)

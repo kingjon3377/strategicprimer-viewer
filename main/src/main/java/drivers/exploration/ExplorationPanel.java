@@ -1,6 +1,7 @@
 package drivers.exploration;
 
 import java.util.Comparator;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -201,7 +202,7 @@ import worker.common.IFixtureEditHelper;
 			}
 			createHotKey(dtb, direction.toString(), ecl, JComponent.WHEN_IN_FOCUSED_WINDOW,
 				Stream.of(arrowKeys.get(direction), numKeys.get(direction))
-					.filter(k -> k != null).toArray(KeyStroke[]::new));
+					.filter(Objects::nonNull).toArray(KeyStroke[]::new));
 			dtb.addActionListener(ecl);
 
 			RandomDiscoverySelector ell = new RandomDiscoverySelector(driverModel,

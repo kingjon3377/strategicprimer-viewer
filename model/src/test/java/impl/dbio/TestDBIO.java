@@ -181,7 +181,7 @@ public final class TestDBIO {
 	}
 
 	private static Stream<Arguments> fewIntegers() {
-		return SINGLETON_RANDOM.ints().boxed().limit(3).map(a -> Arguments.of(a));
+		return SINGLETON_RANDOM.ints().boxed().limit(3).map(Arguments::of);
 	}
 
 	@ParameterizedTest
