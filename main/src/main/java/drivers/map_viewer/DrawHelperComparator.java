@@ -248,7 +248,7 @@ public class DrawHelperComparator implements UtilityDriver {
 		Map<String, Integer> mapSizes = new HashMap<>();
 		for (String arg : args) {
 			Path path = Paths.get(arg);
-			IMapNG map = null;
+			IMapNG map;
 			try {
 				map = MapIOHelper.readMap(path, Warning.IGNORE);
 			} catch (final SPFormatException except) {

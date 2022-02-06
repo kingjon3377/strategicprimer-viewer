@@ -52,7 +52,7 @@ public final class IDFactory implements IDRegistrar {
 	 */
 	@Override
 	public int createID() {
-		int retval = -1;
+		int retval;
 		synchronized (usedIDs) {
 			assert (usedIDs.getCardinality() < Integer.MAX_VALUE - 2);
 			retval = register((int) usedIDs.nextAbsentValue(0));

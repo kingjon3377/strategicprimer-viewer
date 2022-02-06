@@ -131,13 +131,13 @@ import org.jetbrains.annotations.Nullable;
 		}
 		LOGGER.fine("--size parameter is " + size);
 		for (String arg : args) {
-			ResourceInputStream res = null;
+			ResourceInputStream res;
 			try {
 				res = new ResourceInputStream(arg, ImporterDriver.class);
 			} catch (final FileNotFoundException except) {
 				throw new DriverFailedException(except, "Image file not found");
 			}
-			BufferedImage image = null;
+			BufferedImage image;
 			try {
 				image = ImageIO.read(res);
 			} catch (final IOException except) {

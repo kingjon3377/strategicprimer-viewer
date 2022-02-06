@@ -102,7 +102,7 @@ public class WindowMenu extends JMenu {
 		}
 	};
 
-	private JFrame myFrame = null;
+	private JFrame myFrame;
 
 	private final ChangeListener changeListener = e -> SwingUtilities.invokeLater(updateRunnable);
 
