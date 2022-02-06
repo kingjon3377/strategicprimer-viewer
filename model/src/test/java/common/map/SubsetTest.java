@@ -40,7 +40,7 @@ import java.util.function.Consumer;
  * A collection of tests of the subset-checking features.
  */
 public final class SubsetTest {
-	private final Logger LOGGER = Logger.getLogger(SubsetTest.class.getName());
+	private static final Logger LOGGER = Logger.getLogger(SubsetTest.class.getName());
 	// FIXME: Drop the ostream parameters from these assertion methods now we don't need them (and the interface below)
 	/**
 	 * Assert that {@link two} is a "strict subset," by our loose definition, of {@link one}.

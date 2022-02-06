@@ -36,7 +36,7 @@ public class CropTabularReportGenerator implements ITableGenerator</*Forest|Shru
 	/**
 	 * A logger.
 	 */
-	private static Logger LOGGER = Logger.getLogger(CropTabularReportGenerator.class.getName());
+	private static final Logger LOGGER = Logger.getLogger(CropTabularReportGenerator.class.getName());
 
 	private static final NumberFormat NUM_FORMAT = NumberFormat.getInstance();
 

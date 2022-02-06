@@ -7,7 +7,7 @@ import java.util.logging.Logger;
 
 public final class PathfinderFactory {
 	private PathfinderFactory() {}
-	private static Logger LOGGER = Logger.getLogger(PathfinderFactory.class.getName());
+	private static final Logger LOGGER = Logger.getLogger(PathfinderFactory.class.getName());
 	private static final Map<IMapNG, Pathfinder> pathfinderCache = new HashMap<>();
 
 	/**
