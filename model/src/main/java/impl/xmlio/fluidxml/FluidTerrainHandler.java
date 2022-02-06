@@ -1,5 +1,6 @@
 package impl.xmlio.fluidxml;
 
+import java.util.Collection;
 import org.javatuples.Pair;
 
 import javax.xml.namespace.QName;
@@ -107,10 +108,9 @@ import java.util.stream.Collectors;
 		}
 	}
 
-	public static void writeRivers(final XMLStreamWriter ostream, final Iterable<River> obj, final int indent)
+	public static void writeRivers(final XMLStreamWriter ostream, final Collection<River> obj, final int indent)
 			throws MalformedXMLException {
-		for (River river : StreamSupport.stream(obj.spliterator(), false).sorted()
-				.collect(Collectors.toList())) {
+		for (River river : obj.stream().sorted().collect(Collectors.toList())) {
 			writeRiver(ostream, river, indent);
 		}
 	}

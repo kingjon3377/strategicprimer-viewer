@@ -1,5 +1,6 @@
 package impl.xmlio.yaxml;
 
+import java.util.Collection;
 import java.util.logging.Logger;
 import java.util.logging.Level;
 
@@ -127,14 +128,11 @@ import java.util.Collections;
 	 *
 	 * TODO: Test this
 	 *
-	 * TODO: Take Collection, not just Iterable
-	 *
 	 * @throws IOException on I/O error
 	 */
-	private void writeAllRivers(final ThrowingConsumer<String, IOException> ostream, final Iterable<River> rivers, final int indent)
+	private void writeAllRivers(final ThrowingConsumer<String, IOException> ostream, final Collection<River> rivers, final int indent)
 			throws IOException {
-		for (River river : StreamSupport.stream(rivers.spliterator(), false).sorted()
-				.collect(Collectors.toList())) {
+		for (River river : rivers.stream().sorted().collect(Collectors.toList())) {
 			mapReader.writeRiver(ostream, river, indent);
 		}
 	}
