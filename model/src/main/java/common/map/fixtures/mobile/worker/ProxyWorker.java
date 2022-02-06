@@ -284,7 +284,7 @@ public class ProxyWorker implements WorkerProxy {
 	}
 
 	@Override
-	public Iterable<Integer> getNotesPlayers() {
+	public Collection<Integer> getNotesPlayers() {
 		return workers.stream().flatMap(w -> StreamSupport.stream(w.getNotesPlayers().spliterator(),
 			true)).collect(Collectors.toSet());
 	}
