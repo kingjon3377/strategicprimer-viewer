@@ -75,7 +75,7 @@ public class TypesafeXMLEventReader implements Iterator<XMLEvent>, Closeable {
 	 * @throws MalformedXMLException on malformed XML
 	 */
 	@Override
-	public XMLEvent next() {
+	public XMLEvent next() throws NoSuchElementException {
 		if (closed) {
 			throw new NoSuchElementException();
 		} else {
