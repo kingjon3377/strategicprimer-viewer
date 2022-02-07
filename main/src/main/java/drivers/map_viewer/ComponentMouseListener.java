@@ -56,7 +56,7 @@ import java.util.function.Consumer;
 		};
 		List<TileFixture> stream = map.getFixtures(point).stream().filter(zof).sorted(comparator)
 			.collect(Collectors.toList());
-		if (stream.isEmpty()) {
+		if (!stream.isEmpty()) {
 			c.accept(stream.get(0));
 		}
 		stream.stream().filter(TerrainFixture.class::isInstance).forEach(c);
