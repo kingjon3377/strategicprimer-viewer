@@ -23,5 +23,5 @@ public interface GUIDriverFactory extends ModelDriverFactory {
 	/**
 	 * Ask the user to choose a file or files. (Or do something equivalent to produce a filename.)
 	 */
-	Iterable<Path> askUserForFiles();
+	Iterable<Path> askUserForFiles() throws DriverFailedException;
 }

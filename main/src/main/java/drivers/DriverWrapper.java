@@ -85,8 +85,14 @@ import java.util.stream.StreamSupport;
 			while (!enoughArguments(files.size()) &&
 					!tooManyArguments(files.size() + 1)) {
 				// TODO: change signature of askUserForFiles() to Collection or List
-				List<Path> requested = StreamSupport.stream(((GUIDriverFactory) factory).askUserForFiles().spliterator(), false)
-					.collect(Collectors.toList());
+				List<Path> requested;
+				try {
+					requested = StreamSupport.stream(((GUIDriverFactory) factory).askUserForFiles().spliterator(), false)
+						.collect(Collectors.toList());
+				} catch (DriverFailedException except) {
+					LOGGER.log(Level.WARNING, "User presumably canceled", except);
+					throw new IncorrectUsageException(factory.getUsage());
+				}
 				if (requested.isEmpty() || tooManyArguments(files.size() + requested.size())) {
 					throw new IncorrectUsageException(factory.getUsage());
 				} else {

@@ -1,5 +1,6 @@
 package drivers.resourceadding;
 
+import drivers.common.DriverFailedException;
 import java.nio.file.Path;
 
 import drivers.common.cli.ICLIHelper;
@@ -45,12 +46,11 @@ public class ResourceAddingGUIFactory implements GUIDriverFactory {
 	 * Ask the user to choose a file or files.
 	 */
 	@Override
-	public Iterable<Path> askUserForFiles() { // TODO: Make interface declare DriverFailedException instead of just logging it
+	public Iterable<Path> askUserForFiles() throws DriverFailedException { // TODO: Make interface declare ChoiceInterruptedException instead of DriverFailedException?
 		try {
 			return SPFileChooser.open((Path) null).getFiles();
 		} catch (final FileChooser.ChoiceInterruptedException except) {
-			LOGGER.log(Level.WARNING, "Choice interrupted or user didn't choose", except);
-			return Collections.emptyList();
+			throw new DriverFailedException(except, "Choice interrupted or user didn't choose");
 		}
 	}
 

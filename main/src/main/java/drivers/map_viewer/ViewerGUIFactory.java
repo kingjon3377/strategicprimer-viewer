@@ -1,5 +1,6 @@
 package drivers.map_viewer;
 
+import drivers.common.DriverFailedException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -47,13 +48,11 @@ public class ViewerGUIFactory implements GUIDriverFactory {
 	 * Ask the user to choose a file or files.
 	 */
 	@Override
-	public Iterable<Path> askUserForFiles() {
+	public Iterable<Path> askUserForFiles() throws DriverFailedException {
 		try {
 			return SPFileChooser.open((Path) null).getFiles();
 		} catch (final FileChooser.ChoiceInterruptedException except) {
-			// TODO: Add "throws DriverFailedException" to interface instead of just logging?
-			LOGGER.log(Level.SEVERE, "Choice interrupted or user didn't choose", except);
-			return Collections.emptyList();
+			throw new DriverFailedException(except, "Choice interrupted or user didn't choose");
 		}
 	}
 
