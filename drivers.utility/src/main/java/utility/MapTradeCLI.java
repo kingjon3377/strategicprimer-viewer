@@ -184,14 +184,9 @@ public class MapTradeCLI implements CLIDriver {
 			return;
 		}
 		matchers.forEach(this::askAbout);
-		boolean zeroFixtures;
-		if (first.getCurrentPlayer().isIndependent() || second.getCurrentPlayer().isIndependent() ||
-				first.getCurrentPlayer().getPlayerId() !=
-					second.getCurrentPlayer().getPlayerId()) { // TODO: inline into declaration
-			zeroFixtures = true;
-		} else {
-			zeroFixtures = false;
-		}
+		final boolean zeroFixtures =
+				first.getCurrentPlayer().isIndependent() || second.getCurrentPlayer().isIndependent() ||
+				               first.getCurrentPlayer().getPlayerId() != second.getCurrentPlayer().getPlayerId();
 		final long totalCount = first.streamLocations()
 			.filter(l -> !first.isLocationEmpty(l)).count();
 		int count = 1;
