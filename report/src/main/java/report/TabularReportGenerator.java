@@ -64,7 +64,7 @@ public final class TabularReportGenerator {
 	/**
 	 * A method to produce tabular reports based on a map for a player.
 	 *
-	 * TODO: Does the consumer really need to be ThrowingConsumer here either?
+	 * Unfortunately, 'source' needs to take ThrowingConsumer because console and file I/O can fail.
 	 */
 	public static void createTabularReports(final IMapNG map,
 	                                        final ThrowingFunction<String, ThrowingConsumer<String, IOException>, IOException> source,
