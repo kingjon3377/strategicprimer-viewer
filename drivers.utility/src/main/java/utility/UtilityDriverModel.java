@@ -1,5 +1,6 @@
 package utility;
 
+import java.util.logging.Logger;
 import org.jetbrains.annotations.Nullable;
 
 import common.map.TileType;
@@ -54,6 +55,8 @@ import exploration.common.SimpleMovementModel;
  * A driver model for the various utility drivers.
  */
 public class UtilityDriverModel extends SimpleMultiMapModel {
+	private static final Logger LOGGER = Logger.getLogger(UtilityDriverModel.class.getName());
+
 	private static <Desired, Provided> Consumer<Provided> ifApplicable(final Consumer<Desired> func,
 	                                                                   final Class<Desired> cls) {
 		return (item) -> {
@@ -178,7 +181,9 @@ public class UtilityDriverModel extends SimpleMultiMapModel {
 						ifApplicable(((IMutableFortress) fixture)::removeMember,
 							FortressMember.class),
 						setModFlag, handlers));
-				} // TODO: else log a warning about an unhandled case
+				} else {
+					LOGGER.warning("Unhandled fixture in coalesceImpl()");
+				}
 			} else if (fixture instanceof Animal) {
 				if (((Animal) fixture).isTalking()) {
 					continue;
