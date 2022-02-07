@@ -25,7 +25,7 @@ public interface IFortress extends HasImage, ITownFixture, HasName,
 	 *
 	 * TODO: Should perhaps be more granular
 	 */
-	@Override 
+	@Override
 	default String getDefaultImage() {
 		return "fortress.png";
 	}

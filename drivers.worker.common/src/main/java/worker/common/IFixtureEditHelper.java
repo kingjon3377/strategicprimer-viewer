@@ -71,7 +71,7 @@ public interface IFixtureEditHelper extends NewUnitListener, PlayerChangeListene
 	 * Add a unit member to the unit that contains the given member. If the
 	 * base is not in the tree, the model is likely to simply ignore the
 	 * call, but the behavior is undefined.
-	 * 
+	 *
 	 * @param base The member that is already in the tree.
 	 * @param sibling The member to add as its sibling.
 	 */
