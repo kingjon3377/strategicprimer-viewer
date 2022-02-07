@@ -54,8 +54,8 @@ public final class SimpleMovementModel {
 	/**
 	 * Whether land movement is possible on the given terrain.
 	 */
-	public static boolean landMovementPossible(final TileType terrain) {
-		return TileType.Ocean != terrain;
+	public static boolean landMovementPossible(@Nullable final TileType terrain) {
+		return terrain != null && TileType.Ocean != terrain;
 	}
 
 	/**
