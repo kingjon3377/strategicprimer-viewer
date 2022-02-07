@@ -125,12 +125,10 @@ import common.map.fixtures.mobile.AnimalTracks;
 		return new MappedCounter<>(keyExtractor, t -> 1, IntAccumulator::new, 0);
 	}
 
-	// TODO: Take Collection to avoid StreamSupport
-	private <Type> void countSimply(final Class<Type> cls, final Iterable<?> stream, final String title,
+	private <Type> void countSimply(final Class<Type> cls, final Collection<?> stream, final String title,
 	                                final Function<Type, String> extractor) {
 		MappedCounter<Type, String, Integer> counter = simpleCounter(extractor);
-		StreamSupport.stream(stream.spliterator(), false).filter(cls::isInstance)
-			.map(cls::cast).forEach(counter::add);
+		stream.stream().filter(cls::isInstance).map(cls::cast).forEach(counter::add);
 		printSummary(counter, title);
 	}
 
@@ -142,13 +140,12 @@ import common.map.fixtures.mobile.AnimalTracks;
 		return String.format("There are %s acres of forest, including:", total);
 	}
 
-	// TODO: take Collection for these
-	private static boolean hasLake(final Iterable<River> iter) {
-		return StreamSupport.stream(iter.spliterator(), true).anyMatch(River.Lake::equals);
+	private static boolean hasLake(final Collection<River> iter) {
+		return iter.contains(River.Lake);
 	}
 
-	private static boolean withNonLake(final Iterable<River> iter) {
-		return StreamSupport.stream(iter.spliterator(), true).anyMatch(r -> River.Lake != r);
+	private static boolean withNonLake(final Collection<River> iter) {
+		return iter.stream().anyMatch(r -> River.Lake != r);
 	}
 
 	private static String countOfKind(final Pair<String, ? extends Number> pair) {
