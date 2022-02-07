@@ -133,6 +133,7 @@ final class DBMapReader {
 				int column = (Integer) dbRow.get("column");
 				Direction direction = Direction.parse((String) dbRow.get("direction"));
 				int quality = (Integer) dbRow.get("quality");
+				assert direction != null;
 				retval.setRoadLevel(new Point(row, column), direction, quality);
 			});
 		LOGGER.fine("Finished reading terrain");

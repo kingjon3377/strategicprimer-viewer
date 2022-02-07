@@ -114,6 +114,7 @@ final class DBCommunityStatsHandler extends AbstractDatabaseWriter<CommunityStat
 			CommunityStats population = town.getPopulation();
 			String skill = (String) dbRow.get("skill");
 			int level = (Integer) dbRow.get("level");
+			assert population != null;
 			population.setSkillLevel(skill, level);
 		};
 	}
@@ -124,6 +125,7 @@ final class DBCommunityStatsHandler extends AbstractDatabaseWriter<CommunityStat
 			ITownFixture town = (ITownFixture) findById(map, townId, warner);
 			CommunityStats population = town.getPopulation();
 			int resource = (Integer) dbRow.get("resource");
+			assert population != null;
 			population.addWorkedField(resource);
 		};
 	}
@@ -151,6 +153,7 @@ final class DBCommunityStatsHandler extends AbstractDatabaseWriter<CommunityStat
 			if (created != null) {
 				pile.setCreated(created);
 			}
+			assert population != null;
 			population.getYearlyProduction().add(pile);
 		};
 	}
@@ -178,6 +181,7 @@ final class DBCommunityStatsHandler extends AbstractDatabaseWriter<CommunityStat
 			if (created != null) {
 				pile.setCreated(created);
 			}
+			assert population != null;
 			population.getYearlyConsumption().add(pile);
 		};
 	}

@@ -284,6 +284,7 @@ public class ExplorationCLIHelper implements MovementCostListener, SelectionChan
 					break;
 				}
 				Either<SimpleApplet, Boolean> choice = appletChooser.chooseApplet();
+				assert choice != null;
 				SimpleApplet applet = choice.fromLeft().orElse(null);
 				Boolean bool = choice.fromRight().orElse(null);
 				if (applet == null) {
