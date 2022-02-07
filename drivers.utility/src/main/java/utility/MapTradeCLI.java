@@ -1,5 +1,7 @@
 package utility;
 
+import drivers.common.DriverFailedException;
+import drivers.common.IncorrectUsageException;
 import java.util.logging.Logger;
 import java.util.Collections;
 import common.map.Point;
@@ -162,11 +164,10 @@ public class MapTradeCLI implements CLIDriver {
 	}
 
 	@Override
-	public void startDriver() {
+	public void startDriver() throws DriverFailedException {
 		IMapNG first = model.getMap();
 		if (!model.getSubordinateMaps().iterator().hasNext()) {
-			// TODO: Should be DriverFailedException, right?
-			throw new IllegalArgumentException("Must have at least one map to copy to");
+			throw new IncorrectUsageException(MapTradeFactory.USAGE);
 		}
 		IMapNG second = model.getSubordinateMaps().iterator().next();
 		Boolean copyPlayers = cli.inputBoolean("Copy players?");
