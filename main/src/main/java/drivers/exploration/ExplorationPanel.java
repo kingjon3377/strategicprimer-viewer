@@ -166,11 +166,10 @@ import worker.common.IFixtureEditHelper;
 		// about extra logic needed in the setter) to IExplorationModel
 		// (as IMap), to improve no-second-map to a-second-map
 		// transition
-		IMapNG secondMap = StreamSupport.stream(driverModel.getSubordinateMaps().spliterator(),
-			false).findFirst().orElseGet(driverModel::getMap);
+		IMapNG secondMap = driverModel.streamSubordinateMaps().findFirst().orElseGet(driverModel::getMap);
 
-		IDRegistrar idf = new IDFactoryFiller().createIDFactory(StreamSupport.stream(
-			driverModel.getAllMaps().spliterator(), false).toArray(IMapNG[]::new));
+		IDRegistrar idf = new IDFactoryFiller().createIDFactory(
+			driverModel.streamAllMaps().toArray(IMapNG[]::new));
 		huntingModel = new HuntingModel(driverModel.getMap());
 
 		LOGGER.finer("ExplorationPanel: huntingModel created");

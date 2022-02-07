@@ -28,8 +28,7 @@ import common.map.fixtures.Implement;
 		this.options = options;
 		this.model = model;
 		helper = new ResourceAddingCLIHelper(cli, new IDFactoryFiller()
-			.createIDFactory(StreamSupport.stream(model.getAllMaps().spliterator(),
-				false).toArray(IMapNG[]::new)));
+			.createIDFactory(model.streamAllMaps().toArray(IMapNG[]::new)));
 	}
 
 	private final ICLIHelper cli;

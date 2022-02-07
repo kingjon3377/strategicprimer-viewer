@@ -595,8 +595,7 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 		IUnit unit = localSelection.getValue1();
 		if (unit != null) {
 			Player owner = unit.getOwner();
-			List<Village> villages = StreamSupport.stream(getAllMaps().spliterator(), false)
-				.flatMap(m -> m.getFixtures(currentPoint).stream())
+			List<Village> villages = streamAllMaps().flatMap(m -> m.getFixtures(currentPoint).stream())
 				.filter(Village.class::isInstance)
 				.map(Village.class::cast)
 				.filter(v -> v.getOwner().isIndependent())

@@ -53,8 +53,7 @@ public class ExplorationCLIHelper implements MovementCostListener, SelectionChan
 		this.model = model;
 		this.cli = cli;
 		this.huntingModel = new HuntingModel(model.getMap());
-		pather = PathfinderFactory.pathfinder(model.getSubordinateMaps().iterator().hasNext() ?
-			model.getSubordinateMaps().iterator().next() : model.getMap());
+		pather = PathfinderFactory.pathfinder(model.streamSubordinateMaps().findFirst().orElseGet(model::getMap));
 		automationConfig = new ExplorationAutomationConfig(model.getMap()
 			.getCurrentPlayer());
 		appletChooser = new AppletChooser<>(this.cli,
@@ -353,8 +352,7 @@ public class ExplorationCLIHelper implements MovementCostListener, SelectionChan
 			}
 
 			if (!proposedPath.isEmpty() && automationConfig.stopAtPoint(cli,
-					model.getSubordinateMaps().iterator().hasNext() ?
-						model.getSubordinateMaps().iterator().next() : model.getMap(),
+					model.streamSubordinateMaps().findFirst().orElseGet(model::getMap),
 					destPoint)) {
 				proposedPath.clear();
 			}

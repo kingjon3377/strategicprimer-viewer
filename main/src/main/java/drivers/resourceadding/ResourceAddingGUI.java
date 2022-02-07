@@ -173,8 +173,7 @@ import java.io.FileNotFoundException;
 		public ResourceAddingFrame(final ActionListener menuHandler, final MultiMapGUIDriver outer) {
 			super("Resource Entry", outer, null, true);
 			this.menuHandler = menuHandler;
-			idf = new IDFactoryFiller().createIDFactory(
-				StreamSupport.stream(model.getAllMaps().spliterator(), false)
+			idf = new IDFactoryFiller().createIDFactory(model.streamAllMaps()
 					.toArray(IMapNG[]::new));
 			currentPlayer = new PlayerImpl(-1, "");
 			mainPanel = new BoxPanel(BoxAxis.PageAxis);

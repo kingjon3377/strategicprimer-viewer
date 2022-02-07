@@ -101,9 +101,8 @@ public class IOHandler implements ActionListener {
 		}
 
 		if (md instanceof MultiMapGUIDriver &&
-				StreamSupport.stream(((MultiMapGUIDriver) md).getModel()
-					.getSubordinateMaps().spliterator(), false)
-				.anyMatch(IMapNG::isModified)) {
+				    ((MultiMapGUIDriver) md).getModel().streamSubordinateMaps()
+						    .anyMatch(IMapNG::isModified)) {
 			LOGGER.finer("Subordinate map(s) modified.");
 			int answer = JOptionPane.showConfirmDialog(window,
 				String.format("Subordinate map(s) have unsaved changes. Save all before %s?",

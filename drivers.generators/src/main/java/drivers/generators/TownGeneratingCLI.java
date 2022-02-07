@@ -49,8 +49,8 @@ public class TownGeneratingCLI implements CLIDriver {
 		} catch (final IOException except) {
 			throw new DriverFailedException(except, "I/O error initializing generator");
 		}
-		IDRegistrar idf = new IDFactoryFiller().createIDFactory(StreamSupport.stream(
-			model.getAllMaps().spliterator(), false).toArray(IMapNG[]::new));
+		IDRegistrar idf = new IDFactoryFiller().createIDFactory(
+			model.streamAllMaps().toArray(IMapNG[]::new));
 		Boolean specific = cli.inputBoolean("Enter or generate stats for just specific towns? ");
 		if (specific == null) {
 			return;

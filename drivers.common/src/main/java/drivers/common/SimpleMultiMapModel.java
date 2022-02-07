@@ -1,5 +1,6 @@
 package drivers.common;
 
+import java.util.stream.Stream;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -24,6 +25,14 @@ public class SimpleMultiMapModel extends SimpleDriverModel implements IMultiMapM
 	@Override
 	public final Iterable<IMapNG> getSubordinateMaps() {
 		return Collections.unmodifiableList(subordinateMapsList);
+	}
+
+	/**
+	 * Subordinate maps, as a stream.
+	 */
+	@Override
+	public Stream<IMapNG> streamSubordinateMaps() {
+		return subordinateMapsList.stream().map(IMapNG.class::cast);
 	}
 
 	/**
@@ -70,13 +79,8 @@ public class SimpleMultiMapModel extends SimpleDriverModel implements IMultiMapM
 
 	@Override
 	public final int getCurrentTurn() {
-		// TODO: Once we have a streamAllMaps() method, use that to condense this (mapToInt(IMapNG::currentTurn).filter(i -> i >= 0).findFirst() or some such
-		for (IMapNG map : getAllMaps()) {
-			if (map.getCurrentTurn() >= 0) {
-				return map.getCurrentTurn();
-			}
-		}
-		return getRestrictedMap().getCurrentTurn();
+		return streamAllMaps().mapToInt(IMapNG::getCurrentTurn).filter(i -> i >= 0)
+				.findFirst().orElseGet(getMap()::getCurrentTurn);
 	}
 
 	@Override

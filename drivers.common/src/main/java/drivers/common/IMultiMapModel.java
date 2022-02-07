@@ -3,6 +3,7 @@ package drivers.common;
 import common.map.IMapNG;
 import common.map.IMutableMapNG;
 
+import java.util.stream.Stream;
 import lovelace.util.ConcatIterable;
 
 import org.jetbrains.annotations.Nullable;
@@ -22,10 +23,13 @@ public interface IMultiMapModel extends IDriverModel {
 
 	/**
 	 * Subordinate maps
-	 *
-	 * TODO: Provide a Stream view as well?
 	 */
 	Iterable<IMapNG> getSubordinateMaps();
+
+	/**
+	 * Subordinate maps, as a stream.
+	 */
+	Stream<IMapNG> streamSubordinateMaps();
 
 	/**
 	 * Subordinate maps. For use by subclasses only.
@@ -37,6 +41,10 @@ public interface IMultiMapModel extends IDriverModel {
 	 */
 	default Iterable<IMapNG> getAllMaps() {
 		return new ConcatIterable<>(Collections.singleton(getMap()), getSubordinateMaps());
+	}
+
+	default Stream<IMapNG> streamAllMaps() {
+		return Stream.concat(Stream.of(getMap()), streamSubordinateMaps());
 	}
 
 	/**

@@ -37,8 +37,7 @@ import org.javatuples.Pair;
 	public TurnRunningCLI(final ICLIHelper cli, final ITurnRunningModel model) {
 		this.cli = cli;
 		this.model = model;
-		idf = new IDFactoryFiller().createIDFactory(StreamSupport.stream(model.getAllMaps().spliterator(), false)
-				.toArray(IMapNG[]::new));
+		idf = new IDFactoryFiller().createIDFactory(model.streamAllMaps().toArray(IMapNG[]::new));
 		advancementCLI = new AdvancementCLIHelper(model, cli);
 		appletChooser = new AppletChooser<>(cli,
 				StreamSupport.stream(ServiceLoader.load(TurnAppletFactory.class).spliterator(), false)
@@ -95,7 +94,7 @@ import org.javatuples.Pair;
 	}
 
 	private Stream<IUnit> getUnits(final Player player) {
-		final List<IUnit> temp = StreamSupport.stream(model.getAllMaps().spliterator(), false)
+		final List<IUnit> temp = model.streamAllMaps()
 			.flatMap(indivMap -> getUnitsImpl(indivMap.streamAllFixtures(), player)).collect(Collectors.toList());
 		final Map<Integer, ProxyUnit> tempMap = new TreeMap<>();
 		for (IUnit unit : temp) {

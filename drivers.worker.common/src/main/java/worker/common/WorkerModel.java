@@ -125,6 +125,7 @@ public class WorkerModel extends SimpleMultiMapModel implements IWorkerModel {
 		if (currentPlayerImpl == null) {
 			for (IMapNG localMap : getAllMaps()) {
 				Player temp = localMap.getCurrentPlayer();
+				// TODO: Make getUnits() return Collection or List
 				if (getUnits(temp).iterator().hasNext()) {
 					currentPlayerImpl = temp;
 					return temp;
@@ -170,7 +171,7 @@ public class WorkerModel extends SimpleMultiMapModel implements IWorkerModel {
 	 */
 	@Override
 	public Iterable<Player> getPlayers() {
-		return StreamSupport.stream(getAllMaps().spliterator(), false)
+		return streamAllMaps()
 			.flatMap(m -> StreamSupport.stream(m.getPlayers().spliterator(), false)).distinct()
 			.collect(Collectors.toList());
 	}
@@ -198,7 +199,7 @@ public class WorkerModel extends SimpleMultiMapModel implements IWorkerModel {
 					String.CASE_INSENSITIVE_ORDER))
 				.collect(Collectors.toList());
 		} else {
-			Iterable<IUnit> temp = StreamSupport.stream(getAllMaps().spliterator(), false)
+			Iterable<IUnit> temp = streamAllMaps()
 				.flatMap((indivMap) -> getUnitsImpl(indivMap.streamAllFixtures()
 						.collect(Collectors.toList()), player).stream())
 				.collect(Collectors.toList());

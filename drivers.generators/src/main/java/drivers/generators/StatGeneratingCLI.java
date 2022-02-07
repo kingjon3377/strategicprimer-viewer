@@ -588,8 +588,8 @@ import common.map.fixtures.towns.Village;
 	@Override
 	public void startDriver() throws DriverFailedException {
 		IDRegistrar idf = new IDFactoryFiller().createIDFactory(
-			StreamSupport.stream(model.getAllMaps().spliterator(), false)
-				.toArray(IMapNG[]::new));
+			model.streamAllMaps().toArray(IMapNG[]::new));
+		// TODO: Make getPlayerChoices() return Collection
 		List<Player> players = StreamSupport.stream(
 				model.getPlayerChoices().spliterator(), false).collect(Collectors.toList());
 		while (!players.isEmpty()) {

@@ -53,7 +53,7 @@ public class ExpansionDriver implements CLIDriver {
 
 	@Override
 	public void startDriver() {
-		for (Player player : StreamSupport.stream(model.getSubordinateMaps().spliterator(), false)
+		for (Player player : model.streamSubordinateMaps()
 				.map(IMapNG::getCurrentPlayer).filter(not(Player::isIndependent))
 				.collect(Collectors.toList())) { // TODO: Why not distinct()?
 			for (Point point : model.getMap().streamLocations()

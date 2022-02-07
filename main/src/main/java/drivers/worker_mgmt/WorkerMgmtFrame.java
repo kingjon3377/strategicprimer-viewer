@@ -72,8 +72,7 @@ import drivers.worker_mgmt.orderspanel.OrdersPanel;
 		this.menuHandler = menuHandler;
 		this.driver = driver;
 		mainMap = model.getMap();
-		idf = new IDFactoryFiller().createIDFactory(
-			StreamSupport.stream(model.getAllMaps().spliterator(), false)
+		idf = new IDFactoryFiller().createIDFactory(model.streamAllMaps()
 				.toArray(IMapNG[]::new));
 		newUnitFrame = new NewUnitDialog(model.getCurrentPlayer(), idf);
 		treeModel = new WorkerTreeModelAlt(model); // TODO: Try with WorkerTreeModel again?

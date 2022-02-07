@@ -39,8 +39,7 @@ import java.math.BigDecimal;
 	 * All the players in all the maps.
 	 */
 	public Iterable<Player> getPlayers() {
-		return StreamSupport.stream(getAllMaps().spliterator(), false)
-			.flatMap(m -> StreamSupport.stream(m.getPlayers().spliterator(), false))
+		return streamAllMaps().flatMap(m -> StreamSupport.stream(m.getPlayers().spliterator(), false))
 			.collect(Collectors.toSet());
 	}
 

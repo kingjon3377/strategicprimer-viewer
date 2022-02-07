@@ -81,8 +81,7 @@ public class AdvancementGUI implements MultiMapGUIDriver, WorkerGUI {
 			LOGGER.log(Level.SEVERE, "I/O error loading About dialog text", except);
 			// But this isn't a blocker to the driver as a whole, so keep going.
 		}
-		if (StreamSupport.stream(model.getAllMaps().spliterator(), true)
-				.noneMatch(m ->
+		if (model.streamAllMaps().noneMatch(m ->
 					model.getUnits(m.getCurrentPlayer()).iterator().hasNext())) {
 			pcml.actionPerformed(new ActionEvent(frame, ActionEvent.ACTION_FIRST,
 				"change current player"));
