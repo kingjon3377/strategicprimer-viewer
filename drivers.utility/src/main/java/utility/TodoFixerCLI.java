@@ -1,5 +1,6 @@
 package utility;
 
+import common.map.fixtures.mobile.IMutableUnit;
 import drivers.common.DriverFailedException;
 import java.io.IOException;
 import drivers.exploration.old.MissingTableException;
@@ -284,7 +285,7 @@ public class TodoFixerCLI implements CLIDriver {
 	/**
 	 * Fix a stubbed-out kind for a unit.
 	 */
-	private void fixUnit(final Unit unit, final SimpleTerrain terrain) {
+	private void fixUnit(final IMutableUnit unit, final SimpleTerrain terrain) {
 		Random rng = new Random(unit.getId());
 		count++;
 		List<String> jobList;
@@ -326,12 +327,12 @@ public class TodoFixerCLI implements CLIDriver {
 	 */
 	private void fixAllUnits(final IMapNG map) {
 		totalCount = map.streamAllFixtures()
-			.filter(Unit.class::isInstance).map(Unit.class::cast) // FIXME: IMutableUnit, surely?
+			.filter(IMutableUnit.class::isInstance).map(IMutableUnit.class::cast)
 			.filter(u -> "TODO".equals(u.getKind())).count();
 		for (Point point : map.getLocations()) {
 			SimpleTerrain terrain = getTerrain(map, point);
-			map.getFixtures(point).stream().filter(Unit.class::isInstance)
-					.map(Unit.class::cast).filter(u -> "TODO".equals(u.getKind()))
+			map.getFixtures(point).stream().filter(IMutableUnit.class::isInstance)
+					.map(IMutableUnit.class::cast).filter(u -> "TODO".equals(u.getKind()))
 					.forEach(fixture -> fixUnit(fixture, terrain));
 		}
 	}
