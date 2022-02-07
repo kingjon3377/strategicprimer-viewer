@@ -311,7 +311,7 @@ public class FileChooser {
 	 * we didn't catch an exception interrupting the choice)?
 	 */
 	public Iterable<Path> getFiles() throws ChoiceInterruptedException {
-		if (storedFile != null && !storedFile.isEmpty()) {
+		if (!storedFile.isEmpty()) {
 			LOGGER.fine("FileChooser.files: A file was stored, so returning it");
 			return storedFile;
 		} else if (SwingUtilities.isEventDispatchThread()) {
@@ -321,7 +321,7 @@ public class FileChooser {
 			LOGGER.fine("FileChooser.files: Have to ask the user; not yet on EDT");
 			invoke(this::haveUserChooseFiles);
 		}
-		if (storedFile != null && !storedFile.isEmpty()) {
+		if (!storedFile.isEmpty()) {
 			return storedFile;
 		} else {
 			throw new ChoiceInterruptedException();

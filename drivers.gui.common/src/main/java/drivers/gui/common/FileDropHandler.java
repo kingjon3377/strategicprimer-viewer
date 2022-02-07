@@ -29,7 +29,7 @@ import java.util.logging.Level;
 
 	@Override
 	public boolean canImport(final TransferSupport support) {
-		return support.isDrop() && app != null && app.supportsDroppedFiles() &&
+		return support.isDrop() && app.supportsDroppedFiles() &&
 			support.isDataFlavorSupported(DataFlavor.javaFileListFlavor);
 	}
 
