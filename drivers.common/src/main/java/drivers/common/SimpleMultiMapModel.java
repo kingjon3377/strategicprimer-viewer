@@ -55,10 +55,7 @@ public class SimpleMultiMapModel extends SimpleDriverModel implements IMultiMapM
 	public SimpleMultiMapModel(final IDriverModel model) {
 		super(model.getRestrictedMap());
 		if (model instanceof IMultiMapModel) {
-			// TODO: Condense with Iterable.forEach()?
-			for (IMutableMapNG map : ((IMultiMapModel) model).getRestrictedSubordinateMaps()) {
-				subordinateMapsList.add(map);
-			}
+			((IMultiMapModel) model).getRestrictedSubordinateMaps().forEach(subordinateMapsList::add);
 		}
 	}
 
