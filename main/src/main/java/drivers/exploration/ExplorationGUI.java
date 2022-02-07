@@ -1,5 +1,6 @@
 package drivers.exploration;
 
+import drivers.common.DriverFailedException;
 import java.io.IOException;
 
 import drivers.map_viewer.ViewerGUIFactory;
@@ -86,13 +87,11 @@ import common.map.IMutableMapNG;
 	 * Ask the user to choose a file or files.
 	 */
 	@Override
-	public Iterable<Path> askUserForFiles() {
+	public Iterable<Path> askUserForFiles() throws DriverFailedException {
 		try {
 			return SPFileChooser.open((Path) null).getFiles();
 		} catch (final FileChooser.ChoiceInterruptedException except) {
-			// TODO: throw DriverFailedException
-			LOGGER.log(Level.WARNING, "Choice interrupted or user didn't choose", except);
-			return Collections.emptyList();
+			throw new DriverFailedException(except, "Choice interrupted or user didn't choose");
 		}
 	}
 

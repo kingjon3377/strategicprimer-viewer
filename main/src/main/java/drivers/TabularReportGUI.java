@@ -1,5 +1,6 @@
 package drivers;
 
+import drivers.common.DriverFailedException;
 import drivers.map_viewer.ViewerGUIFactory;
 import java.util.Collections;
 import java.util.logging.Logger;
@@ -93,12 +94,11 @@ public class TabularReportGUI implements GUIDriver {
 	 * Ask the user to choose a file.
 	 */
 	@Override
-	public Iterable<Path> askUserForFiles() {
+	public Iterable<Path> askUserForFiles() throws DriverFailedException {
 		try {
 			return SPFileChooser.open((Path) null).getFiles();
 		} catch (final FileChooser.ChoiceInterruptedException except) {
-			LOGGER.log(Level.WARNING, "Choice interrupted or user didn't choose", except);
-			return Collections.emptyList();
+			throw new DriverFailedException(except, "Choice interrupted or user didn't choose");
 		}
 	}
 

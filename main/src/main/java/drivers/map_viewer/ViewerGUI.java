@@ -1,5 +1,6 @@
 package drivers.map_viewer;
 
+import drivers.common.DriverFailedException;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Collections;
@@ -217,12 +218,11 @@ public class ViewerGUI implements ViewerDriver {
 	 * Ask the user to choose a file or files.
 	 */
 	@Override
-	public Iterable<Path> askUserForFiles() {
+	public Iterable<Path> askUserForFiles() throws DriverFailedException {
 		try {
 			return SPFileChooser.open((Path) null).getFiles();
 		} catch (final FileChooser.ChoiceInterruptedException except) {
-			LOGGER.log(Level.WARNING, "Choice interrupted or user failed to choose", except);
-			return Collections.emptyList();
+			throw new DriverFailedException(except, "Choice interrupted or user didn't choose");
 		}
 	}
 

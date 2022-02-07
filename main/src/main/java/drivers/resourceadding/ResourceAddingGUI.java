@@ -1,5 +1,6 @@
 package drivers.resourceadding;
 
+import drivers.common.DriverFailedException;
 import java.util.logging.Logger;
 import java.util.logging.Level;
 
@@ -356,13 +357,11 @@ import java.io.FileNotFoundException;
 	 * Ask the user to choose a file or files.
 	 */
 	@Override
-	public Iterable<Path> askUserForFiles() {
+	public Iterable<Path> askUserForFiles() throws DriverFailedException {
 		try {
 			return SPFileChooser.open((Path) null).getFiles();
 		} catch (final FileChooser.ChoiceInterruptedException except) {
-			// TODO: throw DriverFailedException once interface declares it
-			LOGGER.log(Level.WARNING, "Choice interrupted or user didn't choose", except);
-			return Collections.emptyList();
+			throw new DriverFailedException(except, "Choice interrupted or user didn't choose");
 		}
 	}
 

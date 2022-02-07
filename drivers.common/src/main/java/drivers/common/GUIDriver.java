@@ -12,7 +12,7 @@ public interface GUIDriver extends ModelDriver {
 	/**
 	 * Ask the user to choose a file or files. (Or do something equivalent to produce a filename.)
 	 */
-	Iterable<Path> askUserForFiles();
+	Iterable<Path> askUserForFiles() throws DriverFailedException;
 
 	/**
 	 * Open the given map as a "main map." Doing so in a new window would

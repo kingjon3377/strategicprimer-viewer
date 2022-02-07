@@ -1,5 +1,6 @@
 package drivers.advancement;
 
+import drivers.common.DriverFailedException;
 import drivers.map_viewer.ViewerGUIFactory;
 import java.io.IOException;
 import java.util.Collections;
@@ -104,13 +105,11 @@ public class AdvancementGUI implements MultiMapGUIDriver, WorkerGUI {
 	 * Ask the user to choose a file or files.
 	 */
 	@Override
-	public Iterable<Path> askUserForFiles() {
+	public Iterable<Path> askUserForFiles() throws DriverFailedException {
 		try {
 			return SPFileChooser.open((Path) null).getFiles();
 		} catch (final FileChooser.ChoiceInterruptedException except) {
-			// TODO: throw as DriverFailedException once interface permits
-			LOGGER.log(Level.WARNING, "Choice interrupted or user didn't choose", except);
-			return Collections.emptyList();
+			throw new DriverFailedException(except, "Choice interrupted or user didn't choose");
 		}
 	}
 
