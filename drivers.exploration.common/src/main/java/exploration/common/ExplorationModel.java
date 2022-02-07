@@ -71,7 +71,7 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 	 * A fixture is "diggable" if it is a {@link MineralFixture} or a {@link Mine}.
 	 */
 	private static boolean isDiggable(final TileFixture fixture) {
-		return fixture instanceof MineralFixture || fixture instanceof Mine;
+		return fixture instanceof MineralVein || fixture instanceof Mine;
 	}
 
 	private static Stream<IFixture> flattenIncluding(final IFixture fixture) {
