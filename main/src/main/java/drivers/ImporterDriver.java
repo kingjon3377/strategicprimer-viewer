@@ -163,8 +163,7 @@ import org.jetbrains.annotations.Nullable;
 						}
 					}
 
-					Pair<Integer, Integer> dominant =
-							StreamSupport.stream(counter.getAllCounts().spliterator(), false)
+					Pair<Integer, Integer> dominant = counter.streamAllCounts()
 									.max(Comparator.comparing(Pair::getValue1)).orElse(null);
 					if (dominant != null) {
 						if (mapping.containsKey(dominant.getValue0())) {

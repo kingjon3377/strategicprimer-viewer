@@ -198,9 +198,7 @@ import common.map.fixtures.mobile.AnimalTracks;
 		tileTypeCounts.countMany(map.streamLocations()
 			.map(map::getBaseTerrain).filter(Objects::nonNull).toArray(TileType[]::new));
 		cli.println();
-		// TODO: Add streamAllCounts() to EnumCounter
-		for (Pair<TileType, Integer> entry : StreamSupport.stream(
-					tileTypeCounts.getAllCounts().spliterator(), false)
+		for (Pair<TileType, Integer> entry : tileTypeCounts.streamAllCounts()
 				.sorted(Comparator.comparing(Pair::getValue1,
 					Comparator.reverseOrder())).collect(Collectors.toList())) {
 			// TODO: Use Stream::forEach to avoid collector step

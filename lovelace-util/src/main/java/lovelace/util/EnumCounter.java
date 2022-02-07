@@ -2,6 +2,7 @@ package lovelace.util;
 
 import java.util.Map;
 import java.util.HashMap;
+import java.util.stream.Stream;
 import org.javatuples.Pair;
 import java.util.stream.Collectors;
 import java.util.Optional;
@@ -44,9 +45,13 @@ public class EnumCounter<Type> {
 	 * Get all values and counts.
 	 */
 	public Iterable<Pair<Type, Integer>> getAllCounts() {
-		// FIXME: Just counts.entrySet().stream()
-		return counts.entrySet().stream()
-			.map(e -> Pair.with(e.getKey(), e.getValue().getSum()))
-			.collect(Collectors.toList());
+		return streamAllCounts().collect(Collectors.toList());
+	}
+
+	/**
+	 * Stream all values and counts.
+	 */
+	public Stream<Pair<Type, Integer>> streamAllCounts() {
+		return counts.entrySet().stream().map(e -> Pair.with(e.getKey(), e.getValue().getSum()));
 	}
 }
