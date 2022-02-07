@@ -1,5 +1,6 @@
 package utility;
 
+import java.util.stream.Stream;
 import org.javatuples.Pair;
 import java.util.function.Function;
 import lovelace.util.Accumulator;
@@ -71,9 +72,12 @@ class MappedCounter<Base, Key, Count extends Number&Comparable<Count>> implement
 	 */
 	@Override
 	public Iterator<Pair<Key, Count>> iterator() {
+		return stream().iterator();
+	}
+
+	public Stream<Pair<Key, Count>> stream() {
 		return totals.entrySet().stream().map(e -> Pair.with(e.getKey(), e.getValue().getSum()))
-			.sorted(Comparator.comparing(Pair::getValue1, Comparator.reverseOrder()))
-			.iterator();
+				.sorted(Comparator.comparing(Pair::getValue1, Comparator.reverseOrder()));
 	}
 
 	private Count plus(final Count one, final Count two) {

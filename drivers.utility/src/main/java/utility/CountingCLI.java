@@ -104,8 +104,7 @@ import common.map.fixtures.mobile.AnimalTracks;
 		if (counter.getTotal().doubleValue() > 0.0) {
 			cli.println(total);
 			cli.println();
-			// TODO: Add stream() to MappedCounter
-			StreamSupport.stream(counter.spliterator(), false).map(each).forEach(cli::println);
+			counter.stream().map(each).forEach(cli::println);
 			cli.println();
 		}
 	}
@@ -116,7 +115,7 @@ import common.map.fixtures.mobile.AnimalTracks;
 		if (counter.getTotal().doubleValue() > 0.0) {
 			cli.println(total.apply(counter.getTotal()));
 			cli.println();
-			StreamSupport.stream(counter.spliterator(), false).map(each).forEach(cli::println);
+			counter.stream().map(each).forEach(cli::println);
 			cli.println();
 		}
 	}
@@ -126,6 +125,7 @@ import common.map.fixtures.mobile.AnimalTracks;
 		return new MappedCounter<>(keyExtractor, t -> 1, IntAccumulator::new, 0);
 	}
 
+	// TODO: Take Collection to avoid StreamSupport
 	private <Type> void countSimply(final Class<Type> cls, final Iterable<?> stream, final String title,
 	                                final Function<Type, String> extractor) {
 		MappedCounter<Type, String, Integer> counter = simpleCounter(extractor);
@@ -201,6 +201,7 @@ import common.map.fixtures.mobile.AnimalTracks;
 		tileTypeCounts.countMany(map.streamLocations()
 			.map(map::getBaseTerrain).filter(Objects::nonNull).toArray(TileType[]::new));
 		cli.println();
+		// TODO: Add streamAllCounts() to EnumCounter
 		for (Pair<TileType, Integer> entry : StreamSupport.stream(
 					tileTypeCounts.getAllCounts().spliterator(), false)
 				.sorted(Comparator.comparing(Pair::getValue1,
