@@ -198,9 +198,9 @@ public class FixtureList extends JList<TileFixture>
 		}
 
 		private void handleDrop(final Transferable trans) throws UnsupportedFlavorException, IOException {
-			DataFlavor[] flavors = trans.getTransferDataFlavors();
-			for (DataFlavor flavor : Optional.ofNullable(flavors)
-					.orElseGet(() -> new DataFlavor[0])) {
+			DataFlavor[] flavors = Optional.ofNullable(trans.getTransferDataFlavors())
+					.orElseGet(() -> new DataFlavor[0]);
+			for (DataFlavor flavor : flavors) {
 				if (FixtureTransferable.FLAVOR.equals(flavor)) {
 					Object transferData = trans.getTransferData(flavor);
 					if (transferData instanceof TileFixture) {
