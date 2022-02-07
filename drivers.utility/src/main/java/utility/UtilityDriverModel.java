@@ -1,7 +1,9 @@
 package utility;
 
 import common.map.SubsettableFixture;
+import java.util.Random;
 import java.util.logging.Logger;
+import lovelace.util.SingletonRandom;
 import org.jetbrains.annotations.Nullable;
 
 import common.map.TileType;
@@ -359,10 +361,13 @@ public class UtilityDriverModel extends SimpleMultiMapModel {
 	public void expandAroundPoint(final Point center, final Player currentPlayer) {
 		Mock mock = new Mock(currentPlayer);
 		IMapNG map = getMap();
+		long seed = SingletonRandom.SINGLETON_RANDOM.nextLong();
 		for (IMutableMapNG subMap : getRestrictedSubordinateMaps()) {
 			if (!subMap.getCurrentPlayer().equals(currentPlayer)) {
 				continue;
 			}
+
+			Random rng = new Random(seed);
 
 			for (Point neighbor : new SurroundingPointIterable(center, subMap.getDimensions())) {
 				if (subMap.getBaseTerrain(neighbor) == null) {
@@ -383,7 +388,7 @@ public class UtilityDriverModel extends SimpleMultiMapModel {
 						possibilities.add(fixture);
 					}
 				}
-				Collections.shuffle(possibilities); // FIXME: If multiple sub-maps, this copies different fixtures to each one
+				Collections.shuffle(possibilities, rng);
 				if (!possibilities.isEmpty()) {
 					TileFixture first = possibilities.removeFirst();
 					safeAdd(subMap, currentPlayer, neighbor, first);
