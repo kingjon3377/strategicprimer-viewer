@@ -24,7 +24,7 @@ import org.jetbrains.annotations.Nullable;
 
 /**
  * A worker (or soldier) in a unit. This is deliberately not a
- * {@link strategicprimer.model.common.map.TileFixture TileFixture}: these
+ * {@link common.map.TileFixture TileFixture}: these
  * should only be part of a unit, not as a top-level tag.
  *
  * TODO: Convert some other {@link MobileFixture}s similarly?

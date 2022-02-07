@@ -6,7 +6,7 @@ import common.map.HasPopulation;
 import java.util.function.Consumer;
 
 /**
- * A {@link strategicprimer.model.common.map.TileFixture} to represent shrubs,
+ * A {@link common.map.TileFixture} to represent shrubs,
  * or their aquatic equivalents, on a tile.
  */
 public class Shrub implements HarvestableFixture, HasPopulation<Shrub> {
