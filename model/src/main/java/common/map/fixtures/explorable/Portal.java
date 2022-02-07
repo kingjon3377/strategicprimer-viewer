@@ -1,14 +1,14 @@
 package common.map.fixtures.explorable;
 
+import common.map.SubsettableFixture;
 import java.util.function.Consumer;
 import common.map.IFixture;
-import common.map.Subsettable;
 import common.map.Point;
 
 /**
  * A fixture representing a portal to another world.
  */
-public class Portal implements ExplorableFixture, IFixture, Subsettable<IFixture> {
+public class Portal implements ExplorableFixture, SubsettableFixture {
 
 	public Portal(final String destinationWorld, final Point destinationCoordinates, final int id) {
 		this.destinationWorld = destinationWorld;

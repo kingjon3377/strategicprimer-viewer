@@ -54,11 +54,10 @@ public class SPMapNG implements IMutableMapNG {
 	 * true; otherwise return false.
 	 */
 	private static boolean subsetCheck(final TileFixture one, final TileFixture two) {
-		// FIXME: Reintroduce SubsettableFixture as a fixing of Subsettable<IFixture> for us to test here and probably elsewhere
-		if (one instanceof Subsettable && ((Subsettable<IFixture>) one).isSubset(two, x -> {})) {
+		if (one instanceof SubsettableFixture && ((SubsettableFixture) one).isSubset(two, x -> {})) {
 			return true;
-		} else if (two instanceof Subsettable &&
-				((Subsettable<IFixture>) two).isSubset(one, x -> {})) {
+		} else if (two instanceof SubsettableFixture &&
+				((SubsettableFixture) two).isSubset(one, x -> {})) {
 			return true;
 		} else {
 			return false;
@@ -642,7 +641,7 @@ public class SPMapNG implements IMutableMapNG {
 			Map<TileFixture, Point> ourLocations = fixturesMap.entrySet().stream()
 				.flatMap(e -> e.getValue().stream().map(f -> Pair.with(f, e.getKey())))
 				.collect(Collectors.toMap(Pair::getValue0, Pair::getValue1));
-			// IUnit is Subsettable<IUnit> and thus incompatible with SubsettableFixture
+			// IUnit is Subsettable<IUnit> and thus incompatible with SubsettableFixture // FIXME: No longer true
 			Map<Integer, List<Pair<IUnit, Point>>> ourUnits = new HashMap<>();
 			// AbstractTown is Subsettable<AbstractTown>
 			Map<Integer, List<Pair<AbstractTown, Point>>> ourTowns = new HashMap<>();

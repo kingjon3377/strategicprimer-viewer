@@ -1,5 +1,6 @@
 package utility;
 
+import common.map.SubsettableFixture;
 import java.util.logging.Logger;
 import org.jetbrains.annotations.Nullable;
 
@@ -67,8 +68,8 @@ public class UtilityDriverModel extends SimpleMultiMapModel {
 	}
 
 	private static boolean isSubset(final IFixture one, final IFixture two) {
-		if (one instanceof Subsettable) { // TODO: Extract SubsettableFixture interface
-			return ((Subsettable<IFixture>) one).isSubset(two, s -> {});
+		if (one instanceof SubsettableFixture) {
+			return ((SubsettableFixture) one).isSubset(two, s -> {});
 		} else {
 			return one.equals(two);
 		}

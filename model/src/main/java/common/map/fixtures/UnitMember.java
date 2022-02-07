@@ -1,7 +1,7 @@
 package common.map.fixtures;
 
-import common.map.IFixture;
 import common.map.Subsettable;
+import common.map.SubsettableFixture;
 
 /**
  * A (marker) interface for things that can be part of a unit.
@@ -14,7 +14,7 @@ import common.map.Subsettable;
  *
  * TODO: Members?
  */
-public interface UnitMember extends IFixture, Subsettable<IFixture> {
+public interface UnitMember extends SubsettableFixture {
 	/**
 	 * Specialization.
 	 */

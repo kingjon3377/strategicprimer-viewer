@@ -5,7 +5,7 @@ package common.map;
  *
  * @see HasExtent
  */
-public interface HasPopulation<Self extends HasPopulation<Self>> extends IFixture, Subsettable<IFixture> {
+public interface HasPopulation<Self extends HasPopulation<Self>> extends SubsettableFixture {
 	/**
 	 * The population.
 	 */

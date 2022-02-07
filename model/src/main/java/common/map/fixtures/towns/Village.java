@@ -2,9 +2,9 @@ package common.map.fixtures.towns;
 
 import common.map.IFixture;
 import common.map.HasMutableImage;
-import common.map.Subsettable;
 import common.map.Player;
 
+import common.map.SubsettableFixture;
 import java.util.Objects;
 
 import java.util.function.Consumer;
@@ -19,7 +19,7 @@ import org.jetbrains.annotations.Nullable;
  * players have been informed about by name.
  */
 public class Village implements IMutableTownFixture, HasMutableImage, IFixture,
-		Subsettable<IFixture> {
+		                                SubsettableFixture {
 	public Village(final TownStatus status, final String name, final int id, final Player owner, final String race) {
 		this.status = status;
 		this.name = name;

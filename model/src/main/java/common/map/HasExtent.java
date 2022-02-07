@@ -8,7 +8,7 @@ import java.math.BigDecimal;
  *
  * @see HasPopulation
  */
-public interface HasExtent<Self extends HasExtent<Self>> extends IFixture, Subsettable<IFixture> {
+public interface HasExtent<Self extends HasExtent<Self>> extends SubsettableFixture {
 	/**
 	 * Determine whether the given number is positive.
 	 */
