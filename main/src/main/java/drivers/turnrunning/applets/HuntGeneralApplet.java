@@ -69,7 +69,7 @@ import org.jetbrains.annotations.Nullable;
 		final IUnit unit = chooseFromList(StreamSupport.stream(model.getUnits(Optional
 						.ofNullable(model.getSelectedUnit()).map(IUnit::getOwner)
 					.orElse(model.getMap().getCurrentPlayer())).spliterator(), false)
-				.filter(IUnit.class::isInstance).map(IUnit.class::cast).collect(Collectors.toList()),
+				.collect(Collectors.toList()),
 			"Available units:", "No units", "Unit to add animals to:", false, HuntGeneralApplet::describeUnit);
 		if (unit != null) {
 			Integer num = cli.inputNumber("Number captured:");
