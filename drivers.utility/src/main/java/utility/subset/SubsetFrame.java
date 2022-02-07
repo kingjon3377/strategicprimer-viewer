@@ -35,12 +35,9 @@ import java.util.logging.Logger;
 	private static final Logger LOGGER = Logger.getLogger(SubsetFrame.class.getName());
 	public SubsetFrame(final ISPDriver driver) {
 		super("Subset Tester", driver, new Dimension(640, 320), true);
-		this.driver = driver;
 		label = new StreamingLabel();
 		setContentPane(new JScrollPane(label));
 	}
-
-	private final ISPDriver driver; // TODO: Is this needed?
 
 	private final StreamingLabel label;
 
