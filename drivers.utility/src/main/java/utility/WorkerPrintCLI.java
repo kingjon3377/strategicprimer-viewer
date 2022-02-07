@@ -1,6 +1,7 @@
 package utility;
 
 import common.map.Player;
+import common.map.fixtures.UnitMember;
 import java.util.ArrayList;
 import java.util.stream.StreamSupport;
 import java.util.stream.IntStream;
@@ -53,8 +54,13 @@ import java.util.Arrays;
 	}
 
 	private void printWorkers(final IUnit unit) {
-		for (IWorker worker : unit.stream().filter(IWorker.class::isInstance).map(IWorker.class::cast)
-				.collect(Collectors.toList())) { // TODO: avoid collector
+		for (UnitMember member : unit) {
+			IWorker worker;
+			if (member instanceof IWorker) {
+				worker = (IWorker) member;
+			} else {
+				continue;
+			}
 			cli.print("- ", worker.getName());
 			if (!"human".equals(worker.getRace())) {
 				cli.print(" (", worker.getRace(), ")");
