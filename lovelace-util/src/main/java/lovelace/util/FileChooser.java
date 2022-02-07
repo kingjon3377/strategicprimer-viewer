@@ -109,10 +109,10 @@ public class FileChooser {
 			chooserFunction = (component) -> fileChooser.showDialog(component, approveText);
 			if (loc == null) {
 				LOGGER.fine("No file was passed in");
-				storedFile = Arrays.asList(loc);
+				storedFile = Collections.emptyList();
 			} else {
 				LOGGER.fine("A file was passed in");
-				storedFile = Collections.emptyList();
+				storedFile = Arrays.asList(loc);
 			}
 			break;
 		default:
@@ -129,10 +129,10 @@ public class FileChooser {
 			fileChooser.setMultiSelectionEnabled(true);
 			if (loc == null) {
 				LOGGER.fine("No file was passed in");
-				storedFile = Arrays.asList(loc);
+				storedFile = Collections.emptyList();
 			} else {
 				LOGGER.fine("A file was passed in");
-				storedFile = Collections.emptyList();
+				storedFile = Arrays.asList(loc);
 			}
 			break;
 		case Save:
@@ -141,10 +141,10 @@ public class FileChooser {
 			chooser = Either.left(fileChooser);
 			if (loc == null) {
 				LOGGER.fine("No file was passed in");
-				storedFile = Arrays.asList(loc);
+				storedFile = Collections.emptyList();
 			} else {
 				LOGGER.fine("A file was passed in");
-				storedFile = Collections.emptyList();
+				storedFile = Arrays.asList(loc);
 			}
 			break;
 		case Custom:
@@ -167,10 +167,10 @@ public class FileChooser {
 			fileChooser.setMultipleMode(true);
 			if (loc == null) {
 				LOGGER.fine("No file was passed in");
-				storedFile = Arrays.asList(loc);
+				storedFile = Collections.emptyList();
 			} else {
 				LOGGER.fine("A file was passed in");
-				storedFile = Collections.emptyList();
+				storedFile = Arrays.asList(loc);
 			}
 			break;
 		case Save:
@@ -183,10 +183,10 @@ public class FileChooser {
 			};
 			if (loc == null) {
 				LOGGER.fine("No file was passed in");
-				storedFile = Arrays.asList(loc);
+				storedFile = Collections.emptyList();
 			} else {
 				LOGGER.fine("A file was passed in");
-				storedFile = Collections.emptyList();
+				storedFile = Arrays.asList(loc);
 			}
 			break;
 		case Custom:
