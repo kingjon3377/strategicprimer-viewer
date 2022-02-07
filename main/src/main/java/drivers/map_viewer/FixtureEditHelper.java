@@ -1,5 +1,7 @@
 package drivers.map_viewer;
 
+import common.map.HasName;
+import common.map.HasOwner;
 import org.jetbrains.annotations.Nullable;
 
 import common.map.fixtures.UnitMember;
@@ -7,7 +9,6 @@ import common.map.fixtures.UnitMember;
 import common.map.fixtures.mobile.IUnit;
 
 import common.map.Player;
-import common.map.HasMutableName;
 import common.map.HasMutableOwner;
 import common.map.HasKind;
 
@@ -57,7 +58,7 @@ public class FixtureEditHelper implements IFixtureEditHelper {
 	/**
 	 * Change something's name.
 	 */
-	public void renameItem(final HasMutableName item, final String newName) {
+	public void renameItem(final HasName item, final String newName) {
 		model.renameItem(item, newName);
 	}
 
@@ -93,7 +94,7 @@ public class FixtureEditHelper implements IFixtureEditHelper {
 	 * Change the owner of the given item.
 	 */
 	@Override
-	public void changeOwner(final HasMutableOwner item, final Player newOwner) {
+	public void changeOwner(final HasOwner item, final Player newOwner) {
 		model.changeOwner(item, newOwner);
 	}
 

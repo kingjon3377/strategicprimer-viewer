@@ -1,5 +1,7 @@
 package drivers.map_viewer;
 
+import common.map.HasName;
+import common.map.HasOwner;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
@@ -585,7 +587,7 @@ public class ViewerModel extends SimpleDriverModel implements IViewerModel {
 	}
 
 	@Override
-	public boolean renameItem(final HasMutableName item, final String newName) {
+	public boolean renameItem(final HasName item, final String newName) {
 		if (item instanceof IUnit) {
 			IUnit matching = getMap().streamAllFixtures()
 				.flatMap(ViewerModel::unflattenNonFortresses)
@@ -718,7 +720,7 @@ public class ViewerModel extends SimpleDriverModel implements IViewerModel {
 	 * this succeeded in any map, false otherwise.
 	 */
 	@Override
-	public boolean changeOwner(final HasMutableOwner item, final Player newOwner) {
+	public boolean changeOwner(final HasOwner item, final Player newOwner) {
 		HasMutableOwner matching = getMap().streamAllFixtures()
 			.flatMap(ViewerModel::flattenIncluding).flatMap(ViewerModel::flattenIncluding)
 			.filter(HasMutableOwner.class::isInstance).map(HasMutableOwner.class::cast)

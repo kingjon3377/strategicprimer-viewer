@@ -1,5 +1,7 @@
 package worker.common;
 
+import common.map.HasName;
+import common.map.HasOwner;
 import java.util.Collection;
 import java.util.function.BiPredicate;
 import java.util.Collections;
@@ -518,7 +520,7 @@ public class WorkerModel extends SimpleMultiMapModel implements IWorkerModel {
 	}
 
 	@Override
-	public boolean renameItem(final HasMutableName item, final String newName) {
+	public boolean renameItem(final HasName item, final String newName) {
 		boolean any = false;
 		if (item instanceof IUnit) {
 			for (IMutableMapNG map : getRestrictedAllMaps()) {
@@ -648,7 +650,7 @@ public class WorkerModel extends SimpleMultiMapModel implements IWorkerModel {
 	 * succeeded in any map, false otherwise.
 	 */
 	@Override
-	public boolean changeOwner(final HasMutableOwner item, final Player newOwner) {
+	public boolean changeOwner(final HasOwner item, final Player newOwner) {
 		boolean any = false;
 		for (IMutableMapNG map : getRestrictedAllMaps()) {
 			HasMutableOwner matching = map.streamAllFixtures()

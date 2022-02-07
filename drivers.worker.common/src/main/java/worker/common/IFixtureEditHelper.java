@@ -1,5 +1,7 @@
 package worker.common;
 
+import common.map.HasName;
+import common.map.HasOwner;
 import common.map.fixtures.UnitMember;
 
 import drivers.common.PlayerChangeListener;
@@ -50,10 +52,8 @@ public interface IFixtureEditHelper extends NewUnitListener, PlayerChangeListene
 
 	/**
 	 * Change something's name.
-	 *
-	 * TODO: Just take HasName, since it might be a proxy for things with mutable names
 	 */
-	void renameItem(HasMutableName item, String newName);
+	void renameItem(HasName item, String newName);
 
 	/**
 	 * Change something's kind; in the worker mgmt GUI, if it's a unit,
@@ -79,10 +79,8 @@ public interface IFixtureEditHelper extends NewUnitListener, PlayerChangeListene
 
 	/**
 	 * Change the owner of the given item.
-	 *
-	 * TODO: Just take HasOwner, since it might be a proxy for things with mutable owners
 	 */
-	void changeOwner(HasMutableOwner item, Player newOwner);
+	void changeOwner(HasOwner item, Player newOwner);
 
 	/**
 	 * Sort the contents of the given unit.

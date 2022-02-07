@@ -1,5 +1,6 @@
 package exploration.common;
 
+import common.map.HasName;
 import org.javatuples.Pair;
 import org.jetbrains.annotations.Nullable;
 
@@ -999,7 +1000,7 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 	}
 
 	@Override
-	public boolean renameItem(final HasMutableName item, final String newName) {
+	public boolean renameItem(final HasName item, final String newName) {
 		boolean any = false;
 		if (item instanceof IUnit) {
 			for (IMutableMapNG map : getRestrictedAllMaps()) {
@@ -1146,7 +1147,7 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 	 * succeeded in any map, false otherwise.
 	 */
 	@Override
-	public boolean changeOwner(final HasMutableOwner item, final Player newOwner) {
+	public boolean changeOwner(final HasOwner item, final Player newOwner) {
 		boolean any = false;
 		for (IMutableMapNG map : getRestrictedAllMaps()) {
 			Optional<HasMutableOwner> matching = map.streamAllFixtures()

@@ -3,6 +3,8 @@ package drivers.common;
 import common.map.HasKind;
 import common.map.HasMutableName;
 import common.map.HasMutableOwner;
+import common.map.HasName;
+import common.map.HasOwner;
 import common.map.Player;
 
 import common.map.fixtures.UnitMember;
@@ -35,7 +37,7 @@ public interface IFixtureEditingModel extends IDriverModel {
 	 * Change something's name. Returns true if we were able to find it and
 	 * changed its name, false on failure.
 	 */
-	boolean renameItem(HasMutableName item, String newName);
+	boolean renameItem(HasName item, String newName);
 
 	/**
 	 * Change something's kind. Returns true if we were able to find it and
@@ -63,7 +65,7 @@ public interface IFixtureEditingModel extends IDriverModel {
 	 * Change the owner of the given item in all maps. Returns true if this
 	 * succeeded in any map, false otherwise.
 	 */
-	boolean changeOwner(HasMutableOwner item, Player newOwner);
+	boolean changeOwner(HasOwner item, Player newOwner);
 
 	/**
 	 * Add a unit in its owner's HQ.

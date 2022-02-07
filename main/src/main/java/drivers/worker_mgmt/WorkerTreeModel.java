@@ -1,5 +1,7 @@
 package drivers.worker_mgmt;
 
+import common.map.HasName;
+import common.map.HasOwner;
 import java.util.Collection;
 import org.jetbrains.annotations.Nullable;
 
@@ -14,7 +16,6 @@ import java.util.ArrayList;
 import java.util.List;
 import common.map.fixtures.mobile.IUnit;
 import common.map.Player;
-import common.map.HasMutableName;
 import common.map.HasMutableOwner;
 import common.map.HasKind;
 import worker.common.IWorkerTreeModel;
@@ -198,7 +199,7 @@ import java.util.stream.Collectors;
 	}
 
 	@Override
-	public void renameItem(final HasMutableName item, final String newName) {
+	public void renameItem(final HasName item, final String newName) {
 		TreePath path;
 		int[] indices;
 		Object[] children;
@@ -426,7 +427,7 @@ import java.util.stream.Collectors;
 	}
 
 	@Override
-	public void changeOwner(final HasMutableOwner item, final Player newOwner) {
+	public void changeOwner(final HasOwner item, final Player newOwner) {
 		if (item instanceof IUnit && item.getOwner().equals(player)) {
 			// TODO: What if it's the only unit with this kind?
 			TreeModelEvent event = new TreeModelEvent(this,

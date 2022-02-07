@@ -1,5 +1,7 @@
 package drivers.worker_mgmt;
 
+import common.map.HasName;
+import common.map.HasOwner;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Collections;
@@ -20,7 +22,6 @@ import javax.swing.tree.TreePath;
 
 import common.map.fixtures.mobile.IUnit;
 import common.map.Player;
-import common.map.HasMutableName;
 import common.map.HasMutableOwner;
 import common.map.HasKind;
 import worker.common.IWorkerTreeModel;
@@ -394,7 +395,7 @@ public class WorkerTreeModelAlt extends DefaultTreeModel implements IWorkerTreeM
 	 * Update the tree in response to something changing its name.
 	 */
 	@Override
-	public void renameItem(final HasMutableName item, final String newName) {
+	public void renameItem(final HasName item, final String newName) {
 		PlayerNode temp = (PlayerNode) getRoot();
 		MutableTreeNode node = getNode(temp, item);
 		if (node != null && model.renameItem(item, newName)) {
@@ -648,7 +649,7 @@ public class WorkerTreeModelAlt extends DefaultTreeModel implements IWorkerTreeM
 	}
 
 	@Override
-	public void changeOwner(final HasMutableOwner item, final Player newOwner) {
+	public void changeOwner(final HasOwner item, final Player newOwner) {
 		PlayerNode playerNode = (PlayerNode) getRoot();
 		if (item instanceof IUnit && item.getOwner().equals(model.getCurrentPlayer())) {
 			TreeNode kindNode = getNode(playerNode, ((IUnit) item).getKind());
