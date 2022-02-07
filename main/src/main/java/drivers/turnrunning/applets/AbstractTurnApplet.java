@@ -46,7 +46,7 @@ public abstract class AbstractTurnApplet implements TurnApplet {
 	// This was "shared" in Ceylon, but I expect only subclasses will be able to use it.
 	protected <Type> @Nullable Type chooseFromList(final List<Type> items, final String description, final String none,
 	                                               final String prompt, final boolean auto, final Function<? super Type, String> converter) {
-		Pair<Integer, String> entry = cli.chooseStringFromList(
+		Pair<Integer, @Nullable String> entry = cli.chooseStringFromList(
 			items.stream().map(converter).collect(Collectors.toList()), description,
 			none, prompt, auto);
 		if (entry.getValue1() != null) {

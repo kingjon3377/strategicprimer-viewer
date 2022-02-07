@@ -64,7 +64,7 @@ public class FileChooser {
 	/**
 	 * The method to call to show the caller's chosen dialog.
 	 */
-	private final ToIntFunction<Component> chooserFunction;
+	private final ToIntFunction<@Nullable Component> chooserFunction;
 
 	/**
 	 * The file(s) either passed in to the constructor or chosen by the user.

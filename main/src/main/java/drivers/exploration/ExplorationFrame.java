@@ -40,6 +40,7 @@ import drivers.gui.common.MenuBroker;
 import exploration.common.Speed;
 
 import impl.xmlio.MapIOHelper;
+import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * The main window for the exploration GUI.
@@ -134,7 +135,7 @@ import impl.xmlio.MapIOHelper;
 	private void handlePlayerChanged() {
 		layoutObj.goFirst();
 		if (!playerList.isSelectionEmpty()) {
-			Player newPlayer = playerList.getSelectedValue();
+			@Nullable Player newPlayer = playerList.getSelectedValue();
 			if (newPlayer != null) {
 				unitListModel.playerChanged(null, newPlayer);
 			}
@@ -143,7 +144,7 @@ import impl.xmlio.MapIOHelper;
 
 	private void buttonListener() {
 		LOGGER.finer("In ExplorationFrame.buttonListener");
-		IUnit selectedValue = unitList.getSelectedValue();
+		@Nullable IUnit selectedValue = unitList.getSelectedValue();
 		if (selectedValue != null && !unitList.isSelectionEmpty()) {
 			driver.getModel().setSelectedUnit(selectedValue);
 			LOGGER.finer("ExplorationFrame.buttonListener: after selectedUnit setter call");

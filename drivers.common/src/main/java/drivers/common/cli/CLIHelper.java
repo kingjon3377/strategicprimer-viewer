@@ -1,5 +1,6 @@
 package drivers.common.cli;
 
+import org.eclipse.jdt.annotation.NonNull;
 import org.jetbrains.annotations.Nullable;
 import org.javatuples.Pair;
 
@@ -142,7 +143,7 @@ public final class CLIHelper implements ICLIHelper {
 	/**
 	 * Implementation of {@link chooseFromList} and {@link chooseStringFromList}.
 	 */
-	private <Element> Pair<Integer, @Nullable Element> chooseFromListImpl(final List<? extends Element> items,
+	private <Element> Pair<Integer, @Nullable Element> chooseFromListImpl(final List<@NonNull ? extends Element> items,
 	                                                                      final String description, final String none, final String prompt, final boolean auto,
 	                                                                      final Function<? super Element, String> func) {
 		if (items.isEmpty()) {
@@ -172,7 +173,7 @@ public final class CLIHelper implements ICLIHelper {
 	 */
 	@Override
 	public <Element extends HasName> Pair<Integer, @Nullable Element> chooseFromList(
-			final List<? extends Element> list, final String description, final String none, final String prompt,
+			final List<@NonNull ? extends Element> list, final String description, final String none, final String prompt,
 			final boolean auto) {
 		return chooseFromListImpl(list, description, none, prompt, auto, HasName::getName);
 	}

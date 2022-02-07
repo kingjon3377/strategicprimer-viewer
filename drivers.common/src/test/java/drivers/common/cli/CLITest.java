@@ -1,5 +1,6 @@
 package drivers.common.cli;
 
+import org.eclipse.jdt.annotation.Nullable;
 import org.javatuples.Pair;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -43,7 +44,7 @@ public final class CLITest {
 	 * was as expected" and "CLIHelper output was as expected"
 	 * respectively), but I won't add overloads for that unless I have to.
 	 */
-	<T> void assertCLI(final Function<ICLIHelper, T> method, final List<String> input, final String expectedOutput,
+	<T> void assertCLI(final Function<ICLIHelper, @Nullable T> method, final List<String> input, final String expectedOutput,
 	                   final T expectedResult, final String resultMessage, final String outputMessage) {
 		StringBuilder ostream = new StringBuilder();
 		ICLIHelper cli = new CLIHelper(new LinkedList<>(input)::pollFirst, ostream::append);
