@@ -330,11 +330,9 @@ public class TodoFixerCLI implements CLIDriver {
 			.filter(u -> "TODO".equals(u.getKind())).count();
 		for (Point point : map.getLocations()) {
 			SimpleTerrain terrain = getTerrain(map, point);
-			for (Unit fixture : map.getFixtures(point).stream().filter(Unit.class::isInstance)
+			map.getFixtures(point).stream().filter(Unit.class::isInstance)
 					.map(Unit.class::cast).filter(u -> "TODO".equals(u.getKind()))
-					.collect(Collectors.toList())) { // TODO: try to avoid collector step
-				fixUnit(fixture, terrain);
-			}
+					.forEach(fixture -> fixUnit(fixture, terrain));
 		}
 	}
 
