@@ -1,5 +1,6 @@
 package drivers.worker_mgmt;
 
+import java.util.Collection;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Collections;
@@ -98,8 +99,7 @@ import java.util.stream.Collectors;
 	public int getIndexOfChild(final Object parent, final Object child) {
 		if (parent instanceof Player && child instanceof IUnit) {
 			// FIXME: This case shouldn't be allowed, right?
-			return StreamSupport.stream(model.getUnits((Player) parent).spliterator(), false)
-				.collect(Collectors.toList()).indexOf(child);
+			return new ArrayList<>(model.getUnits((Player) parent)).indexOf(child);
 		} else if (parent instanceof Player && child instanceof String) {
 			return StreamSupport.stream(model.getUnitKinds((Player) parent).spliterator(), false)
 				.collect(Collectors.toList()).indexOf(child);
@@ -207,7 +207,7 @@ import java.util.stream.Collectors;
 			indices = new int[] { getIndexOfChild(((IUnit) item).getKind(), item) };
 			children = new Object[] { item };
 		} else if (item instanceof UnitMember) {
-			IUnit parent = StreamSupport.stream(model.getUnits(player).spliterator(), false)
+			IUnit parent = model.getUnits(player).stream()
 				.filter(containingItem((UnitMember) item)).findAny().orElse(null);
 			if (parent == null) {
 				LOGGER.warning(
@@ -247,7 +247,7 @@ import java.util.stream.Collectors;
 				getIndexOfChild(player, newKind) };
 			children = new Object[] { item.getKind(), newKind };
 		} else if (item instanceof UnitMember) {
-			IUnit parent = StreamSupport.stream(model.getUnits(player).spliterator(), false)
+			IUnit parent = model.getUnits(player).stream()
 				.filter(containingItem((UnitMember) item)).findAny().orElse(null);
 			if (parent == null) {
 				LOGGER.warning(
@@ -332,10 +332,8 @@ import java.util.stream.Collectors;
 				.map(IUnit.class::cast).findFirst().orElse(null);
 			String startingKind = Stream.of(starting.getPath()).filter(String.class::isInstance)
 				.map(String.class::cast).findFirst().orElse(null);
-			Iterable<IUnit> temp = model.getUnits(player);
-			sequence = Stream.concat(StreamSupport.stream(temp.spliterator(), false),
-					StreamSupport.stream(temp.spliterator(), false))
-				.collect(Collectors.toList());
+			Collection<IUnit> temp = model.getUnits(player);
+			sequence = Stream.concat(temp.stream(), temp.stream()).collect(Collectors.toList());
 			if (startingUnit != null) {
 				leading = true;
 				leadingFilter = startingUnit::equals;

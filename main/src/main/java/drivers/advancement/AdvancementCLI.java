@@ -49,7 +49,7 @@ public class AdvancementCLI implements CLIDriver {
 	 * Let the user add experience to a player's workers.
 	 */
 	private void advanceWorkers(final IWorkerModel model, final Player player, final boolean allowExpertMentoring) {
-		List<IUnit> units = StreamSupport.stream(model.getUnits(player).spliterator(), false)
+		List<IUnit> units = model.getUnits(player).stream()
 				.filter(u -> u.stream().anyMatch(IWorker.class::isInstance)).collect(Collectors.toList());
 		while (!units.isEmpty()) {
 			IUnit chosen = cli.chooseFromList(units, String.format("%s's units:", player.getName()),

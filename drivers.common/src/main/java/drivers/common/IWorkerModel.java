@@ -25,7 +25,7 @@ public interface IWorkerModel extends  IMultiMapModel, IAdvancementModel, IFixtu
 	 * The units in the map belonging to the given player.
 	 * @param player The player whose units we want
 	 */
-	Iterable<IUnit> getUnits(Player player);
+	Collection<IUnit> getUnits(Player player);
 
 	/**
 	 * The units in the map of the given "kind" belonging to the given player.

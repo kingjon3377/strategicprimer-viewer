@@ -72,9 +72,7 @@ public class WorkerMgmtGUI implements MultiMapGUIDriver, WorkerGUI {
 			LOGGER.log(Level.SEVERE, "I/O error setting up About dialog", except);
 		}
 		LOGGER.finer("Registered menu handlers");
-		if (model.streamAllMaps().noneMatch(m -> model.getUnits(m.getCurrentPlayer())
-					// TODO: Change to use isEmpty() once return type is List
-					.iterator().hasNext())) {
+		if (model.streamAllMaps().allMatch(m -> model.getUnits(m.getCurrentPlayer()).isEmpty())) {
 			pcml.actionPerformed(new ActionEvent(frame, ActionEvent.ACTION_FIRST,
 				"change current player"));
 		}

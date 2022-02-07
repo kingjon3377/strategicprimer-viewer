@@ -125,8 +125,7 @@ public class WorkerModel extends SimpleMultiMapModel implements IWorkerModel {
 		if (currentPlayerImpl == null) {
 			for (IMapNG localMap : getAllMaps()) {
 				Player temp = localMap.getCurrentPlayer();
-				// TODO: Make getUnits() return Collection or List
-				if (getUnits(temp).iterator().hasNext()) {
+				if (!getUnits(temp).isEmpty()) {
 					currentPlayerImpl = temp;
 					return temp;
 				}
@@ -181,15 +180,14 @@ public class WorkerModel extends SimpleMultiMapModel implements IWorkerModel {
 	 */
 	@Override
 	public Collection<IUnit> getUnits(final Player player, final String kind) {
-		return StreamSupport.stream(getUnits(player).spliterator(), false)
-			.filter(u -> kind.equals(u.getKind())).collect(Collectors.toList());
+		return getUnits(player).stream().filter(u -> kind.equals(u.getKind())).collect(Collectors.toList());
 	}
 
 	/**
 	 * Get all the given player's units, or only those of a specified kind.
 	 */
 	@Override
-	public Iterable<IUnit> getUnits(final Player player) {
+	public Collection<IUnit> getUnits(final Player player) {
 		if (!getSubordinateMaps().iterator().hasNext()) {
 			// Just in case I missed something in the proxy implementation, make sure
 			// things work correctly when there's only one map.
@@ -226,8 +224,7 @@ public class WorkerModel extends SimpleMultiMapModel implements IWorkerModel {
 	 */
 	@Override
 	public Iterable<String> getUnitKinds(final Player player) {
-		return StreamSupport.stream(getUnits(player).spliterator(), false)
-			.map(IUnit::getKind).distinct().sorted(String.CASE_INSENSITIVE_ORDER)
+		return getUnits(player).stream().map(IUnit::getKind).distinct().sorted(String.CASE_INSENSITIVE_ORDER)
 			.collect(Collectors.toList());
 	}
 
@@ -289,7 +286,7 @@ public class WorkerModel extends SimpleMultiMapModel implements IWorkerModel {
 	@Override
 	@Nullable
 	public IUnit getUnitByID(final Player owner, final int id) {
-		return StreamSupport.stream(getUnits(owner).spliterator(), true)
+		return getUnits(owner).parallelStream()
 			.filter(u -> u.getId() == id).findAny().orElse(null);
 	}
 

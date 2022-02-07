@@ -1,5 +1,6 @@
 package drivers.worker_mgmt;
 
+import java.util.Collection;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
@@ -161,7 +162,7 @@ import common.map.fixtures.mobile.worker.IJob;
 		try (BufferedWriter writer = Files.newBufferedWriter(path, StandardCharsets.UTF_8)) {
 			String playerName = currentPlayer.getName();
 			int turn = model.getMap().getCurrentTurn();
-			Iterable<IUnit> units = model.getUnits(currentPlayer);
+			Collection<IUnit> units = model.getUnits(currentPlayer);
 			Map<String, List<IUnit>> unitsByKind = new HashMap<>(); // TODO: Use multimap (as we did in Ceylon)
 			for (IUnit unit : units) {
 				if (unit.iterator().hasNext() ||
