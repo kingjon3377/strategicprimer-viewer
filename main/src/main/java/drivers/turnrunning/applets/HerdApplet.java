@@ -73,6 +73,9 @@ import query.SmallAnimalModel;
 	@Nullable
 	public String run() {
 		IUnit unit = model.getSelectedUnit();
+		if (unit == null) {
+			return null;
+		}
 		StringBuilder buffer = new StringBuilder();
 		@Nullable IFortress home = containingFortress(unit);
 		for (String kind : unit.stream()

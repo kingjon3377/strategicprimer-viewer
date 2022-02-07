@@ -11,6 +11,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import java.util.Map;
+import java.util.Optional;
 import java.util.ServiceLoader;
 import java.util.logging.Logger;
 import java.util.logging.Level;
@@ -69,7 +70,8 @@ import lovelace.util.ResourceInputStream;
 						factory.getUsage().isGraphical()).findAny().orElse(null);
 				LOGGER.warning(String.format("Invocation command conflict for %s between %s and %s",
 					command, factory.getUsage().getShortDescription(),
-					existing.getUsage().getShortDescription()));
+					Optional.ofNullable(existing).map(DriverFactory::getUsage)
+							.map(IDriverUsage::getShortDescription).orElse("a null factory")));
 				conflicts.put(command, new ArrayList<>(Arrays.asList(factory, existing)));
 				List<DriverFactory> existingList = cache.get(command);
 				existingList.remove(existing);
