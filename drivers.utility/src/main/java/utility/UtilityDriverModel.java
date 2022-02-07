@@ -1,6 +1,7 @@
 package utility;
 
 import common.map.SubsettableFixture;
+import java.util.Collection;
 import java.util.Random;
 import java.util.logging.Logger;
 import lovelace.util.SingletonRandom;
@@ -156,11 +157,11 @@ public class UtilityDriverModel extends SimpleMultiMapModel {
 		return duplicatesList;
 	}
 
-	private List<Quartet<Runnable, String, String, Iterable<? extends IFixture>>> coalesceImpl(
+	private List<Quartet<Runnable, String, String, Collection<? extends IFixture>>> coalesceImpl(
 			final String context, final Iterable<? extends IFixture> stream, final Consumer<IFixture> add,
 			final Consumer<IFixture> remove, final Runnable setModFlag,
 			final Map<Class<? extends IFixture>, CoalescedHolder<? extends IFixture, ?>> handlers) {
-		List<Quartet<Runnable, String, String, Iterable<? extends IFixture>>> retval =
+		List<Quartet<Runnable, String, String, Collection<? extends IFixture>>> retval =
 			new ArrayList<>();
 		for (IFixture fixture : stream) {
 			if (fixture instanceof FixtureIterable) {
@@ -227,11 +228,11 @@ public class UtilityDriverModel extends SimpleMultiMapModel {
 	 * of resources that would be combined and a callback to do the
 	 * operation; the initial caller of this ask the user for approval.
 	 */
-	public Iterable<Quartet<Runnable, String, String, Iterable<? extends IFixture>>>
+	public Collection<Quartet<Runnable, String, String, Collection<? extends IFixture>>>
 			conditionallyCoalesceResources(final Point location,
 			                               final Map<Class<? extends IFixture>,
 					CoalescedHolder<? extends IFixture, ?>> handlers) {
-		List<Quartet<Runnable, String, String, Iterable<? extends IFixture>>> retval = new ArrayList<>();
+		List<Quartet<Runnable, String, String, Collection<? extends IFixture>>> retval = new ArrayList<>();
 		for (IMutableMapNG map : getRestrictedAllMaps()) {
 			retval.addAll(coalesceImpl(
 				String.format("In %s: At %s: ",

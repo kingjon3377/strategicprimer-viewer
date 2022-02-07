@@ -1,5 +1,6 @@
 package utility;
 
+import java.util.Collection;
 import java.util.stream.Stream;
 import org.jetbrains.annotations.Nullable;
 
@@ -222,17 +223,15 @@ public class DuplicateFixtureRemoverCLI implements CLIDriver {
 		mapping.put(Shrub.class, new CoalescedHolder<>(Shrub.class, Shrub[]::new,
 				Shrub::getKind, DuplicateFixtureRemoverCLI::combinePopulations));
 
-		for (Quartet<Runnable, String, String, Iterable<? extends IFixture>> q :
+		for (Quartet<Runnable, String, String, Collection<? extends IFixture>> q :
 				model.conditionallyCoalesceResources(location, mapping)) {
 			Runnable callback = q.getValue0();
 			String context = q.getValue1();
 			String plural = q.getValue2();
-			Iterable<? extends IFixture> fixtures = q.getValue3();
+			Collection<? extends IFixture> fixtures = q.getValue3();
 			cli.print(context);
 			cli.println(String.format("The following %s can be combined:", plural));
-			// TODO: Make model.conditionallyCoalesceResources() return Collection rather than Iterable
-			StreamSupport.stream(fixtures.spliterator(), false).map(Object::toString)
-				.forEach(cli::println);
+			fixtures.stream().map(Object::toString).forEach(cli::println);
 			Boolean resp = cli.inputBooleanInSeries("Combine them? ",
 				memberKind(fixtures.iterator().next()));
 			if (resp == null) {
