@@ -1,5 +1,6 @@
 package exploration.common;
 
+import java.util.Collection;
 import java.util.List;
 import org.jetbrains.annotations.Nullable;
 import drivers.common.IFixtureEditingModel;
@@ -19,9 +20,9 @@ import common.map.fixtures.mobile.IUnit;
 public interface IExplorationModel extends IMultiMapModel, SelectionChangeSource,
 		MovementCostSource, IFixtureEditingModel {
 	/**
-	 * Players that are shared by all the maps. TODO: Collection rather than just Iterable?
+	 * Players that are shared by all the maps.
 	 */
-	Iterable<Player> getPlayerChoices();
+	Collection<Player> getPlayerChoices();
 
 	/**
 	 * The given player's units in the main (master) map.

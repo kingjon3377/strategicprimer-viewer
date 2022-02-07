@@ -1,6 +1,7 @@
 package utility;
 
 import common.map.Player;
+import java.util.ArrayList;
 import java.util.stream.StreamSupport;
 import java.util.stream.IntStream;
 import java.util.stream.Collectors;
@@ -88,8 +89,7 @@ import java.util.Arrays;
 
 	@Override
 	public void startDriver() {
-		Player player = cli.chooseFromList(StreamSupport.stream(model.getPlayerChoices()
-				.spliterator(), false).collect(Collectors.toList()),
+		Player player = cli.chooseFromList(new ArrayList<>(model.getPlayerChoices()),
 			"Players in the map:", "No players", "Player owning the unit:", false).getValue1();
 		if (player != null) {
 			IUnit unit = cli.chooseFromList(model.getUnits(player),

@@ -217,8 +217,7 @@ import org.javatuples.Pair;
 	@Override
 	public void startDriver() {
 		int currentTurn = model.getMap().getCurrentTurn();
-		Player player = cli.chooseFromList(StreamSupport.stream(model.getPlayerChoices().spliterator(), false)
-				.collect(Collectors.toList()), "Players in the maps:", "No players found",
+		Player player = cli.chooseFromList(new ArrayList<>(model.getPlayerChoices()), "Players in the maps:", "No players found",
 			"Player to run:", false).getValue1();
 		if (player == null) {
 			return;

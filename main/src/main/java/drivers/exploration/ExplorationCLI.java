@@ -1,5 +1,6 @@
 package drivers.exploration;
 
+import java.util.ArrayList;
 import java.util.logging.Logger;
 
 import org.jetbrains.annotations.Nullable;
@@ -46,8 +47,7 @@ import common.map.fixtures.mobile.IUnit;
 	 */
 	@Nullable
 	public Player choosePlayer() {
-		return cli.chooseFromList(StreamSupport.stream(model.getPlayerChoices().spliterator(), false)
-				.collect(Collectors.toList()), "Players shared by all the maps:",
+		return cli.chooseFromList(new ArrayList<>(model.getPlayerChoices()), "Players shared by all the maps:",
 			"No players shared by all the maps:", "Chosen player: ", true).getValue1();
 	}
 

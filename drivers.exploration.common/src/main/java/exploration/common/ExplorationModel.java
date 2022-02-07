@@ -258,7 +258,7 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 	 * TODO: Move to IMultiMapModel?
 	 */
 	@Override
-	public Iterable<Player> getPlayerChoices() {
+	public Collection<Player> getPlayerChoices() {
 		// TODO: Port this stream-based algorithm to Java
 //		return allMaps.map(IMapNG.players).map(set).fold(set(map.players))(intersection);
 		Set<Player> retval = StreamSupport.stream(getMap().getPlayers().spliterator(), true)
