@@ -142,8 +142,8 @@ public class AnimalTabularReportGenerator implements ITableGenerator<AnimalOrTra
 			} else if (two.getValue1() instanceof Animal) {
 				return -1;
 			} else {
-				return ((Animal) one.getValue1()).getKind()
-					.compareTo(((Animal) two.getValue1()).getKind());
+				return ((AnimalOrTracks) one.getValue1()).getKind()
+					.compareTo(((AnimalOrTracks) two.getValue1()).getKind());
 			}
 		} else {
 			return cmp;
