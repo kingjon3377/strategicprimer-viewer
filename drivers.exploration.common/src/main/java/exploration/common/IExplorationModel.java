@@ -1,5 +1,6 @@
 package exploration.common;
 
+import java.util.List;
 import org.jetbrains.annotations.Nullable;
 import drivers.common.IFixtureEditingModel;
 import drivers.common.SelectionChangeSource;
@@ -23,9 +24,9 @@ public interface IExplorationModel extends IMultiMapModel, SelectionChangeSource
 	Iterable<Player> getPlayerChoices();
 
 	/**
-	 * The given player's units in the main (master) map. TODO: Collection rather than just Iterable?
+	 * The given player's units in the main (master) map.
 	 */
-	Iterable<IUnit> getUnits(Player player);
+	List<IUnit> getUnits(Player player);
 
 	/**
 	 * Move the currently selected unit from its current location one tile

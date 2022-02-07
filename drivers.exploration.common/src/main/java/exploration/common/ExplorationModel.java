@@ -274,7 +274,7 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 	 * Collect all the units in the main map belonging to the specified player.
 	 */
 	@Override
-	public Iterable<IUnit> getUnits(final Player player) {
+	public List<IUnit> getUnits(final Player player) {
 		return getMap().streamAllFixtures()
 			.flatMap(ExplorationModel::unflattenNonFortresses)
 			.filter(IUnit.class::isInstance)

@@ -56,8 +56,7 @@ import common.map.fixtures.mobile.IUnit;
 	 */
 	@Nullable
 	public IUnit chooseUnit(final Player player) {
-		return cli.chooseFromList(StreamSupport.stream(model.getUnits(player).spliterator(), false)
-				.collect(Collectors.toList()), "Player's units:",
+		return cli.chooseFromList(model.getUnits(player), "Player's units:",
 			"That player has no units in the master map", "Chosen unit: ", true).getValue1();
 	}
 

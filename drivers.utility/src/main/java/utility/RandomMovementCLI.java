@@ -47,8 +47,7 @@ import java.util.Random;
 	public void startDriver() {
 		Direction[] directions = Direction.values();
 		for (IUnit unit : StreamSupport.stream(model.getPlayerChoices().spliterator(), false)
-				.filter(Player::isIndependent)
-				.flatMap(p -> StreamSupport.stream(model.getUnits(p).spliterator(), false))
+				.filter(Player::isIndependent).flatMap(p -> model.getUnits(p).stream())
 				.collect(Collectors.toList())) {
 			Random rng = new Random(unit.getId() << 8 + model.getMap().getCurrentTurn());
 			int steps = rng.nextInt(3) + rng.nextInt(3);

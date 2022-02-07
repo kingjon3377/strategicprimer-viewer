@@ -92,9 +92,7 @@ import java.util.Arrays;
 				.spliterator(), false).collect(Collectors.toList()),
 			"Players in the map:", "No players", "Player owning the unit:", false).getValue1();
 		if (player != null) {
-			IUnit unit = cli.chooseFromList(
-				StreamSupport.stream(model.getUnits(player).spliterator(), false)
-					.collect(Collectors.toList()),
+			IUnit unit = cli.chooseFromList(model.getUnits(player),
 				"Units of that player:", "No units", "Unit to print:", false).getValue1();
 			if (unit != null) {
 				printWorkers(unit);
