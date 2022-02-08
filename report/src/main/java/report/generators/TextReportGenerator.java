@@ -74,10 +74,8 @@ public class TextReportGenerator extends AbstractReportGenerator<TextFixture> {
 					.thenComparing(t -> t.getValue2().getText()))
 				.collect(Collectors.toList());
 		if (!items.isEmpty()) {
-			ostream.accept("<h4>Miscellaneous Notes</h4>");
-			ostream.accept(System.lineSeparator());
-			ostream.accept("<ul>");
-			ostream.accept(System.lineSeparator());
+			println(ostream, "<h4>Miscellaneous Notes</h4>");
+			println(ostream, "<ul>");
 			for (Triplet<Integer, Point, TextFixture> triplet : items) {
 				int key = triplet.getValue0();
 				Point location = triplet.getValue1();
@@ -85,11 +83,9 @@ public class TextReportGenerator extends AbstractReportGenerator<TextFixture> {
 				fixtures.remove(key);
 				ostream.accept("<li>");
 				produceSingle(fixtures, map, ostream, item, location);
-				ostream.accept("</li>");
-				ostream.accept(System.lineSeparator());
+				println(ostream, "</li>");
 			}
-			ostream.accept("</ul>");
-				ostream.accept(System.lineSeparator());
+			println(ostream, "</ul>");
 		}
 	}
 }

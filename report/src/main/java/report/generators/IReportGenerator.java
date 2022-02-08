@@ -127,4 +127,14 @@ public interface IReportGenerator<T extends IFixture> {
 			ostream.accept(CLOSE_UL);
 		}
 	}
+
+	/**
+	 * Pass the given string to the given consumer, then additionally pass a newline.
+	 *
+	 * TODO: Maybe also provide printf?
+	 */
+	default void println(Consumer<String> ostream, String str) {
+		ostream.accept(str);
+		ostream.accept(System.lineSeparator());
+	}
 }

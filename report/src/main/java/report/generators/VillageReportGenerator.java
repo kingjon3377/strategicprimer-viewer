@@ -83,8 +83,7 @@ public class VillageReportGenerator extends AbstractReportGenerator<Village> {
 		writeMap(ostream, own, writer, byDistance);
 		writeMap(ostream, independents, writer, byDistance);
 		if (!others.isEmpty()) {
-			ostream.accept("<h4>Other villages you know about:</h4>");
-			ostream.accept(System.lineSeparator());
+			println(ostream, "<h4>Other villages you know about:</h4>");
 			for (HeadedMap<Village, Point> mapping : others.values()) {
 				writeMap(ostream, mapping, writer, byDistance);
 			}

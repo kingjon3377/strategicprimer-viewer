@@ -65,37 +65,30 @@ public class UnitReportGenerator extends AbstractReportGenerator<IUnit> {
 	 */
 	private void produceOrders(final IUnit item, final Consumer<String> formatter) {
 		if (!item.getAllOrders().isEmpty() || !item.getAllResults().isEmpty()) {
-			formatter.accept("Orders and Results:<ul>");
-			formatter.accept(System.lineSeparator());
+			println(formatter, "Orders and Results:<ul>");
 			for (int turn : Stream.concat(item.getAllOrders().keySet().stream(),
 							item.getAllResults().keySet().stream())
 						.mapToInt(Integer::intValue).sorted()
 						.distinct().toArray()) {
 				formatter.accept("<li>Turn ");
 				formatter.accept(Integer.toString(turn));
-				formatter.accept(":<ul>");
-				formatter.accept(System.lineSeparator());
+				println(formatter, ":<ul>");
 				String orders = item.getOrders(turn);
 				if (!orders.isEmpty()) {
 					formatter.accept("<li>Orders: ");
 					formatter.accept(orders);
-					formatter.accept("</li>");
-					formatter.accept(System.lineSeparator());
+					println(formatter, "</li>");
 				}
 				String results = item.getResults(turn);
 				if (!results.isEmpty()) {
 					formatter.accept("<li>Results: ");
 					formatter.accept(results);
-					formatter.accept("</li>");
-					formatter.accept(System.lineSeparator());
+					println(formatter, "</li>");
 				}
-				formatter.accept("</ul>");
-				formatter.accept(System.lineSeparator());
-				formatter.accept("</li>");
-				formatter.accept(System.lineSeparator());
+				println(formatter, "</ul>");
+				println(formatter, "</li>");
 			}
-			formatter.accept("</ul>");
-			formatter.accept(System.lineSeparator());
+			println(formatter, "</ul>");
 		}
 	}
 
@@ -116,21 +109,16 @@ public class UnitReportGenerator extends AbstractReportGenerator<IUnit> {
 		if (!collection.isEmpty()) {
 			ostream.accept("<li>");
 			ostream.accept(heading);
-			ostream.accept(":");
-			ostream.accept(System.lineSeparator());
-			ostream.accept("<ul>");
-			ostream.accept(System.lineSeparator());
+			println(ostream, ":");
+			println(ostream, "<ul>");
 			for (Member member : collection) {
 				ostream.accept("<li>");
 				generator.accept(member);
-				ostream.accept("</li>");
-				ostream.accept(System.lineSeparator());
+				println(ostream, "</li>");
 				fixtures.remove(member.getId());
 			}
-			ostream.accept("</ul>");
-			ostream.accept(System.lineSeparator());
-			ostream.accept("</li>");
-			ostream.accept(System.lineSeparator());
+			println(ostream, "</ul>");
+			println(ostream, "</li>");
 		}
 	}
 
@@ -183,10 +171,8 @@ public class UnitReportGenerator extends AbstractReportGenerator<IUnit> {
 					others.add(member);
 				}
 			}
-			ostream.accept(". Members of the unit:");
-			ostream.accept(System.lineSeparator());
-			ostream.accept("<ul>");
-			ostream.accept(System.lineSeparator());
+			println(ostream, ". Members of the unit:");
+			println(ostream, "<ul>");
 			IReportGenerator<IWorker> workerReportGenerator;
 			if (item.getOwner().equals(currentPlayer)) {
 				workerReportGenerator = ourWorkerReportGenerator;
@@ -201,25 +187,20 @@ public class UnitReportGenerator extends AbstractReportGenerator<IUnit> {
 			this.produceInner(fixtures, ostream, "Equipment", equipment, (member) ->
 				memberReportGenerator.produceSingle(fixtures, map, ostream, member, loc));
 			if (!resources.isEmpty()) {
-				ostream.accept("<li>Resources:");
-				ostream.accept(System.lineSeparator());
-				ostream.accept("<ul>");
-				ostream.accept(System.lineSeparator());
+				println(ostream, "<li>Resources:");
+				println(ostream, "<ul>");
 				for (Map.Entry<String, List<IResourcePile>> entry : resources.entrySet()) {
 					produceInner(fixtures, ostream, entry.getKey(), entry.getValue(),
 						(IResourcePile member) ->
 							memberReportGenerator.produceSingle(fixtures, map,
 								ostream, member, loc));
 				}
-				ostream.accept("</ul>");
-				ostream.accept(System.lineSeparator());
-				ostream.accept("</li>");
-				ostream.accept(System.lineSeparator());
+				println(ostream, "</ul>");
+				println(ostream, "</li>");
 			}
 			this.produceInner(fixtures, ostream, "Others", others,
 				(it) -> ostream.accept(it.toString()));
-			ostream.accept("</ul>");
-			ostream.accept(System.lineSeparator());
+			println(ostream, "</ul>");
 		}
 		produceOrders(item, ostream);
 		fixtures.remove(item.getId());
@@ -255,10 +236,8 @@ public class UnitReportGenerator extends AbstractReportGenerator<IUnit> {
 			}
 		}
 		if (!ours.isEmpty() || !foreign.isEmpty()) {
-			ostream.accept("<h4>Units in the map</h4>");
-			ostream.accept(System.lineSeparator());
-			ostream.accept("<p>(Any units listed above are not described again.)</p>");
-			ostream.accept(System.lineSeparator());
+			println(ostream, "<h4>Units in the map</h4>");
+			println(ostream, "<p>(Any units listed above are not described again.)</p>");
 			writeMap(ostream, ours, (unit, loc, formatter) ->
 				unitFormatter(fixtures, map, unit, loc, formatter));
 			writeMap(ostream, foreign, (unit, loc, formatter) ->

@@ -136,30 +136,23 @@ public class FortressMemberReportGenerator extends AbstractReportGenerator<Fortr
 			}
 		}
 		if (!equipment.isEmpty() || !resources.isEmpty()) {
-			ostream.accept("<h4>Resources and Equipment</h4>");
-			ostream.accept(System.lineSeparator());
-			ostream.accept("<ul>");
-			ostream.accept(System.lineSeparator());
+			println(ostream, "<h4>Resources and Equipment</h4>");
+			println(ostream, "<ul>");
 			writeMap(ostream, equipment, defaultFormatter(fixtures, map));
 			if (!resources.isEmpty()) {
-				ostream.accept("<li>Resources:<ul>");
-				ostream.accept(System.lineSeparator());
+				println(ostream, "<li>Resources:<ul>");
 				for (Map.Entry<String, HeadedMap<IResourcePile, Point>> entry :
 						resources.entrySet()) {
 					String kind = entry.getKey();
 					HeadedMap<IResourcePile, Point> mapping = entry.getValue();
 					ostream.accept("<li>");
 					writeMap(ostream, mapping, defaultFormatter(fixtures, map));
-					ostream.accept("</li>");
-					ostream.accept(System.lineSeparator());
+					println(ostream, "</li>");
 				}
-				ostream.accept("</ul>");
-				ostream.accept(System.lineSeparator());
-				ostream.accept("</li>");
-				ostream.accept(System.lineSeparator());
+				println(ostream, "</ul>");
+				println(ostream, "</li>");
 			}
-			ostream.accept("</ul>");
-			ostream.accept(System.lineSeparator());
+			println(ostream, "</ul>");
 		}
 	}
 }

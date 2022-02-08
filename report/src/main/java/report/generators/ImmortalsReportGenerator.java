@@ -126,8 +126,7 @@ public class ImmortalsReportGenerator extends AbstractReportGenerator<Immortal> 
 		}
 		if (!centaurs.isEmpty() || !giants.isEmpty() || !fairies.isEmpty() || !dragons.isEmpty() ||
 				!simples.isEmpty()) {
-			ostream.accept("<h4>Immortals</h4>");
-			ostream.accept(System.lineSeparator());
+			println(ostream, "<h4>Immortals</h4>");
 			for (Map.Entry<String, List<Point>> entry : new ConcatIterable<>(
 					centaurs.entrySet(), giants.entrySet(), fairies.entrySet(),
 					simples.entrySet())) {
@@ -138,12 +137,10 @@ public class ImmortalsReportGenerator extends AbstractReportGenerator<Immortal> 
 					ostream.accept(key);
 					ostream.accept(": at ");
 					ostream.accept(commaSeparatedList(list));
-					ostream.accept("</li>");
-					ostream.accept(System.lineSeparator());
+					println(ostream, "</li>");
 				}
 			}
-			ostream.accept("</ul>");
-			ostream.accept(System.lineSeparator());
+			println(ostream, "</ul>");
 		}
 	}
 }

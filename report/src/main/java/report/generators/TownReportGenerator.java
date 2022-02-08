@@ -148,8 +148,7 @@ public class TownReportGenerator extends AbstractReportGenerator<ITownFixture> {
 		// separateByStatus() sorts using pairComparator, which should be by distance from HQ
 		separateByStatus(separated, fixtures.values(), TownReportGenerator::separateByStatusInner);
 		if (separated.values().stream().anyMatch(l -> !l.isEmpty())) {
-			ostream.accept("<h4>Cities, towns, and/or fortifications you know about:</h4>");
-			ostream.accept(System.lineSeparator());
+			println(ostream, "<h4>Cities, towns, and/or fortifications you know about:</h4>");
 			for (HeadedMap<ITownFixture, Point> mapping :
 					Arrays.asList(abandoned, active, burned, ruined)) {
 				super.writeMap(ostream, mapping, super.defaultFormatter(fixtures, map));

@@ -216,8 +216,7 @@ public class HarvestableReportGenerator extends AbstractReportGenerator<Harvesta
 		List<HeadedMap<? extends HarvestableFixture, Point>> maps =
 			Arrays.asList(caches, groves, meadows, mines);
 		if (maps.stream().anyMatch(m -> !m.isEmpty()) || all.stream().anyMatch(l -> !l.isEmpty())) {
-			ostream.accept("<h4>Resource Sources</h4>");
-			ostream.accept(System.lineSeparator());
+			println(ostream, "<h4>Resource Sources</h4>");
 			for (HeadedMap<? extends HarvestableFixture, Point> mapping : maps) {
 				super.<HarvestableFixture>writeMap(ostream, mapping, defaultFormatter(fixtures, map));
 			}

@@ -87,16 +87,13 @@ import common.map.fixtures.mobile.worker.IJob;
 			ostream.accept(System.lineSeparator());
 			ostream.accept("<p>");
 			ostream.accept(statsString(worker.getStats()));
-			ostream.accept("</p>");
-			ostream.accept(System.lineSeparator());
+			println(ostream, "</p>");
 		}
 		// FIXME: IWorker.isEmpty() just refers to jobs, right?
 		if (details && worker.iterator().hasNext()) {
 			ostream.accept(System.lineSeparator());
-			ostream.accept("(S)he has training or experience in the following Jobs (Skills):");
-			ostream.accept(System.lineSeparator());
-			ostream.accept("<ul>");
-			ostream.accept(System.lineSeparator());
+			println(ostream, "(S)he has training or experience in the following Jobs (Skills):");
+			println(ostream, "<ul>");
 			for (IJob job : worker) {
 				ostream.accept("<li>");
 				ostream.accept(Integer.toString(job.getLevel()));
@@ -104,17 +101,14 @@ import common.map.fixtures.mobile.worker.IJob;
 				ostream.accept(job.getName());
 				ostream.accept(" ");
 				ostream.accept(skills(job));
-				ostream.accept("</li>");
-				ostream.accept(System.lineSeparator());
+				println(ostream, "</li>");
 			}
-			ostream.accept("</ul>");
-			ostream.accept(System.lineSeparator());
+			println(ostream, "</ul>");
 		}
 		if (details && !worker.getNote(currentPlayer).isEmpty()) {
 			ostream.accept("<p>");
 			ostream.accept(worker.getNote(currentPlayer));
-			ostream.accept("</p>");
-			ostream.accept(System.lineSeparator());
+			println(ostream, "</p>");
 		}
 	}
 
@@ -131,18 +125,14 @@ import common.map.fixtures.mobile.worker.IJob;
 			.map(p -> Pair.with((IWorker) p.getValue1(), p.getValue0()))
 			.collect(Collectors.toList());
 		if (!workers.isEmpty()) {
-			ostream.accept("<h5>Workers</h5>");
-			ostream.accept(System.lineSeparator());
-			ostream.accept("<ul>");
-			ostream.accept(System.lineSeparator());
+			println(ostream, "<h5>Workers</h5>");
+			println(ostream, "<ul>");
 			for (Pair<IWorker, Point> pair : workers) {
 				ostream.accept("<li>");
 				produceSingle(fixtures, map, ostream, pair.getValue0(), pair.getValue1());
-				ostream.accept("</li>");
-				ostream.accept(System.lineSeparator());
+				println(ostream, "</li>");
 			}
-			ostream.accept("</ul>");
-			ostream.accept(System.lineSeparator());
+			println(ostream, "</ul>");
 		}
 	}
 }

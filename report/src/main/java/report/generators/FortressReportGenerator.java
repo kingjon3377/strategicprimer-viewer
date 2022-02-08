@@ -94,8 +94,7 @@ public class FortressReportGenerator extends AbstractReportGenerator<IFortress> 
 		Set<River> set = EnumSet.noneOf(River.class);
 		set.addAll(rivers);
 		if (set.contains(River.Lake)) {
-			formatter.accept("<li>There is a nearby lake.</li>");
-			formatter.accept(System.lineSeparator());
+			println(formatter, "<li>There is a nearby lake.</li>");
 			set.remove(River.Lake);
 		}
 		if (!set.isEmpty()) {
@@ -103,28 +102,24 @@ public class FortressReportGenerator extends AbstractReportGenerator<IFortress> 
 			formatter.accept("flowing through the following borders: ");
 			formatter.accept(set.stream().map(River::getDescription)
 				.collect(Collectors.joining(", ")));
-			formatter.accept("</li>");
-			formatter.accept(System.lineSeparator());
+			println(formatter, "</li>");
 		}
 	}
 
-	private static <Type extends IFixture> void printList(
+	private <Type extends IFixture> void printList(
 			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
 			final Consumer<String> ostream, final IMapNG map, final Collection<? extends Type> list,
 			final String header, final IReportGenerator<Type> helper, final Point loc) {
 		if (!list.isEmpty()) {
 			ostream.accept("<li>");
 			ostream.accept(header);
-			ostream.accept(":<ul>");
-			ostream.accept(System.lineSeparator());
+			println(ostream, ":<ul>");
 			for (Type item : list) {
 				ostream.accept("<li>");
 				helper.produceSingle(fixtures, map, ostream, item, loc);
-				ostream.accept("</li>");
-				ostream.accept(System.lineSeparator());
+				println(ostream, "</li>");
 			}
-			ostream.accept("</ul></li>");
-			ostream.accept(System.lineSeparator());
+			println(ostream, "</ul></li>");
 		}
 	}
 
@@ -139,28 +134,23 @@ public class FortressReportGenerator extends AbstractReportGenerator<IFortress> 
 		ostream.accept(item.getName());
 		ostream.accept("belonging to ");
 		ostream.accept((item.getOwner().equals(currentPlayer)) ? "you" : item.getOwner().toString());
-		ostream.accept("</h5>");
-		ostream.accept(System.lineSeparator());
-		ostream.accept("<ul>");
-		ostream.accept(System.lineSeparator());
+		println(ostream, "</h5>");
+		println(ostream, "<ul>");
 		ostream.accept("    <li>Located at ");
 		ostream.accept(loc.toString());
 		ostream.accept(" ");
 		ostream.accept(distanceString.apply(loc));
-		ostream.accept("</li>");
-		ostream.accept(System.lineSeparator());
+		println(ostream, "</li>");
 		ostream.accept("    <li>");
 		ostream.accept(terrain(map, loc, fixtures)); // TODO: Make it take ostream instead of returning String
-		ostream.accept("</li>");
-		ostream.accept(System.lineSeparator());
+		println(ostream, "</li>");
 		riversToString(ostream, map.getRivers(loc));
 		if (!map.getRoads(loc).isEmpty()) {
 			ostream.accept("<li>There are roads going in the the following directions:");
 			ostream.accept(map.getRoads(loc).keySet().stream().map(Direction::toString)
 				.collect(Collectors.joining(", ")));
 			// TODO: Report what kinds of roads they are
-			ostream.accept("</li>");
-			ostream.accept(System.lineSeparator());
+			println(ostream, "</li>");
 		}
 		List<IUnit> units = new ArrayList<>();
 		List<Implement> equipment = new ArrayList<>();
@@ -185,17 +175,14 @@ public class FortressReportGenerator extends AbstractReportGenerator<IFortress> 
 		printList(fixtures, ostream, map, units, "Units in the fortress", urg, loc);
 		printList(fixtures, ostream, map, equipment, "Equipment", memberReportGenerator, loc);
 		if (!resources.isEmpty()) {
-			ostream.accept("<li>Resources:<ul>");
-			ostream.accept(System.lineSeparator());
+			println(ostream, "<li>Resources:<ul>");
 			for (Map.Entry<String, List<IResourcePile>> entry : resources.entrySet()) {
 				printList(fixtures, ostream, map, entry.getValue(), entry.getKey(), memberReportGenerator, loc);
 			}
-			ostream.accept("</ul></li>");
-			ostream.accept(System.lineSeparator());
+			println(ostream, "</ul></li>");
 		}
 		printList(fixtures, ostream, map, contents, "Other fortress contents", memberReportGenerator, loc);
-		ostream.accept("</ul>");
-		ostream.accept(System.lineSeparator());
+		println(ostream, "</ul>");
 		fixtures.remove(item.getId());
 	}
 
@@ -222,15 +209,13 @@ public class FortressReportGenerator extends AbstractReportGenerator<IFortress> 
 			}
 		}
 		if (!ours.isEmpty()) {
-			ostream.accept("<h4>Your fortresses in the map:</h4>");
-			ostream.accept(System.lineSeparator());
+			println(ostream, "<h4>Your fortresses in the map:</h4>");
 			for (Map.Entry<IFortress, Point> entry : ours.entrySet()) {
 				produceSingle(fixtures, map, ostream, entry.getKey(), entry.getValue());
 			}
 		}
 		if (!others.isEmpty()) {
-			ostream.accept("<h4>Other fortresses in the map:</h4>");
-			ostream.accept(System.lineSeparator());
+			println(ostream, "<h4>Other fortresses in the map:</h4>");
 			for (Map.Entry<IFortress, Point> entry : others.entrySet()) {
 				produceSingle(fixtures, map, ostream, entry.getKey(), entry.getValue());
 			}
