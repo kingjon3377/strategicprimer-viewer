@@ -90,10 +90,11 @@ public class WorkerTabularReportGenerator implements ITableGenerator<IWorker> {
 
 	/**
 	 * Compare two worker-location pairs.
+	 * @return
 	 */
 	@Override
-	public int comparePairs(final Pair<Point, IWorker> one, final Pair<Point, IWorker> two) {
+	public Comparator<Pair<Point, IWorker>> comparePairs() {
 		return Comparator.<Pair<Point, IWorker>, Point>comparing(Pair::getValue0, distanceComparator)
-			.thenComparing(p -> p.getValue1().getName()).compare(one, two);
+			.thenComparing(p -> p.getValue1().getName());
 	}
 }

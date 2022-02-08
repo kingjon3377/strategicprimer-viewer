@@ -137,15 +137,13 @@ public class ResourceTabularReportGenerator
 
 	/**
 	 * Compare two Point-fixture pairs.
+	 * @return
 	 */
 	@Override
-	public int comparePairs(
-			final Pair<Point, /*Implement|CacheFixture|IResourcePile*/TileFixture> one,
-			final Pair<Point, /*Implement|CacheFixture|IResourcePile*/TileFixture> two) {
+	public Comparator<Pair<Point, TileFixture>> comparePairs() {
 		return Comparator.<Pair<Point, TileFixture>, Point>comparing(Pair::getValue0, distanceComparator)
 			.thenComparing(Pair::getValue1,
-				ResourceTabularReportGenerator::compareItems)
-			.compare(one, two);
+				ResourceTabularReportGenerator::compareItems);
 	}
 
 	/**
@@ -160,7 +158,7 @@ public class ResourceTabularReportGenerator
 				e instanceof IResourcePile)
 			.map(e -> Triplet.with(e.getKey(), e.getValue().getValue0(),
 				(TileFixture) e.getValue().getValue1()))
-			.sorted(Comparator.comparing(Triplet::removeFrom0, this::comparePairs))
+			.sorted(Comparator.comparing(Triplet::removeFrom0, comparePairs()))
 			.collect(Collectors.toList());
 		writeRow(ostream, getHeaderRow().toArray(new String[0]));
 		Map<Pair<Point, String>, Integer> implementCounts = new HashMap<>();

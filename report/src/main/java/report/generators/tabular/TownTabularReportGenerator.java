@@ -79,14 +79,14 @@ public class TownTabularReportGenerator implements ITableGenerator<AbstractTown>
 	 * TownComparators#compareTowns} because there we want to have all
 	 * active communities together, and so on, while here we want all
 	 * fortifications together, and so on.
+	 * @return
 	 */
 	@Override
-	public int comparePairs(final Pair<Point, AbstractTown> one, final Pair<Point, AbstractTown> two) {
+	public Comparator<Pair<Point, AbstractTown>> comparePairs() {
 		return Comparator.<Pair<Point, AbstractTown>, AbstractTown>comparing(Pair::getValue1, TownComparators::compareTownKind)
 			.thenComparing(Pair::getValue0, distanceComparator)
 			.thenComparing(Pair::getValue1, Comparator.comparing(AbstractTown::getTownSize)
 					.thenComparing(AbstractTown::getStatus)
-					.thenComparing(AbstractTown::getName))
-			.compare(one, two);
+					.thenComparing(AbstractTown::getName));
 	}
 }

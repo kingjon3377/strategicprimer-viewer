@@ -115,7 +115,11 @@ public class AnimalTabularReportGenerator implements ITableGenerator<AnimalOrTra
 	 * Compare two pairs of Animals and locations.
 	 */
 	@Override
-	public int comparePairs(final Pair<Point, AnimalOrTracks> one, final Pair<Point, AnimalOrTracks> two) {
+	public Comparator<Pair<Point, AnimalOrTracks>> comparePairs() {
+		return this::comparePairsImpl;
+	}
+
+	private int comparePairsImpl(Pair<Point, AnimalOrTracks> one, Pair<Point, AnimalOrTracks> two) {
 		int cmp;
 		if (hq != null) {
 			cmp = new DistanceComparator(hq, dimensions).compare(one.getValue0(),

@@ -94,13 +94,11 @@ public class DiggableTabularReportGenerator implements ITableGenerator<MineralFi
 
 	/**
 	 * Compare two Point-fixture pairs.
-	 *
-	 * TODO: Make this return Comparator in the interface, and not take 'one' and 'two' here?
 	 */
 	@Override
-	public int comparePairs(final Pair<Point, MineralFixture> one, final Pair<Point, MineralFixture> two) {
+	public Comparator<Pair<Point, MineralFixture>> comparePairs() {
 		return Comparator.<Pair<Point, MineralFixture>, String>comparing(p -> p.getValue1().getKind())
 			.thenComparing(Pair::getValue0, distanceComparator)
-			.thenComparing(p -> p.getValue1().hashCode()).compare(one, two);
+			.thenComparing(p -> p.getValue1().hashCode());
 	}
 }

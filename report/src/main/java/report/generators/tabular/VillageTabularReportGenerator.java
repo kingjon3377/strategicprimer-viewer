@@ -74,12 +74,12 @@ public class VillageTabularReportGenerator implements ITableGenerator<Village> {
 
 	/**
 	 * Compare two location-and-village pairs.
+	 * @return
 	 */
 	@Override
-	public int comparePairs(final Pair<Point, Village> one, final Pair<Point, Village> two) {
+	public Comparator<Pair<Point, Village>> comparePairs() {
 		return Comparator.<Pair<Point, Village>, Point>comparing(Pair::getValue0, distanceComparator)
 			.thenComparing(Pair::getValue1, Comparator.comparing(Village::getOwner)
-					.thenComparing(Village::getName))
-			.compare(one, two);
+					.thenComparing(Village::getName));
 	}
 }

@@ -53,7 +53,7 @@ public interface ITableGenerator<T extends IFixture> {
 			.filter(e -> cls.isInstance(e.getValue().getValue1()))
 			.map(e -> Triplet.with(e.getKey(), e.getValue().getValue0(),
 				(T) e.getValue().getValue1()))
-			.sorted(Comparator.comparing(Triplet::removeFrom0, this::comparePairs))
+			.sorted(Comparator.comparing(Triplet::removeFrom0, comparePairs()))
 			.collect(Collectors.toList());
 		writeRow(ostream, getHeaderRow().toArray(new String[0]));
 		for (Triplet<Integer, Point, T> triplet : values) {
@@ -77,7 +77,7 @@ public interface ITableGenerator<T extends IFixture> {
 			.filter(e -> cls.isInstance(e.getValue().getValue1()))
 			.map(e -> Triplet.with(e.getKey(), e.getValue().getValue0(),
 				(T) e.getValue().getValue1()))
-			.sorted(Comparator.comparing(Triplet::removeFrom0, this::comparePairs))
+			.sorted(Comparator.comparing(Triplet::removeFrom0, comparePairs()))
 			.collect(Collectors.toList());
 		DefaultTableModel retval = new DefaultTableModel(getHeaderRow().toArray(), 0);
 		int count = 0;
@@ -165,7 +165,7 @@ public interface ITableGenerator<T extends IFixture> {
 	/**
 	 * Compare two Point-fixture pairs.
 	 */
-	int comparePairs(Pair<Point, T> one, Pair<Point, T> two);
+	Comparator<Pair<Point, T>> comparePairs();
 
 	/**
 	 * A String representing the owner of a fixture: "You" if equal to

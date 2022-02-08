@@ -107,12 +107,13 @@ public class FortressTabularReportGenerator implements ITableGenerator<IFortress
 
 	/**
 	 * Compare two Point-IFortress pairs.
+	 * @return
 	 */
 	@Override
-	public int comparePairs(final Pair<Point, IFortress> one, final Pair<Point, IFortress> two) {
+	public Comparator<Pair<Point, IFortress>> comparePairs() {
 		return Comparator.<Pair<Point, IFortress>, IFortress>comparing(Pair::getValue1, this::compareOwners)
 			.thenComparing(Pair::getValue0, distanceComparator)
 			.thenComparing(Pair::getValue1, FortressTabularReportGenerator::compareNames)
-			.thenComparing(p -> p.getValue1().getOwner()).compare(one, two);
+			.thenComparing(p -> p.getValue1().getOwner());
 	}
 }

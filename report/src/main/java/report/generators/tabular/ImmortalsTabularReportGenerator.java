@@ -70,11 +70,12 @@ public class ImmortalsTabularReportGenerator implements ITableGenerator<Immortal
 
 	/**
 	 * Compare two Point-fixture pairs.
+	 * @return
 	 */
 	@Override
-	public int comparePairs(final Pair<Point, Immortal> one, final Pair<Point, Immortal> two) {
+	public Comparator<Pair<Point, Immortal>> comparePairs() {
 		return Comparator.<Pair<Point, Immortal>, Point>comparing(Pair::getValue0, distanceComparator)
 			.thenComparing(p -> p.getValue1().getClass().hashCode())
-			.thenComparing(p -> p.getValue1().hashCode()).compare(one, two);
+			.thenComparing(p -> p.getValue1().hashCode());
 	}
 }

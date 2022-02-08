@@ -152,13 +152,13 @@ public class CropTabularReportGenerator implements ITableGenerator</*Forest|Shru
 
 	/**
 	 * Compare two Point-fixture pairs.
+	 * @return
 	 */
 	@Override
-	public int comparePairs(final Pair<Point, /*Forest|Shrub|Meadow|Grove*/TileFixture> one,
-	                        final Pair<Point, /*Forest|Shrub|Meadow|Grove*/TileFixture> two) {
+	public Comparator<Pair<Point, TileFixture>> comparePairs() {
 		return Comparator.<Pair<Point, TileFixture>, String>comparing(p -> ((HasKind) p.getValue1()).getKind())
 			.thenComparing(Pair::getValue0, distanceComparator)
 			.thenComparing(p -> p.getValue1().getClass().hashCode())
-			.thenComparing(p -> p.getValue1().hashCode()).compare(one, two);
+			.thenComparing(p -> p.getValue1().hashCode());
 	}
 }

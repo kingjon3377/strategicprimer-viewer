@@ -92,14 +92,14 @@ public class UnitTabularReportGenerator implements ITableGenerator<IUnit> {
 
 	/**
 	 * Compare two location-unit pairs.
+	 * @return
 	 */
 	@Override
-	public int comparePairs(final Pair<Point, IUnit> one, final Pair<Point, IUnit> two) {
+	public Comparator<Pair<Point, IUnit>> comparePairs() {
 		return Comparator.<Pair<Point, IUnit>, Point>comparing(Pair::getValue0, distanceComparator)
 			.thenComparing(Pair::getValue1,
 				Comparator.comparing(IUnit::getOwner)
 					.thenComparing(IUnit::getKind)
-					.thenComparing(IUnit::getName))
-			.compare(one, two);
+					.thenComparing(IUnit::getName));
 	}
 }

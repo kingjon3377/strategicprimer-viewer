@@ -1,5 +1,6 @@
 package report.generators.tabular;
 
+import java.util.Comparator;
 import org.javatuples.Pair;
 
 import common.map.IFixture;
@@ -28,10 +29,11 @@ public class SkillTabularReportGenerator implements ITableGenerator<IWorker> {
 
 	/**
 	 * For this purpose, compare by worker name only.
+	 * @return
 	 */
 	@Override
-	public int comparePairs(final Pair<Point, IWorker> one, final Pair<Point, IWorker> two) {
-		return one.getValue1().getName().compareTo(two.getValue1().getName());
+	public Comparator<Pair<Point, IWorker>> comparePairs() {
+		return Comparator.comparing(p -> p.getValue1().getName());
 	}
 
 	@Override

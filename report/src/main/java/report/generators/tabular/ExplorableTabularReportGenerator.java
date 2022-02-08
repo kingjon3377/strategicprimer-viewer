@@ -127,9 +127,8 @@ public class ExplorableTabularReportGenerator
 	 * Compare two Point-fixture pairs.
 	 */
 	@Override
-	public int comparePairs(final Pair<Point, /*ExplorableFixture|TextFixture*/TileFixture> one,
-	                        final Pair<Point, /*ExplorableFixture|TextFixture*/TileFixture> two) {
+	public Comparator<Pair<Point, TileFixture>> comparePairs() {
 		return Comparator.<Pair<Point, TileFixture>, Point>comparing(Pair::getValue0, distanceComparator)
-			.thenComparing(p -> p.getValue1().toString()).compare(one, two);
+			.thenComparing(p -> p.getValue1().toString());
 	}
 }
