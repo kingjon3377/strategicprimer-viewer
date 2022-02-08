@@ -76,7 +76,6 @@ import java.util.stream.StreamSupport;
 		if (factory instanceof GUIDriverFactory) {
 			final List<Path> files = new ArrayList<>();
 			if (args.length > 0) {
-				// TODO: Make namesToFiles() return List
 				MapIOHelper.namesToFiles(args).forEach(files::add);
 			}
 			if (tooManyArguments(files.size())) {
