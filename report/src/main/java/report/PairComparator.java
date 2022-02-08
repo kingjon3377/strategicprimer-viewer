@@ -19,8 +19,6 @@ public final class PairComparator<First, Second> implements Comparator<Pair<Firs
 	/**
 	 * Given comparators of the pair's types, produce a comparator function
 	 * that compares pairs using the first and then the second element.
-	 *
-	 * TODO: May need wildcards somewhere in the type signatures here ...
 	 */
 	@Override
 	public int compare(final Pair<First, Second> one, final Pair<First, Second> two) {
