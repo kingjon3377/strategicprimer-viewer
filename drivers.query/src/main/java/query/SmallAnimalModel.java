@@ -9,12 +9,13 @@ import common.map.fixtures.Quantity;
 public enum SmallAnimalModel implements HerdModel {
 	Rabbits(10, "Rabbits", 4);
 
+	private static final Quantity QTY = new Quantity(0, "");
 	/**
 	 * These animals don't actually produce any resources.
 	 */
 	@Override
 	public Quantity getProductionPerHead() {
-		return new Quantity(0, ""); // TODO: don't return a new instance on each call
+		return QTY;
 	}
 
 	/**
