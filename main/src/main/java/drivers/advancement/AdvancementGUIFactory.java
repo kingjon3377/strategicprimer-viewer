@@ -1,7 +1,6 @@
 package drivers.advancement;
 
 import drivers.common.DriverFailedException;
-import java.util.Collections;
 
 import drivers.common.ParamCount;
 import drivers.common.IDriverUsage;
@@ -15,6 +14,7 @@ import drivers.common.IWorkerModel;
 
 import drivers.common.cli.ICLIHelper;
 
+import java.util.List;
 import worker.common.WorkerModel;
 
 import drivers.gui.common.SPFileChooser;
@@ -26,7 +26,6 @@ import lovelace.util.FileChooser;
 import java.nio.file.Path;
 
 import java.util.logging.Logger;
-import java.util.logging.Level;
 
 import com.google.auto.service.AutoService;
 
@@ -49,7 +48,7 @@ public class AdvancementGUIFactory implements GUIDriverFactory {
 	 * Ask the user to choose a file or files.
 	 */
 	@Override
-	public Iterable<Path> askUserForFiles() throws DriverFailedException {
+	public List<Path> askUserForFiles() throws DriverFailedException {
 		try {
 			return SPFileChooser.open((Path) null).getFiles();
 		} catch (final FileChooser.ChoiceInterruptedException except) {

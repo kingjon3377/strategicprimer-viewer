@@ -1,9 +1,8 @@
 package drivers;
 
 import drivers.common.DriverFailedException;
-import java.util.Collections;
+import java.util.List;
 import java.util.logging.Logger;
-import java.util.logging.Level;
 
 import java.nio.file.Path;
 
@@ -47,7 +46,7 @@ public class TabularReportGUIFactory implements GUIDriverFactory {
 	 * Ask the user to choose a file.
 	 */
 	@Override
-	public Iterable<Path> askUserForFiles() throws DriverFailedException {
+	public List<Path> askUserForFiles() throws DriverFailedException {
 		try {
 			return SPFileChooser.open((Path) null).getFiles();
 		} catch (final FileChooser.ChoiceInterruptedException except) {

@@ -3,7 +3,7 @@ package drivers.map_viewer;
 import drivers.common.DriverFailedException;
 import drivers.common.ViewerDriver;
 import drivers.common.ViewerDriverFactory;
-import java.util.logging.Level;
+import java.util.List;
 import java.util.logging.Logger;
 
 import java.nio.file.Path;
@@ -13,16 +13,12 @@ import drivers.common.IDriverUsage;
 import drivers.common.DriverUsage;
 import drivers.common.SPOptions;
 import drivers.common.ParamCount;
-import drivers.common.GUIDriver;
 import drivers.common.DriverFactory;
-import drivers.common.GUIDriverFactory;
 import drivers.common.cli.ICLIHelper;
 import common.map.IMutableMapNG;
 import drivers.gui.common.SPFileChooser;
 
 import lovelace.util.FileChooser;
-
-import java.util.Collections;
 
 import com.google.auto.service.AutoService;
 
@@ -50,7 +46,7 @@ public class ViewerGUIFactory implements ViewerDriverFactory {
 	 * Ask the user to choose a file or files.
 	 */
 	@Override
-	public Iterable<Path> askUserForFiles() throws DriverFailedException {
+	public List<Path> askUserForFiles() throws DriverFailedException {
 		try {
 			return SPFileChooser.open((Path) null).getFiles();
 		} catch (final FileChooser.ChoiceInterruptedException except) {

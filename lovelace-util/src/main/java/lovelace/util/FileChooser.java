@@ -310,7 +310,7 @@ public class FileChooser {
 	 * TODO: Just return the empty list when user declines to choose (when
 	 * we didn't catch an exception interrupting the choice)?
 	 */
-	public Iterable<Path> getFiles() throws ChoiceInterruptedException {
+	public List<Path> getFiles() throws ChoiceInterruptedException {
 		if (!storedFile.isEmpty()) {
 			LOGGER.fine("FileChooser.files: A file was stored, so returning it");
 			return storedFile;

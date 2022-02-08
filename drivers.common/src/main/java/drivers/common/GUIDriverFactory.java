@@ -2,6 +2,7 @@ package drivers.common;
 
 import java.nio.file.Path;
 import drivers.common.cli.ICLIHelper;
+import java.util.List;
 
 /**
  * An interface for factories producing GUI drivers. This interface exists so
@@ -23,5 +24,5 @@ public interface GUIDriverFactory extends ModelDriverFactory {
 	/**
 	 * Ask the user to choose a file or files. (Or do something equivalent to produce a filename.)
 	 */
-	Iterable<Path> askUserForFiles() throws DriverFailedException;
+	List<Path> askUserForFiles() throws DriverFailedException;
 }

@@ -5,6 +5,7 @@ import java.nio.file.Path;
 
 import drivers.common.cli.ICLIHelper;
 
+import java.util.List;
 import lovelace.util.FileChooser;
 
 import common.map.IMutableMapNG;
@@ -21,9 +22,6 @@ import drivers.common.IDriverModel;
 import drivers.common.GUIDriver;
 
 import java.util.logging.Logger;
-import java.util.logging.Level;
-
-import java.util.Collections;
 
 import com.google.auto.service.AutoService;
 
@@ -46,7 +44,7 @@ public class ResourceAddingGUIFactory implements GUIDriverFactory {
 	 * Ask the user to choose a file or files.
 	 */
 	@Override
-	public Iterable<Path> askUserForFiles() throws DriverFailedException { // TODO: Make interface declare ChoiceInterruptedException instead of DriverFailedException?
+	public List<Path> askUserForFiles() throws DriverFailedException { // TODO: Make interface declare ChoiceInterruptedException instead of DriverFailedException?
 		try {
 			return SPFileChooser.open((Path) null).getFiles();
 		} catch (final FileChooser.ChoiceInterruptedException except) {

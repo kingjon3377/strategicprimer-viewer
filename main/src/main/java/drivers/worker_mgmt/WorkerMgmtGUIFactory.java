@@ -1,8 +1,7 @@
 package drivers.worker_mgmt;
 
 import drivers.common.DriverFailedException;
-import java.util.Collections;
-import java.util.logging.Level;
+import java.util.List;
 import java.nio.file.Path;
 import java.util.logging.Logger;
 import drivers.common.cli.ICLIHelper;
@@ -46,7 +45,7 @@ public class WorkerMgmtGUIFactory implements GUIDriverFactory {
 	 * Ask the user to choose a file or files.
 	 */
 	@Override
-	public Iterable<Path> askUserForFiles() throws DriverFailedException {
+	public List<Path> askUserForFiles() throws DriverFailedException {
 		try {
 			return SPFileChooser.open((Path) null).getFiles();
 		} catch (final FileChooser.ChoiceInterruptedException except) {
