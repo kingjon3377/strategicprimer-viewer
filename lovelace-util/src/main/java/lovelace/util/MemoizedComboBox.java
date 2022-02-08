@@ -1,5 +1,6 @@
 package lovelace.util;
 
+import goldberg.ImprovedComboBox;
 import javax.swing.JTextField;
 import java.awt.event.ActionListener;
 import java.util.function.Consumer;

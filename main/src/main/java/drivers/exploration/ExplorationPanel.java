@@ -17,7 +17,7 @@ import static lovelace.util.MenuUtils.createHotKey;
 import lovelace.util.ListenedButton;
 import lovelace.util.FormattedLabel;
 import lovelace.util.FunctionalPopupMenu;
-import lovelace.util.ImprovedComboBox;
+import goldberg.ImprovedComboBox;
 import lovelace.util.FunctionalGroupLayout;
 import static lovelace.util.FunctionalSplitPane.verticalSplit;
 

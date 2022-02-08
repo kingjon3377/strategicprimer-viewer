@@ -1,4 +1,4 @@
-package lovelace.util;
+package goldberg;
 
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
@@ -26,8 +26,6 @@ public class ImprovedComboBox<Element> extends JComboBox<Element> {
 	 * visible, treat it like Enter.
 	 *
 	 * @author Joshua Goldberg http://stackoverflow.com/a/24336768
-	 *
-	 * TODO: Maybe move to new "third-party" module
 	 */
 	@Override
 	public void processKeyEvent(final KeyEvent event) {

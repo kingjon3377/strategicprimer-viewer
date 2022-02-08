@@ -23,7 +23,7 @@ import javax.swing.SpinnerNumberModel;
 import static lovelace.util.FunctionalSplitPane.horizontalSplit;
 import lovelace.util.BorderedPanel;
 import lovelace.util.ListenedButton;
-import lovelace.util.ImprovedComboBox;
+import goldberg.ImprovedComboBox;
 import lovelace.util.FunctionalGroupLayout;
 import lovelace.util.MalformedXMLException;
 import lovelace.util.MissingFileException;
