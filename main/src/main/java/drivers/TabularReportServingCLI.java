@@ -129,13 +129,13 @@ import org.takes.http.Exit;
 		}
 
 		// [file, table]->builder
-		List<Fork> endpoints = builders.entrySet().stream()
+		Stream<Fork> endpoints = builders.entrySet().stream()
 			.map(entry -> new FkRegex(String.format("/%s.%s.csv", entry.getKey().getValue0(),
 					entry.getKey().getValue1()),
 				new RsWithType(new RsWithHeader(new RsText(entry.getValue().toString()),
 					"Content-Disposition", String.format(
 						"attachment; filename=\"%s.csv\"", entry.getValue())),
-					"text/csv"))).collect(Collectors.toList()); // TODO: Keep as Stream instead of collecting yet?
+					"text/csv")));
 
 		Function<String, String> tocHtml = path -> {
 			StringBuilder builder = new StringBuilder();
@@ -193,7 +193,7 @@ import org.takes.http.Exit;
 			new FtBasic(
 				new TkFork(Stream.concat(Stream.<Fork>of(new FkRegex("/", new RsHtml(rootDocument.toString())),
 					new FkRegex("/index.html", new RsHtml(rootDocument.toString()))),
-					Stream.concat(tocs.stream(), endpoints.stream())).toArray(Fork[]::new)), port)
+					Stream.concat(tocs.stream(), endpoints)).toArray(Fork[]::new)), port)
 				.start(Exit.NEVER);
 		} catch (final IOException except) {
 			throw new DriverFailedException(except, "I/O error while serving files");
