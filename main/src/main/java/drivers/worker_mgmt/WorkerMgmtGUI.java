@@ -1,11 +1,8 @@
 package drivers.worker_mgmt;
 
-import drivers.map_viewer.ViewerGUIFactory;
 import drivers.common.DriverFailedException;
 import java.io.IOException;
 import java.util.logging.Level;
-import java.util.Collections;
-import java.util.stream.StreamSupport;
 import java.nio.file.Path;
 import javax.swing.SwingUtilities;
 import drivers.gui.common.about.AboutDialog;
@@ -64,7 +61,8 @@ public class WorkerMgmtGUI implements MultiMapGUIDriver, WorkerGUI {
 		pcml.addPlayerChangeListener(frame);
 		LOGGER.finer("Added it as a listener on the PCML");
 		frame.addWindowListener(new WindowCloseListener(menuHandler::actionPerformed));
-		menuHandler.register(ignored -> reload(frame), "reload tree");
+		menuHandler.register(ignored -> frame.playerChanged(model.getCurrentPlayer(), model.getCurrentPlayer()),
+				"reload tree");
 		try {
 			menuHandler.registerWindowShower(new AboutDialog(frame,
 				frame.getWindowName()), "about");
@@ -80,10 +78,6 @@ public class WorkerMgmtGUI implements MultiMapGUIDriver, WorkerGUI {
 		LOGGER.finer("About to show window");
 		frame.showWindow();
 		LOGGER.finer("Window should now be visible");
-	}
-
-	private void reload(final WorkerMgmtFrame frame) { // TODO: inline into (sole?) caller?
-		frame.playerChanged(model.getCurrentPlayer(), model.getCurrentPlayer());
 	}
 
 	@Override
