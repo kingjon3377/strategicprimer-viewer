@@ -101,7 +101,8 @@ public class ExplorableReportGenerator extends AbstractReportGenerator<Explorabl
 				if (!list.isEmpty()) {
 					ostream.accept("<li>");
 					ostream.accept(list.toString());
-					ostream.accept("</li>"); // TODO: add newline? Wasn't in Ceylon ...
+					ostream.accept("</li>");
+					ostream.accept(System.lineSeparator());
 				}
 			}
 			ostream.accept("</ul>");
