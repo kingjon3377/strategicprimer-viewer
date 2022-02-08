@@ -1,5 +1,6 @@
 package report.generators;
 
+import java.util.function.Consumer;
 import org.jetbrains.annotations.Nullable;
 import org.javatuples.Pair;
 import lovelace.util.ThrowingConsumer;
@@ -95,8 +96,7 @@ public class HarvestableReportGenerator extends AbstractReportGenerator<Harvesta
 	 */
 	@Override
 	public void produceSingle(final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-	                          final IMapNG map, final ThrowingConsumer<String, IOException> ostream, final HarvestableFixture item, final Point loc)
-			throws IOException {
+	                          final IMapNG map, final Consumer<String> ostream, final HarvestableFixture item, final Point loc) {
 		if (!(item instanceof CacheFixture || item instanceof Grove || item instanceof Meadow
 				|| item instanceof Mine || item instanceof MineralVein
 				|| item instanceof Shrub || item instanceof StoneDeposit)) {
@@ -150,7 +150,7 @@ public class HarvestableReportGenerator extends AbstractReportGenerator<Harvesta
 	 */
 	@Override
 	public void produce(final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-	                    final IMapNG map, final ThrowingConsumer<String, IOException> ostream) throws IOException {
+	                    final IMapNG map, final Consumer<String> ostream) {
 		Map<String, List<Point>> stone = new HashMap<>();
 		Map<String, List<Point>> shrubs = new HashMap<>();
 		Map<String, List<Point>> minerals = new HashMap<>();

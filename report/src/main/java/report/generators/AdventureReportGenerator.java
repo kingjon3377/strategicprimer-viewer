@@ -1,5 +1,6 @@
 package report.generators;
 
+import java.util.function.Consumer;
 import org.jetbrains.annotations.Nullable;
 import org.javatuples.Pair;
 import lovelace.util.DelayedRemovalMap;
@@ -38,7 +39,7 @@ public class AdventureReportGenerator extends AbstractReportGenerator<AdventureF
 	 */
 	@Override
 	public void produce(final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures, final IMapNG map,
-	                    final ThrowingConsumer<String, IOException> ostream) throws IOException {
+	                    final Consumer<String> ostream) {
 		super.writeMap(ostream, fixtures.values().stream()
 				.filter(p -> p.getValue1() instanceof AdventureFixture)
 				.sorted(pairComparator)
@@ -55,8 +56,7 @@ public class AdventureReportGenerator extends AbstractReportGenerator<AdventureF
 	 */
 	@Override
 	public void produceSingle(final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-	                          final IMapNG map, final ThrowingConsumer<String, IOException> ostream, final AdventureFixture item, final Point loc)
-			throws IOException {
+	                          final IMapNG map, final Consumer<String> ostream, final AdventureFixture item, final Point loc) {
 		fixtures.remove(item.getId());
 		ostream.accept(item.getBriefDescription());
 		ostream.accept(" at ");

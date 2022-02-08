@@ -1,5 +1,6 @@
 package report.generators;
 
+import java.util.function.Consumer;
 import org.jetbrains.annotations.Nullable;
 import org.javatuples.Pair;
 import java.util.List;
@@ -41,8 +42,7 @@ public class ExplorableReportGenerator extends AbstractReportGenerator<Explorabl
 	 */
 	@Override
 	public void produceSingle(final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-	                          final IMapNG map, final ThrowingConsumer<String, IOException> ostream, final ExplorableFixture item, final Point loc)
-			throws IOException {
+	                          final IMapNG map, final Consumer<String> ostream, final ExplorableFixture item, final Point loc) {
 		if (item instanceof Cave) {
 			fixtures.remove(item.getId());
 			ostream.accept("Caves beneath ");
@@ -69,7 +69,7 @@ public class ExplorableReportGenerator extends AbstractReportGenerator<Explorabl
 	 */
 	@Override
 	public void produce(final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-	                    final IMapNG map, final ThrowingConsumer<String, IOException> ostream) throws IOException {
+	                    final IMapNG map, final Consumer<String> ostream) {
 		List<Point> portals = new PointList("Portals to other worlds: ");
 		List<Point> battles = new PointList("Signs of long-ago battles on the following tiles:");
 		List<Point> caves = new PointList("Caves beneath the following tiles: ");

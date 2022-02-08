@@ -1,5 +1,6 @@
 package report.generators;
 
+import java.util.function.Consumer;
 import org.jetbrains.annotations.Nullable;
 import org.javatuples.Pair;
 import lovelace.util.ThrowingConsumer;
@@ -80,8 +81,7 @@ public class TownReportGenerator extends AbstractReportGenerator<ITownFixture> {
 	 */
 	@Override
 	public void produceSingle(final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-	                          final IMapNG map, final ThrowingConsumer<String, IOException> ostream, final ITownFixture item, final Point loc)
-			throws IOException {
+	                          final IMapNG map, final Consumer<String> ostream, final ITownFixture item, final Point loc) {
 		if (item instanceof Village) {
 			new VillageReportGenerator(comp, currentPlayer, dimensions, hq)
 				.produceSingle(fixtures, map, ostream, (Village) item, loc);
@@ -132,7 +132,7 @@ public class TownReportGenerator extends AbstractReportGenerator<ITownFixture> {
 	 */
 	@Override
 	public void produce(final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-	                    final IMapNG map, final ThrowingConsumer<String, IOException> ostream) throws IOException {
+	                    final IMapNG map, final Consumer<String> ostream) {
 		HeadedMap<ITownFixture, Point> abandoned =
 			new HeadedMapImpl<>("<h5>Abandoned Communities</h5>");
 		HeadedMap<ITownFixture, Point> active =

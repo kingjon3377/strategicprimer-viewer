@@ -1,5 +1,6 @@
 package report.generators;
 
+import java.util.function.Consumer;
 import org.jetbrains.annotations.Nullable;
 import org.javatuples.Pair;
 import lovelace.util.ThrowingConsumer;
@@ -59,8 +60,7 @@ public class ImmortalsReportGenerator extends AbstractReportGenerator<Immortal> 
 	 */
 	@Override
 	public void produceSingle(final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-	                          final IMapNG map, final ThrowingConsumer<String, IOException> ostream, final Immortal item, final Point loc)
-			throws IOException {
+	                          final IMapNG map, final Consumer<String> ostream, final Immortal item, final Point loc) {
 		fixtures.remove(item.getId());
 		ostream.accept("At ");
 		ostream.accept(loc.toString());
@@ -75,7 +75,7 @@ public class ImmortalsReportGenerator extends AbstractReportGenerator<Immortal> 
 	 */
 	@Override
 	public void produce(final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-	                    final IMapNG map, final ThrowingConsumer<String, IOException> ostream) throws IOException {
+	                    final IMapNG map, final Consumer<String> ostream) {
 		Map<Class<? extends IFixture>, BiConsumer<String, Point>> meta = new HashMap<>();
 		Map<String, List<Point>> simples = new HashMap<>();
 		BiConsumer<Class<? extends Immortal>, String> handleSimple =

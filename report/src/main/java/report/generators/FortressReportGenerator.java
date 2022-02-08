@@ -1,5 +1,6 @@
 package report.generators;
 
+import java.util.function.Consumer;
 import org.jetbrains.annotations.Nullable;
 import org.javatuples.Pair;
 import lovelace.util.ThrowingConsumer;
@@ -89,7 +90,7 @@ public class FortressReportGenerator extends AbstractReportGenerator<IFortress> 
 	 *
 	 * TODO: Can this be static?
 	 */
-	private void riversToString(final ThrowingConsumer<String, IOException> formatter, final Collection<River> rivers) throws IOException {
+	private void riversToString(final Consumer<String> formatter, final Collection<River> rivers) {
 		Set<River> set = EnumSet.noneOf(River.class);
 		set.addAll(rivers);
 		if (set.contains(River.Lake)) {
@@ -109,8 +110,8 @@ public class FortressReportGenerator extends AbstractReportGenerator<IFortress> 
 
 	private static <Type extends IFixture> void printList(
 			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-			final ThrowingConsumer<String, IOException> ostream, final IMapNG map, final Collection<? extends Type> list,
-			final String header, final IReportGenerator<Type> helper, final Point loc) throws IOException {
+			final Consumer<String> ostream, final IMapNG map, final Collection<? extends Type> list,
+			final String header, final IReportGenerator<Type> helper, final Point loc) {
 		if (!list.isEmpty()) {
 			ostream.accept("<li>");
 			ostream.accept(header);
@@ -133,8 +134,7 @@ public class FortressReportGenerator extends AbstractReportGenerator<IFortress> 
 	 */
 	@Override
 	public void produceSingle(final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-	                          final IMapNG map, final ThrowingConsumer<String, IOException> ostream, final IFortress item, final Point loc)
-			throws IOException {
+	                          final IMapNG map, final Consumer<String> ostream, final IFortress item, final Point loc) {
 		ostream.accept("<h5>Fortress ");
 		ostream.accept(item.getName());
 		ostream.accept("belonging to ");
@@ -205,7 +205,7 @@ public class FortressReportGenerator extends AbstractReportGenerator<IFortress> 
 	 */
 	@Override
 	public void produce(final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-	                    final IMapNG map, final ThrowingConsumer<String, IOException> ostream) throws IOException {
+	                    final IMapNG map, final Consumer<String> ostream) {
 		Map<IFortress, Point> ours = new HashMap<>();
 		Map<IFortress, Point> others = new HashMap<>();
 		for (Pair<Point, IFortress> pair : fixtures.values().stream()

@@ -1,5 +1,6 @@
 package report.generators;
 
+import java.util.function.Consumer;
 import org.jetbrains.annotations.Nullable;
 import org.javatuples.Pair;
 import org.javatuples.Triplet;
@@ -37,8 +38,7 @@ public class TextReportGenerator extends AbstractReportGenerator<TextFixture> {
 	 */
 	@Override
 	public void produceSingle(final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-	                          final IMapNG map, final ThrowingConsumer<String, IOException> ostream, final TextFixture item, final Point loc)
-			throws IOException {
+	                          final IMapNG map, final Consumer<String> ostream, final TextFixture item, final Point loc) {
 		ostream.accept("At ");
 		ostream.accept(loc.toString());
 		ostream.accept(" ");
@@ -61,7 +61,7 @@ public class TextReportGenerator extends AbstractReportGenerator<TextFixture> {
 	 */
 	@Override
 	public void produce(final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-	                    final IMapNG map, final ThrowingConsumer<String, IOException> ostream) throws IOException {
+	                    final IMapNG map, final Consumer<String> ostream) {
 		List<Triplet<Integer, Point, TextFixture>> items =
 			fixtures.entrySet().stream()
 				.filter(e -> e.getValue().getValue1() instanceof TextFixture)

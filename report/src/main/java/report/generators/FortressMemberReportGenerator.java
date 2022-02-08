@@ -1,5 +1,6 @@
 package report.generators;
 
+import java.util.function.Consumer;
 import org.jetbrains.annotations.Nullable;
 import org.javatuples.Pair;
 import lovelace.util.ThrowingConsumer;
@@ -52,8 +53,7 @@ public class FortressMemberReportGenerator extends AbstractReportGenerator<Fortr
 	 */
 	@Override
 	public void produceSingle(final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-	                          final IMapNG map, final ThrowingConsumer<String, IOException> ostream, final FortressMember item, final Point loc)
-			throws IOException {
+	                          final IMapNG map, final Consumer<String> ostream, final FortressMember item, final Point loc) {
 	//	assert (is IUnit|IResourcePile|Implement item);
 		if (item instanceof IUnit) {
 			// TODO: Should be a field, right? Or else a constructor parameter?
@@ -97,7 +97,7 @@ public class FortressMemberReportGenerator extends AbstractReportGenerator<Fortr
 	 */
 	@Override
 	public void produce(final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-	                    final IMapNG map, final ThrowingConsumer<String, IOException> ostream) throws IOException {
+	                    final IMapNG map, final Consumer<String> ostream) {
 		HeadedMap<Implement, Point> equipment = new HeadedMapImpl<>("<li>Equipment:",
 			Comparator.comparing(Implement::getKind)
 				.thenComparing(Implement::getCount,

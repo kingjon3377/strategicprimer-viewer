@@ -1,5 +1,6 @@
 package report.generators;
 
+import java.util.function.Consumer;
 import org.jetbrains.annotations.Nullable;
 import org.javatuples.Pair;
 import org.javatuples.Triplet;
@@ -48,8 +49,8 @@ public class AnimalReportGenerator extends AbstractReportGenerator</*Animal|Anim
 	 */
 	@Override
 	public void produceSingle(final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-	                          final IMapNG map, final ThrowingConsumer<String, IOException> ostream,
-			/*Animal|AnimalTracks*/final AnimalOrTracks item, final Point loc) throws IOException {
+	                          final IMapNG map, final Consumer<String> ostream,
+			/*Animal|AnimalTracks*/final AnimalOrTracks item, final Point loc) {
 		// TODO: Extract helper method for the "At (loc):" idiom
 		ostream.accept("At ");
 		ostream.accept(loc.toString());
@@ -96,7 +97,7 @@ public class AnimalReportGenerator extends AbstractReportGenerator</*Animal|Anim
 	 */
 	@Override
 	public void produce(final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures, final IMapNG map,
-	                    final ThrowingConsumer<String, IOException> ostream) throws IOException {
+	                    final Consumer<String> ostream) {
 		// TODO: Use a multimap, either from Guava or a custom impl in lovelace.util
 		final Map<String, List<Point>> items = new HashMap<>();
 		for (Triplet<Integer, Point, AnimalOrTracks> triplet : fixtures.entrySet().stream()
