@@ -79,8 +79,6 @@ public interface IReportGenerator<T extends IFixture> {
 	/**
 	 * Write the contents of a Map to a stream as a list, but don't write anything if it is empty.
 	 *
-	 * TODO: Split into sorted and unsorted overloads rather than having a nullable parameter
-	 *
 	 * @param ostream The stream to write to.
 	 * @param map The map to write. Has to be a {@link HeadedMap} so we can get its heading.
 	 * @param lambda The method to write each item.
@@ -107,8 +105,6 @@ public interface IReportGenerator<T extends IFixture> {
 
 	/**
 	 * Write the contents of a Map to a stream as a list, but don't write anything if it is empty.
-	 *
-	 * TODO: Split into sorted and unsorted overloads rather than having a nullable parameter
 	 *
 	 * @param ostream The stream to write to.
 	 * @param map The map to write. Has to be a {@link HeadedMap} so we can get its heading.
