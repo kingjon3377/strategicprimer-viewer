@@ -25,7 +25,7 @@ public class ImprovedComboBox<Element> extends JComboBox<Element> {
 	 * Handle a key-press. If Tab is pressed when the pop-up list is
 	 * visible, treat it like Enter.
 	 *
-	 * @author http://stackoverflow.com/a/24336768
+	 * @author Joshua Goldberg http://stackoverflow.com/a/24336768
 	 *
 	 * TODO: Maybe move to new "third-party" module
 	 */
