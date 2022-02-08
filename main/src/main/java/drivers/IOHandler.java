@@ -1,7 +1,9 @@
 package drivers;
 
 import drivers.common.DriverFailedException;
+import drivers.common.ViewerDriverFactory;
 import drivers.common.cli.ICLIHelper;
+import java.util.ServiceLoader;
 import lovelace.util.TriFunction;
 import lovelace.util.MissingFileException;
 import org.jetbrains.annotations.Nullable;
@@ -53,17 +55,11 @@ import lovelace.util.ComponentParentStream;
  */
 public class IOHandler implements ActionListener {
 	private static final Logger LOGGER = Logger.getLogger(IOHandler.class.getName());
-	// TODO: Instead of this, make ViewerGUIFactory the sole implementation of a service (@AutoService takes an array of classes) and use the same ServiceProvider API as the app-chooser will use to pick apps. This will let GUI apps other than the map viewer, and this class, move to separate modules from the map viewer.
-	private final TriFunction<ICLIHelper, SPOptions, IDriverModel, GUIDriver> viewerGUIFactory;
 	private final ISPDriver driver;
 	private final ICLIHelper cli;
 
-	// FIXME: Make viewerGUIFactory optional?
-	public IOHandler(final ISPDriver driver,
-	                 final TriFunction<ICLIHelper, SPOptions, IDriverModel, GUIDriver> viewerGUIFactory,
-	                 final ICLIHelper cli) {
+	public IOHandler(final ISPDriver driver, final ICLIHelper cli) {
 		this.driver = driver;
-		this.viewerGUIFactory = viewerGUIFactory;
 		this.cli = cli;
 	}
 
@@ -173,24 +169,40 @@ public class IOHandler implements ActionListener {
 	 * the EDT, i.e. using {@link SwingUtilities#invokeLater}.
 	 */
 	private void startNewViewerWindow(final ModelDriver driver) {
-		try {
-			viewerGUIFactory.apply(cli, driver.getOptions().copy(),
-					new ViewerModel(new SPMapNG(driver.getModel().getMapDimensions(),
-						new PlayerCollection(),
-						driver.getModel().getMap().getCurrentTurn())))
-				.startDriver();
-		} catch (final DriverFailedException except) {
-			// FIXME: show error dialog
-			LOGGER.log(Level.SEVERE, "Driver failed", except);
+		ViewerDriverFactory vdf =
+				StreamSupport.stream(ServiceLoader.load(ViewerDriverFactory.class).spliterator(), false)
+						.findAny().orElse(null);
+		if (vdf == null) {
+			// FIXME: Show error dialog
+			LOGGER.severe("Map viewer was not included in this assembly, or service discovery failed");
+		} else {
+			try {
+				vdf.createDriver(cli, driver.getOptions().copy(),
+								new ViewerModel(new SPMapNG(driver.getModel().getMapDimensions(),
+										new PlayerCollection(),
+										driver.getModel().getMap().getCurrentTurn())))
+						.startDriver();
+			} catch (final DriverFailedException except) {
+				// FIXME: show error dialog
+				LOGGER.log(Level.SEVERE, "Driver failed", except);
+			}
 		}
 	}
 
 	private void openSecondaryInViewer(final IDriverModel model, final SPOptions options) {
-		try {
-			viewerGUIFactory.apply(cli, options.copy(), new ViewerModel(model)).startDriver();
-		} catch (final DriverFailedException except) {
-			// FIXME: show error dialog
-			LOGGER.log(Level.SEVERE, "Driver failed", except);
+		ViewerDriverFactory vdf =
+				StreamSupport.stream(ServiceLoader.load(ViewerDriverFactory.class).spliterator(), false)
+						.findAny().orElse(null);
+		if (vdf == null) {
+			// FIXME: Show error dialog
+			LOGGER.severe("Map viewer was not included in this assembly, or service discovery failed");
+		} else {
+			try {
+				vdf.createDriver(cli, options.copy(), new ViewerModel(model)).startDriver();
+			} catch (final DriverFailedException except) {
+				// FIXME: show error dialog
+				LOGGER.log(Level.SEVERE, "Driver failed", except);
+			}
 		}
 	}
 
@@ -311,18 +323,26 @@ public class IOHandler implements ActionListener {
 
 		case "open in map viewer":
 			if (driver instanceof ModelDriver) {
-				SwingUtilities.invokeLater(() -> {
-					try {
-						viewerGUIFactory.apply(cli,
-								((ModelDriver) driver).getOptions().copy(),
-								new ViewerModel(((ModelDriver) driver)
-									.getModel()))
-							.startDriver();
-					} catch (final DriverFailedException except) {
-						// FIXME: Log and show error dialog instead
-						throw new RuntimeException(except);
-					}
-				});
+				ViewerDriverFactory vdf =
+						StreamSupport.stream(ServiceLoader.load(ViewerDriverFactory.class).spliterator(), false)
+								.findAny().orElse(null);
+				if (vdf == null) {
+					// FIXME: Show error dialog
+					LOGGER.severe("Map viewer was not included in this assembly, or service discovery failed");
+				} else {
+					SwingUtilities.invokeLater(() -> {
+						try {
+							vdf.createDriver(cli,
+											((ModelDriver) driver).getOptions().copy(),
+											new ViewerModel(((ModelDriver) driver)
+													.getModel()))
+									.startDriver();
+						} catch (final DriverFailedException except) {
+							// FIXME: Log and show error dialog instead
+							throw new RuntimeException(except);
+						}
+					});
+				}
 			} else {
 				LOGGER.severe(
 					"IOHandler asked to 'open in map viewer' in unsupported driver");

@@ -204,7 +204,7 @@ public class ViewerGUI implements ViewerDriver {
 	public void startDriver() {
 		LOGGER.finer("In ViewerGUI.startDriver()");
 		MenuBroker menuHandler = new MenuBroker();
-		menuHandler.register(new IOHandler(this, ViewerGUI::createDriver, cli), "load", "save",
+		menuHandler.register(new IOHandler(this, cli), "load", "save",
 			"save as", "new", "load secondary", "save all", "open in map viewer",
 			"open secondary map in map viewer", "close", "quit");
 		menuHandler.register(ignored -> zoomIn(), "zoom in");

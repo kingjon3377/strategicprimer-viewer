@@ -345,7 +345,7 @@ import java.io.FileNotFoundException;
 	public void startDriver() {
 		PlayerChangeMenuListener pcml = new PlayerChangeMenuListener(model);
 		MenuBroker menuHandler = new MenuBroker();
-		menuHandler.register(new IOHandler(this, new ViewerGUIFactory()::createDriver, cli),
+		menuHandler.register(new IOHandler(this, cli),
 			"load", "save", "save as", "new", "load secondary", "save all",
 			"open in map viewer", "open secondary map in map viewer", "close", "quit");
 		menuHandler.register(pcml, "change current player");

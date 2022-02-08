@@ -89,7 +89,7 @@ public class WorkerMgmtGUI implements MultiMapGUIDriver, WorkerGUI {
 	@Override
 	public void startDriver() throws DriverFailedException {
 		MenuBroker menuHandler = new MenuBroker();
-		menuHandler.register(new IOHandler(this, new ViewerGUIFactory()::createDriver, cli), "load",
+		menuHandler.register(new IOHandler(this, cli), "load",
 			"save", "save as", "new", "load secondary", "save all", "open in map viewer",
 			"open secondary map in map viewer", "close", "quit");
 		PlayerChangeMenuListener pcml = new PlayerChangeMenuListener(model);

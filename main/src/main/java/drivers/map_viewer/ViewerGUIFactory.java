@@ -1,6 +1,8 @@
 package drivers.map_viewer;
 
 import drivers.common.DriverFailedException;
+import drivers.common.ViewerDriver;
+import drivers.common.ViewerDriverFactory;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -27,8 +29,8 @@ import com.google.auto.service.AutoService;
 /**
  * A factory for a driver to start the map viewer.
  */
-@AutoService(DriverFactory.class)
-public class ViewerGUIFactory implements GUIDriverFactory {
+@AutoService({DriverFactory.class, ViewerDriverFactory.class})
+public class ViewerGUIFactory implements ViewerDriverFactory {
 	/**
 	 * A logger.
 	 */
@@ -57,7 +59,7 @@ public class ViewerGUIFactory implements GUIDriverFactory {
 	}
 
 	@Override
-	public GUIDriver createDriver(final ICLIHelper cli, final SPOptions options, final IDriverModel model) {
+	public ViewerDriver createDriver(final ICLIHelper cli, final SPOptions options, final IDriverModel model) {
 		return ViewerGUI.createDriver(cli, options, model);
 	}
 

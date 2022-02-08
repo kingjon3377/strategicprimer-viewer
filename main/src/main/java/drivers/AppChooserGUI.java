@@ -90,7 +90,7 @@ import lovelace.util.ListenedButton;
 		frame.setContentPane(mainPanel);
 		frame.pack();
 		frame.setJMenuBar(SPMenu.forWindowContaining(mainPanel,
-			SPMenu.createFileMenu(new IOHandler(this, new ViewerGUIFactory()::createDriver, cli)::actionPerformed, this),
+			SPMenu.createFileMenu(new IOHandler(this, cli)::actionPerformed, this),
 			SPMenu.disabledMenu(SPMenu.createMapMenu(x -> {}, this)),
 			SPMenu.disabledMenu(SPMenu.createViewMenu(x -> {}, this))));
 		frame.addWindowListener(new WindowCloseListener(ignored -> frame.dispose()));
