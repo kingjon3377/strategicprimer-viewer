@@ -115,7 +115,6 @@ import java.util.logging.Logger;
 				int estimate = tentativeDistances.get(Pair.with(start, neighbor));
 				int tentativeDistance = currentDistance +
 					SimpleMovementModel.movementCost(map.getBaseTerrain(neighbor),
-						// TODO: Use getFixtures().stream()
 						map.getFixtures(neighbor).stream().anyMatch(Forest.class::isInstance),
 						map.isMountainous(neighbor),
 						SimpleMovementModel.riversSpeedTravel(
