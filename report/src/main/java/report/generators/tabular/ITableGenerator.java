@@ -168,20 +168,6 @@ public interface ITableGenerator<T extends IFixture> {
 	int comparePairs(Pair<Point, T> one, Pair<Point, T> two);
 
 	/**
-	 * The Point in a Point-fixture pair. TODO: Remove this, right?
-	 */
-	default Point pairPoint(final Pair<Point, T> pair) {
-		return pair.getValue0();
-	}
-
-	/**
-	 * The fixture in a Point-fixture pair. TODO: Remove this, right?
-	 */
-	default T pairFixture(final Pair<Point, T> pair) {
-		return pair.getValue1();
-	}
-
-	/**
 	 * A String representing the owner of a fixture: "You" if equal to
 	 * currentPlayer, "Independent" if an independent player, or otherwise
 	 * the player's name.
