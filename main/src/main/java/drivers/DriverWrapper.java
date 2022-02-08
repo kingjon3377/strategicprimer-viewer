@@ -76,7 +76,7 @@ import java.util.stream.StreamSupport;
 		if (factory instanceof GUIDriverFactory) {
 			final List<Path> files = new ArrayList<>();
 			if (args.length > 0) {
-				MapIOHelper.namesToFiles(args).forEach(files::add);
+				files.addAll(MapIOHelper.namesToFiles(args));
 			}
 			if (tooManyArguments(files.size())) {
 				throw new IncorrectUsageException(factory.getUsage());
