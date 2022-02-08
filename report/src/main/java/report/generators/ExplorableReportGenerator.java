@@ -4,9 +4,6 @@ import java.util.function.Consumer;
 import org.jetbrains.annotations.Nullable;
 import org.javatuples.Pair;
 import java.util.List;
-import java.util.Comparator;
-import java.io.IOException;
-import lovelace.util.ThrowingConsumer;
 import java.util.stream.Collectors;
 import java.util.Arrays;
 
@@ -27,13 +24,11 @@ import common.map.fixtures.explorable.ExplorableFixture;
  */
 public class ExplorableReportGenerator extends AbstractReportGenerator<ExplorableFixture> {
 	private final Player currentPlayer;
-	public ExplorableReportGenerator(final Comparator<Pair<Point, IFixture>> comp, final Player currentPlayer,
-	                                 final MapDimensions dimensions) {
-		this(comp, currentPlayer, dimensions, null);
+	public ExplorableReportGenerator(final Player currentPlayer, final MapDimensions dimensions) {
+		this(currentPlayer, dimensions, null);
 	}
-	public ExplorableReportGenerator(final Comparator<Pair<Point, IFixture>> comp, final Player currentPlayer,
-	                                 final MapDimensions dimensions, @Nullable final Point hq) {
-		super(comp, dimensions, hq);
+	public ExplorableReportGenerator(final Player currentPlayer, final MapDimensions dimensions, @Nullable final Point hq) {
+		super(dimensions, hq);
 		this.currentPlayer = currentPlayer;
 	}
 

@@ -4,10 +4,7 @@ import java.util.function.Consumer;
 import org.jetbrains.annotations.Nullable;
 import org.javatuples.Pair;
 import lovelace.util.DelayedRemovalMap;
-import lovelace.util.ThrowingConsumer;
-import java.util.Comparator;
 import java.util.stream.Collectors;
-import java.io.IOException;
 
 import common.map.Player;
 import common.map.IFixture;
@@ -21,14 +18,12 @@ import common.map.fixtures.explorable.AdventureFixture;
  */
 public class AdventureReportGenerator extends AbstractReportGenerator<AdventureFixture> {
 
-	public AdventureReportGenerator(final Comparator<Pair<Point, IFixture>> comp, final Player currentPlayer,
-	                                final MapDimensions dimensions) {
-		this(comp, currentPlayer, dimensions, null);
+	public AdventureReportGenerator(final Player currentPlayer, final MapDimensions dimensions) {
+		this(currentPlayer, dimensions, null);
 	}
 
-	public AdventureReportGenerator(final Comparator<Pair<Point, IFixture>> comp, final Player currentPlayer,
-	                                final MapDimensions dimensions, @Nullable final Point hq) {
-		super(comp, dimensions, hq);
+	public AdventureReportGenerator(final Player currentPlayer, final MapDimensions dimensions, @Nullable final Point hq) {
+		super(dimensions, hq);
 		this.currentPlayer = currentPlayer;
 	}
 

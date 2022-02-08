@@ -3,9 +3,6 @@ package report.generators;
 import java.util.function.Consumer;
 import org.jetbrains.annotations.Nullable;
 import org.javatuples.Pair;
-import lovelace.util.ThrowingConsumer;
-import java.io.IOException;
-import java.util.Comparator;
 import java.util.Map;
 import java.util.HashMap;
 import lovelace.util.ConcatIterable;
@@ -46,13 +43,12 @@ import common.map.fixtures.mobile.Pegasus;
  */
 public class ImmortalsReportGenerator extends AbstractReportGenerator<Immortal> {
 
-	public ImmortalsReportGenerator(final Comparator<Pair<Point, IFixture>> comp, final MapDimensions dimensions) {
-		this(comp, dimensions, null);
+	public ImmortalsReportGenerator(final MapDimensions dimensions) {
+		this(dimensions, null);
 	}
 
-	public ImmortalsReportGenerator(final Comparator<Pair<Point, IFixture>> comp, final MapDimensions dimensions,
-	                                @Nullable final Point hq) {
-		super(comp, dimensions, hq);
+	public ImmortalsReportGenerator(final MapDimensions dimensions, @Nullable final Point hq) {
+		super(dimensions, hq);
 	}
 
 	/**

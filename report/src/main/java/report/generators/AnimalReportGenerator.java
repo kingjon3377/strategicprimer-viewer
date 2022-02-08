@@ -4,16 +4,13 @@ import java.util.function.Consumer;
 import org.jetbrains.annotations.Nullable;
 import org.javatuples.Pair;
 import org.javatuples.Triplet;
-import lovelace.util.ThrowingConsumer;
 import lovelace.util.DelayedRemovalMap;
-import java.util.Comparator;
 import java.util.Map;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.stream.Collectors;
 import java.util.Optional;
-import java.io.IOException;
 
 import common.map.IFixture;
 import common.map.Point;
@@ -29,14 +26,12 @@ import common.map.fixtures.mobile.AnimalOrTracks;
  * A report generator for sightings of animals.
  */
 public class AnimalReportGenerator extends AbstractReportGenerator</*Animal|AnimalTracks*/AnimalOrTracks> {
-	public AnimalReportGenerator(final Comparator<Pair<Point, IFixture>> comp, final MapDimensions dimensions,
-	                             final int currentTurn) {
-		this(comp, dimensions, currentTurn, null);
+	public AnimalReportGenerator(final MapDimensions dimensions, final int currentTurn) {
+		this(dimensions, currentTurn, null);
 	}
 
-	public AnimalReportGenerator(final Comparator<Pair<Point, IFixture>> comp, final MapDimensions dimensions,
-	                             final int currentTurn, @Nullable final Point hq) {
-		super(comp, dimensions, hq);
+	public AnimalReportGenerator(final MapDimensions dimensions, final int currentTurn, @Nullable final Point hq) {
+		super(dimensions, hq);
 		this.currentTurn = currentTurn;
 	}
 

@@ -3,8 +3,6 @@ package report.generators;
 import java.util.function.Consumer;
 import org.jetbrains.annotations.Nullable;
 import org.javatuples.Pair;
-import lovelace.util.ThrowingConsumer;
-import java.io.IOException;
 import java.util.Comparator;
 import java.util.Map;
 import java.util.HashMap;
@@ -33,14 +31,13 @@ public class FortressMemberReportGenerator extends AbstractReportGenerator<Fortr
 	@Nullable
 	private final Point hq;
 
-	public FortressMemberReportGenerator(final Comparator<Pair<Point, IFixture>> comp, final Player currentPlayer,
-	                                     final MapDimensions dimensions, final int currentTurn) {
-		this(comp, currentPlayer, dimensions, currentTurn, null);
+	public FortressMemberReportGenerator(final Player currentPlayer, final MapDimensions dimensions, final int currentTurn) {
+		this(currentPlayer, dimensions, currentTurn, null);
 	}
 
-	public FortressMemberReportGenerator(final Comparator<Pair<Point, IFixture>> comp, final Player currentPlayer,
+	public FortressMemberReportGenerator(final Player currentPlayer,
 	                                     final MapDimensions dimensions, final int currentTurn, @Nullable final Point hq) {
-		super(comp, dimensions, hq);
+		super(dimensions, hq);
 		this.currentPlayer = currentPlayer;
 		this.dimensions = dimensions;
 		this.currentTurn = currentTurn;
@@ -57,7 +54,7 @@ public class FortressMemberReportGenerator extends AbstractReportGenerator<Fortr
 	//	assert (is IUnit|IResourcePile|Implement item);
 		if (item instanceof IUnit) {
 			// TODO: Should be a field, right? Or else a constructor parameter?
-			new UnitReportGenerator(pairComparator, currentPlayer, dimensions,
+			new UnitReportGenerator(currentPlayer, dimensions,
 				currentTurn, hq).produceSingle(fixtures, map, ostream, (IUnit) item, loc);
 		} else if (item instanceof Implement) {
 			fixtures.remove(item.getId());

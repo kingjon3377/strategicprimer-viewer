@@ -4,13 +4,10 @@ import java.util.function.Consumer;
 import lovelace.util.TriConsumer;
 import org.jetbrains.annotations.Nullable;
 import org.javatuples.Pair;
-import lovelace.util.ThrowingConsumer;
-import java.io.IOException;
 import java.util.Comparator;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.stream.Collectors;
-import lovelace.util.ThrowingTriConsumer;
 
 import lovelace.util.DelayedRemovalMap;
 
@@ -28,14 +25,12 @@ public class VillageReportGenerator extends AbstractReportGenerator<Village> {
 
 	private final Player currentPlayer;
 
-	public VillageReportGenerator(final Comparator<Pair<Point, IFixture>> comp, final Player currentPlayer,
-	                              final MapDimensions dimensions) {
-		this(comp, currentPlayer, dimensions, null);
+	public VillageReportGenerator(final Player currentPlayer, final MapDimensions dimensions) {
+		this(currentPlayer, dimensions, null);
 	}
 
-	public VillageReportGenerator(final Comparator<Pair<Point, IFixture>> comp, final Player currentPlayer,
-	                              final MapDimensions dimensions, @Nullable final Point hq) {
-		super(comp, dimensions, hq);
+	public VillageReportGenerator(final Player currentPlayer, final MapDimensions dimensions, @Nullable final Point hq) {
+		super(dimensions, hq);
 		this.currentPlayer = currentPlayer;
 	}
 

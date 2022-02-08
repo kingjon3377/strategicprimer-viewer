@@ -3,9 +3,6 @@ package report.generators;
 import java.util.function.Consumer;
 import org.jetbrains.annotations.Nullable;
 import org.javatuples.Pair;
-import lovelace.util.ThrowingConsumer;
-import java.io.IOException;
-import java.util.Comparator;
 import java.util.Map;
 import java.util.Collection;
 import java.util.function.BiConsumer;
@@ -38,22 +35,20 @@ public class TownReportGenerator extends AbstractReportGenerator<ITownFixture> {
 	private final Player currentPlayer;
 	private final int currentTurn;
 	private final MapDimensions dimensions;
-	private final Comparator<Pair<Point, IFixture>> comp;
 	@Nullable
 	private final Point hq;
 
-	public TownReportGenerator(final Comparator<Pair<Point, IFixture>> comp, final Player currentPlayer,
+	public TownReportGenerator(final Player currentPlayer,
 	                           final MapDimensions dimensions, final int currentTurn) {
-		this(comp, currentPlayer, dimensions, currentTurn, null);
+		this(currentPlayer, dimensions, currentTurn, null);
 	}
 
-	public TownReportGenerator(final Comparator<Pair<Point, IFixture>> comp, final Player currentPlayer,
+	public TownReportGenerator(final Player currentPlayer,
 	                           final MapDimensions dimensions, final int currentTurn, @Nullable final Point hq) {
-		super(comp, dimensions, hq);
+		super(dimensions, hq);
 		this.currentPlayer = currentPlayer;
 		this.currentTurn = currentTurn;
 		this.dimensions = dimensions;
-		this.comp = comp;
 		this.hq = hq;
 	}
 
@@ -81,7 +76,7 @@ public class TownReportGenerator extends AbstractReportGenerator<ITownFixture> {
 	public void produceSingle(final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
 	                          final IMapNG map, final Consumer<String> ostream, final ITownFixture item, final Point loc) {
 		if (item instanceof Village) {
-			new VillageReportGenerator(comp, currentPlayer, dimensions, hq)
+			new VillageReportGenerator(currentPlayer, dimensions, hq)
 				.produceSingle(fixtures, map, ostream, (Village) item, loc);
 		} else if (item instanceof AbstractTown) {
 			fixtures.remove(item.getId());
@@ -113,7 +108,7 @@ public class TownReportGenerator extends AbstractReportGenerator<ITownFixture> {
 			ostream.accept(" ");
 			ostream.accept(distanceString.apply(loc));
 		} else if (item instanceof IFortress) {
-			new FortressReportGenerator(comp, currentPlayer, dimensions, currentTurn, hq)
+			new FortressReportGenerator(currentPlayer, dimensions, currentTurn, hq)
 				.produceSingle(fixtures, map, ostream, (IFortress) item, loc);
 		}
 	}

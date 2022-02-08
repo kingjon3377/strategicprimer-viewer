@@ -3,8 +3,6 @@ package report.generators;
 import java.util.function.Consumer;
 import org.jetbrains.annotations.Nullable;
 import org.javatuples.Pair;
-import lovelace.util.ThrowingConsumer;
-import java.io.IOException;
 import java.util.Comparator;
 import lovelace.util.DelayedRemovalMap;
 import java.util.Map;
@@ -67,14 +65,12 @@ public class HarvestableReportGenerator extends AbstractReportGenerator<Harvesta
 		}
 	}
 
-	public HarvestableReportGenerator(final Comparator<Pair<Point, IFixture>> comp,
-	                                  final MapDimensions dimensions) {
-		this(comp, dimensions, null);
+	public HarvestableReportGenerator(final MapDimensions dimensions) {
+		this(dimensions, null);
 	}
 
-	public HarvestableReportGenerator(final Comparator<Pair<Point, IFixture>> comp,
-	                                  final MapDimensions dimensions, @Nullable final Point hq) {
-		super(comp, dimensions, hq);
+	public HarvestableReportGenerator(final MapDimensions dimensions, @Nullable final Point hq) {
+		super(dimensions, hq);
 	}
 
 	/**

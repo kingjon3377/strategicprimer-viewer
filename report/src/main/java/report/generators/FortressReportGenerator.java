@@ -3,9 +3,6 @@ package report.generators;
 import java.util.function.Consumer;
 import org.jetbrains.annotations.Nullable;
 import org.javatuples.Pair;
-import lovelace.util.ThrowingConsumer;
-import java.io.IOException;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.ArrayList;
@@ -39,16 +36,15 @@ import common.map.fixtures.towns.IFortress;
  * A report generator for fortresses.
  */
 public class FortressReportGenerator extends AbstractReportGenerator<IFortress> {
-	public FortressReportGenerator(final Comparator<Pair<Point, IFixture>> comp, final Player currentPlayer,
-	                               final MapDimensions dimensions, final int currentTurn) {
-		this(comp, currentPlayer, dimensions, currentTurn, null);
+	public FortressReportGenerator(final Player currentPlayer, final MapDimensions dimensions, final int currentTurn) {
+		this(currentPlayer, dimensions, currentTurn, null);
 	}
 
-	public FortressReportGenerator(final Comparator<Pair<Point, IFixture>> comp, final Player currentPlayer,
+	public FortressReportGenerator(final Player currentPlayer,
 	                               final MapDimensions dimensions, final Integer currentTurn, @Nullable final Point hq) {
-		super(comp, dimensions, hq);
-		urg = new UnitReportGenerator(comp, currentPlayer, dimensions, currentTurn, hq);
-		memberReportGenerator = new FortressMemberReportGenerator(comp, currentPlayer, dimensions,
+		super(dimensions, hq);
+		urg = new UnitReportGenerator(currentPlayer, dimensions, currentTurn, hq);
+		memberReportGenerator = new FortressMemberReportGenerator(currentPlayer, dimensions,
 			currentTurn, hq);
 		this.currentPlayer = currentPlayer;
 	}

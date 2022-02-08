@@ -16,6 +16,7 @@ import java.util.function.Function;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Collection;
+import report.PairComparator;
 
 /**
  * An abstract superclass for classes that generate reports for particular
@@ -25,8 +26,7 @@ import java.util.Collection;
  * TODO: Investigate pure-Java equivalents of Ceylon sealed annotation. Maybe just make package-private?
  */
 public abstract class AbstractReportGenerator<Type extends IFixture> implements IReportGenerator<Type> {
-	// TODO: Should probably be Comparator<Pair<Point, Type>> instead (here and where passed in)
-	// FIXME: Instead of requiring this to be passed in, just use the algorithm that's always the one provided by callers
+	// TODO: Should probably be Comparator<Pair<Point, ? super Type>>
 	protected final Comparator<Pair<Point, IFixture>> pairComparator;
 
 	/**
@@ -41,7 +41,8 @@ public abstract class AbstractReportGenerator<Type extends IFixture> implements 
 	protected final Function<Point, String> distanceString;
 
 	/**
-	 * @param pairComparator A comparator of {@link Point}-fixture pairs.
+	 * TODO: Don't require callers to pss in mapDimensions if referencePoint is absent. (Split constructor.)
+	 *
 	 * @param mapDimensions The dimensions of the map. If null, {@link
 	 * distComparator} and {@link distanceString} will give inaccurate
 	 * results whenever the shortest distance between two points involves
@@ -50,17 +51,19 @@ public abstract class AbstractReportGenerator<Type extends IFixture> implements 
 	 * calculations. Usually the location of the headquarters of the player
 	 * for whom the report is being prepared.
 	 */
-	protected AbstractReportGenerator(final Comparator<Pair<Point, IFixture>> pairComparator,
-	                               @Nullable final MapDimensions mapDimensions, @Nullable final Point referencePoint) {
-		this.pairComparator = pairComparator;
+	protected AbstractReportGenerator(@Nullable final MapDimensions mapDimensions, @Nullable final Point referencePoint) {
 		if (referencePoint == null) {
 			distComparator = (one, two) -> 0;
 			distanceString = (ignored) -> "unknown";
+			this.pairComparator = new PairComparator<>((one, two) -> 0,
+					Comparator.comparing(IFixture::hashCode));
 		} else {
 			DistanceComparator distCalculator = new DistanceComparator(referencePoint,
 				mapDimensions);
 			distComparator = distCalculator;
 			distanceString = distCalculator::distanceString;
+			this.pairComparator = new PairComparator<>(new DistanceComparator(referencePoint, mapDimensions),
+					Comparator.comparing(IFixture::hashCode));
 		}
 	}
 

@@ -3,9 +3,6 @@ package report.generators;
 import java.util.function.Consumer;
 import org.jetbrains.annotations.Nullable;
 import org.javatuples.Pair;
-import lovelace.util.ThrowingConsumer;
-import java.io.IOException;
-import java.util.Comparator;
 import lovelace.util.DelayedRemovalMap;
 import java.util.stream.StreamSupport;
 import java.util.stream.Collectors;
@@ -29,14 +26,13 @@ import common.map.fixtures.mobile.worker.IJob;
 	private final boolean details;
 	private final Player currentPlayer;
 
-	public WorkerReportGenerator(final Comparator<Pair<Point, IFixture>> comp, final boolean details,
-	                             final MapDimensions dimensions, final Player currentPlayer) {
-		this(comp, details, dimensions, currentPlayer, null);
+	public WorkerReportGenerator(final boolean details, final MapDimensions dimensions, final Player currentPlayer) {
+		this(details, dimensions, currentPlayer, null);
 	}
 
-	public WorkerReportGenerator(final Comparator<Pair<Point, IFixture>> comp, final boolean details,
+	public WorkerReportGenerator(final boolean details,
 	                             final MapDimensions dimensions, final Player currentPlayer, @Nullable final Point hq) {
-		super(comp, dimensions, hq);
+		super(dimensions, hq);
 		this.details = details;
 		this.currentPlayer = currentPlayer;
 	}

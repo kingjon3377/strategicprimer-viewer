@@ -4,8 +4,6 @@ import java.util.function.Consumer;
 import org.jetbrains.annotations.Nullable;
 import org.javatuples.Pair;
 import org.javatuples.Triplet;
-import lovelace.util.ThrowingConsumer;
-import java.io.IOException;
 import java.util.Comparator;
 import lovelace.util.DelayedRemovalMap;
 import java.util.List;
@@ -22,13 +20,13 @@ import common.map.fixtures.TextFixture;
  */
 public class TextReportGenerator extends AbstractReportGenerator<TextFixture> {
 
-	public TextReportGenerator(final Comparator<Pair<Point, IFixture>> comp, final MapDimensions dimensions) {
-		this(comp, dimensions, null);
+	public TextReportGenerator(final MapDimensions dimensions) {
+		this(dimensions, null);
 	}
 
-	public TextReportGenerator(final Comparator<Pair<Point, IFixture>> comp, final MapDimensions dimensions,
+	public TextReportGenerator(final MapDimensions dimensions,
 	                           @Nullable final Point hq) {
-		super(comp, dimensions, hq);
+		super(dimensions, hq);
 	}
 
 	/**

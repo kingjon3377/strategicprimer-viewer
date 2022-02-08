@@ -3,9 +3,6 @@ package report.generators;
 import java.util.function.Consumer;
 import org.jetbrains.annotations.Nullable;
 import org.javatuples.Pair;
-import lovelace.util.ThrowingConsumer;
-import java.io.IOException;
-import java.util.Comparator;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Map;
@@ -36,20 +33,18 @@ import common.map.fixtures.mobile.AnimalOrTracks;
  */
 public class UnitReportGenerator extends AbstractReportGenerator<IUnit> {
 
-	public UnitReportGenerator(final Comparator<Pair<Point, IFixture>> comp, final Player currentPlayer,
-	                           final MapDimensions dimensions, final int currentTurn) {
-		this(comp, currentPlayer, dimensions, currentTurn, null);
+	public UnitReportGenerator(final Player currentPlayer, final MapDimensions dimensions, final int currentTurn) {
+		this(currentPlayer, dimensions, currentTurn, null);
 	}
 
-	public UnitReportGenerator(final Comparator<Pair<Point, IFixture>> comp, final Player currentPlayer,
-	                           final MapDimensions dimensions, final int currentTurn, @Nullable final Point hq) {
-		super(comp, dimensions, hq);
-		memberReportGenerator = new FortressMemberReportGenerator(comp, currentPlayer, dimensions,
+	public UnitReportGenerator(final Player currentPlayer, final MapDimensions dimensions, final int currentTurn, @Nullable final Point hq) {
+		super(dimensions, hq);
+		memberReportGenerator = new FortressMemberReportGenerator(currentPlayer, dimensions,
 			currentTurn, hq);
-		animalReportGenerator = new AnimalReportGenerator(comp, dimensions, currentTurn, hq);
-		ourWorkerReportGenerator = new WorkerReportGenerator(comp, true, dimensions,
+		animalReportGenerator = new AnimalReportGenerator(dimensions, currentTurn, hq);
+		ourWorkerReportGenerator = new WorkerReportGenerator(true, dimensions,
 			currentPlayer, hq);
-		otherWorkerReportGenerator = new WorkerReportGenerator(comp, false, dimensions,
+		otherWorkerReportGenerator = new WorkerReportGenerator(false, dimensions,
 			currentPlayer, hq);
 		this.currentPlayer = currentPlayer;
 	}

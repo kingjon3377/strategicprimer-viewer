@@ -90,17 +90,17 @@ public final class ReportGenerator {
 		}
 		int currentTurn = map.getCurrentTurn();
 		createSubReports(builder, fixtures, map, player,
-			new FortressReportGenerator(comparator, player, dimensions, currentTurn, hq),
-			new UnitReportGenerator(comparator, player, dimensions, currentTurn, hq),
-			new TextReportGenerator(comparator, dimensions, hq),
-			new TownReportGenerator(comparator, player, dimensions, currentTurn, hq),
-			new FortressMemberReportGenerator(comparator, player, dimensions, currentTurn, hq),
-			new AdventureReportGenerator(comparator, player, dimensions, hq),
-			new ExplorableReportGenerator(comparator, player, dimensions, hq),
-			new HarvestableReportGenerator(comparator, dimensions, hq),
-			new AnimalReportGenerator(comparator, dimensions, currentTurn, hq),
-			new VillageReportGenerator(comparator, player, dimensions, hq),
-			new ImmortalsReportGenerator(comparator, dimensions, hq));
+			new FortressReportGenerator(player, dimensions, currentTurn, hq),
+			new UnitReportGenerator(player, dimensions, currentTurn, hq),
+			new TextReportGenerator(dimensions, hq),
+			new TownReportGenerator(player, dimensions, currentTurn, hq),
+			new FortressMemberReportGenerator(player, dimensions, currentTurn, hq),
+			new AdventureReportGenerator(player, dimensions, hq),
+			new ExplorableReportGenerator(player, dimensions, hq),
+			new HarvestableReportGenerator(dimensions, hq),
+			new AnimalReportGenerator(dimensions, currentTurn, hq),
+			new VillageReportGenerator(player, dimensions, hq),
+			new ImmortalsReportGenerator(dimensions, hq));
 		builder.append("</body>").append(System.lineSeparator())
 			.append("</html>").append(System.lineSeparator());
 		for (Pair<Point, IFixture> pair : fixtures.values()) {
