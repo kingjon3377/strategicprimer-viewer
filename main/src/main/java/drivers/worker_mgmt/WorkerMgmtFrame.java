@@ -72,10 +72,10 @@ import drivers.worker_mgmt.orderspanel.OrdersPanel;
 		this.menuHandler = menuHandler;
 		this.driver = driver;
 		mainMap = model.getMap();
-		idf = new IDFactoryFiller().createIDFactory(model.streamAllMaps()
+		IDRegistrar idf = new IDFactoryFiller().createIDFactory(model.streamAllMaps()
 				.toArray(IMapNG[]::new));
 		newUnitFrame = new NewUnitDialog(model.getCurrentPlayer(), idf);
-		treeModel = new WorkerTreeModelAlt(model); // TODO: Try with WorkerTreeModel again?
+		IWorkerTreeModel treeModel = new WorkerTreeModelAlt(model); // TODO: Try with WorkerTreeModel again?
 
 		tree = new WorkerTree(treeModel, model.getPlayers(),
 				mainMap::getCurrentTurn, true, idf);
@@ -155,11 +155,8 @@ import drivers.worker_mgmt.orderspanel.OrdersPanel;
 	private final OrdersPanel ordersPanelObj; // TODO: rename to ordersPanel;
 	private final FormattedLabel playerLabel;
 
-	// TODO: Move any of these that aren't needed post-initialization fully into the constructor
 	private final IMapNG mainMap;
-	private final IDRegistrar idf;
 	private final NewUnitDialog newUnitFrame;
-	private final IWorkerTreeModel treeModel;
 
 	private static boolean isCurrent(final IUnit unit, final int turn) {
 		return unit.getOrders(turn).equals(unit.getLatestOrders(turn));
