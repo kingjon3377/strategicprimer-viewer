@@ -98,6 +98,7 @@ public final class TabularReportGenerator {
 				fixtures.remove(fixture.getId());
 			} else {
 				LOGGER.warning("Unhandled fixture:\t" + fixture);
+				cli.println("Unhandled fixture:\t" + fixture);
 			}
 		}
 	}
