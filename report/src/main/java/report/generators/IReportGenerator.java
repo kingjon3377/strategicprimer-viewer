@@ -93,7 +93,7 @@ public interface IReportGenerator<T extends IFixture> {
 		if (!map.isEmpty()) {
 			ostream.accept(String.format("%s%n<ul>%n", map.getHeader()));
 			List<Pair<Key, Point>> sorted = map.entrySet().stream()
-					.map((e) -> Pair.with(e.getKey(), e.getValue()))
+					.map((e) -> Pair.<Key, Point>with(e.getKey(), e.getValue()))
 					.sorted(sorter)
 					.collect(Collectors.toList());
 			for (Pair<Key, Point> pair : sorted) {
@@ -121,7 +121,7 @@ public interface IReportGenerator<T extends IFixture> {
 		if (!map.isEmpty()) {
 			ostream.accept(String.format("%s%n<ul>%n", map.getHeader()));
 			List<Pair<Key, Point>> sorted = map.entrySet().stream()
-				.map((e) -> Pair.with(e.getKey(), e.getValue()))
+				.map((e) -> Pair.<Key, Point>with(e.getKey(), e.getValue()))
 				.collect(Collectors.toList());
 			for (Pair<Key, Point> pair : sorted) {
 				ostream.accept("<li>");
