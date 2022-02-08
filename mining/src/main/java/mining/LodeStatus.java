@@ -199,15 +199,13 @@ enum LodeStatus {
 		return adjacent(rng::nextGaussian);
 	}
 
-	// FIXME: Why not just a method that can be passed by method reference?
-	public static class LodeStatusComparator implements Comparator<LodeStatus> {
-		/**
-		* One status is *greater* than another iff the former's {@link
-		* LodeStatus#ratio} is <em>less</em> than the latter's.
-		*/
-		@Override
-		public int compare(final LodeStatus one, final LodeStatus two) {
-			return Integer.compare(two.getRatio(), one.getRatio());
-		}
+	/**
+	 * One status is *greater* than another iff the former's {@link
+	 * LodeStatus#ratio} is <em>less</em> than the latter's.
+	 *
+	 * FIXME: Where was this, or should this be, used?
+	 */
+	public static int compareLodeStatus(final LodeStatus one, final LodeStatus two) {
+		return Integer.compare(two.getRatio(), one.getRatio());
 	}
 }
