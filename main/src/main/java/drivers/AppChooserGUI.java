@@ -57,19 +57,18 @@ import lovelace.util.ListenedButton;
 		final Font font = tempComponent.getFont();
 		final Graphics2D pen = (Graphics2D) new BufferedImage(1, 1, BufferedImage.TYPE_INT_RGB).createGraphics();
 		final FontRenderContext context = pen.getFontRenderContext();
-		// FIXME: Should probably calculate both of these as doubles, then *maybe* convert at the last moment.
-		int width = 0;
-		int height = 10;
+		double width = 0;
+		double height = 10;
 		Iterable<DriverFactory> drivers = ServiceLoader.load(DriverFactory.class);
 		for (DriverFactory driver : drivers) {
 			if (!includeInGUIList(driver)) {
 				continue;
 			}
 			final Rectangle2D dimensions = font.getStringBounds(driver.getUsage().getShortDescription(), context);
-			width = Integer.max(width, (int) dimensions.getWidth());
-			height += (int) dimensions.getHeight();
+			width = Double.max(width, dimensions.getWidth());
+			height += dimensions.getHeight();
 		}
-		final SPFrame frame = new SPFrame("SP App Chooser", this, new Dimension(width, height));
+		final SPFrame frame = new SPFrame("SP App Chooser", this, new Dimension((int) width, (int) height));
 		final JPanel buttonPanel = new JPanel(new GridLayout(0, 1));
 		Consumer<DriverFactory> buttonHandler = (target) -> {
 				new DriverWrapper(target).startCatchingErrors(cli, options,
