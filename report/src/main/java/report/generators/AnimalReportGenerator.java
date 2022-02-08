@@ -56,9 +56,8 @@ public class AnimalReportGenerator extends AbstractReportGenerator</*Animal|Anim
 		ostream.accept(loc.toString());
 		ostream.accept(":");
 		if (item instanceof AnimalTracks) {
-			// TODO: AnimalOrTracks should inherit HasKind, right?
 			ostream.accept(" tracks or traces of ");
-			ostream.accept(((AnimalTracks) item).getKind());
+			ostream.accept(item.getKind());
 		} else {
 			Animal animal = (Animal) item;
 			if (animal.isTalking()) {
