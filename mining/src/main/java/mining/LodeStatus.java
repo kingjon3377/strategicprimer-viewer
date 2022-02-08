@@ -45,8 +45,6 @@ enum LodeStatus {
 	 * that value; otherwise, return null.
 	 *
 	 * TODO: Throw instead of returning null?
-	 *
-	 * TODO: support hyphenated "very" statuses
 	 */
 	@Nullable
 	public static LodeStatus parse(final String str) {
@@ -55,7 +53,7 @@ enum LodeStatus {
 			return null;
 		case "minimal":
 			return LodeStatus.Minimal;
-		case "verypoor":
+		case "verypoor": case "very-poor":
 			return LodeStatus.VeryPoor;
 		case "poor":
 			return LodeStatus.Poor;
@@ -63,9 +61,9 @@ enum LodeStatus {
 			return LodeStatus.Fair;
 		case "good":
 			return LodeStatus.Good;
-		case "verygood":
+		case "verygood": case "very-good":
 			return LodeStatus.VeryGood;
-		case "motherlode":
+		case "motherlode": case "mother-lode":
 			return LodeStatus.MotherLode;
 		default:
 			return null;
