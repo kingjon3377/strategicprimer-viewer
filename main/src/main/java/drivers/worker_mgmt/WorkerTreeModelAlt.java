@@ -569,8 +569,7 @@ public class WorkerTreeModelAlt extends DefaultTreeModel implements IWorkerTreeM
 			} else if (!((UnitNode) node).getUserObject().iterator().hasNext()) {
 				continue;
 			}
-			// TODO: add .trim() (in a separate commit!)
-			String orders = ((UnitNode) node).getUserObject().getOrders(turn).toLowerCase();
+			String orders = ((UnitNode) node).getUserObject().getOrders(turn).toLowerCase().trim();
 			if (orders.isEmpty() || orders.contains("todo") || orders.contains("fixme") ||
 					orders.contains("xxx")) {
 				if (orders.isEmpty()) {

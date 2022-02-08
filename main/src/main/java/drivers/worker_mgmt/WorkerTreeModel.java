@@ -361,7 +361,7 @@ import java.util.stream.Collectors;
 			} else if (!unit.iterator().hasNext()) {
 				continue;
 			}
-			String orders = unit.getOrders(turn).toLowerCase(); // TODO: add trim(), in separate commit
+			String orders = unit.getOrders(turn).toLowerCase().trim();
 			if (orders.isEmpty() || orders.contains("todo") || orders.contains("fixme") ||
 					orders.contains("xxx")) {
 				if (orders.isEmpty()) {
