@@ -59,8 +59,6 @@ public class TownReportGenerator extends AbstractReportGenerator<ITownFixture> {
 
 	/**
 	 * Separate towns by status.
-	 *
-	 * TODO: Can we make this static?
 	 */
 	private <T> void separateByStatus(final Map<TownStatus, T> mapping,
 	                                  final Collection<Pair<Point, IFixture>> collection,
