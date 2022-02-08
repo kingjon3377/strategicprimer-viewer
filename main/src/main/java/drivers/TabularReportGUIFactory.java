@@ -46,7 +46,7 @@ public class TabularReportGUIFactory implements GUIDriverFactory {
 	/**
 	 * Ask the user to choose a file.
 	 */
-	@Override // TODO: Make interface allow throwing DriverFailedException
+	@Override
 	public Iterable<Path> askUserForFiles() throws DriverFailedException {
 		try {
 			return SPFileChooser.open((Path) null).getFiles();
