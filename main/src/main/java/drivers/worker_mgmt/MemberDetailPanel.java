@@ -205,7 +205,7 @@ public class MemberDetailPanel extends BorderedPanel implements UnitMemberListen
 				if (job.iterator().hasNext()) {
 					label.setToolTipText(StreamSupport.stream(job.spliterator(), false)
 						.map(MemberDetailPanel::skillString)
-						.collect(Collectors.joining(", ", "Skills ", ""))); // TODO: colon?
+						.collect(Collectors.joining(", ", "Skills: ", "")));
 				}
 				jobsPanel.add(label);
 			}
