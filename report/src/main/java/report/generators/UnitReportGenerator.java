@@ -154,7 +154,7 @@ public class UnitReportGenerator extends AbstractReportGenerator<IUnit> {
 			ostream.accept("owned by ");
 			ostream.accept(item.getOwner().toString());
 		}
-		if (item.iterator().hasNext()) { // TODO: Change back to !item.isEmpty() if IUnit has that method with the meaning "no members"
+		if (!item.isEmpty()) {
 			List<IWorker> workers = new ArrayList<>();
 			List<Implement> equipment = new ArrayList<>();
 			Map<String, List<IResourcePile>> resources = new HashMap<>();
