@@ -16,6 +16,7 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Supplier;
 import org.javatuples.Pair;
 import org.jetbrains.annotations.Nullable;
 
@@ -92,11 +93,11 @@ import org.jetbrains.annotations.Nullable;
 		}
 		final int startingTime = stTemp;
 		int time = startingTime;
-		final Iterator<Pair<Point, /*Grove|Shrub|Meadow|HuntingModel.NothingFound*/TileFixture>> encounters =
-			huntingModel.gather(center).iterator();
+		final Supplier<Pair<Point, /*Grove|Shrub|Meadow|HuntingModel.NothingFound*/TileFixture>> encounters =
+			huntingModel.gather(center);
 		int noResultsTime = 0;
-		while (time > 0 && encounters.hasNext()) {
-			final Pair<Point, TileFixture> pair = encounters.next();
+		while (time > 0) {
+			final Pair<Point, TileFixture> pair = encounters.get();
 			final Point loc = pair.getValue0();
 			final TileFixture find = pair.getValue1();
 			if (find instanceof HuntingModel.NothingFound) {

@@ -1,5 +1,6 @@
 package exploration.common;
 
+import java.util.function.Supplier;
 import org.javatuples.Pair;
 
 import common.map.TileType;
@@ -382,41 +383,28 @@ public class HuntingModel {
 	}
 
 	/**
-	 * Get a stream of gathering results from the area surrounding the
+	 * Get a source of gathering-results from the area surrounding the
 	 * given tile. Many will be "nothing," especially from desert and
-	 * tundra tiles and less from jungle tiles. This may be an infinite
-	 * stream.
+	 * tundra tiles and less from jungle tiles.
 	 *
 	 * @param point Whereabouts to search
 	 */
-	public Iterable<Pair<Point, TileFixture>> gather(final Point point) {
+	public Supplier<Pair<Point, TileFixture>> gather(final Point point) {
 		final List<Pair<Point, TileFixture>> retval =
 				new SurroundingPointIterable(point, dimensions).stream()
 			.flatMap(p -> gatherImpl(p).stream()).collect(Collectors.toList());
-		return () -> new PairIterator(retval);
+		return new PairSupplier(retval);
 	}
 
-	 // TODO: Migrate callers to use Supplier instead?
-	private static class PairIterator implements Iterator<Pair<Point, TileFixture>> {
+	private static class PairSupplier implements Supplier<Pair<Point, TileFixture>> {
 		private final List<Pair<Point, TileFixture>> retval;
 
-		public PairIterator(final List<Pair<Point, TileFixture>> retval) {
+		public PairSupplier(final List<Pair<Point, TileFixture>> retval) {
 			this.retval = retval;
 		}
 
 		@Override
-		public boolean hasNext() {
-			return true;
-		}
-
-		/**
-		 * This never throws (and so the warning is suppressed) because it is an <em>infinite</em> iterator.
-		 *
-		 * @return a random item from the list.
-		 */
-		@SuppressWarnings("IteratorNextCanNotThrowNoSuchElementException")
-		@Override
-		public Pair<Point, TileFixture> next() {
+		public Pair<Point, TileFixture> get() {
 			return retval.get(SingletonRandom.SINGLETON_RANDOM.nextInt(retval.size()));
 		}
 	}
