@@ -72,22 +72,22 @@ import query.SmallAnimalModel;
 	@Override
 	@Nullable
 	public String run() {
-		IUnit unit = model.getSelectedUnit();
+		final IUnit unit = model.getSelectedUnit();
 		if (unit == null) {
 			return null;
 		}
-		StringBuilder buffer = new StringBuilder();
-		@Nullable IFortress home = containingFortress(unit);
-		for (String kind : unit.stream()
+		final StringBuilder buffer = new StringBuilder();
+		@Nullable final IFortress home = containingFortress(unit);
+		for (final String kind : unit.stream()
 				.filter(Animal.class::isInstance).map(Animal.class::cast)
 				.filter(animal -> "domesticated".equals(animal.getStatus()) ||
 					"tame".equals(animal.getStatus()))
 				.map(Animal::getKind).distinct()
 				.filter(k -> !herdModels.containsKey(k))
 				.collect(Collectors.toList())) {
-			HerdModel herdModel = chooseHerdModel(kind);
+			final HerdModel herdModel = chooseHerdModel(kind);
 			if (herdModel == null) {
-				Boolean cont = cli.inputBoolean("Skip?");
+				final Boolean cont = cli.inputBoolean("Skip?");
 				if (cont != null && cont) {
 					continue;
 				} else {
@@ -99,14 +99,14 @@ import query.SmallAnimalModel;
 		}
 		// TODO: Use a multimap
 		final Map<HerdModel, List<Animal>> modelMap = new HashMap<>();
-		for (Animal group : unit.stream()
+		for (final Animal group : unit.stream()
 				.filter(Animal.class::isInstance).map(Animal.class::cast)
 				.filter(a -> "tame".equals(a.getStatus()) ||
 						"domesticated".equals(a.getStatus()))
 				.collect(Collectors.toList())) {
 			if (herdModels.containsKey(group.getKind())) {
-				HerdModel hModel = herdModels.get(group.getKind());
-				List<Animal> list;
+				final HerdModel hModel = herdModels.get(group.getKind());
+				final List<Animal> list;
 				if (modelMap.containsKey(hModel)) {
 					list = modelMap.get(hModel);
 				} else {
@@ -116,7 +116,7 @@ import query.SmallAnimalModel;
 				list.add(group);
 				continue;
 			}
-			Boolean cont = cli.inputBoolean(String.format(
+			final Boolean cont = cli.inputBoolean(String.format(
 				"No model for %s. Really skip?", group.getKind()));
 			if (cont != null && cont) {
 				continue;
@@ -126,7 +126,7 @@ import query.SmallAnimalModel;
 			}
 		}
 		long workerCount = unit.stream().filter(IWorker.class::isInstance).map(IWorker.class::cast).count();
-		Integer addendum = cli.inputNumber(String.format(
+		final Integer addendum = cli.inputNumber(String.format(
 			"%d workers in this unit. Any additional workers to account for:", workerCount));
 		if (addendum != null && addendum >= 0) {
 			workerCount += addendum;
@@ -137,32 +137,32 @@ import query.SmallAnimalModel;
 			.filter(IWorker.class::isInstance).map(IWorker.class::cast)
 			.mapToInt(w -> w.getJob("herder").getLevel()).anyMatch(l -> l > 5);
 		int minutesSpent = 0;
-		Consumer<String> addToOrders = string -> {
+		final Consumer<String> addToOrders = string -> {
 			cli.print(string);
 			buffer.append(string);
 		};
-		Consumer<String> addLineToOrders = string -> {
+		final Consumer<String> addLineToOrders = string -> {
 			cli.println(string);
 			buffer.append(string);
 			buffer.append(System.lineSeparator());
 		};
-		for (Map.Entry<HerdModel, List<Animal>> entry : modelMap.entrySet()) {
+		for (final Map.Entry<HerdModel, List<Animal>> entry : modelMap.entrySet()) {
 			if (buffer.length() > 0) {
 				buffer.append(System.lineSeparator());
 				buffer.append(System.lineSeparator());
 			}
-			HerdModel herdModel = entry.getKey();
-			List<Animal> animals = entry.getValue();
-			Animal combinedAnimal = animals.stream().reduce(Animal::combined).get();
-			long flockPerHerder =
+			final HerdModel herdModel = entry.getKey();
+			final List<Animal> animals = entry.getValue();
+			final Animal combinedAnimal = animals.stream().reduce(Animal::combined).get();
+			final long flockPerHerder =
 				(combinedAnimal.getPopulation() + workerCount - 1) / workerCount;
-			Quantity production = herdModel.scaledProduction(combinedAnimal.getPopulation());
-			double pounds = herdModel.scaledPoundsProduction(combinedAnimal.getPopulation());
-			String resourceProduced;
+			final Quantity production = herdModel.scaledProduction(combinedAnimal.getPopulation());
+			final double pounds = herdModel.scaledPoundsProduction(combinedAnimal.getPopulation());
+			final String resourceProduced;
 			if (herdModel instanceof PoultryModel) {
-				PoultryModel pm = (PoultryModel) herdModel;
+				final PoultryModel pm = (PoultryModel) herdModel;
 				resourceProduced = combinedAnimal.getKind() + " eggs";
-				Boolean cleaningDay = cli.inputBoolean(String.format(
+				final Boolean cleaningDay = cli.inputBoolean(String.format(
 					"Is this the one turn in every %d to clean up after birds?",
 					pm.getExtraChoresInterval() + 1));
 				addLineToOrders.accept(String.format("Gathering %s eggs took the %d workers %d min",
@@ -180,7 +180,7 @@ import query.SmallAnimalModel;
 				resourceProduced = "milk";
 				addToOrders.accept("Between two milkings, tending the ");
 				addToOrders.accept(AnimalPlurals.get(combinedAnimal.getKind()));
-				long baseCost;
+				final long baseCost;
 				if (experts) {
 					baseCost = flockPerHerder * (herdModel.getDailyTimePerHead() - 10); // TODO: That's a sub-optimal formula
 				} else {
@@ -193,7 +193,7 @@ import query.SmallAnimalModel;
 			} else if (herdModel instanceof SmallAnimalModel) {
 				addToOrders.accept("Tending the ");
 				addToOrders.accept(AnimalPlurals.get(combinedAnimal.getKind()));
-				long baseCost;
+				final long baseCost;
 				if (experts) {
 					baseCost = (int) ((flockPerHerder * herdModel.getDailyTimePerHead() +
 						((SmallAnimalModel) herdModel).getDailyTimeFloor()) * 0.9);
@@ -203,7 +203,7 @@ import query.SmallAnimalModel;
 				}
 				minutesSpent += baseCost;
 				addLineToOrders.accept(String.format(" took the %d workers %d min.", workerCount, baseCost));
-				Boolean extra = cli.inputBoolean(String.format(
+				final Boolean extra = cli.inputBoolean(String.format(
 					"Is this the one turn in every %d to clean up after the animals?",
 					((SmallAnimalModel) herdModel).getExtraChoresInterval() + 1));
 				if (extra == null) {

@@ -9,7 +9,7 @@ import javax.swing.JPanel;
 public class FlowPanel extends JPanel {
 	private static final long serialVersionUID = 1;
 	public FlowPanel(final Component... components) {
-		for (Component component : components) {
+		for (final Component component : components) {
 			add(component);
 		}
 	}

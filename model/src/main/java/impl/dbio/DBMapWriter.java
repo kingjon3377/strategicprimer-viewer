@@ -91,28 +91,28 @@ final class DBMapWriter extends AbstractDatabaseWriter<IMutableMapNG, IMapNG> {
 			obj.getDimensions().getColumns(), obj.getCurrentTurn()).execute();
 		currentTurn = obj.getCurrentTurn();
 		playerWriter.initialize(db);
-		for (Player player : obj.getPlayers()) {
+		for (final Player player : obj.getPlayers()) {
 			playerWriter.write(db, player, obj);
 		}
 		int count = 0;
 		int fixtureCount = 0;
-		for (Point location : obj.getLocations()) {
-			Collection<River> rivers = obj.getRivers(location);
+		for (final Point location : obj.getLocations()) {
+			final Collection<River> rivers = obj.getRivers(location);
 			db.update(INSERT_TERRAIN, location.getRow(), location.getColumn(),
 				Optional.ofNullable(obj.getBaseTerrain(location))
 					.map(TileType::getXml).orElse(""),
 				obj.isMountainous(location), rivers.contains(River.North),
 				rivers.contains(River.South), rivers.contains(River.East),
 				rivers.contains(River.West), rivers.contains(River.Lake)).execute();
-			for (TileFixture fixture : obj.getFixtures(location)) {
+			for (final TileFixture fixture : obj.getFixtures(location)) {
 				parent.writeSPObjectInContext(db, fixture, location);
 				fixtureCount++;
 			}
-			for (Player player : obj.getAllBookmarks(location)) {
+			for (final Player player : obj.getAllBookmarks(location)) {
 				db.update(INSERT_BOOKMARK, location.getRow(), location.getColumn(),
 					player.getPlayerId()).execute();
 			}
-			for (Map.Entry<Direction, Integer> entry : obj.getRoads(location).entrySet()) {
+			for (final Map.Entry<Direction, Integer> entry : obj.getRoads(location).entrySet()) {
 				db.update(INSERT_ROADS, location.getRow(), location.getColumn(),
 					entry.getKey().toString(), entry.getValue()).execute();
 			}

@@ -141,7 +141,7 @@ public final class ResourcePileImpl implements IMutableResourcePile {
 	 */
 	@Override
 	public ResourcePileImpl copy(final boolean zero) {
-		ResourcePileImpl retval = new ResourcePileImpl(id, kind, contents, quantity);
+		final ResourcePileImpl retval = new ResourcePileImpl(id, kind, contents, quantity);
 		if (!zero) {
 			retval.setCreated(createdTurn);
 		}

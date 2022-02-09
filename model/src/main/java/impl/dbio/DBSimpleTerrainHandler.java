@@ -58,12 +58,12 @@ final class DBSimpleTerrainHandler extends AbstractDatabaseWriter<TerrainFixture
 
 	private TryBiConsumer<Map<String, Object>, Warning, Exception> readSimpleTerrain(final IMutableMapNG map) {
 		return (dbRow, warner) -> {
-			int row = (Integer) dbRow.get("row");
-			int column = (Integer) dbRow.get("column");
-			String type = (String) dbRow.get("type");
-			int id = (Integer) dbRow.get("id");
-			String image = (String) dbRow.get("image");
-			TerrainFixture fixture;
+			final int row = (Integer) dbRow.get("row");
+			final int column = (Integer) dbRow.get("column");
+			final String type = (String) dbRow.get("type");
+			final int id = (Integer) dbRow.get("id");
+			final String image = (String) dbRow.get("image");
+			final TerrainFixture fixture;
 			switch (type) {
 			case "hill":
 				fixture = new Hill(id);

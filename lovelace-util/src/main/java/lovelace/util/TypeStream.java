@@ -49,14 +49,14 @@ public class TypeStream implements Iterable<Class<?>> {
 				return ourCopy.remove();
 			}
 			while (!queue.isEmpty()) {
-				Class<?> item = queue.remove();
+				final Class<?> item = queue.remove();
 				if (!classes.contains(item)) {
 					classes.add(item);
-					Class<?> superclass = item.getSuperclass();
+					final Class<?> superclass = item.getSuperclass();
 					if (superclass != null) {
 						queue.add(superclass);
 					}
-					for (Class<?> interf : item.getInterfaces()) {
+					for (final Class<?> interf : item.getInterfaces()) {
 						queue.add(interf);
 					}
 					cache.add(item);

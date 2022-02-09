@@ -111,7 +111,7 @@ public class TodoFixerCLI implements CLIDriver {
 	 * We don't just use TileType because we need mountains and forests in ver-2 maps.
 	 */
 	private SimpleTerrain getTerrain(final IMapNG map, final Point location) {
-		TileType terrain = map.getBaseTerrain(location);
+		final TileType terrain = map.getBaseTerrain(location);
 		if (terrain == null) {
 			return SimpleTerrain.Unforested;
 		}
@@ -144,8 +144,8 @@ public class TodoFixerCLI implements CLIDriver {
 		if (_runner != null) {
 			return _runner;
 		} else {
-			ExplorationRunner retval = new ExplorationRunner();
-			Path directory = Paths.get("tables");
+			final ExplorationRunner retval = new ExplorationRunner();
+			final Path directory = Paths.get("tables");
 			if (!Files.isDirectory(directory)) {
 				throw new IllegalStateException("TODO fixer requires a tables directory");
 			}
@@ -156,7 +156,7 @@ public class TodoFixerCLI implements CLIDriver {
 	}
 
 	private String simpleTerrain(final IMapNG map, final Point loc) {
-		TileType terrain = map.getBaseTerrain(loc);
+		final TileType terrain = map.getBaseTerrain(loc);
 		if (TileType.Ocean == terrain) {
 			return "ocean";
 		} else if (map.isMountainous(loc)) {
@@ -183,7 +183,7 @@ public class TodoFixerCLI implements CLIDriver {
 	 * Search for and fix aquatic villages with non-aquatic races.
 	 */
 	private void fixAllVillages(final IMapNG map) throws MissingTableException, IOException {
-		List<Village> villages = map.streamLocations()
+		final List<Village> villages = map.streamLocations()
 			.filter(l -> TileType.Ocean == map.getBaseTerrain(l))
 			.flatMap(l -> map.getFixtures(l).stream())
 			.filter(Village.class::isInstance).map(Village.class::cast)
@@ -192,7 +192,7 @@ public class TodoFixerCLI implements CLIDriver {
 		if (!villages.isEmpty()) {
 			if (raceList.isEmpty()) {
 				while (true) {
-					String race = cli.inputString("Next aquatic rae: ");
+					final String race = cli.inputString("Next aquatic rae: ");
 					if (race == null) {
 						return;
 					} else if (race.isEmpty()) {
@@ -202,19 +202,19 @@ public class TodoFixerCLI implements CLIDriver {
 					}
 				}
 			}
-			for (Village village : villages) {
+			for (final Village village : villages) {
 				if (raceMap.containsKey(village.getId())) {
 					village.setRace(raceMap.get(village.getId()));
 				} else {
-					Random rng = new Random(village.getId());
-					String race = raceList.get(rng.nextInt(raceList.size()));
+					final Random rng = new Random(village.getId());
+					final String race = raceList.get(rng.nextInt(raceList.size()));
 					village.setRace(race);
 					raceMap.put(village.getId(), race);
 				}
 			}
 		}
 
-		List<Pair<Point, CommunityStats>> brokenTownContents =
+		final List<Pair<Point, CommunityStats>> brokenTownContents =
 			map.streamLocations()
 				.flatMap(l -> map.getFixtures(l).stream()
 					.filter(ITownFixture.class::isInstance)
@@ -226,16 +226,16 @@ public class TodoFixerCLI implements CLIDriver {
 				.collect(Collectors.toList());
 
 		if (!brokenTownContents.isEmpty()) {
-			ExplorationRunner eRunner = getRunner();
-			for (Pair<Point, CommunityStats> pair : brokenTownContents) {
-				Point loc = pair.getValue0();
-				CommunityStats population = pair.getValue1();
-				Set<IResourcePile> production = population.getYearlyProduction();
-				for (IResourcePile resource : production.stream()
+			final ExplorationRunner eRunner = getRunner();
+			for (final Pair<Point, CommunityStats> pair : brokenTownContents) {
+				final Point loc = pair.getValue0();
+				final CommunityStats population = pair.getValue1();
+				final Set<IResourcePile> production = population.getYearlyProduction();
+				for (final IResourcePile resource : production.stream()
 						.filter(r -> r.getContents().contains("#"))
 						.collect(Collectors.toList())) {
-				String table = resource.getContents().split("#")[1];
-				IResourcePile replacement = new ResourcePileImpl(resource.getId(),
+				final String table = resource.getContents().split("#")[1];
+				final IResourcePile replacement = new ResourcePileImpl(resource.getId(),
 					resource.getKind(), eRunner.recursiveConsultTable(table, loc,
 						map.getBaseTerrain(loc), map.isMountainous(loc),
 						map.getFixtures(loc), map.getDimensions()),
@@ -246,7 +246,7 @@ public class TodoFixerCLI implements CLIDriver {
 			}
 		}
 
-		List<Pair<Point, CommunityStats>> brokenExpertise =
+		final List<Pair<Point, CommunityStats>> brokenExpertise =
 			map.streamLocations()
 				.flatMap(l -> map.getFixtures(l).stream()
 					.filter(ITownFixture.class::isInstance)
@@ -257,18 +257,18 @@ public class TodoFixerCLI implements CLIDriver {
 				.filter(TodoFixerCLI::anyEmptySkills)
 				.collect(Collectors.toList());
 		if (!brokenExpertise.isEmpty()) {
-			ExplorationRunner eRunner = getRunner();
-			for (Pair<Point, CommunityStats> pair : brokenExpertise) {
-				Point loc = pair.getValue0();
-				CommunityStats population = pair.getValue1();
-				int level = population.getHighestSkillLevels().get("");
+			final ExplorationRunner eRunner = getRunner();
+			for (final Pair<Point, CommunityStats> pair : brokenExpertise) {
+				final Point loc = pair.getValue0();
+				final CommunityStats population = pair.getValue1();
+				final int level = population.getHighestSkillLevels().get("");
 				population.setSkillLevel("", 0);
 				String newSkill = eRunner.recursiveConsultTable(
 					simpleTerrain(map, loc) + "_skills", loc, map.getBaseTerrain(loc),
 					map.isMountainous(loc),  map.getFixtures(loc), map.getDimensions());
 				if (population.getHighestSkillLevels().containsKey(newSkill) &&
 						population.getHighestSkillLevels().get(newSkill) >= level) {
-					int existingLevel = population.getHighestSkillLevels().get(newSkill);
+					final int existingLevel = population.getHighestSkillLevels().get(newSkill);
 					newSkill = eRunner.recursiveConsultTable("regional_specialty", loc,
 						map.getBaseTerrain(loc), map.isMountainous(loc),
 						map.getFixtures(loc), map.getDimensions());
@@ -286,10 +286,10 @@ public class TodoFixerCLI implements CLIDriver {
 	 * Fix a stubbed-out kind for a unit.
 	 */
 	private void fixUnit(final IMutableUnit unit, final SimpleTerrain terrain) {
-		Random rng = new Random(unit.getId());
+		final Random rng = new Random(unit.getId());
 		count++;
-		List<String> jobList;
-		String description;
+		final List<String> jobList;
+		final String description;
 		switch (terrain) {
 		case Unforested:
 			jobList = plainsList;
@@ -306,7 +306,7 @@ public class TodoFixerCLI implements CLIDriver {
 		default:
 			throw new IllegalStateException("Exhaustive switch wasn't");
 		}
-		for (String job : jobList) {
+		for (final String job : jobList) {
 			if (rng.nextBoolean()) {
 				cli.println(String.format("Setting unit with ID #%d (%d/%d) to kind %s",
 					unit.getId(), count, totalCount, job));
@@ -314,7 +314,7 @@ public class TodoFixerCLI implements CLIDriver {
 				return;
 			}
 		}
-		String kind = cli.inputString(String.format("What's the next possible kind for %s? ",
+		final String kind = cli.inputString(String.format("What's the next possible kind for %s? ",
 			description));
 		if (kind != null) {
 			unit.setKind(kind);
@@ -329,8 +329,8 @@ public class TodoFixerCLI implements CLIDriver {
 		totalCount = map.streamAllFixtures()
 			.filter(IMutableUnit.class::isInstance).map(IMutableUnit.class::cast)
 			.filter(u -> "TODO".equals(u.getKind())).count();
-		for (Point point : map.getLocations()) {
-			SimpleTerrain terrain = getTerrain(map, point);
+		for (final Point point : map.getLocations()) {
+			final SimpleTerrain terrain = getTerrain(map, point);
 			map.getFixtures(point).stream().filter(IMutableUnit.class::isInstance)
 					.map(IMutableUnit.class::cast).filter(u -> "TODO".equals(u.getKind()))
 					.forEach(fixture -> fixUnit(fixture, terrain));
@@ -340,7 +340,7 @@ public class TodoFixerCLI implements CLIDriver {
 	@Override
 	public void startDriver() throws DriverFailedException {
 		if (model.getSubordinateMaps().iterator().hasNext()) {
-			for (IMapNG map : model.getAllMaps()) {
+			for (final IMapNG map : model.getAllMaps()) {
 				fixAllUnits(map);
 				try {
 					fixAllVillages(map);
@@ -353,7 +353,7 @@ public class TodoFixerCLI implements CLIDriver {
 				}
 				model.setMapModified(map, true);
 			}
-			for (Point location : model.getMap().getLocations()) {
+			for (final Point location : model.getMap().getLocations()) {
 				model.copyRiversAt(location);
 			}
 		} else {

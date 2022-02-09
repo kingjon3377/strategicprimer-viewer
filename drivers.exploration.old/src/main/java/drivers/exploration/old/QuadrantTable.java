@@ -36,7 +36,7 @@ class QuadrantTable implements EncounterTable {
 		if (quadrants.containsKey(dimensions)) {
 			return quadrants.get(dimensions);
 		} else {
-			Map<Point, String> retval = new HashMap<>();
+			final Map<Point, String> retval = new HashMap<>();
 			final int columns = possResults.size() / quadrantRowCount;
 			int i = 0;
 			final int mapColumns = dimensions.getColumns();
@@ -52,7 +52,7 @@ class QuadrantTable implements EncounterTable {
 					i++;
 				}
 			}
-			Map<Point, String> temp = Collections.unmodifiableMap(retval);
+			final Map<Point, String> temp = Collections.unmodifiableMap(retval);
 			quadrants.put(dimensions, temp);
 			return temp;
 		}
@@ -75,7 +75,7 @@ class QuadrantTable implements EncounterTable {
 
 	private QuadrantTable (final int mapRows, final int mapColumns, final int rows, final String... items) {
 		this(rows, items);
-		MapDimensions dimensions = new MapDimensionsImpl(mapRows, mapColumns, 2);
+		final MapDimensions dimensions = new MapDimensionsImpl(mapRows, mapColumns, 2);
 		quadrants.put(dimensions, valuesFor(dimensions, possibleResults, rows));
 	}
 
@@ -91,7 +91,7 @@ class QuadrantTable implements EncounterTable {
 		final Map<Point, String> resultsMap = valuesFor(mapDimensions, possibleResults,
 			quadrantRows);
 		Point bestKey = Point.INVALID_POINT;
-		for (Point key : resultsMap.keySet().stream()
+		for (final Point key : resultsMap.keySet().stream()
 				.sorted(Comparator.reverseOrder())
 				.collect(Collectors.toList())) {
 			if (key.getRow() <= row && key.getRow() > bestKey.getRow() &&

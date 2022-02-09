@@ -70,7 +70,7 @@ import java.util.logging.Logger;
 	@Override
 	public Pair<Integer, Iterable<Point>> getTravelDistance(final Point start, final Point end) {
 		final Set<Point> unvisited = new HashSet<>();
-		for (Point point : map.getLocations()) {
+		for (final Point point : map.getLocations()) {
 			unvisited.add(point);
 			if (!tentativeDistances.containsKey(Pair.with(start, point))) {
 				tentativeDistances.put(Pair.with(start, point), Integer.MAX_VALUE - 1);
@@ -85,11 +85,11 @@ import java.util.logging.Logger;
 			if (!tentativeDistances.containsKey(Pair.with(start, current))) {
 				throw new IllegalStateException("Tentative distance missing");
 			}
-			int currentDistance = tentativeDistances.get(Pair.with(start, current));
+			final int currentDistance = tentativeDistances.get(Pair.with(start, current));
 			if (current.equals(end)) {
 				LOGGER.info(String.format("Reached the end after %d iterations",
 					iterations));
-				List<Point> path = new ArrayList<>();
+				final List<Point> path = new ArrayList<>();
 				path.add(current);
 				while (retval.containsKey(current)) {
 					path.add(retval.get(current));
@@ -103,7 +103,7 @@ import java.util.logging.Logger;
 					iterations));
 				return Pair.with(currentDistance, Collections.emptyList());
 			}
-			for (Point neighbor : new SurroundingPointIterable(current, map.getDimensions(), 1)) {
+			for (final Point neighbor : new SurroundingPointIterable(current, map.getDimensions(), 1)) {
 				LOGGER.fine(String.format("At %s, considering %s", current, neighbor));
 				if (!unvisited.contains(neighbor)) {
 					LOGGER.fine("Already checked, so skipping.");
@@ -112,8 +112,8 @@ import java.util.logging.Logger;
 				if (!tentativeDistances.containsKey(Pair.with(start, neighbor))) {
 					throw new IllegalStateException("Missing prior estimate");
 				}
-				int estimate = tentativeDistances.get(Pair.with(start, neighbor));
-				int tentativeDistance = currentDistance +
+				final int estimate = tentativeDistances.get(Pair.with(start, neighbor));
+				final int tentativeDistance = currentDistance +
 					SimpleMovementModel.movementCost(map.getBaseTerrain(neighbor),
 						map.getFixtures(neighbor).stream().anyMatch(Forest.class::isInstance),
 						map.isMountainous(neighbor),
@@ -142,7 +142,7 @@ import java.util.logging.Logger;
 			}
 			LOGGER.fine("Finished checking neighbors of " + current);
 			unvisited.remove(current);
-			Point next = nextUnvisited(start, unvisited);
+			final Point next = nextUnvisited(start, unvisited);
 			if (next == null) {
 				LOGGER.info(String.format(
 					"Couldn't find a smallest-estimate unchecked tile after %d iterations",

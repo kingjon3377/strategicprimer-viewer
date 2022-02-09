@@ -135,7 +135,7 @@ public class FixtureFilterTableModel extends AbstractTableModel
 	@Override
 	public Object getValueAt(final int rowIndex, final int columnIndex) {
 		if (rowIndex >= 0 && rowIndex < matchers.size()) {
-			FixtureMatcher matcher = matchers.get(rowIndex);
+			final FixtureMatcher matcher = matchers.get(rowIndex);
 			switch (columnIndex) {
 			case 0:
 				return matcher.isDisplayed();
@@ -181,7 +181,7 @@ public class FixtureFilterTableModel extends AbstractTableModel
 	@Override
 	public void setValueAt(final Object val, final int rowIndex, final int columnIndex) {
 		if (columnIndex == 0 && rowIndex >= 0 && rowIndex < matchers.size()) {
-			FixtureMatcher matcher = matchers.get(rowIndex);
+			final FixtureMatcher matcher = matchers.get(rowIndex);
 			matcher.setDisplayed((Boolean) val);
 			fireTableCellUpdated(rowIndex, 0);
 		}
@@ -190,13 +190,13 @@ public class FixtureFilterTableModel extends AbstractTableModel
 	@Override
 	public void reorder(final int fromIndex, final int toIndex) {
 		if (fromIndex != toIndex) {
-			int actual;
+			final int actual;
 			if (fromIndex < toIndex) {
 				actual = toIndex - 1;
 			} else {
 				actual = toIndex;
 			}
-			FixtureMatcher val = matchers.remove(fromIndex);
+			final FixtureMatcher val = matchers.remove(fromIndex);
 			matchers.add(toIndex, val);
 			fireTableRowsDeleted(fromIndex, fromIndex);
 			fireTableRowsInserted(toIndex, actual);
@@ -205,14 +205,14 @@ public class FixtureFilterTableModel extends AbstractTableModel
 
 	@Override
 	public boolean shouldDisplay(final TileFixture fixture) {
-		for (FixtureMatcher matcher : matchers) {
+		for (final FixtureMatcher matcher : matchers) {
 			if (matcher.matches(fixture)) {
 				return matcher.isDisplayed();
 			}
 		}
-		Class<? extends TileFixture> cls = fixture.getClass();
+		final Class<? extends TileFixture> cls = fixture.getClass();
 		matchers.add(FixtureMatcher.trivialMatcher(cls, fixture.getPlural()));
-		int size = matchers.size();
+		final int size = matchers.size();
 		fireTableRowsInserted(size - 1, size - 1);
 		return true;
 	}
@@ -224,7 +224,7 @@ public class FixtureFilterTableModel extends AbstractTableModel
 
 	@Override
 	public int compare(final TileFixture first, final TileFixture second) {
-		for (FixtureMatcher matcher : matchers) {
+		for (final FixtureMatcher matcher : matchers) {
 			if (!matcher.isDisplayed()) {
 				continue;
 			}

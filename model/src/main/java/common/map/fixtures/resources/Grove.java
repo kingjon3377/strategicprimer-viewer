@@ -133,8 +133,8 @@ public class Grove implements HarvestableFixture, HasPopulation<Grove> {
 
 	@Override
 	public String getShortDescription() {
-		String type;
-		String cultivation;
+		final String type;
+		final String cultivation;
 		String retval;
 		if (cultivated) {
 			cultivation = "Cultivated";
@@ -195,7 +195,7 @@ public class Grove implements HarvestableFixture, HasPopulation<Grove> {
 			return false;
 		} else if (other instanceof Grove) {
 			boolean retval = true;
-			Consumer<String> localReport;
+			final Consumer<String> localReport;
 			if (orchard) {
 				localReport = s -> report.accept(String.format(
 					"In orchard with ID #%d:\t%s", id, s));

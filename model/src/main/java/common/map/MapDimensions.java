@@ -29,15 +29,15 @@ public interface MapDimensions {
 	 * The distance between two points in a map with these dimensions.
 	 */
 	default double distance(final Point first, final Point second) {
-		int rawXDiff = first.getRow() - second.getRow();
-		int rawYDiff = first.getColumn() - second.getColumn();
-		int xDiff;
+		final int rawXDiff = first.getRow() - second.getRow();
+		final int rawYDiff = first.getColumn() - second.getColumn();
+		final int xDiff;
 		if (rawXDiff < (getRows() / 2)) {
 			xDiff = rawXDiff;
 		} else {
 			xDiff = getRows() - rawXDiff;
 		}
-		int yDiff;
+		final int yDiff;
 		if (rawYDiff < (getColumns() / 2)) {
 			yDiff = rawYDiff;
 		} else {

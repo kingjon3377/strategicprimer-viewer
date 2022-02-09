@@ -163,7 +163,7 @@ public final class CommunityStats implements Subsettable<@Nullable CommunityStat
 		builder.append("Population: ").append(population);
 		builder.append(System.lineSeparator());
 		builder.append("Skills: ");
-		for (Map.Entry<String, Integer> entry : skillLevels.entrySet()) {
+		for (final Map.Entry<String, Integer> entry : skillLevels.entrySet()) {
 			builder.append("- ").append(entry.getKey()).append(": Level ")
 				.append(entry.getValue());
 			builder.append(System.lineSeparator());
@@ -173,13 +173,13 @@ public final class CommunityStats implements Subsettable<@Nullable CommunityStat
 			workedFieldIDs.stream().map(Object::toString).toArray(String[]::new)));
 		builder.append(System.lineSeparator());
 		builder.append("Yearly Resource Production:");
-		for (IResourcePile resource : yearlyProduction) {
+		for (final IResourcePile resource : yearlyProduction) {
 			builder.append("- ").append(resource);
 			builder.append(System.lineSeparator());
 		}
 		builder.append("Yearly Resource Consumption:");
 		builder.append(System.lineSeparator());
-		for (IResourcePile resource : yearlyConsumption) {
+		for (final IResourcePile resource : yearlyConsumption) {
 			builder.append("- ").append(resource);
 			builder.append(System.lineSeparator());
 		}
@@ -209,7 +209,7 @@ public final class CommunityStats implements Subsettable<@Nullable CommunityStat
 				report.accept("Has worked fields we don't");
 				return false;
 			} else {
-				for (IResourcePile resource : other.getYearlyProduction()) {
+				for (final IResourcePile resource : other.getYearlyProduction()) {
 					if (yearlyProduction.contains(resource) ||
 							yearlyProduction.stream().anyMatch(
 								r -> r.isSubset(resource, s -> {}))) {
@@ -221,7 +221,7 @@ public final class CommunityStats implements Subsettable<@Nullable CommunityStat
 						return false;
 					}
 				}
-				for (IResourcePile resource : other.getYearlyConsumption()) {
+				for (final IResourcePile resource : other.getYearlyConsumption()) {
 					if (yearlyConsumption.contains(resource) ||
 							yearlyConsumption.stream().anyMatch(
 								r -> r.isSubset(resource, s -> {}))) {

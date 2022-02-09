@@ -28,7 +28,7 @@ public class TestExplorationRunner {
 	 */
 	@Test
 	public void testGetPrimaryRock() throws MissingTableException {
-		ExplorationRunner runner = new ExplorationRunner();
+		final ExplorationRunner runner = new ExplorationRunner();
 		runner.loadTable("major_rock", new MockTable("primary_rock_test"));
 		assertEquals("primary_rock_test", runner.getPrimaryRock(new Point(0, 0),
 			TileType.Tundra, false, Collections.emptyList(), new MapDimensionsImpl(69, 88, 2)),
@@ -40,11 +40,11 @@ public class TestExplorationRunner {
 	 */
 	@Test
 	public void testGetPrimaryTree() throws MissingTableException {
-		ExplorationRunner runner = new ExplorationRunner();
+		final ExplorationRunner runner = new ExplorationRunner();
 		runner.loadTable("boreal_major_tree", new MockTable("boreal_major_test"));
 		runner.loadTable("temperate_major_tree", new MockTable("temperate_major_test"));
-		Point point = new Point(0, 0);
-		MapDimensions dimensions = new MapDimensionsImpl(69, 88, 2);
+		final Point point = new Point(0, 0);
+		final MapDimensions dimensions = new MapDimensionsImpl(69, 88, 2);
 		assertEquals("boreal_major_test", runner.getPrimaryTree(point, TileType.Steppe, false,
 			Arrays.asList(new Forest("kind", false, 3)), dimensions),
 			"primary tree test for forest in steppe");
@@ -69,12 +69,12 @@ public class TestExplorationRunner {
 	 */
 	@Test
 	public void testConsultTable() throws MissingTableException {
-		ExplorationRunner runner = new ExplorationRunner();
+		final ExplorationRunner runner = new ExplorationRunner();
 		runner.loadTable("test_table_one", new MockTable("test_one"));
 		runner.loadTable("test_table_two", new MockTable("test_two"));
 		runner.loadTable("test_table_three", new MockTable("test_three"));
-		Point point = new Point(0, 0);
-		MapDimensions dimensions = new MapDimensionsImpl(69, 88, 2);
+		final Point point = new Point(0, 0);
+		final MapDimensions dimensions = new MapDimensionsImpl(69, 88, 2);
 		assertEquals("test_one", runner.consultTable("test_table_one", point,
 			TileType.Tundra, false, Collections.emptyList(), dimensions), "first table");
 		assertEquals("test_two", runner.consultTable("test_table_two", point,
@@ -91,13 +91,13 @@ public class TestExplorationRunner {
 	 */
 	@Test
 	public void testRecursiveConsultTable() throws MissingTableException {
-		ExplorationRunner runner = new ExplorationRunner();
+		final ExplorationRunner runner = new ExplorationRunner();
 		runner.loadTable("test_table_one", new ConstantTable("( #test_table_two# )"));
 		runner.loadTable("test_table_two", new ConstantTable("( #test_table_three# )"));
 		runner.loadTable("test_table_three", new ConstantTable("test_three"));
 		runner.loadTable("test_table_four", new ConstantTable("_ #test_table_one"));
-		Point point = new Point(0, 0);
-		MapDimensions dimensions = new MapDimensionsImpl(69, 88, 2);
+		final Point point = new Point(0, 0);
+		final MapDimensions dimensions = new MapDimensionsImpl(69, 88, 2);
 		assertEquals("( ( test_three ) )", runner.recursiveConsultTable("test_table_one", point,
 			TileType.Tundra, false, Collections.emptyList(), dimensions),
 			"two levels of recursion");
@@ -115,12 +115,12 @@ public class TestExplorationRunner {
 	 */
 	@Test
 	public void testDefaultResults() throws MissingTableException {
-		ExplorationRunner runner = new ExplorationRunner();
+		final ExplorationRunner runner = new ExplorationRunner();
 		runner.loadTable("major_rock", new ConstantTable("test_rock"));
 		runner.loadTable("boreal_major_tree", new ConstantTable("boreal_tree"));
 		runner.loadTable("temperate_major_tree", new ConstantTable("temperate_tree"));
-		Point point = new Point(0, 0);
-		MapDimensions dimensions = new MapDimensionsImpl(69, 88, 0);
+		final Point point = new Point(0, 0);
+		final MapDimensions dimensions = new MapDimensionsImpl(69, 88, 0);
 		assertEquals("The primary rock type here is test_rock.",
 			runner.defaultResults(point, TileType.Tundra, false, Collections.emptyList(),
 				dimensions), "defaultResults in non-forest");
@@ -142,7 +142,7 @@ public class TestExplorationRunner {
 	 */
 	@Test
 	public void testRecursiveCheck() throws MissingTableException {
-		ExplorationRunner runner = new ExplorationRunner();
+		final ExplorationRunner runner = new ExplorationRunner();
 		runner.loadTable("existent_table", new ConstantTable("exists"));
 		assertTrue(runner.recursiveCheck("non-existent-table"),
 			"base case of non-existent table");
@@ -166,7 +166,7 @@ public class TestExplorationRunner {
 	 */
 	@Test
 	public void testGlobalRecursiveCheck() throws MissingTableException {
-		ExplorationRunner runner = new ExplorationRunner();
+		final ExplorationRunner runner = new ExplorationRunner();
 		assertFalse(runner.globalRecursiveCheck(), "recursive check with no tables");
 		runner.loadTable("existent", new ConstantTable("true_table"));
 		assertFalse(runner.globalRecursiveCheck(), "recursive check with only valid tables");
@@ -179,16 +179,16 @@ public class TestExplorationRunner {
 	 */
 	@Test
 	public void testLoadQuadrantTable() throws MissingTableException, IOException {
-		ExplorationRunner runner = new ExplorationRunner();
-		Deque<String> data = new LinkedList<>(Arrays.asList("quadrant", "2", "one", "two", "three",
+		final ExplorationRunner runner = new ExplorationRunner();
+		final Deque<String> data = new LinkedList<>(Arrays.asList("quadrant", "2", "one", "two", "three",
 			"four", "five", "six"));
-		String table = "testLoadQuadrantTable().result";
+		final String table = "testLoadQuadrantTable().result";
 		runner.loadTableFromDataStream(data.iterator(), table);
-		Point point = new Point(0, 0);
-		MapDimensions dimensions = new MapDimensionsImpl(69, 88, 2);
+		final Point point = new Point(0, 0);
+		final MapDimensions dimensions = new MapDimensionsImpl(69, 88, 2);
 		assertEquals("one", runner.consultTable(table, point, TileType.Tundra, false,
 			Collections.emptyList(), dimensions), "loading quadrant table");
-		Point pointTwo = new Point(36, 30);
+		final Point pointTwo = new Point(36, 30);
 		assertEquals("one", runner.consultTable(table, point, TileType.Ocean, false,
 			Collections.emptyList(), dimensions), "quadrant table isn't a terrain table");
 		assertEquals("five", runner.consultTable(table, pointTwo, TileType.Tundra, false,
@@ -232,8 +232,8 @@ public class TestExplorationRunner {
 	 */
 	@Test
 	public void testLoadRandomTable() throws MissingTableException, IOException {
-		ExplorationRunner runner = new ExplorationRunner();
-		String table = "testLoadRandomTable()";
+		final ExplorationRunner runner = new ExplorationRunner();
+		final String table = "testLoadRandomTable()";
 		runner.loadTableFromDataStream(
 			new LinkedList<>(Arrays.asList("random", "0 one", "99 two")).iterator(),
 			table);
@@ -246,8 +246,8 @@ public class TestExplorationRunner {
 	 */
 	@Test
 	public void testLoadTerrainTable() throws MissingTableException, IOException {
-		ExplorationRunner runner = new ExplorationRunner();
-		String table = "testLoadTerrainTable()";
+		final ExplorationRunner runner = new ExplorationRunner();
+		final String table = "testLoadTerrainTable()";
 		runner.loadTableFromDataStream(new LinkedList<>(Arrays.asList("terrain", "tundra one",
 				"plains two", "ocean three", "mountain four",
 				"temperate_forest five")).iterator(),
@@ -271,8 +271,8 @@ public class TestExplorationRunner {
 	 */
 	@Test
 	public void testLoadConstantTable() throws MissingTableException, IOException {
-		ExplorationRunner runner = new ExplorationRunner();
-		String table = "testLoadConstantTable()";
+		final ExplorationRunner runner = new ExplorationRunner();
+		final String table = "testLoadConstantTable()";
 		runner.loadTableFromDataStream(
 			new LinkedList<>(Arrays.asList("constant", "one")).iterator(), table);
 		assertEquals("one", runner.consultTable(table, Point.INVALID_POINT, TileType.Plains,
@@ -284,7 +284,7 @@ public class TestExplorationRunner {
 	 */
 	@Test
 	public void testTableLoadingInvalidInput() throws MissingTableException {
-		ExplorationRunner runner = new ExplorationRunner();
+		final ExplorationRunner runner = new ExplorationRunner();
 		// no data
 		assertThrows(IllegalArgumentException.class,
 			() -> runner.loadTableFromDataStream(

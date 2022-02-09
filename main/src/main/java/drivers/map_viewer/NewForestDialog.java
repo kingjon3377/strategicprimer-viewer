@@ -34,10 +34,10 @@ public class NewForestDialog extends SPDialog implements NewFixtureSource {
 		super(null, "Add a New Forest");
 		this.idf = idf;
 		setLayout(new GridLayout(0, 2));
-		for (Pair<String, JComponent> pair : Arrays.asList(
+		for (final Pair<String, JComponent> pair : Arrays.asList(
 				Pair.<String, JComponent>with("Kind of Forest", kindField),
 				Pair.<String, JComponent>with("Rows?", rowsField))) {
-			JComponent field = pair.getValue1();
+			final JComponent field = pair.getValue1();
 			add(new JLabel(String.format("<html><b>%s</b></html>", pair.getValue0())));
 			if (field instanceof JTextField) {
 				setupField((JTextField) field);
@@ -49,10 +49,10 @@ public class NewForestDialog extends SPDialog implements NewFixtureSource {
 		idField.setColumns(10);
 		setupField(idField);
 
-		JButton okButton = new ListenedButton("OK", ignored -> okListener());
+		final JButton okButton = new ListenedButton("OK", ignored -> okListener());
 		add(okButton);
 
-		JButton cancelButton = new ListenedButton("Cancel", ignored -> cancelListener());
+		final JButton cancelButton = new ListenedButton("Cancel", ignored -> cancelListener());
 		Platform.makeButtonsSegmented(okButton, cancelButton);
 		add(cancelButton);
 
@@ -84,8 +84,8 @@ public class NewForestDialog extends SPDialog implements NewFixtureSource {
 		new JFormattedTextField(NumberFormat.getNumberInstance());
 
 	private void okListener() {
-		String kind = kindField.getText().trim();
-		String acresString = acresField.getText().trim();
+		final String kind = kindField.getText().trim();
+		final String acresString = acresField.getText().trim();
 		if (kind.isEmpty()) {
 			kindField.requestFocusInWindow();
 			return;
@@ -97,10 +97,10 @@ public class NewForestDialog extends SPDialog implements NewFixtureSource {
 				return;
 			}
 		} else {
-			String reqId = idField.getText().trim();
-			int idNum;
+			final String reqId = idField.getText().trim();
+			final int idNum;
 			if (isNumeric(reqId)) {
-				OptionalInt temp = parseInt(reqId);
+				final OptionalInt temp = parseInt(reqId);
 				if (temp.isPresent() && temp.getAsInt() >= 0) {
 					idNum = temp.getAsInt();
 					idf.register(idNum);
@@ -116,8 +116,8 @@ public class NewForestDialog extends SPDialog implements NewFixtureSource {
 			} catch (final NumberFormatException except) {
 				acres = new BigDecimal(-1);
 			}
-			Forest forest = new Forest(kind, rowsField.getModel().isSelected(), idNum, acres);
-			for (NewFixtureListener listener : listeners) {
+			final Forest forest = new Forest(kind, rowsField.getModel().isSelected(), idNum, acres);
+			for (final NewFixtureListener listener : listeners) {
 				listener.addNewFixture(forest);
 			}
 			kindField.setText("");

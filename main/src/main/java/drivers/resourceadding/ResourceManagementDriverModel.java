@@ -49,12 +49,12 @@ import java.math.BigDecimal;
 	 * TODO: Use the "HQ or, failing that, any other fortress" algorithm used by other driver models.
 	 */
 	public void addResource(final FortressMember resource, final Player player) {
-		for (IMutableMapNG map : getRestrictedAllMaps()) {
-			Player mapPlayer = map.getCurrentPlayer();
+		for (final IMutableMapNG map : getRestrictedAllMaps()) {
+			final Player mapPlayer = map.getCurrentPlayer();
 			// FIXME: It looks like this always skips the main map because the map player is independent there ...
 			if (mapPlayer.isIndependent() || mapPlayer.getPlayerId() < 0 ||
 					mapPlayer.getPlayerId() == player.getPlayerId()) {
-				IMutableFortress fortress = map.streamAllFixtures()
+				final IMutableFortress fortress = map.streamAllFixtures()
 						.filter(IMutableFortress.class::isInstance)
 						.map(IMutableFortress.class::cast)
 						.filter(f -> "HQ".equals(f.getName()))
@@ -71,7 +71,7 @@ import java.math.BigDecimal;
 
 	public IResourcePile addResourcePile(final Player player, final int id, final String kind, final String resource,
 	                                     final BigDecimal quantity, final String units, @Nullable final Integer created) {
-		IMutableResourcePile pile = new ResourcePileImpl(id, kind, resource,
+		final IMutableResourcePile pile = new ResourcePileImpl(id, kind, resource,
 			new Quantity(quantity, units));
 		if (created != null) {
 			pile.setCreated(created);

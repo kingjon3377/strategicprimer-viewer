@@ -53,13 +53,13 @@ final class DBPlayerHandler extends AbstractDatabaseWriter<Player, IMapNG> imple
 
 	private TryBiConsumer<Map<String, Object>, Warning, Exception> readPlayer(final IMutableMapNG map) {
 		return (dbRow, warner) -> {
-			int id = (Integer) dbRow.get("id");
-			String name = (String) dbRow.get("codename");
-			Boolean current = /* DBMapReader.databaseBoolean(dbRow.get("current")) */ // FIXME
+			final int id = (Integer) dbRow.get("id");
+			final String name = (String) dbRow.get("codename");
+			final Boolean current = /* DBMapReader.databaseBoolean(dbRow.get("current")) */ // FIXME
 				(Boolean) dbRow.get("current"); // This will compile but probably won't work
-			String portrait = (String) dbRow.get("portrait");
-			String country = (String) dbRow.get("country");
-			MutablePlayer player = new PlayerImpl(id, name, country);
+			final String portrait = (String) dbRow.get("portrait");
+			final String country = (String) dbRow.get("country");
+			final MutablePlayer player = new PlayerImpl(id, name, country);
 			player.setCurrent(current);
 			if (portrait != null) {
 				player.setPortrait(portrait);

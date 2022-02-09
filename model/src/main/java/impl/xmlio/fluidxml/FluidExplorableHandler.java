@@ -27,13 +27,13 @@ import lovelace.util.MalformedXMLException;
 	                                             final IDRegistrar idFactory) throws SPFormatException {
 		requireTag(element, parent, "adventure");
 		expectAttributes(element, warner, "owner", "brief", "full", "id", "image");
-		Player player;
+		final Player player;
 		if (hasAttribute(element, "owner")) {
 			player = players.getPlayer(getIntegerAttribute(element, "owner"));
 		} else {
 			player = players.getIndependent();
 		}
-		AdventureFixture retval = setImage(new AdventureFixture(player,
+		final AdventureFixture retval = setImage(new AdventureFixture(player,
 			getAttribute(element, "brief", ""),
 			getAttribute(element, "full", ""),
 			getOrGenerateID(element, warner, idFactory)), element, warner);
@@ -46,9 +46,9 @@ import lovelace.util.MalformedXMLException;
 	                                final IDRegistrar idFactory) throws SPFormatException {
 		requireTag(element, parent, "portal");
 		expectAttributes(element, warner, "row", "column", "world", "id", "image");
-		Point location = new Point(getIntegerAttribute(element, "row"),
+		final Point location = new Point(getIntegerAttribute(element, "row"),
 			getIntegerAttribute(element, "column"));
-		Portal retval = setImage(new Portal(
+		final Portal retval = setImage(new Portal(
 			getAttribute(element, "world"), location,
 			getOrGenerateID(element, warner, idFactory)), element, warner);
 		spinUntilEnd(element.getName(), stream);
@@ -60,8 +60,8 @@ import lovelace.util.MalformedXMLException;
 			throws SPFormatException {
 		requireTag(element, parent, "cave");
 		expectAttributes(element, warner, "id", "dc", "image");
-		int idNum = getOrGenerateID(element, warner, idFactory);
-		Cave retval = new Cave(getIntegerAttribute(element, "dc"), idNum);
+		final int idNum = getOrGenerateID(element, warner, idFactory);
+		final Cave retval = new Cave(getIntegerAttribute(element, "dc"), idNum);
 		spinUntilEnd(element.getName(), stream);
 		return setImage(retval, element, warner);
 	}
@@ -71,8 +71,8 @@ import lovelace.util.MalformedXMLException;
 	                                          final IDRegistrar idFactory) throws SPFormatException {
 		requireTag(element, parent, "battlefield");
 		expectAttributes(element, warner, "id", "dc", "image");
-		int idNum = getOrGenerateID(element, warner, idFactory);
-		Battlefield retval = new Battlefield(getIntegerAttribute(element, "dc"), idNum);
+		final int idNum = getOrGenerateID(element, warner, idFactory);
+		final Battlefield retval = new Battlefield(getIntegerAttribute(element, "dc"), idNum);
 		spinUntilEnd(element.getName(), stream);
 		return setImage(retval, element, warner);
 	}

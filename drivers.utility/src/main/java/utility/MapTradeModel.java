@@ -27,7 +27,7 @@ public class MapTradeModel extends SimpleMultiMapModel {
 
 	private void setGlobalModifiedFlag() {
 		if (!globalModifiedFlag) {
-			for (IMutableMapNG second : getRestrictedSubordinateMaps()) {
+			for (final IMutableMapNG second : getRestrictedSubordinateMaps()) {
 				second.setModified(true);
 			}
 			globalModifiedFlag = true;
@@ -35,16 +35,16 @@ public class MapTradeModel extends SimpleMultiMapModel {
 	}
 
 	public void copyPlayers() {
-		for (IMutableMapNG second : getRestrictedSubordinateMaps()) {
+		for (final IMutableMapNG second : getRestrictedSubordinateMaps()) {
 			getMap().getPlayers().forEach(second::addPlayer);
 		}
 		setGlobalModifiedFlag();
 	}
 
 	public void copyBaseTerrainAt(final Point location) {
-		IMapNG map = getMap();
-		for (IMutableMapNG second : getRestrictedSubordinateMaps()) {
-			TileType terrain = map.getBaseTerrain(location);
+		final IMapNG map = getMap();
+		for (final IMutableMapNG second : getRestrictedSubordinateMaps()) {
+			final TileType terrain = map.getBaseTerrain(location);
 			if (second.getBaseTerrain(location) == null && terrain != null) {
 				second.setBaseTerrain(location, terrain);
 				setGlobalModifiedFlag();
@@ -54,9 +54,9 @@ public class MapTradeModel extends SimpleMultiMapModel {
 
 	public void maybeCopyFixturesAt(final Point location, final Predicate<TileFixture> condition,
 	                                final boolean zeroFixtures) {
-		IMapNG map = getMap();
-		for (IMutableMapNG second : getRestrictedSubordinateMaps()) {
-			for (TileFixture fixture : map.getFixtures(location).stream().filter(condition)
+		final IMapNG map = getMap();
+		for (final IMutableMapNG second : getRestrictedSubordinateMaps()) {
+			for (final TileFixture fixture : map.getFixtures(location).stream().filter(condition)
 					.collect(Collectors.toList())) {
 				if (fixture.getId() >= 0 &&
 						second.getFixtures(location).stream()
@@ -69,23 +69,23 @@ public class MapTradeModel extends SimpleMultiMapModel {
 	}
 
 	public void copyRiversAt(final Point location) {
-		IMapNG map = getMap();
-		for (IMutableMapNG second : getRestrictedSubordinateMaps()) {
+		final IMapNG map = getMap();
+		for (final IMutableMapNG second : getRestrictedSubordinateMaps()) {
 			second.addRivers(location, map.getRivers(location).toArray(new River[0]));
 			setGlobalModifiedFlag();
 		}
 	}
 
 	public void copyRoadsAt(final Point location) {
-		IMapNG map = getMap();
+		final IMapNG map = getMap();
 		if (!map.getRoads(location).isEmpty()) {
-			Map<Direction, Integer> roads = map.getRoads(location);
-			for (IMutableMapNG second : getRestrictedSubordinateMaps()) {
-				Map<Direction, Integer> existingRoads = second.getRoads(location);
-				for (Map.Entry<Direction, Integer> entry : roads.entrySet()) {
-					Direction direction = entry.getKey();
-					int quality = entry.getValue();
-					int existingRoad = existingRoads.getOrDefault(direction, 0);
+			final Map<Direction, Integer> roads = map.getRoads(location);
+			for (final IMutableMapNG second : getRestrictedSubordinateMaps()) {
+				final Map<Direction, Integer> existingRoads = second.getRoads(location);
+				for (final Map.Entry<Direction, Integer> entry : roads.entrySet()) {
+					final Direction direction = entry.getKey();
+					final int quality = entry.getValue();
+					final int existingRoad = existingRoads.getOrDefault(direction, 0);
 					if (existingRoad >= quality) {
 						continue;
 					} else {

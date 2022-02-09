@@ -37,8 +37,8 @@ public final class AssertAny {
 	 * @param assertions the gorup of assertions
 	 */
 	public static void assertAny(final String message, final Runnable... assertions) {
-		List<AssertionFailedError> failures = new ArrayList<>();
-		for (Runnable assertion : assertions) {
+		final List<AssertionFailedError> failures = new ArrayList<>();
+		for (final Runnable assertion : assertions) {
 			try {
 				assertion.run();
 				return;
@@ -55,8 +55,8 @@ public final class AssertAny {
 	 * @param assertions the gorup of assertions
 	 */
 	public static void assertAny(final Runnable... assertions) {
-		List<AssertionFailedError> failures = new ArrayList<>();
-		for (Runnable assertion : assertions) {
+		final List<AssertionFailedError> failures = new ArrayList<>();
+		for (final Runnable assertion : assertions) {
 			try {
 				assertion.run();
 				return;

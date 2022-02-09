@@ -68,8 +68,8 @@ public class PlayerChangeMenuListener implements ActionListener, PlayerChangeSou
 	 */
 	@Override
 	public void actionPerformed(final ActionEvent event) {
-		Player currentPlayer;
-		Iterable<Player> players;
+		final Player currentPlayer;
+		final Iterable<Player> players;
 		if (model instanceof IWorkerModel) {
 			currentPlayer = ((IWorkerModel) model).getCurrentPlayer();
 			players = ((IWorkerModel) model).getPlayers();
@@ -77,7 +77,7 @@ public class PlayerChangeMenuListener implements ActionListener, PlayerChangeSou
 			currentPlayer = model.getMap().getCurrentPlayer();
 			players = model.getMap().getPlayers();
 		}
-		Object retval = JOptionPane.showInputDialog(
+		final Object retval = JOptionPane.showInputDialog(
 			getContainingFrame(Optional.ofNullable(event.getSource())
 				.filter(Component.class::isInstance).map(Component.class::cast).orElse(null)),
 			"Player to view:", "Choose New Player:", JOptionPane.PLAIN_MESSAGE, null,
@@ -87,7 +87,7 @@ public class PlayerChangeMenuListener implements ActionListener, PlayerChangeSou
 			if (model instanceof IWorkerModel) {
 				((IWorkerModel) model).setCurrentPlayer((Player) retval);
 			}
-			for (PlayerChangeListener listener : listeners) {
+			for (final PlayerChangeListener listener : listeners) {
 				listener.playerChanged(currentPlayer, (Player) retval);
 			}
 		}

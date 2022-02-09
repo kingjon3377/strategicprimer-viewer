@@ -96,15 +96,15 @@ public class PopulationGeneratingCLI implements CLIDriver {
 		}
 		Collections.shuffle(locations);
 		final int count = locations.size();
-		String key = (talking) ? "talking " + kind : kind;
+		final String key = (talking) ? "talking " + kind : kind;
 		final int total = Optional.ofNullable(cli.inputNumber(String.format(
 			"There are %d groups of %s in the world; what should their total population be?",
 			count, key))).orElse(0);
 		int remainingTotal = total;
 		int remainingCount = count;
 		final Random rng = SingletonRandom.SINGLETON_RANDOM;
-		for (Point location : locations) {
-			int temp = (remainingCount * 2) + 2;
+		for (final Point location : locations) {
+			final int temp = (remainingCount * 2) + 2;
 			if (remainingTotal <= temp) {
 				cli.println(String.format(
 					"With %d groups left, there is only %d left, not enough for 2 or more each",
@@ -112,7 +112,7 @@ public class PopulationGeneratingCLI implements CLIDriver {
 				cli.println(String.format("Adjusting up by %d", remainingCount * 3));
 				remainingTotal += remainingCount * 3;
 			}
-			int nextPopulation;
+			final int nextPopulation;
 			if (remainingCount == 1) {
 				nextPopulation = remainingTotal;
 			} else if (remainingCount < 1) {
@@ -151,7 +151,7 @@ public class PopulationGeneratingCLI implements CLIDriver {
 		int remainingTotal = total;
 		int remainingCount = count;
 		final Random rng = SingletonRandom.SINGLETON_RANDOM;
-		for (Point location : locations) {
+		for (final Point location : locations) {
 			if (remainingTotal < remainingCount) {
 				cli.println(String.format("With %d groups left, there is only %s left",
 					remainingCount, remainingTotal)); // TODO: adjust instead?
@@ -188,7 +188,7 @@ public class PopulationGeneratingCLI implements CLIDriver {
 		int remainingTotal = total;
 		int remainingCount = count;
 		final Random rng = SingletonRandom.SINGLETON_RANDOM;
-		for (Point location : locations) {
+		for (final Point location : locations) {
 			if (remainingTotal < remainingCount) {
 				cli.println(String.format("With %d groups left, there is only %s left",
 					remainingCount, remainingTotal)); // TODO: adjust instead?
@@ -215,10 +215,10 @@ public class PopulationGeneratingCLI implements CLIDriver {
 			.collect(Collectors.toList());
 		Collections.shuffle(entries);
 		final Random rng = SingletonRandom.SINGLETON_RANDOM;
-		for (Pair<Point, Meadow> entry : entries) {
-			Point loc = entry.getValue0();
-			Meadow field = entry.getValue1();
-			double acres = rng.nextDouble() * 5.5 + 0.5;
+		for (final Pair<Point, Meadow> entry : entries) {
+			final Point loc = entry.getValue0();
+			final Meadow field = entry.getValue1();
+			final double acres = rng.nextDouble() * 5.5 + 0.5;
 			model.setFieldExtent(loc, field, acres);
 		}
 	}
@@ -259,7 +259,7 @@ public class PopulationGeneratingCLI implements CLIDriver {
 				.anyMatch(f -> f.getAcres().doubleValue() <= 0.0))
 			.collect(Collectors.toList());
 		Collections.shuffle(locations);
-		for (Point location : locations) {
+		for (final Point location : locations) {
 			final Forest primaryForest = map.getFixtures(location).stream()
 				.filter(Forest.class::isInstance).map(Forest.class::cast)
 				.findFirst().orElseThrow(
@@ -279,13 +279,13 @@ public class PopulationGeneratingCLI implements CLIDriver {
 						}
 					}).reduce(reserved, BigDecimal::add);
 			}
-			List<Forest> otherForests = map.getFixtures(location).stream()
+			final List<Forest> otherForests = map.getFixtures(location).stream()
 				.filter(Forest.class::isInstance).map(Forest.class::cast)
 				.filter(f -> !Objects.equals(f, primaryForest))
 				.filter(f -> f.getAcres().doubleValue() <= 0.0)
 				.collect(Collectors.toList());
-			int adjacentCount = countAdjacentForests(location, primaryForest.getKind());
-			for (ITownFixture town : map.getFixtures(location).stream()
+			final int adjacentCount = countAdjacentForests(location, primaryForest.getKind());
+			for (final ITownFixture town : map.getFixtures(location).stream()
 					.filter(ITownFixture.class::isInstance).map(ITownFixture.class::cast)
 					.collect(Collectors.toList())) {
 				switch (town.getTownSize()) {
@@ -322,7 +322,7 @@ public class PopulationGeneratingCLI implements CLIDriver {
 				continue;
 			}
 			if (otherForests.isEmpty()) {
-				BigDecimal acreage;
+				final BigDecimal acreage;
 				if (adjacentCount > 7) {
 					acreage = fullTile.subtract(reserved);
 				} else if (adjacentCount > 4) {
@@ -334,7 +334,7 @@ public class PopulationGeneratingCLI implements CLIDriver {
 				}
 				model.setForestExtent(location, primaryForest, acreage);
 			} else {
-				BigDecimal acreage;
+				final BigDecimal acreage;
 				if (adjacentCount > 4) {
 					acreage = fullTile.subtract(reserved)
 						.multiply(new BigDecimal(4).divide(new BigDecimal(5)));
@@ -344,7 +344,7 @@ public class PopulationGeneratingCLI implements CLIDriver {
 				}
 				model.setForestExtent(location, primaryForest, acreage);
 				reserved = reserved.add(acreage);
-				for (Forest forest : otherForests) {
+				for (final Forest forest : otherForests) {
 					model.setForestExtent(location, forest,
 						perForestAcreage(reserved, otherForests.size()));
 				}
@@ -354,7 +354,7 @@ public class PopulationGeneratingCLI implements CLIDriver {
 
 	@Override
 	public void startDriver() {
-		for (String kind : map.streamAllFixtures()
+		for (final String kind : map.streamAllFixtures()
 				.filter(Animal.class::isInstance).map(Animal.class::cast)
 				.filter(a -> a.getPopulation() <= 0).map(Animal::getKind).distinct()
 				.collect(Collectors.toList())) {

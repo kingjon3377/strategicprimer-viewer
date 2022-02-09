@@ -53,22 +53,22 @@ final class DBFortressHandler extends AbstractDatabaseWriter<IFortress, Point> i
 		db.update(INSERT_SQL, context.getRow(), context.getColumn(), obj.getOwner().getPlayerId(),
 			obj.getName(), obj.getTownSize().toString(), obj.getId(), obj.getImage(),
 			obj.getPortrait()).execute();
-		for (FortressMember member : obj) {
+		for (final FortressMember member : obj) {
 			parent.writeSPObjectInContext(db, member, obj);
 		}
 	}
 
 	private TryBiConsumer<Map<String, Object>, Warning, Exception> readFortress(final IMutableMapNG map) {
 		return (dbRow, warner) -> {
-			int row = (Integer) dbRow.get("row");
-			int column = (Integer) dbRow.get("column");
-			int ownerId = (Integer) dbRow.get("owner");
-			String name = (String) dbRow.get("name");
-			TownSize size = TownSize.parseTownSize((String) dbRow.get("size"));
-			int id = (Integer) dbRow.get("id");
-			String image = (String) dbRow.get("image");
-			String portrait = (String) dbRow.get("portrait");
-			IMutableFortress fortress = new FortressImpl(map.getPlayers().getPlayer(ownerId),
+			final int row = (Integer) dbRow.get("row");
+			final int column = (Integer) dbRow.get("column");
+			final int ownerId = (Integer) dbRow.get("owner");
+			final String name = (String) dbRow.get("name");
+			final TownSize size = TownSize.parseTownSize((String) dbRow.get("size"));
+			final int id = (Integer) dbRow.get("id");
+			final String image = (String) dbRow.get("image");
+			final String portrait = (String) dbRow.get("portrait");
+			final IMutableFortress fortress = new FortressImpl(map.getPlayers().getPlayer(ownerId),
 				name, id, size);
 			if (image != null) {
 				fortress.setImage(image);

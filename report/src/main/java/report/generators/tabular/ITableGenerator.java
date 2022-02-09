@@ -48,16 +48,16 @@ public interface ITableGenerator<T extends IFixture> {
 	default void produceTable(final ThrowingConsumer<String, IOException> ostream, final DelayedRemovalMap<Integer,
 			Pair<Point, IFixture>> fixtures, final Map<Integer, Integer> parentMap)
 			throws IOException {
-		Class<T> cls = narrowedClass();
-		Iterable<Triplet<Integer, Point, T>> values = fixtures.entrySet().stream()
+		final Class<T> cls = narrowedClass();
+		final Iterable<Triplet<Integer, Point, T>> values = fixtures.entrySet().stream()
 			.filter(e -> cls.isInstance(e.getValue().getValue1()))
 			.map(e -> Triplet.with(e.getKey(), e.getValue().getValue0(),
 				(T) e.getValue().getValue1()))
 			.sorted(Comparator.comparing(Triplet::removeFrom0, comparePairs()))
 			.collect(Collectors.toList());
 		writeRow(ostream, getHeaderRow().toArray(new String[0]));
-		for (Triplet<Integer, Point, T> triplet : values) {
-			for (List<String> row : produce(fixtures, triplet.getValue2(),
+		for (final Triplet<Integer, Point, T> triplet : values) {
+			for (final List<String> row : produce(fixtures, triplet.getValue2(),
 					triplet.getValue0(), triplet.getValue1(), parentMap)) {
 				writeRow(ostream, row.toArray(new String[0]));
 			}
@@ -72,17 +72,17 @@ public interface ITableGenerator<T extends IFixture> {
 	 */
 	default TableModel produceTableModel(final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
 	                                     final Map<Integer, Integer> parentMap) {
-		Class<T> cls = narrowedClass();
-		Iterable<Triplet<Integer, Point, T>> values = fixtures.entrySet().stream()
+		final Class<T> cls = narrowedClass();
+		final Iterable<Triplet<Integer, Point, T>> values = fixtures.entrySet().stream()
 			.filter(e -> cls.isInstance(e.getValue().getValue1()))
 			.map(e -> Triplet.with(e.getKey(), e.getValue().getValue0(),
 				(T) e.getValue().getValue1()))
 			.sorted(Comparator.comparing(Triplet::removeFrom0, comparePairs()))
 			.collect(Collectors.toList());
-		DefaultTableModel retval = new DefaultTableModel(getHeaderRow().toArray(), 0);
+		final DefaultTableModel retval = new DefaultTableModel(getHeaderRow().toArray(), 0);
 		int count = 0;
-		for (Triplet<Integer, Point, T> triplet : values) {
-			for (List<String> row : produce(fixtures, triplet.getValue2(),
+		for (final Triplet<Integer, Point, T> triplet : values) {
+			for (final List<String> row : produce(fixtures, triplet.getValue2(),
 					triplet.getValue0(), triplet.getValue1(), parentMap)) {
 				// TODO: We'd like special handling of numeric fields ...
 				// TODO: Offer a version of addRow() that takes a List?
@@ -117,10 +117,10 @@ public interface ITableGenerator<T extends IFixture> {
 	 * distance, for efficiency.
 	 */
 	default int distance(final Point first, final Point second, final MapDimensions dimensions) {
-		int colDistRaw = Math.abs(first.getColumn() - second.getColumn());
-		int rowDistRaw = Math.abs(first.getRow() - second.getRow());
-		int colDist;
-		int rowDist;
+		final int colDistRaw = Math.abs(first.getColumn() - second.getColumn());
+		final int rowDistRaw = Math.abs(first.getRow() - second.getRow());
+		final int colDist;
+		final int rowDist;
 		if (colDistRaw > dimensions.getColumns() / 2) {
 			colDist = dimensions.getColumns() - colDistRaw;
 		} else {
@@ -205,13 +205,13 @@ public interface ITableGenerator<T extends IFixture> {
 	 */
 	default void writeRow(final ThrowingConsumer<String, IOException> ostream, final String... fields) throws IOException {
 		boolean firstField = true;
-		for (String field : fields) {
+		for (final String field : fields) {
 			if (firstField) {
 				firstField = false;
 			} else {
 				ostream.accept(Character.toString(getFieldDelimiter()));
 			}
-			String quotesQuoted = QUOTE_PATTERN.matcher(field).replaceAll("\"\"");
+			final String quotesQuoted = QUOTE_PATTERN.matcher(field).replaceAll("\"\"");
 			if (quotesQuoted.contains(Character.toString(getFieldDelimiter())) ||
 					quotesQuoted.contains(getRowDelimiter()) ||
 					quotesQuoted.contains(" ")) {

@@ -65,7 +65,7 @@ final class DBTownHandler extends AbstractDatabaseWriter<AbstractTown, Point> im
 			obj.getOwner().getPlayerId(), obj.getImage(), obj.getPortrait(),
 			Optional.ofNullable(obj.getPopulation()).map(CommunityStats::getPopulation)
 				.orElse(null)).execute();
-		CommunityStats stats = obj.getPopulation();
+		final CommunityStats stats = obj.getPopulation();
 		if (stats != null) {
 			CS_WRITER.initialize(db);
 			CS_WRITER.write(db, stats, obj);
@@ -74,20 +74,20 @@ final class DBTownHandler extends AbstractDatabaseWriter<AbstractTown, Point> im
 
 	private TryBiConsumer<Map<String, Object>, Warning, Exception> readTown(final IMutableMapNG map) {
 		return (dbRow, warner) -> {
-			int row = (Integer) dbRow.get("row");
-			int column = (Integer) dbRow.get("column");
-			int id = (Integer) dbRow.get("id");
-			String kind = (String) dbRow.get("kind");
-			TownStatus status = TownStatus.parse((String) dbRow.get("status"));
-			TownSize size = TownSize.parseTownSize((String) dbRow.get("size"));
-			int dc = (Integer) dbRow.get("dc");
-			String name = (String) dbRow.get("name");
-			int ownerNum = (Integer) dbRow.get("owner");
-			String image = (String) dbRow.get("image");
-			String portrait = (String) dbRow.get("portrait");
-			Integer population = (Integer) dbRow.get("population");
-			AbstractTown town;
-			Player owner = map.getPlayers().getPlayer(ownerNum);
+			final int row = (Integer) dbRow.get("row");
+			final int column = (Integer) dbRow.get("column");
+			final int id = (Integer) dbRow.get("id");
+			final String kind = (String) dbRow.get("kind");
+			final TownStatus status = TownStatus.parse((String) dbRow.get("status"));
+			final TownSize size = TownSize.parseTownSize((String) dbRow.get("size"));
+			final int dc = (Integer) dbRow.get("dc");
+			final String name = (String) dbRow.get("name");
+			final int ownerNum = (Integer) dbRow.get("owner");
+			final String image = (String) dbRow.get("image");
+			final String portrait = (String) dbRow.get("portrait");
+			final Integer population = (Integer) dbRow.get("population");
+			final AbstractTown town;
+			final Player owner = map.getPlayers().getPlayer(ownerNum);
 			switch (kind) {
 			case "fortification":
 				town = new Fortification(status, size, dc, name, id, owner);

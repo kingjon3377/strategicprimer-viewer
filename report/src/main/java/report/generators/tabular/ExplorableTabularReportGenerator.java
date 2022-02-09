@@ -77,9 +77,9 @@ public class ExplorableTabularReportGenerator
 			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
 			/*ExplorableFixture|TextFixture*/final TileFixture item, final int key, final Point loc,
 			final Map<Integer, Integer> parentMap) {
-		String brief;
-		String owner;
-		String longDesc;
+		final String brief;
+		final String owner;
+		final String longDesc;
 		if (item instanceof TextFixture) {
 			if (((TextFixture) item).getTurn() >= 0) {
 				brief = String.format("Text Note (%d)", ((TextFixture) item).getTurn());

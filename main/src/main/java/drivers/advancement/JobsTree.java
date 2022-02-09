@@ -79,12 +79,12 @@ import common.map.fixtures.mobile.worker.IJob;
 	}
 
 	private void handleTreeSelectionChange(final TreeSelectionEvent event) {
-		@Nullable ISkill retval;
-		@Nullable IJob job;
-		TreePath selectionPath = event.getNewLeadSelectionPath();
+		@Nullable final ISkill retval;
+		@Nullable final IJob job;
+		final TreePath selectionPath = event.getNewLeadSelectionPath();
 		if (selectionPath != null && selectionPath.getLastPathComponent() instanceof ISkill) {
 			retval = (ISkill) selectionPath.getLastPathComponent();
-			Object[] path = selectionPath.getPath();
+			final Object[] path = selectionPath.getPath();
 			// TODO: Check that length >= 2
 			job = Optional.ofNullable(path[path.length - 2]).filter(IJob.class::isInstance)
 				.map(IJob.class::cast).orElse(null);
@@ -92,7 +92,7 @@ import common.map.fixtures.mobile.worker.IJob;
 			retval = null;
 			job = null;
 		}
-		for (SkillSelectionListener listener : listeners) {
+		for (final SkillSelectionListener listener : listeners) {
 			listener.selectJob(job);
 			listener.selectSkill(retval);
 		}

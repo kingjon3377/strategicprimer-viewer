@@ -63,7 +63,7 @@ public class Battlefield implements ExplorableFixture {
 	 */
 	@Override
 	public Battlefield copy(final boolean zero) {
-		Battlefield retval = new Battlefield((zero) ? 0 : dc, id);
+		final Battlefield retval = new Battlefield((zero) ? 0 : dc, id);
 		retval.setImage(image);
 		return retval;
 	}

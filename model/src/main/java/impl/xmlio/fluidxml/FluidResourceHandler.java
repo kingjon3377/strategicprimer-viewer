@@ -41,7 +41,7 @@ import common.map.HasExtent;
 		expectAttributes(element, warner, "quantity", "kind", "contents", "unit",
 			"created", "id", "image");
 		spinUntilEnd(element.getName(), stream);
-		IMutableResourcePile retval = new ResourcePileImpl(
+		final IMutableResourcePile retval = new ResourcePileImpl(
 			getOrGenerateID(element, warner, idFactory),
 			getAttribute(element, "kind"),
 			getAttribute(element, "contents"),
@@ -72,7 +72,7 @@ import common.map.HasExtent;
 		// We want to transition from arbitrary-String 'contents' to sub-tags. As a first
 		// step, future-proof *this* version of the suite by only firing a warning if
 		// such children are detected, instead of aborting.
-		for (XMLEvent event : stream) {
+		for (final XMLEvent event : stream) {
 			if (event instanceof StartElement && isSPStartElement((StartElement) event)) {
 				if ("resource".equalsIgnoreCase(((StartElement) event).getName().getLocalPart()) ||
 						"implement".equalsIgnoreCase(((StartElement) event).getName().getLocalPart())) {
@@ -101,7 +101,7 @@ import common.map.HasExtent;
 		expectAttributes(element, warner, "cultivated", "wild", "kind", "tree", "id",
 			"image", "count");
 		spinUntilEnd(element.getName(), stream);
-		boolean cultivated;
+		final boolean cultivated;
 		if (hasAttribute(element, "cultivated")) {
 			cultivated = getBooleanAttribute(element, "cultivated");
 		} else if (hasAttribute(element, "wild")) {
@@ -124,7 +124,7 @@ import common.map.HasExtent;
 		expectAttributes(element, warner, "cultivated", "wild", "kind", "tree", "id",
 			"image", "count");
 		spinUntilEnd(element.getName(), stream);
-		boolean cultivated;
+		final boolean cultivated;
 		if (hasAttribute(element, "cultivated")) {
 			cultivated = getBooleanAttribute(element, "cultivated");
 		} else if (hasAttribute(element, "wild")) {
@@ -147,11 +147,11 @@ import common.map.HasExtent;
 		expectAttributes(element, warner, "status", "kind", "cultivated", "id", "image",
 			"acres");
 		spinUntilEnd(element.getName(), stream);
-		int id = getOrGenerateID(element, warner, idFactory);
+		final int id = getOrGenerateID(element, warner, idFactory);
 		if (!hasAttribute(element, "status")) {
 			warner.handle(new MissingPropertyException(element, "status"));
 		}
-		FieldStatus status;
+		final FieldStatus status;
 		try {
 			status = FieldStatus.parse(getAttribute(element, "status",
 				FieldStatus.random(id).toString()));
@@ -170,11 +170,11 @@ import common.map.HasExtent;
 		expectAttributes(element, warner, "status", "kind", "cultivated", "id", "image",
 			"acres");
 		spinUntilEnd(element.getName(), stream);
-		int id = getOrGenerateID(element, warner, idFactory);
+		final int id = getOrGenerateID(element, warner, idFactory);
 		if (!hasAttribute(element, "status")) {
 			warner.handle(new MissingPropertyException(element, "status"));
 		}
-		FieldStatus status;
+		final FieldStatus status;
 		try {
 			status = FieldStatus.parse(getAttribute(element, "status",
 				FieldStatus.random(id).toString()));
@@ -192,7 +192,7 @@ import common.map.HasExtent;
 		requireTag(element, parent, "mine");
 		expectAttributes(element, warner, "status", "kind", "product", "id", "image");
 		spinUntilEnd(element.getName(), stream);
-		TownStatus status;
+		final TownStatus status;
 		try {
 			status = TownStatus.parse(getAttribute(element, "status"));
 		} catch (final IllegalArgumentException except) {
@@ -236,7 +236,7 @@ import common.map.HasExtent;
 		requireTag(element, parent, "stone");
 		expectAttributes(element, warner, "kind", "stone", "dc", "id", "image");
 		spinUntilEnd(element.getName(), stream);
-		StoneKind stone;
+		final StoneKind stone;
 		try {
 			stone = StoneKind.parse(getAttrWithDeprecatedForm(element, "kind", "stone", warner));
 		} catch (final IllegalArgumentException except) {

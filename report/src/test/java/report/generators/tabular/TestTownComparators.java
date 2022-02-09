@@ -30,11 +30,11 @@ public class TestTownComparators {
 	@Test
 	public void testComparison() {
 		// TODO: How can we condense this initialization?
-		List<ITownFixture> input = new ArrayList<>();
+		final List<ITownFixture> input = new ArrayList<>();
 		int id = 0;
-		Player owner = new PlayerImpl(1, "player");
-		for (TownStatus status : TownStatus.values()) {
-			for (TownSize size : TownSize.values()) {
+		final Player owner = new PlayerImpl(1, "player");
+		for (final TownStatus status : TownStatus.values()) {
+			for (final TownSize size : TownSize.values()) {
 				input.add(new Town(status, size, -1, "inputTown", id++, owner));
 				input.add(new City(status, size, -1, "inputCity", id++, owner));
 				input.add(new Fortification(status, size, -1, "inputFortification",
@@ -51,9 +51,9 @@ public class TestTownComparators {
 		input.add(new Village(TownStatus.Abandoned, "inputVillageTwo", id++, owner, "inputRace"));
 		input.add(new FortressImpl(owner, "inputFortressThree", id++, TownSize.Medium));
 		input.add(new FortressImpl(owner, "inputFortressFour", id, TownSize.Large));
-		List<ITownFixture> shuffled = new ArrayList<>(input);
+		final List<ITownFixture> shuffled = new ArrayList<>(input);
 		Collections.shuffle(shuffled);
-		List<ITownFixture> expected = Arrays.asList(
+		final List<ITownFixture> expected = Arrays.asList(
 			new FortressImpl(owner, "inputFortressFour", 47, TownSize.Large),
 			new City(TownStatus.Active, TownSize.Large, -1, "inputCity", 7, owner),
 			new City(TownStatus.Active, TownSize.Large, -1, "inputCityTwo", 41, owner),

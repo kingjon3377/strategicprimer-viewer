@@ -25,7 +25,7 @@ public class YAXMLWriter implements SPWriter {
 	 */
 	@Override
 	public void writeSPObject(final Path arg, final Object obj) throws IOException {
-		try (BufferedWriter writer = Files.newBufferedWriter(arg, StandardCharsets.UTF_8)) {
+		try (final BufferedWriter writer = Files.newBufferedWriter(arg, StandardCharsets.UTF_8)) {
 			writeSPObject(writer::write, obj);
 		}
 	}

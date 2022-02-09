@@ -36,8 +36,8 @@ import lovelace.util.ThrowingConsumer;
 			throws SPFormatException {
 		requireTag(element, parent, "battlefield", "cave");
 		expectAttributes(element, "id", "dc", "image");
-		int idNum = getOrGenerateID(element);
-		ExplorableFixture retval;
+		final int idNum = getOrGenerateID(element);
+		final ExplorableFixture retval;
 		switch (element.getName().getLocalPart().toLowerCase()) {
 		case "battlefield":
 			retval = new Battlefield(getIntegerParameter(element, "dc"), idNum);

@@ -100,7 +100,7 @@ public class SPFluidWriter implements SPWriter {
 
 	private void writeSPObjectImpl(final XMLStreamWriter ostream, final Object obj, final int indentation)
 			throws MalformedXMLException {
-		for (Class<?> type : new TypeStream(obj)) {
+		for (final Class<?> type : new TypeStream(obj)) {
 			if (writers.containsKey(type)) {
 				writers.get(type).writeCasting(ostream, obj, indentation);
 				return;
@@ -112,10 +112,10 @@ public class SPFluidWriter implements SPWriter {
 	@Override
 	public void writeSPObject(final ThrowingConsumer<String, IOException> ostream, final Object obj)
 			throws MalformedXMLException, IOException {
-		XMLOutputFactory xof = XMLOutputFactory.newInstance();
-		StringWriter writer = new StringWriter();
+		final XMLOutputFactory xof = XMLOutputFactory.newInstance();
+		final StringWriter writer = new StringWriter();
 		try {
-			XMLStreamWriter xsw = xof.createXMLStreamWriter(writer);
+			final XMLStreamWriter xsw = xof.createXMLStreamWriter(writer);
 			xsw.setDefaultNamespace(SP_NAMESPACE);
 			writeSPObjectImpl(xsw, obj, 0);
 			xsw.writeEndDocument();
@@ -124,7 +124,7 @@ public class SPFluidWriter implements SPWriter {
 		} catch (final XMLStreamException except) {
 			throw new MalformedXMLException(except);
 		}
-		for (String line : writer.toString().split(System.lineSeparator())) {
+		for (final String line : writer.toString().split(System.lineSeparator())) {
 			ostream.accept(SNUG_END_TAG.matcher(line).replaceAll("$1 />"));
 			ostream.accept(System.lineSeparator());
 		}
@@ -132,7 +132,7 @@ public class SPFluidWriter implements SPWriter {
 
 	@Override
 	public void writeSPObject(final Path file, final Object obj) throws MalformedXMLException, IOException {
-		try (BufferedWriter writer = Files.newBufferedWriter(file, StandardCharsets.UTF_8)) {
+		try (final BufferedWriter writer = Files.newBufferedWriter(file, StandardCharsets.UTF_8)) {
 			writeSPObject(writer::write, obj);
 		}
 	}
@@ -215,7 +215,7 @@ public class SPFluidWriter implements SPWriter {
 
 	private void writeUnit(final XMLStreamWriter ostream, final IUnit obj, final int indentation)
 			throws MalformedXMLException {
-		boolean empty = obj.isEmpty() &&
+		final boolean empty = obj.isEmpty() &&
 			obj.getAllOrders().values().stream().allMatch(String::isEmpty) &&
 			obj.getAllResults().values().stream().allMatch(String::isEmpty);
 		writeTag(ostream, "unit", indentation, empty);
@@ -225,15 +225,15 @@ public class SPFluidWriter implements SPWriter {
 		writeAttributes(ostream, Pair.with("id", obj.getId()));
 		writeImage(ostream, obj);
 		writeNonEmptyAttributes(ostream, Pair.with("portrait", obj.getPortrait()));
-		for (Map.Entry<Integer, String> entry : obj.getAllOrders().entrySet()) {
+		for (final Map.Entry<Integer, String> entry : obj.getAllOrders().entrySet()) {
 			writeUnitOrders(ostream, indentation + 1, entry.getKey(), "orders",
 				entry.getValue().trim());
 		}
-		for (Map.Entry<Integer, String> entry : obj.getAllResults().entrySet()) {
+		for (final Map.Entry<Integer, String> entry : obj.getAllResults().entrySet()) {
 			writeUnitOrders(ostream, indentation + 1, entry.getKey(), "results",
 				entry.getValue().trim());
 		}
-		for (UnitMember member : obj) {
+		for (final UnitMember member : obj) {
 			writeSPObjectImpl(ostream, member, indentation + 1);
 		}
 		if (!empty) {
@@ -258,7 +258,7 @@ public class SPFluidWriter implements SPWriter {
 		writeImage(ostream, obj);
 		writeNonEmptyAttributes(ostream, Pair.with("portrait", obj.getPortrait()));
 		if (obj.iterator().hasNext()) {
-			for (FortressMember member : obj) {
+			for (final FortressMember member : obj) {
 				writeSPObjectImpl(ostream, member, indentation + 1);
 			}
 			indent(ostream, indentation);
@@ -277,18 +277,18 @@ public class SPFluidWriter implements SPWriter {
 			Pair.with("current_turn", obj.getCurrentTurn()));
 		currentTurn = obj.getCurrentTurn();
 		writeTag(ostream, "map", indentation + 1, false);
-		MapDimensions dimensions = obj.getDimensions();
+		final MapDimensions dimensions = obj.getDimensions();
 		writeAttributes(ostream, Pair.with("version", dimensions.getVersion()),
 			Pair.with("rows", dimensions.getRows()),
 			Pair.with("columns", dimensions.getColumns()));
-		for (Player player : obj.getPlayers()) {
+		for (final Player player : obj.getPlayers()) {
 			writePlayer(ostream, player, indentation + 2);
 		}
 		for (int i = 0; i < dimensions.getRows(); i++) {
 			boolean rowEmpty = true;
 			for (int j = 0; j < dimensions.getColumns(); j++) {
-				Point loc = new Point(i, j);
-				TileType terrain = obj.getBaseTerrain(loc);
+				final Point loc = new Point(i, j);
+				final TileType terrain = obj.getBaseTerrain(loc);
 				if (!obj.isLocationEmpty(loc)) {
 					if (rowEmpty) {
 						writeTag(ostream, "row", indentation + 2, false);
@@ -303,7 +303,7 @@ public class SPFluidWriter implements SPWriter {
 							terrain.getXml()));
 					}
 					boolean anyContents = false;
-					for (Player bookmarkPlayer : obj.getAllBookmarks(loc)) {
+					for (final Player bookmarkPlayer : obj.getAllBookmarks(loc)) {
 						anyContents = true;
 						writeTag(ostream, "bookmark", indentation + 4, true);
 						writeAttributes(ostream,
@@ -316,12 +316,12 @@ public class SPFluidWriter implements SPWriter {
 					// Ceylon code made a point of sorting the rivers; that's hard
 					// to do here, and I think in Java we use an EnumSet, which should
 					// be sorted anyway
-					for (River river : obj.getRivers(loc)) {
+					for (final River river : obj.getRivers(loc)) {
 						anyContents = true;
 						writeSPObjectImpl(ostream, river, indentation + 4);
 					}
 					// Similarly, roads are in an EnumMap, which is automatically sorted
-					for (Map.Entry<Direction, Integer> entry :
+					for (final Map.Entry<Direction, Integer> entry :
 							obj.getRoads(loc).entrySet()) {
 						writeTag(ostream, "road", indentation + 4, true);
 						writeAttributes(ostream,
@@ -331,21 +331,21 @@ public class SPFluidWriter implements SPWriter {
 					// To avoid breaking map-format-conversion tests, and to
 					// avoid churn in existing maps, put the first Ground and Forest
 					// before other fixtures.
-					Ground ground = obj.getFixtures(loc).stream()
+					final Ground ground = obj.getFixtures(loc).stream()
 						.filter(Ground.class::isInstance).map(Ground.class::cast)
 						.findFirst().orElse(null);
 					if (ground != null) {
 						anyContents = true;
 						writeSPObjectImpl(ostream, ground, indentation + 4);
 					}
-					Forest forest = obj.getFixtures(loc).stream()
+					final Forest forest = obj.getFixtures(loc).stream()
 						.filter(Forest.class::isInstance).map(Forest.class::cast)
 						.findFirst().orElse(null);
 					if (forest != null) {
 						anyContents = true;
 						writeSPObjectImpl(ostream, forest, indentation + 4);
 					}
-					for (TileFixture fixture : obj.getFixtures(loc)) {
+					for (final TileFixture fixture : obj.getFixtures(loc)) {
 						if (fixture == forest || fixture == ground) {
 							continue;
 						}
@@ -375,7 +375,7 @@ public class SPFluidWriter implements SPWriter {
 				.map(obj::getFixtures).anyMatch(((Predicate<Collection<TileFixture>>)
 					Collection::isEmpty).negate())) {
 			writeTag(ostream, "elsewhere", indentation +2, false);
-			for (TileFixture fixture : obj.streamLocations()
+			for (final TileFixture fixture : obj.streamLocations()
 					.filter(((Predicate<Point>) Point::isValid).negate())
 					.flatMap(p -> obj.getFixtures(p).stream())
 					.collect(Collectors.toList())) {
@@ -406,7 +406,7 @@ public class SPFluidWriter implements SPWriter {
 	}
 
 	public SPFluidWriter() {
-		Map<Class<?>, FluidXMLWriter<?>> temp = new HashMap<>();
+		final Map<Class<?>, FluidXMLWriter<?>> temp = new HashMap<>();
 		addWriterToMap(temp, River.class, FluidTerrainHandler::writeRiver);
 		addWriterToMap(temp, AdventureFixture.class, FluidExplorableHandler::writeAdventure);
 		addWriterToMap(temp, Portal.class, FluidExplorableHandler::writePortal);
@@ -416,7 +416,7 @@ public class SPFluidWriter implements SPWriter {
 		addWriterToMap(temp, Forest.class, FluidTerrainHandler::writeForest);
 		addWriterToMap(temp, Animal.class, UnitMemberHandler::writeAnimal);
 		addWriterToMap(temp, AnimalTracks.class, UnitMemberHandler::writeAnimalTracks);
-		for (SimpleFixtureWriter<?> writer : Arrays.asList(
+		for (final SimpleFixtureWriter<?> writer : Arrays.asList(
 				new SimpleFixtureWriter<>(Hill.class, "hill"),
 				new SimpleFixtureWriter<>(Oasis.class, "oasis"),
 				new SimpleFixtureWriter<>(Centaur.class, "centaur"),

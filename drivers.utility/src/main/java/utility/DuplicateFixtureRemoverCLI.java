@@ -118,8 +118,8 @@ public class DuplicateFixtureRemoverCLI implements CLIDriver {
 		if (list.length == 0) {
 			throw new IllegalArgumentException("Can't combine an empty list");
 		}
-		IResourcePile top = list[0];
-		IMutableResourcePile combined = new ResourcePileImpl(top.getId(), top.getKind(),
+		final IResourcePile top = list[0];
+		final IMutableResourcePile combined = new ResourcePileImpl(top.getId(), top.getKind(),
 			top.getContents(), new Quantity(Stream.of(list).map(IResourcePile::getQuantity)
 				.map(Quantity::getNumber).map(DuplicateFixtureRemoverCLI::decimalize)
 				.reduce(BigDecimal.ZERO, BigDecimal::add), top.getQuantity().getUnits()));
@@ -152,8 +152,8 @@ public class DuplicateFixtureRemoverCLI implements CLIDriver {
 	@Nullable
 	private Boolean approveRemoval(final Point location, final TileFixture fixture, @Nullable final TileFixture matching) {
 		if (matching != null) {
-			String fCls = fixture.getClass().getName();
-			String mCls = matching.getClass().getName();
+			final String fCls = fixture.getClass().getName();
+			final String mCls = matching.getClass().getName();
 			return cli.inputBooleanInSeries(
 				String.format("At %s: Remove '%s', of class '%s', ID #%d, which matches '%s', of class '%s', ID #%d?",
 					location, fixture.getShortDescription(), fCls, fixture.getId(),
@@ -170,16 +170,16 @@ public class DuplicateFixtureRemoverCLI implements CLIDriver {
 	 * TileFixture#equalsIgnoringID}) from every tile in a map.
 	 */
 	private void removeDuplicateFixtures(final IMapNG map) {
-		for (Point location : model.getMap().getLocations()) {
-			for (Quartet<Consumer<TileFixture>, @Nullable Path, TileFixture,
+		for (final Point location : model.getMap().getLocations()) {
+			for (final Quartet<Consumer<TileFixture>, @Nullable Path, TileFixture,
 					Iterable<? extends TileFixture>> q :
 						model.conditionallyRemoveDuplicates(location)) {
-				Consumer<TileFixture> deleteCallback = q.getValue0();
-				Path file = q.getValue1();
-				TileFixture fixture = q.getValue2();
-				Iterable<? extends TileFixture> duplicates = q.getValue3();
-				for (TileFixture duplicate : duplicates) {
-					Boolean approval = approveRemoval(location, duplicate, fixture);
+				final Consumer<TileFixture> deleteCallback = q.getValue0();
+				final Path file = q.getValue1();
+				final TileFixture fixture = q.getValue2();
+				final Iterable<? extends TileFixture> duplicates = q.getValue3();
+				for (final TileFixture duplicate : duplicates) {
+					final Boolean approval = approveRemoval(location, duplicate, fixture);
 					if (approval == null) {
 						return;
 					} else if (approval) {
@@ -195,7 +195,7 @@ public class DuplicateFixtureRemoverCLI implements CLIDriver {
 	 * Offer to combine like resources in a unit or fortress.
 	 */
 	private void coalesceResources(final Point location) {
-		Map<Class<? extends IFixture>, CoalescedHolder<? extends IFixture, ?>> mapping =
+		final Map<Class<? extends IFixture>, CoalescedHolder<? extends IFixture, ?>> mapping =
 			new HashMap<>();
 		mapping.put(IResourcePile.class, new CoalescedHolder<>(IResourcePile.class,
 				IResourcePile[]::new,
@@ -223,16 +223,16 @@ public class DuplicateFixtureRemoverCLI implements CLIDriver {
 		mapping.put(Shrub.class, new CoalescedHolder<>(Shrub.class, Shrub[]::new,
 				Shrub::getKind, DuplicateFixtureRemoverCLI::combinePopulations));
 
-		for (Quartet<Runnable, String, String, Collection<? extends IFixture>> q :
+		for (final Quartet<Runnable, String, String, Collection<? extends IFixture>> q :
 				model.conditionallyCoalesceResources(location, mapping)) {
-			Runnable callback = q.getValue0();
-			String context = q.getValue1();
-			String plural = q.getValue2();
-			Collection<? extends IFixture> fixtures = q.getValue3();
+			final Runnable callback = q.getValue0();
+			final String context = q.getValue1();
+			final String plural = q.getValue2();
+			final Collection<? extends IFixture> fixtures = q.getValue3();
 			cli.print(context);
 			cli.println(String.format("The following %s can be combined:", plural));
 			fixtures.stream().map(Object::toString).forEach(cli::println);
-			Boolean resp = cli.inputBooleanInSeries("Combine them? ",
+			final Boolean resp = cli.inputBooleanInSeries("Combine them? ",
 				memberKind(fixtures.iterator().next()));
 			if (resp == null) {
 				return;
@@ -248,7 +248,7 @@ public class DuplicateFixtureRemoverCLI implements CLIDriver {
 	@Override
 	public void startDriver() {
 		if (model.getSubordinateMaps().iterator().hasNext()) {
-			for (IMapNG map : model.getAllMaps()) {
+			for (final IMapNG map : model.getAllMaps()) {
 				removeDuplicateFixtures(map);
 				model.setMapModified(map, true);
 			}

@@ -69,7 +69,7 @@ public final class Platform {
 			first.putClientProperty("JButton.segmentPosition", "first");
 			JButton last = first;
 			boolean initial = true;
-			for (JButton button : buttons) {
+			for (final JButton button : buttons) {
 				if (initial) {
 					initial = false;
 					continue;

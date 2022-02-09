@@ -72,16 +72,16 @@ import drivers.worker_mgmt.orderspanel.OrdersPanel;
 		this.menuHandler = menuHandler;
 		this.driver = driver;
 		mainMap = model.getMap();
-		IDRegistrar idf = new IDFactoryFiller().createIDFactory(model.streamAllMaps()
+		final IDRegistrar idf = new IDFactoryFiller().createIDFactory(model.streamAllMaps()
 				.toArray(IMapNG[]::new));
 		newUnitFrame = new NewUnitDialog(model.getCurrentPlayer(), idf);
-		IWorkerTreeModel treeModel = new WorkerTreeModelAlt(model); // TODO: Try with WorkerTreeModel again?
+		final IWorkerTreeModel treeModel = new WorkerTreeModelAlt(model); // TODO: Try with WorkerTreeModel again?
 
 		tree = new WorkerTree(treeModel, model.getPlayers(),
 				mainMap::getCurrentTurn, true, idf);
 		newUnitFrame.addNewUnitListener(treeModel);
 
-		int keyMask = Platform.SHORTCUT_MASK;
+		final int keyMask = Platform.SHORTCUT_MASK;
 		createHotKey(tree, "openUnits", ignored -> tree.requestFocusInWindow(),
 			JComponent.WHEN_IN_FOCUSED_WINDOW,
 			KeyStroke.getKeyStroke(KeyEvent.VK_U, keyMask));
@@ -93,31 +93,31 @@ import drivers.worker_mgmt.orderspanel.OrdersPanel;
 			model::setUnitOrders, WorkerMgmtFrame::isCurrent); // TODO: inline isCurrent?
 		tree.addTreeSelectionListener(ordersPanelObj);
 
-		OrdersPanel.IIsCurrent trueSupplier = (unit, turn) -> true;
+		final OrdersPanel.IIsCurrent trueSupplier = (unit, turn) -> true;
 
-		OrdersPanel.IOrdersConsumer resultsSupplier;
+		final OrdersPanel.IOrdersConsumer resultsSupplier;
 		if ("true".equals(options.getArgument("--edit-results"))) {
 			resultsSupplier = model::setUnitResults;
 		} else {
 			resultsSupplier = null;
 		}
-		OrdersPanel resultsPanel = new OrdersPanel("Results", mainMap.getCurrentTurn(),
+		final OrdersPanel resultsPanel = new OrdersPanel("Results", mainMap.getCurrentTurn(),
 			model.getCurrentPlayer(), model::getUnits, IUnit::getResults,
 			resultsSupplier, trueSupplier);
 		tree.addTreeSelectionListener(resultsPanel);
 
-		NotesPanel notesPanelInstance = new NotesPanel(model.getMap().getCurrentPlayer());
+		final NotesPanel notesPanelInstance = new NotesPanel(model.getMap().getCurrentPlayer());
 		tree.addUnitMemberListener(notesPanelInstance);
 
-		MemberDetailPanel mdp = new MemberDetailPanel(resultsPanel, notesPanelInstance);
+		final MemberDetailPanel mdp = new MemberDetailPanel(resultsPanel, notesPanelInstance);
 		tree.addUnitMemberListener(mdp);
 
-		JButton jumpButton = new ListenedButton(String.format("Jump to Next Blank (%sJ)",
+		final JButton jumpButton = new ListenedButton(String.format("Jump to Next Blank (%sJ)",
 			Platform.SHORTCUT_DESCRIPTION), ignored -> jumpNextWrapped());
 
 		strategyExporter = new StrategyExporter(model, options);
 
-		BorderedPanel lowerLeft = BorderedPanel.verticalPanel(
+		final BorderedPanel lowerLeft = BorderedPanel.verticalPanel(
 			new ListenedButton("Add New Unit", ignored -> newUnitFrame.showWindow()),
 			ordersPanelObj,
 			new ListenedButton("Export a proto-strategy", ignored -> strategyWritingListener()));
@@ -163,7 +163,7 @@ import drivers.worker_mgmt.orderspanel.OrdersPanel;
 	}
 
 	private void selectTodoText() {
-		for (String string : Arrays.asList("fixme", "todo", "xxx")) {
+		for (final String string : Arrays.asList("fixme", "todo", "xxx")) {
 			if (ordersPanelObj.selectText(string)) {
 				break;
 			}
@@ -171,9 +171,9 @@ import drivers.worker_mgmt.orderspanel.OrdersPanel;
 	}
 
 	private void jumpNext() {
-		IWorkerTreeModel treeModel = (IWorkerTreeModel) tree.getModel();
-		TreePath currentSelection = tree.getSelectionModel().getSelectionPath();
-		TreePath nextPath = treeModel.nextProblem(currentSelection, mainMap.getCurrentTurn());
+		final IWorkerTreeModel treeModel = (IWorkerTreeModel) tree.getModel();
+		final TreePath currentSelection = tree.getSelectionModel().getSelectionPath();
+		final TreePath nextPath = treeModel.nextProblem(currentSelection, mainMap.getCurrentTurn());
 		if (nextPath != null) {
 			tree.expandPath(nextPath);
 			tree.setSelectionRow(tree.getRowForPath(nextPath));
@@ -215,7 +215,7 @@ import drivers.worker_mgmt.orderspanel.OrdersPanel;
 
 	@Override
 	public void playerChanged(@Nullable final Player old, final Player newPlayer) {
-		for (PlayerChangeListener listener : pcListeners) {
+		for (final PlayerChangeListener listener : pcListeners) {
 			listener.playerChanged(old, newPlayer);
 		}
 		playerLabel.setArguments(newPlayer.getName());

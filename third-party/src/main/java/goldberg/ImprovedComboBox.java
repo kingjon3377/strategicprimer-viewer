@@ -34,7 +34,7 @@ public class ImprovedComboBox<Element> extends JComboBox<Element> {
 			return;
 		}
 		if (isPopupVisible()) {
-			Object source = event.getSource();
+			final Object source = event.getSource();
 			if (source instanceof Component) {
 				super.processKeyEvent(new KeyEvent((Component) source, event.getID(),
 					event.getWhen(), 0, KeyEvent.VK_ENTER, KeyEvent.CHAR_UNDEFINED));

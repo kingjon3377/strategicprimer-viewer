@@ -71,7 +71,7 @@ public interface IUnit extends MobileFixture, HasImage, HasKind, HasName,
 	 */
 	default int getOrdersTurn(final String orders) {
 		int retval = -1;
-		for (Map.Entry<Integer, String> entry : getAllOrders().entrySet()) {
+		for (final Map.Entry<Integer, String> entry : getAllOrders().entrySet()) {
 			if (orders.equals(entry.getValue()) && entry.getKey() > retval) {
 				retval = entry.getKey();
 			}
@@ -112,7 +112,7 @@ public interface IUnit extends MobileFixture, HasImage, HasKind, HasName,
 	default boolean isSubset(final IFixture obj, final Consumer<String> report) {
 		if (obj.getId() == getId()) {
 			if (obj instanceof IUnit) {
-				Consumer<String> localSimpleReport =
+				final Consumer<String> localSimpleReport =
 					s -> report.accept(String.format("In Unit of ID #%d:\t%s",
 						getId(), s));
 				if (getOwner().getPlayerId() != ((IUnit) obj).getOwner().getPlayerId()) {
@@ -125,13 +125,13 @@ public interface IUnit extends MobileFixture, HasImage, HasKind, HasName,
 					localSimpleReport.accept("Kinds differ");
 					return false;
 				}
-				Map<Integer, UnitMember> ours =
+				final Map<Integer, UnitMember> ours =
 					stream().collect(Collectors.toMap(IFixture::getId, m -> m));
 				boolean retval = true;
-				Consumer<String> localReport =
+				final Consumer<String> localReport =
 					s -> report.accept(String.format("In unit of %s (%s) (ID #%d):\t%s",
 						getName(), getKind(), getId(), s));
-				for (UnitMember member : (IUnit) obj) {
+				for (final UnitMember member : (IUnit) obj) {
 					if (ours.containsKey(member.getId())) {
 						if (!ours.get(member.getId()).isSubset(member, localReport)) {
 							retval = false;

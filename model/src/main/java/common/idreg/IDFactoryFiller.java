@@ -12,7 +12,7 @@ public final class IDFactoryFiller {
 	 */
 	public IDRegistrar createIDFactory(final IMapNG... arg) {
 		final IDRegistrar retval = new IDFactory();
-		for (IMapNG map : arg) {
+		for (final IMapNG map : arg) {
 			recursiveRegister(retval, map);
 		}
 		return retval;
@@ -28,14 +28,14 @@ public final class IDFactoryFiller {
 	}
 
 	void recursiveRegister(final IDRegistrar factory, final IMapNG map) {
-		for (Point loc : map.getLocations()) {
+		for (final Point loc : map.getLocations()) {
 			recursiveRegister(factory, map.getFixtures(loc));
 		}
 	}
 
 	void recursiveRegister(final IDRegistrar factory, final Iterable<? extends IFixture> arg) {
-		for (IFixture fixture : arg) {
-			int id = fixture.getId();
+		for (final IFixture fixture : arg) {
+			final int id = fixture.getId();
 			if (factory.isIDUnused(id)) {
 				// We don't want to set off duplicate-ID warnings for the same fixture
 				// in multiple maps, so we only call register() after ensuring the ID

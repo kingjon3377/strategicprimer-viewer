@@ -53,7 +53,7 @@ import common.map.Point;
 	 * Move the cursor up a row.
 	 */
 	public void up(final boolean selection) {
-		Point old = get(selection);
+		final Point old = get(selection);
 		if (old.getRow() > 0) {
 			set(selection, new Point(old.getRow() - 1, old.getColumn()));
 		}
@@ -70,7 +70,7 @@ import common.map.Point;
 	 * Move the cursor left a column.
 	 */
 	public void left(final boolean selection) {
-		Point old = get(selection);
+		final Point old = get(selection);
 		if (old.getColumn() > 0) {
 			set(selection, new Point(old.getRow(), old.getColumn() - 1));
 		}
@@ -87,7 +87,7 @@ import common.map.Point;
 	 * Move the cursor down a row.
 	 */
 	public void down(final boolean selection) {
-		Point old = get(selection);
+		final Point old = get(selection);
 		if (old.getRow() < model.getMapDimensions().getRows() - 1) {
 			set(selection, new Point(old.getRow() + 1, old.getColumn()));
 		}
@@ -104,7 +104,7 @@ import common.map.Point;
 	 * Move the cursor right a column.
 	 */
 	public void right(final boolean selection) {
-		Point old = get(selection);
+		final Point old = get(selection);
 		if (old.getColumn()<model.getMapDimensions().getColumns() - 1) {
 			set(selection, new Point(old.getRow(), old.getColumn() + 1));
 		}
@@ -114,7 +114,7 @@ import common.map.Point;
 	 * Move the cursor all the way to the top.
 	 */
 	public void jumpUp() {
-		Point old = model.getSelection();
+		final Point old = model.getSelection();
 		if (old.getRow() > 0) {
 			model.setSelection(new Point(0, old.getColumn()));
 		}
@@ -124,7 +124,7 @@ import common.map.Point;
 	 * Move the cursor all the way to the bottom.
 	 */
 	public void jumpDown() {
-		Point old = model.getSelection();
+		final Point old = model.getSelection();
 		if (old.getRow() < model.getMapDimensions().getRows()) {
 			model.setSelection(new Point(model.getMapDimensions().getRows() - 1,
 				old.getColumn()));
@@ -135,7 +135,7 @@ import common.map.Point;
 	 * Move the cursor all the way to the left.
 	 */
 	public void jumpLeft() {
-		Point old = model.getSelection();
+		final Point old = model.getSelection();
 		if (old.getColumn() > 0) {
 			model.setSelection(new Point(old.getRow(), 0));
 		}
@@ -145,7 +145,7 @@ import common.map.Point;
 	 * Move the cursor all the way to the right.
 	 */
 	public void jumpRight() {
-		Point old = model.getSelection();
+		final Point old = model.getSelection();
 		if (old.getColumn()<model.getMapDimensions().getColumns()) {
 			model.setSelection(new Point(old.getRow(),
 				model.getMapDimensions().getColumns() - 1));
@@ -168,7 +168,7 @@ import common.map.Point;
 	 * TODO: Boolean parameters should be enums instead
 	 */
 	private void scroll(final boolean horizontal, final boolean forward, final int count) {
-		BooleanConsumer func;
+		final BooleanConsumer func;
 		if (horizontal && forward) {
 			func = this::right;
 		} else if (horizontal) {
@@ -204,7 +204,7 @@ import common.map.Point;
 			}
 		} else if (event.isShiftDown()) {
 			// Scroll sideways on Shift-scroll
-			int count = event.getWheelRotation();
+			final int count = event.getWheelRotation();
 			if (count < 0) {
 				scroll(true, false, 0 - count);
 			} else {
@@ -214,7 +214,7 @@ import common.map.Point;
 			// Otherwise, no relevant modifiers being pressed, scroll vertically.
 			// Control is ignored on Mac because it is rarely used as a modifier, and
 			// Control-clicking is the same as right-clicking.
-			int count = event.getWheelRotation();
+			final int count = event.getWheelRotation();
 			if (count < 0) {
 				scroll(false, false, 0 - count);
 			} else {

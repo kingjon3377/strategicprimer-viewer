@@ -63,12 +63,12 @@ import common.map.fixtures.mobile.IUnit;
 	@Override
 	public void startDriver() {
 		// TODO: Set up eCLI in constructor, surely? Or else remove it as listener at end
-		ExplorationCLIHelper eCLI = new ExplorationCLIHelper(model, cli);
+		final ExplorationCLIHelper eCLI = new ExplorationCLIHelper(model, cli);
 		model.addSelectionChangeListener(eCLI);
 		model.addMovementCostListener(eCLI);
-		Player player = choosePlayer();
+		final Player player = choosePlayer();
 		if (player != null) {
-			IUnit unit = chooseUnit(player);
+			final IUnit unit = chooseUnit(player);
 			if (unit != null) {
 				model.setSelectedUnit(unit);
 				while (eCLI.getMovement() > 0) {

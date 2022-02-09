@@ -70,10 +70,10 @@ import org.takes.http.Exit;
 	}
 
 	private void serveReports(final int port, @Nullable final Player currentPlayer) throws DriverFailedException {
-		Map<Path, String> cache = new HashMap<>();
+		final Map<Path, String> cache = new HashMap<>();
 		if (model instanceof IMultiMapModel) {
-			for (IMapNG map : ((IMultiMapModel) model).getAllMaps()) {
-				Path file = map.getFilename();
+			for (final IMapNG map : ((IMultiMapModel) model).getAllMaps()) {
+				final Path file = map.getFilename();
 				// TODO: skip if no filename
 				if (!cache.containsKey(file.toString())) {
 					try {
@@ -95,20 +95,20 @@ import org.takes.http.Exit;
 		if (cache.isEmpty()) {
 			return;
 		} else {
-			List<Pair<String, String>> localCache = cache.entrySet().stream()
+			final List<Pair<String, String>> localCache = cache.entrySet().stream()
 				.map(entry -> Pair.with(SuffixHelper.shortestSuffix(cache.keySet(),
 					entry.getKey().toAbsolutePath()), entry.getValue()))
 				.collect(Collectors.toList());
-			List<Fork> endpoints = localCache.stream()
+			final List<Fork> endpoints = localCache.stream()
 				.map(pair -> new FkRegex("/" + pair.getValue0(),
 					new RsHtml(pair.getValue1())))
 				.collect(Collectors.toList());
-			Fork rootHandler;
+			final Fork rootHandler;
 			if (localCache.size() == 1) {
 				rootHandler = new FkRegex("/",
 					new TkRedirect("/" + localCache.get(0).getValue0()));
 			} else {
-				StringBuilder builder = new StringBuilder();
+				final StringBuilder builder = new StringBuilder();
 				builder.append("<!DOCTYPE html>").append(System.lineSeparator())
 					.append("<html>").append(System.lineSeparator())
 					.append("\t<head>").append(System.lineSeparator())
@@ -119,8 +119,8 @@ import org.takes.http.Exit;
 					.append("\t\t<h1>Strategic Primer Reports</h1>")
 						.append(System.lineSeparator())
 					.append("\t\t<ul>").append(System.lineSeparator());
-				for (Pair<String, String> pair : localCache) {
-					String file = pair.getValue0();
+				for (final Pair<String, String> pair : localCache) {
+					final String file = pair.getValue0();
 					builder.append("\t\t\t<li><a href=\"").append(file).append("\">")
 						.append(file).append("</a></li>")
 						.append(System.lineSeparator());
@@ -142,7 +142,7 @@ import org.takes.http.Exit;
 
 	@Override
 	public void startDriver() throws DriverFailedException {
-		String portArgument = options.getArgument("--serve");
+		final String portArgument = options.getArgument("--serve");
 		int port;
 		try {
 			port = Integer.parseInt(portArgument);

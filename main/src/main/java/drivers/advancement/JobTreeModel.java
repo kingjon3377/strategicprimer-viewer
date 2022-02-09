@@ -112,7 +112,7 @@ import java.util.stream.StreamSupport;
 	public int getIndexOfChild(final Object parent, final Object child) {
 		if (parent instanceof IWorker || parent instanceof IJob) {
 			int i = 0;
-			for (Object ch : (Iterable<? extends HasName>) parent) {
+			for (final Object ch : (Iterable<? extends HasName>) parent) {
 				if (Objects.equals(ch, child)) {
 					return i;
 				}
@@ -133,13 +133,13 @@ import java.util.stream.StreamSupport;
 	}
 
 	private void fireTreeNodesInserted(final TreeModelEvent event) {
-		for (TreeModelListener listener : listeners) {
+		for (final TreeModelListener listener : listeners) {
 			listener.treeNodesInserted(event);
 		}
 	}
 
 	private void fireTreeStructureChanged(final TreeModelEvent event) {
-		for (TreeModelListener listener : listeners) {
+		for (final TreeModelListener listener : listeners) {
 			listener.treeStructureChanged(event);
 		}
 	}
@@ -151,14 +151,14 @@ import java.util.stream.StreamSupport;
 	 */
 	@Override
 	public void add(final String category, final String addendum) {
-		IWorker currentRoot = localRoot;
+		final IWorker currentRoot = localRoot;
 		if ("job".equals(category)) {
 			if (currentRoot == null) {
 				LOGGER.warning("Can't add a new Job when no worker selected");
 			} else {
-				int childCount = getChildCount(currentRoot);
+				final int childCount = getChildCount(currentRoot);
 				if (driverModel.addJobToWorker(currentRoot, addendum)) {
-					IJob job = StreamSupport.stream(currentRoot.spliterator(), false)
+					final IJob job = StreamSupport.stream(currentRoot.spliterator(), false)
 						.filter(j -> addendum.equals(j.getName()))
 						.findAny().orElse(null);
 					if (job != null) {
@@ -174,14 +174,14 @@ import java.util.stream.StreamSupport;
 				}
 			}
 		} else if ("skill".equals(category)) {
-			TreePath selectionPath = selectionModel.getSelectionPath();
+			final TreePath selectionPath = selectionModel.getSelectionPath();
 			if (currentRoot != null && selectionPath != null &&
 					selectionPath.getLastPathComponent() instanceof IJob) {
-				IJob job = (IJob) selectionPath.getLastPathComponent();
-				int childCount = getChildCount(job);
+				final IJob job = (IJob) selectionPath.getLastPathComponent();
+				final int childCount = getChildCount(job);
 				if (driverModel.addHoursToSkill(currentRoot, job.getName(), addendum,
 						0, 200)) {
-					ISkill skill = StreamSupport.stream(job.spliterator(), false)
+					final ISkill skill = StreamSupport.stream(job.spliterator(), false)
 						.filter(s -> addendum.equals(s.getName()))
 						.findAny().orElse(null);
 					if (skill != null) {

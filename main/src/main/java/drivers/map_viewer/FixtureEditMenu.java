@@ -49,7 +49,7 @@ public class FixtureEditMenu extends JPopupMenu {
 			fixture instanceof HasMutableOwner);
 		addMenuItem(new JMenuItem("Dismiss", KeyEvent.VK_D), ignored -> dismissHandler(),
 			fixture instanceof UnitMember);
-		boolean isAnimalPopulation;
+		final boolean isAnimalPopulation;
 		if (fixture instanceof Animal) { // TODO: Condense to ternary
 			isAnimalPopulation = ((Animal) fixture).getPopulation() > 1;
 		} else {
@@ -62,7 +62,7 @@ public class FixtureEditMenu extends JPopupMenu {
 		addMenuItem(new JMenuItem("Sort", KeyEvent.VK_R), ignored -> sortHandler(),
 			fixture instanceof IUnit);
 
-		boolean isEmptyUnit;
+		final boolean isEmptyUnit;
 		if (fixture instanceof IUnit) { // TODO: condense to ternary
 			isEmptyUnit = ((IUnit) fixture).isEmpty();
 		} else {
@@ -88,12 +88,12 @@ public class FixtureEditMenu extends JPopupMenu {
 	}
 
 	private void renameHandler() {
-		HasMutableName fix = (HasMutableName) fixture;
-		String originalName = fix.getName();
-		Object result = JOptionPane.showInputDialog(getParent(), "Fixture's new name:",
+		final HasMutableName fix = (HasMutableName) fixture;
+		final String originalName = fix.getName();
+		final Object result = JOptionPane.showInputDialog(getParent(), "Fixture's new name:",
 			"Rename Fixture", JOptionPane.PLAIN_MESSAGE, null, null, originalName);
 		if (result instanceof String) {
-			String resultString = ((String) result).trim();
+			final String resultString = ((String) result).trim();
 			if (!resultString.equals(originalName.trim())) {
 				handler.renameItem(fix, resultString);
 			}
@@ -101,12 +101,12 @@ public class FixtureEditMenu extends JPopupMenu {
 	}
 
 	private void changeKindHandler() {
-		HasMutableKind fix = (HasMutableKind) fixture;
-		String originalKind = fix.getKind();
-		Object result = JOptionPane.showInputDialog(getParent(), "Fixture's new kind:",
+		final HasMutableKind fix = (HasMutableKind) fixture;
+		final String originalKind = fix.getKind();
+		final Object result = JOptionPane.showInputDialog(getParent(), "Fixture's new kind:",
 			"Change Fixture Kind", JOptionPane.PLAIN_MESSAGE, null, null, originalKind);
 		if (result instanceof String) {
-			String resultString = ((String) result).trim();
+			final String resultString = ((String) result).trim();
 			if (!resultString.equals(originalKind.trim())) {
 				handler.changeKind(fix, resultString);
 			}
@@ -114,8 +114,8 @@ public class FixtureEditMenu extends JPopupMenu {
 	}
 
 	private void changeOwnerHandler() {
-		HasMutableOwner fix = (HasMutableOwner) fixture;
-		Object player = JOptionPane.showInputDialog(getParent(), "Fixture's new owner:",
+		final HasMutableOwner fix = (HasMutableOwner) fixture;
+		final Object player = JOptionPane.showInputDialog(getParent(), "Fixture's new owner:",
 			"Change Fixture Owner", JOptionPane.PLAIN_MESSAGE, null,
 			StreamSupport.stream(players.spliterator(), false).toArray(Player[]::new),
 			fix.getOwner());
@@ -125,10 +125,10 @@ public class FixtureEditMenu extends JPopupMenu {
 	}
 
 	private void dismissHandler() {
-		UnitMember fix = (UnitMember) fixture;
-		String name = Optional.of(fix).filter(HasName.class::isInstance).map(HasName.class::cast)
+		final UnitMember fix = (UnitMember) fixture;
+		final String name = Optional.of(fix).filter(HasName.class::isInstance).map(HasName.class::cast)
 			.map(HasName::getName).orElse("this " + fix);
-		int reply = JOptionPane.showConfirmDialog(getParent(),
+		final int reply = JOptionPane.showConfirmDialog(getParent(),
 			String.format("Are you sure you want to dismiss %s?", name), "Confirm Dismissal",
 			JOptionPane.YES_NO_OPTION);
 		if (reply == JOptionPane.YES_OPTION) {
@@ -140,25 +140,25 @@ public class FixtureEditMenu extends JPopupMenu {
 	 * TODO: Generalize splitting to HasPopulation more generally
 	 */
 	private void splitAnimalHandler() {
-		Animal fix = (Animal) fixture;
-		Object result = JOptionPane.showInputDialog(getParent(),
+		final Animal fix = (Animal) fixture;
+		final Object result = JOptionPane.showInputDialog(getParent(),
 			"Number of animals to split to new population:", "Split Animal Population",
 			JOptionPane.PLAIN_MESSAGE, null, null, "0");
 		if (result instanceof String) {
-			int num;
+			final int num;
 			try {
 				num = Integer.parseInt(((String) result).trim());
 			} catch (final NumberFormatException except) {
 				// FIXME: Log the failure
 				return;
 			}
-			int orig = fix.getPopulation();
+			final int orig = fix.getPopulation();
 			if (num <= 0 || num > orig) {
 				return;
 			}
-			int remaining = orig - num;
-			Animal split = fix.reduced(num, idf.createID()); // TODO: Add helper for this to IFixtureEditHelper
-			Animal remainder = fix.reduced(remaining);
+			final int remaining = orig - num;
+			final Animal split = fix.reduced(num, idf.createID()); // TODO: Add helper for this to IFixtureEditHelper
+			final Animal remainder = fix.reduced(remaining);
 			handler.addSibling(fix, split);
 			handler.dismissUnitMember(fix);
 			handler.addSibling(split, remainder);
@@ -173,8 +173,8 @@ public class FixtureEditMenu extends JPopupMenu {
 	}
 
 	private void removeUnitHandler() {
-		IUnit fix = (IUnit) fixture;
-		int reply = JOptionPane.showConfirmDialog(getParent(),
+		final IUnit fix = (IUnit) fixture;
+		final int reply = JOptionPane.showConfirmDialog(getParent(),
 			String.format("Are you sure you want to remove this %s unit, \"%s\"?",
 				fix.getKind(), fix.getName()),
 			"Confirm Removal", JOptionPane.YES_NO_OPTION);

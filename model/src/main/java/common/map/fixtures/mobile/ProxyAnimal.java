@@ -49,7 +49,7 @@ import common.map.IFixture;
 
 	@Override
 	public int getBorn() {
-		Integer retval = getConsensus(Animal::getBorn);
+		final Integer retval = getConsensus(Animal::getBorn);
 		return (retval == null) ? -1 : retval;
 	}
 
@@ -60,7 +60,7 @@ import common.map.IFixture;
 
 	@Override
 	public int getId() {
-		Integer retval = getConsensus(Animal::getId);
+		final Integer retval = getConsensus(Animal::getId);
 		return (retval == null) ? -1 : retval;
 	}
 
@@ -76,7 +76,7 @@ import common.map.IFixture;
 
 	@Override
 	public int getPopulation() {
-		Integer retval = getConsensus(Animal::getPopulation);
+		final Integer retval = getConsensus(Animal::getPopulation);
 		return (retval == null) ? -1 : retval;
 	}
 
@@ -93,9 +93,9 @@ import common.map.IFixture;
 	@Override
 	public Animal combined(final Animal addend) {
 		if (addend instanceof AnimalProxy && ((AnimalProxy) addend).isParallel()) {
-			List<Animal> interim = new ArrayList<>();
-			Iterator<Animal> ours = getProxied().iterator();
-			Iterator<Animal> theirs = ((AnimalProxy) addend).getProxied().iterator();
+			final List<Animal> interim = new ArrayList<>();
+			final Iterator<Animal> ours = getProxied().iterator();
+			final Iterator<Animal> theirs = ((AnimalProxy) addend).getProxied().iterator();
 			while (ours.hasNext() && theirs.hasNext()) {
 				interim.add(ours.next().combined(theirs.next()));
 			}
@@ -113,13 +113,13 @@ import common.map.IFixture;
 
 	@Override
 	public boolean isTalking() {
-		Boolean retval = getConsensus(Animal::isTalking);
+		final Boolean retval = getConsensus(Animal::isTalking);
 		return (retval == null) ? false : retval;
 	}
 
 	@Override
 	public int getDC() {
-		Integer retval = getConsensus(Animal::getDC);
+		final Integer retval = getConsensus(Animal::getDC);
 		return (retval == null) ? 22 : retval;
 	}
 

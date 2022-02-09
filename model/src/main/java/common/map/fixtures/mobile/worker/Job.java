@@ -15,7 +15,7 @@ public final class Job implements IMutableJob {
 	public Job(final String name, final int levelNum, final ISkill... skills) {
 		this.name = name;
 		setLevel(levelNum);
-		for (ISkill skill : skills) {
+		for (final ISkill skill : skills) {
 			addSkill(skill);
 		}
 	}
@@ -138,7 +138,7 @@ public final class Job implements IMutableJob {
 			return false;
 		} else {
 			boolean retval = true;
-			for (ISkill skill : obj) {
+			for (final ISkill skill : obj) {
 				if (skillSet.containsKey(skill.getName())) {
 					retval = skillSet.get(skill.getName()).isSubset(skill,
 						s -> report.accept(String.format("In Job %s:\t%s", name, s)))
@@ -183,7 +183,7 @@ public final class Job implements IMutableJob {
 		if (skillSet.containsKey(skillName)) {
 			return skillSet.get(skillName);
 		} else {
-			ISkill skill = new Skill(skillName, 0, 0);
+			final ISkill skill = new Skill(skillName, 0, 0);
 			skillSet.put(skillName, skill);
 			return skill;
 		}

@@ -35,7 +35,7 @@ public class PlayerCollection implements IMutablePlayerCollection {
 		} else if (player < 0) {
 			return new PlayerImpl(player, "");
 		} else {
-			Player retval = new PlayerImpl(player, "");
+			final Player retval = new PlayerImpl(player, "");
 			players.put(player, retval);
 			return retval;
 		}
@@ -55,10 +55,10 @@ public class PlayerCollection implements IMutablePlayerCollection {
 	@Override
 	public boolean isSubset(final Iterable<Player> obj, final Consumer<String> report) {
 		boolean retval = true;
-		for (Player player : obj) {
+		for (final Player player : obj) {
 			if (!players.containsValue(player)) {
 				if (players.containsKey(player.getPlayerId())) {
-					Player match = players.get(player.getPlayerId());
+					final Player match = players.get(player.getPlayerId());
 					if (player.getName().isEmpty() || "unknown".equalsIgnoreCase(player.getName())) {
 						continue;
 					} else {
@@ -115,7 +115,7 @@ public class PlayerCollection implements IMutablePlayerCollection {
 	@Override
 	public void remove(final int obj) {
 		if (players.containsKey(obj)) {
-			Player removed = players.remove(obj);
+			final Player removed = players.remove(obj);
 			if (independentPlayer.equals(removed)) {
 				independentPlayer = players.values().stream().filter(Player::isIndependent)
 					.findAny().orElseGet(() -> new PlayerImpl(-1, "Independent"));
@@ -139,7 +139,7 @@ public class PlayerCollection implements IMutablePlayerCollection {
 	 */
 	@Override
 	public IMutablePlayerCollection copy() {
-		IMutablePlayerCollection retval = new PlayerCollection();
+		final IMutablePlayerCollection retval = new PlayerCollection();
 		players.values().forEach(retval::add);
 		return retval;
 	}
@@ -157,7 +157,7 @@ public class PlayerCollection implements IMutablePlayerCollection {
 	 */
 	@Override
 	public void setCurrentPlayer(final Player currentPlayer) {
-		Player oldCurrent = current;
+		final Player oldCurrent = current;
 		if (oldCurrent instanceof MutablePlayer) {
 			((MutablePlayer) oldCurrent).setCurrent(false);
 		} else {
@@ -193,8 +193,8 @@ public class PlayerCollection implements IMutablePlayerCollection {
 
 	@Override
 	public boolean containsAll(final IPlayerCollection other) {
-		Collection<Player> collection = players.values();
-		for (Player player : other) {
+		final Collection<Player> collection = players.values();
+		for (final Player player : other) {
 			if (!collection.contains(player)) {
 				return false;
 			}

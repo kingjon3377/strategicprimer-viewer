@@ -118,7 +118,7 @@ public class ProxyUnit implements IUnit, ProxyFor<IUnit> {
 		} else {
 			retval = new ProxyUnit(commonKind);
 		}
-		for (IUnit unit : proxiedList) {
+		for (final IUnit unit : proxiedList) {
 			retval.addProxied(unit.copy(zero));
 		}
 		return retval;
@@ -129,7 +129,7 @@ public class ProxyUnit implements IUnit, ProxyFor<IUnit> {
 	@Override
 	public String getKind() {
 		if (parallel) {
-			String retval = getConsensus(IUnit::getKind);
+			final String retval = getConsensus(IUnit::getKind);
 			return retval == null ? "proxied" : retval;
 		} else {
 			return commonKind;
@@ -182,13 +182,13 @@ public class ProxyUnit implements IUnit, ProxyFor<IUnit> {
 		if (proxiedList.isEmpty()) {
 			return "";
 		}
-		String img = getConsensus(IUnit::getDefaultImage);
+		final String img = getConsensus(IUnit::getDefaultImage);
 		return img == null ? "unit.png" : img;
 	}
 
 	@Override
 	public String getImage() {
-		String img = getConsensus(IUnit::getImage);
+		final String img = getConsensus(IUnit::getImage);
 		return img == null ? "" : img;
 	}
 
@@ -199,12 +199,12 @@ public class ProxyUnit implements IUnit, ProxyFor<IUnit> {
 		} else if (!cachedIterable.iterator().hasNext()) {
 			return cachedIterable.iterator();
 		} else {
-			Map<Integer, UnitMemberProxy<? extends UnitMember>> map =
+			final Map<Integer, UnitMemberProxy<? extends UnitMember>> map =
 				new LinkedHashMap<>();
-			for (IUnit unit : proxiedList) {
-				for (UnitMember member : unit) {
-					UnitMemberProxy<? extends UnitMember> proxy;
-					int memberID = member.getId();
+			for (final IUnit unit : proxiedList) {
+				for (final UnitMember member : unit) {
+					final UnitMemberProxy<? extends UnitMember> proxy;
+					final int memberID = member.getId();
 					if (map.containsKey(memberID)) {
 						proxy = map.get(memberID);
 						if (proxy instanceof WorkerProxy) {
@@ -247,19 +247,19 @@ public class ProxyUnit implements IUnit, ProxyFor<IUnit> {
 
 	@Override
 	public String getName() {
-		String retval = getConsensus(IUnit::getName);
+		final String retval = getConsensus(IUnit::getName);
 		return retval == null ? "proxied" : retval;
 	}
 
 	@Override
 	public String getPortrait() {
-		String retval = getConsensus(IUnit::getPortrait);
+		final String retval = getConsensus(IUnit::getPortrait);
 		return retval == null ? "" : retval;
 	}
 
 	@Override
 	public Player getOwner() {
-		Player retval = getConsensus(IUnit::getOwner);
+		final Player retval = getConsensus(IUnit::getOwner);
 		return retval == null ? defaultPlayer : retval;
 	}
 
@@ -271,20 +271,20 @@ public class ProxyUnit implements IUnit, ProxyFor<IUnit> {
 
 	@Override
 	public String getOrders(final int turn) {
-		String retval = getConsensus(u -> u.getOrders(turn));
+		final String retval = getConsensus(u -> u.getOrders(turn));
 		return retval == null ? "" : retval;
 	}
 
 	@Override
 	public String getResults(final int turn) {
-		String retval = getConsensus(u -> u.getResults(turn));
+		final String retval = getConsensus(u -> u.getResults(turn));
 		return retval == null ? "" : retval;
 	}
 
 	@Override
 	public String getVerbose() {
 		if (parallel) {
-			Iterator<IUnit> iterator = proxiedList.iterator();
+			final Iterator<IUnit> iterator = proxiedList.iterator();
 			if (iterator.hasNext()) {
 				return "A proxy for units in several maps, such as the following:" + System.lineSeparator() +
 					iterator.next().getVerbose();
@@ -321,13 +321,13 @@ public class ProxyUnit implements IUnit, ProxyFor<IUnit> {
 
 	@Override
 	public int hashCode() {
-		IUnit[] proxied = new IUnit[proxiedList.size()];
+		final IUnit[] proxied = new IUnit[proxiedList.size()];
 		return Arrays.hashCode(proxiedList.toArray(proxied));
 	}
 
 	@Override
 	public int getDC() {
-		Integer retval = getConsensus(IUnit::getDC);
+		final Integer retval = getConsensus(IUnit::getDC);
 		return retval == null ? 10 : retval;
 	}
 

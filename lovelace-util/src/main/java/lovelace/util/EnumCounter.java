@@ -29,7 +29,7 @@ public class EnumCounter<Type> {
 	 */
 	@SafeVarargs
 	public final void countMany(final Type... values) {
-		for (Type item : values) {
+		for (final Type item : values) {
 			count(item);
 		}
 	}

@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 	 * Get the last {@link count} path elements in {@link file the given path}.
 	 */
 	private static String suffix(final Path file, final int count) {
-		LinkedList<Path> list = StreamSupport.stream(file.spliterator(), false)
+		final LinkedList<Path> list = StreamSupport.stream(file.spliterator(), false)
 				.collect(Collectors.toCollection(LinkedList::new));
 		while (list.size() > count) {
 			list.removeFirst();
@@ -34,12 +34,12 @@ import java.util.stream.Collectors;
 	 * in {@link all}, but is otherwise as long as possible.
 	 */
 	public static String shortestSuffix(final Collection<Path> all, final Path file) {
-		int longestPath = all.stream().mapToInt(Path::getNameCount).max().orElse(1);
-		Set<String> localCache = new HashSet<>();
+		final int longestPath = all.stream().mapToInt(Path::getNameCount).max().orElse(1);
+		final Set<String> localCache = new HashSet<>();
 		for (int num = 1; num <= longestPath; num++) {
 			boolean found = false;
-			for (Path key : all) {
-				String item = suffix(key, num);
+			for (final Path key : all) {
+				final String item = suffix(key, num);
 				if (localCache.contains(item)) {
 					found = true;
 					break;

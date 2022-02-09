@@ -258,18 +258,18 @@ public class FileChooser {
 	 */
 	void haveUserChooseFiles() {
 		LOGGER.fine("In FileChooser.haveUserChooseFiles");
-		int status = chooserFunction.applyAsInt(null);
+		final int status = chooserFunction.applyAsInt(null);
 		LOGGER.fine("FileChooser: The AWT or Swing chooser returned");
 		if (chooser.fromLeft().isPresent()) {
-			JFileChooser fc = chooser.fromLeft().get();
+			final JFileChooser fc = chooser.fromLeft().get();
 			if (JFileChooser.APPROVE_OPTION == status) {
-				List<Path> retval = Stream.of(fc.getSelectedFiles()).filter(Objects::nonNull)
+				final List<Path> retval = Stream.of(fc.getSelectedFiles()).filter(Objects::nonNull)
 					.map(File::toPath).collect(Collectors.toList());
 				if (!retval.isEmpty()) {
 					LOGGER.fine("Saving the file(s) the user chose via Swing");
 					storedFile = retval;
 				} else if (fc.getSelectedFile() != null) {
-					File selectedFile = fc.getSelectedFile();
+					final File selectedFile = fc.getSelectedFile();
 					LOGGER.fine("Saving the singular file the user chose via Swing");
 					storedFile = Arrays.asList(selectedFile.toPath());
 				} else {
@@ -280,14 +280,14 @@ public class FileChooser {
 				LOGGER.info("Chooser function returned " + status);
 			}
 		} else {
-			FileDialog fd = chooser.fromRight().get();
-			List<Path> retval = Stream.of(fd.getFiles()).filter(Objects::nonNull)
+			final FileDialog fd = chooser.fromRight().get();
+			final List<Path> retval = Stream.of(fd.getFiles()).filter(Objects::nonNull)
 				.map(File::toPath).collect(Collectors.toList());
 			if (!retval.isEmpty()) {
 				LOGGER.fine("Saving the file(s) the user chose via AWT");
 				storedFile = retval;
 			} else if (fd.getFile() != null) {
-				String selectedFile = fd.getFile();
+				final String selectedFile = fd.getFile();
 				LOGGER.fine("Saving the singular file the user chose via AWT");
 				storedFile = Arrays.asList(Paths.get(selectedFile));
 			} else {

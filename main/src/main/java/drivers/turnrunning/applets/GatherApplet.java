@@ -81,7 +81,7 @@ import org.jetbrains.annotations.Nullable;
 	@Override
 	@Nullable
 	public String run() {
-		StringBuilder buffer = new StringBuilder();
+		final StringBuilder buffer = new StringBuilder();
 		final Point center = confirmPoint("Location to search around: ");
 		if (center == null) {
 			return ""; // TODO: null, surely?
@@ -92,13 +92,13 @@ import org.jetbrains.annotations.Nullable;
 		}
 		final int startingTime = stTemp;
 		int time = startingTime;
-		Iterator<Pair<Point, /*Grove|Shrub|Meadow|HuntingModel.NothingFound*/TileFixture>> encounters =
+		final Iterator<Pair<Point, /*Grove|Shrub|Meadow|HuntingModel.NothingFound*/TileFixture>> encounters =
 			huntingModel.gather(center).iterator();
 		int noResultsTime = 0;
 		while (time > 0 && encounters.hasNext()) {
-			Pair<Point, TileFixture> pair = encounters.next();
-			Point loc = pair.getValue0();
-			TileFixture find = pair.getValue1();
+			final Pair<Point, TileFixture> pair = encounters.next();
+			final Point loc = pair.getValue0();
+			final TileFixture find = pair.getValue1();
 			if (find instanceof HuntingModel.NothingFound) {
 				noResultsTime += noResultCost;
 				time -= noResultCost;
@@ -107,12 +107,12 @@ import org.jetbrains.annotations.Nullable;
 					cli.println("Found nothing for the next " + toHours(noResultsTime)); // TODO: Add to results?
 					noResultsTime = 0;
 				}
-				Boolean resp = cli.inputBooleanInSeries(String.format("Gather from %s%s",
+				final Boolean resp = cli.inputBooleanInSeries(String.format("Gather from %s%s",
 					find.getShortDescription(), meadowStatus(find)), ((HasKind) find).getKind());
 				if (resp == null) {
 					return null;
 				} else if (resp) {
-					IUnit unit = model.getSelectedUnit();
+					final IUnit unit = model.getSelectedUnit();
 					if (unit != null) {
 						cli.println("Enter details of harvest (any empty string aborts):");
 						IMutableResourcePile resource;
@@ -125,12 +125,12 @@ import org.jetbrains.annotations.Nullable;
 							}
 						}
 					}
-					int cost = Optional.ofNullable(cli.inputNumber("Time to gather: "))
+					final int cost = Optional.ofNullable(cli.inputNumber("Time to gather: "))
 						.orElse((int) Short.MAX_VALUE);
 					time -= cost;
 					// TODO: Once model supports remaining-quantity-in-fields data, offer to reduce it here
 					if (find instanceof Shrub && ((Shrub) find).getPopulation() > 0) {
-						Boolean reduce = cli.inputBooleanInSeries("Reduce shrub population here?");
+						final Boolean reduce = cli.inputBooleanInSeries("Reduce shrub population here?");
 						if (reduce == null) {
 							return null;
 						} else if (reduce) {
@@ -147,7 +147,7 @@ import org.jetbrains.annotations.Nullable;
 				}
 				model.copyToSubMaps(loc, find, true);
 			}
-			String addendum = cli.inputMultilineString("Add to results about that:");
+			final String addendum = cli.inputMultilineString("Add to results about that:");
 			if (addendum == null) {
 				return null;
 			} else {

@@ -152,7 +152,7 @@ public class HuntingModel {
 			if (SingletonRandom.SINGLETON_RANDOM.nextDouble() < nothingProportion) {
 				return nothingValue;
 			}
-			Optional<Type> retval = Stream.generate(this::supplier)
+			final Optional<Type> retval = Stream.generate(this::supplier)
 				.filter(f -> SingletonRandom.SINGLETON_RANDOM.nextInt(20) + 15 >= dcGetter.applyAsInt(f))
 				// TODO: Do a .limit(MAX_ITERATIONS) here?
 				.findAny();
@@ -306,11 +306,11 @@ public class HuntingModel {
 	 * TODO: Return Stream instead of collect()ing?
 	 */
 	private Collection<TileFixture> plants(final Point point) {
-		Collection<TileFixture> retval = map.getFixtures(point).stream()
+		final Collection<TileFixture> retval = map.getFixtures(point).stream()
 			.filter(f -> f instanceof Grove || f instanceof Meadow || f instanceof Shrub)
 			.collect(Collectors.toList());
-		double nothingProportion;
-		TileType tileType = map.getBaseTerrain(point);
+		final double nothingProportion;
+		final TileType tileType = map.getBaseTerrain(point);
 		if (TileType.Desert == tileType || TileType.Tundra == tileType) {
 			nothingProportion = 0.75;
 		} else if (TileType.Jungle == tileType) {
@@ -390,7 +390,7 @@ public class HuntingModel {
 	 * @param point Whereabouts to search
 	 */
 	public Iterable<Pair<Point, TileFixture>> gather(final Point point) {
-		List<Pair<Point, TileFixture>> retval =
+		final List<Pair<Point, TileFixture>> retval =
 				new SurroundingPointIterable(point, dimensions).stream()
 			.flatMap(p -> gatherImpl(p).stream()).collect(Collectors.toList());
 		return () -> new PairIterator(retval);

@@ -67,10 +67,10 @@ public class SubsetGUI implements UtilityGUI {
 			frame.addWindowListener(new WindowCloseListener(ignored -> frame.dispose()));
 		}
 		SwingUtilities.invokeLater(frame::showWindow);
-		String first = args[0];
+		final String first = args[0];
 		try { // Errors are reported via the GUI in loadMain(), then rethrown.
 			frame.loadMain(Paths.get(first));
-		} catch (MissingFileException|NoSuchFileException|FileNotFoundException except) {
+		} catch (final MissingFileException|NoSuchFileException|FileNotFoundException except) {
 			throw new DriverFailedException(except, String.format("File %s not found", first));
 		} catch (final IOException except) {
 			throw new DriverFailedException(except, "I/O error loading main map " + first);

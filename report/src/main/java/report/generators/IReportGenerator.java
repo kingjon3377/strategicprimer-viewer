@@ -90,11 +90,11 @@ public interface IReportGenerator<T extends IFixture> {
 	                                             final Comparator<Pair<? super Key, Point>> sorter) {
 		if (!map.isEmpty()) {
 			ostream.accept(String.format("%s%n<ul>%n", map.getHeader()));
-			List<Pair<Key, Point>> sorted = map.entrySet().stream()
+			final List<Pair<Key, Point>> sorted = map.entrySet().stream()
 					.map((e) -> Pair.<Key, Point>with(e.getKey(), e.getValue()))
 					.sorted(sorter)
 					.collect(Collectors.toList());
-			for (Pair<Key, Point> pair : sorted) {
+			for (final Pair<Key, Point> pair : sorted) {
 				ostream.accept("<li>");
 				lambda.accept(pair.getValue0(), pair.getValue1(), ostream);
 				ostream.accept(CLOSE_LI);
@@ -116,10 +116,10 @@ public interface IReportGenerator<T extends IFixture> {
 	                                             final TriConsumer<? super Key, Point, Consumer<String>> lambda) {
 		if (!map.isEmpty()) {
 			ostream.accept(String.format("%s%n<ul>%n", map.getHeader()));
-			List<Pair<Key, Point>> sorted = map.entrySet().stream()
+			final List<Pair<Key, Point>> sorted = map.entrySet().stream()
 				.map((e) -> Pair.<Key, Point>with(e.getKey(), e.getValue()))
 				.collect(Collectors.toList());
-			for (Pair<Key, Point> pair : sorted) {
+			for (final Pair<Key, Point> pair : sorted) {
 				ostream.accept("<li>");
 				lambda.accept(pair.getValue0(), pair.getValue1(), ostream);
 				ostream.accept(CLOSE_LI);
@@ -133,7 +133,7 @@ public interface IReportGenerator<T extends IFixture> {
 	 *
 	 * TODO: Maybe also provide printf?
 	 */
-	default void println(Consumer<String> ostream, String str) {
+	default void println(final Consumer<String> ostream, final String str) {
 		ostream.accept(str);
 		ostream.accept(System.lineSeparator());
 	}

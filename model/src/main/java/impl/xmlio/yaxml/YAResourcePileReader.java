@@ -27,7 +27,7 @@ import common.xmlio.Warning;
 			throws SPFormatException {
 		requireTag(element, parent, "resource");
 		expectAttributes(element, "quantity", "kind", "contents", "unit", "created", "id", "image");
-		IMutableResourcePile retval = new ResourcePileImpl(getOrGenerateID(element),
+		final IMutableResourcePile retval = new ResourcePileImpl(getOrGenerateID(element),
 			getParameter(element, "kind"), getParameter(element, "contents"),
 			new Quantity(getNumericParameter(element, "quantity"),
 				getParameter(element, "unit", "")));

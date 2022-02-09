@@ -48,7 +48,7 @@ public class TreeExpansionHandler implements TreeExpansionOrderListener {
 	public void expandSome(final int levels) {
 		int i = 0;
 		while (i < tree.getRowCount()) {
-			TreePath path = tree.getPathForRow(i);
+			final TreePath path = tree.getPathForRow(i);
 			if (path != null && path.getPathCount() <= levels) {
 				tree.expandRow(i);
 			}

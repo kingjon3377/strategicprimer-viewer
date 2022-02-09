@@ -75,26 +75,26 @@ import drivers.common.FixtureMatcher;
 		if (!support.isDrop()) {
 			return false;
 		}
-		Component component = support.getComponent();
-		DropLocation dropLocation = support.getDropLocation();
-		Transferable transfer = support.getTransferable();
-		int payload;
+		final Component component = support.getComponent();
+		final DropLocation dropLocation = support.getDropLocation();
+		final Transferable transfer = support.getTransferable();
+		final int payload;
 		try {
 			payload = (Integer) transfer.getTransferData(FLAVOR);
-		} catch (UnsupportedFlavorException|IOException except) {
+		} catch (final UnsupportedFlavorException|IOException except) {
 			LOGGER.log(Level.FINE, "Transfer failure", except);
 			return false;
 		}
 		if (component instanceof JList && ((JList<?>) component).getModel() instanceof Reorderable
 				&& dropLocation instanceof JList.DropLocation) {
-			int index = ((JList.DropLocation) dropLocation).getIndex();
+			final int index = ((JList.DropLocation) dropLocation).getIndex();
 			((Reorderable) ((JList<?>) component).getModel()).reorder(payload, index);
 			return true;
 		} else if (component instanceof JTable &&
 				((JTable) component).getModel() instanceof Reorderable &&
 				dropLocation instanceof JTable.DropLocation) {
-			int index = ((JTable.DropLocation) dropLocation).getRow();
-			int selection = ((JTable) component).getSelectedRow();
+			final int index = ((JTable.DropLocation) dropLocation).getRow();
+			final int selection = ((JTable) component).getSelectedRow();
 			((Reorderable) ((JTable) component).getModel()).reorder(payload, index);
 			if (selection == payload) {
 				((JTable) component).setRowSelectionInterval(index, index);

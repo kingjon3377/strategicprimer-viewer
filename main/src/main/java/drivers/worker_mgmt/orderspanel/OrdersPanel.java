@@ -70,8 +70,8 @@ public class OrdersPanel extends BorderedPanel implements OrdersContainer {
 		this.ordersConsumer = ordersConsumer;
 		this.isCurrent = isCurrent;
 
-		int minimumTurn = (currentTurn < 0) ? currentTurn : -1;
-		int maximumTurn = Math.max(currentTurn, 100);
+		final int minimumTurn = (currentTurn < 0) ? currentTurn : -1;
+		final int maximumTurn = Math.max(currentTurn, 100);
 		spinnerModel = new SpinnerNumberModel(currentTurn, minimumTurn, maximumTurn, 1);
 		defaultColor = area.getBackground();
 
@@ -83,7 +83,7 @@ public class OrdersPanel extends BorderedPanel implements OrdersContainer {
 			JComponent.WHEN_IN_FOCUSED_WINDOW,
 			KeyStroke.getKeyStroke(KeyEvent.VK_D, Platform.SHORTCUT_MASK));
 
-		String topLabel;
+		final String topLabel;
 		if ("Orders".equals(description)) {
 			topLabel = String.format("Orders for current selection, if a unit: (%sD)",
 				Platform.SHORTCUT_DESCRIPTION);
@@ -95,11 +95,11 @@ public class OrdersPanel extends BorderedPanel implements OrdersContainer {
 			BorderedPanel.horizontalPanel(null, new JLabel("Turn "),
 				new JSpinner(spinnerModel))));
 		if (ordersConsumer != null) {
-			JButton applyButton = new ListenedButton("Apply", ignored -> apply());
-			JButton revertButton = new ListenedButton("Revert", ignored -> revert());
+			final JButton applyButton = new ListenedButton("Apply", ignored -> apply());
+			final JButton revertButton = new ListenedButton("Revert", ignored -> revert());
 			Platform.makeButtonsSegmented(applyButton, revertButton);
 
-			JPanel buttonPanel;
+			final JPanel buttonPanel;
 			if (Platform.SYSTEM_IS_MAC) {
 				buttonPanel = BoxPanel.centeredHorizontalBox(revertButton, applyButton);
 			} else {
@@ -164,17 +164,17 @@ public class OrdersPanel extends BorderedPanel implements OrdersContainer {
 	 */
 	@Override
 	public void valueChanged(final TreeSelectionEvent event) {
-		TreePath selectedPath = event.getNewLeadSelectionPath();
+		final TreePath selectedPath = event.getNewLeadSelectionPath();
 		if (selectedPath != null) {
-			Object sel = selectedPath.getLastPathComponent();
-			Object temp;
+			final Object sel = selectedPath.getLastPathComponent();
+			final Object temp;
 			if (sel instanceof DefaultMutableTreeNode) {
 				temp = ((DefaultMutableTreeNode) sel).getUserObject();
 			} else {
 				temp = sel;
 			}
 			if (temp instanceof String) {
-				ProxyUnit proxyUnit = new ProxyUnit((String) temp);
+				final ProxyUnit proxyUnit = new ProxyUnit((String) temp);
 				playerUnits.apply(currentPlayer, (String) temp)
 					.forEach(proxyUnit::addProxied);
 				selection = proxyUnit;
@@ -191,7 +191,7 @@ public class OrdersPanel extends BorderedPanel implements OrdersContainer {
 	}
 
 	public void focusOnArea() {
-		boolean newlyGainingFocus = !area.isFocusOwner();
+		final boolean newlyGainingFocus = !area.isFocusOwner();
 		area.requestFocusInWindow();
 		fixColor();
 		if (newlyGainingFocus) {
@@ -201,8 +201,8 @@ public class OrdersPanel extends BorderedPanel implements OrdersContainer {
 
 	@Override
 	public boolean selectText(final String selection) {
-		String text = area.getText().toLowerCase();
-		int index = text.indexOf(selection.toLowerCase());
+		final String text = area.getText().toLowerCase();
+		final int index = text.indexOf(selection.toLowerCase());
 		if (index < 0) {
 			return false;
 		} else {

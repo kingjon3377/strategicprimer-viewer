@@ -12,7 +12,7 @@ import lovelace.util.BorderedPanel;
 /* package */ class MapScrollPanel extends BorderedPanel {
 	public MapScrollPanel(final IViewerModel model, final JComponent component) {
 		super(component, null, null, null, null);
-		ScrollListener scrollListener = ScrollListener.createScrollBars(model, this);
+		final ScrollListener scrollListener = ScrollListener.createScrollBars(model, this);
 		model.addGraphicalParamsListener(scrollListener);
 		model.addMapChangeListener(scrollListener);
 	}

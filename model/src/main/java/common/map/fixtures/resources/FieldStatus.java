@@ -35,13 +35,13 @@ public enum FieldStatus {
 	}
 
 	public static FieldStatus random(final int seed) {
-		FieldStatus[] statuses = FieldStatus.values();
+		final FieldStatus[] statuses = FieldStatus.values();
 		return statuses[new Random(seed).nextInt(statuses.length)];
 	}
 
 	public static FieldStatus parse(final String status) {
 		// TODO: Have HashMap cache to speed this up?
-		for (FieldStatus val : values()) {
+		for (final FieldStatus val : values()) {
 			if (status.equals(val.toString())) {
 				return val;
 			}

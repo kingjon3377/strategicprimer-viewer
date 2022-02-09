@@ -38,7 +38,7 @@ import java.util.logging.Level;
 		if (!canImport(support)) {
 			return false;
 		}
-		List<File> payload;
+		final List<File> payload;
 		try {
 			payload = (List<File>) support.getTransferable().getTransferData(
 				DataFlavor.javaFileListFlavor);
@@ -47,7 +47,7 @@ import java.util.logging.Level;
 				except);
 			return false;
 		}
-		for (File file : payload) {
+		for (final File file : payload) {
 			try {
 				app.acceptDroppedFile(file.toPath());
 			} catch (final SPFormatException except) {

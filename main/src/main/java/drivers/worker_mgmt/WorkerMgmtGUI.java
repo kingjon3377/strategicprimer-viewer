@@ -56,7 +56,7 @@ public class WorkerMgmtGUI implements MultiMapGUIDriver, WorkerGUI {
 	private void createWindow(final MenuBroker menuHandler, final PlayerChangeMenuListener pcml)
 			throws DriverFailedException {
 		LOGGER.finer("Inside GUI creation lambda");
-		WorkerMgmtFrame frame = new WorkerMgmtFrame(options, model, menuHandler, this);
+		final WorkerMgmtFrame frame = new WorkerMgmtFrame(options, model, menuHandler, this);
 		LOGGER.finer("Created worker mgmt frame");
 		pcml.addPlayerChangeListener(frame);
 		LOGGER.finer("Added it as a listener on the PCML");
@@ -82,11 +82,11 @@ public class WorkerMgmtGUI implements MultiMapGUIDriver, WorkerGUI {
 
 	@Override
 	public void startDriver() throws DriverFailedException {
-		MenuBroker menuHandler = new MenuBroker();
+		final MenuBroker menuHandler = new MenuBroker();
 		menuHandler.register(new IOHandler(this, cli), "load",
 			"save", "save as", "new", "load secondary", "save all", "open in map viewer",
 			"open secondary map in map viewer", "close", "quit");
-		PlayerChangeMenuListener pcml = new PlayerChangeMenuListener(model);
+		final PlayerChangeMenuListener pcml = new PlayerChangeMenuListener(model);
 		menuHandler.register(pcml, "change current player");
 		try {
 			SwingUtilities.invokeLater(() -> {

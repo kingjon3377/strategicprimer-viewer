@@ -54,33 +54,33 @@ import java.util.logging.Level;
 public class MemberDetailPanel extends BorderedPanel implements UnitMemberListener {
 	private static final Logger LOGGER = Logger.getLogger(MemberDetailPanel.class.getName());
 	public MemberDetailPanel(final JPanel resultsPanel, final JPanel notesPanel) { // TODO: Move initialization of those into here?
-		JPanel statPanel = new JPanel();
-		FunctionalGroupLayout statLayout = new FunctionalGroupLayout(statPanel, true, true);
+		final JPanel statPanel = new JPanel();
+		final FunctionalGroupLayout statLayout = new FunctionalGroupLayout(statPanel, true, true);
 		statPanel.setLayout(statLayout);
 		statPanel.setBorder(BorderFactory.createEmptyBorder());
 
-		InterpolatedLabel<@Nullable WorkerStats> strLabel = statLabel(WorkerStats::getStrength);
-		InterpolatedLabel<@Nullable WorkerStats> dexLabel = statLabel(WorkerStats::getDexterity);
-		InterpolatedLabel<@Nullable WorkerStats> conLabel = statLabel(WorkerStats::getConstitution);
-		InterpolatedLabel<@Nullable WorkerStats> intLabel = statLabel(WorkerStats::getIntelligence);
-		InterpolatedLabel<@Nullable WorkerStats> wisLabel = statLabel(WorkerStats::getWisdom);
-		InterpolatedLabel<@Nullable WorkerStats> chaLabel = statLabel(WorkerStats::getCharisma);
+		final InterpolatedLabel<@Nullable WorkerStats> strLabel = statLabel(WorkerStats::getStrength);
+		final InterpolatedLabel<@Nullable WorkerStats> dexLabel = statLabel(WorkerStats::getDexterity);
+		final InterpolatedLabel<@Nullable WorkerStats> conLabel = statLabel(WorkerStats::getConstitution);
+		final InterpolatedLabel<@Nullable WorkerStats> intLabel = statLabel(WorkerStats::getIntelligence);
+		final InterpolatedLabel<@Nullable WorkerStats> wisLabel = statLabel(WorkerStats::getWisdom);
+		final InterpolatedLabel<@Nullable WorkerStats> chaLabel = statLabel(WorkerStats::getCharisma);
 		statLabels = Collections.unmodifiableList(Arrays.asList(strLabel, dexLabel, conLabel,
 			intLabel, wisLabel, chaLabel));
 
-		JLabel typeCaption = caption("Member Type");
+		final JLabel typeCaption = caption("Member Type");
 		typeLabel = new JLabel("member type");
-		JLabel nameCaption = caption("Name");
+		final JLabel nameCaption = caption("Name");
 		nameLabel = new JLabel("member name");
-		JLabel kindCaption = caption("Race or Kind");
+		final JLabel kindCaption = caption("Race or Kind");
 		kindLabel = new JLabel("member kind");
-		JLabel strCaption = caption("Str");
-		JLabel dexCaption = caption("Dex");
-		JLabel conCaption = caption("Con");
-		JLabel intCaption = caption("Int");
-		JLabel wisCaption = caption("Wis");
-		JLabel chaCaption = caption("Cha");
-		JLabel jobsCaption = caption("Job Levels");
+		final JLabel strCaption = caption("Str");
+		final JLabel dexCaption = caption("Dex");
+		final JLabel conCaption = caption("Con");
+		final JLabel intCaption = caption("Int");
+		final JLabel wisCaption = caption("Wis");
+		final JLabel chaCaption = caption("Cha");
+		final JLabel jobsCaption = caption("Job Levels");
 
 		jobsPanel = new JPanel(new GridLayout(0, 1));
 
@@ -115,14 +115,14 @@ public class MemberDetailPanel extends BorderedPanel implements UnitMemberListen
 		statLayout.linkSize(SwingConstants.VERTICAL, nameCaption, nameLabel);
 		statLayout.linkSize(SwingConstants.VERTICAL, kindCaption, kindLabel);
 
-		JScrollPane statPanelWrapped = new JScrollPane(horizontalSplit(statPanel,
+		final JScrollPane statPanelWrapped = new JScrollPane(horizontalSplit(statPanel,
 			portraitComponent, 0.6),
 				(Platform.SYSTEM_IS_MAC) ? ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS
 					: ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,
 				(Platform.SYSTEM_IS_MAC) ? ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS
 					: ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 
-		JTabbedPane tabbed = new JTabbedPane();
+		final JTabbedPane tabbed = new JTabbedPane();
 
 		tabbed.addTab("Stats",statPanelWrapped);
 		tabbed.addTab("Results", resultsPanel);
@@ -185,22 +185,22 @@ public class MemberDetailPanel extends BorderedPanel implements UnitMemberListen
 	}
 
 	private void recache() {
-		UnitMember local = current;
+		final UnitMember local = current;
 		jobsPanel.removeAll();
 		if (local instanceof IWorker) {
-			IWorker worker = (IWorker) local;
+			final IWorker worker = (IWorker) local;
 			typeLabel.setText("Worker");
 			nameLabel.setText(worker.getName());
 			kindLabel.setText(worker.getKind());
-			WorkerStats stats = worker.getStats();
-			for (InterpolatedLabel<@Nullable WorkerStats> label : statLabels) {
+			final WorkerStats stats = worker.getStats();
+			for (final InterpolatedLabel<@Nullable WorkerStats> label : statLabels) {
 				label.setArgument(stats);
 			}
-			for (IJob job : worker) {
+			for (final IJob job : worker) {
 				if (job.isEmpty()) {
 					continue;
 				}
-				JLabel label = new JLabel(String.format("%s %d", job.getName(),
+				final JLabel label = new JLabel(String.format("%s %d", job.getName(),
 					job.getLevel()));
 				if (job.iterator().hasNext()) {
 					label.setToolTipText(StreamSupport.stream(job.spliterator(), false)
@@ -210,9 +210,9 @@ public class MemberDetailPanel extends BorderedPanel implements UnitMemberListen
 				jobsPanel.add(label);
 			}
 		} else if (local instanceof Animal) {
-			Animal animal = (Animal) local;
-			String plural = AnimalPlurals.get(animal.getKind());
-				Map<String, Integer> maturityAges = MaturityModel.getMaturityAges();
+			final Animal animal = (Animal) local;
+			final String plural = AnimalPlurals.get(animal.getKind());
+				final Map<String, Integer> maturityAges = MaturityModel.getMaturityAges();
 			if (animal.getBorn() >= 0 && MaturityModel.getCurrentTurn() >= 0 &&
 					maturityAges.containsKey(animal.getKind()) &&
 					MaturityModel.getCurrentTurn() - animal.getBorn() <
@@ -236,11 +236,11 @@ public class MemberDetailPanel extends BorderedPanel implements UnitMemberListen
 				}
 			}
 			nameLabel.setText("");
-			for (InterpolatedLabel<@Nullable WorkerStats> label : statLabels) {
+			for (final InterpolatedLabel<@Nullable WorkerStats> label : statLabels) {
 				label.setArgument(null);
 			}
 		} else if (local instanceof Implement) {
-			Implement eq = (Implement) local;
+			final Implement eq = (Implement) local;
 			typeLabel.setText("Equipment");
 			nameLabel.setText("");
 			if (eq.getCount() > 1) {
@@ -248,36 +248,36 @@ public class MemberDetailPanel extends BorderedPanel implements UnitMemberListen
 			} else {
 				kindLabel.setText(eq.getKind());
 			}
-			for (InterpolatedLabel<@Nullable WorkerStats> label : statLabels) {
+			for (final InterpolatedLabel<@Nullable WorkerStats> label : statLabels) {
 				label.setArgument(null);
 			}
 		} else if (local instanceof IResourcePile) {
-			IResourcePile rp = (IResourcePile) local;
+			final IResourcePile rp = (IResourcePile) local;
 			typeLabel.setText("Resource");
 			nameLabel.setText("");
 			kindLabel.setText(String.format("%s %s (%s)", rp.getQuantity(), rp.getContents(),
 				rp.getKind()));
-			for (InterpolatedLabel<@Nullable WorkerStats> label : statLabels) {
+			for (final InterpolatedLabel<@Nullable WorkerStats> label : statLabels) {
 				label.setArgument(null);
 			}
 		} else if (local == null) {
 			typeLabel.setText("");
 			nameLabel.setText("");
 			kindLabel.setText("");
-			for (InterpolatedLabel<@Nullable WorkerStats> label : statLabels) {
+			for (final InterpolatedLabel<@Nullable WorkerStats> label : statLabels) {
 				label.setArgument(null);
 			}
 		} else {
 			typeLabel.setText("Unknown");
 			nameLabel.setText("");
 			kindLabel.setText(local.getClass().getName());
-			for (InterpolatedLabel<@Nullable WorkerStats> label : statLabels) {
+			for (final InterpolatedLabel<@Nullable WorkerStats> label : statLabels) {
 				label.setArgument(null);
 			}
 		}
 		portraitComponent.setPortrait(null);
 		if (local instanceof HasPortrait) {
-			String portraitName = ((HasPortrait) local).getPortrait();
+			final String portraitName = ((HasPortrait) local).getPortrait();
 			if (!portraitName.isEmpty()) {
 				try {
 					portraitComponent.setPortrait(ImageLoader.loadImage(portraitName));
@@ -293,7 +293,7 @@ public class MemberDetailPanel extends BorderedPanel implements UnitMemberListen
 	public void memberSelected(@Nullable final UnitMember old, @Nullable final UnitMember selected) {
 		if (selected instanceof ProxyFor) {
 			if (((ProxyFor<? extends UnitMember>) selected).isParallel()) {
-				Iterator<? extends UnitMember> proxied =
+				final Iterator<? extends UnitMember> proxied =
 					((ProxyFor<? extends UnitMember>) selected).getProxied().iterator();
 				if (proxied.hasNext()) {
 					memberSelected(old, proxied.next());

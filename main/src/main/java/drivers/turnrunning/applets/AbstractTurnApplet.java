@@ -46,10 +46,10 @@ public abstract class AbstractTurnApplet implements TurnApplet {
 	// This was "shared" in Ceylon, but I expect only subclasses will be able to use it.
 	protected <Type> @Nullable Type chooseFromList(final List<Type> items, final String description, final String none,
 	                                               final String prompt, final boolean auto, final Function<? super Type, String> converter) {
-		Pair<Integer, @Nullable String> entry = cli.chooseStringFromList(
+		final Pair<Integer, @Nullable String> entry = cli.chooseStringFromList(
 			items.stream().map(converter).collect(Collectors.toList()), description,
 			none, prompt, auto);
-		if (entry.getValue1() != null) {
+		if (entry.getValue1() != null) { // TODO: Inline using Optional?s
 			return items.get(entry.getValue0());
 		} else {
 			return null;
@@ -59,13 +59,13 @@ public abstract class AbstractTurnApplet implements TurnApplet {
 	// This was "shared" in Ceylon, but I expect only subclasses will be able to use it.
 	@Nullable
 	protected Point confirmPoint(final String prompt) {
-		Point retval = cli.inputPoint(prompt);
+		final Point retval = cli.inputPoint(prompt);
 		if (retval == null) {
 			return null;
 		}
-		Point selectedLocation = model.getSelectedUnitLocation();
+		final Point selectedLocation = model.getSelectedUnitLocation();
 		if (selectedLocation.isValid()) {
-			Boolean confirmation = cli.inputBoolean(
+			final Boolean confirmation = cli.inputBoolean(
 				String.format("%s is %.1f away. Is that right?", retval,
 					model.getMapDimensions().distance(retval, selectedLocation)));
 			if (confirmation != null && confirmation) {
@@ -88,7 +88,8 @@ public abstract class AbstractTurnApplet implements TurnApplet {
 	 */
 	protected <T extends HasPopulation<? extends TileFixture>&TileFixture> void reducePopulation(
 			final Point point, final T fixture, final String plural, final Boolean zero) {
-		int count = Math.min(
+		// TODO: make nullable and return null on EOF?
+		final int count = Math.min(
 			Optional.ofNullable(cli.inputNumber(String.format(
 				"How many %s to remove: ", plural))).orElse(0), fixture.getPopulation());
 		model.reducePopulation(point, fixture, zero, count);
@@ -111,13 +112,13 @@ public abstract class AbstractTurnApplet implements TurnApplet {
 			.filter((IResourcePile r) -> r.getCreated() <= turn)
 			.collect(Collectors.<IResourcePile>toList()); */ // Doesn't compile, with impossible errors
 		final List<IResourcePile> retval = new ArrayList<>();
-		IMapNG map = model.getMap();
-		for (Point loc : map.getLocations()) {
-			for (TileFixture fix : map.getFixtures(loc)) {
+		final IMapNG map = model.getMap();
+		for (final Point loc : map.getLocations()) {
+			for (final TileFixture fix : map.getFixtures(loc)) {
 				if (fix instanceof IFortress) {
-					for (FortressMember member : (IFortress) fix) {
+					for (final FortressMember member : (IFortress) fix) {
 						if (member instanceof IResourcePile) {
-							IResourcePile pile = (IResourcePile) member;
+							final IResourcePile pile = (IResourcePile) member;
 							if ("food".equals(pile.getKind()) &&
 									"pounds".equals(pile.getQuantity()
 										.getUnits()) &&
@@ -125,9 +126,9 @@ public abstract class AbstractTurnApplet implements TurnApplet {
 								retval.add(pile);
 							}
 						} else if (member instanceof IUnit) {
-							for (UnitMember inner : (IUnit) member) {
+							for (final UnitMember inner : (IUnit) member) {
 								if (inner instanceof IResourcePile) {
-									IResourcePile pile =
+									final IResourcePile pile =
 										(IResourcePile) inner;
 									if ("food".equals(pile.getKind()) &&
 											"pounds".equals(
@@ -142,9 +143,9 @@ public abstract class AbstractTurnApplet implements TurnApplet {
 						}
 					}
 				} else if (fix instanceof IUnit) {
-					for (UnitMember inner : (IUnit) fix) {
+					for (final UnitMember inner : (IUnit) fix) {
 						if (inner instanceof IResourcePile) {
-							IResourcePile pile = (IResourcePile) inner;
+							final IResourcePile pile = (IResourcePile) inner;
 							if ("food".equals(pile.getKind()) &&
 									"pounds".equals(pile.getQuantity()
 											.getUnits()) &&

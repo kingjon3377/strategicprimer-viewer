@@ -44,13 +44,13 @@ final class DBMineHandler extends AbstractDatabaseWriter<Mine, Point> implements
 
 	private TryBiConsumer<Map<String, Object>, Warning, Exception> readMine(final IMutableMapNG map) {
 		return (dbRow, warner) -> {
-			int row = (Integer) dbRow.get("row");
-			int column = (Integer) dbRow.get("column");
-			int id = (Integer) dbRow.get("id");
-			String kind = (String) dbRow.get("kind");
-			TownStatus status = TownStatus.parse((String) dbRow.get("status"));
-			String image = (String) dbRow.get("image");
-			Mine mine = new Mine(kind, status, id);
+			final int row = (Integer) dbRow.get("row");
+			final int column = (Integer) dbRow.get("column");
+			final int id = (Integer) dbRow.get("id");
+			final String kind = (String) dbRow.get("kind");
+			final TownStatus status = TownStatus.parse((String) dbRow.get("status"));
+			final String image = (String) dbRow.get("image");
+			final Mine mine = new Mine(kind, status, id);
 			if (image != null) {
 				mine.setImage(image);
 			}

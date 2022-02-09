@@ -45,12 +45,12 @@ public class SkillTabularReportGenerator implements ITableGenerator<IWorker> {
 	public List<List<String>> produce(
 			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures, final IWorker item,
 			final int key, final Point loc, final Map<Integer, Integer> parentMap) {
-		List<List<String>> retval = new ArrayList<>();
-		String unitId = Optional.ofNullable(parentMap.get(item.getId()))
+		final List<List<String>> retval = new ArrayList<>();
+		final String unitId = Optional.ofNullable(parentMap.get(item.getId()))
 			.map(Object::toString).orElse("---");
-		for (IJob job : item) {
+		for (final IJob job : item) {
 			boolean any = false;
-			for (ISkill skill : job) {
+			for (final ISkill skill : job) {
 				if (!skill.isEmpty()) {
 					any = true;
 					retval.add(Arrays.asList(item.getName(),

@@ -48,22 +48,22 @@ public class ReaderComparator implements UtilityDriver {
 	 */
 	@Override
 	public void startDriver(final String... args) throws DriverFailedException {
-		IMapReader readerOne = TestReaderFactory.getOldMapReader();
-		IMapReader readerTwo = TestReaderFactory.getNewMapReader();
-		SPWriter writerOne = TestReaderFactory.getOldWriter();
-		SPWriter writerTwo = TestReaderFactory.getNewWriter();
-		Warning warner = Warning.IGNORE;
-		for (String arg : args) {
+		final IMapReader readerOne = TestReaderFactory.getOldMapReader();
+		final IMapReader readerTwo = TestReaderFactory.getNewMapReader();
+		final SPWriter writerOne = TestReaderFactory.getOldWriter();
+		final SPWriter writerTwo = TestReaderFactory.getNewWriter();
+		final Warning warner = Warning.IGNORE;
+		for (final String arg : args) {
 			cli.println(arg + ":");
-			Path path = Paths.get(arg);
-			String contents;
+			final Path path = Paths.get(arg);
+			final String contents;
 			try {
 				contents = readAll(path);
 			} catch (final IOException except) {
 				throw new DriverFailedException(except, "I/O error reading file");
 			}
-			long readStartOne = System.nanoTime();
-			IMapNG mapOne;
+			final long readStartOne = System.nanoTime();
+			final IMapNG mapOne;
 			try {
 				mapOne = readerOne.readMapFromStream(path,
 					new StringReader(contents), warner);
@@ -77,10 +77,10 @@ public class ReaderComparator implements UtilityDriver {
 				throw new DriverFailedException(except,
 					"I/O error thrown by first reader");
 			}
-			long readEndOne = System.nanoTime();
+			final long readEndOne = System.nanoTime();
 			cli.println("Old reader took " + (readEndOne - readStartOne));
-			long readStartTwo = System.nanoTime();
-			IMapNG mapTwo;
+			final long readStartTwo = System.nanoTime();
+			final IMapNG mapTwo;
 			try {
 				mapTwo = readerTwo.readMapFromStream(path,
 					new StringReader(contents), warner);
@@ -94,15 +94,15 @@ public class ReaderComparator implements UtilityDriver {
 				throw new DriverFailedException(except,
 					"I/O error thrown by second reader");
 			}
-			long readEndTwo = System.nanoTime();
+			final long readEndTwo = System.nanoTime();
 			cli.println("New reader took " + (readEndTwo - readStartTwo));
 			if (mapOne.equals(mapTwo)) {
 				cli.println("Readers produce identical results");
 			} else {
 				cli.println("Readers differ on " + arg);
 			}
-			StringBuilder outOne = new StringBuilder();
-			long writeStartOne = System.nanoTime();
+			final StringBuilder outOne = new StringBuilder();
+			final long writeStartOne = System.nanoTime();
 			try {
 				writerOne.write(outOne::append, mapOne);
 			} catch (final MalformedXMLException except) {
@@ -112,10 +112,10 @@ public class ReaderComparator implements UtilityDriver {
 				throw new DriverFailedException(except,
 					"I/O error reported by first writer");
 			}
-			long writeEndOne = System.nanoTime();
+			final long writeEndOne = System.nanoTime();
 			cli.println("Old writer took " + (writeEndOne - writeStartOne));
-			StringBuilder outTwo = new StringBuilder();
-			long writeStartTwo = System.nanoTime();
+			final StringBuilder outTwo = new StringBuilder();
+			final long writeStartTwo = System.nanoTime();
 			try {
 				writerTwo.write(outTwo::append, mapTwo);
 			} catch (final MalformedXMLException except) {
@@ -125,7 +125,7 @@ public class ReaderComparator implements UtilityDriver {
 				throw new DriverFailedException(except,
 					"I/O error reported by second writer");
 			}
-			long writeEndTwo = System.nanoTime();
+			final long writeEndTwo = System.nanoTime();
 			cli.println("New writer took " + (writeEndTwo - writeStartTwo));
 			if (outOne.toString().equals(outTwo.toString())) {
 				cli.println("Writers produce identical results");

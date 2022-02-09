@@ -82,7 +82,7 @@ public class SimpleMultiMapModel extends SimpleDriverModel implements IMultiMapM
 
 	@Override
 	public final void setCurrentTurn(final int currentTurn) {
-		for (IMutableMapNG map : getRestrictedAllMaps()) {
+		for (final IMutableMapNG map : getRestrictedAllMaps()) {
 			map.setCurrentTurn(currentTurn);
 			map.setModified(true);
 		}
@@ -90,13 +90,13 @@ public class SimpleMultiMapModel extends SimpleDriverModel implements IMultiMapM
 
 	@Override
 	public final void setMapModified(final IMapNG map, final boolean flag) {
-		for (IMutableMapNG subMap : getRestrictedAllMaps()) {
+		for (final IMutableMapNG subMap : getRestrictedAllMaps()) {
 			if (subMap == map) {
 				subMap.setModified(flag);
 				return;
 			}
 		}
-		for (IMutableMapNG subMap : getRestrictedAllMaps()) {
+		for (final IMutableMapNG subMap : getRestrictedAllMaps()) {
 			if (subMap.equals(map)) {
 				subMap.setModified(flag);
 				return;

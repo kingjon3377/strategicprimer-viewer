@@ -126,15 +126,15 @@ public class TownReportGenerator extends AbstractReportGenerator<ITownFixture> {
 	@Override
 	public void produce(final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
 	                    final IMapNG map, final Consumer<String> ostream) {
-		HeadedMap<ITownFixture, Point> abandoned =
+		final HeadedMap<ITownFixture, Point> abandoned =
 			new HeadedMapImpl<>("<h5>Abandoned Communities</h5>");
-		HeadedMap<ITownFixture, Point> active =
+		final HeadedMap<ITownFixture, Point> active =
 			new HeadedMapImpl<>("<h5>Active Communities</h5>");
-		HeadedMap<ITownFixture, Point> burned =
+		final HeadedMap<ITownFixture, Point> burned =
 			new HeadedMapImpl<>("<h5>Burned-Out Communities</h5>");
-		HeadedMap<ITownFixture, Point> ruined =
+		final HeadedMap<ITownFixture, Point> ruined =
 			new HeadedMapImpl<>("<h5>Ruined Communities</h5>");
-		Map<TownStatus, Map<ITownFixture, Point>> separated =
+		final Map<TownStatus, Map<ITownFixture, Point>> separated =
 			Stream.of(Pair.with(TownStatus.Abandoned, abandoned),
 					Pair.with(TownStatus.Active, active),
 					Pair.with(TownStatus.Burned, burned),
@@ -144,7 +144,7 @@ public class TownReportGenerator extends AbstractReportGenerator<ITownFixture> {
 		separateByStatus(separated, fixtures.values(), TownReportGenerator::separateByStatusInner);
 		if (separated.values().stream().anyMatch(l -> !l.isEmpty())) {
 			println(ostream, "<h4>Cities, towns, and/or fortifications you know about:</h4>");
-			for (HeadedMap<ITownFixture, Point> mapping :
+			for (final HeadedMap<ITownFixture, Point> mapping :
 					Arrays.asList(abandoned, active, burned, ruined)) {
 				super.writeMap(ostream, mapping, super.defaultFormatter(fixtures, map));
 			}

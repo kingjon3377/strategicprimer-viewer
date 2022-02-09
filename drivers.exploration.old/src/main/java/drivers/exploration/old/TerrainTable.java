@@ -23,10 +23,10 @@ class TerrainTable implements EncounterTable {
 	private final Map<String, String> mapping = new HashMap<>();
 	@SafeVarargs
 	public TerrainTable(final Pair<String, String>... items) {
-		Set<String> types = Stream.concat(Stream.of(TileType.values()).map(TileType::getXml),
+		final Set<String> types = Stream.concat(Stream.of(TileType.values()).map(TileType::getXml),
 				Stream.of("mountain", "boreal_forest", "temperate_forest"))
 			.collect(Collectors.toSet());
-		for (Pair<String, String> pair : items) {
+		for (final Pair<String, String> pair : items) {
 			if (types.contains(pair.getValue0())) {
 				mapping.put(pair.getValue0(), pair.getValue1()); // TODO: check for dupes
 			} else {
@@ -43,7 +43,7 @@ class TerrainTable implements EncounterTable {
 				"Terrain table can only account for visible terrain");
 		}
 		final String actual;
-		boolean forested = StreamSupport.stream(fixtures.spliterator(), true)
+		final boolean forested = StreamSupport.stream(fixtures.spliterator(), true)
 			.anyMatch(Forest.class::isInstance);
 		if (mountainous) {
 			actual = "mountain";

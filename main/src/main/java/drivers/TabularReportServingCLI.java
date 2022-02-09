@@ -74,7 +74,7 @@ import org.takes.http.Exit;
 	}
 
 	private void serveReports(final int port) throws DriverFailedException {
-		Map<Path, IMapNG> mapping;
+		final Map<Path, IMapNG> mapping;
 		if (model instanceof IMultiMapModel) {
 			mapping = ((IMultiMapModel) model).streamAllMaps()
 				.collect(Collectors.toMap(
@@ -87,23 +87,23 @@ import org.takes.http.Exit;
 			mapping = Collections.singletonMap(Paths.get("unknown.xml"), model.getMap());
 		}
 
-		Map<Pair<String, String>, StringBuilder> builders = new HashMap<>();
+		final Map<Pair<String, String>, StringBuilder> builders = new HashMap<>();
 
-		ThrowingFunction<Path, ThrowingFunction<String, ThrowingConsumer<String, IOException>, IOException>, IOException> filenameFunction = base -> {
-			String baseName = SuffixHelper.shortestSuffix(mapping.keySet(), base);
+		final ThrowingFunction<Path, ThrowingFunction<String, ThrowingConsumer<String, IOException>, IOException>, IOException> filenameFunction = base -> {
+			final String baseName = SuffixHelper.shortestSuffix(mapping.keySet(), base);
 			return tableName -> {
-				Pair<String, String> key = Pair.with(baseName, tableName);
+				final Pair<String, String> key = Pair.with(baseName, tableName);
 				if (builders.containsKey(key)) {
 					return builders.get(key)::append;
 				} else {
-					StringBuilder writer = new StringBuilder();
+					final StringBuilder writer = new StringBuilder();
 					builders.put(key, writer);
 					return writer::append;
 				}
 			};
 		};
 
-		ThrowingBiConsumer<IMapNG, @Nullable Path, DriverFailedException> createReports =
+		final ThrowingBiConsumer<IMapNG, @Nullable Path, DriverFailedException> createReports =
 			(map, mapFile) -> {
 				if (mapFile == null) {
 					LOGGER.severe("Asked to create reports from map with no filename");
@@ -112,14 +112,14 @@ import org.takes.http.Exit;
 					try {
 						TabularReportGenerator.createTabularReports(map,
 							filenameFunction.apply(mapFile), cli);
-					} catch (IOException|IOError except) {
+					} catch (final IOException|IOError except) {
 						throw new DriverFailedException(except);
 					}
 				}
 			};
 
 		if (model instanceof IMultiMapModel) {
-			for (IMapNG map : ((IMultiMapModel) model).getAllMaps()) {
+			for (final IMapNG map : ((IMultiMapModel) model).getAllMaps()) {
 				createReports.accept(map, Optional.ofNullable(map.getFilename())
 					.orElseGet(() -> Paths.get("unknown.xml")));
 			}
@@ -129,7 +129,7 @@ import org.takes.http.Exit;
 		}
 
 		// [file, table]->builder
-		Stream<Fork> endpoints = builders.entrySet().stream()
+		final Stream<Fork> endpoints = builders.entrySet().stream()
 			.map(entry -> new FkRegex(String.format("/%s.%s.csv", entry.getKey().getValue0(),
 					entry.getKey().getValue1()),
 				new RsWithType(new RsWithHeader(new RsText(entry.getValue().toString()),
@@ -137,8 +137,8 @@ import org.takes.http.Exit;
 						"attachment; filename=\"%s.csv\"", entry.getValue())),
 					"text/csv")));
 
-		Function<String, String> tocHtml = path -> {
-			StringBuilder builder = new StringBuilder();
+		final Function<String, String> tocHtml = path -> {
+			final StringBuilder builder = new StringBuilder();
 			builder.append("<!DOCTYPE html>").append(System.lineSeparator())
 				.append("<html>").append(System.lineSeparator())
 				.append("\t<head>").append(System.lineSeparator())
@@ -149,7 +149,7 @@ import org.takes.http.Exit;
 				.append("\t\t<h1>Tabular reports for ").append(path).append("</h1>")
 					.append(System.lineSeparator())
 				.append("\t\t<ul>").append(System.lineSeparator());
-			for (Pair<String, String> pair : builders.keySet()) {
+			for (final Pair<String, String> pair : builders.keySet()) {
 				if (path.equals(pair.getValue0())) {
 					builder.append("\t\t\t<li><a href=\"/").append(pair.getValue0())
 						.append(".").append(pair.getValue1()).append(".csv\">")
@@ -163,13 +163,13 @@ import org.takes.http.Exit;
 			return builder.toString();
 		};
 
-		List<Fork> tocs = mapping.keySet().stream()
+		final List<Fork> tocs = mapping.keySet().stream()
 			.map(key -> SuffixHelper.shortestSuffix(mapping.keySet(), key))
 			.flatMap(path -> Stream.of(new FkRegex("/" + path, new RsHtml(tocHtml.apply(path))),
 				new FkRegex(String.format("/%s/", path), new RsHtml(tocHtml.apply(path)))))
 			.collect(Collectors.toList());
 
-		StringBuilder rootDocument = new StringBuilder();
+		final StringBuilder rootDocument = new StringBuilder();
 		rootDocument.append("<!DOCTYPE html>").append(System.lineSeparator())
 			.append("<html>").append(System.lineSeparator())
 			.append("\t<head>").append(System.lineSeparator())
@@ -202,7 +202,7 @@ import org.takes.http.Exit;
 
 	@Override
 	public void startDriver() throws DriverFailedException {
-		String portArgument = options.getArgument("--serve");
+		final String portArgument = options.getArgument("--serve");
 		int port;
 		try {
 			port = Integer.parseInt(portArgument);

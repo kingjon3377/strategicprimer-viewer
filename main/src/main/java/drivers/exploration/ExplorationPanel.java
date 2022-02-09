@@ -113,14 +113,14 @@ import worker.common.IFixtureEditHelper;
 		this.driverModel = driverModel;
 		this.mpModel = mpModel;
 		LOGGER.finer("In ExplorationPanel initializer");
-		Map<Direction, KeyStroke> arrowKeys = Stream.of(
+		final Map<Direction, KeyStroke> arrowKeys = Stream.of(
 				Pair.with(Direction.North, key(KeyEvent.VK_UP)),
 				Pair.with(Direction.South, key(KeyEvent.VK_DOWN)),
 				Pair.with(Direction.West, key(KeyEvent.VK_LEFT)),
 				Pair.with(Direction.East, key(KeyEvent.VK_RIGHT)))
 			.collect(Collectors.toMap(Pair::getValue0, Pair::getValue1));
 
-		Map<Direction, KeyStroke> numKeys = Stream.of(
+		final Map<Direction, KeyStroke> numKeys = Stream.of(
 				Pair.with(Direction.North, key(KeyEvent.VK_NUMPAD8)),
 				Pair.with(Direction.South, key(KeyEvent.VK_NUMPAD2)),
 				Pair.with(Direction.West, key(KeyEvent.VK_NUMPAD4)),
@@ -132,18 +132,18 @@ import worker.common.IFixtureEditHelper;
 				Pair.with(Direction.Nowhere, key(KeyEvent.VK_NUMPAD5)))
 			.collect(Collectors.toMap(Pair::getValue0, Pair::getValue1));
 		driverModel.addMovementCostListener(this::movementDeductionTracker);
-		JButton explorerChangeButton = new ListenedButton("Select a different explorer",
+		final JButton explorerChangeButton = new ListenedButton("Select a different explorer",
 			ignored -> explorerChangeButtonListener.run());
 
-		JLabel remainingMPLabel = new JLabel("Remaining Movement Points:");
-		JSpinner mpField = new JSpinner(mpModel);
+		final JLabel remainingMPLabel = new JLabel("Remaining Movement Points:");
+		final JSpinner mpField = new JSpinner(mpModel);
 		mpField.setMaximumSize(new Dimension(Short.MAX_VALUE,
 			(int) mpField.getPreferredSize().getHeight()));
 
-		JLabel speedLabel = new JLabel("Current relative speed:");
+		final JLabel speedLabel = new JLabel("Current relative speed:");
 
 		speedSource = () -> (Speed) speedModel.getSelectedItem();
-		ImprovedComboBox<Speed> speedBox = new ImprovedComboBox<>(speedModel);
+		final ImprovedComboBox<Speed> speedBox = new ImprovedComboBox<>(speedModel);
 
 		headerPanel.add(explorerChangeButton);
 		headerPanel.add(locLabel);
@@ -166,9 +166,9 @@ import worker.common.IFixtureEditHelper;
 		// about extra logic needed in the setter) to IExplorationModel
 		// (as IMap), to improve no-second-map to a-second-map
 		// transition
-		IMapNG secondMap = driverModel.streamSubordinateMaps().findFirst().orElseGet(driverModel::getMap);
+		final IMapNG secondMap = driverModel.streamSubordinateMaps().findFirst().orElseGet(driverModel::getMap);
 
-		IDRegistrar idf = new IDFactoryFiller().createIDFactory(
+		final IDRegistrar idf = new IDFactoryFiller().createIDFactory(
 			driverModel.streamAllMaps().toArray(IMapNG[]::new));
 		huntingModel = new HuntingModel(driverModel.getMap());
 
@@ -176,9 +176,9 @@ import worker.common.IFixtureEditHelper;
 
 		final IFixtureEditHelper feh = new FixtureEditHelper(driverModel);
 
-		for (Direction direction : Direction.values()) {
+		for (final Direction direction : Direction.values()) {
 			LOGGER.finer("ExplorationPanel: Starting to initialize for " + direction);
-			FixtureList mainList = new FixtureList(tilesPanel,
+			final FixtureList mainList = new FixtureList(tilesPanel,
 				new FixtureListModel(driverModel.getMap()::getFixtures,
 					driverModel.getMap()::getBaseTerrain,
 					driverModel.getMap()::getRivers, driverModel.getMap()::isMountainous,
@@ -189,12 +189,12 @@ import worker.common.IFixtureEditHelper;
 
 			LOGGER.finer("ExplorationPanel: main list set up for " + direction);
 
-			DualTileButton dtb = new DualTileButton(driverModel.getMap(), secondMap, matchers);
+			final DualTileButton dtb = new DualTileButton(driverModel.getMap(), secondMap, matchers);
 			// At some point we tried wrapping the button in a JScrollPane.
 			tilesPanel.add(dtb);
 			LOGGER.finer("ExplorationPanel: Added button for " + direction);
 
-			ExplorationClickListener ecl = new ExplorationClickListener(driverModel, this, this::movementDeductionTracker,
+			final ExplorationClickListener ecl = new ExplorationClickListener(driverModel, this, this::movementDeductionTracker,
 					direction, mainList);
 			if (Direction.Nowhere == direction) {
 				dtb.setComponentPopupMenu(ecl.getExplorerActionsMenu());
@@ -204,7 +204,7 @@ import worker.common.IFixtureEditHelper;
 					.filter(Objects::nonNull).toArray(KeyStroke[]::new));
 			dtb.addActionListener(ecl);
 
-			RandomDiscoverySelector ell = new RandomDiscoverySelector(driverModel,
+			final RandomDiscoverySelector ell = new RandomDiscoverySelector(driverModel,
 				mainList, speedSource);
 
 			// mainList.model.addListDataListener(ell);
@@ -213,7 +213,7 @@ import worker.common.IFixtureEditHelper;
 
 			LOGGER.finer("ExplorationPanel: ell set up for " + direction);
 
-			FixtureList secList = new FixtureList(tilesPanel,
+			final FixtureList secList = new FixtureList(tilesPanel,
 				new FixtureListModel(secondMap::getFixtures, secondMap::getBaseTerrain,
 					secondMap::getRivers, secondMap::isMountainous, this::createNull,
 					driverModel::setSubMapTerrain, driverModel::copyRiversToSubMaps,
@@ -225,7 +225,7 @@ import worker.common.IFixtureEditHelper;
 
 			LOGGER.finer("ExploratonPanel: Second list set up for " + direction);
 
-			SpeedChangeListener scl = new SpeedChangeListener(ell);
+			final SpeedChangeListener scl = new SpeedChangeListener(ell);
 			speedModel.addListDataListener(scl);
 			speedChangeListeners.put(direction, scl);
 
@@ -296,19 +296,19 @@ import worker.common.IFixtureEditHelper;
 			return;
 		}
 		LOGGER.finer("In ExplorationPanel.selectedPointChanged");
-		for (Direction direction : Direction.values()) {
+		for (final Direction direction : Direction.values()) {
 			LOGGER.finer("ExplorationPanel.selectedPointChanged: Beginning " + direction);
-			Point point = driverModel.getDestination(newPoint, direction);
-			@Nullable Point previous;
+			final Point point = driverModel.getDestination(newPoint, direction);
+			@Nullable final Point previous;
 			if (speedChangeListeners.containsKey(direction)) {
 				// TODO: Change SpeedChangeListener API so we can do this in one operation
-				SpeedChangeListener scl = speedChangeListeners.get(direction);
+				final SpeedChangeListener scl = speedChangeListeners.get(direction);
 				previous = scl.getPoint();
 				scl.setPoint(point);
 			} else {
 				previous = old;
 			}
-			Consumer<SelectionChangeListener> c = l -> l.selectedPointChanged(previous, point);
+			final Consumer<SelectionChangeListener> c = l -> l.selectedPointChanged(previous, point);
 			Optional.ofNullable(mains.get(direction)).ifPresent(c);
 			Optional.ofNullable(seconds.get(direction)).ifPresent(c);
 			Optional.ofNullable(buttons.get(direction)).ifPresent(b -> b.setPoint(point));
@@ -321,19 +321,19 @@ import worker.common.IFixtureEditHelper;
 
 	@Nullable
 	private AnimalTracks tracksCreator(final Point point) {
-		TileType terrain = driverModel.getMap().getBaseTerrain(point);
+		final TileType terrain = driverModel.getMap().getBaseTerrain(point);
 		if (terrain == null) {
 			return null;
 		}
 		LOGGER.finer("In ExplorationPanel.tracksCreator");
-		Function<Point, Iterable<Pair<Point, TileFixture>>> source;
+		final Function<Point, Iterable<Pair<Point, TileFixture>>> source;
 		if (TileType.Ocean == terrain) {
 			source = huntingModel::fish;
 		} else {
 			source = huntingModel::hunt;
 		}
 		LOGGER.finer("ExplorationPanel.tracksCreator: Determined which source to use");
-		TileFixture animal = source.apply(point).iterator().next().getValue1();
+		final TileFixture animal = source.apply(point).iterator().next().getValue1();
 		LOGGER.finer("ExplorationPanel.tracksCreator: Got first item from source");
 		if (animal instanceof Animal) {
 			return new AnimalTracks(((Animal) animal).getKind());
@@ -383,10 +383,10 @@ import worker.common.IFixtureEditHelper;
 		}
 
 		private List<TileFixture> getSelectedValuesList() {
-			int[] selections = mainList.getSelectedIndices();
-			ListModel<TileFixture> listModel = mainList.getModel();
-			List<TileFixture> retval = new ArrayList<>();
-			for (int index : selections) {
+			final int[] selections = mainList.getSelectedIndices();
+			final ListModel<TileFixture> listModel = mainList.getModel();
+			final List<TileFixture> retval = new ArrayList<>();
+			for (final int index : selections) {
 				retval.add(listModel.getElementAt(index < listModel.getSize() ?
 					index : listModel.getSize() - 1));
 			}
@@ -405,17 +405,17 @@ import worker.common.IFixtureEditHelper;
 		 * Copy fixtures from the given list to subordinate maps.
 		 */
 		private void discoverFixtures(final Iterable<TileFixture> fixtures) {
-			Point destPoint = driverModel.getSelectedUnitLocation();
-			Player player = Optional.ofNullable(driverModel.getSelectedUnit())
+			final Point destPoint = driverModel.getSelectedUnitLocation();
+			final Player player = Optional.ofNullable(driverModel.getSelectedUnit())
 				.map(IUnit::getOwner).orElse(new PlayerImpl(- 1, "no-one"));
 
 			driverModel.copyTerrainToSubMaps(destPoint);
-			for (TileFixture fixture : fixtures) {
+			for (final TileFixture fixture : fixtures) {
 				if (fixture instanceof FakeFixture) {
 					// Skip it! It'll corrupt the output XML!
 					continue;
 				} else {
-					boolean zero;
+					final boolean zero;
 					if (fixture instanceof HasOwner &&
 							(!player.equals(((HasOwner) fixture).getOwner()) ||
 								fixture instanceof Village)) {
@@ -434,7 +434,7 @@ import worker.common.IFixtureEditHelper;
 		 * 'nowhere' the listener now aborts its normal process.
 		 */
 		private void searchCurrentTile() {
-			List<TileFixture> fixtures = getSelectedValuesList();
+			final List<TileFixture> fixtures = getSelectedValuesList();
 			try {
 				driverModel.move(Direction.Nowhere, speedSource.get());
 			} catch (final TraversalImpossibleException except) {
@@ -454,7 +454,7 @@ import worker.common.IFixtureEditHelper;
 
 		private void actionPerformedImpl() {
 			try {
-				List<TileFixture> fixtures = getSelectedValuesList();
+				final List<TileFixture> fixtures = getSelectedValuesList();
 				if (Direction.Nowhere == direction) {
 					explorerActionsMenu.show(mainList, mainList.getWidth(), 0);
 				} else {
@@ -464,9 +464,9 @@ import worker.common.IFixtureEditHelper;
 			} catch (final TraversalImpossibleException except) {
 				LOGGER.log(Level.FINE, "Attempted movement to impassable destination",
 					except);
-				Point selection = driverModel.getSelectedUnitLocation();
+				final Point selection = driverModel.getSelectedUnitLocation();
 				outer.selectedPointChanged(null, selection);
-				for (SelectionChangeListener listener : selectionListeners) {
+				for (final SelectionChangeListener listener : selectionListeners) {
 					listener.selectedPointChanged(null, selection);
 				}
 				movementDeductionTracker.deduct(1);

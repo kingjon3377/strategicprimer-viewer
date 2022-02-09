@@ -37,7 +37,7 @@ abstract class AbstractDatabaseWriter<Item, Context> implements DatabaseWriter<I
 	public void initialize(final DB sql) {
 		if (!connections.contains(sql)) {
 			sql.transaction(db -> {
-				for (String initializer : getInitializers()) {
+				for (final String initializer : getInitializers()) {
 					db.script(initializer).execute();
 					log.fine("Executed initializer beginning " +
 						initializer.split("\\R")[0]);

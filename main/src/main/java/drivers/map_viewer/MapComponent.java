@@ -61,7 +61,7 @@ import java.awt.image.BufferedImage;
 
 	private final ComponentMouseListener cml;
 	private final DirectionSelectionChanger dsl;
-	private TileDrawHelper helper;
+	private TileDrawHelper helper; // TODO: Reinitialize if map version changes
 
 	@Nullable
 	private BufferedImage backgroundImage = null;
@@ -86,8 +86,8 @@ import java.awt.image.BufferedImage;
 		addMouseListener(cml);
 		addMouseWheelListener(dsl);
 
-		ActionMap localActionMap = getActionMap();
-		InputMap localInputMap = getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+		final ActionMap localActionMap = getActionMap();
+		final InputMap localInputMap = getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
 		ArrowListenerInitializer.setUpArrowListeners(dsl, localInputMap, localActionMap);
 		localInputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_T, 0), "show-terrain-menu");
 		localActionMap.put("show-terrain-menu", new AbstractAction() {
@@ -119,7 +119,7 @@ import java.awt.image.BufferedImage;
 
 	private Rectangle boundsCheck(@Nullable final Rectangle rect) {
 		if (rect == null) {
-			VisibleDimensions dimensions = mapModel.getVisibleDimensions();
+			final VisibleDimensions dimensions = mapModel.getVisibleDimensions();
 			return new Rectangle(0, 0, dimensions.getWidth() * getTileSize(),
 				dimensions.getHeight() * getTileSize());
 		} else {
@@ -128,29 +128,29 @@ import java.awt.image.BufferedImage;
 	}
 
 	private void fixVisibility() {
-		Point selectedPoint = mapModel.getSelection();
+		final Point selectedPoint = mapModel.getSelection();
 		final int selectedRow = Math.max(selectedPoint.getRow(), 0);
 		final int selectedColumn = Math.max(selectedPoint.getColumn(), 0);
-		VisibleDimensions visibleDimensions = mapModel.getVisibleDimensions();
+		final VisibleDimensions visibleDimensions = mapModel.getVisibleDimensions();
 		int minimumRow = visibleDimensions.getMinimumRow();
 		int maximumRow = visibleDimensions.getMaximumRow();
 		int minimumColumn = visibleDimensions.getMinimumColumn();
 		int maximumColumn = visibleDimensions.getMaximumColumn();
 		if (selectedRow < minimumRow) {
-			int difference = minimumRow - selectedRow;
+			final int difference = minimumRow - selectedRow;
 			minimumRow -= difference;
 			maximumRow -= difference;
 		} else if (selectedRow > maximumRow) {
-			int difference = selectedRow - maximumRow;
+			final int difference = selectedRow - maximumRow;
 			minimumRow += difference;
 			maximumRow += difference;
 		}
 		if (selectedColumn < minimumColumn) {
-			int difference = minimumColumn - selectedColumn;
+			final int difference = minimumColumn - selectedColumn;
 			minimumColumn -= difference;
 			maximumColumn -= difference;
 		} else if (selectedColumn > maximumColumn) {
-			int difference = selectedColumn - maximumColumn;
+			final int difference = selectedColumn - maximumColumn;
 			minimumColumn += difference;
 			maximumColumn += difference;
 		}
@@ -178,7 +178,7 @@ import java.awt.image.BufferedImage;
 			new Coordinate(column * tileSize, row * tileSize),
 			new Coordinate(tileSize, tileSize));
 		if (selected) {
-			Graphics context = pen.create();
+			final Graphics context = pen.create();
 			try {
 				context.setColor(Color.black);
 				context.drawRect((column * tileSize) + 1, (row * tileSize) + 1,
@@ -190,10 +190,10 @@ import java.awt.image.BufferedImage;
 	}
 
 	private boolean isSelectionVisible() {
-		Point selectedPoint = mapModel.getSelection();
-		int selectedRow = Math.max(selectedPoint.getRow(), 0);
-		int selectedColumn = Math.max(selectedPoint.getColumn(), 0);
-		VisibleDimensions visibleDimensions = mapModel.getVisibleDimensions();
+		final Point selectedPoint = mapModel.getSelection();
+		final int selectedRow = Math.max(selectedPoint.getRow(), 0);
+		final int selectedColumn = Math.max(selectedPoint.getColumn(), 0);
+		final VisibleDimensions visibleDimensions = mapModel.getVisibleDimensions();
 		return visibleDimensions.getRows().contains(selectedRow) &&
 			visibleDimensions.getColumns().contains(selectedColumn);
 	}
@@ -209,10 +209,10 @@ import java.awt.image.BufferedImage;
 	 * the point.
 	 */
 	private void repaintPoint(final Point point) {
-		VisibleDimensions visibleDimensions = mapModel.getVisibleDimensions();
-		int row = Math.max(point.getRow(), 0);
-		int column = Math.max(point.getColumn(), 0);
-		int tileSize = getTileSize();
+		final VisibleDimensions visibleDimensions = mapModel.getVisibleDimensions();
+		final int row = Math.max(point.getRow(), 0);
+		final int column = Math.max(point.getColumn(), 0);
+		final int tileSize = getTileSize();
 		if (visibleDimensions.getRows().contains(row) &&
 				visibleDimensions.getColumns().contains(column)) {
 			repaint((column - visibleDimensions.getMinimumColumn()) * tileSize,
@@ -241,21 +241,21 @@ import java.awt.image.BufferedImage;
 	public void mapChanged() {}
 
 	private void drawBackgroundImage(final Graphics context, final int tileSize) {
-		BufferedImage temp = backgroundImage;
+		final BufferedImage temp = backgroundImage;
 		if (temp == null) {
 			context.setColor(Color.white); // TODO: save and restore afterwards?
 			context.fillRect(0, 0, getWidth(), getHeight());
 		} else {
-			VisibleDimensions visibleDimensions = mapModel.getVisibleDimensions();
-			MapDimensions mapDimensions = mapModel.getMapDimensions();
-			double horizontalScaling = ((double) temp.getWidth()) / mapDimensions.getColumns();
-			double verticalScaling = ((double) temp.getHeight()) / mapDimensions.getRows();
-			int x = (int) (visibleDimensions.getMinimumColumn() * horizontalScaling);
-			int y = (int) (visibleDimensions.getMinimumRow() * verticalScaling);
-			int sliceWidth = (int) (visibleDimensions.getWidth() * horizontalScaling);
-			int sliceHeight = (int) (visibleDimensions.getHeight() * verticalScaling);
+			final VisibleDimensions visibleDimensions = mapModel.getVisibleDimensions();
+			final MapDimensions mapDimensions = mapModel.getMapDimensions();
+			final double horizontalScaling = ((double) temp.getWidth()) / mapDimensions.getColumns();
+			final double verticalScaling = ((double) temp.getHeight()) / mapDimensions.getRows();
+			final int x = (int) (visibleDimensions.getMinimumColumn() * horizontalScaling);
+			final int y = (int) (visibleDimensions.getMinimumRow() * verticalScaling);
+			final int sliceWidth = (int) (visibleDimensions.getWidth() * horizontalScaling);
+			final int sliceHeight = (int) (visibleDimensions.getHeight() * verticalScaling);
 			// FIXME: Cache this, regenerating when visible dimensions change, somehow
-			Image sliced = temp.getSubimage(Math.max(0, x), Math.max(0, y),
+			final Image sliced = temp.getSubimage(Math.max(0, x), Math.max(0, y),
 				Math.min(temp.getWidth() - x - 1, sliceWidth),
 				Math.min(temp.getHeight() - y - 1, sliceHeight));
 			context.drawImage(sliced, 0, 0, visibleDimensions.getWidth() * tileSize,
@@ -278,7 +278,7 @@ import java.awt.image.BufferedImage;
 				if ((j + minCol) >= (maxCol + 1)) { // TODO: combine with condition in loop
 					break;
 				}
-				Point location = new Point(i + minRow, j + minCol);
+				final Point location = new Point(i + minRow, j + minCol);
 				paintTile(context, tileSize, location, i, j,
 					mapModel.getSelection().equals(location));
 			}
@@ -288,12 +288,12 @@ import java.awt.image.BufferedImage;
 	@Override
 	public void paint(final Graphics pen) {
 		super.paint(pen);
-		Graphics context = pen.create();
+		final Graphics context = pen.create();
 		try {
 			context.setColor(Color.white);
 			context.fillRect(0, 0, getWidth(), getHeight());
-			Rectangle bounds = boundsCheck(context.getClipBounds());
-			MapDimensions mapDimensions = mapModel.getMapDimensions();
+			final Rectangle bounds = boundsCheck(context.getClipBounds());
+			final MapDimensions mapDimensions = mapModel.getMapDimensions();
 			final int tileSize = getTileSize();
 			drawBackgroundImage(context, tileSize);
 			// TODO: We used halfEven() around the division
@@ -348,16 +348,16 @@ import java.awt.image.BufferedImage;
 		@Override
 		public void componentResized(final ComponentEvent event) {
 			final int tileSize = tileSizeFactory.getAsInt();
-			int visibleColumns = outer.getWidth() / tileSize;
-			int visibleRows = outer.getHeight() / tileSize;
-			VisibleDimensions oldDimensions = mapModel.getVisibleDimensions();
-			MapDimensions mapDimensions = mapModel.getMapDimensions();
+			final int visibleColumns = outer.getWidth() / tileSize;
+			final int visibleRows = outer.getHeight() / tileSize;
+			final VisibleDimensions oldDimensions = mapModel.getVisibleDimensions();
+			final MapDimensions mapDimensions = mapModel.getMapDimensions();
 			if (visibleColumns != oldDimensions.getWidth() ||
 					visibleRows != oldDimensions.getHeight()) {
-				Pair<Integer, Integer> constrainedRows =
+				final Pair<Integer, Integer> constrainedRows =
 					constrain(mapDimensions.getRows(), visibleRows,
 						oldDimensions.getMinimumRow());
-				Pair<Integer, Integer> constrainedCols =
+				final Pair<Integer, Integer> constrainedCols =
 					constrain(mapDimensions.getColumns(), visibleColumns,
 						oldDimensions.getMinimumColumn());
 				mapModel.setVisibleDimensions(new VisibleDimensions(
@@ -376,8 +376,8 @@ import java.awt.image.BufferedImage;
 
 	@Override
 	public void tileSizeChanged(final int olSize, final int newSize) {
-		ComponentEvent event = new ComponentEvent(this, ComponentEvent.COMPONENT_RESIZED);
-		for (ComponentListener listener : getComponentListeners()) {
+		final ComponentEvent event = new ComponentEvent(this, ComponentEvent.COMPONENT_RESIZED);
+		for (final ComponentListener listener : getComponentListeners()) {
 			listener.componentResized(event);
 		}
 		repaint();

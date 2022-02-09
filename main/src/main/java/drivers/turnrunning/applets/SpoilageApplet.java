@@ -67,7 +67,7 @@ public class SpoilageApplet extends AbstractTurnApplet {
 	@Override
 	public String run() {
 		final StringBuilder buffer = new StringBuilder();
-		for (IResourcePile food : getFoodFor(owner, turn)) {
+		for (final IResourcePile food : getFoodFor(owner, turn)) {
 			if (turn < 0) { // rations whose spoilage isn't tracked
 				continue;
 			}
@@ -83,7 +83,7 @@ public class SpoilageApplet extends AbstractTurnApplet {
 				LOGGER.warning("EOF on has-this-spoiled");
 				return null;
 			} else if (spoiled) {
-				BigDecimal spoilage = type.amountSpoiling(food.getQuantity(), cli);
+				final BigDecimal spoilage = type.amountSpoiling(food.getQuantity(), cli);
 				if (spoilage == null) {
 					LOGGER.warning("Non-numeric spoilage amount");
 					return null;

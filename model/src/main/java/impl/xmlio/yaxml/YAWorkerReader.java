@@ -50,7 +50,7 @@ import impl.xmlio.exceptions.UnwantedChildException;
 			closeLeafTag(ostream);
 		} else {
 			finishParentTag(ostream);
-			for (ISkill skill : obj) {
+			for (final ISkill skill : obj) {
 				writeSkill(ostream, skill, indent + 1);
 			}
 			closeTag(ostream, indent, "job");
@@ -83,8 +83,8 @@ import impl.xmlio.exceptions.UnwantedChildException;
 			throws SPFormatException {
 		requireTag(element, parent, "stats");
 		expectAttributes(element, "hp", "max", "str", "dex", "con", "int", "wis", "cha");
-		ReadToIntFunction<String> inner = attr -> getIntegerParameter(element, attr);
-		WorkerStats retval = new WorkerStats(inner.apply("hp"), inner.apply("max"),
+		final ReadToIntFunction<String> inner = attr -> getIntegerParameter(element, attr);
+		final WorkerStats retval = new WorkerStats(inner.apply("hp"), inner.apply("max"),
 			inner.apply("str"), inner.apply("dex"), inner.apply("con"), inner.apply("int"),
 			inner.apply("wis"), inner.apply("cha"));
 		spinUntilEnd(element.getName(), stream);
@@ -103,8 +103,8 @@ import impl.xmlio.exceptions.UnwantedChildException;
 			throws SPFormatException {
 		requireTag(element, parent, "note");
 		expectAttributes(element, "player");
-		StringBuilder retval = new StringBuilder();
-		for (XMLEvent event : stream) {
+		final StringBuilder retval = new StringBuilder();
+		for (final XMLEvent event : stream) {
 			if (event instanceof StartElement &&
 					isSupportedNamespace(((StartElement) event).getName())) {
 				throw new UnwantedChildException(element.getName(), (StartElement) event);
@@ -121,9 +121,9 @@ import impl.xmlio.exceptions.UnwantedChildException;
 			throws SPFormatException {
 		requireTag(element, parent, "job");
 		expectAttributes(element, "name", "level");
-		IMutableJob retval = new Job(getParameter(element, "name"),
+		final IMutableJob retval = new Job(getParameter(element, "name"),
 			getIntegerParameter(element, "level"));
-		for (XMLEvent event : stream) {
+		for (final XMLEvent event : stream) {
 			if (event instanceof StartElement &&
 					isSupportedNamespace(((StartElement) event).getName())) {
 				if ("skill".equalsIgnoreCase(((StartElement) event)
@@ -163,11 +163,11 @@ import impl.xmlio.exceptions.UnwantedChildException;
 			throws SPFormatException {
 		requireTag(element, parent, "worker");
 		expectAttributes(element, "name", "race", "image", "portrait", "id");
-		Worker retval = new Worker(getParameter(element, "name"),
+		final Worker retval = new Worker(getParameter(element, "name"),
 			getParameter(element, "race", "human"), getOrGenerateID(element));
 		retval.setImage(getParameter(element, "image", ""));
 		retval.setPortrait(getParameter(element, "portrait", ""));
-		for (XMLEvent event : stream) {
+		for (final XMLEvent event : stream) {
 			if (event instanceof StartElement &&
 					isSupportedNamespace(((StartElement) event).getName())) {
 				if ("job".equalsIgnoreCase(((StartElement) event).getName().getLocalPart())) {
@@ -208,10 +208,10 @@ import impl.xmlio.exceptions.UnwantedChildException;
 				obj.getNotesPlayers().iterator().hasNext()) {
 			finishParentTag(ostream);
 			writeStats(ostream, obj.getStats(), indent + 1);
-			for (IJob job : obj) {
+			for (final IJob job : obj) {
 				writeJob(ostream, job, indent + 1);
 			}
-			for (Integer player : obj.getNotesPlayers()) {
+			for (final Integer player : obj.getNotesPlayers()) {
 				writeNote(ostream, player, obj.getNote(player), indent + 1);
 			}
 			closeTag(ostream, indent, "worker");

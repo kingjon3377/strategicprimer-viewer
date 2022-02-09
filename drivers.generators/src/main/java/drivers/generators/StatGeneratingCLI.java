@@ -79,11 +79,11 @@ import common.map.fixtures.towns.Village;
 	 */
 	@Nullable
 	private static IFixture findInIterable(final Integer id, final IFixture... fixtures) {
-		for (IFixture fixture : fixtures) {
+		for (final IFixture fixture : fixtures) {
 			if (fixture.getId() == id) {
 				return fixture;
 			} else if (fixture instanceof FixtureIterable) {
-				IFixture result = findInIterable(id,
+				final IFixture result = findInIterable(id,
 						((FixtureIterable<?>) fixture).stream().toArray(IFixture[]::new));
 				if (result != null) {
 					return result;
@@ -100,7 +100,7 @@ import common.map.fixtures.towns.Village;
 		int lowest = Integer.MAX_VALUE;
 		int index = -1;
 		int i = 0;
-		for (int num : array) {
+		for (final int num : array) {
 			if (num < lowest) {
 				index = i;
 				lowest = num;
@@ -155,7 +155,7 @@ import common.map.fixtures.towns.Village;
 	 */
 	private void enterWorkerJobs(final IUnit unit, final IWorker worker, final int levels) {
 		for (int i = 0; i < levels; i++) {
-			String jobName = cli.inputString("Which Job does worker have a level in? ");
+			final String jobName = cli.inputString("Which Job does worker have a level in? ");
 			if (jobName == null) {
 				break;
 			} else if (!model.addJobLevel(unit, worker, jobName)) {
@@ -177,7 +177,7 @@ import common.map.fixtures.towns.Village;
 		if (excludedVillages.containsKey(village)) {
 			return excludedVillages.get(village);
 		} else {
-			Boolean retval = cli.inputBoolean(String.format(
+			final Boolean retval = cli.inputBoolean(String.format(
 				"Has a newcomer come from %s in the last 7 turns?", village.getName()));
 			excludedVillages.put(village, retval);
 			return retval;
@@ -197,15 +197,15 @@ import common.map.fixtures.towns.Village;
 			return racialBonuses.get(race);
 		}
 		try {
-			Iterable<String> textContent = FileContentsReader
+			final Iterable<String> textContent = FileContentsReader
 				.readFileContents(WorkerStats.class,
 					String.format("racial_stat_adjustments/%s.txt", race));
-			List<Integer> parsed = new ArrayList<>();
-			for (String line : textContent) {
+			final List<Integer> parsed = new ArrayList<>();
+			for (final String line : textContent) {
 				parsed.add(Integer.parseInt(line.trim()));
 			}
-			Integer[] temp = parsed.toArray(new Integer[0]);
-			WorkerStats retval = WorkerStats.factory(temp[0], temp[1], temp[2], temp[3],
+			final Integer[] temp = parsed.toArray(new Integer[0]);
+			final WorkerStats retval = WorkerStats.factory(temp[0], temp[1], temp[2], temp[3],
 				temp[4], temp[5]);
 			racialBonuses.put(race, retval);
 			return retval;
@@ -227,15 +227,15 @@ import common.map.fixtures.towns.Village;
 	 * Create randomly-generated stats for a worker, with racial adjustments applied.
 	 */
 	private WorkerStats createWorkerStats(final String race, final int levels) {
-		WorkerStats base = WorkerStats.random(StatGeneratingCLI::threeDeeSix);
-		int lowestScore = getMinIndex(base.array());
-		WorkerStats racialBonus;
+		final WorkerStats base = WorkerStats.random(StatGeneratingCLI::threeDeeSix);
+		final int lowestScore = getMinIndex(base.array());
+		final WorkerStats racialBonus;
 		if ("human".equals(race)) {
-			int bonusStat;
+			final int bonusStat;
 			if (alwaysLowest) {
 				bonusStat = lowestScore;
 			} else {
-				int chosenBonus = cli.chooseStringFromList(Arrays.asList("Strength",
+				final int chosenBonus = cli.chooseStringFromList(Arrays.asList("Strength",
 					"Dexterity", "Constitution", "Intelligence", "Wisdom", "Charisma",
 					"Lowest", "Always Choose Lowest"), String.format(
 						"Character is a %s; which stat should get a +2 bonus?", race),
@@ -285,15 +285,15 @@ import common.map.fixtures.towns.Village;
 	 * Generate a worker with race and Job levels based on the population of the given village.
 	 */
 	private Worker generateWorkerFrom(final Village village, final String name, final IDRegistrar idf) {
-		Worker worker = new Worker(name, village.getRace(), idf.createID());
+		final Worker worker = new Worker(name, village.getRace(), idf.createID());
 		worker.setNote(village.getOwner(), String.format("From %s.", village.getName()));
 		if (village.getPopulation() != null) {
-			List<IJob> candidates = new ArrayList<>();
-			for (Map.Entry<String, Integer> entry :
+			final List<IJob> candidates = new ArrayList<>();
+			for (final Map.Entry<String, Integer> entry :
 					village.getPopulation().getHighestSkillLevels().entrySet()) {
-				String job = entry.getKey();
-				int level = entry.getValue();
-				IntConsumer addCandidate = (lvl) -> candidates.add(new Job(job, lvl));
+				final String job = entry.getKey();
+				final int level = entry.getValue();
+				final IntConsumer addCandidate = (lvl) -> candidates.add(new Job(job, lvl));
 				if (level > 16) {
 					addCandidate.accept(level - 3);
 					addCandidate.accept(level - 4);
@@ -329,12 +329,12 @@ import common.map.fixtures.towns.Village;
 			if (candidates.isEmpty()) {
 				cli.println(String.format("No training available in %s.",
 					village.getName()));
-				WorkerStats stats = createWorkerStats(village.getRace(), 0);
+				final WorkerStats stats = createWorkerStats(village.getRace(), 0);
 				worker.setStats(stats);
 				cli.println(String.format("%s is a %s from %s. Stats:", name,
 					village.getRace(), village.getName()));
 				// TODO: Extract helper method for printing stat array
-				int[] statArray = stats.array();
+				final int[] statArray = stats.array();
 				for (int i = 0; i < 6; i++) {
 					if ((i == statLabelArray.size() - 1) ||
 							(i == statArray.length - 1)) {
@@ -348,16 +348,16 @@ import common.map.fixtures.towns.Village;
 				return worker;
 			} else {
 				Collections.shuffle(candidates);
-				IJob training = candidates.get(0);
+				final IJob training = candidates.get(0);
 				while (true) {
 					worker.addJob(training);
-					WorkerStats stats = createWorkerStats(village.getRace(),
+					final WorkerStats stats = createWorkerStats(village.getRace(),
 						training.getLevel());
 					cli.println(String.format(
 						"%s, a %s, is a level-%d %s from %s. Proposed stats:",
 						name, village.getRace(), training.getLevel(),
 						training.getName(), village.getName()));
-					int[] statArray = stats.array();
+					final int[] statArray = stats.array();
 					for (int i = 0; i < 6; i++) {
 						if ((i == statLabelArray.size() - 1) ||
 								(i == statArray.length - 1)) {
@@ -368,7 +368,7 @@ import common.map.fixtures.towns.Village;
 								WorkerStats.getModifierString(statArray[i])));
 						}
 					}
-					boolean acceptance = cli.inputBoolean( // TODO: handle EOF
+					final boolean acceptance = cli.inputBoolean( // TODO: handle EOF
 						"Do those stats fit that profile?");
 					if (acceptance) {
 						worker.setStats(stats);
@@ -378,11 +378,11 @@ import common.map.fixtures.towns.Village;
 			}
 		} else {
 			cli.println("No population details, so no levels.");
-			WorkerStats stats = createWorkerStats(village.getRace(), 0);
+			final WorkerStats stats = createWorkerStats(village.getRace(), 0);
 			worker.setStats(stats);
 			cli.println(String.format("%s is a %s from %s. Stats:", name, village.getRace(),
 				village.getName()));
-			int[] statArray = stats.array();
+			final int[] statArray = stats.array();
 			for (int i = 0; i < 6; i++) {
 				if ((i == statLabelArray.size() - 1) ||
 						(i == statArray.length - 1)) {
@@ -401,23 +401,23 @@ import common.map.fixtures.towns.Village;
 	 * Let the user create randomly-generated workers in a specific unit.
 	 */
 	private void createWorkersForUnit(final IDRegistrar idf, final IUnit unit) {
-		int count = Optional.ofNullable(cli.inputNumber("How many workers to generate? ")).orElse(0);
+		final int count = Optional.ofNullable(cli.inputNumber("How many workers to generate? ")).orElse(0);
 		for (int i = 0; i < count; i++) {
-			String race = RaceFactory.randomRace();
-			Worker worker;
-			String name = cli.inputString(String.format("Work is a %s. Worker name: ", race));
+			final String race = RaceFactory.randomRace();
+			final Worker worker;
+			final String name = cli.inputString(String.format("Work is a %s. Worker name: ", race));
 			if (name == null) {
 				break;
 			}
 			worker = new Worker(name, race, idf.createID());
-			int levels = (int) SingletonRandom.SINGLETON_RANDOM.ints().filter(n -> n < 20)
+			final int levels = (int) SingletonRandom.SINGLETON_RANDOM.ints().filter(n -> n < 20)
 				.limit(3).filter(n -> n == 0).count();
 			if (levels == 1) {
 				cli.println("Worker has 1 Job level.");
 			} else if (levels > 1) {
 				cli.println(String.format("Worker has %d Job levels.", levels));
 			}
-			WorkerStats stats = createWorkerStats(race, levels);
+			final WorkerStats stats = createWorkerStats(race, levels);
 			worker.setStats(stats);
 			if (levels > 0) {
 				cli.println("Generated stats:");
@@ -432,9 +432,9 @@ import common.map.fixtures.towns.Village;
 	 * Let the user create randomly-generated workers, with names read from file, in a unit.
 	 */
 	private void createWorkersFromFile(final IDRegistrar idf, final IUnit unit) throws IOException {
-		int count = Optional.ofNullable(cli.inputNumber("How many workers to generate? ")).orElse(0);
-		Deque<String> names;
-		String filename = cli.inputString("Filename to load names from: ");
+		final int count = Optional.ofNullable(cli.inputNumber("How many workers to generate? ")).orElse(0);
+		final Deque<String> names;
+		final String filename = cli.inputString("Filename to load names from: ");
 		if (filename == null) {
 			return;
 		} else if (Files.exists(Paths.get(filename))) {
@@ -443,8 +443,8 @@ import common.map.fixtures.towns.Village;
 			names = new LinkedList<>();
 			cli.println("No such file.");
 		}
-		Point hqLoc;
-		Optional<Point> found = model.getMap().streamLocations()
+		final Point hqLoc;
+		final Optional<Point> found = model.getMap().streamLocations()
 				.flatMap(l -> model.getMap().getFixtures(l).stream()
 					.map(f -> Pair.with(l, f)))
 				.filter(pair -> pair.getValue1().getId() == unit.getId()) // TODO: look in forts too
@@ -453,18 +453,18 @@ import common.map.fixtures.towns.Village;
 			hqLoc = found.get();
 		} else {
 			cli.println("That unit's location not found in main map.");
-			Point point = cli.inputPoint("Location to use for village distances:");
+			final Point point = cli.inputPoint("Location to use for village distances:");
 			if (point == null) {
 				return;
 			} else {
 				hqLoc = point;
 			}
 		}
-		Pathfinder pather = PathfinderFactory.pathfinder(model.getMap());
-		Function<Point, Pair<Integer, Double>> travelDistance =
+		final Pathfinder pather = PathfinderFactory.pathfinder(model.getMap());
+		final Function<Point, Pair<Integer, Double>> travelDistance =
 			(dest) -> Pair.with(pather.getTravelDistance(hqLoc, dest).getValue0(),
 				model.getMapDimensions().distance(hqLoc, dest));
-		List<Triplet<Integer, Double, Village>> villages = model.getMap().streamLocations()
+		final List<Triplet<Integer, Double, Village>> villages = model.getMap().streamLocations()
 				.flatMap(l -> model.getMap().getFixtures(l).stream()
 					.filter(Village.class::isInstance).map(Village.class::cast)
 					.filter(v -> v.getOwner().equals(unit.getOwner()))
@@ -472,14 +472,14 @@ import common.map.fixtures.towns.Village;
 				.map(p -> travelDistance.apply(p.getValue0()).addAt2(p.getValue1()))
 				.sorted(Comparator.comparingInt(Triplet::getValue0))
 				.collect(Collectors.toList());
-		int mpPerDay = Optional.ofNullable(cli.inputNumber("MP per day for village volunteers:"))
+		final int mpPerDay = Optional.ofNullable(cli.inputNumber("MP per day for village volunteers:"))
 			.orElse(-1);
 		for (int i = 0; i < count; i++) {
-			String name;
+			final String name;
 			if (!names.isEmpty()) {
 				name = names.removeFirst().trim();
 			} else {
-				String temp = cli.inputString("Next worker name: ");
+				final String temp = cli.inputString("Next worker name: ");
 				if (temp == null) {
 					break;
 				} else {
@@ -487,10 +487,10 @@ import common.map.fixtures.towns.Village;
 				}
 			}
 			Village home = null;
-			for (Triplet<Integer, Double, Village> triplet : villages) {
-				int mpDistance = triplet.getValue0();
-				double tileDistance = triplet.getValue1();
-				Village village = triplet.getValue2();
+			for (final Triplet<Integer, Double, Village> triplet : villages) {
+				final int mpDistance = triplet.getValue0();
+				final double tileDistance = triplet.getValue1();
+				final Village village = triplet.getValue2();
 				if (hasLeviedRecently(village)) {
 					continue;
 				} else if (SingletonRandom.SINGLETON_RANDOM.nextDouble() <
@@ -501,12 +501,12 @@ import common.map.fixtures.towns.Village;
 					break;
 				}
 			}
-			Worker worker;
+			final Worker worker;
 			if (home == null) {
-				String race = RaceFactory.randomRace();
+				final String race = RaceFactory.randomRace();
 				cli.println(String.format("Worker %s is a %s", name, race));
 				worker = new Worker(name, race, idf.createID());
-				int levels = (int) SingletonRandom.SINGLETON_RANDOM.ints()
+				final int levels = (int) SingletonRandom.SINGLETON_RANDOM.ints()
 					.filter(n -> n < 20).limit(3).filter(n -> n == 0)
 					.count();
 				if (levels == 1) {
@@ -514,7 +514,7 @@ import common.map.fixtures.towns.Village;
 				} else if (levels>1) {
 					cli.println(String.format("Worker has %d Job levels.", levels));
 				}
-				WorkerStats stats = createWorkerStats(race, levels);
+				final WorkerStats stats = createWorkerStats(race, levels);
 				worker.setStats(stats);
 				if (levels>0) {
 					cli.println("Generated stats:");
@@ -523,7 +523,7 @@ import common.map.fixtures.towns.Village;
 				model.addWorkerToUnit(unit, worker);
 				enterWorkerJobs(unit, worker, levels);
 				cli.println(String.format("%s is a %s. Stats:", name, race));
-				int[] statArray = stats.array();
+				final int[] statArray = stats.array();
 				for (int j = 0; j < statLabelArray.size() && j < statArray.length; j++) {
 					if (j == statLabelArray.size() - 1 || j == statArray.length - 1) {
 						cli.println(String.format("%s %s", statLabelArray.get(j),
@@ -545,23 +545,23 @@ import common.map.fixtures.towns.Village;
 	 * particular player.
 	 */
 	private void createWorkersForPlayer(final IDRegistrar idf, final Player player) throws IOException {
-		List<IUnit> units = StreamSupport.stream(
+		final List<IUnit> units = StreamSupport.stream(
 				model.getUnits(player).spliterator(), false).collect(Collectors.toList());
 		while (true) {
-			Pair<Integer, @Nullable IUnit> chosen = cli.chooseFromList(units,
+			final Pair<Integer, @Nullable IUnit> chosen = cli.chooseFromList(units,
 				"Which unit contains the worker in question? (Select -1 to create new.)",
 				"There are no units owned by that player.", "Unit selection: ", false);
-			IUnit item;
+			final IUnit item;
 			if (chosen.getValue1() != null) {
 				item = chosen.getValue1();
 			} else if (chosen.getValue0() <= units.size()) {
-				Point point = cli.inputPoint("Where to put new unit? ");
-				String kind = point == null ? null : cli.inputString("Kind of unit: ");
-				String name = kind == null ? null : cli.inputString("Unit name: ");
+				final Point point = cli.inputPoint("Where to put new unit? ");
+				final String kind = point == null ? null : cli.inputString("Kind of unit: ");
+				final String name = kind == null ? null : cli.inputString("Unit name: ");
 				if (point == null || kind == null || name == null) {
 					return;
 				} else {
-					IUnit temp = new Unit(player, kind, name, idf.createID());
+					final IUnit temp = new Unit(player, kind, name, idf.createID());
 					model.addUnitAtLocation(temp, point);
 					units.add(temp);
 					item = temp;
@@ -569,7 +569,7 @@ import common.map.fixtures.towns.Village;
 			} else {
 				break;
 			}
-			Boolean load = cli.inputBooleanInSeries(
+			final Boolean load = cli.inputBooleanInSeries(
 				"Load names from file and use randomly generated stats?");
 			if (load == null) {
 				return;
@@ -587,13 +587,13 @@ import common.map.fixtures.towns.Village;
 
 	@Override
 	public void startDriver() throws DriverFailedException {
-		IDRegistrar idf = new IDFactoryFiller().createIDFactory(
+		final IDRegistrar idf = new IDFactoryFiller().createIDFactory(
 			model.streamAllMaps().toArray(IMapNG[]::new));
 		// TODO: Make getPlayerChoices() return Collection
-		List<Player> players = StreamSupport.stream(
+		final List<Player> players = StreamSupport.stream(
 				model.getPlayerChoices().spliterator(), false).collect(Collectors.toList());
 		while (!players.isEmpty()) {
-			Player chosen = cli.chooseFromList(players, "Which player owns the new worker(s)?",
+			final Player chosen = cli.chooseFromList(players, "Which player owns the new worker(s)?",
 				"There are no players shared by all the maps.", "Player selection: ",
 				false).getValue1();
 			if (chosen == null) {
@@ -606,7 +606,7 @@ import common.map.fixtures.towns.Village;
 				} catch (final IOException except) {
 					throw new DriverFailedException(except, "I/O error");
 				}
-				Boolean continuation = cli.inputBoolean("Add more workers to another unit?");
+				final Boolean continuation = cli.inputBoolean("Add more workers to another unit?");
 				if (continuation == null) {
 					return;
 				} else if (!continuation) {

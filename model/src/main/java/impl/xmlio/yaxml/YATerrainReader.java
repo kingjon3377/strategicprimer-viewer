@@ -45,11 +45,11 @@ import java.util.Set;
 			throws SPFormatException {
 		// TODO: Provide requireTag() taking Iterable so we don't have to convert to array
 		requireTag(element, parent, supportedTags.toArray(new String[0]));
-		TerrainFixture retval;
+		final TerrainFixture retval;
 		switch (element.getName().getLocalPart().toLowerCase()) {
 		case "forest":
 			expectAttributes(element, "id", "image", "kind", "rows", "acres");
-			int id = getIntegerParameter(element, "id", -1);
+			final int id = getIntegerParameter(element, "id", -1);
 			if (id >= 0) {
 				registerID(id, element.getLocation());
 			}

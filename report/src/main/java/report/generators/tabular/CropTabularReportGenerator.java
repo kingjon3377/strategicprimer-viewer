@@ -92,12 +92,12 @@ public class CropTabularReportGenerator implements ITableGenerator</*Forest|Shru
 			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
 			/*Forest|Shrub|Meadow|Grove*/ final TileFixture item, final int key, final Point loc,
 			final Map<Integer, Integer> parentMap) {
-		String kind;
-		String cultivation;
-		String status;
-		String size;
-		String sizeUnit;
-		String crop = ((HasKind) item).getKind();
+		final String kind;
+		final String cultivation;
+		final String status;
+		final String size;
+		final String sizeUnit;
+		final String crop = ((HasKind) item).getKind();
 		if (item instanceof Forest) {
 			kind = (((Forest) item).isRows()) ? "rows" : "forest";
 			cultivation = "---";

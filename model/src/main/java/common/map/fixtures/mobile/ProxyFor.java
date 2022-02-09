@@ -28,8 +28,8 @@ public interface ProxyFor<Type> /* implements Type */ {
 	@Nullable
 	default <MemberType> MemberType getConsensus(final Function<Type, MemberType> accessor) {
 		@Nullable MemberType retval = null;
-		for (Type proxied : getProxied()) {
-			MemberType item = accessor.apply(proxied);
+		for (final Type proxied : getProxied()) {
+			final MemberType item = accessor.apply(proxied);
 			if (retval != null) {
 				if (!retval.equals(item)) {
 					return null;

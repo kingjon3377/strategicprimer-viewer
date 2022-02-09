@@ -61,20 +61,20 @@ public class UnitReportGenerator extends AbstractReportGenerator<IUnit> {
 	private void produceOrders(final IUnit item, final Consumer<String> formatter) {
 		if (!item.getAllOrders().isEmpty() || !item.getAllResults().isEmpty()) {
 			println(formatter, "Orders and Results:<ul>");
-			for (int turn : Stream.concat(item.getAllOrders().keySet().stream(),
+			for (final int turn : Stream.concat(item.getAllOrders().keySet().stream(),
 							item.getAllResults().keySet().stream())
 						.mapToInt(Integer::intValue).sorted()
 						.distinct().toArray()) {
 				formatter.accept("<li>Turn ");
 				formatter.accept(Integer.toString(turn));
 				println(formatter, ":<ul>");
-				String orders = item.getOrders(turn);
+				final String orders = item.getOrders(turn);
 				if (!orders.isEmpty()) {
 					formatter.accept("<li>Orders: ");
 					formatter.accept(orders);
 					println(formatter, "</li>");
 				}
-				String results = item.getResults(turn);
+				final String results = item.getResults(turn);
 				if (!results.isEmpty()) {
 					formatter.accept("<li>Results: ");
 					formatter.accept(results);
@@ -88,7 +88,7 @@ public class UnitReportGenerator extends AbstractReportGenerator<IUnit> {
 	}
 
 	private static <T> @Nullable T findAndRemoveFirst(final List<T> list, final Predicate<T> predicate) {
-		for (T item : list) {
+		for (final T item : list) {
 			if (predicate.test(item)) {
 				list.remove(item);
 				return item;
@@ -106,7 +106,7 @@ public class UnitReportGenerator extends AbstractReportGenerator<IUnit> {
 			ostream.accept(heading);
 			println(ostream, ":");
 			println(ostream, "<ul>");
-			for (Member member : collection) {
+			for (final Member member : collection) {
 				ostream.accept("<li>");
 				generator.accept(member);
 				println(ostream, "</li>");
@@ -138,24 +138,24 @@ public class UnitReportGenerator extends AbstractReportGenerator<IUnit> {
 			ostream.accept(item.getOwner().toString());
 		}
 		if (!item.isEmpty()) {
-			List<IWorker> workers = new ArrayList<>();
-			List<Implement> equipment = new ArrayList<>();
-			Map<String, List<IResourcePile>> resources = new HashMap<>();
-			List<Animal> animals = new ArrayList<>();
-			List<UnitMember> others = new ArrayList<>();
-			for (UnitMember member : item) {
+			final List<IWorker> workers = new ArrayList<>();
+			final List<Implement> equipment = new ArrayList<>();
+			final Map<String, List<IResourcePile>> resources = new HashMap<>();
+			final List<Animal> animals = new ArrayList<>();
+			final List<UnitMember> others = new ArrayList<>();
+			for (final UnitMember member : item) {
 				if (member instanceof IWorker) {
 					workers.add((IWorker) member);
 				} else if (member instanceof Implement) {
 					equipment.add((Implement) member);
 				} else if (member instanceof IResourcePile) {
-					List<IResourcePile> list = Optional.ofNullable(
+					final List<IResourcePile> list = Optional.ofNullable(
 							resources.get(((IResourcePile) member).getKind()))
 						.orElseGet(ArrayList::new);
 					list.add((IResourcePile) member);
 					resources.put(((IResourcePile) member).getKind(), list);
 				} else if (member instanceof Animal) {
-					Animal existing = findAndRemoveFirst(animals,
+					final Animal existing = findAndRemoveFirst(animals,
 						((Animal) member)::equalExceptPopulation);
 					if (existing == null) {
 						animals.add((Animal) member);
@@ -168,7 +168,7 @@ public class UnitReportGenerator extends AbstractReportGenerator<IUnit> {
 			}
 			println(ostream, ". Members of the unit:");
 			println(ostream, "<ul>");
-			IReportGenerator<IWorker> workerReportGenerator;
+			final IReportGenerator<IWorker> workerReportGenerator;
 			if (item.getOwner().equals(currentPlayer)) {
 				workerReportGenerator = ourWorkerReportGenerator;
 			} else {
@@ -184,7 +184,7 @@ public class UnitReportGenerator extends AbstractReportGenerator<IUnit> {
 			if (!resources.isEmpty()) {
 				println(ostream, "<li>Resources:");
 				println(ostream, "<ul>");
-				for (Map.Entry<String, List<IResourcePile>> entry : resources.entrySet()) {
+				for (final Map.Entry<String, List<IResourcePile>> entry : resources.entrySet()) {
 					produceInner(fixtures, ostream, entry.getKey(), entry.getValue(),
 						(IResourcePile member) ->
 							memberReportGenerator.produceSingle(fixtures, map,
@@ -215,15 +215,15 @@ public class UnitReportGenerator extends AbstractReportGenerator<IUnit> {
 	@Override
 	public void produce(final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
 	                    final IMapNG map, final Consumer<String> ostream) {
-		HeadedMap<IUnit, Point> foreign = new HeadedMapImpl<>("<h5>Foreign Units</h5>");
-		HeadedMap<IUnit, Point> ours = new HeadedMapImpl<>("<h5>Your units</h5>");
-		for (Pair<Point, IUnit> pair : fixtures.values().stream()
+		final HeadedMap<IUnit, Point> foreign = new HeadedMapImpl<>("<h5>Foreign Units</h5>");
+		final HeadedMap<IUnit, Point> ours = new HeadedMapImpl<>("<h5>Your units</h5>");
+		for (final Pair<Point, IUnit> pair : fixtures.values().stream()
 				.filter(p -> p.getValue1() instanceof IUnit)
 				.sorted(pairComparator)
 				.map(p -> Pair.with(p.getValue0(), (IUnit) p.getValue1()))
 				.collect(Collectors.toList())) {
-			IUnit unit = pair.getValue1();
-			Point loc = pair.getValue0();
+			final IUnit unit = pair.getValue1();
+			final Point loc = pair.getValue0();
 			if (currentPlayer.equals(unit.getOwner())) {
 				ours.put(unit, loc);
 			} else {

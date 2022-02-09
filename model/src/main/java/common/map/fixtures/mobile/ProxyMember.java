@@ -31,8 +31,8 @@ class ProxyMember implements UnitMemberProxy<UnitMember> {
 
 	@Override
 	public ProxyMember copy(final boolean zero) {
-		ProxyMember retval = new ProxyMember();
-		for (UnitMember member : proxiedMembers) {
+		final ProxyMember retval = new ProxyMember();
+		for (final UnitMember member : proxiedMembers) {
 			retval.addProxied(member.copy(zero));
 		}
 		return retval;
@@ -69,7 +69,7 @@ class ProxyMember implements UnitMemberProxy<UnitMember> {
 		if (proxiedMembers.isEmpty()) {
 			return "a proxy for no unit members";
 		}
-		String retval = getConsensus(UnitMember::toString);
+		final String retval = getConsensus(UnitMember::toString);
 		if (retval == null) {
 			return "a proxy for a variety of unit members";
 		} else {
@@ -83,13 +83,13 @@ class ProxyMember implements UnitMemberProxy<UnitMember> {
 	 */
 	@Override
 	public int getId() {
-		Integer retval = getConsensus(UnitMember::getId);
+		final Integer retval = getConsensus(UnitMember::getId);
 		return (retval == null) ? -1 : retval;
 	}
 
 	@Override
 	public String getPlural() {
-		String retval = getConsensus(UnitMember::getPlural);
+		final String retval = getConsensus(UnitMember::getPlural);
 		return (retval == null) ? "Various Unit Members" : retval;
 	}
 }

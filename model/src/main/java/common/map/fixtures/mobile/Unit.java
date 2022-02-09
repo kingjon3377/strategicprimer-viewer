@@ -203,11 +203,11 @@ public final class Unit implements IMutableUnit {
 	 */
 	@Override
 	public Unit copy(final boolean zero) {
-		Unit retval = new Unit(owner, kind, name, id);
+		final Unit retval = new Unit(owner, kind, name, id);
 		if (!zero) {
 			retval.orders.putAll(orders);
 			retval.results.putAll(results);
-			for (UnitMember member : members) {
+			for (final UnitMember member : members) {
 				retval.addMember(member.copy(false));
 			}
 		}
@@ -309,12 +309,12 @@ public final class Unit implements IMutableUnit {
 				((IUnit) fixture).getOwner().getPlayerId() == owner.getPlayerId() &&
 				((IUnit) fixture).getKind().equals(kind) &&
 				((IUnit) fixture).getName().equals(name)) {
-			for (UnitMember member : this) {
+			for (final UnitMember member : this) {
 				if (((IUnit) fixture).stream().noneMatch(member::equalsIgnoringID)) {
 					return false;
 				}
 			}
-			for (UnitMember member : (IUnit) fixture) {
+			for (final UnitMember member : (IUnit) fixture) {
 				if (members.stream().noneMatch(member::equalsIgnoringID)) {
 					return false;
 				}

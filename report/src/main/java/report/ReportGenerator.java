@@ -49,7 +49,7 @@ public final class ReportGenerator {
 	private static void createSubReports(final StringBuilder builder,
 	                                     final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures, final IMapNG map,
 	                                     final Player player, final IReportGenerator<?>... generators) throws IOException {
-		for (IReportGenerator<?> generator : generators) {
+		for (final IReportGenerator<?> generator : generators) {
 			generator.produce(fixtures, map, builder::append);
 			fixtures.coalesce();
 		}
@@ -71,16 +71,16 @@ public final class ReportGenerator {
 	 */
 	public static String createReport(final IMapNG map, final ICLIHelper cli, final Player player)
 			throws IOException {
-		MapDimensions dimensions = map.getDimensions();
-		StringBuilder builder = new StringBuilder();
+		final MapDimensions dimensions = map.getDimensions();
+		final StringBuilder builder = new StringBuilder();
 		builder.append("<!DOCTYPE html>").append(System.lineSeparator())
 			.append("<html>").append(System.lineSeparator())
 			.append("<head><title>Strategic Primer map summary report</title></head>")
 			.append(System.lineSeparator()).append("<body>").append(System.lineSeparator());
-		DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures =
+		final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures =
 			ReportGeneratorHelper.getFixtures(map);
-		@Nullable Point hq = ReportGeneratorHelper.findHQ(map, player);
-		Comparator<Pair<Point, IFixture>> comparator;
+		@Nullable final Point hq = ReportGeneratorHelper.findHQ(map, player);
+		final Comparator<Pair<Point, IFixture>> comparator;
 		if (hq == null) {
 			comparator = new PairComparator<>(ReportGenerator::compareToEqual,
 				Comparator.comparing(IFixture::hashCode));
@@ -88,7 +88,7 @@ public final class ReportGenerator {
 			comparator = new PairComparator<>(new DistanceComparator(hq, dimensions),
 				Comparator.comparing(IFixture::hashCode));
 		}
-		int currentTurn = map.getCurrentTurn();
+		final int currentTurn = map.getCurrentTurn();
 		createSubReports(builder, fixtures, map, player,
 			new FortressReportGenerator(player, dimensions, currentTurn, hq),
 			new UnitReportGenerator(player, dimensions, currentTurn, hq),
@@ -103,9 +103,9 @@ public final class ReportGenerator {
 			new ImmortalsReportGenerator(dimensions, hq));
 		builder.append("</body>").append(System.lineSeparator())
 			.append("</html>").append(System.lineSeparator());
-		for (Pair<Point, IFixture> pair : fixtures.values()) {
-			Point loc = pair.getValue0();
-			IFixture fixture = pair.getValue1();
+		for (final Pair<Point, IFixture> pair : fixtures.values()) {
+			final Point loc = pair.getValue0();
+			final IFixture fixture = pair.getValue1();
 			if (fixture.getId() < 0) {
 				continue;
 			} else if (fixture instanceof Ground || fixture instanceof TerrainFixture) {

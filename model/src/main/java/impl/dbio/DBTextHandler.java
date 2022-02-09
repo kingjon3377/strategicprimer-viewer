@@ -33,7 +33,7 @@ final class DBTextHandler extends AbstractDatabaseWriter<TextFixture, Point> imp
 
 	@Override
 	public void write(final DB db, final TextFixture obj, final Point context) {
-		Integer turn;
+		final Integer turn;
 		if (obj.getTurn() >= 0) {
 			turn = obj.getTurn();
 		} else {
@@ -46,12 +46,12 @@ final class DBTextHandler extends AbstractDatabaseWriter<TextFixture, Point> imp
 
 	private TryBiConsumer<Map<String, Object>, Warning, Exception> readTextNote(final IMutableMapNG map) {
 		return (dbRow, warner) -> {
-			int row = (Integer) dbRow.get("row");
-			int column = (Integer) dbRow.get("column");
-			Integer turn = (Integer) dbRow.get("turn");
-			String text = (String) dbRow.get("text");
-			String image = (String) dbRow.get("image");
-			TextFixture fixture = new TextFixture(text, turn == null ? -1 : turn);
+			final int row = (Integer) dbRow.get("row");
+			final int column = (Integer) dbRow.get("column");
+			final Integer turn = (Integer) dbRow.get("turn");
+			final String text = (String) dbRow.get("text");
+			final String image = (String) dbRow.get("image");
+			final TextFixture fixture = new TextFixture(text, turn == null ? -1 : turn);
 			if (image != null) {
 				fixture.setImage(image);
 			}

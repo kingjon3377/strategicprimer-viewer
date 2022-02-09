@@ -48,16 +48,16 @@ import static lovelace.util.Decimalize.decimalize;
 		if (fortress == null) {
 			return;
 		}
-		List<IResourcePile> resources = fortress.stream()
+		final List<IResourcePile> resources = fortress.stream()
 				.filter(IResourcePile.class::isInstance).map(IResourcePile.class::cast).collect(Collectors.toList());
 		while (true) {
-			IResourcePile chosen =
+			final IResourcePile chosen =
 				chooseFromList(resources, "Resources in ``fortress.name``:", "No resources in fortress.",
 					"Resource to take (from):", false);
 			if (chosen == null) {
 				break;
 			}
-			Boolean takeAll = cli.inputBooleanInSeries("Take it all?");
+			final Boolean takeAll = cli.inputBooleanInSeries("Take it all?");
 			if (takeAll == null) {
 				return; // TODO: Find a way to propagate the EOF to caller
 			}
@@ -66,7 +66,7 @@ import static lovelace.util.Decimalize.decimalize;
 					idf::createID);
 				resources.remove(chosen);
 			} else {
-				BigDecimal amount = cli.inputDecimal(String.format("Amount to take (in %s):",
+				final BigDecimal amount = cli.inputDecimal(String.format("Amount to take (in %s):",
 					chosen.getQuantity().getUnits()));
 				if (amount != null && amount.compareTo(BigDecimal.ZERO) > 0) {
 					model.transferResource(chosen, unit, amount, idf::createID);
@@ -83,27 +83,27 @@ import static lovelace.util.Decimalize.decimalize;
 	public String run() {
 		final StringBuilder buffer = new StringBuilder();
 		model.addSelectionChangeListener(explorationCLI);
-		IUnit mover = model.getSelectedUnit();
+		final IUnit mover = model.getSelectedUnit();
 		// Ask the user about total MP, through explorationCLI listening for the selection-change event
 		model.setSelectedUnit(mover);
 		while (explorationCLI.getMovement() > 0) {
-			Point oldPosition = model.getSelectedUnitLocation();
+			final Point oldPosition = model.getSelectedUnitLocation();
 			explorationCLI.moveOneStep();
-			Point newPosition = model.getSelectedUnitLocation();
-			IFortress startingFort = model.getMap().getFixtures(oldPosition).stream()
+			final Point newPosition = model.getSelectedUnitLocation();
+			final IFortress startingFort = model.getMap().getFixtures(oldPosition).stream()
 				.filter(IFortress.class::isInstance).map(IFortress.class::cast)
 				.filter(f -> f.getOwner().equals(mover.getOwner())).findAny().orElse(null);
 			if (startingFort != null && model.getMap().getFixtures(newPosition).stream()
 					.filter(IFortress.class::isInstance).map(IFortress.class::cast)
 					.noneMatch(f -> f.getOwner().equals(mover.getOwner()))) {
-				Boolean pack = cli.inputBooleanInSeries("Leaving a fortress. Take provisions along?");
+				final Boolean pack = cli.inputBooleanInSeries("Leaving a fortress. Take provisions along?");
 				if (pack == null) {
 					return null;
 				} else if (pack) {
 					packFood(startingFort, mover);
 				}
 			}
-			String addendum = cli.inputMultilineString("Add to results:");
+			final String addendum = cli.inputMultilineString("Add to results:");
 			if (addendum == null) {
 				return null;
 			}

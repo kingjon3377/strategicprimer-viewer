@@ -47,15 +47,15 @@ final class DBGroveHandler extends AbstractDatabaseWriter<Grove, Point> implemen
 
 	private TryBiConsumer<Map<String, Object>, Warning, Exception> readGrove(final IMutableMapNG map) {
 		return (dbRow, warner) -> {
-			int row = (Integer) dbRow.get("row");
-			int column = (Integer) dbRow.get("column");
-			int id = (Integer) dbRow.get("id");
-			String type = (String) dbRow.get("type");
-			String kind = (String) dbRow.get("kind");
-			Boolean cultivated = /*DBMapReader.databaseBoolean(dbRow.get("cultivated"))*/ //FIXME
+			final int row = (Integer) dbRow.get("row");
+			final int column = (Integer) dbRow.get("column");
+			final int id = (Integer) dbRow.get("id");
+			final String type = (String) dbRow.get("type");
+			final String kind = (String) dbRow.get("kind");
+			final Boolean cultivated = /*DBMapReader.databaseBoolean(dbRow.get("cultivated"))*/ //FIXME
 				(Boolean) dbRow.get("cultivated"); // This will compile, but won't work
-			int count = (Integer) dbRow.get("count");
-			String image = (String) dbRow.get("image");
+			final int count = (Integer) dbRow.get("count");
+			final String image = (String) dbRow.get("image");
 			final boolean orchard;
 			switch (type) {
 			case "grove":
@@ -67,7 +67,7 @@ final class DBGroveHandler extends AbstractDatabaseWriter<Grove, Point> implemen
 			default:
 				throw new IllegalArgumentException("Unexpected grove type");
 			}
-			Grove grove = new Grove(orchard, cultivated, kind, id, count);
+			final Grove grove = new Grove(orchard, cultivated, kind, id, count);
 			if (image != null) {
 				grove.setImage(image);
 			}

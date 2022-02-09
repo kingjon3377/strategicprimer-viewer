@@ -102,7 +102,7 @@ public class Portal implements ExplorableFixture, SubsettableFixture {
 
 	@Override
 	public Portal copy(final boolean zero) {
-		Portal retval = new Portal((zero) ? "unknown" : destinationWorld,
+		final Portal retval = new Portal((zero) ? "unknown" : destinationWorld,
 			(zero) ? Point.INVALID_POINT : destinationCoordinates, id);
 		retval.setImage(image);
 		return retval;
@@ -163,7 +163,7 @@ public class Portal implements ExplorableFixture, SubsettableFixture {
 	public boolean isSubset(final IFixture obj, final Consumer<String> report) {
 		if (obj.getId() == id) {
 			if (obj instanceof Portal) {
-				Consumer<String> localReport =
+				final Consumer<String> localReport =
 					(str) -> String.format("In portal with ID #%d: %s", id, str);
 				if (!destinationWorld.equals(((Portal) obj).getDestinationWorld()) &&
 						!"unknown".equals(((Portal) obj).getDestinationWorld())) {

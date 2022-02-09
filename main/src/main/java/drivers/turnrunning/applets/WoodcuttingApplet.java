@@ -59,7 +59,7 @@ import org.jetbrains.annotations.Nullable;
 	@Override
 	@Nullable
 	public String run() {
-		StringBuilder builder = new StringBuilder();
+		final StringBuilder builder = new StringBuilder();
 		// FIXME: support other forms of woodcutting: logs, long beams, land-clearing, etc.
 		final Point loc = confirmPoint("Where are they cutting wood?");
 		if (loc == null) {
@@ -102,13 +102,13 @@ import org.jetbrains.annotations.Nullable;
 				cli.println(String.format(" and get %d into the next", totalHours % 100));
 			}
 		} else {
-			String str = cli.inputMultilineString("Description of trees cut:");
+			final String str = cli.inputMultilineString("Description of trees cut:");
 			if (str == null) {
 				return null;
 			} else {
 				builder.append(str);
 			}
-			Integer count = cli.inputNumber("Number of trees cut and processed: ");
+			final Integer count = cli.inputNumber("Number of trees cut and processed: ");
 			if (count != null && count > 0) {
 				treeCount = count;
 			} else {
@@ -116,19 +116,19 @@ import org.jetbrains.annotations.Nullable;
 			}
 		}
 		int footage = treeCount * 300;
-		Boolean fCorrect = cli.inputBoolean(String.format("Is %d cubic feet correct?", footage));
+		final Boolean fCorrect = cli.inputBoolean(String.format("Is %d cubic feet correct?", footage));
 		if (fCorrect == null) {
 			return null;
 		} else if (fCorrect) {
 			builder.append(String.format(", producing %d cubic feet of wood", footage));
 		} else {
-			String str = cli.inputMultilineString("Description of production:");
+			final String str = cli.inputMultilineString("Description of production:");
 			if (str == null) {
 				return null;
 			} else {
 				builder.append(str);
 			}
-			Integer count = cli.inputNumber("Cubic feet production-ready wood: ");
+			final Integer count = cli.inputNumber("Cubic feet production-ready wood: ");
 			if (count == null) { // TODO: or < 0? But allow 0 to skip adding resource.
 				return null;
 			} else {
@@ -136,7 +136,7 @@ import org.jetbrains.annotations.Nullable;
 			}
 		}
 		if (footage > 0) {
-			IUnit unit = model.getSelectedUnit();
+			final IUnit unit = model.getSelectedUnit();
 			// FIXME: Use model.addResource() rather than creating pile here ourselves
 			if (!model.addExistingResource(new ResourcePileImpl(idf.createID(), "wood",
 					"production-ready wood", new Quantity(footage, "cubic feet")), unit.getOwner())) {
@@ -144,7 +144,7 @@ import org.jetbrains.annotations.Nullable;
 			}
 		}
 		if (treeCount > 7) {
-			Forest forest = chooseFromList(model.getMap().getFixtures(loc).stream()
+			final Forest forest = chooseFromList(model.getMap().getFixtures(loc).stream()
 					.filter(Forest.class::isInstance).map(Forest.class::cast)
 					.collect(Collectors.toList()),
 				"Forests on tile:", "No forests on tile", "Forest being cleared: ", false);
@@ -152,7 +152,7 @@ import org.jetbrains.annotations.Nullable;
 				BigDecimal acres = decimalize(treeCount * 10 / 72)
 					.divide(decimalize(100), RoundingMode.HALF_EVEN)
 					.min(decimalize(forest.getAcres()));
-				Boolean aCorrect = cli.inputBoolean(String.format(
+				final Boolean aCorrect = cli.inputBoolean(String.format(
 					"Is %.2f (of %.2f) cleared correct?", acres.doubleValue(),
 					forest.getAcres().doubleValue()));
 				if (aCorrect == null) {
@@ -161,13 +161,13 @@ import org.jetbrains.annotations.Nullable;
 					builder.append(String.format(", clearing %.2f acres (~ %d sq ft) of land.`",
 						acres, acres.multiply(decimalize(43560)).intValue()));
 				} else {
-					String str = cli.inputMultilineString("Descriptoin of cleared land:");
+					final String str = cli.inputMultilineString("Descriptoin of cleared land:");
 					if (str == null) {
 						return null;
 					} else {
 						builder.append(str);
 					}
-					BigDecimal tAcres = cli.inputDecimal("Acres cleared:");
+					final BigDecimal tAcres = cli.inputDecimal("Acres cleared:");
 					if (tAcres == null) {
 						return null;
 					} else {

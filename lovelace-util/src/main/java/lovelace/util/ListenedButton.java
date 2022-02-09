@@ -14,7 +14,7 @@ public class ListenedButton extends JButton {
 	 */
 	public ListenedButton(final String text, final ActionListener... listeners) {
 		super(text);
-		for (ActionListener listener : listeners) {
+		for (final ActionListener listener : listeners) {
 			addActionListener(listener);
 		}
 	}

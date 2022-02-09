@@ -37,8 +37,8 @@ public final class FileSplitter {
 		if (line.length == 0) {
 			throw new IllegalArgumentException("Empty line");
 		}
-		String first = line[0];
-		String second;
+		final String first = line[0];
+		final String second;
 		if (line.length > 1) {
 			second = line[1];
 		} else {
@@ -55,7 +55,7 @@ public final class FileSplitter {
 	 */
 	public static <Type> Map<String, Type> getFileContents(final String filename,
 	                                                       final Function<String, Type> factory) throws IOException {
-		Iterable<String> textContent =
+		final Iterable<String> textContent =
 			FileContentsReader.readFileContents(FileSplitter.class, filename);
 		return StreamSupport.stream(textContent.spliterator(), false)
 			.map(FileSplitter::splitOnFirstTab)

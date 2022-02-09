@@ -72,11 +72,11 @@ public class ImmortalsReportGenerator extends AbstractReportGenerator<Immortal> 
 	@Override
 	public void produce(final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
 	                    final IMapNG map, final Consumer<String> ostream) {
-		Map<Class<? extends IFixture>, BiConsumer<String, Point>> meta = new HashMap<>();
-		Map<String, List<Point>> simples = new HashMap<>();
-		BiConsumer<Class<? extends Immortal>, String> handleSimple =
+		final Map<Class<? extends IFixture>, BiConsumer<String, Point>> meta = new HashMap<>();
+		final Map<String, List<Point>> simples = new HashMap<>();
+		final BiConsumer<Class<? extends Immortal>, String> handleSimple =
 			(type, plural) -> meta.put(type, (ignored, point) -> {
-				List<Point> list = Optional.ofNullable(simples.get(plural))
+				final List<Point> list = Optional.ofNullable(simples.get(plural))
 					.orElseGet(ArrayList::new);
 				list.add(point);
 				simples.put(plural, list);
@@ -94,40 +94,40 @@ public class ImmortalsReportGenerator extends AbstractReportGenerator<Immortal> 
 		handleSimple.accept(Pegasus.class, "Pegasi");
 		handleSimple.accept(Unicorn.class, "Unicorn(s)");
 		handleSimple.accept(Kraken.class, "Kraken(s)");
-		BiFunction<Class<? extends Immortal>, String, Map<String, List<Point>>> handleComplex =
+		final BiFunction<Class<? extends Immortal>, String, Map<String, List<Point>>> handleComplex =
 			(type, plural) -> {
-				Map<String, List<Point>> retval = new HashMap<>();
+				final Map<String, List<Point>> retval = new HashMap<>();
 				meta.put(type, (kind, point) -> {
-					String pluraled = kind + plural;
-					List<Point> list = Optional.ofNullable(
+					final String pluraled = kind + plural;
+					final List<Point> list = Optional.ofNullable(
 						retval.get(pluraled)).orElseGet(ArrayList::new);
 					list.add(point);
 					retval.put(pluraled, list);
 				});
 				return retval;
 			};
-		Map<String, List<Point>> centaurs = handleComplex.apply(Centaur.class, "(s)");
-		Map<String, List<Point>> giants = handleComplex.apply(Giant.class, "(s)");
-		Map<String, List<Point>> fairies = handleComplex.apply(Fairy.class, "");
-		Map<String, List<Point>> dragons = handleComplex.apply(Dragon.class, "(s)");
-		for (Pair<Point, Immortal> pair : fixtures.values().stream()
+		final Map<String, List<Point>> centaurs = handleComplex.apply(Centaur.class, "(s)");
+		final Map<String, List<Point>> giants = handleComplex.apply(Giant.class, "(s)");
+		final Map<String, List<Point>> fairies = handleComplex.apply(Fairy.class, "");
+		final Map<String, List<Point>> dragons = handleComplex.apply(Dragon.class, "(s)");
+		for (final Pair<Point, Immortal> pair : fixtures.values().stream()
 				.filter(p -> p.getValue1() instanceof Immortal)
 				.filter(p -> meta.containsKey(p.getValue1().getClass()))
 				.sorted(pairComparator)
 				.map(p -> Pair.with(p.getValue0(), (Immortal) p.getValue1()))
 				.collect(Collectors.toList())) {
-			BiConsumer<String, Point> func = meta.get(pair.getValue1().getClass());
+			final BiConsumer<String, Point> func = meta.get(pair.getValue1().getClass());
 			func.accept(pair.getValue1().toString(), pair.getValue0());
 			fixtures.remove(pair.getValue1().getId());
 		}
 		if (!centaurs.isEmpty() || !giants.isEmpty() || !fairies.isEmpty() || !dragons.isEmpty() ||
 				!simples.isEmpty()) {
 			println(ostream, "<h4>Immortals</h4>");
-			for (Map.Entry<String, List<Point>> entry : new ConcatIterable<>(
+			for (final Map.Entry<String, List<Point>> entry : new ConcatIterable<>(
 					centaurs.entrySet(), giants.entrySet(), fairies.entrySet(),
 					simples.entrySet())) {
-				String key = entry.getKey();
-				List<Point> list = entry.getValue();
+				final String key = entry.getKey();
+				final List<Point> list = entry.getValue();
 				if (!list.isEmpty()) {
 					ostream.accept("<li>");
 					ostream.accept(key);

@@ -54,11 +54,11 @@ public enum River {
 	 * Get the river matching the given description.
 	 */
 	public static River parse(final String description) throws ParseException {
-		Optional<River> retval = Stream.of(values())
+		final Optional<River> retval = Stream.of(values())
 			.filter((r) -> description.equals(r.description)).findAny();
 		if (retval.isPresent()) {
 			return retval.get();
-		} else {
+		} else { // TODO: orElseThrow()
 			throw new ParseException(
 				String.format("Failed to parse River from '%s'", description), -1);
 		}

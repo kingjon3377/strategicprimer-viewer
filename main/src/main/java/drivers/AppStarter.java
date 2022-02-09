@@ -38,14 +38,14 @@ import org.jetbrains.annotations.Nullable;
 	public void startDriverOnArguments(final ICLIHelper cli, final SPOptions options, final String... args) throws DriverFailedException {
 		LOGGER.finer("Inside AppStarter#startDriver()");
 		boolean gui = !GraphicsEnvironment.isHeadless();
-		SPOptionsImpl currentOptions = new SPOptionsImpl(StreamSupport.stream(options.spliterator(), false).toArray((Map.Entry[]::new)));
+		final SPOptionsImpl currentOptions = new SPOptionsImpl(StreamSupport.stream(options.spliterator(), false).toArray((Map.Entry[]::new)));
 		if (!currentOptions.hasOption("--gui")) {
 			currentOptions.addOption("--gui", Boolean.toString(gui));
 		}
 		final List<String> others = new ArrayList<>();
 
 		// TODO: Try to make an instance method
-		BiConsumer<DriverFactory, SPOptions> startChosenDriver = (driver, currentOptionsTyped) -> {
+		final BiConsumer<DriverFactory, SPOptions> startChosenDriver = (driver, currentOptionsTyped) -> {
 			if (driver.getUsage().isGraphical()) {
 				SwingUtilities.invokeLater(() -> new DriverWrapper(driver).startCatchingErrors(cli,
 						currentOptionsTyped, others.stream().skip(1).toArray(String[]::new)));
@@ -55,7 +55,7 @@ import org.jetbrains.annotations.Nullable;
 			}
 		};
 
-		for (String arg : args) {
+		for (final String arg : args) {
 			if (arg == null) {
 				continue;
 			} else if ("-g".equals(arg) || "--gui".equals(arg)) {
@@ -67,7 +67,7 @@ import org.jetbrains.annotations.Nullable;
 				currentOptions.addOption("--gui", "false");
 				gui = false;
 			} else if (arg.startsWith("--gui=")) {
-				String tempString = arg.substring(6);
+				final String tempString = arg.substring(6);
 				LOGGER.finer("User specified --gui=" + tempString);
 				if ("true".equalsIgnoreCase(tempString)) {
 					gui = true;
@@ -78,9 +78,9 @@ import org.jetbrains.annotations.Nullable;
 				}
 				currentOptions.addOption("--gui", tempString);
 			} else if (arg.startsWith("-") && arg.contains("=")) {
-				String[] broken = arg.split("=");
-				String param = broken[0];
-				String rest = Stream.of(broken).skip(1).collect(Collectors.joining("="));
+				final String[] broken = arg.split("=");
+				final String param = broken[0];
+				final String rest = Stream.of(broken).skip(1).collect(Collectors.joining("="));
 				currentOptions.addOption(param, rest);
 				LOGGER.finer(String.format("User specified %s=%s", param, rest));
 			} else if (arg.startsWith("-")) {
@@ -94,7 +94,7 @@ import org.jetbrains.annotations.Nullable;
 
 		LOGGER.finer("Reached the end of arguments");
 		// TODO: Use appletChooser so we can support prefixes
-		@Nullable DriverFactory currentDriver;
+		final @Nullable DriverFactory currentDriver;
 		final @Nullable String command = others.stream().findFirst().orElse(null);
 		final List<DriverFactory> drivers = Optional.ofNullable(command).map(driverCache::get)
 				// TODO: Drop StreamSupport use if driverCache is changed to specify List.
@@ -123,20 +123,21 @@ import org.jetbrains.annotations.Nullable;
 				System.out.println("No app specified; use one of the following invocations:");
 				System.out.println();
 				final AppChooserState acs = new AppChooserState();
-				for (DriverFactory driver : driverCache.values().stream()
+				for (final DriverFactory driver : driverCache.values().stream()
 						.flatMap(l -> StreamSupport.stream(l.spliterator(), false)).distinct()
 						.collect(Collectors.toList())) {
 					// TODO: in Java 11+ use String.lines()
-					String[] lines = acs.usageMessage(driver.getUsage(), "true".equals(
+					final String[] lines = acs.usageMessage(driver.getUsage(), "true".equals(
 							options.getArgument("--verbose"))).split(System.lineSeparator());
-					String invocationExample = lines[0].replace("Usage: ", "");
-					String description = lines.length > 1 ? lines[1].replace(".", "") : "An unknown app";
+					final String invocationExample = lines[0].replace("Usage: ", "");
+					final String description = lines.length > 1 ? lines[1].replace(".", "") : "An unknown app";
+					// TODO: Use System.out.printf
 					System.out.print(description);
 					System.out.print(": ");
 					System.out.println(invocationExample);
 				}
 			} else {
-				IDriverUsage currentUsage = currentDriver.getUsage();
+				final IDriverUsage currentUsage = currentDriver.getUsage();
 				LOGGER.finer("Giving usage information for selected driver");
 				// TODO: Can we and should we move the usageMessage() method into this class?
 				System.out.println(new AppChooserState().usageMessage(currentUsage,
@@ -147,7 +148,7 @@ import org.jetbrains.annotations.Nullable;
 			startChosenDriver.accept(currentDriver, currentOptions.copy());
 		} else {
 			LOGGER.finer("Starting app-chooser.");
-			SPOptions currentOptionsTyped = currentOptions.copy();
+			final SPOptions currentOptionsTyped = currentOptions.copy();
 			if (gui) {
 //				try {
 				SwingUtilities.invokeLater(
@@ -159,7 +160,7 @@ import org.jetbrains.annotations.Nullable;
 //						"Strategic Primer Assistive Programs", except.getMessage()));
 //				}
 			} else {
-				DriverFactory chosenDriver = cli.chooseFromList(driverCache.values().stream()
+				final DriverFactory chosenDriver = cli.chooseFromList(driverCache.values().stream()
 								.flatMap(i -> StreamSupport.stream(i.spliterator(), false))
 								.filter(AppStarter::includeInCLIList).collect(Collectors.toList()),
 						"CLI apps available:", "No applications available", "App to start: ",

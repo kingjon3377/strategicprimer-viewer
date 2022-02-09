@@ -29,9 +29,9 @@ public final class ProxyJob implements IJob, ProxyFor<IJob> {
 		this.parallel = parallel;
 		this.name = name;
 
-		for (IWorker worker : proxiedWorkers) {
+		for (final IWorker worker : proxiedWorkers) {
 			boolean unmodified = true;
-			for (IJob job : worker) {
+			for (final IJob job : worker) {
 				if (name.equals(job.getName())) {
 					proxiedJobs.add(job);
 					StreamSupport.stream(job.spliterator(), false)
@@ -111,7 +111,7 @@ public final class ProxyJob implements IJob, ProxyFor<IJob> {
 	@Override
 	public IJob copy() {
 		final ProxyJob retval = new ProxyJob(name, parallel);
-		for (IJob job : proxiedJobs) {
+		for (final IJob job : proxiedJobs) {
 			retval.addProxied(job.copy());
 		}
 		return retval;
@@ -155,12 +155,12 @@ public final class ProxyJob implements IJob, ProxyFor<IJob> {
 			return;
 		}
 		proxiedJobs.add(item);
-		for (ProxyFor<IJob> skill : proxiedSkills) {
+		for (final ProxyFor<IJob> skill : proxiedSkills) {
 			skill.addProxied(item);
 		}
 		IJob[] proxiedJobsArray = new IJob[proxiedJobs.size()];
 		proxiedJobsArray = proxiedJobs.toArray(proxiedJobsArray);
-		for (ISkill skill : item) {
+		for (final ISkill skill : item) {
 			if (!skillNames.contains(skill.getName())) {
 				proxiedSkills.add(new ProxySkill(skill.getName(), parallel,
 					proxiedJobsArray));

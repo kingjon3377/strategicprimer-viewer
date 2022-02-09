@@ -39,27 +39,27 @@ public class VillageReportGenerator extends AbstractReportGenerator<Village> {
 	 */
 	public void produce(final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
 	                    final IMapNG map, final Consumer<String> ostream) {
-		Comparator<Village> villageComparator = Comparator.comparing(Village::getName)
+		final Comparator<Village> villageComparator = Comparator.comparing(Village::getName)
 			.thenComparing(Village::getRace)
 			.thenComparing(Village::getId);
-		HeadedMap<Village, Point> own = new HeadedMapImpl<>(
+		final HeadedMap<Village, Point> own = new HeadedMapImpl<>(
 			"<h4>Villages pledged to your service:</h4>", villageComparator);
-		HeadedMap<Village, Point> independents = new HeadedMapImpl<>(
+		final HeadedMap<Village, Point> independents = new HeadedMapImpl<>(
 			"<h4>Villages you think are independent:</h4>", villageComparator);
-		Map<Player, HeadedMap<Village, Point>> others = new HashMap<>();
-		for (Pair<Point, Village> pair : fixtures.values().stream()
+		final Map<Player, HeadedMap<Village, Point>> others = new HashMap<>();
+		for (final Pair<Point, Village> pair : fixtures.values().stream()
 				.filter(p -> p.getValue1() instanceof Village)
 				.sorted(pairComparator)
 				.map(p -> Pair.with(p.getValue0(), (Village) p.getValue1()))
 				.collect(Collectors.toList())) {
-			Point loc = pair.getValue0();
-			Village village = pair.getValue1();
+			final Point loc = pair.getValue0();
+			final Village village = pair.getValue1();
 			if (village.getOwner().equals(currentPlayer)) {
 				own.put(village, loc);
 			} else if (village.getOwner().isIndependent()) {
 				independents.put(village, loc);
 			} else {
-				HeadedMap<Village, Point> mapping;
+				final HeadedMap<Village, Point> mapping;
 				if (others.containsKey(village.getOwner())) {
 					mapping = others.get(village.getOwner());
 				} else {
@@ -72,14 +72,14 @@ public class VillageReportGenerator extends AbstractReportGenerator<Village> {
 				mapping.put(village, loc);
 			}
 		}
-		Comparator<Pair<? super Village, Point>> byDistance = Comparator.comparing(Pair::getValue1,
+		final Comparator<Pair<? super Village, Point>> byDistance = Comparator.comparing(Pair::getValue1,
 			distComparator);
-		TriConsumer<Village, Point, Consumer<String>> writer = defaultFormatter(fixtures, map);
+		final TriConsumer<Village, Point, Consumer<String>> writer = defaultFormatter(fixtures, map);
 		writeMap(ostream, own, writer, byDistance);
 		writeMap(ostream, independents, writer, byDistance);
 		if (!others.isEmpty()) {
 			println(ostream, "<h4>Other villages you know about:</h4>");
-			for (HeadedMap<Village, Point> mapping : others.values()) {
+			for (final HeadedMap<Village, Point> mapping : others.values()) {
 				writeMap(ostream, mapping, writer, byDistance);
 			}
 		}

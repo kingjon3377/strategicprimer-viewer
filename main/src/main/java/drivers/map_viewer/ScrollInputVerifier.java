@@ -39,7 +39,7 @@ import java.util.logging.Logger;
 	@Override
 	public boolean verify(final JComponent input) {
 		if (input instanceof JScrollBar) {
-			JScrollBar jsb = (JScrollBar) input;
+			final JScrollBar jsb = (JScrollBar) input;
 			if (jsb.getValue() >= 0 && jsb.getValue() < mapDimension.getAsInt()) {
 				LOGGER.fine(String.format("%d is a valid %s coordinate",
 					jsb.getValue(), dimension));

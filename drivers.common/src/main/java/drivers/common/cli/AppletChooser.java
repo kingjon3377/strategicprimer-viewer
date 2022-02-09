@@ -19,9 +19,9 @@ public class AppletChooser<AppletClass extends Applet> {
 	@SafeVarargs
 	public AppletChooser(final ICLIHelper cli, final AppletClass... applets) {
 		this.cli = cli;
-		Map<String, AppletClass> temp = new HashMap<>();
-		for (AppletClass applet : applets) {
-			for (String command : applet.getCommands()) {
+		final Map<String, AppletClass> temp = new HashMap<>();
+		for (final AppletClass applet : applets) {
+			for (final String command : applet.getCommands()) {
 				if ("help".equals(command) || "quit".equals(command) ||
 						"?".equals(command) || "exit".equals(command)) {
 					throw new IllegalArgumentException("Applet with reserved command");
@@ -44,7 +44,7 @@ public class AppletChooser<AppletClass extends Applet> {
 
 	private void usageMessage() {
 		cli.println("The following commands are supported:");
-		for (AppletClass applet : applets) {
+		for (final AppletClass applet : applets) {
 			cli.print(String.join(", ", applet.getCommands().toArray(new String[0])));
 			cli.println(applet.getDescription());
 		}
@@ -64,12 +64,12 @@ public class AppletChooser<AppletClass extends Applet> {
 	 */
 	@Nullable
 	public Either<AppletClass, Boolean> chooseApplet() {
-		String command = Optional.ofNullable(cli.inputString("Command:"))
+		final String command = Optional.ofNullable(cli.inputString("Command:"))
 			.map(String::toLowerCase).orElse(null);
 		if (command == null) {
 			return Either.right(false);
 		} else {
-			List<Map.Entry<String, AppletClass>> matches =
+			final List<Map.Entry<String, AppletClass>> matches =
 				commands.entrySet().stream().filter(e -> e.getKey().startsWith(command))
 					.collect(Collectors.toList());
 			if ("quit".startsWith(command) || "exit".startsWith(command)) {

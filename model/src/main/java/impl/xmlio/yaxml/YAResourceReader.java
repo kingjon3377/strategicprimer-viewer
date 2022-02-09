@@ -47,7 +47,7 @@ import java.util.Collections;
 			throws SPFormatException {
 		expectAttributes(element, "status", "kind", "id", "cultivated", "image", "acres");
 		requireNonEmptyParameter(element, "status", false);
-		FieldStatus status;
+		final FieldStatus status;
 		try {
 			// TODO: add FieldStatus.parse() overload taking FieldStatus as default
 			status = FieldStatus.parse(getParameter(element, "status",
@@ -91,7 +91,7 @@ import java.util.Collections;
 	public HarvestableFixture read(final StartElement element, final QName parent, final Iterable<XMLEvent> stream)
 			throws SPFormatException {
 		requireTag(element, parent, SUPPORTED_TAGS.toArray(new String[0]));
-		int idNum = getOrGenerateID(element);
+		final int idNum = getOrGenerateID(element);
 		final HarvestableFixture retval;
 		switch (element.getName().getLocalPart().toLowerCase()) {
 		case "cache":
@@ -115,7 +115,7 @@ import java.util.Collections;
 			break;
 		case "mine":
 			expectAttributes(element, "status", "kind", "product", "id", "image");
-			TownStatus status;
+			final TownStatus status;
 			try {
 				status = TownStatus.parse(getParameter(element, "status"));
 			} catch (final IllegalArgumentException except) {
@@ -140,7 +140,7 @@ import java.util.Collections;
 			break;
 		case "stone":
 			expectAttributes(element, "kind", "stone", "id", "dc", "image");
-			StoneKind stone;
+			final StoneKind stone;
 			try {
 				stone = StoneKind.parse(getParamWithDeprecatedForm(element, "kind", "stone"));
 			} catch (final IllegalArgumentException except) {

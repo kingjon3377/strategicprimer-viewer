@@ -67,22 +67,22 @@ final class DBResourcePileHandler
 
 	private TryBiConsumer<Map<String, Object>, Warning, Exception> readResourcePile(final IMutableMapNG map) {
 		return (dbRow, warner) -> {
-			int parentId = (Integer) dbRow.get("parent");
-			TileFixture parent = (TileFixture) findById(map, parentId, warner);
-			int id = (Integer) dbRow.get("id");
-			String kind = (String) dbRow.get("kind");
-			String contents = (String) dbRow.get("contents");
-			String qtyString = (String) dbRow.get("quantity");
-			String units = (String) dbRow.get("units");
-			Integer created = (Integer) dbRow.get("created");
-			String image = (String) dbRow.get("image");
+			final int parentId = (Integer) dbRow.get("parent");
+			final TileFixture parent = (TileFixture) findById(map, parentId, warner);
+			final int id = (Integer) dbRow.get("id");
+			final String kind = (String) dbRow.get("kind");
+			final String contents = (String) dbRow.get("contents");
+			final String qtyString = (String) dbRow.get("quantity");
+			final String units = (String) dbRow.get("units");
+			final Integer created = (Integer) dbRow.get("created");
+			final String image = (String) dbRow.get("image");
 			Number quantity;
 			try {
 				quantity = Integer.parseInt(qtyString);
 			} catch (final NumberFormatException except) {
 				quantity = new BigDecimal(qtyString);
 			}
-			IMutableResourcePile pile = new ResourcePileImpl(id, kind, contents,
+			final IMutableResourcePile pile = new ResourcePileImpl(id, kind, contents,
 				new Quantity(quantity, units));
 			if (image != null) {
 				pile.setImage(image);

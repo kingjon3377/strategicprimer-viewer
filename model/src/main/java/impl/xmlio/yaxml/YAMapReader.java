@@ -104,7 +104,7 @@ import java.util.function.Predicate;
 	 */
 	private StartElement getFirstStartElement(final Iterable<XMLEvent> stream, final StartElement parent)
 			throws SPFormatException, MalformedXMLException {
-		for (XMLEvent element : stream) {
+		for (final XMLEvent element : stream) {
 			if (element instanceof StartElement &&
 					isSupportedNamespace(((StartElement) element).getName())) {
 				return (StartElement) element;
@@ -135,7 +135,7 @@ import java.util.function.Predicate;
 			expectAttributes(element, "direction");
 			try {
 				return River.parse(getParameter(element, "direction"));
-			} catch (IllegalArgumentException|ParseException except) {
+			} catch (final IllegalArgumentException|ParseException except) {
 				throw new MissingPropertyException(element, "direction", except);
 			}
 		}
@@ -159,11 +159,11 @@ import java.util.function.Predicate;
 	 */
 	private TileFixture parseFixture(final StartElement element, final QName parent, final Iterable<XMLEvent> stream)
 			throws SPFormatException, MalformedXMLException {
-		String name = element.getName().getLocalPart();
+		final String name = element.getName().getLocalPart();
 		if (readerCache.containsKey(name.toLowerCase())) {
 			return readerCache.get(name.toLowerCase()).read(element, parent, stream);
 		}
-		for (YAReader<? extends TileFixture, ? extends TileFixture> reader : readers) {
+		for (final YAReader<? extends TileFixture, ? extends TileFixture> reader : readers) {
 			if (reader.isSupportedTag(name)) {
 				readerCache.put(name.toLowerCase(), reader);
 				return (TileFixture) reader.read(element, parent, stream);
@@ -173,7 +173,7 @@ import java.util.function.Predicate;
 			if (readerCache.containsKey("animal")) {
 				return readerCache.get("animal").read(element, parent, stream);
 			} else {
-				for (YAReader<? extends TileFixture, ? extends TileFixture> reader : readers) {
+				for (final YAReader<? extends TileFixture, ? extends TileFixture> reader : readers) {
 					if (reader.isSupportedTag("animal")) {
 						return (TileFixture) reader.read(element, parent, stream);
 					}
@@ -191,8 +191,8 @@ import java.util.function.Predicate;
 	public IMutableMapNG read(final StartElement element, final QName parent, final Iterable<XMLEvent> stream)
 			throws SPFormatException, MalformedXMLException {
 		requireTag(element, parent, "map", "view");
-		int currentTurn;
-		StartElement mapTag;
+		final int currentTurn;
+		final StartElement mapTag;
 		switch (element.getName().getLocalPart().toLowerCase()) {
 		case "view":
 			expectAttributes(element, "current_turn", "current_player");
@@ -211,8 +211,8 @@ import java.util.function.Predicate;
 			throw UnwantedChildException.listingExpectedTags(new QName("xml"), element,
 				"map", "view");
 		}
-		MapDimensions dimensions;
-		MapDimensions readDimensions = new MapDimensionsImpl(getIntegerParameter(mapTag, "rows"),
+		final MapDimensions dimensions;
+		final MapDimensions readDimensions = new MapDimensionsImpl(getIntegerParameter(mapTag, "rows"),
 			getIntegerParameter(mapTag, "columns"), getIntegerParameter(mapTag, "version"));
 		if (readDimensions.getVersion() == 2) {
 			dimensions = readDimensions;
@@ -226,10 +226,10 @@ import java.util.function.Predicate;
 		tagStack.addFirst(mapTag.getName());
 		final IMutableMapNG retval = new SPMapNG(dimensions, players, currentTurn);
 		Point point = null;
-		for (XMLEvent event : stream) {
+		for (final XMLEvent event : stream) {
 			if (event instanceof StartElement &&
 					isSupportedNamespace(((StartElement) event).getName())) {
-				String type = ((StartElement) event).getName().getLocalPart().toLowerCase();
+				final String type = ((StartElement) event).getName().getLocalPart().toLowerCase();
 				if ("player".equals(type)) {
 					retval.addPlayer(playerReader.read((StartElement) event,
 						tagStack.peekFirst(), stream));
@@ -258,7 +258,7 @@ import java.util.function.Predicate;
 								TileType.parse(getParamWithDeprecatedForm(
 									(StartElement) event, "kind",
 									"type")));
-						} catch (IllegalArgumentException|ParseException except) {
+						} catch (final IllegalArgumentException|ParseException except) {
 							warner.handle(new MissingPropertyException(
 								(StartElement) event, "kind", except));
 						}
@@ -304,7 +304,7 @@ import java.util.function.Predicate;
 							tagStack.addFirst(((StartElement) event).getName());
 							expectAttributes((StartElement) event, "direction",
 									"quality");
-							Direction direction;
+							final Direction direction;
 							try {
 								direction = Direction.parse(
 										getParameter((StartElement) event,
@@ -317,9 +317,9 @@ import java.util.function.Predicate;
 									getIntegerParameter((StartElement) event, "quality"));
 							break;
 						default:
-							QName top = tagStack.peekFirst();
+							final QName top = tagStack.peekFirst();
 
-							TileFixture child = parseFixture((StartElement) event, top, stream);
+							final TileFixture child = parseFixture((StartElement) event, top, stream);
 							if (child instanceof IFortress &&
 									    retval.getFixtures(point).stream()
 											    .filter(IFortress.class::isInstance)
@@ -353,7 +353,7 @@ import java.util.function.Predicate;
 					point = null;
 				}
 			} else if (event instanceof Characters) {
-				String data = ((Characters) event).getData().trim();
+				final String data = ((Characters) event).getData().trim();
 				if (!data.isEmpty()) {
 					retval.addFixture(point == null ? Point.INVALID_POINT : point,
 						new TextFixture(data, -1));
@@ -377,12 +377,12 @@ import java.util.function.Predicate;
 	 */
 	private void writeChild(final ThrowingConsumer<String, IOException> ostream, final TileFixture child, final int tabs)
 			throws IOException {
-		Class<? extends TileFixture> cls = child.getClass();
+		final Class<? extends TileFixture> cls = child.getClass();
 		if (writerCache.containsKey(cls)) {
 			writerCache.get(cls).writeRaw(ostream, child, tabs);
 			return;
 		}
-		for (YAReader<? extends TileFixture, ? extends TileFixture> reader : readers) {
+		for (final YAReader<? extends TileFixture, ? extends TileFixture> reader : readers) {
 			if (reader.canWrite(child)) {
 				writerCache.put(cls, reader);
 				reader.writeRaw(ostream, child, tabs);
@@ -410,19 +410,19 @@ import java.util.function.Predicate;
 		currentTurn = obj.getCurrentTurn();
 		finishParentTag(ostream);
 		writeTag(ostream, "map", tabs + 1);
-		MapDimensions dimensions = obj.getDimensions();
+		final MapDimensions dimensions = obj.getDimensions();
 		writeProperty(ostream, "version", dimensions.getVersion());
 		writeProperty(ostream, "rows", dimensions.getRows());
 		writeProperty(ostream, "columns", dimensions.getColumns());
 		finishParentTag(ostream);
-		for (Player player : obj.getPlayers()) {
+		for (final Player player : obj.getPlayers()) {
 			playerReader.write(ostream, player, tabs + 2);
 		}
 		for (int i = 0; i < dimensions.getRows(); i++) {
 			boolean rowEmpty = true;
 			for (int j = 0; j < dimensions.getColumns(); j++) {
-				Point loc = new Point(i, j);
-				TileType terrain = obj.getBaseTerrain(loc);
+				final Point loc = new Point(i, j);
+				final TileType terrain = obj.getBaseTerrain(loc);
 				if (!obj.isLocationEmpty(loc)) {
 					if (rowEmpty) {
 						rowEmpty = false;
@@ -438,7 +438,7 @@ import java.util.function.Predicate;
 					}
 					ostream.accept(">");
 					boolean needEol = true;
-					for (Player player : obj.getAllBookmarks(loc)) {
+					for (final Player player : obj.getAllBookmarks(loc)) {
 						eolIfNeeded(needEol, ostream);
 						needEol = false;
 						writeTag(ostream, "bookmark", tabs + 4);
@@ -452,13 +452,13 @@ import java.util.function.Predicate;
 						closeLeafTag(ostream);
 					}
 					// Rivers are automatically sorted, coming from an EnumSet
-					for (River river : obj.getRivers(loc)) {
+					for (final River river : obj.getRivers(loc)) {
 						eolIfNeeded(needEol, ostream);
 						needEol = false;
 						writeRiver(ostream, river, tabs + 4);
 					}
 					// Roads are automatically sorted by direction, coming from an EnumMap
-					for (Map.Entry<Direction, Integer> entry :
+					for (final Map.Entry<Direction, Integer> entry :
 							obj.getRoads(loc).entrySet()) {
 						eolIfNeeded(needEol, ostream);
 						needEol = false;
@@ -471,7 +471,7 @@ import java.util.function.Predicate;
 					// To avoid breaking map-format-conversion tests, and to
 					// avoid churn in existing maps, put the first Ground and Forest
 					// before other fixtures.
-					Ground ground = obj.getFixtures(loc).stream()
+					final Ground ground = obj.getFixtures(loc).stream()
 						.filter(Ground.class::isInstance).map(Ground.class::cast)
 						.findFirst().orElse(null);
 					if (ground != null) {
@@ -479,7 +479,7 @@ import java.util.function.Predicate;
 						needEol = false;
 						writeChild(ostream, ground, tabs + 4);
 					}
-					Forest forest = obj.getFixtures(loc).stream()
+					final Forest forest = obj.getFixtures(loc).stream()
 						.filter(Forest.class::isInstance).map(Forest.class::cast)
 						.findFirst().orElse(null);
 					if (forest != null) {
@@ -487,7 +487,7 @@ import java.util.function.Predicate;
 						needEol = false;
 						writeChild(ostream, forest, tabs + 4);
 					}
-					for (TileFixture fixture : obj.getFixtures(loc)) {
+					for (final TileFixture fixture : obj.getFixtures(loc)) {
 						if (fixture.equals(ground) || fixture.equals(forest)) {
 							continue;
 						}
@@ -511,7 +511,7 @@ import java.util.function.Predicate;
 					.negate())) {
 			writeTag(ostream, "elsewhere", tabs + 2);
 			finishParentTag(ostream);
-			for (TileFixture fixture : obj.streamLocations()
+			for (final TileFixture fixture : obj.streamLocations()
 					.filter(((Predicate<Point>) Point::isValid).negate())
 					.flatMap(p -> obj.getFixtures(p).stream())
 					.collect(Collectors.toList())) {

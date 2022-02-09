@@ -103,7 +103,7 @@ public class AdventureFixture implements ExplorableFixture, HasMutableOwner, Sub
 	 */
 	@Override
 	public AdventureFixture copy(final boolean zero) {
-		AdventureFixture retval = new AdventureFixture(owner, briefDescription,
+		final AdventureFixture retval = new AdventureFixture(owner, briefDescription,
 			fullDescription, id);
 		retval.setImage(image);
 		return retval;
@@ -132,7 +132,7 @@ public class AdventureFixture implements ExplorableFixture, HasMutableOwner, Sub
 		if (this == fixture) {
 			return true;
 		} else if (fixture instanceof AdventureFixture) {
-			AdventureFixture obj = ((AdventureFixture) fixture);
+			final AdventureFixture obj = ((AdventureFixture) fixture);
 			return ((owner.isIndependent() && obj.getOwner().isIndependent()) ||
 					(owner.getPlayerId() == obj.getOwner().getPlayerId())) &&
 				briefDescription.equals(obj.getBriefDescription()) &&
@@ -182,7 +182,7 @@ public class AdventureFixture implements ExplorableFixture, HasMutableOwner, Sub
 	public boolean isSubset(final IFixture obj, final Consumer<String> report) {
 		if (obj.getId() == id) {
 			if (obj instanceof AdventureFixture) {
-				Consumer<String> localReport =
+				final Consumer<String> localReport =
 					(str) -> report.accept(String.format("In adventure with ID #%d: %s", id, str));
 				if (!briefDescription.equals(((AdventureFixture) obj).getBriefDescription())) {
 					localReport.accept("Brief descriptions differ");

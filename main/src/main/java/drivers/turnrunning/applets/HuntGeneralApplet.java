@@ -70,7 +70,7 @@ import org.jetbrains.annotations.Nullable;
 							.map(IUnit::getOwner).orElse(model.getMap().getCurrentPlayer())),
 			"Available units:", "No units", "Unit to add animals to:", false, HuntGeneralApplet::describeUnit);
 		if (unit != null) {
-			Integer num = cli.inputNumber("Number captured:");
+			final Integer num = cli.inputNumber("Number captured:");
 			if (num == null) {
 				return null;
 			} else {
@@ -85,7 +85,7 @@ import org.jetbrains.annotations.Nullable;
 	protected Integer processMeat() {
 		int cost = 0;
 		// TODO: somehow handle processing-in-parallel case
-		Integer iterations = cli.inputNumber("How many carcasses?");
+		final Integer iterations = cli.inputNumber("How many carcasses?");
 		if (iterations == null) {
 			return null;
 		}
@@ -122,29 +122,29 @@ import org.jetbrains.annotations.Nullable;
 	@Nullable
 	private Integer handleFight(final Point loc, final Animal find, final int time) {
 		int cost;
-		Integer temp = cli.inputNumber(String.format("Time to %s: ", verb));
+		final Integer temp = cli.inputNumber(String.format("Time to %s: ", verb));
 		if (temp == null) {
 			return null;
 		} else {
 			cost = temp;
 		}
-		Boolean capture = cli.inputBooleanInSeries("Capture any animals?");
+		final Boolean capture = cli.inputBooleanInSeries("Capture any animals?");
 		if (capture == null) {
 			return null;
 		} else if (capture && handleCapture(find) == null) {
 			return null;
 		}
-		Boolean processNow = cli.inputBooleanInSeries("Process carcasses now?");
+		final Boolean processNow = cli.inputBooleanInSeries("Process carcasses now?");
 		if (processNow == null) {
 			return null;
 		} else if (processNow) {
-			Integer processingTime = processMeat();
+			final Integer processingTime = processMeat();
 			if (processingTime == null) {
 				return null;
 			}
 			cost += processingTime;
 		}
-		Boolean reduce = cli.inputBooleanInSeries(String.format(
+		final Boolean reduce = cli.inputBooleanInSeries(String.format(
 			"Reduce animal group population of %d?", find.getPopulation()));
 		if (reduce == null) {
 			return null;
@@ -202,19 +202,19 @@ import org.jetbrains.annotations.Nullable;
 			return ""; // TODO: return null, surely?
 		}
 		int time = startingTime;
-		Iterator<Pair<Point, TileFixture>> encounters = encounterSrc.apply(center).iterator();
+		final Iterator<Pair<Point, TileFixture>> encounters = encounterSrc.apply(center).iterator();
 		while (time > 0 && encounters.hasNext()) {
-			Pair<Point, TileFixture> pair = encounters.next();
-			Point loc = pair.getValue0();
-			TileFixture find = pair.getValue1();
+			final Pair<Point, TileFixture> pair = encounters.next();
+			final Point loc = pair.getValue0();
+			final TileFixture find = pair.getValue1();
 			cli.print(inHours(time));
 			cli.println(" remaining.");
-			Integer cost = handleEncounter(buffer, time, loc, find);
+			final Integer cost = handleEncounter(buffer, time, loc, find);
 			if (cost == null) {
 				return null;
 			}
 			time -= cost;
-			String addendum = cli.inputMultilineString("Add to results about that:");
+			final String addendum = cli.inputMultilineString("Add to results about that:");
 			if (addendum == null) {
 				return null;
 			}

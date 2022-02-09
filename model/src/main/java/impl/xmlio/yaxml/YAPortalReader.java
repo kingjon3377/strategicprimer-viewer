@@ -25,7 +25,7 @@ import lovelace.util.ThrowingConsumer;
 			throws SPFormatException {
 		requireTag(element, parent, "portal");
 		expectAttributes(element, "world", "row", "column", "id", "image");
-		Portal retval = new Portal(getParameter(element, "world"), parsePoint(element),
+		final Portal retval = new Portal(getParameter(element, "world"), parsePoint(element),
 			getOrGenerateID(element));
 		retval.setImage(getParameter(element, "image", ""));
 		spinUntilEnd(element.getName(), stream);

@@ -33,10 +33,10 @@ public final class DistanceComparator implements Comparator<Point> {
 	 * taking an expensive square root.
 	 */
 	private int distance(final Point point) {
-		int colDistRaw = Math.abs(point.getColumn() - base.getColumn());
-		int rowDistRaw = Math.abs(point.getRow() - base.getRow());
-		int colDist;
-		int rowDist;
+		final int colDistRaw = Math.abs(point.getColumn() - base.getColumn());
+		final int rowDistRaw = Math.abs(point.getRow() - base.getRow());
+		final int colDist;
+		final int rowDist;
 		if (dimensions != null && colDistRaw > dimensions.getColumns() / 2) {
 			colDist = dimensions.getColumns() - colDistRaw;
 		} else {
@@ -71,7 +71,7 @@ public final class DistanceComparator implements Comparator<Point> {
 	 * described with the given name.
 	 */
 	public String distanceString(final Point point, final String name) {
-		int dist = distance(point);
+		final int dist = distance(point);
 		if (dist < 0) {
 			throw new IllegalStateException("Negative distance");
 		} else if (dist == 0) {

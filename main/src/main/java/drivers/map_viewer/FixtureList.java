@@ -91,9 +91,9 @@ public class FixtureList extends JList<TileFixture>
 
 	@Override
 	public void dragGestureRecognized(final DragGestureEvent event) {
-		List<TileFixture> selection = getSelectedValuesList();
+		final List<TileFixture> selection = getSelectedValuesList();
 		if (!selection.isEmpty()) {
-			Transferable payload;
+			final Transferable payload;
 			if (selection.size() == 1) {
 				payload = new FixtureTransferable(selection.get(0));
 			} else {
@@ -132,7 +132,7 @@ public class FixtureList extends JList<TileFixture>
 	private class FixtureMouseListener extends MouseAdapter {
 		private void handleMouseEvent(final MouseEvent event) {
 			if (event.isPopupTrigger() && event.getClickCount() == 1) {
-				int index = locationToIndex(event.getPoint());
+				final int index = locationToIndex(event.getPoint());
 				if (index >= 0 && index < listModel.getSize()) {
 					new FixtureEditMenu(listModel.getElementAt(index), players,
 							idf, feh)
@@ -198,18 +198,18 @@ public class FixtureList extends JList<TileFixture>
 		}
 
 		private void handleDrop(final Transferable trans) throws UnsupportedFlavorException, IOException {
-			DataFlavor[] flavors = Optional.ofNullable(trans.getTransferDataFlavors())
+			final DataFlavor[] flavors = Optional.ofNullable(trans.getTransferDataFlavors())
 					.orElseGet(() -> new DataFlavor[0]);
-			for (DataFlavor flavor : flavors) {
+			for (final DataFlavor flavor : flavors) {
 				if (FixtureTransferable.FLAVOR.equals(flavor)) {
-					Object transferData = trans.getTransferData(flavor);
+					final Object transferData = trans.getTransferData(flavor);
 					if (transferData instanceof TileFixture) {
 						listModel.addFixture((TileFixture) transferData);
 					} // TODO: else what? log?
 				} else if (CurriedFixtureTransferable.FLAVOR.equals(flavor)) {
-					List<Transferable> curried =
+					final List<Transferable> curried =
 						(List<Transferable>) trans.getTransferData(flavor);
-					for (Transferable t : curried) {
+					for (final Transferable t : curried) {
 						handleDrop(t);
 					}
 				} else {
@@ -228,13 +228,13 @@ public class FixtureList extends JList<TileFixture>
 		@Override
 		public void drop(final DropTargetDropEvent dtde) {
 			if (isXfrFromOutside(dtde)) { // TODO: invert to reduce indentation?
-				for (DataFlavor flavor : dtde.getCurrentDataFlavorsAsList()) {
+				for (final DataFlavor flavor : dtde.getCurrentDataFlavorsAsList()) {
 					if (Stream.of(FixtureTransferable.FLAVOR,
 								CurriedFixtureTransferable.FLAVOR)
 							.anyMatch(flavor::equals)) {
 						try {
 							dtde.acceptDrop(dtde.getDropAction());
-							Transferable t = dtde.getTransferable();
+							final Transferable t = dtde.getTransferable();
 							if (t != null) {
 								handleDrop(t);
 							}

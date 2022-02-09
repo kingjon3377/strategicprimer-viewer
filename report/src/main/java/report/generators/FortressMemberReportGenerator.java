@@ -95,22 +95,22 @@ public class FortressMemberReportGenerator extends AbstractReportGenerator<Fortr
 	@Override
 	public void produce(final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
 	                    final IMapNG map, final Consumer<String> ostream) {
-		HeadedMap<Implement, Point> equipment = new HeadedMapImpl<>("<li>Equipment:",
+		final HeadedMap<Implement, Point> equipment = new HeadedMapImpl<>("<li>Equipment:",
 			Comparator.comparing(Implement::getKind)
 				.thenComparing(Implement::getCount,
 					Comparator.reverseOrder())
 				.thenComparing(Implement::getId));
-		Map<String, HeadedMap<IResourcePile, Point>> resources = new HashMap<>();
-		for (Pair<Point, FortressMember> pair : fixtures.values().stream()
+		final Map<String, HeadedMap<IResourcePile, Point>> resources = new HashMap<>();
+		for (final Pair<Point, FortressMember> pair : fixtures.values().stream()
 				.filter(p -> p.getValue1() instanceof IResourcePile ||
 					p.getValue1() instanceof Implement)
 				.sorted(pairComparator)
 				.map(p -> Pair.with(p.getValue0(), (FortressMember) p.getValue1()))
 				.collect(Collectors.toList())) {
-			Point loc = pair.getValue0();
-			FortressMember item = pair.getValue1();
+			final Point loc = pair.getValue0();
+			final FortressMember item = pair.getValue1();
 			if (item instanceof IResourcePile) {
-				IResourcePile resource = (IResourcePile) item;
+				final IResourcePile resource = (IResourcePile) item;
 				final HeadedMap<IResourcePile, Point> pileMap;
 				if (resources.containsKey(resource.getKind())) {
 					pileMap = resources.get(resource.getKind());
@@ -127,7 +127,7 @@ public class FortressMemberReportGenerator extends AbstractReportGenerator<Fortr
 				pileMap.put(resource, loc);
 				fixtures.remove(resource.getId());
 			} else if (item instanceof Implement) {
-				Implement implement = (Implement) item;
+				final Implement implement = (Implement) item;
 				equipment.put(implement, loc); // TODO: Ensure it's not displacing anything (i.e. no duplicate equipment fixtures)
 				fixtures.remove(implement.getId());
 			}
@@ -138,10 +138,10 @@ public class FortressMemberReportGenerator extends AbstractReportGenerator<Fortr
 			writeMap(ostream, equipment, defaultFormatter(fixtures, map));
 			if (!resources.isEmpty()) {
 				println(ostream, "<li>Resources:<ul>");
-				for (Map.Entry<String, HeadedMap<IResourcePile, Point>> entry :
+				for (final Map.Entry<String, HeadedMap<IResourcePile, Point>> entry :
 						resources.entrySet()) {
-					String kind = entry.getKey();
-					HeadedMap<IResourcePile, Point> mapping = entry.getValue();
+					final String kind = entry.getKey();
+					final HeadedMap<IResourcePile, Point> mapping = entry.getValue();
 					ostream.accept("<li>");
 					writeMap(ostream, mapping, defaultFormatter(fixtures, map));
 					println(ostream, "</li>");

@@ -59,8 +59,8 @@ import lovelace.util.ListenedButton;
 		final FontRenderContext context = pen.getFontRenderContext();
 		double width = 0;
 		double height = 10;
-		Iterable<DriverFactory> drivers = ServiceLoader.load(DriverFactory.class);
-		for (DriverFactory driver : drivers) {
+		final Iterable<DriverFactory> drivers = ServiceLoader.load(DriverFactory.class);
+		for (final DriverFactory driver : drivers) {
 			if (!includeInGUIList(driver)) {
 				continue;
 			}
@@ -70,7 +70,7 @@ import lovelace.util.ListenedButton;
 		}
 		final SPFrame frame = new SPFrame("SP App Chooser", this, new Dimension((int) width, (int) height));
 		final JPanel buttonPanel = new JPanel(new GridLayout(0, 1));
-		Consumer<DriverFactory> buttonHandler = (target) -> {
+		final Consumer<DriverFactory> buttonHandler = (target) -> {
 				new DriverWrapper(target).startCatchingErrors(cli, options,
 					Stream.concat(Stream.of(args),
 						additionalFiles.stream()).toArray(String[]::new));
@@ -79,11 +79,11 @@ import lovelace.util.ListenedButton;
 						frame.dispose();
 					});
 			};
-		for (DriverFactory driver : drivers) {
+		for (final DriverFactory driver : drivers) {
 			buttonPanel.add(new ListenedButton(driver.getUsage().getShortDescription(),
 				ignored -> buttonHandler.accept(driver)));
 		}
-		BorderedPanel mainPanel = BorderedPanel.verticalPanel(
+		final BorderedPanel mainPanel = BorderedPanel.verticalPanel(
 			new JLabel("Please choose one of the applications below"),
 			new JScrollPane(buttonPanel), null);
 		frame.setContentPane(mainPanel);

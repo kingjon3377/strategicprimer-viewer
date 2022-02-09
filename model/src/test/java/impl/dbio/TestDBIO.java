@@ -154,28 +154,28 @@ public final class TestDBIO {
 	}
 
 	private IMapNG assertDatabaseSerialization(final IMapNG map) {
-		DB db = new DB(() -> connection);
+		final DB db = new DB(() -> connection);
 		writer.writeToDatabase(db, map);
-		IMapNG deserialized = reader.readMapFromDatabase(db, Warning.DIE);
+		final IMapNG deserialized = reader.readMapFromDatabase(db, Warning.DIE);
 		assertEquals(map, deserialized, "Deserialized form is the same as original");
 		return deserialized;
 	}
 
 	private <FixtureType extends TileFixture> FixtureType
 			assertFixtureSerialization(final FixtureType fixture) {
-		MapDimensions dimensions = new MapDimensionsImpl(2, 2, 2);
-		IMutableMapNG firstMap = new SPMapNG(dimensions, new PlayerCollection(), -1);
+		final MapDimensions dimensions = new MapDimensionsImpl(2, 2, 2);
+		final IMutableMapNG firstMap = new SPMapNG(dimensions, new PlayerCollection(), -1);
 		firstMap.addFixture(new Point(0, 0), fixture);
-		IMutableMapNG secondMap = new SPMapNG(dimensions, new PlayerCollection(), -1);
+		final IMutableMapNG secondMap = new SPMapNG(dimensions, new PlayerCollection(), -1);
 		secondMap.addFixture(new Point(1, 1), fixture);
 		if (fixture instanceof HasOwner) {
 			firstMap.addPlayer(((HasOwner) fixture).getOwner());
 			secondMap.addPlayer(((HasOwner) fixture).getOwner());
 		}
-		IMapNG deserializedFirst = assertDatabaseSerialization(firstMap);
-		IMapNG deserializedSecond = assertDatabaseSerialization(secondMap);
+		final IMapNG deserializedFirst = assertDatabaseSerialization(firstMap);
+		final IMapNG deserializedSecond = assertDatabaseSerialization(secondMap);
 		assertNotEquals(deserializedFirst, deserializedSecond);
-		FixtureType retval =
+		final FixtureType retval =
 			(FixtureType) deserializedFirst.getFixtures(new Point(0, 0))
 				.stream().findFirst().get();
 		return retval;
@@ -256,8 +256,8 @@ public final class TestDBIO {
 	@MethodSource("testCitySerialization")
 	public void testFortificationSerialization(final int id, final TownStatus status, final TownSize size, final int dc) {
 		// TODO: We want more of the state to be random
-		Fortification town = new Fortification(status, size, dc, "name", id, new PlayerImpl(0, ""));
-		CommunityStats stats = new CommunityStats(5);
+		final Fortification town = new Fortification(status, size, dc, "name", id, new PlayerImpl(0, ""));
+		final CommunityStats stats = new CommunityStats(5);
 		stats.addWorkedField(8);
 		stats.addWorkedField(13);
 		stats.setSkillLevel("skillOne", 2);
@@ -278,8 +278,8 @@ public final class TestDBIO {
 	@MethodSource
 	public void testCitySerialization(final int id, final TownStatus status, final TownSize size, final int dc) {
 		// TODO: We want more of the state to be random
-		City town = new City(status, size, dc, "name", id, new PlayerImpl(0, ""));
-		CommunityStats stats = new CommunityStats(5);
+		final City town = new City(status, size, dc, "name", id, new PlayerImpl(0, ""));
+		final CommunityStats stats = new CommunityStats(5);
 		stats.addWorkedField(8);
 		stats.addWorkedField(13);
 		stats.setSkillLevel("skillOne", 2);
@@ -300,8 +300,8 @@ public final class TestDBIO {
 	@MethodSource("testCitySerialization")
 	public void testTownSerialization(final int id, final TownStatus status, final TownSize size, final int dc) {
 		// TODO: We want more of the state to be random
-		Town town = new Town(status, size, dc, "name", id, new PlayerImpl(0, ""));
-		CommunityStats stats = new CommunityStats(5);
+		final Town town = new Town(status, size, dc, "name", id, new PlayerImpl(0, ""));
+		final CommunityStats stats = new CommunityStats(5);
 		stats.addWorkedField(8);
 		stats.addWorkedField(13);
 		stats.setSkillLevel("skillOne", 2);
@@ -369,9 +369,9 @@ public final class TestDBIO {
 	@ParameterizedTest
 	@MethodSource
 	public void testFortressSerialization(final int id, final TownSize size) {
-		Player owner = new PlayerImpl(1, "owner");
-		IMutableFortress fortress = new FortressImpl(owner, "fortress", id, size);
-		IMutableUnit unit = new Unit(owner, "unitKind", "unitName", id + 2);
+		final Player owner = new PlayerImpl(1, "owner");
+		final IMutableFortress fortress = new FortressImpl(owner, "fortress", id, size);
+		final IMutableUnit unit = new Unit(owner, "unitKind", "unitName", id + 2);
 		unit.addMember(new Worker("workerName", "human", id + 3, new Job("jobName", 2)));
 		unit.addMember(new Sphinx(id + 5));
 		unit.addMember(new ResourcePileImpl(id + 6, "resource kind", "resource contents",
@@ -520,8 +520,8 @@ public final class TestDBIO {
 	@ParameterizedTest
 	@MethodSource("fewIntegers")
 	public void testUnitSerialization(final int id) {
-		Player owner = new PlayerImpl(1, "owner");
-		IMutableUnit unit = new Unit(owner, "unitKind", "unitName", id);
+		final Player owner = new PlayerImpl(1, "owner");
+		final IMutableUnit unit = new Unit(owner, "unitKind", "unitName", id);
 		unit.addMember(new Worker("worker name", "elf", id + 1, new Job("job name", 2,
 				new Skill("first skill", 1, 2), new Skill("second skill", 3, 4)),
 			new Job("second job", 4)));
@@ -554,27 +554,27 @@ public final class TestDBIO {
 	@ParameterizedTest
 	@MethodSource
 	public void testNotesSerialization(final int id, final int player, final String note) {
-		Worker worker = new Worker("test worker", "human", id);
-		Player playerObj = new PlayerImpl(player, "");
+		final Worker worker = new Worker("test worker", "human", id);
+		final Player playerObj = new PlayerImpl(player, "");
 		worker.setNote(playerObj, note);
-		Unit unit = new Unit(playerObj, "unitKind", "unitName", id + 1);
+		final Unit unit = new Unit(playerObj, "unitKind", "unitName", id + 1);
 		unit.addMember(worker);
-		IUnit deserializedUnit = assertFixtureSerialization(unit);
+		final IUnit deserializedUnit = assertFixtureSerialization(unit);
 		assertEquals(note, ((IWorker) deserializedUnit.iterator().next()).getNote(playerObj),
 			"Note was deserialized");
 	}
 
 	@Test
 	public void testBookmarkSerialization() {
-		IMutableMapNG map = new SPMapNG(new MapDimensionsImpl(1, 1, 2), new PlayerCollection(), 1);
-		Player player = map.getPlayers().getPlayer(1);
+		final IMutableMapNG map = new SPMapNG(new MapDimensionsImpl(1, 1, 2), new PlayerCollection(), 1);
+		final Player player = map.getPlayers().getPlayer(1);
 		map.setCurrentPlayer(player);
 		assertFalse(map.getBookmarks().contains(new Point(0, 0)),
 			"Map by default doesn't have a bookmark");
 		assertEquals(0, map.getAllBookmarks(new Point(0, 0)).size(),
 			"Map by default has no bookmarks");
 		map.addBookmark(new Point(0, 0));
-		IMutableMapNG deserialized = (IMutableMapNG) assertDatabaseSerialization(map);
+		final IMutableMapNG deserialized = (IMutableMapNG) assertDatabaseSerialization(map);
 		assertNotSame(map, deserialized, "Deserialization doesn't just return the input");
 		assertTrue(deserialized.getBookmarks().contains(new Point(0, 0)),
 			"Deserialized map has the bookmark we saved");
@@ -593,7 +593,7 @@ public final class TestDBIO {
 	public void testRoadSerialization(final Direction directionOne, final int qualityOne, final Direction directionTwo,
 	                                  final int qualityTwo) {
 		assumeFalse(directionOne == directionTwo,  "We can't have the same direction twice");
-		IMutableMapNG map = new SPMapNG(new MapDimensionsImpl(1, 1, 2), new PlayerCollection(), 1);
+		final IMutableMapNG map = new SPMapNG(new MapDimensionsImpl(1, 1, 2), new PlayerCollection(), 1);
 		map.setBaseTerrain(new Point(0, 0), TileType.Plains);
 		if (Direction.Nowhere != directionOne) {
 			map.setRoadLevel(new Point(0, 0), directionOne, qualityOne);

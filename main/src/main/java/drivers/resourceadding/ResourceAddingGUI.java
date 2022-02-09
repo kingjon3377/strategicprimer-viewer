@@ -181,21 +181,21 @@ import java.io.FileNotFoundException;
 			resourceLabel = new FormattedLabel("Add equipment for %s:", currentPlayer.getName());
 			mainPanel.add(resourceLabel);
 
-			JPanel resourcePanel = new BoxPanel(BoxAxis.LineAxis);
+			final JPanel resourcePanel = new BoxPanel(BoxAxis.LineAxis);
 			resourceKindBox = new MemoizedComboBox(logError(logLabel));
 			resourcePanel.add(pairPanel(new JLabel("General Category"), resourceKindBox));
 
 			// If we set the maximum high at this point, the fields would try to be
 			// unneccessarily large. I'm not sure that setting it low at first helps, though.
 			resourceCreatedModel = new SpinnerNumberModel(-1, -1, 2000, 1);
-			JSpinner creationSpinner = new JSpinner(resourceCreatedModel);
+			final JSpinner creationSpinner = new JSpinner(resourceCreatedModel);
 			resourcePanel.add(pairPanel(new JLabel("Turn created"), creationSpinner));
 
 			resourceBox = new MemoizedComboBox(logError(logLabel));
 			resourcePanel.add(pairPanel(new JLabel("Specific Resource"), resourceBox));
 
 			resourceQuantityModel = new SpinnerNumberModel(0, 0, 2000, 1);
-			JSpinner resourceQuantitySpinner = new JSpinner(resourceQuantityModel);
+			final JSpinner resourceQuantitySpinner = new JSpinner(resourceQuantityModel);
 			resourcePanel.add(pairPanel(new JLabel("Quantity"), resourceQuantitySpinner));
 
 			resourceUnitsBox = new MemoizedComboBox(logError(logLabel));
@@ -227,7 +227,7 @@ import java.io.FileNotFoundException;
 				implementKindBox, new ListenedButton("Add Equipment",
 				this::implementListener)));
 			mainPanel.addGlue();
-			JScrollPane scrolledLog = new JScrollPane(logLabel);
+			final JScrollPane scrolledLog = new JScrollPane(logLabel);
 			scrolledLog.setMinimumSize(logLabel.getMinimumSize());
 
 			add(verticalSplit(mainPanel, scrolledLog, 0.2, 0.1));
@@ -236,7 +236,7 @@ import java.io.FileNotFoundException;
 			logLabel.setMinimumSize(new Dimension(getWidth() - 20, 50));
 			logLabel.setPreferredSize(new Dimension(getWidth(), 100));
 
-			int maximum = Short.MAX_VALUE; // TODO: Get whatever runtime.maxArraySize was in Ceylon?
+			final int maximum = Short.MAX_VALUE; // TODO: Get whatever runtime.maxArraySize was in Ceylon?
 
 			resourceCreatedModel.setMaximum(maximum);
 			resourceQuantityModel.setMaximum(maximum);
@@ -253,9 +253,9 @@ import java.io.FileNotFoundException;
 
 		private void resourceListener(final ActionEvent ignored) {
 			confirmPlayer();
-			String kind = resourceKindBox.getSelectedString();
-			String resource = resourceBox.getSelectedString();
-			String units = resourceUnitsBox.getSelectedString();
+			final String kind = resourceKindBox.getSelectedString();
+			final String resource = resourceBox.getSelectedString();
+			final String units = resourceUnitsBox.getSelectedString();
 			if (kind.isEmpty()) {
 				resourceKindBox.requestFocusInWindow();
 				return;
@@ -267,7 +267,7 @@ import java.io.FileNotFoundException;
 				return;
 			}
 
-			BigDecimal qty;
+			final BigDecimal qty;
 			try {
 				// TODO: Can't we pass the number to BigDecimal directly?
 				qty = new BigDecimal(resourceQuantityModel.getNumber().toString());
@@ -275,7 +275,7 @@ import java.io.FileNotFoundException;
 				logLabel.appendLine("Failed to convert quantity into the form we need.");
 				return;
 			}
-			IResourcePile pile = model.addResourcePile(currentPlayer, idf.createID(),
+			final IResourcePile pile = model.addResourcePile(currentPlayer, idf.createID(),
 				kind, resource, qty, units, resourceCreatedModel.getNumber().intValue());
 			logAddition(logLabel, currentPlayer, pile.toString());
 			resourceKindBox.checkAndClear();
@@ -287,12 +287,12 @@ import java.io.FileNotFoundException;
 
 		private void implementListener(final ActionEvent ignored) { // Param required for use in fields
 			confirmPlayer();
-			String kind = implementKindBox.getSelectedString();
+			final String kind = implementKindBox.getSelectedString();
 			if (kind.isEmpty()) {
 				implementKindBox.requestFocusInWindow();
 				return;
 			}
-			int quantity = implementQuantityModel.getNumber().intValue();
+			final int quantity = implementQuantityModel.getNumber().intValue();
 			model.addResource(new Implement(kind, idf.createID(), quantity), currentPlayer);
 			logAddition(logLabel, currentPlayer, String.format("%d x %s", quantity, kind));
 			implementQuantityModel.setValue(1);
@@ -314,7 +314,7 @@ import java.io.FileNotFoundException;
 			} catch (final SPFormatException except) {
 				// FIXME: Report error to the user (via the streaming-log panel)
 				LOGGER.log(Level.SEVERE, "SP map format error", except);
-			} catch (MissingFileException|NoSuchFileException|FileNotFoundException except) {
+			} catch (final MissingFileException|NoSuchFileException|FileNotFoundException except) {
 				// FIXME: Report error to the user (via the streaming-log panel)
 				LOGGER.log(Level.SEVERE, "Dropped file couldn't be found", except);
 			} catch (final IOException except) {
@@ -328,7 +328,7 @@ import java.io.FileNotFoundException;
 	}
 
 	private void startDriverImpl(final PlayerChangeMenuListener pcml, final MenuBroker menuHandler) {
-		ResourceAddingFrame frame = new ResourceAddingFrame(menuHandler::actionPerformed, this);
+		final ResourceAddingFrame frame = new ResourceAddingFrame(menuHandler::actionPerformed, this);
 		frame.addWindowListener(new WindowCloseListener(menuHandler::actionPerformed));
 		try {
 			menuHandler.registerWindowShower(new AboutDialog(frame,
@@ -343,8 +343,8 @@ import java.io.FileNotFoundException;
 
 	@Override
 	public void startDriver() {
-		PlayerChangeMenuListener pcml = new PlayerChangeMenuListener(model);
-		MenuBroker menuHandler = new MenuBroker();
+		final PlayerChangeMenuListener pcml = new PlayerChangeMenuListener(model);
+		final MenuBroker menuHandler = new MenuBroker();
 		menuHandler.register(new IOHandler(this, cli),
 			"load", "save", "save as", "new", "load secondary", "save all",
 			"open in map viewer", "open secondary map in map viewer", "close", "quit");

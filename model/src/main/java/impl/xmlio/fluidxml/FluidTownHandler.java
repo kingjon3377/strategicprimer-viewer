@@ -49,24 +49,24 @@ import java.util.stream.Collectors;
 		expectAttributes(element, warner, "name", "size", "status", "dc", "id",
 			"portrait", "image", "owner");
 		requireNonEmptyAttribute(element, "name", false, warner);
-		TownSize size;
+		final TownSize size;
 		try {
 			size = TownSize.parseTownSize(getAttribute(element, "size"));
 		} catch (final IllegalArgumentException except) {
 			throw new MissingPropertyException(element, "size", except);
 		}
-		TownStatus status;
+		final TownStatus status;
 		try {
 			status = TownStatus.parse(getAttribute(element, "status"));
 		} catch (final IllegalArgumentException except) {
 			throw new MissingPropertyException(element, "status", except);
 		}
-		Town fix = new Town(status, size, getIntegerAttribute(element, "dc"),
+		final Town fix = new Town(status, size, getIntegerAttribute(element, "dc"),
 			getAttribute(element, "name", ""),
 			getOrGenerateID(element, warner, idFactory),
 			getPlayerOrIndependent(element, warner, players));
 		fix.setPortrait(getAttribute(element, "portrait", ""));
-		for (XMLEvent event : stream) {
+		for (final XMLEvent event : stream) {
 			if (event instanceof StartElement && isSPStartElement((StartElement) event)) {
 				if (fix.getPopulation() == null) {
 					fix.setPopulation(readCommunityStats((StartElement) event,
@@ -90,25 +90,25 @@ import java.util.stream.Collectors;
 		expectAttributes(element, warner, "name", "size", "status", "dc", "id",
 			"portrait", "image", "owner");
 		requireNonEmptyAttribute(element, "name", false, warner);
-		TownSize size;
+		final TownSize size;
 		try {
 			size = TownSize.parseTownSize(getAttribute(element, "size"));
 		} catch (final IllegalArgumentException except) {
 			throw new MissingPropertyException(element, "size", except);
 		}
-		TownStatus status;
+		final TownStatus status;
 		try {
 			status = TownStatus.parse(getAttribute(element, "status"));
 		} catch (final IllegalArgumentException except) {
 			throw new MissingPropertyException(element, "status", except);
 		}
-		Fortification fix = new Fortification(status, size,
+		final Fortification fix = new Fortification(status, size,
 			getIntegerAttribute(element, "dc"),
 			getAttribute(element, "name", ""),
 			getOrGenerateID(element, warner, idFactory),
 			getPlayerOrIndependent(element, warner, players));
 		fix.setPortrait(getAttribute(element, "portrait", ""));
-		for (XMLEvent event : stream) {
+		for (final XMLEvent event : stream) {
 			if (event instanceof StartElement && isSPStartElement((StartElement) event)) {
 				if (fix.getPopulation() == null) {
 					fix.setPopulation(readCommunityStats((StartElement) event,
@@ -132,24 +132,24 @@ import java.util.stream.Collectors;
 		expectAttributes(element, warner, "name", "size", "status", "dc", "id",
 			"portrait", "image", "owner");
 		requireNonEmptyAttribute(element, "name", false, warner);
-		TownSize size;
+		final TownSize size;
 		try {
 			size = TownSize.parseTownSize(getAttribute(element, "size"));
 		} catch (final IllegalArgumentException except) {
 			throw new MissingPropertyException(element, "size", except);
 		}
-		TownStatus status;
+		final TownStatus status;
 		try {
 			status = TownStatus.parse(getAttribute(element, "status"));
 		} catch (final IllegalArgumentException except) {
 			throw new MissingPropertyException(element, "status", except);
 		}
-		City fix = new City(status, size, getIntegerAttribute(element, "dc"),
+		final City fix = new City(status, size, getIntegerAttribute(element, "dc"),
 			getAttribute(element, "name", ""),
 			getOrGenerateID(element, warner, idFactory),
 			getPlayerOrIndependent(element, warner, players));
 		fix.setPortrait(getAttribute(element, "portrait", ""));
-		for (XMLEvent event : stream) {
+		for (final XMLEvent event : stream) {
 			if (event instanceof StartElement && isSPStartElement((StartElement) event)) {
 				if (fix.getPopulation() == null) {
 					fix.setPopulation(readCommunityStats((StartElement) event,
@@ -173,19 +173,19 @@ import java.util.stream.Collectors;
 		expectAttributes(element, warner, "status", "race", "owner", "id", "image",
 			"portrait", "name");
 		requireNonEmptyAttribute(element, "name", false, warner);
-		int idNum = getOrGenerateID(element, warner, idFactory);
-		TownStatus status;
+		final int idNum = getOrGenerateID(element, warner, idFactory);
+		final TownStatus status;
 		try {
 			status = TownStatus.parse(getAttribute(element, "status"));
 		} catch (final IllegalArgumentException except) {
 			throw new MissingPropertyException(element, "status", except);
 		}
-		Village retval = new Village(status, getAttribute(element, "name", ""), idNum,
+		final Village retval = new Village(status, getAttribute(element, "name", ""), idNum,
 			getPlayerOrIndependent(element, warner, players),
 			getAttribute(element, "race",
 				RaceFactory.randomRace(new Random(idNum))));
 		retval.setPortrait(getAttribute(element, "portrait", ""));
-		for (XMLEvent event : stream) {
+		for (final XMLEvent event : stream) {
 			if (event instanceof StartElement && isSPStartElement((StartElement) event)) {
 				if (retval.getPopulation() == null) {
 					retval.setPopulation(readCommunityStats((StartElement) event,
@@ -207,11 +207,11 @@ import java.util.stream.Collectors;
 	                                                final IDRegistrar idFactory) throws SPFormatException {
 		requireTag(element, parent, "population");
 		expectAttributes(element, warner, "size");
-		CommunityStats retval = new CommunityStats(getIntegerAttribute(element, "size"));
+		final CommunityStats retval = new CommunityStats(getIntegerAttribute(element, "size"));
 		@Nullable String current = null;
-		Deque<StartElement> stack = new LinkedList<>();
+		final Deque<StartElement> stack = new LinkedList<>();
 		stack.addFirst(element);
-		for (XMLEvent event : stream) {
+		for (final XMLEvent event : stream) {
 			if (event instanceof EndElement &&
 					((EndElement) event).getName().equals(element.getName())) {
 				break;
@@ -240,7 +240,7 @@ import java.util.stream.Collectors;
 					}
 					break;
 				case "resource":
-					StartElement top = stack.peekFirst();
+					final StartElement top = stack.peekFirst();
 					final Consumer<IMutableResourcePile> lambda;
 					switch (current) {
 					case "production":
@@ -266,7 +266,7 @@ import java.util.stream.Collectors;
 			} else if (event instanceof EndElement && !stack.isEmpty() &&
 					((EndElement) event).getName()
 						.equals(stack.peekFirst().getName())) {
-				StartElement top = stack.peekFirst();
+				final StartElement top = stack.peekFirst();
 				stack.removeFirst();
 				if (top.equals(element)) {
 					break;
@@ -322,20 +322,20 @@ import java.util.stream.Collectors;
 	                                       final int indent) throws MalformedXMLException {
 		writeTag(ostream, "population", indent, false);
 		writeAttributes(ostream, Pair.with("size", obj.getPopulation()));
-		for (Map.Entry<String, Integer> entry : obj.getHighestSkillLevels().entrySet()
+		for (final Map.Entry<String, Integer> entry : obj.getHighestSkillLevels().entrySet()
 				.stream().sorted(Map.Entry.comparingByKey())
 				.collect(Collectors.toList())) {
 			writeTag(ostream, "expertise", indent + 1, true);
 			writeAttributes(ostream, Pair.with("skill", entry.getKey()),
 				Pair.with("level", entry.getValue()));
 		}
-		for (Integer claim : obj.getWorkedFields()) {
+		for (final Integer claim : obj.getWorkedFields()) {
 			writeTag(ostream, "claim", indent + 1, true);
 			writeAttributes(ostream, Pair.with("resource", claim));
 		}
 		if (!obj.getYearlyProduction().isEmpty()) {
 			writeTag(ostream, "production", indent + 1, false);
-			for (IResourcePile resource : obj.getYearlyProduction()) {
+			for (final IResourcePile resource : obj.getYearlyProduction()) {
 				FluidResourceHandler.writeResource(ostream, resource, indent + 2);
 			}
 			try {
@@ -346,7 +346,7 @@ import java.util.stream.Collectors;
 		}
 		if (!obj.getYearlyConsumption().isEmpty()) {
 			writeTag(ostream, "consumption", indent + 1, false);
-			for (IResourcePile resource : obj.getYearlyConsumption()) {
+			for (final IResourcePile resource : obj.getYearlyConsumption()) {
 				FluidResourceHandler.writeResource(ostream, resource, indent + 2);
 			}
 			try {

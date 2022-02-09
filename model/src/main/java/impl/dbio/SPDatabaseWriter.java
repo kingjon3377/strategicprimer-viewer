@@ -28,7 +28,7 @@ public final class SPDatabaseWriter implements SPWriter {
 	private final Map<Path, DB> connections = new HashMap<>();
 
 	private DataSource getBaseConnection(final Path path) {
-		SQLiteDataSource retval = new SQLiteDataSource();
+		final SQLiteDataSource retval = new SQLiteDataSource();
 		if (path.toString().isEmpty()) {
 			LOGGER.info("Trying to set up an in-memory database");
 			retval.setUrl("jdbc:sqlite:file::memory:");
@@ -44,7 +44,7 @@ public final class SPDatabaseWriter implements SPWriter {
 		if (connections.containsKey(path)) {
 			return connections.get(path);
 		} else {
-			DB retval = new DB(getBaseConnection(path));
+			final DB retval = new DB(getBaseConnection(path));
 			connections.put(path, retval);
 			return retval;
 		}
@@ -88,8 +88,8 @@ public final class SPDatabaseWriter implements SPWriter {
 		}
 		if (obj instanceof HasNotes) {
 			sql.transaction(db -> {
-					for (Integer player : ((HasNotes) obj).getNotesPlayers()) {
-						String note = ((HasNotes) obj).getNote(player);
+					for (final Integer player : ((HasNotes) obj).getNotesPlayers()) {
+						final String note = ((HasNotes) obj).getNote(player);
 						if (note != null) {
 							db.update(INSERT_NOTE, ((HasNotes) obj).getId(),
 								player, note)
@@ -99,7 +99,7 @@ public final class SPDatabaseWriter implements SPWriter {
 					return true;
 				});
 		}
-		for (DatabaseWriter<?, ?> writer : writers) {
+		for (final DatabaseWriter<?, ?> writer : writers) {
 			if (writer.canWrite(obj, context)) {
 				writer.initialize(sql);
 				writer.writeRaw(sql, obj, context);
@@ -112,7 +112,7 @@ public final class SPDatabaseWriter implements SPWriter {
 
 	@Override
 	public void writeSPObject(final Path arg, final Object obj) {
-		DB db = getSQL(arg);
+		final DB db = getSQL(arg);
 		writeSPObjectInContext(db, obj, obj);
 	}
 

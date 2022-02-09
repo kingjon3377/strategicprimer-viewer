@@ -54,7 +54,7 @@ public class AnimalReportGenerator extends AbstractReportGenerator</*Animal|Anim
 			ostream.accept(" tracks or traces of ");
 			ostream.accept(item.getKind());
 		} else {
-			Animal animal = (Animal) item;
+			final Animal animal = (Animal) item;
 			if (animal.isTalking()) {
 				ostream.accept(" talking");
 			}
@@ -94,16 +94,16 @@ public class AnimalReportGenerator extends AbstractReportGenerator</*Animal|Anim
 	                    final Consumer<String> ostream) {
 		// TODO: Use a multimap, either from Guava or a custom impl in lovelace.util
 		final Map<String, List<Point>> items = new HashMap<>();
-		for (Triplet<Integer, Point, AnimalOrTracks> triplet : fixtures.entrySet().stream()
+		for (final Triplet<Integer, Point, AnimalOrTracks> triplet : fixtures.entrySet().stream()
 				.filter(e -> e.getValue().getValue1() instanceof AnimalOrTracks)
 				.sorted(Map.Entry.comparingByValue(pairComparator))
 				.map(e -> Triplet.with(e.getKey(), e.getValue().getValue0(),
 					(AnimalOrTracks) e.getValue().getValue1()))
 				.collect(Collectors.toList())) {
-			int key = triplet.getValue0();
-			Point loc = triplet.getValue1();
-			AnimalOrTracks animal = triplet.getValue2();
-			String desc;
+			final int key = triplet.getValue0();
+			final Point loc = triplet.getValue1();
+			final AnimalOrTracks animal = triplet.getValue2();
+			final String desc;
 			if (animal instanceof AnimalTracks) {
 				desc = "tracks or traces of " + ((AnimalTracks) animal).getKind();
 			} else if (((Animal) animal).isTalking()) {
@@ -111,7 +111,7 @@ public class AnimalReportGenerator extends AbstractReportGenerator</*Animal|Anim
 			} else {
 				desc = ((Animal) animal).getKind();
 			}
-			List<Point> list = Optional.ofNullable(items.get(desc)).orElseGet(ArrayList::new);
+			final List<Point> list = Optional.ofNullable(items.get(desc)).orElseGet(ArrayList::new);
 			list.add(loc);
 			items.put(desc, list);
 			fixtures.remove(key);
@@ -119,7 +119,7 @@ public class AnimalReportGenerator extends AbstractReportGenerator</*Animal|Anim
 		if (!items.isEmpty()) {
 			println(ostream, "<h4>Animal sightings or encounters</h4>");
 			println(ostream, "<ul>");
-			for (Map.Entry<String, List<Point>> entry : items.entrySet()) {
+			for (final Map.Entry<String, List<Point>> entry : items.entrySet()) {
 				if (!entry.getValue().isEmpty()) {
 					ostream.accept("<li>");
 					ostream.accept(entry.getKey());

@@ -43,7 +43,7 @@ public class MapReaderAdapter {
 	public static IMutableMapNG readMap(final Path file, final Warning warner) throws DriverFailedException {
 		try {
 			return MapIOHelper.readMap(file, warner);
-		} catch (MissingFileException|FileNotFoundException|NoSuchFileException except) {
+		} catch (final MissingFileException|FileNotFoundException|NoSuchFileException except) {
 			throw new DriverFailedException(except, "File not found");
 		} catch (final IOException except) {
 			throw new DriverFailedException(except, "I/O error while reading");
@@ -62,7 +62,7 @@ public class MapReaderAdapter {
 	public static IDriverModel readMapModel(final Path file, final Warning warner) throws DriverFailedException {
 		try {
 			return new SimpleDriverModel(MapIOHelper.readMap(file, warner));
-		} catch (MissingFileException|FileNotFoundException|NoSuchFileException except) {
+		} catch (final MissingFileException|FileNotFoundException|NoSuchFileException except) {
 			throw new DriverFailedException(except, "File not found");
 		} catch (final IOException except) {
 			throw new DriverFailedException(except, "I/O error while reading");
@@ -99,15 +99,15 @@ public class MapReaderAdapter {
 		LOGGER.finer("In MapReaderAdapter.readMultiMapModel");
 		String current = master.toString();
 		try {
-			IMultiMapModel retval = new SimpleMultiMapModel(
+			final IMultiMapModel retval = new SimpleMultiMapModel(
 				MapIOHelper.readMap(master, warner));
-			for (Path file : files) {
+			for (final Path file : files) {
 				current = file.toString();
 				retval.addSubordinateMap(MapIOHelper.readMap(file, warner));
 			}
 			LOGGER.finer("Finished with mapReaderAdapter.readMultiMapModel");
 			return retval;
-		} catch (MissingFileException|FileNotFoundException|NoSuchFileException except) {
+		} catch (final MissingFileException|FileNotFoundException|NoSuchFileException except) {
 			// TODO: Catch FNFE as close to source as possible and convert to NoSuchFileException, to preserve filename as a field of the exception
 			throw new DriverFailedException(except, "File not found: " + current);
 		} catch (final IOException except) {
@@ -124,7 +124,7 @@ public class MapReaderAdapter {
 	 * (thrown) {@link DriverFailedException} to simplify callers.
 	 */
 	public static void writeModel(final IDriverModel model) throws DriverFailedException{
-		Path mainFile = model.getMap().getFilename();
+		final Path mainFile = model.getMap().getFilename();
 		if (mainFile == null) {
 			LOGGER.severe("Model didn't contain filename for main map, so didn't write it");
 		} else {
@@ -139,8 +139,8 @@ public class MapReaderAdapter {
 			}
 		}
 		if (model instanceof IMultiMapModel) {
-			for (IMapNG map : ((IMultiMapModel) model).getSubordinateMaps()) {
-				Path filename = map.getFilename();
+			for (final IMapNG map : ((IMultiMapModel) model).getSubordinateMaps()) {
+				final Path filename = map.getFilename();
 				if (filename == null) {
 					LOGGER.severe("A map didn't have a filename, and so wasn't written.");
 				} else {

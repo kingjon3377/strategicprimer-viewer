@@ -44,8 +44,8 @@ import drivers.common.FixtureMatcher;
 	@Override
 	public void paintComponent(final Graphics pen) {
 		super.paintComponent(pen);
-		Coordinate origin = new Coordinate(0, 0);
-		Coordinate dimensions = new Coordinate(getWidth(), getHeight());
+		final Coordinate origin = new Coordinate(0, 0);
+		final Coordinate dimensions = new Coordinate(getWidth(), getHeight());
 		// TODO: cache the polygons until size changes
 		pen.setClip(new Polygon(new int[] {getWidth() - MARGIN, MARGIN, MARGIN},
 			new int[] { MARGIN, getHeight() - MARGIN, MARGIN }, 3));

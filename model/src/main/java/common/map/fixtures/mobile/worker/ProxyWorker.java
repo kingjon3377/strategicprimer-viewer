@@ -79,10 +79,10 @@ public class ProxyWorker implements WorkerProxy {
 
 	public ProxyWorker(final IUnit unit) {
 		this(false);
-		for (UnitMember member : unit) {
+		for (final UnitMember member : unit) {
 			if (member instanceof IWorker) {
-				WorkerStats tempStats = ((IWorker) member).getStats();
-				WorkerStats priorStats = statsCache;
+				final WorkerStats tempStats = ((IWorker) member).getStats();
+				final WorkerStats priorStats = statsCache;
 				if (workers.isEmpty()) {
 					statsCache = tempStats;
 				} else if (!Objects.equals(tempStats, priorStats)) {
@@ -93,17 +93,17 @@ public class ProxyWorker implements WorkerProxy {
 					.map(IJob::getName).forEach(jobNames::add);
 			}
 		}
-		for (String job : jobNames) {
-			IWorker[] array = new IWorker[workers.size()];
+		for (final String job : jobNames) {
+			final IWorker[] array = new IWorker[workers.size()];
 			proxyJobs.add(new ProxyJob(job, false, workers.toArray(array)));
 		}
 	}
 
 	public ProxyWorker(final IWorker... proxiedWorkers) {
 		this(true);
-		for (IWorker worker : proxiedWorkers) {
-				WorkerStats tempStats = (worker).getStats();
-				WorkerStats priorStats = statsCache;
+		for (final IWorker worker : proxiedWorkers) {
+				final WorkerStats tempStats = (worker).getStats();
+				final WorkerStats priorStats = statsCache;
 				if (workers.isEmpty()) {
 					statsCache = tempStats;
 				} else if (!Objects.equals(tempStats, priorStats)) {
@@ -113,15 +113,15 @@ public class ProxyWorker implements WorkerProxy {
 				StreamSupport.stream(worker.spliterator(), true)
 					.map(IJob::getName).forEach(jobNames::add);
 		}
-		for (String job : jobNames) {
+		for (final String job : jobNames) {
 			proxyJobs.add(new ProxyJob(job, false, proxiedWorkers));
 		}
 	}
 
 	@Override
 	public IWorker copy(final boolean zero) {
-		ProxyWorker retval = new ProxyWorker(parallel);
-		for (IWorker worker : workers) {
+		final ProxyWorker retval = new ProxyWorker(parallel);
+		for (final IWorker worker : workers) {
 			retval.addProxied(worker.copy(zero));
 		}
 		return retval;
@@ -130,7 +130,7 @@ public class ProxyWorker implements WorkerProxy {
 	@Override
 	public int getId() {
 		if (parallel) {
-			Integer retval = getConsensus(IWorker::getId);
+			final Integer retval = getConsensus(IWorker::getId);
 			if (retval == null) {
 				return -1;
 			} else {
@@ -167,8 +167,8 @@ public class ProxyWorker implements WorkerProxy {
 		if (item == this) {
 			return;
 		}
-		WorkerStats tempStats = item.getStats();
-		WorkerStats priorStats = statsCache;
+		final WorkerStats tempStats = item.getStats();
+		final WorkerStats priorStats = statsCache;
 		// FIXME: The algorithm here doesn't quite match that of the constructors
 		if (workers.isEmpty()) {
 			statsCache = tempStats;
@@ -180,17 +180,17 @@ public class ProxyWorker implements WorkerProxy {
 			statsCache = null;
 		}
 		workers.add(item);
-		for (IJob job : item) {
-			String name = job.getName();
+		for (final IJob job : item) {
+			final String name = job.getName();
 			if (jobNames.contains(name)) {
-				for (ProxyJob proxyJob : proxyJobs) {
+				for (final ProxyJob proxyJob : proxyJobs) {
 					if (proxyJob.getName().equals(name)) {
 						proxyJob.addProxied(job);
 					}
 				}
 			} else {
 				jobNames.add(name);
-				IWorker[] array = new IWorker[workers.size()];
+				final IWorker[] array = new IWorker[workers.size()];
 				proxyJobs.add(new ProxyJob(name, parallel, workers.toArray(array)));
 			}
 		}
@@ -204,7 +204,7 @@ public class ProxyWorker implements WorkerProxy {
 	@Override
 	public String getDefaultImage() {
 		String retval = null;
-		for (IWorker worker : workers) {
+		for (final IWorker worker : workers) {
 			if (retval != null) {
 				if (!retval.equals(worker.getDefaultImage())) {
 					return "worker.png";
@@ -218,7 +218,7 @@ public class ProxyWorker implements WorkerProxy {
 
 	@Override
 	public String getImage() {
-		String retval = getConsensus(IWorker::getImage);
+		final String retval = getConsensus(IWorker::getImage);
 		if (retval == null) {
 			return "";
 		} else {
@@ -228,31 +228,31 @@ public class ProxyWorker implements WorkerProxy {
 
 	@Override
 	public String getRace() {
-		String retval = getConsensus(IWorker::getRace);
+		final String retval = getConsensus(IWorker::getRace);
 		return (retval == null) ? "proxied" : retval;
 	}
 
 	@Override
 	public String getName() {
-		String retval = getConsensus(IWorker::getName);
+		final String retval = getConsensus(IWorker::getName);
 		return (retval == null) ? "proxied" : retval;
 	}
 
 	@Override
 	public String getPortrait() {
-		String retval = getConsensus(IWorker::getPortrait);
+		final String retval = getConsensus(IWorker::getPortrait);
 		return (retval == null) ? "" : retval;
 	}
 
 	@Override
 	public IJob getJob(final String jobName) {
-		Optional<ProxyJob> temp =
+		final Optional<ProxyJob> temp =
 			proxyJobs.stream().filter(j -> jobName.equals(j.getName())).findAny();
 		if (temp.isPresent()) {
 			return temp.get();
 		}
-		IWorker[] array = new IWorker[workers.size()];
-		ProxyJob retval = new ProxyJob(jobName, parallel, workers.toArray(array));
+		final IWorker[] array = new IWorker[workers.size()];
+		final ProxyJob retval = new ProxyJob(jobName, parallel, workers.toArray(array));
 		jobNames.add(jobName);
 		proxyJobs.add(retval);
 		return retval;
@@ -266,19 +266,19 @@ public class ProxyWorker implements WorkerProxy {
 
 	@Override
 	public String getNote(final Player player) {
-		String retval = getConsensus(worker -> worker.getNote(player));
+		final String retval = getConsensus(worker -> worker.getNote(player));
 		return (retval == null) ? "" : retval;
 	}
 
 	@Override
 	public String getNote(final int player) {
-		String retval = getConsensus(worker -> worker.getNote(player));
+		final String retval = getConsensus(worker -> worker.getNote(player));
 		return (retval == null) ? "" : retval;
 	}
 
 	@Override
 	public void setNote(final Player key, final String item) {
-		for (IWorker proxy : workers) {
+		for (final IWorker proxy : workers) {
 			proxy.setNote(key, item);
 		}
 	}

@@ -63,7 +63,7 @@ public class Cave implements ExplorableFixture {
 	 */
 	@Override
 	public Cave copy(final boolean zero) {
-		Cave retval = new Cave((zero) ? 0 : dc, id);
+		final Cave retval = new Cave((zero) ? 0 : dc, id);
 		retval.setImage(image);
 		return retval;
 	}

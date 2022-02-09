@@ -71,7 +71,7 @@ public class WorkerTabularReportGenerator implements ITableGenerator<IWorker> {
 			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures, final IWorker item,
 			final int key, final Point loc, final Map<Integer, Integer> parentMap) {
 		fixtures.remove(key);
-		WorkerStats stats = item.getStats();
+		final WorkerStats stats = item.getStats();
 		if (stats == null) {
 			return Collections.singletonList(Stream.concat(Stream.of(
 					distanceString(loc, hq, dimensions), locationString(loc),

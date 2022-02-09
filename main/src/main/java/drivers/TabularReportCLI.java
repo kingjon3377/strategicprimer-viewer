@@ -57,14 +57,14 @@ public class TabularReportCLI implements ReadOnlyDriver {
 	private final Map<String, BufferedWriter> writers = new HashMap<>();
 
 	private ThrowingFunction<String, ThrowingConsumer<String, IOException>, IOException> filenameFunction(final Path base) {
-		String baseName = base.getFileName().toString();
+		final String baseName = base.getFileName().toString();
 		return tableName -> {
-			String key = String.format("%s.%s.csv", baseName, tableName);
+			final String key = String.format("%s.%s.csv", baseName, tableName);
 			if (writers.containsKey(key)) {
 				return writers.get(key)::write;
 			} else {
 				// FIXME: Looks like this leaks the writer
-				BufferedWriter writer = Files.newBufferedWriter(base.resolveSibling(key));
+				final BufferedWriter writer = Files.newBufferedWriter(base.resolveSibling(key));
 				writers.put(key, writer);
 				return writer::write;
 			}
@@ -79,7 +79,7 @@ public class TabularReportCLI implements ReadOnlyDriver {
 			try {
 				TabularReportGenerator.createTabularReports(map,
 					filenameFunction(mapFile), cli);
-			} catch (IOException|IOError except) {
+			} catch (final IOException|IOError except) {
 				throw new DriverFailedException(except);
 			}
 		}
@@ -89,7 +89,7 @@ public class TabularReportCLI implements ReadOnlyDriver {
 	public void startDriver() throws DriverFailedException {
 		try {
 			if (model instanceof IMultiMapModel) {
-				for (IMapNG map : ((IMultiMapModel) model).getAllMaps()) {
+				for (final IMapNG map : ((IMultiMapModel) model).getAllMaps()) {
 					createReports(map, map.getFilename());
 				}
 			} else {
@@ -97,7 +97,7 @@ public class TabularReportCLI implements ReadOnlyDriver {
 			}
 		} finally {
 			try {
-				for (BufferedWriter writer : writers.values()) {
+				for (final BufferedWriter writer : writers.values()) {
 					writer.close();
 				}
 			} catch (final IOException except) {

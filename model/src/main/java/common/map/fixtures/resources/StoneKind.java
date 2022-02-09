@@ -27,7 +27,8 @@ public enum StoneKind {
 
 	public static StoneKind parse(final String stone) {
 		// TODO: Replace with a HashMap cache?
-		for (StoneKind kind : values()) {
+		// TODO: If nothing else, condense using Stream operations?
+		for (final StoneKind kind : values()) {
 			if (stone.equals(kind.toString())) {
 				return kind;
 			}

@@ -69,17 +69,17 @@ public class IOHandler implements ActionListener {
 	 */
 	private void maybeSave(final String verb, @Nullable final Frame window, @Nullable final Component source,
 	                       final Runnable ifNotCanceled) { // TODO: Use the possibly-throwing interface from j.u.concurrent?
-		ModelDriver md = (ModelDriver) driver;
+		final ModelDriver md = (ModelDriver) driver;
 		LOGGER.finer("Checking if we need to save ...");
 		if (md.getModel().isMapModified()) {
 			LOGGER.finer("main map was modified.");
-			String prompt;
+			final String prompt;
 			if (md instanceof MultiMapGUIDriver) {
 				prompt = "Save changes to main map before %s?";
 			} else {
 				prompt = "Save changes to map before %s?";
 			}
-			int answer = JOptionPane.showConfirmDialog(window, String.format(prompt, verb),
+			final int answer = JOptionPane.showConfirmDialog(window, String.format(prompt, verb),
 				"Save Changes?", JOptionPane.YES_NO_CANCEL_OPTION,
 				JOptionPane.QUESTION_MESSAGE);
 			if (answer == JOptionPane.CANCEL_OPTION) {
@@ -100,7 +100,7 @@ public class IOHandler implements ActionListener {
 				    ((MultiMapGUIDriver) md).getModel().streamSubordinateMaps()
 						    .anyMatch(IMapNG::isModified)) {
 			LOGGER.finer("Subordinate map(s) modified.");
-			int answer = JOptionPane.showConfirmDialog(window,
+			final int answer = JOptionPane.showConfirmDialog(window,
 				String.format("Subordinate map(s) have unsaved changes. Save all before %s?",
 					verb), "Save Changes?", JOptionPane.YES_NO_CANCEL_OPTION,
 				JOptionPane.QUESTION_MESSAGE);
@@ -124,7 +124,7 @@ public class IOHandler implements ActionListener {
 
 	private void handleError(final Exception except, final String filename, @Nullable final Component source,
 	                         final String errorTitle, final String verb) {
-		String message;
+		final String message;
 		if (except instanceof MalformedXMLException) {
 			message = "Malformed XML in " + filename;
 		} else if (except instanceof FileNotFoundException || except instanceof NoSuchFileException) {
@@ -145,7 +145,7 @@ public class IOHandler implements ActionListener {
 		return path -> {
 			try {
 				handler.accept(MapIOHelper.readMap(path, Warning.getDefaultHandler()));
-			} catch (MissingFileException|IOException|SPFormatException|MalformedXMLException except) {
+			} catch (final MissingFileException|IOException|SPFormatException|MalformedXMLException except) {
 				handleError(except, path.toString(), source, errorTitle, "reading");
 			}
 		};
@@ -169,7 +169,7 @@ public class IOHandler implements ActionListener {
 	 * the EDT, i.e. using {@link SwingUtilities#invokeLater}.
 	 */
 	private void startNewViewerWindow(final ModelDriver driver) {
-		ViewerDriverFactory vdf =
+		final ViewerDriverFactory vdf =
 				StreamSupport.stream(ServiceLoader.load(ViewerDriverFactory.class).spliterator(), false)
 						.findAny().orElse(null);
 		if (vdf == null) {
@@ -190,7 +190,7 @@ public class IOHandler implements ActionListener {
 	}
 
 	private void openSecondaryInViewer(final IDriverModel model, final SPOptions options) {
-		ViewerDriverFactory vdf =
+		final ViewerDriverFactory vdf =
 				StreamSupport.stream(ServiceLoader.load(ViewerDriverFactory.class).spliterator(), false)
 						.findAny().orElse(null);
 		if (vdf == null) {
@@ -208,9 +208,9 @@ public class IOHandler implements ActionListener {
 
 	@Override
 	public void actionPerformed(final ActionEvent event) {
-		Component source = Optional.ofNullable(event.getSource())
+		final Component source = Optional.ofNullable(event.getSource())
 			.filter(Component.class::isInstance).map(Component.class::cast).orElse(null);
-		Frame parentWindow;
+		final Frame parentWindow;
 		if (source == null) {
 			parentWindow = null;
 		} else {
@@ -218,7 +218,7 @@ public class IOHandler implements ActionListener {
 				false).filter(Frame.class::isInstance).map(Frame.class::cast)
 				.findFirst().orElse(null);
 		}
-		String errorTitle = Optional.ofNullable(parentWindow).filter(ISPWindow.class::isInstance)
+		final String errorTitle = Optional.ofNullable(parentWindow).filter(ISPWindow.class::isInstance)
 			.map(ISPWindow.class::cast).map(ISPWindow::getWindowName)
 			.orElse("Strategic Primer Assistive Programs");
 
@@ -239,13 +239,13 @@ public class IOHandler implements ActionListener {
 
 		case "save":
 			if (driver instanceof ModelDriver) {
-				ModelDriver md = (ModelDriver) driver;
-				Path givenFile = md.getModel().getMap().getFilename();
+				final ModelDriver md = (ModelDriver) driver;
+				final Path givenFile = md.getModel().getMap().getFilename();
 				if (givenFile != null) {
 					try {
 						MapIOHelper.writeMap(givenFile, md.getModel().getMap());
 						md.getModel().setMapModified(false);
-					} catch (IOException|MalformedXMLException except) {
+					} catch (final IOException|MalformedXMLException except) {
 						handleError(except, givenFile.toString(), source, errorTitle,
 							"writing to");
 					}
@@ -260,13 +260,13 @@ public class IOHandler implements ActionListener {
 
 		case "save as":
 			if (driver instanceof ModelDriver) {
-				ModelDriver md = (ModelDriver) driver;
+				final ModelDriver md = (ModelDriver) driver;
 				SPFileChooser.save((Path) null).call(path -> {
 					try {
 							MapIOHelper.writeMap(path, md.getModel().getMap());
 							md.getModel().setMapFilename(path);
 							md.getModel().setMapModified(false);
-						} catch (IOException|MalformedXMLException except) {
+						} catch (final IOException|MalformedXMLException except) {
 							handleError(except, path.toString(), source,
 								errorTitle, "writing to");
 						}
@@ -299,15 +299,15 @@ public class IOHandler implements ActionListener {
 
 		case "save all":
 			if (driver instanceof MultiMapGUIDriver) {
-				for (IMapNG map : ((MultiMapGUIDriver) driver).getModel().getAllMaps()) {
+				for (final IMapNG map : ((MultiMapGUIDriver) driver).getModel().getAllMaps()) {
 					// FIXME: Doesn't MapIOHelper have a method for this?
-					Path file = map.getFilename();
+					final Path file = map.getFilename();
 					if (file != null) {
 						try {
 							MapIOHelper.writeMap(file, map);
 							((MultiMapGUIDriver) driver).getModel()
 								.clearModifiedFlag(map);
-						} catch (IOException|MalformedXMLException except) {
+						} catch (final IOException|MalformedXMLException except) {
 							handleError(except, file.toString(), source,
 								errorTitle, "writing to");
 						}
@@ -323,7 +323,7 @@ public class IOHandler implements ActionListener {
 
 		case "open in map viewer":
 			if (driver instanceof ModelDriver) {
-				ViewerDriverFactory vdf =
+				final ViewerDriverFactory vdf =
 						StreamSupport.stream(ServiceLoader.load(ViewerDriverFactory.class).spliterator(), false)
 								.findAny().orElse(null);
 				if (vdf == null) {
@@ -351,7 +351,7 @@ public class IOHandler implements ActionListener {
 
 		case "open secondary map in map viewer":
 			if (driver instanceof MultiMapGUIDriver) {
-				IDriverModel newModel = ((MultiMapGUIDriver) driver).getModel()
+				final IDriverModel newModel = ((MultiMapGUIDriver) driver).getModel()
 					.fromSecondMap();
 				if (newModel != null) {
 					SwingUtilities.invokeLater(() -> openSecondaryInViewer(newModel,

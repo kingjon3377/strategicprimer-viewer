@@ -49,17 +49,17 @@ public class AdvancementCLI implements CLIDriver {
 	 * Let the user add experience to a player's workers.
 	 */
 	private void advanceWorkers(final IWorkerModel model, final Player player, final boolean allowExpertMentoring) {
-		List<IUnit> units = model.getUnits(player).stream()
+		final List<IUnit> units = model.getUnits(player).stream()
 				.filter(u -> u.stream().anyMatch(IWorker.class::isInstance)).collect(Collectors.toList());
 		while (!units.isEmpty()) {
-			IUnit chosen = cli.chooseFromList(units, String.format("%s's units:", player.getName()),
+			final IUnit chosen = cli.chooseFromList(units, String.format("%s's units:", player.getName()),
 				"No unadvanced units remain.", "Chosen unit:", false).getValue1();
 			if (chosen == null) {
 				break;
 			}
 			units.remove(chosen);
 			helper.advanceWorkersInUnit(chosen, allowExpertMentoring);
-			Boolean continuation = cli.inputBoolean("Choose another unit?");
+			final Boolean continuation = cli.inputBoolean("Choose another unit?");
 			if (continuation == null || !continuation) {
 				break;
 			}
@@ -71,16 +71,16 @@ public class AdvancementCLI implements CLIDriver {
 	 */
 	@Override
 	public void startDriver() {
-		List<Player> playerList = StreamSupport.stream(model.getPlayers().spliterator(), false).collect(Collectors.toList());
+		final List<Player> playerList = StreamSupport.stream(model.getPlayers().spliterator(), false).collect(Collectors.toList());
 		while (!playerList.isEmpty()) {
-			Player chosen = cli.chooseFromList(playerList, "Available players:", "No players found.",
+			final Player chosen = cli.chooseFromList(playerList, "Available players:", "No players found.",
 				"Chosen player:", false).getValue1();
 			if (chosen == null) {
 				break;
 			}
 			playerList.remove(chosen);
 			advanceWorkers(model, chosen, options.hasOption("--allow-expert-mentoring"));
-			Boolean continuation = cli.inputBoolean("Select another player?");
+			final Boolean continuation = cli.inputBoolean("Select another player?");
 			if (continuation == null || !continuation) {
 				break;
 			}

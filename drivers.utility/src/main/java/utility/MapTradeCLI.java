@@ -142,7 +142,7 @@ public class MapTradeCLI implements CLIDriver {
 	}
 
 	private void askAbout(final FixtureMatcher matcher, final String key) {
-		Boolean retval = cli.inputBooleanInSeries(String.format("Include %s items?",
+		final Boolean retval = cli.inputBooleanInSeries(String.format("Include %s items?",
 			matcher.getDescription()), key);
 		if (retval == null) {
 			throw new IllegalStateException("EOF in fixture-matcher query");
@@ -151,12 +151,12 @@ public class MapTradeCLI implements CLIDriver {
 	}
 
 	private boolean testFixture(final TileFixture fixture) {
-		for (FixtureMatcher matcher : matchers) {
+		for (final FixtureMatcher matcher : matchers) {
 			if (matcher.matches(fixture)) {
 				return matcher.isDisplayed();
 			}
 		}
-		FixtureMatcher newMatcher = FixtureMatcher.trivialMatcher(fixture.getClass(),
+		final FixtureMatcher newMatcher = FixtureMatcher.trivialMatcher(fixture.getClass(),
 			fixture.getPlural());
 		askAbout(newMatcher, "new");
 		matchers.add(newMatcher);
@@ -165,22 +165,22 @@ public class MapTradeCLI implements CLIDriver {
 
 	@Override
 	public void startDriver() throws DriverFailedException {
-		IMapNG first = model.getMap();
+		final IMapNG first = model.getMap();
 		if (!model.getSubordinateMaps().iterator().hasNext()) {
 			throw new IncorrectUsageException(MapTradeFactory.USAGE);
 		}
-		IMapNG second = model.getSubordinateMaps().iterator().next();
-		Boolean copyPlayers = cli.inputBoolean("Copy players?");
+		final IMapNG second = model.getSubordinateMaps().iterator().next();
+		final Boolean copyPlayers = cli.inputBoolean("Copy players?");
 		if (copyPlayers == null) {
 			return;
 		} else if (copyPlayers) {
 			model.copyPlayers();
 		}
-		Boolean copyRivers = cli.inputBoolean("Include rivers?");
+		final Boolean copyRivers = cli.inputBoolean("Include rivers?");
 		if (copyRivers == null) {
 			return;
 		}
-		Boolean copyRoads = cli.inputBoolean("Include roads?");
+		final Boolean copyRoads = cli.inputBoolean("Include roads?");
 		if (copyRoads == null) {
 			return;
 		}
@@ -191,7 +191,7 @@ public class MapTradeCLI implements CLIDriver {
 		final long totalCount = first.streamLocations()
 			.filter(l -> !first.isLocationEmpty(l)).count();
 		int count = 1;
-		for (Point location : first.getLocations()) {
+		for (final Point location : first.getLocations()) {
 			if (first.isLocationEmpty(location)) {
 				continue;
 			}

@@ -119,7 +119,7 @@ final class DBImmortalHandler extends AbstractDatabaseWriter<Immortal, /*Point|I
 			} catch (final Exception except) {
 				if (except.getMessage().contains("constraint failed: simple_immortals)")) {
 					db.transaction(sql -> {
-						for (String initializer : refreshSimpleSchema()) {
+						for (final String initializer : refreshSimpleSchema()) {
 							sql.script(initializer).execute();
 						}
 						return true;
@@ -159,9 +159,9 @@ final class DBImmortalHandler extends AbstractDatabaseWriter<Immortal, /*Point|I
 	private TryBiConsumer<Map<String, Object>, Warning, Exception>
 			readSimpleImmortal(final IMutableMapNG map) {
 		return (dbRow, warner) -> {
-			String type = (String) dbRow.get("type");
-			int id = (Integer) dbRow.get("id");
-			String image = (String) dbRow.get("image");
+			final String type = (String) dbRow.get("type");
+			final int id = (Integer) dbRow.get("id");
+			final String image = (String) dbRow.get("image");
 			final Immortal immortal;
 			switch (type) {
 			case "sphinx":
@@ -194,13 +194,13 @@ final class DBImmortalHandler extends AbstractDatabaseWriter<Immortal, /*Point|I
 			if (image != null) {
 				((HasMutableImage) immortal).setImage(image);
 			}
-			Integer row = (Integer) dbRow.get("row");
-			Integer column = (Integer) dbRow.get("column");
-			Integer parentId = (Integer) dbRow.get("parent");
+			final Integer row = (Integer) dbRow.get("row");
+			final Integer column = (Integer) dbRow.get("column");
+			final Integer parentId = (Integer) dbRow.get("parent");
 			if (row != null && column != null) {
 				map.addFixture(new Point(row, column), immortal);
 			} else {
-				IMutableUnit parent = (IMutableUnit) findById(map, parentId, warner);
+				final IMutableUnit parent = (IMutableUnit) findById(map, parentId, warner);
 				parent.addMember(immortal);
 			}
 		};
@@ -209,11 +209,11 @@ final class DBImmortalHandler extends AbstractDatabaseWriter<Immortal, /*Point|I
 	private TryBiConsumer<Map<String, Object>, Warning, Exception>
 			readKindedImmortal(final IMutableMapNG map) {
 		return (dbRow, warner) -> {
-			String type = (String) dbRow.get("type");
-			String kind = (String) dbRow.get("kind");
-			int id = (Integer) dbRow.get("id");
-			String image = (String) dbRow.get("image");
-			Immortal immortal;
+			final String type = (String) dbRow.get("type");
+			final String kind = (String) dbRow.get("kind");
+			final int id = (Integer) dbRow.get("id");
+			final String image = (String) dbRow.get("image");
+			final Immortal immortal;
 			switch (type) {
 			case "centaur":
 				immortal = new Centaur(kind, id);
@@ -233,13 +233,13 @@ final class DBImmortalHandler extends AbstractDatabaseWriter<Immortal, /*Point|I
 			if (image != null) {
 				((HasMutableImage) immortal).setImage(image);
 			}
-			Integer row = (Integer) dbRow.get("row");
-			Integer column = (Integer) dbRow.get("column");
-			Integer parentId = (Integer) dbRow.get("parent");
+			final Integer row = (Integer) dbRow.get("row");
+			final Integer column = (Integer) dbRow.get("column");
+			final Integer parentId = (Integer) dbRow.get("parent");
 			if (row != null && column != null) {
 				map.addFixture(new Point(row, column), immortal);
 			} else {
-				IMutableUnit parent = (IMutableUnit) findById(map, parentId, warner);
+				final IMutableUnit parent = (IMutableUnit) findById(map, parentId, warner);
 				parent.addMember(immortal);
 			}
 		};

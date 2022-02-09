@@ -124,10 +124,10 @@ public class ViewerModel extends SimpleDriverModel implements IViewerModel {
 	@Override
 	public void zoomIn() {
 		if (_zoomLevel < MAX_ZOOM_LEVEL) {
-			int oldZoom = _zoomLevel;
+			final int oldZoom = _zoomLevel;
 			_zoomLevel++;
-			int newZoom = _zoomLevel;
-			for (GraphicalParamsListener listener : gpListeners) {
+			final int newZoom = _zoomLevel;
+			for (final GraphicalParamsListener listener : gpListeners) {
 				listener.tileSizeChanged(oldZoom, newZoom);
 			}
 		}
@@ -139,10 +139,10 @@ public class ViewerModel extends SimpleDriverModel implements IViewerModel {
 	@Override
 	public void zoomOut() {
 		if (_zoomLevel > 1) {
-			int oldZoom = _zoomLevel;
+			final int oldZoom = _zoomLevel;
 			_zoomLevel--;
-			int newZoom = _zoomLevel;
-			for (GraphicalParamsListener listener : gpListeners) {
+			final int newZoom = _zoomLevel;
+			for (final GraphicalParamsListener listener : gpListeners) {
 				listener.tileSizeChanged(oldZoom, newZoom);
 			}
 		}
@@ -182,7 +182,7 @@ public class ViewerModel extends SimpleDriverModel implements IViewerModel {
 	public ViewerModel(final IDriverModel model) {
 		super(model.getRestrictedMap());
 		if (model instanceof IViewerModel) {
-			IViewerModel vm = (IViewerModel) model;
+			final IViewerModel vm = (IViewerModel) model;
 			visDimensions = vm.getVisibleDimensions();
 			selPoint = vm.getSelection();
 			_zoomLevel = vm.getZoomLevel();
@@ -204,20 +204,20 @@ public class ViewerModel extends SimpleDriverModel implements IViewerModel {
 	@Override
 	public void setVisibleDimensions(final VisibleDimensions visibleDimensions) {
 		if (!visDimensions.equals(visibleDimensions)) {
-			VisibleDimensions oldDimensions = visDimensions;
+			final VisibleDimensions oldDimensions = visDimensions;
 			visDimensions = visibleDimensions;
 			// We notify listeners after the change, since one object's
 			// dimensionsChanged() delegates to repaint(). (The other uses the parameter
 			// we provide for robustness.)
-			for (GraphicalParamsListener listener : gpListeners) {
+			for (final GraphicalParamsListener listener : gpListeners) {
 				listener.dimensionsChanged(oldDimensions, visibleDimensions);
 			}
 		}
 	}
 
 	private void fixVisibility() {
-		Point currSelection = selPoint;
-		VisibleDimensions currDims = visDimensions;
+		final Point currSelection = selPoint;
+		final VisibleDimensions currDims = visDimensions;
 		final int row;
 		if (currSelection.getRow() < 0) {
 			row = 0;
@@ -292,7 +292,7 @@ public class ViewerModel extends SimpleDriverModel implements IViewerModel {
 	public void resetZoom() {
 		final int old = _zoomLevel;
 		_zoomLevel = DEFAULT_ZOOM_LEVEL;
-		for (GraphicalParamsListener listener : gpListeners) {
+		for (final GraphicalParamsListener listener : gpListeners) {
 			listener.tileSizeChanged(old, _zoomLevel);
 		}
 		fixVisibility();
@@ -308,7 +308,7 @@ public class ViewerModel extends SimpleDriverModel implements IViewerModel {
 
 	@Override
 	public void setCursor(final Point cursor) {
-		Point oldCursor = cursorPoint;
+		final Point oldCursor = cursorPoint;
 		cursorPoint = cursor;
 		scs.fireCursorChanges(oldCursor, cursor);
 	}
@@ -323,7 +323,7 @@ public class ViewerModel extends SimpleDriverModel implements IViewerModel {
 
 	@Override
 	public void setSelection(final Point selection) {
-		Point oldSel = selPoint;
+		final Point oldSel = selPoint;
 		selPoint = selection;
 		if (selection.isValid()) {
 			cursorPoint = selection;
@@ -421,7 +421,7 @@ public class ViewerModel extends SimpleDriverModel implements IViewerModel {
 	 */
 	@Override
 	public void removeMatchingFixtures(final Point location, final Predicate<TileFixture> condition) {
-		for (TileFixture fixture : getMap().getFixtures(location).stream().filter(condition)
+		for (final TileFixture fixture : getMap().getFixtures(location).stream().filter(condition)
 				.collect(Collectors.toList())) { // TODO: try to avoid collector step
 			getRestrictedMap().removeFixture(location, fixture);
 		}
@@ -478,21 +478,21 @@ public class ViewerModel extends SimpleDriverModel implements IViewerModel {
 	 */
 	@Override
 	public void moveMember(final UnitMember member, final IUnit old, final IUnit newOwner) {
-		IMutableUnit matchingOld = getMap().streamAllFixtures()
+		final IMutableUnit matchingOld = getMap().streamAllFixtures()
 			.flatMap(ViewerModel::unflattenNonFortresses)
 			.filter(IMutableUnit.class::isInstance).map(IMutableUnit.class::cast)
 			.filter(u -> old.getOwner().equals(u.getOwner()))
 			.filter(u -> old.getKind().equals(u.getKind()))
 			.filter(u -> old.getName().equals(u.getName()))
 			.filter(u -> old.getId() == u.getId()).findAny().orElse(null);
-		IMutableUnit matchingNew = getMap().streamAllFixtures()
+		final IMutableUnit matchingNew = getMap().streamAllFixtures()
 			.flatMap(ViewerModel::unflattenNonFortresses)
 			.filter(IMutableUnit.class::isInstance).map(IMutableUnit.class::cast)
 			.filter(u -> newOwner.getOwner().equals(u.getOwner()))
 			.filter(u -> newOwner.getKind().equals(u.getKind()))
 			.filter(u -> newOwner.getName().equals(u.getName()))
 			.filter(u -> newOwner.getId() == u.getId()).findAny().orElse(null);
-		UnitMember matchingMember = Optional.ofNullable(matchingOld).map(FixtureIterable::stream).orElse(Stream.empty())
+		final UnitMember matchingMember = Optional.ofNullable(matchingOld).map(FixtureIterable::stream).orElse(Stream.empty())
 			.filter(member::equals).findAny().orElse(null); // TODO: equals() isn't ideal for finding a matching member ...
 		if (matchingOld != null && matchingMember != null && matchingNew != null) {
 			matchingOld.removeMember(matchingMember);
@@ -503,7 +503,7 @@ public class ViewerModel extends SimpleDriverModel implements IViewerModel {
 
 	private Predicate<Pair<Point, IFixture>> unitMatching(final IUnit unit) {
 		return entry -> {
-			IFixture fixture = entry.getValue1();
+			final IFixture fixture = entry.getValue1();
 			return fixture instanceof IUnit && fixture.getId() == unit.getId() &&
 				((IUnit) fixture).getOwner().equals(unit.getOwner());
 		};
@@ -520,14 +520,14 @@ public class ViewerModel extends SimpleDriverModel implements IViewerModel {
 	@Override
 	public boolean removeUnit(final IUnit unit) {
 		LOGGER.finer("In ViewerModel.removeUnit()");
-		Pair<Point, IFixture> pair = getMap().streamLocations()
+		final Pair<Point, IFixture> pair = getMap().streamLocations()
 				.flatMap(l -> getMap().getFixtures(l).stream()
 					.map(f -> Pair.<Point, IFixture>with(l, f)))
 				.flatMap(ViewerModel::flattenEntries).filter(unitMatching(unit))
 				.findAny().orElse(null);
 		if (pair != null) {
-			Point location = pair.getValue0();
-			IUnit fixture = (IUnit) pair.getValue1();
+			final Point location = pair.getValue0();
+			final IUnit fixture = (IUnit) pair.getValue1();
 			LOGGER.finer("Map has matching unit");
 			if (fixture.getKind().equals(unit.getKind()) &&
 					fixture.getName().equals(unit.getName()) &&
@@ -538,7 +538,7 @@ public class ViewerModel extends SimpleDriverModel implements IViewerModel {
 					LOGGER.finer("Finished removing matching unit from map");
 					return true;
 				} else {
-					for (IMutableFortress fort : getMap().getFixtures(location).stream()
+					for (final IMutableFortress fort : getMap().getFixtures(location).stream()
 							.filter(IMutableFortress.class::isInstance)
 							.map(IMutableFortress.class::cast)
 							.collect(Collectors.toList())) {
@@ -569,7 +569,7 @@ public class ViewerModel extends SimpleDriverModel implements IViewerModel {
 
 	@Override
 	public void addUnitMember(final IUnit unit, final UnitMember member) {
-		IMutableUnit matching = getMap().streamAllFixtures()
+		final IMutableUnit matching = getMap().streamAllFixtures()
 			.flatMap(ViewerModel::unflattenNonFortresses)
 			.filter(IMutableUnit.class::isInstance).map(IMutableUnit.class::cast)
 			// TODO: Implement a matchingValue-like helper method in lovelace.util,
@@ -589,7 +589,7 @@ public class ViewerModel extends SimpleDriverModel implements IViewerModel {
 	@Override
 	public boolean renameItem(final HasName item, final String newName) {
 		if (item instanceof IUnit) {
-			IUnit matching = getMap().streamAllFixtures()
+			final IUnit matching = getMap().streamAllFixtures()
 				.flatMap(ViewerModel::unflattenNonFortresses)
 				.filter(IUnit.class::isInstance).map(IUnit.class::cast)
 				.filter(u -> u.getOwner().equals(((IUnit) item).getOwner()))
@@ -606,7 +606,7 @@ public class ViewerModel extends SimpleDriverModel implements IViewerModel {
 				return false;
 			}
 		} else if (item instanceof UnitMember) {
-			HasMutableName matching = getMap().streamAllFixtures()
+			final HasMutableName matching = getMap().streamAllFixtures()
 					.flatMap(ViewerModel::unflattenNonFortresses)
 					.filter(IUnit.class::isInstance).map(IUnit.class::cast)
 					.filter(u -> getMap().getPlayers().getCurrentPlayer()
@@ -636,7 +636,7 @@ public class ViewerModel extends SimpleDriverModel implements IViewerModel {
 	public boolean changeKind(final HasKind item, final String newKind) {
 		if (item instanceof IUnit) {
 			// TODO: Extract this pipeline to a method
-			IUnit matching = getMap().streamAllFixtures()
+			final IUnit matching = getMap().streamAllFixtures()
 				.flatMap(ViewerModel::unflattenNonFortresses)
 				.filter(IUnit.class::isInstance).map(IUnit.class::cast)
 				.filter(u -> u.getOwner().equals(((IUnit) item).getOwner()))
@@ -655,7 +655,7 @@ public class ViewerModel extends SimpleDriverModel implements IViewerModel {
 		} else if (item instanceof UnitMember) {
 			// TODO: Extract parts of this pipeline to a method, passing in the class to narrow
 			// to and relevant predicate(s).
-			HasMutableKind matching = getMap().streamAllFixtures()
+			final HasMutableKind matching = getMap().streamAllFixtures()
 					.flatMap(ViewerModel::unflattenNonFortresses)
 					.filter(IUnit.class::isInstance).map(IUnit.class::cast)
 					.filter(u -> getMap().getPlayers().getCurrentPlayer()
@@ -684,12 +684,12 @@ public class ViewerModel extends SimpleDriverModel implements IViewerModel {
 	// TODO: Keep a list of dismissed members
 	@Override
 	public void dismissUnitMember(final UnitMember member) {
-		for (IMutableUnit unit : getMap().streamAllFixtures()
+		for (final IMutableUnit unit : getMap().streamAllFixtures()
 				.flatMap(ViewerModel::unflattenNonFortresses)
 				.filter(IMutableUnit.class::isInstance).map(IMutableUnit.class::cast)
 				.filter(u -> getMap().getPlayers().getCurrentPlayer().equals(u.getOwner()))
 				.collect(Collectors.toList())) {
-			UnitMember matching = unit.stream().filter(member::equals) // FIXME: equals() will really not do here ...
+			final UnitMember matching = unit.stream().filter(member::equals) // FIXME: equals() will really not do here ...
 				.findAny().orElse(null);
 			if (matching != null) {
 				unit.removeMember(matching);
@@ -701,7 +701,7 @@ public class ViewerModel extends SimpleDriverModel implements IViewerModel {
 
 	@Override
 	public boolean addSibling(final UnitMember existing, final UnitMember sibling) {
-		for (IMutableUnit unit : getMap().streamAllFixtures()
+		for (final IMutableUnit unit : getMap().streamAllFixtures()
 				.flatMap(ViewerModel::unflattenNonFortresses)
 				.filter(IMutableUnit.class::isInstance).map(IMutableUnit.class::cast)
 				.filter(u -> getMap().getPlayers().getCurrentPlayer().equals(u.getOwner()))
@@ -721,7 +721,7 @@ public class ViewerModel extends SimpleDriverModel implements IViewerModel {
 	 */
 	@Override
 	public boolean changeOwner(final HasOwner item, final Player newOwner) {
-		HasMutableOwner matching = getMap().streamAllFixtures()
+		final HasMutableOwner matching = getMap().streamAllFixtures()
 			.flatMap(ViewerModel::flattenIncluding).flatMap(ViewerModel::flattenIncluding)
 			.filter(HasMutableOwner.class::isInstance).map(HasMutableOwner.class::cast)
 			.filter(item::equals) // TODO: equals() is not the best way to find it ...
@@ -740,7 +740,7 @@ public class ViewerModel extends SimpleDriverModel implements IViewerModel {
 
 	@Override
 	public boolean sortFixtureContents(final IUnit fixture) {
-		IMutableUnit matching = getMap().streamAllFixtures()
+		final IMutableUnit matching = getMap().streamAllFixtures()
 			.flatMap(ViewerModel::unflattenNonFortresses)
 			.filter(IMutableUnit.class::isInstance).map(IMutableUnit.class::cast)
 			.filter(u -> u.getOwner().equals(fixture.getOwner()))
@@ -759,8 +759,8 @@ public class ViewerModel extends SimpleDriverModel implements IViewerModel {
 	@Override
 	public void addUnit(final IUnit unit) {
 		Point hqLoc = Point.INVALID_POINT;
-		for (Point location : getMap().getLocations()) {
-			IFortress fortress = getMap().getFixtures(location).stream()
+		for (final Point location : getMap().getLocations()) {
+			final IFortress fortress = getMap().getFixtures(location).stream()
 				.filter(IFortress.class::isInstance).map(IFortress.class::cast)
 				.filter(f -> f.getOwner().equals(unit.getOwner()))
 				.findAny().orElse(null);

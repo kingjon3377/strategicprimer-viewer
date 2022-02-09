@@ -33,9 +33,9 @@ final class DBAnimalHandler extends AbstractDatabaseWriter<AnimalOrTracks, /*Poi
 
 
 	private static Optional<Integer> born(final Animal animal) {
-		Map<String, Integer> model = MaturityModel.getMaturityAges();
+		final Map<String, Integer> model = MaturityModel.getMaturityAges();
 		if (model.containsKey(animal.getKind())) {
-			int maturityAge = model.get(animal.getKind());
+			final int maturityAge = model.get(animal.getKind());
 			if (maturityAge <= (DBMapWriter.currentTurn - animal.getBorn())) {
 				return Optional.empty();
 			}
@@ -110,22 +110,22 @@ final class DBAnimalHandler extends AbstractDatabaseWriter<AnimalOrTracks, /*Poi
 	private TryBiConsumer<Map<String, Object>, Warning, Exception>
 			readAnimal(final IMutableMapNG map) {
 		return (dbRow, warner) -> {
-			String kind = (String) dbRow.get("kind");
-			Boolean talking = /* DBMapReader.databaseBoolean(dbRow.get("talking")) */ // FIXME
+			final String kind = (String) dbRow.get("kind");
+			final Boolean talking = /* DBMapReader.databaseBoolean(dbRow.get("talking")) */ // FIXME
 				(Boolean) dbRow.get("talking"); // This will compile but probably won't work
-			String status  = (String) dbRow.get("status");
-			Integer born = (Integer) dbRow.get("born");
-			int count = (Integer) dbRow.get("count");
-			int id = (Integer) dbRow.get("id");
-			String image = (String) dbRow.get("image");
-			AnimalImpl animal = new AnimalImpl(kind, talking, status,
+			final String status  = (String) dbRow.get("status");
+			final Integer born = (Integer) dbRow.get("born");
+			final int count = (Integer) dbRow.get("count");
+			final int id = (Integer) dbRow.get("id");
+			final String image = (String) dbRow.get("image");
+			final AnimalImpl animal = new AnimalImpl(kind, talking, status,
 				(born == null) ? -1 : born, count);
 			if (image != null) {
 				animal.setImage(image);
 			}
-			Integer row = (Integer) dbRow.get("row");
-			Integer column = (Integer) dbRow.get("column");
-			Integer parentId = (Integer) dbRow.get("parent");
+			final Integer row = (Integer) dbRow.get("row");
+			final Integer column = (Integer) dbRow.get("column");
+			final Integer parentId = (Integer) dbRow.get("parent");
 			if (row != null && column != null) {
 				map.addFixture(new Point(row, column), animal);
 			} else {
@@ -137,11 +137,11 @@ final class DBAnimalHandler extends AbstractDatabaseWriter<AnimalOrTracks, /*Poi
 	private static TryBiConsumer<Map<String, Object>, Warning, Exception>
 			readTracks(final IMutableMapNG map) {
 		return (dbRow, warner) -> {
-			int row = (Integer) dbRow.get("row");
-			int column = (Integer) dbRow.get("column");
-			String kind = (String) dbRow.get("kind");
-			String image = (String) dbRow.get("image");
-			AnimalTracks track = new AnimalTracks(kind);
+			final int row = (Integer) dbRow.get("row");
+			final int column = (Integer) dbRow.get("column");
+			final String kind = (String) dbRow.get("kind");
+			final String image = (String) dbRow.get("image");
+			final AnimalTracks track = new AnimalTracks(kind);
 			if (image != null) {
 				track.setImage(image);
 			}

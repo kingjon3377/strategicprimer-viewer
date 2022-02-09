@@ -70,7 +70,7 @@ public class ExplorationCLIHelper implements MovementCostListener, SelectionChan
 	 * Let the user change the explorer's speed
 	 */
 	private void changeSpeed() {
-		Speed temp = cli.chooseFromList(Arrays.asList(Speed.values()),
+		final Speed temp = cli.chooseFromList(Arrays.asList(Speed.values()),
 			"Possible Speeds:", "No speeds available", "Chosen Speed: ", true).getValue1();
 		if (temp != null) {
 			speed = temp;
@@ -89,7 +89,7 @@ public class ExplorationCLIHelper implements MovementCostListener, SelectionChan
 			} else {
 				cli.println(fixture.toString());
 			}
-			boolean zero;
+			final boolean zero;
 			if (fixture instanceof HasOwner && (!((HasOwner) fixture).getOwner().equals(mover.getOwner())
 					|| fixture instanceof Village)) {
 				zero = true;
@@ -134,7 +134,7 @@ public class ExplorationCLIHelper implements MovementCostListener, SelectionChan
 			cli.print(model.getSelectedUnitLocation().toString());
 			cli.println("):");
 			cli.println(newSelection.getVerbose());
-			Integer number = cli.inputNumber("MP the unit has: ");
+			final Integer number = cli.inputNumber("MP the unit has: ");
 			if (number != null) {
 				runningTotal = totalMP = number;
 			}
@@ -156,16 +156,16 @@ public class ExplorationCLIHelper implements MovementCostListener, SelectionChan
 	// No need to set the 'modified' flag anywhere in this method, as
 	// ExplorationModel.move() always sets it.
 	public void moveOneStep() {
-		IUnit mover = model.getSelectedUnit();
+		final IUnit mover = model.getSelectedUnit();
 		if (mover != null) {
-			Point point = model.getSelectedUnitLocation();
-			Direction direction;
-			Point proposedDestination = proposedPath.pollFirst();
+			final Point point = model.getSelectedUnitLocation();
+			final Direction direction;
+			final Point proposedDestination = proposedPath.pollFirst();
 			if (proposedDestination == null) {
 				cli.println(String.format("%d/%d MP remaining. Current speed: %s.",
 					runningTotal, totalMP, speed.getShortName()));
 				cli.printlnAtInterval(usage);
-				int directionNum = Optional.ofNullable(cli.inputNumber("Direction to move: ")).orElse(-1);
+				final int directionNum = Optional.ofNullable(cli.inputNumber("Direction to move: ")).orElse(-1);
 				switch (directionNum) {
 				case 0:
 					changeSpeed();
@@ -198,16 +198,16 @@ public class ExplorationCLIHelper implements MovementCostListener, SelectionChan
 					direction = Direction.Northeast;
 					break;
 				case 10:
-					Point destination = cli.inputPoint("Location to move toward: ");
+					final Point destination = cli.inputPoint("Location to move toward: ");
 					if (destination == null) {
 						// EOF
 						runningTotal = 0;
 						return;
 					} else {
-						Pair<Integer, Iterable<Point>> pair =
+						final Pair<Integer, Iterable<Point>> pair =
 							pather.getTravelDistance(point, destination);
-						int cost = pair.getValue0();
-						Iterable<Point> path = pair.getValue1();
+						final int cost = pair.getValue0();
+						final Iterable<Point> path = pair.getValue1();
 						if (!path.iterator().hasNext()) {
 							cli.println(
 								"S/he doesn't know how to get there from here.");
@@ -235,7 +235,7 @@ public class ExplorationCLIHelper implements MovementCostListener, SelectionChan
 					runningTotal, totalMP, speed.getShortName()));
 			}
 
-			Point destPoint = model.getDestination(point, direction);
+			final Point destPoint = model.getDestination(point, direction);
 			try {
 				model.move(direction, speed);
 			} catch (final TraversalImpossibleException except) {
@@ -244,11 +244,11 @@ public class ExplorationCLIHelper implements MovementCostListener, SelectionChan
 				return;
 			}
 
-			List<TileFixture> constants = new ArrayList<>();
-			IMapNG map = model.getMap();
-			List<TileFixture> allFixtures = new ArrayList<>();
+			final List<TileFixture> constants = new ArrayList<>();
+			final IMapNG map = model.getMap();
+			final List<TileFixture> allFixtures = new ArrayList<>();
 
-			for (TileFixture fixture : map.getFixtures(destPoint)) {
+			for (final TileFixture fixture : map.getFixtures(destPoint)) {
 				if (SimpleMovementModel.shouldAlwaysNotice(mover, fixture)) {
 					constants.add(fixture);
 				} else if (SimpleMovementModel.shouldSometimesNotice(mover, speed, fixture)) {
@@ -256,10 +256,10 @@ public class ExplorationCLIHelper implements MovementCostListener, SelectionChan
 				}
 			}
 
-			/*Animal|AnimalTracks|HuntingModel.NothingFound*/ TileFixture tracksAnimal;
+			/*Animal|AnimalTracks|HuntingModel.NothingFound*/ final TileFixture tracksAnimal;
 
 			// Since not-visible terrain is impassable, by this point we know the tile is visible.
-			TileType terrain = map.getBaseTerrain(destPoint);
+			final TileType terrain = map.getBaseTerrain(destPoint);
 			if (TileType.Ocean == terrain) {
 				tracksAnimal = huntingModel.fish(destPoint).iterator().next().getValue1();
 			} else {
@@ -274,7 +274,7 @@ public class ExplorationCLIHelper implements MovementCostListener, SelectionChan
 
 			if (Direction.Nowhere == direction) {
 				while (true) {
-				Boolean response = cli.inputBooleanInSeries("Take an action here?");
+				final Boolean response = cli.inputBooleanInSeries("Take an action here?");
 				if (response == null) {
 					// EOF
 					runningTotal = 0;
@@ -282,10 +282,10 @@ public class ExplorationCLIHelper implements MovementCostListener, SelectionChan
 				} else if (!response) {
 					break;
 				}
-				Either<SimpleApplet, Boolean> choice = appletChooser.chooseApplet();
+				final Either<SimpleApplet, Boolean> choice = appletChooser.chooseApplet();
 				assert choice != null;
-				SimpleApplet applet = choice.fromLeft().orElse(null);
-				Boolean bool = choice.fromRight().orElse(null);
+				final SimpleApplet applet = choice.fromLeft().orElse(null);
+				final Boolean bool = choice.fromRight().orElse(null);
 				if (applet == null) {
 					if (bool == null) {
 						// EOF
@@ -300,7 +300,7 @@ public class ExplorationCLIHelper implements MovementCostListener, SelectionChan
 			}
 		}
 
-		String mtn;
+		final String mtn;
 		if (map.isMountainous(destPoint)) {
 			mtn = "mountainous ";
 		} else {
@@ -311,8 +311,8 @@ public class ExplorationCLIHelper implements MovementCostListener, SelectionChan
 		cli.print(String.format("The explorer comes to %s, a %s%s tile", destPoint, mtn,
 			Optional.ofNullable(map.getBaseTerrain(destPoint)).map(TileType::toString)
 				.orElse("unknown-terrain")));
-			Collection<River> rivers = map.getRivers(destPoint);
-			boolean anyRivers;
+			final Collection<River> rivers = map.getRivers(destPoint);
+			final boolean anyRivers;
 			if (rivers.contains(River.Lake)) {
 				anyRivers = true;
 				if (rivers.stream().anyMatch(r -> River.Lake != r)) {
@@ -338,15 +338,15 @@ public class ExplorationCLIHelper implements MovementCostListener, SelectionChan
 				cli.println(map.getRoads(destPoint).keySet().stream().map(Direction::toString)
 					.collect(Collectors.joining(", "))); // TODO: Report on road quality
 			}
-			Iterable<TileFixture> noticed = SimpleMovementModel.selectNoticed(allFixtures, Function.identity(),
+			final Iterable<TileFixture> noticed = SimpleMovementModel.selectNoticed(allFixtures, Function.identity(),
 				mover, speed);
 
 			if (!constants.isEmpty() || noticed.iterator().hasNext()) {
 				cli.println("The following were noticed:");
-				for (TileFixture fixture : constants) {
+				for (final TileFixture fixture : constants) {
 					printAndTransferFixture(destPoint, fixture, mover, true);
 				}
-				for (TileFixture fixture : noticed) {
+				for (final TileFixture fixture : noticed) {
 					printAndTransferFixture(destPoint, fixture, mover, false);
 				}
 			}

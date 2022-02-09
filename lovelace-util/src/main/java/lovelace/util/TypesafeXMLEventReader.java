@@ -33,7 +33,7 @@ public class TypesafeXMLEventReader implements Iterator<XMLEvent>, Closeable {
 		if (reader instanceof Closeable) { // TODO: AutoCloseable instead?
 			closeHandles.add((Closeable) reader);
 		}
-		for (Closeable method : closeMethods) {
+		for (final Closeable method : closeMethods) {
 			closeHandles.add(method);
 		}
 	}
@@ -41,7 +41,7 @@ public class TypesafeXMLEventReader implements Iterator<XMLEvent>, Closeable {
 	public TypesafeXMLEventReader(final Reader reader, final Closeable... closeMethods)
 			throws MalformedXMLException {
 		try {
-			XMLInputFactory factory = XMLInputFactory.newInstance();
+			final XMLInputFactory factory = XMLInputFactory.newInstance();
 			factory.setProperty(XMLInputFactory.SUPPORT_DTD, Boolean.FALSE);
 			factory.setProperty("javax.xml.stream.isSupportingExternalEntities",
 				Boolean.FALSE);
@@ -50,7 +50,7 @@ public class TypesafeXMLEventReader implements Iterator<XMLEvent>, Closeable {
 			throw new MalformedXMLException(except);
 		}
 		closeHandles.add(reader);
-		for (Closeable method : closeMethods) {
+		for (final Closeable method : closeMethods) {
 			closeHandles.add(method);
 		}
 	}
@@ -65,7 +65,7 @@ public class TypesafeXMLEventReader implements Iterator<XMLEvent>, Closeable {
 		} catch (final XMLStreamException except) {
 			throw new IOException(except);
 		}
-		for (Closeable handle : closeHandles) {
+		for (final Closeable handle : closeHandles) {
 			handle.close();
 		}
 		closed = true;
@@ -81,7 +81,7 @@ public class TypesafeXMLEventReader implements Iterator<XMLEvent>, Closeable {
 		} else {
 			try {
 				if (wrapped.hasNext()) {
-					XMLEvent retval = wrapped.nextEvent();
+					final XMLEvent retval = wrapped.nextEvent();
 					if (retval != null) {
 						if (!wrapped.hasNext()) {
 							close();
@@ -96,7 +96,7 @@ public class TypesafeXMLEventReader implements Iterator<XMLEvent>, Closeable {
 					throw new NoSuchElementException();
 				}
 			} catch (final XMLStreamException exception) {
-				Throwable cause = exception.getCause();
+				final Throwable cause = exception.getCause();
 				if (cause instanceof MalformedInputException) {
 					throw new RuntimeException(new MalformedXMLException(cause,
 						"Invalid character in map file, probably a different encoding."));

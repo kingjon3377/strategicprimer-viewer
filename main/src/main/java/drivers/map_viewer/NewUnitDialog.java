@@ -49,10 +49,10 @@ public class NewUnitDialog extends SPDialog implements NewUnitSource, PlayerChan
 		add(new JLabel("ID #: "));
 		idField.setColumns(10);
 		setupField(idField);
-		JButton okButton = new ListenedButton("OK", ignored -> okListener());
+		final JButton okButton = new ListenedButton("OK", ignored -> okListener());
 		add(okButton);
 
-		JButton cancelButton = new ListenedButton("Cancel", ignored -> cancelListener());
+		final JButton cancelButton = new ListenedButton("Cancel", ignored -> cancelListener());
 		Platform.makeButtonsSegmented(okButton, cancelButton);
 		add(cancelButton);
 		setMinimumSize(new Dimension(200, 100));
@@ -87,17 +87,17 @@ public class NewUnitDialog extends SPDialog implements NewUnitSource, PlayerChan
 	}
 
 	private void okListener() {
-		String name = nameField.getText().trim();
-		String kind = kindField.getText().trim();
+		final String name = nameField.getText().trim();
+		final String kind = kindField.getText().trim();
 		if (name.isEmpty()) {
 			nameField.requestFocusInWindow();
 		} else if (kind.isEmpty()) {
 			kindField.requestFocusInWindow();
 		} else {
-			String reqId = idField.getText().trim();
-			int idNum;
+			final String reqId = idField.getText().trim();
+			final int idNum;
 			if (isNumeric(reqId)) {
-				OptionalInt temp = parseInt(reqId);
+				final OptionalInt temp = parseInt(reqId);
 				if (temp.isPresent()) {
 					if (!idf.isIDUnused(temp.getAsInt())) {
 						// TODO: Show an error message
@@ -116,8 +116,8 @@ public class NewUnitDialog extends SPDialog implements NewUnitSource, PlayerChan
 			} else {
 				idNum = idf.createID();
 			}
-			IUnit unit = new Unit(player, kind, name, idNum);
-			for (NewUnitListener listener : listeners) {
+			final IUnit unit = new Unit(player, kind, name, idNum);
+			for (final NewUnitListener listener : listeners) {
 				listener.addNewUnit(unit);
 			}
 			// TODO: delegate to cancelListener()

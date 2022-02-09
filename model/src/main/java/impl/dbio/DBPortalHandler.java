@@ -43,8 +43,8 @@ final class DBPortalHandler extends AbstractDatabaseWriter<Portal, Point> implem
 
 	@Override
 	public void write(final DB db, final Portal obj, final Point context) {
-		Integer destinationRow;
-		Integer destinationColumn;
+		final Integer destinationRow;
+		final Integer destinationColumn;
 		if (obj.getDestinationCoordinates().isValid()) {
 			destinationRow = obj.getDestinationCoordinates().getRow();
 			destinationColumn = obj.getDestinationCoordinates().getColumn();
@@ -59,14 +59,14 @@ final class DBPortalHandler extends AbstractDatabaseWriter<Portal, Point> implem
 
 	private TryBiConsumer<Map<String, Object>, Warning, Exception> readPortal(final IMutableMapNG map) {
 		return (dbRow, warner) -> {
-			int row = (Integer) dbRow.get("row");
-			int column = (Integer) dbRow.get("column");
-			int id = (Integer) dbRow.get("id");
-			String destinationWorld = (String) dbRow.get("destination_world");
-			Integer destinationRow = (Integer) dbRow.get("destination_row");
-			Integer destinationColumn = (Integer) dbRow.get("destination_column");
-			String image = (String) dbRow.get("image");
-			Portal portal = new Portal(destinationWorld == null ? "unknown" : destinationWorld,
+			final int row = (Integer) dbRow.get("row");
+			final int column = (Integer) dbRow.get("column");
+			final int id = (Integer) dbRow.get("id");
+			final String destinationWorld = (String) dbRow.get("destination_world");
+			final Integer destinationRow = (Integer) dbRow.get("destination_row");
+			final Integer destinationColumn = (Integer) dbRow.get("destination_column");
+			final String image = (String) dbRow.get("image");
+			final Portal portal = new Portal(destinationWorld == null ? "unknown" : destinationWorld,
 				new Point(destinationRow == null ? -1 : destinationRow,
 					destinationColumn == null ? -1 : destinationColumn), id);
 			if (image != null) {

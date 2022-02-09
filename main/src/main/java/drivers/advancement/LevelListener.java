@@ -66,8 +66,8 @@ import common.map.fixtures.mobile.worker.IJob;
 	 */
 	@Override
 	public void level(final String workerName, final String jobName, final String skillName, final int gains, final int currentLevel) {
-		String actualWorkerName;
-		String actualSkillName;
+		final String actualWorkerName;
+		final String actualSkillName;
 		if (!workerName.isEmpty() && !"unknown".equals(workerName)) {
 			actualWorkerName = workerName;
 		} else if (worker == null) {
@@ -82,7 +82,7 @@ import common.map.fixtures.mobile.worker.IJob;
 		} else {
 			actualSkillName = getName(skill);
 		}
-		String count = (gains == 1) ? "a level" : gains + " levels";
+		final String count = (gains == 1) ? "a level" : gains + " levels";
 		System.out.printf("%s gained %s in %s", actualWorkerName, count, actualSkillName); // TODO: Take ICLIHelper instead of using stdout
 	}
 }

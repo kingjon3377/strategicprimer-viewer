@@ -46,39 +46,40 @@ import drivers.gui.common.MenuBroker;
 	public AdvancementFrame(final IWorkerModel model, final MenuBroker menuHandler, final ModelDriver driver) {
 		super("Worker Advancement", driver, new Dimension(640, 480), true,
 			(file) -> model.addSubordinateMap(MapIOHelper.readMap(file)));
-		IMapNG map = model.getMap();
+		final IMapNG map = model.getMap();
 		treeModel = new WorkerTreeModelAlt(model);
-		IDRegistrar idf = new IDFactoryFiller().createIDFactory(map);
+		final IDRegistrar idf = new IDFactoryFiller().createIDFactory(map);
 
-		WorkerTree tree = new WorkerTree(treeModel, model.getPlayers(),
+		// TODO: replace lambda with (model::getMap).andThen(IMapNG::getCurrentTurn)?
+		final WorkerTree tree = new WorkerTree(treeModel, model.getPlayers(),
 			() -> model.getMap().getCurrentTurn(), false, idf);
 
-		WorkerCreationListener newWorkerListener = new WorkerCreationListener(treeModel, idf);
+		final WorkerCreationListener newWorkerListener = new WorkerCreationListener(treeModel, idf);
 
 		tree.addUnitSelectionListener(newWorkerListener);
 
-		JobTreeModel jobsTreeModel = new JobTreeModel(model);
+		final JobTreeModel jobsTreeModel = new JobTreeModel(model);
 		tree.addUnitMemberListener(jobsTreeModel);
 
-		ItemAdditionPanel jobAdditionPanel = new ItemAdditionPanel("job");
+		final ItemAdditionPanel jobAdditionPanel = new ItemAdditionPanel("job");
 		jobAdditionPanel.addAddRemoveListener(jobsTreeModel);
 
-		ItemAdditionPanel skillAdditionPanel = new ItemAdditionPanel("skill");
+		final ItemAdditionPanel skillAdditionPanel = new ItemAdditionPanel("skill");
 		skillAdditionPanel.addAddRemoveListener(jobsTreeModel);
 
-		LevelListener levelListener = new LevelListener();
+		final LevelListener levelListener = new LevelListener();
 
 		tree.addUnitMemberListener(levelListener);
 
-		JobsTree jobsTreeObject = new JobsTree(jobsTreeModel);
+		final JobsTree jobsTreeObject = new JobsTree(jobsTreeModel);
 		jobsTreeObject.addSkillSelectionListener(levelListener);
 
-		SkillAdvancementPanel hoursAdditionPanel = new SkillAdvancementPanel(model);
+		final SkillAdvancementPanel hoursAdditionPanel = new SkillAdvancementPanel(model);
 		tree.addUnitMemberListener(hoursAdditionPanel);
 		jobsTreeObject.addSkillSelectionListener(hoursAdditionPanel);
 		hoursAdditionPanel.addLevelGainListener(levelListener);
 
-		TreeExpansionOrderListener expander = new TreeExpansionHandler(tree);
+		final TreeExpansionOrderListener expander = new TreeExpansionHandler(tree);
 		menuHandler.register(ignored -> expander.expandAll(), "expand all");
 		menuHandler.register(ignored -> expander.collapseAll(), "collapse all");
 		menuHandler.register(event -> expander.expandSome(2), "expand unit kinds");

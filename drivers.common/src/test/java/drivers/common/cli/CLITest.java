@@ -46,8 +46,8 @@ public final class CLITest {
 	 */
 	<T> void assertCLI(final Function<ICLIHelper, @Nullable T> method, final List<String> input, final String expectedOutput,
 	                   final T expectedResult, final String resultMessage, final String outputMessage) {
-		StringBuilder ostream = new StringBuilder();
-		ICLIHelper cli = new CLIHelper(new LinkedList<>(input)::pollFirst, ostream::append);
+		final StringBuilder ostream = new StringBuilder();
+		final ICLIHelper cli = new CLIHelper(new LinkedList<>(input)::pollFirst, ostream::append);
 		assertEquals(expectedResult, method.apply(cli), resultMessage);
 		assertEquals(expectedOutput, ostream.toString(), outputMessage);
 	}
@@ -252,8 +252,8 @@ public final class CLITest {
 				"three "),
 			true, "inputBoolean rejects other input",
 			"inputBoolean gives message on invalid input");
-		StringBuilder ostream = new StringBuilder();
-		ICLIHelper cli = new CLIHelper(new LinkedList<>(Arrays.asList("all"))::pollFirst,
+		final StringBuilder ostream = new StringBuilder();
+		final ICLIHelper cli = new CLIHelper(new LinkedList<>(Arrays.asList("all"))::pollFirst,
 			ostream::append);
 		assertEquals(true, cli.inputBooleanInSeries("prompt four "),
 			"inputBooleanInSeries allows yes-to-all");
@@ -365,7 +365,7 @@ public final class CLITest {
 	 */
 	@Test
 	public void testPrinting() {
-		StringBuilder ostream = new StringBuilder();
+		final StringBuilder ostream = new StringBuilder();
 		new CLIHelper(new LinkedList<String>()::pollFirst, ostream::append).print("test string");
 		assertEquals("test string", ostream.toString(), "print() prints string");
 		ostream.setLength(0);

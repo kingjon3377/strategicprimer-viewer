@@ -42,13 +42,13 @@ final class DBCacheHandler extends AbstractDatabaseWriter<CacheFixture, Point> i
 
 	private TryBiConsumer<Map<String, Object>, Warning, Exception> readCache(final IMutableMapNG map) {
 		return (dbRow, warner) -> {
-			int row = (Integer) dbRow.get("row");
-			int column = (Integer) dbRow.get("column");
-			int id = (Integer) dbRow.get("id");
-			String kind = (String) dbRow.get("kind");
-			String contents = (String) dbRow.get("contents");
-			String image = (String) dbRow.get("image");
-			CacheFixture cache = new CacheFixture(kind, contents, id);
+			final int row = (Integer) dbRow.get("row");
+			final int column = (Integer) dbRow.get("column");
+			final int id = (Integer) dbRow.get("id");
+			final String kind = (String) dbRow.get("kind");
+			final String contents = (String) dbRow.get("contents");
+			final String image = (String) dbRow.get("image");
+			final CacheFixture cache = new CacheFixture(kind, contents, id);
 			if (image != null) {
 				cache.setImage(image);
 			}

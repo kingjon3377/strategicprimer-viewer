@@ -18,7 +18,7 @@ public class SPOptionsImpl implements SPOptions {
 	// TODO: Take Map<String, String> instead and use options.putAll()?
 	@SafeVarargs
 	public SPOptionsImpl(final Map.Entry<String, String>... existing) {
-		for (Map.Entry<String, String> entry : existing) {
+		for (final Map.Entry<String, String> entry : existing) {
 			options.put(entry.getKey(), entry.getValue());
 		}
 	}
@@ -47,15 +47,15 @@ public class SPOptionsImpl implements SPOptions {
 
 	@Override
 	public SPOptionsImpl copy() {
-		SPOptionsImpl retval = new SPOptionsImpl();
+		final SPOptionsImpl retval = new SPOptionsImpl();
 		retval.options.putAll(options);
 		return retval;
 	}
 
 	@Override
 	public String toString() {
-		StringBuilder builder = new StringBuilder();
-		for (Map.Entry<String, String> entry : options.entrySet()) {
+		final StringBuilder builder = new StringBuilder();
+		for (final Map.Entry<String, String> entry : options.entrySet()) {
 			builder.append(entry.getKey());
 			if (!"true".equals(entry.getValue())) {
 				builder.append('=').append(entry.getValue());

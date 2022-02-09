@@ -19,7 +19,7 @@ public final class PathfinderFactory {
 		if (pathfinderCache.containsKey(map)) {
 			return pathfinderCache.get(map);
 		} else {
-			Pathfinder retval = new PathfinderImpl(map);
+			final Pathfinder retval = new PathfinderImpl(map);
 			pathfinderCache.put(map, retval);
 			return retval;
 		}

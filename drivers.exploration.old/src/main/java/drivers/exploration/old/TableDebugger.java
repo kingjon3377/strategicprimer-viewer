@@ -48,11 +48,11 @@ public class TableDebugger implements UtilityDriver {
 			ostream.accept(String.format("The cause was: %s#%s#%s", before, tableName, after));
 			return;
 		}
-		Collection<EncounterTable> innerState = Stream.concat(set.stream(),
+		final Collection<EncounterTable> innerState = Stream.concat(set.stream(),
 			Stream.of(table)).collect(Collectors.toSet());
-		for (String item : table.getAllEvents()) {
+		for (final String item : table.getAllEvents()) {
 			if (item.contains("#")) {
-				String[] parsed = item.split("#", 3);
+				final String[] parsed = item.split("#", 3);
 				debugSingleTable(runner, String.format("%s%s", before, parsed[0]),
 					(parsed.length >= 3) ? String.format("%s%s", parsed[2], after) :
 						after,
@@ -70,13 +70,13 @@ public class TableDebugger implements UtilityDriver {
 		} else if (!Files.isDirectory(Paths.get("tables"))) {
 			throw new DriverFailedException(new IllegalStateException("Table debugger requires a tables directory"));
 		}
-		ExplorationRunner runner = new ExplorationRunner();
+		final ExplorationRunner runner = new ExplorationRunner();
 		try {
 			runner.loadAllTables(Paths.get("tables"));
 			runner.verboseGlobalRecursiveCheck(ostream);
-			EncounterTable mainTable = runner.getTable("main");
+			final EncounterTable mainTable = runner.getTable("main");
 			debugSingleTable(runner, "", "", mainTable, "main", Collections.emptyList());
-		} catch (IOException|MissingTableException except) {
+		} catch (final IOException|MissingTableException except) {
 			throw new DriverFailedException(except);
 		}
 	}

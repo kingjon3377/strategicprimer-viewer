@@ -42,11 +42,11 @@ interface MapContentsReader {
 	 */
 	@Nullable
 	default IFixture findByIdImpl(final Iterable<IFixture> stream, final int id) {
-		for (IFixture fixture : stream) {
+		for (final IFixture fixture : stream) {
 			if (fixture.getId() == id) {
 				return fixture;
 			} else if (fixture instanceof FixtureIterable) {
-				IFixture retval = findByIdImpl((FixtureIterable<IFixture>) fixture, id);
+				final IFixture retval = findByIdImpl((FixtureIterable<IFixture>) fixture, id);
 				if (retval != null) {
 					return retval;
 				}
@@ -71,7 +71,7 @@ interface MapContentsReader {
 	                                final TryBiConsumer<Map<String, Object>, Warning, Exception> handler, final String query,
 	                                final Object... args) throws Exception {
 		LOGGER.fine("About to read " + description);
-		Accumulator<Integer> count = new IntAccumulator(0);
+		final Accumulator<Integer> count = new IntAccumulator(0);
 		db.select(query, args).execute().forEach(handler.andThen((m, w) -> {
 				count.add(1);
 				if (count.getSum() % 50 == 0) {

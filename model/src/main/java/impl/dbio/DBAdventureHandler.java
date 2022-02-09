@@ -47,18 +47,18 @@ final class DBAdventureHandler extends AbstractDatabaseWriter<AdventureFixture, 
 	private static TryBiConsumer<Map<String, Object>, Warning, Exception>
 			readAdventure(final IMutableMapNG map) {
 		return (dbRow, warner) -> {
-			int row = (Integer) dbRow.get("row");
-//			int row = Integer.parseInt(dbRow.get("row"));
-			int column = (Integer) dbRow.get("column");
-//			int column = Integer.parseInt(dbRow.get("column"));
-			int id = (Integer) dbRow.get("id");
-//			int id = Integer.parseInt(dbRow.get("id"));
-			String brief = (String) dbRow.get("brief");
-			String full = (String) dbRow.get("full");
-			int ownerId = (Integer) dbRow.get("owner");
-//			int ownerId = Integer.parseInt(dbRow.get("owner"));
-			String image = (String) dbRow.get("image");
-			AdventureFixture adventure = new AdventureFixture(map.getPlayers().getPlayer(ownerId),
+			final int row = (Integer) dbRow.get("row");
+//			final int row = Integer.parseInt(dbRow.get("row"));
+			final int column = (Integer) dbRow.get("column");
+//			final int column = Integer.parseInt(dbRow.get("column"));
+			final int id = (Integer) dbRow.get("id");
+//			final int id = Integer.parseInt(dbRow.get("id"));
+			final String brief = (String) dbRow.get("brief");
+			final String full = (String) dbRow.get("full");
+			final int ownerId = (Integer) dbRow.get("owner");
+//			final int ownerId = Integer.parseInt(dbRow.get("owner"));
+			final String image = (String) dbRow.get("image");
+			final AdventureFixture adventure = new AdventureFixture(map.getPlayers().getPlayer(ownerId),
 				brief, full, id);
 			if (image != null) {
 				adventure.setImage(image);

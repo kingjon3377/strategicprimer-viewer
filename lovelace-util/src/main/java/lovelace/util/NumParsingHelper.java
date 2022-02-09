@@ -20,7 +20,7 @@ public final class NumParsingHelper {
 		try {
 			PARSER.parse(string);
 			return true;
-		} catch (NumberFormatException|ParseException ignored) {
+		} catch (final NumberFormatException|ParseException ignored) {
 			return false;
 		}
 	}
@@ -32,7 +32,7 @@ public final class NumParsingHelper {
 	public static OptionalInt parseInt(final String string) {
 		try {
 			return OptionalInt.of(PARSER.parse(string).intValue());
-		} catch (NumberFormatException|ParseException except) {
+		} catch (final NumberFormatException|ParseException except) {
 			LOGGER.log(Level.FINE, except,
 				() -> "Failed to parse a number from the following input: " + string);
 			return OptionalInt.empty();

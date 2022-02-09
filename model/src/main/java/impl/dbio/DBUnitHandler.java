@@ -76,7 +76,7 @@ final class DBUnitHandler extends AbstractDatabaseWriter<IUnit, Object> implemen
 	@Override
 	public void write(final DB db, final IUnit obj, final Object context) {
 		db.transaction(sql -> {
-				String portrait = obj.getPortrait();
+				final String portrait = obj.getPortrait();
 				if (context instanceof Point) {
 					sql.update(INSERT_UNIT, ((Point) context).getRow(),
 						((Point) context).getColumn(), null,
@@ -90,46 +90,46 @@ final class DBUnitHandler extends AbstractDatabaseWriter<IUnit, Object> implemen
 					throw new IllegalArgumentException(
 						"Context must be point or fortress");
 				}
-				for (Map.Entry<Integer, String> entry : obj.getAllOrders().entrySet()) {
+				for (final Map.Entry<Integer, String> entry : obj.getAllOrders().entrySet()) {
 					sql.update(INSERT_ORDER, obj.getId(), entry.getKey(),
 						entry.getValue()).execute();
 				}
-				for (Map.Entry<Integer, String> entry : obj.getAllResults().entrySet()) {
+				for (final Map.Entry<Integer, String> entry : obj.getAllResults().entrySet()) {
 					sql.update(INSERT_RESULT, obj.getId(), entry.getKey(),
 						entry.getValue()).execute();
 				}
 				return true;
 			});
-		for (UnitMember member : obj) {
+		for (final UnitMember member : obj) {
 			parent.writeSPObjectInContext(db, member, obj);
 		}
 	}
 
 	private TryBiConsumer<Map<String, Object>, Warning, Exception> readOrders(final IMutableUnit unit) {
 		return (dbRow, warner) -> {
-			Integer turn = (Integer) dbRow.get("turn");
-			String orders = (String) dbRow.get("orders");
+			final Integer turn = (Integer) dbRow.get("turn");
+			final String orders = (String) dbRow.get("orders");
 			unit.setOrders(turn == null ? -1 : turn, orders);
 		};
 	}
 
 	private TryBiConsumer<Map<String, Object>, Warning, Exception> readResults(final IMutableUnit unit) {
 		return (dbRow, warner) -> {
-			Integer turn = (Integer) dbRow.get("turn");
-			String results = (String) dbRow.get("results");
+			final Integer turn = (Integer) dbRow.get("turn");
+			final String results = (String) dbRow.get("results");
 			unit.setResults(turn == null ? -1 : turn, results);
 		};
 	}
 
 	private TryBiConsumer<Map<String, Object>, Warning, Exception> readUnit(final IMutableMapNG map, final DB db) {
 		return (dbRow, warner) -> {
-			int ownerNum = (Integer) dbRow.get("owner");
-			String kind = (String) dbRow.get("kind");
-			String name = (String) dbRow.get("name");
-			int id = (Integer) dbRow.get("id");
-			String image = (String) dbRow.get("image");
-			String portrait = (String) dbRow.get("portrait");
-			IMutableUnit unit = new Unit(map.getPlayers().getPlayer(ownerNum), kind, name, id);
+			final int ownerNum = (Integer) dbRow.get("owner");
+			final String kind = (String) dbRow.get("kind");
+			final String name = (String) dbRow.get("name");
+			final int id = (Integer) dbRow.get("id");
+			final String image = (String) dbRow.get("image");
+			final String portrait = (String) dbRow.get("portrait");
+			final IMutableUnit unit = new Unit(map.getPlayers().getPlayer(ownerNum), kind, name, id);
 			if (image != null) {
 				unit.setImage(image);
 			}
@@ -140,12 +140,12 @@ final class DBUnitHandler extends AbstractDatabaseWriter<IUnit, Object> implemen
 				"SELECT * from orders WHERE unit = ?", id);
 			handleQueryResults(db, warner, "turns' results", readResults(unit),
 				"SELECT * from results WHERE unit = ?", id);
-			Integer row = (Integer) dbRow.get("row");
-			Integer column = (Integer) dbRow.get("column");
+			final Integer row = (Integer) dbRow.get("row");
+			final Integer column = (Integer) dbRow.get("column");
 			if (row != null && column != null) {
 				map.addFixture(new Point(row, column), unit);
 			} else {
-				IMutableFortress parent = (IMutableFortress) findById(map,
+				final IMutableFortress parent = (IMutableFortress) findById(map,
 					(Integer) dbRow.get("parent"), warner);
 				parent.addMember(unit);
 			}

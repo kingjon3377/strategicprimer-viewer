@@ -35,8 +35,8 @@ public class TextNoteDialog extends SPDialog implements NewFixtureSource {
 		noteField.setLineWrap(true);
 
 		// TODO: Add a constructor taking Runnable to ListenedButton
-		JButton okButton = new ListenedButton("OK", ignored -> okListener());
-		JButton cancelButton = new ListenedButton("Cancel", ignored -> cancelListener());
+		final JButton okButton = new ListenedButton("OK", ignored -> okListener());
+		final JButton cancelButton = new ListenedButton("Cancel", ignored -> cancelListener());
 
 		// FIXME: Here and elsewhere, I think the order of "OK" and
 		// "Cancel" needs to be platform-dependent. We probably need a
@@ -66,12 +66,12 @@ public class TextNoteDialog extends SPDialog implements NewFixtureSource {
 	private final JTextArea noteField = new JTextArea(15, 3);
 
 	private void okListener() {
-		String text = noteField.getText().trim();
+		final String text = noteField.getText().trim();
 		if (text.isEmpty()) {
 			noteField.requestFocusInWindow();
 		} else {
-			TextFixture fixture = new TextFixture(text, currentTurn.getAsInt());
-			for (NewFixtureListener listener : listeners) {
+			final TextFixture fixture = new TextFixture(text, currentTurn.getAsInt());
+			for (final NewFixtureListener listener : listeners) {
 				listener.addNewFixture(fixture);
 			}
 			noteField.setText(""); // TODO: delegate to cancelListener()?

@@ -128,7 +128,7 @@ public class WorkerTree extends JTree implements UnitMemberSelectionSource, Unit
 		if (getRowForLocation(event.getX(), event.getY()) == -1) {
 			return null;
 		}
-		WorkerStats stats = Optional.ofNullable(getPathForLocation(event.getX(), event.getY()))
+		final WorkerStats stats = Optional.ofNullable(getPathForLocation(event.getX(), event.getY()))
 			.map(TreePath::getLastPathComponent).map(wtModel::getModelObject)
 			.filter(IWorker.class::isInstance).map(IWorker.class::cast)
 			.map(IWorker::getStats).orElse(null);
@@ -164,23 +164,23 @@ public class WorkerTree extends JTree implements UnitMemberSelectionSource, Unit
 	}
 
 	private void treeSelectionChanged(final TreeSelectionEvent event) {
-		Object sel = Optional.ofNullable(event.getNewLeadSelectionPath())
+		final Object sel = Optional.ofNullable(event.getNewLeadSelectionPath())
 			.map(TreePath::getLastPathComponent).map(wtModel::getModelObject).orElse(null);
 		if (sel instanceof IUnit) {
 			LOGGER.fine("Selection in workerTree is an IUnit");
-			for (UnitSelectionListener listener : selectionListeners) {
+			for (final UnitSelectionListener listener : selectionListeners) {
 				listener.selectUnit((IUnit) sel);
 			}
-			IWorker proxy = new ProxyWorker((IUnit) sel);
-			for (UnitMemberListener listener : memberListeners) {
+			final IWorker proxy = new ProxyWorker((IUnit) sel);
+			for (final UnitMemberListener listener : memberListeners) {
 				listener.memberSelected(null, proxy);
 			}
 		} else if (sel instanceof UnitMember) {
 			LOGGER.fine("workerTree selection is a UnitMember, but not an IUnit");
-			for (UnitSelectionListener listener : selectionListeners) {
+			for (final UnitSelectionListener listener : selectionListeners) {
 				listener.selectUnit(null);
 			}
-			for (UnitMemberListener listener : memberListeners) {
+			for (final UnitMemberListener listener : memberListeners) {
 				listener.memberSelected(null, (UnitMember) sel);
 			}
 		} else {
@@ -192,10 +192,10 @@ public class WorkerTree extends JTree implements UnitMemberSelectionSource, Unit
 				LOGGER.warning("Unexpected type of selection in workerTree: " +
 					sel.getClass());
 			}
-			for (UnitSelectionListener listener : selectionListeners) {
+			for (final UnitSelectionListener listener : selectionListeners) {
 				listener.selectUnit(null);
 			}
-			for (UnitMemberListener listener : memberListeners) {
+			for (final UnitMemberListener listener : memberListeners) {
 				listener.memberSelected(null, null);
 			}
 		}
@@ -235,16 +235,16 @@ public class WorkerTree extends JTree implements UnitMemberSelectionSource, Unit
 		@Override
 		@Nullable
 		public Transferable createTransferable(final JComponent component) {
-			TreePath[] paths = selectionModel.getSelectionPaths();
-			List<Pair<UnitMember, IUnit>> membersToTransfer = new ArrayList<>();
-			List<IUnit> unitsToTransfer = new ArrayList<>();
+			final TreePath[] paths = selectionModel.getSelectionPaths();
+			final List<Pair<UnitMember, IUnit>> membersToTransfer = new ArrayList<>();
+			final List<IUnit> unitsToTransfer = new ArrayList<>();
 
-			for (TreePath path : paths) {
-				Object last = path.getLastPathComponent();
-				Object parentObj = path.getParentPath().getLastPathComponent();
+			for (final TreePath path : paths) {
+				final Object last = path.getLastPathComponent();
+				final Object parentObj = path.getParentPath().getLastPathComponent();
 				if (last != null && parentObj != null) {
-					Object parent = wtModel.getModelObject(parentObj);
-					Object selection = wtModel.getModelObject(last);
+					final Object parent = wtModel.getModelObject(parentObj);
+					final Object selection = wtModel.getModelObject(last);
 					if (parent instanceof IUnit && selection instanceof UnitMember) {
 						membersToTransfer.add(Pair.with((UnitMember) selection,
 							(IUnit) parent));
@@ -281,9 +281,9 @@ public class WorkerTree extends JTree implements UnitMemberSelectionSource, Unit
 			if (support.isDataFlavorSupported(UnitMemberTransferable.FLAVOR) &&
 					support.getDropLocation() instanceof JTree.DropLocation &&
 					((JTree.DropLocation) support.getDropLocation()).getPath() != null) {
-				Object last = ((JTree.DropLocation) support.getDropLocation())
+				final Object last = ((JTree.DropLocation) support.getDropLocation())
 					.getPath().getLastPathComponent();
-				Object lastObj = Optional.ofNullable(last).map(wtModel::getModelObject)
+				final Object lastObj = Optional.ofNullable(last).map(wtModel::getModelObject)
 					.orElse(null);
 				if (lastObj instanceof IUnit || lastObj instanceof UnitMember) {
 					return true;
@@ -292,9 +292,9 @@ public class WorkerTree extends JTree implements UnitMemberSelectionSource, Unit
 			if (support.isDataFlavorSupported(UnitTransferable.FLAVOR) &&
 					support.getDropLocation() instanceof JTree.DropLocation &&
 					((JTree.DropLocation) support.getDropLocation()).getPath() != null) {
-				Object last = ((JTree.DropLocation) support.getDropLocation())
+				final Object last = ((JTree.DropLocation) support.getDropLocation())
 					.getPath().getLastPathComponent();
-				Object lastObj = Optional.ofNullable(last).map(wtModel::getModelObject)
+				final Object lastObj = Optional.ofNullable(last).map(wtModel::getModelObject)
 					.orElse(null);
 				if (lastObj instanceof String) {
 					return true;
@@ -311,14 +311,14 @@ public class WorkerTree extends JTree implements UnitMemberSelectionSource, Unit
 			if (canImport(support) &&
 					support.getDropLocation() instanceof JTree.DropLocation &&
 					((JTree.DropLocation) support.getDropLocation()).getPath() != null) {
-				TreePath path = ((JTree.DropLocation) support.getDropLocation()).getPath();
-				Object pathLast = path.getLastPathComponent();
+				final TreePath path = ((JTree.DropLocation) support.getDropLocation()).getPath();
+				final Object pathLast = path.getLastPathComponent();
 				if (pathLast == null) {
 					return false;
 				}
-				Object local = wtModel.getModelObject(pathLast);
-				Object tempTarget;
-				TreePath targetPath;
+				final Object local = wtModel.getModelObject(pathLast);
+				final Object tempTarget;
+				final TreePath targetPath;
 				if (local instanceof UnitMember) {
 					targetPath = path.getParentPath();
 					tempTarget = wtModel.getModelObject(targetPath
@@ -327,17 +327,17 @@ public class WorkerTree extends JTree implements UnitMemberSelectionSource, Unit
 					targetPath = path;
 					tempTarget = local;
 				}
-				Transferable trans = support.getTransferable();
-				boolean shouldBeExpanded = isExpanded.test(targetPath);
+				final Transferable trans = support.getTransferable();
+				final boolean shouldBeExpanded = isExpanded.test(targetPath);
 				try {
 					if (tempTarget instanceof IUnit &&
 							trans.isDataFlavorSupported(
 								UnitMemberTransferable.FLAVOR)) {
-						List<Pair<UnitMember, IUnit>> list =
+						final List<Pair<UnitMember, IUnit>> list =
 							(List<Pair<UnitMember, IUnit>>)
 								trans.getTransferData(
 									UnitMemberTransferable.FLAVOR);
-						for (Pair<UnitMember, IUnit> pair : list) {
+						for (final Pair<UnitMember, IUnit> pair : list) {
 							wtModel.moveMember(pair.getValue0(),
 								pair.getValue1(), (IUnit) tempTarget);
 						}
@@ -348,9 +348,9 @@ public class WorkerTree extends JTree implements UnitMemberSelectionSource, Unit
 					} else if (tempTarget instanceof String &&
 							trans.isDataFlavorSupported(
 								UnitTransferable.FLAVOR)) {
-						List<IUnit> list = (List<IUnit>)
+						final List<IUnit> list = (List<IUnit>)
 							trans.getTransferData(UnitTransferable.FLAVOR);
-						for (IUnit unit : list) {
+						for (final IUnit unit : list) {
 							wtModel.changeKind(unit, (String) tempTarget);
 						}
 						return true;
@@ -388,22 +388,22 @@ public class WorkerTree extends JTree implements UnitMemberSelectionSource, Unit
 		// TODO: The (int) casts here were all halfEven().integer (before the '+1') in Ceylon;
 		// I'm not sure whether the port introduces one-pixel differences.
 		private static Icon createDefaultFixtureIcon() {
-			int imageSize = 24;
-			BufferedImage temp = new BufferedImage(imageSize, imageSize,
+			final int imageSize = 24;
+			final BufferedImage temp = new BufferedImage(imageSize, imageSize,
 				BufferedImage.TYPE_INT_ARGB);
-			Graphics2D pen = temp.createGraphics();
-			Color saveColor = pen.getColor();
+			final Graphics2D pen = temp.createGraphics();
+			final Color saveColor = pen.getColor();
 			pen.setColor(Color.RED);
-			double margin = 0.15;
-			int firstCorner = ((int) (imageSize * margin)) + 1;
-			int firstDimension = (int) (imageSize * (1.0 - (margin * 2.0)));
-			int firstArcDimension = (int) (imageSize * (margin / 2.0));
+			final double margin = 0.15;
+			final int firstCorner = ((int) (imageSize * margin)) + 1;
+			final int firstDimension = (int) (imageSize * (1.0 - (margin * 2.0)));
+			final int firstArcDimension = (int) (imageSize * (margin / 2.0));
 			pen.fillRoundRect(firstCorner, firstCorner, firstDimension,
 				firstDimension, firstArcDimension, firstArcDimension);
 			pen.setColor(saveColor);
-			int secondCorner = (int) ((imageSize / 2.0) - (imageSize * margin)) + 1;
-			int secondDimension = (int) (imageSize * margin * 2.0);
-			int secondArcDimension = (int) ((imageSize * margin) / 2.0);
+			final int secondCorner = (int) ((imageSize / 2.0) - (imageSize * margin)) + 1;
+			final int secondDimension = (int) (imageSize * margin * 2.0);
+			final int secondArcDimension = (int) ((imageSize * margin) / 2.0);
 			pen.fillRoundRect(secondCorner, secondCorner, secondDimension,
 				secondDimension, secondArcDimension, secondArcDimension);
 			pen.dispose();
@@ -416,7 +416,7 @@ public class WorkerTree extends JTree implements UnitMemberSelectionSource, Unit
 		private static Icon getIconForFile(final String filename) {
 			try {
 				return ImageLoader.loadIcon(filename);
-			}  catch (FileNotFoundException|NoSuchFileException except) {
+			}  catch (final FileNotFoundException|NoSuchFileException except) {
 				LOGGER.severe(String.format("Image file images/%s not found`", filename));
 				LOGGER.log(Level.FINE, "with stack trace", except);
 				return null;
@@ -443,9 +443,9 @@ public class WorkerTree extends JTree implements UnitMemberSelectionSource, Unit
 
 		// TODO: may need to rename to avoid collision with superclass method
 		private static Icon getIcon(final HasImage obj) {
-			String image = obj.getImage();
+			final String image = obj.getImage();
 			if (!image.isEmpty()) {
-				Icon icon = getIconForFile(image);
+				final Icon icon = getIconForFile(image);
 				if (icon != null) {
 					return icon;
 				}
@@ -468,7 +468,7 @@ public class WorkerTree extends JTree implements UnitMemberSelectionSource, Unit
 			if (item.isEmpty()) {
 				return null;
 			}
-			String orders = item.getLatestOrders(turnSource.getAsInt()).toLowerCase();
+			final String orders = item.getLatestOrders(turnSource.getAsInt()).toLowerCase();
 			if (orders.contains("fixme")) {
 				return true;
 			} else if (orders.contains("todo") || orders.contains("xxx")) {
@@ -490,10 +490,10 @@ public class WorkerTree extends JTree implements UnitMemberSelectionSource, Unit
 			Boolean retval = null;
 			// TODO: Can we avoid the collector step?
 			// TODO: Add streamChildrenOf() method to IWorkerTreeModel?
-			for (IUnit unit : StreamSupport.stream(wtModel.childrenOf(item).spliterator(), false)
+			for (final IUnit unit : StreamSupport.stream(wtModel.childrenOf(item).spliterator(), false)
 					.map(wtModel::getModelObject).filter(IUnit.class::isInstance)
 					.map(IUnit.class::cast).collect(Collectors.toList())) {
-				Boolean unitPaint = shouldChangeBackground(unit);
+				final Boolean unitPaint = shouldChangeBackground(unit);
 				if (unitPaint != null) {
 					if (unitPaint) {
 						return true;
@@ -511,9 +511,9 @@ public class WorkerTree extends JTree implements UnitMemberSelectionSource, Unit
 		@Override
 		public Component getTreeCellRendererComponent(final JTree tree, final Object item, final boolean selected,
 		                                              final boolean expanded, final boolean leaf, final int row, final boolean hasFocus) {
-			Component component = super.getTreeCellRendererComponent(tree, item,
+			final Component component = super.getTreeCellRendererComponent(tree, item,
 				selected, expanded, leaf, row, hasFocus);
-			Object internal = Optional.of(item).filter(DefaultMutableTreeNode.class::isInstance)
+			final Object internal = Optional.of(item).filter(DefaultMutableTreeNode.class::isInstance)
 				.map(DefaultMutableTreeNode.class::cast)
 				.map(DefaultMutableTreeNode::getUserObject).orElse(item);
 			if (internal instanceof HasImage && component instanceof JLabel) {
@@ -522,7 +522,7 @@ public class WorkerTree extends JTree implements UnitMemberSelectionSource, Unit
 			boolean shouldWarn = false;
 			boolean shouldError = false;
 			if (internal instanceof IWorker && component instanceof JLabel) {
-				IWorker worker = (IWorker) internal;
+				final IWorker worker = (IWorker) internal;
 				if ("human".equals(worker.getRace())) {
 					((JLabel) component).setText(String.format("<html><p>%s%s</p></html>",
 						worker.getName(), jobCSL(worker)));
@@ -532,13 +532,13 @@ public class WorkerTree extends JTree implements UnitMemberSelectionSource, Unit
 						worker.getRace(), jobCSL(worker)));
 				}
 			} else if (internal instanceof Animal && component instanceof JLabel) {
-				Animal animal = (Animal) internal;
-				Map<String, Integer> maturityAges = MaturityModel.getMaturityAges();
+				final Animal animal = (Animal) internal;
+				final Map<String, Integer> maturityAges = MaturityModel.getMaturityAges();
 				if (animal.getBorn() >= 0 && MaturityModel.getCurrentTurn() >= 0 &&
 						maturityAges.containsKey(animal.getKind()) &&
 						MaturityModel.getCurrentTurn() - animal.getBorn() <
 							maturityAges.get(animal.getKind())) {
-					int age = MaturityModel.getCurrentTurn() - animal.getBorn();
+					final int age = MaturityModel.getCurrentTurn() - animal.getBorn();
 					if (animal.getPopulation() > 1) {
 						((JLabel) component).setText(String.format(
 							"%d %d-turn-old %s", animal.getPopulation(), age,
@@ -554,7 +554,7 @@ public class WorkerTree extends JTree implements UnitMemberSelectionSource, Unit
 				} // else leave the default of animal.toString()
 			} else if (internal instanceof IUnit &&
 					component instanceof DefaultTreeCellRenderer) {
-				IUnit unit = (IUnit) internal;
+				final IUnit unit = (IUnit) internal;
 				if (expanded || unit.isEmpty()) {
 					((DefaultTreeCellRenderer) component).setText(unit.getName());
 				} else {
@@ -562,7 +562,7 @@ public class WorkerTree extends JTree implements UnitMemberSelectionSource, Unit
 						"%s (%d workers)", unit.getName(),
 						unit.stream().filter(IWorker.class::isInstance).count()));
 				}
-				Boolean result = shouldChangeBackground(unit);
+				final Boolean result = shouldChangeBackground(unit);
 				if (result != null) {
 					if (result) {
 						shouldError = true;
@@ -572,7 +572,7 @@ public class WorkerTree extends JTree implements UnitMemberSelectionSource, Unit
 					}
 				}
 			} else if (orderCheck && internal instanceof String) {
-				Boolean result = shouldChangeBackground((String) internal);
+				final Boolean result = shouldChangeBackground((String) internal);
 				if (result != null) {
 					if (result) {
 						shouldError = true;
@@ -583,7 +583,7 @@ public class WorkerTree extends JTree implements UnitMemberSelectionSource, Unit
 				}
 			}
 			if (component instanceof DefaultTreeCellRenderer) {
-				DefaultTreeCellRenderer comp = (DefaultTreeCellRenderer) component;
+				final DefaultTreeCellRenderer comp = (DefaultTreeCellRenderer) component;
 				if (shouldError) {
 					comp.setBackgroundSelectionColor(Color.pink);
 					comp.setBackgroundNonSelectionColor(Color.pink);
@@ -618,8 +618,8 @@ public class WorkerTree extends JTree implements UnitMemberSelectionSource, Unit
 
 		@Override
 		public void treeStructureChanged(final TreeModelEvent event) {
-			TreePath path = event.getTreePath();
-			TreePath parent = Optional.ofNullable(path)
+			final TreePath path = event.getTreePath();
+			final TreePath parent = Optional.ofNullable(path)
 				.map(TreePath::getParentPath).orElse(null);
 			if (parent != null) {
 				tree.expandPath(parent);
@@ -634,7 +634,7 @@ public class WorkerTree extends JTree implements UnitMemberSelectionSource, Unit
 
 		@Override
 		public void treeNodesRemoved(final TreeModelEvent event) {
-			TreePath path = event.getTreePath().pathByAddingChild(event.getChildren()[0]);
+			final TreePath path = event.getTreePath().pathByAddingChild(event.getChildren()[0]);
 			LOGGER.finer("About to remove this path from selection: " + path);
 			tree.removeSelectionPath(path);
 			tree.updateUI();
@@ -642,10 +642,10 @@ public class WorkerTree extends JTree implements UnitMemberSelectionSource, Unit
 
 		@Override
 		public void treeNodesInserted(final TreeModelEvent event) {
-			TreePath path = event.getTreePath();
+			final TreePath path = event.getTreePath();
 			if (path != null) {
 				tree.expandPath(path);
-				TreePath parent = path.getParentPath();
+				final TreePath parent = path.getParentPath();
 				if (parent != null) {
 					tree.expandPath(parent);
 				}

@@ -71,13 +71,13 @@ public class UnitTabularReportGenerator implements ITableGenerator<IUnit> {
 	public List<List<String>> produce(
 			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures, final IUnit item,
 			final int key, final Point loc, final Map<Integer, Integer> parentMap) {
-		List<String> retval = Arrays.asList(distanceString(loc, hq, dimensions),
+		final List<String> retval = Arrays.asList(distanceString(loc, hq, dimensions),
 			locationString(loc), ownerString(player, item.getOwner()), item.getKind(),
 			item.getName(),
 			Optional.ofNullable(item.getAllOrders().lastEntry())
 				.map(Map.Entry::getValue).orElse(""),
 			(player.equals(item.getOwner())) ? Integer.toString(item.getId()) : "---");
-		for (UnitMember member : item) {
+		for (final UnitMember member : item) {
 			if (member instanceof Animal) {
 				// We don't want animals inside a unit showing up in the wild-animal report
 				fixtures.remove(member.getId());

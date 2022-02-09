@@ -77,9 +77,9 @@ public class ResourceTabularReportGenerator
 			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
 			/*Implement|CacheFixture|IResourcePile*/final TileFixture item, final int key, final Point loc,
 			final Map<Integer, Integer> parentMap) {
-		String kind;
-		String quantity;
-		String specifics;
+		final String kind;
+		final String quantity;
+		final String specifics;
 		if (item instanceof Implement) {
 			kind = "equipment";
 			quantity = Integer.toString(((Implement) item).getCount());
@@ -153,7 +153,7 @@ public class ResourceTabularReportGenerator
 	public void produceTable(final ThrowingConsumer<String, IOException> ostream,
 	                         final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
 	                         final Map<Integer, Integer> parentMap) throws IOException {
-		Iterable<Triplet<Integer, Point, TileFixture>> values = fixtures.entrySet().stream()
+		final Iterable<Triplet<Integer, Point, TileFixture>> values = fixtures.entrySet().stream()
 			.filter(e -> e instanceof CacheFixture || e instanceof Implement ||
 				e instanceof IResourcePile)
 			.map(e -> Triplet.with(e.getKey(), e.getValue().getValue0(),
@@ -161,28 +161,28 @@ public class ResourceTabularReportGenerator
 			.sorted(Comparator.comparing(Triplet::removeFrom0, comparePairs()))
 			.collect(Collectors.toList());
 		writeRow(ostream, getHeaderRow().toArray(new String[0]));
-		Map<Pair<Point, String>, Integer> implementCounts = new HashMap<>();
-		for (Triplet<Integer, Point, TileFixture> triplet : values) {
-			int key = triplet.getValue0();
-			Point loc = triplet.getValue1();
-			TileFixture fixture = triplet.getValue2();
+		final Map<Pair<Point, String>, Integer> implementCounts = new HashMap<>();
+		for (final Triplet<Integer, Point, TileFixture> triplet : values) {
+			final int key = triplet.getValue0();
+			final Point loc = triplet.getValue1();
+			final TileFixture fixture = triplet.getValue2();
 			if (fixture instanceof Implement) {
-				int num;
+				final int num;
 				num = implementCounts.getOrDefault(Pair.with(loc, ((Implement) fixture).getKind()), 0);
 				implementCounts.put(Pair.with(loc, ((Implement) fixture).getKind()),
 					num + ((Implement) fixture).getCount());
 				fixtures.remove(key);
 			} else {
-				for (List<String> row : produce(fixtures, fixture, key, loc, parentMap)) {
+				for (final List<String> row : produce(fixtures, fixture, key, loc, parentMap)) {
 					writeRow(ostream, row.toArray(new String[0]));
 					fixtures.remove(key);
 				}
 			}
 		}
-		for (Map.Entry<Pair<Point, String>, Integer> entry : implementCounts.entrySet()) {
-			Point loc = entry.getKey().getValue0();
-			String key = entry.getKey().getValue1();
-			int count = entry.getValue();
+		for (final Map.Entry<Pair<Point, String>, Integer> entry : implementCounts.entrySet()) {
+			final Point loc = entry.getKey().getValue0();
+			final String key = entry.getKey().getValue1();
+			final int count = entry.getValue();
 			writeRow(ostream, distanceString(loc, hq, dimensions), locationString(loc),
 				"equipment", Integer.toString(count), key);
 		}

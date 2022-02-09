@@ -46,10 +46,10 @@ public class YAXMLReader implements IMapReader, ISPReader {
 	@Override
 	public <Element> Element readXML(final Path file, final Reader istream, final Warning warner)
 			throws SPFormatException, MalformedXMLException, IOException {
-		try (TypesafeXMLEventReader reader = new TypesafeXMLEventReader(istream)) {
-			Iterable<XMLEvent> eventReader = new IteratorWrapper<>(reader);
-			IDRegistrar idFactory = new IDFactory();
-			for (XMLEvent event : eventReader) {
+		try (final TypesafeXMLEventReader reader = new TypesafeXMLEventReader(istream)) {
+			final Iterable<XMLEvent> eventReader = new IteratorWrapper<>(reader);
+			final IDRegistrar idFactory = new IDFactory();
+			for (final XMLEvent event : eventReader) {
 				if (event instanceof StartElement) { // TODO: Check namespace, surely?
 					return (Element) new YAReaderAdapter(warner, idFactory)
 						.parse((StartElement) event, new QName("root"), eventReader);
@@ -87,9 +87,9 @@ public class YAXMLReader implements IMapReader, ISPReader {
 	@Override
 	public IMutableMapNG readMap(final Path file, final Warning warner)
 			throws IOException, MalformedXMLException, SPFormatException, MissingFileException {
-		try (Reader istream = Files.newBufferedReader(file, StandardCharsets.UTF_8)) {
+		try (final Reader istream = Files.newBufferedReader(file, StandardCharsets.UTF_8)) {
 			return readMapFromStream(file, istream, warner);
-		} catch (FileNotFoundException|NoSuchFileException except) {
+		} catch (final FileNotFoundException|NoSuchFileException except) {
 			throw new MissingFileException(file, except);
 		}
 	}

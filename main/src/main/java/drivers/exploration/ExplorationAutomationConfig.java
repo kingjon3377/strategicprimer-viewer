@@ -118,7 +118,7 @@ import org.jetbrains.annotations.Nullable;
 
 		private boolean allConditions(final TileFixture fixture) {
 			if (cls.isInstance(fixture)) {
-				for (Predicate<Type> condition : conditions) {
+				for (final Predicate<Type> condition : conditions) {
 					if (!condition.test((Type) fixture)) {
 						return false;
 					}
@@ -148,11 +148,11 @@ import org.jetbrains.annotations.Nullable;
 	}
 
 	public boolean stopAtPoint(final ICLIHelper cli, final IMapNG map, final Point point) {
-		List<Condition<? extends TileFixture>> localEnabledConditions;
+		final List<Condition<? extends TileFixture>> localEnabledConditions;
 		if (enabledConditions == null) {
-			List<Condition<? extends TileFixture>> temp = new ArrayList<>();
-			for (Condition<? extends TileFixture> condition : conditions) {
-				Boolean resp = cli.inputBooleanInSeries("Stop for instructions " +
+			final List<Condition<? extends TileFixture>> temp = new ArrayList<>();
+			for (final Condition<? extends TileFixture> condition : conditions) {
+				final Boolean resp = cli.inputBooleanInSeries("Stop for instructions " +
 					condition.getConfigExplanation() + "?");
 				if (resp == null) {
 					// EOF, so we want to abort the caller's loop
@@ -166,7 +166,7 @@ import org.jetbrains.annotations.Nullable;
 		} else {
 			localEnabledConditions = enabledConditions;
 		}
-		Condition<? extends TileFixture> matchingCondition = localEnabledConditions.stream()
+		final Condition<? extends TileFixture> matchingCondition = localEnabledConditions.stream()
 			.filter(c -> c.matches(map, point)).findFirst().orElse(null);
 		if (matchingCondition != null) {
 			cli.println(String.format("There is %s here, so the explorer stops.",

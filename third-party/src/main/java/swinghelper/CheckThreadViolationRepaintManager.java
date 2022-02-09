@@ -33,7 +33,7 @@ public class CheckThreadViolationRepaintManager extends RepaintManager {
 		System.out.println();
 		System.out.println("EDT violation detected");
 		System.out.println(c.toString());
-		for (StackTraceElement st : stackTrace) {
+		for (final StackTraceElement st : stackTrace) {
 			System.out.print("\tat ");
 			System.out.println(st.toString());
 		}
@@ -71,7 +71,7 @@ public class CheckThreadViolationRepaintManager extends RepaintManager {
 			boolean fromSwing = false;
 			boolean imageUpdate = false;
 			final StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
-			for (StackTraceElement st : stackTrace) {
+			for (final StackTraceElement st : stackTrace) {
 				if (repaint && st.getClassName().startsWith("javax.swing")) {
 					fromSwing = true;
 				}

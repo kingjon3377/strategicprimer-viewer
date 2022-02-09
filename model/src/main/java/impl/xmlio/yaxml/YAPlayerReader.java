@@ -27,14 +27,14 @@ import lovelace.util.ThrowingConsumer;
 		expectAttributes(element, "number", "code_name", "portrait", "country");
 		requireNonEmptyParameter(element, "number", true);
 		requireNonEmptyParameter(element, "code_name", true);
-		String countryRaw = getParameter(element, "country", "");
-		String country = countryRaw.isEmpty() ? null : countryRaw;
+		final String countryRaw = getParameter(element, "country", "");
+		final String country = countryRaw.isEmpty() ? null : countryRaw;
 		// We're thinking about storing "standing orders" in the XML under the <player>
 		// tag; so as to not require players to upgrade to even read their maps once we
 		// start doing so, we *now* only *warn* instead of *dying* if the XML contains
 		// that idiom.
 		spinUntilEnd(element.getName(), stream, "orders", "results", "science");
-		Player retval = new PlayerImpl(getIntegerParameter(element, "number"),
+		final Player retval = new PlayerImpl(getIntegerParameter(element, "number"),
 			getParameter(element, "code_name"), country);
 		retval.setPortrait(getParameter(element, "portrait", ""));
 		return retval;
@@ -52,7 +52,7 @@ import lovelace.util.ThrowingConsumer;
 			writeProperty(ostream, "number", obj.getPlayerId());
 			writeProperty(ostream, "code_name", obj.getName());
 			writeNonemptyProperty(ostream, "portrait", obj.getPortrait());
-			String country = obj.getCountry();
+			final String country = obj.getCountry();
 			if (country != null) {
 				writeNonemptyProperty(ostream, "country", country);
 			}

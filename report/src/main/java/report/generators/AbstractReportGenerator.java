@@ -58,7 +58,7 @@ public abstract class AbstractReportGenerator<Type extends IFixture> implements 
 			this.pairComparator = new PairComparator<>((one, two) -> 0,
 					Comparator.comparing(IFixture::hashCode));
 		} else {
-			DistanceComparator distCalculator = new DistanceComparator(referencePoint,
+			final DistanceComparator distCalculator = new DistanceComparator(referencePoint,
 				mapDimensions);
 			distComparator = distCalculator;
 			distanceString = distCalculator::distanceString;
@@ -94,10 +94,10 @@ public abstract class AbstractReportGenerator<Type extends IFixture> implements 
 			if (isEmpty()) {
 				return "";
 			} else {
-				StringBuilder builder = new StringBuilder();
+				final StringBuilder builder = new StringBuilder();
 				builder.append(header).append(System.lineSeparator())
 					.append("<ul>").append(System.lineSeparator());
-				for (String item : this) {
+				for (final String item : this) {
 					builder.append("<li>").append(item).append("</li>")
 						.append(System.lineSeparator());
 				}
@@ -120,7 +120,7 @@ public abstract class AbstractReportGenerator<Type extends IFixture> implements 
 		} else if (list.size() == 2) {
 			return String.format("%s and %s", list.get(0).toString(), list.get(1).toString());
 		}
-		StringBuilder builder = new StringBuilder();
+		final StringBuilder builder = new StringBuilder();
 		for (int i = 0; i < list.size(); i++) {
 			builder.append(list.get(i).toString());
 			if (i == list.size() - 2) {
@@ -145,7 +145,7 @@ public abstract class AbstractReportGenerator<Type extends IFixture> implements 
 		} else if (list.length == 2) {
 			return String.format("%s and %s", list[0].toString(), list[1].toString());
 		}
-		StringBuilder builder = new StringBuilder();
+		final StringBuilder builder = new StringBuilder();
 		for (int i = 0; i < list.length; i++) {
 			builder.append(list[i].toString());
 			if (i == list.length - 2) {

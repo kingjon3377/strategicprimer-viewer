@@ -182,7 +182,7 @@ public abstract class AbstractTown implements HasMutableImage,
 			report.accept(String.format("In %s, ID #%d:\tTown kind differs", name, getId()));
 			return false;
 		}
-		Consumer<String> localReport = s -> report.accept(String.format(
+		final Consumer<String> localReport = s -> report.accept(String.format(
 			"In %s %s, ID #%d:\t%s", getKind(), name, getId(), s));
 		boolean retval = true;
 		if (status != other.getStatus()) {

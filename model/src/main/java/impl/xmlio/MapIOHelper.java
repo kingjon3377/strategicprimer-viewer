@@ -79,7 +79,7 @@ public final class MapIOHelper {
 	public static IMutableMapNG readMap(final Path file, final Warning warner)
 			throws SPFormatException, IOException, MissingFileException, MalformedXMLException {
 		LOGGER.fine("In mapIOHelper.readMap");
-		IMutableMapNG retval;
+		final IMutableMapNG retval;
 		if (file.toString().endsWith(".db")) {
 			LOGGER.fine(String.format("Reading from %s as an SQLite database",
 				file.toString()));

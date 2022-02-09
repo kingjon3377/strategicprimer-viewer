@@ -22,13 +22,13 @@ public class TestProxyAnimal {
 	@MethodSource
 	public void testProxyAnimalReduction(final int id, final int newId) {
 		// TODO: should take population of original and population to test as parameters?
-		Animal base = new AnimalImpl("test", false, "status", id, -1, 12);
-		ProxyAnimal proxy = new ProxyAnimal(base, base.copy(false), base.copy(false));
+		final Animal base = new AnimalImpl("test", false, "status", id, -1, 12);
+		final ProxyAnimal proxy = new ProxyAnimal(base, base.copy(false), base.copy(false));
 		assertEquals(3, base.reduced(3, newId).getPopulation(),
 			"Test that reduced() works the way we expect in the non-proxy case.");
-		Animal reduced = proxy.reduced(3, newId);
+		final Animal reduced = proxy.reduced(3, newId);
 		assertTrue(reduced instanceof ProxyAnimal);
-		for (Animal proxied : ((ProxyAnimal) reduced).getProxied()) {
+		for (final Animal proxied : ((ProxyAnimal) reduced).getProxied()) {
 			assertEquals(newId, proxied.getId());
 			assertEquals(3, proxied.getPopulation());
 		}
@@ -57,7 +57,7 @@ public class TestProxyAnimal {
 	}
 
 	static Stream<Arguments> testProxyAnimalReduction() {
-		ThreadLocalRandom tlr = ThreadLocalRandom.current();
+		final ThreadLocalRandom tlr = ThreadLocalRandom.current();
 		return tlr.ints(0, Integer.MAX_VALUE - 2).boxed().sequential()
 			.flatMap(new PairCollater()).limit(3);
 	}

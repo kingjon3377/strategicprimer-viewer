@@ -65,7 +65,7 @@ import org.javatuples.Pair;
 
 	private Predicate<IUnit> unfinishedResults(final int turn) {
 		return unit -> {
-			String results = unit.getResults(turn).toLowerCase();
+			final String results = unit.getResults(turn).toLowerCase();
 			return results.isEmpty() || results.contains("fixme") || results.contains("todo") ||
 				results.contains("xxx");
 		};
@@ -97,8 +97,8 @@ import org.javatuples.Pair;
 		final List<IUnit> temp = model.streamAllMaps()
 			.flatMap(indivMap -> getUnitsImpl(indivMap.streamAllFixtures(), player)).collect(Collectors.toList());
 		final Map<Integer, ProxyUnit> tempMap = new TreeMap<>();
-		for (IUnit unit : temp) {
-			int key = unit.getId();
+		for (final IUnit unit : temp) {
+			final int key = unit.getId();
 			final ProxyUnit proxy;
 			if (tempMap.containsKey(key)) {
 				proxy = tempMap.get(key);
@@ -129,16 +129,16 @@ import org.javatuples.Pair;
 		cli.print("Orders for unit ", unit.getName(), " (", unit.getKind());
 		cli.print(") for turn ", Integer.toString(turn), ": ");
 		cli.println(unit.getLatestOrders(turn));
-		StringBuilder buffer = new StringBuilder();
+		final StringBuilder buffer = new StringBuilder();
 		while (true) {
-			Either<TurnApplet, Boolean> command = appletChooser.chooseApplet();
-			Boolean bool = command.fromRight().orElse(null);
-			TurnApplet applet = command.fromLeft().orElse(null);
+			final Either<TurnApplet, Boolean> command = appletChooser.chooseApplet();
+			final Boolean bool = command.fromRight().orElse(null);
+			final TurnApplet applet = command.fromLeft().orElse(null);
 			if (bool != null && !bool) {
 				return ""; // TODO: why not null? (making the method return type nullable) also below
 			} else if (applet != null) {
 				if (!applet.getCommands().contains("other")) {
-					String results = applet.run();
+					final String results = applet.run();
 					if (results == null) {
 						return "";
 					}
@@ -160,11 +160,11 @@ import org.javatuples.Pair;
 		buffer.append(addendum);
 		final Boolean runAdvancement = cli.inputBooleanInSeries("Run advancement for this unit now?");
 		if (runAdvancement != null && runAdvancement) {
-			Boolean expertMentoring = cli.inputBooleanInSeries("Account for expert mentoring?");
+			final Boolean expertMentoring = cli.inputBooleanInSeries("Account for expert mentoring?");
 			if (expertMentoring != null) {
 				buffer.append(System.lineSeparator());
 				buffer.append(System.lineSeparator());
-				LevelGainListener levelListener =
+				final LevelGainListener levelListener =
 					(workerName, jobName, skillName, gains, currentLevel) -> {
 						buffer.append(workerName);
 						buffer.append(" showed improvement in the skill of ");
@@ -186,7 +186,7 @@ import org.javatuples.Pair;
 		if (runFoodConsumptionAnswer != null && runFoodConsumptionAnswer) {
 			consumptionApplet.setTurn(turn);
 			consumptionApplet.setUnit(unit);
-			String consumptionResults = consumptionApplet.run();
+			final String consumptionResults = consumptionApplet.run();
 			if (consumptionResults == null) {
 				return "";
 			}
@@ -202,7 +202,7 @@ import org.javatuples.Pair;
 		if (runFoodSpoilageAnswer != null && runFoodSpoilageAnswer) {
 			spoilageApplet.setOwner(unit.getOwner());
 			spoilageApplet.setTurn(turn);
-			String foodSpoilageResult = spoilageApplet.run();
+			final String foodSpoilageResult = spoilageApplet.run();
 			if (foodSpoilageResult != null) {
 				buffer.append(System.lineSeparator());
 				buffer.append(System.lineSeparator());
@@ -215,23 +215,23 @@ import org.javatuples.Pair;
 
 	@Override
 	public void startDriver() {
-		int currentTurn = model.getMap().getCurrentTurn();
-		Player player = cli.chooseFromList(new ArrayList<>(model.getPlayerChoices()), "Players in the maps:", "No players found",
+		final int currentTurn = model.getMap().getCurrentTurn();
+		final Player player = cli.chooseFromList(new ArrayList<>(model.getPlayerChoices()), "Players in the maps:", "No players found",
 			"Player to run:", false).getValue1();
 		if (player == null) {
 			return;
 		}
-		List<IUnit> units = getUnits(player).filter(unfinishedResults(currentTurn)).collect(Collectors.toList());
+		final List<IUnit> units = getUnits(player).filter(unfinishedResults(currentTurn)).collect(Collectors.toList());
 		while (true) {
-			Pair<Integer, IUnit> pair = cli.chooseFromList(units,
+			final Pair<Integer, IUnit> pair = cli.chooseFromList(units,
 				String.format("Units belonging to %s:", player),
 				"Player has no units without apparently-final results", "Unit to run:", false);
-			int index = pair.getValue0();
-			IUnit unit = pair.getValue1();
+			final int index = pair.getValue0();
+			final IUnit unit = pair.getValue1();
 			if (unit == null) {
 				break;
 			}
-			String results = createResults(unit, currentTurn);
+			final String results = createResults(unit, currentTurn);
 			model.setUnitResults(unit, currentTurn, results);
 			if (!unfinishedResults(currentTurn).test(unit)) {
 				units.remove(index);

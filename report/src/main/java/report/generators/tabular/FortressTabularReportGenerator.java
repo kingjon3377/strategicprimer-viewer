@@ -67,7 +67,7 @@ public class FortressTabularReportGenerator implements ITableGenerator<IFortress
 	public List<List<String>> produce(
 			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
 			final IFortress item, final int key, final Point loc, final Map<Integer, Integer> parentMap) {
-		List<String> retval = Arrays.asList(distanceString(loc, hq, dimensions),
+		final List<String> retval = Arrays.asList(distanceString(loc, hq, dimensions),
 			locationString(loc), ownerString(player, item.getOwner()), item.getName());
 		// Players shouldn't be able to see the contents of others' fortresses
 		// in other tables.

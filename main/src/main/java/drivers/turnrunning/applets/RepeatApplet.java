@@ -52,13 +52,13 @@ import org.jetbrains.annotations.Nullable;
 	public String run() {
 		final StringBuilder buffer = new StringBuilder();
 		while (true) {
-			Either<TurnApplet, Boolean> command = appletChooser.chooseApplet();
-			Boolean bool = command.fromRight().orElse(null);
-			TurnApplet applet = command.fromLeft().orElse(null);
+			final Either<TurnApplet, Boolean> command = appletChooser.chooseApplet();
+			final Boolean bool = command.fromRight().orElse(null);
+			final TurnApplet applet = command.fromLeft().orElse(null);
 			if (bool != null && !bool) {
 				return null;
 			} else if (applet != null) {
-				String results = applet.run();
+				final String results = applet.run();
 				if (results == null) {
 					return null;
 				}
@@ -66,7 +66,7 @@ import org.jetbrains.annotations.Nullable;
 			} else {
 				continue;
 			}
-			Boolean cont = cli.inputBoolean("Create more results for this unit?");
+			final Boolean cont = cli.inputBoolean("Create more results for this unit?");
 			if (cont == null) {
 				return null;
 			} else if (!cont) {

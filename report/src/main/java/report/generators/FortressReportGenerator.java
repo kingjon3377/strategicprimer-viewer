@@ -56,7 +56,7 @@ public class FortressReportGenerator extends AbstractReportGenerator<IFortress> 
 	// TODO: Can this be static?
 	private String terrain(final IMapNG map, final Point point,
 	                       final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures) {
-		StringBuilder builder = new StringBuilder();
+		final StringBuilder builder = new StringBuilder();
 		builder.append("Surrounding terrain: ");
 		builder.append(Optional.ofNullable(map.getBaseTerrain(point)).map(Object::toString)
 			.orElse("Unknown"));
@@ -64,7 +64,7 @@ public class FortressReportGenerator extends AbstractReportGenerator<IFortress> 
 		if (map.isMountainous(point)) {
 			builder.append(", mountainous");
 		}
-		for (TileFixture fixture : map.getFixtures(point)) {
+		for (final TileFixture fixture : map.getFixtures(point)) {
 			if (unforested && fixture instanceof Forest) {
 				unforested = false;
 				builder.append(", forested with ");
@@ -87,7 +87,7 @@ public class FortressReportGenerator extends AbstractReportGenerator<IFortress> 
 	 * TODO: Can this be static?
 	 */
 	private void riversToString(final Consumer<String> formatter, final Collection<River> rivers) {
-		Set<River> set = EnumSet.noneOf(River.class);
+		final Set<River> set = EnumSet.noneOf(River.class);
 		set.addAll(rivers);
 		if (set.contains(River.Lake)) {
 			println(formatter, "<li>There is a nearby lake.</li>");
@@ -110,7 +110,7 @@ public class FortressReportGenerator extends AbstractReportGenerator<IFortress> 
 			ostream.accept("<li>");
 			ostream.accept(header);
 			println(ostream, ":<ul>");
-			for (Type item : list) {
+			for (final Type item : list) {
 				ostream.accept("<li>");
 				helper.produceSingle(fixtures, map, ostream, item, loc);
 				println(ostream, "</li>");
@@ -148,17 +148,17 @@ public class FortressReportGenerator extends AbstractReportGenerator<IFortress> 
 			// TODO: Report what kinds of roads they are
 			println(ostream, "</li>");
 		}
-		List<IUnit> units = new ArrayList<>();
-		List<Implement> equipment = new ArrayList<>();
-		Map<String, List<IResourcePile>> resources = new HashMap<>(); // TODO: Use a multimap
-		List<FortressMember> contents = new ArrayList<>();
-		for (FortressMember member : item) {
+		final List<IUnit> units = new ArrayList<>();
+		final List<Implement> equipment = new ArrayList<>();
+		final Map<String, List<IResourcePile>> resources = new HashMap<>(); // TODO: Use a multimap
+		final List<FortressMember> contents = new ArrayList<>();
+		for (final FortressMember member : item) {
 			if (member instanceof IUnit) {
 				units.add((IUnit) member);
 			} else if (member instanceof Implement) {
 				equipment.add((Implement) member);
 			} else if (member instanceof IResourcePile) {
-				List<IResourcePile> list = Optional.ofNullable(resources
+				final List<IResourcePile> list = Optional.ofNullable(resources
 					.get(((IResourcePile) member).getKind()))
 						.orElseGet(ArrayList::new);
 				list.add((IResourcePile) member);
@@ -172,7 +172,7 @@ public class FortressReportGenerator extends AbstractReportGenerator<IFortress> 
 		printList(fixtures, ostream, map, equipment, "Equipment", memberReportGenerator, loc);
 		if (!resources.isEmpty()) {
 			println(ostream, "<li>Resources:<ul>");
-			for (Map.Entry<String, List<IResourcePile>> entry : resources.entrySet()) {
+			for (final Map.Entry<String, List<IResourcePile>> entry : resources.entrySet()) {
 				printList(fixtures, ostream, map, entry.getValue(), entry.getKey(), memberReportGenerator, loc);
 			}
 			println(ostream, "</ul></li>");
@@ -189,15 +189,15 @@ public class FortressReportGenerator extends AbstractReportGenerator<IFortress> 
 	@Override
 	public void produce(final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
 	                    final IMapNG map, final Consumer<String> ostream) {
-		Map<IFortress, Point> ours = new HashMap<>();
-		Map<IFortress, Point> others = new HashMap<>();
-		for (Pair<Point, IFortress> pair : fixtures.values().stream()
+		final Map<IFortress, Point> ours = new HashMap<>();
+		final Map<IFortress, Point> others = new HashMap<>();
+		for (final Pair<Point, IFortress> pair : fixtures.values().stream()
 				.filter(p -> p.getValue1() instanceof IFortress)
 				.sorted(pairComparator)
 				.map(p -> Pair.with(p.getValue0(), (IFortress) p.getValue1()))
 				.collect(Collectors.toList())) {
-			Point loc = pair.getValue0();
-			IFortress fort = pair.getValue1();
+			final Point loc = pair.getValue0();
+			final IFortress fort = pair.getValue1();
 			if (currentPlayer.equals(fort.getOwner())) {
 				ours.put(fort, loc);
 			} else {
@@ -206,13 +206,13 @@ public class FortressReportGenerator extends AbstractReportGenerator<IFortress> 
 		}
 		if (!ours.isEmpty()) {
 			println(ostream, "<h4>Your fortresses in the map:</h4>");
-			for (Map.Entry<IFortress, Point> entry : ours.entrySet()) {
+			for (final Map.Entry<IFortress, Point> entry : ours.entrySet()) {
 				produceSingle(fixtures, map, ostream, entry.getKey(), entry.getValue());
 			}
 		}
 		if (!others.isEmpty()) {
 			println(ostream, "<h4>Other fortresses in the map:</h4>");
-			for (Map.Entry<IFortress, Point> entry : others.entrySet()) {
+			for (final Map.Entry<IFortress, Point> entry : others.entrySet()) {
 				produceSingle(fixtures, map, ostream, entry.getKey(), entry.getValue());
 			}
 		}

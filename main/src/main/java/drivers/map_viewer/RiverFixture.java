@@ -28,8 +28,8 @@ import java.util.stream.Collectors;
 	}
 
 	public RiverFixture(final River... rivers) {
-		EnumSet<River> temp = EnumSet.noneOf(River.class);
-		for (River river : rivers) {
+		final EnumSet<River> temp = EnumSet.noneOf(River.class);
+		for (final River river : rivers) {
 			temp.add(river);
 		}
 		this.rivers = Collections.unmodifiableSet(temp);

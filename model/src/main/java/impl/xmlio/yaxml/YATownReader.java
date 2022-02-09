@@ -99,9 +99,9 @@ import java.util.logging.Logger;
 		expectAttributes(element, "size");
 		final CommunityStats retval = new CommunityStats(getIntegerParameter(element, "size"));
 		String current = null;
-		Deque<StartElement> stack = new LinkedList<>();
+		final Deque<StartElement> stack = new LinkedList<>();
 		stack.addFirst(element);
-		for (XMLEvent event : stream) {
+		for (final XMLEvent event : stream) {
 			if (event instanceof EndElement &&
 					((EndElement) event).getName().equals(element.getName())) {
 				break;
@@ -148,7 +148,7 @@ import java.util.logging.Logger;
 					}
 					break;
 				case "resource":
-					Consumer<IResourcePile> lambda;
+					final Consumer<IResourcePile> lambda;
 					switch (current) {
 					case "production":
 						lambda = retval.getYearlyProduction()::add;
@@ -176,7 +176,7 @@ import java.util.logging.Logger;
 			} else if (event instanceof EndElement && !stack.isEmpty() &&
 					((EndElement) event).getName()
 						.equals(stack.peekFirst().getName())) {
-				StartElement top = stack.removeFirst();
+				final StartElement top = stack.removeFirst();
 				if (top.equals(element)) {
 					break;
 				} else if (current != null &&
@@ -197,19 +197,19 @@ import java.util.logging.Logger;
 			throws SPFormatException, MalformedXMLException {
 		expectAttributes(element, "status", "name", "race", "image", "portrait", "id", "owner");
 		requireNonEmptyParameter(element, "name", false);
-		int idNum = getOrGenerateID(element);
-		TownStatus status;
+		final int idNum = getOrGenerateID(element);
+		final TownStatus status;
 		try {
 			status = TownStatus.parse(getParameter(element, "status"));
 		} catch (final IllegalArgumentException except) {
 			throw new MissingPropertyException(element, "status", except);
 		}
-		Village retval = new Village(status, getParameter(element, "name", ""), idNum,
+		final Village retval = new Village(status, getParameter(element, "name", ""), idNum,
 			getOwnerOrIndependent(element), getParameter(element, "race",
 				RaceFactory.randomRace(new Random(idNum))));
 		retval.setImage(getParameter(element, "image", ""));
 		retval.setPortrait(getParameter(element, "portrait", ""));
-		for (XMLEvent event : stream) {
+		for (final XMLEvent event : stream) {
 			if (event instanceof StartElement &&
 					isSupportedNamespace(((StartElement) event).getName())) {
 				if (retval.getPopulation() != null) {
@@ -231,23 +231,23 @@ import java.util.logging.Logger;
 		expectAttributes(element, "name", "status", "size", "dc", "id", "image", "owner",
 			"portrait");
 		requireNonEmptyParameter(element, "name", false);
-		String name = getParameter(element, "name", "");
-		TownStatus status;
+		final String name = getParameter(element, "name", "");
+		final TownStatus status;
 		try {
 			status = TownStatus.parse(getParameter(element, "status"));
 		} catch (final IllegalArgumentException except) {
 			throw new MissingPropertyException(element, "status", except);
 		}
-		TownSize size;
+		final TownSize size;
 		try {
 			size = TownSize.parseTownSize(getParameter(element, "size"));
 		} catch (final IllegalArgumentException except) {
 			throw new MissingPropertyException(element, "size", except);
 		}
-		int dc = getIntegerParameter(element, "dc");
-		int id = getOrGenerateID(element);
-		Player owner = getOwnerOrIndependent(element);
-		AbstractTown retval;
+		final int dc = getIntegerParameter(element, "dc");
+		final int id = getOrGenerateID(element);
+		final Player owner = getOwnerOrIndependent(element);
+		final AbstractTown retval;
 		switch (element.getName().getLocalPart().toLowerCase()) {
 		case "town":
 			retval = new Town(status, size, dc, name, id, owner);
@@ -262,7 +262,7 @@ import java.util.logging.Logger;
 			throw new IllegalArgumentException("Unhandled town tag " +
 				element.getName().getLocalPart());
 		}
-		for (XMLEvent event : stream) {
+		for (final XMLEvent event : stream) {
 			if (event instanceof StartElement &&
 					isSupportedNamespace(((StartElement) event).getName())) {
 				if (retval.getPopulation() != null) {
@@ -286,8 +286,8 @@ import java.util.logging.Logger;
 		expectAttributes(element, "owner", "name", "size", "status", "id", "portrait", "image");
 		requireNonEmptyParameter(element, "owner", false);
 		requireNonEmptyParameter(element, "name", false);
-		IMutableFortress retval;
-		TownSize size;
+		final IMutableFortress retval;
+		final TownSize size;
 		try {
 			size = TownSize.parseTownSize(getParameter(element, "size", "small"));
 		} catch (final IllegalArgumentException except) {
@@ -295,12 +295,12 @@ import java.util.logging.Logger;
 		}
 		retval = new FortressImpl(getOwnerOrIndependent(element),
 			getParameter(element, "name", ""), getOrGenerateID(element), size);
-		for (XMLEvent event : stream) {
+		for (final XMLEvent event : stream) {
 			if (event instanceof StartElement &&
 					isSupportedNamespace(((StartElement) event).getName())) {
-				String memberTag =
+				final String memberTag =
 					((StartElement) event).getName().getLocalPart().toLowerCase();
-				Optional<YAReader<? extends FortressMember, ? extends FortressMember>>
+				final Optional<YAReader<? extends FortressMember, ? extends FortressMember>>
 					reader = memberReaders.stream()
 						.filter(yar -> yar.isSupportedTag(memberTag)).findAny();
 				if (reader.isPresent()) {
@@ -354,14 +354,14 @@ import java.util.logging.Logger;
 		writeTag(ostream, "population", tabs);
 		writeProperty(ostream, "size", obj.getPopulation());
 		finishParentTag(ostream);
-		for (Map.Entry<String, Integer> entry : obj.getHighestSkillLevels().entrySet().stream()
+		for (final Map.Entry<String, Integer> entry : obj.getHighestSkillLevels().entrySet().stream()
 				.sorted(Map.Entry.comparingByKey(Comparator.naturalOrder())).collect(Collectors.toList())) {
 			writeTag(ostream, "expertise", tabs + 1);
 			writeProperty(ostream, "skill", entry.getKey());
 			writeProperty(ostream, "level", entry.getValue());
 			closeLeafTag(ostream);
 		}
-		for (Integer claim : obj.getWorkedFields()) {
+		for (final Integer claim : obj.getWorkedFields()) {
 			writeTag(ostream, "claim", tabs + 1);
 			writeProperty(ostream, "resource", claim);
 			closeLeafTag(ostream);
@@ -369,7 +369,7 @@ import java.util.logging.Logger;
 		if (!obj.getYearlyProduction().isEmpty()) {
 			writeTag(ostream, "production", tabs + 1);
 			finishParentTag(ostream);
-			for (IResourcePile resource : obj.getYearlyProduction()) {
+			for (final IResourcePile resource : obj.getYearlyProduction()) {
 				resourceReader.write(ostream, resource, tabs + 2);
 			}
 			closeTag(ostream, tabs + 1, "production");
@@ -377,7 +377,7 @@ import java.util.logging.Logger;
 		if (!obj.getYearlyConsumption().isEmpty()) {
 			writeTag(ostream, "consumption", tabs + 1);
 			finishParentTag(ostream);
-			for (IResourcePile resource : obj.getYearlyConsumption()) {
+			for (final IResourcePile resource : obj.getYearlyConsumption()) {
 				resourceReader.write(ostream, resource, tabs + 2);
 			}
 			closeTag(ostream, tabs + 1, "consumption");
@@ -438,8 +438,8 @@ import java.util.logging.Logger;
 			ostream.accept(">");
 			if (((IFortress) obj).iterator().hasNext()) {
 				ostream.accept(System.lineSeparator());
-				for (FortressMember member : (IFortress) obj) {
-					Optional<YAReader<? extends FortressMember, ? extends FortressMember>>
+				for (final FortressMember member : (IFortress) obj) {
+					final Optional<YAReader<? extends FortressMember, ? extends FortressMember>>
 						reader = memberReaders.stream()
 							.filter(yar -> yar.canWrite(member)).findAny();
 					if (reader.isPresent()) {

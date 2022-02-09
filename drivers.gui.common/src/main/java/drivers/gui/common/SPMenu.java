@@ -51,7 +51,7 @@ public class SPMenu extends JMenuBar {
 	private static JMenuItem enabledForDriver(final JMenuItem item, final ISPDriver driver,
 	                                          final Class<? extends ISPDriver>... types) {
 		boolean any = false;
-		for (Class<?> type : types) {
+		for (final Class<?> type : types) {
 			if (type.isInstance(driver)) {
 				any = true;
 				break;
@@ -71,7 +71,7 @@ public class SPMenu extends JMenuBar {
 	private static JMenuItem disabledForDriver(final JMenuItem item, final ISPDriver driver,
 	                                           final Class<? extends ISPDriver>... types) {
 		boolean any = false;
-		for (Class<?> type : types) {
+		for (final Class<?> type : types) {
 			if (type.isInstance(driver)) {
 				any = true;
 				break;
@@ -87,15 +87,15 @@ public class SPMenu extends JMenuBar {
 	 * Create the File menu.
 	 */
 	public static JMenu createFileMenu(final ActionListener handler, final ISPDriver driver) {
-		JMenu fileMenu = new JMenu("File");
+		final JMenu fileMenu = new JMenu("File");
 		fileMenu.setMnemonic(KeyEvent.VK_F);
 		fileMenu.add(enabledForDriver(createMenuItem("New", KeyEvent.VK_N,
 			"Create a new, empty map the same size as the current one", handler,
 			createAccelerator(KeyEvent.VK_N)), driver, ViewerDriver.class));
 
-		String loadCaption;
-		String saveCaption;
-		String saveAsCaption;
+		final String loadCaption;
+		final String saveCaption;
+		final String saveAsCaption;
 		if (driver instanceof MultiMapGUIDriver) {
 			loadCaption = "Load the main map from file";
 			saveCaption = "Save the main map to the file it was loaded from";
@@ -123,7 +123,7 @@ public class SPMenu extends JMenuBar {
 			driver, MultiMapGUIDriver.class));
 		fileMenu.addSeparator();
 
-		KeyStroke openViewerHotkey;
+		final KeyStroke openViewerHotkey;
 		if (Platform.SYSTEM_IS_MAC) {
 			openViewerHotkey = KeyStroke.getKeyStroke(KeyEvent.VK_M, KeyEvent.ALT_DOWN_MASK);
 		} else {
@@ -171,19 +171,19 @@ public class SPMenu extends JMenuBar {
 	 * Create the "Map" menu, including go-to-tile, find, and zooming functions.
 	 */
 	public static JMenu createMapMenu(final ActionListener handler, final ISPDriver driver) {
-		JMenu retval = new JMenu("Map");
+		final JMenu retval = new JMenu("Map");
 		retval.setMnemonic(KeyEvent.VK_M);
 
 		retval.add(enabledForDriver(createMenuItem("Go to tile", KeyEvent.VK_T,
 			"Go to a tile by coordinates", handler, createAccelerator(KeyEvent.VK_T)),
 			driver, ViewerDriver.class));
 
-		int findKey = KeyEvent.VK_F;
+		final int findKey = KeyEvent.VK_F;
 		retval.add(enabledForDriver(createMenuItem("Find a fixture", findKey,
 			"Find a fixture by name, kind or ID #", handler, createAccelerator(findKey),
 			KeyStroke.getKeyStroke(KeyEvent.VK_SLASH, 0)), driver, ViewerDriver.class));
 
-		int nextKey = KeyEvent.VK_N;
+		final int nextKey = KeyEvent.VK_N;
 		retval.add(enabledForDriver(createMenuItem("Find next", nextKey,
 				"Find the next fixture matching the pattern", handler,
 				createAccelerator(KeyEvent.VK_G), KeyStroke.getKeyStroke(nextKey, 0)),
@@ -192,7 +192,7 @@ public class SPMenu extends JMenuBar {
 
 		// VK_PLUS only works on non-US keyboards, but we leave it as the primary hot-key
 		// because it's the best to *show* in the menu.
-		KeyStroke plusKey = createAccelerator(KeyEvent.VK_PLUS);
+		final KeyStroke plusKey = createAccelerator(KeyEvent.VK_PLUS);
 		retval.add(enabledForDriver(createMenuItem("Zoom in", KeyEvent.VK_I,
 			"Increase the visible size of each tile", handler, plusKey,
 			createAccelerator(KeyEvent.VK_EQUALS),
@@ -208,7 +208,7 @@ public class SPMenu extends JMenuBar {
 			driver, ViewerDriver.class));
 		retval.addSeparator();
 
-		KeyStroke centerHotkey;
+		final KeyStroke centerHotkey;
 		if (Platform.SYSTEM_IS_MAC) {
 			centerHotkey = createAccelerator(KeyEvent.VK_L);
 		} else {
@@ -225,10 +225,10 @@ public class SPMenu extends JMenuBar {
 	 * Create the "View" menu.
 	 */
 	public static JMenu createViewMenu(final ActionListener handler, final ISPDriver driver) {
-		JMenu viewMenu = new JMenu("View");
+		final JMenu viewMenu = new JMenu("View");
 		viewMenu.setMnemonic(KeyEvent.VK_E);
 
-		String currentPlayerDesc;
+		final String currentPlayerDesc;
 		if (driver instanceof WorkerGUI) {
 			currentPlayerDesc = "Look at a different player's units and workers";
 		} else {
@@ -261,7 +261,7 @@ public class SPMenu extends JMenuBar {
 	}
 
 	public SPMenu(final JMenu... menus) {
-		for (JMenu menu : menus) {
+		for (final JMenu menu : menus) {
 			add(menu);
 		}
 	}

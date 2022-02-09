@@ -11,7 +11,7 @@ import java.lang.reflect.InvocationTargetException;
 
 public class CheckThreadViolationRepaintManagerTest {
 	void simpleTest() {
-		JFrame frame = new JFrame("Am I on EDT?");
+		final JFrame frame = new JFrame("Am I on EDT?");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.add(new JButton("JButton"));
 		frame.pack();
@@ -20,9 +20,9 @@ public class CheckThreadViolationRepaintManagerTest {
 	}
 
 	void imageUpdateTest() { // TODO: Surely this should be called from checkThreadViolations() somewhere?
-		JFrame frame = new JFrame();
+		final JFrame frame = new JFrame();
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		JEditorPane editor = new JEditorPane();
+		final JEditorPane editor = new JEditorPane();
 		frame.setContentPane(editor);
 		editor.setContentType("text/html");
 		editor.setText("<html><img src=\"file:\\\\lala.png\"></html>");
@@ -36,13 +36,13 @@ public class CheckThreadViolationRepaintManagerTest {
 	void repaintTest() {
 		try {
 			SwingUtilities.invokeAndWait(() -> {
-				JButton localTest = test = new JButton();
+				final JButton localTest = test = new JButton();
 				localTest.setSize(100, 100);
 			});
 		} catch (final Exception except) {
 			except.printStackTrace();
 		}
-		JButton localTest = test;
+		final JButton localTest = test;
 		assert (localTest != null);
 		// repaint(Rectangle) should be ok
 		localTest.repaint(localTest.getBounds());

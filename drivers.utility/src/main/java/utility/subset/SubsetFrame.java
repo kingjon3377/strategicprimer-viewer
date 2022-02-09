@@ -81,7 +81,7 @@ import java.util.logging.Logger;
 	 * Test a map against the main map, to see if it's a strict subset of it.
 	 */
 	public void testMap(final IMapNG map, @Nullable final Path file) {
-		String filename;
+		final String filename;
 		if (file == null) {
 			LOGGER.warning("Given a map with no filename");
 			printParagraph("Given a map with no filename", LabelTextColor.YELLOW);
@@ -102,7 +102,7 @@ import java.util.logging.Logger;
 			FileNotFoundException, MalformedXMLException, SPFormatException, IOException {
 		try {
 			mainMap = MapIOHelper.readMap(arg, Warning.IGNORE);
-		} catch (MissingFileException|NoSuchFileException|FileNotFoundException except) {
+		} catch (final MissingFileException|NoSuchFileException|FileNotFoundException except) {
 			printParagraph(String.format("File %s not found", arg), LabelTextColor.RED);
 			throw except;
 		} catch (final MalformedXMLException except) {
@@ -135,10 +135,10 @@ import java.util.logging.Logger;
 	 */
 	public void testFile(final Path path) {
 		printParagraph(String.format("Testing %s ...", path));
-		IMapNG map;
+		final IMapNG map;
 		try {
 			map = MapIOHelper.readMap(path, Warning.IGNORE);
-		} catch (MissingFileException|NoSuchFileException|FileNotFoundException except) {
+		} catch (final MissingFileException|NoSuchFileException|FileNotFoundException except) {
 			printParagraph("FAIL: File not found", LabelTextColor.RED);
 			LOGGER.log(Level.SEVERE, path + " not found", except);
 			return;

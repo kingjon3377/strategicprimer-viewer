@@ -216,9 +216,9 @@ public interface ICLIHelper {
 	 */
 	default @Nullable Point inputPoint(final String prompt) {
 		print(prompt);
-		Integer row = inputNumber("Row: ");
+		final Integer row = inputNumber("Row: ");
 		if (row != null) {
-			Integer column = inputNumber("Column: ");
+			final Integer column = inputNumber("Column: ");
 			if (column != null) {
 				return new Point(row, column);
 			}

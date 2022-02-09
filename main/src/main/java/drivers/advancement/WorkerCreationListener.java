@@ -100,37 +100,37 @@ import java.util.function.Consumer;
 			setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 			name = new JTextField();
 			race = new JTextField(RaceFactory.randomRace());
-			JPanel textPanel = new JPanel(new GridLayout(0, 2));
+			final JPanel textPanel = new JPanel(new GridLayout(0, 2));
 
 			addLabeledField(textPanel, "Worker Name:", name);
 			addLabeledField(textPanel, "Worker Race", race);
 
-			JPanel buttonPanel = new JPanel(new GridLayout(0, 2));
+			final JPanel buttonPanel = new JPanel(new GridLayout(0, 2));
 
-			JButton addButton = new ListenedButton("Add Worker", ignored -> accept());
+			final JButton addButton = new ListenedButton("Add Worker", ignored -> accept());
 			buttonPanel.add(addButton);
 
-			JButton cancelButton = new ListenedButton("Cancel", ignored -> revert());
+			final JButton cancelButton = new ListenedButton("Cancel", ignored -> revert());
 			buttonPanel.add(cancelButton);
 
 			Platform.makeButtonsSegmented(addButton, cancelButton);
 
-			JPanel statsPanel = new JPanel(new GridLayout(0, 4));
+			final JPanel statsPanel = new JPanel(new GridLayout(0, 4));
 			hpModel.setValue(8);
 			addLabeledField(statsPanel, "HP:", new JSpinner(hpModel));
 
 			maxHP.setValue(8);
 			addLabeledField(statsPanel, "Max HP:", new JSpinner(maxHP));
 
-			for (Pair<String, SpinnerNumberModel> pair : Arrays.asList(
+			for (final Pair<String, SpinnerNumberModel> pair : Arrays.asList(
 					Pair.with("Strength:", strength),
 					Pair.with("Intelligence:", intelligence),
 					Pair.with("Dexterity:", dexterity),
 					Pair.with("Wisdom:", wisdom),
 					Pair.with("Constitution:", constitution),
 					Pair.with("Charisma:", charisma))) {
-				String stat = pair.getValue0();
-				SpinnerNumberModel model = pair.getValue1();
+				final String stat = pair.getValue0();
+				final SpinnerNumberModel model = pair.getValue1();
 				model.setValue(SingletonRandom.SINGLETON_RANDOM.ints(3, 1, 7).sum());
 				addLabeledField(statsPanel, stat, new JSpinner(model));
 			}
@@ -144,16 +144,16 @@ import java.util.function.Consumer;
 		}
 
 		private void accept() {
-			String nameText = name.getText().trim();
-			String raceText = race.getText().trim();
-			int hpValue = hpModel.getNumber().intValue();
-			int maxHPValue = maxHP.getNumber().intValue();
-			int strValue = strength.getNumber().intValue();
-			int dexValue = dexterity.getNumber().intValue();
-			int conValue = constitution.getNumber().intValue();
-			int intValue = intelligence.getNumber().intValue();
-			int wisValue = wisdom.getNumber().intValue();
-			int chaValue = charisma.getNumber().intValue();
+			final String nameText = name.getText().trim();
+			final String raceText = race.getText().trim();
+			final int hpValue = hpModel.getNumber().intValue();
+			final int maxHPValue = maxHP.getNumber().intValue();
+			final int strValue = strength.getNumber().intValue();
+			final int dexValue = dexterity.getNumber().intValue();
+			final int conValue = constitution.getNumber().intValue();
+			final int intValue = intelligence.getNumber().intValue();
+			final int wisValue = wisdom.getNumber().intValue();
+			final int chaValue = charisma.getNumber().intValue();
 			if (!nameText.isEmpty() && !raceText.isEmpty() && hpValue >= 0 &&
 					maxHPValue >= 0 && strValue >= 0 && dexValue >= 0 &&
 					conValue >= 0 && intValue >= 0 && wisValue >= 0 &&
@@ -162,7 +162,7 @@ import java.util.function.Consumer;
 				// probably be "trace" i.e. "finer", not
 				// "debug" i.e. "fine"
 				LOGGER.fine("All worker-creation-dialog fields are acceptable");
-				Worker retval = new Worker(nameText, raceText, factory.createID());
+				final Worker retval = new Worker(nameText, raceText, factory.createID());
 				retval.setStats(new WorkerStats(hpValue, maxHPValue, strValue,
 					dexValue, conValue, intValue, wisValue, chaValue));
 				addNewWorker.accept(retval);
@@ -170,7 +170,7 @@ import java.util.function.Consumer;
 				setVisible(false);
 				dispose();
 			} else {
-				StringBuilder builder = new StringBuilder();
+				final StringBuilder builder = new StringBuilder();
 				if (nameText.isEmpty()) {
 					LOGGER.fine("Worker not created because name field was empty.");
 					builder.append("Worker needs a name.").append(System.lineSeparator());
@@ -180,7 +180,7 @@ import java.util.function.Consumer;
 					builder.append("Worker needs a race.").append(System.lineSeparator());
 				}
 				// FIXME: Only include stats in the error message if actually non-positive!
-				for (Pair<String, Integer> pair : Arrays.asList(
+				for (final Pair<String, Integer> pair : Arrays.asList(
 						Pair.with("HP", hpValue), Pair.with("Max HP", maxHPValue),
 						Pair.with("Strength", strValue),
 						Pair.with("Dexterity", dexValue),
@@ -188,8 +188,8 @@ import java.util.function.Consumer;
 						Pair.with("Intelligence", intValue),
 						Pair.with("Wisdom", wisValue),
 						Pair.with("Charisma", chaValue))) {
-					String stat = pair.getValue0();
-					int val = pair.getValue1();
+					final String stat = pair.getValue0();
+					final int val = pair.getValue1();
 					LOGGER.fine(String.format(
 						"Worker not created because non-positive %s provided", stat));
 					builder.append(String.format("%s must be a non-negative number.",
@@ -211,7 +211,7 @@ import java.util.function.Consumer;
 
 		public void revert() {
 			name.setText("");
-			for (SpinnerNumberModel field : Arrays.asList(hpModel, maxHP, strength,
+			for (final SpinnerNumberModel field : Arrays.asList(hpModel, maxHP, strength,
 					dexterity, constitution, intelligence, wisdom, charisma)) {
 				field.setValue(-1);
 			}

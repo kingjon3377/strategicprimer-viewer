@@ -64,10 +64,10 @@ public class WindowList {
 				boolean changed = false;
 
 				if (e.getID() == WindowEvent.WINDOW_ACTIVATED) {
-					Window window = (Window) (e.getSource());
+					final Window window = (Window) (e.getSource());
 
 					updateWindowList: {
-						for (Reference<Window> r : windowList) {
+						for (final Reference<Window> r : windowList) {
 							if (r.get() == window) {
 								break updateWindowList;
 							}
@@ -79,7 +79,7 @@ public class WindowList {
 					updateWindowLayerList: {
 						int a = 0;
 						while (a < windowLayerList.size()) {
-							Reference<Window> r = windowLayerList.get(a);
+							final Reference<Window> r = windowLayerList.get(a);
 							if (r.get() == window) {
 								if (a == windowLayerList.size() - 1) {
 									break updateWindowLayerList;
@@ -141,7 +141,7 @@ public class WindowList {
 		};
 
 		private WeakReference<?>[] wrap(final Object[] array) {
-			WeakReference<?>[] references = new WeakReference[array.length];
+			final WeakReference<?>[] references = new WeakReference[array.length];
 			for (int a = 0; a < references.length; a++) {
 				references[a] = new WeakReference<>(array[a]);
 			}
@@ -173,8 +173,8 @@ public class WindowList {
 	static {
 		Toolkit.getDefaultToolkit().addAWTEventListener(windowListener,
 				AWTEvent.WINDOW_EVENT_MASK);
-		Window[] windows = Window.getWindows();
-		for (Window window : windows) {
+		final Window[] windows = Window.getWindows();
+		for (final Window window : windows) {
 			windowLayerList.add(new WeakReference<>(window));
 			windowList.add(new WeakReference<>(window));
 		}
@@ -196,13 +196,13 @@ public class WindowList {
 	 */
 	public static Window[] getWindows(final boolean sortByLayer,
 	                                  final boolean includeInvisible) {
-		ArrayList<WeakReference<Window>> list = sortByLayer ? windowLayerList
+		final ArrayList<WeakReference<Window>> list = sortByLayer ? windowLayerList
 				: windowList;
-		List<Window> returnValue = new ArrayList<>();
+		final List<Window> returnValue = new ArrayList<>();
 		int a = 0;
 		while (a < list.size()) {
-			WeakReference<Window> r = list.get(a);
-			Window w = r.get();
+			final WeakReference<Window> r = list.get(a);
+			final Window w = r.get();
 			if (w == null) {
 				list.remove(a);
 			} else {
@@ -234,18 +234,18 @@ public class WindowList {
 	 */
 	public static Frame[] getFrames(final boolean sortByLayer,
 	                                final boolean includeInvisible, final boolean includeIconified) {
-		ArrayList<WeakReference<Window>> list = sortByLayer ? windowLayerList
+		final ArrayList<WeakReference<Window>> list = sortByLayer ? windowLayerList
 				: windowList;
-		List<Frame> returnValue = new ArrayList<>();
+		final List<Frame> returnValue = new ArrayList<>();
 		int a = 0;
 		while (a < list.size()) {
-			WeakReference<Window> r = list.get(a);
-			Window w = r.get();
+			final WeakReference<Window> r = list.get(a);
+			final Window w = r.get();
 			if (w == null) {
 				list.remove(a);
 			} else {
 				if (w instanceof Frame) {
-					Frame f = (Frame) w;
+					final Frame f = (Frame) w;
 					if (includeInvisible || f.isVisible()) {
 						returnValue.add(f);
 					} else if (includeIconified
@@ -282,7 +282,7 @@ public class WindowList {
 	}
 
 	static void fireChangeListeners() {
-		for (ChangeListener l : changeListeners) {
+		for (final ChangeListener l : changeListeners) {
 			try {
 				l.stateChanged(new ChangeEvent(WindowList.class));
 			} catch (final Throwable t) {

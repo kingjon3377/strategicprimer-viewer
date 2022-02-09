@@ -45,12 +45,12 @@ import java.util.Random;
 
 	@Override
 	public void startDriver() {
-		Direction[] directions = Direction.values();
-		for (IUnit unit : model.getPlayerChoices().stream()
+		final Direction[] directions = Direction.values();
+		for (final IUnit unit : model.getPlayerChoices().stream()
 				.filter(Player::isIndependent).flatMap(p -> model.getUnits(p).stream())
 				.collect(Collectors.toList())) {
-			Random rng = new Random(unit.getId() << 8 + model.getMap().getCurrentTurn());
-			int steps = rng.nextInt(3) + rng.nextInt(3);
+			final Random rng = new Random(unit.getId() << 8 + model.getMap().getCurrentTurn());
+			final int steps = rng.nextInt(3) + rng.nextInt(3);
 			model.setSelectedUnit(unit);
 			for (int i = 0; i < steps; i++) {
 				try {

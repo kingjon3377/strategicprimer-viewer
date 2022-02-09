@@ -69,14 +69,14 @@ public final class TabularReportGenerator {
 	public static void createTabularReports(final IMapNG map,
 	                                        final ThrowingFunction<String, ThrowingConsumer<String, IOException>, IOException> source,
 	                                        final ICLIHelper cli) throws IOException {
-		DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures =
+		final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures =
 			ReportGeneratorHelper.getFixtures(map);
-		Map<Integer, Integer> parentMap = ReportGeneratorHelper.getParentMap(map);
-		Player player = map.getCurrentPlayer();
-		MapDimensions dimensions = map.getDimensions();
-		@Nullable Point hq = ReportGeneratorHelper.findHQ(map, player);
-		int currentTurn = map.getCurrentTurn();
-		List<ITableGenerator<?>> generators = Arrays.asList(
+		final Map<Integer, Integer> parentMap = ReportGeneratorHelper.getParentMap(map);
+		final Player player = map.getCurrentPlayer();
+		final MapDimensions dimensions = map.getDimensions();
+		@Nullable final Point hq = ReportGeneratorHelper.findHQ(map, player);
+		final int currentTurn = map.getCurrentTurn();
+		final List<ITableGenerator<?>> generators = Arrays.asList(
 			new FortressTabularReportGenerator(player, hq, dimensions),
 			new UnitTabularReportGenerator(player, hq, dimensions),
 			new AnimalTabularReportGenerator(hq, dimensions, currentTurn),
@@ -89,11 +89,11 @@ public final class TabularReportGenerator {
 			new ResourceTabularReportGenerator(hq, dimensions),
 			new ImmortalsTabularReportGenerator(hq, dimensions),
 			new ExplorableTabularReportGenerator(player, hq, dimensions));
-		for (ITableGenerator<?> generator : generators) {
+		for (final ITableGenerator<?> generator : generators) {
 			generator.produceTable(source.apply(generator.getTableName()), fixtures, parentMap);
 		}
-		for (Pair<Point, IFixture> pair : fixtures.values()) {
-			IFixture fixture = pair.getValue1();
+		for (final Pair<Point, IFixture> pair : fixtures.values()) {
+			final IFixture fixture = pair.getValue1();
 			if (fixture instanceof TerrainFixture) {
 				fixtures.remove(fixture.getId());
 			} else {
@@ -113,8 +113,8 @@ public final class TabularReportGenerator {
 	 * TODO: Provide a richer model so this becomes unnecessary
 	 */
 	private static int sorter(final Object one, final Object two) {
-		String actualOne;
-		String actualTwo;
+		final String actualOne;
+		final String actualTwo;
 		if (one instanceof String) {
 			actualOne = (String) one;
 		} else {
@@ -140,14 +140,14 @@ public final class TabularReportGenerator {
 	 */
 	public static void createGUITabularReports(final BiConsumer<String, Component> consumer, final IMapNG map)
 			throws IOException {
-		DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures =
+		final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures =
 			ReportGeneratorHelper.getFixtures(map);
-		Map<Integer, Integer> parentMap = ReportGeneratorHelper.getParentMap(map);
-		Player player = map.getCurrentPlayer();
-		MapDimensions dimensions = map.getDimensions();
-		@Nullable Point hq = ReportGeneratorHelper.findHQ(map, player);
-		int currentTurn = map.getCurrentTurn();
-		List<ITableGenerator<?>> generators = Arrays.asList(
+		final Map<Integer, Integer> parentMap = ReportGeneratorHelper.getParentMap(map);
+		final Player player = map.getCurrentPlayer();
+		final MapDimensions dimensions = map.getDimensions();
+		@Nullable final Point hq = ReportGeneratorHelper.findHQ(map, player);
+		final int currentTurn = map.getCurrentTurn();
+		final List<ITableGenerator<?>> generators = Arrays.asList(
 			new FortressTabularReportGenerator(player, hq, dimensions),
 			new UnitTabularReportGenerator(player, hq, dimensions),
 			new AnimalTabularReportGenerator(hq, dimensions, currentTurn),
@@ -160,20 +160,20 @@ public final class TabularReportGenerator {
 			new ResourceTabularReportGenerator(hq, dimensions),
 			new ImmortalsTabularReportGenerator(hq, dimensions),
 			new ExplorableTabularReportGenerator(player, hq, dimensions));
-		for (ITableGenerator<?> generator : generators) {
-			TableModel tableModel = generator.produceTableModel(fixtures, parentMap);
-			JTable table = new JTable(tableModel);
-			TableRowSorter<TableModel> modelSorter = new TableRowSorter<>(tableModel);
+		for (final ITableGenerator<?> generator : generators) {
+			final TableModel tableModel = generator.produceTableModel(fixtures, parentMap);
+			final JTable table = new JTable(tableModel);
+			final TableRowSorter<TableModel> modelSorter = new TableRowSorter<>(tableModel);
 			int i = 0;
-			for (String column : generator.getHeaderRow()) {
+			for (final String column : generator.getHeaderRow()) {
 				if ("distance".equalsIgnoreCase(column)) {
 					modelSorter.setComparator(i, TabularReportGenerator::sorter);
 				}
 				i++;
 			}
 			table.setRowSorter(modelSorter);
-			int vertControl;
-			int horizControl;
+			final int vertControl;
+			final int horizControl;
 			if (Platform.SYSTEM_IS_MAC) {
 				vertControl = ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS;
 				horizControl = ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS;
@@ -184,9 +184,9 @@ public final class TabularReportGenerator {
 			consumer.accept(generator.getTableName(), new JScrollPane(table, vertControl,
 				horizControl));
 		}
-		List<String> unhandled = new ArrayList<>();
-		for (Pair<Point, IFixture> pair : fixtures.values()) {
-			IFixture fixture = pair.getValue1();
+		final List<String> unhandled = new ArrayList<>();
+		for (final Pair<Point, IFixture> pair : fixtures.values()) {
+			final IFixture fixture = pair.getValue1();
 			if (fixture instanceof TerrainFixture) {
 				fixtures.remove(fixture.getId());
 			} else {

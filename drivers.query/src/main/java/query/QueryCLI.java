@@ -67,7 +67,7 @@ public class QueryCLI implements ReadOnlyDriver {
 	 */
 	private static int countWorkersInIterable(final Player player, final Iterable<? extends IFixture> fixtures) {
 		int retval = 0;
-		for (IFixture fixture : fixtures) {
+		for (final IFixture fixture : fixtures) {
 			if (fixture instanceof IWorker && fixtures instanceof HasOwner &&
 					player.equals(((HasOwner) fixtures).getOwner())) {
 				retval++;
@@ -129,10 +129,10 @@ public class QueryCLI implements ReadOnlyDriver {
 	 * Count the workers belonging to a player.
 	 */
 	private void countWorkers(final List<Player> players) {
-		Player player = cli.chooseFromList(players, "Players in the map:", "Map contains no players",
+		final Player player = cli.chooseFromList(players, "Players in the map:", "Map contains no players",
 			"Owner of workers to count: ", true).getValue1();
 		if (player != null) {
-			int count = countWorkersInIterable(player, map.streamAllFixtures()
+			final int count = countWorkersInIterable(player, map.streamAllFixtures()
 					.collect(Collectors.toList()));
 			cli.println(String.format("%s has %d workers", player.getName(), count));
 		}
@@ -144,9 +144,9 @@ public class QueryCLI implements ReadOnlyDriver {
 	 * FIXME: abort after EOF at any point
 	 */
 	private void printDistance() {
-		Point start = cli.inputPoint("Starting point:\t");
-		Point end = cli.inputPoint("Destination:\t");
-		Boolean groundTravel = cli.inputBoolean("Compute ground travel distance?");
+		final Point start = cli.inputPoint("Starting point:\t");
+		final Point end = cli.inputPoint("Destination:\t");
+		final Boolean groundTravel = cli.inputBoolean("Compute ground travel distance?");
 		if (start != null && end != null && groundTravel != null) {
 			if (groundTravel) {
 				cli.print("Distance (on the ground, in MP cost):\t");
@@ -171,10 +171,10 @@ public class QueryCLI implements ReadOnlyDriver {
 			cli.println(String.format("Terrain is %s",
 				Optional.ofNullable(map.getBaseTerrain(location))
 					.map(TileType::toString).orElse("unknown")));
-			List<Ground> ground = map.getFixtures(location).stream()
+			final List<Ground> ground = map.getFixtures(location).stream()
 				.filter(Ground.class::isInstance).map(Ground.class::cast)
 				.collect(Collectors.toList());
-			List<Forest> forests = map.getFixtures(location).stream()
+			final List<Forest> forests = map.getFixtures(location).stream()
 				.filter(Forest.class::isInstance).map(Forest.class::cast)
 				.collect(Collectors.toList());
 			if (!ground.isEmpty()) {
@@ -193,22 +193,22 @@ public class QueryCLI implements ReadOnlyDriver {
 	 */
 	@Nullable
 	private Point findUnexplored(final Point base) {
-		Deque<Point> queue = new LinkedList<>();
+		final Deque<Point> queue = new LinkedList<>();
 		queue.addLast(base);
-		MapDimensions dimensions = map.getDimensions();
-		Set<Point> considered = new HashSet<>();
-		List<Point> retval = new ArrayList<>();
+		final MapDimensions dimensions = map.getDimensions();
+		final Set<Point> considered = new HashSet<>();
+		final List<Point> retval = new ArrayList<>();
 		while (!queue.isEmpty()) {
-			Point current = queue.removeFirst();
-			TileType currentTerrain = map.getBaseTerrain(current);
+			final Point current = queue.removeFirst();
+			final TileType currentTerrain = map.getBaseTerrain(current);
 			if (considered.contains(current)) {
 				continue;
 			} else if (currentTerrain == null) {
 				retval.add(current);
 			} else {
 				if (TileType.Ocean != currentTerrain) {
-					double baseDistance = distance(base, current, dimensions);
-					for (Point neighbor : new SurroundingPointIterable(current,
+					final double baseDistance = distance(base, current, dimensions);
+					for (final Point neighbor : new SurroundingPointIterable(current,
 							dimensions, 1)) {
 						if (distance(base, neighbor, dimensions) >= baseDistance) {
 							queue.addLast(neighbor);
@@ -226,11 +226,11 @@ public class QueryCLI implements ReadOnlyDriver {
 	 * base that produce any resources, and what resources they produce.
 	 */
 	private void suggestTrade(final Point base, final int distance) {
-		DistanceComparator comparator = new DistanceComparator(base, map.getDimensions());
-		for (Point location : new SurroundingPointIterable(base,
+		final DistanceComparator comparator = new DistanceComparator(base, map.getDimensions());
+		for (final Point location : new SurroundingPointIterable(base,
 				map.getDimensions(), distance).stream().distinct()
 				.sorted(comparator).collect(Collectors.toList())) { // TODO: can we combine loops?
-			for (ITownFixture town : map.getFixtures(location).stream()
+			for (final ITownFixture town : map.getFixtures(location).stream()
 					.filter(ITownFixture.class::isInstance)
 					.map(ITownFixture.class::cast).collect(Collectors.toList())) {
 				if (TownStatus.Active == town.getStatus() &&
@@ -251,7 +251,7 @@ public class QueryCLI implements ReadOnlyDriver {
 						cli.print(", allied to ", town.getOwner().toString());
 					}
 					cli.println(". Its yearly production:");
-					for (IResourcePile resource :
+					for (final IResourcePile resource :
 							town.getPopulation().getYearlyProduction()) {
 						cli.print("- ", resource.getKind(), ": ");
 						cli.print(resource.getQuantity().getNumber().toString());
@@ -278,13 +278,13 @@ public class QueryCLI implements ReadOnlyDriver {
 	private static final DecimalFormat ONE_PLACE_FORMAT = new DecimalFormat("#,###.0");
 
 	private void findUnexploredCommand() {
-		Point base = cli.inputPoint("Starting point? ");
+		final Point base = cli.inputPoint("Starting point? ");
 		if (base != null) {
-			Point unexplored = findUnexplored(base);
+			final Point unexplored = findUnexplored(base);
 			if (unexplored == null) {
 				cli.println("No unexplored tiles found.");
 			} else {
-				double distanceTo = distance(base, unexplored, map.getDimensions());
+				final double distanceTo = distance(base, unexplored, map.getDimensions());
 				cli.println(String.format("Nearest unexplored tile is %s, %s tiles away",
 					unexplored, ONE_PLACE_FORMAT.format(distanceTo)));
 			}
@@ -292,9 +292,9 @@ public class QueryCLI implements ReadOnlyDriver {
 	}
 
 	private void tradeCommand() {
-		Point location = cli.inputPoint("Base location? ");
+		final Point location = cli.inputPoint("Base location? ");
 		if (location != null) {
-			Integer distance = cli.inputNumber("Within how many tiles? ");
+			final Integer distance = cli.inputNumber("Within how many tiles? ");
 			if (distance != null) {
 				suggestTrade(location, distance);
 			}
@@ -309,7 +309,7 @@ public class QueryCLI implements ReadOnlyDriver {
 	@Override
 	public void startDriver() {
 		while (true) {
-			Either<SimpleApplet, Boolean> selection = appletChooser.chooseApplet();
+			final Either<SimpleApplet, Boolean> selection = appletChooser.chooseApplet();
 			if (selection == null || (selection.fromRight().isPresent() &&
 					                          selection.fromRight().get())) {
 				continue;

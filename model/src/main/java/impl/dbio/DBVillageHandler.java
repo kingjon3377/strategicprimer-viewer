@@ -56,7 +56,7 @@ final class DBVillageHandler extends AbstractDatabaseWriter<Village, Point> impl
 			obj.getImage(), obj.getPortrait(),
 			Optional.ofNullable(obj.getPopulation()).map(CommunityStats::getPopulation)
 				.orElse(null)).execute();
-		CommunityStats stats = obj.getPopulation();
+		final CommunityStats stats = obj.getPopulation();
 		if (stats != null) {
 			CS_WRITER.initialize(db);
 			CS_WRITER.write(db, stats, obj);
@@ -65,17 +65,17 @@ final class DBVillageHandler extends AbstractDatabaseWriter<Village, Point> impl
 
 	private TryBiConsumer<Map<String, Object>, Warning, Exception> readVillage(final IMutableMapNG map) {
 		return (dbRow, warner) -> {
-			int row = (Integer) dbRow.get("row");
-			int column = (Integer) dbRow.get("column");
-			TownStatus status = TownStatus.parse((String) dbRow.get("status"));
-			String name = (String) dbRow.get("name");
-			int id = (Integer) dbRow.get("id");
-			int ownerId = (Integer) dbRow.get("owner");
-			String race = (String) dbRow.get("race");
-			String image = (String) dbRow.get("image");
-			String portrait = (String) dbRow.get("portrait");
-			Integer population = (Integer) dbRow.get("population");
-			Village village = new Village(status, name, id, map.getPlayers().getPlayer(ownerId),
+			final int row = (Integer) dbRow.get("row");
+			final int column = (Integer) dbRow.get("column");
+			final TownStatus status = TownStatus.parse((String) dbRow.get("status"));
+			final String name = (String) dbRow.get("name");
+			final int id = (Integer) dbRow.get("id");
+			final int ownerId = (Integer) dbRow.get("owner");
+			final String race = (String) dbRow.get("race");
+			final String image = (String) dbRow.get("image");
+			final String portrait = (String) dbRow.get("portrait");
+			final Integer population = (Integer) dbRow.get("population");
+			final Village village = new Village(status, name, id, map.getPlayers().getPlayer(ownerId),
 				race);
 			if (image != null) {
 				village.setImage(image);

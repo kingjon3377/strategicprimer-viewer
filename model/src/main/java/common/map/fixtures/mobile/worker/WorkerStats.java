@@ -25,7 +25,7 @@ public final class WorkerStats {
 	 * The modifier string for a stat with the given value.
 	 */
 	public static String getModifierString(final int stat) {
-		int modifier = getModifier(stat);
+		final int modifier = getModifier(stat);
 		return (modifier >= 0) ? "+" + modifier : Integer.toString(modifier);
 	}
 

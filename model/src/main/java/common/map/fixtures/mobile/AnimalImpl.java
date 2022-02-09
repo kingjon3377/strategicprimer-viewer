@@ -143,7 +143,7 @@ public class AnimalImpl implements Animal, HasMutableImage {
 	 */
 	@Override
 	public Animal copy(final boolean zero) {
-		AnimalImpl retval = new AnimalImpl(kind, talking, status, id,
+		final AnimalImpl retval = new AnimalImpl(kind, talking, status, id,
 			(zero) ? -1 : born, (zero) ? 1 : population);
 		retval.setImage(image);
 		return retval;
@@ -167,7 +167,7 @@ public class AnimalImpl implements Animal, HasMutableImage {
 	 */
 	@Override
 	public int getDC() {
-		int retval = AnimalDiscoveryDCs.get(kind);
+		final int retval = AnimalDiscoveryDCs.get(kind);
 		return (retval >= 0) ?  retval : 22;
 	}
 

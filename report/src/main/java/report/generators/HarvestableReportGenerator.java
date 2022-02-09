@@ -147,29 +147,29 @@ public class HarvestableReportGenerator extends AbstractReportGenerator<Harvesta
 	@Override
 	public void produce(final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
 	                    final IMapNG map, final Consumer<String> ostream) {
-		Map<String, List<Point>> stone = new HashMap<>();
-		Map<String, List<Point>> shrubs = new HashMap<>();
-		Map<String, List<Point>> minerals = new HashMap<>();
-		HeadedMap<Mine, Point> mines = new HeadedMapImpl<>("<h5>Mines</h5>",
+		final Map<String, List<Point>> stone = new HashMap<>();
+		final Map<String, List<Point>> shrubs = new HashMap<>();
+		final Map<String, List<Point>> minerals = new HashMap<>();
+		final HeadedMap<Mine, Point> mines = new HeadedMapImpl<>("<h5>Mines</h5>",
 			Comparator.comparing(Mine::getKind).thenComparing(Mine::getStatus)
 				.thenComparing(Mine::getId));
 		// TODO: Group meadows and fields separately in the list since Boolean is comparable in Java?
-		HeadedMap<Meadow, Point> meadows = new HeadedMapImpl<>("<h5>Meadows and Fields</h5>",
+		final HeadedMap<Meadow, Point> meadows = new HeadedMapImpl<>("<h5>Meadows and Fields</h5>",
 			Comparator.comparing(Meadow::getKind).thenComparing(Meadow::getStatus)
 				.thenComparing(Meadow::getId));
-		HeadedMap<Grove, Point> groves = new HeadedMapImpl<>("<h5>Groves and Orchards</h5>",
+		final HeadedMap<Grove, Point> groves = new HeadedMapImpl<>("<h5>Groves and Orchards</h5>",
 			Comparator.comparing(Grove::getKind).thenComparing(Grove::getId));
-		HeadedMap<CacheFixture, Point> caches = new HeadedMapImpl<>(
+		final HeadedMap<CacheFixture, Point> caches = new HeadedMapImpl<>(
 			"<h5>Caches collected by your explorers and workers:</h5>",
 			Comparator.comparing(CacheFixture::getKind).thenComparing(CacheFixture::getContents)
 				.thenComparing(CacheFixture::getId));
-		for (Pair<Point, HarvestableFixture> pair : fixtures.values().stream()
+		for (final Pair<Point, HarvestableFixture> pair : fixtures.values().stream()
 				.filter(p -> p.getValue1() instanceof HarvestableFixture)
 				.sorted(pairComparator)
 				.map(p -> Pair.with(p.getValue0(), (HarvestableFixture) p.getValue1()))
 				.collect(Collectors.toList())) {
-			Point point = pair.getValue0();
-			HarvestableFixture item = pair.getValue1();
+			final Point point = pair.getValue0();
+			final HarvestableFixture item = pair.getValue1();
 			// TODO: Use a Map by type
 			if (item instanceof CacheFixture) {
 				caches.put((CacheFixture) item, point);
@@ -184,19 +184,19 @@ public class HarvestableReportGenerator extends AbstractReportGenerator<Harvesta
 				mines.put((Mine) item, point);
 				fixtures.remove(item.getId());
 			} else if (item instanceof MineralVein) {
-				List<Point> list = Optional.ofNullable(minerals.get(
+				final List<Point> list = Optional.ofNullable(minerals.get(
 					((MineralVein) item).getShortDescription())).orElseGet(ArrayList::new);
 				list.add(point);
 				minerals.put(((MineralVein) item).getShortDescription(), list);
 				fixtures.remove(item.getId());
 			} else if (item instanceof Shrub) {
-				List<Point> list = Optional.ofNullable(shrubs.get(
+				final List<Point> list = Optional.ofNullable(shrubs.get(
 					((Shrub) item).getKind())).orElseGet(ArrayList::new);
 				list.add(point);
 				shrubs.put(((Shrub) item).getKind(), list);
 				fixtures.remove(item.getId());
 			} else if (item instanceof StoneDeposit) {
-				List<Point> list = Optional.ofNullable(stone.get(
+				final List<Point> list = Optional.ofNullable(stone.get(
 					((StoneDeposit) item).getKind())).orElseGet(ArrayList::new);
 				list.add(point);
 				stone.put(((StoneDeposit) item).getKind(), list);
@@ -205,18 +205,18 @@ public class HarvestableReportGenerator extends AbstractReportGenerator<Harvesta
 				return;
 			}
 		}
-		List<HeadedList<String>> all = Arrays.asList(
+		final List<HeadedList<String>> all = Arrays.asList(
 			mapToList(minerals, "<h5>Mineral Deposits</h5>"),
 			mapToList(stone, "<h5>Exposed Stone Deposits</h5>"),
 			mapToList(shrubs, "<h5>Shrubs, Small Trees, etc.</h5>"));
-		List<HeadedMap<? extends HarvestableFixture, Point>> maps =
+		final List<HeadedMap<? extends HarvestableFixture, Point>> maps =
 			Arrays.asList(caches, groves, meadows, mines);
 		if (maps.stream().anyMatch(m -> !m.isEmpty()) || all.stream().anyMatch(l -> !l.isEmpty())) {
 			println(ostream, "<h4>Resource Sources</h4>");
-			for (HeadedMap<? extends HarvestableFixture, Point> mapping : maps) {
+			for (final HeadedMap<? extends HarvestableFixture, Point> mapping : maps) {
 				super.<HarvestableFixture>writeMap(ostream, mapping, defaultFormatter(fixtures, map));
 			}
-			for (HeadedList<String> list : all) {
+			for (final HeadedList<String> list : all) {
 				ostream.accept(list.toString());
 			}
 		}

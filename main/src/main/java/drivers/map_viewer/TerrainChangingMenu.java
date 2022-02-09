@@ -31,7 +31,7 @@ import common.map.fixtures.terrain.Hill;
  */
 /* package */ class TerrainChangingMenu extends JPopupMenu
 		implements VersionChangeListener, SelectionChangeListener {
-	private int mapVersion;
+	private int mapVersion; // TODO: Change when map version changes
 	private final IViewerModel model;
 	private final IDRegistrar idf;
 	private final NewUnitDialog nuDialog;
@@ -70,15 +70,15 @@ import common.map.fixtures.terrain.Hill;
 		nfDialog.addNewFixtureListener(this::newFixture);
 
 		textNoteItem.setMnemonic(KeyEvent.VK_X);
-		TextNoteDialog tnDialog = new TextNoteDialog(this::currentTurn);
+		final TextNoteDialog tnDialog = new TextNoteDialog(this::currentTurn);
 		tnDialog.addNewFixtureListener(this::newFixture);
 
 		bookmarkItem.setMnemonic(KeyEvent.VK_B);
 		bookmarkItem.addActionListener(ignored -> toggleBookmarked());
 
-		for (River direction : River.values()) {
-			String desc;
-			int mnemonic;
+		for (final River direction : River.values()) {
+			final String desc;
+			final int mnemonic;
 			switch (direction) {
 			case Lake:
 				desc = "lake";
@@ -103,9 +103,9 @@ import common.map.fixtures.terrain.Hill;
 			default:
 				throw new IllegalStateException("Exhaustive switch wasn't");
 			}
-			JCheckBoxMenuItem item = new JCheckBoxMenuItem(desc);
+			final JCheckBoxMenuItem item = new JCheckBoxMenuItem(desc);
 			item.setMnemonic(mnemonic);
-			Runnable runnable = toggleRiver(direction, item);
+			final Runnable runnable = toggleRiver(direction, item);
 			item.addActionListener(ignored -> runnable.run());
 			riverItems.put(direction, item);
 		}
@@ -122,10 +122,10 @@ import common.map.fixtures.terrain.Hill;
 	}
 
 	private void toggleMountains() {
-		Point localPoint = point;
-		TileType terrain = model.getMap().getBaseTerrain(localPoint);
+		final Point localPoint = point;
+		final TileType terrain = model.getMap().getBaseTerrain(localPoint);
 		if (localPoint.isValid() && terrain != null && TileType.Ocean != terrain) {
-			boolean newValue = !model.getMap().isMountainous(localPoint); // TODO: syntax sugar
+			final boolean newValue = !model.getMap().isMountainous(localPoint); // TODO: syntax sugar
 			model.setMountainous(localPoint, newValue);
 			mountainItem.getModel().setSelected(newValue);
 			scs.fireChanges(null, localPoint);
@@ -134,8 +134,8 @@ import common.map.fixtures.terrain.Hill;
 	}
 
 	private void toggleHill() {
-		Point localPoint = point;
-		TileType terrain = model.getMap().getBaseTerrain(localPoint);
+		final Point localPoint = point;
+		final TileType terrain = model.getMap().getBaseTerrain(localPoint);
 		if (localPoint.isValid() && terrain != null && TileType.Ocean != terrain) {
 			if (model.getMap().getFixtures(localPoint).stream()
 					.noneMatch(Hill.class::isInstance)) {
@@ -162,7 +162,7 @@ import common.map.fixtures.terrain.Hill;
 	}
 
 	private void toggleBookmarked() {
-		Point localPoint = point;
+		final Point localPoint = point;
 		if (model.getMap().getBookmarks().contains(localPoint)) { // TODO: make a 'bookmarks' accessor in model?
 			model.removeBookmark(localPoint);
 			bookmarkItem.getModel().setSelected(false);
@@ -176,8 +176,8 @@ import common.map.fixtures.terrain.Hill;
 
 	private Runnable toggleRiver(final River river, final JCheckBoxMenuItem item) {
 		return () -> {
-			Point localPoint = point;
-			TileType terrain = model.getMap().getBaseTerrain(localPoint);
+			final Point localPoint = point;
+			final TileType terrain = model.getMap().getBaseTerrain(localPoint);
 			if (localPoint.isValid() && terrain != null && TileType.Ocean != terrain) {
 				if (model.getMap().getRivers(localPoint).contains(river)) {
 					model.removeRiver(localPoint, river);
@@ -203,13 +203,13 @@ import common.map.fixtures.terrain.Hill;
 		add(bookmarkItem);
 		add(textNoteItem);
 		addSeparator();
-		JMenuItem removalItem = new JMenuItem("Remove terrain");
+		final JMenuItem removalItem = new JMenuItem("Remove terrain");
 		removalItem.setMnemonic(KeyEvent.VK_V);
 		add(removalItem);
 		removalItem.addActionListener(this::removeTerrain);
-		for (TileType type : TileType.getValuesForVersion(version)) {
-			String desc;
-			Integer mnemonic;
+		for (final TileType type : TileType.getValuesForVersion(version)) {
+			final String desc;
+			final Integer mnemonic;
 			switch (type) {
 			case Tundra:
 				desc = "tundra";
@@ -244,7 +244,7 @@ import common.map.fixtures.terrain.Hill;
 				// mnemonic = null;
 				throw new IllegalStateException("Exhaustive switch wasn't");
 			}
-			JMenuItem item = new JMenuItem(desc);
+			final JMenuItem item = new JMenuItem(desc);
 			if (mnemonic != null) {
 				item.setMnemonic(mnemonic);
 			}
@@ -279,9 +279,9 @@ import common.map.fixtures.terrain.Hill;
 		// We default to the selected point if the model has no
 		// interaction point, in case the menu gets shown before the
 		// interaction point gets set somehow.
-		Point localPoint = Optional.ofNullable(model.getInteraction()).orElseGet(model::getSelection);
+		final Point localPoint = Optional.ofNullable(model.getInteraction()).orElseGet(model::getSelection);
 		point = localPoint;
-		TileType terrain = model.getMap().getBaseTerrain(point);
+		final TileType terrain = model.getMap().getBaseTerrain(point);
 		if (point.isValid() && terrain != null) { // TODO: condense, like returning a boolean
 			newUnitItem.setEnabled(true);
 		} else {
@@ -303,13 +303,13 @@ import common.map.fixtures.terrain.Hill;
 		}
 		if (point.isValid() && terrain != null && TileType.Ocean != terrain) {
 			// TODO: combine with earlier if(s)
-			Collection<River> rivers = model.getMap().getRivers(point);
-			for (Map.Entry<River, JCheckBoxMenuItem> entry : riverItems.entrySet()) {
+			final Collection<River> rivers = model.getMap().getRivers(point);
+			for (final Map.Entry<River, JCheckBoxMenuItem> entry : riverItems.entrySet()) {
 				entry.getValue().setEnabled(true);
 				entry.getValue().getModel().setSelected(rivers.contains(entry.getKey()));
 			}
 		} else {
-			for (Map.Entry<River, JCheckBoxMenuItem> entry : riverItems.entrySet()) {
+			for (final Map.Entry<River, JCheckBoxMenuItem> entry : riverItems.entrySet()) {
 				entry.getValue().getModel().setSelected(false);
 				entry.getValue().setEnabled(false);
 			}

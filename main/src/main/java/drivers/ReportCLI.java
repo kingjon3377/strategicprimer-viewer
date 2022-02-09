@@ -68,8 +68,8 @@ public class ReportCLI implements ReadOnlyDriver {
 			} else {
 				player = map.getCurrentPlayer();
 			}
-			String outString;
-			Path outPath;
+			final String outString;
+			final Path outPath;
 			if (options.hasOption("--out")) {
 				outString = options.getArgument("--out");
 				outPath = Paths.get(outString);
@@ -77,7 +77,7 @@ public class ReportCLI implements ReadOnlyDriver {
 				outString = filename.getFileName().toString() + ".report.html";
 				outPath = filename.resolveSibling(outString);
 			}
-			try (BufferedWriter writer = Files.newBufferedWriter(outPath,
+			try (final BufferedWriter writer = Files.newBufferedWriter(outPath,
 					StandardCharsets.UTF_8, StandardOpenOption.WRITE,
 					StandardOpenOption.CREATE_NEW)) {
 				writer.write(ReportGenerator.createReport(map, cli, player));
@@ -89,7 +89,7 @@ public class ReportCLI implements ReadOnlyDriver {
 	public void startDriver() throws DriverFailedException {
 		try {
 			if (model instanceof IMultiMapModel) {
-				for (IMapNG map : ((IMultiMapModel) model).getAllMaps()) {
+				for (final IMapNG map : ((IMultiMapModel) model).getAllMaps()) {
 					writeReport(map.getFilename(), map);
 				}
 			} else {

@@ -145,7 +145,7 @@ public final class SubsetTest {
 	private static IMutableMapNG createMap(final Pair<Point, TileType>... terrain) {
 		final IMutableMapNG retval = new SPMapNG(new MapDimensionsImpl(2, 2, 2),
 			new PlayerCollection(), -1);
-		for (Pair<Point, TileType> pair : terrain) {
+		for (final Pair<Point, TileType> pair : terrain) {
 			retval.setBaseTerrain(pair.getValue0(), pair.getValue1());
 		}
 		return retval;
@@ -159,7 +159,7 @@ public final class SubsetTest {
 		final IMutableMapNG firstMap = createMap(Pair.with(new Point(0, 0), TileType.Jungle));
 		final IMutableMapNG secondMap = createMap(Pair.with(new Point(0, 0), TileType.Jungle),
 			Pair.with(new Point(1, 1), TileType.Ocean));
-		IMapNG zero = createMap();
+		final IMapNG zero = createMap();
 		assertIsSubset(zero, zero, "None is a subset of itself", SubsetTest::noop);
 		assertIsSubset(firstMap, zero, "None is a subset of one", SubsetTest::noop);
 		assertIsSubset(secondMap, zero, "None is a subset of one", SubsetTest::noop);
@@ -199,7 +199,7 @@ public final class SubsetTest {
 	public void testMapOffByOne() {
 		final IMutableMapNG baseMap = new SPMapNG(new MapDimensionsImpl(2, 2, 2),
 			new PlayerCollection(), -1);
-		for (Point point : baseMap.getLocations()) {
+		for (final Point point : baseMap.getLocations()) {
 			baseMap.setBaseTerrain(point, TileType.Plains);
 		}
 		baseMap.addFixture(new Point(1, 1), new Forest("elm", false, 1));
@@ -208,12 +208,12 @@ public final class SubsetTest {
 
 		final IMutableMapNG testMap = new SPMapNG(new MapDimensionsImpl(2, 2, 2),
 			new PlayerCollection(), -1);
-		for (Point point : testMap.getLocations()) {
+		for (final Point point : testMap.getLocations()) {
 			testMap.setBaseTerrain(point, TileType.Plains);
 		}
 		final Forest forest = new Forest("elm", false, 1);
 		final TileFixture animal = new AnimalImpl("skunk", false, "wild", 2);
-		for (Point point : testMap.getLocations()) {
+		for (final Point point : testMap.getLocations()) {
 			assertIsSubset(baseMap, testMap,
 				"Subset invariant before attempt using " + point, SubsetTest::noop);
 			final ITestMethod testMethod;
@@ -250,7 +250,7 @@ public final class SubsetTest {
 		final IMapNG zero = new SPMapNG(new MapDimensionsImpl(2, 2, 2),
 			new PlayerCollection(), -1);
 		assertIsSubset(firstMap, zero, "zero is a subset of one before copy", SubsetTest::noop);
-		IMutableMapNG secondMap =
+		final IMutableMapNG secondMap =
 			new SPMapNG(new MapDimensionsImpl(2, 2, 2), new PlayerCollection(), -1);
 		secondMap.setBaseTerrain(new Point(0, 0), TileType.Jungle);
 		firstMap.setBaseTerrain(new Point(1, 1), TileType.Plains);
@@ -266,7 +266,7 @@ public final class SubsetTest {
 		assertIsSubset(clone, zero, "unfilled map is still a subset of zeroed clone", SubsetTest::noop);
 		// DCs, the only thing zeroed out in *map* copy() at the moment, are ignored by
 		// equals().
-		for (TileFixture fixture : clone.getFixtures(new Point(0, 0))) {
+		for (final TileFixture fixture : clone.getFixtures(new Point(0, 0))) {
 			if (fixture instanceof AbstractTown) {
 				assertEquals(0, ((AbstractTown) fixture).getDC(),
 					"Copied map didn't copy DCs");
@@ -291,8 +291,8 @@ public final class SubsetTest {
 	@ParameterizedTest
 	@MethodSource("townParameters")
 	public void testTownSubsets(final TownSize size, final TownStatus status) {
-		TownSize differentSize;
-		TownStatus differentStatus;
+		final TownSize differentSize;
+		final TownStatus differentStatus;
 		final Player playerOne = new PlayerImpl(0, "playerOne");
 		final Player playerTwo = new PlayerImpl(1, "playerTwo");
 		final Player independent = new PlayerImpl(2, "independent");
@@ -359,8 +359,8 @@ public final class SubsetTest {
 	@ParameterizedTest
 	@MethodSource("townParameters")
 	public void testCitySubsets(final TownSize size, final TownStatus status) {
-		TownSize differentSize;
-		TownStatus differentStatus;
+		final TownSize differentSize;
+		final TownStatus differentStatus;
 		final Player playerOne = new PlayerImpl(0, "playerOne");
 		final Player playerTwo = new PlayerImpl(1, "playerTwo");
 		final Player independent = new PlayerImpl(2, "independent");
@@ -410,8 +410,8 @@ public final class SubsetTest {
 		assertNotSubset(new City(status, size, -1, "townName", 11, independent),
 			new City(status, size, -1, "townName", 11, playerOne),
 			"Owned is not a subset of independently owned", SubsetTest::noop);
-		City first = new City(status, size, -1, "townName", 12, playerOne);
-		City second = new City(status, size, -1, "townName", 12, playerOne);
+		final City first = new City(status, size, -1, "townName", 12, playerOne);
+		final City second = new City(status, size, -1, "townName", 12, playerOne);
 		first.setPopulation(new CommunityStats(8));
 		assertIsSubset(first, second, "Missing population detils doesn't break subset", SubsetTest::noop);
 		assertNotSubset(second, first,
@@ -428,8 +428,8 @@ public final class SubsetTest {
 	@ParameterizedTest
 	@MethodSource("townParameters")
 	public void testFortificationSubsets(final TownSize size, final TownStatus status) {
-		TownSize differentSize;
-		TownStatus differentStatus;
+		final TownSize differentSize;
+		final TownStatus differentStatus;
 		final Player playerOne = new PlayerImpl(0, "playerOne");
 		final Player playerTwo = new PlayerImpl(1, "playerTwo");
 		final Player independent = new PlayerImpl(2, "independent");
@@ -479,8 +479,8 @@ public final class SubsetTest {
 		assertNotSubset(new Fortification(status, size, -1, "townName", 11, independent),
 			new Fortification(status, size, -1, "townName", 11, playerOne),
 			"Owned is not a subset of independently owned", SubsetTest::noop);
-		Fortification first = new Fortification(status, size, -1, "townName", 12, playerOne);
-		Fortification second = new Fortification(status, size, -1, "townName", 12, playerOne);
+		final Fortification first = new Fortification(status, size, -1, "townName", 12, playerOne);
+		final Fortification second = new Fortification(status, size, -1, "townName", 12, playerOne);
 		first.setPopulation(new CommunityStats(8));
 		assertIsSubset(first, second, "Missing population detils doesn't break subset", SubsetTest::noop);
 		assertNotSubset(second, first,

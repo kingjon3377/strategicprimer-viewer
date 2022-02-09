@@ -57,7 +57,7 @@ public class UtilityMenuHandler {
 	 * TODO: Most of this logic should be called on the EDT
 	 */
 	public void handleEvent(final ActionEvent event) {
-		String command = event.getActionCommand().toLowerCase();
+		final String command = event.getActionCommand().toLowerCase();
 		switch (command) {
 		case "load":
 			SPFileChooser.open((Path) null).call(driver::open); // TODO: Pass event's component reference instead of null

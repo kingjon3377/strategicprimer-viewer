@@ -41,7 +41,7 @@ public class MemoizedComboBox extends ImprovedComboBox<String> {
 		if (selectedItem == null) {
 			return;
 		} else {
-			String item = selectedItem.trim();
+			final String item = selectedItem.trim();
 			if (!item.isEmpty() && !values.contains(item)) {
 				values.add(item);
 				addItem(item);
@@ -53,7 +53,7 @@ public class MemoizedComboBox extends ImprovedComboBox<String> {
 	@Override
 	@Nullable
 	public String getSelectedItem() {
-		Object retval = super.getSelectedItem();
+		final Object retval = super.getSelectedItem();
 		if (retval == null) {
 			return null;
 		} else if (retval instanceof String) {
@@ -73,9 +73,9 @@ public class MemoizedComboBox extends ImprovedComboBox<String> {
 	}
 
 	public String getSelectedString() {
-		Object inner = getEditor().getEditorComponent();
+		final Object inner = getEditor().getEditorComponent();
 		if (inner instanceof JTextField) {
-			String text = ((JTextField) inner).getText().trim();
+			final String text = ((JTextField) inner).getText().trim();
 			if (!text.isEmpty()) {
 				setSelectedItem(text);
 				return text;
@@ -85,7 +85,7 @@ public class MemoizedComboBox extends ImprovedComboBox<String> {
 	}
 
 	public void addSubmitListener(final ActionListener listener) {
-		Object inner = getEditor().getEditorComponent();
+		final Object inner = getEditor().getEditorComponent();
 		if (inner instanceof JTextField) {
 			((JTextField) inner).addActionListener(listener);
 		} else {

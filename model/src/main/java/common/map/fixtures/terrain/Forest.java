@@ -186,7 +186,7 @@ public class Forest implements TerrainFixture, HasMutableImage, HasKind, HasExte
 				return false;
 			}
 			boolean retval = true;
-			Consumer<String> localReport = s -> report.accept(
+			final Consumer<String> localReport = s -> report.accept(
 				String.format("In %s forest (ID #%d):\t%s", kind, id, s));
 			if (((Forest) other).isRows() && !rows) {
 				localReport.accept("In rows when we aren't");

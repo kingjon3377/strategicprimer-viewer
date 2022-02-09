@@ -52,7 +52,7 @@ import static lovelace.util.Decimalize.decimalize;
 	@Nullable
 	public String run() {
 		final StringBuilder builder = new StringBuilder();
-		IUnit unit = model.getSelectedUnit();
+		final IUnit unit = model.getSelectedUnit();
 		final List<String> foods = new ArrayList<>();
 		while (true) {
 			// TODO: should verb be "preserve" or "cook" instead of "convert"?
@@ -102,14 +102,14 @@ import static lovelace.util.Decimalize.decimalize;
 			}
 			model.reduceResourceBy(item, subtrahend, unit.getOwner());
 			// TODO: findHQ() should instead take the unit and find the fortress in the same tile, if any
-			IFortress hq = model.findHQ(unit.getOwner());
+			final IFortress hq = model.findHQ(unit.getOwner());
 			if (hq == null) {
 				model.addResource(unit, idf.createID(), "food", convertedForm,
 						new Quantity(newPounds, "pounds"), turn);
 			} else {
 				model.addResource(hq, idf.createID(), "food", convertedForm, new Quantity(newPounds, "pounds"), turn);
 			}
-			String results = cli.inputMultilineString("Description for results:");
+			final String results = cli.inputMultilineString("Description for results:");
 			if (results == null) {
 				return null;
 			}

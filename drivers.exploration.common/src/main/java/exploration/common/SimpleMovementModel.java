@@ -139,7 +139,7 @@ public final class SimpleMovementModel {
 		} else if (unit.equals(fixture)) {
 			return false;
 		} else {
-			int perception;
+			final int perception;
 			if (unit instanceof IUnit) {
 				perception = highestPerception((IUnit) unit);
 			} else {
@@ -164,9 +164,9 @@ public final class SimpleMovementModel {
 	 * Get a worker's Perception score.
 	 */
 	private static int getPerception(final IWorker worker) {
-		int ability = Optional.ofNullable(worker.getStats())
+		final int ability = Optional.ofNullable(worker.getStats())
 			.map(WorkerStats::getWisdom).orElse(0);
-		int ranks = StreamSupport.stream(worker.spliterator(), true)
+		final int ranks = StreamSupport.stream(worker.spliterator(), true)
 			.flatMap(x -> StreamSupport.stream(x.spliterator(), true))
 			.filter(s -> "percpetion".equalsIgnoreCase(s.getName()))
 			.mapToInt(ISkill::getLevel).sum();
@@ -195,12 +195,12 @@ public final class SimpleMovementModel {
 	 */
 	public static <Element> Iterable<Element> selectNoticed(final List<Element> possibilities,
 	                                                        final Function<Element, TileFixture> getter, final IUnit mover, final Speed speed) {
-		List<Element> local = new ArrayList<>(possibilities);
+		final List<Element> local = new ArrayList<>(possibilities);
 		Collections.shuffle(local);
 		int perception = highestPerception(mover) + speed.getPerceptionModifier();
-		List<Element> retval = new ArrayList<>();
-		for (Element item : local) {
-			int dc = getter.apply(item).getDC();
+		final List<Element> retval = new ArrayList<>();
+		for (final Element item : local) {
+			final int dc = getter.apply(item).getDC();
 			if (SingletonRandom.SINGLETON_RANDOM.nextInt(20) + 1 + perception >= dc) {
 				retval.add(item);
 				perception -= 5;

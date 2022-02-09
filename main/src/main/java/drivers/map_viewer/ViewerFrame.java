@@ -90,7 +90,7 @@ public final class ViewerFrame extends SPFrame implements MapGUI {
 		mapModel.addMapChangeListener(mapPanel);
 		mapModel.addSelectionChangeListener(mapPanel);
 
-		DetailPanel detailPane = new DetailPanel(mapModel.getMapDimensions().getVersion(), mapModel,
+		final DetailPanel detailPane = new DetailPanel(mapModel.getMapDimensions().getVersion(), mapModel,
 			tableModel);
 		mapModel.addVersionChangeListener(detailPane);
 		mapModel.addSelectionChangeListener(detailPane);
@@ -114,7 +114,7 @@ public final class ViewerFrame extends SPFrame implements MapGUI {
 	}
 
 	private void acceptDroppedFileImpl(final Path file) {
-		IDriverModel map;
+		final IDriverModel map;
 		try {
 			map = MapReaderAdapter.readMapModel(file, Warning.getDefaultHandler());
 		} catch (final DriverFailedException except) {
@@ -139,7 +139,7 @@ public final class ViewerFrame extends SPFrame implements MapGUI {
 
 	private void alternateAcceptDroppedFile(final Path file) {
 		try {
-			IMutableMapNG mapOrError = MapReaderAdapter.readMap(file,
+			final IMutableMapNG mapOrError = MapReaderAdapter.readMap(file,
 				Warning.getDefaultHandler());
 			SwingUtilities.invokeLater(() -> mapModel.setMap(mapOrError));
 		} catch (final DriverFailedException except) {
@@ -180,35 +180,35 @@ public final class ViewerFrame extends SPFrame implements MapGUI {
 	}
 
 	private void displayAllListener() {
-		for (FixtureMatcher matcher : tableModel) {
+		for (final FixtureMatcher matcher : tableModel) {
 			matcher.setDisplayed(true);
 		}
 		tableModel.fireTableRowsUpdated(0, tableModel.getRowCount());
 	}
 
 	private void displayNoneListener() {
-		for (FixtureMatcher matcher : tableModel) {
+		for (final FixtureMatcher matcher : tableModel) {
 			matcher.setDisplayed(false);
 		}
 		tableModel.fireTableRowsUpdated(0, tableModel.getRowCount());
 	}
 
 	private JComponent createFilterPanel() { // TODO: Extract to class, maybe?
-		JTable table = new JTable(tableModel);
+		final JTable table = new JTable(tableModel);
 		table.setDragEnabled(true);
 		table.setDropMode(DropMode.INSERT_ROWS);
 		table.setTransferHandler(new FixtureFilterTransferHandler());
 		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		TableColumn firstColumn = table.getColumnModel().getColumn(0);
+		final TableColumn firstColumn = table.getColumnModel().getColumn(0);
 		firstColumn.setMinWidth(30);
 		firstColumn.setMaxWidth(50);
 		table.setPreferredScrollableViewportSize(table.getPreferredSize());
 		table.setFillsViewportHeight(true);
 		table.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
-		JButton allButton = new ListenedButton("Display All", ignored -> displayAllListener());
-		JButton noneButton = new ListenedButton("Display None", ignored -> displayNoneListener());
+		final JButton allButton = new ListenedButton("Display All", ignored -> displayAllListener());
+		final JButton noneButton = new ListenedButton("Display None", ignored -> displayNoneListener());
 		Platform.makeButtonsSegmented(allButton, noneButton);
-		JPanel buttonPanel = (Platform.SYSTEM_IS_MAC) ?
+		final JPanel buttonPanel = (Platform.SYSTEM_IS_MAC) ?
 			centeredHorizontalBox(allButton, noneButton) :
 				BorderedPanel.horizontalPanel(allButton, null, noneButton);
 		return BorderedPanel.verticalPanel(new JLabel("Display ..."), new JScrollPane(table),
@@ -232,7 +232,7 @@ public final class ViewerFrame extends SPFrame implements MapGUI {
 		private boolean add = false;
 
 		private void recalculate() {
-			int addend = (add) ? 1 : -1;
+			final int addend = (add) ? 1 : -1;
 			add = !add;
 			mapPanel.setSize(mapPanel.getWidth() + addend, mapPanel.getHeight() + addend);
 		}

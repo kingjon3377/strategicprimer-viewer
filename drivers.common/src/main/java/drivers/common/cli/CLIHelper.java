@@ -70,12 +70,12 @@ public final class CLIHelper implements ICLIHelper {
 	 */
 	@Override
 	public void print(final String... text) {
-		long newlines = Stream.of(text)
+		final long newlines = Stream.of(text)
 			.mapToLong(s -> s.chars().filter(c -> c == '\n' || c == '\r').count()).sum();
 		if (newlines > 0) {
 			intervals.replaceAll((key, lines) -> lines + newlines);
 		}
-		for (String part : text) {
+		for (final String part : text) {
 			try {
 				ostream.write(part);
 			} catch (final IOException except) {
@@ -110,7 +110,7 @@ public final class CLIHelper implements ICLIHelper {
 	@Override
 	public Boolean inputBoolean(final String prompt, final TrinaryPredicate<String> quitResultFactory) {
 		while (true) {
-			String input = Optional.ofNullable(inputString(prompt))
+			final String input = Optional.ofNullable(inputString(prompt))
 				.map(String::toLowerCase).orElse(null);
 			if (input == null || quitResultFactory.test(input) == null) {
 				return null;
@@ -134,7 +134,7 @@ public final class CLIHelper implements ICLIHelper {
 	 */
 	private <Element> void printList(final List<? extends Element> list, final Function<Element, String> func) {
 		int index = 0;
-		for (Element item : list) {
+		for (final Element item : list) {
 			println(String.format("%d: %s", index, func.apply(item)));
 			index++;
 		}
@@ -152,12 +152,12 @@ public final class CLIHelper implements ICLIHelper {
 		}
 		println(description);
 		if (auto && items.size() == 1) {
-			Element first = items.get(0);
+			final Element first = items.get(0);
 			println(String.format("Automatically choosing only item, %s.", func.apply(first)));
 			return Pair.with(0, first);
 		} else {
 			printList(items, func);
-			Integer retval = inputNumber(prompt);
+			final Integer retval = inputNumber(prompt);
 			if (retval == null) {
 				return Pair.with(-2, null);
 			} else if (retval < 0 || retval >= items.size()) {
@@ -199,12 +199,12 @@ public final class CLIHelper implements ICLIHelper {
 		int retval = -1;
 		while (retval < 0) {
 			writePrompt(prompt);
-			String input = readLine();
+			final String input = readLine();
 			if (input == null) {
 				return null;
 			}
 			if (isNumeric(input)) {
-				OptionalInt temp = parseInt(input);
+				final OptionalInt temp = parseInt(input);
 				if (temp.isPresent()) {
 					retval = temp.getAsInt();
 				}
@@ -223,7 +223,7 @@ public final class CLIHelper implements ICLIHelper {
 		BigDecimal retval = zero.subtract(BigDecimal.ONE);
 		while (retval.compareTo(zero) < 0) {
 			writePrompt(prompt);
-			String input = readLine();
+			final String input = readLine();
 			if (input == null) {
 				return null;
 			}
@@ -255,12 +255,12 @@ public final class CLIHelper implements ICLIHelper {
 	                                              final TrinaryPredicate<String> quitResultFactory) {
 		if (seriesState.containsKey(key)) {
 			writePrompt(prompt);
-			boolean retval = seriesState.get(key);
+			final boolean retval = seriesState.get(key);
 			println(retval ? "yes" : "no");
 			return retval;
 		} // else
 		while (true) {
-			String input = Optional.ofNullable(inputString(prompt))
+			final String input = Optional.ofNullable(inputString(prompt))
 				.map(String::toLowerCase).orElse(null);
 			if (input == null || quitResultFactory.test(input) == null) {
 				return null;
@@ -299,7 +299,7 @@ public final class CLIHelper implements ICLIHelper {
 	 */
 	@Override
 	public @Nullable String inputMultilineString(final String prompt) {
-		StringBuilder builder = new StringBuilder();
+		final StringBuilder builder = new StringBuilder();
 		printlnAtInterval("Type . on a line by itself to end input, or , to start over.");
 		while (true) {
 			if (builder.length() == 0) {
@@ -307,11 +307,11 @@ public final class CLIHelper implements ICLIHelper {
 			} else {
 				print("> ");
 			}
-			String line = readLine();
+			final String line = readLine();
 			if (line == null) {
 				return null;
 			} else if (".".equals(line.trim())) {
-				String retval = builder.toString();
+				final String retval = builder.toString();
 				if (retval.endsWith(System.lineSeparator() + System.lineSeparator())) {
 					return retval.trim() + System.lineSeparator() +
 						System.lineSeparator();

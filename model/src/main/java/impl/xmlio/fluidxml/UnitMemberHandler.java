@@ -47,13 +47,13 @@ import javax.xml.stream.XMLStreamException;
 			throws SPFormatException {
 		requireTag(element, parent, "worker");
 		expectAttributes(element, warner, "name", "race", "portrait", "id", "image");
-		Worker retval = setImage(
+		final Worker retval = setImage(
 			new Worker(getAttribute(element, "name"),
 				getAttribute(element, "race", "human"),
 				getOrGenerateID(element, warner, idFactory)),
 			element, warner);
 		retval.setPortrait(getAttribute(element, "portrait", ""));
-		for (XMLEvent event : stream) {
+		for (final XMLEvent event : stream) {
 			if (event instanceof StartElement && isSPStartElement((StartElement) event)) {
 				switch (((StartElement) event).getName().getLocalPart().toLowerCase()) {
 				case "job":
@@ -88,7 +88,7 @@ import javax.xml.stream.XMLStreamException;
 		requireTag(element, parent, "note");
 		expectAttributes(element, warner, "player");
 		final StringBuilder retval = new StringBuilder();
-		for (XMLEvent event : stream) {
+		for (final XMLEvent event : stream) {
 			if (event instanceof StartElement && isSPStartElement((StartElement) event)) {
 				throw new UnwantedChildException(element.getName(), (StartElement) event);
 			} else if (event instanceof EndElement &&
@@ -106,9 +106,9 @@ import javax.xml.stream.XMLStreamException;
 			throws SPFormatException {
 		requireTag(element, parent, "job");
 		expectAttributes(element, warner, "name", "level");
-		IMutableJob retval = new Job(getAttribute(element, "name"),
+		final IMutableJob retval = new Job(getAttribute(element, "name"),
 			getIntegerAttribute(element, "level"));
-		for (XMLEvent event : stream) {
+		for (final XMLEvent event : stream) {
 			if (event instanceof StartElement && isSPStartElement((StartElement) event)) {
 				if ("skill".equalsIgnoreCase(
 						((StartElement) event).getName().getLocalPart())) {
@@ -157,10 +157,10 @@ import javax.xml.stream.XMLStreamException;
 
 	public static void writeWorker(final XMLStreamWriter ostream, final IWorker obj, final int indentation)
 			throws MalformedXMLException {
-		WorkerStats stats = obj.getStats();
-		List<IJob> jobs = StreamSupport.stream(obj.spliterator(), true)
+		final WorkerStats stats = obj.getStats();
+		final List<IJob> jobs = StreamSupport.stream(obj.spliterator(), true)
 			.filter(((Predicate<IJob>) IJob::isEmpty).negate()).collect(Collectors.toList());
-		boolean hasJobs = !jobs.isEmpty();
+		final boolean hasJobs = !jobs.isEmpty();
 		writeTag(ostream, "worker", indentation, !hasJobs && stats == null);
 		writeAttributes(ostream, Pair.with("name", obj.getName()));
 		if (!"human".equals(obj.getRace())) {
@@ -172,10 +172,10 @@ import javax.xml.stream.XMLStreamException;
 		if (stats != null) {
 			writeStats(ostream, stats, indentation + 1);
 		}
-		for (IJob job : jobs) {
+		for (final IJob job : jobs) {
 			writeJob(ostream, job, indentation + 1);
 		}
-		for (Integer player : obj.getNotesPlayers()) {
+		for (final Integer player : obj.getNotesPlayers()) {
 			writeNote(ostream, player, obj.getNote(player), indentation +1);
 		}
 		if (hasJobs || stats != null || obj.getNotesPlayers().iterator().hasNext()) {
@@ -212,14 +212,14 @@ import javax.xml.stream.XMLStreamException;
 
 	public static void writeJob(final XMLStreamWriter ostream, final IJob obj, final int indentation)
 			throws MalformedXMLException {
-		boolean hasSkills = !obj.isEmpty();
+		final boolean hasSkills = !obj.isEmpty();
 		if (obj.getLevel() <= 0 && !hasSkills) {
 			return;
 		}
 		writeTag(ostream, "job", indentation, !hasSkills);
 		writeAttributes(ostream, Pair.with("name", obj.getName()),
 			Pair.with("level", obj.getLevel()));
-		for (ISkill skill : obj) {
+		for (final ISkill skill : obj) {
 			writeSkill(ostream, skill, indentation + 1);
 		}
 		if (hasSkills) {
@@ -246,8 +246,8 @@ import javax.xml.stream.XMLStreamException;
 	                                        final Iterable<XMLEvent> stream, final IPlayerCollection players, final Warning warner,
 	                                        final IDRegistrar idFactory) throws SPFormatException {
 		requireTag(element, parent, "animal");
-		String tag = element.getName().getLocalPart().toLowerCase();
-		String kind;
+		final String tag = element.getName().getLocalPart().toLowerCase();
+		final String kind;
 		if ("animal".equals(tag)) {
 			expectAttributes(element, warner, "traces", "id", "count", "kind", "talking",
 				"status", "wild", "born", "image");
@@ -262,15 +262,15 @@ import javax.xml.stream.XMLStreamException;
 		// traces="" as traces="true". If compatibility with existing maps
 		// ever becomes unnecessary, I will change the default-value here to
 		// simply `false`.
-		boolean traces = getBooleanAttribute(element, "traces",
+		final boolean traces = getBooleanAttribute(element, "traces",
 			hasAttribute(element, "traces") && getAttribute(element, "traces", "").isEmpty(),
 			warner);
-		boolean talking = getBooleanAttribute(element, "talking", false, warner);
-		String status = getAttribute(element, "status", "wild");
-		int born = getIntegerAttribute(element, "born", -1, warner);
+		final boolean talking = getBooleanAttribute(element, "talking", false, warner);
+		final String status = getAttribute(element, "status", "wild");
+		final int born = getIntegerAttribute(element, "born", -1, warner);
 		// TODO: We'd like the default to be 1 inside a unit and -1 outside
-		int count = getIntegerAttribute(element, "count", 1, warner);
-		int id;
+		final int count = getIntegerAttribute(element, "count", 1, warner);
+		final int id;
 		if (traces) {
 			if (hasAttribute(element, "id")) {
 				warner.handle(UnsupportedPropertyException.inContext(element, "id",

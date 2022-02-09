@@ -51,7 +51,7 @@ import lovelace.util.MalformedXMLException;
 	 */
 	private String parseKind(final StartElement element) throws SPFormatException {
 		try {
-			String retval = getParamWithDeprecatedForm(element, "kind", "type");
+			final String retval = getParamWithDeprecatedForm(element, "kind", "type");
 			if (retval.isEmpty()) {
 				warner.handle(new MissingPropertyException(element, "kind"));
 			}
@@ -68,9 +68,9 @@ import lovelace.util.MalformedXMLException;
 	private void parseOrders(final StartElement element, final IMutableUnit unit, final Iterable<XMLEvent> stream)
 			throws SPFormatException {
 		expectAttributes(element, "turn");
-		int turn = getIntegerParameter(element, "turn", -1);
-		StringBuilder builder = new StringBuilder();
-		for (XMLEvent event : stream) {
+		final int turn = getIntegerParameter(element, "turn", -1);
+		final StringBuilder builder = new StringBuilder();
+		for (final XMLEvent event : stream) {
 			if (event instanceof Characters) {
 				builder.append(((Characters) event).getData());
 			} else if (event instanceof StartElement) {
@@ -88,9 +88,9 @@ import lovelace.util.MalformedXMLException;
 	private void parseResults(final StartElement element, final IMutableUnit unit, final Iterable<XMLEvent> stream)
 			throws SPFormatException {
 		expectAttributes(element, "turn");
-		int turn = getIntegerParameter(element, "turn", -1);
-		StringBuilder builder = new StringBuilder();
-		for (XMLEvent event : stream) {
+		final int turn = getIntegerParameter(element, "turn", -1);
+		final StringBuilder builder = new StringBuilder();
+		for (final XMLEvent event : stream) {
 			if (event instanceof Characters) {
 				builder.append(((Characters) event).getData());
 			} else if (event instanceof StartElement) {
@@ -104,10 +104,10 @@ import lovelace.util.MalformedXMLException;
 
 	private UnitMember parseChild(final StartElement element, final QName parent, final Iterable<XMLEvent> stream)
 			throws SPFormatException, MalformedXMLException {
-		String name = element.getName().getLocalPart().toLowerCase();
-		for (YAReader<?, ?> reader : readers) {
+		final String name = element.getName().getLocalPart().toLowerCase();
+		for (final YAReader<?, ?> reader : readers) {
 			if (reader.isSupportedTag(name)) {
-				Object retval = reader.read(element, parent, stream);
+				final Object retval = reader.read(element, parent, stream);
 				if (retval instanceof UnitMember) {
 					return (UnitMember) retval;
 				} else {
@@ -125,14 +125,14 @@ import lovelace.util.MalformedXMLException;
 		expectAttributes(element, "name", "owner", "image", "portrait", "kind", "id", "type");
 		requireNonEmptyParameter(element, "name", false);
 		requireNonEmptyParameter(element, "owner", false);
-		Unit retval = new Unit(
+		final Unit retval = new Unit(
 			players.getPlayer(getIntegerParameter(element, "owner", -1)),
 			parseKind(element), getParameter(element, "name", ""),
 			getOrGenerateID(element));
 		retval.setImage(getParameter(element, "image", ""));
 		retval.setPortrait(getParameter(element, "portrait", ""));
-		StringBuilder orders = new StringBuilder();
-		for (XMLEvent event : stream) {
+		final StringBuilder orders = new StringBuilder();
+		for (final XMLEvent event : stream) {
 			if (event instanceof StartElement &&
 					isSupportedNamespace(((StartElement) event).getName())) {
 				if ("orders".equalsIgnoreCase(((StartElement) event)
@@ -150,7 +150,7 @@ import lovelace.util.MalformedXMLException;
 			} else if (isMatchingEnd(element.getName(), event)) {
 				break;
 			}
-			String tempOrders = orders.toString().trim();
+			final String tempOrders = orders.toString().trim();
 			if (!tempOrders.isEmpty()) {
 				retval.setOrders(-1, tempOrders);
 			}
@@ -179,7 +179,7 @@ import lovelace.util.MalformedXMLException;
 
 	private void writeChild(final ThrowingConsumer<String, IOException> ostream, final UnitMember child, final Integer indent)
 			throws IOException {
-		for (YAReader<?, ?> reader : readers) {
+		for (final YAReader<?, ?> reader : readers) {
 			if (reader.canWrite(child)) {
 				reader.writeRaw(ostream, child, indent);
 				return;
@@ -204,13 +204,13 @@ import lovelace.util.MalformedXMLException;
 			closeLeafTag(ostream);
 		} else {
 			finishParentTag(ostream);
-			for (Map.Entry<Integer, String> entry : obj.getAllOrders().entrySet()) {
+			for (final Map.Entry<Integer, String> entry : obj.getAllOrders().entrySet()) {
 				writeOrders(ostream, "orders", entry.getKey(), entry.getValue(), indent + 1);
 			}
-			for (Map.Entry<Integer, String> entry : obj.getAllResults().entrySet()) {
+			for (final Map.Entry<Integer, String> entry : obj.getAllResults().entrySet()) {
 				writeOrders(ostream, "results", entry.getKey(), entry.getValue(), indent + 1);
 			}
-			for (UnitMember member : obj) {
+			for (final UnitMember member : obj) {
 				writeChild(ostream, member, indent + 1);
 			}
 			closeTag(ostream, indent, "unit");

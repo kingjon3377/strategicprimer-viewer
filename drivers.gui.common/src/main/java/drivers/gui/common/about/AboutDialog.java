@@ -27,17 +27,17 @@ public class AboutDialog extends SPDialog {
 	public AboutDialog(@Nullable final Component parentComponent, @Nullable final String app) throws IOException {
 		super(parentComponent instanceof Frame ? (Frame) parentComponent : null, "About");
 		setLayout(new BorderLayout()); // TODO: Use a BorderedPanel for contentPane
-		Iterable<String> resource = FileContentsReader.readFileContents(AboutDialog.class,
+		final Iterable<String> resource = FileContentsReader.readFileContents(AboutDialog.class,
 			"about.html");
-		StringBuilder sb = new StringBuilder();
+		final StringBuilder sb = new StringBuilder();
 		resource.forEach(sb::append);
-		String raw = sb.toString();
-		String html = raw.replaceAll("App Name Here",
+		final String raw = sb.toString();
+		final String html = raw.replaceAll("App Name Here",
 			(app == null || app.isEmpty()) ? "Strategic Primer Assistive Programs" : app);
-		JEditorPane pane = new JEditorPane("text/html", html);
+		final JEditorPane pane = new JEditorPane("text/html", html);
 		pane.setCaretPosition(0); // scroll to the top
 		pane.setEditable(false);
-		JScrollPane scrollPane;
+		final JScrollPane scrollPane;
 		if (Platform.SYSTEM_IS_MAC) {
 			scrollPane = new JScrollPane(pane, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS,
 				ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);

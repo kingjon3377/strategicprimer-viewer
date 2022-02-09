@@ -19,10 +19,12 @@ public final class PairComparator<First, Second> implements Comparator<Pair<Firs
 	/**
 	 * Given comparators of the pair's types, produce a comparator function
 	 * that compares pairs using the first and then the second element.
+	 *
+	 * TODO: Isn't this equivalent to some nearly-trivial logic using Comparator helper methods?
 	 */
 	@Override
 	public int compare(final Pair<First, Second> one, final Pair<First, Second> two) {
-		int retval = first.compare(one.getValue0(), two.getValue0());
+		final int retval = first.compare(one.getValue0(), two.getValue0());
 		if (retval == 0) {
 			return second.compare(one.getValue1(), two.getValue1());
 		} else {

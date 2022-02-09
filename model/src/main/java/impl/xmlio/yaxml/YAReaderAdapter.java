@@ -101,7 +101,7 @@ import java.util.Collections;
 			throws SPFormatException, MalformedXMLException {
 		// Since all implementations of necessity check the tag's namespace, we leave that
 		// to them.
-		String tag = element.getName().getLocalPart().toLowerCase();
+		final String tag = element.getName().getLocalPart().toLowerCase();
 		// Handle rivers specially.
 		if ("river".equals(tag) || "lake".equals(tag)) {
 			return mapReader.parseRiver(element, parent);
@@ -113,7 +113,7 @@ import java.util.Collections;
 		if (readerCache.containsKey(tag)) {
 			return readerCache.get(tag).read(element, parent, stream);
 		}
-		for (YAReader<?, ?> reader : readers) {
+		for (final YAReader<?, ?> reader : readers) {
 			if (reader.isSupportedTag(tag)) {
 				readerCache.put(tag, reader);
 				return reader.read(element, parent, stream);
@@ -131,7 +131,7 @@ import java.util.Collections;
 	 */
 	private void writeAllRivers(final ThrowingConsumer<String, IOException> ostream, final Collection<River> rivers, final int indent)
 			throws IOException {
-		for (River river : rivers.stream().sorted().collect(Collectors.toList())) {
+		for (final River river : rivers.stream().sorted().collect(Collectors.toList())) {
 			mapReader.writeRiver(ostream, river, indent);
 		}
 	}
@@ -147,7 +147,7 @@ import java.util.Collections;
 	 * @param indent The current indentation level
 	 */
 	public void write(final ThrowingConsumer<String, IOException> ostream, final Object obj, final int indent) throws IOException {
-		Class<?> cls = obj.getClass();
+		final Class<?> cls = obj.getClass();
 		if (obj instanceof River) {
 			mapReader.writeRiver(ostream, (River) obj, indent);
 		} else if (obj instanceof ProxyFor<?>) {
@@ -169,7 +169,7 @@ import java.util.Collections;
 		} else if (writerCache.containsKey(cls)) {
 			writerCache.get(cls).writeRaw(ostream, obj, indent);
 		} else {
-			for (YAReader<?, ?> reader : readers) {
+			for (final YAReader<?, ?> reader : readers) {
 				if (reader.canWrite(obj)) {
 					writerCache.put(cls, reader);
 					reader.writeRaw(ostream, obj, indent);

@@ -32,13 +32,13 @@ import lovelace.util.ThrowingConsumer;
 			throws SPFormatException {
 		requireTag(element, parent, "adventure");
 		expectAttributes(element, "owner", "brief", "full", "image", "id");
-		Player player;
+		final Player player;
 		if (hasParameter(element, "owner")) {
 			player = players.getPlayer(getIntegerParameter(element, "owner"));
 		} else {
 			player = players.getIndependent();
 		}
-		AdventureFixture retval = new AdventureFixture(player,
+		final AdventureFixture retval = new AdventureFixture(player,
 			getParameter(element, "brief", ""), getParameter(element, "full", ""),
 			getOrGenerateID(element));
 		retval.setImage(getParameter(element, "image", ""));

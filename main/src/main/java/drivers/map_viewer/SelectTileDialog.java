@@ -42,9 +42,9 @@ import common.map.Point;
 		super(parentFrame, "Go To ...");
 		this.model = model;
 
-		JPanel contentPanel = new BoxPanel(BoxAxis.PageAxis);
+		final JPanel contentPanel = new BoxPanel(BoxAxis.PageAxis);
 		contentPanel.add(mainLabel);
-		BoxPanel boxPanelObj = new BoxPanel(BoxAxis.LineAxis);
+		final BoxPanel boxPanelObj = new BoxPanel(BoxAxis.LineAxis);
 		boxPanelObj.add(new JLabel("Row: "));
 		boxPanelObj.add(rowField);
 		rowField.setActionCommand("OK");
@@ -65,11 +65,11 @@ import common.map.Point;
 		errorLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 		errorLabel.setAlignmentY(Component.TOP_ALIGNMENT);
 
-		BoxPanel buttonPanel = new BoxPanel(BoxAxis.LineAxis);
+		final BoxPanel buttonPanel = new BoxPanel(BoxAxis.LineAxis);
 		buttonPanel.addGlue();
-		JButton okButton = new ListenedButton("OK", this::handleOK);
+		final JButton okButton = new ListenedButton("OK", this::handleOK);
 
-		JButton cancelButton = new ListenedButton("Cancel", ignored -> cancelHandler());
+		final JButton cancelButton = new ListenedButton("Cancel", ignored -> cancelHandler());
 
 		Platform.makeButtonsSegmented(okButton, cancelButton);
 		buttonPanel.add(okButton);
@@ -98,7 +98,7 @@ import common.map.Point;
 
 	private NumberState checkNumber(final String text, final int bound) {
 		try {
-			int number = NUM_PARSER.parse(text).intValue();
+			final int number = NUM_PARSER.parse(text).intValue();
 			if (number < 0) {
 				return NumberState.Negative;
 			} else if (number > bound) {
@@ -129,11 +129,11 @@ import common.map.Point;
 	}
 
 	private void handleOK(final ActionEvent ignored) { // Param needed because added to two JTextFields
-		String rowText = rowField.getText();
-		String columnText = columnField.getText();
+		final String rowText = rowField.getText();
+		final String columnText = columnField.getText();
 		errorLabel.setText("");
-		MapDimensions dimensions = model.getMapDimensions();
-		NumberState columnState = checkNumber(columnText, dimensions.getColumns() - 1);
+		final MapDimensions dimensions = model.getMapDimensions();
+		final NumberState columnState = checkNumber(columnText, dimensions.getColumns() - 1);
 		if (NumberState.Valid != columnState) {
 			errorLabel.setText(errorLabel.getText() + "Column" +
 				getErrorMessage(columnState, dimensions.getColumns()));
@@ -141,7 +141,7 @@ import common.map.Point;
 			columnField.selectAll();
 		}
 
-		NumberState rowState = checkNumber(rowText, dimensions.getRows() - 1);
+		final NumberState rowState = checkNumber(rowText, dimensions.getRows() - 1);
 		if (NumberState.Valid != rowState) {
 			errorLabel.setText(errorLabel.getText() + "Row " +
 				getErrorMessage(rowState, dimensions.getRows()));

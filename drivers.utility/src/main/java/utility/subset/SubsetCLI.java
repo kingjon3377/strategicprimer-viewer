@@ -41,8 +41,8 @@ public class SubsetCLI implements ReadOnlyDriver {
 
 	@Override
 	public void startDriver() {
-		for (IMapNG map : model.getSubordinateMaps()) {
-			String filename = Optional.ofNullable(map.getFilename()).map(Path::toString)
+		for (final IMapNG map : model.getSubordinateMaps()) {
+			final String filename = Optional.ofNullable(map.getFilename()).map(Path::toString)
 				.orElse("map without a filename");
 			cli.print(filename, "\t...\t\t");
 			if (model.getMap().isSubset(map, report(filename))) {

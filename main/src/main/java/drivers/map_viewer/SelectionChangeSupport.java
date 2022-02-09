@@ -41,7 +41,7 @@ public class SelectionChangeSupport implements SelectionChangeSource {
 	 * accidental infinite recursion.
 	 */
 	public void fireChanges(@Nullable final Point oldSelection, final Point newSelection) {
-		for (SelectionChangeListener listener : listeners) {
+		for (final SelectionChangeListener listener : listeners) {
 			listener.selectedPointChanged(oldSelection, newSelection);
 		}
 	}
@@ -50,7 +50,7 @@ public class SelectionChangeSupport implements SelectionChangeSource {
 	 * Tell all listeners about a change to the cursor location.
 	 */
 	public void fireCursorChanges(@Nullable final Point oldCursor, final Point newCursor) {
-		for (SelectionChangeListener listener : listeners) {
+		for (final SelectionChangeListener listener : listeners) {
 			listener.cursorPointChanged(oldCursor, newCursor);
 		}
 	}
@@ -59,7 +59,7 @@ public class SelectionChangeSupport implements SelectionChangeSource {
 	 * Tell all listeners about a change to the interaction point.
 	 */
 	public void fireInteraction() {
-		for (SelectionChangeListener listener : listeners) {
+		for (final SelectionChangeListener listener : listeners) {
 			listener.interactionPointChanged();
 		}
 	}

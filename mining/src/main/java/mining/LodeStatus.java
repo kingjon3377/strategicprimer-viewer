@@ -178,7 +178,7 @@ enum LodeStatus {
 	 */
 	@Nullable
 	public LodeStatus adjacent(final DoubleSupplier rng) {
-		double rand = rng.getAsDouble();
+		final double rand = rng.getAsDouble();
 		if (rand < lowerProbability) {
 			return getLower();
 		} else if (rand < notHigherProbability) {

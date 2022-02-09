@@ -17,10 +17,10 @@ import java.util.stream.IntStream;
 public final class StatModifierTest {
 	@Test
 	public void testModifiers() {
-		List<Integer> stats = IntStream.range(0, 20).boxed().collect(Collectors.toList());
-		List<Integer> modifiers = Arrays.asList(-5, -4, -3, -2, -1, 0, 1, 2, 3, 4);
-		Iterator<Integer> statsIterator = stats.iterator();
-		for (Integer modifier : modifiers) {
+		final List<Integer> stats = IntStream.range(0, 20).boxed().collect(Collectors.toList());
+		final List<Integer> modifiers = Arrays.asList(-5, -4, -3, -2, -1, 0, 1, 2, 3, 4);
+		final Iterator<Integer> statsIterator = stats.iterator();
+		for (final Integer modifier : modifiers) {
 			assertTrue(statsIterator.hasNext());
 			final int statOne = statsIterator.next();
 			assertEquals(modifier.intValue(), WorkerStats.getModifier(statOne),

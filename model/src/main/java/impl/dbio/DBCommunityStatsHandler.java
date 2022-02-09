@@ -76,15 +76,15 @@ final class DBCommunityStatsHandler extends AbstractDatabaseWriter<CommunityStat
 	@Override
 	public void write(final DB db, final CommunityStats obj, final ITownFixture context) {
 		db.transaction(sql -> {
-				for (Map.Entry<String, Integer> entry :
+				for (final Map.Entry<String, Integer> entry :
 						obj.getHighestSkillLevels().entrySet()) {
 					sql.update(INSERT_EXPERTISE, context.getId(), entry.getKey(),
 						entry.getValue()).execute();
 				}
-				for (Integer field : obj.getWorkedFields()) {
+				for (final Integer field : obj.getWorkedFields()) {
 					sql.update(INSERT_FIELDS, context.getId(), field).execute();
 				}
-				for (IResourcePile resource : obj.getYearlyProduction()) {
+				for (final IResourcePile resource : obj.getYearlyProduction()) {
 					sql.update(INSERT_PRODUCTION, context.getId(), resource.getId(),
 							resource.getKind(), resource.getContents(),
 							resource.getQuantity().getNumber().toString(),
@@ -92,7 +92,7 @@ final class DBCommunityStatsHandler extends AbstractDatabaseWriter<CommunityStat
 							resource.getCreated())
 						.execute();
 				}
-				for (IResourcePile resource : obj.getYearlyConsumption()) {
+				for (final IResourcePile resource : obj.getYearlyConsumption()) {
 					sql.update(INSERT_CONSUMPTION, context.getId(), resource.getId(),
 							resource.getKind(), resource.getContents(),
 							resource.getQuantity().getNumber().toString(),
@@ -109,11 +109,11 @@ final class DBCommunityStatsHandler extends AbstractDatabaseWriter<CommunityStat
 
 	private TryBiConsumer<Map<String, Object>, Warning, Exception> readTownExpertise(final IMutableMapNG map) {
 		return (dbRow, warner) -> {
-			int townId = (Integer) dbRow.get("town");
-			ITownFixture town = (ITownFixture) findById(map, townId, warner);
-			CommunityStats population = town.getPopulation();
-			String skill = (String) dbRow.get("skill");
-			int level = (Integer) dbRow.get("level");
+			final int townId = (Integer) dbRow.get("town");
+			final ITownFixture town = (ITownFixture) findById(map, townId, warner);
+			final CommunityStats population = town.getPopulation();
+			final String skill = (String) dbRow.get("skill");
+			final int level = (Integer) dbRow.get("level");
 			assert population != null;
 			population.setSkillLevel(skill, level);
 		};
@@ -121,10 +121,10 @@ final class DBCommunityStatsHandler extends AbstractDatabaseWriter<CommunityStat
 
 	private TryBiConsumer<Map<String, Object>, Warning, Exception> readWorkedResource(final IMutableMapNG map) {
 		return (dbRow, warner) -> {
-			int townId = (Integer) dbRow.get("town");
-			ITownFixture town = (ITownFixture) findById(map, townId, warner);
-			CommunityStats population = town.getPopulation();
-			int resource = (Integer) dbRow.get("resource");
+			final int townId = (Integer) dbRow.get("town");
+			final ITownFixture town = (ITownFixture) findById(map, townId, warner);
+			final CommunityStats population = town.getPopulation();
+			final int resource = (Integer) dbRow.get("resource");
 			assert population != null;
 			population.addWorkedField(resource);
 		};
@@ -133,22 +133,22 @@ final class DBCommunityStatsHandler extends AbstractDatabaseWriter<CommunityStat
 	private TryBiConsumer<Map<String, Object>, Warning, Exception>
 			readProducedResource(final IMutableMapNG map) {
 		return (dbRow, warner) -> {
-			int townId = (Integer) dbRow.get("town");
-			ITownFixture town = (ITownFixture) findById(map, townId, warner);
-			CommunityStats population = town.getPopulation();
-			int id = (Integer) dbRow.get("id");
-			String kind = (String) dbRow.get("kind");
-			String contents = (String) dbRow.get("contents");
-			String qtyString = (String) dbRow.get("quantity");
-			String units = (String) dbRow.get("units");
-			Integer created = (Integer) dbRow.get("created");
+			final int townId = (Integer) dbRow.get("town");
+			final ITownFixture town = (ITownFixture) findById(map, townId, warner);
+			final CommunityStats population = town.getPopulation();
+			final int id = (Integer) dbRow.get("id");
+			final String kind = (String) dbRow.get("kind");
+			final String contents = (String) dbRow.get("contents");
+			final String qtyString = (String) dbRow.get("quantity");
+			final String units = (String) dbRow.get("units");
+			final Integer created = (Integer) dbRow.get("created");
 			Number quantity;
 			try {
 				quantity = Integer.parseInt(qtyString);
 			} catch (final NumberFormatException except) {
 				quantity = new BigDecimal(qtyString);
 			}
-			IMutableResourcePile pile =
+			final IMutableResourcePile pile =
 				new ResourcePileImpl(id, kind, contents, new Quantity(quantity, units));
 			if (created != null) {
 				pile.setCreated(created);
@@ -161,22 +161,23 @@ final class DBCommunityStatsHandler extends AbstractDatabaseWriter<CommunityStat
 	private TryBiConsumer<Map<String, Object>, Warning, Exception>
 			readConsumedResource(final IMutableMapNG map) {
 		return (dbRow, warner) -> {
-			int townId = (Integer) dbRow.get("town");
-			ITownFixture town = (ITownFixture) findById(map, townId, warner);
-			CommunityStats population = town.getPopulation();
-			int id = (Integer) dbRow.get("id");
-			String kind = (String) dbRow.get("kind");
-			String contents = (String) dbRow.get("contents");
-			String qtyString = (String) dbRow.get("quantity");
-			String units = (String) dbRow.get("units");
-			Integer created = (Integer) dbRow.get("created");
+			final int townId = (Integer) dbRow.get("town");
+			final ITownFixture town = (ITownFixture) findById(map, townId, warner);
+			final CommunityStats population = town.getPopulation();
+			final int id = (Integer) dbRow.get("id");
+			final String kind = (String) dbRow.get("kind");
+			final String contents = (String) dbRow.get("contents");
+			final String qtyString = (String) dbRow.get("quantity");
+			final String units = (String) dbRow.get("units");
+			final Integer created = (Integer) dbRow.get("created");
+			// TODO: Extract method so this (and the identical pattern elsewhere) can be final
 			Number quantity;
 			try {
 				quantity = Integer.parseInt(qtyString);
 			} catch (final NumberFormatException except) {
 				quantity = new BigDecimal(qtyString);
 			}
-			IMutableResourcePile pile =
+			final IMutableResourcePile pile =
 				new ResourcePileImpl(id, kind, contents, new Quantity(quantity, units));
 			if (created != null) {
 				pile.setCreated(created);

@@ -60,7 +60,7 @@ public class TextReportGenerator extends AbstractReportGenerator<TextFixture> {
 	@Override
 	public void produce(final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
 	                    final IMapNG map, final Consumer<String> ostream) {
-		List<Triplet<Integer, Point, TextFixture>> items =
+		final List<Triplet<Integer, Point, TextFixture>> items =
 			fixtures.entrySet().stream()
 				.filter(e -> e.getValue().getValue1() instanceof TextFixture)
 				.map(e -> Triplet.with(e.getKey(), e.getValue().getValue0(),
@@ -74,10 +74,10 @@ public class TextReportGenerator extends AbstractReportGenerator<TextFixture> {
 		if (!items.isEmpty()) {
 			println(ostream, "<h4>Miscellaneous Notes</h4>");
 			println(ostream, "<ul>");
-			for (Triplet<Integer, Point, TextFixture> triplet : items) {
-				int key = triplet.getValue0();
-				Point location = triplet.getValue1();
-				TextFixture item = triplet.getValue2();
+			for (final Triplet<Integer, Point, TextFixture> triplet : items) {
+				final int key = triplet.getValue0();
+				final Point location = triplet.getValue1();
+				final TextFixture item = triplet.getValue2();
 				fixtures.remove(key);
 				ostream.accept("<li>");
 				produceSingle(fixtures, map, ostream, item, location);

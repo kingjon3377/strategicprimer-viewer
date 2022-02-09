@@ -54,8 +54,8 @@ import java.util.Arrays;
 	}
 
 	private void printWorkers(final IUnit unit) {
-		for (UnitMember member : unit) {
-			IWorker worker;
+		for (final UnitMember member : unit) {
+			final IWorker worker;
 			if (member instanceof IWorker) {
 				worker = (IWorker) member;
 			} else {
@@ -66,7 +66,7 @@ import java.util.Arrays;
 				cli.print(" (", worker.getRace(), ")");
 			}
 
-			List<IJob> jobs = StreamSupport.stream(worker.spliterator(), false)
+			final List<IJob> jobs = StreamSupport.stream(worker.spliterator(), false)
 				.filter(j -> j.getLevel() > 0).collect(Collectors.toList());
 			if (!jobs.isEmpty()) {
 				cli.print(" (",
@@ -74,9 +74,9 @@ import java.util.Arrays;
 						.collect(Collectors.joining(", ")), ")");
 			}
 
-			WorkerStats stats = worker.getStats();
+			final WorkerStats stats = worker.getStats();
 			if (stats != null) {
-				List<String> statsArray = IntStream.of(stats.array())
+				final List<String> statsArray = IntStream.of(stats.array())
 					.mapToObj(WorkerStats::getModifierString)
 					.collect(Collectors.toList());
 				cli.print(" [");
@@ -95,10 +95,10 @@ import java.util.Arrays;
 
 	@Override
 	public void startDriver() {
-		Player player = cli.chooseFromList(new ArrayList<>(model.getPlayerChoices()),
+		final Player player = cli.chooseFromList(new ArrayList<>(model.getPlayerChoices()),
 			"Players in the map:", "No players", "Player owning the unit:", false).getValue1();
 		if (player != null) {
-			IUnit unit = cli.chooseFromList(model.getUnits(player),
+			final IUnit unit = cli.chooseFromList(model.getUnits(player),
 				"Units of that player:", "No units", "Unit to print:", false).getValue1();
 			if (unit != null) {
 				printWorkers(unit);

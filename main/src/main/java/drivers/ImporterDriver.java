@@ -112,7 +112,7 @@ import org.jetbrains.annotations.Nullable;
 
 	@Nullable
 	private String findAdjacentForest(final IMapNG map, final Point location) {
-		List<Forest> forests =
+		final List<Forest> forests =
 						new SurroundingPointIterable(location, map.getDimensions(), 1).stream()
 				.flatMap(l -> map.getFixtures(l).stream())
 				.filter(Forest.class::isInstance).map(Forest.class::cast)
@@ -123,21 +123,21 @@ import org.jetbrains.annotations.Nullable;
 
 	@Override
 	public void startDriver(final String... args) throws DriverFailedException {
-		int size;
+		final int size;
 		try {
 			size = Integer.parseInt(options.getArgument("--size"));
 		} catch (final NumberFormatException except) {
 			throw new DriverFailedException(except, "--size argument must be numeric");
 		}
 		LOGGER.fine("--size parameter is " + size);
-		for (String arg : args) {
-			ResourceInputStream res;
+		for (final String arg : args) {
+			final ResourceInputStream res;
 			try {
 				res = new ResourceInputStream(arg, ImporterDriver.class);
 			} catch (final FileNotFoundException except) {
 				throw new DriverFailedException(except, "Image file not found");
 			}
-			BufferedImage image;
+			final BufferedImage image;
 			try {
 				image = ImageIO.read(res);
 			} catch (final IOException except) {
@@ -156,23 +156,23 @@ import org.jetbrains.annotations.Nullable;
 				int baseColumn = 0;
 				int mapColumn = 0;
 				while (baseColumn < width) {
-					EnumCounter<Integer> counter = new EnumCounter<>();
-					for (int row : customRange(baseRow, size, height)) {
-						for (int column : customRange(baseColumn, size, width)) {
+					final EnumCounter<Integer> counter = new EnumCounter<>();
+					for (final int row : customRange(baseRow, size, height)) {
+						for (final int column : customRange(baseColumn, size, width)) {
 							counter.countMany(image.getRGB(row, column));
 						}
 					}
 
-					Pair<Integer, Integer> dominant = counter.streamAllCounts()
+					final Pair<Integer, Integer> dominant = counter.streamAllCounts()
 									.max(Comparator.comparing(Pair::getValue1)).orElse(null);
 					if (dominant != null) {
 						if (mapping.containsKey(dominant.getValue0())) {
-							HasName type = mapping.get(dominant.getValue0());
+							final HasName type = mapping.get(dominant.getValue0());
 							LOGGER.fine(String.format("Type for (%d, %d) deduced to be %s",
 									mapRow, mapColumn, type));
 							retval.put(new Point(mapRow, mapColumn), type);
 						} else {
-							HasName type = askFor(dominant.getValue0());
+							final HasName type = askFor(dominant.getValue0());
 							if (type != null) {
 								mapping.put(dominant.getValue0(), type);
 								retval.put(new Point(mapRow, mapColumn), type);
@@ -185,18 +185,18 @@ import org.jetbrains.annotations.Nullable;
 				baseRow += size;
 				mapRow++;
 			}
-			IMutableMapNG finalRetval = new SPMapNG(new MapDimensionsImpl(
+			final IMutableMapNG finalRetval = new SPMapNG(new MapDimensionsImpl(
 					retval.keySet().stream().mapToInt(Point::getRow).max().orElse(0) + 1,
 					retval.keySet().stream().mapToInt(Point::getColumn).max().orElse(0) + 1, 2),
 					new PlayerCollection(), -1);
-			for (Map.Entry<Point, HasName> entry : retval.entrySet()) {
-				Point point = entry.getKey();
-				HasName type = entry.getValue();
+			for (final Map.Entry<Point, HasName> entry : retval.entrySet()) {
+				final Point point = entry.getKey();
+				final HasName type = entry.getValue();
 				LOGGER.finer(String.format("Setting %s to %s", point, type));
 				if (type instanceof TileType) {
 					finalRetval.setBaseTerrain(point, (TileType) type);
 				} else {
-					ImportableTerrain terr = (ImportableTerrain) type;
+					final ImportableTerrain terr = (ImportableTerrain) type;
 					switch (terr) {
 						case Mountain:
 							finalRetval.setBaseTerrain(point, TileType.Plains);
@@ -204,13 +204,13 @@ import org.jetbrains.annotations.Nullable;
 							break;
 						case TemperateForest:
 							finalRetval.setBaseTerrain(point, TileType.Plains);
-							String foundTForest = findAdjacentForest(finalRetval, point);
+							final String foundTForest = findAdjacentForest(finalRetval, point);
 							if (foundTForest != null) {
 								finalRetval.addFixture(point, new Forest(foundTForest, false,
 										idf.createID()));
 								continue;
 							}
-							String inputTForest = cli.inputString("Kind of tree for a temperate forest: ");
+							final String inputTForest = cli.inputString("Kind of tree for a temperate forest: ");
 							if (inputTForest == null) {
 								return;
 							} else {
@@ -220,13 +220,13 @@ import org.jetbrains.annotations.Nullable;
 							break;
 						case BorealForest:
 							finalRetval.setBaseTerrain(point, TileType.Steppe);
-							String foundBForest = findAdjacentForest(finalRetval, point);
+							final String foundBForest = findAdjacentForest(finalRetval, point);
 							if (foundBForest != null) {
 								finalRetval.addFixture(point, new Forest(foundBForest, false,
 										idf.createID()));
 								continue;
 							}
-							String inputBForest = cli.inputString("Kind of tree for a boreal forest: ");
+							final String inputBForest = cli.inputString("Kind of tree for a boreal forest: ");
 							if (inputBForest == null) {
 								return;
 							} else {

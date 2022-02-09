@@ -56,14 +56,14 @@ import java.util.stream.Collectors;
 	 * Generate a value for the given point, and add its neighbors to the queue.
 	 */
 	private void modelPoint(final int row, final int column) {
-		Pair<Integer, Integer> point = Pair.with(row, column);
-		Pair<Integer, Integer> left = Pair.with(row, column - 1);
-		Pair<Integer, Integer> down = Pair.with(row + 1, column);
-		Pair<Integer, Integer> right = Pair.with(row, column + 1);
+		final Pair<Integer, Integer> point = Pair.with(row, column);
+		final Pair<Integer, Integer> left = Pair.with(row, column - 1);
+		final Pair<Integer, Integer> down = Pair.with(row + 1, column);
+		final Pair<Integer, Integer> right = Pair.with(row, column + 1);
 		if (unnormalized.containsKey(point)) {
 			return;
 		}
-		LodeStatus current = unnormalized.get(point);
+		final LodeStatus current = unnormalized.get(point);
 		if (!unnormalized.containsKey(right)) {
 			unnormalizedSet(right, horizontalGenerator.apply(current));
 			queue.offerLast(right);
@@ -120,7 +120,7 @@ import java.util.stream.Collectors;
 		int pruneCounter = 0;
 
 		while (!queue.isEmpty()) {
-			Pair<Integer, Integer> point = queue.getFirst();
+			final Pair<Integer, Integer> point = queue.getFirst();
 			counter++;
 			if (counter % 100000L == 0L) {
 				System.out.println(String.format("(%d,%d)", point.getValue0(),
@@ -143,42 +143,42 @@ import java.util.stream.Collectors;
 		// FIXME: What is this procedure (by-row and by-column)
 		// supposed to do? On porting back to Java it looks like it's
 		// guaranteed to break on the first iteration in all three loops ...
-		SortedMap<Integer, List<Pair<Integer, Integer>>> byRow =
+		final SortedMap<Integer, List<Pair<Integer, Integer>>> byRow =
 			MiningModel.treeMap(unnormalized.keySet()
 					.stream().collect(Collectors.<Pair<Integer, Integer>, Integer>groupingBy(Pair::getValue0)),
 				Comparator.reverseOrder());
-		for (Map.Entry<Integer, List<Pair<Integer, Integer>>> entry : byRow.entrySet()) {
-			int row = entry.getKey();
-			List<Pair<Integer, Integer>> points = entry.getValue();
+		for (final Map.Entry<Integer, List<Pair<Integer, Integer>>> entry : byRow.entrySet()) {
+			final int row = entry.getKey();
+			final List<Pair<Integer, Integer>> points = entry.getValue();
 			if (points.stream().anyMatch(unnormalized::containsKey)) {
 				points.forEach(unnormalized::remove);
 			}
 		}
 
-		SortedMap<Integer, List<Pair<Integer, Integer>>> byColumnIncreasing =
+		final SortedMap<Integer, List<Pair<Integer, Integer>>> byColumnIncreasing =
 			new TreeMap<>(unnormalized.keySet().stream()
 				.collect(Collectors.groupingBy(Pair::getValue1)));
-		for (Map.Entry<Integer, List<Pair<Integer, Integer>>> entry : byColumnIncreasing.entrySet()) {
-			int column = entry.getKey();
-			List<Pair<Integer, Integer>> points = entry.getValue();
+		for (final Map.Entry<Integer, List<Pair<Integer, Integer>>> entry : byColumnIncreasing.entrySet()) {
+			final int column = entry.getKey();
+			final List<Pair<Integer, Integer>> points = entry.getValue();
 			if (points.stream().anyMatch(unnormalized::containsKey)) {
 				points.forEach(unnormalized::remove);
 			}
 		}
 
-		SortedMap<Integer, List<Pair<Integer, Integer>>> byColumnDecreasing =
+		final SortedMap<Integer, List<Pair<Integer, Integer>>> byColumnDecreasing =
 			treeMap(unnormalized.keySet().stream()
 					.collect(Collectors.<Pair<Integer, Integer>, Integer>groupingBy(Pair::getValue1)),
 				Comparator.reverseOrder());
-		for (Map.Entry<Integer, List<Pair<Integer, Integer>>> entry : byColumnDecreasing.entrySet()) {
-			int column = entry.getKey();
-			List<Pair<Integer, Integer>> points = entry.getValue();
+		for (final Map.Entry<Integer, List<Pair<Integer, Integer>>> entry : byColumnDecreasing.entrySet()) {
+			final int column = entry.getKey();
+			final List<Pair<Integer, Integer>> points = entry.getValue();
 			if (points.stream().anyMatch(unnormalized::containsKey)) {
 				points.forEach(unnormalized::remove);
 			}
 		}
 
-		int minimumColumn = unnormalized.keySet().stream().map(Pair::getValue1)
+		final int minimumColumn = unnormalized.keySet().stream().map(Pair::getValue1)
 			.mapToInt(Integer::intValue).min().orElse(0);
 		data = Collections.unmodifiableMap(unnormalized.entrySet().stream().collect(
 			Collectors.toMap(e -> Pair.with(e.getKey().getValue0(),

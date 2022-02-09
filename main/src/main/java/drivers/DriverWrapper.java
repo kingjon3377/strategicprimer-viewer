@@ -83,10 +83,10 @@ import java.util.stream.StreamSupport;
 			}
 			while (!enoughArguments(files.size()) &&
 					!tooManyArguments(files.size() + 1)) {
-				List<Path> requested;
+				final List<Path> requested;
 				try {
 					requested = ((GUIDriverFactory) factory).askUserForFiles();
-				} catch (DriverFailedException except) {
+				} catch (final DriverFailedException except) {
 					LOGGER.log(Level.WARNING, "User presumably canceled", except);
 					throw new IncorrectUsageException(factory.getUsage());
 				}
@@ -122,14 +122,14 @@ import java.util.stream.StreamSupport;
 			} else if (factory instanceof ModelDriverFactory) { // TODO: refactor to avoid successive instanceof tests
 				if (factory instanceof GUIDriverFactory) {
 					if (ParamCount.One == factory.getUsage().getParamsWanted() && args.length > 1) {
-						for (String arg : args) {
+						for (final String arg : args) {
 							startCatchingErrors(cli, options, arg);
 						}
 					} else {
 						// FIXME: What if paramsWanted is None or Any, and args is empty?
-						List<Path> files = extendArguments(args);
+						final List<Path> files = extendArguments(args);
 						// TODO: Make MapReaderAdapter just take args directly, not split, to reduce inconvenience here
-						IMultiMapModel model = MapReaderAdapter.readMultiMapModel(Warning.WARN,
+						final IMultiMapModel model = MapReaderAdapter.readMultiMapModel(Warning.WARN,
 							files.get(0), files.stream().skip(1).toArray(Path[]::new));
 						fixCurrentTurn(options, model);
 						((GUIDriverFactory) factory).createDriver(cli, options, model).startDriver();
@@ -138,11 +138,11 @@ import java.util.stream.StreamSupport;
 					checkArguments(args);
 					// FIXME: What if a model driver had paramsWanted as None or Any, and args is empty?
 					// In Ceylon we asserted args was nonempty, but didn't address this case
-					List<Path> files = MapIOHelper.namesToFiles(args);
-					IMultiMapModel model = MapReaderAdapter.readMultiMapModel(Warning.WARN,
+					final List<Path> files = MapIOHelper.namesToFiles(args);
+					final IMultiMapModel model = MapReaderAdapter.readMultiMapModel(Warning.WARN,
 						files.get(0), files.stream().skip(1).toArray(Path[]::new));
 					fixCurrentTurn(options, model);
-					ModelDriver driver = ((ModelDriverFactory) factory).createDriver(cli, options, model);
+					final ModelDriver driver = ((ModelDriverFactory) factory).createDriver(cli, options, model);
 					driver.startDriver();
 					if (driver instanceof CLIDriver) {
 						MapReaderAdapter.writeModel(model);
@@ -155,7 +155,7 @@ import java.util.stream.StreamSupport;
 			cli.println(new AppChooserState().usageMessage(except.getCorrectUsage(),
 					"true".equals(options.getArgument("--verbose"))));
 		} catch (final DriverFailedException except) {
-			Throwable cause = except.getCause();
+			final Throwable cause = except.getCause();
 			if (cause instanceof SPFormatException) {
 				LOGGER.severe(cause.getMessage());
 			} else if (cause != null) {

@@ -86,7 +86,7 @@ public class CacheFixture implements HarvestableFixture {
 	 */
 	@Override
 	public CacheFixture copy(final boolean zero) {
-		CacheFixture retval = new CacheFixture(kind, contents, id);
+		final CacheFixture retval = new CacheFixture(kind, contents, id);
 		retval.setImage(image);
 		return retval;
 	}

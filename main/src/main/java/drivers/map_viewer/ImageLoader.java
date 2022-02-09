@@ -49,9 +49,9 @@ public final class ImageLoader {
 	 * Create a very simple background icon for a terrain type
 	 */
 	private static Icon createTerrainIcon(final TileType tileType) {
-		BufferedImage retval = new BufferedImage(FIXTURE_ICON_SIZE, FIXTURE_ICON_SIZE,
+		final BufferedImage retval = new BufferedImage(FIXTURE_ICON_SIZE, FIXTURE_ICON_SIZE,
 			BufferedImage.TYPE_INT_ARGB);
-		Graphics pen = retval.createGraphics();
+		final Graphics pen = retval.createGraphics();
 		if (ColorHelper.supportsType(2, tileType)) {
 			pen.setColor(ColorHelper.get(2, tileType));
 		}
@@ -66,7 +66,7 @@ public final class ImageLoader {
 	private static final Map<String, Icon> ICON_CACHE = new HashMap<>();
 
 	static {
-		for (TileType tileType : TileType.values()) {
+		for (final TileType tileType : TileType.values()) {
 			ICON_CACHE.put(tileType.getXml() + ".png", createTerrainIcon(tileType));
 		}
 	}
@@ -89,9 +89,9 @@ public final class ImageLoader {
 		if (IMAGE_CACHE.containsKey(file)) {
 			return IMAGE_CACHE.get(file);
 		} else {
-			try (ResourceInputStream res = new ResourceInputStream("images/" + file,
+			try (final ResourceInputStream res = new ResourceInputStream("images/" + file,
 					ImageLoader.class)) { // TODO: Change back to IOHandler once ported?
-				Image image = ImageIO.read(res);
+				final Image image = ImageIO.read(res);
 				if (image != null) {
 					IMAGE_CACHE.put(file, image);
 					return image;
@@ -111,13 +111,13 @@ public final class ImageLoader {
 		if (ICON_CACHE.containsKey(file)) {
 			return ICON_CACHE.get(file);
 		} else {
-			Image orig = loadImage(file);
-			BufferedImage temp = new BufferedImage(FIXTURE_ICON_SIZE, FIXTURE_ICON_SIZE,
+			final Image orig = loadImage(file);
+			final BufferedImage temp = new BufferedImage(FIXTURE_ICON_SIZE, FIXTURE_ICON_SIZE,
 				BufferedImage.TYPE_INT_ARGB);
-			Graphics pen = temp.createGraphics();
+			final Graphics pen = temp.createGraphics();
 			pen.drawImage(orig, 0, 0, temp.getWidth(), temp.getHeight(), null);
 			pen.dispose();
-			Icon icon = new ImageIcon(temp);
+			final Icon icon = new ImageIcon(temp);
 			ICON_CACHE.put(file, icon);
 			return icon;
 		}
@@ -153,7 +153,7 @@ public final class ImageLoader {
 		private static final Map<Class<? extends TileFixture>, Color> FEATURE_COLORS;
 
 		static {
-			Map<Class<? extends TileFixture>, Color> featureColors = new HashMap<>();
+			final Map<Class<? extends TileFixture>, Color> featureColors = new HashMap<>();
 			featureColors.put(Forest.class, new Color(0, 117, 0));
 			featureColors.put(Oasis.class, new Color(72, 218, 164));
 			featureColors.put(Hill.class, new Color(141, 182, 0));
@@ -166,7 +166,7 @@ public final class ImageLoader {
 		private static final Map<Integer, Map<TileType, Color>> COLORS;
 
 		static {
-			Map<TileType, Color> verTwo = new HashMap<>();
+			final Map<TileType, Color> verTwo = new HashMap<>();
 			verTwo.put(TileType.Desert, new Color(249, 233, 28));
 			verTwo.put(TileType.Jungle, new Color(229, 46, 46));
 			verTwo.put(TileType.Ocean, Color.BLUE);
@@ -175,7 +175,7 @@ public final class ImageLoader {
 			verTwo.put(TileType.Steppe, new Color(72, 100, 72));
 			verTwo.put(TileType.Swamp, new Color(231,41,138));
 			// TODO: Somehow check that all types in a version are covered?
-			Map<Integer, Map<TileType, Color>> colors = new HashMap<>();
+			final Map<Integer, Map<TileType, Color>> colors = new HashMap<>();
 			colors.put(2, Collections.unmodifiableMap(verTwo));
 			COLORS = Collections.unmodifiableMap(colors);
 		}
@@ -194,7 +194,7 @@ public final class ImageLoader {
 			if (type == null) {
 				return null;
 			} else if (COLORS.containsKey(version)) {
-				Map<TileType, Color> map = COLORS.get(version);
+				final Map<TileType, Color> map = COLORS.get(version);
 				if (map.containsKey(type)) {
 					return map.get(type);
 				} else {

@@ -86,8 +86,8 @@ final class DBWorkerHandler extends AbstractDatabaseWriter<IWorker, IUnit> imple
 	@Override
 	public void write(final DB db, final IWorker obj, final IUnit context) {
 		db.transaction(sql -> {
-			String portrait = obj.getPortrait();
-			WorkerStats stats = obj.getStats();
+			final String portrait = obj.getPortrait();
+			final WorkerStats stats = obj.getStats();
 			if (stats != null) {
 				sql.update(WORKER_SQL, context.getId(), obj.getId(), obj.getName(),
 					obj.getRace(), obj.getImage(), portrait, stats.getHitPoints(),
@@ -100,10 +100,10 @@ final class DBWorkerHandler extends AbstractDatabaseWriter<IWorker, IUnit> imple
 						obj.getRace(), obj.getImage(), portrait, null, null, null,
 						null, null, null, null, null).execute();
 				}
-				for (IJob job : obj) {
+				for (final IJob job : obj) {
 					sql.update(JOB_SQL, obj.getId(), job.getName(), job.getLevel())
 						.execute();
-					for (ISkill skill : job) {
+					for (final ISkill skill : job) {
 						sql.update(SKILL_SQL, obj.getId(),
 							job.getName(), skill.getName(), skill.getLevel(),
 							skill.getHours()).execute();
@@ -119,22 +119,22 @@ final class DBWorkerHandler extends AbstractDatabaseWriter<IWorker, IUnit> imple
 	private TryBiConsumer<Map<String, Object>, Warning, Exception>
 			readWorkerStats(final IMutableMapNG map, final Map<Integer, Worker> workers) {
 		return (dbRow, warner) -> {
-			IMutableUnit unit = (IMutableUnit) findById(map, (Integer) dbRow.get("unit"),
+			final IMutableUnit unit = (IMutableUnit) findById(map, (Integer) dbRow.get("unit"),
 				warner);
-			int id = (Integer) dbRow.get("id");
-			String name = (String) dbRow.get("name");
-			String race = (String) dbRow.get("race");
-			String image = (String) dbRow.get("image");
-			String portrait = (String) dbRow.get("portrait");
-			Integer hp = (Integer) dbRow.get("hp");
-			Integer maxHp = (Integer) dbRow.get("max_hp");
-			Integer str = (Integer) dbRow.get("str");
-			Integer dex = (Integer) dbRow.get("dex");
-			Integer con = (Integer) dbRow.get("con");
-			Integer intel = (Integer) dbRow.get("int");
-			Integer wis = (Integer) dbRow.get("wis");
-			Integer cha = (Integer) dbRow.get("cha");
-			Worker worker = new Worker(name, race, id);
+			final int id = (Integer) dbRow.get("id");
+			final String name = (String) dbRow.get("name");
+			final String race = (String) dbRow.get("race");
+			final String image = (String) dbRow.get("image");
+			final String portrait = (String) dbRow.get("portrait");
+			final Integer hp = (Integer) dbRow.get("hp");
+			final Integer maxHp = (Integer) dbRow.get("max_hp");
+			final Integer str = (Integer) dbRow.get("str");
+			final Integer dex = (Integer) dbRow.get("dex");
+			final Integer con = (Integer) dbRow.get("con");
+			final Integer intel = (Integer) dbRow.get("int");
+			final Integer wis = (Integer) dbRow.get("wis");
+			final Integer cha = (Integer) dbRow.get("cha");
+			final Worker worker = new Worker(name, race, id);
 			if (hp != null) {
 				worker.setStats(new WorkerStats(hp, maxHp, str, dex, con, intel, wis, cha));
 			}
@@ -155,10 +155,10 @@ final class DBWorkerHandler extends AbstractDatabaseWriter<IWorker, IUnit> imple
 	private TryBiConsumer<Map<String, Object>, Warning, Exception>
 			readJobLevel(final IMutableMapNG map, final Map<Integer, Worker> workers) {
 		return (dbRow, warner) -> {
-			int id = (Integer) dbRow.get("worker");
-			Worker worker = workers.get(id);
-			String job = (String) dbRow.get("job");
-			int level = (Integer) dbRow.get("level");
+			final int id = (Integer) dbRow.get("worker");
+			final Worker worker = workers.get(id);
+			final String job = (String) dbRow.get("job");
+			final int level = (Integer) dbRow.get("level");
 			worker.addJob(new Job(job, level));
 		};
 	}
@@ -166,12 +166,12 @@ final class DBWorkerHandler extends AbstractDatabaseWriter<IWorker, IUnit> imple
 	private TryBiConsumer<Map<String, Object>, Warning, Exception>
 			readSkillLevel(final IMutableMapNG map, final Map<Integer, Worker> workers) {
 		return (dbRow, warner) -> {
-			int id = (Integer) dbRow.get("worker");
-			Worker worker = workers.get(id);
-			String skill = (String) dbRow.get("skill");
-			int level = (Integer) dbRow.get("level");
-			int hours = (Integer) dbRow.get("hours");
-			IMutableJob job = (IMutableJob) worker.getJob((String) dbRow.get("associated_job"));
+			final int id = (Integer) dbRow.get("worker");
+			final Worker worker = workers.get(id);
+			final String skill = (String) dbRow.get("skill");
+			final int level = (Integer) dbRow.get("level");
+			final int hours = (Integer) dbRow.get("hours");
+			final IMutableJob job = (IMutableJob) worker.getJob((String) dbRow.get("associated_job"));
 			job.addSkill(new Skill(skill, level, hours));
 		};
 	}
@@ -179,10 +179,10 @@ final class DBWorkerHandler extends AbstractDatabaseWriter<IWorker, IUnit> imple
 	private TryBiConsumer<Map<String, Object>, Warning, Exception>
 			readWorkerNotes(final IMapNG map, final Map<Integer, Worker> workers) {
 		return (dbRow, warner) -> {
-			int id = (Integer) dbRow.get("fixture");
-			Worker worker = workers.get(id);
-			int player = (Integer) dbRow.get("player");
-			String note = (String) dbRow.get("note");
+			final int id = (Integer) dbRow.get("fixture");
+			final Worker worker = workers.get(id);
+			final int player = (Integer) dbRow.get("player");
+			final String note = (String) dbRow.get("note");
 			if (worker != null) {
 				worker.setNote(map.getPlayers().getPlayer(player), note);
 			}
@@ -191,7 +191,7 @@ final class DBWorkerHandler extends AbstractDatabaseWriter<IWorker, IUnit> imple
 
 	@Override
 	public void readExtraMapContents(final DB db, final IMutableMapNG map, final Warning warner) {
-		Map<Integer, Worker> workers = new HashMap<>();
+		final Map<Integer, Worker> workers = new HashMap<>();
 		try {
 			handleQueryResults(db, warner, "worker stats", readWorkerStats(map, workers),
 				"SELECT * FROM workers");

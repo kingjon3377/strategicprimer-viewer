@@ -62,13 +62,13 @@ public class SPFileChooser extends FileChooser {
 	public static Either<JFileChooser, FileDialog> filteredFileChooser(final boolean allowMultiple,
 	                                                                   final String current, @Nullable final FileFilter filter) {
 		if (Platform.SYSTEM_IS_MAC) {
-			FileDialog retval = new FileDialog((Frame) null);
+			final FileDialog retval = new FileDialog((Frame) null);
 			if (filter != null) {
 				retval.setFilenameFilter((dir, name) -> filter.accept(new File(dir, name)));
 			}
 			return Either.right(retval);
 		} else {
-			JFileChooser retval = new JFileChooser(current);
+			final JFileChooser retval = new JFileChooser(current);
 			if (filter != null) {
 				retval.setFileFilter(filter);
 			}
@@ -107,7 +107,7 @@ public class SPFileChooser extends FileChooser {
 	 * Constructor for a filtered "Open" dialog.
 	 */
 	public static SPFileChooser open(@Nullable final Path loc) {
-		Either<JFileChooser, FileDialog> fc = filteredFileChooser(true);
+		final Either<JFileChooser, FileDialog> fc = filteredFileChooser(true);
 		if (fc.fromLeft().isPresent()) {
 			return open(loc, fc.fromLeft().get());
 		} else {
@@ -169,7 +169,7 @@ public class SPFileChooser extends FileChooser {
 	 * support custom-verb dialogs).
 	 */
 	public static SPFileChooser custom(@Nullable final Path loc, final String approveText) {
-		Either<JFileChooser, FileDialog> fc = filteredFileChooser(true);
+		final Either<JFileChooser, FileDialog> fc = filteredFileChooser(true);
 		if (fc.fromLeft().isPresent()) {
 			return custom(loc, approveText, fc.fromLeft().get());
 		} else {

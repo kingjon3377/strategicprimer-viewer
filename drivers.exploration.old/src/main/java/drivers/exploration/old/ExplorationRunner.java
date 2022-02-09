@@ -86,15 +86,15 @@ public final class ExplorationRunner {
 	public String recursiveConsultTable(final String table, final Point location, @Nullable final TileType terrain,
 	                                    final boolean mountainous, final Iterable<TileFixture> fixtures, final MapDimensions mapDimensions)
 			throws MissingTableException {
-		String result = consultTable(table, location, terrain, mountainous, fixtures, mapDimensions);
+		final String result = consultTable(table, location, terrain, mountainous, fixtures, mapDimensions);
 		if (result.contains("#")) {
-			List<String> broken = new LinkedList<>(splitOnHash(result));
+			final List<String> broken = new LinkedList<>(splitOnHash(result));
 			if (broken.size() < 2) {
 				throw new IllegalStateException(String.format("Unexpected result of split: '%s' -> %s", result, broken));
 			}
-			String before = broken.remove(0);
-			String middle = broken.remove(0);
-			StringBuilder builder = new StringBuilder();
+			final String before = broken.remove(0);
+			final String middle = broken.remove(0);
+			final StringBuilder builder = new StringBuilder();
 			builder.append(before);
 			builder.append(recursiveConsultTable(middle, location, terrain, mountainous,
 				fixtures, mapDimensions));
@@ -124,7 +124,7 @@ public final class ExplorationRunner {
 		state.add(table);
 		if (tables.containsKey(table)) {
 			try {
-				for (String string : getTable(table).getAllEvents()) {
+				for (final String string : getTable(table).getAllEvents()) {
 					if (string.contains("#") && recursiveCheck(
 							splitOnHash(string).get(1), state)) {
 						return true;
@@ -144,7 +144,7 @@ public final class ExplorationRunner {
 	 * Check whether any table contains recursive calls to a table that doesn't exist.
 	 */
 	public boolean globalRecursiveCheck() {
-		Set<String> state = new HashSet<>();
+		final Set<String> state = new HashSet<>();
 		// TODO: Use concurrent set instead of sequential()
 		return tables.keySet().stream().sequential().anyMatch(table -> recursiveCheck(table, state));
 	}
@@ -165,7 +165,7 @@ public final class ExplorationRunner {
 			state.add(table);
 			if (tables.containsKey(table)) {
 				try {
-					for (String string : getTable(table).getAllEvents()) {
+					for (final String string : getTable(table).getAllEvents()) {
 						if (string.contains("#")) {
 							verboseRecursiveCheck(
 								splitOnHash(string).get(1), ostream, state);
@@ -184,8 +184,8 @@ public final class ExplorationRunner {
 	 * Print the names of any tables that are called but don't exist yet.
 	 */
 	public void verboseGlobalRecursiveCheck(final ThrowingConsumer<String, IOException> ostream) throws IOException {
-		Set<String> state = new HashSet<>();
-		for (String table : tables.keySet()) {
+		final Set<String> state = new HashSet<>();
+		for (final String table : tables.keySet()) {
 			verboseRecursiveCheck(table, ostream, state);
 		}
 	}
@@ -293,7 +293,7 @@ public final class ExplorationRunner {
 	/* package */ void loadTableFromDataStream(final Iterator<String> source, final String name)
 			throws IOException {
 		if (source.hasNext()) {
-			String line = source.next();
+			final String line = source.next();
 			if (line.isEmpty()) {
 				throw new IllegalArgumentException(
 					"File doesn't start by specifying which kind of table");
@@ -301,15 +301,15 @@ public final class ExplorationRunner {
 			switch (line.toLowerCase().charAt(0)) {
 			case 'q':
 				if (source.hasNext()) {
-					String firstLine = source.next();
-					int rows;
+					final String firstLine = source.next();
+					final int rows;
 					try {
 						rows = Integer.parseInt(firstLine);
 					} catch (final NumberFormatException except) {
 						throw new IllegalArgumentException(
 							"File doesn't start with number of rows of quadrants", except);
 					}
-					List<String> items = new LinkedList<>();
+					final List<String> items = new LinkedList<>();
 					while (source.hasNext()) {
 						items.add(source.next());
 					}
@@ -321,10 +321,10 @@ public final class ExplorationRunner {
 				}
 				break;
 			case 'r':
-				List<Pair<Integer, String>> listR = new ArrayList<>();
+				final List<Pair<Integer, String>> listR = new ArrayList<>();
 				while (source.hasNext()) {
-					String tableLine = source.next();
-					String[] splitted = tableLine.split(" ");
+					final String tableLine = source.next();
+					final String[] splitted = tableLine.split(" ");
 					if (splitted.length < 2) {
 						if (tableLine.isEmpty()) {
 							LOGGER.fine("Unexpected blank line");
@@ -333,8 +333,8 @@ public final class ExplorationRunner {
 							LOGGER.info("It was " + tableLine);
 						}
 					} else {
-						String left = splitted[0];
-						int leftNum;
+						final String left = splitted[0];
+						final int leftNum;
 						try {
 							leftNum = Integer.parseInt(left);
 						} catch (final NumberFormatException except) {
@@ -358,10 +358,10 @@ public final class ExplorationRunner {
 				}
 				break;
 			case 't':
-				List<Pair<String, String>> listT = new ArrayList<>();
+				final List<Pair<String, String>> listT = new ArrayList<>();
 				while (source.hasNext()) {
-					String tableLine = source.next();
-					String[] splitted = tableLine.split(" ");
+					final String tableLine = source.next();
+					final String[] splitted = tableLine.split(" ");
 					if (splitted.length < 2) {
 						if (tableLine.isEmpty()) {
 							LOGGER.fine("Unexpected blank line");
@@ -397,10 +397,10 @@ public final class ExplorationRunner {
 	 */
 	public void loadTableFromFile(final Path file) throws IOException {
 		if (Files.exists(file)) {
-			List<String> lines = Files.readAllLines(file, StandardCharsets.UTF_8);
+			final List<String> lines = Files.readAllLines(file, StandardCharsets.UTF_8);
 			loadTableFromDataStream(lines.iterator(), file.getFileName().toString());
 		} else if (Files.exists(Paths.get("tables").resolve(file))) {
-			List<String> lines = Files.readAllLines(Paths.get("tables").resolve(file),
+			final List<String> lines = Files.readAllLines(Paths.get("tables").resolve(file),
 				StandardCharsets.UTF_8);
 			loadTableFromDataStream(lines.iterator(), file.getFileName().toString());
 		} else {
@@ -426,8 +426,8 @@ public final class ExplorationRunner {
 	 * Load all tables in the specified path into the runner.
 	 */
 	public void loadAllTables(final Path path) throws IOException {
-		try (DirectoryStream<Path> stream = Files.newDirectoryStream(path)) {
-			for (Path child : stream) {
+		try (final DirectoryStream<Path> stream = Files.newDirectoryStream(path)) {
+			for (final Path child : stream) {
 				if (Files.isHidden(child)) { // TODO: Also exclude dotfiles on Windows?
 					LOGGER.info(String.format(
 						"%s looks like a hidden file, skipping ...",

@@ -66,15 +66,15 @@ public class ViewerGUI implements ViewerDriver {
 
 	@Override
 	public void center() {
-		Point selection = model.getSelection();
+		final Point selection = model.getSelection();
 		LOGGER.finer("Asked to center on " + selection);
-		MapDimensions dimensions = model.getMapDimensions();
-		VisibleDimensions visible = model.getVisibleDimensions();
+		final MapDimensions dimensions = model.getMapDimensions();
+		final VisibleDimensions visible = model.getVisibleDimensions();
 		LOGGER.finer(String.format(
 			"Visible area is currently from (%d, %d) to (%d to %s), %s rows x %s cols.",
 			visible.getMinimumRow(), visible.getMinimumColumn(), visible.getMaximumRow(),
 			visible.getMaximumColumn(), visible.getHeight(), visible.getWidth()));
-		int topRow;
+		final int topRow;
 		if (selection.getRow() - (visible.getHeight() / 2) <= 0) {
 			LOGGER.finer("Close enough to the top to go flush to it");
 			topRow = 0;
@@ -85,7 +85,7 @@ public class ViewerGUI implements ViewerDriver {
 			topRow = selection.getRow() - (visible.getHeight() / 2);
 			LOGGER.finer("Setting top row to " + topRow);
 		}
-		int leftColumn;
+		final int leftColumn;
 		if (selection.getColumn() - (visible.getWidth() / 2) <= 0) {
 			LOGGER.finer("Close enough to left edge to go flush to it");
 			leftColumn = 0;
@@ -122,11 +122,11 @@ public class ViewerGUI implements ViewerDriver {
 	private FindDialog finder = null;
 
 	private FindDialog getFindDialog(final ViewerFrame parent) {
-		FindDialog temp = finder;
+		final FindDialog temp = finder;
 		if (temp != null) {
 			return temp;
 		} else {
-			FindDialog local = new FindDialog(parent, model);
+			final FindDialog local = new FindDialog(parent, model);
 			finder = local;
 			return local;
 		}
@@ -137,12 +137,12 @@ public class ViewerGUI implements ViewerDriver {
 	}
 
 	private void createWindow(final MenuBroker menuHandler) {
-		ViewerFrame frame = new ViewerFrame(model, menuHandler, this, this::factory);
-		String backgroundFile = options.getArgument("--background");
+		final ViewerFrame frame = new ViewerFrame(model, menuHandler, this, this::factory);
+		final String backgroundFile = options.getArgument("--background");
 		if (!backgroundFile.isEmpty() && !"false".equals(backgroundFile)) {
 			try {
 				frame.setBackgroundImage(ImageIO.read(new File(backgroundFile)));
-			} catch (FileNotFoundException|NoSuchFileException except) {
+			} catch (final FileNotFoundException|NoSuchFileException except) {
 				LOGGER.severe("Background image file not found");
 				LOGGER.log(Level.FINE, "Stack trace for background missing", except);
 			} catch (final IOException except) {
@@ -150,7 +150,7 @@ public class ViewerGUI implements ViewerDriver {
 			}
 		}
 		frame.addWindowListener(new WindowCloseListener(menuHandler));
-		SelectTileDialog selectTileDialogInstance = new SelectTileDialog(frame, model);
+		final SelectTileDialog selectTileDialogInstance = new SelectTileDialog(frame, model);
 		menuHandler.registerWindowShower(selectTileDialogInstance, "go to tile");
 		selectTileDialogInstance.dispose();
 		menuHandler.registerWindowShower(() -> getFindDialog(frame), "find a fixture");
@@ -164,12 +164,12 @@ public class ViewerGUI implements ViewerDriver {
 		// TODO: We'd like to have the starting position stored in the map
 		// file, in system preferences, or some such, or simply default to HQ.
 		if (options.hasOption("--starting-row") && options.hasOption("--starting-column")) {
-			int startingRow;
-			int startingCol;
+			final int startingRow;
+			final int startingCol;
 			try {
 				startingRow = Integer.parseInt(options.getArgument("--starting-row"));
 				startingCol = Integer.parseInt(options.getArgument("--starting-column"));
-				Point starting = new Point(startingRow, startingCol);
+				final Point starting = new Point(startingRow, startingCol);
 				if (model.getMapDimensions().contains(starting)) {
 					model.setSelection(starting);
 				} else {
@@ -203,7 +203,7 @@ public class ViewerGUI implements ViewerDriver {
 	@Override
 	public void startDriver() {
 		LOGGER.finer("In ViewerGUI.startDriver()");
-		MenuBroker menuHandler = new MenuBroker();
+		final MenuBroker menuHandler = new MenuBroker();
 		menuHandler.register(new IOHandler(this, cli), "load", "save",
 			"save as", "new", "load secondary", "save all", "open in map viewer",
 			"open secondary map in map viewer", "close", "quit");

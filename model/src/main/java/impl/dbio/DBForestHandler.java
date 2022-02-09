@@ -46,21 +46,21 @@ final class DBForestHandler extends AbstractDatabaseWriter<Forest, Point> implem
 
 	private TryBiConsumer<Map<String, Object>, Warning, Exception> readForest(final IMutableMapNG map) {
 		return (dbRow, warner) -> {
-			int row = (Integer) dbRow.get("row");
-			int column = (Integer) dbRow.get("column");
-			int id = (Integer) dbRow.get("id");
-			String kind = (String) dbRow.get("kind");
-			Boolean rows = /* DBMapReader.databaseBoolean(dbRow.get("rows")) */ // FIXME
+			final int row = (Integer) dbRow.get("row");
+			final int column = (Integer) dbRow.get("column");
+			final int id = (Integer) dbRow.get("id");
+			final String kind = (String) dbRow.get("kind");
+			final Boolean rows = /* DBMapReader.databaseBoolean(dbRow.get("rows")) */ // FIXME
 				(Boolean) dbRow.get("rows"); // This will compile, but probably won't work
-			String acresString = (String) dbRow.get("acres");
-			String image = (String) dbRow.get("image");
+			final String acresString = (String) dbRow.get("acres");
+			final String image = (String) dbRow.get("image");
 			Number acres;
 			try {
 				acres = Integer.parseInt(acresString);
 			} catch (final NumberFormatException except) {
 				acres = new BigDecimal(acresString);
 			}
-			Forest forest = new Forest(kind, rows, id, acres);
+			final Forest forest = new Forest(kind, rows, id, acres);
 			if (image != null) {
 				forest.setImage(image);
 			}

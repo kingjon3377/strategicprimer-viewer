@@ -125,23 +125,23 @@ import java.util.stream.Collectors;
 
 	@Override
 	public void moveMember(final UnitMember member, final IUnit old, final IUnit newOwner) {
-		int oldIndex = getIndexOfChild(old, member);
-		TreeModelEvent removedEvent = new TreeModelEvent(this,
+		final int oldIndex = getIndexOfChild(old, member);
+		final TreeModelEvent removedEvent = new TreeModelEvent(this,
 			new TreePath(new Object[] { player, old.getKind(), old }),
 				new int[] { oldIndex }, new Object[] { member });
-		TreeModelEvent removedChangeEvent = new TreeModelEvent(this,
+		final TreeModelEvent removedChangeEvent = new TreeModelEvent(this,
 			new TreePath(new Object[] { player, old.getKind(), old }));
-		for (TreeModelListener listener : listeners) {
+		for (final TreeModelListener listener : listeners) {
 			listener.treeNodesRemoved(removedEvent);
 			listener.treeStructureChanged(removedChangeEvent);
 		}
 		model.moveMember(member, old, newOwner);
-		TreeModelEvent insertedEvent = new TreeModelEvent(this,
+		final TreeModelEvent insertedEvent = new TreeModelEvent(this,
 			new TreePath(new Object[] { player, newOwner.getKind(), newOwner }),
 				new int[] { getIndexOfChild(newOwner, member) }, new Object[] { member });
-		TreeModelEvent insertedChangeEvent = new TreeModelEvent(this,
+		final TreeModelEvent insertedChangeEvent = new TreeModelEvent(this,
 			new TreePath(new Object[] { player, newOwner.getKind(), newOwner }));
-		for (TreeModelListener listener : listeners) {
+		for (final TreeModelListener listener : listeners) {
 			listener.treeNodesInserted(insertedEvent);
 			listener.treeStructureChanged(insertedChangeEvent);
 		}
@@ -150,11 +150,11 @@ import java.util.stream.Collectors;
 	@Override
 	public void addUnit(final IUnit unit) {
 		model.addUnit(unit);
-		TreePath path = new TreePath(new Object[] { player, unit.getKind() });
-		int[] indices = { model.getUnits(player, unit.getKind()).size()};
-		Object[] children = { unit };
-		TreeModelEvent event = new TreeModelEvent(this, path, indices, children);
-		for (TreeModelListener listener : listeners) {
+		final TreePath path = new TreePath(new Object[] { player, unit.getKind() });
+		final int[] indices = { model.getUnits(player, unit.getKind()).size()};
+		final Object[] children = { unit };
+		final TreeModelEvent event = new TreeModelEvent(this, path, indices, children);
+		for (final TreeModelListener listener : listeners) {
 			listener.treeNodesInserted(event);
 		}
 	}
@@ -167,8 +167,8 @@ import java.util.stream.Collectors;
 	@Override
 	public void playerChanged(@Nullable final Player old, final Player newPlayer) {
 		player = newPlayer;
-		TreeModelEvent event = new TreeModelEvent(this, new TreePath(getRoot()));
-		for (TreeModelListener listener : listeners) {
+		final TreeModelEvent event = new TreeModelEvent(this, new TreePath(getRoot()));
+		for (final TreeModelListener listener : listeners) {
 			listener.treeNodesChanged(event);
 		}
 	}
@@ -188,11 +188,11 @@ import java.util.stream.Collectors;
 		LOGGER.finer("In WorkerTreeModel.addUnitMember");
 		model.addUnitMember(unit, member);
 		LOGGER.finer("Added member to unit");
-		TreePath path = new TreePath(new Object[] { player, unit.getKind(), unit });
-		int[] indices = { getIndexOfChild(unit, member) };
-		Object[] children = { member };
-		TreeModelEvent event = new TreeModelEvent(this, path, indices, children);
-		for (TreeModelListener listener : listeners) {
+		final TreePath path = new TreePath(new Object[] { player, unit.getKind(), unit });
+		final int[] indices = { getIndexOfChild(unit, member) };
+		final Object[] children = { member };
+		final TreeModelEvent event = new TreeModelEvent(this, path, indices, children);
+		for (final TreeModelListener listener : listeners) {
 			listener.treeNodesInserted(event);
 		}
 		LOGGER.finer("Notified listeners of inserted nodes");
@@ -200,15 +200,15 @@ import java.util.stream.Collectors;
 
 	@Override
 	public void renameItem(final HasName item, final String newName) {
-		TreePath path;
-		int[] indices;
-		Object[] children;
+		final TreePath path;
+		final int[] indices;
+		final Object[] children;
 		if (item instanceof IUnit) {
 			path = new TreePath(new Object[] { player, ((IUnit) item).getKind() });
 			indices = new int[] { getIndexOfChild(((IUnit) item).getKind(), item) };
 			children = new Object[] { item };
 		} else if (item instanceof UnitMember) {
-			IUnit parent = model.getUnits(player).stream()
+			final IUnit parent = model.getUnits(player).stream()
 				.filter(containingItem((UnitMember) item)).findAny().orElse(null);
 			if (parent == null) {
 				LOGGER.warning(
@@ -229,8 +229,8 @@ import java.util.stream.Collectors;
 			return;
 		}
 		if (model.renameItem(item, newName)) {
-			TreeModelEvent event = new TreeModelEvent(this, path, indices, children);
-			for (TreeModelListener listener : listeners) {
+			final TreeModelEvent event = new TreeModelEvent(this, path, indices, children);
+			for (final TreeModelListener listener : listeners) {
 				listener.treeNodesChanged(event);
 			}
 		}
@@ -238,9 +238,9 @@ import java.util.stream.Collectors;
 
 	@Override
 	public void changeKind(final HasKind item, final String newKind) {
-		TreePath path;
-		int[] indices;
-		Object[] children;
+		final TreePath path;
+		final int[] indices;
+		final Object[] children;
 		if (item instanceof IUnit) {
 			// TODO: should probably fire removal and addition events instead
 			path = new TreePath(new Object[] { player });
@@ -248,7 +248,7 @@ import java.util.stream.Collectors;
 				getIndexOfChild(player, newKind) };
 			children = new Object[] { item.getKind(), newKind };
 		} else if (item instanceof UnitMember) {
-			IUnit parent = model.getUnits(player).stream()
+			final IUnit parent = model.getUnits(player).stream()
 				.filter(containingItem((UnitMember) item)).findAny().orElse(null);
 			if (parent == null) {
 				LOGGER.warning(
@@ -263,23 +263,23 @@ import java.util.stream.Collectors;
 			return;
 		}
 		model.changeKind(item, newKind);
-		TreeModelEvent event = new TreeModelEvent(this, path, indices, children);
-		for (TreeModelListener listener : listeners) {
+		final TreeModelEvent event = new TreeModelEvent(this, path, indices, children);
+		for (final TreeModelListener listener : listeners) {
 			listener.treeNodesChanged(event);
 		}
 	}
 
 	@Override
 	public void dismissUnitMember(final UnitMember member) {
-		for (IUnit unit : model.getUnits(player)) {
+		for (final IUnit unit : model.getUnits(player)) {
 			int index = 0;
-			for (UnitMember item : unit) {
+			for (final UnitMember item : unit) {
 				if (member.equals(item)) {
 					model.dismissUnitMember(member);
-					TreeModelEvent event = new TreeModelEvent(this,
+					final TreeModelEvent event = new TreeModelEvent(this,
 						new TreePath(new Object[] { player, unit }),
 							new int[] { index }, new Object[] { member });
-					for (TreeModelListener listener : listeners) {
+					for (final TreeModelListener listener : listeners) {
 						listener.treeNodesRemoved(event);
 					}
 					return;
@@ -291,12 +291,12 @@ import java.util.stream.Collectors;
 
 	@Override
 	public void addSibling(final UnitMember base, final UnitMember sibling) {
-		for (IUnit unit : model.getUnits(player)) {
+		for (final IUnit unit : model.getUnits(player)) {
 			if (unit.stream().anyMatch(base::equals)) {
-				int existingMembersCount = (int) unit.stream().count();
+				final int existingMembersCount = (int) unit.stream().count();
 				model.addSibling(base, sibling);
-				int countAfterAdding = (int) unit.stream().count();
-				TreeModelEvent event;
+				final int countAfterAdding = (int) unit.stream().count();
+				final TreeModelEvent event;
 				if (countAfterAdding > existingMembersCount) {
 					event = new TreeModelEvent(this,
 						new TreePath(new Object[] { player, unit.getKind(), unit }),
@@ -308,7 +308,7 @@ import java.util.stream.Collectors;
 						new int[] { getIndexOfChild(unit.getKind(), unit) },
 						new Object[] { unit });
 				}
-				for (TreeModelListener listener : listeners) {
+				for (final TreeModelListener listener : listeners) {
 					listener.treeNodesInserted(event);
 				}
 				// TODO: return, surely?
@@ -327,13 +327,13 @@ import java.util.stream.Collectors;
 	public TreePath nextProblem(@Nullable final TreePath starting, final int turn) {
 		Iterable<IUnit> sequence;
 		boolean leading;
-		Predicate<IUnit> leadingFilter;
+		final Predicate<IUnit> leadingFilter;
 		if (starting != null) {
-			IUnit startingUnit = Stream.of(starting.getPath()).filter(IUnit.class::isInstance)
+			final IUnit startingUnit = Stream.of(starting.getPath()).filter(IUnit.class::isInstance)
 				.map(IUnit.class::cast).findFirst().orElse(null);
-			String startingKind = Stream.of(starting.getPath()).filter(String.class::isInstance)
+			final String startingKind = Stream.of(starting.getPath()).filter(String.class::isInstance)
 				.map(String.class::cast).findFirst().orElse(null);
-			Collection<IUnit> temp = model.getUnits(player);
+			final Collection<IUnit> temp = model.getUnits(player);
 			sequence = Stream.concat(temp.stream(), temp.stream()).collect(Collectors.toList());
 			if (startingUnit != null) {
 				leading = true;
@@ -351,7 +351,7 @@ import java.util.stream.Collectors;
 			leadingFilter = null;
 			sequence = model.getUnits(player);
 		}
-		for (IUnit unit : sequence) {
+		for (final IUnit unit : sequence) {
 			if (leading) {
 				if (leadingFilter.test(unit)) {
 					continue;
@@ -361,7 +361,7 @@ import java.util.stream.Collectors;
 			} else if (!unit.iterator().hasNext()) {
 				continue;
 			}
-			String orders = unit.getOrders(turn).toLowerCase().trim();
+			final String orders = unit.getOrders(turn).toLowerCase().trim();
 			if (orders.isEmpty() || orders.contains("todo") || orders.contains("fixme") ||
 					orders.contains("xxx")) {
 				if (orders.isEmpty()) {
@@ -400,9 +400,9 @@ import java.util.stream.Collectors;
 
 	@Override
 	public void refreshChildren(final IUnit parent) {
-		TreeModelEvent event = new TreeModelEvent(this, new TreePath(
+		final TreeModelEvent event = new TreeModelEvent(this, new TreePath(
 			new Object[] { player, parent.getKind(), parent }));
-		for (TreeModelListener listener : listeners) {
+		for (final TreeModelListener listener : listeners) {
 			listener.treeStructureChanged(event);
 		}
 	}
@@ -411,13 +411,13 @@ import java.util.stream.Collectors;
 	public void removeUnit(final IUnit unit) {
 		LOGGER.finer("In WorkerTreeModel.removeUnit()");
 		// FIXME: What if it's the only unit with this kind?
-		TreeModelEvent event = new TreeModelEvent(this,
+		final TreeModelEvent event = new TreeModelEvent(this,
 			new TreePath(new Object[] { player, unit.getKind() }),
 				new int[] { getIndexOfChild(unit.getKind(), unit) },
 				new Object[] { unit });
 		if (model.removeUnit(unit)) {
 			LOGGER.finer("Removed unit from the map, about to notify tree listeners");
-			for (TreeModelListener listener : listeners) {
+			for (final TreeModelListener listener : listeners) {
 				listener.treeNodesRemoved(event);
 			}
 			LOGGER.finer("Finished notifying tree listeners");
@@ -430,12 +430,12 @@ import java.util.stream.Collectors;
 	public void changeOwner(final HasOwner item, final Player newOwner) {
 		if (item instanceof IUnit && item.getOwner().equals(player)) {
 			// TODO: What if it's the only unit with this kind?
-			TreeModelEvent event = new TreeModelEvent(this,
+			final TreeModelEvent event = new TreeModelEvent(this,
 				new TreePath(new Object[] { player, ((IUnit) item).getKind() }),
 				new int[] { getIndexOfChild(((IUnit) item).getKind(), item) },
 				new Object[] { item });
 			if (model.changeOwner(item, newOwner)) {
-				for (TreeModelListener listener : listeners) {
+				for (final TreeModelListener listener : listeners) {
 					listener.treeNodesRemoved(event);
 				}
 			}

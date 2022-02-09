@@ -60,7 +60,7 @@ public class SimpleDriverModel implements IDriverModel {
 	@Override
 	public final void setMapModified(final boolean mapModified) {
 		mainMap.setModified(mapModified);
-		for (MapChangeListener listener : mcListeners) {
+		for (final MapChangeListener listener : mcListeners) {
 			listener.mapMetadataChanged();
 		}
 	}
@@ -70,12 +70,12 @@ public class SimpleDriverModel implements IDriverModel {
 	 */
 	@Override
 	public void setMap(final IMutableMapNG newMap) {
-		for (VersionChangeListener listener : vcListeners) {
+		for (final VersionChangeListener listener : vcListeners) {
 			listener.changeVersion(mapDim.getVersion(), newMap.getDimensions().getVersion());
 		}
 		mainMap = newMap;
 		mapDim = newMap.getDimensions();
-		for (MapChangeListener listener : mcListeners) {
+		for (final MapChangeListener listener : mcListeners) {
 			listener.mapChanged();
 		}
 	}

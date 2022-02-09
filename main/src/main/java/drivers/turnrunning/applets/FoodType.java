@@ -25,8 +25,8 @@ import org.jetbrains.annotations.Nullable;
 
 	@Nullable
 	public static FoodType askFoodType(final ICLIHelper cli, final String foodKind) {
-		for (FoodType type : FoodType.values()) {
-			Boolean resp = cli.inputBooleanInSeries(String.format("Is it %s?", type),
+		for (final FoodType type : FoodType.values()) {
+			final Boolean resp = cli.inputBooleanInSeries(String.format("Is it %s?", type),
 				foodKind + type);
 			if (resp == null) {
 				return null; // EOF
@@ -107,7 +107,7 @@ import org.jetbrains.annotations.Nullable;
 
 	@Nullable
 	public Boolean hasSpoiled(final IResourcePile pile, final int turn, final ICLIHelper cli) {
-		int age = turn - pile.getCreated();
+		final int age = turn - pile.getCreated();
 		if (turn < 0 || pile.getCreated() < 0) { // Either corrupt turn information or non-spoiling rations
 			return false;
 		} else if (pile.getCreated() >= turn) { // Created this turn or in the future
@@ -115,7 +115,7 @@ import org.jetbrains.annotations.Nullable;
 		} else if (keepsFor != null && age < keepsFor) {
 			return false;
 		} else if (keepsForIfCool != null && age < keepsForIfCool) {
-			Boolean resp = cli.inputBooleanInSeries("Was this kept cool?", pile.getKind() + string + "cool");
+			final Boolean resp = cli.inputBooleanInSeries("Was this kept cool?", pile.getKind() + string + "cool");
 			if (resp == null) {
 				return null;
 			} else if (resp) {
@@ -123,7 +123,7 @@ import org.jetbrains.annotations.Nullable;
 			}
 		}
 		if (keepsForRefrigerated != null && age < keepsForRefrigerated) {
-			Boolean resp = cli.inputBooleanInSeries("Was this kept refrigerated?",
+			final Boolean resp = cli.inputBooleanInSeries("Was this kept refrigerated?",
 				pile.getKind() + string + "refrig");
 			if (resp == null) {
 				return null;
@@ -132,7 +132,7 @@ import org.jetbrains.annotations.Nullable;
 			}
 		}
 		if (keepsForFrozen != null && age < keepsForFrozen) {
-			Boolean resp = cli.inputBooleanInSeries("Was this kept frozen?",
+			final Boolean resp = cli.inputBooleanInSeries("Was this kept frozen?",
 				pile.getKind() + string + "frozen");
 			if (resp == null) {
 				return null;
@@ -149,8 +149,8 @@ import org.jetbrains.annotations.Nullable;
 
 	@Nullable
 	public BigDecimal amountSpoiling(final Quantity qty, final ICLIHelper cli) {
-		BigDecimal amt = decimalize(qty.getNumber());
-		BigDecimal fractional = Optional.ofNullable(fractionSpoilingDaily).map(amt::multiply).orElse(null);
+		final BigDecimal amt = decimalize(qty.getNumber());
+		final BigDecimal fractional = Optional.ofNullable(fractionSpoilingDaily).map(amt::multiply).orElse(null);
 		return Stream.of(fractional, minimumSpoilage).filter(Objects::nonNull)
 				.max(Comparator.naturalOrder()).orElseGet(() -> cli.inputDecimal("How many pounds spoil?"));
 	}

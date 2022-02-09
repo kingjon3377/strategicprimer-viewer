@@ -19,7 +19,7 @@ public final class FunctionalGroupLayout extends GroupLayout {
 	private static <SpecificGroup extends Group> SpecificGroup
 			initializeGroup(final SpecificGroup group,
 			                final Object... components) {
-		for (Object component : components) {
+		for (final Object component : components) {
 			if (component instanceof Component) {
 				group.addComponent((Component) component);
 			} else if (component instanceof Group) {

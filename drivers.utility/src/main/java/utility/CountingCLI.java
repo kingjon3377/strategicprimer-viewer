@@ -127,7 +127,7 @@ import common.map.fixtures.mobile.AnimalTracks;
 
 	private <Type> void countSimply(final Class<Type> cls, final Collection<?> stream, final String title,
 	                                final Function<Type, String> extractor) {
-		MappedCounter<Type, String, Integer> counter = simpleCounter(extractor);
+		final MappedCounter<Type, String, Integer> counter = simpleCounter(extractor);
 		stream.stream().filter(cls::isInstance).map(cls::cast).forEach(counter::add);
 		printSummary(counter, title);
 	}
@@ -149,8 +149,8 @@ import common.map.fixtures.mobile.AnimalTracks;
 	}
 
 	private static String countOfKind(final Pair<String, ? extends Number> pair) {
-		String key = pair.getValue0();
-		Number item = pair.getValue1();
+		final String key = pair.getValue0();
+		final Number item = pair.getValue1();
 		return String.format("- %s of %s", item, key);
 	}
 
@@ -191,22 +191,22 @@ import common.map.fixtures.mobile.AnimalTracks;
 
 	@Override
 	public void startDriver() { // TODO: Reduce duplication
-		IMapNG map = model.getMap();
+		final IMapNG map = model.getMap();
 		cli.println(String.format("There are %d tiles in all.",
 			map.getDimensions().getRows() * map.getDimensions().getColumns()));
-		EnumCounter<TileType> tileTypeCounts = new EnumCounter<>();
+		final EnumCounter<TileType> tileTypeCounts = new EnumCounter<>();
 		tileTypeCounts.countMany(map.streamLocations()
 			.map(map::getBaseTerrain).filter(Objects::nonNull).toArray(TileType[]::new));
 		cli.println();
-		for (Pair<TileType, Integer> entry : tileTypeCounts.streamAllCounts()
+		for (final Pair<TileType, Integer> entry : tileTypeCounts.streamAllCounts()
 				.sorted(Comparator.comparing(Pair::getValue1,
 					Comparator.reverseOrder())).collect(Collectors.toList())) {
 			// TODO: Use Stream::forEach to avoid collector step
 			cli.println(String.format("- %d are %s", entry.getValue1(), entry.getValue0()));
 		}
 		cli.println();
-		List<TileFixture> allFixtures = map.streamAllFixtures().collect(Collectors.toList());
-		MappedCounter<Forest, String, BigDecimal> forests = new MappedCounter<>(Forest::getKind,
+		final List<TileFixture> allFixtures = map.streamAllFixtures().collect(Collectors.toList());
+		final MappedCounter<Forest, String, BigDecimal> forests = new MappedCounter<>(Forest::getKind,
 			f -> decimalize(f.getAcres()), DecimalAccumulator::new, BigDecimal.ZERO);
 		allFixtures.stream().filter(Forest.class::isInstance).map(Forest.class::cast)
 			.forEach(forests::add);
@@ -215,7 +215,7 @@ import common.map.fixtures.mobile.AnimalTracks;
 
 		cli.println("Terrain fixtures:");
 		cli.println();
-		List<Collection<TileFixture>> separateTiles = map.streamLocations()
+		final List<Collection<TileFixture>> separateTiles = map.streamLocations()
 				.map(map::getFixtures).collect(Collectors.toList());
 		cli.println(String.format("- %d hilly tiles",
 			separateTiles.stream().filter(c -> c.stream().anyMatch(Hill.class::isInstance))
@@ -227,7 +227,7 @@ import common.map.fixtures.mobile.AnimalTracks;
 				.count()));
 		cli.println(String.format("- %d oases", separateTiles.stream()
 			.filter(c -> c.stream().anyMatch(Oasis.class::isInstance)).count()));
-		List<Collection<River>> tilesRivers = map.streamLocations()
+		final List<Collection<River>> tilesRivers = map.streamLocations()
 				.map(map::getRivers).collect(Collectors.toList());
 		cli.println(String.format("- %d lakes",
 			tilesRivers.stream().filter(CountingCLI::hasLake).count()));
@@ -236,7 +236,7 @@ import common.map.fixtures.mobile.AnimalTracks;
 		// TODO: Count tiles with roads of each type
 		cli.println();
 
-		MappedCounter<Ground, String, Integer> ground = simpleCounter(Ground::getKind);
+		final MappedCounter<Ground, String, Integer> ground = simpleCounter(Ground::getKind);
 		allFixtures.stream().filter(Ground.class::isInstance).map(Ground.class::cast)
 			.forEach(ground::add);
 		this.printSummary(ground,
@@ -247,12 +247,12 @@ import common.map.fixtures.mobile.AnimalTracks;
 		countSimply(MineralVein.class, allFixtures, "Mineral veins:", MineralVein::getKind);
 		countSimply(Mine.class, allFixtures, "Mines:", Mine::getKind);
 
-		MappedCounter<CacheFixture, String, Integer> caches = simpleCounter(CacheFixture::getKind);
+		final MappedCounter<CacheFixture, String, Integer> caches = simpleCounter(CacheFixture::getKind);
 		allFixtures.stream().filter(CacheFixture.class::isInstance).map(CacheFixture.class::cast)
 			.forEach(caches::add);
 		printSummary(caches, "Caches:", CountingCLI::countOfKind);
 
-		MappedCounter<AdventureFixture, String, Integer> adventures =
+		final MappedCounter<AdventureFixture, String, Integer> adventures =
 			simpleCounter(AdventureFixture::getBriefDescription);
 		allFixtures.stream().filter(AdventureFixture.class::isInstance)
 			.map(AdventureFixture.class::cast).forEach(adventures::add);
@@ -273,24 +273,24 @@ import common.map.fixtures.mobile.AnimalTracks;
 				.map(AbstractTown.class::cast)
 				.filter(t -> TownStatus.Active == t.getStatus()).count()));
 
-		MappedCounter<Village, String, Integer> villages = simpleCounter(Village::getRace);
+		final MappedCounter<Village, String, Integer> villages = simpleCounter(Village::getRace);
 		allFixtures.stream().filter(Village.class::isInstance).map(Village.class::cast)
 			.forEach(villages::add);
 		printSummary(villages, "- Villages, grouped by race:", CountingCLI::countSpaceKind);
 
-		MappedCounter<AbstractTown, String, Integer> inactiveTowns = simpleCounter(
+		final MappedCounter<AbstractTown, String, Integer> inactiveTowns = simpleCounter(
 			CountingCLI::townSummary);
 		allFixtures.stream().filter(AbstractTown.class::isInstance).map(AbstractTown.class::cast)
 			.filter(t -> TownStatus.Active != t.getStatus()).forEach(inactiveTowns::add);
 		printSummary(inactiveTowns, "Inactive Communities:");
 
-		MappedCounter<IUnit, String, Integer> independentUnits =
+		final MappedCounter<IUnit, String, Integer> independentUnits =
 			simpleCounter(IUnit::getName);
 		allFixtures.stream().filter(IUnit.class::isInstance).map(IUnit.class::cast)
 			.filter(u -> u.getOwner().isIndependent()).forEach(independentUnits::add);
 		printSummary(independentUnits, "Independent Units:");
 
-		MappedCounter<IWorker, String, Integer> workers = simpleCounter(IWorker::getRace);
+		final MappedCounter<IWorker, String, Integer> workers = simpleCounter(IWorker::getRace);
 		allFixtures.stream().filter(IUnit.class::isInstance).map(IUnit.class::cast)
 			.flatMap(FixtureIterable::stream)
 			.filter(IWorker.class::isInstance).map(IWorker.class::cast).forEach(workers::add);
@@ -306,7 +306,7 @@ import common.map.fixtures.mobile.AnimalTracks;
 		countSimply(Grove.class, allFixtures, "Groves and Orchards:", Grove::getKind);
 		countSimply(Shrub.class, allFixtures, "Shrubs:", Shrub::getKind);
 
-		MappedCounter<Animal, String, Integer> animals =
+		final MappedCounter<Animal, String, Integer> animals =
 			new MappedCounter<>(Animal::getKind, Animal::getPopulation, IntAccumulator::new, 0);
 		allFixtures.stream().filter(Animal.class::isInstance).map(Animal.class::cast)
 			.filter(a -> !a.isTalking()).forEach(animals::add);
@@ -323,7 +323,7 @@ import common.map.fixtures.mobile.AnimalTracks;
 			.count());
 		printSummary(animals, "Animals");
 
-		List<TileFixture> remaining = allFixtures.stream().filter(notA(Animal.class))
+		final List<TileFixture> remaining = allFixtures.stream().filter(notA(Animal.class))
 			.filter(notA(Shrub.class)).filter(notA(Grove.class)).filter(notA(Meadow.class))
 			.filter(notA(Immortal.class)).filter(notA(IFortress.class)).filter(notA(IUnit.class))
 			.filter(notA(AbstractTown.class)).filter(notA(Village.class))
@@ -338,7 +338,7 @@ import common.map.fixtures.mobile.AnimalTracks;
 			cli.println();
 			cli.println("Remaining fixtures:");
 			cli.println();
-			for (TileFixture fixture : remaining) {
+			for (final TileFixture fixture : remaining) {
 				cli.println(String.format("- %s", fixture.getShortDescription()));
 			}
 		}

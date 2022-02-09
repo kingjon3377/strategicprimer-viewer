@@ -69,10 +69,10 @@ public class Ver2TileDrawHelper implements TileDrawHelper {
 		this.observer = observer;
 		this.filter = filter;
 		this.matchers = Collections.unmodifiableList(Arrays.asList(matchers));
-		for (String file : Arrays.asList("trees.png", "mountain.png")) {
+		for (final String file : Arrays.asList("trees.png", "mountain.png")) {
 			try {
 				ImageLoader.loadImage(file);
-			} catch (FileNotFoundException|NoSuchFileException except) {
+			} catch (final FileNotFoundException|NoSuchFileException except) {
 				LOGGER.log(Level.INFO, String.format("Image %s not found", file), except);
 			} catch (final IOException except) {
 				LOGGER.log(Level.SEVERE, "I/O error while loading image " + file, except);
@@ -84,13 +84,13 @@ public class Ver2TileDrawHelper implements TileDrawHelper {
 	                          final Iterable<FixtureMatcher> matchers) {
 		this.observer = observer;
 		this.filter = filter;
-		List<FixtureMatcher> temp = new ArrayList<>();
+		final List<FixtureMatcher> temp = new ArrayList<>();
 		matchers.forEach(temp::add);
 		this.matchers = Collections.unmodifiableList(temp);
-		for (String file : Arrays.asList("trees.png", "mountain.png")) {
+		for (final String file : Arrays.asList("trees.png", "mountain.png")) {
 			try {
 				ImageLoader.loadImage(file);
-			} catch (FileNotFoundException|NoSuchFileException except) {
+			} catch (final FileNotFoundException|NoSuchFileException except) {
 				LOGGER.log(Level.INFO, String.format("Image %s not found", file), except);
 			} catch (final IOException except) {
 				LOGGER.log(Level.SEVERE, "I/O error while loading image " + file, except);
@@ -103,7 +103,7 @@ public class Ver2TileDrawHelper implements TileDrawHelper {
 	 * matcher that matches them.
 	 */
 	private int compareFixtures(final TileFixture one, final TileFixture two) {
-		for (FixtureMatcher matcher : matchers) {
+		for (final FixtureMatcher matcher : matchers) {
 			if (matcher.matches(one)) {
 				if (matcher.matches(two)) {
 					return 0;
@@ -126,11 +126,11 @@ public class Ver2TileDrawHelper implements TileDrawHelper {
 	 * Create the fallback image---made a method so the object reference can be immutable
 	 */
 	private static Image createFallbackImage() {
-		Image fallbackFallback = new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB);
-		String filename = "event_fallback.png";
+		final Image fallbackFallback = new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB);
+		final String filename = "event_fallback.png";
 		try {
 			return ImageLoader.loadImage(filename);
-		} catch (FileNotFoundException|NoSuchFileException except) {
+		} catch (final FileNotFoundException|NoSuchFileException except) {
 			LOGGER.log(Level.SEVERE, String.format("Image %s not found", filename), except);
 			return fallbackFallback;
 		} catch (final IOException except) {
@@ -149,9 +149,9 @@ public class Ver2TileDrawHelper implements TileDrawHelper {
 	 */
 	@Nullable
 	private Color getFixtureColor(final IMapNG map, final Point location) {
-		TileFixture top = getTopFixture(map, location);
+		final TileFixture top = getTopFixture(map, location);
 		if (top != null) {
-			Color color =
+			final Color color =
 				StreamSupport.stream(getDrawableFixtures(map, location).spliterator(), false)
 					.filter(f -> !top.equals(f)).filter(TerrainFixture.class::isInstance)
 					.map(TerrainFixture.class::cast).findFirst()
@@ -172,7 +172,7 @@ public class Ver2TileDrawHelper implements TileDrawHelper {
 	private Image getImage(final String filename) {
 		try {
 			return ImageLoader.loadImage(filename);
-		} catch (FileNotFoundException|NoSuchFileException except) {
+		} catch (final FileNotFoundException|NoSuchFileException except) {
 			if (!missingFiles.contains(filename)) {
 				LOGGER.severe(String.format("images/%s not found", filename));
 				LOGGER.log(Level.FINE, "with stack trace", except);
@@ -190,7 +190,7 @@ public class Ver2TileDrawHelper implements TileDrawHelper {
 	 */
 	private Image getImageForFixture(final TileFixture fixture) {
 		if (fixture instanceof HasImage) {
-			String image = ((HasImage) fixture).getImage();
+			final String image = ((HasImage) fixture).getImage();
 			if (image.isEmpty() || missingFiles.contains(image)) {
 				return getImage(((HasImage) fixture).getDefaultImage());
 			} else {
@@ -206,7 +206,7 @@ public class Ver2TileDrawHelper implements TileDrawHelper {
 	 * Draw an icon at the specified coordinates.
 	 */
 	private void drawIcon(final Graphics pen, final String icon, final Coordinate coordinates, final Coordinate dimensions) {
-		Image image = getImage(icon);
+		final Image image = getImage(icon);
 		pen.drawImage(image, coordinates.getX(), coordinates.getY(),
 			dimensions.getX(), dimensions.getY(), observer);
 	}
@@ -227,7 +227,7 @@ public class Ver2TileDrawHelper implements TileDrawHelper {
 	@Override
 	public void drawTile(final Graphics pen, final IMapNG map, final Point location,
 	                     final Coordinate coordinates, final Coordinate dimensions) {
-		Color localColor;
+		final Color localColor;
 		if (needsFixtureColor(map, location)) {
 			localColor = getFixtureColor(map, location);
 		} else {
@@ -239,17 +239,17 @@ public class Ver2TileDrawHelper implements TileDrawHelper {
 			pen.fillRect(coordinates.getX(), coordinates.getY(),
 				dimensions.getX(), dimensions.getY());
 		}
-		for (River river : map.getRivers(location)) {
+		for (final River river : map.getRivers(location)) {
 			// TODO: Do something to avoid String.format(), which is probably slow
 			drawIcon(pen, String.format("river%d.png", river.ordinal()),
 				coordinates, dimensions);
 		}
-		for (Map.Entry<Direction, Integer> entry : map.getRoads(location).entrySet()) {
+		for (final Map.Entry<Direction, Integer> entry : map.getRoads(location).entrySet()) {
 			// TODO: Do something to avoid String.format(), which is probably slow
 			drawIcon(pen, String.format("road%d.png", entry.getKey().ordinal()),
 				coordinates, dimensions);
 		}
-		TileFixture top = getTopFixture(map, location);
+		final TileFixture top = getTopFixture(map, location);
 		if (top != null) {
 			drawIcon(pen, getImageForFixture(top), coordinates, dimensions);
 		} else if (map.isMountainous(location)) {
@@ -278,7 +278,7 @@ public class Ver2TileDrawHelper implements TileDrawHelper {
 	@Nullable
 	private TileFixture getTopFixture(final IMapNG map, final Point location) {
 		// if we change getDrawbleFixtures() to return Stream, use findFirst().orElse(null)
-		Iterable<TileFixture> fixtures = getDrawableFixtures(map, location);
+		final Iterable<TileFixture> fixtures = getDrawableFixtures(map, location);
 		if (fixtures.iterator().hasNext()) {
 			return fixtures.iterator().next();
 		} else {
@@ -307,9 +307,9 @@ public class Ver2TileDrawHelper implements TileDrawHelper {
 	 * fixture (forest, for example) at the given location.
 	 */
 	private boolean needsFixtureColor(final IMapNG map, final Point location) {
-		TileFixture top = getTopFixture(map, location);
+		final TileFixture top = getTopFixture(map, location);
 		if (hasTerrainFixture(map, location) && top != null) {
-			TileFixture bottom =
+			final TileFixture bottom =
 				StreamSupport.stream(getDrawableFixtures(map, location).spliterator(), false)
 					.filter(TerrainFixture.class::isInstance)
 					.map(TerrainFixture.class::cast)

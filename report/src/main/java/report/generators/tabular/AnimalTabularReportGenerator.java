@@ -66,9 +66,9 @@ public class AnimalTabularReportGenerator implements ITableGenerator<AnimalOrTra
 	public List<List<String>> produce(
 			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
 			final AnimalOrTracks item, final int key, final Point loc, final Map<Integer, Integer> parentMap) {
-		String kind;
-		String age;
-		String population;
+		final String kind;
+		final String age;
+		final String population;
 		// TODO: To avoid unchecked-cast warnings, first check if
 		// instanceof Animal, and make all the other tests inside that
 		// block.
@@ -119,8 +119,8 @@ public class AnimalTabularReportGenerator implements ITableGenerator<AnimalOrTra
 		return this::comparePairsImpl;
 	}
 
-	private int comparePairsImpl(Pair<Point, AnimalOrTracks> one, Pair<Point, AnimalOrTracks> two) {
-		int cmp;
+	private int comparePairsImpl(final Pair<Point, AnimalOrTracks> one, final Pair<Point, AnimalOrTracks> two) {
+		final int cmp;
 		if (hq != null) {
 			cmp = new DistanceComparator(hq, dimensions).compare(one.getValue0(),
 				two.getValue0());

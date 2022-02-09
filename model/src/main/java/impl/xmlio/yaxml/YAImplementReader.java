@@ -25,7 +25,7 @@ import common.xmlio.Warning;
 			throws SPFormatException {
 		requireTag(element, parent, "implement");
 		expectAttributes(element, "kind", "id", "image");
-		Implement retval = new Implement(getParameter(element, "kind"),
+		final Implement retval = new Implement(getParameter(element, "kind"),
 			getOrGenerateID(element), getIntegerParameter(element, "count", 1));
 		spinUntilEnd(element.getName(), stream);
 		retval.setImage(getParameter(element, "image", ""));

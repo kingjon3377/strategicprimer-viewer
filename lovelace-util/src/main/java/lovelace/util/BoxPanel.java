@@ -54,7 +54,7 @@ public class BoxPanel extends JPanel {
 	 * Add a rigid (fixed-size) area between components.
 	 */
 	public final void addRigidArea(final int dimension) {
-		Dimension dimensionObject;
+		final Dimension dimensionObject;
 		switch (axis) {
 			case LineAxis:
 				dimensionObject = new Dimension(dimension, 0);
@@ -74,7 +74,7 @@ public class BoxPanel extends JPanel {
 		final BoxPanel retval = new BoxPanel(BoxAxis.LineAxis);
 		retval.addGlue();
 		boolean first = true;
-		for (Component component : items) {
+		for (final Component component : items) {
 			if (first) {
 				first = false;
 			} else {
@@ -94,7 +94,7 @@ public class BoxPanel extends JPanel {
 		final BoxPanel retval = new BoxPanel(BoxAxis.PageAxis);
 		retval.addGlue();
 		boolean first = true;
-		for (Component component : items) {
+		for (final Component component : items) {
 			if (first) {
 				first = false;
 			} else {

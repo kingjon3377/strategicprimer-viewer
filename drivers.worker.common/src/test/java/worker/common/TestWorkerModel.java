@@ -44,8 +44,8 @@ public class TestWorkerModel {
 	 * Helper method: Flatten any proxies in the list by replacing them with what they are proxies for.
 	 */
 	private <T> Iterable<T> filterProxies(final Iterable<T> list, final Class<? extends ProxyFor<?>> cls) {
-		List<T> retval = new ArrayList<>();
-		for (T item : list) {
+		final List<T> retval = new ArrayList<>();
+		for (final T item : list) {
 			if (cls.isInstance(item)) {
 				((ProxyFor<? extends T>) item).getProxied().forEach(retval::add);
 			} else {
@@ -60,16 +60,16 @@ public class TestWorkerModel {
 	 */
 	@SafeVarargs
 	private final <T> void addItem(final T item, final List<? super T>... lists) {
-		for (List<? super T> list : lists) {
+		for (final List<? super T> list : lists) {
 			list.add(item);
 		}
 	}
 
 	private boolean iterableEquality(final Object one, final Object two) {
 		if (one instanceof Iterable && two instanceof Iterable) {
-			List<Object> listOne = StreamSupport.stream(((Iterable<?>) one).spliterator(), false)
+			final List<Object> listOne = StreamSupport.stream(((Iterable<?>) one).spliterator(), false)
 				.collect(Collectors.toList());
-			List<Object> listTwo = StreamSupport.stream(((Iterable<?>) two).spliterator(), false)
+			final List<Object> listTwo = StreamSupport.stream(((Iterable<?>) two).spliterator(), false)
 				.collect(Collectors.toList());
 			return listOne.containsAll(listTwo) && listTwo.containsAll(listOne);
 		} else {
@@ -82,37 +82,37 @@ public class TestWorkerModel {
 	 */
 	@Test
 	public void testGetUnits() {
-		List<TileFixture> fixtures = new ArrayList<>();
+		final List<TileFixture> fixtures = new ArrayList<>();
 		fixtures.add(new Oasis(14));
 		fixtures.add(new AnimalImpl("animal", false, "wild", 1));
-		List<IUnit> listOne = new ArrayList<>();
-		Player playerOne = new PlayerImpl(0, "player1");
+		final List<IUnit> listOne = new ArrayList<>();
+		final Player playerOne = new PlayerImpl(0, "player1");
 		addItem(new Unit(playerOne, "one", "unitOne", 2), fixtures, listOne);
-		List<IUnit> listTwo = new ArrayList<>();
-		Player playerTwo = new PlayerImpl(1, "player2");
+		final List<IUnit> listTwo = new ArrayList<>();
+		final Player playerTwo = new PlayerImpl(1, "player2");
 		addItem(new Unit(playerTwo, "two", "unitTwo", 3), fixtures, listTwo);
-		Player playerThree = new PlayerImpl(2, "player3");
-		Player playerFour = new PlayerImpl(3, "player4");
-		IMutableFortress fort = new FortressImpl(playerFour, "fort", 4, TownSize.Small);
-		IUnit unit = new Unit(playerThree, "three", "unitThree", 5);
+		final Player playerThree = new PlayerImpl(2, "player3");
+		final Player playerFour = new PlayerImpl(3, "player4");
+		final IMutableFortress fort = new FortressImpl(playerFour, "fort", 4, TownSize.Small);
+		final IUnit unit = new Unit(playerThree, "three", "unitThree", 5);
 		fort.addMember(unit);
-		List<IUnit> listThree = new ArrayList<>();
+		final List<IUnit> listThree = new ArrayList<>();
 		listThree.add(unit);
 		fixtures.add(fort);
 		fixtures.add(new Forest("forest", false, 10));
 		fixtures.add(new Hill(7));
 		addItem(new Unit(playerOne, "four", "unitFour", 6), fixtures, listOne);
 		fixtures.add(new Oasis(8));
-		LinkedList<TileFixture> shuffled = new LinkedList<>(fixtures);
+		final LinkedList<TileFixture> shuffled = new LinkedList<>(fixtures);
 		Collections.shuffle(shuffled);
-		IMutableMapNG map = new SPMapNG(new MapDimensionsImpl(3, 3, 2), new PlayerCollection(), -1);
-		Iterator<Point> locations = map.getLocations().iterator();
+		final IMutableMapNG map = new SPMapNG(new MapDimensionsImpl(3, 3, 2), new PlayerCollection(), -1);
+		final Iterator<Point> locations = map.getLocations().iterator();
 		while (locations.hasNext() && !shuffled.isEmpty()) {
-			Point point = locations.next();
-			TileFixture fixture = shuffled.removeFirst();
+			final Point point = locations.next();
+			final TileFixture fixture = shuffled.removeFirst();
 			map.addFixture(point, fixture);
 		}
-		IWorkerModel model = new WorkerModel(map);
+		final IWorkerModel model = new WorkerModel(map);
 
 		// TODO: Each of these assertions passed a method reference to iterableEquality<IUnit>
 		// as a fourth parameter to assertEquals(); I don't remember what that parameter did ...

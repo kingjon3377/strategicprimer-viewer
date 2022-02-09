@@ -90,7 +90,7 @@ import common.map.fixtures.mobile.worker.IJob;
 			ostream.accept(System.lineSeparator());
 			println(ostream, "(S)he has training or experience in the following Jobs (Skills):");
 			println(ostream, "<ul>");
-			for (IJob job : worker) {
+			for (final IJob job : worker) {
 				ostream.accept("<li>");
 				ostream.accept(Integer.toString(job.getLevel()));
 				ostream.accept(" levels in ");
@@ -115,7 +115,7 @@ import common.map.fixtures.mobile.worker.IJob;
 	@Override
 	public void produce(final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
 	                    final IMapNG map, final Consumer<String> ostream) {
-		List<Pair<IWorker, Point>> workers = fixtures.values().stream()
+		final List<Pair<IWorker, Point>> workers = fixtures.values().stream()
 			.filter(p -> p.getValue1() instanceof IWorker)
 			.sorted(pairComparator)
 			.map(p -> Pair.with((IWorker) p.getValue1(), p.getValue0()))
@@ -123,7 +123,7 @@ import common.map.fixtures.mobile.worker.IJob;
 		if (!workers.isEmpty()) {
 			println(ostream, "<h5>Workers</h5>");
 			println(ostream, "<ul>");
-			for (Pair<IWorker, Point> pair : workers) {
+			for (final Pair<IWorker, Point> pair : workers) {
 				ostream.accept("<li>");
 				produceSingle(fixtures, map, ostream, pair.getValue0(), pair.getValue1());
 				println(ostream, "</li>");

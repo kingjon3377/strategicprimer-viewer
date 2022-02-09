@@ -57,7 +57,7 @@ import common.xmlio.Warning;
 	private static final Map<Class<? extends MobileFixture>, String> TAG_MAP = initTagMap();
 
 	private static Map<Class<? extends MobileFixture>, String> initTagMap() {
-		Map<Class<? extends MobileFixture>, String> retval = new HashMap<>();
+		final Map<Class<? extends MobileFixture>, String> retval = new HashMap<>();
 		retval.put(Animal.class, "animal");
 		retval.put(Centaur.class, "centaur");
 		retval.put(Dragon.class, "dragon");
@@ -84,7 +84,7 @@ import common.xmlio.Warning;
 	private static final Map<String, IntFunction<? extends Immortal>> SIMPLES = initSimples();
 
 	private static Map<String, IntFunction<? extends Immortal>> initSimples() {
-		Map<String, IntFunction<? extends Immortal>> retval = new HashMap<>();
+		final Map<String, IntFunction<? extends Immortal>> retval = new HashMap<>();
 		retval.put("sphinx", Sphinx::new);
 		retval.put("snowbird", Snowbird::new);
 		retval.put("thunderbird", Thunderbird::new);
@@ -102,9 +102,9 @@ import common.xmlio.Warning;
 	}
 
 	private MobileFixture createAnimal(final StartElement element) throws SPFormatException {
-		String tag = element.getName().getLocalPart().toLowerCase(); // TODO: drop toLowerCase if we can use equalsIgnoreCase() everywhere below
-		String kind;
-		boolean tracks;
+		final String tag = element.getName().getLocalPart().toLowerCase(); // TODO: drop toLowerCase if we can use equalsIgnoreCase() everywhere below
+		final String kind;
+		final boolean tracks;
 		if ("animal".equalsIgnoreCase(tag)) {
 			kind = getParameter(element, "kind");
 			// To get the intended meaning of existing maps, we have to parse
@@ -136,7 +136,7 @@ import common.xmlio.Warning;
 				return new AnimalTracks(kind);
 		} else {
 			// TODO: We'd like default to be 1 inside a unit and -1 outside
-			int count = getIntegerParameter(element, "count", 1);
+			final int count = getIntegerParameter(element, "count", 1);
 			return new AnimalImpl(kind,
 				getBooleanParameter(element, "talking", false),
 				getParameter(element, "status", "wild"), getOrGenerateID(element),
@@ -171,7 +171,7 @@ import common.xmlio.Warning;
 	public MobileFixture read(final StartElement element, final QName parent, final Iterable<XMLEvent> stream)
 			throws SPFormatException {
 		requireTag(element, parent, SUPPORTED_TAGS.toArray(new String[0]));
-		MobileFixture retval;
+		final MobileFixture retval;
 		switch (element.getName().getLocalPart().toLowerCase()) {
 		case "animal":
 			retval = createAnimal(element);
@@ -220,8 +220,8 @@ import common.xmlio.Warning;
 			}
 			writeProperty(ostream, "id", obj.getId());
 			if (((Animal) obj).getBorn() >= 0) {
-				Map<String, Integer> maturity = MaturityModel.getMaturityAges();
-				int currentTurn = MaturityModel.getCurrentTurn();
+				final Map<String, Integer> maturity = MaturityModel.getMaturityAges();
+				final int currentTurn = MaturityModel.getCurrentTurn();
 				// Write turn-of-birth if and only if it is fewer turns before the current
 				// turn than this kind of animal's age of maturity.
 				if (!maturity.containsKey(((Animal) obj).getKind()) ||

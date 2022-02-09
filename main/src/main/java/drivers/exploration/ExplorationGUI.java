@@ -62,7 +62,7 @@ import common.map.IMutableMapNG;
 
 	private void createWindow(final MenuBroker menuHandler) {
 		// FIXME: Try to remove the use of 'this' here
-		SPFrame frame = new ExplorationFrame(this, menuHandler);
+		final SPFrame frame = new ExplorationFrame(this, menuHandler);
 		frame.addWindowListener(new WindowCloseListener(menuHandler::actionPerformed));
 		try {
 			menuHandler.registerWindowShower(new AboutDialog(frame,
@@ -76,7 +76,7 @@ import common.map.IMutableMapNG;
 
 	@Override
 	public void startDriver() {
-		MenuBroker menuHandler = new MenuBroker();
+		final MenuBroker menuHandler = new MenuBroker();
 		menuHandler.register(new IOHandler(this, cli),
 			"load", "save", "save as", "new", "load secondary", "save all",
 			"open in map viewer", "open secondary map in map viewer", "close", "quit");

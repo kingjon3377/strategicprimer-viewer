@@ -180,8 +180,8 @@ public class MapCheckerCLI implements UtilityDriver {
 						" has a Job with one suspiciously-named Skill"));
 				retval = true;
 			}
-			for (IJob job : (IWorker) fixture) {
-				for (ISkill skill : job) {
+			for (final IJob job : (IWorker) fixture) {
+				for (final ISkill skill : job) {
 					if ("miscellaneous".equals(skill.getName()) &&
 							skill.getLevel() > 0) {
 						warner.handle(new SPContentWarning(context,
@@ -226,13 +226,13 @@ public class MapCheckerCLI implements UtilityDriver {
 			return true;
 		} else if (fixture instanceof ITownFixture &&
 				((ITownFixture) fixture).getPopulation() != null) {
-			CommunityStats stats = ((ITownFixture) fixture).getPopulation();
+			final CommunityStats stats = ((ITownFixture) fixture).getPopulation();
 			boolean retval = false;
-			for (IResourcePile resource : stats.getYearlyConsumption()) {
+			for (final IResourcePile resource : stats.getYearlyConsumption()) {
 				retval = resourcePlaceholderChecker(terrain, context, resource, warner)
 					|| retval;
 			}
-			for (IResourcePile resource : stats.getYearlyProduction()) {
+			for (final IResourcePile resource : stats.getYearlyProduction()) {
 				retval = resourcePlaceholderChecker(terrain, context, resource, warner)
 					|| retval;
 			}
@@ -249,8 +249,8 @@ public class MapCheckerCLI implements UtilityDriver {
 	private static boolean acreageChecker(final Point context, final Warning warner,
 	                                      final Collection<? extends IFixture> fixtures) {
 		double total = 0.0;
-		boolean retval = false;
-		for (HasExtent<?> fixture : fixtures.stream()
+		final boolean retval = false;
+		for (final HasExtent<?> fixture : fixtures.stream()
 				.filter(HasExtent.class::isInstance).map(HasExtent.class::cast)
 				.filter(MapCheckerCLI::positiveAcres)
 				.collect(Collectors.toList())) { // TODO: convert to forEach() to avoid collector?
@@ -261,7 +261,7 @@ public class MapCheckerCLI implements UtilityDriver {
 				"More explicit acres (%.1f) than tile should allow", total)));
 			return true;
 		}
-		for (ITownFixture fixture : fixtures.stream()
+		for (final ITownFixture fixture : fixtures.stream()
 				.filter(ITownFixture.class::isInstance).map(ITownFixture.class::cast)
 				.collect(Collectors.toList())) { // TODO: try to avoid collector
 			switch (fixture.getTownSize()) {
@@ -299,7 +299,7 @@ public class MapCheckerCLI implements UtilityDriver {
 	private static boolean contentCheck(final Checker checker, final TileType terrain, final Point context,
 	                                    final Warning warner, final Iterable<? extends IFixture> list) {
 		boolean retval = false;
-		for (IFixture fixture : list) {
+		for (final IFixture fixture : list) {
 			if (fixture instanceof FixtureIterable) {
 				retval = contentCheck(checker, terrain, context, warner,
 					(FixtureIterable<?>) fixture) || retval;
@@ -328,7 +328,7 @@ public class MapCheckerCLI implements UtilityDriver {
 
 	public void check(final Path file, final Warning warner) {
 		stdout.accept("Starting " + file);
-		IMapNG map;
+		final IMapNG map;
 		try {
 			map = MapIOHelper.readMap(file, warner);
 		} catch (final MissingFileException except) {
@@ -355,9 +355,9 @@ public class MapCheckerCLI implements UtilityDriver {
 		}
 
 		boolean result = false;
-		for (Checker checker : Stream.concat(Stream.of(new OwnerChecker(map)::check),
+		for (final Checker checker : Stream.concat(Stream.of(new OwnerChecker(map)::check),
 				EXTRA_CHECKS.stream()).collect(Collectors.toList())) {
-			for (Point location : map.getLocations()) {
+			for (final Point location : map.getLocations()) {
 				if (map.getBaseTerrain(location) != null) {
 					result = contentCheck(checker, map.getBaseTerrain(location),
 						location, warner, map.getFixtures(location)) || result;
@@ -366,7 +366,7 @@ public class MapCheckerCLI implements UtilityDriver {
 			LOGGER.fine("Finished a check for " + file);
 		}
 
-		for (Point location : map.getLocations()) {
+		for (final Point location : map.getLocations()) {
 			if (map.getBaseTerrain(location) != null) {
 				// TODO: Make acreageChecker() take terrain so
 				// this can go in the same loop as above
@@ -381,12 +381,12 @@ public class MapCheckerCLI implements UtilityDriver {
 		}
 
 		if (file.toString().contains("world_turn")) {
-			for (Pair<Point, TileFixture> pair : map.streamLocations()
+			for (final Pair<Point, TileFixture> pair : map.streamLocations()
 						.flatMap(l -> map.getFixtures(l).stream()
 							.map(f -> Pair.with(l, f)))
 						.collect(Collectors.toList())) {
-				Point location = pair.getValue0();
-				TileFixture fixture = pair.getValue1();
+				final Point location = pair.getValue0();
+				final TileFixture fixture = pair.getValue1();
 				if (map.getBaseTerrain(location) != null) {
 					result = animalTracksChecker(map.getBaseTerrain(location),
 						location, fixture, warner) || result;
@@ -405,7 +405,7 @@ public class MapCheckerCLI implements UtilityDriver {
 	@Override
 	public void startDriver(final String... args) {
 		// TODO: Convert to stream/functional form?
-		for (String filename : args) {
+		for (final String filename : args) {
 			if (filename == null) {
 				continue;
 			}

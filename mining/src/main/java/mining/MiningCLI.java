@@ -42,9 +42,9 @@ public final class MiningCLI implements UtilityDriver {
 		if (args.length != 2) {
 			throw new IncorrectUsageException(MiningCLIFactory.USAGE);
 		}
-		String filename = args[0];
-		String second = args[1];
-		long seed; // TODO: long instead?
+		final String filename = args[0];
+		final String second = args[1];
+		final long seed; // TODO: long instead?
 		if (options.hasOption("--seed")) {
 			try {
 				seed = Long.parseLong(options.getArgument("--seed"));
@@ -58,20 +58,20 @@ public final class MiningCLI implements UtilityDriver {
 		LodeStatus initial = LodeStatus.parse(second);
 		if (initial == null) {
 			try {
-				int index = Integer.parseInt(second);
+				final int index = Integer.parseInt(second);
 				if (index >= 0 && index < LodeStatus.values().length) {
 					initial = LodeStatus.values()[index];
 				} else {
 					throw new DriverFailedException(new ArrayIndexOutOfBoundsException(),
 							"Status must be valid status or the index of a valid status");
 				}
-			} catch (NumberFormatException except) {
+			} catch (final NumberFormatException except) {
 				throw new DriverFailedException(except,
 					"Status must be a valid status or the index of a valid status");
 			}
 		}
 
-		MineKind mineKind;
+		final MineKind mineKind;
 		// TODO: Support distance-from-center deposits
 		if (options.hasOption("--banded")) {
 			mineKind = MineKind.Banded;
@@ -79,19 +79,19 @@ public final class MiningCLI implements UtilityDriver {
 			mineKind = MineKind.Normal;
 		}
 
-		MiningModel model = new MiningModel(initial, seed, mineKind);
-		int lowerRightRow = model.getMaximumRow();
-		int lowerRightColumn = model.getMaximumColumn();
+		final MiningModel model = new MiningModel(initial, seed, mineKind);
+		final int lowerRightRow = model.getMaximumRow();
+		final int lowerRightColumn = model.getMaximumColumn();
 
-		Path path = Paths.get(filename);
+		final Path path = Paths.get(filename);
 		if (Files.exists(path)) {
 			throw new DriverFailedException(new Exception(
 				String.format("Output file %s already exists", filename)));
 		}
-		try (BufferedWriter writer = Files.newBufferedWriter(path, StandardCharsets.UTF_8)) {
+		try (final BufferedWriter writer = Files.newBufferedWriter(path, StandardCharsets.UTF_8)) {
 			for (int row = 0; row <= lowerRightRow; row++) {
 				for (int col = 0; col <= lowerRightColumn; col++) {
-					LodeStatus status = model.statusAt(row, col);
+					final LodeStatus status = model.statusAt(row, col);
 					if (status == null) {
 						writer.write("-1,");
 					} else {

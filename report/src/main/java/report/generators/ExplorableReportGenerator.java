@@ -65,17 +65,17 @@ public class ExplorableReportGenerator extends AbstractReportGenerator<Explorabl
 	@Override
 	public void produce(final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
 	                    final IMapNG map, final Consumer<String> ostream) {
-		List<Point> portals = new PointList("Portals to other worlds: ");
-		List<Point> battles = new PointList("Signs of long-ago battles on the following tiles:");
-		List<Point> caves = new PointList("Caves beneath the following tiles: ");
-		for (Pair<Point, ExplorableFixture> pair : fixtures.values().stream()
+		final List<Point> portals = new PointList("Portals to other worlds: ");
+		final List<Point> battles = new PointList("Signs of long-ago battles on the following tiles:");
+		final List<Point> caves = new PointList("Caves beneath the following tiles: ");
+		for (final Pair<Point, ExplorableFixture> pair : fixtures.values().stream()
 				.filter(p -> p.getValue1() instanceof ExplorableFixture)
 				.sorted(pairComparator)
 				.map(p -> Pair.with(p.getValue0(),
 					(ExplorableFixture) p.getValue1()))
 				.collect(Collectors.toList())) {
-			Point loc = pair.getValue0();
-			ExplorableFixture item = pair.getValue1();
+			final Point loc = pair.getValue0();
+			final ExplorableFixture item = pair.getValue1();
 			if (item instanceof Portal) {
 				portals.add(loc);
 			} else if (item instanceof Battlefield) {
@@ -91,7 +91,7 @@ public class ExplorableReportGenerator extends AbstractReportGenerator<Explorabl
 		if (!caves.isEmpty() || !battles.isEmpty() || !portals.isEmpty()) {
 			println(ostream, "<h4>Caves, Battlefields, and Portals</h4>");
 			ostream.accept("<ul>");
-			for (List<Point> list : Arrays.asList(caves, battles, portals)) {
+			for (final List<Point> list : Arrays.asList(caves, battles, portals)) {
 				if (!list.isEmpty()) {
 					ostream.accept("<li>");
 					ostream.accept(list.toString());

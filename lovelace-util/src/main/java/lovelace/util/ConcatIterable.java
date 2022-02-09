@@ -16,8 +16,9 @@ public final class ConcatIterable<T> implements Iterable<T> {
 
 	@SafeVarargs
 	public ConcatIterable(final Iterable<? extends T>... iterables) {
-		List<Iterable<? extends T>> temp = new ArrayList<>();
-		for (Iterable<? extends T> iter : iterables) {
+		final List<Iterable<? extends T>> temp = new ArrayList<>();
+		// TODO: addAll()
+		for (final Iterable<? extends T> iter : iterables) {
 			temp.add(iter);
 		}
 		wrapped = Collections.unmodifiableList(temp);
@@ -32,7 +33,7 @@ public final class ConcatIterable<T> implements Iterable<T> {
 		private final Deque<Iterator<? extends T>> wrapped = new LinkedList<>();
 
 		public ConcatIterator(final List<Iterable<? extends T>> wrapped) {
-			for (Iterable<? extends T> it : wrapped) {
+			for (final Iterable<? extends T> it : wrapped) {
 				this.wrapped.addLast(it.iterator());
 			}
 		}
@@ -45,7 +46,7 @@ public final class ConcatIterable<T> implements Iterable<T> {
 		@Override
 		public T next() {
 			while (!wrapped.isEmpty()) {
-				Iterator<? extends T> first = wrapped.peekFirst();
+				final Iterator<? extends T> first = wrapped.peekFirst();
 				if (first.hasNext()) {
 					return first.next();
 				} else {

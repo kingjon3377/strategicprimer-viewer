@@ -25,14 +25,14 @@ import common.xmlio.Warning;
 			throws SPFormatException {
 		requireTag(element, parent, "ground");
 		expectAttributes(element, "kind", "ground", "exposed", "id", "image");
-		String kind = getParamWithDeprecatedForm(element, "kind", "ground");
+		final String kind = getParamWithDeprecatedForm(element, "kind", "ground");
 		requireNonEmptyParameter(element, "exposed", true);
 		spinUntilEnd(element.getName(), stream);
-		int id = getIntegerParameter(element, "id", -1);
+		final int id = getIntegerParameter(element, "id", -1);
 		if (id >= 0) {
 			registerID(id, element.getLocation());
 		}
-		Ground retval = new Ground(id, kind, getBooleanParameter(element, "exposed"));
+		final Ground retval = new Ground(id, kind, getBooleanParameter(element, "exposed"));
 		retval.setImage(getParameter(element, "image", ""));
 		return retval;
 	}

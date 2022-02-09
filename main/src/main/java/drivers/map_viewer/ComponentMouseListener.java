@@ -46,15 +46,15 @@ import java.util.function.Consumer;
 	private final TerrainChangingMenu menu;
 
 	private String terrainFixturesAndTop(final Point point) {
-		IMapNG map = model.getMap();
-		StringBuilder builder = new StringBuilder();
-		Consumer<TileFixture> c = fixture -> {
+		final IMapNG map = model.getMap();
+		final StringBuilder builder = new StringBuilder();
+		final Consumer<TileFixture> c = fixture -> {
 			if (!builder.toString().isEmpty()) {
 				builder.append("<br />");
 			}
 			builder.append(fixture.getShortDescription());
 		};
-		List<TileFixture> stream = map.getFixtures(point).stream().filter(zof).sorted(comparator)
+		final List<TileFixture> stream = map.getFixtures(point).stream().filter(zof).sorted(comparator)
 			.collect(Collectors.toList());
 		if (!stream.isEmpty()) {
 			c.accept(stream.get(0));
@@ -64,10 +64,10 @@ import java.util.function.Consumer;
 	}
 
 	private Point pointFor(final MouseEvent event) {
-		java.awt.Point eventPoint = event.getPoint();
-		MapDimensions mapDimensions = model.getMapDimensions();
-		int tileSize = scaleZoom(model.getZoomLevel(), mapDimensions.getVersion());
-		VisibleDimensions visibleDimensions = model.getVisibleDimensions();
+		final java.awt.Point eventPoint = event.getPoint();
+		final MapDimensions mapDimensions = model.getMapDimensions();
+		final int tileSize = scaleZoom(model.getZoomLevel(), mapDimensions.getVersion());
+		final VisibleDimensions visibleDimensions = model.getVisibleDimensions();
 		return new Point((int) ((eventPoint.getY() / tileSize) + visibleDimensions.getMinimumRow()),
 			(int) ((eventPoint.getX() / tileSize) + visibleDimensions.getMinimumColumn()));
 	}
@@ -75,11 +75,11 @@ import java.util.function.Consumer;
 	@Override
 	@Nullable
 	public String getToolTipText(final MouseEvent event) {
-		MapDimensions mapDimensions = model.getMapDimensions();
-		Point point = pointFor(event);
+		final MapDimensions mapDimensions = model.getMapDimensions();
+		final Point point = pointFor(event);
 		if (point.isValid() && point.getRow() < mapDimensions.getRows() &&
 				point.getColumn() < mapDimensions.getColumns()) {
-			String mountainString = (model.getMap().isMountainous(point)) ?
+			final String mountainString = (model.getMap().isMountainous(point)) ?
 				", mountainous" : "";
 			return String.format("<html><body>%s: %s%s<br />%s</body></html>", point,
 				Optional.ofNullable(model.getMap().getBaseTerrain(point))
@@ -93,8 +93,8 @@ import java.util.function.Consumer;
 	@Override
 	public void mouseClicked(final MouseEvent event) {
 		event.getComponent().requestFocusInWindow();
-		MapDimensions mapDimensions = model.getMapDimensions();
-		Point point = pointFor(event);
+		final MapDimensions mapDimensions = model.getMapDimensions();
+		final Point point = pointFor(event);
 		LOGGER.finer("User clicked on " + point);
 		if (point.isValid() && point.getRow() < mapDimensions.getRows() &&
 				point.getColumn() < mapDimensions.getColumns()) {
@@ -124,9 +124,9 @@ import java.util.function.Consumer;
 	}
 
 	private Pair<Integer, Integer> screenPointFor(final Point point) {
-		MapDimensions mapDimensions = model.getMapDimensions();
-		int tileSize = scaleZoom(model.getZoomLevel(), mapDimensions.getVersion());
-		VisibleDimensions visibleDimensions = model.getVisibleDimensions();
+		final MapDimensions mapDimensions = model.getMapDimensions();
+		final int tileSize = scaleZoom(model.getZoomLevel(), mapDimensions.getVersion());
+		final VisibleDimensions visibleDimensions = model.getVisibleDimensions();
 		return Pair.with(
 			(point.getColumn() - visibleDimensions.getMinimumColumn()) * tileSize + tileSize / 2,
 			(point.getRow() - visibleDimensions.getMinimumRow()) * tileSize + tileSize / 2);
@@ -134,7 +134,7 @@ import java.util.function.Consumer;
 
 	public void showMenuAtSelection(@Nullable final Component parent) {
 		model.setInteraction(model.getSelection());
-		Pair<Integer, Integer> pair = screenPointFor(model.getSelection());
+		final Pair<Integer, Integer> pair = screenPointFor(model.getSelection());
 		menu.show(parent, pair.getValue0(), pair.getValue1());
 	}
 

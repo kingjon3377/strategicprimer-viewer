@@ -50,8 +50,8 @@ final class DBMineralHandler extends AbstractDatabaseWriter<MineralFixture, Poin
 			"VALUES(?, ?, ?, ?, ?, ?, ?, ?);";
 	@Override
 	public void write(final DB db, final MineralFixture obj, final Point context) {
-		String type;
-		boolean exposed;
+		final String type;
+		final boolean exposed;
 		if (obj instanceof MineralVein) {
 			type = "mineral";
 			exposed = ((MineralVein) obj).isExposed();
@@ -67,15 +67,15 @@ final class DBMineralHandler extends AbstractDatabaseWriter<MineralFixture, Poin
 
 	private TryBiConsumer<Map<String, Object>, Warning, Exception> readMineralVein(final IMutableMapNG map) {
 		return (dbRow, warner) -> {
-			int row = (Integer) dbRow.get("row");
-			int column = (Integer) dbRow.get("column");
-			int id = (Integer) dbRow.get("id");
-			String kind = (String) dbRow.get("kind");
-			Boolean exposed = /* DBMapReader.databaseBoolean(dbRow.get("exposed")) */ // FIXME
+			final int row = (Integer) dbRow.get("row");
+			final int column = (Integer) dbRow.get("column");
+			final int id = (Integer) dbRow.get("id");
+			final String kind = (String) dbRow.get("kind");
+			final Boolean exposed = /* DBMapReader.databaseBoolean(dbRow.get("exposed")) */ // FIXME
 				(Boolean) dbRow.get("exposed"); // This will compile but probably won't work
-			int dc = (Integer) dbRow.get("dc");
-			String image = (String) dbRow.get("image");
-			MineralVein mineral = new MineralVein(kind, exposed, dc, id);
+			final int dc = (Integer) dbRow.get("dc");
+			final String image = (String) dbRow.get("image");
+			final MineralVein mineral = new MineralVein(kind, exposed, dc, id);
 			if (image != null) {
 				mineral.setImage(image);
 			}
@@ -85,13 +85,13 @@ final class DBMineralHandler extends AbstractDatabaseWriter<MineralFixture, Poin
 
 	private TryBiConsumer<Map<String, Object>, Warning, Exception> readStoneDeposit(final IMutableMapNG map) {
 		return (dbRow, warner) -> {
-			int row = (Integer) dbRow.get("row");
-			int column = (Integer) dbRow.get("column");
-			int id = (Integer) dbRow.get("id");
-			StoneKind kind = StoneKind.parse((String) dbRow.get("kind"));
-			int dc = (Integer) dbRow.get("dc");
-			String image = (String) dbRow.get("image");
-			StoneDeposit stone = new StoneDeposit(kind, dc, id);
+			final int row = (Integer) dbRow.get("row");
+			final int column = (Integer) dbRow.get("column");
+			final int id = (Integer) dbRow.get("id");
+			final StoneKind kind = StoneKind.parse((String) dbRow.get("kind"));
+			final int dc = (Integer) dbRow.get("dc");
+			final String image = (String) dbRow.get("image");
+			final StoneDeposit stone = new StoneDeposit(kind, dc, id);
 			if (image != null) {
 				stone.setImage(image);
 			}

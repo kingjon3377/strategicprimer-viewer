@@ -194,7 +194,7 @@ public class FortressImpl implements IMutableFortress {
 			retval = new FortressImpl(owner, "unknown", id, townSize);
 		} else {
 			retval = new FortressImpl(owner, name, id, townSize);
-			for (FortressMember member : members) {
+			for (final FortressMember member : members) {
 				retval.addMember(member.copy(false));
 			}
 		}
@@ -218,7 +218,7 @@ public class FortressImpl implements IMutableFortress {
 	@Override
 	public boolean equalsIgnoringID(final IFixture fixture) {
 		if (fixture instanceof IFortress) {
-			Set<FortressMember> theirs =
+			final Set<FortressMember> theirs =
 				((IFortress) fixture).stream().collect(Collectors.toSet());
 			return name.equals(((IFortress) fixture).getName()) &&
 				owner.getPlayerId() == ((IFortress) fixture).getOwner().getPlayerId() &&
@@ -235,7 +235,7 @@ public class FortressImpl implements IMutableFortress {
 			.append(owner.toString()).append(". Members:");
 		int count = 0;
 		final int size = members.size();
-		for (FortressMember member : members) {
+		for (final FortressMember member : members) {
 			builder.append(System.lineSeparator());
 			builder.append("\t\t\t");
 			if (member instanceof IUnit) {
@@ -283,12 +283,12 @@ public class FortressImpl implements IMutableFortress {
 		}
 		if ((name.equals(fort.getName()) || "unknown".equals(fort.getName())) &&
 				fort.getOwner().getPlayerId() == owner.getPlayerId()) {
-			Map<Integer, FortressMember> ours = members.stream()
+			final Map<Integer, FortressMember> ours = members.stream()
 				.collect(Collectors.toMap(FortressMember::getId, m -> m));
 			boolean retval = true;
-			Consumer<String> localFormat = s -> report.accept(String.format(
+			final Consumer<String> localFormat = s -> report.accept(String.format(
 				"In fortress %s (ID #%d):\t%s", name, id, s));
-			for (FortressMember member : fort) {
+			for (final FortressMember member : fort) {
 				if (ours.containsKey(member.getId())) {
 					if (!ours.get(member.getId()).isSubset(member, localFormat)) {
 						retval = false;

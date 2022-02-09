@@ -27,11 +27,11 @@ import java.util.stream.Collectors;
 			throws SPFormatException {
 		requireTag(element, parent, "ground");
 		expectAttributes(element, warner, "id", "kind", "ground", "image", "exposed");
-		int id = getIntegerAttribute(element, "id", -1, warner);
+		final int id = getIntegerAttribute(element, "id", -1, warner);
 		if (id >= 0) {
 			idFactory.register(id, warner, element.getLocation());
 		}
-		String kind = getAttrWithDeprecatedForm(element, "kind", "ground", warner);
+		final String kind = getAttrWithDeprecatedForm(element, "kind", "ground", warner);
 		spinUntilEnd(element.getName(), stream);
 		return setImage(new Ground(id, kind, getBooleanAttribute(element, "exposed")),
 			element, warner);
@@ -42,11 +42,11 @@ import java.util.stream.Collectors;
 			throws SPFormatException {
 		requireTag(element, parent, "forest");
 		expectAttributes(element, warner, "id", "kind", "rows", "image", "acres");
-		int id = getIntegerAttribute(element, "id", -1, warner);
+		final int id = getIntegerAttribute(element, "id", -1, warner);
 		if (id >= 0) {
 			idFactory.register(id, warner, element.getLocation());
 		}
-		Forest retval = new Forest(getAttribute(element, "kind"),
+		final Forest retval = new Forest(getAttribute(element, "kind"),
 			getBooleanAttribute(element, "rows", false), id,
 			getNumericAttribute(element, "acres", -1));
 		spinUntilEnd(element.getName(), stream);
@@ -92,7 +92,7 @@ import java.util.stream.Collectors;
 		spinUntilEnd(element.getName(), stream);
 		try {
 			return River.parse(getAttribute(element, "direction"));
-		} catch (ParseException|IllegalArgumentException except) {
+		} catch (final ParseException|IllegalArgumentException except) {
 			throw new MissingPropertyException(element, "direction", except);
 		}
 	}
@@ -109,7 +109,7 @@ import java.util.stream.Collectors;
 
 	public static void writeRivers(final XMLStreamWriter ostream, final Collection<River> obj, final int indent)
 			throws MalformedXMLException {
-		for (River river : obj.stream().sorted().collect(Collectors.toList())) {
+		for (final River river : obj.stream().sorted().collect(Collectors.toList())) {
 			writeRiver(ostream, river, indent);
 		}
 	}

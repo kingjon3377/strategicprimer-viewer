@@ -45,9 +45,9 @@ public class EchoDriver implements UtilityDriver {
 	@Override
 	public void startDriver(final String... args) throws DriverFailedException {
 		if (args.length == 2) {
-			String inArg = args[0];
-			String outArg = args[1];
-			IMutableMapNG map;
+			final String inArg = args[0];
+			final String outArg = args[1];
+			final IMutableMapNG map;
 			try {
 				map = MapIOHelper.readMap(Paths.get(inArg), Warning.IGNORE);
 			} catch (final MissingFileException except) {
@@ -59,10 +59,10 @@ public class EchoDriver implements UtilityDriver {
 			} catch (final SPFormatException except) {
 				throw new DriverFailedException(except, "SP map format error in " + inArg);
 			}
-			IDRegistrar idFactory = new IDFactoryFiller().createIDFactory(map);
-			int columnCount = map.getDimensions().getColumns();
-			for (Point location : map.getLocations()) {
-				Forest mainForest = map.getFixtures(location).stream()
+			final IDRegistrar idFactory = new IDFactoryFiller().createIDFactory(map);
+			final int columnCount = map.getDimensions().getColumns();
+			for (final Point location : map.getLocations()) {
+				final Forest mainForest = map.getFixtures(location).stream()
 					.filter(Forest.class::isInstance).map(Forest.class::cast)
 					.findFirst().orElse(null);
 				if (mainForest != null && mainForest.getId() < 0) {
@@ -70,7 +70,7 @@ public class EchoDriver implements UtilityDriver {
 						1147200 + location.getRow() * columnCount +
 							location.getColumn()));
 				}
-				Ground mainGround = map.getFixtures(location).stream()
+				final Ground mainGround = map.getFixtures(location).stream()
 					.filter(Ground.class::isInstance).map(Ground.class::cast)
 					.findFirst().orElse(null);
 				if (mainGround != null && mainGround.getId() < 0) {
@@ -78,7 +78,7 @@ public class EchoDriver implements UtilityDriver {
 						1171484 + location.getRow() * columnCount +
 							location.getColumn()));
 				}
-				for (TileFixture fixture : map.getFixtures(location)) {
+				for (final TileFixture fixture : map.getFixtures(location)) {
 					if (fixture instanceof Forest && fixture.getId() < 0) {
 						((Forest) fixture).setId(idFactory.createID());
 					} else if (fixture instanceof Ground && fixture.getId() < 0) {
@@ -89,7 +89,7 @@ public class EchoDriver implements UtilityDriver {
 
 			if (options.hasOption("--current-turn")) {
 				try {
-					int currentTurn = Integer.parseInt(
+					final int currentTurn = Integer.parseInt(
 						options.getArgument("--current-turn"));
 					map.setCurrentTurn(currentTurn);
 				} catch (final NumberFormatException except) {

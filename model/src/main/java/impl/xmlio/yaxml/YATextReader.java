@@ -32,8 +32,8 @@ import impl.xmlio.exceptions.UnwantedChildException;
 			throws SPFormatException {
 		requireTag(element, parent, "text");
 		expectAttributes(element, "turn", "image");
-		StringBuilder builder = new StringBuilder();
-		for (XMLEvent event : stream) {
+		final StringBuilder builder = new StringBuilder();
+		for (final XMLEvent event : stream) {
 			if (event instanceof StartElement) {
 				throw new UnwantedChildException(element.getName(), (StartElement) event);
 			} else if (event instanceof Characters) {
@@ -42,7 +42,7 @@ import impl.xmlio.exceptions.UnwantedChildException;
 				break;
 			}
 		}
-		TextFixture fixture = new TextFixture(builder.toString().trim(),
+		final TextFixture fixture = new TextFixture(builder.toString().trim(),
 			getIntegerParameter(element, "turn", -1));
 		fixture.setImage(getParameter(element, "image", ""));
 		return fixture;

@@ -56,10 +56,10 @@ public class SPFrame extends JFrame implements ISPWindow {
 		setTitle(refreshTitle());
 
 		if (driver instanceof ModelDriver) {
-			ModelDriver md = (ModelDriver) driver;
+			final ModelDriver md = (ModelDriver) driver;
 			md.getModel().addMapChangeListener(new MapChangeListener() {
 				private void impl() {
-					Path filename = md.getModel().getMap().getFilename();
+					final Path filename = md.getModel().getMap().getFilename();
 					getRootPane().putClientProperty("Window.documentFile", filename);
 					setTitle(refreshTitle());
 				}
@@ -112,7 +112,7 @@ public class SPFrame extends JFrame implements ISPWindow {
 	private String refreshTitle() {
 		if (driver instanceof ModelDriver &&
 				((ModelDriver) driver).getModel().getMap().getFilename() != null) {
-			IMapNG map = ((ModelDriver) driver).getModel().getMap();
+			final IMapNG map = ((ModelDriver) driver).getModel().getMap();
 			return String.format("%s%s | %s", map.isModified() ? "*" : "",
 				map.getFilename(), windowTitle);
 		} else {

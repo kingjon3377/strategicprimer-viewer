@@ -53,16 +53,16 @@ final class DBFieldHandler extends AbstractDatabaseWriter<Meadow, Point> impleme
 
 	private TryBiConsumer<Map<String, Object>, Warning, Exception> readMeadow(final IMutableMapNG map) {
 		return (dbRow, warner) -> {
-			int row = (Integer) dbRow.get("row");
-			int column = (Integer) dbRow.get("column");
-			int id = (Integer) dbRow.get("id");
-			String type = (String) dbRow.get("type");
-			String kind = (String) dbRow.get("kind");
-			Boolean cultivated = /*DBMapReader.databaseBoolean(dbRow.get("cultivated"))*///FIXME
+			final int row = (Integer) dbRow.get("row");
+			final int column = (Integer) dbRow.get("column");
+			final int id = (Integer) dbRow.get("id");
+			final String type = (String) dbRow.get("type");
+			final String kind = (String) dbRow.get("kind");
+			final Boolean cultivated = /*DBMapReader.databaseBoolean(dbRow.get("cultivated"))*///FIXME
 				(Boolean) dbRow.get("cultivated"); // This will compile, probably won't work
-			FieldStatus status = FieldStatus.parse((String) dbRow.get("status"));
-			String acresString = (String) dbRow.get("acres");
-			String image = (String) dbRow.get("image");
+			final FieldStatus status = FieldStatus.parse((String) dbRow.get("status"));
+			final String acresString = (String) dbRow.get("acres");
+			final String image = (String) dbRow.get("image");
 			Number acres;
 			try {
 				acres = Integer.parseInt(acresString);
@@ -80,7 +80,7 @@ final class DBFieldHandler extends AbstractDatabaseWriter<Meadow, Point> impleme
 			default:
 				throw new IllegalArgumentException("Unhandled field type");
 			}
-			Meadow meadow = new Meadow(kind, field, cultivated, id, status, acres);
+			final Meadow meadow = new Meadow(kind, field, cultivated, id, status, acres);
 			if (image != null) {
 				meadow.setImage(image);
 			}

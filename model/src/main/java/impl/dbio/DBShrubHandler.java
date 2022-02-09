@@ -43,13 +43,13 @@ final class DBShrubHandler extends AbstractDatabaseWriter<Shrub, Point> implemen
 
 	private TryBiConsumer<Map<String, Object>, Warning, Exception> readShrub(final IMutableMapNG map) {
 		return (dbRow, warner) -> {
-			int row = (Integer) dbRow.get("row");
-			int column = (Integer) dbRow.get("column");
-			int id = (Integer) dbRow.get("id");
-			String kind = (String) dbRow.get("kind");
-			Integer count = (Integer) dbRow.get("count");
-			String image = (String) dbRow.get("image");
-			Shrub shrub = new Shrub(kind, id, count == null ? -1 : count);
+			final int row = (Integer) dbRow.get("row");
+			final int column = (Integer) dbRow.get("column");
+			final int id = (Integer) dbRow.get("id");
+			final String kind = (String) dbRow.get("kind");
+			final Integer count = (Integer) dbRow.get("count");
+			final String image = (String) dbRow.get("image");
+			final Shrub shrub = new Shrub(kind, id, count == null ? -1 : count);
 			if (image != null) {
 				shrub.setImage(image);
 			}

@@ -43,7 +43,7 @@ import common.map.fixtures.mobile.IUnit;
 		model = mapModel;
 		visibleDimensions = mapModel.getVisibleDimensions();
 		mapDimensions = mapModel.getMapDimensions();
-		Point cursor = mapModel.getCursor();
+		final Point cursor = mapModel.getCursor();
 		horizontalBarModel = horizontal.getModel();
 		horizontalBarModel.setRangeProperties(constrainToRange(cursor.getColumn(), 0,
 				mapDimensions.getColumns() - 1),
@@ -59,7 +59,7 @@ import common.map.fixtures.mobile.IUnit;
 		vertical.setInputVerifier(ScrollInputVerifier.vertical(
 				mapModel::getMapDimensions));
 
-		ScrollAdjustmentListener adjustmentListener = new ScrollAdjustmentListener(model);
+		final ScrollAdjustmentListener adjustmentListener = new ScrollAdjustmentListener(model);
 
 		horizontalBarModel.addChangeListener(adjustmentListener::horizontalScroll);
 		verticalBarModel.addChangeListener(adjustmentListener::verticalScroll);
@@ -106,12 +106,12 @@ import common.map.fixtures.mobile.IUnit;
 
 	private void setRangeProperties(final BoundedRangeModel model, final int val, final int extent,
 	                                final int minimum, final int maximum) {
-		int differences = countChanges(model, val, minimum, extent, maximum);
+		final int differences = countChanges(model, val, minimum, extent, maximum);
 		if (differences <= 0) {
 			return;
 		} else if (differences < 3) {
 			// TODO: Set ScrollAdjustmentListener.adjusting?
-			boolean oldVIA = model.getValueIsAdjusting();
+			final boolean oldVIA = model.getValueIsAdjusting();
 			model.setValueIsAdjusting(true);
 			if (model.getValue() != val) {
 				model.setValue(val);
@@ -163,7 +163,7 @@ import common.map.fixtures.mobile.IUnit;
 	 */
 	@Override
 	public void cursorPointChanged(@Nullable final Point previous, final Point newCursor) {
-		VisibleDimensions temp = model.getVisibleDimensions();
+		final VisibleDimensions temp = model.getVisibleDimensions();
 		if (!temp.getColumns().contains(newCursor.getColumn()) &&
 				horizontalBarModel.getValue() != Math.max(newCursor.getColumn(), 0)) {
 			horizontalBarModel.setValue(Math.max(newCursor.getColumn(), 0));

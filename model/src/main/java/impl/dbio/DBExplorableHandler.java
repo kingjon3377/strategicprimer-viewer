@@ -54,7 +54,7 @@ final class DBExplorableHandler extends AbstractDatabaseWriter<ExplorableFixture
 
 	@Override
 	public void write(final DB db, final ExplorableFixture obj, final Point context) {
-		String sql;
+		final String sql;
 		if (obj instanceof Cave) {
 			sql = CAVE_INSERT;
 		} else if (obj instanceof Battlefield) {
@@ -68,12 +68,12 @@ final class DBExplorableHandler extends AbstractDatabaseWriter<ExplorableFixture
 
 	private TryBiConsumer<Map<String, Object>, Warning, Exception> readCave(final IMutableMapNG map) {
 		return (dbRow, warner) -> {
-			int row = (Integer) dbRow.get("row");
-			int column = (Integer) dbRow.get("column");
-			int id = (Integer) dbRow.get("id");
-			int dc = (Integer) dbRow.get("dc");
-			String image = (String) dbRow.get("image");
-			Cave cave = new Cave(dc, id);
+			final int row = (Integer) dbRow.get("row");
+			final int column = (Integer) dbRow.get("column");
+			final int id = (Integer) dbRow.get("id");
+			final int dc = (Integer) dbRow.get("dc");
+			final String image = (String) dbRow.get("image");
+			final Cave cave = new Cave(dc, id);
 			if (image != null) {
 				cave.setImage(image);
 			}
@@ -83,12 +83,12 @@ final class DBExplorableHandler extends AbstractDatabaseWriter<ExplorableFixture
 
 	private TryBiConsumer<Map<String, Object>, Warning, Exception> readBattlefield(final IMutableMapNG map) {
 		return (dbRow, warner) -> {
-			int row = (Integer) dbRow.get("row");
-			int column = (Integer) dbRow.get("column");
-			int id = (Integer) dbRow.get("id");
-			int dc = (Integer) dbRow.get("dc");
-			String image = (String) dbRow.get("image");
-			Battlefield battlefield = new Battlefield(dc, id);
+			final int row = (Integer) dbRow.get("row");
+			final int column = (Integer) dbRow.get("column");
+			final int id = (Integer) dbRow.get("id");
+			final int dc = (Integer) dbRow.get("dc");
+			final String image = (String) dbRow.get("image");
+			final Battlefield battlefield = new Battlefield(dc, id);
 			if (image != null) {
 				battlefield.setImage(image);
 			}

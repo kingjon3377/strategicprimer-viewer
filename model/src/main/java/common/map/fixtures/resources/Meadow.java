@@ -129,7 +129,7 @@ public class Meadow implements HarvestableFixture, HasExtent<Meadow> {
 
 	@Override
 	public Meadow copy(final boolean zero) {
-		Meadow retval = new Meadow(kind, field, cultivated, id, status,
+		final Meadow retval = new Meadow(kind, field, cultivated, id, status,
 			(zero) ? -1 : acres);
 		retval.setImage(image);
 		return retval;
@@ -147,7 +147,7 @@ public class Meadow implements HarvestableFixture, HasExtent<Meadow> {
 
 	@Override
 	public String getShortDescription() {
-		String acreage;
+		final String acreage;
 		if (acres.doubleValue() <= 0.0) {
 			acreage = "";
 		} else {
@@ -204,12 +204,12 @@ public class Meadow implements HarvestableFixture, HasExtent<Meadow> {
 				report.accept("One field, one meadow for ID #" + id);
 				return false;
 			} else if (!kind.equals(((Meadow) other).getKind())) {
-				String fieldString = (field) ? "field" : "meadow";
+				final String fieldString = (field) ? "field" : "meadow";
 				report.accept(String.format("In %s with ID #%d:\tKinds differ",
 					fieldString, id));
 				return false;
 			}
-			Consumer<String> localReport;
+			final Consumer<String> localReport;
 			if (field) {
 				localReport = s -> report.accept(String.format("In %s field (ID #%d):\t%s",
 					kind, id, s));

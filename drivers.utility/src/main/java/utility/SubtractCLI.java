@@ -29,7 +29,7 @@ public class SubtractCLI implements CLIDriver {
 
 	@Override
 	public void startDriver() {
-		for (Point loc : model.getMap().getLocations()) {
+		for (final Point loc : model.getMap().getLocations()) {
 			model.subtractAtPoint(loc);
 		}
 	}

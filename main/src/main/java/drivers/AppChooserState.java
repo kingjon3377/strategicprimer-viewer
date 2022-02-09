@@ -51,10 +51,10 @@ import lovelace.util.ResourceInputStream;
 	 */
 	public Map<String, Iterable<DriverFactory>> createCache() {
 		// TODO: Use a multimap?
-		Map<String, List<DriverFactory>> cache = new HashMap<>();
-		Map<String, List<DriverFactory>> conflicts = new HashMap<>();
-		for (DriverFactory factory : ServiceLoader.load(DriverFactory.class)) {
-			String command = factory.getUsage().getInvocation();
+		final Map<String, List<DriverFactory>> cache = new HashMap<>();
+		final Map<String, List<DriverFactory>> conflicts = new HashMap<>();
+		for (final DriverFactory factory : ServiceLoader.load(DriverFactory.class)) {
+			final String command = factory.getUsage().getInvocation();
 			if (command.startsWith("-")) {
 				LOGGER.severe(String.format(
 					"An app wants to register an option, %s, not a subcommand", command));
@@ -65,7 +65,7 @@ import lovelace.util.ResourceInputStream;
 			} else if (cache.containsKey(command) &&
 					cache.get(command).stream().anyMatch(f -> f.getUsage().isGraphical() ==
 						factory.getUsage().isGraphical())) {
-				DriverFactory existing = cache.get(command).stream()
+				final DriverFactory existing = cache.get(command).stream()
 					.filter(f -> f.getUsage().isGraphical() ==
 						factory.getUsage().isGraphical()).findAny().orElse(null);
 				LOGGER.warning(String.format("Invocation command conflict for %s between %s and %s",
@@ -73,13 +73,13 @@ import lovelace.util.ResourceInputStream;
 					Optional.ofNullable(existing).map(DriverFactory::getUsage)
 							.map(IDriverUsage::getShortDescription).orElse("a null factory")));
 				conflicts.put(command, new ArrayList<>(Arrays.asList(factory, existing)));
-				List<DriverFactory> existingList = cache.get(command);
+				final List<DriverFactory> existingList = cache.get(command);
 				existingList.remove(existing);
 				if (existingList.isEmpty()) {
 					cache.remove(command);
 				}
 			} else {
-				List<DriverFactory> list = new ArrayList<>();
+				final List<DriverFactory> list = new ArrayList<>();
 				list.add(factory);
 				cache.put(command, list);
 			}
@@ -91,10 +91,10 @@ import lovelace.util.ResourceInputStream;
 	 * Create the usage message for a particular driver.
 	 */
 	public String usageMessage(final IDriverUsage usage, final boolean verbose) {
-		StringBuilder builder = new StringBuilder();
+		final StringBuilder builder = new StringBuilder();
 		builder.append("Usage: ");
 		String mainInvocation;
-		try (BufferedReader reader = new BufferedReader(new InputStreamReader(
+		try (final BufferedReader reader = new BufferedReader(new InputStreamReader(
 				new ResourceInputStream("invocation", AppChooserState.class)))) {
 			mainInvocation = reader.lines().collect(Collectors.joining(System.lineSeparator())).trim();
 		} catch (final FileNotFoundException | NoSuchFileException except) {
@@ -112,7 +112,7 @@ import lovelace.util.ResourceInputStream;
 			builder.append(" -c|--cli "); // FIXME For apps with no GUI counterpart this is actually optional
 		}
 		builder.append(usage.getInvocation());
-		for (String option : usage.getSupportedOptions()) {
+		for (final String option : usage.getSupportedOptions()) {
 			builder.append(" [").append(option).append("]");
 		}
 		switch (usage.getParamsWanted()) {
@@ -151,10 +151,10 @@ import lovelace.util.ResourceInputStream;
 	}
 
 	public static void handleDroppedFiles(final AppEvent.OpenFilesEvent openFilesEvent) {
-		SPFrame topWindow = Stream.of(WindowList.getWindows(true, false)).filter(SPFrame.class::isInstance)
+		final SPFrame topWindow = Stream.of(WindowList.getWindows(true, false)).filter(SPFrame.class::isInstance)
 			.map(SPFrame.class::cast).reduce((first, second) -> second).orElse(null);
 		if (topWindow != null) {
-			for (File file : openFilesEvent.getFiles()) {
+			for (final File file : openFilesEvent.getFiles()) {
 				try {
 					topWindow.acceptDroppedFile(file.toPath());
 				} catch (final SPFormatException except) {

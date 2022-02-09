@@ -104,36 +104,36 @@ public class FixtureListModel implements ListModel<TileFixture>, SelectionChange
 	}
 
 	private void fireIntervalReplaced(final Range oldRange, final Range newRange) {
-		ListDataEvent removeEvent = new ListDataEvent(this, ListDataEvent.INTERVAL_REMOVED,
+		final ListDataEvent removeEvent = new ListDataEvent(this, ListDataEvent.INTERVAL_REMOVED,
 			oldRange.getLowerBound(), oldRange.getUpperBound());
-		ListDataEvent addEvent = new ListDataEvent(this, ListDataEvent.INTERVAL_ADDED,
+		final ListDataEvent addEvent = new ListDataEvent(this, ListDataEvent.INTERVAL_ADDED,
 			newRange.getLowerBound(), newRange.getUpperBound());
-		for (ListDataListener listener : listDataListeners) {
+		for (final ListDataListener listener : listDataListeners) {
 			listener.intervalRemoved(removeEvent);
 			listener.intervalAdded(addEvent);
 		}
 	}
 
 	private void fireContentsChanged(final Range range) {
-		ListDataEvent event = new ListDataEvent(this, ListDataEvent.CONTENTS_CHANGED,
+		final ListDataEvent event = new ListDataEvent(this, ListDataEvent.CONTENTS_CHANGED,
 			range.getLowerBound(), range.getUpperBound());
-		for (ListDataListener listener : listDataListeners) {
+		for (final ListDataListener listener : listDataListeners) {
 			listener.contentsChanged(event);
 		}
 	}
 
 	private void fireIntervalAdded(final Range range) {
-		ListDataEvent event = new ListDataEvent(this, ListDataEvent.INTERVAL_ADDED,
+		final ListDataEvent event = new ListDataEvent(this, ListDataEvent.INTERVAL_ADDED,
 			range.getLowerBound(), range.getUpperBound());
-		for (ListDataListener listener : listDataListeners) {
+		for (final ListDataListener listener : listDataListeners) {
 			listener.intervalAdded(event);
 		}
 	}
 
 	private void fireIntervalRemoved(final Range range) {
-		ListDataEvent event = new ListDataEvent(this, ListDataEvent.INTERVAL_REMOVED,
+		final ListDataEvent event = new ListDataEvent(this, ListDataEvent.INTERVAL_REMOVED,
 			range.getLowerBound(), range.getUpperBound());
-		for (ListDataListener listener : listDataListeners) {
+		for (final ListDataListener listener : listDataListeners) {
 			listener.intervalRemoved(event);
 		}
 	}
@@ -141,15 +141,15 @@ public class FixtureListModel implements ListModel<TileFixture>, SelectionChange
 	@Override
 	public void selectedPointChanged(@Nullable final Point old, final Point newPoint) {
 		LOGGER.finer("Starting FixtureListModel.selectedPointChanged");
-		int oldSize = getSize();
+		final int oldSize = getSize();
 		cachedTerrainList = Collections.emptyList();
-		TileType terrain = terrainSource.apply(newPoint);
+		final TileType terrain = terrainSource.apply(newPoint);
 		if (terrain != null) {
 			cachedTerrainList = new ArrayList<>(Collections.singleton(
 					new TileTypeFixture(terrain)));
 		}
 		LOGGER.finer("FixtureListModel.selectedPointChanged: Accounted for base terrain");
-		Collection<River> rivers = riversSource.apply(newPoint);
+		final Collection<River> rivers = riversSource.apply(newPoint);
 		if (rivers.iterator().hasNext()) {
 			cachedTerrainList.add(new RiverFixture(rivers.toArray(new River[0])));
 		}
@@ -161,12 +161,12 @@ public class FixtureListModel implements ListModel<TileFixture>, SelectionChange
 		LOGGER.finer("FixtureListModel.selectedPointChanged: Accounted for mountain");
 		point = newPoint;
 		currentTracks.clear();
-		AnimalTracks tracks = tracksSource.apply(newPoint);
+		final AnimalTracks tracks = tracksSource.apply(newPoint);
 		if (tracks != null) {
 			currentTracks.add(tracks);
 		}
 		LOGGER.finer("FixtureListModel.selectedPointChanged: Accounted for animal tracks");
-		int newSize = getSize();
+		final int newSize = getSize();
 		LOGGER.finer("FixtureListModel.selectedPointChanged: About to notify listeners");
 		fireIntervalReplaced(new Range(0, oldSize - 1), new Range(0, newSize - 1));
 		LOGGER.finer("End of FixtureListModel.selectedPointChanged");
@@ -174,7 +174,7 @@ public class FixtureListModel implements ListModel<TileFixture>, SelectionChange
 
 	@Override
 	public TileFixture getElementAt(final int index) {
-		List<TileFixture> main = new ArrayList<>(fixturesSource.apply(point));
+		final List<TileFixture> main = new ArrayList<>(fixturesSource.apply(point));
 		main.sort(comparator); // TODO: cache this?
 		if (index < 0) {
 			throw new ArrayIndexOutOfBoundsException(index);
@@ -211,8 +211,8 @@ public class FixtureListModel implements ListModel<TileFixture>, SelectionChange
 	 */
 	public boolean addFixture(final TileFixture fixture) {
 		if (fixture instanceof TileTypeFixture) {
-			TileType existingTerrain = terrainSource.apply(point);
-			TileTypeFixture ttf = (TileTypeFixture) fixture;
+			final TileType existingTerrain = terrainSource.apply(point);
+			final TileTypeFixture ttf = (TileTypeFixture) fixture;
 			if (existingTerrain != null) {
 				if (existingTerrain == ttf.getTileType()) {
 					return true;
@@ -231,10 +231,10 @@ public class FixtureListModel implements ListModel<TileFixture>, SelectionChange
 				return false;
 			}
 		} else if (fixture instanceof RiverFixture) {
-			Collection<River> existingRivers = riversSource.apply(point);
-			RiverFixture rf = (RiverFixture) fixture;
+			final Collection<River> existingRivers = riversSource.apply(point);
+			final RiverFixture rf = (RiverFixture) fixture;
 			if (existingRivers.iterator().hasNext()) {
-				Collection<River> coll = new ArrayList<>(existingRivers);
+				final Collection<River> coll = new ArrayList<>(existingRivers);
 				if (coll.containsAll(rf.getRivers())) {
 					return true;
 				} else if (addRivers != null) {
@@ -257,7 +257,7 @@ public class FixtureListModel implements ListModel<TileFixture>, SelectionChange
 			} else if (addRivers != null) {
 				addRivers.accept(point,
 						rf.getRivers().toArray(new River[0]));
-				int index = cachedTerrainList.size();
+				final int index = cachedTerrainList.size();
 				cachedTerrainList.add(fixture);
 				fireIntervalAdded(new Range(index, index));
 				return true;
@@ -268,7 +268,7 @@ public class FixtureListModel implements ListModel<TileFixture>, SelectionChange
 			if (mountainSource.test(point)) {
 				return true;
 			} else if (mountainSink != null) {
-				int index = cachedTerrainList.size();
+				final int index = cachedTerrainList.size();
 				mountainSink.accept(point, true);
 				fireIntervalAdded(new Range(index, index));
 				return true;
@@ -276,18 +276,18 @@ public class FixtureListModel implements ListModel<TileFixture>, SelectionChange
 				return false;
 			}
 		} else if (addFixtureLambda != null && addFixtureLambda.test(point, fixture)) {
-			int index = indexOf(fixturesSource.apply(point), fixture);
+			final int index = indexOf(fixturesSource.apply(point), fixture);
 			if (index >= 0) {
-				int adjusted = adjustedIndex(index); // FIXME: Can this be right?
+				final int adjusted = adjustedIndex(index); // FIXME: Can this be right?
 				fireIntervalAdded(new Range(adjusted, adjusted));
 				return true;
 			} else {
 				return false; // TODO: This returns failure if a more-up-to-date version is already there
 			}
 		} else if (addFixtureLambda != null) {
-			int index = indexOf(fixturesSource.apply(point), fixture);
+			final int index = indexOf(fixturesSource.apply(point), fixture);
 			if (index >= 0) {
-				int adjusted = adjustedIndex(index);
+				final int adjusted = adjustedIndex(index);
 				fireContentsChanged(new Range(adjusted, adjusted));
 				return true;
 			} else {
@@ -303,9 +303,9 @@ public class FixtureListModel implements ListModel<TileFixture>, SelectionChange
 	 */
 	public boolean removeAll(final Collection<? extends TileFixture> fixtures) {
 		boolean retval = true;
-		for (TileFixture fixture : fixtures) {
+		for (final TileFixture fixture : fixtures) {
 			if (fixture instanceof TileTypeFixture) {
-				TileType currentTerrain = terrainSource.apply(point);
+				final TileType currentTerrain = terrainSource.apply(point);
 				if (currentTerrain != null &&
 						    currentTerrain == ((TileTypeFixture) fixture)
 								    .getTileType()) {
@@ -318,7 +318,7 @@ public class FixtureListModel implements ListModel<TileFixture>, SelectionChange
 				}
 			} else if (fixture instanceof RiverFixture) {
 				if (removeRivers != null) {
-					int index = cachedTerrainList.indexOf(fixture);
+					final int index = cachedTerrainList.indexOf(fixture);
 					removeRivers.accept(point,
 							((RiverFixture) fixture).getRivers().toArray(new River[0]));
 					cachedTerrainList.remove(fixture);
@@ -328,7 +328,7 @@ public class FixtureListModel implements ListModel<TileFixture>, SelectionChange
 				}
 			} else if (fixture instanceof MountainFixture) {
 				if (mountainSink != null) {
-					int index = cachedTerrainList.indexOf(fixture);
+					final int index = cachedTerrainList.indexOf(fixture);
 					mountainSink.accept(point, false);
 					cachedTerrainList.remove(fixture);
 					fireIntervalRemoved(new Range(index, index));
@@ -336,17 +336,17 @@ public class FixtureListModel implements ListModel<TileFixture>, SelectionChange
 					retval = false;
 				}
 			} else if (fixturesSource.apply(point).contains(fixture)) {
-				int index = indexOf(fixturesSource.apply(point), fixture);
+				final int index = indexOf(fixturesSource.apply(point), fixture);
 				if (removeFixture != null) {
 					removeFixture.accept(point, fixture);
-					int adjusted = adjustedIndex(index);
+					final int adjusted = adjustedIndex(index);
 					fireIntervalRemoved(new Range(adjusted, adjusted));
 				} else {
 					retval = false;
 				}
 			} else if (fixture instanceof Animal && currentTracks.contains(fixture)) {
-				int ctIndex = currentTracks.indexOf(fixture);
-				int index = adjustedIndex(fixturesSource.apply(point).size() + ctIndex);
+				final int ctIndex = currentTracks.indexOf(fixture);
+				final int index = adjustedIndex(fixturesSource.apply(point).size() + ctIndex);
 				currentTracks.remove(fixture);
 				fireIntervalRemoved(new Range(index, index));
 			}

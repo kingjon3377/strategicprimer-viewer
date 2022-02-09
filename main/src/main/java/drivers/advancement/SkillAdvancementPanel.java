@@ -66,8 +66,8 @@ import drivers.common.IAdvancementModel;
 		// enforced thread-safety of reading mutable nullable variables; we should really
 		// do the same here to avoid TOCTOU races
 		if (worker != null && job != null && skill != null) {
-			int level = skill.getLevel();
-			int number;
+			final int level = skill.getLevel();
+			final int number;
 			try {
 				number = Integer.parseInt(hours.getText());
 			} catch (final NumberFormatException except) {
@@ -85,9 +85,9 @@ import drivers.common.IAdvancementModel;
 				model.addHoursToSkill(worker, job.getName(), skill.getName(), 1,
 					SingletonRandom.SINGLETON_RANDOM.nextInt(100));
 			}
-			int newLevel = skill.getLevel();
+			final int newLevel = skill.getLevel();
 			if (newLevel != level) {
-				for (LevelGainListener listener : listeners) {
+				for (final LevelGainListener listener : listeners) {
 					// TODO: What if it's a proxy for all workers in a unit?
 					listener.level(worker.getName(), job.getName(),
 						skill.getName(), newLevel - level, newLevel);

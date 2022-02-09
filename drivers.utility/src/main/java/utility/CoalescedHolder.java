@@ -56,12 +56,12 @@ public class CoalescedHolder<Type extends IFixture, Key> implements Iterable<Lis
 	}
 
 	public List<Type> get(final Type item) {
-		Key key = extractor.apply(item);
+		final Key key = extractor.apply(item);
 		plural = item.getPlural();
 		if (map.containsKey(key)) {
 			return map.get(key);
 		} else {
-			List<Type> retval = new ArrayList<>();
+			final List<Type> retval = new ArrayList<>();
 			map.put(key, retval);
 			return retval;
 		}

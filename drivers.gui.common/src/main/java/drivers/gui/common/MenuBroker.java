@@ -25,7 +25,7 @@ public class MenuBroker implements ActionListener {
 	 * Rgister a listener for a series of action commands.
 	 */
 	public void register(final ActionListener listener, final String... actions) {
-		for (String action : actions) {
+		for (final String action : actions) {
 			mapping.put(action.toLowerCase(), listener);
 		}
 	}
@@ -50,9 +50,9 @@ public class MenuBroker implements ActionListener {
 	 */
 	@Override
 	public void actionPerformed(final ActionEvent event) {
-		String action = event.getActionCommand();
+		final String action = event.getActionCommand();
 		if (mapping.containsKey(action.toLowerCase())) {
-			ActionListener listener = mapping.get(action.toLowerCase());
+			final ActionListener listener = mapping.get(action.toLowerCase());
 			SwingUtilities.invokeLater(() -> listener.actionPerformed(event));
 		} else {
 			LOGGER.warning("Unhandled action: " + action);

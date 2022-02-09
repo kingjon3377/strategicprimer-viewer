@@ -65,9 +65,9 @@ import worker.common.IFixtureEditHelper;
 		keyPanel = new KeyPanel(version);
 		keyPanel.changeVersion(-1, version);
 
-		IFixtureEditHelper feh = new FixtureEditHelper(model);
+		final IFixtureEditHelper feh = new FixtureEditHelper(model);
 
-		FixtureList fixtureListObject = new FixtureList(this,
+		final FixtureList fixtureListObject = new FixtureList(this,
 			new FixtureListModel(model.getMap()::getFixtures, model.getMap()::getBaseTerrain,
 				model.getMap()::getRivers, model.getMap()::isMountainous, (point) -> null,
 				null, null, null, null, null, null, sortOrder), // TODO: implementations instead of null?
@@ -78,7 +78,7 @@ import worker.common.IFixtureEditHelper;
 		portrait = new PortraitComponent(fixtureListObject);
 		fixtureListObject.addListSelectionListener(portrait);
 
-		JPanel listPanel = BorderedPanel.verticalPanel(header, new JScrollPane(fixtureListObject),
+		final JPanel listPanel = BorderedPanel.verticalPanel(header, new JScrollPane(fixtureListObject),
 			null);
 		setLeftComponent(horizontalSplit(listPanel, portrait));
 		setRightComponent(keyPanel);
@@ -87,18 +87,18 @@ import worker.common.IFixtureEditHelper;
 	}
 
 	private static JComponent keyElement(final int version, @Nullable final TileType type) {
-		BoxPanel retval = new BoxPanel(BoxAxis.LineAxis);
+		final BoxPanel retval = new BoxPanel(BoxAxis.LineAxis);
 		retval.addGlue();
 		retval.addRigidArea(7);
 
-		BoxPanel panel = new BoxPanel(BoxAxis.PageAxis);
+		final BoxPanel panel = new BoxPanel(BoxAxis.PageAxis);
 		panel.addRigidArea(4);
-		int tileSize = scaleZoom(ViewerModel.DEFAULT_ZOOM_LEVEL, version);
-		Color color = Optional.ofNullable(ColorHelper.get(version, type)).orElse(Color.white);
+		final int tileSize = scaleZoom(ViewerModel.DEFAULT_ZOOM_LEVEL, version);
+		final Color color = Optional.ofNullable(ColorHelper.get(version, type)).orElse(Color.white);
 		panel.add(new KeyElementComponent(color, new Dimension(4, 4), new Dimension(8, 8),
 			new Dimension(tileSize, tileSize)));
 		panel.addRigidArea(4);
-		JLabel label = new JLabel(ColorHelper.getDescription(type));
+		final JLabel label = new JLabel(ColorHelper.getDescription(type));
 		panel.add(label);
 		panel.addRigidArea(4);
 		retval.add(panel);
@@ -112,7 +112,7 @@ import worker.common.IFixtureEditHelper;
 	private static class KeyPanel extends JPanel implements VersionChangeListener {
 		public KeyPanel(final int version) {
 			super(new GridLayout(0, 4));
-			Dimension size = new Dimension((int) keyElement(version, null)
+			final Dimension size = new Dimension((int) keyElement(version, null)
 					.getMinimumSize().getWidth() * 4,
 				(int) getMinimumSize().getHeight());
 			setMinimumSize(size);
@@ -122,7 +122,7 @@ import worker.common.IFixtureEditHelper;
 		@Override
 		public void changeVersion(final int old, final int newVersion) {
 			removeAll();
-			for (TileType type : TileType.getValuesForVersion(newVersion)) {
+			for (final TileType type : TileType.getValuesForVersion(newVersion)) {
 				add(keyElement(newVersion, type));
 			}
 		}
@@ -175,13 +175,13 @@ import worker.common.IFixtureEditHelper;
 
 		@Override
 		public void valueChanged(final ListSelectionEvent event) {
-			List<TileFixture> selections =
+			final List<TileFixture> selections =
 				fixtureListObject.getSelectedValuesList();
 			portrait = null;
 			if (selections.size() == 1) {
-				TileFixture selectedValue = selections.get(0);
+				final TileFixture selectedValue = selections.get(0);
 				if (selectedValue instanceof HasPortrait) {
-					String portraitName = ((HasPortrait) selectedValue).getPortrait();
+					final String portraitName = ((HasPortrait) selectedValue).getPortrait();
 					if (!portraitName.isEmpty()) {
 						try {
 							portrait = ImageLoader.loadImage(portraitName);
@@ -193,7 +193,7 @@ import worker.common.IFixtureEditHelper;
 						}
 					}
 					if (selectedValue instanceof HasOwner) {
-						String playerPortraitName = ((HasOwner) selectedValue).
+						final String playerPortraitName = ((HasOwner) selectedValue).
 							getOwner().getPortrait();
 						if (!playerPortraitName.isEmpty()) {
 							try {

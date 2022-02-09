@@ -22,7 +22,7 @@ public class SPDatabaseReader implements IMapReader {
 	private final Map<Path, DB> connections = new HashMap<>();
 
 	private DataSource getBaseConnection(final Path path) {
-		SQLiteDataSource retval = new SQLiteDataSource();
+		final SQLiteDataSource retval = new SQLiteDataSource();
 		if (path.toString().isEmpty()) {
 			LOGGER.info("Trying to set up an (empty) in-memory database for reading");
 			retval.setUrl("jdbc:sqlite:file::memory:");
@@ -38,7 +38,7 @@ public class SPDatabaseReader implements IMapReader {
 		if (connections.containsKey(path)) {
 			return connections.get(path);
 		} else {
-			DB retval = new DB(getBaseConnection(path));
+			final DB retval = new DB(getBaseConnection(path));
 			connections.put(path, retval);
 			return retval;
 		}
@@ -48,7 +48,7 @@ public class SPDatabaseReader implements IMapReader {
 
 	@Override
 	public IMutableMapNG readMap(final Path file, final Warning warner) {
-		DB db = getSQL(file);
+		final DB db = getSQL(file);
 		return dbMapReader.readMap(db, warner);
 	}
 

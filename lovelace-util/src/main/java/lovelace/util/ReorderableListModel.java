@@ -11,7 +11,7 @@ public class ReorderableListModel<Element> extends DefaultListModel<Element> imp
 	private static final long serialVersionUID = 1;
 	@SafeVarargs
 	public ReorderableListModel(final Element... initialElements) {
-		for (Element element : initialElements) {
+		for (final Element element : initialElements) {
 			addElement(element);
 		}
 	}

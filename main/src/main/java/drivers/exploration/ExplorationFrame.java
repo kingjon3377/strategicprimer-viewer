@@ -62,16 +62,16 @@ import org.eclipse.jdt.annotation.Nullable;
 		layoutObj = new SimpleCardLayout(getContentPane());
 		setLayout(layoutObj);
 
-		SpinnerNumberModel mpModel = new SpinnerNumberModel(0, 0, 2000, 0);
-		JSpinner mpField = new JSpinner(mpModel);
+		final SpinnerNumberModel mpModel = new SpinnerNumberModel(0, 0, 2000, 0);
+		final JSpinner mpField = new JSpinner(mpModel);
 
 		unitListModel = new UnitListModel(driver.getModel());
 		unitList = new JList<>(unitListModel);
 
-		PlayerListModel playerListModel = new PlayerListModel(driver.getModel());
+		final PlayerListModel playerListModel = new PlayerListModel(driver.getModel());
 		playerList = new JList<>(playerListModel);
 
-		ComboBoxModel<Speed> speedModel = new DefaultComboBoxModel<>(Speed.values());
+		final ComboBoxModel<Speed> speedModel = new DefaultComboBoxModel<>(Speed.values());
 		driver.getModel().addMapChangeListener(playerListModel);
 
 		playerList.addListSelectionListener(ignored -> handlePlayerChanged());
@@ -81,12 +81,12 @@ import org.eclipse.jdt.annotation.Nullable;
 
 		speedModel.setSelectedItem(Speed.Normal);
 
-		JPanel tilesPanel = new JPanel(new GridLayout(3, 12, 2, 2));
+		final JPanel tilesPanel = new JPanel(new GridLayout(3, 12, 2, 2));
 
-		JPanel headerPanel = new JPanel();
-		FunctionalGroupLayout headerLayout = new FunctionalGroupLayout(headerPanel);
+		final JPanel headerPanel = new JPanel();
+		final FunctionalGroupLayout headerLayout = new FunctionalGroupLayout(headerPanel);
 
-		ExplorationPanel explorationPanel = new ExplorationPanel(mpModel, speedModel, headerPanel,
+		final ExplorationPanel explorationPanel = new ExplorationPanel(mpModel, speedModel, headerPanel,
 			headerLayout, tilesPanel, driver.getModel(), layoutObj::goNext);
 
 		driver.getModel().addSelectionChangeListener(explorationPanel);
@@ -135,7 +135,7 @@ import org.eclipse.jdt.annotation.Nullable;
 	private void handlePlayerChanged() {
 		layoutObj.goFirst();
 		if (!playerList.isSelectionEmpty()) {
-			@Nullable Player newPlayer = playerList.getSelectedValue();
+			@Nullable final Player newPlayer = playerList.getSelectedValue();
 			if (newPlayer != null) {
 				unitListModel.playerChanged(null, newPlayer);
 			}
@@ -144,7 +144,7 @@ import org.eclipse.jdt.annotation.Nullable;
 
 	private void buttonListener() {
 		LOGGER.finer("In ExplorationFrame.buttonListener");
-		@Nullable IUnit selectedValue = unitList.getSelectedValue();
+		@Nullable final IUnit selectedValue = unitList.getSelectedValue();
 		if (selectedValue != null && !unitList.isSelectionEmpty()) {
 			driver.getModel().setSelectedUnit(selectedValue);
 			LOGGER.finer("ExplorationFrame.buttonListener: after selectedUnit setter call");

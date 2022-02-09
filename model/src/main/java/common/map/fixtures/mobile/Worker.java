@@ -36,9 +36,9 @@ public class Worker implements IMutableWorker {
 	 * FIXME: Take Collection, not Iterable, to avoid StreamSupport wrapper
 	 */
 	private static boolean jobSetsEqual(final Iterable<IJob> first, final Iterable<IJob> second) {
-		Collection<IJob> firstFiltered = StreamSupport.stream(first.spliterator(), true)
+		final Collection<IJob> firstFiltered = StreamSupport.stream(first.spliterator(), true)
 			.filter(j -> !j.isEmpty()).collect(Collectors.toList());
-		Collection<IJob> secondFiltered = StreamSupport.stream(second.spliterator(), true)
+		final Collection<IJob> secondFiltered = StreamSupport.stream(second.spliterator(), true)
 			.filter(j -> !j.isEmpty()).collect(Collectors.toList());
 		return firstFiltered.containsAll(secondFiltered) &&
 			secondFiltered.containsAll(firstFiltered);
@@ -234,7 +234,7 @@ public class Worker implements IMutableWorker {
 	public boolean isSubset(final IFixture obj, final Consumer<String> report) {
 		if (obj.getId() == id) {
 			if (obj instanceof IWorker) {
-				Consumer<String> localReport =
+				final Consumer<String> localReport =
 					s -> report.accept(String.format("In worker %s (ID #%d):\t%s",
 						name, id, s));
 				if (!name.equals(((IWorker) obj).getName())) {
@@ -251,7 +251,7 @@ public class Worker implements IMutableWorker {
 					jobSet.stream().collect(Collectors.toMap(IJob::getName,
 						Function.identity()));
 				boolean retval = true;
-				for (IJob job : (IWorker) obj) {
+				for (final IJob job : (IWorker) obj) {
 					if (ours.containsKey(job.getName())) {
 						if (!ours.get(job.getName()).isSubset(job, localReport)) {
 							retval = false;
@@ -281,11 +281,11 @@ public class Worker implements IMutableWorker {
 		final Worker retval = new Worker(name, race, id);
 		retval.setImage(image);
 		if (!zero) {
-			WorkerStats localStats = stats;
+			final WorkerStats localStats = stats;
 			if (localStats != null) {
 				retval.setStats(localStats.copy());
 			}
-			for (IJob job : this) {
+			for (final IJob job : this) {
 				if (!job.isEmpty()) {
 					retval.addJob(job.copy());
 				}
@@ -300,7 +300,7 @@ public class Worker implements IMutableWorker {
 	 */
 	@Override
 	public IJob getJob(final String name) {
-		Optional<IJob> maybe = jobSet.stream().filter(j -> name.equals(j.getName())).findAny();
+		final Optional<IJob> maybe = jobSet.stream().filter(j -> name.equals(j.getName())).findAny();
 		if (maybe.isPresent()) {
 			return maybe.get();
 		} else {

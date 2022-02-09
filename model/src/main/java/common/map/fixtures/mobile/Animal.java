@@ -36,7 +36,7 @@ public interface Animal extends AnimalOrTracks, MobileFixture, HasImage,
 		if (isTalking()) {
 			return "talking " + getKind();
 		} else {
-			String popString = (getPopulation() == 1) ? "" : Integer.toString(getPopulation()) + " ";
+			final String popString = (getPopulation() == 1) ? "" : Integer.toString(getPopulation()) + " ";
 			if (getBorn() >= 0) {
 				return String.format("%s%s (born %d)", popString, getKind(), getBorn());
 			} else {

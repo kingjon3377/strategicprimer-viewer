@@ -50,14 +50,14 @@ import java.util.function.Predicate;
 	@Override
 	public boolean shouldDisplay(final TileFixture fixture) {
 		for (int i = 0; i < matcherListModel.getSize(); i++) {
-			FixtureMatcher matcher = matcherListModel.getElementAt(i);
+			final FixtureMatcher matcher = matcherListModel.getElementAt(i);
 			if (matcher.matches(fixture)) {
 				return matcher.isDisplayed();
 			}
 		}
-		Class<?> cls = fixture.getClass();
+		final Class<?> cls = fixture.getClass();
 		matcherListModel.addElement(new FixtureMatcher(cls::isInstance, fixture.getPlural()));
-		int size = matcherListModel.getSize();
+		final int size = matcherListModel.getSize();
 		getSelectionModel().addSelectionInterval(size - 1, size - 1);
 		return true;
 	}
@@ -73,7 +73,7 @@ import java.util.function.Predicate;
 
 	private Component renderCell(final JList<? extends FixtureMatcher> list, final FixtureMatcher item,
 	                             final int index, final boolean isSelected, final boolean cellHasFocus) {
-		Component retval = DEFAULT_RENDERER.getListCellRendererComponent(list, item,
+		final Component retval = DEFAULT_RENDERER.getListCellRendererComponent(list, item,
 			index, isSelected, cellHasFocus);
 		if (retval instanceof JLabel) {
 			((JLabel) retval).setText(item.getDescription());

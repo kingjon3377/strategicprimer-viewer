@@ -62,8 +62,8 @@ public final class MenuUtils {
 	 */
 	public static void createHotKey(final JComponent component, final String action, final Action handler,
 	                                final int condition, final KeyStroke... keys) {
-		InputMap inputMap = component.getInputMap(condition);
-		for (KeyStroke key : keys) {
+		final InputMap inputMap = component.getInputMap(condition);
+		for (final KeyStroke key : keys) {
 			inputMap.put(key, action);
 		}
 		component.getActionMap().put(action, handler);
@@ -96,14 +96,14 @@ public final class MenuUtils {
 	 */
 	public static JMenuItem createMenuItem(final String item, final int mnemonic, final String description,
 	                                       final ActionListener listener, final KeyStroke... accelerators) {
-		JMenuItem menuItem = new JMenuItem(item, mnemonic);
+		final JMenuItem menuItem = new JMenuItem(item, mnemonic);
 		if (accelerators.length > 0) {
 			menuItem.setAccelerator(accelerators[0]);
 		}
 		menuItem.getAccessibleContext().setAccessibleDescription(description);
 		menuItem.addActionListener(listener);
-		InputMap inputMap = menuItem.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
-		for (KeyStroke accelerator : accelerators) {
+		final InputMap inputMap = menuItem.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+		for (final KeyStroke accelerator : accelerators) {
 			inputMap.put(accelerator, menuItem.getAction());
 		}
 		return menuItem;

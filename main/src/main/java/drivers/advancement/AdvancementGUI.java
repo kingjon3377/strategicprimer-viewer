@@ -71,7 +71,7 @@ public class AdvancementGUI implements MultiMapGUIDriver, WorkerGUI {
 	}
 
 	private void createWindow(final MenuBroker menuHandler, final PlayerChangeMenuListener pcml) {
-		AdvancementFrame frame = new AdvancementFrame(model, menuHandler, this);
+		final AdvancementFrame frame = new AdvancementFrame(model, menuHandler, this);
 		frame.addWindowListener(new WindowCloseListener(menuHandler::actionPerformed));
 		pcml.addPlayerChangeListener(frame);
 		menuHandler.register(ignored -> reload(frame), "reload tree");
@@ -90,11 +90,11 @@ public class AdvancementGUI implements MultiMapGUIDriver, WorkerGUI {
 
 	@Override
 	public void startDriver() {
-		MenuBroker menuHandler = new MenuBroker();
+		final MenuBroker menuHandler = new MenuBroker();
 		menuHandler.register(new IOHandler(this, cli), "load", "save", "save as", "new",
 			"load secondary", "save all", "open in map viewer",
 			"open secondary map in map viewer", "close", "quit");
-		PlayerChangeMenuListener pcml = new PlayerChangeMenuListener(model);
+		final PlayerChangeMenuListener pcml = new PlayerChangeMenuListener(model);
 		menuHandler.register(pcml, "change current player");
 		SwingUtilities.invokeLater(() -> createWindow(menuHandler, pcml));
 	}

@@ -91,7 +91,7 @@ import org.jetbrains.annotations.Nullable;
 	 * @param param The parameter we want to get.
 	 */
 	protected static String getAttribute(final StartElement element, final String param, final String defaultValue) {
-		Attribute attr = getAttributeByName(element, param);
+		final Attribute attr = getAttributeByName(element, param);
 		String retval = null;
 		if (attr != null) {
 			retval = attr.getValue();
@@ -111,11 +111,11 @@ import org.jetbrains.annotations.Nullable;
 	 * @param param The parameter we want to get.
 	 */
 	protected static String getAttribute(final StartElement element, final String param) throws SPFormatException {
-		Attribute attr = getAttributeByName(element, param);
+		final Attribute attr = getAttributeByName(element, param);
 		if (attr == null) {
 			throw new MissingPropertyException(element, param);
 		}
-		String retval = attr.getValue();
+		final String retval = attr.getValue();
 		if (retval == null) {
 			throw new MissingPropertyException(element, param);
 		} else {
@@ -150,11 +150,11 @@ import org.jetbrains.annotations.Nullable;
 	 */
 	protected static boolean getBooleanAttribute(final StartElement element, final String param,
 	                                             final boolean defaultValue, final Warning warner) {
-		Attribute attr = getAttributeByName(element, param);
+		final Attribute attr = getAttributeByName(element, param);
 		if (attr == null) {
 			return defaultValue;
 		}
-		String val = attr.getValue();
+		final String val = attr.getValue();
 		if (val == null || val.isEmpty()) {
 			return defaultValue;
 		}
@@ -179,11 +179,11 @@ import org.jetbrains.annotations.Nullable;
 	 */
 	protected static boolean getBooleanAttribute(final StartElement element, final String param)
 			throws SPFormatException {
-		Attribute attr = getAttributeByName(element, param);
+		final Attribute attr = getAttributeByName(element, param);
 		if (attr == null) {
 			throw new MissingPropertyException(element, param);
 		}
-		String val = attr.getValue();
+		final String val = attr.getValue();
 		if (val == null || val.isEmpty()) {
 			throw new MissingPropertyException(element, param);
 		}
@@ -213,7 +213,7 @@ import org.jetbrains.annotations.Nullable;
 	protected static void requireNonEmptyAttribute(final StartElement element, final String param,
 	                                               final boolean mandatory, final Warning warner) throws SPFormatException {
 		if (getAttribute(element, param, "").isEmpty()) {
-			SPFormatException except = new MissingPropertyException(element, param);
+			final SPFormatException except = new MissingPropertyException(element, param);
 			if (mandatory) {
 				throw except;
 			} else {
@@ -247,7 +247,7 @@ import org.jetbrains.annotations.Nullable;
 	 */
 	protected static void spinUntilEnd(final QName tag, final Iterable<XMLEvent> reader)
 			throws SPFormatException {
-		for (XMLEvent event : reader) {
+		for (final XMLEvent event : reader) {
 			if (event instanceof StartElement && isSPStartElement(event)) {
 				throw new UnwantedChildException(tag, (StartElement) event);
 			} else if (event instanceof EndElement &&
@@ -283,7 +283,7 @@ import org.jetbrains.annotations.Nullable;
 				return idFactory.register(
 					NUM_PARSER.parse(getAttribute(element, "id")).intValue(),
 					warner, element.getLocation());
-			} catch (NumberFormatException|ParseException except) {
+			} catch (final NumberFormatException|ParseException except) {
 				throw new MissingPropertyException(element, "id", except);
 			}
 		} else {
@@ -350,7 +350,7 @@ import org.jetbrains.annotations.Nullable;
 	protected static void writeNonEmptyAttributes(final XMLStreamWriter ostream,
 	                                              final Pair<String, String>... items) throws MalformedXMLException {
 		try {
-			for (Pair<String, String> pair : items) {
+			for (final Pair<String, String> pair : items) {
 				if (!pair.getValue1().isEmpty()) {
 					ostream.writeAttribute(SP_NAMESPACE, pair.getValue0(),
 						pair.getValue1());
@@ -370,7 +370,7 @@ import org.jetbrains.annotations.Nullable;
 	 */
 	protected static void writeImage(final XMLStreamWriter ostream, final HasImage obj)
 			throws MalformedXMLException {
-		String image = obj.getImage();
+		final String image = obj.getImage();
 		// FIXME: Should also skip empty image
 		if (!image.equals(obj.getDefaultImage())) {
 			writeNonEmptyAttributes(ostream, Pair.with("image", image));
@@ -418,11 +418,11 @@ import org.jetbrains.annotations.Nullable;
 	 */
 	protected static int getIntegerAttribute(final StartElement tag, final String parameter, final int defaultValue,
 	                                         final Warning warner) {
-		Attribute attr = getAttributeByName(tag, parameter);
+		final Attribute attr = getAttributeByName(tag, parameter);
 		if (attr == null) {
 			return defaultValue;
 		}
-		String val = attr.getValue();
+		final String val = attr.getValue();
 		if (val == null) {
 			return defaultValue;
 		}
@@ -447,11 +447,11 @@ import org.jetbrains.annotations.Nullable;
 	 */
 	public static int getIntegerAttribute(final StartElement tag, final String parameter)
 			throws SPFormatException {
-		Attribute attr = getAttributeByName(tag, parameter);
+		final Attribute attr = getAttributeByName(tag, parameter);
 		if (attr == null) {
 			throw new MissingPropertyException(tag, parameter);
 		}
-		String val = attr.getValue();
+		final String val = attr.getValue();
 		if (val == null) {
 			throw new MissingPropertyException(tag, parameter);
 		}
@@ -492,11 +492,11 @@ import org.jetbrains.annotations.Nullable;
 	 */
 	protected static Number getNumericAttribute(final StartElement tag, final String parameter,
 	                                            final Number defaultValue, final Warning warner) throws SPFormatException {
-		Attribute attr = getAttributeByName(tag, parameter);
+		final Attribute attr = getAttributeByName(tag, parameter);
 		if (attr == null) {
 			return defaultValue;
 		}
-		String val = attr.getValue();
+		final String val = attr.getValue();
 		if (val == null) {
 			return defaultValue;
 		}
@@ -527,11 +527,11 @@ import org.jetbrains.annotations.Nullable;
 	 */
 	protected static Number getNumericAttribute(final StartElement tag, final String parameter)
 			throws SPFormatException {
-		Attribute attr = getAttributeByName(tag, parameter);
+		final Attribute attr = getAttributeByName(tag, parameter);
 		if (attr == null) {
 			throw new MissingPropertyException(tag, parameter);
 		}
-		String val = attr.getValue();
+		final String val = attr.getValue();
 		if (val == null) {
 			throw new MissingPropertyException(tag, parameter);
 		}
@@ -595,9 +595,9 @@ import org.jetbrains.annotations.Nullable;
 	protected static void writeAttributes(final XMLStreamWriter ostream, final Pair<String, ?>... attributes)
 			throws MalformedXMLException {
 		try {
-			for (Pair<String, ?> pair : attributes) {
-				String name = pair.getValue0();
-				Object item = pair.getValue1();
+			for (final Pair<String, ?> pair : attributes) {
+				final String name = pair.getValue0();
+				final Object item = pair.getValue1();
 				if (item instanceof String) {
 					ostream.writeAttribute(SP_NAMESPACE, name, (String) item);
 				} else if (item instanceof BigDecimal) {
@@ -668,8 +668,8 @@ import org.jetbrains.annotations.Nullable;
 	 */
 	protected static String getTextUntil(final QName tag, final Iterable<XMLEvent> stream)
 			throws SPFormatException {
-		StringBuilder builder = new StringBuilder();
-		for (XMLEvent event : stream) {
+		final StringBuilder builder = new StringBuilder();
+		for (final XMLEvent event : stream) {
 			if (event instanceof StartElement && isSPStartElement((StartElement) event)) {
 				throw new UnwantedChildException(tag, (StartElement) event);
 			} else if (event instanceof Characters) {
@@ -705,11 +705,11 @@ import org.jetbrains.annotations.Nullable;
 	 */
 	protected static void expectAttributes(final StartElement element, final Warning warner,
 	                                       final String... attributes) {
-		List<String> local = Stream.of(attributes).map(String::toLowerCase)
+		final List<String> local = Stream.of(attributes).map(String::toLowerCase)
 			.collect(Collectors.toList());
-		for (Attribute attribute : new IteratorWrapper<>(
+		for (final Attribute attribute : new IteratorWrapper<>(
 				(Iterator<Attribute>) element.getAttributes())) {
-			QName name = attribute.getName();
+			final QName name = attribute.getName();
 			if (isSupportedNamespace(name) &&
 					!local.contains(name.getLocalPart().toLowerCase())) {
 				warner.handle(new UnsupportedPropertyException(element,

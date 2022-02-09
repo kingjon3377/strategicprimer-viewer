@@ -57,9 +57,9 @@ import common.map.fixtures.mobile.worker.IJob;
 
 	private void writeMember(final Writer writer, @Nullable final UnitMember member) throws IOException {
 		if (member instanceof IWorker) {
-			IWorker worker = (IWorker) member;
+			final IWorker worker = (IWorker) member;
 			writer.write(worker.getName());
-			List<IJob> jobs;
+			final List<IJob> jobs;
 			if (options.hasOption("--include-unleveled-jobs")) {
 				jobs = StreamSupport.stream(worker.spliterator(), false)
 						.filter(j -> !j.isEmpty())
@@ -74,7 +74,7 @@ import common.map.fixtures.mobile.worker.IJob;
 					.collect(Collectors.joining(", ", " (", ")")));
 			}
 		} else if (member instanceof Animal) {
-			Animal animal = (Animal) member;
+			final Animal animal = (Animal) member;
 			if (animal.getPopulation() > 1) {
 				writer.write(String.format("%d ", animal.getPopulation()));
 			}
@@ -96,10 +96,10 @@ import common.map.fixtures.mobile.worker.IJob;
 	}
 
 	private void summarizeUnitMembers(final Writer writer, final IUnit unit) throws IOException {
-		List<IWorker> leveledWorkers = new ArrayList<>();
-		List<UnitMember> nonWorkers = new ArrayList<>();
-		List<IWorker> unleveledWorkers = new ArrayList<>();
-		for (UnitMember member : unit) {
+		final List<IWorker> leveledWorkers = new ArrayList<>();
+		final List<UnitMember> nonWorkers = new ArrayList<>();
+		final List<IWorker> unleveledWorkers = new ArrayList<>();
+		for (final UnitMember member : unit) {
 			if (member instanceof IWorker) {
 				if (StreamSupport.stream(((IWorker) member).spliterator(), false)
 						.mapToInt(IJob::getLevel).anyMatch(x -> x > 0)) {
@@ -126,7 +126,7 @@ import common.map.fixtures.mobile.worker.IJob;
 		} else {
 			needComma = true;
 			boolean first = true;
-			for (IWorker worker : leveledWorkers) {
+			for (final IWorker worker : leveledWorkers) {
 				if (first) {
 					first = false;
 				} else {
@@ -139,7 +139,7 @@ import common.map.fixtures.mobile.worker.IJob;
 					unleveledWorkers.size()));
 			}
 		}
-		for (UnitMember member : nonWorkers) {
+		for (final UnitMember member : nonWorkers) {
 			if (needComma) {
 				writer.write(", ");
 			}
@@ -159,15 +159,15 @@ import common.map.fixtures.mobile.worker.IJob;
 	}
 
 	public void writeStrategy(final Path path, final Iterable<UnitMember> dismissed) throws IOException {
-		try (BufferedWriter writer = Files.newBufferedWriter(path, StandardCharsets.UTF_8)) {
-			String playerName = currentPlayer.getName();
-			int turn = model.getMap().getCurrentTurn();
-			Collection<IUnit> units = model.getUnits(currentPlayer);
-			Map<String, List<IUnit>> unitsByKind = new HashMap<>(); // TODO: Use multimap (as we did in Ceylon)
-			for (IUnit unit : units) {
+		try (final BufferedWriter writer = Files.newBufferedWriter(path, StandardCharsets.UTF_8)) {
+			final String playerName = currentPlayer.getName();
+			final int turn = model.getMap().getCurrentTurn();
+			final Collection<IUnit> units = model.getUnits(currentPlayer);
+			final Map<String, List<IUnit>> unitsByKind = new HashMap<>(); // TODO: Use multimap (as we did in Ceylon)
+			for (final IUnit unit : units) {
 				if (unit.iterator().hasNext() ||
 						"true".equals(options.getArgument("--print-empty"))) {
-					List<IUnit> list;
+					final List<IUnit> list;
 					if (unitsByKind.containsKey(unit.getKind())) {
 						list = unitsByKind.get(unit.getKind());
 					} else {
@@ -177,12 +177,12 @@ import common.map.fixtures.mobile.worker.IJob;
 					list.add(unit);
 				}
 			}
-			Map<IUnit, String> orders = new HashMap<>();
-			for (IUnit unit : unitsByKind.entrySet().stream()
+			final Map<IUnit, String> orders = new HashMap<>();
+			for (final IUnit unit : unitsByKind.entrySet().stream()
 					.flatMap(e -> e.getValue().stream())
 					.collect(Collectors.toList())) {
-				String unitOrders = unit.getLatestOrders(turn);
-				int ordersTurn = unit.getOrdersTurn(unitOrders);
+				final String unitOrders = unit.getLatestOrders(turn);
+				final int ordersTurn = unit.getOrdersTurn(unitOrders);
 				if (unitOrders.equals(unit.getOrders(turn)) || ordersTurn < 0) {
 					orders.put(unit, unitOrders);
 				} else {
@@ -218,9 +218,9 @@ import common.map.fixtures.mobile.worker.IJob;
 			writer.write("Workers:");
 			writer.newLine();
 			writer.newLine();
-			for (Map.Entry<String, List<IUnit>> entry : unitsByKind.entrySet()) {
-				String kind = entry.getKey();
-				List<IUnit> list = entry.getValue();
+			for (final Map.Entry<String, List<IUnit>> entry : unitsByKind.entrySet()) {
+				final String kind = entry.getKey();
+				final List<IUnit> list = entry.getValue();
 				if (list.isEmpty()) {
 					continue;
 				}
@@ -228,7 +228,7 @@ import common.map.fixtures.mobile.worker.IJob;
 				writer.write(kind);
 				writer.write(":");
 				writer.newLine();
-				for (IUnit unit : list) {
+				for (final IUnit unit : list) {
 					writer.write("  - ");
 					writer.write(unit.getName());
 					if (unit.iterator().hasNext()) {
@@ -240,7 +240,7 @@ import common.map.fixtures.mobile.worker.IJob;
 							summarizeUnitMembers(writer, unit);
 						} else {
 							boolean first = true;
-							for (UnitMember member : unit) {
+							for (final UnitMember member : unit) {
 								if (first) {
 									first = false;
 								} else {
@@ -261,7 +261,7 @@ import common.map.fixtures.mobile.worker.IJob;
 						}
 						writer.newLine();
 						writer.newLine();
-						String results = unit.getResults(turn);
+						final String results = unit.getResults(turn);
 						if (results.isEmpty()) {
 							writer.write("TODO: run");
 						} else {
@@ -290,36 +290,36 @@ import common.map.fixtures.mobile.worker.IJob;
 				writer.write("Resources:");
 				writer.newLine();
 				writer.newLine();
-				for (IFortress fortress : model.getFortresses(currentPlayer)) {
+				for (final IFortress fortress : model.getFortresses(currentPlayer)) {
 					writer.write("- In ");
 					writer.write(fortress.getName());
 					writer.newLine();
-					List<Implement> equipment =
+					final List<Implement> equipment =
 						fortress.stream().filter(Implement.class::isInstance)
 							.map(Implement.class::cast)
 							.collect(Collectors.toList());
 					if (!equipment.isEmpty()) {
 						writer.write("  - Equipment not in a unit:");
 						writer.newLine();
-						for (Implement item : equipment) { // TODO: move out of if?
+						for (final Implement item : equipment) { // TODO: move out of if?
 							writer.write("    - ");
 							writer.write(item.toString()); // FIXME: This is egregiously verbose ("An implement of kind ...")
 							writer.newLine();
 						}
 					}
-					for (Map.Entry<String, List<IResourcePile>> entry :
+					for (final Map.Entry<String, List<IResourcePile>> entry :
 							fortress.stream().filter(IResourcePile.class::isInstance)
 								.map(IResourcePile.class::cast)
 								.collect(Collectors.groupingBy(
 									IResourcePile::getKind))
 								.entrySet()) {
-						String kind = entry.getKey();
-						List<IResourcePile> resources = entry.getValue();
+						final String kind = entry.getKey();
+						final List<IResourcePile> resources = entry.getValue();
 						writer.write("  - ");
 						writer.write(kind);
 						writer.write(":");
 						writer.newLine();
-						for (IResourcePile pile : resources) {
+						for (final IResourcePile pile : resources) {
 							writer.write("    - ");
 							writer.write(pile.toString()); // FIXME: This is egregiously verbose ("A pile of ...")
 							writer.newLine();
@@ -332,7 +332,7 @@ import common.map.fixtures.mobile.worker.IJob;
 							fortress.getName()); // TODO: Take ICLIHelper to report diagnostics on
 					}
 				}
-				for (IUnit unit : model.getUnits(currentPlayer)) {
+				for (final IUnit unit : model.getUnits(currentPlayer)) {
 					if (unit.stream().allMatch(IWorker.class::isInstance)) {
 						continue;
 					}
@@ -342,7 +342,7 @@ import common.map.fixtures.mobile.worker.IJob;
 					writer.write(unit.getKind());
 					writer.write("):");
 					writer.newLine();
-					for (UnitMember member : unit) {
+					for (final UnitMember member : unit) {
 						if (!(member instanceof IWorker)) {
 							writer.write("  - ");
 							writer.write(member.toString());

@@ -78,6 +78,7 @@ public class WindowMenu extends JMenu {
 	 */
 	final JMenuItem bringItem = new JMenuItem("Bring All To Front");
 
+	// TODO: Can this be a lambda or made a normal method accessed through a method reference?
 	final Runnable updateRunnable = new Runnable() {
 		public void run() {
 			removeAll();
@@ -93,35 +94,20 @@ public class WindowMenu extends JMenu {
 			addSeparator();
 			add(bringItem);
 			addSeparator();
-			Frame[] frames = WindowList.getFrames(false, false, true);
+			final Frame[] frames = WindowList.getFrames(false, false, true);
 			for (final Frame frame : frames) {
-				JCheckBoxMenuItem item = new SummonMenuItem(frame);
+				final JCheckBoxMenuItem item = new SummonMenuItem(frame);
 				item.setSelected(frame == myFrame);
 				add(item);
 			}
 		}
 	};
 
-	private JFrame myFrame;
+	private final JFrame myFrame;
 
 	private final ChangeListener changeListener = e -> SwingUtilities.invokeLater(updateRunnable);
 
-	final ActionListener actionListener = e -> {
-		Object src = e.getSource();
-		if (src == minimizeItem) {
-			myFrame.setExtendedState(Frame.ICONIFIED);
-		} else if (src == bringItem) {
-			Frame[] frames = WindowList.getFrames(false, false, true);
-			for (final Frame frame : frames) {
-				if (frame.isVisible() || frame
-						.getExtendedState() == Frame.ICONIFIED) {
-					frame.toFront();
-					if (frame.getExtendedState() == Frame.ICONIFIED)
-						frame.setExtendedState(Frame.NORMAL);
-				}
-			}
-		}
-	};
+	final ActionListener actionListener;
 
 	final JMenuItem[] customItems;
 
@@ -145,13 +131,29 @@ public class WindowMenu extends JMenu {
 	 */
 	public WindowMenu(final JFrame frame, final JMenuItem... extraItems) {
 		super("Window");
+		myFrame = frame;
+		actionListener = e -> {
+			final Object src = e.getSource();
+			if (src == minimizeItem) {
+				myFrame.setExtendedState(Frame.ICONIFIED);
+			} else if (src == bringItem) {
+				final Frame[] frames = WindowList.getFrames(false, false, true);
+				for (final Frame w : frames) {
+					if (w.isVisible() || frame
+							.getExtendedState() == Frame.ICONIFIED) {
+						w.toFront();
+						if (w.getExtendedState() == Frame.ICONIFIED)
+							w.setExtendedState(Frame.NORMAL);
+					}
+				}
+			}
+		};
 		minimizeItem.addActionListener(actionListener);
 		bringItem.addActionListener(actionListener);
 
 		customItems = new JMenuItem[extraItems.length];
 		System.arraycopy(extraItems, 0, customItems, 0, extraItems.length);
 
-		myFrame = frame;
 		minimizeItem.setAccelerator(KeyStroke.getKeyStroke('M',
 				Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
 

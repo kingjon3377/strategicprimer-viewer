@@ -42,14 +42,14 @@ final class DBGroundHandler extends AbstractDatabaseWriter<Ground, Point> implem
 
 	private TryBiConsumer<Map<String, Object>, Warning, Exception> readGround(final IMutableMapNG map) {
 		return (dbRow, warner) -> {
-			int row = (Integer) dbRow.get("row");
-			int column = (Integer) dbRow.get("column");
-			int id = (Integer) dbRow.get("id");
-			String kind = (String) dbRow.get("kind");
-			Boolean exposed = /* DBMapReader.databaseBoolean(dbRow.get("exposed")) */ // FIXME
+			final int row = (Integer) dbRow.get("row");
+			final int column = (Integer) dbRow.get("column");
+			final int id = (Integer) dbRow.get("id");
+			final String kind = (String) dbRow.get("kind");
+			final Boolean exposed = /* DBMapReader.databaseBoolean(dbRow.get("exposed")) */ // FIXME
 				(Boolean) dbRow.get("exposed"); // This will compile, but probably won't work
-			String image = (String) dbRow.get("image");
-			Ground ground = new Ground(id, kind, exposed);
+			final String image = (String) dbRow.get("image");
+			final Ground ground = new Ground(id, kind, exposed);
 			if (image != null) {
 				ground.setImage(image);
 			}

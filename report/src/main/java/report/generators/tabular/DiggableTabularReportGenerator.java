@@ -70,8 +70,8 @@ public class DiggableTabularReportGenerator implements ITableGenerator<MineralFi
 	public List<List<String>> produce(
 			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures, final MineralFixture item,
 			final int key, final Point loc, final Map<Integer, Integer> parentMap) {
-		String classField;
-		String statusField;
+		final String classField;
+		final String statusField;
 		if (item instanceof Ground) {
 			classField = "ground";
 			statusField = (((Ground) item).isExposed()) ? "exposed" : "not exposed";

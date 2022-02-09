@@ -53,45 +53,45 @@ import common.map.fixtures.Implement;
 	 */
 	@Override
 	public void startDriver() {
-		List<Player> players = StreamSupport.stream(model.getPlayers().spliterator(),
+		final List<Player> players = StreamSupport.stream(model.getPlayers().spliterator(),
 				false).collect(Collectors.toList());
 		while (!players.isEmpty()) {
-			Player chosen = cli.chooseFromList(players, "Players in the maps:",
+			final Player chosen = cli.chooseFromList(players, "Players in the maps:",
 				"No players found.", "Player to add resources for: ", false).getValue1();
 			if (chosen == null) {
 				break;
 			}
 			players.remove(chosen);
 			while (true) {
-				Boolean resp = cli.inputBoolean("Keep going? ");
+				final Boolean resp = cli.inputBoolean("Keep going? ");
 				if (resp == null) {
 					return;
 				} else if (!resp) {
 					break;
 				}
-				Boolean res = cli.inputBooleanInSeries("Enter a (quantified) resource? ");
+				final Boolean res = cli.inputBooleanInSeries("Enter a (quantified) resource? ");
 				if (res == null) {
 					return;
 				} else if (res) {
-					IResourcePile resource = helper.enterResource();
+					final IResourcePile resource = helper.enterResource();
 					if (resource == null) {
 						return;
 					}
 					model.addResource(resource, chosen);
 					continue;
 				}
-				Boolean eq = cli.inputBooleanInSeries("Enter equipment etc.? ");
+				final Boolean eq = cli.inputBooleanInSeries("Enter equipment etc.? ");
 				if (eq == null) {
 					return;
 				} else if (eq) {
-					Implement implement = helper.enterImplement();
+					final Implement implement = helper.enterImplement();
 					if (implement == null) {
 						return;
 					}
 					model.addResource(implement, chosen);
 				}
 			}
-			Boolean continuation = cli.inputBoolean("Choose another player?");
+			final Boolean continuation = cli.inputBoolean("Choose another player?");
 			if (continuation == null) {
 				return;
 			} else if (!continuation) {

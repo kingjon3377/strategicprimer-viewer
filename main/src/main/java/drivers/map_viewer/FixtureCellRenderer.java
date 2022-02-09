@@ -43,21 +43,21 @@ import java.util.logging.Level;
 
 	private static Icon createDefaultFixtureIcon() {
 		final int imageSize = 24;
-		BufferedImage temp = new BufferedImage(imageSize, imageSize, BufferedImage.TYPE_INT_ARGB);
-		Graphics2D pen = temp.createGraphics();
-		Color saveColor = pen.getColor();
+		final BufferedImage temp = new BufferedImage(imageSize, imageSize, BufferedImage.TYPE_INT_ARGB);
+		final Graphics2D pen = temp.createGraphics();
+		final Color saveColor = pen.getColor();
 		pen.setColor(Color.RED);
-		double margin = 0.15;
+		final double margin = 0.15;
 		// TODO: Each of these calculations was wrapped in halfEven() in Ceylon; investigate whether Math.round() changes behavior
-		double pixelMargin = Math.round(imageSize * margin);
-		double afterMargin = Math.round(imageSize * (1.0 - (margin * 2.0)));
-		double cornerRounding = Math.round((imageSize * margin) / 2.0);
+		final double pixelMargin = Math.round(imageSize * margin);
+		final double afterMargin = Math.round(imageSize * (1.0 - (margin * 2.0)));
+		final double cornerRounding = Math.round((imageSize * margin) / 2.0);
 		pen.fillRoundRect(((int) pixelMargin) + 1, ((int) pixelMargin) + 1,
 			(int) afterMargin, (int) afterMargin, (int) cornerRounding, (int) cornerRounding);
 		pen.setColor(saveColor);
-		double newMargin = Math.round((imageSize / 2.0) - (imageSize * margin));
-		double newAfterMargin = Math.round(imageSize * margin * 2.0);
-		double newCorner = Math.round((imageSize * margin) / 2.0);
+		final double newMargin = Math.round((imageSize / 2.0) - (imageSize * margin));
+		final double newAfterMargin = Math.round(imageSize * margin * 2.0);
+		final double newCorner = Math.round((imageSize * margin) / 2.0);
 		pen.fillRoundRect(((int) newMargin) + 1, ((int) newMargin) + 1,
 			(int) newAfterMargin, (int) newAfterMargin, (int) newCorner, (int) newCorner);
 		// FIXME: pen.dispose(), surely?
@@ -72,18 +72,18 @@ import java.util.logging.Level;
 	 * FIXME: Move to third-party module
 	 */
 	private static void setComponentPreferredSize(final JComponent component, final int width) {
-		View view = (View) component.getClientProperty(BasicHTML.propertyKey);
+		final View view = (View) component.getClientProperty(BasicHTML.propertyKey);
 		view.setSize((float) width, (float) 0.0);
-		int wid = (int) Math.ceil(view.getPreferredSpan(View.X_AXIS));
-		int height = (int) Math.ceil(view.getPreferredSpan(View.Y_AXIS));
+		final int wid = (int) Math.ceil(view.getPreferredSpan(View.X_AXIS));
+		final int height = (int) Math.ceil(view.getPreferredSpan(View.Y_AXIS));
 		component.setPreferredSize(new Dimension(wid, height)); // TODO: Use Dimension constructor taking doubles instead?
 	}
 
 	private static final Icon DEFAULT_FIXTURE_ICON = createDefaultFixtureIcon();
 
 	private Icon getIcon(final HasImage obj) {
-		String image = obj.getImage();
-		String actualImage;
+		final String image = obj.getImage();
+		final String actualImage;
 		if (image.isEmpty() || MISSING_FILENAMES.contains(image)) {
 			actualImage = obj.getDefaultImage();
 		} else {
@@ -94,7 +94,7 @@ import java.util.logging.Level;
 		}
 		try {
 			return ImageLoader.loadIcon(actualImage);
-		} catch (FileNotFoundException|NoSuchFileException except) {
+		} catch (final FileNotFoundException|NoSuchFileException except) {
 			LOGGER.severe(String.format("image file images/%s not found", actualImage));
 			LOGGER.log(Level.FINE, "With stack trace", except);
 			MISSING_FILENAMES.add(actualImage);
@@ -108,7 +108,7 @@ import java.util.logging.Level;
 	@Override
 	public Component getListCellRendererComponent(final JList<? extends TileFixture> list,
 	                                              final TileFixture val, final int index, final boolean isSelected, final boolean cellHasFocus) {
-		JLabel component = (JLabel) DEFAULT_RENDERER.getListCellRendererComponent(list,
+		final JLabel component = (JLabel) DEFAULT_RENDERER.getListCellRendererComponent(list,
 			val, index, isSelected, cellHasFocus);
 		component.setText(String.format("<html><p>%s</p></html>", val.getShortDescription()));
 		if (val instanceof HasImage) {

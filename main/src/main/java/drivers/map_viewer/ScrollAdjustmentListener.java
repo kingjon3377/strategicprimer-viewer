@@ -37,16 +37,16 @@ import java.util.logging.Logger;
 	}
 
 	public void horizontalScroll(final ChangeEvent event) {
-		BoundedRangeModel source = (BoundedRangeModel) event.getSource();
+		final BoundedRangeModel source = (BoundedRangeModel) event.getSource();
 		if (adjusting) {
 			LOGGER.finer(
 				"Waiting for scrollbar to stop adjusting before handling horizontal scroll");
 			return;
 		}
 		LOGGER.finer("Starting to respond to horizontal scroll");
-		VisibleDimensions oldDimensions = model.getVisibleDimensions();
-		int newValue = source.getValue();
-		VisibleDimensions newDimensions;
+		final VisibleDimensions oldDimensions = model.getVisibleDimensions();
+		final int newValue = source.getValue();
+		final VisibleDimensions newDimensions;
 		if (newValue < 0) {
 			LOGGER.warning("Tried to scroll to negative column, skipping ...");
 			return;
@@ -55,8 +55,8 @@ import java.util.logging.Logger;
 			LOGGER.warning("Tried to scroll too far to the right, skipping ...");
 			return;
 		} else if (oldColumn == null) {
-			int newMinColumn;
-			int newMaxColumn;
+			final int newMinColumn;
+			final int newMaxColumn;
 			if (oldDimensions.getMinimumColumn() > newValue) {
 				LOGGER.fine("User scrolled left");
 				newMinColumn = newValue;
@@ -79,7 +79,7 @@ import java.util.logging.Logger;
 					"Horizontal scroll to same value, possibly reentrant. Skipping ...");
 				return;
 			}
-			int offset = newValue - oldColumn;
+			final int offset = newValue - oldColumn;
 			LOGGER.fine(String.format("User scrolled horizontally by %d tiles, to %d.",
 				offset, newValue));
 			oldColumn = newValue;
@@ -87,7 +87,7 @@ import java.util.logging.Logger;
 				oldDimensions.getMaximumRow(), oldDimensions.getMinimumColumn() + offset,
 				oldDimensions.getMaximumColumn() + offset);
 		}
-		boolean oldAdjusting = adjusting;
+		final boolean oldAdjusting = adjusting;
 		adjusting = true;
 		model.setCursor(new Point(model.getCursor().getRow(), newValue));
 		model.setVisibleDimensions(newDimensions);
@@ -95,7 +95,7 @@ import java.util.logging.Logger;
 	}
 
 	public void verticalScroll(final ChangeEvent event) {
-		BoundedRangeModel source = (BoundedRangeModel) event.getSource();
+		final BoundedRangeModel source = (BoundedRangeModel) event.getSource();
 		if (adjusting) {
 			// TODO: We'd like to do *some* handling, in case the user is dragging the tongue. Mutex flag again?
 			LOGGER.finer(
@@ -103,9 +103,9 @@ import java.util.logging.Logger;
 			return;
 		}
 		LOGGER.finer("Starting to respond to vertical scroll");
-		int newValue = source.getValue();
-		VisibleDimensions oldDimensions = model.getVisibleDimensions();
-		VisibleDimensions newDimensions;
+		final int newValue = source.getValue();
+		final VisibleDimensions oldDimensions = model.getVisibleDimensions();
+		final VisibleDimensions newDimensions;
 		if (newValue < 0) {
 			LOGGER.warning("Tried to scroll to negative row, skipping ...");
 			return;
@@ -119,7 +119,7 @@ import java.util.logging.Logger;
 					"Vertical scroll to same value, possibly reentrant. Skipping ...");
 				return;
 			}
-			int offset = newValue - oldRow;
+			final int offset = newValue - oldRow;
 			LOGGER.fine(String.format("User scrolled vertically by %d tiles, to %d.",
 				offset, newValue));
 			oldRow = newValue;
@@ -127,8 +127,8 @@ import java.util.logging.Logger;
 				oldDimensions.getMaximumRow() + offset, oldDimensions.getMinimumColumn(),
 				oldDimensions.getMaximumColumn());
 		} else {
-			int newMinRow;
-			int newMaxRow;
+			final int newMinRow;
+			final int newMaxRow;
 			if (oldDimensions.getMinimumRow() > newValue) {
 				LOGGER.fine("User scrolled down");
 				newMinRow = newValue;
@@ -146,7 +146,7 @@ import java.util.logging.Logger;
 			newDimensions = new VisibleDimensions(newMinRow, newMaxRow,
 				oldDimensions.getMinimumColumn(), oldDimensions.getMaximumColumn());
 		}
-		boolean oldAdjusting = adjusting;
+		final boolean oldAdjusting = adjusting;
 		adjusting = true;
 		model.setCursor(new Point(newValue, model.getCursor().getColumn()));
 		model.setVisibleDimensions(newDimensions);

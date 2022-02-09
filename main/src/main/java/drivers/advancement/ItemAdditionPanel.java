@@ -33,7 +33,7 @@ import lovelace.util.SimpleCardLayout;
 		this.what = what;
 		layoutObj = new SimpleCardLayout(this);
 		setPanelSizes(this);
-		JPanel first = new BoxPanel(BoxAxis.LineAxis);
+		final JPanel first = new BoxPanel(BoxAxis.LineAxis);
 		first.add(new ListenedButton("+", ignored -> {
 				// I had wondered if Component.requestFocusInWindow() would make CardLayout
 				// flip to the card containing the component, but it apparently doesn't
@@ -44,17 +44,17 @@ import lovelace.util.SimpleCardLayout;
 		setPanelSizes(first);
 		add(first);
 
-		JPanel second = new BoxPanel(BoxAxis.PageAxis);
+		final JPanel second = new BoxPanel(BoxAxis.PageAxis);
 		second.add(field);
 
 		field.addActionListener(ignored -> okListener());
 		field.setActionCommand("OK");
 
-		JPanel okPanel = new BoxPanel(BoxAxis.LineAxis);
-		JButton okButton = new ListenedButton("OK", ignored -> okListener());
+		final JPanel okPanel = new BoxPanel(BoxAxis.LineAxis);
+		final JButton okButton = new ListenedButton("OK", ignored -> okListener());
 		okPanel.add(okButton);
 
-		JButton cancelButton = new ListenedButton("Cancel", ignored -> {
+		final JButton cancelButton = new ListenedButton("Cancel", ignored -> {
 				layoutObj.goFirst();
 				field.setText("");
 			});
@@ -93,8 +93,8 @@ import lovelace.util.SimpleCardLayout;
 	}
 
 	private void okListener() {
-		String text = field.getText();
-		for (AddRemoveListener listener : listeners) {
+		final String text = field.getText();
+		for (final AddRemoveListener listener : listeners) {
 			listener.add(what, text);
 		}
 		layoutObj.goFirst();

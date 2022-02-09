@@ -96,7 +96,7 @@ public enum TileType implements HasName {
 	TileType(final String desc, final String xmlDesc, final int... vers) {
 		string = desc;
 		xml = xmlDesc;
-		for (int ver : vers) {
+		for (final int ver : vers) {
 			versions.add(ver);
 		}
 	}

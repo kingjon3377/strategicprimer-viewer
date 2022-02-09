@@ -107,11 +107,11 @@ import java.util.Arrays;
 
 	public static void setUpArrowListeners(final DirectionSelectionChanger selListener,
 	                                       final InputMap inputMap, final ActionMap actionMap) {
-		int fiveMask =
+		final int fiveMask =
 			(Platform.SYSTEM_IS_MAC) ? InputEvent.ALT_DOWN_MASK : InputEvent.CTRL_DOWN_MASK;
-		for (Pair<Integer, String> pair : ARROW_INPUTS) {
-			int stroke = pair.getValue0();
-			String action = pair.getValue1();
+		for (final Pair<Integer, String> pair : ARROW_INPUTS) {
+			final int stroke = pair.getValue0();
+			final String action = pair.getValue1();
 			inputMap.put(KeyStroke.getKeyStroke(stroke, 0), action);
 			inputMap.put(KeyStroke.getKeyStroke(stroke, fiveMask), "ctrl-" + action);
 		}
@@ -120,7 +120,7 @@ import java.util.Arrays;
 		  Strings representing arrow-key key codes and the actions
 		  that should be mapped to them.
 		 */
-		List<Pair<String, Runnable>> arrowActions = Arrays.asList(
+		final List<Pair<String, Runnable>> arrowActions = Arrays.asList(
 			Pair.with("up", selListener::up),
 			Pair.with("down", selListener::down),
 			Pair.with("left", selListener::left),
@@ -130,31 +130,31 @@ import java.util.Arrays;
 			Pair.with("down-right", join(selListener::down, selListener::right)),
 			Pair.with("down-left", join(selListener::down, selListener::left)));
 
-		for (Pair<String, Runnable> pair : arrowActions) { // TODO: inline it here?
-			String action = pair.getValue0();
-			Runnable consumer = pair.getValue1();
+		for (final Pair<String, Runnable> pair : arrowActions) { // TODO: inline it here?
+			final String action = pair.getValue0();
+			final Runnable consumer = pair.getValue1();
 			actionMap.put(action, new DirectionListener(consumer));
 			actionMap.put("ctrl-" + action, new DirectionListener(consumer, 5));
 		}
 
-		int jumpModifier = Platform.SHORTCUT_MASK;
-		for (Pair<Integer, String> pair : JUMP_INPUTS) {
-			int stroke = pair.getValue0();
-			String action = pair.getValue1();
+		final int jumpModifier = Platform.SHORTCUT_MASK;
+		for (final Pair<Integer, String> pair : JUMP_INPUTS) {
+			final int stroke = pair.getValue0();
+			final String action = pair.getValue1();
 			inputMap.put(KeyStroke.getKeyStroke(stroke, jumpModifier), action);
 		}
 
 		if (Platform.SYSTEM_IS_MAC) {
-			for (Pair<Integer, String> pair : MAC_JUMP_INPUTS) {
-				int stroke = pair.getValue0();
-				String action = pair.getValue1();
+			for (final Pair<Integer, String> pair : MAC_JUMP_INPUTS) {
+				final int stroke = pair.getValue0();
+				final String action = pair.getValue1();
 				inputMap.put(KeyStroke.getKeyStroke(stroke, jumpModifier), action);
 			}
 		}
 
-		for (Pair<Integer, String> pair : OTHER_INPUTS) {
-			int stroke = pair.getValue0();
-			String action = pair.getValue1();
+		for (final Pair<Integer, String> pair : OTHER_INPUTS) {
+			final int stroke = pair.getValue0();
+			final String action = pair.getValue1();
 			inputMap.put(KeyStroke.getKeyStroke(stroke, 0), action);
 		}
 

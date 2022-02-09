@@ -44,28 +44,28 @@ import org.jetbrains.annotations.Nullable;
 	private Integer handleFound(final Point center, final Point loc, final Animal item) {
 		int cost;
 		cli.println(String.format("Found either %s or evidence of it escaping.", item.getKind()));
-		Integer num = cli.inputNumber("How long to check and deal with the animal? ");
+		final Integer num = cli.inputNumber("How long to check and deal with the animal? ");
 		if (num == null) {
 			return null;
 		}
 		cost = num;
-		Boolean live = cli.inputBooleanInSeries("Is an animal captured live?");
+		final Boolean live = cli.inputBooleanInSeries("Is an animal captured live?");
 		if (live == null) {
 			return null;
 		} else if (live && handleCapture(item) == null) {
 			return null;
 		}
-		Boolean process = cli.inputBooleanInSeries("Handle processing now?");
+		final Boolean process = cli.inputBooleanInSeries("Handle processing now?");
 		if (process == null) {
 			return null;
 		} else if (process) {
-			Integer processingTime = processMeat();
+			final Integer processingTime = processMeat();
 			if (processingTime == null) {
 				return null;
 			}
 			cost += processingTime;
 		}
-		Boolean reduce = cli.inputBooleanInSeries(String.format("Reduce animal group population of %d?",
+		final Boolean reduce = cli.inputBooleanInSeries(String.format("Reduce animal group population of %d?",
 			item.getPopulation()));
 		if (reduce == null) {
 			return null;
@@ -124,9 +124,9 @@ import org.jetbrains.annotations.Nullable;
 					cli.println("Ran out of results!");
 					break;
 				}
-				Pair<Point, TileFixture> find = encounters.next();
-				Point loc = find.getValue0();
-				TileFixture item = find.getValue1();
+				final Pair<Point, TileFixture> find = encounters.next();
+				final Point loc = find.getValue0();
+				final TileFixture item = find.getValue1();
 				if (item instanceof HuntingModel.NothingFound) {
 					cli.println("Nothing in the trap");
 					time -= nothingCost;
@@ -139,7 +139,7 @@ import org.jetbrains.annotations.Nullable;
 				} else if (!(item instanceof Animal)) {
 					throw new IllegalStateException("Unhandled case from HuntingModel");
 				}
-				Integer cost = handleFound(center, loc, (Animal) item);
+				final Integer cost = handleFound(center, loc, (Animal) item);
 				if (cost == null) {
 					return null;
 				}
@@ -173,7 +173,7 @@ import org.jetbrains.annotations.Nullable;
 			}
 			cli.print(inHours(time));
 			cli.println(" remaining.");
-			String addendum = cli.inputMultilineString("Add to results about that:");
+			final String addendum = cli.inputMultilineString("Add to results about that:");
 			if (addendum == null) {
 				return null;
 			}

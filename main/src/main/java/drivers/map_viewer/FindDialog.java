@@ -52,10 +52,10 @@ import java.util.function.Predicate;
 		searchField.addActionListener(ignored -> okListener());
 		searchField.setActionCommand("OK");
 
-		BoxPanel buttonPanel = new BoxPanel(BoxAxis.LineAxis); // TODO: Use a better layout
+		final BoxPanel buttonPanel = new BoxPanel(BoxAxis.LineAxis); // TODO: Use a better layout
 		buttonPanel.addGlue();
 
-		JButton okButton = new ListenedButton("OK", ignored -> okListener());
+		final JButton okButton = new ListenedButton("OK", ignored -> okListener());
 
 		Platform.makeButtonsSegmented(okButton, cancelButton);
 		buttonPanel.add(okButton);
@@ -72,7 +72,7 @@ import java.util.function.Predicate;
 
 		buttonPanel.add(cancelButton);
 		buttonPanel.addGlue();
-		JPanel contentPanel = BorderedPanel.verticalPanel(searchField,
+		final JPanel contentPanel = BorderedPanel.verticalPanel(searchField,
 			BorderedPanel.verticalPanel(backwards, vertically, caseSensitive), buttonPanel);
 
 		SwingUtilities.invokeLater(this::populateAll);
@@ -109,7 +109,7 @@ import java.util.function.Predicate;
 	 */
 	private boolean matchesName(final String pattern, final IFixture fixture, final boolean caseSensitivity) {
 		if (fixture instanceof HasName) {
-			String name = (caseSensitivity) ? ((HasName) fixture).getName() :
+			final String name = (caseSensitivity) ? ((HasName) fixture).getName() :
 				((HasName) fixture).getName().toLowerCase();
 			return name.contains(pattern);
 		} else {
@@ -122,7 +122,7 @@ import java.util.function.Predicate;
 	 */
 	private boolean matchesKind(final String pattern, final IFixture fixture, final boolean caseSensitivity) {
 		if (fixture instanceof HasKind) {
-			String kind = (caseSensitivity) ? ((HasKind) fixture).getKind() :
+			final String kind = (caseSensitivity) ? ((HasKind) fixture).getKind() :
 				((HasKind) fixture).getKind().toLowerCase();
 			return kind.contains(pattern);
 		} else {
@@ -136,8 +136,8 @@ import java.util.function.Predicate;
 	private boolean matchesOwner(final String pattern, @Nullable final Integer idNum, final IFixture fixture,
 	                             final boolean caseSensitivity) {
 		if (fixture instanceof HasOwner) {
-			Player owner = ((HasOwner) fixture).getOwner();
-			String ownerName = (caseSensitivity) ? owner.getName() :
+			final Player owner = ((HasOwner) fixture).getOwner();
+			final String ownerName = (caseSensitivity) ? owner.getName() :
 				owner.getName().toLowerCase();
 			if (idNum != null && (owner.getPlayerId() == idNum ||
 					ownerName.contains(pattern))) {
@@ -214,8 +214,8 @@ import java.util.function.Predicate;
 	 * pattern is the empty string, don't search.
 	 */
 	public void search() {
-		String pattern;
-		boolean caseSensitivity = caseSensitive.isSelected();
+		final String pattern;
+		final boolean caseSensitivity = caseSensitive.isSelected();
 		if (caseSensitivity) {
 			pattern = searchField.getText().trim();
 		} else {
@@ -230,7 +230,7 @@ import java.util.function.Predicate;
 		} catch (final NumberFormatException ignored) {
 			// ignore non-numeric patterns
 		}
-		Point result = StreamSupport.stream(new PointIterable(model.getMapDimensions(),
+		final Point result = StreamSupport.stream(new PointIterable(model.getMapDimensions(),
 				!backwards.isSelected(), !vertically.isSelected(),
 				model.getSelection()).spliterator(), false)
 			.filter(matchesPoint(pattern, idNum, caseSensitivity)).findFirst().orElse(null);

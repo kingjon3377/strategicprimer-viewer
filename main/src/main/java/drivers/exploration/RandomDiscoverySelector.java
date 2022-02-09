@@ -38,15 +38,15 @@ import org.jetbrains.annotations.Nullable;
 	private final Supplier<Speed> speedSource;
 
 	private void selectedPointChangedImpl() {
-		IUnit selectedUnit = driverModel.getSelectedUnit();
+		final IUnit selectedUnit = driverModel.getSelectedUnit();
 		if (outsideCritical && selectedUnit != null) {
 			outsideCritical = false;
 			mainList.clearSelection();
-			List<Pair<Integer, TileFixture>> constants = new ArrayList<>();
-			List<Pair<Integer, TileFixture>> possibles = new ArrayList<>();
-			ListModel<? extends TileFixture> model = mainList.getModel();
+			final List<Pair<Integer, TileFixture>> constants = new ArrayList<>();
+			final List<Pair<Integer, TileFixture>> possibles = new ArrayList<>();
+			final ListModel<? extends TileFixture> model = mainList.getModel();
 			for (int index = 0; index < model.getSize(); index++) {
-				TileFixture fixture = model.getElementAt(index);
+				final TileFixture fixture = model.getElementAt(index);
 				if (SimpleMovementModel.shouldAlwaysNotice(selectedUnit, fixture)) {
 					constants.add(Pair.with(index, fixture));
 				} else if (SimpleMovementModel.shouldSometimesNotice(selectedUnit,

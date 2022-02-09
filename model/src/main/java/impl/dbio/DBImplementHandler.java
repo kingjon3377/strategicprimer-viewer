@@ -56,13 +56,13 @@ final class DBImplementHandler extends AbstractDatabaseWriter<Implement, /*IUnit
 
 	private TryBiConsumer<Map<String, Object>, Warning, Exception> readImplement(final IMutableMapNG map) {
 		return (dbRow, warner) -> {
-			int parentId = (Integer) dbRow.get("parent");
-			IFixture parent = findById(map, parentId, warner);
-			int id = (Integer) dbRow.get("id");
-			String kind = (String) dbRow.get("kind");
-			int count = (Integer) dbRow.get("count");
-			String image = (String) dbRow.get("image");
-			Implement implement = new Implement(kind, id, count);
+			final int parentId = (Integer) dbRow.get("parent");
+			final IFixture parent = findById(map, parentId, warner);
+			final int id = (Integer) dbRow.get("id");
+			final String kind = (String) dbRow.get("kind");
+			final int count = (Integer) dbRow.get("count");
+			final String image = (String) dbRow.get("image");
+			final Implement implement = new Implement(kind, id, count);
 			if (image != null) {
 				implement.setImage(image);
 			}

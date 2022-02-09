@@ -34,9 +34,9 @@ public class DirectionTest {
 	 */
 	@Test
 	public void testEast() {
-		IExplorationModel model = new ExplorationModel(new SPMapNG(new MapDimensionsImpl(5, 5, 2),
+		final IExplorationModel model = new ExplorationModel(new SPMapNG(new MapDimensionsImpl(5, 5, 2),
 			new PlayerCollection(), 0));
-		DirectionAssertion localAssert = directionAssert(model, Direction.East);
+		final DirectionAssertion localAssert = directionAssert(model, Direction.East);
 		localAssert.call(new Point(0, 0), new Point(0, 1), "");
 		localAssert.call(new Point(1, 1), new Point(1, 2), "");
 		localAssert.call(new Point(3, 4), new Point(3, 0), " in a 5x5 map");
@@ -48,9 +48,9 @@ public class DirectionTest {
 	 */
 	@Test
 	public void testNorth() {
-		IExplorationModel model = new ExplorationModel(new SPMapNG(new MapDimensionsImpl(5, 5, 2),
+		final IExplorationModel model = new ExplorationModel(new SPMapNG(new MapDimensionsImpl(5, 5, 2),
 			new PlayerCollection(), 0));
-		DirectionAssertion localAssert = directionAssert(model, Direction.North);
+		final DirectionAssertion localAssert = directionAssert(model, Direction.North);
 		localAssert.call(new Point(0, 0), new Point(4, 0), " in a 5x5 map");
 		localAssert.call(new Point(1, 1), new Point(0, 1), "");
 		localAssert.call(new Point(3, 4), new Point(2, 4), "");
@@ -62,9 +62,9 @@ public class DirectionTest {
 	 */
 	@Test
 	public void testSouth() {
-		IExplorationModel model = new ExplorationModel(new SPMapNG(new MapDimensionsImpl(5, 5, 2),
+		final IExplorationModel model = new ExplorationModel(new SPMapNG(new MapDimensionsImpl(5, 5, 2),
 			new PlayerCollection(), 0));
-		DirectionAssertion localAssert = directionAssert(model, Direction.South);
+		final DirectionAssertion localAssert = directionAssert(model, Direction.South);
 		localAssert.call(new Point(0, 0), new Point(1, 0), "");
 		localAssert.call(new Point(1, 1), new Point(2, 1), "");
 		localAssert.call(new Point(3, 4), new Point(4, 4), "");
@@ -76,9 +76,9 @@ public class DirectionTest {
 	 */
 	@Test
 	public void testWest() {
-		IExplorationModel model = new ExplorationModel(new SPMapNG(new MapDimensionsImpl(5, 5, 2),
+		final IExplorationModel model = new ExplorationModel(new SPMapNG(new MapDimensionsImpl(5, 5, 2),
 			new PlayerCollection(), 0));
-		DirectionAssertion localAssert = directionAssert(model, Direction.West);
+		final DirectionAssertion localAssert = directionAssert(model, Direction.West);
 		localAssert.call(new Point(0, 0), new Point(0, 4), " in a 5x5 map");
 		localAssert.call(new Point(1, 1), new Point(1, 0), "");
 		localAssert.call(new Point(3, 4), new Point(3, 3), "");
@@ -90,9 +90,9 @@ public class DirectionTest {
 	 */
 	@Test
 	public void testNortheast() {
-		IExplorationModel model = new ExplorationModel(new SPMapNG(new MapDimensionsImpl(5, 5, 2),
+		final IExplorationModel model = new ExplorationModel(new SPMapNG(new MapDimensionsImpl(5, 5, 2),
 			new PlayerCollection(), 0));
-		DirectionAssertion localAssert = directionAssert(model, Direction.Northeast);
+		final DirectionAssertion localAssert = directionAssert(model, Direction.Northeast);
 		localAssert.call(new Point(0, 0), new Point(4, 1), " in a 5x5 map");
 		localAssert.call(new Point(1, 1), new Point(0, 2), "");
 		localAssert.call(new Point(3, 4), new Point(2, 0), "");
@@ -104,9 +104,9 @@ public class DirectionTest {
 	 */
 	@Test
 	public void testNorthwest() {
-		IExplorationModel model = new ExplorationModel(new SPMapNG(new MapDimensionsImpl(5, 5, 2),
+		final IExplorationModel model = new ExplorationModel(new SPMapNG(new MapDimensionsImpl(5, 5, 2),
 			new PlayerCollection(), 0));
-		DirectionAssertion localAssert = directionAssert(model, Direction.Northwest);
+		final DirectionAssertion localAssert = directionAssert(model, Direction.Northwest);
 		localAssert.call(new Point(0, 0), new Point(4, 4), " in a 5x5 map");
 		localAssert.call(new Point(1, 1), new Point(0, 0), "");
 		localAssert.call(new Point(3, 4), new Point(2, 3), "");
@@ -118,9 +118,9 @@ public class DirectionTest {
 	 */
 	@Test
 	public void testSoutheast() {
-		IExplorationModel model = new ExplorationModel(new SPMapNG(new MapDimensionsImpl(5, 5, 2),
+		final IExplorationModel model = new ExplorationModel(new SPMapNG(new MapDimensionsImpl(5, 5, 2),
 			new PlayerCollection(), 0));
-		DirectionAssertion localAssert = directionAssert(model, Direction.Southeast);
+		final DirectionAssertion localAssert = directionAssert(model, Direction.Southeast);
 		localAssert.call(new Point(0, 0), new Point(1, 1), "");
 		localAssert.call(new Point(1, 1), new Point(2, 2), "");
 		localAssert.call(new Point(3, 4), new Point(4, 0), " in a 5x5 map");
@@ -132,9 +132,9 @@ public class DirectionTest {
 	 */
 	@Test
 	public void testSouthwest() {
-		IExplorationModel model = new ExplorationModel(new SPMapNG(new MapDimensionsImpl(5, 5, 2),
+		final IExplorationModel model = new ExplorationModel(new SPMapNG(new MapDimensionsImpl(5, 5, 2),
 			new PlayerCollection(), 0));
-		DirectionAssertion localAssert = directionAssert(model, Direction.Southwest);
+		final DirectionAssertion localAssert = directionAssert(model, Direction.Southwest);
 		localAssert.call(new Point(0, 0), new Point(1, 4), " in a 5x5 map");
 		localAssert.call(new Point(1, 1), new Point(2, 0), "");
 		localAssert.call(new Point(3, 4), new Point(4, 3), "");
@@ -146,9 +146,9 @@ public class DirectionTest {
 	 */
 	@Test
 	public void testNowhere() {
-		IExplorationModel model = new ExplorationModel(new SPMapNG(new MapDimensionsImpl(5, 5, 2),
+		final IExplorationModel model = new ExplorationModel(new SPMapNG(new MapDimensionsImpl(5, 5, 2),
 			new PlayerCollection(), 0));
-		DirectionAssertion localAssert = directionAssert(model, Direction.Nowhere);
+		final DirectionAssertion localAssert = directionAssert(model, Direction.Nowhere);
 		localAssert.call(new Point(0, 0), new Point(0, 0), "");
 		localAssert.call(new Point(1, 1), new Point(1, 1), "");
 		localAssert.call(new Point(3, 4), new Point(3, 4), "");
