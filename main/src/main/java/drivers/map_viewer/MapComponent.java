@@ -198,11 +198,6 @@ import java.awt.image.BufferedImage;
 			visibleDimensions.getColumns().contains(selectedColumn);
 	}
 
-	// FIXME: inline into callers; Ceylon couldn't because it's overloaded
-	private void requestFocusNarrowly() {
-		requestFocusInWindow();
-	}
-
 	/**
 	 * If the point is currently visible, call the overloading of {@link
 	 * repaint} that takes coordinates, passing the coordinates describing

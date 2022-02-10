@@ -133,10 +133,6 @@ public final class ViewerFrame extends SPFrame implements MapGUI {
 			});
 	}
 
-	private void setMapWrapper(final IMutableMapNG map) {
-		mapModel.setMap(map); // FIXME: inline into caller(s); this was separated out because of a Ceylon compiler bug
-	}
-
 	private void alternateAcceptDroppedFile(final Path file) {
 		try {
 			final IMutableMapNG mapOrError = MapReaderAdapter.readMap(file,
