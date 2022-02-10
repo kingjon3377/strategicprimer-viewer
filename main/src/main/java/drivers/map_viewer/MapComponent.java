@@ -265,14 +265,8 @@ import java.awt.image.BufferedImage;
 		final int maxRow = mapModel.getVisibleDimensions().getMaximumRow();
 		final int minCol = mapModel.getVisibleDimensions().getMinimumColumn();
 		final int maxCol = mapModel.getVisibleDimensions().getMaximumColumn();
-		for (int i = minY; i <= maxY; i++) {
-			if ((i + minRow) >= (maxRow + 1)) { // TODO: combine with condition in loop
-				break;
-			}
-			for (int j = minX; j <= maxX; j++) {
-				if ((j + minCol) >= (maxCol + 1)) { // TODO: combine with condition in loop
-					break;
-				}
+		for (int i = minY; i <= maxY && (i + minRow) < (maxRow + 1); i++) {
+			for (int j = minX; j <= maxX && (j + minCol) < (maxCol + 1); j++) {
 				final Point location = new Point(i + minRow, j + minCol);
 				paintTile(context, tileSize, location, i, j,
 					mapModel.getSelection().equals(location));
