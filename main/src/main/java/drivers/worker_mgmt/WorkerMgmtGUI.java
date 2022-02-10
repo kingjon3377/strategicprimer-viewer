@@ -14,6 +14,7 @@ import drivers.common.SPOptions;
 import drivers.common.MultiMapGUIDriver;
 import drivers.common.IWorkerModel;
 import drivers.common.WorkerGUI;
+import lovelace.util.ShowErrorDialog;
 import worker.common.WorkerModel;
 import java.awt.event.ActionEvent;
 import common.map.IMutableMapNG;
@@ -126,7 +127,8 @@ public class WorkerMgmtGUI implements MultiMapGUIDriver, WorkerGUI {
 						new WorkerMgmtGUI(cli, options, new WorkerModel(map))
 							.startDriver();
 					} catch (final DriverFailedException except) {
-						// FIXME: Show error dialog
+						ShowErrorDialog.showErrorDialog(null, "Strategic Primer Worker Management",
+								String.format("Failed to open new window:%n%s", except.getMessage()));
 						LOGGER.log(Level.SEVERE, "Failed to open new window",
 							except);
 					}

@@ -19,6 +19,7 @@ import drivers.common.cli.ICLIHelper;
 
 import common.map.IMutableMapNG;
 
+import lovelace.util.ShowErrorDialog;
 import report.TabularReportGenerator;
 
 import javax.swing.JTabbedPane;
@@ -69,7 +70,8 @@ public class TabularReportGUI implements GUIDriver {
 				try {
 					TabularReportGenerator.createGUITabularReports(frame::addTab, model.getMap());
 				} catch (final IOException except) {
-					// FIXME: Show error dialog
+					ShowErrorDialog.showErrorDialog(window, "Strategic Primer Tabular Reports",
+							String.format("I/O error while generating reports:%n%s", except.getLocalizedMessage()));
 					LOGGER.log(Level.SEVERE, "I/O error while generating tabular reports", except);
 				}
 			}

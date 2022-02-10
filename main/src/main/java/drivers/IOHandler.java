@@ -325,7 +325,8 @@ public class IOHandler implements ActionListener {
 						StreamSupport.stream(ServiceLoader.load(ViewerDriverFactory.class).spliterator(), false)
 								.findAny().orElse(null);
 				if (vdf == null) {
-					// FIXME: Show error dialog
+					ShowErrorDialog.showErrorDialog(null, "Strategic Primer Assistive Programs",
+							"Either the map viewer was not included in this edition of the assistive programs, or the logic to load it failed.");
 					LOGGER.severe("Map viewer was not included in this assembly, or service discovery failed");
 				} else {
 					SwingUtilities.invokeLater(() -> {
@@ -336,8 +337,10 @@ public class IOHandler implements ActionListener {
 													.getModel()))
 									.startDriver();
 						} catch (final DriverFailedException except) {
-							// FIXME: Log and show error dialog instead
-							throw new RuntimeException(except);
+							LOGGER.log(Level.SEVERE, "Error thrown from viewer driver",
+									Optional.ofNullable(except.getCause()).orElse(except));
+							ShowErrorDialog.showErrorDialog(null, "Strategic Primer Assistive Programs",
+									String.format("Error starting map viewer:%n%s", except.getMessage()));
 						}
 					});
 				}
