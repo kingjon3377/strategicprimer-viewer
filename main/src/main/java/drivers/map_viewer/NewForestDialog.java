@@ -1,6 +1,7 @@
 package drivers.map_viewer;
 
 import java.util.OptionalInt;
+import java.util.logging.Logger;
 import org.javatuples.Pair;
 import java.util.Arrays;
 import javax.swing.JComponent;
@@ -30,6 +31,7 @@ import java.math.BigDecimal;
  * A dialog to let the user add a new forest to a tile.
  */
 public class NewForestDialog extends SPDialog implements NewFixtureSource {
+	private static final Logger LOGGER = Logger.getLogger(NewForestDialog.class.getName());
 	public NewForestDialog(final IDRegistrar idf) {
 		super(null, "Add a New Forest");
 		this.idf = idf;
@@ -104,7 +106,8 @@ public class NewForestDialog extends SPDialog implements NewFixtureSource {
 				if (temp.isPresent() && temp.getAsInt() >= 0) {
 					idNum = temp.getAsInt();
 					idf.register(idNum);
-				} else { // TODO: log inconsistency
+				} else {
+					LOGGER.warning("Failed to parse input detected as numeric");
 					idNum = idf.createID();
 				}
 			} else {

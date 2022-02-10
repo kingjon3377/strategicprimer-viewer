@@ -1,5 +1,6 @@
 package drivers.resourceadding;
 
+import java.util.logging.Logger;
 import java.util.stream.StreamSupport;
 import java.util.stream.Collectors;
 import org.jetbrains.annotations.Nullable;
@@ -24,6 +25,7 @@ import java.math.BigDecimal;
  * A driver model for resource-entering drivers.
  */
 /* package */ class ResourceManagementDriverModel extends SimpleMultiMapModel {
+	private static final Logger LOGGER = Logger.getLogger(ResourceManagementDriverModel.class.getName());
 	// TODO: Make these private and expose them as fromMap() and
 	// fromDriverModel() static factory methods, as they were (in effect)
 	// in Ceylon?
@@ -62,11 +64,15 @@ import java.math.BigDecimal;
 						.filter(f -> mapPlayer.getPlayerId() ==
 							f.getOwner().getPlayerId())
 						.findAny().orElse(null);
-				if (fortress != null) {
+				if (fortress == null) {
+					LOGGER.warning("Didn't find HQ for " + mapPlayer);
+				} else {
 					fortress.addMember(resource);
 					map.setModified(true);
-				} // TODO: Else log why we're skipping the map
-			} // TODO: Else log why we're skipping the map
+				}
+			} else {
+				LOGGER.fine("Skipping map because current player isn't independent and doesn't match");
+			}
 		}
 	}
 
