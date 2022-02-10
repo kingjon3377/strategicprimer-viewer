@@ -49,10 +49,10 @@ public class NewForestDialog extends SPDialog implements NewFixtureSource {
 		idField.setColumns(10);
 		setupField(idField);
 
-		final JButton okButton = new ListenedButton("OK", ignored -> okListener());
+		final JButton okButton = new ListenedButton("OK", this::okListener);
 		add(okButton);
 
-		final JButton cancelButton = new ListenedButton("Cancel", ignored -> cancelListener());
+		final JButton cancelButton = new ListenedButton("Cancel", this::cancelListener);
 		Platform.makeButtonsSegmented(okButton, cancelButton);
 		add(cancelButton);
 

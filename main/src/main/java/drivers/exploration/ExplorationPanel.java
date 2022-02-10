@@ -133,7 +133,7 @@ import worker.common.IFixtureEditHelper;
 			.collect(Collectors.toMap(Pair::getValue0, Pair::getValue1));
 		driverModel.addMovementCostListener(this::movementDeductionTracker);
 		final JButton explorerChangeButton = new ListenedButton("Select a different explorer",
-			ignored -> explorerChangeButtonListener.run());
+			explorerChangeButtonListener::run);
 
 		final JLabel remainingMPLabel = new JLabel("Remaining Movement Points:");
 		final JSpinner mpField = new JSpinner(mpModel);

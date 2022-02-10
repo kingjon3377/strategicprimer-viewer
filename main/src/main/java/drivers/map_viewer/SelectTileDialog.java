@@ -48,13 +48,13 @@ import common.map.Point;
 		boxPanelObj.add(new JLabel("Row: "));
 		boxPanelObj.add(rowField);
 		rowField.setActionCommand("OK");
-		rowField.addActionListener(this::handleOK);
+		rowField.addActionListener(ignored -> handleOK());
 
 		boxPanelObj.addGlue();
 		boxPanelObj.add(new JLabel("Column:"));
 		boxPanelObj.add(columnField);
 		columnField.setActionCommand("OK");
-		columnField.addActionListener(this::handleOK);
+		columnField.addActionListener(ignored -> handleOK());
 
 		boxPanelObj.addGlue();
 		contentPanel.add(boxPanelObj);
@@ -69,7 +69,7 @@ import common.map.Point;
 		buttonPanel.addGlue();
 		final JButton okButton = new ListenedButton("OK", this::handleOK);
 
-		final JButton cancelButton = new ListenedButton("Cancel", ignored -> cancelHandler());
+		final JButton cancelButton = new ListenedButton("Cancel", this::cancelHandler);
 
 		Platform.makeButtonsSegmented(okButton, cancelButton);
 		buttonPanel.add(okButton);
@@ -128,7 +128,7 @@ import common.map.Point;
 		}
 	}
 
-	private void handleOK(final ActionEvent ignored) { // Param needed because added to two JTextFields
+	private void handleOK() {
 		final String rowText = rowField.getText();
 		final String columnText = columnField.getText();
 		errorLabel.setText("");

@@ -107,10 +107,10 @@ import java.util.function.Consumer;
 
 			final JPanel buttonPanel = new JPanel(new GridLayout(0, 2));
 
-			final JButton addButton = new ListenedButton("Add Worker", ignored -> accept());
+			final JButton addButton = new ListenedButton("Add Worker", this::accept);
 			buttonPanel.add(addButton);
 
-			final JButton cancelButton = new ListenedButton("Cancel", ignored -> revert());
+			final JButton cancelButton = new ListenedButton("Cancel", this::revert);
 			buttonPanel.add(cancelButton);
 
 			Platform.makeButtonsSegmented(addButton, cancelButton);

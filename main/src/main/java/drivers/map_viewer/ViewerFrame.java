@@ -205,8 +205,8 @@ public final class ViewerFrame extends SPFrame implements MapGUI {
 		table.setPreferredScrollableViewportSize(table.getPreferredSize());
 		table.setFillsViewportHeight(true);
 		table.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
-		final JButton allButton = new ListenedButton("Display All", ignored -> displayAllListener());
-		final JButton noneButton = new ListenedButton("Display None", ignored -> displayNoneListener());
+		final JButton allButton = new ListenedButton("Display All", this::displayAllListener);
+		final JButton noneButton = new ListenedButton("Display None", this::displayNoneListener);
 		Platform.makeButtonsSegmented(allButton, noneButton);
 		final JPanel buttonPanel = (Platform.SYSTEM_IS_MAC) ?
 			centeredHorizontalBox(allButton, noneButton) :

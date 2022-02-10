@@ -51,7 +51,7 @@ import lovelace.util.SimpleCardLayout;
 		field.setActionCommand("OK");
 
 		final JPanel okPanel = new BoxPanel(BoxAxis.LineAxis);
-		final JButton okButton = new ListenedButton("OK", ignored -> okListener());
+		final JButton okButton = new ListenedButton("OK", this::okListener);
 		okPanel.add(okButton);
 
 		final JButton cancelButton = new ListenedButton("Cancel", ignored -> {

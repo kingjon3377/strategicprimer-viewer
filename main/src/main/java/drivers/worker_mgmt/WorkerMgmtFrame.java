@@ -119,9 +119,9 @@ import drivers.worker_mgmt.orderspanel.OrdersPanel;
 		strategyExporter = new StrategyExporter(model, options);
 
 		final BorderedPanel lowerLeft = BorderedPanel.verticalPanel(
-			new ListenedButton("Add New Unit", ignored -> newUnitFrame.showWindow()),
+			new ListenedButton("Add New Unit", newUnitFrame::showWindow),
 			ordersPanelObj,
-			new ListenedButton("Export a proto-strategy", ignored -> strategyWritingListener()));
+			new ListenedButton("Export a proto-strategy", this::strategyWritingListener));
 		setContentPane(horizontalSplit(verticalSplit(
 			BorderedPanel.verticalPanel(
 				BorderedPanel.horizontalPanel(playerLabel, null, jumpButton),

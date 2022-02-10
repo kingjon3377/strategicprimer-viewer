@@ -48,7 +48,7 @@ public class AboutDialog extends SPDialog {
 		scrollPane.setMinimumSize(new Dimension(300, 400));
 		scrollPane.setPreferredSize(new Dimension(400, 500));
 		add(scrollPane, BorderLayout.CENTER);
-		add(BoxPanel.centeredHorizontalBox(new ListenedButton("Close", (ignored) -> dispose())),
+		add(BoxPanel.centeredHorizontalBox(new ListenedButton("Close", this::dispose)),
 			BorderLayout.PAGE_END);
 		pack();
 	}

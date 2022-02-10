@@ -34,9 +34,8 @@ public class TextNoteDialog extends SPDialog implements NewFixtureSource {
 		this.currentTurn = currentTurn;
 		noteField.setLineWrap(true);
 
-		// TODO: Add a constructor taking Runnable to ListenedButton
-		final JButton okButton = new ListenedButton("OK", ignored -> okListener());
-		final JButton cancelButton = new ListenedButton("Cancel", ignored -> cancelListener());
+		final JButton okButton = new ListenedButton("OK", this::okListener);
+		final JButton cancelButton = new ListenedButton("Cancel", this::cancelListener);
 
 		// FIXME: Here and elsewhere, I think the order of "OK" and
 		// "Cancel" needs to be platform-dependent. We probably need a

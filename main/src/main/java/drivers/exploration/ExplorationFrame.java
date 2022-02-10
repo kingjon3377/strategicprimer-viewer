@@ -103,7 +103,7 @@ import org.eclipse.jdt.annotation.Nullable;
 					BorderedPanel.horizontalPanel(new JLabel("Unit's Movement Points"), null, mpField),
 					BorderedPanel.horizontalPanel(new JLabel("Unit's Relative Speed"),
 						null, new ImprovedComboBox<>(speedModel)),
-					new ListenedButton("Start exploring!", ignored -> buttonListener()))))));
+					new ListenedButton("Start exploring!", this::buttonListener))))));
 
 		add(explorationPanel);
 

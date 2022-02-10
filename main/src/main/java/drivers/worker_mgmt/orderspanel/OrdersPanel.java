@@ -95,8 +95,8 @@ public class OrdersPanel extends BorderedPanel implements OrdersContainer {
 			BorderedPanel.horizontalPanel(null, new JLabel("Turn "),
 				new JSpinner(spinnerModel))));
 		if (ordersConsumer != null) {
-			final JButton applyButton = new ListenedButton("Apply", ignored -> apply());
-			final JButton revertButton = new ListenedButton("Revert", ignored -> revert());
+			final JButton applyButton = new ListenedButton("Apply", this::apply);
+			final JButton revertButton = new ListenedButton("Revert", this::revert);
 			Platform.makeButtonsSegmented(applyButton, revertButton);
 
 			final JPanel buttonPanel;

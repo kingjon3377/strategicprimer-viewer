@@ -55,7 +55,7 @@ import java.util.function.Predicate;
 		final BoxPanel buttonPanel = new BoxPanel(BoxAxis.LineAxis); // TODO: Use a better layout
 		buttonPanel.addGlue();
 
-		final JButton okButton = new ListenedButton("OK", ignored -> okListener());
+		final JButton okButton = new ListenedButton("OK", this::okListener);
 
 		Platform.makeButtonsSegmented(okButton, cancelButton);
 		buttonPanel.add(okButton);
@@ -253,7 +253,7 @@ import java.util.function.Predicate;
 		dispose();
 	}
 
-	private final JButton cancelButton = new ListenedButton("Cancel", ignored -> cancelListener());
+	private final JButton cancelButton = new ListenedButton("Cancel", this::cancelListener);
 
 	private void clearSearchField() {
 		searchField.setText("");
