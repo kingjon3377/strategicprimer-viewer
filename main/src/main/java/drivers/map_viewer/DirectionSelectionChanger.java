@@ -190,9 +190,9 @@ import common.map.Point;
 	 */
 	@Override
 	public void mouseWheelMoved(final MouseWheelEvent event) {
+		final int count = event.getWheelRotation();
 		if (Platform.isHotKeyPressed(event)) {
 			// Zoom if Command-scroll/Control-scroll
-			final int count = event.getWheelRotation(); // TODO: pull count variable to top of method
 			if (count < 0) {
 				for (int i = 0; i < -count; i++) {
 					model.zoomIn();
@@ -204,7 +204,6 @@ import common.map.Point;
 			}
 		} else if (event.isShiftDown()) {
 			// Scroll sideways on Shift-scroll
-			final int count = event.getWheelRotation();
 			if (count < 0) {
 				scroll(true, false, 0 - count);
 			} else {
@@ -214,7 +213,6 @@ import common.map.Point;
 			// Otherwise, no relevant modifiers being pressed, scroll vertically.
 			// Control is ignored on Mac because it is rarely used as a modifier, and
 			// Control-clicking is the same as right-clicking.
-			final int count = event.getWheelRotation();
 			if (count < 0) {
 				scroll(false, false, 0 - count);
 			} else {
