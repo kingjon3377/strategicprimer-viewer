@@ -60,7 +60,7 @@ import java.util.logging.Level;
 		final double newCorner = Math.round((imageSize * margin) / 2.0);
 		pen.fillRoundRect(((int) newMargin) + 1, ((int) newMargin) + 1,
 			(int) newAfterMargin, (int) newAfterMargin, (int) newCorner, (int) newCorner);
-		// FIXME: pen.dispose(), surely?
+		pen.dispose();
 		return new ImageIcon(temp);
 	}
 
