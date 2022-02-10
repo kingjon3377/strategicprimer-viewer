@@ -1,6 +1,7 @@
 package drivers.gui.common;
 
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import org.jetbrains.annotations.Nullable;
 import javax.swing.JFileChooser;
 import lovelace.util.FileChooser;
@@ -32,7 +33,7 @@ public class SPFileChooser extends FileChooser {
 	 * @param allowMultiple Whether to allow multi-selection.
 	 */
 	public static Either<JFileChooser, FileDialog> filteredFileChooser(final boolean allowMultiple) {
-		return filteredFileChooser(allowMultiple, ".");
+		return filteredFileChooser(allowMultiple, Paths.get("."));
 	}
 
 	/**
@@ -42,10 +43,10 @@ public class SPFileChooser extends FileChooser {
 	 * TODO: Move functionality into FileChooser somehow? Or else convert to class.
 	 *
 	 * @param allowMultiple Whether to allow multi-selection.
-	 * @param current The current directory. TODO: Take as Path instead?
+	 * @param current The current directory.
 	 */
 	public static Either<JFileChooser, FileDialog> filteredFileChooser(final boolean allowMultiple,
-	                                                                   final String current) {
+	                                                                   final Path current) {
 		return filteredFileChooser(allowMultiple, current, MAP_EXTENSIONS_FILTER);
 	}
 
@@ -56,11 +57,11 @@ public class SPFileChooser extends FileChooser {
 	 * TODO: Move functionality into FileChooser somehow?
 	 *
 	 * @param allowMultiple Whether to allow multi-selection.
-	 * @param current The current directory. TODO: Take as Path instead?
+	 * @param current The current directory.
 	 * @param filter The filter to apply, if any.
 	 */
 	public static Either<JFileChooser, FileDialog> filteredFileChooser(final boolean allowMultiple,
-	                                                                   final String current, @Nullable final FileFilter filter) {
+	                                                                   final Path current, @Nullable final FileFilter filter) {
 		if (Platform.SYSTEM_IS_MAC) {
 			final FileDialog retval = new FileDialog((Frame) null);
 			if (filter != null) {
@@ -68,7 +69,7 @@ public class SPFileChooser extends FileChooser {
 			}
 			return Either.right(retval);
 		} else {
-			final JFileChooser retval = new JFileChooser(current);
+			final JFileChooser retval = new JFileChooser(current.toFile());
 			if (filter != null) {
 				retval.setFileFilter(filter);
 			}

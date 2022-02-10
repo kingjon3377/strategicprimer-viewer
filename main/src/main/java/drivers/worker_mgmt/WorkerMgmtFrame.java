@@ -1,5 +1,6 @@
 package drivers.worker_mgmt;
 
+import java.nio.file.Paths;
 import java.util.logging.Level;
 import java.io.IOException;
 import java.util.logging.Logger;
@@ -202,7 +203,7 @@ import drivers.worker_mgmt.orderspanel.OrdersPanel;
 	}
 
 	private void strategyWritingListener() {
-		SPFileChooser.save(null, filteredFileChooser(false, ".", null)).call(this::writeStrategy);
+		SPFileChooser.save(null, filteredFileChooser(false, Paths.get("."), null)).call(this::writeStrategy);
 	}
 
 	private final TreeExpansionOrderListener expander;
