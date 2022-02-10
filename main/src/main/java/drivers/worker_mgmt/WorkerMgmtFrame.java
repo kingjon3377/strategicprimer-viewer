@@ -5,7 +5,6 @@ import java.util.logging.Level;
 import java.io.IOException;
 import java.util.logging.Logger;
 import drivers.gui.common.SPFileChooser;
-import java.util.stream.StreamSupport;
 import java.util.Collections;
 import javax.swing.JButton;
 import java.util.Arrays;
@@ -114,7 +113,7 @@ import drivers.worker_mgmt.orderspanel.OrdersPanel;
 		tree.addUnitMemberListener(mdp);
 
 		final JButton jumpButton = new ListenedButton(String.format("Jump to Next Blank (%sJ)",
-			Platform.SHORTCUT_DESCRIPTION), ignored -> jumpNextWrapped());
+			Platform.SHORTCUT_DESCRIPTION), ignored -> SwingUtilities.invokeLater(this::jumpNext));
 
 		strategyExporter = new StrategyExporter(model, options);
 
@@ -128,8 +127,7 @@ import drivers.worker_mgmt.orderspanel.OrdersPanel;
 				new JScrollPane(tree), null),
 			lowerLeft, 2.0 / 3.0), mdp));
 
-		// TODO: inline jumpNextWrapped()?
-		createHotKey(jumpButton, "jumpToNext", ignored -> jumpNextWrapped(),
+		createHotKey(jumpButton, "jumpToNext", ignored -> SwingUtilities.invokeLater(this::jumpNext),
 			JComponent.WHEN_IN_FOCUSED_WINDOW, createAccelerator(KeyEvent.VK_J));
 
 		expander = new TreeExpansionHandler(tree);
@@ -185,10 +183,6 @@ import drivers.worker_mgmt.orderspanel.OrdersPanel;
 			LOGGER.finer("Nowhere to jump to, about to beep");
 			Toolkit.getDefaultToolkit().beep();
 		}
-	}
-
-	private void jumpNextWrapped() {
-		SwingUtilities.invokeLater(this::jumpNext);
 	}
 
 	private final StrategyExporter strategyExporter;
