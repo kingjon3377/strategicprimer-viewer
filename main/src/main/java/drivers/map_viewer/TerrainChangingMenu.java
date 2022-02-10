@@ -290,21 +290,17 @@ import common.map.fixtures.terrain.Hill;
 				.anyMatch(Hill.class::isInstance));
 			hillItem.setEnabled(true);
 			newForestItem.setEnabled(true);
-		} else {
-			mountainItem.getModel().setSelected(false);
-			mountainItem.setEnabled(false);
-			hillItem.getModel().setSelected(false);
-			hillItem.setEnabled(false);
-			newForestItem.setEnabled(false);
-		}
-		if (point.isValid() && terrain != null && TileType.Ocean != terrain) {
-			// TODO: combine with earlier if(s)
 			final Collection<River> rivers = model.getMap().getRivers(point);
 			for (final Map.Entry<River, JCheckBoxMenuItem> entry : riverItems.entrySet()) {
 				entry.getValue().setEnabled(true);
 				entry.getValue().getModel().setSelected(rivers.contains(entry.getKey()));
 			}
 		} else {
+			mountainItem.getModel().setSelected(false);
+			mountainItem.setEnabled(false);
+			hillItem.getModel().setSelected(false);
+			hillItem.setEnabled(false);
+			newForestItem.setEnabled(false);
 			for (final Map.Entry<River, JCheckBoxMenuItem> entry : riverItems.entrySet()) {
 				entry.getValue().getModel().setSelected(false);
 				entry.getValue().setEnabled(false);
