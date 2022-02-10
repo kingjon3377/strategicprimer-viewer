@@ -49,12 +49,7 @@ public class FixtureEditMenu extends JPopupMenu {
 			fixture instanceof HasMutableOwner);
 		addMenuItem(new JMenuItem("Dismiss", KeyEvent.VK_D), ignored -> dismissHandler(),
 			fixture instanceof UnitMember);
-		final boolean isAnimalPopulation;
-		if (fixture instanceof Animal) { // TODO: Condense to ternary
-			isAnimalPopulation = ((Animal) fixture).getPopulation() > 1;
-		} else {
-			isAnimalPopulation = false;
-		}
+		final boolean isAnimalPopulation = fixture instanceof Animal && ((Animal) fixture).getPopulation() > 1;
 
 		addMenuItem(new JMenuItem("Split animal population", KeyEvent.VK_S),
 			ignored -> splitAnimalHandler(), isAnimalPopulation);
@@ -62,12 +57,7 @@ public class FixtureEditMenu extends JPopupMenu {
 		addMenuItem(new JMenuItem("Sort", KeyEvent.VK_R), ignored -> sortHandler(),
 			fixture instanceof IUnit);
 
-		final boolean isEmptyUnit;
-		if (fixture instanceof IUnit) { // TODO: condense to ternary
-			isEmptyUnit = ((IUnit) fixture).isEmpty();
-		} else {
-			isEmptyUnit = false;
-		}
+		final boolean isEmptyUnit = fixture instanceof IUnit && ((IUnit) fixture).isEmpty();
 
 		addMenuItem(new JMenuItem("Remove Unit", KeyEvent.VK_M), ignored -> removeUnitHandler(),
 			isEmptyUnit);
