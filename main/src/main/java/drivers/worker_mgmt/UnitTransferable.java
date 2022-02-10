@@ -26,7 +26,7 @@ import common.map.HasMutableKind;
 		if (!Stream.of(data).allMatch(HasMutableKind.class::isInstance)) {
 			throw new IllegalArgumentException("All transferred units must have mutable kind.");
 		}
-		payload = Arrays.asList(data); // TODO: unmodifiableList()?
+		payload = Collections.unmodifiableList(Arrays.asList(data));
 	}
 
 	@Override
