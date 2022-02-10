@@ -144,8 +144,7 @@ import java.util.function.Predicate;
 				return true;
 			} else if ("me".equalsIgnoreCase(pattern) && owner.isCurrent()) {
 				return true;
-			} else if (Arrays.asList("none", "independent").contains(pattern.toLowerCase()) &&
-					owner.isIndependent()) { // TODO: reverse conditions for speed
+			} else if (owner.isIndependent() && Arrays.asList("none", "independent").contains(pattern.toLowerCase())) {
 				return true;
 			} else {
 				return false;
