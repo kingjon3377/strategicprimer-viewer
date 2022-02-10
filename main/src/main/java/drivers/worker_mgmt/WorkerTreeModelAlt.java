@@ -38,9 +38,9 @@ public class WorkerTreeModelAlt extends DefaultTreeModel implements IWorkerTreeM
 	/**
 	 * A base class for all nodes in the tree in this implementation of the tree model.
 	 *
-	 * TODO: Does this really need to be public, or just protected?
+	 * TODO: should be abstract
 	 */
-	public static class WorkerTreeNode<NodeObject> extends DefaultMutableTreeNode
+	protected static class WorkerTreeNode<NodeObject> extends DefaultMutableTreeNode
 			implements Iterable<TreeNode> {
 		public WorkerTreeNode(final Class<NodeObject> cls, final NodeObject userObj) {
 			this(cls, userObj, true);
@@ -129,10 +129,8 @@ public class WorkerTreeModelAlt extends DefaultTreeModel implements IWorkerTreeM
 
 	/**
 	 * A class for tree-nodes representing units.
-	 *
-	 * TODO: Does this really need to be public?
 	 */
-	public static class UnitNode extends WorkerTreeNode<IUnit> {
+	private static class UnitNode extends WorkerTreeNode<IUnit> {
 		private final IUnit unit;
 		public UnitNode(final IUnit unit) {
 			super(IUnit.class, unit);
@@ -195,10 +193,8 @@ public class WorkerTreeModelAlt extends DefaultTreeModel implements IWorkerTreeM
 	 * A class for tree-nodes representing unit kinds, grouping units
 	 * sharing a "kind" (in practice an administrative classification) in
 	 * the tree.
-	 *
-	 * TODO: Does this really need to be public?
 	 */
-	public static class KindNode extends WorkerTreeNode<String> {
+	private static class KindNode extends WorkerTreeNode<String> {
 		public KindNode(final String kind, final IUnit... units) {
 			super(String.class, kind);
 			for (int index = 0; index < units.length; index++) {
