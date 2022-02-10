@@ -68,7 +68,7 @@ import static lovelace.util.Decimalize.decimalize;
 			} else {
 				final BigDecimal amount = cli.inputDecimal(String.format("Amount to take (in %s):",
 					chosen.getQuantity().getUnits()));
-				if (amount != null && amount.compareTo(BigDecimal.ZERO) > 0) {
+				if (amount != null && amount.signum() > 0) {
 					model.transferResource(chosen, unit, amount, idf::createID);
 					resources.clear();
 					fortress.stream().filter(IResourcePile.class::isInstance).map(IResourcePile.class::cast)

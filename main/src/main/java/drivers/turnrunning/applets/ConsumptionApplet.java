@@ -88,8 +88,7 @@ public class ConsumptionApplet extends AbstractTurnApplet {
 		}
 		final long workers = localUnit.stream().filter(IWorker.class::isInstance).count();
 		BigDecimal remainingConsumption = new BigDecimal(4 * workers);
-		final BigDecimal zero = new BigDecimal(0); // FIXME: Use BigDecimal.ZERO
-		while (remainingConsumption.compareTo(zero) > 0) { // TODO: extract loop body as a function?
+		while (remainingConsumption.signum() > 0) { // TODO: extract loop body as a function?
 			cli.println(String.format("%.1f pounds of consumption unaccounted-for",
 				remainingConsumption.doubleValue()));
 			final IResourcePile food = chooseFromList(getFoodFor(localUnit.getOwner(), turn),

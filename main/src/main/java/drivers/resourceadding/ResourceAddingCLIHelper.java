@@ -135,7 +135,7 @@ public class ResourceAddingCLIHelper {
 			contents = origContents;
 		}
 		final BigDecimal quantity = cli.inputDecimal(String.format("Quantity in %s?", units));
-		if (quantity == null || quantity.compareTo(BigDecimal.ZERO) < 0) {
+		if (quantity == null || quantity.signum() < 0) {
 			return null;
 		}
 		final ResourcePileImpl retval = new ResourcePileImpl(idf.createID(), kind, contents,

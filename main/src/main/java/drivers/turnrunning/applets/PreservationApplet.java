@@ -84,7 +84,7 @@ import static lovelace.util.Decimalize.decimalize;
 			turn = tempThree;
 			final BigDecimal newPounds =
 				cli.inputDecimal("How many pounds of that are produced from this source?");
-			if (newPounds == null || newPounds.compareTo(BigDecimal.ZERO) <= 0) {
+			if (newPounds == null || newPounds.signum() <= 0) {
 				return null;
 			}
 			final BigDecimal subtrahend;
@@ -96,7 +96,7 @@ import static lovelace.util.Decimalize.decimalize;
 			} else {
 				subtrahend = cli.inputDecimal(String.format("How many %s to use?",
 					item.getQuantity().getUnits()));
-				if (subtrahend == null || subtrahend.compareTo(BigDecimal.ZERO) <= 0) {
+				if (subtrahend == null || subtrahend.signum() <= 0) {
 					return null;
 				}
 			}

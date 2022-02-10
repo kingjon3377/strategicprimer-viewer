@@ -148,7 +148,7 @@ public class TurnRunningModel extends ExplorationModel implements ITurnRunningMo
 	@Override
 	public <T extends HasExtent<? extends TileFixture>&TileFixture>
 		void reduceExtent(final Point location, final T fixture, final boolean zero, final BigDecimal reduction) {
-		if (reduction.compareTo(BigDecimal.ZERO) > 0) {
+		if (reduction.signum() > 0) {
 			boolean first = false;
 			boolean all = false;
 			for (final IMutableMapNG map : getRestrictedAllMaps()) {
