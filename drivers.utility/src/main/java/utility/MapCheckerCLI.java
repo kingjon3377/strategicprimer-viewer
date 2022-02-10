@@ -248,14 +248,9 @@ public class MapCheckerCLI implements UtilityDriver {
 
 	private static boolean acreageChecker(final Point context, final Warning warner,
 	                                      final Collection<? extends IFixture> fixtures) {
-		double total = 0.0;
 		final boolean retval = false;
-		for (final HasExtent<?> fixture : fixtures.stream()
-				.filter(HasExtent.class::isInstance).map(HasExtent.class::cast)
-				.filter(MapCheckerCLI::positiveAcres)
-				.collect(Collectors.toList())) { // TODO: convert to forEach() to avoid collector?
-			total += fixture.getAcres().doubleValue();
-		}
+		double total = fixtures.stream().filter(HasExtent.class::isInstance).map(HasExtent.class::cast)
+				.filter(MapCheckerCLI::positiveAcres).map(HasExtent::getAcres).mapToDouble(Number::doubleValue).sum();
 		if (total > 160.0) {
 			warner.handle(new SPContentWarning(context, String.format(
 				"More explicit acres (%.1f) than tile should allow", total)));
