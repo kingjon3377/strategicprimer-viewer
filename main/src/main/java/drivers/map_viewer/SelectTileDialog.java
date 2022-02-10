@@ -87,8 +87,7 @@ import common.map.Point;
 	private final JLabel mainLabel = new AlignedLabel("Coordinates of tile to select:",
 		Component.CENTER_ALIGNMENT, Component.TOP_ALIGNMENT);
 
-	// TODO: static?
-	private final NumberFormat NUM_PARSER = NumberFormat.getIntegerInstance();
+	private static final NumberFormat NUM_PARSER = NumberFormat.getIntegerInstance();
 
 	private final JTextField rowField = new JTextField("-1", 4);
 	private final JTextField columnField = new JTextField("-1", 4);
