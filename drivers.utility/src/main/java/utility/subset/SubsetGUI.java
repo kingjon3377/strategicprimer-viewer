@@ -35,6 +35,12 @@ public class SubsetGUI implements UtilityGUI {
 	public SubsetGUI(final ICLIHelper cli, final SPOptions options) {
 		this.cli = cli;
 		this.options = options;
+		frame = new SubsetFrame(this);
+		frame.setJMenuBar(SPMenu.forWindowContaining(frame.getContentPane(),
+				SPMenu.createFileMenu(new UtilityMenuHandler(this, frame)::handleEvent, this),
+				SPMenu.disabledMenu(SPMenu.createMapMenu(SubsetGUI::noop, this)),
+				SPMenu.disabledMenu(SPMenu.createViewMenu(SubsetGUI::noop, this))));
+		frame.addWindowListener(new WindowCloseListener(ignored -> frame.dispose()));
 	}
 
 	private final ICLIHelper cli;
@@ -45,10 +51,7 @@ public class SubsetGUI implements UtilityGUI {
 		return options;
 	}
 
-	@Nullable
-	private SubsetFrame frame;
-
-	private boolean initialized = false;
+	private final SubsetFrame frame;
 
 	private static <T> void noop(final T t) { }
 
@@ -56,15 +59,6 @@ public class SubsetGUI implements UtilityGUI {
 	public void startDriver(final String... args) throws DriverFailedException {
 		if (args.length == 0) {
 			throw new IncorrectUsageException(SubsetGUIFactory.USAGE);
-		}
-		if (!initialized || frame == null) { // FIXME: Move this initialization into the constructor, since Java is less strict about 'this' usage in initializers.
-			initialized = true;
-			frame = new SubsetFrame(this);
-			frame.setJMenuBar(SPMenu.forWindowContaining(frame.getContentPane(),
-				SPMenu.createFileMenu(new UtilityMenuHandler(this, frame)::handleEvent, this),
-				SPMenu.disabledMenu(SPMenu.createMapMenu(SubsetGUI::noop, this)),
-				SPMenu.disabledMenu(SPMenu.createViewMenu(SubsetGUI::noop, this))));
-			frame.addWindowListener(new WindowCloseListener(ignored -> frame.dispose()));
 		}
 		SwingUtilities.invokeLater(frame::showWindow);
 		final String first = args[0];
