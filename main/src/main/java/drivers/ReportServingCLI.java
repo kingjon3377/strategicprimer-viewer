@@ -71,10 +71,12 @@ import org.takes.http.Exit;
 
 	private void serveReports(final int port, @Nullable final Player currentPlayer) throws DriverFailedException {
 		final Map<Path, String> cache = new HashMap<>();
-		if (model instanceof IMultiMapModel) {
+		if (model instanceof IMultiMapModel) { // TODO: Also require there to be 1+ sub-maps w/ filenames for this case
 			for (final IMapNG map : ((IMultiMapModel) model).getAllMaps()) {
 				final Path file = map.getFilename();
-				// TODO: skip if no filename
+				if (file == null) {
+					continue;
+				}
 				if (!cache.containsKey(file.toString())) {
 					try {
 						cache.put(file, ReportGenerator.createReport(map, cli,
