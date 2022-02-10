@@ -96,7 +96,7 @@ public final class ReportGenerator {
 			new TownReportGenerator(player, dimensions, currentTurn, hq),
 			new FortressMemberReportGenerator(player, dimensions, currentTurn, hq),
 			new AdventureReportGenerator(player, dimensions, hq),
-			new ExplorableReportGenerator(player, dimensions, hq),
+			new ExplorableReportGenerator(dimensions, hq),
 			new HarvestableReportGenerator(dimensions, hq),
 			new AnimalReportGenerator(dimensions, currentTurn, hq),
 			new VillageReportGenerator(player, dimensions, hq),

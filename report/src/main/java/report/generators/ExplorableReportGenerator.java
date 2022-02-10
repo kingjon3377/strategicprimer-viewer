@@ -9,7 +9,6 @@ import java.util.Arrays;
 
 import lovelace.util.DelayedRemovalMap;
 
-import common.map.Player;
 import common.map.IFixture;
 import common.map.Point;
 import common.map.MapDimensions;
@@ -23,13 +22,11 @@ import common.map.fixtures.explorable.ExplorableFixture;
  * A report generator for caves, battlefields, and portals.
  */
 public class ExplorableReportGenerator extends AbstractReportGenerator<ExplorableFixture> {
-	private final Player currentPlayer;
-	public ExplorableReportGenerator(final Player currentPlayer, final MapDimensions dimensions) {
-		this(currentPlayer, dimensions, null);
+	public ExplorableReportGenerator(final MapDimensions dimensions) {
+		this(dimensions, null);
 	}
-	public ExplorableReportGenerator(final Player currentPlayer, final MapDimensions dimensions, @Nullable final Point hq) {
+	public ExplorableReportGenerator(final MapDimensions dimensions, @Nullable final Point hq) {
 		super(dimensions, hq);
-		this.currentPlayer = currentPlayer;
 	}
 
 	/**
