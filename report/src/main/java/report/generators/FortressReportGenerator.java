@@ -53,31 +53,29 @@ public class FortressReportGenerator extends AbstractReportGenerator<IFortress> 
 	private final IReportGenerator<FortressMember> memberReportGenerator;
 	private final Player currentPlayer;
 
-	private String terrain(final IMapNG map, final Point point,
+	private void terrain(final Consumer<String> ostream, final IMapNG map, final Point point,
 	                       final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures) {
-		final StringBuilder builder = new StringBuilder();
-		builder.append("Surrounding terrain: ");
-		builder.append(Optional.ofNullable(map.getBaseTerrain(point)).map(Object::toString)
+		ostream.accept("Surrounding terrain: ");
+		ostream.accept(Optional.ofNullable(map.getBaseTerrain(point)).map(Object::toString)
 			.orElse("Unknown"));
 		boolean unforested = true;
 		if (map.isMountainous(point)) {
-			builder.append(", mountainous");
+			ostream.accept(", mountainous");
 		}
 		for (final TileFixture fixture : map.getFixtures(point)) {
 			if (unforested && fixture instanceof Forest) {
 				unforested = false;
-				builder.append(", forested with ");
-				builder.append(((Forest) fixture).getKind());
+				ostream.accept(", forested with ");
+				ostream.accept(((Forest) fixture).getKind());
 				fixtures.remove(fixture.getId());
 			} else if (fixture instanceof Hill) {
-				builder.append(", hilly");
+				ostream.accept(", hilly");
 				fixtures.remove(fixture.getId());
 			} else if (fixture instanceof Oasis) {
-				builder.append(", with a nearby oasis");
+				ostream.accept(", with a nearby oasis");
 				fixtures.remove(fixture.getId());
 			}
 		}
-		return builder.toString();
 	}
 
 	/**
@@ -135,7 +133,7 @@ public class FortressReportGenerator extends AbstractReportGenerator<IFortress> 
 		ostream.accept(distanceString.apply(loc));
 		println(ostream, "</li>");
 		ostream.accept("    <li>");
-		ostream.accept(terrain(map, loc, fixtures)); // TODO: Make it take ostream instead of returning String
+		terrain(ostream, map, loc, fixtures);
 		println(ostream, "</li>");
 		riversToString(ostream, map.getRivers(loc));
 		if (!map.getRoads(loc).isEmpty()) {
