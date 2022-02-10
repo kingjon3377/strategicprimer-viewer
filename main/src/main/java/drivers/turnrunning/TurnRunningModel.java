@@ -118,7 +118,7 @@ public class TurnRunningModel extends ExplorationModel implements ITurnRunningMo
 							final T addend = (T) matching.reduced(remaining);
 							map.replace(location, matching,
 								(TileFixture) addend.copy(first || zero));
-							// FIXME: first = false here, right?
+							first = false;
 							continue;
 						} else if (first) {
 							all = true;
@@ -164,7 +164,7 @@ public class TurnRunningModel extends ExplorationModel implements ITurnRunningMo
 							final T addend = (T)
 								matching.reduced(reduction).copy(first || zero);
 							map.replace(location, matching, (TileFixture) addend);
-							// FIXME: first = false here, right?
+							first = false;
 							continue;
 						} else if (first) {
 							all = true;
