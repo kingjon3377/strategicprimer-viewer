@@ -282,11 +282,7 @@ import common.map.fixtures.terrain.Hill;
 		final Point localPoint = Optional.ofNullable(model.getInteraction()).orElseGet(model::getSelection);
 		point = localPoint;
 		final TileType terrain = model.getMap().getBaseTerrain(point);
-		if (point.isValid() && terrain != null) { // TODO: condense, like returning a boolean
-			newUnitItem.setEnabled(true);
-		} else {
-			newUnitItem.setEnabled(false);
-		}
+		newUnitItem.setEnabled(point.isValid() && terrain != null);
 		if (point.isValid() && terrain != null && TileType.Ocean != terrain) {
 			mountainItem.getModel().setSelected(model.getMap().isMountainous(point));
 			mountainItem.setEnabled(true);
