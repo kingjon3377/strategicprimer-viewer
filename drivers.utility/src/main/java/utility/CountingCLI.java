@@ -198,12 +198,11 @@ import common.map.fixtures.mobile.AnimalTracks;
 		tileTypeCounts.countMany(map.streamLocations()
 			.map(map::getBaseTerrain).filter(Objects::nonNull).toArray(TileType[]::new));
 		cli.println();
-		for (final Pair<TileType, Integer> entry : tileTypeCounts.streamAllCounts()
+		tileTypeCounts.streamAllCounts()
 				.sorted(Comparator.comparing(Pair::getValue1,
-					Comparator.reverseOrder())).collect(Collectors.toList())) {
-			// TODO: Use Stream::forEach to avoid collector step
-			cli.println(String.format("- %d are %s", entry.getValue1(), entry.getValue0()));
-		}
+						Comparator.reverseOrder()))
+				.map(entry -> String.format("- %d are %s", entry.getValue1(), entry.getValue0()))
+				.forEach(cli::println);
 		cli.println();
 		final List<TileFixture> allFixtures = map.streamAllFixtures().collect(Collectors.toList());
 		final MappedCounter<Forest, String, BigDecimal> forests = new MappedCounter<>(Forest::getKind,
