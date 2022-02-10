@@ -2,6 +2,7 @@ package drivers.map_viewer;
 
 import java.nio.file.NoSuchFileException;
 
+import java.util.stream.Stream;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -151,8 +152,7 @@ public class Ver2TileDrawHelper implements TileDrawHelper {
 	private Color getFixtureColor(final IMapNG map, final Point location) {
 		final TileFixture top = getTopFixture(map, location);
 		if (top != null) {
-			final Color color =
-				StreamSupport.stream(getDrawableFixtures(map, location).spliterator(), false)
+			final Color color = getDrawableFixtures(map, location)
 					.filter(f -> !top.equals(f)).filter(TerrainFixture.class::isInstance)
 					.map(TerrainFixture.class::cast).findFirst()
 					.map(ColorHelper::getFeatureColor).orElse(null);
@@ -264,12 +264,10 @@ public class Ver2TileDrawHelper implements TileDrawHelper {
 
 	/**
 	 * The drawable fixtures at the given location.
-	 *
-	 * TODO: return Stream instead?
 	 */
-	private Iterable<TileFixture> getDrawableFixtures(final IMapNG map, final Point location) {
+	private Stream<TileFixture> getDrawableFixtures(final IMapNG map, final Point location) {
 		return map.getFixtures(location).stream().filter(f -> !(f instanceof FakeFixture))
-			.filter(filter).sorted(this::compareFixtures).collect(Collectors.toList());
+			.filter(filter).sorted(this::compareFixtures);
 	}
 
 	/**
@@ -277,13 +275,7 @@ public class Ver2TileDrawHelper implements TileDrawHelper {
 	 */
 	@Nullable
 	private TileFixture getTopFixture(final IMapNG map, final Point location) {
-		// if we change getDrawbleFixtures() to return Stream, use findFirst().orElse(null)
-		final Iterable<TileFixture> fixtures = getDrawableFixtures(map, location);
-		if (fixtures.iterator().hasNext()) {
-			return fixtures.iterator().next();
-		} else {
-			return null;
-		}
+		return getDrawableFixtures(map, location).findFirst().orElse(null);
 	}
 
 	/**
@@ -291,10 +283,9 @@ public class Ver2TileDrawHelper implements TileDrawHelper {
 	 */
 	private boolean hasTerrainFixture(final IMapNG map, final Point location) {
 		// TODO: Should we really return true if there is exactly one drawable fixture that happens to be a terrain fixture?
-		if (StreamSupport.stream(getDrawableFixtures(map, location).spliterator(), false)
-				.anyMatch(TerrainFixture.class::isInstance)) {
+		if (getDrawableFixtures(map, location).anyMatch(TerrainFixture.class::isInstance)) {
 			return true;
-		} else if (getDrawableFixtures(map, location).iterator().hasNext() &&
+		} else if (getDrawableFixtures(map, location).anyMatch(x -> true) &&
 				map.isMountainous(location)) {
 			return true;
 		} else {
@@ -309,8 +300,7 @@ public class Ver2TileDrawHelper implements TileDrawHelper {
 	private boolean needsFixtureColor(final IMapNG map, final Point location) {
 		final TileFixture top = getTopFixture(map, location);
 		if (hasTerrainFixture(map, location) && top != null) {
-			final TileFixture bottom =
-				StreamSupport.stream(getDrawableFixtures(map, location).spliterator(), false)
+			final TileFixture bottom = getDrawableFixtures(map, location)
 					.filter(TerrainFixture.class::isInstance)
 					.map(TerrainFixture.class::cast)
 					.reduce((first, second) -> second)
