@@ -609,10 +609,11 @@ public class WorkerTreeModelAlt extends DefaultTreeModel implements IWorkerTreeM
 	@Override
 	public void refreshChildren(final IUnit parent) {
 		final PlayerNode playerNode = (PlayerNode) getRoot();
+		final TreeNode kindNode = getNode(playerNode, parent.getKind());
 		final TreeNode parentNode = getNode(playerNode, parent);
-		if (parentNode instanceof UnitNode) {
+		if (kindNode instanceof KindNode && parentNode instanceof UnitNode) {
 			((UnitNode) parentNode).refreshChildren();
-			fireTreeStructureChanged(this, new Object[] { root, parentNode }, // FIXME: kind node?
+			fireTreeStructureChanged(this, new Object[] { root, kindNode, parentNode },
 				null, null);
 		} else {
 			LOGGER.severe("refreshChildren() called on unit not in the tree");
