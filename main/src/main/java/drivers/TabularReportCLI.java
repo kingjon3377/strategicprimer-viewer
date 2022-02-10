@@ -1,5 +1,6 @@
 package drivers;
 
+import java.nio.file.Paths;
 import java.util.logging.Logger;
 import java.util.logging.Level;
 
@@ -72,16 +73,17 @@ public class TabularReportCLI implements ReadOnlyDriver {
 	}
 
 	private void createReports(final IMapNG map, @Nullable final Path mapFile) throws DriverFailedException {
-		if (mapFile == null) {
-			LOGGER.severe("Asked to create reports from map with no filename");
-			// TODO: substitute "unknown.xml", surely?
-		} else {
-			try {
+		try {
+			if (mapFile == null) {
+				LOGGER.severe("Asked to create reports from map with no filename");
+				TabularReportGenerator.createTabularReports(map,
+						filenameFunction(Paths.get("unknown.xml")), cli);
+			} else {
 				TabularReportGenerator.createTabularReports(map,
 					filenameFunction(mapFile), cli);
-			} catch (final IOException|IOError except) {
-				throw new DriverFailedException(except);
 			}
+		} catch (final IOException|IOError except) {
+			throw new DriverFailedException(except);
 		}
 	}
 
