@@ -1,12 +1,10 @@
 package drivers.exploration;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Logger;
 
 import org.jetbrains.annotations.Nullable;
-
-import java.util.stream.StreamSupport;
-import java.util.stream.Collectors;
 
 import drivers.common.SPOptions;
 import drivers.common.CLIDriver;
@@ -47,8 +45,7 @@ import common.map.fixtures.mobile.IUnit;
 	 */
 	@Nullable
 	public Player choosePlayer() {
-		return cli.chooseFromList(new ArrayList<>(model.getPlayerChoices()), "Players shared by all the maps:",
-			"No players shared by all the maps:", "Chosen player: ", true).getValue1();
+		return cli.chooseFromList((List<? extends Player>) new ArrayList<Player>(model.getPlayerChoices()), "Players shared by all the maps:", "No players shared by all the maps:", "Chosen player: ", ICLIHelper.ListChoiceBehavior.AUTO_CHOOSE_ONLY).getValue1();
 	}
 
 	/**
@@ -56,8 +53,7 @@ import common.map.fixtures.mobile.IUnit;
 	 */
 	@Nullable
 	public IUnit chooseUnit(final Player player) {
-		return cli.chooseFromList(model.getUnits(player), "Player's units:",
-			"That player has no units in the master map", "Chosen unit: ", true).getValue1();
+		return cli.chooseFromList((List<? extends IUnit>) model.getUnits(player), "Player's units:", "That player has no units in the master map", "Chosen unit: ", ICLIHelper.ListChoiceBehavior.AUTO_CHOOSE_ONLY).getValue1();
 	}
 
 	@Override

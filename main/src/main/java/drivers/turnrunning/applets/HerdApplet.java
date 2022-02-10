@@ -18,6 +18,7 @@ import java.util.function.Consumer;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import org.javatuples.Pair;
 import org.jetbrains.annotations.Nullable;
 import query.HerdModel;
 import query.MammalModel;
@@ -63,10 +64,8 @@ import query.SmallAnimalModel;
 	@Nullable
 	private HerdModel chooseHerdModel(final String animal) {
 		return cli.chooseFromList(Stream.concat(Stream.of(MammalModel.values()), Stream.concat(
-				Stream.of(PoultryModel.values()), Stream.of(SmallAnimalModel.values())))
-				.collect(Collectors.toList()),
-			String.format("What kind of animal(s) is/are %s?", animal),
-			"No animal kinds found", "Kind of animal:", false).getValue1();
+						Stream.of(PoultryModel.values()), Stream.of(SmallAnimalModel.values())))
+				.collect(Collectors.toList()), String.format("What kind of animal(s) is/are %s?", animal), "No animal kinds found", "Kind of animal:", ICLIHelper.ListChoiceBehavior.ALWAYS_PROMPT).getValue1();
 	}
 
 	@Override

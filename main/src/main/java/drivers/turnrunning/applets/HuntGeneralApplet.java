@@ -68,7 +68,7 @@ import org.jetbrains.annotations.Nullable;
 	protected Boolean handleCapture(final Animal find) {
 		final IUnit unit = chooseFromList(model.getUnits(Optional.ofNullable(model.getSelectedUnit())
 							.map(IUnit::getOwner).orElse(model.getMap().getCurrentPlayer())),
-			"Available units:", "No units", "Unit to add animals to:", false, HuntGeneralApplet::describeUnit);
+			"Available units:", "No units", "Unit to add animals to:", ICLIHelper.ListChoiceBehavior.ALWAYS_PROMPT, HuntGeneralApplet::describeUnit);
 		if (unit != null) {
 			final Integer num = cli.inputNumber("Number captured:");
 			if (num == null) {

@@ -94,8 +94,7 @@ import org.jetbrains.annotations.Nullable;
 
 	@Nullable
 	private /*TileType|ImportableTerrain?*/ HasName askFor(final int color) {
-		return cli.chooseFromList(terrains, "Tile type represented by " + pixelString(color),
-				"No tile types found to choose from", "Tile type:", false).getValue1();
+		return cli.chooseFromList((List<? extends HasName>) terrains, "Tile type represented by " + pixelString(color), "No tile types found to choose from", "Tile type:", ICLIHelper.ListChoiceBehavior.ALWAYS_PROMPT).getValue1();
 	}
 
 	@Nullable

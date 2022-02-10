@@ -239,7 +239,7 @@ import common.map.fixtures.towns.Village;
 					"Dexterity", "Constitution", "Intelligence", "Wisdom", "Charisma",
 					"Lowest", "Always Choose Lowest"), String.format(
 						"Character is a %s; which stat should get a +2 bonus?", race),
-					"", "Stat for bonus:", false).getValue0();
+					"", "Stat for bonus:", ICLIHelper.ListChoiceBehavior.ALWAYS_PROMPT).getValue0();
 				if (chosenBonus < 6) {
 					bonusStat = chosenBonus;
 				} else if (chosenBonus == 7) {
@@ -548,9 +548,7 @@ import common.map.fixtures.towns.Village;
 		final List<IUnit> units = StreamSupport.stream(
 				model.getUnits(player).spliterator(), false).collect(Collectors.toList());
 		while (true) {
-			final Pair<Integer, @Nullable IUnit> chosen = cli.chooseFromList(units,
-				"Which unit contains the worker in question? (Select -1 to create new.)",
-				"There are no units owned by that player.", "Unit selection: ", false);
+			final Pair<Integer, @Nullable IUnit> chosen = cli.chooseFromList(units, "Which unit contains the worker in question? (Select -1 to create new.)", "There are no units owned by that player.", "Unit selection: ", ICLIHelper.ListChoiceBehavior.ALWAYS_PROMPT);
 			final IUnit item;
 			if (chosen.getValue1() != null) {
 				item = chosen.getValue1();
@@ -593,9 +591,7 @@ import common.map.fixtures.towns.Village;
 		final List<Player> players = StreamSupport.stream(
 				model.getPlayerChoices().spliterator(), false).collect(Collectors.toList());
 		while (!players.isEmpty()) {
-			final Player chosen = cli.chooseFromList(players, "Which player owns the new worker(s)?",
-				"There are no players shared by all the maps.", "Player selection: ",
-				false).getValue1();
+			final Player chosen = cli.chooseFromList((List<? extends Player>) players, "Which player owns the new worker(s)?", "There are no players shared by all the maps.", "Player selection: ", ICLIHelper.ListChoiceBehavior.ALWAYS_PROMPT).getValue1();
 			if (chosen == null) {
 				break;
 			}

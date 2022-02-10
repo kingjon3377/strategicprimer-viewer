@@ -129,8 +129,7 @@ public class QueryCLI implements ReadOnlyDriver {
 	 * Count the workers belonging to a player.
 	 */
 	private void countWorkers(final List<Player> players) {
-		final Player player = cli.chooseFromList(players, "Players in the map:", "Map contains no players",
-			"Owner of workers to count: ", true).getValue1();
+		final Player player = cli.chooseFromList((List<? extends Player>) players, "Players in the map:", "Map contains no players", "Owner of workers to count: ", ICLIHelper.ListChoiceBehavior.AUTO_CHOOSE_ONLY).getValue1();
 		if (player != null) {
 			final int count = countWorkersInIterable(player, map.streamAllFixtures()
 					.collect(Collectors.toList()));

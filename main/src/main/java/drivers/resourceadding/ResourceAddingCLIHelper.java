@@ -43,7 +43,7 @@ public class ResourceAddingCLIHelper {
 	private String getResourceKind() {
 		final String one = cli.chooseStringFromList(new ArrayList<>(resourceKinds),
 			"Possible kinds of resources:", "No resource kinds entered yet",
-			"Chosen kind: ", false).getValue1();
+			"Chosen kind: ", ICLIHelper.ListChoiceBehavior.ALWAYS_PROMPT).getValue1();
 		if (one != null) {
 			return one;
 		}
@@ -64,7 +64,7 @@ public class ResourceAddingCLIHelper {
 		final List<String> list = resourceContents.getOrDefault(kind, new ArrayList<>());
 		final String one = cli.chooseStringFromList(list,
 			"Possible resources in the ``kind`` category:",
-			"No resources entered yet", "Choose resource: ", false).getValue1();
+			"No resources entered yet", "Choose resource: ", ICLIHelper.ListChoiceBehavior.ALWAYS_PROMPT).getValue1();
 		if (one != null) {
 			return one;
 		}

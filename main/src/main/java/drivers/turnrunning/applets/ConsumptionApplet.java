@@ -93,7 +93,7 @@ public class ConsumptionApplet extends AbstractTurnApplet {
 				remainingConsumption.doubleValue()));
 			final IResourcePile food = chooseFromList(getFoodFor(localUnit.getOwner(), turn),
 				"Food stocks owned by player:", "No food stocks found", "Food to consume from:",
-				false, ConsumptionApplet::describeFood); // TODO: should only count food *in the same place* (but unit movement away from HQ should ask user how much food to take along, and to choose what food in a similar manner to this)
+				ICLIHelper.ListChoiceBehavior.ALWAYS_PROMPT, ConsumptionApplet::describeFood); // TODO: should only count food *in the same place* (but unit movement away from HQ should ask user how much food to take along, and to choose what food in a similar manner to this)
 			if (food == null) {
 				return null;
 			}

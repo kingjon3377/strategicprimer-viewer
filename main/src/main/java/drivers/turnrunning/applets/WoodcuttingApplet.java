@@ -147,7 +147,7 @@ import org.jetbrains.annotations.Nullable;
 			final Forest forest = chooseFromList(model.getMap().getFixtures(loc).stream()
 					.filter(Forest.class::isInstance).map(Forest.class::cast)
 					.collect(Collectors.toList()),
-				"Forests on tile:", "No forests on tile", "Forest being cleared: ", false);
+				"Forests on tile:", "No forests on tile", "Forest being cleared: ", ICLIHelper.ListChoiceBehavior.ALWAYS_PROMPT);
 			if (forest != null && forest.getAcres().doubleValue() > 0.0) {
 				BigDecimal acres = decimalize(treeCount * 10 / 72)
 					.divide(decimalize(100), RoundingMode.HALF_EVEN)

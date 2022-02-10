@@ -144,14 +144,15 @@ public final class CLIHelper implements ICLIHelper {
 	 * Implementation of {@link chooseFromList} and {@link chooseStringFromList}.
 	 */
 	private <Element> Pair<Integer, @Nullable Element> chooseFromListImpl(final List<@NonNull ? extends Element> items,
-	                                                                      final String description, final String none, final String prompt, final boolean auto,
+	                                                                      final String description, final String none, final String prompt,
+	                                                                      ListChoiceBehavior behavior,
 	                                                                      final Function<? super Element, String> func) {
 		if (items.isEmpty()) {
 			println(none);
 			return Pair.with(-1, null);
 		}
 		println(description);
-		if (auto && items.size() == 1) {
+		if (behavior == ListChoiceBehavior.AUTO_CHOOSE_ONLY && items.size() == 1) {
 			final Element first = items.get(0);
 			println(String.format("Automatically choosing only item, %s.", func.apply(first)));
 			return Pair.with(0, first);
@@ -174,8 +175,8 @@ public final class CLIHelper implements ICLIHelper {
 	@Override
 	public <Element extends HasName> Pair<Integer, @Nullable Element> chooseFromList(
 			final List<@NonNull ? extends Element> list, final String description, final String none, final String prompt,
-			final boolean auto) {
-		return chooseFromListImpl(list, description, none, prompt, auto, HasName::getName);
+			final ListChoiceBehavior behavior) {
+		return chooseFromListImpl(list, description, none, prompt, behavior, HasName::getName);
 	}
 
 	/**
@@ -290,8 +291,9 @@ public final class CLIHelper implements ICLIHelper {
 	 */
 	@Override
 	public Pair<Integer, @Nullable String> chooseStringFromList(final List<String> items,
-	                                                            final String description, final String none, final String prompt, final boolean auto) {
-		return chooseFromListImpl(items, description, none, prompt, auto, s -> s);
+	                                                            final String description, final String none,
+	                                                            final String prompt, ListChoiceBehavior behavior) {
+		return chooseFromListImpl(items, description, none, prompt, behavior, s -> s);
 	}
 
 	/**

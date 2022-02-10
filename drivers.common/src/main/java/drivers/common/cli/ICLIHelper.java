@@ -14,6 +14,8 @@ import java.util.List;
  * wrappers around them.
  */
 public interface ICLIHelper {
+	// TODO: Split up methods instead of using this boolean-replacement enum?
+	enum ListChoiceBehavior { ALWAYS_PROMPT, AUTO_CHOOSE_ONLY }
 	/**
 	 * Have the user choose an item from a list. Returns the index and the
 	 * item, if any.  On EOF, returns an index of -2.
@@ -22,12 +24,10 @@ public interface ICLIHelper {
 	 * @param description The description to give before printing the list.
 	 * @param none What to print if there are none.
 	 * @param prompt What to prompt the user with.
-	 * @param auto Whether to automatically choose if there's only one choice.
-	 *
-	 * TODO: Change boolean parameter to either a separate method or an enum
+	 * @param behavior How to handle a list of only one element
 	 */
 	<Element extends HasName> Pair<Integer, @Nullable Element> chooseFromList(
-		List<? extends Element> items, String description, String none, String prompt, boolean auto);
+		List<? extends Element> items, String description, String none, String prompt, ListChoiceBehavior behavior);
 
 	/**
 	 * Have the user choose an item from a list. Returns the index and the
@@ -39,12 +39,10 @@ public interface ICLIHelper {
 	 * @param description The description to give before printing the list.
 	 * @param none What to print if there are none.
 	 * @param prompt What to prompt the user with.
-	 * @param auto Whether to automatically choose if there's only one choice.
-	 *
-	 * TODO: Change boolean parameter to either a separate method or an enum
+	 * @param behavior How to handle a list of only one element
 	 */
 	Pair<Integer, @Nullable String> chooseStringFromList(List<String> items, String description,
-		String none, String prompt, boolean auto);
+		String none, String prompt, ListChoiceBehavior behavior);
 
 	/**
 	 * Read from the input stream until a non-negative integer is entered,

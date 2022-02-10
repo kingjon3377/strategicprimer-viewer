@@ -53,7 +53,7 @@ import static lovelace.util.Decimalize.decimalize;
 		while (true) {
 			final IResourcePile chosen =
 				chooseFromList(resources, "Resources in ``fortress.name``:", "No resources in fortress.",
-					"Resource to take (from):", false);
+					"Resource to take (from):", ICLIHelper.ListChoiceBehavior.ALWAYS_PROMPT);
 			if (chosen == null) {
 				break;
 			}

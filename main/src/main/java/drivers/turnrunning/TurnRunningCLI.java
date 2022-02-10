@@ -216,16 +216,13 @@ import org.javatuples.Pair;
 	@Override
 	public void startDriver() {
 		final int currentTurn = model.getMap().getCurrentTurn();
-		final Player player = cli.chooseFromList(new ArrayList<>(model.getPlayerChoices()), "Players in the maps:", "No players found",
-			"Player to run:", false).getValue1();
+		final Player player = cli.chooseFromList((List<? extends Player>) new ArrayList<Player>(model.getPlayerChoices()), "Players in the maps:", "No players found", "Player to run:", ICLIHelper.ListChoiceBehavior.ALWAYS_PROMPT).getValue1();
 		if (player == null) {
 			return;
 		}
 		final List<IUnit> units = getUnits(player).filter(unfinishedResults(currentTurn)).collect(Collectors.toList());
 		while (true) {
-			final Pair<Integer, IUnit> pair = cli.chooseFromList(units,
-				String.format("Units belonging to %s:", player),
-				"Player has no units without apparently-final results", "Unit to run:", false);
+			final Pair<Integer, IUnit> pair = cli.chooseFromList(units, String.format("Units belonging to %s:", player), "Player has no units without apparently-final results", "Unit to run:", ICLIHelper.ListChoiceBehavior.ALWAYS_PROMPT);
 			final int index = pair.getValue0();
 			final IUnit unit = pair.getValue1();
 			if (unit == null) {

@@ -51,8 +51,7 @@ public class AdvancementCLI implements CLIDriver {
 		final List<IUnit> units = model.getUnits(player).stream()
 				.filter(u -> u.stream().anyMatch(IWorker.class::isInstance)).collect(Collectors.toList());
 		while (!units.isEmpty()) {
-			final IUnit chosen = cli.chooseFromList(units, String.format("%s's units:", player.getName()),
-				"No unadvanced units remain.", "Chosen unit:", false).getValue1();
+			final IUnit chosen = cli.chooseFromList((List<? extends IUnit>) units, String.format("%s's units:", player.getName()), "No unadvanced units remain.", "Chosen unit:", ICLIHelper.ListChoiceBehavior.ALWAYS_PROMPT).getValue1();
 			if (chosen == null) {
 				break;
 			}
@@ -72,8 +71,7 @@ public class AdvancementCLI implements CLIDriver {
 	public void startDriver() {
 		final List<Player> playerList = StreamSupport.stream(model.getPlayers().spliterator(), false).collect(Collectors.toList());
 		while (!playerList.isEmpty()) {
-			final Player chosen = cli.chooseFromList(playerList, "Available players:", "No players found.",
-				"Chosen player:", false).getValue1();
+			final Player chosen = cli.chooseFromList((List<? extends Player>) playerList, "Available players:", "No players found.", "Chosen player:", ICLIHelper.ListChoiceBehavior.ALWAYS_PROMPT).getValue1();
 			if (chosen == null) {
 				break;
 			}

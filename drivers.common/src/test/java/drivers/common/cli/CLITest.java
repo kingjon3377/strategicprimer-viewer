@@ -58,25 +58,25 @@ public final class CLITest {
 	@Test
 	public void testChooseFromList() {
 		assertCLI(cli -> cli.<Player>chooseFromList(Arrays.asList(new PlayerImpl(1, "one"),
-			new PlayerImpl(2, "two")), "test desc", "none present", "prompt", false),
+			new PlayerImpl(2, "two")), "test desc", "none present", "prompt", ICLIHelper.ListChoiceBehavior.ALWAYS_PROMPT),
 			Arrays.asList("0"), String.format("test desc%n0: one%n1: two%nprompt "),
 			Pair.with(0, new PlayerImpl(1, "one")),
 			"chooseFromList chooses the one specified by the user",
 			"chooseFromList prompted the user");
 		assertCLI(cli -> cli.<Player>chooseFromList(Arrays.asList(new PlayerImpl(1, "one"),
-			new PlayerImpl(2, "two")), "test desc", "none present", "prompt", true),
+			new PlayerImpl(2, "two")), "test desc", "none present", "prompt", ICLIHelper.ListChoiceBehavior.AUTO_CHOOSE_ONLY),
 			Arrays.asList("1"), String.format("test desc%n0: one%n1: two%nprompt "),
 			Pair.with(1, new PlayerImpl(2, "two")),
 			"chooseFromList chooses the one specified by the user",
 			"chooseFromList prompted the user");
 		assertCLI(cli -> cli.<Player>chooseFromList(Arrays.asList(new PlayerImpl(1, "one")),
-			"test desc", "none present", "prompt", true), Collections.emptyList(),
+			"test desc", "none present", "prompt", ICLIHelper.ListChoiceBehavior.AUTO_CHOOSE_ONLY), Collections.emptyList(),
 			String.format("test desc%nAutomatically choosing only item, one.%n"),
 			Pair.with(0, new PlayerImpl(1, "one")),
 			"chooseFromList chooses only choice when this is specified",
 			"chooseFromList automatically chose only choice");
 		assertCLI(cli -> cli.<Player>chooseFromList(Arrays.asList(new PlayerImpl(1, "one")),
-			"test desc", "none present", "prompt", false), Arrays.asList("0"),
+			"test desc", "none present", "prompt", ICLIHelper.ListChoiceBehavior.ALWAYS_PROMPT), Arrays.asList("0"),
 			String.format("test desc%n0: one%nprompt "), Pair.with(0, new PlayerImpl(1, "one")),
 			"chooseFromList doesn't always auto-choose only choice",
 			"chooseFromList didn't automatically choose only choice");
@@ -88,24 +88,24 @@ public final class CLITest {
 	@Test
 	public void testChooseFromListMore() {
 		assertCLI(cli -> cli.<Player>chooseFromList(Arrays.asList(new PlayerImpl(1, "one"),
-			new PlayerImpl(2, "two")), "test desc", "none present", "prompt ", false),
+			new PlayerImpl(2, "two")), "test desc", "none present", "prompt ", ICLIHelper.ListChoiceBehavior.ALWAYS_PROMPT),
 			Arrays.asList("-1", "0"), String.format("test desc%n0: one%n1: two%nprompt prompt "),
 			Pair.with(0, new PlayerImpl(1, "one")),
 			"chooseFromList prompts again when negative index given",
 			"chooseFromList prompts again when negative index given");
 		assertCLI(cli -> cli.<Player>chooseFromList(Arrays.asList(new PlayerImpl(1, "one"),
-			new PlayerImpl(2, "two")), "test desc", "none present", "prompt", false),
+			new PlayerImpl(2, "two")), "test desc", "none present", "prompt", ICLIHelper.ListChoiceBehavior.ALWAYS_PROMPT),
 			Arrays.asList("3"), String.format("test desc%n0: one%n1: two%nprompt "),
 			Pair.with(3, null), "chooseFromList allows too-large choice",
 			"chooseFromList allows too-large choice");
 		assertCLI(cli -> cli.<Player>chooseFromList(Arrays.asList(new PlayerImpl(1, "one"),
-			new PlayerImpl(2, "two")), "test desc", "none present", "prompt", true),
+			new PlayerImpl(2, "two")), "test desc", "none present", "prompt", ICLIHelper.ListChoiceBehavior.AUTO_CHOOSE_ONLY),
 			Arrays.asList("0"), String.format("test desc%n0: one%n1: two%nprompt "),
 			Pair.with(0, new PlayerImpl(1, "one")),
 			"chooseFromList asks even if 'auto' when multiple items",
 			"chooseFromList prompted the user");
 		assertCLI(cli -> cli.<Player>chooseFromList(Collections.emptyList(), "test desc",
-			"none present", "prompt", false), Collections.emptyList(),
+			"none present", "prompt", ICLIHelper.ListChoiceBehavior.ALWAYS_PROMPT), Collections.emptyList(),
 			String.format("none present%n"), Pair.with(-1, null),
 			"chooseFromList handles no-item case", "chooseFromList didn't prompt the user");
 	}
@@ -253,7 +253,7 @@ public final class CLITest {
 			true, "inputBoolean rejects other input",
 			"inputBoolean gives message on invalid input");
 		final StringBuilder ostream = new StringBuilder();
-		final ICLIHelper cli = new CLIHelper(new LinkedList<>(Arrays.asList("all"))::pollFirst,
+		ICLIHelper cli = new CLIHelper(new LinkedList<>(Arrays.asList("all"))::pollFirst,
 			ostream::append);
 		assertEquals(true, cli.inputBooleanInSeries("prompt four "),
 			"inputBooleanInSeries allows yes-to-all");
@@ -311,23 +311,23 @@ public final class CLITest {
 	@Test
 	public void testChooseStringFromList() {
 		assertCLI(cli -> cli.chooseStringFromList(Arrays.asList("one", "two"),
-			"test desc", "none present", "prompt", false), Arrays.asList("0"),
+			"test desc", "none present", "prompt", ICLIHelper.ListChoiceBehavior.ALWAYS_PROMPT), Arrays.asList("0"),
 			String.format("test desc%n0: one%n1: two%nprompt "), Pair.with(0, "one"),
 			"chooseStringFromList chooses the one specified by the user",
 			"chooseStringFromList prompts the user");
 		assertCLI(cli -> cli.chooseStringFromList(Arrays.asList("one", "two", "three"),
-			"test desc", "none present", "prompt two", true), Arrays.asList("1"),
+			"test desc", "none present", "prompt two", ICLIHelper.ListChoiceBehavior.AUTO_CHOOSE_ONLY), Arrays.asList("1"),
 			String.format("test desc%n0: one%n1: two%n2: three%nprompt two "),
 			Pair.with(1, "two"), "chooseStringFromList chooses the one specified by the user",
 			"chooseStringFromList prompts the user");
 		assertCLI(cli -> cli.chooseStringFromList(Arrays.asList("one"), "test desc",
-			"none present", "prompt", true), Collections.emptyList(),
+			"none present", "prompt", ICLIHelper.ListChoiceBehavior.AUTO_CHOOSE_ONLY), Collections.emptyList(),
 			String.format("test desc%nAutomatically choosing only item, one.%n"),
 			Pair.with(0, "one"),
 			"chooseStringFromList automatically chooses only choice when told to",
 			"chooseStringFromList automatically chose only choice");
 		assertCLI(cli -> cli.chooseStringFromList(Arrays.asList("one"), "test desc",
-			"none present", "prompt", false), Arrays.asList("0"),
+			"none present", "prompt", ICLIHelper.ListChoiceBehavior.ALWAYS_PROMPT), Arrays.asList("0"),
 			String.format("test desc%n0: one%nprompt "), Pair.with(0, "one"),
 			"chooseStringFromList doesn't always auto-choose",
 			"chooseStringFromList didn't automatically choose only choice");
@@ -339,22 +339,22 @@ public final class CLITest {
 	@Test
 	public void testChooseStringFromListMore() {
 		assertCLI(cli -> cli.chooseStringFromList(Arrays.asList("zero", "one", "two"),
-			"test desc", "none present", "prompt", true), Arrays.asList("1"),
+			"test desc", "none present", "prompt", ICLIHelper.ListChoiceBehavior.AUTO_CHOOSE_ONLY), Arrays.asList("1"),
 			String.format("test desc%n0: zero%n1: one%n2: two%nprompt "), Pair.with(1, "one"),
 			"chooseStringFromList doesn't auto-choose when more than one item",
 			"chooseStringFromList doesn't auto-choose when more than one item");
 		assertCLI(cli -> cli.chooseStringFromList(Arrays.asList("one", "two"),
-			"test desc", "none present", "prompt", false), Arrays.asList("-1", "0"),
+			"test desc", "none present", "prompt", ICLIHelper.ListChoiceBehavior.ALWAYS_PROMPT), Arrays.asList("-1", "0"),
 			String.format("test desc%n0: one%n1: two%nprompt prompt "), Pair.with(0, "one"),
 			"chooseStringFromList prompts again when negative index given",
 			"chooseStringFromList prompts again when negative index given");
 		assertCLI(cli -> cli.chooseStringFromList(Arrays.asList("one", "two"), "test desc",
-			"none present", "prompt", false), Arrays.asList("3"),
+			"none present", "prompt", ICLIHelper.ListChoiceBehavior.ALWAYS_PROMPT), Arrays.asList("3"),
 			String.format("test desc%n0: one%n1: two%nprompt "), Pair.with(3, null),
 			"chooseStringFromList allows too-large choice",
 			"chooseStringFromList allows too-large choice");
 		assertCLI(cli -> cli.chooseStringFromList(Collections.emptyList(), "test desc",
-			"none present", "prompt", false), Collections.emptyList(),
+			"none present", "prompt", ICLIHelper.ListChoiceBehavior.ALWAYS_PROMPT), Collections.emptyList(),
 			String.format("none present%n"), Pair.with(-1, null),
 			"chooseStringFromList handles empty list",
 			"chooseStringFromList handles empty list");

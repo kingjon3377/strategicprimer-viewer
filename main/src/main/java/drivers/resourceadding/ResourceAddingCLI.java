@@ -13,7 +13,6 @@ import common.map.Player;
 import drivers.common.SPOptions;
 import drivers.common.CLIDriver;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import common.map.fixtures.IResourcePile;
@@ -56,8 +55,7 @@ import common.map.fixtures.Implement;
 		final List<Player> players = StreamSupport.stream(model.getPlayers().spliterator(),
 				false).collect(Collectors.toList());
 		while (!players.isEmpty()) {
-			final Player chosen = cli.chooseFromList(players, "Players in the maps:",
-				"No players found.", "Player to add resources for: ", false).getValue1();
+			final Player chosen = cli.chooseFromList((List<? extends Player>) players, "Players in the maps:", "No players found.", "Player to add resources for: ", ICLIHelper.ListChoiceBehavior.ALWAYS_PROMPT).getValue1();
 			if (chosen == null) {
 				break;
 			}

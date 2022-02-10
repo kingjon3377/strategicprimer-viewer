@@ -58,13 +58,13 @@ import static lovelace.util.Decimalize.decimalize;
 			// TODO: should verb be "preserve" or "cook" instead of "convert"?
 			final IResourcePile item = chooseFromList(getFoodFor(unit.getOwner(),
 				model.getMap().getCurrentTurn()), "Available food:", "No food available",
-				"Choose food to convert:", false, PreservationApplet::describePile);
+				"Choose food to convert:", ICLIHelper.ListChoiceBehavior.ALWAYS_PROMPT, PreservationApplet::describePile);
 			if (item == null) {
 				break;
 			}
 			final String convertedForm;
 			final String tempOne = chooseFromList(foods, "Preserved food types:", "",
-				"Type that converts into:", false);
+				"Type that converts into:", ICLIHelper.ListChoiceBehavior.ALWAYS_PROMPT);
 			if (tempOne == null) {
 				final String tempTwo = cli.inputString("Type of food that converts into:");
 				if (tempTwo == null || tempTwo.isEmpty()) {

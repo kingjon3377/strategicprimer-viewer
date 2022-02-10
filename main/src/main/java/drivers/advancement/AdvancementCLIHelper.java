@@ -64,8 +64,7 @@ public class AdvancementCLIHelper implements LevelGainSource {
 	private void advanceJob(final IWorker worker, final IJob job, final boolean allowExpertMentoring) {
 		final List<ISkill> skills = StreamSupport.stream(job.spliterator(), false).collect(Collectors.toList());
 		while (true) {
-			final Pair<Integer, @Nullable ISkill> chosen = cli.chooseFromList(skills, "Skills in Job:",
-				"No existing Skills.", "Skill to advance: ", false);
+			final Pair<Integer, @Nullable ISkill> chosen = cli.chooseFromList(skills, "Skills in Job:", "No existing Skills.", "Skill to advance: ", ICLIHelper.ListChoiceBehavior.ALWAYS_PROMPT);
 			final ISkill skill;
 			if (chosen.getValue1() != null) {
 				skill = chosen.getValue1();
@@ -132,8 +131,7 @@ public class AdvancementCLIHelper implements LevelGainSource {
 	private void advanceSingleWorker(final IWorker worker, final boolean allowExpertMentoring) {
 		final List<IJob> jobs = StreamSupport.stream(worker.spliterator(), false).collect(Collectors.toList());
 		while (true) {
-			final Pair<Integer, @Nullable IJob> chosen = cli.chooseFromList(jobs,
-				"Jobs in worker:", "No existing Jobs.", "Job to advance: ", false);
+			final Pair<Integer, @Nullable IJob> chosen = cli.chooseFromList(jobs, "Jobs in worker:", "No existing Jobs.", "Job to advance: ", ICLIHelper.ListChoiceBehavior.ALWAYS_PROMPT);
 			final IJob job;
 			if (chosen.getValue1() != null) {
 				job = chosen.getValue1();
@@ -195,7 +193,7 @@ public class AdvancementCLIHelper implements LevelGainSource {
 								.filter(s -> !"miscellaneous".equals(s.getName()))
 								.collect(Collectors.toList()),
 							"Skill to gain level in:", "No other skill", "Chosen skill:",
-							false);
+							ICLIHelper.ListChoiceBehavior.ALWAYS_PROMPT);
 						if (choice.getValue1() != null) {
 							replacement = choice.getValue1();
 							model.replaceSkillInJob(worker, job.getName(), skill, replacement);
@@ -245,8 +243,7 @@ public class AdvancementCLIHelper implements LevelGainSource {
 		final List<ISkill> skills = StreamSupport.stream(
 				new ProxyJob(jobName, false, workers).spliterator(), false).collect(Collectors.toList());
 		while (true) {
-			final Pair<Integer, @Nullable ISkill> chosen = cli.chooseFromList(skills,
-				"Skills in Jobs:", "No existing skills.", "Skill to advance: ", false);
+			final Pair<Integer, @Nullable ISkill> chosen = cli.chooseFromList(skills, "Skills in Jobs:", "No existing skills.", "Skill to advance: ", ICLIHelper.ListChoiceBehavior.ALWAYS_PROMPT);
 			final ISkill skill;
 			if (chosen.getValue1() != null) {
 				skill = chosen.getValue1();
@@ -290,8 +287,7 @@ public class AdvancementCLIHelper implements LevelGainSource {
 			return;
 		} else if (individualAdvancement) {
 			while (!workers.isEmpty()) {
-				final IWorker chosen = cli.chooseFromList(workers, "Workers in unit:",
-					"No unadvanced workers remain.", "Chosen worker: ", false).getValue1();
+				final IWorker chosen = cli.chooseFromList((List<? extends IWorker>) workers, "Workers in unit:", "No unadvanced workers remain.", "Chosen worker: ", ICLIHelper.ListChoiceBehavior.ALWAYS_PROMPT).getValue1();
 				if (chosen == null) {
 					break;
 				}
@@ -309,8 +305,7 @@ public class AdvancementCLIHelper implements LevelGainSource {
 			}
 			final List<IJob> jobs = StreamSupport.stream(new ProxyWorker(unit).spliterator(), false).collect(Collectors.toList());
 			while (true) {
-				final Pair<Integer, @Nullable IJob> chosen = cli.chooseFromList(jobs, "Jobs in workers:",
-					"No existing jobs.", "Job to advance: ", false);
+				final Pair<Integer, @Nullable IJob> chosen = cli.chooseFromList(jobs, "Jobs in workers:", "No existing jobs.", "Job to advance: ", ICLIHelper.ListChoiceBehavior.ALWAYS_PROMPT);
 				final IJob job;
 				if (chosen.getValue1() != null) {
 					job = chosen.getValue1();
