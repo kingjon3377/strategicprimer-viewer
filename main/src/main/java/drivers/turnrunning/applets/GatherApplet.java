@@ -105,7 +105,9 @@ import org.jetbrains.annotations.Nullable;
 				time -= noResultCost;
 			} else {
 				if (noResultsTime > 0) {
-					cli.println("Found nothing for the next " + toHours(noResultsTime)); // TODO: Add to results?
+					// TODO: Add to results?
+					cli.print("Found nothing for the next");
+					cli.println(toHours(noResultsTime));
 					noResultsTime = 0;
 				}
 				final Boolean resp = cli.inputBooleanInSeries(String.format("Gather from %s%s",
@@ -156,7 +158,9 @@ import org.jetbrains.annotations.Nullable;
 			}
 		}
 		if (noResultsTime > 0) {
-			cli.println("Found nothing for the next " + toHours(noResultsTime)); // TODO: Add to results?
+			// TODO: Add to results?
+			cli.print("Found nothing for the next ");
+			cli.println(toHours(noResultsTime));
 		}
 		return buffer.toString().trim();
 	}
