@@ -1,5 +1,6 @@
 package drivers.worker_mgmt;
 
+import java.util.Comparator;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.FileNotFoundException;
@@ -454,27 +455,28 @@ public class WorkerTree extends JTree implements UnitMemberSelectionSource, Unit
 				.orElse(DEFAULT_FIXTURE_ICON);
 		}
 
+		private static enum BackgroundState {
+			NONE, WARN, ERROR;
+		}
+
 		/**
-		 * Returns true if orders contain FIXME, false, if orders
-		 * contain TODO or XXX, and null otherwise (or if the unit has
-		 * no members, as such a unit is probably an administrative
-		 * holdover that <em>shouldn't</em> have orders, and if it does
-		 * the orders will be ignored).
-		 *
-		 * TODO: Convert to enum
+		 * Returns {@link BackgroundState#ERROR} if orders contain FIXME,
+		 * {@link BackgroundState##WARN}, if orders contain TODO or XXX, and
+		 * {@link BackgroundState#NONE} otherwise (or if the unit has no members,
+		 * as such a unit is probably an administrative holdover that
+		 * <em>shouldn't</em> have orders, and if it does the orders will be ignored).
 		 */
-		@Nullable
-		private Boolean shouldChangeBackground(final IUnit item) {
+		private BackgroundState shouldChangeBackground(final IUnit item) {
 			if (item.isEmpty()) {
-				return null;
+				return BackgroundState.NONE;
 			}
 			final String orders = item.getLatestOrders(turnSource.getAsInt()).toLowerCase();
 			if (orders.contains("fixme")) {
-				return true;
+				return BackgroundState.ERROR;
 			} else if (orders.contains("todo") || orders.contains("xxx")) {
-				return false;
+				return BackgroundState.WARN;
 			} else {
-				return null;
+				return BackgroundState.NONE;
 			}
 		}
 
@@ -482,27 +484,12 @@ public class WorkerTree extends JTree implements UnitMemberSelectionSource, Unit
 		 * Returns true if orders (for any unit with this "kind")
 		 * contain FIXME, false, if orders contain TODO or XXX, and
 		 * null otherwise (except that units with no members are ignored).
-		 *
-		 * TODO: Convert to enum
 		 */
-		@Nullable
-		private Boolean shouldChangeBackground(final String item) {
-			Boolean retval = null;
-			// TODO: Can we avoid the collector step?
-			// TODO: Add streamChildrenOf() method to IWorkerTreeModel?
-			for (final IUnit unit : StreamSupport.stream(wtModel.childrenOf(item).spliterator(), false)
+		private BackgroundState shouldChangeBackground(final String item) {
+			return StreamSupport.stream(wtModel.childrenOf(item).spliterator(), false)
 					.map(wtModel::getModelObject).filter(IUnit.class::isInstance)
-					.map(IUnit.class::cast).collect(Collectors.toList())) {
-				final Boolean unitPaint = shouldChangeBackground(unit);
-				if (unitPaint != null) {
-					if (unitPaint) {
-						return true;
-					} else {
-						retval = false;
-					}
-				}
-			}
-			return retval;
+					.map(IUnit.class::cast).map(this::shouldChangeBackground).max(Comparator.naturalOrder())
+					.orElse(BackgroundState.NONE);
 		}
 
 		// In Ceylon 'tree' and 'object' had to be marked nullable, but I'm not going
@@ -562,24 +549,20 @@ public class WorkerTree extends JTree implements UnitMemberSelectionSource, Unit
 						"%s (%d workers)", unit.getName(),
 						unit.stream().filter(IWorker.class::isInstance).count()));
 				}
-				final Boolean result = shouldChangeBackground(unit);
-				if (result != null) {
-					if (result) {
-						shouldError = true;
-						shouldWarn = false;
-					} else {
-						shouldWarn = true;
-					}
+				final BackgroundState result = shouldChangeBackground(unit);
+				if (result == BackgroundState.ERROR) {
+					shouldError = true;
+					shouldWarn = false;
+				} else if (result == BackgroundState.WARN) {
+					shouldWarn = true;
 				}
 			} else if (orderCheck && internal instanceof String) {
-				final Boolean result = shouldChangeBackground((String) internal);
-				if (result != null) {
-					if (result) {
-						shouldError = true;
-						shouldWarn = false;
-					} else {
-						shouldWarn = true;
-					}
+				final BackgroundState result = shouldChangeBackground((String) internal);
+				if (result == BackgroundState.ERROR) {
+					shouldError = true;
+					shouldWarn = false;
+				} else if (result == BackgroundState.WARN) {
+					shouldWarn = true;
 				}
 			}
 			if (component instanceof DefaultTreeCellRenderer) {
