@@ -201,7 +201,7 @@ public class DrawHelperComparator implements UtilityDriver {
 	}
 
 	private final long printStats(final String prefix, final long total, final int reps) {
-		cli.println(String.format("%s\t%d, average of %d ms.", prefix, total, total / reps)); // TODO: quotient should give sub-decimal precision
+		cli.println(String.format("%s\t%d, average of %.1f ms.", prefix, total, total / (double) reps));
 		return total;
 	}
 
