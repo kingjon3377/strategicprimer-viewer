@@ -331,8 +331,7 @@ public class IOHandler implements ActionListener {
 				} else {
 					SwingUtilities.invokeLater(() -> {
 						try {
-							vdf.createDriver(cli,
-											((ModelDriver) driver).getOptions().copy(),
+							vdf.createDriver(cli, driver.getOptions().copy(),
 											new ViewerModel(((ModelDriver) driver)
 													.getModel()))
 									.startDriver();

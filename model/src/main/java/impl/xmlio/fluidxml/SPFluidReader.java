@@ -376,7 +376,7 @@ public class SPFluidReader implements IMapReader, ISPReader {
 					!((Characters) event).getData().trim().isEmpty()) {
 				warner.handle(UnwantedChildException.childInTag(stackTop,
 					new QName(XMLConstants.NULL_NS_URI, "text"),
-					((Characters) event).getLocation(), // TODO: Is cast necessary?
+					event.getLocation(),
 					new IllegalStateException("Random text outside any tile")));
 			}
 		}
