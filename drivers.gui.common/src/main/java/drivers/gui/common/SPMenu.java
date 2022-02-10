@@ -269,9 +269,7 @@ public class SPMenu extends JMenuBar {
 	// The boolean parameter is to make the overload unambiguous; JMenu is a subtype of Component ...
 	private SPMenu(final boolean ignored, final Component component, final JMenu... menus) {
 		this(menus);
-		// TODO: Add stream() to ComponentParentStream
-		add(new WindowMenu(StreamSupport.stream(new ComponentParentStream(component).spliterator(),
-				false).filter(JFrame.class::isInstance)
+		add(new WindowMenu(new ComponentParentStream(component).stream().filter(JFrame.class::isInstance)
 				.map(JFrame.class::cast).findAny().orElse(null)));
 	}
 

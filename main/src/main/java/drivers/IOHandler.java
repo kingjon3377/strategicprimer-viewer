@@ -214,8 +214,8 @@ public class IOHandler implements ActionListener {
 		if (source == null) {
 			parentWindow = null;
 		} else {
-			parentWindow = StreamSupport.stream(new ComponentParentStream(source).spliterator(),
-				false).filter(Frame.class::isInstance).map(Frame.class::cast)
+			parentWindow = new ComponentParentStream(source).stream()
+				.filter(Frame.class::isInstance).map(Frame.class::cast)
 				.findFirst().orElse(null);
 		}
 		final String errorTitle = Optional.ofNullable(parentWindow).filter(ISPWindow.class::isInstance)

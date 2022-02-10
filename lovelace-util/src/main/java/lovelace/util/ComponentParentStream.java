@@ -1,5 +1,7 @@
 package lovelace.util;
 
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -51,5 +53,9 @@ public final class ComponentParentStream implements Iterable<Component> {
 	@Override
 	public Iterator<Component> iterator() {
 		return new ComponentParentIterator(widget);
+	}
+
+	public Stream<Component> stream() {
+		return StreamSupport.stream(spliterator(), false);
 	}
 }
