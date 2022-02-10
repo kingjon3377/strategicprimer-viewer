@@ -312,16 +312,16 @@ import java.io.FileNotFoundException;
 			try {
 				model.addSubordinateMap(MapIOHelper.readMap(file));
 			} catch (final SPFormatException except) {
-				// FIXME: Report error to the user (via the streaming-log panel)
+				logError(logLabel).accept("SP map format error: " + except.getLocalizedMessage());
 				LOGGER.log(Level.SEVERE, "SP map format error", except);
 			} catch (final MissingFileException|NoSuchFileException|FileNotFoundException except) {
-				// FIXME: Report error to the user (via the streaming-log panel)
+				logError(logLabel).accept(String.format("Dropped file %s couldn't be found", file));
 				LOGGER.log(Level.SEVERE, "Dropped file couldn't be found", except);
 			} catch (final IOException except) {
-				// FIXME: Report error to the user (via the streaming-log panel)
+				logError(logLabel).accept("I/O error while reading dropped file: " + except.getLocalizedMessage());
 				LOGGER.log(Level.SEVERE, "I/O error reading map file", except);
 			} catch (final MalformedXMLException except) {
-				// FIXME: Report error to the user (via the streaming-log panel)
+				logError(logLabel).accept(String.format("Dropped file %s contained malformed XML", file));
 				LOGGER.log(Level.SEVERE, "Dropped file contained malformed XML", except);
 			}
 		}
