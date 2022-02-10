@@ -112,15 +112,11 @@ public class VisibleDimensions {
 
 	@Override
 	public boolean equals(final Object that) {
-		if (that instanceof VisibleDimensions && // TODO: just return this Boolean expression
+		return that instanceof VisibleDimensions &&
 				((VisibleDimensions) that).minimumRow == minimumRow &&
 				((VisibleDimensions) that).maximumRow == maximumRow &&
 				((VisibleDimensions) that).minimumColumn == minimumColumn &&
-				((VisibleDimensions) that).maximumColumn == maximumColumn) {
-			return true;
-		} else {
-			return false;
-		}
+				((VisibleDimensions) that).maximumColumn == maximumColumn;
 	}
 
 	@Override
