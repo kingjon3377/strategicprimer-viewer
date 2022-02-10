@@ -1030,11 +1030,11 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 						.flatMap(ExplorationModel::unflattenNonFortresses)
 						.filter(IUnit.class::isInstance).map(IUnit.class::cast)
 						.filter(this::matchingPlayer).flatMap(FixtureIterable::stream)
+						.filter(u -> u.getId() == ((UnitMember) item).getId())
 						.filter(HasMutableName.class::isInstance)
 						.map(HasMutableName.class::cast)
 						.filter(u -> u.getName().equals(
-							((HasMutableName) item).getName()))
-						.filter(u -> ((UnitMember) u).getId() == ((UnitMember) item).getId())
+							item.getName()))
 						.findAny();
 				if (matching.isPresent()) {
 					any = true;
