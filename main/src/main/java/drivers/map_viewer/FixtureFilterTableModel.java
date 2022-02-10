@@ -175,7 +175,7 @@ public class FixtureFilterTableModel extends AbstractTableModel
 
 	@Override
 	public boolean isCellEditable(final int rowIndex, final int columnIndex) {
-		return columnIndex == 0; // TODO: restrict to existing rows as well?
+		return columnIndex == 0 && rowIndex >= 0 && rowIndex < matchers.size();
 	}
 
 	@Override
