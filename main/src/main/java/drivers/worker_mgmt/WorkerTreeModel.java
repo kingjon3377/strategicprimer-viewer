@@ -439,8 +439,29 @@ import java.util.stream.Collectors;
 					listener.treeNodesRemoved(event);
 				}
 			}
-		} else { // FIXME: Also check the case where newOwner is the current player
-			model.changeOwner(item, newOwner);
+		} else if (item instanceof IUnit && newOwner.equals(player)) {
+			final TreeModelEvent event;
+			final String kind = ((IUnit) item).getKind();
+			// TODO: Make getUnitKinds() return Collection
+			final boolean existingKind = StreamSupport.stream(model.getUnitKinds(player).spliterator(), false)
+					.anyMatch(kind::equals);
+			if (!model.changeOwner(item, newOwner)) {
+				return;
+			}
+			// TODO: double-check I passed the parameters a nodes-inserted listener expects
+			if (existingKind) {
+				event = new TreeModelEvent(this, new TreePath(new Object[] { player }),
+						new int[] { this.getIndexOfChild(player, kind)},
+						new Object[] { kind });
+			} else {
+				event = new TreeModelEvent(this, new TreePath(new Object[] { player, kind }),
+						new int[] { getIndexOfChild(kind, item) }, new Object[] { item });
+			}
+			if (model.changeOwner(item, newOwner)) {
+				for (final TreeModelListener listener : listeners) {
+					listener.treeNodesInserted(event);
+				}
+			}
 		}
 	}
 
