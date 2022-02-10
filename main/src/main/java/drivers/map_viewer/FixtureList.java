@@ -226,30 +226,31 @@ public class FixtureList extends JList<TileFixture>
 
 		@Override
 		public void drop(final DropTargetDropEvent dtde) {
-			if (isXfrFromOutside(dtde)) { // TODO: invert to reduce indentation?
-				for (final DataFlavor flavor : dtde.getCurrentDataFlavorsAsList()) {
-					if (Stream.of(FixtureTransferable.FLAVOR,
-								CurriedFixtureTransferable.FLAVOR)
-							.anyMatch(flavor::equals)) {
-						try {
-							dtde.acceptDrop(dtde.getDropAction());
-							final Transferable t = dtde.getTransferable();
-							if (t != null) {
-								handleDrop(t);
-							}
-							return;
-						} catch (final UnsupportedFlavorException except) {
-							LOGGER.log(Level.SEVERE,
-								"Unsupported flavor when it said it was supported",
-								except);
-						} catch (final IOException except) {
-							LOGGER.log(Level.SEVERE,
-								"I/O error getting the data", except);
+			if (!isXfrFromOutside(dtde)) {
+				return;
+			}
+			for (final DataFlavor flavor : dtde.getCurrentDataFlavorsAsList()) {
+				if (Stream.of(FixtureTransferable.FLAVOR,
+							CurriedFixtureTransferable.FLAVOR)
+						.anyMatch(flavor::equals)) {
+					try {
+						dtde.acceptDrop(dtde.getDropAction());
+						final Transferable t = dtde.getTransferable();
+						if (t != null) {
+							handleDrop(t);
 						}
+						return;
+					} catch (final UnsupportedFlavorException except) {
+						LOGGER.log(Level.SEVERE,
+							"Unsupported flavor when it said it was supported",
+							except);
+					} catch (final IOException except) {
+						LOGGER.log(Level.SEVERE,
+							"I/O error getting the data", except);
 					}
 				}
-				dtde.rejectDrop();
 			}
+			dtde.rejectDrop();
 		}
 	}
 }
