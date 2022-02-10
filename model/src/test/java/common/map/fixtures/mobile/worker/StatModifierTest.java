@@ -21,11 +21,11 @@ public final class StatModifierTest {
 		final List<Integer> modifiers = Arrays.asList(-5, -4, -3, -2, -1, 0, 1, 2, 3, 4);
 		final Iterator<Integer> statsIterator = stats.iterator();
 		for (final Integer modifier : modifiers) {
-			assertTrue(statsIterator.hasNext());
+			assertTrue(statsIterator.hasNext(), "A matching modifier exists for the even stat");
 			final int statOne = statsIterator.next();
 			assertEquals(modifier.intValue(), WorkerStats.getModifier(statOne),
 				"Even stat has correct modifier");
-			assertTrue(statsIterator.hasNext());
+			assertTrue(statsIterator.hasNext(), "A matching modifier exists for the odd stat");
 			final int statTwo = statsIterator.next();
 			assertEquals(modifier.intValue(), WorkerStats.getModifier(statTwo),
 				"Odd stat has correct modifier");

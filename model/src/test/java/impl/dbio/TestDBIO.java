@@ -174,7 +174,8 @@ public final class TestDBIO {
 		}
 		final IMapNG deserializedFirst = assertDatabaseSerialization(firstMap);
 		final IMapNG deserializedSecond = assertDatabaseSerialization(secondMap);
-		assertNotEquals(deserializedFirst, deserializedSecond);
+		assertNotEquals(deserializedFirst, deserializedSecond,
+				"DB round-trip preserves not-equality of with and without fixture");
 		final FixtureType retval =
 			(FixtureType) deserializedFirst.getFixtures(new Point(0, 0))
 				.stream().findFirst().get();

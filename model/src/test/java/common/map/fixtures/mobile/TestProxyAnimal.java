@@ -27,10 +27,11 @@ public class TestProxyAnimal {
 		assertEquals(3, base.reduced(3, newId).getPopulation(),
 			"Test that reduced() works the way we expect in the non-proxy case.");
 		final Animal reduced = proxy.reduced(3, newId);
-		assertTrue(reduced instanceof ProxyAnimal);
+		assertTrue(reduced instanceof ProxyAnimal, "Proxy reduction produces another proxy");
 		for (final Animal proxied : ((ProxyAnimal) reduced).getProxied()) {
-			assertEquals(newId, proxied.getId());
-			assertEquals(3, proxied.getPopulation());
+			assertEquals(newId, proxied.getId(), "Each animal proxied by it has the correct ID");
+			assertEquals(3, proxied.getPopulation(),
+					"Each animal proxied by it has the correct population");;
 		}
 	}
 

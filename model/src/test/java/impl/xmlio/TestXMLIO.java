@@ -1069,9 +1069,10 @@ public final class TestXMLIO {
 				"\t\t\t\t<unit id=\"2\" kind=\"explorer\" name=\"name two\" owner=\"2\" />%n" +
 				"\t\t\t</tile>%n\t\t</row>%n\t</map>%n</view>%n", SP_NAMESPACE);
 		final String serializedForm = createSerializedForm(five, false);
-		assertAny("Multiple units", () -> assertEquals(xmlTwoLogical, serializedForm),
-			() -> assertEquals(xmlTwoAlphabetical, serializedForm),
-			() -> assertEquals(xmlTwoLogical.replaceAll("\" />", "\"/>"), serializedForm));
+		assertAny("Multiple units", () -> assertEquals(xmlTwoLogical, serializedForm, "Logical form matches"),
+			() -> assertEquals(xmlTwoAlphabetical, serializedForm, "Alphabetical form matches"),
+			() -> assertEquals(xmlTwoLogical.replaceAll("\" />", "\"/>"), serializedForm,
+					"Logical form with tags snugged matches"));
 		assertEquals(String.format("<view xmlns=\"%s\" current_player=\"-1\" current_turn=\"-1\">%n" +
 			"\t<map version=\"2\" rows=\"1\" columns=\"1\">%n" +
 			"\t</map>%n</view>%n", SP_NAMESPACE),
@@ -1087,8 +1088,8 @@ public final class TestXMLIO {
 				"\t<map columns=\"1\" rows=\"1\" version=\"2\"/>%n</view>%n",
 			SP_NAMESPACE);
 		assertAny("Shouldn't print empty non-visible tiles",
-			() -> assertEquals(firstPossibility, emptySerializedForm),
-			() -> assertEquals(secondPossibility, emptySerializedForm));
+			() -> assertEquals(firstPossibility, emptySerializedForm, "First empty form matches"),
+			() -> assertEquals(secondPossibility, emptySerializedForm, "Second empty form matches"));
 	}
 
 	/**
@@ -1246,7 +1247,7 @@ public final class TestXMLIO {
 						} else if (except instanceof MalformedXMLException) {
 							assertEquals(
 								"XML stream didn't contain a start element",
-								except.getMessage());
+								except.getMessage(), "Exception message matches");
 						} else {
 							fail("Unexpected exception type");
 						}
