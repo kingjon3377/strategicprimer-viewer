@@ -103,19 +103,19 @@ public class HarvestableReportGenerator extends AbstractReportGenerator<Harvesta
 		ostream.accept(": ");
 		if (item instanceof CacheFixture) {
 			ostream.accept("A cache of ");
-			ostream.accept(((CacheFixture) item).getKind());
+			ostream.accept(item.getKind());
 			ostream.accept(", containing ");
 			ostream.accept(((CacheFixture) item).getContents());
 		} else if (item instanceof Grove) {
 			ostream.accept((((Grove) item).isCultivated()) ? "cultivated " : "wild ");
-			ostream.accept(((Grove) item).getKind());
+			ostream.accept(item.getKind());
 			ostream.accept((((Grove) item).isOrchard()) ? " orchard " : " grove ");
 			ostream.accept(populationCountString(((Grove) item), "tree"));
 		} else if (item instanceof Meadow) {
 			ostream.accept(((Meadow) item).getStatus().toString());
 			ostream.accept((((Meadow) item).isCultivated()) ? " cultivated " :
 				" wild or abandoned ");
-			ostream.accept(((Meadow) item).getKind());
+			ostream.accept(item.getKind());
 			ostream.accept((((Meadow) item).isField()) ? " field " : " meadow ");
 			ostream.accept(acreageString(((Meadow) item)));
 		} else if (item instanceof Mine) {
@@ -123,14 +123,14 @@ public class HarvestableReportGenerator extends AbstractReportGenerator<Harvesta
 		} else if (item instanceof MineralVein) {
 			ostream.accept((((MineralVein) item).isExposed()) ? "An exposed vein of " :
 				"An unexposed vein of ");
-			ostream.accept(((MineralVein) item).getKind());
+			ostream.accept(item.getKind());
 		} else if (item instanceof Shrub) {
-			ostream.accept(((Shrub) item).getKind());
+			ostream.accept(item.getKind());
 			ostream.accept(" ");
 			ostream.accept(populationCountString((Shrub) item, "plant"));
 		} else if (item instanceof StoneDeposit) {
 			ostream.accept("An exposed ");
-			ostream.accept(((StoneDeposit) item).getKind());
+			ostream.accept(item.getKind());
 			ostream.accept(" deposit");
 		}
 		ostream.accept(" ");
@@ -185,21 +185,21 @@ public class HarvestableReportGenerator extends AbstractReportGenerator<Harvesta
 				fixtures.remove(item.getId());
 			} else if (item instanceof MineralVein) {
 				final List<Point> list = Optional.ofNullable(minerals.get(
-					((MineralVein) item).getShortDescription())).orElseGet(ArrayList::new);
+					item.getShortDescription())).orElseGet(ArrayList::new);
 				list.add(point);
-				minerals.put(((MineralVein) item).getShortDescription(), list);
+				minerals.put(item.getShortDescription(), list);
 				fixtures.remove(item.getId());
 			} else if (item instanceof Shrub) {
 				final List<Point> list = Optional.ofNullable(shrubs.get(
-					((Shrub) item).getKind())).orElseGet(ArrayList::new);
+					item.getKind())).orElseGet(ArrayList::new);
 				list.add(point);
-				shrubs.put(((Shrub) item).getKind(), list);
+				shrubs.put(item.getKind(), list);
 				fixtures.remove(item.getId());
 			} else if (item instanceof StoneDeposit) {
 				final List<Point> list = Optional.ofNullable(stone.get(
-					((StoneDeposit) item).getKind())).orElseGet(ArrayList::new);
+					item.getKind())).orElseGet(ArrayList::new);
 				list.add(point);
-				stone.put(((StoneDeposit) item).getKind(), list);
+				stone.put(item.getKind(), list);
 				fixtures.remove(item.getId());
 			} else {
 				return;

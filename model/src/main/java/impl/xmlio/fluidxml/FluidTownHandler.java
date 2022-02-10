@@ -67,7 +67,7 @@ import java.util.stream.Collectors;
 			getPlayerOrIndependent(element, warner, players));
 		fix.setPortrait(getAttribute(element, "portrait", ""));
 		for (final XMLEvent event : stream) {
-			if (event instanceof StartElement && isSPStartElement((StartElement) event)) {
+			if (event instanceof StartElement && isSPStartElement(event)) {
 				if (fix.getPopulation() == null) {
 					fix.setPopulation(readCommunityStats((StartElement) event,
 						element.getName(), stream, players, warner, idFactory));
@@ -109,7 +109,7 @@ import java.util.stream.Collectors;
 			getPlayerOrIndependent(element, warner, players));
 		fix.setPortrait(getAttribute(element, "portrait", ""));
 		for (final XMLEvent event : stream) {
-			if (event instanceof StartElement && isSPStartElement((StartElement) event)) {
+			if (event instanceof StartElement && isSPStartElement(event)) {
 				if (fix.getPopulation() == null) {
 					fix.setPopulation(readCommunityStats((StartElement) event,
 						element.getName(), stream, players, warner, idFactory));
@@ -150,7 +150,7 @@ import java.util.stream.Collectors;
 			getPlayerOrIndependent(element, warner, players));
 		fix.setPortrait(getAttribute(element, "portrait", ""));
 		for (final XMLEvent event : stream) {
-			if (event instanceof StartElement && isSPStartElement((StartElement) event)) {
+			if (event instanceof StartElement && isSPStartElement(event)) {
 				if (fix.getPopulation() == null) {
 					fix.setPopulation(readCommunityStats((StartElement) event,
 						element.getName(), stream, players, warner, idFactory));
@@ -186,7 +186,7 @@ import java.util.stream.Collectors;
 				RaceFactory.randomRace(new Random(idNum))));
 		retval.setPortrait(getAttribute(element, "portrait", ""));
 		for (final XMLEvent event : stream) {
-			if (event instanceof StartElement && isSPStartElement((StartElement) event)) {
+			if (event instanceof StartElement && isSPStartElement(event)) {
 				if (retval.getPopulation() == null) {
 					retval.setPopulation(readCommunityStats((StartElement) event,
 						element.getName(), stream, players, warner, idFactory));
@@ -215,7 +215,7 @@ import java.util.stream.Collectors;
 			if (event instanceof EndElement &&
 					((EndElement) event).getName().equals(element.getName())) {
 				break;
-			} else if (event instanceof StartElement && isSPStartElement((StartElement) event)) {
+			} else if (event instanceof StartElement && isSPStartElement(event)) {
 				switch (((StartElement) event).getName().getLocalPart().toLowerCase()) {
 				case "expertise":
 					expectAttributes((StartElement) event, warner, "skill", "level");

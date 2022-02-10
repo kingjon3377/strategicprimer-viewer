@@ -269,7 +269,7 @@ public class Village implements IMutableTownFixture, HasMutableImage, IFixture,
 	@Override
 	public boolean isSubset(final IFixture obj, final Consumer<String> report) {
 		if (obj instanceof Village) {
-			if (id != ((Village) obj).getId()) {
+			if (id != obj.getId()) {
 				report.accept("IDs differ");
 			} else if (status != ((Village) obj).getStatus()) {
 				report.accept(String.format("In village (ID #%d):\tVillage status differs",

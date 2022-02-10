@@ -73,15 +73,15 @@ public class AnimalTabularReportGenerator implements ITableGenerator<AnimalOrTra
 		// instanceof Animal, and make all the other tests inside that
 		// block.
 		if (item instanceof AnimalTracks) {
-			kind = "tracks or traces of " + ((AnimalTracks) item).getKind();
+			kind = "tracks or traces of " + item.getKind();
 			age = "---";
 			population = "---";
 		} else if (((Animal) item).isTalking()) {
-			kind = "talking " + ((Animal) item).getKind();
+			kind = "talking " + item.getKind();
 			age = "---";
 			population = "---";
 		} else if (!"wild".equals(((Animal) item).getStatus())) {
-			kind = String.format("%s %s", ((Animal) item).getStatus(), ((Animal) item).getKind());
+			kind = String.format("%s %s", ((Animal) item).getStatus(), item.getKind());
 			population = Integer.toString(((Animal) item).getPopulation());
 			if (((Animal) item).getBorn() >= 0) {
 				if (((Animal) item).getBorn() > currentTurn) {
@@ -89,9 +89,9 @@ public class AnimalTabularReportGenerator implements ITableGenerator<AnimalOrTra
 				} else if (((Animal) item).getBorn() == currentTurn) {
 					age = "newborn";
 				} else if (MaturityModel.getMaturityAges()
-							.containsKey(((Animal) item).getKind()) &&
+							.containsKey(item.getKind()) &&
 						MaturityModel.getMaturityAges()
-								.get(((Animal) item).getKind()) <=
+								.get(item.getKind()) <=
 							(currentTurn - ((Animal) item).getBorn())) {
 					age = "adult";
 				} else {
@@ -102,7 +102,7 @@ public class AnimalTabularReportGenerator implements ITableGenerator<AnimalOrTra
 				age = "adult";
 			}
 		} else {
-			kind = ((Animal) item).getKind();
+			kind = item.getKind();
 			age = "---";
 			population = "---";
 		}
@@ -146,8 +146,8 @@ public class AnimalTabularReportGenerator implements ITableGenerator<AnimalOrTra
 			} else if (two.getValue1() instanceof Animal) {
 				return -1;
 			} else {
-				return ((AnimalOrTracks) one.getValue1()).getKind()
-					.compareTo(((AnimalOrTracks) two.getValue1()).getKind());
+				return one.getValue1().getKind()
+					.compareTo(two.getValue1().getKind());
 			}
 		} else {
 			return cmp;

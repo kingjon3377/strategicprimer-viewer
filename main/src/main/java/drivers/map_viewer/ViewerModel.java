@@ -76,7 +76,7 @@ public class ViewerModel extends SimpleDriverModel implements IViewerModel {
 	 */
 	private static Stream<Pair<Point, IFixture>> flattenEntries(final Pair<Point, IFixture> entry) {
 		if (entry.getValue1() instanceof IFortress) {
-			return ((IFortress) entry.getValue1()).stream().map(m -> Pair.with(entry.getValue0(), (IFixture) m));
+			return ((IFortress) entry.getValue1()).stream().map(m -> Pair.with(entry.getValue0(), m));
 		} else {
 			return Stream.of(entry);
 		}

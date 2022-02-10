@@ -54,7 +54,7 @@ import javax.xml.stream.XMLStreamException;
 			element, warner);
 		retval.setPortrait(getAttribute(element, "portrait", ""));
 		for (final XMLEvent event : stream) {
-			if (event instanceof StartElement && isSPStartElement((StartElement) event)) {
+			if (event instanceof StartElement && isSPStartElement(event)) {
 				switch (((StartElement) event).getName().getLocalPart().toLowerCase()) {
 				case "job":
 					retval.addJob(readJob((StartElement) event, element.getName(),
@@ -89,7 +89,7 @@ import javax.xml.stream.XMLStreamException;
 		expectAttributes(element, warner, "player");
 		final StringBuilder retval = new StringBuilder();
 		for (final XMLEvent event : stream) {
-			if (event instanceof StartElement && isSPStartElement((StartElement) event)) {
+			if (event instanceof StartElement && isSPStartElement(event)) {
 				throw new UnwantedChildException(element.getName(), (StartElement) event);
 			} else if (event instanceof EndElement &&
 					element.getName().equals(((EndElement) event).getName())) {
@@ -109,7 +109,7 @@ import javax.xml.stream.XMLStreamException;
 		final IMutableJob retval = new Job(getAttribute(element, "name"),
 			getIntegerAttribute(element, "level"));
 		for (final XMLEvent event : stream) {
-			if (event instanceof StartElement && isSPStartElement((StartElement) event)) {
+			if (event instanceof StartElement && isSPStartElement(event)) {
 				if ("skill".equalsIgnoreCase(
 						((StartElement) event).getName().getLocalPart())) {
 					retval.addSkill(readSkill((StartElement) event, element.getName(),

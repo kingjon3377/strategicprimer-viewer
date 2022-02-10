@@ -112,12 +112,12 @@ public class TurnRunningModel extends ExplorationModel implements ITurnRunningMo
 				if (matching != null) {
 					if (all) {
 						map.removeFixture(location, matching);
-					} else if (((HasPopulation<? extends TileFixture>) matching).getPopulation() > 0) {
+					} else if (matching.getPopulation() > 0) {
 						final int remaining = matching.getPopulation() - reduction;
 						if (remaining > 0) {
 							final T addend = (T) matching.reduced(remaining);
 							map.replace(location, matching,
-								(TileFixture) addend.copy(first || zero));
+									addend.copy(first || zero));
 							first = false;
 							continue;
 						} else if (first) {
@@ -163,7 +163,7 @@ public class TurnRunningModel extends ExplorationModel implements ITurnRunningMo
 						if (matching.getAcres().doubleValue() > reduction.doubleValue()) {
 							final T addend = (T)
 								matching.reduced(reduction).copy(first || zero);
-							map.replace(location, matching, (TileFixture) addend);
+							map.replace(location, matching, addend);
 							first = false;
 							continue;
 						} else if (first) {

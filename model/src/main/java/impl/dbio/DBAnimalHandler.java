@@ -89,17 +89,17 @@ final class DBAnimalHandler extends AbstractDatabaseWriter<AnimalOrTracks, /*Poi
 				throw new IllegalArgumentException("Animal tracks can't occur inside a unit");
 			}
 			db.update(INSERT_TRACKS, ((Point) context).getRow(), ((Point) context).getColumn(),
-				((AnimalTracks) obj).getKind(), ((AnimalTracks) obj).getImage()).execute();
+				obj.getKind(), ((AnimalTracks) obj).getImage()).execute();
 		} else if (obj instanceof Animal) {
 			if (context instanceof Point) {
 				db.update(INSERT_ANIMAL, ((Point) context).getRow(),
-					((Point) context).getColumn(), null, ((Animal) obj).getKind(),
+					((Point) context).getColumn(), null, obj.getKind(),
 					((Animal) obj).isTalking(), ((Animal) obj).getStatus(),
 					born((Animal) obj).orElse(null), ((Animal) obj).getPopulation(),
 					obj.getId(), ((Animal) obj).getImage()).execute();
 			} else {
 				db.update(INSERT_ANIMAL, null, null, ((IUnit) context).getId(),
-					((Animal) obj).getKind(), ((Animal) obj).isTalking(),
+					obj.getKind(), ((Animal) obj).isTalking(),
 					((Animal) obj).getStatus(), born((Animal) obj).orElse(null),
 					((Animal) obj).getPopulation(), obj.getId(),
 					((Animal) obj).getImage()).execute();

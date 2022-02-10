@@ -392,7 +392,7 @@ import java.util.stream.Collectors;
 		} else if (obj instanceof String) {
 			return (Iterable<Object>) ((Iterable<?>) model.getUnits(player, (String) obj));
 		} else if (obj instanceof IUnit) {
-			return (Iterable<Object>) ((Iterable<?>) ((IUnit) obj));
+			return (Iterable<Object>) obj;
 		} else {
 			return Collections.emptyList();
 		}

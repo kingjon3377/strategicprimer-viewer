@@ -528,7 +528,7 @@ public class WorkerModel extends SimpleMultiMapModel implements IWorkerModel {
 					getUnitsImpl(map.streamAllFixtures()
 							.collect(Collectors.toList()),
 						((IUnit) item).getOwner()).stream()
-					.filter(u -> u.getName().equals(((IUnit) item).getName()))
+					.filter(u -> u.getName().equals(item.getName()))
 					.filter(u -> u.getKind().equals(((IUnit) item).getKind()))
 					.filter(u -> u.getId() == ((IUnit) item).getId())
 					.findAny().orElse(null);
@@ -578,7 +578,7 @@ public class WorkerModel extends SimpleMultiMapModel implements IWorkerModel {
 							.collect(Collectors.toList()),
 						((IUnit) item).getOwner()).stream()
 					.filter(u -> u.getName().equals(((IUnit) item).getName()))
-					.filter(u -> u.getKind().equals(((IUnit) item).getKind()))
+					.filter(u -> u.getKind().equals(item.getKind()))
 					.filter(u -> u.getId() == ((IUnit) item).getId())
 					.findAny().orElse(null);
 				if (matching instanceof HasMutableKind) {

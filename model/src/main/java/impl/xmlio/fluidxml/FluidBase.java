@@ -670,7 +670,7 @@ import org.jetbrains.annotations.Nullable;
 			throws SPFormatException {
 		final StringBuilder builder = new StringBuilder();
 		for (final XMLEvent event : stream) {
-			if (event instanceof StartElement && isSPStartElement((StartElement) event)) {
+			if (event instanceof StartElement && isSPStartElement(event)) {
 				throw new UnwantedChildException(tag, (StartElement) event);
 			} else if (event instanceof Characters) {
 				builder.append(((Characters) event).getData());

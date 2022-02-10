@@ -411,30 +411,30 @@ import java.util.logging.Logger;
 			writeAbstractTown(ostream, (AbstractTown) obj, tabs);
 		} else if (obj instanceof Village) {
 			writeTag(ostream, "village", tabs);
-			writeProperty(ostream, "status", ((Village) obj).getStatus().toString());
-			writeNonemptyProperty(ostream, "name", ((Village) obj).getName());
-			writeProperty(ostream, "id", ((Village) obj).getId());
-			writeProperty(ostream, "owner", ((Village) obj).getOwner().getPlayerId());
+			writeProperty(ostream, "status", obj.getStatus().toString());
+			writeNonemptyProperty(ostream, "name", obj.getName());
+			writeProperty(ostream, "id", obj.getId());
+			writeProperty(ostream, "owner", obj.getOwner().getPlayerId());
 			writeProperty(ostream, "race", ((Village) obj).getRace());
 			writeImageXML(ostream, (Village) obj);
-			writeNonemptyProperty(ostream, "portrait", ((Village) obj).getPortrait());
-			if (((Village) obj).getPopulation() != null) {
+			writeNonemptyProperty(ostream, "portrait", obj.getPortrait());
+			if (obj.getPopulation() != null) {
 				finishParentTag(ostream);
-				writeCommunityStats(ostream, ((Village) obj).getPopulation(), tabs + 1);
+				writeCommunityStats(ostream, obj.getPopulation(), tabs + 1);
 				closeTag(ostream, tabs, "village");
 			} else {
 				closeLeafTag(ostream);
 			}
 		} else if (obj instanceof IFortress) {
 			writeTag(ostream, "fortress", tabs);
-			writeProperty(ostream, "owner", ((IFortress) obj).getOwner().getPlayerId());
-			writeNonemptyProperty(ostream, "name", ((IFortress) obj).getName());
-			if (TownSize.Small != ((IFortress) obj).getTownSize()) {
-				writeProperty(ostream, "size", ((IFortress) obj).getTownSize().toString());
+			writeProperty(ostream, "owner", obj.getOwner().getPlayerId());
+			writeNonemptyProperty(ostream, "name", obj.getName());
+			if (TownSize.Small != obj.getTownSize()) {
+				writeProperty(ostream, "size", obj.getTownSize().toString());
 			}
-			writeProperty(ostream, "id", ((IFortress) obj).getId());
+			writeProperty(ostream, "id", obj.getId());
 			writeImageXML(ostream, (IFortress) obj);
-			writeNonemptyProperty(ostream, "portrait", ((IFortress) obj).getPortrait());
+			writeNonemptyProperty(ostream, "portrait", obj.getPortrait());
 			ostream.accept(">");
 			if (((IFortress) obj).iterator().hasNext()) {
 				ostream.accept(System.lineSeparator());

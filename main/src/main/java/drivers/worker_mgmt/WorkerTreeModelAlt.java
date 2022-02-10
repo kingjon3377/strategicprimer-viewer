@@ -444,7 +444,7 @@ public class WorkerTreeModelAlt extends DefaultTreeModel implements IWorkerTreeM
 			final Object[] pathSubset;
 			final TreeNode lastParent = pathOne[pathOne.length - 2];
 			if (lastParent instanceof MutableTreeNode &&
-					((MutableTreeNode) lastParent).getChildCount() == 0) {
+					lastParent.getChildCount() == 0) {
 				final TreeNode lastParentParent = pathOne[pathOne.length - 3];
 				final int parentIndex = lastParentParent.getIndex(lastParent);
 				pathSubset = Arrays.copyOf(pathOne, pathOne.length - 2,
@@ -596,7 +596,7 @@ public class WorkerTreeModelAlt extends DefaultTreeModel implements IWorkerTreeM
 	public Iterable<Object> childrenOf(final Object obj) {
 		final PlayerNode temp = (PlayerNode) getRoot();
 		if (obj instanceof WorkerTreeNode) {
-			return (Iterable<Object>) ((Iterable<?>) ((WorkerTreeNode<?>) obj));
+			return (Iterable<Object>) obj;
 		}
 		final TreeNode node = getNode(temp, obj);
 		if (node == null) {

@@ -150,7 +150,7 @@ public class MemberDetailPanel extends BorderedPanel implements UnitMemberListen
 	}
 
 	private static InterpolatedLabel<@Nullable WorkerStats> statLabel(final ToIntFunction<WorkerStats> stat) {
-		return new InterpolatedLabel<>(labelFormat(stat), (WorkerStats) null);
+		return new InterpolatedLabel<>(labelFormat(stat), null);
 	}
 
 	private final List<InterpolatedLabel<@Nullable WorkerStats>> statLabels;

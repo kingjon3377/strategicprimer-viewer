@@ -55,7 +55,7 @@ import lovelace.util.ListenedButton;
 	public void startDriver(final String... args) {
 		final JEditorPane tempComponent = new JEditorPane();
 		final Font font = tempComponent.getFont();
-		final Graphics2D pen = (Graphics2D) new BufferedImage(1, 1, BufferedImage.TYPE_INT_RGB).createGraphics();
+		final Graphics2D pen = new BufferedImage(1, 1, BufferedImage.TYPE_INT_RGB).createGraphics();
 		final FontRenderContext context = pen.getFontRenderContext();
 		double width = 0;
 		double height = 10;

@@ -105,11 +105,11 @@ public class AnimalReportGenerator extends AbstractReportGenerator</*Animal|Anim
 			final AnimalOrTracks animal = triplet.getValue2();
 			final String desc;
 			if (animal instanceof AnimalTracks) {
-				desc = "tracks or traces of " + ((AnimalTracks) animal).getKind();
+				desc = "tracks or traces of " + animal.getKind();
 			} else if (((Animal) animal).isTalking()) {
-				desc = "talking " + ((Animal) animal).getKind();
+				desc = "talking " + animal.getKind();
 			} else {
-				desc = ((Animal) animal).getKind();
+				desc = animal.getKind();
 			}
 			final List<Point> list = Optional.ofNullable(items.get(desc)).orElseGet(ArrayList::new);
 			list.add(loc);

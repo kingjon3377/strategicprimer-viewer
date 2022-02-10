@@ -243,7 +243,7 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 	/**
 	 * The currently selected unit and its location.
 	 */
-	private Pair<Point, @Nullable IUnit> selection = Pair.with(Point.INVALID_POINT, (IUnit) null);
+	private Pair<Point, @Nullable IUnit> selection = Pair.with(Point.INVALID_POINT, null);
 
 	public ExplorationModel(final IMutableMapNG map) {
 		super(map);
@@ -1010,7 +1010,7 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 						.filter(HasMutableName.class::isInstance)
 						.map(IUnit.class::cast)
 						.filter(u -> u.getOwner().equals(((IUnit) item).getOwner()))
-						.filter(u -> u.getName().equals(((IUnit) item).getName()))
+						.filter(u -> u.getName().equals(item.getName()))
 						.filter(u -> u.getKind().equals(((IUnit) item).getKind()))
 						.filter(u -> u.getId() == ((IUnit) item).getId())
 						.map(HasMutableName.class::cast).findAny();
@@ -1062,7 +1062,7 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 						.filter(IUnit.class::isInstance).map(IUnit.class::cast)
 						.filter(u -> u.getOwner().equals(((IUnit) item).getOwner()))
 						.filter(u -> u.getName().equals(((IUnit) item).getName()))
-						.filter(u -> u.getKind().equals(((IUnit) item).getKind()))
+						.filter(u -> u.getKind().equals(item.getKind()))
 						.filter(u -> u.getId() == ((IUnit) item).getId())
 						.map(HasMutableKind.class::cast).findAny();
 				if (matching.isPresent()) {

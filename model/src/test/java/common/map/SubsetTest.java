@@ -268,7 +268,7 @@ public final class SubsetTest {
 		// equals().
 		for (final TileFixture fixture : clone.getFixtures(new Point(0, 0))) {
 			if (fixture instanceof AbstractTown) {
-				assertEquals(0, ((AbstractTown) fixture).getDC(),
+				assertEquals(0, fixture.getDC(),
 					"Copied map didn't copy DCs");
 			}
 		}

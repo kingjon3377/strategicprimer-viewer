@@ -166,7 +166,7 @@ import java.util.function.Predicate;
 		for (final YAReader<? extends TileFixture, ? extends TileFixture> reader : readers) {
 			if (reader.isSupportedTag(name)) {
 				readerCache.put(name.toLowerCase(), reader);
-				return (TileFixture) reader.read(element, parent, stream);
+				return reader.read(element, parent, stream);
 			}
 		}
 		if (IMMORTAL_ANIMALS.contains(name.toLowerCase())) {
@@ -175,7 +175,7 @@ import java.util.function.Predicate;
 			} else {
 				for (final YAReader<? extends TileFixture, ? extends TileFixture> reader : readers) {
 					if (reader.isSupportedTag("animal")) {
-						return (TileFixture) reader.read(element, parent, stream);
+						return reader.read(element, parent, stream);
 					}
 				}
 			}
