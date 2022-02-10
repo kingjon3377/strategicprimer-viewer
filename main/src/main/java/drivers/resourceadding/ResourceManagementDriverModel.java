@@ -51,7 +51,8 @@ import java.math.BigDecimal;
 	public void addResource(final FortressMember resource, final Player player) {
 		for (final IMutableMapNG map : getRestrictedAllMaps()) {
 			final Player mapPlayer = map.getCurrentPlayer();
-			// FIXME: It looks like this always skips the main map because the map player is independent there ...
+			// Operate on maps where the current player is independent OR matches
+			// ("independent" also including negative ID)
 			if (mapPlayer.isIndependent() || mapPlayer.getPlayerId() < 0 ||
 					mapPlayer.getPlayerId() == player.getPlayerId()) {
 				final IMutableFortress fortress = map.streamAllFixtures()

@@ -46,7 +46,7 @@ public final class MapIOHelper {
 	/**
 	 * The writer to use to write to XML.
 	 */
-	public static final SPWriter WRITER = new YAXMLWriter(); // TODO: make it singleton?
+	public static final SPWriter WRITER = new YAXMLWriter();
 
 	/**
 	 * The writer to use to write to SQLite databases.

@@ -50,8 +50,6 @@ import lovelace.util.ComponentParentStream;
  * A handler for "open" and "save" menu items (and a few others)
  *
  * TODO: Further splitting up
- *
- * TODO: Fix circular dependency between this and viewerGUI
  */
 public class IOHandler implements ActionListener {
 	private static final Logger LOGGER = Logger.getLogger(IOHandler.class.getName());

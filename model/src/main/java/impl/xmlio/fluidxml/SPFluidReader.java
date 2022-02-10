@@ -188,8 +188,6 @@ public class SPFluidReader implements IMapReader, ISPReader {
 		}
 	}
 
-	// TODO: make following methods static if it will compile
-
 	private void parseTileChild(final IMutableMapNG map, final StartElement parent,
 	                            final Iterable<XMLEvent> stream, final IMutablePlayerCollection players, final Warning warner,
 	                            final IDRegistrar idFactory, final Point currentTile, final StartElement element)
@@ -226,7 +224,6 @@ public class SPFluidReader implements IMapReader, ISPReader {
 			map.addRivers(currentTile, (River) child);
 		} else if (child instanceof TileFixture) {
 			if (child instanceof IFortress &&
-						// TODO: Just use getFixtures().stream()
 					map.getFixtures(currentTile).stream()
 						.filter(IFortress.class::isInstance)
 						.map(IFortress.class::cast)

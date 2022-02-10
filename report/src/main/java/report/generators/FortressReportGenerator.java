@@ -53,7 +53,6 @@ public class FortressReportGenerator extends AbstractReportGenerator<IFortress> 
 	private final IReportGenerator<FortressMember> memberReportGenerator;
 	private final Player currentPlayer;
 
-	// TODO: Can this be static?
 	private String terrain(final IMapNG map, final Point point,
 	                       final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures) {
 		final StringBuilder builder = new StringBuilder();
@@ -83,8 +82,6 @@ public class FortressReportGenerator extends AbstractReportGenerator<IFortress> 
 
 	/**
 	 * Write HTML representing a collection of rivers.
-	 *
-	 * TODO: Can this be static?
 	 */
 	private void riversToString(final Consumer<String> formatter, final Collection<River> rivers) {
 		final Set<River> set = EnumSet.noneOf(River.class);

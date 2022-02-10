@@ -55,7 +55,6 @@ import worker.common.IFixtureEditHelper;
 public class FixtureList extends JList<TileFixture>
 		implements DragGestureListener, SelectionChangeListener {
 	private static final Logger LOGGER = Logger.getLogger(FixtureList.class.getName());
-	// TODO: Remove any of these that aren't used beyond initialization
 	private final JComponent parentComponent;
 	private final FixtureListModel listModel;
 	private final IFixtureEditHelper feh;

@@ -60,7 +60,7 @@ public class UtilityMenuHandler {
 		final String command = event.getActionCommand().toLowerCase();
 		switch (command) {
 		case "load":
-			SPFileChooser.open((Path) null).call(driver::open); // TODO: Pass event's component reference instead of null
+			SPFileChooser.open((Path) null).call(driver::open);
 			break;
 		case "close":
 			window.dispose();

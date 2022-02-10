@@ -93,8 +93,9 @@ public class ResourceAddingCLIHelper {
 				return unit;
 			}
 		}
+		// N.B. ICLIHelper trims input before returning
 		final String retval = cli.inputString(String.format("Unit to use for %s: ", resource));
-		if (retval == null || retval.isEmpty()) { // TODO: check if ICLIHelper trims the user's input; if not, do so each place we get such input here
+		if (retval == null || retval.isEmpty()) {
 			return null;
 		}
 		resourceUnits.put(resource, retval);
