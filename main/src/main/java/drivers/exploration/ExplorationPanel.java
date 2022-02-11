@@ -189,6 +189,7 @@ import worker.common.IFixtureEditHelper;
 
 			LOGGER.finer("ExplorationPanel: main list set up for " + direction);
 
+			Iterable<FixtureMatcher> matchers = new FixtureFilterTableModel();
 			final DualTileButton dtb = new DualTileButton(driverModel.getMap(), secondMap, matchers);
 			// At some point we tried wrapping the button in a JScrollPane.
 			tilesPanel.add(dtb);
@@ -248,8 +249,6 @@ import worker.common.IFixtureEditHelper;
 	private final Map<Direction, SelectionChangeListener> mains = new HashMap<>();
 	private final Map<Direction, SelectionChangeListener> seconds = new HashMap<>();
 	private final Map<Direction, DualTileButton> buttons = new HashMap<>();
-
-	private final Iterable<FixtureMatcher> matchers = new FixtureFilterTableModel();
 
 	private static class SpeedChangeListener implements ListDataListener {
 		public SpeedChangeListener(final SelectionChangeListener scs) {

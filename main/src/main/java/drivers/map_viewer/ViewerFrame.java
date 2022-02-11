@@ -104,7 +104,7 @@ public final class ViewerFrame extends SPFrame implements MapGUI {
 
 		mapPanel.requestFocusInWindow();
 
-		windowSizeListener = new WindowSizeListener(mapPanel);
+		WindowSizeListener windowSizeListener = new WindowSizeListener(mapPanel);
 		addWindowListener(windowSizeListener);
 		addWindowStateListener(windowSizeListener);
 
@@ -244,5 +244,4 @@ public final class ViewerFrame extends SPFrame implements MapGUI {
 		}
 	}
 
-	private final WindowSizeListener windowSizeListener;
 }

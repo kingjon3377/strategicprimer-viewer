@@ -105,8 +105,6 @@ public class WindowMenu extends JMenu {
 
 	private final JFrame myFrame;
 
-	private final ChangeListener changeListener = e -> SwingUtilities.invokeLater(updateRunnable);
-
 	final ActionListener actionListener;
 
 	final JMenuItem[] customItems;
@@ -157,6 +155,7 @@ public class WindowMenu extends JMenu {
 		minimizeItem.setAccelerator(KeyStroke.getKeyStroke('M',
 				Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
 
+		ChangeListener changeListener = e -> SwingUtilities.invokeLater(updateRunnable);
 		WindowList.addChangeListener(changeListener);
 		updateRunnable.run();
 	}

@@ -60,7 +60,6 @@ import java.awt.image.BufferedImage;
 	}
 
 	private final ComponentMouseListener cml;
-	private final DirectionSelectionChanger dsl;
 	private TileDrawHelper helper; // TODO: Reinitialize if map version changes
 
 	@Nullable
@@ -79,7 +78,7 @@ import java.awt.image.BufferedImage;
 	                    final Iterable<FixtureMatcher> matchers) { // FIXME: Create an interface extending both Iterable and Comparator, and make FixtureFixtureTableModel, FixtureFilterListModel, etc., implement it, and take it here instead of taking Iterable and casting to Comparator
 		mapModel = model;
 		cml = new ComponentMouseListener(model, zof, (Comparator<TileFixture>) matchers);
-		dsl = new DirectionSelectionChanger(model);
+		DirectionSelectionChanger dsl = new DirectionSelectionChanger(model);
 		helper = new Ver2TileDrawHelper(this, zof, matchers);
 		setDoubleBuffered(true);
 
@@ -98,7 +97,7 @@ import java.awt.image.BufferedImage;
 						.map(Component.class::cast).orElse(null));
 				}
 			});
-		mapSizeListener = new MapSizeListener(model, this, this::getTileSize);
+		MapSizeListener mapSizeListener = new MapSizeListener(model, this, this::getTileSize);
 		addComponentListener(mapSizeListener);
 
 		setToolTipText("");
@@ -360,8 +359,6 @@ import java.awt.image.BufferedImage;
 			componentResized(event);
 		}
 	}
-
-	private final MapSizeListener mapSizeListener;
 
 	@Override
 	public void tileSizeChanged(final int olSize, final int newSize) {

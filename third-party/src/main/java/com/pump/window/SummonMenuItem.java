@@ -28,15 +28,6 @@ public class SummonMenuItem extends JCheckBoxMenuItem {
 
 	private final Frame frame;
 
-	private final ActionListener actionListener = new ActionListener() {
-		public void actionPerformed(final ActionEvent e) {
-			frame.toFront();
-			if (frame.getExtendedState() == Frame.ICONIFIED)
-				frame.setExtendedState(Frame.NORMAL);
-			setSelected(true);
-		}
-	};
-
 	/**
 	 * Create a new {@code SummonMenuItem}.
 	 *
@@ -46,7 +37,12 @@ public class SummonMenuItem extends JCheckBoxMenuItem {
 	public SummonMenuItem(final Frame f) {
 		super();
 		frame = f;
-		addActionListener(actionListener);
+		addActionListener(ignored -> { // TODO: convert to class method?
+			frame.toFront();
+			if (frame.getExtendedState() == Frame.ICONIFIED)
+				frame.setExtendedState(Frame.NORMAL);
+			setSelected(true);
+		});
 		updateText();
 
 		frame.addPropertyChangeListener("title", e -> updateText());

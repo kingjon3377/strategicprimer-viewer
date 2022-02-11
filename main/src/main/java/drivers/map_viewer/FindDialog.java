@@ -57,6 +57,7 @@ import java.util.function.Predicate;
 
 		final JButton okButton = new ListenedButton("OK", this::okListener);
 
+		JButton cancelButton = new ListenedButton("Cancel", this::cancelListener);
 		Platform.makeButtonsSegmented(okButton, cancelButton);
 		buttonPanel.add(okButton);
 
@@ -76,6 +77,7 @@ import java.util.function.Predicate;
 			BorderedPanel.verticalPanel(backwards, vertically, caseSensitive), buttonPanel);
 
 		SwingUtilities.invokeLater(this::populateAll);
+		JScrollPane scrollPane;
 		if (Platform.SYSTEM_IS_MAC) { // TODO: combine with above
 			scrollPane = new JScrollPane(filterList,
 				ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS,
@@ -252,8 +254,6 @@ import java.util.function.Predicate;
 		dispose();
 	}
 
-	private final JButton cancelButton = new ListenedButton("Cancel", this::cancelListener);
-
 	private void clearSearchField() {
 		searchField.setText("");
 	}
@@ -270,5 +270,4 @@ import java.util.function.Predicate;
 		model.getMap().streamAllFixtures().forEach(this::populate);
 	}
 
-	private final JScrollPane scrollPane;
 }

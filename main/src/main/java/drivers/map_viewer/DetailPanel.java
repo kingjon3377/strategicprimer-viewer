@@ -75,7 +75,7 @@ import worker.common.IFixtureEditHelper;
 			model.getMap().getPlayers());
 
 		delegate = fixtureListObject;
-		portrait = new PortraitComponent(fixtureListObject);
+		PortraitComponent portrait = new PortraitComponent(fixtureListObject);
 		fixtureListObject.addListSelectionListener(portrait);
 
 		final JPanel listPanel = BorderedPanel.verticalPanel(header, new JScrollPane(fixtureListObject),
@@ -151,8 +151,6 @@ import worker.common.IFixtureEditHelper;
 
 	@Override
 	public void cursorPointChanged(@Nullable final Point old, final Point newCursor) {}
-
-	private final PortraitComponent portrait;
 
 	private static class PortraitComponent extends JComponent implements ListSelectionListener {
 		private static final long serialVersionUID = 1L;

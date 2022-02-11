@@ -43,6 +43,8 @@ import common.map.Point;
 		this.model = model;
 
 		final JPanel contentPanel = new BoxPanel(BoxAxis.PageAxis);
+		JLabel mainLabel = new AlignedLabel("Coordinates of tile to select:",
+				Component.CENTER_ALIGNMENT, Component.TOP_ALIGNMENT);
 		contentPanel.add(mainLabel);
 		final BoxPanel boxPanelObj = new BoxPanel(BoxAxis.LineAxis);
 		boxPanelObj.add(new JLabel("Row: "));
@@ -83,9 +85,6 @@ import common.map.Point;
 		setContentPane(contentPanel);
 		pack();
 	}
-
-	private final JLabel mainLabel = new AlignedLabel("Coordinates of tile to select:",
-		Component.CENTER_ALIGNMENT, Component.TOP_ALIGNMENT);
 
 	private static final NumberFormat NUM_PARSER = NumberFormat.getIntegerInstance();
 

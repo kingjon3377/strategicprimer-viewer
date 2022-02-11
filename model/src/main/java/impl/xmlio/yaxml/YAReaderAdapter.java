@@ -53,7 +53,7 @@ import java.util.Collections;
 	 * @param idFactory The factory for ID numbers
 	 */
 	public YAReaderAdapter(final Warning warning, final IDRegistrar idFactory) {
-		players = new PlayerCollection();
+		IMutablePlayerCollection players = new PlayerCollection();
 		mapReader = new YAMapReader(warning, idFactory, players);
 		townReader = new YATownReader(warning, idFactory, players);
 		readers = Collections.unmodifiableList(Arrays.asList(
@@ -67,11 +67,6 @@ import java.util.Collections;
 			new YAUnitReader(warning, idFactory, players),
 			new YAWorkerReader(warning, idFactory, players)));
 	}
-
-	/**
-	 * The player collection to use.
-	 */
-	private final IMutablePlayerCollection players;
 
 	/**
 	 * The map reader
