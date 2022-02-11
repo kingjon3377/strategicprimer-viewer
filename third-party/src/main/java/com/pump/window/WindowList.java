@@ -47,7 +47,7 @@ import javax.swing.event.ChangeListener;
  * {@code Toolkit.getDefaultToolkit().addAWTEventListener(..)}.
  *
  */
-public class WindowList {
+public final class WindowList {
 
 	private static final ArrayList<ChangeListener> changeListeners = new ArrayList<>();
 

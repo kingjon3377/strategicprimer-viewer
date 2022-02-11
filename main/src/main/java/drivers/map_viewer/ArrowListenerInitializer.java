@@ -21,7 +21,7 @@ import java.util.Arrays;
  * A collection of code to help set up the map viewer to listen to the arrow
  * keys, the numeric keypad, and other motion keys.
  */
-/* package */ class ArrowListenerInitializer {
+/* package */ final class ArrowListenerInitializer {
 	private ArrowListenerInitializer() {
 	}
 

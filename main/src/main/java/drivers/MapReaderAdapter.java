@@ -30,7 +30,7 @@ import common.map.IMutableMapNG;
  * have their own type-specific model factory methods. Maybe take the factory
  * methods as parameters in the reading methods here?
  */
-public class MapReaderAdapter {
+public final class MapReaderAdapter {
 	private MapReaderAdapter() {}
 
 	private static final Logger LOGGER = Logger.getLogger(MapReaderAdapter.class.getName());

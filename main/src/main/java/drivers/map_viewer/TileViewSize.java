@@ -5,7 +5,7 @@ package drivers.map_viewer;
  *
  * TODO: Move into some class ... which?
  */
-/* package */ class TileViewSize {
+/* package */ final class TileViewSize {
 	private TileViewSize() {}
 
 	/**

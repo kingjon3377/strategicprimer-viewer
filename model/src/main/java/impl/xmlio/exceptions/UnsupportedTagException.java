@@ -8,7 +8,7 @@ import javax.xml.stream.events.StartElement;
 /**
  * A custom exception for not-yet-supported tags.
  */
-public class UnsupportedTagException extends SPFormatException {
+public final class UnsupportedTagException extends SPFormatException {
 	/**
 	 * The unsupported tag.
 	 */

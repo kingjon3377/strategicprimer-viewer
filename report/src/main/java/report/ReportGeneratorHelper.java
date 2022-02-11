@@ -26,7 +26,7 @@ import java.util.logging.Logger;
 /**
  * An encapsulation of helper methods for report generators.
  */
-/* package */ class ReportGeneratorHelper {
+/* package */ final class ReportGeneratorHelper {
 	private ReportGeneratorHelper() {
 	}
 

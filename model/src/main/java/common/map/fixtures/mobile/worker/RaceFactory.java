@@ -7,7 +7,7 @@ import java.util.Random;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class RaceFactory {
+public final class RaceFactory {
 	private RaceFactory() {
 	}
 

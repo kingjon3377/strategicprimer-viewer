@@ -15,7 +15,7 @@ import java.util.logging.Logger;
  * A class, formerly static within {@link ScrollListener}, to verify that
  * scroll inputs are within the valid range.
  */
-/* package */ class ScrollInputVerifier extends InputVerifier {
+/* package */ final class ScrollInputVerifier extends InputVerifier {
 	private static final Logger LOGGER = Logger.getLogger(ScrollInputVerifier.class.getName());
 	private final IntSupplier mapDimension;
 	private final String dimension;

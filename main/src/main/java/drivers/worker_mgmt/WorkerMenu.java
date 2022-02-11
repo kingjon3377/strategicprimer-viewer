@@ -9,7 +9,7 @@ import java.awt.Component;
 /**
  * A set of menus for the worker GUI (and other related apps).
  */
-public class WorkerMenu {
+public final class WorkerMenu {
 	private WorkerMenu() {}
 	/**
 	 * @param handler The broker that handles menu items, or arranges for them to be handled

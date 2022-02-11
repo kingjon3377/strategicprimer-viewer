@@ -206,7 +206,7 @@ public class TestExplorationRunner {
 	 * A mock object to make sure that tables other than {@link
 	 * QuadrantTable} do not use the map dimensions.
 	 */
-	private static class MockDimensions implements MapDimensions {
+	private static final class MockDimensions implements MapDimensions {
 		public static final MockDimensions INSTANCE = new MockDimensions();
 		private MockDimensions() {}
 		@Override

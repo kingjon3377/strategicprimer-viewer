@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
  * An object to help us present files with only as much of their paths as
  * necessary to uniquely identify them, without their shared prefix.
  */
-/* package */ class SuffixHelper {
+/* package */ final class SuffixHelper {
 	private SuffixHelper() {}
 	/**
 	 * Get the last {@link count} path elements in {@link file the given path}.

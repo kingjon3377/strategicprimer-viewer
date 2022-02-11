@@ -20,7 +20,7 @@ import drivers.common.cli.CLIHelper;
 
 import com.apple.eawt.Application;
 
-public class Main {
+public final class Main {
 	private static final Logger LOGGER = Logger.getLogger(Main.class.getName());
 	private Main() {}
 

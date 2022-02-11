@@ -4,7 +4,7 @@ import java.util.Collections;
 import java.util.Arrays;
 import java.util.List;
 
-/* package */ class LandRaces {
+/* package */ final class LandRaces {
 	private LandRaces() {}
 	/**
 	 * List of non-aquatic races.

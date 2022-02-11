@@ -3,7 +3,7 @@ package lovelace.util;
 import java.math.BigInteger;
 import java.math.BigDecimal;
 
-public class Decimalize {
+public final class Decimalize {
 	private Decimalize() {
 	}
 

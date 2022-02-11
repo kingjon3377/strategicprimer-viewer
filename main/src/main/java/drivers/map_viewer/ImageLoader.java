@@ -126,7 +126,7 @@ public final class ImageLoader {
 	/**
 	 * An encapsulation of the mapping from tile-types to colors.
 	 */
-	public static class ColorHelper {
+	public static final class ColorHelper {
 		private static final Logger LOGGER = Logger.getLogger(ColorHelper.class.getName());
 		private ColorHelper() {}
 		private static String wrap(final String wrapped) {
