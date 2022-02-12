@@ -44,7 +44,7 @@ public final class MiningCLI implements UtilityDriver {
 		}
 		final String filename = args[0];
 		final String second = args[1];
-		final long seed; // TODO: long instead?
+		final long seed;
 		if (options.hasOption("--seed")) {
 			try {
 				seed = Long.parseLong(options.getArgument("--seed"));
