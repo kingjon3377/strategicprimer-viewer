@@ -102,7 +102,7 @@ import common.xmlio.Warning;
 	}
 
 	private MobileFixture createAnimal(final StartElement element) throws SPFormatException {
-		final String tag = element.getName().getLocalPart().toLowerCase(); // TODO: drop toLowerCase if we can use equalsIgnoreCase() everywhere below
+		final String tag = element.getName().getLocalPart();
 		final String kind;
 		final boolean tracks;
 		if ("animal".equalsIgnoreCase(tag)) {
@@ -124,7 +124,7 @@ import common.xmlio.Warning;
 		} else {
 			warnFutureTag(element);
 			expectAttributes(element, "id", "count", "image");
-			kind = tag;
+			kind = tag.toLowerCase();
 			tracks = false;
 		}
 		if (tracks) {
