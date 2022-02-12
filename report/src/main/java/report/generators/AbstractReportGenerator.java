@@ -16,7 +16,6 @@ import java.util.function.Function;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Collection;
-import report.PairComparator;
 
 /**
  * An abstract superclass for classes that generate reports for particular
@@ -40,6 +39,10 @@ public abstract class AbstractReportGenerator<Type extends IFixture> implements 
 	 */
 	protected final Function<Point, String> distanceString;
 
+	private <First, Second> Comparator<Pair<First, Second>> pairComparator(Comparator<First> first, Comparator<Second> second) {
+		return Comparator.<Pair<First, Second>, First>comparing(Pair::getValue0, first)
+				.thenComparing(Pair::getValue1, second);
+	}
 	/**
 	 * TODO: Don't require callers to pss in mapDimensions if referencePoint is absent. (Split constructor.)
 	 *
@@ -55,14 +58,14 @@ public abstract class AbstractReportGenerator<Type extends IFixture> implements 
 		if (referencePoint == null) {
 			distComparator = (one, two) -> 0;
 			distanceString = (ignored) -> "unknown";
-			this.pairComparator = new PairComparator<>((one, two) -> 0,
+			this.pairComparator = pairComparator((one, two) -> 0,
 					Comparator.comparing(IFixture::hashCode));
 		} else {
 			final DistanceComparator distCalculator = new DistanceComparator(referencePoint,
 				mapDimensions);
 			distComparator = distCalculator;
 			distanceString = distCalculator::distanceString;
-			this.pairComparator = new PairComparator<>(new DistanceComparator(referencePoint, mapDimensions),
+			this.pairComparator = pairComparator(new DistanceComparator(referencePoint, mapDimensions),
 					Comparator.comparing(IFixture::hashCode));
 		}
 	}
