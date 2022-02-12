@@ -44,7 +44,8 @@ public class SubsetCLIFactory implements ModelDriverFactory {
 		if (model instanceof IMultiMapModel) {
 			return new SubsetCLI(cli, (IMultiMapModel) model);
 		} else {
-			LOGGER.warning("Subset checking does nothing with no subordinate maps"); // TODO: Should probably warn on the provided ICLIHelper
+			cli.println("Subset checking does nothing with no subordinate maps");
+			LOGGER.warning("Subset checking does nothing with no subordinate maps");
 			return createDriver(cli, options, new SimpleMultiMapModel(model));
 		}
 	}
