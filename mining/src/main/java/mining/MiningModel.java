@@ -1,5 +1,6 @@
 package mining;
 
+import drivers.common.cli.ICLIHelper;
 import org.javatuples.Pair;
 
 import java.util.List;
@@ -25,6 +26,8 @@ import java.util.stream.Collectors;
  * constructor can be <em>very</em> computationally expensive!
  *
  * TODO: Try to reduce type-parameter verbosity
+ *
+ * FIXME: Refactor so the "model" isn't the *code* that *does* the generation ...
  */
 /* package */ final class MiningModel {
 	/**
@@ -33,6 +36,8 @@ import java.util.stream.Collectors;
 	private final Map<Pair<Integer, Integer>, LodeStatus> unnormalized = new HashMap<>();
 
 	private final Random rng;
+
+	private final ICLIHelper cli;
 
 	private void unnormalizedSet(final Pair<Integer, Integer> loc, @Nullable final LodeStatus status) {
 		if (status == null) {
@@ -99,11 +104,12 @@ import java.util.stream.Collectors;
 	 * @param seed A number to seed the RNG
 	 * @param kind What kind of mine to model
 	 */
-	public MiningModel(final LodeStatus initial, final long seed, final MineKind kind) {
+	public MiningModel(final LodeStatus initial, final long seed, final MineKind kind, final ICLIHelper cli) {
 		unnormalized.put(Pair.with(0, 0), initial);
 		queue.offerLast(Pair.with(0, 0));
 		rng = new Random(seed);
 		verticalGenerator = (current) -> current.adjacent(rng::nextDouble);
+		this.cli = cli;
 
 		switch (kind) {
 		case Normal:
@@ -123,11 +129,10 @@ import java.util.stream.Collectors;
 			final Pair<Integer, Integer> point = queue.getFirst();
 			counter++;
 			if (counter % 100000L == 0L) {
-				System.out.println(String.format("(%d,%d)", point.getValue0(),
-					point.getValue1())); // TODO: Take ICLIHelper instead of using stdout
+				cli.println(String.format("(%d,%d)", point.getValue0(), point.getValue1()));
 			} else if (counter % 1000L == 0L) {
-				System.out.print(".");
-				System.out.flush();
+				cli.print(".");
+				System.out.flush(); // TODO: Either make ICLIHelper#print do this, or add a flush() method to interface
 			}
 			// Limit the size of the output spreadsheet.
 			if (Math.abs(point.getValue0()) > 200 || Math.abs(point.getValue1()) > 100) {
@@ -137,8 +142,8 @@ import java.util.stream.Collectors;
 				modelPoint(point.getValue0(), point.getValue1());
 			}
 		}
-		System.out.println();
-		System.out.printf("Pruned %d branches beyond our boundaries%n", pruneCounter);
+		cli.println();
+		cli.println(String.format("Pruned %d branches beyond our boundaries", pruneCounter)); // TODO: printf() once added to interface
 
 		// FIXME: What is this procedure (by-row and by-column)
 		// supposed to do? On porting back to Java it looks like it's

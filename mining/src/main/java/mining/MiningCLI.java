@@ -25,7 +25,7 @@ import java.nio.charset.Charset;
  */
 public final class MiningCLI implements UtilityDriver {
 	private final SPOptions options;
-	private final ICLIHelper cli; // TODO: Pass into "model" to report on (instead of just stdout)
+	private final ICLIHelper cli;
 
 	public MiningCLI(final ICLIHelper cli, final SPOptions options) {
 		this.cli = cli;
@@ -79,7 +79,7 @@ public final class MiningCLI implements UtilityDriver {
 			mineKind = MineKind.Normal;
 		}
 
-		final MiningModel model = new MiningModel(initial, seed, mineKind);
+		final MiningModel model = new MiningModel(initial, seed, mineKind, cli);
 		final int lowerRightRow = model.getMaximumRow();
 		final int lowerRightColumn = model.getMaximumColumn();
 
