@@ -41,7 +41,7 @@ public class SubsetCLIFactory implements ModelDriverFactory {
 
 	@Override
 	public ModelDriver createDriver(final ICLIHelper cli, final SPOptions options, final IDriverModel model) {
-		if (model instanceof IMultiMapModel) {
+		if (model instanceof IMultiMapModel && ((IMultiMapModel) model).streamSubordinateMaps().anyMatch(x -> true)) {
 			return new SubsetCLI(cli, (IMultiMapModel) model);
 		} else {
 			cli.println("Subset checking does nothing with no subordinate maps");
