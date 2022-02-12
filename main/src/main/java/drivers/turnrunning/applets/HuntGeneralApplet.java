@@ -23,8 +23,6 @@ import java.util.Iterator;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.logging.Logger;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 import org.javatuples.Pair;
 import org.jetbrains.annotations.Nullable;
 
@@ -39,7 +37,7 @@ import org.jetbrains.annotations.Nullable;
 	protected final String verb;
 
 	protected HuntGeneralApplet(final String verb, final ITurnRunningModel model, final ICLIHelper cli, final IDRegistrar idf) {
-		super(model, cli, idf);
+		super(model, cli);
 		huntingModel = new HuntingModel(model.getMap());
 		resourceAddingHelper = new ResourceAddingCLIHelper(cli, idf);
 		this.model = model;

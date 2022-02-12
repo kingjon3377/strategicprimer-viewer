@@ -94,7 +94,6 @@ public class QueryCLI implements ReadOnlyDriver {
 
 	private final ICLIHelper cli;
 	private final IMapNG map;
-	private final HuntingModel huntModel;
 
 	@Override
 	public SPOptions getOptions() {
@@ -105,7 +104,6 @@ public class QueryCLI implements ReadOnlyDriver {
 		this.cli = cli;
 		this.model = model;
 		map = model.getMap();
-		huntModel = new HuntingModel(map);
 		pather = PathfinderFactory.pathfinder(map);
 		appletChooser = new AppletChooser<>(cli,
 			new SimpleApplet(() -> fortressInfo(cli.inputPoint("Location of fortress?")),

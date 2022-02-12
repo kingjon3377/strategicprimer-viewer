@@ -54,12 +54,10 @@ import java.util.function.Consumer;
 	private static final Logger LOGGER = Logger.getLogger(WorkerCreationListener.class.getName());
 	public WorkerCreationListener(final IWorkerTreeModel model, final IDRegistrar factory) {
 		this.model = model;
-		this.factory = factory;
 		workerCreationFrame = new WorkerCreationFrame(factory, this::addNewWorker);
 	}
 
 	private final IWorkerTreeModel model;
-	private final IDRegistrar factory;
 
 	/**
 	 * The currently selected unit

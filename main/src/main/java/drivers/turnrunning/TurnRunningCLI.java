@@ -42,8 +42,8 @@ import org.javatuples.Pair;
 		appletChooser = new AppletChooser<>(cli,
 				StreamSupport.stream(ServiceLoader.load(TurnAppletFactory.class).spliterator(), false)
 						.map(factory -> factory.create(model, cli, idf)).toArray(TurnApplet[]::new));
-		consumptionApplet = new ConsumptionApplet(model, cli, idf);
-		spoilageApplet = new SpoilageApplet(model, cli, idf);
+		consumptionApplet = new ConsumptionApplet(model, cli);
+		spoilageApplet = new SpoilageApplet(model, cli);
 	}
 
 	private final ICLIHelper cli;

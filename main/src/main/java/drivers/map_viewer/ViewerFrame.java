@@ -72,16 +72,12 @@ public final class ViewerFrame extends SPFrame implements MapGUI {
 		return "Map Viewer";
 	}
 
-	private final ActionListener menuHandler;
-	private final ViewerDriver driver;
 	private final Function<IDriverModel, ViewerDriver> driverFactory;
 
 	public ViewerFrame(final IViewerModel model, final ActionListener menuListener, final ViewerDriver driver,
 	                   final Function<IDriverModel, ViewerDriver> driverFactory) {
 		super("Map Viewer", driver);
 		mapModel = model;
-		menuHandler = menuListener;
-		this.driver = driver;
 		this.driverFactory = driverFactory;
 		mapPanel = new MapComponent(mapModel, tableModel::shouldDisplay, tableModel);
 
@@ -108,9 +104,9 @@ public final class ViewerFrame extends SPFrame implements MapGUI {
 		addWindowListener(windowSizeListener);
 		addWindowStateListener(windowSizeListener);
 
-		setJMenuBar(SPMenu.forWindowContaining(mapPanel, SPMenu.createFileMenu(menuHandler, driver),
-			SPMenu.createMapMenu(menuHandler, driver),
-			SPMenu.createViewMenu(menuHandler, driver)));
+		setJMenuBar(SPMenu.forWindowContaining(mapPanel, SPMenu.createFileMenu(menuListener, driver),
+			SPMenu.createMapMenu(menuListener, driver),
+			SPMenu.createViewMenu(menuListener, driver)));
 	}
 
 	private void acceptDroppedFileImpl(final Path file) {

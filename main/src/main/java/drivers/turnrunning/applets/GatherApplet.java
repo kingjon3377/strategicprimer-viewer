@@ -13,7 +13,6 @@ import drivers.resourceadding.ResourceAddingCLIHelper;
 import drivers.turnrunning.ITurnRunningModel;
 import exploration.common.HuntingModel;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Supplier;
@@ -22,17 +21,15 @@ import org.jetbrains.annotations.Nullable;
 
 /* package */ class GatherApplet extends AbstractTurnApplet {
 	public GatherApplet(final ITurnRunningModel model, final ICLIHelper cli, final IDRegistrar idf) {
-		super(model, cli, idf);
+		super(model, cli);
 		this.model = model;
 		this.cli = cli;
-		this.idf = idf;
 		huntingModel = new HuntingModel(model.getMap());
 		resourceAddingHelper = new ResourceAddingCLIHelper(cli, idf);
 	}
 
 	private final ITurnRunningModel model;
 	private final ICLIHelper cli;
-	private final IDRegistrar idf;
 	private final HuntingModel huntingModel;
 	private final ResourceAddingCLIHelper resourceAddingHelper;
 

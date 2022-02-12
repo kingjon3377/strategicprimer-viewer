@@ -27,15 +27,13 @@ import org.jetbrains.annotations.Nullable;
 
 // TODO: Most of these 'default' functions should probably go into a 'TurnRunningModel' interface
 public abstract class AbstractTurnApplet implements TurnApplet {
-	protected AbstractTurnApplet(final ITurnRunningModel model, final ICLIHelper cli, final IDRegistrar idf) {
+	protected AbstractTurnApplet(final ITurnRunningModel model, final ICLIHelper cli) {
 		this.model = model;
 		this.cli = cli;
-		this.idf = idf;
 	}
 
 	private final ITurnRunningModel model;
 	private final ICLIHelper cli;
-	private final IDRegistrar idf;
 
 	// This was "shared" in Ceylon, but I expect only subclasses will be able to use it.
 	protected <Type> @Nullable Type chooseFromList(final List<Type> items, final String description, final String none,

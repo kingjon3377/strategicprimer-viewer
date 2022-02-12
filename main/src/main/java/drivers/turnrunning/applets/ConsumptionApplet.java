@@ -24,13 +24,11 @@ import org.jetbrains.annotations.Nullable;
 public class ConsumptionApplet extends AbstractTurnApplet {
 	private final ITurnRunningModel model;
 	private final ICLIHelper cli;
-	private final IDRegistrar idf;
 
-	public ConsumptionApplet(final ITurnRunningModel model, final ICLIHelper cli, final IDRegistrar idf) {
-		super(model, cli, idf);
+	public ConsumptionApplet(final ITurnRunningModel model, final ICLIHelper cli) {
+		super(model, cli);
 		this.model = model;
 		this.cli = cli;
-		this.idf = idf;
 		turn = model.getMap().getCurrentTurn();
 		unit = model.getSelectedUnit();
 	}

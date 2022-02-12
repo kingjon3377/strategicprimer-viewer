@@ -18,18 +18,16 @@ public class SpoilageApplet extends AbstractTurnApplet {
 	 */
 	private static final Logger LOGGER = Logger.getLogger(SpoilageApplet.class.getName());
 
-	public SpoilageApplet(final ITurnRunningModel model, final ICLIHelper cli, final IDRegistrar idf) {
-		super(model, cli, idf);
+	public SpoilageApplet(final ITurnRunningModel model, final ICLIHelper cli) {
+		super(model, cli);
 		this.model = model;
 		this.cli = cli;
-		this.idf = idf;
 		owner = model.getMap().getCurrentPlayer();
 		turn = model.getMap().getCurrentTurn();
 	}
 
 	private final ITurnRunningModel model;
 	private final ICLIHelper cli;
-	private final IDRegistrar idf;
 
 	private Player owner;
 

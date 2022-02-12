@@ -57,20 +57,14 @@ import drivers.worker_mgmt.orderspanel.OrdersPanel;
  */
 /* package */ class WorkerMgmtFrame extends SPFrame implements PlayerChangeListener {
 	private static final Logger LOGGER = Logger.getLogger(WorkerMgmtFrame.class.getName());
-	private final SPOptions options;
 	private final IWorkerModel model;
-	private final MenuBroker menuHandler;
-	private final WorkerMgmtGUI driver;
 	private final WorkerTree tree;
 
 	public WorkerMgmtFrame(final SPOptions options, final IWorkerModel model, final MenuBroker menuHandler,
 	                       final WorkerMgmtGUI driver) {
 		super("Worker Management", driver, new Dimension(640, 480), true,
 			(file) -> model.addSubordinateMap(MapIOHelper.readMap(file)));
-		this.options = options;
 		this.model = model;
-		this.menuHandler = menuHandler;
-		this.driver = driver;
 		mainMap = model.getMap();
 		final IDRegistrar idf = new IDFactoryFiller().createIDFactory(model.streamAllMaps()
 				.toArray(IMapNG[]::new));

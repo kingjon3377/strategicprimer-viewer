@@ -21,7 +21,7 @@ import static lovelace.util.Decimalize.decimalize;
 	private final IDRegistrar idf;
 
 	public PreservationApplet(final ITurnRunningModel model, final ICLIHelper cli, final IDRegistrar idf) {
-		super(model, cli, idf);
+		super(model, cli);
 		this.model = model;
 		this.cli = cli;
 		this.idf = idf;

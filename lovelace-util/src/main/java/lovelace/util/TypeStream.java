@@ -25,14 +25,12 @@ public class TypeStream implements Iterable<Class<?>> {
 	}
 
 	private static class TypeIterator implements Iterator<Class<?>> {
-		private final Object obj;
 		private final LinkedList<Class<?>> ourCopy;
 		private final List<Class<?>> cache;
 		private final Set<Class<?>> classes = new HashSet<>();
 		private final Queue<Class<?>> queue = new LinkedList<>();
 
 		public TypeIterator(final Object obj, final List<Class<?>> cache) {
-			this.obj = obj;
 			this.cache = cache;
 			ourCopy = new LinkedList<>(cache);
 			queue.add(obj.getClass());

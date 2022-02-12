@@ -25,7 +25,7 @@ import java.nio.charset.Charset;
  */
 public final class MiningCLI implements UtilityDriver {
 	private final SPOptions options;
-	private final ICLIHelper cli;
+	private final ICLIHelper cli; // TODO: Pass into "model" to report on (instead of just stdout)
 
 	public MiningCLI(final ICLIHelper cli, final SPOptions options) {
 		this.cli = cli;

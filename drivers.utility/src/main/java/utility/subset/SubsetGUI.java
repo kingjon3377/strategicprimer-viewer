@@ -32,8 +32,7 @@ import org.eclipse.jdt.annotation.Nullable;
  * TODO: Unify with {@link SubsetCLI}, like the map-checker GUI
  */
 public class SubsetGUI implements UtilityGUI {
-	public SubsetGUI(final ICLIHelper cli, final SPOptions options) {
-		this.cli = cli;
+	public SubsetGUI(final SPOptions options) {
 		this.options = options;
 		frame = new SubsetFrame(this);
 		frame.setJMenuBar(SPMenu.forWindowContaining(frame.getContentPane(),
@@ -43,7 +42,6 @@ public class SubsetGUI implements UtilityGUI {
 		frame.addWindowListener(new WindowCloseListener(ignored -> frame.dispose()));
 	}
 
-	private final ICLIHelper cli;
 	private final SPOptions options;
 
 	@Override

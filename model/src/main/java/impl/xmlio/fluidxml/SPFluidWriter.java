@@ -96,8 +96,6 @@ public class SPFluidWriter implements SPWriter {
 	// Note Ceylon regex was 'global', matching all rather than just the first
 	private static final Pattern SNUG_END_TAG = Pattern.compile("([^ ])/>");
 
-	private static int currentTurn = -1;
-
 	private void writeSPObjectImpl(final XMLStreamWriter ostream, final Object obj, final int indentation)
 			throws MalformedXMLException {
 		for (final Class<?> type : new TypeStream(obj)) {
@@ -275,7 +273,6 @@ public class SPFluidWriter implements SPWriter {
 		writeTag(ostream, "view", indentation, false);
 		writeAttributes(ostream, Pair.with("current_player", obj.getCurrentPlayer().getPlayerId()),
 			Pair.with("current_turn", obj.getCurrentTurn()));
-		currentTurn = obj.getCurrentTurn();
 		writeTag(ostream, "map", indentation + 1, false);
 		final MapDimensions dimensions = obj.getDimensions();
 		writeAttributes(ostream, Pair.with("version", dimensions.getVersion()),

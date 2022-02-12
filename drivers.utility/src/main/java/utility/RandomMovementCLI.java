@@ -27,7 +27,7 @@ import java.util.Random;
 		this.model = model;
 	}
 
-	private final ICLIHelper cli;
+	private final ICLIHelper cli; // TODO Add listener to report movement players would notice
 
 	private final IExplorationModel model;
 

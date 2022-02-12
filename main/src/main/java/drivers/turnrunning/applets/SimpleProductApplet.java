@@ -20,18 +20,16 @@ import org.jetbrains.annotations.Nullable;
 	private final String description;
 	private final ITurnRunningModel model;
 	private final ICLIHelper cli;
-	private final IDRegistrar idf;
 	private final ResourceAddingCLIHelper raHelper;
 
 	public SimpleProductApplet(final String name, final String description, final ITurnRunningModel model, final ICLIHelper cli,
 	                           final IDRegistrar idf) {
-		super(model, cli, idf);
+		super(model, cli);
 		this.name = name;
 		commands = Collections.singletonList(name);
 		this.description = description;
 		this.model = model;
 		this.cli = cli;
-		this.idf = idf;
 		raHelper = new ResourceAddingCLIHelper(cli, idf);
 	}
 

@@ -21,13 +21,11 @@ import drivers.common.cli.ICLIHelper;
  * FIXME: Write GUI for map-expanding driver
  */
 public class ExpansionDriver implements CLIDriver {
-	public ExpansionDriver(final ICLIHelper cli, final SPOptions options, final UtilityDriverModel model) {
-		this.cli = cli;
+	public ExpansionDriver(final SPOptions options, final UtilityDriverModel model) {
 		this.options = options;
 		this.model = model;
 	}
 
-	private final ICLIHelper cli;
 	private final SPOptions options;
 	private final UtilityDriverModel model;
 

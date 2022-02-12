@@ -32,7 +32,7 @@ import org.jetbrains.annotations.Nullable;
 	private final IDRegistrar idf;
 
 	public WoodcuttingApplet(final ITurnRunningModel model, final ICLIHelper cli, final IDRegistrar idf) {
-		super(model, cli, idf);
+		super(model, cli);
 		this.model = model;
 		this.cli = cli;
 		this.idf = idf;

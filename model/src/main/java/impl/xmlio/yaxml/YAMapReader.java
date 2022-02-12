@@ -79,9 +79,6 @@ import java.util.function.Predicate;
 
 	private final IMutablePlayerCollection players; // TODO: IPlayerCollection instead?
 
-	// TODO: Use the one in the Animal maturityModel instead of here?
-	private static int currentTurn = -1;
-
 	/**
 	 * The reader for players
 	 */
@@ -407,7 +404,6 @@ import java.util.function.Predicate;
 		writeTag(ostream, "view", tabs);
 		writeProperty(ostream, "current_player", obj.getCurrentPlayer().getPlayerId());
 		writeProperty(ostream, "current_turn", obj.getCurrentTurn());
-		currentTurn = obj.getCurrentTurn();
 		finishParentTag(ostream);
 		writeTag(ostream, "map", tabs + 1);
 		final MapDimensions dimensions = obj.getDimensions();

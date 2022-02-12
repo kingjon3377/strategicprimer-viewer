@@ -9,7 +9,6 @@ import drivers.common.cli.ICLIHelper;
 import drivers.exploration.ExplorationCLIHelper;
 import drivers.turnrunning.ITurnRunningModel;
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -19,7 +18,7 @@ import static lovelace.util.Decimalize.decimalize;
 
 /* package */ class MovementApplet extends AbstractTurnApplet {
 	public MovementApplet(final ITurnRunningModel model, final ICLIHelper cli, final IDRegistrar idf) {
-		super(model, cli, idf);
+		super(model, cli);
 		this.model = model;
 		this.cli = cli;
 		this.idf = idf;

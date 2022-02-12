@@ -50,14 +50,12 @@ import org.eclipse.jdt.annotation.Nullable;
 	private final SimpleCardLayout layoutObj;
 	private final JList<Player> playerList;
 	private final IExplorationGUI driver;
-	private final MenuBroker menuHandler;
 	private final UnitListModel unitListModel;
 	private final JList<IUnit> unitList;
 
 	public ExplorationFrame(final IExplorationGUI driver, final MenuBroker menuHandler) {
 		super("Exploration", driver, new Dimension(768, 48), true);
 		this.driver = driver;
-		this.menuHandler = menuHandler;
 
 		layoutObj = new SimpleCardLayout(getContentPane());
 		setLayout(layoutObj);

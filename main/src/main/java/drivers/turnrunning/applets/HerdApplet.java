@@ -18,7 +18,6 @@ import java.util.function.Consumer;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import org.javatuples.Pair;
 import org.jetbrains.annotations.Nullable;
 import query.HerdModel;
 import query.MammalModel;
@@ -28,7 +27,7 @@ import query.SmallAnimalModel;
 /* package */ class HerdApplet extends AbstractTurnApplet {
 	private static final Logger LOGGER = Logger.getLogger(HerdApplet.class.getName());
 	public HerdApplet(final ITurnRunningModel model, final ICLIHelper cli, final IDRegistrar idf) {
-		super(model, cli, idf);
+		super(model, cli);
 		this.model = model;
 		this.cli = cli;
 		this.idf = idf;
