@@ -22,6 +22,8 @@ import java.nio.charset.MalformedInputException;
  * the object this wraps. If the provided reader is {@link Closeable}, we call
  * its {@code close} method before flipping {@link hasNext} to false.
  * Callers can also pass in additional methods to call at that point.
+ *
+ * N.B. in Java we don't take and implement {@link AutoCloseable} because that would require us to declare 'throws exception'.
  */
 public class TypesafeXMLEventReader implements Iterator<XMLEvent>, Closeable {
 	private final XMLEventReader wrapped;
@@ -30,7 +32,7 @@ public class TypesafeXMLEventReader implements Iterator<XMLEvent>, Closeable {
 
 	public TypesafeXMLEventReader (final XMLEventReader reader, final Closeable... closeMethods) {
 		wrapped = reader;
-		if (reader instanceof Closeable) { // TODO: AutoCloseable instead?
+		if (reader instanceof Closeable) {
 			closeHandles.add((Closeable) reader);
 		}
 		for (final Closeable method : closeMethods) {
