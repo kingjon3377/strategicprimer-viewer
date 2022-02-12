@@ -1,5 +1,6 @@
 package utility.subset;
 
+import drivers.common.DriverFailedException;
 import lovelace.util.MissingFileException;
 import java.util.logging.Level;
 import java.nio.file.NoSuchFileException;
@@ -97,30 +98,28 @@ import java.util.logging.Logger;
 		}
 	}
 
-	// FIXME: Do the wrapping-to-DriverFailedException operation here to limit "throws" declaration
-	public void loadMain(final Path arg) throws MissingFileException, NoSuchFileException,
-			FileNotFoundException, MalformedXMLException, SPFormatException, IOException {
+	public void loadMain(final Path arg) throws DriverFailedException {
 		try {
 			mainMap = MapIOHelper.readMap(arg, Warning.IGNORE);
 		} catch (final MissingFileException|NoSuchFileException|FileNotFoundException except) {
 			printParagraph(String.format("File %s not found", arg), LabelTextColor.RED);
-			throw except;
+			throw new DriverFailedException(except, String.format("File %s not found", arg));
 		} catch (final MalformedXMLException except) {
 			printParagraph(String.format(
 				"ERROR: Malformed XML in %s; see following error message for details", arg),
 				LabelTextColor.RED);
 			printParagraph(except.getMessage(), LabelTextColor.RED);
-			throw except;
+			throw new DriverFailedException(except, "Malformed XML in main map " + arg);
 		} catch (final SPFormatException except) {
 			printParagraph(String.format(
 					"ERROR: SP map format error at line %d in file %s; see following error message for details",
 					except.getLine(), arg),
 				LabelTextColor.RED);
 			printParagraph(except.getMessage(), LabelTextColor.RED);
-			throw except;
+			throw new DriverFailedException(except, "Invalid SP XML in main  map " + arg);
 		} catch (final IOException except) {
 			printParagraph("ERROR: I/O error reading file " + arg, LabelTextColor.RED);
-			throw except;
+			throw new DriverFailedException(except, "I/O error loading main map " + arg);
 		}
 		printParagraph("<span style=\"color:green\">OK</span> if strict subset, " +
 					"<span style=\"color:yellow\">WARN</span> if apparently not (but " +

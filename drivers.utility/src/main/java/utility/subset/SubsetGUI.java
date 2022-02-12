@@ -60,17 +60,8 @@ public class SubsetGUI implements UtilityGUI {
 		}
 		SwingUtilities.invokeLater(frame::showWindow);
 		final String first = args[0];
-		try { // Errors are reported via the GUI in loadMain(), then rethrown.
-			frame.loadMain(Paths.get(first));
-		} catch (final MissingFileException|NoSuchFileException|FileNotFoundException except) {
-			throw new DriverFailedException(except, String.format("File %s not found", first));
-		} catch (final IOException except) {
-			throw new DriverFailedException(except, "I/O error loading main map " + first);
-		} catch (final MalformedXMLException except) {
-			throw new DriverFailedException(except, "Malformed XML in main map " + first);
-		} catch (final SPFormatException except) {
-			throw new DriverFailedException(except, "Invalid SP XML in main  map " + first);
-		}
+		// Errors are reported via the GUI in loadMain(), then rethrown.
+		frame.loadMain(Paths.get(first));
 		Stream.of(args).skip(1).map(Paths::get).forEach(frame::testFile);
 	}
 
