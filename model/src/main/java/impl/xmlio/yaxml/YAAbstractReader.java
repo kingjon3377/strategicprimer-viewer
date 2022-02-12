@@ -1,5 +1,6 @@
 package impl.xmlio.yaxml;
 
+import java.util.Collection;
 import org.jetbrains.annotations.Nullable;
 
 import org.javatuples.Pair;
@@ -89,6 +90,21 @@ abstract class YAAbstractReader<Item, Value> implements YAReader<Item, Value> {
 		}
 	}
 
+	/**
+	 * Require that an element be one of the specified tags.
+	 */
+	protected static void requireTag(final StartElement element, final QName parent, final Collection<String> tags)
+			throws SPFormatException {
+		if (!isSupportedNamespace(element.getName())) {
+			throw UnwantedChildException.unexpectedNamespace(parent, element);
+		}
+		final String elementTag = element.getName().getLocalPart();
+		if (tags.stream().noneMatch(elementTag::equalsIgnoreCase)) {
+			// While we'd like tests to exercise this, we're always careful to only call
+			// readers when we know they support the tag ...
+			throw UnwantedChildException.listingExpectedTags(parent, element, tags);
+		}
+	}
 	/**
 	 * Create a {@link QName} for the given tag in our namespace.
 	 */

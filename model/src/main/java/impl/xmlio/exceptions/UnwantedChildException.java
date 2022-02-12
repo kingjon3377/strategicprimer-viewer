@@ -2,6 +2,8 @@ package impl.xmlio.exceptions;
 
 import common.xmlio.SPFormatException;
 
+import java.util.Collection;
+import java.util.stream.Collectors;
 import javax.xml.namespace.QName;
 import javax.xml.stream.Location;
 import javax.xml.stream.events.StartElement;
@@ -87,11 +89,32 @@ public class UnwantedChildException extends SPFormatException {
 
 	/**
 	 * Where the caller asserted that a tag was one of a specified list.
+	 */
+	private UnwantedChildException(final QName parent, final StartElement child, final Collection<String> expected) {
+		super(String.format("Unexpected child %s in tag %s, expecting one of the following: %s",
+						child.getName().getLocalPart(), parent.getLocalPart(),
+						expected.stream().collect(Collectors.joining(", "))),
+				child.getLocation().getLineNumber(), child.getLocation().getColumnNumber());
+		tag = parent;
+		this.child = child.getName();
+	}
+	/**
+	 * Where the caller asserted that a tag was one of a specified list.
 	 * @param parent the current tag
 	 * @param child the unwanted child
 	 * @param expected what could have appeared here without triggering the error
 	 */
 	public static UnwantedChildException listingExpectedTags(final QName parent, final StartElement child, final String... expected) {
+		return new UnwantedChildException(parent, child, expected);
+	}
+
+	/**
+	 * Where the caller asserted that a tag was one of a specified list.
+	 * @param parent the current tag
+	 * @param child the unwanted child
+	 * @param expected what could have appeared here without triggering the error
+	 */
+	public static UnwantedChildException listingExpectedTags(final QName parent, final StartElement child, final Collection<String> expected) {
 		return new UnwantedChildException(parent, child, expected);
 	}
 

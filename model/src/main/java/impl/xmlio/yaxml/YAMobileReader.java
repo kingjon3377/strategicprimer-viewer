@@ -170,7 +170,7 @@ import common.xmlio.Warning;
 	@Override
 	public MobileFixture read(final StartElement element, final QName parent, final Iterable<XMLEvent> stream)
 			throws SPFormatException {
-		requireTag(element, parent, SUPPORTED_TAGS.toArray(new String[0]));
+		requireTag(element, parent, SUPPORTED_TAGS);
 		final MobileFixture retval;
 		switch (element.getName().getLocalPart().toLowerCase()) {
 		case "animal":
