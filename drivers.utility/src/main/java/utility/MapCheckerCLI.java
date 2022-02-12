@@ -2,6 +2,7 @@ package utility;
 
 import common.map.fixtures.towns.CommunityStats;
 import common.map.fixtures.FixtureIterable;
+import common.map.fixtures.towns.TownSize;
 import java.util.Arrays;
 import common.map.TileFixture;
 import java.util.Collection;
@@ -246,6 +247,18 @@ public class MapCheckerCLI implements UtilityDriver {
 		return item.getAcres().doubleValue() > 0.0;
 	}
 
+	private static double townAcreage(TownSize size) {
+		switch (size) {
+			case Small:
+				return 15.0;
+			case Medium:
+				return 40.0;
+			case Large:
+				return 80.0;
+			default:
+				throw new IllegalStateException("Exhaustive switch wasn't");
+		}
+	}
 	private static boolean acreageChecker(final Point context, final Warning warner,
 	                                      final Collection<? extends IFixture> fixtures) {
 		final boolean retval = false;
@@ -256,23 +269,8 @@ public class MapCheckerCLI implements UtilityDriver {
 				"More explicit acres (%.1f) than tile should allow", total)));
 			return true;
 		}
-		for (final ITownFixture fixture : fixtures.stream()
-				.filter(ITownFixture.class::isInstance).map(ITownFixture.class::cast)
-				.collect(Collectors.toList())) { // TODO: try to avoid collector
-			switch (fixture.getTownSize()) {
-			case Small:
-				total += 15;
-				break;
-			case Medium:
-				total += 40;
-				break;
-			case Large:
-				total += 80;
-				break;
-			default:
-				throw new IllegalStateException("Exhaustive switch wasn't");
-			}
-		}
+		total += fixtures.stream().filter(ITownFixture.class::isInstance).map(ITownFixture.class::cast)
+				.map(ITownFixture::getTownSize).mapToDouble(MapCheckerCLI::townAcreage).sum();
 		total += (fixtures.stream()
 			.filter(Grove.class::isInstance).map(Grove.class::cast)
 			.mapToInt(Grove::getPopulation).filter(p -> p > 0).sum() / 500.0);
