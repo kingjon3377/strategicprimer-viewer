@@ -1,5 +1,7 @@
 package lovelace.util;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import org.jetbrains.annotations.Nullable;
 import java.lang.reflect.InvocationTargetException;
 import javax.swing.SwingUtilities;
@@ -330,10 +332,9 @@ public class FileChooser {
 
 	/**
 	 * Set the stored file(s) to the given Iterable.
-	 * TODO: Take Collection
 	 */
-	public void setFiles(final Iterable<Path> files) {
-		storedFile = StreamSupport.stream(files.spliterator(), false).collect(Collectors.toList());
+	public void setFiles(final Collection<Path> files) {
+		storedFile = new ArrayList<>(files);
 	}
 
 	/**
