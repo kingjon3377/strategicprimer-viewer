@@ -80,14 +80,6 @@ public final class ReportGenerator {
 		final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures =
 			ReportGeneratorHelper.getFixtures(map);
 		@Nullable final Point hq = ReportGeneratorHelper.findHQ(map, player);
-		final Comparator<Pair<Point, IFixture>> comparator;
-		if (hq == null) {
-			comparator = new PairComparator<>(ReportGenerator::compareToEqual,
-				Comparator.comparing(IFixture::hashCode));
-		} else {
-			comparator = new PairComparator<>(new DistanceComparator(hq, dimensions),
-				Comparator.comparing(IFixture::hashCode));
-		}
 		final int currentTurn = map.getCurrentTurn();
 		createSubReports(builder, fixtures, map, player,
 			new FortressReportGenerator(player, dimensions, currentTurn, hq),
