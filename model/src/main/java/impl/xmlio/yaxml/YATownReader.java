@@ -109,17 +109,17 @@ import java.util.logging.Logger;
 					isSupportedNamespace(((StartElement) event).getName())) {
 				switch (((StartElement) event).getName().getLocalPart().toLowerCase()) {
 				case "expertise":
-					if (current != null) { // FIXME: Swap if/else in these cases
-						throw UnwantedChildException.listingExpectedTags(
-							stack.peekFirst().getName(), (StartElement) event,
-								expectedCommunityStatsTags(current).toArray(new String[0]));
-					} else {
+					if (current == null) {
 						expectAttributes((StartElement) event, "skill", "level");
 						retval.setSkillLevel(getParameter((StartElement) event,
 								"skill"),
 							getIntegerParameter((StartElement) event, "level"));
 						stack.addFirst((StartElement) event);
 						current = ((StartElement) event).getName().getLocalPart();
+					} else {
+						throw UnwantedChildException.listingExpectedTags(
+							stack.peekFirst().getName(), (StartElement) event,
+								expectedCommunityStatsTags(current).toArray(new String[0]));
 					}
 					break;
 				case "claim":
