@@ -391,11 +391,6 @@ import java.util.function.Predicate;
 			readers.size(), cls.getName()));
 	}
 
-	// FIXME: Probably remove, as we won't use in the Java port
-	private boolean validPoint(final Map.Entry<Point, TileFixture> entry) {
-		return entry.getKey().isValid();
-	}
-
 	/**
 	 * Write a map.
 	 */
