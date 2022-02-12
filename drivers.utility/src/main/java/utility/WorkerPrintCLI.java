@@ -3,6 +3,7 @@ package utility;
 import common.map.Player;
 import common.map.fixtures.UnitMember;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.stream.StreamSupport;
 import java.util.stream.IntStream;
 import java.util.stream.Collectors;
@@ -76,16 +77,18 @@ import java.util.Arrays;
 
 			final WorkerStats stats = worker.getStats();
 			if (stats != null) {
-				final List<String> statsArray = IntStream.of(stats.array())
-					.mapToObj(WorkerStats::getModifierString)
-					.collect(Collectors.toList());
-				cli.print(" [");
-				// TODO: convert to iterator-based loop?
-				for (int i = 0; i < statLabelArray.size() && i < statsArray.size(); i++) {
-					if (i != 0) {
+				final Iterator<String> statsIterator = IntStream.of(stats.array())
+						.mapToObj(WorkerStats::getModifierString).iterator();
+				final Iterator<String> labelIterator = statLabelArray.iterator();
+				boolean first = true;
+				while (labelIterator.hasNext() && statsIterator.hasNext()) {
+					if (first) {
+						cli.print(" [");
+						first = false;
+					} else {
 						cli.print(", ");
 					}
-					cli.print(statLabelArray.get(i), " ", statsArray.get(i));
+					cli.print(labelIterator.next(), " ", statsIterator.next());
 				}
 				cli.print("]");
 			}
