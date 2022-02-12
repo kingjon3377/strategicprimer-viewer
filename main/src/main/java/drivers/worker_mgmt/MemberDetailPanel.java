@@ -55,7 +55,9 @@ public class MemberDetailPanel extends BorderedPanel implements UnitMemberListen
 	private static final Logger LOGGER = Logger.getLogger(MemberDetailPanel.class.getName());
 	public MemberDetailPanel(final JPanel resultsPanel, final JPanel notesPanel) { // TODO: Move initialization of those into here?
 		final JPanel statPanel = new JPanel();
-		final FunctionalGroupLayout statLayout = new FunctionalGroupLayout(statPanel, true, true);
+		final FunctionalGroupLayout statLayout = new FunctionalGroupLayout(statPanel,
+				FunctionalGroupLayout.ContainerGaps.AUTO_CREATE_GAPS,
+				FunctionalGroupLayout.ContainerGaps.AUTO_CREATE_GAPS);
 		statPanel.setLayout(statLayout);
 		statPanel.setBorder(BorderFactory.createEmptyBorder());
 

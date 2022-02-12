@@ -10,6 +10,10 @@ import java.awt.Container;
  * initialization less verbose and more functional in style.
  */
 public final class FunctionalGroupLayout extends GroupLayout {
+	public enum ContainerGaps {
+		AUTO_CREATE_GAPS,
+		FLUSH
+	}
 	/**
 	 * Add components and/or groups to a group. Var-arg arguments ({@link
 	 * components}) must be either {@link Component} or {@link Group}
@@ -57,14 +61,12 @@ public final class FunctionalGroupLayout extends GroupLayout {
 	 * @param autoCreateGaps Whether to automatically create gaps between components.
 	 * @param autoCreateContainerGaps Whether to automatically create gaps
 	 * between components at an edge of the container and that edge.
-	 *
-	 * TODO: Create an enum for the configuration, so we don't have to take Boolean constructor parameters.
 	 */
-	public FunctionalGroupLayout(final Container host, final boolean autoCreateGaps,
-	                             final boolean autoCreateContainerGaps) {
+	public FunctionalGroupLayout(final Container host, final ContainerGaps autoCreateGaps,
+	                             ContainerGaps autoCreateContainerGaps) {
 		super(host);
-		super.setAutoCreateGaps(autoCreateGaps);
-		super.setAutoCreateContainerGaps(autoCreateContainerGaps);
+		super.setAutoCreateGaps(autoCreateGaps == ContainerGaps.AUTO_CREATE_GAPS);
+		super.setAutoCreateContainerGaps(autoCreateContainerGaps == ContainerGaps.AUTO_CREATE_GAPS);
 	}
 
 	/**
@@ -72,8 +74,8 @@ public final class FunctionalGroupLayout extends GroupLayout {
 	 * @param host The container to lay out.
 	 * @param autoCreateGaps Whether to automatically create gaps between components.
 	 */
-	public FunctionalGroupLayout(final Container host, final boolean autoCreateGaps) {
-		this(host, autoCreateGaps, false);
+	public FunctionalGroupLayout(final Container host, final ContainerGaps autoCreateGaps) {
+		this(host, autoCreateGaps, ContainerGaps.FLUSH);
 	}
 
 	/**
@@ -81,6 +83,6 @@ public final class FunctionalGroupLayout extends GroupLayout {
 	 * @param host The container to lay out.
 	 */
 	public FunctionalGroupLayout(final Container host) {
-		this(host, false);
+		this(host, ContainerGaps.FLUSH);
 	}
 }
