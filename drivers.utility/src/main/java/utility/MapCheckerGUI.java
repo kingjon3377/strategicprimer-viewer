@@ -18,35 +18,31 @@ import org.eclipse.jdt.annotation.Nullable;
  * A driver to check every map file in a list for errors and report the results in a window.
  */
 public class MapCheckerGUI implements UtilityGUI {
-	@Nullable
-	private MapCheckerFrame window; // FIXME: Initialize this more safely now we're not working around Ceylon's 'this' restrictions
+	public MapCheckerGUI() {
+		window = new MapCheckerFrame(this);
+		window.setJMenuBar(SPMenu.forWindowContaining(window.getContentPane(),
+				SPMenu.createFileMenu(
+						new UtilityMenuHandler(this, window)::handleEvent, this),
+				SPMenu.disabledMenu(SPMenu.createMapMenu(MapCheckerGUI::noop, this)),
+				SPMenu.disabledMenu(SPMenu.createViewMenu(MapCheckerGUI::noop, this))));
+		window.addWindowListener(new WindowCloseListener(arg -> window.dispose()));
+	}
+	private final MapCheckerFrame window;
 	@Override
 	public SPOptions getOptions() {
 		return EmptyOptions.EMPTY_OPTIONS;
 	}
 
-	private boolean initialized = false;
-
 	private static final <T> void noop(final T t) {}
 
 	@Override
 	public void startDriver(final String... args) {
-		if (!initialized || window == null) {
-			initialized = true;
-			window = new MapCheckerFrame(this);
-			window.setJMenuBar(SPMenu.forWindowContaining(window.getContentPane(),
-				SPMenu.createFileMenu(
-					new UtilityMenuHandler(this, window)::handleEvent, this),
-				SPMenu.disabledMenu(SPMenu.createMapMenu(MapCheckerGUI::noop, this)),
-				SPMenu.disabledMenu(SPMenu.createViewMenu(MapCheckerGUI::noop, this))));
-			window.addWindowListener(new WindowCloseListener(arg -> window.dispose()));
-		}
 		window.showWindow();
 		Stream.of(args).filter(Objects::nonNull).map(Paths::get).forEach(window::check);
 	}
 
 	@Override
 	public void open(final Path path) {
-		Optional.ofNullable(window).ifPresent(w -> w.check(path));
+		window.check(path);
 	}
 }
