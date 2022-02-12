@@ -2,6 +2,7 @@ package utility;
 
 import java.util.Collection;
 import java.util.stream.Stream;
+import lovelace.util.Decimalize;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Map;
@@ -97,18 +98,6 @@ public class DuplicateFixtureRemoverCLI implements CLIDriver {
 			.orElseThrow(() -> new IllegalArgumentException("Can't combine an empty list"));
 	}
 
-	// FIXME Move to lovelace.util
-	private static BigDecimal decimalize(final Number number) {
-		if (number instanceof Integer || number instanceof Long
-				|| number instanceof Short || number instanceof Byte) {
-			return BigDecimal.valueOf(number.longValue());
-		} else if (number instanceof BigDecimal) {
-			return (BigDecimal) number;
-		} else {
-			return BigDecimal.valueOf(number.doubleValue());
-		}
-	}
-
 	/**
 	 * Combine like resources into a single resource pile. We assume that
 	 * all resources have the same kind, contents, units, and created
@@ -121,7 +110,7 @@ public class DuplicateFixtureRemoverCLI implements CLIDriver {
 		final IResourcePile top = list[0];
 		final IMutableResourcePile combined = new ResourcePileImpl(top.getId(), top.getKind(),
 			top.getContents(), new Quantity(Stream.of(list).map(IResourcePile::getQuantity)
-				.map(Quantity::getNumber).map(DuplicateFixtureRemoverCLI::decimalize)
+				.map(Quantity::getNumber).map(Decimalize::decimalize)
 				.reduce(BigDecimal.ZERO, BigDecimal::add), top.getQuantity().getUnits()));
 		combined.setCreated(top.getCreated());
 		return combined;

@@ -18,10 +18,9 @@ public final class Decimalize {
 			return (BigDecimal) number;
 		} else if (number instanceof BigInteger) {
 			return new BigDecimal((BigInteger) number);
-		} else if (number instanceof Integer) {
-			return BigDecimal.valueOf((Integer) number);
-		} else if (number instanceof Long) {
-			return BigDecimal.valueOf((Long) number);
+		} else if (number instanceof Integer || number instanceof Long ||
+				number instanceof Short || number instanceof Byte) {
+			return BigDecimal.valueOf(number.longValue());
 		} else {
 			// Most likely float or double
 			return new BigDecimal(number.doubleValue());
