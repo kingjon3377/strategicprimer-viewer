@@ -3,6 +3,7 @@ package common.map.fixtures.mobile;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.Map;
+import java.util.logging.Logger;
 
 /**
  * A model, loaded from file, of the ages at which young animals become adults.
@@ -10,6 +11,7 @@ import java.util.Map;
  * the codebase, store a notion of the current turn here.
  */
 public final class MaturityModel {
+	private static final Logger LOGGER = Logger.getLogger(MaturityModel.class.getName());
 	private static final Map<String, Integer> MATURITY_AGES =
 		initMaturityAges();
 
@@ -35,8 +37,9 @@ public final class MaturityModel {
 	public static void setCurrentTurn(final int currentTurn) {
 		if (currentTurnLocal < 0) {
 			currentTurnLocal = currentTurn;
+		} else {
+			LOGGER.warning("Tried to reset current turn");
 		}
-		// TODO: else log a warning?
 	}
 
 	/**
