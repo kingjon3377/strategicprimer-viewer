@@ -79,7 +79,11 @@ public class AnimalTabularReportGenerator implements ITableGenerator<AnimalOrTra
 				kind = "talking " + item.getKind();
 				age = "---";
 				population = "---";
-			} else if (!"wild".equals(animal.getStatus())) { // TODO: invert
+			} else if ("wild".equals(animal.getStatus())) {
+				kind = item.getKind();
+				age = "---";
+				population = "---";
+			} else {
 				kind = String.format("%s %s", animal.getStatus(), item.getKind());
 				population = Integer.toString(animal.getPopulation());
 				if (animal.getBorn() >= 0) {
@@ -99,10 +103,6 @@ public class AnimalTabularReportGenerator implements ITableGenerator<AnimalOrTra
 				} else {
 					age = "adult";
 				}
-			} else {
-				kind = item.getKind();
-				age = "---";
-				population = "---";
 			}
 		} else {
 			throw new IllegalStateException("Unexpected AnimalOrTracks subtype");
