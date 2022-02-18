@@ -85,7 +85,6 @@ import common.map.fixtures.mobile.worker.IJob;
 			ostream.accept(statsString(worker.getStats()));
 			println(ostream, "</p>");
 		}
-		// FIXME: IWorker.isEmpty() just refers to jobs, right?
 		if (details && worker.iterator().hasNext()) {
 			ostream.accept(System.lineSeparator());
 			println(ostream, "(S)he has training or experience in the following Jobs (Skills):");
