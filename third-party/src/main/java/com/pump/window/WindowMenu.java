@@ -15,6 +15,8 @@ import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import java.util.Objects;
+import java.util.stream.Stream;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -83,11 +85,7 @@ public class WindowMenu extends JMenu {
 		add(minimizeItem);
 		if (customItems.length != 0) {
 			addSeparator();
-			// TODO (JL): Convert to Stream operation with Optional.nonNull and forEach
-			for (final JMenuItem customItem : customItems) {
-				if (customItem != null)
-					add(customItem);
-			}
+			Stream.of(customItems).filter(Objects::nonNull).forEach(this::add);
 		}
 		addSeparator();
 		add(bringItem);
