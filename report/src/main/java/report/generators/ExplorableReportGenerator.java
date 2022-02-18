@@ -1,6 +1,7 @@
 package report.generators;
 
 import java.util.function.Consumer;
+import java.util.logging.Logger;
 import org.jetbrains.annotations.Nullable;
 import org.javatuples.Pair;
 import java.util.List;
@@ -22,6 +23,7 @@ import common.map.fixtures.explorable.ExplorableFixture;
  * A report generator for caves, battlefields, and portals.
  */
 public class ExplorableReportGenerator extends AbstractReportGenerator<ExplorableFixture> {
+	private static final Logger LOGGER = Logger.getLogger(ExplorableReportGenerator.class.getName());
 	public ExplorableReportGenerator(final MapDimensions dimensions) {
 		this(dimensions, null);
 	}
@@ -45,7 +47,7 @@ public class ExplorableReportGenerator extends AbstractReportGenerator<Explorabl
 			fixtures.remove(item.getId());
 			ostream.accept("A portal to another world at ");
 		} else {
-			// FIXME: Log a warning?
+			LOGGER.warning("Unandled ExplorableFixture class (single item)");
 			return;
 		}
 		if (loc.isValid()) {
@@ -80,7 +82,7 @@ public class ExplorableReportGenerator extends AbstractReportGenerator<Explorabl
 			} else if (item instanceof Cave) {
 				caves.add(loc);
 			} else {
-				// TODO: log a warning?
+				LOGGER.warning("Unandled ExplorableFixture class (in loop)");
 				continue;
 			}
 			fixtures.remove(item.getId());
