@@ -78,30 +78,27 @@ public class WindowMenu extends JMenu {
 	 */
 	final JMenuItem bringItem = new JMenuItem("Bring All To Front");
 
-	// TODO: Can this be a lambda or made a normal method accessed through a method reference?
-	final Runnable updateRunnable = new Runnable() {
-		public void run() {
-			removeAll();
-			add(minimizeItem);
-			if (customItems.length != 0) {
-				addSeparator();
-				// TODO (JL): Convert to Stream operation with Optional.nonNull and forEach
-				for (final JMenuItem customItem : customItems) {
-					if (customItem != null)
-						add(customItem);
-				}
-			}
+	private void update() {
+		removeAll();
+		add(minimizeItem);
+		if (customItems.length != 0) {
 			addSeparator();
-			add(bringItem);
-			addSeparator();
-			final Frame[] frames = WindowList.getFrames(false, false, true);
-			for (final Frame frame : frames) {
-				final JCheckBoxMenuItem item = new SummonMenuItem(frame);
-				item.setSelected(frame == myFrame);
-				add(item);
+			// TODO (JL): Convert to Stream operation with Optional.nonNull and forEach
+			for (final JMenuItem customItem : customItems) {
+				if (customItem != null)
+					add(customItem);
 			}
 		}
-	};
+		addSeparator();
+		add(bringItem);
+		addSeparator();
+		final Frame[] frames = WindowList.getFrames(false, false, true);
+		for (final Frame frame : frames) {
+			final JCheckBoxMenuItem item = new SummonMenuItem(frame);
+			item.setSelected(frame == myFrame);
+			add(item);
+		}
+	}
 
 	private final JFrame myFrame;
 
@@ -155,8 +152,8 @@ public class WindowMenu extends JMenu {
 		minimizeItem.setAccelerator(KeyStroke.getKeyStroke('M',
 				Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
 
-		ChangeListener changeListener = e -> SwingUtilities.invokeLater(updateRunnable);
+		ChangeListener changeListener = e -> SwingUtilities.invokeLater(this::update);
 		WindowList.addChangeListener(changeListener);
-		updateRunnable.run();
+		update();
 	}
 }
