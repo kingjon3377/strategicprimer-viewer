@@ -33,7 +33,7 @@ public class Worker implements IMutableWorker {
 	/**
 	 * Whether neither of two collections of Jobs contains a nonempty Job the other does not.
 	 *
-	 * FIXME: Take Collection, not Iterable, to avoid StreamSupport wrapper
+	 * We can't take Collection because what's passed in is actually IWorker.
 	 */
 	private static boolean jobSetsEqual(final Iterable<IJob> first, final Iterable<IJob> second) {
 		final Collection<IJob> firstFiltered = StreamSupport.stream(first.spliterator(), true)
