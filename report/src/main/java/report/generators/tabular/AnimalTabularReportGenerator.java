@@ -87,14 +87,15 @@ public class AnimalTabularReportGenerator implements ITableGenerator<AnimalOrTra
 				kind = String.format("%s %s", animal.getStatus(), item.getKind());
 				population = Integer.toString(animal.getPopulation());
 				if (animal.getBorn() >= 0) {
+					String lkey = animal.getKind();
 					if (animal.getBorn() > currentTurn) {
 						age = "unborn";
 					} else if (animal.getBorn() == currentTurn) {
 						age = "newborn";
 					} else if (MaturityModel.getMaturityAges()
-							.containsKey(animal.getKind()) &&
+							.containsKey(lkey) &&
 							           MaturityModel.getMaturityAges()
-									           .get(animal.getKind()) <=
+									           .get(lkey) <=
 									           (currentTurn - animal.getBorn())) {
 						age = "adult";
 					} else {
