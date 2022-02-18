@@ -92,10 +92,8 @@ public class AnimalTabularReportGenerator implements ITableGenerator<AnimalOrTra
 						age = "unborn";
 					} else if (animal.getBorn() == currentTurn) {
 						age = "newborn";
-					} else if (MaturityModel.getMaturityAges()
-							.containsKey(lkey) &&
-							           MaturityModel.getMaturityAges()
-									           .get(lkey) <=
+					} else if (MaturityModel.getMaturityAges().containsKey(lkey) &&
+							           MaturityModel.getMaturityAges().get(lkey) <=
 									           (currentTurn - animal.getBorn())) {
 						age = "adult";
 					} else {
