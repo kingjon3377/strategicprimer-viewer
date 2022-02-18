@@ -69,42 +69,43 @@ public class AnimalTabularReportGenerator implements ITableGenerator<AnimalOrTra
 		final String kind;
 		final String age;
 		final String population;
-		// TODO: To avoid unchecked-cast warnings, first check if
-		// instanceof Animal, and make all the other tests inside that
-		// block.
 		if (item instanceof AnimalTracks) {
 			kind = "tracks or traces of " + item.getKind();
 			age = "---";
 			population = "---";
-		} else if (((Animal) item).isTalking()) {
-			kind = "talking " + item.getKind();
-			age = "---";
-			population = "---";
-		} else if (!"wild".equals(((Animal) item).getStatus())) {
-			kind = String.format("%s %s", ((Animal) item).getStatus(), item.getKind());
-			population = Integer.toString(((Animal) item).getPopulation());
-			if (((Animal) item).getBorn() >= 0) {
-				if (((Animal) item).getBorn() > currentTurn) {
-					age = "unborn";
-				} else if (((Animal) item).getBorn() == currentTurn) {
-					age = "newborn";
-				} else if (MaturityModel.getMaturityAges()
-							.containsKey(item.getKind()) &&
-						MaturityModel.getMaturityAges()
-								.get(item.getKind()) <=
-							(currentTurn - ((Animal) item).getBorn())) {
-					age = "adult";
+		} else if (item instanceof Animal) {
+			Animal animal = (Animal) item;
+			if (animal.isTalking()) {
+				kind = "talking " + item.getKind();
+				age = "---";
+				population = "---";
+			} else if (!"wild".equals(animal.getStatus())) { // TODO: invert
+				kind = String.format("%s %s", animal.getStatus(), item.getKind());
+				population = Integer.toString(animal.getPopulation());
+				if (animal.getBorn() >= 0) {
+					if (animal.getBorn() > currentTurn) {
+						age = "unborn";
+					} else if (animal.getBorn() == currentTurn) {
+						age = "newborn";
+					} else if (MaturityModel.getMaturityAges()
+							.containsKey(animal.getKind()) &&
+							           MaturityModel.getMaturityAges()
+									           .get(animal.getKind()) <=
+									           (currentTurn - animal.getBorn())) {
+						age = "adult";
+					} else {
+						age = String.format("%d turns", currentTurn - animal.getBorn());
+					}
 				} else {
-					age = String.format("%d turns",
-						currentTurn - ((Animal) item).getBorn());
+					age = "adult";
 				}
 			} else {
-				age = "adult";
+				kind = item.getKind();
+				age = "---";
+				population = "---";
 			}
 		} else {
-			kind = item.getKind();
-			age = "---";
-			population = "---";
+			throw new IllegalStateException("Unexpected AnimalOrTracks subtype");
 		}
 		fixtures.remove(key);
 		return Collections.singletonList(Arrays.asList(distanceString(loc, hq, dimensions),
