@@ -85,9 +85,12 @@ import common.map.fixtures.mobile.worker.IJob;
 		if (selectionPath != null && selectionPath.getLastPathComponent() instanceof ISkill) {
 			retval = (ISkill) selectionPath.getLastPathComponent();
 			final Object[] path = selectionPath.getPath();
-			// TODO: Check that length >= 2
-			job = Optional.ofNullable(path[path.length - 2]).filter(IJob.class::isInstance)
-				.map(IJob.class::cast).orElse(null);
+			if (path.length < 2) {
+				job = null;
+			} else {
+				job = Optional.ofNullable(path[path.length - 2]).filter(IJob.class::isInstance)
+						.map(IJob.class::cast).orElse(null);
+			}
 		} else {
 			retval = null;
 			job = null;
