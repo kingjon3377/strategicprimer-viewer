@@ -13,12 +13,16 @@ import java.util.Iterator;
 public final class SPOptionsImpl implements SPOptions {
 	private final Map<String, String> options = new HashMap<>();
 
-	// TODO: Take Map<String, String> instead and use options.putAll()?
+	// TODO: Migrate callers to use other constructor.
 	@SafeVarargs
 	public SPOptionsImpl(final Map.Entry<String, String>... existing) {
 		for (final Map.Entry<String, String> entry : existing) {
 			options.put(entry.getKey(), entry.getValue());
 		}
+	}
+
+	public SPOptionsImpl(final Map<String, String> existing) {
+		options.putAll(existing);
 	}
 
 	public void addOption(final String option) {
@@ -45,9 +49,7 @@ public final class SPOptionsImpl implements SPOptions {
 
 	@Override
 	public SPOptionsImpl copy() {
-		final SPOptionsImpl retval = new SPOptionsImpl();
-		retval.options.putAll(options);
-		return retval;
+		return new SPOptionsImpl(options);
 	}
 
 	@Override
