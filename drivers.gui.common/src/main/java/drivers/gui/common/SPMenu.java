@@ -4,6 +4,7 @@ import com.pump.window.WindowList;
 import com.pump.window.WindowMenu;
 import com.apple.eawt.Application;
 import java.awt.event.ActionEvent;
+import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import drivers.common.ISPDriver;
 import drivers.common.ModelDriver;
@@ -124,7 +125,7 @@ public class SPMenu extends JMenuBar {
 
 		final KeyStroke openViewerHotkey;
 		if (Platform.SYSTEM_IS_MAC) {
-			openViewerHotkey = KeyStroke.getKeyStroke(KeyEvent.VK_M, KeyEvent.ALT_DOWN_MASK);
+			openViewerHotkey = KeyStroke.getKeyStroke(KeyEvent.VK_M, InputEvent.ALT_DOWN_MASK);
 		} else {
 			openViewerHotkey = createAccelerator(KeyEvent.VK_M);
 		}

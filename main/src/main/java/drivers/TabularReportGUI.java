@@ -17,6 +17,7 @@ import drivers.common.cli.ICLIHelper;
 
 import common.map.IMutableMapNG;
 
+import javax.swing.SwingConstants;
 import lovelace.util.ShowErrorDialog;
 import report.TabularReportGenerator;
 
@@ -60,7 +61,7 @@ public class TabularReportGUI implements GUIDriver {
 	@Override
 	public void startDriver() {
 		final SPFrame window = new SPFrame("Tabular Report", this, new Dimension(640, 480));
-		final JTabbedPane frame = new JTabbedPane(JTabbedPane.TOP, JTabbedPane.SCROLL_TAB_LAYOUT);
+		final JTabbedPane frame = new JTabbedPane(SwingConstants.TOP, JTabbedPane.SCROLL_TAB_LAYOUT);
 		final MapChangeListener listener = new MapChangeListener() {
 			@Override
 			public void mapChanged() {
