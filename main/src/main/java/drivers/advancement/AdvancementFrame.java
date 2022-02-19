@@ -1,5 +1,6 @@
 package drivers.advancement;
 
+import drivers.common.cli.ICLIHelper;
 import org.jetbrains.annotations.Nullable;
 
 import java.awt.Dimension;
@@ -43,7 +44,8 @@ import drivers.gui.common.MenuBroker;
 /* package */ class AdvancementFrame extends SPFrame implements PlayerChangeListener {
 	private final FormattedLabel playerLabel;
 	private final IWorkerTreeModel treeModel;
-	public AdvancementFrame(final IWorkerModel model, final MenuBroker menuHandler, final ModelDriver driver) {
+	public AdvancementFrame(final IWorkerModel model, final MenuBroker menuHandler, final ModelDriver driver,
+	                        final ICLIHelper cli) {
 		super("Worker Advancement", driver, new Dimension(640, 480), true,
 			(file) -> model.addSubordinateMap(MapIOHelper.readMap(file)));
 		final IMapNG map = model.getMap();
@@ -67,7 +69,7 @@ import drivers.gui.common.MenuBroker;
 		final ItemAdditionPanel skillAdditionPanel = new ItemAdditionPanel("skill");
 		skillAdditionPanel.addAddRemoveListener(jobsTreeModel);
 
-		final LevelListener levelListener = new LevelListener();
+		final LevelListener levelListener = new LevelListener(cli);
 
 		tree.addUnitMemberListener(levelListener);
 

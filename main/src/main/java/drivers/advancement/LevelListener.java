@@ -1,5 +1,6 @@
 package drivers.advancement;
 
+import drivers.common.cli.ICLIHelper;
 import org.jetbrains.annotations.Nullable;
 
 import common.map.HasName;
@@ -15,6 +16,13 @@ import common.map.fixtures.mobile.worker.IJob;
  * A listener to print a line whenever a worker gains a level.
  */
 /* package */ class LevelListener implements LevelGainListener, UnitMemberListener, SkillSelectionListener {
+	private final ICLIHelper cli;
+	/**
+	 * Constructor.
+	 */
+	public LevelListener(ICLIHelper cli) {
+		this.cli = cli;
+	}
 	/**
 	 * The current worker.
 	 */
@@ -83,6 +91,6 @@ import common.map.fixtures.mobile.worker.IJob;
 			actualSkillName = getName(skill);
 		}
 		final String count = (gains == 1) ? "a level" : gains + " levels";
-		System.out.printf("%s gained %s in %s", actualWorkerName, count, actualSkillName); // TODO: Take ICLIHelper instead of using stdout
+		cli.print(actualWorkerName, " gained ", count, " in ", actualSkillName, ". ");
 	}
 }
