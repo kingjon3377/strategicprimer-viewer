@@ -1,5 +1,7 @@
 package common.map;
 
+import java.util.Comparator;
+
 /**
  * A structure encapsulating two coordinates: a row and column in the map.
  */
@@ -64,17 +66,11 @@ public final class Point implements Comparable<Point> {
 
 	/**
 	 * Compare to another point, by first row and then column.
-	 *
-	 * TODO: This should be simplifiable using Comparator helper methods
 	 */
 	@Override
 	public int compareTo(final Point point) {
-		final int rowComparison = Integer.compare(row, point.getRow());
-		if (rowComparison == 0) {
-			return Integer.compare(column, point.getColumn());
-		} else {
-			return rowComparison;
-		}
+		return Comparator.comparing(Point::getRow, Comparator.naturalOrder())
+				.thenComparing(Point::getColumn).compare(this, point);
 	}
 
 	/**
