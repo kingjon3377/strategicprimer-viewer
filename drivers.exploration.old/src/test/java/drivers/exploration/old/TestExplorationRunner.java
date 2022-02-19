@@ -46,10 +46,10 @@ public class TestExplorationRunner {
 		final Point point = new Point(0, 0);
 		final MapDimensions dimensions = new MapDimensionsImpl(69, 88, 2);
 		assertEquals("boreal_major_test", runner.getPrimaryTree(point, TileType.Steppe, false,
-			Arrays.asList(new Forest("kind", false, 3)), dimensions),
+						Collections.singletonList(new Forest("kind", false, 3)), dimensions),
 			"primary tree test for forest in steppe");
 		assertEquals("temperate_major_test", runner.getPrimaryTree(point, TileType.Plains, false,
-			Arrays.asList(new Forest("second", false, 4)), dimensions),
+						Collections.singletonList(new Forest("second", false, 4)), dimensions),
 			"primary tree test for forest in plains");
 	}
 
@@ -126,13 +126,13 @@ public class TestExplorationRunner {
 				dimensions), "defaultResults in non-forest");
 		assertEquals(String.format("The primary rock type here is test_rock.%n" +
 				"The main kind of tree here is boreal_tree.%n"),
-			runner.defaultResults(point, TileType.Steppe, false, Arrays.asList(
-				new Forest("boreal_tree", false, 1)), dimensions),
+			runner.defaultResults(point, TileType.Steppe, false, Collections.singletonList(
+					new Forest("boreal_tree", false, 1)), dimensions),
 			"defaultResults in boreal forest");
 		assertEquals(String.format("The primary rock type here is test_rock.%n" +
 				"The main kind of tree here is temperate_tree.%n"),
-			runner.defaultResults(point, TileType.Plains, false, Arrays.asList(
-				new Forest("temperate_tree", false, 2)), dimensions),
+			runner.defaultResults(point, TileType.Plains, false, Collections.singletonList(
+					new Forest("temperate_tree", false, 2)), dimensions),
 				"defaultResults in temperate forest");
 	}
 
@@ -198,7 +198,7 @@ public class TestExplorationRunner {
 			"quadrant table can use alternate dimensions");
 		assertThrows(IllegalArgumentException.class,
 			() -> runner.loadTableFromDataStream(
-				new LinkedList<>(Arrays.asList("quadrant")).iterator(),
+				new LinkedList<>(Collections.singletonList("quadrant")).iterator(),
 				"testLoadQuadrantTable().illegal"));
 	}
 
@@ -259,7 +259,7 @@ public class TestExplorationRunner {
 		assertEquals("three", runner.consultTable(table, Point.INVALID_POINT, TileType.Ocean, false,
 			Collections.emptyList(), mockDimensions), "loading terrain table: ocean");
 		assertEquals("five", runner.consultTable(table, Point.INVALID_POINT, TileType.Plains,
-			false, Arrays.asList(new Forest("forestKind", false, 1)), mockDimensions),
+			false, Collections.singletonList(new Forest("forestKind", false, 1)), mockDimensions),
 			"loading terrain table: version 2 equivalent of temperate forest");
 		assertEquals("four", runner.consultTable(table, Point.INVALID_POINT, TileType.Plains, true,
 			Collections.emptyList(), mockDimensions),
@@ -288,7 +288,7 @@ public class TestExplorationRunner {
 		// no data
 		assertThrows(IllegalArgumentException.class,
 			() -> runner.loadTableFromDataStream(
-				new LinkedList<>(Arrays.asList("")).iterator(),
+				new LinkedList<>(Collections.singletonList("")).iterator(),
 				"testTableLoadingInvalidInput().noData"));
 		// invalid header
 		assertThrows(IllegalArgumentException.class,

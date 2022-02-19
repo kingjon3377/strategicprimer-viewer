@@ -114,7 +114,7 @@ public class FileChooser {
 				storedFile = Collections.emptyList();
 			} else {
 				LOGGER.fine("A file was passed in");
-				storedFile = Arrays.asList(loc);
+				storedFile = Collections.singletonList(loc);
 			}
 			break;
 		default:
@@ -134,7 +134,7 @@ public class FileChooser {
 				storedFile = Collections.emptyList();
 			} else {
 				LOGGER.fine("A file was passed in");
-				storedFile = Arrays.asList(loc);
+				storedFile = Collections.singletonList(loc);
 			}
 			break;
 		case Save:
@@ -146,7 +146,7 @@ public class FileChooser {
 				storedFile = Collections.emptyList();
 			} else {
 				LOGGER.fine("A file was passed in");
-				storedFile = Arrays.asList(loc);
+				storedFile = Collections.singletonList(loc);
 			}
 			break;
 		case Custom:
@@ -172,7 +172,7 @@ public class FileChooser {
 				storedFile = Collections.emptyList();
 			} else {
 				LOGGER.fine("A file was passed in");
-				storedFile = Arrays.asList(loc);
+				storedFile = Collections.singletonList(loc);
 			}
 			break;
 		case Save:
@@ -188,7 +188,7 @@ public class FileChooser {
 				storedFile = Collections.emptyList();
 			} else {
 				LOGGER.fine("A file was passed in");
-				storedFile = Arrays.asList(loc);
+				storedFile = Collections.singletonList(loc);
 			}
 			break;
 		case Custom:
@@ -273,7 +273,7 @@ public class FileChooser {
 				} else if (fc.getSelectedFile() != null) {
 					final File selectedFile = fc.getSelectedFile();
 					LOGGER.fine("Saving the singular file the user chose via Swing");
-					storedFile = Arrays.asList(selectedFile.toPath());
+					storedFile = Collections.singletonList(selectedFile.toPath());
 				} else {
 					LOGGER.info("User pressed approve but selected no files");
 					storedFile = Collections.emptyList();
@@ -291,7 +291,7 @@ public class FileChooser {
 			} else if (fd.getFile() != null) {
 				final String selectedFile = fd.getFile();
 				LOGGER.fine("Saving the singular file the user chose via AWT");
-				storedFile = Arrays.asList(Paths.get(selectedFile));
+				storedFile = Collections.singletonList(Paths.get(selectedFile));
 			} else {
 				LOGGER.info("User failed to choose?");
 				LOGGER.fine(String.format("Returned iterable was %s (%s)", retval,
