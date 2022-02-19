@@ -156,9 +156,7 @@ import java.util.function.Consumer;
 					maxHPValue >= 0 && strValue >= 0 && dexValue >= 0 &&
 					conValue >= 0 && intValue >= 0 && wisValue >= 0 &&
 					chaValue >= 0) {
-				// TODO: These logging statements should
-				// probably be "trace" i.e. "finer", not
-				// "debug" i.e. "fine"
+				// TODO: These logging statements should probably be "trace" i.e. "finer", not "debug" i.e. "fine"
 				LOGGER.fine("All worker-creation-dialog fields are acceptable");
 				final Worker retval = new Worker(nameText, raceText, factory.createID());
 				retval.setStats(new WorkerStats(hpValue, maxHPValue, strValue,
