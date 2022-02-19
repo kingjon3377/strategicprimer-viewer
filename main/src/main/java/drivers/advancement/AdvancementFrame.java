@@ -41,7 +41,7 @@ import drivers.gui.common.MenuBroker;
 /**
  * A GUI to let a user manage workers.
  */
-/* package */ class AdvancementFrame extends SPFrame implements PlayerChangeListener {
+/* package */ final class AdvancementFrame extends SPFrame implements PlayerChangeListener {
 	private final FormattedLabel playerLabel;
 	private final IWorkerTreeModel treeModel;
 	public AdvancementFrame(final IWorkerModel model, final MenuBroker menuHandler, final ModelDriver driver,
