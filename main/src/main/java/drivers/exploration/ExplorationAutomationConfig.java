@@ -142,11 +142,6 @@ import org.jetbrains.annotations.Nullable;
 	@Nullable
 	private List<Condition<? extends TileFixture>> enabledConditions = null;
 
-	// TODO: inline into callers
-	private BiPredicate<IMapNG, Point> matchesCondition(final Condition<? extends TileFixture> condition) {
-		return condition::matches;
-	}
-
 	public boolean stopAtPoint(final ICLIHelper cli, final IMapNG map, final Point point) {
 		final List<Condition<? extends TileFixture>> localEnabledConditions;
 		if (enabledConditions == null) {
