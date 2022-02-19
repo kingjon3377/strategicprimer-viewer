@@ -41,25 +41,24 @@ import java.util.logging.Level;
 
 	private static final Set<String> MISSING_FILENAMES = new HashSet<>();
 
+	// Image size is 24, margin is 15%.
 	private static Icon createDefaultFixtureIcon() {
 		final int imageSize = 24;
 		final BufferedImage temp = new BufferedImage(imageSize, imageSize, BufferedImage.TYPE_INT_ARGB);
 		final Graphics2D pen = temp.createGraphics();
 		final Color saveColor = pen.getColor();
 		pen.setColor(Color.RED);
-		final double margin = 0.15;
-		// TODO: Each of these calculations was wrapped in halfEven() in Ceylon; investigate whether Math.round() changes behavior
-		final double pixelMargin = Math.round(imageSize * margin);
-		final double afterMargin = Math.round(imageSize * (1.0 - (margin * 2.0)));
-		final double cornerRounding = Math.round((imageSize * margin) / 2.0);
-		pen.fillRoundRect(((int) pixelMargin) + 1, ((int) pixelMargin) + 1,
-			(int) afterMargin, (int) afterMargin, (int) cornerRounding, (int) cornerRounding);
+		final int pixelMargin = 4; // imageSize * margin
+		final int afterMargin = 17; // imageSize * (1 - margin * 2)
+		final int cornerRounding = 2; // (imageSize * margin) / 2
+		pen.fillRoundRect(pixelMargin + 1, pixelMargin + 1,
+				afterMargin, afterMargin, cornerRounding, cornerRounding);
 		pen.setColor(saveColor);
-		final double newMargin = Math.round((imageSize / 2.0) - (imageSize * margin));
-		final double newAfterMargin = Math.round(imageSize * margin * 2.0);
-		final double newCorner = Math.round((imageSize * margin) / 2.0);
-		pen.fillRoundRect(((int) newMargin) + 1, ((int) newMargin) + 1,
-			(int) newAfterMargin, (int) newAfterMargin, (int) newCorner, (int) newCorner);
+		final int newMargin = 8; // (imageSize / 2) - (imageSize * margin)
+		final int newAfterMargin = 7; // imageSize * margin * 2
+		final int newCorner = 2; // imageSize * margin / 2
+		pen.fillRoundRect(newMargin + 1, newMargin + 1,
+				newAfterMargin, newAfterMargin, newCorner, newCorner);
 		pen.dispose();
 		return new ImageIcon(temp);
 	}
