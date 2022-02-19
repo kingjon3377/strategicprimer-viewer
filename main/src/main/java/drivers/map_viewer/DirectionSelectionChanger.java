@@ -205,7 +205,7 @@ import common.map.Point;
 		} else if (event.isShiftDown()) {
 			// Scroll sideways on Shift-scroll
 			if (count < 0) {
-				scroll(true, false, 0 - count);
+				scroll(true, false, -count);
 			} else {
 				scroll(true, true, count);
 			}
@@ -214,7 +214,7 @@ import common.map.Point;
 			// Control is ignored on Mac because it is rarely used as a modifier, and
 			// Control-clicking is the same as right-clicking.
 			if (count < 0) {
-				scroll(false, false, 0 - count);
+				scroll(false, false, -count);
 			} else {
 				scroll(false, true, count);
 			}

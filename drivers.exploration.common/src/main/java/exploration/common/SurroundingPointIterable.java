@@ -23,7 +23,7 @@ public class SurroundingPointIterable implements Iterable<Point> {
 	public SurroundingPointIterable(final Point startingPoint, final MapDimensions dimensions, final int radius) {
 		this.dimensions = dimensions;
 		for (int inner = radius; inner >= 0; inner--) {
-			final int lowerBound = 0 - inner;
+			final int lowerBound = -inner;
 			final int upperBound = inner;
 			for (int row = lowerBound; row <= upperBound; row++) {
 				for (int column = lowerBound; column <= upperBound; column++) {

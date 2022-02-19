@@ -58,7 +58,7 @@ import org.jetbrains.annotations.Nullable;
 
 	private static String toHours(final int minutes) {
 		if (minutes < 0) {
-			return "negative " + toHours(0 - minutes);
+			return "negative " + toHours(-minutes);
 		} else if (minutes == 0) {
 			return "no time";
 		} else if (minutes == 1) {

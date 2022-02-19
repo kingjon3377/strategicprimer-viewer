@@ -98,9 +98,9 @@ public interface HasExtent<Self extends HasExtent<Self>> extends SubsettableFixt
 	 */
 	static Number negate(final Number num) {
 		if (num instanceof Integer) {
-			return 0 - (Integer) num;
+			return -(Integer) num;
 		} else if (num instanceof Long) {
-			return 0L - (Long) num;
+			return -(Long) num;
 		} else if (num instanceof BigInteger) {
 			return ((BigInteger) num).negate();
 		} else if (num instanceof Float || num instanceof Double) {
