@@ -543,7 +543,7 @@ public class SPMapNG implements IMutableMapNG {
 			if (isLocationEmpty(location)) {
 				continue;
 			}
-			builder.append("At " + location);
+			builder.append("At ").append(location);
 			if (terrain.containsKey(location)) {
 				builder.append("terrain: ").append(terrain.get(location)).append(", ");
 			}
