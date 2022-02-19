@@ -92,10 +92,8 @@ public class ExplorationCLIHelper implements MovementCostListener, SelectionChan
 			if (fixture instanceof HasOwner && (!((HasOwner) fixture).getOwner().equals(mover.getOwner())
 					|| fixture instanceof Village)) {
 				zero = true;
-			} else if (fixture instanceof HasPopulation || fixture instanceof HasExtent) {
-				zero = true;
 			} else {
-				zero = false;
+				zero = fixture instanceof HasPopulation || fixture instanceof HasExtent;
 			}
 			model.copyToSubMaps(destPoint, fixture, zero);
 		}

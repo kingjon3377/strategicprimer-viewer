@@ -146,10 +146,8 @@ import java.util.function.Predicate;
 				return true;
 			} else if ("me".equalsIgnoreCase(pattern) && owner.isCurrent()) {
 				return true;
-			} else if (owner.isIndependent() && Arrays.asList("none", "independent").contains(pattern.toLowerCase())) {
-				return true;
 			} else {
-				return false;
+				return owner.isIndependent() && Arrays.asList("none", "independent").contains(pattern.toLowerCase());
 			}
 		} else {
 			return false;
@@ -168,12 +166,10 @@ import java.util.function.Predicate;
 			return false;
 		} else if (idNum != null && idNum == fixture.getId()) {
 			return true;
-		} else if (matchesName(pattern, fixture, caseSensitivity) ||
-				matchesKind(pattern, fixture, caseSensitivity) ||
-				matchesOwner(pattern, idNum, fixture, caseSensitivity)) {
-			return true;
 		} else {
-			return false;
+			return matchesName(pattern, fixture, caseSensitivity) ||
+					       matchesKind(pattern, fixture, caseSensitivity) ||
+					       matchesOwner(pattern, idNum, fixture, caseSensitivity);
 		}
 	}
 

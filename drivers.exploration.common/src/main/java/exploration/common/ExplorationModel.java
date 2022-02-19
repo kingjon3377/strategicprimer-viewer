@@ -890,12 +890,8 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 		return (pair) -> {
 			final Point location = pair.getValue0();
 			final IFixture fixture = pair.getValue1();
-			if (fixture instanceof IUnit && fixture.getId() == unit.getId() &&
-					((IUnit) fixture).getOwner().equals(unit.getOwner())) {
-				return true;
-			} else {
-				return false;
-			}
+			return fixture instanceof IUnit && fixture.getId() == unit.getId() &&
+					       ((IUnit) fixture).getOwner().equals(unit.getOwner());
 		};
 	}
 

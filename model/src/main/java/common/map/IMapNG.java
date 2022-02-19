@@ -156,10 +156,8 @@ public interface IMapNG extends Subsettable<IMapNG> {
 			return false;
 		} else if (!getFixtures(location).isEmpty()) {
 			return false;
-		} else if (!getAllBookmarks(location).isEmpty()) {
-			return false;
 		} else {
-			return true;
+			return getAllBookmarks(location).isEmpty();
 		}
 	}
 }

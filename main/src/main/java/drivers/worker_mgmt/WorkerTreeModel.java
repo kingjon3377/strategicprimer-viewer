@@ -83,12 +83,7 @@ import java.util.stream.Collectors;
 
 	@Override
 	public boolean isLeaf(final Object node) {
-		// TODO: condense further
-		if (node instanceof Player || node instanceof IUnit || node instanceof String) {
-			return false;
-		} else {
-			return true;
-		}
+		return !(node instanceof Player) && !(node instanceof IUnit) && !(node instanceof String);
 	}
 
 	@Override

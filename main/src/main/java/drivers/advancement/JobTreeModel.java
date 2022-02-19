@@ -91,11 +91,7 @@ import java.util.stream.StreamSupport;
 
 	@Override
 	public boolean isLeaf(final Object node) {
-		if (node instanceof IWorker || node instanceof IJob) {
-			return false;
-		} else {
-			return true;
-		}
+		return !(node instanceof IWorker) && !(node instanceof IJob);
 	}
 
 	/**

@@ -160,12 +160,8 @@ public class FixtureList extends JList<TileFixture>
 	private class DropListener extends DropTargetAdapter {
 		// TODO: Figure out how to skip all this (return true) on non-local drags
 		private boolean isXfrFromOutside(final DropTargetEvent dtde) {
-			if (dtde.getSource() instanceof Component &&
-					parentComponent.isAncestorOf((Component) dtde.getSource())) {
-				return false;
-			} else {
-				return true;
-			}
+			return !(dtde.getSource() instanceof Component) ||
+					       !parentComponent.isAncestorOf((Component) dtde.getSource());
 		}
 
 		private void handleDrag(final DropTargetDragEvent dtde) {

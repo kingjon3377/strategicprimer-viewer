@@ -214,10 +214,8 @@ import java.math.BigDecimal;
 	private boolean bothOrNeitherOcean(@Nullable final TileType one, @Nullable final TileType two) {
 		if (TileType.Ocean == one) {
 			return TileType.Ocean == two;
-		} else if (TileType.Ocean == two) {
-			return false;
 		} else {
-			return true;
+			return TileType.Ocean != two;
 		}
 	}
 

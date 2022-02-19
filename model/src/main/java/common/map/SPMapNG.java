@@ -56,11 +56,8 @@ public class SPMapNG implements IMutableMapNG {
 	private static boolean subsetCheck(final TileFixture one, final TileFixture two) {
 		if (one instanceof SubsettableFixture && ((SubsettableFixture) one).isSubset(two, x -> {})) {
 			return true;
-		} else if (two instanceof SubsettableFixture &&
-				((SubsettableFixture) two).isSubset(one, x -> {})) {
-			return true;
 		} else {
-			return false;
+			return two instanceof SubsettableFixture && ((SubsettableFixture) two).isSubset(one, x -> {});
 		}
 	}
 

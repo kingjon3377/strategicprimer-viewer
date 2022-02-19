@@ -285,11 +285,9 @@ public class Ver2TileDrawHelper implements TileDrawHelper {
 		// TODO: Should we really return true if there is exactly one drawable fixture that happens to be a terrain fixture?
 		if (getDrawableFixtures(map, location).anyMatch(TerrainFixture.class::isInstance)) {
 			return true;
-		} else if (getDrawableFixtures(map, location).anyMatch(x -> true) &&
-				map.isMountainous(location)) {
-			return true;
 		} else {
-			return false;
+			return getDrawableFixtures(map, location).anyMatch(x -> true) &&
+					       map.isMountainous(location);
 		}
 	}
 
@@ -306,11 +304,7 @@ public class Ver2TileDrawHelper implements TileDrawHelper {
 					.reduce((first, second) -> second)
 					.orElse(null);
 			if (bottom == null) {
-				if (map.isMountainous(location)) {
-					return true;
-				} else {
-					return false;
-				}
+				return map.isMountainous(location);
 			} else {
 				return !top.equals(bottom);
 			}

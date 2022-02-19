@@ -295,11 +295,7 @@ public class WorkerTree extends JTree implements UnitMemberSelectionSource, Unit
 					((JTree.DropLocation) support.getDropLocation()).getPath() != null) {
 				final Object last = ((JTree.DropLocation) support.getDropLocation())
 					.getPath().getLastPathComponent();
-				final Object lastObj = Optional.ofNullable(last).map(wtModel::getModelObject)
-					.orElse(null);
-				if (lastObj instanceof String) {
-					return true;
-				}
+				return Optional.ofNullable(last).map(wtModel::getModelObject).orElse(null) instanceof String;
 			}
 			return false;
 		}

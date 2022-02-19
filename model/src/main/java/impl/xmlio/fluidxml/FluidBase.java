@@ -226,14 +226,10 @@ import org.jetbrains.annotations.Nullable;
 	 * Whether the given XML element is a {@link StartElement} and in a namespace we support.
 	 */
 	protected static boolean isSPStartElement(final XMLEvent element) {
-		if (element instanceof StartElement &&
-			(SP_NAMESPACE.equals(((StartElement) element).getName().getNamespaceURI()) ||
-				XMLConstants.NULL_NS_URI.equals(((StartElement) element).getName()
-					.getNamespaceURI()))) {
-			return true;
-		} else {
-			return false;
-		}
+		return element instanceof StartElement &&
+				       (SP_NAMESPACE.equals(((StartElement) element).getName().getNamespaceURI()) ||
+						        XMLConstants.NULL_NS_URI.equals(((StartElement) element).getName()
+								        .getNamespaceURI()));
 	}
 
 	/**
