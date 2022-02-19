@@ -118,15 +118,15 @@ public final class WindowList {
 			Frame[] newInvisibleFrames = getFrames(false, true, false);
 			Frame[] newIconifiedFrames = getFrames(false, false, true);
 
-			if (arrayEquals(newVisibleWindows, visibleWindows) == false)
+			if (!arrayEquals(newVisibleWindows, visibleWindows))
 				changed = true;
-			if (arrayEquals(newInvisibleWindows, invisibleWindows) == false)
+			if (!arrayEquals(newInvisibleWindows, invisibleWindows))
 				changed = true;
-			if (arrayEquals(newVisibleFrames, visibleFrames) == false)
+			if (!arrayEquals(newVisibleFrames, visibleFrames))
 				changed = true;
-			if (arrayEquals(newInvisibleFrames, invisibleFrames) == false)
+			if (!arrayEquals(newInvisibleFrames, invisibleFrames))
 				changed = true;
-			if (arrayEquals(newIconifiedFrames, iconifiedFrames) == false)
+			if (!arrayEquals(newIconifiedFrames, iconifiedFrames))
 				changed = true;
 
 			visibleWindows = wrap(newVisibleWindows);
