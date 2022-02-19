@@ -174,7 +174,6 @@ import java.util.function.Consumer;
 					LOGGER.fine("Worker not created because race field was empty.");
 					builder.append("Worker needs a race.").append(System.lineSeparator());
 				}
-				// FIXME: Only include stats in the error message if actually non-positive!
 				for (final Pair<String, Integer> pair : Arrays.asList(
 						Pair.with("HP", hpValue), Pair.with("Max HP", maxHPValue),
 						Pair.with("Strength", strValue),
@@ -185,10 +184,12 @@ import java.util.function.Consumer;
 						Pair.with("Charisma", chaValue))) {
 					final String stat = pair.getValue0();
 					final int val = pair.getValue1();
-					LOGGER.fine(String.format(
-						"Worker not created because non-positive %s provided", stat));
-					builder.append(String.format("%s must be a non-negative number.",
-						stat)).append(System.lineSeparator());
+					if (val < 0) {
+						LOGGER.fine(String.format(
+								"Worker not created because non-positive %s provided", stat));
+						builder.append(String.format("%s must be a non-negative number.",
+								stat)).append(System.lineSeparator());
+					}
 				}
 				showErrorDialog(getParent(), "Strategic Primer Worker Advancement",
 					builder.toString());
