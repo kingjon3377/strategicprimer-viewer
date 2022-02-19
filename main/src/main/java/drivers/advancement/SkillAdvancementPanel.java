@@ -102,13 +102,7 @@ import drivers.common.IAdvancementModel;
 		hours.setText("");
 	}
 
-	// FIXME: Remove if never called
-	public static SkillAdvancementPanel delegate(final IAdvancementModel model, final JTextField hours,
-	                                             final JButton okButton, final JButton cancelButton) {
-		return new SkillAdvancementPanel(model, hours, okButton, cancelButton);
-	}
-
-	// FIXME: Inline into public constructor if static factory is never called
+	// We'd like to combine the two constructors, but that's far from trivial.
 	private SkillAdvancementPanel(final IAdvancementModel model, final JTextField hours, final JButton okButton,
 	                              final JButton cancelButton) {
 		super(null, new FlowPanel(new JLabel("Add "), hours, new JLabel(" hours to skill?")),
