@@ -9,8 +9,7 @@
     <version>0.5-SNAPSHOT</version>
 
     <properties>
-        <maven.compiler.source>8</maven.compiler.source>
-        <maven.compiler.target>8</maven.compiler.target>
+        <maven.compiler.release>8</maven.compiler.release>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <junit.platform.version>1.8.0</junit.platform.version>
         <junit.jupiter.version>5.8.2</junit.jupiter.version>
