@@ -20,6 +20,7 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -156,10 +157,8 @@ import java.util.logging.Logger;
 			final Throwable cause = except.getCause();
 			if (cause instanceof SPFormatException) {
 				LOGGER.severe(cause.getMessage());
-			} else if (cause != null) {
-				LOGGER.log(Level.SEVERE, "Driver failed:", cause);
 			} else {
-				LOGGER.log(Level.SEVERE, "Driver failed:", except);
+				LOGGER.log(Level.SEVERE, "Driver failed:", Objects.requireNonNullElse(cause, except));
 			}
 		} catch (final Exception except) {
 			LOGGER.log(Level.SEVERE, except.getMessage(), except);
