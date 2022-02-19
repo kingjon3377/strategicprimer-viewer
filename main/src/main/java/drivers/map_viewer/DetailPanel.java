@@ -48,7 +48,7 @@ import worker.common.IFixtureEditHelper;
  *
  * TODO: Separate controller functionality from presentation
  */
-/* package */ class DetailPanel extends JSplitPane implements VersionChangeListener, SelectionChangeListener {
+/* package */ final class DetailPanel extends JSplitPane implements VersionChangeListener, SelectionChangeListener {
 	protected static final Logger LOGGER = Logger.getLogger(DetailPanel.class.getName());
 
 
