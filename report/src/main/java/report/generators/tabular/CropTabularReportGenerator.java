@@ -63,7 +63,7 @@ public class CropTabularReportGenerator implements ITableGenerator</*Forest|Shru
 		if (hq == null) {
 			distanceComparator = (one, two) -> 0;
 		} else {
-			distanceComparator = new DistanceComparator(hq, dimensions)::compare;
+			distanceComparator = new DistanceComparator(hq, dimensions);
 		}
 	}
 

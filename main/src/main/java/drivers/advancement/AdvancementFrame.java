@@ -103,7 +103,7 @@ import drivers.gui.common.MenuBroker;
 					hoursAdditionPanel), 0.5, 0.3)));
 
 		playerChanged(null, model.getCurrentPlayer());
-		setJMenuBar(workerMenu(menuHandler::actionPerformed, this, driver));
+		setJMenuBar(workerMenu(menuHandler, this, driver));
 		pack();
 	}
 

@@ -63,7 +63,7 @@ import common.map.IMutableMapNG;
 	private void createWindow(final MenuBroker menuHandler) {
 		// FIXME: Try to remove the use of 'this' here
 		final SPFrame frame = new ExplorationFrame(this, menuHandler);
-		frame.addWindowListener(new WindowCloseListener(menuHandler::actionPerformed));
+		frame.addWindowListener(new WindowCloseListener(menuHandler));
 		try {
 			menuHandler.registerWindowShower(new AboutDialog(frame,
 				frame.getWindowName()), "about");

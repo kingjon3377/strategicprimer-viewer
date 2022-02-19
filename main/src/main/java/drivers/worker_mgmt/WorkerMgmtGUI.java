@@ -61,7 +61,7 @@ public class WorkerMgmtGUI implements MultiMapGUIDriver, WorkerGUI {
 		LOGGER.finer("Created worker mgmt frame");
 		pcml.addPlayerChangeListener(frame);
 		LOGGER.finer("Added it as a listener on the PCML");
-		frame.addWindowListener(new WindowCloseListener(menuHandler::actionPerformed));
+		frame.addWindowListener(new WindowCloseListener(menuHandler));
 		menuHandler.register(ignored -> frame.playerChanged(model.getCurrentPlayer(), model.getCurrentPlayer()),
 				"reload tree");
 		try {

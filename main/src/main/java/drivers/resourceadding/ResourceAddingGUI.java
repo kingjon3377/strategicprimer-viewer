@@ -328,8 +328,8 @@ import java.io.FileNotFoundException;
 	}
 
 	private void startDriverImpl(final PlayerChangeMenuListener pcml, final MenuBroker menuHandler) {
-		final ResourceAddingFrame frame = new ResourceAddingFrame(menuHandler::actionPerformed, this);
-		frame.addWindowListener(new WindowCloseListener(menuHandler::actionPerformed));
+		final ResourceAddingFrame frame = new ResourceAddingFrame(menuHandler, this);
+		frame.addWindowListener(new WindowCloseListener(menuHandler));
 		try {
 			menuHandler.registerWindowShower(new AboutDialog(frame,
 				frame.getWindowName()), "about");

@@ -141,7 +141,7 @@ import drivers.worker_mgmt.orderspanel.OrdersPanel;
 		pcListeners = Collections.unmodifiableList(Arrays.asList(newUnitFrame, treeModel,
 			ordersPanelObj, resultsPanel, notesPanelInstance));
 
-		setJMenuBar(WorkerMenu.workerMenu(menuHandler::actionPerformed, getContentPane(), driver));
+		setJMenuBar(WorkerMenu.workerMenu(menuHandler, getContentPane(), driver));
 		pack();
 	}
 

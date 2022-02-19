@@ -108,9 +108,9 @@ import org.eclipse.jdt.annotation.Nullable;
 		setPreferredSize(new Dimension(1024, 640));
 
 		setJMenuBar(SPMenu.forWindowContaining(explorationPanel,
-			SPMenu.createFileMenu(menuHandler::actionPerformed, driver),
-			SPMenu.disabledMenu(SPMenu.createMapMenu(menuHandler::actionPerformed, driver)),
-			SPMenu.createViewMenu(menuHandler::actionPerformed, driver)));
+			SPMenu.createFileMenu(menuHandler, driver),
+			SPMenu.disabledMenu(SPMenu.createMapMenu(menuHandler, driver)),
+			SPMenu.createViewMenu(menuHandler, driver)));
 		pack();
 	}
 

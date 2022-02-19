@@ -84,7 +84,7 @@ public class TabularReportGUI implements GUIDriver {
 		window.add(frame);
 		window.setJMenuBar(SPMenu.forWindowContaining(frame,
 			SPMenu.createFileMenu(
-				new IOHandler(this, cli)::actionPerformed,
+				new IOHandler(this, cli),
 				this),
 			SPMenu.disabledMenu(SPMenu.createMapMenu(x -> {}, this)),
 			SPMenu.disabledMenu(SPMenu.createViewMenu(x -> {}, this))));
