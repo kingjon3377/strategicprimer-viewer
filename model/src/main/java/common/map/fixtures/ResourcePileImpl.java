@@ -48,7 +48,7 @@ public final class ResourcePileImpl implements IMutableResourcePile {
 	/**
 	 * What specific kind of thing is in the resource pile.
 	 */
-	private String contents;
+	private final String contents;
 
 	/**
 	 * What specific kind of thing is in the resource pile.
@@ -56,14 +56,6 @@ public final class ResourcePileImpl implements IMutableResourcePile {
 	@Override
 	public String getContents() {
 		return contents;
-	}
-
-	/**
-	 * Set what specific kind of thing is in the resource pile.
-	 */
-	@Override
-	public void setContents(final String contents) {
-		this.contents = contents;
 	}
 
 	/**
