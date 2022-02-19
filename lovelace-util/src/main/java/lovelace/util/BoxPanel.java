@@ -11,7 +11,7 @@ import java.awt.Dimension;
 /**
  * A {@link JPanel} laid out by a {@link BoxLayout}.
  */
-public class BoxPanel extends JPanel {
+public final class BoxPanel extends JPanel {
 	/**
 	 * The possible axes that a {@link BoxLayout} can be laid out on.
 	 */
