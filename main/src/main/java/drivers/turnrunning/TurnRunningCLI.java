@@ -216,7 +216,7 @@ import org.javatuples.Pair;
 	@Override
 	public void startDriver() {
 		final int currentTurn = model.getMap().getCurrentTurn();
-		final Player player = cli.chooseFromList((List<? extends Player>) new ArrayList<Player>(model.getPlayerChoices()), "Players in the maps:", "No players found", "Player to run:", ICLIHelper.ListChoiceBehavior.ALWAYS_PROMPT).getValue1();
+		final Player player = cli.chooseFromList((List<? extends Player>) new ArrayList<>(model.getPlayerChoices()), "Players in the maps:", "No players found", "Player to run:", ICLIHelper.ListChoiceBehavior.ALWAYS_PROMPT).getValue1();
 		if (player == null) {
 			return;
 		}

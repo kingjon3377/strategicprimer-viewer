@@ -555,7 +555,7 @@ abstract class YAAbstractReader<Item, Value> implements YAReader<Item, Value> {
 		final Set<String> local = Stream.of(attributes).map(String::toLowerCase)
 			.collect(Collectors.toSet());
 		for (final String attribute : StreamSupport.stream(
-				new IteratorWrapper<Attribute>(
+						new IteratorWrapper<>(
 					element.getAttributes()).spliterator(), true)
 				.map(Attribute::getName).filter(YAAbstractReader::isSupportedNamespace)
 				.map(QName::getLocalPart).map(String::toLowerCase)

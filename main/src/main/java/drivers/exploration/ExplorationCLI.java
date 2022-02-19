@@ -45,7 +45,7 @@ import common.map.fixtures.mobile.IUnit;
 	 */
 	@Nullable
 	public Player choosePlayer() {
-		return cli.chooseFromList((List<? extends Player>) new ArrayList<Player>(model.getPlayerChoices()), "Players shared by all the maps:", "No players shared by all the maps:", "Chosen player: ", ICLIHelper.ListChoiceBehavior.AUTO_CHOOSE_ONLY).getValue1();
+		return cli.chooseFromList((List<? extends Player>) new ArrayList<>(model.getPlayerChoices()), "Players shared by all the maps:", "No players shared by all the maps:", "Chosen player: ", ICLIHelper.ListChoiceBehavior.AUTO_CHOOSE_ONLY).getValue1();
 	}
 
 	/**

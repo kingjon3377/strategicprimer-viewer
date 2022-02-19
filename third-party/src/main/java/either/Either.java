@@ -16,7 +16,7 @@ public abstract class Either<A, B> {
 		Function<? super B, ? extends C> right);
 
 	public static <A, B> Either<A, B> left(final A value) {
-		return new Either<A, B>() {
+		return new Either<>() {
 			@Override
 			public <C> C either(final Function<? super A, ? extends C> left,
 			                    final Function<? super B, ? extends C> right) {
@@ -26,7 +26,7 @@ public abstract class Either<A, B> {
 	}
 
 	public static <A, B> Either<A, B> right(final B value) {
-		return new Either<A, B>() {
+		return new Either<>() {
 			@Override
 			public <C> C either(final Function<? super A, ? extends C> left,
 			                    final Function<? super B, ? extends C> right) {

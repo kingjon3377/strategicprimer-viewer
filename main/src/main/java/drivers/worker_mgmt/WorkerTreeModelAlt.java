@@ -534,7 +534,7 @@ public class WorkerTreeModelAlt extends DefaultTreeModel implements IWorkerTreeM
 		final PlayerNode rootNode = (PlayerNode) getRoot();
 		final Enumeration<?> enumeration = rootNode.preorderEnumeration();
 		final Iterable<WorkerTreeNode<?>> wrapped =
-			new IteratorWrapper<>(new EnumerationWrapper<WorkerTreeNode<?>>(enumeration));
+			new IteratorWrapper<>(new EnumerationWrapper<>(enumeration));
 		final Iterable<WorkerTreeNode<?>> sequence;
 		boolean leading;
 		final WorkerTreeNode<?> toTrim;
