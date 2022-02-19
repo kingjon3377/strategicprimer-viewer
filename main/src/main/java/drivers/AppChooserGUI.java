@@ -80,6 +80,9 @@ import lovelace.util.ListenedButton;
 					});
 			};
 		for (final DriverFactory driver : drivers) {
+			if (!includeInGUIList(driver)) {
+				continue;
+			}
 			buttonPanel.add(new ListenedButton(driver.getUsage().getShortDescription(),
 				ignored -> buttonHandler.accept(driver)));
 		}
