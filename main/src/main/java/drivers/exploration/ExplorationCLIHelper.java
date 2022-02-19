@@ -201,7 +201,6 @@ public class ExplorationCLIHelper implements MovementCostListener, SelectionChan
 					if (destination == null) {
 						// EOF
 						runningTotal = 0;
-						return;
 					} else {
 						final Pair<Integer, Iterable<Point>> pair =
 							pather.getTravelDistance(point, destination);
@@ -213,8 +212,8 @@ public class ExplorationCLIHelper implements MovementCostListener, SelectionChan
 						} else {
 							path.forEach(proposedPath::addLast);
 						}
-						return;
 					}
+					return;
 					default:
 					runningTotal = 0;
 					return;
