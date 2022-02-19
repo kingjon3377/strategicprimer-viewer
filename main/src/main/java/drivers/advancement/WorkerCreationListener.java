@@ -1,5 +1,6 @@
 package drivers.advancement;
 
+import java.util.stream.IntStream;
 import org.jetbrains.annotations.Nullable;
 
 import org.javatuples.Pair;
@@ -152,10 +153,8 @@ import java.util.function.Consumer;
 			final int intValue = intelligence.getNumber().intValue();
 			final int wisValue = wisdom.getNumber().intValue();
 			final int chaValue = charisma.getNumber().intValue();
-			if (!nameText.isEmpty() && !raceText.isEmpty() && hpValue >= 0 &&
-					maxHPValue >= 0 && strValue >= 0 && dexValue >= 0 &&
-					conValue >= 0 && intValue >= 0 && wisValue >= 0 &&
-					chaValue >= 0) {
+			if (!nameText.isEmpty() && !raceText.isEmpty() && IntStream.of(hpValue, maxHPValue, strValue, dexValue,
+					conValue, intValue, wisValue, chaValue).allMatch(x -> x >= 0)) {
 				// TODO: These logging statements should probably be "trace" i.e. "finer", not "debug" i.e. "fine"
 				LOGGER.fine("All worker-creation-dialog fields are acceptable");
 				final Worker retval = new Worker(nameText, raceText, factory.createID());
