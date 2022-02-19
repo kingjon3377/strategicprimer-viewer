@@ -78,9 +78,7 @@ import drivers.gui.common.SPFrame;
 	}
 
 	private void printParagraph(final String paragraph, final LabelTextColor color) {
-		SwingUtilities.invokeLater(() -> {
-			label.append(String.format("<p style=\"color:%s\">%s</p>", color, paragraph));
-		});
+		SwingUtilities.invokeLater(() -> label.append(String.format("<p style=\"color:%s\">%s</p>", color, paragraph)));
 	}
 
 	void customPrinter(final String string) {
