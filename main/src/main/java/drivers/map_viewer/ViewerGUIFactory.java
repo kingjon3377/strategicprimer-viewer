@@ -62,10 +62,10 @@ public class ViewerGUIFactory implements ViewerDriverFactory {
 	@Override
 	public IViewerModel createModel(final IMutableMapNG map) {
 		final Path path = map.getFilename();
-		if (path != null) {
-			LOGGER.finer("Creating a viewer model for path " + path);
-		} else {
+		if (path == null) {
 			LOGGER.finer("Creating a viewer model for a null path");
+		} else {
+			LOGGER.finer("Creating a viewer model for path " + path);
 		}
 		return new ViewerModel(map);
 	}

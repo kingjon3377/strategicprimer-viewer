@@ -123,12 +123,12 @@ public class ViewerGUI implements ViewerDriver {
 
 	private FindDialog getFindDialog(final ViewerFrame parent) {
 		final FindDialog temp = finder;
-		if (temp != null) {
-			return temp;
-		} else {
+		if (temp == null) {
 			final FindDialog local = new FindDialog(parent, model);
 			finder = local;
 			return local;
+		} else {
+			return temp;
 		}
 	}
 

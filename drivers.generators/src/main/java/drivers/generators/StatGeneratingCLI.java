@@ -287,7 +287,25 @@ import common.map.fixtures.towns.Village;
 	private Worker generateWorkerFrom(final Village village, final String name, final IDRegistrar idf) {
 		final Worker worker = new Worker(name, village.getRace(), idf.createID());
 		worker.setNote(village.getOwner(), String.format("From %s.", village.getName()));
-		if (village.getPopulation() != null) {
+		if (village.getPopulation() == null) {
+			cli.println("No population details, so no levels.");
+			final WorkerStats stats = createWorkerStats(village.getRace(), 0);
+			worker.setStats(stats);
+			cli.println(String.format("%s is a %s from %s. Stats:", name, village.getRace(),
+					village.getName()));
+			final int[] statArray = stats.array();
+			for (int i = 0; i < 6; i++) {
+				if ((i == statLabelArray.size() - 1) ||
+						    (i == statArray.length - 1)) {
+					cli.println(String.format("%s %s", statLabelArray.get(i),
+							WorkerStats.getModifierString(statArray[i])));
+				} else {
+					cli.print(String.format("%s %s, ", statLabelArray.get(i),
+							WorkerStats.getModifierString(statArray[i])));
+				}
+			}
+			return worker;
+		} else {
 			final List<IJob> candidates = new ArrayList<>();
 			for (final Map.Entry<String, Integer> entry :
 					village.getPopulation().getHighestSkillLevels().entrySet()) {
@@ -300,49 +318,49 @@ import common.map.fixtures.towns.Village;
 					addCandidate.accept(level - 6);
 					addCandidate.accept(level - 7);
 					SingletonRandom.SINGLETON_RANDOM.ints()
-						.filter(n -> n < 4).map(n -> 5 + n).limit(16)
-						.forEach(addCandidate);
+							.filter(n -> n < 4).map(n -> 5 + n).limit(16)
+							.forEach(addCandidate);
 					SingletonRandom.SINGLETON_RANDOM.ints()
-						.filter(n -> n < 4).map(n -> 1 + n).limit(32)
-						.forEach(addCandidate);
+							.filter(n -> n < 4).map(n -> 1 + n).limit(32)
+							.forEach(addCandidate);
 				} else if (level > 12) {
 					addCandidate.accept(level - 3);
 					SingletonRandom.SINGLETON_RANDOM.ints()
-						.filter(n -> n < 4).map(n -> 5 + n).limit(8)
-						.forEach(addCandidate);
+							.filter(n -> n < 4).map(n -> 5 + n).limit(8)
+							.forEach(addCandidate);
 					SingletonRandom.SINGLETON_RANDOM.ints()
-						.filter(n -> n < 4).map(n -> 1 + n).limit(16)
-						.forEach(addCandidate);
+							.filter(n -> n < 4).map(n -> 1 + n).limit(16)
+							.forEach(addCandidate);
 				} else if (level > 8) {
 					SingletonRandom.SINGLETON_RANDOM.ints()
-						.filter(n -> n < 4).map(n -> 5 + n).limit(3)
-						.forEach(addCandidate);
+							.filter(n -> n < 4).map(n -> 5 + n).limit(3)
+							.forEach(addCandidate);
 					SingletonRandom.SINGLETON_RANDOM.ints()
-						.filter(n -> n < 4).map(n -> 1 + n).limit(6)
-						.forEach(addCandidate);
+							.filter(n -> n < 4).map(n -> 1 + n).limit(6)
+							.forEach(addCandidate);
 				} else if (level > 4) {
 					SingletonRandom.SINGLETON_RANDOM.ints()
-						.filter(n -> n < 4).map(n -> 1 + n).limit(2)
-						.forEach(addCandidate);
+							.filter(n -> n < 4).map(n -> 1 + n).limit(2)
+							.forEach(addCandidate);
 				}
 			}
 			if (candidates.isEmpty()) {
 				cli.println(String.format("No training available in %s.",
-					village.getName()));
+						village.getName()));
 				final WorkerStats stats = createWorkerStats(village.getRace(), 0);
 				worker.setStats(stats);
 				cli.println(String.format("%s is a %s from %s. Stats:", name,
-					village.getRace(), village.getName()));
+						village.getRace(), village.getName()));
 				// TODO: Extract helper method for printing stat array
 				final int[] statArray = stats.array();
 				for (int i = 0; i < 6; i++) {
 					if ((i == statLabelArray.size() - 1) ||
-							(i == statArray.length - 1)) {
+							    (i == statArray.length - 1)) {
 						cli.println(String.format("%s %s", statLabelArray.get(i),
-							WorkerStats.getModifierString(statArray[i])));
+								WorkerStats.getModifierString(statArray[i])));
 					} else {
 						cli.print(String.format("%s %s, ", statLabelArray.get(i),
-							WorkerStats.getModifierString(statArray[i])));
+								WorkerStats.getModifierString(statArray[i])));
 					}
 				}
 				return worker;
@@ -352,48 +370,30 @@ import common.map.fixtures.towns.Village;
 				while (true) {
 					worker.addJob(training);
 					final WorkerStats stats = createWorkerStats(village.getRace(),
-						training.getLevel());
+							training.getLevel());
 					cli.println(String.format(
-						"%s, a %s, is a level-%d %s from %s. Proposed stats:",
-						name, village.getRace(), training.getLevel(),
-						training.getName(), village.getName()));
+							"%s, a %s, is a level-%d %s from %s. Proposed stats:",
+							name, village.getRace(), training.getLevel(),
+							training.getName(), village.getName()));
 					final int[] statArray = stats.array();
 					for (int i = 0; i < 6; i++) {
 						if ((i == statLabelArray.size() - 1) ||
-								(i == statArray.length - 1)) {
+								    (i == statArray.length - 1)) {
 							cli.println(String.format("%s %s", statLabelArray.get(i),
-								WorkerStats.getModifierString(statArray[i])));
+									WorkerStats.getModifierString(statArray[i])));
 						} else {
 							cli.print(String.format("%s %s, ", statLabelArray.get(i),
-								WorkerStats.getModifierString(statArray[i])));
+									WorkerStats.getModifierString(statArray[i])));
 						}
 					}
 					final boolean acceptance = cli.inputBoolean( // TODO: handle EOF
-						"Do those stats fit that profile?");
+							"Do those stats fit that profile?");
 					if (acceptance) {
 						worker.setStats(stats);
 						return worker;
 					}
 				}
 			}
-		} else {
-			cli.println("No population details, so no levels.");
-			final WorkerStats stats = createWorkerStats(village.getRace(), 0);
-			worker.setStats(stats);
-			cli.println(String.format("%s is a %s from %s. Stats:", name, village.getRace(),
-				village.getName()));
-			final int[] statArray = stats.array();
-			for (int i = 0; i < 6; i++) {
-				if ((i == statLabelArray.size() - 1) ||
-						(i == statArray.length - 1)) {
-					cli.println(String.format("%s %s", statLabelArray.get(i),
-						WorkerStats.getModifierString(statArray[i])));
-				} else {
-					cli.print(String.format("%s %s, ", statLabelArray.get(i),
-						WorkerStats.getModifierString(statArray[i])));
-				}
-			}
-			return worker;
 		}
 	}
 
@@ -476,15 +476,15 @@ import common.map.fixtures.towns.Village;
 			.orElse(-1);
 		for (int i = 0; i < count; i++) {
 			final String name;
-			if (!names.isEmpty()) {
-				name = names.removeFirst().trim();
-			} else {
+			if (names.isEmpty()) {
 				final String temp = cli.inputString("Next worker name: ");
 				if (temp == null) {
 					break;
 				} else {
 					name = temp;
 				}
+			} else {
+				name = names.removeFirst().trim();
 			}
 			Village home = null;
 			for (final Triplet<Integer, Double, Village> triplet : villages) {

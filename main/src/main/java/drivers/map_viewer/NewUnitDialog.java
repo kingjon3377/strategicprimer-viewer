@@ -99,15 +99,14 @@ public class NewUnitDialog extends SPDialog implements NewUnitSource, PlayerChan
 			if (isNumeric(reqId)) {
 				final OptionalInt temp = parseInt(reqId);
 				if (temp.isPresent()) {
-					if (!idf.isIDUnused(temp.getAsInt())) {
+					if (idf.isIDUnused(temp.getAsInt())) {
+						idNum = temp.getAsInt();
+						idf.register(idNum);
+					} else {
 						// TODO: Show an error message
 						idField.setText("");
 						idField.requestFocusInWindow();
 						return;
-					}
-					else {
-						idNum = temp.getAsInt();
-						idf.register(idNum);
 					}
 				} else {
 					// TODO: log and/or show error message

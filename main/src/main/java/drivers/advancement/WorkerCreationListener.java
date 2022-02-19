@@ -67,12 +67,12 @@ import java.util.function.Consumer;
 	private IUnit selectedUnit = null;
 
 	public void addNewWorker(final IWorker worker) {
-		if (selectedUnit != null) {
-			model.addUnitMember(selectedUnit, worker);
-		} else {
+		if (selectedUnit == null) {
 			LOGGER.warning("New worker created when no unit selected");
 			showErrorDialog(null, "Strategic Primer Worker Advancement",
-				"As no unit was selected, the new worker wasn't added to a unit.");
+					"As no unit was selected, the new worker wasn't added to a unit.");
+		} else {
+			model.addUnitMember(selectedUnit, worker);
 		}
 	}
 

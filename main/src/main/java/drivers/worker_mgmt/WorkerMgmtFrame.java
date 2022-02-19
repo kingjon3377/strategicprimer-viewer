@@ -167,15 +167,15 @@ import drivers.worker_mgmt.orderspanel.OrdersPanel;
 		final IWorkerTreeModel treeModel = (IWorkerTreeModel) tree.getModel();
 		final TreePath currentSelection = tree.getSelectionModel().getSelectionPath();
 		final TreePath nextPath = treeModel.nextProblem(currentSelection, mainMap.getCurrentTurn());
-		if (nextPath != null) {
+		if (nextPath == null) {
+			LOGGER.finer("Nowhere to jump to, about to beep");
+			Toolkit.getDefaultToolkit().beep();
+		} else {
 			tree.expandPath(nextPath);
 			tree.setSelectionRow(tree.getRowForPath(nextPath));
 			// selectTodoText isn't inlined because we need to make sure the
 			// tree-selection listeners get updated
 			SwingUtilities.invokeLater(this::selectTodoText);
-		} else {
-			LOGGER.finer("Nowhere to jump to, about to beep");
-			Toolkit.getDefaultToolkit().beep();
 		}
 	}
 

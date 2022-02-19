@@ -484,10 +484,10 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 
 	private boolean mapsAgreeOnLocation(final IUnit unit) {
 		if (unit instanceof ProxyUnit) {
-			if (!((ProxyUnit) unit).getProxied().isEmpty()) {
-				return mapsAgreeOnLocation(((ProxyUnit) unit).getProxied().iterator().next());
-			} else {
+			if (((ProxyUnit) unit).getProxied().isEmpty()) {
 				return false;
+			} else {
+				return mapsAgreeOnLocation(((ProxyUnit) unit).getProxied().iterator().next());
 			}
 		}
 		final Point mainLoc = find(unit);
@@ -729,7 +729,9 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 			matching = getMap().getFixtures(location).stream()
 				.filter(f -> f.getId() == fixture.getId()).findAny().orElse(null);
 		}
-		if (matching != null) {
+		if (matching == null) {
+			LOGGER.warning("Skipping because not in the main map");
+		} else {
 			for (final IMutableMapNG subMap : getRestrictedSubordinateMaps()) {
 				retval = subMap.addFixture(location, matching.copy(zero)) || retval;
 				// We do *not* use the return value because it returns false if an existing fixture was *replaced*
@@ -741,8 +743,6 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 				retval = true;
 				getRestrictedMap().setModified(true); // TODO: Here and elsewhere, don't bother to setModified() if the earlier mutator method already sets the flag
 			}
-		} else {
-			LOGGER.warning("Skipping because not in the main map");
 		}
 		return retval;
 	}

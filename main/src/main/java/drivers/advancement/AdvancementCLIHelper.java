@@ -145,11 +145,11 @@ public class AdvancementCLIHelper implements LevelGainSource {
 				worker.forEach(jobs::add);
 				final IJob temp = jobs.stream().filter(j -> jobName.equals(j.getName()))
 					.findFirst().orElse(null);
-				if (temp != null) {
-					job = temp;
-				} else {
+				if (temp == null) {
 					cli.println("Select the new item at the next prompt.");
 					continue;
+				} else {
+					job = temp;
 				}
 			} else {
 				break;

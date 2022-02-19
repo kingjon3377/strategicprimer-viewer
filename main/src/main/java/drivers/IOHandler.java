@@ -239,17 +239,17 @@ public class IOHandler implements ActionListener {
 			if (driver instanceof ModelDriver) {
 				final ModelDriver md = (ModelDriver) driver;
 				final Path givenFile = md.getModel().getMap().getFilename();
-				if (givenFile != null) {
+				if (givenFile == null) {
+					actionPerformed(new ActionEvent(event.getSource(), event.getID(),
+							"save as", event.getWhen(), event.getModifiers()));
+				} else {
 					try {
 						MapIOHelper.writeMap(givenFile, md.getModel().getMap());
 						md.getModel().setMapModified(false);
-					} catch (final IOException|MalformedXMLException except) {
+					} catch (final IOException | MalformedXMLException except) {
 						handleError(except, givenFile.toString(), source, errorTitle,
-							"writing to");
+								"writing to");
 					}
-				} else {
-					actionPerformed(new ActionEvent(event.getSource(), event.getID(),
-						"save as", event.getWhen(), event.getModifiers()));
 				}
 			} else {
 				LOGGER.severe("IOHandler asked to save in driver it can't do that for");
@@ -353,12 +353,12 @@ public class IOHandler implements ActionListener {
 			if (driver instanceof MultiMapGUIDriver) {
 				final IDriverModel newModel = ((MultiMapGUIDriver) driver).getModel()
 					.fromSecondMap();
-				if (newModel != null) {
-					SwingUtilities.invokeLater(() -> openSecondaryInViewer(newModel,
-						driver.getOptions()));
-				} else {
+				if (newModel == null) {
 					LOGGER.severe(
-						"IOHandler asked to 'open secondary in map viewer'; none there");
+							"IOHandler asked to 'open secondary in map viewer'; none there");
+				} else {
+					SwingUtilities.invokeLater(() -> openSecondaryInViewer(newModel,
+							driver.getOptions()));
 				}
 			} else {
 				LOGGER.severe(

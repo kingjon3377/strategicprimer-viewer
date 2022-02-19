@@ -92,11 +92,11 @@ public final class ImageLoader {
 			try (final ResourceInputStream res = new ResourceInputStream("images/" + file,
 					ImageLoader.class)) { // TODO: Change back to IOHandler once ported?
 				final Image image = ImageIO.read(res);
-				if (image != null) {
+				if (image == null) {
+					throw new IOException("No reader could read the file images/" + file);
+				} else {
 					IMAGE_CACHE.put(file, image);
 					return image;
-				} else {
-					throw new IOException("No reader could read the file images/" + file);
 				}
 			}
 		}

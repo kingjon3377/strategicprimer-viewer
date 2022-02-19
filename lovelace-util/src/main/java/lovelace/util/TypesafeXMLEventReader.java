@@ -84,14 +84,14 @@ public class TypesafeXMLEventReader implements Iterator<XMLEvent>, Closeable {
 			try {
 				if (wrapped.hasNext()) {
 					final XMLEvent retval = wrapped.nextEvent();
-					if (retval != null) {
+					if (retval == null) {
+						close();
+						throw new NoSuchElementException();
+					} else {
 						if (!wrapped.hasNext()) {
 							close();
 						}
 						return retval;
-					} else {
-						close();
-						throw new NoSuchElementException();
 					}
 				} else {
 					close();

@@ -95,10 +95,10 @@ public class WorkerModel extends SimpleMultiMapModel implements IWorkerModel {
 		final IMutableFortress fortress = map.getFixtures(location).stream()
 			.filter(IMutableFortress.class::isInstance).map(IMutableFortress.class::cast)
 			.filter(f -> f.getOwner().equals(unit.getOwner())).findAny().orElse(null);
-		if (fortress != null) {
-			fortress.addMember(unit.copy(false));
-		} else {
+		if (fortress == null) {
 			map.addFixture(location, unit.copy(false));
+		} else {
+			fortress.addMember(unit.copy(false));
 		}
 	}
 
@@ -190,19 +190,11 @@ public class WorkerModel extends SimpleMultiMapModel implements IWorkerModel {
 	 */
 	@Override
 	public Collection<IUnit> getUnits(final Player player) {
-		if (!getSubordinateMaps().iterator().hasNext()) {
-			// Just in case I missed something in the proxy implementation, make sure
-			// things work correctly when there's only one map.
-			return getUnitsImpl(getMap().streamAllFixtures()
-					.collect(Collectors.toList()), player)
-				.stream().sorted(Comparator.comparing(IUnit::getName,
-					String.CASE_INSENSITIVE_ORDER))
-				.collect(Collectors.toList());
-		} else {
+		if (getSubordinateMaps().iterator().hasNext()) {
 			final Iterable<IUnit> temp = streamAllMaps()
-				.flatMap((indivMap) -> getUnitsImpl(indivMap.streamAllFixtures()
-						.collect(Collectors.toList()), player).stream())
-				.collect(Collectors.toList());
+					.flatMap((indivMap) -> getUnitsImpl(indivMap.streamAllFixtures()
+							.collect(Collectors.toList()), player).stream())
+					.collect(Collectors.toList());
 			final Map<Integer, ProxyUnit> tempMap = new TreeMap<>();
 			for (final IUnit unit : temp) {
 				final int key = unit.getId();
@@ -217,7 +209,15 @@ public class WorkerModel extends SimpleMultiMapModel implements IWorkerModel {
 				proxy.addProxied(unit);
 			}
 			return tempMap.values().stream().sorted(Comparator.comparing(IUnit::getName,
-				String.CASE_INSENSITIVE_ORDER)).collect(Collectors.toList());
+					String.CASE_INSENSITIVE_ORDER)).collect(Collectors.toList());
+		} else {
+			// Just in case I missed something in the proxy implementation, make sure
+			// things work correctly when there's only one map.
+			return getUnitsImpl(getMap().streamAllFixtures()
+					.collect(Collectors.toList()), player)
+					.stream().sorted(Comparator.comparing(IUnit::getName,
+							String.CASE_INSENSITIVE_ORDER))
+					.collect(Collectors.toList());
 		}
 	}
 
@@ -236,14 +236,14 @@ public class WorkerModel extends SimpleMultiMapModel implements IWorkerModel {
 	 * FIXME: Should copy into subordinate maps, and return either the unit (in one-map case) or a proxy
 	 */
 	private void addUnitAtLocation(final IUnit unit, final Point location) {
-		if (!getSubordinateMaps().iterator().hasNext()) {
-			addUnitAtLocationImpl(unit, location, getRestrictedMap());
-			setMapModified(true);
-		} else {
+		if (getSubordinateMaps().iterator().hasNext()) {
 			for (final IMutableMapNG eachMap : getRestrictedAllMaps()) {
 				addUnitAtLocationImpl(unit, location, eachMap);
 				eachMap.setModified(true);
 			}
+		} else {
+			addUnitAtLocationImpl(unit, location, getRestrictedMap());
+			setMapModified(true);
 		}
 	}
 
@@ -803,20 +803,20 @@ public class WorkerModel extends SimpleMultiMapModel implements IWorkerModel {
 						matchingWorker.spliterator(), true)
 					.filter(IMutableJob.class::isInstance).map(IMutableJob.class::cast)
 					.filter(j -> jobName.equals(j.getName())).findAny().orElse(null);
-				if (matchingJob != null) {
+				if (matchingJob == null) {
+					LOGGER.warning("No matching skill in matching worker");
+				} else {
 					final ISkill matchingSkill = StreamSupport.stream(
-							matchingJob.spliterator(), true)
-						.filter(delenda::equals).findAny().orElse(null);
-					if (matchingSkill != null) {
+									matchingJob.spliterator(), true)
+							.filter(delenda::equals).findAny().orElse(null);
+					if (matchingSkill == null) {
+						LOGGER.warning("No matching skill in matching worker");
+					} else {
 						map.setModified(true);
 						any = true;
 						matchingJob.removeSkill(matchingSkill);
 						matchingJob.addSkill(replacement.copy());
-					} else {
-						LOGGER.warning("No matching skill in matching worker");
 					}
-				} else {
-					LOGGER.warning("No matching skill in matching worker");
 				}
 			}
 		}

@@ -140,16 +140,16 @@ public class DuplicateFixtureRemoverCLI implements CLIDriver {
 	 */
 	@Nullable
 	private Boolean approveRemoval(final Point location, final TileFixture fixture, @Nullable final TileFixture matching) {
-		if (matching != null) {
+		if (matching == null) {
+			return false;
+		} else {
 			final String fCls = fixture.getClass().getName();
 			final String mCls = matching.getClass().getName();
 			return cli.inputBooleanInSeries(
-				String.format("At %s: Remove '%s', of class '%s', ID #%d, which matches '%s', of class '%s', ID #%d?",
-					location, fixture.getShortDescription(), fCls, fixture.getId(),
-					matching.getShortDescription(), mCls, matching.getId()),
-				"duplicate``fCls````mCls``");
-		} else {
-			return false;
+					String.format("At %s: Remove '%s', of class '%s', ID #%d, which matches '%s', of class '%s', ID #%d?",
+							location, fixture.getShortDescription(), fCls, fixture.getId(),
+							matching.getShortDescription(), mCls, matching.getId()),
+					"duplicate``fCls````mCls``");
 		}
 	}
 

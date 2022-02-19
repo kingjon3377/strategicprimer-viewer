@@ -205,12 +205,10 @@ public class ProxyWorker implements WorkerProxy {
 	public String getDefaultImage() {
 		String retval = null;
 		for (final IWorker worker : workers) {
-			if (retval != null) {
-				if (!retval.equals(worker.getDefaultImage())) {
-					return "worker.png";
-				}
-			} else {
+			if (retval == null) {
 				retval = worker.getDefaultImage();
+			} else if (!retval.equals(worker.getDefaultImage())) {
+				return "worker.png";
 			}
 		}
 		return (retval == null) ? "worker.png" : retval;

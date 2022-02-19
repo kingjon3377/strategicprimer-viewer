@@ -53,10 +53,10 @@ public final class NotesPanel extends BorderedPanel
 	}
 
 	private void revertNotes() {
-		if (current != null) {
-			notesArea.setText(current.getNote(player));
-		} else {
+		if (current == null) {
 			Toolkit.getDefaultToolkit().beep();
+		} else {
+			notesArea.setText(current.getNote(player));
 		}
 	}
 

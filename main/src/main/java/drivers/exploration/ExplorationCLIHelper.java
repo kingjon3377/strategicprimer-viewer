@@ -156,81 +156,83 @@ public class ExplorationCLIHelper implements MovementCostListener, SelectionChan
 	// ExplorationModel.move() always sets it.
 	public void moveOneStep() {
 		final IUnit mover = model.getSelectedUnit();
-		if (mover != null) {
+		if (mover == null) {
+			cli.println("No unit is selected");
+		} else {
 			final Point point = model.getSelectedUnitLocation();
 			final Direction direction;
 			final Point proposedDestination = proposedPath.pollFirst();
 			if (proposedDestination == null) {
 				cli.println(String.format("%d/%d MP remaining. Current speed: %s.",
-					runningTotal, totalMP, speed.getShortName()));
+						runningTotal, totalMP, speed.getShortName()));
 				cli.printlnAtInterval(usage);
 				final int directionNum = Optional.ofNullable(cli.inputNumber("Direction to move: ")).orElse(-1);
 				switch (directionNum) {
-				case 0:
-					changeSpeed();
-					return;
-				case 1:
-					direction = Direction.Southwest;
-					break;
-				case 2:
-					direction = Direction.South;
-					break;
-				case 3:
-					direction = Direction.Southeast;
-					break;
-				case 4:
-					direction = Direction.West;
-					break;
-				case 5:
-					direction = Direction.Nowhere;
-					break;
-				case 6:
-					direction = Direction.East;
-					break;
-				case 7:
-					direction = Direction.Northwest;
-					break;
-				case 8:
-					direction = Direction.North;
-					break;
-				case 9:
-					direction = Direction.Northeast;
-					break;
-				case 10:
-					final Point destination = cli.inputPoint("Location to move toward: ");
-					if (destination == null) {
-						// EOF
-						runningTotal = 0;
-					} else {
-						final Pair<Integer, Iterable<Point>> pair =
-							pather.getTravelDistance(point, destination);
-						final int cost = pair.getValue0();
-						final Iterable<Point> path = pair.getValue1();
-						if (!path.iterator().hasNext()) {
-							cli.println(
-								"S/he doesn't know how to get there from here.");
+					case 0:
+						changeSpeed();
+						return;
+					case 1:
+						direction = Direction.Southwest;
+						break;
+					case 2:
+						direction = Direction.South;
+						break;
+					case 3:
+						direction = Direction.Southeast;
+						break;
+					case 4:
+						direction = Direction.West;
+						break;
+					case 5:
+						direction = Direction.Nowhere;
+						break;
+					case 6:
+						direction = Direction.East;
+						break;
+					case 7:
+						direction = Direction.Northwest;
+						break;
+					case 8:
+						direction = Direction.North;
+						break;
+					case 9:
+						direction = Direction.Northeast;
+						break;
+					case 10:
+						final Point destination = cli.inputPoint("Location to move toward: ");
+						if (destination == null) {
+							// EOF
+							runningTotal = 0;
 						} else {
-							path.forEach(proposedPath::addLast);
+							final Pair<Integer, Iterable<Point>> pair =
+									pather.getTravelDistance(point, destination);
+							final int cost = pair.getValue0();
+							final Iterable<Point> path = pair.getValue1();
+							if (path.iterator().hasNext()) {
+								path.forEach(proposedPath::addLast);
+							} else {
+								cli.println(
+										"S/he doesn't know how to get there from here.");
+							}
 						}
-					}
-					return;
-				default:
-					runningTotal = 0;
-					return;
+						return;
+					default:
+						runningTotal = 0;
+						return;
 				}
 			} else {
 				direction = Stream.of(Direction.values())
-					.filter(d -> proposedDestination.equals(model.getDestination(point, d)))
-					.findAny().orElse(Direction.Nowhere);
+						.filter(d -> proposedDestination.equals(model.getDestination(point, d)))
+						.findAny().orElse(Direction.Nowhere);
 				if (proposedDestination.equals(point)) {
 					return;
 				} else if (Direction.Nowhere == direction) {
 					cli.println(String.format("Next step %s isn't adjacent to %s",
-						proposedDestination, point));
+							proposedDestination, point));
 					return;
 				}
 				cli.println(String.format("%d/%d MP remaining. Current speed: %s.",
-					runningTotal, totalMP, speed.getShortName()));
+						runningTotal, totalMP, speed.getShortName()));
 			}
 
 			final Point destPoint = model.getDestination(point, direction);
@@ -254,7 +256,8 @@ public class ExplorationCLIHelper implements MovementCostListener, SelectionChan
 				}
 			}
 
-			/*Animal|AnimalTracks|HuntingModel.NothingFound*/ final TileFixture tracksAnimal;
+			/*Animal|AnimalTracks|HuntingModel.NothingFound*/
+			final TileFixture tracksAnimal;
 
 			// Since not-visible terrain is impassable, by this point we know the tile is visible.
 			final TileType terrain = map.getBaseTerrain(destPoint);
@@ -272,43 +275,43 @@ public class ExplorationCLIHelper implements MovementCostListener, SelectionChan
 
 			if (Direction.Nowhere == direction) {
 				while (true) {
-				final Boolean response = cli.inputBooleanInSeries("Take an action here?");
-				if (response == null) {
-					// EOF
-					runningTotal = 0;
-					return;
-				} else if (!response) {
-					break;
-				}
-				final Either<SimpleApplet, Boolean> choice = appletChooser.chooseApplet();
-				assert choice != null;
-				final SimpleApplet applet = choice.fromLeft().orElse(null);
-				final Boolean bool = choice.fromRight().orElse(null);
-				if (applet == null) {
-					if (bool == null) {
+					final Boolean response = cli.inputBooleanInSeries("Take an action here?");
+					if (response == null) {
 						// EOF
 						runningTotal = 0;
 						return;
-					} else if (!bool) {
+					} else if (!response) {
 						break;
 					}
-				} else {
-					applet.invoke();
+					final Either<SimpleApplet, Boolean> choice = appletChooser.chooseApplet();
+					assert choice != null;
+					final SimpleApplet applet = choice.fromLeft().orElse(null);
+					final Boolean bool = choice.fromRight().orElse(null);
+					if (applet == null) {
+						if (bool == null) {
+							// EOF
+							runningTotal = 0;
+							return;
+						} else if (!bool) {
+							break;
+						}
+					} else {
+						applet.invoke();
+					}
 				}
 			}
-		}
 
-		final String mtn;
-		if (map.isMountainous(destPoint)) {
-			mtn = "mountainous ";
-		} else {
-			mtn = "";
-		}
-		model.copyTerrainToSubMaps(destPoint);
+			final String mtn;
+			if (map.isMountainous(destPoint)) {
+				mtn = "mountainous ";
+			} else {
+				mtn = "";
+			}
+			model.copyTerrainToSubMaps(destPoint);
 
-		cli.print(String.format("The explorer comes to %s, a %s%s tile", destPoint, mtn,
-			Optional.ofNullable(map.getBaseTerrain(destPoint)).map(TileType::toString)
-				.orElse("unknown-terrain")));
+			cli.print(String.format("The explorer comes to %s, a %s%s tile", destPoint, mtn,
+					Optional.ofNullable(map.getBaseTerrain(destPoint)).map(TileType::toString)
+							.orElse("unknown-terrain")));
 			final Collection<River> rivers = map.getRivers(destPoint);
 			final boolean anyRivers;
 			if (rivers.contains(River.Lake)) {
@@ -325,7 +328,7 @@ public class ExplorationCLIHelper implements MovementCostListener, SelectionChan
 				anyRivers = false;
 			}
 			cli.println(rivers.stream().filter(r -> River.Lake != r).map(River::toString)
-				.collect(Collectors.joining(", ")));
+					.collect(Collectors.joining(", ")));
 
 			if (!map.getRoads(destPoint).isEmpty()) {
 				if (anyRivers) {
@@ -334,10 +337,10 @@ public class ExplorationCLIHelper implements MovementCostListener, SelectionChan
 					cli.print(" with (a) road(s) to the ");
 				}
 				cli.println(map.getRoads(destPoint).keySet().stream().map(Direction::toString)
-					.collect(Collectors.joining(", "))); // TODO: Report on road quality
+						.collect(Collectors.joining(", "))); // TODO: Report on road quality
 			}
 			final Iterable<TileFixture> noticed = SimpleMovementModel.selectNoticed(allFixtures, Function.identity(),
-				mover, speed);
+					mover, speed);
 
 			if (!constants.isEmpty() || noticed.iterator().hasNext()) {
 				cli.println("The following were noticed:");
@@ -354,8 +357,6 @@ public class ExplorationCLIHelper implements MovementCostListener, SelectionChan
 					destPoint)) {
 				proposedPath.clear();
 			}
-		} else {
-			cli.println("No unit is selected");
 		}
 	}
 

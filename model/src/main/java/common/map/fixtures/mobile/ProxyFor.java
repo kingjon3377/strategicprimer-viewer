@@ -30,12 +30,10 @@ public interface ProxyFor<Type> /* implements Type */ {
 		@Nullable MemberType retval = null;
 		for (final Type proxied : getProxied()) {
 			final MemberType item = accessor.apply(proxied);
-			if (retval != null) {
-				if (!retval.equals(item)) {
-					return null;
-				}
-			} else {
+			if (retval == null) {
 				retval = item;
+			} else if (!retval.equals(item)) {
+				return null;
 			}
 		}
 		return retval;

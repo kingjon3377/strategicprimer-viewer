@@ -305,12 +305,14 @@ public class Ver2TileDrawHelper implements TileDrawHelper {
 					.map(TerrainFixture.class::cast)
 					.reduce((first, second) -> second)
 					.orElse(null);
-			if (bottom != null) {
-				return !top.equals(bottom);
-			} else if (map.isMountainous(location)) {
-				return true;
+			if (bottom == null) {
+				if (map.isMountainous(location)) {
+					return true;
+				} else {
+					return false;
+				}
 			} else {
-				return false;
+				return !top.equals(bottom);
 			}
 		} else {
 			return false;

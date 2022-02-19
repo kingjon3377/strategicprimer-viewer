@@ -328,28 +328,28 @@ import java.util.stream.Collectors;
 		Iterable<IUnit> sequence;
 		boolean leading;
 		final Predicate<IUnit> leadingFilter;
-		if (starting != null) {
+		if (starting == null) {
+			leading = false;
+			leadingFilter = null;
+			sequence = model.getUnits(player);
+		} else {
 			final IUnit startingUnit = Stream.of(starting.getPath()).filter(IUnit.class::isInstance)
-				.map(IUnit.class::cast).findFirst().orElse(null);
+					.map(IUnit.class::cast).findFirst().orElse(null);
 			final String startingKind = Stream.of(starting.getPath()).filter(String.class::isInstance)
-				.map(String.class::cast).findFirst().orElse(null);
+					.map(String.class::cast).findFirst().orElse(null);
 			final Collection<IUnit> temp = model.getUnits(player);
 			sequence = Stream.concat(temp.stream(), temp.stream()).collect(Collectors.toList());
 			if (startingUnit != null) {
 				leading = true;
 				leadingFilter = startingUnit::equals;
-			} else if (startingKind != null) {
-				leading = true;
-				leadingFilter = unit -> startingKind.equals(unit.getKind());
-			} else {
+			} else if (startingKind == null) {
 				leading = false;
 				leadingFilter = null;
 				sequence = model.getUnits(player);
+			} else {
+				leading = true;
+				leadingFilter = unit -> startingKind.equals(unit.getKind());
 			}
-		} else {
-			leading = false;
-			leadingFilter = null;
-			sequence = model.getUnits(player);
 		}
 		for (final IUnit unit : sequence) {
 			if (leading) {

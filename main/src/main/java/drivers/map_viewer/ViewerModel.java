@@ -525,13 +525,16 @@ public class ViewerModel extends SimpleDriverModel implements IViewerModel {
 					.map(f -> Pair.<Point, IFixture>with(l, f)))
 				.flatMap(ViewerModel::flattenEntries).filter(unitMatching(unit))
 				.findAny().orElse(null);
-		if (pair != null) {
+		if (pair == null) {
+			LOGGER.finer("No matching units");
+			return false;
+		} else {
 			final Point location = pair.getValue0();
 			final IUnit fixture = (IUnit) pair.getValue1();
 			LOGGER.finer("Map has matching unit");
 			if (fixture.getKind().equals(unit.getKind()) &&
-					fixture.getName().equals(unit.getName()) &&
-					fixture.isEmpty()) {
+					    fixture.getName().equals(unit.getName()) &&
+					    fixture.isEmpty()) {
 				LOGGER.finer("Matching unit meets preconditions");
 				if (getMap().getFixtures(location).contains(fixture)) {
 					getRestrictedMap().removeFixture(location, fixture);
@@ -546,24 +549,21 @@ public class ViewerModel extends SimpleDriverModel implements IViewerModel {
 							fort.removeMember(fixture);
 							getRestrictedMap().setModified(true);
 							LOGGER.finer(
-								"Finished removing matching unit from map");
+									"Finished removing matching unit from map");
 							return true;
 						}
 					}
 					LOGGER.warning(
-						"Failed to find unit to remove that we thought might be in a fortress");
+							"Failed to find unit to remove that we thought might be in a fortress");
 					return false;
 				}
 			} else {
 				LOGGER.warning(String.format(
-					"Matching unit in %s fails preconditions for removal",
-					Optional.ofNullable(getMap().getFilename())
-						.map(Path::toString).orElse("an unsaved map")));
+						"Matching unit in %s fails preconditions for removal",
+						Optional.ofNullable(getMap().getFilename())
+								.map(Path::toString).orElse("an unsaved map")));
 				return false;
 			}
-		} else {
-			LOGGER.finer("No matching units");
-			return false;
 		}
 	}
 
@@ -618,13 +618,13 @@ public class ViewerModel extends SimpleDriverModel implements IViewerModel {
 					.filter(m -> ((UnitMember) m).getId() ==
 						((UnitMember) item).getId())
 					.findAny().orElse(null); // FIXME: We should have a firmer identification than just name and ID
-			if (matching != null) {
+			if (matching == null) {
+				LOGGER.warning("Unable to find unit member to rename");
+				return false;
+			} else {
 				matching.setName(newName);
 				getRestrictedMap().setModified(true);
 				return true;
-			} else {
-				LOGGER.warning("Unable to find unit member to rename");
-				return false;
 			}
 		} else { // FIXME: Fortresses are the obvious case here ...
 			LOGGER.warning("Unable to find item to rename");
@@ -667,13 +667,13 @@ public class ViewerModel extends SimpleDriverModel implements IViewerModel {
 					.filter(m -> ((UnitMember) m).getId() ==
 						((UnitMember) item).getId())
 					.findAny().orElse(null); // FIXME: We should have a firmer identification than just kind and ID
-			if (matching != null) {
+			if (matching == null) {
+				LOGGER.warning("Unable to find unit member to change kind");
+				return false;
+			} else {
 				matching.setKind(newKind);
 				getRestrictedMap().setModified(true);
 				return true;
-			} else {
-				LOGGER.warning("Unable to find unit member to change kind");
-				return false;
 			}
 		} else { // FIXME: Fortresses are the obvious type
 			LOGGER.warning("Unable to find item to change kind");

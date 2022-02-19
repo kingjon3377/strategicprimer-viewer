@@ -748,12 +748,12 @@ public class TurnRunningModel extends ExplorationModel implements ITurnRunningMo
 
 		@Override
 		public int getAsInt() {
-			if (generatedId != null) {
-				return generatedId;
-			} else {
+			if (generatedId == null) {
 				final int temp = idFactory.getAsInt();
 				generatedId = temp;
 				return temp;
+			} else {
+				return generatedId;
 			}
 		}
 	}

@@ -49,10 +49,10 @@ public abstract class AbstractTurnApplet implements TurnApplet {
 			items.stream().map(converter).collect(Collectors.toList()), description,
 			none, prompt, behavior);
 		// N.B. can't inline using Optional because we *test* the right side of the pair, then *use* the left side.
-		if (entry.getValue1() != null) {
-			return items.get(entry.getValue0());
-		} else {
+		if (entry.getValue1() == null) {
 			return null;
+		} else {
+			return items.get(entry.getValue0());
 		}
 	}
 

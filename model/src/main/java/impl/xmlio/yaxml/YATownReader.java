@@ -123,28 +123,28 @@ import java.util.logging.Logger;
 					}
 					break;
 				case "claim":
-					if (current != null) {
-						throw UnwantedChildException.listingExpectedTags(
-							stack.peekFirst().getName(), (StartElement) event,
-								expectedCommunityStatsTags(current).toArray(new String[0]));
-					} else {
+					if (current == null) {
 						expectAttributes((StartElement) event, "resource");
 						retval.addWorkedField(getIntegerParameter(
 							(StartElement) event, "resource"));
 						stack.addFirst((StartElement) event);
 						current = ((StartElement) event).getName().getLocalPart();
+					} else {
+						throw UnwantedChildException.listingExpectedTags(
+							stack.peekFirst().getName(), (StartElement) event,
+								expectedCommunityStatsTags(current).toArray(new String[0]));
 					}
 					break;
 				case "production":
 				case "consumption":
-					if (current != null) {
-						throw UnwantedChildException.listingExpectedTags(
-							stack.peekFirst().getName(), (StartElement) event,
-								expectedCommunityStatsTags(current).toArray(new String[0]));
-					} else {
+					if (current == null) {
 						expectAttributes((StartElement) event);
 						stack.addFirst((StartElement) event);
 						current = ((StartElement) event).getName().getLocalPart();
+					} else {
+						throw UnwantedChildException.listingExpectedTags(
+								stack.peekFirst().getName(), (StartElement) event,
+								expectedCommunityStatsTags(current).toArray(new String[0]));
 					}
 					break;
 				case "resource":
@@ -212,12 +212,12 @@ import java.util.logging.Logger;
 		for (final XMLEvent event : stream) {
 			if (event instanceof StartElement &&
 					isSupportedNamespace(((StartElement) event).getName())) {
-				if (retval.getPopulation() != null) {
-					throw new UnwantedChildException(element.getName(),
-						(StartElement) event);
-				} else {
+				if (retval.getPopulation() == null) {
 					retval.setPopulation(parseCommunityStats((StartElement) event,
-						element.getName(), stream));
+							element.getName(), stream));
+				} else {
+					throw new UnwantedChildException(element.getName(),
+							(StartElement) event);
 				}
 			} else if (isMatchingEnd(element.getName(), event)) {
 				break;
@@ -265,12 +265,12 @@ import java.util.logging.Logger;
 		for (final XMLEvent event : stream) {
 			if (event instanceof StartElement &&
 					isSupportedNamespace(((StartElement) event).getName())) {
-				if (retval.getPopulation() != null) {
-					throw new UnwantedChildException(element.getName(),
-						(StartElement) event);
-				} else {
+				if (retval.getPopulation() == null) {
 					retval.setPopulation(parseCommunityStats((StartElement) event,
-						element.getName(), stream));
+							element.getName(), stream));
+				} else {
+					throw new UnwantedChildException(element.getName(),
+							(StartElement) event);
 				}
 			} else if (isMatchingEnd(element.getName(), event)) {
 				break;
@@ -340,12 +340,12 @@ import java.util.logging.Logger;
 		writeProperty(ostream, "owner", obj.getOwner().getPlayerId());
 		writeImageXML(ostream, obj);
 		writeNonemptyProperty(ostream, "portrait", obj.getPortrait());
-		if (obj.getPopulation() != null) {
+		if (obj.getPopulation() == null) {
+			closeLeafTag(ostream);
+		} else {
 			finishParentTag(ostream);
 			writeCommunityStats(ostream, obj.getPopulation(), tabs + 1);
 			closeTag(ostream, tabs, obj.getKind());
-		} else {
-			closeLeafTag(ostream);
 		}
 	}
 
@@ -418,12 +418,12 @@ import java.util.logging.Logger;
 			writeProperty(ostream, "race", ((Village) obj).getRace());
 			writeImageXML(ostream, (Village) obj);
 			writeNonemptyProperty(ostream, "portrait", obj.getPortrait());
-			if (obj.getPopulation() != null) {
+			if (obj.getPopulation() == null) {
+				closeLeafTag(ostream);
+			} else {
 				finishParentTag(ostream);
 				writeCommunityStats(ostream, obj.getPopulation(), tabs + 1);
 				closeTag(ostream, tabs, "village");
-			} else {
-				closeLeafTag(ostream);
 			}
 		} else if (obj instanceof IFortress) {
 			writeTag(ostream, "fortress", tabs);

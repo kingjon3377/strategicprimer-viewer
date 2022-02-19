@@ -35,11 +35,11 @@ public final class IDFactory implements IDRegistrar {
 	public int register(final int id, final Warning warning, @Nullable final Location location) {
 		if (id >= 0) {
 			if (usedIDs.contains(id)) {
-				if (location != null) {
-					warning.handle(DuplicateIDException.atLocation(id,
-						location.getLineNumber(), location.getColumnNumber()));
-				} else {
+				if (location == null) {
 					warning.handle(new DuplicateIDException(id));
+				} else {
+					warning.handle(DuplicateIDException.atLocation(id,
+							location.getLineNumber(), location.getColumnNumber()));
 				}
 			}
 			usedIDs.add(id);

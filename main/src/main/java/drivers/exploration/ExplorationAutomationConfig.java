@@ -168,12 +168,12 @@ import org.jetbrains.annotations.Nullable;
 		}
 		final Condition<? extends TileFixture> matchingCondition = localEnabledConditions.stream()
 			.filter(c -> c.matches(map, point)).findFirst().orElse(null);
-		if (matchingCondition != null) {
-			cli.println(String.format("There is %s here, so the explorer stops.",
-				matchingCondition.getStopExplanation()));
-			return true;
-		} else {
+		if (matchingCondition == null) {
 			return false;
+		} else {
+			cli.println(String.format("There is %s here, so the explorer stops.",
+					matchingCondition.getStopExplanation()));
+			return true;
 		}
 	}
 }

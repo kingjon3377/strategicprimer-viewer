@@ -141,9 +141,7 @@ public class TodoFixerCLI implements CLIDriver {
 	private ExplorationRunner _runner = null;
 
 	private ExplorationRunner getRunner() throws IOException {
-		if (_runner != null) {
-			return _runner;
-		} else {
+		if (_runner == null) {
 			final ExplorationRunner retval = new ExplorationRunner();
 			final Path directory = Paths.get("tables");
 			if (!Files.isDirectory(directory)) {
@@ -152,6 +150,8 @@ public class TodoFixerCLI implements CLIDriver {
 			retval.loadAllTables(directory);
 			_runner = retval;
 			return retval;
+		} else {
+			return _runner;
 		}
 	}
 

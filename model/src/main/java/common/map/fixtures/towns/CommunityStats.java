@@ -201,7 +201,9 @@ public final class CommunityStats implements Subsettable<@Nullable CommunityStat
 
 	@Override
 	public boolean isSubset(@Nullable final CommunityStats other, final Consumer<String> report) {
-		if (other != null) {
+		if (other == null) {
+			return true;
+		} else {
 			if (population < other.getPopulation()) {
 				report.accept("Population is larger");
 				return false;
@@ -235,8 +237,6 @@ public final class CommunityStats implements Subsettable<@Nullable CommunityStat
 				}
 				return true;
 			}
-		} else {
-			return true;
 		}
 	}
 

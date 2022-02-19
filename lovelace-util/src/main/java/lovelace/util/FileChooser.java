@@ -323,10 +323,10 @@ public class FileChooser {
 			LOGGER.fine("FileChooser.files: Have to ask the user; not yet on EDT");
 			invoke(this::haveUserChooseFiles);
 		}
-		if (!storedFile.isEmpty()) {
-			return storedFile;
-		} else {
+		if (storedFile.isEmpty()) {
 			throw new ChoiceInterruptedException();
+		} else {
+			return storedFile;
 		}
 	}
 

@@ -163,12 +163,12 @@ import java.util.stream.StreamSupport;
 					final IJob job = StreamSupport.stream(currentRoot.spliterator(), false)
 						.filter(j -> addendum.equals(j.getName()))
 						.findAny().orElse(null);
-					if (job != null) {
-						fireTreeNodesInserted(new TreeModelEvent(this,
-							new TreePath(currentRoot), new int[] { childCount },
-							new Object[] { job }));
-					} else {
+					if (job == null) {
 						LOGGER.warning("Worker not found");
+					} else {
+						fireTreeNodesInserted(new TreeModelEvent(this,
+								new TreePath(currentRoot), new int[]{childCount},
+								new Object[]{job}));
 					}
 				} else {
 					LOGGER.warning("Worker not found");
@@ -185,13 +185,13 @@ import java.util.stream.StreamSupport;
 					final ISkill skill = StreamSupport.stream(job.spliterator(), false)
 						.filter(s -> addendum.equals(s.getName()))
 						.findAny().orElse(null);
-					if (skill != null) {
-						fireTreeNodesInserted(new TreeModelEvent(this,
-							new TreePath(new Object[] { localRoot, job }),
-							new int[] { childCount }, new Object[] { skill }));
-					} else {
+					if (skill == null) {
 						LOGGER.warning(
-							"Worker not found, or skill-adding otherwise failed");
+								"Worker not found, or skill-adding otherwise failed");
+					} else {
+						fireTreeNodesInserted(new TreeModelEvent(this,
+								new TreePath(new Object[]{localRoot, job}),
+								new int[]{childCount}, new Object[]{skill}));
 					}
 				} else {
 					LOGGER.warning("Worker not found, or skill-adding otherwise failed");

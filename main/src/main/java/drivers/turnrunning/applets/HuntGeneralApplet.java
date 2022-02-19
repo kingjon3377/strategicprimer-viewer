@@ -67,15 +67,15 @@ import org.jetbrains.annotations.Nullable;
 		final IUnit unit = chooseFromList(model.getUnits(Optional.ofNullable(model.getSelectedUnit())
 							.map(IUnit::getOwner).orElse(model.getMap().getCurrentPlayer())),
 			"Available units:", "No units", "Unit to add animals to:", ICLIHelper.ListChoiceBehavior.ALWAYS_PROMPT, HuntGeneralApplet::describeUnit);
-		if (unit != null) {
+		if (unit == null) {
+			return false;
+		} else {
 			final Integer num = cli.inputNumber("Number captured:");
 			if (num == null) {
 				return null;
 			} else {
 				return model.addAnimal(unit, find.getKind(), "wild", idf.createID(), num);
 			}
-		} else {
-			return false;
 		}
 	}
 

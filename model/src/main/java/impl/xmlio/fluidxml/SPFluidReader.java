@@ -324,12 +324,12 @@ public class SPFluidReader implements IMapReader, ISPReader {
 			getIntegerAttribute(mapTag, "rows"),
 			getIntegerAttribute(mapTag, "columns"),
 			getIntegerAttribute(mapTag, "version"));
-		if (readDimensions.getVersion() != 2) {
+		if (readDimensions.getVersion() == 2) {
+			dimensions = readDimensions;
+		} else {
 			warner.handle(new MapVersionException(mapTag, readDimensions.getVersion(), 2, 2));
 			dimensions = new MapDimensionsImpl(readDimensions.getRows(),
-				readDimensions.getColumns(), 2);
-		} else {
-			dimensions = readDimensions;
+					readDimensions.getColumns(), 2);
 		}
 		final Deque<QName> tagStack = new LinkedList<>();
 		tagStack.addFirst(element.getName());

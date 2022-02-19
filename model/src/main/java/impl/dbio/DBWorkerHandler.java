@@ -88,18 +88,18 @@ final class DBWorkerHandler extends AbstractDatabaseWriter<IWorker, IUnit> imple
 		db.transaction(sql -> {
 			final String portrait = obj.getPortrait();
 			final WorkerStats stats = obj.getStats();
-			if (stats != null) {
+			if (stats == null) {
 				sql.update(WORKER_SQL, context.getId(), obj.getId(), obj.getName(),
-					obj.getRace(), obj.getImage(), portrait, stats.getHitPoints(),
-					stats.getMaxHitPoints(), stats.getStrength(),
-					stats.getDexterity(), stats.getConstitution(),
-					stats.getIntelligence(), stats.getWisdom(),
-					stats.getCharisma()).execute();
-				} else {
-					sql.update(WORKER_SQL, context.getId(), obj.getId(), obj.getName(),
 						obj.getRace(), obj.getImage(), portrait, null, null, null,
 						null, null, null, null, null).execute();
-				}
+			} else {
+				sql.update(WORKER_SQL, context.getId(), obj.getId(), obj.getName(),
+						obj.getRace(), obj.getImage(), portrait, stats.getHitPoints(),
+						stats.getMaxHitPoints(), stats.getStrength(),
+						stats.getDexterity(), stats.getConstitution(),
+						stats.getIntelligence(), stats.getWisdom(),
+						stats.getCharisma()).execute();
+			}
 				for (final IJob job : obj) {
 					sql.update(JOB_SQL, obj.getId(), job.getName(), job.getLevel())
 						.execute();

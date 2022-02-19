@@ -309,40 +309,40 @@ public class FixtureListModel implements ListModel<TileFixture>, SelectionChange
 				if (currentTerrain != null &&
 						    currentTerrain == ((TileTypeFixture) fixture)
 								    .getTileType()) {
-					if (terrainSink != null) {
+					if (terrainSink == null) {
+						retval = false;
+					} else {
 						terrainSink.accept(point, null);
 						fireIntervalRemoved(new Range(0, 0));
-					} else {
-						retval = false;
 					}
 				}
 			} else if (fixture instanceof RiverFixture) {
-				if (removeRivers != null) {
+				if (removeRivers == null) {
+					retval = false;
+				} else {
 					final int index = cachedTerrainList.indexOf(fixture);
 					removeRivers.accept(point,
 							((RiverFixture) fixture).getRivers().toArray(new River[0]));
 					cachedTerrainList.remove(fixture);
 					fireIntervalRemoved(new Range(index, index));
-				} else {
-					retval = false;
 				}
 			} else if (fixture instanceof MountainFixture) {
-				if (mountainSink != null) {
+				if (mountainSink == null) {
+					retval = false;
+				} else {
 					final int index = cachedTerrainList.indexOf(fixture);
 					mountainSink.accept(point, false);
 					cachedTerrainList.remove(fixture);
 					fireIntervalRemoved(new Range(index, index));
-				} else {
-					retval = false;
 				}
 			} else if (fixturesSource.apply(point).contains(fixture)) {
 				final int index = indexOf(fixturesSource.apply(point), fixture);
-				if (removeFixture != null) {
+				if (removeFixture == null) {
+					retval = false;
+				} else {
 					removeFixture.accept(point, fixture);
 					final int adjusted = adjustedIndex(index);
 					fireIntervalRemoved(new Range(adjusted, adjusted));
-				} else {
-					retval = false;
 				}
 			} else if (fixture instanceof Animal && currentTracks.contains(fixture)) {
 				final int ctIndex = currentTracks.indexOf(fixture);
