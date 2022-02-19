@@ -9,10 +9,8 @@ import java.util.Iterator;
  * any option is passed to an app more than once, the subsequent option
  * overrides the previous, and any option passed without argument has an
  * implied argument of "true".
- *
- * TODO: Make class final?
  */
-public class SPOptionsImpl implements SPOptions {
+public final class SPOptionsImpl implements SPOptions {
 	private final Map<String, String> options = new HashMap<>();
 
 	// TODO: Take Map<String, String> instead and use options.putAll()?
