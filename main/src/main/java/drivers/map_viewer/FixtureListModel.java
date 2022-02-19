@@ -344,7 +344,7 @@ public class FixtureListModel implements ListModel<TileFixture>, SelectionChange
 					final int adjusted = adjustedIndex(index);
 					fireIntervalRemoved(new Range(adjusted, adjusted));
 				}
-			} else if (fixture instanceof Animal && currentTracks.contains(fixture)) {
+			} else if (fixture instanceof AnimalTracks && currentTracks.contains(fixture)) {
 				final int ctIndex = currentTracks.indexOf(fixture);
 				final int index = adjustedIndex(fixturesSource.apply(point).size() + ctIndex);
 				currentTracks.remove(fixture);
