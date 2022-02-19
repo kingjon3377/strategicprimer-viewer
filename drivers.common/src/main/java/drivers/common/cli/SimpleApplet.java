@@ -8,7 +8,7 @@ public class SimpleApplet implements Applet {
 	public SimpleApplet(final Runnable invoke, final String description, final String... commands) {
 		this.impl = invoke;
 		this.description = description;
-		this.commands = Collections.unmodifiableList(Arrays.asList(commands));
+		this.commands = List.of(commands);
 	}
 
 	private final Runnable impl;

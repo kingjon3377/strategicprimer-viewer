@@ -29,8 +29,7 @@ import java.util.Arrays;
  * A driver to print a mini-report on workers, suitable for inclusion in a player's results.
  */
 /* package */ class WorkerPrintCLI implements  ReadOnlyDriver {
-	private static final List<String> statLabelArray = Collections.unmodifiableList(Arrays.asList("Str",
-		"Dex", "Con", "Int", "Wis", "Cha"));
+	private static final List<String> statLabelArray = List.of("Str", "Dex", "Con", "Int", "Wis", "Cha");
 
 	private static String jobString(final IJob job) {
 		return String.format("%s %d", job.getName(), job.getLevel());

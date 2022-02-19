@@ -32,39 +32,35 @@ final class DBMapWriter extends AbstractDatabaseWriter<IMutableMapNG, IMapNG> {
 
 	public static int currentTurn = -1; // TODO: Make private and provide accessor---other classes don't need to write, right?
 
-	private static final List<String> INITIALIZERS = Collections.unmodifiableList(Arrays.asList(
-		"CREATE TABLE IF NOT EXISTS metadata (" +
-			"    version INTEGER NOT NULL," +
-			"    rows INTEGER NOT NULL," +
-			"    columns INTEGER NOT NULL," +
-			"    current_turn INTEGER NOT NULL" +
-			");",
-		"CREATE TABLE IF NOT EXISTS terrain (" +
-			"    row INTEGER NOT NULL," +
-			"    column INTEGER NOT NULL," +
-			"    terrain VARCHAR(16) NOT NULL" +
-			"        CHECK (terrain IN ('', 'tundra', 'desert', 'mountain', 'boreal_forest'," +
-			"            'temperate_forest', 'ocean', 'plains', 'jungle', 'steppe', 'swamp'))," +
-			"    mountainous BOOLEAN NOT NULL," +
-			"    north_river BOOLEAN NOT NULL," +
-			"    south_river BOOLEAN NOT NULL," +
-			"    east_river BOOLEAN NOT NULL," +
-			"    west_river BOOLEAN NOT NULL," +
-			"    lake BOOLEAN NOT NULL" +
-			");",
-		"CREATE TABLE IF NOT EXISTS bookmarks (" +
-			"    row INTEGER NOT NULL," +
-			"    column INTEGER NOT NULL," +
-			"    player INTEGER NOT NULL" +
-			");",
-		"CREATE TABLE IF NOT EXISTS roads (" +
-			"    row INTEGER NOT NULL," +
-			"    column INTEGER NOT NULL," +
-			"    direction VARCHAR(9) NOT NULL" +
-			"        CHECK (direction IN ('north', 'south', 'east', 'west', 'northeast'," +
-			"            'southeast', 'northwest', 'southwest'))," +
-			"    quality INTEGER NOT NULL" +
-			")"));
+	private static final List<String> INITIALIZERS = List.of("CREATE TABLE IF NOT EXISTS metadata (" +
+			                                                         "    version INTEGER NOT NULL," +
+			                                                         "    rows INTEGER NOT NULL," +
+			                                                         "    columns INTEGER NOT NULL," +
+			                                                         "    current_turn INTEGER NOT NULL" +
+			                                                         ");", "CREATE TABLE IF NOT EXISTS terrain (" +
+					                                                               "    row INTEGER NOT NULL," +
+					                                                               "    column INTEGER NOT NULL," +
+					                                                               "    terrain VARCHAR(16) NOT NULL" +
+					                                                               "        CHECK (terrain IN ('', 'tundra', 'desert', 'mountain', 'boreal_forest'," +
+					                                                               "            'temperate_forest', 'ocean', 'plains', 'jungle', 'steppe', 'swamp'))," +
+					                                                               "    mountainous BOOLEAN NOT NULL," +
+					                                                               "    north_river BOOLEAN NOT NULL," +
+					                                                               "    south_river BOOLEAN NOT NULL," +
+					                                                               "    east_river BOOLEAN NOT NULL," +
+					                                                               "    west_river BOOLEAN NOT NULL," +
+					                                                               "    lake BOOLEAN NOT NULL" +
+					                                                               ");", "CREATE TABLE IF NOT EXISTS bookmarks (" +
+							                                                                     "    row INTEGER NOT NULL," +
+							                                                                     "    column INTEGER NOT NULL," +
+							                                                                     "    player INTEGER NOT NULL" +
+							                                                                     ");", "CREATE TABLE IF NOT EXISTS roads (" +
+									                                                                           "    row INTEGER NOT NULL," +
+									                                                                           "    column INTEGER NOT NULL," +
+									                                                                           "    direction VARCHAR(9) NOT NULL" +
+									                                                                           "        CHECK (direction IN ('north', 'south', 'east', 'west', 'northeast'," +
+									                                                                           "            'southeast', 'northwest', 'southwest'))," +
+									                                                                           "    quality INTEGER NOT NULL" +
+									                                                                           ")");
 
 	@Override
 	public List<String> getInitializers() {

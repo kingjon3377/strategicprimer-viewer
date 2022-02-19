@@ -67,7 +67,7 @@ public class Ver2TileDrawHelper implements TileDrawHelper {
 	                          final FixtureMatcher... matchers) {
 		this.observer = observer;
 		this.filter = filter;
-		this.matchers = Collections.unmodifiableList(Arrays.asList(matchers));
+		this.matchers = List.of(matchers);
 		for (final String file : Arrays.asList("trees.png", "mountain.png")) {
 			try {
 				ImageLoader.loadImage(file);

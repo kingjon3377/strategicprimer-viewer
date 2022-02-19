@@ -38,7 +38,7 @@ import org.jetbrains.annotations.Nullable;
 	}
 
 	private final List<TrapperCommand> trapperCommands =
-			Collections.unmodifiableList(Arrays.asList(TrapperCommand.values()));
+			List.of(TrapperCommand.values());
 
 	@Nullable
 	private Integer handleFound(final Point center, final Point loc, final Animal item) {

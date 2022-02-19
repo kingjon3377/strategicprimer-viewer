@@ -29,42 +29,39 @@ final class DBWorkerHandler extends AbstractDatabaseWriter<IWorker, IUnit> imple
 		super(IWorker.class, IUnit.class);
 	}
 
-	private static final List<String> INITIALIZERS = Collections.unmodifiableList(Arrays.asList(
-		"CREATE TABLE IF NOT EXISTS workers (" +
-			"   unit INTEGER NOT NULL," +
-			"   id INTEGER NOT NULL," +
-			"   name VARCHAR(64) NOT NULL," +
-			"   race VARCHAR(32) NOT NULL," +
-			"   image VARCHAR(255)," +
-			"   portrait VARCHAR(255)," +
-			"   hp INTEGER," +
-			"   max_hp INTEGER CHECK((hp IS NULL AND max_hp IS NULL) OR" +
-			"       (hp IS NOT NULL AND max_hp IS NOT NULL))," +
-			"   str INTEGER CHECK((hp IS NULL AND str IS NULL) OR" +
-			"       (hp IS NOT NULL AND str IS NOT NULL))," +
-			"   dex INTEGER CHECK((hp IS NULL AND dex IS NULL) OR" +
-			"       (hp IS NOT NULL AND dex IS NOT NULL))," +
-			"   con INTEGER CHECK((hp IS NULL AND con IS NULL) OR" +
-			"       (hp IS NOT NULL AND con IS NOT NULL))," +
-			"   int INTEGER CHECK((hp IS NULL AND int IS NULL) OR" +
-			"       (hp IS NOT NULL AND int IS NOT NULL))," +
-			"   wis INTEGER CHECK((hp IS NULL AND wis IS NULL) OR" +
-			"       (hp IS NOT NULL AND wis IS NOT NULL))," +
-			"   cha INTEGER CHECK((hp IS NULL AND cha IS NULL) OR" +
-			"       (hp IS NOT NULL AND cha IS NOT NULL))" +
-			");",
-		"CREATE TABLE IF NOT EXISTS worker_job_levels (" +
-			"    worker INTEGER NOT NULL," +
-			"    job VARCHAR(32) NOT NULL," +
-			"    level INTEGER NOT NULL CHECK(level >= 0)" +
-			");",
-		"CREATE TABLE IF NOT EXISTS worker_skill_levels (" +
-			"    worker INTEGER NOT NULL," +
-			"    associated_job VARCHAR(32) NOT NULL," +
-			"    skill VARCHAR(32) NOT NULL," +
-			"    level INTEGER NOT NULL check(level >= 0)," +
-			"    hours INTEGER NOT NULL check(hours >= 0)" +
-			");"));
+	private static final List<String> INITIALIZERS = List.of("CREATE TABLE IF NOT EXISTS workers (" +
+			                                                         "   unit INTEGER NOT NULL," +
+			                                                         "   id INTEGER NOT NULL," +
+			                                                         "   name VARCHAR(64) NOT NULL," +
+			                                                         "   race VARCHAR(32) NOT NULL," +
+			                                                         "   image VARCHAR(255)," +
+			                                                         "   portrait VARCHAR(255)," +
+			                                                         "   hp INTEGER," +
+			                                                         "   max_hp INTEGER CHECK((hp IS NULL AND max_hp IS NULL) OR" +
+			                                                         "       (hp IS NOT NULL AND max_hp IS NOT NULL))," +
+			                                                         "   str INTEGER CHECK((hp IS NULL AND str IS NULL) OR" +
+			                                                         "       (hp IS NOT NULL AND str IS NOT NULL))," +
+			                                                         "   dex INTEGER CHECK((hp IS NULL AND dex IS NULL) OR" +
+			                                                         "       (hp IS NOT NULL AND dex IS NOT NULL))," +
+			                                                         "   con INTEGER CHECK((hp IS NULL AND con IS NULL) OR" +
+			                                                         "       (hp IS NOT NULL AND con IS NOT NULL))," +
+			                                                         "   int INTEGER CHECK((hp IS NULL AND int IS NULL) OR" +
+			                                                         "       (hp IS NOT NULL AND int IS NOT NULL))," +
+			                                                         "   wis INTEGER CHECK((hp IS NULL AND wis IS NULL) OR" +
+			                                                         "       (hp IS NOT NULL AND wis IS NOT NULL))," +
+			                                                         "   cha INTEGER CHECK((hp IS NULL AND cha IS NULL) OR" +
+			                                                         "       (hp IS NOT NULL AND cha IS NOT NULL))" +
+			                                                         ");", "CREATE TABLE IF NOT EXISTS worker_job_levels (" +
+					                                                               "    worker INTEGER NOT NULL," +
+					                                                               "    job VARCHAR(32) NOT NULL," +
+					                                                               "    level INTEGER NOT NULL CHECK(level >= 0)" +
+					                                                               ");", "CREATE TABLE IF NOT EXISTS worker_skill_levels (" +
+							                                                                     "    worker INTEGER NOT NULL," +
+							                                                                     "    associated_job VARCHAR(32) NOT NULL," +
+							                                                                     "    skill VARCHAR(32) NOT NULL," +
+							                                                                     "    level INTEGER NOT NULL check(level >= 0)," +
+							                                                                     "    hours INTEGER NOT NULL check(hours >= 0)" +
+							                                                                     ");");
 
 	@Override
 	public List<String> getInitializers() {

@@ -15,6 +15,5 @@ import java.util.List;
 	 * to be in a class and making a separate class just for this seems
 	 * silly.
 	 */
-	public static final List<String> LAND_RACES = Collections.unmodifiableList(
-		Arrays.asList("Danan", "dwarf", "elf", "half-elf", "gnome", "human"));
+	public static final List<String> LAND_RACES = List.of("Danan", "dwarf", "elf", "half-elf", "gnome", "human");
 }

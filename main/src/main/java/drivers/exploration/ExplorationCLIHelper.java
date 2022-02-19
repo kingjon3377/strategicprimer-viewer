@@ -115,8 +115,7 @@ public class ExplorationCLIHelper implements MovementCostListener, SelectionChan
 
 	private ExplorationAutomationConfig automationConfig;
 
-	private static final List<String> COMMANDS = Collections.unmodifiableList(Arrays.asList("Set Speed", "SW", "S", "SE",
-		"W", "Linger", "E", "NW", "N", "NE", "Toward Point", "Quit"));
+	private static final List<String> COMMANDS = List.of("Set Speed", "SW", "S", "SE", "W", "Linger", "E", "NW", "N", "NE", "Toward Point", "Quit");
 
 	private final String usage = IntStream.range(0, COMMANDS.size())
 		.mapToObj(i -> i + ": " + COMMANDS.get(i)).collect(Collectors.joining(", "));

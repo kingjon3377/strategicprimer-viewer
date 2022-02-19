@@ -33,7 +33,7 @@ public class AppletChooser<AppletClass extends Applet> {
 			}
 		}
 		commands = Collections.unmodifiableMap(temp);
-		this.applets = Collections.unmodifiableList(Arrays.asList(applets));
+		this.applets = List.of(applets);
 	}
 
 	private final ICLIHelper cli;

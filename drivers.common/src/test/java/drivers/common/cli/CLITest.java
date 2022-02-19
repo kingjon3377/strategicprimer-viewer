@@ -22,11 +22,9 @@ import java.util.stream.Stream;
 
 // TODO: Convert to property-based testing where possible
 public final class CLITest {
-	private static final List<String> TRUE_POSSIBILITIES = Collections.unmodifiableList(Arrays.asList(
-		"yes", "true", "y", "t"));
+	private static final List<String> TRUE_POSSIBILITIES = List.of("yes", "true", "y", "t");
 
-	private static final List<String> FALSE_POSSIBILITIES = Collections.unmodifiableList(Arrays.asList(
-		"no", "false", "n", "f"));
+	private static final List<String> FALSE_POSSIBILITIES = List.of("no", "false", "n", "f");
 
 	/**
 	 * A helper method to condense tests.

@@ -136,14 +136,10 @@ import common.map.HasKind;
 // FIXME: A lot of the assertions in this class have expected and actual values backwards
 public final class TestXMLIO {
 	private static final Set<String> races = Collections.unmodifiableSet(new HashSet<>(RaceFactory.RACES));
-	private static final List<String> animalStatuses = Collections.unmodifiableList(Arrays.asList(
-		"wild", "semi-domesticated", "domesticated", "tame"));
-	private static final List<String> treeTypes = Collections.unmodifiableList(Arrays.asList("oak",
-		"larch", "terebinth", "elm", "skybroom", "silver maple"));
-	private static final List<String> fieldTypes = Collections.unmodifiableList(Arrays.asList("wheat",
-		"amaranth", "bluegrass", "corn", "winter wheat"));
-	private static final List<String> minerals = Collections.unmodifiableList(Arrays.asList("coal",
-		"platinum", "oil", "diamonds", "natural gas"));
+	private static final List<String> animalStatuses = List.of("wild", "semi-domesticated", "domesticated", "tame");
+	private static final List<String> treeTypes = List.of("oak", "larch", "terebinth", "elm", "skybroom", "silver maple");
+	private static final List<String> fieldTypes = List.of("wheat", "amaranth", "bluegrass", "corn", "winter wheat");
+	private static final List<String> minerals = List.of("coal", "platinum", "oil", "diamonds", "natural gas");
 
 	/**
 	 * The "filename" to give to map-readers when they require one.
@@ -156,10 +152,8 @@ public final class TestXMLIO {
 	 * TODO: Extract interface for ISPReader&amp;IMapReader, so we don't
 	 * have to maintain separate names for the same objects.
 	 */
-	private final List<ISPReader> spReaders = Collections.unmodifiableList(Arrays.asList(
-		TestReaderFactory.getOldSPReader(), TestReaderFactory.getNewSPReader()));
-	private final List<IMapReader> mapReaders = Collections.unmodifiableList(Arrays.asList(
-		TestReaderFactory.getOldMapReader(), TestReaderFactory.getNewMapReader()));
+	private final List<ISPReader> spReaders = List.of(TestReaderFactory.getOldSPReader(), TestReaderFactory.getNewSPReader());
+	private final List<IMapReader> mapReaders = List.of(TestReaderFactory.getOldMapReader(), TestReaderFactory.getNewMapReader());
 
 	/**
 	 * Assert that the given XML will produce the given kind of warning and

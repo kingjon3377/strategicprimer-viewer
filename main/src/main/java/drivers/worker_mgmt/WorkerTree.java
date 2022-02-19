@@ -71,12 +71,7 @@ public class WorkerTree extends JTree implements UnitMemberSelectionSource, Unit
 	// TODO: Move into the inner class that uses this
 	private static final DefaultTreeCellRenderer DEFAULT_STORER = new DefaultTreeCellRenderer();
 	private final List<Pair<String, ToIntFunction<WorkerStats>>> statReferencesList =
-		Collections.unmodifiableList(Arrays.asList(Pair.with("Str", WorkerStats::getStrength),
-			Pair.with("Dex", WorkerStats::getDexterity),
-			Pair.with("Con", WorkerStats::getConstitution),
-			Pair.with("Int", WorkerStats::getIntelligence),
-			Pair.with("Wis", WorkerStats::getWisdom),
-			Pair.with("Cha", WorkerStats::getCharisma)));
+			List.of(Pair.with("Str", WorkerStats::getStrength), Pair.with("Dex", WorkerStats::getDexterity), Pair.with("Con", WorkerStats::getConstitution), Pair.with("Int", WorkerStats::getIntelligence), Pair.with("Wis", WorkerStats::getWisdom), Pair.with("Cha", WorkerStats::getCharisma));
 
 	private final IWorkerTreeModel wtModel;
 

@@ -196,11 +196,9 @@ public class MapCheckerCLI implements UtilityDriver {
 		return retval;
 	}
 
-	private static final List<String> PLACEHOLDER_KINDS = Collections.unmodifiableList(Arrays.asList(
-		"various", "unknown"));
+	private static final List<String> PLACEHOLDER_KINDS = List.of("various", "unknown");
 
-	private static final List<String> PLACEHOLDER_UNITS = Collections.unmodifiableList(Arrays.asList(
-		"unit", "units"));
+	private static final List<String> PLACEHOLDER_UNITS = List.of("unit", "units");
 
 	private static boolean resourcePlaceholderChecker(final TileType terrain, final Point context,
 	                                                  final IFixture fixture, final Warning warner) {
@@ -284,10 +282,7 @@ public class MapCheckerCLI implements UtilityDriver {
 		}
 	}
 
-	private static final List<Checker> EXTRA_CHECKS = Collections.unmodifiableList(Arrays.asList(
-		MapCheckerCLI::lateriteChecker, MapCheckerCLI::aquaticVillageChecker,
-		MapCheckerCLI::suspiciousSkillCheck,
-		MapCheckerCLI::resourcePlaceholderChecker, MapCheckerCLI::oasisChecker));
+	private static final List<Checker> EXTRA_CHECKS = List.of(MapCheckerCLI::lateriteChecker, MapCheckerCLI::aquaticVillageChecker, MapCheckerCLI::suspiciousSkillCheck, MapCheckerCLI::resourcePlaceholderChecker, MapCheckerCLI::oasisChecker);
 
 	private static boolean contentCheck(final Checker checker, final TileType terrain, final Point context,
 	                                    final Warning warner, final Iterable<? extends IFixture> list) {

@@ -22,10 +22,7 @@ public interface ISPReader {
 	 * we'll warn if they're used.
 	 */
 	public static final List<String> FUTURE_TAGS =
-		Collections.unmodifiableList(Arrays.asList("future",
-			"explorer", "building", "resource", "changeset",
-			"change", "move", "work", "discover", "submap",
-			"futuretag", "futureTag", "science"));
+			List.of("future", "explorer", "building", "resource", "changeset", "change", "move", "work", "discover", "submap", "futuretag", "futureTag", "science");
 
 	/**
 	 * The namespace that SP XML will use.

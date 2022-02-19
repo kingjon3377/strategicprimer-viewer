@@ -56,16 +56,7 @@ import java.util.Collections;
 		IMutablePlayerCollection players = new PlayerCollection();
 		mapReader = new YAMapReader(warning, idFactory, players);
 		townReader = new YATownReader(warning, idFactory, players);
-		readers = Collections.unmodifiableList(Arrays.asList(
-			new YAAdventureReader(warning, idFactory, players),
-			new YAExplorableReader(warning, idFactory), new YAGroundReader(warning, idFactory),
-			new YAImplementReader(warning, idFactory), mapReader,
-			new YAMobileReader(warning, idFactory), new YAPlayerReader(warning, idFactory),
-			new YAPortalReader(warning, idFactory), new YAResourcePileReader(warning, idFactory),
-			new YAResourceReader(warning, idFactory), new YATerrainReader(warning, idFactory),
-			new YATextReader(warning, idFactory), townReader,
-			new YAUnitReader(warning, idFactory, players),
-			new YAWorkerReader(warning, idFactory, players)));
+		readers = List.of(new YAAdventureReader(warning, idFactory, players), new YAExplorableReader(warning, idFactory), new YAGroundReader(warning, idFactory), new YAImplementReader(warning, idFactory), mapReader, new YAMobileReader(warning, idFactory), new YAPlayerReader(warning, idFactory), new YAPortalReader(warning, idFactory), new YAResourcePileReader(warning, idFactory), new YAResourceReader(warning, idFactory), new YATerrainReader(warning, idFactory), new YATextReader(warning, idFactory), townReader, new YAUnitReader(warning, idFactory, players), new YAWorkerReader(warning, idFactory, players));
 	}
 
 	/**

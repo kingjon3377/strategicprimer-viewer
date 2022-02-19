@@ -29,15 +29,7 @@ import lovelace.util.IntAccumulator;
 final class DBMapReader {
 	private static final Logger LOGGER = Logger.getLogger(DBMapReader.class.getName());
 	// FIXME: Passing null when we don't want to construct the parent object is a *really* bad idea!
-	private final List<MapContentsReader> readers = Collections.unmodifiableList(Arrays.asList(
-		new DBPlayerHandler(), new DBCacheHandler(), new DBExplorableHandler(),
-		new DBFieldHandler(), new DBFortressHandler(null), new DBUnitHandler(null),
-		new DBGroundHandler(), new DBGroveHandler(), new DBImmortalHandler(),
-		new DBImplementHandler(), new DBMineralHandler(), new DBMineHandler(),
-		new DBPortalHandler(), new DBShrubHandler(), new DBSimpleTerrainHandler(),
-		new DBTextHandler(), new DBTownHandler(), new DBVillageHandler(),
-		new DBResourcePileHandler(), new DBAnimalHandler(), new DBCommunityStatsHandler(),
-		new DBWorkerHandler(), new DBAdventureHandler(), new DBForestHandler()));
+	private final List<MapContentsReader> readers = List.of(new DBPlayerHandler(), new DBCacheHandler(), new DBExplorableHandler(), new DBFieldHandler(), new DBFortressHandler(null), new DBUnitHandler(null), new DBGroundHandler(), new DBGroveHandler(), new DBImmortalHandler(), new DBImplementHandler(), new DBMineralHandler(), new DBMineHandler(), new DBPortalHandler(), new DBShrubHandler(), new DBSimpleTerrainHandler(), new DBTextHandler(), new DBTownHandler(), new DBVillageHandler(), new DBResourcePileHandler(), new DBAnimalHandler(), new DBCommunityStatsHandler(), new DBWorkerHandler(), new DBAdventureHandler(), new DBForestHandler());
 
 	/**
 	 * If {@link field} is is an Integer and either 0 or 1, which is how

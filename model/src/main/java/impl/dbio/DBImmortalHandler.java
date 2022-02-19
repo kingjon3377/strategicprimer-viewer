@@ -43,36 +43,34 @@ final class DBImmortalHandler extends AbstractDatabaseWriter<Immortal, /*Point|I
 		return obj instanceof Immortal && (context instanceof Point || context instanceof IUnit);
 	}
 
-	private static final List<String> INITIALIZERS = Collections.unmodifiableList(Arrays.asList(
-		"CREATE TABLE IF NOT EXISTS simple_immortals (" +
-			"    row INTEGER," +
-			"    column INTEGER" +
-			"        CHECK ((row IS NOT NULL AND column IS NOT NULL)" +
-			"            OR (row IS NULL AND column IS NULL))," +
-			"    parent INTEGER" +
-			"        CHECK ((row IS NOT NULL AND parent IS NULL)" +
-			"            OR (row IS NULL AND parent IS NOT NULL))," +
-			"    type VARCHAR(16) NOT NULL" +
-			"        CHECK (type IN('sphinx', 'djinn', 'griffin', 'minotaur', 'ogre'," +
-			"            'phoenix', 'simurgh', 'troll', 'snowbird', 'thunderbird'," +
-			"            'pegasus', 'unicorn', 'kraken'))," +
-			"    id INTEGER NOT NULL," +
-			"    image VARCHAR(255)" +
-			");",
-		"CREATE TABLE IF NOT EXISTS kinded_immortals (" +
-			"    row INTEGER," +
-			"    column INTEGER" +
-			"        CHECK ((row IS NOT NULL AND column IS NOT NULL)" +
-			"            OR (row IS NULL AND column IS NULL))," +
-			"    parent INTEGER" +
-			"        CHECK ((row IS NOT NULL AND parent IS NULL)" +
-			"            OR (row IS NULL AND parent IS NOT NULL))," +
-			"    type VARCHAR(16) NOT NULL" +
-			"        CHECK (type IN ('centaur', 'dragon', 'fairy', 'giant'))," +
-			"    kind VARCHAR(32) NOT NULL," +
-			"    id INTEGER NOT NULL," +
-			"    image VARCHAR(255)" +
-			");"));
+	private static final List<String> INITIALIZERS = List.of("CREATE TABLE IF NOT EXISTS simple_immortals (" +
+			                                                         "    row INTEGER," +
+			                                                         "    column INTEGER" +
+			                                                         "        CHECK ((row IS NOT NULL AND column IS NOT NULL)" +
+			                                                         "            OR (row IS NULL AND column IS NULL))," +
+			                                                         "    parent INTEGER" +
+			                                                         "        CHECK ((row IS NOT NULL AND parent IS NULL)" +
+			                                                         "            OR (row IS NULL AND parent IS NOT NULL))," +
+			                                                         "    type VARCHAR(16) NOT NULL" +
+			                                                         "        CHECK (type IN('sphinx', 'djinn', 'griffin', 'minotaur', 'ogre'," +
+			                                                         "            'phoenix', 'simurgh', 'troll', 'snowbird', 'thunderbird'," +
+			                                                         "            'pegasus', 'unicorn', 'kraken'))," +
+			                                                         "    id INTEGER NOT NULL," +
+			                                                         "    image VARCHAR(255)" +
+			                                                         ");", "CREATE TABLE IF NOT EXISTS kinded_immortals (" +
+					                                                               "    row INTEGER," +
+					                                                               "    column INTEGER" +
+					                                                               "        CHECK ((row IS NOT NULL AND column IS NOT NULL)" +
+					                                                               "            OR (row IS NULL AND column IS NULL))," +
+					                                                               "    parent INTEGER" +
+					                                                               "        CHECK ((row IS NOT NULL AND parent IS NULL)" +
+					                                                               "            OR (row IS NULL AND parent IS NOT NULL))," +
+					                                                               "    type VARCHAR(16) NOT NULL" +
+					                                                               "        CHECK (type IN ('centaur', 'dragon', 'fairy', 'giant'))," +
+					                                                               "    kind VARCHAR(32) NOT NULL," +
+					                                                               "    id INTEGER NOT NULL," +
+					                                                               "    image VARCHAR(255)" +
+					                                                               ");");
 
 	@Override
 	public List<String> getInitializers() {

@@ -71,8 +71,7 @@ import common.map.fixtures.towns.Village;
 	 */
 	private static final Logger LOGGER = Logger.getLogger(StatGeneratingCLI.class.getName());
 
-	private static final List<String> statLabelArray = Collections.unmodifiableList(Arrays.asList("Str",
-		"Dex", "Con", "Int", "Wis", "Cha"));
+	private static final List<String> statLabelArray = List.of("Str", "Dex", "Con", "Int", "Wis", "Cha");
 
 	/**
 	 * Find a fixture in a given iterable with the given ID.

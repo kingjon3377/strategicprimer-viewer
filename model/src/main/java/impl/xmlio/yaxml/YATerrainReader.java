@@ -32,8 +32,7 @@ import java.util.Set;
 	}
 
 	// TODO: This seems overkill for this (in Java)
-	private final Set<String> supportedTags = Collections.unmodifiableSet(Stream.of("forest",
-		"hill", "oasis").collect(Collectors.toSet()));
+	private final Set<String> supportedTags = Set.of("forest", "hill", "oasis");
 
 	@Override
 	public boolean isSupportedTag(final String tag) {

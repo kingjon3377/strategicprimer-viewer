@@ -67,8 +67,7 @@ public class MemberDetailPanel extends BorderedPanel implements UnitMemberListen
 		final InterpolatedLabel<@Nullable WorkerStats> intLabel = statLabel(WorkerStats::getIntelligence);
 		final InterpolatedLabel<@Nullable WorkerStats> wisLabel = statLabel(WorkerStats::getWisdom);
 		final InterpolatedLabel<@Nullable WorkerStats> chaLabel = statLabel(WorkerStats::getCharisma);
-		statLabels = Collections.unmodifiableList(Arrays.asList(strLabel, dexLabel, conLabel,
-			intLabel, wisLabel, chaLabel));
+		statLabels = List.of(strLabel, dexLabel, conLabel, intLabel, wisLabel, chaLabel);
 
 		final JLabel typeCaption = caption("Member Type");
 		typeLabel = new JLabel("member type");

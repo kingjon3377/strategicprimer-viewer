@@ -51,8 +51,8 @@ import java.util.logging.Logger;
 	public YATownReader(final Warning warner, final IDRegistrar idRegistrar, final IPlayerCollection players) {
 		super(warner, idRegistrar);
 		resourceReader = new YAResourcePileReader(warner, idRegistrar);
-		memberReaders = Collections.unmodifiableList(Arrays.asList(new YAUnitReader(warner,
-			idRegistrar, players), resourceReader, new YAImplementReader(warner, idRegistrar)));
+		memberReaders = List.of(new YAUnitReader(warner,
+				idRegistrar, players), resourceReader, new YAImplementReader(warner, idRegistrar));
 		this.players = players;
 		this.warner = warner;
 	}

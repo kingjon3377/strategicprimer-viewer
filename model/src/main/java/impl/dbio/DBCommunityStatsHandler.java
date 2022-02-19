@@ -23,36 +23,32 @@ final class DBCommunityStatsHandler extends AbstractDatabaseWriter<CommunityStat
 		super(CommunityStats.class, ITownFixture.class);
 	}
 
-	private static final List<String> INITIALIZERS = Collections.unmodifiableList(Arrays.asList(
-		"CREATE TABLE IF NOT EXISTS town_expertise (" +
-			"    town INTEGER NOT NULL," +
-			"    skill VARCHAR(255) NOT NULL," +
-			"    level INTEGER NOT NULL" +
-			");",
-		"CREATE TABLE IF NOT EXISTS town_worked_resources (" +
-			"    town INTEGER NOT NULL," +
-			"    resource INTEGER NOT NULL" +
-			");",
-		"CREATE TABLE IF NOT EXISTS town_production (" +
-			"    town INTEGER NOT NULL," +
-			"    id INTEGER NOT NULL," +
-			"    kind VARCHAR(64) NOT NULL," +
-			"    contents VARCHAR(64) NOT NULL," +
-			"    quantity VARCHAR(128) NOT NULL" +
-			"        CHECK (quantity NOT LIKE '%[^0-9.]%' AND quantity NOT LIKE '%.%.%')," +
-			"    units VARCHAR(32) NOT NULL," +
-			"    created INTEGER" +
-			");",
-		"CREATE TABLE IF NOT EXISTS town_consumption (" +
-			"    town INTEGER NOT NULL," +
-			"    id INTEGER NOT NULL," +
-			"    kind VARCHAR(64) NOT NULL," +
-			"    contents VARCHAR(64) NOT NULL," +
-			"    quantity VARCHAR(128) NOT NULL" +
-			"        CHECK (quantity NOT LIKE '%[^0-9.]%' AND quantity NOT LIKE '%.%.%')," +
-			"    units VARCHAR(32) NOT NULL," +
-			"    created INTEGER" +
-			");"));
+	private static final List<String> INITIALIZERS = List.of("CREATE TABLE IF NOT EXISTS town_expertise (" +
+			                                                         "    town INTEGER NOT NULL," +
+			                                                         "    skill VARCHAR(255) NOT NULL," +
+			                                                         "    level INTEGER NOT NULL" +
+			                                                         ");", "CREATE TABLE IF NOT EXISTS town_worked_resources (" +
+					                                                               "    town INTEGER NOT NULL," +
+					                                                               "    resource INTEGER NOT NULL" +
+					                                                               ");", "CREATE TABLE IF NOT EXISTS town_production (" +
+							                                                                     "    town INTEGER NOT NULL," +
+							                                                                     "    id INTEGER NOT NULL," +
+							                                                                     "    kind VARCHAR(64) NOT NULL," +
+							                                                                     "    contents VARCHAR(64) NOT NULL," +
+							                                                                     "    quantity VARCHAR(128) NOT NULL" +
+							                                                                     "        CHECK (quantity NOT LIKE '%[^0-9.]%' AND quantity NOT LIKE '%.%.%')," +
+							                                                                     "    units VARCHAR(32) NOT NULL," +
+							                                                                     "    created INTEGER" +
+							                                                                     ");", "CREATE TABLE IF NOT EXISTS town_consumption (" +
+									                                                                           "    town INTEGER NOT NULL," +
+									                                                                           "    id INTEGER NOT NULL," +
+									                                                                           "    kind VARCHAR(64) NOT NULL," +
+									                                                                           "    contents VARCHAR(64) NOT NULL," +
+									                                                                           "    quantity VARCHAR(128) NOT NULL" +
+									                                                                           "        CHECK (quantity NOT LIKE '%[^0-9.]%' AND quantity NOT LIKE '%.%.%')," +
+									                                                                           "    units VARCHAR(32) NOT NULL," +
+									                                                                           "    created INTEGER" +
+									                                                                           ");");
 
 	@Override
 	public List<String> getInitializers() {

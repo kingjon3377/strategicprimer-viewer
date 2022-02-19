@@ -165,7 +165,7 @@ public class DriverUsage implements IDriverUsage {
 		this.includeInGUIList = includeInGUIList;
 		this.firstParamDescription = firstParamDescription;
 		this.subsequentParamDescription = subsequentParamDescription;
-		this.supportedOptions = Collections.unmodifiableList(Arrays.asList(supportedOptions));
+		this.supportedOptions = List.of(supportedOptions);
 	}
 
 	@Override

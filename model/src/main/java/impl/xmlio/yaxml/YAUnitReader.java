@@ -31,11 +31,7 @@ import lovelace.util.MalformedXMLException;
 		super(warner, idRegistrar);
 		this.players = players;
 		this.warner = warner;
-		readers = Collections.unmodifiableList(Arrays.asList(
-			new YAMobileReader(warner, idRegistrar),
-			new YAWorkerReader(warner, idRegistrar, players),
-			new YAResourcePileReader(warner, idRegistrar),
-			new YAImplementReader(warner, idRegistrar)));
+		readers = List.of(new YAMobileReader(warner, idRegistrar), new YAWorkerReader(warner, idRegistrar, players), new YAResourcePileReader(warner, idRegistrar), new YAImplementReader(warner, idRegistrar));
 	}
 
 	private final IPlayerCollection players;

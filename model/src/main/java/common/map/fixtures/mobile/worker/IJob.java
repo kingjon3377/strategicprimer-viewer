@@ -16,11 +16,7 @@ public interface IJob extends HasName, Iterable<ISkill>, Subsettable<IJob> {
 	 * has. In many cases they should be "miscellaneous" instead.
 	 */
 	public static final List<String> SUSPICIOUS_SKILLS =
-		Collections.unmodifiableList(Arrays.asList("hunter", "hunting",
-			"explorer", "exploration", "research", "carpentry",
-			"woodcutting", "farming", "food gathering",
-			"scientist", "woodcutter", "farmer", "brickmaker",
-			"brickmaking", "administration"));
+			List.of("hunter", "hunting", "explorer", "exploration", "research", "carpentry", "woodcutting", "farming", "food gathering", "scientist", "woodcutter", "farmer", "brickmaker", "brickmaking", "administration");
 
 	/**
 	 * The worker's Job level in this Job. Cannot be negative.

@@ -154,11 +154,7 @@ public final class ImageLoader {
 		private static final Map<Class<? extends TileFixture>, Color> FEATURE_COLORS;
 
 		static {
-			final Map<Class<? extends TileFixture>, Color> featureColors = new HashMap<>();
-			featureColors.put(Forest.class, new Color(0, 117, 0));
-			featureColors.put(Oasis.class, new Color(72, 218, 164));
-			featureColors.put(Hill.class, new Color(141, 182, 0));
-			FEATURE_COLORS = Collections.unmodifiableMap(featureColors);
+			FEATURE_COLORS = Map.of(Forest.class, new Color(0, 117, 0), Oasis.class, new Color(72, 218, 164), Hill.class, new Color(141, 182, 0));
 		}
 
 		/**
@@ -176,9 +172,7 @@ public final class ImageLoader {
 			verTwo.put(TileType.Steppe, new Color(72, 100, 72));
 			verTwo.put(TileType.Swamp, new Color(231,41,138));
 			// TODO: Somehow check that all types in a version are covered?
-			final Map<Integer, Map<TileType, Color>> colors = new HashMap<>();
-			colors.put(2, Collections.unmodifiableMap(verTwo));
-			COLORS = Collections.unmodifiableMap(colors);
+			COLORS = Map.of(2, Collections.unmodifiableMap(verTwo));
 		}
 
 		public static boolean supportsType(final int version, final TileType type) {

@@ -43,30 +43,29 @@ final class DBAnimalHandler extends AbstractDatabaseWriter<AnimalOrTracks, /*Poi
 		return Optional.of(animal.getBorn());
 	}
 
-	private static final List<String> INITIALIZERS = Collections.unmodifiableList(
-		Arrays.asList("CREATE TABLE IF NOT EXISTS animals (" +
-				"    row INTEGER," +
-				"    column INTEGER" +
-				"    CHECK ((animals.row IS NOT NULL AND column IS NOT NULL) OR" +
-				"        (animals.row IS NULL AND column IS NULL))," +
-				"    parent INTEGER" +
-				"    CHECK ((row IS NOT NULL AND parent IS NULL) OR" +
-				"        (row IS NULL AND parent IS NOT NULL))," +
-				"    kind VARCHAR(32) NOT NULL," +
-				"    talking BOOLEAN NOT NULL," +
-				"    status VARCHAR(32) NOT NULL," +
-				"    born INTEGER," +
-				"    count INTEGER NOT NULL," +
-				"    id INTEGER NOT NULL," +
-				"    image VARCHAR(255)" +
-				");",
+	private static final List<String> INITIALIZERS = List.of("CREATE TABLE IF NOT EXISTS animals (" +
+			                                                         "    row INTEGER," +
+			                                                         "    column INTEGER" +
+			                                                         "    CHECK ((animals.row IS NOT NULL AND column IS NOT NULL) OR" +
+			                                                         "        (animals.row IS NULL AND column IS NULL))," +
+			                                                         "    parent INTEGER" +
+			                                                         "    CHECK ((row IS NOT NULL AND parent IS NULL) OR" +
+			                                                         "        (row IS NULL AND parent IS NOT NULL))," +
+			                                                         "    kind VARCHAR(32) NOT NULL," +
+			                                                         "    talking BOOLEAN NOT NULL," +
+			                                                         "    status VARCHAR(32) NOT NULL," +
+			                                                         "    born INTEGER," +
+			                                                         "    count INTEGER NOT NULL," +
+			                                                         "    id INTEGER NOT NULL," +
+			                                                         "    image VARCHAR(255)" +
+			                                                         ");",
 			// We assume that animal tracks can't occur inside a unit or fortress.
-				"CREATE TABLE IF NOT EXISTS tracks (" +
-				"    row INTEGER NOT NULL," +
-				"    column INTEGER NOT NULL," +
-				"    kind VARCHAR(32) NOT NULL," +
-				"    image VARCHAR(255)" +
-				");"));
+			"CREATE TABLE IF NOT EXISTS tracks (" +
+					"    row INTEGER NOT NULL," +
+					"    column INTEGER NOT NULL," +
+					"    kind VARCHAR(32) NOT NULL," +
+					"    image VARCHAR(255)" +
+					");");
 
 	@Override
 	public List<String> getInitializers() {

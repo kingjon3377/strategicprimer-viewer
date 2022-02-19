@@ -63,14 +63,7 @@ import java.util.function.Predicate;
 	public YAMapReader(final Warning warner, final IDRegistrar idRegistrar, final IMutablePlayerCollection players) {
 		super(warner, idRegistrar);
 		playerReader = new YAPlayerReader(warner, idRegistrar);
-		readers = Collections.unmodifiableList(Arrays.asList(
-			new YAMobileReader(warner, idRegistrar), new YAResourceReader(warner, idRegistrar),
-			new YATerrainReader(warner, idRegistrar), new YATextReader(warner, idRegistrar),
-			new YATownReader(warner, idRegistrar, players),
-			new YAGroundReader(warner, idRegistrar),
-			new YAAdventureReader(warner, idRegistrar, players),
-			new YAPortalReader(warner, idRegistrar), new YAExplorableReader(warner, idRegistrar),
-			new YAUnitReader(warner, idRegistrar, players)));
+		readers = List.of(new YAMobileReader(warner, idRegistrar), new YAResourceReader(warner, idRegistrar), new YATerrainReader(warner, idRegistrar), new YATextReader(warner, idRegistrar), new YATownReader(warner, idRegistrar, players), new YAGroundReader(warner, idRegistrar), new YAAdventureReader(warner, idRegistrar, players), new YAPortalReader(warner, idRegistrar), new YAExplorableReader(warner, idRegistrar), new YAUnitReader(warner, idRegistrar, players));
 		this.warner = warner;
 		this.players = players;
 	}

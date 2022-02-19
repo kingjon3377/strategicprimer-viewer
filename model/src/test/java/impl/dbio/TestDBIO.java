@@ -116,9 +116,7 @@ import common.map.fixtures.TerrainFixture;
 @Disabled("Until either jdbc-fn library is fixed or DBIO code ported to a different one")
 public final class TestDBIO {
 	private static final Collection<IntFunction<Immortal>> simpleImmortalConstructors =
-		Collections.unmodifiableList(Arrays.asList(Sphinx::new, Djinn::new, Griffin::new,
-			Minotaur::new, Ogre::new, Phoenix::new, Simurgh::new, Troll::new,
-			Snowbird::new, Thunderbird::new, Pegasus::new, Unicorn::new, Kraken::new));
+			java.util.List.of(Sphinx::new, Djinn::new, Griffin::new, Minotaur::new, Ogre::new, Phoenix::new, Simurgh::new, Troll::new, Snowbird::new, Thunderbird::new, Pegasus::new, Unicorn::new, Kraken::new);
 
 
 	@FunctionalInterface
@@ -127,11 +125,10 @@ public final class TestDBIO {
 	}
 
 	private static final Collection<StringIntConstructor<Immortal>> kindedImmortalConstructors =
-		Collections.unmodifiableList(Arrays.asList(Centaur::new, Dragon::new, Fairy::new,
-			Giant::new));
+			java.util.List.of(Centaur::new, Dragon::new, Fairy::new, Giant::new);
 
 	private static final Collection<IntFunction<TileFixture>> simpleTerrainConstructors =
-		Collections.unmodifiableList(Arrays.asList(Hill::new, Oasis::new));
+			java.util.List.of(Hill::new, Oasis::new);
 
 	private static final Collection<String> races = new HashSet<>(RaceFactory.RACES);
 

@@ -57,26 +57,7 @@ import common.xmlio.Warning;
 	private static final Map<Class<? extends MobileFixture>, String> TAG_MAP = initTagMap();
 
 	private static Map<Class<? extends MobileFixture>, String> initTagMap() {
-		final Map<Class<? extends MobileFixture>, String> retval = new HashMap<>();
-		retval.put(Animal.class, "animal");
-		retval.put(Centaur.class, "centaur");
-		retval.put(Dragon.class, "dragon");
-		retval.put(Fairy.class, "fairy");
-		retval.put(Giant.class, "giant");
-		retval.put(Sphinx.class, "sphinx");
-		retval.put(Djinn.class, "djinn");
-		retval.put(Griffin.class, "griffin");
-		retval.put(Minotaur.class, "minotaur");
-		retval.put(Ogre.class, "ogre");
-		retval.put(Phoenix.class, "phoenix");
-		retval.put(Simurgh.class, "simurgh");
-		retval.put(Troll.class, "troll");
-		retval.put(Snowbird.class, "snowbird");
-		retval.put(Thunderbird.class, "thunderbird");
-		retval.put(Pegasus.class, "pegasus");
-		retval.put(Unicorn.class, "unicorn");
-		retval.put(Kraken.class, "kraken");
-		return Collections.unmodifiableMap(retval);
+		return Map.ofEntries(Map.entry(Animal.class, "animal"), Map.entry(Centaur.class, "centaur"), Map.entry(Dragon.class, "dragon"), Map.entry(Fairy.class, "fairy"), Map.entry(Giant.class, "giant"), Map.entry(Sphinx.class, "sphinx"), Map.entry(Djinn.class, "djinn"), Map.entry(Griffin.class, "griffin"), Map.entry(Minotaur.class, "minotaur"), Map.entry(Ogre.class, "ogre"), Map.entry(Phoenix.class, "phoenix"), Map.entry(Simurgh.class, "simurgh"), Map.entry(Troll.class, "troll"), Map.entry(Snowbird.class, "snowbird"), Map.entry(Thunderbird.class, "thunderbird"), Map.entry(Pegasus.class, "pegasus"), Map.entry(Unicorn.class, "unicorn"), Map.entry(Kraken.class, "kraken"));
 	}
 
 	private static final Set<String> SUPPORTED_TAGS = new HashSet<>(TAG_MAP.values());
@@ -84,21 +65,7 @@ import common.xmlio.Warning;
 	private static final Map<String, IntFunction<? extends Immortal>> SIMPLES = initSimples();
 
 	private static Map<String, IntFunction<? extends Immortal>> initSimples() {
-		final Map<String, IntFunction<? extends Immortal>> retval = new HashMap<>();
-		retval.put("sphinx", Sphinx::new);
-		retval.put("snowbird", Snowbird::new);
-		retval.put("thunderbird", Thunderbird::new);
-		retval.put("djinn", Djinn::new);
-		retval.put("griffin", Griffin::new);
-		retval.put("minotaur", Minotaur::new);
-		retval.put("ogre", Ogre::new);
-		retval.put("phoenix", Phoenix::new);
-		retval.put("simurgh", Simurgh::new);
-		retval.put("troll", Troll::new);
-		retval.put("pegasus", Pegasus::new);
-		retval.put("unicorn", Unicorn::new);
-		retval.put("kraken", Kraken::new);
-		return Collections.unmodifiableMap(retval);
+		return Map.ofEntries(Map.entry("sphinx", Sphinx::new), Map.entry("snowbird", Snowbird::new), Map.entry("thunderbird", Thunderbird::new), Map.entry("djinn", Djinn::new), Map.entry("griffin", Griffin::new), Map.entry("minotaur", Minotaur::new), Map.entry("ogre", Ogre::new), Map.entry("phoenix", Phoenix::new), Map.entry("simurgh", Simurgh::new), Map.entry("troll", Troll::new), Map.entry("pegasus", Pegasus::new), Map.entry("unicorn", Unicorn::new), Map.entry("kraken", Kraken::new));
 	}
 
 	private MobileFixture createAnimal(final StartElement element) throws SPFormatException {

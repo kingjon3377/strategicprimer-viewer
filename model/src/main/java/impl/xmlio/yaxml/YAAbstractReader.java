@@ -55,10 +55,7 @@ abstract class YAAbstractReader<Item, Value> implements YAReader<Item, Value> {
 	 * Patterns to match XML metacharacters, and their quoted forms.
 	 */
 	protected static final List<Pair<Pattern, String>> QUOTING =
-		Collections.unmodifiableList(Arrays.asList(
-			Pair.with(Pattern.compile("&"), "&amp;"),
-			Pair.with(Pattern.compile("<"), "&lt;"),
-			Pair.with(Pattern.compile(">"), "&gt;")));
+			List.of(Pair.with(Pattern.compile("&"), "&amp;"), Pair.with(Pattern.compile("<"), "&lt;"), Pair.with(Pattern.compile(">"), "&gt;"));
 
 	protected static final Pair<Pattern, String> QUOTE_DOUBLE_QUOTE =
 			Pair.with(Pattern.compile("\""), "&quot;");

@@ -39,9 +39,7 @@ import java.util.Collections;
 
 	private final Warning warner;
 
-	private static final Set<String> SUPPORTED_TAGS = Collections.unmodifiableSet(new HashSet<>(
-		Arrays.asList("cache", "grove", "orchard", "field", "meadow", "mine", "mineral",
-			"shrub", "stone")));
+	private static final Set<String> SUPPORTED_TAGS = Set.of("cache", "grove", "orchard", "field", "meadow", "mine", "mineral", "shrub", "stone");
 
 	private HarvestableFixture createMeadow(final StartElement element, final boolean field, final int idNum)
 			throws SPFormatException {

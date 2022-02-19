@@ -33,30 +33,27 @@ final class DBUnitHandler extends AbstractDatabaseWriter<IUnit, Object> implemen
 		return obj instanceof IUnit && (context instanceof Point || context instanceof IFortress);
 	}
 
-	private static final List<String> INITIALIZERS = Collections.unmodifiableList(Arrays.asList(
-		"CREATE TABLE IF NOT EXISTS units (" +
-			"    row INTEGER," +
-			"    column INTEGER CHECK ((row IS NOT NULL AND column IS NOT NULL) OR" +
-			"       (row IS NULL AND column IS NULL))," +
-			"    parent INTEGER CHECK ((row IS NOT NULL AND parent IS NULL) OR" +
-			"       (row IS NULL AND parent IS NOT NULL))," +
-			"    owner INTEGER NOT NULL," +
-			"    kind VARCHAR(32) NOT NULL," +
-			"    name VARCHAR(64) NOT NULL," +
-			"    id INTEGER NOT NULL," +
-			"    image VARCHAR(255)," +
-			"    portrait VARCHAR(255)" +
-			");",
-		"CREATE TABLE IF NOT EXISTS orders (" +
-			"    unit INTEGER NOT NULL," +
-			"    turn INTEGER," +
-			"    orders VARCHAR(2048) NOT NULL" +
-			");",
-		"CREATE TABLE IF NOT EXISTS results (" +
-			"    unit INTEGER NOT NULL," +
-			"    turn INTEGER," +
-			"    result VARCHAR(2048) NOT NULL" +
-			");"));
+	private static final List<String> INITIALIZERS = List.of("CREATE TABLE IF NOT EXISTS units (" +
+			                                                         "    row INTEGER," +
+			                                                         "    column INTEGER CHECK ((row IS NOT NULL AND column IS NOT NULL) OR" +
+			                                                         "       (row IS NULL AND column IS NULL))," +
+			                                                         "    parent INTEGER CHECK ((row IS NOT NULL AND parent IS NULL) OR" +
+			                                                         "       (row IS NULL AND parent IS NOT NULL))," +
+			                                                         "    owner INTEGER NOT NULL," +
+			                                                         "    kind VARCHAR(32) NOT NULL," +
+			                                                         "    name VARCHAR(64) NOT NULL," +
+			                                                         "    id INTEGER NOT NULL," +
+			                                                         "    image VARCHAR(255)," +
+			                                                         "    portrait VARCHAR(255)" +
+			                                                         ");", "CREATE TABLE IF NOT EXISTS orders (" +
+					                                                               "    unit INTEGER NOT NULL," +
+					                                                               "    turn INTEGER," +
+					                                                               "    orders VARCHAR(2048) NOT NULL" +
+					                                                               ");", "CREATE TABLE IF NOT EXISTS results (" +
+							                                                                     "    unit INTEGER NOT NULL," +
+							                                                                     "    turn INTEGER," +
+							                                                                     "    result VARCHAR(2048) NOT NULL" +
+							                                                                     ");");
 
 	@Override
 	public List<String> getInitializers() {

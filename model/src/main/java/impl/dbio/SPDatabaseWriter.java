@@ -52,15 +52,7 @@ public final class SPDatabaseWriter implements SPWriter {
 
 	private final DBPlayerHandler playerHandler = new DBPlayerHandler();
 
-	private final List<DatabaseWriter<?, ?>> writers = Collections.unmodifiableList(Arrays.asList(
-		new DBAdventureHandler(), new DBExplorableHandler(), new DBGroundHandler(),
-		new DBImplementHandler(), new DBMapWriter(this, playerHandler), new DBAnimalHandler(),
-		new DBImmortalHandler(), playerHandler, new DBPortalHandler(),
-		new DBResourcePileHandler(), new DBCacheHandler(), new DBFieldHandler(),
-		new DBGroveHandler(), new DBMineHandler(), new DBMineralHandler(), new DBShrubHandler(),
-		new DBSimpleTerrainHandler(), new DBForestHandler(), new DBTextHandler(),
-		new DBTownHandler(), new DBCommunityStatsHandler(), new DBVillageHandler(),
-		new DBFortressHandler(this), new DBUnitHandler(this), new DBWorkerHandler()));
+	private final List<DatabaseWriter<?, ?>> writers = List.of(new DBAdventureHandler(), new DBExplorableHandler(), new DBGroundHandler(), new DBImplementHandler(), new DBMapWriter(this, playerHandler), new DBAnimalHandler(), new DBImmortalHandler(), playerHandler, new DBPortalHandler(), new DBResourcePileHandler(), new DBCacheHandler(), new DBFieldHandler(), new DBGroveHandler(), new DBMineHandler(), new DBMineralHandler(), new DBShrubHandler(), new DBSimpleTerrainHandler(), new DBForestHandler(), new DBTextHandler(), new DBTownHandler(), new DBCommunityStatsHandler(), new DBVillageHandler(), new DBFortressHandler(this), new DBUnitHandler(this), new DBWorkerHandler());
 
 	private static final String NOTES_SCHEMA =
 		"CREATE TABLE IF NOT EXISTS notes (" +

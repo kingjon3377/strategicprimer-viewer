@@ -28,7 +28,6 @@ public interface Immortal extends MobileFixture, UnitMember {
 	 */
 	@Deprecated
 	public static final List<String> IMMORTAL_ANIMALS =
-		Collections.unmodifiableList(Arrays.asList("snowbird",
-			"thunderbird", "pegasus", "unicorn", "kraken"));
+			List.of("snowbird", "thunderbird", "pegasus", "unicorn", "kraken");
 }
 

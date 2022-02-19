@@ -25,21 +25,19 @@ final class DBExplorableHandler extends AbstractDatabaseWriter<ExplorableFixture
 		return (obj instanceof Battlefield || obj instanceof Cave) && context instanceof Point;
 	}
 
-	private static final List<String> INITIALIZERS = Collections.unmodifiableList(Arrays.asList(
-		"CREATE TABLE IF NOT EXISTS caves (" +
-			"    row INTEGER NOT NULL," +
-			"    column INTEGER NOT NULL," +
-			"    id INTEGER NOT NULL," +
-			"    dc INTEGER NOT NULL," +
-			"    image VARCHAR(255)" +
-			");",
-		"CREATE TABLE IF NOT EXISTS battlefields (" +
-			"    row INTEGER NOT NULL," +
-			"    column INTEGER NOT NULL," +
-			"    id INTEGER NOT NULL," +
-			"    dc INTEGER NOT NULL," +
-			"    image VARCHAR(255)" +
-			");"));
+	private static final List<String> INITIALIZERS = List.of("CREATE TABLE IF NOT EXISTS caves (" +
+			                                                         "    row INTEGER NOT NULL," +
+			                                                         "    column INTEGER NOT NULL," +
+			                                                         "    id INTEGER NOT NULL," +
+			                                                         "    dc INTEGER NOT NULL," +
+			                                                         "    image VARCHAR(255)" +
+			                                                         ");", "CREATE TABLE IF NOT EXISTS battlefields (" +
+					                                                               "    row INTEGER NOT NULL," +
+					                                                               "    column INTEGER NOT NULL," +
+					                                                               "    id INTEGER NOT NULL," +
+					                                                               "    dc INTEGER NOT NULL," +
+					                                                               "    image VARCHAR(255)" +
+					                                                               ");");
 
 	@Override
 	public List<String> getInitializers() {

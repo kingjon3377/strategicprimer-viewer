@@ -69,7 +69,7 @@ class QuadrantTable implements EncounterTable {
 	private final int quadrantRows;
 
 	public QuadrantTable(final int rows, final String... items) {
-		possibleResults = Collections.unmodifiableList(Arrays.asList(items));
+		possibleResults = List.of(items);
 		quadrantRows = rows;
 	}
 

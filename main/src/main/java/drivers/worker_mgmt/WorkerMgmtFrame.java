@@ -138,8 +138,7 @@ import drivers.worker_mgmt.orderspanel.OrdersPanel;
 			}
 		});
 
-		pcListeners = Collections.unmodifiableList(Arrays.asList(newUnitFrame, treeModel,
-			ordersPanelObj, resultsPanel, notesPanelInstance));
+		pcListeners = List.of(newUnitFrame, treeModel, ordersPanelObj, resultsPanel, notesPanelInstance);
 
 		setJMenuBar(WorkerMenu.workerMenu(menuHandler, getContentPane(), driver));
 		pack();
