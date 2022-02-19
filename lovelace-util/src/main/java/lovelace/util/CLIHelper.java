@@ -65,7 +65,7 @@ public final class CLIHelper {
 	public static void printList(final String... list) {
 		int i = 0;
 		for (final String string : list) {
-			System.out.println(String.format("%d. %s", i, string));
+			System.out.printf("%d. %s%n", i, string);
 			i++;
 		}
 	}
