@@ -1,5 +1,6 @@
 package common.map.fixtures.mobile;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.function.Consumer;
 import java.util.stream.Stream;
@@ -15,8 +16,7 @@ import common.map.IFixture;
 /* default */ final class ProxyAnimal implements AnimalProxy {
 
 	public ProxyAnimal(final Animal... proxiedAnimals) {
-		animals = new ArrayList<>();
-		Stream.of(proxiedAnimals).forEach(animals::add);
+		animals = new ArrayList<>(Arrays.asList(proxiedAnimals));
 	}
 
 	/**

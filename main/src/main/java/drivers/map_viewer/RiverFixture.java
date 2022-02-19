@@ -3,6 +3,7 @@ package drivers.map_viewer;
 import common.map.River;
 import common.map.FakeFixture;
 
+import java.util.Arrays;
 import java.util.logging.Level;
 
 import java.util.Set;
@@ -28,11 +29,11 @@ import java.util.stream.Collectors;
 	}
 
 	public RiverFixture(final River... rivers) {
-		final EnumSet<River> temp = EnumSet.noneOf(River.class);
-		for (final River river : rivers) {
-			temp.add(river);
+		if (rivers.length == 0) {
+			this.rivers = Collections.emptySet();
+		} else {
+			this.rivers = EnumSet.copyOf(Arrays.asList(rivers));
 		}
-		this.rivers = Collections.unmodifiableSet(temp);
 	}
 
 	/**

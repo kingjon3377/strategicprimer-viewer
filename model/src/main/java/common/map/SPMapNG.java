@@ -2,6 +2,7 @@ package common.map;
 
 import common.map.fixtures.mobile.IUnit;
 
+import java.util.Arrays;
 import org.javatuples.Pair;
 
 import java.nio.file.Path;
@@ -397,9 +398,7 @@ public class SPMapNG implements IMutableMapNG {
 		} else {
 			set = EnumSet.noneOf(River.class); // TODO: Use EnumSet.of() rather than adding one by one below
 		}
-		for (final River river : addedRivers) {
-			set.add(river);
-		}
+		set.addAll(Arrays.asList(addedRivers));
 		riversMap.put(location, set);
 	}
 

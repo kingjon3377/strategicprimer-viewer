@@ -4,6 +4,7 @@ import java.io.Reader;
 import java.io.Closeable;
 import java.io.IOException;
 
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
@@ -35,9 +36,7 @@ public class TypesafeXMLEventReader implements Iterator<XMLEvent>, Closeable {
 		if (reader instanceof Closeable) {
 			closeHandles.add((Closeable) reader);
 		}
-		for (final Closeable method : closeMethods) {
-			closeHandles.add(method);
-		}
+		closeHandles.addAll(Arrays.asList(closeMethods));
 	}
 
 	public TypesafeXMLEventReader(final Reader reader, final Closeable... closeMethods)
@@ -52,9 +51,7 @@ public class TypesafeXMLEventReader implements Iterator<XMLEvent>, Closeable {
 			throw new MalformedXMLException(except);
 		}
 		closeHandles.add(reader);
-		for (final Closeable method : closeMethods) {
-			closeHandles.add(method);
-		}
+		closeHandles.addAll(Arrays.asList(closeMethods));
 	}
 
 	/**

@@ -47,7 +47,7 @@ public class TestWorkerModel {
 		final List<T> retval = new ArrayList<>();
 		for (final T item : list) {
 			if (cls.isInstance(item)) {
-				((ProxyFor<? extends T>) item).getProxied().forEach(retval::add);
+				retval.addAll(((ProxyFor<? extends T>) item).getProxied());
 			} else {
 				retval.add(item);
 			}
