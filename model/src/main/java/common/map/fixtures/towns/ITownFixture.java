@@ -1,5 +1,6 @@
 package common.map.fixtures.towns;
 
+import common.map.HasKind;
 import org.jetbrains.annotations.Nullable;
 
 import common.map.TileFixture;
@@ -10,7 +11,7 @@ import common.map.HasOwner;
 /**
  * An interface for towns and similar fixtures.
  */
-public interface ITownFixture extends TileFixture, HasName, HasOwner, HasPortrait {
+public interface ITownFixture extends TileFixture, HasName, HasOwner, HasPortrait, HasKind {
 	/**
 	 * The status of the town.
 	 */
@@ -23,9 +24,8 @@ public interface ITownFixture extends TileFixture, HasName, HasOwner, HasPortrai
 
 	/**
 	 * A description of what kind of "town" this is.
-	 *
-	 * TODO: Why not HasKind?
 	 */
+	@Override
 	String getKind();
 
 	/**
