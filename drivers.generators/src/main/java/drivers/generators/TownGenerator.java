@@ -332,7 +332,8 @@ import java.math.BigDecimal;
 		cli.println("Now add resources produced each year. (Empty to end.)");
 		while (true) {
 			final String kind = cli.inputString("General kind of resource: ");
-			if (kind == null || kind.isEmpty()) { // TODO: here and elsewhere, trim before isEmpty(), unless inputString() does that for us
+			// N.B. inputString() trims leading and trailing whitespace.
+			if (kind == null || kind.isEmpty()) {
 				break;
 			}
 			final String contents = cli.inputString("Specific kind of resource: ");
@@ -355,7 +356,8 @@ import java.math.BigDecimal;
 		cli.println("Now add resources consumed each year. (Empty to end.)");
 		while (true) {
 			final String kind = cli.inputString("General kind of resource: ");
-			if (kind == null || kind.isEmpty()) { // TODO: here and elsewhere, trim before isEmpty(), unless inputString() does that for us
+			// N.B. inputString() trims leading and trailing whitespace.
+			if (kind == null || kind.isEmpty()) {
 				break;
 			}
 			final String contents = cli.inputString("Specific kind of resource: ");
