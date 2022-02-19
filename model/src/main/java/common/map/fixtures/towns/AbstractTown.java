@@ -14,7 +14,7 @@ import org.jetbrains.annotations.Nullable;
 /**
  * An abstract superclass for towns etc.
  *
- * // FIXME: Probably Needs to implement SubsettableFixture instead of Subsettable<AbstractTown></AbstractTown>
+ * // FIXME: Probably Needs to implement SubsettableFixture instead of {@code Subsettable<AbstractTown>}
  */
 public abstract class AbstractTown implements HasMutableImage,
 		IMutableTownFixture, Subsettable<AbstractTown> {
