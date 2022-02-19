@@ -317,7 +317,7 @@ import java.awt.image.BufferedImage;
 		}
 
 		// TODO: Split the difference instead of only expanding/contracting on  'max' side
-		private Pair<Integer, Integer> constrain(final int total, final int visible, final int oldMinimum) {
+		private static Pair<Integer, Integer> constrain(final int total, final int visible, final int oldMinimum) {
 			if (visible >= total) {
 				return Pair.with(0, total - 1);
 			} else if (oldMinimum + visible >= total) {
@@ -327,8 +327,8 @@ import java.awt.image.BufferedImage;
 			}
 		}
 
-		private Quartet<Integer, Integer, Integer, Integer> concat(final Pair<Integer, Integer> one,
-		                                                           final Pair<Integer, Integer> two) {
+		private static Quartet<Integer, Integer, Integer, Integer> concat(final Pair<Integer, Integer> one,
+		                                                                  final Pair<Integer, Integer> two) {
 			return Quartet.with(one.getValue0(), one.getValue1(), two.getValue0(),
 				two.getValue1());
 		}

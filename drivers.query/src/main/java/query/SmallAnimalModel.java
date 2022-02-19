@@ -66,7 +66,7 @@ public enum SmallAnimalModel implements HerdModel {
 	/**
 	 * How much time, in minutes, must be spent per head on "extra chores" days.
 	 */
-	public int getExtraTimePerHead() {
+	public static int getExtraTimePerHead() {
 		return 30;
 	}
 
@@ -75,7 +75,7 @@ public enum SmallAnimalModel implements HerdModel {
 	 * each turn, regardless of its size, in addition to each herder's time
 	 * with individual animals.
 	 */
-	public int getDailyTimeFloor() {
+	public static int getDailyTimeFloor() {
 		return 20;
 	}
 

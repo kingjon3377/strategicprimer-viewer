@@ -39,7 +39,7 @@ public class ExpansionDriver implements CLIDriver {
 		return model;
 	}
 
-	private Predicate<Point> containsSwornVillage(final IMapNG map, final Player currentPlayer) {
+	private static Predicate<Point> containsSwornVillage(final IMapNG map, final Player currentPlayer) {
 		return (point) -> map.getFixtures(point).stream().filter(ITownFixture.class::isInstance)
 			.map(ITownFixture.class::cast).map(HasOwner::getOwner)
 			.anyMatch(currentPlayer::equals);

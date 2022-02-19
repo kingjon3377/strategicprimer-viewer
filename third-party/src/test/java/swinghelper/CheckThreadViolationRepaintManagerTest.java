@@ -10,7 +10,7 @@ import javax.swing.SwingUtilities;
 import java.lang.reflect.InvocationTargetException;
 
 public class CheckThreadViolationRepaintManagerTest {
-	void simpleTest() {
+	static void simpleTest() {
 		final JFrame frame = new JFrame("Am I on EDT?");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.add(new JButton("JButton"));
@@ -19,7 +19,7 @@ public class CheckThreadViolationRepaintManagerTest {
 		frame.dispose();
 	}
 
-	void imageUpdateTest() { // TODO: Surely this should be called from checkThreadViolations() somewhere?
+	static void imageUpdateTest() { // TODO: Surely this should be called from checkThreadViolations() somewhere?
 		final JFrame frame = new JFrame();
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		final JEditorPane editor = new JEditorPane();
@@ -54,7 +54,7 @@ public class CheckThreadViolationRepaintManagerTest {
 		// set CheckThreadViolationRepaintManager
 		RepaintManager.setCurrentManager(new CheckThreadViolationRepaintManager());
 		// Valid code
-		SwingUtilities.invokeAndWait(this::simpleTest);
+		SwingUtilities.invokeAndWait(CheckThreadViolationRepaintManagerTest::simpleTest);
 		System.out.println("Valid code passed ...");
 		repaintTest();
 		System.out.println("Repaint test - correct code");

@@ -49,7 +49,7 @@ import lovelace.util.ResourceInputStream;
 	/**
 	 * Create the cache of driver objects.
 	 */
-	public Map<String, Iterable<DriverFactory>> createCache() {
+	public static Map<String, Iterable<DriverFactory>> createCache() {
 		// TODO: Use a multimap?
 		final Map<String, List<DriverFactory>> cache = new HashMap<>();
 		final Map<String, List<DriverFactory>> conflicts = new HashMap<>();
@@ -90,7 +90,7 @@ import lovelace.util.ResourceInputStream;
 	/**
 	 * Create the usage message for a particular driver.
 	 */
-	public String usageMessage(final IDriverUsage usage, final boolean verbose) {
+	public static String usageMessage(final IDriverUsage usage, final boolean verbose) {
 		final StringBuilder builder = new StringBuilder();
 		builder.append("Usage: ");
 		String mainInvocation;

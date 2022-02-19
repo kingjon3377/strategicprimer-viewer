@@ -59,7 +59,7 @@ public class EchoDriver implements UtilityDriver {
 			} catch (final SPFormatException except) {
 				throw new DriverFailedException(except, "SP map format error in " + inArg);
 			}
-			final IDRegistrar idFactory = new IDFactoryFiller().createIDFactory(map);
+			final IDRegistrar idFactory = IDFactoryFiller.createIDFactory(map);
 			final int columnCount = map.getDimensions().getColumns();
 			for (final Point location : map.getLocations()) {
 				final Forest mainForest = map.getFixtures(location).stream()

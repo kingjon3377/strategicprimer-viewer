@@ -37,7 +37,7 @@ import org.javatuples.Pair;
 	public TurnRunningCLI(final ICLIHelper cli, final ITurnRunningModel model) {
 		this.cli = cli;
 		this.model = model;
-		idf = new IDFactoryFiller().createIDFactory(model.streamAllMaps().toArray(IMapNG[]::new));
+		idf = IDFactoryFiller.createIDFactory(model.streamAllMaps().toArray(IMapNG[]::new));
 		advancementCLI = new AdvancementCLIHelper(model, cli);
 		appletChooser = new AppletChooser<>(cli,
 				StreamSupport.stream(ServiceLoader.load(TurnAppletFactory.class).spliterator(), false)
@@ -63,7 +63,7 @@ import org.javatuples.Pair;
 
 	private final IDRegistrar idf;
 
-	private Predicate<IUnit> unfinishedResults(final int turn) {
+	private static Predicate<IUnit> unfinishedResults(final int turn) {
 		return unit -> {
 			final String results = unit.getResults(turn).toLowerCase();
 			return results.isEmpty() || results.contains("fixme") || results.contains("todo") ||

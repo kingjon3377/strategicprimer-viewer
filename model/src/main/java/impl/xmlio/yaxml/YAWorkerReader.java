@@ -140,7 +140,7 @@ import impl.xmlio.exceptions.UnwantedChildException;
 		return retval;
 	}
 
-	private void writeStats(final ThrowingConsumer<String, IOException> ostream, @Nullable final WorkerStats stats, final int indent)
+	private static void writeStats(final ThrowingConsumer<String, IOException> ostream, @Nullable final WorkerStats stats, final int indent)
 			throws IOException {
 		if (stats != null) {
 			writeTag(ostream, "stats", indent);

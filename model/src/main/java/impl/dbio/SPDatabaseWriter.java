@@ -27,7 +27,7 @@ public final class SPDatabaseWriter implements SPWriter {
 
 	private final Map<Path, DB> connections = new HashMap<>();
 
-	private DataSource getBaseConnection(final Path path) {
+	private static DataSource getBaseConnection(final Path path) {
 		final SQLiteDataSource retval = new SQLiteDataSource();
 		if (path.toString().isEmpty()) {
 			LOGGER.info("Trying to set up an in-memory database");

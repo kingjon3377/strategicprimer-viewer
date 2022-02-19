@@ -34,7 +34,7 @@ import java.util.function.Predicate;
 		setModel(matcherListModel);
 		getSelectionModel().setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 		getSelectionModel().addListSelectionListener(ignored -> selectionChanged());
-		setCellRenderer(this::renderCell);
+		setCellRenderer(FixtureFilterList::renderCell);
 
 		setTransferHandler(new FixtureFilterTransferHandler());
 		setDropMode(DropMode.INSERT);
@@ -71,8 +71,8 @@ import java.util.function.Predicate;
 
 	private static final DefaultListCellRenderer DEFAULT_RENDERER = new DefaultListCellRenderer();
 
-	private Component renderCell(final JList<? extends FixtureMatcher> list, final FixtureMatcher item,
-	                             final int index, final boolean isSelected, final boolean cellHasFocus) {
+	private static Component renderCell(final JList<? extends FixtureMatcher> list, final FixtureMatcher item,
+	                                    final int index, final boolean isSelected, final boolean cellHasFocus) {
 		final Component retval = DEFAULT_RENDERER.getListCellRendererComponent(list, item,
 			index, isSelected, cellHasFocus);
 		if (retval instanceof JLabel) {

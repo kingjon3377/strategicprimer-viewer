@@ -157,7 +157,7 @@ public class UtilityDriverModel extends SimpleMultiMapModel {
 		return duplicatesList;
 	}
 
-	private List<Quartet<Runnable, String, String, Collection<? extends IFixture>>> coalesceImpl(
+	private static List<Quartet<Runnable, String, String, Collection<? extends IFixture>>> coalesceImpl(
 			final String context, final Iterable<? extends IFixture> stream, final Consumer<IFixture> add,
 			final Consumer<IFixture> remove, final Runnable setModFlag,
 			final Map<Class<? extends IFixture>, CoalescedHolder<? extends IFixture, ?>> handlers) {
@@ -340,7 +340,7 @@ public class UtilityDriverModel extends SimpleMultiMapModel {
 		}
 	}
 
-	private void safeAdd(final IMutableMapNG map, final Player currentPlayer, final Point point, final TileFixture fixture) {
+	private static void safeAdd(final IMutableMapNG map, final Player currentPlayer, final Point point, final TileFixture fixture) {
 		if (map.getFixtures(point).stream().anyMatch(fixture::equals)) {
 			return;
 		} else if (fixture instanceof HasOwner && !(fixture instanceof ITownFixture)) {

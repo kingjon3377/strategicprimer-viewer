@@ -501,7 +501,7 @@ public class ViewerModel extends SimpleDriverModel implements IViewerModel {
 		}
 	}
 
-	private Predicate<Pair<Point, IFixture>> unitMatching(final IUnit unit) {
+	private static Predicate<Pair<Point, IFixture>> unitMatching(final IUnit unit) {
 		return entry -> {
 			final IFixture fixture = entry.getValue1();
 			return fixture instanceof IUnit && fixture.getId() == unit.getId() &&

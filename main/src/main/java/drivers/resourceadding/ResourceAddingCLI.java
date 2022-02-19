@@ -26,7 +26,7 @@ import common.map.fixtures.Implement;
 		this.cli = cli;
 		this.options = options;
 		this.model = model;
-		helper = new ResourceAddingCLIHelper(cli, new IDFactoryFiller()
+		helper = new ResourceAddingCLIHelper(cli, IDFactoryFiller
 			.createIDFactory(model.streamAllMaps().toArray(IMapNG[]::new)));
 	}
 

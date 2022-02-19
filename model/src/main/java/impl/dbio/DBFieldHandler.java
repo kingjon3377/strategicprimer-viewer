@@ -51,7 +51,7 @@ final class DBFieldHandler extends AbstractDatabaseWriter<Meadow, Point> impleme
 			obj.getStatus().toString(), obj.getAcres().toString(), obj.getImage());
 	}
 
-	private TryBiConsumer<Map<String, Object>, Warning, Exception> readMeadow(final IMutableMapNG map) {
+	private static TryBiConsumer<Map<String, Object>, Warning, Exception> readMeadow(final IMutableMapNG map) {
 		return (dbRow, warner) -> {
 			final int row = (Integer) dbRow.get("row");
 			final int column = (Integer) dbRow.get("column");

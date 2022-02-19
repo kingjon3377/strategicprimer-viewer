@@ -62,7 +62,7 @@ import common.map.fixtures.mobile.worker.IJob;
 	 * Produce text describing the given Skills.
 	 * TODO: Take Consumer instead of returning String?
 	 */
-	private String skills(final Iterable<ISkill> job) {
+	private static String skills(final Iterable<ISkill> job) {
 		return (job.iterator().hasNext()) ? StreamSupport.stream(job.spliterator(), false)
 			.map(WorkerReportGenerator::skillString)
 			.collect(Collectors.joining(", ", "(", ")")) : "";

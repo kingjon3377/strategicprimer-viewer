@@ -240,12 +240,12 @@ public class PopulationGeneratingCLI implements CLIDriver {
 			.filter(hasForests(kind)).count();
 	}
 
-	private BigDecimal perForestAcreage(final BigDecimal reserved, final int otherForests) {
+	private static BigDecimal perForestAcreage(final BigDecimal reserved, final int otherForests) {
 		return new BigDecimal(160).subtract(reserved)
 			.divide(new BigDecimal(otherForests), RoundingMode.HALF_EVEN);
 	}
 
-	private Number acreageExtent(final HasExtent<?> item) {
+	private static Number acreageExtent(final HasExtent<?> item) {
 		return item.getAcres();
 	}
 

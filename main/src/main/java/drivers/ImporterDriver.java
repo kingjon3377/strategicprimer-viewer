@@ -109,7 +109,7 @@ import org.jetbrains.annotations.Nullable;
 	private final IDRegistrar idf = new IDFactory();
 
 	@Nullable
-	private String findAdjacentForest(final IMapNG map, final Point location) {
+	private static String findAdjacentForest(final IMapNG map, final Point location) {
 		final List<Forest> forests =
 						new SurroundingPointIterable(location, map.getDimensions(), 1).stream()
 				.flatMap(l -> map.getFixtures(l).stream())

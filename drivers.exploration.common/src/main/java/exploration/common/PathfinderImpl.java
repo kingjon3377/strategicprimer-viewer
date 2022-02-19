@@ -24,7 +24,7 @@ import java.util.logging.Logger;
 	}
 	private final IMapNG map;
 	private final Map<Pair<Point, Point>, Integer> tentativeDistances = new HashMap<>();
-	private Predicate<Map.Entry<Pair<Point, Point>, Integer>> forUs(final Point base, final Set<Point> unvisited) {
+	private static Predicate<Map.Entry<Pair<Point, Point>, Integer>> forUs(final Point base, final Set<Point> unvisited) {
 		return entry -> entry.getKey().getValue0().equals(base) &&
 			unvisited.contains(entry.getKey().getValue1());
 	}

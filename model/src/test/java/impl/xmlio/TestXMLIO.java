@@ -172,7 +172,7 @@ public final class TestXMLIO {
 	 * TODO: Split 'fatal error' and 'warning' cases into separate methods?
 	 */
 	@SafeVarargs
-	private final <Type, Expectation extends Exception> void assertFormatIssue(
+	private static <Type, Expectation extends Exception> void assertFormatIssue(
 			final ISPReader reader, final String xml, @Nullable final Type desideratum,
 			final Class<Expectation> exceptionClass, final Consumer<Expectation>... checks)
 			throws SPFormatException, MalformedXMLException, IOException {
@@ -221,7 +221,7 @@ public final class TestXMLIO {
 	private <Type> void assertUnsupportedTag(final String xml, final String tag, @Nullable final Type desideratum)
 			throws SPFormatException, MalformedXMLException, IOException {
 		for (final ISPReader reader : spReaders) {
-			this.assertFormatIssue(reader, xml, desideratum,
+			TestXMLIO.assertFormatIssue(reader, xml, desideratum,
 				UnsupportedTagException.class,
 				(except) -> assertEquals(tag, except.getTag().getLocalPart(),
 					"Unsupported tag was the tag we expected"));
@@ -237,7 +237,7 @@ public final class TestXMLIO {
 	private <Type> void assertUnwantedChild(final String xml, @Nullable final Type desideratum)
 			throws SPFormatException, MalformedXMLException, IOException {
 		for (final ISPReader reader : spReaders) {
-			this.assertFormatIssue(reader, xml, desideratum,
+			TestXMLIO.assertFormatIssue(reader, xml, desideratum,
 				UnwantedChildException.class);
 		}
 	}
@@ -252,7 +252,7 @@ public final class TestXMLIO {
 	                                          @Nullable final Type desideratum)
 			throws SPFormatException, MalformedXMLException, IOException {
 		for (final ISPReader reader : spReaders) {
-			this.assertFormatIssue(reader, xml, desideratum,
+			TestXMLIO.assertFormatIssue(reader, xml, desideratum,
 				MissingPropertyException.class,
 				(except) -> assertEquals(property, except.getParam(),
 					"Missing property should be the one we're expecting"));
@@ -265,7 +265,7 @@ public final class TestXMLIO {
 	private <Type> void assertMissingChild(final String xml)
 			throws SPFormatException, MalformedXMLException, IOException {
 		for (final ISPReader reader : spReaders) {
-			this.<Type, MissingChildException>assertFormatIssue(reader, xml, null,
+			TestXMLIO.<Type, MissingChildException>assertFormatIssue(reader, xml, null,
 				MissingChildException.class);
 		}
 	}
@@ -280,7 +280,7 @@ public final class TestXMLIO {
 	                                             final String tag, @Nullable final Type desideratum)
 			throws SPFormatException, MalformedXMLException, IOException {
 		for (final ISPReader reader : spReaders) {
-			this.assertFormatIssue(reader, xml, desideratum,
+			TestXMLIO.assertFormatIssue(reader, xml, desideratum,
 				DeprecatedPropertyException.class,
 				(except) -> {
 					assertEquals(deprecated, except.getOld(),
@@ -301,7 +301,7 @@ public final class TestXMLIO {
 	 * @param obj The object to serialize
 	 * @param deprecated Whether to use the deprecated i.e. one-generation-back writer
 	 */
-	private String createSerializedForm(final Object obj, final boolean deprecated)
+	private static String createSerializedForm(final Object obj, final boolean deprecated)
 			throws SPFormatException, MalformedXMLException, IOException {
 		final StringBuilder writer = new StringBuilder();
 		if (deprecated) {
@@ -343,7 +343,7 @@ public final class TestXMLIO {
 	 * Assert that the serialized form of the given object, using both
 	 * writers, will contain the given string.
 	 */
-	private void assertSerializedFormContains(final Object obj, final String expected, final String message)
+	private static void assertSerializedFormContains(final Object obj, final String expected, final String message)
 			throws SPFormatException, MalformedXMLException, IOException {
 		// TODO: Is there a JUnit assertContains() or similar?
 		assertTrue(createSerializedForm(obj, false).contains(expected), message);
@@ -496,7 +496,7 @@ public final class TestXMLIO {
 	private <Type> void assertDuplicateID(final String xml, final Type desideratum)
 			throws SPFormatException, MalformedXMLException, IOException {
 		for (final ISPReader reader : spReaders) {
-			this.assertFormatIssue(reader, xml, desideratum,
+			TestXMLIO.assertFormatIssue(reader, xml, desideratum,
 				DuplicateIDException.class);
 		}
 	}
@@ -523,7 +523,7 @@ public final class TestXMLIO {
 	private void assertInvalid(final String xml)
 			throws SPFormatException, MalformedXMLException, IOException {
 		for (final ISPReader reader : spReaders) {
-			this.assertFormatIssue(reader, xml, null, Exception.class,
+			TestXMLIO.assertFormatIssue(reader, xml, null, Exception.class,
 				except -> assertTrue(instanceOfAny(NoSuchElementException.class,
 						IllegalArgumentException.class,
 						MalformedXMLException.class,
@@ -1231,7 +1231,7 @@ public final class TestXMLIO {
 				"<xy:xyzzy><row index=\"0\"><tile row=\"0\" column=\"0\" kind=\"steppe\">" +
 				"<xy:hill id=\"0\" /></tile></row></xy:xyzzy></map>", SP_NAMESPACE));
 		for (final ISPReader reader : spReaders) {
-			this.<IMapNG, Exception>assertFormatIssue(reader,
+			TestXMLIO.<IMapNG, Exception>assertFormatIssue(reader,
 				"<map xmlns=\"xyzzy\" version=\"2\" rows=\"1\" columns=\"1\" " +
 					"current_player=\"1\">" +
 					"<player number=\"1\" code_name=\"playerOne\" /><row index=\"0\">" +
@@ -1252,7 +1252,7 @@ public final class TestXMLIO {
 							fail("Unexpected exception type");
 						}
 					});
-			this.<AdventureFixture, Exception>assertFormatIssue(reader,
+			TestXMLIO.<AdventureFixture, Exception>assertFormatIssue(reader,
 				"<adventure xmlns=\"xyzzy\" id=\"1\" brief=\"one\" full=\"two\" />", null,
 				Exception.class,
 				(except) -> assertTrue(except instanceof UnwantedChildException ||

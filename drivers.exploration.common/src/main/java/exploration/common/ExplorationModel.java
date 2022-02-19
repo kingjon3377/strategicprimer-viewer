@@ -886,7 +886,7 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 		}
 	}
 
-	private Predicate<Pair<Point, TileFixture>> unitMatching(final IUnit unit) {
+	private static Predicate<Pair<Point, TileFixture>> unitMatching(final IUnit unit) {
 		return (pair) -> {
 			final Point location = pair.getValue0();
 			final IFixture fixture = pair.getValue1();

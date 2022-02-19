@@ -86,8 +86,8 @@ import common.map.fixtures.mobile.IUnit;
 			new JScrollBar(Adjustable.VERTICAL));
 	}
 
-	private int countChanges(final BoundedRangeModel model, final int val, final int extent,
-	                         final int minimum, final int maximum) {
+	private static int countChanges(final BoundedRangeModel model, final int val, final int extent,
+	                                final int minimum, final int maximum) {
 		int retval = 0;
 		if (model.getValue() != val) {
 			retval++;
@@ -104,8 +104,8 @@ import common.map.fixtures.mobile.IUnit;
 		return retval;
 	}
 
-	private void setRangeProperties(final BoundedRangeModel model, final int val, final int extent,
-	                                final int minimum, final int maximum) {
+	private static void setRangeProperties(final BoundedRangeModel model, final int val, final int extent,
+	                                       final int minimum, final int maximum) {
 		final int differences = countChanges(model, val, minimum, extent, maximum);
 		if (differences <= 0) {
 			return;

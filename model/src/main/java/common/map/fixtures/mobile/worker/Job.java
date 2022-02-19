@@ -81,7 +81,7 @@ public final class Job implements IMutableJob {
 		}
 	}
 
-	private ISkill copySkill(final ISkill skill) {
+	private static ISkill copySkill(final ISkill skill) {
 		return skill.copy();
 	}
 

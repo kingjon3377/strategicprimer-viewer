@@ -329,7 +329,7 @@ public class HuntingModel {
 	 *
 	 * TODO: Stream instead of Collection?
 	 */
-	private Function<Point, Collection<Pair<Point, TileFixture>>> chooseFromMapImpl(
+	private static Function<Point, Collection<Pair<Point, TileFixture>>> chooseFromMapImpl(
 			final Function<Point, Collection<TileFixture>> chosenMap) {
 		return loc -> chosenMap.apply(loc).stream().map(f -> Pair.with(loc, f))
 			.collect(Collectors.toList());

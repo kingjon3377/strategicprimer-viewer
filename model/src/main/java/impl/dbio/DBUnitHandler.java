@@ -105,7 +105,7 @@ final class DBUnitHandler extends AbstractDatabaseWriter<IUnit, Object> implemen
 		}
 	}
 
-	private TryBiConsumer<Map<String, Object>, Warning, Exception> readOrders(final IMutableUnit unit) {
+	private static TryBiConsumer<Map<String, Object>, Warning, Exception> readOrders(final IMutableUnit unit) {
 		return (dbRow, warner) -> {
 			final Integer turn = (Integer) dbRow.get("turn");
 			final String orders = (String) dbRow.get("orders");
@@ -113,7 +113,7 @@ final class DBUnitHandler extends AbstractDatabaseWriter<IUnit, Object> implemen
 		};
 	}
 
-	private TryBiConsumer<Map<String, Object>, Warning, Exception> readResults(final IMutableUnit unit) {
+	private static TryBiConsumer<Map<String, Object>, Warning, Exception> readResults(final IMutableUnit unit) {
 		return (dbRow, warner) -> {
 			final Integer turn = (Integer) dbRow.get("turn");
 			final String results = (String) dbRow.get("results");

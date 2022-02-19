@@ -51,7 +51,7 @@ import common.map.fixtures.terrain.Hill;
 		// TODO: Pass checkbox models into methods, not the items themselves?
 		this.mapVersion = mapVersion;
 		this.model = model;
-		idf = new IDFactoryFiller().createIDFactory(model.getMap());
+		idf = IDFactoryFiller.createIDFactory(model.getMap());
 		nuDialog = new NewUnitDialog(model.getMap().getCurrentPlayer(), idf);
 		// TODO: convert to lambda?
 		nuDialog.addNewUnitListener(unit -> {

@@ -144,7 +144,7 @@ import common.xmlio.Warning;
 		}
 	}
 
-	private MobileFixture readSimple(final String tag, final int idNum) {
+	private static MobileFixture readSimple(final String tag, final int idNum) {
 		if (!SIMPLES.containsKey(tag)) {
 			throw new IllegalArgumentException("Only works for simple immortals");
 		}

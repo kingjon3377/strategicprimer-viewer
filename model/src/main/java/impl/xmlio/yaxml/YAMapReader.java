@@ -99,7 +99,7 @@ import java.util.function.Predicate;
 	/**
 	 * Get the first open-tag event in our namespace in the stream.
 	 */
-	private StartElement getFirstStartElement(final Iterable<XMLEvent> stream, final StartElement parent)
+	private static StartElement getFirstStartElement(final Iterable<XMLEvent> stream, final StartElement parent)
 			throws SPFormatException, MalformedXMLException {
 		for (final XMLEvent element : stream) {
 			if (element instanceof StartElement &&
@@ -113,7 +113,7 @@ import java.util.function.Predicate;
 	/**
 	 * Write a newline if needed.
 	 */
-	private void eolIfNeeded(final boolean needEol, final ThrowingConsumer<String, IOException> writer) throws IOException {
+	private static void eolIfNeeded(final boolean needEol, final ThrowingConsumer<String, IOException> writer) throws IOException {
 		if (needEol) {
 			writer.accept(System.lineSeparator());
 		}
@@ -141,7 +141,7 @@ import java.util.function.Predicate;
 	/**
 	 * Write a river.
 	 */
-	public void writeRiver(final ThrowingConsumer<String, IOException> ostream, final River obj, final int indent) throws IOException {
+	public static void writeRiver(final ThrowingConsumer<String, IOException> ostream, final River obj, final int indent) throws IOException {
 		if (River.Lake == obj) {
 			writeTag(ostream, "lake", indent);
 		} else {

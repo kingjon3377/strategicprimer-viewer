@@ -66,7 +66,7 @@ final class DBExplorableHandler extends AbstractDatabaseWriter<ExplorableFixture
 			obj.getImage()).execute();
 	}
 
-	private TryBiConsumer<Map<String, Object>, Warning, Exception> readCave(final IMutableMapNG map) {
+	private static TryBiConsumer<Map<String, Object>, Warning, Exception> readCave(final IMutableMapNG map) {
 		return (dbRow, warner) -> {
 			final int row = (Integer) dbRow.get("row");
 			final int column = (Integer) dbRow.get("column");
@@ -81,7 +81,7 @@ final class DBExplorableHandler extends AbstractDatabaseWriter<ExplorableFixture
 		};
 	}
 
-	private TryBiConsumer<Map<String, Object>, Warning, Exception> readBattlefield(final IMutableMapNG map) {
+	private static TryBiConsumer<Map<String, Object>, Warning, Exception> readBattlefield(final IMutableMapNG map) {
 		return (dbRow, warner) -> {
 			final int row = (Integer) dbRow.get("row");
 			final int column = (Integer) dbRow.get("column");

@@ -120,7 +120,7 @@ import common.map.fixtures.mobile.AnimalTracks;
 		}
 	}
 
-	private <Type> MappedCounter<Type, String, Integer>
+	private static <Type> MappedCounter<Type, String, Integer>
 			simpleCounter(final Function<Type, String> keyExtractor) {
 		return new MappedCounter<>(keyExtractor, t -> 1, IntAccumulator::new, 0);
 	}

@@ -40,7 +40,7 @@ final class DBGroundHandler extends AbstractDatabaseWriter<Ground, Point> implem
 			obj.isExposed(), obj.getImage());
 	}
 
-	private TryBiConsumer<Map<String, Object>, Warning, Exception> readGround(final IMutableMapNG map) {
+	private static TryBiConsumer<Map<String, Object>, Warning, Exception> readGround(final IMutableMapNG map) {
 		return (dbRow, warner) -> {
 			final int row = (Integer) dbRow.get("row");
 			final int column = (Integer) dbRow.get("column");

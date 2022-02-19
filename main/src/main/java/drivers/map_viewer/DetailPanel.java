@@ -67,7 +67,7 @@ import worker.common.IFixtureEditHelper;
 			new FixtureListModel(model.getMap()::getFixtures, model.getMap()::getBaseTerrain,
 				model.getMap()::getRivers, model.getMap()::isMountainous, (point) -> null,
 				null, null, null, null, null, null, sortOrder), // TODO: implementations instead of null?
-			feh, new IDFactoryFiller().createIDFactory(model.getMap()),
+			feh, IDFactoryFiller.createIDFactory(model.getMap()),
 			model.getMap().getPlayers());
 
 		delegate = fixtureListObject;

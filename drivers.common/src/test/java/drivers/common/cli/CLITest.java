@@ -44,8 +44,8 @@ public final class CLITest {
 	 * was as expected" and "CLIHelper output was as expected"
 	 * respectively), but I won't add overloads for that unless I have to.
 	 */
-	<T> void assertCLI(final Function<ICLIHelper, @Nullable T> method, final List<String> input, final String expectedOutput,
-	                   final T expectedResult, final String resultMessage, final String outputMessage) {
+	static <T> void assertCLI(final Function<ICLIHelper, @Nullable T> method, final List<String> input, final String expectedOutput,
+	                          final T expectedResult, final String resultMessage, final String outputMessage) {
 		final StringBuilder ostream = new StringBuilder();
 		final ICLIHelper cli = new CLIHelper(new LinkedList<>(input)::pollFirst, ostream::append);
 		assertEquals(expectedResult, method.apply(cli), resultMessage);

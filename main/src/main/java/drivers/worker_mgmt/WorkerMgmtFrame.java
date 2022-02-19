@@ -66,7 +66,7 @@ import drivers.worker_mgmt.orderspanel.OrdersPanel;
 			(file) -> model.addSubordinateMap(MapIOHelper.readMap(file)));
 		this.model = model;
 		mainMap = model.getMap();
-		final IDRegistrar idf = new IDFactoryFiller().createIDFactory(model.streamAllMaps()
+		final IDRegistrar idf = IDFactoryFiller.createIDFactory(model.streamAllMaps()
 				.toArray(IMapNG[]::new));
 		newUnitFrame = new NewUnitDialog(model.getCurrentPlayer(), idf);
 		final IWorkerTreeModel treeModel = new WorkerTreeModelAlt(model); // TODO: Try with WorkerTreeModel again?

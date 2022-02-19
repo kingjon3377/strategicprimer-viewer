@@ -65,7 +65,7 @@ final class DBMineralHandler extends AbstractDatabaseWriter<MineralFixture, Poin
 			obj.getId(), obj.getKind(), exposed, obj.getDC(), ((HasImage) obj).getImage());
 	}
 
-	private TryBiConsumer<Map<String, Object>, Warning, Exception> readMineralVein(final IMutableMapNG map) {
+	private static TryBiConsumer<Map<String, Object>, Warning, Exception> readMineralVein(final IMutableMapNG map) {
 		return (dbRow, warner) -> {
 			final int row = (Integer) dbRow.get("row");
 			final int column = (Integer) dbRow.get("column");
@@ -83,7 +83,7 @@ final class DBMineralHandler extends AbstractDatabaseWriter<MineralFixture, Poin
 		};
 	}
 
-	private TryBiConsumer<Map<String, Object>, Warning, Exception> readStoneDeposit(final IMutableMapNG map) {
+	private static TryBiConsumer<Map<String, Object>, Warning, Exception> readStoneDeposit(final IMutableMapNG map) {
 		return (dbRow, warner) -> {
 			final int row = (Integer) dbRow.get("row");
 			final int column = (Integer) dbRow.get("column");

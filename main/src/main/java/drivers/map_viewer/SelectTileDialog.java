@@ -94,7 +94,7 @@ import common.map.Point;
 	private final JLabel errorLabel = new JLabel(
 		"This text should vanish from this label before it appears.");
 
-	private NumberState checkNumber(final String text, final int bound) {
+	private static NumberState checkNumber(final String text, final int bound) {
 		try {
 			final int number = NUM_PARSER.parse(text).intValue();
 			if (number < 0) {

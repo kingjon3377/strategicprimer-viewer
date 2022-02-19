@@ -569,7 +569,7 @@ public class SPMapNG implements IMutableMapNG {
 
 	// FIXME: Inline this into all callers, or figure out what's missing
 	// FIXME: Remove 'movedFrom' once that's converted to a member function
-	private <Target extends IFixture, SubsetType extends Subsettable<Target>>
+	private static <Target extends IFixture, SubsetType extends Subsettable<Target>>
 		boolean testAgainstList(final Target desideratum, final Point location,
 		                        final Collection<Pair<SubsetType, Point>> list, final Consumer<String> ostream,
 		                        final BiPredicate<Point, TileFixture> movedFrom) {

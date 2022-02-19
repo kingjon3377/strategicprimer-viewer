@@ -148,7 +148,7 @@ public class SPFluidWriter implements SPWriter {
 	/**
 	 * TODO: Does this really need to be an instance (non-static) method?
 	 */
-	private void writePlayer(final XMLStreamWriter ostream, final Player obj, final int indentation)
+	private static void writePlayer(final XMLStreamWriter ostream, final Player obj, final int indentation)
 			throws MalformedXMLException {
 		if (!obj.getName().isEmpty()) {
 			writeTag(ostream, "player", indentation, true);
@@ -193,8 +193,8 @@ public class SPFluidWriter implements SPWriter {
 		}
 	}
 
-	private void writeUnitOrders(final XMLStreamWriter ostream, final int indentation, final int turn,
-	                             final String tag, final String text) throws MalformedXMLException {
+	private static void writeUnitOrders(final XMLStreamWriter ostream, final int indentation, final int turn,
+	                                    final String tag, final String text) throws MalformedXMLException {
 		// assert (tag == "orders" || tag == "results");
 		if (text.isEmpty()) {
 			return;
@@ -443,7 +443,7 @@ public class SPFluidWriter implements SPWriter {
 		addWriterToMap(temp, Village.class, FluidTownHandler::writeVillage);
 		addWriterToMap(temp, AbstractTown.class, FluidTownHandler::writeTown);
 		addWriterToMap(temp, IMapNG.class, this::writeMap);
-		addWriterToMap(temp, Player.class, this::writePlayer);
+		addWriterToMap(temp, Player.class, SPFluidWriter::writePlayer);
 		addWriterToMap(temp, CommunityStats.class, FluidTownHandler::writeCommunityStats);
 		writers = Collections.unmodifiableMap(temp);
 	}

@@ -44,7 +44,7 @@ final class DBMapReader {
 	 * SQLite stores Boolean values, convert to the equivalent Boolean and
 	 * return that; otherwise, return the original value.
 	 */
-	public Object databaseBoolean(final Object field) {
+	public static Object databaseBoolean(final Object field) {
 		if (field instanceof Integer) {
 			if ((Integer) field == 0) {
 				return false;

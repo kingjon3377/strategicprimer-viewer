@@ -392,8 +392,8 @@ public class SPFluidReader implements IMapReader, ISPReader {
 		return retval;
 	}
 
-	private Player readPlayer(final StartElement element, final QName parent, final Iterable<XMLEvent> stream,
-	                          final IMutablePlayerCollection players, final Warning warner, final IDRegistrar idFactory)
+	private static Player readPlayer(final StartElement element, final QName parent, final Iterable<XMLEvent> stream,
+	                                 final IMutablePlayerCollection players, final Warning warner, final IDRegistrar idFactory)
 			throws SPFormatException {
 		requireTag(element, parent, "player");
 		requireNonEmptyAttribute(element, "number", true, warner);
@@ -430,15 +430,15 @@ public class SPFluidReader implements IMapReader, ISPReader {
 		return retval;
 	}
 
-	private void parseOrders(final StartElement element, final IMutableUnit unit, final Iterable<XMLEvent> stream,
-	                         final Warning warner) throws SPFormatException {
+	private static void parseOrders(final StartElement element, final IMutableUnit unit, final Iterable<XMLEvent> stream,
+	                                final Warning warner) throws SPFormatException {
 		expectAttributes(element, warner, "turn");
 		final int turn = getIntegerAttribute(element, "turn", -1, warner);
 		unit.setOrders(turn, getTextUntil(element.getName(), stream));
 	}
 
-	private void parseResults(final StartElement element, final IMutableUnit unit, final Iterable<XMLEvent> stream,
-	                          final Warning warner) throws SPFormatException {
+	private static void parseResults(final StartElement element, final IMutableUnit unit, final Iterable<XMLEvent> stream,
+	                                 final Warning warner) throws SPFormatException {
 		expectAttributes(element, warner, "turn");
 		final int turn = getIntegerAttribute(element, "turn", -1, warner);
 		unit.setResults(turn, getTextUntil(element.getName(), stream));
@@ -589,7 +589,7 @@ public class SPFluidReader implements IMapReader, ISPReader {
 		temp.put("view", this::readMapOrViewTag);
 		temp.put("river", FluidTerrainHandler::readRiver);
 		temp.put("lake", FluidTerrainHandler::readLake);
-		temp.put("player", this::readPlayer);
+		temp.put("player", SPFluidReader::readPlayer);
 		temp.put("population", FluidTownHandler::readCommunityStats);
 		for (final SimpleHasKindReader reader : Arrays.asList(
 				new SimpleHasKindReader("centaur", Centaur::new),

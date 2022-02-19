@@ -445,7 +445,7 @@ abstract class YAAbstractReader<Item, Value> implements YAReader<Item, Value> {
 	 * Boolean#parseBoolean} because it doesn't object to non-boolean
 	 * input, just returns false for everything but "true".
 	 */
-	protected boolean getBooleanParameter(final StartElement element, final String parameter)
+	protected static boolean getBooleanParameter(final StartElement element, final String parameter)
 			throws SPFormatException {
 		final Attribute attr = getAttributeByName(element, parameter);
 		if (attr != null) {

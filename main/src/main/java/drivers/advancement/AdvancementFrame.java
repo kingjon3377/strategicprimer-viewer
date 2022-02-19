@@ -50,7 +50,7 @@ import drivers.gui.common.MenuBroker;
 			(file) -> model.addSubordinateMap(MapIOHelper.readMap(file)));
 		final IMapNG map = model.getMap();
 		treeModel = new WorkerTreeModelAlt(model);
-		final IDRegistrar idf = new IDFactoryFiller().createIDFactory(map);
+		final IDRegistrar idf = IDFactoryFiller.createIDFactory(map);
 
 		// TODO: replace lambda with (model::getMap).andThen(IMapNG::getCurrentTurn)?
 		final WorkerTree tree = new WorkerTree(treeModel, model.getPlayers(),

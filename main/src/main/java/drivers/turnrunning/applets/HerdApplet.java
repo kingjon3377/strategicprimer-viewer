@@ -172,7 +172,7 @@ import query.SmallAnimalModel;
 					addLineToOrders.accept(String.format(
 						"Cleaning up after them takes %.1f hours.",
 						pm.dailyExtraTime((int) flockPerHerder) / 60.0));
-					minutesSpent += ((PoultryModel) herdModel).getExtraTimePerHead() * flockPerHerder;
+					minutesSpent += PoultryModel.getExtraTimePerHead() * flockPerHerder;
 				}
 			} else if (herdModel instanceof MammalModel) {
 				resourceProduced = "milk";
@@ -185,19 +185,19 @@ import query.SmallAnimalModel;
 					baseCost = flockPerHerder * herdModel.getDailyTimePerHead();
 				}
 				addLineToOrders.accept(String.format(" took %d min, plus %s min to gather them",
-					baseCost, ((MammalModel) herdModel).getDailyTimeFloor()));
+					baseCost, MammalModel.getDailyTimeFloor()));
 				minutesSpent += baseCost;
-				minutesSpent += ((MammalModel) herdModel).getDailyTimeFloor();
+				minutesSpent += MammalModel.getDailyTimeFloor();
 			} else if (herdModel instanceof SmallAnimalModel) {
 				addToOrders.accept("Tending the ");
 				addToOrders.accept(AnimalPlurals.get(combinedAnimal.getKind()));
 				final long baseCost;
 				if (experts) {
 					baseCost = (int) ((flockPerHerder * herdModel.getDailyTimePerHead() +
-						((SmallAnimalModel) herdModel).getDailyTimeFloor()) * 0.9);
+						SmallAnimalModel.getDailyTimeFloor()) * 0.9);
 				} else {
 					baseCost = flockPerHerder * herdModel.getDailyTimePerHead() +
-						((SmallAnimalModel) herdModel).getDailyTimeFloor();
+						SmallAnimalModel.getDailyTimeFloor();
 				}
 				minutesSpent += baseCost;
 				addLineToOrders.accept(String.format(" took the %d workers %d min.", workerCount, baseCost));
@@ -208,8 +208,8 @@ import query.SmallAnimalModel;
 					return null;
 				} else {
 					addLineToOrders.accept(String.format("Cleaning up after them took %d minutes.",
-						((SmallAnimalModel) herdModel).getExtraTimePerHead() * flockPerHerder));
-					minutesSpent += ((SmallAnimalModel) herdModel).getExtraTimePerHead() * flockPerHerder;
+						SmallAnimalModel.getExtraTimePerHead() * flockPerHerder));
+					minutesSpent += SmallAnimalModel.getExtraTimePerHead() * flockPerHerder;
 				}
 				continue;
 			} else {

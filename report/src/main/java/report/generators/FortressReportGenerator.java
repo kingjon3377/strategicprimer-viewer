@@ -53,8 +53,8 @@ public class FortressReportGenerator extends AbstractReportGenerator<IFortress> 
 	private final IReportGenerator<FortressMember> memberReportGenerator;
 	private final Player currentPlayer;
 
-	private void terrain(final Consumer<String> ostream, final IMapNG map, final Point point,
-	                       final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures) {
+	private static void terrain(final Consumer<String> ostream, final IMapNG map, final Point point,
+	                            final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures) {
 		ostream.accept("Surrounding terrain: ");
 		ostream.accept(Optional.ofNullable(map.getBaseTerrain(point)).map(Object::toString)
 			.orElse("Unknown"));

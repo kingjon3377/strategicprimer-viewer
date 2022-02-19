@@ -169,7 +169,7 @@ import worker.common.IFixtureEditHelper;
 		// transition
 		final IMapNG secondMap = driverModel.streamSubordinateMaps().findFirst().orElseGet(driverModel::getMap);
 
-		final IDRegistrar idf = new IDFactoryFiller().createIDFactory(
+		final IDRegistrar idf = IDFactoryFiller.createIDFactory(
 			driverModel.streamAllMaps().toArray(IMapNG[]::new));
 		huntingModel = new HuntingModel(driverModel.getMap());
 
@@ -217,7 +217,7 @@ import worker.common.IFixtureEditHelper;
 
 			final FixtureList secList = new FixtureList(tilesPanel,
 				new FixtureListModel(secondMap::getFixtures, secondMap::getBaseTerrain,
-					secondMap::getRivers, secondMap::isMountainous, this::createNull,
+					secondMap::getRivers, secondMap::isMountainous, ExplorationPanel::createNull,
 					driverModel::setSubMapTerrain, driverModel::copyRiversToSubMaps,
 					driverModel::setMountainousInSubMap, driverModel::copyToSubMaps,
 					driverModel::removeRiversFromSubMaps,
@@ -480,7 +480,7 @@ import worker.common.IFixtureEditHelper;
 	}
 
 	@Nullable
-	private AnimalTracks createNull(final Point point) {
+	private static AnimalTracks createNull(final Point point) {
 		return null;
 	}
 

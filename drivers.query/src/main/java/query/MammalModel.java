@@ -62,7 +62,7 @@ public enum MammalModel implements HerdModel {
 	 * each turn, regardless of its size, in addition to each herder's time
 	 * with individual animals.
 	 */
-	public int getDailyTimeFloor() {
+	public static int getDailyTimeFloor() {
 		return 60;
 	}
 

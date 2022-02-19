@@ -81,7 +81,7 @@ import java.math.BigDecimal;
 	/**
 	 * Load consumption possibilities from file.
 	 */
-	private Map<String, List<Triplet<Quantity, String, String>>> initConsumption() throws IOException {
+	private static Map<String, List<Triplet<Quantity, String, String>>> initConsumption() throws IOException {
 		final Map<String, List<Triplet<Quantity, String, String>>> retval = new HashMap<>();
 		for (final String terrain : Arrays.asList("mountain", "forest", "plains", "ocean")) {
 			final String file = terrain + "_consumption";
@@ -107,7 +107,7 @@ import java.math.BigDecimal;
 	/**
 	 * Load production possibilities from file.
 	 */
-	private ExplorationRunner initProduction() throws MissingTableException, IOException {
+	private static ExplorationRunner initProduction() throws MissingTableException, IOException {
 		final ExplorationRunner retval = new ExplorationRunner();
 		final Deque<String> firstTables = new LinkedList<>(Arrays.asList("mountain_skills",
 			"forest_skills", "plains_skills", "ocean_skills"));
@@ -152,7 +152,7 @@ import java.math.BigDecimal;
 	 * alias nor use a union type in Java and so use the nearest supertype,
 	 * {@link ITownFixture}.
 	 */
-	List<Pair<Point, ITownFixture>> unstattedTowns(final IMapNG map) {
+	static List<Pair<Point, ITownFixture>> unstattedTowns(final IMapNG map) {
 		return map.streamLocations()
 			.flatMap(l -> map.getFixtures(l).stream().filter(ITownFixture.class::isInstance)
 				.map(ITownFixture.class::cast)
@@ -167,7 +167,7 @@ import java.math.BigDecimal;
 	 * TODO: search inside fortresses and units
 	 */
 	@Nullable
-	private IFixture findByID(final IMapNG map, final int id) {
+	private static IFixture findByID(final IMapNG map, final int id) {
 		return map.streamAllFixtures()
 			.filter(f -> f.getId() == id)
 			.findAny().orElse(null);
@@ -180,7 +180,7 @@ import java.math.BigDecimal;
 	 * TODO: search inside fortresses and units
 	 */
 	@Nullable
-	private Point findLocById(final IMapNG map, final int id) {
+	private static Point findLocById(final IMapNG map, final int id) {
 		return map.streamLocations()
 			.filter(l -> map.getFixtures(l).stream().anyMatch(f -> f.getId() == id))
 			.findAny().orElse(null);
@@ -190,7 +190,7 @@ import java.math.BigDecimal;
 	 * Whether, in the given {@link map}, any town claims a resource
 	 * identified by the given {@link id ID number}.
 	 */
-	private boolean isClaimedField(final IMapNG map, final int id) {
+	private static boolean isClaimedField(final IMapNG map, final int id) {
 		return map.streamAllFixtures()
 			.filter(ITownFixture.class::isInstance).map(ITownFixture.class::cast)
 			.map(ITownFixture::getPopulation).filter(Objects::nonNull)
@@ -203,7 +203,7 @@ import java.math.BigDecimal;
 	 * refers to {@link HarvestableFixture a resource that can be worked}
 	 * that {@link isClaimedField is presently unclaimed}.
 	 */
-	private boolean isUnclaimedField(final IMapNG map, final int id) {
+	private static boolean isUnclaimedField(final IMapNG map, final int id) {
 		return !isClaimedField(map, id) && findByID(map, id) instanceof HarvestableFixture;
 	}
 
@@ -211,7 +211,7 @@ import java.math.BigDecimal;
 	 * If both arguments exist and are ocean, return true; if one is ocean
 	 * and the other is not, return false; otherwise, return true.
 	 */
-	private boolean bothOrNeitherOcean(@Nullable final TileType one, @Nullable final TileType two) {
+	private static boolean bothOrNeitherOcean(@Nullable final TileType one, @Nullable final TileType two) {
 		if (TileType.Ocean == one) {
 			return TileType.Ocean == two;
 		} else {
@@ -224,7 +224,7 @@ import java.math.BigDecimal;
 	 * unexposed mineral vein, an uncultivated field or meadow, an
 	 * uncultivated grove or orchard, an abandoned mine, or a cache is not claimable.
 	 */
-	private boolean isReallyClaimable(final HarvestableFixture fix) {
+	private static boolean isReallyClaimable(final HarvestableFixture fix) {
 		if (fix instanceof MineralVein) {
 			return ((MineralVein) fix).isExposed();
 		} else if (fix instanceof Meadow) {
@@ -246,7 +246,7 @@ import java.math.BigDecimal;
 	/**
 	 * Find the nearest claimable resources to the given location.
 	 */
-	private List<HarvestableFixture> findNearestFields(final IMapNG map, final Point location) {
+	private static List<HarvestableFixture> findNearestFields(final IMapNG map, final Point location) {
 		final TileType base = map.getBaseTerrain(location);
 		if (base == null) {
 			return Collections.emptyList();
@@ -256,7 +256,7 @@ import java.math.BigDecimal;
 				.filter(l -> bothOrNeitherOcean(base, map.getBaseTerrain(l)))
 				.flatMap(l -> map.getFixtures(l).stream())
 				.filter(HarvestableFixture.class::isInstance)
-				.map(HarvestableFixture.class::cast).filter(this::isReallyClaimable)
+				.map(HarvestableFixture.class::cast).filter(TownGenerator::isReallyClaimable)
 				.collect(Collectors.toList());
 		}
 	}
@@ -264,7 +264,7 @@ import java.math.BigDecimal;
 	/**
 	 * Have the user enter expertise levels and claimed resources for a town.
 	 */
-	private CommunityStats enterStats(final ICLIHelper cli, final IDRegistrar idf, final IMapNG map, final Point location,
+	private static CommunityStats enterStats(final ICLIHelper cli, final IDRegistrar idf, final IMapNG map, final Point location,
 			/*ModifiableTown*/ final ITownFixture town) {
 		final CommunityStats retval = new CommunityStats(Optional.ofNullable(
 			cli.inputNumber("Population: ")).orElse(0));
@@ -383,7 +383,7 @@ import java.math.BigDecimal;
 	 *
 	 * TODO: Provide and use lookup tables for specific crops to avoid miscategorizations
 	 */
-	private String getHarvestableKind(final HarvestableFixture fixture) {
+	private static String getHarvestableKind(final HarvestableFixture fixture) {
 		if (fixture instanceof Grove) {
 			return (((Grove) fixture).isOrchard()) ? "food" : "wood";
 		} else if (fixture instanceof Meadow) {
@@ -401,7 +401,7 @@ import java.math.BigDecimal;
 	/**
 	 * What specific resource the given harvestable fixture will produce.
 	 */
-	private String getHarvestedProduct(final HarvestableFixture fixture) {
+	private static String getHarvestedProduct(final HarvestableFixture fixture) {
 		return fixture.getKind();
 	}
 

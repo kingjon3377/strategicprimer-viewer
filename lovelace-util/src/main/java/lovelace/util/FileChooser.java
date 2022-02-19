@@ -243,7 +243,7 @@ public class FileChooser {
 	 * the implementation-detail exceptions that are commonly thrown to the
 	 * caller.
 	 */
-	private void invoke(final Runnable runnable) throws ChoiceInterruptedException {
+	private static void invoke(final Runnable runnable) throws ChoiceInterruptedException {
 		try {
 			LOGGER.fine("FileChooser.invoke(): About to invoke the provided function");
 			SwingUtilities.invokeAndWait(runnable);

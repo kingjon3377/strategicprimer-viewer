@@ -152,7 +152,7 @@ final class DBWorkerHandler extends AbstractDatabaseWriter<IWorker, IUnit> imple
 		};
 	}
 
-	private TryBiConsumer<Map<String, Object>, Warning, Exception>
+	private static TryBiConsumer<Map<String, Object>, Warning, Exception>
 			readJobLevel(final IMutableMapNG map, final Map<Integer, Worker> workers) {
 		return (dbRow, warner) -> {
 			final int id = (Integer) dbRow.get("worker");
@@ -163,7 +163,7 @@ final class DBWorkerHandler extends AbstractDatabaseWriter<IWorker, IUnit> imple
 		};
 	}
 
-	private TryBiConsumer<Map<String, Object>, Warning, Exception>
+	private static TryBiConsumer<Map<String, Object>, Warning, Exception>
 			readSkillLevel(final IMutableMapNG map, final Map<Integer, Worker> workers) {
 		return (dbRow, warner) -> {
 			final int id = (Integer) dbRow.get("worker");
@@ -176,7 +176,7 @@ final class DBWorkerHandler extends AbstractDatabaseWriter<IWorker, IUnit> imple
 		};
 	}
 
-	private TryBiConsumer<Map<String, Object>, Warning, Exception>
+	private static TryBiConsumer<Map<String, Object>, Warning, Exception>
 			readWorkerNotes(final IMapNG map, final Map<Integer, Worker> workers) {
 		return (dbRow, warner) -> {
 			final int id = (Integer) dbRow.get("fixture");

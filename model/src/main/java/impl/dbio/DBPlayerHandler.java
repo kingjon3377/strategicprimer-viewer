@@ -51,7 +51,7 @@ final class DBPlayerHandler extends AbstractDatabaseWriter<Player, IMapNG> imple
 		}
 	}
 
-	private TryBiConsumer<Map<String, Object>, Warning, Exception> readPlayer(final IMutableMapNG map) {
+	private static TryBiConsumer<Map<String, Object>, Warning, Exception> readPlayer(final IMutableMapNG map) {
 		return (dbRow, warner) -> {
 			final int id = (Integer) dbRow.get("id");
 			final String name = (String) dbRow.get("codename");

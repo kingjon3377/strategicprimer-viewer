@@ -81,7 +81,7 @@ import java.util.logging.Level;
 
 	private static final Icon DEFAULT_FIXTURE_ICON = createDefaultFixtureIcon();
 
-	private Icon getIcon(final HasImage obj) {
+	private static Icon getIcon(final HasImage obj) {
 		final String image = obj.getImage();
 		final String actualImage;
 		if (image.isEmpty() || MISSING_FILENAMES.contains(image)) {

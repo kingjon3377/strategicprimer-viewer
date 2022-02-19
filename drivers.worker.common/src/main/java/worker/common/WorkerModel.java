@@ -152,7 +152,7 @@ public class WorkerModel extends SimpleMultiMapModel implements IWorkerModel {
 	/**
 	 * Flatten and filter the stream to include only units, and only those owned by the given player.
 	 */
-	private List<IUnit> getUnitsImpl(final Iterable<?> iter, final Player player) {
+	private static List<IUnit> getUnitsImpl(final Iterable<?> iter, final Player player) {
 		return StreamSupport.stream(iter.spliterator(), false).flatMap(WorkerModel::flatten)
 			.filter(IUnit.class::isInstance).map(IUnit.class::cast)
 			.filter(u -> u.getOwner().getPlayerId() == player.getPlayerId())
@@ -292,7 +292,7 @@ public class WorkerModel extends SimpleMultiMapModel implements IWorkerModel {
 			.filter(u -> u.getId() == id).findAny().orElse(null);
 	}
 
-	private BiPredicate<Point, IFixture> unitMatching(final IUnit unit) {
+	private static BiPredicate<Point, IFixture> unitMatching(final IUnit unit) {
 		return (point, fixture) ->
 			fixture instanceof IUnit && fixture.getId() == unit.getId() &&
 				((IUnit) fixture).getOwner().equals(unit.getOwner());

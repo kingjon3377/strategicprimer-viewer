@@ -161,8 +161,8 @@ import lovelace.util.MalformedXMLException;
 		return "unit".equalsIgnoreCase(tag);
 	}
 
-	public void writeOrders(final ThrowingConsumer<String, IOException> ostream, final String tag, final int turn, final String orders,
-	                        final int indent) throws IOException {
+	public static void writeOrders(final ThrowingConsumer<String, IOException> ostream, final String tag, final int turn, final String orders,
+	                               final int indent) throws IOException {
 		if (orders.isEmpty()) {
 			return;
 		}

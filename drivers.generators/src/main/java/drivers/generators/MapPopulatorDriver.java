@@ -55,7 +55,7 @@ public class MapPopulatorDriver implements CLIDriver {
 	 * Populate the map. You shouldn't need to customize this.
 	 */
 	private void populate(final IPopulatorDriverModel model) {
-		final IDRegistrar idf = new IDFactoryFiller().createIDFactory(model.getMap());
+		final IDRegistrar idf = IDFactoryFiller.createIDFactory(model.getMap());
 		final List<Point> locations = model.getMap().streamLocations().collect(Collectors.toList());
 		Collections.shuffle(locations);
 		for (final Point location : locations) {

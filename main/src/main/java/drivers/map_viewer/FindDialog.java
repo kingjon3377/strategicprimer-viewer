@@ -109,7 +109,7 @@ import java.util.function.Predicate;
 	/**
 	 * Whether the fixture has a name matching the given pattern.
 	 */
-	private boolean matchesName(final String pattern, final IFixture fixture, final boolean caseSensitivity) {
+	private static boolean matchesName(final String pattern, final IFixture fixture, final boolean caseSensitivity) {
 		if (fixture instanceof HasName) {
 			final String name = (caseSensitivity) ? ((HasName) fixture).getName() :
 				((HasName) fixture).getName().toLowerCase();
@@ -122,7 +122,7 @@ import java.util.function.Predicate;
 	/**
 	 * Whether the fixture has a kind matching the given pattern.
 	 */
-	private boolean matchesKind(final String pattern, final IFixture fixture, final boolean caseSensitivity) {
+	private static boolean matchesKind(final String pattern, final IFixture fixture, final boolean caseSensitivity) {
 		if (fixture instanceof HasKind) {
 			final String kind = (caseSensitivity) ? ((HasKind) fixture).getKind() :
 				((HasKind) fixture).getKind().toLowerCase();
@@ -135,8 +135,8 @@ import java.util.function.Predicate;
 	/**
 	 * Whether the fixture has an owner matching the given pattern.
 	 */
-	private boolean matchesOwner(final String pattern, @Nullable final Integer idNum, final IFixture fixture,
-	                             final boolean caseSensitivity) {
+	private static boolean matchesOwner(final String pattern, @Nullable final Integer idNum, final IFixture fixture,
+	                                    final boolean caseSensitivity) {
 		if (fixture instanceof HasOwner) {
 			final Player owner = ((HasOwner) fixture).getOwner();
 			final String ownerName = (caseSensitivity) ? owner.getName() :

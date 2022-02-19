@@ -47,7 +47,7 @@ public class PlayerChangeMenuListener implements ActionListener, PlayerChangeSou
 	 * away the results of the intermediate steps.
 	 */
 	@Nullable
-	private Frame getContainingFrame(@Nullable final Component component) {
+	private static Frame getContainingFrame(@Nullable final Component component) {
 		Component temp = component;
 		while (temp != null) {
 			if (temp instanceof Frame) {

@@ -124,10 +124,10 @@ import java.util.Collections;
 	 *
 	 * @throws IOException on I/O error
 	 */
-	private void writeAllRivers(final ThrowingConsumer<String, IOException> ostream, final Collection<River> rivers, final int indent)
+	private static void writeAllRivers(final ThrowingConsumer<String, IOException> ostream, final Collection<River> rivers, final int indent)
 			throws IOException {
 		for (final River river : rivers.stream().sorted().collect(Collectors.toList())) {
-			mapReader.writeRiver(ostream, river, indent);
+			YAMapReader.writeRiver(ostream, river, indent);
 		}
 	}
 
@@ -144,7 +144,7 @@ import java.util.Collections;
 	public void write(final ThrowingConsumer<String, IOException> ostream, final Object obj, final int indent) throws IOException {
 		final Class<?> cls = obj.getClass();
 		if (obj instanceof River) {
-			mapReader.writeRiver(ostream, (River) obj, indent);
+			YAMapReader.writeRiver(ostream, (River) obj, indent);
 		} else if (obj instanceof ProxyFor<?>) {
 			if (((ProxyFor<?>) obj).getProxied().isEmpty()) {
 				throw new IllegalArgumentException(

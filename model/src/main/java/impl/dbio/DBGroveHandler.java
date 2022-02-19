@@ -45,7 +45,7 @@ final class DBGroveHandler extends AbstractDatabaseWriter<Grove, Point> implemen
 			obj.getPopulation(), obj.getImage());
 	}
 
-	private TryBiConsumer<Map<String, Object>, Warning, Exception> readGrove(final IMutableMapNG map) {
+	private static TryBiConsumer<Map<String, Object>, Warning, Exception> readGrove(final IMutableMapNG map) {
 		return (dbRow, warner) -> {
 			final int row = (Integer) dbRow.get("row");
 			final int column = (Integer) dbRow.get("column");

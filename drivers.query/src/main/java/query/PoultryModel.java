@@ -75,7 +75,7 @@ public enum PoultryModel implements HerdModel {
 	/**
 	 * How much time, in minutes, must be spent per head on "extra chores" days.
 	 */
-	public int getExtraTimePerHead() {
+	public static int getExtraTimePerHead() {
 		return 30;
 	}
 
@@ -116,7 +116,7 @@ public enum PoultryModel implements HerdModel {
 	 * How much time, in minutes, herders must spend on a flock with this
 	 * many animals per head on "extra chores" days.
 	 */
-	public int dailyExtraTime(final int heads) {
+	public static int dailyExtraTime(final int heads) {
 		return heads * getExtraTimePerHead();
 	}
 }

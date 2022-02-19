@@ -85,7 +85,7 @@ import java.util.logging.Logger;
 	 */
 	public static DelayedRemovalMap<Integer, Pair<Point, IFixture>> getFixtures(final IMapNG map) {
 		final DelayedRemovalMap<Integer, Pair<Point, IFixture>> retval = new IntMap<>();
-		final IDRegistrar idf = new IDFactoryFiller().createIDFactory(map);
+		final IDRegistrar idf = IDFactoryFiller.createIDFactory(map);
 		for (final Point location : map.getLocations()) {
 			for (final TileFixture fixture : map.getFixtures(location)) {
 				addToMap(location, fixture, idf, retval);

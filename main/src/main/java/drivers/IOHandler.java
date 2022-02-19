@@ -120,8 +120,8 @@ public class IOHandler implements ActionListener {
 		ifNotCanceled.run();
 	}
 
-	private void handleError(final Exception except, final String filename, @Nullable final Component source,
-	                         final String errorTitle, final String verb) {
+	private static void handleError(final Exception except, final String filename, @Nullable final Component source,
+	                                final String errorTitle, final String verb) {
 		final String message;
 		if (except instanceof MalformedXMLException) {
 			message = "Malformed XML in " + filename;
@@ -138,8 +138,8 @@ public class IOHandler implements ActionListener {
 		ShowErrorDialog.showErrorDialog(source, errorTitle, message);
 	}
 
-	private Consumer<Path> loadHandlerImpl(final Consumer<IMutableMapNG> handler, @Nullable final Component source,
-	                                       final String errorTitle) {
+	private static Consumer<Path> loadHandlerImpl(final Consumer<IMutableMapNG> handler, @Nullable final Component source,
+	                                              final String errorTitle) {
 		return path -> {
 			try {
 				handler.accept(MapIOHelper.readMap(path, Warning.getDefaultHandler()));

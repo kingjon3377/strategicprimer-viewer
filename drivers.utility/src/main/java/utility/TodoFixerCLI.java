@@ -110,7 +110,7 @@ public class TodoFixerCLI implements CLIDriver {
 	 *
 	 * We don't just use TileType because we need mountains and forests in ver-2 maps.
 	 */
-	private SimpleTerrain getTerrain(final IMapNG map, final Point location) {
+	private static SimpleTerrain getTerrain(final IMapNG map, final Point location) {
 		final TileType terrain = map.getBaseTerrain(location);
 		if (terrain == null) {
 			return SimpleTerrain.Unforested;
@@ -155,7 +155,7 @@ public class TodoFixerCLI implements CLIDriver {
 		}
 	}
 
-	private String simpleTerrain(final IMapNG map, final Point loc) {
+	private static String simpleTerrain(final IMapNG map, final Point loc) {
 		final TileType terrain = map.getBaseTerrain(loc);
 		if (TileType.Ocean == terrain) {
 			return "ocean";
