@@ -77,7 +77,7 @@ import org.takes.http.Exit;
 				if (file == null) {
 					continue;
 				}
-				if (!cache.containsKey(file.toString())) {
+				if (!cache.containsKey(file)) {
 					try {
 						cache.put(file, ReportGenerator.createReport(map, cli,
 							Optional.of(currentPlayer).orElse(map.getCurrentPlayer())));
