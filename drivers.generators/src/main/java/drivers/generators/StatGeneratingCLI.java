@@ -494,7 +494,7 @@ import common.map.fixtures.towns.Village;
 				if (hasLeviedRecently(village)) {
 					continue;
 				} else if (SingletonRandom.SINGLETON_RANDOM.nextDouble() <
-						villageChance((int) (Math.min(mpDistance / mpPerDay,
+						villageChance((int) (Math.min((double) (mpDistance) / mpPerDay,
 							tileDistance / 12.0)) + 1)) {
 					excludedVillages.put(village, true);
 					home = village;
