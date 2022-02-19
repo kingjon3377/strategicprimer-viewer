@@ -47,7 +47,7 @@ import lovelace.util.ListenedButton;
 
 	private final List<String> additionalFiles = new ArrayList<>();
 
-	boolean includeInGUIList(final DriverFactory driver) {
+	private static boolean includeInGUIList(final DriverFactory driver) {
 		return driver.getUsage().includeInList(true);
 	}
 
