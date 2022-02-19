@@ -214,7 +214,7 @@ public class ExplorationCLIHelper implements MovementCostListener, SelectionChan
 						}
 					}
 					return;
-					default:
+				default:
 					runningTotal = 0;
 					return;
 				}
