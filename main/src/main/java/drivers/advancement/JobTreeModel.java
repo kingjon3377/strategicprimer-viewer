@@ -155,6 +155,8 @@ import java.util.stream.StreamSupport;
 		if ("job".equals(category)) {
 			if (currentRoot == null) {
 				LOGGER.warning("Can't add a new Job when no worker selected");
+			} else if (StreamSupport.stream(currentRoot.spliterator(), false).map(IJob::getName).anyMatch(addendum::equals)) {
+				LOGGER.info("Addition would be no-op");
 			} else {
 				final int childCount = getChildCount(currentRoot);
 				if (driverModel.addJobToWorker(currentRoot, addendum)) {
@@ -162,7 +164,6 @@ import java.util.stream.StreamSupport;
 						.filter(j -> addendum.equals(j.getName()))
 						.findAny().orElse(null);
 					if (job != null) {
-						// TODO: Check for no-op before firing event ...
 						fireTreeNodesInserted(new TreeModelEvent(this,
 							new TreePath(currentRoot), new int[] { childCount },
 							new Object[] { job }));
