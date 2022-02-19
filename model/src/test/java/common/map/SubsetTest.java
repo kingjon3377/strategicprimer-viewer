@@ -33,9 +33,6 @@ import common.map.fixtures.towns.Town;
 import common.map.fixtures.towns.City;
 import common.map.fixtures.towns.CommunityStats;
 
-import java.util.logging.Logger;
-import java.util.function.Consumer;
-
 /**
  * A collection of tests of the subset-checking features.
  */

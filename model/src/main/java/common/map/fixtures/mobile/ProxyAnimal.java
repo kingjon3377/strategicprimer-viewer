@@ -3,7 +3,6 @@ package common.map.fixtures.mobile;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.function.Consumer;
-import java.util.stream.Stream;
 import java.util.Optional;
 import java.util.Iterator;
 import java.util.ArrayList;

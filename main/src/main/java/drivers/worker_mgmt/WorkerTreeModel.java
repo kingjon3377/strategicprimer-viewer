@@ -16,7 +16,6 @@ import java.util.ArrayList;
 import java.util.List;
 import common.map.fixtures.mobile.IUnit;
 import common.map.Player;
-import common.map.HasMutableOwner;
 import common.map.HasKind;
 import worker.common.IWorkerTreeModel;
 import drivers.common.IWorkerModel;

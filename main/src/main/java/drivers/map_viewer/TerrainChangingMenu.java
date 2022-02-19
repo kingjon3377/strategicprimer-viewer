@@ -14,7 +14,6 @@ import javax.swing.JCheckBoxMenuItem;
 
 import drivers.common.VersionChangeListener;
 import drivers.common.SelectionChangeListener;
-import worker.common.NewUnitListener;
 import common.idreg.IDFactoryFiller;
 import common.idreg.IDRegistrar;
 import common.map.Point;
@@ -24,7 +23,6 @@ import common.map.TileFixture;
 import common.map.fixtures.mobile.IUnit;
 
 import java.util.Map;
-import java.util.HashMap;
 import common.map.fixtures.terrain.Hill;
 
 /**

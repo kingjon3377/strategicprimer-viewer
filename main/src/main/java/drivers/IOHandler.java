@@ -4,7 +4,6 @@ import drivers.common.DriverFailedException;
 import drivers.common.ViewerDriverFactory;
 import drivers.common.cli.ICLIHelper;
 import java.util.ServiceLoader;
-import lovelace.util.TriFunction;
 import lovelace.util.MissingFileException;
 import org.jetbrains.annotations.Nullable;
 

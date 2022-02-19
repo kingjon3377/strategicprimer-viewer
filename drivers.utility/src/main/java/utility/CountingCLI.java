@@ -31,7 +31,6 @@ import java.util.function.Predicate;
 
 import java.util.List;
 import java.util.Collection;
-import java.util.stream.StreamSupport;
 import java.util.stream.Collectors;
 
 import common.map.fixtures.Ground;

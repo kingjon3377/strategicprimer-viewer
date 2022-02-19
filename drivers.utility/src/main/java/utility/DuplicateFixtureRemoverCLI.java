@@ -7,7 +7,6 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Map;
 import java.util.HashMap;
-import java.util.stream.StreamSupport;
 import org.javatuples.Quartet;
 import org.javatuples.Triplet;
 import org.javatuples.Pair;
@@ -35,7 +34,6 @@ import common.map.fixtures.mobile.AnimalImpl;
 import common.map.fixtures.resources.Grove;
 import common.map.fixtures.resources.Meadow;
 import common.map.fixtures.resources.Shrub;
-import common.map.fixtures.resources.FieldStatus;
 
 import drivers.common.cli.ICLIHelper;
 

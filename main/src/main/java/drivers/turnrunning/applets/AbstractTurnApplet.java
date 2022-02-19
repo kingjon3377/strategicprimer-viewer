@@ -10,7 +10,6 @@ import java.util.stream.Collectors;
 import org.javatuples.Pair;
 import java.util.List;
 import drivers.common.cli.ICLIHelper;
-import common.idreg.IDRegistrar;
 import common.map.Point;
 import common.map.Player;
 import common.map.TileFixture;

@@ -22,7 +22,6 @@ import javax.swing.tree.TreePath;
 
 import common.map.fixtures.mobile.IUnit;
 import common.map.Player;
-import common.map.HasMutableOwner;
 import common.map.HasKind;
 import worker.common.IWorkerTreeModel;
 import lovelace.util.IteratorWrapper;

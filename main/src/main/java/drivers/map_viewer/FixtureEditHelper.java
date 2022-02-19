@@ -9,7 +9,6 @@ import common.map.fixtures.UnitMember;
 import common.map.fixtures.mobile.IUnit;
 
 import common.map.Player;
-import common.map.HasMutableOwner;
 import common.map.HasKind;
 
 import worker.common.IFixtureEditHelper;

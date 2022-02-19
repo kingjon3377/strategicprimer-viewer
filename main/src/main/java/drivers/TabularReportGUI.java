@@ -1,8 +1,6 @@
 package drivers;
 
 import drivers.common.DriverFailedException;
-import drivers.map_viewer.ViewerGUIFactory;
-import java.util.Collections;
 import java.util.logging.Logger;
 import java.util.logging.Level;
 

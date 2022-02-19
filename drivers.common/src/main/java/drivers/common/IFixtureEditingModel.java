@@ -1,8 +1,6 @@
 package drivers.common;
 
 import common.map.HasKind;
-import common.map.HasMutableName;
-import common.map.HasMutableOwner;
 import common.map.HasName;
 import common.map.HasOwner;
 import common.map.Player;

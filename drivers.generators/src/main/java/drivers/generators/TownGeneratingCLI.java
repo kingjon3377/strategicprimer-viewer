@@ -13,8 +13,6 @@ import drivers.common.cli.ICLIHelper;
 import common.idreg.IDRegistrar;
 import common.idreg.IDFactoryFiller;
 
-import java.util.stream.StreamSupport;
-
 /**
  * A driver to let the user enter or generate 'stats' for towns.
  *

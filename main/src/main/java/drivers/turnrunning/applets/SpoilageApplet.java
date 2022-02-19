@@ -1,6 +1,5 @@
 package drivers.turnrunning.applets;
 
-import common.idreg.IDRegistrar;
 import common.map.Player;
 import common.map.fixtures.IResourcePile;
 import drivers.common.cli.ICLIHelper;

@@ -5,7 +5,6 @@ import java.util.Random;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.function.DoubleSupplier;
-import java.util.Comparator;
 
 /**
  * The status of a vein of ore or deposit of stone at any given point.

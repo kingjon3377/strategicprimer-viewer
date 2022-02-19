@@ -9,7 +9,6 @@ import drivers.common.SPOptions;
 import drivers.gui.common.WindowCloseListener;
 import drivers.gui.common.SPMenu;
 import drivers.gui.common.UtilityMenuHandler;
-import java.util.Optional;
 import java.util.stream.Stream;
 import java.util.Objects;
 import org.eclipse.jdt.annotation.Nullable;

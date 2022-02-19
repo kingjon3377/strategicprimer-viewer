@@ -40,7 +40,6 @@ import common.map.fixtures.mobile.IWorker;
 import exploration.common.SurroundingPointIterable;
 import exploration.common.PathfinderFactory;
 import exploration.common.Pathfinder;
-import exploration.common.HuntingModel;
 
 import common.DistanceComparator;
 

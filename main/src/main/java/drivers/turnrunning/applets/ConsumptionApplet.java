@@ -2,8 +2,6 @@ package drivers.turnrunning.applets;
 
 import drivers.common.cli.ICLIHelper;
 
-import common.idreg.IDRegistrar;
-
 import common.map.fixtures.mobile.IUnit;
 import common.map.fixtures.mobile.IWorker;
 

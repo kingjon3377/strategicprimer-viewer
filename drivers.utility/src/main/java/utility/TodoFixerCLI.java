@@ -11,8 +11,6 @@ import common.map.fixtures.towns.CommunityStats;
 
 import java.util.Random;
 
-import common.map.fixtures.mobile.Unit;
-
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.List;

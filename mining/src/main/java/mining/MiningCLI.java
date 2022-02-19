@@ -14,8 +14,6 @@ import drivers.common.IncorrectUsageException;
 
 import drivers.common.cli.ICLIHelper;
 
-import java.nio.charset.Charset;
-
 /**
  * A driver to create a spreadsheet model of a mine. Its parameters are the
  * name of the file to write the CSV to and the value at the top center (as an

@@ -3,7 +3,6 @@ package report.generators;
 import java.util.function.Consumer;
 import lovelace.util.TriConsumer;
 import org.javatuples.Pair;
-import java.io.IOException;
 import lovelace.util.DelayedRemovalMap;
 
 import common.map.Point;
@@ -11,8 +10,6 @@ import common.map.IFixture;
 import common.map.IMapNG;
 import java.util.Map;
 import java.util.List;
-import lovelace.util.ThrowingConsumer;
-import lovelace.util.ThrowingTriConsumer;
 import java.util.Comparator;
 import java.util.stream.Collectors;
 

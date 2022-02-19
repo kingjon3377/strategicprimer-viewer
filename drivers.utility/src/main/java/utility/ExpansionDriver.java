@@ -1,6 +1,5 @@
 package utility;
 
-import java.util.stream.StreamSupport;
 import java.util.stream.Collectors;
 import java.util.function.Predicate;
 import common.map.Player;
@@ -12,8 +11,6 @@ import common.map.fixtures.towns.ITownFixture;
 
 import drivers.common.SPOptions;
 import drivers.common.CLIDriver;
-
-import drivers.common.cli.ICLIHelper;
 
 /**
  * A driver to update a player's map to include a certain minimum distance around allied villages.

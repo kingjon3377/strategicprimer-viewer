@@ -6,8 +6,6 @@ import java.util.logging.Logger;
 
 import lovelace.util.DelayedRemovalMap;
 
-import common.DistanceComparator;
-
 import common.map.IFixture;
 import common.map.Player;
 import common.map.Point;
@@ -31,7 +29,6 @@ import report.generators.TextReportGenerator;
 import report.generators.AdventureReportGenerator;
 import drivers.common.cli.ICLIHelper;
 import java.io.IOException;
-import java.util.Comparator;
 
 /**
  * Produces reports based on maps.

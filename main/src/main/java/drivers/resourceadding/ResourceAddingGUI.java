@@ -4,8 +4,6 @@ import drivers.common.DriverFailedException;
 import java.util.logging.Logger;
 import java.util.logging.Level;
 
-import java.util.stream.StreamSupport;
-
 import org.jetbrains.annotations.Nullable;
 
 import java.nio.file.Path;
@@ -72,10 +70,6 @@ import lovelace.util.MissingFileException;
 import lovelace.util.MalformedXMLException;
 
 import java.math.BigDecimal;
-
-import drivers.map_viewer.ViewerGUIFactory;
-
-import java.util.Collections;
 
 import common.xmlio.SPFormatException;
 

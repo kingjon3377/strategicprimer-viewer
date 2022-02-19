@@ -3,7 +3,6 @@ package drivers.map_viewer;
 import drivers.common.DriverFailedException;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Collections;
 import java.nio.file.Path;
 import java.util.logging.Logger;
 import java.util.logging.Level;

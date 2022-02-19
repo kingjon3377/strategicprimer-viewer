@@ -9,8 +9,6 @@ import drivers.common.MapChangeListener;
 
 import common.map.fixtures.mobile.IUnit;
 
-import common.map.HasMutableName;
-import common.map.HasMutableOwner;
 import common.map.HasKind;
 import common.map.Player;
 

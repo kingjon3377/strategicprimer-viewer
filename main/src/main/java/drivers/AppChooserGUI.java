@@ -7,7 +7,6 @@ import drivers.common.cli.ICLIHelper;
 import drivers.gui.common.SPFrame;
 import drivers.gui.common.SPMenu;
 import drivers.gui.common.WindowCloseListener;
-import drivers.map_viewer.ViewerGUIFactory;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics2D;

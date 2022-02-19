@@ -1,25 +1,15 @@
 package utility.subset;
 
-import java.nio.file.NoSuchFileException;
-import java.io.FileNotFoundException;
-import lovelace.util.MissingFileException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.stream.Stream;
-import java.io.IOException;
 
 import javax.swing.SwingUtilities;
-
-import lovelace.util.MalformedXMLException;
-
-import common.xmlio.SPFormatException;
 
 import drivers.common.DriverFailedException;
 import drivers.common.SPOptions;
 import drivers.common.IncorrectUsageException;
 import drivers.common.UtilityGUI;
-
-import drivers.common.cli.ICLIHelper;
 
 import drivers.gui.common.WindowCloseListener;
 import drivers.gui.common.UtilityMenuHandler;

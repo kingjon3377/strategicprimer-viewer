@@ -12,7 +12,6 @@ package com.pump.window;
 
 import java.awt.Frame;
 import java.awt.Toolkit;
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import java.util.Objects;
@@ -23,7 +22,6 @@ import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
-import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 /**

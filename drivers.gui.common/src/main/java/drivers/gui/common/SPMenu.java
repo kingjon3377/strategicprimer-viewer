@@ -24,7 +24,6 @@ import java.awt.Component;
 import java.awt.event.ActionListener;
 import java.util.Objects;
 import java.util.stream.Stream;
-import java.util.stream.StreamSupport;
 
 /**
  * A class to hold the logic for building our menus.

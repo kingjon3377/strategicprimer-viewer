@@ -29,7 +29,6 @@ import common.map.IMapNG;
 import common.map.IMutableMapNG;
 import common.map.Player;
 import common.map.Point;
-import common.map.Subsettable;
 import common.map.TileFixture;
 
 import drivers.common.SimpleMultiMapModel;

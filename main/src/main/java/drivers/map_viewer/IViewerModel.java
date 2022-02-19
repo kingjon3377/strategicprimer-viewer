@@ -7,7 +7,6 @@ import common.map.Point;
 import common.map.River;
 import common.map.TileFixture;
 import common.map.TileType;
-import drivers.common.IDriverModel;
 import drivers.common.IFixtureEditingModel;
 import drivers.common.SelectionChangeSource;
 

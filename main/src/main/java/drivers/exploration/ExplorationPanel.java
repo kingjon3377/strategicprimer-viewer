@@ -11,7 +11,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import java.util.stream.StreamSupport;
 import lovelace.util.BorderedPanel;
 import static lovelace.util.MenuUtils.createMenuItem;
 import static lovelace.util.MenuUtils.createHotKey;
@@ -84,7 +83,6 @@ import common.idreg.IDFactoryFiller;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.HashMap;
 
 import org.jetbrains.annotations.Nullable;
 import worker.common.IFixtureEditHelper;

@@ -9,9 +9,6 @@ import java.util.Set;
 
 import java.util.function.Consumer;
 
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
-
 import common.map.fixtures.IResourcePile;
 import common.map.Subsettable;
 

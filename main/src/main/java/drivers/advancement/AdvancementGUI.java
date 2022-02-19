@@ -1,9 +1,7 @@
 package drivers.advancement;
 
 import drivers.common.DriverFailedException;
-import drivers.map_viewer.ViewerGUIFactory;
 import java.io.IOException;
-import java.util.Collections;
 import javax.swing.SwingUtilities;
 
 import drivers.common.SPOptions;
@@ -35,8 +33,6 @@ import java.nio.file.Path;
 
 import java.util.logging.Logger;
 import java.util.logging.Level;
-
-import java.util.stream.StreamSupport;
 
 /**
  * The worker-advancement GUI driver.

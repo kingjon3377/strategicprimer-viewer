@@ -8,7 +8,6 @@ import java.util.logging.Logger;
 import java.util.logging.Level;
 
 import java.util.stream.Stream;
-import java.util.stream.StreamSupport;
 import lovelace.util.ThrowingBiConsumer;
 import lovelace.util.ThrowingConsumer;
 import lovelace.util.ThrowingFunction;

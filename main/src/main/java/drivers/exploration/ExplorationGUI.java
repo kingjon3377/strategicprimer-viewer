@@ -3,10 +3,6 @@ package drivers.exploration;
 import drivers.common.DriverFailedException;
 import java.io.IOException;
 
-import drivers.map_viewer.ViewerGUIFactory;
-
-import java.util.Collections;
-
 import java.nio.file.Path;
 
 import javax.swing.SwingUtilities;
