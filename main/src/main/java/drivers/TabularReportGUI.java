@@ -83,9 +83,7 @@ public class TabularReportGUI implements GUIDriver {
 		model.addMapChangeListener(listener);
 		window.add(frame);
 		window.setJMenuBar(SPMenu.forWindowContaining(frame,
-			SPMenu.createFileMenu(
-				new IOHandler(this, cli),
-				this),
+			SPMenu.createFileMenu(new IOHandler(this, cli), this),
 			SPMenu.disabledMenu(SPMenu.createMapMenu(x -> {}, this)),
 			SPMenu.disabledMenu(SPMenu.createViewMenu(x -> {}, this))));
 			window.addWindowListener(new WindowCloseListener(ignored -> window.dispose()));
