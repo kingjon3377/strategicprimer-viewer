@@ -606,7 +606,7 @@ public class WorkerTree extends JTree implements UnitMemberSelectionSource, Unit
 				.map(TreePath::getParentPath).orElse(null);
 			if (parent != null) {
 				tree.expandPath(parent);
-			} else if (parent != null) {
+			} else if (path != null) {
 				tree.expandPath(path);
 			}
 			for (int i = 0; i < tree.getRowCount(); i++) {
