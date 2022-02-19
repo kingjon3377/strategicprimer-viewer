@@ -1,6 +1,7 @@
 package drivers.exploration;
 
 import java.util.Comparator;
+import java.util.EnumMap;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Consumer;
@@ -246,9 +247,9 @@ import worker.common.IFixtureEditHelper;
 	private final FormattedLabel locLabel = new FormattedLabel(
 		"<html><body>Currently exploring %s; click a tile to explore it. Selected fixtures in its left-hand list will be 'discovered'.</body></html>", Point.INVALID_POINT);
 
-	private final Map<Direction, SelectionChangeListener> mains = new HashMap<>();
-	private final Map<Direction, SelectionChangeListener> seconds = new HashMap<>();
-	private final Map<Direction, DualTileButton> buttons = new HashMap<>();
+	private final Map<Direction, SelectionChangeListener> mains = new EnumMap<>(Direction.class);
+	private final Map<Direction, SelectionChangeListener> seconds = new EnumMap<>(Direction.class);
+	private final Map<Direction, DualTileButton> buttons = new EnumMap<>(Direction.class);
 
 	private static class SpeedChangeListener implements ListDataListener {
 		public SpeedChangeListener(final SelectionChangeListener scs) {
@@ -287,7 +288,7 @@ import worker.common.IFixtureEditHelper;
 		}
 	}
 
-	private final Map<Direction, SpeedChangeListener> speedChangeListeners = new HashMap<>();
+	private final Map<Direction, SpeedChangeListener> speedChangeListeners = new EnumMap<>(Direction.class);
 
 	@Override
 	public void selectedPointChanged(@Nullable final Point old, final Point newPoint) {

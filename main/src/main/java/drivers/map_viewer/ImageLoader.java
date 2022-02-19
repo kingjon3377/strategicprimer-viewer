@@ -1,5 +1,6 @@
 package drivers.map_viewer;
 
+import java.util.EnumMap;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Collections;
@@ -166,7 +167,7 @@ public final class ImageLoader {
 		private static final Map<Integer, Map<TileType, Color>> COLORS;
 
 		static {
-			final Map<TileType, Color> verTwo = new HashMap<>();
+			final Map<TileType, Color> verTwo = new EnumMap<>(TileType.class);
 			verTwo.put(TileType.Desert, new Color(249, 233, 28));
 			verTwo.put(TileType.Jungle, new Color(229, 46, 46));
 			verTwo.put(TileType.Ocean, Color.BLUE);

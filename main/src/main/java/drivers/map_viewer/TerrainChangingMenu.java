@@ -1,6 +1,7 @@
 package drivers.map_viewer;
 
 import java.util.Collection;
+import java.util.EnumMap;
 import java.util.Optional;
 import org.jetbrains.annotations.Nullable;
 
@@ -44,7 +45,7 @@ import common.map.fixtures.terrain.Hill;
 	private final NewForestDialog nfDialog;
 	private final JMenuItem textNoteItem = new JMenuItem("Add Text Note ...");
 	private final JCheckBoxMenuItem bookmarkItem = new JCheckBoxMenuItem("Bookmarked");
-	private final Map<River, JCheckBoxMenuItem> riverItems = new HashMap<>();
+	private final Map<River, JCheckBoxMenuItem> riverItems = new EnumMap<>(River.class);
 
 	public TerrainChangingMenu(final int mapVersion, final IViewerModel model) {
 		// TODO: Pass checkbox models into methods, not the items themselves?
