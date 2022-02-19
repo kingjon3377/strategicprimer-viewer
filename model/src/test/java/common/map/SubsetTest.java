@@ -41,14 +41,12 @@ import java.util.function.Consumer;
  */
 public final class SubsetTest {
 	private static final Logger LOGGER = Logger.getLogger(SubsetTest.class.getName());
-	// FIXME: Drop the ostream parameters from these assertion methods now we don't need them (and the interface below)
 	/**
 	 * Assert that {@link two} is a "strict subset," by our loose definition, of {@link one}.
 	 */
 	private static <SpecificType, GeneralType extends Subsettable<SpecificType>>
-			void assertIsSubset(final GeneralType one, final SpecificType two, final String message,
-			                    final Consumer<String> ostream) {
-		assertTrue(one.isSubset(two, ostream), message);
+			void assertIsSubset(final GeneralType one, final SpecificType two, final String message) {
+		assertTrue(one.isSubset(two, SubsetTest::noop), message);
 	}
 
 	/**
@@ -56,9 +54,8 @@ public final class SubsetTest {
 	 * of {@link one}.
 	 */
 	private static <SpecificType, GeneralType extends Subsettable<SpecificType>>
-			void assertNotSubset(final GeneralType one, final SpecificType two, final String message,
-			                     final Consumer<String> ostream) {
-		assertFalse(one.isSubset(two, ostream), message);
+			void assertNotSubset(final GeneralType one, final SpecificType two, final String message) {
+		assertFalse(one.isSubset(two, SubsetTest::noop), message);
 	}
 
 	private static void noop(final String str) {}
@@ -75,19 +72,15 @@ public final class SubsetTest {
 		secondCollection.add(new PlayerImpl(1, "one"));
 		secondCollection.add(new PlayerImpl(2, "two"));
 		final IPlayerCollection zero = new PlayerCollection();
-		assertIsSubset(zero, zero, "Empty is subset of self", SubsetTest::noop);
-		assertIsSubset(firstCollection, zero, "Empty is subset of one", SubsetTest::noop);
-		assertIsSubset(secondCollection, zero, "Empty is subset of two", SubsetTest::noop);
-		assertNotSubset(zero, firstCollection, "One is not subset of empty", SubsetTest::noop);
-		assertIsSubset(firstCollection, firstCollection, "One is subset of self",
-			SubsetTest::noop);
-		assertIsSubset(secondCollection, firstCollection, "One is subset of two",
-			SubsetTest::noop);
-		assertNotSubset(zero, secondCollection, "Two is not subset of empty", SubsetTest::noop);
-		assertNotSubset(firstCollection, secondCollection, "Two is not subset of one",
-			SubsetTest::noop);
-		assertIsSubset(secondCollection, secondCollection, "Two is subset of self",
-			SubsetTest::noop);
+		assertIsSubset(zero, zero, "Empty is subset of self");
+		assertIsSubset(firstCollection, zero, "Empty is subset of one");
+		assertIsSubset(secondCollection, zero, "Empty is subset of two");
+		assertNotSubset(zero, firstCollection, "One is not subset of empty");
+		assertIsSubset(firstCollection, firstCollection, "One is subset of self");
+		assertIsSubset(secondCollection, firstCollection, "One is subset of two");
+		assertNotSubset(zero, secondCollection, "Two is not subset of empty");
+		assertNotSubset(firstCollection, secondCollection, "Two is not subset of one");
+		assertIsSubset(secondCollection, secondCollection, "Two is subset of self");
 	}
 
 	/**
@@ -95,9 +88,9 @@ public final class SubsetTest {
 	 */
 	private static void requireMatching(final IFortress one, final IFortress two, final String what) {
 		assertNotSubset(one, two,
-			String.format("Subset requires %s, first test", what), SubsetTest::noop);
+			String.format("Subset requires %s, first test", what));
 		assertNotSubset(two, one,
-			String.format("Subset requires %s, second test", what), SubsetTest::noop);
+			String.format("Subset requires %s, second test", what));
 	}
 
 	/**
@@ -121,21 +114,21 @@ public final class SubsetTest {
 			TownSize.Small);
 		fifthFort.addMember(new Unit(new PlayerImpl(2, "two"), "unit_type", "unit_name", 4));
 		assertIsSubset(fifthFort, firstFort,
-			"Fortress without is a subset of fortress with unit", SubsetTest::noop);
+			"Fortress without is a subset of fortress with unit");
 		assertNotSubset(firstFort, fifthFort,
-			"Fortress with is not a subset of fortress without unit", SubsetTest::noop);
+			"Fortress with is not a subset of fortress without unit");
 		final IFortress sixthFort = new FortressImpl(new PlayerImpl(1, "one"), "unknown", fortId,
 			TownSize.Small);
 		assertIsSubset(firstFort, sixthFort,
-			"Fortress named \"unknown\" can be subset", SubsetTest::noop);
+			"Fortress named \"unknown\" can be subset");
 		assertNotSubset(sixthFort, firstFort,
-			"\"unknown\" is not commutative", SubsetTest::noop);
+			"\"unknown\" is not commutative");
 		final IFortress seventhFort = new FortressImpl(new PlayerImpl(1, "one"), "unknown", fortId,
 			TownSize.Medium);
 		assertNotSubset(sixthFort, seventhFort,
-			"Different size breaks Fortress subset", SubsetTest::noop);
+			"Different size breaks Fortress subset");
 		assertNotSubset(seventhFort, sixthFort,
-			"Different size breaks Fortress subset", SubsetTest::noop);
+			"Different size breaks Fortress subset");
 	}
 
 	/**
@@ -160,36 +153,36 @@ public final class SubsetTest {
 		final IMutableMapNG secondMap = createMap(Pair.with(new Point(0, 0), TileType.Jungle),
 			Pair.with(new Point(1, 1), TileType.Ocean));
 		final IMapNG zero = createMap();
-		assertIsSubset(zero, zero, "None is a subset of itself", SubsetTest::noop);
-		assertIsSubset(firstMap, zero, "None is a subset of one", SubsetTest::noop);
-		assertIsSubset(secondMap, zero, "None is a subset of one", SubsetTest::noop);
-		assertNotSubset(zero, firstMap, "One is not a subset of none", SubsetTest::noop);
-		assertIsSubset(firstMap, firstMap, "One is a subset of itself", SubsetTest::noop);
-		assertIsSubset(secondMap, firstMap, "One is a subset of two", SubsetTest::noop);
-		assertNotSubset(zero, secondMap, "Two is not a subset of none", SubsetTest::noop);
-		assertNotSubset(firstMap, secondMap, "Two is not a subset of one", SubsetTest::noop);
-		assertIsSubset(secondMap, secondMap, "Two is a subset of itself", SubsetTest::noop);
+		assertIsSubset(zero, zero, "None is a subset of itself");
+		assertIsSubset(firstMap, zero, "None is a subset of one");
+		assertIsSubset(secondMap, zero, "None is a subset of one");
+		assertNotSubset(zero, firstMap, "One is not a subset of none");
+		assertIsSubset(firstMap, firstMap, "One is a subset of itself");
+		assertIsSubset(secondMap, firstMap, "One is a subset of two");
+		assertNotSubset(zero, secondMap, "Two is not a subset of none");
+		assertNotSubset(firstMap, secondMap, "Two is not a subset of one");
+		assertIsSubset(secondMap, secondMap, "Two is a subset of itself");
 		firstMap.setBaseTerrain(new Point(1, 1), TileType.Plains);
 		assertNotSubset(secondMap, firstMap,
-			"Corresponding but non-matching tile breaks subset", SubsetTest::noop);
+			"Corresponding but non-matching tile breaks subset");
 		assertNotSubset(firstMap, secondMap,
-			"Corresponding but non-matching tile breaks subset", SubsetTest::noop);
+			"Corresponding but non-matching tile breaks subset");
 		secondMap.setBaseTerrain(new Point(1, 1), TileType.Plains);
-		assertIsSubset(secondMap, firstMap, "Subset again after resetting terrain", SubsetTest::noop);
+		assertIsSubset(secondMap, firstMap, "Subset again after resetting terrain");
 		firstMap.addFixture(new Point(1, 1), new CacheFixture("category", "contents", 3));
-		assertIsSubset(secondMap, firstMap, "Subset calculation ignores caches", SubsetTest::noop);
+		assertIsSubset(secondMap, firstMap, "Subset calculation ignores caches");
 		firstMap.addFixture(new Point(1, 1), new TextFixture("text", -1));
-		assertIsSubset(secondMap, firstMap, "Subset calculation ignores text fixtures", SubsetTest::noop);
+		assertIsSubset(secondMap, firstMap, "Subset calculation ignores text fixtures");
 		firstMap.addFixture(new Point(1, 1), new AnimalTracks("animal"));
-		assertIsSubset(secondMap, firstMap, "Subset calculation ignores animal tracks", SubsetTest::noop);
+		assertIsSubset(secondMap, firstMap, "Subset calculation ignores animal tracks");
 		firstMap.addFixture(new Point(1, 1), new AnimalImpl("animal", true, "status", 7));
 		assertNotSubset(secondMap, firstMap,
-			"Subset calculation does not ignore other fixtures", SubsetTest::noop);
+			"Subset calculation does not ignore other fixtures");
 	}
 
 	@FunctionalInterface
 	private static interface ITestMethod {
-		void apply(IMapNG one, IMapNG two, String message, Consumer<String> ostream);
+		void apply(IMapNG one, IMapNG two, String message);
 	}
 
 	/**
@@ -215,7 +208,7 @@ public final class SubsetTest {
 		final TileFixture animal = new AnimalImpl("skunk", false, "wild", 2);
 		for (final Point point : testMap.getLocations()) {
 			assertIsSubset(baseMap, testMap,
-				"Subset invariant before attempt using " + point, SubsetTest::noop);
+				"Subset invariant before attempt using " + point);
 			final ITestMethod testMethod;
 			final String result;
 			if (point.equals(new Point(1, 1))) {
@@ -226,16 +219,16 @@ public final class SubsetTest {
 				result = "Subset fails when fixture(s) off by one";
 			}
 			testMap.addFixture(point, forest);
-			testMethod.apply(baseMap, testMap, result, SubsetTest::noop);
+			testMethod.apply(baseMap, testMap, result);
 			testMap.removeFixture(point, forest);
 			testMap.addFixture(point, animal);
-			testMethod.apply(baseMap, testMap, result, SubsetTest::noop);
+			testMethod.apply(baseMap, testMap, result);
 			testMap.removeFixture(point, animal);
 			testMap.addRivers(point, River.East);
-			testMethod.apply(baseMap, testMap, result, SubsetTest::noop);
+			testMethod.apply(baseMap, testMap, result);
 			testMap.removeRivers(point, River.East);
 			assertIsSubset(baseMap, testMap,
-				"Subset invariant after attempt using " + point, SubsetTest::noop);
+				"Subset invariant after attempt using " + point);
 		}
 	}
 
@@ -249,7 +242,7 @@ public final class SubsetTest {
 		firstMap.setBaseTerrain(new Point(0, 0), TileType.Jungle);
 		final IMapNG zero = new SPMapNG(new MapDimensionsImpl(2, 2, 2),
 			new PlayerCollection(), -1);
-		assertIsSubset(firstMap, zero, "zero is a subset of one before copy", SubsetTest::noop);
+		assertIsSubset(firstMap, zero, "zero is a subset of one before copy");
 		final IMutableMapNG secondMap =
 			new SPMapNG(new MapDimensionsImpl(2, 2, 2), new PlayerCollection(), -1);
 		secondMap.setBaseTerrain(new Point(0, 0), TileType.Jungle);
@@ -263,7 +256,7 @@ public final class SubsetTest {
 				new PlayerImpl(0, "")));
 		assertEquals(firstMap, firstMap.copy(false, null), "Cloned map equals original");
 		final IMapNG clone = firstMap.copy(true, null);
-		assertIsSubset(clone, zero, "unfilled map is still a subset of zeroed clone", SubsetTest::noop);
+		assertIsSubset(clone, zero, "unfilled map is still a subset of zeroed clone");
 		// DCs, the only thing zeroed out in *map* copy() at the moment, are ignored by
 		// equals().
 		for (final TileFixture fixture : clone.getFixtures(new Point(0, 0))) {
@@ -276,7 +269,7 @@ public final class SubsetTest {
 		uOne.addMember(new Worker("worker", "dwarf", 8, new Job("job", 1)));
 		assertEquals(uOne, uOne.copy(false), "clone equals original");
 		assertNotEquals(uOne, uOne.copy(true), "zeroed clone doesn't equal original");
-		assertIsSubset(uOne, uOne.copy(true), "zeroed clone is subset of original", SubsetTest::noop);
+		assertIsSubset(uOne, uOne.copy(true), "zeroed clone is subset of original");
 	}
 
 	static Stream<Arguments> townParameters() {
@@ -308,49 +301,49 @@ public final class SubsetTest {
 		}
 		assertNotSubset(new Town(status, size, -1, "townName", 0, playerOne),
 			new Town(status, size, -1, "townName", 1, playerOne),
-			"Different IDs break Town subsets", SubsetTest::noop);
+			"Different IDs break Town subsets");
 		assertNotSubset(new Town(status, size, -1, "nameOne", 2, playerOne),
 			new Town(status, size, -1, "nameTwo", 2, playerOne),
-			"Different names breaks Town subsets", SubsetTest::noop);
+			"Different names breaks Town subsets");
 		assertIsSubset(new Town(status, size, -1, "townName", 3, playerOne),
 			new Town(status, size, -1, "unknown", 3, playerOne),
-			"Town with \"unknown\" name is still subset", SubsetTest::noop);
+			"Town with \"unknown\" name is still subset");
 		assertNotSubset(new Town(status, size, -1, "unknown", 3, playerOne),
 			new Town(status, size, -1, "townName", 3, playerOne),
-			"Name of \"unknown\" doesn't work in reverse", SubsetTest::noop);
+			"Name of \"unknown\" doesn't work in reverse");
 		assertNotSubset(new Town(status, size, -1, "townName", 4, playerOne),
 			new City(status, size, -1, "townName", 4, playerOne),
-			"City not a subset of town", SubsetTest::noop);
+			"City not a subset of town");
 		assertNotSubset(new Town(status, size, -1, "townName", 5, playerOne),
 			new Fortification(status, size, -1, "townName", 5, playerOne),
-			"Fortification not a subset of town", SubsetTest::noop);
+			"Fortification not a subset of town");
 		assertNotSubset(new Town(status, size, -1, "townName", 6, playerOne),
 			new Town(differentStatus, size, -1, "townName", 6, playerOne),
-			"Different status breaks subset", SubsetTest::noop);
+			"Different status breaks subset");
 		assertIsSubset(new Town(status, size, 5, "townName", 7, playerOne),
 			new Town(status, size, 10, "townName", 7, playerOne),
-			"Different DC doesn't break subset", SubsetTest::noop);
+			"Different DC doesn't break subset");
 		assertNotSubset(new Town(status, size, -1, "townName", 8, playerOne),
 			new Town(status, differentSize, -1, "townName", 8, playerOne),
-			"Different size breaks subset", SubsetTest::noop);
+			"Different size breaks subset");
 		assertNotSubset(new Town(status, size, -1, "townName", 9, playerOne),
 			new Town(status, size, -1, "townName", 9, playerTwo),
-			"Different owner breaks subset", SubsetTest::noop);
+			"Different owner breaks subset");
 		assertIsSubset(new Town(status, size, -1, "townName", 10, playerOne),
 			new Town(status, size, -1, "townName", 10, independent),
-			"Still a subset if they think independently owned", SubsetTest::noop);
+			"Still a subset if they think independently owned");
 		assertNotSubset(new Town(status, size, -1, "townName", 11, independent),
 			new Town(status, size, -1, "townName", 11, playerOne),
-			"Owned is not a subset of independently owned", SubsetTest::noop);
+			"Owned is not a subset of independently owned");
 		final Town first = new Town(status, size, -1, "townName", 12, playerOne);
 		final Town second = new Town(status, size, -1, "townName", 12, playerOne);
 		first.setPopulation(new CommunityStats(8));
-		assertIsSubset(first, second, "Missing population detils doesn't break subset", SubsetTest::noop);
+		assertIsSubset(first, second, "Missing population detils doesn't break subset");
 		assertNotSubset(second, first,
-			"Having population details when we don't does break subset", SubsetTest::noop);
+			"Having population details when we don't does break subset");
 		second.setPopulation(new CommunityStats(10));
 		assertNotSubset(first, second,
-			"Having non-subset population details breaks subset", SubsetTest::noop);
+			"Having non-subset population details breaks subset");
 	}
 
 	/**
@@ -376,49 +369,49 @@ public final class SubsetTest {
 		}
 		assertNotSubset(new City(status, size, -1, "townName", 0, playerOne),
 			new City(status, size, -1, "townName", 1, playerOne),
-			"Different IDs break City subsets", SubsetTest::noop);
+			"Different IDs break City subsets");
 		assertNotSubset(new City(status, size, -1, "nameOne", 2, playerOne),
 			new City(status, size, -1, "nameTwo", 2, playerOne),
-			"Different names breaks City subsets", SubsetTest::noop);
+			"Different names breaks City subsets");
 		assertIsSubset(new City(status, size, -1, "townName", 3, playerOne),
 			new City(status, size, -1, "unknown", 3, playerOne),
-			"City with \"unknown\" name is still subset", SubsetTest::noop);
+			"City with \"unknown\" name is still subset");
 		assertNotSubset(new City(status, size, -1, "unknown", 3, playerOne),
 			new City(status, size, -1, "townName", 3, playerOne),
-			"Name of \"unknown\" doesn't work in reverse", SubsetTest::noop);
+			"Name of \"unknown\" doesn't work in reverse");
 		assertNotSubset(new City(status, size, -1, "townName", 4, playerOne),
 			new Town(status, size, -1, "townName", 4, playerOne),
-			"Town not a subset of City", SubsetTest::noop);
+			"Town not a subset of City");
 		assertNotSubset(new City(status, size, -1, "townName", 5, playerOne),
 			new Fortification(status, size, -1, "townName", 5, playerOne),
-			"Fortification not a subset of City", SubsetTest::noop);
+			"Fortification not a subset of City");
 		assertNotSubset(new City(status, size, -1, "townName", 6, playerOne),
 			new City(differentStatus, size, -1, "townName", 6, playerOne),
-			"Different status breaks subset", SubsetTest::noop);
+			"Different status breaks subset");
 		assertIsSubset(new City(status, size, 5, "townName", 7, playerOne),
 			new City(status, size, 10, "townName", 7, playerOne),
-			"Different DC doesn't break subset", SubsetTest::noop);
+			"Different DC doesn't break subset");
 		assertNotSubset(new City(status, size, -1, "townName", 8, playerOne),
 			new City(status, differentSize, -1, "townName", 8, playerOne),
-			"Different size breaks subset", SubsetTest::noop);
+			"Different size breaks subset");
 		assertNotSubset(new City(status, size, -1, "townName", 9, playerOne),
 			new City(status, size, -1, "townName", 9, playerTwo),
-			"Different owner breaks subset", SubsetTest::noop);
+			"Different owner breaks subset");
 		assertIsSubset(new City(status, size, -1, "townName", 10, playerOne),
 			new City(status, size, -1, "townName", 10, independent),
-			"Still a subset if they think independently owned", SubsetTest::noop);
+			"Still a subset if they think independently owned");
 		assertNotSubset(new City(status, size, -1, "townName", 11, independent),
 			new City(status, size, -1, "townName", 11, playerOne),
-			"Owned is not a subset of independently owned", SubsetTest::noop);
+			"Owned is not a subset of independently owned");
 		final City first = new City(status, size, -1, "townName", 12, playerOne);
 		final City second = new City(status, size, -1, "townName", 12, playerOne);
 		first.setPopulation(new CommunityStats(8));
-		assertIsSubset(first, second, "Missing population detils doesn't break subset", SubsetTest::noop);
+		assertIsSubset(first, second, "Missing population detils doesn't break subset");
 		assertNotSubset(second, first,
-			"Having population details when we don't does break subset", SubsetTest::noop);
+			"Having population details when we don't does break subset");
 		second.setPopulation(new CommunityStats(10));
 		assertNotSubset(first, second,
-			"Having non-subset population details breaks subset", SubsetTest::noop);
+			"Having non-subset population details breaks subset");
 	}
 
 	/**
@@ -445,48 +438,48 @@ public final class SubsetTest {
 		}
 		assertNotSubset(new Fortification(status, size, -1, "townName", 0, playerOne),
 			new Fortification(status, size, -1, "townName", 1, playerOne),
-			"Different IDs break Fortification subsets", SubsetTest::noop);
+			"Different IDs break Fortification subsets");
 		assertNotSubset(new Fortification(status, size, -1, "nameOne", 2, playerOne),
 			new Fortification(status, size, -1, "nameTwo", 2, playerOne),
-			"Different names breaks Fortification subsets", SubsetTest::noop);
+			"Different names breaks Fortification subsets");
 		assertIsSubset(new Fortification(status, size, -1, "townName", 3, playerOne),
 			new Fortification(status, size, -1, "unknown", 3, playerOne),
-			"Fortification with \"unknown\" name is still subset", SubsetTest::noop);
+			"Fortification with \"unknown\" name is still subset");
 		assertNotSubset(new Fortification(status, size, -1, "unknown", 3, playerOne),
 			new Fortification(status, size, -1, "townName", 3, playerOne),
-			"Name of \"unknown\" doesn't work in reverse", SubsetTest::noop);
+			"Name of \"unknown\" doesn't work in reverse");
 		assertNotSubset(new Fortification(status, size, -1, "townName", 4, playerOne),
 			new Town(status, size, -1, "townName", 4, playerOne),
-			"Town not a subset of Fortification", SubsetTest::noop);
+			"Town not a subset of Fortification");
 		assertNotSubset(new Fortification(status, size, -1, "townName", 5, playerOne),
 			new City(status, size, -1, "townName", 5, playerOne),
-			"City not a subset of Fortification", SubsetTest::noop);
+			"City not a subset of Fortification");
 		assertNotSubset(new Fortification(status, size, -1, "townName", 6, playerOne),
 			new Fortification(differentStatus, size, -1, "townName", 6, playerOne),
-			"Different status breaks subset", SubsetTest::noop);
+			"Different status breaks subset");
 		assertIsSubset(new Fortification(status, size, 5, "townName", 7, playerOne),
 			new Fortification(status, size, 10, "townName", 7, playerOne),
-			"Different DC doesn't break subset", SubsetTest::noop);
+			"Different DC doesn't break subset");
 		assertNotSubset(new Fortification(status, size, -1, "townName", 8, playerOne),
 			new Fortification(status, differentSize, -1, "townName", 8, playerOne),
-			"Different size breaks subset", SubsetTest::noop);
+			"Different size breaks subset");
 		assertNotSubset(new Fortification(status, size, -1, "townName", 9, playerOne),
 			new Fortification(status, size, -1, "townName", 9, playerTwo),
-			"Different owner breaks subset", SubsetTest::noop);
+			"Different owner breaks subset");
 		assertIsSubset(new Fortification(status, size, -1, "townName", 10, playerOne),
 			new Fortification(status, size, -1, "townName", 10, independent),
-			"Still a subset if they think independently owned", SubsetTest::noop);
+			"Still a subset if they think independently owned");
 		assertNotSubset(new Fortification(status, size, -1, "townName", 11, independent),
 			new Fortification(status, size, -1, "townName", 11, playerOne),
-			"Owned is not a subset of independently owned", SubsetTest::noop);
+			"Owned is not a subset of independently owned");
 		final Fortification first = new Fortification(status, size, -1, "townName", 12, playerOne);
 		final Fortification second = new Fortification(status, size, -1, "townName", 12, playerOne);
 		first.setPopulation(new CommunityStats(8));
-		assertIsSubset(first, second, "Missing population detils doesn't break subset", SubsetTest::noop);
+		assertIsSubset(first, second, "Missing population detils doesn't break subset");
 		assertNotSubset(second, first,
-			"Having population details when we don't does break subset", SubsetTest::noop);
+			"Having population details when we don't does break subset");
 		second.setPopulation(new CommunityStats(10));
 		assertNotSubset(first, second,
-			"Having non-subset population details breaks subset", SubsetTest::noop);
+			"Having non-subset population details breaks subset");
 	}
 }
