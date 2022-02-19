@@ -105,7 +105,7 @@ import worker.common.IFixtureEditHelper;
 		return retval;
 	}
 
-	private static class KeyPanel extends JPanel implements VersionChangeListener {
+	private static final class KeyPanel extends JPanel implements VersionChangeListener {
 		public KeyPanel(final int version) {
 			super(new GridLayout(0, 4));
 			final Dimension size = new Dimension((int) keyElement(version, null)
