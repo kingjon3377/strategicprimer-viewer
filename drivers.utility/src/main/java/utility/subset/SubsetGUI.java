@@ -14,7 +14,6 @@ import drivers.common.UtilityGUI;
 import drivers.gui.common.WindowCloseListener;
 import drivers.gui.common.UtilityMenuHandler;
 import drivers.gui.common.SPMenu;
-import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * A driver to check whether player maps are subsets of the main map and display the results graphically.

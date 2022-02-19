@@ -11,7 +11,6 @@ import drivers.gui.common.SPMenu;
 import drivers.gui.common.UtilityMenuHandler;
 import java.util.stream.Stream;
 import java.util.Objects;
-import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * A driver to check every map file in a list for errors and report the results in a window.

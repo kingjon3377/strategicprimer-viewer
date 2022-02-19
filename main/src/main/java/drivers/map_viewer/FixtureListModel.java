@@ -12,7 +12,6 @@ import javax.swing.ListModel;
 import drivers.common.SelectionChangeListener;
 import java.util.ArrayList;
 import java.util.List;
-import common.map.fixtures.mobile.Animal;
 import common.map.fixtures.mobile.AnimalTracks;
 import common.map.fixtures.mobile.IUnit;
 import javax.swing.event.ListDataListener;

@@ -3,7 +3,6 @@ package impl.xmlio.exceptions;
 import common.xmlio.SPFormatException;
 
 import java.util.Collection;
-import java.util.stream.Collectors;
 import javax.xml.namespace.QName;
 import javax.xml.stream.Location;
 import javax.xml.stream.events.StartElement;
