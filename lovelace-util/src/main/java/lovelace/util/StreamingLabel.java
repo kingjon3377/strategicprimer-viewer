@@ -26,9 +26,9 @@ public final class StreamingLabel extends JEditorPane {
 	private final StringBuilder buffer = new StringBuilder();
 
 	public StreamingLabel() {
-		super("text/html", "<html><body bgcolor=\"#ffffff\"><p>&nbsp;</p></body></html>");
+		super("text/html", "<html><body bgcolor=\"#000000\"><p>&nbsp;</p></body></html>");
 		setEditable(false);
-		setBackground(Color.WHITE);
+		setBackground(Color.BLACK);
 		setOpaque(true);
 	}
 
@@ -37,7 +37,7 @@ public final class StreamingLabel extends JEditorPane {
 	 */
 	public void append(final String string) {
 		buffer.append(string);
-		setText("<html><body bgcolor=\"#ffffff\">" + buffer + "</body></html>");
+		setText("<html><body bgcolor=\"#000000\">" + buffer + "</body></html>");
 		repaint();
 	}
 
@@ -47,7 +47,7 @@ public final class StreamingLabel extends JEditorPane {
 	public void appendLine(final String string) {
 		buffer.append(string);
 		buffer.append("<br />");
-		setText("<html><body bgcolor=\"#ffffff\">" + buffer + "</body></html>");
+		setText("<html><body bgcolor=\"#000000\">" + buffer + "</body></html>");
 		repaint();
 	}
 }

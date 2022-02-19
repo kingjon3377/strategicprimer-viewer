@@ -25,14 +25,14 @@ import drivers.gui.common.SPFrame;
 	public MapCheckerFrame(final ISPDriver driver) {
 		super("Strategic Primer Map Checker", driver, new Dimension(640, 320), true, x -> {},
 			"Map Checker");
-		setBackground(Color.white);
+		setBackground(Color.black);
 		setContentPane(new JScrollPane(label));
-		getContentPane().setBackground(Color.white);
+		getContentPane().setBackground(Color.black);
 	}
 
 	private final StreamingLabel label = new StreamingLabel();
 	private void printParagraph(final String paragraph) {
-		printParagraph(paragraph, LabelTextColor.BLACK);
+		printParagraph(paragraph, LabelTextColor.WHITE);
 	}
 
 	private void printParagraph(final String paragraph, final LabelTextColor color) {
