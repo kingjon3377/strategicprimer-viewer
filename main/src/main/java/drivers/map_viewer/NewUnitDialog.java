@@ -35,7 +35,7 @@ import static lovelace.util.NumParsingHelper.parseInt;
  * TODO: Use NewFixtureSource/NewFixtureListener for listeners that might want
  * to handle other kinds of fixtures
  */
-public class NewUnitDialog extends SPDialog implements NewUnitSource, PlayerChangeListener {
+public final class NewUnitDialog extends SPDialog implements NewUnitSource, PlayerChangeListener {
 	public NewUnitDialog(final Player player, final IDRegistrar idf) {
 		super(null, "Add a New Unit");
 		this.player = player;
