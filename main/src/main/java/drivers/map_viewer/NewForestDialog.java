@@ -30,7 +30,7 @@ import java.math.BigDecimal;
 /**
  * A dialog to let the user add a new forest to a tile.
  */
-public class NewForestDialog extends SPDialog implements NewFixtureSource {
+public final class NewForestDialog extends SPDialog implements NewFixtureSource {
 	private static final Logger LOGGER = Logger.getLogger(NewForestDialog.class.getName());
 	public NewForestDialog(final IDRegistrar idf) {
 		super(null, "Add a New Forest");
