@@ -18,7 +18,7 @@ import javax.swing.JCheckBoxMenuItem;
  * This menu item calls {@code Frame.toFront()} when the item is selected.
  *
  */
-public class SummonMenuItem extends JCheckBoxMenuItem {
+public final class SummonMenuItem extends JCheckBoxMenuItem {
 
 	private static final long serialVersionUID = 1L;
 
