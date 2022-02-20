@@ -12,6 +12,7 @@ package com.pump.window;
 
 import java.awt.Frame;
 
+import java.awt.event.ActionEvent;
 import javax.swing.JCheckBoxMenuItem;
 
 /**
@@ -33,12 +34,7 @@ public final class SummonMenuItem extends JCheckBoxMenuItem {
 	public SummonMenuItem(final Frame f) {
 		super();
 		frame = f;
-		addActionListener(ignored -> { // TODO: convert to class method?
-			frame.toFront();
-			if (frame.getExtendedState() == Frame.ICONIFIED)
-				frame.setExtendedState(Frame.NORMAL);
-			setSelected(true);
-		});
+		addActionListener(this::handler);
 		updateText();
 
 		frame.addPropertyChangeListener("title", e -> updateText());
@@ -56,5 +52,12 @@ public final class SummonMenuItem extends JCheckBoxMenuItem {
 		if (text == null || text.trim().isEmpty())
 			text = "Untitled";
 		setText(text);
+	}
+
+	private void handler(ActionEvent ignored) {
+		frame.toFront();
+		if (frame.getExtendedState() == Frame.ICONIFIED)
+			frame.setExtendedState(Frame.NORMAL);
+		setSelected(true);
 	}
 }
