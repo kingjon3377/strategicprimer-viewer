@@ -27,7 +27,7 @@ import drivers.gui.common.SPFrame;
  *
  * TODO: Merge into MapCheckerGUI
  */
-/* package */ class MapCheckerFrame extends SPFrame {
+/* package */ final class MapCheckerFrame extends SPFrame {
 	private static final class AutoDisposeExecutor extends WindowAdapter {
 		public AutoDisposeExecutor() {
 			executor = Executors.newSingleThreadExecutor();
