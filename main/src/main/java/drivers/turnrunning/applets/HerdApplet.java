@@ -51,8 +51,7 @@ import query.SmallAnimalModel;
 	}
 
 	// TODO: Pull up to AbstractTurnApplet for use by other applets?
-	@Nullable
-	private IFortress containingFortress(final IUnit unit) {
+	private @Nullable IFortress containingFortress(final IUnit unit) {
 		return model.getMap().getFixtures(model.find(unit)).stream().filter(IFortress.class::isInstance)
 			.map(IFortress.class::cast).filter(f -> f.getOwner().equals(unit.getOwner()))
 			.findAny().orElse(null);
@@ -60,22 +59,20 @@ import query.SmallAnimalModel;
 
 	private final Map<String, HerdModel> herdModels = new HashMap<>();
 
-	@Nullable
-	private HerdModel chooseHerdModel(final String animal) {
+	private @Nullable HerdModel chooseHerdModel(final String animal) {
 		return cli.chooseFromList(Stream.concat(Stream.of(MammalModel.values()), Stream.concat(
 						Stream.of(PoultryModel.values()), Stream.of(SmallAnimalModel.values())))
 				.collect(Collectors.toList()), String.format("What kind of animal(s) is/are %s?", animal), "No animal kinds found", "Kind of animal:", ICLIHelper.ListChoiceBehavior.ALWAYS_PROMPT).getValue1();
 	}
 
 	@Override
-	@Nullable
-	public String run() {
+	public @Nullable String run() {
 		final IUnit unit = model.getSelectedUnit();
 		if (unit == null) {
 			return null;
 		}
 		final StringBuilder buffer = new StringBuilder();
-		@Nullable final IFortress home = containingFortress(unit);
+		final @Nullable IFortress home = containingFortress(unit);
 		for (final String kind : unit.stream()
 				.filter(Animal.class::isInstance).map(Animal.class::cast)
 				.filter(animal -> "domesticated".equals(animal.getStatus()) ||

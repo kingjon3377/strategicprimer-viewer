@@ -26,17 +26,15 @@ import common.map.fixtures.mobile.worker.IJob;
 	/**
 	 * The current worker.
 	 */
-	@Nullable
-	private UnitMember worker = null;
+	private @Nullable UnitMember worker = null;
 
 	/**
 	 * The current skill.
 	 */
-	@Nullable
-	private ISkill skill = null;
+	private @Nullable ISkill skill = null;
 
 	@Override
-	public void selectSkill(@Nullable final ISkill selectedSkill) {
+	public void selectSkill(final @Nullable ISkill selectedSkill) {
 		skill = selectedSkill;
 	}
 
@@ -46,10 +44,10 @@ import common.map.fixtures.mobile.worker.IJob;
 	 * TODO: Probably should
 	 */
 	@Override
-	public void selectJob(@Nullable final IJob selectedJob) {}
+	public void selectJob(final @Nullable IJob selectedJob) {}
 
 	@Override
-	public void memberSelected(@Nullable final UnitMember old, @Nullable final UnitMember selected) {
+	public void memberSelected(final @Nullable UnitMember old, final @Nullable UnitMember selected) {
 		worker = selected;
 	}
 

@@ -120,5 +120,5 @@ public class FixtureEditHelper implements IFixtureEditHelper {
 	}
 
 	@Override
-	public void playerChanged(@Nullable final Player previousCurrent, final Player newCurrent) {} // TODO: Do we need to implement this?
+	public void playerChanged(final @Nullable Player previousCurrent, final Player newCurrent) {} // TODO: Do we need to implement this?
 }

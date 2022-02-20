@@ -44,8 +44,7 @@ import org.jetbrains.annotations.Nullable;
 	}
 
 	@Override
-	@Nullable
-	public String run() {
+	public @Nullable String run() {
 		final StringBuilder builder = new StringBuilder();
 		boolean another;
 		final Boolean respOne =  cli.inputBooleanInSeries("Add resources to the map?", name + "resources");

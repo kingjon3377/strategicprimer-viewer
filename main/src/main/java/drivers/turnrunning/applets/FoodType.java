@@ -23,8 +23,7 @@ import org.jetbrains.annotations.Nullable;
 	// TODO: Add additional cases
 	Other(null, null, null, null, null, null, "other");
 
-	@Nullable
-	public static FoodType askFoodType(final ICLIHelper cli, final String foodKind) {
+	public static @Nullable FoodType askFoodType(final ICLIHelper cli, final String foodKind) {
 		for (final FoodType type : FoodType.values()) {
 			final Boolean resp = cli.inputBooleanInSeries(String.format("Is it %s?", type),
 				foodKind + type);
@@ -37,51 +36,39 @@ import org.jetbrains.annotations.Nullable;
 		return null;
 	}
 
-	@Nullable
-	private final Integer keepsFor;
+	private final @Nullable Integer keepsFor;
 
-	@Nullable
-	public Integer getKeepsFor() {
+	public @Nullable Integer getKeepsFor() {
 		return keepsFor;
 	}
 
-	@Nullable
-	private final Integer keepsForIfCool;
+	private final @Nullable Integer keepsForIfCool;
 
-	@Nullable
-	public Integer getKeepsForIfCool() {
+	public @Nullable Integer getKeepsForIfCool() {
 		return keepsForIfCool;
 	}
 
-	@Nullable
-	private final Integer keepsForRefrigerated;
+	private final @Nullable Integer keepsForRefrigerated;
 
-	@Nullable
-	public Integer getKeepsForRefrigerated() {
+	public @Nullable Integer getKeepsForRefrigerated() {
 		return keepsForRefrigerated;
 	}
 
-	@Nullable
-	private final Integer keepsForFrozen;
+	private final @Nullable Integer keepsForFrozen;
 
-	@Nullable
-	public Integer getKeepsForFrozen() {
+	public @Nullable Integer getKeepsForFrozen() {
 		return keepsForFrozen;
 	}
 
-	@Nullable
-	private final BigDecimal fractionSpoilingDaily;
+	private final @Nullable BigDecimal fractionSpoilingDaily;
 
-	@Nullable
-	public BigDecimal getFractionSpoilingDaily() {
+	public @Nullable BigDecimal getFractionSpoilingDaily() {
 		return fractionSpoilingDaily;
 	}
 
-	@Nullable
-	private final BigDecimal minimumSpoilage;
+	private final @Nullable BigDecimal minimumSpoilage;
 
-	@Nullable
-	public BigDecimal getMinimumSpoilage() {
+	public @Nullable BigDecimal getMinimumSpoilage() {
 		return minimumSpoilage;
 	}
 
@@ -92,9 +79,9 @@ import org.jetbrains.annotations.Nullable;
 		return string;
     	}
 
-	FoodType(@Nullable final Integer keepsFor, @Nullable final Integer keepsForIfCool,
-	         @Nullable final Integer keepsForRefrig, @Nullable final Integer keepsForFrozen,
-	         @Nullable final BigDecimal fracSpoilingDaily, @Nullable final BigDecimal minSpoilage,
+	FoodType(final @Nullable Integer keepsFor, final @Nullable Integer keepsForIfCool,
+	         final @Nullable Integer keepsForRefrig, final @Nullable Integer keepsForFrozen,
+	         final @Nullable BigDecimal fracSpoilingDaily, final @Nullable BigDecimal minSpoilage,
 	         final String str) {
 		this.keepsFor = keepsFor;
 		this.keepsForIfCool = keepsForIfCool;
@@ -105,8 +92,7 @@ import org.jetbrains.annotations.Nullable;
 		string = str;
 	}
 
-	@Nullable
-	public Boolean hasSpoiled(final IResourcePile pile, final int turn, final ICLIHelper cli) {
+	public @Nullable Boolean hasSpoiled(final IResourcePile pile, final int turn, final ICLIHelper cli) {
 		final int age = turn - pile.getCreated();
 		if (turn < 0 || pile.getCreated() < 0) { // Either corrupt turn information or non-spoiling rations
 			return false;
@@ -147,8 +133,7 @@ import org.jetbrains.annotations.Nullable;
 		}
 	}
 
-	@Nullable
-	public BigDecimal amountSpoiling(final Quantity qty, final ICLIHelper cli) {
+	public @Nullable BigDecimal amountSpoiling(final Quantity qty, final ICLIHelper cli) {
 		final BigDecimal amt = decimalize(qty.getNumber());
 		final BigDecimal fractional = Optional.ofNullable(fractionSpoilingDaily).map(amt::multiply).orElse(null);
 		return Stream.of(fractional, minimumSpoilage).filter(Objects::nonNull)

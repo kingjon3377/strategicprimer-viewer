@@ -41,8 +41,7 @@ import org.jetbrains.annotations.Nullable;
 	private final List<TrapperCommand> trapperCommands =
 			List.of(TrapperCommand.values());
 
-	@Nullable
-	private Integer handleFound(final Point center, final Point loc, final Animal item) {
+	private @Nullable Integer handleFound(final Point center, final Point loc, final Animal item) {
 		int cost;
 		cli.println(String.format("Found either %s or evidence of it escaping.", item.getKind()));
 		final Integer num = cli.inputNumber("How long to check and deal with the animal? ");
@@ -81,9 +80,8 @@ import org.jetbrains.annotations.Nullable;
 		return cost;
 	}
 
-	@Nullable
 	@Override
-	public String run() {
+	public @Nullable String run() {
 		final StringBuilder buffer = new StringBuilder();
 		final Boolean fishing = cli.inputBooleanInSeries(
 			"Is this a fisherman trapping fish rather than a trapper?");

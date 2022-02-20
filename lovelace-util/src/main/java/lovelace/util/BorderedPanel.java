@@ -20,7 +20,7 @@ public class BorderedPanel extends JPanel {
 		return center;
 	}
 
-	public final void setCenter(@Nullable final Component center) {
+	public final void setCenter(final @Nullable Component center) {
 		if (center != null) {
 			add(center, BorderLayout.CENTER);
 		} else if (this.center != null) {
@@ -39,7 +39,7 @@ public class BorderedPanel extends JPanel {
 		return lineStart;
 	}
 
-	public final void setLineStart(@Nullable final Component lineStart) {
+	public final void setLineStart(final @Nullable Component lineStart) {
 		if (lineStart != null) {
 			add(lineStart, BorderLayout.LINE_START);
 		} else if (this.lineStart != null) {
@@ -58,7 +58,7 @@ public class BorderedPanel extends JPanel {
 		return lineEnd;
 	}
 
-	public final void setLineEnd(@Nullable final Component lineEnd) {
+	public final void setLineEnd(final @Nullable Component lineEnd) {
 		if (lineEnd != null) {
 			add(lineEnd, BorderLayout.LINE_END);
 		} else if (this.lineEnd != null) {
@@ -77,7 +77,7 @@ public class BorderedPanel extends JPanel {
 		return pageStart;
 	}
 
-	public final void setPageStart(@Nullable final Component pageStart) {
+	public final void setPageStart(final @Nullable Component pageStart) {
 		if (pageStart != null) {
 			add(pageStart, BorderLayout.PAGE_START);
 		} else if (this.pageStart != null) {
@@ -96,7 +96,7 @@ public class BorderedPanel extends JPanel {
 		return pageEnd;
 	}
 
-	public final void setPageEnd(@Nullable final Component pageEnd) {
+	public final void setPageEnd(final @Nullable Component pageEnd) {
 		if (pageEnd != null) {
 			add(pageEnd, BorderLayout.PAGE_END);
 		} else if (this.pageEnd != null) {
@@ -108,9 +108,9 @@ public class BorderedPanel extends JPanel {
 	/**
 	 * Constructors.
 	 */
-	public BorderedPanel(@Nullable final Component center, @Nullable final Component pageStart,
-			@Nullable final Component pageEnd, @Nullable final Component lineEnd,
-			@Nullable final Component lineStart) {
+	public BorderedPanel(final @Nullable Component center, final @Nullable Component pageStart,
+	                     final @Nullable Component pageEnd, final @Nullable Component lineEnd,
+	                     final @Nullable Component lineStart) {
 		super(new BorderLayout());
 		setCenter(center);
 		setPageStart(pageStart);
@@ -119,21 +119,21 @@ public class BorderedPanel extends JPanel {
 		setLineEnd(lineEnd);
 	}
 
-	public BorderedPanel(@Nullable final Component center, @Nullable final Component pageStart,
-			@Nullable final Component pageEnd, @Nullable final Component lineEnd) {
+	public BorderedPanel(final @Nullable Component center, final @Nullable Component pageStart,
+	                     final @Nullable Component pageEnd, final @Nullable Component lineEnd) {
 		this(center, pageStart, pageEnd, lineEnd, null);
 	}
 
-	public BorderedPanel(@Nullable final Component center, @Nullable final Component pageStart,
-			@Nullable final Component pageEnd) {
+	public BorderedPanel(final @Nullable Component center, final @Nullable Component pageStart,
+	                     final @Nullable Component pageEnd) {
 		this(center, pageStart, pageEnd, null);
 	}
 
-	public BorderedPanel(@Nullable final Component center, @Nullable final Component pageStart) {
+	public BorderedPanel(final @Nullable Component center, final @Nullable Component pageStart) {
 		this(center, pageStart, null);
 	}
 
-	public BorderedPanel(@Nullable final Component center) {
+	public BorderedPanel(final @Nullable Component center) {
 		this(center, null);
 	}
 
@@ -145,8 +145,8 @@ public class BorderedPanel extends JPanel {
 	 * Factory method to arrange three components (pass null for any
 	 * position to be left empty) in a vertical line.
 	 */
-	public static BorderedPanel verticalPanel(@Nullable final Component pageStart,
-			@Nullable final Component center, @Nullable final Component pageEnd) {
+	public static BorderedPanel verticalPanel(final @Nullable Component pageStart,
+	                                          final @Nullable Component center, final @Nullable Component pageEnd) {
 		return new BorderedPanel(center, pageStart, pageEnd);
 	}
 
@@ -154,8 +154,8 @@ public class BorderedPanel extends JPanel {
 	 * Factory method to arrange three components (pass null for any
 	 * position to be left empty) in a horizontal line.
 	 */
-	public static BorderedPanel horizontalPanel(@Nullable final Component lineStart,
-			@Nullable final Component center, @Nullable final Component lineEnd) {
+	public static BorderedPanel horizontalPanel(final @Nullable Component lineStart,
+	                                            final @Nullable Component center, final @Nullable Component lineEnd) {
 		return new BorderedPanel(center, null, null, lineEnd,
 				lineStart);
 	}

@@ -47,8 +47,7 @@ public class CheckThreadViolationRepaintManager extends RepaintManager {
 	/**
 	 * The last(-referenced?) component.
 	 */
-	@Nullable
-	private WeakReference<JComponent> lastComponent;
+	private @Nullable WeakReference<JComponent> lastComponent;
 
 	/**
 	 * @param shouldCompleteCheck Whether to run the complete check (recommended)
@@ -107,7 +106,7 @@ public class CheckThreadViolationRepaintManager extends RepaintManager {
 	 * @param component the component to add
 	 */
 	@Override
-	public synchronized void addInvalidComponent(@Nullable final JComponent component) {
+	public synchronized void addInvalidComponent(final @Nullable JComponent component) {
 		if (component != null) {
 			checkThreadViolations(component);
 			super.addInvalidComponent(component);
@@ -124,7 +123,7 @@ public class CheckThreadViolationRepaintManager extends RepaintManager {
 	 * @param h         the height of the dirty region
 	 */
 	@Override
-	public void addDirtyRegion(@Nullable final JComponent component,
+	public void addDirtyRegion(final @Nullable JComponent component,
 	                           final int x, final int y, final int w, final int h) {
 		if (component != null) {
 			checkThreadViolations(component);

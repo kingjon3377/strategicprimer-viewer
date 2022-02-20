@@ -112,8 +112,7 @@ abstract class YAAbstractReader<Item, Value> implements YAReader<Item, Value> {
 	/**
 	 * Get an attribute by name from the given tag, if it's there.
 	 */
-	@Nullable
-	private static Attribute getAttributeByName(final StartElement element, final String parameter) {
+	private static @Nullable Attribute getAttributeByName(final StartElement element, final String parameter) {
 		final Attribute retval = element.getAttributeByName(qname(parameter));
 		if (retval == null) {
 			return element.getAttributeByName(new QName(parameter));

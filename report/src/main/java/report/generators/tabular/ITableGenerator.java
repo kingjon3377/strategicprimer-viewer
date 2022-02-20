@@ -140,7 +140,7 @@ public interface ITableGenerator<T extends IFixture> {
 	 * just takes the square root of {@link distance} and formats it,
 	 * unless one or both of the points is null or invalid, in which case it prints "unknown" instead.
 	 */
-	default String distanceString(@Nullable final Point first, @Nullable final Point second,
+	default String distanceString(final @Nullable Point first, final @Nullable Point second,
 	                              final MapDimensions dimensions) {
 		if (first != null && second != null && first.isValid() && second.isValid()) {
 			return String.format("%1.1f", Math.sqrt(distance(first, second, dimensions)));

@@ -19,10 +19,8 @@ import java.util.logging.Logger;
 	}
 
 	// TODO: Do we really need to track these, or can we just rely on {@link model.getCursor}?
-	@Nullable
-	private Integer oldRow = null;
-	@Nullable
-	private Integer oldColumn = null;
+	private @Nullable Integer oldRow = null;
+	private @Nullable Integer oldColumn = null;
 
 	// TODO: Should probably track horizonal and vertical scrolling separately
 	private boolean adjusting = false;

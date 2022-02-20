@@ -29,15 +29,14 @@ public class AnimalTabularReportGenerator implements ITableGenerator<AnimalOrTra
 		return AnimalOrTracks.class;
 	}
 
-	public AnimalTabularReportGenerator(@Nullable final Point hq, final MapDimensions dimensions,
+	public AnimalTabularReportGenerator(final @Nullable Point hq, final MapDimensions dimensions,
 	                                    final int currentTurn) {
 		this.hq = hq;
 		this.dimensions = dimensions;
 		this.currentTurn = currentTurn;
 	}
 
-	@Nullable
-	private final Point hq;
+	private final @Nullable Point hq;
 
 	private final MapDimensions dimensions;
 

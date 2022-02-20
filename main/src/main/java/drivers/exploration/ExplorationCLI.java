@@ -43,16 +43,14 @@ import common.map.fixtures.mobile.IUnit;
 	/**
 	 * Have the user choose a player.
 	 */
-	@Nullable
-	public Player choosePlayer() {
+	public @Nullable Player choosePlayer() {
 		return cli.chooseFromList((List<? extends Player>) new ArrayList<>(model.getPlayerChoices()), "Players shared by all the maps:", "No players shared by all the maps:", "Chosen player: ", ICLIHelper.ListChoiceBehavior.AUTO_CHOOSE_ONLY).getValue1();
 	}
 
 	/**
 	 * Have the user choose a unit belonging to that player.
 	 */
-	@Nullable
-	public IUnit chooseUnit(final Player player) {
+	public @Nullable IUnit chooseUnit(final Player player) {
 		return cli.chooseFromList((List<? extends IUnit>) model.getUnits(player), "Player's units:", "That player has no units in the master map", "Chosen unit: ", ICLIHelper.ListChoiceBehavior.AUTO_CHOOSE_ONLY).getValue1();
 	}
 

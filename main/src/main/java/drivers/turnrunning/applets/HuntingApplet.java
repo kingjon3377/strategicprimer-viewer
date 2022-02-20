@@ -25,8 +25,7 @@ import org.jetbrains.annotations.Nullable;
 	}
 
 	@Override
-	@Nullable
-	public String run() {
+	public @Nullable String run() {
 		return impl("hunt", huntingModel::hunt);
 	}
 }

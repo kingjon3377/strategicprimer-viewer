@@ -39,8 +39,7 @@ public class ResourceAddingCLIHelper {
 	/**
 	 * Ask the user to choose or enter a resource kind. Returns null on EOF.
 	 */
-	@Nullable
-	private String getResourceKind() {
+	private @Nullable String getResourceKind() {
 		final String one = cli.chooseStringFromList(new ArrayList<>(resourceKinds),
 			"Possible kinds of resources:", "No resource kinds entered yet",
 			"Chosen kind: ", ICLIHelper.ListChoiceBehavior.ALWAYS_PROMPT).getValue1();
@@ -59,8 +58,7 @@ public class ResourceAddingCLIHelper {
 	 * Ask the user to choose or enter a resource-content-type for a given
 	 * resource kind. Returns null on EOF.
 	 */
-	@Nullable
-	private String getResourceContents(final String kind) {
+	private @Nullable String getResourceContents(final String kind) {
 		final List<String> list = resourceContents.getOrDefault(kind, new ArrayList<>());
 		final String one = cli.chooseStringFromList(list,
 			"Possible resources in the ``kind`` category:",
@@ -80,8 +78,7 @@ public class ResourceAddingCLIHelper {
 	/**
 	 * Ask the user to choose units for a type of resource. Returns null on EOF.
 	 */
-	@Nullable
-	private String getResourceUnits(final String resource) {
+	private @Nullable String getResourceUnits(final String resource) {
 		if (resourceUnits.containsKey(resource)) {
 			final String unit = resourceUnits.get(resource);
 			final Boolean resp = cli.inputBooleanInSeries(
@@ -105,8 +102,7 @@ public class ResourceAddingCLIHelper {
 	/**
 	 * Ask the user to enter a resource, which is returned; null is returned on EOF.
 	 */
-	@Nullable
-	public IMutableResourcePile enterResource() {
+	public @Nullable IMutableResourcePile enterResource() {
 		final String kind = getResourceKind();
 		if (kind == null) {
 			return null;
@@ -156,8 +152,7 @@ public class ResourceAddingCLIHelper {
 	 * Ask the user to enter an Implement (a piece of equipment), which is
 	 * returned; null is returned on EOF.
 	 */
-	@Nullable
-	public Implement enterImplement() {
+	public @Nullable Implement enterImplement() {
 		final String kind = cli.inputString("Kind of equipment: ");
 		if (kind == null || kind.isEmpty()) {
 			return null;

@@ -297,7 +297,7 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 	/**
 	 * Tell listeners that the selected unit changed.
 	 */
-	private void fireSelectedUnitChange(@Nullable final IUnit old, @Nullable final IUnit newSelection) {
+	private void fireSelectedUnitChange(final @Nullable IUnit old, final @Nullable IUnit newSelection) {
 		for (final SelectionChangeListener listener : scListeners) {
 			LOGGER.fine("Notifying a listener of selected-unit change");
 			listener.selectedUnitChanged(old, newSelection);
@@ -520,7 +520,7 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 	 * Select the given unit.
 	 */
 	@Override
-	public void setSelectedUnit(@Nullable final IUnit selectedUnit) {
+	public void setSelectedUnit(final @Nullable IUnit selectedUnit) {
 		final Point oldLoc = selection.getValue0();
 		final IUnit oldSelection = selection.getValue1();
 		final Point loc;
@@ -718,7 +718,7 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 	 */
 	@Override
 	public boolean copyToSubMaps(final Point location, final TileFixture fixture, final IFixture.CopyBehavior zero) {
-		@Nullable final TileFixture matching;
+		final @Nullable TileFixture matching;
 		boolean retval = false;
 		if (fixture instanceof FakeFixture) {
 			// Skip it! It'll corrupt the output XML!
@@ -788,7 +788,7 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 	 */
 	@Deprecated
 	@Override
-	public void setSubMapTerrain(final Point location, @Nullable final TileType terrain) {
+	public void setSubMapTerrain(final Point location, final @Nullable TileType terrain) {
 		for (final IMutableMapNG subMap : getRestrictedSubordinateMaps()) {
 			subMap.setBaseTerrain(location, terrain);
 			subMap.setModified(true);

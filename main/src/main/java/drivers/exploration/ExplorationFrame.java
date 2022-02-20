@@ -133,7 +133,7 @@ import org.eclipse.jdt.annotation.Nullable;
 	private void handlePlayerChanged() {
 		layoutObj.goFirst();
 		if (!playerList.isSelectionEmpty()) {
-			@Nullable final Player newPlayer = playerList.getSelectedValue();
+			final @Nullable Player newPlayer = playerList.getSelectedValue();
 			if (newPlayer != null) {
 				unitListModel.playerChanged(null, newPlayer);
 			}
@@ -142,7 +142,7 @@ import org.eclipse.jdt.annotation.Nullable;
 
 	private void buttonListener() {
 		LOGGER.finer("In ExplorationFrame.buttonListener");
-		@Nullable final IUnit selectedValue = unitList.getSelectedValue();
+		final @Nullable IUnit selectedValue = unitList.getSelectedValue();
 		if (selectedValue != null && !unitList.isSelectionEmpty()) {
 			driver.getModel().setSelectedUnit(selectedValue);
 			LOGGER.finer("ExplorationFrame.buttonListener: after selectedUnit setter call");

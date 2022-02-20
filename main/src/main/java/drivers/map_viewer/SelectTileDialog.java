@@ -37,7 +37,7 @@ import common.map.Point;
 
 	private final IViewerModel model;
 
-	public SelectTileDialog(@Nullable final Frame parentFrame, final IViewerModel model) {
+	public SelectTileDialog(final @Nullable Frame parentFrame, final IViewerModel model) {
 		super(parentFrame, "Go To ...");
 		this.model = model;
 

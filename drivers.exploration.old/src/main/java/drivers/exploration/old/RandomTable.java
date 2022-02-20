@@ -40,7 +40,7 @@ class RandomTable implements EncounterTable {
 	}
 
 	@Override
-	public String generateEvent(final Point point, @Nullable final TileType terrain, final boolean mountainous,
+	public String generateEvent(final Point point, final @Nullable TileType terrain, final boolean mountainous,
 	                            final Iterable<TileFixture> fixtures, final MapDimensions dimensions) {
 		return lowestMatch(SingletonRandom.SINGLETON_RANDOM.nextInt(100));
 	}

@@ -62,8 +62,7 @@ public class AppletChooser<AppletClass extends Applet> {
 	 * true (wrapped in {@link Either}). If the user's input is ambiguous
 	 * or does not match any applet, print the usage message and return null.
 	 */
-	@Nullable
-	public Either<AppletClass, Boolean> chooseApplet() {
+	public @Nullable Either<AppletClass, Boolean> chooseApplet() {
 		final String command = Optional.ofNullable(cli.inputString("Command:"))
 			.map(String::toLowerCase).orElse(null);
 		if (command == null) {

@@ -239,8 +239,7 @@ public class WorkerTreeModelAlt extends DefaultTreeModel implements IWorkerTreeM
 	/**
 	 * Get the node in the subtree under the given node that represents the given object.
 	 */
-	@Nullable
-	private static MutableTreeNode getNode(final TreeNode node, final Object obj) {
+	private static @Nullable MutableTreeNode getNode(final TreeNode node, final Object obj) {
 		if (node instanceof MutableTreeNode && areTreeObjectsEqual(node, obj)) {
 			return (MutableTreeNode) node;
 		} else if (node instanceof WorkerTreeNode && node.getAllowsChildren()) {
@@ -343,7 +342,7 @@ public class WorkerTreeModelAlt extends DefaultTreeModel implements IWorkerTreeM
 	 * the tree for that player.
 	 */
 	@Override
-	public void playerChanged(@Nullable final Player old, final Player newPlayer) {
+	public void playerChanged(final @Nullable Player old, final Player newPlayer) {
 		setRoot(new PlayerNode(newPlayer, model));
 	}
 
@@ -529,8 +528,7 @@ public class WorkerTreeModelAlt extends DefaultTreeModel implements IWorkerTreeM
 	 * Skips units with no members.  Returns null if no unit matches those criteria.
 	 */
 	@Override
-	@Nullable
-	public TreePath nextProblem(@Nullable final TreePath starting, final int turn) {
+	public @Nullable TreePath nextProblem(final @Nullable TreePath starting, final int turn) {
 		final PlayerNode rootNode = (PlayerNode) getRoot();
 		final Enumeration<?> enumeration = rootNode.preorderEnumeration();
 		final Iterable<WorkerTreeNode<?>> wrapped =

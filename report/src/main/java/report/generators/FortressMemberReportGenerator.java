@@ -28,15 +28,14 @@ public class FortressMemberReportGenerator extends AbstractReportGenerator<Fortr
 	private final Player currentPlayer;
 	private final MapDimensions dimensions;
 	private final int currentTurn;
-	@Nullable
-	private final Point hq;
+	private final @Nullable Point hq;
 
 	public FortressMemberReportGenerator(final Player currentPlayer, final MapDimensions dimensions, final int currentTurn) {
 		this(currentPlayer, dimensions, currentTurn, null);
 	}
 
 	public FortressMemberReportGenerator(final Player currentPlayer,
-	                                     final MapDimensions dimensions, final int currentTurn, @Nullable final Point hq) {
+	                                     final MapDimensions dimensions, final int currentTurn, final @Nullable Point hq) {
 		super(dimensions, hq);
 		this.currentPlayer = currentPlayer;
 		this.dimensions = dimensions;

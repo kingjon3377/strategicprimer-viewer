@@ -241,7 +241,7 @@ import worker.common.IFixtureEditHelper;
 
 	// TODO: Cache selected unit here instead of always referring to it via the model?
 	@Override
-	public void selectedUnitChanged(@Nullable final IUnit old, @Nullable final IUnit newSelection) {}
+	public void selectedUnitChanged(final @Nullable IUnit old, final @Nullable IUnit newSelection) {}
 
 	private final FormattedLabel locLabel = new FormattedLabel(
 		"<html><body>Currently exploring %s; click a tile to explore it. Selected fixtures in its left-hand list will be 'discovered'.</body></html>", Point.INVALID_POINT);
@@ -290,7 +290,7 @@ import worker.common.IFixtureEditHelper;
 	private final Map<Direction, SpeedChangeListener> speedChangeListeners = new EnumMap<>(Direction.class);
 
 	@Override
-	public void selectedPointChanged(@Nullable final Point old, final Point newPoint) {
+	public void selectedPointChanged(final @Nullable Point old, final Point newPoint) {
 		if (old != null && old.equals(newPoint)) {
 			return;
 		}
@@ -298,7 +298,7 @@ import worker.common.IFixtureEditHelper;
 		for (final Direction direction : Direction.values()) {
 			LOGGER.finer("ExplorationPanel.selectedPointChanged: Beginning " + direction);
 			final Point point = driverModel.getDestination(newPoint, direction);
-			@Nullable final Point previous;
+			final @Nullable Point previous;
 			if (speedChangeListeners.containsKey(direction)) {
 				// TODO: Change SpeedChangeListener API so we can do this in one operation
 				final SpeedChangeListener scl = speedChangeListeners.get(direction);
@@ -318,8 +318,7 @@ import worker.common.IFixtureEditHelper;
 
 	// TODO: Move as many fields as possible into the constructor, to minimize class footprint
 
-	@Nullable
-	private AnimalTracks tracksCreator(final Point point) {
+	private @Nullable AnimalTracks tracksCreator(final Point point) {
 		final TileType terrain = driverModel.getMap().getBaseTerrain(point);
 		if (terrain == null) {
 			return null;
@@ -479,13 +478,12 @@ import worker.common.IFixtureEditHelper;
 		}
 	}
 
-	@Nullable
-	private static AnimalTracks createNull(final Point point) {
+	private static @Nullable AnimalTracks createNull(final Point point) {
 		return null;
 	}
 
 	@Override
 	public void interactionPointChanged() {}
 	@Override
-	public void cursorPointChanged(@Nullable final Point oldCursor, final Point newCursor) {}
+	public void cursorPointChanged(final @Nullable Point oldCursor, final Point newCursor) {}
 }

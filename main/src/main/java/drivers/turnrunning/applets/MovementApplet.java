@@ -43,7 +43,7 @@ import static lovelace.util.Decimalize.decimalize;
 		return "move a unit";
 	}
 
-	private void packFood(@Nullable final IFortress fortress, final IUnit unit) {
+	private void packFood(final @Nullable IFortress fortress, final IUnit unit) {
 		if (fortress == null) {
 			return;
 		}
@@ -77,9 +77,8 @@ import static lovelace.util.Decimalize.decimalize;
 		}
 	}
 
-	@Nullable
 	@Override
-	public String run() {
+	public @Nullable String run() {
 		final StringBuilder buffer = new StringBuilder();
 		model.addSelectionChangeListener(explorationCLI);
 		final IUnit mover = model.getSelectedUnit();

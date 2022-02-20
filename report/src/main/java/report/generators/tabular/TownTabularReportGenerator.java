@@ -27,7 +27,7 @@ public class TownTabularReportGenerator implements ITableGenerator<AbstractTown>
 		return AbstractTown.class;
 	}
 
-	public TownTabularReportGenerator(final Player player, @Nullable final Point hq, final MapDimensions dimensions) {
+	public TownTabularReportGenerator(final Player player, final @Nullable Point hq, final MapDimensions dimensions) {
 		this.player = player;
 		this.hq = hq;
 		this.dimensions = dimensions;
@@ -39,8 +39,7 @@ public class TownTabularReportGenerator implements ITableGenerator<AbstractTown>
 	}
 
 	private final Player player;
-	@Nullable
-	private final Point hq;
+	private final @Nullable Point hq;
 	private final MapDimensions dimensions;
 
 	/**

@@ -197,7 +197,7 @@ public final class CommunityStats implements Subsettable<@Nullable CommunityStat
 	}
 
 	@Override
-	public boolean isSubset(@Nullable final CommunityStats other, final Consumer<String> report) {
+	public boolean isSubset(final @Nullable CommunityStats other, final Consumer<String> report) {
 		if (other == null) {
 			return true;
 		} else {

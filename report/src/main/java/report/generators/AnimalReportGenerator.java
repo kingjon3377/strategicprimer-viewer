@@ -30,7 +30,7 @@ public class AnimalReportGenerator extends AbstractReportGenerator</*Animal|Anim
 		this(dimensions, currentTurn, null);
 	}
 
-	public AnimalReportGenerator(final MapDimensions dimensions, final int currentTurn, @Nullable final Point hq) {
+	public AnimalReportGenerator(final MapDimensions dimensions, final int currentTurn, final @Nullable Point hq) {
 		super(dimensions, hq);
 		this.currentTurn = currentTurn;
 	}

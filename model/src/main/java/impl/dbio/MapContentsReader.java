@@ -40,8 +40,7 @@ interface MapContentsReader {
 	 * Find a tile fixture or unit or fortress member within a given stream
 	 * of such objects by its ID, if present.
 	 */
-	@Nullable
-	default IFixture findByIdImpl(final Iterable<IFixture> stream, final int id) {
+	default @Nullable IFixture findByIdImpl(final Iterable<IFixture> stream, final int id) {
 		for (final IFixture fixture : stream) {
 			if (fixture.getId() == id) {
 				return fixture;

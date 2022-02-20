@@ -83,10 +83,10 @@ public final class FixtureList extends JList<TileFixture>
 	}
 
 	@Override
-	public void selectedUnitChanged(@Nullable final IUnit old, @Nullable final IUnit newSel) {}
+	public void selectedUnitChanged(final @Nullable IUnit old, final @Nullable IUnit newSel) {}
 
 	@Override
-	public void cursorPointChanged(@Nullable final Point old, final Point newCursor) {}
+	public void cursorPointChanged(final @Nullable Point old, final Point newCursor) {}
 
 	@Override
 	public void dragGestureRecognized(final DragGestureEvent event) {
@@ -118,7 +118,7 @@ public final class FixtureList extends JList<TileFixture>
 	}
 
 	@Override
-	public void selectedPointChanged(@Nullable final Point old, final Point newPoint) {
+	public void selectedPointChanged(final @Nullable Point old, final Point newPoint) {
 		SwingUtilities.invokeLater(() -> listModel.selectedPointChanged(old, newPoint));
 	}
 

@@ -41,15 +41,13 @@ public class ConsumptionApplet extends AbstractTurnApplet {
 		this.turn = turn;
 	}
 
-	@Nullable
-	private IUnit unit;
+	private @Nullable IUnit unit;
 
-	@Nullable
-	public IUnit getUnit() {
+	public @Nullable IUnit getUnit() {
 		return unit;
 	}
 
-	public void setUnit(@Nullable final IUnit unit) {
+	public void setUnit(final @Nullable IUnit unit) {
 		this.unit = unit;
 	}
 
@@ -76,8 +74,7 @@ public class ConsumptionApplet extends AbstractTurnApplet {
 	}
 
 	@Override
-	@Nullable
-	public String run() {
+	public @Nullable String run() {
 		final IUnit localUnit = unit;
 		if (localUnit == null) {
 			return null;

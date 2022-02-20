@@ -135,7 +135,7 @@ import java.util.function.Predicate;
 	/**
 	 * Whether the fixture has an owner matching the given pattern.
 	 */
-	private static boolean matchesOwner(final String pattern, @Nullable final Integer idNum, final IFixture fixture,
+	private static boolean matchesOwner(final String pattern, final @Nullable Integer idNum, final IFixture fixture,
 	                                    final boolean caseSensitivity) {
 		if (fixture instanceof HasOwner) {
 			final Player owner = ((HasOwner) fixture).getOwner();
@@ -157,7 +157,7 @@ import java.util.function.Predicate;
 	/**
 	 * Whether the fixture matches the pattern in any of our simple ways.
 	 */
-	private boolean matchesSimple(final String pattern, @Nullable final Integer idNum, final IFixture fixture,
+	private boolean matchesSimple(final String pattern, final @Nullable Integer idNum, final IFixture fixture,
 	                              final boolean caseSensitivity) {
 		if (pattern.isEmpty()) {
 			return true;
@@ -176,7 +176,7 @@ import java.util.function.Predicate;
 	/**
 	 * Whether the given fixture matches the given pattern in any way we recognize.
 	 */
-	private Predicate<IFixture> matches(final String pattern, @Nullable final Integer idNum,
+	private Predicate<IFixture> matches(final String pattern, final @Nullable Integer idNum,
 	                                    final boolean caseSensitivity) {
 		return fixture -> {
 			if (matchesSimple(pattern, idNum, fixture, caseSensitivity)) {
@@ -189,7 +189,7 @@ import java.util.function.Predicate;
 		};
 	}
 
-	private Predicate<Point> matchesPoint(final String pattern, @Nullable final Integer id,
+	private Predicate<Point> matchesPoint(final String pattern, final @Nullable Integer id,
 	                                      final boolean caseSensitivity) {
 		return point -> {
 			if (((caseSensitivity && "bookmark".equals(pattern)) ||

@@ -130,8 +130,7 @@ import org.jetbrains.annotations.Nullable;
 
 	private final List<Condition<? extends TileFixture>> conditions;
 
-	@Nullable
-	private List<Condition<? extends TileFixture>> enabledConditions = null;
+	private @Nullable List<Condition<? extends TileFixture>> enabledConditions = null;
 
 	public boolean stopAtPoint(final ICLIHelper cli, final IMapNG map, final Point point) {
 		final List<Condition<? extends TileFixture>> localEnabledConditions;

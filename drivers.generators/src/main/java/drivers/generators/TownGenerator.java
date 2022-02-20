@@ -165,8 +165,7 @@ import java.math.BigDecimal;
 	 *
 	 * TODO: search inside fortresses and units
 	 */
-	@Nullable
-	private static IFixture findByID(final IMapNG map, final int id) {
+	private static @Nullable IFixture findByID(final IMapNG map, final int id) {
 		return map.streamAllFixtures()
 			.filter(f -> f.getId() == id)
 			.findAny().orElse(null);
@@ -178,8 +177,7 @@ import java.math.BigDecimal;
 	 *
 	 * TODO: search inside fortresses and units
 	 */
-	@Nullable
-	private static Point findLocById(final IMapNG map, final int id) {
+	private static @Nullable Point findLocById(final IMapNG map, final int id) {
 		return map.streamLocations()
 			.filter(l -> map.getFixtures(l).stream().anyMatch(f -> f.getId() == id))
 			.findAny().orElse(null);
@@ -210,7 +208,7 @@ import java.math.BigDecimal;
 	 * If both arguments exist and are ocean, return true; if one is ocean
 	 * and the other is not, return false; otherwise, return true.
 	 */
-	private static boolean bothOrNeitherOcean(@Nullable final TileType one, @Nullable final TileType two) {
+	private static boolean bothOrNeitherOcean(final @Nullable TileType one, final @Nullable TileType two) {
 		if (TileType.Ocean == one) {
 			return TileType.Ocean == two;
 		} else {
@@ -578,8 +576,8 @@ import java.math.BigDecimal;
 			if (input == null || input.trim().isEmpty()) {
 				break;
 			}
-			@Nullable final Point location;
-			@Nullable final ITownFixture town; // ModifiableTown, i.e. AbstractTown|Village, in Ceylon
+			final @Nullable Point location;
+			final @Nullable ITownFixture town; // ModifiableTown, i.e. AbstractTown|Village, in Ceylon
 			if (NumParsingHelper.isNumeric(input)) {
 				final int id = NumParsingHelper.parseInt(input).orElseThrow(
 					() -> new IllegalStateException(

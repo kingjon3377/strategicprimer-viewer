@@ -41,7 +41,7 @@ public class FortressReportGenerator extends AbstractReportGenerator<IFortress> 
 	}
 
 	public FortressReportGenerator(final Player currentPlayer,
-	                               final MapDimensions dimensions, final Integer currentTurn, @Nullable final Point hq) {
+	                               final MapDimensions dimensions, final Integer currentTurn, final @Nullable Point hq) {
 		super(dimensions, hq);
 		urg = new UnitReportGenerator(currentPlayer, dimensions, currentTurn, hq);
 		memberReportGenerator = new FortressMemberReportGenerator(currentPlayer, dimensions,

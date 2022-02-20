@@ -295,7 +295,7 @@ import java.io.FileNotFoundException;
 		}
 
 		@Override
-		public void playerChanged(@Nullable final Player old, final Player newPlayer) {
+		public void playerChanged(final @Nullable Player old, final Player newPlayer) {
 			currentPlayer = newPlayer;
 			resourceLabel.setArguments(currentPlayer.getName());
 			implementLabel.setArguments(currentPlayer.getName());

@@ -29,8 +29,7 @@ import java.util.logging.Logger;
 			unvisited.contains(entry.getKey().getValue1());
 	}
 
-	@Nullable
-	private Point nextUnvisited(final Point base, final Set<Point> unvisited) {
+	private @Nullable Point nextUnvisited(final Point base, final Set<Point> unvisited) {
 		return tentativeDistances.entrySet().stream().filter(forUs(base, unvisited)).min(Map.Entry.comparingByValue())
 			.map(Map.Entry::getKey).map(Pair::getValue1).orElse(null);
 	}

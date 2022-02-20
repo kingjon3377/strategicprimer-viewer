@@ -35,8 +35,7 @@ import java.util.logging.Logger;
 	/**
 	 * Find the location of the given player's HQ in the given map, or null if not found.
 	 */
-	@Nullable
-	public static Point findHQ(final IMapNG map, final Player player) {
+	public static @Nullable Point findHQ(final IMapNG map, final Player player) {
 		Point retval = null;
 		for (final Point location : map.getLocations()) {
 			for (final TileFixture fixture : map.getFixtures(location)) {

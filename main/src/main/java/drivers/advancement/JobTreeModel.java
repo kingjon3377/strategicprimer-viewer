@@ -48,8 +48,7 @@ import java.util.stream.StreamSupport;
 	/**
 	 * The worker whom the Jobs and Skills describe.
 	 */
-	@Nullable
-	private IWorker localRoot = null;
+	private @Nullable IWorker localRoot = null;
 
 	private TreeSelectionModel selectionModel = new DefaultTreeSelectionModel(); // TODO: refactor so this can be provided in the constructor, if possible; it's currently provided by the tree, to whose constructor this tree-model object is passed
 
@@ -58,8 +57,7 @@ import java.util.stream.StreamSupport;
 	}
 
 	@Override
-	@Nullable
-	public IWorker getRoot() {
+	public @Nullable IWorker getRoot() {
 		return localRoot;
 	}
 
@@ -204,7 +202,7 @@ import java.util.stream.StreamSupport;
 	 * Change what unit member is currently selected
 	 */
 	@Override
-	public void memberSelected(@Nullable final UnitMember old, @Nullable final UnitMember selected) {
+	public void memberSelected(final @Nullable UnitMember old, final @Nullable UnitMember selected) {
 		if (selected instanceof IWorker) {
 			localRoot = (IWorker) selected;
 			fireTreeStructureChanged(new TreeModelEvent(this, new TreePath(selected)));

@@ -184,8 +184,7 @@ public final class ImageLoader {
 		 * map version. Returns null if the given version does not
 		 * support that tile type. TODO: throw instead, as we used to do in Java?
 		 */
-		@Nullable
-		public static Color get(final int version, @Nullable final TileType type) {
+		public static @Nullable Color get(final int version, final @Nullable TileType type) {
 			if (type == null) {
 				return null;
 			} else if (COLORS.containsKey(version)) {
@@ -209,8 +208,7 @@ public final class ImageLoader {
 		 * Get a String (HTML) representation of the given terrain
 		 * type. TODO: throw on not-found instead of returning null?
 		 */
-		@Nullable
-		public static String getDescription(@Nullable final TileType type) {
+		public static @Nullable String getDescription(final @Nullable TileType type) {
 			if (type == null) {
 				return "Unknown";
 			} else if (DESCRIPTIONS.containsKey(type)) {
@@ -226,8 +224,7 @@ public final class ImageLoader {
 		 * not on top. TODO: throw on not-found instead of returning
 		 * null?
 		 */
-		@Nullable
-		public static Color getFeatureColor(final TileFixture fixture) {
+		public static @Nullable Color getFeatureColor(final TileFixture fixture) {
 			if (FEATURE_COLORS.containsKey(fixture.getClass())) {
 				return FEATURE_COLORS.get(fixture.getClass());
 			} else {

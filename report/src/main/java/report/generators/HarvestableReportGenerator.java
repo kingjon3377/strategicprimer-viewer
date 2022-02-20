@@ -69,7 +69,7 @@ public class HarvestableReportGenerator extends AbstractReportGenerator<Harvesta
 		this(dimensions, null);
 	}
 
-	public HarvestableReportGenerator(final MapDimensions dimensions, @Nullable final Point hq) {
+	public HarvestableReportGenerator(final MapDimensions dimensions, final @Nullable Point hq) {
 		super(dimensions, hq);
 	}
 

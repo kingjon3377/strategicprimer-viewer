@@ -49,7 +49,7 @@ import common.map.fixtures.terrain.Forest;
  * it).
  */
 public class DuplicateFixtureRemoverCLI implements CLIDriver {
-	private static String memberKind(@Nullable final IFixture member) {
+	private static String memberKind(final @Nullable IFixture member) {
 		if (member instanceof AnimalImpl || member instanceof Implement ||
 				member instanceof Forest || member instanceof Grove ||
 				member instanceof Meadow) {
@@ -136,8 +136,7 @@ public class DuplicateFixtureRemoverCLI implements CLIDriver {
 	 * {@link fixture}, and return the user's answer (null on EOF). If
 	 * {@link matching} is null, return false.
 	 */
-	@Nullable
-	private Boolean approveRemoval(final Point location, final TileFixture fixture, @Nullable final TileFixture matching) {
+	private @Nullable Boolean approveRemoval(final Point location, final TileFixture fixture, final @Nullable TileFixture matching) {
 		if (matching == null) {
 			return false;
 		} else {

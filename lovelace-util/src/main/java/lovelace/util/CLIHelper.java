@@ -46,7 +46,7 @@ public final class CLIHelper {
 				return item;
 			} else {
 				printList(Stream.of(choices).map(Pair::getValue0).toArray(String[]::new));
-				@Nullable final Integer index = inputNumber(prompt);
+				final @Nullable Integer index = inputNumber(prompt);
 				if (index != null && index >= 0 && index < choices.length) {
 					return choices[index].getValue1();
 				} else {

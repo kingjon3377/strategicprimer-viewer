@@ -105,8 +105,7 @@ public class WorkerModel extends SimpleMultiMapModel implements IWorkerModel {
 	/**
 	 * The current player, subject to change by user action.
 	 */
-	@Nullable
-	private Player currentPlayerImpl = null;
+	private @Nullable Player currentPlayerImpl = null;
 
 	private final List<UnitMember> dismissedMembers = new ArrayList<>();
 
@@ -286,8 +285,7 @@ public class WorkerModel extends SimpleMultiMapModel implements IWorkerModel {
 	 * Get a unit by its owner and ID.
 	 */
 	@Override
-	@Nullable
-	public IUnit getUnitByID(final Player owner, final int id) {
+	public @Nullable IUnit getUnitByID(final Player owner, final int id) {
 		return getUnits(owner).parallelStream()
 			.filter(u -> u.getId() == id).findAny().orElse(null);
 	}

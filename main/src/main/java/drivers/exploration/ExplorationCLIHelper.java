@@ -80,7 +80,7 @@ public class ExplorationCLIHelper implements MovementCostListener, SelectionChan
 	/**
 	 * Copy the given fixture to subordinate maps and print it to the output stream.
 	 */
-	private void printAndTransferFixture(final Point destPoint, @Nullable final TileFixture fixture, final HasOwner mover,
+	private void printAndTransferFixture(final Point destPoint, final @Nullable TileFixture fixture, final HasOwner mover,
 	                                     final boolean automatic) {
 		if (fixture != null) {
 			if (automatic) {
@@ -127,7 +127,7 @@ public class ExplorationCLIHelper implements MovementCostListener, SelectionChan
 	 * When the selected unit changes, print the unit's details and ask how many MP the unit has.
 	 */
 	@Override
-	public void selectedUnitChanged(@Nullable final IUnit old, @Nullable final IUnit newSelection) {
+	public void selectedUnitChanged(final @Nullable IUnit old, final @Nullable IUnit newSelection) {
 		if (newSelection != null) { // TODO What if old == newSelection?
 			cli.print("Details of the unit (apparently at ");
 			cli.print(model.getSelectedUnitLocation().toString());
@@ -361,11 +361,11 @@ public class ExplorationCLIHelper implements MovementCostListener, SelectionChan
 	}
 
 	@Override
-	public void selectedPointChanged(@Nullable final Point previousSelection, final Point newSelection) {}
+	public void selectedPointChanged(final @Nullable Point previousSelection, final Point newSelection) {}
 
 	@Override
 	public void interactionPointChanged() {}
 
 	@Override
-	public void cursorPointChanged(@Nullable final Point previousCursor, final Point newCursor) {}
+	public void cursorPointChanged(final @Nullable Point previousCursor, final Point newCursor) {}
 }

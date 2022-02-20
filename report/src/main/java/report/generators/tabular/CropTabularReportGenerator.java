@@ -52,12 +52,11 @@ public class CropTabularReportGenerator implements ITableGenerator</*Forest|Shru
 		return NUM_FORMAT.format(number);
 	}
 
-	@Nullable
-	private final Point hq;
+	private final @Nullable Point hq;
 	private final MapDimensions dimensions;
 	private final Comparator<Point> distanceComparator;
 
-	public CropTabularReportGenerator(@Nullable final Point hq, final MapDimensions dimensions) {
+	public CropTabularReportGenerator(final @Nullable Point hq, final MapDimensions dimensions) {
 		this.hq = hq;
 		this.dimensions = dimensions;
 		if (hq == null) {

@@ -161,8 +161,7 @@ public class ViewerModel extends SimpleDriverModel implements IViewerModel {
 	/**
 	 * The point in the map the user has just right-clicked on, if any.
 	 */
-	@Nullable
-	private Point interactionPoint = null;
+	private @Nullable Point interactionPoint = null;
 
 	/**
 	 * The visible dimensions of the map.
@@ -340,13 +339,12 @@ public class ViewerModel extends SimpleDriverModel implements IViewerModel {
 	 * The point in the map the user has just right-clicked on, if any.
 	 */
 	@Override
-	@Nullable
-	public Point getInteraction() {
+	public @Nullable Point getInteraction() {
 		return interactionPoint;
 	}
 
 	@Override
-	public void setInteraction(@Nullable final Point interaction) {
+	public void setInteraction(final @Nullable Point interaction) {
 		interactionPoint = interaction;
 		scs.fireInteraction();
 	}
@@ -468,7 +466,7 @@ public class ViewerModel extends SimpleDriverModel implements IViewerModel {
 	 * Set the map's terrain type at the given point.
 	 */
 	@Override
-	public void setBaseTerrain(final Point location, @Nullable final TileType terrain) {
+	public void setBaseTerrain(final Point location, final @Nullable TileType terrain) {
 		getRestrictedMap().setBaseTerrain(location, terrain);
 		setMapModified(true); // TODO: Only set the flag if this was a change?
 	}

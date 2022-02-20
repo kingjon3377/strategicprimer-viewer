@@ -76,8 +76,7 @@ import common.map.fixtures.towns.Village;
 	/**
 	 * Find a fixture in a given iterable with the given ID.
 	 */
-	@Nullable
-	private static IFixture findInIterable(final Integer id, final IFixture... fixtures) {
+	private static @Nullable IFixture findInIterable(final Integer id, final IFixture... fixtures) {
 		for (final IFixture fixture : fixtures) {
 			if (fixture.getId() == id) {
 				return fixture;

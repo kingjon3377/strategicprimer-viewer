@@ -154,12 +154,12 @@ public class DrawHelperComparator implements UtilityDriver {
 	private static final List<Pair<String, TestInterface>> TESTS =
 			List.of(Pair.with("1. Basic Drawing", DrawHelperComparator::first), Pair.with("2. Basic Drawing, reusing Graphics", DrawHelperComparator::second), Pair.with("3a. Ordered iteration vs filtering: Iteration", DrawHelperComparator::thirdOne), Pair.with("3b. Ordered iteration vs filtering: Filtering", DrawHelperComparator::thirdTwo));
 
-	private static boolean dummyObserver(@Nullable final Image image, final int infoflags,
+	private static boolean dummyObserver(final @Nullable Image image, final int infoflags,
 	                                     final int xCoordinate, final int yCoordinate, final int width, final int height) {
 		return false;
 	}
 
-	private static boolean dummyFilter(@Nullable final TileFixture fix) {
+	private static boolean dummyFilter(final @Nullable TileFixture fix) {
 		return true;
 	}
 

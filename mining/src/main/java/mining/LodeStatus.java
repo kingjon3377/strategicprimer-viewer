@@ -45,8 +45,7 @@ enum LodeStatus {
 	 *
 	 * TODO: Throw instead of returning null?
 	 */
-	@Nullable
-	public static LodeStatus parse(final String str) {
+	public static @Nullable LodeStatus parse(final String str) {
 		switch (str.toLowerCase()) {
 		case "none":
 			return null;
@@ -124,8 +123,7 @@ enum LodeStatus {
 	/**
 	 * The next lower status.
 	 */
-	@Nullable
-	private LodeStatus getLower() {
+	private @Nullable LodeStatus getLower() {
 		switch (this) {
 		case Minimal:
 			return null;
@@ -149,8 +147,7 @@ enum LodeStatus {
 	/**
 	 * The next higher status.
 	 */
-	@Nullable
-	private LodeStatus getHigher() {
+	private @Nullable LodeStatus getHigher() {
 		switch (this) {
 		case Minimal:
 			return VeryPoor;
@@ -175,8 +172,7 @@ enum LodeStatus {
 	 *
 	 * @param rng The random-number-generating function to use
 	 */
-	@Nullable
-	public LodeStatus adjacent(final DoubleSupplier rng) {
+	public @Nullable LodeStatus adjacent(final DoubleSupplier rng) {
 		final double rand = rng.getAsDouble();
 		if (rand < lowerProbability) {
 			return getLower();
@@ -191,8 +187,7 @@ enum LodeStatus {
 	 * Randomly choose the status of a location horizontally adjacent in a
 	 * "banded" (for example sand) mine to one with this status.
 	 */
-	@Nullable
-	public LodeStatus bandedAdjacent(final Random rng) {
+	public @Nullable LodeStatus bandedAdjacent(final Random rng) {
 		return adjacent(rng::nextGaussian);
 	}
 

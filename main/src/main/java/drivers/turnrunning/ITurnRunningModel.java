@@ -158,8 +158,7 @@ public interface ITurnRunningModel extends IExplorationModel, IAdvancementModel 
 	 * {@link IFortress fortress} named "HQ", return <em>a</em> fortress of
 	 * that player. If it can't find even one, return null.
 	 */
-	@Nullable
-	default IFortress findHQ(final Player player) {
+	default @Nullable IFortress findHQ(final Player player) {
 		return findHQ(player, "HQ");
 	}
 
@@ -169,8 +168,7 @@ public interface ITurnRunningModel extends IExplorationModel, IAdvancementModel 
 	 * with the given name, return <em>a</em> fortress of that player. If
 	 * it can't find even one, return null.
 	 */
-	@Nullable
-	default IFortress findHQ(final Player player, final String fortressName) {
+	default @Nullable IFortress findHQ(final Player player, final String fortressName) {
 		IFortress retval = null;
 		final IMapNG map = getMap();
 		for (final IFortress fortress : map.streamAllFixtures()

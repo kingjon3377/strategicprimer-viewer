@@ -81,7 +81,7 @@ import java.util.logging.Logger;
 	/**
 	 * Test a map against the main map, to see if it's a strict subset of it.
 	 */
-	public void testMap(final IMapNG map, @Nullable final Path file) {
+	public void testMap(final IMapNG map, final @Nullable Path file) {
 		final String filename;
 		if (file == null) {
 			LOGGER.warning("Given a map with no filename");

@@ -46,12 +46,12 @@ public class FixtureListModel implements ListModel<TileFixture>, SelectionChange
 	                        final Function<Point, @Nullable TileType> terrainSource,
 	                        final Function<Point, Collection<River>> riversSource, final Predicate<Point> mountainSource,
 	                        final Function<Point, @Nullable AnimalTracks> tracksSource,
-	                        @Nullable final BiConsumer<Point, TileType> terrainSink,
-	                        @Nullable final BiConsumer<Point, River[]> addRivers,
-	                        @Nullable final BiConsumer<Point, Boolean> mountainSink,
-	                        @Nullable final BiPredicate<Point, TileFixture> addFixtureLambda,
-	                        @Nullable final BiConsumer<Point, River[]> removeRivers,
-	                        @Nullable final BiConsumer<Point, TileFixture> removeFixture,
+	                        final @Nullable BiConsumer<Point, TileType> terrainSink,
+	                        final @Nullable BiConsumer<Point, River[]> addRivers,
+	                        final @Nullable BiConsumer<Point, Boolean> mountainSink,
+	                        final @Nullable BiPredicate<Point, TileFixture> addFixtureLambda,
+	                        final @Nullable BiConsumer<Point, River[]> removeRivers,
+	                        final @Nullable BiConsumer<Point, TileFixture> removeFixture,
 	                        final Comparator<TileFixture> comparator) {
 		this.fixturesSource = fixturesSource;
 		this.terrainSource = terrainSource;
@@ -75,10 +75,10 @@ public class FixtureListModel implements ListModel<TileFixture>, SelectionChange
 	private List<TileFixture> cachedTerrainList = Collections.emptyList();
 
 	@Override
-	public void selectedUnitChanged(@Nullable final IUnit oldSelection, @Nullable final IUnit newSelection) {}
+	public void selectedUnitChanged(final @Nullable IUnit oldSelection, final @Nullable IUnit newSelection) {}
 
 	@Override
-	public void cursorPointChanged(@Nullable final Point old, final Point newCursor) {}
+	public void cursorPointChanged(final @Nullable Point old, final Point newCursor) {}
 
 	/**
 	 * Any animal tracks that have been "added" to the current tile but kept out of the map.
@@ -138,7 +138,7 @@ public class FixtureListModel implements ListModel<TileFixture>, SelectionChange
 	}
 
 	@Override
-	public void selectedPointChanged(@Nullable final Point old, final Point newPoint) {
+	public void selectedPointChanged(final @Nullable Point old, final Point newPoint) {
 		LOGGER.finer("Starting FixtureListModel.selectedPointChanged");
 		final int oldSize = getSize();
 		cachedTerrainList = Collections.emptyList();

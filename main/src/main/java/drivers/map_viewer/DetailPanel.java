@@ -82,7 +82,7 @@ import worker.common.IFixtureEditHelper;
 		setDividerLocation(0.9);
 	}
 
-	private static JComponent keyElement(final int version, @Nullable final TileType type) {
+	private static JComponent keyElement(final int version, final @Nullable TileType type) {
 		final BoxPanel retval = new BoxPanel(BoxAxis.LineAxis);
 		retval.addGlue();
 		retval.addRigidArea(7);
@@ -132,13 +132,13 @@ import worker.common.IFixtureEditHelper;
 	}
 
 	@Override
-	public void selectedPointChanged(@Nullable final Point old, final Point newPoint) {
+	public void selectedPointChanged(final @Nullable Point old, final Point newPoint) {
 		delegate.selectedPointChanged(old, newPoint);
 		header.setArguments(newPoint);
 	}
 
 	@Override
-	public void selectedUnitChanged(@Nullable final IUnit old, @Nullable final IUnit newUnit) {
+	public void selectedUnitChanged(final @Nullable IUnit old, final @Nullable IUnit newUnit) {
 		delegate.selectedUnitChanged(old, newUnit);
 	}
 
@@ -146,7 +146,7 @@ import worker.common.IFixtureEditHelper;
 	public void interactionPointChanged() {}
 
 	@Override
-	public void cursorPointChanged(@Nullable final Point old, final Point newCursor) {}
+	public void cursorPointChanged(final @Nullable Point old, final Point newCursor) {}
 
 	private static class PortraitComponent extends JComponent implements ListSelectionListener {
 		private static final long serialVersionUID = 1L;
@@ -156,8 +156,7 @@ import worker.common.IFixtureEditHelper;
 			fixtureListObject = fixtureList;
 		}
 
-		@Nullable
-		private Image portrait = null;
+		private @Nullable Image portrait = null;
 
 		@Override
 		public void paintComponent(final Graphics pen) {

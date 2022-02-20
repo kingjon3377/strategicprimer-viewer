@@ -30,7 +30,7 @@ public class DiggableTabularReportGenerator implements ITableGenerator<MineralFi
 		return MineralFixture.class;
 	}
 
-	public DiggableTabularReportGenerator(@Nullable final Point hq, final MapDimensions dimensions) {
+	public DiggableTabularReportGenerator(final @Nullable Point hq, final MapDimensions dimensions) {
 		this.hq = hq;
 		this.dimensions = dimensions;
 		if (hq == null) {
@@ -40,8 +40,7 @@ public class DiggableTabularReportGenerator implements ITableGenerator<MineralFi
 		}
 	}
 
-	@Nullable
-	private final Point hq;
+	private final @Nullable Point hq;
 
 	private final MapDimensions dimensions;
 

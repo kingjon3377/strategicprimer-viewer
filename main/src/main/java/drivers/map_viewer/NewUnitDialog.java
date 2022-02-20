@@ -72,7 +72,7 @@ public final class NewUnitDialog extends SPDialog implements NewUnitSource, Play
 		new JFormattedTextField(NumberFormat.getIntegerInstance());
 
 	@Override
-	public void playerChanged(@Nullable final Player old, final Player newPlayer) {
+	public void playerChanged(final @Nullable Player old, final Player newPlayer) {
 		player = newPlayer;
 	}
 

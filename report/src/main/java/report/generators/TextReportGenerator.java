@@ -25,7 +25,7 @@ public class TextReportGenerator extends AbstractReportGenerator<TextFixture> {
 	}
 
 	public TextReportGenerator(final MapDimensions dimensions,
-	                           @Nullable final Point hq) {
+	                           final @Nullable Point hq) {
 		super(dimensions, hq);
 	}
 

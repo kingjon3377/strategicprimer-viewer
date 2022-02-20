@@ -62,7 +62,7 @@ public class OrdersPanel extends BorderedPanel implements OrdersContainer {
 
 	public OrdersPanel(final String description, final int currentTurn, final Player currentPlayer,
 	                   final BiFunction<Player, String, Collection<IUnit>> playerUnits,
-	                   final IOrdersSupplier ordersSupplier, @Nullable final IOrdersConsumer ordersConsumer,
+	                   final IOrdersSupplier ordersSupplier, final @Nullable IOrdersConsumer ordersConsumer,
 	                   final IIsCurrent isCurrent) {
 		this.currentPlayer = currentPlayer;
 		this.playerUnits = playerUnits;
@@ -114,8 +114,7 @@ public class OrdersPanel extends BorderedPanel implements OrdersContainer {
 		area.setWrapStyleWord(true);
 	}
 
-	@Nullable
-	private Object selection = null;
+	private @Nullable Object selection = null;
 
 	private void fixColor() {
 		if (selection instanceof IUnit && !isCurrent.isCurrent((IUnit) selection,
@@ -186,7 +185,7 @@ public class OrdersPanel extends BorderedPanel implements OrdersContainer {
 	}
 
 	@Override
-	public void playerChanged(@Nullable final Player old, final Player newPlayer) {
+	public void playerChanged(final @Nullable Player old, final Player newPlayer) {
 		currentPlayer = newPlayer;
 	}
 

@@ -28,10 +28,9 @@ public final class BoxPanel extends JPanel {
 	/**
 	 * Which direction the panel is laid out, for use in the helper methods.
 	 */
-	@NotNull
-	private final BoxAxis axis;
+	private final @NotNull BoxAxis axis;
 
-	public BoxPanel(@NotNull final BoxAxis layoutAxis) {
+	public BoxPanel(final @NotNull BoxAxis layoutAxis) {
 		this.axis = layoutAxis;
 		setLayout(new BoxLayout(this, axis.axis));
 	}

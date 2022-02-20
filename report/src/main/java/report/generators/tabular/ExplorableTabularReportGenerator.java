@@ -34,7 +34,7 @@ public class ExplorableTabularReportGenerator
 		return TileFixture.class;
 	}
 
-	public ExplorableTabularReportGenerator(final Player player, @Nullable final Point hq, final MapDimensions dimensions) {
+	public ExplorableTabularReportGenerator(final Player player, final @Nullable Point hq, final MapDimensions dimensions) {
 		this.player = player;
 		this.hq = hq;
 		this.dimensions = dimensions;
@@ -46,8 +46,7 @@ public class ExplorableTabularReportGenerator
 	}
 
 	private final Player player;
-	@Nullable
-	private final Point hq;
+	private final @Nullable Point hq;
 	private final MapDimensions dimensions;
 
 	/**

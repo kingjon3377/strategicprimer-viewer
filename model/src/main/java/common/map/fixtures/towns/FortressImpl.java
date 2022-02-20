@@ -121,8 +121,7 @@ public class FortressImpl implements IMutableFortress {
 	 * TODO: OTOH, should they be?
 	 */
 	@Override
-	@Nullable
-	public CommunityStats getPopulation() {
+	public @Nullable CommunityStats getPopulation() {
 		return null;
 	}
 

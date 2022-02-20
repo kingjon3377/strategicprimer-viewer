@@ -41,7 +41,7 @@ public class SPMapNG implements IMutableMapNG {
 	/**
 	 * Whether the given fixture should be zeroed out if the map is for the given player.
 	 */
-	private static boolean shouldZero(final TileFixture fixture, @Nullable final Player player) {
+	private static boolean shouldZero(final TileFixture fixture, final @Nullable Player player) {
 		if (player != null && fixture instanceof HasOwner) {
 			return player.equals(((HasOwner) fixture).getOwner());
 		} else {
@@ -64,15 +64,13 @@ public class SPMapNG implements IMutableMapNG {
 	/**
 	 * The file from which the map was loaded, or to which it should be saved, if known
 	 */
-	@Nullable
-	private Path filename = null; // TODO: Require as constructor parameter?
+	private @Nullable Path filename = null; // TODO: Require as constructor parameter?
 
 	/**
 	 * The file from which the map was loaded, or to which it should be saved, if known
 	 */
 	@Override
-	@Nullable
-	public Path getFilename() {
+	public @Nullable Path getFilename() {
 		return filename;
 	}
 
@@ -80,7 +78,7 @@ public class SPMapNG implements IMutableMapNG {
 	 * Set the file from which the map was loaded, or to which it should be saved, if known
 	 */
 	@Override
-	public void setFilename(@Nullable final Path filename) {
+	public void setFilename(final @Nullable Path filename) {
 		this.filename = filename;
 	}
 
@@ -221,8 +219,7 @@ public class SPMapNG implements IMutableMapNG {
 	 * The base terrain at the given location.
 	 */
 	@Override
-	@Nullable
-	public TileType getBaseTerrain(final Point key) {
+	public @Nullable TileType getBaseTerrain(final Point key) {
 		return terrain.get(key);
 	}
 
@@ -230,10 +227,9 @@ public class SPMapNG implements IMutableMapNG {
 	 * Set the base terrain at the given location.
 	 */
 	@Override
-	@Nullable
-	public TileType setBaseTerrain(final Point key, @Nullable final TileType item) {
+	public @Nullable TileType setBaseTerrain(final Point key, final @Nullable TileType item) {
 		modified = true; // TODO: Only if this is a change
-		@Nullable final TileType retval = getBaseTerrain(key);
+		final @Nullable TileType retval = getBaseTerrain(key);
 		if (item == null) {
 			terrain.remove(key);
 		} else {
@@ -783,7 +779,7 @@ public class SPMapNG implements IMutableMapNG {
 	 * FIXME: (In the interface) split with-player and without-player into separate signatures
 	 */
 	@Override
-	public IMapNG copy(final IFixture.CopyBehavior zero, @Nullable final Player player) {
+	public IMapNG copy(final IFixture.CopyBehavior zero, final @Nullable Player player) {
 		final IMutableMapNG retval = new SPMapNG(getDimensions(), playerCollection.copy(),
 			currentTurn);
 		for (final Point point : getLocations()) {

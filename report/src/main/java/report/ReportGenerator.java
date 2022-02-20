@@ -76,7 +76,7 @@ public final class ReportGenerator {
 			.append(System.lineSeparator()).append("<body>").append(System.lineSeparator());
 		final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures =
 			ReportGeneratorHelper.getFixtures(map);
-		@Nullable final Point hq = ReportGeneratorHelper.findHQ(map, player);
+		final @Nullable Point hq = ReportGeneratorHelper.findHQ(map, player);
 		final int currentTurn = map.getCurrentTurn();
 		createSubReports(builder, fixtures, map, player,
 			new FortressReportGenerator(player, dimensions, currentTurn, hq),

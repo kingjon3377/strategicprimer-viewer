@@ -69,15 +69,13 @@ public final class PlayerImpl implements MutablePlayer {
 	/**
 	 * The country the player is associated with.
 	 */
-	@Nullable
-	private final String country;
+	private final @Nullable String country;
 
 	/**
 	 * The country the player is associated with.
 	 */
-	@Nullable
 	@Override
-	public String getCountry() {
+	public @Nullable String getCountry() {
 		return country;
 	}
 

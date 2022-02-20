@@ -102,22 +102,20 @@ public class Worker implements IMutableWorker {
 	/**
 	 * The worker's stats.
 	 */
-	@Nullable
-	private WorkerStats stats = null;
+	private @Nullable WorkerStats stats = null;
 
 	/**
 	 * The worker's stats.
 	 */
 	@Override
-	@Nullable
-	public WorkerStats getStats() {
+	public @Nullable WorkerStats getStats() {
 		return stats;
 	}
 
 	/**
 	 * Set the worker's stats.
 	 */
-	public void setStats(@Nullable final WorkerStats stats) {
+	public void setStats(final @Nullable WorkerStats stats) {
 		this.stats = stats;
 	}
 

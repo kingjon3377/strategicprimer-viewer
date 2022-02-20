@@ -25,7 +25,7 @@ public class ImmortalsTabularReportGenerator implements ITableGenerator<Immortal
 		return Immortal.class;
 	}
 
-	public ImmortalsTabularReportGenerator(@Nullable final Point hq, final MapDimensions dimensions) {
+	public ImmortalsTabularReportGenerator(final @Nullable Point hq, final MapDimensions dimensions) {
 		this.hq = hq;
 		this.dimensions = dimensions;
 		if (hq == null) {
@@ -35,8 +35,7 @@ public class ImmortalsTabularReportGenerator implements ITableGenerator<Immortal
 		}
 	}
 	private final MapDimensions dimensions;
-	@Nullable
-	private final Point hq;
+	private final @Nullable Point hq;
 
 	/**
 	 * The header row for this table.

@@ -77,7 +77,7 @@ import java.math.BigDecimal;
 	}
 
 	public IResourcePile addResourcePile(final Player player, final int id, final String kind, final String resource,
-	                                     final BigDecimal quantity, final String units, @Nullable final Integer created) {
+	                                     final BigDecimal quantity, final String units, final @Nullable Integer created) {
 		final IMutableResourcePile pile = new ResourcePileImpl(id, kind, resource,
 			new Quantity(quantity, units));
 		if (created != null) {
@@ -90,8 +90,7 @@ import java.math.BigDecimal;
 	/**
 	 * Get the current player. If none is current, returns null.
 	 */
-	@Nullable
-	public Player getCurrentPlayer() {
+	public @Nullable Player getCurrentPlayer() {
 		return StreamSupport.stream(getPlayers().spliterator(), false)
 			.filter(Player::isCurrent).findAny().orElse(null);
 	}

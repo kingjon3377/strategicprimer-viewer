@@ -46,8 +46,7 @@ public class PlayerChangeMenuListener implements ActionListener, PlayerChangeSou
 	 * invoker of any {@link JPopupMenu pop-up menu}, and we also throw
 	 * away the results of the intermediate steps.
 	 */
-	@Nullable
-	private static Frame getContainingFrame(@Nullable final Component component) {
+	private static @Nullable Frame getContainingFrame(final @Nullable Component component) {
 		Component temp = component;
 		while (temp != null) {
 			if (temp instanceof Frame) {

@@ -167,7 +167,7 @@ public final class TestXMLIO {
 	 */
 	@SafeVarargs
 	private static <Type, Expectation extends Exception> void assertFormatIssue(
-			final ISPReader reader, final String xml, @Nullable final Type desideratum,
+			final ISPReader reader, final String xml, final @Nullable Type desideratum,
 			final Class<Expectation> exceptionClass, final Consumer<Expectation>... checks)
 			throws SPFormatException, MalformedXMLException, IOException {
 		if (desideratum == null) {
@@ -212,7 +212,7 @@ public final class TestXMLIO {
 	 * assert that it'll pass with warnings disabled but fail with warnings
 	 * made fatal.
 	 */
-	private <Type> void assertUnsupportedTag(final String xml, final String tag, @Nullable final Type desideratum)
+	private <Type> void assertUnsupportedTag(final String xml, final String tag, final @Nullable Type desideratum)
 			throws SPFormatException, MalformedXMLException, IOException {
 		for (final ISPReader reader : spReaders) {
 			TestXMLIO.assertFormatIssue(reader, xml, desideratum,
@@ -228,7 +228,7 @@ public final class TestXMLIO {
 	 * assert that it'll pass with warnings disabled but fail with warnings
 	 * made fatal.
 	 */
-	private <Type> void assertUnwantedChild(final String xml, @Nullable final Type desideratum)
+	private <Type> void assertUnwantedChild(final String xml, final @Nullable Type desideratum)
 			throws SPFormatException, MalformedXMLException, IOException {
 		for (final ISPReader reader : spReaders) {
 			TestXMLIO.assertFormatIssue(reader, xml, desideratum,
@@ -243,7 +243,7 @@ public final class TestXMLIO {
 	 * made fatal.
 	 */
 	private <Type> void assertMissingProperty(final String xml, final String property,
-	                                          @Nullable final Type desideratum)
+	                                          final @Nullable Type desideratum)
 			throws SPFormatException, MalformedXMLException, IOException {
 		for (final ISPReader reader : spReaders) {
 			TestXMLIO.assertFormatIssue(reader, xml, desideratum,
@@ -271,7 +271,7 @@ public final class TestXMLIO {
 	 * made fatal.
 	 */
 	private <Type> void assertDeprecatedProperty(final String xml, final String deprecated, final String preferred,
-	                                             final String tag, @Nullable final Type desideratum)
+	                                             final String tag, final @Nullable Type desideratum)
 			throws SPFormatException, MalformedXMLException, IOException {
 		for (final ISPReader reader : spReaders) {
 			TestXMLIO.assertFormatIssue(reader, xml, desideratum,

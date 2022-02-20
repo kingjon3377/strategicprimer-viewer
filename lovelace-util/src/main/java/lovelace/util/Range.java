@@ -37,9 +37,8 @@ public class Range implements Iterable<Integer> {
 		return upperBound - lowerBound + 1;
 	}
 
-	@NotNull
 	@Override
-	public Iterator<Integer> iterator() {
+	public @NotNull Iterator<Integer> iterator() {
 		return new RangeIterator(this);
 	}
 

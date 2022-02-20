@@ -64,7 +64,7 @@ public class IOHandler implements ActionListener {
 	 * If any files are marked as modified, ask the user whether to save
 	 * them before closing/quitting.
 	 */
-	private void maybeSave(final String verb, @Nullable final Frame window, @Nullable final Component source,
+	private void maybeSave(final String verb, final @Nullable Frame window, final @Nullable Component source,
 	                       final Runnable ifNotCanceled) { // TODO: Use the possibly-throwing interface from j.u.concurrent?
 		final ModelDriver md = (ModelDriver) driver;
 		LOGGER.finer("Checking if we need to save ...");
@@ -119,7 +119,7 @@ public class IOHandler implements ActionListener {
 		ifNotCanceled.run();
 	}
 
-	private static void handleError(final Exception except, final String filename, @Nullable final Component source,
+	private static void handleError(final Exception except, final String filename, final @Nullable Component source,
 	                                final String errorTitle, final String verb) {
 		final String message;
 		if (except instanceof MalformedXMLException) {
@@ -137,7 +137,7 @@ public class IOHandler implements ActionListener {
 		ShowErrorDialog.showErrorDialog(source, errorTitle, message);
 	}
 
-	private static Consumer<Path> loadHandlerImpl(final Consumer<IMutableMapNG> handler, @Nullable final Component source,
+	private static Consumer<Path> loadHandlerImpl(final Consumer<IMutableMapNG> handler, final @Nullable Component source,
 	                                              final String errorTitle) {
 		return path -> {
 			try {
@@ -148,7 +148,7 @@ public class IOHandler implements ActionListener {
 		};
 	}
 
-	private void loadHandler(@Nullable final Component source, final String errorTitle) {
+	private void loadHandler(final @Nullable Component source, final String errorTitle) {
 		if (driver instanceof GUIDriver) {
 			SPFileChooser.open((Path) null)
 				.call(loadHandlerImpl(((GUIDriver) driver)::open, source,

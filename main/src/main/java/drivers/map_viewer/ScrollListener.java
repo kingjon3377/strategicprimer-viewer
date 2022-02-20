@@ -162,7 +162,7 @@ import common.map.fixtures.mobile.IUnit;
 	 * Handle a change to the cursor location.
 	 */
 	@Override
-	public void cursorPointChanged(@Nullable final Point previous, final Point newCursor) {
+	public void cursorPointChanged(final @Nullable Point previous, final Point newCursor) {
 		final VisibleDimensions temp = model.getVisibleDimensions();
 		if (!temp.getColumns().contains(newCursor.getColumn()) &&
 				horizontalBarModel.getValue() != Math.max(newCursor.getColumn(), 0)) {
@@ -178,7 +178,7 @@ import common.map.fixtures.mobile.IUnit;
 	 * Scrolling deals only with the cursor location, not with the selection.
 	 */
 	@Override
-	public void selectedPointChanged(@Nullable final Point previousSelection, final Point newSelection) {}
+	public void selectedPointChanged(final @Nullable Point previousSelection, final Point newSelection) {}
 
 	/**
 	 * Handle notification that a new map was loaded.
@@ -199,7 +199,7 @@ import common.map.fixtures.mobile.IUnit;
 	public void mapMetadataChanged() {}
 
 	@Override
-	public void selectedUnitChanged(@Nullable final IUnit oldSelection, @Nullable final IUnit newSelection) {}
+	public void selectedUnitChanged(final @Nullable IUnit oldSelection, final @Nullable IUnit newSelection) {}
 
 	@Override
 	public void interactionPointChanged() {}

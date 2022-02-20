@@ -14,7 +14,7 @@ import org.jetbrains.annotations.Nullable;
 	private static final DefaultListCellRenderer DEFAULT_RENDERER = new DefaultListCellRenderer();
 
 	@Override
-	public Component getListCellRendererComponent(@Nullable final JList<? extends IUnit> list, @Nullable final IUnit val,
+	public Component getListCellRendererComponent(final @Nullable JList<? extends IUnit> list, final @Nullable IUnit val,
 	                                              final int index, final boolean isSelected, final boolean cellHasFocus) {
 		final Component retval = DEFAULT_RENDERER.getListCellRendererComponent(list, val, index,
 			isSelected, cellHasFocus);

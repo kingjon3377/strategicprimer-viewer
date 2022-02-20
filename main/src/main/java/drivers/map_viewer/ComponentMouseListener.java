@@ -73,8 +73,7 @@ import java.util.function.Consumer;
 	}
 
 	@Override
-	@Nullable
-	public String getToolTipText(final MouseEvent event) {
+	public @Nullable String getToolTipText(final MouseEvent event) {
 		final MapDimensions mapDimensions = model.getMapDimensions();
 		final Point point = pointFor(event);
 		if (point.isValid() && point.getRow() < mapDimensions.getRows() &&
@@ -132,7 +131,7 @@ import java.util.function.Consumer;
 			(point.getRow() - visibleDimensions.getMinimumRow()) * tileSize + tileSize / 2);
 	}
 
-	public void showMenuAtSelection(@Nullable final Component parent) {
+	public void showMenuAtSelection(final @Nullable Component parent) {
 		model.setInteraction(model.getSelection());
 		final Pair<Integer, Integer> pair = screenPointFor(model.getSelection());
 		menu.show(parent, pair.getValue0(), pair.getValue1());

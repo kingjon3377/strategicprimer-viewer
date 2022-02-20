@@ -79,8 +79,8 @@ import common.map.fixtures.mobile.worker.IJob;
 	}
 
 	private void handleTreeSelectionChange(final TreeSelectionEvent event) {
-		@Nullable final ISkill retval;
-		@Nullable final IJob job;
+		final @Nullable ISkill retval;
+		final @Nullable IJob job;
 		final TreePath selectionPath = event.getNewLeadSelectionPath();
 		if (selectionPath != null && selectionPath.getLastPathComponent() instanceof ISkill) {
 			retval = (ISkill) selectionPath.getLastPathComponent();

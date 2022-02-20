@@ -268,10 +268,10 @@ import common.map.fixtures.terrain.Hill;
 	}
 
 	@Override
-	public void selectedPointChanged(@Nullable final Point old, final Point newPoint) {}
+	public void selectedPointChanged(final @Nullable Point old, final Point newPoint) {}
 
 	@Override
-	public void cursorPointChanged(@Nullable final Point old, final Point newCursor) {}
+	public void cursorPointChanged(final @Nullable Point old, final Point newCursor) {}
 
 	@Override
 	public void interactionPointChanged() {
@@ -309,6 +309,6 @@ import common.map.fixtures.terrain.Hill;
 	}
 
 	@Override
-	public void selectedUnitChanged(@Nullable final IUnit oldSelection, @Nullable final IUnit newSelection) {}
+	public void selectedUnitChanged(final @Nullable IUnit oldSelection, final @Nullable IUnit newSelection) {}
 }
 

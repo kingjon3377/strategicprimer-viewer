@@ -119,8 +119,7 @@ public final class WorkerTree extends JTree implements UnitMemberSelectionSource
 	}
 
 	@Override
-	@Nullable
-	public String getToolTipText(final MouseEvent event) {
+	public @Nullable String getToolTipText(final MouseEvent event) {
 		if (getRowForLocation(event.getX(), event.getY()) == -1) {
 			return null;
 		}
@@ -229,8 +228,7 @@ public final class WorkerTree extends JTree implements UnitMemberSelectionSource
 		 * the supertype Transferable.
 		 */
 		@Override
-		@Nullable
-		public Transferable createTransferable(final JComponent component) {
+		public @Nullable Transferable createTransferable(final JComponent component) {
 			final TreePath[] paths = selectionModel.getSelectionPaths();
 			final List<Pair<UnitMember, IUnit>> membersToTransfer = new ArrayList<>();
 			final List<IUnit> unitsToTransfer = new ArrayList<>();
@@ -404,8 +402,7 @@ public final class WorkerTree extends JTree implements UnitMemberSelectionSource
 
 		private static final Icon DEFAULT_FIXTURE_ICON = createDefaultFixtureIcon();
 
-		@Nullable
-		private static Icon getIconForFile(final String filename) {
+		private static @Nullable Icon getIconForFile(final String filename) {
 			try {
 				return ImageLoader.loadIcon(filename);
 			}  catch (final FileNotFoundException|NoSuchFileException except) {

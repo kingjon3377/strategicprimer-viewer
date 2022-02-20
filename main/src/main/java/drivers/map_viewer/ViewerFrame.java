@@ -158,8 +158,7 @@ public final class ViewerFrame extends SPFrame implements MapGUI {
 
 	private final MapComponent mapPanel;
 
-	@Nullable
-	public BufferedImage getBackgroundImage() {
+	public @Nullable BufferedImage getBackgroundImage() {
 		return mapPanel.getBackgroundImage();
 	}
 

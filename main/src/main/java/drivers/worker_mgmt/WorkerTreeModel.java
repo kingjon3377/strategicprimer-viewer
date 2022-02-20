@@ -159,7 +159,7 @@ import java.util.stream.Collectors;
 	}
 
 	@Override
-	public void playerChanged(@Nullable final Player old, final Player newPlayer) {
+	public void playerChanged(final @Nullable Player old, final Player newPlayer) {
 		player = newPlayer;
 		final TreeModelEvent event = new TreeModelEvent(this, new TreePath(getRoot()));
 		for (final TreeModelListener listener : listeners) {
@@ -317,8 +317,7 @@ import java.util.stream.Collectors;
 	 * criteria.
 	 */
 	@Override
-	@Nullable
-	public TreePath nextProblem(@Nullable final TreePath starting, final int turn) {
+	public @Nullable TreePath nextProblem(final @Nullable TreePath starting, final int turn) {
 		Iterable<IUnit> sequence;
 		boolean leading;
 		final Predicate<IUnit> leadingFilter;

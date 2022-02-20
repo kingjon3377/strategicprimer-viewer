@@ -65,8 +65,7 @@ public class SimpleMultiMapModel extends SimpleDriverModel implements IMultiMapM
 	}
 
 	@Override
-	@Nullable
-	public final IDriverModel fromSecondMap() {
+	public final @Nullable IDriverModel fromSecondMap() {
 		if (subordinateMapsList.isEmpty()) {
 			return null;
 		} else {

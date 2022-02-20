@@ -57,8 +57,7 @@ import org.jetbrains.annotations.Nullable;
 	}
 
 	@Override
-	@Nullable
-	public String run() {
+	public @Nullable String run() {
 		final StringBuilder builder = new StringBuilder();
 		// FIXME: support other forms of woodcutting: logs, long beams, land-clearing, etc.
 		final Point loc = confirmPoint("Where are they cutting wood?");

@@ -162,7 +162,7 @@ public class QueryCLI implements ReadOnlyDriver {
 	 * of the sole caller, this method accepts null, and does nothing when
 	 * that is the parameter.
 	 */
-	private void fortressInfo(@Nullable final Point location) {
+	private void fortressInfo(final @Nullable Point location) {
 		if (location != null) {
 			cli.println(String.format("Terrain is %s",
 				Optional.ofNullable(map.getBaseTerrain(location))
@@ -187,8 +187,7 @@ public class QueryCLI implements ReadOnlyDriver {
 	/**
 	 * Find the nearest obviously-reachable unexplored location.
 	 */
-	@Nullable
-	private Point findUnexplored(final Point base) {
+	private @Nullable Point findUnexplored(final Point base) {
 		final Deque<Point> queue = new LinkedList<>();
 		queue.addLast(base);
 		final MapDimensions dimensions = map.getDimensions();

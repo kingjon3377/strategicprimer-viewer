@@ -49,8 +49,7 @@ import static lovelace.util.Decimalize.decimalize;
 	}
 
 	@Override
-	@Nullable
-	public String run() {
+	public @Nullable String run() {
 		final StringBuilder builder = new StringBuilder();
 		final IUnit unit = model.getSelectedUnit();
 		final List<String> foods = new ArrayList<>();

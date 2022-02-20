@@ -77,7 +77,7 @@ public class SPFrame extends JFrame implements ISPWindow {
 	 * @param supportsDroppedFiles Whether this app supports having files dropped on it.
 	 * @param windowName The name of the window, for use in customizing the About dialog
 	 */
-	public SPFrame(final String windowTitle, final ISPDriver driver, @Nullable final Dimension minSize,
+	public SPFrame(final String windowTitle, final ISPDriver driver, final @Nullable Dimension minSize,
 	               final boolean supportsDroppedFiles, final IDroppedFileHandler droppedFileHandler,
 	               final String windowName) {
 		super(windowTitle);
@@ -119,17 +119,17 @@ public class SPFrame extends JFrame implements ISPWindow {
 		return supportsDroppedFiles;
 	}
 
-	public SPFrame(final String windowTitle, final ISPDriver driver, @Nullable final Dimension minSize,
+	public SPFrame(final String windowTitle, final ISPDriver driver, final @Nullable Dimension minSize,
 	               final boolean supportsDroppedFiles, final IDroppedFileHandler droppedFileHandler) {
 		this(windowTitle, driver, minSize, supportsDroppedFiles, droppedFileHandler, windowTitle);
 	}
 
-	public SPFrame(final String windowTitle, final ISPDriver driver, @Nullable final Dimension minSize,
+	public SPFrame(final String windowTitle, final ISPDriver driver, final @Nullable Dimension minSize,
 	               final boolean supportsDroppedFiles) {
 		this(windowTitle, driver, minSize, supportsDroppedFiles, p -> {});
 	}
 
-	public SPFrame(final String windowTitle, final ISPDriver driver, @Nullable final Dimension minSize) {
+	public SPFrame(final String windowTitle, final ISPDriver driver, final @Nullable Dimension minSize) {
 		this(windowTitle, driver, minSize, false);
 	}
 

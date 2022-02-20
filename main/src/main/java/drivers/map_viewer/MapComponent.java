@@ -62,15 +62,13 @@ import java.awt.image.BufferedImage;
 	private final ComponentMouseListener cml;
 	private TileDrawHelper helper; // TODO: Reinitialize if map version changes
 
-	@Nullable
-	private BufferedImage backgroundImage = null;
+	private @Nullable BufferedImage backgroundImage = null;
 
-	@Nullable
-	public BufferedImage getBackgroundImage() {
+	public @Nullable BufferedImage getBackgroundImage() {
 		return backgroundImage;
 	}
 
-	public void setBackgroundImage(@Nullable final BufferedImage backgroundImage) {
+	public void setBackgroundImage(final @Nullable BufferedImage backgroundImage) {
 		this.backgroundImage = backgroundImage;
 	}
 
@@ -116,7 +114,7 @@ import java.awt.image.BufferedImage;
 		return scaleZoom(mapModel.getZoomLevel(), mapModel.getMapDimensions().getVersion());
 	}
 
-	private Rectangle boundsCheck(@Nullable final Rectangle rect) {
+	private Rectangle boundsCheck(final @Nullable Rectangle rect) {
 		if (rect == null) {
 			final VisibleDimensions dimensions = mapModel.getVisibleDimensions();
 			return new Rectangle(0, 0, dimensions.getWidth() * getTileSize(),
@@ -158,8 +156,7 @@ import java.awt.image.BufferedImage;
 	}
 
 	@Override
-	@Nullable
-	public String getToolTipText(final MouseEvent event) {
+	public @Nullable String getToolTipText(final MouseEvent event) {
 		return cml.getToolTipText(event);
 	}
 
@@ -215,7 +212,7 @@ import java.awt.image.BufferedImage;
 	}
 
 	@Override
-	public void selectedPointChanged(@Nullable final Point old, final Point newPoint) {
+	public void selectedPointChanged(final @Nullable Point old, final Point newPoint) {
 		SwingUtilities.invokeLater(this::requestFocusInWindow);
 		if (isSelectionVisible()) {
 			if (old != null && !old.equals(newPoint)) {
@@ -229,7 +226,7 @@ import java.awt.image.BufferedImage;
 	}
 
 	@Override
-	public void cursorPointChanged(@Nullable final Point old, final Point newCursor) {} // TODO: check visibility of cursor point here?
+	public void cursorPointChanged(final @Nullable Point old, final Point newCursor) {} // TODO: check visibility of cursor point here?
 
 	@Override
 	public void mapChanged() {}
@@ -302,7 +299,7 @@ import java.awt.image.BufferedImage;
 	public void interactionPointChanged() {}
 
 	@Override
-	public void selectedUnitChanged(@Nullable final IUnit old, @Nullable final IUnit newUnit) {}
+	public void selectedUnitChanged(final @Nullable IUnit old, final @Nullable IUnit newUnit) {}
 
 	private static class MapSizeListener extends ComponentAdapter {
 		private final IViewerModel mapModel;

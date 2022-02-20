@@ -54,7 +54,7 @@ public final class SimpleMovementModel {
 	/**
 	 * Whether land movement is possible on the given terrain.
 	 */
-	public static boolean landMovementPossible(@Nullable final TileType terrain) {
+	public static boolean landMovementPossible(final @Nullable TileType terrain) {
 		return terrain != null && TileType.Ocean != terrain;
 	}
 
@@ -99,7 +99,7 @@ public final class SimpleMovementModel {
 	 * @param river Whether the location has a river that reduces cost
 	 * @param fixtures The fixtures at the location TODO: Iterable instead of varargs?
 	 */
-	public static int movementCost(@Nullable final TileType terrain, final boolean forest, final boolean mountain,
+	public static int movementCost(final @Nullable TileType terrain, final boolean forest, final boolean mountain,
 	                               final boolean river, final Iterable<TileFixture> fixtures) {
 		if (terrain == null) {
 			return Integer.MAX_VALUE - 1;
@@ -133,7 +133,7 @@ public final class SimpleMovementModel {
 	 * @param fixture The fixture the unit might be noticing
 	 */
 	public static boolean shouldSometimesNotice(final HasOwner unit, final Speed speed,
-	                                            @Nullable final TileFixture fixture) {
+	                                            final @Nullable TileFixture fixture) {
 		if (fixture == null) {
 			return false;
 		} else if (unit.equals(fixture)) {
@@ -179,7 +179,7 @@ public final class SimpleMovementModel {
 	 * TODO: Very-observant units should "always" notice some things that
 	 * others might "sometimes" notice.
 	 */
-	public static boolean shouldAlwaysNotice(final HasOwner unit, @Nullable final TileFixture fixture) {
+	public static boolean shouldAlwaysNotice(final HasOwner unit, final @Nullable TileFixture fixture) {
 		if (fixture instanceof ITownFixture) {
 			return ((ITownFixture) fixture).getOwner().equals(unit.getOwner());
 		} else {

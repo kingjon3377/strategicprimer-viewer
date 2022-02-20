@@ -25,8 +25,7 @@ public interface ProxyFor<Type> /* implements Type */ {
 	 *
 	 * TODO: Return Optional instead?
 	 */
-	@Nullable
-	default <MemberType> MemberType getConsensus(final Function<Type, MemberType> accessor) {
+	default @Nullable <MemberType> MemberType getConsensus(final Function<Type, MemberType> accessor) {
 		@Nullable MemberType retval = null;
 		for (final Type proxied : getProxied()) {
 			final MemberType item = accessor.apply(proxied);
@@ -45,8 +44,7 @@ public interface ProxyFor<Type> /* implements Type */ {
 	 * @deprecated Use getConsensus
 	 */
 	@Deprecated
-	@Nullable
-	default <MemberType> MemberType getNullableConsensus(final Function<Type, MemberType> accessor) {
+	default @Nullable <MemberType> MemberType getNullableConsensus(final Function<Type, MemberType> accessor) {
 		return getConsensus(accessor);
 	}
 

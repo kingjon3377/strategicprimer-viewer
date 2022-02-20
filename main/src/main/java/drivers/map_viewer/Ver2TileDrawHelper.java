@@ -146,8 +146,7 @@ public class Ver2TileDrawHelper implements TileDrawHelper {
 	/**
 	 * Get the color representing a "not-on-top" terrain fixture at the given location.
 	 */
-	@Nullable
-	private Color getFixtureColor(final IMapNG map, final Point location) {
+	private @Nullable Color getFixtureColor(final IMapNG map, final Point location) {
 		final TileFixture top = getTopFixture(map, location);
 		if (top != null) {
 			final Color color = getDrawableFixtures(map, location)
@@ -271,8 +270,7 @@ public class Ver2TileDrawHelper implements TileDrawHelper {
 	/**
 	 * Get the "top" fixture at the given location
 	 */
-	@Nullable
-	private TileFixture getTopFixture(final IMapNG map, final Point location) {
+	private @Nullable TileFixture getTopFixture(final IMapNG map, final Point location) {
 		return getDrawableFixtures(map, location).findFirst().orElse(null);
 	}
 

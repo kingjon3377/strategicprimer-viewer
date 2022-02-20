@@ -39,7 +39,7 @@ import java.util.stream.Collectors;
 
 	private final ICLIHelper cli;
 
-	private void unnormalizedSet(final Pair<Integer, Integer> loc, @Nullable final LodeStatus status) {
+	private void unnormalizedSet(final Pair<Integer, Integer> loc, final @Nullable LodeStatus status) {
 		if (status == null) {
 			unnormalized.remove(loc);
 		} else {
@@ -208,8 +208,7 @@ import java.util.stream.Collectors;
 		return maximumColumn;
 	}
 
-	@Nullable
-	public LodeStatus statusAt(final int row, final int column) {
+	public @Nullable LodeStatus statusAt(final int row, final int column) {
 		return data.get(Pair.with(row, column));
 	}
 }

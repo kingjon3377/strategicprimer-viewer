@@ -108,7 +108,7 @@ import drivers.gui.common.MenuBroker;
 	}
 
 	@Override
-	public void playerChanged(@Nullable final Player old, final Player newPlayer) {
+	public void playerChanged(final @Nullable Player old, final Player newPlayer) {
 		playerLabel.setArguments(newPlayer.getName());
 		treeModel.playerChanged(old, newPlayer);
 	}

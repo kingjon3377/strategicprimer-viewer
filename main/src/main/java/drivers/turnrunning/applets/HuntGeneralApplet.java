@@ -63,8 +63,7 @@ import org.jetbrains.annotations.Nullable;
 		return String.format("%s (%s)", unit.getName(), unit.getKind());
 	}
 
-	@Nullable
-	protected Boolean handleCapture(final Animal find) {
+	protected @Nullable Boolean handleCapture(final Animal find) {
 		final IUnit unit = chooseFromList(model.getUnits(Optional.ofNullable(model.getSelectedUnit())
 							.map(IUnit::getOwner).orElse(model.getMap().getCurrentPlayer())),
 			"Available units:", "No units", "Unit to add animals to:", ICLIHelper.ListChoiceBehavior.ALWAYS_PROMPT, HuntGeneralApplet::describeUnit);
@@ -80,8 +79,7 @@ import org.jetbrains.annotations.Nullable;
 		}
 	}
 
-	@Nullable
-	protected Integer processMeat() {
+	protected @Nullable Integer processMeat() {
 		int cost = 0;
 		// TODO: somehow handle processing-in-parallel case
 		final Integer iterations = cli.inputNumber("How many carcasses?");
@@ -118,8 +116,7 @@ import org.jetbrains.annotations.Nullable;
 		}
 	}
 
-	@Nullable
-	private Integer handleFight(final Point loc, final Animal find, final int time) {
+	private @Nullable Integer handleFight(final Point loc, final Animal find, final int time) {
 		int cost;
 		final Integer temp = cli.inputNumber(String.format("Time to %s: ", verb));
 		if (temp == null) {
@@ -158,8 +155,7 @@ import org.jetbrains.annotations.Nullable;
 		return cost;
 	}
 
-	@Nullable
-	private Integer handleEncounter(final StringBuilder buffer, final int time, final Point loc,
+	private @Nullable Integer handleEncounter(final StringBuilder buffer, final int time, final Point loc,
 			/*Animal|AnimalTracks|HuntingModel.NothingFound*/ final TileFixture find) {
 		if (find instanceof HuntingModel.NothingFound) {
 			cli.println(String.format("Found nothing for the next %d minutes.", noResultCost));
@@ -189,8 +185,7 @@ import org.jetbrains.annotations.Nullable;
 	// TODO: Distinguish hunting from fishing in no-result time cost (encounters / hour)?
 	// Note that the intended return type of encounterSrc::apply is Pair<Point, Animal|AnimalTracks|NothingFound>,
 	// but Java doesn't offer union types.
-	@Nullable
-	protected String impl(final String command, final Function<Point, Iterable<Pair<Point, TileFixture>>> encounterSrc) {
+	protected @Nullable String impl(final String command, final Function<Point, Iterable<Pair<Point, TileFixture>>> encounterSrc) {
 		final StringBuilder buffer = new StringBuilder();
 		final Point center = confirmPoint("Location to search around: ");
 		if (center == null) {

@@ -31,10 +31,10 @@ public class UnitTabularReportGenerator implements ITableGenerator<IUnit> {
 	}
 
 	private final Player player;
-	@Nullable private final Point hq;
+	private final @Nullable Point hq;
 	private final MapDimensions dimensions;
 
-	public UnitTabularReportGenerator(final Player player, @Nullable final Point hq, final MapDimensions dimensions) {
+	public UnitTabularReportGenerator(final Player player, final @Nullable Point hq, final MapDimensions dimensions) {
 		this.player = player;
 		this.hq = hq;
 		this.dimensions = dimensions;

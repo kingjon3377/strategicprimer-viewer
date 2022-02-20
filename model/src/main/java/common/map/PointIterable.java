@@ -32,8 +32,7 @@ public class PointIterable implements Iterable<Point> {
 	/**
 	 * The selected point; we start from (just before) (0, 0) if omitted.
 	 */
-	@Nullable
-	private final Point selection;
+	private final @Nullable Point selection;
 
 	public PointIterable(final MapDimensions dimensions, final boolean forwards, final boolean horizontal, final Point selection) {
 		this.dimensions = dimensions;

@@ -31,10 +31,9 @@ public class WorkerTabularReportGenerator implements ITableGenerator<IWorker> {
 		return IWorker.class;
 	}
 
-	@Nullable
-	private final Point hq;
+	private final @Nullable Point hq;
 	private final MapDimensions dimensions;
-	public WorkerTabularReportGenerator(@Nullable final Point hq, final MapDimensions dimensions) {
+	public WorkerTabularReportGenerator(final @Nullable Point hq, final MapDimensions dimensions) {
 		this.hq = hq;
 		this.dimensions = dimensions;
 		if (hq == null) {

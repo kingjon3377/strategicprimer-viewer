@@ -51,8 +51,7 @@ public class MemoizedComboBox extends ImprovedComboBox<String> {
 	}
 
 	@Override
-	@Nullable
-	public String getSelectedItem() {
+	public @Nullable String getSelectedItem() {
 		final Object retval = super.getSelectedItem();
 		if (retval == null) {
 			return null;
@@ -64,7 +63,7 @@ public class MemoizedComboBox extends ImprovedComboBox<String> {
 	}
 
 	@Override
-	public void setSelectedItem(@Nullable final Object selectedItem) {
+	public void setSelectedItem(final @Nullable Object selectedItem) {
 		if (selectedItem instanceof String || selectedItem == null) {
 			super.setSelectedItem(selectedItem);
 		} else {

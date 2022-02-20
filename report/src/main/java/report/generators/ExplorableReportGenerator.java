@@ -27,7 +27,7 @@ public class ExplorableReportGenerator extends AbstractReportGenerator<Explorabl
 	public ExplorableReportGenerator(final MapDimensions dimensions) {
 		this(dimensions, null);
 	}
-	public ExplorableReportGenerator(final MapDimensions dimensions, @Nullable final Point hq) {
+	public ExplorableReportGenerator(final MapDimensions dimensions, final @Nullable Point hq) {
 		super(dimensions, hq);
 	}
 

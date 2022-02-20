@@ -151,22 +151,20 @@ public abstract class AbstractTown implements HasMutableImage,
 	/**
 	 * The contents of the town.
 	 */
-	@Nullable
-	private CommunityStats population = null;
+	private @Nullable CommunityStats population = null;
 
 	/**
 	 * The contents of the town.
 	 */
 	@Override
-	@Nullable
-	public final CommunityStats getPopulation() {
+	public final @Nullable CommunityStats getPopulation() {
 		return population;
 	}
 
 	/**
 	 * The contents of the town.
 	 */
-	public final void setPopulation(@Nullable final CommunityStats population) {
+	public final void setPopulation(final @Nullable CommunityStats population) {
 		this.population = population;
 	}
 

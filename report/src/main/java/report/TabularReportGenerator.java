@@ -74,7 +74,7 @@ public final class TabularReportGenerator {
 		final Map<Integer, Integer> parentMap = ReportGeneratorHelper.getParentMap(map);
 		final Player player = map.getCurrentPlayer();
 		final MapDimensions dimensions = map.getDimensions();
-		@Nullable final Point hq = ReportGeneratorHelper.findHQ(map, player);
+		final @Nullable Point hq = ReportGeneratorHelper.findHQ(map, player);
 		final int currentTurn = map.getCurrentTurn();
 		final List<ITableGenerator<?>> generators = Arrays.asList(
 			new FortressTabularReportGenerator(player, hq, dimensions),
@@ -145,7 +145,7 @@ public final class TabularReportGenerator {
 		final Map<Integer, Integer> parentMap = ReportGeneratorHelper.getParentMap(map);
 		final Player player = map.getCurrentPlayer();
 		final MapDimensions dimensions = map.getDimensions();
-		@Nullable final Point hq = ReportGeneratorHelper.findHQ(map, player);
+		final @Nullable Point hq = ReportGeneratorHelper.findHQ(map, player);
 		final int currentTurn = map.getCurrentTurn();
 		final List<ITableGenerator<?>> generators = Arrays.asList(
 			new FortressTabularReportGenerator(player, hq, dimensions),

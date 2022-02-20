@@ -47,7 +47,7 @@ import common.map.fixtures.mobile.worker.IJob;
 	private Player currentPlayer;
 
 	@Override
-	public void playerChanged(@Nullable final Player old, final Player newPlayer) {
+	public void playerChanged(final @Nullable Player old, final Player newPlayer) {
 		currentPlayer = newPlayer;
 	}
 
@@ -55,7 +55,7 @@ import common.map.fixtures.mobile.worker.IJob;
 		return String.format("%s %d", job.getName(), job.getLevel());
 	}
 
-	private void writeMember(final Writer writer, @Nullable final UnitMember member) throws IOException {
+	private void writeMember(final Writer writer, final @Nullable UnitMember member) throws IOException {
 		if (member instanceof IWorker) {
 			final IWorker worker = (IWorker) member;
 			writer.write(worker.getName());
@@ -148,7 +148,7 @@ import common.map.fixtures.mobile.worker.IJob;
 		}
 	}
 
-	private static String workerString(@Nullable final UnitMember member) {
+	private static String workerString(final @Nullable UnitMember member) {
 		if (member instanceof HasName) {
 			return ((HasName) member).getName();
 		} else if (member == null) {

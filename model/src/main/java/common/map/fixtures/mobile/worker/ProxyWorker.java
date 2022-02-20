@@ -69,8 +69,7 @@ public class ProxyWorker implements WorkerProxy {
 	 * Cached stats for the workers. Null if there are no workers being
 	 * proxied or if they do not share identical stats.
 	 */
-	@Nullable
-	private WorkerStats statsCache;
+	private @Nullable WorkerStats statsCache;
 
 	private ProxyWorker(final boolean parallelProxy) {
 		parallel = parallelProxy;
@@ -257,8 +256,7 @@ public class ProxyWorker implements WorkerProxy {
 	}
 
 	@Override
-	@Nullable
-	public WorkerStats getStats() {
+	public @Nullable WorkerStats getStats() {
 		return statsCache;
 	}
 

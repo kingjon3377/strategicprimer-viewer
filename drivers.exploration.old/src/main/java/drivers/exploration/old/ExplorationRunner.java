@@ -83,7 +83,7 @@ public final class ExplorationRunner {
 	 * than two hash marks in any given String, or if either is at the
 	 * beginning or end of the string, since we use {@link String#split}.
 	 */
-	public String recursiveConsultTable(final String table, final Point location, @Nullable final TileType terrain,
+	public String recursiveConsultTable(final String table, final Point location, final @Nullable TileType terrain,
 	                                    final boolean mountainous, final Iterable<TileFixture> fixtures, final MapDimensions mapDimensions)
 			throws MissingTableException {
 		final String result = consultTable(table, location, terrain, mountainous, fixtures, mapDimensions);
@@ -203,7 +203,7 @@ public final class ExplorationRunner {
 	 * @param fixtures Any fixtures there
 	 * @param mapDimensions The dimensions of the map
 	 */
-	public String consultTable(final String table, final Point location, @Nullable final TileType terrain,
+	public String consultTable(final String table, final Point location, final @Nullable TileType terrain,
 	                           final boolean mountainous, final Iterable<TileFixture> fixtures, final MapDimensions mapDimensions)
 			throws MissingTableException {
 		return getTable(table).generateEvent(location, terrain, mountainous, fixtures,

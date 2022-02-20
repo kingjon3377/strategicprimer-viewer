@@ -50,14 +50,11 @@ import drivers.common.IAdvancementModel;
 	private final JTextField hours; // FIXME: Why not use a spinner?
 	private final IAdvancementModel model;
 
-	@Nullable
-	private ISkill skill = null;
+	private @Nullable ISkill skill = null;
 
-	@Nullable
-	private IJob job = null;
+	private @Nullable IJob job = null;
 
-	@Nullable
-	private IWorker worker = null;
+	private @Nullable IWorker worker = null;
 
 	private final List<LevelGainListener> listeners = new ArrayList<>();
 
@@ -123,7 +120,7 @@ import drivers.common.IAdvancementModel;
 	}
 
 	@Override
-	public void selectSkill(@Nullable final ISkill selectedSkill) {
+	public void selectSkill(final @Nullable ISkill selectedSkill) {
 		skill = selectedSkill;
 		if (selectedSkill != null) {
 			hours.requestFocusInWindow();
@@ -131,7 +128,7 @@ import drivers.common.IAdvancementModel;
 	}
 
 	@Override
-	public void selectJob(@Nullable final IJob selectedJob) {
+	public void selectJob(final @Nullable IJob selectedJob) {
 		job = selectedJob;
 	}
 
@@ -146,8 +143,8 @@ import drivers.common.IAdvancementModel;
 	}
 
 	@Override
-	public void memberSelected(@Nullable final UnitMember previousSelection,
-			@Nullable final UnitMember selected) {
+	public void memberSelected(final @Nullable UnitMember previousSelection,
+	                           final @Nullable UnitMember selected) {
 		if (selected instanceof IWorker) {
 			worker = (IWorker) selected;
 		} else {

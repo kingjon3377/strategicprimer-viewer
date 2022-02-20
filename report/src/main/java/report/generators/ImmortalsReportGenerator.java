@@ -47,7 +47,7 @@ public class ImmortalsReportGenerator extends AbstractReportGenerator<Immortal> 
 		this(dimensions, null);
 	}
 
-	public ImmortalsReportGenerator(final MapDimensions dimensions, @Nullable final Point hq) {
+	public ImmortalsReportGenerator(final MapDimensions dimensions, final @Nullable Point hq) {
 		super(dimensions, hq);
 	}
 

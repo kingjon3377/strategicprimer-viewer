@@ -78,8 +78,7 @@ import org.jetbrains.annotations.Nullable;
 	}
 
 	@Override
-	@Nullable
-	public String run() {
+	public @Nullable String run() {
 		final StringBuilder buffer = new StringBuilder();
 		final Point center = confirmPoint("Location to search around: ");
 		if (center == null) {

@@ -75,8 +75,7 @@ import org.jetbrains.annotations.Nullable;
 	 * @param element The current XML tag
 	 * @param param The parameter we want
 	 */
-	@Nullable
-	private static Attribute getAttributeByName(final StartElement element, final String param) {
+	private static @Nullable Attribute getAttributeByName(final StartElement element, final String param) {
 		Attribute retval = element.getAttributeByName(new QName(SP_NAMESPACE, param));
 		if (retval == null) {
 			retval = element.getAttributeByName(new QName(param));

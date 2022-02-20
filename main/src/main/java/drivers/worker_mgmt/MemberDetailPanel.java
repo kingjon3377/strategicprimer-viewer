@@ -161,8 +161,7 @@ public class MemberDetailPanel extends BorderedPanel implements UnitMemberListen
 	}
 
 	private static class PortraitComponent extends JComponent {
-		@Nullable
-		private Image portrait = null;
+		private @Nullable Image portrait = null;
 
 		public void setPortrait(final Image portrait) {
 			this.portrait = portrait;
@@ -177,8 +176,7 @@ public class MemberDetailPanel extends BorderedPanel implements UnitMemberListen
 		}
 	}
 
-	@Nullable
-	private UnitMember current = null;
+	private @Nullable UnitMember current = null;
 
 
 	private static String skillString(final ISkill skill) {
@@ -291,7 +289,7 @@ public class MemberDetailPanel extends BorderedPanel implements UnitMemberListen
 	}
 
 	@Override
-	public void memberSelected(@Nullable final UnitMember old, @Nullable final UnitMember selected) {
+	public void memberSelected(final @Nullable UnitMember old, final @Nullable UnitMember selected) {
 		if (selected instanceof ProxyFor) {
 			if (((ProxyFor<? extends UnitMember>) selected).isParallel()) {
 				final Iterator<? extends UnitMember> proxied =

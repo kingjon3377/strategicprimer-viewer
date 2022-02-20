@@ -60,9 +60,8 @@ public class SpoilageApplet extends AbstractTurnApplet {
 		return "Determine what food has spoiled";
 	}
 
-	@Nullable
 	@Override
-	public String run() {
+	public @Nullable String run() {
 		final StringBuilder buffer = new StringBuilder();
 		for (final IResourcePile food : getFoodFor(owner, turn)) {
 			if (turn < 0) { // rations whose spoilage isn't tracked

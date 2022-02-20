@@ -54,7 +54,7 @@ public abstract class AbstractReportGenerator<Type extends IFixture> implements 
 	 * calculations. Usually the location of the headquarters of the player
 	 * for whom the report is being prepared.
 	 */
-	protected AbstractReportGenerator(@Nullable final MapDimensions mapDimensions, @Nullable final Point referencePoint) {
+	protected AbstractReportGenerator(final @Nullable MapDimensions mapDimensions, final @Nullable Point referencePoint) {
 		if (referencePoint == null) {
 			distComparator = (one, two) -> 0;
 			distanceString = (ignored) -> "unknown";
@@ -270,8 +270,7 @@ public abstract class AbstractReportGenerator<Type extends IFixture> implements 
 		}
 
 		@Override
-		@Nullable
-		public Value get(final Object key) {
+		public @Nullable Value get(final Object key) {
 			return wrapped.get(key);
 		}
 
@@ -281,14 +280,12 @@ public abstract class AbstractReportGenerator<Type extends IFixture> implements 
 		}
 
 		@Override
-		@Nullable
-		public Value put(final Key key, final Value item) {
+		public @Nullable Value put(final Key key, final Value item) {
 			return wrapped.put(key, item);
 		}
 
 		@Override
-		@Nullable
-		public Value remove(final Object key) {
+		public @Nullable Value remove(final Object key) {
 			return wrapped.remove(key);
 		}
 

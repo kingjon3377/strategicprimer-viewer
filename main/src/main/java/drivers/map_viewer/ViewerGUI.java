@@ -117,8 +117,7 @@ public class ViewerGUI implements ViewerDriver {
 		model.resetZoom();
 	}
 
-	@Nullable
-	private FindDialog finder = null;
+	private @Nullable FindDialog finder = null;
 
 	private FindDialog getFindDialog(final ViewerFrame parent) {
 		final FindDialog temp = finder;

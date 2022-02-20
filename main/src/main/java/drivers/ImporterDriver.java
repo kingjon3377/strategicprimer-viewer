@@ -92,13 +92,11 @@ import org.jetbrains.annotations.Nullable;
 				Stream.of(ImportableTerrain.values())).collect(Collectors.toList()));
 	}
 
-	@Nullable
-	private /*TileType|ImportableTerrain?*/ HasName askFor(final int color) {
+	private @Nullable /*TileType|ImportableTerrain?*/ HasName askFor(final int color) {
 		return cli.chooseFromList((List<? extends HasName>) terrains, "Tile type represented by " + pixelString(color), "No tile types found to choose from", "Tile type:", ICLIHelper.ListChoiceBehavior.ALWAYS_PROMPT).getValue1();
 	}
 
-	@Nullable
-	private static Range customRange(final int base, final int span, final int max) {
+	private static @Nullable Range customRange(final int base, final int span, final int max) {
 		if (base + span > max + 1) {
 			return new Range(base, max - 1);
 		} else {
@@ -108,8 +106,7 @@ import org.jetbrains.annotations.Nullable;
 
 	private final IDRegistrar idf = new IDFactory();
 
-	@Nullable
-	private static String findAdjacentForest(final IMapNG map, final Point location) {
+	private static @Nullable String findAdjacentForest(final IMapNG map, final Point location) {
 		final List<Forest> forests =
 						new SurroundingPointIterable(location, map.getDimensions(), 1).stream()
 				.flatMap(l -> map.getFixtures(l).stream())

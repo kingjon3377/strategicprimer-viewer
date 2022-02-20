@@ -72,7 +72,7 @@ public class TabularReportCLI implements ReadOnlyDriver {
 		};
 	}
 
-	private void createReports(final IMapNG map, @Nullable final Path mapFile) throws DriverFailedException {
+	private void createReports(final IMapNG map, final @Nullable Path mapFile) throws DriverFailedException {
 		try {
 			if (mapFile == null) {
 				LOGGER.severe("Asked to create reports from map with no filename");

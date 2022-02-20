@@ -57,8 +57,7 @@ public abstract class AbstractTurnApplet implements TurnApplet {
 	}
 
 	// This was "shared" in Ceylon, but I expect only subclasses will be able to use it.
-	@Nullable
-	protected Point confirmPoint(final String prompt) {
+	protected @Nullable Point confirmPoint(final String prompt) {
 		final Point retval = cli.inputPoint(prompt);
 		if (retval == null) {
 			return null;

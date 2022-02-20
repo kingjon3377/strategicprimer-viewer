@@ -202,7 +202,7 @@ import drivers.worker_mgmt.orderspanel.OrdersPanel;
 	private final List<PlayerChangeListener> pcListeners;
 
 	@Override
-	public void playerChanged(@Nullable final Player old, final Player newPlayer) {
+	public void playerChanged(final @Nullable Player old, final Player newPlayer) {
 		for (final PlayerChangeListener listener : pcListeners) {
 			listener.playerChanged(old, newPlayer);
 		}

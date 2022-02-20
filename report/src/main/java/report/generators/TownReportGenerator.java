@@ -35,8 +35,7 @@ public class TownReportGenerator extends AbstractReportGenerator<ITownFixture> {
 	private final Player currentPlayer;
 	private final int currentTurn;
 	private final MapDimensions dimensions;
-	@Nullable
-	private final Point hq;
+	private final @Nullable Point hq;
 
 	public TownReportGenerator(final Player currentPlayer,
 	                           final MapDimensions dimensions, final int currentTurn) {
@@ -44,7 +43,7 @@ public class TownReportGenerator extends AbstractReportGenerator<ITownFixture> {
 	}
 
 	public TownReportGenerator(final Player currentPlayer,
-	                           final MapDimensions dimensions, final int currentTurn, @Nullable final Point hq) {
+	                           final MapDimensions dimensions, final int currentTurn, final @Nullable Point hq) {
 		super(dimensions, hq);
 		this.currentPlayer = currentPlayer;
 		this.currentTurn = currentTurn;

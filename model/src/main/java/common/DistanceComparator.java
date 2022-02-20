@@ -11,7 +11,7 @@ import java.util.Comparator;
  * point (such as a player's HQ).
  */
 public final class DistanceComparator implements Comparator<Point> {
-	public DistanceComparator(final Point base, @Nullable final MapDimensions dimensions) {
+	public DistanceComparator(final Point base, final @Nullable MapDimensions dimensions) {
 		this.base = base;
 		this.dimensions = dimensions;
 	}
@@ -24,8 +24,7 @@ public final class DistanceComparator implements Comparator<Point> {
 	/**
 	 * The dimensions of the map. May, but shouldn't, be null.
 	 */
-	@Nullable
-	private final MapDimensions dimensions;
+	private final @Nullable MapDimensions dimensions;
 
 	/**
 	 * Returns a value that is proportional to the distance from the base

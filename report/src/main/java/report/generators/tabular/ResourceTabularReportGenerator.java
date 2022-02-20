@@ -37,7 +37,7 @@ public class ResourceTabularReportGenerator
 		return TileFixture.class;
 	}
 
-	public ResourceTabularReportGenerator(@Nullable final Point hq, final MapDimensions dimensions) {
+	public ResourceTabularReportGenerator(final @Nullable Point hq, final MapDimensions dimensions) {
 		this.hq = hq;
 		this.dimensions = dimensions;
 		if (hq == null) {
@@ -48,8 +48,7 @@ public class ResourceTabularReportGenerator
 	}
 
 	private final MapDimensions dimensions;
-	@Nullable
-	private final Point hq;
+	private final @Nullable Point hq;
 
 	/**
 	 * The file-name to (by default) write this table to.

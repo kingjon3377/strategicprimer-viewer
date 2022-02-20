@@ -48,8 +48,7 @@ import org.jetbrains.annotations.Nullable;
 	private final AppletChooser<TurnApplet> appletChooser;
 
 	@Override
-	@Nullable
-	public String run() {
+	public @Nullable String run() {
 		final StringBuilder buffer = new StringBuilder();
 		while (true) {
 			final Either<TurnApplet, Boolean> command = appletChooser.chooseApplet();

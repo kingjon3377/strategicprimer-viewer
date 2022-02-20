@@ -36,7 +36,7 @@ class TerrainTable implements EncounterTable {
 	}
 
 	@Override
-	public String generateEvent(final Point point, @Nullable final TileType terrain, final boolean mountainous,
+	public String generateEvent(final Point point, final @Nullable TileType terrain, final boolean mountainous,
 	                            final Iterable<TileFixture> fixtures, final MapDimensions mapDimensions) {
 		if (terrain == null) {
 			throw new IllegalArgumentException(

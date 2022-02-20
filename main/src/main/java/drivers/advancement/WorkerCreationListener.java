@@ -63,8 +63,7 @@ import java.util.function.Consumer;
 	/**
 	 * The currently selected unit
 	 */
-	@Nullable
-	private IUnit selectedUnit = null;
+	private @Nullable IUnit selectedUnit = null;
 
 	public void addNewWorker(final IWorker worker) {
 		if (selectedUnit == null) {
@@ -228,7 +227,7 @@ import java.util.function.Consumer;
 	 * Update our currently-selected-unit reference.
 	 */
 	@Override
-	public void selectUnit(@Nullable final IUnit unit) {
+	public void selectUnit(final @Nullable IUnit unit) {
 		selectedUnit = unit;
 	}
 }

@@ -48,7 +48,7 @@ public class FileChooser {
 			super("No file was selected");
 		}
 
-		public ChoiceInterruptedException(@Nullable final Throwable cause) {
+		public ChoiceInterruptedException(final @Nullable Throwable cause) {
 			super(cause == null ? "No file was selected" :
 				"Choice of a file was interrupted by an exception:", cause);
 		}
@@ -99,7 +99,7 @@ public class FileChooser {
 	// We don't provide a constructor taking FileDialog and approveText, as it's (unfortunately)
 	// not possible to use a "custom" action with the AWT interface.
 	protected FileChooser(final ChooserMode mode, final JFileChooser fileChooser, final String approveText,
-	                      @Nullable final Path loc) {
+	                      final @Nullable Path loc) {
 		switch (mode) {
 		case Open: case Save:
 			throw new IllegalArgumentException("Approve text only supported for custom dialog");
@@ -120,7 +120,7 @@ public class FileChooser {
 		}
 	}
 
-	protected FileChooser(final ChooserMode mode, final JFileChooser fileChooser, @Nullable final Path loc) {
+	protected FileChooser(final ChooserMode mode, final JFileChooser fileChooser, final @Nullable Path loc) {
 		switch (mode) {
 		case Open:
 			LOGGER.fine("FileChooser invoked for the Open dialog using Swing JFileChooser");
@@ -154,7 +154,7 @@ public class FileChooser {
 		}
 	}
 
-	protected FileChooser(final ChooserMode mode, final FileDialog fileChooser, @Nullable final Path loc) {
+	protected FileChooser(final ChooserMode mode, final FileDialog fileChooser, final @Nullable Path loc) {
 		switch (mode) {
 		case Open:
 			LOGGER.fine("FileChooser invoked for the Open dialog using AWT FileDialog");
@@ -196,11 +196,11 @@ public class FileChooser {
 		}
 	}
 
-	public static FileChooser open(final JFileChooser fileChooser, @Nullable final Path loc) {
+	public static FileChooser open(final JFileChooser fileChooser, final @Nullable Path loc) {
 		return new FileChooser(ChooserMode.Open, fileChooser, loc);
 	}
 
-	public static FileChooser open(final FileDialog fileChooser, @Nullable final Path loc) {
+	public static FileChooser open(final FileDialog fileChooser, final @Nullable Path loc) {
 		return new FileChooser(ChooserMode.Open, fileChooser, loc);
 	}
 
@@ -212,11 +212,11 @@ public class FileChooser {
 		return new FileChooser(ChooserMode.Open, fileChooser, null);
 	}
 
-	public static FileChooser save(final JFileChooser fileChooser, @Nullable final Path loc) {
+	public static FileChooser save(final JFileChooser fileChooser, final @Nullable Path loc) {
 		return new FileChooser(ChooserMode.Save, fileChooser, loc);
 	}
 
-	public static FileChooser save(final FileDialog fileChooser, @Nullable final Path loc) {
+	public static FileChooser save(final FileDialog fileChooser, final @Nullable Path loc) {
 		return new FileChooser(ChooserMode.Save, fileChooser, loc);
 	}
 
@@ -228,7 +228,7 @@ public class FileChooser {
 		return new FileChooser(ChooserMode.Save, fileChooser, null);
 	}
 
-	public static FileChooser custom(final JFileChooser fileChooser, final String approveText, @Nullable final Path loc) {
+	public static FileChooser custom(final JFileChooser fileChooser, final String approveText, final @Nullable Path loc) {
 		return new FileChooser(ChooserMode.Custom, fileChooser, approveText, loc);
 	}
 

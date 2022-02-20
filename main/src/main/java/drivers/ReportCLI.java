@@ -52,7 +52,7 @@ public class ReportCLI implements ReadOnlyDriver {
 		return model;
 	}
 
-	private void writeReport(@Nullable final Path filename, final IMapNG map) throws IOException {
+	private void writeReport(final @Nullable Path filename, final IMapNG map) throws IOException {
 		if (filename == null) {
 			LOGGER.severe("Asked to make report from map with no filename");
 		} else {

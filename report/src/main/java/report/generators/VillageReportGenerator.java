@@ -29,7 +29,7 @@ public class VillageReportGenerator extends AbstractReportGenerator<Village> {
 		this(currentPlayer, dimensions, null);
 	}
 
-	public VillageReportGenerator(final Player currentPlayer, final MapDimensions dimensions, @Nullable final Point hq) {
+	public VillageReportGenerator(final Player currentPlayer, final MapDimensions dimensions, final @Nullable Point hq) {
 		super(dimensions, hq);
 		this.currentPlayer = currentPlayer;
 	}

@@ -164,22 +164,20 @@ public class Village implements IMutableTownFixture, HasMutableImage, IFixture,
 	/**
 	 * The contents of the village.
 	 */
-	@Nullable
-	private CommunityStats population = null;
+	private @Nullable CommunityStats population = null;
 
 	/**
 	 * The contents of the village.
 	 */
 	@Override
-	@Nullable
-	public CommunityStats getPopulation() {
+	public @Nullable CommunityStats getPopulation() {
 		return population;
 	}
 
 	/**
 	 * The contents of the village.
 	 */
-	public void setPopulation(@Nullable final CommunityStats population) {
+	public void setPopulation(final @Nullable CommunityStats population) {
 		this.population = population;
 	}
 

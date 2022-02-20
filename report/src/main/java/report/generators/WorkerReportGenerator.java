@@ -31,7 +31,7 @@ import common.map.fixtures.mobile.worker.IJob;
 	}
 
 	public WorkerReportGenerator(final boolean details,
-	                             final MapDimensions dimensions, final Player currentPlayer, @Nullable final Point hq) {
+	                             final MapDimensions dimensions, final Player currentPlayer, final @Nullable Point hq) {
 		super(dimensions, hq);
 		this.details = details;
 		this.currentPlayer = currentPlayer;

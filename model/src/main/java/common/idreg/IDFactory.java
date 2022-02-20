@@ -32,7 +32,7 @@ public final class IDFactory implements IDRegistrar {
 	 * to report if it has already been registered.
 	 */
 	@Override
-	public int register(final int id, final Warning warning, @Nullable final Location location) {
+	public int register(final int id, final Warning warning, final @Nullable Location location) {
 		if (id >= 0) {
 			if (usedIDs.contains(id)) {
 				if (location == null) {
