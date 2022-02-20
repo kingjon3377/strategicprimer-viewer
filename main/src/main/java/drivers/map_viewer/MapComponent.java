@@ -50,7 +50,7 @@ import java.awt.image.BufferedImage;
  * for every tile in the map, and removing them all and adding the visible
  * tiles back in every time the map was scrolled).
  */
-/* package */ class MapComponent extends JComponent implements MapGUI, MapChangeListener,
+/* package */ final class MapComponent extends JComponent implements MapGUI, MapChangeListener,
 		SelectionChangeListener, GraphicalParamsListener {
 	private final IViewerModel mapModel;
 
