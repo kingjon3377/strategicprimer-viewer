@@ -1,5 +1,6 @@
 package drivers.gui.common;
 
+import javax.swing.JRootPane;
 import org.jetbrains.annotations.Nullable;
 
 import java.awt.Frame;
@@ -35,5 +36,21 @@ public class SPDialog extends JDialog {
 	 */
 	public void showWindow() {
 		setVisible(true);
+	}
+
+	/**
+	 * Overridden to make final.
+	 */
+	@Override
+	public final void setDefaultCloseOperation(final int operation) {
+		super.setDefaultCloseOperation(operation);
+	}
+
+	/**
+	 * Overridden to make final.
+	 */
+	@Override
+	public final JRootPane getRootPane() {
+		return super.getRootPane();
 	}
 }
