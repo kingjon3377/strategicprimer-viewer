@@ -66,7 +66,7 @@ import java.util.stream.Collectors;
 /**
  * A tree of a player's units.
  */
-public class WorkerTree extends JTree implements UnitMemberSelectionSource, UnitSelectionSource {
+public final class WorkerTree extends JTree implements UnitMemberSelectionSource, UnitSelectionSource {
 	private static final Logger LOGGER = Logger.getLogger(WorkerTree.class.getName());
 	// TODO: Move into the inner class that uses this
 	private static final DefaultTreeCellRenderer DEFAULT_STORER = new DefaultTreeCellRenderer();
