@@ -52,7 +52,7 @@ import worker.common.IFixtureEditHelper;
 /**
  * A visual list-based representation of the contents of a tile.
  */
-public class FixtureList extends JList<TileFixture>
+public final class FixtureList extends JList<TileFixture>
 		implements DragGestureListener, SelectionChangeListener {
 	private static final Logger LOGGER = Logger.getLogger(FixtureList.class.getName());
 	private final JComponent parentComponent;
