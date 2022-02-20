@@ -43,7 +43,7 @@ import java.util.function.Predicate;
  * exploration.common.SurroundingPointIterable} or a sort-by-distance
  * Comparator?)
  */
-/* package */ class FindDialog extends SPDialog {
+/* package */ final class FindDialog extends SPDialog {
 	private static final Logger LOGGER = Logger.getLogger(FindDialog.class.getName());
 	public FindDialog(final Frame parent, final IViewerModel model) {
 		super(parent, "Find");
