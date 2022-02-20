@@ -26,7 +26,7 @@ import java.util.function.IntSupplier;
  *
  * TODO: Add the ability to edit an existing note.
  */
-public class TextNoteDialog extends SPDialog implements NewFixtureSource {
+public final class TextNoteDialog extends SPDialog implements NewFixtureSource {
 	private final IntSupplier currentTurn;
 
 	public TextNoteDialog(final IntSupplier currentTurn) {
