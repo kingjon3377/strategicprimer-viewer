@@ -29,7 +29,7 @@ import java.util.stream.Stream;
 /**
  * A class to hold the logic for building our menus.
  */
-public class SPMenu extends JMenuBar {
+public final class SPMenu extends JMenuBar {
 	private static final long serialVersionUID = 1L;
 	private static void simpleQuit() {
 		System.exit(0);
