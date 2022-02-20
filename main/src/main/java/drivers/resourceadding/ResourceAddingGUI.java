@@ -140,7 +140,7 @@ import java.io.FileNotFoundException;
 	 *
 	 * TODO: Make dependencies explicit to make this static.
 	 */
-	private class ResourceAddingFrame extends SPFrame implements PlayerChangeListener {
+	private final class ResourceAddingFrame extends SPFrame implements PlayerChangeListener {
 		private final IDRegistrar idf;
 		private Player currentPlayer;
 		private final FormattedLabel resourceLabel;
