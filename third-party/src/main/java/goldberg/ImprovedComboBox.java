@@ -22,6 +22,14 @@ public class ImprovedComboBox<Element> extends JComboBox<Element> {
 	}
 
 	/**
+	 * Overridden to make final.
+	 */
+	@Override
+	public final void setEditable(final boolean aFlag) {
+		super.setEditable(aFlag);
+	}
+
+	/**
 	 * Handle a key-press. If Tab is pressed when the pop-up list is
 	 * visible, treat it like Enter.
 	 *
