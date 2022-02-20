@@ -3,8 +3,6 @@ package common.map.fixtures.mobile;
 import common.map.fixtures.UnitMember;
 
 import java.util.List;
-import java.util.Arrays;
-import java.util.Collections;
 
 /**
  * A (marker) interface for centaurs, trolls, ogres, fairies, and the like.
