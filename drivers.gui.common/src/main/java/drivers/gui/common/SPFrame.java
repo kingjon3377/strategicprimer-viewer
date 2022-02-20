@@ -1,5 +1,6 @@
 package drivers.gui.common;
 
+import javax.swing.TransferHandler;
 import org.jetbrains.annotations.Nullable;
 
 import lovelace.util.MalformedXMLException;
@@ -38,6 +39,38 @@ public class SPFrame extends JFrame implements ISPWindow {
 	@Override
 	public String getWindowName() {
 		return windowName;
+	}
+
+	/**
+	 * Overridden to make final.
+	 */
+	@Override
+	public final void setTitle(final String title) {
+		super.setTitle(title);
+	}
+
+	/**
+	 * Overridden to make final.
+	 */
+	@Override
+	public final void setDefaultCloseOperation(final int operation) {
+		super.setDefaultCloseOperation(operation);
+	}
+
+	/**
+	 * Overridden to make final.
+	 */
+	@Override
+	public final void setMinimumSize(final Dimension minimumSize) {
+		super.setMinimumSize(minimumSize);
+	}
+
+	/**
+	 * Overridden to make final.
+	 */
+	@Override
+	public final void setTransferHandler(final TransferHandler newHandler) {
+		super.setTransferHandler(newHandler);
 	}
 
 	/**
