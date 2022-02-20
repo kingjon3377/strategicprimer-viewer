@@ -6,7 +6,7 @@ import javax.swing.JPanel;
  * A {@link JPanel} using the default {@link java.awt.FlowLayout} and taking
  * children to add as constructor parameters.
  */
-public class FlowPanel extends JPanel {
+public final class FlowPanel extends JPanel {
 	private static final long serialVersionUID = 1;
 	public FlowPanel(final Component... components) {
 		for (final Component component : components) {
