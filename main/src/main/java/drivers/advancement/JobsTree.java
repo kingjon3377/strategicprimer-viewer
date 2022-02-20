@@ -23,7 +23,7 @@ import common.map.fixtures.mobile.worker.IJob;
  * TODO: Can we split our special code out of this class, perhaps into a
  * TreeSelectionModel, so we can make callers use a bog-standard JTree?
  */
-/* package */ class JobsTree extends JTree implements SkillSelectionSource {
+/* package */ final class JobsTree extends JTree implements SkillSelectionSource {
 	public JobsTree(final JobTreeModel jtModel) {
 		super(jtModel);
 
