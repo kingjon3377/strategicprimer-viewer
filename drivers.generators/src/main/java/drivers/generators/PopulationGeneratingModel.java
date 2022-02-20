@@ -244,7 +244,7 @@ public class PopulationGeneratingModel extends SimpleMultiMapModel { // TODO: Ex
 					.findAny();
 			if (localUnit.isPresent()) {
 				final int turn = map.getCurrentTurn();
-				final IWorker addend = worker.copy(false);
+				final IWorker addend = worker.copy(IFixture.CopyBehavior.KEEP);
 				if (turn >= 0) {
 					addend.setNote(localUnit.get().getOwner(),
 						String.format("%sNewcomer in turn #%d", existingNote, turn));

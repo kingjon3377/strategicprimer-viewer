@@ -1,5 +1,6 @@
 package drivers.turnrunning.applets;
 
+import common.map.IFixture;
 import java.util.ArrayList;
 import common.map.fixtures.UnitMember;
 import common.map.fixtures.FortressMember;
@@ -86,7 +87,7 @@ public abstract class AbstractTurnApplet implements TurnApplet {
 	 * the reduced form into all subordinate maps.
 	 */
 	protected <T extends HasPopulation<? extends TileFixture>&TileFixture> void reducePopulation(
-			final Point point, final T fixture, final String plural, final Boolean zero) {
+			final Point point, final T fixture, final String plural, final IFixture.CopyBehavior zero) {
 		// TODO: make nullable and return null on EOF?
 		final int count = Math.min(
 			Optional.ofNullable(cli.inputNumber(String.format(

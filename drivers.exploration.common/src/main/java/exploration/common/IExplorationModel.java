@@ -1,5 +1,6 @@
 package exploration.common;
 
+import common.map.IFixture;
 import java.util.Collection;
 import java.util.List;
 import org.jetbrains.annotations.Nullable;
@@ -100,7 +101,7 @@ public interface IExplorationModel extends IMultiMapModel, SelectionChangeSource
 	 * true if we think this changed anything in any of the sub-maps.
 	 */
 	default boolean copyToSubMaps(final Point location, final TileFixture fixture) {
-		return copyToSubMaps(location, fixture, true);
+		return copyToSubMaps(location, fixture, IFixture.CopyBehavior.ZERO);
 	}
 
 	/**
@@ -110,7 +111,7 @@ public interface IExplorationModel extends IMultiMapModel, SelectionChangeSource
 	 * If {@link zero}, remove sensitive information from the copies.
 	 * Returns true if we think this changed anything in any of the sub-maps.
 	 */
-	boolean copyToSubMaps(Point location, TileFixture fixture, boolean zero);
+	boolean copyToSubMaps(Point location, TileFixture fixture, IFixture.CopyBehavior zero);
 
 	/**
 	 * Copy terrain, including any mountain, rivers, and roads, from the

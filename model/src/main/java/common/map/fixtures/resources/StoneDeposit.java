@@ -82,8 +82,8 @@ public class StoneDeposit implements HarvestableFixture, MineralFixture {
 	 * Clone the object.
 	 */
 	@Override
-	public StoneDeposit copy(final boolean zero) {
-		final StoneDeposit retval = new StoneDeposit(stone, (zero) ? 0 : dc, id);
+	public StoneDeposit copy(final CopyBehavior zero) {
+		final StoneDeposit retval = new StoneDeposit(stone, (zero == CopyBehavior.ZERO) ? 0 : dc, id);
 		retval.setImage(image);
 		return retval;
 	}

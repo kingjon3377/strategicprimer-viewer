@@ -67,7 +67,7 @@ public class Centaur implements Immortal, HasMutableImage, HasKind {
 	}
 
 	@Override
-	public Centaur copy(final boolean zero) {
+	public Centaur copy(final CopyBehavior zero) {
 		final Centaur retval = new Centaur(kind, id);
 		retval.setImage(image);
 		return retval;

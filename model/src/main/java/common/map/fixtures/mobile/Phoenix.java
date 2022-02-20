@@ -6,7 +6,7 @@ public class Phoenix extends SimpleImmortal {
 	}
 
 	@Override
-	public Phoenix copy(final boolean zero) {
+	public Phoenix copy(final CopyBehavior zero) {
 		return new Phoenix(getId());
 	}
 }

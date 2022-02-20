@@ -106,7 +106,7 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 	 */
 	private static boolean areDiggablesEqual(final IFixture firstFixture, final IFixture secondFixture) {
 		return Objects.equals(firstFixture, secondFixture) ||
-			Objects.equals(firstFixture.copy(true), secondFixture.copy(true));
+			Objects.equals(firstFixture.copy(IFixture.CopyBehavior.ZERO), secondFixture.copy(IFixture.CopyBehavior.ZERO));
 	}
 
 	/**
@@ -602,12 +602,12 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 				.filter(v -> v.getOwner().isIndependent())
 				.collect(Collectors.toList());
 			if (!villages.isEmpty()) {
-				boolean subordinate = false;
+				IFixture.CopyBehavior subordinate = IFixture.CopyBehavior.KEEP;
 				for (final Village village : villages) {
 					village.setOwner(owner);
 					for (final IMutableMapNG subMap : getRestrictedAllMaps()) {
 						subMap.addFixture(currentPoint, village.copy(subordinate));
-						subordinate = true;
+						subordinate = IFixture.CopyBehavior.ZERO;
 						subMap.setModified(true);
 					}
 				}
@@ -642,9 +642,9 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 						.filter(p -> p.getValue1() instanceof Animal).findFirst();
 				for (final IMutableMapNG subMap : getRestrictedSubordinateMaps()) {
 					vegetation.ifPresent(objects -> subMap.addFixture(objects.getValue0(),
-							objects.getValue1().copy(true)));
+							objects.getValue1().copy(IFixture.CopyBehavior.ZERO)));
 					animal.ifPresent(objects -> subMap.addFixture(objects.getValue0(),
-							objects.getValue1().copy(true)));
+							objects.getValue1().copy(IFixture.CopyBehavior.ZERO)));
 				}
 			}
 			fireMovementCost(5);
@@ -675,13 +675,13 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 				i++;
 			}
 			final TileFixture oldFixture = diggables.get(0);
-			final TileFixture newFixture = oldFixture.copy(false);
+			final TileFixture newFixture = oldFixture.copy(IFixture.CopyBehavior.KEEP);
 			if (newFixture instanceof Ground) { // TODO: Extract an interface for this field so we only have to do one test
 				((Ground) newFixture).setExposed(true);
 			} else if (newFixture instanceof MineralVein) {
 				((MineralVein) newFixture).setExposed(true);
 			}
-			final BiConsumer<IMutableMapNG, Boolean> addToMap = (map, condition) -> {
+			final BiConsumer<IMutableMapNG, IFixture.CopyBehavior> addToMap = (map, condition) -> {
 				if (map.getFixtures(currentPoint).stream()
 						.anyMatch(f -> areDiggablesEqual(oldFixture, f))) {
 					map.replace(currentPoint, oldFixture, newFixture.copy(condition));
@@ -689,10 +689,10 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 					map.addFixture(currentPoint, newFixture.copy(condition));
 				}
 			};
-			boolean subsequent = false;
+			IFixture.CopyBehavior subsequent = IFixture.CopyBehavior.KEEP;
 			for (final IMutableMapNG subMap : getRestrictedAllMaps()) {
 				addToMap.accept(subMap, subsequent);
-				subsequent = true;
+				subsequent = IFixture.CopyBehavior.ZERO;
 				subMap.setModified(true);
 			}
 			fireMovementCost(4);
@@ -717,7 +717,7 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 	 * sensitive information from the copies.
 	 */
 	@Override
-	public boolean copyToSubMaps(final Point location, final TileFixture fixture, final boolean zero) {
+	public boolean copyToSubMaps(final Point location, final TileFixture fixture, final IFixture.CopyBehavior zero) {
 		@Nullable final TileFixture matching;
 		boolean retval = false;
 		if (fixture instanceof FakeFixture) {
@@ -977,7 +977,7 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 						u.getId() == unit.getId())
 					.findAny();
 			if (matching.isPresent()) {
-				matching.get().addMember(member.copy(false));
+				matching.get().addMember(member.copy(IFixture.CopyBehavior.KEEP));
 				map.setModified(true);
 				continue;
 			}
@@ -1128,7 +1128,7 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 					.map(IMutableUnit.class::cast)
 					.filter(this::matchingPlayer).collect(Collectors.toList())) {
 				if (unit.stream().anyMatch(existing::equals)) { // TODO: look beyond equals() for matching-in-existing?
-					unit.addMember(sibling.copy(false));
+					unit.addMember(sibling.copy(IFixture.CopyBehavior.KEEP));
 					any = true;
 					map.setModified(true);
 					break;

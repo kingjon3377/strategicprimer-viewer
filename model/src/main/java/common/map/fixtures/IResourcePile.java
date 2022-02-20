@@ -86,5 +86,5 @@ public interface IResourcePile extends UnitMember, FortressMember, HasKind, HasI
 	 * Clone the object.
 	 */
 	@Override
-	IResourcePile copy(boolean zero);
+	IResourcePile copy(CopyBehavior zero);
 }

@@ -3,6 +3,7 @@ package common.map.fixtures.mobile;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import common.map.IFixture;
 import org.eclipse.jdt.annotation.Nullable;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -23,7 +24,8 @@ public class TestProxyAnimal {
 	public void testProxyAnimalReduction(final int id, final int newId) {
 		// TODO: should take population of original and population to test as parameters?
 		final Animal base = new AnimalImpl("test", false, "status", id, -1, 12);
-		final ProxyAnimal proxy = new ProxyAnimal(base, base.copy(false), base.copy(false));
+		final ProxyAnimal proxy = new ProxyAnimal(base, base.copy(IFixture.CopyBehavior.KEEP),
+				base.copy(IFixture.CopyBehavior.KEEP));
 		assertEquals(3, base.reduced(3, newId).getPopulation(),
 			"Test that reduced() works the way we expect in the non-proxy case.");
 		final Animal reduced = proxy.reduced(3, newId);

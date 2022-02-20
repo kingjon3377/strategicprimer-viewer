@@ -64,7 +64,7 @@ public final class TextFixture implements TileFixture, HasMutableImage {
 	 * Clone the object.
 	 */
 	@Override
-	public TextFixture copy(final boolean zero) {
+	public TextFixture copy(final CopyBehavior zero) {
 		final TextFixture retval = new TextFixture(text, turn);
 		retval.setImage(image);
 		return retval;

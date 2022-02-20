@@ -6,7 +6,7 @@ public class Simurgh extends SimpleImmortal {
 	}
 
 	@Override
-	public Simurgh copy(final boolean zero) {
+	public Simurgh copy(final CopyBehavior zero) {
 		return new Simurgh(getId());
 	}
 }

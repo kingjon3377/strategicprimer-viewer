@@ -102,7 +102,7 @@ public class AdventureFixture implements ExplorableFixture, HasMutableOwner, Sub
 	 * Clone the fixture.
 	 */
 	@Override
-	public AdventureFixture copy(final boolean zero) {
+	public AdventureFixture copy(final CopyBehavior zero) {
 		final AdventureFixture retval = new AdventureFixture(owner, briefDescription,
 			fullDescription, id);
 		retval.setImage(image);

@@ -125,10 +125,10 @@ public interface IMapNG extends Subsettable<IMapNG> {
 	 *
 	 * TODO: What should this do with the filename? Take a filename parameter?
 	 *
-	 * @param zero Whether to "zero" sensitive data TODO: make enum
+	 * @param zero Whether to "zero" sensitive data TODO: move CopyBehavior elsewhere than IFixture
 	 * @param player The player for whom the copied map is being prepared, if any."
 	 */
-	IMapNG copy(boolean zero, @Nullable Player player);
+	IMapNG copy(IFixture.CopyBehavior zero, @Nullable Player player);
 
 	/**
 	 * The file from which the map was loaded, or to which it should be saved, if known

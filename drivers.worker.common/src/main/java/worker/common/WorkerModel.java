@@ -96,9 +96,9 @@ public class WorkerModel extends SimpleMultiMapModel implements IWorkerModel {
 			.filter(IMutableFortress.class::isInstance).map(IMutableFortress.class::cast)
 			.filter(f -> f.getOwner().equals(unit.getOwner())).findAny().orElse(null);
 		if (fortress == null) {
-			map.addFixture(location, unit.copy(false));
+			map.addFixture(location, unit.copy(IFixture.CopyBehavior.KEEP));
 		} else {
-			fortress.addMember(unit.copy(false));
+			fortress.addMember(unit.copy(IFixture.CopyBehavior.KEEP));
 		}
 	}
 
@@ -512,7 +512,7 @@ public class WorkerModel extends SimpleMultiMapModel implements IWorkerModel {
 				.filter(u -> u.getId() == unit.getId())
 				.findAny().orElse(null);
 			if (matching != null) {
-				matching.addMember(member.copy(false));
+				matching.addMember(member.copy(IFixture.CopyBehavior.KEEP));
 				map.setModified(true);
 				continue;
 			}
@@ -627,7 +627,7 @@ public class WorkerModel extends SimpleMultiMapModel implements IWorkerModel {
 					.map(IMutableUnit.class::cast).collect(Collectors.toList())) {
 				if (unit.stream().anyMatch(existing::equals)) {
 					// TODO: look beyond equals() for matching-in-existing?
-					unit.addMember(sibling.copy(false));
+					unit.addMember(sibling.copy(IFixture.CopyBehavior.KEEP));
 					any = true;
 					map.setModified(true);
 					break;

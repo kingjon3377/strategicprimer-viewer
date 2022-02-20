@@ -63,7 +63,7 @@ public class Fairy implements Immortal, HasMutableImage, HasKind {
 	}
 
 	@Override
-	public Fairy copy(final boolean zero) {
+	public Fairy copy(final CopyBehavior zero) {
 		final Fairy retval = new Fairy(kind, id);
 		retval.setImage(image);
 		return retval;

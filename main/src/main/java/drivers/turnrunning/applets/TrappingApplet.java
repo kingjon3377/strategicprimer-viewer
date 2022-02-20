@@ -2,6 +2,7 @@ package drivers.turnrunning.applets;
 
 import common.idreg.IDRegistrar;
 
+import common.map.IFixture;
 import common.map.TileFixture;
 import drivers.common.cli.ICLIHelper;
 
@@ -70,9 +71,9 @@ import org.jetbrains.annotations.Nullable;
 		if (reduce == null) {
 			return null;
 		} else if (reduce) {
-			reducePopulation(loc, item, "animals", true);
+			reducePopulation(loc, item, "animals", IFixture.CopyBehavior.ZERO);
 		} else {
-			model.copyToSubMaps(center, new AnimalTracks(item.getKind()), false);
+			model.copyToSubMaps(center, new AnimalTracks(item.getKind()), IFixture.CopyBehavior.KEEP);
 		}
 		if (model.getSelectedUnit() != null) {
 			resourceEntry(model.getSelectedUnit().getOwner());
@@ -132,7 +133,7 @@ import org.jetbrains.annotations.Nullable;
 					break;
 				} else if (item instanceof AnimalTracks) {
 					cli.println(String.format("Found evidence of %s escaping", ((AnimalTracks) item).getKind()));
-					model.copyToSubMaps(center, item, true);
+					model.copyToSubMaps(center, item, IFixture.CopyBehavior.ZERO);
 					time -= nothingCost;
 					break;
 				} else if (!(item instanceof Animal)) {

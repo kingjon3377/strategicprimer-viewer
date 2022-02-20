@@ -30,7 +30,7 @@ class ProxyMember implements UnitMemberProxy<UnitMember> {
 	}
 
 	@Override
-	public ProxyMember copy(final boolean zero) {
+	public ProxyMember copy(final CopyBehavior zero) {
 		final ProxyMember retval = new ProxyMember();
 		for (final UnitMember member : proxiedMembers) {
 			retval.addProxied(member.copy(zero));

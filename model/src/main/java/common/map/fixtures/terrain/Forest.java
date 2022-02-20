@@ -104,8 +104,8 @@ public class Forest implements TerrainFixture, HasMutableImage, HasKind, HasExte
 	 * Clone the forest.
 	 */
 	@Override
-	public Forest copy(final boolean zero) {
-		final Forest retval = new Forest(kind, rows, id, (zero) ? -1 : acres);
+	public Forest copy(final CopyBehavior zero) {
+		final Forest retval = new Forest(kind, rows, id, (zero == CopyBehavior.ZERO) ? -1 : acres);
 		retval.setImage(image);
 		return retval;
 	}

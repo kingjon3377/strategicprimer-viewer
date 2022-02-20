@@ -1,5 +1,6 @@
 package drivers.turnrunning.applets;
 
+import common.map.IFixture;
 import common.map.Player;
 import common.map.Point;
 
@@ -147,9 +148,9 @@ import org.jetbrains.annotations.Nullable;
 		if (reduce == null) {
 			return null;
 		} else if (reduce) {
-			reducePopulation(loc, find, "animals", true);
+			reducePopulation(loc, find, "animals", IFixture.CopyBehavior.ZERO);
 		} else {
-			model.copyToSubMaps(loc, find, true);
+			model.copyToSubMaps(loc, find, IFixture.CopyBehavior.ZERO);
 		}
 		if (model.getSelectedUnit() != null) {
 			resourceEntry(model.getSelectedUnit().getOwner());
@@ -164,7 +165,7 @@ import org.jetbrains.annotations.Nullable;
 			cli.println(String.format("Found nothing for the next %d minutes.", noResultCost));
 			return noResultCost;
 		} else if (find instanceof AnimalTracks) {
-			model.copyToSubMaps(loc, find, true);
+			model.copyToSubMaps(loc, find, IFixture.CopyBehavior.ZERO);
 			cli.println(String.format("Found only tracks or traces from %s for the next %d minutes.",
 				((AnimalTracks) find).getKind(), noResultCost));
 			return noResultCost;
@@ -176,7 +177,7 @@ import org.jetbrains.annotations.Nullable;
 			} else if (fight) {
 				return handleFight(loc, (Animal) find, time);
 			} else {
-				model.copyToSubMaps(loc, find, true);
+				model.copyToSubMaps(loc, find, IFixture.CopyBehavior.ZERO);
 				return noResultCost;
 			}
 		} else {

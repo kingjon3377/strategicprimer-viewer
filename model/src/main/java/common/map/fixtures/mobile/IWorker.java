@@ -39,7 +39,7 @@ public interface IWorker extends UnitMember, Iterable<IJob>, HasName, HasKind, H
 	 * Clone the object.
 	 */
 	@Override
-	IWorker copy(boolean zero);
+	IWorker copy(CopyBehavior zero);
 
 	/**
 	 * Get the Job that the worker has with the given name, or a

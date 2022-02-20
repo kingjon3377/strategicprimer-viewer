@@ -202,13 +202,13 @@ public final class Unit implements IMutableUnit {
 	 * but not *their* details?
 	 */
 	@Override
-	public Unit copy(final boolean zero) {
+	public Unit copy(final CopyBehavior zero) {
 		final Unit retval = new Unit(owner, kind, name, id);
-		if (!zero) {
+		if (zero == CopyBehavior.KEEP) {
 			retval.orders.putAll(orders);
 			retval.results.putAll(results);
 			for (final UnitMember member : members) {
-				retval.addMember(member.copy(false));
+				retval.addMember(member.copy(CopyBehavior.KEEP));
 			}
 		}
 		retval.setImage(image);

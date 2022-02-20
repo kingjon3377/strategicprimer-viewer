@@ -27,10 +27,11 @@ import java.util.logging.Level;
 	 * @deprecated This class should only ever be used in a
 	 * FixtureListModel, and copying a tile's terrain type should be
 	 * handled specially anyway, so this method should never be called.
+	 * @param zero
 	 */
 	@Deprecated
 	@Override
-	public TileTypeFixture copy(final boolean zero) {
+	public TileTypeFixture copy(final CopyBehavior zero) {
 		LOGGER.log(Level.WARNING, "TileTypeFixture.copy called", new Exception("dummy"));
 		return new TileTypeFixture(tileType);
 	}

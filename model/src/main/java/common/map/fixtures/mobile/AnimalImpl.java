@@ -142,9 +142,9 @@ public class AnimalImpl implements Animal, HasMutableImage {
 	 * TODO: change, here and elsewhere, so that "unknown" is -1 population
 	 */
 	@Override
-	public Animal copy(final boolean zero) {
+	public Animal copy(final CopyBehavior zero) {
 		final AnimalImpl retval = new AnimalImpl(kind, talking, status, id,
-			(zero) ? -1 : born, (zero) ? 1 : population);
+			(zero == CopyBehavior.ZERO) ? -1 : born, (zero == CopyBehavior.ZERO) ? 1 : population);
 		retval.setImage(image);
 		return retval;
 	}

@@ -17,7 +17,7 @@ public interface TileFixture extends IFixture, Comparable<TileFixture> {
 	 * Clone the object.
 	 */
 	@Override
-	TileFixture copy(boolean zero);
+	TileFixture copy(CopyBehavior zero);
 
 	/**
 	 * Compare to another fixture.

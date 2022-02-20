@@ -186,16 +186,17 @@ public class FortressImpl implements IMutableFortress {
 
 	/**
 	 * Clone the fortress.
+	 * @param zero
 	 */
 	@Override
-	public IMutableFortress copy(final boolean zero) {
+	public IMutableFortress copy(final CopyBehavior zero) {
 		final IMutableFortress retval;
-		if (zero) {
+		if (zero == CopyBehavior.ZERO) {
 			retval = new FortressImpl(owner, "unknown", id, townSize);
 		} else {
 			retval = new FortressImpl(owner, name, id, townSize);
 			for (final FortressMember member : members) {
-				retval.addMember(member.copy(false));
+				retval.addMember(member.copy(CopyBehavior.KEEP));
 			}
 		}
 		retval.setImage(image);

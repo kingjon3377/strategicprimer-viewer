@@ -131,7 +131,7 @@ public /* sealed */ abstract class ImmortalAnimal
 	 * Clone the object.
 	 */
 	@Override
-	public abstract ImmortalAnimal copy(boolean zero);
+	public abstract ImmortalAnimal copy(CopyBehavior zero);
 
 	@Override
 	public final String toString() {

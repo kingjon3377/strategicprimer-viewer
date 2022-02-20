@@ -62,8 +62,8 @@ public class Battlefield implements ExplorableFixture {
 	 * Clone the object.
 	 */
 	@Override
-	public Battlefield copy(final boolean zero) {
-		final Battlefield retval = new Battlefield((zero) ? 0 : dc, id);
+	public Battlefield copy(final CopyBehavior zero) {
+		final Battlefield retval = new Battlefield((zero == CopyBehavior.ZERO) ? 0 : dc, id);
 		retval.setImage(image);
 		return retval;
 	}

@@ -78,7 +78,7 @@ public interface Animal extends AnimalOrTracks, MobileFixture, HasImage,
 	Animal reduced(int newPopulation, int newId);
 
 	@Override
-	Animal copy(boolean zero);
+	Animal copy(CopyBehavior zero);
 
 	@Override
 	Animal combined(Animal addend);

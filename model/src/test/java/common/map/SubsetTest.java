@@ -250,8 +250,8 @@ public final class SubsetTest {
 		firstMap.addFixture(new Point(0, 0),
 			new Fortification(TownStatus.Burned, TownSize.Large, 15, "fortification", 6,
 				new PlayerImpl(0, "")));
-		assertEquals(firstMap, firstMap.copy(false, null), "Cloned map equals original");
-		final IMapNG clone = firstMap.copy(true, null);
+		assertEquals(firstMap, firstMap.copy(IFixture.CopyBehavior.KEEP, null), "Cloned map equals original");
+		final IMapNG clone = firstMap.copy(IFixture.CopyBehavior.ZERO, null);
 		assertIsSubset(clone, zero, "unfilled map is still a subset of zeroed clone");
 		// DCs, the only thing zeroed out in *map* copy() at the moment, are ignored by
 		// equals().
@@ -263,9 +263,9 @@ public final class SubsetTest {
 		}
 		final Unit uOne = new Unit(new PlayerImpl(0, ""), "type", "name", 7);
 		uOne.addMember(new Worker("worker", "dwarf", 8, new Job("job", 1)));
-		assertEquals(uOne, uOne.copy(false), "clone equals original");
-		assertNotEquals(uOne, uOne.copy(true), "zeroed clone doesn't equal original");
-		assertIsSubset(uOne, uOne.copy(true), "zeroed clone is subset of original");
+		assertEquals(uOne, uOne.copy(IFixture.CopyBehavior.KEEP), "clone equals original");
+		assertNotEquals(uOne, uOne.copy(IFixture.CopyBehavior.ZERO), "zeroed clone doesn't equal original");
+		assertIsSubset(uOne, uOne.copy(IFixture.CopyBehavior.ZERO), "zeroed clone is subset of original");
 	}
 
 	static Stream<Arguments> townParameters() {

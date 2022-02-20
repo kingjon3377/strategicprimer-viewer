@@ -91,7 +91,7 @@ public class Hill implements TerrainFixture, HasMutableImage {
 	}
 
 	@Override
-	public Hill copy(final boolean zero) {
+	public Hill copy(final CopyBehavior zero) {
 		final Hill retval = new Hill(id);
 		retval.setImage(image);
 		return retval;

@@ -6,7 +6,7 @@ public class Griffin extends SimpleImmortal {
 	}
 
 	@Override
-	public Griffin copy(final boolean zero) {
+	public Griffin copy(final CopyBehavior zero) {
 		return new Griffin(getId());
 	}
 }

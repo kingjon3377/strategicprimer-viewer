@@ -49,11 +49,11 @@ public class City extends AbstractTown {
 	}
 
 	@Override
-	public City copy(final boolean zero) {
-		final City retval = new City(getStatus(), getTownSize(), (zero) ? 0 : getDC(),
+	public City copy(final CopyBehavior zero) {
+		final City retval = new City(getStatus(), getTownSize(), (zero == CopyBehavior.ZERO) ? 0 : getDC(),
 			getName(), id, getOwner());
 		retval.setImage(getImage());
-		if (!zero) {
+		if (zero == CopyBehavior.KEEP) {
 			retval.setPopulation(getPopulation());
 		}
 		return retval;

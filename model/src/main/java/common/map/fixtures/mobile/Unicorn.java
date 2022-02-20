@@ -6,7 +6,7 @@ public class Unicorn extends ImmortalAnimal {
 	}
 
 	@Override
-	public Unicorn copy(final boolean zero) {
+	public Unicorn copy(final CopyBehavior zero) {
 		return new Unicorn(getId());
 	}
 }

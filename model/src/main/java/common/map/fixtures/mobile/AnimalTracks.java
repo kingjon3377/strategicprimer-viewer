@@ -88,7 +88,7 @@ public class AnimalTracks implements HasMutableImage, HasKind, MobileFixture,
 	}
 
 	@Override
-	public AnimalTracks copy(final boolean zero) {
+	public AnimalTracks copy(final CopyBehavior zero) {
 		return new AnimalTracks(kind);
 	}
 

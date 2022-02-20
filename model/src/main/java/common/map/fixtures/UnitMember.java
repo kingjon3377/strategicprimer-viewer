@@ -19,5 +19,5 @@ public interface UnitMember extends SubsettableFixture {
 	 * Specialization.
 	 */
 	@Override
-	UnitMember copy(boolean zero);
+	UnitMember copy(CopyBehavior zero);
 }

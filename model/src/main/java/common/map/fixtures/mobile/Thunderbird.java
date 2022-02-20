@@ -6,7 +6,7 @@ public class Thunderbird extends ImmortalAnimal {
 	}
 
 	@Override
-	public Thunderbird copy(final boolean zero) {
+	public Thunderbird copy(final CopyBehavior zero) {
 		return new Thunderbird(getId());
 	}
 }

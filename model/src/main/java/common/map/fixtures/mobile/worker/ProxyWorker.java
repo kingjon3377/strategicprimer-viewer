@@ -119,7 +119,7 @@ public class ProxyWorker implements WorkerProxy {
 	}
 
 	@Override
-	public IWorker copy(final boolean zero) {
+	public IWorker copy(final CopyBehavior zero) {
 		final ProxyWorker retval = new ProxyWorker(parallel);
 		for (final IWorker worker : workers) {
 			retval.addProxied(worker.copy(zero));

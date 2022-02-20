@@ -581,7 +581,7 @@ public class ViewerModel extends SimpleDriverModel implements IViewerModel {
 			.filter(u -> u.getKind().equals(unit.getKind()))
 			.filter(u -> u.getId() == unit.getId()).findAny().orElse(null);
 		if (matching != null) {
-			matching.addMember(member.copy(false));
+			matching.addMember(member.copy(IFixture.CopyBehavior.KEEP));
 			getRestrictedMap().setModified(true);
 		}
 	}
@@ -707,7 +707,7 @@ public class ViewerModel extends SimpleDriverModel implements IViewerModel {
 				.filter(u -> getMap().getPlayers().getCurrentPlayer().equals(u.getOwner()))
 				.collect(Collectors.toList())) {
 			if (unit.stream().anyMatch(existing::equals)) { // TODO: look beyond equals() for matching-in-existing?
-				unit.addMember(sibling.copy(false));
+				unit.addMember(sibling.copy(IFixture.CopyBehavior.KEEP));
 				getRestrictedMap().setModified(true);
 				return true;
 			}

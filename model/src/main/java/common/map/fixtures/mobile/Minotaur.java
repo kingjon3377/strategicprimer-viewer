@@ -6,7 +6,7 @@ public class Minotaur extends SimpleImmortal {
 	}
 
 	@Override
-	public Minotaur copy(final boolean zero) {
+	public Minotaur copy(final CopyBehavior zero) {
 		return new Minotaur(getId());
 	}
 }

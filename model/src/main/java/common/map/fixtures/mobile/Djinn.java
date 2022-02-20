@@ -6,7 +6,7 @@ public class Djinn extends SimpleImmortal {
 	}
 
 	@Override
-	public Djinn copy(final boolean zero) {
+	public Djinn copy(final CopyBehavior zero) {
 		return new Djinn(getId());
 	}
 }

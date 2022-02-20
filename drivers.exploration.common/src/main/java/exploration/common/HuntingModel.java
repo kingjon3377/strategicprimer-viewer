@@ -56,7 +56,7 @@ public class HuntingModel {
 		}
 
 		@Override
-		public NothingFound copy(final boolean zero) {
+		public NothingFound copy(final CopyBehavior zero) {
 			return this;
 		}
 

@@ -132,9 +132,9 @@ public final class ResourcePileImpl implements IMutableResourcePile {
 	 * TODO: If {@link zero}, probably shouldn't expose <em>precise</em> quantity.
 	 */
 	@Override
-	public ResourcePileImpl copy(final boolean zero) {
+	public ResourcePileImpl copy(final CopyBehavior zero) {
 		final ResourcePileImpl retval = new ResourcePileImpl(id, kind, contents, quantity);
-		if (!zero) {
+		if (zero == CopyBehavior.KEEP) {
 			retval.setCreated(createdTurn);
 		}
 		return retval;

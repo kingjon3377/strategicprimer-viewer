@@ -277,10 +277,10 @@ public class Worker implements IMutableWorker {
 	 * Clone the object.
 	 */
 	@Override
-	public Worker copy(final boolean zero) {
+	public Worker copy(final CopyBehavior zero) {
 		final Worker retval = new Worker(name, race, id);
 		retval.setImage(image);
-		if (!zero) {
+		if (zero == CopyBehavior.KEEP) {
 			final WorkerStats localStats = stats;
 			if (localStats != null) {
 				retval.setStats(localStats.copy());

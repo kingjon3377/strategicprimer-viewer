@@ -43,5 +43,5 @@ public interface IMutableUnit extends IUnit, HasMutableKind, HasMutableName,
 	 * Clone the unit.
 	 */
 	@Override
-	IMutableUnit copy(boolean zero);
+	IMutableUnit copy(CopyBehavior zero);
 }

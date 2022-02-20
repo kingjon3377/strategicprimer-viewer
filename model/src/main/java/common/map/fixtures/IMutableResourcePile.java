@@ -24,5 +24,5 @@ public interface IMutableResourcePile extends IResourcePile, HasMutableImage {
 	 * Specialization.
 	 */
 	@Override
-	IMutableResourcePile copy(boolean zero);
+	IMutableResourcePile copy(CopyBehavior zero);
 }

@@ -136,7 +136,7 @@ public class Implement implements UnitMember, FortressMember, HasKind, HasMutabl
 	}
 
 	@Override
-	public Implement copy(final boolean zero) {
+	public Implement copy(final CopyBehavior zero) {
 		return new Implement(kind, id, count);
 	}
 

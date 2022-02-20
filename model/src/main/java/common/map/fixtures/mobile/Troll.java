@@ -6,7 +6,7 @@ public class Troll extends SimpleImmortal {
 	}
 
 	@Override
-	public Troll copy(final boolean zero) {
+	public Troll copy(final CopyBehavior zero) {
 		return new Troll(getId());
 	}
 }

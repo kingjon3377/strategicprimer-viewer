@@ -27,5 +27,5 @@ public interface IMutableFortress extends IFortress, HasMutableImage,
 	 * Clone the fortress.
 	 */
 	@Override
-	IMutableFortress copy(boolean zero);
+	IMutableFortress copy(CopyBehavior zero);
 }

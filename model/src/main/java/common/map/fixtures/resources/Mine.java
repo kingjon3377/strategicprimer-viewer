@@ -90,7 +90,7 @@ public class Mine implements HarvestableFixture, MineralFixture {
 	 * Clone the object.
 	 */
 	@Override
-	public Mine copy(final boolean zero) {
+	public Mine copy(final CopyBehavior zero) {
 		final Mine retval = new Mine(kind, status, id);
 		retval.setImage(image);
 		return retval;

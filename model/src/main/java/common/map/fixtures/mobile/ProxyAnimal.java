@@ -53,7 +53,7 @@ import common.map.IFixture;
 	}
 
 	@Override
-	public Animal copy(final boolean zero) {
+	public Animal copy(final CopyBehavior zero) {
 		return new ProxyAnimal(animals.stream().map((a) -> a.copy(zero)).toArray(Animal[]::new));
 	}
 

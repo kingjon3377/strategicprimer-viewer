@@ -81,8 +81,8 @@ public class Shrub implements HarvestableFixture, HasPopulation<Shrub> {
 	}
 
 	@Override
-	public Shrub copy(final boolean zero) {
-		final Shrub retval = new Shrub(kind, id, (zero) ? -1 : population);
+	public Shrub copy(final CopyBehavior zero) {
+		final Shrub retval = new Shrub(kind, id, (zero == CopyBehavior.ZERO) ? -1 : population);
 		retval.setImage(image);
 		return retval;
 	}

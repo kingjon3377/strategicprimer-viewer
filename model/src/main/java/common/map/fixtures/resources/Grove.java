@@ -108,9 +108,9 @@ public class Grove implements HarvestableFixture, HasPopulation<Grove> {
 	}
 
 	@Override
-	public Grove copy(final boolean zero) {
+	public Grove copy(final CopyBehavior zero) {
 		final Grove retval = new Grove(orchard, cultivated, kind, id,
-			(zero) ? -1 : population);
+			(zero == CopyBehavior.ZERO) ? -1 : population);
 		retval.setImage(image);
 		return retval;
 	}

@@ -12,5 +12,5 @@ public interface FortressMember extends SubsettableFixture {
 	 * Specialization.
 	 */
 	@Override
-	FortressMember copy(boolean zero);
+	FortressMember copy(CopyBehavior zero);
 }

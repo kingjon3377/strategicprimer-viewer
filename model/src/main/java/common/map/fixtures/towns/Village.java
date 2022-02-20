@@ -336,10 +336,10 @@ public class Village implements IMutableTownFixture, HasMutableImage, IFixture,
 	 * Clone the object.
 	 */
 	@Override
-	public Village copy(final boolean zero) {
+	public Village copy(final CopyBehavior zero) {
 		final Village retval = new Village(status, name, id, owner, race);
 		retval.setImage(image);
-		if (!zero) {
+		if (zero == CopyBehavior.KEEP) {
 			retval.setPortrait(portrait);
 			retval.setPopulation(population);
 		}

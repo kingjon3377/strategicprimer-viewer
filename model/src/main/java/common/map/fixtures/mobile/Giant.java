@@ -63,7 +63,7 @@ public class Giant implements Immortal, HasMutableImage, HasKind {
 	}
 
 	@Override
-	public Giant copy(final boolean zero) {
+	public Giant copy(final CopyBehavior zero) {
 		final Giant retval = new Giant(kind, id);
 		retval.setImage(image);
 		return retval;

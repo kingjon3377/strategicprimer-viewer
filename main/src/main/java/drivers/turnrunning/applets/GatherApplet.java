@@ -2,6 +2,7 @@ package drivers.turnrunning.applets;
 
 import common.idreg.IDRegistrar;
 import common.map.HasKind;
+import common.map.IFixture;
 import common.map.Point;
 import common.map.TileFixture;
 import common.map.fixtures.IMutableResourcePile;
@@ -134,7 +135,7 @@ import org.jetbrains.annotations.Nullable;
 						if (reduce == null) {
 							return null;
 						} else if (reduce) {
-							reducePopulation(loc, (Shrub) find, "plants", true);
+							reducePopulation(loc, (Shrub) find, "plants", IFixture.CopyBehavior.ZERO);
 							cli.print(inHours(time));
 							cli.println("remaining.");
 							continue;
@@ -145,7 +146,7 @@ import org.jetbrains.annotations.Nullable;
 				} else {
 					time -= noResultCost;
 				}
-				model.copyToSubMaps(loc, find, true);
+				model.copyToSubMaps(loc, find, IFixture.CopyBehavior.ZERO);
 			}
 			final String addendum = cli.inputMultilineString("Add to results about that:");
 			if (addendum == null) {

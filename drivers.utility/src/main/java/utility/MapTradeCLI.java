@@ -1,5 +1,6 @@
 package utility;
 
+import common.map.IFixture;
 import drivers.common.DriverFailedException;
 import drivers.common.IncorrectUsageException;
 import java.util.logging.Logger;
@@ -198,7 +199,8 @@ public class MapTradeCLI implements CLIDriver {
 			LOGGER.fine(String.format("Copying contents at %s, location %d/%d", location,
 				count, totalCount));
 			model.copyBaseTerrainAt(location);
-			model.maybeCopyFixturesAt(location, this::testFixture, zeroFixtures);
+			model.maybeCopyFixturesAt(location, this::testFixture,
+					zeroFixtures ? IFixture.CopyBehavior.ZERO : IFixture.CopyBehavior.KEEP);
 			if (copyRivers) {
 				model.copyRiversAt(location);
 			}

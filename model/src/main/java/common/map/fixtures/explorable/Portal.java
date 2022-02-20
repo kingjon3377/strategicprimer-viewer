@@ -101,9 +101,9 @@ public class Portal implements ExplorableFixture, SubsettableFixture {
 	}
 
 	@Override
-	public Portal copy(final boolean zero) {
-		final Portal retval = new Portal((zero) ? "unknown" : destinationWorld,
-			(zero) ? Point.INVALID_POINT : destinationCoordinates, id);
+	public Portal copy(final CopyBehavior zero) {
+		final Portal retval = new Portal((zero == CopyBehavior.ZERO) ? "unknown" : destinationWorld,
+			(zero == CopyBehavior.ZERO) ? Point.INVALID_POINT : destinationCoordinates, id);
 		retval.setImage(image);
 		return retval;
 	}

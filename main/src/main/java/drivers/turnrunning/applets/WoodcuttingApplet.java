@@ -1,5 +1,6 @@
 package drivers.turnrunning.applets;
 
+import common.map.IFixture;
 import common.map.fixtures.mobile.IUnit;
 import drivers.common.cli.ICLIHelper;
 
@@ -52,7 +53,7 @@ import org.jetbrains.annotations.Nullable;
 	// TODO: To simplify our lives in the crippled type-system of Java, make HasPopulation and HasExtent extend TileFixture
 	private <T extends HasExtent<? extends TileFixture>&TileFixture> void
 			reduceExtent(final Point point, final T fixture, final BigDecimal acres) {
-		model.reduceExtent(point, fixture, true, acres);
+		model.reduceExtent(point, fixture, IFixture.CopyBehavior.ZERO, acres);
 	}
 
 	@Override

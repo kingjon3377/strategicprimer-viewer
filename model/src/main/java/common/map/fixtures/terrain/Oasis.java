@@ -86,7 +86,7 @@ public class Oasis implements TerrainFixture, HasMutableImage {
 	}
 
 	@Override
-	public Oasis copy(final boolean zero) {
+	public Oasis copy(final CopyBehavior zero) {
 		final Oasis retval = new Oasis(id);
 		retval.setImage(image);
 		return retval;

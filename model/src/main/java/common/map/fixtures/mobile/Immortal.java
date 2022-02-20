@@ -14,7 +14,7 @@ public interface Immortal extends MobileFixture, UnitMember {
 	 * Clone the object.
 	 */
 	@Override
-	Immortal copy(boolean zero);
+	Immortal copy(CopyBehavior zero);
 
 	/**
 	 * A list of immortals that used to be represented as {@link Animal

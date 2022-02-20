@@ -22,6 +22,16 @@ public interface IFixture {
 	 */
 	boolean equalsIgnoringID(IFixture fixture);
 
+	enum CopyBehavior {
+		/**
+		 * Keep all information, e.g. when copying between maps for the same player.
+		 */
+		KEEP,
+		/**
+		 * "Zero out" (omit) any "sensitive" information in the copy.
+		 */
+		ZERO
+	}
 	/**
 	 * Clone the fixture, optionally "sanitizing" it in a way that should
 	 * not break subset checking.
@@ -32,5 +42,5 @@ public interface IFixture {
 	 * when reading code that calls this, whether 'true' means 'zero out'
 	 * or 'keep sensitive information'.
 	 */
-	IFixture copy(boolean zero);
+	IFixture copy(CopyBehavior zero);
 }

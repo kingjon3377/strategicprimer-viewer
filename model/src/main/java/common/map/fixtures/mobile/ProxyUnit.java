@@ -111,7 +111,7 @@ public class ProxyUnit implements IUnit, ProxyFor<IUnit> {
 	}
 
 	@Override
-	public IUnit copy(final boolean zero) {
+	public IUnit copy(final CopyBehavior zero) {
 		final ProxyUnit retval;
 		if (parallel) {
 			retval = new ProxyUnit(commonID);

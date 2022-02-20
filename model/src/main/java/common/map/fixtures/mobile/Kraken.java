@@ -6,7 +6,7 @@ public class Kraken extends ImmortalAnimal {
 	}
 
 	@Override
-	public Kraken copy(final boolean zero) {
+	public Kraken copy(final CopyBehavior zero) {
 		return new Kraken(getId());
 	}
 }

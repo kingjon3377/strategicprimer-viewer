@@ -1,5 +1,6 @@
 package drivers.turnrunning;
 
+import common.map.IFixture;
 import org.jetbrains.annotations.Nullable;
 
 import common.map.IMapNG;
@@ -33,20 +34,20 @@ public interface ITurnRunningModel extends IExplorationModel, IAdvancementModel 
 	 * Add a copy of the given fixture to all submaps at the given location
 	 * iff no fixture with the same ID is already there.
 	 */
-	void addToSubMaps(Point location, TileFixture fixture, boolean zero);
+	void addToSubMaps(Point location, TileFixture fixture, IFixture.CopyBehavior zero);
 
 	/**
 	 * Reduce the population of a group of plants, animals, etc., and copy
 	 * the reduced form into all subordinate maps.
 	 */
 	<T extends HasPopulation<? extends TileFixture>&TileFixture> void reducePopulation(Point location,
-		T fixture, boolean zero, int reduction);
+	        T fixture, IFixture.CopyBehavior zero, int reduction);
 
 	/**
 	 * Reduce the acreage of a fixture, and copy the reduced form into all subordinate maps.
 	 */
 	<T extends HasExtent<? extends TileFixture>&TileFixture> void reduceExtent(Point location,
-		T fixture, boolean zero, BigDecimal reduction);
+	        T fixture, IFixture.CopyBehavior zero, BigDecimal reduction);
 
 	/**
 	 * Reduce the matching {@link IResourcePile resource}, in a {@link

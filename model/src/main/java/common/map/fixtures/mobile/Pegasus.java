@@ -6,7 +6,7 @@ public class Pegasus extends ImmortalAnimal {
 	}
 
 	@Override
-	public Pegasus copy(final boolean zero) {
+	public Pegasus copy(final CopyBehavior zero) {
 		return new Pegasus(getId());
 	}
 }

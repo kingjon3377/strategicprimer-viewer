@@ -107,8 +107,8 @@ public class MineralVein implements HarvestableFixture, MineralFixture {
 	}
 
 	@Override
-	public MineralVein copy(final boolean zero) {
-		final MineralVein retval = new MineralVein(kind, exposed, (zero) ? 0 : dc, id);
+	public MineralVein copy(final CopyBehavior zero) {
+		final MineralVein retval = new MineralVein(kind, exposed, (zero == CopyBehavior.ZERO) ? 0 : dc, id);
 		retval.setImage(image);
 		return retval;
 	}

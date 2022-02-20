@@ -6,7 +6,7 @@ public class Ogre extends SimpleImmortal {
 	}
 
 	@Override
-	public Ogre copy(final boolean zero) {
+	public Ogre copy(final CopyBehavior zero) {
 		return new Ogre(getId());
 	}
 

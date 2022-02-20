@@ -6,7 +6,7 @@ public class Snowbird extends ImmortalAnimal {
 	}
 
 	@Override
-	public Snowbird copy(final boolean zero) {
+	public Snowbird copy(final CopyBehavior zero) {
 		return new Snowbird(getId());
 	}
 }

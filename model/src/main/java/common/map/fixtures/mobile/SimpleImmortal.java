@@ -106,7 +106,7 @@ public abstract /* sealed */ class SimpleImmortal
 	 * Clone the object.
 	 */
 	@Override
-	public abstract SimpleImmortal copy(boolean zero);
+	public abstract SimpleImmortal copy(CopyBehavior zero);
 
 	@Override
 	public final String toString() {

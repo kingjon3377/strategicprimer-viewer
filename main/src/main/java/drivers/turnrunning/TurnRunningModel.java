@@ -85,7 +85,7 @@ public class TurnRunningModel extends ExplorationModel implements ITurnRunningMo
 	 * iff no fixture with the same ID is already there.
 	 */
 	@Override
-	public void addToSubMaps(final Point point, final TileFixture fixture, final boolean zero) {
+	public void addToSubMaps(final Point point, final TileFixture fixture, final IFixture.CopyBehavior zero) {
 		for (final IMutableMapNG map : getRestrictedSubordinateMaps()) {
 			if (map.getFixtures(point).stream().mapToInt(TileFixture::getId)
 					.noneMatch(i -> fixture.getId() == i)) {
@@ -100,7 +100,7 @@ public class TurnRunningModel extends ExplorationModel implements ITurnRunningMo
 	 */
 	@Override
 	public <T extends HasPopulation<? extends TileFixture>&TileFixture>
-			void reducePopulation(final Point location, final T fixture, final boolean zero, final int reduction) {
+			void reducePopulation(final Point location, final T fixture, final IFixture.CopyBehavior zero, final int reduction) {
 		if (reduction > 0) {
 			boolean first = false;
 			boolean all = false;
@@ -109,6 +109,12 @@ public class TurnRunningModel extends ExplorationModel implements ITurnRunningMo
 					.filter(fixture.getClass()::isInstance).map(fixture.getClass()::cast)
 						.filter(f -> fixture.isSubset(f, x -> {}))
 					.findAny().orElse(null);
+				IFixture.CopyBehavior cb;
+				if (first) { // TODO: This should probably be if NOT first ...
+					cb = IFixture.CopyBehavior.ZERO;
+				} else {
+					cb = zero;
+				}
 				if (matching != null) {
 					if (all) {
 						map.removeFixture(location, matching);
@@ -117,7 +123,7 @@ public class TurnRunningModel extends ExplorationModel implements ITurnRunningMo
 						if (remaining > 0) {
 							final T addend = (T) matching.reduced(remaining);
 							map.replace(location, matching,
-									addend.copy(first || zero));
+									addend.copy(cb));
 							first = false;
 							continue;
 						} else if (first) {
@@ -147,7 +153,7 @@ public class TurnRunningModel extends ExplorationModel implements ITurnRunningMo
 	 */
 	@Override
 	public <T extends HasExtent<? extends TileFixture>&TileFixture>
-		void reduceExtent(final Point location, final T fixture, final boolean zero, final BigDecimal reduction) {
+		void reduceExtent(final Point location, final T fixture, final IFixture.CopyBehavior zero, final BigDecimal reduction) {
 		if (reduction.signum() > 0) {
 			boolean first = false;
 			boolean all = false;
@@ -155,6 +161,12 @@ public class TurnRunningModel extends ExplorationModel implements ITurnRunningMo
 				final T matching = (T) map.getFixtures(location).stream()
 					.filter(fixture.getClass()::isInstance).map(fixture.getClass()::cast).filter(f -> fixture.isSubset(f, x -> {}))
 					.findAny().orElse(null);
+				IFixture.CopyBehavior cb;
+				if (first) { // TODO: Should be NOT first, right?
+					cb = IFixture.CopyBehavior.ZERO;
+				} else {
+					cb = zero;
+				}
 				if (matching != null) {
 					if (all) {
 						map.removeFixture(location, matching);
@@ -162,7 +174,7 @@ public class TurnRunningModel extends ExplorationModel implements ITurnRunningMo
 						// Precision isn't essential here
 						if (matching.getAcres().doubleValue() > reduction.doubleValue()) {
 							final T addend = (T)
-								matching.reduced(reduction).copy(first || zero);
+								matching.reduced(reduction).copy(cb);
 							map.replace(location, matching, addend);
 							first = false;
 							continue;
@@ -473,7 +485,7 @@ public class TurnRunningModel extends ExplorationModel implements ITurnRunningMo
 //				.filter(u -> u.getKind().equals(container.getKind()))
 					.filter(u -> u.getName().equals(container.getName()))
 					.filter(u -> u.getId() == container.getId()).findAny()
-					.ifPresent(matching -> matching.addMember(resource.copy(false)));
+					.ifPresent(matching -> matching.addMember(resource.copy(IFixture.CopyBehavior.KEEP)));
 			map.setModified(true);
 			any = true;
 		}
@@ -495,7 +507,7 @@ public class TurnRunningModel extends ExplorationModel implements ITurnRunningMo
 					.filter(IMutableFortress.class::isInstance).map(IMutableFortress.class::cast)
 					.filter(f -> f.getName().equals(container.getName()))
 					.filter(f -> f.getId() == container.getId()).findAny()
-					.ifPresent(matching -> matching.addMember(resource.copy(false)));
+					.ifPresent(matching -> matching.addMember(resource.copy(IFixture.CopyBehavior.KEEP)));
 			map.setModified(true);
 			any = true;
 		}
@@ -523,7 +535,7 @@ public class TurnRunningModel extends ExplorationModel implements ITurnRunningMo
 //				.filter(u -> u.getKind().equals(container.getKind()))
 					.filter(u -> u.getName().equals(container.getName()))
 					.filter(u -> u.getId() == container.getId()).findAny()
-					.ifPresent(matching -> matching.addMember(resource.copy(false)));
+					.ifPresent(matching -> matching.addMember(resource.copy(IFixture.CopyBehavior.KEEP)));
 			map.setModified(true);
 			any = true;
 		}
@@ -548,7 +560,7 @@ public class TurnRunningModel extends ExplorationModel implements ITurnRunningMo
 					.filter(IMutableFortress.class::isInstance).map(IMutableFortress.class::cast)
 					.filter(f -> f.getName().equals(container.getName()))
 					.filter(f -> f.getId() == container.getId()).findAny()
-					.ifPresent(matching -> matching.addMember(resource.copy(false)));
+					.ifPresent(matching -> matching.addMember(resource.copy(IFixture.CopyBehavior.KEEP)));
 			map.setModified(true);
 			any = true;
 		}
@@ -579,7 +591,7 @@ public class TurnRunningModel extends ExplorationModel implements ITurnRunningMo
 				.filter(u -> u.getName().equals(container.getName()))
 				.filter(u -> u.getId() == container.getId()).findAny().orElse(null);
 			if (matching != null) {
-				matching.addMember(animal.copy(false));
+				matching.addMember(animal.copy(IFixture.CopyBehavior.KEEP));
 				any = true;
 				map.setModified(true);
 			}
@@ -732,7 +744,7 @@ public class TurnRunningModel extends ExplorationModel implements ITurnRunningMo
 			}
 			any = true;
 			map.setModified(true);
-			result.addMember(resource.copy(false));
+			result.addMember(resource.copy(IFixture.CopyBehavior.KEEP));
 		}
 		return any;
 	}

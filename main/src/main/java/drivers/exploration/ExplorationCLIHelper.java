@@ -4,6 +4,7 @@ import common.map.Direction;
 import common.map.HasExtent;
 import common.map.HasOwner;
 import common.map.HasPopulation;
+import common.map.IFixture;
 import common.map.IMapNG;
 import common.map.Point;
 import common.map.River;
@@ -88,12 +89,14 @@ public class ExplorationCLIHelper implements MovementCostListener, SelectionChan
 			} else {
 				cli.println(fixture.toString());
 			}
-			final boolean zero;
+			final IFixture.CopyBehavior zero;
 			if (fixture instanceof HasOwner && (!((HasOwner) fixture).getOwner().equals(mover.getOwner())
 					|| fixture instanceof Village)) {
-				zero = true;
-			} else {
-				zero = fixture instanceof HasPopulation || fixture instanceof HasExtent;
+				zero = IFixture.CopyBehavior.ZERO;
+			} else if (fixture instanceof HasPopulation || fixture instanceof HasExtent)
+				zero = IFixture.CopyBehavior.ZERO;
+			else {
+				zero = IFixture.CopyBehavior.KEEP;
 			}
 			model.copyToSubMaps(destPoint, fixture, zero);
 		}
@@ -267,7 +270,7 @@ public class ExplorationCLIHelper implements MovementCostListener, SelectionChan
 			if (tracksAnimal instanceof Animal) {
 				allFixtures.add(new AnimalTracks((((Animal) tracksAnimal).getKind())));
 			} else if (tracksAnimal instanceof AnimalTracks) {
-				allFixtures.add(tracksAnimal.copy(false));
+				allFixtures.add(tracksAnimal.copy(IFixture.CopyBehavior.KEEP));
 			}
 
 			if (Direction.Nowhere == direction) {

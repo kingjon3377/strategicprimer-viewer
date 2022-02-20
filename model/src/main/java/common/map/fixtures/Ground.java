@@ -96,7 +96,7 @@ public class Ground implements MineralFixture, HasMutableImage {
 	 * Clone the object.
 	 */
 	@Override
-	public Ground copy(final boolean zero) {
+	public Ground copy(final CopyBehavior zero) {
 		final Ground retval = new Ground(id, kind, exposed);
 		retval.setImage(image);
 		return retval;

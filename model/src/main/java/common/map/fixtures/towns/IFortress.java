@@ -18,7 +18,7 @@ public interface IFortress extends HasImage, ITownFixture, HasName,
 	 * Clone the fortress.
 	 */
 	@Override
-	IFortress copy(boolean zero);
+	IFortress copy(CopyBehavior zero);
 
 	/**
 	 * The filename of the image to use as an icon when no per-instance icon has been specified.

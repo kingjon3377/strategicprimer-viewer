@@ -1,5 +1,6 @@
 package utility;
 
+import common.map.IFixture;
 import java.util.Map;
 import common.map.TileType;
 import drivers.common.IDriverModel;
@@ -53,7 +54,7 @@ public class MapTradeModel extends SimpleMultiMapModel {
 	}
 
 	public void maybeCopyFixturesAt(final Point location, final Predicate<TileFixture> condition,
-	                                final boolean zeroFixtures) {
+	                                final IFixture.CopyBehavior zeroFixtures) {
 		final IMapNG map = getMap();
 		for (final IMutableMapNG second : getRestrictedSubordinateMaps()) {
 			for (final TileFixture fixture : map.getFixtures(location).stream().filter(condition)

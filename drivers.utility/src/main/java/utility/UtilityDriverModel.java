@@ -309,7 +309,7 @@ public class UtilityDriverModel extends SimpleMultiMapModel {
 					if (matching == null) {
 						ostream.accept(String.format("Unmatched forest in %s: %s",
 							location, forest));
-						getRestrictedMap().addFixture(location, forest.copy(false));
+						getRestrictedMap().addFixture(location, forest.copy(IFixture.CopyBehavior.KEEP));
 						setMapModified(true);
 					} else {
 						forest.setId(matching.getId());
@@ -328,7 +328,7 @@ public class UtilityDriverModel extends SimpleMultiMapModel {
 					if (matching == null) {
 						ostream.accept(String.format("Unmatched ground in %s: %s",
 							location, ground));
-						getRestrictedMap().addFixture(location, ground.copy(false));
+						getRestrictedMap().addFixture(location, ground.copy(IFixture.CopyBehavior.KEEP));
 						setMapModified(true);
 					} else {
 						ground.setId(matching.getId());
@@ -343,17 +343,15 @@ public class UtilityDriverModel extends SimpleMultiMapModel {
 		if (map.getFixtures(point).stream().anyMatch(fixture::equals)) {
 			return;
 		} else if (fixture instanceof HasOwner && !(fixture instanceof ITownFixture)) {
-			final TileFixture zeroed = fixture.copy(!((HasOwner) fixture).getOwner()
-				.equals(currentPlayer));
+			IFixture.CopyBehavior cb = ((HasOwner) fixture).getOwner().equals(currentPlayer) ? IFixture.CopyBehavior.KEEP : IFixture.CopyBehavior.ZERO;
+			final TileFixture zeroed = fixture.copy(cb);
 			if (map.getFixtures(point).stream().noneMatch(zeroed::equals)) {
-				map.addFixture(point,
-					fixture.copy(!((HasOwner) fixture).getOwner()
-						.equals(currentPlayer)));
+				map.addFixture(point, fixture.copy(cb));
 			}
 		} else {
-			final TileFixture zeroed = fixture.copy(true);
+			final TileFixture zeroed = fixture.copy(IFixture.CopyBehavior.ZERO);
 			if (map.getFixtures(point).stream().noneMatch(zeroed::equals)) {
-				map.addFixture(point, fixture.copy(true));
+				map.addFixture(point, fixture.copy(IFixture.CopyBehavior.ZERO));
 			}
 		}
 	}

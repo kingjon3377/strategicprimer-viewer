@@ -63,7 +63,7 @@ public class Dragon implements Immortal, HasMutableImage, HasKind {
 	}
 
 	@Override
-	public Dragon copy(final boolean zero) {
+	public Dragon copy(final CopyBehavior zero) {
 		final Dragon retval = new Dragon(kind, id);
 		retval.setImage(image);
 		return retval;

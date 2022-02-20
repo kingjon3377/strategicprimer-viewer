@@ -783,7 +783,7 @@ public class SPMapNG implements IMutableMapNG {
 	 * FIXME: (In the interface) split with-player and without-player into separate signatures
 	 */
 	@Override
-	public IMapNG copy(final boolean zero, @Nullable final Player player) {
+	public IMapNG copy(final IFixture.CopyBehavior zero, @Nullable final Player player) {
 		final IMutableMapNG retval = new SPMapNG(getDimensions(), playerCollection.copy(),
 			currentTurn);
 		for (final Point point : getLocations()) {
@@ -794,8 +794,15 @@ public class SPMapNG implements IMutableMapNG {
 			retval.addRivers(point, getRivers(point).toArray(new River[0]));
 			// TODO: what other fixtures should we zero, or skip?
 			for (final TileFixture fixture : getFixtures(point)) {
-				retval.addFixture(point,
-					fixture.copy(zero && shouldZero(fixture, player)));
+				IFixture.CopyBehavior cb;
+				if (zero == IFixture.CopyBehavior.ZERO) {
+					cb = IFixture.CopyBehavior.ZERO;
+				} else if (shouldZero(fixture, player)) {
+					cb = IFixture.CopyBehavior.ZERO;
+				} else {
+					cb = IFixture.CopyBehavior.KEEP;
+				}
+				retval.addFixture(point, fixture.copy(cb));
 			}
 		}
 		return retval;

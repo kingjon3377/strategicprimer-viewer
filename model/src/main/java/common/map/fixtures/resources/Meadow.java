@@ -128,9 +128,9 @@ public class Meadow implements HarvestableFixture, HasExtent<Meadow> {
 	}
 
 	@Override
-	public Meadow copy(final boolean zero) {
+	public Meadow copy(final CopyBehavior zero) {
 		final Meadow retval = new Meadow(kind, field, cultivated, id, status,
-			(zero) ? -1 : acres);
+			(zero == CopyBehavior.ZERO) ? -1 : acres);
 		retval.setImage(image);
 		return retval;
 	}

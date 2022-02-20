@@ -42,10 +42,11 @@ import java.util.stream.Collectors;
 	 * @deprecated This class should only ever be used in a
 	 * FixtureListModel, and copying a tile's rivers should be handled
 	 * specially anyway, so this method should never be called.
+	 * @param zero
 	 */
 	@Deprecated
 	@Override
-	public RiverFixture copy(final boolean zero) {
+	public RiverFixture copy(final CopyBehavior zero) {
 		LOGGER.log(Level.WARNING, "TileTypeFixture.copy called", new Exception("dummy"));
 		return new RiverFixture(rivers.toArray(new River[0]));
 	}

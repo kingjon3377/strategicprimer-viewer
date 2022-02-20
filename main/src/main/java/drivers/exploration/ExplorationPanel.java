@@ -1,5 +1,6 @@
 package drivers.exploration;
 
+import common.map.IFixture;
 import java.util.Comparator;
 import java.util.EnumMap;
 import java.util.Objects;
@@ -336,7 +337,7 @@ import worker.common.IFixtureEditHelper;
 		if (animal instanceof Animal) {
 			return new AnimalTracks(((Animal) animal).getKind());
 		} else if (animal instanceof AnimalTracks) {
-			return ((AnimalTracks) animal).copy(true);
+			return ((AnimalTracks) animal).copy(IFixture.CopyBehavior.ZERO);
 		} else {
 			return null;
 		}
@@ -413,14 +414,15 @@ import worker.common.IFixtureEditHelper;
 					// Skip it! It'll corrupt the output XML!
 					continue;
 				} else {
-					final boolean zero;
+					final IFixture.CopyBehavior zero;
 					if (fixture instanceof HasOwner &&
 							(!player.equals(((HasOwner) fixture).getOwner()) ||
 								fixture instanceof Village)) {
-						zero = true;
-					} else {
-						zero = fixture instanceof HasPopulation ||
-							fixture instanceof HasExtent;
+						zero = IFixture.CopyBehavior.ZERO;
+					} else if (fixture instanceof HasPopulation || fixture instanceof HasExtent)
+						zero = IFixture.CopyBehavior.ZERO;
+					else {
+						zero = IFixture.CopyBehavior.KEEP;
 					}
 					driverModel.copyToSubMaps(destPoint, fixture, zero);
 				}

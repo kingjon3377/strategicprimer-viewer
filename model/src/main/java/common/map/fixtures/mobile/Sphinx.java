@@ -6,7 +6,7 @@ public class Sphinx extends SimpleImmortal {
 	}
 
 	@Override
-	public Sphinx copy(final boolean zero) {
+	public Sphinx copy(final CopyBehavior zero) {
 		return new Sphinx(getId());
 	}
 }
