@@ -129,7 +129,7 @@ public class WorkerTreeModelAlt extends DefaultTreeModel implements IWorkerTreeM
 	/**
 	 * A class for tree-nodes representing units.
 	 */
-	private static class UnitNode extends WorkerTreeNode<IUnit> {
+	private static final class UnitNode extends WorkerTreeNode<IUnit> {
 		private final IUnit unit;
 		public UnitNode(final IUnit unit) {
 			super(IUnit.class, unit);
@@ -193,7 +193,7 @@ public class WorkerTreeModelAlt extends DefaultTreeModel implements IWorkerTreeM
 	 * sharing a "kind" (in practice an administrative classification) in
 	 * the tree.
 	 */
-	private static class KindNode extends WorkerTreeNode<String> {
+	private static final class KindNode extends WorkerTreeNode<String> {
 		public KindNode(final String kind, final IUnit... units) {
 			super(String.class, kind);
 			for (int index = 0; index < units.length; index++) {
@@ -211,7 +211,7 @@ public class WorkerTreeModelAlt extends DefaultTreeModel implements IWorkerTreeM
 	 * and only when some but not all units are in a fortress, or when
 	 * units are in (divided between) multiple fortresses.
 	 */
-	private static class PlayerNode extends WorkerTreeNode<Player> {
+	private static final class PlayerNode extends WorkerTreeNode<Player> {
 		public PlayerNode(final Player player, final IWorkerModel model) {
 			super(Player.class, player);
 			final int index = 0;
