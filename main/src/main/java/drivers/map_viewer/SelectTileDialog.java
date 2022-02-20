@@ -29,7 +29,7 @@ import common.map.Point;
 /**
  * A dialog to let the user select a tile by coordinates.
  */
-/* package */ class SelectTileDialog extends SPDialog {
+/* package */ final class SelectTileDialog extends SPDialog {
 
 	private static final Logger LOGGER = Logger.getLogger(SelectTileDialog.class.getName());
 
