@@ -25,7 +25,7 @@ import lovelace.util.SimpleCardLayout;
  *
  * Or <del>try to convert back to a class now we have</del> merge with(?) SimpleCardLayout
  */
-/* package */ class ItemAdditionPanel extends JPanel implements AddRemoveSource {
+/* package */ final class ItemAdditionPanel extends JPanel implements AddRemoveSource {
 	/**
 	 * @param what What we're adding
 	 */
