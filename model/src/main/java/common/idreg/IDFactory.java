@@ -38,7 +38,7 @@ public final class IDFactory implements IDRegistrar {
 				if (location == null) {
 					warning.handle(new DuplicateIDException(id));
 				} else {
-					warning.handle(DuplicateIDException.atLocation(id,
+					warning.handle(new DuplicateIDException(id,
 							location.getLineNumber(), location.getColumnNumber()));
 				}
 			}

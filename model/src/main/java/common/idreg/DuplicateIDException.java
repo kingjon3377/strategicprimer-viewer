@@ -12,9 +12,4 @@ public class DuplicateIDException extends Exception {
 	public DuplicateIDException(final int id, final int line, final int column) {
 		super(String.format("Duplicate ID #%d at line %d, column %d", id, line, column));
 	}
-
-	// TODO: Deprecate this for removal once fully ported to Java?
-	public static DuplicateIDException atLocation(final int id, final int line, final int column) {
-		return new DuplicateIDException(id, line, column);
-	}
 }
