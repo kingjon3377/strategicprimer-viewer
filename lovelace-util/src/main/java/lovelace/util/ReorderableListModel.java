@@ -7,7 +7,7 @@ import javax.swing.DefaultListModel;
  * of the {@link Reorderable} interface. For the convenience of callers, the
  * class also takes its initial elements as constructor parameters.
  */
-public class ReorderableListModel<Element> extends DefaultListModel<Element> implements Reorderable {
+public final class ReorderableListModel<Element> extends DefaultListModel<Element> implements Reorderable {
 	private static final long serialVersionUID = 1;
 	@SafeVarargs
 	public ReorderableListModel(final Element... initialElements) {
