@@ -305,7 +305,9 @@ public class SPFluidReader implements IMapReader, ISPReader {
 		case "view":
 			expectAttributes(element, warner, "current_player", "current_turn");
 			currentTurn = getIntegerAttribute(element, "current_turn");
-			MaturityModel.setCurrentTurn(currentTurn);
+			if (currentTurn >= 0) {
+				MaturityModel.setCurrentTurn(currentTurn);
+			}
 			mapTag = firstStartElement(stream, element);
 			requireTag(mapTag, element.getName(), "map");
 			expectAttributes(mapTag, warner, "version", "rows", "columns");

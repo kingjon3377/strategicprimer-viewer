@@ -185,7 +185,9 @@ import java.util.function.Predicate;
 		case "view":
 			expectAttributes(element, "current_turn", "current_player");
 			currentTurn = getIntegerParameter(element, "current_turn");
-			MaturityModel.setCurrentTurn(currentTurn);
+			if (currentTurn >= 0) {
+				MaturityModel.setCurrentTurn(currentTurn);
+			}
 			mapTag = getFirstStartElement(stream, element);
 			requireTag(mapTag, element.getName(), "map");
 			expectAttributes(mapTag, "version", "rows", "columns");
