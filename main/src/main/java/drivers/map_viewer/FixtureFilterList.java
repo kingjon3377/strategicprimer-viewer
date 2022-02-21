@@ -41,7 +41,7 @@ import java.util.function.Predicate;
 		setDragEnabled(true);
 	}
 
-	private static final <T> Predicate<T> not(final Predicate<T> p) {
+	private static <T> Predicate<T> not(final Predicate<T> p) {
 		return t -> !p.test(t);
 	}
 

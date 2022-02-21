@@ -69,7 +69,7 @@ import common.map.fixtures.explorable.Battlefield;
  */
 public class MapTradeCLI implements CLIDriver {
 	private static final Logger LOGGER = Logger.getLogger(MapTradeCLI.class.getName());
-	private static final List<FixtureMatcher> initializeMatchers() {
+	private static List<FixtureMatcher> initializeMatchers() {
 		final List<FixtureMatcher> retval = new ArrayList<>();
 		FixtureMatcher.complements(IUnit.class, u -> !u.getOwner().isIndependent(),
 			"Units", "Independent Units").forEach(retval::add);

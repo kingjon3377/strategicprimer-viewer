@@ -496,7 +496,7 @@ public final class TestXMLIO {
 	}
 
 	@SafeVarargs
-	private static final Predicate<Throwable> instanceOfAny(final Class<? extends Throwable>... types) {
+	private static Predicate<Throwable> instanceOfAny(final Class<? extends Throwable>... types) {
 		return (except) -> {
 			for (final Class<? extends Throwable> type : types) {
 				if (type.isInstance(except)) {

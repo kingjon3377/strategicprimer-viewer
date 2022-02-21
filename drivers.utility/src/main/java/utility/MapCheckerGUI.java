@@ -31,7 +31,7 @@ public class MapCheckerGUI implements UtilityGUI {
 		return EmptyOptions.EMPTY_OPTIONS;
 	}
 
-	private static final <T> void noop(final T t) {}
+	private static <T> void noop(final T t) {}
 
 	@Override
 	public void startDriver(final String... args) {

@@ -187,7 +187,7 @@ public class ViewerGUI implements ViewerDriver {
 		frame.showWindow();
 	}
 
-	/* package */ static final ViewerGUI createDriver(final ICLIHelper cli, final SPOptions options,
+	/* package */ static ViewerGUI createDriver(final ICLIHelper cli, final SPOptions options,
 	                                                  final IDriverModel model) {
 		if (model instanceof IViewerModel) {
 			LOGGER.finer("Creating a viewer-GUI instance for a model of the proper type");
