@@ -445,13 +445,27 @@ public final class WorkerTree extends JTree implements UnitMemberSelectionSource
 		}
 
 		private enum BackgroundState {
-			NONE, WARN, ERROR
+			NONE(null), MISSING(new Color(184, 224, 249)), TODO(Color.yellow), FIXME(Color.pink);
+			BackgroundState(final @Nullable Color color) {
+				this.color = color;
+			}
+			private final @Nullable Color color;
+			public @Nullable Color getColor() {
+				return color;
+			}
+			public static BackgroundState larger(BackgroundState one, BackgroundState two) {
+				if (one.compareTo(two) < 0) {
+					return two;
+				} else {
+					return one;
+				}
+			}
 		}
 
 		/**
-		 * Returns {@link BackgroundState#ERROR} if orders contain FIXME,
-		 * {@link BackgroundState##WARN}, if orders contain TODO or XXX, and
-		 * {@link BackgroundState#NONE} otherwise (or if the unit has no members,
+		 * Returns {@link BackgroundState#FIXME} if orders contain FIXME,
+		 * {@link BackgroundState##WARN} if orders contain TODO or XXX, {@link BackgroundState#MISSING} if orders are
+		 * empty, and {@link BackgroundState#NONE} otherwise (or if the unit has no members,
 		 * as such a unit is probably an administrative holdover that
 		 * <em>shouldn't</em> have orders, and if it does the orders will be ignored).
 		 */
@@ -461,9 +475,11 @@ public final class WorkerTree extends JTree implements UnitMemberSelectionSource
 			}
 			final String orders = item.getLatestOrders(turnSource.getAsInt()).toLowerCase();
 			if (orders.contains("fixme")) {
-				return BackgroundState.ERROR;
+				return BackgroundState.FIXME;
 			} else if (orders.contains("todo") || orders.contains("xxx")) {
-				return BackgroundState.WARN;
+				return BackgroundState.TODO;
+			} else if (orders.trim().isEmpty() || item.getOrders(turnSource.getAsInt()).trim().isEmpty()) {
+				return BackgroundState.MISSING;
 			} else {
 				return BackgroundState.NONE;
 			}
@@ -495,8 +511,7 @@ public final class WorkerTree extends JTree implements UnitMemberSelectionSource
 			if (internal instanceof HasImage && component instanceof JLabel) {
 				((JLabel) component).setIcon(getIcon((HasImage) internal));
 			}
-			boolean shouldWarn = false;
-			boolean shouldError = false;
+			BackgroundState background = BackgroundState.NONE;
 			if (internal instanceof IWorker && component instanceof JLabel) {
 				final IWorker worker = (IWorker) internal;
 				if ("human".equals(worker.getRace())) {
@@ -539,39 +554,25 @@ public final class WorkerTree extends JTree implements UnitMemberSelectionSource
 						unit.stream().filter(IWorker.class::isInstance).count()));
 				}
 				final BackgroundState result = shouldChangeBackground(unit);
-				if (result == BackgroundState.ERROR) {
-					shouldError = true;
-					shouldWarn = false;
-				} else if (result == BackgroundState.WARN) {
-					shouldWarn = true;
-				}
+				background = BackgroundState.larger(background, result);
 			} else if (orderCheck && internal instanceof String) {
 				final BackgroundState result = shouldChangeBackground((String) internal);
-				if (result == BackgroundState.ERROR) {
-					shouldError = true;
-					shouldWarn = false;
-				} else if (result == BackgroundState.WARN) {
-					shouldWarn = true;
-				}
+				background = BackgroundState.larger(background, result);
 			}
 			if (component instanceof DefaultTreeCellRenderer) {
+				@Nullable Color backgroundColor = background.getColor();
 				final DefaultTreeCellRenderer comp = (DefaultTreeCellRenderer) component;
-				if (shouldError) {
-					comp.setBackgroundSelectionColor(Color.pink);
-					comp.setBackgroundNonSelectionColor(Color.pink);
-					comp.setTextSelectionColor(Color.black);
-					comp.setTextNonSelectionColor(Color.black);
-				} else if (shouldWarn) {
-					comp.setBackgroundSelectionColor(Color.yellow);
-					comp.setBackgroundNonSelectionColor(Color.yellow);
-					comp.setTextSelectionColor(Color.black);
+				if (backgroundColor == null) {
+					comp.setBackgroundSelectionColor(DEFAULT_STORER
+							.getBackgroundSelectionColor());
+					comp.setBackgroundNonSelectionColor(DEFAULT_STORER
+							.getBackgroundNonSelectionColor());
+					comp.setTextSelectionColor(Color.white);
 					comp.setTextNonSelectionColor(Color.black);
 				} else {
-					comp.setBackgroundSelectionColor(DEFAULT_STORER
-						.getBackgroundSelectionColor());
-					comp.setBackgroundNonSelectionColor(DEFAULT_STORER
-						.getBackgroundNonSelectionColor());
-					comp.setTextSelectionColor(Color.white);
+					comp.setBackgroundSelectionColor(backgroundColor);
+					comp.setBackgroundNonSelectionColor(backgroundColor);
+					comp.setTextSelectionColor(Color.black);
 					comp.setTextNonSelectionColor(Color.black);
 				}
 			}
