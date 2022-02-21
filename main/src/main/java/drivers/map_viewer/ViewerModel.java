@@ -2,6 +2,9 @@ package drivers.map_viewer;
 
 import common.map.HasName;
 import common.map.HasOwner;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
@@ -104,6 +107,11 @@ public class ViewerModel extends SimpleDriverModel implements IViewerModel {
 	 * The object to handle notifying selection-change listeners.
 	 */
 	private final SelectionChangeSupport scs = new SelectionChangeSupport();
+
+	/**
+	 * Previously dismissed members.
+	 */
+	private final Set<UnitMember> dismissedMembers = new HashSet<>();
 
 	/**
 	 * The current zoom level.
@@ -679,7 +687,6 @@ public class ViewerModel extends SimpleDriverModel implements IViewerModel {
 		}
 	}
 
-	// TODO: Keep a list of dismissed members
 	@Override
 	public void dismissUnitMember(final UnitMember member) {
 		for (final IMutableUnit unit : getMap().streamAllFixtures()
@@ -691,10 +698,16 @@ public class ViewerModel extends SimpleDriverModel implements IViewerModel {
 				.findAny().orElse(null);
 			if (matching != null) {
 				unit.removeMember(matching);
+				dismissedMembers.add(member);
 				getRestrictedMap().setModified(true);
 				break; // TODO: Why not just return?
 			}
 		}
+	}
+
+	@Override
+	public Iterable<UnitMember> getDismissed() {
+		return Collections.unmodifiableSet(dismissedMembers);
 	}
 
 	@Override

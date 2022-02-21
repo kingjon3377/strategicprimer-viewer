@@ -5,8 +5,6 @@ import org.jetbrains.annotations.Nullable;
 
 import common.map.Player;
 
-import common.map.fixtures.UnitMember;
-
 import common.map.fixtures.mobile.IUnit;
 import common.map.fixtures.towns.IFortress;
 
@@ -64,11 +62,4 @@ public interface IWorkerModel extends  IMultiMapModel, IAdvancementModel, IFixtu
 	 * TODO: Return their positions with them?
 	 */
 	Iterable<IFortress> getFortresses(Player player);
-
-	/**
-	 * The unit members that have been dismissed during this session.
-	 *
-	 * TODO: Move to {@link IFixtureEditingModel}, since dismissUnitMember() got moved there?
-	 */
-	Iterable<UnitMember> getDismissed();
 }

@@ -237,6 +237,7 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 		}
 	}
 
+	private final Set<UnitMember> dismissedMembers = new HashSet<>();
 	private final List<MovementCostListener> mcListeners = new ArrayList<>();
 	private final List<SelectionChangeListener> scListeners = new ArrayList<>();
 
@@ -1111,11 +1112,17 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 				final Optional<UnitMember> matching = unit.stream().filter(member::equals).findAny();
 				if (matching.isPresent()) { // FIXME: equals() will really not do here ...
 					unit.removeMember(matching.get());
+					dismissedMembers.add(member);
 					map.setModified(true);
 					break;
 				}
 			}
 		}
+	}
+
+	@Override
+	public Iterable<UnitMember> getDismissed() {
+		return Collections.unmodifiableSet(dismissedMembers);
 	}
 
 	@Override

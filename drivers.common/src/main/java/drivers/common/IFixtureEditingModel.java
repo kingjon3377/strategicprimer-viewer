@@ -79,4 +79,11 @@ public interface IFixtureEditingModel extends IDriverModel {
 	 * fixtures-containing-fixtures as they come to exist
 	 */
 	boolean sortFixtureContents(IUnit fixture);
+
+	/**
+	 * The unit members that have been dismissed during this session.
+	 *
+	 * TODO: Move to {@link IFixtureEditingModel}, since dismissUnitMember() got moved there?
+	 */
+	Iterable<UnitMember> getDismissed();
 }
