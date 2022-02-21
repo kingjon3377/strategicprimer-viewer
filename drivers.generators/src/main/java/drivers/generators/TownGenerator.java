@@ -405,12 +405,12 @@ import java.math.BigDecimal;
 	}
 
 	@FunctionalInterface
-	private static interface IntToIntFunction {
+	private interface IntToIntFunction {
 		int apply(int num);
 	}
 
 	@FunctionalInterface
-	private static interface RepeatedRoller {
+	private interface RepeatedRoller {
 		default int repeatedlyRoll(final int count, final int die) {
 			return repeatedlyRoll(count, die, 0);
 		}

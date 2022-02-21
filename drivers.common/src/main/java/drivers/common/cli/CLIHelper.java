@@ -29,12 +29,12 @@ import java.util.OptionalInt;
 public final class CLIHelper implements ICLIHelper {
 	private static final Logger LOGGER = Logger.getLogger(CLIHelper.class.getName());
 	@FunctionalInterface
-	public static interface IOSource {
+	public interface IOSource {
 		@Nullable String readLine() throws IOException;
 	}
 
 	@FunctionalInterface
-	public static interface IOSink {
+	public interface IOSink {
 		void write(String string) throws IOException;
 	}
 

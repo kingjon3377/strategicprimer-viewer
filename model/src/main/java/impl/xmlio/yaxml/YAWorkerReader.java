@@ -73,7 +73,7 @@ import impl.xmlio.exceptions.UnwantedChildException;
 	}
 
 	@FunctionalInterface
-	private static interface ReadToIntFunction<Type> {
+	private interface ReadToIntFunction<Type> {
 		int apply(Type item) throws SPFormatException;
 	}
 

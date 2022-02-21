@@ -24,7 +24,7 @@ interface MapContentsReader {
 	/**
 	 * Logger for default methods.
 	 */
-	static final Logger LOGGER = Logger.getLogger(MapContentsReader.class.getName());
+	Logger LOGGER = Logger.getLogger(MapContentsReader.class.getName());
 	/**
 	 * Read map direct contents---that is, anything directly at a location on the map.
 	 */

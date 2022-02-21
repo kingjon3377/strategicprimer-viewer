@@ -6,7 +6,7 @@ import java.util.logging.Logger;
  * An interface for "fixtures" used in the UI that should not actually be added to a map.
  */
 public interface FakeFixture extends TileFixture, HasImage {
-	static final Logger LOGGER = Logger.getLogger(FakeFixture.class.getName());
+	Logger LOGGER = Logger.getLogger(FakeFixture.class.getName());
 	/**
 	 * A dummy "ID number"
 	 * @deprecated A fake fixture should only ever be used in a

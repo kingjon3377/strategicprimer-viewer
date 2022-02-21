@@ -147,7 +147,7 @@ public class DrawHelperComparator implements UtilityDriver {
 	}
 
 	@FunctionalInterface
-	private static interface TestInterface {
+	private interface TestInterface {
 		long runTest(TileDrawHelper tdh, IMapNG map, int reps, int tileSize);
 	}
 

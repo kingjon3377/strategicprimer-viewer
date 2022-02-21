@@ -70,7 +70,7 @@ public class MapCheckerCLI implements UtilityDriver {
 	 * report at least one warning.
 	 */
 	@FunctionalInterface
-	private static interface Checker {
+	private interface Checker {
 		/**
 		 * @param terrain the terrain at a point
 		 * @param location the location being checked

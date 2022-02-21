@@ -36,21 +36,21 @@ public class OrdersPanel extends BorderedPanel implements OrdersContainer {
 	private final BiFunction<Player, String, Collection<IUnit>> playerUnits;
 
 	@FunctionalInterface
-	public static interface IOrdersSupplier { // TODO: Move elsewhere; TODO: just use BiFunction<IUnit, Integer, String>? (See what callers try to pass in)
+	public interface IOrdersSupplier { // TODO: Move elsewhere; TODO: just use BiFunction<IUnit, Integer, String>? (See what callers try to pass in)
 		String getOrders(IUnit unit, int turn);
 	}
 
 	private final IOrdersSupplier ordersSupplier;
 
 	@FunctionalInterface
-	public static interface IOrdersConsumer { // TODO: Move elsewhere
+	public interface IOrdersConsumer { // TODO: Move elsewhere
 		void accept(IUnit unit, int turn, String orders);
 	}
 
 	private final @Nullable IOrdersConsumer ordersConsumer;
 
 	@FunctionalInterface
-	public static interface IIsCurrent { // TODO: Move elsewhere; rename
+	public interface IIsCurrent { // TODO: Move elsewhere; rename
 		boolean isCurrent(IUnit unit, int turn);
 	}
 

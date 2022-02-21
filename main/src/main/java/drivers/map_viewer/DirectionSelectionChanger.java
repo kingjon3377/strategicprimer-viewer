@@ -153,7 +153,7 @@ import common.map.Point;
 	}
 
 	@FunctionalInterface
-	private static interface BooleanConsumer {
+	private interface BooleanConsumer {
 		void accept(boolean bool);
 	}
 

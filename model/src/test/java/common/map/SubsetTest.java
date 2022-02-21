@@ -177,7 +177,7 @@ public final class SubsetTest {
 	}
 
 	@FunctionalInterface
-	private static interface ITestMethod {
+	private interface ITestMethod {
 		void apply(IMapNG one, IMapNG two, String message);
 	}
 

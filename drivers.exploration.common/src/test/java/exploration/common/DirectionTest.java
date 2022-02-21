@@ -15,7 +15,7 @@ import common.map.SPMapNG;
  * finding adjacent tiles, right.
  */
 public class DirectionTest {
-	private static interface DirectionAssertion {
+	private interface DirectionAssertion {
 		void call(Point source, Point destination, String extraMessage);
 	}
 

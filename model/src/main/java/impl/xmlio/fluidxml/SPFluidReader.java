@@ -142,7 +142,7 @@ public class SPFluidReader implements IMapReader, ISPReader {
 	}
 
 	@FunctionalInterface
-	private static interface HasKindFactory {
+	private interface HasKindFactory {
 		HasKind apply(String string, int integer);
 	}
 

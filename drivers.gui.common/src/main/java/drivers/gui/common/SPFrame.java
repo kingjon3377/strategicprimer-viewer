@@ -25,7 +25,7 @@ import drivers.common.MapChangeListener;
  */
 public class SPFrame extends JFrame implements ISPWindow {
 	@FunctionalInterface
-	public static interface IDroppedFileHandler {
+	public interface IDroppedFileHandler {
 		void accept(Path file) throws SPFormatException, IOException, MissingFileException,
 			MalformedXMLException;
 	}

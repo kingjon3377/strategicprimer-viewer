@@ -86,7 +86,7 @@ public interface ICLIHelper {
 
 	// TODO: Why not just use Predicate?
 	@FunctionalInterface
-	public static interface TrinaryPredicate<Input> {
+	interface TrinaryPredicate<Input> {
 		@Nullable Boolean test(Input item);
 	}
 

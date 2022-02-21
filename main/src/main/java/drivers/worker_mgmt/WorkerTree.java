@@ -443,7 +443,7 @@ public final class WorkerTree extends JTree implements UnitMemberSelectionSource
 				.orElse(DEFAULT_FIXTURE_ICON);
 		}
 
-		private static enum BackgroundState {
+		private enum BackgroundState {
 			NONE, WARN, ERROR;
 		}
 

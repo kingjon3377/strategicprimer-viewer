@@ -21,13 +21,13 @@ public interface ISPReader {
 	 * Tags we expect to use in the future; they are skipped for now and
 	 * we'll warn if they're used.
 	 */
-	public static final List<String> FUTURE_TAGS =
+	List<String> FUTURE_TAGS =
 			List.of("future", "explorer", "building", "resource", "changeset", "change", "move", "work", "discover", "submap", "futuretag", "futureTag", "science");
 
 	/**
 	 * The namespace that SP XML will use.
 	 */
-	public static final String SP_NAMESPACE =
+	String SP_NAMESPACE =
 		"https://github.com/kingjon3377/strategicprimer-viewer";
 
 	/**

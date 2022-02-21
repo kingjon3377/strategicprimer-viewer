@@ -15,7 +15,7 @@ public interface IJob extends HasName, Iterable<ISkill>, Subsettable<IJob> {
 	 * Skill names that are suspicious when they are the only Skill a Job
 	 * has. In many cases they should be "miscellaneous" instead.
 	 */
-	public static final List<String> SUSPICIOUS_SKILLS =
+	List<String> SUSPICIOUS_SKILLS =
 			List.of("hunter", "hunting", "explorer", "exploration", "research", "carpentry", "woodcutting", "farming", "food gathering", "scientist", "woodcutter", "farmer", "brickmaker", "brickmaking", "administration");
 
 	/**

@@ -20,7 +20,7 @@ public interface IReportGenerator<T extends IFixture> {
 	/**
 	 * A list that knows what its title should be when its contents are written to HTML.
 	 */
-	public static interface HeadedList<Element> extends List<Element> {
+	interface HeadedList<Element> extends List<Element> {
 		/**
 		 * The header text.
 		 */
@@ -30,7 +30,7 @@ public interface IReportGenerator<T extends IFixture> {
 	/**
 	 * A Map that knows what its title should be when its contents are written to HTML.
 	 */
-	public static interface HeadedMap<Key, Value> extends Map<Key, Value> {
+	interface HeadedMap<Key, Value> extends Map<Key, Value> {
 		/**
 		 * The header text.
 		 */
@@ -70,8 +70,8 @@ public interface IReportGenerator<T extends IFixture> {
 			produceSingle(fixtures, map, formatter, item, loc);
 	}
 
-	static final String CLOSE_LI = "</li>" + System.lineSeparator();
-	static final String CLOSE_UL = "</ul>" + System.lineSeparator();
+	String CLOSE_LI = "</li>" + System.lineSeparator();
+	String CLOSE_UL = "</ul>" + System.lineSeparator();
 
 	/**
 	 * Write the contents of a Map to a stream as a list, but don't write anything if it is empty.

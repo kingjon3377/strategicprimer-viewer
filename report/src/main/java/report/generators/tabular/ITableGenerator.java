@@ -33,9 +33,9 @@ public interface ITableGenerator<T extends IFixture> {
 	/**
 	 * A regular expression to match quote characters.
 	 */
-	static final Pattern QUOTE_PATTERN = Pattern.compile("\"");
+	Pattern QUOTE_PATTERN = Pattern.compile("\"");
 
-	static final Logger LOGGER = Logger.getLogger(ITableGenerator.class.getName());
+	Logger LOGGER = Logger.getLogger(ITableGenerator.class.getName());
 
 	// TODO: Should actually be a Predicate<IFixture> canHandle(), most
 	// likely, in the absence of reified union types.
