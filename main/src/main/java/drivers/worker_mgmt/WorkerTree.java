@@ -444,7 +444,7 @@ public final class WorkerTree extends JTree implements UnitMemberSelectionSource
 		}
 
 		private enum BackgroundState {
-			NONE, WARN, ERROR;
+			NONE, WARN, ERROR
 		}
 
 		/**

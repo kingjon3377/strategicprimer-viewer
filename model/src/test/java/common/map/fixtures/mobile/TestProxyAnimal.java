@@ -33,7 +33,7 @@ public class TestProxyAnimal {
 		for (final Animal proxied : ((ProxyAnimal) reduced).getProxied()) {
 			assertEquals(newId, proxied.getId(), "Each animal proxied by it has the correct ID");
 			assertEquals(3, proxied.getPopulation(),
-					"Each animal proxied by it has the correct population");;
+					"Each animal proxied by it has the correct population");
 		}
 	}
 
