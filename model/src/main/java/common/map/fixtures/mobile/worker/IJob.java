@@ -3,8 +3,6 @@ package common.map.fixtures.mobile.worker;
 import common.map.Subsettable;
 import common.map.HasName;
 
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 /**

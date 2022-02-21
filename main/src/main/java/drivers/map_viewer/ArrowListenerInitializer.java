@@ -14,7 +14,6 @@ import lovelace.util.Platform;
 
 import org.javatuples.Pair;
 
-import java.util.Collections;
 import java.util.Arrays;
 
 /**

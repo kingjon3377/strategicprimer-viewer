@@ -42,8 +42,6 @@ import static common.map.fixtures.mobile.Immortal.IMMORTAL_ANIMALS;
 import common.map.fixtures.towns.IFortress;
 
 import java.util.List;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.stream.Collectors;
 import lovelace.util.MalformedXMLException;
 import java.text.ParseException;

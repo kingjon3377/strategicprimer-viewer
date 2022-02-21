@@ -13,8 +13,6 @@ import common.map.fixtures.mobile.AnimalTracks;
 import common.map.fixtures.mobile.AnimalOrTracks;
 import common.xmlio.Warning;
 
-import java.util.Collections;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.Map;

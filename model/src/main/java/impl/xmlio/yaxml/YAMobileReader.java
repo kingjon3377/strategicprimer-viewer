@@ -4,8 +4,6 @@ import javax.xml.namespace.QName;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 import java.util.Map;
-import java.util.HashMap;
-import java.util.Collections;
 import java.util.Set;
 import java.util.HashSet;
 import java.util.function.IntFunction;

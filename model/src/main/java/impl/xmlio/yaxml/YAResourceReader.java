@@ -23,10 +23,7 @@ import common.map.fixtures.towns.TownStatus;
 import common.xmlio.Warning;
 import impl.xmlio.exceptions.MissingPropertyException;
 import impl.xmlio.exceptions.DeprecatedPropertyException;
-import java.util.Arrays;
 import java.util.Set;
-import java.util.HashSet;
-import java.util.Collections;
 
 /**
  * A reader for resource-bearing {@link common.map.TileFixture}s.

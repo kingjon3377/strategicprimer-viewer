@@ -33,7 +33,6 @@ import static impl.xmlio.ISPReader.SP_NAMESPACE;
 import java.util.List;
 import java.util.Collections;
 import lovelace.util.ThrowingConsumer;
-import java.util.Arrays;
 import java.util.stream.Stream;
 import java.util.stream.Collectors;
 import java.io.IOException;

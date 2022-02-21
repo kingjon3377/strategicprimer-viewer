@@ -18,9 +18,6 @@ import common.map.fixtures.terrain.Hill;
 import common.map.fixtures.terrain.Forest;
 import common.xmlio.Warning;
 
-import java.util.stream.Stream;
-import java.util.stream.Collectors;
-import java.util.Collections;
 import java.util.Set;
 
 /**

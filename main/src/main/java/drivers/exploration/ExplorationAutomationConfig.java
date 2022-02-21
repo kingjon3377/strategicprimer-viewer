@@ -12,7 +12,6 @@ import common.map.fixtures.towns.TownStatus;
 import common.map.fixtures.towns.Village;
 import drivers.common.cli.ICLIHelper;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.function.Function;

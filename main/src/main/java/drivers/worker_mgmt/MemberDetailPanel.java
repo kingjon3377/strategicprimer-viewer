@@ -6,8 +6,6 @@ import java.util.stream.Collectors;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.function.ToIntFunction;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.stream.StreamSupport;
 import java.awt.Image;
 import java.awt.Graphics;

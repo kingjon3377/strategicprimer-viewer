@@ -22,9 +22,6 @@ import common.map.fixtures.mobile.worker.WorkerStats;
 
 import exploration.common.IExplorationModel;
 
-import java.util.Collections;
-import java.util.Arrays;
-
 /**
  * A driver to print a mini-report on workers, suitable for inclusion in a player's results.
  */

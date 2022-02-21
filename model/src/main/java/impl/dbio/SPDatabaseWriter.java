@@ -16,8 +16,6 @@ import common.map.IMapNG;
 import java.nio.file.Path;
 import lovelace.util.ThrowingConsumer;
 import java.io.IOException;
-import java.util.Collections;
-import java.util.Arrays;
 
 public final class SPDatabaseWriter implements SPWriter {
 	/**

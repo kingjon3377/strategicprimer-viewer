@@ -5,7 +5,6 @@ import java.util.logging.Level;
 import java.io.IOException;
 import java.util.logging.Logger;
 import drivers.gui.common.SPFileChooser;
-import java.util.Collections;
 import javax.swing.JButton;
 import java.util.Arrays;
 import java.util.List;

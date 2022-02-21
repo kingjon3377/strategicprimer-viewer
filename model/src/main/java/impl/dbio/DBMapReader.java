@@ -16,8 +16,6 @@ import common.map.Direction;
 import common.xmlio.Warning;
 import impl.xmlio.exceptions.MapVersionException;
 
-import java.util.Collections;
-import java.util.Arrays;
 import java.util.Map;
 import java.util.List;
 import java.util.logging.Logger;

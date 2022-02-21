@@ -14,7 +14,6 @@ import common.map.fixtures.mobile.AnimalTracks;
 import common.map.fixtures.mobile.Animal;
 
 import drivers.turnrunning.ITurnRunningModel;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;

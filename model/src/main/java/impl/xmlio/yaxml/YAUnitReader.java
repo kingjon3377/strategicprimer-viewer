@@ -18,8 +18,6 @@ import common.xmlio.Warning;
 import impl.xmlio.exceptions.MissingPropertyException;
 import impl.xmlio.exceptions.UnwantedChildException;
 import java.util.Map;
-import java.util.Collections;
-import java.util.Arrays;
 import java.util.List;
 import lovelace.util.MalformedXMLException;
 
