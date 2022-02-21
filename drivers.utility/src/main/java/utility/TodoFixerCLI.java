@@ -351,9 +351,7 @@ public class TodoFixerCLI implements CLIDriver {
 				}
 				model.setMapModified(map, true);
 			}
-			for (final Point location : model.getMap().getLocations()) {
-				model.copyRiversAt(location);
-			}
+			model.getMap().getLocations().forEach(model::copyRiversAt);
 		} else {
 			fixAllUnits(model.getMap());
 			try {
