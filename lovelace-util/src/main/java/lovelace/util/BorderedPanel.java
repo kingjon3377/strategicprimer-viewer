@@ -8,7 +8,7 @@ import java.awt.Component;
 
 /**
  * A {@link JPanel panel} laid out by a {@link BorderLayout}, with helper
- * methods/attributes to assign components to its different sectors. 
+ * methods/attributes to assign components to its different sectors.
  */
 public class BorderedPanel extends JPanel {
 	private static final long serialVersionUID = 1L;
