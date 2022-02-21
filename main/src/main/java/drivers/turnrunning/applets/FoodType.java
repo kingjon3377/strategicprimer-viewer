@@ -26,7 +26,7 @@ import org.jetbrains.annotations.Nullable;
 	public static @Nullable FoodType askFoodType(final ICLIHelper cli, final String foodKind) {
 		for (final FoodType type : FoodType.values()) {
 			final Boolean resp = cli.inputBooleanInSeries(String.format("Is it %s?", type),
-				foodKind + type);
+					foodKind + type);
 			if (resp == null) {
 				return null; // EOF
 			} else if (resp) {
@@ -77,7 +77,7 @@ import org.jetbrains.annotations.Nullable;
 	@Override
 	public String toString() {
 		return string;
-    	}
+	}
 
 	FoodType(final @Nullable Integer keepsFor, final @Nullable Integer keepsForIfCool,
 	         final @Nullable Integer keepsForRefrig, final @Nullable Integer keepsForFrozen,
@@ -110,7 +110,7 @@ import org.jetbrains.annotations.Nullable;
 		}
 		if (keepsForRefrigerated != null && age < keepsForRefrigerated) {
 			final Boolean resp = cli.inputBooleanInSeries("Was this kept refrigerated?",
-				pile.getKind() + string + "refrig");
+					pile.getKind() + string + "refrig");
 			if (resp == null) {
 				return null;
 			} else if (resp) {
@@ -119,7 +119,7 @@ import org.jetbrains.annotations.Nullable;
 		}
 		if (keepsForFrozen != null && age < keepsForFrozen) {
 			final Boolean resp = cli.inputBooleanInSeries("Was this kept frozen?",
-				pile.getKind() + string + "frozen");
+					pile.getKind() + string + "frozen");
 			if (resp == null) {
 				return null;
 			} else if (resp) {

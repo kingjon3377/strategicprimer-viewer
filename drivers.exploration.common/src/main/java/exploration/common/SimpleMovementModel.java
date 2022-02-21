@@ -106,7 +106,7 @@ public final class SimpleMovementModel {
 		} else if (TileType.Ocean == terrain) {
 			return Integer.MAX_VALUE - 1;
 		} else if (forest || mountain || Stream.of(fixtures)
-					.anyMatch(fix -> fix instanceof Forest || fix instanceof Hill) ||
+				.anyMatch(fix -> fix instanceof Forest || fix instanceof Hill) ||
 				           TileType.Desert == terrain) {
 			return (river) ? 2 : 3;
 		} else if (TileType.Jungle == terrain || TileType.Swamp == terrain) {
@@ -156,8 +156,8 @@ public final class SimpleMovementModel {
 	 */
 	private static int highestPerception(final IUnit unit) {
 		return unit.stream().filter(IWorker.class::isInstance)
-			.map(IWorker.class::cast).mapToInt(SimpleMovementModel::getPerception)
-			.max().orElse(0);
+				.map(IWorker.class::cast).mapToInt(SimpleMovementModel::getPerception)
+				.max().orElse(0);
 	}
 
 	/**
@@ -165,11 +165,11 @@ public final class SimpleMovementModel {
 	 */
 	private static int getPerception(final IWorker worker) {
 		final int ability = Optional.ofNullable(worker.getStats())
-			.map(WorkerStats::getWisdom).orElse(0);
+				.map(WorkerStats::getWisdom).orElse(0);
 		final int ranks = StreamSupport.stream(worker.spliterator(), true)
-			.flatMap(x -> StreamSupport.stream(x.spliterator(), true))
-			.filter(s -> "percpetion".equalsIgnoreCase(s.getName()))
-			.mapToInt(ISkill::getLevel).sum();
+				.flatMap(x -> StreamSupport.stream(x.spliterator(), true))
+				.filter(s -> "percpetion".equalsIgnoreCase(s.getName()))
+				.mapToInt(ISkill::getLevel).sum();
 		return ability + (ranks * 2);
 	}
 
