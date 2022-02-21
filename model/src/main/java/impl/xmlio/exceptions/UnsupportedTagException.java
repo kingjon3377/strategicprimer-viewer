@@ -9,6 +9,7 @@ import javax.xml.stream.events.StartElement;
  * A custom exception for not-yet-supported tags.
  */
 public final class UnsupportedTagException extends SPFormatException {
+	private static final long serialVersionUID = 1L;
 	/**
 	 * The unsupported tag.
 	 */

@@ -9,6 +9,7 @@ import javax.xml.stream.events.StartElement;
  * A custom exception for cases where one property is deprecated in favor of another.
  */
 public class DeprecatedPropertyException extends SPFormatException {
+	private static final long serialVersionUID = 1L;
 	/**
 	 * The current tag.
 	 */

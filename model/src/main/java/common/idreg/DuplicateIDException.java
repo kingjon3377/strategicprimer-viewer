@@ -4,6 +4,7 @@ package common.idreg;
  * An exception to warn about duplicate IDs.
  */
 public class DuplicateIDException extends Exception {
+	private static final long serialVersionUID = 1L;
 	public DuplicateIDException(final int id) {
 		super("Duplicate ID #" + id);
 	}

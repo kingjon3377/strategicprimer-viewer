@@ -16,6 +16,7 @@ import java.util.logging.Level;
  * A {@link TransferHandler} to allow SP apps to accept dropped files.
  */
 /* package */ class FileDropHandler extends TransferHandler {
+	private static final long serialVersionUID = 1L;
 	/**
 	 * Logger.
 	 */

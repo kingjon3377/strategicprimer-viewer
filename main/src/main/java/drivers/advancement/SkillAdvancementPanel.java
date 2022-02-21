@@ -38,6 +38,7 @@ import drivers.common.IAdvancementModel;
  */
 /* package */ final class SkillAdvancementPanel extends BorderedPanel
 		implements SkillSelectionListener, LevelGainSource, UnitMemberListener {
+	private static final long serialVersionUID = 1L;
 	private static JPanel secondPanelFactory(final JButton... buttons) {
 		Platform.makeButtonsSegmented(buttons);
 		if (Platform.SYSTEM_IS_MAC) {

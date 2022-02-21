@@ -78,6 +78,7 @@ import java.util.function.Consumer;
 	private final WorkerCreationFrame workerCreationFrame;
 
 	private static final class WorkerCreationFrame extends JFrame {
+		private static final long serialVersionUID = 1L;
 		private final JTextField name;
 		private final JTextField race;
 		private final SpinnerNumberModel hpModel = new SpinnerNumberModel(0, -1, 100, 1);

@@ -22,6 +22,7 @@ import java.util.function.Predicate;
  * A list to let the user select which fixtures ought to be searched.
  */
 /* package */ final class FixtureFilterList extends JList<FixtureMatcher> implements ZOrderFilter {
+	private static final long serialVersionUID = 1L;
 	public FixtureFilterList() {
 		matcherListModel = new ReorderableListModel<>(
 				FixtureMatcher.simpleMatcher(Ground.class, Ground::isExposed,

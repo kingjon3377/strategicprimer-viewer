@@ -16,6 +16,7 @@ import org.jetbrains.annotations.Nullable;
  * The list model for the list of units to choose the explorer (or otherwise moving unit) from.
  */
 /* package */ class UnitListModel extends DefaultListModel<IUnit> implements PlayerChangeListener {
+	private static final long serialVersionUID = 1L;
 	private static final Logger LOGGER = Logger.getLogger(UnitListModel.class.getName());
 
 	public UnitListModel(final IExplorationModel model) {

@@ -52,6 +52,7 @@ import java.awt.image.BufferedImage;
  */
 /* package */ final class MapComponent extends JComponent implements MapGUI, MapChangeListener,
 		SelectionChangeListener, GraphicalParamsListener {
+	private static final long serialVersionUID = 1L;
 	private final IViewerModel mapModel;
 
 	@Override
@@ -87,7 +88,8 @@ import java.awt.image.BufferedImage;
 		final InputMap localInputMap = getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
 		ArrowListenerInitializer.setUpArrowListeners(dsl, localInputMap, localActionMap);
 		localInputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_T, 0), "show-terrain-menu");
-		localActionMap.put("show-terrain-menu", new AbstractAction() {
+		localActionMap.put("show-terrain-menu", new AbstractAction() { // FIXME: Use ActionWrapper
+			private static final long serialVersionUID = 1L;
 				@Override
 				public void actionPerformed(final ActionEvent event) {
 					cml.showMenuAtSelection(Optional.ofNullable(event.getSource())

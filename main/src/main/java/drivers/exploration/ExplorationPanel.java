@@ -92,6 +92,7 @@ import worker.common.IFixtureEditHelper;
  * TODO: try to split controller-functionality from presentation
  */
 /* package */ class ExplorationPanel extends BorderedPanel implements SelectionChangeListener {
+	private static final long serialVersionUID = 1L;
 	private static final Logger LOGGER = Logger.getLogger(ExplorationPanel.class.getName());
 	private static KeyStroke key(final int code) {
 		return KeyStroke.getKeyStroke(code, 0);

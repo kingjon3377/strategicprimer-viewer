@@ -64,6 +64,7 @@ import drivers.common.FixtureMatcher;
  */
 public class FixtureFilterTableModel extends AbstractTableModel
 		implements Reorderable, ZOrderFilter, Iterable<FixtureMatcher>, Comparator<TileFixture> {
+	private static final long serialVersionUID = 1L;
 	private final List<FixtureMatcher> matchers = new ArrayList<>();
 
 	private static <T> Predicate<T> not(final Predicate<T> p) {

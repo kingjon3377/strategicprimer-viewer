@@ -8,6 +8,7 @@ import javax.xml.stream.Location;
  * TODO: Take filename as well as location in the file?
  */
 public abstract class SPFormatException extends Exception {
+	private static final long serialVersionUID = 1L;
 	/**
 	 * The line of the XML file containing the mistake.
 	 */

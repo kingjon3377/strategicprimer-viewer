@@ -62,6 +62,7 @@ import java.util.Arrays;
 	}
 
 	private static class DirectionListener extends AbstractAction {
+		private static final long serialVersionUID = 1L;
 		private final Runnable action;
 		private final int num;
 

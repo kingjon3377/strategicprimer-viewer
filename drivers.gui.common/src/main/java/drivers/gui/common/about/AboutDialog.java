@@ -24,6 +24,7 @@ import lovelace.util.FileContentsReader;
  * FIXME: Credits for other images?
  */
 public final class AboutDialog extends SPDialog {
+	private static final long serialVersionUID = 1L;
 	public AboutDialog(final @Nullable Component parentComponent, final @Nullable String app) throws IOException {
 		super(parentComponent instanceof Frame ? (Frame) parentComponent : null, "About");
 		setLayout(new BorderLayout()); // TODO: Use a BorderedPanel for contentPane

@@ -31,6 +31,7 @@ import java.math.BigDecimal;
  * A dialog to let the user add a new forest to a tile.
  */
 public final class NewForestDialog extends SPDialog implements NewFixtureSource {
+	private static final long serialVersionUID = 1L;
 	private static final Logger LOGGER = Logger.getLogger(NewForestDialog.class.getName());
 	public NewForestDialog(final IDRegistrar idf) {
 		super(null, "Add a New Forest");

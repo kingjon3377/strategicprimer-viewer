@@ -9,6 +9,7 @@ import javax.xml.stream.events.StartElement;
  * An exception for cases where a parameter is required (or, if this is merely logged, recommended) but missing.
  */
 public class MissingPropertyException extends SPFormatException {
+	private static final long serialVersionUID = 1L;
 	/**
 	 * The current tag.
 	 */

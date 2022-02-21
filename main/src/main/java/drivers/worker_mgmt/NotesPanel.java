@@ -18,6 +18,7 @@ import org.jetbrains.annotations.Nullable;
 
 public final class NotesPanel extends BorderedPanel
 		implements UnitMemberListener, PlayerChangeListener {
+	private static final long serialVersionUID = 1L;
 	private final JTextArea notesArea = new JTextArea();
 	private @Nullable HasNotes current = null;
 	private Player player;

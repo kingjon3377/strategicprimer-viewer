@@ -48,6 +48,7 @@ import java.awt.image.BufferedImage;
  * The main window for the map viewer app.
  */
 public final class ViewerFrame extends SPFrame implements MapGUI {
+	private static final long serialVersionUID = 1L;
 	private static final Logger LOGGER = Logger.getLogger(ViewerFrame.class.getName());
 
 	private static JFrame containingWindow(final Component component) {

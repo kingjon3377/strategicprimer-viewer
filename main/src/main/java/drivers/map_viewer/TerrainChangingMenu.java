@@ -30,6 +30,7 @@ import common.map.fixtures.terrain.Hill;
  */
 /* package */ class TerrainChangingMenu extends JPopupMenu
 		implements VersionChangeListener, SelectionChangeListener {
+	private static final long serialVersionUID = 1L;
 	private final IViewerModel model;
 	private final IDRegistrar idf;
 	private final NewUnitDialog nuDialog;

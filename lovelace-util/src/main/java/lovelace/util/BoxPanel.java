@@ -12,6 +12,7 @@ import java.awt.Dimension;
  * A {@link JPanel} laid out by a {@link BoxLayout}.
  */
 public final class BoxPanel extends JPanel {
+	private static final long serialVersionUID = 1L;
 	/**
 	 * The possible axes that a {@link BoxLayout} can be laid out on.
 	 */

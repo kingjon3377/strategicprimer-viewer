@@ -46,6 +46,7 @@ import org.eclipse.jdt.annotation.Nullable;
  * The main window for the exploration GUI.
  */
 /* package */ final class ExplorationFrame extends SPFrame {
+	private static final long serialVersionUID = 1L;
 	private static final Logger LOGGER = Logger.getLogger(ExplorationFrame.class.getName());
 	private final SimpleCardLayout layoutObj;
 	private final JList<Player> playerList;

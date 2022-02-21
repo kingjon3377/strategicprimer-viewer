@@ -22,6 +22,7 @@ import lovelace.util.Platform;
  * {@link showWindow} method so calling code doesn't have to create a lambda to show a dialog.
  */
 public class SPDialog extends JDialog {
+	private static final long serialVersionUID = 1L;
 	public SPDialog(final @Nullable Frame parentFrame, final String title) {
 		super(parentFrame, title);
 		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);

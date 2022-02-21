@@ -24,6 +24,7 @@ import common.map.fixtures.mobile.worker.IJob;
  * TreeSelectionModel, so we can make callers use a bog-standard JTree?
  */
 /* package */ final class JobsTree extends JTree implements SkillSelectionSource {
+	private static final long serialVersionUID = 1L;
 	public JobsTree(final JobTreeModel jtModel) {
 		super(jtModel);
 

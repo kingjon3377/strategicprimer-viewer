@@ -8,6 +8,7 @@ import javax.xml.stream.events.StartElement;
  * An exception to indicate that a map file specified a map version not supported by the code reading it.
  */
 public class MapVersionException extends SPFormatException {
+	private static final long serialVersionUID = 1L;
 	private static String messageFragment(final int minimum, final int maximum) {
 		if (minimum == maximum) {
 			return ": must be " + minimum;

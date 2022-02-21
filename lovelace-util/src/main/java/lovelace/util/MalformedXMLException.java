@@ -7,6 +7,7 @@ package lovelace.util;
  */
 @Deprecated
 public class MalformedXMLException extends Exception {
+	private static final long serialVersionUID = 1L;
 	public MalformedXMLException(final Throwable cause, final String message) {
 		super(message, cause);
 	}

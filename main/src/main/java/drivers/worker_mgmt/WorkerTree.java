@@ -65,6 +65,7 @@ import java.util.stream.Collectors;
  * A tree of a player's units.
  */
 public final class WorkerTree extends JTree implements UnitMemberSelectionSource, UnitSelectionSource {
+	private static final long serialVersionUID = 1L;
 	private static final Logger LOGGER = Logger.getLogger(WorkerTree.class.getName());
 	// TODO: Move into the inner class that uses this
 	private static final DefaultTreeCellRenderer DEFAULT_STORER = new DefaultTreeCellRenderer();
@@ -196,6 +197,7 @@ public final class WorkerTree extends JTree implements UnitMemberSelectionSource
 
 	// TODO: Move this class to its own file?
 	private static class WorkerTreeTransferHandler extends TransferHandler {
+		private static final long serialVersionUID = 1L;
 		private final IWorkerTreeModel wtModel;
 		private final Predicate<TreePath> isExpanded;
 		private final TreeSelectionModel selectionModel;
@@ -362,6 +364,7 @@ public final class WorkerTree extends JTree implements UnitMemberSelectionSource
 
 	// TODO: Move this class to its own file?
 	private static class UnitMemberCellRenderer extends DefaultTreeCellRenderer {
+		private static final long serialVersionUID = 1L;
 		public UnitMemberCellRenderer(final IWorkerTreeModel wtModel, final IntSupplier turnSource,
 		                              final boolean orderCheck) {
 			this.wtModel = wtModel;

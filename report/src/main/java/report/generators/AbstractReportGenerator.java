@@ -76,6 +76,7 @@ public abstract class AbstractReportGenerator<Type extends IFixture> implements 
 	 * Assuming this is supposed to be static ...
 	 */
 	protected static class HtmlList extends ArrayList<String> implements HeadedList<String> {
+		private static final long serialVersionUID = 1L;
 		private final String header;
 
 		@Override
@@ -164,6 +165,7 @@ public abstract class AbstractReportGenerator<Type extends IFixture> implements 
 	 * A list of Points that produces a comma-separated list in its {@link toString} and has a "header".
 	 */
 	protected static class PointList extends ArrayList<Point> implements HeadedList<Point> {
+		private static final long serialVersionUID = 1L;
 		private final String header;
 		/**
 		 * The "header" to print before the points in the list.

@@ -50,6 +50,7 @@ import java.util.logging.Level;
  * A panel to show the details of the currently selected unit-member.
  */
 public class MemberDetailPanel extends BorderedPanel implements UnitMemberListener {
+	private static final long serialVersionUID = 1L;
 	private static final Logger LOGGER = Logger.getLogger(MemberDetailPanel.class.getName());
 	public MemberDetailPanel(final JPanel resultsPanel, final JPanel notesPanel) { // TODO: Move initialization of those into here?
 		final JPanel statPanel = new JPanel();
@@ -159,6 +160,7 @@ public class MemberDetailPanel extends BorderedPanel implements UnitMemberListen
 	}
 
 	private static class PortraitComponent extends JComponent {
+		private static final long serialVersionUID = 1L;
 		private @Nullable Image portrait = null;
 
 		public void setPortrait(final Image portrait) {

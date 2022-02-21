@@ -33,6 +33,7 @@ import java.util.logging.Logger;
  * A window to show the result of running subset tests.
  */
 /* package */ final class SubsetFrame extends SPFrame {
+	private static final long serialVersionUID = 1L;
 	private static final Logger LOGGER = Logger.getLogger(SubsetFrame.class.getName());
 	public SubsetFrame(final ISPDriver driver) {
 		super("Subset Tester", driver, new Dimension(640, 320), true);

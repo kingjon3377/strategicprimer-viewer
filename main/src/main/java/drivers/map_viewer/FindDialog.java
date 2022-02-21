@@ -44,6 +44,7 @@ import java.util.function.Predicate;
  * Comparator?)
  */
 /* package */ final class FindDialog extends SPDialog {
+	private static final long serialVersionUID = 1L;
 	private static final Logger LOGGER = Logger.getLogger(FindDialog.class.getName());
 	public FindDialog(final Frame parent, final IViewerModel model) {
 		super(parent, "Find");

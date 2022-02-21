@@ -9,6 +9,7 @@ import javax.xml.stream.events.StartElement;
  * A custom exception for cases where a tag has a property it doesn't support.
  */
 public class UnsupportedPropertyException extends SPFormatException {
+	private static final long serialVersionUID = 1L;
 	/**
 	 * The unsupported property.
 	 */

@@ -11,6 +11,7 @@ import java.awt.Component;
  * methods/attributes to assign components to its different sectors. 
  */
 public class BorderedPanel extends JPanel {
+	private static final long serialVersionUID = 1L;
 	private @Nullable Component center = null;
 
 	/**

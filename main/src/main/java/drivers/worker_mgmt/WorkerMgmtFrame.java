@@ -55,6 +55,7 @@ import drivers.worker_mgmt.orderspanel.OrdersPanel;
  * A window to let the player manage units.
  */
 /* package */ final class WorkerMgmtFrame extends SPFrame implements PlayerChangeListener {
+	private static final long serialVersionUID = 1L;
 	private static final Logger LOGGER = Logger.getLogger(WorkerMgmtFrame.class.getName());
 	private final IWorkerModel model;
 	private final WorkerTree tree;

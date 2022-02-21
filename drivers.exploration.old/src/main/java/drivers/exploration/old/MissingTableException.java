@@ -4,6 +4,7 @@ package drivers.exploration.old;
  * An exception to throw when a table is missing.
  */
 public class MissingTableException extends Exception {
+	private static final long serialVersionUID = 1L;
 	/**
 	 * The name of the missing table.
 	 */

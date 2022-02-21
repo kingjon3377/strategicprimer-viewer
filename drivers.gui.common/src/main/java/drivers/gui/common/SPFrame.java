@@ -24,6 +24,7 @@ import drivers.common.MapChangeListener;
  * things that can't be done in an interface.
  */
 public class SPFrame extends JFrame implements ISPWindow {
+	private static final long serialVersionUID = 1L;
 	@FunctionalInterface
 	public interface IDroppedFileHandler {
 		void accept(Path file) throws SPFormatException, IOException, MissingFileException,

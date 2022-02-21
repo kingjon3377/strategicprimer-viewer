@@ -9,6 +9,7 @@ import javax.xml.stream.events.StartElement;
  * A custom exception for when a tag requires a child and it isn't there.
  */
 public class MissingChildException extends SPFormatException {
+	private static final long serialVersionUID = 1L;
 	/**
 	 * The current tag.
 	 */

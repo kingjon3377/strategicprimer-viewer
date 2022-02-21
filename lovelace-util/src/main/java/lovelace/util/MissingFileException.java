@@ -9,6 +9,7 @@ import java.nio.file.Path;
  */
 @Deprecated
 public class MissingFileException extends Exception {
+	private static final long serialVersionUID = 1L;
 	public MissingFileException(final Path filename, final Throwable cause) {
 		super(String.format("File %s not found", filename.toString()), cause);
 	}

@@ -141,6 +141,7 @@ import java.io.FileNotFoundException;
 	 * TODO: Make dependencies explicit to make this static.
 	 */
 	private final class ResourceAddingFrame extends SPFrame implements PlayerChangeListener {
+		private static final long serialVersionUID = 1L;
 		private final IDRegistrar idf;
 		private Player currentPlayer;
 		private final FormattedLabel resourceLabel;

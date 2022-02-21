@@ -14,6 +14,7 @@ import org.jetbrains.annotations.Nullable;
  * Extends {@link ImprovedComboBox} to keep a running collection of values.
  */
 public class MemoizedComboBox extends ImprovedComboBox<String> {
+	private static final long serialVersionUID = 1L;
 
 	private static final Logger LOGGER = Logger.getLogger(MemoizedComboBox.class.getName());
 

@@ -33,6 +33,7 @@ import java.util.logging.Logger;
  * An alternative implementation of the worker tree model.
  */
 public class WorkerTreeModelAlt extends DefaultTreeModel implements IWorkerTreeModel {
+	private static final long serialVersionUID = 1L;
 	protected static final Logger LOGGER = Logger.getLogger(WorkerTreeModelAlt.class.getName());
 	/**
 	 * A base class for all nodes in the tree in this implementation of the tree model.
@@ -41,6 +42,7 @@ public class WorkerTreeModelAlt extends DefaultTreeModel implements IWorkerTreeM
 	 */
 	protected static class WorkerTreeNode<NodeObject> extends DefaultMutableTreeNode
 			implements Iterable<TreeNode> {
+		private static final long serialVersionUID = 1L;
 		public WorkerTreeNode(final Class<NodeObject> cls, final NodeObject userObj) {
 			this(cls, userObj, true);
 		}
@@ -121,6 +123,7 @@ public class WorkerTreeModelAlt extends DefaultTreeModel implements IWorkerTreeM
 	 * A class for tree-nodes representing members of units.
 	 */
 	private static class UnitMemberNode extends WorkerTreeNode<UnitMember> {
+		private static final long serialVersionUID = 1L;
 		public UnitMemberNode(final UnitMember member) {
 			super(UnitMember.class, member, false);
 		}
@@ -130,6 +133,7 @@ public class WorkerTreeModelAlt extends DefaultTreeModel implements IWorkerTreeM
 	 * A class for tree-nodes representing units.
 	 */
 	private static final class UnitNode extends WorkerTreeNode<IUnit> {
+		private static final long serialVersionUID = 1L;
 		private final IUnit unit;
 		public UnitNode(final IUnit unit) {
 			super(IUnit.class, unit);
@@ -194,6 +198,7 @@ public class WorkerTreeModelAlt extends DefaultTreeModel implements IWorkerTreeM
 	 * the tree.
 	 */
 	private static final class KindNode extends WorkerTreeNode<String> {
+		private static final long serialVersionUID = 1L;
 		public KindNode(final String kind, final IUnit... units) {
 			super(String.class, kind);
 			for (int index = 0; index < units.length; index++) {
@@ -212,6 +217,7 @@ public class WorkerTreeModelAlt extends DefaultTreeModel implements IWorkerTreeM
 	 * units are in (divided between) multiple fortresses.
 	 */
 	private static final class PlayerNode extends WorkerTreeNode<Player> {
+		private static final long serialVersionUID = 1L;
 		public PlayerNode(final Player player, final IWorkerModel model) {
 			super(Player.class, player);
 			final int index = 0;

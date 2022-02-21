@@ -80,6 +80,7 @@ public class MapCheckerCLI implements UtilityDriver {
 	}
 
 	private static class SPContentWarning extends Exception {
+		private static final long serialVersionUID = 1L;
 		public SPContentWarning(final Point context, final String message) {
 			super(String.format("At %s: %s", context, message));
 		}

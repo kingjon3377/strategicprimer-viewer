@@ -49,6 +49,7 @@ import worker.common.IFixtureEditHelper;
  * TODO: Separate controller functionality from presentation
  */
 /* package */ final class DetailPanel extends JSplitPane implements VersionChangeListener, SelectionChangeListener {
+	private static final long serialVersionUID = 1L;
 	protected static final Logger LOGGER = Logger.getLogger(DetailPanel.class.getName());
 
 
@@ -106,6 +107,7 @@ import worker.common.IFixtureEditHelper;
 	}
 
 	private static final class KeyPanel extends JPanel implements VersionChangeListener {
+		private static final long serialVersionUID = 1L;
 		public KeyPanel(final int version) {
 			super(new GridLayout(0, 4));
 			final Dimension size = new Dimension((int) keyElement(version, null)
