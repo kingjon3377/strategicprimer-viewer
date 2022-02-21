@@ -30,7 +30,6 @@ import common.map.fixtures.terrain.Hill;
  */
 /* package */ class TerrainChangingMenu extends JPopupMenu
 		implements VersionChangeListener, SelectionChangeListener {
-	private int mapVersion; // TODO: Change when map version changes
 	private final IViewerModel model;
 	private final IDRegistrar idf;
 	private final NewUnitDialog nuDialog;
@@ -47,7 +46,6 @@ import common.map.fixtures.terrain.Hill;
 
 	public TerrainChangingMenu(final int mapVersion, final IViewerModel model) {
 		// TODO: Pass checkbox models into methods, not the items themselves?
-		this.mapVersion = mapVersion;
 		this.model = model;
 		idf = IDFactoryFiller.createIDFactory(model.getMap());
 		nuDialog = new NewUnitDialog(model.getMap().getCurrentPlayer(), idf);
