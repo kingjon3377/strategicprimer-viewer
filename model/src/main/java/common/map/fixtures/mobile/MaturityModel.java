@@ -47,8 +47,10 @@ public final class MaturityModel {
 
 	/**
 	 * Clear the stored current turn
+	 *
+	 * TODO: Can we restrict access somehow?
 	 */
-	/* package */ static void resetCurrentTurn() {
+	public static void resetCurrentTurn() {
 		currentTurnLocal = -1;
 	}
 }

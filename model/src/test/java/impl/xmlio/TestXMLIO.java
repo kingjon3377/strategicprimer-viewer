@@ -2,6 +2,7 @@ package impl.xmlio;
 
 import static lovelace.util.SingletonRandom.SINGLETON_RANDOM;
 
+import common.map.fixtures.mobile.MaturityModel;
 import org.jetbrains.annotations.Nullable;
 
 import org.javatuples.Pair;
@@ -15,6 +16,8 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.fail;
 import static org.junit.jupiter.api.Assumptions.assumeTrue;
 import static org.junit.jupiter.api.Assumptions.assumeFalse;
+
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -606,6 +609,10 @@ public final class TestXMLIO {
 					SINGLETON_RANDOM.nextInt())));
 	}
 
+	@AfterEach
+	public void resetCurrentTurn() {
+		MaturityModel.resetCurrentTurn();
+	}
 	/**
 	 * Test (de)serialization of {@link Village villages'} {@link CommunityStats population details}."
 	 */
