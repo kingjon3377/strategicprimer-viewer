@@ -425,7 +425,7 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 			removeImpl(getRestrictedMap(), point, unit);
 			getRestrictedMap().addFixture(dest, unit);
 			setMapModified(true);
-			for (final IMutableMapNG subMap : getRestrictedSubordinateMaps()) { // FIXME: Use copyToSubMaps()
+			for (final IMutableMapNG subMap : getRestrictedSubordinateMaps()) {
 				if (doesLocationHaveFixture(subMap, point, unit)) {
 					ensureTerrain(getMap(), subMap, dest);
 					removeImpl(subMap, point, unit);
