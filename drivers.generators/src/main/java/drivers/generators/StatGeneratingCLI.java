@@ -74,24 +74,6 @@ import common.map.fixtures.towns.Village;
 	private static final List<String> statLabelArray = List.of("Str", "Dex", "Con", "Int", "Wis", "Cha");
 
 	/**
-	 * Find a fixture in a given iterable with the given ID.
-	 */
-	private static @Nullable IFixture findInIterable(final Integer id, final IFixture... fixtures) {
-		for (final IFixture fixture : fixtures) {
-			if (fixture.getId() == id) {
-				return fixture;
-			} else if (fixture instanceof FixtureIterable) {
-				final IFixture result = findInIterable(id,
-						((FixtureIterable<?>) fixture).stream().toArray(IFixture[]::new));
-				if (result != null) {
-					return result;
-				}
-			}
-		}
-		return null;
-	}
-
-	/**
 	 * Get the index of the lowest value in an array.
 	 */
 	private static int getMinIndex(final int... array) {
