@@ -40,7 +40,7 @@ public final class MaturityModel {
 	public static void setCurrentTurn(final int currentTurn) {
 		if (currentTurnLocal < 0) {
 			currentTurnLocal = currentTurn;
-		} else {
+		} else if (currentTurnLocal != currentTurn) {
 			LOGGER.warning("Tried to reset current turn");
 		}
 	}
