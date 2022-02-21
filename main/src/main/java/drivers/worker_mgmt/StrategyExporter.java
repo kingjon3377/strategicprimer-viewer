@@ -202,12 +202,17 @@ import common.map.fixtures.mobile.worker.IJob;
 			writer.write(String.format("Turn %d]", turn));
 			writer.newLine();
 			writer.newLine();
-			writer.write("Inventions: TODO: any?");
+			writer.write("## Inventions:");
+			writer.newLine();
+			writer.newLine();
+			writer.write("TODO: any?");
 			writer.newLine();
 			writer.newLine();
 
 			if (dismissed.iterator().hasNext()) {
-				writer.write("Dismissed workers etc.: ");
+				writer.write("## Dismissed workers etc.: ");
+				writer.newLine();
+				writer.newLine();
 				writer.write(StreamSupport.stream(dismissed.spliterator(), false)
 					.map(StrategyExporter::workerString)
 					.collect(Collectors.joining(", ")));
@@ -215,7 +220,7 @@ import common.map.fixtures.mobile.worker.IJob;
 				writer.newLine();
 			}
 
-			writer.write("Workers:");
+			writer.write("## Workers:");
 			writer.newLine();
 			writer.newLine();
 			for (final Map.Entry<String, List<IUnit>> entry : unitsByKind.entrySet()) {
@@ -224,15 +229,26 @@ import common.map.fixtures.mobile.worker.IJob;
 				if (list.isEmpty()) {
 					continue;
 				}
-				writer.write("* ");
+				writer.write("### ");
 				writer.write(kind);
 				writer.write(":");
 				writer.newLine();
 				for (final IUnit unit : list) {
-					writer.write("  - ");
+					writer.write("#### ");
 					writer.write(unit.getName());
-					if (unit.iterator().hasNext()) {
+					final boolean alreadyWroteMembers;
+					if (unit.stream().count() == 1L) { // TODO: Support the 'one person plus equipment/animals' case, and maybe the 'leader and helpers' case
 						writer.write(" [");
+						writeMember(writer, unit.stream().findAny().orElse(null));
+						writer.write("]");
+						alreadyWroteMembers = true;
+					} else {
+						writer.write(":");
+						alreadyWroteMembers = false;
+					}
+					writer.newLine();
+					if (unit.iterator().hasNext() && !alreadyWroteMembers) {
+						writer.write("- Members: ");
 						if (unit.stream().count() > 4L &&
 								"true".equals(options
 									.getArgument(
@@ -249,10 +265,11 @@ import common.map.fixtures.mobile.worker.IJob;
 								writeMember(writer, member);
 							}
 						}
-						writer.write("]");
+						writer.newLine();
+						writer.newLine();
 					}
 					if (options.hasOption("--results")) {
-						writer.write(": ");
+						writer.write("- Orders: ");
 						if (orders.containsKey(unit) &&
 								!orders.get(unit).isEmpty()) {
 							writer.write(orders.get(unit));
@@ -287,11 +304,11 @@ import common.map.fixtures.mobile.worker.IJob;
 				}
 			}
 			if (options.hasOption("--results")) {
-				writer.write("Resources:");
+				writer.write("## Resources:");
 				writer.newLine();
 				writer.newLine();
 				for (final IFortress fortress : model.getFortresses(currentPlayer)) {
-					writer.write("- In ");
+					writer.write("### In ");
 					writer.write(fortress.getName());
 					writer.newLine();
 					final List<Implement> equipment =
@@ -299,10 +316,10 @@ import common.map.fixtures.mobile.worker.IJob;
 							.map(Implement.class::cast)
 							.collect(Collectors.toList());
 					if (!equipment.isEmpty()) {
-						writer.write("  - Equipment not in a unit:");
+						writer.write("- Equipment not in a unit:");
 						writer.newLine();
 						for (final Implement item : equipment) { // TODO: move out of if?
-							writer.write("    - ");
+							writer.write("  - ");
 							writer.write(item.toString()); // FIXME: This is egregiously verbose ("An implement of kind ...")
 							writer.newLine();
 						}
@@ -315,12 +332,12 @@ import common.map.fixtures.mobile.worker.IJob;
 								.entrySet()) {
 						final String kind = entry.getKey();
 						final List<IResourcePile> resources = entry.getValue();
-						writer.write("  - ");
+						writer.write("- "); // TODO: Markdown header instead?
 						writer.write(kind);
 						writer.write(":");
 						writer.newLine();
 						for (final IResourcePile pile : resources) {
-							writer.write("    - ");
+							writer.write("  - ");
 							writer.write(pile.toString()); // FIXME: This is egregiously verbose ("A pile of ...")
 							writer.newLine();
 						}
