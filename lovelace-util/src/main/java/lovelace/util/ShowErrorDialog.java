@@ -6,7 +6,10 @@ import java.awt.Component;
 
 import org.jetbrains.annotations.Nullable;
 
-public class ShowErrorDialog {
+public final class ShowErrorDialog {
+	private ShowErrorDialog() {
+	}
+
 	/**
 	 * Show an error dialog to the user.
 	 * @deprecated Inline into callers

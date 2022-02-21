@@ -39,6 +39,9 @@ public final class ReportGenerator {
 	 */
 	private static final Logger LOGGER = Logger.getLogger(ReportGenerator.class.getName());
 
+	private ReportGenerator() {
+	}
+
 	/**
 	 * Produces sub-reports, appending them to the buffer and calling
 	 * {@link DelayedRemovalMap#coalesce} on the fixtures collection after each.

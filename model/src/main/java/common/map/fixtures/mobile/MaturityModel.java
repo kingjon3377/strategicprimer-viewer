@@ -15,6 +15,9 @@ public final class MaturityModel {
 	private static final Map<String, Integer> MATURITY_AGES =
 		initMaturityAges();
 
+	private MaturityModel() {
+	}
+
 	private static Map<String, Integer> initMaturityAges() {
 		try {
 			return FileSplitter.getFileContents("animal_data/maturity.txt",

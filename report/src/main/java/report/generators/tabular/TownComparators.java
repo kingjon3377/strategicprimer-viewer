@@ -14,7 +14,10 @@ import common.map.fixtures.towns.Fortification;
  * ITownFixture towns}. The methods it uses to derive that ordering are useful
  * by themselves as well, and so are also public.
  */
-public class TownComparators {
+public final class TownComparators {
+	private TownComparators() {
+	}
+
 	/**
 	 * A comparator for towns, sorting them <em>only</em> on the basis of
 	 * what kind of town they are, putting fortresses before cities before

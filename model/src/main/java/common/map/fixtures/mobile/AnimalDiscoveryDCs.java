@@ -15,6 +15,9 @@ import java.util.Map;
  * DC.
  */
 public final class AnimalDiscoveryDCs {
+	private AnimalDiscoveryDCs() {
+	}
+
 	private static Map<String, Integer> initDcs() {
 		try {
 			return FileSplitter.getFileContents(

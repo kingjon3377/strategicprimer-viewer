@@ -13,6 +13,9 @@ public final class NumParsingHelper {
 
 	private static final NumberFormat PARSER = NumberFormat.getIntegerInstance();
 
+	private NumParsingHelper() {
+	}
+
 	/**
 	 * Whether the given string contains numeric data, such as will be successfully parsed by {@link parseInt}.
 	 */

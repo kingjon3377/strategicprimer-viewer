@@ -12,6 +12,9 @@ import java.nio.file.Paths;
 import java.util.stream.Collectors;
 
 public final class FileContentsReader {
+	private FileContentsReader() {
+	}
+
 	public static Iterable<String> readFileContents(final Class<?> cls,
 	                                                final String filename) throws IOException {
 		final Path onDisk = Paths.get(filename);

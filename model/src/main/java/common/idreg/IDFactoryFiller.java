@@ -7,6 +7,9 @@ import common.map.fixtures.towns.ITownFixture;
 import common.map.fixtures.FixtureIterable;
 
 public final class IDFactoryFiller {
+	private IDFactoryFiller() {
+	}
+
 	/**
 	 * Fill a new ID factory from the given map.
 	 */

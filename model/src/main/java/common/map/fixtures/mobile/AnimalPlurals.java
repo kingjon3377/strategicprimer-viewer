@@ -10,6 +10,9 @@ import java.util.Map;
  * same as the singular.
  */
 public final class AnimalPlurals {
+	private AnimalPlurals() {
+	}
+
 	private static Map<String, String> initPlurals() {
 		try {
 			return FileSplitter.getFileContents("animal_data/plurals.txt", str -> str);

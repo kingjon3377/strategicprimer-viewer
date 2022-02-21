@@ -40,7 +40,7 @@ import lovelace.util.MissingFileException;
 
 import lovelace.util.ResourceInputStream;
 
-/* package */ class AppChooserState {
+/* package */ final class AppChooserState {
 	private static final Logger LOGGER = Logger.getLogger(AppChooserState.class.getName());
 	// TODO: Define and register a custom log formatter? We had to in
 	// Ceylon to get log messags to show at all, but in Java I dropped this

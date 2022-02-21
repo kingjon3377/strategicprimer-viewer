@@ -14,6 +14,9 @@ import java.util.stream.Stream;
  * A class to contain utility methods related to menus and menu items.
  */
 public final class MenuUtils {
+	private MenuUtils() {
+	}
+
 	/**
 	 * An enumeration of possible modifiers to hot-keys.
 	 */
