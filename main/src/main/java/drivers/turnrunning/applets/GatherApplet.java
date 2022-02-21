@@ -84,11 +84,10 @@ import org.jetbrains.annotations.Nullable;
 		if (center == null) {
 			return ""; // TODO: null, surely?
 		}
-		final Integer stTemp = cli.inputNumber("Minutes to spend gathering: ");
-		if (stTemp == null) {
+		final Integer startingTime = cli.inputNumber("Minutes to spend gathering: ");
+		if (startingTime == null) {
 			return ""; // TODO: null, surely?
 		}
-		final int startingTime = stTemp;
 		int time = startingTime;
 		final Supplier<Pair<Point, /*Grove|Shrub|Meadow|HuntingModel.NothingFound*/TileFixture>> encounters =
 			huntingModel.gather(center);
