@@ -136,18 +136,18 @@ public final class CLITest {
 	@Test
 	public void testInputDecimal() {
 		assertCLI(cli -> cli.inputDecimal("test prompt"), Collections.singletonList("10"),
-			"test prompt ", new BigDecimal(10), "inputDecimal works with integers",
+			"test prompt ", BigDecimal.TEN, "inputDecimal works with integers",
 			"inputDecimal uses given prompt");
 		assertCLI(cli -> cli.inputDecimal("test prompt two"), Collections.singletonList("2.5"),
 			"test prompt two ", new BigDecimal(5).divide(new BigDecimal(2)),
 			"inputDecimal works with decimals", "inputDecimal uses given prompt");
 		assertCLI(cli -> cli.inputDecimal("test prompt three "), Arrays.asList("-2.5", "0.5"),
-			"test prompt three test prompt three ", new BigDecimal(1).divide(new BigDecimal(2)),
+			"test prompt three test prompt three ", BigDecimal.ONE.divide(new BigDecimal(2)),
 			"inputDecimal asks again on negative input",
 			"inputDecimal asks again on negative input");
 		assertCLI(cli -> cli.inputDecimal("test prompt four "), Arrays.asList("non-number", ".1"),
 			String.format("test prompt four Invalid number.%ntest prompt four "),
-			new BigDecimal(1).divide(new BigDecimal(10)),
+				BigDecimal.ONE.divide(BigDecimal.TEN),
 			"inputDecimal asks again on non-numerc input",
 			"inputDecimal asks again on non-numeric input");
 		assertCLI(cli -> cli.inputDecimal("test prompt five "), Collections.emptyList(),

@@ -262,7 +262,7 @@ public final class TestDBIO {
 		stats.getYearlyProduction().add(new ResourcePileImpl(1, "first", "first detail",
 			new Quantity(5, "pounds")));
 		stats.getYearlyProduction().add(new ResourcePileImpl(2, "second", "second detail",
-			new Quantity(new BigDecimal(1).divide(new BigDecimal(2)), "quarts")));
+			new Quantity(BigDecimal.ONE.divide(new BigDecimal(2)), "quarts")));
 		stats.getYearlyConsumption().add(new ResourcePileImpl(3, "third", "third detail",
 			new Quantity(8, "pecks")));
 		stats.getYearlyConsumption().add(new ResourcePileImpl(4, "fourth", "fourth detail",
@@ -284,7 +284,7 @@ public final class TestDBIO {
 		stats.getYearlyProduction().add(new ResourcePileImpl(1, "first", "first detail",
 			new Quantity(5, "pounds")));
 		stats.getYearlyProduction().add(new ResourcePileImpl(2, "second", "second detail",
-			new Quantity(new BigDecimal(1).divide(new BigDecimal(2)), "quarts")));
+			new Quantity(BigDecimal.ONE.divide(new BigDecimal(2)), "quarts")));
 		stats.getYearlyConsumption().add(new ResourcePileImpl(3, "third", "third detail",
 			new Quantity(8, "pecks")));
 		stats.getYearlyConsumption().add(new ResourcePileImpl(4, "fourth", "fourth detail",
@@ -306,7 +306,7 @@ public final class TestDBIO {
 		stats.getYearlyProduction().add(new ResourcePileImpl(1, "first", "first detail",
 			new Quantity(5, "pounds")));
 		stats.getYearlyProduction().add(new ResourcePileImpl(2, "second", "second detail",
-			new Quantity(new BigDecimal(1).divide(new BigDecimal(2)), "quarts")));
+			new Quantity(BigDecimal.ONE.divide(new BigDecimal(2)), "quarts")));
 		stats.getYearlyConsumption().add(new ResourcePileImpl(3, "third", "third detail",
 			new Quantity(8, "pecks")));
 		stats.getYearlyConsumption().add(new ResourcePileImpl(4, "fourth", "fourth detail",
@@ -336,7 +336,7 @@ public final class TestDBIO {
 	public void testFractionalMeadowSerialization(final boolean field, final boolean cultivated, final int id,
 	                                              final FieldStatus status, final int acres) {
 		assertFixtureSerialization(new Meadow("kind", field, cultivated, id, status,
-			new BigDecimal(acres).add(new BigDecimal(1).divide(new BigDecimal(2)))));
+			new BigDecimal(acres).add(BigDecimal.ONE.divide(new BigDecimal(2)))));
 	}
 
 	private static Stream<Arguments> testForestSerialization() {
@@ -355,7 +355,7 @@ public final class TestDBIO {
 	@MethodSource("testForestSerialization")
 	public void testFractionalForestSerialization(final boolean rows, final int id, final int acres) {
 		assertFixtureSerialization(new Forest("kind", rows, id,
-			new BigDecimal(acres).add(new BigDecimal(1).divide(new BigDecimal(4)))));
+			new BigDecimal(acres).add(BigDecimal.ONE.divide(new BigDecimal(4)))));
 	}
 
 	private static Stream<Arguments> testFortressSerialization() {
