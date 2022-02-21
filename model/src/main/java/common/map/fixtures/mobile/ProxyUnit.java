@@ -196,7 +196,7 @@ public class ProxyUnit implements IUnit, ProxyFor<IUnit> {
 	public Iterator<UnitMember> iterator() {
 		if (!parallel || proxiedList.isEmpty()) {
 			return Collections.emptyIterator();
-		} else if (!cachedIterable.iterator().hasNext()) {
+		} else if (cachedIterable.iterator().hasNext()) {
 			return cachedIterable.iterator();
 		} else {
 			final Map<Integer, UnitMemberProxy<? extends UnitMember>> map =
