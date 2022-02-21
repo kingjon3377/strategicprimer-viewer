@@ -37,8 +37,6 @@ import java.util.stream.Collectors;
 
 	private final Random rng;
 
-	private final ICLIHelper cli;
-
 	private void unnormalizedSet(final Pair<Integer, Integer> loc, final @Nullable LodeStatus status) {
 		if (status == null) {
 			unnormalized.remove(loc);
@@ -109,7 +107,6 @@ import java.util.stream.Collectors;
 		queue.offerLast(Pair.with(0, 0));
 		rng = new Random(seed);
 		verticalGenerator = (current) -> current.adjacent(rng::nextDouble);
-		this.cli = cli;
 
 		switch (kind) {
 		case Normal:
