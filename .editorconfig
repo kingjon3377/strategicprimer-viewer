@@ -18,25 +18,9 @@ indent_size = 2
 indent_style = space
 indent_size = 2
 
-[{ruleset.xml,.pmd}]
-indent_style = space
-indent_size = 4
-
-[viewer.eml]
-indent_style = tab
-indent_size = 4
-
-[{.classpath,.project}]
-indent_style = space
-indent_size = 8
-
 [*.sh]
 indent_style = tab
 indent_size = 4
-
-[*.override.xml]
-indent_style = space
-indent_size = 1
 
 [sample_map.xml]
 indent_style = tab
