@@ -6,12 +6,6 @@ insert_final_newline = true
 charset = utf-8
 trim_trailing_whitespace = true
 
-# Until eclipse/ceylon#3972 is fixed, tab indentation in code containing
-# multiline strings causes compilation errors.
-[*.ceylon]
-indent_style = space
-indent_size = 4
-
 [{build.xml,.travis.yml,checkstyle.xml,.checkstyle,.eclipse-pmd,launch4j.cfg.xml}]
 indent_style = space
 indent_size = 2
