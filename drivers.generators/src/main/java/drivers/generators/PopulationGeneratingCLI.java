@@ -73,7 +73,7 @@ public class PopulationGeneratingCLI implements CLIDriver {
 	public PopulationGeneratingCLI(final ICLIHelper cli, final PopulationGeneratingModel model) {
 		this.cli = cli;
 		this.model = model;
-		this.map = model.getMap();
+		map = model.getMap();
 	}
 
 	private final IMapNG map;

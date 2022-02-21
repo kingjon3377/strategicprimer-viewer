@@ -31,7 +31,7 @@ public final class BoxPanel extends JPanel {
 	private final @NotNull BoxAxis axis;
 
 	public BoxPanel(final @NotNull BoxAxis layoutAxis) {
-		this.axis = layoutAxis;
+		axis = layoutAxis;
 		setLayout(new BoxLayout(this, axis.axis));
 	}
 

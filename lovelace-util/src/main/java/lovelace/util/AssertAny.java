@@ -23,7 +23,7 @@ public final class AssertAny {
 		private final List<AssertionFailedError> failures;
 		public MultipleFailureException(final List<AssertionFailedError> list, final String message) {
 			super(message, list.get(0));
-			this.failures = list;
+			failures = list;
 		}
 		public List<AssertionFailedError> getFailures() {
 			return Collections.unmodifiableList(failures);

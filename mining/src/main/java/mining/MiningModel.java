@@ -149,7 +149,7 @@ import java.util.stream.Collectors;
 		// supposed to do? On porting back to Java it looks like it's
 		// guaranteed to break on the first iteration in all three loops ...
 		final SortedMap<Integer, List<Pair<Integer, Integer>>> byRow =
-			MiningModel.treeMap(unnormalized.keySet()
+			treeMap(unnormalized.keySet()
 					.stream().collect(Collectors.<Pair<Integer, Integer>, Integer>groupingBy(Pair::getValue0)),
 				Comparator.reverseOrder());
 		for (final Map.Entry<Integer, List<Pair<Integer, Integer>>> entry : byRow.entrySet()) {

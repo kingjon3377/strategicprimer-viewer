@@ -143,7 +143,7 @@ public class TownReportGenerator extends AbstractReportGenerator<ITownFixture> {
 			println(ostream, "<h4>Cities, towns, and/or fortifications you know about:</h4>");
 			for (final HeadedMap<ITownFixture, Point> mapping :
 					Arrays.asList(abandoned, active, burned, ruined)) {
-				super.writeMap(ostream, mapping, super.defaultFormatter(fixtures, map));
+				writeMap(ostream, mapping, defaultFormatter(fixtures, map));
 			}
 		}
 	}

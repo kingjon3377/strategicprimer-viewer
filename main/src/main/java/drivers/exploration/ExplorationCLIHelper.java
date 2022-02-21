@@ -52,7 +52,7 @@ public class ExplorationCLIHelper implements MovementCostListener, SelectionChan
 	public ExplorationCLIHelper(final IExplorationModel model, final ICLIHelper cli) {
 		this.model = model;
 		this.cli = cli;
-		this.huntingModel = new HuntingModel(model.getMap());
+		huntingModel = new HuntingModel(model.getMap());
 		pather = PathfinderFactory.pathfinder(model.streamSubordinateMaps().findFirst().orElseGet(model::getMap));
 		automationConfig = new ExplorationAutomationConfig(model.getMap()
 			.getCurrentPlayer());

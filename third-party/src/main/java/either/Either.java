@@ -36,10 +36,10 @@ public abstract class Either<A, B> {
 	}
 
 	public Optional<A> fromLeft() {
-		return this.either(Optional::of, value -> Optional.empty());
+		return either(Optional::of, value -> Optional.empty());
 	}
 
 	public Optional<B> fromRight() {
-		return this.either(value -> Optional.empty(), Optional::of);
+		return either(value -> Optional.empty(), Optional::of);
 	}
 }

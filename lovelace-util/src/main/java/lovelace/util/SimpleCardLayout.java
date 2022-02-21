@@ -14,12 +14,12 @@ public class SimpleCardLayout extends CardLayout {
 		this.container = container;
 	}
 	public void goFirst() {
-		super.first(container);
+		first(container);
 	}
 	public void goNext() {
-		super.next(container);
+		next(container);
 	}
 	public void goPrevious() {
-		super.previous(container);
+		previous(container);
 	}
 }

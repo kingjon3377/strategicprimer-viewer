@@ -40,8 +40,8 @@ public class FixtureMatcher {
 	public static <FixtureType extends TileFixture> Iterable<FixtureMatcher> complements(
 			final Class<FixtureType> cls, final Predicate<FixtureType> method, final String firstDescription,
 			final String secondDescription) {
-		return Arrays.asList(FixtureMatcher.simpleMatcher(cls, method, firstDescription),
-			FixtureMatcher.simpleMatcher(cls, method.negate(), secondDescription));
+		return Arrays.asList(simpleMatcher(cls, method, firstDescription),
+			simpleMatcher(cls, method.negate(), secondDescription));
 	}
 
 	private final Predicate<TileFixture> matchesImpl;

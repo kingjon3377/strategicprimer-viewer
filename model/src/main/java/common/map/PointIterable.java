@@ -45,7 +45,7 @@ public class PointIterable implements Iterable<Point> {
 		this.dimensions = dimensions;
 		this.forwards = forwards;
 		this.horizontal = horizontal;
-		this.selection = null;
+		selection = null;
 	}
 
 	// TODO: convert to static class

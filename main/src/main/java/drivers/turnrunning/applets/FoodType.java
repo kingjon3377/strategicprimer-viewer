@@ -24,7 +24,7 @@ import org.jetbrains.annotations.Nullable;
 	Other(null, null, null, null, null, null, "other");
 
 	public static @Nullable FoodType askFoodType(final ICLIHelper cli, final String foodKind) {
-		for (final FoodType type : FoodType.values()) {
+		for (final FoodType type : values()) {
 			final Boolean resp = cli.inputBooleanInSeries(String.format("Is it %s?", type),
 					foodKind + type);
 			if (resp == null) {
@@ -85,10 +85,10 @@ import org.jetbrains.annotations.Nullable;
 	         final String str) {
 		this.keepsFor = keepsFor;
 		this.keepsForIfCool = keepsForIfCool;
-		this.keepsForRefrigerated = keepsForRefrig;
+		keepsForRefrigerated = keepsForRefrig;
 		this.keepsForFrozen = keepsForFrozen;
-		this.fractionSpoilingDaily = fracSpoilingDaily;
-		this.minimumSpoilage = minSpoilage;
+		fractionSpoilingDaily = fracSpoilingDaily;
+		minimumSpoilage = minSpoilage;
 		string = str;
 	}
 

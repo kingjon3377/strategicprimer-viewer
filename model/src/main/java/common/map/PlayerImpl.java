@@ -17,7 +17,7 @@ public final class PlayerImpl implements MutablePlayer {
 	public PlayerImpl(final int playerId, final String name) {
 		this.playerId = playerId;
 		this.name = name;
-		this.country = null;
+		country = null;
 	}
 
 	/**

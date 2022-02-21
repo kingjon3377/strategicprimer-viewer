@@ -214,7 +214,7 @@ public class HarvestableReportGenerator extends AbstractReportGenerator<Harvesta
 		if (maps.stream().anyMatch(m -> !m.isEmpty()) || all.stream().anyMatch(l -> !l.isEmpty())) {
 			println(ostream, "<h4>Resource Sources</h4>");
 			for (final HeadedMap<? extends HarvestableFixture, Point> mapping : maps) {
-				super.<HarvestableFixture>writeMap(ostream, mapping, defaultFormatter(fixtures, map));
+				writeMap(ostream, mapping, defaultFormatter(fixtures, map));
 			}
 			for (final HeadedList<String> list : all) {
 				ostream.accept(list.toString());

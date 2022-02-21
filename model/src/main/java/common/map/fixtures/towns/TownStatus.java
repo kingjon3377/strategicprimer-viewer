@@ -23,13 +23,13 @@ public enum TownStatus {
 	public static TownStatus parse(final String status) {
 		switch (status) {
 		case "active":
-			return TownStatus.Active;
+			return Active;
 		case "abandoned":
-			return TownStatus.Abandoned;
+			return Abandoned;
 		case "burned":
-			return TownStatus.Burned;
+			return Burned;
 		case "ruined":
-			return TownStatus.Ruined;
+			return Ruined;
 		default:
 			throw new IllegalArgumentException(String.format(
 				"Failed to parse TownStatus from '%s'", status));

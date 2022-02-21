@@ -444,7 +444,7 @@ import java.util.stream.Collectors;
 			// TODO: double-check I passed the parameters a nodes-inserted listener expects
 			if (existingKind) {
 				event = new TreeModelEvent(this, new TreePath(new Object[] { player }),
-						new int[] { this.getIndexOfChild(player, kind)},
+						new int[] { getIndexOfChild(player, kind)},
 						new Object[] { kind });
 			} else {
 				event = new TreeModelEvent(this, new TreePath(new Object[] { player, kind }),

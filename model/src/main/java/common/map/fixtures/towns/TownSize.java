@@ -21,11 +21,11 @@ public enum TownSize {
 	public static TownSize parseTownSize(final String size) {
 		switch (size) {
 		case "small":
-			return TownSize.Small;
+			return Small;
 		case "medium":
-			return TownSize.Medium;
+			return Medium;
 		case "large":
-			return TownSize.Large;
+			return Large;
 		default:
 			throw new IllegalArgumentException(String.format(
 				"Failed to parse TownSize from '%s'", size));

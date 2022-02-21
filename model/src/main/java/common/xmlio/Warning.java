@@ -61,7 +61,7 @@ public final class Warning {
 	}
 
 	public Warning(final Consumer<String> handler, final boolean ignored) {
-		this.impl = t -> {
+		impl = t -> {
 			if (t instanceof SPFormatException) {
 				handler.accept("SP format warning: " + t.getMessage());
 			} else {

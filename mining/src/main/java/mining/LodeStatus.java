@@ -50,19 +50,19 @@ enum LodeStatus {
 		case "none":
 			return null;
 		case "minimal":
-			return LodeStatus.Minimal;
+			return Minimal;
 		case "verypoor": case "very-poor":
-			return LodeStatus.VeryPoor;
+			return VeryPoor;
 		case "poor":
-			return LodeStatus.Poor;
+			return Poor;
 		case "fair":
-			return LodeStatus.Fair;
+			return Fair;
 		case "good":
-			return LodeStatus.Good;
+			return Good;
 		case "verygood": case "very-good":
-			return LodeStatus.VeryGood;
+			return VeryGood;
 		case "motherlode": case "mother-lode":
-			return LodeStatus.MotherLode;
+			return MotherLode;
 		default:
 			return null;
 		}

@@ -71,7 +71,7 @@ public class UnwantedChildException extends SPFormatException {
 		super(String.format("Unexpected child %s in tag %s", except.getChild().getLocalPart(),
 			parent.getLocalPart()), except.getLine(), except.getColumn());
 		tag = parent;
-		this.child = except.getChild();
+		child = except.getChild();
 	}
 
 	/**

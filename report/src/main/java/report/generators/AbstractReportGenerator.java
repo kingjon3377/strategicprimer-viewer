@@ -58,14 +58,14 @@ public abstract class AbstractReportGenerator<Type extends IFixture> implements 
 		if (referencePoint == null) {
 			distComparator = (one, two) -> 0;
 			distanceString = (ignored) -> "unknown";
-			this.pairComparator = pairComparator((one, two) -> 0,
+			pairComparator = pairComparator((one, two) -> 0,
 					Comparator.comparing(IFixture::hashCode));
 		} else {
 			final DistanceComparator distCalculator = new DistanceComparator(referencePoint,
 				mapDimensions);
 			distComparator = distCalculator;
 			distanceString = distCalculator::distanceString;
-			this.pairComparator = pairComparator(new DistanceComparator(referencePoint, mapDimensions),
+			pairComparator = pairComparator(new DistanceComparator(referencePoint, mapDimensions),
 					Comparator.comparing(IFixture::hashCode));
 		}
 	}

@@ -72,7 +72,7 @@ public class YAXMLReader implements IMapReader, ISPReader {
 	@Override
 	public IMutableMapNG readMapFromStream(final Path file, final Reader istream, final Warning warner)
 			throws SPFormatException, MalformedXMLException, IOException {
-		return this.readXML(file, istream, warner);
+		return readXML(file, istream, warner);
 	}
 
 	/**

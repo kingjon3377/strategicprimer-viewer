@@ -46,8 +46,8 @@ public class Range implements Iterable<Integer> {
 		private int current;
 		private final int upperBound;
 		public RangeIterator(final Range range) {
-			this.current = range.lowerBound - 1;
-			this.upperBound = range.upperBound;
+			current = range.lowerBound - 1;
+			upperBound = range.upperBound;
 		}
 
 		@Override

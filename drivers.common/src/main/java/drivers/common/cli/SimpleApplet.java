@@ -4,7 +4,7 @@ import java.util.List;
 
 public class SimpleApplet implements Applet {
 	public SimpleApplet(final Runnable invoke, final String description, final String... commands) {
-		this.impl = invoke;
+		impl = invoke;
 		this.description = description;
 		this.commands = List.of(commands);
 	}

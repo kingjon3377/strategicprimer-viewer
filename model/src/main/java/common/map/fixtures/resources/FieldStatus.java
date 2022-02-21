@@ -35,7 +35,7 @@ public enum FieldStatus {
 	}
 
 	public static FieldStatus random(final int seed) {
-		final FieldStatus[] statuses = FieldStatus.values();
+		final FieldStatus[] statuses = values();
 		return statuses[new Random(seed).nextInt(statuses.length)];
 	}
 

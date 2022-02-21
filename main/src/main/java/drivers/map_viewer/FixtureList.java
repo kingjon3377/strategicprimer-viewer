@@ -76,7 +76,7 @@ public final class FixtureList extends JList<TileFixture>
 		setDropTarget(new DropTarget(this, new DropListener()));
 
 		createHotKey(this, "delete",
-			event -> listModel.removeAll(this.getSelectedValuesList()),
+			event -> listModel.removeAll(getSelectedValuesList()),
 			JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT,
 			KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0),
 			KeyStroke.getKeyStroke(KeyEvent.VK_BACK_SPACE, 0));

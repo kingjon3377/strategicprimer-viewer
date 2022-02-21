@@ -8,7 +8,7 @@ import javax.swing.JLabel;
 public class AlignedLabel extends JLabel {
 	public AlignedLabel(final String text, final float alignmentX, final float alignmentY) {
 		super(text);
-		super.setAlignmentX(alignmentX);
-		super.setAlignmentY(alignmentY);
+		setAlignmentX(alignmentX);
+		setAlignmentY(alignmentY);
 	}
 }

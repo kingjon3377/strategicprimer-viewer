@@ -65,8 +65,8 @@ public final class FunctionalGroupLayout extends GroupLayout {
 	public FunctionalGroupLayout(final Container host, final ContainerGaps autoCreateGaps,
 	                             ContainerGaps autoCreateContainerGaps) {
 		super(host);
-		super.setAutoCreateGaps(autoCreateGaps == ContainerGaps.AUTO_CREATE_GAPS);
-		super.setAutoCreateContainerGaps(autoCreateContainerGaps == ContainerGaps.AUTO_CREATE_GAPS);
+		setAutoCreateGaps(autoCreateGaps == ContainerGaps.AUTO_CREATE_GAPS);
+		setAutoCreateContainerGaps(autoCreateContainerGaps == ContainerGaps.AUTO_CREATE_GAPS);
 	}
 
 	/**

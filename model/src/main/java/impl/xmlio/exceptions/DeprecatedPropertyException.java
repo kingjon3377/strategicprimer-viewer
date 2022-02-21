@@ -38,7 +38,7 @@ public class DeprecatedPropertyException extends SPFormatException {
 		super(String.format("Use of the property %s in tag %s is deprecated, use %s instead", old,
 				context.getName().getLocalPart(), preferred), context.getLocation().getLineNumber(),
 			context.getLocation().getColumnNumber());
-		this.tag = context.getName();
+		tag = context.getName();
 		this.old = old;
 		this.preferred = preferred;
 	}

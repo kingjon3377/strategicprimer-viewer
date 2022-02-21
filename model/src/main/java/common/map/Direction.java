@@ -36,7 +36,7 @@ public enum Direction implements Comparable<Direction> {
 		return string;
 	}
 	public static @Nullable Direction parse(final String direction) {
-		return Stream.of(Direction.values())
+		return Stream.of(values())
 			.filter((dir) -> Objects.equals(dir.toString(), direction))
 			.findAny().orElse(null);
 	}

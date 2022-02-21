@@ -652,6 +652,6 @@ public class SPFluidReader implements IMapReader, ISPReader {
 	@Override
 	public IMutableMapNG readMapFromStream(final Path file, final Reader istream, final Warning warner)
 			throws SPFormatException, MalformedXMLException {
-		return this.readXML(file, istream, warner);
+		return readXML(file, istream, warner);
 	}
 }
