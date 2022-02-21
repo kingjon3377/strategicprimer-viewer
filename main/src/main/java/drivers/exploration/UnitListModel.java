@@ -27,7 +27,7 @@ import org.jetbrains.annotations.Nullable;
 	@Override
 	public void playerChanged(final @Nullable Player old, final Player newPlayer) {
 		LOGGER.finer("Regenerating UnitListModel"); // TODO: move to below equality check?
-		if (old != null && old.equals(newPlayer)) {
+		if (newPlayer.equals(old)) {
 			return;
 		}
 		clear();

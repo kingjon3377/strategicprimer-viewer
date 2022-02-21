@@ -291,7 +291,7 @@ import worker.common.IFixtureEditHelper;
 
 	@Override
 	public void selectedPointChanged(final @Nullable Point old, final Point newPoint) {
-		if (old != null && old.equals(newPoint)) {
+		if (newPoint.equals(old)) {
 			return;
 		}
 		LOGGER.finer("In ExplorationPanel.selectedPointChanged");
