@@ -35,6 +35,8 @@ import common.map.fixtures.towns.CommunityStats;
 
 /**
  * A collection of tests of the subset-checking features.
+ *
+ * TODO: Add test of Worker subset logic
  */
 public final class SubsetTest {
 	/**

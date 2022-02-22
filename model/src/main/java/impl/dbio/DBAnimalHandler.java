@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Map;
 
-final class DBAnimalHandler extends AbstractDatabaseWriter<AnimalOrTracks, /*Point|IUnit*/Object>
+final class DBAnimalHandler extends AbstractDatabaseWriter<AnimalOrTracks, /*Point|IUnit|IWorker*/Object>
 		implements MapContentsReader {
 	public DBAnimalHandler() {
 		super(AnimalOrTracks.class, Object.class);

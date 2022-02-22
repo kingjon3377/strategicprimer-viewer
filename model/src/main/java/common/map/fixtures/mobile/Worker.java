@@ -1,5 +1,9 @@
 package common.map.fixtures.mobile;
 
+import common.map.fixtures.Implement;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import lovelace.util.ArraySet;
 import common.map.IFixture;
 import common.map.Player;
@@ -53,6 +57,8 @@ public class Worker implements IMutableWorker {
 	 * The notes players have associaed with this worker
 	 */
 	private final Map<Integer, String> notesImpl = new HashMap<>();
+
+	private final List<Implement> equipmentImpl = new ArrayList<>();
 
 	/**
 	 * The worker's ID number.
@@ -179,13 +185,28 @@ public class Worker implements IMutableWorker {
 		return jobSet.iterator();
 	}
 
+	private @Nullable Animal mount = null;
+
+	@Override
+	public @Nullable Animal getMount() {
+		return mount;
+	}
+
+	@Override
+	public void setMount(final @Nullable Animal mount) {
+		this.mount = mount;
+	}
+
 	@Override
 	public boolean equalsIgnoringID(final IFixture fixture) {
 		if (fixture instanceof IWorker) {
 			return ((IWorker) fixture).getName().equals(name) &&
 				jobSetsEqual(jobSet, ((IWorker) fixture)) &&
 				((IWorker) fixture).getRace().equals(race) &&
-				Objects.equals(stats, ((IWorker) fixture).getStats());
+				Objects.equals(stats, ((IWorker) fixture).getStats()) &&
+				equipmentImpl.containsAll(((IWorker) fixture).getEquipment()) &&
+				((IWorker) fixture).getEquipment().containsAll(equipmentImpl) &&
+				Objects.equals(mount, ((IWorker) fixture).getMount());
 		} else {
 			return false;
 		}
@@ -259,6 +280,22 @@ public class Worker implements IMutableWorker {
 						retval = false;
 					}
 				}
+				Animal theirMount = ((IWorker) obj).getMount();
+				if (theirMount != null) {
+					if (mount != null && !theirMount.equals(mount)) { // TODO: Use isSubset() instead?
+						localReport.accept("Mounts differ");
+						retval = false;
+					} else if (mount == null) {
+						localReport.accept("Has mount we don't");
+						retval = false;
+					}
+				}
+				for (Implement item : ((IWorker) obj).getEquipment()) {
+					if (!equipmentImpl.contains(item)) {
+						localReport.accept("Extra equipment: " + item);
+						retval = false;
+					}
+				}
 				return retval;
 			} else {
 				report.accept(String.format("For ID #%d, different kinds of members", id));
@@ -287,6 +324,12 @@ public class Worker implements IMutableWorker {
 				if (!job.isEmpty()) {
 					retval.addJob(job.copy());
 				}
+			}
+			if (mount != null) {
+				retval.setMount(mount.copy(zero));
+			}
+			for (Implement item : equipmentImpl) {
+				retval.addEquipment(item);
 			}
 		}
 		return retval;
@@ -332,5 +375,20 @@ public class Worker implements IMutableWorker {
 	@Override
 	public Iterable<Integer> getNotesPlayers() {
 		return notesImpl.keySet();
+	}
+
+	@Override
+	public Collection<Implement> getEquipment() {
+		return Collections.unmodifiableList(equipmentImpl);
+	}
+
+	@Override
+	public void addEquipment(final Implement item) {
+		equipmentImpl.add(item);
+	}
+
+	@Override
+	public void removeEquipment(final Implement item) {
+		equipmentImpl.remove(item);
 	}
 }

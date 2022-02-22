@@ -1,7 +1,10 @@
 package common.map.fixtures.mobile.worker;
 
+import common.map.fixtures.Implement;
+import common.map.fixtures.mobile.Animal;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -66,6 +69,13 @@ public class ProxyWorker implements WorkerProxy {
 	private final List<IWorker> workers = new ArrayList<>();
 
 	/**
+	 * Equipment held by all the workers. (Cache, more or less.)
+	 *
+	 * TODO: Should this be the union instead?
+	 */
+	private final List<Implement> equipmentImpl = new ArrayList<>();
+
+	/**
 	 * Cached stats for the workers. Null if there are no workers being
 	 * proxied or if they do not share identical stats.
 	 */
@@ -96,6 +106,11 @@ public class ProxyWorker implements WorkerProxy {
 			final IWorker[] array = new IWorker[workers.size()];
 			proxyJobs.add(new ProxyJob(job, false, workers.toArray(array)));
 		}
+		for (Implement item : workers.stream().flatMap(w -> w.getEquipment().stream()).collect(Collectors.toList())) {
+			if (workers.stream().map(IWorker::getEquipment).allMatch(l -> l.contains(item))) {
+				equipmentImpl.add(item);
+			}
+		}
 	}
 
 	public ProxyWorker(final IWorker... proxiedWorkers) {
@@ -105,8 +120,10 @@ public class ProxyWorker implements WorkerProxy {
 				final WorkerStats priorStats = statsCache;
 				if (workers.isEmpty()) {
 					statsCache = tempStats;
+					equipmentImpl.addAll(worker.getEquipment());
 				} else if (!Objects.equals(tempStats, priorStats)) {
 					statsCache = null;
+					equipmentImpl.retainAll(worker.getEquipment());
 				}
 				workers.add(worker);
 				StreamSupport.stream(worker.spliterator(), true)
@@ -171,12 +188,15 @@ public class ProxyWorker implements WorkerProxy {
 		// FIXME: The algorithm here doesn't quite match that of the constructors
 		if (workers.isEmpty()) {
 			statsCache = tempStats;
+			equipmentImpl.addAll(item.getEquipment());
 		} else if (tempStats != null) {
 			if (priorStats != null && !Objects.equals(tempStats, priorStats)) {
 				statsCache = null;
 			}
+			equipmentImpl.retainAll(item.getEquipment());
 		} else if (priorStats != null) {
 			statsCache = null;
+			equipmentImpl.retainAll(item.getEquipment());
 		}
 		workers.add(item);
 		for (final IJob job : item) {
@@ -283,5 +303,15 @@ public class ProxyWorker implements WorkerProxy {
 	public Collection<Integer> getNotesPlayers() {
 		return workers.stream().flatMap(w -> StreamSupport.stream(w.getNotesPlayers().spliterator(),
 			true)).collect(Collectors.toSet());
+	}
+
+	@Override
+	public Collection<Implement> getEquipment() {
+		return Collections.unmodifiableList(equipmentImpl);
+	}
+
+	@Override
+	public @Nullable Animal getMount() {
+		return getConsensus(IWorker::getMount);
 	}
 }

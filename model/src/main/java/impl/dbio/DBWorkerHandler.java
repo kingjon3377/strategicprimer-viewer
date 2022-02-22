@@ -3,6 +3,7 @@ package impl.dbio;
 import buckelieg.jdbc.fn.DB;
 
 import common.map.IFixture;
+import common.map.fixtures.Implement;
 import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
@@ -25,6 +26,13 @@ final class DBWorkerHandler extends AbstractDatabaseWriter<IWorker, IUnit> imple
 	public DBWorkerHandler() {
 		super(IWorker.class, IUnit.class);
 	}
+
+	// TODO: Add a getInstance() method, taking the class to write, to MapContentsReader (or add a cache elsewhere) so
+	//  we don't have to have multiple instances
+
+	private final DBAnimalHandler animalHandler = new DBAnimalHandler();
+
+	private final DBImplementHandler equipmentHandler = new DBImplementHandler();
 
 	private static final List<String> INITIALIZERS = List.of("CREATE TABLE IF NOT EXISTS workers (" +
 			                                                         "   unit INTEGER NOT NULL," +
@@ -59,7 +67,7 @@ final class DBWorkerHandler extends AbstractDatabaseWriter<IWorker, IUnit> imple
 							                                                                     "    level INTEGER NOT NULL check(level >= 0)," +
 							                                                                     "    hours INTEGER NOT NULL check(hours >= 0)" +
 							                                                                     ");");
-	// TODO: Also pull in Animal initializers if we go ahead with the 'mounts' enhancement
+	// FIXME: Also pull in Animal initializers
 
 	@Override
 	public List<String> getInitializers() {
@@ -103,6 +111,12 @@ final class DBWorkerHandler extends AbstractDatabaseWriter<IWorker, IUnit> imple
 							job.getName(), skill.getName(), skill.getLevel(),
 							skill.getHours()).execute();
 					}
+				}
+				if (obj.getMount() != null) {
+					animalHandler.write(sql, obj.getMount(), obj);
+				}
+				for (Implement item : obj.getEquipment()) {
+					equipmentHandler.write(sql, item, obj);
 				}
 				return true;
 			});
@@ -200,6 +214,6 @@ final class DBWorkerHandler extends AbstractDatabaseWriter<IWorker, IUnit> imple
 			// FIXME Antipattern
 			throw new RuntimeException(except);
 		}
-		// TODO: If we go ahead with mounts and/or equipment enhancement, add all in 'workers' to containers.
+		containers.putAll(workers);
 	}
 }

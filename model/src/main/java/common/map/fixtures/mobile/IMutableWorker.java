@@ -1,9 +1,11 @@
 package common.map.fixtures.mobile;
 
+import common.map.fixtures.Implement;
 import common.map.fixtures.mobile.worker.IJob;
 
 import common.map.HasMutableImage;
 import common.map.HasMutablePortrait;
+import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * Mutator operations for {@link IWorker}.
@@ -25,4 +27,23 @@ public interface IMutableWorker extends IWorker, HasMutableImage, HasMutablePort
 	 * TODO: Make void instead of boolean?
 	 */
 	boolean addJob(IJob job);
+
+	/**
+	 * The animal, if any, this worker is personally mounted on.
+	 */
+	void setMount(@Nullable Animal mount);
+
+	/**
+	 * Add an item of equipment that is associated with this worker personally.
+	 *
+	 * TODO: Return whether it was already associated with the worker?
+	 */
+	void addEquipment(Implement item);
+
+	/**
+	 * Remove an item of equipment from this worker.
+	 *
+	 * TODO: Make this return the actual item that was removed?
+	 */
+	void removeEquipment(Implement item);
 }

@@ -15,8 +15,11 @@ import common.map.IMutablePlayerCollection;
 import common.map.PlayerCollection;
 import common.map.Direction;
 import common.map.fixtures.FortressMember;
+import common.map.fixtures.Implement;
 import common.map.fixtures.UnitMember;
+import common.map.fixtures.mobile.Animal;
 import common.map.fixtures.mobile.IMutableUnit;
+import common.map.fixtures.mobile.IMutableWorker;
 import common.map.fixtures.towns.AbstractTown;
 import common.map.fixtures.towns.CommunityStats;
 import common.map.fixtures.towns.IMutableFortress;
@@ -173,6 +176,11 @@ final class DBMapReader {
 				} else if (parent instanceof Village && member instanceof CommunityStats &&
 						((Village) parent).getPopulation() == null) {
 					((Village) parent).setPopulation((CommunityStats) member);
+				} else if (parent instanceof IMutableWorker && member instanceof Animal &&
+						((IMutableWorker) parent).getMount() == null) {
+					((IMutableWorker) parent).setMount((Animal) member);
+				} else if (parent instanceof IMutableWorker && member instanceof Implement) {
+					((IMutableWorker) parent).addEquipment((Implement) member);
 				} else {
 					throw new IllegalStateException("DB parent-child type invariants not met");
 				}

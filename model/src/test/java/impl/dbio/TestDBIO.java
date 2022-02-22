@@ -4,6 +4,7 @@ import buckelieg.jdbc.fn.DB;
 
 import static lovelace.util.SingletonRandom.SINGLETON_RANDOM;
 
+import common.map.fixtures.mobile.IMutableWorker;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.math.BigDecimal;
@@ -526,6 +527,19 @@ public final class TestDBIO {
 			new Job("second job", 4)));
 		unit.addMember(new Centaur("horse", id + 5));
 		unit.addMember(new AnimalImpl("elephant", false, "domesticated", id + 6, -1, 4));
+		assertFixtureSerialization(unit);
+	}
+
+	@ParameterizedTest
+	@MethodSource("fewIntegers")
+	public void testWorkerEquipment(int id) {
+		IMutableWorker worker = new Worker("worker name", "elf", id);
+		worker.setMount(new AnimalImpl("animal kind", false, "tame", id + 1));
+		worker.addEquipment(new Implement("equipment kind one", id + 2));
+		worker.addEquipment(new Implement("equipment kind two", id + 3));
+		Player owner = new PlayerImpl(1, "owner"); // randomize player-ID, surely?
+		IMutableUnit unit = new Unit(owner, "unitKind", "unitName", id + 5);
+		unit.addMember(worker);
 		assertFixtureSerialization(unit);
 	}
 

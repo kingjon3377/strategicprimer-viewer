@@ -14,10 +14,10 @@ import common.xmlio.Warning;
 import common.map.TileFixture;
 import common.map.IFixture;
 
-final class DBImplementHandler extends AbstractDatabaseWriter<Implement, /*IUnit|IFortress*/TileFixture>
+final class DBImplementHandler extends AbstractDatabaseWriter<Implement, /*IUnit|IFortress|IWorker*/IFixture>
 		implements MapContentsReader {
 	public DBImplementHandler() {
-		super(Implement.class, TileFixture.class);
+		super(Implement.class, IFixture.class);
 	}
 
 	@Override
@@ -44,7 +44,7 @@ final class DBImplementHandler extends AbstractDatabaseWriter<Implement, /*IUnit
 			"VALUES(?, ?, ?, ?, ?);";
 
 	@Override
-	public void write(final DB db, final Implement obj, final TileFixture context) {
+	public void write(final DB db, final Implement obj, final IFixture context) {
 		db.update(INSERT_SQL, context.getId(), obj.getId(), obj.getKind(), obj.getCount(),
 			obj.getImage()).execute();
 	}

@@ -5,10 +5,12 @@ import common.map.HasName;
 import common.map.HasNotes;
 import common.map.HasKind;
 import common.map.HasPortrait;
+import common.map.fixtures.Implement;
 import common.map.fixtures.UnitMember;
 import common.map.fixtures.mobile.worker.IJob;
 import common.map.fixtures.mobile.worker.WorkerStats;
 
+import java.util.Collection;
 import org.jetbrains.annotations.Nullable;
 
 /**
@@ -51,4 +53,14 @@ public interface IWorker extends UnitMember, Iterable<IJob>, HasName, HasKind, H
 	default String getPlural() {
 		return "Workers";
 	}
+
+	/**
+	 * The animal, if any, this worker is personally mounted on.
+	 */
+	@Nullable Animal getMount();
+
+	/**
+	 * Any equipment associated with this worker personally. (Generally not much more than clothing.)
+	 */
+	Collection<Implement> getEquipment();
 }

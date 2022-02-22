@@ -1534,6 +1534,11 @@ public final class TestXMLIO {
 		assertImageSerialization("Worker image property is preserved", secondWorker);
 		secondWorker.addJob(new Job("seventh", 1));
 		assertSerialization("Worker can have Job with no skills yet", secondWorker);
+		secondWorker.setMount(new AnimalImpl("animal", false, "tame", 11));
+		assertSerialization("Worker can have a mount", secondWorker);
+		secondWorker.addEquipment(new Implement("implKind", 12));
+		secondWorker.addEquipment(new Implement("implKindTwo", 13));
+		assertSerialization("Worker can have equipment", secondWorker);
 		this.<IMapNG>assertUnwantedChild("<map version=\"2\" rows=\"1\" columns=\"1\">" +
 			"<tile row=\"0\" column=\"0\" kind=\"plains\">" +
 			"<worker name=\"name\" id=\"1\" /></tile></map>", null);

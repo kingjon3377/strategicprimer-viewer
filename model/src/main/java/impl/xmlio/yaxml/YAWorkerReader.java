@@ -1,5 +1,9 @@
 package impl.xmlio.yaxml;
 
+import common.map.fixtures.Implement;
+import common.map.fixtures.mobile.Animal;
+import common.map.fixtures.mobile.AnimalOrTracks;
+import common.map.fixtures.mobile.MobileFixture;
 import org.jetbrains.annotations.Nullable;
 
 import javax.xml.namespace.QName;
@@ -67,9 +71,14 @@ import impl.xmlio.exceptions.UnwantedChildException;
 	}
 
 	private final IPlayerCollection players;
+	// TODO: Figure out some way to inject these without having to have our own copies (or provide them as constructor parameters)
+	private final YAMobileReader mobileReader;
+	private final YAImplementReader implementReader;
 	public YAWorkerReader (final Warning warning, final IDRegistrar idRegistrar, final IPlayerCollection players) {
 		super(warning, idRegistrar);
 		this.players = players;
+		mobileReader = new YAMobileReader(warning, idRegistrar);
+		implementReader = new YAImplementReader(warning, idRegistrar);
 	}
 
 	@FunctionalInterface
@@ -178,12 +187,22 @@ import impl.xmlio.exceptions.UnwantedChildException;
 				} else if ("note".equalsIgnoreCase(((StartElement) event)
 						.getName().getLocalPart())) {
 					retval.setNote(
-						players.getPlayer(getIntegerParameter((StartElement) event,
-							"player")),
-						readNote((StartElement) event, element.getName(), stream));
+							players.getPlayer(getIntegerParameter((StartElement) event,
+									"player")),
+							readNote((StartElement) event, element.getName(), stream));
+				} else if ("animal".equalsIgnoreCase(((StartElement) event).getName().getLocalPart()) &&
+						 retval.getMount() == null) {
+					MobileFixture animal = mobileReader.read((StartElement) event, element.getName(), stream);
+					if (animal instanceof Animal) {
+						retval.setMount((Animal) animal);
+					} else {
+						throw new UnwantedChildException(((StartElement) event).getName(), element);
+					}
+				} else if ("implement".equalsIgnoreCase(((StartElement) event).getName().getLocalPart())) {
+					retval.addEquipment(implementReader.read((StartElement) event, element.getName(), stream));
 				} else {
 					throw UnwantedChildException.listingExpectedTags(element.getName(),
-						(StartElement) event, "job", "stats");
+						(StartElement) event, "job", "stats", "note", "animal", "implement");
 				}
 			} else if (isMatchingEnd(element.getName(), event)) {
 				break;
@@ -203,9 +222,16 @@ import impl.xmlio.exceptions.UnwantedChildException;
 		writeImageXML(ostream, obj);
 		writeNonemptyProperty(ostream, "portrait", obj.getPortrait());
 		if (obj.iterator().hasNext() || obj.getStats() != null ||
-				obj.getNotesPlayers().iterator().hasNext()) {
+				obj.getNotesPlayers().iterator().hasNext() || obj.getMount() != null ||
+				!obj.getEquipment().isEmpty()) {
 			finishParentTag(ostream);
 			writeStats(ostream, obj.getStats(), indent + 1);
+			if (obj.getMount() != null) {
+				mobileReader.write(ostream, obj.getMount(), indent + 1);
+			}
+			for (Implement item : obj.getEquipment()) {
+				implementReader.write(ostream, item, indent + 1);
+			}
 			for (final IJob job : obj) {
 				writeJob(ostream, job, indent + 1);
 			}

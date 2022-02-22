@@ -1,5 +1,6 @@
 package impl.xmlio.fluidxml;
 
+import common.map.fixtures.Implement;
 import org.javatuples.Pair;
 
 import common.map.HasImage;
@@ -71,9 +72,23 @@ import javax.xml.stream.XMLStreamException;
 						readNote((StartElement) event, element.getName(), stream,
 							warner));
 					break;
+				case "animal":
+					if (retval.getMount() == null) {
+						AnimalOrTracks animal = readAnimal((StartElement) event, element.getName(), stream, players,
+								warner, idFactory);
+						if (animal instanceof Animal) {
+							retval.setMount((Animal) animal);
+							break;
+						}
+					}
+					throw new UnwantedChildException(((StartElement) event).getName(), element);
+				case "implement":
+					retval.addEquipment(FluidResourceHandler.readImplement((StartElement) event, element.getName(), stream,
+							players, warner, idFactory));
+					break;
 				default:
 					throw UnwantedChildException.listingExpectedTags(element.getName(),
-						(StartElement) event, "job", "stats", "note");
+						(StartElement) event, "job", "stats", "note", "animal", "implement");
 				}
 			} else if (event instanceof EndElement &&
 					element.getName().equals(((EndElement) event).getName())) {
@@ -172,13 +187,21 @@ import javax.xml.stream.XMLStreamException;
 		if (stats != null) {
 			writeStats(ostream, stats, indentation + 1);
 		}
+		Animal mount = obj.getMount();
+		if (mount != null) {
+			writeAnimal(ostream, mount, indentation + 1);
+		}
+		for (Implement item : obj.getEquipment()) {
+			FluidResourceHandler.writeImplement(ostream, item, indentation + 1);
+		}
 		for (final IJob job : jobs) {
 			writeJob(ostream, job, indentation + 1);
 		}
 		for (final Integer player : obj.getNotesPlayers()) {
 			writeNote(ostream, player, obj.getNote(player), indentation +1);
 		}
-		if (hasJobs || stats != null || obj.getNotesPlayers().iterator().hasNext()) {
+		if (hasJobs || stats != null || mount != null || obj.getNotesPlayers().iterator().hasNext() ||
+				    !obj.getEquipment().isEmpty()) {
 			indent(ostream, indentation);
 			try {
 				ostream.writeEndElement();
