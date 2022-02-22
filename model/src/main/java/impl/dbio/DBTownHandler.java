@@ -2,6 +2,7 @@ package impl.dbio;
 
 import buckelieg.jdbc.fn.DB;
 
+import common.map.IFixture;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -72,7 +73,8 @@ final class DBTownHandler extends AbstractDatabaseWriter<AbstractTown, Point> im
 		}
 	}
 
-	private static TryBiConsumer<Map<String, Object>, Warning, Exception> readTown(final IMutableMapNG map) {
+	private TryBiConsumer<Map<String, Object>, Warning, Exception> readTown(final IMutableMapNG map,
+			final Map<Integer, List<Object>> containees) {
 		return (dbRow, warner) -> {
 			final int row = (Integer) dbRow.get("row");
 			final int column = (Integer) dbRow.get("column");
@@ -108,16 +110,20 @@ final class DBTownHandler extends AbstractDatabaseWriter<AbstractTown, Point> im
 				town.setPortrait(portrait);
 			}
 			if (population != null) {
-				town.setPopulation(new CommunityStats(population));
+				// Don't add it directly because it's also read in the
+				// CommunityStats handler, which needs to get it out of the
+				// containees to avoid conflicts.
+				multimapPut(containees, id, new CommunityStats(population));
 			}
 			map.addFixture(new Point(row, column), town);
 		};
 	}
 
 	@Override
-	public void readMapContents(final DB db, final IMutableMapNG map, final Warning warner) {
+	public void readMapContents(final DB db, final IMutableMapNG map, final Map<Integer, IFixture> containers,
+			final Map<Integer, List<Object>> containees, final Warning warner) {
 		try {
-			handleQueryResults(db, warner, "towns", readTown(map),
+			handleQueryResults(db, warner, "towns", readTown(map, containees),
 				"SELECT * FROM towns");
 		} catch (final RuntimeException except) {
 			// Don't wrap RuntimeExceptions in RuntimeException

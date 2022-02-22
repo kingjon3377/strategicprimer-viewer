@@ -2,6 +2,7 @@ package impl.dbio;
 
 import buckelieg.jdbc.fn.DB;
 
+import common.map.IFixture;
 import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
@@ -9,7 +10,6 @@ import java.util.HashMap;
 import common.idreg.DuplicateIDException;
 import common.map.IMapNG;
 import common.map.IMutableMapNG;
-import common.map.fixtures.mobile.IMutableUnit;
 import common.map.fixtures.mobile.IUnit;
 import common.map.fixtures.mobile.IWorker;
 import common.map.fixtures.mobile.Worker;
@@ -59,6 +59,7 @@ final class DBWorkerHandler extends AbstractDatabaseWriter<IWorker, IUnit> imple
 							                                                                     "    level INTEGER NOT NULL check(level >= 0)," +
 							                                                                     "    hours INTEGER NOT NULL check(hours >= 0)" +
 							                                                                     ");");
+	// TODO: Also pull in Animal initializers if we go ahead with the 'mounts' enhancement
 
 	@Override
 	public List<String> getInitializers() {
@@ -107,14 +108,10 @@ final class DBWorkerHandler extends AbstractDatabaseWriter<IWorker, IUnit> imple
 			});
 	}
 
-	@Override
-	public void readMapContents(final DB db, final IMutableMapNG map, final Warning warner) {}
-
-	private TryBiConsumer<Map<String, Object>, Warning, Exception>
-			readWorkerStats(final IMutableMapNG map, final Map<Integer, Worker> workers) {
+	private TryBiConsumer<Map<String, Object>, Warning, Exception> readWorkerStats(final IMutableMapNG map,
+			final Map<Integer, Worker> workers, final Map<Integer, List<Object>> containees) {
 		return (dbRow, warner) -> {
-			final IMutableUnit unit = (IMutableUnit) findById(map, (Integer) dbRow.get("unit"),
-				warner);
+			final int unitId = (Integer) dbRow.get("unit");
 			final int id = (Integer) dbRow.get("id");
 			final String name = (String) dbRow.get("name");
 			final String race = (String) dbRow.get("race");
@@ -142,7 +139,7 @@ final class DBWorkerHandler extends AbstractDatabaseWriter<IWorker, IUnit> imple
 				warner.handle(new DuplicateIDException(id));
 			}
 			workers.put(id, worker);
-			unit.addMember(worker);
+			multimapPut(containees, unitId, worker);
 		};
 	}
 
@@ -184,10 +181,11 @@ final class DBWorkerHandler extends AbstractDatabaseWriter<IWorker, IUnit> imple
 	}
 
 	@Override
-	public void readExtraMapContents(final DB db, final IMutableMapNG map, final Warning warner) {
+	public void readMapContents(final DB db, final IMutableMapNG map, final Map<Integer, IFixture> containers,
+			final Map<Integer, List<Object>> containees, final Warning warner) {
 		final Map<Integer, Worker> workers = new HashMap<>();
 		try {
-			handleQueryResults(db, warner, "worker stats", readWorkerStats(map, workers),
+			handleQueryResults(db, warner, "worker stats", readWorkerStats(map, workers, containees),
 				"SELECT * FROM workers");
 			handleQueryResults(db, warner, "Job levels", readJobLevel(map, workers),
 				"SELECT * FROM worker_job_levels");
@@ -202,5 +200,6 @@ final class DBWorkerHandler extends AbstractDatabaseWriter<IWorker, IUnit> imple
 			// FIXME Antipattern
 			throw new RuntimeException(except);
 		}
+		// TODO: If we go ahead with mounts and/or equipment enhancement, add all in 'workers' to containers.
 	}
 }

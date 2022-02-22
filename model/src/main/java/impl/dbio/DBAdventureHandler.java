@@ -2,6 +2,7 @@ package impl.dbio;
 
 import buckelieg.jdbc.fn.DB;
 
+import common.map.IFixture;
 import common.map.Point;
 import common.map.IMutableMapNG;
 import common.map.fixtures.explorable.AdventureFixture;
@@ -68,7 +69,8 @@ final class DBAdventureHandler extends AbstractDatabaseWriter<AdventureFixture, 
 	}
 
 	@Override
-	public void readMapContents(final DB db, final IMutableMapNG map, final Warning warner) {
+	public void readMapContents(final DB db, final IMutableMapNG map, final Map<Integer, IFixture> containers,
+			final Map<Integer, List<Object>> containees, final Warning warner) {
 		try {
 			handleQueryResults(db, warner, "adventures", readAdventure(map),
 				"SELECT * FROM adventures");

@@ -2,6 +2,7 @@ package impl.dbio;
 
 import buckelieg.jdbc.fn.DB;
 
+import common.map.IFixture;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -14,10 +15,8 @@ import common.map.fixtures.IResourcePile;
 import common.map.fixtures.IMutableResourcePile;
 import common.map.fixtures.ResourcePileImpl;
 import common.map.fixtures.Quantity;
-import common.map.fixtures.mobile.IMutableUnit;
 import common.map.fixtures.mobile.IUnit;
 import common.map.fixtures.towns.IFortress;
-import common.map.fixtures.towns.IMutableFortress;
 import common.xmlio.Warning;
 
 final class DBResourcePileHandler
@@ -62,13 +61,10 @@ final class DBResourcePileHandler
 			obj.getCreated(), obj.getImage()).execute();
 	}
 
-	@Override
-	public void readMapContents(final DB db, final IMutableMapNG map, final Warning warner) {}
-
-	private TryBiConsumer<Map<String, Object>, Warning, Exception> readResourcePile(final IMutableMapNG map) {
+	private TryBiConsumer<Map<String, Object>, Warning, Exception> readResourcePile(final IMutableMapNG map,
+			final Map<Integer, List<Object>> containees) {
 		return (dbRow, warner) -> {
 			final int parentId = (Integer) dbRow.get("parent");
-			final TileFixture parent = (TileFixture) findById(map, parentId, warner);
 			final int id = (Integer) dbRow.get("id");
 			final String kind = (String) dbRow.get("kind");
 			final String contents = (String) dbRow.get("contents");
@@ -90,20 +86,15 @@ final class DBResourcePileHandler
 			if (created != null) {
 				pile.setCreated(created);
 			}
-			if (parent instanceof IMutableUnit) {
-				((IMutableUnit) parent).addMember(pile);
-			} else if (parent instanceof IMutableFortress) {
-				((IMutableFortress) parent).addMember(pile);
-			} else {
-				throw new IllegalArgumentException("parent must be unit or fortress");
-			}
+			multimapPut(containees, parentId, pile);
 		};
 	}
 
 	@Override
-	public void readExtraMapContents(final DB db, final IMutableMapNG map, final Warning warner) {
+	public void readMapContents(final DB db, final IMutableMapNG map, final Map<Integer, IFixture> containers,
+			final Map<Integer, List<Object>> containees, final Warning warner) {
 		try {
-			handleQueryResults(db, warner, "resource piles", readResourcePile(map),
+			handleQueryResults(db, warner, "resource piles", readResourcePile(map, containees),
 				"SELECT * FROM resource_piles");
 		} catch (final RuntimeException except) {
 			// Don't wrap RuntimeExceptions in RuntimeException

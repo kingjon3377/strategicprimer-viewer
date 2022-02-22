@@ -8,10 +8,8 @@ import java.util.Map;
 
 import common.map.IMutableMapNG;
 import common.map.fixtures.Implement;
-import common.map.fixtures.mobile.IMutableUnit;
 import common.map.fixtures.mobile.IUnit;
 import common.map.fixtures.towns.IFortress;
-import common.map.fixtures.towns.IMutableFortress;
 import common.xmlio.Warning;
 import common.map.TileFixture;
 import common.map.IFixture;
@@ -51,13 +49,10 @@ final class DBImplementHandler extends AbstractDatabaseWriter<Implement, /*IUnit
 			obj.getImage()).execute();
 	}
 
-	@Override
-	public void readMapContents(final DB db, final IMutableMapNG map, final Warning warner) {}
-
-	private TryBiConsumer<Map<String, Object>, Warning, Exception> readImplement(final IMutableMapNG map) {
+	private TryBiConsumer<Map<String, Object>, Warning, Exception> readImplement(final IMutableMapNG map,
+			final Map<Integer, List<Object>> containees) {
 		return (dbRow, warner) -> {
 			final int parentId = (Integer) dbRow.get("parent");
-			final IFixture parent = findById(map, parentId, warner);
 			final int id = (Integer) dbRow.get("id");
 			final String kind = (String) dbRow.get("kind");
 			final int count = (Integer) dbRow.get("count");
@@ -66,22 +61,16 @@ final class DBImplementHandler extends AbstractDatabaseWriter<Implement, /*IUnit
 			if (image != null) {
 				implement.setImage(image);
 			}
-			if (parent instanceof IMutableUnit) {
-				((IMutableUnit) parent).addMember(implement);
-			} else if (parent instanceof IMutableFortress) {
-				((IMutableFortress) parent).addMember(implement);
-			} else {
-				throw new IllegalArgumentException(
-					"Implement can only be in a unit or fortress");
-			}
+			multimapPut(containees, parentId, implement);
 		};
 	}
 
 	@Override
-	public void readExtraMapContents(final DB db, final IMutableMapNG map, final Warning warner) {
+	public void readMapContents(final DB db, final IMutableMapNG map, final Map<Integer, IFixture> containers,
+			final Map<Integer, List<Object>> containees, final Warning warner) {
 		try {
 			handleQueryResults(db, warner, "pieces of equipment",
-				readImplement(map), "SELECT * FROM implements");
+				readImplement(map, containees), "SELECT * FROM implements");
 		} catch (final RuntimeException except) {
 			// Don't wrap RuntimeExceptions in RuntimeException
 			throw except;

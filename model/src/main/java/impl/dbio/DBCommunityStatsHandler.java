@@ -2,6 +2,7 @@ package impl.dbio;
 
 import buckelieg.jdbc.fn.DB;
 
+import common.map.IFixture;
 import java.util.List;
 import java.util.Map;
 import java.math.BigDecimal;
@@ -98,14 +99,23 @@ final class DBCommunityStatsHandler extends AbstractDatabaseWriter<CommunityStat
 			});
 	}
 
-	@Override
-	public void readMapContents(final DB db, final IMutableMapNG map, final Warning warner) {}
+	private TryBiConsumer<Map<String, Object>, Warning, Exception> readTownPopulations(final IMutableMapNG map,
+			final Map<Integer, List<Object>> containees) {
+		return (dbRow, warner) -> {
+			final int id = (Integer) dbRow.get("id");
+			final int population = (Integer) dbRow.get("population");
+			if (!containees.containsKey(id) || containees.get(id).stream().noneMatch(CommunityStats.class::isInstance)) {
+				multimapPut(containees, id, new CommunityStats(population));
+			}
+		};
+	}
 
-	private TryBiConsumer<Map<String, Object>, Warning, Exception> readTownExpertise(final IMutableMapNG map) {
+	private TryBiConsumer<Map<String, Object>, Warning, Exception> readTownExpertise(final IMutableMapNG map,
+			final Map<Integer, List<Object>> containees) {
 		return (dbRow, warner) -> {
 			final int townId = (Integer) dbRow.get("town");
-			final ITownFixture town = (ITownFixture) findById(map, townId, warner);
-			final CommunityStats population = town.getPopulation();
+			final CommunityStats population = containees.get(townId).stream().filter(CommunityStats.class::isInstance)
+					.map(CommunityStats.class::cast).findAny().orElse(null);
 			final String skill = (String) dbRow.get("skill");
 			final int level = (Integer) dbRow.get("level");
 			assert population != null;
@@ -113,11 +123,12 @@ final class DBCommunityStatsHandler extends AbstractDatabaseWriter<CommunityStat
 		};
 	}
 
-	private TryBiConsumer<Map<String, Object>, Warning, Exception> readWorkedResource(final IMutableMapNG map) {
+	private TryBiConsumer<Map<String, Object>, Warning, Exception> readWorkedResource(final IMutableMapNG map,
+			final Map<Integer, List<Object>> containees) {
 		return (dbRow, warner) -> {
 			final int townId = (Integer) dbRow.get("town");
-			final ITownFixture town = (ITownFixture) findById(map, townId, warner);
-			final CommunityStats population = town.getPopulation();
+			final CommunityStats population = containees.get(townId).stream().filter(CommunityStats.class::isInstance)
+					.map(CommunityStats.class::cast).findAny().orElse(null);
 			final int resource = (Integer) dbRow.get("resource");
 			assert population != null;
 			population.addWorkedField(resource);
@@ -125,11 +136,11 @@ final class DBCommunityStatsHandler extends AbstractDatabaseWriter<CommunityStat
 	}
 
 	private TryBiConsumer<Map<String, Object>, Warning, Exception>
-			readProducedResource(final IMutableMapNG map) {
+			readProducedResource(final IMutableMapNG map, final Map<Integer, List<Object>> containees) {
 		return (dbRow, warner) -> {
 			final int townId = (Integer) dbRow.get("town");
-			final ITownFixture town = (ITownFixture) findById(map, townId, warner);
-			final CommunityStats population = town.getPopulation();
+			final CommunityStats population = containees.get(townId).stream().filter(CommunityStats.class::isInstance)
+					.map(CommunityStats.class::cast).findAny().orElse(null);
 			final int id = (Integer) dbRow.get("id");
 			final String kind = (String) dbRow.get("kind");
 			final String contents = (String) dbRow.get("contents");
@@ -153,11 +164,11 @@ final class DBCommunityStatsHandler extends AbstractDatabaseWriter<CommunityStat
 	}
 
 	private TryBiConsumer<Map<String, Object>, Warning, Exception>
-			readConsumedResource(final IMutableMapNG map) {
+			readConsumedResource(final IMutableMapNG map, final Map<Integer, List<Object>> containees) {
 		return (dbRow, warner) -> {
 			final int townId = (Integer) dbRow.get("town");
-			final ITownFixture town = (ITownFixture) findById(map, townId, warner);
-			final CommunityStats population = town.getPopulation();
+			final CommunityStats population = containees.get(townId).stream().filter(CommunityStats.class::isInstance)
+					.map(CommunityStats.class::cast).findAny().orElse(null);
 			final int id = (Integer) dbRow.get("id");
 			final String kind = (String) dbRow.get("kind");
 			final String contents = (String) dbRow.get("contents");
@@ -182,16 +193,17 @@ final class DBCommunityStatsHandler extends AbstractDatabaseWriter<CommunityStat
 	}
 
 	@Override
-	public void readExtraMapContents(final DB db, final IMutableMapNG map, final Warning warner) {
+	public void readMapContents(final DB db, final IMutableMapNG map, final Map<Integer, IFixture> containers,
+			final Map<Integer, List<Object>> containees, final Warning warner) {
 		try {
 			handleQueryResults(db, warner, "town expertise levels",
-				readTownExpertise(map), "SELECT * FROM town_expertise");
+				readTownExpertise(map, containees), "SELECT * FROM town_expertise");
 			handleQueryResults(db, warner, "town worked resources",
-				readWorkedResource(map), "SELECT * FROM town_worked_resources");
+				readWorkedResource(map, containees), "SELECT * FROM town_worked_resources");
 			handleQueryResults(db, warner, "town produced resources",
-				readProducedResource(map), "SELECT * FROM town_production");
+				readProducedResource(map, containees), "SELECT * FROM town_production");
 			handleQueryResults(db, warner, "town consumed resources",
-				readConsumedResource(map), "SELECT * FROM town_consumption");
+				readConsumedResource(map, containees), "SELECT * FROM town_consumption");
 		} catch (final RuntimeException except) {
 			// Don't wrap RuntimeExceptions in RuntimeException
 			throw except;

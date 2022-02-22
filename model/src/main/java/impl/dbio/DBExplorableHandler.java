@@ -2,6 +2,7 @@ package impl.dbio;
 
 import buckelieg.jdbc.fn.DB;
 
+import common.map.IFixture;
 import java.util.List;
 import java.util.Map;
 
@@ -93,7 +94,8 @@ final class DBExplorableHandler extends AbstractDatabaseWriter<ExplorableFixture
 	}
 
 	@Override
-	public void readMapContents(final DB db, final IMutableMapNG map, final Warning warner) {
+	public void readMapContents(final DB db, final IMutableMapNG map, final Map<Integer, IFixture> containers,
+			final Map<Integer, List<Object>> containees, final Warning warner) {
 		try {
 			handleQueryResults(db, warner, "caves", readCave(map),
 				"SELECT * FROM caves");

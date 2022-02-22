@@ -2,6 +2,7 @@ package impl.dbio;
 
 import buckelieg.jdbc.fn.DB;
 
+import common.map.IFixture;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -100,7 +101,8 @@ final class DBMineralHandler extends AbstractDatabaseWriter<MineralFixture, Poin
 	}
 
 	@Override
-	public void readMapContents(final DB db, final IMutableMapNG map, final Warning warner) {
+	public void readMapContents(final DB db, final IMutableMapNG map, final Map<Integer, IFixture> containers,
+			final Map<Integer, List<Object>> containees, final Warning warner) {
 		try {
 			handleQueryResults(db, warner, "stone deposits", readStoneDeposit(map),
 				"SELECT row, column, id, kind, dc, image FROM minerals WHERE type = 'stone'");

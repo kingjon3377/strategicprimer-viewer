@@ -2,6 +2,7 @@ package impl.dbio;
 
 import buckelieg.jdbc.fn.DB;
 
+// TODO: Can we get rid of the Context parameter? Is it ever not a subtype of IFixture?
 interface DatabaseWriter<Item, Context> {
 	/**
 	 * Set up the tables that this writer uses on the given connection.

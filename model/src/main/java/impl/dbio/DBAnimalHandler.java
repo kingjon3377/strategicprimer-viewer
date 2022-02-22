@@ -2,9 +2,9 @@ package impl.dbio;
 
 import buckelieg.jdbc.fn.DB;
 
+import common.map.IFixture;
 import common.map.Point;
 import common.map.IMutableMapNG;
-import common.map.fixtures.mobile.IMutableUnit;
 import common.map.fixtures.mobile.IUnit;
 import common.map.fixtures.mobile.Animal;
 import common.map.fixtures.mobile.MaturityModel;
@@ -105,7 +105,7 @@ final class DBAnimalHandler extends AbstractDatabaseWriter<AnimalOrTracks, /*Poi
 	}
 
 	private TryBiConsumer<Map<String, Object>, Warning, Exception>
-			readAnimal(final IMutableMapNG map) {
+			readAnimal(final IMutableMapNG map, final Map<Integer, List<Object>> containees) {
 		return (dbRow, warner) -> {
 			final String kind = (String) dbRow.get("kind");
 			final Boolean talking = /* DBMapReader.databaseBoolean(dbRow.get("talking")) */ // FIXME
@@ -126,7 +126,7 @@ final class DBAnimalHandler extends AbstractDatabaseWriter<AnimalOrTracks, /*Poi
 			if (row != null && column != null) {
 				map.addFixture(new Point(row, column), animal);
 			} else {
-				((IMutableUnit) findById(map, parentId, warner)).addMember(animal);
+				multimapPut(containees, parentId, animal);
 			}
 		};
 	}
@@ -147,26 +147,13 @@ final class DBAnimalHandler extends AbstractDatabaseWriter<AnimalOrTracks, /*Poi
 	}
 
 	@Override
-	public void readMapContents(final DB db, final IMutableMapNG map, final Warning warner) {
+	public void readMapContents(final DB db, final IMutableMapNG map, final Map<Integer, IFixture> containers,
+			final Map<Integer, List<Object>> containees, final Warning warner) {
 		try {
-			handleQueryResults(db, warner, "animal populations", readAnimal(map),
-				"SELECT * FROM animals WHERE row IS NOT NULL");
+			handleQueryResults(db, warner, "animal populations", readAnimal(map, containees),
+				"SELECT * FROM animals");
 			handleQueryResults(db, warner, "animal tracks", readTracks(map),
 				"SELECT * FROM tracks");
-		} catch (final RuntimeException except) {
-			// Don't wrap RuntimeExceptions in RuntimeException
-			throw except;
-		} catch (final Exception except) {
-			// FIXME Antipattern
-			throw new RuntimeException(except);
-		}
-	}
-
-	@Override
-	public void readExtraMapContents(final DB db, final IMutableMapNG map, final Warning warner) {
-		try {
-			handleQueryResults(db, warner, "animals in units", readAnimal(map),
-				"SELECT * FROM animals WHERE parent IS NOT NULL");
 		} catch (final RuntimeException except) {
 			// Don't wrap RuntimeExceptions in RuntimeException
 			throw except;

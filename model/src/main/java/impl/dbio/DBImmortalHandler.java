@@ -2,6 +2,7 @@ package impl.dbio;
 
 import buckelieg.jdbc.fn.DB;
 
+import common.map.IFixture;
 import java.util.Map;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -12,7 +13,6 @@ import common.map.HasKind;
 import common.map.HasImage;
 import common.map.HasMutableImage;
 import common.map.fixtures.mobile.Immortal;
-import common.map.fixtures.mobile.IMutableUnit;
 import common.map.fixtures.mobile.IUnit;
 import common.map.fixtures.mobile.SimpleImmortal;
 import common.map.fixtures.mobile.Centaur;
@@ -153,7 +153,7 @@ final class DBImmortalHandler extends AbstractDatabaseWriter<Immortal, /*Point|I
 	}
 
 	private TryBiConsumer<Map<String, Object>, Warning, Exception>
-			readSimpleImmortal(final IMutableMapNG map) {
+			readSimpleImmortal(final IMutableMapNG map, final Map<Integer, List<Object>> containees) {
 		return (dbRow, warner) -> {
 			final String type = (String) dbRow.get("type");
 			final int id = (Integer) dbRow.get("id");
@@ -196,14 +196,13 @@ final class DBImmortalHandler extends AbstractDatabaseWriter<Immortal, /*Point|I
 			if (row != null && column != null) {
 				map.addFixture(new Point(row, column), immortal);
 			} else {
-				final IMutableUnit parent = (IMutableUnit) findById(map, parentId, warner);
-				parent.addMember(immortal);
+				multimapPut(containees, parentId, immortal);
 			}
 		};
 	}
 
 	private TryBiConsumer<Map<String, Object>, Warning, Exception>
-			readKindedImmortal(final IMutableMapNG map) {
+			readKindedImmortal(final IMutableMapNG map, final Map<Integer, List<Object>> containees) {
 		return (dbRow, warner) -> {
 			final String type = (String) dbRow.get("type");
 			final String kind = (String) dbRow.get("kind");
@@ -235,37 +234,19 @@ final class DBImmortalHandler extends AbstractDatabaseWriter<Immortal, /*Point|I
 			if (row != null && column != null) {
 				map.addFixture(new Point(row, column), immortal);
 			} else {
-				final IMutableUnit parent = (IMutableUnit) findById(map, parentId, warner);
-				parent.addMember(immortal);
+				multimapPut(containees, parentId, immortal);
 			}
 		};
 	}
 
 	@Override
-	public void readMapContents(final DB db, final IMutableMapNG map, final Warning warner) {
+	public void readMapContents(final DB db, final IMutableMapNG map, final Map<Integer, IFixture> containers,
+			final Map<Integer, List<Object>> containees, final Warning warner) {
 		try {
-			handleQueryResults(db, warner, "simple immortals", readSimpleImmortal(map),
+			handleQueryResults(db, warner, "simple immortals", readSimpleImmortal(map, containees),
 				"SELECT * FROM simple_immortals WHERE row IS NOT NULL");
-			handleQueryResults(db, warner, "immortals with kinds", readKindedImmortal(map),
+			handleQueryResults(db, warner, "immortals with kinds", readKindedImmortal(map, containees),
 				"SELECT * FROM kinded_immortals WHERE row IS NOT NULL");
-		} catch (final RuntimeException except) {
-			// Don't wrap RuntimeExceptions in RuntimeException
-			throw except;
-		} catch (final Exception except) {
-			// FIXME Antipattern
-			throw new RuntimeException(except);
-		}
-	}
-
-	@Override
-	public void readExtraMapContents(final DB db, final IMutableMapNG map, final Warning warner) {
-		try {
-			handleQueryResults(db, warner, "simple immortals in units",
-				readSimpleImmortal(map),
-				"SELECT * FROM simple_immortals WHERE parent IS NOT NULL");
-			handleQueryResults(db, warner, "immortals with kinds in units",
-				readKindedImmortal(map),
-				"SELECT * FROM kinded_immortals WHERE parent IS NOT NULL");
 		} catch (final RuntimeException except) {
 			// Don't wrap RuntimeExceptions in RuntimeException
 			throw except;

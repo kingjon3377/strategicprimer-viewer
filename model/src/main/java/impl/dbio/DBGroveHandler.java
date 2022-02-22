@@ -2,6 +2,7 @@ package impl.dbio;
 
 import buckelieg.jdbc.fn.DB;
 
+import common.map.IFixture;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -76,7 +77,8 @@ final class DBGroveHandler extends AbstractDatabaseWriter<Grove, Point> implemen
 	}
 
 	@Override
-	public void readMapContents(final DB db, final IMutableMapNG map, final Warning warner) {
+	public void readMapContents(final DB db, final IMutableMapNG map, final Map<Integer, IFixture> containers,
+			final Map<Integer, List<Object>> containees, final Warning warner) {
 		try {
 			handleQueryResults(db, warner, "groves", readGrove(map),
 				"SELECT * FROM groves");

@@ -8,6 +8,8 @@ import common.map.IMapNG;
 import common.map.fixtures.FixtureIterable;
 import common.xmlio.Warning;
 
+import java.util.ArrayList;
+import java.util.List;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Map;
@@ -26,40 +28,17 @@ interface MapContentsReader {
 	 */
 	Logger LOGGER = Logger.getLogger(MapContentsReader.class.getName());
 	/**
-	 * Read map direct contents---that is, anything directly at a location on the map.
+	 * Read map contents---that is, anything directly at a location on the map.
+	 *
+	 * @param db The database to read from.
+	 * @param map The map we're reading
+	 * @param containers A map by ID of fixtures that can contain others, to connect later.
+	 * @param containees A multimap (TODO: use one) by container ID of fixtures that are contained in other fixtures,
+	 *                      to be added to their containers later.
+	 * @param warner Warning instance to use
 	 */
-	void readMapContents(DB db, IMutableMapNG map, Warning warner);
-
-	/**
-	 * Read non-direct contents---that is, unit and fortress members and
-	 * the like. Because in many cases this doesn't apply, it's by default a noop.
-	 */
-	default void readExtraMapContents(final DB db, final IMutableMapNG map, final Warning warner) {}
-
-	/**
-	 * Find a tile fixture or unit or fortress member within a given stream
-	 * of such objects by its ID, if present.
-	 */
-	default @Nullable IFixture findByIdImpl(final Iterable<IFixture> stream, final int id) {
-		for (final IFixture fixture : stream) {
-			if (fixture.getId() == id) {
-				return fixture;
-			} else if (fixture instanceof FixtureIterable) {
-				final IFixture retval = findByIdImpl((FixtureIterable<IFixture>) fixture, id);
-				if (retval != null) {
-					return retval;
-				}
-			}
-		}
-		return null;
-	}
-
-	/**
-	 * Find a tile fixture or unit or fortress member by ID.
-	 */
-	default IFixture findById(final IMapNG map, final int id, final Warning warner) {
-		return DBMemoizer.findById(map, id, this, warner);
-	}
+	void readMapContents(DB db, IMutableMapNG map, Map<Integer, IFixture> containers,
+			Map<Integer, List<Object>> containees, Warning warner);
 
 	/**
 	 * Run the given method on each row returned by the given query.
@@ -79,5 +58,15 @@ interface MapContentsReader {
 				}
 			}).wrappedPartial(warner));
 		LOGGER.fine("Finished reading " + description);
+	}
+
+	default void multimapPut(final Map<Integer, List<Object>> mapping, final Integer key, final Object val) {
+		if (mapping.containsKey(key)) {
+			mapping.get(key).add(val);
+		} else {
+			final List<Object> list = new ArrayList<>();
+			list.add(val);
+			mapping.put(key, list);
+		}
 	}
 }

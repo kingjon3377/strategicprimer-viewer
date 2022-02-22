@@ -2,6 +2,7 @@ package impl.dbio;
 
 import buckelieg.jdbc.fn.DB;
 
+import common.map.IFixture;
 import common.map.IMutableMapNG;
 import common.map.SPMapNG;
 import common.map.MapDimensionsImpl;
@@ -13,9 +14,17 @@ import common.map.River;
 import common.map.IMutablePlayerCollection;
 import common.map.PlayerCollection;
 import common.map.Direction;
+import common.map.fixtures.FortressMember;
+import common.map.fixtures.UnitMember;
+import common.map.fixtures.mobile.IMutableUnit;
+import common.map.fixtures.towns.AbstractTown;
+import common.map.fixtures.towns.CommunityStats;
+import common.map.fixtures.towns.IMutableFortress;
+import common.map.fixtures.towns.Village;
 import common.xmlio.Warning;
 import impl.xmlio.exceptions.MapVersionException;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.List;
 import java.util.logging.Logger;
@@ -28,6 +37,9 @@ final class DBMapReader {
 	private static final Logger LOGGER = Logger.getLogger(DBMapReader.class.getName());
 	// FIXME: Passing null when we don't want to construct the parent object is a *really* bad idea!
 	private final List<MapContentsReader> readers = List.of(new DBPlayerHandler(), new DBCacheHandler(), new DBExplorableHandler(), new DBFieldHandler(), new DBFortressHandler(null), new DBUnitHandler(null), new DBGroundHandler(), new DBGroveHandler(), new DBImmortalHandler(), new DBImplementHandler(), new DBMineralHandler(), new DBMineHandler(), new DBPortalHandler(), new DBShrubHandler(), new DBSimpleTerrainHandler(), new DBTextHandler(), new DBTownHandler(), new DBVillageHandler(), new DBResourcePileHandler(), new DBAnimalHandler(), new DBCommunityStatsHandler(), new DBWorkerHandler(), new DBAdventureHandler(), new DBForestHandler());
+
+	private final Map<Integer, IFixture> containers = new HashMap<>();
+	private final Map<Integer, List<Object>> containees = new HashMap<>();
 
 	/**
 	 * If {@link field} is is an Integer and either 0 or 1, which is how
@@ -135,7 +147,7 @@ final class DBMapReader {
 			});
 		for (final MapContentsReader reader : readers) {
 			try {
-				reader.readMapContents(db, retval, warner);
+				reader.readMapContents(db, retval, containers, containees, warner);
 			} catch (final Exception exception) {
 				if (exception.getMessage().contains("no such table")) {
 					continue;
@@ -145,25 +157,28 @@ final class DBMapReader {
 				}
 			}
 		}
-		for (final MapContentsReader reader : readers) {
-			try {
-				reader.readExtraMapContents(db, retval, warner);
-			} catch (RuntimeException except) {
-				if (except.getMessage().contains("no such table")) {
-					continue;
+		LOGGER.fine("Finished reading the map except adding members to parents");
+
+		for (final Map.Entry<Integer, List<Object>> entry : containees.entrySet()) {
+			final int parentId = entry.getKey();
+			for (final Object member : entry.getValue()) {
+				final IFixture parent = containers.get(parentId);
+				if (parent instanceof IMutableFortress && member instanceof FortressMember) {
+					((IMutableFortress) parent).addMember((FortressMember) member);
+				} else if (parent instanceof IMutableUnit && member instanceof UnitMember) {
+					((IMutableUnit) parent).addMember((UnitMember) member);
+				} else if (parent instanceof AbstractTown && member instanceof CommunityStats &&
+						((AbstractTown) parent).getPopulation() == null) {
+					((AbstractTown) parent).setPopulation((CommunityStats) member);
+				} else if (parent instanceof Village && member instanceof CommunityStats &&
+						((Village) parent).getPopulation() == null) {
+					((Village) parent).setPopulation((CommunityStats) member);
 				} else {
-					throw except;
-				}
-			} catch (final Exception exception) {
-				if (exception.getMessage().contains("no such table")) {
-					continue;
-				} else {
-					// TODO: declare checked exception instead?
-					throw new RuntimeException(exception);
+					throw new IllegalStateException("DB parent-child type invariants not met");
 				}
 			}
 		}
-		LOGGER.fine("Finished reading the map");
+		LOGGER.fine("Finished adding members to parents");
 		return retval;
 	}
 }

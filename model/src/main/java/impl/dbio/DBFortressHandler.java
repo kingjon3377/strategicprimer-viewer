@@ -2,6 +2,7 @@ package impl.dbio;
 
 import buckelieg.jdbc.fn.DB;
 
+import common.map.IFixture;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -58,7 +59,8 @@ final class DBFortressHandler extends AbstractDatabaseWriter<IFortress, Point> i
 		}
 	}
 
-	private static TryBiConsumer<Map<String, Object>, Warning, Exception> readFortress(final IMutableMapNG map) {
+	private static TryBiConsumer<Map<String, Object>, Warning, Exception> readFortress(final IMutableMapNG map,
+			final Map<Integer, IFixture> containers) {
 		return (dbRow, warner) -> {
 			final int row = (Integer) dbRow.get("row");
 			final int column = (Integer) dbRow.get("column");
@@ -77,13 +79,15 @@ final class DBFortressHandler extends AbstractDatabaseWriter<IFortress, Point> i
 				fortress.setPortrait(portrait);
 			}
 			map.addFixture(new Point(row, column), fortress);
+			containers.put(id, fortress);
 		};
 	}
 
 	@Override
-	public void readMapContents(final DB db, final IMutableMapNG map, final Warning warner) {
+	public void readMapContents(final DB db, final IMutableMapNG map, final Map<Integer, IFixture> containers,
+			final Map<Integer, List<Object>> containees, final Warning warner) {
 		try {
-			handleQueryResults(db, warner, "fortresses", readFortress(map),
+			handleQueryResults(db, warner, "fortresses", readFortress(map, containers),
 				"SELECT * FROM fortresses");
 		} catch (final RuntimeException except) {
 			// Don't wrap RuntimeExceptions in RuntimeException

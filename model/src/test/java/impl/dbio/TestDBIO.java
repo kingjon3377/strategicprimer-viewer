@@ -111,6 +111,8 @@ import common.map.fixtures.TerrainFixture;
  * TODO: All tests should be more robust, as if developed test-first
  *
  * TODO: Randomize string inputs
+ *
+ * TODO: Figure out a way to share tests with {@link impl.xmlio.TestXMLIO}
  */
 @Disabled("Until either jdbc-fn library is fixed or DBIO code ported to a different one")
 public final class TestDBIO {

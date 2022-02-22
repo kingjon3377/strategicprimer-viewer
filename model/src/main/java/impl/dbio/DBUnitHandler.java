@@ -2,6 +2,7 @@ package impl.dbio;
 
 import buckelieg.jdbc.fn.DB;
 
+import common.map.IFixture;
 import java.util.List;
 import java.util.Map;
 
@@ -11,7 +12,6 @@ import common.map.fixtures.mobile.IMutableUnit;
 import common.map.fixtures.mobile.IUnit;
 import common.map.fixtures.mobile.Unit;
 import common.map.fixtures.towns.IFortress;
-import common.map.fixtures.towns.IMutableFortress;
 import common.xmlio.Warning;
 import common.map.fixtures.UnitMember;
 
@@ -116,7 +116,8 @@ final class DBUnitHandler extends AbstractDatabaseWriter<IUnit, Object> implemen
 		};
 	}
 
-	private TryBiConsumer<Map<String, Object>, Warning, Exception> readUnit(final IMutableMapNG map, final DB db) {
+	private TryBiConsumer<Map<String, Object>, Warning, Exception> readUnit(final IMutableMapNG map, final DB db,
+			final Map<Integer, List<Object>> containees) {
 		return (dbRow, warner) -> {
 			final int ownerNum = (Integer) dbRow.get("owner");
 			final String kind = (String) dbRow.get("kind");
@@ -140,32 +141,18 @@ final class DBUnitHandler extends AbstractDatabaseWriter<IUnit, Object> implemen
 			if (row != null && column != null) {
 				map.addFixture(new Point(row, column), unit);
 			} else {
-				final IMutableFortress parent = (IMutableFortress) findById(map,
-					(Integer) dbRow.get("parent"), warner);
-				parent.addMember(unit);
+				multimapPut(containees, (Integer) dbRow.get("parent"), unit);
 			}
 		};
 	}
 
 	@Override
-	public void readMapContents(final DB db, final IMutableMapNG map, final Warning warner) {
+	public void readMapContents(final DB db, final IMutableMapNG map, final Map<Integer, IFixture> containers,
+			final Map<Integer, List<Object>> containees, final Warning warner) {
 		try {
-			handleQueryResults(db, warner, "units outside fortresses",
-				readUnit(map, db), "SELECT * FROM units WHERE row IS NOT NULL");
-		} catch (final RuntimeException except) {
-			// Don't wrap RuntimeExceptions in RuntimeException
-			throw except;
-		} catch (final Exception except) {
-			// FIXME Antipattern
-			throw new RuntimeException(except);
-		}
-	}
-
-	@Override
-	public void readExtraMapContents(final DB db, final IMutableMapNG map, final Warning warner) {
-		try {
-			handleQueryResults(db, warner, "units in fortresses",
-				readUnit(map, db), "SELECT * FROM units WHERE parent IS NOT NULL");
+			// FIXME: Move orders and results handling to here so we don't have to pass DB to the row-handler
+			handleQueryResults(db, warner, "units",
+				readUnit(map, db, containees), "SELECT * FROM units WHERE row IS NOT NULL");
 		} catch (final RuntimeException except) {
 			// Don't wrap RuntimeExceptions in RuntimeException
 			throw except;
