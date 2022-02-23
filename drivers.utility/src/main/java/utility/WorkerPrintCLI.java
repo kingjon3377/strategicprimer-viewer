@@ -63,6 +63,10 @@ import exploration.common.IExplorationModel;
 				cli.print(" (", worker.getRace(), ")");
 			}
 
+			if (worker.getMount() != null) {
+				cli.print(" (mounted on ", worker.getMount().getKind(), ")");
+			}
+
 			final List<IJob> jobs = StreamSupport.stream(worker.spliterator(), false)
 				.filter(j -> j.getLevel() > 0).collect(Collectors.toList());
 			if (!jobs.isEmpty()) {
