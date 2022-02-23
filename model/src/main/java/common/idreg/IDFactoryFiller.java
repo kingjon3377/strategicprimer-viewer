@@ -3,8 +3,10 @@ package common.idreg;
 import common.map.Point;
 import common.map.IFixture;
 import common.map.IMapNG;
+import common.map.fixtures.mobile.IWorker;
 import common.map.fixtures.towns.ITownFixture;
 import common.map.fixtures.FixtureIterable;
+import java.util.Collections;
 
 public final class IDFactoryFiller {
 	private IDFactoryFiller() {
@@ -51,6 +53,12 @@ public final class IDFactoryFiller {
 			if (fixture instanceof ITownFixture && ((ITownFixture) fixture).getPopulation() != null) {
 				recursiveRegister(factory, ((ITownFixture) fixture).getPopulation().getYearlyProduction());
 				recursiveRegister(factory, ((ITownFixture) fixture).getPopulation().getYearlyConsumption());
+			}
+			if (fixture instanceof IWorker) {
+				if (((IWorker) fixture).getMount() != null) {
+					recursiveRegister(factory, Collections.singleton(((IWorker) fixture).getMount()));
+				}
+				recursiveRegister(factory, ((IWorker) fixture).getEquipment());
 			}
 		}
 	}
