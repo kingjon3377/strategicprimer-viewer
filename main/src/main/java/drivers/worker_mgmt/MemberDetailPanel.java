@@ -195,6 +195,9 @@ public class MemberDetailPanel extends BorderedPanel implements UnitMemberListen
 			for (final InterpolatedLabel<@Nullable WorkerStats> label : statLabels) {
 				label.setArgument(stats);
 			}
+			if (worker.getMount() != null) {
+				jobsPanel.add(new JLabel("Mounted on " + worker.getMount().getKind()));
+			}
 			for (final IJob job : worker) {
 				if (job.isEmpty()) {
 					continue;
@@ -207,6 +210,10 @@ public class MemberDetailPanel extends BorderedPanel implements UnitMemberListen
 						.collect(Collectors.joining(", ", "Skills: ", "")));
 				}
 				jobsPanel.add(label);
+			}
+			// TODO: Make a separate panel?
+			for (Implement item : worker.getEquipment()) {
+				jobsPanel.add(new JLabel(item.toString()));
 			}
 		} else if (local instanceof Animal) {
 			final Animal animal = (Animal) local;
