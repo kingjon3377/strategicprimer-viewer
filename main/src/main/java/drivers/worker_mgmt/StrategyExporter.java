@@ -69,9 +69,24 @@ import common.map.fixtures.mobile.worker.IJob;
 						.filter(j -> j.getLevel() > 0)
 						.collect(Collectors.toList());
 			}
+			boolean needsClosingParen = false;
+			if (((IWorker) member).getMount() != null) {
+				writer.write(" (on ");
+				writer.write(((IWorker) member).getMount().getKind());
+				needsClosingParen = true;
+			}
 			if (!jobs.isEmpty()) {
+				if (needsClosingParen) {
+					writer.write("; ");
+				} else {
+					writer.write(" (");
+				}
 				writer.write(jobs.stream().map(StrategyExporter::jobString)
-					.collect(Collectors.joining(", ", " (", ")")));
+					.collect(Collectors.joining(", ")));
+				needsClosingParen = true;
+			}
+			if (needsClosingParen) {
+				writer.write(")");
 			}
 		} else if (member instanceof Animal) {
 			final Animal animal = (Animal) member;
