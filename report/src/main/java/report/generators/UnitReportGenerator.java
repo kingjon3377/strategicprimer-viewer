@@ -43,9 +43,9 @@ public class UnitReportGenerator extends AbstractReportGenerator<IUnit> {
 			currentTurn, hq);
 		animalReportGenerator = new AnimalReportGenerator(dimensions, currentTurn, hq);
 		ourWorkerReportGenerator = new WorkerReportGenerator(true, dimensions,
-			currentPlayer, hq);
+			currentPlayer, currentTurn, hq);
 		otherWorkerReportGenerator = new WorkerReportGenerator(false, dimensions,
-			currentPlayer, hq);
+			currentPlayer, currentTurn, hq);
 		this.currentPlayer = currentPlayer;
 	}
 

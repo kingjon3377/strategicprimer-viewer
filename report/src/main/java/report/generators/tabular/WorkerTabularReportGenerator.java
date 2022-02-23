@@ -24,6 +24,8 @@ import java.util.stream.Collectors;
 /**
  * A report generator for workers. We do not cover Jobs or Skills; see {@link
  * SkillTabularReportGenerator} for that.
+ *
+ * TODO: Should probably include something about mount and/or equipment
  */
 public class WorkerTabularReportGenerator implements ITableGenerator<IWorker> {
 	@Override

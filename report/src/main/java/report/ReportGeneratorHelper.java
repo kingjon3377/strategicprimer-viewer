@@ -1,5 +1,7 @@
 package report;
 
+import common.map.fixtures.Implement;
+import common.map.fixtures.mobile.IWorker;
 import org.jetbrains.annotations.Nullable;
 import org.javatuples.Pair;
 import lovelace.util.DelayedRemovalMap;
@@ -64,6 +66,13 @@ import java.util.logging.Logger;
 			mapping.put(key, val);
 			if (fixture instanceof FixtureIterable) {
 				for (final IFixture inner : (FixtureIterable<?>) fixture) {
+					addToMap(location, inner, idf, mapping);
+				}
+			} else if (fixture instanceof IWorker) {
+				if (((IWorker) fixture).getMount() != null) {
+					addToMap(location, ((IWorker) fixture).getMount(), idf, mapping);
+				}
+				for (final Implement inner : ((IWorker) fixture).getEquipment()) {
 					addToMap(location, inner, idf, mapping);
 				}
 			}

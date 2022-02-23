@@ -1,5 +1,6 @@
 package report.generators;
 
+import common.map.fixtures.Implement;
 import java.util.function.Consumer;
 import org.jetbrains.annotations.Nullable;
 import org.javatuples.Pair;
@@ -25,16 +26,23 @@ import common.map.fixtures.mobile.worker.IJob;
 
 	private final boolean details;
 	private final Player currentPlayer;
+	private final int currentTurn;
+	private final AnimalReportGenerator animalReportGenerator;
+	private final FortressMemberReportGenerator equipmentReportGenerator;
 
-	public WorkerReportGenerator(final boolean details, final MapDimensions dimensions, final Player currentPlayer) {
-		this(details, dimensions, currentPlayer, null);
+	public WorkerReportGenerator(final boolean details, final MapDimensions dimensions, final Player currentPlayer,
+			final int currentTurn) {
+		this(details, dimensions, currentPlayer, currentTurn, null);
 	}
 
-	public WorkerReportGenerator(final boolean details,
-	                             final MapDimensions dimensions, final Player currentPlayer, final @Nullable Point hq) {
+	public WorkerReportGenerator(final boolean details, final MapDimensions dimensions, final Player currentPlayer,
+			final int currentTurn, final @Nullable Point hq) {
 		super(dimensions, hq);
 		this.details = details;
 		this.currentPlayer = currentPlayer;
+		this.currentTurn = currentTurn;
+		animalReportGenerator = new AnimalReportGenerator(dimensions, currentTurn, hq);
+		equipmentReportGenerator = new FortressMemberReportGenerator(currentPlayer, dimensions, currentTurn, hq);
 	}
 
 	private static String mod(final int stat) {
@@ -96,6 +104,20 @@ import common.map.fixtures.mobile.worker.IJob;
 				ostream.accept(job.getName());
 				ostream.accept(" ");
 				ostream.accept(skills(job));
+				println(ostream, "</li>");
+			}
+			println(ostream, "</ul>");
+		}
+		if (details && worker.getMount() != null) {
+			ostream.accept("(S)he is mounted on the following animal:");
+			animalReportGenerator.produceSingle(fixtures, map, ostream, worker.getMount(), loc);
+		}
+		if (details && !worker.getEquipment().isEmpty()) {
+			println(ostream, "(S)he has the following personal equipment:");
+			println(ostream, "<ul>");
+			for (Implement item : worker.getEquipment()) {
+				ostream.accept("<li>");
+				equipmentReportGenerator.produceSingle(fixtures, map, ostream, item, loc);
 				println(ostream, "</li>");
 			}
 			println(ostream, "</ul>");
