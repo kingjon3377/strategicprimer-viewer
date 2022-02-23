@@ -1,10 +1,13 @@
 package utility;
 
+import common.map.fixtures.Implement;
 import common.map.fixtures.towns.CommunityStats;
 import common.map.fixtures.FixtureIterable;
+import common.map.fixtures.towns.IFortress;
 import common.map.fixtures.towns.TownSize;
 import common.map.TileFixture;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.function.Consumer;
 import java.util.stream.StreamSupport;
@@ -85,6 +88,12 @@ public class MapCheckerCLI implements UtilityDriver {
 			super(String.format("At %s: %s", context, message));
 		}
 	}
+
+	/**
+	 * Kinds of {@link Implement}s that should probably be assigned to a worker, or at least in a unit, not directly
+	 * in a fortress.
+	 */
+	private static final List<String> PERSONAL_EQUIPMENT = Collections.emptyList(); // TODO: Fill in this list (using List.of)
 
 	private static class OwnerChecker {
 		private final IMapNG map;
@@ -195,6 +204,24 @@ public class MapCheckerCLI implements UtilityDriver {
 		return retval;
 	}
 
+	private static boolean personalEquipmentCheck(final TileType terrain, final Point context, final IFixture fixture,
+			final Warning warner) {
+		if (fixture instanceof IFortress) {
+			final String matching = ((IFortress) fixture).stream().filter(Implement.class::isInstance)
+					.map(Implement.class::cast).map(Implement::getKind).filter(PERSONAL_EQUIPMENT::contains)
+					.findAny().orElse(null);
+			if (matching == null) {
+				return false;
+			} else {
+				warner.handle(new SPContentWarning(context,
+						String.format("'Personal equipment' (%s) directly in fortress", matching)));
+				return true;
+			}
+		} else {
+			return false;
+		}
+	}
+
 	private static final List<String> PLACEHOLDER_KINDS = List.of("various", "unknown");
 
 	private static final List<String> PLACEHOLDER_UNITS = List.of("unit", "units");
@@ -281,7 +308,10 @@ public class MapCheckerCLI implements UtilityDriver {
 		}
 	}
 
-	private static final List<Checker> EXTRA_CHECKS = List.of(MapCheckerCLI::lateriteChecker, MapCheckerCLI::aquaticVillageChecker, MapCheckerCLI::suspiciousSkillCheck, MapCheckerCLI::resourcePlaceholderChecker, MapCheckerCLI::oasisChecker);
+	private static final List<Checker> EXTRA_CHECKS = List.of(MapCheckerCLI::lateriteChecker,
+			MapCheckerCLI::aquaticVillageChecker, MapCheckerCLI::suspiciousSkillCheck,
+			MapCheckerCLI::resourcePlaceholderChecker, MapCheckerCLI::oasisChecker,
+			MapCheckerCLI::personalEquipmentCheck);
 
 	private static boolean contentCheck(final Checker checker, final TileType terrain, final Point context,
 	                                    final Warning warner, final Iterable<? extends IFixture> list) {
