@@ -73,7 +73,7 @@ public class AdvancementCLIHelper implements LevelGainSource {
 				if (skillName == null) {
 					return;
 				} else {
-					model.addHoursToSkill(worker, job.getName(), skillName, 0, 200); // TODO: Have a better way to add the skill without any hours, or else rework this method
+					model.addSkillToWorker(worker, job.getName(), skillName);
 					skills.clear();
 					job.forEach(skills::add);
 					final ISkill temp = skills.stream().filter(s -> skillName.equals(s.getName()))
@@ -255,7 +255,7 @@ public class AdvancementCLIHelper implements LevelGainSource {
 					return;
 				}
 				for (final IWorker worker : workers) {
-					model.addHoursToSkill(worker, jobName, skillName, 0, 200);
+					model.addSkillToWorker(worker, jobName, skillName);
 				}
 				skills.clear();
 				new ProxyJob(jobName, false, workers).forEach(skills::add);
