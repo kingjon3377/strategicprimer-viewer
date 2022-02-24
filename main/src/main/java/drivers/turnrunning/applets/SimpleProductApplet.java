@@ -70,7 +70,7 @@ import org.jetbrains.annotations.Nullable;
 				another = respTwo;
 			}
 		}
-		final String addendum = cli.inputMultilineString("Desription of results:");
+		final String addendum = cli.inputMultilineString("Description of results:");
 		if (addendum == null) {
 			return null;
 		} else {
