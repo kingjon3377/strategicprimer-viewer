@@ -186,6 +186,7 @@ final class DBMapReader {
 				}
 			}
 		}
+		retval.setModified(false);
 		LOGGER.fine("Finished adding members to parents");
 		return retval;
 	}

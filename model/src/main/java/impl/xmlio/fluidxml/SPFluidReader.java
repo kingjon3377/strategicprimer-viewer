@@ -391,6 +391,7 @@ public class SPFluidReader implements IMapReader, ISPReader {
 		} else {
 			warner.handle(new MissingPropertyException(mapTag, "current_player"));
 		}
+		retval.setModified(false);
 		return retval;
 	}
 

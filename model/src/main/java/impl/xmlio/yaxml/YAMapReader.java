@@ -359,6 +359,7 @@ import java.util.function.Predicate;
 		} else {
 			warner.handle(new MissingPropertyException(mapTag, "current_player"));
 		}
+		retval.setModified(false);
 		return retval;
 	}
 
