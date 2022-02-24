@@ -425,7 +425,9 @@ public class TurnRunningModel extends ExplorationModel implements ITurnRunningMo
 						.filter(IMutableResourcePile.class::isInstance)
 						.map(IMutableResourcePile.class::cast)
 						.collect(Collectors.toList())) {
-					if (resource.isSubset(item, x -> {})) { // TODO: is that the right way around?
+					if (resource.isSubset(item, x -> {}) || // TODO: is that the right way around?
+							    (resource.getKind().equals(item.getKind()) &&
+									     resource.getContents().equals(item.getContents()) && resource.getId() == item.getId())) {
 						final BigDecimal qty = decimalize(item.getQuantity().getNumber());
 						if (qty.compareTo(amount) <= 0) {
 							if (container instanceof IMutableUnit) {
