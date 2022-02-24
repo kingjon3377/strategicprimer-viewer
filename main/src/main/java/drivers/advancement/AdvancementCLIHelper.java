@@ -15,9 +15,7 @@ import lovelace.util.SingletonRandom;
 import common.map.fixtures.mobile.IWorker;
 import common.map.fixtures.mobile.IUnit;
 
-import common.map.fixtures.mobile.worker.ProxyWorker;
 import common.map.fixtures.mobile.worker.IJob;
-import common.map.fixtures.mobile.worker.ProxyJob;
 import common.map.fixtures.mobile.worker.ISkill;
 import common.map.fixtures.mobile.worker.Skill;
 
@@ -239,12 +237,13 @@ public class AdvancementCLIHelper implements LevelGainSource {
 	/**
 	 * Let the user add experience in a given Job to all of a list of workers.
 	 */
-	private void advanceWorkersInJob(final String jobName, final IWorker... workers) {
-		final List<ISkill> skills = StreamSupport.stream(
-				new ProxyJob(jobName, false, workers).spliterator(), false).collect(Collectors.toList());
+	private void advanceWorkersInJob(final String jobName, final IUnit unit) {
+		final List<String> skills = unit.stream().filter(IWorker.class::isInstance).map(IWorker.class::cast)
+				.flatMap(w -> StreamSupport.stream(w.getJob(jobName).spliterator(), false)).map(ISkill::getName)
+				.distinct().collect(Collectors.toList());
 		while (true) {
-			final Pair<Integer, @Nullable ISkill> chosen = cli.chooseFromList(skills, "Skills in Jobs:", "No existing skills.", "Skill to advance: ", ICLIHelper.ListChoiceBehavior.ALWAYS_PROMPT);
-			final ISkill skill;
+			final Pair<Integer, @Nullable String> chosen = cli.chooseStringFromList(skills, "Skills in Jobs:", "No existing skills.", "Skill to advance: ", ICLIHelper.ListChoiceBehavior.ALWAYS_PROMPT);
+			final String skill;
 			if (chosen.getValue1() != null) {
 				skill = chosen.getValue1();
 			} else if (chosen.getValue0() > skills.size()) {
@@ -254,21 +253,14 @@ public class AdvancementCLIHelper implements LevelGainSource {
 				if (skillName == null) {
 					return;
 				}
-				for (final IWorker worker : workers) {
-					model.addSkillToWorker(worker, jobName, skillName);
-				}
+				model.addSkillToAllWorkers(unit, jobName, skillName);
 				skills.clear();
-				new ProxyJob(jobName, false, workers).forEach(skills::add);
-				final ISkill temp = skills.stream().filter(s -> skillName.equals(s.getName()))
-					.findAny().orElse(null);
-				if (temp == null) {
-					cli.println("Select the new item at the next prompt.");
-					continue;
-				} else {
-					skill = temp;
-				}
+				unit.stream().filter(IWorker.class::isInstance).map(IWorker.class::cast)
+						.flatMap(w -> StreamSupport.stream(w.getJob(jobName).spliterator(), false)).map(ISkill::getName)
+						.distinct().forEach(skills::add);
+				skill = skillName;
 			}
-			advanceWorkersInSkill(jobName, skill.getName(), workers);
+			advanceWorkersInSkill(jobName, skill, unit.stream().toArray(IWorker[]::new));
 			final Boolean continuation = cli.inputBoolean("Select another Skill in this Job?");
 			if (continuation == null || !continuation) {
 				break;
@@ -303,10 +295,12 @@ public class AdvancementCLIHelper implements LevelGainSource {
 				cli.println("No workers in unit.");
 				return;
 			}
-			final List<IJob> jobs = StreamSupport.stream(new ProxyWorker(unit).spliterator(), false).collect(Collectors.toList());
+			final List<String> jobs = unit.stream().filter(IWorker.class::isInstance).map(IWorker.class::cast)
+					.flatMap(w -> StreamSupport.stream(w.spliterator(), false)).map(IJob::getName).distinct()
+					.collect(Collectors.toList());
 			while (true) {
-				final Pair<Integer, @Nullable IJob> chosen = cli.chooseFromList(jobs, "Jobs in workers:", "No existing jobs.", "Job to advance: ", ICLIHelper.ListChoiceBehavior.ALWAYS_PROMPT);
-				final IJob job;
+				final Pair<Integer, @Nullable String> chosen = cli.chooseStringFromList(jobs, "Jobs in workers:", "No existing jobs.", "Job to advance: ", ICLIHelper.ListChoiceBehavior.ALWAYS_PROMPT);
+				final String job;
 				if (chosen.getValue1() != null) {
 					job = chosen.getValue1();
 				} else if (chosen.getValue0() > jobs.size()) {
@@ -320,17 +314,11 @@ public class AdvancementCLIHelper implements LevelGainSource {
 						model.addJobToWorker(worker, jobName);
 					}
 					jobs.clear();
-					new ProxyWorker(unit).forEach(jobs::add);
-					final IJob temp = jobs.stream().filter(j -> jobName.equals(j.getName()))
-						.findFirst().orElse(null);
-					if (temp == null) {
-						cli.println("Select the new item at the next prompt.");
-						continue;
-					} else {
-						job = temp;
-					}
+					job = jobName;
+					unit.stream().filter(IWorker.class::isInstance).map(IWorker.class::cast)
+							.flatMap(w -> StreamSupport.stream(w.spliterator(), false)).map(IJob::getName).distinct().forEach(jobs::add);
 				}
-				advanceWorkersInJob(job.getName(), workers.toArray(new IWorker[0]));
+				advanceWorkersInJob(job, unit);
 				final Boolean continuation = cli.inputBoolean("Select another Job in these workers?");
 				if (continuation == null || !continuation) {
 					break;
