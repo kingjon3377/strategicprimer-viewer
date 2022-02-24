@@ -10,6 +10,7 @@ import java.util.Set;
 
 import java.util.function.Consumer;
 
+import java.util.logging.Level;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -47,6 +48,7 @@ public final class ProxyJob implements IJob, ProxyFor<IJob> {
 					.findAny().orElse(job));
 			} else if (unmodified) {
 				LOGGER.warning("Can't add job to immutable worker");
+				LOGGER.log(Level.FINER, "Stack trace for immutable-worker condition", new Exception());
 			}
 		}
 
