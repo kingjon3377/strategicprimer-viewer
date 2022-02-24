@@ -22,6 +22,27 @@ public interface IAdvancementModel extends IDriverModel {
 	boolean addJobToWorker(IWorker worker, String jobName);
 
 	/**
+	 * Add a skill, without any hours in it, to the specified worker in the
+	 * specified Job in all maps. Returns true if a matching worker was
+	 * found in at least one map, false otherwise. If no existing Job by
+	 * that name already exists, a zero-level Job with that name is added
+	 * first. If a Skill by that name already exists in the corresponding
+	 * Job, it is left alone.
+	 */
+	boolean addSkillToWorker(IWorker worker, String jobName, String skillName);
+
+	/**
+	 * Add a skill, without any hours in it, to all workers in the
+	 * specified Job in all maps. Returns true if at least one matching
+	 * worker was found in at least one map, false otherwise. If a worker
+	 * is in a different unit in some map, the Skill is still added to it.
+	 * If no existing Job by that name already exists, a zero-level Job
+	 * with that name is added first. If a Skill by that name already
+	 * exists in the corresponding Job, it is left alone.
+	 */
+	boolean addSkillToAllWorkers(IUnit unit, String jobName, String skillName);
+
+	/**
 	 * Add hours to a Skill to the specified Job in the matching worker in
 	 * all maps.  Returns true if a matching worker was found in at least
 	 * one map, false otherwise. If the worker doesn't have that Skill in
@@ -34,6 +55,23 @@ public interface IAdvancementModel extends IDriverModel {
 	 */
 	boolean addHoursToSkill(IWorker worker, String jobName, String skillName, int hours,
 		int contextValue);
+
+	/**
+	 * Add hours to a Skill to the specified Job in all workers in the
+	 * given unit in all maps. (If a worker is in a different unit in some
+	 * maps, that worker will still receive the hours.) Returns true if at
+	 * least one worker received hours, false otherwise. If a worker
+	 * doesn't have that skill in that Job, it is added first; if it
+	 * doesn't have that Job, it is added first as in {@link
+	 * addJobToWorker}, then the skill is added to it. The {@link
+	 * contextValue} is used to calculate a new value passed to {@link
+	 * common.map.fixtures.mobile.worker.IMutableSkill#addHours} for each
+	 * worker.
+	 *
+	 * TODO: Take a level-up listener?
+	 */
+	boolean addHoursToSkillInAll(IUnit unit, String jobName, String skillName,
+			int hours, int contextValue);
 
 	/**
 	 * Replace {@link delenda one skill} with {@link replacement another}

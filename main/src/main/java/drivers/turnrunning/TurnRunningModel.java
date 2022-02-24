@@ -14,6 +14,7 @@ import common.map.fixtures.IMutableResourcePile;
 import common.map.fixtures.IResourcePile;
 import common.map.fixtures.Quantity;
 import common.map.fixtures.ResourcePileImpl;
+import common.map.fixtures.UnitMember;
 import common.map.fixtures.mobile.Animal;
 import common.map.fixtures.mobile.AnimalImpl;
 import common.map.fixtures.mobile.IMutableUnit;
@@ -30,6 +31,7 @@ import common.map.fixtures.towns.IMutableFortress;
 import drivers.common.IDriverModel;
 import exploration.common.ExplorationModel;
 import java.math.BigDecimal;
+import java.util.Random;
 import java.util.function.IntSupplier;
 import java.util.function.Supplier;
 import java.util.logging.Logger;
@@ -219,6 +221,93 @@ public class TurnRunningModel extends ExplorationModel implements ITurnRunningMo
 					map.setModified(true);
 					matching.addJob(new Job(jobName, 0));
 				}
+				any = true;
+			}
+		}
+		return any;
+	}
+
+	/**
+	 * Add a skill, without any hours in it, to the specified worker in the
+	 * specified Job in all maps. Returns true if a matching worker was
+	 * found in at least one map, false otherwise. If no existing Job by
+	 * that name already exists, a zero-level Job with that name is added
+	 * first. If a Skill by that name already exists in the corresponding
+	 * Job, it is left alone.
+	 */
+	@Override
+	public boolean addSkillToWorker(IWorker worker, String jobName, String skillName) {
+		boolean any = false;
+		for (IMutableMapNG map : getRestrictedAllMaps()) {
+			final IMutableWorker matching =
+					map.streamAllFixtures().flatMap(TurnRunningModel::unflattenNonFortresses)
+							.filter(IUnit.class::isInstance).map(IUnit.class::cast)
+							.filter(u -> u.getOwner().equals(map.getCurrentPlayer()))
+							.flatMap(IUnit::stream).filter(IMutableWorker.class::isInstance).map(IMutableWorker.class::cast)
+							.filter(w -> w.getRace().equals(worker.getRace())).filter(w -> w.getName().equals(worker.getName()))
+							.filter(w -> w.getId() == worker.getId()).findAny().orElse(null);
+			if (matching != null) {
+				final IMutableJob job = StreamSupport.stream(matching.spliterator(), false)
+						.filter(IMutableJob.class::isInstance).map(IMutableJob.class::cast)
+						.filter(j -> j.getName().equals(jobName)).findAny().orElse(null);
+				if (job == null) {
+					map.setModified(true);
+					final Job newJob = new Job(jobName, 0);
+					newJob.addSkill(new Skill(skillName, 0, 0));
+					matching.addJob(newJob);
+				} else if (StreamSupport.stream(job.spliterator(), false).map(ISkill::getName).noneMatch(skillName::equals)) {
+					map.setModified(true);
+					job.addSkill(new Skill(skillName, 0, 0));
+				}
+				any = true;
+			}
+		}
+		return any;
+	}
+
+	/**
+	 * Add a skill, without any hours in it, to all workers in the
+	 * specified Job in all maps. Returns true if at least one matching
+	 * worker was found in at least one map, false otherwise. If a worker
+	 * is in a different unit in some map, the Skill is still added to it.
+	 * If no existing Job by that name already exists, a zero-level Job
+	 * with that name is added first. If a Skill by that name already
+	 * exists in the corresponding Job, it is left alone.
+	 */
+	@Override
+	public boolean addSkillToAllWorkers(IUnit unit, String jobName, String skillName) {
+		boolean any = false;
+		for (IWorker worker : unit.stream().filter(IWorker.class::isInstance).map(IWorker.class::cast)
+				.collect(Collectors.toList())) {
+			if (addSkillToWorker(worker, jobName, skillName)) {
+				any = true;
+			}
+		}
+		return any;
+	}
+
+	/**
+	 * Add hours to a Skill to the specified Job in all workers in the
+	 * given unit in all maps. (If a worker is in a different unit in some
+	 * maps, that worker will still receive the hours.) Returns true if at
+	 * least one worker received hours, false otherwise. If a worker
+	 * doesn't have that skill in that Job, it is added first; if it
+	 * doesn't have that Job, it is added first as in {@link
+	 * addJobToWorker}, then the skill is added to it. The {@link
+	 * contextValue} is used to calculate a new value passed to {@link
+	 * common.map.fixtures.mobile.worker.IMutableSkill#addHours} for each
+	 * worker.
+	 *
+	 * TODO: Take a level-up listener?
+	 */
+	@Override
+	public boolean addHoursToSkillInAll(IUnit unit, String jobName, String skillName,
+			int hours, int contextValue) {
+		boolean any = false;
+		final Random rng = new Random(contextValue);
+		for (UnitMember member : unit) {
+			if (member instanceof IWorker && addHoursToSkill((IWorker) member, jobName, skillName, hours,
+					rng.nextInt(100))) {
 				any = true;
 			}
 		}
