@@ -347,8 +347,8 @@ import common.map.fixtures.towns.Village;
 			} else {
 				Collections.shuffle(candidates);
 				final IJob training = candidates.get(0);
+				worker.addJob(training);
 				while (true) {
-					worker.addJob(training);
 					final WorkerStats stats = createWorkerStats(village.getRace(),
 							training.getLevel());
 					cli.println(String.format(
