@@ -1,6 +1,9 @@
 package drivers.generators;
 
+import common.map.fixtures.Implement;
+import common.map.fixtures.mobile.AnimalImpl;
 import java.util.Comparator;
+import java.util.function.Predicate;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
@@ -284,6 +287,7 @@ import common.map.fixtures.towns.Village;
 							WorkerStats.getModifierString(statArray[i])));
 				}
 			}
+			// FIXME: Add, and report on, standard equipment (some should be "most probably" rather than every time)
 			return worker;
 		} else {
 			final List<IJob> candidates = new ArrayList<>();
@@ -343,6 +347,7 @@ import common.map.fixtures.towns.Village;
 								WorkerStats.getModifierString(statArray[i])));
 					}
 				}
+				// FIXME: Add, and report on, standard equipment (some should be "most probably" rather than every time)
 				return worker;
 			} else {
 				Collections.shuffle(candidates);
@@ -370,9 +375,29 @@ import common.map.fixtures.towns.Village;
 							"Do those stats fit that profile?");
 					if (acceptance) {
 						worker.setStats(stats);
-						return worker;
+						break;
 					}
 				}
+				final boolean hasMount = cli.inputBooleanInSeries("Is the worker mounted?");
+				if (hasMount) {
+					String mountKind = cli.inputString("Kind of mount: ");
+					if (mountKind != null && !mountKind.isEmpty()) {
+						worker.setMount(new AnimalImpl(mountKind, false, "tame", idf.createID()));
+					}
+				}
+				// FIXME: Add & report on standard equipment (some s.b. "most probably", not every time) without asking
+				String equipmentPrompt = "Does the worker have any equipment?";
+				Predicate<String> equipmentQuery = cli::inputBooleanInSeries;
+				while (equipmentQuery.test(equipmentPrompt)) {
+					String equipment = cli.inputString("Kind of equipment: ");
+					if (equipment == null || equipment.isEmpty()) {
+						break;
+					}
+					worker.addEquipment(new Implement(equipment, idf.createID()));
+					equipmentPrompt = "Does the worker have any more equipment?";
+					equipmentQuery = cli::inputBoolean;
+				}
+				return worker;
 			}
 		}
 	}
