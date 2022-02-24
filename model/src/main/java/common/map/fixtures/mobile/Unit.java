@@ -221,8 +221,8 @@ public final class Unit implements IMutableUnit {
 	@Override
 	public void addMember(final UnitMember member) {
 		if (member instanceof ProxyFor) {
-			LOGGER.log(Level.SEVERE, "ProxyWorker added to Unit",
-				new IllegalStateException("ProxyWorker added to Unit"));
+			LOGGER.log(Level.SEVERE, "Proxy member added to Unit",
+				new IllegalStateException("Proxy member added to Unit"));
 		}
 		members.add(member);
 	}
