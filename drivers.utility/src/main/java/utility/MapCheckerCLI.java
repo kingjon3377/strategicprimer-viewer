@@ -93,7 +93,9 @@ public class MapCheckerCLI implements UtilityDriver {
 	 * Kinds of {@link Implement}s that should probably be assigned to a worker, or at least in a unit, not directly
 	 * in a fortress.
 	 */
-	private static final List<String> PERSONAL_EQUIPMENT = Collections.emptyList(); // TODO: Fill in this list (using List.of)
+	private static final List<String> PERSONAL_EQUIPMENT = List.of("leather waterskin", "waterskin", "water skin",
+			"leather water skin", "water-skin", "leather water-skin", "leather satchel", "satchel", "woolen cloak",
+			"leather boots", "pair leather boots", "woolen tunic", "linen tunic");
 
 	private static class OwnerChecker {
 		private final IMapNG map;
