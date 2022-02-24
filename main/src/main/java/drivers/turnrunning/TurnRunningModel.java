@@ -209,7 +209,6 @@ public class TurnRunningModel extends ExplorationModel implements ITurnRunningMo
 			final IMutableWorker matching = map.streamAllFixtures()
 				.flatMap(TurnRunningModel::unflattenNonFortresses)
 				.filter(IUnit.class::isInstance).map(IUnit.class::cast)
-				.filter(u -> u.getOwner().equals(map.getCurrentPlayer()))
 				.flatMap(FixtureIterable::stream)
 				.filter(IMutableWorker.class::isInstance).map(IMutableWorker.class::cast)
 				.filter(w -> w.getRace().equals(worker.getRace()))
@@ -242,7 +241,6 @@ public class TurnRunningModel extends ExplorationModel implements ITurnRunningMo
 			final IMutableWorker matching =
 					map.streamAllFixtures().flatMap(TurnRunningModel::unflattenNonFortresses)
 							.filter(IUnit.class::isInstance).map(IUnit.class::cast)
-							.filter(u -> u.getOwner().equals(map.getCurrentPlayer()))
 							.flatMap(IUnit::stream).filter(IMutableWorker.class::isInstance).map(IMutableWorker.class::cast)
 							.filter(w -> w.getRace().equals(worker.getRace())).filter(w -> w.getName().equals(worker.getName()))
 							.filter(w -> w.getId() == worker.getId()).findAny().orElse(null);
@@ -330,8 +328,7 @@ public class TurnRunningModel extends ExplorationModel implements ITurnRunningMo
 		for (final IMutableMapNG map : getRestrictedAllMaps()) {
 			final IMutableWorker matching = map.streamAllFixtures()
 				.flatMap(TurnRunningModel::unflattenNonFortresses)
-				.filter(IUnit.class::isInstance).map(IUnit.class::cast)
-				.filter(u -> u.getOwner().equals(map.getCurrentPlayer())).flatMap(FixtureIterable::stream)
+				.filter(IUnit.class::isInstance).map(IUnit.class::cast).flatMap(FixtureIterable::stream)
 				.filter(IMutableWorker.class::isInstance).map(IMutableWorker.class::cast)
 				.filter(w -> w.getRace().equals(worker.getRace()))
 				.filter(w -> w.getName().equals(worker.getName()))
@@ -380,8 +377,7 @@ public class TurnRunningModel extends ExplorationModel implements ITurnRunningMo
 		for (final IMutableMapNG map : getRestrictedAllMaps()) {
 			final IMutableWorker matching = map.streamAllFixtures()
 				.flatMap(TurnRunningModel::unflattenNonFortresses)
-				.filter(IUnit.class::isInstance).map(IUnit.class::cast)
-				.filter(u -> u.getOwner().equals(map.getCurrentPlayer())).flatMap(FixtureIterable::stream)
+				.filter(IUnit.class::isInstance).map(IUnit.class::cast).flatMap(FixtureIterable::stream)
 				.filter(IMutableWorker.class::isInstance).map(IMutableWorker.class::cast)
 				.filter(w -> w.getRace().equals(worker.getRace()))
 				.filter(w -> w.getName().equals(worker.getName()))
