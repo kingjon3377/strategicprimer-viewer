@@ -1,6 +1,7 @@
 package drivers.worker_mgmt.orderspanel;
 
 import java.util.Collection;
+import java.util.Optional;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.tree.TreePath;
@@ -121,6 +122,15 @@ public class OrdersPanel extends BorderedPanel implements OrdersContainer {
 		if (selection instanceof IUnit && !isCurrent.isCurrent((IUnit) selection,
 				spinnerModel.getNumber().intValue())) {
 			area.setBackground(LIGHT_BLUE);
+		} else if (selection instanceof String) {
+			final int turn = spinnerModel.getNumber().intValue();
+			for (IUnit unit : playerUnits.apply(currentPlayer, (String) selection)) {
+				if (!isCurrent.isCurrent(unit, turn)) {
+					area.setBackground(LIGHT_BLUE);
+					return;
+				}
+			}
+			area.setBackground(defaultColor);
 		} else {
 			area.setBackground(defaultColor);
 		}
@@ -139,6 +149,15 @@ public class OrdersPanel extends BorderedPanel implements OrdersContainer {
 			}
 			fixColor();
 			getParent().getParent().repaint();
+		} else if (selection instanceof String) {
+			if (ordersConsumer != null) {
+				final int turn = spinnerModel.getNumber().intValue();
+				for (IUnit unit : playerUnits.apply(currentPlayer, (String) selection)) {
+					ordersConsumer.accept(unit, turn, area.getText());
+				}
+			}
+			fixColor();
+			getParent().getParent().repaint();
 		}
 	}
 
@@ -151,7 +170,21 @@ public class OrdersPanel extends BorderedPanel implements OrdersContainer {
 		if (selection instanceof IUnit) {
 			area.setEnabled(true);
 			area.setText(ordersSupplier.getOrders((IUnit) selection,
-				spinnerModel.getNumber().intValue()));
+					spinnerModel.getNumber().intValue()));
+		} else if (selection instanceof String) {
+			area.setEnabled(true);
+			@Nullable String orders = null;
+			final int turn = spinnerModel.getNumber().intValue();
+			for (IUnit unit : playerUnits.apply(currentPlayer, (String) selection)) {
+				if (orders == null) {
+					orders = ordersSupplier.getOrders(unit, turn);
+				} else if (orders != null && !orders.equals(ordersSupplier.getOrders(unit, turn))) {
+					area.setText("");
+					fixColor();
+					return;
+				}
+			}
+			area.setText(Optional.ofNullable(orders).orElse(""));
 		} else {
 			area.setEnabled(false);
 			area.setText("");
@@ -167,19 +200,10 @@ public class OrdersPanel extends BorderedPanel implements OrdersContainer {
 		final TreePath selectedPath = event.getNewLeadSelectionPath();
 		if (selectedPath != null) {
 			final Object sel = selectedPath.getLastPathComponent();
-			final Object temp;
 			if (sel instanceof DefaultMutableTreeNode) {
-				temp = ((DefaultMutableTreeNode) sel).getUserObject();
+				selection = ((DefaultMutableTreeNode) sel).getUserObject();
 			} else {
-				temp = sel;
-			}
-			if (temp instanceof String) {
-				final ProxyUnit proxyUnit = new ProxyUnit((String) temp);
-				playerUnits.apply(currentPlayer, (String) temp)
-					.forEach(proxyUnit::addProxied);
-				selection = proxyUnit;
-			} else {
-				selection = temp;
+				selection = sel;
 			}
 			revert();
 		}
