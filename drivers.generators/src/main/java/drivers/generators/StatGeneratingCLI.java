@@ -287,7 +287,21 @@ import common.map.fixtures.towns.Village;
 							WorkerStats.getModifierString(statArray[i])));
 				}
 			}
-			// FIXME: Add, and report on, standard equipment (some should be "most probably" rather than every time)
+			final boolean woolen = cli.inputBooleanInSeries("Is the worker's tunic woolen rather than linen?");
+			worker.addEquipment(new Implement(woolen ? "woolen tunic" : "linen tunic", idf.createID()));
+			// FIXME: Extract a method for this equipment-adding process, and configure it with a set of (kind, chance) pairs
+			if (SingletonRandom.SINGLETON_RANDOM.nextDouble() < 0.9) {
+				worker.addEquipment(new Implement("woolen cloak", idf.createID()));
+			}
+			if (SingletonRandom.SINGLETON_RANDOM.nextDouble() < 0.8) {
+				worker.addEquipment(new Implement("pair leather boots", idf.createID()));
+			}
+			if (SingletonRandom.SINGLETON_RANDOM.nextDouble() < 0.75) {
+				worker.addEquipment(new Implement("leather satchel", idf.createID()));
+			}
+			if (SingletonRandom.SINGLETON_RANDOM.nextDouble() < 0.75) {
+				worker.addEquipment(new Implement("leather waterskin", idf.createID()));
+			}
 			return worker;
 		} else {
 			final List<IJob> candidates = new ArrayList<>();
@@ -347,7 +361,21 @@ import common.map.fixtures.towns.Village;
 								WorkerStats.getModifierString(statArray[i])));
 					}
 				}
-				// FIXME: Add, and report on, standard equipment (some should be "most probably" rather than every time)
+				final boolean woolen = cli.inputBooleanInSeries("Is the worker's tunic woolen rather than linen?");
+				worker.addEquipment(new Implement(woolen ? "woolen tunic" : "linen tunic", idf.createID()));
+				// FIXME: Extract a method for this equipment-adding process, and configure it with a set of (kind, chance) pairs
+				if (SingletonRandom.SINGLETON_RANDOM.nextDouble() < 0.9) {
+					worker.addEquipment(new Implement("woolen cloak", idf.createID()));
+				}
+				if (SingletonRandom.SINGLETON_RANDOM.nextDouble() < 0.8) {
+					worker.addEquipment(new Implement("pair leather boots", idf.createID()));
+				}
+				if (SingletonRandom.SINGLETON_RANDOM.nextDouble() < 0.75) {
+					worker.addEquipment(new Implement("leather satchel", idf.createID()));
+				}
+				if (SingletonRandom.SINGLETON_RANDOM.nextDouble() < 0.75) {
+					worker.addEquipment(new Implement("leather waterskin", idf.createID()));
+				}
 				return worker;
 			} else {
 				Collections.shuffle(candidates);
@@ -385,9 +413,36 @@ import common.map.fixtures.towns.Village;
 						worker.setMount(new AnimalImpl(mountKind, false, "tame", idf.createID()));
 					}
 				}
-				// FIXME: Add & report on standard equipment (some s.b. "most probably", not every time) without asking
 				String equipmentPrompt = "Does the worker have any equipment?";
 				Predicate<String> equipmentQuery = cli::inputBooleanInSeries;
+				final boolean woolen = cli.inputBooleanInSeries("Is the worker's tunic woolen rather than linen?");
+				worker.addEquipment(new Implement(woolen ? "woolen tunic" : "linen tunic", idf.createID()));
+				// FIXME: Separate method, and data-driven framework, for standard equipment
+				if (StreamSupport.stream(worker.spliterator(), false).mapToInt(IJob::getLevel).sum() > 1 ||
+						    SingletonRandom.SINGLETON_RANDOM.nextDouble() < 0.9) {
+					worker.addEquipment(new Implement("woolen cloak", idf.createID()));
+				} else {
+					cli.println("Not adding woolen cloak");
+				}
+				if (StreamSupport.stream(worker.spliterator(), false).mapToInt(IJob::getLevel).sum() > 1 ||
+						    SingletonRandom.SINGLETON_RANDOM.nextDouble() < 0.8) {
+					worker.addEquipment(new Implement("pair leather boots", idf.createID()));
+				} else {
+					cli.println("Not adding leather boots");
+				}
+				if (StreamSupport.stream(worker.spliterator(), false).mapToInt(IJob::getLevel).sum() > 1 ||
+						    SingletonRandom.SINGLETON_RANDOM.nextDouble() < 0.75) {
+					worker.addEquipment(new Implement("leather satchel", idf.createID()));
+				} else {
+					cli.println("Not adding leather satchel");
+				}
+				if (StreamSupport.stream(worker.spliterator(), false).mapToInt(IJob::getLevel).sum() > 1 ||
+						    SingletonRandom.SINGLETON_RANDOM.nextDouble() < 0.75) {
+					worker.addEquipment(new Implement("leather waterskin", idf.createID()));
+				} else {
+					cli.println("Not adding leather waterskin");
+				}
+				// TODO: Should probably automatically add some job-specific equipment
 				while (equipmentQuery.test(equipmentPrompt)) {
 					String equipment = cli.inputString("Kind of equipment: ");
 					if (equipment == null || equipment.isEmpty()) {
