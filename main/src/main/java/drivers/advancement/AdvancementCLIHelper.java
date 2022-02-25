@@ -167,6 +167,9 @@ public class AdvancementCLIHelper implements LevelGainSource {
 	 */
 	private void advanceWorkersInSkill(final String jobName, final String skillName, final IWorker... workers) {
 		final int hours = Optional.ofNullable(cli.inputNumber("Hours of experience to add: ")).orElse(0);
+		if (hours <= 0) {
+			return;
+		}
 		for (final IWorker worker : workers) {
 			final IJob job = worker.getJob(jobName);
 			final ISkill skill = job.getSkill(skillName);
