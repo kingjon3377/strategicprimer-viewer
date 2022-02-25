@@ -196,11 +196,30 @@ import org.jetbrains.annotations.Nullable;
 			return ""; // TODO: return null, surely?
 		}
 		int time = startingTime;
+		int noResultsTime = 0;
 		final Iterator<Pair<Point, TileFixture>> encounters = encounterSrc.apply(center).iterator();
 		while (time > 0 && encounters.hasNext()) {
 			final Pair<Point, TileFixture> pair = encounters.next();
 			final Point loc = pair.getValue0();
 			final TileFixture find = pair.getValue1();
+			if (find instanceof HuntingModel.NothingFound) {
+				noResultsTime += noResultCost;
+				time -= noResultCost;
+				if (time <= 0) {
+					cli.print("Found nothing for the next ");
+					cli.println(inHours(noResultsTime));
+				}
+				continue;
+			} else if (noResultsTime > 0) {
+				cli.print("Found nothing for the next ");
+				cli.println(inHours(noResultsTime));
+				final String addendum = cli.inputMultilineString("Add to results about that:");
+				if (addendum == null) {
+					return null;
+				}
+				buffer.append(addendum);
+				noResultsTime = 0;
+			}
 			cli.print(inHours(time));
 			cli.println(" remaining.");
 			final Integer cost = handleEncounter(buffer, time, loc, find);
