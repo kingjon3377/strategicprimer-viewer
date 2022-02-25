@@ -31,6 +31,14 @@ import java.util.logging.Logger;
 
 /**
  * An alternative implementation of the worker tree model.
+ *
+ * TODO: Nodes should store 'keys', i.e. [id, owner, name, kind] for units, rather than model objects
+ * directly, to ease the elimination of proxies.  We may need to alter the driver model to make that
+ * work. Once that's in place we'll get rid of {@link WorkerTreeModel}.
+ *
+ * TODO: We want to add Fortress and Unit-Group levels to the tree,
+ *
+ * TODO: We want a way for the user to manage 'personal equipment'
  */
 public class WorkerTreeModelAlt extends DefaultTreeModel implements IWorkerTreeModel {
 	private static final long serialVersionUID = 1L;
