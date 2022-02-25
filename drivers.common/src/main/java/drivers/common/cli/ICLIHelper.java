@@ -214,6 +214,9 @@ public interface ICLIHelper {
 	 */
 	default @Nullable Point inputPoint(final String prompt) {
 		print(prompt);
+		if (!prompt.isEmpty() && Character.isWhitespace(prompt.charAt(prompt.length() - 1))) {
+			print(" ");
+		}
 		final Integer row = inputNumber("Row: ");
 		if (row != null) {
 			final Integer column = inputNumber("Column: ");

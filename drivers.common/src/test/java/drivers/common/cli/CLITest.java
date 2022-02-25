@@ -382,10 +382,10 @@ public final class CLITest {
 	@Test
 	public void testInputPoint() {
 		assertCLI(cli -> cli.inputPoint("point prompt one "), Arrays.asList("2", "3"),
-			"point prompt one Row: Column: ", new Point(2, 3),
+			"point prompt one  Row: Column: ", new Point(2, 3),
 			"reads row then column", "prompts as expected");
 		assertCLI(cli -> cli.inputPoint("point prompt two "), Arrays.asList("-1", "0", "-2", "4"),
-			"point prompt two Row: Row: Column: Column: ", new Point(0, 4),
+			"point prompt two  Row: Row: Column: Column: ", new Point(0, 4),
 			"doesn't accept negative row or column", "prompts as expected");
 	}
 }
