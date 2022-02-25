@@ -86,6 +86,7 @@ public class ExplorationCLIHelper implements MovementCostListener, SelectionChan
 	                                     final boolean automatic) {
 		if (fixture != null) {
 			if (automatic) {
+				cli.print("- ");
 				cli.print(fixture.toString());
 				cli.println(" (automatically)");
 			} else {
