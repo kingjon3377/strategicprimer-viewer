@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import common.map.fixtures.UnitMember;
 import common.map.fixtures.FortressMember;
 import common.map.IMapNG;
+import java.util.Comparator;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -108,7 +109,7 @@ public abstract class AbstractTurnApplet implements TurnApplet {
 			.map(x -> (IResourcePile) x)
 			.filter((IResourcePile r) -> "food".equals(r.getKind()))
 			.filter((IResourcePile r) -> "pounds".equals(r.getQuantity().getUnits()))
-			.filter((IResourcePile r) -> r.getCreated() <= turn)
+			.filter((IResourcePile r) -> r.getCreated() <= turn) // TODO: add sorting in this version
 			.collect(Collectors.<IResourcePile>toList()); */ // Doesn't compile, with impossible errors
 		final List<IResourcePile> retval = new ArrayList<>();
 		final IMapNG map = model.getMap();
@@ -156,6 +157,7 @@ public abstract class AbstractTurnApplet implements TurnApplet {
 				}
 			}
 		}
+		retval.sort(Comparator.comparing(IResourcePile::getCreated));
 		return retval;
 	}
 }
