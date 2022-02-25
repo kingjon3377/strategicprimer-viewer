@@ -106,7 +106,7 @@ public final class SimpleMovementModel {
 		} else if (TileType.Ocean == terrain) {
 			return Integer.MAX_VALUE - 1;
 		} else if (forest || mountain || Stream.of(fixtures)
-				.anyMatch(fix -> fix instanceof Forest || fix instanceof Hill) ||
+				.anyMatch(fix -> (fix instanceof Forest && !((Forest) fix).isRows()) || fix instanceof Hill) ||
 				           TileType.Desert == terrain) {
 			return (river) ? 2 : 3;
 		} else if (TileType.Jungle == terrain || TileType.Swamp == terrain) {
