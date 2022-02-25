@@ -69,7 +69,7 @@ public class SpoilageApplet extends AbstractTurnApplet {
 			}
 			cli.print("Food is ");
 			cli.println(food.toString());
-			final FoodType type = FoodType.askFoodType(cli, food.getKind());
+			final FoodType type = FoodType.askFoodType(cli, food.getContents());
 			if (type == null) {
 				LOGGER.warning("Didn't get a food type");
 				return null;
