@@ -1,6 +1,7 @@
 package utility;
 
 import common.map.fixtures.Implement;
+import common.map.fixtures.mobile.IUnit;
 import common.map.fixtures.towns.CommunityStats;
 import common.map.fixtures.FixtureIterable;
 import common.map.fixtures.towns.IFortress;
@@ -9,6 +10,7 @@ import common.map.TileFixture;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.OptionalInt;
 import java.util.function.Consumer;
 import java.util.stream.StreamSupport;
 import java.util.stream.Stream;
@@ -269,6 +271,21 @@ public class MapCheckerCLI implements UtilityDriver {
 		}
 	}
 
+	private static boolean noResultsCheck(final TileType terrain, final Point context, final IFixture fixture,
+			final Warning warner) {
+		if (fixture instanceof IUnit && !((IUnit) fixture).isEmpty()) {
+			IUnit unit = (IUnit) fixture;
+			OptionalInt turn = unit.getAllOrders().keySet().stream().mapToInt(x -> x).max();
+			String results = turn.stream().mapToObj(unit::getResults).map(String::toLowerCase).findAny().orElse("");
+			if (results.isEmpty() || results.contains("todo") || results.contains("fixme")) {
+				warner.handle(new SPContentWarning(context, String.format(
+						"Unit %s [%s] (ID #%d) has orders but no results for turn %d", unit.getName(), unit.getKind(),
+						unit.getId(), turn.orElse(-1))));
+				return true;
+			}
+		}
+		return false;
+	}
 	private static boolean positiveAcres(final HasExtent<?> item) {
 		return item.getAcres().doubleValue() > 0.0;
 	}
@@ -313,7 +330,7 @@ public class MapCheckerCLI implements UtilityDriver {
 	private static final List<Checker> EXTRA_CHECKS = List.of(MapCheckerCLI::lateriteChecker,
 			MapCheckerCLI::aquaticVillageChecker, MapCheckerCLI::suspiciousSkillCheck,
 			MapCheckerCLI::resourcePlaceholderChecker, MapCheckerCLI::oasisChecker,
-			MapCheckerCLI::personalEquipmentCheck);
+			MapCheckerCLI::personalEquipmentCheck, MapCheckerCLI::noResultsCheck);
 
 	private static boolean contentCheck(final Checker checker, final TileType terrain, final Point context,
 	                                    final Warning warner, final Iterable<? extends IFixture> list) {
