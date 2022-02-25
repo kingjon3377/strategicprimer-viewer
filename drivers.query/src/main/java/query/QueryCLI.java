@@ -1,10 +1,15 @@
 package query;
 
+import common.map.TileFixture;
 import common.map.fixtures.IResourcePile;
+import common.map.fixtures.towns.CommunityStats;
+import java.util.Comparator;
+import java.util.Map;
 import java.util.Optional;
 import common.map.fixtures.FixtureIterable;
 import java.util.stream.StreamSupport;
 import java.util.stream.Collectors;
+import org.javatuples.Pair;
 import org.jetbrains.annotations.Nullable;
 import java.text.DecimalFormat;
 import common.map.IFixture;
@@ -116,8 +121,8 @@ public class QueryCLI implements ReadOnlyDriver {
 				"Count how many workers belong to a player", "count"),
 			new SimpleApplet(this::findUnexploredCommand,
 				"Find the nearest unexplored tile not behind water.", "unexplored"),
-			new SimpleApplet(this::tradeCommand, "Suggest possible trading partners.",
-				"trade"));
+			new SimpleApplet(this::tradeCommand, "Suggest possible trading partners.", "trade"),
+			new SimpleApplet(this::findVillagesWithExpertise, "Find villages with a skill", "village-skill"));
 	}
 
 	private final Pathfinder pather;
@@ -134,6 +139,37 @@ public class QueryCLI implements ReadOnlyDriver {
 		}
 	}
 
+	private void findVillagesWithExpertise() {
+		final String skill = cli.inputString("Job to look for: ");
+		if (skill == null) {
+			return;
+		}
+		final Point point = cli.inputPoint("Central point for search: ");
+		if (point == null) {
+			return;
+		}
+		// FIXME: Also limit search radius
+		for (Pair<Point, ITownFixture> pair : map.streamLocations()
+				.sorted(Comparator.comparing(l -> distance(point, l, map.getDimensions())))
+				.flatMap(l -> map.getFixtures(l).stream().filter(ITownFixture.class::isInstance)
+						.map(ITownFixture.class::cast).filter(t -> t.getPopulation() != null)
+						.map(f -> Pair.with(l, f))).collect(Collectors.toList())) {
+			final Point loc = pair.getValue0();
+			final double delta = distance(point, loc, map.getDimensions());
+			final ITownFixture town = pair.getValue1();
+			final CommunityStats population = town.getPopulation();
+			assert (population != null);
+			for (Map.Entry<String, Integer> entry : population.getHighestSkillLevels().entrySet()) {
+				final String expert = entry.getKey();
+				final int level = entry.getValue();
+				if (expert.toLowerCase().contains(skill.toLowerCase())) {
+					cli.print("- At ", town.getName(), ", at ", loc.toString(), " (", String.format("%.1f", delta),
+							" tiles away), a level-", Integer.toString(level), " ");
+					cli.println(expert);
+				}
+			}
+		}
+	}
 	/**
 	 * Report the distance between two points.
 	 *
