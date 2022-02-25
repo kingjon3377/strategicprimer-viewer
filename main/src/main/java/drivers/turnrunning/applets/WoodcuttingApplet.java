@@ -160,7 +160,7 @@ import org.jetbrains.annotations.Nullable;
 					builder.append(String.format(", clearing %.2f acres (~ %d sq ft) of land.`",
 						acres, acres.multiply(decimalize(43560)).intValue()));
 				} else {
-					final String str = cli.inputMultilineString("Descriptoin of cleared land:");
+					final String str = cli.inputMultilineString("Description of cleared land:");
 					if (str == null) {
 						return null;
 					} else {
