@@ -105,12 +105,12 @@ public final class SimpleMovementModel {
 			return Integer.MAX_VALUE - 1;
 		} else if (TileType.Ocean == terrain) {
 			return Integer.MAX_VALUE - 1;
+		} else if (TileType.Jungle == terrain || TileType.Swamp == terrain) {
+			return (river) ? 4 : 6;
 		} else if (forest || mountain || Stream.of(fixtures)
 				.anyMatch(fix -> (fix instanceof Forest && !((Forest) fix).isRows()) || fix instanceof Hill) ||
 				           TileType.Desert == terrain) {
 			return (river) ? 2 : 3;
-		} else if (TileType.Jungle == terrain || TileType.Swamp == terrain) {
-			return (river) ? 4 : 6;
 		} else if (TileType.Steppe == terrain || TileType.Plains == terrain ||
 				           TileType.Tundra == terrain) {
 			return (river) ? 1 : 2;
