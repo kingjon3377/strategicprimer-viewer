@@ -102,8 +102,8 @@ import worker.common.IFixtureEditHelper;
 	private final Supplier<Speed> speedSource;
 	private final SpinnerNumberModel mpModel;
 
-	private void movementDeductionTracker(final int cost) {
-		mpModel.setValue(mpModel.getNumber().intValue() - cost);
+	private void movementDeductionTracker(final Number cost) {
+		mpModel.setValue(mpModel.getNumber().doubleValue() - cost.doubleValue());
 	}
 
 	public ExplorationPanel(final SpinnerNumberModel mpModel, final ComboBoxModel<Speed> speedModel,

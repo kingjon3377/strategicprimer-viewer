@@ -42,7 +42,7 @@ public interface IExplorationModel extends IMultiMapModel, SelectionChangeSource
 	 *
 	 * @throws TraversalImpossibleException if movement in the specified direction is impossible
 	 */
-	int move(Direction direction, Speed speed) throws TraversalImpossibleException;
+	Number move(Direction direction, Speed speed) throws TraversalImpossibleException;
 
 	/**
 	 * Given a starting point and a direction, get the next point in that direction.

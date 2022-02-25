@@ -308,7 +308,7 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 	/**
 	 * Tell listeners to deduct a cost from their movement-point totals.
 	 */
-	private void fireMovementCost(final int cost) {
+	private void fireMovementCost(final Number cost) {
 		for (final MovementCostListener listener : mcListeners) {
 			listener.deduct(cost);
 		}
@@ -393,7 +393,7 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 	 * @param speed How hastily the explorer is moving
 	 */
 	@Override
-	public int move(final Direction direction, final Speed speed) throws TraversalImpossibleException {
+	public Number move(final Direction direction, final Speed speed) throws TraversalImpossibleException {
 		final Pair<Point, @Nullable IUnit> local = selection;
 		final Point point = local.getValue0();
 		final IUnit unit = local.getValue1();
@@ -421,7 +421,7 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 						getMap().getRivers(point),
 						getMap().getRivers(dest)), fixtures);
 			}
-			final int retval = (int) (Math.ceil((base * speed.getMpMultiplier()) + 0.1));
+			final double retval = base * speed.getMpMultiplier();
 			removeImpl(getRestrictedMap(), point, unit);
 			getRestrictedMap().addFixture(dest, unit);
 			setMapModified(true);

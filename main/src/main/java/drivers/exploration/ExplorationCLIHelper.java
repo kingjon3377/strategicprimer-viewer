@@ -27,6 +27,7 @@ import exploration.common.PathfinderFactory;
 import exploration.common.SimpleMovementModel;
 import exploration.common.Speed;
 import exploration.common.TraversalImpossibleException;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -40,6 +41,8 @@ import java.util.stream.IntStream;
 import java.util.stream.Stream;
 import org.javatuples.Pair;
 import org.jetbrains.annotations.Nullable;
+
+import static lovelace.util.Decimalize.decimalize;
 
 /**
  * The logic split out of {@link ExplorationCLI}, some also used in {@link drivers.turnrunning.TurnRunningCLI}
@@ -102,15 +105,15 @@ public class ExplorationCLIHelper implements MovementCostListener, SelectionChan
 	}
 
 	private int totalMP = 0;
-	private int runningTotal = 0;
+	private BigDecimal runningTotal = BigDecimal.ZERO;
 
 	public int getMovement() {
-		return runningTotal;
+		return runningTotal.intValue();
 	}
 
 	@Override
-	public void deduct(final int cost) {
-		runningTotal -= cost;
+	public void deduct(final Number cost) {
+		runningTotal = runningTotal.subtract(decimalize(cost));
 	}
 
 	private final LinkedList<Point> proposedPath = new LinkedList<>();
@@ -134,7 +137,8 @@ public class ExplorationCLIHelper implements MovementCostListener, SelectionChan
 			cli.println(newSelection.getVerbose());
 			final Integer number = cli.inputNumber("MP the unit has: ");
 			if (number != null) {
-				runningTotal = totalMP = number;
+				totalMP = number;
+				runningTotal = decimalize(number);
 			}
 			if (!automationConfig.getPlayer().equals(newSelection.getOwner())) {
 				automationConfig = new ExplorationAutomationConfig(newSelection.getOwner());
@@ -163,7 +167,7 @@ public class ExplorationCLIHelper implements MovementCostListener, SelectionChan
 			final Point proposedDestination = proposedPath.pollFirst();
 			if (proposedDestination == null) {
 				cli.println(String.format("%d/%d MP remaining. Current speed: %s.",
-						runningTotal, totalMP, speed.getShortName()));
+						runningTotal.intValue(), totalMP, speed.getShortName()));
 				cli.printlnAtInterval(usage);
 				final int directionNum = Optional.ofNullable(cli.inputNumber("Direction to move: ")).orElse(-1);
 				switch (directionNum) {
@@ -201,7 +205,7 @@ public class ExplorationCLIHelper implements MovementCostListener, SelectionChan
 						final Point destination = cli.inputPoint("Location to move toward: ");
 						if (destination == null) {
 							// EOF
-							runningTotal = 0;
+							runningTotal = BigDecimal.ZERO;
 						} else {
 							final Pair<Integer, Iterable<Point>> pair =
 									pather.getTravelDistance(point, destination);
@@ -216,7 +220,7 @@ public class ExplorationCLIHelper implements MovementCostListener, SelectionChan
 						}
 						return;
 					default:
-						runningTotal = 0;
+						runningTotal = BigDecimal.ZERO;
 						return;
 				}
 			} else {
@@ -231,7 +235,7 @@ public class ExplorationCLIHelper implements MovementCostListener, SelectionChan
 					return;
 				}
 				cli.println(String.format("%d/%d MP remaining. Current speed: %s.",
-						runningTotal, totalMP, speed.getShortName()));
+						runningTotal.intValue(), totalMP, speed.getShortName()));
 			}
 
 			final Point destPoint = model.getDestination(point, direction);
@@ -277,7 +281,7 @@ public class ExplorationCLIHelper implements MovementCostListener, SelectionChan
 					final Boolean response = cli.inputBooleanInSeries("Take an action here?");
 					if (response == null) {
 						// EOF
-						runningTotal = 0;
+						runningTotal = BigDecimal.ZERO;
 						return;
 					} else if (!response) {
 						break;
@@ -289,7 +293,7 @@ public class ExplorationCLIHelper implements MovementCostListener, SelectionChan
 					if (applet == null) {
 						if (bool == null) {
 							// EOF
-							runningTotal = 0;
+							runningTotal = BigDecimal.ZERO;
 							return;
 						} else if (!bool) {
 							break;
