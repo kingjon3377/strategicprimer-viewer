@@ -14,6 +14,7 @@ import drivers.common.cli.ICLIHelper;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import org.jetbrains.annotations.Nullable;
@@ -106,6 +107,8 @@ import org.jetbrains.annotations.Nullable;
 		 */
 		private final List<Predicate<Type>> conditions;
 
+		private @Nullable Type matched = null;
+
 		private boolean allConditions(final TileFixture fixture) {
 			if (cls.isInstance(fixture)) {
 				for (final Predicate<Type> condition : conditions) {
@@ -113,6 +116,7 @@ import org.jetbrains.annotations.Nullable;
 						return false;
 					}
 				}
+				matched = (Type) fixture;
 				return true;
 			} else {
 				return false;
@@ -124,6 +128,14 @@ import org.jetbrains.annotations.Nullable;
 		 */
 		public boolean matches(final IMapNG map, final Point point) {
 			return map.getFixtures(point).stream().anyMatch(this::allConditions);
+		}
+
+		/**
+		 * The description of the fixture that matched, if any, so caller doesn't have to figure out which fixture
+		 * matched to use {@link stopExplanation}.
+		 */
+		public String explain() {
+			return Optional.ofNullable(matched).map(stopExplanation).orElse("");
 		}
 	}
 
@@ -156,7 +168,7 @@ import org.jetbrains.annotations.Nullable;
 			return false;
 		} else {
 			cli.println(String.format("There is %s here, so the explorer stops.",
-					matchingCondition.getStopExplanation()));
+					matchingCondition.explain()));
 			return true;
 		}
 	}
