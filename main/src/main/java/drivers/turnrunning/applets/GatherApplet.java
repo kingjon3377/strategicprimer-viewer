@@ -57,26 +57,6 @@ import org.jetbrains.annotations.Nullable;
 		}
 	}
 
-	private static String toHours(final int minutes) {
-		if (minutes < 0) {
-			return "negative " + toHours(-minutes);
-		} else if (minutes == 0) {
-			return "no time";
-		} else if (minutes == 1) {
-			return "1 minute";
-		} else if (minutes < 60) {
-			return minutes + " minutes";
-		} else if (minutes == 60) {
-			return "1 hour";
-		} else if (minutes < 120) {
-			return "1 hour, " + toHours(minutes % 60);
-		} else if (minutes % 60 == 0) {
-			return (minutes / 60) + " hours";
-		} else {
-			return (minutes / 60) + " hours, " + toHours(minutes % 60);
-		}
-	}
-
 	@Override
 	public @Nullable String run() {
 		final StringBuilder buffer = new StringBuilder();
@@ -103,7 +83,7 @@ import org.jetbrains.annotations.Nullable;
 				if (noResultsTime > 0) {
 					// TODO: Add to results?
 					cli.print("Found nothing for the next");
-					cli.println(toHours(noResultsTime));
+					cli.println(inHours(noResultsTime));
 					noResultsTime = 0;
 				}
 				final Boolean resp = cli.inputBooleanInSeries(String.format("Gather from %s%s",
@@ -156,7 +136,7 @@ import org.jetbrains.annotations.Nullable;
 		if (noResultsTime > 0) {
 			// TODO: Add to results?
 			cli.print("Found nothing for the next ");
-			cli.println(toHours(noResultsTime));
+			cli.println(inHours(noResultsTime));
 		}
 		return buffer.toString().trim();
 	}
