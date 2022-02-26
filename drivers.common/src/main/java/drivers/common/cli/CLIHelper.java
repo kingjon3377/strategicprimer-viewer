@@ -1,5 +1,9 @@
 package drivers.common.cli;
 
+import java.io.BufferedReader;
+import java.io.Console;
+import java.io.InputStreamReader;
+import lovelace.util.SystemIn;
 import org.eclipse.jdt.annotation.NonNull;
 import org.jetbrains.annotations.Nullable;
 import org.javatuples.Pair;
@@ -43,8 +47,17 @@ public final class CLIHelper implements ICLIHelper {
 		this.ostream = ostream;
 	}
 
+	private static IOSource stdin() {
+		Console console = System.console();
+		if (console == null) {
+			return new BufferedReader(new InputStreamReader(SystemIn.STDIN))::readLine; // TODO: Does this consume the newline character?
+		} else {
+			return console::readLine;
+		}
+	}
+
 	public CLIHelper() {
-		this(System.console()::readLine, System.out::print);
+		this(stdin(), System.out::print);
 	}
 
 	/**
