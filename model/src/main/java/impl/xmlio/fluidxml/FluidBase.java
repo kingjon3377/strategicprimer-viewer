@@ -703,7 +703,7 @@ import org.jetbrains.annotations.Nullable;
 		final List<String> local = Stream.of(attributes).map(String::toLowerCase)
 			.collect(Collectors.toList());
 		for (final Attribute attribute : new IteratorWrapper<>(
-				(Iterator<Attribute>) element.getAttributes())) {
+				element.getAttributes())) {
 			final QName name = attribute.getName();
 			if (isSupportedNamespace(name) &&
 					!local.contains(name.getLocalPart().toLowerCase())) {
