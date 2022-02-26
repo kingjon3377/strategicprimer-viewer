@@ -113,7 +113,7 @@ import common.map.IFixture;
 	@Override
 	public boolean isTalking() {
 		final Boolean retval = getConsensus(Animal::isTalking);
-		return (retval == null) ? false : retval;
+		return retval != null && retval;
 	}
 
 	@Override
