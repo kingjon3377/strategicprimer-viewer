@@ -41,3 +41,4 @@ modules/*
 .swo
 main/src/main/resources/invocation
 */target/
+main/dependency-reduced-pom.xml
