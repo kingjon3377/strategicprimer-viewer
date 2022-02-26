@@ -37,7 +37,7 @@ public final class ConcatIterable<T> implements Iterable<T> {
 
 		@Override
 		public boolean hasNext() {
-			return wrapped.stream().anyMatch(i -> i.hasNext());
+			return wrapped.stream().anyMatch(Iterator::hasNext);
 		}
 
 		@Override
