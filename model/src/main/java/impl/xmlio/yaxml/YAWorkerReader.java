@@ -2,7 +2,6 @@ package impl.xmlio.yaxml;
 
 import common.map.fixtures.Implement;
 import common.map.fixtures.mobile.Animal;
-import common.map.fixtures.mobile.AnimalOrTracks;
 import common.map.fixtures.mobile.MobileFixture;
 import org.jetbrains.annotations.Nullable;
 

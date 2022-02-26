@@ -1,6 +1,5 @@
 package utility;
 
-import common.map.Point;
 import drivers.common.CLIDriver;
 import drivers.common.EmptyOptions;
 import drivers.common.SPOptions;

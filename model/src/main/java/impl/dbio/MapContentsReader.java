@@ -4,13 +4,10 @@ import buckelieg.jdbc.fn.DB;
 
 import common.map.IFixture;
 import common.map.IMutableMapNG;
-import common.map.IMapNG;
-import common.map.fixtures.FixtureIterable;
 import common.xmlio.Warning;
 
 import java.util.ArrayList;
 import java.util.List;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.Map;
 

@@ -19,7 +19,6 @@ import common.idreg.IDFactoryFiller;
 import drivers.common.DriverFailedException;
 
 import common.map.IMapNG;
-import common.map.IFixture;
 import common.map.Player;
 import common.map.Point;
 
@@ -60,7 +59,6 @@ import java.nio.file.NoSuchFileException;
 import lovelace.util.FileContentsReader;
 import lovelace.util.SingletonRandom;
 
-import common.map.fixtures.FixtureIterable;
 import common.map.fixtures.towns.Village;
 
 /**

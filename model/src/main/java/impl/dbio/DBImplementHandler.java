@@ -11,7 +11,6 @@ import common.map.fixtures.Implement;
 import common.map.fixtures.mobile.IUnit;
 import common.map.fixtures.towns.IFortress;
 import common.xmlio.Warning;
-import common.map.TileFixture;
 import common.map.IFixture;
 
 final class DBImplementHandler extends AbstractDatabaseWriter<Implement, /*IUnit|IFortress|IWorker*/IFixture>

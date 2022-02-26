@@ -2,7 +2,6 @@ package common.map.fixtures.mobile;
 
 import common.map.Player;
 import common.map.PlayerImpl;
-import java.util.stream.Collectors;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;

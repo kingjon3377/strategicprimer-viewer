@@ -1,6 +1,5 @@
 package query;
 
-import common.map.TileFixture;
 import common.map.fixtures.IResourcePile;
 import common.map.fixtures.towns.CommunityStats;
 import java.util.Comparator;

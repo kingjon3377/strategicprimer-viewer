@@ -18,7 +18,6 @@ import static lovelace.util.MenuUtils.createHotKey;
 import lovelace.util.Platform;
 import common.map.Player;
 import common.map.fixtures.mobile.IUnit;
-import common.map.fixtures.mobile.ProxyUnit;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.JTextArea;
 import javax.swing.JComponent;

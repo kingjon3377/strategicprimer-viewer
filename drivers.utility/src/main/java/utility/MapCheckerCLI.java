@@ -8,7 +8,6 @@ import common.map.fixtures.towns.IFortress;
 import common.map.fixtures.towns.TownSize;
 import common.map.TileFixture;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 import java.util.OptionalInt;
 import java.util.function.Consumer;
