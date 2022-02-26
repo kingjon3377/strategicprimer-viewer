@@ -263,7 +263,8 @@ public class AdvancementCLIHelper implements LevelGainSource {
 						.distinct().forEach(skills::add);
 				skill = skillName;
 			}
-			advanceWorkersInSkill(jobName, skill, unit.stream().toArray(IWorker[]::new));
+			advanceWorkersInSkill(jobName, skill, unit.stream().filter(IWorker.class::isInstance).map(IWorker.class::cast)
+					.toArray(IWorker[]::new));
 			final Boolean continuation = cli.inputBoolean("Select another Skill in this Job?");
 			if (continuation == null || !continuation) {
 				break;
