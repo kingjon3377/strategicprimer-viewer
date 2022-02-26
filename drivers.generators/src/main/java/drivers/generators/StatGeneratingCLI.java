@@ -408,7 +408,7 @@ import common.map.fixtures.towns.Village;
 				}
 				final boolean hasMount = cli.inputBooleanInSeries("Is the worker mounted?");
 				if (hasMount) {
-					String mountKind = cli.inputString("Kind of mount: ");
+					final String mountKind = cli.inputString("Kind of mount: ");
 					if (mountKind != null && !mountKind.isEmpty()) {
 						worker.setMount(new AnimalImpl(mountKind, false, "tame", idf.createID()));
 					}
@@ -444,7 +444,7 @@ import common.map.fixtures.towns.Village;
 				}
 				// TODO: Should probably automatically add some job-specific equipment
 				while (equipmentQuery.test(equipmentPrompt)) {
-					String equipment = cli.inputString("Kind of equipment: ");
+					final String equipment = cli.inputString("Kind of equipment: ");
 					if (equipment == null || equipment.isEmpty()) {
 						break;
 					}

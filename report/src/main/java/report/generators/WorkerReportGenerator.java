@@ -115,7 +115,7 @@ import common.map.fixtures.mobile.worker.IJob;
 		if (details && !worker.getEquipment().isEmpty()) {
 			println(ostream, "(S)he has the following personal equipment:");
 			println(ostream, "<ul>");
-			for (Implement item : worker.getEquipment()) {
+			for (final Implement item : worker.getEquipment()) {
 				ostream.accept("<li>");
 				equipmentReportGenerator.produceSingle(fixtures, map, ostream, item, loc);
 				println(ostream, "</li>");

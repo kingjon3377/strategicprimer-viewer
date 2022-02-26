@@ -63,7 +63,7 @@ public final class FunctionalGroupLayout extends GroupLayout {
 	 * between components at an edge of the container and that edge.
 	 */
 	public FunctionalGroupLayout(final Container host, final ContainerGaps autoCreateGaps,
-	                             ContainerGaps autoCreateContainerGaps) {
+	                             final ContainerGaps autoCreateContainerGaps) {
 		super(host);
 		setAutoCreateGaps(autoCreateGaps == ContainerGaps.AUTO_CREATE_GAPS);
 		setAutoCreateContainerGaps(autoCreateContainerGaps == ContainerGaps.AUTO_CREATE_GAPS);

@@ -274,9 +274,9 @@ public class MapCheckerCLI implements UtilityDriver {
 	private static boolean noResultsCheck(final TileType terrain, final Point context, final IFixture fixture,
 			final Warning warner) {
 		if (fixture instanceof IUnit && !((IUnit) fixture).isEmpty()) {
-			IUnit unit = (IUnit) fixture;
-			OptionalInt turn = unit.getAllOrders().keySet().stream().mapToInt(x -> x).max();
-			String results = turn.stream().mapToObj(unit::getResults).map(String::toLowerCase).findAny().orElse("");
+			final IUnit unit = (IUnit) fixture;
+			final OptionalInt turn = unit.getAllOrders().keySet().stream().mapToInt(x -> x).max();
+			final String results = turn.stream().mapToObj(unit::getResults).map(String::toLowerCase).findAny().orElse("");
 			if (results.isEmpty() || results.contains("todo") || results.contains("fixme")) {
 				warner.handle(new SPContentWarning(context, String.format(
 						"Unit %s [%s] (ID #%d) has orders but no results for turn %d", unit.getName(), unit.getKind(),
@@ -290,7 +290,7 @@ public class MapCheckerCLI implements UtilityDriver {
 		return item.getAcres().doubleValue() > 0.0;
 	}
 
-	private static double townAcreage(TownSize size) {
+	private static double townAcreage(final TownSize size) {
 		switch (size) {
 			case Small:
 				return 15.0;

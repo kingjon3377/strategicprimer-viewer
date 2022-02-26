@@ -115,7 +115,7 @@ final class DBWorkerHandler extends AbstractDatabaseWriter<IWorker, IUnit> imple
 				if (obj.getMount() != null) {
 					animalHandler.write(sql, obj.getMount(), obj);
 				}
-				for (Implement item : obj.getEquipment()) {
+				for (final Implement item : obj.getEquipment()) {
 					equipmentHandler.write(sql, item, obj);
 				}
 				return true;

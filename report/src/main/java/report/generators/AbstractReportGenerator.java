@@ -39,7 +39,7 @@ public abstract class AbstractReportGenerator<Type extends IFixture> implements 
 	 */
 	protected final Function<Point, String> distanceString;
 
-	private static <First, Second> Comparator<Pair<First, Second>> pairComparator(Comparator<First> first, Comparator<Second> second) {
+	private static <First, Second> Comparator<Pair<First, Second>> pairComparator(final Comparator<First> first, final Comparator<Second> second) {
 		return Comparator.<Pair<First, Second>, First>comparing(Pair::getValue0, first)
 				.thenComparing(Pair::getValue1, second);
 	}

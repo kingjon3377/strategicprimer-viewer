@@ -72,7 +72,7 @@ import worker.common.IFixtureEditHelper;
 			model.getMap().getPlayers());
 
 		delegate = fixtureListObject;
-		PortraitComponent portrait = new PortraitComponent(fixtureListObject);
+		final PortraitComponent portrait = new PortraitComponent(fixtureListObject);
 		fixtureListObject.addListSelectionListener(portrait);
 
 		final JPanel listPanel = BorderedPanel.verticalPanel(header, new JScrollPane(fixtureListObject),

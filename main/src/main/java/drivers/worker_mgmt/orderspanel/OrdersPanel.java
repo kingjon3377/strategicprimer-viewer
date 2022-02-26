@@ -124,7 +124,7 @@ public class OrdersPanel extends BorderedPanel implements OrdersContainer {
 			area.setBackground(LIGHT_BLUE);
 		} else if (selection instanceof String) {
 			final int turn = spinnerModel.getNumber().intValue();
-			for (IUnit unit : playerUnits.apply(currentPlayer, (String) selection)) {
+			for (final IUnit unit : playerUnits.apply(currentPlayer, (String) selection)) {
 				if (!isCurrent.isCurrent(unit, turn)) {
 					area.setBackground(LIGHT_BLUE);
 					return;
@@ -152,7 +152,7 @@ public class OrdersPanel extends BorderedPanel implements OrdersContainer {
 		} else if (selection instanceof String) {
 			if (ordersConsumer != null) {
 				final int turn = spinnerModel.getNumber().intValue();
-				for (IUnit unit : playerUnits.apply(currentPlayer, (String) selection)) {
+				for (final IUnit unit : playerUnits.apply(currentPlayer, (String) selection)) {
 					ordersConsumer.accept(unit, turn, area.getText());
 				}
 			}
@@ -175,7 +175,7 @@ public class OrdersPanel extends BorderedPanel implements OrdersContainer {
 			area.setEnabled(true);
 			@Nullable String orders = null;
 			final int turn = spinnerModel.getNumber().intValue();
-			for (IUnit unit : playerUnits.apply(currentPlayer, (String) selection)) {
+			for (final IUnit unit : playerUnits.apply(currentPlayer, (String) selection)) {
 				if (orders == null) {
 					orders = ordersSupplier.getOrders(unit, turn);
 				} else if (orders != null && !orders.equals(ordersSupplier.getOrders(unit, turn))) {

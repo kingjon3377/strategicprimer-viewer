@@ -192,7 +192,7 @@ import impl.xmlio.exceptions.UnwantedChildException;
 							readNote((StartElement) event, element.getName(), stream));
 				} else if ("animal".equalsIgnoreCase(((StartElement) event).getName().getLocalPart()) &&
 						 retval.getMount() == null) {
-					MobileFixture animal = mobileReader.read((StartElement) event, element.getName(), stream);
+					final MobileFixture animal = mobileReader.read((StartElement) event, element.getName(), stream);
 					if (animal instanceof Animal) {
 						retval.setMount((Animal) animal);
 					} else {
@@ -229,7 +229,7 @@ import impl.xmlio.exceptions.UnwantedChildException;
 			if (obj.getMount() != null) {
 				mobileReader.write(ostream, obj.getMount(), indent + 1);
 			}
-			for (Implement item : obj.getEquipment()) {
+			for (final Implement item : obj.getEquipment()) {
 				implementReader.write(ostream, item, indent + 1);
 			}
 			for (final IJob job : obj) {

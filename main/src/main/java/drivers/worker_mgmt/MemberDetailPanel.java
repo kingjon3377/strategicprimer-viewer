@@ -212,7 +212,7 @@ public class MemberDetailPanel extends BorderedPanel implements UnitMemberListen
 				jobsPanel.add(label);
 			}
 			// TODO: Make a separate panel?
-			for (Implement item : worker.getEquipment()) {
+			for (final Implement item : worker.getEquipment()) {
 				jobsPanel.add(new JLabel(item.toString()));
 			}
 		} else if (local instanceof Animal) {

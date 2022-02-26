@@ -43,7 +43,7 @@ import drivers.gui.common.SPFrame;
 				if (!executor.awaitTermination(800, TimeUnit.MILLISECONDS)) {
 					executor.shutdownNow();
 				}
-			} catch (InterruptedException except) {
+			} catch (final InterruptedException except) {
 				executor.shutdownNow();
 			} finally {
 				valid = false;
@@ -58,7 +58,7 @@ import drivers.gui.common.SPFrame;
 			return executor;
 		}
 
-		public void execute(Runnable task) {
+		public void execute(final Runnable task) {
 			get().execute(task);
 		}
 	}

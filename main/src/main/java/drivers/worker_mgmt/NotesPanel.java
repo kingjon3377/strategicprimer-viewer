@@ -27,7 +27,7 @@ public final class NotesPanel extends BorderedPanel
 
 	public NotesPanel(final Player currentPlayer) {
 		Platform.makeButtonsSegmented(notesApplyButton, notesRevertButton);
-		JPanel notesButtonPanel;
+		final JPanel notesButtonPanel;
 		if (Platform.SYSTEM_IS_MAC) {
 			notesButtonPanel = centeredHorizontalBox(notesRevertButton, notesApplyButton);
 		} else {

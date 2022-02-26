@@ -145,7 +145,7 @@ public final class CLIHelper implements ICLIHelper {
 	 */
 	private <Element> Pair<Integer, @Nullable Element> chooseFromListImpl(final List<@NonNull ? extends Element> items,
 	                                                                      final String description, final String none, final String prompt,
-	                                                                      ListChoiceBehavior behavior,
+	                                                                      final ListChoiceBehavior behavior,
 	                                                                      final Function<? super Element, String> func) {
 		if (items.isEmpty()) {
 			println(none);
@@ -292,7 +292,7 @@ public final class CLIHelper implements ICLIHelper {
 	@Override
 	public Pair<Integer, @Nullable String> chooseStringFromList(final List<String> items,
 	                                                            final String description, final String none,
-	                                                            final String prompt, ListChoiceBehavior behavior) {
+	                                                            final String prompt, final ListChoiceBehavior behavior) {
 		return chooseFromListImpl(items, description, none, prompt, behavior, s -> s);
 	}
 

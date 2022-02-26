@@ -729,9 +729,9 @@ public class WorkerModel extends SimpleMultiMapModel implements IWorkerModel {
 	 * Job, it is left alone.
 	 */
 	@Override
-	public boolean addSkillToWorker(IWorker worker, String jobName, String skillName) {
+	public boolean addSkillToWorker(final IWorker worker, final String jobName, final String skillName) {
 		boolean any = false;
-		for (IMutableMapNG map : getRestrictedAllMaps()) {
+		for (final IMutableMapNG map : getRestrictedAllMaps()) {
 			final IMutableWorker matching =
 					getUnitsImpl(map.streamAllFixtures().collect(Collectors.toList()), getCurrentPlayer()).stream()
 							.flatMap(IUnit::stream).filter(IMutableWorker.class::isInstance).map(IMutableWorker.class::cast)
@@ -766,9 +766,9 @@ public class WorkerModel extends SimpleMultiMapModel implements IWorkerModel {
 	 * exists in the corresponding Job, it is left alone.
 	 */
 	@Override
-	public boolean addSkillToAllWorkers(IUnit unit, String jobName, String skillName) {
+	public boolean addSkillToAllWorkers(final IUnit unit, final String jobName, final String skillName) {
 		boolean any = false;
-		for (IWorker worker : unit.stream().filter(IWorker.class::isInstance).map(IWorker.class::cast)
+		for (final IWorker worker : unit.stream().filter(IWorker.class::isInstance).map(IWorker.class::cast)
 				.collect(Collectors.toList())) {
 			if (addSkillToWorker(worker, jobName, skillName)) {
 				any = true;
@@ -846,11 +846,11 @@ public class WorkerModel extends SimpleMultiMapModel implements IWorkerModel {
 	 * TODO: Take a level-up listener?
 	 */
 	@Override
-	public boolean addHoursToSkillInAll(IUnit unit, String jobName, String skillName,
-			int hours, int contextValue) {
+	public boolean addHoursToSkillInAll(final IUnit unit, final String jobName, final String skillName,
+			final int hours, final int contextValue) {
 		boolean any = false;
 		final Random rng = new Random(contextValue);
-		for (UnitMember member : unit) {
+		for (final UnitMember member : unit) {
 			if (member instanceof IWorker && addHoursToSkill((IWorker) member, jobName, skillName, hours,
 					rng.nextInt(100))) {
 				any = true;

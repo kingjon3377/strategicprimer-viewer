@@ -43,7 +43,7 @@ import common.map.Point;
 		this.model = model;
 
 		final JPanel contentPanel = new BoxPanel(BoxAxis.PageAxis);
-		JLabel mainLabel = new AlignedLabel("Coordinates of tile to select:",
+		final JLabel mainLabel = new AlignedLabel("Coordinates of tile to select:",
 				Component.CENTER_ALIGNMENT, Component.TOP_ALIGNMENT);
 		contentPanel.add(mainLabel);
 		final BoxPanel boxPanelObj = new BoxPanel(BoxAxis.LineAxis);

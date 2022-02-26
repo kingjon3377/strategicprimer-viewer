@@ -58,7 +58,7 @@ import java.util.function.Predicate;
 
 		final JButton okButton = new ListenedButton("OK", this::okListener);
 
-		JButton cancelButton = new ListenedButton("Cancel", this::cancelListener);
+		final JButton cancelButton = new ListenedButton("Cancel", this::cancelListener);
 		Platform.makeButtonsSegmented(okButton, cancelButton);
 		buttonPanel.add(okButton);
 
@@ -78,7 +78,7 @@ import java.util.function.Predicate;
 			BorderedPanel.verticalPanel(backwards, vertically, caseSensitive), buttonPanel);
 
 		SwingUtilities.invokeLater(this::populateAll);
-		JScrollPane scrollPane;
+		final JScrollPane scrollPane;
 		if (Platform.SYSTEM_IS_MAC) { // TODO: combine with above
 			scrollPane = new JScrollPane(filterList,
 				ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS,

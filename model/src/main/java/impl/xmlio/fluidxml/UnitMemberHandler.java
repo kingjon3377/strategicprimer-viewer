@@ -74,7 +74,7 @@ import javax.xml.stream.XMLStreamException;
 					break;
 				case "animal":
 					if (retval.getMount() == null) {
-						AnimalOrTracks animal = readAnimal((StartElement) event, element.getName(), stream, players,
+						final AnimalOrTracks animal = readAnimal((StartElement) event, element.getName(), stream, players,
 								warner, idFactory);
 						if (animal instanceof Animal) {
 							retval.setMount((Animal) animal);
@@ -187,11 +187,11 @@ import javax.xml.stream.XMLStreamException;
 		if (stats != null) {
 			writeStats(ostream, stats, indentation + 1);
 		}
-		Animal mount = obj.getMount();
+		final Animal mount = obj.getMount();
 		if (mount != null) {
 			writeAnimal(ostream, mount, indentation + 1);
 		}
-		for (Implement item : obj.getEquipment()) {
+		for (final Implement item : obj.getEquipment()) {
 			FluidResourceHandler.writeImplement(ostream, item, indentation + 1);
 		}
 		for (final IJob job : jobs) {

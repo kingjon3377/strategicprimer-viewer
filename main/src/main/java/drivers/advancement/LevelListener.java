@@ -20,7 +20,7 @@ import common.map.fixtures.mobile.worker.IJob;
 	/**
 	 * Constructor.
 	 */
-	public LevelListener(ICLIHelper cli) {
+	public LevelListener(final ICLIHelper cli) {
 		this.cli = cli;
 	}
 	/**

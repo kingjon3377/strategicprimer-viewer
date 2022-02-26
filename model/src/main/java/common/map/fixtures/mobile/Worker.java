@@ -280,7 +280,7 @@ public class Worker implements IMutableWorker {
 						retval = false;
 					}
 				}
-				Animal theirMount = ((IWorker) obj).getMount();
+				final Animal theirMount = ((IWorker) obj).getMount();
 				if (theirMount != null) {
 					if (mount != null && !theirMount.equals(mount)) { // TODO: Use isSubset() instead?
 						localReport.accept("Mounts differ");
@@ -290,7 +290,7 @@ public class Worker implements IMutableWorker {
 						retval = false;
 					}
 				}
-				for (Implement item : ((IWorker) obj).getEquipment()) {
+				for (final Implement item : ((IWorker) obj).getEquipment()) {
 					if (!equipmentImpl.contains(item)) {
 						localReport.accept("Extra equipment: " + item);
 						retval = false;
@@ -328,7 +328,7 @@ public class Worker implements IMutableWorker {
 			if (mount != null) {
 				retval.setMount(mount.copy(zero));
 			}
-			for (Implement item : equipmentImpl) {
+			for (final Implement item : equipmentImpl) {
 				retval.addEquipment(item);
 			}
 		}

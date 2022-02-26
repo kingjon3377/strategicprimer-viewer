@@ -54,7 +54,7 @@ public final class SummonMenuItem extends JCheckBoxMenuItem {
 		setText(text);
 	}
 
-	private void handler(ActionEvent ignored) {
+	private void handler(final ActionEvent ignored) {
 		frame.toFront();
 		if (frame.getExtendedState() == Frame.ICONIFIED)
 			frame.setExtendedState(Frame.NORMAL);

@@ -148,7 +148,7 @@ public class WindowMenu extends JMenu {
 		minimizeItem.setAccelerator(KeyStroke.getKeyStroke('M',
 				Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
 
-		ChangeListener changeListener = e -> SwingUtilities.invokeLater(this::update);
+		final ChangeListener changeListener = e -> SwingUtilities.invokeLater(this::update);
 		WindowList.addChangeListener(changeListener);
 		update();
 	}

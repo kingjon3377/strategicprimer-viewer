@@ -111,7 +111,7 @@ public class TurnRunningModel extends ExplorationModel implements ITurnRunningMo
 					.filter(fixture.getClass()::isInstance).map(fixture.getClass()::cast)
 						.filter(f -> fixture.isSubset(f, x -> {}))
 					.findAny().orElse(null);
-				IFixture.CopyBehavior cb;
+				final IFixture.CopyBehavior cb;
 				if (first) { // TODO: This should probably be if NOT first ...
 					cb = IFixture.CopyBehavior.ZERO;
 				} else {
@@ -163,7 +163,7 @@ public class TurnRunningModel extends ExplorationModel implements ITurnRunningMo
 				final T matching = (T) map.getFixtures(location).stream()
 					.filter(fixture.getClass()::isInstance).map(fixture.getClass()::cast).filter(f -> fixture.isSubset(f, x -> {}))
 					.findAny().orElse(null);
-				IFixture.CopyBehavior cb;
+				final IFixture.CopyBehavior cb;
 				if (first) { // TODO: Should be NOT first, right?
 					cb = IFixture.CopyBehavior.ZERO;
 				} else {
@@ -235,9 +235,9 @@ public class TurnRunningModel extends ExplorationModel implements ITurnRunningMo
 	 * Job, it is left alone.
 	 */
 	@Override
-	public boolean addSkillToWorker(IWorker worker, String jobName, String skillName) {
+	public boolean addSkillToWorker(final IWorker worker, final String jobName, final String skillName) {
 		boolean any = false;
-		for (IMutableMapNG map : getRestrictedAllMaps()) {
+		for (final IMutableMapNG map : getRestrictedAllMaps()) {
 			final IMutableWorker matching =
 					map.streamAllFixtures().flatMap(TurnRunningModel::unflattenNonFortresses)
 							.filter(IUnit.class::isInstance).map(IUnit.class::cast)
@@ -273,9 +273,9 @@ public class TurnRunningModel extends ExplorationModel implements ITurnRunningMo
 	 * exists in the corresponding Job, it is left alone.
 	 */
 	@Override
-	public boolean addSkillToAllWorkers(IUnit unit, String jobName, String skillName) {
+	public boolean addSkillToAllWorkers(final IUnit unit, final String jobName, final String skillName) {
 		boolean any = false;
-		for (IWorker worker : unit.stream().filter(IWorker.class::isInstance).map(IWorker.class::cast)
+		for (final IWorker worker : unit.stream().filter(IWorker.class::isInstance).map(IWorker.class::cast)
 				.collect(Collectors.toList())) {
 			if (addSkillToWorker(worker, jobName, skillName)) {
 				any = true;
@@ -299,11 +299,11 @@ public class TurnRunningModel extends ExplorationModel implements ITurnRunningMo
 	 * TODO: Take a level-up listener?
 	 */
 	@Override
-	public boolean addHoursToSkillInAll(IUnit unit, String jobName, String skillName,
-			int hours, int contextValue) {
+	public boolean addHoursToSkillInAll(final IUnit unit, final String jobName, final String skillName,
+			final int hours, final int contextValue) {
 		boolean any = false;
 		final Random rng = new Random(contextValue);
-		for (UnitMember member : unit) {
+		for (final UnitMember member : unit) {
 			if (member instanceof IWorker && addHoursToSkill((IWorker) member, jobName, skillName, hours,
 					rng.nextInt(100))) {
 				any = true;

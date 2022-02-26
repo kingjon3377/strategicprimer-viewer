@@ -453,7 +453,7 @@ public final class WorkerTree extends JTree implements UnitMemberSelectionSource
 			public @Nullable Color getColor() {
 				return color;
 			}
-			public static BackgroundState larger(BackgroundState one, BackgroundState two) {
+			public static BackgroundState larger(final BackgroundState one, final BackgroundState two) {
 				if (one.compareTo(two) < 0) {
 					return two;
 				} else {
@@ -560,7 +560,7 @@ public final class WorkerTree extends JTree implements UnitMemberSelectionSource
 				background = BackgroundState.larger(background, result);
 			}
 			if (component instanceof DefaultTreeCellRenderer) {
-				@Nullable Color backgroundColor = background.getColor();
+				@Nullable final Color backgroundColor = background.getColor();
 				final DefaultTreeCellRenderer comp = (DefaultTreeCellRenderer) component;
 				if (backgroundColor == null) {
 					comp.setBackgroundSelectionColor(DEFAULT_STORER

@@ -149,7 +149,7 @@ public class QueryCLI implements ReadOnlyDriver {
 			return;
 		}
 		// FIXME: Also limit search radius
-		for (Pair<Point, ITownFixture> pair : map.streamLocations()
+		for (final Pair<Point, ITownFixture> pair : map.streamLocations()
 				.sorted(Comparator.comparing(l -> distance(point, l, map.getDimensions())))
 				.flatMap(l -> map.getFixtures(l).stream().filter(ITownFixture.class::isInstance)
 						.map(ITownFixture.class::cast).filter(t -> t.getPopulation() != null)
@@ -159,7 +159,7 @@ public class QueryCLI implements ReadOnlyDriver {
 			final ITownFixture town = pair.getValue1();
 			final CommunityStats population = town.getPopulation();
 			assert (population != null);
-			for (Map.Entry<String, Integer> entry : population.getHighestSkillLevels().entrySet()) {
+			for (final Map.Entry<String, Integer> entry : population.getHighestSkillLevels().entrySet()) {
 				final String expert = entry.getKey();
 				final int level = entry.getValue();
 				if (expert.toLowerCase().contains(skill.toLowerCase())) {

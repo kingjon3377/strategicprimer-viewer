@@ -532,13 +532,13 @@ public final class TestDBIO {
 
 	@ParameterizedTest
 	@MethodSource("fewIntegers")
-	public void testWorkerEquipment(int id) {
-		IMutableWorker worker = new Worker("worker name", "elf", id);
+	public void testWorkerEquipment(final int id) {
+		final IMutableWorker worker = new Worker("worker name", "elf", id);
 		worker.setMount(new AnimalImpl("animal kind", false, "tame", id + 1));
 		worker.addEquipment(new Implement("equipment kind one", id + 2));
 		worker.addEquipment(new Implement("equipment kind two", id + 3));
-		Player owner = new PlayerImpl(1, "owner"); // randomize player-ID, surely?
-		IMutableUnit unit = new Unit(owner, "unitKind", "unitName", id + 5);
+		final Player owner = new PlayerImpl(1, "owner"); // randomize player-ID, surely?
+		final IMutableUnit unit = new Unit(owner, "unitKind", "unitName", id + 5);
 		unit.addMember(worker);
 		assertFixtureSerialization(unit);
 	}

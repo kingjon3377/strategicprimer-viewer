@@ -343,7 +343,7 @@ public class UtilityDriverModel extends SimpleMultiMapModel {
 		if (map.getFixtures(point).stream().anyMatch(fixture::equals)) {
 			return;
 		} else if (fixture instanceof HasOwner && !(fixture instanceof ITownFixture)) {
-			IFixture.CopyBehavior cb = ((HasOwner) fixture).getOwner().equals(currentPlayer) ? IFixture.CopyBehavior.KEEP : IFixture.CopyBehavior.ZERO;
+			final IFixture.CopyBehavior cb = ((HasOwner) fixture).getOwner().equals(currentPlayer) ? IFixture.CopyBehavior.KEEP : IFixture.CopyBehavior.ZERO;
 			final TileFixture zeroed = fixture.copy(cb);
 			if (map.getFixtures(point).stream().noneMatch(zeroed::equals)) {
 				map.addFixture(point, fixture.copy(cb));

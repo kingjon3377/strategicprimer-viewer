@@ -125,7 +125,7 @@ import common.map.fixtures.mobile.AnimalTracks;
 				cli.println(total);
 			}
 			// TODO: Once in Java 11, use "  ".repeat(indent) to prepend indentation and stream().map(each) ...
-			for (Pair<Key, Count> pair : counter) {
+			for (final Pair<Key, Count> pair : counter) {
 				for (int i = 0; i < indent; i++) {
 					cli.print("  ");
 				}
@@ -217,7 +217,7 @@ import common.map.fixtures.mobile.AnimalTracks;
 		}
 	}
 
-	private static Stream<?> flatten(@Nullable Object item) {
+	private static Stream<?> flatten(@Nullable final Object item) {
 		// Note that workers are counted separately, so while we include their equipment and mounts we don't include them.
 		if (item instanceof IWorker) {
 			return Stream.concat(Stream.concat(StreamSupport.stream(((IWorker) item).spliterator(), false),
@@ -231,7 +231,7 @@ import common.map.fixtures.mobile.AnimalTracks;
 		}
 	}
 
-	private static String resourcePileKeyExtractor(IResourcePile pile) {
+	private static String resourcePileKeyExtractor(final IResourcePile pile) {
 		if (pile.getContents().contains(pile.getQuantity().getUnits()) ||
 				    pile.getQuantity().getUnits().contains(pile.getContents())) {
 			return pile.getContents();
@@ -376,8 +376,8 @@ import common.map.fixtures.mobile.AnimalTracks;
 
 		if (!groupedResources.isEmpty()) {
 			cli.println("Resources:");
-			for (Map.Entry<String, List<IResourcePile>> entry : groupedResources.entrySet()) {
-				MappedCounter<IResourcePile, String, BigDecimal> counter = new MappedCounter<>(
+			for (final Map.Entry<String, List<IResourcePile>> entry : groupedResources.entrySet()) {
+				final MappedCounter<IResourcePile, String, BigDecimal> counter = new MappedCounter<>(
 						CountingCLI::resourcePileKeyExtractor, r -> decimalize(r.getQuantity().getNumber()),
 						DecimalAccumulator::new, BigDecimal.ZERO);
 				entry.getValue().forEach(counter::add);

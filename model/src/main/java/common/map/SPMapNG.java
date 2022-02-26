@@ -790,7 +790,7 @@ public class SPMapNG implements IMutableMapNG {
 			retval.addRivers(point, getRivers(point).toArray(new River[0]));
 			// TODO: what other fixtures should we zero, or skip?
 			for (final TileFixture fixture : getFixtures(point)) {
-				IFixture.CopyBehavior cb;
+				final IFixture.CopyBehavior cb;
 				if (zero == IFixture.CopyBehavior.ZERO) {
 					cb = IFixture.CopyBehavior.ZERO;
 				} else if (shouldZero(fixture, player)) {

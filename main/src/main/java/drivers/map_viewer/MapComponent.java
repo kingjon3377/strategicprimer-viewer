@@ -81,7 +81,7 @@ import java.awt.image.BufferedImage;
 	                    final Iterable<FixtureMatcher> matchers) { // FIXME: Create an interface extending both Iterable and Comparator, and make FixtureFixtureTableModel, FixtureFilterListModel, etc., implement it, and take it here instead of taking Iterable and casting to Comparator
 		mapModel = model;
 		cml = new ComponentMouseListener(model, zof, (Comparator<TileFixture>) matchers);
-		DirectionSelectionChanger dsl = new DirectionSelectionChanger(model);
+		final DirectionSelectionChanger dsl = new DirectionSelectionChanger(model);
 		zOrderFilter = zof;
 		this.matchers = matchers;
 		helper = new Ver2TileDrawHelper(this, zof, matchers);
@@ -103,7 +103,7 @@ import java.awt.image.BufferedImage;
 						.map(Component.class::cast).orElse(null));
 				}
 			});
-		MapSizeListener mapSizeListener = new MapSizeListener(model, this, this::getTileSize);
+		final MapSizeListener mapSizeListener = new MapSizeListener(model, this, this::getTileSize);
 		addComponentListener(mapSizeListener);
 
 		setToolTipText("");

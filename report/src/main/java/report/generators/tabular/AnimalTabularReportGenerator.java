@@ -73,7 +73,7 @@ public class AnimalTabularReportGenerator implements ITableGenerator<AnimalOrTra
 			age = "---";
 			population = "---";
 		} else if (item instanceof Animal) {
-			Animal animal = (Animal) item;
+			final Animal animal = (Animal) item;
 			if (animal.isTalking()) {
 				kind = "talking " + item.getKind();
 				age = "---";
@@ -86,7 +86,7 @@ public class AnimalTabularReportGenerator implements ITableGenerator<AnimalOrTra
 				kind = String.format("%s %s", animal.getStatus(), item.getKind());
 				population = Integer.toString(animal.getPopulation());
 				if (animal.getBorn() >= 0) {
-					String lkey = animal.getKind();
+					final String lkey = animal.getKind();
 					if (animal.getBorn() > currentTurn) {
 						age = "unborn";
 					} else if (animal.getBorn() == currentTurn) {

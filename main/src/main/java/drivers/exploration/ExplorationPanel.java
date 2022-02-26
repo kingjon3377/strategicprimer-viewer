@@ -190,7 +190,7 @@ import worker.common.IFixtureEditHelper;
 
 			LOGGER.finer("ExplorationPanel: main list set up for " + direction);
 
-			Iterable<FixtureMatcher> matchers = new FixtureFilterTableModel();
+			final Iterable<FixtureMatcher> matchers = new FixtureFilterTableModel();
 			final DualTileButton dtb = new DualTileButton(driverModel.getMap(), secondMap, matchers);
 			// At some point we tried wrapping the button in a JScrollPane.
 			tilesPanel.add(dtb);
