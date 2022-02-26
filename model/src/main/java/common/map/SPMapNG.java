@@ -451,7 +451,7 @@ public class SPMapNG implements IMutableMapNG {
 				local.add(fixture);
 				fixturesMap.put(location, local);
 				LOGGER.warning("Inserted duplicate-ID fixture at " + location);
-				LOGGER.log(Level.INFO, "Stack trace of this location: ", new Exception());
+				LOGGER.log(Level.FINE, "Stack trace of this location: ", new Exception());
 				LOGGER.info("Existing fixture was: " + existing.get().getShortDescription());
 				LOGGER.info("Added: " + fixture.getShortDescription());
 				return true;
