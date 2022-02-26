@@ -53,6 +53,11 @@ import java.util.stream.Collectors;
 	}
 
 	@Override
+	public boolean equals(Object obj) {
+		return obj instanceof CurriedFixtureTransferable && ((CurriedFixtureTransferable) obj).payload.equals(payload);
+	}
+
+	@Override
 	public int hashCode() {
 		return payload.hashCode();
 	}
