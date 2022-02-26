@@ -25,7 +25,7 @@ public interface Immortal extends MobileFixture, UnitMember {
 	 * @deprecated the transition has occurred, so maybe this shouldn't be used anymore?
 	 */
 	@Deprecated
-	public static final List<String> IMMORTAL_ANIMALS =
+	List<String> IMMORTAL_ANIMALS =
 			List.of("snowbird", "thunderbird", "pegasus", "unicorn", "kraken");
 }
 
