@@ -151,7 +151,7 @@ import java.util.logging.Logger;
 				throw new DriverFailedException(new IllegalStateException("Unhandled driver class"));
 			}
 		} catch (final IncorrectUsageException except) {
-			cli.println(new AppChooserState().usageMessage(except.getCorrectUsage(),
+			cli.println(AppChooserState.usageMessage(except.getCorrectUsage(),
 					"true".equals(options.getArgument("--verbose"))));
 		} catch (final DriverFailedException except) {
 			final Throwable cause = except.getCause();

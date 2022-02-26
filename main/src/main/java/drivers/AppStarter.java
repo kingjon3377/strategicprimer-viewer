@@ -29,7 +29,7 @@ import org.jetbrains.annotations.Nullable;
 /* package */ class AppStarter {
 	private static final Logger LOGGER = Logger.getLogger(AppStarter.class.getName());
 	private final Map<String, Iterable<DriverFactory>> driverCache =
-			new AppChooserState().createCache(); // TODO: Can we, and should we, inline that into here?
+			AppChooserState.createCache(); // TODO: Can we, and should we, inline that into here?
 
 	private static boolean includeInCLIList(final DriverFactory driver) {
 		return driver.getUsage().includeInList(false);
@@ -122,12 +122,11 @@ import org.jetbrains.annotations.Nullable;
 				System.out.println("Strategic Primer assistive programs suite");
 				System.out.println("No app specified; use one of the following invocations:");
 				System.out.println();
-				final AppChooserState acs = new AppChooserState();
 				for (final DriverFactory driver : driverCache.values().stream()
 						.flatMap(l -> StreamSupport.stream(l.spliterator(), false)).distinct()
 						.collect(Collectors.toList())) {
 					// TODO: in Java 11+ use String.lines()
-					final String[] lines = acs.usageMessage(driver.getUsage(), "true".equals(
+					final String[] lines = AppChooserState.usageMessage(driver.getUsage(), "true".equals(
 							options.getArgument("--verbose"))).split(System.lineSeparator());
 					final String invocationExample = lines[0].replace("Usage: ", "");
 					final String description = lines.length > 1 ? lines[1].replace(".", "") : "An unknown app";
@@ -137,7 +136,7 @@ import org.jetbrains.annotations.Nullable;
 				final IDriverUsage currentUsage = currentDriver.getUsage();
 				LOGGER.finer("Giving usage information for selected driver");
 				// TODO: Can we and should we move the usageMessage() method into this class?
-				System.out.println(new AppChooserState().usageMessage(currentUsage,
+				System.out.println(AppChooserState.usageMessage(currentUsage,
 						"true".equals(options.getArgument("--verbose"))));
 			}
 		} else if (currentDriver != null) {

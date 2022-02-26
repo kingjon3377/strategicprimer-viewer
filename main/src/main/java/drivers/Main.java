@@ -56,7 +56,7 @@ public final class Main {
 			appStarter.startDriverOnArguments(new CLIHelper(), options, args);
 		} catch (final IncorrectUsageException except) {
 			final IDriverUsage usage = except.getCorrectUsage();
-			System.err.println(new AppChooserState().usageMessage(usage, options.hasOption("--verbose")));
+			System.err.println(AppChooserState.usageMessage(usage, options.hasOption("--verbose")));
 			System.exit(1);
 		} catch (final DriverFailedException except) {
 			LOGGER.log(Level.SEVERE, except.getMessage(),

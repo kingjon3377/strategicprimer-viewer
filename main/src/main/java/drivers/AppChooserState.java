@@ -41,6 +41,7 @@ import lovelace.util.MissingFileException;
 import lovelace.util.ResourceInputStream;
 
 /* package */ final class AppChooserState {
+	// FIXME: Move methods back into AppStarter, unless that would break something.
 	private static final Logger LOGGER = Logger.getLogger(AppChooserState.class.getName());
 	// TODO: Define and register a custom log formatter? We had to in
 	// Ceylon to get log messags to show at all, but in Java I dropped this
