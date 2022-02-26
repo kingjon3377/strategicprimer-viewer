@@ -193,9 +193,7 @@ import java.util.function.Predicate;
 	private Predicate<Point> matchesPoint(final String pattern, final @Nullable Integer id,
 	                                      final boolean caseSensitivity) {
 		return point -> {
-			if (((caseSensitivity && "bookmark".equals(pattern)) ||
-						(!caseSensitivity &&
-							"bookmark".equalsIgnoreCase(pattern))) &&
+			if ((caseSensitivity ? "bookmark".equals(pattern) : "bookmark".equalsIgnoreCase(pattern)) &&
 					model.getMap().getBookmarks().contains(point)) {
 				return true;
 			} else {
