@@ -1,5 +1,6 @@
 package swinghelper;
 
+import javax.swing.WindowConstants;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.JButton;
@@ -12,7 +13,7 @@ import java.lang.reflect.InvocationTargetException;
 public class CheckThreadViolationRepaintManagerTest {
 	static void simpleTest() {
 		final JFrame frame = new JFrame("Am I on EDT?");
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		frame.add(new JButton("JButton"));
 		frame.pack();
 		frame.setVisible(true);
@@ -21,7 +22,7 @@ public class CheckThreadViolationRepaintManagerTest {
 
 	static void imageUpdateTest() { // TODO: Surely this should be called from checkThreadViolations() somewhere?
 		final JFrame frame = new JFrame();
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		final JEditorPane editor = new JEditorPane();
 		frame.setContentPane(editor);
 		editor.setContentType("text/html");
