@@ -248,6 +248,7 @@ import common.map.fixtures.mobile.worker.IJob;
 				writer.write(kind);
 				writer.write(":");
 				writer.newLine();
+				writer.newLine();
 				for (final IUnit unit : list) {
 					writer.write("#### ");
 					writer.write(unit.getName());
@@ -261,6 +262,7 @@ import common.map.fixtures.mobile.worker.IJob;
 						writer.write(":");
 						alreadyWroteMembers = false;
 					}
+					writer.newLine();
 					writer.newLine();
 					if (unit.iterator().hasNext() && !alreadyWroteMembers) {
 						writer.write("- Members: ");
@@ -325,6 +327,7 @@ import common.map.fixtures.mobile.worker.IJob;
 				for (final IFortress fortress : model.getFortresses(currentPlayer)) {
 					writer.write("### In ");
 					writer.write(fortress.getName());
+					writer.newLine();
 					writer.newLine();
 					final List<Implement> equipment =
 						fortress.stream().filter(Implement.class::isInstance)
