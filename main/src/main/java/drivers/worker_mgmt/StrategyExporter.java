@@ -302,9 +302,6 @@ import common.map.fixtures.mobile.worker.IJob;
 							writer.write(results);
 						}
 						writer.newLine();
-						writer.newLine();
-						writer.write("TODO: advancement"); // TODO: Omit this nowadays?
-						writer.newLine();
 					} else {
 						writer.write(":");
 						writer.newLine();
