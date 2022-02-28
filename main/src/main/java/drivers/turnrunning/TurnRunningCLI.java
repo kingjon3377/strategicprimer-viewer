@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.ServiceLoader;
 import java.util.TreeMap;
 import java.util.function.Predicate;
@@ -132,7 +133,8 @@ import org.javatuples.Pair;
 		final StringBuilder buffer = new StringBuilder();
 		while (true) {
 			final Either<TurnApplet, Boolean> command = appletChooser.chooseApplet();
-			final Boolean bool = command.fromRight().orElse(null);
+			final Boolean bool = Optional.ofNullable(command).map(Either::fromRight).filter(Optional::isPresent)
+					.map(Optional::get).orElse(null);
 			final TurnApplet applet = command.fromLeft().orElse(null);
 			if (bool != null && !bool) {
 				return ""; // TODO: why not null? (making the method return type nullable) also below
