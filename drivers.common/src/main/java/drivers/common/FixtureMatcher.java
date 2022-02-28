@@ -12,7 +12,7 @@ public class FixtureMatcher {
 	 * Factory method for a matcher that matches every tile fixture of the given type.
 	 */
 	public static FixtureMatcher trivialMatcher(final Class<? extends TileFixture> type) {
-		return trivialMatcher(type, type.getName() + "s");
+		return trivialMatcher(type, type.getSimpleName() + "s");
 	}
 
 	/**
