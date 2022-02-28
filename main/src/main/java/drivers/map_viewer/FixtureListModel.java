@@ -167,7 +167,8 @@ public class FixtureListModel implements ListModel<TileFixture>, SelectionChange
 		LOGGER.finer("FixtureListModel.selectedPointChanged: Accounted for animal tracks");
 		final int newSize = getSize();
 		LOGGER.finer("FixtureListModel.selectedPointChanged: About to notify listeners");
-		fireIntervalReplaced(new Range(0, oldSize - 1), new Range(0, newSize - 1));
+		fireIntervalReplaced(new Range(0, Math.max(0, oldSize - 1)),
+			new Range(0, Math.max(0, newSize - 1)));
 		LOGGER.finer("End of FixtureListModel.selectedPointChanged");
 	}
 
