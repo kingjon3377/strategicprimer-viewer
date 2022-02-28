@@ -24,7 +24,7 @@ public class ResourceInputStream extends InputStream {
 		try {
 			temp = new BufferedInputStream(new FileInputStream(filename));
 		} catch (final FileNotFoundException except) {
-			temp = sourceClass.getResourceAsStream(filename);
+			temp = sourceClass.getResourceAsStream("/" + filename);
 			if (temp == null) {
 				throw except;
 			}
