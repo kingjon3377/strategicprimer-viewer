@@ -31,10 +31,10 @@ import java.util.stream.Collectors;
  * caches}, {@link IResourcePile resource piles}, and {@link Implement equipment}.
  */
 public class ResourceTabularReportGenerator
-		implements ITableGenerator</*Implement|CacheFixture|IResourcePile*/TileFixture> {
+		implements ITableGenerator</*Implement|CacheFixture|IResourcePile*/IFixture> {
 	@Override
-	public Class<TileFixture> narrowedClass() {
-		return TileFixture.class;
+	public boolean canHandle(final IFixture fixture) {
+		return fixture instanceof Implement || fixture instanceof CacheFixture || fixture instanceof  IResourcePile;
 	}
 
 	public ResourceTabularReportGenerator(final @Nullable Point hq, final MapDimensions dimensions) {
@@ -74,7 +74,7 @@ public class ResourceTabularReportGenerator
 	@Override
 	public List<List<String>> produce(
 			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-			/*Implement|CacheFixture|IResourcePile*/final TileFixture item, final int key, final Point loc,
+			/*Implement|CacheFixture|IResourcePile*/final IFixture item, final int key, final Point loc,
 			final Map<Integer, Integer> parentMap) {
 		final String kind;
 		final String quantity;
@@ -99,8 +99,8 @@ public class ResourceTabularReportGenerator
 			locationString(loc), kind, quantity, specifics));
 	}
 
-	private static int compareItems(/*Implement|CacheFixture|IResourcePile*/final TileFixture first,
-			/*Implement|CacheFixture|IResourcePile*/final TileFixture second) {
+	private static int compareItems(/*Implement|CacheFixture|IResourcePile*/final IFixture first,
+			/*Implement|CacheFixture|IResourcePile*/final IFixture second) {
 		if (first instanceof Implement) {
 			if (second instanceof Implement) {
 				return Comparator.comparing(Implement::getKind)
@@ -139,8 +139,8 @@ public class ResourceTabularReportGenerator
 	 * @return
 	 */
 	@Override
-	public Comparator<Pair<Point, TileFixture>> comparePairs() {
-		return Comparator.<Pair<Point, TileFixture>, Point>comparing(Pair::getValue0, distanceComparator)
+	public Comparator<Pair<Point, IFixture>> comparePairs() {
+		return Comparator.<Pair<Point, IFixture>, Point>comparing(Pair::getValue0, distanceComparator)
 			.thenComparing(Pair::getValue1,
 				ResourceTabularReportGenerator::compareItems);
 	}
@@ -152,19 +152,19 @@ public class ResourceTabularReportGenerator
 	public void produceTable(final ThrowingConsumer<String, IOException> ostream,
 	                         final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
 	                         final Map<Integer, Integer> parentMap) throws IOException {
-		final Iterable<Triplet<Integer, Point, TileFixture>> values = fixtures.entrySet().stream()
+		final Iterable<Triplet<Integer, Point, IFixture>> values = fixtures.entrySet().stream()
 			.filter(e -> e instanceof CacheFixture || e instanceof Implement ||
 				e instanceof IResourcePile)
 			.map(e -> Triplet.with(e.getKey(), e.getValue().getValue0(),
-				(TileFixture) e.getValue().getValue1()))
+					e.getValue().getValue1()))
 			.sorted(Comparator.comparing(Triplet::removeFrom0, comparePairs()))
 			.collect(Collectors.toList());
 		writeRow(ostream, getHeaderRow().toArray(new String[0]));
 		final Map<Pair<Point, String>, Integer> implementCounts = new HashMap<>();
-		for (final Triplet<Integer, Point, TileFixture> triplet : values) {
+		for (final Triplet<Integer, Point, IFixture> triplet : values) {
 			final int key = triplet.getValue0();
 			final Point loc = triplet.getValue1();
-			final TileFixture fixture = triplet.getValue2();
+			final IFixture fixture = triplet.getValue2();
 			if (fixture instanceof Implement) {
 				final int num;
 				num = implementCounts.getOrDefault(Pair.with(loc, ((Implement) fixture).getKind()), 0);

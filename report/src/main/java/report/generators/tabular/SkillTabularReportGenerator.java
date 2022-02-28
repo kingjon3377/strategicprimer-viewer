@@ -23,8 +23,8 @@ import java.util.Map;
  */
 public class SkillTabularReportGenerator implements ITableGenerator<IWorker> {
 	@Override
-	public Class<IWorker> narrowedClass() {
-		return IWorker.class;
+	public boolean canHandle(final IFixture fixture) {
+		return fixture instanceof IWorker;
 	}
 
 	/**

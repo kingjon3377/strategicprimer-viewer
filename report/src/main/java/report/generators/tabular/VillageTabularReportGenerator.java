@@ -22,8 +22,8 @@ import java.util.Comparator;
  */
 public class VillageTabularReportGenerator implements ITableGenerator<Village> {
 	@Override
-	public Class<Village> narrowedClass() {
-		return Village.class;
+	public boolean canHandle(final IFixture fixture) {
+		return fixture instanceof Village;
 	}
 
 	public VillageTabularReportGenerator(final Player player, final @Nullable Point hq, final MapDimensions dimensions) {

@@ -23,8 +23,8 @@ import java.util.Collections;
  */
 public class TownTabularReportGenerator implements ITableGenerator<AbstractTown> {
 	@Override
-	public Class<AbstractTown> narrowedClass() {
-		return AbstractTown.class;
+	public boolean canHandle(final IFixture fixture) {
+		return fixture instanceof AbstractTown;
 	}
 
 	public TownTabularReportGenerator(final Player player, final @Nullable Point hq, final MapDimensions dimensions) {

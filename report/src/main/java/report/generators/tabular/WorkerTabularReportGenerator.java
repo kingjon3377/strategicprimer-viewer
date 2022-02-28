@@ -29,8 +29,8 @@ import java.util.stream.Collectors;
  */
 public class WorkerTabularReportGenerator implements ITableGenerator<IWorker> {
 	@Override
-	public Class<IWorker> narrowedClass() {
-		return IWorker.class;
+	public boolean canHandle(final IFixture fixture) {
+		return fixture instanceof IWorker;
 	}
 
 	private final @Nullable Point hq;

@@ -21,8 +21,8 @@ import common.map.fixtures.mobile.Immortal;
  */
 public class ImmortalsTabularReportGenerator implements ITableGenerator<Immortal> {
 	@Override
-	public Class<Immortal> narrowedClass() {
-		return Immortal.class;
+	public boolean canHandle(final IFixture fixture) {
+		return fixture instanceof Immortal;
 	}
 
 	public ImmortalsTabularReportGenerator(final @Nullable Point hq, final MapDimensions dimensions) {

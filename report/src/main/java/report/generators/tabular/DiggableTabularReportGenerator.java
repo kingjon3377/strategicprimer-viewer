@@ -26,8 +26,8 @@ import java.util.Collections;
  */
 public class DiggableTabularReportGenerator implements ITableGenerator<MineralFixture> {
 	@Override
-	public Class<MineralFixture> narrowedClass() {
-		return MineralFixture.class;
+	public boolean canHandle(final IFixture fixture) {
+		return fixture instanceof MineralFixture;
 	}
 
 	public DiggableTabularReportGenerator(final @Nullable Point hq, final MapDimensions dimensions) {

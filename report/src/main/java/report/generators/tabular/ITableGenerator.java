@@ -2,6 +2,7 @@ package report.generators.tabular;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.function.Predicate;
 import lovelace.util.ThrowingConsumer;
 import org.jetbrains.annotations.Nullable;
 
@@ -37,9 +38,11 @@ public interface ITableGenerator<T extends IFixture> {
 
 	Logger LOGGER = Logger.getLogger(ITableGenerator.class.getName());
 
-	// TODO: Should actually be a Predicate<IFixture> canHandle(), most
-	// likely, in the absence of reified union types.
-	Class<T> narrowedClass();
+	/**
+	 * Whether this generator can include the given fixture. If this returns false for an object, that object may
+	 * cause a {@link ClassCastException} if passed to other methods.
+	 */
+	boolean canHandle(IFixture fixture);
 
 	/**
 	 * Produce a tabular report on a particular category of fixtures in the
@@ -48,9 +51,8 @@ public interface ITableGenerator<T extends IFixture> {
 	default void produceTable(final ThrowingConsumer<String, IOException> ostream, final DelayedRemovalMap<Integer,
 			Pair<Point, IFixture>> fixtures, final Map<Integer, Integer> parentMap)
 			throws IOException {
-		final Class<T> cls = narrowedClass();
 		final Iterable<Triplet<Integer, Point, T>> values = fixtures.entrySet().stream()
-			.filter(e -> cls.isInstance(e.getValue().getValue1()))
+			.filter(e -> canHandle(e.getValue().getValue1()))
 			.map(e -> Triplet.with(e.getKey(), e.getValue().getValue0(),
 				(T) e.getValue().getValue1()))
 			.sorted(Comparator.comparing(Triplet::removeFrom0, comparePairs()))
@@ -72,9 +74,8 @@ public interface ITableGenerator<T extends IFixture> {
 	 */
 	default TableModel produceTableModel(final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
 	                                     final Map<Integer, Integer> parentMap) {
-		final Class<T> cls = narrowedClass();
 		final Iterable<Triplet<Integer, Point, T>> values = fixtures.entrySet().stream()
-			.filter(e -> cls.isInstance(e.getValue().getValue1()))
+			.filter(e -> canHandle(e.getValue().getValue1()))
 			.map(e -> Triplet.with(e.getKey(), e.getValue().getValue0(),
 				(T) e.getValue().getValue1()))
 			.sorted(Comparator.comparing(Triplet::removeFrom0, comparePairs()))

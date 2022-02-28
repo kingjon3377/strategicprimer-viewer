@@ -26,8 +26,8 @@ import java.util.Collections;
  */
 public class UnitTabularReportGenerator implements ITableGenerator<IUnit> {
 	@Override
-	public Class<IUnit> narrowedClass() {
-		return IUnit.class;
+	public boolean canHandle(final IFixture fixture) {
+		return fixture instanceof IUnit;
 	}
 
 	private final Player player;

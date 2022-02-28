@@ -1,5 +1,6 @@
 package report.generators.tabular;
 
+import common.map.fixtures.explorable.ExplorableFixture;
 import java.util.List;
 import org.javatuples.Pair;
 import org.jetbrains.annotations.Nullable;
@@ -30,8 +31,8 @@ import java.util.Collections;
 public class ExplorableTabularReportGenerator
 		implements ITableGenerator</*ExplorableFixture|TextFixture*/TileFixture> {
 	@Override
-	public Class<TileFixture> narrowedClass() {
-		return TileFixture.class;
+	public boolean canHandle(final IFixture fixture) {
+		return fixture instanceof ExplorableFixture || fixture instanceof TextFixture;
 	}
 
 	public ExplorableTabularReportGenerator(final Player player, final @Nullable Point hq, final MapDimensions dimensions) {

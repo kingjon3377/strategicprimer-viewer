@@ -1,6 +1,7 @@
 package report.generators.tabular;
 
 import java.util.List;
+import java.util.function.Predicate;
 import org.javatuples.Pair;
 import org.jetbrains.annotations.Nullable;
 
@@ -29,8 +30,9 @@ import java.text.NumberFormat;
  */
 public class CropTabularReportGenerator implements ITableGenerator</*Forest|Shrub|Meadow|Grove*/TileFixture> {
 	@Override
-	public Class<TileFixture> narrowedClass() {
-		return TileFixture.class;
+	public boolean canHandle(final IFixture fixture) {
+		return fixture instanceof Forest || fixture instanceof Shrub || fixture instanceof Meadow ||
+				       fixture instanceof Grove;
 	}
 
 	/**

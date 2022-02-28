@@ -23,8 +23,8 @@ import java.util.Collections;
  */
 public class FortressTabularReportGenerator implements ITableGenerator<IFortress> {
 	@Override
-	public Class<IFortress> narrowedClass() {
-		return IFortress.class;
+	public boolean canHandle(final IFixture fixture) {
+		return fixture instanceof IFortress;
 	}
 
 	private final Player player;

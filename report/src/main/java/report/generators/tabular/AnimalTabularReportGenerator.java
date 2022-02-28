@@ -25,8 +25,8 @@ import java.util.Collections;
  */
 public class AnimalTabularReportGenerator implements ITableGenerator<AnimalOrTracks> {
 	@Override
-	public Class<AnimalOrTracks> narrowedClass() {
-		return AnimalOrTracks.class;
+	public boolean canHandle(final IFixture fixture) {
+		return fixture instanceof AnimalOrTracks;
 	}
 
 	public AnimalTabularReportGenerator(final @Nullable Point hq, final MapDimensions dimensions,
