@@ -129,7 +129,7 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 						!((HasOwner) fixture).getOwner().isIndependent() &&
 						!((HasOwner) fixture).getOwner().equals(unit.getOwner())) {
 					System.out.printf( // FIXME: Make a new interface for reporting this, and write to UI in a listener
-						"Motion of %s to %s could be observed by %s at %s",
+						"Motion of %s to %s could be observed by %s at %s%n",
 						description, dest, fixture.getShortDescription(), point);
 				}
 			}
