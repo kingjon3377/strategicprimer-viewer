@@ -63,6 +63,7 @@ public final class FixtureList extends JList<TileFixture>
 	private final Iterable<Player> players;
 	public FixtureList(final JComponent parentComponent, final FixtureListModel listModel,
 	                   final IFixtureEditHelper feh, final IDRegistrar idf, final Iterable<Player> players) {
+		super(listModel);
 		this.parentComponent = parentComponent;
 		this.listModel = listModel;
 		this.feh = feh;
