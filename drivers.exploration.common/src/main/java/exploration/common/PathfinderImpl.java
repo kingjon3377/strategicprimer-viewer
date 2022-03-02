@@ -86,7 +86,7 @@ import java.util.logging.Logger;
 			}
 			final int currentDistance = tentativeDistances.get(Pair.with(start, current));
 			if (current.equals(end)) {
-				LOGGER.info(String.format("Reached the end after %d iterations",
+				LOGGER.fine(String.format("Reached the end after %d iterations",
 					iterations));
 				final List<Point> path = new ArrayList<>();
 				path.add(current);
