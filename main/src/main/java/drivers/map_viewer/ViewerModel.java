@@ -41,6 +41,7 @@ import common.map.fixtures.mobile.IUnit;
 
 import common.map.fixtures.towns.IFortress;
 import common.map.fixtures.towns.IMutableFortress;
+import lovelace.util.Range;
 
 /**
  * A class to encapsulate the various model-type things views need to do with maps.
@@ -222,6 +223,25 @@ public class ViewerModel extends SimpleDriverModel implements IViewerModel {
 		}
 	}
 
+	private static Range constrain(final int selection, final Range curr, final int currMin,
+			final int currMax, final int mapEdge) {
+		// TODO: Check possible off-by-one here or in caller: Range says it is *inclusive* on both ends
+		if (curr.contains(selection)) {
+			return curr;
+		} else if (currMin > selection && currMin - selection <= JUMP_INTERVAL) {
+			return new Range(selection, currMax - (currMin - selection));
+		} else if (currMax < selection && selection - currMax >= JUMP_INTERVAL) {
+			return new Range(currMin + (selection - currMax), selection);
+		} else if (selection >= 0 && selection < curr.size()) {
+			return new Range(0, curr.size() - 1);
+		} else if (selection >= mapEdge - curr.size() && selection < mapEdge) {
+			return new Range(mapEdge - curr.size(), mapEdge - 1);
+		} else {
+			final int min = selection - curr.size() / 2;
+			return new Range(min, min + curr.size() - 1);
+		}
+	}
+
 	private void fixVisibility() {
 		final Point currSelection = selPoint;
 		final VisibleDimensions currDims = visDimensions;
@@ -241,54 +261,15 @@ public class ViewerModel extends SimpleDriverModel implements IViewerModel {
 		} else {
 			column = currSelection.getColumn();
 		}
-		final int minRow;
-		final int maxRow;
-		if (currDims.getRows().contains(row)) {
-			minRow = currDims.getMinimumRow();
-			maxRow = currDims.getMaximumRow();
-		} else if (currDims.getMinimumRow() > row &&
-				currDims.getMinimumRow() - row <= JUMP_INTERVAL) {
-			minRow = row;
-			maxRow = currDims.getMaximumRow() - (currDims.getMinimumRow() - row);
-		} else if (currDims.getMaximumRow() < row &&
-				row - currDims.getMaximumRow() <= JUMP_INTERVAL) {
-			minRow = currDims.getMinimumRow() + (row - currDims.getMaximumRow());
-			maxRow = row;
-		} else if (row >= 0 && row < currDims.getHeight()) {
-			minRow = 0;
-			maxRow = currDims.getHeight() - 1;
-		} else if (row >= (getMap().getDimensions().getRows() - currDims.getHeight()) &&
-				row < getMap().getDimensions().getRows()) {
-			minRow = getMap().getDimensions().getRows() - currDims.getHeight();
-			maxRow = getMap().getDimensions().getRows() - 1;
-		} else {
-			minRow = row - currDims.getHeight() / 2;
-			maxRow = minRow + currDims.getHeight() - 1;
-		}
-		final int minColumn;
-		final int maxColumn;
-		if (currDims.getColumns().contains(column)) {
-			minColumn = currDims.getMinimumColumn();
-			maxColumn = currDims.getMaximumColumn();
-		} else if (currDims.getMinimumColumn() > column &&
-				currDims.getMinimumColumn() - column <= JUMP_INTERVAL) {
-			minColumn = column;
-			maxColumn = currDims.getMaximumColumn() - (currDims.getMinimumColumn() - column);
-		} else if (currDims.getMaximumColumn() < column &&
-				column - currDims.getMaximumColumn() <= JUMP_INTERVAL) {
-			minColumn = currDims.getMinimumColumn() + (column - currDims.getMaximumColumn());
-			maxColumn = column;
-		} else if (column >= 0 && column < currDims.getWidth()) {
-			minColumn = 0;
-			maxColumn = currDims.getWidth() - 1;
-		} else if (column >= getMap().getDimensions().getColumns() - currDims.getWidth() &&
-				column < getMap().getDimensions().getColumns()) {
-			minColumn = getMap().getDimensions().getColumns() - currDims.getWidth();
-			maxColumn = getMap().getDimensions().getColumns() - 1;
-		} else {
-			minColumn = column - currDims.getWidth() / 2;
-			maxColumn = minColumn + currDims.getWidth() - 1;
-		}
+		final Range rowRange = constrain(row, currDims.getRows(), currDims.getMinimumRow(),
+			currDims.getMaximumRow(), getMap().getDimensions().getRows());
+		final int minRow = rowRange.getLowerBound();
+		final int maxRow = rowRange.getUpperBound();
+		final Range colRange = constrain(column, currDims.getColumns(),
+			currDims.getMinimumColumn(), currDims.getMaximumColumn(),
+			getMap().getDimensions().getColumns());
+		final int minColumn = colRange.getLowerBound();
+		final int maxColumn = colRange.getUpperBound();
 		visDimensions = new VisibleDimensions(minRow, maxRow, minColumn, maxColumn);
 	}
 
