@@ -59,6 +59,7 @@
                             <version>${auto-service.version}</version>
                         </path>
                     </annotationProcessorPaths>
+                    <forceJavacCompilerUse>true</forceJavacCompilerUse>
                 </configuration>
             </plugin>
         </plugins>
