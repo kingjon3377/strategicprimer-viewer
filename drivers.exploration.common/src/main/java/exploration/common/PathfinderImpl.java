@@ -62,6 +62,18 @@ import java.util.logging.Logger;
 		}
 	}
 
+	private static int clampAdd(int one, int two) {
+		if (one == 0 || two == 0 || (one > 0 ^ two > 0)) {
+			return one + two;
+		} else if (one > 0 && Integer.MAX_VALUE - one < two) {
+			return Integer.MAX_VALUE;
+		} else if (one < 0 && Integer.MIN_VALUE - one > two) {
+			return Integer.MIN_VALUE;
+		} else {
+			return one + two;
+		}
+	}
+
 	/**
 	 * The shortest-path distance, avoiding obstacles, in MP, between two
 	 * points, using Dijkstra's algorithm.
@@ -112,7 +124,7 @@ import java.util.logging.Logger;
 					throw new IllegalStateException("Missing prior estimate");
 				}
 				final int estimate = tentativeDistances.get(Pair.with(start, neighbor));
-				final int tentativeDistance = currentDistance +
+				final int tentativeDistance = clampAdd(currentDistance,
 					SimpleMovementModel.movementCost(map.getBaseTerrain(neighbor),
 						map.getFixtures(neighbor).stream().anyMatch(Forest.class::isInstance),
 						map.isMountainous(neighbor),
@@ -120,7 +132,7 @@ import java.util.logging.Logger;
 							getDirection(current, neighbor),
 							map.getRivers(current),
 							map.getRivers(neighbor)),
-						map.getFixtures(neighbor));
+						map.getFixtures(neighbor)));
 				LOGGER.fine(String.format("Old estimate %d, new estimate %d", estimate,
 					tentativeDistance));
 				if (tentativeDistance < estimate) {
