@@ -453,6 +453,7 @@ import java.util.function.Predicate;
 						writeProperty(ostream, "quality", entry.getValue());
 						closeLeafTag(ostream);
 					}
+					// TODO: Instead of special-casing ground and forest, and to minimize future churn with exploration, sort fixtures in some way.
 					// To avoid breaking map-format-conversion tests, and to
 					// avoid churn in existing maps, put the first Ground and Forest
 					// before other fixtures.

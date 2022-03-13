@@ -325,6 +325,7 @@ public class SPFluidWriter implements SPWriter {
 							Pair.with("direction", entry.getKey().toString()),
 							Pair.with("quality", entry.getValue()));
 					}
+					// TODO: Instead of special-casing ground and forest, and to minimize future churn with exploration, sort fixtures in some way.
 					// To avoid breaking map-format-conversion tests, and to
 					// avoid churn in existing maps, put the first Ground and Forest
 					// before other fixtures.
