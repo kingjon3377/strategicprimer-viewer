@@ -85,12 +85,13 @@ public class ExplorationCLIHelper implements MovementCostListener, SelectionChan
 	private void printAndTransferFixture(final Point destPoint, final @Nullable TileFixture fixture, final HasOwner mover,
 	                                     final boolean automatic) {
 		if (fixture != null) {
+			// TODO: Print a description of the form that will be copied (omitting acreage, etc.) unless already in sub-map(s).
+			cli.print("- ");
 			if (automatic) {
-				cli.print("- ");
-				cli.print(fixture.toString());
+				cli.print(fixture.getShortDescription());
 				cli.println(" (automatically)");
 			} else {
-				cli.println(fixture.toString());
+				cli.println(fixture.getShortDescription());
 			}
 			final IFixture.CopyBehavior zero;
 			if (fixture instanceof HasOwner && (!((HasOwner) fixture).getOwner().equals(mover.getOwner())
