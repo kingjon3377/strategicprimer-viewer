@@ -130,7 +130,7 @@ import org.jetbrains.annotations.Nullable;
 							options.getArgument("--verbose"))).split(System.lineSeparator());
 					final String invocationExample = lines[0].replace("Usage: ", "");
 					final String description = lines.length > 1 ? lines[1].replace(".", "") : "An unknown app";
-					System.out.printf("%s: %s", description, invocationExample);
+					System.out.printf("%s: %s%n", description, invocationExample);
 				}
 			} else {
 				final IDriverUsage currentUsage = currentDriver.getUsage();

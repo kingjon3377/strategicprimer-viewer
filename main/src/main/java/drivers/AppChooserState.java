@@ -148,6 +148,7 @@ import lovelace.util.ResourceInputStream;
 			} else {
 				builder.append(usage.getShortDescription());
 			}
+			builder.append(System.lineSeparator());
 			return builder.toString();
 	}
 
