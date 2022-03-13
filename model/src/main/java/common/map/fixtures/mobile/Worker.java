@@ -331,6 +331,7 @@ public class Worker implements IMutableWorker {
 			for (final Implement item : equipmentImpl) {
 				retval.addEquipment(item);
 			}
+			retval.notesImpl.putAll(notesImpl); // TODO: add setNote() overload taking int, so we don't have to violate encapsulation
 		}
 		return retval;
 	}
