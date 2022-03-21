@@ -79,6 +79,10 @@ import lovelace.util.ResourceInputStream;
 				if (existingList.isEmpty()) {
 					cache.remove(command);
 				}
+			} else if (cache.containsKey(command)) {
+				final List<DriverFactory> list = cache.get(command);
+				list.add(factory);
+				cache.put(command, list);
 			} else {
 				final List<DriverFactory> list = new ArrayList<>();
 				list.add(factory);
