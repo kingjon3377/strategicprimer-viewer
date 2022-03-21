@@ -167,6 +167,9 @@ import org.jetbrains.annotations.Nullable;
 									mapRow, mapColumn, type));
 							retval.put(new Point(mapRow, mapColumn), type);
 						} else {
+							cli.print("In (", Integer.toString(mapRow),
+								", ", Integer.toString(mapColumn),
+								"): ");
 							final HasName type = askFor(dominant.getValue0());
 							if (type != null) {
 								mapping.put(dominant.getValue0(), type);
