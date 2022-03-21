@@ -150,7 +150,7 @@ public class HuntingModel {
 		@SuppressWarnings("IteratorNextCanNotThrowNoSuchElementException")
 		@Override
 		public Type next() {
-			if (SingletonRandom.SINGLETON_RANDOM.nextDouble() < nothingProportion) {
+			if (stream.isEmpty() || SingletonRandom.SINGLETON_RANDOM.nextDouble() < nothingProportion) {
 				return nothingValue;
 			}
 			final Optional<Type> retval = Stream.generate(this::supplier)
