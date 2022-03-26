@@ -241,7 +241,7 @@ public class SPFluidReader implements IMapReader, ISPReader {
 	private void parseTile(final IMutableMapNG map, final StartElement element, final Iterable<XMLEvent> stream,
 	                       final IMutablePlayerCollection players, final Warning warner, final IDRegistrar idFactory)
 			throws SPFormatException {
-		expectAttributes(element, warner, "row", "column", "kind", "type");
+		expectAttributes(element, warner, "row", "column", "kind", "type", "mountain");
 		final Point loc = new Point(getIntegerAttribute(element, "row"),
 			getIntegerAttribute(element, "column"));
 		// Tiles have been known to be *written* without "kind" and then fail to load, so
@@ -255,6 +255,9 @@ public class SPFluidReader implements IMapReader, ISPReader {
 			}
 		} else {
 			warner.handle(new MissingPropertyException(element, "kind"));
+		}
+		if (getBooleanAttribute(element, "mountain", false)) {
+			map.setMountainous(loc, true);
 		}
 		for (final XMLEvent event : stream) {
 			if (event instanceof StartElement && isSPStartElement(event)) {

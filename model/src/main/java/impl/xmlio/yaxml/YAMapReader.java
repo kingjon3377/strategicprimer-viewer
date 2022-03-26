@@ -234,7 +234,7 @@ import java.util.function.Predicate;
 							(StartElement) event);
 					}
 					expectAttributes((StartElement) event, "row", "column", "kind",
-						"type");
+						"type", "mountain");
 					tagStack.addFirst(((StartElement) event).getName());
 					// TODO: Just assign to point, maybe?
 					final Point localPoint = parsePoint((StartElement) event);
@@ -255,6 +255,10 @@ import java.util.function.Predicate;
 					} else {
 						warner.handle(new MissingPropertyException(
 							(StartElement) event, "kind"));
+					}
+					if (getBooleanParameter((StartElement) event,
+							"mountain", false)) {
+						retval.setMountainous(localPoint, true);
 					}
 				} else if ("elsewhere".equals(type)) {
 					if (point != null) {

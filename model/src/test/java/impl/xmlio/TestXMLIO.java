@@ -2250,4 +2250,21 @@ public final class TestXMLIO {
 		}
 		assertSerialization("Map with roads is serialized properly.", map, Warning.DIE);
 	}
+
+	/**
+	 * Test that the in-tile-tag and pseudo-fixture representations of
+	 * mountains are both read properly.
+	 */
+	@Test
+	public void testMountainSerialization() throws SPFormatException, MalformedXMLException,
+			IOException {
+		assertEquivalentForms("Old and new representation of mountains",
+			encapsulateTileString("<mountain />"),
+			"<map version=\"2\" rows=\"2\" columns=\"2\">" +
+				"<tile row=\"1\" column=\"1\" kind=\"plains\" mountain=\"true\" />" +
+				"</map>",
+			Warning.IGNORE); // missing current_player
+		// TODO: Verify that they actually set the mountain in the map,
+		// and it is not set by default
+	}
 }
