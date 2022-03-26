@@ -80,7 +80,7 @@ import org.takes.http.Exit;
 				if (!cache.containsKey(file)) {
 					try {
 						cache.put(file, ReportGenerator.createReport(map, cli,
-							Optional.of(currentPlayer).orElse(map.getCurrentPlayer())));
+							Optional.ofNullable(currentPlayer).orElse(map.getCurrentPlayer())));
 					} catch (final IOException except) {
 						throw new DriverFailedException(except, "I/O error while creating report(s)");
 					}
@@ -89,7 +89,7 @@ import org.takes.http.Exit;
 		} else if (model.getMap().getFilename() != null) {
 			try {
 				cache.put(model.getMap().getFilename(), ReportGenerator.createReport(model.getMap(), cli,
-					Optional.of(currentPlayer).orElse(model.getMap().getCurrentPlayer())));
+					Optional.ofNullable(currentPlayer).orElse(model.getMap().getCurrentPlayer())));
 			} catch (final IOException except) {
 				throw new DriverFailedException(except, "I/O error while creating report(s)");
 			}
