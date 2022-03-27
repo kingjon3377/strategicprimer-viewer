@@ -10,7 +10,7 @@ import common.map.HasMutableImage;
  *
  * TODO: Implement that
  *
- * TODO: Convert to a boolean property of the tile instead of a fixture, like mountains?
+ * TODO: Convert to a boolean property of the tile instead of a fixture, like mountains. Start by removing ID.
  */
 public class Hill implements TerrainFixture, HasMutableImage {
 	public Hill(final int id) {
