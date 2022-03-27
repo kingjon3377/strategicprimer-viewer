@@ -69,12 +69,25 @@ public final class TabularReportGenerator {
 	public static void createTabularReports(final IMapNG map,
 	                                        final ThrowingFunction<String, ThrowingConsumer<String, IOException>, IOException> source,
 	                                        final ICLIHelper cli) throws IOException {
+		final Player player = map.getCurrentPlayer();
+		final @Nullable Point hq = ReportGeneratorHelper.findHQ(map, player);
+		createTabularReports(map, source, cli, hq);
+	}
+
+	/**
+	 * A method to produce tabular reports based on a map for a player.
+	 *
+	 * Unfortunately, 'source' needs to take ThrowingConsumer because console and file I/O can fail.
+	 */
+	public static void createTabularReports(final IMapNG map,
+	                                        final ThrowingFunction<String, ThrowingConsumer<String, IOException>, IOException> source,
+	                                        final ICLIHelper cli, final @Nullable Point hq)
+					throws IOException {
 		final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures =
 			ReportGeneratorHelper.getFixtures(map);
 		final Map<Integer, Integer> parentMap = ReportGeneratorHelper.getParentMap(map);
 		final Player player = map.getCurrentPlayer();
 		final MapDimensions dimensions = map.getDimensions();
-		final @Nullable Point hq = ReportGeneratorHelper.findHQ(map, player);
 		final int currentTurn = map.getCurrentTurn();
 		final List<ITableGenerator<?>> generators = Arrays.asList(
 			new FortressTabularReportGenerator(player, hq, dimensions),
@@ -140,12 +153,24 @@ public final class TabularReportGenerator {
 	 */
 	public static void createGUITabularReports(final BiConsumer<String, Component> consumer, final IMapNG map)
 			throws IOException {
+		final Player player = map.getCurrentPlayer();
+		final @Nullable Point hq = ReportGeneratorHelper.findHQ(map, player);
+		createGUITabularReports(consumer, map, hq);
+	}
+
+	/**
+	 * A method to produce tabular reports and add them to a GUI.
+	 * @param consumer The way to add the tables to the GUI
+	 * @param map The map to base the reports on
+	 * @param hq the point to count distances from
+	 */
+	public static void createGUITabularReports(final BiConsumer<String, Component> consumer,
+			final IMapNG map, final @Nullable Point hq) throws IOException {
 		final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures =
 			ReportGeneratorHelper.getFixtures(map);
 		final Map<Integer, Integer> parentMap = ReportGeneratorHelper.getParentMap(map);
 		final Player player = map.getCurrentPlayer();
 		final MapDimensions dimensions = map.getDimensions();
-		final @Nullable Point hq = ReportGeneratorHelper.findHQ(map, player);
 		final int currentTurn = map.getCurrentTurn();
 		final List<ITableGenerator<?>> generators = Arrays.asList(
 			new FortressTabularReportGenerator(player, hq, dimensions),

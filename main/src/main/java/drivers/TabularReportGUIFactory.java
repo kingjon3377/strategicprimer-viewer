@@ -34,7 +34,7 @@ public class TabularReportGUIFactory implements GUIDriverFactory {
 	private static final Logger LOGGER = Logger.getLogger(TabularReportGUIFactory.class.getName());
 	private static final IDriverUsage USAGE = new DriverUsage(true, "tabular-report",
 		ParamCount.One, "Tabular Report Viewer", "Show the contents of a map in tabular form",
-		false, true);
+		false, true, "--hq-row=NN --hq-col=NN");
 
 	@Override
 	public IDriverUsage getUsage() {

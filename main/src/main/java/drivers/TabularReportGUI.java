@@ -1,5 +1,8 @@
 package drivers;
 
+import java.util.OptionalInt;
+import org.jetbrains.annotations.Nullable;
+import common.map.Point;
 import drivers.common.DriverFailedException;
 import java.util.logging.Logger;
 import java.util.logging.Level;
@@ -62,12 +65,36 @@ public class TabularReportGUI implements GUIDriver {
 	public void startDriver() {
 		final SPFrame window = new SPFrame("Tabular Report", this, new Dimension(640, 480));
 		final JTabbedPane frame = new JTabbedPane(SwingConstants.TOP, JTabbedPane.SCROLL_TAB_LAYOUT);
+		final @Nullable Point hq;
+		if (options.hasOption("--hq-row") && options.hasOption("--hq-col")) {
+			OptionalInt row = OptionalInt.empty();
+			OptionalInt column = OptionalInt.empty();
+			try {
+				row = OptionalInt.of(Integer.parseInt(
+					options.getArgument("--hq-row")));
+				column = OptionalInt.of(Integer.parseInt(
+					options.getArgument("--hq-col")));
+			} catch (NumberFormatException except) {
+				LOGGER.warning("--hq-row and --hq-col must be numeric");
+			}
+			if (row.isPresent() && column.isPresent()) {
+				hq = new Point(row.getAsInt(), column.getAsInt());
+			} else {
+				hq = null;
+			}
+		} else {
+			hq = null;
+		}
 		final MapChangeListener listener = new MapChangeListener() {
 			@Override
 			public void mapChanged() {
 				frame.removeAll();
 				try {
-					TabularReportGenerator.createGUITabularReports(frame::addTab, model.getMap());
+					if (hq == null) {
+						TabularReportGenerator.createGUITabularReports(frame::addTab, model.getMap());
+					} else {
+						TabularReportGenerator.createGUITabularReports(frame::addTab, model.getMap(), hq);
+					}
 				} catch (final IOException except) {
 					ShowErrorDialog.showErrorDialog(window, "Strategic Primer Tabular Reports",
 							String.format("I/O error while generating reports:%n%s", except.getLocalizedMessage()));
