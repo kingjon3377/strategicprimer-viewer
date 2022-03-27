@@ -82,7 +82,7 @@ public final class ImageLoader {
 	 *
 	 * TODO: Add support for SVG (presumably using Batik)
 	 *
-	 * TODO: "Return null instead of throwing if not loadable?
+	 * TODO: Return null instead of throwing if not loadable?
 	 *
 	 * @throws IOException If no reader could read the file (or the file does not exist)
 	 */

@@ -38,7 +38,7 @@ public class Portal implements ExplorableFixture, SubsettableFixture {
 	 * before any unit traverses the portal.
 	 *
 	 * TODO: Use Null instead of an invalid Point?
-	 * TODO: "Combine with destinationWorld in a Tuple?
+	 * TODO: Combine with destinationWorld in a Tuple?
 	 */
 	private Point destinationCoordinates;
 
@@ -48,7 +48,7 @@ public class Portal implements ExplorableFixture, SubsettableFixture {
 	 * before any unit traverses the portal.
 	 *
 	 * TODO: Use Null instead of an invalid Point?
-	 * TODO: "Combine with destinationWorld in a Tuple?
+	 * TODO: Combine with destinationWorld in a Tuple?
 	 */
 	public Point getDestinationCoordinates() {
 		return destinationCoordinates;
@@ -60,7 +60,7 @@ public class Portal implements ExplorableFixture, SubsettableFixture {
 	 * before any unit traverses the portal.
 	 *
 	 * TODO: Use Null instead of an invalid Point?
-	 * TODO: "Combine with destinationWorld in a Tuple?
+	 * TODO: Combine with destinationWorld in a Tuple?
 	 */
 	public void setDestinationCoordinates(final Point destinationCoordinates) {
 		this.destinationCoordinates = destinationCoordinates;
