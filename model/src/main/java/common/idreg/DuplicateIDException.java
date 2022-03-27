@@ -9,7 +9,7 @@ public class DuplicateIDException extends Exception {
 		super("Duplicate ID #" + id);
 	}
 
-	// TODO: Should probably take filename as well
+	// TODO: Should probably take filename as well. Note getting this from call-sites requires heavy refactoring.
 	public DuplicateIDException(final int id, final int line, final int column) {
 		super(String.format("Duplicate ID #%d at line %d, column %d", id, line, column));
 	}
