@@ -1,8 +1,10 @@
 package impl.dbio;
 
-import buckelieg.jdbc.fn.DB;
-
 import common.map.IFixture;
+import io.jenetics.facilejdbc.Query;
+import io.jenetics.facilejdbc.Transactional;
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 import java.math.BigDecimal;
@@ -16,90 +18,94 @@ import common.map.fixtures.towns.CommunityStats;
 import common.map.fixtures.towns.ITownFixture;
 import common.xmlio.Warning;
 
+import static io.jenetics.facilejdbc.Param.value;
+
 final class DBCommunityStatsHandler extends AbstractDatabaseWriter<CommunityStats, ITownFixture>
 		implements MapContentsReader {
 	public DBCommunityStatsHandler() {
 		super(CommunityStats.class, ITownFixture.class);
 	}
 
-	private static final List<String> INITIALIZERS = List.of("CREATE TABLE IF NOT EXISTS town_expertise (" +
-			                                                         "    town INTEGER NOT NULL," +
-			                                                         "    skill VARCHAR(255) NOT NULL," +
-			                                                         "    level INTEGER NOT NULL" +
-			                                                         ");", "CREATE TABLE IF NOT EXISTS town_worked_resources (" +
-					                                                               "    town INTEGER NOT NULL," +
-					                                                               "    resource INTEGER NOT NULL" +
-					                                                               ");", "CREATE TABLE IF NOT EXISTS town_production (" +
-							                                                                     "    town INTEGER NOT NULL," +
-							                                                                     "    id INTEGER NOT NULL," +
-							                                                                     "    kind VARCHAR(64) NOT NULL," +
-							                                                                     "    contents VARCHAR(64) NOT NULL," +
-							                                                                     "    quantity VARCHAR(128) NOT NULL" +
-							                                                                     "        CHECK (quantity NOT LIKE '%[^0-9.]%' AND quantity NOT LIKE '%.%.%')," +
-							                                                                     "    units VARCHAR(32) NOT NULL," +
-							                                                                     "    created INTEGER" +
-							                                                                     ");", "CREATE TABLE IF NOT EXISTS town_consumption (" +
-									                                                                           "    town INTEGER NOT NULL," +
-									                                                                           "    id INTEGER NOT NULL," +
-									                                                                           "    kind VARCHAR(64) NOT NULL," +
-									                                                                           "    contents VARCHAR(64) NOT NULL," +
-									                                                                           "    quantity VARCHAR(128) NOT NULL" +
-									                                                                           "        CHECK (quantity NOT LIKE '%[^0-9.]%' AND quantity NOT LIKE '%.%.%')," +
-									                                                                           "    units VARCHAR(32) NOT NULL," +
-									                                                                           "    created INTEGER" +
-									                                                                           ");");
+	private static final List<Query> INITIALIZERS = List.of(
+			Query.of("CREATE TABLE IF NOT EXISTS town_expertise (" +
+					         "    town INTEGER NOT NULL," +
+					         "    skill VARCHAR(255) NOT NULL," +
+					         "    level INTEGER NOT NULL" +
+					         ");"),
+			Query.of("CREATE TABLE IF NOT EXISTS town_worked_resources (" +
+					         "    town INTEGER NOT NULL," +
+					         "    resource INTEGER NOT NULL" +
+					         ");"),
+			Query.of("CREATE TABLE IF NOT EXISTS town_production (" +
+					         "    town INTEGER NOT NULL," +
+					         "    id INTEGER NOT NULL," +
+					         "    kind VARCHAR(64) NOT NULL," +
+					         "    contents VARCHAR(64) NOT NULL," +
+					         "    quantity VARCHAR(128) NOT NULL" +
+					         "        CHECK (quantity NOT LIKE '%[^0-9.]%' AND quantity NOT LIKE '%.%.%')," +
+					         "    units VARCHAR(32) NOT NULL," +
+					         "    created INTEGER" +
+					         ");"),
+			Query.of("CREATE TABLE IF NOT EXISTS town_consumption (" +
+					         "    town INTEGER NOT NULL," +
+					         "    id INTEGER NOT NULL," +
+					         "    kind VARCHAR(64) NOT NULL," +
+					         "    contents VARCHAR(64) NOT NULL," +
+					         "    quantity VARCHAR(128) NOT NULL" +
+					         "        CHECK (quantity NOT LIKE '%[^0-9.]%' AND quantity NOT LIKE '%.%.%')," +
+					         "    units VARCHAR(32) NOT NULL," +
+					         "    created INTEGER" +
+					         ");"));
 
 	@Override
-	public List<String> getInitializers() {
+	public List<Query> getInitializers() {
 		return INITIALIZERS;
 	}
 
-	private static final String INSERT_EXPERTISE =
-		"INSERT INTO town_expertise (town, skill, level) VALUES(?, ?, ?);";
+	private static final Query INSERT_EXPERTISE =
+		Query.of("INSERT INTO town_expertise (town, skill, level) VALUES(:town, :skill, :level);");
 
-	private static final String INSERT_FIELDS =
-		"INSERT INTO town_worked_resources (town, resource) VALUES(?, ?);";
+	private static final Query INSERT_FIELDS =
+		Query.of("INSERT INTO town_worked_resources (town, resource) VALUES(:town, :resource);");
 
-	private static final String INSERT_PRODUCTION =
-		"INSERT INTO town_production(town, id, kind, contents, quantity, units, created) " +
-			"VALUES(?, ?, ?, ?, ?, ?, ?);";
+	private static final Query INSERT_PRODUCTION =
+		Query.of("INSERT INTO town_production(town, id, kind, contents, quantity, units, created) " +
+			"VALUES(:town, :id, :kind, :contents, :quantity, :units, :created);");
 
-	private static final String INSERT_CONSUMPTION =
-		"INSERT INTO town_consumption(town, id, kind, contents, quantity, units, created) " +
-			"VALUES(?, ?, ?, ?, ?, ?, ?);";
+	private static final Query INSERT_CONSUMPTION =
+		Query.of("INSERT INTO town_consumption(town, id, kind, contents, quantity, units, created) " +
+			"VALUES(:town, :id, :kind, :contents, :quantity, :units, :created);");
 
 	@Override
-	public void write(final DB db, final CommunityStats obj, final ITownFixture context) {
-		db.transaction(sql -> {
+	public void write(final Transactional db, final CommunityStats obj, final ITownFixture context) throws SQLException {
+		db.transaction().accept(sql -> {
+				// TODO: Use batch mode
 				for (final Map.Entry<String, Integer> entry :
 						obj.getHighestSkillLevels().entrySet()) {
-					sql.update(INSERT_EXPERTISE, context.getId(), entry.getKey(),
-						entry.getValue()).execute();
+					INSERT_EXPERTISE.on(value("town", context.getId()), value("skill", entry.getKey()),
+							value("level", entry.getValue())).execute(sql);
 				}
 				for (final Integer field : obj.getWorkedFields()) {
-					sql.update(INSERT_FIELDS, context.getId(), field).execute();
+					INSERT_FIELDS.on(value("town", context.getId()), value("resource", field)).execute(sql);
 				}
 				for (final IResourcePile resource : obj.getYearlyProduction()) {
-					sql.update(INSERT_PRODUCTION, context.getId(), resource.getId(),
-							resource.getKind(), resource.getContents(),
-							resource.getQuantity().getNumber().toString(),
-							resource.getQuantity().getUnits(),
-							resource.getCreated())
-						.execute();
+					INSERT_PRODUCTION.on(value("town", context.getId()), value("id", resource.getId()),
+							value("kind", resource.getKind()), value("contents", resource.getContents()),
+							value("quantity", resource.getQuantity().getNumber().toString()),
+							value("units", resource.getQuantity().getUnits()),
+							value("created", resource.getCreated())).execute(sql);
 				}
 				for (final IResourcePile resource : obj.getYearlyConsumption()) {
-					sql.update(INSERT_CONSUMPTION, context.getId(), resource.getId(),
-							resource.getKind(), resource.getContents(),
-							resource.getQuantity().getNumber().toString(),
-							resource.getQuantity().getUnits(),
-							resource.getCreated())
-						.execute();
+					INSERT_CONSUMPTION.on(value("town", context.getId()), value("id", resource.getId()),
+							value("kind", resource.getKind()), value("contents", resource.getContents()),
+							value("quantity", resource.getQuantity().getNumber().toString()),
+							value("units", resource.getQuantity().getUnits()),
+							value("created", resource.getCreated())).execute(sql);
 				}
-				return true;
 			});
 	}
 
-	private TryBiConsumer<Map<String, Object>, Warning, Exception> readTownPopulations(final IMutableMapNG map,
+	private TryBiConsumer<Map<String, Object>, Warning, SQLException> readTownPopulations(final IMutableMapNG map,
 			final Map<Integer, List<Object>> containees) {
 		return (dbRow, warner) -> {
 			final int id = (Integer) dbRow.get("id");
@@ -110,7 +116,7 @@ final class DBCommunityStatsHandler extends AbstractDatabaseWriter<CommunityStat
 		};
 	}
 
-	private TryBiConsumer<Map<String, Object>, Warning, Exception> readTownExpertise(final IMutableMapNG map,
+	private TryBiConsumer<Map<String, Object>, Warning, SQLException> readTownExpertise(final IMutableMapNG map,
 			final Map<Integer, List<Object>> containees) {
 		return (dbRow, warner) -> {
 			final int townId = (Integer) dbRow.get("town");
@@ -123,7 +129,7 @@ final class DBCommunityStatsHandler extends AbstractDatabaseWriter<CommunityStat
 		};
 	}
 
-	private TryBiConsumer<Map<String, Object>, Warning, Exception> readWorkedResource(final IMutableMapNG map,
+	private TryBiConsumer<Map<String, Object>, Warning, SQLException> readWorkedResource(final IMutableMapNG map,
 			final Map<Integer, List<Object>> containees) {
 		return (dbRow, warner) -> {
 			final int townId = (Integer) dbRow.get("town");
@@ -135,7 +141,7 @@ final class DBCommunityStatsHandler extends AbstractDatabaseWriter<CommunityStat
 		};
 	}
 
-	private TryBiConsumer<Map<String, Object>, Warning, Exception>
+	private TryBiConsumer<Map<String, Object>, Warning, SQLException>
 			readProducedResource(final IMutableMapNG map, final Map<Integer, List<Object>> containees) {
 		return (dbRow, warner) -> {
 			final int townId = (Integer) dbRow.get("town");
@@ -163,7 +169,7 @@ final class DBCommunityStatsHandler extends AbstractDatabaseWriter<CommunityStat
 		};
 	}
 
-	private TryBiConsumer<Map<String, Object>, Warning, Exception>
+	private TryBiConsumer<Map<String, Object>, Warning, SQLException>
 			readConsumedResource(final IMutableMapNG map, final Map<Integer, List<Object>> containees) {
 		return (dbRow, warner) -> {
 			final int townId = (Integer) dbRow.get("town");
@@ -192,24 +198,20 @@ final class DBCommunityStatsHandler extends AbstractDatabaseWriter<CommunityStat
 		};
 	}
 
+	private static final Query SELECT_EXPERTISE = Query.of("SELECT * FROM town_expertise");
+	private static final Query SELECT_WORKED = Query.of("SELECT * FROM town_worked_resources");
+	private static final Query SELECT_PRODUCTION = Query.of("SELECT * FROM town_production");
+	private static final Query SELECT_CONSUMPTION = Query.of("SELECT * FROM town_consumption");
 	@Override
-	public void readMapContents(final DB db, final IMutableMapNG map, final Map<Integer, IFixture> containers,
-			final Map<Integer, List<Object>> containees, final Warning warner) {
-		try {
-			handleQueryResults(db, warner, "town expertise levels",
-				readTownExpertise(map, containees), "SELECT * FROM town_expertise");
-			handleQueryResults(db, warner, "town worked resources",
-				readWorkedResource(map, containees), "SELECT * FROM town_worked_resources");
-			handleQueryResults(db, warner, "town produced resources",
-				readProducedResource(map, containees), "SELECT * FROM town_production");
-			handleQueryResults(db, warner, "town consumed resources",
-				readConsumedResource(map, containees), "SELECT * FROM town_consumption");
-		} catch (final RuntimeException except) {
-			// Don't wrap RuntimeExceptions in RuntimeException
-			throw except;
-		} catch (final Exception except) {
-			// FIXME Antipattern
-			throw new RuntimeException(except);
-		}
+	public void readMapContents(final Connection db, final IMutableMapNG map, final Map<Integer, IFixture> containers,
+			final Map<Integer, List<Object>> containees, final Warning warner) throws SQLException {
+		handleQueryResults(db, warner, "town expertise levels",
+			readTownExpertise(map, containees), SELECT_EXPERTISE);
+		handleQueryResults(db, warner, "town worked resources",
+			readWorkedResource(map, containees), SELECT_WORKED);
+		handleQueryResults(db, warner, "town produced resources",
+			readProducedResource(map, containees), SELECT_PRODUCTION);
+		handleQueryResults(db, warner, "town consumed resources",
+			readConsumedResource(map, containees), SELECT_CONSUMPTION);
 	}
 }

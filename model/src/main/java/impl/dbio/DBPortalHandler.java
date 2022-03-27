@@ -1,8 +1,12 @@
 package impl.dbio;
 
-import buckelieg.jdbc.fn.DB;
-
 import common.map.IFixture;
+import io.jenetics.facilejdbc.Param;
+import io.jenetics.facilejdbc.Query;
+import io.jenetics.facilejdbc.Transactional;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -13,13 +17,15 @@ import common.map.IMutableMapNG;
 import common.map.fixtures.explorable.Portal;
 import common.xmlio.Warning;
 
+import static io.jenetics.facilejdbc.Param.value;
+
 final class DBPortalHandler extends AbstractDatabaseWriter<Portal, Point> implements MapContentsReader {
 	public DBPortalHandler() {
 		super(Portal.class, Point.class);
 	}
 
-	private static final List<String> INITIALIZERS = Collections.singletonList(
-		"CREATE TABLE IF NOT EXISTS portals (" +
+	private static final List<Query> INITIALIZERS = Collections.singletonList(
+		Query.of("CREATE TABLE IF NOT EXISTS portals (" +
 			"    row INTEGER NOT NULL," +
 			"    column INTEGER NOT NULL," +
 			"    id INTEGER NOT NULL," +
@@ -29,36 +35,35 @@ final class DBPortalHandler extends AbstractDatabaseWriter<Portal, Point> implem
 			"    destination_column INTEGER" +
 			"        CHECK ((destination_row IS NOT NULL AND destination_column IS NOT NULL)" +
 			"            OR (destination_row IS NULL AND destination_column IS NULL))" +
-			");");
+			");"));
 
 	@Override
-	public List<String> getInitializers() {
+	public List<Query> getInitializers() {
 		return INITIALIZERS;
 	}
 
-	private static final String INSERT_SQL =
-		"INSERT INTO portals (row, column, id, image, destination_world, " +
+	private static final Query INSERT_SQL =
+		Query.of("INSERT INTO portals (row, column, id, image, destination_world, " +
 			"    destination_row, destination_column) " +
-			"VALUES(?, ?, ?, ?, ?, ?, ?);";
+			"VALUES(:row, :column, :id, :image, :destination_world, :destination_row, :destination_column);");
 
 
 	@Override
-	public void write(final DB db, final Portal obj, final Point context) {
-		final Integer destinationRow;
-		final Integer destinationColumn;
+	public void write(final Transactional db, final Portal obj, final Point context) throws SQLException {
+		List<Param> params = new ArrayList<>();
+		params.add(value("row", context.getRow()));
+		params.add(value("column", context.getColumn()));
+		params.add(value("id", obj.getId()));
+		params.add(value("image", obj.getImage()));
+		params.add(value("destination_world", obj.getDestinationWorld()));
 		if (obj.getDestinationCoordinates().isValid()) {
-			destinationRow = obj.getDestinationCoordinates().getRow();
-			destinationColumn = obj.getDestinationCoordinates().getColumn();
-		} else {
-			destinationRow = null;
-			destinationColumn = null;
+			params.add(value("destination_row", obj.getDestinationCoordinates().getRow()));
+			params.add(value("destination_column", obj.getDestinationCoordinates().getColumn()));
 		}
-		db.update(INSERT_SQL, context.getRow(), context.getColumn(), obj.getId(),
-			obj.getImage(), obj.getDestinationWorld(), destinationRow,
-			destinationColumn).execute();
+		INSERT_SQL.on(params).execute(db.connection());
 	}
 
-	private static TryBiConsumer<Map<String, Object>, Warning, Exception> readPortal(final IMutableMapNG map) {
+	private static TryBiConsumer<Map<String, Object>, Warning, SQLException> readPortal(final IMutableMapNG map) {
 		return (dbRow, warner) -> {
 			final int row = (Integer) dbRow.get("row");
 			final int column = (Integer) dbRow.get("column");
@@ -77,18 +82,10 @@ final class DBPortalHandler extends AbstractDatabaseWriter<Portal, Point> implem
 		};
 	}
 
+	private static final Query SELECT = Query.of("SELECT * FROM portals");
 	@Override
-	public void readMapContents(final DB db, final IMutableMapNG map, final Map<Integer, IFixture> containers,
-			final Map<Integer, List<Object>> containees, final Warning warner) {
-		try {
-			handleQueryResults(db, warner, "portals", readPortal(map),
-				"SELECT * FROM portals");
-		} catch (final RuntimeException except) {
-			// Don't wrap RuntimeExceptions in RuntimeException
-			throw except;
-		} catch (final Exception except) {
-			// FIXME Antipattern
-			throw new RuntimeException(except);
-		}
+	public void readMapContents(final Connection db, final IMutableMapNG map, final Map<Integer, IFixture> containers,
+			final Map<Integer, List<Object>> containees, final Warning warner) throws SQLException {
+		handleQueryResults(db, warner, "portals", readPortal(map), SELECT);
 	}
 }

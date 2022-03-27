@@ -3,7 +3,6 @@ package impl.dbio;
 import java.util.Objects;
 
 import java.util.function.Consumer;
-import buckelieg.jdbc.fn.TryConsumer;
 
 /**
  * @see buckelieg.jdbc.fn.TryConsumer
@@ -36,10 +35,10 @@ interface TryBiConsumer<T1, T2, E extends Throwable> {
 		};
 	}
 
-	default TryConsumer<T1, E> partial(final T2 t2) throws E {
-		return (T1 t1) -> accept(t1, t2);
-	}
-
+//	default TryConsumer<T1, E> partial(final T2 t2) throws E {
+//		return (T1 t1) -> accept(t1, t2);
+//	}
+//
 	default Consumer<T1> wrappedPartial(final T2 t2) {
 		return (T1 t1) -> {
 			try {

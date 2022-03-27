@@ -1,6 +1,8 @@
 package impl.dbio;
 
-import buckelieg.jdbc.fn.DB;
+import io.jenetics.facilejdbc.Query;
+import io.jenetics.facilejdbc.Transactional;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Set;
 import java.util.HashSet;
@@ -25,26 +27,25 @@ abstract class AbstractDatabaseWriter<Item, Context> implements DatabaseWriter<I
 	/**
 	 * SQL to run to initialize the needed tables.
 	 */
-	public abstract List<String> getInitializers();
+	public abstract List<Query> getInitializers();
 
 	/**
 	 * Database connections that we've been initialized for.
 	 * TODO: Is this really best practice in the jdbc-fn library?
 	 */
-	private final Set<DB> connections = new HashSet<>();
+	private final Set<Transactional> connections = new HashSet<>();
 
 	@Override
-	public void initialize(final DB sql) {
+	public void initialize(final Transactional sql) throws SQLException {
 		if (!connections.contains(sql)) {
-			sql.transaction(db -> {
-				for (final String initializer : getInitializers()) {
-					db.script(initializer).execute();
+			sql.transaction().accept(db -> {
+				for (final Query initializer : getInitializers()) {
+					initializer.execute(db);
 					log.fine("Executed initializer beginning " +
-						initializer.split("\\R")[0]);
+						initializer.rawSql().split("\\R")[0]);
 				}
-				connections.add(sql);
-				return true;
 			});
+			connections.add(sql);
 		}
 	}
 }

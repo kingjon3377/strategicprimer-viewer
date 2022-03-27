@@ -1,6 +1,7 @@
 package impl.dbio;
 
-import buckelieg.jdbc.fn.DB;
+import io.jenetics.facilejdbc.Transactional;
+import java.sql.SQLException;
 
 // TODO: Can we get rid of the Context parameter? Is it ever not a subtype of IFixture?
 interface DatabaseWriter<Item, Context> {
@@ -8,12 +9,12 @@ interface DatabaseWriter<Item, Context> {
 	 * Set up the tables that this writer uses on the given connection.
 	 * Should be a no-op if called with the same Sql again.
 	 */
-	void initialize(DB db);
+	void initialize(Transactional db) throws SQLException;
 
 	/**
 	 * Write an object to the database.
 	 */
-	void write(DB db, Item obj, Context context);
+	void write(Transactional db, Item obj, Context context) throws SQLException;
 
 	/**
 	 * Whether we can write the given object. Should generally be equivalent to
@@ -28,7 +29,7 @@ interface DatabaseWriter<Item, Context> {
 	 * right type but the typechecker doesn't. This will probably crash the
 	 * program if the types don't in fact match.
 	 */
-	default void writeRaw(final DB db, final Object obj, final Object context) {
+	default void writeRaw(final Transactional db, final Object obj, final Object context) throws SQLException {
 		write(db, (Item) obj, (Context) context);
 	}
 }

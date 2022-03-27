@@ -1,11 +1,12 @@
 package impl.dbio;
 
-import buckelieg.jdbc.fn.DB;
-
 import impl.xmlio.IMapReader;
 import common.xmlio.Warning;
 import common.map.IMutableMapNG;
+import io.jenetics.facilejdbc.Transactional;
+import java.io.IOException;
 import java.io.Reader;
+import java.sql.SQLException;
 import org.sqlite.SQLiteDataSource;
 import java.util.Map;
 import java.util.HashMap;
@@ -19,7 +20,7 @@ public class SPDatabaseReader implements IMapReader {
 	 */
 	private static final Logger LOGGER = Logger.getLogger(SPDatabaseReader.class.getName());
 
-	private final Map<Path, DB> connections = new HashMap<>();
+	private final Map<Path, Transactional> connections = new HashMap<>();
 
 	private static DataSource getBaseConnection(final Path path) {
 		final SQLiteDataSource retval = new SQLiteDataSource();
@@ -34,11 +35,11 @@ public class SPDatabaseReader implements IMapReader {
 	}
 
 	// TODO: Rename to getDB
-	private DB getSQL(final Path path) {
+	private Transactional getSQL(final Path path) {
 		if (connections.containsKey(path)) {
 			return connections.get(path);
 		} else {
-			final DB retval = new DB(getBaseConnection(path));
+			final Transactional retval = getBaseConnection(path)::getConnection;
 			connections.put(path, retval);
 			return retval;
 		}
@@ -47,9 +48,13 @@ public class SPDatabaseReader implements IMapReader {
 	private final DBMapReader dbMapReader = new DBMapReader();
 
 	@Override
-	public IMutableMapNG readMap(final Path file, final Warning warner) {
-		final DB db = getSQL(file);
-		return dbMapReader.readMap(db, warner);
+	public IMutableMapNG readMap(final Path file, final Warning warner) throws IOException {
+		final Transactional db = getSQL(file);
+		try {
+			return dbMapReader.readMap(db, warner);
+		} catch (final SQLException except) {
+			throw new IOException(except);
+		}
 	}
 
 	@Override
@@ -57,7 +62,16 @@ public class SPDatabaseReader implements IMapReader {
 		throw new UnsupportedOperationException("Can't read a database from a stream");
 	}
 
-	public IMutableMapNG readMapFromDatabase(final DB db, final Warning warner) {
-		return dbMapReader.readMap(db, warner);
+	public IMutableMapNG readMapFromDatabase(final Transactional db, final Warning warner) throws IOException {
+		try {
+			return dbMapReader.readMap(db, warner);
+		} catch (SQLException except) {
+			throw new IOException(except);
+		}
+	}
+
+	// TODO: Find a way to restrict access, or to make the two collections have their lifespan tied to a particular database
+	public void clearCache() {
+		dbMapReader.clearCache();
 	}
 }

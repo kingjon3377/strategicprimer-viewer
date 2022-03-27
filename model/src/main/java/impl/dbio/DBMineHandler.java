@@ -1,8 +1,10 @@
 package impl.dbio;
 
-import buckelieg.jdbc.fn.DB;
-
 import common.map.IFixture;
+import io.jenetics.facilejdbc.Query;
+import io.jenetics.facilejdbc.Transactional;
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -13,13 +15,15 @@ import common.map.fixtures.resources.Mine;
 import common.map.fixtures.towns.TownStatus;
 import common.xmlio.Warning;
 
+import static io.jenetics.facilejdbc.Param.value;
+
 final class DBMineHandler extends AbstractDatabaseWriter<Mine, Point> implements MapContentsReader {
 	public DBMineHandler() {
 		super(Mine.class, Point.class);
 	}
 
-	private static final List<String> INITIALIZERS = Collections.singletonList(
-		"CREATE TABLE IF NOT EXISTS mines (" +
+	private static final List<Query> INITIALIZERS = Collections.singletonList(
+		Query.of("CREATE TABLE IF NOT EXISTS mines (" +
 			"    row INTEGER NOT NULL," +
 			"    column INTEGER NOT NULL," +
 			"    id INTEGER NOT NULL," +
@@ -27,23 +31,26 @@ final class DBMineHandler extends AbstractDatabaseWriter<Mine, Point> implements
 			"    status VARCHAR(9) NOT NULL" +
 			"        CHECK(status IN ('abandoned', 'active', 'burned', 'ruined'))," +
 			"    image VARCHAR(255)" +
-			");");
+			");"));
 
 	@Override
-	public List<String> getInitializers() {
+	public List<Query> getInitializers() {
 		return INITIALIZERS;
 	}
 
-	private static final String INSERT_SQL =
-		"INSERT INTO mines (row, column, id, kind, status, image) VALUES(?, ?, ?, ?, ?, ?);";
+	private static final Query INSERT_SQL =
+		Query.of("INSERT INTO mines (row, column, id, kind, status, image) " +
+				         "VALUES(:row, :column, :id, :kind, :status, :image);");
 
 	@Override
-	public void write(final DB db, final Mine obj, final Point context) {
-		db.update(INSERT_SQL, context.getRow(), context.getColumn(), obj.getId(), obj.getKind(),
-			obj.getStatus().toString(), obj.getImage());
+	public void write(final Transactional db, final Mine obj, final Point context) throws SQLException {
+		INSERT_SQL.on(value("row", context.getRow()), value("column", context.getColumn()),
+					value("id", obj.getId()), value("kind", obj.getKind()),
+					value("status", obj.getStatus().toString()), value("image", obj.getImage()))
+				.execute(db.connection());
 	}
 
-	private static TryBiConsumer<Map<String, Object>, Warning, Exception> readMine(final IMutableMapNG map) {
+	private static TryBiConsumer<Map<String, Object>, Warning, SQLException> readMine(final IMutableMapNG map) {
 		return (dbRow, warner) -> {
 			final int row = (Integer) dbRow.get("row");
 			final int column = (Integer) dbRow.get("column");
@@ -59,18 +66,10 @@ final class DBMineHandler extends AbstractDatabaseWriter<Mine, Point> implements
 		};
 	}
 
+	private static final Query SELECT = Query.of("SELECT * FROM mines");
 	@Override
-	public void readMapContents(final DB db, final IMutableMapNG map, final Map<Integer, IFixture> containers,
-			final Map<Integer, List<Object>> containees, final Warning warner) {
-		try {
-			handleQueryResults(db, warner, "mines", readMine(map),
-				"SELECT * FROM mines");
-		} catch (final RuntimeException except) {
-			// Don't wrap RuntimeExceptions in RuntimeException
-			throw except;
-		} catch (final Exception except) {
-			// FIXME Antipattern
-			throw new RuntimeException(except);
-		}
+	public void readMapContents(final Connection db, final IMutableMapNG map, final Map<Integer, IFixture> containers,
+			final Map<Integer, List<Object>> containees, final Warning warner) throws SQLException {
+		handleQueryResults(db, warner, "mines", readMine(map), SELECT);
 	}
 }

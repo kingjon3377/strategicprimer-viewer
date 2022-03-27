@@ -1,8 +1,10 @@
 package impl.dbio;
 
-import buckelieg.jdbc.fn.DB;
-
 import common.map.IFixture;
+import io.jenetics.facilejdbc.Query;
+import io.jenetics.facilejdbc.Transactional;
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -12,43 +14,45 @@ import common.map.IMutableMapNG;
 import common.map.fixtures.Ground;
 import common.xmlio.Warning;
 
+import static io.jenetics.facilejdbc.Param.value;
+
 final class DBGroundHandler extends AbstractDatabaseWriter<Ground, Point> implements MapContentsReader {
 	public DBGroundHandler() {
 		super(Ground.class, Point.class);
 	}
 
-	private static final List<String> INITIALIZERS = Collections.singletonList(
-		"CREATE TABLE IF NOT EXISTS ground (" +
+	private static final List<Query> INITIALIZERS = Collections.singletonList(
+		Query.of("CREATE TABLE IF NOT EXISTS ground (" +
 			"    row INTEGER NOT NULL," +
 			"    column INTEGER NOT NULL," +
 			"    id INTEGER NOT NULL," +
 			"    kind VARCHAR(32) NOT NULL," +
 			"    exposed BOOLEAN NOT NULL," +
 			"    image VARCHAR(255)" +
-			");");
+			");"));
 
 	@Override
-	public List<String> getInitializers() {
+	public List<Query> getInitializers() {
 		return INITIALIZERS;
 	}
 
-	private static final String INSERT_SQL =
-		"INSERT INTO ground (row, column, id, kind, exposed, image) VALUES(?, ?, ?, ?, ?, ?);";
+	private static final Query INSERT_SQL = Query.of(
+		"INSERT INTO ground (row, column, id, kind, exposed, image) VALUES(:row, :column, :id, :kind, :exposed, :image);");
 
 	@Override
-	public void write(final DB db, final Ground obj, final Point context) {
-		db.update(INSERT_SQL, context.getRow(), context.getColumn(), obj.getId(), obj.getKind(),
-			obj.isExposed(), obj.getImage());
+	public void write(final Transactional db, final Ground obj, final Point context) throws SQLException {
+		INSERT_SQL.on(value("row", context.getRow()), value("column", context.getColumn()),
+				value("id", obj.getId()), value("kind", obj.getKind()),
+				value("exposed", obj.isExposed()), value("image", obj.getImage())).execute(db.connection());
 	}
 
-	private static TryBiConsumer<Map<String, Object>, Warning, Exception> readGround(final IMutableMapNG map) {
+	private TryBiConsumer<Map<String, Object>, Warning, SQLException> readGround(final IMutableMapNG map) {
 		return (dbRow, warner) -> {
 			final int row = (Integer) dbRow.get("row");
 			final int column = (Integer) dbRow.get("column");
 			final int id = (Integer) dbRow.get("id");
 			final String kind = (String) dbRow.get("kind");
-			final Boolean exposed = /* DBMapReader.databaseBoolean(dbRow.get("exposed")) */ // FIXME
-				(Boolean) dbRow.get("exposed"); // This will compile, but probably won't work
+			final Boolean exposed = getBooleanValue(dbRow, "exposed");
 			final String image = (String) dbRow.get("image");
 			final Ground ground = new Ground(id, kind, exposed);
 			if (image != null) {
@@ -58,18 +62,10 @@ final class DBGroundHandler extends AbstractDatabaseWriter<Ground, Point> implem
 		};
 	}
 
+	private static final Query SELECT = Query.of("SELECT * FROM ground");
 	@Override
-	public void readMapContents(final DB db, final IMutableMapNG map, final Map<Integer, IFixture> containers,
-			final Map<Integer, List<Object>> containees, final Warning warner) {
-		try {
-			handleQueryResults(db, warner, "ground", readGround(map),
-				"SELECT * FROM ground");
-		} catch (final RuntimeException except) {
-			// Don't wrap RuntimeExceptions in RuntimeException
-			throw except;
-		} catch (final Exception except) {
-			// FIXME Antipattern
-			throw new RuntimeException(except);
-		}
+	public void readMapContents(final Connection db, final IMutableMapNG map, final Map<Integer, IFixture> containers,
+			final Map<Integer, List<Object>> containees, final Warning warner) throws SQLException {
+		handleQueryResults(db, warner, "ground", readGround(map), SELECT);
 	}
 }

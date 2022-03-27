@@ -1,8 +1,10 @@
 package impl.dbio;
 
-import buckelieg.jdbc.fn.DB;
-
 import common.map.IFixture;
+import io.jenetics.facilejdbc.Query;
+import io.jenetics.facilejdbc.Transactional;
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -16,6 +18,8 @@ import common.map.fixtures.towns.TownSize;
 import common.xmlio.Warning;
 import common.map.fixtures.FortressMember;
 
+import static io.jenetics.facilejdbc.Param.value;
+
 final class DBFortressHandler extends AbstractDatabaseWriter<IFortress, Point> implements MapContentsReader {
 	public DBFortressHandler(final SPDatabaseWriter parent) {
 		super(IFortress.class, Point.class);
@@ -27,8 +31,8 @@ final class DBFortressHandler extends AbstractDatabaseWriter<IFortress, Point> i
 	 */
 	private final SPDatabaseWriter parent;
 
-	private static final List<String> INITIALIZERS = Collections.singletonList(
-		"CREATE TABLE IF NOT EXISTS fortresses (" +
+	private static final List<Query> INITIALIZERS = Collections.singletonList(
+		Query.of("CREATE TABLE IF NOT EXISTS fortresses (" +
 			"    row INTEGER NOT NULL," +
 			"    column INTEGER NOT NULL," +
 			"    owner INTEGER NOT NULL," +
@@ -38,28 +42,30 @@ final class DBFortressHandler extends AbstractDatabaseWriter<IFortress, Point> i
 			"    id INTEGER NOT NULL," +
 			"    image VARCHAR(255)," +
 			"    portrait VARCHAR(255)" +
-			");");
+			");"));
 
 	@Override
-	public List<String> getInitializers() {
+	public List<Query> getInitializers() {
 		return INITIALIZERS;
 	}
 
-	private static final String INSERT_SQL =
-		"INSERT INTO fortresses (row, column, owner, name, size, id, image, portrait) " +
-			"VALUES(?, ?, ?, ?, ?, ?, ?, ?);";
+	private static final Query INSERT_SQL =
+		Query.of("INSERT INTO fortresses (row, column, owner, name, size, id, image, portrait) " +
+			"VALUES(:row, :column, :owner, :name, :size, :id, :image, :portrait);");
 
 	@Override
-	public void write(final DB db, final IFortress obj, final Point context) {
-		db.update(INSERT_SQL, context.getRow(), context.getColumn(), obj.getOwner().getPlayerId(),
-			obj.getName(), obj.getTownSize().toString(), obj.getId(), obj.getImage(),
-			obj.getPortrait()).execute();
+	public void write(final Transactional db, final IFortress obj, final Point context) throws SQLException {
+		INSERT_SQL.on(value("row", context.getRow()), value("column", context.getColumn()),
+					value("owner", obj.getOwner().getPlayerId()), value("name", obj.getName()),
+					value("size", obj.getTownSize().toString()), value("id", obj.getId()),
+					value("image", obj.getImage()), value("portrait", obj.getPortrait()))
+				.execute(db.connection());
 		for (final FortressMember member : obj) {
 			parent.writeSPObjectInContext(db, member, obj);
 		}
 	}
 
-	private static TryBiConsumer<Map<String, Object>, Warning, Exception> readFortress(final IMutableMapNG map,
+	private static TryBiConsumer<Map<String, Object>, Warning, SQLException> readFortress(final IMutableMapNG map,
 			final Map<Integer, IFixture> containers) {
 		return (dbRow, warner) -> {
 			final int row = (Integer) dbRow.get("row");
@@ -83,18 +89,10 @@ final class DBFortressHandler extends AbstractDatabaseWriter<IFortress, Point> i
 		};
 	}
 
+	private static final Query SELECT = Query.of("SELECT * FROM fortresses");
 	@Override
-	public void readMapContents(final DB db, final IMutableMapNG map, final Map<Integer, IFixture> containers,
-			final Map<Integer, List<Object>> containees, final Warning warner) {
-		try {
-			handleQueryResults(db, warner, "fortresses", readFortress(map, containers),
-				"SELECT * FROM fortresses");
-		} catch (final RuntimeException except) {
-			// Don't wrap RuntimeExceptions in RuntimeException
-			throw except;
-		} catch (final Exception except) {
-			// FIXME Antipattern
-			throw new RuntimeException(except);
-		}
+	public void readMapContents(final Connection db, final IMutableMapNG map, final Map<Integer, IFixture> containers,
+			final Map<Integer, List<Object>> containees, final Warning warner) throws SQLException {
+		handleQueryResults(db, warner, "fortresses", readFortress(map, containers), SELECT);
 	}
 }

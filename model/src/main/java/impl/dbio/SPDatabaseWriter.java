@@ -1,8 +1,9 @@
 package impl.dbio;
 
-import buckelieg.jdbc.fn.DB;
-
 import impl.xmlio.SPWriter;
+import io.jenetics.facilejdbc.Query;
+import io.jenetics.facilejdbc.Transactional;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -17,13 +18,15 @@ import java.nio.file.Path;
 import lovelace.util.ThrowingConsumer;
 import java.io.IOException;
 
+import static io.jenetics.facilejdbc.Param.value;
+
 public final class SPDatabaseWriter implements SPWriter {
 	/**
 	 * A logger.
 	 */
 	private static final Logger LOGGER = Logger.getLogger(SPDatabaseWriter.class.getName());
 
-	private final Map<Path, DB> connections = new HashMap<>();
+	private final Map<Path, Transactional> connections = new HashMap<>();
 
 	private static DataSource getBaseConnection(final Path path) {
 		final SQLiteDataSource retval = new SQLiteDataSource();
@@ -38,11 +41,11 @@ public final class SPDatabaseWriter implements SPWriter {
 	}
 
 	// TODO: Rename to getDB
-	private DB getSQL(final Path path) {
+	private Transactional getSQL(final Path path) {
 		if (connections.containsKey(path)) {
 			return connections.get(path);
 		} else {
-			final DB retval = new DB(getBaseConnection(path));
+			final Transactional retval = getBaseConnection(path)::getConnection;
 			connections.put(path, retval);
 			return retval;
 		}
@@ -52,41 +55,38 @@ public final class SPDatabaseWriter implements SPWriter {
 
 	private final List<DatabaseWriter<?, ?>> writers = List.of(new DBAdventureHandler(), new DBExplorableHandler(), new DBGroundHandler(), new DBImplementHandler(), new DBMapWriter(this, playerHandler), new DBAnimalHandler(), new DBImmortalHandler(), playerHandler, new DBPortalHandler(), new DBResourcePileHandler(), new DBCacheHandler(), new DBFieldHandler(), new DBGroveHandler(), new DBMineHandler(), new DBMineralHandler(), new DBShrubHandler(), new DBSimpleTerrainHandler(), new DBForestHandler(), new DBTextHandler(), new DBTownHandler(), new DBCommunityStatsHandler(), new DBVillageHandler(), new DBFortressHandler(this), new DBUnitHandler(this), new DBWorkerHandler());
 
-	private static final String NOTES_SCHEMA =
-		"CREATE TABLE IF NOT EXISTS notes (" +
+	private static final Query NOTES_SCHEMA =
+		Query.of("CREATE TABLE IF NOT EXISTS notes (" +
 			"    fixture INTEGER NOT NULL," +
 			"    player INTEGER NOT NULL," +
 			"    note VARCHAR(255) NOT NULL" +
-			");";
+			");");
 
 	// FIXME: Make an AbstractDatabaseWriter/MapContentsReader for this so
 	// we don't have to keep this parallel set of DB objects here
-	private final Set<DB> notesInitialized = new HashSet<>();
+	private final Set<Transactional> notesInitialized = new HashSet<>();
 
-	private static final String INSERT_NOTE =
-		"INSERT INTO notes (fixture, player, note) VALUES(?, ?, ?)";
+	private static final Query INSERT_NOTE =
+		Query.of("INSERT INTO notes (fixture, player, note) VALUES(:fixture, :player, :note)");
 
-	public void writeSPObjectInContext(final DB sql, final Object obj, final Object context) {
+	public void writeSPObjectInContext(final Transactional sql, final Object obj, final Object context) throws SQLException {
 		if (!notesInitialized.contains(sql)) {
-			sql.transaction(db -> {
-					db.script(NOTES_SCHEMA).execute();
+			sql.transaction().accept(db -> {
+					NOTES_SCHEMA.execute(db);
 					LOGGER.fine("Executed initializer beginning " +
-						NOTES_SCHEMA.split("\\R")[0]);
-					notesInitialized.add(sql);
-					return true;
+						NOTES_SCHEMA.rawSql().split("\\R")[0]);
 				});
+			notesInitialized.add(sql);
 		}
 		if (obj instanceof HasNotes) {
-			sql.transaction(db -> {
+			sql.transaction().accept(db -> {
 					for (final Integer player : ((HasNotes) obj).getNotesPlayers()) {
 						final String note = ((HasNotes) obj).getNote(player);
-						if (note != null) {
-							db.update(INSERT_NOTE, ((HasNotes) obj).getId(),
-								player, note)
-								.execute();
+						if (note != null) { // FIXME: Should be "is not empty", not "is not null"
+							INSERT_NOTE.on(value("fixture", ((HasNotes) obj).getId()),
+									value("player", player), value("note", note)).executeInsert(db);
 						}
 					}
-					return true;
 				});
 		}
 		for (final DatabaseWriter<?, ?> writer : writers) {
@@ -101,9 +101,13 @@ public final class SPDatabaseWriter implements SPWriter {
 	}
 
 	@Override
-	public void writeSPObject(final Path arg, final Object obj) {
-		final DB db = getSQL(arg);
-		writeSPObjectInContext(db, obj, obj);
+	public void writeSPObject(final Path arg, final Object obj) throws IOException {
+		final Transactional db = getSQL(arg);
+		try {
+			writeSPObjectInContext(db, obj, obj);
+		} catch (SQLException except) {
+			throw new IOException(except);
+		}
 	}
 
 	@Override
@@ -113,7 +117,7 @@ public final class SPDatabaseWriter implements SPWriter {
 	}
 
 	@Override
-	public void write(final Path arg, final IMapNG map) {
+	public void write(final Path arg, final IMapNG map) throws IOException {
 		writeSPObject(arg, map);
 	}
 
@@ -122,7 +126,7 @@ public final class SPDatabaseWriter implements SPWriter {
 		writeSPObject(arg, map);
 	}
 
-	public void writeToDatabase(final DB db, final IMapNG map) {
+	public void writeToDatabase(final Transactional db, final IMapNG map) throws SQLException {
 		writeSPObjectInContext(db, map, map);
 	}
 }

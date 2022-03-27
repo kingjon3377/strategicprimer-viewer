@@ -1,14 +1,32 @@
 package impl.dbio;
 
-import buckelieg.jdbc.fn.DB;
-
 import static lovelace.util.SingletonRandom.SINGLETON_RANDOM;
 
 import common.map.fixtures.mobile.IMutableWorker;
+import io.jenetics.facilejdbc.Transactional;
+import java.io.IOException;
+import java.sql.Array;
+import java.sql.Blob;
+import java.sql.CallableStatement;
+import java.sql.Clob;
 import java.sql.Connection;
+import java.sql.DatabaseMetaData;
+import java.sql.NClob;
+import java.sql.PreparedStatement;
+import java.sql.SQLClientInfoException;
 import java.sql.SQLException;
 import java.math.BigDecimal;
 
+import java.sql.SQLWarning;
+import java.sql.SQLXML;
+import java.sql.Savepoint;
+import java.sql.Statement;
+import java.sql.Struct;
+import java.util.Map;
+import java.util.Properties;
+import java.util.concurrent.Executor;
+import org.jetbrains.annotations.Nullable;
+import org.junit.jupiter.api.AfterEach;
 import org.sqlite.SQLiteDataSource;
 
 import common.map.IMapNG;
@@ -90,6 +108,8 @@ import static org.junit.jupiter.api.Assertions.assertNotSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assumptions.assumeFalse;
+import static org.junit.jupiter.api.Assumptions.assumeTrue;
+
 import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -115,7 +135,6 @@ import common.map.fixtures.TerrainFixture;
  *
  * TODO: Figure out a way to share tests with {@link impl.xmlio.TestXMLIO}
  */
-@Disabled("Until either jdbc-fn library is fixed or DBIO code ported to a different one")
 public final class TestDBIO {
 	private static final Collection<IntFunction<Immortal>> simpleImmortalConstructors =
 			java.util.List.of(Sphinx::new, Djinn::new, Griffin::new, Minotaur::new, Ogre::new, Phoenix::new, Simurgh::new, Troll::new, Snowbird::new, Thunderbird::new, Pegasus::new, Unicorn::new, Kraken::new);
@@ -134,34 +153,357 @@ public final class TestDBIO {
 
 	private static final Collection<String> races = new HashSet<>(RaceFactory.RACES);
 
-	private final SQLiteDataSource source;
+	private static class PersistentConnection implements Connection {
+		private final Connection wrapped;
+		public PersistentConnection(final Connection wrapped) {
+			this.wrapped = wrapped;
+		}
+
+		@Override
+		public Statement createStatement() throws SQLException {
+			return wrapped.createStatement();
+		}
+
+		@Override
+		public PreparedStatement prepareStatement(final String sql) throws SQLException {
+			return wrapped.prepareStatement(sql);
+		}
+
+		@Override
+		public CallableStatement prepareCall(final String sql) throws SQLException {
+			return wrapped.prepareCall(sql);
+		}
+
+		@Override
+		public String nativeSQL(final String sql) throws SQLException {
+			return wrapped.nativeSQL(sql);
+		}
+
+		@Override
+		public void setAutoCommit(final boolean autoCommit) throws SQLException {
+			wrapped.setAutoCommit(autoCommit);
+		}
+
+		@Override
+		public boolean getAutoCommit() throws SQLException {
+			return wrapped.getAutoCommit();
+		}
+
+		@Override
+		public void commit() throws SQLException {
+			wrapped.commit();
+		}
+
+		@Override
+		public void rollback() throws SQLException {
+			wrapped.rollback();
+		}
+
+		@Override
+		public void close() throws SQLException {
+			// Deliberate noop
+		}
+
+		@Override
+		public boolean isClosed() throws SQLException {
+			return wrapped.isClosed();
+		}
+
+		@Override
+		public DatabaseMetaData getMetaData() throws SQLException {
+			return wrapped.getMetaData();
+		}
+
+		@Override
+		public void setReadOnly(final boolean readOnly) throws SQLException {
+			wrapped.setReadOnly(readOnly);
+		}
+
+		@Override
+		public boolean isReadOnly() throws SQLException {
+			return wrapped.isReadOnly();
+		}
+
+		@Override
+		public void setCatalog(final String catalog) throws SQLException {
+			wrapped.setCatalog(catalog);
+		}
+
+		@Override
+		public String getCatalog() throws SQLException {
+			return wrapped.getCatalog();
+		}
+
+		@Override
+		public void setTransactionIsolation(final int level) throws SQLException {
+			wrapped.setTransactionIsolation(level);
+		}
+
+		@Override
+		public int getTransactionIsolation() throws SQLException {
+			return wrapped.getTransactionIsolation();
+		}
+
+		@Override
+		public SQLWarning getWarnings() throws SQLException {
+			return wrapped.getWarnings();
+		}
+
+		@Override
+		public void clearWarnings() throws SQLException {
+			wrapped.clearWarnings();
+		}
+
+		@Override
+		public Statement createStatement(final int resultSetType, final int resultSetConcurrency) throws SQLException {
+			return wrapped.createStatement(resultSetType, resultSetConcurrency);
+		}
+
+		@Override
+		public PreparedStatement prepareStatement(final String sql, final int resultSetType,
+				final int resultSetConcurrency) throws SQLException {
+			return wrapped.prepareStatement(sql, resultSetType, resultSetConcurrency);
+		}
+
+		@Override
+		public CallableStatement prepareCall(final String sql, final int resultSetType, final int resultSetConcurrency) throws SQLException {
+			return wrapped.prepareCall(sql, resultSetType, resultSetConcurrency);
+		}
+
+		@Override
+		public Map<String, Class<?>> getTypeMap() throws SQLException {
+			return wrapped.getTypeMap();
+		}
+
+		@Override
+		public void setTypeMap(final Map<String, Class<?>> map) throws SQLException {
+			wrapped.setTypeMap(map);
+		}
+
+		@Override
+		public void setHoldability(final int holdability) throws SQLException {
+			wrapped.setHoldability(holdability);
+		}
+
+		@Override
+		public int getHoldability() throws SQLException {
+			return wrapped.getHoldability();
+		}
+
+		@Override
+		public Savepoint setSavepoint() throws SQLException {
+			return wrapped.setSavepoint();
+		}
+
+		@Override
+		public Savepoint setSavepoint(final String name) throws SQLException {
+			return wrapped.setSavepoint(name);
+		}
+
+		@Override
+		public void rollback(final Savepoint savepoint) throws SQLException {
+			wrapped.rollback(savepoint);
+		}
+
+		@Override
+		public void releaseSavepoint(final Savepoint savepoint) throws SQLException {
+			wrapped.releaseSavepoint(savepoint);
+		}
+
+		@Override
+		public Statement createStatement(final int resultSetType, final int resultSetConcurrency,
+				final int resultSetHoldability) throws SQLException {
+			return wrapped.createStatement(resultSetType, resultSetConcurrency, resultSetHoldability);
+		}
+
+		@Override
+		public PreparedStatement prepareStatement(final String sql, final int resultSetType,
+				final int resultSetConcurrency, final int resultSetHoldability) throws SQLException {
+			return wrapped.prepareStatement(sql, resultSetType, resultSetConcurrency, resultSetHoldability);
+		}
+
+		@Override
+		public CallableStatement prepareCall(final String sql, final int resultSetType, final int resultSetConcurrency
+				, final int resultSetHoldability) throws SQLException {
+			return wrapped.prepareCall(sql, resultSetType, resultSetConcurrency, resultSetHoldability);
+		}
+
+		@Override
+		public PreparedStatement prepareStatement(final String sql, final int autoGeneratedKeys) throws SQLException {
+			return wrapped.prepareStatement(sql, autoGeneratedKeys);
+		}
+
+		@Override
+		public PreparedStatement prepareStatement(final String sql, final int[] columnIndexes) throws SQLException {
+			return wrapped.prepareStatement(sql, columnIndexes);
+		}
+
+		@Override
+		public PreparedStatement prepareStatement(final String sql, final String[] columnNames) throws SQLException {
+			return wrapped.prepareStatement(sql, columnNames);
+		}
+
+		@Override
+		public Clob createClob() throws SQLException {
+			return wrapped.createClob();
+		}
+
+		@Override
+		public Blob createBlob() throws SQLException {
+			return wrapped.createBlob();
+		}
+
+		@Override
+		public NClob createNClob() throws SQLException {
+			return wrapped.createNClob();
+		}
+
+		@Override
+		public SQLXML createSQLXML() throws SQLException {
+			return wrapped.createSQLXML();
+		}
+
+		@Override
+		public boolean isValid(final int timeout) throws SQLException {
+			return wrapped.isValid(timeout);
+		}
+
+		@Override
+		public void setClientInfo(final String name, final String value) throws SQLClientInfoException {
+			wrapped.setClientInfo(name, value);
+		}
+
+		@Override
+		public void setClientInfo(final Properties properties) throws SQLClientInfoException {
+			wrapped.setClientInfo(properties);
+		}
+
+		@Override
+		public String getClientInfo(final String name) throws SQLException {
+			return wrapped.getClientInfo(name);
+		}
+
+		@Override
+		public Properties getClientInfo() throws SQLException {
+			return wrapped.getClientInfo();
+		}
+
+		@Override
+		public Array createArrayOf(final String typeName, final Object[] elements) throws SQLException {
+			return wrapped.createArrayOf(typeName, elements);
+		}
+
+		@Override
+		public Struct createStruct(final String typeName, final Object[] attributes) throws SQLException {
+			return wrapped.createStruct(typeName, attributes);
+		}
+
+		@Override
+		public void setSchema(final String schema) throws SQLException {
+			wrapped.setSchema(schema);
+		}
+
+		@Override
+		public String getSchema() throws SQLException {
+			return wrapped.getSchema();
+		}
+
+		@Override
+		public void abort(final Executor executor) throws SQLException {
+			wrapped.abort(executor);
+		}
+
+		@Override
+		public void setNetworkTimeout(final Executor executor, final int milliseconds) throws SQLException {
+			wrapped.setNetworkTimeout(executor, milliseconds);
+		}
+
+		@Override
+		public int getNetworkTimeout() throws SQLException {
+			return wrapped.getNetworkTimeout();
+		}
+
+		@Override
+		public <T> T unwrap(final Class<T> iface) throws SQLException {
+			return wrapped.unwrap(iface);
+		}
+
+		@Override
+		public boolean isWrapperFor(final Class<?> iface) throws SQLException {
+			return wrapped.isWrapperFor(iface);
+		}
+
+		public void reallyClose() throws SQLException {
+			wrapped.close();
+		}
+	}
+
+	private static class TestDatabase implements Transactional {
+		private SQLiteDataSource source;
+		private PersistentConnection connection;
+		public void tearDown() throws SQLException {
+			if (connection != null) {
+				connection.close();
+			}
+			connection = null;
+			source = null;
+		}
+
+		@Override
+		public Connection connection() throws SQLException {
+			SQLiteDataSource ds = source;
+			if (ds == null) {
+				ds = new SQLiteDataSource();
+				ds.setSharedCache(true);
+				ds.setReadUncommited(true);
+				ds.setUrl("jdbc:sqlite::memory:");
+				source = ds;
+				connection = new PersistentConnection(ds.getConnection());
+				connection.setAutoCommit(false);
+				connection.setTransactionIsolation(
+						Connection.TRANSACTION_READ_UNCOMMITTED);
+				return connection;
+			} else if (connection != null) {
+				return connection;
+			} else {
+				connection = new PersistentConnection(ds.getConnection());
+				connection.setAutoCommit(false);
+				connection.setTransactionIsolation(
+						Connection.TRANSACTION_READ_UNCOMMITTED);
+				return connection;
+			}
+		}
+	}
+	private TestDatabase db;
 
 	private final SPDatabaseWriter writer = new SPDatabaseWriter();
 
 	private final SPDatabaseReader reader = new SPDatabaseReader();
 
-	private Connection connection;
+	private @Nullable Connection connection;
 
 	@BeforeEach
-	public void setUp() throws SQLException {
-		connection = source.getConnection();
+	public void setUp() throws SQLException, IOException {
+		db = new TestDatabase();
 	}
 
-	public TestDBIO() {
-		source = new SQLiteDataSource();
-		source.setUrl("jdbc:sqlite:file::memory:?cache=shared");
+	@AfterEach
+	public void tearDown() throws SQLException, IOException {
+		db.tearDown();
 	}
 
-	private IMapNG assertDatabaseSerialization(final IMapNG map) {
-		final DB db = new DB(() -> connection);
+	private IMapNG assertDatabaseSerialization(final IMapNG map) throws SQLException, IOException {
+		final TestDatabase db = new TestDatabase();
 		writer.writeToDatabase(db, map);
+		reader.clearCache();
 		final IMapNG deserialized = reader.readMapFromDatabase(db, Warning.DIE);
 		assertEquals(map, deserialized, "Deserialized form is the same as original");
+		db.tearDown();
 		return deserialized;
 	}
 
 	private <FixtureType extends TileFixture> FixtureType
-			assertFixtureSerialization(final FixtureType fixture) {
+			assertFixtureSerialization(final FixtureType fixture) throws SQLException, IOException {
 		final MapDimensions dimensions = new MapDimensionsImpl(2, 2, 2);
 		final IMutableMapNG firstMap = new SPMapNG(dimensions, new PlayerCollection(), -1);
 		firstMap.addFixture(new Point(0, 0), fixture);
@@ -187,7 +529,7 @@ public final class TestDBIO {
 
 	@ParameterizedTest
 	@MethodSource("fewIntegers")
-	public void testAdventureSerialization(final int id) {
+	public void testAdventureSerialization(final int id) throws SQLException, IOException {
 		assertFixtureSerialization(new AdventureFixture(new PlayerImpl(1, "independent"),
 			"hook brief", "hook full", id));
 	}
@@ -201,7 +543,9 @@ public final class TestDBIO {
 
 	@ParameterizedTest
 	@MethodSource
-	public void testPortalSerialization(final int id, final int row, final int column) {
+	public void testPortalSerialization(final int id, final int row, final int column) throws SQLException, IOException {
+		assumeTrue((row == -1 && column == -1) || (row >= 0 && column >= 0),
+				"Destination row and column must be either both -1 or both nonnegative");
 		assertFixtureSerialization(new Portal("portal dest", new Point(row, column), id));
 	}
 
@@ -212,18 +556,18 @@ public final class TestDBIO {
 
 	@ParameterizedTest
 	@MethodSource
-	public void testAnimalSerialization(final int id, final boolean talking) {
+	public void testAnimalSerialization(final int id, final boolean talking) throws SQLException, IOException {
 		assertFixtureSerialization(new AnimalImpl("animal kind", talking, "status", id, -1, 1));
 	}
 
 	@Test
-	public void testTracksSerialization() {
+	public void testTracksSerialization() throws SQLException, IOException {
 		assertFixtureSerialization(new AnimalTracks("kind"));
 	}
 
 	@ParameterizedTest
 	@MethodSource("fewIntegers")
-	public void testCacheSerialization(final int id) {
+	public void testCacheSerialization(final int id) throws SQLException, IOException {
 		assertFixtureSerialization(new CacheFixture("kind", "contents", id));
 	}
 
@@ -234,13 +578,13 @@ public final class TestDBIO {
 
 	@ParameterizedTest
 	@MethodSource
-	public void testCaveSerialization(final int id, final int dc) {
+	public void testCaveSerialization(final int id, final int dc) throws SQLException, IOException {
 		assertFixtureSerialization(new Cave(dc, id));
 	}
 
 	@ParameterizedTest
 	@MethodSource("testCaveSerialization")
-	public void testBattlefieldSerialization(final int id, final int dc) {
+	public void testBattlefieldSerialization(final int id, final int dc) throws SQLException, IOException {
 		assertFixtureSerialization(new Battlefield(dc, id));
 	}
 
@@ -254,7 +598,8 @@ public final class TestDBIO {
 
 	@ParameterizedTest
 	@MethodSource("testCitySerialization")
-	public void testFortificationSerialization(final int id, final TownStatus status, final TownSize size, final int dc) {
+	public void testFortificationSerialization(final int id, final TownStatus status, final TownSize size, final int dc)
+			throws SQLException, IOException {
 		// TODO: We want more of the state to be random
 		final Fortification town = new Fortification(status, size, dc, "name", id, new PlayerImpl(0, ""));
 		final CommunityStats stats = new CommunityStats(5);
@@ -276,7 +621,8 @@ public final class TestDBIO {
 
 	@ParameterizedTest
 	@MethodSource
-	public void testCitySerialization(final int id, final TownStatus status, final TownSize size, final int dc) {
+	public void testCitySerialization(final int id, final TownStatus status, final TownSize size, final int dc)
+			throws SQLException, IOException {
 		// TODO: We want more of the state to be random
 		final City town = new City(status, size, dc, "name", id, new PlayerImpl(0, ""));
 		final CommunityStats stats = new CommunityStats(5);
@@ -298,7 +644,8 @@ public final class TestDBIO {
 
 	@ParameterizedTest
 	@MethodSource("testCitySerialization")
-	public void testTownSerialization(final int id, final TownStatus status, final TownSize size, final int dc) {
+	public void testTownSerialization(final int id, final TownStatus status, final TownSize size, final int dc)
+			throws SQLException, IOException {
 		// TODO: We want more of the state to be random
 		final Town town = new Town(status, size, dc, "name", id, new PlayerImpl(0, ""));
 		final CommunityStats stats = new CommunityStats(5);
@@ -329,7 +676,7 @@ public final class TestDBIO {
 	@ParameterizedTest
 	@MethodSource
 	public void testMeadowSerialization(final boolean field, final boolean cultivated, final int id, final FieldStatus status,
-	                                    final int acres) {
+	                                    final int acres) throws SQLException, IOException {
 		assertFixtureSerialization(new Meadow("kind", field, cultivated, id, status, acres));
 	}
 
@@ -337,7 +684,7 @@ public final class TestDBIO {
 	@ParameterizedTest
 	@MethodSource("testMeadowSerialization")
 	public void testFractionalMeadowSerialization(final boolean field, final boolean cultivated, final int id,
-	                                              final FieldStatus status, final int acres) {
+	                                              final FieldStatus status, final int acres) throws SQLException, IOException {
 		assertFixtureSerialization(new Meadow("kind", field, cultivated, id, status,
 			new BigDecimal(acres).add(BigDecimal.ONE.divide(new BigDecimal(2)))));
 	}
@@ -350,13 +697,13 @@ public final class TestDBIO {
 
 	@ParameterizedTest
 	@MethodSource
-	public void testForestSerialization(final boolean rows, final int id, final int acres) {
+	public void testForestSerialization(final boolean rows, final int id, final int acres) throws SQLException, IOException {
 		assertFixtureSerialization(new Forest("kind", rows, id, acres));
 	}
 
 	@ParameterizedTest
 	@MethodSource("testForestSerialization")
-	public void testFractionalForestSerialization(final boolean rows, final int id, final int acres) {
+	public void testFractionalForestSerialization(final boolean rows, final int id, final int acres) throws SQLException, IOException {
 		assertFixtureSerialization(new Forest("kind", rows, id,
 			new BigDecimal(acres).add(BigDecimal.ONE.divide(new BigDecimal(4)))));
 	}
@@ -368,7 +715,7 @@ public final class TestDBIO {
 
 	@ParameterizedTest
 	@MethodSource
-	public void testFortressSerialization(final int id, final TownSize size) {
+	public void testFortressSerialization(final int id, final TownSize size) throws SQLException, IOException {
 		final Player owner = new PlayerImpl(1, "owner");
 		final IMutableFortress fortress = new FortressImpl(owner, "fortress", id, size);
 		final IMutableUnit unit = new Unit(owner, "unitKind", "unitName", id + 2);
@@ -400,7 +747,7 @@ public final class TestDBIO {
 
 	@ParameterizedTest
 	@MethodSource
-	public void testGroundSerialization(final int id, final boolean exposed, final String kind) {
+	public void testGroundSerialization(final int id, final boolean exposed, final String kind) throws SQLException, IOException {
 		assertFixtureSerialization(new Ground(id, kind, exposed));
 	}
 
@@ -415,7 +762,7 @@ public final class TestDBIO {
 	@ParameterizedTest
 	@MethodSource
 	public void testGroveSerialization(final boolean orchard, final boolean cultivated, final int id, final int count,
-	                                   final String kind) {
+	                                   final String kind) throws SQLException, IOException {
 		assertFixtureSerialization(new Grove(orchard, cultivated, kind, id, count));
 	}
 
@@ -427,7 +774,7 @@ public final class TestDBIO {
 
 	@ParameterizedTest
 	@MethodSource
-	public void testSimpleImmortalSerialization(final IntFunction<Immortal> constructor, final int id) {
+	public void testSimpleImmortalSerialization(final IntFunction<Immortal> constructor, final int id) throws SQLException, IOException {
 		assertFixtureSerialization(constructor.apply(id));
 	}
 
@@ -441,7 +788,7 @@ public final class TestDBIO {
 	@ParameterizedTest
 	@MethodSource
 	public void testKindedImmortalSerialization(final StringIntConstructor<Immortal> constructor, final int id,
-	                                            final String kind) {
+	                                            final String kind) throws SQLException, IOException {
 		assertFixtureSerialization(constructor.apply(kind, id));
 	}
 
@@ -454,7 +801,7 @@ public final class TestDBIO {
 
 	@ParameterizedTest
 	@MethodSource
-	public void testMineSerialization(final TownStatus status, final int id, final String kind) {
+	public void testMineSerialization(final TownStatus status, final int id, final String kind) throws SQLException, IOException {
 		assertFixtureSerialization(new Mine(kind, status, id));
 	}
 
@@ -468,7 +815,7 @@ public final class TestDBIO {
 
 	@ParameterizedTest
 	@MethodSource
-	public void testMineralSerialization(final boolean exposed, final int dc, final int id, final String kind) {
+	public void testMineralSerialization(final boolean exposed, final int dc, final int id, final String kind) throws SQLException, IOException {
 		assertFixtureSerialization(new MineralVein(kind, exposed, dc, id));
 	}
 
@@ -481,7 +828,7 @@ public final class TestDBIO {
 
 	@ParameterizedTest
 	@MethodSource
-	public void testStoneSerialization(final StoneKind kind, final int dc, final int id) {
+	public void testStoneSerialization(final StoneKind kind, final int dc, final int id) throws SQLException, IOException {
 		assertFixtureSerialization(new StoneDeposit(kind, dc, id));
 	}
 
@@ -494,7 +841,7 @@ public final class TestDBIO {
 
 	@ParameterizedTest
 	@MethodSource
-	public void testShrubSerialization(final int id, final int count, final String kind) {
+	public void testShrubSerialization(final int id, final int count, final String kind) throws SQLException, IOException {
 		assertFixtureSerialization(new Shrub(kind, id, count));
 	}
 
@@ -506,20 +853,21 @@ public final class TestDBIO {
 
 	@ParameterizedTest
 	@MethodSource
-	public void testSimpleTerrainSerialization(final IntFunction<TerrainFixture> constructor, final int id) {
+	public void testSimpleTerrainSerialization(final IntFunction<TerrainFixture> constructor, final int id) throws SQLException, IOException {
 		assertFixtureSerialization(constructor.apply(id));
 	}
 
 	// TODO: randomize text
 	@ParameterizedTest
 	@MethodSource("fewIntegers")
-	public void testTextSerialization(final int turn) {
+	public void testTextSerialization(final int turn) throws SQLException, IOException {
+		assumeTrue(turn >= 0, "Turn (as adjusted) must be greater than or equal to -1");
 		assertFixtureSerialization(new TextFixture("test text", turn - 1));
 	}
 
 	@ParameterizedTest
 	@MethodSource("fewIntegers")
-	public void testUnitSerialization(final int id) {
+	public void testUnitSerialization(final int id) throws SQLException, IOException {
 		final Player owner = new PlayerImpl(1, "owner");
 		final IMutableUnit unit = new Unit(owner, "unitKind", "unitName", id);
 		unit.addMember(new Worker("worker name", "elf", id + 1, new Job("job name", 2,
@@ -532,7 +880,7 @@ public final class TestDBIO {
 
 	@ParameterizedTest
 	@MethodSource("fewIntegers")
-	public void testWorkerEquipment(final int id) {
+	public void testWorkerEquipment(final int id) throws SQLException, IOException {
 		final IMutableWorker worker = new Worker("worker name", "elf", id);
 		worker.setMount(new AnimalImpl("animal kind", false, "tame", id + 1));
 		worker.addEquipment(new Implement("equipment kind one", id + 2));
@@ -552,7 +900,7 @@ public final class TestDBIO {
 
 	@ParameterizedTest
 	@MethodSource
-	public void testVillageSerialization(final TownStatus status, final int id, final String race) {
+	public void testVillageSerialization(final TownStatus status, final int id, final String race) throws SQLException, IOException {
 		assertFixtureSerialization(new Village(status, "village name", id,
 			new PlayerImpl(1, "player name"), race));
 	}
@@ -566,7 +914,7 @@ public final class TestDBIO {
 
 	@ParameterizedTest
 	@MethodSource
-	public void testNotesSerialization(final int id, final int player, final String note) {
+	public void testNotesSerialization(final int id, final int player, final String note) throws SQLException, IOException {
 		final Worker worker = new Worker("test worker", "human", id);
 		final Player playerObj = new PlayerImpl(player, "");
 		worker.setNote(playerObj, note);
@@ -578,7 +926,7 @@ public final class TestDBIO {
 	}
 
 	@Test
-	public void testBookmarkSerialization() {
+	public void testBookmarkSerialization() throws SQLException, IOException {
 		final IMutableMapNG map = new SPMapNG(new MapDimensionsImpl(1, 1, 2), new PlayerCollection(), 1);
 		final Player player = map.getPlayers().getPlayer(1);
 		map.setCurrentPlayer(player);
@@ -604,8 +952,9 @@ public final class TestDBIO {
 	@ParameterizedTest
 	@MethodSource
 	public void testRoadSerialization(final Direction directionOne, final int qualityOne, final Direction directionTwo,
-	                                  final int qualityTwo) {
+	                                  final int qualityTwo) throws SQLException, IOException {
 		assumeFalse(directionOne == directionTwo,  "We can't have the same direction twice");
+		assumeTrue(qualityOne >= 0 && qualityTwo >= 0, "Road quality must be nonnegative");
 		final IMutableMapNG map = new SPMapNG(new MapDimensionsImpl(1, 1, 2), new PlayerCollection(), 1);
 		map.setBaseTerrain(new Point(0, 0), TileType.Plains);
 		if (Direction.Nowhere != directionOne) {

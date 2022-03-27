@@ -1,8 +1,10 @@
 package impl.dbio;
 
-import buckelieg.jdbc.fn.DB;
-
 import common.map.IFixture;
+import io.jenetics.facilejdbc.Query;
+import io.jenetics.facilejdbc.Transactional;
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -17,6 +19,8 @@ import common.map.fixtures.resources.StoneKind;
 import common.xmlio.Warning;
 import common.map.HasImage;
 
+import static io.jenetics.facilejdbc.Param.value;
+
 final class DBMineralHandler extends AbstractDatabaseWriter<MineralFixture, Point>
 		implements MapContentsReader {
 	public DBMineralHandler() {
@@ -29,8 +33,8 @@ final class DBMineralHandler extends AbstractDatabaseWriter<MineralFixture, Poin
 			context instanceof Point;
 	}
 
-	private static final List<String> INITIALIZERS = Collections.singletonList(
-		"CREATE TABLE IF NOT EXISTS minerals (" +
+	private static final List<Query> INITIALIZERS = Collections.singletonList(
+		Query.of("CREATE TABLE IF NOT EXISTS minerals (" +
 			"    row INTEGER NOT NULL," +
 			"    column INTEGER NOT NULL," +
 			"    type VARCHAR(7) NOT NULL CHECK(type IN('stone', 'mineral'))," +
@@ -39,18 +43,18 @@ final class DBMineralHandler extends AbstractDatabaseWriter<MineralFixture, Poin
 			"    exposed BOOLEAN NOT NULL CHECK(exposed OR type IN('mineral'))," +
 			"    dc INTEGER NOT NULL," +
 			"    image VARCHAR(255)" +
-			");");
+			");"));
 
 	@Override
-	public List<String> getInitializers() {
+	public List<Query> getInitializers() {
 		return INITIALIZERS;
 	}
 
-	private static final String INSERT_SQL =
-		"INSERT INTO minerals (row, column, type, id, kind, exposed, dc, image) " +
-			"VALUES(?, ?, ?, ?, ?, ?, ?, ?);";
+	private static final Query INSERT_SQL =
+		Query.of("INSERT INTO minerals (row, column, type, id, kind, exposed, dc, image) " +
+			"VALUES(:row, :column, :type, :id, :kind, :exposed, :dc, :image);");
 	@Override
-	public void write(final DB db, final MineralFixture obj, final Point context) {
+	public void write(final Transactional db, final MineralFixture obj, final Point context) throws SQLException {
 		final String type;
 		final boolean exposed;
 		if (obj instanceof MineralVein) {
@@ -62,18 +66,19 @@ final class DBMineralHandler extends AbstractDatabaseWriter<MineralFixture, Poin
 		} else {
 			throw new IllegalArgumentException("Unhandled mineral fixture type");
 		}
-		db.update(INSERT_SQL, context.getRow(), context.getColumn(), type,
-			obj.getId(), obj.getKind(), exposed, obj.getDC(), ((HasImage) obj).getImage());
+		INSERT_SQL.on(value("row", context.getRow()), value("column", context.getColumn()),
+				value("type", type), value("id", obj.getId()), value("kind", obj.getKind()),
+				value("exposed", exposed), value("dc", obj.getDC()),
+				value("image", ((HasImage) obj).getImage())).execute(db.connection());
 	}
 
-	private static TryBiConsumer<Map<String, Object>, Warning, Exception> readMineralVein(final IMutableMapNG map) {
+	private TryBiConsumer<Map<String, Object>, Warning, SQLException> readMineralVein(final IMutableMapNG map) {
 		return (dbRow, warner) -> {
 			final int row = (Integer) dbRow.get("row");
 			final int column = (Integer) dbRow.get("column");
 			final int id = (Integer) dbRow.get("id");
 			final String kind = (String) dbRow.get("kind");
-			final Boolean exposed = /* DBMapReader.databaseBoolean(dbRow.get("exposed")) */ // FIXME
-				(Boolean) dbRow.get("exposed"); // This will compile but probably won't work
+			final Boolean exposed = getBooleanValue(dbRow, "exposed");
 			final int dc = (Integer) dbRow.get("dc");
 			final String image = (String) dbRow.get("image");
 			final MineralVein mineral = new MineralVein(kind, exposed, dc, id);
@@ -84,7 +89,7 @@ final class DBMineralHandler extends AbstractDatabaseWriter<MineralFixture, Poin
 		};
 	}
 
-	private static TryBiConsumer<Map<String, Object>, Warning, Exception> readStoneDeposit(final IMutableMapNG map) {
+	private static TryBiConsumer<Map<String, Object>, Warning, SQLException> readStoneDeposit(final IMutableMapNG map) {
 		return (dbRow, warner) -> {
 			final int row = (Integer) dbRow.get("row");
 			final int column = (Integer) dbRow.get("column");
@@ -100,21 +105,14 @@ final class DBMineralHandler extends AbstractDatabaseWriter<MineralFixture, Poin
 		};
 	}
 
+	private static final Query SELECT_STONE =
+			Query.of("SELECT row, column, id, kind, dc, image FROM minerals WHERE type = 'stone'");
+	private static final Query SELECT_MINERAL =
+			Query.of("SELECT row, column, id, kind, exposed, dc, image FROM minerals WHERE type = 'mineral'");
 	@Override
-	public void readMapContents(final DB db, final IMutableMapNG map, final Map<Integer, IFixture> containers,
-			final Map<Integer, List<Object>> containees, final Warning warner) {
-		try {
-			handleQueryResults(db, warner, "stone deposits", readStoneDeposit(map),
-				"SELECT row, column, id, kind, dc, image FROM minerals WHERE type = 'stone'");
-			handleQueryResults(db, warner, "mineral veins", readMineralVein(map),
-				"SELECT row, column, id, kind, exposed, dc, image FROM minerals " +
-					"WHERE type = 'mineral'");
-		} catch (final RuntimeException except) {
-			// Don't wrap RuntimeExceptions in RuntimeException
-			throw except;
-		} catch (final Exception except) {
-			// FIXME Antipattern
-			throw new RuntimeException(except);
-		}
+	public void readMapContents(final Connection db, final IMutableMapNG map, final Map<Integer, IFixture> containers,
+			final Map<Integer, List<Object>> containees, final Warning warner) throws SQLException {
+		handleQueryResults(db, warner, "stone deposits", readStoneDeposit(map), SELECT_STONE);
+		handleQueryResults(db, warner, "mineral veins", readMineralVein(map), SELECT_MINERAL);
 	}
 }

@@ -1,21 +1,28 @@
 package impl.dbio;
 
-import buckelieg.jdbc.fn.DB;
-
 import common.map.IFixture;
 import common.map.Point;
 import common.map.IMutableMapNG;
 import common.map.fixtures.mobile.IUnit;
 import common.map.fixtures.mobile.Animal;
+import common.map.fixtures.mobile.IWorker;
 import common.map.fixtures.mobile.MaturityModel;
 import common.map.fixtures.mobile.AnimalImpl;
 import common.map.fixtures.mobile.AnimalTracks;
 import common.map.fixtures.mobile.AnimalOrTracks;
 import common.xmlio.Warning;
 
+import io.jenetics.facilejdbc.Param;
+import io.jenetics.facilejdbc.Query;
+import io.jenetics.facilejdbc.Transactional;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Map;
+
+import static io.jenetics.facilejdbc.Param.value;
 
 final class DBAnimalHandler extends AbstractDatabaseWriter<AnimalOrTracks, /*Point|IUnit|IWorker*/Object>
 		implements MapContentsReader {
@@ -30,7 +37,7 @@ final class DBAnimalHandler extends AbstractDatabaseWriter<AnimalOrTracks, /*Poi
 	}
 
 
-	private static Optional<Integer> born(final Animal animal) {
+	private static Optional<Integer> born(final Animal animal) { // TODO: OptionalInt
 		final Map<String, Integer> model = MaturityModel.getMaturityAges();
 		if (model.containsKey(animal.getKind())) {
 			final int maturityAge = model.get(animal.getKind());
@@ -41,7 +48,7 @@ final class DBAnimalHandler extends AbstractDatabaseWriter<AnimalOrTracks, /*Poi
 		return Optional.of(animal.getBorn());
 	}
 
-	private static final List<String> INITIALIZERS = List.of("CREATE TABLE IF NOT EXISTS animals (" +
+	private static final List<Query> INITIALIZERS = List.of(Query.of("CREATE TABLE IF NOT EXISTS animals (" +
 			                                                         "    row INTEGER," +
 			                                                         "    column INTEGER" +
 			                                                         "    CHECK ((animals.row IS NOT NULL AND column IS NOT NULL) OR" +
@@ -56,67 +63,73 @@ final class DBAnimalHandler extends AbstractDatabaseWriter<AnimalOrTracks, /*Poi
 			                                                         "    count INTEGER NOT NULL," +
 			                                                         "    id INTEGER NOT NULL," +
 			                                                         "    image VARCHAR(255)" +
-			                                                         ");",
+			                                                         ");"),
 			// We assume that animal tracks can't occur inside a unit or fortress.
-			"CREATE TABLE IF NOT EXISTS tracks (" +
+			Query.of("CREATE TABLE IF NOT EXISTS tracks (" +
 					"    row INTEGER NOT NULL," +
 					"    column INTEGER NOT NULL," +
 					"    kind VARCHAR(32) NOT NULL," +
 					"    image VARCHAR(255)" +
-					");");
+					");"));
 
 	@Override
-	public List<String> getInitializers() {
+	public List<Query> getInitializers() {
 		return INITIALIZERS;
 	}
 
-	private static final String INSERT_TRACKS = "INSERT INTO tracks (row, column, kind, image) " +
-		"VALUES(?, ?, ?, ?);";
+	private static final Query INSERT_TRACKS = Query.of("INSERT INTO tracks (row, column, kind, image) " +
+		"VALUES(:row, :column, :kind, :image);");
 
-	private static final String INSERT_ANIMAL = "INSERT INTO animals (row, column, parent, kind, " +
-		"talking, status, born, count, id, image) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
+	private static final Query INSERT_ANIMAL = Query.of("INSERT INTO animals (row, column, parent, kind, " +
+		"talking, status, born, count, id, image) " +
+		"VALUES(:row, :column, :parent, :kind, :talking, :status, :born, :count, :id, :image);");
 
 	@Override
-	public void write(final DB db, final AnimalOrTracks obj, final Object context) {
-		if (!((context instanceof Point) || (context instanceof IUnit))) {
-			throw new IllegalArgumentException("context must be a point or a unit");
+	public void write(final Transactional db, final AnimalOrTracks obj, final Object context) throws SQLException {
+		if (!((context instanceof Point) || (context instanceof IUnit) || (context instanceof IWorker))) {
+			throw new IllegalArgumentException("context must be a point, a unit, or a worker");
 		}
 		if (obj instanceof AnimalTracks) {
-			if (context instanceof IUnit) {
-				throw new IllegalArgumentException("Animal tracks can't occur inside a unit");
+			if (context instanceof IUnit || context instanceof IWorker) {
+				throw new IllegalArgumentException("Animal tracks can't occur inside a unit or worker");
 			}
-			db.update(INSERT_TRACKS, ((Point) context).getRow(), ((Point) context).getColumn(),
-				obj.getKind(), ((AnimalTracks) obj).getImage()).execute();
+			INSERT_TRACKS.on(value("row", ((Point) context).getRow()), value("column", ((Point) context).getColumn()),
+						value("kind", obj.getKind()), value("image", ((AnimalTracks) obj).getImage()))
+					.execute(db.connection());
 		} else if (obj instanceof Animal) {
+			final List<Param> params = new ArrayList<>();
 			if (context instanceof Point) {
-				db.update(INSERT_ANIMAL, ((Point) context).getRow(),
-					((Point) context).getColumn(), null, obj.getKind(),
-					((Animal) obj).isTalking(), ((Animal) obj).getStatus(),
-					born((Animal) obj).orElse(null), ((Animal) obj).getPopulation(),
-					obj.getId(), ((Animal) obj).getImage()).execute();
+				params.add(value("row", ((Point) context).getRow()));
+				params.add(value("column", ((Point) context).getColumn()));
 			} else {
-				db.update(INSERT_ANIMAL, null, null, ((IUnit) context).getId(),
-					obj.getKind(), ((Animal) obj).isTalking(),
-					((Animal) obj).getStatus(), born((Animal) obj).orElse(null),
-					((Animal) obj).getPopulation(), obj.getId(),
-					((Animal) obj).getImage()).execute();
+				params.add(value("parent", ((IFixture) context).getId()));
 			}
+			params.add(value("kind", obj.getKind()));
+			params.add(value("talking", ((Animal) obj).isTalking()));
+			params.add(value("status", ((Animal) obj).getStatus()));
+			Optional<Integer> born = born((Animal) obj);
+			if (born.isPresent()) {
+				params.add(value("born", born.get()));
+			}
+			params.add(value("count", ((Animal) obj).getPopulation()));
+			params.add(value("id", obj.getId()));
+			params.add(value("image", ((Animal) obj).getImage()));
+			INSERT_ANIMAL.on(params).execute(db.connection());
 		}
 	}
 
-	private TryBiConsumer<Map<String, Object>, Warning, Exception>
+	private TryBiConsumer<Map<String, Object>, Warning, SQLException>
 			readAnimal(final IMutableMapNG map, final Map<Integer, List<Object>> containees) {
 		return (dbRow, warner) -> {
 			final String kind = (String) dbRow.get("kind");
-			final Boolean talking = /* DBMapReader.databaseBoolean(dbRow.get("talking")) */ // FIXME
-				(Boolean) dbRow.get("talking"); // This will compile but probably won't work
+			final Boolean talking = getBooleanValue(dbRow, "talking");
 			final String status  = (String) dbRow.get("status");
 			final Integer born = (Integer) dbRow.get("born");
 			final int count = (Integer) dbRow.get("count");
 			final int id = (Integer) dbRow.get("id");
 			final String image = (String) dbRow.get("image");
 			final AnimalImpl animal = new AnimalImpl(kind, talking, status,
-				(born == null) ? -1 : born, count);
+				id, (born == null) ? -1 : born, count);
 			if (image != null) {
 				animal.setImage(image);
 			}
@@ -131,7 +144,7 @@ final class DBAnimalHandler extends AbstractDatabaseWriter<AnimalOrTracks, /*Poi
 		};
 	}
 
-	private static TryBiConsumer<Map<String, Object>, Warning, Exception>
+	private static TryBiConsumer<Map<String, Object>, Warning, SQLException>
 			readTracks(final IMutableMapNG map) {
 		return (dbRow, warner) -> {
 			final int row = (Integer) dbRow.get("row");
@@ -146,20 +159,14 @@ final class DBAnimalHandler extends AbstractDatabaseWriter<AnimalOrTracks, /*Poi
 		};
 	}
 
+	private static final Query SELECT_ANIMALS = Query.of("SELECT * FROM animals");
+	private static final Query SELECT_TRACKS = Query.of("SELECT * FROM tracks");
 	@Override
-	public void readMapContents(final DB db, final IMutableMapNG map, final Map<Integer, IFixture> containers,
-			final Map<Integer, List<Object>> containees, final Warning warner) {
-		try {
-			handleQueryResults(db, warner, "animal populations", readAnimal(map, containees),
-				"SELECT * FROM animals");
-			handleQueryResults(db, warner, "animal tracks", readTracks(map),
-				"SELECT * FROM tracks");
-		} catch (final RuntimeException except) {
-			// Don't wrap RuntimeExceptions in RuntimeException
-			throw except;
-		} catch (final Exception except) {
-			// FIXME Antipattern
-			throw new RuntimeException(except);
-		}
+	public void readMapContents(final Connection db, final IMutableMapNG map, final Map<Integer, IFixture> containers,
+			final Map<Integer, List<Object>> containees, final Warning warner) throws SQLException {
+		handleQueryResults(db, warner, "animal populations", readAnimal(map, containees),
+			SELECT_ANIMALS);
+		handleQueryResults(db, warner, "animal tracks", readTracks(map),
+			SELECT_TRACKS);
 	}
 }

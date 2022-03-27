@@ -1,9 +1,8 @@
 package impl.dbio;
 
-import buckelieg.jdbc.fn.DB;
-
 import common.map.IFixture;
 import common.map.IMutableMapNG;
+import common.map.Player;
 import common.map.SPMapNG;
 import common.map.MapDimensionsImpl;
 import common.map.PlayerImpl;
@@ -27,14 +26,29 @@ import common.map.fixtures.towns.Village;
 import common.xmlio.Warning;
 import impl.xmlio.exceptions.MapVersionException;
 
+import io.jenetics.facilejdbc.Query;
+import io.jenetics.facilejdbc.ResultSetParser;
+import io.jenetics.facilejdbc.Row;
+import io.jenetics.facilejdbc.RowParser;
+import io.jenetics.facilejdbc.Transactional;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.List;
+import java.util.Objects;
 import java.util.logging.Logger;
 import java.text.ParseException;
 
+import java.util.stream.Stream;
 import lovelace.util.Accumulator;
 import lovelace.util.IntAccumulator;
+import org.eclipse.jdt.annotation.Nullable;
+import org.javatuples.Pair;
+import org.javatuples.Quartet;
+import org.javatuples.Sextet;
+import org.javatuples.Triplet;
 
 final class DBMapReader {
 	private static final Logger LOGGER = Logger.getLogger(DBMapReader.class.getName());
@@ -44,72 +58,90 @@ final class DBMapReader {
 	private final Map<Integer, IFixture> containers = new HashMap<>();
 	private final Map<Integer, List<Object>> containees = new HashMap<>();
 
-	/**
-	 * If {@link field} is is an Integer and either 0 or 1, which is how
-	 * SQLite stores Boolean values, convert to the equivalent Boolean and
-	 * return that; otherwise, return the original value.
-	 */
-	public static Object databaseBoolean(final Object field) {
-		if (field instanceof Integer) {
-			if ((Integer) field == 0) {
-				return false;
-			} else if ((Integer) field == 1) {
-				return true;
-			} else {
-				return field;
-			}
-		} else {
-			return field;
+	private static final Query PLAYER_SELECT = Query.of("SELECT id, codename, current FROM players");
+
+	private static Player parsePlayer(final Row row, final Connection sql) throws SQLException {
+		MutablePlayer retval = new PlayerImpl(row.getInt("id"), row.getString("codename"));
+		if (row.getBoolean("current")) {
+			retval.setCurrent(true);
+		}
+		return retval;
+	}
+
+	private static final Query METADATA_SELECT = Query.of("SELECT version, rows, columns, current_turn FROM metadata LIMIT 1");
+
+	// FIXME: Define DTOs for metadata and terrain records, rather than using tuples.
+	private static Quartet<Integer, Integer, Integer, Integer> parseMetadata(final Row row, final Connection sql) throws SQLException {
+		return Quartet.with(row.getInt("version"), row.getInt("rows"), row.getInt("columns"), row.getInt("current_turn"));
+	}
+
+	private static @Nullable TileType parseTileType(final @Nullable String string) {
+		if (string == null || string.isEmpty()) {
+			return null;
+		}
+		try {
+			return TileType.parse(string);
+		} catch (final ParseException except) {
+			throw new IllegalArgumentException(except);
 		}
 	}
 
-	public IMutableMapNG readMap(final DB db, final Warning warner) {
-		// FIXME: Better exception
-		final Map<String, Object> metadata = db.select(
-				"SELECT version, rows, columns, current_turn FROM metadata LIMIT 1")
-			.single().orElseThrow(() -> new IllegalStateException("No metadata in database"));
-		final int version = (Integer) metadata.get("version");
-		final int rows = (Integer) metadata.get("rows");
-		final int columns = (Integer) metadata.get("columns");
-		final int turn = (Integer) metadata.get("current_turn");
+	private static final Query TERRAIN_SELECT = Query.of("SELECT * FROM terrain");
+	private static Triplet<Point, @Nullable TileType, Sextet<Boolean, Boolean, Boolean, Boolean, Boolean, Boolean>> parseTerrain(final Row row, final Connection sql) throws SQLException {
+		return Triplet.with(new Point(row.getInt("row"), row.getInt("column")), parseTileType(row.getString("terrain")),
+				Sextet.with(row.getBoolean("mountainous"), row.getBoolean("north_river"),
+						row.getBoolean("south_river"), row.getBoolean("east_river"), row.getBoolean("west_river"),
+						row.getBoolean("lake")));
+	}
+
+	private static final Query ROAD_SELECT = Query.of("SELECT * FROM roads");
+	private static Triplet<Point, Direction, Integer> parseRoads(final Row row, final Connection sql) throws SQLException {
+		return Triplet.with(new Point(row.getInt("row"), row.getInt("column")),
+				Objects.requireNonNull(Direction.parse(row.getString("direction"))), row.getInt("quality"));
+	}
+
+	private static final Query BOOKMARK_SELECT = Query.of("SELECT * FROM BOOKMARKS");
+	private static Pair<Point, Integer> parseBookmark(final Row row, final Connection sql) throws SQLException {
+		return Pair.with(new Point(row.getInt("row"), row.getInt("column")), row.getInt("player"));
+	}
+	public IMutableMapNG readMap(final Transactional db, final Warning warner) throws SQLException {
+		Connection conn = db.connection();
+		final @Nullable Quartet<Integer, Integer, Integer, Integer> metadata = METADATA_SELECT.as(((RowParser<Quartet<Integer, Integer, Integer, Integer>>) DBMapReader::parseMetadata).singleNull(), conn);
+		if (metadata == null) {
+			throw new IllegalStateException("No metadata in database");
+		}
+		final int version = metadata.getValue0();
+		final int rows = metadata.getValue1();
+		final int columns = metadata.getValue2();
+		final int turn = metadata.getValue3();
 		if (version != 2) {
 			warner.handle(MapVersionException.nonXML(version, 2, 2));
 		}
 		final IMutablePlayerCollection players = new PlayerCollection();
 		LOGGER.fine("About to read players");
-		// TODO: Here and elsewhere, adapt to the 'lambda to filter' model this library
-		// assumes and encourages instead of doing *everything* in the "consumer".
-		db.select("SELECT id, codename, current FROM players").execute().forEach(row -> {
-				final int id = (Integer) row.get("id");
-				final String codename = (String) row.get("codename");
-				final boolean current = (Boolean) databaseBoolean(row.get("current"));
-				final MutablePlayer player = new PlayerImpl(id, codename);
-				if (current) {
-					player.setCurrent(true);
-				}
-				players.add(player);
-			});
+		// TODO: Players should have 'country' and 'portrait' flags as well
+		try (Stream<Player> playerStream = PLAYER_SELECT.as(((RowParser<Player>) DBMapReader::parsePlayer).stream(), conn)) {
+			playerStream.forEach(players::add);
+		}
 		LOGGER.fine("Finished reading players, about to start on terrain");
 		final IMutableMapNG retval =
 			new SPMapNG(new MapDimensionsImpl(rows, columns, version), players, turn);
 		final Accumulator<Integer> count = new IntAccumulator(0);
-		db.select("SELECT * FROM terrain").execute().forEach(dbRow -> {
-				final int row = (Integer) dbRow.get("row");
-				final int column = (Integer) dbRow.get("column");
-				final String terrainString = (String) dbRow.get("terrain");
-				final boolean mtn = (Boolean) databaseBoolean(dbRow.get("mountainous"));
-				final boolean northR = (Boolean) databaseBoolean(dbRow.get("north_river"));
-				final boolean southR = (Boolean) databaseBoolean(dbRow.get("south_river"));
-				final boolean eastR = (Boolean) databaseBoolean(dbRow.get("east_river"));
-				final boolean westR = (Boolean) databaseBoolean(dbRow.get("west_river"));
-				final boolean lake = (Boolean) databaseBoolean(dbRow.get("lake"));
-				final Point location = new Point(row, column);
-				if (terrainString != null && !terrainString.isEmpty()) {
-					try {
-						retval.setBaseTerrain(location, TileType.parse(terrainString));
-					} catch (final ParseException except) {
-						throw new IllegalArgumentException(except);
-					}
+		try (Stream<Triplet<Point, @Nullable TileType, Sextet<Boolean, Boolean, Boolean, Boolean, Boolean, Boolean>>> terrainStream =
+				     TERRAIN_SELECT.as(((RowParser<Triplet<Point, @Nullable TileType, Sextet<Boolean, Boolean, Boolean, Boolean, Boolean, Boolean>>>)
+						                        DBMapReader::parseTerrain).stream(), conn)) {
+			terrainStream.forEach(dbRow -> {
+				Sextet<Boolean, Boolean, Boolean, Boolean, Boolean, Boolean> tuple = dbRow.getValue2();
+				final boolean mtn = tuple.getValue0();
+				final boolean northR = tuple.getValue1();
+				final boolean southR = tuple.getValue2();
+				final boolean eastR = tuple.getValue3();
+				final boolean westR = tuple.getValue4();
+				final boolean lake = tuple.getValue5();
+				final Point location = dbRow.getValue0();
+				final @Nullable TileType tileType = dbRow.getValue1();
+				if (tileType != null) {
+					retval.setBaseTerrain(location, tileType);
 				}
 				retval.setMountainous(location, mtn);
 				if (northR) {
@@ -130,30 +162,25 @@ final class DBMapReader {
 				count.add(1);
 				if (count.getSum() % 50 == 0) {
 					LOGGER.fine(String.format("Read terrain for %d tiles",
-						count.getSum()));
+							count.getSum()));
 				}
 			});
-		db.select("SELECT * FROM roads").execute().forEach(dbRow -> {
-				final int row = (Integer) dbRow.get("row");
-				final int column = (Integer) dbRow.get("column");
-				final Direction direction = Direction.parse((String) dbRow.get("direction"));
-				final int quality = (Integer) dbRow.get("quality");
-				assert direction != null;
-				retval.setRoadLevel(new Point(row, column), direction, quality);
-			});
+		}
+		try (Stream<Triplet<Point, Direction, Integer>> rStream = ROAD_SELECT.as(((RowParser<Triplet<Point, Direction, Integer>>) DBMapReader::parseRoads).stream(), conn)) {
+			rStream.forEach(t -> retval.setRoadLevel(t.getValue0(), t.getValue1(), t.getValue2()));
+		}
 		LOGGER.fine("Finished reading terrain");
-		db.select("SELECT * FROM bookmarks").execute().forEach(dbRow -> {
-				final int row = (Integer) dbRow.get("row");
-				final int column = (Integer) dbRow.get("column");
-				final int playerNum = (Integer) dbRow.get("player");
-				retval.addBookmark(new Point(row, column), players.getPlayer(playerNum));
-			});
+		try (Stream<Pair<Point, Integer>> bStream = BOOKMARK_SELECT.as(((RowParser<Pair<Point, Integer>>) DBMapReader::parseBookmark).stream(), conn)) {
+			bStream.forEach(p -> retval.addBookmark(p.getValue0(), players.getPlayer(p.getValue1())));
+		}
 		for (final MapContentsReader reader : readers) {
 			try {
-				reader.readMapContents(db, retval, containers, containees, warner);
+				reader.readMapContents(conn, retval, containers, containees, warner);
 			} catch (final Exception exception) {
 				if (exception.getMessage().contains("no such table")) {
 					continue;
+				} else if (exception instanceof RuntimeException) {
+					throw (RuntimeException) exception;
 				} else {
 					// TODO: declare checked exception instead?
 					throw new RuntimeException(exception);
@@ -166,7 +193,13 @@ final class DBMapReader {
 			final int parentId = entry.getKey();
 			for (final Object member : entry.getValue()) {
 				final IFixture parent = containers.get(parentId);
-				if (parent instanceof IMutableFortress && member instanceof FortressMember) {
+				if (!containers.containsKey(parentId)) {
+					throw new IllegalArgumentException("No parent for " + member);
+				} else if (parent == null) {
+					throw new IllegalArgumentException("Null parent");
+				} else if (member == null) {
+					throw new IllegalArgumentException("Null member");
+				} else if (parent instanceof IMutableFortress && member instanceof FortressMember) {
 					((IMutableFortress) parent).addMember((FortressMember) member);
 				} else if (parent instanceof IMutableUnit && member instanceof UnitMember) {
 					((IMutableUnit) parent).addMember((UnitMember) member);
@@ -181,13 +214,23 @@ final class DBMapReader {
 					((IMutableWorker) parent).setMount((Animal) member);
 				} else if (parent instanceof IMutableWorker && member instanceof Implement) {
 					((IMutableWorker) parent).addEquipment((Implement) member);
+				} else if (parent instanceof AbstractTown && member instanceof CommunityStats &&
+						((AbstractTown) parent).getPopulation() != null) {
+					throw new IllegalStateException("Community stats already set");
 				} else {
-					throw new IllegalStateException("DB parent-child type invariants not met");
+					throw new IllegalStateException(String.format("DB parent-child type invariants not met (parent %s, child %s)",
+							parent.getClass().getSimpleName(), member.getClass().getSimpleName()));
 				}
 			}
 		}
 		retval.setModified(false);
 		LOGGER.fine("Finished adding members to parents");
 		return retval;
+	}
+
+	// TODO: Find a way to restrict access, or to make the two collections have their lifespan tied to a particular database
+	public void clearCache() {
+		containers.clear();
+		containees.clear();
 	}
 }

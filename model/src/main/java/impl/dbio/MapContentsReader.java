@@ -1,18 +1,28 @@
 package impl.dbio;
 
-import buckelieg.jdbc.fn.DB;
-
+import common.map.fixtures.towns.CommunityStats;
+import org.eclipse.jdt.annotation.Nullable;
 import common.map.IFixture;
 import common.map.IMutableMapNG;
 import common.xmlio.Warning;
 
+import io.jenetics.facilejdbc.Query;
+import io.jenetics.facilejdbc.Row;
+import io.jenetics.facilejdbc.RowParser;
+import io.jenetics.facilejdbc.Transactional;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import java.util.Map;
 
 import java.util.logging.Logger;
 
+import java.util.stream.Stream;
 import lovelace.util.Accumulator;
 import lovelace.util.IntAccumulator;
 
@@ -34,26 +44,36 @@ interface MapContentsReader {
 	 *                      to be added to their containers later.
 	 * @param warner Warning instance to use
 	 */
-	void readMapContents(DB db, IMutableMapNG map, Map<Integer, IFixture> containers,
-			Map<Integer, List<Object>> containees, Warning warner);
+	void readMapContents(Connection db, IMutableMapNG map, Map<Integer, IFixture> containers,
+			Map<Integer, List<Object>> containees, Warning warner) throws SQLException;
 
+	private static Map<String, Object> parseToMap(final Row rs, final Connection conn) throws SQLException {
+		ResultSetMetaData rsm = rs.getMetaData();
+		final Map<String, Object> retval = new HashMap<>(rsm.getColumnCount());
+		for (int i = 1; i <= rsm.getColumnCount(); i++) {
+			retval.put(rsm.getColumnLabel(i), rs.getObject(i));
+		}
+		return retval;
+	}
 	/**
 	 * Run the given method on each row returned by the given query.
 	 *
-	 * FIXME: Narrow TryBiConsumer exception type arg and the exception type declared to be thrown here
+	 * FIXME: Provide a version taking a RowParser, for the more common case of 1:1 object-to-row mapping
 	 */
-	default void handleQueryResults(final DB db, final Warning warner, final String description,
-	                                final TryBiConsumer<Map<String, Object>, Warning, Exception> handler, final String query,
-	                                final Object... args) throws Exception {
+	default void handleQueryResults(final Connection db, final Warning warner, final String description,
+	                                final TryBiConsumer<Map<String, Object>, Warning, SQLException> handler, final Query query,
+	                                final Object... args) throws SQLException {
 		LOGGER.fine("About to read " + description);
 		final Accumulator<Integer> count = new IntAccumulator(0);
-		db.select(query, args).execute().forEach(handler.andThen((m, w) -> {
+		try (Stream<Map<String, Object>> stream = query.as(((RowParser<Map<String, Object>>) MapContentsReader::parseToMap).stream(), db)) {
+			stream.forEach(handler.andThen((m, w) -> {
 				count.add(1);
 				if (count.getSum() % 50 == 0) {
 					LOGGER.fine(String.format("Finished reading %d %s", count.getSum(),
-						description));
+							description));
 				}
 			}).wrappedPartial(warner));
+		}
 		LOGGER.fine("Finished reading " + description);
 	}
 
@@ -64,6 +84,33 @@ interface MapContentsReader {
 			final List<Object> list = new ArrayList<>();
 			list.add(val);
 			mapping.put(key, list);
+		}
+	}
+
+	/**
+	 * Read a Boolean value from a field. This helper is necessary because
+	 * SQLite stores booleans as integers, and the JDBC library unhelpfully
+	 * exposes that "feature".
+	 */
+	default @Nullable Boolean getBooleanValue(Map<String, Object> dbRow, String key) {
+		if (!dbRow.containsKey(key)) {
+			return null;
+		}
+		Object val = dbRow.get(key);
+		if (val == null) {
+			return null;
+		} else if (val instanceof Boolean) { // Can't happen in SQLite, but we can dream ...
+			return (Boolean) val;
+		} else if (val instanceof Integer) {
+			if ((Integer) val == 0) {
+				return false;
+			} else if ((Integer) val == 1) {
+				return true;
+			} else {
+				throw new IllegalArgumentException("Outside range of Boolean");
+			}
+		} else {
+			throw new IllegalArgumentException("Field maps to non-Boolean value");
 		}
 	}
 }
