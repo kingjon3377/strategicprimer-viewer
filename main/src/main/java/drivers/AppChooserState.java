@@ -36,8 +36,6 @@ import drivers.gui.common.SPFrame;
 
 import common.xmlio.SPFormatException;
 
-import lovelace.util.MissingFileException;
-
 import lovelace.util.ResourceInputStream;
 
 /* package */ final class AppChooserState {
@@ -166,7 +164,7 @@ import lovelace.util.ResourceInputStream;
 				} catch (final SPFormatException except) {
 					showErrorDialog(topWindow, "Strategic Primer Map Format Error", except.getMessage());
 					LOGGER.severe(except.getMessage());
-				} catch (final FileNotFoundException|NoSuchFileException|MissingFileException except) {
+				} catch (final FileNotFoundException|NoSuchFileException except) {
 					showErrorDialog(topWindow, "File Not Found", except.getMessage());
 					LOGGER.log(Level.SEVERE, "Dropped file not found", except);
 				} catch (final IOException except) {

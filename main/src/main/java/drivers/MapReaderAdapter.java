@@ -1,7 +1,6 @@
 package drivers;
 
 import javax.xml.stream.XMLStreamException;
-import lovelace.util.MissingFileException;
 import java.io.FileNotFoundException;
 import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
@@ -42,7 +41,7 @@ public final class MapReaderAdapter {
 	public static IMutableMapNG readMap(final Path file, final Warning warner) throws DriverFailedException {
 		try {
 			return MapIOHelper.readMap(file, warner);
-		} catch (final MissingFileException|FileNotFoundException|NoSuchFileException except) {
+		} catch (final FileNotFoundException|NoSuchFileException except) {
 			throw new DriverFailedException(except, "File not found");
 		} catch (final IOException except) {
 			throw new DriverFailedException(except, "I/O error while reading");
@@ -61,7 +60,7 @@ public final class MapReaderAdapter {
 	public static IDriverModel readMapModel(final Path file, final Warning warner) throws DriverFailedException {
 		try {
 			return new SimpleDriverModel(MapIOHelper.readMap(file, warner));
-		} catch (final MissingFileException|FileNotFoundException|NoSuchFileException except) {
+		} catch (final FileNotFoundException|NoSuchFileException except) {
 			throw new DriverFailedException(except, "File not found");
 		} catch (final IOException except) {
 			throw new DriverFailedException(except, "I/O error while reading");
@@ -106,7 +105,7 @@ public final class MapReaderAdapter {
 			}
 			LOGGER.finer("Finished with mapReaderAdapter.readMultiMapModel");
 			return retval;
-		} catch (final MissingFileException|FileNotFoundException|NoSuchFileException except) {
+		} catch (final FileNotFoundException|NoSuchFileException except) {
 			// TODO: Catch FNFE as close to source as possible and convert to NoSuchFileException, to preserve filename as a field of the exception
 			throw new DriverFailedException(except, "File not found: " + current);
 		} catch (final IOException except) {

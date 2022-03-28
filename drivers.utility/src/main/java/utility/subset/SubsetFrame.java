@@ -2,7 +2,6 @@ package utility.subset;
 
 import drivers.common.DriverFailedException;
 import javax.xml.stream.XMLStreamException;
-import lovelace.util.MissingFileException;
 import java.util.logging.Level;
 import java.nio.file.NoSuchFileException;
 import java.io.FileNotFoundException;
@@ -102,7 +101,7 @@ import java.util.logging.Logger;
 	public void loadMain(final Path arg) throws DriverFailedException {
 		try {
 			mainMap = MapIOHelper.readMap(arg, Warning.IGNORE);
-		} catch (final MissingFileException|NoSuchFileException|FileNotFoundException except) {
+		} catch (final NoSuchFileException|FileNotFoundException except) {
 			printParagraph(String.format("File %s not found", arg), LabelTextColor.RED);
 			throw new DriverFailedException(except, String.format("File %s not found", arg));
 		} catch (final XMLStreamException except) {
@@ -138,7 +137,7 @@ import java.util.logging.Logger;
 		final IMapNG map;
 		try {
 			map = MapIOHelper.readMap(path, Warning.IGNORE);
-		} catch (final MissingFileException|NoSuchFileException|FileNotFoundException except) {
+		} catch (final NoSuchFileException|FileNotFoundException except) {
 			printParagraph("FAIL: File not found", LabelTextColor.RED);
 			LOGGER.log(Level.SEVERE, path + " not found", except);
 			return;

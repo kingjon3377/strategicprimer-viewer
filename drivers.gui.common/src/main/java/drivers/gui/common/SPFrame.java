@@ -1,10 +1,10 @@
 package drivers.gui.common;
 
+import java.nio.file.NoSuchFileException;
 import javax.swing.TransferHandler;
 import javax.xml.stream.XMLStreamException;
 import org.jetbrains.annotations.Nullable;
 
-import lovelace.util.MissingFileException;
 import java.io.IOException;
 import common.xmlio.SPFormatException;
 import common.map.IMapNG;
@@ -27,7 +27,7 @@ public class SPFrame extends JFrame implements ISPWindow {
 	private static final long serialVersionUID = 1L;
 	@FunctionalInterface
 	public interface IDroppedFileHandler {
-		void accept(Path file) throws SPFormatException, IOException, MissingFileException,
+		void accept(Path file) throws SPFormatException, IOException, NoSuchFileException,
 			XMLStreamException;
 	}
 
@@ -157,8 +157,8 @@ public class SPFrame extends JFrame implements ISPWindow {
 	/**
 	 * Handle a dropped file.
 	 */
-	public void acceptDroppedFile(final Path file) throws SPFormatException, IOException,
-			MissingFileException, XMLStreamException { // TODO: Wrap XMLStreamException in SPFormatException (subclass) in MapIOHelper or elsewhere, to reduce exception-declaration surface
+	public void acceptDroppedFile(final Path file)
+			throws SPFormatException, IOException, NoSuchFileException, XMLStreamException { // TODO: Wrap XMLStreamException in SPFormatException (subclass) in MapIOHelper or elsewhere, to reduce exception-declaration surface
 		droppedFileHandler.accept(file);
 	}
 

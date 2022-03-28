@@ -1,5 +1,6 @@
 package impl.xmlio;
 
+import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 
 import java.io.Reader;
@@ -9,7 +10,6 @@ import common.map.IMutableMapNG;
 
 import common.xmlio.SPFormatException;
 import common.xmlio.Warning;
-import lovelace.util.MissingFileException;
 
 import javax.xml.stream.XMLStreamException;
 
@@ -23,7 +23,7 @@ public interface IMapReader {
 	 * @throws SPFormatException if the reader can't handle this map
 	 *                           version, doesn't recognize the map format,
 	 *                           or finds the file contains format errors
-	 * @throws MissingFileException if the file does not exist
+	 * @throws NoSuchFileException if the file does not exist
 	 * @throws XMLStreamException on low-level XML errors
 	 * @throws IOException on I/O errors not covered by {@link
 	 *                     XMLStreamException} or {@link SPFormatException}
@@ -31,7 +31,7 @@ public interface IMapReader {
 	 * @param warner the Warning instance to use for warnings
 	 */
 	IMutableMapNG readMap(Path file, Warning warner)
-		throws SPFormatException, MissingFileException, XMLStreamException, IOException;
+		throws SPFormatException, NoSuchFileException, XMLStreamException, IOException;
 
 	/**
 	 * Read a map from a {@link Reader}.

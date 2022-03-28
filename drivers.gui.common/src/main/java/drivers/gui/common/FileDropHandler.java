@@ -1,7 +1,7 @@
 package drivers.gui.common;
 
+import java.nio.file.NoSuchFileException;
 import javax.xml.stream.XMLStreamException;
-import lovelace.util.MissingFileException;
 import java.io.IOException;
 import common.xmlio.SPFormatException;
 
@@ -54,7 +54,7 @@ import java.util.logging.Level;
 			} catch (final SPFormatException except) {
 				LOGGER.log(Level.WARNING, "SP format error in dropped file", except);
 				return false;
-			} catch (final MissingFileException except) { // FIXME: Or more-standard equivalents
+			} catch (final NoSuchFileException except) {
 				LOGGER.log(Level.WARNING, "Dropped file not actually present", except);
 				return false;
 			} catch (final XMLStreamException except) {

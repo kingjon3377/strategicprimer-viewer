@@ -5,7 +5,6 @@ import drivers.common.ViewerDriverFactory;
 import drivers.common.cli.ICLIHelper;
 import java.util.ServiceLoader;
 import javax.xml.stream.XMLStreamException;
-import lovelace.util.MissingFileException;
 import org.jetbrains.annotations.Nullable;
 
 import drivers.gui.common.SPMenu;
@@ -142,7 +141,7 @@ public class IOHandler implements ActionListener {
 		return path -> {
 			try {
 				handler.accept(MapIOHelper.readMap(path, Warning.getDefaultHandler()));
-			} catch (final MissingFileException|IOException|SPFormatException| XMLStreamException except) {
+			} catch (final IOException|SPFormatException| XMLStreamException except) {
 				handleError(except, path.toString(), source, errorTitle, "reading");
 			}
 		};

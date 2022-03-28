@@ -7,6 +7,7 @@ import common.map.fixtures.FixtureIterable;
 import common.map.fixtures.towns.IFortress;
 import common.map.fixtures.towns.TownSize;
 import common.map.TileFixture;
+import java.nio.file.NoSuchFileException;
 import java.util.Collection;
 import java.util.List;
 import java.util.OptionalInt;
@@ -18,8 +19,6 @@ import javax.xml.stream.XMLStreamException;
 import org.javatuples.Pair;
 import java.io.IOException;
 import java.nio.file.Paths;
-
-import lovelace.util.MissingFileException;
 
 import java.nio.file.Path;
 
@@ -368,7 +367,7 @@ public class MapCheckerCLI implements UtilityDriver {
 		final IMapNG map;
 		try {
 			map = MapIOHelper.readMap(file, warner);
-		} catch (final MissingFileException except) {
+		} catch (final NoSuchFileException except) {
 			stderr.accept(file + " not found");
 			LOGGER.severe(file + " not found");
 			LOGGER.log(Level.FINE, "Full stack trace of file-not-found:", except);

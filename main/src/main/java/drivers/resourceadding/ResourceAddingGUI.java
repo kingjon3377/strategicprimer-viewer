@@ -67,7 +67,6 @@ import static lovelace.util.BoxPanel.BoxAxis;
 import lovelace.util.BorderedPanel;
 import static lovelace.util.FunctionalSplitPane.verticalSplit;
 import lovelace.util.MemoizedComboBox;
-import lovelace.util.MissingFileException;
 
 import java.math.BigDecimal;
 
@@ -309,7 +308,7 @@ import java.io.FileNotFoundException;
 			} catch (final SPFormatException except) {
 				logError(logLabel).accept("SP map format error: " + except.getLocalizedMessage());
 				LOGGER.log(Level.SEVERE, "SP map format error", except);
-			} catch (final MissingFileException|NoSuchFileException|FileNotFoundException except) {
+			} catch (final NoSuchFileException|FileNotFoundException except) {
 				logError(logLabel).accept(String.format("Dropped file %s couldn't be found", file));
 				LOGGER.log(Level.SEVERE, "Dropped file couldn't be found", except);
 			} catch (final IOException except) {

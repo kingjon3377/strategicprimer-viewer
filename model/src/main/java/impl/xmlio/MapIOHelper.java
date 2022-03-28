@@ -1,5 +1,6 @@
 package impl.xmlio;
 
+import java.nio.file.NoSuchFileException;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -11,7 +12,6 @@ import java.util.stream.Collectors;
 import java.io.Reader;
 import java.io.IOException;
 import javax.xml.stream.XMLStreamException;
-import lovelace.util.MissingFileException;
 
 import impl.dbio.SPDatabaseWriter;
 import impl.dbio.SPDatabaseReader;
@@ -69,7 +69,7 @@ public final class MapIOHelper {
 	 * Read a map from a file.
 	 */
 	public static IMutableMapNG readMap(final Path file)
-			throws SPFormatException, IOException, MissingFileException, XMLStreamException {
+			throws SPFormatException, IOException, NoSuchFileException, XMLStreamException {
 		return readMap(file, Warning.WARN);
 	}
 
@@ -77,7 +77,7 @@ public final class MapIOHelper {
 	 * Read a map from a file.
 	 */
 	public static IMutableMapNG readMap(final Path file, final Warning warner)
-			throws SPFormatException, IOException, MissingFileException, XMLStreamException {
+			throws SPFormatException, IOException, NoSuchFileException, XMLStreamException {
 		LOGGER.fine("In mapIOHelper.readMap");
 		final IMutableMapNG retval;
 		if (file.toString().endsWith(".db")) {

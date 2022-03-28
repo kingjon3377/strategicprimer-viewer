@@ -27,7 +27,6 @@ import lovelace.util.BorderedPanel;
 import lovelace.util.ListenedButton;
 import goldberg.ImprovedComboBox;
 import lovelace.util.FunctionalGroupLayout;
-import lovelace.util.MissingFileException;
 import lovelace.util.SimpleCardLayout;
 
 import common.map.Player;
@@ -123,7 +122,7 @@ import org.eclipse.jdt.annotation.Nullable;
 			// FIXME: THrow DriverFailedException and/or show error dialog on error
 		} catch (final SPFormatException except) {
 			LOGGER.log(Level.SEVERE, "SP format error in dropped file " + file, except);
-		} catch (final NoSuchFileException| FileNotFoundException|MissingFileException except) {
+		} catch (final NoSuchFileException| FileNotFoundException except) {
 			LOGGER.log(Level.SEVERE, "Dropped file not found: " + file, except);
 		} catch (final IOException except) {
 			LOGGER.log(Level.SEVERE, "I/O error reading dropped file", except);

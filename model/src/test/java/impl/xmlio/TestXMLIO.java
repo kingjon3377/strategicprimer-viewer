@@ -3,6 +3,7 @@ package impl.xmlio;
 import static lovelace.util.SingletonRandom.SINGLETON_RANDOM;
 
 import common.map.fixtures.mobile.MaturityModel;
+import java.nio.file.NoSuchFileException;
 import javax.xml.stream.XMLStreamException;
 import org.jetbrains.annotations.Nullable;
 
@@ -31,7 +32,6 @@ import java.util.NoSuchElementException;
 import javax.xml.namespace.QName;
 
 import static lovelace.util.AssertAny.assertAny;
-import lovelace.util.MissingFileException;
 
 import common.idreg.DuplicateIDException;
 import common.map.HasMutablePortrait;
@@ -524,7 +524,7 @@ public final class TestXMLIO {
 				except -> assertTrue(instanceOfAny(NoSuchElementException.class,
 						IllegalArgumentException.class,
 						XMLStreamException.class,
-						MissingFileException.class).test(except),
+						NoSuchFileException.class).test(except),
 					String.format(
 						"Exception is of an expected type: was %s",
 						except.getClass().getName())));

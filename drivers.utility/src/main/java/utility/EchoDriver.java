@@ -1,9 +1,9 @@
 package utility;
 
+import java.nio.file.NoSuchFileException;
 import java.nio.file.Paths;
 import java.io.IOException;
 import javax.xml.stream.XMLStreamException;
-import lovelace.util.MissingFileException;
 
 import common.map.Point;
 import common.map.TileFixture;
@@ -50,7 +50,7 @@ public class EchoDriver implements UtilityDriver {
 			final IMutableMapNG map;
 			try {
 				map = MapIOHelper.readMap(Paths.get(inArg), Warning.IGNORE);
-			} catch (final MissingFileException except) {
+			} catch (final NoSuchFileException except) {
 				throw new DriverFailedException(except, "No such file " + inArg);
 			} catch (final IOException except) {
 				throw new DriverFailedException(except, "I/O error reading file " + inArg);

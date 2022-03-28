@@ -13,7 +13,6 @@ import javax.xml.stream.events.XMLEvent;
 import javax.xml.stream.events.StartElement;
 
 import lovelace.util.IteratorWrapper;
-import lovelace.util.MissingFileException;
 import lovelace.util.TypesafeXMLEventReader;
 
 import common.idreg.IDRegistrar;
@@ -86,11 +85,13 @@ public class YAXMLReader implements IMapReader, ISPReader {
 	 */
 	@Override
 	public IMutableMapNG readMap(final Path file, final Warning warner)
-			throws SPFormatException, MissingFileException, XMLStreamException, IOException {
+			throws SPFormatException, NoSuchFileException, XMLStreamException, IOException {
 		try (final Reader istream = Files.newBufferedReader(file, StandardCharsets.UTF_8)) {
 			return readMapFromStream(file, istream, warner);
-		} catch (final FileNotFoundException|NoSuchFileException except) {
-			throw new MissingFileException(file, except);
+		} catch (final FileNotFoundException except) {
+			final NoSuchFileException wrapper = new NoSuchFileException(file.toString());
+			wrapper.initCause(except);
+			throw wrapper;
 		}
 	}
 }

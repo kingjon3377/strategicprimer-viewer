@@ -38,7 +38,6 @@ import java.nio.file.Paths;
 import java.util.Optional;
 import javax.xml.stream.XMLStreamException;
 import lovelace.util.LongAccumulator;
-import lovelace.util.MissingFileException;
 import lovelace.util.Range;
 import org.javatuples.Pair;
 import org.javatuples.Triplet;
@@ -248,7 +247,7 @@ public class DrawHelperComparator implements UtilityDriver {
 				map = MapIOHelper.readMap(path, Warning.IGNORE);
 			} catch (final SPFormatException except) {
 				throw new DriverFailedException(except, "SP map format error in " + arg);
-			} catch (final MissingFileException|FileNotFoundException|NoSuchFileException except) {
+			} catch (final FileNotFoundException|NoSuchFileException except) {
 				throw new DriverFailedException(except, arg + " not found");
 			} catch (final IOException except) {
 				throw new DriverFailedException(except, "I/O error while reading " + arg);
