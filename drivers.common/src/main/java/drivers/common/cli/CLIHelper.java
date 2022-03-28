@@ -3,6 +3,7 @@ package drivers.common.cli;
 import java.io.BufferedReader;
 import java.io.Console;
 import java.io.InputStreamReader;
+import java.util.function.Consumer;
 import lovelace.util.SystemIn;
 import org.eclipse.jdt.annotation.NonNull;
 import org.jetbrains.annotations.Nullable;
@@ -37,12 +38,7 @@ public final class CLIHelper implements ICLIHelper {
 		@Nullable String readLine() throws IOException;
 	}
 
-	@FunctionalInterface
-	public interface IOSink {
-		void write(String string) throws IOException;
-	}
-
-	public CLIHelper(final IOSource istream, final IOSink ostream) {
+	public CLIHelper(final IOSource istream, final Consumer<String> ostream) {
 		this.istream = istream;
 		this.ostream = ostream;
 	}
@@ -68,7 +64,7 @@ public final class CLIHelper implements ICLIHelper {
 	/**
 	 * A consumer of output, presumably sending it to the user.
 	 */
-	private final IOSink ostream;
+	private final Consumer<String> ostream;
 
 	/**
 	 * The current state of the yes-to-all/no-to-all possibility. Absent if
@@ -89,12 +85,7 @@ public final class CLIHelper implements ICLIHelper {
 			intervals.replaceAll((key, lines) -> lines + newlines);
 		}
 		for (final String part : text) {
-			try {
-				ostream.write(part);
-			} catch (final IOException except) {
-				LOGGER.log(Level.WARNING, "I/O error", except);
-				return;
-			}
+			ostream.accept(part);
 		}
 	}
 
