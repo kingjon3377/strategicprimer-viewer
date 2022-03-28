@@ -5,6 +5,7 @@ import java.io.BufferedInputStream;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.nio.file.NoSuchFileException;
 
 /**
  * Basically a {@link FileInputStream}, but the file could be on disk or in the classpath.
@@ -15,18 +16,20 @@ import java.io.IOException;
  */
 public class ResourceInputStream extends InputStream {
 	private final InputStream wrapped;
-	public ResourceInputStream(final String filename) throws FileNotFoundException {
+	public ResourceInputStream(final String filename) throws NoSuchFileException {
 		this(filename, ResourceInputStream.class);
 	}
 
-	public ResourceInputStream(final String filename, final Class<?> sourceClass) throws FileNotFoundException {
+	public ResourceInputStream(final String filename, final Class<?> sourceClass) throws NoSuchFileException {
 		InputStream temp;
-		try {
+		try { // TODO: Use static method from Files class, if one exists
 			temp = new BufferedInputStream(new FileInputStream(filename));
 		} catch (final FileNotFoundException except) {
 			temp = sourceClass.getResourceAsStream("/" + filename);
 			if (temp == null) {
-				throw except;
+				final NoSuchFileException wrapped = new NoSuchFileException(filename);
+				wrapped.initCause(except);
+				throw wrapped;
 			}
 		}
 		wrapped = temp;

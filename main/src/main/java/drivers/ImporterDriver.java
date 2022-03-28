@@ -6,7 +6,7 @@ import drivers.common.SPOptions;
 
 import java.awt.image.BufferedImage;
 
-import java.io.FileNotFoundException;
+import java.nio.file.NoSuchFileException;
 import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.Collections;
@@ -129,7 +129,7 @@ import org.jetbrains.annotations.Nullable;
 			final ResourceInputStream res;
 			try {
 				res = new ResourceInputStream(arg, ImporterDriver.class);
-			} catch (final FileNotFoundException except) {
+			} catch (final NoSuchFileException except) {
 				throw new DriverFailedException(except, "Image file not found");
 			}
 			final BufferedImage image;
