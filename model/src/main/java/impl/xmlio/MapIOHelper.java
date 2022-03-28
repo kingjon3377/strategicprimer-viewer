@@ -10,8 +10,8 @@ import java.util.stream.Collectors;
 
 import java.io.Reader;
 import java.io.IOException;
+import javax.xml.stream.XMLStreamException;
 import lovelace.util.MissingFileException;
-import lovelace.util.MalformedXMLException;
 
 import impl.dbio.SPDatabaseWriter;
 import impl.dbio.SPDatabaseReader;
@@ -69,7 +69,7 @@ public final class MapIOHelper {
 	 * Read a map from a file.
 	 */
 	public static IMutableMapNG readMap(final Path file)
-			throws SPFormatException, IOException, MissingFileException, MalformedXMLException {
+			throws SPFormatException, IOException, MissingFileException, XMLStreamException {
 		return readMap(file, Warning.WARN);
 	}
 
@@ -77,7 +77,7 @@ public final class MapIOHelper {
 	 * Read a map from a file.
 	 */
 	public static IMutableMapNG readMap(final Path file, final Warning warner)
-			throws SPFormatException, IOException, MissingFileException, MalformedXMLException {
+			throws SPFormatException, IOException, MissingFileException, XMLStreamException {
 		LOGGER.fine("In mapIOHelper.readMap");
 		final IMutableMapNG retval;
 		if (file.toString().endsWith(".db")) {
@@ -97,7 +97,7 @@ public final class MapIOHelper {
 	 * Read a map from a stream.
 	 */
 	public static IMutableMapNG readMap(final Reader stream)
-			throws SPFormatException, MalformedXMLException, IOException {
+			throws SPFormatException, XMLStreamException, IOException {
 		return readMap(stream, Warning.WARN);
 	}
 
@@ -105,7 +105,7 @@ public final class MapIOHelper {
 	 * Read a map from a stream.
 	 */
 	public static IMutableMapNG readMap(final Reader stream, final Warning warner)
-			throws SPFormatException, MalformedXMLException, IOException {
+			throws SPFormatException, XMLStreamException, IOException {
 		LOGGER.fine("In mapIOHelper.readMap");
 		LOGGER.fine("Reading from a Reader");
 		return READER.readMapFromStream(Paths.get(""), stream, warner);
@@ -114,7 +114,7 @@ public final class MapIOHelper {
 	/**
 	 * Write a map to file.
 	 */
-	public static void writeMap(final Path file, final IMapNG map) throws IOException, MalformedXMLException {
+	public static void writeMap(final Path file, final IMapNG map) throws IOException, XMLStreamException {
 		if (file.toString().endsWith(".db") || file.toString().isEmpty()) {
 			LOGGER.fine(String.format("Writing to %s as an SQLite database", file.toString()));
 			DB_WRITER.write(file, map);

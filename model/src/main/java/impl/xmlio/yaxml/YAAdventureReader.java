@@ -2,6 +2,7 @@ package impl.xmlio.yaxml;
 
 import java.io.IOException;
 import javax.xml.namespace.QName;
+import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
@@ -29,7 +30,7 @@ import lovelace.util.ThrowingConsumer;
 	 */
 	@Override
 	public AdventureFixture read(final StartElement element, final QName parent, final Iterable<XMLEvent> stream)
-			throws SPFormatException {
+			throws SPFormatException, XMLStreamException {
 		requireTag(element, parent, "adventure");
 		expectAttributes(element, "owner", "brief", "full", "image", "id");
 		final Player player;

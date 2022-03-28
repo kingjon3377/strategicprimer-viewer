@@ -40,16 +40,12 @@ public class TypesafeXMLEventReader implements Iterator<XMLEvent>, Closeable {
 	}
 
 	public TypesafeXMLEventReader(final Reader reader, final Closeable... closeMethods)
-			throws MalformedXMLException {
-		try {
-			final XMLInputFactory factory = XMLInputFactory.newInstance();
-			factory.setProperty(XMLInputFactory.SUPPORT_DTD, Boolean.FALSE);
-			factory.setProperty("javax.xml.stream.isSupportingExternalEntities",
-				Boolean.FALSE);
-			wrapped = factory.createXMLEventReader(reader);
-		} catch (final XMLStreamException except) {
-			throw new MalformedXMLException(except);
-		}
+			throws XMLStreamException {
+		final XMLInputFactory factory = XMLInputFactory.newInstance();
+		factory.setProperty(XMLInputFactory.SUPPORT_DTD, Boolean.FALSE);
+		factory.setProperty("javax.xml.stream.isSupportingExternalEntities",
+			Boolean.FALSE);
+		wrapped = factory.createXMLEventReader(reader);
 		closeHandles.add(reader);
 		closeHandles.addAll(Arrays.asList(closeMethods));
 	}
@@ -71,7 +67,7 @@ public class TypesafeXMLEventReader implements Iterator<XMLEvent>, Closeable {
 	}
 
 	/**
-	 * @throws MalformedXMLException on malformed XML
+	 * @throws XMLStreamException on malformed XML
 	 */
 	@Override
 	public XMLEvent next() throws NoSuchElementException {
@@ -97,10 +93,10 @@ public class TypesafeXMLEventReader implements Iterator<XMLEvent>, Closeable {
 			} catch (final XMLStreamException exception) {
 				final Throwable cause = exception.getCause();
 				if (cause instanceof MalformedInputException) {
-					throw new RuntimeException(new MalformedXMLException(cause,
-						"Invalid character in map file, probably a different encoding."));
+					throw new RuntimeException("Invalid character in map file, probably a different encoding.",
+							cause);
 				} else {
-					throw new RuntimeException(new MalformedXMLException(exception));
+					throw new RuntimeException(exception);
 				}
 			} catch (final IOException except) {
 				throw new RuntimeException(except);

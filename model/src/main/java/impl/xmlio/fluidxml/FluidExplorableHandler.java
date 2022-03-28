@@ -19,7 +19,6 @@ import common.map.fixtures.explorable.Battlefield;
 import common.map.fixtures.explorable.Cave;
 import common.xmlio.Warning;
 import common.xmlio.SPFormatException;
-import lovelace.util.MalformedXMLException;
 
 /* package */ class FluidExplorableHandler extends FluidBase {
 	public static AdventureFixture readAdventure(final StartElement element, final QName parent,
@@ -87,7 +86,7 @@ import lovelace.util.MalformedXMLException;
 	}
 
 	public static void writeAdventure(final XMLStreamWriter ostream, final AdventureFixture obj,
-	                                  final int indent) throws MalformedXMLException {
+	                                  final int indent) throws XMLStreamException {
 		writeTag(ostream, "adventure", indent, true);
 		writeAttributes(ostream, Pair.with("id", obj.getId()));
 		if (!obj.getOwner().isIndependent()) {
@@ -99,7 +98,7 @@ import lovelace.util.MalformedXMLException;
 	}
 
 	public static void writePortal(final XMLStreamWriter ostream, final Portal obj, final int indent)
-			throws MalformedXMLException {
+			throws XMLStreamException {
 		writeTag(ostream, "portal", indent, true);
 		writeAttributes(ostream, Pair.with("world", obj.getDestinationWorld()),
 			Pair.with("row", obj.getDestinationCoordinates().getRow()),
@@ -109,31 +108,27 @@ import lovelace.util.MalformedXMLException;
 	}
 
 	public static void writeCave(final XMLStreamWriter ostream, final Cave obj, final int indent)
-			throws MalformedXMLException {
+			throws XMLStreamException {
 		writeTag(ostream, "cave", indent, true);
 		writeAttributes(ostream, Pair.with("dc", obj.getDC()), Pair.with("id", obj.getId()));
 		writeImage(ostream, obj);
 	}
 
 	public static void writeBattlefield(final XMLStreamWriter ostream, final Battlefield obj,
-	                                    final int indent) throws MalformedXMLException {
+	                                    final int indent) throws XMLStreamException {
 		writeTag(ostream, "battlefield", indent, true);
 		writeAttributes(ostream, Pair.with("dc", obj.getDC()), Pair.with("id", obj.getId()));
 		writeImage(ostream, obj);
 	}
 
 	public static void writeTextFixture(final XMLStreamWriter ostream, final TextFixture obj,
-	                                    final int indent) throws MalformedXMLException {
+	                                    final int indent) throws XMLStreamException {
 		writeTag(ostream, "text", indent, false);
 		if (obj.getTurn() != -1) {
 			writeAttributes(ostream, Pair.with("turn", obj.getTurn()));
 		}
 		writeImage(ostream, obj);
-		try {
-			ostream.writeCharacters(obj.getText().trim());
-			ostream.writeEndElement();
-		} catch (final XMLStreamException except) {
-			throw new MalformedXMLException(except);
-		}
+		ostream.writeCharacters(obj.getText().trim());
+		ostream.writeEndElement();
 	}
 }

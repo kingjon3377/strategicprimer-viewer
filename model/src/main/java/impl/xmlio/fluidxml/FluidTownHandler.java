@@ -29,7 +29,6 @@ import java.util.Deque;
 import java.util.LinkedList;
 import common.map.fixtures.IMutableResourcePile;
 import common.xmlio.SPFormatException;
-import lovelace.util.MalformedXMLException;
 import common.map.fixtures.IResourcePile;
 import javax.xml.stream.XMLStreamException;
 
@@ -279,7 +278,7 @@ import java.util.stream.Collectors;
 	}
 
 	public static void writeVillage(final XMLStreamWriter ostream, final Village obj, final int indent)
-			throws MalformedXMLException {
+			throws XMLStreamException {
 		writeTag(ostream, "village", indent, obj.getPopulation() == null);
 		writeAttributes(ostream, Pair.with("status", obj.getStatus().toString()));
 		writeNonEmptyAttributes(ostream, Pair.with("name", obj.getName()));
@@ -290,16 +289,12 @@ import java.util.stream.Collectors;
 		writeNonEmptyAttributes(ostream, Pair.with("portrait", obj.getPortrait()));
 		if (obj.getPopulation() != null) {
 			writeCommunityStats(ostream, obj.getPopulation(), indent);
-			try {
-				ostream.writeEndElement();
-			} catch (final XMLStreamException except) {
-				throw new MalformedXMLException(except);
-			}
+			ostream.writeEndElement();
 		}
 	}
 
 	public static void writeTown(final XMLStreamWriter ostream, final AbstractTown obj, final int indent)
-			throws MalformedXMLException {
+			throws XMLStreamException {
 		writeTag(ostream, obj.getKind(), indent, obj.getPopulation() == null);
 		writeAttributes(ostream, Pair.with("status", obj.getStatus().toString()),
 			Pair.with("size", obj.getTownSize().toString()), Pair.with("dc", obj.getDC()));
@@ -310,16 +305,12 @@ import java.util.stream.Collectors;
 		writeNonEmptyAttributes(ostream, Pair.with("portrait", obj.getPortrait()));
 		if (obj.getPopulation() != null) {
 			writeCommunityStats(ostream, obj.getPopulation(), indent);
-			try {
-				ostream.writeEndElement();
-			} catch (final XMLStreamException except) {
-				throw new MalformedXMLException(except);
-			}
+			ostream.writeEndElement();
 		}
 	}
 
 	public static void writeCommunityStats(final XMLStreamWriter ostream, final CommunityStats obj,
-	                                       final int indent) throws MalformedXMLException {
+	                                       final int indent) throws XMLStreamException {
 		writeTag(ostream, "population", indent, false);
 		writeAttributes(ostream, Pair.with("size", obj.getPopulation()));
 		for (final Map.Entry<String, Integer> entry : obj.getHighestSkillLevels().entrySet()
@@ -338,27 +329,15 @@ import java.util.stream.Collectors;
 			for (final IResourcePile resource : obj.getYearlyProduction()) {
 				FluidResourceHandler.writeResource(ostream, resource, indent + 2);
 			}
-			try {
-				ostream.writeEndElement();
-			} catch (final XMLStreamException except) {
-				throw new MalformedXMLException(except);
-			}
+			ostream.writeEndElement();
 		}
 		if (!obj.getYearlyConsumption().isEmpty()) {
 			writeTag(ostream, "consumption", indent + 1, false);
 			for (final IResourcePile resource : obj.getYearlyConsumption()) {
 				FluidResourceHandler.writeResource(ostream, resource, indent + 2);
 			}
-			try {
-				ostream.writeEndElement();
-			} catch (final XMLStreamException except) {
-				throw new MalformedXMLException(except);
-			}
-		}
-		try {
 			ostream.writeEndElement();
-		} catch (final XMLStreamException except) {
-			throw new MalformedXMLException(except);
 		}
+		ostream.writeEndElement();
 	}
 }

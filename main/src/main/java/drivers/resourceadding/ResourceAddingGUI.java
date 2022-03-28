@@ -4,6 +4,7 @@ import drivers.common.DriverFailedException;
 import java.util.logging.Logger;
 import java.util.logging.Level;
 
+import javax.xml.stream.XMLStreamException;
 import org.jetbrains.annotations.Nullable;
 
 import java.nio.file.Path;
@@ -67,7 +68,6 @@ import lovelace.util.BorderedPanel;
 import static lovelace.util.FunctionalSplitPane.verticalSplit;
 import lovelace.util.MemoizedComboBox;
 import lovelace.util.MissingFileException;
-import lovelace.util.MalformedXMLException;
 
 import java.math.BigDecimal;
 
@@ -315,7 +315,7 @@ import java.io.FileNotFoundException;
 			} catch (final IOException except) {
 				logError(logLabel).accept("I/O error while reading dropped file: " + except.getLocalizedMessage());
 				LOGGER.log(Level.SEVERE, "I/O error reading map file", except);
-			} catch (final MalformedXMLException except) {
+			} catch (final XMLStreamException except) {
 				logError(logLabel).accept(String.format("Dropped file %s contained malformed XML", file));
 				LOGGER.log(Level.SEVERE, "Dropped file contained malformed XML", except);
 			}

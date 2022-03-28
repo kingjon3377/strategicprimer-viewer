@@ -1,6 +1,5 @@
 package utility;
 
-import lovelace.util.MalformedXMLException;
 import drivers.common.DriverFailedException;
 import common.xmlio.SPFormatException;
 import java.io.IOException;
@@ -24,6 +23,7 @@ import drivers.common.SPOptions;
 import drivers.common.EmptyOptions;
 
 import drivers.common.cli.ICLIHelper;
+import javax.xml.stream.XMLStreamException;
 
 /**
  * A driver for comparing map readers.
@@ -70,7 +70,7 @@ public class ReaderComparator implements UtilityDriver {
 			} catch (final SPFormatException except) {
 				throw new DriverFailedException(except,
 					"Fatal SP format error reported by first reader");
-			} catch (final MalformedXMLException except) {
+			} catch (final XMLStreamException except) {
 				throw new DriverFailedException(except,
 					"Malformed XML reported by first reader");
 			} catch (final IOException except) {
@@ -87,7 +87,7 @@ public class ReaderComparator implements UtilityDriver {
 			} catch (final SPFormatException except) {
 				throw new DriverFailedException(except,
 					"Fatal SP format error reported by second reader");
-			} catch (final MalformedXMLException except) {
+			} catch (final XMLStreamException except) {
 				throw new DriverFailedException(except,
 					"Malformed XML reported by second reader");
 			} catch (final IOException except) {
@@ -105,7 +105,7 @@ public class ReaderComparator implements UtilityDriver {
 			final long writeStartOne = System.nanoTime();
 			try {
 				writerOne.write(outOne::append, mapOne);
-			} catch (final MalformedXMLException except) {
+			} catch (final XMLStreamException except) {
 				throw new DriverFailedException(except,
 					"First writer produced malformed XML");
 			} catch (final IOException except) {
@@ -118,7 +118,7 @@ public class ReaderComparator implements UtilityDriver {
 			final long writeStartTwo = System.nanoTime();
 			try {
 				writerTwo.write(outTwo::append, mapTwo);
-			} catch (final MalformedXMLException except) {
+			} catch (final XMLStreamException except) {
 				throw new DriverFailedException(except,
 					"Second writer produced malformed XML");
 			} catch (final IOException except) {

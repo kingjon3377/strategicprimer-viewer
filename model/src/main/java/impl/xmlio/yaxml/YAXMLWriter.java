@@ -8,6 +8,7 @@ import common.map.IMapNG;
 import impl.xmlio.SPWriter;
 import java.nio.file.Path;
 import java.nio.file.Files;
+import javax.xml.stream.XMLStreamException;
 import lovelace.util.ThrowingConsumer;
 
 /**
@@ -24,7 +25,7 @@ public class YAXMLWriter implements SPWriter {
 	 * @param obj The object to write
 	 */
 	@Override
-	public void writeSPObject(final Path arg, final Object obj) throws IOException {
+	public void writeSPObject(final Path arg, final Object obj) throws XMLStreamException, IOException {
 		try (final BufferedWriter writer = Files.newBufferedWriter(arg, StandardCharsets.UTF_8)) {
 			writeSPObject(writer::write, obj);
 		}
@@ -38,7 +39,7 @@ public class YAXMLWriter implements SPWriter {
 	 * @param obj The object to write
 	 */
 	@Override
-	public void writeSPObject(final ThrowingConsumer<String, IOException> arg, final Object obj) throws IOException {
+	public void writeSPObject(final ThrowingConsumer<String, IOException> arg, final Object obj) throws XMLStreamException, IOException {
 		wrapped.write(arg, obj, 0);
 	}
 
@@ -50,7 +51,7 @@ public class YAXMLWriter implements SPWriter {
 	 * @param map The map to write.
 	 */
 	@Override
-	public void write(final Path arg, final IMapNG map) throws IOException {
+	public void write(final Path arg, final IMapNG map) throws XMLStreamException, IOException {
 		writeSPObject(arg, map);
 	}
 
@@ -62,7 +63,8 @@ public class YAXMLWriter implements SPWriter {
 	 * @param map The map to write.
 	 */
 	@Override
-	public void write(final ThrowingConsumer<String, IOException> arg, final IMapNG map) throws IOException {
+	public void write(final ThrowingConsumer<String, IOException> arg, final IMapNG map)
+			throws XMLStreamException, IOException {
 		writeSPObject(arg, map);
 	}
 }

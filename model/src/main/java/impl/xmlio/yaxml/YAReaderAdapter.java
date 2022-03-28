@@ -5,7 +5,7 @@ import java.util.logging.Logger;
 import java.util.logging.Level;
 
 import java.io.IOException;
-import lovelace.util.MalformedXMLException;
+import javax.xml.stream.XMLStreamException;
 
 import javax.xml.namespace.QName;
 import javax.xml.stream.events.StartElement;
@@ -82,7 +82,7 @@ import java.util.stream.Collectors;
 	 * @throws SPFormatException on SP format problems
 	 */
 	public Object parse(final StartElement element, final QName parent, final Iterable<XMLEvent> stream)
-			throws SPFormatException, MalformedXMLException {
+			throws SPFormatException, XMLStreamException {
 		// Since all implementations of necessity check the tag's namespace, we leave that
 		// to them.
 		final String tag = element.getName().getLocalPart().toLowerCase();

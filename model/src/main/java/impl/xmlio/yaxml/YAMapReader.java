@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.HashMap;
 
 import javax.xml.namespace.QName;
+import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 import javax.xml.stream.events.EndElement;
@@ -43,7 +44,6 @@ import common.map.fixtures.towns.IFortress;
 
 import java.util.List;
 import java.util.stream.Collectors;
-import lovelace.util.MalformedXMLException;
 import java.text.ParseException;
 import java.util.Collection;
 import java.util.function.Predicate;
@@ -91,7 +91,7 @@ import java.util.function.Predicate;
 	 * Get the first open-tag event in our namespace in the stream.
 	 */
 	private static StartElement getFirstStartElement(final Iterable<XMLEvent> stream, final StartElement parent)
-			throws SPFormatException, MalformedXMLException {
+			throws SPFormatException, XMLStreamException {
 		for (final XMLEvent element : stream) {
 			if (element instanceof StartElement &&
 					isSupportedNamespace(((StartElement) element).getName())) {
@@ -146,7 +146,7 @@ import java.util.function.Predicate;
 	 * Parse what should be a {@link TileFixture} from the XML.
 	 */
 	private TileFixture parseFixture(final StartElement element, final QName parent, final Iterable<XMLEvent> stream)
-			throws SPFormatException, MalformedXMLException {
+			throws SPFormatException, XMLStreamException {
 		final String name = element.getName().getLocalPart();
 		if (readerCache.containsKey(name.toLowerCase())) {
 			return readerCache.get(name.toLowerCase()).read(element, parent, stream);
@@ -177,7 +177,7 @@ import java.util.function.Predicate;
 	 */
 	@Override
 	public IMutableMapNG read(final StartElement element, final QName parent, final Iterable<XMLEvent> stream)
-			throws SPFormatException, MalformedXMLException {
+			throws SPFormatException, XMLStreamException {
 		requireTag(element, parent, "map", "view");
 		final int currentTurn;
 		final StartElement mapTag;

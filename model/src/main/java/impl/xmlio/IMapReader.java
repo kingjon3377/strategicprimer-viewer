@@ -10,7 +10,6 @@ import common.map.IMutableMapNG;
 import common.xmlio.SPFormatException;
 import common.xmlio.Warning;
 import lovelace.util.MissingFileException;
-import lovelace.util.MalformedXMLException;
 
 import javax.xml.stream.XMLStreamException;
 
@@ -28,12 +27,11 @@ public interface IMapReader {
 	 * @throws XMLStreamException on low-level XML errors
 	 * @throws IOException on I/O errors not covered by {@link
 	 *                     XMLStreamException} or {@link SPFormatException}
-	 *
-	 * @param file the file to read
+	 *@param file the file to read
 	 * @param warner the Warning instance to use for warnings
 	 */
 	IMutableMapNG readMap(Path file, Warning warner)
-		throws SPFormatException, MissingFileException, MalformedXMLException, IOException;
+		throws SPFormatException, MissingFileException, XMLStreamException, IOException;
 
 	/**
 	 * Read a map from a {@link Reader}.
@@ -42,11 +40,10 @@ public interface IMapReader {
 	 *                           version, doesn't recognize the map format,
 	 *                           or finds the file contains format errors
 	 * @throws XMLStreamException on low-level XML errors
-	 *
-	 * @param file the name of the file the stream represents
+	 *@param file the name of the file the stream represents
 	 * @param istream the reader to read from
 	 * @param warner the Warning instance to use for warnings
 	 */
 	IMutableMapNG readMapFromStream(Path file, Reader istream, Warning warner)
-		throws SPFormatException, MalformedXMLException, IOException;
+		throws SPFormatException, XMLStreamException, IOException;
 }

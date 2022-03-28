@@ -1,6 +1,7 @@
 package impl.xmlio.yaxml;
 
 import javax.xml.namespace.QName;
+import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 import java.io.IOException;
@@ -22,7 +23,7 @@ import common.xmlio.Warning;
 
 	@Override
 	public Ground read(final StartElement element, final QName parent, final Iterable<XMLEvent> stream)
-			throws SPFormatException {
+			throws SPFormatException, XMLStreamException {
 		requireTag(element, parent, "ground");
 		expectAttributes(element, "kind", "ground", "exposed", "id", "image");
 		final String kind = getParamWithDeprecatedForm(element, "kind", "ground");

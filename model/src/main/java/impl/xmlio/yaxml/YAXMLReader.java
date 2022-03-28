@@ -8,12 +8,12 @@ import java.nio.file.Files;
 import java.nio.file.NoSuchFileException;
 
 import javax.xml.namespace.QName;
+import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.XMLEvent;
 import javax.xml.stream.events.StartElement;
 
 import lovelace.util.IteratorWrapper;
 import lovelace.util.MissingFileException;
-import lovelace.util.MalformedXMLException;
 import lovelace.util.TypesafeXMLEventReader;
 
 import common.idreg.IDRegistrar;
@@ -33,7 +33,7 @@ public class YAXMLReader implements IMapReader, ISPReader {
 	/**
 	 * Read an object from XML.
 	 *
-	 * @throws MalformedXMLException if the XML isn't well-formed
+	 * @throws XMLStreamException if the XML isn't well-formed
 	 * @throws SPFormatException on SP XML format error
 	 * @param file The file we're reading from
 	 * @param istream The stream to read from
@@ -45,7 +45,7 @@ public class YAXMLReader implements IMapReader, ISPReader {
 	 */
 	@Override
 	public <Element> Element readXML(final Path file, final Reader istream, final Warning warner)
-			throws SPFormatException, MalformedXMLException, IOException {
+			throws SPFormatException, XMLStreamException, IOException {
 		try (final TypesafeXMLEventReader reader = new TypesafeXMLEventReader(istream)) {
 			final Iterable<XMLEvent> eventReader = new IteratorWrapper<>(reader);
 			final IDRegistrar idFactory = new IDFactory();
@@ -56,13 +56,13 @@ public class YAXMLReader implements IMapReader, ISPReader {
 				}
 			}
 		}
-		throw new MalformedXMLException("XML stream didn't contain a start element");
+		throw new XMLStreamException("XML stream didn't contain a start element");
 	}
 
 	/**
 	 * Read a map from a stream.
 	 *
-	 * @throws MalformedXMLException on malformed XML
+	 * @throws XMLStreamException on malformed XML
 	 * @throws SPFormatException on SP format problems
 	 * @param file The file we're reading from
 	 * @param istream The stream to read from
@@ -71,7 +71,7 @@ public class YAXMLReader implements IMapReader, ISPReader {
 	 */
 	@Override
 	public IMutableMapNG readMapFromStream(final Path file, final Reader istream, final Warning warner)
-			throws SPFormatException, MalformedXMLException, IOException {
+			throws SPFormatException, XMLStreamException, IOException {
 		return readXML(file, istream, warner);
 	}
 
@@ -79,14 +79,14 @@ public class YAXMLReader implements IMapReader, ISPReader {
 	 * Read a map from XML.
 	 *
 	 * @throws IOException on I/O error
-	 * @throws MalformedXMLException on malformed XML
+	 * @throws XMLStreamException on malformed XML
 	 * @throws SPFormatException on SP format problems
 	 * @param file The file to read from
 	 * @param warner The Warning instance to use for warnings
 	 */
 	@Override
 	public IMutableMapNG readMap(final Path file, final Warning warner)
-			throws IOException, MalformedXMLException, SPFormatException, MissingFileException {
+			throws SPFormatException, MissingFileException, XMLStreamException, IOException {
 		try (final Reader istream = Files.newBufferedReader(file, StandardCharsets.UTF_8)) {
 			return readMapFromStream(file, istream, warner);
 		} catch (final FileNotFoundException|NoSuchFileException except) {

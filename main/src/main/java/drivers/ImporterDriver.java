@@ -20,7 +20,7 @@ import drivers.common.cli.ICLIHelper;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import lovelace.util.MalformedXMLException;
+import javax.xml.stream.XMLStreamException;
 import lovelace.util.Range;
 import lovelace.util.ResourceInputStream;
 
@@ -239,7 +239,7 @@ import org.jetbrains.annotations.Nullable;
 					MapIOHelper.writeMap(Paths.get(arg + ".xml"), finalRetval);
 				} catch (final IOException except) {
 					throw new DriverFailedException(except, "I/O error while writing map");
-				} catch (final MalformedXMLException except) {
+				} catch (final XMLStreamException except) {
 					throw new DriverFailedException(except, "Map writer produced invalid XML");
 				}
 			}

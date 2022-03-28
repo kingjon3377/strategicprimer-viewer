@@ -10,6 +10,7 @@ import java.util.Set;
 import java.util.HashSet;
 import java.util.HashMap;
 import java.util.logging.Logger;
+import javax.xml.stream.XMLStreamException;
 import org.sqlite.SQLiteDataSource;
 import javax.sql.DataSource;
 import common.map.HasNotes;
@@ -101,7 +102,7 @@ public final class SPDatabaseWriter implements SPWriter {
 	}
 
 	@Override
-	public void writeSPObject(final Path arg, final Object obj) throws IOException {
+	public void writeSPObject(final Path arg, final Object obj) throws XMLStreamException, IOException {
 		final Transactional db = getSQL(arg);
 		try {
 			writeSPObjectInContext(db, obj, obj);
@@ -111,18 +112,19 @@ public final class SPDatabaseWriter implements SPWriter {
 	}
 
 	@Override
-	public void writeSPObject(final ThrowingConsumer<String, IOException> arg, final Object obj) {
+	public void writeSPObject(final ThrowingConsumer<String, IOException> arg, final Object obj) throws XMLStreamException, IOException {
 		throw new UnsupportedOperationException(
 			"SPDatabaseWriter can only write to a database file, not to a stream");
 	}
 
 	@Override
-	public void write(final Path arg, final IMapNG map) throws IOException {
+	public void write(final Path arg, final IMapNG map) throws XMLStreamException, IOException {
 		writeSPObject(arg, map);
 	}
 
 	@Override
-	public void write(final ThrowingConsumer<String, IOException> arg, final IMapNG map) {
+	public void write(final ThrowingConsumer<String, IOException> arg, final IMapNG map) throws XMLStreamException,
+			                                                                                                IOException {
 		writeSPObject(arg, map);
 	}
 

@@ -14,12 +14,12 @@ import java.util.function.Consumer;
 import java.util.stream.StreamSupport;
 import java.util.stream.Stream;
 import java.util.stream.Collectors;
+import javax.xml.stream.XMLStreamException;
 import org.javatuples.Pair;
 import java.io.IOException;
 import java.nio.file.Paths;
 
 import lovelace.util.MissingFileException;
-import lovelace.util.MalformedXMLException;
 
 import java.nio.file.Path;
 
@@ -378,7 +378,7 @@ public class MapCheckerCLI implements UtilityDriver {
 			LOGGER.severe(String.format("I/O error reading %s: %s", file, except.getMessage()));
 			LOGGER.log(Level.FINE, "Full stack trace of I/O error", except);
 			return;
-		} catch (final MalformedXMLException except) {
+		} catch (final XMLStreamException except) {
 			stderr.accept("Malformed XML in " + file);
 			LOGGER.severe(String.format("Malformed XML in %s: %s", file, except.getMessage()));
 			LOGGER.log(Level.FINE, "Full stack trace of malformed-XML error", except);

@@ -23,7 +23,7 @@ import java.util.stream.Stream;
 
 import static lovelace.util.ShowErrorDialog.showErrorDialog;
 
-import lovelace.util.MalformedXMLException;
+import javax.xml.stream.XMLStreamException;
 
 import drivers.common.IDriverUsage;
 import drivers.common.DriverFactory;
@@ -172,7 +172,7 @@ import lovelace.util.ResourceInputStream;
 				} catch (final IOException except) {
 					showErrorDialog(topWindow, "I/O Error", except.getMessage());
 					LOGGER.log(Level.SEVERE, "I/O error reading dropped file", except.getMessage());
-				} catch (final MalformedXMLException except) {
+				} catch (final XMLStreamException except) {
 					showErrorDialog(topWindow, "Strategic Primer Map Format Error", except.getMessage());
 					LOGGER.log(Level.SEVERE, "Malformed XML in " + file, except);
 				}

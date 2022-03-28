@@ -1,5 +1,6 @@
 package impl.dbio;
 
+import common.xmlio.SPFormatException;
 import impl.xmlio.IMapReader;
 import common.xmlio.Warning;
 import common.map.IMutableMapNG;
@@ -7,6 +8,8 @@ import io.jenetics.facilejdbc.Transactional;
 import java.io.IOException;
 import java.io.Reader;
 import java.sql.SQLException;
+import javax.xml.stream.XMLStreamException;
+import lovelace.util.MissingFileException;
 import org.sqlite.SQLiteDataSource;
 import java.util.Map;
 import java.util.HashMap;
@@ -48,7 +51,8 @@ public class SPDatabaseReader implements IMapReader {
 	private final DBMapReader dbMapReader = new DBMapReader();
 
 	@Override
-	public IMutableMapNG readMap(final Path file, final Warning warner) throws IOException {
+	public IMutableMapNG readMap(final Path file, final Warning warner)
+			throws SPFormatException, MissingFileException, XMLStreamException, IOException {
 		final Transactional db = getSQL(file);
 		try {
 			return dbMapReader.readMap(db, warner);
@@ -58,7 +62,7 @@ public class SPDatabaseReader implements IMapReader {
 	}
 
 	@Override
-	public IMutableMapNG readMapFromStream(final Path file, final Reader istream, final Warning warner) {
+	public IMutableMapNG readMapFromStream(final Path file, final Reader istream, final Warning warner) throws SPFormatException, XMLStreamException, IOException {
 		throw new UnsupportedOperationException("Can't read a database from a stream");
 	}
 

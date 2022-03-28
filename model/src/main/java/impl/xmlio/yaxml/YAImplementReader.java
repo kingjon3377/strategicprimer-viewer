@@ -1,6 +1,7 @@
 package impl.xmlio.yaxml;
 
 import javax.xml.namespace.QName;
+import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 import java.io.IOException;
@@ -22,7 +23,7 @@ import common.xmlio.Warning;
 
 	@Override
 	public Implement read(final StartElement element, final QName parent, final Iterable<XMLEvent> stream)
-			throws SPFormatException {
+			throws SPFormatException, XMLStreamException {
 		requireTag(element, parent, "implement");
 		expectAttributes(element, "kind", "id", "image");
 		final Implement retval = new Implement(getParameter(element, "kind"),

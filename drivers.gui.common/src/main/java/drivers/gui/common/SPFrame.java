@@ -1,9 +1,9 @@
 package drivers.gui.common;
 
 import javax.swing.TransferHandler;
+import javax.xml.stream.XMLStreamException;
 import org.jetbrains.annotations.Nullable;
 
-import lovelace.util.MalformedXMLException;
 import lovelace.util.MissingFileException;
 import java.io.IOException;
 import common.xmlio.SPFormatException;
@@ -28,7 +28,7 @@ public class SPFrame extends JFrame implements ISPWindow {
 	@FunctionalInterface
 	public interface IDroppedFileHandler {
 		void accept(Path file) throws SPFormatException, IOException, MissingFileException,
-			MalformedXMLException;
+			XMLStreamException;
 	}
 
 	private final String windowTitle;
@@ -158,7 +158,7 @@ public class SPFrame extends JFrame implements ISPWindow {
 	 * Handle a dropped file.
 	 */
 	public void acceptDroppedFile(final Path file) throws SPFormatException, IOException,
-			MissingFileException, MalformedXMLException { // TODO: Wrap MalformedXMLException (or whatever it wraps) in SPFormatException (subclass) in MapIOHelper or elsewhere, to reduce exception-declaration surface
+			MissingFileException, XMLStreamException { // TODO: Wrap XMLStreamException in SPFormatException (subclass) in MapIOHelper or elsewhere, to reduce exception-declaration surface
 		droppedFileHandler.accept(file);
 	}
 

@@ -14,8 +14,6 @@ import javax.xml.stream.events.EndElement;
 import javax.xml.stream.events.Attribute;
 import javax.xml.stream.events.Characters;
 
-import lovelace.util.MalformedXMLException;
-
 import org.javatuples.Pair;
 
 import common.idreg.IDRegistrar;
@@ -34,7 +32,6 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.logging.Logger;
 import lovelace.util.IteratorWrapper;
-import java.util.Iterator;
 
 import java.util.stream.Stream;
 import java.util.stream.Collectors;
@@ -316,55 +313,47 @@ import org.jetbrains.annotations.Nullable;
 	/**
 	 * Write the given number of tabs to the given stream.
 	 *
-	 * @throws MalformedXMLException on I/O error writing to the stream
+	 * @throws XMLStreamException on I/O error writing to the stream
 	 * @param ostream The stream to write the tabs to.
 	 * @param tabs The number of tabs to write.
 	 */
-	protected static void indent(final XMLStreamWriter ostream, final int tabs) throws MalformedXMLException {
+	protected static void indent(final XMLStreamWriter ostream, final int tabs) throws XMLStreamException {
 		if (tabs < 0) {
 			throw new IllegalArgumentException("Cannot write a negative number of tabs.");
 		}
-		try {
-			ostream.writeCharacters(System.lineSeparator());
-			for (int i = 0; i < tabs; i++) {
-				ostream.writeCharacters("\t");
-			}
-		} catch (final XMLStreamException except) {
-			throw new MalformedXMLException(except);
+		ostream.writeCharacters(System.lineSeparator());
+		for (int i = 0; i < tabs; i++) {
+			ostream.writeCharacters("\t");
 		}
 	}
 
 	/**
 	 * Write an attribute if its value is nonempty.
 	 *
-	 * @throws MalformedXMLException on I/O error
+	 * @throws XMLStreamException on I/O error
 	 * @param ostream The stream to write to
 	 * @param items The names and values of the attributes to write.
 	 */
 	@SafeVarargs
 	protected static void writeNonEmptyAttributes(final XMLStreamWriter ostream,
-	                                              final Pair<String, String>... items) throws MalformedXMLException {
-		try {
-			for (final Pair<String, String> pair : items) {
-				if (!pair.getValue1().isEmpty()) {
-					ostream.writeAttribute(SP_NAMESPACE, pair.getValue0(),
-						pair.getValue1());
-				}
+	                                              final Pair<String, String>... items) throws XMLStreamException {
+		for (final Pair<String, String> pair : items) {
+			if (!pair.getValue1().isEmpty()) {
+				ostream.writeAttribute(SP_NAMESPACE, pair.getValue0(),
+					pair.getValue1());
 			}
-		} catch (final XMLStreamException except) {
-			throw new MalformedXMLException(except);
 		}
 	}
 
 	/**
 	 * If the object has a custom (non-default) image, write it to XML.
 	 *
-	 * @throws MalformedXMLException on I/O error when writing
+	 * @throws XMLStreamException on I/O error when writing
 	 * @param ostream The stream to write to
 	 * @param obj The object being written out that might have a custom image
 	 */
 	protected static void writeImage(final XMLStreamWriter ostream, final HasImage obj)
-			throws MalformedXMLException {
+			throws XMLStreamException {
 		final String image = obj.getImage();
 		// FIXME: Should also skip empty image
 		if (!image.equals(obj.getDefaultImage())) {
@@ -550,71 +539,63 @@ import org.jetbrains.annotations.Nullable;
 	 *
 	 * TODO: Split to "writeLeafTag" and "writeNonLeafTag"?
 	 *
-	 * @throws MalformedXMLException on I/O error writing to the stream
+	 * @throws XMLStreamException on I/O error writing to the stream
 	 * @param ostream The stream to write to
 	 * @param tag The tag to write
 	 * @param indentation The indentation level. If positive, write a newline before indenting; if zero, write a default-namespace declaration.
 	 * @param leaf Whether to automatically close the tag
 	 */
 	protected static void writeTag(final XMLStreamWriter ostream, final String tag, final int indentation, final boolean leaf)
-			throws MalformedXMLException {
+			throws XMLStreamException {
 		if (indentation < 0) {
 			throw new IllegalArgumentException("Indentation cannot be negative");
 		}
 		if (indentation > 0) {
 			indent(ostream, indentation);
 		}
-		try {
-			if (leaf) {
-				ostream.writeEmptyElement(SP_NAMESPACE, tag);
-			} else {
-				ostream.writeStartElement(SP_NAMESPACE, tag);
-			}
-			if (indentation == 0) {
-				ostream.writeDefaultNamespace(SP_NAMESPACE);
-			}
-		} catch (final XMLStreamException except) {
-			throw new MalformedXMLException(except);
+		if (leaf) {
+			ostream.writeEmptyElement(SP_NAMESPACE, tag);
+		} else {
+			ostream.writeStartElement(SP_NAMESPACE, tag);
+		}
+		if (indentation == 0) {
+			ostream.writeDefaultNamespace(SP_NAMESPACE);
 		}
 	}
 
 	/**
 	 * Write attributes to XML.
 	 *
-	 * @throws MalformedXMLException on I/O error
+	 * @throws XMLStreamException on I/O error
 	 * @param ostream The stream to write to
 	 * @param attributes The name and values of the attributes to write.
 	 * Only supports String, boolean, and numeric attributes.
 	 */
 	@SafeVarargs
 	protected static void writeAttributes(final XMLStreamWriter ostream, final Pair<String, ?>... attributes)
-			throws MalformedXMLException {
-		try {
-			for (final Pair<String, ?> pair : attributes) {
-				final String name = pair.getValue0();
-				final Object item = pair.getValue1();
-				if (item instanceof String) {
-					ostream.writeAttribute(SP_NAMESPACE, name, (String) item);
-				} else if (item instanceof BigDecimal) {
-					if (((BigDecimal) item).scale() <= 0) {
-						ostream.writeAttribute(SP_NAMESPACE, name,
-							Integer.toString(((BigDecimal) item).intValue()));
-					} else {
-						ostream.writeAttribute(SP_NAMESPACE, name,
-							((BigDecimal) item).toPlainString());
-					}
-				} else if (item instanceof BigInteger || item instanceof Integer ||
-						item instanceof Boolean || item instanceof Long) {
-					ostream.writeAttribute(SP_NAMESPACE, name, item.toString());
+			throws XMLStreamException {
+		for (final Pair<String, ?> pair : attributes) {
+			final String name = pair.getValue0();
+			final Object item = pair.getValue1();
+			if (item instanceof String) {
+				ostream.writeAttribute(SP_NAMESPACE, name, (String) item);
+			} else if (item instanceof BigDecimal) {
+				if (((BigDecimal) item).scale() <= 0) {
+					ostream.writeAttribute(SP_NAMESPACE, name,
+						Integer.toString(((BigDecimal) item).intValue()));
 				} else {
-					LOGGER.warning(String.format(
-						"Unhandled attribute type %s in FluidBase.writeAttributes",
-						item.getClass().getName()));
-					ostream.writeAttribute(SP_NAMESPACE, name, item.toString());
+					ostream.writeAttribute(SP_NAMESPACE, name,
+						((BigDecimal) item).toPlainString());
 				}
+			} else if (item instanceof BigInteger || item instanceof Integer ||
+					item instanceof Boolean || item instanceof Long) {
+				ostream.writeAttribute(SP_NAMESPACE, name, item.toString());
+			} else {
+				LOGGER.warning(String.format(
+					"Unhandled attribute type %s in FluidBase.writeAttributes",
+					item.getClass().getName()));
+				ostream.writeAttribute(SP_NAMESPACE, name, item.toString());
 			}
-		} catch (final XMLStreamException except) {
-			throw new MalformedXMLException(except);
 		}
 	}
 

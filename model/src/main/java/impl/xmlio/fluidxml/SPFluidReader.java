@@ -1,5 +1,6 @@
 package impl.xmlio.fluidxml;
 
+import javax.xml.stream.XMLStreamException;
 import org.javatuples.Pair;
 
 import java.io.IOException;
@@ -29,7 +30,6 @@ import javax.xml.stream.events.EndElement;
 
 import lovelace.util.IteratorWrapper;
 import lovelace.util.MissingFileException;
-import lovelace.util.MalformedXMLException;
 import lovelace.util.TypesafeXMLEventReader;
 
 import common.idreg.IDRegistrar;
@@ -627,7 +627,7 @@ public class SPFluidReader implements IMapReader, ISPReader {
 
 	@Override
 	public <Type> Type readXML(final Path file, final Reader istream, final Warning warner)
-			throws SPFormatException, MalformedXMLException {
+			throws SPFormatException, XMLStreamException, IOException {
 		try (final TypesafeXMLEventReader reader = new TypesafeXMLEventReader(istream)) {
 			final Iterable<XMLEvent> eventReader = new IteratorWrapper<>(reader);
 			final IMutablePlayerCollection players = new PlayerCollection();
@@ -640,14 +640,14 @@ public class SPFluidReader implements IMapReader, ISPReader {
 				}
 			}
 		} catch (final IOException except) {
-			throw new MalformedXMLException(except);
+			throw new XMLStreamException(except);
 		}
-		throw new MalformedXMLException("XML stream didn't contain a start element");
+		throw new XMLStreamException("XML stream didn't contain a start element");
 	}
 
 	@Override
 	public IMutableMapNG readMap(final Path file, final Warning warner)
-			throws IOException, MissingFileException, SPFormatException, MalformedXMLException {
+			throws SPFormatException, MissingFileException, XMLStreamException, IOException {
 		try (final BufferedReader istream = Files.newBufferedReader(file, StandardCharsets.UTF_8)) {
 			return readMapFromStream(file, istream, warner);
 		} catch (final FileNotFoundException|NoSuchFileException except) {
@@ -657,7 +657,7 @@ public class SPFluidReader implements IMapReader, ISPReader {
 
 	@Override
 	public IMutableMapNG readMapFromStream(final Path file, final Reader istream, final Warning warner)
-			throws SPFormatException, MalformedXMLException {
+			throws SPFormatException, XMLStreamException, IOException {
 		return readXML(file, istream, warner);
 	}
 }

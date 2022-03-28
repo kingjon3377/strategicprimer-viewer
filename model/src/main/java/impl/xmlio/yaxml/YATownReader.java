@@ -1,6 +1,7 @@
 package impl.xmlio.yaxml;
 
 import javax.xml.namespace.QName;
+import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.XMLEvent;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.EndElement;
@@ -8,7 +9,6 @@ import java.io.IOException;
 
 import lovelace.util.ThrowingConsumer;
 import common.xmlio.SPFormatException;
-import lovelace.util.MalformedXMLException;
 import common.idreg.IDRegistrar;
 import common.map.IPlayerCollection;
 import common.map.Player;
@@ -94,7 +94,7 @@ import java.util.logging.Logger;
 	}
 
 	public CommunityStats parseCommunityStats(final StartElement element, final QName parent,
-	                                          final Iterable<XMLEvent> stream) throws SPFormatException, MalformedXMLException {
+	                                          final Iterable<XMLEvent> stream) throws SPFormatException, XMLStreamException {
 		requireTag(element, parent, "population");
 		expectAttributes(element, "size");
 		final CommunityStats retval = new CommunityStats(getIntegerParameter(element, "size"));
@@ -194,7 +194,7 @@ import java.util.logging.Logger;
 	}
 
 	private ITownFixture parseVillage(final StartElement element, final Iterable<XMLEvent> stream)
-			throws SPFormatException, MalformedXMLException {
+			throws SPFormatException, XMLStreamException {
 		expectAttributes(element, "status", "name", "race", "image", "portrait", "id", "owner");
 		requireNonEmptyParameter(element, "name", false);
 		final int idNum = getOrGenerateID(element);
@@ -227,7 +227,7 @@ import java.util.logging.Logger;
 	}
 
 	private ITownFixture parseTown(final StartElement element, final Iterable<XMLEvent> stream)
-			throws SPFormatException, MalformedXMLException {
+			throws SPFormatException, XMLStreamException {
 		expectAttributes(element, "name", "status", "size", "dc", "id", "image", "owner",
 			"portrait");
 		requireNonEmptyParameter(element, "name", false);
@@ -282,7 +282,7 @@ import java.util.logging.Logger;
 	}
 
 	private ITownFixture parseFortress(final StartElement element, final Iterable<XMLEvent> stream)
-			throws SPFormatException, MalformedXMLException {
+			throws SPFormatException, XMLStreamException {
 		expectAttributes(element, "owner", "name", "size", "status", "id", "portrait", "image");
 		requireNonEmptyParameter(element, "owner", false);
 		requireNonEmptyParameter(element, "name", false);
@@ -393,7 +393,7 @@ import java.util.logging.Logger;
 
 	@Override
 	public ITownFixture read(final StartElement element, final QName parent, final Iterable<XMLEvent> stream)
-			throws SPFormatException, MalformedXMLException {
+			throws SPFormatException, XMLStreamException {
 		requireTag(element, parent, "village", "fortress", "town", "city", "fortification");
 		switch (element.getName().getLocalPart().toLowerCase()) {
 		case "village":

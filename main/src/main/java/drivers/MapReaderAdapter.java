@@ -1,5 +1,6 @@
 package drivers;
 
+import javax.xml.stream.XMLStreamException;
 import lovelace.util.MissingFileException;
 import java.io.FileNotFoundException;
 import java.nio.file.NoSuchFileException;
@@ -7,8 +8,6 @@ import java.nio.file.Path;
 import java.util.logging.Logger;
 import java.io.IOException;
 import java.io.Reader;
-
-import lovelace.util.MalformedXMLException;
 
 import common.xmlio.SPFormatException;
 import common.xmlio.Warning;
@@ -47,7 +46,7 @@ public final class MapReaderAdapter {
 			throw new DriverFailedException(except, "File not found");
 		} catch (final IOException except) {
 			throw new DriverFailedException(except, "I/O error while reading");
-		} catch (final MalformedXMLException except) {
+		} catch (final XMLStreamException except) {
 			throw new DriverFailedException(except, "Malformed XML");
 		} catch (final SPFormatException except) {
 			throw new DriverFailedException(except, "SP map format error");
@@ -66,7 +65,7 @@ public final class MapReaderAdapter {
 			throw new DriverFailedException(except, "File not found");
 		} catch (final IOException except) {
 			throw new DriverFailedException(except, "I/O error while reading");
-		} catch (final MalformedXMLException except) {
+		} catch (final XMLStreamException except) {
 			throw new DriverFailedException(except, "Malformed XML");
 		} catch (final SPFormatException except) {
 			throw new DriverFailedException(except, "SP map format error");
@@ -83,7 +82,7 @@ public final class MapReaderAdapter {
 			return new SimpleDriverModel(MapIOHelper.readMap(stream, warner));
 		} catch (final IOException except) {
 			throw new DriverFailedException(except, "I/O error while reading");
-		} catch (final MalformedXMLException except) {
+		} catch (final XMLStreamException except) {
 			throw new DriverFailedException(except, "Malformed XML");
 		} catch (final SPFormatException except) {
 			throw new DriverFailedException(except, "SP map format error");
@@ -112,7 +111,7 @@ public final class MapReaderAdapter {
 			throw new DriverFailedException(except, "File not found: " + current);
 		} catch (final IOException except) {
 			throw new DriverFailedException(except, "I/O error reading from file " + current);
-		} catch (final MalformedXMLException except) {
+		} catch (final XMLStreamException except) {
 			throw new DriverFailedException(except, "Malformed XML in " + current);
 		} catch (final SPFormatException except) {
 			throw new DriverFailedException(except, "SP map format error in " + current);
@@ -131,7 +130,7 @@ public final class MapReaderAdapter {
 			try {
 				MapIOHelper.writeMap(mainFile, model.getMap());
 				model.setMapModified(false);
-			} catch (final MalformedXMLException except) {
+			} catch (final XMLStreamException except) {
 				throw new DriverFailedException(except,
 					"Malformed XML while writing " + mainFile);
 			} catch (final IOException except) {
@@ -147,7 +146,7 @@ public final class MapReaderAdapter {
 					try {
 						MapIOHelper.writeMap(filename, map);
 						((IMultiMapModel) model).clearModifiedFlag(map);
-					} catch (final MalformedXMLException except) {
+					} catch (final XMLStreamException except) {
 						throw new DriverFailedException(except,
 							"Malformed XML while writing " + filename);
 					} catch (final IOException except) {

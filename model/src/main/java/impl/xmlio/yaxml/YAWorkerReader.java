@@ -3,6 +3,7 @@ package impl.xmlio.yaxml;
 import common.map.fixtures.Implement;
 import common.map.fixtures.mobile.Animal;
 import common.map.fixtures.mobile.MobileFixture;
+import javax.xml.stream.XMLStreamException;
 import org.jetbrains.annotations.Nullable;
 
 import javax.xml.namespace.QName;
@@ -166,7 +167,7 @@ import impl.xmlio.exceptions.UnwantedChildException;
 
 	@Override
 	public IWorker read(final StartElement element, final QName parent, final Iterable<XMLEvent> stream)
-			throws SPFormatException {
+			throws SPFormatException, XMLStreamException {
 		requireTag(element, parent, "worker");
 		expectAttributes(element, "name", "race", "image", "portrait", "id");
 		final Worker retval = new Worker(getParameter(element, "name"),

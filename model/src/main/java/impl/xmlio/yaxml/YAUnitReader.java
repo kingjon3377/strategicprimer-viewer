@@ -1,6 +1,7 @@
 package impl.xmlio.yaxml;
 
 import javax.xml.namespace.QName;
+import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 import javax.xml.stream.events.Characters;
@@ -19,7 +20,6 @@ import impl.xmlio.exceptions.MissingPropertyException;
 import impl.xmlio.exceptions.UnwantedChildException;
 import java.util.Map;
 import java.util.List;
-import lovelace.util.MalformedXMLException;
 
 /**
  * A reader for units.
@@ -95,11 +95,12 @@ import lovelace.util.MalformedXMLException;
 	}
 
 	private UnitMember parseChild(final StartElement element, final QName parent, final Iterable<XMLEvent> stream)
-			throws SPFormatException, MalformedXMLException {
+			throws SPFormatException, XMLStreamException {
 		final String name = element.getName().getLocalPart().toLowerCase();
 		for (final YAReader<?, ?> reader : readers) {
 			if (reader.isSupportedTag(name)) {
-				final Object retval = reader.read(element, parent, stream);
+				final Object retval;
+				retval = reader.read(element, parent, stream);
 				if (retval instanceof UnitMember) {
 					return (UnitMember) retval;
 				} else {
@@ -112,7 +113,7 @@ import lovelace.util.MalformedXMLException;
 
 	@Override
 	public IUnit read(final StartElement element, final QName parent, final Iterable<XMLEvent> stream)
-			throws SPFormatException, MalformedXMLException {
+			throws SPFormatException, XMLStreamException {
 		requireTag(element, parent, "unit");
 		expectAttributes(element, "name", "owner", "image", "portrait", "kind", "id", "type");
 		requireNonEmptyParameter(element, "name", false);

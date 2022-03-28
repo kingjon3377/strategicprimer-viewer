@@ -1,6 +1,7 @@
 package impl.xmlio.yaxml;
 
 import javax.xml.namespace.QName;
+import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 import java.io.IOException;
@@ -33,7 +34,7 @@ import lovelace.util.ThrowingConsumer;
 
 	@Override
 	public ExplorableFixture read(final StartElement element, final QName parent, final Iterable<XMLEvent> stream)
-			throws SPFormatException {
+			throws SPFormatException, XMLStreamException {
 		requireTag(element, parent, "battlefield", "cave");
 		expectAttributes(element, "id", "dc", "image");
 		final int idNum = getOrGenerateID(element);

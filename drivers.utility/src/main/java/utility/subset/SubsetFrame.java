@@ -1,6 +1,7 @@
 package utility.subset;
 
 import drivers.common.DriverFailedException;
+import javax.xml.stream.XMLStreamException;
 import lovelace.util.MissingFileException;
 import java.util.logging.Level;
 import java.nio.file.NoSuchFileException;
@@ -25,7 +26,6 @@ import impl.xmlio.MapIOHelper;
 import common.xmlio.Warning;
 import common.xmlio.SPFormatException;
 import drivers.gui.common.SPFrame;
-import lovelace.util.MalformedXMLException;
 import drivers.common.ISPDriver;
 import java.util.logging.Logger;
 
@@ -105,7 +105,7 @@ import java.util.logging.Logger;
 		} catch (final MissingFileException|NoSuchFileException|FileNotFoundException except) {
 			printParagraph(String.format("File %s not found", arg), LabelTextColor.RED);
 			throw new DriverFailedException(except, String.format("File %s not found", arg));
-		} catch (final MalformedXMLException except) {
+		} catch (final XMLStreamException except) {
 			printParagraph(String.format(
 				"ERROR: Malformed XML in %s; see following error message for details", arg),
 				LabelTextColor.RED);
@@ -146,7 +146,7 @@ import java.util.logging.Logger;
 			printParagraph("FAIL: I/O error reading file", LabelTextColor.RED);
 			LOGGER.log(Level.SEVERE, "I/O error reading " + path, except);
 			return;
-		} catch (final MalformedXMLException except) {
+		} catch (final XMLStreamException except) {
 			printParagraph("FAIL: Malformed XML; see following error message for details",
 				LabelTextColor.RED);
 			printParagraph(except.getMessage(), LabelTextColor.RED);

@@ -1,7 +1,7 @@
 package impl.xmlio.yaxml;
 
 import common.xmlio.SPFormatException;
-import lovelace.util.MalformedXMLException;
+import javax.xml.stream.XMLStreamException;
 
 import java.io.IOException;
 
@@ -24,7 +24,7 @@ public interface YAReader<Item, Value> {
 	 * @param stream The stream of XML events to read more from
 	 */
 	Item read(StartElement element, QName parent, Iterable<XMLEvent> stream)
-		throws SPFormatException, MalformedXMLException;
+		throws SPFormatException, XMLStreamException;
 
 	/**
 	 * Write an object to the stream.

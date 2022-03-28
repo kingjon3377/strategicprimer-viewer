@@ -1,6 +1,7 @@
 package impl.xmlio.fluidxml;
 
 import java.util.Collection;
+import javax.xml.stream.XMLStreamException;
 import org.javatuples.Pair;
 
 import javax.xml.namespace.QName;
@@ -17,7 +18,6 @@ import common.map.fixtures.terrain.Forest;
 import common.xmlio.Warning;
 import impl.xmlio.exceptions.MissingPropertyException;
 import common.xmlio.SPFormatException;
-import lovelace.util.MalformedXMLException;
 import common.map.HasExtent;
 import java.util.stream.Collectors;
 
@@ -54,7 +54,7 @@ import java.util.stream.Collectors;
 	}
 
 	public static void writeGround(final XMLStreamWriter ostream, final Ground obj, final int indent)
-			throws MalformedXMLException {
+			throws XMLStreamException {
 		writeTag(ostream, "ground", indent, true);
 		writeAttributes(ostream, Pair.with("kind", obj.getKind()),
 			Pair.with("exposed", obj.isExposed()), Pair.with("id", obj.getId()));
@@ -62,7 +62,7 @@ import java.util.stream.Collectors;
 	}
 
 	public static void writeForest(final XMLStreamWriter ostream, final Forest obj, final int indent)
-			throws MalformedXMLException {
+			throws XMLStreamException {
 		writeTag(ostream, "forest", indent, true);
 		writeAttributes(ostream, Pair.with("kind", obj.getKind()));
 		if (obj.isRows()) {
@@ -98,7 +98,7 @@ import java.util.stream.Collectors;
 	}
 
 	public static void writeRiver(final XMLStreamWriter ostream, final River obj, final int indent)
-			throws MalformedXMLException {
+			throws XMLStreamException {
 		if (River.Lake == obj) {
 			writeTag(ostream, "lake", indent, true);
 		} else {
@@ -108,7 +108,7 @@ import java.util.stream.Collectors;
 	}
 
 	public static void writeRivers(final XMLStreamWriter ostream, final Collection<River> obj, final int indent)
-			throws MalformedXMLException {
+			throws XMLStreamException {
 		for (final River river : obj.stream().sorted().collect(Collectors.toList())) {
 			writeRiver(ostream, river, indent);
 		}

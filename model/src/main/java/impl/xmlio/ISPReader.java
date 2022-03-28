@@ -8,7 +8,7 @@ import java.util.List;
 import common.xmlio.Warning;
 
 import common.xmlio.SPFormatException;
-import lovelace.util.MalformedXMLException;
+import javax.xml.stream.XMLStreamException;
 
 
 /**
@@ -36,5 +36,5 @@ public interface ISPReader {
 	 * @param warner "The Warning instance to use for warnings
 	 */
 	<Element> Element readXML(Path file, Reader istream, Warning warner)
-		throws SPFormatException, MalformedXMLException, IOException;
+		throws SPFormatException, XMLStreamException, IOException;
 }

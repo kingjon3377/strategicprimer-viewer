@@ -36,8 +36,8 @@ import java.util.HashMap;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Optional;
+import javax.xml.stream.XMLStreamException;
 import lovelace.util.LongAccumulator;
-import lovelace.util.MalformedXMLException;
 import lovelace.util.MissingFileException;
 import lovelace.util.Range;
 import org.javatuples.Pair;
@@ -252,7 +252,7 @@ public class DrawHelperComparator implements UtilityDriver {
 				throw new DriverFailedException(except, arg + " not found");
 			} catch (final IOException except) {
 				throw new DriverFailedException(except, "I/O error while reading " + arg);
-			} catch (final MalformedXMLException except) {
+			} catch (final XMLStreamException except) {
 				throw new DriverFailedException(except, "Malformed XML in " + arg);
 			}
 			mapSizes.put(arg, (int) map.streamLocations().count());

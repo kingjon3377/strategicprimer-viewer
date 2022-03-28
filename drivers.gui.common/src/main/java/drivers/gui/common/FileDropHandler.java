@@ -1,6 +1,6 @@
 package drivers.gui.common;
 
-import lovelace.util.MalformedXMLException;
+import javax.xml.stream.XMLStreamException;
 import lovelace.util.MissingFileException;
 import java.io.IOException;
 import common.xmlio.SPFormatException;
@@ -57,7 +57,7 @@ import java.util.logging.Level;
 			} catch (final MissingFileException except) { // FIXME: Or more-standard equivalents
 				LOGGER.log(Level.WARNING, "Dropped file not actually present", except);
 				return false;
-			} catch (final MalformedXMLException except) {
+			} catch (final XMLStreamException except) {
 				LOGGER.log(Level.WARNING, "Malformed XML in dropped file", except);
 				return false;
 			} catch (final IOException except) {

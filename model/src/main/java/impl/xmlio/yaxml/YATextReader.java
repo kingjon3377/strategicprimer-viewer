@@ -1,6 +1,7 @@
 package impl.xmlio.yaxml;
 
 import javax.xml.namespace.QName;
+import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 import javax.xml.stream.events.Characters;
@@ -29,7 +30,7 @@ import impl.xmlio.exceptions.UnwantedChildException;
 
 	@Override
 	public TextFixture read(final StartElement element, final QName parent, final Iterable<XMLEvent> stream)
-			throws SPFormatException {
+			throws SPFormatException, XMLStreamException {
 		requireTag(element, parent, "text");
 		expectAttributes(element, "turn", "image");
 		final StringBuilder builder = new StringBuilder();

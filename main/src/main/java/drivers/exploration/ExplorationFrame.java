@@ -21,11 +21,12 @@ import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
 
 import static lovelace.util.FunctionalSplitPane.horizontalSplit;
+
+import javax.xml.stream.XMLStreamException;
 import lovelace.util.BorderedPanel;
 import lovelace.util.ListenedButton;
 import goldberg.ImprovedComboBox;
 import lovelace.util.FunctionalGroupLayout;
-import lovelace.util.MalformedXMLException;
 import lovelace.util.MissingFileException;
 import lovelace.util.SimpleCardLayout;
 
@@ -126,7 +127,7 @@ import org.eclipse.jdt.annotation.Nullable;
 			LOGGER.log(Level.SEVERE, "Dropped file not found: " + file, except);
 		} catch (final IOException except) {
 			LOGGER.log(Level.SEVERE, "I/O error reading dropped file", except);
-		} catch (final MalformedXMLException except) {
+		} catch (final XMLStreamException except) {
 			LOGGER.log(Level.SEVERE, "Malformed XML in dropped file", except);
 		}
 	}

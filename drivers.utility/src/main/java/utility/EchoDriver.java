@@ -2,6 +2,7 @@ package utility;
 
 import java.nio.file.Paths;
 import java.io.IOException;
+import javax.xml.stream.XMLStreamException;
 import lovelace.util.MissingFileException;
 
 import common.map.Point;
@@ -18,7 +19,6 @@ import drivers.common.UtilityDriver;
 import drivers.common.DriverFailedException;
 import drivers.common.IncorrectUsageException;
 import drivers.common.SPOptions;
-import lovelace.util.MalformedXMLException;
 
 /**
  * A driver that reads in maps and then writes them out again---this is
@@ -54,7 +54,7 @@ public class EchoDriver implements UtilityDriver {
 				throw new DriverFailedException(except, "No such file " + inArg);
 			} catch (final IOException except) {
 				throw new DriverFailedException(except, "I/O error reading file " + inArg);
-			} catch (final MalformedXMLException except) {
+			} catch (final XMLStreamException except) {
 				throw new DriverFailedException(except, "Malformed XML in " + inArg);
 			} catch (final SPFormatException except) {
 				throw new DriverFailedException(except, "SP map format error in " + inArg);
@@ -100,7 +100,7 @@ public class EchoDriver implements UtilityDriver {
 
 			try {
 				MapIOHelper.writeMap(Paths.get(outArg), map);
-			} catch (final MalformedXMLException except) {
+			} catch (final XMLStreamException except) {
 				throw new DriverFailedException(except, "Malformed XML writing " + outArg);
 			} catch (final IOException except) {
 				throw new DriverFailedException(except, "I/O error writing " + outArg);

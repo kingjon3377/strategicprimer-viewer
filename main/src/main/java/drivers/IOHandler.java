@@ -4,6 +4,7 @@ import drivers.common.DriverFailedException;
 import drivers.common.ViewerDriverFactory;
 import drivers.common.cli.ICLIHelper;
 import java.util.ServiceLoader;
+import javax.xml.stream.XMLStreamException;
 import lovelace.util.MissingFileException;
 import org.jetbrains.annotations.Nullable;
 
@@ -36,7 +37,6 @@ import drivers.common.ModelDriver;
 import drivers.common.SPOptions;
 import drivers.common.UtilityGUI;
 import drivers.common.MultiMapGUIDriver;
-import lovelace.util.MalformedXMLException;
 import java.io.IOException;
 import java.awt.Component;
 import java.awt.Frame;
@@ -122,7 +122,7 @@ public class IOHandler implements ActionListener {
 	private static void handleError(final Exception except, final String filename, final @Nullable Component source,
 	                                final String errorTitle, final String verb) {
 		final String message;
-		if (except instanceof MalformedXMLException) {
+		if (except instanceof XMLStreamException) {
 			message = "Malformed XML in " + filename;
 		} else if (except instanceof FileNotFoundException || except instanceof NoSuchFileException) {
 			message = String.format("File %s not found", filename);
@@ -142,7 +142,7 @@ public class IOHandler implements ActionListener {
 		return path -> {
 			try {
 				handler.accept(MapIOHelper.readMap(path, Warning.getDefaultHandler()));
-			} catch (final MissingFileException|IOException|SPFormatException|MalformedXMLException except) {
+			} catch (final MissingFileException|IOException|SPFormatException| XMLStreamException except) {
 				handleError(except, path.toString(), source, errorTitle, "reading");
 			}
 		};
@@ -245,7 +245,7 @@ public class IOHandler implements ActionListener {
 					try {
 						MapIOHelper.writeMap(givenFile, md.getModel().getMap());
 						md.getModel().setMapModified(false);
-					} catch (final IOException | MalformedXMLException except) {
+					} catch (final IOException | XMLStreamException except) {
 						handleError(except, givenFile.toString(), source, errorTitle,
 								"writing to");
 					}
@@ -263,7 +263,7 @@ public class IOHandler implements ActionListener {
 							MapIOHelper.writeMap(path, md.getModel().getMap());
 							md.getModel().setMapFilename(path);
 							md.getModel().setMapModified(false);
-						} catch (final IOException|MalformedXMLException except) {
+						} catch (final IOException|XMLStreamException except) {
 							handleError(except, path.toString(), source,
 								errorTitle, "writing to");
 						}
@@ -304,7 +304,7 @@ public class IOHandler implements ActionListener {
 							MapIOHelper.writeMap(file, map);
 							((MultiMapGUIDriver) driver).getModel()
 								.clearModifiedFlag(map);
-						} catch (final IOException|MalformedXMLException except) {
+						} catch (final IOException|XMLStreamException except) {
 							handleError(except, file.toString(), source,
 								errorTitle, "writing to");
 						}

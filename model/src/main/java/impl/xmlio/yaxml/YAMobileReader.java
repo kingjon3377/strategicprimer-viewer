@@ -1,6 +1,7 @@
 package impl.xmlio.yaxml;
 
 import javax.xml.namespace.QName;
+import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 import java.util.Map;
@@ -134,7 +135,7 @@ import common.xmlio.Warning;
 
 	@Override
 	public MobileFixture read(final StartElement element, final QName parent, final Iterable<XMLEvent> stream)
-			throws SPFormatException {
+			throws SPFormatException, XMLStreamException {
 		requireTag(element, parent, SUPPORTED_TAGS);
 		final MobileFixture retval;
 		switch (element.getName().getLocalPart().toLowerCase()) {

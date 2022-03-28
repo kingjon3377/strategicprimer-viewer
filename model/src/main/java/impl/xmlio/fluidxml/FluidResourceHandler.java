@@ -1,5 +1,6 @@
 package impl.xmlio.fluidxml;
 
+import javax.xml.stream.XMLStreamException;
 import org.javatuples.Pair;
 
 import javax.xml.namespace.QName;
@@ -30,7 +31,6 @@ import impl.xmlio.exceptions.MissingPropertyException;
 import impl.xmlio.exceptions.DeprecatedPropertyException;
 import impl.xmlio.exceptions.UnwantedChildException;
 import common.xmlio.SPFormatException;
-import lovelace.util.MalformedXMLException;
 import common.map.HasExtent;
 
 /* package */ class FluidResourceHandler extends FluidBase {
@@ -249,7 +249,7 @@ import common.map.HasExtent;
 	}
 
 	public static void writeResource(final XMLStreamWriter ostream, final IResourcePile obj, final int indent)
-			throws MalformedXMLException {
+			throws XMLStreamException {
 		writeTag(ostream, "resource", indent, true);
 		writeAttributes(ostream, Pair.with("id", obj.getId()), Pair.with("kind", obj.getKind()),
 			Pair.with("contents", obj.getContents()),
@@ -262,7 +262,7 @@ import common.map.HasExtent;
 	}
 
 	public static void writeImplement(final XMLStreamWriter ostream, final Implement obj, final int indent)
-			throws MalformedXMLException {
+			throws XMLStreamException {
 		writeTag(ostream, "implement", indent, true);
 		writeAttributes(ostream, Pair.with("kind", obj.getKind()), Pair.with("id", obj.getId()));
 		if (obj.getCount() > 1) {
@@ -272,7 +272,7 @@ import common.map.HasExtent;
 	}
 
 	public static void writeCache(final XMLStreamWriter ostream, final CacheFixture obj, final int indent)
-			throws MalformedXMLException {
+			throws XMLStreamException {
 		writeTag(ostream, "cache", indent, true);
 		writeAttributes(ostream, Pair.with("kind", obj.getKind()),
 			Pair.with("contents", obj.getContents()), Pair.with("id", obj.getId()));
@@ -280,7 +280,7 @@ import common.map.HasExtent;
 	}
 
 	public static void writeMeadow(final XMLStreamWriter ostream, final Meadow obj, final int indent)
-			throws MalformedXMLException {
+			throws XMLStreamException {
 		writeTag(ostream, (obj.isField()) ? "field" : "meadow", indent, true);
 		writeAttributes(ostream, Pair.with("kind", obj.getKind()),
 			Pair.with("cultivated", obj.isCultivated()),
@@ -292,7 +292,7 @@ import common.map.HasExtent;
 	}
 
 	public static void writeGrove(final XMLStreamWriter ostream, final Grove obj, final int indent)
-			throws MalformedXMLException {
+			throws XMLStreamException {
 		writeTag(ostream, (obj.isOrchard()) ? "orchard" : "grove", indent, true);
 		writeAttributes(ostream, Pair.with("cultivated", obj.isCultivated()),
 			Pair.with("kind", obj.getKind()), Pair.with("id", obj.getId()));
@@ -303,7 +303,7 @@ import common.map.HasExtent;
 	}
 
 	public static void writeMine(final XMLStreamWriter ostream, final Mine obj, final int indent)
-			throws MalformedXMLException {
+			throws XMLStreamException {
 		writeTag(ostream, "mine", indent, true);
 		writeAttributes(ostream, Pair.with("kind", obj.getKind()),
 			Pair.with("status", obj.getStatus().toString()), Pair.with("id", obj.getId()));
@@ -311,7 +311,7 @@ import common.map.HasExtent;
 	}
 
 	public static void writeMineral(final XMLStreamWriter ostream, final MineralVein obj, final int indent)
-			throws MalformedXMLException {
+			throws XMLStreamException {
 		writeTag(ostream, "mineral", indent, true);
 		writeAttributes(ostream, Pair.with("kind", obj.getKind()),
 			Pair.with("exposed", obj.isExposed()), Pair.with("dc", obj.getDC()),
@@ -320,7 +320,7 @@ import common.map.HasExtent;
 	}
 
 	public static void writeStone(final XMLStreamWriter ostream, final StoneDeposit obj, final int indent)
-			throws MalformedXMLException {
+			throws XMLStreamException {
 		writeTag(ostream, "stone", indent, true);
 		writeAttributes(ostream, Pair.with("kind", obj.getStone().toString()),
 			Pair.with("dc", obj.getDC()), Pair.with("id", obj.getId()));
@@ -328,7 +328,7 @@ import common.map.HasExtent;
 	}
 
 	public static void writeShrub(final XMLStreamWriter ostream, final Shrub obj, final int indent)
-			throws MalformedXMLException {
+			throws XMLStreamException {
 		writeTag(ostream, "shrub", indent, true);
 		writeAttributes(ostream, Pair.with("kind", obj.getKind()), Pair.with("id", obj.getId()));
 		if (obj.getPopulation() >= 1) {

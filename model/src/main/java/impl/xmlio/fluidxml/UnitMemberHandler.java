@@ -34,7 +34,6 @@ import impl.xmlio.exceptions.UnwantedChildException;
 import impl.xmlio.exceptions.UnsupportedPropertyException;
 import impl.xmlio.exceptions.UnsupportedTagException;
 import common.xmlio.SPFormatException;
-import lovelace.util.MalformedXMLException;
 import java.util.List;
 import java.util.stream.StreamSupport;
 import java.util.function.Predicate;
@@ -171,7 +170,7 @@ import javax.xml.stream.XMLStreamException;
 	}
 
 	public static void writeWorker(final XMLStreamWriter ostream, final IWorker obj, final int indentation)
-			throws MalformedXMLException {
+			throws XMLStreamException {
 		final WorkerStats stats = obj.getStats();
 		final List<IJob> jobs = StreamSupport.stream(obj.spliterator(), true)
 			.filter(((Predicate<IJob>) IJob::isEmpty).negate()).collect(Collectors.toList());
@@ -203,28 +202,20 @@ import javax.xml.stream.XMLStreamException;
 		if (hasJobs || stats != null || mount != null || obj.getNotesPlayers().iterator().hasNext() ||
 				    !obj.getEquipment().isEmpty()) {
 			indent(ostream, indentation);
-			try {
-				ostream.writeEndElement();
-			} catch (final XMLStreamException except) {
-				throw new MalformedXMLException(except);
-			}
+			ostream.writeEndElement();
 		}
 	}
 
 	private static void writeNote(final XMLStreamWriter ostream, final int player, final String note, final int indentation)
-			throws MalformedXMLException {
+			throws XMLStreamException {
 		writeTag(ostream, "note", indentation, false);
 		writeAttributes(ostream, Pair.with("player", player));
-		try {
-			ostream.writeCharacters(note);
-			ostream.writeEndElement();
-		} catch (final XMLStreamException except) {
-			throw new MalformedXMLException(except);
-		}
+		ostream.writeCharacters(note);
+		ostream.writeEndElement();
 	}
 
 	public static void writeStats(final XMLStreamWriter ostream, final WorkerStats obj, final int indentation)
-			throws MalformedXMLException {
+			throws XMLStreamException {
 		writeTag(ostream, "stats", indentation, true);
 		writeAttributes(ostream, Pair.with("hp", obj.getHitPoints()),
 			Pair.with("max", obj.getMaxHitPoints()),
@@ -234,7 +225,7 @@ import javax.xml.stream.XMLStreamException;
 	}
 
 	public static void writeJob(final XMLStreamWriter ostream, final IJob obj, final int indentation)
-			throws MalformedXMLException {
+			throws XMLStreamException {
 		final boolean hasSkills = !obj.isEmpty();
 		if (obj.getLevel() <= 0 && !hasSkills) {
 			return;
@@ -247,16 +238,12 @@ import javax.xml.stream.XMLStreamException;
 		}
 		if (hasSkills) {
 			indent(ostream, indentation);
-			try {
-				ostream.writeEndElement();
-			} catch (final XMLStreamException except) {
-				throw new MalformedXMLException(except);
-			}
+			ostream.writeEndElement();
 		}
 	}
 
 	public static void writeSkill(final XMLStreamWriter ostream, final ISkill obj, final int indentation)
-			throws MalformedXMLException {
+			throws XMLStreamException {
 		if (!obj.isEmpty()) {
 			writeTag(ostream, "skill", indentation, true);
 			writeAttributes(ostream, Pair.with("name", obj.getName()),
@@ -324,14 +311,14 @@ import javax.xml.stream.XMLStreamException;
 	}
 
 	public static void writeAnimalTracks(final XMLStreamWriter ostream, final AnimalTracks obj,
-	                                     final int indentation) throws MalformedXMLException {
+	                                     final int indentation) throws XMLStreamException {
 		writeTag(ostream, "animal", indentation, true);
 		writeAttributes(ostream, Pair.with("kind", obj.getKind()), Pair.with("traces", true));
 		writeImage(ostream, obj);
 	}
 
 	public static void writeAnimal(final XMLStreamWriter ostream, final Animal obj, final int indentation)
-			throws MalformedXMLException {
+			throws XMLStreamException {
 		writeTag(ostream, "animal", indentation, true);
 		writeAttributes(ostream, Pair.with("kind", obj.getKind()));
 		if (obj.isTalking()) {
@@ -357,7 +344,7 @@ import javax.xml.stream.XMLStreamException;
 	}
 
 	public static void writeSimpleImmortal(final XMLStreamWriter ostream, final Immortal obj, final int indentation)
-			throws MalformedXMLException {
+			throws XMLStreamException {
 		// TODO: split this method so we can get this back in the type system
 		if (!(obj instanceof SimpleImmortal || obj instanceof ImmortalAnimal)) {
 			throw new IllegalArgumentException("Only works with simple immortals");
