@@ -64,9 +64,9 @@ public class Ground implements MineralFixture, HasMutableImage {
 
 	/**
 	 * Set the ID number.
-	 * @deprecated I don't know why this was variable, but I've ported it as such just in case
+	 *
+	 * TODO: Extract 'HasMutableId' interface for this and Forest
 	 */
-	@Deprecated
 	public void setId(final int id) {
 		this.id = id;
 	}
