@@ -3,6 +3,7 @@ package utility;
 import common.map.SubsettableFixture;
 import java.util.Collection;
 import java.util.Random;
+import java.util.function.Predicate;
 import java.util.logging.Logger;
 import lovelace.util.SingletonRandom;
 import org.jetbrains.annotations.Nullable;
@@ -344,18 +345,32 @@ public class UtilityDriverModel extends SimpleMultiMapModel {
 	}
 
 	private static void safeAdd(final IMutableMapNG map, final Player currentPlayer, final Point point, final TileFixture fixture) {
-		if (map.getFixtures(point).stream().anyMatch(fixture::equals)) {
+		final Predicate<TileFixture> equality = fixture::equals;
+		final Consumer<String> noop = x -> {};
+		final Predicate<TileFixture> newSubsetOfOld =
+				f -> f instanceof SubsettableFixture && ((SubsettableFixture) f).isSubset(fixture, noop);
+		if (map.getFixtures(point).stream().anyMatch(equality.or(newSubsetOfOld))) {
 			return;
-		} else if (fixture instanceof HasOwner && !(fixture instanceof ITownFixture)) {
-			final IFixture.CopyBehavior cb = ((HasOwner) fixture).getOwner().equals(currentPlayer) ? IFixture.CopyBehavior.KEEP : IFixture.CopyBehavior.ZERO;
-			final TileFixture zeroed = fixture.copy(cb);
-			if (map.getFixtures(point).stream().noneMatch(zeroed::equals)) {
-				map.addFixture(point, fixture.copy(cb));
-			}
+		}
+		final IFixture.CopyBehavior cb;
+		if (fixture instanceof HasOwner && !(fixture instanceof ITownFixture) &&
+				    ((HasOwner) fixture).getOwner().equals(currentPlayer)) {
+			cb = IFixture.CopyBehavior.KEEP;
 		} else {
-			final TileFixture zeroed = fixture.copy(IFixture.CopyBehavior.ZERO);
-			if (map.getFixtures(point).stream().noneMatch(zeroed::equals)) {
-				map.addFixture(point, fixture.copy(IFixture.CopyBehavior.ZERO));
+			cb = IFixture.CopyBehavior.ZERO;
+		}
+		final TileFixture zeroed = fixture.copy(cb);
+		final Predicate<TileFixture> zeroedEquals = zeroed::equals;
+		final Predicate<TileFixture> zeroedSubsetOfOld =
+				f -> f instanceof SubsettableFixture && ((SubsettableFixture) f).isSubset(zeroed, noop);
+		final Predicate<TileFixture> oldSubsetOfZeroed =
+				f -> zeroed instanceof SubsettableFixture && ((SubsettableFixture) zeroed).isSubset(f, noop);
+		if (map.getFixtures(point).stream().noneMatch(zeroedEquals.or(zeroedSubsetOfOld))) {
+			final Optional<TileFixture> matching = map.getFixtures(point).stream().filter(oldSubsetOfZeroed).findAny();
+			if (matching.isPresent()) {
+				map.replace(point, matching.get(), fixture.copy(cb));
+			} else {
+				map.addFixture(point, fixture.copy(cb));
 			}
 		}
 	}
