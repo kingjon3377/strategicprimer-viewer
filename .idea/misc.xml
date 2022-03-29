@@ -19,6 +19,14 @@
     <option name="pathToUserRulesConfiguration" value="" />
     <option name="pathToJarWithRules" value="" />
   </component>
+  <component name="EntryPointsManager">
+    <pattern value="drivers.common.UtilityDriverFactory" hierarchically="true" method="createDriver" />
+    <pattern value="drivers.common.UtilityDriverFactory" hierarchically="true" method="startDriver" />
+    <pattern value="drivers.common.ModelDriverFactory" hierarchically="true" method="createDriver" />
+    <pattern value="drivers.common.ModelDriverFactory" hierarchically="true" method="createModel" />
+    <pattern value="drivers.common.UtilityDriver" hierarchically="true" method="startDriver" />
+    <pattern value="drivers.common.ModelDriver" hierarchically="true" method="startDriver" />
+  </component>
   <component name="ExternalStorageConfigurationManager" enabled="true" />
   <component name="FindBugsConfigurable">
     <option name="make" value="true" />
