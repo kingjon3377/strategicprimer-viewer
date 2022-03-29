@@ -1,6 +1,8 @@
 package common.map.fixtures.resources;
 
+import java.util.List;
 import java.util.Random;
+import java.util.function.Supplier;
 
 /**
  * Possible status of fields (and meadows, and orchards ...) Fields should
@@ -34,14 +36,26 @@ public enum FieldStatus {
 		return string;
 	}
 
+	private static final class Cache implements Supplier<List<FieldStatus>> {
+		private List<FieldStatus> cache;
+		public List<FieldStatus> get() {
+			if (cache == null) {
+				cache = List.of(FieldStatus.values());
+			}
+			return cache;
+		}
+	}
+
+	private static final Supplier<List<FieldStatus>> FS_CACHE = new Cache();
+
 	public static FieldStatus random(final int seed) {
-		final FieldStatus[] statuses = values();
-		return statuses[new Random(seed).nextInt(statuses.length)];
+		final List<FieldStatus> statuses = FS_CACHE.get();
+		return statuses.get(new Random(seed).nextInt(statuses.size()));
 	}
 
 	public static FieldStatus parse(final String status) {
 		// TODO: Have HashMap cache to speed this up?
-		for (final FieldStatus val : values()) {
+		for (final FieldStatus val : FS_CACHE.get()) {
 			if (status.equals(val.toString())) {
 				return val;
 			}

@@ -2,6 +2,7 @@ package drivers.map_viewer;
 
 import java.util.Collection;
 import java.util.EnumMap;
+import java.util.List;
 import java.util.Optional;
 import org.jetbrains.annotations.Nullable;
 
@@ -44,6 +45,7 @@ import common.map.fixtures.terrain.Hill;
 	private final JMenuItem textNoteItem = new JMenuItem("Add Text Note ...");
 	private final JCheckBoxMenuItem bookmarkItem = new JCheckBoxMenuItem("Bookmarked");
 	private final Map<River, JCheckBoxMenuItem> riverItems = new EnumMap<>(River.class);
+	private static final List<River> RIVER_CHOICES = List.of(River.values());
 
 	public TerrainChangingMenu(final int mapVersion, final IViewerModel model) {
 		// TODO: Pass checkbox models into methods, not the items themselves?
@@ -74,9 +76,10 @@ import common.map.fixtures.terrain.Hill;
 		bookmarkItem.setMnemonic(KeyEvent.VK_B);
 		bookmarkItem.addActionListener(ignored -> toggleBookmarked());
 
-		for (final River direction : River.values()) {
+		for (final River direction : RIVER_CHOICES) {
 			final String desc;
 			final int mnemonic;
+			// TODO: Can we get this effect without going one-by-one here? e.g. for non-lakes desc = direction + " river"
 			switch (direction) {
 			case Lake:
 				desc = "lake";

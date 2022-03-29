@@ -69,11 +69,12 @@ public class ExplorationCLIHelper implements MovementCostListener, SelectionChan
 	 */
 	private Speed speed = Speed.Normal;
 
+	private static final List<Speed> SPEED_CHOICES = List.of(Speed.values());
 	/**
 	 * Let the user change the explorer's speed
 	 */
 	private void changeSpeed() {
-		final Speed temp = cli.chooseFromList(Arrays.asList(Speed.values()), "Possible Speeds:", "No speeds available", "Chosen Speed: ", ICLIHelper.ListChoiceBehavior.AUTO_CHOOSE_ONLY).getValue1();
+		final Speed temp = cli.chooseFromList(SPEED_CHOICES, "Possible Speeds:", "No speeds available", "Chosen Speed: ", ICLIHelper.ListChoiceBehavior.AUTO_CHOOSE_ONLY).getValue1();
 		if (temp != null) {
 			speed = temp;
 		}
