@@ -121,9 +121,7 @@ import common.map.fixtures.mobile.AnimalTracks;
 				}
 				cli.print("- ");
 			}
-			if (indent <= 0) {
-				cli.println(total);
-			}
+			cli.println(total);
 			// TODO: Once in Java 11, use "  ".repeat(indent) to prepend indentation and stream().map(each) ...
 			for (final Pair<Key, Count> pair : counter) {
 				for (int i = 0; i < indent; i++) {
@@ -132,7 +130,7 @@ import common.map.fixtures.mobile.AnimalTracks;
 				cli.println(each.apply(pair));
 			}
 			if (indent <= 0) {
-				cli.println(total);
+				cli.println();
 			}
 		}
 	}
