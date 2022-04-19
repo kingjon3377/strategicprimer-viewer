@@ -325,7 +325,7 @@ public class MapCheckerCLI implements UtilityDriver {
 		}
 	}
 
-	// FIXME: Add checks: 1. Hill in ocean 2. Tracks when matching animal already known 3. HasName named "unnamed"
+	// FIXME: Add checks: 1. Hill in ocean 2. Tracks when matching animal already known 3. HasName named "unnamed" 4. "food" resources with non-"pounds" units
 	// TODO: Add automatic fixes (removing offending fixtures) for these and others to TodoFixerDriver
 	private static final List<Checker> EXTRA_CHECKS = List.of(MapCheckerCLI::lateriteChecker,
 			MapCheckerCLI::aquaticVillageChecker, MapCheckerCLI::suspiciousSkillCheck,
