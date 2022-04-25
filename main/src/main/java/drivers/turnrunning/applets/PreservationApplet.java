@@ -87,7 +87,7 @@ import static lovelace.util.Decimalize.decimalize;
 				return null;
 			}
 			final BigDecimal subtrahend;
-			final Boolean useAll = cli.inputBoolean("Use all ``item.quantity``?");
+			final Boolean useAll = cli.inputBoolean(String.format("Use all %s?", item.getQuantity()));
 			if (useAll == null) {
 				return null;
 			} else if (useAll) {

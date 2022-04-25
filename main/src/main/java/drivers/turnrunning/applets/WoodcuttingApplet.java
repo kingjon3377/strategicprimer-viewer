@@ -157,8 +157,8 @@ import org.jetbrains.annotations.Nullable;
 				if (aCorrect == null) {
 					return null;
 				} else if (aCorrect) {
-					builder.append(String.format(", clearing %.2f acres (~ %d sq ft) of land.`",
-						acres, acres.multiply(decimalize(43560)).intValue()));
+					builder.append(String.format(", clearing %.2f acres (~ %d sq ft) of land.",
+						acres, acres.multiply(decimalize(43560)).intValue())); // TODO: Make Decimal constant static final
 				} else {
 					final String str = cli.inputMultilineString("Description of cleared land:");
 					if (str == null) {

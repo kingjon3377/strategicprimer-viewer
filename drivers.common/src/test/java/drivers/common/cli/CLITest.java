@@ -220,7 +220,7 @@ public final class CLITest {
 	public void testInputBooleanInSeriesSimpleTrue(final String arg) {
 		assertCLI(cli -> cli.inputBooleanInSeries("bool prompt"), Collections.singletonList(arg),
 			"bool prompt ", true,
-			String.format("inputBooleanInSeries returns true on '%s`", arg),
+			String.format("inputBooleanInSeries returns true on '%s'", arg),
 			"inputBooleanInSeries displays prompt");
 	}
 

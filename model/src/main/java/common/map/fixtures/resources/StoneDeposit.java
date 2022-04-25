@@ -137,6 +137,6 @@ public class StoneDeposit implements HarvestableFixture, MineralFixture {
 
 	@Override
 	public String getShortDescription() {
-		return "an exposed ``stone`` deposit";
+		return String.format("an exposed %s deposit", stone);
 	}
 }

@@ -50,7 +50,7 @@ import common.map.HasMutableKind;
 
 	@Override
 	public String toString() { // TODO: cache?
-		return String.format("UnitTransferable conveying %d unit(s)`", payload.size());
+		return String.format("UnitTransferable conveying %d unit(s)", payload.size());
 	}
 
 	@Override

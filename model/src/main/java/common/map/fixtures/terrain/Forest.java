@@ -198,7 +198,7 @@ public class Forest implements TerrainFixture, HasMutableImage, HasKind, HasExte
 			}
 			return retval;
 		} else {
-			report.accept("Different types for ID #``id``");
+			report.accept(String.format("Different types for ID #%d", id));
 			return false;
 		}
 	}

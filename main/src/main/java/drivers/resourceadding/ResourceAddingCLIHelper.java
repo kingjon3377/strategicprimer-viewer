@@ -61,7 +61,7 @@ public class ResourceAddingCLIHelper {
 	private @Nullable String getResourceContents(final String kind) {
 		final List<String> list = resourceContents.getOrDefault(kind, new ArrayList<>());
 		final String one = cli.chooseStringFromList(list,
-			"Possible resources in the ``kind`` category:",
+			String.format("Possible resources in the %s category:", kind),
 			"No resources entered yet", "Choose resource: ", ICLIHelper.ListChoiceBehavior.ALWAYS_PROMPT).getValue1();
 		if (one != null) {
 			return one;

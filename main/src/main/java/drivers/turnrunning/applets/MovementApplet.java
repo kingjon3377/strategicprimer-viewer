@@ -51,7 +51,7 @@ import static lovelace.util.Decimalize.decimalize;
 				.filter(IResourcePile.class::isInstance).map(IResourcePile.class::cast).collect(Collectors.toList());
 		while (true) {
 			final IResourcePile chosen =
-				chooseFromList(resources, "Resources in ``fortress.name``:", "No resources in fortress.",
+				chooseFromList(resources, String.format("Resources in %s:", fortress.getName()), "No resources in fortress.",
 					"Resource to take (from):", ICLIHelper.ListChoiceBehavior.ALWAYS_PROMPT);
 			if (chosen == null) {
 				break;
