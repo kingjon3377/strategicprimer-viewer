@@ -17,6 +17,7 @@ import common.map.Player;
 import common.map.Direction;
 import common.map.TileFixture;
 import common.map.Point;
+import lovelace.util.LovelaceLogger;
 
 import static io.jenetics.facilejdbc.Param.value;
 
@@ -129,8 +130,8 @@ final class DBMapWriter extends AbstractDatabaseWriter<IMutableMapNG, IMapNG> {
 			}
 			count++;
 			if (count % 25 == 0) {
-				log.fine(String.format("Wrote %d points with %d fixtures so far",
-					count, fixtureCount));
+				LovelaceLogger.debug("Wrote %d points with %d fixtures so far",
+					count, fixtureCount);
 			}
 		}
 	}

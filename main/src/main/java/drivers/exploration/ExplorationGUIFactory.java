@@ -25,8 +25,6 @@ import lovelace.util.FileChooser;
 
 import common.map.IMutableMapNG;
 
-import java.util.logging.Logger;
-
 import com.google.auto.service.AutoService;
 
 /**
@@ -34,7 +32,6 @@ import com.google.auto.service.AutoService;
  */
 @AutoService(DriverFactory.class)
 public class ExplorationGUIFactory implements GUIDriverFactory {
-	private static final Logger LOGGER = Logger.getLogger(ExplorationGUIFactory.class.getName());
 	private static final IDriverUsage USAGE = new DriverUsage(true, "explore", ParamCount.AtLeastOne,
 		"Run exploration.",
 		"Move a unit around the map, updating the player's map with what it sees.", false,

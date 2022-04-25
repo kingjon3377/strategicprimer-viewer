@@ -1,6 +1,6 @@
 package drivers.map_viewer;
 
-import java.util.logging.Logger;
+import lovelace.util.LovelaceLogger;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.function.IntSupplier;
@@ -54,7 +54,6 @@ import java.awt.image.BufferedImage;
 /* package */ final class MapComponent extends JComponent implements MapGUI, MapChangeListener,
 		SelectionChangeListener, GraphicalParamsListener {
 	private static final long serialVersionUID = 1L;
-	private static final Logger LOGGER = Logger.getLogger(MapComponent.class.getName());
 	private final IViewerModel mapModel;
 	private final Predicate<TileFixture> zOrderFilter;
 	private final Iterable<FixtureMatcher> matchers;
@@ -377,7 +376,7 @@ import java.awt.image.BufferedImage;
 	@Override
 	public void mapMetadataChanged() {
 		if (mapModel.getMapDimensions().getVersion() != 2) {
-			LOGGER.warning("Treating map of unsupported format version as version 2");
+			LovelaceLogger.warning("Treating map of unsupported format version as version 2");
 		}
 		helper = new Ver2TileDrawHelper(this, zOrderFilter, matchers);
 	}

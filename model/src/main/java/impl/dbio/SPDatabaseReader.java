@@ -10,28 +10,23 @@ import java.io.Reader;
 import java.nio.file.NoSuchFileException;
 import java.sql.SQLException;
 import javax.xml.stream.XMLStreamException;
+import lovelace.util.LovelaceLogger;
 import org.sqlite.SQLiteDataSource;
 import java.util.Map;
 import java.util.HashMap;
 import javax.sql.DataSource;
 import java.nio.file.Path;
-import java.util.logging.Logger;
 
 public class SPDatabaseReader implements IMapReader {
-	/**
-	 * A logger.
-	 */
-	private static final Logger LOGGER = Logger.getLogger(SPDatabaseReader.class.getName());
-
 	private final Map<Path, Transactional> connections = new HashMap<>();
 
 	private static DataSource getBaseConnection(final Path path) {
 		final SQLiteDataSource retval = new SQLiteDataSource();
 		if (path.toString().isEmpty()) {
-			LOGGER.info("Trying to set up an (empty) in-memory database for reading");
+			LovelaceLogger.info("Trying to set up an (empty) in-memory database for reading");
 			retval.setUrl("jdbc:sqlite:file::memory:");
 		} else {
-			LOGGER.info("Setting up an SQLite database for file " + path);
+			LovelaceLogger.info("Setting up an SQLite database for file %s", path);
 			retval.setUrl("jdbc:sqlite:" + path);
 		}
 		return retval;

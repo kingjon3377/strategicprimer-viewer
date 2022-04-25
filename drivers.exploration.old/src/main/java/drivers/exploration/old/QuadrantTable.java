@@ -1,5 +1,6 @@
 package drivers.exploration.old;
 
+import lovelace.util.LovelaceLogger;
 import org.jetbrains.annotations.Nullable;
 import java.util.Map;
 import java.util.HashMap;
@@ -8,7 +9,6 @@ import java.util.stream.Collectors;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
-import java.util.logging.Logger;
 import java.util.Collections;
 
 import common.map.Point;
@@ -21,7 +21,6 @@ import common.map.MapDimensionsImpl;
  * An {@link EncounterTable} where results are by quadrant of the map.
  */
 class QuadrantTable implements EncounterTable {
-	private static final Logger LOGGER = Logger.getLogger(QuadrantTable.class.getName());
 	/**
 	 * The collection of collections of results.
 	 */
@@ -101,7 +100,7 @@ class QuadrantTable implements EncounterTable {
 		if (resultsMap.containsKey(bestKey)) {
 			return resultsMap.get(bestKey);
 		} else {
-			LOGGER.severe("Best key not in map"); // FIXME: Throw an exception?
+			LovelaceLogger.error("Best key not in map"); // FIXME: Throw an exception?
 			return "";
 		}
 	}

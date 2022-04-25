@@ -13,8 +13,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.ServiceLoader;
-import java.util.logging.Logger;
-import java.util.logging.Level;
 
 import java.io.IOException;
 
@@ -36,11 +34,11 @@ import drivers.gui.common.SPFrame;
 
 import common.xmlio.SPFormatException;
 
+import lovelace.util.LovelaceLogger;
 import lovelace.util.ResourceInputStream;
 
 /* package */ final class AppChooserState {
 	// FIXME: Move methods back into AppStarter, unless that would break something.
-	private static final Logger LOGGER = Logger.getLogger(AppChooserState.class.getName());
 	// TODO: Define and register a custom log formatter? We had to in
 	// Ceylon to get log messags to show at all, but in Java I dropped this
 	// as j.u.l includes one. Or TODO: define my own central logging method?
@@ -55,11 +53,11 @@ import lovelace.util.ResourceInputStream;
 		for (final DriverFactory factory : ServiceLoader.load(DriverFactory.class)) {
 			final String command = factory.getUsage().getInvocation();
 			if (command.startsWith("-")) {
-				LOGGER.severe(String.format(
-					"An app wants to register an option, %s, not a subcommand", command));
+				LovelaceLogger.error(
+					"An app wants to register an option, %s, not a subcommand", command);
 			} else if (conflicts.containsKey(command)) {
-				LOGGER.warning(String.format("Additional conflict for %s: %s", command,
-					factory.getUsage().getShortDescription()));
+				LovelaceLogger.warning("Additional conflict for %s: %s", command,
+					factory.getUsage().getShortDescription());
 				conflicts.get(command).add(factory);
 			} else if (cache.containsKey(command) &&
 					cache.get(command).stream().anyMatch(f -> f.getUsage().isGraphical() ==
@@ -67,10 +65,10 @@ import lovelace.util.ResourceInputStream;
 				final DriverFactory existing = cache.get(command).stream()
 					.filter(f -> f.getUsage().isGraphical() ==
 						factory.getUsage().isGraphical()).findAny().orElse(null);
-				LOGGER.warning(String.format("Invocation command conflict for %s between %s and %s",
+				LovelaceLogger.warning("Invocation command conflict for %s between %s and %s",
 					command, factory.getUsage().getShortDescription(),
 					Optional.ofNullable(existing).map(DriverFactory::getUsage)
-							.map(IDriverUsage::getShortDescription).orElse("a null factory")));
+							.map(IDriverUsage::getShortDescription).orElse("a null factory"));
 				conflicts.put(command, new ArrayList<>(Arrays.asList(factory, existing)));
 				final List<DriverFactory> existingList = cache.get(command);
 				existingList.remove(existing);
@@ -101,11 +99,11 @@ import lovelace.util.ResourceInputStream;
 				new ResourceInputStream("invocation", AppChooserState.class)))) {
 			mainInvocation = reader.lines().collect(Collectors.joining(System.lineSeparator())).trim();
 		} catch (final FileNotFoundException | NoSuchFileException except) {
-			LOGGER.warning("Invocation file not found");
-			LOGGER.log(Level.FINER, "Stack trace for invocation-not-found", except);
+			LovelaceLogger.warning("Invocation file not found");
+			LovelaceLogger.debug(except, "Stack trace for invocation-not-found");
 			mainInvocation = "java -jar viewer-VERSION.jar";
 		} catch (final IOException except) {
-			LOGGER.log(Level.SEVERE, "I/O error reading invocation file", except);
+			LovelaceLogger.error(except, "I/O error reading invocation file");
 			mainInvocation = "java -jar viewer-VERSION.jar";
 		}
 		builder.append(mainInvocation);
@@ -163,16 +161,16 @@ import lovelace.util.ResourceInputStream;
 					topWindow.acceptDroppedFile(file.toPath());
 				} catch (final SPFormatException except) {
 					showErrorDialog(topWindow, "Strategic Primer Map Format Error", except.getMessage());
-					LOGGER.severe(except.getMessage());
+					LovelaceLogger.error(except.getMessage());
 				} catch (final FileNotFoundException|NoSuchFileException except) {
 					showErrorDialog(topWindow, "File Not Found", except.getMessage());
-					LOGGER.log(Level.SEVERE, "Dropped file not found", except);
+					LovelaceLogger.error(except, "Dropped file not found");
 				} catch (final IOException except) {
 					showErrorDialog(topWindow, "I/O Error", except.getMessage());
-					LOGGER.log(Level.SEVERE, "I/O error reading dropped file", except.getMessage());
+					LovelaceLogger.error("I/O error reading dropped file: %s", except.getMessage());
 				} catch (final XMLStreamException except) {
 					showErrorDialog(topWindow, "Strategic Primer Map Format Error", except.getMessage());
-					LOGGER.log(Level.SEVERE, "Malformed XML in " + file, except);
+					LovelaceLogger.error(except, "Malformed XML in %s", file);
 				}
 			}
 		}

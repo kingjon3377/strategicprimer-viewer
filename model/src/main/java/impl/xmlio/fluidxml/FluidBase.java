@@ -14,6 +14,7 @@ import javax.xml.stream.events.EndElement;
 import javax.xml.stream.events.Attribute;
 import javax.xml.stream.events.Characters;
 
+import lovelace.util.LovelaceLogger;
 import org.javatuples.Pair;
 
 import common.idreg.IDRegistrar;
@@ -30,7 +31,6 @@ import impl.xmlio.exceptions.DeprecatedPropertyException;
 import impl.xmlio.exceptions.UnsupportedPropertyException;
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.util.logging.Logger;
 import lovelace.util.IteratorWrapper;
 
 import java.util.stream.Stream;
@@ -41,7 +41,6 @@ import java.util.List;
 import org.jetbrains.annotations.Nullable;
 
 /* package */ abstract class FluidBase {
-	protected static final Logger LOGGER = Logger.getLogger(FluidBase.class.getName());
 	private static final NumberFormat NUM_PARSER = NumberFormat.getIntegerInstance();
 
 	protected FluidBase() {}
@@ -591,9 +590,9 @@ import org.jetbrains.annotations.Nullable;
 					item instanceof Boolean || item instanceof Long) {
 				ostream.writeAttribute(SP_NAMESPACE, name, item.toString());
 			} else {
-				LOGGER.warning(String.format(
+				LovelaceLogger.warning(
 					"Unhandled attribute type %s in FluidBase.writeAttributes",
-					item.getClass().getName()));
+					item.getClass().getName());
 				ostream.writeAttribute(SP_NAMESPACE, name, item.toString());
 			}
 		}

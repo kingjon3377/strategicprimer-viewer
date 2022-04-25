@@ -2,13 +2,12 @@ package drivers;
 
 import java.util.Arrays;
 
-import java.util.Optional;
-import java.util.logging.Logger;
-import java.util.logging.Level;
+import java.util.Objects;
 
 import javax.swing.UIManager;
 
 import javax.swing.UnsupportedLookAndFeelException;
+import lovelace.util.LovelaceLogger;
 import lovelace.util.Platform;
 
 import drivers.common.IDriverUsage;
@@ -21,11 +20,9 @@ import drivers.common.cli.CLIHelper;
 import com.apple.eawt.Application;
 
 public final class Main {
-	private static final Logger LOGGER = Logger.getLogger(Main.class.getName());
 	private Main() {}
 
 	public static void main(final String... args) {
-		// TODO: Any logger setup we're going to do should go here.
 		System.setProperty("com.apple.mrj.application.apple.menu.about.name", "SP Helpers");
 		System.setProperty("apple.awt.application.name", "SP Helpers");
 		try {
@@ -37,16 +34,13 @@ public final class Main {
 		}
 		System.setProperty("apple.laf.useScreenMenuBar", "true");
 		// TODO: While we're at it, also set up something to save *all* (our) log messages to a file as well.
-		final Logger rootLog = Logger.getLogger("");
 		if (Arrays.asList(args).contains("--trace")) {
-			rootLog.setLevel(Level.FINER);
-			rootLog.getHandlers()[0].setLevel(Level.FINER);
+			LovelaceLogger.setLevel(LovelaceLogger.Level.TRACE);
 		} else if (Arrays.asList(args).contains("--debug")) {
-			rootLog.setLevel(Level.FINE);
-			rootLog.getHandlers()[0].setLevel(Level.FINE);
+			LovelaceLogger.setLevel(LovelaceLogger.Level.DEBUG);
 		}
-		LOGGER.fine("If you can see this, debug-level log messages are enabled.");
-		LOGGER.finer("If you can see this, trace-level log messages are enabled.");
+		LovelaceLogger.debug("If you can see this, debug-level log messages are enabled.");
+		LovelaceLogger.trace("If you can see this, trace-level log messages are enabled.");
 		final SPOptionsImpl options = new SPOptionsImpl();
 		if (Platform.SYSTEM_IS_MAC) {
 			Application.getApplication().setOpenFileHandler(AppChooserState::handleDroppedFiles);
@@ -59,8 +53,7 @@ public final class Main {
 			System.err.println(AppChooserState.usageMessage(usage, options.hasOption("--verbose")));
 			System.exit(1);
 		} catch (final DriverFailedException except) {
-			LOGGER.log(Level.SEVERE, except.getMessage(),
-				Optional.ofNullable(except.getCause()).orElse(except));
+			LovelaceLogger.error(Objects.requireNonNullElse(except.getCause(), except), except.getMessage());
 				System.exit(2);
 		}
 	}

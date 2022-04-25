@@ -1,9 +1,8 @@
 package common.xmlio;
 
 import common.idreg.DuplicateIDException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.function.Consumer;
+import lovelace.util.LovelaceLogger;
 
 /**
  * A slightly-customizable warning-handling interface.
@@ -12,11 +11,6 @@ import java.util.function.Consumer;
  * filtering in {@link WarningLevels#WARN} work first ...
  */
 public final class Warning {
-	/**
-	 * A logger.
-	 */
-	private static final Logger LOGGER = Logger.getLogger(Warning.class.getName());
-
 	/**
 	 * Don't do anything with warnings.
 	 */
@@ -72,9 +66,9 @@ public final class Warning {
 
 	private static void warn(final Throwable warning) {
 		if (warning instanceof SPFormatException || warning instanceof DuplicateIDException) {
-			LOGGER.warning(warning.getMessage());
+			LovelaceLogger.warning(warning.getMessage());
 		} else {
-			LOGGER.log(Level.WARNING, "Warning: ", warning);
+			LovelaceLogger.warning(warning, "Warning: ");
 		}
 	}
 

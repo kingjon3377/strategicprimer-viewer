@@ -21,11 +21,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import lovelace.util.LovelaceLogger;
 
 /* package */ class DriverWrapper {
-	private static final Logger LOGGER = Logger.getLogger(DriverWrapper.class.getName());
 	private final DriverFactory factory;
 	public DriverWrapper(final DriverFactory factory) {
 		this.factory = factory;
@@ -86,7 +84,7 @@ import java.util.logging.Logger;
 				try {
 					requested = ((GUIDriverFactory) factory).askUserForFiles();
 				} catch (final DriverFailedException except) {
-					LOGGER.log(Level.WARNING, "User presumably canceled", except);
+					LovelaceLogger.warning(except, "User presumably canceled");
 					throw new IncorrectUsageException(factory.getUsage());
 				}
 				if (requested.isEmpty() || tooManyArguments(files.size() + requested.size())) {
@@ -108,7 +106,7 @@ import java.util.logging.Logger;
 			try {
 				model.setCurrentTurn(Integer.parseInt(options.getArgument("--current-turn")));
 			} catch (final NumberFormatException except) {
-				LOGGER.warning("Non-numeric current turn argument");
+				LovelaceLogger.warning("Non-numeric current turn argument");
 			}
 		}
 	}
@@ -156,12 +154,12 @@ import java.util.logging.Logger;
 		} catch (final DriverFailedException except) {
 			final Throwable cause = except.getCause();
 			if (cause instanceof SPFormatException) {
-				LOGGER.severe(cause.getMessage());
+				LovelaceLogger.error(cause.getMessage());
 			} else {
-				LOGGER.log(Level.SEVERE, "Driver failed:", Objects.requireNonNullElse(cause, except));
+				LovelaceLogger.error(Objects.requireNonNullElse(cause, except), "Driver failed:");
 			}
 		} catch (final Exception except) {
-			LOGGER.log(Level.SEVERE, except.getMessage(), except);
+			LovelaceLogger.error(except, except.getMessage());
 		}
 	}
 }

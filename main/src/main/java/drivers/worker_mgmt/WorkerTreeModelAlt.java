@@ -2,6 +2,7 @@ package drivers.worker_mgmt;
 
 import common.map.HasName;
 import common.map.HasOwner;
+import lovelace.util.LovelaceLogger;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Collections;
@@ -27,7 +28,6 @@ import worker.common.IWorkerTreeModel;
 import lovelace.util.IteratorWrapper;
 import lovelace.util.EnumerationWrapper;
 import drivers.common.IWorkerModel;
-import java.util.logging.Logger;
 
 /**
  * An alternative implementation of the worker tree model.
@@ -42,7 +42,6 @@ import java.util.logging.Logger;
  */
 public class WorkerTreeModelAlt extends DefaultTreeModel implements IWorkerTreeModel {
 	private static final long serialVersionUID = 1L;
-	protected static final Logger LOGGER = Logger.getLogger(WorkerTreeModelAlt.class.getName());
 	/**
 	 * A base class for all nodes in the tree in this implementation of the tree model.
 	 *
@@ -122,7 +121,7 @@ public class WorkerTreeModelAlt extends DefaultTreeModel implements IWorkerTreeM
 			if (child instanceof WorkerTreeNode) {
 				super.add(child);
 			} else {
-				LOGGER.info("Asked to add a non-WorkerTreeNode to a WorkerTreeNode");
+				LovelaceLogger.info("Asked to add a non-WorkerTreeNode to a WorkerTreeNode");
 			}
 		}
 	}
@@ -163,11 +162,11 @@ public class WorkerTreeModelAlt extends DefaultTreeModel implements IWorkerTreeM
 			if (child instanceof UnitMemberNode) {
 				if (unit.stream().noneMatch(
 							((UnitMemberNode) child).getUserObject()::equals)) {
-					LOGGER.warning(
+					LovelaceLogger.warning(
 						"Adding UnitMemberNode when its object is not in the unit");
 				}
 			} else {
-				LOGGER.info("Added a non-UnitMemberNode to a UnitNode");
+				LovelaceLogger.info("Added a non-UnitMemberNode to a UnitNode");
 			}
 			super.add(child);
 		}
@@ -183,11 +182,11 @@ public class WorkerTreeModelAlt extends DefaultTreeModel implements IWorkerTreeM
 			if (child instanceof UnitMemberNode) {
 				if (unit.stream().anyMatch(
 							((UnitMemberNode) child).getUserObject()::equals)) {
-					LOGGER.warning(
+					LovelaceLogger.warning(
 						"Removing UnitMemberNode when member is still in the unit");
 				}
 			} else {
-				LOGGER.warning("Asked to remove non-UnitMember child from UnitNode");
+				LovelaceLogger.warning("Asked to remove non-UnitMember child from UnitNode");
 			}
 			super.remove(child);
 		}
@@ -237,7 +236,7 @@ public class WorkerTreeModelAlt extends DefaultTreeModel implements IWorkerTreeM
 						.toArray(IUnit[]::new)), index);
 			}
 			if (getChildCount() == 0) {
-				LOGGER.warning("No unit kinds in player node for player " + player);
+				LovelaceLogger.warning("No unit kinds in player node for player %s", player);
 			}
 		}
 	}
@@ -394,7 +393,7 @@ public class WorkerTreeModelAlt extends DefaultTreeModel implements IWorkerTreeM
 			fireTreeNodesInserted(this, new Object[] { root, unitNode },
 				new int[] { unitNode.getChildCount() - 1 }, new Object[] { newNode });
 		} else {
-			LOGGER.severe(
+			LovelaceLogger.error(
 				"Asked to add a unit member but couldn't find corresponding unit node");
 		}
 	}
@@ -580,15 +579,15 @@ public class WorkerTreeModelAlt extends DefaultTreeModel implements IWorkerTreeM
 			if (orders.isEmpty() || orders.contains("todo") || orders.contains("fixme") ||
 					orders.contains("xxx")) {
 				if (orders.isEmpty()) {
-					LOGGER.fine("Orders are empty");
+					LovelaceLogger.debug("Orders are empty");
 				} else if (orders.contains("todo")) {
-					LOGGER.fine("Orders contain 'todo'");
+					LovelaceLogger.debug("Orders contain 'todo'");
 				} else if (orders.contains("fixme")) {
-					LOGGER.fine("Orders contain 'fixme'");
+					LovelaceLogger.debug("Orders contain 'fixme'");
 				} else if (orders.contains("xxx")) {
-					LOGGER.fine("Orders contain 'xxx'");
+					LovelaceLogger.debug("Orders contain 'xxx'");
 				} else {
-					LOGGER.warning(
+					LovelaceLogger.warning(
 						"Orders are not problematic, but called a problem anyway");
 				}
 				return new TreePath(node.getPath());
@@ -627,31 +626,31 @@ public class WorkerTreeModelAlt extends DefaultTreeModel implements IWorkerTreeM
 			fireTreeStructureChanged(this, new Object[] { root, kindNode, parentNode },
 				null, null);
 		} else {
-			LOGGER.severe("refreshChildren() called on unit not in the tree");
+			LovelaceLogger.error("refreshChildren() called on unit not in the tree");
 		}
 	}
 
 	@Override
 	public void removeUnit(final IUnit unit) {
-		LOGGER.finer("In WorkerTreeModelAlt.removeUnit");
+		LovelaceLogger.trace("In WorkerTreeModelAlt.removeUnit");
 		final PlayerNode playerNode = (PlayerNode) getRoot();
 		final TreeNode kindNode = getNode(playerNode, unit.getKind());
 		final TreeNode node = Optional.ofNullable(kindNode).map(n -> getNode(n, unit)).orElse(null);
 		if (kindNode instanceof KindNode && node instanceof UnitNode) {
 			final int index = getIndexOfChild(kindNode, node);
-			LOGGER.finer(String.format("Unit is %dth child of unit-kind", index));
+			LovelaceLogger.trace("Unit is %dth child of unit-kind", index);
 			if (model.removeUnit(unit)) {
-				LOGGER.finer("Removed from the map, about to remove from the tree");
+				LovelaceLogger.trace("Removed from the map, about to remove from the tree");
 				((KindNode) kindNode).remove((UnitNode) node);
 				fireTreeNodesRemoved(this, new Object[] { playerNode, kindNode},
 					new int[] { index }, new Object[] { node });
-				LOGGER.finer("Finished updating the tree");
+				LovelaceLogger.trace("Finished updating the tree");
 			} else {
-				LOGGER.warning("Failed to remove from the map for some reason");
+				LovelaceLogger.warning("Failed to remove from the map for some reason");
 				// FIXME: Some user feedback---beep, visual beep, etc.
 			}
 		} else {
-			LOGGER.severe("Tree root isn't a tree node, or tree doesn't contain that unit");
+			LovelaceLogger.error("Tree root isn't a tree node, or tree doesn't contain that unit");
 		}
 	}
 
@@ -671,7 +670,7 @@ public class WorkerTreeModelAlt extends DefaultTreeModel implements IWorkerTreeM
 					return;
 				}
 			}
-			LOGGER.warning("Failed to change unit's owner");
+			LovelaceLogger.warning("Failed to change unit's owner");
 			// FIXME: Some user feedback---beep, visual beep, etc.
 		} else { // FIXME: Also check the case where newOwner is the current player
 			// TODO: Log when preconditions other than 'is a unit'

@@ -23,13 +23,12 @@ import drivers.turnrunning.ITurnRunningModel;
 import java.util.Iterator;
 import java.util.Optional;
 import java.util.function.Function;
-import java.util.logging.Logger;
+import lovelace.util.LovelaceLogger;
 import org.javatuples.Pair;
 import org.jetbrains.annotations.Nullable;
 
 // TODO: Once we're on Java 17, make "sealed", limited to HuntingApplet, FishingApplet, and TrappingApplet
 /* package */ abstract class HuntGeneralApplet extends AbstractTurnApplet {
-	private static final Logger LOGGER = Logger.getLogger(HuntGeneralApplet.class.getName());
 	protected final HuntingModel huntingModel;
 	protected final ResourceAddingCLIHelper resourceAddingHelper;
 	protected final ITurnRunningModel model;
@@ -177,7 +176,7 @@ import org.jetbrains.annotations.Nullable;
 				return noResultCost;
 			}
 		} else {
-			LOGGER.severe("Unhandled case from hunting model");
+			LovelaceLogger.error("Unhandled case from hunting model");
 			return null;
 		}
 	}

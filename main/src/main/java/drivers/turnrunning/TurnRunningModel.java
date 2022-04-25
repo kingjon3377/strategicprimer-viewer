@@ -34,19 +34,14 @@ import java.math.BigDecimal;
 import java.util.Random;
 import java.util.function.IntSupplier;
 import java.util.function.Supplier;
-import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
+import lovelace.util.LovelaceLogger;
 
 import static lovelace.util.Decimalize.decimalize;
 
 public class TurnRunningModel extends ExplorationModel implements ITurnRunningModel {
-	/**
-	 * Logger.
-	 */
-	private static final Logger LOGGER = Logger.getLogger(TurnRunningModel.class.getName());
-
 	/**
 	 * If {@link fixture} is a {@link IFortress fortress}, return a stream
 	 * of its contents; otherwise, return stream containing only it. This
@@ -397,7 +392,7 @@ public class TurnRunningModel extends ExplorationModel implements ITurnRunningMo
 						continue;
 					}
 				}
-				LOGGER.warning("No matching skill in matching worker");
+				LovelaceLogger.warning("No matching skill in matching worker");
 			}
 		}
 		return any;

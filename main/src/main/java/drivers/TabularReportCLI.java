@@ -1,9 +1,8 @@
 package drivers;
 
 import java.nio.file.Paths;
-import java.util.logging.Logger;
-import java.util.logging.Level;
 
+import lovelace.util.LovelaceLogger;
 import lovelace.util.ThrowingConsumer;
 import lovelace.util.ThrowingFunction;
 import org.jetbrains.annotations.Nullable;
@@ -34,7 +33,6 @@ import java.util.Map;
  * A driver to produce tabular (CSV) reports of the contents of a player's map.
  */
 public class TabularReportCLI implements ReadOnlyDriver {
-	private static final Logger LOGGER = Logger.getLogger(TabularReportCLI.class.getName());
 	public TabularReportCLI(final ICLIHelper cli, final SPOptions options, final IDriverModel model) {
 		this.cli = cli;
 		this.options = options;
@@ -75,7 +73,7 @@ public class TabularReportCLI implements ReadOnlyDriver {
 	private void createReports(final IMapNG map, final @Nullable Path mapFile) throws DriverFailedException {
 		try {
 			if (mapFile == null) {
-				LOGGER.severe("Asked to create reports from map with no filename");
+				LovelaceLogger.error("Asked to create reports from map with no filename");
 				TabularReportGenerator.createTabularReports(map,
 						filenameFunction(Paths.get("unknown.xml")), cli);
 			} else {
@@ -103,7 +101,7 @@ public class TabularReportCLI implements ReadOnlyDriver {
 					writer.close();
 				}
 			} catch (final IOException except) {
-				LOGGER.log(Level.SEVERE, "I/O error closing writer(s)", except);
+				LovelaceLogger.error(except, "I/O error closing writer(s)");
 			}
 		}
 	}

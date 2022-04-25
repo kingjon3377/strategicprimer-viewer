@@ -4,7 +4,7 @@ import common.map.SubsettableFixture;
 import java.util.Collection;
 import java.util.Random;
 import java.util.function.Predicate;
-import java.util.logging.Logger;
+import lovelace.util.LovelaceLogger;
 import lovelace.util.SingletonRandom;
 import org.jetbrains.annotations.Nullable;
 
@@ -59,8 +59,6 @@ import exploration.common.SimpleMovementModel;
  * A driver model for the various utility drivers.
  */
 public class UtilityDriverModel extends SimpleMultiMapModel {
-	private static final Logger LOGGER = Logger.getLogger(UtilityDriverModel.class.getName());
-
 	private static <Desired, Provided> Consumer<Provided> ifApplicable(final Consumer<Desired> func,
 	                                                                   final Class<Desired> cls) {
 		return (item) -> {
@@ -186,7 +184,7 @@ public class UtilityDriverModel extends SimpleMultiMapModel {
 							FortressMember.class),
 						setModFlag, handlers));
 				} else {
-					LOGGER.warning("Unhandled fixture in coalesceImpl()");
+					LovelaceLogger.warning("Unhandled fixture in coalesceImpl()");
 				}
 			} else if (fixture instanceof Animal) {
 				if (((Animal) fixture).isTalking()) {

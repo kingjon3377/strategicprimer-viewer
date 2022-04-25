@@ -1,6 +1,7 @@
 package drivers.map_viewer;
 
 import java.util.EnumMap;
+import lovelace.util.LovelaceLogger;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Collections;
@@ -21,7 +22,6 @@ import java.io.IOException;
 import java.awt.Image;
 import java.awt.Graphics;
 
-import java.util.logging.Logger;
 import java.util.Objects;
 import java.util.stream.Stream;
 import java.util.stream.Collectors;
@@ -33,10 +33,9 @@ import java.util.stream.Collectors;
 public final class ImageLoader {
 	private ImageLoader() {
 	}
-	private static final Logger LOGGER = Logger.getLogger(ImageLoader.class.getName());
 
 	static {
-		LOGGER.fine(Stream.of(ImageIO.getReaderFileSuffixes()).filter(Objects::nonNull)
+		LovelaceLogger.debug(Stream.of(ImageIO.getReaderFileSuffixes()).filter(Objects::nonNull)
 			.collect(Collectors.joining(", ",
 				"Expect to be able to load the following image file formats: ", "")));
 	}
@@ -128,7 +127,6 @@ public final class ImageLoader {
 	 * An encapsulation of the mapping from tile-types to colors.
 	 */
 	public static final class ColorHelper {
-		private static final Logger LOGGER = Logger.getLogger(ColorHelper.class.getName());
 		private ColorHelper() {}
 		private static String wrap(final String wrapped) {
 			return "<html><p>" + wrapped + "</p></html>";
@@ -192,14 +190,11 @@ public final class ImageLoader {
 				if (map.containsKey(type)) {
 					return map.get(type);
 				} else {
-					LOGGER.severe(String.format(
-						"Asked for unsupported type %s in version %d",
-						type, version));
+					LovelaceLogger.error("Asked for unsupported type %s in version %d", type, version);
 					return null;
 				}
 			} else {
-				LOGGER.severe(String.format("Asked for %s in unsupported version %d",
-					type, version));
+				LovelaceLogger.error("Asked for %s in unsupported version %d", type, version);
 				return null;
 			}
 		}
@@ -214,7 +209,7 @@ public final class ImageLoader {
 			} else if (DESCRIPTIONS.containsKey(type)) {
 				return DESCRIPTIONS.get(type);
 			} else {
-				LOGGER.severe("No description found for tile type " + type);
+				LovelaceLogger.error("No description found for tile type %s", type);
 				return null;
 			}
 		}
@@ -228,7 +223,7 @@ public final class ImageLoader {
 			if (FEATURE_COLORS.containsKey(fixture.getClass())) {
 				return FEATURE_COLORS.get(fixture.getClass());
 			} else {
-				LOGGER.warning("Asked for color for unsupported fixture: " + fixture);
+				LovelaceLogger.warning("Asked for color for unsupported fixture: %s", fixture);
 				return null;
 			}
 		}

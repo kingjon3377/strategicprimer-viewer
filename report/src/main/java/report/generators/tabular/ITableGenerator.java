@@ -3,6 +3,7 @@ package report.generators.tabular;
 import java.io.IOException;
 import java.util.List;
 import java.util.function.Predicate;
+import lovelace.util.LovelaceLogger;
 import lovelace.util.ThrowingConsumer;
 import org.jetbrains.annotations.Nullable;
 
@@ -20,7 +21,6 @@ import java.util.regex.Pattern;
 import org.javatuples.Pair;
 import org.javatuples.Triplet;
 
-import java.util.logging.Logger;
 import java.util.Map;
 import java.util.Comparator;
 import java.util.stream.Collectors;
@@ -35,8 +35,6 @@ public interface ITableGenerator<T extends IFixture> {
 	 * A regular expression to match quote characters.
 	 */
 	Pattern QUOTE_PATTERN = Pattern.compile("\"");
-
-	Logger LOGGER = Logger.getLogger(ITableGenerator.class.getName());
 
 	/**
 	 * Whether this generator can include the given fixture. If this returns false for an object, that object may
@@ -91,7 +89,7 @@ public interface ITableGenerator<T extends IFixture> {
 				count++;
 			}
 		}
-		LOGGER.finer(String.format("Added %d rows in %s", count, getTableName()));
+		LovelaceLogger.trace("Added %d rows in %s", count, getTableName());
 		fixtures.coalesce();
 		return retval;
 	}

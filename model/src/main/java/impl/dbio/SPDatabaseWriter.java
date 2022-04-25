@@ -9,8 +9,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.HashSet;
 import java.util.HashMap;
-import java.util.logging.Logger;
 import javax.xml.stream.XMLStreamException;
+import lovelace.util.LovelaceLogger;
 import org.sqlite.SQLiteDataSource;
 import javax.sql.DataSource;
 import common.map.HasNotes;
@@ -22,20 +22,15 @@ import java.io.IOException;
 import static io.jenetics.facilejdbc.Param.value;
 
 public final class SPDatabaseWriter implements SPWriter {
-	/**
-	 * A logger.
-	 */
-	private static final Logger LOGGER = Logger.getLogger(SPDatabaseWriter.class.getName());
-
 	private final Map<Path, Transactional> connections = new HashMap<>();
 
 	private static DataSource getBaseConnection(final Path path) {
 		final SQLiteDataSource retval = new SQLiteDataSource();
 		if (path.toString().isEmpty()) {
-			LOGGER.info("Trying to set up an in-memory database");
+			LovelaceLogger.info("Trying to set up an in-memory database");
 			retval.setUrl("jdbc:sqlite:file::memory:");
 		} else {
-			LOGGER.info("Setting up an SQLite database for file " + path);
+			LovelaceLogger.info("Setting up an SQLite database for file %s", path);
 			retval.setUrl("jdbc:sqlite:" + path);
 		}
 		return retval;
@@ -74,7 +69,7 @@ public final class SPDatabaseWriter implements SPWriter {
 		if (!notesInitialized.contains(sql)) {
 			sql.transaction().accept(db -> {
 					NOTES_SCHEMA.execute(db);
-					LOGGER.fine("Executed initializer beginning " +
+					LovelaceLogger.debug("Executed initializer beginning %s",
 						NOTES_SCHEMA.rawSql().split("\\R")[0]);
 				});
 			notesInitialized.add(sql);

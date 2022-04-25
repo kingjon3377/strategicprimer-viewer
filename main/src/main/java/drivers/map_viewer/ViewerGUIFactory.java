@@ -4,7 +4,6 @@ import drivers.common.DriverFailedException;
 import drivers.common.ViewerDriver;
 import drivers.common.ViewerDriverFactory;
 import java.util.List;
-import java.util.logging.Logger;
 
 import java.nio.file.Path;
 
@@ -21,17 +20,13 @@ import drivers.gui.common.SPFileChooser;
 import lovelace.util.FileChooser;
 
 import com.google.auto.service.AutoService;
+import lovelace.util.LovelaceLogger;
 
 /**
  * A factory for a driver to start the map viewer.
  */
 @AutoService({DriverFactory.class, ViewerDriverFactory.class})
 public class ViewerGUIFactory implements ViewerDriverFactory {
-	/**
-	 * A logger.
-	 */
-	private static final Logger LOGGER = Logger.getLogger(ViewerGUIFactory.class.getName());
-
 	private static final IDriverUsage USAGE = new DriverUsage(true, "view-map", ParamCount.One,
 		"Map viewer", "Look at the map visually. This is probably the app you want.",
 		false, true, "--current-turn=NN", "--background=image.png",
@@ -63,9 +58,9 @@ public class ViewerGUIFactory implements ViewerDriverFactory {
 	public IViewerModel createModel(final IMutableMapNG map) {
 		final Path path = map.getFilename();
 		if (path == null) {
-			LOGGER.finer("Creating a viewer model for a null path");
+			LovelaceLogger.trace("Creating a viewer model for a null path");
 		} else {
-			LOGGER.finer("Creating a viewer model for path " + path);
+			LovelaceLogger.trace("Creating a viewer model for path %s", path);
 		}
 		return new ViewerModel(map);
 	}

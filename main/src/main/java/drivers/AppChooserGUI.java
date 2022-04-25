@@ -19,7 +19,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ServiceLoader;
 import java.util.function.Consumer;
-import java.util.logging.Logger;
 import java.util.stream.Stream;
 import javax.swing.JEditorPane;
 import javax.swing.JLabel;
@@ -30,7 +29,6 @@ import lovelace.util.BorderedPanel;
 import lovelace.util.ListenedButton;
 
 /* package */ class AppChooserGUI implements UtilityGUI {
-	private static final Logger LOGGER = Logger.getLogger(AppChooserGUI.class.getName());
 	public AppChooserGUI(final ICLIHelper cli, final SPOptions options) {
 		this.cli = cli;
 		this.options = options;

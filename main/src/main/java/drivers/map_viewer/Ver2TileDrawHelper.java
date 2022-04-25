@@ -3,6 +3,7 @@ package drivers.map_viewer;
 import java.nio.file.NoSuchFileException;
 
 import java.util.stream.Stream;
+import lovelace.util.LovelaceLogger;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -36,8 +37,6 @@ import drivers.common.FixtureMatcher;
 
 import java.util.function.Predicate;
 import java.util.List;
-import java.util.logging.Logger;
-import java.util.logging.Level;
 
 import common.map.River;
 import common.map.Direction;
@@ -61,8 +60,6 @@ public class Ver2TileDrawHelper implements TileDrawHelper {
 	 */
 	private final List<FixtureMatcher> matchers;
 
-	private static final Logger LOGGER = Logger.getLogger(Ver2TileDrawHelper.class.getName());
-
 	public Ver2TileDrawHelper(final ImageObserver observer, final Predicate<TileFixture> filter,
 	                          final FixtureMatcher... matchers) {
 		this.observer = observer;
@@ -72,9 +69,9 @@ public class Ver2TileDrawHelper implements TileDrawHelper {
 			try {
 				ImageLoader.loadImage(file);
 			} catch (final FileNotFoundException|NoSuchFileException except) {
-				LOGGER.log(Level.INFO, String.format("Image %s not found", file), except);
+				LovelaceLogger.info(except, "Image %s not found", file);
 			} catch (final IOException except) {
-				LOGGER.log(Level.SEVERE, "I/O error while loading image " + file, except);
+				LovelaceLogger.error(except, "I/O error while loading image %s", file);
 			}
 		}
 	}
@@ -90,9 +87,9 @@ public class Ver2TileDrawHelper implements TileDrawHelper {
 			try {
 				ImageLoader.loadImage(file);
 			} catch (final FileNotFoundException|NoSuchFileException except) {
-				LOGGER.log(Level.INFO, String.format("Image %s not found", file), except);
+				LovelaceLogger.info(except, "Image %s not found", file);
 			} catch (final IOException except) {
-				LOGGER.log(Level.SEVERE, "I/O error while loading image " + file, except);
+				LovelaceLogger.error(except, "I/O error while loading image %s", file);
 			}
 		}
 	}
@@ -130,10 +127,10 @@ public class Ver2TileDrawHelper implements TileDrawHelper {
 		try {
 			return ImageLoader.loadImage(filename);
 		} catch (final FileNotFoundException|NoSuchFileException except) {
-			LOGGER.log(Level.SEVERE, String.format("Image %s not found", filename), except);
+			LovelaceLogger.error(except,"Image %s not found", filename);
 			return fallbackFallback;
 		} catch (final IOException except) {
-			LOGGER.log(Level.SEVERE, "I/O error while loading image " + filename, except);
+			LovelaceLogger.error(except, "I/O error while loading image %s", filename);
 			return fallbackFallback;
 		}
 	}
@@ -171,13 +168,13 @@ public class Ver2TileDrawHelper implements TileDrawHelper {
 			return ImageLoader.loadImage(filename);
 		} catch (final FileNotFoundException|NoSuchFileException except) {
 			if (!missingFiles.contains(filename)) {
-				LOGGER.severe(String.format("images/%s not found", filename));
-				LOGGER.log(Level.FINE, "with stack trace", except);
+				LovelaceLogger.error("images/%s not found", filename);
+				LovelaceLogger.debug(except, "with stack trace");
 				missingFiles.add(filename);
 			}
 			return fallbackImage;
 		} catch (final IOException except) {
-			LOGGER.log(Level.SEVERE, "I/O error reading image images/" + filename, except);
+			LovelaceLogger.error(except, "I/O error reading image images/%s", filename);
 			return fallbackImage;
 		}
 	}
@@ -194,7 +191,7 @@ public class Ver2TileDrawHelper implements TileDrawHelper {
 				return getImage(image);
 			}
 		} else {
-			LOGGER.warning("Using fallback image for unexpected kind of fixture");
+			LovelaceLogger.warning("Using fallback image for unexpected kind of fixture");
 			return fallbackImage;
 		}
 	}

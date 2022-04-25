@@ -10,7 +10,6 @@ import java.util.Set;
 
 import java.util.function.Consumer;
 
-import java.util.logging.Level;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -18,14 +17,12 @@ import common.map.fixtures.mobile.IMutableWorker;
 import common.map.fixtures.mobile.IWorker;
 import common.map.fixtures.mobile.ProxyFor;
 
-import java.util.logging.Logger;
+import lovelace.util.LovelaceLogger;
 
 /**
  * An IJob implementation to let the Job tree operate on a whole unit at once.
  */
 public final class ProxyJob implements IJob, ProxyFor<IJob> {
-	private static final Logger LOGGER = Logger.getLogger(ProxyJob.class.getName());
-
 	public ProxyJob(final String name, final boolean parallel, final IWorker... proxiedWorkers) {
 		this.parallel = parallel;
 		this.name = name;
@@ -47,8 +44,8 @@ public final class ProxyJob implements IJob, ProxyFor<IJob> {
 					.filter(j -> name.equals(j.getName()))
 					.findAny().orElse(job));
 			} else if (unmodified) {
-				LOGGER.warning("Can't add job to immutable worker");
-				LOGGER.log(Level.FINER, "Stack trace for immutable-worker condition", new Exception());
+				LovelaceLogger.warning("Can't add job to immutable worker");
+				LovelaceLogger.trace(new Exception(), "Stack trace for immutable-worker condition");
 			}
 		}
 

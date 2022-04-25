@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.Console;
 import java.io.InputStreamReader;
 import java.util.function.Consumer;
+import lovelace.util.LovelaceLogger;
 import lovelace.util.SystemIn;
 import org.eclipse.jdt.annotation.NonNull;
 import org.jetbrains.annotations.Nullable;
@@ -19,8 +20,6 @@ import static lovelace.util.NumParsingHelper.parseInt;
 import java.util.List;
 import java.util.function.Function;
 import java.io.IOException;
-import java.util.logging.Logger;
-import java.util.logging.Level;
 import java.util.stream.Stream;
 import java.util.Optional;
 import java.util.OptionalInt;
@@ -32,7 +31,6 @@ import java.util.OptionalInt;
  * TODO: Port to use java.io.Console more directly and extensively?
  */
 public final class CLIHelper implements ICLIHelper {
-	private static final Logger LOGGER = Logger.getLogger(CLIHelper.class.getName());
 	@FunctionalInterface
 	public interface IOSource {
 		@Nullable String readLine() throws IOException;
@@ -190,7 +188,7 @@ public final class CLIHelper implements ICLIHelper {
 		try {
 			return istream.readLine();
 		} catch (final IOException except) {
-			LOGGER.log(Level.WARNING, "I/O error", except);
+			LovelaceLogger.warning(except, "I/O error");
 			return null;
 		}
 	}
@@ -236,7 +234,7 @@ public final class CLIHelper implements ICLIHelper {
 				retval = new BigDecimal(input.trim());
 			} catch (final NumberFormatException except) {
 				println("Invalid number.");
-				LOGGER.log(Level.FINER, "Invalid number", except);
+				LovelaceLogger.trace(except, "Invalid number");
 			}
 		}
 		return retval;

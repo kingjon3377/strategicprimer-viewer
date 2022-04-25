@@ -1,6 +1,7 @@
 package drivers.worker_mgmt;
 
 import java.util.Comparator;
+import lovelace.util.LovelaceLogger;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.FileNotFoundException;
@@ -57,8 +58,6 @@ import java.util.function.Predicate;
 import java.util.function.Consumer;
 import org.javatuples.Pair;
 import java.util.Optional;
-import java.util.logging.Logger;
-import java.util.logging.Level;
 import java.util.stream.Collectors;
 
 /**
@@ -66,7 +65,6 @@ import java.util.stream.Collectors;
  */
 public final class WorkerTree extends JTree implements UnitMemberSelectionSource, UnitSelectionSource {
 	private static final long serialVersionUID = 1L;
-	private static final Logger LOGGER = Logger.getLogger(WorkerTree.class.getName());
 	// TODO: Move into the inner class that uses this
 	private static final DefaultTreeCellRenderer DEFAULT_STORER = new DefaultTreeCellRenderer();
 	private final List<Pair<String, ToIntFunction<WorkerStats>>> statReferencesList =
@@ -161,7 +159,7 @@ public final class WorkerTree extends JTree implements UnitMemberSelectionSource
 		final Object sel = Optional.ofNullable(event.getNewLeadSelectionPath())
 			.map(TreePath::getLastPathComponent).map(wtModel::getModelObject).orElse(null);
 		if (sel instanceof IUnit) {
-			LOGGER.fine("Selection in workerTree is an IUnit");
+			LovelaceLogger.debug("Selection in workerTree is an IUnit");
 			for (final UnitSelectionListener listener : selectionListeners) {
 				listener.selectUnit((IUnit) sel);
 			}
@@ -170,7 +168,7 @@ public final class WorkerTree extends JTree implements UnitMemberSelectionSource
 				listener.memberSelected(null, proxy);
 			}
 		} else if (sel instanceof UnitMember) {
-			LOGGER.fine("workerTree selection is a UnitMember, but not an IUnit");
+			LovelaceLogger.debug("workerTree selection is a UnitMember, but not an IUnit");
 			for (final UnitSelectionListener listener : selectionListeners) {
 				listener.selectUnit(null);
 			}
@@ -179,11 +177,11 @@ public final class WorkerTree extends JTree implements UnitMemberSelectionSource
 			}
 		} else {
 			if (sel instanceof String) {
-				LOGGER.fine("workerTree selection is a String, i.e. a unit-kind node");
+				LovelaceLogger.debug("workerTree selection is a String, i.e. a unit-kind node");
 			} else if (sel == null) {
-				LOGGER.fine("Selection in workerTree is null");
+				LovelaceLogger.debug("Selection in workerTree is null");
 			} else {
-				LOGGER.warning("Unexpected type of selection in workerTree: " +
+				LovelaceLogger.warning("Unexpected type of selection in workerTree: %s",
 					sel.getClass());
 			}
 			for (final UnitSelectionListener listener : selectionListeners) {
@@ -246,8 +244,7 @@ public final class WorkerTree extends JTree implements UnitMemberSelectionSource
 							selection instanceof HasMutableKind) {
 						unitsToTransfer.add((IUnit) selection);
 					} else {
-						LOGGER.info("Selection included non-UnitMember: "
-							+ selection.getClass());
+						LovelaceLogger.info("Selection included non-UnitMember: %s", selection.getClass());
 					}
 				}
 			}
@@ -261,7 +258,7 @@ public final class WorkerTree extends JTree implements UnitMemberSelectionSource
 				}
 			} else {
 				if (!unitsToTransfer.isEmpty()) { // TODO: combine with containing else?
-					LOGGER.warning("Selection included both units and unit members");
+					LovelaceLogger.warning("Selection included both units and unit members");
 				}
 				return new UnitMemberTransferable(membersToTransfer.toArray(new Pair[0]));
 			}
@@ -348,12 +345,10 @@ public final class WorkerTree extends JTree implements UnitMemberSelectionSource
 						return false;
 					}
 				} catch (final UnsupportedFlavorException except) {
-					LOGGER.log(Level.SEVERE, "Impossible unsupported data flavor",
-						except);
+					LovelaceLogger.error(except, "Impossible unsupported data flavor");
 					return false;
 				} catch (final IOException except) {
-					LOGGER.log(Level.SEVERE, "I/O error in transfer after we checked",
-						except);
+					LovelaceLogger.error(except, "I/O error in transfer after we checked");
 					return false;
 				}
 			} else {
@@ -407,11 +402,11 @@ public final class WorkerTree extends JTree implements UnitMemberSelectionSource
 			try {
 				return ImageLoader.loadIcon(filename);
 			}  catch (final FileNotFoundException|NoSuchFileException except) {
-				LOGGER.severe(String.format("Image file images/%s not found`", filename));
-				LOGGER.log(Level.FINE, "with stack trace", except);
+				LovelaceLogger.error("Image file images/%s not found", filename);
+				LovelaceLogger.debug(except, "with stack trace");
 				return null;
 			} catch (final IOException except) {
-				LOGGER.log(Level.SEVERE, "I/O error reading image", except);
+				LovelaceLogger.error(except, "I/O error reading image");
 				return null;
 			}
 		}
@@ -608,7 +603,7 @@ public final class WorkerTree extends JTree implements UnitMemberSelectionSource
 		@Override
 		public void treeNodesRemoved(final TreeModelEvent event) {
 			final TreePath path = event.getTreePath().pathByAddingChild(event.getChildren()[0]);
-			LOGGER.finer("About to remove this path from selection: " + path);
+			LovelaceLogger.trace("About to remove this path from selection: %s", path);
 			tree.removeSelectionPath(path);
 			tree.updateUI();
 		}

@@ -3,7 +3,6 @@ package utility;
 import common.map.IFixture;
 import drivers.common.DriverFailedException;
 import drivers.common.IncorrectUsageException;
-import java.util.logging.Logger;
 import java.util.Collections;
 import common.map.Point;
 import drivers.common.FixtureMatcher;
@@ -63,12 +62,12 @@ import common.map.fixtures.explorable.Cave;
 import common.map.fixtures.explorable.Portal;
 import common.map.fixtures.explorable.AdventureFixture;
 import common.map.fixtures.explorable.Battlefield;
+import lovelace.util.LovelaceLogger;
 
 /**
  * An app to copy selected contents from one map to another.
  */
 public class MapTradeCLI implements CLIDriver {
-	private static final Logger LOGGER = Logger.getLogger(MapTradeCLI.class.getName());
 	private static List<FixtureMatcher> initializeMatchers() {
 		final List<FixtureMatcher> retval = new ArrayList<>();
 		FixtureMatcher.complements(IUnit.class, u -> !u.getOwner().isIndependent(),
@@ -196,8 +195,8 @@ public class MapTradeCLI implements CLIDriver {
 			if (first.isLocationEmpty(location)) {
 				continue;
 			}
-			LOGGER.fine(String.format("Copying contents at %s, location %d/%d", location,
-				count, totalCount));
+			LovelaceLogger.debug("Copying contents at %s, location %d/%d", location,
+				count, totalCount);
 			model.copyBaseTerrainAt(location);
 			model.maybeCopyFixturesAt(location, this::testFixture,
 					zeroFixtures ? IFixture.CopyBehavior.ZERO : IFixture.CopyBehavior.KEEP);

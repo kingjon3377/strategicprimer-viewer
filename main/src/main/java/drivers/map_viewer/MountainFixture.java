@@ -1,15 +1,13 @@
 package drivers.map_viewer;
 
 import common.map.FakeFixture;
-import java.util.logging.Logger;
-import java.util.logging.Level;
+import lovelace.util.LovelaceLogger;
 
 /**
  * A fake "TileFixture" to represent the mountain(s) on a mountainous tile, so
  * it/they can appear in the list of the tile's contents.
  */
 /* package */ class MountainFixture implements FakeFixture {
-	private static final Logger LOGGER = Logger.getLogger(MountainFixture.class.getName());
 	/**
 	 * Clone the object.
 	 *
@@ -21,7 +19,7 @@ import java.util.logging.Level;
 	@Deprecated
 	@Override
 	public MountainFixture copy(final CopyBehavior zero) {
-		LOGGER.log(Level.WARNING, "TileTypeFixture.copy called", new Exception("dummy"));
+		LovelaceLogger.warning(new Exception("dummy"), "TileTypeFixture.copy called");
 		return new MountainFixture();
 	}
 

@@ -1,10 +1,9 @@
 package drivers.resourceadding;
 
 import drivers.common.DriverFailedException;
-import java.util.logging.Logger;
-import java.util.logging.Level;
 
 import javax.xml.stream.XMLStreamException;
+import lovelace.util.LovelaceLogger;
 import org.jetbrains.annotations.Nullable;
 
 import java.nio.file.Path;
@@ -76,8 +75,6 @@ import java.io.IOException;
 import java.io.FileNotFoundException;
 
 /* package */ class ResourceAddingGUI implements MultiMapGUIDriver {
-	private static final Logger LOGGER = Logger.getLogger(ResourceAddingGUI.class.getName());
-
 	// TODO: Probably move inside frame class
 	private static JPanel pairPanel(final Component first, final Component second) {
 		return BorderedPanel.verticalPanel(first, null, second);
@@ -307,16 +304,16 @@ import java.io.FileNotFoundException;
 				model.addSubordinateMap(MapIOHelper.readMap(file));
 			} catch (final SPFormatException except) {
 				logError(logLabel).accept("SP map format error: " + except.getLocalizedMessage());
-				LOGGER.log(Level.SEVERE, "SP map format error", except);
+				LovelaceLogger.error(except, "SP map format error");
 			} catch (final NoSuchFileException|FileNotFoundException except) {
 				logError(logLabel).accept(String.format("Dropped file %s couldn't be found", file));
-				LOGGER.log(Level.SEVERE, "Dropped file couldn't be found", except);
+				LovelaceLogger.error(except, "Dropped file couldn't be found");
 			} catch (final IOException except) {
 				logError(logLabel).accept("I/O error while reading dropped file: " + except.getLocalizedMessage());
-				LOGGER.log(Level.SEVERE, "I/O error reading map file", except);
+				LovelaceLogger.error(except, "I/O error reading map file");
 			} catch (final XMLStreamException except) {
 				logError(logLabel).accept(String.format("Dropped file %s contained malformed XML", file));
-				LOGGER.log(Level.SEVERE, "Dropped file contained malformed XML", except);
+				LovelaceLogger.error(except, "Dropped file contained malformed XML");
 			}
 		}
 	}
@@ -328,7 +325,7 @@ import java.io.FileNotFoundException;
 			menuHandler.registerWindowShower(new AboutDialog(frame,
 				frame.getWindowName()), "about");
 		} catch (final IOException except) {
-			LOGGER.log(Level.SEVERE, "I/O error loading about dialog text", except);
+			LovelaceLogger.error(except, "I/O error loading about dialog text");
 			// But the About dialog isn't critical, so go on ...
 		}
 		pcml.addPlayerChangeListener(frame);

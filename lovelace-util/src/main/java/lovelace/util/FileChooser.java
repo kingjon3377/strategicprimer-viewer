@@ -9,7 +9,6 @@ import javax.swing.JFileChooser;
 import java.io.File;
 import java.awt.FileDialog;
 import java.awt.Component;
-import java.util.logging.Logger;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.function.ToIntFunction;
@@ -19,7 +18,6 @@ import java.util.Optional;
 import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import java.util.logging.Level;
 import java.util.function.Consumer;
 import either.Either;
 
@@ -34,11 +32,6 @@ import either.Either;
  * over the differences between them.
  */
 public class FileChooser {
-	/**
-	 * Logger.
-	 */
-	private static final Logger LOGGER = Logger.getLogger(FileChooser.class.getName());
-
 	/**
 	 * An exception to throw when the user cancels the file-chooser.
 	 */
@@ -104,14 +97,14 @@ public class FileChooser {
 		case Open: case Save:
 			throw new IllegalArgumentException("Approve text only supported for custom dialog");
 		case Custom:
-			LOGGER.fine("FileChooser invoked for a custom dialog with Swing JFileChooser");
+			LovelaceLogger.debug("FileChooser invoked for a custom dialog with Swing JFileChooser");
 			chooser = Either.left(fileChooser);
 			chooserFunction = (component) -> fileChooser.showDialog(component, approveText);
 			if (loc == null) {
-				LOGGER.fine("No file was passed in");
+				LovelaceLogger.debug("No file was passed in");
 				storedFile = Collections.emptyList();
 			} else {
-				LOGGER.fine("A file was passed in");
+				LovelaceLogger.debug("A file was passed in");
 				storedFile = Collections.singletonList(loc);
 			}
 			break;
@@ -123,27 +116,27 @@ public class FileChooser {
 	protected FileChooser(final ChooserMode mode, final JFileChooser fileChooser, final @Nullable Path loc) {
 		switch (mode) {
 		case Open:
-			LOGGER.fine("FileChooser invoked for the Open dialog using Swing JFileChooser");
+			LovelaceLogger.debug("FileChooser invoked for the Open dialog using Swing JFileChooser");
 			chooser = Either.left(fileChooser);
 			chooserFunction = fileChooser::showOpenDialog;
 			fileChooser.setMultiSelectionEnabled(true);
 			if (loc == null) {
-				LOGGER.fine("No file was passed in");
+				LovelaceLogger.debug("No file was passed in");
 				storedFile = Collections.emptyList();
 			} else {
-				LOGGER.fine("A file was passed in");
+				LovelaceLogger.debug("A file was passed in");
 				storedFile = Collections.singletonList(loc);
 			}
 			break;
 		case Save:
-			LOGGER.fine("FileChooser invoked for Save dialog using Swing JFileChooser");
+			LovelaceLogger.debug("FileChooser invoked for Save dialog using Swing JFileChooser");
 			chooserFunction = fileChooser::showSaveDialog;
 			chooser = Either.left(fileChooser);
 			if (loc == null) {
-				LOGGER.fine("No file was passed in");
+				LovelaceLogger.debug("No file was passed in");
 				storedFile = Collections.emptyList();
 			} else {
-				LOGGER.fine("A file was passed in");
+				LovelaceLogger.debug("A file was passed in");
 				storedFile = Collections.singletonList(loc);
 			}
 			break;
@@ -157,7 +150,7 @@ public class FileChooser {
 	protected FileChooser(final ChooserMode mode, final FileDialog fileChooser, final @Nullable Path loc) {
 		switch (mode) {
 		case Open:
-			LOGGER.fine("FileChooser invoked for the Open dialog using AWT FileDialog");
+			LovelaceLogger.debug("FileChooser invoked for the Open dialog using AWT FileDialog");
 			fileChooser.setMode(FileDialog.LOAD);
 			chooser = Either.right(fileChooser);
 			chooserFunction = (component) -> {
@@ -166,15 +159,15 @@ public class FileChooser {
 			};
 			fileChooser.setMultipleMode(true);
 			if (loc == null) {
-				LOGGER.fine("No file was passed in");
+				LovelaceLogger.debug("No file was passed in");
 				storedFile = Collections.emptyList();
 			} else {
-				LOGGER.fine("A file was passed in");
+				LovelaceLogger.debug("A file was passed in");
 				storedFile = Collections.singletonList(loc);
 			}
 			break;
 		case Save:
-			LOGGER.fine("FileChooser invoked for Save dialog using AWT FileDialog");
+			LovelaceLogger.debug("FileChooser invoked for Save dialog using AWT FileDialog");
 			fileChooser.setMode(FileDialog.SAVE);
 			chooser = Either.right(fileChooser);
 			chooserFunction = (component) -> {
@@ -182,10 +175,10 @@ public class FileChooser {
 				return 0;
 			};
 			if (loc == null) {
-				LOGGER.fine("No file was passed in");
+				LovelaceLogger.debug("No file was passed in");
 				storedFile = Collections.emptyList();
 			} else {
-				LOGGER.fine("A file was passed in");
+				LovelaceLogger.debug("A file was passed in");
 				storedFile = Collections.singletonList(loc);
 			}
 			break;
@@ -243,7 +236,7 @@ public class FileChooser {
 	 */
 	private static void invoke(final Runnable runnable) throws ChoiceInterruptedException {
 		try {
-			LOGGER.fine("FileChooser.invoke(): About to invoke the provided function");
+			LovelaceLogger.debug("FileChooser.invoke(): About to invoke the provided function");
 			SwingUtilities.invokeAndWait(runnable);
 		} catch (final InvocationTargetException except) {
 			throw new ChoiceInterruptedException(
@@ -257,43 +250,43 @@ public class FileChooser {
 	 * Show the dialog to the user and update {@link storedFile} with his or her choice(s).
 	 */
 	void haveUserChooseFiles() {
-		LOGGER.fine("In FileChooser.haveUserChooseFiles");
+		LovelaceLogger.debug("In FileChooser.haveUserChooseFiles");
 		final int status = chooserFunction.applyAsInt(null);
-		LOGGER.fine("FileChooser: The AWT or Swing chooser returned");
+		LovelaceLogger.debug("FileChooser: The AWT or Swing chooser returned");
 		if (chooser.fromLeft().isPresent()) {
 			final JFileChooser fc = chooser.fromLeft().get();
 			if (JFileChooser.APPROVE_OPTION == status) {
 				final List<Path> retval = Stream.of(fc.getSelectedFiles()).filter(Objects::nonNull)
 					.map(File::toPath).collect(Collectors.toList());
 				if (!retval.isEmpty()) {
-					LOGGER.fine("Saving the file(s) the user chose via Swing");
+					LovelaceLogger.debug("Saving the file(s) the user chose via Swing");
 					storedFile = retval;
 				} else if (fc.getSelectedFile() != null) {
 					final File selectedFile = fc.getSelectedFile();
-					LOGGER.fine("Saving the singular file the user chose via Swing");
+					LovelaceLogger.debug("Saving the singular file the user chose via Swing");
 					storedFile = Collections.singletonList(selectedFile.toPath());
 				} else {
-					LOGGER.info("User pressed approve but selected no files");
+					LovelaceLogger.info("User pressed approve but selected no files");
 					storedFile = Collections.emptyList();
 				}
 			} else {
-				LOGGER.info("Chooser function returned " + status);
+				LovelaceLogger.info("Chooser function returned %s", status);
 			}
 		} else {
 			final FileDialog fd = chooser.fromRight().get();
 			final List<Path> retval = Stream.of(fd.getFiles()).filter(Objects::nonNull)
 				.map(File::toPath).collect(Collectors.toList());
 			if (!retval.isEmpty()) {
-				LOGGER.fine("Saving the file(s) the user chose via AWT");
+				LovelaceLogger.debug("Saving the file(s) the user chose via AWT");
 				storedFile = retval;
 			} else if (fd.getFile() != null) {
 				final String selectedFile = fd.getFile();
-				LOGGER.fine("Saving the singular file the user chose via AWT");
+				LovelaceLogger.debug("Saving the singular file the user chose via AWT");
 				storedFile = Collections.singletonList(Paths.get(selectedFile));
 			} else {
-				LOGGER.info("User failed to choose?");
-				LOGGER.fine(String.format("Returned iterable was %s (%s)", retval,
-					retval.getClass()));
+				LovelaceLogger.info("User failed to choose?");
+				LovelaceLogger.debug("Returned iterable was %s (%s)", retval,
+					retval.getClass());
 				storedFile = Collections.emptyList();
 			}
 		}
@@ -312,13 +305,13 @@ public class FileChooser {
 	 */
 	public List<Path> getFiles() throws ChoiceInterruptedException {
 		if (!storedFile.isEmpty()) {
-			LOGGER.fine("FileChooser.files: A file was stored, so returning it");
+			LovelaceLogger.debug("FileChooser.files: A file was stored, so returning it");
 			return storedFile;
 		} else if (SwingUtilities.isEventDispatchThread()) {
-			LOGGER.fine("FileChooser.files: Have to ask the user; on EDT");
+			LovelaceLogger.debug("FileChooser.files: Have to ask the user; on EDT");
 			haveUserChooseFiles();
 		} else {
-			LOGGER.fine("FileChooser.files: Have to ask the user; not yet on EDT");
+			LovelaceLogger.debug("FileChooser.files: Have to ask the user; not yet on EDT");
 			invoke(this::haveUserChooseFiles);
 		}
 		if (storedFile.isEmpty()) {
@@ -344,7 +337,7 @@ public class FileChooser {
 		try {
 			getFiles().forEach(consumer);
 		} catch (final ChoiceInterruptedException exception) {
-			LOGGER.log(Level.INFO, "Choice interrupted or user failed to choose", exception);
+			LovelaceLogger.info(exception, "Choice interrupted or user failed to choose");
 		}
 	}
 }

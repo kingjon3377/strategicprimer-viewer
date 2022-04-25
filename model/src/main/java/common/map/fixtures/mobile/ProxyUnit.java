@@ -14,7 +14,6 @@ import java.util.NavigableMap;
 import java.util.TreeMap;
 import java.util.function.Consumer;
 import java.util.function.Function;
-import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 import static java.util.Map.Entry;
@@ -27,12 +26,12 @@ import common.map.fixtures.UnitMember;
 import common.map.fixtures.mobile.worker.ProxyWorker;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
+import lovelace.util.LovelaceLogger;
 
 /**
  * A proxy for units in multiple maps, or all a player's units of one kind.
  */
 public class ProxyUnit implements IUnit, ProxyFor<IUnit> {
-	private static final Logger LOGGER = Logger.getLogger(ProxyUnit.class.getName());
 	/**
 	 * If true, we are proxying parallel units in different maps; if false,
 	 * multiple units of the same kind owned by one player.
@@ -163,7 +162,7 @@ public class ProxyUnit implements IUnit, ProxyFor<IUnit> {
 
 	@Override
 	public boolean equalsIgnoringID(final IFixture fixture) {
-		LOGGER.severe("ProxyUnit.equalsIgnoringID called");
+		LovelaceLogger.error("ProxyUnit.equalsIgnoringID called");
 		if (fixture instanceof ProxyUnit) {
 			return proxiedList.stream().allMatch(m -> (((ProxyUnit) fixture).proxiedList.stream().anyMatch(m::equals))); // TODO: Should check the converse as well
 		} else {
@@ -173,7 +172,7 @@ public class ProxyUnit implements IUnit, ProxyFor<IUnit> {
 
 	@Override
 	public int compareTo(final TileFixture fixture) {
-		LOGGER.warning("ProxyUnit.compare called");
+		LovelaceLogger.warning("ProxyUnit.compare called");
 		return IUnit.super.compareTo(fixture);
 	}
 
@@ -211,13 +210,13 @@ public class ProxyUnit implements IUnit, ProxyFor<IUnit> {
 							if (member instanceof IWorker) {
 								((WorkerProxy) proxy).addProxied((IWorker) member);
 							} else {
-								LOGGER.warning("ProxyWorker matched non-worker");
+								LovelaceLogger.warning("ProxyWorker matched non-worker");
 							}
 						} else if (proxy instanceof AnimalProxy) {
 							if (member instanceof Animal) {
 								((AnimalProxy) proxy).addProxied((Animal) member);
 							} else {
-								LOGGER.warning("ProxyAnimal matched non-animal");
+								LovelaceLogger.warning("ProxyAnimal matched non-animal");
 							}
 						} else {
 							((UnitMemberProxy<UnitMember>) proxy).addProxied(member);

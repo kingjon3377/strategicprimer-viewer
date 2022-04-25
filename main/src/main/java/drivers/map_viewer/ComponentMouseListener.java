@@ -5,10 +5,10 @@ import java.util.List;
 import java.util.stream.Collectors;
 import common.map.TileType;
 import java.util.Optional;
+import lovelace.util.LovelaceLogger;
 import org.jetbrains.annotations.Nullable;
 import org.javatuples.Pair;
 
-import java.util.logging.Logger;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
@@ -28,7 +28,6 @@ import java.util.function.Consumer;
  * A mouse listener for the map panel, to show the terrain-changing menu as needed.
  */
 /* package */ class ComponentMouseListener extends MouseAdapter implements ToolTipSource {
-	private static final Logger LOGGER = Logger.getLogger(ComponentMouseListener.class.getName());
 	public ComponentMouseListener(final IViewerModel model, final Predicate<TileFixture> zof,
 	                              final Comparator<TileFixture> comparator) {
 		this.model = model;
@@ -94,7 +93,7 @@ import java.util.function.Consumer;
 		event.getComponent().requestFocusInWindow();
 		final MapDimensions mapDimensions = model.getMapDimensions();
 		final Point point = pointFor(event);
-		LOGGER.finer("User clicked on " + point);
+		LovelaceLogger.trace("User clicked on %s", point);
 		if (point.isValid() && point.getRow() < mapDimensions.getRows() &&
 				point.getColumn() < mapDimensions.getColumns()) {
 			if (event.isPopupTrigger()) {

@@ -3,11 +3,9 @@ package exploration.common;
 import java.util.Map;
 import java.util.HashMap;
 import common.map.IMapNG;
-import java.util.logging.Logger;
 
 public final class PathfinderFactory {
 	private PathfinderFactory() {}
-	private static final Logger LOGGER = Logger.getLogger(PathfinderFactory.class.getName());
 	private static final Map<IMapNG, Pathfinder> pathfinderCache = new HashMap<>();
 
 	/**

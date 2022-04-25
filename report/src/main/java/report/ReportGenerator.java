@@ -1,8 +1,8 @@
 package report;
 
+import lovelace.util.LovelaceLogger;
 import org.jetbrains.annotations.Nullable;
 import org.javatuples.Pair;
-import java.util.logging.Logger;
 
 import lovelace.util.DelayedRemovalMap;
 
@@ -34,11 +34,6 @@ import java.io.IOException;
  * Produces reports based on maps.
  */
 public final class ReportGenerator {
-	/**
-	 * A logger.
-	 */
-	private static final Logger LOGGER = Logger.getLogger(ReportGenerator.class.getName());
-
 	private ReportGenerator() {
 	}
 
@@ -104,8 +99,8 @@ public final class ReportGenerator {
 				fixtures.remove(fixture.getId());
 					continue;
 			}
-			LOGGER.warning(String.format("Unhandled fixture:\t%s (ID #%d)",
-				fixture.toString(), fixture.getId()));
+			LovelaceLogger.warning("Unhandled fixture:\t%s (ID #%d)",
+				fixture, fixture.getId());
 		}
 		return builder.toString();
 	}

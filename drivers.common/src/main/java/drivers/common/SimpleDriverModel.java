@@ -12,17 +12,12 @@ import common.map.MapDimensions;
 import common.map.MapDimensionsImpl;
 import common.map.PlayerCollection;
 
-import java.util.logging.Logger;
+import lovelace.util.LovelaceLogger;
 
 /**
  * A superclass for driver-models, to handle the common details.
  */
 public class SimpleDriverModel implements IDriverModel {
-	/**
-	 * Logger.
-	 */
-	private static final Logger LOGGER = Logger.getLogger(SimpleDriverModel.class.getName());
-
 	/**
 	 * The list of map-change listeners.
 	 */
@@ -151,7 +146,7 @@ public class SimpleDriverModel implements IDriverModel {
 	@Override
 	public final void setMapFilename(final Path filename) {
 		if (mainMap.getFilename() != null) {
-			LOGGER.warning("Overwriting existing filename");
+			LovelaceLogger.warning("Overwriting existing filename");
 		}
 		mainMap.setFilename(filename);
 	}

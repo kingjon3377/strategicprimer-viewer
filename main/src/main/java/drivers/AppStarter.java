@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.BiConsumer;
-import java.util.logging.Logger;
 
 import java.awt.GraphicsEnvironment;
 
@@ -24,10 +23,10 @@ import drivers.common.DriverFactory;
 
 import drivers.common.cli.ICLIHelper;
 
+import lovelace.util.LovelaceLogger;
 import org.jetbrains.annotations.Nullable;
 
 /* package */ class AppStarter {
-	private static final Logger LOGGER = Logger.getLogger(AppStarter.class.getName());
 	private final Map<String, Iterable<DriverFactory>> driverCache =
 			AppChooserState.createCache(); // TODO: Can we, and should we, inline that into here?
 
@@ -36,7 +35,7 @@ import org.jetbrains.annotations.Nullable;
 	}
 
 	public void startDriverOnArguments(final ICLIHelper cli, final SPOptions options, final String... args) throws DriverFailedException {
-		LOGGER.finer("Inside AppStarter#startDriver()");
+		LovelaceLogger.trace("Inside AppStarter#startDriver()");
 		boolean gui = !GraphicsEnvironment.isHeadless();
 		final SPOptionsImpl currentOptions = new SPOptionsImpl(StreamSupport.stream(options.spliterator(), false).toArray((Map.Entry[]::new)));
 		if (!currentOptions.hasOption("--gui")) {
@@ -59,16 +58,16 @@ import org.jetbrains.annotations.Nullable;
 			if (arg == null) {
 				continue;
 			} else if ("-g".equals(arg) || "--gui".equals(arg)) {
-				LOGGER.finer("User specified either -g or --gui");
+				LovelaceLogger.trace("User specified either -g or --gui");
 				currentOptions.addOption("--gui");
 				gui = true;
 			} else if ("-c".equals(arg) || "--cli".equals(arg)) {
-				LOGGER.finer("User specified either -c or --cli");
+				LovelaceLogger.trace("User specified either -c or --cli");
 				currentOptions.addOption("--gui", "false");
 				gui = false;
 			} else if (arg.startsWith("--gui=")) {
 				final String tempString = arg.substring(6);
-				LOGGER.finer("User specified --gui=" + tempString);
+				LovelaceLogger.trace("User specified --gui=%s", tempString);
 				if ("true".equalsIgnoreCase(tempString)) {
 					gui = true;
 				} else if ("false".equalsIgnoreCase(tempString)) {
@@ -82,17 +81,17 @@ import org.jetbrains.annotations.Nullable;
 				final String param = broken[0];
 				final String rest = Stream.of(broken).skip(1).collect(Collectors.joining("="));
 				currentOptions.addOption(param, rest);
-				LOGGER.finer(String.format("User specified %s=%s", param, rest));
+				LovelaceLogger.trace("User specified %s=%s", param, rest);
 			} else if (arg.startsWith("-")) {
-				LOGGER.finer("User specified non-app-choosing option ``arg``");
+				LovelaceLogger.trace("User specified non-app-choosing option %s", arg);
 				currentOptions.addOption(arg);
 			} else {
-				LOGGER.finer("User specified non-option argument ``arg``");
+				LovelaceLogger.trace("User specified non-option argument %s", arg);
 				others.add(arg);
 			}
 		}
 
-		LOGGER.finer("Reached the end of arguments");
+		LovelaceLogger.trace("Reached the end of arguments");
 		// TODO: Use appletChooser so we can support prefixes
 		final @Nullable DriverFactory currentDriver;
 		final @Nullable String command = others.stream().findFirst().orElse(null);
@@ -102,23 +101,23 @@ import org.jetbrains.annotations.Nullable;
 				.orElse(Collections.emptyList());
 		if (command != null && !drivers.isEmpty()) {
 			final DriverFactory first = drivers.stream().findFirst().orElse(null);
-			LOGGER.finer("Found a driver or drivers");
+			LovelaceLogger.trace("Found a driver or drivers");
 			if (drivers.size() == 1) {
-				LOGGER.finer("Only one driver registered for that command");
+				LovelaceLogger.trace("Only one driver registered for that command");
 				currentDriver = first;
 			} else {
 				final boolean localGui = gui;
-				LOGGER.finer("Multiple drivers registered; filtering by interface");
+				LovelaceLogger.trace("Multiple drivers registered; filtering by interface");
 				currentDriver = drivers.stream()
 						.filter(d -> d.getUsage().isGraphical() == localGui).findAny().orElse(null);
 			}
 		} else {
-			LOGGER.finer("No matching driver found");
+			LovelaceLogger.trace("No matching driver found");
 			currentDriver = null;
 		}
 		if (currentOptions.hasOption("--help")) {
 			if (currentDriver == null) {
-				LOGGER.finer("No driver selected, so giving choices.");
+				LovelaceLogger.trace("No driver selected, so giving choices.");
 				System.out.println("Strategic Primer assistive programs suite");
 				System.out.println("No app specified; use one of the following invocations:");
 				System.out.println();
@@ -134,16 +133,16 @@ import org.jetbrains.annotations.Nullable;
 				}
 			} else {
 				final IDriverUsage currentUsage = currentDriver.getUsage();
-				LOGGER.finer("Giving usage information for selected driver");
+				LovelaceLogger.trace("Giving usage information for selected driver");
 				// TODO: Can we and should we move the usageMessage() method into this class?
 				System.out.println(AppChooserState.usageMessage(currentUsage,
 						"true".equals(options.getArgument("--verbose"))));
 			}
 		} else if (currentDriver != null) {
-			LOGGER.finer("Starting chosen app.");
+			LovelaceLogger.trace("Starting chosen app.");
 			startChosenDriver.accept(currentDriver, currentOptions.copy());
 		} else {
-			LOGGER.finer("Starting app-chooser.");
+			LovelaceLogger.trace("Starting app-chooser.");
 			final SPOptions currentOptionsTyped = currentOptions.copy();
 			if (gui) {
 //				try {
@@ -151,7 +150,7 @@ import org.jetbrains.annotations.Nullable;
 						() -> new AppChooserGUI(cli, currentOptionsTyped)
 								.startDriver(others.toArray(new String[0])));
 //				} catch (DriverFailedException except) {
-//					LOGGER.log(Level.SEVERE, except.getMessage(), except);
+//					LovelaceLogger.error(except, except.getMessage());
 //					SwingUtilities.invokeLater(() -> showErrorDialog(null,
 //						"Strategic Primer Assistive Programs", except.getMessage()));
 //				}

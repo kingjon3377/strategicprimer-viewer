@@ -1,11 +1,10 @@
 package drivers.map_viewer;
 
 import drivers.common.DriverFailedException;
+import lovelace.util.LovelaceLogger;
 import org.jetbrains.annotations.Nullable;
 
 import java.nio.file.Path;
-import java.util.logging.Logger;
-import java.util.logging.Level;
 import java.io.FileNotFoundException;
 import java.nio.file.NoSuchFileException;
 import java.io.IOException;
@@ -35,15 +34,10 @@ import java.io.File;
  * A driver to start the map viewer.
  */
 public class ViewerGUI implements ViewerDriver {
-	/**
-	 * A logger.
-	 */
-	private static final Logger LOGGER = Logger.getLogger(ViewerGUI.class.getName());
-
 	private final ICLIHelper cli;
 
 	public ViewerGUI(final IViewerModel model, final SPOptions options, final ICLIHelper cli) {
-		LOGGER.finer("In ViewerGUI constructor");
+		LovelaceLogger.trace("In ViewerGUI constructor");
 		this.model = model;
 		this.options = options;
 		this.cli = cli;
@@ -66,34 +60,34 @@ public class ViewerGUI implements ViewerDriver {
 	@Override
 	public void center() {
 		final Point selection = model.getSelection();
-		LOGGER.finer("Asked to center on " + selection);
+		LovelaceLogger.trace("Asked to center on %s", selection);
 		final MapDimensions dimensions = model.getMapDimensions();
 		final VisibleDimensions visible = model.getVisibleDimensions();
-		LOGGER.finer(String.format(
-			"Visible area is currently from (%d, %d) to (%d to %s), %s rows x %s cols.",
+		LovelaceLogger.trace(
+			"Visible area is currently from (%d, %d) to (%d to %d), %d rows x %d cols.",
 			visible.getMinimumRow(), visible.getMinimumColumn(), visible.getMaximumRow(),
-			visible.getMaximumColumn(), visible.getHeight(), visible.getWidth()));
+			visible.getMaximumColumn(), visible.getHeight(), visible.getWidth());
 		final int topRow;
 		if (selection.getRow() - (visible.getHeight() / 2) <= 0) {
-			LOGGER.finer("Close enough to the top to go flush to it");
+			LovelaceLogger.trace("Close enough to the top to go flush to it");
 			topRow = 0;
 		} else if (selection.getRow() + (visible.getHeight() / 2) >= dimensions.getRows()) {
-			LOGGER.finer("Close enough to the bottom to go flush to it");
+			LovelaceLogger.trace("Close enough to the bottom to go flush to it");
 			topRow = dimensions.getRows() - visible.getHeight(); // TODO: do we need an off-by-one adjustment?
 		} else {
 			topRow = selection.getRow() - (visible.getHeight() / 2);
-			LOGGER.finer("Setting top row to " + topRow);
+			LovelaceLogger.trace("Setting top row to %d", topRow);
 		}
 		final int leftColumn;
 		if (selection.getColumn() - (visible.getWidth() / 2) <= 0) {
-			LOGGER.finer("Close enough to left edge to go flush to it");
+			LovelaceLogger.trace("Close enough to left edge to go flush to it");
 			leftColumn = 0;
 		} else if (selection.getColumn() + (visible.getWidth() / 2) >= dimensions.getColumns()) {
-			LOGGER.finer("Close enough to right edge to go flush to it");
+			LovelaceLogger.trace("Close enough to right edge to go flush to it");
 			leftColumn = dimensions.getColumns() - visible.getWidth();
 		} else {
 			leftColumn = selection.getColumn() - (visible.getWidth() / 2);
-			LOGGER.finer("Setting left column to " + leftColumn);
+			LovelaceLogger.trace("Setting left column to %d", leftColumn);
 		}
 		// Original Java version had topRow + dimensions.rows and
 		// leftColumn + dimensions.columns as max row and column; this seems
@@ -141,10 +135,10 @@ public class ViewerGUI implements ViewerDriver {
 			try {
 				frame.setBackgroundImage(ImageIO.read(new File(backgroundFile)));
 			} catch (final FileNotFoundException|NoSuchFileException except) {
-				LOGGER.severe("Background image file not found");
-				LOGGER.log(Level.FINE, "Stack trace for background missing", except);
+				LovelaceLogger.error("Background image file not found");
+				LovelaceLogger.debug(except, "Stack trace for background missing");
 			} catch (final IOException except) {
-				LOGGER.log(Level.SEVERE, "I/O error reading background image", except);
+				LovelaceLogger.error(except, "I/O error reading background image");
 			}
 		}
 		frame.addWindowListener(new WindowCloseListener(menuHandler));
@@ -157,7 +151,7 @@ public class ViewerGUI implements ViewerDriver {
 			menuHandler.registerWindowShower(new AboutDialog(frame, frame.getWindowName()),
 				"about");
 		} catch (final IOException except) {
-			LOGGER.log(Level.SEVERE, "I/O error loading About dialog contents", except);
+			LovelaceLogger.error(except, "I/O error loading About dialog contents");
 		}
 		// TODO: We'd like to have the starting position stored in the map
 		// file, in system preferences, or some such, or simply default to HQ.
@@ -171,36 +165,36 @@ public class ViewerGUI implements ViewerDriver {
 				if (model.getMapDimensions().contains(starting)) {
 					model.setSelection(starting);
 				} else {
-					LOGGER.warning(
+					LovelaceLogger.warning(
 						"Starting coordinates must be within the map's dimensions");
 				}
 			} catch (final NumberFormatException except) {
-				LOGGER.warning(
+				LovelaceLogger.warning(
 					"Arguments to --starting-row and --starting-column must be numeric");
 			}
 		} else if (options.hasOption("--starting-row")) {
-			LOGGER.warning("--starting-row requires --starting-column");
+			LovelaceLogger.warning("--starting-row requires --starting-column");
 		} else if (options.hasOption("--starting-column")) {
-			LOGGER.warning("--starting-column requires --starting-row");
+			LovelaceLogger.warning("--starting-column requires --starting-row");
 		}
-		LOGGER.finer("About to show viewer GUI window");
+		LovelaceLogger.trace("About to show viewer GUI window");
 		frame.showWindow();
 	}
 
 	/* package */ static ViewerGUI createDriver(final ICLIHelper cli, final SPOptions options,
 	                                                  final IDriverModel model) {
 		if (model instanceof IViewerModel) {
-			LOGGER.finer("Creating a viewer-GUI instance for a model of the proper type");
+			LovelaceLogger.trace("Creating a viewer-GUI instance for a model of the proper type");
 				return new ViewerGUI((IViewerModel) model, options, cli);
 		} else {
-			LOGGER.finer("Creating a viewer-GUI instance after converting its type");
+			LovelaceLogger.trace("Creating a viewer-GUI instance after converting its type");
 			return createDriver(cli, options, new ViewerModel(model));
 		}
 	}
 
 	@Override
 	public void startDriver() {
-		LOGGER.finer("In ViewerGUI.startDriver()");
+		LovelaceLogger.trace("In ViewerGUI.startDriver()");
 		final MenuBroker menuHandler = new MenuBroker();
 		menuHandler.register(new IOHandler(this, cli), "load", "save",
 			"save as", "new", "load secondary", "save all", "open in map viewer",

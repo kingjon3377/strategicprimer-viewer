@@ -1,7 +1,5 @@
 package drivers.map_viewer;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.awt.Component;
 
 import java.awt.datatransfer.DataFlavor;
@@ -15,6 +13,7 @@ import javax.swing.JList;
 import javax.swing.TransferHandler;
 import javax.swing.JComponent;
 
+import lovelace.util.LovelaceLogger;
 import lovelace.util.Reorderable;
 import lovelace.util.IntTransferable;
 import drivers.common.FixtureMatcher;
@@ -24,8 +23,6 @@ import drivers.common.FixtureMatcher;
  */
 /* package */ class FixtureFilterTransferHandler extends TransferHandler {
 	private static final DataFlavor FLAVOR = new DataFlavor(FixtureMatcher.class, "FixtureMatcher");
-	private static final Logger LOGGER =
-		Logger.getLogger(FixtureFilterTransferHandler.class.getName());
 	private static final long serialVersionUID = 1L;
 
 	/**
@@ -82,7 +79,7 @@ import drivers.common.FixtureMatcher;
 		try {
 			payload = (Integer) transfer.getTransferData(FLAVOR);
 		} catch (final UnsupportedFlavorException|IOException except) {
-			LOGGER.log(Level.FINE, "Transfer failure", except);
+			LovelaceLogger.debug(except, "Transfer failure");
 			return false;
 		}
 		if (component instanceof JList && ((JList<?>) component).getModel() instanceof Reorderable

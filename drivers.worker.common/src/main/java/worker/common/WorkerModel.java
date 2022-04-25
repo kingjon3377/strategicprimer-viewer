@@ -9,6 +9,7 @@ import java.util.Collections;
 import java.util.Optional;
 import common.map.fixtures.FixtureIterable;
 import java.util.stream.Stream;
+import lovelace.util.LovelaceLogger;
 import org.javatuples.Pair;
 import org.jetbrains.annotations.Nullable;
 import java.util.stream.StreamSupport;
@@ -44,7 +45,6 @@ import common.map.fixtures.towns.IMutableFortress;
 import drivers.common.SimpleMultiMapModel;
 import drivers.common.IDriverModel;
 import drivers.common.IWorkerModel;
-import java.util.logging.Logger;
 
 import common.map.fixtures.mobile.worker.IMutableJob;
 import common.map.fixtures.mobile.worker.IMutableSkill;
@@ -56,11 +56,6 @@ import common.map.fixtures.mobile.worker.Skill;
  * A model to underlie the advancement GUI, etc.
  */
 public class WorkerModel extends SimpleMultiMapModel implements IWorkerModel {
-	/**
-	 * Logger.
-	 */
-	private static final Logger LOGGER = Logger.getLogger(WorkerModel.class.getName());
-
 	/**
 	 * If {@link fixture the argument} is a {@link IFortress fortress},
 	 * return a stream of its members; otherwise, return a stream
@@ -273,12 +268,12 @@ public class WorkerModel extends SimpleMultiMapModel implements IWorkerModel {
 		if (temp != null) {
 			final IMutableFortress fortress = temp.getValue0();
 			final Point loc = temp.getValue1();
-			LOGGER.info(String.format("Added unit at fortress %s, not HQ", fortress.getName()));
+			LovelaceLogger.info("Added unit at fortress %s, not HQ", fortress.getName());
 			addUnitAtLocation(unit, loc);
 			return;
 		} else if (!unit.getOwner().isIndependent()) {
-			LOGGER.warning(String.format("No suitable location found for unit %s, owned by %s",
-				unit.getName(), unit.getOwner()));
+			LovelaceLogger.warning("No suitable location found for unit %s, owned by %s",
+				unit.getName(), unit.getOwner());
 		}
 	}
 
@@ -307,7 +302,7 @@ public class WorkerModel extends SimpleMultiMapModel implements IWorkerModel {
 	 */
 	@Override
 	public boolean removeUnit(final IUnit unit) {
-		LOGGER.fine("In WorkerModel.removeUnit()");
+		LovelaceLogger.debug("In WorkerModel.removeUnit()");
 		final List<Pair<IMutableMapNG, Pair<Point, IUnit>>> delenda = new ArrayList<>();
 		for (final IMutableMapNG map : getRestrictedAllMaps()) {
 			final Pair<Point, IFixture> pair = map.streamLocations()
@@ -318,25 +313,25 @@ public class WorkerModel extends SimpleMultiMapModel implements IWorkerModel {
 						p.getValue1()))
 					.findAny().orElse(null);
 			if (pair != null) {
-				LOGGER.fine("Map has matching unit");
+				LovelaceLogger.debug("Map has matching unit");
 				final Point location = pair.getValue0();
 				final IUnit fixture = (IUnit) pair.getValue1();
 				if (fixture.getKind().equals(unit.getKind()) &&
 						fixture.getName().equals(unit.getName()) &&
 						!fixture.iterator().hasNext()) {
-					LOGGER.fine("Matching unit meets preconditions");
+					LovelaceLogger.debug("Matching unit meets preconditions");
 					delenda.add(Pair.with(map, Pair.with(location, fixture)));
 				} else {
-					LOGGER.warning(String.format(
+					LovelaceLogger.warning(
 						"Matching unit in %s fails preconditions for removal",
 						Optional.ofNullable(map.getFilename())
-							.map(Object::toString).orElse("an unsaved map")));
+							.map(Object::toString).orElse("an unsaved map"));
 					return false;
 				}
 			}
 		}
 		if (delenda.isEmpty()) {
-			LOGGER.fine("No matching units");
+			LovelaceLogger.debug("No matching units");
 			return false;
 		}
 		for (final Pair<IMutableMapNG, Pair<Point, IUnit>> pair : delenda) {
@@ -358,12 +353,12 @@ public class WorkerModel extends SimpleMultiMapModel implements IWorkerModel {
 					}
 				}
 				if (!any) {
-					LOGGER.warning(
+					LovelaceLogger.warning(
 						"Failed to find unit to remove that we thought might be in a fortress");
 				}
 			}
 		}
-		LOGGER.fine("Finished removing matching unit(s) from map(s)");
+		LovelaceLogger.debug("Finished removing matching unit(s) from map(s)");
 		return true;
 	}
 
@@ -405,7 +400,7 @@ public class WorkerModel extends SimpleMultiMapModel implements IWorkerModel {
 					members.addLast(item);
 					newList.addLast((IMutableUnit) innerNew);
 				} else {
-					LOGGER.warning("Immutable unit in moveProxied()");
+					LovelaceLogger.warning("Immutable unit in moveProxied()");
 					return false;
 				}
 			}
@@ -538,7 +533,7 @@ public class WorkerModel extends SimpleMultiMapModel implements IWorkerModel {
 				}
 			}
 			if (!any) {
-				LOGGER.warning("Unable to find unit to rename");
+				LovelaceLogger.warning("Unable to find unit to rename");
 			}
 			return any;
 		} else if (item instanceof UnitMember) {
@@ -559,11 +554,11 @@ public class WorkerModel extends SimpleMultiMapModel implements IWorkerModel {
 				}
 			}
 			if (!any) {
-				LOGGER.warning("Unable to find unit member to rename");
+				LovelaceLogger.warning("Unable to find unit member to rename");
 			}
 			return any;
 		} else {
-			LOGGER.warning("Unable to find item to rename");
+			LovelaceLogger.warning("Unable to find item to rename");
 			return false;
 		}
 	}
@@ -587,7 +582,7 @@ public class WorkerModel extends SimpleMultiMapModel implements IWorkerModel {
 				}
 			}
 			if (!any) {
-				LOGGER.warning("Unable to find unit to change kind");
+				LovelaceLogger.warning("Unable to find unit to change kind");
 			}
 			return any;
 		} else if (item instanceof UnitMember) {
@@ -607,11 +602,11 @@ public class WorkerModel extends SimpleMultiMapModel implements IWorkerModel {
 				}
 			}
 			if (!any) {
-				LOGGER.warning("Unable to find unit member to change kind");
+				LovelaceLogger.warning("Unable to find unit member to change kind");
 			}
 			return any;
 		} else {
-			LOGGER.warning("Unable to find item to change kind");
+			LovelaceLogger.warning("Unable to find item to change kind");
 			return false;
 		}
 	}
@@ -888,13 +883,13 @@ public class WorkerModel extends SimpleMultiMapModel implements IWorkerModel {
 					.filter(IMutableJob.class::isInstance).map(IMutableJob.class::cast)
 					.filter(j -> jobName.equals(j.getName())).findAny().orElse(null);
 				if (matchingJob == null) {
-					LOGGER.warning("No matching skill in matching worker");
+					LovelaceLogger.warning("No matching skill in matching worker");
 				} else {
 					final ISkill matchingSkill = StreamSupport.stream(
 									matchingJob.spliterator(), true)
 							.filter(delenda::equals).findAny().orElse(null);
 					if (matchingSkill == null) {
-						LOGGER.warning("No matching skill in matching worker");
+						LovelaceLogger.warning("No matching skill in matching worker");
 					} else {
 						map.setModified(true);
 						any = true;

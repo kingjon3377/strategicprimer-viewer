@@ -2,15 +2,13 @@ package drivers.map_viewer;
 
 import common.map.TileType;
 import common.map.FakeFixture;
-import java.util.logging.Logger;
-import java.util.logging.Level;
+import lovelace.util.LovelaceLogger;
 
 /**
  * A fake "TileFixture" to represent the tile's terrain type, so it can be
  * copied via drag-and-drop like a fixture.
  */
 /* package */ class TileTypeFixture implements FakeFixture {
-	private static final Logger LOGGER = Logger.getLogger(TileTypeFixture.class.getName());
 	private final TileType tileType;
 
 	public TileType getTileType() {
@@ -32,7 +30,7 @@ import java.util.logging.Level;
 	@Deprecated
 	@Override
 	public TileTypeFixture copy(final CopyBehavior zero) {
-		LOGGER.log(Level.WARNING, "TileTypeFixture.copy called", new Exception("dummy"));
+		LovelaceLogger.warning(new Exception("dummy"), "TileTypeFixture.copy called");
 		return new TileTypeFixture(tileType);
 	}
 

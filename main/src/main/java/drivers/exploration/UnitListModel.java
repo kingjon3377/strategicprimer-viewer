@@ -1,6 +1,5 @@
 package drivers.exploration;
 
-import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
 
 import common.map.fixtures.mobile.IUnit;
@@ -10,6 +9,7 @@ import drivers.common.PlayerChangeListener;
 import common.map.Player;
 
 import exploration.common.IExplorationModel;
+import lovelace.util.LovelaceLogger;
 import org.jetbrains.annotations.Nullable;
 
 /**
@@ -17,7 +17,6 @@ import org.jetbrains.annotations.Nullable;
  */
 /* package */ class UnitListModel extends DefaultListModel<IUnit> implements PlayerChangeListener {
 	private static final long serialVersionUID = 1L;
-	private static final Logger LOGGER = Logger.getLogger(UnitListModel.class.getName());
 
 	public UnitListModel(final IExplorationModel model) {
 		this.model = model;
@@ -27,7 +26,7 @@ import org.jetbrains.annotations.Nullable;
 
 	@Override
 	public void playerChanged(final @Nullable Player old, final Player newPlayer) {
-		LOGGER.finer("Regenerating UnitListModel"); // TODO: move to below equality check?
+		LovelaceLogger.trace("Regenerating UnitListModel"); // TODO: move to below equality check?
 		if (newPlayer.equals(old)) {
 			return;
 		}

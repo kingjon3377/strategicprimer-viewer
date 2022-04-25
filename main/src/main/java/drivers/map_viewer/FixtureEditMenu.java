@@ -20,14 +20,12 @@ import worker.common.IFixtureEditHelper;
 import common.map.fixtures.mobile.IUnit;
 import common.map.fixtures.mobile.Animal;
 import common.idreg.IDRegistrar;
-import java.util.logging.Logger;
 
 /**
  * A pop-up menu to let the user edit a fixture.
  */
 public class FixtureEditMenu extends JPopupMenu {
 	private static final long serialVersionUID = 1L;
-	protected static final Logger LOGGER = Logger.getLogger(FixtureEditMenu.class.getName());
 	/**
 	 * @param fixture The fixture to be edited. Its type determines what
 	 * menu items are enabled.

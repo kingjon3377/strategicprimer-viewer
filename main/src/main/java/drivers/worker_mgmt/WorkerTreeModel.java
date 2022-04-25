@@ -3,6 +3,7 @@ package drivers.worker_mgmt;
 import common.map.HasName;
 import common.map.HasOwner;
 import java.util.Collection;
+import lovelace.util.LovelaceLogger;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Collections;
@@ -11,7 +12,6 @@ import javax.swing.event.TreeModelEvent;
 import common.map.fixtures.UnitMember;
 import javax.swing.tree.TreePath;
 
-import java.util.logging.Logger;
 import java.util.ArrayList;
 import java.util.List;
 import common.map.fixtures.mobile.IUnit;
@@ -28,7 +28,6 @@ import java.util.stream.Collectors;
  * A TreeModel implementation for a player's units and workers.
  */
 /* package */ class WorkerTreeModel implements IWorkerTreeModel {
-	private static final Logger LOGGER = Logger.getLogger(WorkerTreeModel.class.getName());
 	private static Predicate<IUnit> containingItem(final UnitMember item) {
 		return unit -> unit.stream().anyMatch(item::equals);
 	}
@@ -87,7 +86,7 @@ import java.util.stream.Collectors;
 
 	@Override
 	public void valueForPathChanged(final TreePath path, final Object newValue) {
-		LOGGER.severe("valueForPathChanged needs to be implemented");
+		LovelaceLogger.error("valueForPathChanged needs to be implemented");
 	}
 
 	@Override
@@ -179,9 +178,9 @@ import java.util.stream.Collectors;
 
 	@Override
 	public void addUnitMember(final IUnit unit, final UnitMember member) {
-		LOGGER.finer("In WorkerTreeModel.addUnitMember");
+		LovelaceLogger.trace("In WorkerTreeModel.addUnitMember");
 		model.addUnitMember(unit, member);
-		LOGGER.finer("Added member to unit");
+		LovelaceLogger.trace("Added member to unit");
 		final TreePath path = new TreePath(new Object[] { player, unit.getKind(), unit });
 		final int[] indices = { getIndexOfChild(unit, member) };
 		final Object[] children = { member };
@@ -189,7 +188,7 @@ import java.util.stream.Collectors;
 		for (final TreeModelListener listener : listeners) {
 			listener.treeNodesInserted(event);
 		}
-		LOGGER.finer("Notified listeners of inserted nodes");
+		LovelaceLogger.trace("Notified listeners of inserted nodes");
 	}
 
 	@Override
@@ -205,7 +204,7 @@ import java.util.stream.Collectors;
 			final IUnit parent = model.getUnits(player).stream()
 				.filter(containingItem((UnitMember) item)).findAny().orElse(null);
 			if (parent == null) {
-				LOGGER.warning(
+				LovelaceLogger.warning(
 					"In WorkerTreeModel.renameItem(), unit member belonged to no unit");
 				return;
 			}
@@ -216,7 +215,7 @@ import java.util.stream.Collectors;
 			// ignore
 			return;
 		} else {
-			LOGGER.warning(
+			LovelaceLogger.warning(
 				"In WorkerTreeModel.renameItem(), item was neither unit nor unit member");
 			// Ignore, as it's something we don't know how to handle.
 			// If we see log messages, revisit.
@@ -245,7 +244,7 @@ import java.util.stream.Collectors;
 			final IUnit parent = model.getUnits(player).stream()
 				.filter(containingItem((UnitMember) item)).findAny().orElse(null);
 			if (parent == null) {
-				LOGGER.warning(
+				LovelaceLogger.warning(
 					"In WorkerTreeModel.changeKind(), unit member belonged to no unit");
 				return;
 			}
@@ -358,15 +357,15 @@ import java.util.stream.Collectors;
 			if (orders.isEmpty() || orders.contains("todo") || orders.contains("fixme") ||
 					orders.contains("xxx")) {
 				if (orders.isEmpty()) {
-					LOGGER.finer("Orders are empty");
+					LovelaceLogger.trace("Orders are empty");
 				} else if (orders.contains("todo")) {
-					LOGGER.finer("Orders contain 'todo'");
+					LovelaceLogger.trace("Orders contain 'todo'");
 				} else if (orders.contains("fixme")) {
-					LOGGER.finer("Orders contain 'fixme'");
+					LovelaceLogger.trace("Orders contain 'fixme'");
 				} else if (orders.contains("xxx")) {
-					LOGGER.finer("Orders contain 'xxx'");
+					LovelaceLogger.trace("Orders contain 'xxx'");
 				} else {
-					LOGGER.warning(
+					LovelaceLogger.warning(
 						"Orders are not problematic, but called a problem anyway");
 				}
 				return new TreePath(new Object[] { player, unit.getKind(), unit });
@@ -402,20 +401,20 @@ import java.util.stream.Collectors;
 
 	@Override
 	public void removeUnit(final IUnit unit) {
-		LOGGER.finer("In WorkerTreeModel.removeUnit()");
+		LovelaceLogger.trace("In WorkerTreeModel.removeUnit()");
 		// FIXME: What if it's the only unit with this kind?
 		final TreeModelEvent event = new TreeModelEvent(this,
 			new TreePath(new Object[] { player, unit.getKind() }),
 				new int[] { getIndexOfChild(unit.getKind(), unit) },
 				new Object[] { unit });
 		if (model.removeUnit(unit)) {
-			LOGGER.finer("Removed unit from the map, about to notify tree listeners");
+			LovelaceLogger.trace("Removed unit from the map, about to notify tree listeners");
 			for (final TreeModelListener listener : listeners) {
 				listener.treeNodesRemoved(event);
 			}
-			LOGGER.finer("Finished notifying tree listeners");
+			LovelaceLogger.trace("Finished notifying tree listeners");
 		} else {
-			LOGGER.warning("Failed to remove from the map for some reason");
+			LovelaceLogger.warning("Failed to remove from the map for some reason");
 		}
 	}
 

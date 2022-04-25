@@ -1,5 +1,6 @@
 package exploration.common;
 
+import lovelace.util.LovelaceLogger;
 import org.jetbrains.annotations.Nullable;
 import org.javatuples.Pair;
 import java.util.Set;
@@ -15,10 +16,8 @@ import common.map.fixtures.terrain.Forest;
 import java.util.function.Predicate;
 import java.util.Collections;
 import java.util.Optional;
-import java.util.logging.Logger;
 
 /* package */ class PathfinderImpl implements Pathfinder {
-	private static final Logger LOGGER = Logger.getLogger(PathfinderImpl.class.getName());
 	public PathfinderImpl(final IMapNG map) {
 		this.map = map;
 	}
@@ -98,8 +97,8 @@ import java.util.logging.Logger;
 			}
 			final int currentDistance = tentativeDistances.get(Pair.with(start, current));
 			if (current.equals(end)) {
-				LOGGER.fine(String.format("Reached the end after %d iterations",
-					iterations));
+				LovelaceLogger.debug("Reached the end after %d iterations",
+					iterations);
 				final List<Point> path = new ArrayList<>();
 				path.add(current);
 				while (retval.containsKey(current)) {
@@ -109,15 +108,15 @@ import java.util.logging.Logger;
 				Collections.reverse(path);
 				return Pair.with(currentDistance, Collections.unmodifiableList(path));
 			} else if (currentDistance >= (Integer.MAX_VALUE - 1)) {
-				LOGGER.info(String.format(
+				LovelaceLogger.info(
 					"Considering an 'infinite-distance' tile after %d iterations",
-					iterations));
+					iterations);
 				return Pair.with(currentDistance, Collections.emptyList());
 			}
 			for (final Point neighbor : new SurroundingPointIterable(current, map.getDimensions(), 1)) {
-				LOGGER.fine(String.format("At %s, considering %s", current, neighbor));
+				LovelaceLogger.debug("At %s, considering %s", current, neighbor);
 				if (!unvisited.contains(neighbor)) {
-					LOGGER.fine("Already checked, so skipping.");
+					LovelaceLogger.debug("Already checked, so skipping.");
 					continue;
 				}
 				if (!tentativeDistances.containsKey(Pair.with(start, neighbor))) {
@@ -133,37 +132,37 @@ import java.util.logging.Logger;
 							map.getRivers(current),
 							map.getRivers(neighbor)),
 						map.getFixtures(neighbor)));
-				LOGGER.fine(String.format("Old estimate %d, new estimate %d", estimate,
-					tentativeDistance));
+				LovelaceLogger.debug("Old estimate %d, new estimate %d", estimate,
+					tentativeDistance);
 				if (tentativeDistance < estimate) {
-					LOGGER.fine("Updating path");
+					LovelaceLogger.debug("Updating path");
 					retval.put(neighbor, current);
 					tentativeDistances.put(Pair.with(start, neighbor),
 						tentativeDistance);
 				}
 				if (estimate < 0) {
-					LOGGER.warning(String.format("Old estimate at %s was negative",
-						neighbor));
+					LovelaceLogger.warning("Old estimate at %s was negative",
+						neighbor);
 					return Pair.with(Integer.MAX_VALUE - 1, Collections.emptyList());
 				} else if (tentativeDistance < 0) {
-					LOGGER.warning(String.format("Recomputed estimate at %s was negative",
-						neighbor));
+					LovelaceLogger.warning("Recomputed estimate at %s was negative",
+						neighbor);
 					return Pair.with(Integer.MAX_VALUE - 1, Collections.emptyList());
 				}
 			}
-			LOGGER.fine("Finished checking neighbors of " + current);
+			LovelaceLogger.debug("Finished checking neighbors of %s", current);
 			unvisited.remove(current);
 			final Point next = nextUnvisited(start, unvisited);
 			if (next == null) {
-				LOGGER.info(String.format(
+				LovelaceLogger.info(
 					"Couldn't find a smallest-estimate unchecked tile after %d iterations",
-					iterations));
+					iterations);
 				return Pair.with(Integer.MAX_VALUE - 1, Collections.emptyList());
 			} else {
 				current = next;
 			}
 		}
-		LOGGER.info(String.format("Apparently ran out of tiles after %d iterations", iterations));
+		LovelaceLogger.info("Apparently ran out of tiles after %d iterations", iterations);
 		return Pair.with(Optional.ofNullable(tentativeDistances.get(Pair.with(start, end)))
 			.orElse(Integer.MAX_VALUE - 1), Collections.emptyList());
 	}

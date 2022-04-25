@@ -1,5 +1,6 @@
 package drivers.exploration.old;
 
+import lovelace.util.LovelaceLogger;
 import org.jetbrains.annotations.Nullable;
 import org.javatuples.Pair;
 import java.util.LinkedList;
@@ -30,8 +31,6 @@ import java.nio.file.DirectoryStream;
 import java.nio.file.NoSuchFileException;
 import java.nio.charset.StandardCharsets;
 
-import java.util.logging.Logger;
-import java.util.logging.Level;
 import java.util.stream.StreamSupport;
 import java.util.Optional;
 import java.util.stream.Stream;
@@ -47,8 +46,6 @@ import java.util.stream.Collectors;
  * of broken town production, consumption, and skill levels.
  */
 public final class ExplorationRunner {
-	private static final Logger LOGGER = Logger.getLogger(ExplorationRunner.class.getName());
-
 	private final Map<String, EncounterTable> tables = new HashMap<>();
 
 	/**
@@ -131,7 +128,7 @@ public final class ExplorationRunner {
 					}
 				}
 			} catch (final MissingTableException except) {
-				LOGGER.log(Level.INFO, "Missing table " + table, except);
+				LovelaceLogger.info(except, "Missing table %s", table);
 				return true;
 			}
 			return false;
@@ -327,10 +324,10 @@ public final class ExplorationRunner {
 					final String[] splitted = tableLine.split(" ");
 					if (splitted.length < 2) {
 						if (tableLine.isEmpty()) {
-							LOGGER.fine("Unexpected blank line");
+							LovelaceLogger.trace("Unexpected blank line");
 						} else {
-							LOGGER.severe("Line with no blanks, continuing ...");
-							LOGGER.info("It was " + tableLine);
+							LovelaceLogger.error("Line with no blanks, continuing ...");
+							LovelaceLogger.info("It was %s", tableLine);
 						}
 					} else {
 						final String left = splitted[0];
@@ -364,11 +361,11 @@ public final class ExplorationRunner {
 					final String[] splitted = tableLine.split(" ");
 					if (splitted.length < 2) {
 						if (tableLine.isEmpty()) {
-							LOGGER.fine("Unexpected blank line");
+							LovelaceLogger.debug("Unexpected blank line");
 						} else {
-							LOGGER.severe("Line with no blanks, coninuing ...");
-							LOGGER.info(String.format("It was '%s'",
-								tableLine));
+							LovelaceLogger.error("Line with no blanks, coninuing ...");
+							LovelaceLogger.info("It was '%s'",
+								tableLine);
 						}
 					} else {
 						// N.B. first must be a recognized tile type
@@ -429,18 +426,17 @@ public final class ExplorationRunner {
 		try (final DirectoryStream<Path> stream = Files.newDirectoryStream(path)) {
 			for (final Path child : stream) {
 				if (Files.isHidden(child)) { // TODO: Also exclude dotfiles on Windows?
-					LOGGER.info(String.format(
+					LovelaceLogger.info(
 						"%s looks like a hidden file, skipping ...",
-						child.getFileName().toString()));
+						child.getFileName().toString());
 				} else {
 					try {
 						loadTableFromFile(child);
 					} catch (final Exception except) {
-						LOGGER.severe(String.format(
+						LovelaceLogger.error(
 							"Error loading %s, continuing ...",
-							child.getFileName().toString()));
-						LOGGER.log(Level.FINE, "Details of that error:",
-							except);
+							child.getFileName().toString());
+						LovelaceLogger.debug(except, "Details of that error:");
 					}
 				}
 			}

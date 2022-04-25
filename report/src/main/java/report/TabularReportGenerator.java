@@ -1,5 +1,6 @@
 package report;
 
+import lovelace.util.LovelaceLogger;
 import lovelace.util.ThrowingFunction;
 import org.jetbrains.annotations.Nullable;
 import org.javatuples.Pair;
@@ -41,7 +42,6 @@ import report.generators.tabular.ITableGenerator;
 import javax.swing.table.TableRowSorter;
 import javax.swing.table.TableModel;
 import drivers.common.cli.ICLIHelper;
-import java.util.logging.Logger;
 import java.util.function.BiConsumer;
 import java.io.IOException;
 import java.text.NumberFormat;
@@ -55,11 +55,6 @@ import java.util.Arrays;
  */
 public final class TabularReportGenerator {
 	private TabularReportGenerator() {}
-
-	/**
-	 * A logger.
-	 */
-	private static final Logger LOGGER = Logger.getLogger(TabularReportGenerator.class.getName());
 
 	/**
 	 * A method to produce tabular reports based on a map for a player.
@@ -110,8 +105,8 @@ public final class TabularReportGenerator {
 			if (fixture instanceof TerrainFixture) {
 				fixtures.remove(fixture.getId());
 			} else {
-				LOGGER.warning("Unhandled fixture:\t" + fixture);
-				cli.println("Unhandled fixture:\t" + fixture);
+				LovelaceLogger.warning("Unhandled fixture:\t%s", fixture);
+				cli.println("Unhandled fixture:\t" + fixture); // FIXME: Concatenation in loop
 			}
 		}
 	}

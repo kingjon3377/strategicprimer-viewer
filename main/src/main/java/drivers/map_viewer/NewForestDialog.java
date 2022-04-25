@@ -1,7 +1,7 @@
 package drivers.map_viewer;
 
 import java.util.OptionalInt;
-import java.util.logging.Logger;
+import lovelace.util.LovelaceLogger;
 import org.javatuples.Pair;
 import java.util.Arrays;
 import javax.swing.JComponent;
@@ -32,7 +32,6 @@ import java.math.BigDecimal;
  */
 public final class NewForestDialog extends SPDialog implements NewFixtureSource {
 	private static final long serialVersionUID = 1L;
-	private static final Logger LOGGER = Logger.getLogger(NewForestDialog.class.getName());
 	public NewForestDialog(final IDRegistrar idf) {
 		super(null, "Add a New Forest");
 		this.idf = idf;
@@ -108,7 +107,7 @@ public final class NewForestDialog extends SPDialog implements NewFixtureSource 
 					idNum = temp.getAsInt();
 					idf.register(idNum);
 				} else {
-					LOGGER.warning("Failed to parse input detected as numeric");
+					LovelaceLogger.warning("Failed to parse input detected as numeric");
 					idNum = idf.createID();
 				}
 			} else {

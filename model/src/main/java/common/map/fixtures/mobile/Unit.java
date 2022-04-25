@@ -13,11 +13,10 @@ import common.map.Player;
 import common.map.fixtures.Implement;
 import common.map.fixtures.IResourcePile;
 import common.map.fixtures.UnitMember;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
+import lovelace.util.LovelaceLogger;
 
 /**
  * A unit in the map.
@@ -25,11 +24,6 @@ import java.util.stream.Stream;
  * FIXME: we need more members: something about stats; what else?
  */
 public final class Unit implements IMutableUnit {
-	/**
-	 * Logger.
-	 */
-	private static final Logger LOGGER = Logger.getLogger(Unit.class.getName());
-
 	public Unit(final Player owner, final String kind, final String name, final int id) {
 		this.owner = owner;
 		this.kind = kind;
@@ -221,8 +215,7 @@ public final class Unit implements IMutableUnit {
 	@Override
 	public void addMember(final UnitMember member) {
 		if (member instanceof ProxyFor) {
-			LOGGER.log(Level.SEVERE, "Proxy member added to Unit",
-				new IllegalStateException("Proxy member added to Unit"));
+			LovelaceLogger.error(new IllegalStateException("Proxy member added to Unit"), "Proxy member added to Unit");
 		}
 		members.add(member);
 	}
@@ -445,7 +438,7 @@ public final class Unit implements IMutableUnit {
 		} else if (two instanceof IResourcePile) {
 			return 1;
 		} else {
-			LOGGER.severe("Unhandled unit-member in sorting");
+			LovelaceLogger.error("Unhandled unit-member in sorting");
 			return one.toString().compareTo(two.toString());
 		}
 	}

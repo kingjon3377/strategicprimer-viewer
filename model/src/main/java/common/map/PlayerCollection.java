@@ -5,14 +5,13 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.TreeMap;
-import java.util.logging.Logger;
+import lovelace.util.LovelaceLogger;
 
 /**
  * A collection of players. Using a simple List doesn't work when -1 is the
  * default index if one isn't given in the XML.
  */
 public class PlayerCollection implements IMutablePlayerCollection {
-	private static final Logger LOGGER = Logger.getLogger(PlayerCollection.class.getName());
 	public PlayerCollection() {
 	}
 	/**
@@ -161,7 +160,7 @@ public class PlayerCollection implements IMutablePlayerCollection {
 		if (oldCurrent instanceof MutablePlayer) {
 			((MutablePlayer) oldCurrent).setCurrent(false);
 		} else {
-			LOGGER.warning("Previous current player wasn't mutable");
+			LovelaceLogger.warning("Previous current player wasn't mutable");
 		}
 		if (players.containsValue(currentPlayer)) {
 			current = currentPlayer;
@@ -171,7 +170,7 @@ public class PlayerCollection implements IMutablePlayerCollection {
 		if (current instanceof MutablePlayer) {
 			((MutablePlayer) current).setCurrent(true);
 		} else {
-			LOGGER.warning("Newly current player wasn't mutable");
+			LovelaceLogger.warning("Newly current player wasn't mutable");
 		}
 	}
 

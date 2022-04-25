@@ -8,8 +8,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JTextField;
 import javax.swing.JScrollPane;
@@ -27,6 +25,7 @@ import lovelace.util.BorderedPanel;
 import lovelace.util.ListenedButton;
 import goldberg.ImprovedComboBox;
 import lovelace.util.FunctionalGroupLayout;
+import lovelace.util.LovelaceLogger;
 import lovelace.util.SimpleCardLayout;
 
 import common.map.Player;
@@ -47,7 +46,6 @@ import org.eclipse.jdt.annotation.Nullable;
  */
 /* package */ final class ExplorationFrame extends SPFrame {
 	private static final long serialVersionUID = 1L;
-	private static final Logger LOGGER = Logger.getLogger(ExplorationFrame.class.getName());
 	private final SimpleCardLayout layoutObj;
 	private final JList<Player> playerList;
 	private final IExplorationGUI driver;
@@ -121,13 +119,13 @@ import org.eclipse.jdt.annotation.Nullable;
 			driver.getModel().addSubordinateMap(MapIOHelper.readMap(file));
 			// FIXME: THrow DriverFailedException and/or show error dialog on error
 		} catch (final SPFormatException except) {
-			LOGGER.log(Level.SEVERE, "SP format error in dropped file " + file, except);
+			LovelaceLogger.error(except, "SP format error in dropped file %s", file);
 		} catch (final NoSuchFileException| FileNotFoundException except) {
-			LOGGER.log(Level.SEVERE, "Dropped file not found: " + file, except);
+			LovelaceLogger.error(except, "Dropped file not found: %s", file);
 		} catch (final IOException except) {
-			LOGGER.log(Level.SEVERE, "I/O error reading dropped file", except);
+			LovelaceLogger.error(except, "I/O error reading dropped file");
 		} catch (final XMLStreamException except) {
-			LOGGER.log(Level.SEVERE, "Malformed XML in dropped file", except);
+			LovelaceLogger.error(except, "Malformed XML in dropped file");
 		}
 	}
 
@@ -142,15 +140,15 @@ import org.eclipse.jdt.annotation.Nullable;
 	}
 
 	private void buttonListener() {
-		LOGGER.finer("In ExplorationFrame.buttonListener");
+		LovelaceLogger.trace("In ExplorationFrame.buttonListener");
 		final @Nullable IUnit selectedValue = unitList.getSelectedValue();
 		if (selectedValue != null && !unitList.isSelectionEmpty()) {
 			driver.getModel().setSelectedUnit(selectedValue);
-			LOGGER.finer("ExplorationFrame.buttonListener: after selectedUnit setter call");
+			LovelaceLogger.trace("ExplorationFrame.buttonListener: after selectedUnit setter call");
 			layoutObj.goNext();
 		} else {
-			LOGGER.warning("Apparently no unit selected");
+			LovelaceLogger.warning("Apparently no unit selected");
 		}
-		LOGGER.finer("End of ExplorationFrame.buttonListener");
+		LovelaceLogger.trace("End of ExplorationFrame.buttonListener");
 	}
 }

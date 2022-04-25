@@ -14,7 +14,6 @@ import java.nio.file.Path;
 import javax.swing.JFrame;
 import javax.swing.WindowConstants;
 import javax.swing.SwingUtilities;
-import java.util.logging.Logger;
 import drivers.common.ISPDriver;
 import drivers.common.ModelDriver;
 import drivers.common.MapChangeListener;
@@ -137,11 +136,6 @@ public class SPFrame extends JFrame implements ISPWindow {
 	public SPFrame(final String windowTitle, final ISPDriver driver) {
 		this(windowTitle, driver, null);
 	}
-
-	/**
-	 * Logger.
-	 */
-	private static final Logger LOGGER = Logger.getLogger(SPFrame.class.getName());
 
 	private String refreshTitle() {
 		if (driver instanceof ModelDriver &&

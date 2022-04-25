@@ -4,7 +4,6 @@ import javax.xml.stream.XMLStreamException;
 import java.io.FileNotFoundException;
 import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
-import java.util.logging.Logger;
 import java.io.IOException;
 import java.io.Reader;
 
@@ -19,6 +18,7 @@ import drivers.common.SimpleMultiMapModel;
 
 import common.map.IMapNG;
 import common.map.IMutableMapNG;
+import lovelace.util.LovelaceLogger;
 
 /**
  * A collection of a few methods for reading and writing map models, adding an
@@ -30,8 +30,6 @@ import common.map.IMutableMapNG;
  */
 public final class MapReaderAdapter {
 	private MapReaderAdapter() {}
-
-	private static final Logger LOGGER = Logger.getLogger(MapReaderAdapter.class.getName());
 
 	/**
 	 * Read a map from a file, wrapping any errors the process generates in
@@ -94,7 +92,7 @@ public final class MapReaderAdapter {
 	 */
 	public static IMultiMapModel readMultiMapModel(final Warning warner, final Path master, final Path... files)
 			throws DriverFailedException {
-		LOGGER.finer("In MapReaderAdapter.readMultiMapModel");
+		LovelaceLogger.trace("In MapReaderAdapter.readMultiMapModel");
 		String current = master.toString();
 		try {
 			final IMultiMapModel retval = new SimpleMultiMapModel(
@@ -103,7 +101,7 @@ public final class MapReaderAdapter {
 				current = file.toString();
 				retval.addSubordinateMap(MapIOHelper.readMap(file, warner));
 			}
-			LOGGER.finer("Finished with mapReaderAdapter.readMultiMapModel");
+			LovelaceLogger.trace("Finished with mapReaderAdapter.readMultiMapModel");
 			return retval;
 		} catch (final FileNotFoundException|NoSuchFileException except) {
 			// TODO: Catch FNFE as close to source as possible and convert to NoSuchFileException, to preserve filename as a field of the exception
@@ -124,7 +122,7 @@ public final class MapReaderAdapter {
 	public static void writeModel(final IDriverModel model) throws DriverFailedException{
 		final Path mainFile = model.getMap().getFilename();
 		if (mainFile == null) {
-			LOGGER.severe("Model didn't contain filename for main map, so didn't write it");
+			LovelaceLogger.error("Model didn't contain filename for main map, so didn't write it");
 		} else {
 			try {
 				MapIOHelper.writeMap(mainFile, model.getMap());
@@ -140,7 +138,7 @@ public final class MapReaderAdapter {
 			for (final IMapNG map : ((IMultiMapModel) model).getSubordinateMaps()) {
 				final Path filename = map.getFilename();
 				if (filename == null) {
-					LOGGER.severe("A map didn't have a filename, and so wasn't written.");
+					LovelaceLogger.error("A map didn't have a filename, and so wasn't written.");
 				} else {
 					try {
 						MapIOHelper.writeMap(filename, map);

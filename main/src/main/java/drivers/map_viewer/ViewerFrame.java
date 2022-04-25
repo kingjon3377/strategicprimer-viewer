@@ -2,10 +2,9 @@ package drivers.map_viewer;
 
 import java.util.function.Function;
 import drivers.common.ViewerDriver;
-import java.util.logging.Logger;
-import java.util.logging.Level;
 import drivers.common.IDriverModel;
 import drivers.common.DriverFailedException;
+import lovelace.util.LovelaceLogger;
 import org.jetbrains.annotations.Nullable;
 import java.awt.Dimension;
 import java.awt.Component;
@@ -49,7 +48,6 @@ import java.awt.image.BufferedImage;
  */
 public final class ViewerFrame extends SPFrame implements MapGUI {
 	private static final long serialVersionUID = 1L;
-	private static final Logger LOGGER = Logger.getLogger(ViewerFrame.class.getName());
 
 	private static JFrame containingWindow(final Component component) {
 		if (component instanceof JFrame) {
@@ -116,7 +114,7 @@ public final class ViewerFrame extends SPFrame implements MapGUI {
 			map = MapReaderAdapter.readMapModel(file, Warning.getDefaultHandler());
 		} catch (final DriverFailedException except) {
 			// FIXME: Show error dialog, depending on what the error was
-			LOGGER.log(Level.SEVERE, "Driver failed", except.getCause());
+			LovelaceLogger.error(except.getCause(), "Driver failed");
 			return;
 		}
 		SwingUtilities.invokeLater(() -> {
@@ -124,8 +122,8 @@ public final class ViewerFrame extends SPFrame implements MapGUI {
 					driverFactory.apply(map).startDriver();
 				} catch (final DriverFailedException except) {
 					// FIXME: Show error dialog, depending on what the error was
-					LOGGER.log(Level.SEVERE, "Driver failed", except.getCause());
-					return;
+					LovelaceLogger.error(except.getCause(), "Driver failed");
+					return; // FIXME: redundant
 				}
 			});
 	}

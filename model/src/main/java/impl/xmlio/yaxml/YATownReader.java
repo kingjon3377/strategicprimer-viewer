@@ -7,6 +7,7 @@ import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.EndElement;
 import java.io.IOException;
 
+import lovelace.util.LovelaceLogger;
 import lovelace.util.ThrowingConsumer;
 import common.xmlio.SPFormatException;
 import common.idreg.IDRegistrar;
@@ -41,13 +42,11 @@ import java.util.Optional;
 import java.util.Map;
 import java.util.Comparator;
 import java.util.stream.Collectors;
-import java.util.logging.Logger;
 
 /**
  * A reader for fortresses, villages, and other towns.
  */
 /* package */ class YATownReader extends YAAbstractReader<ITownFixture, ITownFixture> {
-	private static final Logger LOGGER = Logger.getLogger(YATownReader.class.getName());
 	public YATownReader(final Warning warner, final IDRegistrar idRegistrar, final IPlayerCollection players) {
 		super(warner, idRegistrar);
 		resourceReader = new YAResourcePileReader(warner, idRegistrar);
@@ -445,7 +444,7 @@ import java.util.logging.Logger;
 					if (reader.isPresent()) {
 						reader.get().writeRaw(ostream, member, tabs + 1);
 					} else {
-						LOGGER.severe("Unhandled FortressMember type " +
+						LovelaceLogger.error("Unhandled FortressMember type %s",
 							member.getClass().getName());
 					}
 				}

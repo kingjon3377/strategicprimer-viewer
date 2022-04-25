@@ -2,7 +2,6 @@ package drivers.exploration;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Logger;
 
 import org.jetbrains.annotations.Nullable;
 
@@ -22,7 +21,6 @@ import common.map.fixtures.mobile.IUnit;
  * A CLI to help running exploration.
  */
 /* package */ class ExplorationCLI implements CLIDriver {
-	private static final Logger LOGGER = Logger.getLogger(ExplorationCLI.class.getName());
 	public ExplorationCLI(final ICLIHelper cli, final IExplorationModel model) {
 		this.cli = cli;
 		this.model = model;

@@ -1,10 +1,9 @@
 package drivers.map_viewer;
 
+import lovelace.util.LovelaceLogger;
 import org.jetbrains.annotations.Nullable;
 
 import java.text.ParseException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Frame;
@@ -31,8 +30,6 @@ import common.map.Point;
  */
 /* package */ final class SelectTileDialog extends SPDialog {
 	private static final long serialVersionUID = 1L;
-
-	private static final Logger LOGGER = Logger.getLogger(SelectTileDialog.class.getName());
 
 	private enum NumberState { Valid, NonNumeric, Negative, Overflow}
 
@@ -105,7 +102,7 @@ import common.map.Point;
 				return NumberState.Valid;
 			}
 		} catch (final ParseException except) {
-			LOGGER.log(Level.FINE, "Non-numeric input", except);
+			LovelaceLogger.debug(except, "Non-numeric input");
 			return NumberState.NonNumeric;
 		}
 	}
@@ -152,9 +149,9 @@ import common.map.Point;
 				model.setSelection(new Point(NUM_PARSER.parse(rowText).intValue(),
 					NUM_PARSER.parse(columnText).intValue()));
 			} catch (final ParseException except) {
-				LOGGER.log(Level.SEVERE,
-					"Parse failure after we checked input was numeric", except);
-				// TODO: return here, surely?
+				LovelaceLogger.error(except,
+					"Parse failure after we checked input was numeric");
+				// FIXME: return here, surely?
 			}
 			setVisible(false);
 			dispose();

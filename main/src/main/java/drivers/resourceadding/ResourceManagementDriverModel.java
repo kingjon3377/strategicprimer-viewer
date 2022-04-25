@@ -1,8 +1,8 @@
 package drivers.resourceadding;
 
-import java.util.logging.Logger;
 import java.util.stream.StreamSupport;
 import java.util.stream.Collectors;
+import lovelace.util.LovelaceLogger;
 import org.jetbrains.annotations.Nullable;
 
 import common.map.fixtures.towns.IMutableFortress;
@@ -25,7 +25,6 @@ import java.math.BigDecimal;
  * A driver model for resource-entering drivers.
  */
 /* package */ class ResourceManagementDriverModel extends SimpleMultiMapModel {
-	private static final Logger LOGGER = Logger.getLogger(ResourceManagementDriverModel.class.getName());
 	// TODO: Make these private and expose them as fromMap() and
 	// fromDriverModel() static factory methods, as they were (in effect)
 	// in Ceylon?
@@ -65,13 +64,13 @@ import java.math.BigDecimal;
 							f.getOwner().getPlayerId())
 						.findAny().orElse(null);
 				if (fortress == null) {
-					LOGGER.warning("Didn't find HQ for " + mapPlayer);
+					LovelaceLogger.warning("Didn't find HQ for %s", mapPlayer);
 				} else {
 					fortress.addMember(resource);
 					map.setModified(true);
 				}
 			} else {
-				LOGGER.fine("Skipping map because current player isn't independent and doesn't match");
+				LovelaceLogger.debug("Skipping map because current player isn't independent and doesn't match");
 			}
 		}
 	}

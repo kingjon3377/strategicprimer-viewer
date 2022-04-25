@@ -1,7 +1,5 @@
 package utility.subset;
 
-import java.util.logging.Logger;
-
 import drivers.common.DriverUsage;
 import drivers.common.ParamCount;
 import drivers.common.IDriverUsage;
@@ -18,17 +16,13 @@ import drivers.common.cli.ICLIHelper;
 import common.map.IMutableMapNG;
 
 import com.google.auto.service.AutoService;
+import lovelace.util.LovelaceLogger;
 
 /**
  * A factory for a driver to check whether player maps are subsets of the main map.
  */
 @AutoService(DriverFactory.class)
 public class SubsetCLIFactory implements ModelDriverFactory {
-	/**
-	 * A logger.
-	 */
-	private static final Logger LOGGER = Logger.getLogger(SubsetCLIFactory.class.getName());
-
 	private static final IDriverUsage USAGE = new DriverUsage(false, "subset", ParamCount.AtLeastTwo,
 		"Check players' maps against master",
 		"Check that subordinate maps are subsets of the main map, containing nothing that it does not contain in the same place.",
@@ -45,7 +39,7 @@ public class SubsetCLIFactory implements ModelDriverFactory {
 			return new SubsetCLI(cli, (IMultiMapModel) model);
 		} else {
 			cli.println("Subset checking does nothing with no subordinate maps");
-			LOGGER.warning("Subset checking does nothing with no subordinate maps");
+			LovelaceLogger.warning("Subset checking does nothing with no subordinate maps");
 			return createDriver(cli, options, new SimpleMultiMapModel(model));
 		}
 	}

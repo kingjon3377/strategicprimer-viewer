@@ -3,11 +3,10 @@ package drivers.map_viewer;
 import static drivers.map_viewer.TileViewSize.scaleZoom;
 import static drivers.map_viewer.ImageLoader.ColorHelper;
 import java.util.Optional;
+import lovelace.util.LovelaceLogger;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
-import java.util.logging.Logger;
-import java.util.logging.Level;
 import javax.swing.JPanel;
 import javax.swing.JLabel;
 import javax.swing.JSplitPane;
@@ -50,8 +49,6 @@ import worker.common.IFixtureEditHelper;
  */
 /* package */ final class DetailPanel extends JSplitPane implements VersionChangeListener, SelectionChangeListener {
 	private static final long serialVersionUID = 1L;
-	protected static final Logger LOGGER = Logger.getLogger(DetailPanel.class.getName());
-
 
 	private final KeyPanel keyPanel;
 	private final FormattedLabel header = new FormattedLabel(
@@ -183,8 +180,7 @@ import worker.common.IFixtureEditHelper;
 							repaint();
 							return;
 						} catch (final IOException except) {
-							LOGGER.log(Level.WARNING,
-								"I/O error loading portrait", except);
+							LovelaceLogger.warning(except, "I/O error loading portrait");
 						}
 					}
 					if (selectedValue instanceof HasOwner) {
@@ -195,9 +191,7 @@ import worker.common.IFixtureEditHelper;
 								portrait = ImageLoader
 									.loadImage(playerPortraitName);
 							} catch (final IOException except) {
-								LOGGER.log(Level.WARNING,
-									"I/O error loading player portrait",
-									except);
+								LovelaceLogger.warning(except, "I/O error loading player portrait");
 							}
 						}
 					}

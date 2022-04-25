@@ -17,6 +17,7 @@ import common.map.fixtures.terrain.Hill;
 import common.map.fixtures.terrain.Oasis;
 import common.xmlio.Warning;
 import common.map.fixtures.TerrainFixture;
+import lovelace.util.LovelaceLogger;
 
 import static io.jenetics.facilejdbc.Param.value;
 
@@ -76,7 +77,7 @@ final class DBSimpleTerrainHandler extends AbstractDatabaseWriter<TerrainFixture
 				fixture = new Hill(id);
 				break;
 			case "sandbar":
-				log.info("Ignoring 'sandbar' with ID ``id```");
+				LovelaceLogger.info("Ignoring 'sandbar' with ID %d", id);
 				return;
 			case "oasis":
 				fixture = new Oasis(id);

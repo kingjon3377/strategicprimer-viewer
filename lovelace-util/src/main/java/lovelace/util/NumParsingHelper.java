@@ -5,12 +5,7 @@ import java.text.ParseException;
 
 import java.util.OptionalInt;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 public final class NumParsingHelper {
-	private static final Logger LOGGER = Logger.getLogger(NumParsingHelper.class.getName());
-
 	private static final NumberFormat PARSER = NumberFormat.getIntegerInstance();
 
 	private NumParsingHelper() {
@@ -36,8 +31,8 @@ public final class NumParsingHelper {
 		try {
 			return OptionalInt.of(PARSER.parse(string).intValue());
 		} catch (final NumberFormatException|ParseException except) {
-			LOGGER.log(Level.FINE, except,
-				() -> "Failed to parse a number from the following input: " + string);
+			LovelaceLogger.debug(except,
+				"Failed to parse a number from the following input: {}", string);
 			return OptionalInt.empty();
 		}
 	}

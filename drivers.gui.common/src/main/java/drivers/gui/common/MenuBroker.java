@@ -6,8 +6,8 @@ import java.util.HashMap;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.Window;
-import java.util.logging.Logger;
 import java.util.function.Supplier;
+import lovelace.util.LovelaceLogger;
 
 /**
  * A class to match menu item selections to the listeners to handle them. Note
@@ -15,7 +15,6 @@ import java.util.function.Supplier;
  * subsequent registrations override previous ones.
  */
 public class MenuBroker implements ActionListener {
-	private static final Logger LOGGER = Logger.getLogger(MenuBroker.class.getName());
 	/**
 	 * The mapping from "actions" to listeners to handle them.
 	 */
@@ -55,7 +54,7 @@ public class MenuBroker implements ActionListener {
 			final ActionListener listener = mapping.get(action.toLowerCase());
 			SwingUtilities.invokeLater(() -> listener.actionPerformed(event));
 		} else {
-			LOGGER.warning("Unhandled action: " + action);
+			LovelaceLogger.warning("Unhandled action: %s", action);
 		}
 	}
 }

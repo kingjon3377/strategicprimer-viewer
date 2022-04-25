@@ -1,6 +1,7 @@
 package exploration.common;
 
 import java.util.function.Supplier;
+import lovelace.util.LovelaceLogger;
 import org.javatuples.Pair;
 
 import common.map.TileType;
@@ -25,7 +26,6 @@ import java.util.Optional;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 import java.util.stream.Collectors;
-import java.util.logging.Logger;
 import java.util.NoSuchElementException;
 import java.util.function.Predicate;
 
@@ -33,7 +33,6 @@ import java.util.function.Predicate;
  * A class to facilitate a better hunting/fishing driver.
  */
 public class HuntingModel {
-	private static final Logger LOGGER = Logger.getLogger(HuntingModel.class.getName());
 	/**
 	 * A class and object for "nothing found".
 	 *
@@ -160,7 +159,7 @@ public class HuntingModel {
 			if (retval.isPresent()) {
 				return retval.get();
 			} else {
-				LOGGER.warning("Somehow ran out of items to encounter");
+				LovelaceLogger.warning("Somehow ran out of items to encounter");
 				return nothingValue;
 			}
 		}

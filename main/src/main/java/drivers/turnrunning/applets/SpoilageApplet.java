@@ -7,16 +7,11 @@ import drivers.turnrunning.ITurnRunningModel;
 import java.math.BigDecimal;
 import java.util.Collections;
 import java.util.List;
-import java.util.logging.Logger;
+import lovelace.util.LovelaceLogger;
 import org.jetbrains.annotations.Nullable;
 
 // Note we *deliberately* do not make a factory for service-discovery to find a way to build an instance of this class.
 public class SpoilageApplet extends AbstractTurnApplet {
-	/**
-	 * A logger.
-	 */
-	private static final Logger LOGGER = Logger.getLogger(SpoilageApplet.class.getName());
-
 	public SpoilageApplet(final ITurnRunningModel model, final ICLIHelper cli) {
 		super(model, cli);
 		this.model = model;
@@ -71,17 +66,17 @@ public class SpoilageApplet extends AbstractTurnApplet {
 			cli.println(food.toString());
 			final FoodType type = FoodType.askFoodType(cli, food.getContents());
 			if (type == null) {
-				LOGGER.warning("Didn't get a food type");
+				LovelaceLogger.warning("Didn't get a food type");
 				return null;
 			}
 			final Boolean spoiled = type.hasSpoiled(food, turn, cli);
 			if (spoiled == null) {
-				LOGGER.warning("EOF on has-this-spoiled");
+				LovelaceLogger.warning("EOF on has-this-spoiled");
 				return null;
 			} else if (spoiled) {
 				final BigDecimal spoilage = type.amountSpoiling(food.getQuantity(), cli);
 				if (spoilage == null) {
-					LOGGER.warning("Non-numeric spoilage amount");
+					LovelaceLogger.warning("Non-numeric spoilage amount");
 					return null;
 				}
 				buffer.append(String.format("%.2f pounds of %s spoiled.%n%n", spoilage.doubleValue(),

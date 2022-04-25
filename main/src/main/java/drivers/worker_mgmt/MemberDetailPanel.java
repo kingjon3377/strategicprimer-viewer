@@ -1,5 +1,6 @@
 package drivers.worker_mgmt;
 
+import lovelace.util.LovelaceLogger;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.stream.Collectors;
@@ -43,15 +44,12 @@ import common.map.fixtures.mobile.worker.ISkill;
 import drivers.map_viewer.ImageLoader;
 import java.util.Objects;
 import java.util.Iterator;
-import java.util.logging.Logger;
-import java.util.logging.Level;
 
 /**
  * A panel to show the details of the currently selected unit-member.
  */
 public class MemberDetailPanel extends BorderedPanel implements UnitMemberListener {
 	private static final long serialVersionUID = 1L;
-	private static final Logger LOGGER = Logger.getLogger(MemberDetailPanel.class.getName());
 	public MemberDetailPanel(final JPanel resultsPanel, final JPanel notesPanel) { // TODO: Move initialization of those into here?
 		final JPanel statPanel = new JPanel();
 		final FunctionalGroupLayout statLayout = new FunctionalGroupLayout(statPanel,
@@ -288,7 +286,7 @@ public class MemberDetailPanel extends BorderedPanel implements UnitMemberListen
 				try {
 					portraitComponent.setPortrait(ImageLoader.loadImage(portraitName));
 				} catch (final IOException except) {
-					LOGGER.log(Level.WARNING, "Failed to load portrait", except);
+					LovelaceLogger.warning(except, "Failed to load portrait");
 				}
 			}
 		}

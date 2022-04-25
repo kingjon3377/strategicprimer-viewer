@@ -4,7 +4,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
-import java.util.logging.Logger;
+import lovelace.util.LovelaceLogger;
 
 /**
  * A simple listener to send a "Close" menu event when the user clicks the
@@ -12,7 +12,6 @@ import java.util.logging.Logger;
  * close".
  */
 public class WindowCloseListener extends WindowAdapter {
-	private static final Logger LOGGER = Logger.getLogger(WindowCloseListener.class.getName());
 	public WindowCloseListener(final ActionListener menuListener) {
 		this.menuListener = menuListener;
 	}
@@ -21,9 +20,9 @@ public class WindowCloseListener extends WindowAdapter {
 
 	@Override
 	public void windowClosing(final WindowEvent evt) {
-		LOGGER.fine("About to send synthetic Close menu event");
+		LovelaceLogger.debug("About to send synthetic Close menu event");
 		menuListener.actionPerformed(new ActionEvent(evt.getSource(),
 			ActionEvent.ACTION_FIRST, "Close"));
-		LOGGER.fine("Returned from Close menu handler");
+		LovelaceLogger.debug("Returned from Close menu handler");
 	}
 }

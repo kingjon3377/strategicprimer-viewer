@@ -25,8 +25,6 @@ import lovelace.util.FileChooser;
 
 import java.nio.file.Path;
 
-import java.util.logging.Logger;
-
 import com.google.auto.service.AutoService;
 
 /**
@@ -34,7 +32,6 @@ import com.google.auto.service.AutoService;
  */
 @AutoService(DriverFactory.class)
 public class AdvancementGUIFactory implements GUIDriverFactory {
-	private static final Logger LOGGER = Logger.getLogger(AdvancementGUIFactory.class.getName());
 	private static final IDriverUsage USAGE = new DriverUsage(true, "advance", ParamCount.AtLeastOne,
 		"Worker Skill Advancement", "View a player's units, the workers in those units, each worker's Jobs, and his or her level in each Skill in each Job.",
 		false, true, "--current-turn=NN");

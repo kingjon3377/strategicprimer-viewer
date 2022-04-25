@@ -16,6 +16,7 @@ import java.util.stream.StreamSupport;
 import java.util.stream.Stream;
 import java.util.stream.Collectors;
 import javax.xml.stream.XMLStreamException;
+import lovelace.util.LovelaceLogger;
 import org.javatuples.Pair;
 import java.io.IOException;
 import java.nio.file.Paths;
@@ -57,14 +58,11 @@ import common.map.fixtures.IResourcePile;
 
 import common.map.fixtures.terrain.Hill;
 import common.map.fixtures.terrain.Oasis;
-import java.util.logging.Logger;
-import java.util.logging.Level;
 
 /**
  * A driver to check every map file in a list for errors.
  */
 public class MapCheckerCLI implements UtilityDriver {
-	private static final Logger LOGGER = Logger.getLogger(MapCheckerCLI.class.getName());
 	/**
 	 * An interface for checks of a map's <em>contents</em> that we don't want the
 	 * XML-<em>reading</em> code to do. Checkers should return true iff they
@@ -369,24 +367,24 @@ public class MapCheckerCLI implements UtilityDriver {
 			map = MapIOHelper.readMap(file, warner);
 		} catch (final NoSuchFileException except) {
 			stderr.accept(file + " not found");
-			LOGGER.severe(file + " not found");
-			LOGGER.log(Level.FINE, "Full stack trace of file-not-found:", except);
+			LovelaceLogger.error("%s not found", file);
+			LovelaceLogger.debug(except, "Full stack trace of file-not-found:");
 			return;
 		} catch (final IOException except) {
 			stderr.accept("I/O error reading " + file);
-			LOGGER.severe(String.format("I/O error reading %s: %s", file, except.getMessage()));
-			LOGGER.log(Level.FINE, "Full stack trace of I/O error", except);
+			LovelaceLogger.error("I/O error reading %s: %s", file, except.getMessage());
+			LovelaceLogger.debug(except, "Full stack trace of I/O error");
 			return;
 		} catch (final XMLStreamException except) {
 			stderr.accept("Malformed XML in " + file);
-			LOGGER.severe(String.format("Malformed XML in %s: %s", file, except.getMessage()));
-			LOGGER.log(Level.FINE, "Full stack trace of malformed-XML error", except);
+			LovelaceLogger.error("Malformed XML in %s: %s", file, except.getMessage());
+			LovelaceLogger.debug(except, "Full stack trace of malformed-XML error");
 			return;
 		} catch (final SPFormatException except) {
 			stderr.accept("SP map format error in " + file);
-			LOGGER.severe(String.format("SP map format error in %s: %s", file,
-				except.getMessage()));
-			LOGGER.log(Level.FINE, "Full stack trace of SP map format error:", except);
+			LovelaceLogger.error("SP map format error in %s: %s", file,
+				except.getMessage());
+			LovelaceLogger.debug(except, "Full stack trace of SP map format error:");
 			return;
 		}
 
@@ -399,7 +397,7 @@ public class MapCheckerCLI implements UtilityDriver {
 						location, warner, map.getFixtures(location)) || result;
 				}
 			}
-			LOGGER.fine("Finished a check for " + file);
+			LovelaceLogger.debug("Finished a check for %s", file);
 		}
 
 		for (final Point location : map.getLocations()) {
@@ -430,7 +428,7 @@ public class MapCheckerCLI implements UtilityDriver {
 			}
 		}
 
-		LOGGER.fine("Finished with " + file);
+		LovelaceLogger.debug("Finished with %s", file);
 		if (result) {
 			stdout.accept("... done");
 		} else {

@@ -15,9 +15,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
-import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import lovelace.util.LovelaceLogger;
 import org.jetbrains.annotations.Nullable;
 import query.HerdModel;
 import query.MammalModel;
@@ -25,7 +25,6 @@ import query.PoultryModel;
 import query.SmallAnimalModel;
 
 /* package */ class HerdApplet extends AbstractTurnApplet {
-	private static final Logger LOGGER = Logger.getLogger(HerdApplet.class.getName());
 	public HerdApplet(final ITurnRunningModel model, final ICLIHelper cli, final IDRegistrar idf) {
 		super(model, cli);
 		this.model = model;
@@ -210,7 +209,7 @@ import query.SmallAnimalModel;
 				}
 				continue;
 			} else {
-				LOGGER.severe("Unhandled animal type");
+				LovelaceLogger.error("Unhandled animal type");
 				return null;
 			}
 			addLineToOrders.accept(String.format("This produced %.1f %s, %.1f lbs, of %s.",

@@ -1,6 +1,7 @@
 package impl.dbio;
 
 import common.map.fixtures.towns.CommunityStats;
+import lovelace.util.LovelaceLogger;
 import org.eclipse.jdt.annotation.Nullable;
 import common.map.IFixture;
 import common.map.IMutableMapNG;
@@ -20,8 +21,6 @@ import java.util.List;
 
 import java.util.Map;
 
-import java.util.logging.Logger;
-
 import java.util.stream.Stream;
 import lovelace.util.Accumulator;
 import lovelace.util.IntAccumulator;
@@ -30,10 +29,6 @@ import lovelace.util.IntAccumulator;
  * An interface for code to read map contents from an SQL database.
  */
 interface MapContentsReader {
-	/**
-	 * Logger for default methods.
-	 */
-	Logger LOGGER = Logger.getLogger(MapContentsReader.class.getName());
 	/**
 	 * Read map contents---that is, anything directly at a location on the map.
 	 *
@@ -63,18 +58,17 @@ interface MapContentsReader {
 	default void handleQueryResults(final Connection db, final Warning warner, final String description,
 	                                final TryBiConsumer<Map<String, Object>, Warning, SQLException> handler, final Query query,
 	                                final Object... args) throws SQLException {
-		LOGGER.fine("About to read " + description);
+		LovelaceLogger.debug("About to read %s", description);
 		final Accumulator<Integer> count = new IntAccumulator(0);
 		try (Stream<Map<String, Object>> stream = query.as(((RowParser<Map<String, Object>>) MapContentsReader::parseToMap).stream(), db)) {
 			stream.forEach(handler.andThen((m, w) -> {
 				count.add(1);
 				if (count.getSum() % 50 == 0) {
-					LOGGER.fine(String.format("Finished reading %d %s", count.getSum(),
-							description));
+					LovelaceLogger.debug("Finished reading %d %s", count.getSum(), description);
 				}
 			}).wrappedPartial(warner));
 		}
-		LOGGER.fine("Finished reading " + description);
+		LovelaceLogger.debug("Finished reading %s", description);
 	}
 
 	default void multimapPut(final Map<Integer, List<Object>> mapping, final Integer key, final Object val) {

@@ -2,7 +2,6 @@ package drivers;
 
 import drivers.common.DriverFailedException;
 import java.util.List;
-import java.util.logging.Logger;
 
 import java.nio.file.Path;
 
@@ -31,7 +30,6 @@ import com.google.auto.service.AutoService;
  */
 @AutoService(DriverFactory.class)
 public class TabularReportGUIFactory implements GUIDriverFactory {
-	private static final Logger LOGGER = Logger.getLogger(TabularReportGUIFactory.class.getName());
 	private static final IDriverUsage USAGE = new DriverUsage(true, "tabular-report",
 		ParamCount.One, "Tabular Report Viewer", "Show the contents of a map in tabular form",
 		false, true, "--hq-row=NN --hq-col=NN");

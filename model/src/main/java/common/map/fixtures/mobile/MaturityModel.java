@@ -3,7 +3,7 @@ package common.map.fixtures.mobile;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.Map;
-import java.util.logging.Logger;
+import lovelace.util.LovelaceLogger;
 
 /**
  * A model, loaded from file, of the ages at which young animals become adults.
@@ -11,7 +11,6 @@ import java.util.logging.Logger;
  * the codebase, store a notion of the current turn here.
  */
 public final class MaturityModel {
-	private static final Logger LOGGER = Logger.getLogger(MaturityModel.class.getName());
 	private static final Map<String, Integer> MATURITY_AGES =
 		initMaturityAges();
 
@@ -41,7 +40,7 @@ public final class MaturityModel {
 		if (currentTurnLocal < 0) {
 			currentTurnLocal = currentTurn;
 		} else if (currentTurnLocal != currentTurn) {
-			LOGGER.warning("Tried to reset current turn");
+			LovelaceLogger.warning("Tried to reset current turn");
 		}
 	}
 

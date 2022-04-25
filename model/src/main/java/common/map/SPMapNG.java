@@ -3,6 +3,7 @@ package common.map;
 import common.map.fixtures.mobile.IUnit;
 
 import java.util.Arrays;
+import lovelace.util.LovelaceLogger;
 import org.javatuples.Pair;
 
 import java.nio.file.Path;
@@ -19,9 +20,6 @@ import java.util.Collections;
 import java.util.EnumSet;
 import java.util.Optional;
 
-import java.util.logging.Logger;
-import java.util.logging.Level;
-
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 import java.util.stream.Stream;
@@ -37,7 +35,6 @@ import org.jetbrains.annotations.Nullable;
  * A class to represent a game-world map and its contents.
  */
 public class SPMapNG implements IMutableMapNG {
-	private static final Logger LOGGER = Logger.getLogger(SPMapNG.class.getName());
 	/**
 	 * Whether the given fixture should be zeroed out if the map is for the given player.
 	 */
@@ -423,9 +420,8 @@ public class SPMapNG implements IMutableMapNG {
 	@Override
 	public boolean addFixture(final Point location, final TileFixture fixture) {
 		if (fixture instanceof FakeFixture) {
-			LOGGER.severe("Fake fixture passed to SPMapNG.addFixture()");
-			LOGGER.log(Level.FINE, "Stack trace for fake fixture in SPMapNG.addFixture()",
-				new Exception());
+			LovelaceLogger.error("Fake fixture passed to SPMapNG.addFixture()");
+			LovelaceLogger.debug(new Exception(), "Stack trace for fake fixture in SPMapNG.addFixture()");
 			return false;
 		}
 		modified = true; // TODO: Only if this is a change
@@ -450,10 +446,10 @@ public class SPMapNG implements IMutableMapNG {
 			} else {
 				local.add(fixture);
 				fixturesMap.put(location, local);
-				LOGGER.warning("Inserted duplicate-ID fixture at " + location);
-				LOGGER.log(Level.FINE, "Stack trace of this location: ", new Exception());
-				LOGGER.info("Existing fixture was: " + existing.get().getShortDescription());
-				LOGGER.info("Added: " + fixture.getShortDescription());
+				LovelaceLogger.warning("Inserted duplicate-ID fixture at %s", location);
+				LovelaceLogger.debug(new Exception(), "Stack trace of this location: ");
+				LovelaceLogger.info("Existing fixture was: %s", existing.get().getShortDescription());
+				LovelaceLogger.info("Added: %s", fixture.getShortDescription());
 				return true;
 			}
 		} else {

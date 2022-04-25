@@ -17,10 +17,10 @@ import java.util.HashMap;
 
 import drivers.common.cli.ICLIHelper;
 
-import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import javax.xml.stream.XMLStreamException;
+import lovelace.util.LovelaceLogger;
 import lovelace.util.Range;
 import lovelace.util.ResourceInputStream;
 
@@ -52,8 +52,6 @@ import org.jetbrains.annotations.Nullable;
  * An app to let the user create a map from an image.
  */
 /* package */ class ImporterDriver implements UtilityDriver {
-	private static final Logger LOGGER = Logger.getLogger(ImporterDriver.class.getName());
-
 	private enum ImportableTerrain implements HasName {
 		Mountain("mountain"),
 		BorealForest("boreal forest"),
@@ -124,7 +122,7 @@ import org.jetbrains.annotations.Nullable;
 		} catch (final NumberFormatException except) {
 			throw new DriverFailedException(except, "--size argument must be numeric");
 		}
-		LOGGER.fine("--size parameter is " + size);
+		LovelaceLogger.debug("--size parameter is %s", size);
 		for (final String arg : args) {
 			final ResourceInputStream res;
 			try {
@@ -140,7 +138,7 @@ import org.jetbrains.annotations.Nullable;
 			}
 			final int width = image.getWidth();
 			final int height = image.getHeight();
-			LOGGER.fine(String.format("Image is %dx%d", width, height));
+			LovelaceLogger.debug("Image is %dx%d", width, height);
 			int baseRow = 0;
 			final Map<Integer, /*TileType|ImportableTerrain*/HasName> mapping =
 					new HashMap<>();
@@ -163,8 +161,8 @@ import org.jetbrains.annotations.Nullable;
 					if (dominant != null) {
 						if (mapping.containsKey(dominant.getValue0())) {
 							final HasName type = mapping.get(dominant.getValue0());
-							LOGGER.fine(String.format("Type for (%d, %d) deduced to be %s",
-									mapRow, mapColumn, type));
+							LovelaceLogger.debug("Type for (%d, %d) deduced to be %s",
+									mapRow, mapColumn, type);
 							retval.put(new Point(mapRow, mapColumn), type);
 						} else {
 							cli.print("In (", Integer.toString(mapRow),
@@ -190,7 +188,7 @@ import org.jetbrains.annotations.Nullable;
 			for (final Map.Entry<Point, HasName> entry : retval.entrySet()) {
 				final Point point = entry.getKey();
 				final HasName type = entry.getValue();
-				LOGGER.finer(String.format("Setting %s to %s", point, type));
+				LovelaceLogger.trace("Setting %s to %s", point, type);
 				if (type instanceof TileType) {
 					finalRetval.setBaseTerrain(point, (TileType) type);
 				} else {

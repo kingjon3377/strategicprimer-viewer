@@ -2,18 +2,17 @@ package drivers.worker_mgmt;
 
 import drivers.common.DriverFailedException;
 import java.io.IOException;
-import java.util.logging.Level;
 import java.nio.file.Path;
 import javax.swing.SwingUtilities;
 import drivers.gui.common.about.AboutDialog;
 import drivers.PlayerChangeMenuListener;
 import drivers.IOHandler;
-import java.util.logging.Logger;
 import drivers.common.cli.ICLIHelper;
 import drivers.common.SPOptions;
 import drivers.common.MultiMapGUIDriver;
 import drivers.common.IWorkerModel;
 import drivers.common.WorkerGUI;
+import lovelace.util.LovelaceLogger;
 import lovelace.util.ShowErrorDialog;
 import worker.common.WorkerModel;
 import java.awt.event.ActionEvent;
@@ -27,11 +26,6 @@ import drivers.gui.common.SPFileChooser;
  * A driver to start the worker management GUI.
  */
 public class WorkerMgmtGUI implements MultiMapGUIDriver, WorkerGUI {
-	/**
-	 * A logger.
-	 */
-	private static final Logger LOGGER = Logger.getLogger(WorkerMgmtGUI.class.getName());
-
 	public WorkerMgmtGUI(final ICLIHelper cli, final SPOptions options, final IWorkerModel model) {
 		this.cli = cli;
 		this.options = options;
@@ -56,11 +50,11 @@ public class WorkerMgmtGUI implements MultiMapGUIDriver, WorkerGUI {
 
 	private void createWindow(final MenuBroker menuHandler, final PlayerChangeMenuListener pcml)
 			throws DriverFailedException {
-		LOGGER.finer("Inside GUI creation lambda");
+		LovelaceLogger.trace("Inside GUI creation lambda");
 		final WorkerMgmtFrame frame = new WorkerMgmtFrame(options, model, menuHandler, this);
-		LOGGER.finer("Created worker mgmt frame");
+		LovelaceLogger.trace("Created worker mgmt frame");
 		pcml.addPlayerChangeListener(frame);
-		LOGGER.finer("Added it as a listener on the PCML");
+		LovelaceLogger.trace("Added it as a listener on the PCML");
 		frame.addWindowListener(new WindowCloseListener(menuHandler));
 		menuHandler.register(ignored -> frame.playerChanged(model.getCurrentPlayer(), model.getCurrentPlayer()),
 				"reload tree");
@@ -68,17 +62,17 @@ public class WorkerMgmtGUI implements MultiMapGUIDriver, WorkerGUI {
 			menuHandler.registerWindowShower(new AboutDialog(frame,
 				frame.getWindowName()), "about");
 		} catch (final IOException except) {
-			LOGGER.log(Level.SEVERE, "I/O error setting up About dialog", except);
+			LovelaceLogger.error(except, "I/O error setting up About dialog");
 		}
-		LOGGER.finer("Registered menu handlers");
+		LovelaceLogger.trace("Registered menu handlers");
 		if (model.streamAllMaps().allMatch(m -> model.getUnits(m.getCurrentPlayer()).isEmpty())) {
 			pcml.actionPerformed(new ActionEvent(frame, ActionEvent.ACTION_FIRST,
 				"change current player"));
 		}
 
-		LOGGER.finer("About to show window");
+		LovelaceLogger.trace("About to show window");
 		frame.showWindow();
-		LOGGER.finer("Window should now be visible");
+		LovelaceLogger.trace("Window should now be visible");
 	}
 
 	@Override
@@ -104,7 +98,7 @@ public class WorkerMgmtGUI implements MultiMapGUIDriver, WorkerGUI {
 				throw except;
 			}
 		}
-		LOGGER.finer("Worker GUI window should appear any time now");
+		LovelaceLogger.trace("Worker GUI window should appear any time now");
 	}
 
 	/**
@@ -129,8 +123,7 @@ public class WorkerMgmtGUI implements MultiMapGUIDriver, WorkerGUI {
 					} catch (final DriverFailedException except) {
 						ShowErrorDialog.showErrorDialog(null, "Strategic Primer Worker Management",
 								String.format("Failed to open new window:%n%s", except.getMessage()));
-						LOGGER.log(Level.SEVERE, "Failed to open new window",
-							except);
+						LovelaceLogger.error(except, "Failed to open new window");
 					}
 				});
 		} else {

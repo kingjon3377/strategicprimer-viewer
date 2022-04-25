@@ -1,6 +1,7 @@
 package drivers.advancement;
 
 import javax.swing.tree.DefaultTreeSelectionModel;
+import lovelace.util.LovelaceLogger;
 import org.jetbrains.annotations.Nullable;
 
 import common.map.HasName;
@@ -27,16 +28,12 @@ import common.map.fixtures.mobile.worker.ISkill;
 
 import drivers.common.IAdvancementModel;
 
-import java.util.logging.Logger;
-
 import java.util.stream.StreamSupport;
 
 /**
  * A model for a tree of a worker's Jobs and Skills.
  */
 /* package */ class JobTreeModel implements TreeModel, UnitMemberListener, AddRemoveListener {
-	private static final Logger LOGGER = Logger.getLogger(JobTreeModel.class.getName());
-
 	public JobTreeModel(final IAdvancementModel driverModel) {
 		this.driverModel = driverModel;
 	}
@@ -99,7 +96,7 @@ import java.util.stream.StreamSupport;
 	 */
 	@Override
 	public void valueForPathChanged(final TreePath path, final Object newValue) {
-		LOGGER.severe("valueForPathChanged needs to be implemented");
+		LovelaceLogger.error("valueForPathChanged needs to be implemented");
 	}
 
 	@Override
@@ -148,9 +145,9 @@ import java.util.stream.StreamSupport;
 		final IWorker currentRoot = localRoot;
 		if ("job".equals(category)) {
 			if (currentRoot == null) {
-				LOGGER.warning("Can't add a new Job when no worker selected");
+				LovelaceLogger.warning("Can't add a new Job when no worker selected");
 			} else if (StreamSupport.stream(currentRoot.spliterator(), false).map(IJob::getName).anyMatch(addendum::equals)) {
-				LOGGER.info("Addition would be no-op");
+				LovelaceLogger.info("Addition would be no-op");
 			} else {
 				final int childCount = getChildCount(currentRoot);
 				if (driverModel.addJobToWorker(currentRoot, addendum)) {
@@ -158,14 +155,14 @@ import java.util.stream.StreamSupport;
 						.filter(j -> addendum.equals(j.getName()))
 						.findAny().orElse(null);
 					if (job == null) {
-						LOGGER.warning("Worker not found");
+						LovelaceLogger.warning("Worker not found");
 					} else {
 						fireTreeNodesInserted(new TreeModelEvent(this,
 								new TreePath(currentRoot), new int[]{childCount},
 								new Object[]{job}));
 					}
 				} else {
-					LOGGER.warning("Worker not found");
+					LovelaceLogger.warning("Worker not found");
 				}
 			}
 		} else if ("skill".equals(category)) {
@@ -180,7 +177,7 @@ import java.util.stream.StreamSupport;
 						.filter(s -> addendum.equals(s.getName()))
 						.findAny().orElse(null);
 					if (skill == null) {
-						LOGGER.warning(
+						LovelaceLogger.warning(
 								"Worker not found, or skill-adding otherwise failed");
 					} else {
 						fireTreeNodesInserted(new TreeModelEvent(this,
@@ -188,13 +185,13 @@ import java.util.stream.StreamSupport;
 								new int[]{childCount}, new Object[]{skill}));
 					}
 				} else {
-					LOGGER.warning("Worker not found, or skill-adding otherwise failed");
+					LovelaceLogger.warning("Worker not found, or skill-adding otherwise failed");
 				}
 			} else {
-				LOGGER.warning("Can't add a new Skill when no Job selected");
+				LovelaceLogger.warning("Can't add a new Skill when no Job selected");
 			}
 		} else {
-			LOGGER.warning(String.format("Don't know how to add a new '%s", category));
+			LovelaceLogger.warning("Don't know how to add a new '%s", category);
 		}
 	}
 

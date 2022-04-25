@@ -2,6 +2,7 @@ package report;
 
 import common.map.fixtures.Implement;
 import common.map.fixtures.mobile.IWorker;
+import lovelace.util.LovelaceLogger;
 import org.jetbrains.annotations.Nullable;
 import org.javatuples.Pair;
 import lovelace.util.DelayedRemovalMap;
@@ -23,16 +24,12 @@ import common.map.fixtures.towns.IFortress;
 import java.util.Map;
 import java.util.HashMap;
 
-import java.util.logging.Logger;
-
 /**
  * An encapsulation of helper methods for report generators.
  */
 /* package */ final class ReportGeneratorHelper {
 	private ReportGeneratorHelper() {
 	}
-
-	private static final Logger LOGGER = Logger.getLogger(ReportGeneratorHelper.class.getName());
 
 	/**
 	 * Find the location of the given player's HQ in the given map, or null if not found.
@@ -60,8 +57,8 @@ import java.util.logging.Logger;
 			final int key = checkID(idf, fixture);
 			final Pair<Point, IFixture> val = Pair.with(location, fixture);
 			if (mapping.containsKey(key) && !val.equals(mapping.get(key))) {
-				LOGGER.warning(String.format("Duplicate key, %d, for Pairs %s and %s",
-					key, mapping.get(key), val));
+				LovelaceLogger.warning("Duplicate key, %d, for Pairs %s and %s",
+					key, mapping.get(key), val);
 			}
 			mapping.put(key, val);
 			if (fixture instanceof FixtureIterable) {

@@ -35,10 +35,10 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
-import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
+import lovelace.util.LovelaceLogger;
 import org.javatuples.Pair;
 import org.jetbrains.annotations.Nullable;
 
@@ -48,7 +48,6 @@ import static lovelace.util.Decimalize.decimalize;
  * The logic split out of {@link ExplorationCLI}, some also used in {@link drivers.turnrunning.TurnRunningCLI}
  */
 public class ExplorationCLIHelper implements MovementCostListener, SelectionChangeListener {
-	private static final Logger LOGGER = Logger.getLogger(ExplorationCLIHelper.class.getName());
 	private final IExplorationModel model;
 	private final ICLIHelper cli;
 	private final HuntingModel huntingModel;
@@ -245,7 +244,7 @@ public class ExplorationCLIHelper implements MovementCostListener, SelectionChan
 			try {
 				model.move(direction, speed);
 			} catch (final TraversalImpossibleException except) {
-				LOGGER.fine("Attempted movement to impossible destination");
+				LovelaceLogger.debug("Attempted movement to impossible destination");
 				cli.println("That direction is impassable; we've made sure all maps show that at a cost of 1 MP");
 				return;
 			}

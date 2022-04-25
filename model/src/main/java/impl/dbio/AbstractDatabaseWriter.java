@@ -6,15 +6,13 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Set;
 import java.util.HashSet;
-import java.util.logging.Logger;
+import lovelace.util.LovelaceLogger;
 
 abstract class AbstractDatabaseWriter<Item, Context> implements DatabaseWriter<Item, Context> {
 	protected AbstractDatabaseWriter(final Class<Item> itemClass, final Class<Context> contextClass) {
 		this.itemClass = itemClass;
 		this.contextClass = contextClass;
 	}
-
-	protected final Logger log = Logger.getLogger(getClass().getName());
 
 	private final Class<Item> itemClass;
 	private final Class<Context> contextClass;
@@ -41,7 +39,7 @@ abstract class AbstractDatabaseWriter<Item, Context> implements DatabaseWriter<I
 			sql.transaction().accept(db -> {
 				for (final Query initializer : getInitializers()) {
 					initializer.execute(db);
-					log.fine("Executed initializer beginning " +
+					LovelaceLogger.debug("Executed initializer beginning %s",
 						initializer.rawSql().split("\\R")[0]);
 				}
 			});

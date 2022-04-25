@@ -8,8 +8,6 @@ import java.util.Collections;
 import java.util.stream.Collectors;
 import java.util.Objects;
 import java.util.function.IntSupplier;
-import java.util.logging.Logger;
-import java.util.logging.Level;
 
 import drivers.common.cli.ICLIHelper;
 
@@ -56,6 +54,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 import lovelace.util.FileContentsReader;
+import lovelace.util.LovelaceLogger;
 import lovelace.util.NumParsingHelper;
 import org.javatuples.Triplet;
 import org.javatuples.Pair;
@@ -67,8 +66,6 @@ import java.math.BigDecimal;
  * A command-line app to generate population details for villages.
  */
 /* package */ class TownGenerator {
-	private static final Logger LOGGER = Logger.getLogger(TownGenerator.class.getName());
-
 	public TownGenerator(final ICLIHelper cli) throws MissingTableException, IOException {
 		this.cli = cli;
 		runner = initProduction(); // TODO: pull its contents up?
@@ -235,7 +232,7 @@ import java.math.BigDecimal;
 		} else if (fix instanceof Shrub || fix instanceof StoneDeposit) {
 			return true;
 		} else {
-			LOGGER.severe("Unhandled harvestable type");
+			LovelaceLogger.error("Unhandled harvestable type");
 			return false;
 		}
 	}
@@ -541,7 +538,7 @@ import java.math.BigDecimal;
 						new Quantity(Math.pow(2, level - 1),
 							(level == 1) ? "unit" : "units")));
 				} catch (final MissingTableException except) {
-					LOGGER.log(Level.WARNING, "Missing table", except);
+					LovelaceLogger.warning(except, "Missing table");
 					retval.getYearlyProduction().add(new ResourcePileImpl(
 						idf.createID(), "unknown", "product of " + skill,
 						new Quantity(1, "unit")));
@@ -608,7 +605,7 @@ import java.math.BigDecimal;
 					model.assignTownStats(location, town.getId(), town.getName(), stats);
 				}
 			} catch (final MissingTableException except) {
-				LOGGER.log(Level.SEVERE, "Missing table file", except);
+				LovelaceLogger.error(except, "Missing table file");
 				return;
 			}
 		}
@@ -640,7 +637,7 @@ import java.math.BigDecimal;
 				model.setMapModified(true);
 				model.assignTownStats(location, town.getId(), town.getName(), stats);
 			} catch (final MissingTableException except) {
-				LOGGER.log(Level.SEVERE, "Missing table file", except);
+				LovelaceLogger.error(except, "Missing table file");
 				break;
 			}
 		}

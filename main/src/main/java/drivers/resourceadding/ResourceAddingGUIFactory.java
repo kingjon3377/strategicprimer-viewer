@@ -21,8 +21,6 @@ import drivers.common.IDriverUsage;
 import drivers.common.IDriverModel;
 import drivers.common.GUIDriver;
 
-import java.util.logging.Logger;
-
 import com.google.auto.service.AutoService;
 
 /**
@@ -30,7 +28,6 @@ import com.google.auto.service.AutoService;
  */
 @AutoService(DriverFactory.class)
 public class ResourceAddingGUIFactory implements GUIDriverFactory {
-	private static final Logger LOGGER = Logger.getLogger(ResourceAddingGUIFactory.class.getName());
 	private static final IDriverUsage USAGE = new DriverUsage(true, "add-resource",
 		ParamCount.AtLeastOne, "Add resources to maps", "Add resources for players to maps",
 		false, true, "--current-turn=NN");

@@ -1,8 +1,6 @@
 package impl.xmlio.yaxml;
 
 import java.util.Collection;
-import java.util.logging.Logger;
-import java.util.logging.Level;
 
 import java.io.IOException;
 import javax.xml.stream.XMLStreamException;
@@ -25,6 +23,7 @@ import impl.xmlio.exceptions.UnwantedChildException;
 import common.map.fixtures.towns.CommunityStats;
 import java.util.HashMap;
 import java.util.Map;
+import lovelace.util.LovelaceLogger;
 import lovelace.util.ThrowingConsumer;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -33,11 +32,6 @@ import java.util.stream.Collectors;
  * A class to hide the complexity of YAXML from callers.
  */
 /* protected */ class YAReaderAdapter {
-	/**
-	 * A logger.
-	 */
-	private static final Logger LOGGER = Logger.getLogger(YAReaderAdapter.class.getName());
-
 	public YAReaderAdapter() {
 		this(Warning.getDefaultHandler());
 	}
@@ -140,8 +134,8 @@ import java.util.stream.Collectors;
 					"To write a proxy object, it has to be proxying for at least one object.");
 			}
 			// TODO: Handle proxies in their respective types
-			LOGGER.log(Level.SEVERE, "Wanted to write a proxy",
-				new IllegalStateException("Shouldn't try to write proxy objects"));
+			LovelaceLogger.error(new IllegalStateException("Shouldn't try to write proxy objects"),
+					"Wanted to write a proxy");
 			write(ostream, ((ProxyFor<?>) obj).getProxied().iterator().next(), indent);
 			return;
 		} else if (obj instanceof IJob) {

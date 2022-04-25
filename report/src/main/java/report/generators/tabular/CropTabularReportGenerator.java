@@ -17,7 +17,6 @@ import common.map.fixtures.resources.Grove;
 import common.map.fixtures.resources.Meadow;
 import common.map.fixtures.resources.Shrub;
 import common.map.fixtures.terrain.Forest;
-import java.util.logging.Logger;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Collections;
@@ -34,11 +33,6 @@ public class CropTabularReportGenerator implements ITableGenerator</*Forest|Shru
 		return fixture instanceof Forest || fixture instanceof Shrub || fixture instanceof Meadow ||
 				       fixture instanceof Grove;
 	}
-
-	/**
-	 * A logger.
-	 */
-	private static final Logger LOGGER = Logger.getLogger(CropTabularReportGenerator.class.getName());
 
 	private static final NumberFormat NUM_FORMAT = NumberFormat.getInstance();
 

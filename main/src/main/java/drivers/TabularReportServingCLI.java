@@ -4,10 +4,9 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
-import java.util.logging.Logger;
-import java.util.logging.Level;
 
 import java.util.stream.Stream;
+import lovelace.util.LovelaceLogger;
 import lovelace.util.ThrowingBiConsumer;
 import lovelace.util.ThrowingConsumer;
 import lovelace.util.ThrowingFunction;
@@ -51,7 +50,6 @@ import org.takes.http.FtBasic;
 import org.takes.http.Exit;
 
 /* package */ class TabularReportServingCLI implements ReadOnlyDriver {
-	private static final Logger LOGGER = Logger.getLogger(TabularReportServingCLI.class.getName());
 	public TabularReportServingCLI(final ICLIHelper cli, final SPOptions options, final IDriverModel model) {
 		this.cli = cli;
 		this.options = options;
@@ -106,7 +104,7 @@ import org.takes.http.Exit;
 			(map, mapFile) -> {
 				try {
 					if (mapFile == null) {
-						LOGGER.severe("Asked to create reports from map with no filename");
+						LovelaceLogger.error("Asked to create reports from map with no filename");
 						TabularReportGenerator.createTabularReports(map,
 								filenameFunction.apply(Paths.get("unknown.xml")), cli);
 					} else {
@@ -188,7 +186,7 @@ import org.takes.http.Exit;
 		rootDocument.append("\t</body>").append(System.lineSeparator());
 		rootDocument.append("</html>").append(System.lineSeparator());
 
-		LOGGER.info("About to start serving on port ``port``");
+		LovelaceLogger.info("About to start serving on port %d", port);
 		try {
 			new FtBasic(
 				new TkFork(Stream.concat(Stream.<Fork>of(new FkRegex("/", new RsHtml(rootDocument.toString())),
@@ -208,8 +206,8 @@ import org.takes.http.Exit;
 			port = Integer.parseInt(portArgument);
 		} catch (final NumberFormatException except) {
 			if (!"true".equals(portArgument)) {
-				LOGGER.warning("Port must be a number");
-				LOGGER.log(Level.FINER, "Stack trace of port parse failure", except);
+				LovelaceLogger.warning("Port must be a number");
+				LovelaceLogger.trace(except, "Stack trace of port parse failure");
 			}
 			port = 8080;
 		}

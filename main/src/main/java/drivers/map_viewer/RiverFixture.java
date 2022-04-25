@@ -4,13 +4,13 @@ import common.map.River;
 import common.map.FakeFixture;
 
 import java.util.Arrays;
-import java.util.logging.Level;
 
 import java.util.Set;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.EnumSet;
 import java.util.stream.Collectors;
+import lovelace.util.LovelaceLogger;
 
 /**
  * A fake "TileFixture" to represent the rivers on a tile, so they can appear
@@ -47,7 +47,7 @@ import java.util.stream.Collectors;
 	@Deprecated
 	@Override
 	public RiverFixture copy(final CopyBehavior zero) {
-		LOGGER.log(Level.WARNING, "TileTypeFixture.copy called", new Exception("dummy"));
+		LovelaceLogger.warning(new Exception("dummy"), "TileTypeFixture.copy called");
 		return new RiverFixture(rivers.toArray(new River[0]));
 	}
 

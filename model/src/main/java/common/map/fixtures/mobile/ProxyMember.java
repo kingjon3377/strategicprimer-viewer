@@ -8,13 +8,12 @@ import common.map.IFixture;
 import common.map.fixtures.UnitMember;
 
 import java.util.function.Consumer;
-import java.util.logging.Logger;
+import lovelace.util.LovelaceLogger;
 
 /**
  * A proxy for non-worker unit members.
  */
 class ProxyMember implements UnitMemberProxy<UnitMember> {
-	private static final Logger LOGGER = Logger.getLogger(ProxyMember.class.getName());
 	private final List<UnitMember> proxiedMembers = new ArrayList<>();
 
 	private ProxyMember() {
@@ -40,7 +39,7 @@ class ProxyMember implements UnitMemberProxy<UnitMember> {
 
 	@Override
 	public boolean equalsIgnoringID(final IFixture fixture) {
-		LOGGER.warning("ProxyMember.equalsIgnoringID() called");
+		LovelaceLogger.warning("ProxyMember.equalsIgnoringID() called");
 		if (fixture instanceof ProxyMember) {
 			return ((ProxyMember) fixture).proxiedMembers.equals(proxiedMembers); // TODO: Shouldn't depend on order, right?
 		} else {

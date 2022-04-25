@@ -2,9 +2,8 @@ package drivers;
 
 import java.nio.charset.StandardCharsets;
 import java.nio.file.StandardOpenOption;
-import java.util.logging.Logger;
-import java.util.logging.Level;
 
+import lovelace.util.LovelaceLogger;
 import org.jetbrains.annotations.Nullable;
 
 import java.nio.file.Path;
@@ -31,7 +30,6 @@ import report.ReportGenerator;
  * A driver to produce a report of the contents of a map.
  */
 public class ReportCLI implements ReadOnlyDriver {
-	private static final Logger LOGGER = Logger.getLogger(ReportCLI.class.getName());
 	public ReportCLI(final SPOptions options, final IDriverModel model, final ICLIHelper cli) {
 		this.options = options;
 		this.model = model;
@@ -54,7 +52,7 @@ public class ReportCLI implements ReadOnlyDriver {
 
 	private void writeReport(final @Nullable Path filename, final IMapNG map) throws IOException {
 		if (filename == null) {
-			LOGGER.severe("Asked to make report from map with no filename");
+			LovelaceLogger.error("Asked to make report from map with no filename");
 		} else {
 			Player player;
 			if (options.hasOption("--player")) {
@@ -62,7 +60,7 @@ public class ReportCLI implements ReadOnlyDriver {
 					player = map.getPlayers().getPlayer(Integer.parseInt(
 						options.getArgument("--player")));
 				} catch (final NumberFormatException except) {
-					LOGGER.log(Level.WARNING, "Non-numeric player", except);
+					LovelaceLogger.warning(except, "Non-numeric player");
 					player = map.getCurrentPlayer();
 				}
 			} else {

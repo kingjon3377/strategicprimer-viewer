@@ -47,8 +47,6 @@ import exploration.common.Pathfinder;
 
 import common.DistanceComparator;
 
-import java.util.logging.Logger;
-
 import common.map.fixtures.towns.ITownFixture;
 import common.map.fixtures.towns.TownStatus;
 import common.map.fixtures.towns.Village;
@@ -60,11 +58,6 @@ import either.Either;
  * FIXME: Write GUI equivalent of query CLI
  */
 public class QueryCLI implements ReadOnlyDriver {
-	/**
-	 * A logger.
-	 */
-	private static final Logger LOGGER = Logger.getLogger(QueryCLI.class.getName());
-
 	/**
 	 * Count the workers in an Iterable belonging to a player.
 	 */

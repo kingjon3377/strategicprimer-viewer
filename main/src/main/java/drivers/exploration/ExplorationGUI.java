@@ -23,18 +23,15 @@ import drivers.gui.common.WindowCloseListener;
 import drivers.gui.common.MenuBroker;
 import drivers.gui.common.SPFileChooser;
 
-import java.util.logging.Logger;
-import java.util.logging.Level;
-
 import lovelace.util.FileChooser;
 
 import common.map.IMutableMapNG;
+import lovelace.util.LovelaceLogger;
 
 /**
  * An object to start the exploration GUI.
  */
 /* package */ class ExplorationGUI implements IExplorationGUI {
-	private static final Logger LOGGER = Logger.getLogger(ExplorationGUI.class.getName());
 	public ExplorationGUI(final ICLIHelper cli, final SPOptions options, final IExplorationModel model) {
 		this.cli = cli;
 		this.options = options;
@@ -64,7 +61,7 @@ import common.map.IMutableMapNG;
 			menuHandler.registerWindowShower(new AboutDialog(frame,
 				frame.getWindowName()), "about");
 		} catch (final IOException except) {
-			LOGGER.log(Level.SEVERE, "I/O error while loading About dialog text", except);
+			LovelaceLogger.error(except, "I/O error while loading About dialog text");
 			// But go on anyway
 		}
 		frame.showWindow();

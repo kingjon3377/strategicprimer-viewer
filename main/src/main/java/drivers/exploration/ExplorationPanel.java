@@ -8,8 +8,6 @@ import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import lovelace.util.BorderedPanel;
@@ -38,6 +36,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.ActionListener;
 
+import lovelace.util.LovelaceLogger;
 import org.javatuples.Pair;
 import drivers.map_viewer.FixtureEditHelper;
 import drivers.map_viewer.FixtureFilterTableModel;
@@ -93,7 +92,6 @@ import worker.common.IFixtureEditHelper;
  */
 /* package */ class ExplorationPanel extends BorderedPanel implements SelectionChangeListener {
 	private static final long serialVersionUID = 1L;
-	private static final Logger LOGGER = Logger.getLogger(ExplorationPanel.class.getName());
 	private static KeyStroke key(final int code) {
 		return KeyStroke.getKeyStroke(code, 0);
 	}
@@ -113,7 +111,7 @@ import worker.common.IFixtureEditHelper;
 		super(verticalSplit(headerPanel, tilesPanel));
 		this.driverModel = driverModel;
 		this.mpModel = mpModel;
-		LOGGER.finer("In ExplorationPanel initializer");
+		LovelaceLogger.trace("In ExplorationPanel initializer");
 		final Map<Direction, KeyStroke> arrowKeys = Stream.of(
 				Pair.with(Direction.North, key(KeyEvent.VK_UP)),
 				Pair.with(Direction.South, key(KeyEvent.VK_DOWN)),
@@ -153,7 +151,7 @@ import worker.common.IFixtureEditHelper;
 		headerPanel.add(speedLabel);
 		headerPanel.add(speedBox);
 
-		LOGGER.finer("ExplorationPanel: headerPanel contents added");
+		LovelaceLogger.trace("ExplorationPanel: headerPanel contents added");
 
 		headerLayout.setHorizontalGroup(
 			headerLayout.sequentialGroupOf(explorerChangeButton, locLabel,
@@ -161,7 +159,7 @@ import worker.common.IFixtureEditHelper;
 			headerLayout.setVerticalGroup(headerLayout.parallelGroupOf(explorerChangeButton,
 				locLabel, remainingMPLabel, mpField, speedLabel, speedBox));
 
-		LOGGER.finer("ExplorationPanel: headerPanel layout adjusted");
+		LovelaceLogger.trace("ExplorationPanel: headerPanel layout adjusted");
 
 		// TODO: Add 'secondMap' field (i.e. getter/setter, thinking
 		// about extra logic needed in the setter) to IExplorationModel
@@ -173,12 +171,12 @@ import worker.common.IFixtureEditHelper;
 			driverModel.streamAllMaps().toArray(IMapNG[]::new));
 		huntingModel = new HuntingModel(driverModel.getMap());
 
-		LOGGER.finer("ExplorationPanel: huntingModel created");
+		LovelaceLogger.trace("ExplorationPanel: huntingModel created");
 
 		final IFixtureEditHelper feh = new FixtureEditHelper(driverModel);
 
 		for (final Direction direction : Direction.values()) {
-			LOGGER.finer("ExplorationPanel: Starting to initialize for " + direction);
+			LovelaceLogger.trace("ExplorationPanel: Starting to initialize for %s", direction);
 			final FixtureList mainList = new FixtureList(tilesPanel,
 				new FixtureListModel(driverModel.getMap()::getFixtures,
 					driverModel.getMap()::getBaseTerrain,
@@ -188,13 +186,13 @@ import worker.common.IFixtureEditHelper;
 				feh, idf, driverModel.getMap().getPlayers());
 			tilesPanel.add(new JScrollPane(mainList));
 
-			LOGGER.finer("ExplorationPanel: main list set up for " + direction);
+			LovelaceLogger.trace("ExplorationPanel: main list set up for %s", direction);
 
 			final Iterable<FixtureMatcher> matchers = new FixtureFilterTableModel();
 			final DualTileButton dtb = new DualTileButton(driverModel.getMap(), secondMap, matchers);
 			// At some point we tried wrapping the button in a JScrollPane.
 			tilesPanel.add(dtb);
-			LOGGER.finer("ExplorationPanel: Added button for " + direction);
+			LovelaceLogger.trace("ExplorationPanel: Added button for %s", direction);
 
 			final ExplorationClickListener ecl = new ExplorationClickListener(driverModel, this, this::movementDeductionTracker,
 					direction, mainList);
@@ -213,7 +211,7 @@ import worker.common.IFixtureEditHelper;
 			driverModel.addSelectionChangeListener(ell);
 			ecl.addSelectionChangeListener(ell);
 
-			LOGGER.finer("ExplorationPanel: ell set up for " + direction);
+			LovelaceLogger.trace("ExplorationPanel: ell set up for %s", direction);
 
 			final FixtureList secList = new FixtureList(tilesPanel,
 				new FixtureListModel(secondMap::getFixtures, secondMap::getBaseTerrain,
@@ -225,7 +223,7 @@ import worker.common.IFixtureEditHelper;
 				feh, idf, secondMap.getPlayers());
 			tilesPanel.add(new JScrollPane(secList));
 
-			LOGGER.finer("ExploratonPanel: Second list set up for " + direction);
+			LovelaceLogger.trace("ExploratonPanel: Second list set up for %s", direction);
 
 			final SpeedChangeListener scl = new SpeedChangeListener(ell);
 			speedModel.addListDataListener(scl);
@@ -235,9 +233,9 @@ import worker.common.IFixtureEditHelper;
 			buttons.put(direction, dtb);
 			seconds.put(direction, secList);
 			ell.selectedPointChanged(null, driverModel.getSelectedUnitLocation());
-			LOGGER.finer("ExplorationPanel: Done with " + direction);
+			LovelaceLogger.trace("ExplorationPanel: Done with %s", direction);
 		}
-		LOGGER.finer("End of ExplorationPanel initializer");
+		LovelaceLogger.trace("End of ExplorationPanel initializer");
 	}
 
 	// TODO: Cache selected unit here instead of always referring to it via the model?
@@ -295,9 +293,9 @@ import worker.common.IFixtureEditHelper;
 		if (newPoint.equals(old)) {
 			return;
 		}
-		LOGGER.finer("In ExplorationPanel.selectedPointChanged");
+		LovelaceLogger.trace("In ExplorationPanel.selectedPointChanged");
 		for (final Direction direction : Direction.values()) {
-			LOGGER.finer("ExplorationPanel.selectedPointChanged: Beginning " + direction);
+			LovelaceLogger.trace("ExplorationPanel.selectedPointChanged: Beginning %s", direction);
 			final Point point = driverModel.getDestination(newPoint, direction);
 			final @Nullable Point previous;
 			if (speedChangeListeners.containsKey(direction)) {
@@ -312,7 +310,7 @@ import worker.common.IFixtureEditHelper;
 			Optional.ofNullable(mains.get(direction)).ifPresent(c);
 			Optional.ofNullable(seconds.get(direction)).ifPresent(c);
 			Optional.ofNullable(buttons.get(direction)).ifPresent(b -> b.setPoint(point));
-			LOGGER.finer("ExplorationPanel.selectedPointChanged: Ending " + direction);
+			LovelaceLogger.trace("ExplorationPanel.selectedPointChanged: Ending %s", direction);
 		}
 		locLabel.setArguments(newPoint);
 	}
@@ -324,16 +322,16 @@ import worker.common.IFixtureEditHelper;
 		if (terrain == null) {
 			return null;
 		}
-		LOGGER.finer("In ExplorationPanel.tracksCreator");
+		LovelaceLogger.trace("In ExplorationPanel.tracksCreator");
 		final Function<Point, Iterable<Pair<Point, TileFixture>>> source;
 		if (TileType.Ocean == terrain) {
 			source = huntingModel::fish;
 		} else {
 			source = huntingModel::hunt;
 		}
-		LOGGER.finer("ExplorationPanel.tracksCreator: Determined which source to use");
+		LovelaceLogger.trace("ExplorationPanel.tracksCreator: Determined which source to use");
 		final TileFixture animal = source.apply(point).iterator().next().getValue1();
-		LOGGER.finer("ExplorationPanel.tracksCreator: Got first item from source");
+		LovelaceLogger.trace("ExplorationPanel.tracksCreator: Got first item from source");
 		if (animal instanceof Animal) {
 			return new AnimalTracks(((Animal) animal).getKind());
 		} else if (animal instanceof AnimalTracks) {
@@ -438,7 +436,7 @@ import worker.common.IFixtureEditHelper;
 			try {
 				driverModel.move(Direction.Nowhere, speedSource.get());
 			} catch (final TraversalImpossibleException except) {
-				LOGGER.log(Level.SEVERE, "\"Traversal impossible\" going nowhere", except);
+				LovelaceLogger.error(except, "\"Traversal impossible\" going nowhere");
 			}
 			discoverFixtures(fixtures);
 		}
@@ -462,8 +460,7 @@ import worker.common.IFixtureEditHelper;
 					discoverFixtures(fixtures);
 				}
 			} catch (final TraversalImpossibleException except) {
-				LOGGER.log(Level.FINE, "Attempted movement to impassable destination",
-					except);
+				LovelaceLogger.debug(except, "Attempted movement to impassable destination");
 				final Point selection = driverModel.getSelectedUnitLocation();
 				outer.selectedPointChanged(null, selection);
 				for (final SelectionChangeListener listener : selectionListeners) {

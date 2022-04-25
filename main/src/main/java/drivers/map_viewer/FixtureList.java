@@ -1,10 +1,9 @@
 package drivers.map_viewer;
 
+import lovelace.util.LovelaceLogger;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.stream.Stream;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.Optional;
 import java.util.List;
 import common.map.Player;
@@ -55,7 +54,6 @@ import worker.common.IFixtureEditHelper;
 public final class FixtureList extends JList<TileFixture>
 		implements DragGestureListener, SelectionChangeListener {
 	private static final long serialVersionUID = 1L;
-	private static final Logger LOGGER = Logger.getLogger(FixtureList.class.getName());
 	private final JComponent parentComponent;
 	private final FixtureListModel listModel;
 	private final IFixtureEditHelper feh;
@@ -239,12 +237,9 @@ public final class FixtureList extends JList<TileFixture>
 						}
 						return;
 					} catch (final UnsupportedFlavorException except) {
-						LOGGER.log(Level.SEVERE,
-							"Unsupported flavor when it said it was supported",
-							except);
+						LovelaceLogger.error(except, "Unsupported flavor when it said it was supported");
 					} catch (final IOException except) {
-						LOGGER.log(Level.SEVERE,
-							"I/O error getting the data", except);
+						LovelaceLogger.error(except, "I/O error getting the data");
 					}
 				}
 			}

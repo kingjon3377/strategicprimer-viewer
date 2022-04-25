@@ -2,13 +2,12 @@ package drivers.gui.common;
 
 import drivers.common.UtilityGUI;
 import java.awt.event.ActionEvent;
+import lovelace.util.LovelaceLogger;
 import lovelace.util.Platform;
 import com.apple.eawt.Application;
 import com.apple.eawt.AppEvent;
 import drivers.gui.common.about.AboutDialog;
-import java.util.logging.Logger;
 import java.nio.file.Path;
-import java.util.logging.Level;
 import java.io.IOException;
 
 /**
@@ -16,7 +15,6 @@ import java.io.IOException;
  * "Close", "About", and "Quit" menu items enabled.
  */
 public class UtilityMenuHandler {
-	private static final Logger LOGGER = Logger.getLogger(UtilityMenuHandler.class.getName());
 	public UtilityMenuHandler(final UtilityGUI driver, final SPFrame window) {
 		this.driver = driver;
 		this.window = window;
@@ -39,7 +37,7 @@ public class UtilityMenuHandler {
 		try {
 			new AboutDialog(window, window.getWindowName()).setVisible(true);
 		} catch (final IOException except) {
-			LOGGER.log(Level.SEVERE, "I/O error reading About dialog contents", except);
+			LovelaceLogger.error(except, "I/O error reading About dialog contents");
 			// FIXME: Show an error dialog
 		}
 	}
@@ -72,7 +70,7 @@ public class UtilityMenuHandler {
 			aboutHandler();
 			break;
 		default:
-			LOGGER.info("Unhandled command " + event.getActionCommand());
+			LovelaceLogger.info("Unhandled command %s", event.getActionCommand());
 			break;
 		}
 	}

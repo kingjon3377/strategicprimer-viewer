@@ -3,17 +3,17 @@ package drivers;
 import drivers.common.DriverFailedException;
 import drivers.common.ViewerDriverFactory;
 import drivers.common.cli.ICLIHelper;
+import java.util.Objects;
 import java.util.ServiceLoader;
 import javax.xml.stream.XMLStreamException;
+import lovelace.util.LovelaceLogger;
 import org.jetbrains.annotations.Nullable;
 
 import drivers.gui.common.SPMenu;
 import java.util.Optional;
-import java.util.logging.Level;
 import java.util.stream.StreamSupport;
 import java.io.FileNotFoundException;
 import java.nio.file.NoSuchFileException;
-import java.util.logging.Logger;
 import java.nio.file.Path;
 import java.util.function.Consumer;
 import impl.xmlio.MapIOHelper;
@@ -50,7 +50,6 @@ import lovelace.util.ComponentParentStream;
  * TODO: Further splitting up
  */
 public class IOHandler implements ActionListener {
-	private static final Logger LOGGER = Logger.getLogger(IOHandler.class.getName());
 	private final ISPDriver driver;
 	private final ICLIHelper cli;
 
@@ -66,9 +65,9 @@ public class IOHandler implements ActionListener {
 	private void maybeSave(final String verb, final @Nullable Frame window, final @Nullable Component source,
 	                       final Runnable ifNotCanceled) { // TODO: Use the possibly-throwing interface from j.u.concurrent?
 		final ModelDriver md = (ModelDriver) driver;
-		LOGGER.finer("Checking if we need to save ...");
+		LovelaceLogger.trace("Checking if we need to save ...");
 		if (md.getModel().isMapModified()) {
-			LOGGER.finer("main map was modified.");
+			LovelaceLogger.trace("main map was modified.");
 			final String prompt;
 			if (md instanceof MultiMapGUIDriver) {
 				prompt = "Save changes to main map before %s?";
@@ -79,42 +78,42 @@ public class IOHandler implements ActionListener {
 				"Save Changes?", JOptionPane.YES_NO_CANCEL_OPTION,
 				JOptionPane.QUESTION_MESSAGE);
 			if (answer == JOptionPane.CANCEL_OPTION) {
-				LOGGER.finer("User selected 'Cancel'");
+				LovelaceLogger.trace("User selected 'Cancel'");
 				return;
 			} else if (answer == JOptionPane.YES_OPTION) {
-				LOGGER.finer("User selected 'Yes'; invoking 'Save' menu ...");
+				LovelaceLogger.trace("User selected 'Yes'; invoking 'Save' menu ...");
 				actionPerformed(new ActionEvent(source, ActionEvent.ACTION_FIRST, "save"));
-				LOGGER.finer("Finished saving main map");
+				LovelaceLogger.trace("Finished saving main map");
 			} else {
-				LOGGER.finer("User said not to save main map");
+				LovelaceLogger.trace("User said not to save main map");
 			}
 		} else {
-			LOGGER.finer("main map was not modified");
+			LovelaceLogger.trace("main map was not modified");
 		}
 
 		if (md instanceof MultiMapGUIDriver &&
 				    ((MultiMapGUIDriver) md).getModel().streamSubordinateMaps()
 						    .anyMatch(IMapNG::isModified)) {
-			LOGGER.finer("Subordinate map(s) modified.");
+			LovelaceLogger.trace("Subordinate map(s) modified.");
 			final int answer = JOptionPane.showConfirmDialog(window,
 				String.format("Subordinate map(s) have unsaved changes. Save all before %s?",
 					verb), "Save Changes?", JOptionPane.YES_NO_CANCEL_OPTION,
 				JOptionPane.QUESTION_MESSAGE);
 			if (answer == JOptionPane.CANCEL_OPTION) {
-				LOGGER.finer("User selected 'Cancel' rather than save-all.");
+				LovelaceLogger.trace("User selected 'Cancel' rather than save-all.");
 				return;
 			} else if (answer == JOptionPane.YES_OPTION) {
-				LOGGER.finer("User selected 'Yes'; invoking 'Save All' menu ...");
+				LovelaceLogger.trace("User selected 'Yes'; invoking 'Save All' menu ...");
 				actionPerformed(new ActionEvent(source, ActionEvent.ACTION_FIRST,
 					"save all"));
-				LOGGER.finer("Finished saving");
+				LovelaceLogger.trace("Finished saving");
 			} else {
-				LOGGER.finer("User said not to save subordinate maps");
+				LovelaceLogger.trace("User said not to save subordinate maps");
 			}
 		} else {
-			LOGGER.finer("No subordinate maps modified");
+			LovelaceLogger.trace("No subordinate maps modified");
 		}
-		LOGGER.finer("About to carry out action ...");
+		LovelaceLogger.trace("About to carry out action ...");
 		ifNotCanceled.run();
 	}
 
@@ -132,7 +131,7 @@ public class IOHandler implements ActionListener {
 		} else {
 			message = except.getMessage();
 		}
-		LOGGER.log(Level.SEVERE, message, except);
+		LovelaceLogger.error(except, message);
 		ShowErrorDialog.showErrorDialog(source, errorTitle, message);
 	}
 
@@ -155,7 +154,7 @@ public class IOHandler implements ActionListener {
 		} else if (driver instanceof UtilityGUI) {
 			SPFileChooser.open((Path) null).call(((UtilityGUI) driver)::open);
 		} else {
-			LOGGER.severe("IOHandler asked to 'load' in app that doesn't support that");
+			LovelaceLogger.error("IOHandler asked to 'load' in app that doesn't support that");
 		}
 	}
 
@@ -170,7 +169,7 @@ public class IOHandler implements ActionListener {
 						.findAny().orElse(null);
 		if (vdf == null) {
 			// FIXME: Show error dialog
-			LOGGER.severe("Map viewer was not included in this assembly, or service discovery failed");
+			LovelaceLogger.error("Map viewer was not included in this assembly, or service discovery failed");
 		} else {
 			try {
 				vdf.createDriver(cli, driver.getOptions().copy(),
@@ -180,7 +179,7 @@ public class IOHandler implements ActionListener {
 						.startDriver();
 			} catch (final DriverFailedException except) {
 				// FIXME: show error dialog
-				LOGGER.log(Level.SEVERE, "Driver failed", except);
+				LovelaceLogger.error(except, "Driver failed");
 			}
 		}
 	}
@@ -191,13 +190,13 @@ public class IOHandler implements ActionListener {
 						.findAny().orElse(null);
 		if (vdf == null) {
 			// FIXME: Show error dialog
-			LOGGER.severe("Map viewer was not included in this assembly, or service discovery failed");
+			LovelaceLogger.error("Map viewer was not included in this assembly, or service discovery failed");
 		} else {
 			try {
 				vdf.createDriver(cli, options.copy(), new ViewerModel(model)).startDriver();
 			} catch (final DriverFailedException except) {
 				// FIXME: show error dialog
-				LOGGER.log(Level.SEVERE, "Driver failed", except);
+				LovelaceLogger.error(except, "Driver failed");
 			}
 		}
 	}
@@ -218,7 +217,7 @@ public class IOHandler implements ActionListener {
 			.map(ISPWindow.class::cast).map(ISPWindow::getWindowName)
 			.orElse("Strategic Primer Assistive Programs");
 
-		LOGGER.finer("Menu item invoked: " + event.getActionCommand());
+		LovelaceLogger.trace("Menu item invoked: %s", event.getActionCommand());
 
 		switch (event.getActionCommand().toLowerCase()) {
 		case "load":
@@ -229,7 +228,7 @@ public class IOHandler implements ActionListener {
 			} else if (driver instanceof UtilityGUI) {
 				loadHandler(source, errorTitle);
 			} else {
-				LOGGER.severe("IOHandler asked to 'load' in unsupported app");
+				LovelaceLogger.error("IOHandler asked to 'load' in unsupported app");
 			}
 			break;
 
@@ -250,7 +249,7 @@ public class IOHandler implements ActionListener {
 					}
 				}
 			} else {
-				LOGGER.severe("IOHandler asked to save in driver it can't do that for");
+				LovelaceLogger.error("IOHandler asked to save in driver it can't do that for");
 			}
 			break;
 
@@ -268,7 +267,7 @@ public class IOHandler implements ActionListener {
 						}
 					});
 			} else {
-				LOGGER.severe("IOHandler asked to save-as in driver it can't do that for");
+				LovelaceLogger.error("IOHandler asked to save-as in driver it can't do that for");
 			}
 			break;
 
@@ -276,7 +275,7 @@ public class IOHandler implements ActionListener {
 			if (driver instanceof ModelDriver) {
 				SwingUtilities.invokeLater(() -> startNewViewerWindow((ModelDriver) driver));
 			} else {
-				LOGGER.severe("IOHandler asked to 'new' in driver it can't do that from");
+				LovelaceLogger.error("IOHandler asked to 'new' in driver it can't do that from");
 			}
 			break;
 
@@ -288,7 +287,7 @@ public class IOHandler implements ActionListener {
 					((MultiMapGUIDriver) driver).getModel()::addSubordinateMap,
 						source, errorTitle));
 			} else {
-				LOGGER.severe(
+				LovelaceLogger.error(
 					"IOHandler asked to 'load secondary' in driver it can't do that for");
 			}
 			break;
@@ -313,7 +312,7 @@ public class IOHandler implements ActionListener {
 				actionPerformed(new ActionEvent(event.getSource(), event.getID(),
 					"save", event.getWhen(), event.getModifiers()));
 			} else {
-				LOGGER.severe("IOHandler asked to 'save all' in driver it can't do that for");
+				LovelaceLogger.error("IOHandler asked to 'save all' in driver it can't do that for");
 			}
 			break;
 
@@ -325,7 +324,7 @@ public class IOHandler implements ActionListener {
 				if (vdf == null) {
 					ShowErrorDialog.showErrorDialog(null, "Strategic Primer Assistive Programs",
 							"Either the map viewer was not included in this edition of the assistive programs, or the logic to load it failed.");
-					LOGGER.severe("Map viewer was not included in this assembly, or service discovery failed");
+					LovelaceLogger.error("Map viewer was not included in this assembly, or service discovery failed");
 				} else {
 					SwingUtilities.invokeLater(() -> {
 						try {
@@ -334,15 +333,15 @@ public class IOHandler implements ActionListener {
 													.getModel()))
 									.startDriver();
 						} catch (final DriverFailedException except) {
-							LOGGER.log(Level.SEVERE, "Error thrown from viewer driver",
-									Optional.ofNullable(except.getCause()).orElse(except));
+							LovelaceLogger.error(Objects.requireNonNullElse(except.getCause(), except),
+									"Error thrown from viewer driver");
 							ShowErrorDialog.showErrorDialog(null, "Strategic Primer Assistive Programs",
 									String.format("Error starting map viewer:%n%s", except.getMessage()));
 						}
 					});
 				}
 			} else {
-				LOGGER.severe(
+				LovelaceLogger.error(
 					"IOHandler asked to 'open in map viewer' in unsupported driver");
 			}
 			break;
@@ -352,33 +351,33 @@ public class IOHandler implements ActionListener {
 				final IDriverModel newModel = ((MultiMapGUIDriver) driver).getModel()
 					.fromSecondMap();
 				if (newModel == null) {
-					LOGGER.severe(
+					LovelaceLogger.error(
 							"IOHandler asked to 'open secondary in map viewer'; none there");
 				} else {
 					SwingUtilities.invokeLater(() -> openSecondaryInViewer(newModel,
 							driver.getOptions()));
 				}
 			} else {
-				LOGGER.severe(
+				LovelaceLogger.error(
 					"IOHandler asked to 'open secondary in viewer' in unsupported app");
 			}
 			break;
 
 		case "close":
 			if (parentWindow == null) {
-				LOGGER.severe("IOHandler asked to close but couldn't get current window");
-				LOGGER.fine("Event details: " + event);
-				LOGGER.fine("Source: " + source);
-				LOGGER.log(Level.FINER, "Stack trace:", new Exception("Stack trace"));
+				LovelaceLogger.error("IOHandler asked to close but couldn't get current window");
+				LovelaceLogger.debug("Event details: %s", event);
+				LovelaceLogger.debug("Source: %s", source);
+				LovelaceLogger.trace(new Exception("Stack trace"), "Stack trace:");
 			} else {
 				if (driver instanceof ModelDriver) {
-					LOGGER.finer("This operates on a model, maybe we should save ...");
+					LovelaceLogger.trace("This operates on a model, maybe we should save ...");
 					maybeSave("closing", parentWindow, source, parentWindow::dispose);
 				} else if (driver instanceof UtilityGUI) {
-					LOGGER.finer("This is a utility GUI, so we just dispose the window.");
+					LovelaceLogger.trace("This is a utility GUI, so we just dispose the window.");
 					parentWindow.dispose();
 				} else {
-					LOGGER.severe("IOHandler asked to close in unsupported app");
+					LovelaceLogger.error("IOHandler asked to close in unsupported app");
 				}
 			}
 			break;
@@ -389,13 +388,13 @@ public class IOHandler implements ActionListener {
 			} else if (driver instanceof UtilityGUI) {
 				SPMenu.getDefaultQuit().run();
 			} else {
-				LOGGER.severe("IOHandler asked to quit in unsupported app");
+				LovelaceLogger.error("IOHandler asked to quit in unsupported app");
 			}
 			break;
 
 		default:
-			LOGGER.info(String.format("Unhandled command %s in IOHandler",
-				event.getActionCommand()));
+			LovelaceLogger.info("Unhandled command %s in IOHandler",
+				event.getActionCommand());
 			break;
 		}
 	}

@@ -38,12 +38,12 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.List;
 import java.util.Objects;
-import java.util.logging.Logger;
 import java.text.ParseException;
 
 import java.util.stream.Stream;
 import lovelace.util.Accumulator;
 import lovelace.util.IntAccumulator;
+import lovelace.util.LovelaceLogger;
 import org.eclipse.jdt.annotation.Nullable;
 import org.javatuples.Pair;
 import org.javatuples.Quartet;
@@ -51,7 +51,6 @@ import org.javatuples.Sextet;
 import org.javatuples.Triplet;
 
 final class DBMapReader {
-	private static final Logger LOGGER = Logger.getLogger(DBMapReader.class.getName());
 	// FIXME: Passing null when we don't want to construct the parent object is a *really* bad idea!
 	private final List<MapContentsReader> readers = List.of(new DBPlayerHandler(), new DBCacheHandler(), new DBExplorableHandler(), new DBFieldHandler(), new DBFortressHandler(null), new DBUnitHandler(null), new DBGroundHandler(), new DBGroveHandler(), new DBImmortalHandler(), new DBImplementHandler(), new DBMineralHandler(), new DBMineHandler(), new DBPortalHandler(), new DBShrubHandler(), new DBSimpleTerrainHandler(), new DBTextHandler(), new DBTownHandler(), new DBVillageHandler(), new DBResourcePileHandler(), new DBAnimalHandler(), new DBCommunityStatsHandler(), new DBWorkerHandler(), new DBAdventureHandler(), new DBForestHandler());
 
@@ -118,12 +117,12 @@ final class DBMapReader {
 			warner.handle(MapVersionException.nonXML(version, 2, 2));
 		}
 		final IMutablePlayerCollection players = new PlayerCollection();
-		LOGGER.fine("About to read players");
+		LovelaceLogger.debug("About to read players");
 		// TODO: Players should have 'country' and 'portrait' flags as well
 		try (Stream<Player> playerStream = PLAYER_SELECT.as(((RowParser<Player>) DBMapReader::parsePlayer).stream(), conn)) {
 			playerStream.forEach(players::add);
 		}
-		LOGGER.fine("Finished reading players, about to start on terrain");
+		LovelaceLogger.debug("Finished reading players, about to start on terrain");
 		final IMutableMapNG retval =
 			new SPMapNG(new MapDimensionsImpl(rows, columns, version), players, turn);
 		final Accumulator<Integer> count = new IntAccumulator(0);
@@ -161,15 +160,15 @@ final class DBMapReader {
 				}
 				count.add(1);
 				if (count.getSum() % 50 == 0) {
-					LOGGER.fine(String.format("Read terrain for %d tiles",
-							count.getSum()));
+					LovelaceLogger.debug("Read terrain for %d tiles",
+							count.getSum());
 				}
 			});
 		}
 		try (Stream<Triplet<Point, Direction, Integer>> rStream = ROAD_SELECT.as(((RowParser<Triplet<Point, Direction, Integer>>) DBMapReader::parseRoads).stream(), conn)) {
 			rStream.forEach(t -> retval.setRoadLevel(t.getValue0(), t.getValue1(), t.getValue2()));
 		}
-		LOGGER.fine("Finished reading terrain");
+		LovelaceLogger.debug("Finished reading terrain");
 		try (Stream<Pair<Point, Integer>> bStream = BOOKMARK_SELECT.as(((RowParser<Pair<Point, Integer>>) DBMapReader::parseBookmark).stream(), conn)) {
 			bStream.forEach(p -> retval.addBookmark(p.getValue0(), players.getPlayer(p.getValue1())));
 		}
@@ -187,7 +186,7 @@ final class DBMapReader {
 				}
 			}
 		}
-		LOGGER.fine("Finished reading the map except adding members to parents");
+		LovelaceLogger.debug("Finished reading the map except adding members to parents");
 
 		for (final Map.Entry<Integer, List<Object>> entry : containees.entrySet()) {
 			final int parentId = entry.getKey();
@@ -224,7 +223,7 @@ final class DBMapReader {
 			}
 		}
 		retval.setModified(false);
-		LOGGER.fine("Finished adding members to parents");
+		LovelaceLogger.debug("Finished adding members to parents");
 		return retval;
 	}
 

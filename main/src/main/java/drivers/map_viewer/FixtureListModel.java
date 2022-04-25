@@ -1,5 +1,6 @@
 package drivers.map_viewer;
 
+import lovelace.util.LovelaceLogger;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
@@ -22,13 +23,11 @@ import java.util.function.BiPredicate;
 import java.util.function.BiConsumer;
 import java.util.Comparator;
 import java.util.Collections;
-import java.util.logging.Logger;
 
 /**
  * A model for the list-based representation of the contents of a tile.
  */
 public class FixtureListModel implements ListModel<TileFixture>, SelectionChangeListener {
-	private static final Logger LOGGER = Logger.getLogger(FixtureListModel.class.getName());
 	private final Function<Point, Collection<TileFixture>> fixturesSource;
 	private final Function<Point, @Nullable TileType> terrainSource;
 	private final Function<Point, Collection<River>> riversSource;
@@ -139,7 +138,7 @@ public class FixtureListModel implements ListModel<TileFixture>, SelectionChange
 
 	@Override
 	public void selectedPointChanged(final @Nullable Point old, final Point newPoint) {
-		LOGGER.finer("Starting FixtureListModel.selectedPointChanged");
+		LovelaceLogger.trace("Starting FixtureListModel.selectedPointChanged");
 		final int oldSize = getSize();
 		cachedTerrainList = Collections.emptyList();
 		final TileType terrain = terrainSource.apply(newPoint);
@@ -147,29 +146,29 @@ public class FixtureListModel implements ListModel<TileFixture>, SelectionChange
 			cachedTerrainList = new ArrayList<>(Collections.singleton(
 					new TileTypeFixture(terrain)));
 		}
-		LOGGER.finer("FixtureListModel.selectedPointChanged: Accounted for base terrain");
+		LovelaceLogger.trace("FixtureListModel.selectedPointChanged: Accounted for base terrain");
 		final Collection<River> rivers = riversSource.apply(newPoint);
 		if (rivers.iterator().hasNext()) {
 			cachedTerrainList.add(new RiverFixture(rivers.toArray(new River[0])));
 		}
 		// TODO: Add support for roads
-		LOGGER.finer("FixtureListModel.selectedPointChanged: Accounted for rivers");
+		LovelaceLogger.trace("FixtureListModel.selectedPointChanged: Accounted for rivers");
 		if (mountainSource.test(newPoint)) {
 			cachedTerrainList.add(new MountainFixture());
 		}
-		LOGGER.finer("FixtureListModel.selectedPointChanged: Accounted for mountain");
+		LovelaceLogger.trace("FixtureListModel.selectedPointChanged: Accounted for mountain");
 		point = newPoint;
 		currentTracks.clear();
 		final AnimalTracks tracks = tracksSource.apply(newPoint);
 		if (tracks != null) {
 			currentTracks.add(tracks);
 		}
-		LOGGER.finer("FixtureListModel.selectedPointChanged: Accounted for animal tracks");
+		LovelaceLogger.trace("FixtureListModel.selectedPointChanged: Accounted for animal tracks");
 		final int newSize = getSize();
-		LOGGER.finer("FixtureListModel.selectedPointChanged: About to notify listeners");
+		LovelaceLogger.trace("FixtureListModel.selectedPointChanged: About to notify listeners");
 		fireIntervalReplaced(new Range(0, Math.max(0, oldSize - 1)),
 			new Range(0, Math.max(0, newSize - 1)));
-		LOGGER.finer("End of FixtureListModel.selectedPointChanged");
+		LovelaceLogger.trace("End of FixtureListModel.selectedPointChanged");
 	}
 
 	@Override

@@ -1,11 +1,10 @@
 package drivers;
 
 import java.util.OptionalInt;
+import lovelace.util.LovelaceLogger;
 import org.jetbrains.annotations.Nullable;
 import common.map.Point;
 import drivers.common.DriverFailedException;
-import java.util.logging.Logger;
-import java.util.logging.Level;
 
 import java.nio.file.Path;
 
@@ -40,7 +39,6 @@ import lovelace.util.FileChooser;
  * A driver to show tabular reports of the contents of a player's map in a GUI.
  */
 public class TabularReportGUI implements GUIDriver {
-	private static final Logger LOGGER = Logger.getLogger(TabularReportGUI.class.getName());
 	public TabularReportGUI(final ICLIHelper cli, final SPOptions options, final IDriverModel model) {
 		this.cli = cli;
 		this.options = options;
@@ -75,7 +73,7 @@ public class TabularReportGUI implements GUIDriver {
 				column = OptionalInt.of(Integer.parseInt(
 					options.getArgument("--hq-col")));
 			} catch (NumberFormatException except) {
-				LOGGER.warning("--hq-row and --hq-col must be numeric");
+				LovelaceLogger.warning("--hq-row and --hq-col must be numeric");
 			}
 			if (row.isPresent() && column.isPresent()) {
 				hq = new Point(row.getAsInt(), column.getAsInt());
@@ -98,7 +96,7 @@ public class TabularReportGUI implements GUIDriver {
 				} catch (final IOException except) {
 					ShowErrorDialog.showErrorDialog(window, "Strategic Primer Tabular Reports",
 							String.format("I/O error while generating reports:%n%s", except.getLocalizedMessage()));
-					LOGGER.log(Level.SEVERE, "I/O error while generating tabular reports", except);
+					LovelaceLogger.error(except, "I/O error while generating tabular reports");
 				}
 			}
 

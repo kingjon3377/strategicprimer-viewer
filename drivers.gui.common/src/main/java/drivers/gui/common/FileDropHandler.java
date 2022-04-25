@@ -9,18 +9,13 @@ import javax.swing.TransferHandler;
 import java.awt.datatransfer.DataFlavor;
 import java.io.File;
 import java.util.List;
-import java.util.logging.Logger;
-import java.util.logging.Level;
+import lovelace.util.LovelaceLogger;
 
 /**
  * A {@link TransferHandler} to allow SP apps to accept dropped files.
  */
 /* package */ class FileDropHandler extends TransferHandler {
 	private static final long serialVersionUID = 1L;
-	/**
-	 * Logger.
-	 */
-	private static final Logger LOGGER = Logger.getLogger(FileDropHandler.class.getName());
 
 	public FileDropHandler(final SPFrame app) {
 		this.app = app;
@@ -44,24 +39,23 @@ import java.util.logging.Level;
 			payload = (List<File>) support.getTransferable().getTransferData(
 				DataFlavor.javaFileListFlavor);
 		} catch (final Exception except) {
-			LOGGER.log(Level.WARNING, "Caught an exception trying to unmarshall dropped files",
-				except);
+			LovelaceLogger.warning(except, "Caught an exception trying to unmarshall dropped files");
 			return false;
 		}
 		for (final File file : payload) {
 			try {
 				app.acceptDroppedFile(file.toPath());
 			} catch (final SPFormatException except) {
-				LOGGER.log(Level.WARNING, "SP format error in dropped file", except);
+				LovelaceLogger.warning(except, "SP format error in dropped file");
 				return false;
 			} catch (final NoSuchFileException except) {
-				LOGGER.log(Level.WARNING, "Dropped file not actually present", except);
+				LovelaceLogger.warning(except, "Dropped file not actually present");
 				return false;
 			} catch (final XMLStreamException except) {
-				LOGGER.log(Level.WARNING, "Malformed XML in dropped file", except);
+				LovelaceLogger.warning(except, "Malformed XML in dropped file");
 				return false;
 			} catch (final IOException except) {
-				LOGGER.log(Level.WARNING, "I/O error reading dropped file", except);
+				LovelaceLogger.warning(except, "I/O error reading dropped file");
 				return false;
 			}
 		}

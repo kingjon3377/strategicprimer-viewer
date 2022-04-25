@@ -5,7 +5,6 @@ import javax.swing.JTextField;
 import java.awt.event.ActionListener;
 import java.util.function.Consumer;
 import java.util.HashSet;
-import java.util.logging.Logger;
 import java.util.Set;
 
 import org.jetbrains.annotations.Nullable;
@@ -16,8 +15,6 @@ import org.jetbrains.annotations.Nullable;
 public class MemoizedComboBox extends ImprovedComboBox<String> {
 	private static final long serialVersionUID = 1L;
 
-	private static final Logger LOGGER = Logger.getLogger(MemoizedComboBox.class.getName());
-
 	private final Consumer<String> logger;
 
 	public MemoizedComboBox(final Consumer<String> logger) {
@@ -25,7 +22,7 @@ public class MemoizedComboBox extends ImprovedComboBox<String> {
 	}
 
 	public MemoizedComboBox() {
-		this(LOGGER::severe);
+		this(LovelaceLogger::error);
 	}
 
 	/**

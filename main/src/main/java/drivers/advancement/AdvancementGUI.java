@@ -12,6 +12,7 @@ import drivers.common.WorkerGUI;
 
 import drivers.common.cli.ICLIHelper;
 
+import lovelace.util.LovelaceLogger;
 import worker.common.WorkerModel;
 
 import drivers.gui.common.about.AboutDialog;
@@ -31,16 +32,12 @@ import lovelace.util.FileChooser;
 
 import java.nio.file.Path;
 
-import java.util.logging.Logger;
-import java.util.logging.Level;
-
 /**
  * The worker-advancement GUI driver.
  *
  * TODO: Does this really need to be public?
  */
 public class AdvancementGUI implements MultiMapGUIDriver, WorkerGUI {
-	private static final Logger LOGGER = Logger.getLogger(AdvancementGUI.class.getName());
 	public AdvancementGUI(final ICLIHelper cli, final SPOptions options, final IWorkerModel model) {
 		this.cli = cli;
 		this.options = options;
@@ -74,7 +71,7 @@ public class AdvancementGUI implements MultiMapGUIDriver, WorkerGUI {
 		try {
 			menuHandler.registerWindowShower(new AboutDialog(frame, frame.getWindowName()), "about");
 		} catch (final IOException except) {
-			LOGGER.log(Level.SEVERE, "I/O error loading About dialog text", except);
+			LovelaceLogger.error(except, "I/O error loading About dialog text");
 			// But this isn't a blocker to the driver as a whole, so keep going.
 		}
 		if (model.streamAllMaps().allMatch(m -> model.getUnits(m.getCurrentPlayer()).isEmpty())) {

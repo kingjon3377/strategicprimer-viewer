@@ -2,10 +2,10 @@ package utility.subset;
 
 import drivers.common.DriverFailedException;
 import javax.xml.stream.XMLStreamException;
-import java.util.logging.Level;
 import java.nio.file.NoSuchFileException;
 import java.io.FileNotFoundException;
 import java.nio.file.Path;
+import lovelace.util.LovelaceLogger;
 import org.jetbrains.annotations.Nullable;
 import java.util.regex.Pattern;
 
@@ -26,14 +26,12 @@ import common.xmlio.Warning;
 import common.xmlio.SPFormatException;
 import drivers.gui.common.SPFrame;
 import drivers.common.ISPDriver;
-import java.util.logging.Logger;
 
 /**
  * A window to show the result of running subset tests.
  */
 /* package */ final class SubsetFrame extends SPFrame {
 	private static final long serialVersionUID = 1L;
-	private static final Logger LOGGER = Logger.getLogger(SubsetFrame.class.getName());
 	public SubsetFrame(final ISPDriver driver) {
 		super("Subset Tester", driver, new Dimension(640, 320), true);
 		label = new StreamingLabel();
@@ -84,7 +82,7 @@ import java.util.logging.Logger;
 	public void testMap(final IMapNG map, final @Nullable Path file) {
 		final String filename;
 		if (file == null) {
-			LOGGER.warning("Given a map with no filename");
+			LovelaceLogger.warning("Given a map with no filename");
 			printParagraph("Given a map with no filename", LabelTextColor.YELLOW);
 			filename = "an unnamed file";
 		} else {
@@ -139,17 +137,17 @@ import java.util.logging.Logger;
 			map = MapIOHelper.readMap(path, Warning.IGNORE);
 		} catch (final NoSuchFileException|FileNotFoundException except) {
 			printParagraph("FAIL: File not found", LabelTextColor.RED);
-			LOGGER.log(Level.SEVERE, path + " not found", except);
+			LovelaceLogger.error(except, "%s not found", path);
 			return;
 		} catch (final IOException except) {
 			printParagraph("FAIL: I/O error reading file", LabelTextColor.RED);
-			LOGGER.log(Level.SEVERE, "I/O error reading " + path, except);
+			LovelaceLogger.error(except, "I/O error reading %s", path);
 			return;
 		} catch (final XMLStreamException except) {
 			printParagraph("FAIL: Malformed XML; see following error message for details",
 				LabelTextColor.RED);
 			printParagraph(except.getMessage(), LabelTextColor.RED);
-			LOGGER.log(Level.SEVERE, "Malformed XML in file " + path, except);
+			LovelaceLogger.error(except, "Malformed XML in file %s", path);
 			return;
 		} catch (final SPFormatException except) {
 			printParagraph(String.format(
@@ -157,7 +155,7 @@ import java.util.logging.Logger;
 					except.getLine()),
 				LabelTextColor.RED);
 			printParagraph(except.getMessage(), LabelTextColor.RED);
-			LOGGER.log(Level.SEVERE, "SP map format error reading " + path, except);
+			LovelaceLogger.error(except, "SP map format error reading %s", path);
 			return;
 		}
 		testMap(map, path);

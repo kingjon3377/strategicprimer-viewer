@@ -23,7 +23,6 @@ import common.map.fixtures.UnitMember;
 import common.map.fixtures.mobile.IUnit;
 import common.map.fixtures.mobile.IWorker;
 import common.map.fixtures.mobile.WorkerProxy;
-import java.util.logging.Logger;
 
 import org.jetbrains.annotations.Nullable;
 
@@ -31,11 +30,6 @@ import org.jetbrains.annotations.Nullable;
  * An IWorker implementation to make the UI able to operate on all of a unit's workers at once.
  */
 public class ProxyWorker implements WorkerProxy {
-	/**
-	 * Logger.
-	 */
-	private static final Logger LOGGER = Logger.getLogger(ProxyWorker.class.getName());
-
 	/**
 	 * If false, this is representing all the workers in a single unit; if
 	 * true, it is representing the corresponding workers in corresponding

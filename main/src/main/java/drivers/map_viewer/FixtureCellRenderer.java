@@ -29,14 +29,12 @@ import java.io.IOException;
 import java.util.Set;
 import java.util.HashSet;
 
-import java.util.logging.Logger;
-import java.util.logging.Level;
+import lovelace.util.LovelaceLogger;
 
 /**
  * A cell renderer for tile-details GUIs.
  */
 /* package */ class FixtureCellRenderer implements ListCellRenderer<TileFixture> {
-	private static final Logger LOGGER = Logger.getLogger(FixtureCellRenderer.class.getName());
 	private static final DefaultListCellRenderer DEFAULT_RENDERER = new DefaultListCellRenderer();
 
 	private static final Set<String> MISSING_FILENAMES = new HashSet<>();
@@ -94,12 +92,12 @@ import java.util.logging.Level;
 		try {
 			return ImageLoader.loadIcon(actualImage);
 		} catch (final FileNotFoundException|NoSuchFileException except) {
-			LOGGER.severe(String.format("image file images/%s not found", actualImage));
-			LOGGER.log(Level.FINE, "With stack trace", except);
+			LovelaceLogger.error("image file images/%s not found", actualImage);
+			LovelaceLogger.debug(except, "With stack trace");
 			MISSING_FILENAMES.add(actualImage);
 			return DEFAULT_FIXTURE_ICON;
 		} catch (final IOException except) {
-			LOGGER.log(Level.SEVERE, "I/O error reading image", except);
+			LovelaceLogger.error(except, "I/O error reading image");
 			return DEFAULT_FIXTURE_ICON;
 		}
 	}

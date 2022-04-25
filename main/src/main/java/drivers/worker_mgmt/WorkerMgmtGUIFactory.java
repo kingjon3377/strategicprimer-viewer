@@ -3,7 +3,6 @@ package drivers.worker_mgmt;
 import drivers.common.DriverFailedException;
 import java.util.List;
 import java.nio.file.Path;
-import java.util.logging.Logger;
 import drivers.common.cli.ICLIHelper;
 import drivers.common.IDriverUsage;
 import drivers.common.ParamCount;
@@ -26,11 +25,6 @@ import com.google.auto.service.AutoService;
  */
 @AutoService(DriverFactory.class)
 public class WorkerMgmtGUIFactory implements GUIDriverFactory {
-	/**
-	 * A logger.
-	 */
-	private static final Logger LOGGER = Logger.getLogger(WorkerMgmtGUIFactory.class.getName());
-
 	private static final IDriverUsage USAGE = new DriverUsage(true, "worker-mgmt", ParamCount.AtLeastOne,
 		"Unit Orders and Worker Management", "Organize the members of a player's units.", false,
 		true, "--current-turn=NN", "--print-empty", "--include-unleveled-jobs",

@@ -1,5 +1,6 @@
 package drivers.map_viewer;
 
+import lovelace.util.LovelaceLogger;
 import org.jetbrains.annotations.Nullable;
 
 import common.map.Point;
@@ -7,11 +8,8 @@ import common.map.Point;
 import javax.swing.BoundedRangeModel;
 
 import javax.swing.event.ChangeEvent;
-import java.util.logging.Logger;
 
 /* package */ class ScrollAdjustmentListener { // FIXME: Listen to some events so we can reset on map or selected point change
-	private static final Logger LOGGER = Logger.getLogger(ScrollAdjustmentListener.class.getName());
-
 	private final IViewerModel model;
 
 	public ScrollAdjustmentListener(final IViewerModel model) {
@@ -37,34 +35,34 @@ import java.util.logging.Logger;
 	public void horizontalScroll(final ChangeEvent event) {
 		final BoundedRangeModel source = (BoundedRangeModel) event.getSource();
 		if (adjusting) {
-			LOGGER.finer(
+			LovelaceLogger.trace(
 				"Waiting for scrollbar to stop adjusting before handling horizontal scroll");
 			return;
 		}
-		LOGGER.finer("Starting to respond to horizontal scroll");
+		LovelaceLogger.trace("Starting to respond to horizontal scroll");
 		final VisibleDimensions oldDimensions = model.getVisibleDimensions();
 		final int newValue = source.getValue();
 		final VisibleDimensions newDimensions;
 		if (newValue < 0) {
-			LOGGER.warning("Tried to scroll to negative column, skipping ...");
+			LovelaceLogger.warning("Tried to scroll to negative column, skipping ...");
 			return;
 		} else if (newValue > (model.getMapDimensions().getColumns() +
 				oldDimensions.getColumns().size())) {
-			LOGGER.warning("Tried to scroll too far to the right, skipping ...");
+			LovelaceLogger.warning("Tried to scroll too far to the right, skipping ...");
 			return;
 		} else if (oldColumn == null) {
 			final int newMinColumn;
 			final int newMaxColumn;
 			if (oldDimensions.getMinimumColumn() > newValue) {
-				LOGGER.fine("User scrolled left");
+				LovelaceLogger.debug("User scrolled left");
 				newMinColumn = newValue;
 				newMaxColumn = newValue + oldDimensions.getWidth() - 1;
 			} else if (oldDimensions.getMaximumColumn() < newValue) {
-				LOGGER.fine("User scrolled right");
+				LovelaceLogger.debug("User scrolled right");
 				newMaxColumn = newValue;
 				newMinColumn = newValue - oldDimensions.getWidth() + 1;
 			} else {
-				LOGGER.fine("No cached horizontal coordinate and new value within previous visible area, skipping ...");
+				LovelaceLogger.debug("No cached horizontal coordinate and new value within previous visible area, skipping ...");
 				oldColumn = newValue;
 				return;
 			}
@@ -73,13 +71,12 @@ import java.util.logging.Logger;
 				oldDimensions.getMaximumRow(), newMinColumn, newMaxColumn);
 		} else {
 			if (oldColumn == newValue) {
-				LOGGER.finer(
+				LovelaceLogger.trace(
 					"Horizontal scroll to same value, possibly reentrant. Skipping ...");
 				return;
 			}
 			final int offset = newValue - oldColumn;
-			LOGGER.fine(String.format("User scrolled horizontally by %d tiles, to %d.",
-				offset, newValue));
+			LovelaceLogger.debug("User scrolled horizontally by %d tiles, to %d.", offset, newValue);
 			oldColumn = newValue;
 			newDimensions = new VisibleDimensions(oldDimensions.getMinimumRow(),
 				oldDimensions.getMaximumRow(), oldDimensions.getMinimumColumn() + offset,
@@ -96,30 +93,29 @@ import java.util.logging.Logger;
 		final BoundedRangeModel source = (BoundedRangeModel) event.getSource();
 		if (adjusting) {
 			// TODO: We'd like to do *some* handling, in case the user is dragging the tongue. Mutex flag again?
-			LOGGER.finer(
+			LovelaceLogger.trace(
 				"Waiting for scrollbar to stop adjusting before handling vertical scroll");
 			return;
 		}
-		LOGGER.finer("Starting to respond to vertical scroll");
+		LovelaceLogger.trace("Starting to respond to vertical scroll");
 		final int newValue = source.getValue();
 		final VisibleDimensions oldDimensions = model.getVisibleDimensions();
 		final VisibleDimensions newDimensions;
 		if (newValue < 0) {
-			LOGGER.warning("Tried to scroll to negative row, skipping ...");
+			LovelaceLogger.warning("Tried to scroll to negative row, skipping ...");
 			return;
 		} else if (newValue > (model.getMapDimensions().getRows() +
 				oldDimensions.getRows().size())) {
-			LOGGER.warning("Tried to scroll too far down, skipping ...");
+			LovelaceLogger.warning("Tried to scroll too far down, skipping ...");
 			return;
 		} else if (oldRow != null) {
 			if (oldRow == newValue) {
-				LOGGER.finer(
+				LovelaceLogger.trace(
 					"Vertical scroll to same value, possibly reentrant. Skipping ...");
 				return;
 			}
 			final int offset = newValue - oldRow;
-			LOGGER.fine(String.format("User scrolled vertically by %d tiles, to %d.",
-				offset, newValue));
+			LovelaceLogger.debug("User scrolled vertically by %d tiles, to %d.", offset, newValue);
 			oldRow = newValue;
 			newDimensions = new VisibleDimensions(oldDimensions.getMinimumRow() + offset,
 				oldDimensions.getMaximumRow() + offset, oldDimensions.getMinimumColumn(),
@@ -128,15 +124,15 @@ import java.util.logging.Logger;
 			final int newMinRow;
 			final int newMaxRow;
 			if (oldDimensions.getMinimumRow() > newValue) {
-				LOGGER.fine("User scrolled down");
+				LovelaceLogger.debug("User scrolled down");
 				newMinRow = newValue;
 				newMaxRow = newValue + oldDimensions.getHeight() - 1;
 			} else if (oldDimensions.getMaximumRow() < newValue) {
-				LOGGER.fine("User scrolled up");
+				LovelaceLogger.debug("User scrolled up");
 				newMaxRow = newValue;
 				newMinRow = newValue - oldDimensions.getHeight() + 1;
 			} else {
-				LOGGER.fine("No cached vertical coordinate and new value within previous visible area, skipping ...");
+				LovelaceLogger.debug("No cached vertical coordinate and new value within previous visible area, skipping ...");
 				oldRow = newValue;
 				return;
 			}

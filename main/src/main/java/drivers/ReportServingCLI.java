@@ -2,10 +2,9 @@ package drivers;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.logging.Logger;
-import java.util.logging.Level;
 
 import java.util.stream.Stream;
+import lovelace.util.LovelaceLogger;
 import org.jetbrains.annotations.Nullable;
 
 import org.javatuples.Pair;
@@ -48,7 +47,6 @@ import org.takes.http.Exit;
  * A driver to "serve" a report on the contents of a map on an embedded HTTP server.
  */
 /* package */ class ReportServingCLI implements ReadOnlyDriver {
-	private static final Logger LOGGER = Logger.getLogger(ReportServingCLI.class.getName());
 	public ReportServingCLI(final SPOptions options, final IDriverModel model, final ICLIHelper cli) {
 		this.options = options;
 		this.model = model;
@@ -132,7 +130,7 @@ import org.takes.http.Exit;
 					.append("</html>");
 				rootHandler = new FkRegex("/", new RsHtml(builder.toString()));
 			}
-			LOGGER.info("About to start serving on port " + port);
+			LovelaceLogger.info("About to start serving on port %d", port);
 			try {
 				new FtBasic(new TkFork(Stream.concat(Stream.of(rootHandler), endpoints.stream()).toArray(Fork[]::new)),
 					port).start(Exit.NEVER);
@@ -150,8 +148,8 @@ import org.takes.http.Exit;
 			port = Integer.parseInt(portArgument);
 		} catch (final NumberFormatException except) {
 			if (!"true".equals(portArgument)) {
-				LOGGER.warning("Port must be a number");
-				LOGGER.log(Level.FINER, "Stack trace of port parse failure", except);
+				LovelaceLogger.warning("Port must be a number");
+				LovelaceLogger.trace(except, "Stack trace of port parse failure");
 			}
 			port = 8080;
 		}

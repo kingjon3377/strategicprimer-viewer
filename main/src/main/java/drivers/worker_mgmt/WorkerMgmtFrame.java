@@ -1,13 +1,12 @@
 package drivers.worker_mgmt;
 
 import java.nio.file.Paths;
-import java.util.logging.Level;
 import java.io.IOException;
-import java.util.logging.Logger;
 import drivers.gui.common.SPFileChooser;
 import javax.swing.JButton;
 import java.util.Arrays;
 import java.util.List;
+import lovelace.util.LovelaceLogger;
 import org.jetbrains.annotations.Nullable;
 
 import java.nio.file.Path;
@@ -56,7 +55,6 @@ import drivers.worker_mgmt.orderspanel.OrdersPanel;
  */
 /* package */ final class WorkerMgmtFrame extends SPFrame implements PlayerChangeListener {
 	private static final long serialVersionUID = 1L;
-	private static final Logger LOGGER = Logger.getLogger(WorkerMgmtFrame.class.getName());
 	private final IWorkerModel model;
 	private final WorkerTree tree;
 
@@ -167,7 +165,7 @@ import drivers.worker_mgmt.orderspanel.OrdersPanel;
 		final TreePath currentSelection = tree.getSelectionModel().getSelectionPath();
 		final TreePath nextPath = treeModel.nextProblem(currentSelection, mainMap.getCurrentTurn());
 		if (nextPath == null) {
-			LOGGER.finer("Nowhere to jump to, about to beep");
+			LovelaceLogger.trace("Nowhere to jump to, about to beep");
 			Toolkit.getDefaultToolkit().beep();
 		} else {
 			tree.expandPath(nextPath);
@@ -185,7 +183,7 @@ import drivers.worker_mgmt.orderspanel.OrdersPanel;
 			strategyExporter.writeStrategy(file, model.getDismissed());
 		} catch (final IOException except) {
 			// FIXME: Show error dialog
-			LOGGER.log(Level.SEVERE, "I/O error while trying to write strategy", except);
+			LovelaceLogger.error(except, "I/O error while trying to write strategy");
 		}
 	}
 

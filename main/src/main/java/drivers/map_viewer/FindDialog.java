@@ -4,7 +4,7 @@ import java.awt.event.ActionListener;
 import java.util.Arrays;
 import common.map.fixtures.FixtureIterable;
 import java.util.stream.StreamSupport;
-import java.util.logging.Logger;
+import lovelace.util.LovelaceLogger;
 import org.jetbrains.annotations.Nullable;
 
 import java.awt.Frame;
@@ -45,7 +45,6 @@ import java.util.function.Predicate;
  */
 /* package */ final class FindDialog extends SPDialog {
 	private static final long serialVersionUID = 1L;
-	private static final Logger LOGGER = Logger.getLogger(FindDialog.class.getName());
 	public FindDialog(final Frame parent, final IViewerModel model) {
 		super(parent, "Find");
 		this.model = model;
@@ -231,7 +230,7 @@ import java.util.function.Predicate;
 				model.getSelection()).spliterator(), false)
 			.filter(matchesPoint(pattern, idNum, caseSensitivity)).findFirst().orElse(null);
 		if (result != null) {
-			LOGGER.fine("Found in point " + result);
+			LovelaceLogger.debug("Found in point %s", result);
 			model.setSelection(result);
 		}
 	}

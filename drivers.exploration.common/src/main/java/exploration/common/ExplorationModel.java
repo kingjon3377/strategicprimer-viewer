@@ -1,6 +1,7 @@
 package exploration.common;
 
 import common.map.HasName;
+import lovelace.util.LovelaceLogger;
 import org.javatuples.Pair;
 import org.jetbrains.annotations.Nullable;
 
@@ -20,7 +21,6 @@ import java.util.Optional;
 import java.util.Objects;
 import java.util.HashSet;
 import java.util.EnumSet;
-import java.util.logging.Logger;
 
 import drivers.common.SimpleMultiMapModel;
 import drivers.common.IDriverModel;
@@ -67,7 +67,6 @@ import common.map.fixtures.towns.IFortress;
  * A model for exploration apps.
  */
 public class ExplorationModel extends SimpleMultiMapModel implements IExplorationModel {
-	private static final Logger LOGGER = Logger.getLogger(ExplorationModel.class.getName());
 	/**
 	 * A fixture is "diggable" if it is a {@link MineralFixture} or a {@link Mine}.
 	 */
@@ -290,7 +289,7 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 	 */
 	private void fireSelectionChange(final Point old, final Point newSelection) {
 		for (final SelectionChangeListener listener : scListeners) {
-			LOGGER.fine("Notifying a listener of selected-point change");
+			LovelaceLogger.debug("Notifying a listener of selected-point change");
 			listener.selectedPointChanged(old, newSelection);
 		}
 	}
@@ -300,7 +299,7 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 	 */
 	private void fireSelectedUnitChange(final @Nullable IUnit old, final @Nullable IUnit newSelection) {
 		for (final SelectionChangeListener listener : scListeners) {
-			LOGGER.fine("Notifying a listener of selected-unit change");
+			LovelaceLogger.debug("Notifying a listener of selected-unit change");
 			listener.selectedUnitChanged(old, newSelection);
 		}
 	}
@@ -441,22 +440,22 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 			return retval;
 		} else {
 			if (getMap().getBaseTerrain(point) == null) {
-				LOGGER.fine("Started outside explored territory in main map");
+				LovelaceLogger.debug("Started outside explored territory in main map");
 			} else if (getMap().getBaseTerrain(dest) == null) {
-				LOGGER.fine("Main map doesn't have terrain for destination");
+				LovelaceLogger.debug("Main map doesn't have terrain for destination");
 			} else {
 				if (SimpleMovementModel.landMovementPossible(terrain) &&
 						    TileType.Ocean == startingTerrain) {
-					LOGGER.fine("Starting in ocean, trying to get to " + terrain);
+					LovelaceLogger.debug("Starting in ocean, trying to get to %s", terrain);
 				} else if (TileType.Ocean == startingTerrain &&
 						                                                                                              TileType.Ocean != terrain) {
-					LOGGER.fine("Land movement not possible from ocean to " + terrain);
+					LovelaceLogger.debug("Land movement not possible from ocean to %s", terrain);
 				} else if (TileType.Ocean != startingTerrain &&
 						           TileType.Ocean == terrain) {
-					LOGGER.fine(String.format("Starting in %s, trying to get to ocean",
-						startingTerrain));
+					LovelaceLogger.debug("Starting in %s, trying to get to ocean",
+						startingTerrain);
 				} else {
-					LOGGER.fine("Unknown reason for movement-impossible condition");
+					LovelaceLogger.debug("Unknown reason for movement-impossible condition");
 				}
 			}
 			for (final IMutableMapNG subMap : getRestrictedSubordinateMaps()) {
@@ -526,18 +525,18 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 		final IUnit oldSelection = selection.getValue1();
 		final Point loc;
 		if (selectedUnit == null) {
-			LOGGER.fine("Unsetting currently-selected-unit property");
+			LovelaceLogger.debug("Unsetting currently-selected-unit property");
 			loc = Point.INVALID_POINT;
 		} else {
 			if (!mapsAgreeOnLocation(selectedUnit)) {
-				LOGGER.warning("Maps containing that unit don't all agree on its location");
+				LovelaceLogger.warning("Maps containing that unit don't all agree on its location");
 			}
-			LOGGER.fine("Setting a newly selected unit");
+			LovelaceLogger.debug("Setting a newly selected unit");
 			loc = find(selectedUnit);
 			if (loc.isValid()) {
-				LOGGER.fine("Found at " + loc);
+				LovelaceLogger.debug("Found at %s", loc);
 			} else {
-				LOGGER.fine("Not found using our 'find' method");
+				LovelaceLogger.debug("Not found using our 'find' method");
 			}
 		}
 		selection = Pair.with(loc, selectedUnit);
@@ -731,7 +730,7 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 				.filter(f -> f.getId() == fixture.getId()).findAny().orElse(null);
 		}
 		if (matching == null) {
-			LOGGER.warning("Skipping because not in the main map");
+			LovelaceLogger.warning("Skipping because not in the main map");
 		} else {
 			for (final IMutableMapNG subMap : getRestrictedSubordinateMaps()) {
 				retval = subMap.addFixture(location, matching.copy(zero)) || retval;
@@ -908,34 +907,34 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 	 */
 	@Override
 	public boolean removeUnit(final IUnit unit) {
-		LOGGER.fine("In ExplorationModel.removeUnit()");
+		LovelaceLogger.debug("In ExplorationModel.removeUnit()");
 		final List<Pair<IMutableMapNG, Pair<Point, IUnit>>> delenda = new ArrayList<>();
 		for (final IMutableMapNG map : getRestrictedAllMaps()) {
 			final Optional<Pair<Point, TileFixture>> pair = map.streamLocations()
 					.flatMap(l -> map.getFixtures(l).stream().map(f -> Pair.with(l, f)))
 					.filter(unitMatching(unit)).findAny();
 			if (pair.isPresent()) {
-				LOGGER.fine("Map has matching unit");
+				LovelaceLogger.debug("Map has matching unit");
 				final IUnit fixture = (IUnit) pair.get().getValue1();
 				if (fixture.getKind().equals(unit.getKind()) &&
 						fixture.getName().equals(unit.getName()) &&
 						!fixture.iterator().hasNext()) {
-					LOGGER.fine("Matching unit meets preconditions");
+					LovelaceLogger.debug("Matching unit meets preconditions");
 					delenda.add(Pair.with(map,
 						Pair.with(pair.get().getValue0(), fixture)));
 				} else {
-					LOGGER.warning(String.format(
+					LovelaceLogger.warning(
 						"Matching unit in %s fails preconditions for removal",
 						Optional.ofNullable(map.getFilename())
 							.map(Object::toString)
 							.filter(f -> !f.isEmpty())
-							.orElse("an unsaved map")));
+							.orElse("an unsaved map"));
 					return false;
 				}
 			}
 		}
 		if (delenda.isEmpty()) {
-			LOGGER.fine("No matching units");
+			LovelaceLogger.debug("No matching units");
 			return false;
 		}
 		for (final Pair<IMutableMapNG, Pair<Point, IUnit>> entry : delenda) {
@@ -957,11 +956,11 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 					}
 				}
 				if (!any) {
-					LOGGER.warning("Failed to find unit to remove that we thought might be in a fortress");
+					LovelaceLogger.warning("Failed to find unit to remove that we thought might be in a fortress");
 				}
 			}
 		}
-		LOGGER.fine("Finished removing matching unit(s) from map(s)");
+		LovelaceLogger.debug("Finished removing matching unit(s) from map(s)");
 		return true;
 	}
 
@@ -1018,7 +1017,7 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 				}
 			}
 			if (!any) {
-				LOGGER.warning("Unable to find unit to rename");
+				LovelaceLogger.warning("Unable to find unit to rename");
 			}
 			return any;
 		} else if (item instanceof UnitMember) {
@@ -1040,11 +1039,11 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 				}
 			}
 			if (!any) {
-				LOGGER.warning("Unable to find unit member to rename");
+				LovelaceLogger.warning("Unable to find unit member to rename");
 			}
 			return any;
 		} else {
-			LOGGER.warning("Unable to find item to rename");
+			LovelaceLogger.warning("Unable to find item to rename");
 			return false;
 		}
 	}
@@ -1069,7 +1068,7 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 				}
 			}
 			if (!any) {
-				LOGGER.warning("Unable to find unit to change kind");
+				LovelaceLogger.warning("Unable to find unit to change kind");
 			}
 			return any;
 		} else if (item instanceof UnitMember) {
@@ -1091,11 +1090,11 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 				}
 			}
 			if (!any) {
-				LOGGER.warning("Unable to find unit member to change kind");
+				LovelaceLogger.warning("Unable to find unit member to change kind");
 			}
 			return any;
 		} else {
-			LOGGER.warning("Unable to find item to change kind");
+			LovelaceLogger.warning("Unable to find item to change kind");
 			return false;
 		}
 	}

@@ -4,6 +4,7 @@ import common.map.fixtures.Implement;
 import common.map.fixtures.mobile.AnimalImpl;
 import java.util.Comparator;
 import java.util.function.Predicate;
+import lovelace.util.LovelaceLogger;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
@@ -45,7 +46,6 @@ import exploration.common.Pathfinder;
 import exploration.common.PathfinderFactory;
 
 import java.util.Optional;
-import java.util.logging.Logger;
 import java.util.stream.StreamSupport;
 import java.util.stream.Collectors;
 import java.util.Collections;
@@ -67,11 +67,6 @@ import common.map.fixtures.towns.Village;
  * FIXME: Write stat-generating GUI
  */
 /* package */ class StatGeneratingCLI implements CLIDriver {
-	/**
-	 * A logger.
-	 */
-	private static final Logger LOGGER = Logger.getLogger(StatGeneratingCLI.class.getName());
-
 	private static final List<String> statLabelArray = List.of("Str", "Dex", "Con", "Int", "Wis", "Cha");
 
 	/**
@@ -140,7 +135,7 @@ import common.map.fixtures.towns.Village;
 			if (jobName == null) {
 				break;
 			} else if (!model.addJobLevel(unit, worker, jobName)) {
-				LOGGER.warning("Adding or incrementing Job failed somehow ...");
+				LovelaceLogger.warning("Adding or incrementing Job failed somehow ...");
 			}
 		}
 	}
@@ -191,10 +186,10 @@ import common.map.fixtures.towns.Village;
 			racialBonuses.put(race, retval);
 			return retval;
 		} catch (final NoSuchFileException except) {
-			LOGGER.warning("No stat adjustments found for " + race);
+			LovelaceLogger.warning("No stat adjustments found for %s", race);
 			return WorkerStats.factory(0, 0, 0, 0, 0, 0);
 		} catch (final IOException except) {
-			LOGGER.warning("I/O error reading stat adjustments for " + race);
+			LovelaceLogger.warning("I/O error reading stat adjustments for %s", race);
 			return WorkerStats.factory(0, 0, 0, 0, 0, 0);
 		}
 	}

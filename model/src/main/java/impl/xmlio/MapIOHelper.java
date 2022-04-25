@@ -2,7 +2,6 @@ package impl.xmlio;
 
 import java.nio.file.NoSuchFileException;
 import java.util.List;
-import java.util.logging.Logger;
 
 import java.nio.file.Paths;
 import java.nio.file.Path;
@@ -21,6 +20,7 @@ import common.map.IMapNG;
 import impl.xmlio.fluidxml.SPFluidReader;
 import impl.xmlio.yaxml.YAXMLWriter;
 import common.xmlio.Warning;
+import lovelace.util.LovelaceLogger;
 
 /**
  * A helper to abstract the details of specific I/O implementations to shield
@@ -28,11 +28,6 @@ import common.xmlio.Warning;
  * implementation to use in one place.
  */
 public final class MapIOHelper {
-	/**
-	 * A logger.
-	 */
-	private static final Logger LOGGER = Logger.getLogger(MapIOHelper.class.getName());
-
 	private MapIOHelper() {
 	}
 
@@ -78,18 +73,18 @@ public final class MapIOHelper {
 	 */
 	public static IMutableMapNG readMap(final Path file, final Warning warner)
 			throws SPFormatException, IOException, NoSuchFileException, XMLStreamException {
-		LOGGER.fine("In mapIOHelper.readMap");
+		LovelaceLogger.debug("In mapIOHelper.readMap");
 		final IMutableMapNG retval;
 		if (file.toString().endsWith(".db")) {
-			LOGGER.fine(String.format("Reading from %s as an SQLite database",
-				file.toString()));
+			LovelaceLogger.debug("Reading from %s as an SQLite database",
+				file.toString());
 			retval = DB_READER.readMap(file, warner);
 		} else {
-			LOGGER.fine(String.format("Reading from %s", file.toString()));
+			LovelaceLogger.debug("Reading from %s", file);
 			retval = READER.readMap(file, warner);
 		}
 		retval.setFilename(file);
-		LOGGER.fine(String.format("Finished reading from %s", file.toString()));
+		LovelaceLogger.debug("Finished reading from %s", file);
 		return retval;
 	}
 
@@ -106,8 +101,8 @@ public final class MapIOHelper {
 	 */
 	public static IMutableMapNG readMap(final Reader stream, final Warning warner)
 			throws SPFormatException, XMLStreamException, IOException {
-		LOGGER.fine("In mapIOHelper.readMap");
-		LOGGER.fine("Reading from a Reader");
+		LovelaceLogger.debug("In mapIOHelper.readMap");
+		LovelaceLogger.debug("Reading from a Reader");
 		return READER.readMapFromStream(Paths.get(""), stream, warner);
 	}
 
@@ -116,10 +111,10 @@ public final class MapIOHelper {
 	 */
 	public static void writeMap(final Path file, final IMapNG map) throws IOException, XMLStreamException {
 		if (file.toString().endsWith(".db") || file.toString().isEmpty()) {
-			LOGGER.fine(String.format("Writing to %s as an SQLite database", file.toString()));
+			LovelaceLogger.debug("Writing to %s as an SQLite database", file);
 			DB_WRITER.write(file, map);
 		} else {
-			LOGGER.fine(String.format("Writing to %s", file.toString()));
+			LovelaceLogger.debug("Writing to %s", file);
 			WRITER.write(file, map);
 		}
 	}
