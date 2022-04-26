@@ -1,6 +1,9 @@
 package exploration.common;
 
 import lovelace.util.LovelaceLogger;
+import common.map.MapDimensions;
+import common.map.TileFixture;
+import lovelace.util.SimplePair;
 import org.jetbrains.annotations.Nullable;
 import org.javatuples.Pair;
 import java.util.Set;
@@ -20,17 +23,22 @@ import java.util.Optional;
 /* package */ class PathfinderImpl implements Pathfinder {
 	public PathfinderImpl(final IMapNG map) {
 		this.map = map;
+		final MapDimensions dims = map.getDimensions();
+		size = dims.getRows() * dims.getColumns();
+		LovelaceLogger.debug("Map has %d tiles", size);
+		tentativeDistances = new HashMap<>(size);
 	}
 	private final IMapNG map;
-	private final Map<Pair<Point, Point>, Integer> tentativeDistances = new HashMap<>();
-	private static Predicate<Map.Entry<Pair<Point, Point>, Integer>> forUs(final Point base, final Set<Point> unvisited) {
-		return entry -> entry.getKey().getValue0().equals(base) &&
-			unvisited.contains(entry.getKey().getValue1());
+	private final Map<SimplePair<Point>, Integer> tentativeDistances;
+	private final int size;
+	private static Predicate<Map.Entry<SimplePair<Point>, Integer>> forUs(final Point base, final Set<Point> unvisited) {
+		return entry -> entry.getKey().getFirst().equals(base) &&
+			unvisited.contains(entry.getKey().getSecond());
 	}
 
 	private @Nullable Point nextUnvisited(final Point base, final Set<Point> unvisited) {
 		return tentativeDistances.entrySet().stream().filter(forUs(base, unvisited)).min(Map.Entry.comparingByValue())
-			.map(Map.Entry::getKey).map(Pair::getValue1).orElse(null);
+			.map(Map.Entry::getKey).map(SimplePair::getSecond).orElse(null);
 	}
 
 	private static Direction getDirection(final Point one, final Point two) {
@@ -79,27 +87,28 @@ import java.util.Optional;
 	 */
 	@Override
 	public Pair<Integer, Iterable<Point>> getTravelDistance(final Point start, final Point end) {
-		final Set<Point> unvisited = new HashSet<>();
+		final Set<Point> unvisited = new HashSet<>(size);
 		for (final Point point : map.getLocations()) {
 			unvisited.add(point);
-			if (!tentativeDistances.containsKey(Pair.with(start, point))) {
-				tentativeDistances.put(Pair.with(start, point), Integer.MAX_VALUE - 1);
+			if (!tentativeDistances.containsKey(SimplePair.of(start, point))) {
+				tentativeDistances.put(SimplePair.of(start, point), Integer.MAX_VALUE - 1);
 			}
 		}
-		tentativeDistances.put(Pair.with(start, start), 0);
+		tentativeDistances.put(SimplePair.of(start, start), 0);
 		Point current = start;
 		int iterations = 0;
-		final Map<Point, Point> retval = new HashMap<>();
+		final Map<Point, Point> retval = new HashMap<>(size);
+		final Predicate<TileFixture> isForest = Forest.class::isInstance;
 		while (!unvisited.isEmpty()) {
 			iterations++;
-			if (!tentativeDistances.containsKey(Pair.with(start, current))) {
+			if (!tentativeDistances.containsKey(SimplePair.of(start, current))) {
 				throw new IllegalStateException("Tentative distance missing");
 			}
-			final int currentDistance = tentativeDistances.get(Pair.with(start, current));
+			final int currentDistance = tentativeDistances.get(SimplePair.of(start, current));
 			if (current.equals(end)) {
 				LovelaceLogger.debug("Reached the end after %d iterations",
 					iterations);
-				final List<Point> path = new ArrayList<>();
+				final List<Point> path = new ArrayList<>(size >> 2);
 				path.add(current);
 				while (retval.containsKey(current)) {
 					path.add(retval.get(current));
@@ -119,13 +128,13 @@ import java.util.Optional;
 					LovelaceLogger.debug("Already checked, so skipping.");
 					continue;
 				}
-				if (!tentativeDistances.containsKey(Pair.with(start, neighbor))) {
+				if (!tentativeDistances.containsKey(SimplePair.of(start, neighbor))) {
 					throw new IllegalStateException("Missing prior estimate");
 				}
-				final int estimate = tentativeDistances.get(Pair.with(start, neighbor));
+				final int estimate = tentativeDistances.get(SimplePair.of(start, neighbor));
 				final int tentativeDistance = clampAdd(currentDistance,
 					SimpleMovementModel.movementCost(map.getBaseTerrain(neighbor),
-						map.getFixtures(neighbor).stream().anyMatch(Forest.class::isInstance),
+						map.getFixtures(neighbor).stream().anyMatch(isForest),
 						map.isMountainous(neighbor),
 						SimpleMovementModel.riversSpeedTravel(
 							getDirection(current, neighbor),
@@ -137,7 +146,7 @@ import java.util.Optional;
 				if (tentativeDistance < estimate) {
 					LovelaceLogger.debug("Updating path");
 					retval.put(neighbor, current);
-					tentativeDistances.put(Pair.with(start, neighbor),
+					tentativeDistances.put(SimplePair.of(start, neighbor),
 						tentativeDistance);
 				}
 				if (estimate < 0) {
@@ -163,7 +172,7 @@ import java.util.Optional;
 			}
 		}
 		LovelaceLogger.info("Apparently ran out of tiles after %d iterations", iterations);
-		return Pair.with(Optional.ofNullable(tentativeDistances.get(Pair.with(start, end)))
+		return Pair.with(Optional.ofNullable(tentativeDistances.get(SimplePair.of(start, end)))
 			.orElse(Integer.MAX_VALUE - 1), Collections.emptyList());
 	}
 }
