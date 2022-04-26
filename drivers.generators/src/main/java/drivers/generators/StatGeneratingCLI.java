@@ -317,20 +317,25 @@ import common.map.fixtures.towns.Village;
 				} else if (level > 12) {
 					addCandidate.accept(level - 3);
 					SingletonRandom.SINGLETON_RANDOM.ints()
+							.filter(n -> n > 0)
 							.filter(n -> n < 4).map(n -> 5 + n).limit(8)
 							.forEach(addCandidate);
 					SingletonRandom.SINGLETON_RANDOM.ints()
+							.filter(n -> n > 0)
 							.filter(n -> n < 4).map(n -> 1 + n).limit(16)
 							.forEach(addCandidate);
 				} else if (level > 8) {
 					SingletonRandom.SINGLETON_RANDOM.ints()
+							.filter(n -> n > 0)
 							.filter(n -> n < 4).map(n -> 5 + n).limit(3)
 							.forEach(addCandidate);
 					SingletonRandom.SINGLETON_RANDOM.ints()
+							.filter(n -> n > 0)
 							.filter(n -> n < 4).map(n -> 1 + n).limit(6)
 							.forEach(addCandidate);
 				} else if (level > 4) {
 					SingletonRandom.SINGLETON_RANDOM.ints()
+							.filter(n -> n > 0)
 							.filter(n -> n < 4).map(n -> 1 + n).limit(2)
 							.forEach(addCandidate);
 				}
