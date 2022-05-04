@@ -260,6 +260,8 @@ public class PopulationGeneratingModel extends SimpleMultiMapModel { // TODO: Ex
 
 	/**
 	 * All the units in the main map belonging to the specified player.
+	 *
+	 * FIXME: Return List
 	 */
 	public Iterable<IUnit> getUnits(final Player player) {
 		return getMap().streamAllFixtures()
