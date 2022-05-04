@@ -211,6 +211,14 @@ public final class WorkerStats {
 			wisdom, charisma);
 	}
 
+	public String getPrintable() {
+		return String.format(
+			"Str: %+d, Dex %+d, Con %+d, Int %+d, Wis %+d, Cha %+d",
+			getModifier(strength), getModifier(dexterity),
+			getModifier(constitution), getModifier(intelligence),
+			getModifier(wisdom), getModifier(charisma));
+	}
+
 	public int[] array() {
 		return IntStream.of(strength, dexterity, constitution, intelligence, wisdom,
 			charisma).toArray();
