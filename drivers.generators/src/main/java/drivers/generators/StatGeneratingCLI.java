@@ -67,8 +67,6 @@ import common.map.fixtures.towns.Village;
  * FIXME: Write stat-generating GUI
  */
 /* package */ class StatGeneratingCLI implements CLIDriver {
-	private static final List<String> statLabelArray = List.of("Str", "Dex", "Con", "Int", "Wis", "Cha");
-
 	/**
 	 * Get the index of the lowest value in an array.
 	 */
@@ -269,17 +267,7 @@ import common.map.fixtures.towns.Village;
 			worker.setStats(stats);
 			cli.println(String.format("%s is a %s from %s. Stats:", name, village.getRace(),
 					village.getName()));
-			final int[] statArray = stats.array();
-			for (int i = 0; i < 6; i++) {
-				if ((i == statLabelArray.size() - 1) ||
-						    (i == statArray.length - 1)) {
-					cli.println(String.format("%s %s", statLabelArray.get(i),
-							WorkerStats.getModifierString(statArray[i])));
-				} else {
-					cli.print(String.format("%s %s, ", statLabelArray.get(i),
-							WorkerStats.getModifierString(statArray[i])));
-				}
-			}
+			cli.println(stats.getPrintable());
 			final boolean woolen = cli.inputBooleanInSeries("Is the worker's tunic woolen rather than linen?");
 			worker.addEquipment(new Implement(woolen ? "woolen tunic" : "linen tunic", idf.createID()));
 			// FIXME: Extract a method for this equipment-adding process, and configure it with a set of (kind, chance) pairs
@@ -348,17 +336,7 @@ import common.map.fixtures.towns.Village;
 				cli.println(String.format("%s is a %s from %s. Stats:", name,
 						village.getRace(), village.getName()));
 				// TODO: Extract helper method for printing stat array
-				final int[] statArray = stats.array();
-				for (int i = 0; i < 6; i++) {
-					if ((i == statLabelArray.size() - 1) ||
-							    (i == statArray.length - 1)) {
-						cli.println(String.format("%s %s", statLabelArray.get(i),
-								WorkerStats.getModifierString(statArray[i])));
-					} else {
-						cli.print(String.format("%s %s, ", statLabelArray.get(i),
-								WorkerStats.getModifierString(statArray[i])));
-					}
-				}
+				cli.println(stats.getPrintable());
 				final boolean woolen = cli.inputBooleanInSeries("Is the worker's tunic woolen rather than linen?");
 				worker.addEquipment(new Implement(woolen ? "woolen tunic" : "linen tunic", idf.createID()));
 				// FIXME: Extract a method for this equipment-adding process, and configure it with a set of (kind, chance) pairs
@@ -386,17 +364,7 @@ import common.map.fixtures.towns.Village;
 							"%s, a %s, is a level-%d %s from %s. Proposed stats:",
 							name, village.getRace(), training.getLevel(),
 							training.getName(), village.getName()));
-					final int[] statArray = stats.array();
-					for (int i = 0; i < 6; i++) {
-						if ((i == statLabelArray.size() - 1) ||
-								    (i == statArray.length - 1)) {
-							cli.println(String.format("%s %s", statLabelArray.get(i),
-									WorkerStats.getModifierString(statArray[i])));
-						} else {
-							cli.print(String.format("%s %s, ", statLabelArray.get(i),
-									WorkerStats.getModifierString(statArray[i])));
-						}
-					}
+					cli.println(stats.getPrintable());
 					final boolean acceptance = cli.inputBoolean( // TODO: handle EOF
 							"Do those stats fit that profile?");
 					if (acceptance) {
@@ -581,16 +549,7 @@ import common.map.fixtures.towns.Village;
 				model.addWorkerToUnit(unit, worker);
 				enterWorkerJobs(unit, worker, levels);
 				cli.println(String.format("%s is a %s. Stats:", name, race));
-				final int[] statArray = stats.array();
-				for (int j = 0; j < statLabelArray.size() && j < statArray.length; j++) {
-					if (j == statLabelArray.size() - 1 || j == statArray.length - 1) {
-						cli.println(String.format("%s %s", statLabelArray.get(j),
-							WorkerStats.getModifierString(statArray[j])));
-					} else {
-						cli.print(String.format("%s %s, ", statLabelArray.get(j),
-							WorkerStats.getModifierString(statArray[j])));
-					}
-				}
+				cli.println(stats.getPrintable());
 			} else {
 				worker = generateWorkerFrom(home, name, idf);
 				model.addWorkerToUnit(unit, worker);
