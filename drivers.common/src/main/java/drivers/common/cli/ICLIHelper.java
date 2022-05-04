@@ -12,6 +12,8 @@ import java.util.List;
  * An interface for the "CLI helper," which encapsulates input and output
  * streams, allowing automated testing of command-line apps and graphical
  * wrappers around them.
+ *
+ * TODO: Add printf(), wrapping String.format() (to reduce caller verbosity)
  */
 public interface ICLIHelper {
 	// TODO: Split up methods instead of using this boolean-replacement enum?
