@@ -22,6 +22,7 @@ import java.sql.SQLXML;
 import java.sql.Savepoint;
 import java.sql.Statement;
 import java.sql.Struct;
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.Executor;
@@ -524,7 +525,7 @@ public final class TestDBIO {
 	}
 
 	private static Stream<Arguments> fewIntegers() {
-		return SINGLETON_RANDOM.ints().boxed().limit(3).map(Arguments::of);
+		return SINGLETON_RANDOM.ints(3).boxed().map(Arguments::of);
 	}
 
 	@ParameterizedTest
@@ -535,9 +536,9 @@ public final class TestDBIO {
 	}
 
 	private static Stream<Arguments> testPortalSerialization() {
-		return SINGLETON_RANDOM.ints().boxed().limit(2).flatMap(a ->
-			SINGLETON_RANDOM.ints().boxed().limit(2).flatMap(b ->
-				SINGLETON_RANDOM.ints().boxed().limit(2).map(c ->
+		return SINGLETON_RANDOM.ints(2).boxed().flatMap(a ->
+			SINGLETON_RANDOM.ints(2).boxed().flatMap(b ->
+				SINGLETON_RANDOM.ints(2).boxed().map(c ->
 					Arguments.of(a, b, c))));
 	}
 
@@ -549,9 +550,17 @@ public final class TestDBIO {
 		assertFixtureSerialization(new Portal("portal dest", new Point(row, column), id));
 	}
 
+	private static final List<Boolean> BOOLS = List.of(true, false);
+
+	// TODO: Reformat methods using this helper and ints()
+	// TODO: Extract helper to reduce verbosity of boxed() with ints(), as in TestXMLIO?
+	private static Stream<Boolean> bools() {
+		return BOOLS.stream();
+	}
+
 	private static Stream<Arguments> testAnimalSerialization() {
-		return SINGLETON_RANDOM.ints().boxed().limit(2).flatMap(a ->
-			Stream.of(true, false).map(b -> Arguments.of(a, b)));
+		return SINGLETON_RANDOM.ints(2).boxed().flatMap(a ->
+			bools().map(b -> Arguments.of(a, b)));
 	}
 
 	@ParameterizedTest
@@ -572,8 +581,8 @@ public final class TestDBIO {
 	}
 
 	private static Stream<Arguments> testCaveSerialization() {
-		return SINGLETON_RANDOM.ints().boxed().limit(2).flatMap(a ->
-			SINGLETON_RANDOM.ints().boxed().limit(2).map(b -> Arguments.of(a, b)));
+		return SINGLETON_RANDOM.ints(2).boxed().flatMap(a ->
+			SINGLETON_RANDOM.ints(2).boxed().map(b -> Arguments.of(a, b)));
 	}
 
 	@ParameterizedTest
@@ -589,10 +598,10 @@ public final class TestDBIO {
 	}
 
 	private static Stream<Arguments> testCitySerialization() {
-		return SINGLETON_RANDOM.ints().boxed().limit(2).flatMap(a ->
+		return SINGLETON_RANDOM.ints(2).boxed().flatMap(a ->
 			Stream.of(TownStatus.values()).flatMap(b ->
 				Stream.of(TownSize.values()).flatMap(c ->
-					SINGLETON_RANDOM.ints().boxed().limit(1).map(d ->
+					SINGLETON_RANDOM.ints(1).boxed().map(d ->
 						Arguments.of(a, b, c, d)))));
 	}
 
@@ -666,10 +675,10 @@ public final class TestDBIO {
 	}
 
 	private static Stream<Arguments> testMeadowSerialization() {
-		return Stream.of(true, false).flatMap(a -> Stream.of(true, false).flatMap(b ->
-			SINGLETON_RANDOM.ints().boxed().limit(1).flatMap(c ->
+		return bools().flatMap(a -> bools().flatMap(b ->
+			SINGLETON_RANDOM.ints(1).boxed().flatMap(c ->
 				Stream.of(FieldStatus.values()).flatMap(d ->
-					SINGLETON_RANDOM.ints().boxed().limit(1).map(e ->
+					SINGLETON_RANDOM.ints(1).boxed().map(e ->
 						Arguments.of(a, b, c, d, e))))));
 	}
 
@@ -690,9 +699,9 @@ public final class TestDBIO {
 	}
 
 	private static Stream<Arguments> testForestSerialization() {
-		return Stream.of(true, false).flatMap(a ->
-			SINGLETON_RANDOM.ints().boxed().limit(1).flatMap(b ->
-				SINGLETON_RANDOM.ints().boxed().limit(1).map(c -> Arguments.of(a, b, c))));
+		return bools().flatMap(a ->
+			SINGLETON_RANDOM.ints(1).boxed().flatMap(b ->
+				SINGLETON_RANDOM.ints(1).boxed().map(c -> Arguments.of(a, b, c))));
 	}
 
 	@ParameterizedTest
@@ -709,7 +718,7 @@ public final class TestDBIO {
 	}
 
 	private static Stream<Arguments> testFortressSerialization() {
-		return SINGLETON_RANDOM.ints().boxed().limit(2).flatMap(a ->
+		return SINGLETON_RANDOM.ints(2).boxed().flatMap(a ->
 			Stream.of(TownSize.values()).map(b -> Arguments.of(a, b)));
 	}
 
@@ -739,8 +748,8 @@ public final class TestDBIO {
 	}
 
 	private static Stream<Arguments> testGroundSerialization() {
-		return SINGLETON_RANDOM.ints().boxed().limit(2).flatMap(a ->
-			Stream.of(true, false).flatMap(b ->
+		return SINGLETON_RANDOM.ints(2).boxed().flatMap(a ->
+			bools().flatMap(b ->
 				races.stream().collect(toShuffledStream(2)).map(c ->
 					Arguments.of(a, b, c))));
 	}
@@ -752,9 +761,9 @@ public final class TestDBIO {
 	}
 
 	private static Stream<Arguments> testGroveSerialization() {
-		return Stream.of(true, false).flatMap(a -> Stream.of(true, false).flatMap(b ->
-			SINGLETON_RANDOM.ints().boxed().limit(2).flatMap(c ->
-				SINGLETON_RANDOM.ints().boxed().limit(1).flatMap(d ->
+		return bools().flatMap(a -> bools().flatMap(b ->
+			SINGLETON_RANDOM.ints(2).boxed().flatMap(c ->
+				SINGLETON_RANDOM.ints(1).boxed().flatMap(d ->
 					races.stream().collect(toShuffledStream(1)).map(e ->
 						Arguments.of(a, b, c, d, e))))));
 	}
@@ -768,7 +777,7 @@ public final class TestDBIO {
 
 	private static Stream<Arguments> testSimpleImmortalSerialization() {
 		return simpleImmortalConstructors.stream().flatMap(a ->
-			SINGLETON_RANDOM.ints().boxed().limit(2).map(b ->
+			SINGLETON_RANDOM.ints(2).boxed().map(b ->
 				Arguments.of(a, b)));
 	}
 
@@ -780,7 +789,7 @@ public final class TestDBIO {
 
 	private static Stream<Arguments> testKindedImmortalSerialization() {
 		return kindedImmortalConstructors.stream().flatMap(a ->
-			SINGLETON_RANDOM.ints().boxed().limit(2).flatMap(b ->
+			SINGLETON_RANDOM.ints(2).boxed().flatMap(b ->
 				races.stream().collect(toShuffledStream(2)).map(c ->
 					Arguments.of(a, b, c))));
 	}
@@ -794,7 +803,7 @@ public final class TestDBIO {
 
 	private static Stream<Arguments> testMineSerialization() {
 		return Stream.of(TownStatus.values()).flatMap(a ->
-			SINGLETON_RANDOM.ints().boxed().limit(2).flatMap(b ->
+			SINGLETON_RANDOM.ints(2).boxed().flatMap(b ->
 				races.stream().collect(toShuffledStream(1)).map(c ->
 					Arguments.of(a, b, c))));
 	}
@@ -806,9 +815,9 @@ public final class TestDBIO {
 	}
 
 	private static Stream<Arguments> testMineralSerialization() {
-		return Stream.of(true, false).flatMap(a ->
-			SINGLETON_RANDOM.ints().boxed().limit(2).flatMap(b ->
-				SINGLETON_RANDOM.ints().boxed().limit(2).flatMap(c ->
+		return bools().flatMap(a ->
+			SINGLETON_RANDOM.ints(2).boxed().flatMap(b ->
+				SINGLETON_RANDOM.ints(2).boxed().flatMap(c ->
 					races.stream().collect(toShuffledStream(1)).map(d ->
 						Arguments.of(a, b, c, d)))));
 	}
@@ -821,8 +830,8 @@ public final class TestDBIO {
 
 	private static Stream<Arguments> testStoneSerialization() {
 		return Stream.of(StoneKind.values()).flatMap(a ->
-			SINGLETON_RANDOM.ints().boxed().limit(2).flatMap(b ->
-				SINGLETON_RANDOM.ints().boxed().limit(2).map(c ->
+			SINGLETON_RANDOM.ints(2).boxed().flatMap(b ->
+				SINGLETON_RANDOM.ints(2).boxed().map(c ->
 						Arguments.of(a, b, c))));
 	}
 
@@ -833,8 +842,8 @@ public final class TestDBIO {
 	}
 
 	private static Stream<Arguments> testShrubSerialization() {
-		return SINGLETON_RANDOM.ints().boxed().limit(2).flatMap(a ->
-				SINGLETON_RANDOM.ints().boxed().limit(2).flatMap(b ->
+		return SINGLETON_RANDOM.ints(2).boxed().flatMap(a ->
+				SINGLETON_RANDOM.ints(2).boxed().flatMap(b ->
 					races.stream().collect(toShuffledStream(1)).map(c ->
 						Arguments.of(a, b, c))));
 	}
@@ -847,7 +856,7 @@ public final class TestDBIO {
 
 	private static Stream<Arguments> testSimpleTerrainSerialization() {
 		return simpleTerrainConstructors.stream().flatMap(a ->
-			SINGLETON_RANDOM.ints().boxed().limit(2).map(b ->
+			SINGLETON_RANDOM.ints(2).boxed().map(b ->
 				Arguments.of(a, b)));
 	}
 
@@ -893,7 +902,7 @@ public final class TestDBIO {
 
 	private static Stream<Arguments> testVillageSerialization() {
 		return Stream.of(TownStatus.values()).flatMap(a ->
-			SINGLETON_RANDOM.ints().boxed().limit(1).flatMap(b ->
+			SINGLETON_RANDOM.ints(1).boxed().flatMap(b ->
 					races.stream().collect(toShuffledStream(3)).map(c ->
 						Arguments.of(a, b, c))));
 	}
@@ -906,8 +915,8 @@ public final class TestDBIO {
 	}
 
 	private static Stream<Arguments> testNotesSerialization() {
-		return SINGLETON_RANDOM.ints().boxed().limit(1).flatMap(a ->
-			SINGLETON_RANDOM.ints().boxed().limit(1).flatMap(b ->
+		return SINGLETON_RANDOM.ints(1).boxed().flatMap(a ->
+			SINGLETON_RANDOM.ints(1).boxed().flatMap(b ->
 					races.stream().collect(toShuffledStream(2)).map(c ->
 						Arguments.of(a, b, c))));
 	}
