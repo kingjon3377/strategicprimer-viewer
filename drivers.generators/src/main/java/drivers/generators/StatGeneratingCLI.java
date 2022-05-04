@@ -140,12 +140,16 @@ import common.map.fixtures.towns.Village;
 
 	/**
 	 * Villages from which newcomers have arrived either recently or already this turn.
+	 *
+	 * TODO: Preinitialize size
 	 */
 	private final Map<Village, Boolean> excludedVillages = new HashMap<>();
 
 	/**
 	 * Get from the cache, or if not present there ask the user, if a
 	 * newcomer has come from the given village recently.
+	 *
+	 * TODO: Prepopulate cache by looking through "player notes" on workers.
 	 */
 	private boolean hasLeviedRecently(final Village village) {
 		if (excludedVillages.containsKey(village)) {
@@ -357,6 +361,7 @@ import common.map.fixtures.towns.Village;
 				Collections.shuffle(candidates);
 				final IJob training = candidates.get(0);
 				worker.addJob(training);
+				// TODO: Load minimum stats for Job levels from file and use those to filter unsuitable stat proposals before showing them
 				while (true) {
 					final WorkerStats stats = createWorkerStats(village.getRace(),
 							training.getLevel());
