@@ -178,13 +178,12 @@ import common.map.fixtures.towns.Village;
 			final Iterable<String> textContent = FileContentsReader
 				.readFileContents(WorkerStats.class,
 					String.format("racial_stat_adjustments/%s.txt", race));
-			final List<Integer> parsed = new ArrayList<>();
+			final List<Integer> parsed = new ArrayList<>(6);
 			for (final String line : textContent) {
 				parsed.add(Integer.parseInt(line.trim()));
 			}
-			final Integer[] temp = parsed.toArray(new Integer[0]);
-			final WorkerStats retval = WorkerStats.factory(temp[0], temp[1], temp[2], temp[3],
-				temp[4], temp[5]);
+			final WorkerStats retval = WorkerStats.factory(parsed.get(0), parsed.get(1), parsed.get(2), parsed.get(3),
+				parsed.get(4), parsed.get(5));
 			racialBonuses.put(race, retval);
 			return retval;
 		} catch (final NoSuchFileException except) {
