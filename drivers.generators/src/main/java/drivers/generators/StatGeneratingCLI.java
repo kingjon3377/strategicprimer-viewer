@@ -503,20 +503,24 @@ import common.map.fixtures.towns.Village;
 				name = names.removeFirst().trim();
 			}
 			Village home = null;
+			final List<Triplet<Integer, Double, Village>> villagesToRemove = new ArrayList<>();
 			for (final Triplet<Integer, Double, Village> triplet : villages) {
 				final int mpDistance = triplet.getValue0();
 				final double tileDistance = triplet.getValue1();
 				final Village village = triplet.getValue2();
 				if (hasLeviedRecently(village)) {
+					villagesToRemove.add(triplet);
 					continue;
 				} else if (SingletonRandom.SINGLETON_RANDOM.nextDouble() <
 						villageChance((int) (Math.min((double) (mpDistance) / mpPerDay,
 							tileDistance / 12.0)) + 1)) {
 					excludedVillages.put(village, true);
+					villagesToRemove.add(triplet);
 					home = village;
 					break;
 				}
 			}
+			villages.removeAll(villagesToRemove);
 			final Worker worker;
 			if (home == null) {
 				final String race = RaceFactory.randomRace();
