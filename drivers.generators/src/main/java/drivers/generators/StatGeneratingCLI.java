@@ -346,8 +346,7 @@ import common.map.fixtures.towns.Village;
 				}
 				return worker;
 			} else {
-				Collections.shuffle(candidates);
-				final IJob training = candidates.get(0);
+				final IJob training = candidates.get(SingletonRandom.SINGLETON_RANDOM.nextInt(candidates.size()));
 				worker.addJob(training);
 				// TODO: Load minimum stats for Job levels from file and use those to filter unsuitable stat proposals before showing them
 				while (true) {
