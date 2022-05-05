@@ -299,35 +299,24 @@ import common.map.fixtures.towns.Village;
 					addCandidate.accept(level - 4);
 					addCandidate.accept(level - 6);
 					addCandidate.accept(level - 7);
-					SingletonRandom.SINGLETON_RANDOM.ints()
-							.filter(n -> n < 4).map(n -> 5 + n).limit(16)
+					// TODO: For counts above 16 just use a hard-coded distribution (e.g. 4 each of 5, 6, 7, 8)?
+					SingletonRandom.SINGLETON_RANDOM.ints(16, 5, 9)
 							.forEach(addCandidate);
-					SingletonRandom.SINGLETON_RANDOM.ints()
-							.filter(n -> n < 4).map(n -> 1 + n).limit(32)
+					SingletonRandom.SINGLETON_RANDOM.ints(32, 1, 5)
 							.forEach(addCandidate);
 				} else if (level > 12) {
 					addCandidate.accept(level - 3);
-					SingletonRandom.SINGLETON_RANDOM.ints()
-							.filter(n -> n > 0)
-							.filter(n -> n < 4).map(n -> 5 + n).limit(8)
+					SingletonRandom.SINGLETON_RANDOM.ints(8, 5, 9)
 							.forEach(addCandidate);
-					SingletonRandom.SINGLETON_RANDOM.ints()
-							.filter(n -> n > 0)
-							.filter(n -> n < 4).map(n -> 1 + n).limit(16)
+					SingletonRandom.SINGLETON_RANDOM.ints(16, 1, 5)
 							.forEach(addCandidate);
 				} else if (level > 8) {
-					SingletonRandom.SINGLETON_RANDOM.ints()
-							.filter(n -> n > 0)
-							.filter(n -> n < 4).map(n -> 5 + n).limit(3)
+					SingletonRandom.SINGLETON_RANDOM.ints(3, 5, 9)
 							.forEach(addCandidate);
-					SingletonRandom.SINGLETON_RANDOM.ints()
-							.filter(n -> n > 0)
-							.filter(n -> n < 4).map(n -> 1 + n).limit(6)
+					SingletonRandom.SINGLETON_RANDOM.ints(6, 1, 5)
 							.forEach(addCandidate);
 				} else if (level > 4) {
-					SingletonRandom.SINGLETON_RANDOM.ints()
-							.filter(n -> n > 0)
-							.filter(n -> n < 4).map(n -> 1 + n).limit(2)
+					SingletonRandom.SINGLETON_RANDOM.ints(2, 1, 5)
 							.forEach(addCandidate);
 				}
 			}
@@ -440,8 +429,8 @@ import common.map.fixtures.towns.Village;
 				break;
 			}
 			worker = new Worker(name, race, idf.createID());
-			final int levels = (int) SingletonRandom.SINGLETON_RANDOM.ints().filter(n -> n < 20)
-				.limit(3).filter(n -> n == 0).count();
+			final int levels = (int) SingletonRandom.SINGLETON_RANDOM.ints(3, 0, 20)
+				.filter(n -> n == 0).count();
 			if (levels == 1) {
 				cli.println("Worker has 1 Job level.");
 			} else if (levels > 1) {
@@ -536,8 +525,8 @@ import common.map.fixtures.towns.Village;
 				final String race = RaceFactory.randomRace();
 				cli.println(String.format("Worker %s is a %s", name, race));
 				worker = new Worker(name, race, idf.createID());
-				final int levels = (int) SingletonRandom.SINGLETON_RANDOM.ints()
-					.filter(n -> n < 20).limit(3).filter(n -> n == 0)
+				final int levels = (int) SingletonRandom.SINGLETON_RANDOM.ints(3, 0, 20)
+					.filter(n -> n == 0)
 					.count();
 				if (levels == 1) {
 					cli.println("Worker has 1 Job level.");
