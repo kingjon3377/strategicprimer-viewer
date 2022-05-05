@@ -2,6 +2,7 @@ package common.map.fixtures.mobile;
 
 import java.io.IOException;
 import java.util.Map;
+import lovelace.util.FileSplitter;
 
 /**
  * Plurals for various kinds of animals, loaded from file, so that a population

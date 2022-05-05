@@ -1,4 +1,4 @@
-package common.map.fixtures.mobile;
+package lovelace.util;
 
 import java.io.IOException;
 
@@ -14,9 +14,7 @@ import org.javatuples.Pair;
 /**
  * A helper to load tab-separated data from file.
  *
- * TODO: move to lovelace-util? or drivers.common?
- *
- * TODO: Instead, combine with all the classes that use this into just one class?
+ * TODO: Support 3-column files as well
  */
 public final class FileSplitter {
 	private FileSplitter() {

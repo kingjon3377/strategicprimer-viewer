@@ -2,6 +2,7 @@ package common.map.fixtures.mobile;
 
 import java.io.IOException;
 import java.util.Map;
+import lovelace.util.FileSplitter;
 
 /**
  * Discovery DCs for animal populations based on the kind of animal, loaded

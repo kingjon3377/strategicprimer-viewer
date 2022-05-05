@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.Map;
 import lovelace.util.LovelaceLogger;
+import lovelace.util.FileSplitter;
 
 /**
  * A model, loaded from file, of the ages at which young animals become adults.
