@@ -14,6 +14,8 @@ import java.util.Map;
 import java.util.HashMap;
 import java.util.List;
 import java.util.LinkedList;
+import java.util.regex.Pattern;
+import java.util.regex.Matcher;
 
 import common.idreg.IDRegistrar;
 import common.idreg.IDFactoryFiller;
@@ -22,6 +24,8 @@ import drivers.common.DriverFailedException;
 import common.map.IMapNG;
 import common.map.Player;
 import common.map.Point;
+
+import common.map.fixtures.UnitMember;
 
 import common.map.fixtures.mobile.IUnit;
 import common.map.fixtures.mobile.Unit;
@@ -108,6 +112,7 @@ import common.map.fixtures.towns.Village;
 
 	private final ICLIHelper cli;
 	private final PopulationGeneratingModel model;
+	private int currentTurn;
 
 	@Override
 	public PopulationGeneratingModel getModel() {
@@ -444,6 +449,30 @@ import common.map.fixtures.towns.Village;
 		}
 	}
 
+	private static final Pattern VILLAGER_PATTERN = Pattern.compile(".*From \\([^.]*\\)\\. Newcomer in turn #\\([0-9]*\\)\\..*");
+
+	/**
+	 * Filter out villages that have had volunteers come to the player's fortress(es) recently.
+	 */
+	private Predicate<Village> filterRecentVillages(final Player player) {
+		final Map<String, Integer> villageMap = new HashMap<>();
+		for (IUnit unit : model.getUnits(player)) {
+			for (UnitMember member : unit) {
+				if (member instanceof IWorker) {
+					final String note = ((IWorker) member).getNote(player);
+					final Matcher match = VILLAGER_PATTERN.matcher(note);
+					if (match.find()) {
+						final String village = match.group(1);
+						final String turnStr = match.group(2);
+						final int turn = Integer.parseInt(turnStr);
+						villageMap.put(village, Math.max(turn, villageMap.getOrDefault(village, -1)));
+					}
+				}
+			}
+		}
+		return village -> villageMap.getOrDefault(village.getName(), -1) < currentTurn - 7;
+	}
+
 	/**
 	 * Let the user create randomly-generated workers, with names read from file, in a unit.
 	 */
@@ -484,6 +513,7 @@ import common.map.fixtures.towns.Village;
 				.flatMap(l -> model.getMap().getFixtures(l).stream()
 					.filter(Village.class::isInstance).map(Village.class::cast)
 					.filter(v -> v.getOwner().equals(unit.getOwner()))
+					.filter(filterRecentVillages(unit.getOwner()))
 					.map(v -> Pair.with(l, v)))
 				.map(p -> travelDistance.apply(p.getValue0()).addAt2(p.getValue1()))
 				.sorted(Comparator.comparingInt(Triplet::getValue0))
@@ -598,6 +628,7 @@ import common.map.fixtures.towns.Village;
 	public void startDriver() throws DriverFailedException {
 		final IDRegistrar idf = IDFactoryFiller.createIDFactory(
 			model.streamAllMaps().toArray(IMapNG[]::new));
+		currentTurn = model.getMap().getCurrentTurn();
 		// TODO: Make getPlayerChoices() return Collection
 		final List<Player> players = StreamSupport.stream(
 				model.getPlayerChoices().spliterator(), false).collect(Collectors.toList());
