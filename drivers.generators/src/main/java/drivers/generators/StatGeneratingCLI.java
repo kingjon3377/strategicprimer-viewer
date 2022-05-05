@@ -375,27 +375,25 @@ import common.map.fixtures.towns.Village;
 				Predicate<String> equipmentQuery = cli::inputBooleanInSeries;
 				final boolean woolen = cli.inputBooleanInSeries("Is the worker's tunic woolen rather than linen?");
 				worker.addEquipment(new Implement(woolen ? "woolen tunic" : "linen tunic", idf.createID()));
+				final boolean hasMultipleLevels = StreamSupport.stream(worker.spliterator(), false)
+					.mapToInt(IJob::getLevel).sum() > 1;
 				// FIXME: Separate method, and data-driven framework, for standard equipment
-				if (StreamSupport.stream(worker.spliterator(), false).mapToInt(IJob::getLevel).sum() > 1 ||
-						    SingletonRandom.SINGLETON_RANDOM.nextDouble() < 0.9) {
+				if (hasMultipleLevels || SingletonRandom.SINGLETON_RANDOM.nextDouble() < 0.9) {
 					worker.addEquipment(new Implement("woolen cloak", idf.createID()));
 				} else {
 					cli.println("Not adding woolen cloak");
 				}
-				if (StreamSupport.stream(worker.spliterator(), false).mapToInt(IJob::getLevel).sum() > 1 ||
-						    SingletonRandom.SINGLETON_RANDOM.nextDouble() < 0.8) {
+				if (hasMultipleLevels || SingletonRandom.SINGLETON_RANDOM.nextDouble() < 0.8) {
 					worker.addEquipment(new Implement("pair leather boots", idf.createID()));
 				} else {
 					cli.println("Not adding leather boots");
 				}
-				if (StreamSupport.stream(worker.spliterator(), false).mapToInt(IJob::getLevel).sum() > 1 ||
-						    SingletonRandom.SINGLETON_RANDOM.nextDouble() < 0.75) {
+				if (hasMultipleLevels || SingletonRandom.SINGLETON_RANDOM.nextDouble() < 0.75) {
 					worker.addEquipment(new Implement("leather satchel", idf.createID()));
 				} else {
 					cli.println("Not adding leather satchel");
 				}
-				if (StreamSupport.stream(worker.spliterator(), false).mapToInt(IJob::getLevel).sum() > 1 ||
-						    SingletonRandom.SINGLETON_RANDOM.nextDouble() < 0.75) {
+				if (hasMultipleLevels || SingletonRandom.SINGLETON_RANDOM.nextDouble() < 0.75) {
 					worker.addEquipment(new Implement("leather waterskin", idf.createID()));
 				} else {
 					cli.println("Not adding leather waterskin");
