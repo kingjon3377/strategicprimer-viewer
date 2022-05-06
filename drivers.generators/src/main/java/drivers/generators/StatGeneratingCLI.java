@@ -153,8 +153,6 @@ import common.map.fixtures.towns.Village;
 	/**
 	 * Get from the cache, or if not present there ask the user, if a
 	 * newcomer has come from the given village recently.
-	 *
-	 * TODO: Prepopulate cache by looking through "player notes" on workers.
 	 */
 	private boolean hasLeviedRecently(final Village village) {
 		if (excludedVillages.containsKey(village)) {
@@ -332,7 +330,6 @@ import common.map.fixtures.towns.Village;
 				worker.setStats(stats);
 				cli.println(String.format("%s is a %s from %s. Stats:", name,
 						village.getRace(), village.getName()));
-				// TODO: Extract helper method for printing stat array
 				cli.println(stats.getPrintable());
 				final boolean woolen = cli.inputBooleanInSeries("Is the worker's tunic woolen rather than linen?");
 				worker.addEquipment(new Implement(woolen ? "woolen tunic" : "linen tunic", idf.createID()));
