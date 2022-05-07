@@ -31,6 +31,7 @@ import common.map.fixtures.mobile.IUnit;
 import common.map.fixtures.mobile.Unit;
 import common.map.fixtures.mobile.Worker;
 import common.map.fixtures.mobile.IWorker;
+import common.map.fixtures.mobile.IMutableWorker;
 
 import common.map.fixtures.mobile.worker.WorkerStats;
 import common.map.fixtures.mobile.worker.IJob;
@@ -261,8 +262,19 @@ import common.map.fixtures.towns.Village;
 		return WorkerStats.adjusted(hp, base, racialBonus);
 	}
 
+	private void maybeAddEquipment(final IDRegistrar idf,
+			final IMutableWorker worker, final String equipment,
+			final double chance) {
+		if (chance >= 1.0 || SingletonRandom.SINGLETON_RANDOM.nextDouble() < chance) {
+			worker.addEquipment(new Implement(equipment,
+				idf.createID()));
+		}
+	}
+
 	/**
 	 * Generate a worker with race and Job levels based on the population of the given village.
+	 *
+	 * FIXME: Worker doesn't get added to sub-maps.
 	 */
 	private Worker generateWorkerFrom(final Village village, final String name, final IDRegistrar idf) {
 		final Worker worker = new Worker(name, village.getRace(), idf.createID());
@@ -276,19 +288,10 @@ import common.map.fixtures.towns.Village;
 			cli.println(stats.getPrintable());
 			final boolean woolen = cli.inputBooleanInSeries("Is the worker's tunic woolen rather than linen?");
 			worker.addEquipment(new Implement(woolen ? "woolen tunic" : "linen tunic", idf.createID()));
-			// FIXME: Extract a method for this equipment-adding process, and configure it with a set of (kind, chance) pairs
-			if (SingletonRandom.SINGLETON_RANDOM.nextDouble() < 0.9) {
-				worker.addEquipment(new Implement("woolen cloak", idf.createID()));
-			}
-			if (SingletonRandom.SINGLETON_RANDOM.nextDouble() < 0.8) {
-				worker.addEquipment(new Implement("pair leather boots", idf.createID()));
-			}
-			if (SingletonRandom.SINGLETON_RANDOM.nextDouble() < 0.75) {
-				worker.addEquipment(new Implement("leather satchel", idf.createID()));
-			}
-			if (SingletonRandom.SINGLETON_RANDOM.nextDouble() < 0.75) {
-				worker.addEquipment(new Implement("leather waterskin", idf.createID()));
-			}
+			maybeAddEquipment(idf, worker, "woolen cloak", 0.9);
+			maybeAddEquipment(idf, worker, "pair leather boots", 0.8);
+			maybeAddEquipment(idf, worker, "leather satchel", 0.75);
+			maybeAddEquipment(idf, worker, "leather waterskin", 0.75);
 			return worker;
 		} else {
 			final List<IJob> candidates = new ArrayList<>();
@@ -333,19 +336,10 @@ import common.map.fixtures.towns.Village;
 				cli.println(stats.getPrintable());
 				final boolean woolen = cli.inputBooleanInSeries("Is the worker's tunic woolen rather than linen?");
 				worker.addEquipment(new Implement(woolen ? "woolen tunic" : "linen tunic", idf.createID()));
-				// FIXME: Extract a method for this equipment-adding process, and configure it with a set of (kind, chance) pairs
-				if (SingletonRandom.SINGLETON_RANDOM.nextDouble() < 0.9) {
-					worker.addEquipment(new Implement("woolen cloak", idf.createID()));
-				}
-				if (SingletonRandom.SINGLETON_RANDOM.nextDouble() < 0.8) {
-					worker.addEquipment(new Implement("pair leather boots", idf.createID()));
-				}
-				if (SingletonRandom.SINGLETON_RANDOM.nextDouble() < 0.75) {
-					worker.addEquipment(new Implement("leather satchel", idf.createID()));
-				}
-				if (SingletonRandom.SINGLETON_RANDOM.nextDouble() < 0.75) {
-					worker.addEquipment(new Implement("leather waterskin", idf.createID()));
-				}
+				maybeAddEquipment(idf, worker, "woolen cloak", 0.9);
+				maybeAddEquipment(idf, worker, "pair leather boots", 0.8);
+				maybeAddEquipment(idf, worker, "leather satchel", 0.75);
+				maybeAddEquipment(idf, worker, "leather waterskin", 0.75);
 				return worker;
 			} else {
 				final IJob training = candidates.get(SingletonRandom.SINGLETON_RANDOM.nextInt(candidates.size()));
