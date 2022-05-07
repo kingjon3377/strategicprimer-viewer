@@ -1,5 +1,6 @@
 package drivers.generators;
 
+import lovelace.util.LovelaceLogger;
 import drivers.common.IDriverModel;
 import drivers.common.SimpleMultiMapModel;
 
@@ -254,6 +255,8 @@ public class PopulationGeneratingModel extends SimpleMultiMapModel { // TODO: Ex
 					localUnit.get().setOrders(turn, "TODO: assign");
 				}
 				map.setModified(true);
+			} else {
+				LovelaceLogger.debug("Unit not found in %s", map.getFilename());
 			}
 		}
 	}
