@@ -1,0 +1,10 @@
+woodcutter;str	1
+woodcutter;dex	0
+woodcutter;con	0
+woodcutter;3;str	2
+woodcutter;4;str	3
+woodcutter;5;str	3
+woodcutter;6;str	3
+woodcutter;7;str	3
+woodcutter;8;str	3
+woodcutter;9;str	3

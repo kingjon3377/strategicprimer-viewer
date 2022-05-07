@@ -350,10 +350,18 @@ import common.map.fixtures.towns.Village;
 			} else {
 				final IJob training = candidates.get(SingletonRandom.SINGLETON_RANDOM.nextInt(candidates.size()));
 				worker.addJob(training);
-				// TODO: Load minimum stats for Job levels from file and use those to filter unsuitable stat proposals before showing them
+				final Predicate<WorkerStats> suitable = MinimumStats.suitableFor(training.getName(), training.getLevel());
+				int iterations = 0;
 				while (true) {
+					iterations++;
 					final WorkerStats stats = createWorkerStats(village.getRace(),
 							training.getLevel());
+					if (iterations > 100) {
+						cli.println(String.format("Bypassing automated sanity check after %d iterations", iterations));
+					} else if (!suitable.test(stats)) {
+						LovelaceLogger.trace("Skipping stats deemed unsuitable: %s", stats.getPrintable());
+						continue;
+					}
 					cli.println(String.format(
 							"%s, a %s, is a level-%d %s from %s. Proposed stats:",
 							name, village.getRace(), training.getLevel(),
