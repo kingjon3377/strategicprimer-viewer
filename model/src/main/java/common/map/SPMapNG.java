@@ -260,10 +260,11 @@ public class SPMapNG implements IMutableMapNG {
 	 */
 	@Override
 	public Collection<River> getRivers(final Point location) {
-		if (riversMap.containsKey(location)) {
-			return Collections.unmodifiableSet(riversMap.get(location));
-		} else {
+		final Set<River> retval = riversMap.get(location);
+		if (retval == null) {
 			return Collections.emptySet();
+		} else {
+			return Collections.unmodifiableSet(retval);
 		}
 	}
 
@@ -272,10 +273,11 @@ public class SPMapNG implements IMutableMapNG {
 	 */
 	@Override
 	public Map<Direction, Integer> getRoads(final Point location) {
-		if (roadsMap.containsKey(location)) {
-			return Collections.unmodifiableMap(roadsMap.get(location));
-		} else {
+		final Map<Direction, Integer> retval = roadsMap.get(location);
+		if (retval == null) {
 			return Collections.emptyMap();
+		} else {
+			return Collections.unmodifiableMap(retval);
 		}
 	}
 
@@ -287,13 +289,15 @@ public class SPMapNG implements IMutableMapNG {
 			throw new IllegalArgumentException("Road quality must be nonnegative");
 		}
 		modified = true; // TODO: Only if this is a change
-		if (roadsMap.containsKey(point)) {
-			roadsMap.get(point).put(direction, quality);
+		final Map<Direction, Integer> temp = roadsMap.get(point);
+		final Map<Direction, Integer> roadsAtPoint;
+		if (temp == null) {
+			roadsAtPoint = new EnumMap<>(Direction.class);
 		} else {
-			final Map<Direction, Integer> roadsAtPoint = new EnumMap<>(Direction.class);
-			roadsAtPoint.put(direction, quality);
-			roadsMap.put(point, roadsAtPoint);
+			roadsAtPoint = temp;
 		}
+		roadsAtPoint.put(direction, quality);
+		roadsMap.put(point, roadsAtPoint);
 	}
 
 	/**
@@ -301,10 +305,11 @@ public class SPMapNG implements IMutableMapNG {
 	 */
 	@Override
 	public Collection<TileFixture> getFixtures(final Point location) {
-		if (fixturesMap.containsKey(location)) {
-			return Collections.unmodifiableCollection(fixturesMap.get(location));
-		} else {
+		final Collection<TileFixture> retval = fixturesMap.get(location);
+		if (retval == null) {
 			return Collections.emptyList();
+		} else {
+			return Collections.unmodifiableCollection(retval);
 		}
 	}
 
@@ -335,21 +340,23 @@ public class SPMapNG implements IMutableMapNG {
 
 	@Override
 	public Collection<Player> getAllBookmarks(final Point location) {
-		if (bookmarksImpl.containsKey(location)) {
-			return Collections.unmodifiableCollection(bookmarksImpl.get(location));
-		} else {
+		final Collection<Player> retval = bookmarksImpl.get(location);
+		if (retval == null) {
 			return Collections.emptyList();
+		} else {
+			return Collections.unmodifiableCollection(retval);
 		}
 	}
 
 	@Override
 	public void addBookmark(final Point point, final Player player) {
 		modified = true; // TODO: Only if this is a change
+		final Set<Player> temp = bookmarksImpl.get(point);
 		final Set<Player> marks;
-		if (bookmarksImpl.containsKey(point)) {
-			marks = bookmarksImpl.get(point);
-		} else {
+		if (temp == null) {
 			marks = new HashSet<>();
+		} else {
+			marks = temp;
 		}
 		marks.add(player);
 		bookmarksImpl.put(point, marks);
@@ -358,8 +365,8 @@ public class SPMapNG implements IMutableMapNG {
 	@Override
 	public void removeBookmark(final Point point, final Player player) {
 		modified = true; // TODO: Only if this is a change
-		if (bookmarksImpl.containsKey(point)) {
-			final Set<Player> marks = bookmarksImpl.get(point);
+		final Set<Player> marks = bookmarksImpl.get(point);
+		if (marks != null) {
 			marks.remove(player);
 			if (marks.isEmpty()) {
 				bookmarksImpl.remove(point);
@@ -384,14 +391,15 @@ public class SPMapNG implements IMutableMapNG {
 	@Override
 	public void addRivers(final Point location, final River... addedRivers) {
 		modified = true; // TODO: Only if this is a change
-		final Set<River> set;
-		if (riversMap.containsKey(location)) {
-			set = riversMap.get(location);
+		final Set<River> set = riversMap.get(location);
+		if (set == null) {
+			if (addedRivers.length > 0) {
+				riversMap.put(location, EnumSet.of(addedRivers[0], addedRivers));
+			}
 		} else {
-			set = EnumSet.noneOf(River.class); // TODO: Use EnumSet.of() rather than adding one by one below
+			set.addAll(Arrays.asList(addedRivers));
+			riversMap.put(location, set);
 		}
-		set.addAll(Arrays.asList(addedRivers));
-		riversMap.put(location, set);
 	}
 
 	/**
@@ -400,8 +408,8 @@ public class SPMapNG implements IMutableMapNG {
 	@Override
 	public void removeRivers(final Point location, final River... removedRivers) {
 		modified = true; // TODO: Only if this is a change
-		if (riversMap.containsKey(location)) {
-			final Set<River> set = riversMap.get(location);
+		final Set<River> set = riversMap.get(location);
+		if (set != null) {
 			for (final River river : removedRivers) {
 				set.remove(river);
 			}
@@ -426,10 +434,11 @@ public class SPMapNG implements IMutableMapNG {
 		}
 		modified = true; // TODO: Only if this is a change
 		final List<TileFixture> local;
-		if (fixturesMap.containsKey(location)) {
-			local = fixturesMap.get(location);
-		} else {
+		final List<TileFixture> temp = fixturesMap.get(location);
+		if (temp == null) {
 			local = new ArrayList<>();
+		} else {
+			local = temp;
 		}
 		final Optional<TileFixture> existing = local.stream()
 			.filter(f -> f.getId() == fixture.getId()).findAny();
@@ -466,8 +475,8 @@ public class SPMapNG implements IMutableMapNG {
 	@Override
 	public void removeFixture(final Point location, final TileFixture fixture) {
 		modified = true; // TODO: Only if this is a change
-		if (fixturesMap.containsKey(location)) {
-			final List<TileFixture> local = fixturesMap.get(location);
+		final List<TileFixture> local = fixturesMap.get(location);
+		if (local != null) {
 			local.remove(fixture);
 			if (local.isEmpty()) {
 				fixturesMap.remove(location);
@@ -536,8 +545,9 @@ public class SPMapNG implements IMutableMapNG {
 				continue;
 			}
 			builder.append("At ").append(location);
-			if (terrain.containsKey(location)) {
-				builder.append("terrain: ").append(terrain.get(location)).append(", ");
+			final TileType tileTerrain = terrain.get(location);
+			if (tileTerrain != null) {
+				builder.append("terrain: ").append(tileTerrain).append(", ");
 			}
 			if (isMountainous(location)) {
 				builder.append("mountains, ");
@@ -548,9 +558,11 @@ public class SPMapNG implements IMutableMapNG {
 					.collect(Collectors.joining(" ")));
 				builder.append(", ");
 			}
-			if (fixturesMap.containsKey(location)) {
+			final Collection<TileFixture> localFixtures =
+				fixturesMap.get(location);
+			if (localFixtures != null) {
 				builder.append("fixtures: ").append(System.lineSeparator());
-				builder.append(fixturesMap.get(location).stream().map(Object::toString)
+				builder.append(localFixtures.stream().map(Object::toString)
 					.collect(Collectors.joining(System.lineSeparator())));
 			}
 			builder.append(System.lineSeparator());
@@ -638,28 +650,34 @@ public class SPMapNG implements IMutableMapNG {
 				final TileFixture fixture = entry.getKey();
 				if (fixture instanceof IUnit) {
 					final List<Pair<IUnit, Point>> list;
-					if (ourUnits.containsKey(fixture.getId())) {
-						list = ourUnits.get(fixture.getId());
-					} else {
+					final List<Pair<IUnit, Point>> temp =
+						ourUnits.get(fixture.getId());
+					if (temp == null) {
 						list = new ArrayList<>();
+					} else {
+						list = temp;
 					}
 					list.add(Pair.with((IUnit) fixture, point));
 					ourUnits.put(fixture.getId(), list);
 				} else if (fixture instanceof AbstractTown) {
 					final List<Pair<AbstractTown, Point>> list;
-					if (ourTowns.containsKey(fixture.getId())) {
-						list = ourTowns.get(fixture.getId());
-					} else {
+					final List<Pair<AbstractTown, Point>> temp =
+						ourTowns.get(fixture.getId());
+					if (temp == null) {
 						list = new ArrayList<>();
+					} else {
+						list = temp;
 					}
 					list.add(Pair.with((AbstractTown) fixture, point));
 					ourTowns.put(fixture.getId(), list);
 				} else if (fixture instanceof Subsettable) {
 					final List<Pair<Subsettable<IFixture>, Point>> list;
-					if (ourSubsettables.containsKey(fixture.getId())) {
-						list = ourSubsettables.get(fixture.getId());
-					} else {
+					final List<Pair<Subsettable<IFixture>, Point>> temp =
+						ourSubsettables.get(fixture.getId());
+					if (temp == null) {
 						list = new ArrayList<>();
+					} else {
+						list = temp;
 					}
 					list.add(Pair.with((Subsettable<IFixture>) fixture, point));
 					ourSubsettables.put(fixture.getId(), list);
@@ -668,10 +686,10 @@ public class SPMapNG implements IMutableMapNG {
 
 			// TODO: Convert to member function
 			final BiPredicate<Point, TileFixture> movedFrom = (point, fixture) -> {
-				if (ourLocations.containsKey(fixture) &&
-						!ourLocations.get(fixture).equals(point)) {
+				final Point tPoint = ourLocations.get(fixture);
+				if (tPoint != null && !tPoint.equals(point)) {
 					report.accept(String.format("%s moved from our %s to %s",
-						fixture.toString(), ourLocations.get(fixture).toString(),
+						fixture.toString(), tPoint.toString(),
 						point.toString()));
 					return true;
 				} else {
@@ -683,9 +701,11 @@ public class SPMapNG implements IMutableMapNG {
 				final Consumer<String> localReport =
 					str -> report.accept(String.format(
 						"At %s:\t%s", point.toString(), str));
-				if (obj.getBaseTerrain(point) != null) {
-					if (terrain.containsKey(point)) {
-						if (getBaseTerrain(point) != obj.getBaseTerrain(point)) {
+				final TileType theirTerrain = obj.getBaseTerrain(point);
+				final TileType ourTerrain = terrain.get(point);
+				if (theirTerrain != null) {
+					if (ourTerrain != null) {
+						if (ourTerrain != theirTerrain) {
 							localReport.accept("Base terrain differs");
 							retval = false;
 							continue;
@@ -718,21 +738,24 @@ public class SPMapNG implements IMutableMapNG {
 				}
 				final Collection<TileFixture> theirFixtures = obj.getFixtures(point);
 				for (final TileFixture fixture : theirFixtures) {
+					final List<Pair<IUnit, Point>> unitLocs = ourUnits.get(fixture.getId());
+					final List<Pair<AbstractTown, Point>> townLocs = ourTowns.get(fixture.getId());
+					final List<Pair<Subsettable<IFixture>, Point>> subsetLocs = ourSubsettables.get(fixture.getId());
 					if (ourFixtures.contains(fixture) || fixture.subsetShouldSkip()) {
 						continue;
 					} else if (fixture instanceof IUnit &&
-							ourUnits.containsKey(fixture.getId())) {
+							unitLocs != null) {
 						retval = testAgainstList(fixture, point,
-							ourUnits.get(fixture.getId()), localReport, movedFrom) && retval;
+							unitLocs, localReport, movedFrom) && retval;
 					} else if (fixture instanceof AbstractTown &&
-							ourTowns.containsKey(fixture.getId())) {
+							townLocs != null) {
 						retval = testAgainstList((AbstractTown) fixture, point,
-								ourTowns.get(fixture.getId()), localReport, movedFrom)
+								townLocs, localReport, movedFrom)
 							&& retval;
 					} else if (fixture instanceof Subsettable &&
-							ourSubsettables.containsKey(fixture.getId())) {
+							subsetLocs != null) {
 						retval = testAgainstList(fixture, point,
-							ourSubsettables.get(fixture.getId()),
+							subsetLocs,
 							localReport, movedFrom) && retval;
 					} else if (movedFrom.test(point, fixture)) {
 						retval = false; // return false;
@@ -750,8 +773,7 @@ public class SPMapNG implements IMutableMapNG {
 				final Map<Direction, Integer> ourRoads = getRoads(point);
 				// TODO: Extract road-subset method
 				for (final Map.Entry<Direction, Integer> entry : theirRoads.entrySet()) {
-					if (ourRoads.containsKey(entry.getKey()) &&
-							ourRoads.get(entry.getKey()) >= entry.getValue()) {
+					if (ourRoads.getOrDefault(entry.getKey(), 0) >= entry.getValue()) {
 						continue;
 					} else {
 						localReport.accept("Has road information we don't");
@@ -776,11 +798,13 @@ public class SPMapNG implements IMutableMapNG {
 	 */
 	@Override
 	public IMapNG copy(final IFixture.CopyBehavior zero, final @Nullable Player player) {
+		// FIXME: Should declare as SPMapNG and use collection bulk-add methods
 		final IMutableMapNG retval = new SPMapNG(getDimensions(), playerCollection.copy(),
 			currentTurn);
 		for (final Point point : getLocations()) {
-			if (terrain.containsKey(point)) {
-				retval.setBaseTerrain(point, terrain.get(point));
+			final TileType tileType = terrain.get(point);
+			if (tileType != null) {
+				retval.setBaseTerrain(point, tileType);
 			}
 			retval.setMountainous(point, isMountainous(point));
 			retval.addRivers(point, getRivers(point).toArray(new River[0]));
