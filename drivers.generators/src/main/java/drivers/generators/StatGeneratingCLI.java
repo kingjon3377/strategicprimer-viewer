@@ -273,8 +273,6 @@ import common.map.fixtures.towns.Village;
 
 	/**
 	 * Generate a worker with race and Job levels based on the population of the given village.
-	 *
-	 * FIXME: Worker doesn't get added to sub-maps.
 	 */
 	private Worker generateWorkerFrom(final Village village, final String name, final IDRegistrar idf) {
 		final Worker worker = new Worker(name, village.getRace(), idf.createID());

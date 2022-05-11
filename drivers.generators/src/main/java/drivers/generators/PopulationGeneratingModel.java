@@ -60,7 +60,7 @@ public class PopulationGeneratingModel extends SimpleMultiMapModel { // TODO: Ex
 
 	// TODO: Make a static copyConstructor() method delegating to a private constructor method instead?
 	public PopulationGeneratingModel(final IDriverModel model) {
-		super(model.getRestrictedMap());
+		super(model);
 	}
 
 	/**
