@@ -33,7 +33,6 @@ public final class Point implements Comparable<Point> {
 	public Point(final int row, final int column) {
 		this.row = row;
 		this.column = column;
-		string = String.format("(%d, %d)", row, column);
 	}
 
 	/**
@@ -57,11 +56,19 @@ public final class Point implements Comparable<Point> {
 		return row << 9 + column;
 	}
 
-	private final String string;
+	private volatile String string;
+
+	private synchronized String maybeString() {
+		if (string == null) {
+			string = String.format("(%d, %d)", row, column);
+		}
+		return string;
+	}
 
 	@Override
 	public String toString() {
-		return string;
+		final String str = string;
+		return str == null ? maybeString() : str;
 	}
 
 	/**
