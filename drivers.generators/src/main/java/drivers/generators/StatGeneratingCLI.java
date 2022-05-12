@@ -6,7 +6,9 @@ import java.util.Comparator;
 import java.util.function.Predicate;
 import lovelace.util.LovelaceLogger;
 import org.jetbrains.annotations.Nullable;
+import lovelace.util.TriConsumer;
 
+import java.util.function.BiConsumer;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Deque;
@@ -366,41 +368,49 @@ import common.map.fixtures.towns.Village;
 						break;
 					}
 				}
-				final boolean hasMount = cli.inputBooleanInSeries("Is the worker mounted?");
+				final boolean hasMount = cli.inputBooleanInSeries("Is the worker mounted?", "mounted-" + training.getName());
 				if (hasMount) {
 					final String mountKind = cli.inputString("Kind of mount: ");
 					if (mountKind != null && !mountKind.isEmpty()) {
 						worker.setMount(new AnimalImpl(mountKind, false, "tame", idf.createID()));
 					}
 				}
+				final List<String> standardEquipment =
+					StandardEquipment.standardEquipment(
+						training.getName(), training.getLevel());
+				for (final String item : standardEquipment) {
+					LovelaceLogger.debug("Adding %s for %s, a level %d %s",
+						item, worker.getName(),
+						training.getLevel(), training.getName());
+					worker.addEquipment(new Implement(item, idf.createID()));
+				}
 				String equipmentPrompt = "Does the worker have any equipment?";
 				Predicate<String> equipmentQuery = cli::inputBooleanInSeries;
-				final boolean woolen = cli.inputBooleanInSeries("Is the worker's tunic woolen rather than linen?");
-				worker.addEquipment(new Implement(woolen ? "woolen tunic" : "linen tunic", idf.createID()));
-				final boolean hasMultipleLevels = StreamSupport.stream(worker.spliterator(), false)
-					.mapToInt(IJob::getLevel).sum() > 1;
-				// FIXME: Separate method, and data-driven framework, for standard equipment
-				if (hasMultipleLevels || SingletonRandom.SINGLETON_RANDOM.nextDouble() < 0.9) {
-					worker.addEquipment(new Implement("woolen cloak", idf.createID()));
-				} else {
-					cli.println("Not adding woolen cloak");
+				BiConsumer<String, String> addIfStdOmits = (key, arg) -> {
+					if (standardEquipment.stream().map(String::toLowerCase).noneMatch(s -> s.contains(key))) {
+						worker.addEquipment(new Implement(arg, idf.createID()));
+					}
+				};
+				Predicate<String> stdOmits = arg -> standardEquipment.stream().map(String::toLowerCase).noneMatch(s -> s.contains(arg));
+				if (stdOmits.test("tunic")) {
+					final boolean woolen = cli.inputBooleanInSeries("Is the worker's tunic woolen rather than linen?", "tunic-" + training.getName());
+					addIfStdOmits.accept("tunic",
+						woolen ? "woolen tunic" : "linen tunic");
 				}
-				if (hasMultipleLevels || SingletonRandom.SINGLETON_RANDOM.nextDouble() < 0.8) {
-					worker.addEquipment(new Implement("pair leather boots", idf.createID()));
-				} else {
-					cli.println("Not adding leather boots");
-				}
-				if (hasMultipleLevels || SingletonRandom.SINGLETON_RANDOM.nextDouble() < 0.75) {
-					worker.addEquipment(new Implement("leather satchel", idf.createID()));
-				} else {
-					cli.println("Not adding leather satchel");
-				}
-				if (hasMultipleLevels || SingletonRandom.SINGLETON_RANDOM.nextDouble() < 0.75) {
-					worker.addEquipment(new Implement("leather waterskin", idf.createID()));
-				} else {
-					cli.println("Not adding leather waterskin");
-				}
-				// TODO: Should probably automatically add some job-specific equipment
+				final boolean hasMultipleLevels = training.getLevel() > 1;
+				TriConsumer<String, String, Double> maybeAdd =
+					(key, item, chance) -> {
+						if (hasMultipleLevels || SingletonRandom.SINGLETON_RANDOM.nextDouble() < chance) {
+							addIfStdOmits.accept(key, item);
+						} else {
+							cli.println("Not adding " + key);
+						}
+				};
+				maybeAdd.accept("cloak", "woolen cloak", 0.9);
+				maybeAdd.accept("boots", "pair leather boots", 0.8);
+				maybeAdd.accept("satchel", "leather satchel", 0.75);
+				maybeAdd.accept("waterskin", "leather waterskin", 0.75);
+				// TODO: Accept strings until empty line instead of boolean-prompting every time
 				while (equipmentQuery.test(equipmentPrompt)) {
 					final String equipment = cli.inputString("Kind of equipment: ");
 					if (equipment == null || equipment.isEmpty()) {
