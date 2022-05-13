@@ -103,12 +103,12 @@ public class SPMapNG implements IMutableMapNG {
 	/**
 	 * The set of mountainous places.
 	 */
-	private final Set<Point> mountains = new HashSet<>();
+	private final Set<Point> mountains;
 
 	/**
 	 * The base terrain at points in the map.
 	 */
-	private final Map<Point, TileType> terrain = new HashMap<>();
+	private final Map<Point, TileType> terrain;
 
 	/**
 	 * The players in the map.
@@ -119,7 +119,7 @@ public class SPMapNG implements IMutableMapNG {
 	 * Fixtures at various points, other than the main ground and forest.
 	 */
 	// TODO: Use Guava multimap?
-	private final Map<Point, List<TileFixture>> fixturesMap = new HashMap<>();
+	private final Map<Point, List<TileFixture>> fixturesMap;
 
 	/**
 	 * The version and dimensions of the map.
@@ -129,12 +129,12 @@ public class SPMapNG implements IMutableMapNG {
 	/**
 	 * The rivers in the map.
 	 */
-	private final Map<Point, Set<River>> riversMap = new HashMap<>();
+	private final Map<Point, Set<River>> riversMap;
 
 	/**
 	 * Roads in the map.
 	 */
-	private final Map<Point, Map<Direction, Integer>> roadsMap = new HashMap<>();
+	private final Map<Point, Map<Direction, Integer>> roadsMap;
 
 	/**
 	 * The current turn.
@@ -160,9 +160,34 @@ public class SPMapNG implements IMutableMapNG {
 	/**
 	 * The collection of bookmarks.
 	 */
-	private final Map<Point, Set<Player>> bookmarksImpl = new HashMap<>();
+	private final Map<Point, Set<Player>> bookmarksImpl;
+
+	private static int reduceLarge(final int num) {
+		final int retval = num >> 1;
+		if (retval < 20) {
+			return num;
+		} else {
+			return retval;
+		}
+	}
+
+	private static int reduceMore(final int num) {
+		final int retval = num >> 2;
+		if (retval < 20) {
+			return num;
+		} else {
+			return retval;
+		}
+	}
 
 	public SPMapNG(final MapDimensions dimensions, final IMutablePlayerCollection players, final int turn) {
+		final int size = dimensions.getRows() * dimensions.getColumns();
+		terrain = new HashMap<Point, TileType>(reduceLarge(size), 0.5f);
+		fixturesMap = new HashMap<Point, List<TileFixture>>(reduceLarge(size), 0.5f);
+		riversMap = new HashMap<Point, Set<River>>(reduceMore(size), 0.5f);
+		roadsMap = new HashMap<Point, Map<Direction, Integer>>(reduceMore(size), 0.5f);
+		bookmarksImpl = new HashMap<Point, Set<Player>>(reduceMore(size), 0.5f);
+		mountains = new HashSet<Point>(reduceLarge(size), 0.5f);
 		mapDimensions = dimensions;
 		playerCollection = players;
 		currentTurn = turn;
@@ -636,14 +661,14 @@ public class SPMapNG implements IMutableMapNG {
 			final List<TileFixture> ourFixtures = new ArrayList<>();
 			// TODO: Use Guava Multimap for this
 			final Map<Integer, List<Pair<Subsettable<IFixture>, Point>>> ourSubsettables =
-				new HashMap<>();
+				new HashMap<Integer, List<Pair<Subsettable<IFixture>, Point>>>(50, 0.4f);
 			final Map<TileFixture, Point> ourLocations = fixturesMap.entrySet().stream()
 				.flatMap(e -> e.getValue().stream().map(f -> Pair.with(f, e.getKey())))
 				.collect(Collectors.toMap(Pair::getValue0, Pair::getValue1));
 			// IUnit is Subsettable<IUnit> and thus incompatible with SubsettableFixture // FIXME: No longer true
-			final Map<Integer, List<Pair<IUnit, Point>>> ourUnits = new HashMap<>();
+			final Map<Integer, List<Pair<IUnit, Point>>> ourUnits = new HashMap<Integer, List<Pair<IUnit, Point>>>(50, 0.4f);
 			// AbstractTown is Subsettable<AbstractTown>
-			final Map<Integer, List<Pair<AbstractTown, Point>>> ourTowns = new HashMap<>();
+			final Map<Integer, List<Pair<AbstractTown, Point>>> ourTowns = new HashMap<Integer, List<Pair<AbstractTown, Point>>>(50, 0.4f);
 
 			for (final Map.Entry<TileFixture, Point> entry : ourLocations.entrySet()) {
 				final Point point = entry.getValue();
