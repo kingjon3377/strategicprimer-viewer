@@ -60,7 +60,8 @@ public final class Point implements Comparable<Point> {
 
 	private synchronized String maybeString() {
 		if (string == null) {
-			string = String.format("(%d, %d)", row, column);
+			// String.format("(%d, %d)", row, column) // perf bottleneck
+			string = "(" + row + ", " + column + ")";
 		}
 		return string;
 	}
