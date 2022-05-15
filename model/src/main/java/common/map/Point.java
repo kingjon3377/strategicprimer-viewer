@@ -42,7 +42,7 @@ public final class Point implements Comparable<Point> {
 	public static final Point INVALID_POINT = new Point(-1, -1);
 
 	@Override
-	public boolean equals(final Object obj) {
+	public boolean equals(@Nullable final Object obj) {
 		if (this == obj) {
 			return true;
 		} else if (obj instanceof Point) {

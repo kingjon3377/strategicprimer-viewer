@@ -16,11 +16,12 @@ import common.map.fixtures.mobile.Unit;
 import common.map.fixtures.towns.IFortress;
 import common.xmlio.Warning;
 import common.map.fixtures.UnitMember;
+import org.jetbrains.annotations.Nullable;
 
 import static io.jenetics.facilejdbc.Param.value;
 
 final class DBUnitHandler extends AbstractDatabaseWriter<IUnit, Object> implements MapContentsReader {
-	public DBUnitHandler(final SPDatabaseWriter parent) {
+	public DBUnitHandler(@Nullable final SPDatabaseWriter parent) {
 		super(IUnit.class, Object.class);
 		this.parent = parent;
 	}

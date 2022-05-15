@@ -17,11 +17,12 @@ import common.map.fixtures.towns.IMutableFortress;
 import common.map.fixtures.towns.TownSize;
 import common.xmlio.Warning;
 import common.map.fixtures.FortressMember;
+import org.jetbrains.annotations.Nullable;
 
 import static io.jenetics.facilejdbc.Param.value;
 
 final class DBFortressHandler extends AbstractDatabaseWriter<IFortress, Point> implements MapContentsReader {
-	public DBFortressHandler(final SPDatabaseWriter parent) {
+	public DBFortressHandler(@Nullable final SPDatabaseWriter parent) {
 		super(IFortress.class, Point.class);
 		this.parent = parent;
 	}
