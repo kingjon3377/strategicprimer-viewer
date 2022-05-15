@@ -25,8 +25,7 @@ public class MissingPropertyException extends SPFormatException {
 	 */
 	public MissingPropertyException(final StartElement context, final String param) {
 		super(String.format("Missing parameter %s in tag %s", param,
-			context.getName().getLocalPart()), context.getLocation().getLineNumber(),
-			context.getLocation().getColumnNumber());
+			context.getName().getLocalPart()), context.getLocation());
 		tag = context.getName();
 		this.param = param;
 	}
@@ -38,8 +37,7 @@ public class MissingPropertyException extends SPFormatException {
 	 */
 	public MissingPropertyException(final StartElement context, final String param, final Throwable cause) {
 		super(String.format("Missing parameter %s in tag %s", param,
-			context.getName().getLocalPart()), context.getLocation().getLineNumber(),
-			context.getLocation().getColumnNumber(), cause);
+			context.getName().getLocalPart()), context.getLocation(), cause);
 		tag = context.getName();
 		this.param = param;
 	}
