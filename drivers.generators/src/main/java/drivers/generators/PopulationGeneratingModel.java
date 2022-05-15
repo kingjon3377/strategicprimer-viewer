@@ -256,7 +256,8 @@ public class PopulationGeneratingModel extends SimpleMultiMapModel { // TODO: Ex
 				}
 				map.setModified(true);
 			} else {
-				LovelaceLogger.debug("Unit not found in %s", map.getFilename());
+				LovelaceLogger.debug("Unit not found in %s",
+						Optional.ofNullable(map.getFilename()).map(Object::toString).orElse("unsaved map"));
 			}
 		}
 	}

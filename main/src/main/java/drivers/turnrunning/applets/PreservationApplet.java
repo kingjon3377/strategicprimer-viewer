@@ -52,6 +52,10 @@ import static lovelace.util.Decimalize.decimalize;
 	public @Nullable String run() {
 		final StringBuilder builder = new StringBuilder();
 		final IUnit unit = model.getSelectedUnit();
+		if (unit == null) {
+			cli.println("No current unit");
+			return "";
+		}
 		final List<String> foods = new ArrayList<>();
 		while (true) {
 			// TODO: should verb be "preserve" or "cook" instead of "convert"?

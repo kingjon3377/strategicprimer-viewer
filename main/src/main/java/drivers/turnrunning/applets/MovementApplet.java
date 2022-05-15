@@ -82,6 +82,10 @@ import static lovelace.util.Decimalize.decimalize;
 		final StringBuilder buffer = new StringBuilder();
 		model.addSelectionChangeListener(explorationCLI);
 		final IUnit mover = model.getSelectedUnit();
+		if (mover == null) {
+			cli.println("No currently selected unit");
+			return "";
+		}
 		// Ask the user about total MP, through explorationCLI listening for the selection-change event
 		model.setSelectedUnit(mover);
 		while (explorationCLI.getMovement() > 0) {

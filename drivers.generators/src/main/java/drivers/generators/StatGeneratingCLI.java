@@ -163,6 +163,9 @@ import common.map.fixtures.towns.Village;
 		} else {
 			final Boolean retval = cli.inputBoolean(String.format(
 				"Has a newcomer come from %s in the last 7 turns?", village.getName()));
+			if (retval == null) {
+				return false;
+			}
 			excludedVillages.put(village, retval);
 			return retval;
 		}

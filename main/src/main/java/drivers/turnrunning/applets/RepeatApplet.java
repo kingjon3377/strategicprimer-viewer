@@ -52,6 +52,9 @@ import org.jetbrains.annotations.Nullable;
 		final StringBuilder buffer = new StringBuilder();
 		while (true) {
 			final Either<TurnApplet, Boolean> command = appletChooser.chooseApplet();
+			if (command == null) {
+				return null;
+			}
 			final Boolean bool = command.fromRight().orElse(null);
 			final TurnApplet applet = command.fromLeft().orElse(null);
 			if (bool != null && !bool) {
