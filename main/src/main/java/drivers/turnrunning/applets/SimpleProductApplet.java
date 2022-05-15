@@ -58,9 +58,11 @@ import org.jetbrains.annotations.Nullable;
 			if (resource == null) {
 				break;
 			}
-			if (!model.addExistingResource(resource,
+			if (model.addExistingResource(resource,
 					Optional.ofNullable(model.getSelectedUnit()).map(IUnit::getOwner)
-						.orElse(model.getMap().getCurrentPlayer()))) {
+							.orElse(model.getMap().getCurrentPlayer()))) {
+				builder.append("Added ").append(resource).append(". ");
+			} else {
 				cli.println("Failed to find a fortress to add to in any map");
 			}
 			final Boolean respTwo = cli.inputBoolean("Add another resource?");
@@ -74,6 +76,7 @@ import org.jetbrains.annotations.Nullable;
 		if (addendum == null) {
 			return null;
 		} else {
+			builder.append(addendum);
 			return builder.toString();
 		}
 	}
