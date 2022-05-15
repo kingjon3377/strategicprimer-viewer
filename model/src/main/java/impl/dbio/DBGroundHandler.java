@@ -52,7 +52,7 @@ final class DBGroundHandler extends AbstractDatabaseWriter<Ground, Point> implem
 			final int column = (Integer) dbRow.get("column");
 			final int id = (Integer) dbRow.get("id");
 			final String kind = (String) dbRow.get("kind");
-			final Boolean exposed = getBooleanValue(dbRow, "exposed");
+			final boolean exposed = getBooleanValue(dbRow, "exposed");
 			final String image = (String) dbRow.get("image");
 			final Ground ground = new Ground(id, kind, exposed);
 			if (image != null) {

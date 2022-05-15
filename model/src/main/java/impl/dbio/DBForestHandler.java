@@ -56,7 +56,7 @@ final class DBForestHandler extends AbstractDatabaseWriter<Forest, Point> implem
 			final int column = (Integer) dbRow.get("column");
 			final int id = (Integer) dbRow.get("id");
 			final String kind = (String) dbRow.get("kind");
-			final Boolean rows = getBooleanValue(dbRow, "rows");
+			final boolean rows = getBooleanValue(dbRow, "rows");
 			final String acresString = (String) dbRow.get("acres");
 			final String image = (String) dbRow.get("image");
 			Number acres;

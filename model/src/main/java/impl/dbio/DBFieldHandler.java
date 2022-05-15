@@ -65,7 +65,7 @@ final class DBFieldHandler extends AbstractDatabaseWriter<Meadow, Point> impleme
 			final int id = (Integer) dbRow.get("id");
 			final String type = (String) dbRow.get("type");
 			final String kind = (String) dbRow.get("kind");
-			final Boolean cultivated = getBooleanValue(dbRow, "cultivated");
+			final boolean cultivated = getBooleanValue(dbRow, "cultivated");
 			final FieldStatus status = FieldStatus.parse((String) dbRow.get("status"));
 			final String acresString = (String) dbRow.get("acres");
 			final String image = (String) dbRow.get("image");

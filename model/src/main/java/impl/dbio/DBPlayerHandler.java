@@ -74,7 +74,7 @@ final class DBPlayerHandler extends AbstractDatabaseWriter<Player, IMapNG> imple
 		return (dbRow, warner) -> {
 			final int id = (Integer) dbRow.get("id");
 			final String name = (String) dbRow.get("codename");
-			final Boolean current = getBooleanValue(dbRow, "current");
+			final boolean current = getBooleanValue(dbRow, "current");
 			final String portrait = (String) dbRow.get("portrait");
 			final String country = (String) dbRow.get("country");
 			final MutablePlayer player = new PlayerImpl(id, name, country);

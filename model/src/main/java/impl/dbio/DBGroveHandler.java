@@ -58,7 +58,7 @@ final class DBGroveHandler extends AbstractDatabaseWriter<Grove, Point> implemen
 			final int id = (Integer) dbRow.get("id");
 			final String type = (String) dbRow.get("type");
 			final String kind = (String) dbRow.get("kind");
-			final Boolean cultivated = getBooleanValue(dbRow, "cultivated");
+			final boolean cultivated = getBooleanValue(dbRow, "cultivated");
 			final int count = (Integer) dbRow.get("count");
 			final String image = (String) dbRow.get("image");
 			final boolean orchard;

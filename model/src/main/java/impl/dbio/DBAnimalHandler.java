@@ -122,7 +122,7 @@ final class DBAnimalHandler extends AbstractDatabaseWriter<AnimalOrTracks, /*Poi
 			readAnimal(final IMutableMapNG map, final Map<Integer, List<Object>> containees) {
 		return (dbRow, warner) -> {
 			final String kind = (String) dbRow.get("kind");
-			final Boolean talking = getBooleanValue(dbRow, "talking");
+			final boolean talking = getBooleanValue(dbRow, "talking");
 			final String status  = (String) dbRow.get("status");
 			final Integer born = (Integer) dbRow.get("born");
 			final int count = (Integer) dbRow.get("count");

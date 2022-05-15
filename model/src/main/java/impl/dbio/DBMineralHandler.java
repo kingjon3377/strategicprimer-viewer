@@ -78,7 +78,7 @@ final class DBMineralHandler extends AbstractDatabaseWriter<MineralFixture, Poin
 			final int column = (Integer) dbRow.get("column");
 			final int id = (Integer) dbRow.get("id");
 			final String kind = (String) dbRow.get("kind");
-			final Boolean exposed = getBooleanValue(dbRow, "exposed");
+			final boolean exposed = getBooleanValue(dbRow, "exposed");
 			final int dc = (Integer) dbRow.get("dc");
 			final String image = (String) dbRow.get("image");
 			final MineralVein mineral = new MineralVein(kind, exposed, dc, id);
