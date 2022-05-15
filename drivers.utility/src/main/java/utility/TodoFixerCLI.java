@@ -39,6 +39,7 @@ import java.nio.file.Files;
 import org.javatuples.Pair;
 import java.util.stream.Collectors;
 import java.util.Objects;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * A hackish driver to fix TODOs (missing content) in the map, namely units
@@ -136,7 +137,7 @@ public class TodoFixerCLI implements CLIDriver {
 		}
 	}
 
-	private ExplorationRunner _runner = null;
+	private @Nullable ExplorationRunner _runner = null;
 
 	private ExplorationRunner getRunner() throws IOException {
 		if (_runner == null) {

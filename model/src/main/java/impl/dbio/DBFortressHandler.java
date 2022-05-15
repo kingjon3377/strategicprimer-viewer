@@ -30,7 +30,7 @@ final class DBFortressHandler extends AbstractDatabaseWriter<IFortress, Point> i
 	/**
 	 * What we use to write members. Called "parent" because *it* actually owns *this* object.
 	 */
-	private final SPDatabaseWriter parent;
+	private final @Nullable SPDatabaseWriter parent;
 
 	private static final List<Query> INITIALIZERS = Collections.singletonList(
 		Query.of("CREATE TABLE IF NOT EXISTS fortresses (" +

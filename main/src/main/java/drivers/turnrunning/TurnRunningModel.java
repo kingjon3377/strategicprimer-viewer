@@ -38,6 +38,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 import lovelace.util.LovelaceLogger;
+import org.jetbrains.annotations.Nullable;
 
 import static lovelace.util.Decimalize.decimalize;
 
@@ -833,7 +834,7 @@ public class TurnRunningModel extends ExplorationModel implements ITurnRunningMo
 
 	private static class GenerateOnce implements IntSupplier {
 		private final IntSupplier idFactory;
-		Integer generatedId;
+		private @Nullable Integer generatedId;
 
 		public GenerateOnce(final IntSupplier idFactory) {
 			this.idFactory = idFactory;

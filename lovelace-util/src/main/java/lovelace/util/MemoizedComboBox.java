@@ -69,7 +69,7 @@ public class MemoizedComboBox extends ImprovedComboBox<String> {
 		}
 	}
 
-	public String getSelectedString() {
+	public @Nullable String getSelectedString() {
 		final Object inner = getEditor().getEditorComponent();
 		if (inner instanceof JTextField) {
 			final String text = ((JTextField) inner).getText().trim();

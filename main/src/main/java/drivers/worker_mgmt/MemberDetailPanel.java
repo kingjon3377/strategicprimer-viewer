@@ -161,7 +161,7 @@ public class MemberDetailPanel extends BorderedPanel implements UnitMemberListen
 		private static final long serialVersionUID = 1L;
 		private @Nullable Image portrait = null;
 
-		public void setPortrait(final Image portrait) {
+		public void setPortrait(final @Nullable Image portrait) {
 			this.portrait = portrait;
 		}
 

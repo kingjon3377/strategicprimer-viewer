@@ -2,6 +2,7 @@ package lovelace.util;
 
 import javax.swing.JLabel;
 import java.util.function.Function;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * A JLabel that takes a function to produce its text as constructor parameters
@@ -11,7 +12,7 @@ import java.util.function.Function;
  * @deprecated Generally prefer {@link FormattedLabel}, right?
  */
 @Deprecated
-public class InterpolatedLabel<T> extends JLabel {
+public class InterpolatedLabel<@Nullable T> extends JLabel {
 	private static final long serialVersionUID = 1;
 	private final Function<? super T, String> function;
 	/**

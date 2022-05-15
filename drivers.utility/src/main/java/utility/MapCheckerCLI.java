@@ -58,6 +58,7 @@ import common.map.fixtures.IResourcePile;
 
 import common.map.fixtures.terrain.Hill;
 import common.map.fixtures.terrain.Oasis;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * A driver to check every map file in a list for errors.
@@ -77,7 +78,7 @@ public class MapCheckerCLI implements UtilityDriver {
 		 * @param warner the Warning instance to report specific errors on
 		 * @return true iff at least one warning was reported
 		 */
-		boolean check(TileType terrain, Point location, IFixture fixture, Warning warner);
+		boolean check(@Nullable TileType terrain, Point location, IFixture fixture, Warning warner);
 	}
 
 	private static class SPContentWarning extends Exception {
@@ -146,7 +147,7 @@ public class MapCheckerCLI implements UtilityDriver {
 		}
 	}
 
-	private static boolean animalTracksChecker(final TileType terrain, final Point context, final IFixture fixture,
+	private static boolean animalTracksChecker(@Nullable final TileType terrain, final Point context, final IFixture fixture,
 	                                           final Warning warner) {
 		if (fixture instanceof AnimalTracks) {
 			warner.handle(new SPContentWarning(context,
@@ -330,7 +331,7 @@ public class MapCheckerCLI implements UtilityDriver {
 			MapCheckerCLI::resourcePlaceholderChecker, MapCheckerCLI::oasisChecker,
 			MapCheckerCLI::personalEquipmentCheck, MapCheckerCLI::noResultsCheck);
 
-	private static boolean contentCheck(final Checker checker, final TileType terrain, final Point context,
+	private static boolean contentCheck(final Checker checker, @Nullable final TileType terrain, final Point context,
 	                                    final Warning warner, final Iterable<? extends IFixture> list) {
 		boolean retval = false;
 		for (final IFixture fixture : list) {

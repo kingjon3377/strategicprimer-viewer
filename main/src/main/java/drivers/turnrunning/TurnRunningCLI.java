@@ -32,6 +32,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 import org.javatuples.Pair;
+import org.jetbrains.annotations.Nullable;
 
 // TODO: Tests
 /* package */ class TurnRunningCLI implements CLIDriver {
@@ -224,7 +225,7 @@ import org.javatuples.Pair;
 		}
 		final List<IUnit> units = getUnits(player).filter(unfinishedResults(currentTurn)).collect(Collectors.toList());
 		while (true) {
-			final Pair<Integer, IUnit> pair = cli.chooseFromList(units, String.format("Units belonging to %s:", player), "Player has no units without apparently-final results", "Unit to run:", ICLIHelper.ListChoiceBehavior.ALWAYS_PROMPT);
+			final Pair<Integer, @Nullable IUnit> pair = cli.chooseFromList(units, String.format("Units belonging to %s:", player), "Player has no units without apparently-final results", "Unit to run:", ICLIHelper.ListChoiceBehavior.ALWAYS_PROMPT);
 			final int index = pair.getValue0();
 			final IUnit unit = pair.getValue1();
 			if (unit == null) {

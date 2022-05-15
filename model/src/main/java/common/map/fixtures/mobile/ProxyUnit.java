@@ -27,6 +27,7 @@ import common.map.fixtures.mobile.worker.ProxyWorker;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 import lovelace.util.LovelaceLogger;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * A proxy for units in multiple maps, or all a player's units of one kind.
@@ -67,13 +68,13 @@ public class ProxyUnit implements IUnit, ProxyFor<IUnit> {
 	/**
 	 * If we're proxying parallel units, they all share this ID. If not, this is null.
 	 */
-	private final Integer commonID;
+	private final @Nullable Integer commonID;
 
 	/**
 	 * If we're proxying all units of a given kind, it's this kind; if
 	 * we're proxying parallel units, this is null.
 	 */
-	private final String commonKind;
+	private final @Nullable String commonKind;
 
 	/**
 	 * Constructor for units from parallel maps.
