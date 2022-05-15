@@ -1,10 +1,12 @@
 package impl.dbio;
 
 import common.map.IFixture;
+import io.jenetics.facilejdbc.Param;
 import io.jenetics.facilejdbc.Query;
 import io.jenetics.facilejdbc.Transactional;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -65,15 +67,23 @@ final class DBTownHandler extends AbstractDatabaseWriter<AbstractTown, Point> im
 
 	@Override
 	public void write(final Transactional db, final AbstractTown obj, final Point context) throws SQLException {
-		INSERT_SQL.on(value("row", context.getRow()), value("column", context.getColumn()),
-				value("id", obj.getId()), value("kind", obj.getKind()),
-				value("status", obj.getStatus().toString()), value("size", obj.getTownSize().toString()),
-				value("dc", obj.getDC()), value("name", obj.getName()),
-				value("owner", obj.getOwner().getPlayerId()), value("image", obj.getImage()),
-				value("portrait", obj.getPortrait()),
-				value("population", Optional.ofNullable(obj.getPopulation())
-						.map(CommunityStats::getPopulation).orElse(null))).execute(db.connection());
+		final List<Param> params = new ArrayList<>();
+		params.add(value("row", context.getRow()));
+		params.add(value("column", context.getColumn()));
+		params.add(value("id", obj.getId()));
+		params.add(value("kind", obj.getKind()));
+		params.add(value("status", obj.getStatus().toString()));
+		params.add(value("size", obj.getTownSize().toString()));
+		params.add(value("dc", obj.getDC()));
+		params.add(value("name", obj.getName()));
+		params.add(value("owner", obj.getOwner().getPlayerId()));
+		params.add(value("image", obj.getImage()));
+		params.add(value("portrait", obj.getPortrait()));
 		final CommunityStats stats = obj.getPopulation();
+		if (stats != null) {
+			params.add(value("population", stats.getPopulation()));
+		}
+		INSERT_SQL.on(params).execute(db.connection());
 		if (stats != null) {
 			CS_WRITER.initialize(db);
 			CS_WRITER.write(db, stats, obj);
