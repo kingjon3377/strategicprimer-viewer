@@ -51,7 +51,7 @@ final class DBPlayerHandler extends AbstractDatabaseWriter<Player, IMapNG> imple
 		params.add(value("id", obj.getPlayerId()));
 		params.add(value("codename", obj.getName()));
 		params.add(value("current", obj.isCurrent()));
-		if (obj.getPortrait() != null && !obj.getPortrait().isEmpty()) {
+		if (!obj.getPortrait().isEmpty()) {
 			params.add(value("portrait", obj.getPortrait()));
 		}
 		if (obj.getCountry() != null && !obj.getPortrait().isEmpty()) {
