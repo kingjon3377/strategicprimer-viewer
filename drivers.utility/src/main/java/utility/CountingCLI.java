@@ -224,6 +224,8 @@ import common.map.fixtures.mobile.AnimalTracks;
 		} else if (item instanceof Iterable) {
 			return Stream.concat(StreamSupport.stream(((Iterable<?>) item).spliterator(), false).flatMap(CountingCLI::flatten),
 					Stream.of(item));
+		} else if (item == null) { // TODO: why is it @Nullable?
+			return Stream.empty();
 		} else {
 			return Stream.of(item);
 		}
