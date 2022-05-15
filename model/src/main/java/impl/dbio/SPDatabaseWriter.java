@@ -78,7 +78,7 @@ public final class SPDatabaseWriter implements SPWriter {
 			sql.transaction().accept(db -> {
 					for (final Integer player : ((HasNotes) obj).getNotesPlayers()) {
 						final String note = ((HasNotes) obj).getNote(player);
-						if (note != null) { // FIXME: Should be "is not empty", not "is not null"
+						if (!note.isEmpty()) {
 							INSERT_NOTE.on(value("fixture", ((HasNotes) obj).getId()),
 									value("player", player), value("note", note)).executeInsert(db);
 						}
