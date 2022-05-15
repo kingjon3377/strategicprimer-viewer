@@ -1,10 +1,11 @@
 package drivers;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.InputStreamReader;
+import java.net.URISyntaxException;
 import java.nio.file.NoSuchFileException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -16,7 +17,6 @@ import java.util.ServiceLoader;
 
 import java.io.IOException;
 
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static lovelace.util.ShowErrorDialog.showErrorDialog;
@@ -35,7 +35,8 @@ import drivers.gui.common.SPFrame;
 import common.xmlio.SPFormatException;
 
 import lovelace.util.LovelaceLogger;
-import lovelace.util.ResourceInputStream;
+import lovelace.util.Platform;
+import org.jetbrains.annotations.Nullable;
 
 /* package */ final class AppChooserState {
 	// FIXME: Move methods back into AppStarter, unless that would break something.
@@ -88,22 +89,52 @@ import lovelace.util.ResourceInputStream;
 		return new HashMap<>(cache);
 	}
 
+	private static @Nullable Path getContainingApp(final @Nullable Path path) {
+		if (path == null) {
+			return null;
+		}
+		if (path.toString().endsWith(".app") || path.toString().endsWith(".app/")) {
+			return path;
+		}
+		final Path root = path.getRoot();
+		if (root == null || root.equals(path)) {
+			return null;
+		} else {
+			return getContainingApp(path.getParent());
+		}
+	}
+
 	/**
 	 * Create the usage message for a particular driver.
+	 *
+	 * FIXME: Cache "invocation" contents or equivalent.
 	 */
 	public static String usageMessage(final IDriverUsage usage, final boolean verbose) {
 		final StringBuilder builder = new StringBuilder();
-		builder.append("Usage: ");
 		String mainInvocation;
-		try (final BufferedReader reader = new BufferedReader(new InputStreamReader(
-				new ResourceInputStream("invocation", AppChooserState.class)))) {
-			mainInvocation = reader.lines().collect(Collectors.joining(System.lineSeparator())).trim();
-		} catch (final FileNotFoundException | NoSuchFileException except) {
-			LovelaceLogger.warning("Invocation file not found");
-			LovelaceLogger.debug(except, "Stack trace for invocation-not-found");
-			mainInvocation = "java -jar viewer-VERSION.jar";
-		} catch (final IOException except) {
-			LovelaceLogger.error(except, "I/O error reading invocation file");
+		builder.append("Usage: ");
+		try {
+			final File clsSource = new File(AppChooserState.class.getProtectionDomain().getCodeSource().getLocation().toURI());
+			final String clsPath = clsSource.toString();
+			if (clsPath.endsWith(".exe")) {
+				mainInvocation = Paths.get(".").toAbsolutePath().relativize(clsSource.toPath()).toString();
+			} else if (clsPath.endsWith(".jar")) {
+				if (Platform.SYSTEM_IS_MAC && clsPath.contains(".app/")) {
+					final Path containingApp = getContainingApp(clsSource.toPath());
+					if (containingApp == null) {
+						mainInvocation = "java -jar " + Paths.get(".").toAbsolutePath().relativize(clsSource.toPath());
+					} else {
+						mainInvocation = "open " + Paths.get(".").toAbsolutePath().relativize(containingApp) + " --args";
+					}
+				} else {
+					mainInvocation = "java -jar " + Paths.get(".").toAbsolutePath().relativize(clsSource.toPath());
+				}
+			} else {
+				mainInvocation = "java -cp CLASSPATH " + Main.class.getName();
+			}
+		} catch (URISyntaxException except) {
+			LovelaceLogger.warning("Error computing usage message");
+			LovelaceLogger.debug(except, "Stack trace: URI syntax exception");
 			mainInvocation = "java -jar viewer-VERSION.jar";
 		}
 		builder.append(mainInvocation);
