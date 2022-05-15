@@ -42,7 +42,7 @@ import common.map.HasMutableKind;
 	public List<IUnit> getTransferData(final DataFlavor candidate)
 			throws UnsupportedFlavorException {
 		if (FLAVOR.equals(candidate)) {
-			return Collections.unmodifiableList(payload);
+			return payload;
 		} else {
 			throw new UnsupportedFlavorException(candidate);
 		}

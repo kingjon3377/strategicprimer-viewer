@@ -38,7 +38,7 @@ import org.jetbrains.annotations.Nullable;
 		this.idf = idf;
 	}
 
-	private static final List<String> COMMANDS = Collections.unmodifiableList(Collections.singletonList("woodcutting"));
+	private static final List<String> COMMANDS = Collections.singletonList("woodcutting");
 
 	@Override
 	public List<String> getCommands() {

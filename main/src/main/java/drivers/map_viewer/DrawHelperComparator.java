@@ -162,11 +162,11 @@ public class DrawHelperComparator implements UtilityDriver {
 	}
 
 	private final List<Pair<TileDrawHelper, String>> helpers =
-		Collections.unmodifiableList(Collections.singletonList(
+		Collections.singletonList(
 				Pair.with(new Ver2TileDrawHelper(DrawHelperComparator::dummyObserver,
 								DrawHelperComparator::dummyFilter,
 								Collections.singleton(new FixtureMatcher(DrawHelperComparator::dummyFilter, "test"))),
-						"Ver 2:")));
+						"Ver 2:"));
 
 	private final Map<Triplet<String, String, String>, LongAccumulator> results = new HashMap<>();
 
