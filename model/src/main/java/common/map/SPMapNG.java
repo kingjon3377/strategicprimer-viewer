@@ -182,12 +182,12 @@ public class SPMapNG implements IMutableMapNG {
 
 	public SPMapNG(final MapDimensions dimensions, final IMutablePlayerCollection players, final int turn) {
 		final int size = dimensions.getRows() * dimensions.getColumns();
-		terrain = new HashMap<Point, TileType>(reduceLarge(size), 0.5f);
-		fixturesMap = new HashMap<Point, List<TileFixture>>(reduceLarge(size), 0.5f);
-		riversMap = new HashMap<Point, Set<River>>(reduceMore(size), 0.5f);
-		roadsMap = new HashMap<Point, Map<Direction, Integer>>(reduceMore(size), 0.5f);
-		bookmarksImpl = new HashMap<Point, Set<Player>>(reduceMore(size), 0.5f);
-		mountains = new HashSet<Point>(reduceLarge(size), 0.5f);
+		terrain = new HashMap<>(reduceLarge(size), 0.5f);
+		fixturesMap = new HashMap<>(reduceLarge(size), 0.5f);
+		riversMap = new HashMap<>(reduceMore(size), 0.5f);
+		roadsMap = new HashMap<>(reduceMore(size), 0.5f);
+		bookmarksImpl = new HashMap<>(reduceMore(size), 0.5f);
+		mountains = new HashSet<>(reduceLarge(size), 0.5f);
 		mapDimensions = dimensions;
 		playerCollection = players;
 		currentTurn = turn;
@@ -661,14 +661,14 @@ public class SPMapNG implements IMutableMapNG {
 			final List<TileFixture> ourFixtures = new ArrayList<>();
 			// TODO: Use Guava Multimap for this
 			final Map<Integer, List<Pair<Subsettable<IFixture>, Point>>> ourSubsettables =
-				new HashMap<Integer, List<Pair<Subsettable<IFixture>, Point>>>(50, 0.4f);
+					new HashMap<>(50, 0.4f);
 			final Map<TileFixture, Point> ourLocations = fixturesMap.entrySet().stream()
 				.flatMap(e -> e.getValue().stream().map(f -> Pair.with(f, e.getKey())))
 				.collect(Collectors.toMap(Pair::getValue0, Pair::getValue1));
 			// IUnit is Subsettable<IUnit> and thus incompatible with SubsettableFixture // FIXME: No longer true
-			final Map<Integer, List<Pair<IUnit, Point>>> ourUnits = new HashMap<Integer, List<Pair<IUnit, Point>>>(50, 0.4f);
+			final Map<Integer, List<Pair<IUnit, Point>>> ourUnits = new HashMap<>(50, 0.4f);
 			// AbstractTown is Subsettable<AbstractTown>
-			final Map<Integer, List<Pair<AbstractTown, Point>>> ourTowns = new HashMap<Integer, List<Pair<AbstractTown, Point>>>(50, 0.4f);
+			final Map<Integer, List<Pair<AbstractTown, Point>>> ourTowns = new HashMap<>(50, 0.4f);
 
 			for (final Map.Entry<TileFixture, Point> entry : ourLocations.entrySet()) {
 				final Point point = entry.getValue();
