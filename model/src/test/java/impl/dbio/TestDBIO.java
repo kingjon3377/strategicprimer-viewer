@@ -440,8 +440,8 @@ public final class TestDBIO {
 	}
 
 	private static class TestDatabase implements Transactional {
-		private SQLiteDataSource source;
-		private PersistentConnection connection;
+		private @Nullable SQLiteDataSource source;
+		private @Nullable PersistentConnection connection;
 		public void tearDown() throws SQLException {
 			if (connection != null) {
 				connection.close();

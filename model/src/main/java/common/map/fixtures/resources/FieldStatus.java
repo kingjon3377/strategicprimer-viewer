@@ -3,6 +3,7 @@ package common.map.fixtures.resources;
 import java.util.List;
 import java.util.Random;
 import java.util.function.Supplier;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Possible status of fields (and meadows, and orchards ...) Fields should
@@ -37,7 +38,7 @@ public enum FieldStatus {
 	}
 
 	private static final class Cache implements Supplier<List<FieldStatus>> {
-		private List<FieldStatus> cache;
+		private @Nullable List<FieldStatus> cache;
 		public List<FieldStatus> get() {
 			if (cache == null) {
 				cache = List.of(FieldStatus.values());

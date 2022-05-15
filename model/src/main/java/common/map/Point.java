@@ -1,6 +1,7 @@
 package common.map;
 
 import java.util.Comparator;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * A structure encapsulating two coordinates: a row and column in the map.
@@ -56,7 +57,7 @@ public final class Point implements Comparable<Point> {
 		return row << 9 + column;
 	}
 
-	private volatile String string;
+	private volatile @Nullable String string;
 
 	private synchronized String maybeString() {
 		if (string == null) {
