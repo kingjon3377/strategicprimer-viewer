@@ -94,7 +94,7 @@ import org.jetbrains.annotations.Nullable;
 		return cli.chooseFromList((List<? extends HasName>) terrains, "Tile type represented by " + pixelString(color), "No tile types found to choose from", "Tile type:", ICLIHelper.ListChoiceBehavior.ALWAYS_PROMPT).getValue1();
 	}
 
-	private static @Nullable Range customRange(final int base, final int span, final int max) {
+	private static Range customRange(final int base, final int span, final int max) {
 		if (base + span > max + 1) {
 			return new Range(base, max - 1);
 		} else {

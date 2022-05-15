@@ -147,7 +147,7 @@ enum LodeStatus {
 	/**
 	 * The next higher status.
 	 */
-	private @Nullable LodeStatus getHigher() {
+	private LodeStatus getHigher() {
 		switch (this) {
 		case Minimal:
 			return VeryPoor;

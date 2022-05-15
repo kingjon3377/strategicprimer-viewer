@@ -246,9 +246,7 @@ import common.map.fixtures.terrain.Hill;
 				throw new IllegalStateException("Exhaustive switch wasn't");
 			}
 			final JMenuItem item = new JMenuItem(desc);
-			if (mnemonic != null) {
-				item.setMnemonic(mnemonic);
-			}
+			item.setMnemonic(mnemonic);
 			add(item);
 			item.addActionListener(event -> {
 					model.setBaseTerrain(point, type);

@@ -177,7 +177,7 @@ public class OrdersPanel extends BorderedPanel implements OrdersContainer {
 			for (final IUnit unit : playerUnits.apply(currentPlayer, (String) selection)) {
 				if (orders == null) {
 					orders = ordersSupplier.getOrders(unit, turn);
-				} else if (orders != null && !orders.equals(ordersSupplier.getOrders(unit, turn))) {
+				} else if (!orders.equals(ordersSupplier.getOrders(unit, turn))) {
 					area.setText("");
 					fixColor();
 					return;
