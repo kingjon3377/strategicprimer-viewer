@@ -181,7 +181,7 @@ import java.util.stream.StreamSupport;
 								"Worker not found, or skill-adding otherwise failed");
 					} else {
 						fireTreeNodesInserted(new TreeModelEvent(this,
-								new TreePath(new Object[]{localRoot, job}),
+								new TreePath(new Object[]{currentRoot, job}),
 								new int[]{childCount}, new Object[]{skill}));
 					}
 				} else {
