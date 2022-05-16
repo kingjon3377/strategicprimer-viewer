@@ -57,7 +57,7 @@ public final class Point implements Comparable<Point> {
 		return row << 9 + column;
 	}
 
-	private volatile @Nullable String string;
+	private volatile @Nullable String string = null;
 
 	private synchronized String maybeString() {
 		if (string == null) {
