@@ -85,14 +85,16 @@ interface MapContentsReader {
 	 * Read a Boolean value from a field. This helper is necessary because
 	 * SQLite stores booleans as integers, and the JDBC library unhelpfully
 	 * exposes that "feature".
+	 *
+	 * TODO: If needed, make a version that returns null (via boxed Boolean) if not found instead of throwing
 	 */
-	default @Nullable Boolean getBooleanValue(Map<String, Object> dbRow, String key) {
+	default boolean getBooleanValue(Map<String, Object> dbRow, String key) throws SQLException {
 		if (!dbRow.containsKey(key)) {
-			return null;
+			throw new SQLException("Expected key not in the schema"); // TODO: specify which key
 		}
 		Object val = dbRow.get(key);
 		if (val == null) {
-			return null;
+			throw new SQLException("No value for key " + key);
 		} else if (val instanceof Boolean) { // Can't happen in SQLite, but we can dream ...
 			return (Boolean) val;
 		} else if (val instanceof Integer) {
@@ -101,10 +103,12 @@ interface MapContentsReader {
 			} else if ((Integer) val == 1) {
 				return true;
 			} else {
-				throw new IllegalArgumentException("Outside range of Boolean");
+				throw new SQLException("Invalid Boolean value",
+						new IllegalArgumentException("Outside range of Boolean"));
 			}
 		} else {
-			throw new IllegalArgumentException("Field maps to non-Boolean value");
+			throw new SQLException("Invalid Boolean value",
+					new IllegalArgumentException("Field maps to non-Boolean value"));
 		}
 	}
 }
