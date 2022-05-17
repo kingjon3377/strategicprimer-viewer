@@ -428,9 +428,14 @@ public class SPFluidReader implements IMapReader, ISPReader {
 				break;
 			}
 		}
-		final Player retval = new PlayerImpl(getIntegerAttribute(element, "number"),
-			getAttribute(element, "code_name"),
-			country.isEmpty() ? null : country);
+		final Player retval;
+		if (country.isEmpty()) {
+			retval = new PlayerImpl(getIntegerAttribute(element, "number"),
+					getAttribute(element, "code_name"));
+		} else {
+			retval = new PlayerImpl(getIntegerAttribute(element, "number"),
+					getAttribute(element, "code_name"), country);
+		}
 		retval.setPortrait(getAttribute(element, "portrait", ""));
 		return retval;
 	}
