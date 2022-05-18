@@ -148,14 +148,11 @@ import java.util.stream.Collectors;
 					break;
 				case "resource":
 					final Consumer<IResourcePile> lambda;
-					switch (current) {
-					case "production":
+					if ("production".equals(current)) {
 						lambda = retval.getYearlyProduction()::add;
-						break;
-					case "consumption":
+					} else if ("consumption".equals(current)) {
 						lambda = retval.getYearlyConsumption()::add;
-						break;
-					default:
+					} else {
 						throw UnwantedChildException.listingExpectedTags(
 							stack.peekFirst().getName(), (StartElement) event,
 								expectedCommunityStatsTags(current == null ?

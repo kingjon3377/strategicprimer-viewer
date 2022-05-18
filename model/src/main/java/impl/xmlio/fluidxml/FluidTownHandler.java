@@ -241,14 +241,11 @@ import java.util.stream.Collectors;
 				case "resource":
 					final StartElement top = stack.peekFirst();
 					final Consumer<IMutableResourcePile> lambda;
-					switch (current) {
-					case "production":
+					if ("production".equals(current)) {
 						lambda = retval.getYearlyProduction()::add;
-						break;
-					case "consumption":
+					} else if ("consumption".equals(current)) {
 						lambda = retval.getYearlyConsumption()::add;
-						break;
-					default:
+					} else {
 						throw UnwantedChildException.listingExpectedTags(
 							top.getName(), (StartElement) event, "production",
 							"consumption");
