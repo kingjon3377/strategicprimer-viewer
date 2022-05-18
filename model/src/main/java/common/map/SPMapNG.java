@@ -616,8 +616,6 @@ public class SPMapNG implements IMutableMapNG {
 			} else if (match.isSubset(desideratum, x -> {})) {
 				unmatched = false;
 				break;
-			} else {
-				unmatched = true;
 			}
 		}
 		boolean retval = true;
