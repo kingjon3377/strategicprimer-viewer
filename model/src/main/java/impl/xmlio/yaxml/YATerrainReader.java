@@ -66,9 +66,8 @@ import java.util.Set;
 				element.getName().getLocalPart());
 		}
 		spinUntilEnd(element.getName(), stream);
-		if (retval instanceof HasMutableImage) {
-			((HasMutableImage) retval).setImage(getParameter(element, "image", ""));
-		}
+		// All types we currently support implement HasMutableImage
+		((HasMutableImage) retval).setImage(getParameter(element, "image", ""));
 		return retval;
 	}
 
@@ -90,9 +89,8 @@ import java.util.Set;
 		} else {
 			throw new IllegalArgumentException("Unhandled TerrainFixture type");
 		}
-		if (obj instanceof HasImage) {
-			writeImageXML(ostream, (HasImage) obj);
-		}
+		// All types we currently support implement HasImage
+		writeImageXML(ostream, (HasImage) obj);
 		writeProperty(ostream, "id", obj.getId());
 		closeLeafTag(ostream);
 	}

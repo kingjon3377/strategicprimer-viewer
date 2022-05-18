@@ -493,7 +493,7 @@ public class WorkerTreeModelAlt extends DefaultTreeModel implements IWorkerTreeM
 	public void dismissUnitMember(final UnitMember member) {
 		final TreeNode temp = (TreeNode) getRoot();
 		final MutableTreeNode node = getNode(temp, member);
-		if (node instanceof MutableTreeNode) {
+		if (node != null) {
 			final UnitNode parentNode = (UnitNode) node.getParent();
 			// Note that getPathToRoot() returns a path that does
 			// *not* include the node itself
