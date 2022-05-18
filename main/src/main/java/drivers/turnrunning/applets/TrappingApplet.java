@@ -152,9 +152,9 @@ import org.jetbrains.annotations.Nullable;
 			case Move:
 				time -= 2;
 				break;
-			case Quit:
-				time = 0;
-				break;
+//			case Quit:
+//				time = 0;
+//				break;
 			case SetTrap:
 				if (fishing) {
 					time -= 30;
