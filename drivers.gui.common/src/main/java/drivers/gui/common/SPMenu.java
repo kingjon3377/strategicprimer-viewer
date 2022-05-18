@@ -276,4 +276,13 @@ public final class SPMenu extends JMenuBar {
 	public static SPMenu forWindowContaining(final Component component, final JMenu... menus) {
 		return new SPMenu(false, component, menus);
 	}
+
+	private SPMenu(final JFrame frame, final JMenu... menus) {
+		this(menus);
+		add(new WindowMenu(frame));
+	}
+
+	public static SPMenu forWindow(final JFrame frame, final JMenu... menus) {
+		return new SPMenu(frame, menus);
+	}
 }

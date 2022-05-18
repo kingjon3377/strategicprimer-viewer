@@ -88,7 +88,7 @@ import lovelace.util.ListenedButton;
 			new JScrollPane(buttonPanel), null);
 		frame.setContentPane(mainPanel);
 		frame.pack();
-		frame.setJMenuBar(SPMenu.forWindowContaining(mainPanel,
+		frame.setJMenuBar(SPMenu.forWindow(frame,
 			SPMenu.createFileMenu(new IOHandler(this, cli), this),
 			SPMenu.disabledMenu(SPMenu.createMapMenu(x -> {}, this)),
 			SPMenu.disabledMenu(SPMenu.createViewMenu(x -> {}, this))));

@@ -19,7 +19,7 @@ import org.jetbrains.annotations.Nullable;
 public class MapCheckerGUI implements UtilityGUI {
 	public MapCheckerGUI() {
 		window = new MapCheckerFrame(this);
-		window.setJMenuBar(SPMenu.forWindowContaining(window.getContentPane(),
+		window.setJMenuBar(SPMenu.forWindow(window,
 				SPMenu.createFileMenu(
 						new UtilityMenuHandler(this, window)::handleEvent, this),
 				SPMenu.disabledMenu(SPMenu.createMapMenu(MapCheckerGUI::noop, this)),
