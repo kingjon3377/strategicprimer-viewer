@@ -136,7 +136,8 @@ import org.jetbrains.annotations.Nullable;
 			final Either<TurnApplet, Boolean> command = appletChooser.chooseApplet();
 			final Boolean bool = Optional.ofNullable(command).map(Either::fromRight).filter(Optional::isPresent)
 					.map(Optional::get).orElse(null);
-			final TurnApplet applet = command.fromLeft().orElse(null);
+			final TurnApplet applet = Optional.ofNullable(command).map(Either::fromLeft).filter(Optional::isPresent)
+					                          .map(Optional::get).orElse(null);
 			if (bool != null && !bool) {
 				return ""; // TODO: why not null? (making the method return type nullable) also below
 			} else if (applet != null) {
