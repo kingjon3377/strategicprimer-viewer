@@ -48,11 +48,15 @@ public class SubsetGUI implements UtilityGUI {
 		if (args.length == 0) {
 			throw new IncorrectUsageException(SubsetGUIFactory.USAGE);
 		}
-		SwingUtilities.invokeLater(frame::showWindow);
+		SubsetFrame localFrame = frame;
+		if (localFrame == null) {
+			throw new DriverFailedException(new IllegalStateException("Window not open"));
+		}
+		SwingUtilities.invokeLater(localFrame::showWindow);
 		final String first = args[0];
 		// Errors are reported via the GUI in loadMain(), then rethrown.
-		frame.loadMain(Paths.get(first));
-		Stream.of(args).skip(1).map(Paths::get).forEach(frame::testFile);
+		localFrame.loadMain(Paths.get(first));
+		Stream.of(args).skip(1).map(Paths::get).forEach(localFrame::testFile);
 	}
 
 	@Override
