@@ -447,8 +447,7 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 				if (SimpleMovementModel.landMovementPossible(terrain) &&
 						    TileType.Ocean == startingTerrain) {
 					LovelaceLogger.debug("Starting in ocean, trying to get to %s", terrain);
-				} else if (TileType.Ocean == startingTerrain &&
-						                                                                                              TileType.Ocean != terrain) {
+				} else if (TileType.Ocean == startingTerrain && TileType.Ocean != terrain) {
 					LovelaceLogger.debug("Land movement not possible from ocean to %s",
 							terrain == null ? "unexplored" : terrain);
 				} else if (TileType.Ocean != startingTerrain &&
