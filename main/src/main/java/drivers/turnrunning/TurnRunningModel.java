@@ -586,7 +586,7 @@ public class TurnRunningModel extends ExplorationModel implements ITurnRunningMo
 		final IMutableResourcePile resource = new ResourcePileImpl(id, kind, contents, quantity);
 		for (final IMutableMapNG map : getRestrictedAllMaps()) {
 			// TODO: Match the fortress on owner as well as name and ID?
-			map.streamLocations()
+			map.streamAllFixtures()
 					.filter(IMutableFortress.class::isInstance).map(IMutableFortress.class::cast)
 					.filter(f -> f.getName().equals(container.getName()))
 					.filter(f -> f.getId() == container.getId()).findAny()
@@ -639,7 +639,7 @@ public class TurnRunningModel extends ExplorationModel implements ITurnRunningMo
 		resource.setCreated(createdDate);
 		for (final IMutableMapNG map : getRestrictedAllMaps()) {
 			// TODO: Match the fortress on owner as well as name and ID?
-			map.streamLocations()
+			map.streamAllFixtures()
 					.filter(IMutableFortress.class::isInstance).map(IMutableFortress.class::cast)
 					.filter(f -> f.getName().equals(container.getName()))
 					.filter(f -> f.getId() == container.getId()).findAny()
