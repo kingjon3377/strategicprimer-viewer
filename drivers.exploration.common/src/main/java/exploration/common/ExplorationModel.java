@@ -449,11 +449,12 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 					LovelaceLogger.debug("Starting in ocean, trying to get to %s", terrain);
 				} else if (TileType.Ocean == startingTerrain &&
 						                                                                                              TileType.Ocean != terrain) {
-					LovelaceLogger.debug("Land movement not possible from ocean to %s", terrain);
+					LovelaceLogger.debug("Land movement not possible from ocean to %s",
+							terrain == null ? "unexplored" : terrain);
 				} else if (TileType.Ocean != startingTerrain &&
 						           TileType.Ocean == terrain) {
 					LovelaceLogger.debug("Starting in %s, trying to get to ocean",
-						startingTerrain);
+						startingTerrain == null ? "unexplored" : startingTerrain);
 				} else {
 					LovelaceLogger.debug("Unknown reason for movement-impossible condition");
 				}
