@@ -128,7 +128,7 @@ public class HarvestableReportGenerator extends AbstractReportGenerator<Harvesta
 			ostream.accept(item.getKind());
 			ostream.accept(" ");
 			ostream.accept(populationCountString((Shrub) item, "plant"));
-		} else if (item instanceof StoneDeposit) {
+		} else /*if (item instanceof StoneDeposit)*/ {
 			ostream.accept("An exposed ");
 			ostream.accept(item.getKind());
 			ostream.accept(" deposit");
