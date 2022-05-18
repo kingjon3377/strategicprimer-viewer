@@ -114,8 +114,10 @@ public class ProxyUnit implements IUnit, ProxyFor<IUnit> {
 	public IUnit copy(final CopyBehavior zero) {
 		final ProxyUnit retval;
 		if (parallel) {
+			assert (commonID != null);
 			retval = new ProxyUnit(commonID);
 		} else {
+			assert (commonKind != null);
 			retval = new ProxyUnit(commonKind);
 		}
 		for (final IUnit unit : proxiedList) {

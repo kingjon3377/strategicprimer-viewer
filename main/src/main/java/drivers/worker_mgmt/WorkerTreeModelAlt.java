@@ -444,6 +444,10 @@ public class WorkerTreeModelAlt extends DefaultTreeModel implements IWorkerTreeM
 			}
 		} else if (item instanceof IUnit) {
 			final MutableTreeNode node = getNode(temp, item);
+			if (node == null) {
+				LovelaceLogger.debug("changeKind() called for unit not in the tree");
+				return;
+			}
 			final TreeNode[] pathOne = getPathToRoot(node);
 			final int indexOne = getIndexOfChild(pathOne[pathOne.length - 2], node);
 			final KindNode nodeTwo = temp.stream().filter(KindNode.class::isInstance)

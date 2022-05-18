@@ -215,6 +215,9 @@ public class SPFluidReader implements IMapReader, ISPReader {
 			} catch (final IllegalArgumentException except) {
 				throw new MissingPropertyException(element, "direction", except);
 			}
+			if (direction == null) {
+				throw new MissingPropertyException(element, "direction");
+			}
 			map.setRoadLevel(currentTile, direction, getIntegerAttribute(element, "quality"));
 			return;
 		}

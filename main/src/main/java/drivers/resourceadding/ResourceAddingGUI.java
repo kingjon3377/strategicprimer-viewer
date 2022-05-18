@@ -247,13 +247,13 @@ import java.io.FileNotFoundException;
 			final String kind = resourceKindBox.getSelectedString();
 			final String resource = resourceBox.getSelectedString();
 			final String units = resourceUnitsBox.getSelectedString();
-			if (kind.isEmpty()) {
+			if (kind == null || kind.isEmpty()) {
 				resourceKindBox.requestFocusInWindow();
 				return;
-			} else if (resource.isEmpty()) {
+			} else if (resource == null || resource.isEmpty()) {
 				resourceBox.requestFocusInWindow();
 				return;
-			} else if (units.isEmpty()) {
+			} else if (units == null || units.isEmpty()) {
 				resourceUnitsBox.requestFocusInWindow();
 				return;
 			}
@@ -279,7 +279,7 @@ import java.io.FileNotFoundException;
 		private void implementListener(final ActionEvent ignored) { // Param required for use in fields
 			confirmPlayer();
 			final String kind = implementKindBox.getSelectedString();
-			if (kind.isEmpty()) {
+			if (kind == null || kind.isEmpty()) {
 				implementKindBox.requestFocusInWindow();
 				return;
 			}

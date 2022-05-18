@@ -137,7 +137,9 @@ import org.jetbrains.annotations.Nullable;
 		if (footage > 0) {
 			final IUnit unit = model.getSelectedUnit();
 			// FIXME: Use model.addResource() rather than creating pile here ourselves
-			if (!model.addExistingResource(new ResourcePileImpl(idf.createID(), "wood",
+			if (unit == null) {
+				cli.println("No selected unit");
+			} else if (!model.addExistingResource(new ResourcePileImpl(idf.createID(), "wood",
 					"production-ready wood", new Quantity(footage, "cubic feet")), unit.getOwner())) {
 				cli.println("Failed to find a fortress to add to in any map");
 			}
