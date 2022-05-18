@@ -35,8 +35,14 @@ import lovelace.util.ThrowingConsumer;
 		// start doing so, we *now* only *warn* instead of *dying* if the XML contains
 		// that idiom.
 		spinUntilEnd(element.getName(), stream, "orders", "results", "science");
-		final Player retval = new PlayerImpl(getIntegerParameter(element, "number"),
-			getParameter(element, "code_name"), country);
+		final Player retval;
+		if (country == null) {
+			retval = new PlayerImpl(getIntegerParameter(element, "number"),
+					getParameter(element, "code_name"));
+		} else {
+			retval = new PlayerImpl(getIntegerParameter(element, "number"),
+					getParameter(element, "code_name"), country);
+		}
 		retval.setPortrait(getParameter(element, "portrait", ""));
 		return retval;
 	}
