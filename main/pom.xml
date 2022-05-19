@@ -108,6 +108,41 @@
           </execution>
         </executions>
       </plugin>
+      <plugin>
+        <groupId>com.akathist.maven.plugins.launch4j</groupId>
+        <artifactId>launch4j-maven-plugin</artifactId>
+        <version>2.1.2</version>
+        <executions>
+          <execution>
+            <id>l4j-clui</id>
+            <phase>package</phase>
+            <goals><goal>launch4j</goal></goals>
+            <configuration>
+              <headerType>console</headerType>
+              <outfile>target/${project.artifactId}-${project.version}.exe</outfile>
+              <jar>target/${project.artifactId}-${project.version}.jar</jar>
+              <errTitle>Strategic Primer Map Viewer error</errTitle>
+	      <customProcName>true</customProcName>
+	      <stayAlive>false</stayAlive>
+	      <!-- FIXME: <icon>icon.ico</icon> -->
+              <jre>
+                <minVersion>1.9</minVersion>
+              </jre>
+              <versionInfo>
+                <txtFileVersion>${project.version}</txtFileVersion>
+                <fileDescription>Helper programs for players and Judges in a campaign of Strategic Primer</fileDescription>
+                <fileVersion>${parsedVersion.majorVersion}.${parsedVersion.minorVersion}.${parsedVersion.incrementalVersion}.${parsedVersion.buildNumber}</fileVersion>
+                <copyright>Jonathan Lovelace</copyright>
+                <productVersion>${parsedVersion.majorVersion}.${parsedVersion.minorVersion}.${parsedVersion.incrementalVersion}.${parsedVersion.buildNumber}</productVersion>
+                <txtProductVersion>${project.version}</txtProductVersion>
+                <productName>Strategic Primer Assistive Programs</productName>
+                <internalName>strategicprimer-viewer</internalName>
+                <originalFilename>viewer.exe</originalFilename>
+              </versionInfo>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
     </plugins>
   </build>
 </project>
