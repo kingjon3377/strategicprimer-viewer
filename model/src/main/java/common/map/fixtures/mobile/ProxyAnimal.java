@@ -11,7 +11,11 @@ import common.map.IFixture;
 
 /**
  * A proxy for corresponding animal populations in different maps.
+ * 
+ * @deprecated We're trying to get rid of the notion of 'proxies' in favor of
+ * driver model methods.
  */
+@Deprecated
 /* default */ final class ProxyAnimal implements AnimalProxy {
 
 	public ProxyAnimal(final Animal... proxiedAnimals) {

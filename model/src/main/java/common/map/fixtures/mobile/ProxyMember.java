@@ -12,7 +12,10 @@ import lovelace.util.LovelaceLogger;
 
 /**
  * A proxy for non-worker unit members.
+ * @deprecated We're trying to get rid of the notion of 'proxies' in favor of
+ * driver model methods.
  */
+@Deprecated
 class ProxyMember implements UnitMemberProxy<UnitMember> {
 	private final List<UnitMember> proxiedMembers = new ArrayList<>();
 

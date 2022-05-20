@@ -15,7 +15,11 @@ import common.map.fixtures.mobile.ProxyFor;
  * An implementation of ISkill whose operations act on multiple workers at once.
  *
  * TODO: Figure out how we can make this satisfy ProxyFor&lt;ISkill&gt;?
+ *
+ * @deprecated We're trying to get rid of the notion of 'proxies' in favor of
+ * driver model methods.
  */
+@Deprecated
 /* package */ class ProxySkill implements ISkill, ProxyFor<IJob> {
 	public ProxySkill(final String name, final boolean parallel, final IJob... proxiedJobs) {
 		this.parallel = parallel;

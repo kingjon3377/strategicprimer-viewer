@@ -28,7 +28,11 @@ import org.jetbrains.annotations.Nullable;
 
 /**
  * An IWorker implementation to make the UI able to operate on all of a unit's workers at once.
+ *
+ * @deprecated We're trying to get rid of the notion of 'proxies' in favor of
+ * driver model methods.
  */
+@Deprecated
 public class ProxyWorker implements WorkerProxy {
 	/**
 	 * If false, this is representing all the workers in a single unit; if

@@ -31,7 +31,11 @@ import org.jetbrains.annotations.Nullable;
 
 /**
  * A proxy for units in multiple maps, or all a player's units of one kind.
+ *
+ * @deprecated We're trying to get rid of the notion of 'proxies' in favor of
+ * driver model methods.
  */
+@Deprecated
 public class ProxyUnit implements IUnit, ProxyFor<IUnit> {
 	/**
 	 * If true, we are proxying parallel units in different maps; if false,

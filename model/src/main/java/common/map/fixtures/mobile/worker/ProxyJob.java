@@ -21,7 +21,11 @@ import lovelace.util.LovelaceLogger;
 
 /**
  * An IJob implementation to let the Job tree operate on a whole unit at once.
+ *
+ * @deprecated We're trying to get rid of the notion of 'proxies' in favor of
+ * driver model methods.
  */
+@Deprecated
 public final class ProxyJob implements IJob, ProxyFor<IJob> {
 	public ProxyJob(final String name, final boolean parallel, final IWorker... proxiedWorkers) {
 		this.parallel = parallel;
