@@ -46,6 +46,7 @@ import java.util.function.Predicate;
  * the tiles they visit, for now) as they move, some automatically and some
  * with a probability dependent on the kind of fixture and on the unit's
  * members' Perception score.</li>
+ * </ul>
  */
 public final class SimpleMovementModel {
 	private SimpleMovementModel() {
