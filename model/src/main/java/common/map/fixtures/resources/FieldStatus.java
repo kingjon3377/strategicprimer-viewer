@@ -41,7 +41,7 @@ public enum FieldStatus {
 		private @Nullable List<FieldStatus> cache;
 		public List<FieldStatus> get() {
 			if (cache == null) {
-				cache = List.of(FieldStatus.values());
+				cache = List.of(values());
 			}
 			return cache;
 		}
