@@ -82,8 +82,6 @@ public interface IFixtureEditingModel extends IDriverModel {
 
 	/**
 	 * The unit members that have been dismissed during this session.
-	 *
-	 * TODO: Move to {@link IFixtureEditingModel}, since dismissUnitMember() got moved there?
 	 */
 	Iterable<UnitMember> getDismissed();
 }
