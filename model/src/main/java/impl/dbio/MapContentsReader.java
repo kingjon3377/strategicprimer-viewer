@@ -1,8 +1,6 @@
 package impl.dbio;
 
-import common.map.fixtures.towns.CommunityStats;
 import lovelace.util.LovelaceLogger;
-import org.eclipse.jdt.annotation.Nullable;
 import common.map.IFixture;
 import common.map.IMutableMapNG;
 import common.xmlio.Warning;
@@ -10,9 +8,7 @@ import common.xmlio.Warning;
 import io.jenetics.facilejdbc.Query;
 import io.jenetics.facilejdbc.Row;
 import io.jenetics.facilejdbc.RowParser;
-import io.jenetics.facilejdbc.Transactional;
 import java.sql.Connection;
-import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.ArrayList;

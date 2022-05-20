@@ -21,7 +21,6 @@ import common.map.Point;
 import common.map.fixtures.Implement;
 import common.map.fixtures.IResourcePile;
 import common.map.fixtures.resources.CacheFixture;
-import common.map.TileFixture;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.stream.Collectors;

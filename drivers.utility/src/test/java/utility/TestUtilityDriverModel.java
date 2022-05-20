@@ -5,7 +5,6 @@ import common.map.IMutablePlayerCollection;
 import common.map.MapDimensions;
 import common.map.MapDimensionsImpl;
 import common.map.MutablePlayer;
-import common.map.Player;
 import common.map.PlayerCollection;
 import common.map.PlayerImpl;
 import common.map.Point;

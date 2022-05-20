@@ -29,7 +29,6 @@ import exploration.common.Speed;
 import exploration.common.TraversalImpossibleException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;

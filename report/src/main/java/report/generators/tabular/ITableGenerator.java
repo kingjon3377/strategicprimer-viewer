@@ -2,7 +2,6 @@ package report.generators.tabular;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.function.Predicate;
 import lovelace.util.LovelaceLogger;
 import lovelace.util.ThrowingConsumer;
 import org.jetbrains.annotations.Nullable;

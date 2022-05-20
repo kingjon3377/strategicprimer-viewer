@@ -27,12 +27,10 @@ import common.xmlio.Warning;
 import impl.xmlio.exceptions.MapVersionException;
 
 import io.jenetics.facilejdbc.Query;
-import io.jenetics.facilejdbc.ResultSetParser;
 import io.jenetics.facilejdbc.Row;
 import io.jenetics.facilejdbc.RowParser;
 import io.jenetics.facilejdbc.Transactional;
 import java.sql.Connection;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;

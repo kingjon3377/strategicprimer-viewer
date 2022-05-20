@@ -1,7 +1,6 @@
 package report.generators.tabular;
 
 import java.util.List;
-import java.util.function.Predicate;
 import org.javatuples.Pair;
 import org.jetbrains.annotations.Nullable;
 

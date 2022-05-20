@@ -55,7 +55,6 @@ import exploration.common.PathfinderFactory;
 import java.util.Optional;
 import java.util.stream.StreamSupport;
 import java.util.stream.Collectors;
-import java.util.Collections;
 import java.util.function.IntConsumer;
 import java.util.function.Function;
 import java.util.Arrays;

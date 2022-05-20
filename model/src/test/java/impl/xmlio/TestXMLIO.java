@@ -111,7 +111,6 @@ import impl.xmlio.exceptions.MissingPropertyException;
 import impl.xmlio.exceptions.MissingChildException;
 import impl.xmlio.exceptions.DeprecatedPropertyException;
 import java.util.Collections;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 import java.util.HashSet;
