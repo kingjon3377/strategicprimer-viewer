@@ -22,7 +22,7 @@ import org.jetbrains.annotations.Nullable;
 import static io.jenetics.facilejdbc.Param.value;
 
 final class DBFortressHandler extends AbstractDatabaseWriter<IFortress, Point> implements MapContentsReader {
-	public DBFortressHandler(@Nullable final SPDatabaseWriter parent) {
+	public DBFortressHandler(final @Nullable SPDatabaseWriter parent) {
 		super(IFortress.class, Point.class);
 		this.parent = parent;
 	}

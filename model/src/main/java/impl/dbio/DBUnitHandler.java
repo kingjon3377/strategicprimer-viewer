@@ -21,7 +21,7 @@ import org.jetbrains.annotations.Nullable;
 import static io.jenetics.facilejdbc.Param.value;
 
 final class DBUnitHandler extends AbstractDatabaseWriter<IUnit, Object> implements MapContentsReader {
-	public DBUnitHandler(@Nullable final SPDatabaseWriter parent) {
+	public DBUnitHandler(final @Nullable SPDatabaseWriter parent) {
 		super(IUnit.class, Object.class);
 		this.parent = parent;
 	}

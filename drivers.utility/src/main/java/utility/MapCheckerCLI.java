@@ -147,7 +147,7 @@ public class MapCheckerCLI implements UtilityDriver {
 		}
 	}
 
-	private static boolean animalTracksChecker(@Nullable final TileType terrain, final Point context, final IFixture fixture,
+	private static boolean animalTracksChecker(final @Nullable TileType terrain, final Point context, final IFixture fixture,
 	                                           final Warning warner) {
 		if (fixture instanceof AnimalTracks) {
 			warner.handle(new SPContentWarning(context,
@@ -331,7 +331,7 @@ public class MapCheckerCLI implements UtilityDriver {
 			MapCheckerCLI::resourcePlaceholderChecker, MapCheckerCLI::oasisChecker,
 			MapCheckerCLI::personalEquipmentCheck, MapCheckerCLI::noResultsCheck);
 
-	private static boolean contentCheck(final Checker checker, @Nullable final TileType terrain, final Point context,
+	private static boolean contentCheck(final Checker checker, final @Nullable TileType terrain, final Point context,
 	                                    final Warning warner, final Iterable<? extends IFixture> list) {
 		boolean retval = false;
 		for (final IFixture fixture : list) {

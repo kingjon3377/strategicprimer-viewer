@@ -215,7 +215,7 @@ import common.map.fixtures.mobile.AnimalTracks;
 		}
 	}
 
-	private static Stream<?> flatten(@Nullable final Object item) {
+	private static Stream<?> flatten(final @Nullable Object item) {
 		// Note that workers are counted separately, so while we include their equipment and mounts we don't include them.
 		if (item instanceof IWorker) {
 			return Stream.concat(Stream.concat(StreamSupport.stream(((IWorker) item).spliterator(), false),

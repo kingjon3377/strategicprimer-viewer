@@ -555,7 +555,7 @@ public final class WorkerTree extends JTree implements UnitMemberSelectionSource
 				background = BackgroundState.larger(background, result);
 			}
 			if (component instanceof DefaultTreeCellRenderer) {
-				@Nullable final Color backgroundColor = background.getColor();
+				final @Nullable Color backgroundColor = background.getColor();
 				final DefaultTreeCellRenderer comp = (DefaultTreeCellRenderer) component;
 				if (backgroundColor == null) {
 					comp.setBackgroundSelectionColor(DEFAULT_STORER
