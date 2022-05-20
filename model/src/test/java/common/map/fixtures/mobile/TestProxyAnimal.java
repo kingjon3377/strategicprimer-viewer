@@ -38,8 +38,8 @@ public class TestProxyAnimal {
 	}
 
 	/**
-	 * @by J. Dimeo https://stackoverflow.com/a/49032736
-	 * @by Jonathan Lovelace (adapting to Arguments of ints)
+	 * @author J. Dimeo https://stackoverflow.com/a/49032736
+	 * @author Jonathan Lovelace (adapting to Arguments of ints)
 	 */
 	private static class PairCollater implements Function<Integer, Stream<Arguments>> {
 		@Nullable
