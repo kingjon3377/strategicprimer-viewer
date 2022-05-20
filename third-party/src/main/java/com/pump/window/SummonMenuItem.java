@@ -32,7 +32,6 @@ public final class SummonMenuItem extends JCheckBoxMenuItem {
 	 *            the frame to bring to front when this menu item is activated
 	 */
 	public SummonMenuItem(final Frame f) {
-		super();
 		frame = f;
 		addActionListener(this::handler);
 		updateText();
