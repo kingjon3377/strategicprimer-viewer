@@ -5,7 +5,7 @@ import java.util.function.Predicate;
 import common.map.TileFixture;
 
 /**
- * A wrapper around <code>Predicate<TileFixture></code>, used to determine Z-order of fixtures.
+ * A wrapper around {@code Predicate<TileFixture>}, used to determine Z-order of fixtures.
  */
 public class FixtureMatcher {
 	/**
