@@ -7,8 +7,6 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
-import lovelace.util.FileContentsReader;
-
 import org.javatuples.Pair;
 
 /**
