@@ -20,6 +20,9 @@ import java.util.HashMap;
 
 	private static final Map<String, Map<String, Integer>> MINIMUMS = init();
 
+	private MinimumStats() {
+	}
+
 	// TODO: Convert to use FileSplitter's three- or four-column version once available
 	private static Map<String, Map<String, Integer>> init() {
 		final Map<String, Map<String, Integer>> retval = new HashMap<>();

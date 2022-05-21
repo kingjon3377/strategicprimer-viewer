@@ -39,6 +39,8 @@ import lovelace.util.Platform;
 import org.jetbrains.annotations.Nullable;
 
 /* package */ final class AppChooserState {
+	private AppChooserState() {
+	}
 	// FIXME: Move methods back into AppStarter, unless that would break something.
 	// TODO: Define and register a custom log formatter? We had to in
 	// Ceylon to get log messags to show at all, but in Java I dropped this
