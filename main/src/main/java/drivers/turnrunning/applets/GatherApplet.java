@@ -138,6 +138,6 @@ import org.jetbrains.annotations.Nullable;
 			cli.print("Found nothing for the next ");
 			cli.println(inHours(noResultsTime));
 		}
-		return buffer.toString().trim();
+		return buffer.toString().strip();
 	}
 }

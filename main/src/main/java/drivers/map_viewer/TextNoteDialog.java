@@ -66,7 +66,7 @@ public final class TextNoteDialog extends SPDialog implements NewFixtureSource {
 	private final JTextArea noteField = new JTextArea(15, 3);
 
 	private void okListener() {
-		final String text = noteField.getText().trim();
+		final String text = noteField.getText().strip();
 		if (text.isEmpty()) {
 			noteField.requestFocusInWindow();
 		} else {

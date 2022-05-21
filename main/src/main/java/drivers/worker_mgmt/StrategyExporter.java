@@ -209,7 +209,7 @@ import common.map.fixtures.mobile.worker.IJob;
 			writer.write(playerName);
 			writer.newLine();
 			if (currentPlayer.getCountry() != null &&
-					!currentPlayer.getCountry().trim().isEmpty()) {
+					!currentPlayer.getCountry().isBlank()) {
 				writer.write("Country: ");
 				writer.write(currentPlayer.getCountry());
 				writer.newLine();

@@ -105,7 +105,7 @@ public class MapCheckerCLI implements UtilityDriver {
 		public boolean check(final TileType terrain, final Point context, final IFixture fixture, final Warning warner) {
 			boolean retval = false;
 			if (fixture instanceof HasOwner) {
-				if (((HasOwner) fixture).getOwner().getName().trim().isEmpty()) {
+				if (((HasOwner) fixture).getOwner().getName().isBlank()) {
 					warner.handle(new SPContentWarning(context,
 						String.format("Fixture owned by %s, who has no name",
 							((HasOwner) fixture).getOwner())));

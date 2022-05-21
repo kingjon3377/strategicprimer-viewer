@@ -112,7 +112,7 @@ public final class CLIHelper {
 		try (final Scanner scanner = new Scanner(SystemIn.STDIN)) {
 			while (true) {
 				writePrompt(prompt);
-				final String input = scanner.nextLine().trim().toLowerCase();
+				final String input = scanner.nextLine().strip().toLowerCase();
 				switch (input) {
 					case "yes":
 					case "true":

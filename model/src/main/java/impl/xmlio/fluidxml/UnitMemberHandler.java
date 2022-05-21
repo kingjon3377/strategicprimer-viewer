@@ -112,7 +112,7 @@ import javax.xml.stream.XMLStreamException;
 				retval.append(((Characters) event).getData());
 			}
 		}
-		return retval.toString().trim();
+		return retval.toString().strip();
 	}
 
 	public static IJob readJob(final StartElement element, final QName parent, final Iterable<XMLEvent> stream,

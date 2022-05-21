@@ -71,7 +71,7 @@ import java.util.List;
 				break;
 			}
 		}
-		unit.setOrders(turn, builder.toString().trim());
+		unit.setOrders(turn, builder.toString().strip());
 	}
 
 	/**
@@ -91,7 +91,7 @@ import java.util.List;
 				break;
 			}
 		}
-		unit.setResults(turn, builder.toString().trim());
+		unit.setResults(turn, builder.toString().strip());
 	}
 
 	private UnitMember parseChild(final StartElement element, final QName parent, final Iterable<XMLEvent> stream)
@@ -143,7 +143,7 @@ import java.util.List;
 			} else if (isMatchingEnd(element.getName(), event)) {
 				break;
 			}
-			final String tempOrders = orders.toString().trim();
+			final String tempOrders = orders.toString().strip();
 			if (!tempOrders.isEmpty()) {
 				retval.setOrders(-1, tempOrders);
 			}

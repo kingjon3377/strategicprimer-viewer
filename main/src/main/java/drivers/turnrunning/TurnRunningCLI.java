@@ -214,7 +214,7 @@ import org.jetbrains.annotations.Nullable;
 				buffer.append(System.lineSeparator());
 			}
 		}
-		return buffer.toString().trim();
+		return buffer.toString().strip();
 	}
 
 	@Override

@@ -217,11 +217,11 @@ public class SPFluidWriter implements SPWriter {
 		writeNonEmptyAttributes(ostream, Pair.with("portrait", obj.getPortrait()));
 		for (final Map.Entry<Integer, String> entry : obj.getAllOrders().entrySet()) {
 			writeUnitOrders(ostream, indentation + 1, entry.getKey(), "orders",
-				entry.getValue().trim());
+				entry.getValue().strip());
 		}
 		for (final Map.Entry<Integer, String> entry : obj.getAllResults().entrySet()) {
 			writeUnitOrders(ostream, indentation + 1, entry.getKey(), "results",
-				entry.getValue().trim());
+				entry.getValue().strip());
 		}
 		for (final UnitMember member : obj) {
 			writeSPObjectImpl(ostream, member, indentation + 1);

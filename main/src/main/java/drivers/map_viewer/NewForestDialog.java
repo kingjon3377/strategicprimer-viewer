@@ -86,8 +86,8 @@ public final class NewForestDialog extends SPDialog implements NewFixtureSource 
 		new JFormattedTextField(NumberFormat.getNumberInstance());
 
 	private void okListener() {
-		final String kind = kindField.getText().trim();
-		final String acresString = acresField.getText().trim();
+		final String kind = kindField.getText().strip();
+		final String acresString = acresField.getText().strip();
 		if (kind.isEmpty()) {
 			kindField.requestFocusInWindow();
 			return;
@@ -99,7 +99,7 @@ public final class NewForestDialog extends SPDialog implements NewFixtureSource 
 				return;
 			}
 		} else {
-			final String reqId = idField.getText().trim();
+			final String reqId = idField.getText().strip();
 			final int idNum;
 			if (isNumeric(reqId)) {
 				final OptionalInt temp = parseInt(reqId);

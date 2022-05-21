@@ -473,7 +473,7 @@ public final class WorkerTree extends JTree implements UnitMemberSelectionSource
 				return BackgroundState.FIXME;
 			} else if (orders.contains("todo") || orders.contains("xxx")) {
 				return BackgroundState.TODO;
-			} else if (orders.trim().isEmpty() || item.getOrders(turnSource.getAsInt()).trim().isEmpty()) {
+			} else if (orders.isBlank() || item.getOrders(turnSource.getAsInt()).isBlank()) {
 				return BackgroundState.MISSING;
 			} else {
 				return BackgroundState.NONE;

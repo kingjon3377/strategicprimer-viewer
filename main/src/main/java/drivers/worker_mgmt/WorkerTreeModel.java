@@ -353,7 +353,7 @@ import java.util.stream.Collectors;
 			} else if (!unit.iterator().hasNext()) {
 				continue;
 			}
-			final String orders = unit.getOrders(turn).toLowerCase().trim();
+			final String orders = unit.getOrders(turn).toLowerCase().strip();
 			if (orders.isEmpty() || orders.contains("todo") || orders.contains("fixme") ||
 					orders.contains("xxx")) {
 				if (orders.isEmpty()) {

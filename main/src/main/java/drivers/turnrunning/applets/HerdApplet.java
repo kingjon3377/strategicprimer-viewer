@@ -222,6 +222,6 @@ import query.SmallAnimalModel;
 			}
 		}
 		addToOrders.accept(String.format("In all, tending the animals took %s.", inHours(minutesSpent)));
-		return buffer.toString().trim();
+		return buffer.toString().strip();
 	}
 }

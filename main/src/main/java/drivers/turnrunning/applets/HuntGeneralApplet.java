@@ -232,6 +232,6 @@ import org.jetbrains.annotations.Nullable;
 			}
 			buffer.append(addendum);
 		}
-		return buffer.toString().trim();
+		return buffer.toString().strip();
 	}
 }

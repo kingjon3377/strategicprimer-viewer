@@ -129,7 +129,7 @@ public class ReaderComparator implements UtilityDriver {
 			cli.println("New writer took " + (writeEndTwo - writeStartTwo));
 			if (outOne.toString().equals(outTwo.toString())) {
 				cli.println("Writers produce identical results");
-			} else if (outOne.toString().trim().equals(outTwo.toString().trim())) {
+			} else if (outOne.toString().strip().equals(outTwo.toString().strip())) {
 				// TODO: try with a global replacement of all whitespace with single spaces
 				cli.println("Writers produce identical results except for whitespace");
 			} else {

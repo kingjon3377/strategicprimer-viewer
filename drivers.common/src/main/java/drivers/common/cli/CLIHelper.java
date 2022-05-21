@@ -231,7 +231,7 @@ public final class CLIHelper implements ICLIHelper {
 				return null;
 			}
 			try {
-				retval = new BigDecimal(input.trim());
+				retval = new BigDecimal(input.strip());
 			} catch (final NumberFormatException except) {
 				println("Invalid number.");
 				LovelaceLogger.trace(except, "Invalid number");
@@ -314,15 +314,15 @@ public final class CLIHelper implements ICLIHelper {
 			final String line = readLine();
 			if (line == null) {
 				return null;
-			} else if (".".equals(line.trim())) {
+			} else if (".".equals(line.strip())) {
 				final String retval = builder.toString();
 				if (retval.endsWith(System.lineSeparator() + System.lineSeparator())) {
-					return retval.trim() + System.lineSeparator() +
+					return retval.strip() + System.lineSeparator() +
 						System.lineSeparator();
 				} else {
-					return retval.trim();
+					return retval.strip();
 				}
-			} else if (",".equals(line.trim())) {
+			} else if (",".equals(line.strip())) {
 				builder.setLength(0);
 			} else {
 				builder.append(line);

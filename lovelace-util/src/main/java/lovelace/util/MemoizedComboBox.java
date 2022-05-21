@@ -39,7 +39,7 @@ public class MemoizedComboBox extends ImprovedComboBox<String> {
 		if (selectedItem == null) {
 			return;
 		} else {
-			final String item = selectedItem.trim();
+			final String item = selectedItem.strip();
 			if (!item.isEmpty() && !values.contains(item)) {
 				values.add(item);
 				addItem(item);
@@ -54,9 +54,9 @@ public class MemoizedComboBox extends ImprovedComboBox<String> {
 		if (retval == null) {
 			return null;
 		} else if (retval instanceof String) {
-			return ((String) retval).trim();
+			return ((String) retval).strip();
 		} else {
-			return retval.toString().trim();
+			return retval.toString().strip();
 		}
 	}
 
@@ -72,7 +72,7 @@ public class MemoizedComboBox extends ImprovedComboBox<String> {
 	public @Nullable String getSelectedString() {
 		final Object inner = getEditor().getEditorComponent();
 		if (inner instanceof JTextField) {
-			final String text = ((JTextField) inner).getText().trim();
+			final String text = ((JTextField) inner).getText().strip();
 			if (!text.isEmpty()) {
 				setSelectedItem(text);
 				return text;

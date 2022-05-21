@@ -128,7 +128,7 @@ import common.xmlio.SPFormatException;
 			writeAttributes(ostream, Pair.with("turn", obj.getTurn()));
 		}
 		writeImage(ostream, obj);
-		ostream.writeCharacters(obj.getText().trim());
+		ostream.writeCharacters(obj.getText().strip());
 		ostream.writeEndElement();
 	}
 }

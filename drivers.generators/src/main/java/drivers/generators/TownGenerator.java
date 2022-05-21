@@ -115,9 +115,9 @@ import java.math.BigDecimal;
 				if (reference.contains("#")) {
 					final String temp = reference.split("#", 2)[1];
 					if (!retval.hasTable(temp)) {
-						firstTables.addFirst(temp.trim());
+						firstTables.addFirst(temp.strip());
 					}
-				} else if (!reference.trim().isEmpty()) {
+				} else if (!reference.isBlank()) {
 					secondTables.addFirst(reference + "_production"); // TODO: should this be firstTables instead?
 				}
 			}
@@ -129,7 +129,7 @@ import java.math.BigDecimal;
 				if (reference.contains("#")) {
 					final String temp = reference.split("#", 2)[1];
 					if (!retval.hasTable(temp)) {
-						secondTables.addFirst(temp.trim());
+						secondTables.addFirst(temp.strip());
 					}
 				}
 			}
@@ -570,7 +570,7 @@ import java.math.BigDecimal;
 	public void generateSpecificTowns(final IDRegistrar idf, final PopulationGeneratingModel model) {
 		while (true) {
 			final String input = cli.inputString("ID or name of town to create stats for: ");
-			if (input == null || input.trim().isEmpty()) {
+			if (input == null || input.isBlank()) {
 				break;
 			}
 			final @Nullable Point location;

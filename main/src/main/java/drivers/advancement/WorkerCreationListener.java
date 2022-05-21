@@ -141,8 +141,8 @@ import java.util.function.Consumer;
 		}
 
 		private void accept() {
-			final String nameText = name.getText().trim();
-			final String raceText = race.getText().trim();
+			final String nameText = name.getText().strip();
+			final String raceText = race.getText().strip();
 			final int hpValue = hpModel.getNumber().intValue();
 			final int maxHPValue = maxHP.getNumber().intValue();
 			final int strValue = strength.getNumber().intValue();

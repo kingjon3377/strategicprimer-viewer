@@ -121,7 +121,7 @@ import impl.xmlio.exceptions.UnwantedChildException;
 				retval.append(((Characters) event).getData());
 			}
 		}
-		return retval.toString().trim();
+		return retval.toString().strip();
 	}
 
 	private IJob parseJob(final StartElement element, final QName parent, final Iterable<XMLEvent> stream)

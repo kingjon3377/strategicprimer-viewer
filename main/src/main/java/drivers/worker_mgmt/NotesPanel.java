@@ -49,7 +49,7 @@ public final class NotesPanel extends BorderedPanel
 		if (current == null) {
 			Toolkit.getDefaultToolkit().beep();
 		} else {
-			current.setNote(player, notesArea.getText().trim());
+			current.setNote(player, notesArea.getText().strip());
 		}
 	}
 

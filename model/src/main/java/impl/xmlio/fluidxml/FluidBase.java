@@ -654,7 +654,7 @@ import org.jetbrains.annotations.Nullable;
 				break;
 			}
 		}
-		return builder.toString().trim();
+		return builder.toString().strip();
 	}
 
 	/**

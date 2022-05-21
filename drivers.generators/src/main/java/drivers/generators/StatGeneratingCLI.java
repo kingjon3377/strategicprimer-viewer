@@ -188,7 +188,7 @@ import common.map.fixtures.towns.Village;
 					String.format("racial_stat_adjustments/%s.txt", race));
 			final List<Integer> parsed = new ArrayList<>(6);
 			for (final String line : textContent) {
-				parsed.add(Integer.parseInt(line.trim()));
+				parsed.add(Integer.parseInt(line.strip()));
 			}
 			final WorkerStats retval = WorkerStats.factory(parsed.get(0), parsed.get(1), parsed.get(2), parsed.get(3),
 				parsed.get(4), parsed.get(5));
@@ -539,7 +539,7 @@ import common.map.fixtures.towns.Village;
 					name = temp;
 				}
 			} else {
-				name = names.removeFirst().trim();
+				name = names.removeFirst().strip();
 			}
 			Village home = null;
 			final List<Triplet<Integer, Double, Village>> villagesToRemove = new ArrayList<>();

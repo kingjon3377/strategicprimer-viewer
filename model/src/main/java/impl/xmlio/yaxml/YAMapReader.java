@@ -347,7 +347,7 @@ import java.util.function.Predicate;
 					point = null;
 				}
 			} else if (event instanceof Characters) {
-				final String data = ((Characters) event).getData().trim();
+				final String data = ((Characters) event).getData().strip();
 				if (!data.isEmpty()) {
 					retval.addFixture(point == null ? Point.INVALID_POINT : point,
 						new TextFixture(data, -1));

@@ -43,7 +43,7 @@ import impl.xmlio.exceptions.UnwantedChildException;
 				break;
 			}
 		}
-		final TextFixture fixture = new TextFixture(builder.toString().trim(),
+		final TextFixture fixture = new TextFixture(builder.toString().strip(),
 			getIntegerParameter(element, "turn", -1));
 		fixture.setImage(getParameter(element, "image", ""));
 		return fixture;
@@ -57,7 +57,7 @@ import impl.xmlio.exceptions.UnwantedChildException;
 		}
 		writeImageXML(ostream, obj);
 		ostream.accept(">");
-		ostream.accept(obj.getText().trim());
+		ostream.accept(obj.getText().strip());
 		closeTag(ostream, 0, "text");
 	}
 

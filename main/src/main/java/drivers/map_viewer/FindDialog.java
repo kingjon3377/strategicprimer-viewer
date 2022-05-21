@@ -212,9 +212,9 @@ import java.util.function.Predicate;
 		final String pattern;
 		final boolean caseSensitivity = caseSensitive.isSelected();
 		if (caseSensitivity) {
-			pattern = searchField.getText().trim();
+			pattern = searchField.getText().strip();
 		} else {
-			pattern = searchField.getText().trim().toLowerCase();
+			pattern = searchField.getText().strip().toLowerCase();
 		}
 		if (pattern.isEmpty()) {
 			return;

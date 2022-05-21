@@ -270,7 +270,7 @@ public class SPFluidReader implements IMapReader, ISPReader {
 					element.getName().equals(((EndElement) event).getName())) {
 				break;
 			} else if (event instanceof Characters) {
-				final String data = ((Characters) event).getData().trim();
+				final String data = ((Characters) event).getData().strip();
 				if (!data.isEmpty()) {
 					map.addFixture(loc, new TextFixture(data, -1));
 				}
@@ -292,7 +292,7 @@ public class SPFluidReader implements IMapReader, ISPReader {
 					element.getName().equals(((EndElement) event).getName())) {
 				break;
 			} else if (event instanceof Characters) {
-				final String data = ((Characters) event).getData().trim();
+				final String data = ((Characters) event).getData().strip();
 				if (!data.isEmpty()) {
 					map.addFixture(loc, new TextFixture(data, -1));
 				}
@@ -380,7 +380,7 @@ public class SPFluidReader implements IMapReader, ISPReader {
 					break;
 				}
 			} else if (event instanceof Characters &&
-					!((Characters) event).getData().trim().isEmpty()) {
+					!((Characters) event).getData().isBlank()) {
 				warner.handle(UnwantedChildException.childInTag(stackTop,
 					new QName(XMLConstants.NULL_NS_URI, "text"),
 					event.getLocation(),
@@ -507,7 +507,7 @@ public class SPFluidReader implements IMapReader, ISPReader {
 				break;
 			}
 		}
-		final String tempOrders = orders.toString().trim();
+		final String tempOrders = orders.toString().strip();
 		if (!tempOrders.isEmpty()) {
 			retval.setOrders(-1, tempOrders);
 		}

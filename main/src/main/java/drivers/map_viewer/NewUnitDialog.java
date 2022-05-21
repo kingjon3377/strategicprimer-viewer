@@ -88,14 +88,14 @@ public final class NewUnitDialog extends SPDialog implements NewUnitSource, Play
 	}
 
 	private void okListener() {
-		final String name = nameField.getText().trim();
-		final String kind = kindField.getText().trim();
+		final String name = nameField.getText().strip();
+		final String kind = kindField.getText().strip();
 		if (name.isEmpty()) {
 			nameField.requestFocusInWindow();
 		} else if (kind.isEmpty()) {
 			kindField.requestFocusInWindow();
 		} else {
-			final String reqId = idField.getText().trim();
+			final String reqId = idField.getText().strip();
 			final int idNum;
 			if (isNumeric(reqId)) {
 				final OptionalInt temp = parseInt(reqId);

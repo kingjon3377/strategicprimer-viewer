@@ -81,8 +81,8 @@ public class FixtureEditMenu extends JPopupMenu {
 		final Object result = JOptionPane.showInputDialog(getParent(), "Fixture's new name:",
 			"Rename Fixture", JOptionPane.PLAIN_MESSAGE, null, null, originalName);
 		if (result instanceof String) {
-			final String resultString = ((String) result).trim();
-			if (!resultString.equals(originalName.trim())) {
+			final String resultString = ((String) result).strip();
+			if (!resultString.equals(originalName.strip())) {
 				handler.renameItem(fix, resultString);
 			}
 		}
@@ -94,8 +94,8 @@ public class FixtureEditMenu extends JPopupMenu {
 		final Object result = JOptionPane.showInputDialog(getParent(), "Fixture's new kind:",
 			"Change Fixture Kind", JOptionPane.PLAIN_MESSAGE, null, null, originalKind);
 		if (result instanceof String) {
-			final String resultString = ((String) result).trim();
-			if (!resultString.equals(originalKind.trim())) {
+			final String resultString = ((String) result).strip();
+			if (!resultString.equals(originalKind.strip())) {
 				handler.changeKind(fix, resultString);
 			}
 		}
@@ -135,7 +135,7 @@ public class FixtureEditMenu extends JPopupMenu {
 		if (result instanceof String) {
 			final int num;
 			try {
-				num = Integer.parseInt(((String) result).trim());
+				num = Integer.parseInt(((String) result).strip());
 			} catch (final NumberFormatException except) {
 				// FIXME: Log the failure
 				return;

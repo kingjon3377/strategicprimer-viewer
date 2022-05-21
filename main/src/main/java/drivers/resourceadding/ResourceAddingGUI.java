@@ -235,7 +235,7 @@ import java.io.FileNotFoundException;
 		}
 
 		private void confirmPlayer() {
-			if (playerIsDefault && currentPlayer.getName().trim().isEmpty()) {
+			if (playerIsDefault && currentPlayer.getName().isBlank()) {
 				menuHandler.actionPerformed(new ActionEvent(mainPanel, 1,
 					"change current player"));
 			}
