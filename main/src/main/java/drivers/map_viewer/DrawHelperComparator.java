@@ -170,7 +170,7 @@ public class DrawHelperComparator implements UtilityDriver {
 
 	private final Map<Triplet<String, String, String>, LongAccumulator> results = new HashMap<>();
 
-	private final LongAccumulator getResultsAccumulator(final String file, final String testee, final String test) {
+	private LongAccumulator getResultsAccumulator(final String file, final String testee, final String test) {
 		final Triplet<String, String, String> tuple = Triplet.with(file, testee, test);
 		if (results.containsKey(tuple)) {
 			return results.get(tuple);
@@ -194,7 +194,7 @@ public class DrawHelperComparator implements UtilityDriver {
 		this.options = options;
 	}
 
-	private final long printStats(final String prefix, final long total, final int reps) {
+	private long printStats(final String prefix, final long total, final int reps) {
 		cli.println(String.format("%s\t%d, average of %.1f ms.", prefix, total, total / (double) reps));
 		return total;
 	}

@@ -272,7 +272,7 @@ public class HuntingModel {
 	 *
 	 * TODO: Return Stream instead of collect()ing?
 	 */
-	private final Collection<Animal> baseAnimals(final Point point) {
+	private Collection<Animal> baseAnimals(final Point point) {
 		return map.getFixtures(point).stream().filter(Animal.class::isInstance)
 			.map(Animal.class::cast).filter(((Predicate<Animal>) Animal::isTalking).negate())
 			.collect(Collectors.toList());
@@ -283,7 +283,7 @@ public class HuntingModel {
 	 *
 	 * TODO: Return Stream instead of collect()ing?
 	 */
-	private final Collection<TileFixture> animals(final Point point) {
+	private Collection<TileFixture> animals(final Point point) {
 		return baseAnimals(point).stream().filter(a -> !fishKinds.contains(a.getKind()))
 			.collect(Collectors.toList());
 	}
@@ -293,7 +293,7 @@ public class HuntingModel {
 	 *
 	 * TODO: Return Stream instead of collect()ing?
 	 */
-	private final Collection<TileFixture> waterAnimals(final Point point) {
+	private Collection<TileFixture> waterAnimals(final Point point) {
 		return baseAnimals(point).stream().filter(a -> fishKinds.contains(a.getKind()))
 			.collect(Collectors.toList());
 	}
