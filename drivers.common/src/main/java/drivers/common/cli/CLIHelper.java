@@ -42,7 +42,7 @@ public final class CLIHelper implements ICLIHelper {
 	}
 
 	private static IOSource stdin() {
-		Console console = System.console();
+		final Console console = System.console();
 		if (console == null) {
 			return new BufferedReader(new InputStreamReader(SystemIn.STDIN))::readLine; // TODO: Does this consume the newline character?
 		} else {

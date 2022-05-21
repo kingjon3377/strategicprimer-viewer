@@ -39,7 +39,7 @@ interface MapContentsReader {
 			Map<Integer, List<Object>> containees, Warning warner) throws SQLException;
 
 	private static Map<String, Object> parseToMap(final Row rs, final Connection conn) throws SQLException {
-		ResultSetMetaData rsm = rs.getMetaData();
+		final ResultSetMetaData rsm = rs.getMetaData();
 		final Map<String, Object> retval = new HashMap<>(rsm.getColumnCount());
 		for (int i = 1; i <= rsm.getColumnCount(); i++) {
 			retval.put(rsm.getColumnLabel(i), rs.getObject(i));

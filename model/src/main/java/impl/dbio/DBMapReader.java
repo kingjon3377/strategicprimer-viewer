@@ -58,7 +58,7 @@ final class DBMapReader {
 	private static final Query PLAYER_SELECT = Query.of("SELECT id, codename, current FROM players");
 
 	private static Player parsePlayer(final Row row, final Connection sql) throws SQLException {
-		MutablePlayer retval = new PlayerImpl(row.getInt("id"), row.getString("codename"));
+		final MutablePlayer retval = new PlayerImpl(row.getInt("id"), row.getString("codename"));
 		if (row.getBoolean("current")) {
 			retval.setCurrent(true);
 		}
@@ -102,7 +102,7 @@ final class DBMapReader {
 		return Pair.with(new Point(row.getInt("row"), row.getInt("column")), row.getInt("player"));
 	}
 	public IMutableMapNG readMap(final Transactional db, final Warning warner) throws SQLException {
-		Connection conn = db.connection();
+		final Connection conn = db.connection();
 		final @Nullable Quartet<Integer, Integer, Integer, Integer> metadata = METADATA_SELECT.as(((RowParser<Quartet<Integer, Integer, Integer, Integer>>) DBMapReader::parseMetadata).singleNull(), conn);
 		if (metadata == null) {
 			throw new IllegalStateException("No metadata in database");
@@ -117,18 +117,18 @@ final class DBMapReader {
 		final IMutablePlayerCollection players = new PlayerCollection();
 		LovelaceLogger.debug("About to read players");
 		// TODO: Players should have 'country' and 'portrait' flags as well
-		try (Stream<Player> playerStream = PLAYER_SELECT.as(((RowParser<Player>) DBMapReader::parsePlayer).stream(), conn)) {
+		try (final Stream<Player> playerStream = PLAYER_SELECT.as(((RowParser<Player>) DBMapReader::parsePlayer).stream(), conn)) {
 			playerStream.forEach(players::add);
 		}
 		LovelaceLogger.debug("Finished reading players, about to start on terrain");
 		final IMutableMapNG retval =
 			new SPMapNG(new MapDimensionsImpl(rows, columns, version), players, turn);
 		final Accumulator<Integer> count = new IntAccumulator(0);
-		try (Stream<Triplet<Point, @Nullable TileType, Sextet<Boolean, Boolean, Boolean, Boolean, Boolean, Boolean>>> terrainStream =
+		try (final Stream<Triplet<Point, @Nullable TileType, Sextet<Boolean, Boolean, Boolean, Boolean, Boolean, Boolean>>> terrainStream =
 				     TERRAIN_SELECT.as(((RowParser<Triplet<Point, @Nullable TileType, Sextet<Boolean, Boolean, Boolean, Boolean, Boolean, Boolean>>>)
 						                        DBMapReader::parseTerrain).stream(), conn)) {
 			terrainStream.forEach(dbRow -> {
-				Sextet<Boolean, Boolean, Boolean, Boolean, Boolean, Boolean> tuple = dbRow.getValue2();
+				final Sextet<Boolean, Boolean, Boolean, Boolean, Boolean, Boolean> tuple = dbRow.getValue2();
 				final boolean mtn = tuple.getValue0();
 				final boolean northR = tuple.getValue1();
 				final boolean southR = tuple.getValue2();
@@ -163,11 +163,11 @@ final class DBMapReader {
 				}
 			});
 		}
-		try (Stream<Triplet<Point, Direction, Integer>> rStream = ROAD_SELECT.as(((RowParser<Triplet<Point, Direction, Integer>>) DBMapReader::parseRoads).stream(), conn)) {
+		try (final Stream<Triplet<Point, Direction, Integer>> rStream = ROAD_SELECT.as(((RowParser<Triplet<Point, Direction, Integer>>) DBMapReader::parseRoads).stream(), conn)) {
 			rStream.forEach(t -> retval.setRoadLevel(t.getValue0(), t.getValue1(), t.getValue2()));
 		}
 		LovelaceLogger.debug("Finished reading terrain");
-		try (Stream<Pair<Point, Integer>> bStream = BOOKMARK_SELECT.as(((RowParser<Pair<Point, Integer>>) DBMapReader::parseBookmark).stream(), conn)) {
+		try (final Stream<Pair<Point, Integer>> bStream = BOOKMARK_SELECT.as(((RowParser<Pair<Point, Integer>>) DBMapReader::parseBookmark).stream(), conn)) {
 			bStream.forEach(p -> retval.addBookmark(p.getValue0(), players.getPlayer(p.getValue1())));
 		}
 		for (final MapContentsReader reader : readers) {

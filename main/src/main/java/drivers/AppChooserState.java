@@ -132,7 +132,7 @@ import org.jetbrains.annotations.Nullable;
 			} else {
 				mainInvocation = "java -cp CLASSPATH " + Main.class.getName();
 			}
-		} catch (URISyntaxException except) {
+		} catch (final URISyntaxException except) {
 			LovelaceLogger.warning("Error computing usage message");
 			LovelaceLogger.debug(except, "Stack trace: URI syntax exception");
 			mainInvocation = "java -jar viewer-VERSION.jar";

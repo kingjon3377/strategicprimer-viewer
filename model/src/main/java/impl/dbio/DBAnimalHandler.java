@@ -107,7 +107,7 @@ final class DBAnimalHandler extends AbstractDatabaseWriter<AnimalOrTracks, /*Poi
 			params.add(value("kind", obj.getKind()));
 			params.add(value("talking", ((Animal) obj).isTalking()));
 			params.add(value("status", ((Animal) obj).getStatus()));
-			Optional<Integer> born = born((Animal) obj);
+			final Optional<Integer> born = born((Animal) obj);
 			if (born.isPresent()) {
 				params.add(value("born", born.get()));
 			}

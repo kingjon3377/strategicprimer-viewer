@@ -123,7 +123,7 @@ final class DBImmortalHandler extends AbstractDatabaseWriter<Immortal, /*Point|I
 			} catch (final SQLException except) {
 				if (except.getMessage().contains("constraint failed: simple_immortals)")) {
 					db.transaction().accept(sql -> {
-						for (Query query : refreshSimpleSchema()) {
+						for (final Query query : refreshSimpleSchema()) {
 							query.execute(sql);
 						}
 					});

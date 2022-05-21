@@ -47,7 +47,7 @@ final class DBPlayerHandler extends AbstractDatabaseWriter<Player, IMapNG> imple
 	private static final Query UPDATE_SCHEMA = Query.of("ALTER TABLE players ADD COLUMN country VARCHAR(64)");
 	@Override
 	public void write(final Transactional db, final Player obj, final IMapNG context) throws SQLException {
-		List<Param> params = new ArrayList<>();
+		final List<Param> params = new ArrayList<>();
 		params.add(value("id", obj.getPlayerId()));
 		params.add(value("codename", obj.getName()));
 		params.add(value("current", obj.isCurrent()));
