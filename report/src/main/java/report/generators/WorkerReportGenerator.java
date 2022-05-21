@@ -26,7 +26,6 @@ import common.map.fixtures.mobile.worker.IJob;
 
 	private final boolean details;
 	private final Player currentPlayer;
-	private final int currentTurn;
 	private final AnimalReportGenerator animalReportGenerator;
 	private final FortressMemberReportGenerator equipmentReportGenerator;
 
@@ -40,7 +39,6 @@ import common.map.fixtures.mobile.worker.IJob;
 		super(dimensions, hq);
 		this.details = details;
 		this.currentPlayer = currentPlayer;
-		this.currentTurn = currentTurn;
 		animalReportGenerator = new AnimalReportGenerator(dimensions, currentTurn, hq);
 		equipmentReportGenerator = new FortressMemberReportGenerator(currentPlayer, dimensions, currentTurn, hq);
 	}
