@@ -48,7 +48,7 @@ public class SubsetGUI implements UtilityGUI {
 		if (args.length == 0) {
 			throw new IncorrectUsageException(SubsetGUIFactory.USAGE);
 		}
-		SubsetFrame localFrame = frame;
+		final SubsetFrame localFrame = frame;
 		if (localFrame == null) {
 			throw new DriverFailedException(new IllegalStateException("Window not open"));
 		}

@@ -101,7 +101,7 @@ public final class SPDatabaseWriter implements SPWriter {
 		final Transactional db = getSQL(arg);
 		try {
 			writeSPObjectInContext(db, obj, obj);
-		} catch (SQLException except) {
+		} catch (final SQLException except) {
 			throw new IOException(except);
 		}
 	}

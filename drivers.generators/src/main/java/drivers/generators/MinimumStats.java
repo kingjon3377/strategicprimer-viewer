@@ -30,7 +30,7 @@ import java.util.HashMap;
 		} catch (final IOException except) {
 			throw new RuntimeException(except);
 		}
-		for (Map.Entry<String, Integer> entry : initial.entrySet()) {
+		for (final Map.Entry<String, Integer> entry : initial.entrySet()) {
 			final String key = entry.getKey();
 			final int val = entry.getValue();
 			final String[] split = key.split(";");

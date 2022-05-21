@@ -18,10 +18,10 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class TestUtilityDriverModel {
-	private static IMutablePlayerCollection playerCollection(String current, String... players) {
+	private static IMutablePlayerCollection playerCollection(final String current, final String... players) {
 		final IMutablePlayerCollection retval = new PlayerCollection();
 		int i = 0;
-		for (String name : players) {
+		for (final String name : players) {
 			final MutablePlayer player = new PlayerImpl(i, name);
 			if (name.equals(current)) {
 				player.setCurrent(true);
@@ -32,7 +32,7 @@ public class TestUtilityDriverModel {
 		return retval;
 	}
 
-	private static void noop(String str) {
+	private static void noop(final String str) {
 		// Noop
 	}
 

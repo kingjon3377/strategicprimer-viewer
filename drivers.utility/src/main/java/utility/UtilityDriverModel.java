@@ -271,14 +271,14 @@ public class UtilityDriverModel extends SimpleMultiMapModel {
 			if (map.isMountainous(location)) {
 				subMap.setMountainous(location, false);
 			}
-			List<TileFixture> toRemove = new ArrayList<>();
+			final List<TileFixture> toRemove = new ArrayList<>();
 			for (final TileFixture fixture : subMap.getFixtures(location)) {
 				if (map.getFixtures(location).stream()
 						.anyMatch(item -> isSubset(item, fixture))) {
 					toRemove.add(fixture);
 				}
 			}
-			for (TileFixture fixture : toRemove) {
+			for (final TileFixture fixture : toRemove) {
 				subMap.removeFixture(location, fixture);
 			}
 		}

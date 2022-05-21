@@ -388,19 +388,19 @@ import common.map.fixtures.towns.Village;
 				}
 				String equipmentPrompt = "Does the worker have any equipment?";
 				Predicate<String> equipmentQuery = cli::inputBooleanInSeries;
-				BiConsumer<String, String> addIfStdOmits = (key, arg) -> {
+				final BiConsumer<String, String> addIfStdOmits = (key, arg) -> {
 					if (standardEquipment.stream().map(String::toLowerCase).noneMatch(s -> s.contains(key))) {
 						worker.addEquipment(new Implement(arg, idf.createID()));
 					}
 				};
-				Predicate<String> stdOmits = arg -> standardEquipment.stream().map(String::toLowerCase).noneMatch(s -> s.contains(arg));
+				final Predicate<String> stdOmits = arg -> standardEquipment.stream().map(String::toLowerCase).noneMatch(s -> s.contains(arg));
 				if (stdOmits.test("tunic")) {
 					final boolean woolen = cli.inputBooleanInSeries("Is the worker's tunic woolen rather than linen?", "tunic-" + training.getName());
 					addIfStdOmits.accept("tunic",
 						woolen ? "woolen tunic" : "linen tunic");
 				}
 				final boolean hasMultipleLevels = training.getLevel() > 1;
-				TriConsumer<String, String, Double> maybeAdd =
+				final TriConsumer<String, String, Double> maybeAdd =
 					(key, item, chance) -> {
 						if (hasMultipleLevels || SingletonRandom.SINGLETON_RANDOM.nextDouble() < chance) {
 							addIfStdOmits.accept(key, item);
@@ -465,8 +465,8 @@ import common.map.fixtures.towns.Village;
 	 */
 	private Predicate<Village> filterRecentVillages(final Player player) {
 		final Map<String, Integer> villageMap = new HashMap<>();
-		for (IUnit unit : model.getUnits(player)) {
-			for (UnitMember member : unit) {
+		for (final IUnit unit : model.getUnits(player)) {
+			for (final UnitMember member : unit) {
 				if (member instanceof IWorker) {
 					final String note = ((IWorker) member).getNote(player);
 					final Matcher match = VILLAGER_PATTERN.matcher(note);

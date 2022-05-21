@@ -69,7 +69,7 @@ import java.util.Optional;
 		}
 	}
 
-	private static int clampAdd(int one, int two) {
+	private static int clampAdd(final int one, final int two) {
 		if (one == 0 || two == 0 || (one > 0 ^ two > 0)) {
 			return one + two;
 		} else if (one > 0 && Integer.MAX_VALUE - one < two) {

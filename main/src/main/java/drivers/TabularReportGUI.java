@@ -72,7 +72,7 @@ public class TabularReportGUI implements GUIDriver {
 					options.getArgument("--hq-row")));
 				column = OptionalInt.of(Integer.parseInt(
 					options.getArgument("--hq-col")));
-			} catch (NumberFormatException except) {
+			} catch (final NumberFormatException except) {
 				LovelaceLogger.warning("--hq-row and --hq-col must be numeric");
 			}
 			if (row.isPresent() && column.isPresent()) {

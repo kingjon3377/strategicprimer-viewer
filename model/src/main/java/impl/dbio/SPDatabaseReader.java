@@ -64,7 +64,7 @@ public class SPDatabaseReader implements IMapReader {
 	public IMutableMapNG readMapFromDatabase(final Transactional db, final Warning warner) throws IOException {
 		try {
 			return dbMapReader.readMap(db, warner);
-		} catch (SQLException except) {
+		} catch (final SQLException except) {
 			throw new IOException(except);
 		}
 	}

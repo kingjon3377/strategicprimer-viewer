@@ -56,7 +56,7 @@ interface MapContentsReader {
 	                                final Object... args) throws SQLException {
 		LovelaceLogger.debug("About to read %s", description);
 		final Accumulator<Integer> count = new IntAccumulator(0);
-		try (Stream<Map<String, Object>> stream = query.as(((RowParser<Map<String, Object>>) MapContentsReader::parseToMap).stream(), db)) {
+		try (final Stream<Map<String, Object>> stream = query.as(((RowParser<Map<String, Object>>) MapContentsReader::parseToMap).stream(), db)) {
 			stream.forEach(handler.andThen((m, w) -> {
 				count.add(1);
 				if (count.getSum() % 50 == 0) {
@@ -84,11 +84,11 @@ interface MapContentsReader {
 	 *
 	 * TODO: If needed, make a version that returns null (via boxed Boolean) if not found instead of throwing
 	 */
-	default boolean getBooleanValue(Map<String, Object> dbRow, String key) throws SQLException {
+	default boolean getBooleanValue(final Map<String, Object> dbRow, final String key) throws SQLException {
 		if (!dbRow.containsKey(key)) {
 			throw new SQLException("Expected key not in the schema"); // TODO: specify which key
 		}
-		Object val = dbRow.get(key);
+		final Object val = dbRow.get(key);
 		if (val == null) {
 			throw new SQLException("No value for key " + key);
 		} else if (val instanceof Boolean) { // Can't happen in SQLite, but we can dream ...

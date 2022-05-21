@@ -37,7 +37,7 @@ import java.util.Optional;
 		} catch (final IOException except) {
 			throw new RuntimeException(except);
 		}
-		for (Map.Entry<String, String> entry : initial.entrySet()) {
+		for (final Map.Entry<String, String> entry : initial.entrySet()) {
 			final String key = entry.getKey();
 			final String val = entry.getValue();
 			final String[] keySplit = key.split(";");
