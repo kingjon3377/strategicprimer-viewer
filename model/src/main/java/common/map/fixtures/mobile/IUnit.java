@@ -138,7 +138,7 @@ public interface IUnit extends MobileFixture, HasImage, HasKind, HasName,
 						}
 					} else {
 						localReport.accept(String.format("Extra member: %s, ID #%d",
-							member.toString(), member.getId()));
+								member, member.getId()));
 						retval = false;
 					}
 				}

@@ -157,9 +157,9 @@ public class Forest implements TerrainFixture, HasMutableImage, HasKind, HasExte
 	public String getShortDescription() {
 		if (HasExtent.isPositive(acres)) {
 			if (rows) {
-				return String.format("Rows of %s trees for %s acres", kind, acres.toString());
+				return String.format("Rows of %s trees for %s acres", kind, acres);
 			} else {
-				return String.format("A %s-acre %s forest", acres.toString(), kind);
+				return String.format("A %s-acre %s forest", acres, kind);
 			}
 		} else {
 			if (rows) {

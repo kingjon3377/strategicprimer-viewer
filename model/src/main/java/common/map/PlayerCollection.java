@@ -63,7 +63,7 @@ public class PlayerCollection implements IMutablePlayerCollection {
 					} else {
 						report.accept(String.format(
 							"Matching players differ: our %s, their %s",
-							match.toString(), player.toString()));
+							match.toString(), player));
 					}
 				} else {
 					report.accept("Extra player " + player.getName());

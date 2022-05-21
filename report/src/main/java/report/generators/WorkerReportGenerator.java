@@ -61,7 +61,7 @@ import common.map.fixtures.mobile.worker.IJob;
 
 	// TODO: take Consumer instead of returning String
 	private static String skillString(final ISkill skill) {
-		return skill.getName() + " " + Integer.toString(skill.getLevel());
+		return skill.getName() + " " + skill.getLevel();
 	}
 
 	/**

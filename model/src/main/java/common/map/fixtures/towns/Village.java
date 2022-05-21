@@ -190,7 +190,7 @@ public class Village implements IMutableTownFixture, HasMutableImage, IFixture,
 		if (owner.isIndependent()) {
 			builder.append("Independent ");
 		}
-		builder.append(status.toString()).append(" village");
+		builder.append(status).append(" village");
 		if (!name.isEmpty()) {
 			builder.append(" named ").append(name);
 		}

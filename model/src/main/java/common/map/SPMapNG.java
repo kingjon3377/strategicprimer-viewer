@@ -628,7 +628,7 @@ public class SPMapNG implements IMutableMapNG {
 					idStr = "";
 				}
 				ostream.accept(String.format("%s%s apparently moved from our %s to %s",
-					match.toString(), idStr, matchPoint.toString(), location.toString()));
+						match, idStr, matchPoint, location));
 				retval = false;
 			}
 			retval = match.isSubset(desideratum, ostream) && retval;
@@ -712,8 +712,8 @@ public class SPMapNG implements IMutableMapNG {
 				final Point tPoint = ourLocations.get(fixture);
 				if (tPoint != null && !tPoint.equals(point)) {
 					report.accept(String.format("%s moved from our %s to %s",
-						fixture.toString(), tPoint.toString(),
-						point.toString()));
+							fixture, tPoint,
+							point));
 					return true;
 				} else {
 					return false;

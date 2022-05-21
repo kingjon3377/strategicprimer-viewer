@@ -270,13 +270,13 @@ public final class Unit implements IMutableUnit {
 			return String.format("Independent unit of type %s, named %s", kind, name);
 		} else {
 			return String.format("Unit of type %s, belonging to %s, named %s",
-				kind, owner.toString(), name);
+				kind, owner, name);
 		}
 	}
 
 	@Override
 	public String getVerbose() {
-		return String.format("%s, consisting of:%n%s", toString(),
+		return String.format("%s, consisting of:%n%s", this,
 			String.join(System.lineSeparator(),
 				members.stream().map(Object::toString).toArray(String[]::new)));
 	}

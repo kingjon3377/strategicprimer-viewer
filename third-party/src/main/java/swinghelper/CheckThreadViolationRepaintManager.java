@@ -32,7 +32,7 @@ public class CheckThreadViolationRepaintManager extends RepaintManager {
 	static void violationFound(final JComponent c, final StackTraceElement... stackTrace) {
 		System.out.println();
 		System.out.println("EDT violation detected");
-		System.out.println(c.toString());
+		System.out.println(c);
 		for (final StackTraceElement st : stackTrace) {
 			System.out.print("\tat ");
 			System.out.println(st.toString());

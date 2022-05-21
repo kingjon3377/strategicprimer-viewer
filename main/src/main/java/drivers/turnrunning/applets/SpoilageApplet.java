@@ -80,7 +80,7 @@ public class SpoilageApplet extends AbstractTurnApplet {
 					return null;
 				}
 				buffer.append(String.format("%.2f pounds of %s spoiled.%n%n", spoilage.doubleValue(),
-					food.toString()));
+						food));
 				model.reduceResourceBy(food, spoilage, owner);
 			}
 		}

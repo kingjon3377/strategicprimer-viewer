@@ -98,7 +98,7 @@ public class Mine implements HarvestableFixture, MineralFixture {
 
 	@Override
 	public String toString() {
-		return String.format("%s mine of %s", status.toString(), kind);
+		return String.format("%s mine of %s", status, kind);
 	}
 
 	@Override
@@ -129,7 +129,7 @@ public class Mine implements HarvestableFixture, MineralFixture {
 
 	@Override
 	public String getShortDescription() {
-		return String.format("%s %s mine", status.toString(), kind);
+		return String.format("%s %s mine", status, kind);
 	}
 
 	/**

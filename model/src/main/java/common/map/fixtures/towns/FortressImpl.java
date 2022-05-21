@@ -232,7 +232,7 @@ public class FortressImpl implements IMutableFortress {
 	public String toString() {
 		final StringBuilder builder = new StringBuilder();
 		builder.append("Fortress ").append(name).append(", owned by player ")
-			.append(owner.toString()).append(". Members:");
+			.append(owner).append(". Members:");
 		int count = 0;
 		final int size = members.size();
 		for (final FortressMember member : members) {
@@ -295,7 +295,7 @@ public class FortressImpl implements IMutableFortress {
 					}
 				} else {
 					localFormat.accept(String.format("Extra member:\t%s, ID #%d",
-						member.toString(), member.getId()));
+							member, member.getId()));
 					retval = false;
 				}
 			}

@@ -151,7 +151,7 @@ public class ProxyUnit implements IUnit, ProxyFor<IUnit> {
 				return String.format("an independent %s unit", getKind());
 			} else {
 				return String.format("a(n) %s unit belonging to %s", getKind(),
-					getOwner().toString());
+						getOwner());
 			}
 		} else {
 			return "Multiple units of kind " + getKind();

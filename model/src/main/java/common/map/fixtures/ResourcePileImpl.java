@@ -160,17 +160,17 @@ public final class ResourcePileImpl implements IMutableResourcePile {
 	public String toString() {
 		if (quantity.getUnits().isEmpty()) {
 			if (createdTurn < 0) {
-				return String.format("A pile of %s %s (%s)", quantity.toString(), contents, kind);
+				return String.format("A pile of %s %s (%s)", quantity, contents, kind);
 			} else {
 				return String.format("A pile of %s %s (%s) from turn %d",
-					quantity.toString(), contents, kind, createdTurn);
+						quantity, contents, kind, createdTurn);
 			}
 		} else {
 			if (createdTurn < 0) {
-				return String.format("A pile of %s of %s (%s)", quantity.toString(), contents, kind);
+				return String.format("A pile of %s of %s (%s)", quantity, contents, kind);
 			} else {
 				return String.format("A pile of %s of %s (%s) from turn %d",
-					quantity.toString(), contents, kind, createdTurn);
+						quantity, contents, kind, createdTurn);
 			}
 		}
 	}

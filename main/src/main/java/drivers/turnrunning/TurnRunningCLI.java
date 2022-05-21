@@ -175,7 +175,7 @@ import org.jetbrains.annotations.Nullable;
 						buffer.append(skillName);
 						if (gains > 1) {
 							buffer.append(" (");
-							buffer.append(Integer.toString(gains));
+							buffer.append(gains);
 							buffer.append(" skill ranks)");
 						}
 						buffer.append(". ");

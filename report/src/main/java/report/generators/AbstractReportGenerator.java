@@ -147,7 +147,7 @@ public abstract class AbstractReportGenerator<Type extends IFixture> implements 
 		} else if (list.length == 1) {
 			return list[0].toString();
 		} else if (list.length == 2) {
-			return String.format("%s and %s", list[0].toString(), list[1].toString());
+			return String.format("%s and %s", list[0], list[1]);
 		}
 		final StringBuilder builder = new StringBuilder();
 		for (int i = 0; i < list.length; i++) {

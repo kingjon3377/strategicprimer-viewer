@@ -596,14 +596,14 @@ public final class TestXMLIO {
 		assertSerialization("Basic Village serialization",
 			new Village(status, name, id, owner, race));
 		this.<Village>assertUnwantedChild(String.format(
-			"<village status=\"%s\"><village /></village>", status.toString()), null);
+			"<village status=\"%s\"><village /></village>", status), null);
 		this.<Village>assertMissingProperty("<village />", "status", null);
 		assertMissingProperty(String.format(
-			"<village name=\"%s\" status=\"%s\" />", name, status.toString()), "id",
+			"<village name=\"%s\" status=\"%s\" />", name, status), "id",
 			new Village(status, name, 0, new PlayerImpl(-1, "Independent"), "dwarf"));
 		assertMissingProperty(String.format(
 				"<village race=\"%s\" name=\"%s\" status=\"%s\" id=\"%d\" />", race,
-				name, status.toString(), id),
+				name, status, id),
 			"owner", new Village(status, name, id, new PlayerImpl(-1, "Independent"), race));
 		assertImageSerialization("Village image property is preserved", village);
 		assertPortraitSerialization("Village portrait property is preserved", village);
@@ -695,10 +695,10 @@ public final class TestXMLIO {
 		final City city = new City(status, size, dc, "", id, owner);
 		this.<City>assertUnwantedChild(String.format(
 			"<city status=\"%s\" size=\"%s\" name=\"%s\" dc=\"%d\"><troll /></city>",
-			status.toString(), size.toString(), name, dc), null);
+				status, size, name, dc), null);
 		assertMissingProperty(String.format(
 			"<city status=\"%s\" size=\"%s\" name=\"%s\" dc=\"%d\" id=\"%d\" />",
-			status.toString(), size.toString(), name, dc, id), "owner",
+						status, size, name, dc, id), "owner",
 			new City(status, size, dc, name, id, new PlayerImpl(-1, "Independent")));
 		assertImageSerialization("City image property is preserved", city);
 		assertPortraitSerialization("City portrait property is preserved", city);
@@ -766,10 +766,10 @@ public final class TestXMLIO {
 		final Fortification fort = new Fortification(status, size, 30, "", 3, owner);
 		this.<Fortification>assertUnwantedChild(String.format(
 			"<fortification status=\"%s\" size=\"%s\" name=\"%s\" dc=\"%d\"><troll /></fortification>",
-			status.toString(), size.toString(), name, dc), null);
+				status, size, name, dc), null);
 		assertMissingProperty(String.format(
 				"<fortification status=\"%s\" size=\"%s\" name=\"%s\" dc=\"%d\" id=\"%d\" />",
-				status.toString(), size.toString(), name, dc, id), "owner",
+						status, size, name, dc, id), "owner",
 			new Fortification(status, size, dc, name, id, new PlayerImpl(-1, "Independent")));
 		assertImageSerialization("Fortification image property is preserved", fort);
 		assertPortraitSerialization("Fortification portrait property is preserved", fort);
@@ -828,10 +828,10 @@ public final class TestXMLIO {
 		final Town town = new Town(status, size, dc, name, id, owner);
 		this.<Town>assertUnwantedChild(String.format(
 			"<town status=\"%s\" size=\"%s\" name=\"%s\" dc=\"%s\"><troll /></town>",
-			status.toString(), size.toString(), name, dc), null);
+				status, size, name, dc), null);
 		assertMissingProperty(String.format(
 				"<town status=\"%s\" size=\"%s\" name=\"%s\" dc=\"%d\" id=\"%d\" />",
-				status.toString(), size.toString(), name, dc, id), "owner",
+						status, size, name, dc, id), "owner",
 			new Town(status, size, dc, name, id, new PlayerImpl(-1, "Independent")));
 		assertImageSerialization("Town image property is preserved", town);
 		assertPortraitSerialization("Town portrait property is preserved", town);
@@ -886,12 +886,12 @@ public final class TestXMLIO {
 	public void testStoneSerializationErrors(final StoneKind kind)
 			throws SPFormatException, XMLStreamException, IOException {
 		this.<StoneDeposit>assertUnwantedChild(String.format(
-			"<stone kind=\"%s\" dc=\"10\"><troll /></stone>", kind.toString()), null);
+			"<stone kind=\"%s\" dc=\"10\"><troll /></stone>", kind), null);
 		this.<StoneDeposit>assertMissingProperty(String.format(
-			"<stone kind=\"%s\" />", kind.toString()), "dc", null);
+			"<stone kind=\"%s\" />", kind), "dc", null);
 		this.<StoneDeposit>assertMissingProperty("<stone dc=\"10\" />", "kind", null);
 		assertMissingProperty(String.format(
-				"<stone kind=\"%s\" dc=\"0\" />", kind.toString()), "id",
+				"<stone kind=\"%s\" dc=\"0\" />", kind), "id",
 			new StoneDeposit(kind, 0, 0));
 	}
 
@@ -1398,12 +1398,12 @@ public final class TestXMLIO {
 			createSerializedForm(mine, deprecatedWriter).replaceAll("kind=", "product="),
 			"product", "kind", "mine", mine);
 		this.<Mine>assertUnwantedChild(String.format(
-			"<mine kind=\"%s\" status=\"%s\"><troll /></mine>", kind, status.toString()), null);
-		this.<Mine>assertMissingProperty(String.format("<mine status=\"%s\" />", status.toString()),
+			"<mine kind=\"%s\" status=\"%s\"><troll /></mine>", kind, status), null);
+		this.<Mine>assertMissingProperty(String.format("<mine status=\"%s\" />", status),
 			"kind", null);
 		this.<Mine>assertMissingProperty(String.format("<mine kind=\"%s\" />", kind), "status", null);
 		assertMissingProperty(
-			String.format("<mine kind=\"%s\" status=\"%s\" />", kind, status.toString()), "id",
+			String.format("<mine kind=\"%s\" status=\"%s\" />", kind, status), "id",
 			new Mine(kind, status, 0));
 		assertImageSerialization("Mine image property is preserved", mine);
 	}
@@ -1926,10 +1926,10 @@ public final class TestXMLIO {
 		// Can't give player names because our test environment doesn't
 		// let us pass a set of players in
 		final Player firstPlayer = new PlayerImpl(1, "");
-		assertSerialization(String.format("First test of %s Fortress serialization", size.toString()),
+		assertSerialization(String.format("First test of %s Fortress serialization", size),
 			new FortressImpl(firstPlayer, "one", id, size));
 		assertSerialization(String.format("Second test of %s Fortress serialization",
-			size.toString()), new FortressImpl(firstPlayer, "two", id, size));
+				size), new FortressImpl(firstPlayer, "two", id, size));
 		final Player secondPlayer = new PlayerImpl(2, "");
 		final IMutableFortress five = new FortressImpl(secondPlayer, "five", id, TownSize.Small);
 		five.addMember(new Unit(secondPlayer, "unitOne", "unitTwo", 1));
