@@ -659,7 +659,7 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 						final Optional<Forest> forest = getMap().getFixtures(point).stream()
 							.filter(Forest.class::isInstance)
 							.map(Forest.class::cast).findFirst();
-						if (forest.isPresent() && !subForest.isPresent()) {
+						if (forest.isPresent() && subForest.isEmpty()) {
 							subMap.addFixture(point, forest.get());
 						}
 					}
