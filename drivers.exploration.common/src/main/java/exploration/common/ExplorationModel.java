@@ -188,10 +188,46 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 	}
 
 	/**
+	 * Specialization of {@link doesStreamContainFixture} for units.
+	 */
+	private static boolean doesStreamContainUnit(final Iterable<? extends IFixture> stream, final IUnit unit) {
+		for (final IFixture member : stream) {
+			if (member.getId() == unit.getId() && member instanceof IUnit && ((IUnit) member).getOwner().equals(unit.getOwner()) &&
+					    ((IUnit) member).getKind().equals(unit.getKind()) && ((IUnit) member).getName().equals(unit.getName())) {
+				return true;
+			} else if (member instanceof FixtureIterable && doesStreamContainUnit((FixtureIterable<?>) member, unit)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * Specialization of {@link doesStreamContainFixture} for fortresses.
+	 */
+	private static boolean doesStreamContainFortress(final Iterable<? extends IFixture> stream, final IFortress fort) {
+		for (final IFixture member : stream) {
+			if (member.getId() == fort.getId() && member instanceof IFortress && ((IFortress) member).getOwner().equals(fort.getOwner()) &&
+					    ((IFortress) member).getName().equals(fort.getName())) {
+				return true;
+			} else if (member instanceof FixtureIterable && doesStreamContainFortress((FixtureIterable<?>) member, fort)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	/**
 	 * Whether the given fixture is at the given location in the given map.
 	 */
 	private static boolean doesLocationHaveFixture(final IMapNG map, final Point point, final TileFixture fixture) {
-		return doesStreamContainFixture(map.getFixtures(point), fixture);
+		if (fixture instanceof IUnit) {
+			return doesStreamContainUnit(map.getFixtures(point), (IUnit) fixture);
+		} else if (fixture instanceof IFortress) {
+			return doesStreamContainFortress(map.getFixtures(point), (IFortress) fixture);
+		} else {
+			return doesStreamContainFixture(map.getFixtures(point), fixture);
+		}
 	}
 
 	/**
