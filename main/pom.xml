@@ -122,7 +122,6 @@
               <outfile>target/${project.artifactId}-${project.version}.exe</outfile>
               <jar>target/${project.artifactId}-${project.version}.jar</jar>
               <errTitle>Strategic Primer Map Viewer error</errTitle>
-	      <customProcName>true</customProcName>
 	      <stayAlive>false</stayAlive>
 	      <!-- FIXME: <icon>icon.ico</icon> -->
               <jre>
