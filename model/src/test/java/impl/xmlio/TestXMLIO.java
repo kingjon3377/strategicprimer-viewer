@@ -113,7 +113,6 @@ import impl.xmlio.exceptions.DeprecatedPropertyException;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
-import java.util.HashSet;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.stream.Collector;
