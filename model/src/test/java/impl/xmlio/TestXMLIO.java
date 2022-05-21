@@ -137,7 +137,7 @@ import common.map.HasKind;
 // TODO: Make methods static where possible
 // FIXME: A lot of the assertions in this class have expected and actual values backwards
 public final class TestXMLIO {
-	private static final Set<String> races = Collections.unmodifiableSet(new HashSet<>(RaceFactory.RACES));
+	private static final Set<String> races = Set.copyOf(RaceFactory.RACES);
 	private static final List<String> animalStatuses = List.of("wild", "semi-domesticated", "domesticated", "tame");
 	private static final List<String> treeTypes = List.of("oak", "larch", "terebinth", "elm", "skybroom", "silver maple");
 	private static final List<String> fieldTypes = List.of("wheat", "amaranth", "bluegrass", "corn", "winter wheat");

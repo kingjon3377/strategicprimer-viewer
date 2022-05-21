@@ -41,7 +41,7 @@
   </dependencies>
 
   <properties>
-    <maven.compiler.release>9</maven.compiler.release>
+    <maven.compiler.release>10</maven.compiler.release>
   </properties>
 
 </project>

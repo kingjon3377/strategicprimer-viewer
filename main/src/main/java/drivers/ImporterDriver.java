@@ -86,8 +86,8 @@ import org.jetbrains.annotations.Nullable;
 	public ImporterDriver(final ICLIHelper cli, final SPOptions options) {
 		this.cli = cli;
 		this.options = options;
-		terrains = Collections.unmodifiableList(Stream.concat(Stream.of(TileType.values()),
-				Stream.of(ImportableTerrain.values())).collect(Collectors.toList()));
+		terrains = Stream.concat(Stream.of(TileType.values()),
+				Stream.of(ImportableTerrain.values())).collect(Collectors.toUnmodifiableList());
 	}
 
 	private @Nullable /*TileType|ImportableTerrain?*/ HasName askFor(final int color) {
