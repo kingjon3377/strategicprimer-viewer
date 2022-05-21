@@ -22,16 +22,14 @@ public class UnsupportedPropertyException extends SPFormatException {
 
 	public UnsupportedPropertyException(final StartElement context, final String param) {
 		super(String.format("Unsupported property %s in tag %s", param,
-			context.getName().getLocalPart()), context.getLocation().getLineNumber(),
-			context.getLocation().getColumnNumber());
+			context.getName().getLocalPart()), context.getLocation());
 		this.param = param;
 		tag = context.getName();
 	}
 
 	private UnsupportedPropertyException(final StartElement tag, final String param, final String context) {
 		super(String.format("Unsupported property %s in tag %s %s", param,
-			tag.getName().getLocalPart(), context), tag.getLocation().getLineNumber(),
-			tag.getLocation().getColumnNumber());
+			tag.getName().getLocalPart(), context), tag.getLocation());
 		this.tag = tag.getName();
 		this.param = param;
 	}

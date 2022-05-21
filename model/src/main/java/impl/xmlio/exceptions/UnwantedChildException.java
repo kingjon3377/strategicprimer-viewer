@@ -24,7 +24,7 @@ public class UnwantedChildException extends SPFormatException {
 
 	private UnwantedChildException(final QName parent, final QName child, final Location location, final Throwable cause) {
 		super(String.format("Unexpected child %s in tag %s", child.getLocalPart(),
-			parent.getLocalPart()), location.getLineNumber(), location.getColumnNumber());
+			parent.getLocalPart()), location);
 		tag = parent;
 		this.child = child;
 	}
@@ -47,8 +47,7 @@ public class UnwantedChildException extends SPFormatException {
 	 */
 	public UnwantedChildException(final QName parent, final StartElement child, final Throwable cause) {
 		super(String.format("Unexpected child %s in tag %s", child.getName().getLocalPart(),
-			parent.getLocalPart()), child.getLocation().getLineNumber(),
-			child.getLocation().getColumnNumber(), cause);
+			parent.getLocalPart()), child.getLocation(), cause);
 		tag = parent;
 		this.child = child.getName();
 	}
@@ -59,8 +58,7 @@ public class UnwantedChildException extends SPFormatException {
 	 */
 	public UnwantedChildException(final QName parent, final StartElement child) {
 		super(String.format("Unexpected child %s in tag %s", child.getName().getLocalPart(),
-			parent.getLocalPart()), child.getLocation().getLineNumber(),
-			child.getLocation().getColumnNumber());
+			parent.getLocalPart()), child.getLocation());
 		tag = parent;
 		this.child = child.getName();
 	}
@@ -70,7 +68,7 @@ public class UnwantedChildException extends SPFormatException {
 	 */
 	public UnwantedChildException(final QName parent, final UnwantedChildException except) {
 		super(String.format("Unexpected child %s in tag %s", except.getChild().getLocalPart(),
-			parent.getLocalPart()), except.getLine(), except.getColumn());
+			parent.getLocalPart()), except.getLine(), except.getColumn()); // TODO: Expose location as a property
 		tag = parent;
 		child = except.getChild();
 	}
@@ -82,7 +80,7 @@ public class UnwantedChildException extends SPFormatException {
 		super(String.format("Unexpected child %s in tag %s, expecting one of the following: %s",
 			child.getName().getLocalPart(), parent.getLocalPart(),
 						String.join(", ", expected)),
-			child.getLocation().getLineNumber(), child.getLocation().getColumnNumber());
+			child.getLocation());
 		tag = parent;
 		this.child = child.getName();
 	}
@@ -94,7 +92,7 @@ public class UnwantedChildException extends SPFormatException {
 		super(String.format("Unexpected child %s in tag %s, expecting one of the following: %s",
 						child.getName().getLocalPart(), parent.getLocalPart(),
 						String.join(", ", expected)),
-				child.getLocation().getLineNumber(), child.getLocation().getColumnNumber());
+				child.getLocation());
 		tag = parent;
 		this.child = child.getName();
 	}

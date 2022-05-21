@@ -26,7 +26,7 @@ public class MapVersionException extends SPFormatException {
 	public MapVersionException(final StartElement context, final int version, final int minimum, final int maximum) {
 		super(String.format("Unsupported map version %d in tag %s%s", version,
 			context.getName().getLocalPart(), messageFragment(minimum, maximum)),
-			context.getLocation().getLineNumber(), context.getLocation().getColumnNumber());
+			context.getLocation());
 	}
 
 	/**

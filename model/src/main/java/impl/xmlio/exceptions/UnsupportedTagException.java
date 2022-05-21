@@ -17,7 +17,7 @@ public final class UnsupportedTagException extends SPFormatException {
 
 	private UnsupportedTagException(final String format, final StartElement tag) {
 		super(String.format(format, tag.getName().getLocalPart()),
-			tag.getLocation().getLineNumber(), tag.getLocation().getColumnNumber());
+			tag.getLocation());
 		this.tag = tag.getName();
 	}
 
