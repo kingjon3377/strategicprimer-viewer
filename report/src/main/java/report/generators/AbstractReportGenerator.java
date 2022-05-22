@@ -23,6 +23,8 @@ import java.util.Collection;
  * a couple of bits of shared state.
  *
  * TODO: Investigate pure-Java equivalents of Ceylon sealed annotation. Maybe just make package-private?
+ *
+ * TODO: Pass a Formatter around instead of relying on String.format or String::formatted, which instantiates a Formatter in every call
  */
 public abstract class AbstractReportGenerator<Type extends IFixture> implements IReportGenerator<Type> {
 	// TODO: Should probably be Comparator<Pair<Point, ? super Type>>
@@ -99,8 +101,11 @@ public abstract class AbstractReportGenerator<Type extends IFixture> implements 
 				return "";
 			} else {
 				final StringBuilder builder = new StringBuilder();
-				builder.append(header).append(System.lineSeparator())
-					.append("<ul>").append(System.lineSeparator());
+				builder.append(header);
+				builder.append("""
+
+								<ul>
+								""");
 				for (final String item : this) {
 					builder.append("<li>").append(item).append("</li>")
 						.append(System.lineSeparator());

@@ -81,28 +81,27 @@ import common.map.fixtures.mobile.worker.IJob;
 	@Override
 	public void produceSingle(final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
 	                          final IMapNG map, final Consumer<String> ostream, final IWorker worker, final Point loc) {
-		ostream.accept(worker.getName());
-		ostream.accept(", a ");
-		ostream.accept(worker.getRace());
-		ostream.accept(".");
 		if (details && worker.getStats() != null) {
-			ostream.accept(System.lineSeparator());
-			ostream.accept("<p>");
-			ostream.accept(statsString(worker.getStats()));
-			println(ostream, "</p>");
+			ostream.accept("""
+
+					%s, a %s.
+					<p>%s</p>
+					""".formatted(worker.getName(), worker.getRace(), statsString(worker.getStats())));
+		} else {
+			ostream.accept("""
+
+					%s, a %s.""");
 		}
 		if (details && worker.iterator().hasNext()) {
-			ostream.accept(System.lineSeparator());
-			println(ostream, "(S)he has training or experience in the following Jobs (Skills):");
-			println(ostream, "<ul>");
+			ostream.accept("""
+
+					(S)he has training or experience in the following Jobs (Skills):
+					<ul>
+					""");
 			for (final IJob job : worker) {
-				ostream.accept("<li>");
-				ostream.accept(Integer.toString(job.getLevel()));
-				ostream.accept(" levels in ");
-				ostream.accept(job.getName());
-				ostream.accept(" ");
-				ostream.accept(skills(job));
-				println(ostream, "</li>");
+				ostream.accept("""
+						<li>%d levels in %s %s</li>
+						""".formatted(job.getLevel(), job.getName(), skills(job)));
 			}
 			println(ostream, "</ul>");
 		}
@@ -111,8 +110,10 @@ import common.map.fixtures.mobile.worker.IJob;
 			animalReportGenerator.produceSingle(fixtures, map, ostream, worker.getMount(), loc);
 		}
 		if (details && !worker.getEquipment().isEmpty()) {
-			println(ostream, "(S)he has the following personal equipment:");
-			println(ostream, "<ul>");
+			ostream.accept("""
+					(S)he has the following personal equipment:
+					<ul>
+					""");
 			for (final Implement item : worker.getEquipment()) {
 				ostream.accept("<li>");
 				equipmentReportGenerator.produceSingle(fixtures, map, ostream, item, loc);
@@ -121,9 +122,9 @@ import common.map.fixtures.mobile.worker.IJob;
 			println(ostream, "</ul>");
 		}
 		if (details && !worker.getNote(currentPlayer).isEmpty()) {
-			ostream.accept("<p>");
-			ostream.accept(worker.getNote(currentPlayer));
-			println(ostream, "</p>");
+			ostream.accept("""
+					<p>%s</p>
+					""".formatted(worker.getNote(currentPlayer)));
 		}
 	}
 
@@ -140,8 +141,10 @@ import common.map.fixtures.mobile.worker.IJob;
 			.map(p -> Pair.with((IWorker) p.getValue1(), p.getValue0()))
 			.collect(Collectors.toList());
 		if (!workers.isEmpty()) {
-			println(ostream, "<h5>Workers</h5>");
-			println(ostream, "<ul>");
+			ostream.accept("""
+					<h5>Workers</h5>
+					<ul>
+					""");
 			for (final Pair<IWorker, Point> pair : workers) {
 				ostream.accept("<li>");
 				produceSingle(fixtures, map, ostream, pair.getValue0(), pair.getValue1());
