@@ -137,14 +137,11 @@ public class FixtureFilterTableModel extends AbstractTableModel
 	public Object getValueAt(final int rowIndex, final int columnIndex) {
 		if (rowIndex >= 0 && rowIndex < matchers.size()) {
 			final FixtureMatcher matcher = matchers.get(rowIndex);
-			switch (columnIndex) {
-			case 0:
-				return matcher.isDisplayed();
-			case 1:
-				return matcher.getDescription();
-			default:
-				throw new ArrayIndexOutOfBoundsException(columnIndex);
-			}
+			return switch (columnIndex) {
+				case 0 -> matcher.isDisplayed();
+				case 1 -> matcher.getDescription();
+				default -> throw new ArrayIndexOutOfBoundsException(columnIndex);
+			};
 		} else {
 			throw new ArrayIndexOutOfBoundsException(rowIndex);
 		}
@@ -152,26 +149,20 @@ public class FixtureFilterTableModel extends AbstractTableModel
 
 	@Override
 	public String getColumnName(final int column) {
-		switch (column) {
-		case 0:
-			return "Visible";
-		case 1:
-			return "Category";
-		default:
-			return super.getColumnName(column);
-		}
+		return switch (column) {
+			case 0 -> "Visible";
+			case 1 -> "Category";
+			default -> super.getColumnName(column);
+		};
 	}
 
 	@Override
 	public Class<?> getColumnClass(final int columnIndex) {
-		switch (columnIndex) {
-		case 0:
-			return Boolean.class;
-		case 1:
-			return String.class;
-		default:
-			return Object.class;
-		}
+		return switch (columnIndex) {
+			case 0 -> Boolean.class;
+			case 1 -> String.class;
+			default -> Object.class;
+		};
 	}
 
 	@Override

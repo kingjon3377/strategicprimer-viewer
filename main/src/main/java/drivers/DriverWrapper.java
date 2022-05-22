@@ -33,34 +33,25 @@ import lovelace.util.LovelaceLogger;
 		if (argc < 0) {
 			throw new IllegalArgumentException("Negative arg counts don't make sense");
 		}
-		switch (factory.getUsage().getParamsWanted()) {
-		case None: case AnyNumber:
-			return true;
-		case One: case AtLeastOne:
-			return argc >= 1;
-		case Two: case AtLeastTwo:
-			return argc >= 2;
-		default:
-			throw new IllegalStateException("Exhaustive switch wasn't");
-		}
+		return switch (factory.getUsage().getParamsWanted()) {
+			case None, AnyNumber -> true;
+			case One, AtLeastOne -> argc >= 1;
+			case Two, AtLeastTwo -> argc >= 2;
+			default -> throw new IllegalStateException("Exhaustive switch wasn't");
+		};
 	}
 
 	private boolean tooManyArguments(final int argc) {
 		if (argc < 0) {
 			throw new IllegalArgumentException("Negative arg counts don't make sense");
 		}
-		switch (factory.getUsage().getParamsWanted()) {
-		case AnyNumber: case AtLeastOne: case AtLeastTwo:
-			return false;
-		case None:
-			return argc > 0;
-		case One:
-			return argc > 1;
-		case Two:
-			return argc > 2;
-		default:
-			throw new IllegalStateException("Exhaustive switch wasn't");
-		}
+		return switch (factory.getUsage().getParamsWanted()) {
+			case AnyNumber, AtLeastOne, AtLeastTwo -> false;
+			case None -> argc > 0;
+			case One -> argc > 1;
+			case Two -> argc > 2;
+			default -> throw new IllegalStateException("Exhaustive switch wasn't");
+		};
 	}
 
 	private void checkArguments(final String... args) throws IncorrectUsageException {

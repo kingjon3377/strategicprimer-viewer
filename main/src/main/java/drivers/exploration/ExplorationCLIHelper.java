@@ -172,57 +172,42 @@ public class ExplorationCLIHelper implements MovementCostListener, SelectionChan
 				cli.printlnAtInterval(usage);
 				final int directionNum = Optional.ofNullable(cli.inputNumber("Direction to move: ")).orElse(-1);
 				switch (directionNum) {
-					case 0:
-						changeSpeed();
-						return;
-					case 1:
-						direction = Direction.Southwest;
-						break;
-					case 2:
-						direction = Direction.South;
-						break;
-					case 3:
-						direction = Direction.Southeast;
-						break;
-					case 4:
-						direction = Direction.West;
-						break;
-					case 5:
-						direction = Direction.Nowhere;
-						break;
-					case 6:
-						direction = Direction.East;
-						break;
-					case 7:
-						direction = Direction.Northwest;
-						break;
-					case 8:
-						direction = Direction.North;
-						break;
-					case 9:
-						direction = Direction.Northeast;
-						break;
-					case 10:
-						final Point destination = cli.inputPoint("Location to move toward: ");
-						if (destination == null) {
-							// EOF
-							runningTotal = BigDecimal.ZERO;
-						} else {
-							final Pair<Integer, Iterable<Point>> pair =
-									pather.getTravelDistance(point, destination);
-							final int cost = pair.getValue0();
-							final Iterable<Point> path = pair.getValue1();
-							if (path.iterator().hasNext()) {
-								path.forEach(proposedPath::addLast);
-							} else {
-								cli.println(
-										"S/he doesn't know how to get there from here.");
-							}
-						}
-						return;
-					default:
+				case 0 -> {
+					changeSpeed();
+					return;
+				}
+				case 1 -> direction = Direction.Southwest;
+				case 2 -> direction = Direction.South;
+				case 3 -> direction = Direction.Southeast;
+				case 4 -> direction = Direction.West;
+				case 5 -> direction = Direction.Nowhere;
+				case 6 -> direction = Direction.East;
+				case 7 -> direction = Direction.Northwest;
+				case 8 -> direction = Direction.North;
+				case 9 -> direction = Direction.Northeast;
+				case 10 -> {
+					final Point destination = cli.inputPoint("Location to move toward: ");
+					if (destination == null) {
+						// EOF
 						runningTotal = BigDecimal.ZERO;
-						return;
+					} else {
+						final Pair<Integer, Iterable<Point>> pair =
+								pather.getTravelDistance(point, destination);
+						final int cost = pair.getValue0();
+						final Iterable<Point> path = pair.getValue1();
+						if (path.iterator().hasNext()) {
+							path.forEach(proposedPath::addLast);
+						} else {
+							cli.println(
+									"S/he doesn't know how to get there from here.");
+						}
+					}
+					return;
+				}
+				default -> {
+					runningTotal = BigDecimal.ZERO;
+					return;
+				}
 				}
 			} else {
 				direction = Stream.of(Direction.values())

@@ -194,43 +194,42 @@ import org.jetbrains.annotations.Nullable;
 				} else {
 					final ImportableTerrain terr = (ImportableTerrain) type;
 					switch (terr) {
-						case Mountain:
-							finalRetval.setBaseTerrain(point, TileType.Plains);
-							finalRetval.setMountainous(point, true);
-							break;
-						case TemperateForest:
-							finalRetval.setBaseTerrain(point, TileType.Plains);
-							final String foundTForest = findAdjacentForest(finalRetval, point);
-							if (foundTForest != null) {
-								finalRetval.addFixture(point, new Forest(foundTForest, false,
-										idf.createID()));
-								continue;
-							}
-							final String inputTForest = cli.inputString("Kind of tree for a temperate forest: ");
-							if (inputTForest == null) {
-								return;
-							} else {
-								finalRetval.addFixture(point, new Forest(inputTForest, false,
-										idf.createID()));
-							}
-							break;
-						case BorealForest:
-							finalRetval.setBaseTerrain(point, TileType.Steppe);
-							final String foundBForest = findAdjacentForest(finalRetval, point);
-							if (foundBForest != null) {
-								finalRetval.addFixture(point, new Forest(foundBForest, false,
-										idf.createID()));
-								continue;
-							}
-							final String inputBForest = cli.inputString("Kind of tree for a boreal forest: ");
-							if (inputBForest == null) {
-								return;
-							} else {
-								finalRetval.addFixture(point, new Forest(inputBForest, false, idf.createID()));
-							}
-							break;
-						default:
-							throw new IllegalStateException("Exhaustive switch wasn't");
+					case Mountain -> {
+						finalRetval.setBaseTerrain(point, TileType.Plains);
+						finalRetval.setMountainous(point, true);
+					}
+					case TemperateForest -> {
+						finalRetval.setBaseTerrain(point, TileType.Plains);
+						final String foundTForest = findAdjacentForest(finalRetval, point);
+						if (foundTForest != null) {
+							finalRetval.addFixture(point, new Forest(foundTForest, false,
+									idf.createID()));
+							continue;
+						}
+						final String inputTForest = cli.inputString("Kind of tree for a temperate forest: ");
+						if (inputTForest == null) {
+							return;
+						} else {
+							finalRetval.addFixture(point, new Forest(inputTForest, false,
+									idf.createID()));
+						}
+					}
+					case BorealForest -> {
+						finalRetval.setBaseTerrain(point, TileType.Steppe);
+						final String foundBForest = findAdjacentForest(finalRetval, point);
+						if (foundBForest != null) {
+							finalRetval.addFixture(point, new Forest(foundBForest, false,
+									idf.createID()));
+							continue;
+						}
+						final String inputBForest = cli.inputString("Kind of tree for a boreal forest: ");
+						if (inputBForest == null) {
+							return;
+						} else {
+							finalRetval.addFixture(point, new Forest(inputBForest, false, idf.createID()));
+						}
+					}
+					default -> throw new IllegalStateException("Exhaustive switch wasn't");
 					}
 				}
 				try {

@@ -65,28 +65,18 @@ public final class SimpleMovementModel {
 	public static boolean riversSpeedTravel(final Direction direction, final Collection<River> source,
 	                                        final Collection<River> dest) {
 		final Predicate<Direction> recurse = partial -> riversSpeedTravel(partial, source, dest);
-		switch (direction) {
-		case North:
-			return source.contains(River.North) || dest.contains(River.South);
-		case Northeast:
-			return recurse.test(Direction.North) || recurse.test(Direction.East);
-		case East:
-			return source.contains(River.East) || dest.contains(River.West);
-		case Southeast:
-			return recurse.test(Direction.South) || recurse.test(Direction.East);
-		case South:
-			return source.contains(River.South) || dest.contains(River.North);
-		case Southwest:
-			return recurse.test(Direction.South) || recurse.test(Direction.West);
-		case West:
-			return source.contains(River.West) || dest.contains(River.East);
-		case Northwest:
-			return recurse.test(Direction.North) || recurse.test(Direction.West);
-		case Nowhere:
-			return false;
-		default:
-			throw new IllegalStateException("Unhandled switch case");
-		}
+		return switch (direction) {
+			case North -> source.contains(River.North) || dest.contains(River.South);
+			case Northeast -> recurse.test(Direction.North) || recurse.test(Direction.East);
+			case East -> source.contains(River.East) || dest.contains(River.West);
+			case Southeast -> recurse.test(Direction.South) || recurse.test(Direction.East);
+			case South -> source.contains(River.South) || dest.contains(River.North);
+			case Southwest -> recurse.test(Direction.South) || recurse.test(Direction.West);
+			case West -> source.contains(River.West) || dest.contains(River.East);
+			case Northwest -> recurse.test(Direction.North) || recurse.test(Direction.West);
+			case Nowhere -> false;
+			default -> throw new IllegalStateException("Unhandled switch case");
+		};
 	}
 
 	/**

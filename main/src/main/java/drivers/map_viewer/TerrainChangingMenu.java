@@ -81,28 +81,27 @@ import common.map.fixtures.terrain.Hill;
 			final int mnemonic;
 			// TODO: Can we get this effect without going one-by-one here? e.g. for non-lakes desc = direction + " river"
 			switch (direction) {
-			case Lake:
+			case Lake -> {
 				desc = "lake";
 				mnemonic = KeyEvent.VK_K;
-				break;
-			case North:
+			}
+			case North -> {
 				desc = "north river";
 				mnemonic = KeyEvent.VK_N;
-				break;
-			case South:
+			}
+			case South -> {
 				desc = "south river";
 				mnemonic = KeyEvent.VK_S;
-				break;
-			case East:
+			}
+			case East -> {
 				desc = "east river";
 				mnemonic = KeyEvent.VK_E;
-				break;
-			case West:
+			}
+			case West -> {
 				desc = "west river";
 				mnemonic = KeyEvent.VK_W;
-				break;
-			default:
-				throw new IllegalStateException("Exhaustive switch wasn't");
+			}
+			default -> throw new IllegalStateException("Exhaustive switch wasn't");
 			}
 			final JCheckBoxMenuItem item = new JCheckBoxMenuItem(desc);
 			item.setMnemonic(mnemonic);
@@ -212,38 +211,38 @@ import common.map.fixtures.terrain.Hill;
 			final String desc;
 			final Integer mnemonic;
 			switch (type) {
-			case Tundra:
+			case Tundra -> {
 				desc = "tundra";
 				mnemonic = KeyEvent.VK_T;
-				break;
-			case Desert:
+			}
+			case Desert -> {
 				desc = "desert";
 				mnemonic = KeyEvent.VK_D;
-				break;
-			case Ocean:
+			}
+			case Ocean -> {
 				desc = "ocean";
 				mnemonic = KeyEvent.VK_O;
-				break;
-			case Plains:
+			}
+			case Plains -> {
 				desc = "plains";
 				mnemonic = KeyEvent.VK_L;
-				break;
-			case Jungle:
+			}
+			case Jungle -> {
 				desc = "jungle";
 				mnemonic = KeyEvent.VK_J;
-				break;
-			case Steppe:
+			}
+			case Steppe -> {
 				desc = "steppe";
 				mnemonic = KeyEvent.VK_P;
-				break;
-			case Swamp:
+			}
+			case Swamp -> {
 				desc = "swamp";
 				mnemonic = KeyEvent.VK_A;
-				break;
-			default:
+			}
+			default ->
 				// desc = type.toString();
 				// mnemonic = null;
-				throw new IllegalStateException("Exhaustive switch wasn't");
+					throw new IllegalStateException("Exhaustive switch wasn't");
 			}
 			final JMenuItem item = new JMenuItem(desc);
 			item.setMnemonic(mnemonic);

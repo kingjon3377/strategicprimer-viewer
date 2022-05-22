@@ -139,25 +139,15 @@ import common.xmlio.Warning;
 		requireTag(element, parent, SUPPORTED_TAGS);
 		final MobileFixture retval;
 		switch (element.getName().getLocalPart().toLowerCase()) {
-		case "animal":
-			retval = createAnimal(element);
-			break;
-		case "centaur":
-			retval = twoParam(element, Centaur::new);
-			break;
-		case "dragon":
-			retval = twoParam(element, Dragon::new);
-			break;
-		case "fairy":
-			retval = twoParam(element, Fairy::new);
-			break;
-		case "giant":
-			retval = twoParam(element, Giant::new);
-			break;
-		default:
+		case "animal" -> retval = createAnimal(element);
+		case "centaur" -> retval = twoParam(element, Centaur::new);
+		case "dragon" -> retval = twoParam(element, Dragon::new);
+		case "fairy" -> retval = twoParam(element, Fairy::new);
+		case "giant" -> retval = twoParam(element, Giant::new);
+		default -> {
 			expectAttributes(element, "image", "id");
 			retval = readSimple(element.getName().getLocalPart(), getOrGenerateID(element));
-			break;
+		}
 		}
 		spinUntilEnd(element.getName(), stream);
 		if (retval instanceof HasMutableImage) {

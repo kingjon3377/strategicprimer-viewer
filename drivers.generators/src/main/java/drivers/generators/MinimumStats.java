@@ -66,29 +66,15 @@ import java.util.HashMap;
 	}
 
 	private static int getModifierFor(final WorkerStats stats, final String stat) {
-		final int val;
-		switch (stat) {
-			case "str":
-				val = stats.getStrength();
-				break;
-			case "dex":
-				val = stats.getDexterity();
-				break;
-			case "con":
-				val = stats.getConstitution();
-				break;
-			case "int":
-				val = stats.getIntelligence();
-				break;
-			case "wis":
-				val = stats.getWisdom();
-				break;
-			case "cha":
-				val = stats.getCharisma();
-				break;
-			default:
-				throw new IllegalArgumentException("Must be a recognized stat label");
-		}
+		final int val = switch (stat) {
+			case "str" -> stats.getStrength();
+			case "dex" -> stats.getDexterity();
+			case "con" -> stats.getConstitution();
+			case "int" -> stats.getIntelligence();
+			case "wis" -> stats.getWisdom();
+			case "cha" -> stats.getCharisma();
+			default -> throw new IllegalArgumentException("Must be a recognized stat label");
+		};
 		return WorkerStats.getModifier(val);
 	}
 

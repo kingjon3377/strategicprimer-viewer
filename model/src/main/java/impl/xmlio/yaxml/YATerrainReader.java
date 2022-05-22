@@ -43,27 +43,26 @@ import java.util.Set;
 		requireTag(element, parent, supportedTags);
 		final TerrainFixture retval;
 		switch (element.getName().getLocalPart().toLowerCase()) {
-		case "forest":
+		case "forest" -> {
 			expectAttributes(element, "id", "image", "kind", "rows", "acres");
 			final int id = getIntegerParameter(element, "id", -1);
 			if (id >= 0) {
 				registerID(id, element.getLocation());
 			}
 			retval = new Forest(getParameter(element, "kind"),
-				getBooleanParameter(element, "rows", false), id,
-				getNumericParameter(element, "acres", -1));
-			break;
-		case "hill":
+					getBooleanParameter(element, "rows", false), id,
+					getNumericParameter(element, "acres", -1));
+		}
+		case "hill" -> {
 			expectAttributes(element, "id", "image");
 			retval = new Hill(getOrGenerateID(element));
-			break;
-		case "oasis":
+		}
+		case "oasis" -> {
 			expectAttributes(element, "id", "image");
 			retval = new Oasis(getOrGenerateID(element));
-			break;
-		default:
-			throw new IllegalArgumentException("Unhandled terrain fixture tag " +
-				element.getName().getLocalPart());
+		}
+		default -> throw new IllegalArgumentException("Unhandled terrain fixture tag " +
+				                                              element.getName().getLocalPart());
 		}
 		spinUntilEnd(element.getName(), stream);
 		// All types we currently support implement HasMutableImage

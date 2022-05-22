@@ -22,20 +22,14 @@ public /* sealed */ abstract class ImmortalAnimal
 	 * Get an immortal constructor for the given kind.
 	 */
 	public static IntFunction<ImmortalAnimal> parse(final String kind) {
-		switch (kind) {
-			case "snowbird":
-				return Snowbird::new;
-			case "thunderbird":
-				return Thunderbird::new;
-			case "pegasus":
-				return Pegasus::new;
-			case "unicorn":
-				return Unicorn::new;
-			case "kraken":
-				return Kraken::new;
-			default:
-				throw new IllegalArgumentException("Unknown immortal-animal kind " + kind);
-		}
+		return switch (kind) {
+			case "snowbird" -> Snowbird::new;
+			case "thunderbird" -> Thunderbird::new;
+			case "pegasus" -> Pegasus::new;
+			case "unicorn" -> Unicorn::new;
+			case "kraken" -> Kraken::new;
+			default -> throw new IllegalArgumentException("Unknown immortal-animal kind " + kind);
+		};
 	}
 
 	protected ImmortalAnimal(final String kind, final String plural, final int dc, final int id) {

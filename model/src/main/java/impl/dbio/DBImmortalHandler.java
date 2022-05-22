@@ -167,35 +167,17 @@ final class DBImmortalHandler extends AbstractDatabaseWriter<Immortal, /*Point|I
 			final String type = (String) dbRow.get("type");
 			final int id = (Integer) dbRow.get("id");
 			final String image = (String) dbRow.get("image");
-			final Immortal immortal;
-			switch (type) {
-			case "sphinx":
-				immortal = new Sphinx(id);
-				break;
-			case "djinn":
-				immortal = new Djinn(id);
-				break;
-			case "griffin":
-				immortal = new Griffin(id);
-				break;
-			case "minotaur":
-				immortal = new Minotaur(id);
-				break;
-			case "ogre":
-				immortal = new Ogre(id);
-				break;
-			case "phoenix":
-				immortal = new Phoenix(id);
-				break;
-			case "simurgh":
-				immortal = new Simurgh(id);
-				break;
-			case "troll":
-				immortal = new Troll(id);
-				break;
-			default:
-				immortal = ImmortalAnimal.parse(type).apply(id);
-			}
+			final Immortal immortal = switch (type) {
+				case "sphinx" -> new Sphinx(id);
+				case "djinn" -> new Djinn(id);
+				case "griffin" -> new Griffin(id);
+				case "minotaur" -> new Minotaur(id);
+				case "ogre" -> new Ogre(id);
+				case "phoenix" -> new Phoenix(id);
+				case "simurgh" -> new Simurgh(id);
+				case "troll" -> new Troll(id);
+				default -> ImmortalAnimal.parse(type).apply(id);
+			};
 			if (image != null) {
 				((HasMutableImage) immortal).setImage(image);
 			}
@@ -217,23 +199,13 @@ final class DBImmortalHandler extends AbstractDatabaseWriter<Immortal, /*Point|I
 			final String kind = (String) dbRow.get("kind");
 			final int id = (Integer) dbRow.get("id");
 			final String image = (String) dbRow.get("image");
-			final Immortal immortal;
-			switch (type) {
-			case "centaur":
-				immortal = new Centaur(kind, id);
-				break;
-			case "dragon":
-				immortal = new Dragon(kind, id);
-				break;
-			case "fairy":
-				immortal = new Fairy(kind, id);
-				break;
-			case "giant":
-				immortal = new Giant(kind, id);
-				break;
-			default:
-				throw new IllegalArgumentException("Unexpected immortal kind");
-			}
+			final Immortal immortal = switch (type) {
+				case "centaur" -> new Centaur(kind, id);
+				case "dragon" -> new Dragon(kind, id);
+				case "fairy" -> new Fairy(kind, id);
+				case "giant" -> new Giant(kind, id);
+				default -> throw new IllegalArgumentException("Unexpected immortal kind");
+			};
 			if (image != null) {
 				((HasMutableImage) immortal).setImage(image);
 			}

@@ -61,17 +61,11 @@ final class DBGroveHandler extends AbstractDatabaseWriter<Grove, Point> implemen
 			final boolean cultivated = getBooleanValue(dbRow, "cultivated");
 			final int count = (Integer) dbRow.get("count");
 			final String image = (String) dbRow.get("image");
-			final boolean orchard;
-			switch (type) {
-			case "grove":
-				orchard = false;
-				break;
-			case "orchard":
-				orchard = true;
-				break;
-			default:
-				throw new IllegalArgumentException("Unexpected grove type");
-			}
+			final boolean orchard = switch (type) {
+				case "grove" -> false;
+				case "orchard" -> true;
+				default -> throw new IllegalArgumentException("Unexpected grove type");
+			};
 			final Grove grove = new Grove(orchard, cultivated, kind, id, count);
 			if (image != null) {
 				grove.setImage(image);

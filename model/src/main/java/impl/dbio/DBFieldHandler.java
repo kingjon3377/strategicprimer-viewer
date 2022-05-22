@@ -75,17 +75,11 @@ final class DBFieldHandler extends AbstractDatabaseWriter<Meadow, Point> impleme
 			} catch (final NumberFormatException except) {
 				acres = new BigDecimal(acresString);
 			}
-			final boolean field;
-			switch (type) {
-			case "meadow":
-				field = false;
-				break;
-			case "field":
-				field = true;
-				break;
-			default:
-				throw new IllegalArgumentException("Unhandled field type");
-			}
+			final boolean field = switch (type) {
+				case "meadow" -> false;
+				case "field" -> true;
+				default -> throw new IllegalArgumentException("Unhandled field type");
+			};
 			final Meadow meadow = new Meadow(kind, field, cultivated, id, status, acres);
 			if (image != null) {
 				meadow.setImage(image);

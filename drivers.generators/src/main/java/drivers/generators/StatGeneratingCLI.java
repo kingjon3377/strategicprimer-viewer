@@ -234,26 +234,14 @@ import common.map.fixtures.towns.Village;
 					bonusStat = lowestScore;
 				}
 			}
-			switch (bonusStat) {
-			case 0:
-				racialBonus = WorkerStats.factory(2, 0, 0, 0, 0, 0);
-				break;
-			case 1:
-				racialBonus = WorkerStats.factory(0, 2, 0, 0, 0, 0);
-				break;
-			case 2:
-				racialBonus = WorkerStats.factory(0, 0, 2, 0, 0, 0);
-				break;
-			case 3:
-				racialBonus = WorkerStats.factory(0, 0, 0, 2, 0, 0);
-				break;
-			case 4:
-				racialBonus = WorkerStats.factory(0, 0, 0, 0, 2, 0);
-				break;
-			default:
-				racialBonus = WorkerStats.factory(0, 0, 0, 0, 0, 2);
-				break;
-			}
+			racialBonus = switch (bonusStat) {
+				case 0 -> WorkerStats.factory(2, 0, 0, 0, 0, 0);
+				case 1 -> WorkerStats.factory(0, 2, 0, 0, 0, 0);
+				case 2 -> WorkerStats.factory(0, 0, 2, 0, 0, 0);
+				case 3 -> WorkerStats.factory(0, 0, 0, 2, 0, 0);
+				case 4 -> WorkerStats.factory(0, 0, 0, 0, 2, 0);
+				default -> WorkerStats.factory(0, 0, 0, 0, 0, 2);
+			};
 		} else {
 			racialBonus = loadRacialBonus(race);
 		}

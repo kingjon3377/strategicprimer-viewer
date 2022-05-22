@@ -57,21 +57,11 @@ public class UtilityMenuHandler {
 	public void handleEvent(final ActionEvent event) {
 		final String command = event.getActionCommand().toLowerCase();
 		switch (command) {
-		case "load":
-			SPFileChooser.open((Path) null).call(driver::open);
-			break;
-		case "close":
-			window.dispose();
-			break;
-		case "quit":
-			System.exit(0);
-			break;
-		case "about":
-			aboutHandler();
-			break;
-		default:
-			LovelaceLogger.info("Unhandled command %s", event.getActionCommand());
-			break;
+		case "load" -> SPFileChooser.open((Path) null).call(driver::open);
+		case "close" -> window.dispose();
+		case "quit" -> System.exit(0);
+		case "about" -> aboutHandler();
+		default -> LovelaceLogger.info("Unhandled command %s", event.getActionCommand());
 		}
 	}
 }

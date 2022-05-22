@@ -94,9 +94,8 @@ public class FileChooser {
 	protected FileChooser(final ChooserMode mode, final JFileChooser fileChooser, final String approveText,
 	                      final @Nullable Path loc) {
 		switch (mode) {
-		case Open: case Save:
-			throw new IllegalArgumentException("Approve text only supported for custom dialog");
-		case Custom:
+		case Open, Save -> throw new IllegalArgumentException("Approve text only supported for custom dialog");
+		case Custom -> {
 			LovelaceLogger.debug("FileChooser invoked for a custom dialog with Swing JFileChooser");
 			chooser = Either.left(fileChooser);
 			chooserFunction = (component) -> fileChooser.showDialog(component, approveText);
@@ -107,15 +106,14 @@ public class FileChooser {
 				LovelaceLogger.debug("A file was passed in");
 				storedFile = Collections.singletonList(loc);
 			}
-			break;
-		default:
-			throw new IllegalStateException("Exhaustive switch wasn't");
+		}
+		default -> throw new IllegalStateException("Exhaustive switch wasn't");
 		}
 	}
 
 	protected FileChooser(final ChooserMode mode, final JFileChooser fileChooser, final @Nullable Path loc) {
 		switch (mode) {
-		case Open:
+		case Open -> {
 			LovelaceLogger.debug("FileChooser invoked for the Open dialog using Swing JFileChooser");
 			chooser = Either.left(fileChooser);
 			chooserFunction = fileChooser::showOpenDialog;
@@ -127,8 +125,8 @@ public class FileChooser {
 				LovelaceLogger.debug("A file was passed in");
 				storedFile = Collections.singletonList(loc);
 			}
-			break;
-		case Save:
+		}
+		case Save -> {
 			LovelaceLogger.debug("FileChooser invoked for Save dialog using Swing JFileChooser");
 			chooserFunction = fileChooser::showSaveDialog;
 			chooser = Either.left(fileChooser);
@@ -139,17 +137,15 @@ public class FileChooser {
 				LovelaceLogger.debug("A file was passed in");
 				storedFile = Collections.singletonList(loc);
 			}
-			break;
-		case Custom:
-			throw new IllegalArgumentException("Approval text required for custom dialog");
-		default:
-			throw new IllegalStateException("Exhaustive switch wasn't");
+		}
+		case Custom -> throw new IllegalArgumentException("Approval text required for custom dialog");
+		default -> throw new IllegalStateException("Exhaustive switch wasn't");
 		}
 	}
 
 	protected FileChooser(final ChooserMode mode, final FileDialog fileChooser, final @Nullable Path loc) {
 		switch (mode) {
-		case Open:
+		case Open -> {
 			LovelaceLogger.debug("FileChooser invoked for the Open dialog using AWT FileDialog");
 			fileChooser.setMode(FileDialog.LOAD);
 			chooser = Either.right(fileChooser);
@@ -165,8 +161,8 @@ public class FileChooser {
 				LovelaceLogger.debug("A file was passed in");
 				storedFile = Collections.singletonList(loc);
 			}
-			break;
-		case Save:
+		}
+		case Save -> {
 			LovelaceLogger.debug("FileChooser invoked for Save dialog using AWT FileDialog");
 			fileChooser.setMode(FileDialog.SAVE);
 			chooser = Either.right(fileChooser);
@@ -181,11 +177,9 @@ public class FileChooser {
 				LovelaceLogger.debug("A file was passed in");
 				storedFile = Collections.singletonList(loc);
 			}
-			break;
-		case Custom:
-			throw new IllegalArgumentException("Custom dialog not supported in AWT");
-		default:
-			throw new IllegalStateException("Exhaustive switch wasn't");
+		}
+		case Custom -> throw new IllegalArgumentException("Custom dialog not supported in AWT");
+		default -> throw new IllegalStateException("Exhaustive switch wasn't");
 		}
 	}
 

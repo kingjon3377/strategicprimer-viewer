@@ -56,24 +56,19 @@ import javax.xml.stream.XMLStreamException;
 		for (final XMLEvent event : stream) {
 			if (event instanceof StartElement && isSPStartElement(event)) {
 				switch (((StartElement) event).getName().getLocalPart().toLowerCase()) {
-				case "job":
-					retval.addJob(readJob((StartElement) event, element.getName(),
+				case "job" -> retval.addJob(readJob((StartElement) event, element.getName(),
 						stream, players, warner, idFactory));
-					break;
-				case "stats":
-					retval.setStats(readStats((StartElement) event, element.getName(),
+				case "stats" -> retval.setStats(readStats((StartElement) event, element.getName(),
 						stream, players, warner, idFactory));
-					break;
-				case "note":
-					retval.setNote(
+				case "note" -> retval.setNote(
 						players.getPlayer(getIntegerAttribute((StartElement) event,
-							"player")),
+								"player")),
 						readNote((StartElement) event, element.getName(), stream,
-							warner));
-					break;
-				case "animal":
+								warner));
+				case "animal" -> {
 					if (retval.getMount() == null) {
-						final AnimalOrTracks animal = readAnimal((StartElement) event, element.getName(), stream, players,
+						final AnimalOrTracks animal = readAnimal((StartElement) event, element.getName(), stream,
+								players,
 								warner, idFactory);
 						if (animal instanceof Animal) {
 							retval.setMount((Animal) animal);
@@ -81,12 +76,12 @@ import javax.xml.stream.XMLStreamException;
 						}
 					}
 					throw new UnwantedChildException(((StartElement) event).getName(), element);
-				case "implement":
-					retval.addEquipment(FluidResourceHandler.readImplement((StartElement) event, element.getName(), stream,
-							players, warner, idFactory));
-					break;
-				default:
-					throw UnwantedChildException.listingExpectedTags(element.getName(),
+				}
+				case "implement" ->
+						retval.addEquipment(FluidResourceHandler.readImplement((StartElement) event, element.getName()
+								, stream,
+								players, warner, idFactory));
+				default -> throw UnwantedChildException.listingExpectedTags(element.getName(),
 						(StartElement) event, "job", "stats", "note", "animal", "implement");
 				}
 			} else if (event instanceof EndElement &&

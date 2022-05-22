@@ -41,12 +41,8 @@ public final class BoxPanel extends JPanel {
 	 */
 	public final void addGlue() {
 		switch (axis) {
-			case LineAxis:
-				add(Box.createHorizontalGlue());
-				break;
-			case PageAxis:
-				add(Box.createVerticalGlue());
-				break;
+		case LineAxis -> add(Box.createHorizontalGlue());
+		case PageAxis -> add(Box.createVerticalGlue());
 		}
 	}
 
@@ -54,17 +50,11 @@ public final class BoxPanel extends JPanel {
 	 * Add a rigid (fixed-size) area between components.
 	 */
 	public final void addRigidArea(final int dimension) {
-		final Dimension dimensionObject;
-		switch (axis) {
-			case LineAxis:
-				dimensionObject = new Dimension(dimension, 0);
-				break;
-			case PageAxis:
-				dimensionObject = new Dimension(0, dimension);
-				break;
-			default:
-				throw new IllegalStateException("Default case in exhaustive switch");
-		}
+		final Dimension dimensionObject = switch (axis) {
+			case LineAxis -> new Dimension(dimension, 0);
+			case PageAxis -> new Dimension(0, dimension);
+			default -> throw new IllegalStateException("Default case in exhaustive switch");
+		};
 		add(Box.createRigidArea(dimensionObject));
 	}
 

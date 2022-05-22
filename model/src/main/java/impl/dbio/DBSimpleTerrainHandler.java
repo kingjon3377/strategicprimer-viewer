@@ -73,17 +73,13 @@ final class DBSimpleTerrainHandler extends AbstractDatabaseWriter<TerrainFixture
 			final String image = (String) dbRow.get("image");
 			final TerrainFixture fixture;
 			switch (type) {
-			case "hill":
-				fixture = new Hill(id);
-				break;
-			case "sandbar":
+			case "hill" -> fixture = new Hill(id);
+			case "sandbar" -> {
 				LovelaceLogger.info("Ignoring 'sandbar' with ID %d", id);
 				return;
-			case "oasis":
-				fixture = new Oasis(id);
-				break;
-			default:
-				throw new IllegalArgumentException("Unhandled simple terrain-fixture type");
+			}
+			case "oasis" -> fixture = new Oasis(id);
+			default -> throw new IllegalArgumentException("Unhandled simple terrain-fixture type");
 			}
 			if (image != null) {
 				((HasMutableImage) fixture).setImage(image);

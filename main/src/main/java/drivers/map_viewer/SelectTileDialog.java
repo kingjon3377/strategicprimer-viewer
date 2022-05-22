@@ -109,18 +109,13 @@ import common.map.Point;
 
 	// TODO: put into NumberState, as a method taking int (for the overflow case)?
 	private static String getErrorMessage(final NumberState state, final int bound) {
-		switch (state) {
-		case Valid:
-			return "";
-		case NonNumeric:
-			return "must be a whole number. ";
-		case Negative:
-			return "must be positive. ";
-		case Overflow:
-			return String.format("must be less than %d.", bound);
-		default:
-			throw new IllegalStateException("Exhaustive switch wasn't");
-		}
+		return switch (state) {
+			case Valid -> "";
+			case NonNumeric -> "must be a whole number. ";
+			case Negative -> "must be positive. ";
+			case Overflow -> String.format("must be less than %d.", bound);
+			default -> throw new IllegalStateException("Exhaustive switch wasn't");
+		};
 	}
 
 	private void handleOK() {

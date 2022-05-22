@@ -21,18 +21,13 @@ public enum TownStatus {
 	}
 
 	public static TownStatus parse(final String status) {
-		switch (status) {
-		case "active":
-			return Active;
-		case "abandoned":
-			return Abandoned;
-		case "burned":
-			return Burned;
-		case "ruined":
-			return Ruined;
-		default:
-			throw new IllegalArgumentException(String.format(
-				"Failed to parse TownStatus from '%s'", status));
-		}
+		return switch (status) {
+			case "active" -> Active;
+			case "abandoned" -> Abandoned;
+			case "burned" -> Burned;
+			case "ruined" -> Ruined;
+			default -> throw new IllegalArgumentException(String.format(
+					"Failed to parse TownStatus from '%s'", status));
+		};
 	}
 }

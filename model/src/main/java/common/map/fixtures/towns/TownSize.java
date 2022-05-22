@@ -19,16 +19,12 @@ public enum TownSize {
 	}
 
 	public static TownSize parseTownSize(final String size) {
-		switch (size) {
-		case "small":
-			return Small;
-		case "medium":
-			return Medium;
-		case "large":
-			return Large;
-		default:
-			throw new IllegalArgumentException(String.format(
-				"Failed to parse TownSize from '%s'", size));
-		}
+		return switch (size) {
+			case "small" -> Small;
+			case "medium" -> Medium;
+			case "large" -> Large;
+			default -> throw new IllegalArgumentException(String.format(
+					"Failed to parse TownSize from '%s'", size));
+		};
 	}
 }

@@ -90,26 +90,21 @@ import java.util.Set;
 		final int idNum = getOrGenerateID(element);
 		final HarvestableFixture retval;
 		switch (element.getName().getLocalPart().toLowerCase()) {
-		case "cache":
+		case "cache" -> {
 			expectAttributes(element, "kind", "contents", "id", "image");
 			retval = new CacheFixture(getParameter(element, "kind"),
-				getParameter(element, "contents"), idNum);
+					getParameter(element, "contents"), idNum);
 			// We want to transition from arbitrary-String 'contents' to sub-tags. As a
 			// first step, future-proof *this* version of the suite by only firing a
 			// warning if such children are detected, instead of aborting.
 			spinUntilEnd(element.getName(), stream, "resource", "implement");
 			retval.setImage(getParameter(element, "image", ""));
 			return retval;
-		case "field":
-			retval = createMeadow(element, true, idNum);
-			break;
-		case "grove":
-			retval = createGrove(element, false, idNum);
-			break;
-		case "meadow":
-			retval = createMeadow(element, false, idNum);
-			break;
-		case "mine":
+		}
+		case "field" -> retval = createMeadow(element, true, idNum);
+		case "grove" -> retval = createGrove(element, false, idNum);
+		case "meadow" -> retval = createMeadow(element, false, idNum);
+		case "mine" -> {
 			expectAttributes(element, "status", "kind", "product", "id", "image");
 			final TownStatus status;
 			try {
@@ -118,23 +113,21 @@ import java.util.Set;
 				throw new MissingPropertyException(element, "status", except);
 			}
 			retval = new Mine(getParamWithDeprecatedForm(element, "kind", "product"),
-				status, idNum);
-			break;
-		case "mineral":
+					status, idNum);
+		}
+		case "mineral" -> {
 			expectAttributes(element, "kind", "mineral", "exposed", "id", "dc", "image");
 			retval = new MineralVein(getParamWithDeprecatedForm(element, "kind", "mineral"),
-				getBooleanParameter(element, "exposed"),
-				getIntegerParameter(element, "dc"), idNum);
-			break;
-		case "orchard":
-			retval = createGrove(element, true, idNum);
-			break;
-		case "shrub":
+					getBooleanParameter(element, "exposed"),
+					getIntegerParameter(element, "dc"), idNum);
+		}
+		case "orchard" -> retval = createGrove(element, true, idNum);
+		case "shrub" -> {
 			expectAttributes(element, "kind", "shrub", "id", "image", "count");
 			retval = new Shrub(getParamWithDeprecatedForm(element, "kind", "shrub"), idNum,
-				getIntegerParameter(element, "count", -1));
-			break;
-		case "stone":
+					getIntegerParameter(element, "count", -1));
+		}
+		case "stone" -> {
 			expectAttributes(element, "kind", "stone", "id", "dc", "image");
 			final StoneKind stone;
 			try {
@@ -143,9 +136,8 @@ import java.util.Set;
 				throw new MissingPropertyException(element, "kind", except);
 			}
 			retval = new StoneDeposit(stone, getIntegerParameter(element, "dc"), idNum);
-			break;
-		default:
-			throw new IllegalArgumentException("Unhandled harvestable tag");
+		}
+		default -> throw new IllegalArgumentException("Unhandled harvestable tag");
 		}
 		spinUntilEnd(element.getName(), stream);
 		retval.setImage(getParameter(element, "image", ""));

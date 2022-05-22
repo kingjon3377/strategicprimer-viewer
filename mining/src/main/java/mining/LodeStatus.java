@@ -46,26 +46,17 @@ enum LodeStatus {
 	 * TODO: Throw instead of returning null?
 	 */
 	public static @Nullable LodeStatus parse(final String str) {
-		switch (str.toLowerCase()) {
-		case "none":
-			return null;
-		case "minimal":
-			return Minimal;
-		case "verypoor": case "very-poor":
-			return VeryPoor;
-		case "poor":
-			return Poor;
-		case "fair":
-			return Fair;
-		case "good":
-			return Good;
-		case "verygood": case "very-good":
-			return VeryGood;
-		case "motherlode": case "mother-lode":
-			return MotherLode;
-		default:
-			return null;
-		}
+		return switch (str.toLowerCase()) {
+			case "none" -> null;
+			case "minimal" -> Minimal;
+			case "verypoor", "very-poor" -> VeryPoor;
+			case "poor" -> Poor;
+			case "fair" -> Fair;
+			case "good" -> Good;
+			case "verygood", "very-good" -> VeryGood;
+			case "motherlode", "mother-lode" -> MotherLode;
+			default -> null;
+		};
 	}
 
 	/**
@@ -124,47 +115,31 @@ enum LodeStatus {
 	 * The next lower status.
 	 */
 	private @Nullable LodeStatus getLower() {
-		switch (this) {
-		case Minimal:
-			return null;
-		case VeryPoor:
-			return Minimal;
-		case Poor:
-			return VeryPoor;
-		case Fair:
-			return Poor;
-		case Good:
-			return Fair;
-		case VeryGood:
-			return Good;
-		case MotherLode:
-			return VeryGood;
-		default:
-			throw new IllegalStateException("Non-exhaustive switch");
-		}
+		return switch (this) {
+			case Minimal -> null;
+			case VeryPoor -> Minimal;
+			case Poor -> VeryPoor;
+			case Fair -> Poor;
+			case Good -> Fair;
+			case VeryGood -> Good;
+			case MotherLode -> VeryGood;
+			default -> throw new IllegalStateException("Non-exhaustive switch");
+		};
 	}
 
 	/**
 	 * The next higher status.
 	 */
 	private LodeStatus getHigher() {
-		switch (this) {
-		case Minimal:
-			return VeryPoor;
-		case VeryPoor:
-			return Poor;
-		case Poor:
-			return Fair;
-		case Fair:
-			return Good;
-		case Good:
-			return VeryGood;
-		case VeryGood:
-		case MotherLode:
-			return MotherLode;
-		default:
-			throw new IllegalStateException("Non-exhaustive switch");
-		}
+		return switch (this) {
+			case Minimal -> VeryPoor;
+			case VeryPoor -> Poor;
+			case Poor -> Fair;
+			case Fair -> Good;
+			case Good -> VeryGood;
+			case VeryGood, MotherLode -> MotherLode;
+			default -> throw new IllegalStateException("Non-exhaustive switch");
+		};
 	}
 
 	/**

@@ -78,18 +78,12 @@ import java.util.stream.Collectors;
 	}
 
 	private static List<String> expectedCommunityStatsTags(final String parent) {
-		switch (parent) {
-		case "population":
-			return Arrays.asList("expertise", "claim", "production", "consumption");
-		case "claim":
-		case "expertise":
-			return Collections.emptyList();
-		case "production":
-		case "consumption":
-			return Collections.singletonList("resource");
-		default:
-			throw new IllegalArgumentException("Impossible CommunityStats parent tag");
-		}
+		return switch (parent) {
+			case "population" -> Arrays.asList("expertise", "claim", "production", "consumption");
+			case "claim", "expertise" -> Collections.emptyList();
+			case "production", "consumption" -> Collections.singletonList("resource");
+			default -> throw new IllegalArgumentException("Impossible CommunityStats parent tag");
+		};
 	}
 
 	public CommunityStats parseCommunityStats(final StartElement element, final QName parent,
@@ -243,21 +237,13 @@ import java.util.stream.Collectors;
 		final int dc = getIntegerParameter(element, "dc");
 		final int id = getOrGenerateID(element);
 		final Player owner = getOwnerOrIndependent(element);
-		final AbstractTown retval;
-		switch (element.getName().getLocalPart().toLowerCase()) {
-		case "town":
-			retval = new Town(status, size, dc, name, id, owner);
-			break;
-		case "city":
-			retval = new City(status, size, dc, name, id, owner);
-			break;
-		case "fortification":
-			retval = new Fortification(status, size, dc, name, id, owner);
-			break;
-		default:
-			throw new IllegalArgumentException("Unhandled town tag " +
-				element.getName().getLocalPart());
-		}
+		final AbstractTown retval = switch (element.getName().getLocalPart().toLowerCase()) {
+			case "town" -> new Town(status, size, dc, name, id, owner);
+			case "city" -> new City(status, size, dc, name, id, owner);
+			case "fortification" -> new Fortification(status, size, dc, name, id, owner);
+			default -> throw new IllegalArgumentException("Unhandled town tag " +
+					                                              element.getName().getLocalPart());
+		};
 		for (final XMLEvent event : stream) {
 			if (event instanceof StartElement &&
 					isSupportedNamespace(((StartElement) event).getName())) {
@@ -391,14 +377,11 @@ import java.util.stream.Collectors;
 	public ITownFixture read(final StartElement element, final QName parent, final Iterable<XMLEvent> stream)
 			throws SPFormatException, XMLStreamException {
 		requireTag(element, parent, "village", "fortress", "town", "city", "fortification");
-		switch (element.getName().getLocalPart().toLowerCase()) {
-		case "village":
-			return parseVillage(element, stream);
-		case "fortress":
-			return parseFortress(element, stream);
-		default:
-			return parseTown(element, stream);
-		}
+		return switch (element.getName().getLocalPart().toLowerCase()) {
+			case "village" -> parseVillage(element, stream);
+			case "fortress" -> parseFortress(element, stream);
+			default -> parseTown(element, stream);
+		};
 	}
 
 	@Override

@@ -182,7 +182,7 @@ import java.util.function.Predicate;
 		final int currentTurn;
 		final StartElement mapTag;
 		switch (element.getName().getLocalPart().toLowerCase()) {
-		case "view":
+		case "view" -> {
 			expectAttributes(element, "current_turn", "current_player");
 			currentTurn = getIntegerParameter(element, "current_turn");
 			if (currentTurn >= 0) {
@@ -191,14 +191,13 @@ import java.util.function.Predicate;
 			mapTag = getFirstStartElement(stream, element);
 			requireTag(mapTag, element.getName(), "map");
 			expectAttributes(mapTag, "version", "rows", "columns");
-			break;
-		case "map":
+		}
+		case "map" -> {
 			currentTurn = 0;
 			mapTag = element;
 			expectAttributes(mapTag, "version", "rows", "columns", "current_player");
-			break;
-		default:
-			throw UnwantedChildException.listingExpectedTags(new QName("xml"), element,
+		}
+		default -> throw UnwantedChildException.listingExpectedTags(new QName("xml"), element,
 				"map", "view");
 		}
 		final MapDimensions dimensions;
@@ -276,56 +275,54 @@ import java.util.function.Predicate;
 					warner.handle(UnsupportedTagException.obsolete((StartElement) event));
 				} else if (point != null) {
 					switch (type) {
-						case "lake":
-						case "river":
-							retval.addRivers(point,
-									parseRiver((StartElement) event,
-											tagStack.peekFirst()));
-							spinUntilEnd(((StartElement) event).getName(), stream);
-							break;
-						case "mountain":
-							tagStack.addFirst(((StartElement) event).getName());
-							retval.setMountainous(point, true);
-							break;
-						case "bookmark":
-							tagStack.addFirst(((StartElement) event).getName());
-							expectAttributes((StartElement) event, "player");
-							retval.addBookmark(point,
-									players.getPlayer(getIntegerParameter(
-											(StartElement) event, "player")));
-							break;
-						case "road":
-							tagStack.addFirst(((StartElement) event).getName());
-							expectAttributes((StartElement) event, "direction",
-									"quality");
-							final Direction direction;
-							try {
-								direction = Direction.parse(
-										getParameter((StartElement) event,
-												"direction"));
-							} catch (final IllegalArgumentException except) {
-								throw new MissingPropertyException(
-										(StartElement) event, "direction", except);
-							}
-							retval.setRoadLevel(point, direction,
-									getIntegerParameter((StartElement) event, "quality"));
-							break;
-						default:
-							final QName top = tagStack.peekFirst();
-
-							final TileFixture child = parseFixture((StartElement) event, top, stream);
-							if (child instanceof IFortress &&
-									    retval.getFixtures(point).stream()
-											    .filter(IFortress.class::isInstance)
-											    .map(IFortress.class::cast)
-											    .map(IFortress::getOwner)
-											    .anyMatch(((IFortress) child).getOwner()::equals)) {
-								warner.handle(new UnwantedChildException(
-										top, (StartElement) event,
-										"Multiple fortresses owned by one player on a tile"));
-							}
-							retval.addFixture(point, child);
-							break;
+					case "lake", "river" -> {
+						retval.addRivers(point,
+								parseRiver((StartElement) event,
+										tagStack.peekFirst()));
+						spinUntilEnd(((StartElement) event).getName(), stream);
+					}
+					case "mountain" -> {
+						tagStack.addFirst(((StartElement) event).getName());
+						retval.setMountainous(point, true);
+					}
+					case "bookmark" -> {
+						tagStack.addFirst(((StartElement) event).getName());
+						expectAttributes((StartElement) event, "player");
+						retval.addBookmark(point,
+								players.getPlayer(getIntegerParameter(
+										(StartElement) event, "player")));
+					}
+					case "road" -> {
+						tagStack.addFirst(((StartElement) event).getName());
+						expectAttributes((StartElement) event, "direction",
+								"quality");
+						final Direction direction;
+						try {
+							direction = Direction.parse(
+									getParameter((StartElement) event,
+											"direction"));
+						} catch (final IllegalArgumentException except) {
+							throw new MissingPropertyException(
+									(StartElement) event, "direction", except);
+						}
+						retval.setRoadLevel(point, direction,
+								getIntegerParameter((StartElement) event, "quality"));
+					}
+					default -> {
+						final QName top = tagStack.peekFirst();
+						final TileFixture child = parseFixture((StartElement) event, top, stream);
+						if (child instanceof IFortress &&
+								    retval.getFixtures(point).stream()
+										    .filter(IFortress.class::isInstance)
+										    .map(IFortress.class::cast)
+										    .map(IFortress::getOwner)
+										    .anyMatch(((IFortress) child).getOwner()::equals)) {
+							warner.handle(new UnwantedChildException(
+									top, (StartElement) event,
+									"Multiple fortresses owned by one player on a tile"));
+						}
+						retval.addFixture(point, child);
+					}
 					}
 				} else {
 					// fixture outside tile

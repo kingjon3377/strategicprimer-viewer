@@ -288,16 +288,12 @@ public class MapCheckerCLI implements UtilityDriver {
 	}
 
 	private static double townAcreage(final TownSize size) {
-		switch (size) {
-			case Small:
-				return 15.0;
-			case Medium:
-				return 40.0;
-			case Large:
-				return 80.0;
-			default:
-				throw new IllegalStateException("Exhaustive switch wasn't");
-		}
+		return switch (size) {
+			case Small -> 15.0;
+			case Medium -> 40.0;
+			case Large -> 80.0;
+			default -> throw new IllegalStateException("Exhaustive switch wasn't");
+		};
 	}
 	private static boolean acreageChecker(final Point context, final Warning warner,
 	                                      final Collection<? extends IFixture> fixtures) {

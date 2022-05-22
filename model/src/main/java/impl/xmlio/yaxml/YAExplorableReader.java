@@ -38,17 +38,11 @@ import lovelace.util.ThrowingConsumer;
 		requireTag(element, parent, "battlefield", "cave");
 		expectAttributes(element, "id", "dc", "image");
 		final int idNum = getOrGenerateID(element);
-		final ExplorableFixture retval;
-		switch (element.getName().getLocalPart().toLowerCase()) {
-		case "battlefield":
-			retval = new Battlefield(getIntegerParameter(element, "dc"), idNum);
-			break;
-		case "cave":
-			retval = new Cave(getIntegerParameter(element, "dc"), idNum);
-			break;
-		default:
-			throw UnsupportedTagException.future(element);
-		}
+		final ExplorableFixture retval = switch (element.getName().getLocalPart().toLowerCase()) {
+			case "battlefield" -> new Battlefield(getIntegerParameter(element, "dc"), idNum);
+			case "cave" -> new Cave(getIntegerParameter(element, "dc"), idNum);
+			default -> throw UnsupportedTagException.future(element);
+		};
 		spinUntilEnd(element.getName(), stream);
 		retval.setImage(getParameter(element, "image", ""));
 		return retval;

@@ -290,20 +290,19 @@ public class TodoFixerCLI implements CLIDriver {
 		final List<String> jobList;
 		final String description;
 		switch (terrain) {
-		case Unforested:
+		case Unforested -> {
 			jobList = plainsList;
 			description = "plains, desert, or mountains";
-			break;
-		case Forested:
+		}
+		case Forested -> {
 			jobList = forestList;
 			description = "forest or jungle";
-			break;
-		case Ocean:
+		}
+		case Ocean -> {
 			jobList = oceanList;
 			description = "ocean";
-			break;
-		default:
-			throw new IllegalStateException("Exhaustive switch wasn't");
+		}
+		default -> throw new IllegalStateException("Exhaustive switch wasn't");
 		}
 		for (final String job : jobList) {
 			if (rng.nextBoolean()) {

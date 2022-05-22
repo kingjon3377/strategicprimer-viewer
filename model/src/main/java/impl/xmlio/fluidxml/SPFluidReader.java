@@ -307,7 +307,7 @@ public class SPFluidReader implements IMapReader, ISPReader {
 		final int currentTurn;
 		final StartElement mapTag;
 		switch (element.getName().getLocalPart().toLowerCase()) {
-		case "view":
+		case "view" -> {
 			expectAttributes(element, warner, "current_player", "current_turn");
 			currentTurn = getIntegerAttribute(element, "current_turn");
 			if (currentTurn >= 0) {
@@ -316,15 +316,14 @@ public class SPFluidReader implements IMapReader, ISPReader {
 			mapTag = firstStartElement(stream, element);
 			requireTag(mapTag, element.getName(), "map");
 			expectAttributes(mapTag, warner, "version", "rows", "columns");
-			break;
-		case "map":
+		}
+		case "map" -> {
 			currentTurn = 0;
 			mapTag = element;
 			expectAttributes(mapTag, warner, "version", "rows", "columns",
-				"current_player");
-			break;
-		default:
-			throw new UnwantedChildException(parent, element);
+					"current_player");
+		}
+		default -> throw new UnwantedChildException(parent, element);
 		}
 		final MapDimensions dimensions;
 		final MapDimensions readDimensions = new MapDimensionsImpl(

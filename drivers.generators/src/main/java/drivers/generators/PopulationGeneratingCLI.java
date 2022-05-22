@@ -287,19 +287,12 @@ public class PopulationGeneratingCLI implements CLIDriver {
 			for (final ITownFixture town : map.getFixtures(location).stream()
 					.filter(ITownFixture.class::isInstance).map(ITownFixture.class::cast)
 					.collect(Collectors.toList())) {
-				switch (town.getTownSize()) {
-				case Small:
-					reserved = reserved.add(new BigDecimal(15));
-					break;
-				case Medium:
-					reserved = reserved.add(new BigDecimal(40));
-					break;
-				case Large:
-					reserved = reserved.add(new BigDecimal(80));
-					break;
-				default:
-					throw new IllegalStateException("Non-exhaustive exhaustive switch");
-				}
+				reserved = switch (town.getTownSize()) {
+					case Small -> reserved.add(new BigDecimal(15));
+					case Medium -> reserved.add(new BigDecimal(40));
+					case Large -> reserved.add(new BigDecimal(80));
+					default -> throw new IllegalStateException("Non-exhaustive exhaustive switch");
+				};
 			}
 			reserved = reserved.add(new BigDecimal(map.getFixtures(location).stream()
 				.filter(Grove.class::isInstance).map(Grove.class::cast)

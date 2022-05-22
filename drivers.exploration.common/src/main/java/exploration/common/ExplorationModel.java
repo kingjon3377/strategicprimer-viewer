@@ -359,28 +359,18 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 		final int maxRow = dims.getRows() - 1;
 		final int row = point.getRow();
 		final int column = point.getColumn();
-		switch (direction) {
-		case East:
-			return new Point(row, increment(column, maxColumn));
-		case North:
-			return new Point(decrement(row, maxRow), column);
-		case Northeast:
-			return new Point(decrement(row, maxRow), increment(column, maxColumn));
-		case Northwest:
-			return new Point(decrement(row, maxRow), decrement(column, maxColumn));
-		case South:
-			return new Point(increment(row, maxRow), column);
-		case Southeast:
-			return new Point(increment(row, maxRow), increment(column, maxColumn));
-		case Southwest:
-			return new Point(increment(row, maxRow), decrement(column, maxColumn));
-		case West:
-			return new Point(row, decrement(column, maxColumn));
-		case Nowhere:
-			return point;
-		default:
-			throw new IllegalStateException("Exhaustive switch wasn't");
-		}
+		return switch (direction) {
+			case East -> new Point(row, increment(column, maxColumn));
+			case North -> new Point(decrement(row, maxRow), column);
+			case Northeast -> new Point(decrement(row, maxRow), increment(column, maxColumn));
+			case Northwest -> new Point(decrement(row, maxRow), decrement(column, maxColumn));
+			case South -> new Point(increment(row, maxRow), column);
+			case Southeast -> new Point(increment(row, maxRow), increment(column, maxColumn));
+			case Southwest -> new Point(increment(row, maxRow), decrement(column, maxColumn));
+			case West -> new Point(row, decrement(column, maxColumn));
+			case Nowhere -> point;
+			default -> throw new IllegalStateException("Exhaustive switch wasn't");
+		};
 	}
 
 	private void fixMovedUnits(final Point base) {

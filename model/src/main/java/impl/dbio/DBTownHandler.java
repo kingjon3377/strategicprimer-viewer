@@ -106,19 +106,12 @@ final class DBTownHandler extends AbstractDatabaseWriter<AbstractTown, Point> im
 			final Integer population = (Integer) dbRow.get("population");
 			final AbstractTown town;
 			final Player owner = map.getPlayers().getPlayer(ownerNum);
-			switch (kind) {
-			case "fortification":
-				town = new Fortification(status, size, dc, name, id, owner);
-				break;
-			case "city":
-				town = new City(status, size, dc, name, id, owner);
-				break;
-			case "town":
-				town = new Town(status, size, dc, name, id, owner);
-				break;
-			default:
-				throw new IllegalArgumentException("Unhandled kind of town");
-			}
+			town = switch (kind) {
+				case "fortification" -> new Fortification(status, size, dc, name, id, owner);
+				case "city" -> new City(status, size, dc, name, id, owner);
+				case "town" -> new Town(status, size, dc, name, id, owner);
+				default -> throw new IllegalArgumentException("Unhandled kind of town");
+			};
 			if (image != null) {
 				town.setImage(image);
 			}

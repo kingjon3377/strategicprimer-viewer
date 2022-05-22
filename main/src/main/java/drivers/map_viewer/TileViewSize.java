@@ -17,13 +17,10 @@ package drivers.map_viewer;
 	 * TODO: tests
 	 */
 	public static int scaleZoom(final int zoomLevel, final int mapVersion) {
-		switch (mapVersion) {
-		case 1:
-			return zoomLevel * 2;
-		case 2:
-			return zoomLevel * 3;
-		default:
-			throw new IllegalArgumentException("Unsupported map version number");
-		}
+		return switch (mapVersion) {
+			case 1 -> zoomLevel * 2;
+			case 2 -> zoomLevel * 3;
+			default -> throw new IllegalArgumentException("Unsupported map version number");
+		};
 	}
 }
