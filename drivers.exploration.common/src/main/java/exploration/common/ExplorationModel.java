@@ -369,7 +369,6 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 			case Southwest -> new Point(increment(row, maxRow), decrement(column, maxColumn));
 			case West -> new Point(row, decrement(column, maxColumn));
 			case Nowhere -> point;
-			default -> throw new IllegalStateException("Exhaustive switch wasn't");
 		};
 	}
 

@@ -75,7 +75,6 @@ public final class SimpleMovementModel {
 			case West -> source.contains(River.West) || dest.contains(River.East);
 			case Northwest -> recurse.test(Direction.North) || recurse.test(Direction.West);
 			case Nowhere -> false;
-			default -> throw new IllegalStateException("Unhandled switch case");
 		};
 	}
 

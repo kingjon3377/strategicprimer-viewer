@@ -292,7 +292,6 @@ public class MapCheckerCLI implements UtilityDriver {
 			case Small -> 15.0;
 			case Medium -> 40.0;
 			case Large -> 80.0;
-			default -> throw new IllegalStateException("Exhaustive switch wasn't");
 		};
 	}
 	private static boolean acreageChecker(final Point context, final Warning warner,

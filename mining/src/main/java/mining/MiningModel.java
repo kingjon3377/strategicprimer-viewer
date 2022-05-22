@@ -111,8 +111,7 @@ import java.util.stream.Collectors;
 		horizontalGenerator = switch (kind) {
 				case Normal -> (current) -> current.adjacent(rng::nextDouble);
 				case Banded -> (current) -> current.bandedAdjacent(rng);
-				default -> throw new IllegalStateException("Non-exhaustive switch");
-			};
+		};
 
 		long counter = 0L;
 		int pruneCounter = 0;

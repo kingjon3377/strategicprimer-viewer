@@ -37,7 +37,6 @@ import lovelace.util.LovelaceLogger;
 			case None, AnyNumber -> true;
 			case One, AtLeastOne -> argc >= 1;
 			case Two, AtLeastTwo -> argc >= 2;
-			default -> throw new IllegalStateException("Exhaustive switch wasn't");
 		};
 	}
 
@@ -50,7 +49,6 @@ import lovelace.util.LovelaceLogger;
 			case None -> argc > 0;
 			case One -> argc > 1;
 			case Two -> argc > 2;
-			default -> throw new IllegalStateException("Exhaustive switch wasn't");
 		};
 	}
 

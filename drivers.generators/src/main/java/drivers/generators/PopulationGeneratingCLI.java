@@ -291,7 +291,6 @@ public class PopulationGeneratingCLI implements CLIDriver {
 					case Small -> reserved.add(new BigDecimal(15));
 					case Medium -> reserved.add(new BigDecimal(40));
 					case Large -> reserved.add(new BigDecimal(80));
-					default -> throw new IllegalStateException("Non-exhaustive exhaustive switch");
 				};
 			}
 			reserved = reserved.add(new BigDecimal(map.getFixtures(location).stream()

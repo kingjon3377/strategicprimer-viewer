@@ -53,7 +53,6 @@ public final class BoxPanel extends JPanel {
 		final Dimension dimensionObject = switch (axis) {
 			case LineAxis -> new Dimension(dimension, 0);
 			case PageAxis -> new Dimension(0, dimension);
-			default -> throw new IllegalStateException("Default case in exhaustive switch");
 		};
 		add(Box.createRigidArea(dimensionObject));
 	}

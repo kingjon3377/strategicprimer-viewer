@@ -114,7 +114,6 @@ import common.map.Point;
 			case NonNumeric -> "must be a whole number. ";
 			case Negative -> "must be positive. ";
 			case Overflow -> String.format("must be less than %d.", bound);
-			default -> throw new IllegalStateException("Exhaustive switch wasn't");
 		};
 	}
 

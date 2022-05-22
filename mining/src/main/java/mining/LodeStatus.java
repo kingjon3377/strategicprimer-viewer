@@ -123,7 +123,6 @@ enum LodeStatus {
 			case Good -> Fair;
 			case VeryGood -> Good;
 			case MotherLode -> VeryGood;
-			default -> throw new IllegalStateException("Non-exhaustive switch");
 		};
 	}
 
@@ -138,7 +137,6 @@ enum LodeStatus {
 			case Fair -> Good;
 			case Good -> VeryGood;
 			case VeryGood, MotherLode -> MotherLode;
-			default -> throw new IllegalStateException("Non-exhaustive switch");
 		};
 	}
 
