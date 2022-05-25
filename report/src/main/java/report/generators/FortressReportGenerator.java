@@ -89,8 +89,8 @@ public class FortressReportGenerator extends AbstractReportGenerator<IFortress> 
 			set.remove(River.Lake);
 		}
 		if (!set.isEmpty()) {
-			formatter.accept("<li>There is a river on the tile, ");
-			formatter.accept("flowing through the following borders: ");
+			formatter.accept("""
+					<li>There is a river on the tile, flowing through the following borders: """);
 			formatter.accept(set.stream().map(River::getDescription)
 				.collect(Collectors.joining(", ")));
 			println(formatter, "</li>");
@@ -125,14 +125,16 @@ public class FortressReportGenerator extends AbstractReportGenerator<IFortress> 
 		ostream.accept(item.getName());
 		ostream.accept("belonging to ");
 		ostream.accept((item.getOwner().equals(currentPlayer)) ? "you" : item.getOwner().toString());
-		println(ostream, "</h5>");
-		println(ostream, "<ul>");
-		ostream.accept("    <li>Located at ");
+		ostream.accept("""
+				</h5>
+				<ul>
+				    <li>Located at """);
 		ostream.accept(loc.toString());
 		ostream.accept(" ");
 		ostream.accept(distanceString.apply(loc));
-		println(ostream, "</li>");
-		ostream.accept("    <li>");
+		ostream.accept("""
+				</li>
+				    <li>""");
 		terrain(ostream, map, loc, fixtures);
 		println(ostream, "</li>");
 		riversToString(ostream, map.getRivers(loc));

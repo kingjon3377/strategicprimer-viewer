@@ -110,7 +110,9 @@ public abstract class AbstractReportGenerator<Type extends IFixture> implements 
 					builder.append("<li>").append(item).append("</li>")
 						.append(System.lineSeparator());
 				}
-				builder.append("</ul>").append(System.lineSeparator());
+				builder.append("""
+						</ul>
+						""");
 				return builder.toString();
 			}
 		}

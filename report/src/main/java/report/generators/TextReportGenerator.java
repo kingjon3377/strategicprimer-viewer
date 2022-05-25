@@ -72,8 +72,10 @@ public class TextReportGenerator extends AbstractReportGenerator<TextFixture> {
 					.thenComparing(t -> t.getValue2().getText()))
 				.collect(Collectors.toList());
 		if (!items.isEmpty()) {
-			println(ostream, "<h4>Miscellaneous Notes</h4>");
-			println(ostream, "<ul>");
+			ostream.accept("""
+					<h4>Miscellaneous Notes</h4>
+					<ul>
+					""");
 			for (final Triplet<Integer, Point, TextFixture> triplet : items) {
 				final int key = triplet.getValue0();
 				final Point location = triplet.getValue1();

@@ -80,8 +80,10 @@ public class UnitReportGenerator extends AbstractReportGenerator<IUnit> {
 					formatter.accept(results);
 					println(formatter, "</li>");
 				}
-				println(formatter, "</ul>");
-				println(formatter, "</li>");
+				formatter.accept("""
+						</ul>
+						</li>
+						""");
 			}
 			println(formatter, "</ul>");
 		}
@@ -104,16 +106,20 @@ public class UnitReportGenerator extends AbstractReportGenerator<IUnit> {
 		if (!collection.isEmpty()) {
 			ostream.accept("<li>");
 			ostream.accept(heading);
-			println(ostream, ":");
-			println(ostream, "<ul>");
+			ostream.accept("""
+					:
+					<ul>
+					""");
 			for (final Member member : collection) {
 				ostream.accept("<li>");
 				generator.accept(member);
 				println(ostream, "</li>");
 				fixtures.remove(member.getId());
 			}
-			println(ostream, "</ul>");
-			println(ostream, "</li>");
+			ostream.accept("""
+					</ul>
+					</li>
+					""");
 		}
 	}
 
@@ -166,8 +172,10 @@ public class UnitReportGenerator extends AbstractReportGenerator<IUnit> {
 					others.add(member);
 				}
 			}
-			println(ostream, ". Members of the unit:");
-			println(ostream, "<ul>");
+			ostream.accept("""
+					Members of the unit:
+					<ul>
+					""");
 			final IReportGenerator<IWorker> workerReportGenerator;
 			if (item.getOwner().equals(currentPlayer)) {
 				workerReportGenerator = ourWorkerReportGenerator;
@@ -182,16 +190,19 @@ public class UnitReportGenerator extends AbstractReportGenerator<IUnit> {
 			produceInner(fixtures, ostream, "Equipment", equipment, (member) ->
 				memberReportGenerator.produceSingle(fixtures, map, ostream, member, loc));
 			if (!resources.isEmpty()) {
-				println(ostream, "<li>Resources:");
-				println(ostream, "<ul>");
+				ostream.accept("""
+						<li>Resources:
+						<ul>""");
 				for (final Map.Entry<String, List<IResourcePile>> entry : resources.entrySet()) {
 					produceInner(fixtures, ostream, entry.getKey(), entry.getValue(),
 						(IResourcePile member) ->
 							memberReportGenerator.produceSingle(fixtures, map,
 								ostream, member, loc));
 				}
-				println(ostream, "</ul>");
-				println(ostream, "</li>");
+				ostream.accept("""
+						</ul>
+						</li>
+						""");
 			}
 			produceInner(fixtures, ostream, "Others", others,
 				(it) -> ostream.accept(it.toString()));
@@ -231,8 +242,10 @@ public class UnitReportGenerator extends AbstractReportGenerator<IUnit> {
 			}
 		}
 		if (!ours.isEmpty() || !foreign.isEmpty()) {
-			println(ostream, "<h4>Units in the map</h4>");
-			println(ostream, "<p>(Any units listed above are not described again.)</p>");
+			ostream.accept("""
+					<h4>Units in the map</h4>
+					<p>(Any units listed above are not described again.)</p>
+					""");
 			writeMap(ostream, ours, (unit, loc, formatter) ->
 				unitFormatter(fixtures, map, unit, loc, formatter));
 			writeMap(ostream, foreign, (unit, loc, formatter) ->

@@ -117,8 +117,10 @@ public class AnimalReportGenerator extends AbstractReportGenerator</*Animal|Anim
 			fixtures.remove(key);
 		}
 		if (!items.isEmpty()) {
-			println(ostream, "<h4>Animal sightings or encounters</h4>");
-			println(ostream, "<ul>");
+			ostream.accept("""
+					<h4>Animal sightings or encounters</h4>
+					<ul>
+					""");
 			for (final Map.Entry<String, List<Point>> entry : items.entrySet()) {
 				if (!entry.getValue().isEmpty()) {
 					ostream.accept("<li>");

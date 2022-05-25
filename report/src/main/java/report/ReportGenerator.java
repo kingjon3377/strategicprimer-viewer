@@ -68,10 +68,12 @@ public final class ReportGenerator {
 			throws IOException {
 		final MapDimensions dimensions = map.getDimensions();
 		final StringBuilder builder = new StringBuilder();
-		builder.append("<!DOCTYPE html>").append(System.lineSeparator())
-			.append("<html>").append(System.lineSeparator())
-			.append("<head><title>Strategic Primer map summary report</title></head>")
-			.append(System.lineSeparator()).append("<body>").append(System.lineSeparator());
+		builder.append("""
+				<!DOCTYPE html>
+				<html>
+				<head><title>Strategic Primer map summary report</title></head>
+				<body>
+				""");
 		final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures =
 			ReportGeneratorHelper.getFixtures(map);
 		final @Nullable Point hq = ReportGeneratorHelper.findHQ(map, player);
@@ -88,8 +90,10 @@ public final class ReportGenerator {
 			new AnimalReportGenerator(dimensions, currentTurn, hq),
 			new VillageReportGenerator(player, dimensions, hq),
 			new ImmortalsReportGenerator(dimensions, hq));
-		builder.append("</body>").append(System.lineSeparator())
-			.append("</html>").append(System.lineSeparator());
+		builder.append("""
+				</body>
+				</html>
+				""");
 		for (final Pair<Point, IFixture> pair : fixtures.values()) {
 			final Point loc = pair.getValue0();
 			final IFixture fixture = pair.getValue1();

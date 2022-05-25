@@ -575,7 +575,9 @@ public final class TestXMLIO {
 	 * Encapsulate the given string in a "tile" tag inside a "map" tag.
 	 */
 	private static String encapsulateTileString(final String str) {
-		return String.format("<map version=\"2\" rows=\"2\" columns=\"2\">%n<tile row=\"1\" column=\"1\" kind=\"plains\">%s</tile></map>", str);
+		return """
+				<map version="2" rows="2" columns="2">
+				<tile row="1" column="1" kind="plains">%s</tile></map>""".formatted(str);
 	}
 
 	// TODO: Add .limit() after .stream(), and take int to pass to it
@@ -626,20 +628,20 @@ public final class TestXMLIO {
 		final Village village = new Village(status, name, id, owner, race);
 		assertSerialization("Basic Village serialization",
 			new Village(status, name, id, owner, race));
-		this.<Village>assertUnwantedChild(String.format(
-			"<village status=\"%s\"><village /></village>", status), null);
+		this.<Village>assertUnwantedChild("""
+				<village status="%s"><village /></village>""".formatted(status), null);
 		this.<Village>assertMissingProperty("<village />", "status", null);
-		assertMissingProperty(String.format(
-			"<village name=\"%s\" status=\"%s\" />", name, status), "id",
+		assertMissingProperty("""
+				<village name="%s" status="%s" />""".formatted(name, status), "id",
 			new Village(status, name, 0, new PlayerImpl(-1, "Independent"), "dwarf"));
-		assertMissingProperty(String.format(
-				"<village race=\"%s\" name=\"%s\" status=\"%s\" id=\"%d\" />", race,
-				name, status, id),
+		assertMissingProperty("""
+						<village race="%s" name="%s" status="%s" id="%d" />""".formatted(race, name, status, id),
 			"owner", new Village(status, name, id, new PlayerImpl(-1, "Independent"), race));
 		assertImageSerialization("Village image property is preserved", village);
 		assertPortraitSerialization("Village portrait property is preserved", village);
 	}
 
+	// TODO: Pass some bound to each of these nextInt() calls, instead of calling assume() so much in the test method.
 	private static Stream<Arguments> testVillagePopulationSerialization() {
 		return Stream.of(TownStatus.values()).flatMap(a ->
 			races.stream().collect(toShuffledStream()).limit(3).map(b ->
@@ -686,7 +688,7 @@ public final class TestXMLIO {
 			village);
 	}
 
-	// FIXME: Create helper method for 'stream of n ints', other patterns
+	// TODO: reformat
 	private static Stream<Arguments> testCityWantsName() {
 		return Stream.of(TownSize.values()).flatMap(a -> Stream.of(TownStatus.values()).flatMap(b ->
 			integers(2).flatMap(c ->
@@ -706,7 +708,7 @@ public final class TestXMLIO {
 		assertMissingProperty(createSerializedForm(city, deprecatedWriter), "name", city);
 	}
 
-	// FIXME: Create helper method for 'stream of n ints', other patterns
+	// TODO: reformat
 	private static Stream<Arguments> testCitySerialization() {
 		return Stream.of(TownSize.values()).flatMap(a -> Stream.of(TownStatus.values()).flatMap(b ->
 			treeTypes.stream().collect(toShuffledStream()).limit(2).map(c ->
@@ -724,12 +726,12 @@ public final class TestXMLIO {
 		final Player owner = new PlayerImpl(-1, "");
 		assertSerialization("City serialization", new City(status, size, dc, name, id, owner));
 		final City city = new City(status, size, dc, "", id, owner);
-		this.<City>assertUnwantedChild(String.format(
-			"<city status=\"%s\" size=\"%s\" name=\"%s\" dc=\"%d\"><troll /></city>",
-				status, size, name, dc), null);
-		assertMissingProperty(String.format(
-			"<city status=\"%s\" size=\"%s\" name=\"%s\" dc=\"%d\" id=\"%d\" />",
-						status, size, name, dc, id), "owner",
+		this.<City>assertUnwantedChild("""
+						<city status="%s" size="%s" name="%s" dc="%d"><troll /></city>""".formatted(status, size, name, dc),
+				null);
+		assertMissingProperty("""
+						<city status="%s" size="%s" name="%s" dc="%d" id="%d" />""".formatted(status, size, name, dc, id),
+				"owner",
 			new City(status, size, dc, name, id, new PlayerImpl(-1, "Independent")));
 		assertImageSerialization("City image property is preserved", city);
 		assertPortraitSerialization("City portrait property is preserved", city);
@@ -795,11 +797,11 @@ public final class TestXMLIO {
 		assertSerialization("Fortification serialization",
 			new Fortification(status, size, dc, name, id, owner));
 		final Fortification fort = new Fortification(status, size, 30, "", 3, owner);
-		this.<Fortification>assertUnwantedChild(String.format(
-			"<fortification status=\"%s\" size=\"%s\" name=\"%s\" dc=\"%d\"><troll /></fortification>",
-				status, size, name, dc), null);
-		assertMissingProperty(String.format(
-				"<fortification status=\"%s\" size=\"%s\" name=\"%s\" dc=\"%d\" id=\"%d\" />",
+		this.<Fortification>assertUnwantedChild("""
+						<fortification status="%s" size="%s" name="%s" dc="%s"><troll /><fortification>""".formatted(status, size, name, dc),
+				null);
+		assertMissingProperty("""
+						<fortification status="%s" size="%s" name="%s" dc="%s" id="%d" />""".formatted(
 						status, size, name, dc, id), "owner",
 			new Fortification(status, size, dc, name, id, new PlayerImpl(-1, "Independent")));
 		assertImageSerialization("Fortification image property is preserved", fort);
@@ -857,11 +859,11 @@ public final class TestXMLIO {
 		final Player owner = new PlayerImpl(-1, "");
 		assertSerialization("Town serialization test", new Town(status, size, dc, name, id, owner));
 		final Town town = new Town(status, size, dc, name, id, owner);
-		this.<Town>assertUnwantedChild(String.format(
-			"<town status=\"%s\" size=\"%s\" name=\"%s\" dc=\"%s\"><troll /></town>",
+		this.<Town>assertUnwantedChild("""
+						<town status="%s" size="%s" name="%s" dc="%s"><troll /></town>""".formatted(
 				status, size, name, dc), null);
-		assertMissingProperty(String.format(
-				"<town status=\"%s\" size=\"%s\" name=\"%s\" dc=\"%d\" id=\"%d\" />",
+		assertMissingProperty("""
+						<town status="%s" size="%s" name="%s" dc="%d" id="%d" />""".formatted(
 						status, size, name, dc, id), "owner",
 			new Town(status, size, dc, name, id, new PlayerImpl(-1, "Independent")));
 		assertImageSerialization("Town image property is preserved", town);
@@ -916,13 +918,14 @@ public final class TestXMLIO {
 	@EnumSource(StoneKind.class)
 	public void testStoneSerializationErrors(final StoneKind kind)
 			throws SPFormatException, XMLStreamException, IOException {
-		this.<StoneDeposit>assertUnwantedChild(String.format(
-			"<stone kind=\"%s\" dc=\"10\"><troll /></stone>", kind), null);
-		this.<StoneDeposit>assertMissingProperty(String.format(
-			"<stone kind=\"%s\" />", kind), "dc", null);
-		this.<StoneDeposit>assertMissingProperty("<stone dc=\"10\" />", "kind", null);
-		assertMissingProperty(String.format(
-				"<stone kind=\"%s\" dc=\"0\" />", kind), "id",
+		this.<StoneDeposit>assertUnwantedChild("""
+						<stone kind="%s" dc="10"><troll /></stone>""".formatted(kind), null);
+		this.<StoneDeposit>assertMissingProperty("""
+						<stone kind="%s" />""".formatted(kind), "dc", null);
+		this.<StoneDeposit>assertMissingProperty("""
+				<stone dc="10" />""", "kind", null);
+		assertMissingProperty("""
+						<stone kind="%s" dc="0" />""".formatted(kind), "id",
 			new StoneDeposit(kind, 0, 0));
 	}
 
@@ -961,10 +964,12 @@ public final class TestXMLIO {
 		assertSerialization("First Player serialization test", new PlayerImpl(1, "one"));
 		assertSerialization("Second Player serialization test", new PlayerImpl(2, "two"));
 		assertSerialization("Player with country", new PlayerImpl(3, "three", "country"));
-		this.<Player>assertUnwantedChild(
-			"<player code_name=\"one\" number=\"1\"><troll /></player>", null);
-		this.<Player>assertMissingProperty("<player code_name=\"one\" />", "number", null);
-		this.<Player>assertMissingProperty("<player number=\"1\" />", "code_name", null);
+		this.<Player>assertUnwantedChild("""
+						<player code_name="one" number="1"><troll /></player>""", null);
+		this.<Player>assertMissingProperty("""
+						<player code_name="one" />""", "number", null);
+		this.<Player>assertMissingProperty("""
+						<player number="1" />""", "code_name", null);
 		assertPortraitSerialization("Players can have associated portraits",
 			new PlayerImpl(3, "three"));
 	}
@@ -1004,7 +1009,8 @@ public final class TestXMLIO {
 		assertSerialization("Two rivers", encapsulateRivers(new Point(1, 2),
 			River.North, River.South));
 		this.<IMapNG>assertMissingProperty(
-			encapsulateTileString("<river direction=\"invalid\" />"), "direction",
+			encapsulateTileString("""
+							<river direction="invalid" />"""), "direction",
 			null);
 	}
 
@@ -1028,16 +1034,17 @@ public final class TestXMLIO {
 			new Unit(new PlayerImpl(-1, ""), "unitOne", "firstUnit", 1));
 		secondMap.addFixture(new Point(2, 2), new Forest("forestKind", true, 8));
 		assertSerialization("Tile with two fixtures", secondMap);
-		this.<IMapNG>assertMissingProperty("<map version=\"2\" rows=\"1\" columns=\"1\">" +
-			"<tile column=\"0\" kind=\"plains\" /></map>", "row", null);
-		this.<IMapNG>assertMissingProperty(
-			"<map version=\"2\" rows=\"1\" columns=\"1\"><tile row=\"0\" kind=\"plains\" /></map>",
+		this.<IMapNG>assertMissingProperty("""
+						<map version="2" rows="1" columns="1"><tile column="0" kind="plains" /></map>""",
+				"row", null);
+		this.<IMapNG>assertMissingProperty("""
+						<map version="2" rows="1" columns="1"><tile row="0" kind="plains" /></map>""",
 			"column", null);
-		this.<IMapNG>assertMissingProperty(
-			"<map version=\"2\" rows=\"1\" columns=\"1\"><tile row=\"0\" column=\"0\" /></map>",
+		this.<IMapNG>assertMissingProperty("""
+						<map version="2" rows="1" columns="1"><tile row="0" column="0" /></map>""",
 			"kind", new SPMapNG(new MapDimensionsImpl(1, 1, 2), new PlayerCollection(), 0));
-		this.<IMapNG>assertUnwantedChild(encapsulateTileString(
-			"<tile row=\"2\" column=\"0\" kind=\"plains\" />"), null);
+		this.<IMapNG>assertUnwantedChild(encapsulateTileString("""
+						<tile row="2" column="0" kind="plains" />"""), null);
 	}
 
 	/**
@@ -1090,44 +1097,58 @@ public final class TestXMLIO {
 		five.addPlayer(player);
 		assertEquals(2, five.getFixtures(new Point(2, 3)).size(), "Just checking ...");
 		assertSerialization("Multiple units should come through", five);
-		final String xmlTwoLogical = String.format(
-			"<view xmlns=\"%s\" current_player=\"-1\" current_turn=\"-1\">%n" +
-				"\t<map version=\"2\" rows=\"3\" columns=\"4\">%n" +
-				"\t\t<player number=\"2\" code_name=\"playerName\" />%n" +
-				"\t\t<row index=\"2\">%n" +
-				"\t\t\t<tile row=\"2\" column=\"3\" kind=\"jungle\">%n" +
-				"\t\t\t\t<unit owner=\"2\" kind=\"explorer\" name=\"name one\" id=\"1\" />%n" +
-				"\t\t\t\t<unit owner=\"2\" kind=\"explorer\" name=\"name two\" id=\"2\" />%n" +
-				"\t\t\t</tile>%n\t\t</row>%n\t</map>%n</view>%n", SP_NAMESPACE);
+		final String xmlTwoLogical = """
+				<view xmlns="%s" current_player="-1" current_turn="-1">
+				\t<map version="2" rows="3" columns="4">
+				\t\t<player number="2" code_name="playerName" />
+				\t\t<row index="2">
+				\t\t\t<tile row="2" column="3" kind="jungle">
+				\t\t\t\t<unit owner="2" kind="explorer" name="name one" id="1" />
+				\t\t\t\t<unit owner="2" kind="explorer" name="name two" id="2" />
+				\t\t\t</tile>
+				\t\t</row>
+				\t</map>
+				</view>
+				""".formatted(SP_NAMESPACE);
 		assertEquals(createSerializedForm(five, true), xmlTwoLogical, "Multiple units");
-		final String xmlTwoAlphabetical = String.format(
-			"<view current_player=\"-1\" current_turn=\"-1\" xmlns=\"%s\">%n" +
-				"\t<map columns=\"4\" rows=\"3\" version=\"2\">%n" +
-				"\t\t<player number=\"2\" code_name=\"playerName\" />%n" +
-				"\t\t<row index=\"2\">%n" +
-				"\t\t\t<tile column=\"3\" kind=\"jungle\" row=\"2\">%n" +
-				"\t\t\t\t<unit id=\"1\" kind=\"explorer\" name=\"name one\" owner=\"2\" />%n" +
-				"\t\t\t\t<unit id=\"2\" kind=\"explorer\" name=\"name two\" owner=\"2\" />%n" +
-				"\t\t\t</tile>%n\t\t</row>%n\t</map>%n</view>%n", SP_NAMESPACE);
+		final String xmlTwoAlphabetical = """
+				<view current_player="-1" current_turn="-1" xmlns="%s">
+				\t<map columns="4" rows="3" version="2">
+				\t\t<player number="2" code_name="playerName" />
+				\t\t<row index="2">
+				\t\t\t<tile column="3" kind="jungle" row="2">
+				\t\t\t\t<unit id="1" kind="explorer" name="name one" owner="2" />
+				\t\t\t\t<unit id="2" kind="explorer" name="name two" owner="2" />
+				\t\t\t</tile>
+				\t\t</row>
+				\t</map>
+				</view>
+				""".formatted(SP_NAMESPACE);
 		final String serializedForm = createSerializedForm(five, false);
 		assertAny("Multiple units", () -> assertEquals(xmlTwoLogical, serializedForm, "Logical form matches"),
 			() -> assertEquals(xmlTwoAlphabetical, serializedForm, "Alphabetical form matches"),
 			() -> assertEquals(xmlTwoLogical.replaceAll("\" />", "\"/>"), serializedForm,
 					"Logical form with tags snugged matches"));
-		assertEquals(String.format("<view xmlns=\"%s\" current_player=\"-1\" current_turn=\"-1\">%n" +
-			"\t<map version=\"2\" rows=\"1\" columns=\"1\">%n" +
-			"\t</map>%n</view>%n", SP_NAMESPACE),
+		assertEquals("""
+						<view xmlns="%s" current_player="-1" current_turn="-1">
+						\t<map version="2" rows="1" columns="1">
+						\t</map>
+						</view>
+						""".formatted(SP_NAMESPACE),
 				createSerializedForm(createSimpleMap(new Point(1, 1)), true),
 			"Shouldn't print empty not-visible tiles");
 		final String emptySerializedForm = createSerializedForm(createSimpleMap(new Point(1, 1)), false);
-		final String firstPossibility = String.format(
-			"<view xmlns=\"%s\" current_player=\"-1\" current_turn=\"-1\">%n" +
-				"\t<map version=\"2\" rows=\"1\" columns=\"1\">%n" +
-				"\t</map>%n</view>%n", SP_NAMESPACE);
-		final String secondPossibility = String.format(
-			"<view current_player=\"-1\" current_turn=\"-1\" xmlns=\"%s\">%n" +
-				"\t<map columns=\"1\" rows=\"1\" version=\"2\"/>%n</view>%n",
-			SP_NAMESPACE);
+		final String firstPossibility = """
+				<view xmlns="%s" current_player="-1" current_turn="-1">
+				\t<map version="2" rows="1" columns="1">
+				\t</map>
+				</view>
+				""".formatted(SP_NAMESPACE);
+		final String secondPossibility = """
+				<view current_player="-1" current_turn="-1" xmlns="%s">
+				\t<map columns="1" rows="1" version="2" />
+				</view>
+				""".formatted(SP_NAMESPACE);
 		assertAny("Shouldn't print empty non-visible tiles",
 			() -> assertEquals(firstPossibility, emptySerializedForm, "First empty form matches"),
 			() -> assertEquals(secondPossibility, emptySerializedForm, "Second empty form matches"));
@@ -1167,27 +1188,33 @@ public final class TestXMLIO {
 	 * Test that tags we intend to possibly support in the future (or
 	 * include in the XML for readability, like {@code row}) are
 	 * properly skipped when deserializing.
+	 *
+	 * TODO: Check each tag marked as "future", not just selected ones
 	 */
 	@Test
 	public void testSkippableSerialization()
 			throws SPFormatException, XMLStreamException, IOException {
 		assertEquivalentForms("Two maps, one with row tags, one without",
-			"<map rows=\"1\" columns=\"1\" version=\"2\" current_player=\"-1\" />",
-			"<map rows=\"1\" columns=\"1\" version=\"2\" current_player=\"-1\"><row /></map>",
+			"""
+					<map rows="1" columns="1" version="2" current_player="-1" />""",
+			"""
+					<map rows="1" columns="1" version="2" current_player="-1"><row /></map>""",
 			Warning.DIE);
 		assertEquivalentForms("Two maps, one with future tag, one without",
-			"<map rows=\"1\" columns=\"1\" version=\"2\" current_player=\"-1\" />",
-			"<map rows=\"1\" columns=\"1\" version=\"2\" current_player=\"-1\"><future /></map>",
+			"""
+					<map rows="1" columns="1" version="2" current_player="-1" />""",
+			"""
+					<map rows="1" columns="1" version="2" current_player="-1"><future /></map>""",
 			Warning.IGNORE);
-		this.<IMapNG>assertUnsupportedTag(
-			"<map rows=\"1\" columns=\"1\" version=\"2\" current_player=\"-1\"><future /></map>",
+		this.<IMapNG>assertUnsupportedTag("""
+						<map rows="1" columns="1" version="2" current_player="-1"><future /></map>""",
 			"future", new SPMapNG(new MapDimensionsImpl(1, 1, 2), new PlayerCollection(), 0));
 		final IMutableMapNG expected =
 			new SPMapNG(new MapDimensionsImpl(1, 1, 2), new PlayerCollection(), 0);
 		expected.setBaseTerrain(new Point(0, 0), TileType.Steppe);
-		this.<IMapNG>assertUnsupportedTag(
-			"<map rows=\"1\" columns=\"1\" version=\"2\" current_player=\"-1\">" +
-				"<tile row=\"0\" column=\"0\" kind=\"steppe\"><futureTag /></tile></map>",
+		this.<IMapNG>assertUnsupportedTag("""
+						<map rows="1" columns="1" version="2" current_player="-1">
+						<tile row="0" column="0" kind="steppe"><futureTag /></tile></map>""",
 			"futureTag", expected);
 	}
 
@@ -1197,8 +1224,8 @@ public final class TestXMLIO {
 	@Test
 	public void testMapSerialization()
 			throws SPFormatException, XMLStreamException, IOException {
-		this.<IMapNG>assertUnwantedChild(
-			"<map rows=\"1\" columns=\"1\" version=\"2\"><hill /></map>", null);
+		this.<IMapNG>assertUnwantedChild("""
+						<map rows="1" columns="1" version="2"><hill /></map>""", null);
 		final MutablePlayer player = new PlayerImpl(1, "playerOne");
 		player.setCurrent(true);
 		final IMutableMapNG firstMap = new SPMapNG(new MapDimensionsImpl(1, 1, 2),
@@ -1207,8 +1234,10 @@ public final class TestXMLIO {
 		final Point loc = new Point(0, 0);
 		firstMap.setBaseTerrain(loc, TileType.Plains);
 		assertSerialization("Simple Map serialization", firstMap);
-		this.<IMapNG>assertMissingProperty("<map version=\"2\" columns=\"1\" />", "rows", null);
-		this.<IMapNG>assertMissingProperty("<map version=\"2\" rows=\"1\" />", "columns", null);
+		this.<IMapNG>assertMissingProperty("""
+						<map version="2" columns="1" />""", "rows", null);
+		this.<IMapNG>assertMissingProperty("""
+						<map version="2" rows="1" />""", "columns", null);
 		final String originalFormOne = createSerializedForm(firstMap, false);
 		final String originalFormTwo = createSerializedForm(firstMap, true);
 		firstMap.setBaseTerrain(new Point(1, 1), null);
@@ -1218,26 +1247,29 @@ public final class TestXMLIO {
 			"Explicitly not visible tile is not serialized");
 		firstMap.setMountainous(loc, true);
 		assertSerialization("Map with a mountainous point", firstMap);
-		this.<IMapNG>assertMissingProperty(
-			"<view current_turn=\"0\"><map version=\"2\" rows=\"1\" columns=\"1\" /></view>",
+		this.<IMapNG>assertMissingProperty("""
+						<view current_turn="0"><map version="2" rows="1" columns="1" /></view>""",
 			"current_player", new SPMapNG(new MapDimensionsImpl(1, 1, 2),
 				new PlayerCollection(), 0));
-		this.<IMapNG>assertMissingProperty(
-			"<view current_player=\"0\"><map version=\"2\" rows=\"1\" columns=\"1\" /></view>",
+		this.<IMapNG>assertMissingProperty("""
+						<view current_player="0"><map version="2" rows="1" columns="1"></view>""",
 			"current_turn", null);
-		this.<IMapNG>assertMissingChild("<view current_player=\"1\" current_turn=\"0\" />");
-		this.<IMapNG>assertMissingChild("<view current_player=\"1\" current_turn=\"13\" />");
-		this.<IMapNG>assertUnwantedChild(
-			"<view current_player=\"0\" current_turn=\"0\">" +
-				"<map version=\"2\" rows=\"1\" columns=\"1\" />" +
-				"<map version=\"2\" rows=\"1\" columns=\"1\" /></view>", null);
-		this.<IMapNG>assertUnwantedChild(
-			"<view current_player=\"0\" current_turn=\"0\"><hill /></view>", null);
+		this.<IMapNG>assertMissingChild("""
+						<view current_player="1" current_turn="0" />""");
+		this.<IMapNG>assertMissingChild("""
+						<view current_player="1" current_turn="13" />""");
+		this.<IMapNG>assertUnwantedChild("""
+						<view current_player="0" current_turn="0">
+						<map version="2" rows="1" columns="1" />
+						<map version="2" rows="1" columns="1" />
+						</view>""", null);
+		this.<IMapNG>assertUnwantedChild("""
+						<view current_player="0" current_turn="0"><hill /></view>""", null);
 		assertMapDeserialization("Proper deserialization of map without view tag", firstMap,
-			"<map version=\"2\" rows=\"1\" columns=\"1\" current_player=\"1\">" +
-				"<player number=\"1\" code_name=\"playerOne\" />" +
-				"<row index=\"0\"><tile row=\"0\" column=\"0\" kind=\"plains\">" +
-				"<mountain /></tile></row></map>");
+			"""
+					<map version="2" rows="1" columns="1" current_player="1">
+					<player number="1" code_name="playerOne" />
+					<row index="0"><tile row="0" column="0" kind="plains"><mountain /></tile></row></map>""");
 	}
 
 	/**
@@ -1254,29 +1286,27 @@ public final class TestXMLIO {
 		final Point loc = new Point(0, 0);
 		firstMap.setBaseTerrain(loc, TileType.Steppe);
 		assertMapDeserialization("Proper deserialization of namespaced map", firstMap,
-			String.format("<map xmlns=\"%s\" version=\"2\" rows=\"1\" columns=\"1\"%n" +
-				"current_player=\"1\"><player number=\"1\" code_name=\"playerOne\" />" +
-				"<row index=\"0\"><tile row=\"0\" column=\"0\" kind=\"steppe\" />" +
-				"</row></map>", SP_NAMESPACE));
+				"""
+						<map xmlns="%s" version="2" rows="1" columns="1" current_player="1">
+						<player number="1" code_name="playerOne" />
+						<row index="0"><tile row="0" column="0" kind="steppe" /></row></map>""".formatted(SP_NAMESPACE));
 		assertMapDeserialization(
 			"Proper deserialization of map if another namespace is declared default",
-			firstMap, String.format(
-				"<sp:map xmlns=\"xyzzy\" xmlns:sp=\"%s\" version=\"2\" rows=\"1\" " +
-					"columns=\"1\" current_player=\"1\"><sp:player number=\"1\" " +
-					"code_name=\"playerOne\" /><sp:row index=\"0\">" +
-					"<sp:tile row=\"0\" column=\"0\" kind=\"steppe\" />" +
-					"</sp:row></sp:map>", SP_NAMESPACE));
-		assertMapDeserialization("Non-root other-namespace tags ignored", firstMap, String.format(
-			"<map xmlns=\"%s\" version=\"2\" rows=\"1\" columns=\"1\" current_player=\"1\" " +
-				"xmlns:xy=\"xyzzy\"><player number=\"1\" code_name=\"playerOne\" />" +
-				"<xy:xyzzy><row index=\"0\"><tile row=\"0\" column=\"0\" kind=\"steppe\">" +
-				"<xy:hill id=\"0\" /></tile></row></xy:xyzzy></map>", SP_NAMESPACE));
+			firstMap, """
+						<sp:map xmlns="xyzzy" xmlns:sp="%s" version="2" rows="1" columns="1" current_player="1">
+						<sp:player number="1" code_name="playerOne" /><sp:row index="0">
+						<sp:tile row="0" column="0" kind="steppe" /></sp:row></sp:map>""".formatted(SP_NAMESPACE));
+		assertMapDeserialization("Non-root other-namespace tags ignored", firstMap,
+				"""
+						<map xmlns="%s" version="2" rows="1" columns="1" current_player="1" xmlns:xy="xyzzy">
+						<player number="1" code_name="playerOne" /><xy:xyzzy><row index="0">
+						<tile row="0" column="0" kind="steppe"><xy:hill id="0" /></tile></row></xy:xyzzy></map>""".formatted(SP_NAMESPACE));
 		for (final ISPReader reader : spReaders) {
 			TestXMLIO.<IMapNG, Exception>assertFormatIssue(reader,
-				"<map xmlns=\"xyzzy\" version=\"2\" rows=\"1\" columns=\"1\" " +
-					"current_player=\"1\">" +
-					"<player number=\"1\" code_name=\"playerOne\" /><row index=\"0\">" +
-					"<tile row=\"0\" column=\"0\" kind=\"steppe\" /></row></map>", null,
+				"""
+						<map xmlns="xyzzy" version="2" rows="1" columns="1" current_player="1">
+						<player number="1" code_name="playerOne" /><row index="0">
+						<tile row="0" column="0" kind="steppe" /></row></map>""", null,
 					Exception.class, (except) -> {
 						if (except instanceof UnwantedChildException) {
 							assertEquals("root", ((UnwantedChildException) except)
@@ -1293,8 +1323,8 @@ public final class TestXMLIO {
 							fail("Unexpected exception type");
 						}
 					});
-			TestXMLIO.<AdventureFixture, Exception>assertFormatIssue(reader,
-				"<adventure xmlns=\"xyzzy\" id=\"1\" brief=\"one\" full=\"two\" />", null,
+			TestXMLIO.<AdventureFixture, Exception>assertFormatIssue(reader, """
+							<adventure xmlns="xyzzy" id="1" brief="one" full="two" />""", null,
 				Exception.class,
 				except -> assertAny("Exception is of expected type: was %s".formatted(except.getClass().getName()),
 						() -> assertInstanceOf(UnwantedChildException.class, except),
@@ -1318,11 +1348,11 @@ public final class TestXMLIO {
 		expected.addPlayer(player);
 		expected.addFixture(point, new Hill(1));
 		expected.addFixture(point, new Ogre(1));
-		assertDuplicateID("<map version=\"2\" rows=\"1\" columns=\"1\" current_player=\"1\">" +
-			"<player number=\"1\" code_name=\"playerOne\" />" +
-			"<row index=\"0\">" +
-			"<tile row=\"0\" column=\"0\" kind=\"steppe\">" +
-			"<hill id=\"1\" /><ogre id=\"1\" /></tile></row></map>", expected);
+		assertDuplicateID("""
+						<map version="2" rows="1" columns="1" current_player="1">
+						<player number="1" code_name="playerOne" />
+						<row index="0"><tile row="0" column="0" kind="steppe"><hill id="1" />
+						<ogre id="1" /></tile></row></map>""", expected);
 	}
 
 	/**
@@ -1331,9 +1361,10 @@ public final class TestXMLIO {
 	@Test
 	public void testRejectsInvalid()
 			throws SPFormatException, XMLStreamException, IOException {
-		assertInvalid("<map version=\"2\" rows=\"1\" columns=\"1\" current_player=\"1\">");
-		assertInvalid(
-			"<map version=\"2\" rows=\"1\" columns=\"1\" current_player=\"1\"><></map>");
+		assertInvalid("""
+						<map version="2" rows="1" columns="1" current_player="1">""");
+		assertInvalid("""
+						<map version="2" rows="1" columns="1" current_player="1"><></map>""");
 	}
 
 	private static Stream<Arguments> testGroveSerialization() {
@@ -1352,18 +1383,25 @@ public final class TestXMLIO {
 	public void testGroveSerialization(final boolean fruit, final boolean cultivated, final String trees, final int id)
 			throws SPFormatException, XMLStreamException, IOException {
 		assertSerialization("Test of Grove serialization", new Grove(fruit, cultivated, trees, id));
-		this.<Grove>assertUnwantedChild("<grove wild=\"true\" kind=\"kind\"><troll /></grove>", null);
+		this.<Grove>assertUnwantedChild("""
+						<grove wild="true" kind="kind"><troll /></grove>""", null);
 		this.<Grove>assertMissingProperty("<grove />", "cultivated", null);
-		this.<Grove>assertMissingProperty("<grove wild=\"false\" />", "kind", null);
-		assertDeprecatedProperty("<grove cultivated=\"true\" tree=\"tree\" id=\"0\" />",
+		this.<Grove>assertMissingProperty("""
+						<grove wild="false" />""", "kind", null);
+		assertDeprecatedProperty("""
+						<grove cultivated="true" tree="tree" id="0" />""",
 			"tree", "kind", "grove", new Grove(false, true, "tree", 0));
-		assertMissingProperty("<grove cultivated=\"true\" kind=\"kind\" />", "id",
+		assertMissingProperty("""
+						<grove cultivated="true" kind="kind" />""", "id",
 			new Grove(false, true, "kind", 0));
-		assertDeprecatedProperty("<grove wild=\"true\" kind=\"tree\" id=\"0\" />",
+		assertDeprecatedProperty("""
+						<grove wild="true" kind="tree" id="0" />""",
 			"wild", "cultivated", "grove", new Grove(false, false, "tree", 0));
 		assertEquivalentForms("Assert that wild is the inverse of cultivated",
-			"<grove wild=\"true\" kind=\"tree\" id=\"0\" />",
-			"<grove cultivated=\"false\" kind=\"tree\" id=\"0\" />", Warning.IGNORE);
+			"""
+					<grove wild="true" kind="tree" id="0" />""",
+			"""
+					<grove cultivated="false" kind="tree" id="0" />""", Warning.IGNORE);
 		assertImageSerialization("Grove image property is preserved",
 			new Grove(false, false, trees, id));
 		assertSerialization("Groves can have 'count' property", new Grove(true, true, trees, id, 4));
@@ -1390,13 +1428,17 @@ public final class TestXMLIO {
 			throws SPFormatException, XMLStreamException, IOException {
 		assertSerialization("Test of Meadow serialization",
 			new Meadow(kind, field, cultivated, id, status));
-		this.<Meadow>assertUnwantedChild(
-			"<meadow kind=\"flax\" cultivated=\"false\"><troll /></meadow>", null);
-		this.<Meadow>assertMissingProperty("<meadow cultivated=\"false\" />", "kind", null);
-		this.<Meadow>assertMissingProperty("<meadow kind=\"flax\" />", "cultivated", null);
-		assertMissingProperty("<field kind=\"kind\" cultivated=\"true\" />", "id",
+		this.<Meadow>assertUnwantedChild("""
+						<meadow kind="flax" cultivated="false"><troll /></meadow>""", null);
+		this.<Meadow>assertMissingProperty("""
+						<meadow cultivated="false" />""", "kind", null);
+		this.<Meadow>assertMissingProperty("""
+						<meadow kind="flax" />""", "cultivated", null);
+		assertMissingProperty("""
+						<field kind="kind" cultivated="true" />""", "id",
 			new Meadow("kind", true, true, 0, FieldStatus.random(0)));
-		assertMissingProperty("<field kind=\"kind\" cultivated=\"true\" id=\"0\" />",
+		assertMissingProperty("""
+						<field kind="kind" cultivated="true" id="0" />""",
 			"status", new Meadow("kind", true, true, 0, FieldStatus.random(0)));
 		assertImageSerialization("Meadow image property is preserved",
 			new Meadow(kind, field, cultivated, id, status));
@@ -1429,13 +1471,15 @@ public final class TestXMLIO {
 		assertDeprecatedProperty(
 			createSerializedForm(mine, deprecatedWriter).replaceAll("kind=", "product="),
 			"product", "kind", "mine", mine);
-		this.<Mine>assertUnwantedChild(String.format(
-			"<mine kind=\"%s\" status=\"%s\"><troll /></mine>", kind, status), null);
-		this.<Mine>assertMissingProperty(String.format("<mine status=\"%s\" />", status),
+		this.<Mine>assertUnwantedChild("""
+						<mine kind="%s" status="%s"><troll /></mine>""".formatted(kind, status), null);
+		this.<Mine>assertMissingProperty("""
+						<mine status="%s" />""".formatted(status),
 			"kind", null);
-		this.<Mine>assertMissingProperty(String.format("<mine kind=\"%s\" />", kind), "status", null);
-		assertMissingProperty(
-			String.format("<mine kind=\"%s\" status=\"%s\" />", kind, status), "id",
+		this.<Mine>assertMissingProperty("""
+						<mine kind="%s" />""".formatted(kind), "status", null);
+		assertMissingProperty("""
+						<mine kind="%s" status="%s" />""".formatted(kind, status), "id",
 			new Mine(kind, status, 0));
 		assertImageSerialization("Mine image property is preserved", mine);
 	}
@@ -1458,11 +1502,11 @@ public final class TestXMLIO {
 		assertDeprecatedProperty(
 			createSerializedForm(shrub, deprecatedWriter).replace("kind", "shrub"),
 			"shrub", "kind", "shrub", shrub);
-		this.<Shrub>assertUnwantedChild(String.format(
-			"<shrub kind=\"%s\"><troll /></shrub>", kind), null);
+		this.<Shrub>assertUnwantedChild("""
+						<shrub kind="%s"><troll /></shrub>""".formatted(kind), null);
 		this.<Shrub>assertMissingProperty("<shrub />", "kind", null);
-		assertMissingProperty(String.format(
-			"<shrub kind=\"%s\" />", kind), "id", new Shrub(kind, 0));
+		assertMissingProperty("""
+						<shrub kind="%s" />""".formatted(kind), "id", new Shrub(kind, 0));
 		assertImageSerialization("Shrub image property is preserved", shrub);
 		assertSerialization("Shrub can have 'count' property", new Shrub(kind, id, 3));
 	}
@@ -1483,16 +1527,17 @@ public final class TestXMLIO {
 		final int turn = baseTurn - 2; // Make sure negative turns occasionally get checked.
 		final TextFixture testee = new TextFixture(text, turn);
 		assertSerialization("Test of TextFixture serialization", testee);
-		this.<TextFixture>assertUnwantedChild(String.format(
-			"<text turn=\"%d\"><troll /></text>", turn), null);
+		this.<TextFixture>assertUnwantedChild("""
+						<text turn="%d"><troll></text>""".formatted(turn), null);
 		assertImageSerialization("Text image property is preserved", testee);
 		final IMutableMapNG wrapper = createSimpleMap(new Point(1, 1),
 			Pair.with(new Point(0, 0), TileType.Plains));
 		wrapper.addFixture(new Point(0, 0), new TextFixture(text, -1));
 		wrapper.setCurrentTurn(0);
-		assertForwardDeserializationEquality("Deprecated text-in-map still works", String.format(
-				"<map version=\"2\" rows=\"1\" columns=\"1\" current_player=\"-1\">%n" +
-					"<tile row=\"0\" column=\"0\" kind=\"plains\">%s</tile></map>", text),
+		assertForwardDeserializationEquality("Deprecated text-in-map still works",
+				"""
+						<map version="2" rows="1" columns="1" current_player="-1">
+						<tile row="0" column="0" kind="plains">%s</tile></map>""".formatted(text),
 			wrapper);
 	}
 
@@ -1502,11 +1547,14 @@ public final class TestXMLIO {
 	@Test
 	public void testUnitHasRequiredProperties()
 			throws SPFormatException, XMLStreamException, IOException {
-		this.<IUnit>assertMissingProperty("<unit name=\"name\" />", "owner",
+		this.<IUnit>assertMissingProperty("""
+						<unit name="name" />""", "owner",
 			new Unit(new PlayerImpl(-1, ""), "", "name", 0));
-		this.<IUnit>assertMissingProperty("<unit owner=\"1\" name=\"name\" id=\"0\" />", "kind",
+		this.<IUnit>assertMissingProperty("""
+						<unit owner="1" name="name" id="0" />""", "kind",
 			new Unit(new PlayerImpl(1, ""), "", "name", 0));
-		this.<IUnit>assertMissingProperty("<unit owner=\"1\" kind=\"\" name=\"name\" id=\"0\" />",
+		this.<IUnit>assertMissingProperty("""
+						<unit owner="1" kind="" name="name" id="0" />""",
 			"kind", new Unit(new PlayerImpl(1, ""), "", "name", 0));
 	}
 
@@ -1532,20 +1580,22 @@ public final class TestXMLIO {
 		assertDeprecatedProperty(
 			createSerializedForm(firstUnit, deprecatedWriter).replace("kind", "type"),
 			"type", "kind", "unit", firstUnit);
-		this.<IUnit>assertMissingProperty("<unit owner=\"2\" kind=\"unit\" />", "name",
+		this.<IUnit>assertMissingProperty("""
+						<unit owner="2" kind="unit" />""", "name",
 			new Unit(new PlayerImpl(2, ""), "unit", "", 0)); // TODO: use provided kind
 		assertSerialization("Deserialize unit with no kind properly",
 			new Unit(new PlayerImpl(2, ""), "", name, 2), Warning.IGNORE);
-		assertMissingProperty("<unit kind=\"kind\" name=\"unitThree\" id=\"3\" />", "owner",
+		assertMissingProperty("""
+						<unit kind="kind" name="unitThree" id="3" />""", "owner",
 			new Unit(new PlayerImpl(-1, ""), "kind", "unitThree", 3));
 		final IUnit fourthUnit = new Unit(new PlayerImpl(4, ""), kind, "", id);
 		assertMissingProperty(createSerializedForm(fourthUnit, deprecatedWriter), "name",
 			fourthUnit);
-		assertMissingProperty(String.format(
-				"<unit owner=\"4\" kind=\"%s\" name=\"\" id=\"%d\" />", kind, id), "name",
+		assertMissingProperty("""
+						<unit owner="4" kind="%s" name="" id="%d" />""".formatted(kind, id), "name",
 			fourthUnit);
-		this.<IUnit>assertMissingProperty(String.format(
-			"<unit owner=\"1\" kind=\"%s\" name=\"%s\" />", kind, name), "id",
+		this.<IUnit>assertMissingProperty("""
+						<unit owner="1" kind="%s" name="%s" />""".formatted(kind, name), "id",
 			new Unit(new PlayerImpl(1, ""), kind, name, 0));
 	}
 
@@ -1564,10 +1614,12 @@ public final class TestXMLIO {
 			new Worker("second", "elf", 4, new Job("job", 0, new Skill("skill", 1, 2))));
 		assertSerialization("Worker can have jobs", firstUnit);
 		assertForwardDeserializationEquality("Explicit specification of default race works",
-			"<worker name=\"third\" race=\"human\" id=\"5\" />",
+			"""
+					<worker name="third" race="human" id="5" />""",
 			new Worker("third", "human", 5));
 		assertForwardDeserializationEquality("Implicit default race also works",
-			"<worker name=\"fourth\" id=\"6\" />",
+			"""
+					<worker name="fourth" id="6" />""",
 			new Worker("fourth", "human", 6));
 		final Worker secondWorker = new Worker("sixth", "dwarf", 9);
 		secondWorker.setStats(new WorkerStats(0, 0, 1, 2, 3, 4, 5, 6));
@@ -1580,9 +1632,10 @@ public final class TestXMLIO {
 		secondWorker.addEquipment(new Implement("implKind", 12));
 		secondWorker.addEquipment(new Implement("implKindTwo", 13));
 		assertSerialization("Worker can have equipment", secondWorker);
-		this.<IMapNG>assertUnwantedChild("<map version=\"2\" rows=\"1\" columns=\"1\">" +
-			"<tile row=\"0\" column=\"0\" kind=\"plains\">" +
-			"<worker name=\"name\" id=\"1\" /></tile></map>", null);
+		this.<IMapNG>assertUnwantedChild("""
+						<map version="2" rows="1" columns="1">
+						<tile row="0" column="0" kind="plains">
+						<worker name="name" id="1" /></tile></map>""", null);
 		assertPortraitSerialization("Worker portrait property is preserved", secondWorker);
 		secondWorker.setNote(new PlayerImpl(1, ""), "sample notes");
 		assertNotesSerialization("Worker notes property is preserved", secondWorker);
@@ -1614,7 +1667,8 @@ public final class TestXMLIO {
 		assertSerializedFormContains(secondUnit, "some other results",
 			"Serialized form contains new results too");
 		this.<IUnit>assertForwardDeserialization("Orders can be read without tags",
-			"<unit name=\"name\" kind=\"kind\" id=\"1\" owner=\"-1\">Orders orders</unit>",
+			"""
+					<unit name="name" kind="kind" id="1" owner="-1">Orders orders</unit>""",
 			(unit) -> "Orders orders".equals(unit.getOrders(-1)));
 	}
 
@@ -1633,15 +1687,18 @@ public final class TestXMLIO {
 			throws SPFormatException, XMLStreamException, IOException {
 		final Player player = new PlayerImpl(0, "");
 		final Unit unit = new Unit(player, "kind of unit", "name of unit", id);
-		unit.setOrders(4, "I <3 & :( \"meta'");
+		unit.setOrders(4, """
+						I <3 & :( "meta'""");
 		unit.setResults(5, "2 --> 1");
 		// FIXME: assertSerialization() relies on equals(), which doesn't check orders IIRC
 		assertSerialization(
 			"Serialization preserves XML meta-characters in orders and results", unit);
 		unit.setOrders(3, "1 << 2");
-		unit.setResults(-1, "\"quote this\"");
+		unit.setResults(-1, """
+						"quote this" """);
 		assertSerialization("This works even if such characters occur more than once", unit);
-		unit.setName("\"Can't quote this ><>&\"");
+		unit.setName("""
+						"Can't quote this ><>&" """);
 		assertSerialization("Data stored in XML attributes is quoted", unit);
 	}
 
@@ -1735,14 +1792,17 @@ public final class TestXMLIO {
 	public void testAnimalTracksSerialization(final String kind)
 			throws SPFormatException, XMLStreamException, IOException {
 		assertSerialization("Test of animal-track serialization", new AnimalTracks(kind));
-		this.<AnimalTracks>assertUnwantedChild(
-			"<animal kind=\"tracks\" traces=\"true\"><troll /></animal>", null);
-		this.<AnimalTracks>assertMissingProperty("<animal traces=\"true\" />", "kind", null);
+		this.<AnimalTracks>assertUnwantedChild("""
+						<animal kind="tracks" traces="true"><troll /></animal>""", null);
+		this.<AnimalTracks>assertMissingProperty("""
+						<animal traces="true" />""", "kind", null);
 		assertImageSerialization("Animal-track image property is preserved",
 			new AnimalTracks(kind));
 		assertEquivalentForms("Former idiom still works",
-			"<animal kind=\"kind\" status=\"wild\" traces=\"\" />",
-			"<animal kind=\"kind\" status=\"wild\" traces=\"true\" />",
+			"""
+					<animal kind="kind" status="wild" traces="" />""",
+			"""
+					<animal kind="kind" status="wild" traces="true" />""",
 			Warning.DIE);
 	}
 
@@ -1762,30 +1822,35 @@ public final class TestXMLIO {
 			throws SPFormatException, XMLStreamException, IOException {
 		assertSerialization("Test of Animal serialization",
 			new AnimalImpl(kind, talking, status, id));
-		this.<Animal>assertUnwantedChild(String.format(
-			"<animal kind=\"%s\"><troll /></animal>", kind), null);
+		this.<Animal>assertUnwantedChild("""
+						<animal kind="%s"><troll /></animal>""".formatted(kind), null);
 		this.<Animal>assertMissingProperty("<animal />", "kind", null);
 		this.<Animal>assertForwardDeserializationEquality("Forward-looking in re talking",
-			String.format("<animal kind=\"%s\" talking=\"false\" id=\"%d\" />", kind, id),
+				"""
+						<animal kind="%s" talking="false" id="%d" />""".formatted(kind, id),
 			new AnimalImpl(kind, false, "wild", id));
-		this.<Animal>assertMissingProperty(String.format("<animal kind=\"%s\" talking=\"%b\" />",
-			kind, talking), "id", new AnimalImpl(kind, talking, "wild", 0));
-		this.<Animal>assertMissingProperty(String.format(
-			"<animal kind=\"%s\" id=\"nonNumeric\" />", kind), "id", null);
+		this.<Animal>assertMissingProperty("""
+						<animal kind="%s" talking="%b" />""".formatted(kind, talking), "id",
+				new AnimalImpl(kind, talking, "wild", 0));
+		this.<Animal>assertMissingProperty("""
+						<animal kind="%s" id="nonNumeric" />""".formatted(kind), "id", null);
 		this.<Animal>assertForwardDeserializationEquality("Explicit default status of animal",
-			String.format("<animal kind=\"%s\" status=\"wild\" id=\"%d\" />", kind, id),
+			"""
+					<animal kind="%s" status="wild" id="%d" />""".formatted(kind, id),
 			new AnimalImpl(kind, false, "wild", id));
 		assertImageSerialization("Animal image property is preserved",
 			new AnimalImpl(kind, talking, status, id));
 		this.<Animal>assertForwardDeserializationEquality("Namespaced attribute",
-			"<animal xmlns:sp=\"%s\" sp:kind=\"%s\" sp:talking=\"%b\" sp:traces=\"false\"" +
-				" sp:status=\"%s\" sp:id=\"%d\" />", SP_NAMESPACE, kind, talking,
-						status, id),
+			"""
+					<animal xmlns:sp="%s" sp:kind="%s" sp:talking="%b" sp:traces="false" sp:status="%s" sp:id="%d" />"""
+					.formatted(SP_NAMESPACE, kind, talking, status, id),
 			new AnimalImpl(kind, talking, status, id));
-		assertEquivalentForms("Supports 'traces=\"false\"'",
-			String.format("<animal kind=\"%s\" status=\"%s\" id=\"%d\" />", kind,
-					status, id),
-			String.format("<animal kind=\"%s\" traces=\"false\" status=\"%s\" id=\"%d\" />",
+		assertEquivalentForms("""
+						Supports 'traces="false"'""",
+			"""
+					<animal kind="%s" status="%s" id="%d" />""".formatted(kind, status, id),
+			"""
+					<animal kind="%s" traces="false" status="%s" id="%d" />""".formatted(
 				kind, status, id), Warning.DIE);
 		assertSerialization("Animal age is preserved",
 			new AnimalImpl("youngKind", talking, status, id, 8));
@@ -1812,8 +1877,10 @@ public final class TestXMLIO {
 	public void testImmortalAnimalDeserialization(final String animal, final int id)
 			throws SPFormatException, XMLStreamException, IOException {
 		assertEquivalentForms(animal + " as animal deserializes to immortal",
-			String.format("<%s id=\"%d\" />", animal, id),
-			String.format("<animal kind=\"%s\" id=\"%d\" />", animal, id), Warning.DIE);
+			"""
+					<%s id="%d" />""".formatted(animal, id),
+			"""
+					<animal kind="%s" id="%d" />""".formatted(animal, id), Warning.DIE);
 	}
 
 	private static Stream<Arguments> testCacheSerialization() {
@@ -1832,14 +1899,14 @@ public final class TestXMLIO {
 			throws SPFormatException, XMLStreamException, IOException {
 		final CacheFixture testee = new CacheFixture(kind, contents, id);
 		assertSerialization("Test of Cache serialization", testee);
-		this.<CacheFixture>assertUnwantedChild(String.format(
-			"<cache kind=\"%s\" contents=\"%s\"><troll /></cache>", kind, contents), null);
-		this.<CacheFixture>assertMissingProperty(
-			String.format("<cache contents=\"%s\" />", contents), "kind", null);
-		this.<CacheFixture>assertMissingProperty(
-			String.format("<cache kind=\"%s\" />", kind), "contents", null);
-		assertMissingProperty(
-			String.format("<cache kind=\"%s\" contents=\"%s\" />", kind, contents),
+		this.<CacheFixture>assertUnwantedChild("""
+						<cache kind="%s" contents="%s"><troll /></cache>""".formatted(kind, contents), null);
+		this.<CacheFixture>assertMissingProperty("""
+						<cache contents="%s" />""".formatted(contents), "kind", null);
+		this.<CacheFixture>assertMissingProperty("""
+						<cache kind="%s" />""".formatted(kind), "contents", null);
+		assertMissingProperty("""
+						<cache kind="%s" contents="%s" />""".formatted(kind, contents),
 			"id", new CacheFixture(kind, contents, 0));
 		assertImageSerialization("Cache image property is preserved", testee);
 	}
@@ -1859,10 +1926,11 @@ public final class TestXMLIO {
 			throws SPFormatException, XMLStreamException, IOException {
 		final Centaur testee = new Centaur(kind, id);
 		assertSerialization("Test of Centaur serialization", testee);
-		this.<Centaur>assertUnwantedChild(String.format(
-			"<centaur kind=\"%s\"><troll /></centaur>", kind), null);
+		this.<Centaur>assertUnwantedChild("""
+						<centaur kind="%s"><troll /></centaur>""".formatted(kind), null);
 		this.<Centaur>assertMissingProperty("<centaur />", "kind", null);
-		assertMissingProperty(String.format("<centaur kind=\"%s\" />", kind), "id",
+		assertMissingProperty("""
+						<centaur kind="%s" />""".formatted(kind), "id",
 			new Centaur(kind, 0));
 		assertImageSerialization("Centaur image property is preserved", testee);
 	}
@@ -1877,9 +1945,11 @@ public final class TestXMLIO {
 		final Dragon testee = new Dragon(kind, id);
 		assertSerialization("Test of Dragon serialization", testee);
 		assertSerialization("Dragon with no kind (de-)serialization", new Dragon("", id));
-		this.<Dragon>assertUnwantedChild("<dragon kind=\"ice\"><hill /></dragon>", null);
+		this.<Dragon>assertUnwantedChild("""
+						<dragon kind="ice"><hill /></dragon>""", null);
 		this.<Dragon>assertMissingProperty("<dragon />", "kind", null);
-		assertMissingProperty(String.format("<dragon kind=\"%s\" />", kind), "id",
+		assertMissingProperty("""
+						<dragon kind="%s" />""".formatted(kind), "id",
 			new Dragon(kind, 0));
 		assertImageSerialization("Dragon image property is preserved", testee);
 	}
@@ -1893,10 +1963,12 @@ public final class TestXMLIO {
 			throws SPFormatException, XMLStreamException, IOException {
 		final Fairy testee = new Fairy(kind, id);
 		assertSerialization("Test of Fairy serialization", testee);
-		this.<Fairy>assertUnwantedChild(String.format("<fairy kind=\"%s\"><hill /></fairy>", kind),
+		this.<Fairy>assertUnwantedChild("""
+						<fairy kind="%s"><hill /></fairy>""".formatted(kind),
 			null);
 		this.<Fairy>assertMissingProperty("<fairy />", "kind", null);
-		assertMissingProperty(String.format("<fairy kind=\"%s\" />", kind), "id",
+		assertMissingProperty("""
+					<fairy kind="%s" />""".formatted(kind), "id",
 			new Fairy(kind, 0));
 		assertImageSerialization("Fairy image property is preserved", testee);
 	}
@@ -1918,8 +1990,8 @@ public final class TestXMLIO {
 			throws SPFormatException, XMLStreamException, IOException {
 		final Forest testee = new Forest(kind, rows, id);
 		assertSerialization("Test of Forest serialization", testee);
-		this.<Forest>assertUnwantedChild(String.format(
-			"<forest kind=\"%s\"><hill /></forest>", kind), null);
+		this.<Forest>assertUnwantedChild("""
+						<forest kind="%s"><hill /></forest>""".formatted(kind), null);
 		this.<Forest>assertMissingProperty("<forest />", "kind", null);
 		assertImageSerialization("Forest image property is preserved", testee);
 		final Point loc = new Point(0, 0);
@@ -1928,16 +2000,19 @@ public final class TestXMLIO {
 		map.addFixture(loc, new Forest("secondForest", true, 5));
 		assertSerialization("Map with multiple Forests on a tile", map);
 		assertEquivalentForms("Duplicate Forests ignored",
-			encapsulateTileString("<forest kind=\"trees\" id=\"4\" />" +
-				"<forest kind=\"second\" rows=\"true\" id=\"5\" />"),
-			encapsulateTileString("<forest kind=\"trees\" id=\"4\" />" +
-				"<forest kind=\"trees\" id=\"4\" />" +
-				"<forest kind=\"second\" rows=\"true\" id=\"5\" />"),
+			encapsulateTileString("""
+							<forest kind="trees" id="4" />
+							<forest kind="second" rows="true" id="5" />"""),
+			encapsulateTileString("""
+							<forest kind="trees" id="4" />
+							<forest kind="trees" id="4" />
+							<forest kind="second" rows="true" id="5" />"""),
 			Warning.IGNORE);
 		assertEquivalentForms("Deserialization now supports 'rows=false'",
-			encapsulateTileString(String.format("<forest kind=\"trees\" id=\"%d\" />", id)),
-			encapsulateTileString(String.format(
-				"<forest kind=\"trees\" rows=\"false\" id=\"%d\" />", id)),
+			encapsulateTileString("""
+							<forest kind="trees" id="%d" />""".formatted(id)),
+			encapsulateTileString("""
+							<forest kind="trees" rows="false" id="%d" />""".formatted(id)),
 			Warning.IGNORE);
 		assertSerialization("Forests can have acreage numbers", new Forest(kind,
 			rows, id, new BigDecimal(3).divide(new BigDecimal(2))));
@@ -1969,9 +2044,11 @@ public final class TestXMLIO {
 		this.<IFortress>assertUnwantedChild("<fortress><hill /></fortress>", null);
 		this.<IFortress>assertMissingProperty("<fortress />", "owner",
 			new FortressImpl(new PlayerImpl(-1, ""), "", 0, TownSize.Small));
-		this.<IFortress>assertMissingProperty("<fortress owner=\"1\" />", "name",
+		this.<IFortress>assertMissingProperty("""
+						<fortress owner="1" />""", "name",
 			new FortressImpl(new PlayerImpl(1, ""), "", 0, TownSize.Small));
-		this.<IFortress>assertMissingProperty("<fortress owner=\"1\" name=\"name\" />",
+		this.<IFortress>assertMissingProperty("""
+						<fortress owner="1" name="name" />""",
 			"id", new FortressImpl(new PlayerImpl(1, ""), "name", 0, TownSize.Small));
 		assertImageSerialization("Fortress image property is preserved", five);
 	}
@@ -1985,11 +2062,11 @@ public final class TestXMLIO {
 			throws SPFormatException, XMLStreamException, IOException {
 		final Giant testee = new Giant(kind, id);
 		assertSerialization("Test of Giant serialization", testee);
-		this.<Giant>assertUnwantedChild(String.format(
-			"<giant kind=\"%s\"><hill /></giant>", kind), null);
+		this.<Giant>assertUnwantedChild("""
+						<giant kind="%s"><hill /></giant>""".formatted(kind), null);
 		this.<Giant>assertMissingProperty("<giant />", "kind", null);
-		assertMissingProperty(String.format(
-			"<giant kind=\"%s\" />", kind), "id", new Giant(kind, 0));
+		assertMissingProperty("""
+						<giant kind="%s" />""".formatted(kind), "id", new Giant(kind, 0));
 		assertImageSerialization("Giant image property is preserved", testee);
 	}
 
@@ -2011,34 +2088,35 @@ public final class TestXMLIO {
 		final IMutableMapNG map = createSimpleMap(new Point(1, 1), Pair.with(loc, TileType.Plains));
 		map.addFixture(loc, new Ground(-1, "four", true));
 		assertSerialization("Test that reader handles ground as a fixture", map);
-		assertForwardDeserializationEquality("Duplicate Ground ignored",
-			"<view current_turn=\"-1\" current_player=\"-1\">" +
-				"<map version=\"2\" rows=\"1\" columns=\"1\">" +
-				"<tile row=\"0\" column=\"0\" kind=\"plains\">" +
-				"<ground kind=\"four\" exposed=\"true\" />" +
-				"<ground kind=\"four\" exposed=\"true\" /></tile></map></view>",
+		assertForwardDeserializationEquality("Duplicate Ground ignored", """
+						<view current_turn="-1" current_player="-1">
+						<map version="2" rows="1" columns="1">
+						<tile row="0" column="0" kind="plains">
+						<ground kind="four" exposed="true" />
+						<ground kind="four" exposed="true" /></tile></map></view>""",
 			map);
 		map.addFixture(loc, new Ground(-1, "five", false));
-		assertForwardDeserializationEquality("Exposed Ground made main",
-			"<view current_turn=\"-1\" current_player=\"-1\">" +
-				"<map version=\"2\" rows=\"1\" columns=\"1\">" +
-				"<tile row=\"0\" column=\"0\" kind=\"plains\">" +
-				"<ground kind=\"five\" exposed=\"false\" />" +
-				"<ground kind=\"four\" exposed=\"true\" /></tile></map></view>",
+		assertForwardDeserializationEquality("Exposed Ground made main", """
+						<view current_turn="-1" current_player="-1">
+						<map version="2" rows="1" columns="1">
+						<tile row="0" column="0" kind="plains">
+						<ground kind="five" exposed="false" />
+						<ground kind="four" exposed="true" /></tile></map></view>""",
 			map);
-		assertForwardDeserializationEquality("Exposed Ground left as main",
-			"<view current_turn=\"-1\" current_player=\"-1\">" +
-				"<map version=\"2\" rows=\"1\" columns=\"1\">" +
-				"<tile row=\"0\" column=\"0\" kind=\"plains\">" +
-				"<ground kind=\"four\" exposed=\"true\" />" +
-				"<ground kind=\"five\" exposed=\"false\" /></tile></map></view>",
+		assertForwardDeserializationEquality("Exposed Ground left as main", """
+						<view current_turn="-1" current_player="-1">
+						<map version="2" rows="1" columns="1">
+						<tile row="0" column="0" kind="plains">
+						<ground kind="four" exposed="true" />
+						<ground kind="five" exposed="false" /></tile></map></view>""",
 			map);
-		this.<Ground>assertUnwantedChild(
-			"<ground kind=\"sand\" exposed=\"true\"><hill /></ground>", null);
+		this.<Ground>assertUnwantedChild("""
+						<ground kind="sand" exposed="true"><hill /></ground>""", null);
 		this.<Ground>assertMissingProperty("<ground />", "kind", null);
-		this.<Ground>assertMissingProperty("<ground kind=\"ground\" />", "exposed", null);
-		assertDeprecatedProperty(
-			"<ground ground=\"ground\" exposed=\"true\" />", "ground", "kind", "ground",
+		this.<Ground>assertMissingProperty("""
+						<ground kind="ground" />""", "exposed", null);
+		assertDeprecatedProperty("""
+						<ground ground="ground" exposed="true" />""", "ground", "kind", "ground",
 			new Ground(-1, "ground", true));
 		assertImageSerialization("Ground image property is preserved",
 			new Ground(id, "five", true));
@@ -2123,9 +2201,11 @@ public final class TestXMLIO {
 	public void testCaveSerialization(final int dc, final int id)
 			throws SPFormatException, XMLStreamException, IOException {
 		assertSerialization("Cave serialization test", new Cave(dc, id));
-		this.<Cave>assertUnwantedChild(String.format("<cave dc=\"%d\"><troll /></cave>", dc), null);
+		this.<Cave>assertUnwantedChild("""
+						<cave dc="%d"><troll /></cave>""".formatted(dc), null);
 		this.<Cave>assertMissingProperty("<cave />", "dc", null);
-		assertMissingProperty(String.format("<cave dc=\"%d\" />", dc), "id",
+		assertMissingProperty("""
+						<cave dc="%d" />""".formatted(dc), "id",
 			new Cave(dc, 0));
 		assertImageSerialization("Cave image property is preserved", new Cave(dc, id));
 	}
@@ -2152,21 +2232,19 @@ public final class TestXMLIO {
 		assertDeprecatedProperty(
 			createSerializedForm(secondVein, deprecatedWriter).replace("kind", "mineral"),
 			"mineral", "kind", "mineral", secondVein);
-		this.<MineralVein>assertUnwantedChild(
-			String.format(
-				"<mineral kind=\"%s\" exposed=\"%b\" dc=\"%d\"><hill/></mineral>",
-				kind, exposed, dc),
+		this.<MineralVein>assertUnwantedChild("""
+						<mineral kind="%s" exposed="%b" dc="%d"><hill /></mineral>""".formatted(kind, exposed, dc),
 			null);
-		this.<MineralVein>assertMissingProperty(
-			String.format("<mineral dc=\"%d\" exposed=\"%b\" />", dc, exposed),
+		this.<MineralVein>assertMissingProperty("""
+						<mineral dc="%d" exposed="%b" />""".formatted(dc, exposed),
 			"kind", null);
-		this.<MineralVein>assertMissingProperty(
-			String.format("<mineral kind=\"%s\" exposed=\"%b\" />", kind, exposed), "dc", null);
-		this.<MineralVein>assertMissingProperty(
-			String.format("<mineral dc=\"%d\" kind=\"%s\" />", dc, kind),
+		this.<MineralVein>assertMissingProperty("""
+						<mineral kind="%s" exposed="%b" />""".formatted(kind, exposed), "dc", null);
+		this.<MineralVein>assertMissingProperty("""
+						<mineral dc="%d" kind="%s" />""".formatted(dc, kind),
 			"exposed", null);
-		assertMissingProperty(
-			String.format("<mineral kind=\"%s\" exposed=\"%b\" dc=\"%d\" />", kind, exposed, dc),
+		assertMissingProperty("""
+						<mineral kind="%s" exposed="%b" dc="%d" />""".formatted(kind, exposed, dc),
 			"id", new MineralVein(kind, exposed, dc, 0));
 		assertImageSerialization("Mineral image property is preserved", secondVein);
 	}
@@ -2179,11 +2257,11 @@ public final class TestXMLIO {
 	public void testBattlefieldSerialization(final int dc, final int id)
 			throws SPFormatException, XMLStreamException, IOException {
 		assertSerialization("Battlefield serialization test", new Battlefield(dc, id));
-		this.<Battlefield>assertUnwantedChild(
-			String.format("<battlefield dc=\"%d\"><hill /></battlefield>", dc), null);
+		this.<Battlefield>assertUnwantedChild("""
+						<battlefield dc="%d"><hill /></battlefield>""".formatted(dc), null);
 		this.<Battlefield>assertMissingProperty("<battlefield />", "dc", null);
-		assertMissingProperty(
-			String.format("<battlefield dc=\"%d\" />", dc), "id", new Battlefield(dc, 0));
+		assertMissingProperty("""
+						<battlefield dc="%d" />""".formatted(dc), "id", new Battlefield(dc, 0));
 		assertImageSerialization("Battlefield image property is preserved",
 			new Battlefield(dc, id));
 	}
@@ -2196,8 +2274,9 @@ public final class TestXMLIO {
 	@Test
 	public void testCommaSeparators()
 			throws SPFormatException, XMLStreamException, IOException {
-		assertEquivalentForms("ID numbers can contain commas",
-			"<hill id=\"1,002\" />", "<hill id=\"1002\" />", Warning.DIE);
+		assertEquivalentForms("ID numbers can contain commas", """
+						<hill id="1,002" />""", """
+				<hill id="1002" />""", Warning.DIE);
 	}
 
 	/**
@@ -2206,11 +2285,11 @@ public final class TestXMLIO {
 	@Test
 	public void testOldSandbars()
 			throws SPFormatException, XMLStreamException, IOException {
-		assertUnsupportedTag(
-			"<view current_player=\"-1\" current_turn=\"-1\">" +
-				"<map version=\"2\" rows=\"1\" columns=\"1\">" +
-				"<tile row=\"0\" column=\"0\" kind=\"plains\">" +
-				"<sandbar id=\"0\" /></tile></map></view>", "sandbar",
+		assertUnsupportedTag("""
+						<view current_player="-1" current_turn="-1">
+						<map version="2" rows="1" columns="1">
+						<tile row="0" column="0" kind="plains">
+						<sandbar id="0" /></tile></map></view>""", "sandbar",
 			createSimpleMap(new Point(1, 1), Pair.with(new Point(0, 0), TileType.Plains)));
 	}
 
@@ -2228,7 +2307,7 @@ public final class TestXMLIO {
 		final IMutableMapNG map = createSimpleMap(new Point(1, 1));
 		map.addFixture(Point.INVALID_POINT, new Ogre(id));
 		assertSerialization(
-			"Map with fixture \"elsewhere\" should be properly serialized", map);
+			"Map with fixture 'elsewhere' should be properly serialized", map);
 	}
 
 	private static Stream<Arguments> testBookmarkSerialization() {
@@ -2300,10 +2379,10 @@ public final class TestXMLIO {
 	public void testMountainSerialization() throws SPFormatException, XMLStreamException,
 			IOException {
 		assertEquivalentForms("Old and new representation of mountains",
-			encapsulateTileString("<mountain />"),
-			"<map version=\"2\" rows=\"2\" columns=\"2\">" +
-				"<tile row=\"1\" column=\"1\" kind=\"plains\" mountain=\"true\" />" +
-				"</map>",
+			encapsulateTileString("<mountain />"), """
+						<map version="2" rows="2" columns="2">
+						<tile row="1" column="1" kind="plains" mountain="true" />
+						</map>""",
 			Warning.IGNORE); // missing current_player
 		// TODO: Verify that they actually set the mountain in the map,
 		// and it is not set by default

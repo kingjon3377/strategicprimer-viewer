@@ -87,8 +87,10 @@ public class ExplorableReportGenerator extends AbstractReportGenerator<Explorabl
 			fixtures.remove(item.getId());
 		}
 		if (!caves.isEmpty() || !battles.isEmpty() || !portals.isEmpty()) {
-			println(ostream, "<h4>Caves, Battlefields, and Portals</h4>");
-			ostream.accept("<ul>");
+			ostream.accept("""
+					<h4>Caves, Battlefields, and Portals</h4>
+					<ul>
+					""");
 			for (final List<Point> list : Arrays.asList(caves, battles, portals)) {
 				if (!list.isEmpty()) {
 					ostream.accept("<li>");
