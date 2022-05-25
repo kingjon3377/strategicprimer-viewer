@@ -163,6 +163,9 @@ public class SPMapNG implements IMutableMapNG {
 	private final Map<Point, Set<Player>> bookmarksImpl;
 
 	private static int reduceLarge(final int num) {
+		if (num < 16) {
+			return 16;
+		}
 		final int retval = num >> 1;
 		if (retval < 20) {
 			return num;
@@ -172,6 +175,9 @@ public class SPMapNG implements IMutableMapNG {
 	}
 
 	private static int reduceMore(final int num) {
+		if (num < 16) {
+			return 16;
+		}
 		final int retval = num >> 2;
 		if (retval < 20) {
 			return num;
