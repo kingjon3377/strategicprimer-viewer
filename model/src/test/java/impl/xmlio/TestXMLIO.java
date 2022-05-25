@@ -11,6 +11,7 @@ import org.javatuples.Pair;
 
 import java.io.IOException;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -176,8 +177,14 @@ public final class TestXMLIO {
 				reader.<Type>readXML(FAKE_FILENAME, stringReader, Warning.IGNORE);
 				fail(String.format("Expected a(n) %s to be thrown",
 					exceptionClass.getName()));
+			} catch (final RuntimeException except) {
+				final Throwable cause = except.getCause();
+				assertInstanceOf(exceptionClass, cause, "Exception should be of the right type");
+				for (final Consumer<Expectation> check : checks) {
+					check.accept((Expectation) cause);
+				}
 			} catch (final Exception except) {
-				assertTrue(exceptionClass.isInstance(except), "Exception should be of the right type");
+				assertInstanceOf(exceptionClass, except, "Exception should be of the right type");
 				for (final Consumer<Expectation> check : checks) {
 					check.accept((Expectation) except);
 				}
@@ -194,12 +201,12 @@ public final class TestXMLIO {
 				fail("Expected a fatal warning");
 			} catch (final RuntimeException except) {
 				final Throwable cause = except.getCause();
-				assertTrue(exceptionClass.isInstance(cause), "Exception should be of the right type");
+				assertInstanceOf(exceptionClass, cause, "Exception should be of the right type");
 				for (final Consumer<Expectation> check : checks) {
 					check.accept((Expectation) cause);
 				}
 			} catch (final Throwable except) {
-				assertTrue(exceptionClass.isInstance(except), "Exception should be of the right type");
+				assertInstanceOf(exceptionClass, except, "Exception should be of the right type");
 				for (final Consumer<Expectation> check : checks) {
 					check.accept((Expectation) except);
 				}
@@ -530,13 +537,12 @@ public final class TestXMLIO {
 			throws SPFormatException, XMLStreamException, IOException {
 		for (final ISPReader reader : spReaders) {
 			assertFormatIssue(reader, xml, null, Exception.class,
-				except -> assertTrue(instanceOfAny(NoSuchElementException.class,
-						IllegalArgumentException.class,
-						XMLStreamException.class,
-						NoSuchFileException.class).test(except),
-					String.format(
-						"Exception is of an expected type: was %s",
-						except.getClass().getName())));
+				except -> assertAny("Exception is of an expected type: was %s".formatted(except.getClass().getName()),
+						() -> assertInstanceOf(NoSuchElementException.class, except),
+						() -> assertInstanceOf(IllegalArgumentException.class, except),
+						() -> assertInstanceOf(XMLStreamException.class, except),
+						() -> assertInstanceOf(NoSuchFileException.class, except) // TODO: NSFE not needed anymore with no 'import', right?
+						));
 		}
 	}
 
@@ -1265,9 +1271,10 @@ public final class TestXMLIO {
 			TestXMLIO.<AdventureFixture, Exception>assertFormatIssue(reader,
 				"<adventure xmlns=\"xyzzy\" id=\"1\" brief=\"one\" full=\"two\" />", null,
 				Exception.class,
-				(except) -> assertTrue(except instanceof UnwantedChildException ||
-						except instanceof XMLStreamException,
-					"Exception is of expected type"));
+				except -> assertAny("Exception is of expected type: was %s".formatted(except.getClass().getName()),
+						() -> assertInstanceOf(UnwantedChildException.class, except),
+						() -> assertInstanceOf(XMLStreamException.class, except)
+						));
 		}
 	}
 
