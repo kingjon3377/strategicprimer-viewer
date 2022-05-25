@@ -5,6 +5,9 @@ package common.map;
  */
 public final class MapDimensionsImpl implements MapDimensions {
 	public MapDimensionsImpl(final int rows, final int columns, final int version) {
+		if (rows < 0 || columns < 0) {
+			throw new IllegalArgumentException("Dimensions cannot be negative");
+		}
 		this.rows = rows;
 		this.columns = columns;
 		this.version = version;
