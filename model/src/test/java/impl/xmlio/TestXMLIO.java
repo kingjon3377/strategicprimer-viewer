@@ -448,6 +448,31 @@ public final class TestXMLIO {
 		assertForwardDeserialization(message, xml, assertion, Warning.DIE);
 	}
 
+	private <Type> void assertForwardDeserializationEquality(final String message, final String xml, final Type expected)
+			throws SPFormatException, XMLStreamException, IOException {
+		assertForwardDeserializationEquality(message, xml, expected, Warning.DIE);
+	}
+
+	/**
+	 * Assert that a "forward idiom"---an idiom that we do not yet (or,
+	 * conversely, anymore) produce, but want to accept---will be handled
+	 * properly by both readers.
+	 *
+	 * TODO: should {@link assertion} be a Consumer instead of a Predicate?
+	 *
+	 * @param message The assertion message
+	 * @param xml The serialized form
+	 * @param expected A value that should be "equal to" the deserialized object.
+	 * @param warner The warning level to use for this assertion
+	 */
+	private <Type> void assertForwardDeserializationEquality(final String message, final String xml,
+			final Type expected, final Warning warner) throws SPFormatException, XMLStreamException, IOException {
+		for (final ISPReader reader : spReaders) {
+			try (final StringReader stringReader = new StringReader(xml)) {
+				assertEquals(expected, reader.readXML(FAKE_FILENAME, stringReader, warner), message);
+			}
+		}
+	}
 	/**
 	 * Assert that a "forward idiom"---an idiom that we do not yet (or,
 	 * conversely, anymore) produce, but want to accept---will be handled
@@ -1465,10 +1490,10 @@ public final class TestXMLIO {
 			Pair.with(new Point(0, 0), TileType.Plains));
 		wrapper.addFixture(new Point(0, 0), new TextFixture(text, -1));
 		wrapper.setCurrentTurn(0);
-		assertForwardDeserialization("Deprecated text-in-map still works", String.format(
+		assertForwardDeserializationEquality("Deprecated text-in-map still works", String.format(
 				"<map version=\"2\" rows=\"1\" columns=\"1\" current_player=\"-1\">%n" +
 					"<tile row=\"0\" column=\"0\" kind=\"plains\">%s</tile></map>", text),
-			wrapper::equals);
+			wrapper);
 	}
 
 	/**
@@ -1538,12 +1563,12 @@ public final class TestXMLIO {
 		firstUnit.addMember(
 			new Worker("second", "elf", 4, new Job("job", 0, new Skill("skill", 1, 2))));
 		assertSerialization("Worker can have jobs", firstUnit);
-		assertForwardDeserialization("Explicit specification of default race works",
+		assertForwardDeserializationEquality("Explicit specification of default race works",
 			"<worker name=\"third\" race=\"human\" id=\"5\" />",
-			new Worker("third", "human", 5)::equals);
-		assertForwardDeserialization("Implicit default race also works",
+			new Worker("third", "human", 5));
+		assertForwardDeserializationEquality("Implicit default race also works",
 			"<worker name=\"fourth\" id=\"6\" />",
-			new Worker("fourth", "human", 6)::equals);
+			new Worker("fourth", "human", 6));
 		final Worker secondWorker = new Worker("sixth", "dwarf", 9);
 		secondWorker.setStats(new WorkerStats(0, 0, 1, 2, 3, 4, 5, 6));
 		assertSerialization("Worker can have stats", secondWorker);
@@ -1740,23 +1765,23 @@ public final class TestXMLIO {
 		this.<Animal>assertUnwantedChild(String.format(
 			"<animal kind=\"%s\"><troll /></animal>", kind), null);
 		this.<Animal>assertMissingProperty("<animal />", "kind", null);
-		this.<Animal>assertForwardDeserialization("Forward-looking in re talking",
+		this.<Animal>assertForwardDeserializationEquality("Forward-looking in re talking",
 			String.format("<animal kind=\"%s\" talking=\"false\" id=\"%d\" />", kind, id),
-			new AnimalImpl(kind, false, "wild", id)::equals);
+			new AnimalImpl(kind, false, "wild", id));
 		this.<Animal>assertMissingProperty(String.format("<animal kind=\"%s\" talking=\"%b\" />",
 			kind, talking), "id", new AnimalImpl(kind, talking, "wild", 0));
 		this.<Animal>assertMissingProperty(String.format(
 			"<animal kind=\"%s\" id=\"nonNumeric\" />", kind), "id", null);
-		this.<Animal>assertForwardDeserialization("Explicit default status of animal",
+		this.<Animal>assertForwardDeserializationEquality("Explicit default status of animal",
 			String.format("<animal kind=\"%s\" status=\"wild\" id=\"%d\" />", kind, id),
-			new AnimalImpl(kind, false, "wild", id)::equals);
+			new AnimalImpl(kind, false, "wild", id));
 		assertImageSerialization("Animal image property is preserved",
 			new AnimalImpl(kind, talking, status, id));
-		this.<Animal>assertForwardDeserialization("Namespaced attribute", String.format(
+		this.<Animal>assertForwardDeserializationEquality("Namespaced attribute",
 			"<animal xmlns:sp=\"%s\" sp:kind=\"%s\" sp:talking=\"%b\" sp:traces=\"false\"" +
 				" sp:status=\"%s\" sp:id=\"%d\" />", SP_NAMESPACE, kind, talking,
 						status, id),
-			new AnimalImpl(kind, talking, status, id)::equals);
+			new AnimalImpl(kind, talking, status, id));
 		assertEquivalentForms("Supports 'traces=\"false\"'",
 			String.format("<animal kind=\"%s\" status=\"%s\" id=\"%d\" />", kind,
 					status, id),
@@ -1986,28 +2011,28 @@ public final class TestXMLIO {
 		final IMutableMapNG map = createSimpleMap(new Point(1, 1), Pair.with(loc, TileType.Plains));
 		map.addFixture(loc, new Ground(-1, "four", true));
 		assertSerialization("Test that reader handles ground as a fixture", map);
-		assertForwardDeserialization("Duplicate Ground ignored",
+		assertForwardDeserializationEquality("Duplicate Ground ignored",
 			"<view current_turn=\"-1\" current_player=\"-1\">" +
 				"<map version=\"2\" rows=\"1\" columns=\"1\">" +
 				"<tile row=\"0\" column=\"0\" kind=\"plains\">" +
 				"<ground kind=\"four\" exposed=\"true\" />" +
 				"<ground kind=\"four\" exposed=\"true\" /></tile></map></view>",
-			map::equals);
+			map);
 		map.addFixture(loc, new Ground(-1, "five", false));
-		assertForwardDeserialization("Exposed Ground made main",
+		assertForwardDeserializationEquality("Exposed Ground made main",
 			"<view current_turn=\"-1\" current_player=\"-1\">" +
 				"<map version=\"2\" rows=\"1\" columns=\"1\">" +
 				"<tile row=\"0\" column=\"0\" kind=\"plains\">" +
 				"<ground kind=\"five\" exposed=\"false\" />" +
 				"<ground kind=\"four\" exposed=\"true\" /></tile></map></view>",
-			map::equals);
-		assertForwardDeserialization("Exposed Ground left as main",
+			map);
+		assertForwardDeserializationEquality("Exposed Ground left as main",
 			"<view current_turn=\"-1\" current_player=\"-1\">" +
 				"<map version=\"2\" rows=\"1\" columns=\"1\">" +
 				"<tile row=\"0\" column=\"0\" kind=\"plains\">" +
 				"<ground kind=\"four\" exposed=\"true\" />" +
 				"<ground kind=\"five\" exposed=\"false\" /></tile></map></view>",
-			map::equals);
+			map);
 		this.<Ground>assertUnwantedChild(
 			"<ground kind=\"sand\" exposed=\"true\"><hill /></ground>", null);
 		this.<Ground>assertMissingProperty("<ground />", "kind", null);
