@@ -1695,10 +1695,10 @@ public final class TestXMLIO {
 			"Serialization preserves XML meta-characters in orders and results", unit);
 		unit.setOrders(3, "1 << 2");
 		unit.setResults(-1, """
-						"quote this" """);
+						"quote this"\s""");
 		assertSerialization("This works even if such characters occur more than once", unit);
 		unit.setName("""
-						"Can't quote this ><>&" """);
+						"Can't quote this ><>&"\s""");
 		assertSerialization("Data stored in XML attributes is quoted", unit);
 	}
 

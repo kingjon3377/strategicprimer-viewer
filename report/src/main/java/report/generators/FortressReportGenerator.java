@@ -90,7 +90,7 @@ public class FortressReportGenerator extends AbstractReportGenerator<IFortress> 
 		}
 		if (!set.isEmpty()) {
 			formatter.accept("""
-					<li>There is a river on the tile, flowing through the following borders: """);
+					<li>There is a river on the tile, flowing through the following borders:\s""");
 			formatter.accept(set.stream().map(River::getDescription)
 				.collect(Collectors.joining(", ")));
 			println(formatter, "</li>");
@@ -128,7 +128,7 @@ public class FortressReportGenerator extends AbstractReportGenerator<IFortress> 
 		ostream.accept("""
 				</h5>
 				<ul>
-				    <li>Located at """);
+				    <li>Located at\s""");
 		ostream.accept(loc.toString());
 		ostream.accept(" ");
 		ostream.accept(distanceString.apply(loc));
