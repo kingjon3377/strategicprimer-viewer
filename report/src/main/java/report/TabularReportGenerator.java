@@ -106,7 +106,8 @@ public final class TabularReportGenerator {
 				fixtures.remove(fixture.getId());
 			} else {
 				LovelaceLogger.warning("Unhandled fixture:\t%s", fixture);
-				cli.println("Unhandled fixture:\t" + fixture); // FIXME: Concatenation in loop
+				cli.print("Unhandled fixture:\t");
+				cli.println(fixture.toString());
 			}
 		}
 	}
