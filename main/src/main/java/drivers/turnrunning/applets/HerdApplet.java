@@ -77,8 +77,7 @@ import query.SmallAnimalModel;
 				.filter(animal -> "domesticated".equals(animal.getStatus()) ||
 					"tame".equals(animal.getStatus()))
 				.map(Animal::getKind).distinct()
-				.filter(k -> !herdModels.containsKey(k))
-				.collect(Collectors.toList())) {
+				.filter(k -> !herdModels.containsKey(k)).toList()) {
 			final HerdModel herdModel = chooseHerdModel(kind);
 			if (herdModel == null) {
 				final Boolean cont = cli.inputBoolean("Skip?");
@@ -96,8 +95,7 @@ import query.SmallAnimalModel;
 		for (final Animal group : unit.stream()
 				.filter(Animal.class::isInstance).map(Animal.class::cast)
 				.filter(a -> "tame".equals(a.getStatus()) ||
-						"domesticated".equals(a.getStatus()))
-				.collect(Collectors.toList())) {
+						"domesticated".equals(a.getStatus())).toList()) {
 			if (herdModels.containsKey(group.getKind())) {
 				final HerdModel hModel = herdModels.get(group.getKind());
 				final List<Animal> list;

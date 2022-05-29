@@ -70,8 +70,7 @@ public class ExplorableReportGenerator extends AbstractReportGenerator<Explorabl
 				.filter(p -> p.getValue1() instanceof ExplorableFixture)
 				.sorted(pairComparator)
 				.map(p -> Pair.with(p.getValue0(),
-					(ExplorableFixture) p.getValue1()))
-				.collect(Collectors.toList())) {
+					(ExplorableFixture) p.getValue1())).toList()) {
 			final Point loc = pair.getValue0();
 			final ExplorableFixture item = pair.getValue1();
 			if (item instanceof Portal) {

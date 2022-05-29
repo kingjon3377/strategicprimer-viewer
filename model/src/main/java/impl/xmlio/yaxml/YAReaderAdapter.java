@@ -109,7 +109,7 @@ import java.util.stream.Collectors;
 	 */
 	private static void writeAllRivers(final ThrowingConsumer<String, IOException> ostream, final Collection<River> rivers, final int indent)
 			throws IOException {
-		for (final River river : rivers.stream().sorted().collect(Collectors.toList())) {
+		for (final River river : rivers.stream().sorted().toList()) {
 			YAMapReader.writeRiver(ostream, river, indent);
 		}
 	}

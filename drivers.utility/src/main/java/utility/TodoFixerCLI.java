@@ -186,8 +186,7 @@ public class TodoFixerCLI implements CLIDriver {
 			.filter(l -> TileType.Ocean == map.getBaseTerrain(l))
 			.flatMap(l -> map.getFixtures(l).stream())
 			.filter(Village.class::isInstance).map(Village.class::cast)
-			.filter(v -> LandRaces.LAND_RACES.contains(v.getRace()))
-			.collect(Collectors.toList());
+			.filter(v -> LandRaces.LAND_RACES.contains(v.getRace())).toList();
 		if (!villages.isEmpty()) {
 			if (raceList.isEmpty()) {
 				while (true) {
@@ -221,8 +220,7 @@ public class TodoFixerCLI implements CLIDriver {
 					.map(ITownFixture::getPopulation)
 					.filter(Objects::nonNull)
 					.map(s -> Pair.with(l, s)))
-				.filter(TodoFixerCLI::productionContainsHash)
-				.collect(Collectors.toList());
+				.filter(TodoFixerCLI::productionContainsHash).toList();
 
 		if (!brokenTownContents.isEmpty()) {
 			final ExplorationRunner eRunner = getRunner();
@@ -231,8 +229,7 @@ public class TodoFixerCLI implements CLIDriver {
 				final CommunityStats population = pair.getValue1();
 				final Set<IResourcePile> production = population.getYearlyProduction();
 				for (final IResourcePile resource : production.stream()
-						.filter(r -> r.getContents().contains("#"))
-						.collect(Collectors.toList())) {
+						.filter(r -> r.getContents().contains("#")).toList()) {
 				final String table = resource.getContents().split("#")[1];
 				final IResourcePile replacement = new ResourcePileImpl(resource.getId(),
 					resource.getKind(), eRunner.recursiveConsultTable(table, loc,
@@ -253,8 +250,7 @@ public class TodoFixerCLI implements CLIDriver {
 					.map(ITownFixture::getPopulation)
 					.filter(Objects::nonNull)
 					.map(s -> Pair.with(l, s)))
-				.filter(TodoFixerCLI::anyEmptySkills)
-				.collect(Collectors.toList());
+				.filter(TodoFixerCLI::anyEmptySkills).toList();
 		if (!brokenExpertise.isEmpty()) {
 			final ExplorationRunner eRunner = getRunner();
 			for (final Pair<Point, CommunityStats> pair : brokenExpertise) {

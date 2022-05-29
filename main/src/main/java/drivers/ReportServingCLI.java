@@ -97,12 +97,10 @@ import org.takes.http.Exit;
 		} else {
 			final List<Pair<String, String>> localCache = cache.entrySet().stream()
 				.map(entry -> Pair.with(SuffixHelper.shortestSuffix(cache.keySet(),
-					entry.getKey().toAbsolutePath()), entry.getValue()))
-				.collect(Collectors.toList());
+					entry.getKey().toAbsolutePath()), entry.getValue())).toList();
 			final List<Fork> endpoints = localCache.stream()
 				.map(pair -> new FkRegex("/" + pair.getValue0(),
-					new RsHtml(pair.getValue1())))
-				.collect(Collectors.toList());
+					new RsHtml(pair.getValue1()))).map(Fork.class::cast).toList();
 			final Fork rootHandler;
 			if (localCache.size() == 1) {
 				rootHandler = new FkRegex("/",

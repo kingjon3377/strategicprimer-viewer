@@ -98,8 +98,7 @@ public class AnimalReportGenerator extends AbstractReportGenerator</*Animal|Anim
 				.filter(e -> e.getValue().getValue1() instanceof AnimalOrTracks)
 				.sorted(Map.Entry.comparingByValue(pairComparator))
 				.map(e -> Triplet.with(e.getKey(), e.getValue().getValue0(),
-					(AnimalOrTracks) e.getValue().getValue1()))
-				.collect(Collectors.toList())) {
+					(AnimalOrTracks) e.getValue().getValue1())).toList()) {
 			final int key = triplet.getValue0();
 			final Point loc = triplet.getValue1();
 			final AnimalOrTracks animal = triplet.getValue2();

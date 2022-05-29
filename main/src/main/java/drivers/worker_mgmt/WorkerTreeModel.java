@@ -53,12 +53,11 @@ import java.util.stream.Collectors;
 	public Object getChild(final Object parent, final int index) {
 		// TODO: Make IWorkerModel methods return List to simplify this?
 		if (parent instanceof Player p) {
-			return StreamSupport.stream(model.getUnitKinds(p).spliterator(), false)
-				.collect(Collectors.toList()).get(index);
+			return StreamSupport.stream(model.getUnitKinds(p).spliterator(), false).toList().get(index);
 		} else if (parent instanceof String kind) {
 			return new ArrayList<>(model.getUnits(player, kind)).get(index);
 		} else if (parent instanceof IUnit unit) {
-			return (unit).stream().collect(Collectors.toList()).get(index);
+			return (unit).stream().toList().get(index);
 		} else {
 			throw new ArrayIndexOutOfBoundsException("Unrecognized parent");
 		}
@@ -95,12 +94,11 @@ import java.util.stream.Collectors;
 			// FIXME: This case shouldn't be allowed, right?
 			return new ArrayList<>(model.getUnits(p)).indexOf(child);
 		} else if (parent instanceof Player p && child instanceof String) {
-			return StreamSupport.stream(model.getUnitKinds(p).spliterator(), false)
-				.collect(Collectors.toList()).indexOf(child);
+			return StreamSupport.stream(model.getUnitKinds(p).spliterator(), false).toList().indexOf(child);
 		} else if (parent instanceof String kind && child instanceof IUnit) {
 			return new ArrayList<>(model.getUnits(player, kind)).indexOf(child);
 		} else if (parent instanceof IUnit unit) {
-			return unit.stream().collect(Collectors.toList()).indexOf(child);
+			return unit.stream().toList().indexOf(child);
 		} else {
 			return -1;
 		}

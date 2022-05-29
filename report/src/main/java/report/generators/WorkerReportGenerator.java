@@ -138,8 +138,7 @@ import common.map.fixtures.mobile.worker.IJob;
 		final List<Pair<IWorker, Point>> workers = fixtures.values().stream()
 			.filter(p -> p.getValue1() instanceof IWorker)
 			.sorted(pairComparator)
-			.map(p -> Pair.with((IWorker) p.getValue1(), p.getValue0()))
-			.collect(Collectors.toList());
+			.map(p -> Pair.with((IWorker) p.getValue1(), p.getValue0())).toList();
 		if (!workers.isEmpty()) {
 			ostream.accept("""
 					<h5>Workers</h5>

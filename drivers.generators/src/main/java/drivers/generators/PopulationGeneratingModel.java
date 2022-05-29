@@ -318,8 +318,7 @@ public class PopulationGeneratingModel extends SimpleMultiMapModel { // TODO: Ex
 			for (final IUnit container : map.streamAllFixtures()
 					.flatMap(PopulationGeneratingModel::flattenFortresses)
 					.filter(IUnit.class::isInstance).map(IUnit.class::cast)
-					.filter(u -> u.owner().equals(unit.owner()))
-					.collect(Collectors.toList())) {
+					.filter(u -> u.owner().equals(unit.owner())).toList()) {
 				final Optional<IWorker> matching =
 					container.stream().filter(IWorker.class::isInstance).map(IWorker.class::cast)
 						.filter(w -> worker.getRace().equals(w.getRace()))

@@ -114,8 +114,7 @@ public class ImmortalsReportGenerator extends AbstractReportGenerator<Immortal> 
 				.filter(p -> p.getValue1() instanceof Immortal)
 				.filter(p -> meta.containsKey(p.getValue1().getClass()))
 				.sorted(pairComparator)
-				.map(p -> Pair.with(p.getValue0(), (Immortal) p.getValue1()))
-				.collect(Collectors.toList())) {
+				.map(p -> Pair.with(p.getValue0(), (Immortal) p.getValue1())).toList()) {
 			final BiConsumer<String, Point> func = meta.get(pair.getValue1().getClass());
 			func.accept(pair.getValue1().toString(), pair.getValue0());
 			fixtures.remove(pair.getValue1().getId());

@@ -25,8 +25,7 @@ class RandomTable implements EncounterTable {
 			throw new IllegalArgumentException("Need at least one item");
 		}
 		// FIXME: Double-check that this put the low numbers first
-		table = Stream.of(items)
-				        .sorted(Comparator.comparing(Pair::getValue0)).collect(Collectors.toUnmodifiableList());
+		table = Stream.of(items).sorted(Comparator.comparing(Pair::getValue0)).toList();
 	}
 
 	/**

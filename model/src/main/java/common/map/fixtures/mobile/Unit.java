@@ -254,7 +254,7 @@ public final class Unit implements IMutableUnit {
 				kind.equals(that.getKind()) &&
 				name.equals(that.getName()) &&
 				that.getId() == id &&
-				members.containsAll(that.stream().collect(Collectors.toList())) &&
+				members.containsAll(that.stream().toList()) &&
 				that.stream().collect(Collectors.toSet()).containsAll(members);
 		} else {
 			return false;

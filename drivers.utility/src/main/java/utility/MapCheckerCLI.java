@@ -377,7 +377,7 @@ public class MapCheckerCLI implements UtilityDriver {
 
 		boolean result = false;
 		for (final Checker checker : Stream.concat(Stream.of(new OwnerChecker(map)::check),
-				EXTRA_CHECKS.stream()).collect(Collectors.toList())) {
+				EXTRA_CHECKS.stream()).toList()) {
 			for (final Point location : map.getLocations()) {
 				if (map.getBaseTerrain(location) != null) {
 					result = contentCheck(checker, map.getBaseTerrain(location),
@@ -404,8 +404,7 @@ public class MapCheckerCLI implements UtilityDriver {
 		if (file.toString().contains("world_turn")) {
 			for (final Pair<Point, TileFixture> pair : map.streamLocations()
 						.flatMap(l -> map.getFixtures(l).stream()
-							.map(f -> Pair.with(l, f)))
-						.collect(Collectors.toList())) {
+							.map(f -> Pair.with(l, f))).toList()) {
 				final Point location = pair.getValue0();
 				final TileFixture fixture = pair.getValue1();
 				if (map.getBaseTerrain(location) != null) {

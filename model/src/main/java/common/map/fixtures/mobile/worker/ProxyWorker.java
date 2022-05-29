@@ -104,7 +104,7 @@ public class ProxyWorker implements WorkerProxy {
 			final IWorker[] array = new IWorker[workers.size()];
 			proxyJobs.add(new ProxyJob(job, false, workers.toArray(array)));
 		}
-		for (final Implement item : workers.stream().flatMap(w -> w.getEquipment().stream()).collect(Collectors.toList())) {
+		for (final Implement item : workers.stream().flatMap(w -> w.getEquipment().stream()).toList()) {
 			if (workers.stream().map(IWorker::getEquipment).allMatch(l -> l.contains(item))) {
 				equipmentImpl.add(item);
 			}

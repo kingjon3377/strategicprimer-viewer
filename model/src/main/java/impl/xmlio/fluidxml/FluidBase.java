@@ -678,8 +678,7 @@ import org.jetbrains.annotations.Nullable;
 	 */
 	protected static void expectAttributes(final StartElement element, final Warning warner,
 	                                       final String... attributes) {
-		final List<String> local = Stream.of(attributes).map(String::toLowerCase)
-			.collect(Collectors.toList());
+		final List<String> local = Stream.of(attributes).map(String::toLowerCase).toList();
 		for (final Attribute attribute : new IteratorWrapper<>(
 				element.getAttributes())) {
 			final QName name = attribute.getName();

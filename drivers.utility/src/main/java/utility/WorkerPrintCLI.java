@@ -68,7 +68,7 @@ import exploration.common.IExplorationModel;
 			}
 
 			final List<IJob> jobs = StreamSupport.stream(worker.spliterator(), false)
-				.filter(j -> j.getLevel() > 0).collect(Collectors.toList());
+				.filter(j -> j.getLevel() > 0).toList();
 			if (!jobs.isEmpty()) {
 				cli.print(" (",
 					jobs.stream().map(WorkerPrintCLI::jobString)

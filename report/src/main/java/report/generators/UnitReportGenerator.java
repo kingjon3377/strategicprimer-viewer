@@ -230,8 +230,7 @@ public class UnitReportGenerator extends AbstractReportGenerator<IUnit> {
 		for (final Pair<Point, IUnit> pair : fixtures.values().stream()
 				.filter(p -> p.getValue1() instanceof IUnit)
 				.sorted(pairComparator)
-				.map(p -> Pair.with(p.getValue0(), (IUnit) p.getValue1()))
-				.collect(Collectors.toList())) {
+				.map(p -> Pair.with(p.getValue0(), (IUnit) p.getValue1())).toList()) {
 			final IUnit unit = pair.getValue1();
 			final Point loc = pair.getValue0();
 			if (currentPlayer.equals(unit.owner())) {

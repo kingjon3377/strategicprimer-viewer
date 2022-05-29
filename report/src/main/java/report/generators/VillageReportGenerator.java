@@ -50,8 +50,7 @@ public class VillageReportGenerator extends AbstractReportGenerator<Village> {
 		for (final Pair<Point, Village> pair : fixtures.values().stream()
 				.filter(p -> p.getValue1() instanceof Village)
 				.sorted(pairComparator)
-				.map(p -> Pair.with(p.getValue0(), (Village) p.getValue1()))
-				.collect(Collectors.toList())) {
+				.map(p -> Pair.with(p.getValue0(), (Village) p.getValue1())).toList()) {
 			final Point loc = pair.getValue0();
 			final Village village = pair.getValue1();
 			if (village.owner().equals(currentPlayer)) {

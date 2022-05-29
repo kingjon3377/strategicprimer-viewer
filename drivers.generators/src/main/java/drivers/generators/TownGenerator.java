@@ -515,7 +515,7 @@ import java.math.BigDecimal;
 		}
 
 		final List<HarvestableFixture> workedFields = findNearestFields(map, location).stream()
-			.limit(resourceCount).collect(Collectors.toList());
+			.limit(resourceCount).toList();
 		for (final HarvestableFixture field : workedFields) {
 			retval.addWorkedField(field.getId());
 			retval.getYearlyProduction().add(new ResourcePileImpl(idf.createID(),

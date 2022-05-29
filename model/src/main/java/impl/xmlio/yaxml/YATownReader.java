@@ -322,7 +322,7 @@ import java.util.stream.Collectors;
 		writeProperty(ostream, "size", obj.getPopulation());
 		finishParentTag(ostream);
 		for (final Map.Entry<String, Integer> entry : obj.getHighestSkillLevels().entrySet().stream()
-				.sorted(Map.Entry.comparingByKey(Comparator.naturalOrder())).collect(Collectors.toList())) {
+				.sorted(Map.Entry.comparingByKey(Comparator.naturalOrder())).toList()) {
 			writeTag(ostream, "expertise", tabs + 1);
 			writeProperty(ostream, "skill", entry.getKey());
 			writeProperty(ostream, "level", entry.getValue());

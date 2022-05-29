@@ -160,7 +160,7 @@ import javax.xml.stream.XMLStreamException;
 			throws XMLStreamException {
 		final WorkerStats stats = obj.getStats();
 		final List<IJob> jobs = StreamSupport.stream(obj.spliterator(), true)
-			.filter(((Predicate<IJob>) IJob::isEmpty).negate()).collect(Collectors.toList());
+			.filter(((Predicate<IJob>) IJob::isEmpty).negate()).toList();
 		final boolean hasJobs = !jobs.isEmpty();
 		writeTag(ostream, "worker", indentation, !hasJobs && stats == null);
 		writeAttributes(ostream, Pair.with("name", obj.getName()));

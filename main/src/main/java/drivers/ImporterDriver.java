@@ -87,7 +87,7 @@ import org.jetbrains.annotations.Nullable;
 		this.cli = cli;
 		this.options = options;
 		terrains = Stream.concat(Stream.of(TileType.values()),
-				Stream.of(ImportableTerrain.values())).collect(Collectors.toUnmodifiableList());
+				Stream.of(ImportableTerrain.values())).map(HasName.class::cast).toList();
 	}
 
 	private @Nullable /*TileType|ImportableTerrain?*/ HasName askFor(final int color) {

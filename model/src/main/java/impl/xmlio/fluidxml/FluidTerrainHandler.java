@@ -109,7 +109,7 @@ import java.util.stream.Collectors;
 
 	public static void writeRivers(final XMLStreamWriter ostream, final Collection<River> obj, final int indent)
 			throws XMLStreamException {
-		for (final River river : obj.stream().sorted().collect(Collectors.toList())) {
+		for (final River river : obj.stream().sorted().toList()) { // TODO: Convert to forEach(lambda)
 			writeRiver(ostream, river, indent);
 		}
 	}

@@ -22,8 +22,7 @@ import java.util.stream.Collectors;
 	private final List<Transferable> payload;
 
 	public CurriedFixtureTransferable(final TileFixture... list) {
-		payload = Stream.of(list)
-				          .map(FixtureTransferable::new).collect(Collectors.toUnmodifiableList());
+		payload = Stream.of(list).map(FixtureTransferable::new).map(Transferable.class::cast).toList();
 	}
 
 	@Override

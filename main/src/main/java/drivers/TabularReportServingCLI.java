@@ -165,7 +165,7 @@ import org.takes.http.Exit;
 			.map(key -> SuffixHelper.shortestSuffix(mapping.keySet(), key))
 			.flatMap(path -> Stream.of(new FkRegex("/" + path, new RsHtml(tocHtml.apply(path))),
 				new FkRegex(String.format("/%s/", path), new RsHtml(tocHtml.apply(path)))))
-			.collect(Collectors.toList());
+			.map(Fork.class::cast).toList();
 
 		final StringBuilder rootDocument = new StringBuilder();
 		rootDocument.append("<!DOCTYPE html>").append(System.lineSeparator())

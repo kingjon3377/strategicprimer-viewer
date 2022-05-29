@@ -259,8 +259,7 @@ import common.map.fixtures.mobile.AnimalTracks;
 
 		cli.println("Terrain fixtures:");
 		cli.println();
-		final List<Collection<TileFixture>> separateTiles = map.streamLocations()
-				.map(map::getFixtures).collect(Collectors.toList());
+		final List<Collection<TileFixture>> separateTiles = map.streamLocations().map(map::getFixtures).toList();
 		cli.println(String.format("- %d hilly tiles",
 			separateTiles.stream().filter(c -> c.stream().anyMatch(Hill.class::isInstance))
 				.count()));
@@ -271,8 +270,7 @@ import common.map.fixtures.mobile.AnimalTracks;
 				.count()));
 		cli.println(String.format("- %d oases", separateTiles.stream()
 			.filter(c -> c.stream().anyMatch(Oasis.class::isInstance)).count()));
-		final List<Collection<River>> tilesRivers = map.streamLocations()
-				.map(map::getRivers).collect(Collectors.toList());
+		final List<Collection<River>> tilesRivers = map.streamLocations().map(map::getRivers).toList();
 		cli.println(String.format("- %d lakes",
 			tilesRivers.stream().filter(CountingCLI::hasLake).count()));
 		cli.println(String.format("- %d tiles with rivers", tilesRivers.stream()
@@ -387,8 +385,7 @@ import common.map.fixtures.mobile.AnimalTracks;
 			.filter(notA(MineralVein.class)).filter(notA(StoneDeposit.class))
 			.filter(notA(Ground.class)).filter(notA(Forest.class)).filter(notA(Hill.class))
 			.filter(notA(Oasis.class)).filter(notA(AnimalTracks.class)).filter(notA(Cave.class))
-			.filter(notA(Battlefield.class)).filter(notA(Implement.class)).filter(notA(IResourcePile.class))
-			.collect(Collectors.toList());
+			.filter(notA(Battlefield.class)).filter(notA(Implement.class)).filter(notA(IResourcePile.class)).toList();
 
 		if (!remaining.isEmpty()) {
 			cli.println();

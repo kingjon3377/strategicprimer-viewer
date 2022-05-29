@@ -271,8 +271,7 @@ public class TurnRunningModel extends ExplorationModel implements ITurnRunningMo
 	@Override
 	public boolean addSkillToAllWorkers(final IUnit unit, final String jobName, final String skillName) {
 		boolean any = false;
-		for (final IWorker worker : unit.stream().filter(IWorker.class::isInstance).map(IWorker.class::cast)
-				.collect(Collectors.toList())) {
+		for (final IWorker worker : unit.stream().filter(IWorker.class::isInstance).map(IWorker.class::cast).toList()) {
 			if (addSkillToWorker(worker, jobName, skillName)) {
 				any = true;
 			}
@@ -414,13 +413,11 @@ public class TurnRunningModel extends ExplorationModel implements ITurnRunningMo
 					.flatMap(TurnRunningModel::partiallyFlattenFortresses)
 					.filter(HasOwner.class::isInstance).map(HasOwner.class::cast)
 					.filter(f -> f.owner().equals(owner))
-					.filter(FixtureIterable.class::isInstance).map(FixtureIterable.class::cast)
-					.collect(Collectors.toList())) {
+					.filter(FixtureIterable.class::isInstance).map(FixtureIterable.class::cast).toList()) {
 				boolean found = false;
 				for (final IMutableResourcePile item : container.stream()
 						.filter(IMutableResourcePile.class::isInstance)
-						.map(IMutableResourcePile.class::cast)
-						.collect(Collectors.toList())) {
+						.map(IMutableResourcePile.class::cast).toList()) {
 					if (resource.isSubset(item, x -> {}) || // TODO: is that the right way around?
 							    (resource.getKind().equals(item.getKind()) &&
 									     resource.getContents().equals(item.getContents()) && resource.getId() == item.getId())) {
@@ -470,13 +467,11 @@ public class TurnRunningModel extends ExplorationModel implements ITurnRunningMo
 					.flatMap(TurnRunningModel::partiallyFlattenFortresses)
 					.filter(HasOwner.class::isInstance).map(HasOwner.class::cast)
 					.filter(f -> f.owner().equals(owner))
-					.filter(FixtureIterable.class::isInstance).map(FixtureIterable.class::cast)
-					.collect(Collectors.toList())) {
+					.filter(FixtureIterable.class::isInstance).map(FixtureIterable.class::cast).toList()) {
 				boolean found = false;
 				for (final IMutableResourcePile item : container.stream()
 						.filter(IMutableResourcePile.class::isInstance)
-						.map(IMutableResourcePile.class::cast)
-						.collect(Collectors.toList())) {
+						.map(IMutableResourcePile.class::cast).toList()) {
 					if (resource.isSubset(item, x -> {})) { // TODO: is that the right way around?
 						if (container instanceof IMutableUnit unit) {
 							unit.removeMember(item);
@@ -702,7 +697,7 @@ public class TurnRunningModel extends ExplorationModel implements ITurnRunningMo
 					.filter(HasOwner.class::isInstance)
 					.map(HasOwner.class::cast)
 					.filter(f -> f.owner().equals(to.owner()))
-					.map(FixtureIterable.class::cast).collect(Collectors.toList())) {
+					.map(FixtureIterable.class::cast).toList()) {
 				final IMutableResourcePile matching = container.stream()
 					.filter(IMutableResourcePile.class::isInstance).map(IMutableResourcePile.class::cast)
 					.filter(r -> r.getKind().equals(from.getKind()))
@@ -764,7 +759,7 @@ public class TurnRunningModel extends ExplorationModel implements ITurnRunningMo
 					.filter(HasOwner.class::isInstance)
 					.map(HasOwner.class::cast)
 					.filter(f -> f.owner().equals(to.owner()))
-					.map(FixtureIterable.class::cast).collect(Collectors.toList())) {
+					.map(FixtureIterable.class::cast).toList()) {
 				final IMutableResourcePile matching = container.stream()
 					.filter(IMutableResourcePile.class::isInstance).map(IMutableResourcePile.class::cast)
 					.filter(r -> r.getKind().equals(from.getKind()))

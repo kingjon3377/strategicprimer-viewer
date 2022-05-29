@@ -484,8 +484,7 @@ import java.util.function.Predicate;
 			finishParentTag(ostream);
 			for (final TileFixture fixture : obj.streamLocations()
 					.filter(((Predicate<Point>) Point::isValid).negate())
-					.flatMap(p -> obj.getFixtures(p).stream())
-					.collect(Collectors.toList())) {
+					.flatMap(p -> obj.getFixtures(p).stream()).toList()) {
 				writeChild(ostream, fixture, tabs + 3);
 			}
 			closeTag(ostream, tabs + 2, "elsewhere");

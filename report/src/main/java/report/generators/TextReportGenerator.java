@@ -69,8 +69,7 @@ public class TextReportGenerator extends AbstractReportGenerator<TextFixture> {
 						TextReportGenerator::compareTurn)
 					.thenComparing(t -> Pair.with(t.getValue1(), t.getValue2()),
 						pairComparator)
-					.thenComparing(t -> t.getValue2().getText()))
-				.collect(Collectors.toList());
+					.thenComparing(t -> t.getValue2().getText())).toList();
 		if (!items.isEmpty()) {
 			ostream.accept("""
 					<h4>Miscellaneous Notes</h4>

@@ -192,8 +192,7 @@ import common.map.fixtures.mobile.worker.IJob;
 			}
 			final Map<IUnit, String> orders = new HashMap<>();
 			for (final IUnit unit : unitsByKind.entrySet().stream()
-					.flatMap(e -> e.getValue().stream())
-					.collect(Collectors.toList())) {
+					.flatMap(e -> e.getValue().stream()).toList()) {
 				final String unitOrders = unit.getLatestOrders(turn);
 				final int ordersTurn = unit.getOrdersTurn(unitOrders);
 				if (unitOrders.equals(unit.getOrders(turn)) || ordersTurn < 0) {
@@ -326,8 +325,7 @@ import common.map.fixtures.mobile.worker.IJob;
 					writer.newLine();
 					final List<Implement> equipment =
 						fortress.stream().filter(Implement.class::isInstance)
-							.map(Implement.class::cast)
-							.collect(Collectors.toList());
+							.map(Implement.class::cast).toList();
 					if (!equipment.isEmpty()) {
 						writer.write("- Equipment not in a unit:");
 						writer.newLine();

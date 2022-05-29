@@ -254,8 +254,7 @@ public class WorkerModel extends SimpleMultiMapModel implements IWorkerModel {
 					.map(IMutableFortress.class::cast)
 					.filter(f -> f.owner().getPlayerId() ==
 						unit.owner().getPlayerId())
-					.map(f -> Pair.with(l, f)))
-				.collect(Collectors.toList())) {
+					.map(f -> Pair.with(l, f))).toList()) {
 			final Point point = pair.getValue0();
 			final IMutableFortress fixture = pair.getValue1();
 			if ("HQ".equals(fixture.getName())) {
@@ -344,8 +343,7 @@ public class WorkerModel extends SimpleMultiMapModel implements IWorkerModel {
 				boolean any = false;
 				for (final IMutableFortress fort : map.getFixtures(location).stream()
 						.filter(IMutableFortress.class::isInstance)
-						.map(IMutableFortress.class::cast)
-						.collect(Collectors.toList())) {
+						.map(IMutableFortress.class::cast).toList()) {
 					if (fort.stream().anyMatch(fixture::equals)) {
 						any = true;
 						fort.removeMember(fixture);
@@ -467,7 +465,7 @@ public class WorkerModel extends SimpleMultiMapModel implements IWorkerModel {
 							.collect(Collectors.toList()),
 						getCurrentPlayer()).stream()
 					.filter(IMutableUnit.class::isInstance)
-					.map(IMutableUnit.class::cast).collect(Collectors.toList())) {
+					.map(IMutableUnit.class::cast).toList()) {
 				final UnitMember matching = unit.stream().filter(member::equals) // FIXME: equals() will really not do here ...
 					.findAny().orElse(null);
 				if (matching != null) {
@@ -616,7 +614,7 @@ public class WorkerModel extends SimpleMultiMapModel implements IWorkerModel {
 			for (final IMutableUnit unit : getUnitsImpl(map.streamAllFixtures()
 						.collect(Collectors.toList()), getCurrentPlayer())
 					.stream().filter(IMutableUnit.class::isInstance)
-					.map(IMutableUnit.class::cast).collect(Collectors.toList())) {
+					.map(IMutableUnit.class::cast).toList()) {
 				if (unit.stream().anyMatch(existing::equals)) {
 					// TODO: look beyond equals() for matching-in-existing?
 					unit.addMember(sibling.copy(IFixture.CopyBehavior.KEEP));
@@ -761,8 +759,7 @@ public class WorkerModel extends SimpleMultiMapModel implements IWorkerModel {
 	@Override
 	public boolean addSkillToAllWorkers(final IUnit unit, final String jobName, final String skillName) {
 		boolean any = false;
-		for (final IWorker worker : unit.stream().filter(IWorker.class::isInstance).map(IWorker.class::cast)
-				.collect(Collectors.toList())) {
+		for (final IWorker worker : unit.stream().filter(IWorker.class::isInstance).map(IWorker.class::cast).toList()) {
 			if (addSkillToWorker(worker, jobName, skillName)) {
 				any = true;
 			}

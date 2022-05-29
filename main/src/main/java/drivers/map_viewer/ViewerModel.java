@@ -406,8 +406,7 @@ public class ViewerModel extends SimpleDriverModel implements IViewerModel {
 	 */
 	@Override
 	public void removeMatchingFixtures(final Point location, final Predicate<TileFixture> condition) {
-		for (final TileFixture fixture : getMap().getFixtures(location).stream().filter(condition)
-				.collect(Collectors.toList())) { // TODO: try to avoid collector step
+		for (final TileFixture fixture : getMap().getFixtures(location).stream().filter(condition).toList()) { // TODO: try to avoid collector step (forEach(lambda))
 			getRestrictedMap().removeFixture(location, fixture);
 		}
 		setMapModified(true); // TODO: Only set the flag if this was a change?
@@ -528,8 +527,7 @@ public class ViewerModel extends SimpleDriverModel implements IViewerModel {
 				} else {
 					for (final IMutableFortress fort : getMap().getFixtures(location).stream()
 							.filter(IMutableFortress.class::isInstance)
-							.map(IMutableFortress.class::cast)
-							.collect(Collectors.toList())) {
+							.map(IMutableFortress.class::cast).toList()) {
 						if (fort.stream().anyMatch(fixture::equals)) {
 							fort.removeMember(fixture);
 							getRestrictedMap().setModified(true);
@@ -671,8 +669,7 @@ public class ViewerModel extends SimpleDriverModel implements IViewerModel {
 		for (final IMutableUnit unit : getMap().streamAllFixtures()
 				.flatMap(ViewerModel::unflattenNonFortresses)
 				.filter(IMutableUnit.class::isInstance).map(IMutableUnit.class::cast)
-				.filter(u -> getMap().getPlayers().getCurrentPlayer().equals(u.owner()))
-				.collect(Collectors.toList())) {
+				.filter(u -> getMap().getPlayers().getCurrentPlayer().equals(u.owner())).toList()) {
 			final UnitMember matching = unit.stream().filter(member::equals) // FIXME: equals() will really not do here ...
 				.findAny().orElse(null);
 			if (matching != null) {
@@ -694,8 +691,7 @@ public class ViewerModel extends SimpleDriverModel implements IViewerModel {
 		for (final IMutableUnit unit : getMap().streamAllFixtures()
 				.flatMap(ViewerModel::unflattenNonFortresses)
 				.filter(IMutableUnit.class::isInstance).map(IMutableUnit.class::cast)
-				.filter(u -> getMap().getPlayers().getCurrentPlayer().equals(u.owner()))
-				.collect(Collectors.toList())) {
+				.filter(u -> getMap().getPlayers().getCurrentPlayer().equals(u.owner())).toList()) {
 			if (unit.stream().anyMatch(existing::equals)) { // TODO: look beyond equals() for matching-in-existing?
 				unit.addMember(sibling.copy(IFixture.CopyBehavior.KEEP));
 				getRestrictedMap().setModified(true);

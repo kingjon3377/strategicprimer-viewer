@@ -550,8 +550,7 @@ abstract class YAAbstractReader<Item, Value> implements YAReader<Item, Value> {
 						new IteratorWrapper<>(
 					element.getAttributes()).spliterator(), true)
 				.map(Attribute::getName).filter(YAAbstractReader::isSupportedNamespace)
-				.map(QName::getLocalPart).map(String::toLowerCase)
-				.collect(Collectors.toList())) {
+				.map(QName::getLocalPart).map(String::toLowerCase).toList()) {
 			if (!local.contains(attribute)) {
 				warner.handle(new UnsupportedPropertyException(element, attribute));
 			}

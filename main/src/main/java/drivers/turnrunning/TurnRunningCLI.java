@@ -97,7 +97,7 @@ import org.jetbrains.annotations.Nullable;
 
 	private Stream<IUnit> getUnits(final Player player) {
 		final List<IUnit> temp = model.streamAllMaps()
-			.flatMap(indivMap -> getUnitsImpl(indivMap.streamAllFixtures(), player)).collect(Collectors.toList());
+			.flatMap(indivMap -> getUnitsImpl(indivMap.streamAllFixtures(), player)).toList();
 		final Map<Integer, ProxyUnit> tempMap = new TreeMap<>();
 		for (final IUnit unit : temp) {
 			final int key = unit.getId();

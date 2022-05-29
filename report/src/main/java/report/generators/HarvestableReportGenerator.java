@@ -165,8 +165,7 @@ public class HarvestableReportGenerator extends AbstractReportGenerator<Harvesta
 		for (final Pair<Point, HarvestableFixture> pair : fixtures.values().stream()
 				.filter(p -> p.getValue1() instanceof HarvestableFixture)
 				.sorted(pairComparator)
-				.map(p -> Pair.with(p.getValue0(), (HarvestableFixture) p.getValue1()))
-				.collect(Collectors.toList())) {
+				.map(p -> Pair.with(p.getValue0(), (HarvestableFixture) p.getValue1())).toList()) {
 			final Point point = pair.getValue0();
 			final HarvestableFixture item = pair.getValue1();
 			// TODO: Use a Map by type

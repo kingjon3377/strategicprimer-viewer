@@ -69,8 +69,7 @@ public class AppletChooser<AppletClass extends Applet> {
 			return Either.right(false);
 		} else {
 			final List<Map.Entry<String, AppletClass>> matches =
-				commands.entrySet().stream().filter(e -> e.getKey().startsWith(command))
-					.collect(Collectors.toList());
+				commands.entrySet().stream().filter(e -> e.getKey().startsWith(command)).toList();
 			if ("quit".startsWith(command) || "exit".startsWith(command)) {
 				if (matches.isEmpty()) {
 					return Either.right(false);

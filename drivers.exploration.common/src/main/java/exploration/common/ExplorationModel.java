@@ -625,8 +625,7 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 			final List<Village> villages = streamAllMaps().flatMap(m -> m.getFixtures(currentPoint).stream())
 				.filter(Village.class::isInstance)
 				.map(Village.class::cast)
-				.filter(v -> v.owner().isIndependent())
-				.collect(Collectors.toList());
+				.filter(v -> v.owner().isIndependent()).toList();
 			if (!villages.isEmpty()) {
 				IFixture.CopyBehavior subordinate = IFixture.CopyBehavior.KEEP;
 				for (final Village village : villages) {
@@ -973,8 +972,7 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 				boolean any = false;
 				for (final IMutableFortress fort : map.getFixtures(location).stream()
 						.filter(IMutableFortress.class::isInstance)
-						.map(IMutableFortress.class::cast)
-						.collect(Collectors.toList())) {
+						.map(IMutableFortress.class::cast).toList()) {
 					if (fort.stream().anyMatch(fixture::equals)) {
 						fort.removeMember((FortressMember) fixture);
 						any = true;
@@ -1133,7 +1131,7 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 					.flatMap(ExplorationModel::unflattenNonFortresses)
 					.filter(IMutableUnit.class::isInstance)
 					.map(IMutableUnit.class::cast)
-					.filter(this::matchingPlayer).collect(Collectors.toList())) {
+					.filter(this::matchingPlayer).toList()) {
 				final Optional<UnitMember> matching = unit.stream().filter(member::equals).findAny();
 				if (matching.isPresent()) { // FIXME: equals() will really not do here ...
 					unit.removeMember(matching.get());
@@ -1158,7 +1156,7 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 					.flatMap(ExplorationModel::unflattenNonFortresses)
 					.filter(IMutableUnit.class::isInstance)
 					.map(IMutableUnit.class::cast)
-					.filter(this::matchingPlayer).collect(Collectors.toList())) {
+					.filter(this::matchingPlayer).toList()) {
 				if (unit.stream().anyMatch(existing::equals)) { // TODO: look beyond equals() for matching-in-existing?
 					unit.addMember(sibling.copy(IFixture.CopyBehavior.KEEP));
 					any = true;

@@ -173,8 +173,7 @@ public interface ITurnRunningModel extends IExplorationModel, IAdvancementModel 
 		final IMapNG map = getMap();
 		for (final IFortress fortress : map.streamAllFixtures()
 				.filter(IFortress.class::isInstance).map(IFortress.class::cast)
-				.filter(f -> player.equals(f.owner()))
-				.collect(Collectors.toList())) {
+				.filter(f -> player.equals(f.owner())).toList()) {
 			if (fortressName.equals(fortress.getName())) {
 				return fortress;
 			} else if (retval == null) {

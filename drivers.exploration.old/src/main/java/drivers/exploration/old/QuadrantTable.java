@@ -90,8 +90,7 @@ class QuadrantTable implements EncounterTable {
 			quadrantRows);
 		Point bestKey = Point.INVALID_POINT;
 		for (final Point key : resultsMap.keySet().stream()
-				.sorted(Comparator.reverseOrder())
-				.collect(Collectors.toList())) {
+				.sorted(Comparator.reverseOrder()).toList()) {
 			if (key.row() <= row && key.row() > bestKey.row() &&
 					key.column() <= column && key.column() > bestKey.column()) {
 				bestKey = key;

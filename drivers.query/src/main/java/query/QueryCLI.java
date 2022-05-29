@@ -145,7 +145,7 @@ public class QueryCLI implements ReadOnlyDriver {
 				.sorted(Comparator.comparing(l -> distance(point, l, map.getDimensions())))
 				.flatMap(l -> map.getFixtures(l).stream().filter(ITownFixture.class::isInstance)
 						.map(ITownFixture.class::cast).filter(t -> t.getPopulation() != null)
-						.map(f -> Pair.with(l, f))).collect(Collectors.toList())) {
+						.map(f -> Pair.with(l, f))).toList()) {
 			final Point loc = pair.getValue0();
 			final double delta = distance(point, loc, map.getDimensions());
 			final ITownFixture town = pair.getValue1();
@@ -196,11 +196,9 @@ public class QueryCLI implements ReadOnlyDriver {
 				Optional.ofNullable(map.getBaseTerrain(location))
 					.map(TileType::toString).orElse("unknown")));
 			final List<Ground> ground = map.getFixtures(location).stream()
-				.filter(Ground.class::isInstance).map(Ground.class::cast)
-				.collect(Collectors.toList());
+				.filter(Ground.class::isInstance).map(Ground.class::cast).toList();
 			final List<Forest> forests = map.getFixtures(location).stream()
-				.filter(Forest.class::isInstance).map(Forest.class::cast)
-				.collect(Collectors.toList());
+				.filter(Forest.class::isInstance).map(Forest.class::cast).toList();
 			if (!ground.isEmpty()) {
 				cli.println("Kind(s) of ground (rock) on the tile:");
 				ground.stream().map(Object::toString).forEach(cli::println);
@@ -252,10 +250,10 @@ public class QueryCLI implements ReadOnlyDriver {
 		final DistanceComparator comparator = new DistanceComparator(base, map.getDimensions());
 		for (final Point location : new SurroundingPointIterable(base,
 				map.getDimensions(), distance).stream().distinct()
-				.sorted(comparator).collect(Collectors.toList())) { // TODO: can we combine loops?
+				.sorted(comparator).toList()) { // TODO: can we combine loops?
 			for (final ITownFixture town : map.getFixtures(location).stream()
 					.filter(ITownFixture.class::isInstance)
-					.map(ITownFixture.class::cast).collect(Collectors.toList())) {
+					.map(ITownFixture.class::cast).toList()) {
 				if (TownStatus.Active == town.getStatus() &&
 						town.getPopulation() != null &&
 						!town.getPopulation().getYearlyProduction().isEmpty()) {

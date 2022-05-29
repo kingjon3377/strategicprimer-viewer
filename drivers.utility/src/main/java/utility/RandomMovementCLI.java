@@ -42,8 +42,7 @@ import java.util.Random;
 	public void startDriver() {
 		final Direction[] directions = Direction.values();
 		for (final IUnit unit : model.getPlayerChoices().stream()
-				.filter(Player::isIndependent).flatMap(p -> model.getUnits(p).stream())
-				.collect(Collectors.toList())) {
+				.filter(Player::isIndependent).flatMap(p -> model.getUnits(p).stream()).toList()) {
 			final Random rng = new Random(unit.getId() << 8 + model.getMap().getCurrentTurn());
 			final int steps = rng.nextInt(3) + rng.nextInt(3);
 			model.setSelectedUnit(unit);

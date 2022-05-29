@@ -104,8 +104,7 @@ public class FortressMemberReportGenerator extends AbstractReportGenerator<Fortr
 				.filter(p -> p.getValue1() instanceof IResourcePile ||
 					p.getValue1() instanceof Implement)
 				.sorted(pairComparator)
-				.map(p -> Pair.with(p.getValue0(), (FortressMember) p.getValue1()))
-				.collect(Collectors.toList())) {
+				.map(p -> Pair.with(p.getValue0(), (FortressMember) p.getValue1())).toList()) {
 			final Point loc = pair.getValue0();
 			final FortressMember item = pair.getValue1();
 			if (item instanceof final IResourcePile resource) {
