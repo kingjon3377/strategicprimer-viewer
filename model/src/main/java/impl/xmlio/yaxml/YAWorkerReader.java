@@ -112,13 +112,12 @@ import impl.xmlio.exceptions.UnwantedChildException;
 		expectAttributes(element, "player");
 		final StringBuilder retval = new StringBuilder();
 		for (final XMLEvent event : stream) {
-			if (event instanceof StartElement &&
-					isSupportedNamespace(((StartElement) event).getName())) {
-				throw new UnwantedChildException(element.getName(), (StartElement) event);
+			if (event instanceof StartElement se && isSupportedNamespace(se.getName())) {
+				throw new UnwantedChildException(element.getName(), se);
 			} else if (isMatchingEnd(element.getName(), event)) {
 				break;
-			} else if (event instanceof Characters) {
-				retval.append(((Characters) event).getData());
+			} else if (event instanceof Characters c) {
+				retval.append(c.getData());
 			}
 		}
 		return retval.toString().strip();
@@ -131,16 +130,13 @@ import impl.xmlio.exceptions.UnwantedChildException;
 		final IMutableJob retval = new Job(getParameter(element, "name"),
 			getIntegerParameter(element, "level"));
 		for (final XMLEvent event : stream) {
-			if (event instanceof StartElement &&
-					isSupportedNamespace(((StartElement) event).getName())) {
-				if ("skill".equalsIgnoreCase(((StartElement) event)
-						.getName().getLocalPart())) {
-					retval.addSkill(parseSkill((StartElement) event,
-						element.getName()));
-					spinUntilEnd(((StartElement) event).getName(), stream);
+			if (event instanceof StartElement se && isSupportedNamespace(se.getName())) {
+				if ("skill".equalsIgnoreCase(se.getName().getLocalPart())) {
+					retval.addSkill(parseSkill(se, element.getName()));
+					spinUntilEnd(se.getName(), stream);
 				} else {
 					throw UnwantedChildException.listingExpectedTags(element.getName(),
-						(StartElement) event, "skill");
+						se, "skill");
 				}
 			} else if (isMatchingEnd(element.getName(), event)) {
 				break;
@@ -175,34 +171,27 @@ import impl.xmlio.exceptions.UnwantedChildException;
 		retval.setImage(getParameter(element, "image", ""));
 		retval.setPortrait(getParameter(element, "portrait", ""));
 		for (final XMLEvent event : stream) {
-			if (event instanceof StartElement &&
-					isSupportedNamespace(((StartElement) event).getName())) {
-				if ("job".equalsIgnoreCase(((StartElement) event).getName().getLocalPart())) {
-					retval.addJob(parseJob((StartElement) event, element.getName(),
-						stream));
-				} else if ("stats".equalsIgnoreCase(((StartElement) event)
-						.getName().getLocalPart())) {
-					retval.setStats(parseStats((StartElement) event,
-						element.getName(), stream));
-				} else if ("note".equalsIgnoreCase(((StartElement) event)
-						.getName().getLocalPart())) {
+			if (event instanceof StartElement se && isSupportedNamespace(se.getName())) {
+				if ("job".equalsIgnoreCase(se.getName().getLocalPart())) {
+					retval.addJob(parseJob(se, element.getName(), stream));
+				} else if ("stats".equalsIgnoreCase(se.getName().getLocalPart())) {
+					retval.setStats(parseStats(se, element.getName(), stream));
+				} else if ("note".equalsIgnoreCase(se.getName().getLocalPart())) {
 					retval.setNote(
-							players.getPlayer(getIntegerParameter((StartElement) event,
-									"player")),
-							readNote((StartElement) event, element.getName(), stream));
-				} else if ("animal".equalsIgnoreCase(((StartElement) event).getName().getLocalPart()) &&
-						 retval.getMount() == null) {
-					final MobileFixture animal = mobileReader.read((StartElement) event, element.getName(), stream);
-					if (animal instanceof Animal) {
-						retval.setMount((Animal) animal);
+							players.getPlayer(getIntegerParameter(se, "player")),
+							readNote(se, element.getName(), stream));
+				} else if ("animal".equalsIgnoreCase(se.getName().getLocalPart()) && retval.getMount() == null) {
+					final MobileFixture animal = mobileReader.read(se, element.getName(), stream);
+					if (animal instanceof Animal a) {
+						retval.setMount(a);
 					} else {
-						throw new UnwantedChildException(((StartElement) event).getName(), element);
+						throw new UnwantedChildException(se.getName(), element);
 					}
-				} else if ("implement".equalsIgnoreCase(((StartElement) event).getName().getLocalPart())) {
-					retval.addEquipment(implementReader.read((StartElement) event, element.getName(), stream));
+				} else if ("implement".equalsIgnoreCase(se.getName().getLocalPart())) {
+					retval.addEquipment(implementReader.read(se, element.getName(), stream));
 				} else {
 					throw UnwantedChildException.listingExpectedTags(element.getName(),
-						(StartElement) event, "job", "stats", "note", "animal", "implement");
+						se, "job", "stats", "note", "animal", "implement");
 				}
 			} else if (isMatchingEnd(element.getName(), event)) {
 				break;

@@ -53,8 +53,7 @@ import lovelace.util.LovelaceLogger;
 
 	@Override
 	public boolean equals(final Object obj) {
-		return obj instanceof RiverFixture && rivers.containsAll(((RiverFixture) obj).rivers) &&
-			((RiverFixture) obj).rivers.containsAll(rivers);
+		return obj instanceof RiverFixture rf && rivers.containsAll(rf.rivers) && rf.rivers.containsAll(rivers);
 	}
 
 	@Override

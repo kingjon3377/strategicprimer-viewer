@@ -76,8 +76,8 @@ import java.util.function.Predicate;
 	                                    final int index, final boolean isSelected, final boolean cellHasFocus) {
 		final Component retval = DEFAULT_RENDERER.getListCellRendererComponent(list, item,
 			index, isSelected, cellHasFocus);
-		if (retval instanceof JLabel) {
-			((JLabel) retval).setText(item.getDescription());
+		if (retval instanceof JLabel label) {
+			label.setText(item.getDescription());
 		}
 		return retval;
 	}

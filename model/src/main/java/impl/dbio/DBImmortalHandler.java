@@ -108,14 +108,14 @@ final class DBImmortalHandler extends AbstractDatabaseWriter<Immortal, /*Point|I
 	public void write(final Transactional db, final Immortal obj, final Object context) throws SQLException {
 		if (obj instanceof SimpleImmortal || obj instanceof ImmortalAnimal) {
 			try {
-				if (context instanceof Point) {
-					INSERT_SIMPLE.on(value("row", ((Point) context).getRow()),
-						value("column", ((Point) context).getColumn()),
+				if (context instanceof Point p) {
+					INSERT_SIMPLE.on(value("row", p.getRow()),
+						value("column", p.getColumn()),
 						value("type", ((HasKind) obj).getKind()), value("id", obj.getId()),
 						value("image", ((HasImage) obj).getImage())).executeUpdate(db.connection());
-				} else if (context instanceof IUnit) {
+				} else if (context instanceof IUnit u) {
 					INSERT_SIMPLE.on(
-							value("parent", ((IUnit) context).getId()), value("type", ((HasKind) obj).getKind()),
+							value("parent", u.getId()), value("type", ((HasKind) obj).getKind()),
 							value("id", obj.getId()), value("image", ((HasImage) obj).getImage())).execute(db.connection());
 				} else {
 					throw new IllegalArgumentException("context must be Point or IUnit");
@@ -145,14 +145,14 @@ final class DBImmortalHandler extends AbstractDatabaseWriter<Immortal, /*Point|I
 			} else {
 				throw new IllegalArgumentException("Unexpected immortal type");
 			}
-			if (context instanceof Point) {
-				INSERT_KINDED.on(value("row", ((Point) context).getRow()),
-						value("column", ((Point) context).getColumn()),
+			if (context instanceof Point p) {
+				INSERT_KINDED.on(value("row", p.getRow()),
+						value("column", p.getColumn()),
 						value("type", type), value("kind", ((HasKind) obj).getKind()),
 						value("id", obj.getId()), value("image", ((HasImage) obj).getImage())).execute(db.connection());
-			} else if (context instanceof IUnit) {
+			} else if (context instanceof IUnit u) {
 				INSERT_KINDED.on(
-						value("parent", ((IUnit) context).getId()), value("type", type),
+						value("parent", u.getId()), value("type", type),
 						value("kind", ((HasKind) obj).getKind()), value("id", obj.getId()),
 						value("image", ((HasImage) obj).getImage())).execute(db.connection());
 			} else {

@@ -197,9 +197,9 @@ import java.util.function.Consumer;
 		private void addLabeledField(final JPanel panel, final String text, final JComponent field) {
 			panel.add(new JLabel(text));
 			panel.add(field);
-			if (field instanceof JTextField) {
-				((JTextField) field).addActionListener(ignored -> accept());
-				((JTextField) field).setActionCommand("Add Worker");
+			if (field instanceof JTextField tf) {
+				tf.addActionListener(ignored -> accept());
+				tf.setActionCommand("Add Worker");
 			}
 		}
 

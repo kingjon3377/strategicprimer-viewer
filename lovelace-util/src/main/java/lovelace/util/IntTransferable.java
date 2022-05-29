@@ -71,8 +71,6 @@ public final class IntTransferable implements Transferable {
 	 */
 	@Override
 	public boolean equals(final Object that) {
-		return that instanceof IntTransferable &&
-				       ((IntTransferable) that).payload == payload &&
-			Objects.equals(((IntTransferable) that).flavor, flavor);
+		return that instanceof IntTransferable t && t.payload == payload && Objects.equals(t.flavor, flavor);
 	}
 }

@@ -123,9 +123,9 @@ public abstract /* sealed */ class SimpleImmortal
 
 	@Override
 	public final boolean equals(final Object obj) {
-		if (obj instanceof SimpleImmortal) {
-			return ((SimpleImmortal) obj).getId() == id &&
-				kind.equals(((SimpleImmortal) obj).getKind());
+		if (obj instanceof SimpleImmortal si) {
+			return si.getId() == id &&
+				kind.equals(si.getKind());
 		} else {
 			return false;
 		}
@@ -141,8 +141,8 @@ public abstract /* sealed */ class SimpleImmortal
 	 */
 	@Override
 	public final boolean equalsIgnoringID(final IFixture fixture) {
-		if (fixture instanceof SimpleImmortal) {
-			return ((SimpleImmortal) fixture).getKind().equals(kind);
+		if (fixture instanceof SimpleImmortal si) {
+			return si.getKind().equals(kind);
 		} else {
 			return false;
 		}
@@ -154,8 +154,8 @@ public abstract /* sealed */ class SimpleImmortal
 	@Override
 	public final boolean isSubset(final IFixture obj, final Consumer<String> report) {
 		if (obj.getId() == id) {
-			if (obj instanceof SimpleImmortal &&
-					((SimpleImmortal) obj).getKind().equals(kind)) {
+			if (obj instanceof SimpleImmortal si &&
+					si.getKind().equals(kind)) {
 				return true;
 			} else {
 				report.accept(String.format("For ID #%d, different kinds of members", id));

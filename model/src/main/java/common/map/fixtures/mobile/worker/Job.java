@@ -110,12 +110,12 @@ public final class Job implements IMutableJob {
 	 */
 	@Override
 	public boolean equals(final Object obj) {
-		if (obj instanceof Job) {
-			return name.equals(((Job) obj).getName()) && levelNum == ((Job) obj).getLevel() &&
-				StreamSupport.stream(((Job) obj).spliterator(), true)
+		if (obj instanceof Job that) {
+			return name.equals(that.getName()) && levelNum == that.getLevel() &&
+				StreamSupport.stream(that.spliterator(), true)
 					.allMatch(skillSet.values()::contains) &&
-				StreamSupport.stream(((Job) obj).spliterator(), true)
-					.collect(Collectors.toList())
+				StreamSupport.stream(that.spliterator(), true)
+					.collect(Collectors.toList()) // FIXME: Should be Set
 					.containsAll(skillSet.values());
 		} else {
 			return false;

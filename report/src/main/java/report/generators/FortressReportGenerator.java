@@ -63,10 +63,10 @@ public class FortressReportGenerator extends AbstractReportGenerator<IFortress> 
 			ostream.accept(", mountainous");
 		}
 		for (final TileFixture fixture : map.getFixtures(point)) {
-			if (unforested && fixture instanceof Forest) {
+			if (unforested && fixture instanceof Forest f) {
 				unforested = false;
 				ostream.accept(", forested with ");
-				ostream.accept(((Forest) fixture).getKind());
+				ostream.accept(f.getKind());
 				fixtures.remove(fixture.getId());
 			} else if (fixture instanceof Hill) {
 				ostream.accept(", hilly");
@@ -150,16 +150,15 @@ public class FortressReportGenerator extends AbstractReportGenerator<IFortress> 
 		final Map<String, List<IResourcePile>> resources = new HashMap<>(); // TODO: Use a multimap
 		final List<FortressMember> contents = new ArrayList<>();
 		for (final FortressMember member : item) {
-			if (member instanceof IUnit) {
-				units.add((IUnit) member);
-			} else if (member instanceof Implement) {
-				equipment.add((Implement) member);
-			} else if (member instanceof IResourcePile) {
-				final List<IResourcePile> list = Optional.ofNullable(resources
-					.get(((IResourcePile) member).getKind()))
+			if (member instanceof IUnit u) {
+				units.add(u);
+			} else if (member instanceof Implement i) {
+				equipment.add(i);
+			} else if (member instanceof IResourcePile r) {
+				final List<IResourcePile> list = Optional.ofNullable(resources.get(r.getKind()))
 						.orElseGet(ArrayList::new);
-				list.add((IResourcePile) member);
-				resources.put(((IResourcePile) member).getKind(), list);
+				list.add(r);
+				resources.put(r.getKind(), list);
 			} else {
 				contents.add(member);
 			}

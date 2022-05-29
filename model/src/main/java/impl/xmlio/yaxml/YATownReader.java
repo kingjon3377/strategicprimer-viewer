@@ -95,48 +95,45 @@ import java.util.stream.Collectors;
 		final Deque<StartElement> stack = new LinkedList<>();
 		stack.addFirst(element);
 		for (final XMLEvent event : stream) {
-			if (event instanceof EndElement &&
-					((EndElement) event).getName().equals(element.getName())) {
+			if (event instanceof EndElement ee && ee.getName().equals(element.getName())) {
 				break;
-			} else if (event instanceof StartElement &&
-					isSupportedNamespace(((StartElement) event).getName())) {
-				switch (((StartElement) event).getName().getLocalPart().toLowerCase()) {
+			} else if (event instanceof StartElement se && isSupportedNamespace(se.getName())) {
+				switch (se.getName().getLocalPart().toLowerCase()) {
 				case "expertise":
 					if (current == null) {
-						expectAttributes((StartElement) event, "skill", "level");
-						retval.setSkillLevel(getParameter((StartElement) event,
-								"skill"),
-							getIntegerParameter((StartElement) event, "level"));
-						stack.addFirst((StartElement) event);
-						current = ((StartElement) event).getName().getLocalPart();
+						expectAttributes(se, "skill", "level");
+						retval.setSkillLevel(getParameter(se, "skill"),
+							getIntegerParameter(se, "level"));
+						stack.addFirst(se);
+						current = se.getName().getLocalPart();
 					} else {
 						throw UnwantedChildException.listingExpectedTags(
-							stack.peekFirst().getName(), (StartElement) event,
+							stack.peekFirst().getName(), se,
 								expectedCommunityStatsTags(current).toArray(new String[0]));
 					}
 					break;
 				case "claim":
 					if (current == null) {
-						expectAttributes((StartElement) event, "resource");
+						expectAttributes(se, "resource");
 						retval.addWorkedField(getIntegerParameter(
-							(StartElement) event, "resource"));
-						stack.addFirst((StartElement) event);
-						current = ((StartElement) event).getName().getLocalPart();
+							se, "resource"));
+						stack.addFirst(se);
+						current = se.getName().getLocalPart();
 					} else {
 						throw UnwantedChildException.listingExpectedTags(
-							stack.peekFirst().getName(), (StartElement) event,
+							stack.peekFirst().getName(), se,
 								expectedCommunityStatsTags(current).toArray(new String[0]));
 					}
 					break;
 				case "production":
 				case "consumption":
 					if (current == null) {
-						expectAttributes((StartElement) event);
-						stack.addFirst((StartElement) event);
-						current = ((StartElement) event).getName().getLocalPart();
+						expectAttributes(se);
+						stack.addFirst(se);
+						current = se.getName().getLocalPart();
 					} else {
 						throw UnwantedChildException.listingExpectedTags(
-								stack.peekFirst().getName(), (StartElement) event,
+								stack.peekFirst().getName(), se,
 								expectedCommunityStatsTags(current).toArray(new String[0]));
 					}
 					break;
@@ -148,24 +145,22 @@ import java.util.stream.Collectors;
 						lambda = retval.getYearlyConsumption()::add;
 					} else {
 						throw UnwantedChildException.listingExpectedTags(
-							stack.peekFirst().getName(), (StartElement) event,
+							stack.peekFirst().getName(), se,
 								expectedCommunityStatsTags(current == null ?
 										                           "population" : current).toArray(new String[0]));
 					}
-					lambda.accept(resourceReader.read((StartElement) event,
+					lambda.accept(resourceReader.read(se,
 						stack.peekFirst().getName(), stream));
 					break;
 				default:
 					throw UnwantedChildException.listingExpectedTags(
 						stack.isEmpty() ? element.getName() :
 							stack.peekFirst().getName(),
-						(StartElement) event,
-							expectedCommunityStatsTags(current == null ?
+						se, expectedCommunityStatsTags(current == null ?
 									                           "population" : current).toArray(new String[0]));
 				}
-			} else if (event instanceof EndElement && !stack.isEmpty() &&
-					((EndElement) event).getName()
-						.equals(stack.peekFirst().getName())) {
+			} else if (event instanceof EndElement ee && !stack.isEmpty() &&
+					ee.getName().equals(stack.peekFirst().getName())) {
 				final StartElement top = stack.removeFirst();
 				if (top.equals(element)) {
 					break;
@@ -200,14 +195,12 @@ import java.util.stream.Collectors;
 		retval.setImage(getParameter(element, "image", ""));
 		retval.setPortrait(getParameter(element, "portrait", ""));
 		for (final XMLEvent event : stream) {
-			if (event instanceof StartElement &&
-					isSupportedNamespace(((StartElement) event).getName())) {
+			if (event instanceof StartElement se && isSupportedNamespace(se.getName())) {
 				if (retval.getPopulation() == null) {
-					retval.setPopulation(parseCommunityStats((StartElement) event,
+					retval.setPopulation(parseCommunityStats(se,
 							element.getName(), stream));
 				} else {
-					throw new UnwantedChildException(element.getName(),
-							(StartElement) event);
+					throw new UnwantedChildException(element.getName(), se);
 				}
 			} else if (isMatchingEnd(element.getName(), event)) {
 				break;
@@ -245,14 +238,11 @@ import java.util.stream.Collectors;
 					                                              element.getName().getLocalPart());
 		};
 		for (final XMLEvent event : stream) {
-			if (event instanceof StartElement &&
-					isSupportedNamespace(((StartElement) event).getName())) {
+			if (event instanceof StartElement se && isSupportedNamespace(se.getName())) {
 				if (retval.getPopulation() == null) {
-					retval.setPopulation(parseCommunityStats((StartElement) event,
-							element.getName(), stream));
+					retval.setPopulation(parseCommunityStats(se, element.getName(), stream));
 				} else {
-					throw new UnwantedChildException(element.getName(),
-							(StartElement) event);
+					throw new UnwantedChildException(element.getName(), se);
 				}
 			} else if (isMatchingEnd(element.getName(), event)) {
 				break;
@@ -278,16 +268,13 @@ import java.util.stream.Collectors;
 		retval = new FortressImpl(getOwnerOrIndependent(element),
 			getParameter(element, "name", ""), getOrGenerateID(element), size);
 		for (final XMLEvent event : stream) {
-			if (event instanceof StartElement &&
-					isSupportedNamespace(((StartElement) event).getName())) {
-				final String memberTag =
-					((StartElement) event).getName().getLocalPart().toLowerCase();
+			if (event instanceof StartElement se && isSupportedNamespace(se.getName())) {
+				final String memberTag = se.getName().getLocalPart().toLowerCase();
 				final Optional<YAReader<? extends FortressMember, ? extends FortressMember>>
 					reader = memberReaders.stream()
 						.filter(yar -> yar.isSupportedTag(memberTag)).findAny();
 				if (reader.isPresent()) {
-					retval.addMember(reader.get().read((StartElement) event,
-						element.getName(), stream));
+					retval.addMember(reader.get().read(se, element.getName(), stream));
 				} else if ("orders".equals(memberTag) || "results".equals(memberTag) ||
 						"science".equals(memberTag)) {
 					// We're thinking about storing per-fortress "standing orders" or
@@ -295,12 +282,10 @@ import java.util.stream.Collectors;
 					// scientific research progress within fortresses. To ease the
 					// transition, we *now* warn, instead of aborting, if the tags we
 					// expect to use for this appear in this position in the XML.
-					warner.handle(new UnwantedChildException(element.getName(),
-						(StartElement) event));
+					warner.handle(new UnwantedChildException(element.getName(), se));
 					continue;
 				} else {
-					throw new UnwantedChildException(element.getName(),
-						(StartElement) event);
+					throw new UnwantedChildException(element.getName(), se);
 				}
 			} else if (isMatchingEnd(element.getName(), event)) {
 				break;
@@ -386,16 +371,16 @@ import java.util.stream.Collectors;
 
 	@Override
 	public void write(final ThrowingConsumer<String, IOException> ostream, final ITownFixture obj, final int tabs) throws IOException {
-		if (obj instanceof AbstractTown) {
-			writeAbstractTown(ostream, (AbstractTown) obj, tabs);
-		} else if (obj instanceof Village) {
+		if (obj instanceof AbstractTown at) {
+			writeAbstractTown(ostream, at, tabs);
+		} else if (obj instanceof Village v) {
 			writeTag(ostream, "village", tabs);
 			writeProperty(ostream, "status", obj.getStatus().toString());
 			writeNonemptyProperty(ostream, "name", obj.getName());
 			writeProperty(ostream, "id", obj.getId());
 			writeProperty(ostream, "owner", obj.getOwner().getPlayerId());
-			writeProperty(ostream, "race", ((Village) obj).getRace());
-			writeImageXML(ostream, (Village) obj);
+			writeProperty(ostream, "race", v.getRace());
+			writeImageXML(ostream, v);
 			writeNonemptyProperty(ostream, "portrait", obj.getPortrait());
 			if (obj.getPopulation() == null) {
 				closeLeafTag(ostream);
@@ -404,7 +389,7 @@ import java.util.stream.Collectors;
 				writeCommunityStats(ostream, obj.getPopulation(), tabs + 1);
 				closeTag(ostream, tabs, "village");
 			}
-		} else if (obj instanceof IFortress) {
+		} else if (obj instanceof IFortress f) {
 			writeTag(ostream, "fortress", tabs);
 			writeProperty(ostream, "owner", obj.getOwner().getPlayerId());
 			writeNonemptyProperty(ostream, "name", obj.getName());
@@ -412,12 +397,12 @@ import java.util.stream.Collectors;
 				writeProperty(ostream, "size", obj.getTownSize().toString());
 			}
 			writeProperty(ostream, "id", obj.getId());
-			writeImageXML(ostream, (IFortress) obj);
+			writeImageXML(ostream, f);
 			writeNonemptyProperty(ostream, "portrait", obj.getPortrait());
 			ostream.accept(">");
-			if (((IFortress) obj).iterator().hasNext()) {
+			if (f.iterator().hasNext()) {
 				ostream.accept(System.lineSeparator());
-				for (final FortressMember member : (IFortress) obj) {
+				for (final FortressMember member : f) {
 					final Optional<YAReader<? extends FortressMember, ? extends FortressMember>>
 						reader = memberReaders.stream()
 							.filter(yar -> yar.canWrite(member)).findAny();

@@ -134,15 +134,15 @@ public final class MapReaderAdapter {
 				throw new DriverFailedException(except, "I/O error writing to " + mainFile);
 			}
 		}
-		if (model instanceof IMultiMapModel) {
-			for (final IMapNG map : ((IMultiMapModel) model).getSubordinateMaps()) {
+		if (model instanceof IMultiMapModel mmm) {
+			for (final IMapNG map : mmm.getSubordinateMaps()) {
 				final Path filename = map.getFilename();
 				if (filename == null) {
 					LovelaceLogger.error("A map didn't have a filename, and so wasn't written.");
 				} else {
 					try {
 						MapIOHelper.writeMap(filename, map);
-						((IMultiMapModel) model).clearModifiedFlag(map);
+						mmm.clearModifiedFlag(map);
 					} catch (final XMLStreamException except) {
 						throw new DriverFailedException(except,
 							"Malformed XML while writing " + filename);

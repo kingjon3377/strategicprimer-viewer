@@ -90,9 +90,9 @@ public class StoneDeposit implements HarvestableFixture, MineralFixture {
 
 	@Override
 	public boolean equals(final Object obj) {
-		if (obj instanceof StoneDeposit) {
-			return ((StoneDeposit) obj).getStone() == stone &&
-				((StoneDeposit) obj).getId() == id;
+		if (obj instanceof StoneDeposit it) {
+			return it.getStone() == stone &&
+				it.getId() == id;
 		} else {
 			return false;
 		}
@@ -118,8 +118,8 @@ public class StoneDeposit implements HarvestableFixture, MineralFixture {
 
 	@Override
 	public boolean equalsIgnoringID(final IFixture fixture) {
-		if (fixture instanceof StoneDeposit) {
-			return ((StoneDeposit) fixture).getStone() == stone;
+		if (fixture instanceof StoneDeposit it) {
+			return it.getStone() == stone;
 		} else {
 			return false;
 		}

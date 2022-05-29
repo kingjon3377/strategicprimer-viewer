@@ -33,8 +33,8 @@ public class StrategyExportFactory implements ModelDriverFactory {
 
 	@Override
 	public ModelDriver createDriver(final ICLIHelper cli, final SPOptions options, final IDriverModel model) {
-		if (model instanceof IWorkerModel) {
-			return new StrategyExportCLI(options, (IWorkerModel) model);
+		if (model instanceof IWorkerModel wm) {
+			return new StrategyExportCLI(options, wm);
 		} else {
 			return createDriver(cli, options, new WorkerModel(model));
 		}

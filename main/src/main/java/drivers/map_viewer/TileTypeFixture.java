@@ -36,7 +36,7 @@ import lovelace.util.LovelaceLogger;
 
 	@Override
 	public boolean equals(final Object obj) {
-		return obj instanceof TileTypeFixture && ((TileTypeFixture) obj).tileType == tileType;
+		return obj instanceof TileTypeFixture fix && fix.tileType == tileType;
 	}
 
 	@Override

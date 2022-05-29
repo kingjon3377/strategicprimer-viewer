@@ -150,23 +150,22 @@ public class UnitReportGenerator extends AbstractReportGenerator<IUnit> {
 			final List<Animal> animals = new ArrayList<>();
 			final List<UnitMember> others = new ArrayList<>();
 			for (final UnitMember member : item) {
-				if (member instanceof IWorker) {
-					workers.add((IWorker) member);
-				} else if (member instanceof Implement) {
-					equipment.add((Implement) member);
-				} else if (member instanceof IResourcePile) {
-					final List<IResourcePile> list = Optional.ofNullable(
-							resources.get(((IResourcePile) member).getKind()))
+				if (member instanceof IWorker w) {
+					workers.add(w);
+				} else if (member instanceof Implement i) {
+					equipment.add(i);
+				} else if (member instanceof IResourcePile r) {
+					final List<IResourcePile> list = Optional.ofNullable(resources.get(r.getKind()))
 						.orElseGet(ArrayList::new);
-					list.add((IResourcePile) member);
-					resources.put(((IResourcePile) member).getKind(), list);
-				} else if (member instanceof Animal) {
+					list.add(r);
+					resources.put(r.getKind(), list);
+				} else if (member instanceof Animal a) {
 					final Animal existing = findAndRemoveFirst(animals,
-						((Animal) member)::equalExceptPopulation);
+						a::equalExceptPopulation);
 					if (existing == null) {
-						animals.add((Animal) member);
+						animals.add(a);
 					} else {
-						animals.add(((Animal) member).combined(existing));
+						animals.add(a.combined(existing));
 					}
 				} else {
 					others.add(member);

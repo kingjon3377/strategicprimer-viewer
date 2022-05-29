@@ -72,8 +72,7 @@ public class AnimalTabularReportGenerator implements ITableGenerator<AnimalOrTra
 			kind = "tracks or traces of " + item.getKind();
 			age = "---";
 			population = "---";
-		} else if (item instanceof Animal) {
-			final Animal animal = (Animal) item;
+		} else if (item instanceof final Animal animal) {
 			if (animal.isTalking()) {
 				kind = "talking " + item.getKind();
 				age = "---";

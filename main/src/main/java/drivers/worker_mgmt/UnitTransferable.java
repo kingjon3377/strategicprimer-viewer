@@ -54,8 +54,8 @@ import common.map.HasMutableKind;
 
 	@Override
 	public boolean equals(final Object that) {
-		if (that instanceof UnitTransferable) {
-			return payload.equals(((UnitTransferable) that).payload);
+		if (that instanceof UnitTransferable ut) {
+			return payload.equals(ut.payload);
 		} else {
 			return false;
 		}

@@ -455,8 +455,8 @@ import common.map.fixtures.towns.Village;
 		final Map<String, Integer> villageMap = new HashMap<>();
 		for (final IUnit unit : model.getUnits(player)) {
 			for (final UnitMember member : unit) {
-				if (member instanceof IWorker) {
-					final String note = ((IWorker) member).getNote(player);
+				if (member instanceof IWorker worker) {
+					final String note = worker.getNote(player);
 					final Matcher match = VILLAGER_PATTERN.matcher(note);
 					if (match.find()) {
 						final String village = match.group(1);

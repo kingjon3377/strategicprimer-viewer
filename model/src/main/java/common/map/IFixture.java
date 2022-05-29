@@ -5,6 +5,10 @@ package common.map;
  * model.common.map.fixtures.UnitMember UnitMembers} (etc.) that shouldn't be
  * {@link TileFixture TileFixtures}s, so we don't have to special-case them for
  * things like searching.
+ *
+ * TODO: Add a method for generic "identity": most implementations will probably just check type and ID, but units will
+ * probably check name and kind, for instance. This is looser than equals(), since adding members to a unit shouldn't
+ * break identity, but not *too* vague.
  */
 public interface IFixture {
 	/**

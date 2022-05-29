@@ -54,38 +54,34 @@ import javax.xml.stream.XMLStreamException;
 			element, warner);
 		retval.setPortrait(getAttribute(element, "portrait", ""));
 		for (final XMLEvent event : stream) {
-			if (event instanceof StartElement && isSPStartElement(event)) {
-				switch (((StartElement) event).getName().getLocalPart().toLowerCase()) {
-				case "job" -> retval.addJob(readJob((StartElement) event, element.getName(),
+			if (event instanceof StartElement se && isSPStartElement(event)) {
+				switch (se.getName().getLocalPart().toLowerCase()) {
+				case "job" -> retval.addJob(readJob(se, element.getName(),
 						stream, players, warner, idFactory));
-				case "stats" -> retval.setStats(readStats((StartElement) event, element.getName(),
+				case "stats" -> retval.setStats(readStats(se, element.getName(),
 						stream, players, warner, idFactory));
 				case "note" -> retval.setNote(
-						players.getPlayer(getIntegerAttribute((StartElement) event,
-								"player")),
-						readNote((StartElement) event, element.getName(), stream,
-								warner));
+						players.getPlayer(getIntegerAttribute(se, "player")),
+						readNote(se, element.getName(), stream, warner));
 				case "animal" -> {
 					if (retval.getMount() == null) {
-						final AnimalOrTracks animal = readAnimal((StartElement) event, element.getName(), stream,
-								players,
+						final AnimalOrTracks animal = readAnimal(se, element.getName(), stream, players,
 								warner, idFactory);
-						if (animal instanceof Animal) {
-							retval.setMount((Animal) animal);
+						if (animal instanceof Animal a) {
+							retval.setMount(a);
 							break;
 						}
 					}
-					throw new UnwantedChildException(((StartElement) event).getName(), element);
+					throw new UnwantedChildException(se.getName(), element);
 				}
 				case "implement" ->
-						retval.addEquipment(FluidResourceHandler.readImplement((StartElement) event, element.getName()
+						retval.addEquipment(FluidResourceHandler.readImplement(se, element.getName()
 								, stream,
 								players, warner, idFactory));
 				default -> throw UnwantedChildException.listingExpectedTags(element.getName(),
-						(StartElement) event, "job", "stats", "note", "animal", "implement");
+						se, "job", "stats", "note", "animal", "implement");
 				}
-			} else if (event instanceof EndElement &&
-					element.getName().equals(((EndElement) event).getName())) {
+			} else if (event instanceof EndElement ee && element.getName().equals(ee.getName())) {
 				break;
 			}
 		}
@@ -98,13 +94,12 @@ import javax.xml.stream.XMLStreamException;
 		expectAttributes(element, warner, "player");
 		final StringBuilder retval = new StringBuilder();
 		for (final XMLEvent event : stream) {
-			if (event instanceof StartElement && isSPStartElement(event)) {
-				throw new UnwantedChildException(element.getName(), (StartElement) event);
-			} else if (event instanceof EndElement &&
-					element.getName().equals(((EndElement) event).getName())) {
+			if (event instanceof StartElement se && isSPStartElement(event)) {
+				throw new UnwantedChildException(element.getName(), se);
+			} else if (event instanceof EndElement ee && element.getName().equals(ee.getName())) {
 				break;
-			} else if (event instanceof Characters) {
-				retval.append(((Characters) event).getData());
+			} else if (event instanceof Characters c) {
+				retval.append(c.getData());
 			}
 		}
 		return retval.toString().strip();
@@ -118,17 +113,14 @@ import javax.xml.stream.XMLStreamException;
 		final IMutableJob retval = new Job(getAttribute(element, "name"),
 			getIntegerAttribute(element, "level"));
 		for (final XMLEvent event : stream) {
-			if (event instanceof StartElement && isSPStartElement(event)) {
-				if ("skill".equalsIgnoreCase(
-						((StartElement) event).getName().getLocalPart())) {
-					retval.addSkill(readSkill((StartElement) event, element.getName(),
+			if (event instanceof StartElement se && isSPStartElement(event)) {
+				if ("skill".equalsIgnoreCase(se.getName().getLocalPart())) {
+					retval.addSkill(readSkill(se, element.getName(),
 						stream, players, warner, idFactory));
 				} else {
-					throw UnwantedChildException.listingExpectedTags(element.getName(),
-						(StartElement) event, "skill");
+					throw UnwantedChildException.listingExpectedTags(element.getName(), se, "skill");
 				}
-			} else if (event instanceof  EndElement &&
-					element.getName().equals(((EndElement) event).getName())) {
+			} else if (event instanceof  EndElement ee && element.getName().equals(ee.getName())) {
 				break;
 			}
 		}

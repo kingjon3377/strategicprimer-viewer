@@ -198,8 +198,8 @@ public class PopulationGeneratingModel extends SimpleMultiMapModel { // TODO: Ex
 				.filter(f -> name.equals(f.getName()))
 				.findAny();
 			if (town.isPresent()) {
-				if (town.get() instanceof AbstractTown) {
-					((AbstractTown) (town.get())).setPopulation(stats);
+				if (town.get() instanceof AbstractTown t) {
+					t.setPopulation(stats);
 				} else {
 					((Village) (town.get())).setPopulation(stats);
 				}
@@ -216,8 +216,8 @@ public class PopulationGeneratingModel extends SimpleMultiMapModel { // TODO: Ex
 	 * a fortress's contents into a stream of tile fixtures.
 	 */
 	private static Stream<IFixture> flattenFortresses(final IFixture fixture) {
-		if (fixture instanceof IFortress) {
-			return ((IFortress) fixture).stream().map(IFixture.class::cast);
+		if (fixture instanceof IFortress fort) {
+			return fort.stream().map(IFixture.class::cast);
 		} else {
 			return Stream.of(fixture);
 		}
@@ -337,14 +337,12 @@ public class PopulationGeneratingModel extends SimpleMultiMapModel { // TODO: Ex
 					if (streamedJob.isPresent()) {
 						streamedJob.get().setLevel(
 							streamedJob.get().getLevel() + 1);
-					} else if (queriedJob instanceof IMutableJob) {
-						((IMutableJob) queriedJob)
-							.setLevel(queriedJob.getLevel() + 1);
-					} else if (matching.get() instanceof IMutableWorker &&
-							StreamSupport.stream(matching.get().spliterator(), true)
+					} else if (queriedJob instanceof IMutableJob mj) {
+						mj.setLevel(queriedJob.getLevel() + 1);
+					} else if (matching.get() instanceof IMutableWorker mw &&
+							StreamSupport.stream(mw.spliterator(), true)
 									.noneMatch(j -> j.getName().equals(jobName))) {
-						((IMutableWorker) matching.get())
-							.addJob(new Job(jobName, 1));
+						mw.addJob(new Job(jobName, 1));
 					} else {
 						continue;
 					}

@@ -92,45 +92,45 @@ public class CropTabularReportGenerator implements ITableGenerator</*Forest|Shru
 		final String size;
 		final String sizeUnit;
 		final String crop = ((HasKind) item).getKind();
-		if (item instanceof Forest) {
-			kind = (((Forest) item).isRows()) ? "rows" : "forest";
+		if (item instanceof Forest f) {
+			kind = (f.isRows()) ? "rows" : "forest";
 			cultivation = "---";
 			status = "---";
-			if (((Forest) item).getAcres().doubleValue() > 0.0) {
-				size = truncatedNumberString(((Forest) item).getAcres());
+			if (f.getAcres().doubleValue() > 0.0) {
+				size = truncatedNumberString(f.getAcres());
 				sizeUnit = "acres";
 			} else {
 				size = "unknown";
 				sizeUnit = "---";
 			}
-		} else if (item instanceof Shrub) {
+		} else if (item instanceof Shrub s) {
 			kind = "shrub";
 			cultivation = "---";
 			status = "---";
-			if (((Shrub) item).getPopulation() > 0) {
-				size = Integer.toString(((Shrub) item).getPopulation());
+			if (s.getPopulation() > 0) {
+				size = Integer.toString(s.getPopulation());
 				sizeUnit = "plants";
 			} else {
 				size = "unknown";
 				sizeUnit = "---";
 			}
-		} else if (item instanceof Meadow) {
-			kind = (((Meadow) item).isField()) ? "field" : "meadow";
-			cultivation = (((Meadow) item).isCultivated()) ? "cultivated" : "wild";
-			status = ((Meadow) item).getStatus().toString();
-			if (((Meadow) item).getAcres().doubleValue() > 0.0) {
-				size = truncatedNumberString(((Meadow) item).getAcres());
+		} else if (item instanceof Meadow m) {
+			kind = m.isField() ? "field" : "meadow";
+			cultivation = m.isCultivated() ? "cultivated" : "wild";
+			status = m.getStatus().toString();
+			if (m.getAcres().doubleValue() > 0.0) {
+				size = truncatedNumberString(m.getAcres());
 				sizeUnit = "acres";
 			} else {
 				size = "unknown";
 				sizeUnit = "---";
 			}
-		} else if (item instanceof Grove) {
-			kind = (((Grove) item).isOrchard()) ? "orchard" : "grove";
-			cultivation = (((Grove) item).isCultivated()) ? "cultivated" : "wild";
+		} else if (item instanceof Grove g) {
+			kind = g.isOrchard() ? "orchard" : "grove";
+			cultivation = g.isCultivated() ? "cultivated" : "wild";
 			status = "---";
-			if (((Grove) item).getPopulation() > 0) {
-				size = Integer.toString(((Grove) item).getPopulation());
+			if (g.getPopulation() > 0) {
+				size = Integer.toString(g.getPopulation());
 				sizeUnit = "trees";
 			} else {
 				size = "unknown";

@@ -11,7 +11,7 @@ import common.map.IFixture;
 
 /**
  * A proxy for corresponding animal populations in different maps.
- * 
+ *
  * @deprecated We're trying to get rid of the notion of 'proxies' in favor of
  * driver model methods.
  */
@@ -95,10 +95,10 @@ import common.map.IFixture;
 
 	@Override
 	public Animal combined(final Animal addend) {
-		if (addend instanceof AnimalProxy && ((AnimalProxy) addend).isParallel()) {
+		if (addend instanceof AnimalProxy ap && ap.isParallel()) {
 			final List<Animal> interim = new ArrayList<>();
 			final Iterator<Animal> ours = getProxied().iterator();
-			final Iterator<Animal> theirs = ((AnimalProxy) addend).getProxied().iterator();
+			final Iterator<Animal> theirs = ap.getProxied().iterator();
 			while (ours.hasNext() && theirs.hasNext()) {
 				interim.add(ours.next().combined(theirs.next()));
 			}
@@ -144,8 +144,8 @@ import common.map.IFixture;
 	public boolean equals(final Object obj) {
 		if (this == obj) {
 			return true;
-		} else if (obj instanceof Animal) {
-			return ((Animal) obj).getId() == getId() && equalsIgnoringID((Animal) obj);
+		} else if (obj instanceof Animal a) {
+			return a.getId() == getId() && equalsIgnoringID(a);
 		} else {
 			return false;
 		}

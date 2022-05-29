@@ -219,14 +219,14 @@ import java.math.BigDecimal;
 	 * uncultivated grove or orchard, an abandoned mine, or a cache is not claimable.
 	 */
 	private static boolean isReallyClaimable(final HarvestableFixture fix) {
-		if (fix instanceof MineralVein) {
-			return ((MineralVein) fix).isExposed();
-		} else if (fix instanceof Meadow) {
-			return ((Meadow) fix).isCultivated();
-		} else if (fix instanceof Grove) {
-			return ((Grove) fix).isCultivated();
-		} else if (fix instanceof Mine) {
-			return TownStatus.Active == ((Mine) fix).getStatus();
+		if (fix instanceof MineralVein mv) {
+			return mv.isExposed();
+		} else if (fix instanceof Meadow m) {
+			return m.isCultivated();
+		} else if (fix instanceof Grove g) {
+			return g.isCultivated();
+		} else if (fix instanceof Mine m) {
+			return TownStatus.Active == m.getStatus();
 		} else if (fix instanceof CacheFixture) {
 			return false;
 		} else if (fix instanceof Shrub || fix instanceof StoneDeposit) {
@@ -380,10 +380,10 @@ import java.math.BigDecimal;
 	 * TODO: Provide and use lookup tables for specific crops to avoid miscategorizations
 	 */
 	private static String getHarvestableKind(final HarvestableFixture fixture) {
-		if (fixture instanceof Grove) {
-			return (((Grove) fixture).isOrchard()) ? "food" : "wood";
-		} else if (fixture instanceof Meadow) {
-			return (((Meadow) fixture).isField()) ? "food" : "fodder";
+		if (fixture instanceof Grove g) {
+			return (g.isOrchard()) ? "food" : "wood";
+		} else if (fixture instanceof Meadow m) {
+			return (m.isField()) ? "food" : "fodder";
 		} else if (fixture instanceof MineralVein) {
 			return "mineral";
 		} else if (fixture instanceof StoneDeposit) {

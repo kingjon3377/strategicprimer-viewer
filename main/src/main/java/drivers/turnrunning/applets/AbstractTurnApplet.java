@@ -115,21 +115,18 @@ public abstract class AbstractTurnApplet implements TurnApplet {
 		final IMapNG map = model.getMap();
 		for (final Point loc : map.getLocations()) {
 			for (final TileFixture fix : map.getFixtures(loc)) {
-				if (fix instanceof IFortress) {
-					for (final FortressMember member : (IFortress) fix) {
-						if (member instanceof IResourcePile && ((IFortress) fix).getOwner().equals(player)) {
-							final IResourcePile pile = (IResourcePile) member;
+				if (fix instanceof IFortress fort) {
+					for (final FortressMember member : fort) {
+						if (member instanceof final IResourcePile pile && fort.getOwner().equals(player)) {
 							if ("food".equals(pile.getKind()) &&
 									"pounds".equals(pile.getQuantity()
 										.getUnits()) &&
 									pile.getCreated() <= turn) {
 								retval.add(pile);
 							}
-						} else if (member instanceof IUnit && ((IUnit) member).getOwner().equals(player)) {
-							for (final UnitMember inner : (IUnit) member) {
-								if (inner instanceof IResourcePile) {
-									final IResourcePile pile =
-										(IResourcePile) inner;
+						} else if (member instanceof IUnit unit && unit.getOwner().equals(player)) {
+							for (final UnitMember inner : unit) {
+								if (inner instanceof final IResourcePile pile) {
 									if ("food".equals(pile.getKind()) &&
 											"pounds".equals(
 												pile.getQuantity()
@@ -142,10 +139,9 @@ public abstract class AbstractTurnApplet implements TurnApplet {
 							}
 						}
 					}
-				} else if (fix instanceof IUnit && ((IUnit) fix).getOwner().equals(player)) {
-					for (final UnitMember inner : (IUnit) fix) {
-						if (inner instanceof IResourcePile) {
-							final IResourcePile pile = (IResourcePile) inner;
+				} else if (fix instanceof IUnit unit && unit.getOwner().equals(player)) {
+					for (final UnitMember inner : unit) {
+						if (inner instanceof final IResourcePile pile) {
 							if ("food".equals(pile.getKind()) &&
 									"pounds".equals(pile.getQuantity()
 											.getUnits()) &&

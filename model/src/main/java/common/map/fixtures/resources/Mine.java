@@ -103,10 +103,10 @@ public class Mine implements HarvestableFixture, MineralFixture {
 
 	@Override
 	public boolean equals(final Object obj) {
-		if (obj instanceof Mine) {
-			return kind.equals(((Mine) obj).getKind()) &&
-					       status == ((Mine) obj).getStatus() &&
-				id == ((Mine) obj).getId();
+		if (obj instanceof Mine it) {
+			return kind.equals(it.getKind()) &&
+					       status == it.getStatus() &&
+				id == it.getId();
 		} else {
 			return false;
 		}
@@ -119,9 +119,9 @@ public class Mine implements HarvestableFixture, MineralFixture {
 
 	@Override
 	public boolean equalsIgnoringID(final IFixture fixture) {
-		if (fixture instanceof Mine) {
-		return kind.equals(((Mine) fixture).getKind()) &&
-				       status == ((Mine) fixture).getStatus();
+		if (fixture instanceof Mine it) {
+		return kind.equals(it.getKind()) &&
+				       status == it.getStatus();
 		} else {
 			return false;
 		}

@@ -86,10 +86,10 @@ public final class PlayerImpl implements MutablePlayer {
 	public boolean equals(final Object obj) {
 		if (this == obj) {
 			return true;
-		} else if (obj instanceof Player) {
-			return playerId == ((Player) obj).getPlayerId() &&
-				name.equals(((Player) obj).getName()) &&
-				Objects.equals(country, ((Player) obj).getCountry());
+		} else if (obj instanceof Player p) {
+			return playerId == p.getPlayerId() &&
+				name.equals(p.getName()) &&
+				Objects.equals(country, p.getCountry());
 		} else {
 			return false;
 		}

@@ -111,17 +111,17 @@ public interface IUnit extends MobileFixture, HasImage, HasKind, HasName,
 	@Override
 	default boolean isSubset(final IFixture obj, final Consumer<String> report) {
 		if (obj.getId() == getId()) {
-			if (obj instanceof IUnit) {
+			if (obj instanceof IUnit that) {
 				final Consumer<String> localSimpleReport =
 					s -> report.accept(String.format("In Unit of ID #%d:\t%s",
 						getId(), s));
-				if (getOwner().getPlayerId() != ((IUnit) obj).getOwner().getPlayerId()) {
+				if (getOwner().getPlayerId() != that.getOwner().getPlayerId()) {
 					localSimpleReport.accept("Owners differ");
 					return false;
-				} else if (!getName().equals(((IUnit) obj).getName())) {
+				} else if (!getName().equals(that.getName())) {
 					localSimpleReport.accept("Names differ");
 					return false;
-				} else if (!getKind().equals(((IUnit) obj).getKind())) {
+				} else if (!getKind().equals(that.getKind())) {
 					localSimpleReport.accept("Kinds differ");
 					return false;
 				}
@@ -131,7 +131,7 @@ public interface IUnit extends MobileFixture, HasImage, HasKind, HasName,
 				final Consumer<String> localReport =
 					s -> report.accept(String.format("In unit of %s (%s) (ID #%d):\t%s",
 						getName(), getKind(), getId(), s));
-				for (final UnitMember member : (IUnit) obj) {
+				for (final UnitMember member : that) {
 					if (ours.containsKey(member.getId())) {
 						if (!ours.get(member.getId()).isSubset(member, localReport)) {
 							retval = false;
@@ -144,7 +144,7 @@ public interface IUnit extends MobileFixture, HasImage, HasKind, HasName,
 				}
 				if (retval) {
 					if (("unassigned".equals(getName()) || "unassigned".equals(getKind()))
-							&& !isEmpty() && ((IUnit) obj).isEmpty()) {
+							&& !isEmpty() && that.isEmpty()) {
 						localReport.accept(
 							"Non-empty \"unassigned\" when submap has it empty");
 					}

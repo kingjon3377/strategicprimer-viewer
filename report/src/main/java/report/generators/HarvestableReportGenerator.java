@@ -101,33 +101,32 @@ public class HarvestableReportGenerator extends AbstractReportGenerator<Harvesta
 		ostream.accept("At ");
 		ostream.accept(loc.toString());
 		ostream.accept(": ");
-		if (item instanceof CacheFixture) {
+		if (item instanceof CacheFixture cf) {
 			ostream.accept("A cache of ");
 			ostream.accept(item.getKind());
 			ostream.accept(", containing ");
-			ostream.accept(((CacheFixture) item).getContents());
-		} else if (item instanceof Grove) {
-			ostream.accept((((Grove) item).isCultivated()) ? "cultivated " : "wild ");
+			ostream.accept(cf.getContents());
+		} else if (item instanceof Grove g) {
+			ostream.accept(g.isCultivated() ? "cultivated " : "wild ");
 			ostream.accept(item.getKind());
-			ostream.accept((((Grove) item).isOrchard()) ? " orchard " : " grove ");
+			ostream.accept(g.isOrchard() ? " orchard " : " grove ");
 			ostream.accept(populationCountString(((Grove) item), "tree"));
-		} else if (item instanceof Meadow) {
-			ostream.accept(((Meadow) item).getStatus().toString());
-			ostream.accept((((Meadow) item).isCultivated()) ? " cultivated " :
+		} else if (item instanceof Meadow m) {
+			ostream.accept(m.getStatus().toString());
+			ostream.accept(m.isCultivated() ? " cultivated " :
 				" wild or abandoned ");
 			ostream.accept(item.getKind());
-			ostream.accept((((Meadow) item).isField()) ? " field " : " meadow ");
-			ostream.accept(acreageString(((Meadow) item)));
+			ostream.accept(m.isField() ? " field " : " meadow ");
+			ostream.accept(acreageString(m));
 		} else if (item instanceof Mine) {
 			ostream.accept(item.toString());
-		} else if (item instanceof MineralVein) {
-			ostream.accept((((MineralVein) item).isExposed()) ? "An exposed vein of " :
-				"An unexposed vein of ");
+		} else if (item instanceof MineralVein mv) {
+			ostream.accept(mv.isExposed() ? "An exposed vein of " : "An unexposed vein of ");
 			ostream.accept(item.getKind());
-		} else if (item instanceof Shrub) {
+		} else if (item instanceof Shrub s) {
 			ostream.accept(item.getKind());
 			ostream.accept(" ");
-			ostream.accept(populationCountString((Shrub) item, "plant"));
+			ostream.accept(populationCountString(s, "plant"));
 		} else /*if (item instanceof StoneDeposit)*/ {
 			ostream.accept("An exposed ");
 			ostream.accept(item.getKind());
@@ -171,17 +170,17 @@ public class HarvestableReportGenerator extends AbstractReportGenerator<Harvesta
 			final Point point = pair.getValue0();
 			final HarvestableFixture item = pair.getValue1();
 			// TODO: Use a Map by type
-			if (item instanceof CacheFixture) {
-				caches.put((CacheFixture) item, point);
+			if (item instanceof CacheFixture c) {
+				caches.put(c, point);
 				fixtures.remove(item.getId());
-			} else if (item instanceof Grove) {
-				groves.put((Grove) item, point);
+			} else if (item instanceof Grove g) {
+				groves.put(g, point);
 				fixtures.remove(item.getId());
-			} else if (item instanceof Meadow) {
-				meadows.put((Meadow) item, point);
+			} else if (item instanceof Meadow m) {
+				meadows.put(m, point);
 				fixtures.remove(item.getId());
-			} else if (item instanceof Mine) {
-				mines.put((Mine) item, point);
+			} else if (item instanceof Mine m) {
+				mines.put(m, point);
 				fixtures.remove(item.getId());
 			} else if (item instanceof MineralVein) {
 				final List<Point> list = Optional.ofNullable(minerals.get(

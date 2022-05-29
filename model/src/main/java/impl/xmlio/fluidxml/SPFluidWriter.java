@@ -175,12 +175,12 @@ public class SPFluidWriter implements SPWriter {
 				throw new IllegalArgumentException("Can only \"simply\" write fixtures.");
 			}
 			writeTag(ostream, tag, indentation, true);
-			if (obj instanceof HasKind) {
-				writeAttributes(ostream, Pair.with("kind", ((HasKind) obj).getKind()));
+			if (obj instanceof HasKind hk) {
+				writeAttributes(ostream, Pair.with("kind", hk.getKind()));
 			}
 			writeAttributes(ostream, Pair.with("id", ((IFixture) obj).getId()));
-			if (obj instanceof HasImage) {
-				writeImage(ostream, (HasImage) obj);
+			if (obj instanceof HasImage hi) {
+				writeImage(ostream, hi);
 			}
 		}
 

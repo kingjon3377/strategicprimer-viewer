@@ -244,8 +244,7 @@ public final class WindowList {
 			if (w == null) {
 				list.remove(a);
 			} else {
-				if (w instanceof Frame) {
-					final Frame f = (Frame) w;
+				if (w instanceof final Frame f) {
 					if (includeInvisible || f.isVisible()) {
 						returnValue.add(f);
 					} else if (includeIconified

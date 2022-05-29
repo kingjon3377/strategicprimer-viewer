@@ -26,7 +26,7 @@ import lovelace.util.FileContentsReader;
 public final class AboutDialog extends SPDialog {
 	private static final long serialVersionUID = 1L;
 	public AboutDialog(final @Nullable Component parentComponent, final @Nullable String app) throws IOException {
-		super(parentComponent instanceof Frame ? (Frame) parentComponent : null, "About");
+		super(parentComponent instanceof Frame f ? f : null, "About");
 		setLayout(new BorderLayout()); // TODO: Use a BorderedPanel for contentPane
 		final Iterable<String> resource = FileContentsReader.readFileContents(AboutDialog.class,
 			"about.html");

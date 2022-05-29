@@ -25,9 +25,8 @@ public final class SimplePair<Type> {
 	public boolean equals(final Object obj) {
 		if (this == obj) {
 			return true;
-		} else if (obj instanceof SimplePair) {
-			return Objects.equals(first, ((SimplePair<?>) obj).getFirst()) &&
-					       Objects.equals(second, ((SimplePair<?>) obj).getSecond());
+		} else if (obj instanceof SimplePair sp) {
+			return Objects.equals(first, sp.getFirst()) && Objects.equals(second, sp.getSecond());
 		} else {
 			return false;
 		}

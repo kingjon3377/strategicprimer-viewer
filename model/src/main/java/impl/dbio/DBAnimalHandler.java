@@ -90,30 +90,30 @@ final class DBAnimalHandler extends AbstractDatabaseWriter<AnimalOrTracks, /*Poi
 			throw new IllegalArgumentException("context must be a point, a unit, or a worker");
 		}
 		if (obj instanceof AnimalTracks) {
-			if (context instanceof IUnit || context instanceof IWorker) {
+			if (context instanceof IUnit || context instanceof IWorker) { // TODO: Invert test so we can use Ceylon-like type-inferring instanceof
 				throw new IllegalArgumentException("Animal tracks can't occur inside a unit or worker");
 			}
 			INSERT_TRACKS.on(value("row", ((Point) context).getRow()), value("column", ((Point) context).getColumn()),
 						value("kind", obj.getKind()), value("image", ((AnimalTracks) obj).getImage()))
 					.execute(db.connection());
-		} else if (obj instanceof Animal) {
+		} else if (obj instanceof Animal a) {
 			final List<Param> params = new ArrayList<>();
-			if (context instanceof Point) {
-				params.add(value("row", ((Point) context).getRow()));
-				params.add(value("column", ((Point) context).getColumn()));
+			if (context instanceof Point p) {
+				params.add(value("row", p.getRow()));
+				params.add(value("column", p.getColumn()));
 			} else {
 				params.add(value("parent", ((IFixture) context).getId()));
 			}
 			params.add(value("kind", obj.getKind()));
-			params.add(value("talking", ((Animal) obj).isTalking()));
-			params.add(value("status", ((Animal) obj).getStatus()));
-			final Optional<Integer> born = born((Animal) obj);
+			params.add(value("talking", a.isTalking()));
+			params.add(value("status", a.getStatus()));
+			final Optional<Integer> born = born(a);
 			if (born.isPresent()) {
 				params.add(value("born", born.get()));
 			}
-			params.add(value("count", ((Animal) obj).getPopulation()));
+			params.add(value("count", a.getPopulation()));
 			params.add(value("id", obj.getId()));
-			params.add(value("image", ((Animal) obj).getImage()));
+			params.add(value("image", a.getImage()));
 			INSERT_ANIMAL.on(params).execute(db.connection());
 		}
 	}

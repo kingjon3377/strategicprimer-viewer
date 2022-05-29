@@ -51,8 +51,8 @@ public class ResourceAddingGUIFactory implements GUIDriverFactory {
 
 	@Override
 	public GUIDriver createDriver(final ICLIHelper cli, final SPOptions options, final IDriverModel model) {
-		if (model instanceof ResourceManagementDriverModel) {
-			return new ResourceAddingGUI(cli, options, (ResourceManagementDriverModel) model);
+		if (model instanceof ResourceManagementDriverModel rmdm) {
+			return new ResourceAddingGUI(cli, options, rmdm);
 		} else {
 			return createDriver(cli, options, new ResourceManagementDriverModel(model));
 		}

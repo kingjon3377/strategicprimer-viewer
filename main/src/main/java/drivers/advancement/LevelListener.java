@@ -56,8 +56,8 @@ import common.map.fixtures.mobile.worker.IJob;
 	 * HasName} objects using their {@link Object#toString toString} method.
 	 */
 	private static String getName(final Object named) {
-		if (named instanceof HasName) {
-			return ((HasName) named).getName();
+		if (named instanceof HasName n) {
+			return n.getName();
 		} else {
 			return named.toString();
 		}

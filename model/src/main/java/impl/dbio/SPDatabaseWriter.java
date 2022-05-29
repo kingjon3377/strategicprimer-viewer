@@ -74,12 +74,12 @@ public final class SPDatabaseWriter implements SPWriter {
 				});
 			notesInitialized.add(sql);
 		}
-		if (obj instanceof HasNotes) {
+		if (obj instanceof HasNotes hn) {
 			sql.transaction().accept(db -> {
-					for (final Integer player : ((HasNotes) obj).getNotesPlayers()) {
-						final String note = ((HasNotes) obj).getNote(player);
+					for (final Integer player : hn.getNotesPlayers()) {
+						final String note = hn.getNote(player);
 						if (!note.isEmpty()) {
-							INSERT_NOTE.on(value("fixture", ((HasNotes) obj).getId()),
+							INSERT_NOTE.on(value("fixture", hn.getId()),
 									value("player", player), value("note", note)).executeInsert(db);
 						}
 					}

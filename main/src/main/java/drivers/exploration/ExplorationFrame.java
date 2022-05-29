@@ -88,8 +88,8 @@ import org.eclipse.jdt.annotation.Nullable;
 
 		driver.getModel().addSelectionChangeListener(explorationPanel);
 
-		if (mpField.getEditor() instanceof JTextField) {
-			((JTextField) mpField.getEditor()).addActionListener(ignored -> buttonListener());
+		if (mpField.getEditor() instanceof JTextField tf) {
+			tf.addActionListener(ignored -> buttonListener());
 		}
 
 		add(new BorderedPanel(horizontalSplit(

@@ -33,8 +33,8 @@ public class TodoFixerFactory implements ModelDriverFactory {
 
 	@Override
 	public ModelDriver createDriver(final ICLIHelper cli, final SPOptions options, final IDriverModel model) {
-		if (model instanceof UtilityDriverModel) {
-			return new TodoFixerCLI(cli, (UtilityDriverModel) model);
+		if (model instanceof UtilityDriverModel udm) {
+			return new TodoFixerCLI(cli, udm);
 		} else {
 			return createDriver(cli, options, new UtilityDriverModel(model));
 		}

@@ -184,8 +184,7 @@ public class MemberDetailPanel extends BorderedPanel implements UnitMemberListen
 	private void recache() {
 		final UnitMember local = current;
 		jobsPanel.removeAll();
-		if (local instanceof IWorker) {
-			final IWorker worker = (IWorker) local;
+		if (local instanceof final IWorker worker) {
 			typeLabel.setText("Worker");
 			nameLabel.setText(worker.getName());
 			kindLabel.setText(worker.getKind());
@@ -213,8 +212,7 @@ public class MemberDetailPanel extends BorderedPanel implements UnitMemberListen
 			for (final Implement item : worker.getEquipment()) {
 				jobsPanel.add(new JLabel(item.toString()));
 			}
-		} else if (local instanceof Animal) {
-			final Animal animal = (Animal) local;
+		} else if (local instanceof final Animal animal) {
 			final String plural = AnimalPlurals.get(animal.getKind());
 				final Map<String, Integer> maturityAges = MaturityModel.getMaturityAges();
 			if (animal.getBorn() >= 0 && MaturityModel.getCurrentTurn() >= 0 &&
@@ -243,8 +241,7 @@ public class MemberDetailPanel extends BorderedPanel implements UnitMemberListen
 			for (final InterpolatedLabel<@Nullable WorkerStats> label : statLabels) {
 				label.setArgument(null);
 			}
-		} else if (local instanceof Implement) {
-			final Implement eq = (Implement) local;
+		} else if (local instanceof final Implement eq) {
 			typeLabel.setText("Equipment");
 			nameLabel.setText("");
 			if (eq.getCount() > 1) {
@@ -255,8 +252,7 @@ public class MemberDetailPanel extends BorderedPanel implements UnitMemberListen
 			for (final InterpolatedLabel<@Nullable WorkerStats> label : statLabels) {
 				label.setArgument(null);
 			}
-		} else if (local instanceof IResourcePile) {
-			final IResourcePile rp = (IResourcePile) local;
+		} else if (local instanceof final IResourcePile rp) {
 			typeLabel.setText("Resource");
 			nameLabel.setText("");
 			kindLabel.setText(String.format("%s %s (%s)", rp.getQuantity(), rp.getContents(),
@@ -280,8 +276,8 @@ public class MemberDetailPanel extends BorderedPanel implements UnitMemberListen
 			}
 		}
 		portraitComponent.setPortrait(null);
-		if (local instanceof HasPortrait) {
-			final String portraitName = ((HasPortrait) local).getPortrait();
+		if (local instanceof HasPortrait hp) {
+			final String portraitName = hp.getPortrait();
 			if (!portraitName.isEmpty()) {
 				try {
 					portraitComponent.setPortrait(ImageLoader.loadImage(portraitName));
@@ -295,8 +291,8 @@ public class MemberDetailPanel extends BorderedPanel implements UnitMemberListen
 
 	@Override
 	public void memberSelected(final @Nullable UnitMember old, final @Nullable UnitMember selected) {
-		if (selected instanceof ProxyFor) {
-			if (((ProxyFor<? extends UnitMember>) selected).isParallel()) {
+		if (selected instanceof ProxyFor p) {
+			if (p.isParallel()) {
 				final Iterator<? extends UnitMember> proxied =
 					((ProxyFor<? extends UnitMember>) selected).getProxied().iterator();
 				if (proxied.hasNext()) {

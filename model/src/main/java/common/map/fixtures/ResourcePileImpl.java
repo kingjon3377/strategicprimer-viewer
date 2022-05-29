@@ -149,8 +149,8 @@ public final class ResourcePileImpl implements IMutableResourcePile {
 	public boolean equals(final Object obj) {
 		if (this == obj) {
 			return true;
-		} else if (obj instanceof IResourcePile) {
-			return id == ((IResourcePile) obj).getId() && equalsIgnoringID((IResourcePile) obj);
+		} else if (obj instanceof IResourcePile rp) {
+			return id == rp.getId() && equalsIgnoringID(rp);
 		} else {
 			return false;
 		}

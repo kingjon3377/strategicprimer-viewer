@@ -42,8 +42,8 @@ public final class SummonMenuItem extends JCheckBoxMenuItem {
 		// the main issue is that it won't even show up on Macs
 		// if you use the screen menubar, and since the goal
 		// is to emulate macs: why bother?
-		// if(frame instanceof JFrame)
-		// setUI(new FrameMenuItemUI((JFrame)frame));
+		// if(frame instanceof JFrame f)
+		// setUI(new FrameMenuItemUI(f));
 	}
 
 	private void updateText() {

@@ -72,14 +72,14 @@ import java.util.Set;
 
 	@Override
 	public void write(final ThrowingConsumer<String, IOException> ostream, final TerrainFixture obj, final int indent) throws IOException {
-		if (obj instanceof Forest) {
+		if (obj instanceof Forest f) {
 			writeTag(ostream, "forest", indent);
-			writeProperty(ostream, "kind", ((Forest) obj).getKind());
-			if (((Forest) obj).isRows()) {
+			writeProperty(ostream, "kind", f.getKind());
+			if (f.isRows()) {
 				writeProperty(ostream, "rows", "true");
 			}
-			if (HasExtent.isPositive(((Forest) obj).getAcres())) {
-				writeProperty(ostream, "acres", ((Forest) obj).getAcres().toString());
+			if (HasExtent.isPositive(f.getAcres())) {
+				writeProperty(ostream, "acres", f.getAcres().toString());
 			}
 		} else if (obj instanceof Hill) {
 			writeTag(ostream, "hill", indent);

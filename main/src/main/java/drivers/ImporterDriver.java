@@ -189,8 +189,8 @@ import org.jetbrains.annotations.Nullable;
 				final Point point = entry.getKey();
 				final HasName type = entry.getValue();
 				LovelaceLogger.trace("Setting %s to %s", point, type);
-				if (type instanceof TileType) {
-					finalRetval.setBaseTerrain(point, (TileType) type);
+				if (type instanceof TileType tt) {
+					finalRetval.setBaseTerrain(point, tt);
 				} else {
 					final ImportableTerrain terr = (ImportableTerrain) type;
 					switch (terr) {

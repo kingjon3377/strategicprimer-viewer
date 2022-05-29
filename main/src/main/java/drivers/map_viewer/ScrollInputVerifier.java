@@ -37,8 +37,7 @@ import lovelace.util.LovelaceLogger;
 	 */
 	@Override
 	public boolean verify(final JComponent input) {
-		if (input instanceof JScrollBar) {
-			final JScrollBar jsb = (JScrollBar) input;
+		if (input instanceof final JScrollBar jsb) {
 			if (jsb.getValue() >= 0 && jsb.getValue() < mapDimension.getAsInt()) {
 				LovelaceLogger.debug("%d is a valid %s coordinate", jsb.getValue(), dimension);
 				return true;

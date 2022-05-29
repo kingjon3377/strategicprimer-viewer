@@ -84,8 +84,8 @@ public class IntMap<Item> extends AbstractMap<Integer, Item> implements DelayedR
 	public final @Nullable Item remove(final Object key) {
 		if (toRemove.contains(key)) {
 			return null;
-		} else if (key instanceof Integer && backing.containsKey(key)) {
-			toRemove.add((Integer) key);
+		} else if (key instanceof Integer k && backing.containsKey(key)) {
+			toRemove.add(k);
 			return backing.get(key);
 		} else {
 			return null;

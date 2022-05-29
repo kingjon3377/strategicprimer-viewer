@@ -88,8 +88,8 @@ public class TabularReportCLI implements ReadOnlyDriver {
 	@Override
 	public void startDriver() throws DriverFailedException {
 		try {
-			if (model instanceof IMultiMapModel) {
-				for (final IMapNG map : ((IMultiMapModel) model).getAllMaps()) {
+			if (model instanceof IMultiMapModel mmm) {
+				for (final IMapNG map : mmm.getAllMaps()) {
 					createReports(map, map.getFilename());
 				}
 			} else {

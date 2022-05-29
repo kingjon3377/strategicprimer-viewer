@@ -49,8 +49,8 @@ public class TurnRunningModel extends ExplorationModel implements ITurnRunningMo
 	 * is intended to be used in {@link Stream#flatMap}.
 	 */
 	private static Stream<IFixture> unflattenNonFortresses(final TileFixture fixture) {
-		if (fixture instanceof IFortress) {
-			return ((IFortress) fixture).stream().map(IFixture.class::cast);
+		if (fixture instanceof IFortress f) {
+			return f.stream().map(IFixture.class::cast);
 		} else {
 			return Stream.of(fixture);
 		}
@@ -62,8 +62,8 @@ public class TurnRunningModel extends ExplorationModel implements ITurnRunningMo
 	 * is intended to be used in {@link Stream#flatMap}.
 	 */
 	private static Stream<IFixture> partiallyFlattenFortresses(final TileFixture fixture) {
-		if (fixture instanceof IFortress) {
-			return Stream.concat(Stream.of(fixture), ((IFortress) fixture).stream());
+		if (fixture instanceof IFortress f) {
+			return Stream.concat(Stream.of(fixture), f.stream());
 		} else {
 			return Stream.of(fixture);
 		}
@@ -300,7 +300,7 @@ public class TurnRunningModel extends ExplorationModel implements ITurnRunningMo
 		boolean any = false;
 		final Random rng = new Random(contextValue);
 		for (final UnitMember member : unit) {
-			if (member instanceof IWorker && addHoursToSkill((IWorker) member, jobName, skillName, hours,
+			if (member instanceof IWorker w && addHoursToSkill(w, jobName, skillName, hours,
 					rng.nextInt(100))) {
 				any = true;
 			}
@@ -426,10 +426,10 @@ public class TurnRunningModel extends ExplorationModel implements ITurnRunningMo
 									     resource.getContents().equals(item.getContents()) && resource.getId() == item.getId())) {
 						final BigDecimal qty = decimalize(item.getQuantity().getNumber());
 						if (qty.compareTo(amount) <= 0) {
-							if (container instanceof IMutableUnit) {
-								((IMutableUnit) container).removeMember(item);
-							} else if (container instanceof IMutableFortress) {
-								((IMutableFortress) container).removeMember(item);
+							if (container instanceof IMutableUnit unit) {
+								unit.removeMember(item);
+							} else if (container instanceof IMutableFortress fort) {
+								fort.removeMember(item);
 							} else {
 								throw new IllegalStateException(
 									"Unexpected fixture container type");
@@ -478,10 +478,10 @@ public class TurnRunningModel extends ExplorationModel implements ITurnRunningMo
 						.map(IMutableResourcePile.class::cast)
 						.collect(Collectors.toList())) {
 					if (resource.isSubset(item, x -> {})) { // TODO: is that the right way around?
-						if (container instanceof IMutableUnit) {
-							((IMutableUnit) container).removeMember(item);
-						} else if (container instanceof IMutableFortress) {
-							((IMutableFortress) container).removeMember(item);
+						if (container instanceof IMutableUnit unit) {
+							unit.removeMember(item);
+						} else if (container instanceof IMutableFortress fort) {
+							fort.removeMember(item);
 						} else {
 							throw new IllegalStateException(
 								"Unexpected fixture container type");
@@ -719,10 +719,10 @@ public class TurnRunningModel extends ExplorationModel implements ITurnRunningMo
 				if (matching != null && destination != null) {
 					map.setModified(true);
 					if (quantity.doubleValue() >= matching.getQuantity().getNumber().doubleValue()) {
-						if (container instanceof IMutableFortress) { // TODO: Combine with other block when a supertype is added for this method
-							((IMutableFortress) container).removeMember(matching);
-						} else if (container instanceof IMutableUnit) {
-							((IMutableUnit) container).removeMember(matching);
+						if (container instanceof IMutableFortress fort) { // TODO: Combine with other block when a supertype is added for this method
+							fort.removeMember(matching);
+						} else if (container instanceof IMutableUnit unit) {
+							unit.removeMember(matching);
 						} else {
 							throw new IllegalStateException("Unexpected fixture-container type");
 						}
@@ -780,10 +780,10 @@ public class TurnRunningModel extends ExplorationModel implements ITurnRunningMo
 				if (matching != null && destination != null) {
 					map.setModified(true);
 					if (quantity.doubleValue() >= matching.getQuantity().getNumber().doubleValue()) {
-						if (container instanceof IMutableFortress) { // TODO: Combine with other block when a supertype is added for this method
-							((IMutableFortress) container).removeMember(matching);
-						} else if (container instanceof IMutableUnit) {
-							((IMutableUnit) container).removeMember(matching);
+						if (container instanceof IMutableFortress fort) { // TODO: Combine with other block when a supertype is added for this method
+							fort.removeMember(matching);
+						} else if (container instanceof IMutableUnit unit) {
+							unit.removeMember(matching);
 						} else {
 							throw new IllegalStateException("Unexpected fixture-container type");
 						}

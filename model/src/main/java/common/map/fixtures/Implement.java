@@ -98,8 +98,8 @@ public class Implement implements UnitMember, FortressMember, HasKind, HasMutabl
 	public boolean equalsIgnoringID(final IFixture fixture) {
 		if (this == fixture) {
 			return true;
-		} else if (fixture instanceof Implement) {
-			return kind.equals(((Implement) fixture).kind) && ((Implement) fixture).getCount() == count;
+		} else if (fixture instanceof Implement that) {
+			return kind.equals(that.kind) && that.getCount() == count;
 		} else {
 			return false;
 		}
@@ -113,9 +113,9 @@ public class Implement implements UnitMember, FortressMember, HasKind, HasMutabl
 		if (this == obj) {
 			return true;
 		} else if (obj.getId() == id) {
-			if (obj instanceof Implement) {
-				if (kind.equals(((Implement) obj).getKind())) {
-					if (((Implement) obj).getCount() <= count) {
+			if (obj instanceof Implement that) {
+				if (kind.equals(that.getKind())) {
+					if (that.getCount() <= count) {
 						return true;
 					} else {
 						report.accept(String.format("In Implement ID #%d:\tHas higher count than we do", id));
@@ -159,9 +159,9 @@ public class Implement implements UnitMember, FortressMember, HasKind, HasMutabl
 	public boolean equals(final Object obj) {
 		if (this == obj) {
 			return true;
-		} else if (obj instanceof Implement) {
-			return ((Implement) obj).getId() == id && kind.equals(((Implement) obj).getKind()) &&
-				((Implement) obj).getCount() == count;
+		} else if (obj instanceof Implement that) {
+			return that.getId() == id && kind.equals(that.getKind()) &&
+				that.getCount() == count;
 		} else {
 			return false;
 		}

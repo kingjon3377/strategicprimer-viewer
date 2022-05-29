@@ -168,14 +168,14 @@ public class Meadow implements HarvestableFixture, HasExtent<Meadow> {
 
 	@Override
 	public boolean equals(final Object obj) {
-		if (obj instanceof Meadow) {
+		if (obj instanceof Meadow it) {
 			// TODO: Make NumberComparator.compare() static first, with the dynamic one delegating?
-			return kind.equals(((Meadow) obj).getKind()) &&
-				field == ((Meadow) obj).isField() &&
-					       status == ((Meadow) obj).getStatus() &&
-				cultivated == ((Meadow) obj).isCultivated() &&
-				id == ((Meadow) obj).getId() &&
-				new NumberComparator().compare(acres, ((Meadow) obj).getAcres()) == 0;
+			return kind.equals(it.getKind()) &&
+				field == it.isField() &&
+					       status == it.getStatus() &&
+				cultivated == it.isCultivated() &&
+				id == it.getId() &&
+				new NumberComparator().compare(acres, it.getAcres()) == 0;
 		} else {
 			return false;
 		}
@@ -183,12 +183,12 @@ public class Meadow implements HarvestableFixture, HasExtent<Meadow> {
 
 	@Override
 	public boolean equalsIgnoringID(final IFixture fixture) {
-		if (fixture instanceof Meadow) {
-			return kind.equals(((Meadow) fixture).getKind()) &&
-				field == ((Meadow) fixture).isField() &&
-					       status == ((Meadow) fixture).getStatus() &&
-				cultivated == ((Meadow) fixture).isCultivated() &&
-				new NumberComparator().compare(acres, ((Meadow) fixture).getAcres()) == 0;
+		if (fixture instanceof Meadow it) {
+			return kind.equals(it.getKind()) &&
+				field == it.isField() &&
+					       status == it.getStatus() &&
+				cultivated == it.isCultivated() &&
+				new NumberComparator().compare(acres, it.getAcres()) == 0;
 		} else {
 			return false;
 		}
@@ -199,11 +199,11 @@ public class Meadow implements HarvestableFixture, HasExtent<Meadow> {
 		if (other.getId() != id) {
 			report.accept("IDs differ");
 			return false;
-		} else if (other instanceof Meadow) {
-			if (field != (((Meadow) other).isField())) {
+		} else if (other instanceof Meadow it) {
+			if (field != it.isField()) {
 				report.accept("One field, one meadow for ID #" + id);
 				return false;
-			} else if (!kind.equals(((Meadow) other).getKind())) {
+			} else if (!kind.equals(it.getKind())) {
 				final String fieldString = (field) ? "field" : "meadow";
 				report.accept(String.format("In %s with ID #%d:\tKinds differ",
 					fieldString, id));
@@ -218,15 +218,15 @@ public class Meadow implements HarvestableFixture, HasExtent<Meadow> {
 					kind, id, s));
 			}
 			boolean retval = true;
-			if (status != ((Meadow) other).getStatus()) {
+			if (status != it.getStatus()) {
 				localReport.accept("Field status differs");
 				retval = false;
 			}
-			if (cultivated != ((Meadow) other).isCultivated()) {
+			if (cultivated != it.isCultivated()) { // TODO: Should non-cultivated be subset of cultivated?
 				localReport.accept("Cultivation status differs");
 				retval = false;
 			}
-			if (new NumberComparator().compare(acres, ((Meadow) other).getAcres()) < 0) {
+			if (new NumberComparator().compare(acres, it.getAcres()) < 0) {
 				localReport.accept("Has larger extent");
 				retval = false;
 			}

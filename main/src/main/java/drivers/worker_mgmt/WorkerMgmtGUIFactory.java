@@ -49,8 +49,8 @@ public class WorkerMgmtGUIFactory implements GUIDriverFactory {
 
 	@Override
 	public GUIDriver createDriver(final ICLIHelper cli, final SPOptions options, final IDriverModel model) {
-		if (model instanceof IWorkerModel) {
-			return new WorkerMgmtGUI(cli, options, (IWorkerModel) model);
+		if (model instanceof IWorkerModel wm) {
+			return new WorkerMgmtGUI(cli, options, wm);
 		} else {
 			return createDriver(cli, options, new WorkerModel(model));
 		}

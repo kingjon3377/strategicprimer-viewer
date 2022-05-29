@@ -160,12 +160,12 @@ public class Grove implements HarvestableFixture, HasPopulation<Grove> {
 
 	@Override
 	public boolean equals(final Object obj) {
-		if (obj instanceof Grove) {
-			return kind.equals(((Grove) obj).getKind()) &&
-				orchard == ((Grove) obj).isOrchard() &&
-				cultivated == ((Grove) obj).isCultivated() &&
-				id == ((Grove) obj).getId() &&
-				population == ((Grove) obj).getPopulation();
+		if (obj instanceof Grove that) {
+			return kind.equals(that.getKind()) &&
+				orchard == that.isOrchard() &&
+				cultivated == that.isCultivated() &&
+				id == that.getId() &&
+				population == that.getPopulation();
 		} else {
 			return false;
 		}
@@ -178,11 +178,11 @@ public class Grove implements HarvestableFixture, HasPopulation<Grove> {
 
 	@Override
 	public boolean equalsIgnoringID(final IFixture fixture) {
-		if (fixture instanceof Grove) {
-			return kind.equals(((Grove) fixture).getKind()) &&
-				orchard == ((Grove) fixture).isOrchard() &&
-				cultivated == ((Grove) fixture).isCultivated() &&
-				population == ((Grove) fixture).getPopulation();
+		if (fixture instanceof Grove that) {
+			return kind.equals(that.getKind()) &&
+				orchard == that.isOrchard() &&
+				cultivated == that.isCultivated() &&
+				population == that.getPopulation();
 		} else {
 			return false;
 		}
@@ -193,7 +193,7 @@ public class Grove implements HarvestableFixture, HasPopulation<Grove> {
 		if (other.getId() != id) {
 			report.accept("Different IDs");
 			return false;
-		} else if (other instanceof Grove) {
+		} else if (other instanceof Grove it) {
 			boolean retval = true;
 			final Consumer<String> localReport;
 			if (orchard) {
@@ -203,19 +203,19 @@ public class Grove implements HarvestableFixture, HasPopulation<Grove> {
 				localReport = s -> report.accept(String.format(
 					"In grove with ID #%d:\t%s", id, s));
 			}
-			if (!kind.equals(((Grove) other).getKind())) {
+			if (!kind.equals(it.getKind())) {
 				localReport.accept("Kinds differ");
 				retval = false;
 			}
-			if (orchard != ((Grove) other).isOrchard()) {
+			if (orchard != it.isOrchard()) {
 				localReport.accept("Grove vs. orchard differs");
 				retval = false;
 			}
-			if (cultivated != ((Grove) other).isCultivated()) {
+			if (cultivated != it.isCultivated()) { // TODO: Should a non-cultivated one be a subset of a cultivated one?
 				localReport.accept("Cultivation status differs");
 				retval = false;
 			}
-			if (population < ((Grove) other).getPopulation()) {
+			if (population < it.getPopulation()) {
 				localReport.accept("Has larger number of trees than we do");
 				retval = false;
 			}

@@ -78,18 +78,18 @@ public class ResourceTabularReportGenerator
 		final String kind;
 		final String quantity;
 		final String specifics;
-		if (item instanceof Implement) {
+		if (item instanceof Implement i) {
 			kind = "equipment";
-			quantity = Integer.toString(((Implement) item).getCount());
-			specifics = ((Implement) item).getKind();
-		} else if (item instanceof CacheFixture) {
-			kind = ((CacheFixture) item).getKind();
+			quantity = Integer.toString(i.getCount());
+			specifics = i.getKind();
+		} else if (item instanceof CacheFixture cf) {
+			kind = cf.getKind();
 			quantity = "---";
-			specifics = ((CacheFixture) item).getContents();
-		} else if (item instanceof IResourcePile) {
-			kind = ((IResourcePile) item).getKind();
-			quantity = ((IResourcePile) item).getQuantity().toString();
-			specifics = ((IResourcePile) item).getContents();
+			specifics = cf.getContents();
+		} else if (item instanceof IResourcePile rp) {
+			kind = rp.getKind();
+			quantity = rp.getQuantity().toString();
+			specifics = rp.getContents();
 		} else {
 			return Collections.emptyList();
 		}
@@ -100,30 +100,30 @@ public class ResourceTabularReportGenerator
 
 	private static int compareItems(/*Implement|CacheFixture|IResourcePile*/final IFixture first,
 			/*Implement|CacheFixture|IResourcePile*/final IFixture second) {
-		if (first instanceof Implement) {
-			if (second instanceof Implement) {
+		if (first instanceof Implement one) {
+			if (second instanceof Implement two) {
 				return Comparator.comparing(Implement::getKind)
 					.thenComparing(Implement::getCount, Comparator.reverseOrder())
-					.compare((Implement) first, (Implement) second);
+					.compare(one, two);
 			} else if (second instanceof IResourcePile) {
 				return 1;
 			} else {
 				return -1;
 			}
-		} else if (first instanceof CacheFixture) {
-			if (second instanceof CacheFixture) {
+		} else if (first instanceof CacheFixture one) {
+			if (second instanceof CacheFixture two) {
 				return Comparator.comparing(CacheFixture::getKind)
 					.thenComparing(CacheFixture::getContents)
-					.compare((CacheFixture) first, (CacheFixture) second);
+					.compare(one, two);
 			} else {
 				return 1;
 			}
-		} else if (first instanceof IResourcePile) {
-			if (second instanceof IResourcePile) {
+		} else if (first instanceof IResourcePile one) {
+			if (second instanceof IResourcePile two) {
 				return Comparator.comparing(IResourcePile::getKind)
 					.thenComparing(IResourcePile::getContents)
 					.thenComparing(IResourcePile::getQuantity, Comparator.reverseOrder())
-					.compare((IResourcePile) first, (IResourcePile) second);
+					.compare(one, two);
 			} else {
 				return -1;
 			}
@@ -164,11 +164,10 @@ public class ResourceTabularReportGenerator
 			final int key = triplet.getValue0();
 			final Point loc = triplet.getValue1();
 			final IFixture fixture = triplet.getValue2();
-			if (fixture instanceof Implement) {
+			if (fixture instanceof Implement i) {
 				final int num;
-				num = implementCounts.getOrDefault(Pair.with(loc, ((Implement) fixture).getKind()), 0);
-				implementCounts.put(Pair.with(loc, ((Implement) fixture).getKind()),
-					num + ((Implement) fixture).getCount());
+				num = implementCounts.getOrDefault(Pair.with(loc, i.getKind()), 0);
+				implementCounts.put(Pair.with(loc, i.getKind()), num + i.getCount());
 				fixtures.remove(key);
 			} else {
 				for (final List<String> row : produce(fixtures, fixture, key, loc, parentMap)) {

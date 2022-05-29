@@ -93,7 +93,7 @@ public class ExplorationCLIHelper implements MovementCostListener, SelectionChan
 				cli.println(fixture.getShortDescription());
 			}
 			final IFixture.CopyBehavior zero;
-			if (fixture instanceof HasOwner && (!((HasOwner) fixture).getOwner().equals(mover.getOwner())
+			if (fixture instanceof HasOwner owned && (!owned.getOwner().equals(mover.getOwner())
 					|| fixture instanceof Village)) {
 				zero = IFixture.CopyBehavior.ZERO;
 			} else if (fixture instanceof HasPopulation || fixture instanceof HasExtent)
@@ -256,8 +256,8 @@ public class ExplorationCLIHelper implements MovementCostListener, SelectionChan
 				tracksAnimal = huntingModel.hunt(destPoint).iterator().next().getValue1();
 			}
 
-			if (tracksAnimal instanceof Animal) {
-				allFixtures.add(new AnimalTracks((((Animal) tracksAnimal).getKind())));
+			if (tracksAnimal instanceof Animal a) {
+				allFixtures.add(new AnimalTracks(a.getKind()));
 			} else if (tracksAnimal instanceof AnimalTracks) {
 				allFixtures.add(tracksAnimal.copy(IFixture.CopyBehavior.KEEP));
 			}

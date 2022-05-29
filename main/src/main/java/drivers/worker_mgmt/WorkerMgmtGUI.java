@@ -92,8 +92,8 @@ public class WorkerMgmtGUI implements MultiMapGUIDriver, WorkerGUI {
 					}
 				});
 		} catch (final RuntimeException except) {
-			if (except.getCause() instanceof DriverFailedException) {
-				throw (DriverFailedException) except.getCause();
+			if (except.getCause() instanceof DriverFailedException dfe) {
+				throw dfe;
 			} else {
 				throw except;
 			}

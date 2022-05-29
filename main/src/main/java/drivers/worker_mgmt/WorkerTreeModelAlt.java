@@ -159,9 +159,8 @@ public class WorkerTreeModelAlt extends DefaultTreeModel implements IWorkerTreeM
 		 */
 		@Override
 		public void add(final MutableTreeNode child) {
-			if (child instanceof UnitMemberNode) {
-				if (unit.stream().noneMatch(
-							((UnitMemberNode) child).getUserObject()::equals)) {
+			if (child instanceof UnitMemberNode umn) {
+				if (unit.stream().noneMatch(umn.getUserObject()::equals)) {
 					LovelaceLogger.warning(
 						"Adding UnitMemberNode when its object is not in the unit");
 				}
@@ -179,9 +178,8 @@ public class WorkerTreeModelAlt extends DefaultTreeModel implements IWorkerTreeM
 		 */
 		@Override
 		public void remove(final MutableTreeNode child) {
-			if (child instanceof UnitMemberNode) {
-				if (unit.stream().anyMatch(
-							((UnitMemberNode) child).getUserObject()::equals)) {
+			if (child instanceof UnitMemberNode umn) {
+				if (unit.stream().anyMatch(umn.getUserObject()::equals)) {
 					LovelaceLogger.warning(
 						"Removing UnitMemberNode when member is still in the unit");
 				}
@@ -242,8 +240,7 @@ public class WorkerTreeModelAlt extends DefaultTreeModel implements IWorkerTreeM
 	 * A helper method to test whether a node has the given object as the object it represents.
 	 */
 	private static boolean areTreeObjectsEqual(final TreeNode node, final Object obj) {
-		return node instanceof DefaultMutableTreeNode &&
-			Objects.equals(((DefaultMutableTreeNode) node).getUserObject(), obj);
+		return node instanceof DefaultMutableTreeNode mtn && Objects.equals(mtn.getUserObject(), obj);
 	}
 
 	/**
@@ -309,9 +306,8 @@ public class WorkerTreeModelAlt extends DefaultTreeModel implements IWorkerTreeM
 			final String kind = unit.getKind();
 			boolean any = false;
 			for (final TreeNode child : temp) {
-				if (child instanceof KindNode &&
-						kind.equals(((KindNode) child).getUserObject())) {
-					((KindNode) child).add(node);
+				if (child instanceof KindNode kn && kind.equals(kn.getUserObject())) {
+					kn.add(node);
 					fireTreeNodesInserted(this, getPathToRoot(node),
 						new int[] { child.getChildCount() - 1 },
 						new Object[] { node });
@@ -364,8 +360,8 @@ public class WorkerTreeModelAlt extends DefaultTreeModel implements IWorkerTreeM
 	 */
 	@Override
 	public Object getModelObject(final Object obj) {
-		if (obj instanceof DefaultMutableTreeNode) {
-			return ((DefaultMutableTreeNode) obj).getUserObject();
+		if (obj instanceof DefaultMutableTreeNode dmtn) {
+			return dmtn.getUserObject();
 		} else {
 			return obj;
 		}
@@ -455,13 +451,13 @@ public class WorkerTreeModelAlt extends DefaultTreeModel implements IWorkerTreeM
 			end.removeFromParent();
 			final Object[] pathSubset;
 			final TreeNode lastParent = pathOne[pathOne.length - 2];
-			if (lastParent instanceof MutableTreeNode &&
+			if (lastParent instanceof MutableTreeNode mtn &&
 					lastParent.getChildCount() == 0) {
 				final TreeNode lastParentParent = pathOne[pathOne.length - 3];
 				final int parentIndex = lastParentParent.getIndex(lastParent);
 				pathSubset = Arrays.copyOf(pathOne, pathOne.length - 2,
 					Object[].class);
-				((MutableTreeNode) lastParent).removeFromParent();
+				mtn.removeFromParent();
 				fireTreeNodesRemoved(this, pathSubset, new int[] { parentIndex },
 					new Object[] { lastParent });
 			} else {
@@ -518,17 +514,17 @@ public class WorkerTreeModelAlt extends DefaultTreeModel implements IWorkerTreeM
 		final TreeNode temp = (TreeNode) getRoot();
 		final TreeNode node = getNode(temp, base);
 		final TreeNode parentNode = Optional.ofNullable(node).map(TreeNode::getParent).orElse(null);
-		if (node != null && parentNode instanceof UnitNode && model.addSibling(base, sibling)) {
+		if (node != null && parentNode instanceof UnitNode un && model.addSibling(base, sibling)) {
 			boolean found = false;
 			final int index = 0;
-			for (final UnitMember child : ((UnitNode) parentNode).getUserObject()) {
+			for (final UnitMember child : un.getUserObject()) {
 				if (sibling.equals(child)) {
 					found = true;
 					break;
 				}
 			}
 			if (found) {
-				((UnitNode) parentNode).insert(childNode, index);
+				un.insert(childNode, index);
 				fireTreeNodesInserted(this, getPathToRoot(parentNode),
 					new int[] { index },
 					new Object[] { childNode });
@@ -622,8 +618,8 @@ public class WorkerTreeModelAlt extends DefaultTreeModel implements IWorkerTreeM
 		final PlayerNode playerNode = (PlayerNode) getRoot();
 		final TreeNode kindNode = getNode(playerNode, parent.getKind());
 		final TreeNode parentNode = getNode(playerNode, parent);
-		if (kindNode instanceof KindNode && parentNode instanceof UnitNode) {
-			((UnitNode) parentNode).refreshChildren();
+		if (kindNode instanceof KindNode && parentNode instanceof UnitNode un) {
+			un.refreshChildren();
 			fireTreeStructureChanged(this, new Object[] { root, kindNode, parentNode },
 				null, null);
 		} else {
@@ -637,12 +633,12 @@ public class WorkerTreeModelAlt extends DefaultTreeModel implements IWorkerTreeM
 		final PlayerNode playerNode = (PlayerNode) getRoot();
 		final TreeNode kindNode = getNode(playerNode, unit.getKind());
 		final TreeNode node = Optional.ofNullable(kindNode).map(n -> getNode(n, unit)).orElse(null);
-		if (kindNode instanceof KindNode && node instanceof UnitNode) {
+		if (kindNode instanceof KindNode kn && node instanceof UnitNode) {
 			final int index = getIndexOfChild(kindNode, node);
 			LovelaceLogger.trace("Unit is %dth child of unit-kind", index);
 			if (model.removeUnit(unit)) {
 				LovelaceLogger.trace("Removed from the map, about to remove from the tree");
-				((KindNode) kindNode).remove((UnitNode) node);
+				kn.remove((UnitNode) node);
 				fireTreeNodesRemoved(this, new Object[] { playerNode, kindNode},
 					new int[] { index }, new Object[] { node });
 				LovelaceLogger.trace("Finished updating the tree");
@@ -658,14 +654,14 @@ public class WorkerTreeModelAlt extends DefaultTreeModel implements IWorkerTreeM
 	@Override
 	public void changeOwner(final HasOwner item, final Player newOwner) {
 		final PlayerNode playerNode = (PlayerNode) getRoot();
-		if (item instanceof IUnit && item.getOwner().equals(model.getCurrentPlayer())) {
-			final TreeNode kindNode = getNode(playerNode, ((IUnit) item).getKind());
+		if (item instanceof IUnit unit && item.getOwner().equals(model.getCurrentPlayer())) {
+			final TreeNode kindNode = getNode(playerNode, unit.getKind());
 			final TreeNode node = Optional.ofNullable(kindNode).map(n -> getNode(n, item))
 				.orElse(null);
-			if (kindNode instanceof KindNode && node instanceof UnitNode) {
+			if (kindNode instanceof KindNode kn && node instanceof UnitNode un) {
 				final int index = getIndexOfChild(kindNode, null);
 				if (model.changeOwner(item, newOwner)) {
-					((KindNode) kindNode).remove((UnitNode) node);
+					kn.remove(un);
 					fireTreeNodesRemoved(this, new Object[] { playerNode, kindNode },
 						new int[] { index }, new Object[] { node });
 					return;

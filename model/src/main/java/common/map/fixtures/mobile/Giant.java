@@ -86,8 +86,8 @@ public class Giant implements Immortal, HasMutableImage, HasKind {
 
 	@Override
 	public boolean equals(final Object obj) {
-		if (obj instanceof Giant) {
-			return ((Giant) obj).getKind().equals(kind) && ((Giant) obj).getId() == id;
+		if (obj instanceof Giant g) {
+			return g.getKind().equals(kind) && g.getId() == id;
 		} else {
 			return false;
 		}
@@ -100,8 +100,8 @@ public class Giant implements Immortal, HasMutableImage, HasKind {
 
 	@Override
 	public boolean equalsIgnoringID(final IFixture fixture) {
-		if (fixture instanceof Giant) {
-			return ((Giant) fixture).getKind().equals(kind);
+		if (fixture instanceof Giant g) {
+			return g.getKind().equals(kind);
 		} else {
 			return false;
 		}
@@ -110,8 +110,8 @@ public class Giant implements Immortal, HasMutableImage, HasKind {
 	@Override
 	public boolean isSubset(final IFixture obj, final Consumer<String> report) {
 		if (obj.getId() == id) {
-			if (obj instanceof Giant) {
-				if (((Giant) obj).getKind().equals(kind)) {
+			if (obj instanceof Giant g) {
+				if (g.getKind().equals(kind)) {
 					return true;
 				} else {
 					report.accept("\tDifferent kinds of giant for ID #" + id);

@@ -153,8 +153,7 @@ import query.SmallAnimalModel;
 			final Quantity production = herdModel.scaledProduction(combinedAnimal.getPopulation());
 			final double pounds = herdModel.scaledPoundsProduction(combinedAnimal.getPopulation());
 			final String resourceProduced;
-			if (herdModel instanceof PoultryModel) {
-				final PoultryModel pm = (PoultryModel) herdModel;
+			if (herdModel instanceof final PoultryModel pm) {
 				resourceProduced = combinedAnimal.getKind() + " eggs";
 				final Boolean cleaningDay = cli.inputBoolean(String.format(
 					"Is this the one turn in every %d to clean up after birds?",
@@ -184,7 +183,7 @@ import query.SmallAnimalModel;
 					baseCost, MammalModel.getDailyTimeFloor()));
 				minutesSpent += baseCost;
 				minutesSpent += MammalModel.getDailyTimeFloor();
-			} else if (herdModel instanceof SmallAnimalModel) {
+			} else if (herdModel instanceof SmallAnimalModel smm) {
 				addToOrders.accept("Tending the ");
 				addToOrders.accept(AnimalPlurals.get(combinedAnimal.getKind()));
 				final long baseCost;
@@ -199,7 +198,7 @@ import query.SmallAnimalModel;
 				addLineToOrders.accept(String.format(" took the %d workers %d min.", workerCount, baseCost));
 				final Boolean extra = cli.inputBoolean(String.format(
 					"Is this the one turn in every %d to clean up after the animals?",
-					((SmallAnimalModel) herdModel).getExtraChoresInterval() + 1));
+					smm.getExtraChoresInterval() + 1));
 				if (extra == null) {
 					return null;
 				} else {

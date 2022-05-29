@@ -98,7 +98,7 @@ public final class SimpleMovementModel {
 		} else if (TileType.Jungle == terrain || TileType.Swamp == terrain) {
 			return (river) ? 4 : 6;
 		} else if (forest || mountain || Stream.of(fixtures)
-				.anyMatch(fix -> (fix instanceof Forest && !((Forest) fix).isRows()) || fix instanceof Hill) ||
+				.anyMatch(fix -> (fix instanceof Forest f && !f.isRows()) || fix instanceof Hill) ||
 				           TileType.Desert == terrain) {
 			return (river) ? 2 : 3;
 		} else if (TileType.Steppe == terrain || TileType.Plains == terrain ||
@@ -130,8 +130,8 @@ public final class SimpleMovementModel {
 			return false;
 		} else {
 			final int perception;
-			if (unit instanceof IUnit) {
-				perception = highestPerception((IUnit) unit);
+			if (unit instanceof IUnit u) {
+				perception = highestPerception(u);
 			} else {
 				perception = 0;
 			}
@@ -170,8 +170,8 @@ public final class SimpleMovementModel {
 	 * others might "sometimes" notice.
 	 */
 	public static boolean shouldAlwaysNotice(final HasOwner unit, final @Nullable TileFixture fixture) {
-		if (fixture instanceof ITownFixture) {
-			return ((ITownFixture) fixture).getOwner().equals(unit.getOwner());
+		if (fixture instanceof ITownFixture town) {
+			return town.getOwner().equals(unit.getOwner());
 		} else {
 			return fixture instanceof Hill || fixture instanceof Forest;
 		}

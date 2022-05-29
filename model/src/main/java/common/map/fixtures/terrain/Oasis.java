@@ -58,8 +58,8 @@ public class Oasis implements TerrainFixture, HasMutableImage {
 
 	@Override
 	public boolean equals(final Object obj) {
-		if (obj instanceof Oasis) {
-			return ((Oasis) obj).getId() == id;
+		if (obj instanceof Oasis it) {
+			return it.getId() == id;
 		} else {
 			return false;
 		}

@@ -150,8 +150,8 @@ import common.xmlio.Warning;
 		}
 		}
 		spinUntilEnd(element.getName(), stream);
-		if (retval instanceof HasMutableImage) {
-			((HasMutableImage) retval).setImage(getParameter(element, "image", ""));
+		if (retval instanceof HasMutableImage hmi) {
+			hmi.setImage(getParameter(element, "image", ""));
 		}
 		return retval;
 	}
@@ -160,47 +160,47 @@ import common.xmlio.Warning;
 	public void write(final ThrowingConsumer<String, IOException> ostream, final MobileFixture obj, final int indent) throws IOException {
 		if (obj instanceof IUnit) {
 			throw new IllegalArgumentException("Unit handled elsewhere");
-		} else if (obj instanceof AnimalTracks) {
+		} else if (obj instanceof AnimalTracks at) {
 			writeTag(ostream, "animal", indent);
-			writeProperty(ostream, "kind", ((AnimalTracks) obj).getKind());
+			writeProperty(ostream, "kind", at.getKind());
 			writeProperty(ostream, "traces", "true");
-			writeImageXML(ostream, (HasImage) obj);
-		} else if (obj instanceof Animal) {
+			writeImageXML(ostream, at);
+		} else if (obj instanceof Animal a) {
 			writeTag(ostream, "animal", indent);
-			writeProperty(ostream, "kind", ((Animal) obj).getKind());
-			if (((Animal) obj).isTalking()) {
+			writeProperty(ostream, "kind", a.getKind());
+			if (a.isTalking()) {
 				writeProperty(ostream, "talking", "true");
 			}
-			if (!"wild".equals(((Animal) obj).getStatus())) {
-				writeProperty(ostream, "status", ((Animal) obj).getStatus());
+			if (!"wild".equals(a.getStatus())) {
+				writeProperty(ostream, "status", a.getStatus());
 			}
 			writeProperty(ostream, "id", obj.getId());
-			if (((Animal) obj).getBorn() >= 0) {
+			if (a.getBorn() >= 0) {
 				final Map<String, Integer> maturity = MaturityModel.getMaturityAges();
 				final int currentTurn = MaturityModel.getCurrentTurn();
 				// Write turn-of-birth if and only if it is fewer turns before the current
 				// turn than this kind of animal's age of maturity.
-				if (!maturity.containsKey(((Animal) obj).getKind()) ||
-							maturity.get(((Animal) obj).getKind()) > (currentTurn - ((Animal) obj).getBorn())) {
-					writeProperty(ostream, "born", ((Animal) obj).getBorn());
+				if (!maturity.containsKey(a.getKind()) ||
+							maturity.get(a.getKind()) > (currentTurn - a.getBorn())) {
+					writeProperty(ostream, "born", a.getBorn());
 				}
 			}
-			if (((Animal) obj).getPopulation() > 1) {
-				writeProperty(ostream, "count", ((Animal) obj).getPopulation());
+			if (a.getPopulation() > 1) {
+				writeProperty(ostream, "count", a.getPopulation());
 			}
-			writeImageXML(ostream, ((Animal) obj));
+			writeImageXML(ostream, a);
 		} else if (obj instanceof SimpleImmortal || obj instanceof ImmortalAnimal) {
 			writeTag(ostream, ((HasKind) obj).getKind(), indent);
 			writeProperty(ostream, "id", obj.getId());
 			writeImageXML(ostream, (HasImage) obj);
 		} else if (TAG_MAP.containsKey(obj.getClass())) {
 			writeTag(ostream, TAG_MAP.get(obj.getClass()), indent);
-			if (obj instanceof HasKind) {
-				writeProperty(ostream, "kind", ((HasKind) obj).getKind());
+			if (obj instanceof HasKind hk) {
+				writeProperty(ostream, "kind", hk.getKind());
 			}
 			writeProperty(ostream, "id", obj.getId());
-			if (obj instanceof HasImage) {
-				writeImageXML(ostream, (HasImage) obj);
+			if (obj instanceof HasImage hi) {
+				writeImageXML(ostream, hi);
 			}
 		} else {
 			throw new IllegalArgumentException("No tag for " + obj.getShortDescription());

@@ -74,9 +74,9 @@ public class TownReportGenerator extends AbstractReportGenerator<ITownFixture> {
 	@Override
 	public void produceSingle(final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
 	                          final IMapNG map, final Consumer<String> ostream, final ITownFixture item, final Point loc) {
-		if (item instanceof Village) {
+		if (item instanceof Village v) {
 			new VillageReportGenerator(currentPlayer, dimensions, hq)
-				.produceSingle(fixtures, map, ostream, (Village) item, loc);
+				.produceSingle(fixtures, map, ostream, v, loc);
 		} else if (item instanceof AbstractTown) {
 			fixtures.remove(item.getId());
 			ostream.accept("At ");
@@ -104,9 +104,9 @@ public class TownReportGenerator extends AbstractReportGenerator<ITownFixture> {
 			}
 			ostream.accept(" ");
 			ostream.accept(distanceString.apply(loc));
-		} else if (item instanceof IFortress) {
+		} else if (item instanceof IFortress f) {
 			new FortressReportGenerator(currentPlayer, dimensions, currentTurn, hq)
-				.produceSingle(fixtures, map, ostream, (IFortress) item, loc);
+				.produceSingle(fixtures, map, ostream, f, loc);
 		}
 	}
 

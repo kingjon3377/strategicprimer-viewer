@@ -70,8 +70,8 @@ public interface Animal extends AnimalOrTracks, MobileFixture, HasImage,
 
 	@Override
 	default boolean equalsIgnoringID(final IFixture fixture) {
-		return fixture instanceof Animal && equalExceptPopulation((Animal) fixture) &&
-			getPopulation() == ((Animal) fixture).getPopulation();
+		return fixture instanceof Animal a && equalExceptPopulation(a) &&
+			getPopulation() == (a).getPopulation();
 	}
 
 	@Override
@@ -86,26 +86,26 @@ public interface Animal extends AnimalOrTracks, MobileFixture, HasImage,
 	@Override
 	default boolean isSubset(final IFixture obj, final Consumer<String> report) {
 		if (obj.getId() == getId()) {
-			if (obj instanceof Animal) {
-				if (!getKind().equals(((Animal) obj).getKind())) {
+			if (obj instanceof Animal a) {
+				if (!getKind().equals(a.getKind())) {
 					report.accept("Different kinds of animal for ID #" + getId());
 					return false;
-				} else if (!isTalking() && ((Animal) obj).isTalking()) {
+				} else if (!isTalking() && a.isTalking()) {
 					report.accept(String.format("In animal ID #%d:\tSubmap's is talking and master's isn't", getId()));
 					return false;
-				} else if (!getStatus().equals(((Animal) obj).getStatus())) {
+				} else if (!getStatus().equals(a.getStatus())) {
 					report.accept("Animal domestication status differs at ID #" + getId());
 					return false;
-				} else if (((Animal) obj).getPopulation() > getPopulation()) {
+				} else if (a.getPopulation() > getPopulation()) {
 					report.accept(String.format("In animal #%d: Submap has greater population than master", getId()));
 					return false;
-				} else if (((Animal) obj).getBorn() < getBorn()) {
+				} else if (a.getBorn() < getBorn()) {
 					report.accept(String.format("In animal #%d: Submap has greater age than master", getId()));
 					return false;
 				} else {
 					return true;
 				}
-			} else if (obj instanceof AnimalTracks && getKind().equals(((AnimalTracks) obj).getKind())) {
+			} else if (obj instanceof AnimalTracks at && getKind().equals(at.getKind())) {
 				return true;
 			} else {
 				report.accept(String.format("For ID #%d, different kinds of members", getId()));

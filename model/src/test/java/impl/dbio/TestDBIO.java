@@ -509,9 +509,9 @@ public final class TestDBIO {
 		firstMap.addFixture(new Point(0, 0), fixture);
 		final IMutableMapNG secondMap = new SPMapNG(dimensions, new PlayerCollection(), -1);
 		secondMap.addFixture(new Point(1, 1), fixture);
-		if (fixture instanceof HasOwner) {
-			firstMap.addPlayer(((HasOwner) fixture).getOwner());
-			secondMap.addPlayer(((HasOwner) fixture).getOwner());
+		if (fixture instanceof HasOwner owned) {
+			firstMap.addPlayer(owned.getOwner());
+			secondMap.addPlayer(owned.getOwner());
 		}
 		final IMapNG deserializedFirst = assertDatabaseSerialization(firstMap);
 		final IMapNG deserializedSecond = assertDatabaseSerialization(secondMap);

@@ -47,10 +47,10 @@ import drivers.common.FixtureMatcher;
 	 */
 	@Override
 	public Transferable createTransferable(final JComponent component) {
-		if (component instanceof JList) {
-			return new IntTransferable(FLAVOR, ((JList<?>) component).getSelectedIndex());
-		} else if (component instanceof JTable) {
-			return new IntTransferable(FLAVOR, ((JTable) component).getSelectedRow());
+		if (component instanceof JList l) {
+			return new IntTransferable(FLAVOR, l.getSelectedIndex());
+		} else if (component instanceof JTable t) {
+			return new IntTransferable(FLAVOR, t.getSelectedRow());
 		} else {
 			throw new IllegalArgumentException("component must be a JList or a JTable");
 		}
@@ -82,21 +82,20 @@ import drivers.common.FixtureMatcher;
 			LovelaceLogger.debug(except, "Transfer failure");
 			return false;
 		}
-		if (component instanceof JList && ((JList<?>) component).getModel() instanceof Reorderable
-				&& dropLocation instanceof JList.DropLocation) {
-			final int index = ((JList.DropLocation) dropLocation).getIndex();
-			((Reorderable) ((JList<?>) component).getModel()).reorder(payload, index);
+		if (component instanceof JList l && l.getModel() instanceof Reorderable model
+				&& dropLocation instanceof JList.DropLocation dl) {
+			final int index = dl.getIndex();
+			model.reorder(payload, index);
 			return true;
-		} else if (component instanceof JTable &&
-				((JTable) component).getModel() instanceof Reorderable &&
-				dropLocation instanceof JTable.DropLocation) {
-			final int index = ((JTable.DropLocation) dropLocation).getRow();
-			final int selection = ((JTable) component).getSelectedRow();
-			((Reorderable) ((JTable) component).getModel()).reorder(payload, index);
+		} else if (component instanceof JTable t && t.getModel() instanceof Reorderable model &&
+				dropLocation instanceof JTable.DropLocation dl) {
+			final int index = dl.getRow();
+			final int selection = t.getSelectedRow();
+			model.reorder(payload, index);
 			if (selection == payload) {
-				((JTable) component).setRowSelectionInterval(index, index);
+				t.setRowSelectionInterval(index, index);
 			} else if (selection > index && selection < payload) {
-				((JTable) component).setRowSelectionInterval(selection - 1, selection - 1);
+				t.setRowSelectionInterval(selection - 1, selection - 1);
 			}
 			return true;
 		} else {

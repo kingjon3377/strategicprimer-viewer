@@ -41,9 +41,9 @@ public final class ProxyJob implements IJob, ProxyFor<IJob> {
 					unmodified = false;
 				}
 			}
-			if (unmodified && worker instanceof IMutableWorker) { // FIXME: This can't still be needed, can it?
+			if (unmodified && worker instanceof IMutableWorker mw) { // FIXME: This can't still be needed, can it?
 				final IMutableJob job = new Job(name, 0);
-				((IMutableWorker) worker).addJob(job);
+				mw.addJob(job);
 				proxiedJobs.add(StreamSupport.stream(worker.spliterator(), false)
 					.filter(j -> name.equals(j.getName()))
 					.findAny().orElse(job));

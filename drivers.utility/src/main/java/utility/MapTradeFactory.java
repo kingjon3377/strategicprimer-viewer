@@ -31,8 +31,8 @@ public class MapTradeFactory implements ModelDriverFactory {
 
 	@Override
 	public ModelDriver createDriver(final ICLIHelper cli, final SPOptions options, final IDriverModel model) {
-		if (model instanceof MapTradeModel) { // TODO: If any options, print a warning (here and in other empty-options drivers
-			return new MapTradeCLI(cli, (MapTradeModel) model);
+		if (model instanceof MapTradeModel mtm) { // TODO: If any options, print a warning (here and in other empty-options drivers
+			return new MapTradeCLI(cli, mtm);
 		} else {
 			return createDriver(cli, options, new MapTradeModel(model));
 		}

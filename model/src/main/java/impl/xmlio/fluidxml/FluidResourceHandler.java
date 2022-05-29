@@ -73,17 +73,15 @@ import common.map.HasExtent;
 		// step, future-proof *this* version of the suite by only firing a warning if
 		// such children are detected, instead of aborting.
 		for (final XMLEvent event : stream) {
-			if (event instanceof StartElement && isSPStartElement(event)) {
-				if ("resource".equalsIgnoreCase(((StartElement) event).getName().getLocalPart()) ||
-						"implement".equalsIgnoreCase(((StartElement) event).getName().getLocalPart())) {
-					warner.handle(new UnwantedChildException(element.getName(),
-						(StartElement) event));
+			if (event instanceof StartElement se && isSPStartElement(event)) {
+				if ("resource".equalsIgnoreCase(se.getName().getLocalPart()) ||
+						"implement".equalsIgnoreCase(se.getName().getLocalPart())) {
+					warner.handle(new UnwantedChildException(element.getName(), se));
 				} else {
-					throw new UnwantedChildException(element.getName(),
-						(StartElement) event);
+					throw new UnwantedChildException(element.getName(), se);
 				}
-			} else if (event instanceof EndElement &&
-					element.getName().equals(((EndElement) event).getName())) {
+			} else if (event instanceof EndElement ee &&
+					element.getName().equals(ee.getName())) {
 				break;
 			}
 		}

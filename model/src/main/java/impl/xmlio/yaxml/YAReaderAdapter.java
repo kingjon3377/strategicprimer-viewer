@@ -126,24 +126,24 @@ import java.util.stream.Collectors;
 	 */
 	public void write(final ThrowingConsumer<String, IOException> ostream, final Object obj, final int indent) throws IOException {
 		final Class<?> cls = obj.getClass();
-		if (obj instanceof River) {
-			YAMapReader.writeRiver(ostream, (River) obj, indent);
-		} else if (obj instanceof ProxyFor<?>) {
-			if (((ProxyFor<?>) obj).getProxied().isEmpty()) {
+		if (obj instanceof River r) {
+			YAMapReader.writeRiver(ostream, r, indent);
+		} else if (obj instanceof ProxyFor<?> p) {
+			if (p.getProxied().isEmpty()) {
 				throw new IllegalArgumentException(
 					"To write a proxy object, it has to be proxying for at least one object.");
 			}
 			// TODO: Handle proxies in their respective types
 			LovelaceLogger.error(new IllegalStateException("Shouldn't try to write proxy objects"),
 					"Wanted to write a proxy");
-			write(ostream, ((ProxyFor<?>) obj).getProxied().iterator().next(), indent);
+			write(ostream, p.getProxied().iterator().next(), indent);
 			return;
-		} else if (obj instanceof IJob) {
-			YAWorkerReader.writeJob(ostream, (IJob) obj, indent);
-		} else if (obj instanceof ISkill) {
-			YAWorkerReader.writeSkill(ostream, (ISkill) obj, indent);
-		} else if (obj instanceof CommunityStats) {
-			townReader.writeCommunityStats(ostream, (CommunityStats) obj, indent);
+		} else if (obj instanceof IJob j) {
+			YAWorkerReader.writeJob(ostream, j, indent);
+		} else if (obj instanceof ISkill s) {
+			YAWorkerReader.writeSkill(ostream, s, indent);
+		} else if (obj instanceof CommunityStats cs) {
+			townReader.writeCommunityStats(ostream, cs, indent);
 		} else if (writerCache.containsKey(cls)) {
 			writerCache.get(cls).writeRaw(ostream, obj, indent);
 		} else {

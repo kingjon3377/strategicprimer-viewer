@@ -43,8 +43,8 @@ class ProxyMember implements UnitMemberProxy<UnitMember> {
 	@Override
 	public boolean equalsIgnoringID(final IFixture fixture) {
 		LovelaceLogger.warning("ProxyMember.equalsIgnoringID() called");
-		if (fixture instanceof ProxyMember) {
-			return ((ProxyMember) fixture).proxiedMembers.equals(proxiedMembers); // TODO: Shouldn't depend on order, right?
+		if (fixture instanceof ProxyMember pm) {
+			return pm.proxiedMembers.equals(proxiedMembers); // TODO: Shouldn't depend on order, right?
 		} else {
 			return false;
 		}

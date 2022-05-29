@@ -127,9 +127,9 @@ public class Portal implements ExplorableFixture, SubsettableFixture {
 	public boolean equalsIgnoringID(final IFixture fixture) {
 		if (this == fixture) {
 			return true;
-		} else if (fixture instanceof Portal) {
-			return destinationWorld.equals(((Portal) fixture).getDestinationWorld()) &&
-				destinationCoordinates.equals(((Portal) fixture).getDestinationCoordinates());
+		} else if (fixture instanceof Portal p) {
+			return destinationWorld.equals(p.getDestinationWorld()) &&
+				destinationCoordinates.equals(p.getDestinationCoordinates());
 		} else {
 			return false;
 		}
@@ -139,8 +139,8 @@ public class Portal implements ExplorableFixture, SubsettableFixture {
 	public boolean equals(final Object obj) {
 		if (this == obj) {
 			return true;
-		} else if (obj instanceof Portal) {
-			return ((Portal) obj).getId() == id && equalsIgnoringID((Portal) obj);
+		} else if (obj instanceof Portal p) {
+			return p.getId() == id && equalsIgnoringID(p);
 		} else {
 			return false;
 		}
@@ -162,15 +162,15 @@ public class Portal implements ExplorableFixture, SubsettableFixture {
 	@Override
 	public boolean isSubset(final IFixture obj, final Consumer<String> report) {
 		if (obj.getId() == id) {
-			if (obj instanceof Portal) {
+			if (obj instanceof Portal p) {
 				final Consumer<String> localReport =
 					(str) -> report.accept(String.format("In portal with ID #%d: %s", id, str));
-				if (!destinationWorld.equals(((Portal) obj).getDestinationWorld()) &&
-						!"unknown".equals(((Portal) obj).getDestinationWorld())) {
+				if (!destinationWorld.equals(p.getDestinationWorld()) &&
+						!"unknown".equals(p.getDestinationWorld())) {
 					localReport.accept("Different destination world");
 					return false;
-				} else if (((Portal) obj).getDestinationCoordinates().isValid() &&
-						!destinationCoordinates.equals(((Portal) obj).getDestinationCoordinates())) {
+				} else if (p.getDestinationCoordinates().isValid() &&
+						!destinationCoordinates.equals(p.getDestinationCoordinates())) {
 					localReport.accept("Different destination coordinates");
 					return false;
 				} else {

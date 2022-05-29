@@ -69,8 +69,8 @@ public class UtilityDriverModel extends SimpleMultiMapModel {
 	}
 
 	private static boolean isSubset(final IFixture one, final IFixture two) {
-		if (one instanceof SubsettableFixture) {
-			return ((SubsettableFixture) one).isSubset(two, s -> {});
+		if (one instanceof SubsettableFixture sf) {
+			return sf.isSubset(two, s -> {});
 		} else {
 			return one.equals(two);
 		}
@@ -129,16 +129,15 @@ public class UtilityDriverModel extends SimpleMultiMapModel {
 		for (final IMutableMapNG map : getRestrictedAllMaps()) {
 			for (final TileFixture fixture : map.getFixtures(location)) {
 				checked.add(fixture);
-				if (fixture instanceof IUnit &&
-						((IUnit) fixture).getKind().contains("TODO")) {
+				if (fixture instanceof IUnit u && u.getKind().contains("TODO")) {
 					continue;
 				} else if (fixture instanceof CacheFixture) {
 					continue;
-				} else if (fixture instanceof HasPopulation &&
-						((HasPopulation<?>) fixture).getPopulation() > 0) {
+				} else if (fixture instanceof HasPopulation hp &&
+						hp.getPopulation() > 0) {
 					continue;
-				} else if (fixture instanceof HasExtent &&
-						((HasExtent<?>) fixture).getAcres().doubleValue() > 0.0) {
+				} else if (fixture instanceof HasExtent he &&
+						he.getAcres().doubleValue() > 0.0) {
 					continue;
 				}
 				final List<TileFixture> matching = map.getFixtures(location).stream()
@@ -163,41 +162,35 @@ public class UtilityDriverModel extends SimpleMultiMapModel {
 			new ArrayList<>();
 		for (final IFixture fixture : stream) {
 			if (fixture instanceof FixtureIterable) {
-				final String shortDesc = (fixture instanceof TileFixture) ?
-					((TileFixture) fixture).getShortDescription() : fixture.toString();
-				if (fixture instanceof IMutableUnit) {
+				final String shortDesc = (fixture instanceof TileFixture tf) ?
+					tf.getShortDescription() : fixture.toString();
+				if (fixture instanceof IMutableUnit u) {
 					retval.addAll(coalesceImpl(
 						String.format("%sIn %s: ", context, shortDesc),
-						(IMutableUnit) fixture,
-						ifApplicable(((IMutableUnit) fixture)::addMember,
-							UnitMember.class),
-						ifApplicable(((IMutableUnit) fixture)::removeMember,
-							UnitMember.class),
+						u,
+						ifApplicable(u::addMember, UnitMember.class),
+						ifApplicable(u::removeMember, UnitMember.class),
 						setModFlag, handlers));
-				} else if (fixture instanceof IMutableFortress) {
+				} else if (fixture instanceof IMutableFortress f) {
 					retval.addAll(coalesceImpl(
 						String.format("%sIn %s: ", context, shortDesc),
 						(IMutableFortress) fixture,
-						ifApplicable(((IMutableFortress) fixture)::addMember,
-							FortressMember.class),
-						ifApplicable(((IMutableFortress) fixture)::removeMember,
-							FortressMember.class),
+						ifApplicable(f::addMember, FortressMember.class),
+						ifApplicable(f::removeMember, FortressMember.class),
 						setModFlag, handlers));
 				} else {
 					LovelaceLogger.warning("Unhandled fixture in coalesceImpl()");
 				}
-			} else if (fixture instanceof Animal) {
-				if (((Animal) fixture).isTalking()) {
+			} else if (fixture instanceof Animal a) {
+				if (a.isTalking()) {
 					continue;
 				}
 				if (handlers.containsKey(Animal.class)) {
 					handlers.get(Animal.class).addIfType(fixture);
 				}
-			} else if (fixture instanceof HasPopulation &&
-					((HasPopulation<?>) fixture).getPopulation() < 0) {
+			} else if (fixture instanceof HasPopulation hp && hp.getPopulation() < 0) {
 				continue;
-			} else if (fixture instanceof HasExtent &&
-					((HasExtent<?>) fixture).getAcres().doubleValue() <= 0.0) {
+			} else if (fixture instanceof HasExtent he && he.getAcres().doubleValue() <= 0.0) {
 				continue;
 			} else if (handlers.containsKey(fixture.getClass())) {
 				handlers.get(fixture.getClass()).addIfType(fixture);
@@ -346,13 +339,13 @@ public class UtilityDriverModel extends SimpleMultiMapModel {
 		final Predicate<TileFixture> equality = fixture::equals;
 		final Consumer<String> noop = x -> {};
 		final Predicate<TileFixture> newSubsetOfOld =
-				f -> f instanceof SubsettableFixture && ((SubsettableFixture) f).isSubset(fixture, noop);
+				f -> f instanceof SubsettableFixture sf && sf.isSubset(fixture, noop);
 		if (map.getFixtures(point).stream().anyMatch(equality.or(newSubsetOfOld))) {
 			return;
 		}
 		final IFixture.CopyBehavior cb;
-		if (fixture instanceof HasOwner && !(fixture instanceof ITownFixture) &&
-				    ((HasOwner) fixture).getOwner().equals(currentPlayer)) {
+		if (fixture instanceof HasOwner owned && !(fixture instanceof ITownFixture) &&
+				    owned.getOwner().equals(currentPlayer)) {
 			cb = IFixture.CopyBehavior.KEEP;
 		} else {
 			cb = IFixture.CopyBehavior.ZERO;
@@ -360,9 +353,9 @@ public class UtilityDriverModel extends SimpleMultiMapModel {
 		final TileFixture zeroed = fixture.copy(cb);
 		final Predicate<TileFixture> zeroedEquals = zeroed::equals;
 		final Predicate<TileFixture> zeroedSubsetOfOld =
-				f -> f instanceof SubsettableFixture && ((SubsettableFixture) f).isSubset(zeroed, noop);
+				f -> f instanceof SubsettableFixture sf && sf.isSubset(zeroed, noop);
 		final Predicate<TileFixture> oldSubsetOfZeroed =
-				f -> zeroed instanceof SubsettableFixture && ((SubsettableFixture) zeroed).isSubset(f, noop);
+				f -> zeroed instanceof SubsettableFixture sf && sf.isSubset(f, noop);
 		if (map.getFixtures(point).stream().noneMatch(zeroedEquals.or(zeroedSubsetOfOld))) {
 			final Optional<TileFixture> matching = map.getFixtures(point).stream().filter(oldSubsetOfZeroed).findAny();
 			if (matching.isPresent()) {

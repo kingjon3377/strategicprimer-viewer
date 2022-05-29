@@ -108,10 +108,10 @@ public class CacheFixture implements HarvestableFixture {
 
 	@Override
 	public boolean equals(final Object obj) {
-		if (obj instanceof CacheFixture) {
-			return ((CacheFixture) obj).getId() == id &&
-				kind.equals(((CacheFixture) obj).getKind()) &&
-				contents.equals(((CacheFixture) obj).getContents());
+		if (obj instanceof CacheFixture that) {
+			return that.getId() == id &&
+				kind.equals(that.getKind()) &&
+				contents.equals(that.getContents());
 		} else {
 			return false;
 		}
@@ -124,9 +124,9 @@ public class CacheFixture implements HarvestableFixture {
 
 	@Override
 	public boolean equalsIgnoringID(final IFixture fixture) {
-		if (fixture instanceof CacheFixture) {
-			return ((CacheFixture) fixture).getKind().equals(kind) &&
-				((CacheFixture) fixture).getContents().equals(contents);
+		if (fixture instanceof CacheFixture that) {
+			return that.getKind().equals(kind) &&
+				that.getContents().equals(contents);
 		} else {
 			return false;
 		}

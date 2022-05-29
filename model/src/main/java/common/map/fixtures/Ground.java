@@ -118,9 +118,9 @@ public class Ground implements MineralFixture, HasMutableImage {
 	public boolean equals(final Object obj) {
 		if (this == obj) {
 			return true;
-		} else if (obj instanceof Ground) {
-			return kind.equals(((Ground) obj).getKind()) &&
-				exposed == ((Ground) obj).isExposed() && id == ((Ground) obj).getId();
+		} else if (obj instanceof Ground that) {
+			return kind.equals(that.getKind()) &&
+				exposed == that.isExposed() && id == that.getId();
 		} else {
 			return false;
 		}
@@ -149,8 +149,8 @@ public class Ground implements MineralFixture, HasMutableImage {
 	public boolean equalsIgnoringID(final IFixture fixture) {
 		if (this == fixture) {
 			return true;
-		} else if (fixture instanceof Ground) {
-			return kind.equals(((Ground) fixture).getKind()) && exposed == ((Ground) fixture).isExposed();
+		} else if (fixture instanceof Ground that) {
+			return kind.equals(that.getKind()) && exposed == that.isExposed();
 		} else {
 			return false;
 		}

@@ -50,8 +50,8 @@ import org.jetbrains.annotations.Nullable;
 	 * If argument is a meadow, its status in the format used below; otherwise the empty string.
 	 */
 	private static String meadowStatus(final Object argument) {
-		if (argument instanceof Meadow) {
-			return String.format("(%s)", ((Meadow) argument).getStatus());
+		if (argument instanceof Meadow m) {
+			return String.format("(%s)", m.getStatus());
 		} else {
 			return "";
 		}
@@ -108,7 +108,7 @@ import org.jetbrains.annotations.Nullable;
 						.orElse((int) Short.MAX_VALUE);
 					time -= cost;
 					// TODO: Once model supports remaining-quantity-in-fields data, offer to reduce it here
-					if (find instanceof Shrub && ((Shrub) find).getPopulation() > 0) {
+					if (find instanceof Shrub s && s.getPopulation() > 0) {
 						final Boolean reduce = cli.inputBooleanInSeries("Reduce shrub population here?");
 						if (reduce == null) {
 							return null;

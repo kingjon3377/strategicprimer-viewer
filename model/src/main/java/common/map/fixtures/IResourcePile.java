@@ -33,11 +33,11 @@ public interface IResourcePile extends UnitMember, FortressMember, HasKind, HasI
 	 */
 	@Override
 	default boolean equalsIgnoringID(final IFixture fixture) {
-		if (fixture instanceof IResourcePile) {
-			return ((IResourcePile) fixture).getKind().equals(getKind()) &&
-				((IResourcePile) fixture).getContents().equals(getContents()) &&
-				((IResourcePile) fixture).getQuantity().equals(getQuantity()) &&
-				((IResourcePile) fixture).getCreated() == getCreated();
+		if (fixture instanceof IResourcePile rp) {
+			return rp.getKind().equals(getKind()) &&
+				rp.getContents().equals(getContents()) &&
+				rp.getQuantity().equals(getQuantity()) &&
+				rp.getCreated() == getCreated();
 		} else {
 			return false;
 		}
@@ -51,23 +51,22 @@ public interface IResourcePile extends UnitMember, FortressMember, HasKind, HasI
 	@Override
 	default boolean isSubset(final IFixture obj, final Consumer<String> report) {
 		if (obj.getId() == getId()) {
-			if (obj instanceof IResourcePile) {
+			if (obj instanceof IResourcePile rp) {
 				boolean retval = true;
 				final Consumer<String> localReport =
 					(str) -> report.accept(String.format("In Resource Pile, ID #%d: %s", getId(), str));
-				if (!getKind().equals(((IResourcePile) obj).getKind())) {
+				if (!getKind().equals(rp.getKind())) {
 					localReport.accept("Kinds differ");
 					retval = false;
 				}
-				if (!getContents().equals(((IResourcePile) obj).getContents())) {
+				if (!getContents().equals(rp.getContents())) {
 					localReport.accept("Contents differ");
 					retval = false;
 				}
-				if (!getQuantity().isSubset(((IResourcePile) obj).getQuantity(), localReport)) {
+				if (!getQuantity().isSubset(rp.getQuantity(), localReport)) {
 					retval = false;
 				}
-				if (getCreated() != ((IResourcePile) obj).getCreated() &&
-						((IResourcePile) obj).getCreated() != -1) {
+				if (getCreated() != rp.getCreated() && rp.getCreated() != -1) {
 					localReport.accept("Age differs");
 					retval = false;
 				}

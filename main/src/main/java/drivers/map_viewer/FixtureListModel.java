@@ -193,8 +193,8 @@ public class FixtureListModel implements ListModel<TileFixture>, SelectionChange
 	}
 
 	private static <U, T extends U> int indexOf(final Collection<U> collection, final T item) {
-		if (collection instanceof List) {
-			return ((List<U>) collection).indexOf(item);
+		if (collection instanceof List l) {
+			return l.indexOf(item);
 		} else {
 			return new ArrayList<>(collection).indexOf(item);
 		}
@@ -209,9 +209,8 @@ public class FixtureListModel implements ListModel<TileFixture>, SelectionChange
 	 * failures can be warned about before the drop
 	 */
 	public boolean addFixture(final TileFixture fixture) {
-		if (fixture instanceof TileTypeFixture) {
+		if (fixture instanceof final TileTypeFixture ttf) {
 			final TileType existingTerrain = terrainSource.apply(point);
-			final TileTypeFixture ttf = (TileTypeFixture) fixture;
 			if (existingTerrain != null) {
 				if (existingTerrain == ttf.getTileType()) {
 					return true;
@@ -229,9 +228,8 @@ public class FixtureListModel implements ListModel<TileFixture>, SelectionChange
 			} else {
 				return false;
 			}
-		} else if (fixture instanceof RiverFixture) {
+		} else if (fixture instanceof final RiverFixture rf) {
 			final Collection<River> existingRivers = riversSource.apply(point);
-			final RiverFixture rf = (RiverFixture) fixture;
 			if (existingRivers.iterator().hasNext()) {
 				final Collection<River> coll = new ArrayList<>(existingRivers);
 				if (coll.containsAll(rf.getRivers())) {

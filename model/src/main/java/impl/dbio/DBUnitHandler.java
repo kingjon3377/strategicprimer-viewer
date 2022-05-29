@@ -80,16 +80,16 @@ final class DBUnitHandler extends AbstractDatabaseWriter<IUnit, Object> implemen
 	public void write(final Transactional db, final IUnit obj, final Object context) throws SQLException {
 		db.transaction().accept(sql -> {
 				final String portrait = obj.getPortrait();
-				if (context instanceof Point) {
-					INSERT_UNIT.on(value("row", ((Point) context).getRow()),
-							value("column", ((Point) context).getColumn()),
+				if (context instanceof Point p) {
+					INSERT_UNIT.on(value("row", p.getRow()),
+							value("column", p.getColumn()),
 							 value("owner", obj.getOwner().getPlayerId()),
 							value("kind", obj.getKind()), value("name", obj.getName()),
 							value("id", obj.getId()), value("image", obj.getImage()),
 							value("portrait", portrait)).execute(sql);
-				} else if (context instanceof IFortress) {
+				} else if (context instanceof IFortress f) {
 					INSERT_UNIT.on(
-							value("parent", ((IFortress) context).getId()),
+							value("parent", f.getId()),
 							value("owner", obj.getOwner().getPlayerId()), value("kind", obj.getKind()),
 							value("name", obj.getName()), value("id", obj.getId()),
 							value("image", obj.getImage()), value("portrait", portrait)).execute(sql);

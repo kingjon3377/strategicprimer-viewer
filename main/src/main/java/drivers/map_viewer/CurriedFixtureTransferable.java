@@ -53,7 +53,7 @@ import java.util.stream.Collectors;
 
 	@Override
 	public boolean equals(final Object obj) {
-		return obj instanceof CurriedFixtureTransferable && ((CurriedFixtureTransferable) obj).payload.equals(payload);
+		return obj instanceof CurriedFixtureTransferable cft && cft.payload.equals(payload);
 	}
 
 	@Override

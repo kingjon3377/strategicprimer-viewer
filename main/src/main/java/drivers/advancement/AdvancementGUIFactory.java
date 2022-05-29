@@ -55,8 +55,8 @@ public class AdvancementGUIFactory implements GUIDriverFactory {
 
 	@Override
 	public GUIDriver createDriver(final ICLIHelper cli, final SPOptions options, final IDriverModel model) {
-		if (model instanceof IWorkerModel) {
-			return new AdvancementGUI(cli, options, (IWorkerModel) model);
+		if (model instanceof IWorkerModel wm) {
+			return new AdvancementGUI(cli, options, wm);
 		} else {
 			return createDriver(cli, options, new WorkerModel(model));
 		}

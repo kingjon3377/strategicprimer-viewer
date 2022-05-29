@@ -217,11 +217,11 @@ public class FortressImpl implements IMutableFortress {
 
 	@Override
 	public boolean equalsIgnoringID(final IFixture fixture) {
-		if (fixture instanceof IFortress) {
+		if (fixture instanceof IFortress it) {
 			final Set<FortressMember> theirs =
-				((IFortress) fixture).stream().collect(Collectors.toSet());
-			return name.equals(((IFortress) fixture).getName()) &&
-				owner.getPlayerId() == ((IFortress) fixture).getOwner().getPlayerId() &&
+				it.stream().collect(Collectors.toSet());
+			return name.equals(it.getName()) &&
+				owner.getPlayerId() == it.getOwner().getPlayerId() &&
 				members.containsAll(theirs) && theirs.containsAll(members);
 		} else {
 			return false;
@@ -238,17 +238,17 @@ public class FortressImpl implements IMutableFortress {
 		for (final FortressMember member : members) {
 			builder.append(System.lineSeparator());
 			builder.append("\t\t\t");
-			if (member instanceof IUnit) {
-				builder.append(((IUnit) member).getName());
-				if (((IUnit) member).getOwner().equals(owner)) {
-					builder.append(" (").append(((IUnit) member).getKind()).append(")");
-				} else if (((IUnit) member).getOwner().isIndependent()) {
+			if (member instanceof IUnit unit) {
+				builder.append(unit.getName());
+				if (unit.getOwner().equals(owner)) {
+					builder.append(" (").append(unit.getKind()).append(")");
+				} else if (unit.getOwner().isIndependent()) {
 					builder.append(", an independent ")
-						.append(((IUnit) member).getKind());
+						.append(unit.getKind());
 				} else {
-					builder.append(" (").append(((IUnit) member).getKind())
+					builder.append(" (").append(unit.getKind())
 						.append("), belonging to ")
-						.append(((IUnit) member).getOwner());
+						.append(unit.getOwner());
 				}
 			} else {
 				builder.append(member.toString());
@@ -268,11 +268,10 @@ public class FortressImpl implements IMutableFortress {
 	 */
 	@Override
 	public boolean isSubset(final IFixture obj, final Consumer<String> report) {
-		if (!(obj instanceof IFortress)) {
+		if (!(obj instanceof final IFortress fort)) {
 			report.accept("Incompatible type to Fortress");
 			return false;
 		}
-		final IFortress fort = (IFortress) obj;
 		if (fort.getId() != id) {
 			report.accept("ID mismatch between Fortresses");
 			return false;
@@ -318,8 +317,8 @@ public class FortressImpl implements IMutableFortress {
 
 	@Override
 	public boolean equals(final Object obj) {
-		if (obj instanceof IFortress) {
-			return equalsIgnoringID((IFortress) obj) && id == ((IFortress) obj).getId();
+		if (obj instanceof IFortress it) {
+			return equalsIgnoringID(it) && id == it.getId();
 		} else {
 			return false;
 		}

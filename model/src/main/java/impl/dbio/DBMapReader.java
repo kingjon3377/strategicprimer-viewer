@@ -176,7 +176,7 @@ final class DBMapReader {
 			} catch (final Exception exception) {
 				if (exception.getMessage().contains("no such table")) {
 					continue;
-				} else if (exception instanceof RuntimeException) {
+				} else if (exception instanceof RuntimeException) { // TODO: catch and test message to avoid cast
 					throw (RuntimeException) exception;
 				} else {
 					// TODO: declare checked exception instead?
@@ -196,23 +196,23 @@ final class DBMapReader {
 					throw new IllegalArgumentException("Null parent");
 				} else if (member == null) {
 					throw new IllegalArgumentException("Null member");
-				} else if (parent instanceof IMutableFortress && member instanceof FortressMember) {
-					((IMutableFortress) parent).addMember((FortressMember) member);
-				} else if (parent instanceof IMutableUnit && member instanceof UnitMember) {
-					((IMutableUnit) parent).addMember((UnitMember) member);
-				} else if (parent instanceof AbstractTown && member instanceof CommunityStats &&
-						((AbstractTown) parent).getPopulation() == null) {
-					((AbstractTown) parent).setPopulation((CommunityStats) member);
-				} else if (parent instanceof Village && member instanceof CommunityStats &&
-						((Village) parent).getPopulation() == null) {
-					((Village) parent).setPopulation((CommunityStats) member);
-				} else if (parent instanceof IMutableWorker && member instanceof Animal &&
-						((IMutableWorker) parent).getMount() == null) {
-					((IMutableWorker) parent).setMount((Animal) member);
-				} else if (parent instanceof IMutableWorker && member instanceof Implement) {
-					((IMutableWorker) parent).addEquipment((Implement) member);
-				} else if (parent instanceof AbstractTown && member instanceof CommunityStats &&
-						((AbstractTown) parent).getPopulation() != null) {
+				} else if (parent instanceof IMutableFortress p && member instanceof FortressMember m) {
+					p.addMember(m);
+				} else if (parent instanceof IMutableUnit p && member instanceof UnitMember m) {
+					p.addMember(m);
+				} else if (parent instanceof AbstractTown p && member instanceof CommunityStats m &&
+						p.getPopulation() == null) {
+					p.setPopulation(m);
+				} else if (parent instanceof Village p && member instanceof CommunityStats m &&
+						p.getPopulation() == null) {
+					p.setPopulation(m);
+				} else if (parent instanceof IMutableWorker p && member instanceof Animal m &&
+						p.getMount() == null) {
+					p.setMount(m);
+				} else if (parent instanceof IMutableWorker p && member instanceof Implement m) {
+					p.addEquipment(m);
+				} else if (parent instanceof AbstractTown p && member instanceof CommunityStats && // TODO: combine with earlier AbstractTown case?
+						p.getPopulation() != null) {
 					throw new IllegalStateException("Community stats already set");
 				} else {
 					throw new IllegalStateException(String.format("DB parent-child type invariants not met (parent %s, child %s)",

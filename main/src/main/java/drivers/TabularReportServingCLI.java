@@ -72,8 +72,8 @@ import org.takes.http.Exit;
 
 	private void serveReports(final int port) throws DriverFailedException {
 		final Map<Path, IMapNG> mapping;
-		if (model instanceof IMultiMapModel) {
-			mapping = ((IMultiMapModel) model).streamAllMaps()
+		if (model instanceof IMultiMapModel mmm) {
+			mapping = mmm.streamAllMaps()
 				.collect(Collectors.toMap(
 					map -> Optional.ofNullable(map.getFilename()).orElseGet(
 						() -> Paths.get("unknown.xml")),
@@ -116,8 +116,8 @@ import org.takes.http.Exit;
 				}
 			};
 
-		if (model instanceof IMultiMapModel) {
-			for (final IMapNG map : ((IMultiMapModel) model).getAllMaps()) {
+		if (model instanceof IMultiMapModel mmm) {
+			for (final IMapNG map : mmm.getAllMaps()) {
 				createReports.accept(map, Optional.ofNullable(map.getFilename())
 					.orElseGet(() -> Paths.get("unknown.xml")));
 			}

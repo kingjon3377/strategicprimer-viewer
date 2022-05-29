@@ -159,14 +159,14 @@ import org.jetbrains.annotations.Nullable;
 		if (find instanceof HuntingModel.NothingFound) {
 			cli.println(String.format("Found nothing for the next %d minutes.", noResultCost));
 			return noResultCost;
-		} else if (find instanceof AnimalTracks) {
+		} else if (find instanceof AnimalTracks at) {
 			model.copyToSubMaps(loc, find, IFixture.CopyBehavior.ZERO);
 			cli.println(String.format("Found only tracks or traces from %s for the next %d minutes.",
-				((AnimalTracks) find).getKind(), noResultCost));
+				at.getKind(), noResultCost));
 			return noResultCost;
-		} else if (find instanceof Animal) {
+		} else if (find instanceof Animal a) {
 			final Boolean fight = cli.inputBooleanInSeries(String.format("Found %s. Should they %s?",
-				populationDescription((Animal) find), verb), ((Animal) find).getKind());
+				populationDescription(a), verb), a.getKind());
 			if (fight == null) {
 				return null;
 			} else if (fight) {

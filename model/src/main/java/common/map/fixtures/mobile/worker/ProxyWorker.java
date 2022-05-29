@@ -87,16 +87,16 @@ public class ProxyWorker implements WorkerProxy {
 	public ProxyWorker(final IUnit unit) {
 		this(false);
 		for (final UnitMember member : unit) {
-			if (member instanceof IWorker) {
-				final WorkerStats tempStats = ((IWorker) member).getStats();
+			if (member instanceof IWorker w) {
+				final WorkerStats tempStats = w.getStats();
 				final WorkerStats priorStats = statsCache;
 				if (workers.isEmpty()) {
 					statsCache = tempStats;
 				} else if (!Objects.equals(tempStats, priorStats)) {
 					statsCache = null;
 				}
-				workers.add((IWorker) member);
-				StreamSupport.stream(((IWorker) member).spliterator(), true)
+				workers.add(w);
+				StreamSupport.stream(w.spliterator(), true)
 					.map(IJob::getName).forEach(jobNames::add);
 			}
 		}
@@ -157,9 +157,8 @@ public class ProxyWorker implements WorkerProxy {
 
 	@Override
 	public boolean equalsIgnoringID(final IFixture fixture) {
-		if (fixture instanceof ProxyWorker) {
-			return parallel == ((ProxyWorker) fixture).parallel &&
-				proxyJobs.equals(((ProxyWorker) fixture).proxyJobs);
+		if (fixture instanceof ProxyWorker pw) {
+			return parallel == pw.parallel && proxyJobs.equals(pw.proxyJobs);
 		} else {
 			return false;
 		}

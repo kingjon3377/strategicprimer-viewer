@@ -80,8 +80,8 @@ import org.jetbrains.annotations.Nullable;
 	 * stream of units, including those in fortresses.
 	 */
 	private static Stream<IFixture> flatten(final IFixture fixture) {
-		if (fixture instanceof IFortress) {
-			return ((IFortress) fixture).stream().map(IFixture.class::cast);
+		if (fixture instanceof IFortress f) {
+			return f.stream().map(IFixture.class::cast);
 		} else {
 			return Stream.of(fixture);
 		}
@@ -123,8 +123,8 @@ import org.jetbrains.annotations.Nullable;
 	private final SpoilageApplet spoilageApplet;
 
 	private String createResults(final IUnit unit, final int turn) {
-		if (unit instanceof ProxyUnit) {
-			model.setSelectedUnit(((ProxyUnit) unit).getProxied().iterator().next());
+		if (unit instanceof ProxyUnit pu) {
+			model.setSelectedUnit(pu.getProxied().iterator().next());
 		} else {
 			model.setSelectedUnit(unit);
 		}

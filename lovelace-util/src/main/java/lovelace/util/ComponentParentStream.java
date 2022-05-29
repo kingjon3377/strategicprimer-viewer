@@ -34,10 +34,10 @@ public final class ComponentParentStream implements Iterable<Component> {
 				throw new NoSuchElementException("Last parent reached");
 			} else {
 				current = retval.getParent();
-				if (current == null && retval instanceof JPopupMenu) {
-					current = ((JPopupMenu) retval).getInvoker();
-				} else if (current == null && retval instanceof JMenu) {
-					current = ((JMenu) retval).getPopupMenu();
+				if (current == null && retval instanceof JPopupMenu menu) {
+					current = menu.getInvoker();
+				} else if (current == null && retval instanceof JMenu menu) {
+					current = menu.getPopupMenu();
 				}
 				return retval;
 			}

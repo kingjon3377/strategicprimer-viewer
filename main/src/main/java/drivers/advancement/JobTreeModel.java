@@ -168,8 +168,7 @@ import java.util.stream.StreamSupport;
 		} else if ("skill".equals(category)) {
 			final TreePath selectionPath = selectionModel.getSelectionPath();
 			if (currentRoot != null && selectionPath != null &&
-					selectionPath.getLastPathComponent() instanceof IJob) {
-				final IJob job = (IJob) selectionPath.getLastPathComponent();
+					    selectionPath.getLastPathComponent() instanceof final IJob job) {
 				final int childCount = getChildCount(job);
 				if (driverModel.addHoursToSkill(currentRoot, job.getName(), addendum,
 						0, 200)) {
@@ -200,8 +199,8 @@ import java.util.stream.StreamSupport;
 	 */
 	@Override
 	public void memberSelected(final @Nullable UnitMember old, final @Nullable UnitMember selected) {
-		if (selected instanceof IWorker) {
-			localRoot = (IWorker) selected;
+		if (selected instanceof IWorker w) {
+			localRoot = w;
 			fireTreeStructureChanged(new TreeModelEvent(this, new TreePath(selected)));
 		} else {
 			localRoot = null;

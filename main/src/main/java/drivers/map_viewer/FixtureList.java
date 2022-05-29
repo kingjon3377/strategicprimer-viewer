@@ -105,8 +105,8 @@ public final class FixtureList extends JList<TileFixture>
 
 	@Override
 	public boolean equals(final Object that) {
-		if (that instanceof JList) {
-			return getModel().equals(((JList<?>) that).getModel());
+		if (that instanceof JList l) {
+			return getModel().equals(l.getModel());
 		} else {
 			return false;
 		}
@@ -160,8 +160,7 @@ public final class FixtureList extends JList<TileFixture>
 	private class DropListener extends DropTargetAdapter {
 		// TODO: Figure out how to skip all this (return true) on non-local drags
 		private boolean isXfrFromOutside(final DropTargetEvent dtde) {
-			return !(dtde.getSource() instanceof Component) ||
-					       !parentComponent.isAncestorOf((Component) dtde.getSource());
+			return !(dtde.getSource() instanceof Component c) || !parentComponent.isAncestorOf(c);
 		}
 
 		private void handleDrag(final DropTargetDragEvent dtde) {
@@ -198,8 +197,8 @@ public final class FixtureList extends JList<TileFixture>
 			for (final DataFlavor flavor : flavors) {
 				if (FixtureTransferable.FLAVOR.equals(flavor)) {
 					final Object transferData = trans.getTransferData(flavor);
-					if (transferData instanceof TileFixture) {
-						listModel.addFixture((TileFixture) transferData);
+					if (transferData instanceof TileFixture tf) {
+						listModel.addFixture(tf);
 					} // TODO: else what? log?
 				} else if (CurriedFixtureTransferable.FLAVOR.equals(flavor)) {
 					final List<Transferable> curried =

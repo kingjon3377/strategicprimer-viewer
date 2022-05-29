@@ -93,9 +93,8 @@ import java.util.function.Predicate;
 	private static StartElement getFirstStartElement(final Iterable<XMLEvent> stream, final StartElement parent)
 			throws SPFormatException, XMLStreamException {
 		for (final XMLEvent element : stream) {
-			if (element instanceof StartElement &&
-					isSupportedNamespace(((StartElement) element).getName())) {
-				return (StartElement) element;
+			if (element instanceof StartElement se && isSupportedNamespace(se.getName())) {
+				return se;
 			}
 		}
 		throw new MissingChildException(parent);
@@ -216,109 +215,96 @@ import java.util.function.Predicate;
 		final IMutableMapNG retval = new SPMapNG(dimensions, players, currentTurn);
 		Point point = null;
 		for (final XMLEvent event : stream) {
-			if (event instanceof StartElement &&
-					isSupportedNamespace(((StartElement) event).getName())) {
-				final String type = ((StartElement) event).getName().getLocalPart().toLowerCase();
+			if (event instanceof StartElement se && isSupportedNamespace(se.getName())) {
+				final String type = se.getName().getLocalPart().toLowerCase();
 				if ("player".equals(type)) {
-					retval.addPlayer(playerReader.read((StartElement) event,
-						tagStack.peekFirst(), stream));
+					retval.addPlayer(playerReader.read(se, tagStack.peekFirst(), stream));
 				} else if ("row".equals(type)) {
-					expectAttributes((StartElement) event, "index");
-					tagStack.addFirst(((StartElement) event).getName());
+					expectAttributes(se, "index");
+					tagStack.addFirst(se.getName());
 					// Deliberately ignore "row"
 					continue;
 				} else if ("tile".equals(type)) {
 					if (point != null) {
-						throw new UnwantedChildException(tagStack.peekFirst(),
-							(StartElement) event);
+						throw new UnwantedChildException(tagStack.peekFirst(), se);
 					}
-					expectAttributes((StartElement) event, "row", "column", "kind",
+					expectAttributes(se, "row", "column", "kind",
 						"type", "mountain");
-					tagStack.addFirst(((StartElement) event).getName());
+					tagStack.addFirst(se.getName());
 					// TODO: Just assign to point, maybe?
-					final Point localPoint = parsePoint((StartElement) event);
+					final Point localPoint = parsePoint(se);
 					point = localPoint;
 					// Since tiles have sometimes been *written* without "kind", then
-					// failed to load, be liberal in waht we accept here.
-					if ((hasParameter((StartElement) event, "kind") ||
-							hasParameter((StartElement) event, "type"))) {
+					// failed to load, be liberal in what we accept here.
+					if ((hasParameter(se, "kind") || hasParameter(se, "type"))) {
 						try {
 							retval.setBaseTerrain(localPoint,
-								TileType.parse(getParamWithDeprecatedForm(
-									(StartElement) event, "kind",
+								TileType.parse(getParamWithDeprecatedForm(se, "kind",
 									"type")));
 						} catch (final IllegalArgumentException|ParseException except) {
-							warner.handle(new MissingPropertyException(
-								(StartElement) event, "kind", except));
+							warner.handle(new MissingPropertyException(se, "kind", except));
 						}
 					} else {
-						warner.handle(new MissingPropertyException(
-							(StartElement) event, "kind"));
+						warner.handle(new MissingPropertyException(se, "kind"));
 					}
-					if (getBooleanParameter((StartElement) event,
-							"mountain", false)) {
+					if (getBooleanParameter(se, "mountain", false)) {
 						retval.setMountainous(localPoint, true);
 					}
 				} else if ("elsewhere".equals(type)) {
 					if (point != null) {
-						throw new UnwantedChildException(tagStack.peekFirst(),
-							(StartElement) event);
+						throw new UnwantedChildException(tagStack.peekFirst(), se);
 					}
-					expectAttributes((StartElement) event);
-					tagStack.addFirst(((StartElement) event).getName());
+					expectAttributes(se);
+					tagStack.addFirst(se.getName());
 					point = Point.INVALID_POINT;
 				} else if (FUTURE_TAGS.contains(type)) {
-					tagStack.addFirst(((StartElement) event).getName());
-					warner.handle(UnsupportedTagException.future((StartElement) event));
+					tagStack.addFirst(se.getName());
+					warner.handle(UnsupportedTagException.future(se));
 				} else if ("sandbar".equals(type)) {
-					tagStack.addFirst(((StartElement) event).getName());
-					warner.handle(UnsupportedTagException.obsolete((StartElement) event));
+					tagStack.addFirst(se.getName());
+					warner.handle(UnsupportedTagException.obsolete(se));
 				} else if (point != null) {
 					switch (type) {
 					case "lake", "river" -> {
 						retval.addRivers(point,
-								parseRiver((StartElement) event,
-										tagStack.peekFirst()));
-						spinUntilEnd(((StartElement) event).getName(), stream);
+								parseRiver(se, tagStack.peekFirst()));
+						spinUntilEnd(se.getName(), stream);
 					}
 					case "mountain" -> {
-						tagStack.addFirst(((StartElement) event).getName());
+						tagStack.addFirst(se.getName());
 						retval.setMountainous(point, true);
 					}
 					case "bookmark" -> {
-						tagStack.addFirst(((StartElement) event).getName());
-						expectAttributes((StartElement) event, "player");
+						tagStack.addFirst(se.getName());
+						expectAttributes(se, "player");
 						retval.addBookmark(point,
 								players.getPlayer(getIntegerParameter(
-										(StartElement) event, "player")));
+										se, "player")));
 					}
 					case "road" -> {
-						tagStack.addFirst(((StartElement) event).getName());
-						expectAttributes((StartElement) event, "direction",
-								"quality");
+						tagStack.addFirst(se.getName());
+						expectAttributes(se, "direction", "quality");
 						final Direction direction;
 						try {
 							direction = Direction.parse(
-									getParameter((StartElement) event,
+									getParameter(se,
 											"direction"));
 						} catch (final IllegalArgumentException except) {
-							throw new MissingPropertyException(
-									(StartElement) event, "direction", except);
+							throw new MissingPropertyException(se, "direction", except);
 						}
 						retval.setRoadLevel(point, direction,
-								getIntegerParameter((StartElement) event, "quality"));
+								getIntegerParameter(se, "quality"));
 					}
 					default -> {
 						final QName top = tagStack.peekFirst();
-						final TileFixture child = parseFixture((StartElement) event, top, stream);
-						if (child instanceof IFortress &&
+						final TileFixture child = parseFixture(se, top, stream);
+						if (child instanceof IFortress f &&
 								    retval.getFixtures(point).stream()
 										    .filter(IFortress.class::isInstance)
 										    .map(IFortress.class::cast)
 										    .map(IFortress::getOwner)
-										    .anyMatch(((IFortress) child).getOwner()::equals)) {
-							warner.handle(new UnwantedChildException(
-									top, (StartElement) event,
+										    .anyMatch(f.getOwner()::equals)) {
+							warner.handle(new UnwantedChildException(top, se,
 									"Multiple fortresses owned by one player on a tile"));
 						}
 						retval.addFixture(point, child);
@@ -327,24 +313,22 @@ import java.util.function.Predicate;
 				} else {
 					// fixture outside tile
 					throw UnwantedChildException.listingExpectedTags(
-						tagStack.peekFirst(), (StartElement) event, "tile",
+						tagStack.peekFirst(), se, "tile",
 						"elsewhere");
 				}
-			} else if (event instanceof EndElement) {
+			} else if (event instanceof EndElement ee) {
 				if (!tagStack.isEmpty() &&
-						tagStack.peekFirst().equals(((EndElement) event).getName())) {
+						tagStack.peekFirst().equals(ee.getName())) {
 					tagStack.removeFirst();
 				} // **NOT** else if!
-				if (element.getName().equals(((EndElement) event).getName())) {
+				if (element.getName().equals(ee.getName())) {
 					break;
-				} else if ("tile".equalsIgnoreCase(
-							((EndElement) event).getName().getLocalPart()) ||
-					"elsewhere".equalsIgnoreCase(
-						((EndElement) event).getName().getLocalPart())) {
+				} else if ("tile".equalsIgnoreCase(ee.getName().getLocalPart()) ||
+						"elsewhere".equalsIgnoreCase(ee.getName().getLocalPart())) {
 					point = null;
 				}
-			} else if (event instanceof Characters) {
-				final String data = ((Characters) event).getData().strip();
+			} else if (event instanceof Characters c) {
+				final String data = c.getData().strip();
 				if (!data.isEmpty()) {
 					retval.addFixture(point == null ? Point.INVALID_POINT : point,
 						new TextFixture(data, -1));

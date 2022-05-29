@@ -51,35 +51,35 @@ public class FortressMemberReportGenerator extends AbstractReportGenerator<Fortr
 	public void produceSingle(final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
 	                          final IMapNG map, final Consumer<String> ostream, final FortressMember item, final Point loc) {
 	//	assert (is IUnit|IResourcePile|Implement item);
-		if (item instanceof IUnit) {
+		if (item instanceof IUnit u) {
 			// TODO: Should be a field, right? Or else a constructor parameter?
 			new UnitReportGenerator(currentPlayer, dimensions,
-				currentTurn, hq).produceSingle(fixtures, map, ostream, (IUnit) item, loc);
-		} else if (item instanceof Implement) {
+				currentTurn, hq).produceSingle(fixtures, map, ostream, u, loc);
+		} else if (item instanceof Implement i) {
 			fixtures.remove(item.getId());
 			ostream.accept("Equipment: ");
-			ostream.accept(((Implement) item).getKind());
-			if (((Implement) item).getCount() > 1) {
+			ostream.accept(i.getKind());
+			if (i.getCount() > 1) {
 				ostream.accept(" (");
-				ostream.accept(Integer.toString(((Implement) item).getCount()));
+				ostream.accept(Integer.toString(i.getCount()));
 				ostream.accept(")");
 			}
-		} else if (item instanceof IResourcePile) {
+		} else if (item instanceof IResourcePile r) {
 			fixtures.remove(item.getId());
 			ostream.accept("A pile of ");
-			ostream.accept(((IResourcePile) item).getQuantity().toString());
-			if (((IResourcePile) item).getQuantity().getUnits().isEmpty()) {
+			ostream.accept(r.getQuantity().toString());
+			if (r.getQuantity().getUnits().isEmpty()) {
 				ostream.accept(" ");
 			} else {
 				ostream.accept(" of ");
 			}
-			ostream.accept(((IResourcePile) item).getContents());
+			ostream.accept(r.getContents());
 			ostream.accept(" (");
-			ostream.accept(((IResourcePile) item).getKind());
+			ostream.accept(r.getKind());
 			ostream.accept(")");
-			if (((IResourcePile) item).getCreated() >= 0) {
+			if (r.getCreated() >= 0) {
 				ostream.accept(" from turn ");
-				ostream.accept(Integer.toString(((IResourcePile) item).getCreated()));
+				ostream.accept(Integer.toString(r.getCreated()));
 			}
 		}
 	}
@@ -108,8 +108,7 @@ public class FortressMemberReportGenerator extends AbstractReportGenerator<Fortr
 				.collect(Collectors.toList())) {
 			final Point loc = pair.getValue0();
 			final FortressMember item = pair.getValue1();
-			if (item instanceof IResourcePile) {
-				final IResourcePile resource = (IResourcePile) item;
+			if (item instanceof final IResourcePile resource) {
 				final HeadedMap<IResourcePile, Point> pileMap;
 				if (resources.containsKey(resource.getKind())) {
 					pileMap = resources.get(resource.getKind());
@@ -125,8 +124,7 @@ public class FortressMemberReportGenerator extends AbstractReportGenerator<Fortr
 				}
 				pileMap.put(resource, loc);
 				fixtures.remove(resource.getId());
-			} else if (item instanceof Implement) {
-				final Implement implement = (Implement) item;
+			} else if (item instanceof final Implement implement) {
 				equipment.put(implement, loc); // TODO: Ensure it's not displacing anything (i.e. no duplicate equipment fixtures)
 				fixtures.remove(implement.getId());
 			}

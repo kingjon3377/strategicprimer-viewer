@@ -110,10 +110,10 @@ public class Shrub implements HarvestableFixture, HasPopulation<Shrub> {
 
 	@Override
 	public boolean equals(final Object obj) {
-		if (obj instanceof Shrub) {
-			return ((Shrub) obj).getId() == id &&
-				((Shrub) obj).getKind().equals(kind) &&
-				population == ((Shrub) obj).getPopulation();
+		if (obj instanceof Shrub it) {
+			return it.getId() == id &&
+				it.getKind().equals(kind) &&
+				population == it.getPopulation();
 		} else {
 			return false;
 		}
@@ -126,9 +126,8 @@ public class Shrub implements HarvestableFixture, HasPopulation<Shrub> {
 
 	@Override
 	public boolean equalsIgnoringID(final IFixture fixture) {
-		if (fixture instanceof Shrub) {
-			return kind.equals(((Shrub) fixture).getKind()) &&
-				population == ((Shrub) fixture).getPopulation();
+		if (fixture instanceof Shrub it) {
+			return kind.equals(it.getKind()) && population == it.getPopulation();
 		} else {
 			return false;
 		}
@@ -153,11 +152,11 @@ public class Shrub implements HarvestableFixture, HasPopulation<Shrub> {
 		if (other.getId() != id) {
 			report.accept("Different IDs");
 			return false;
-		} else if (other instanceof Shrub) {
-			if (!((Shrub) other).getKind().equals(kind)) {
+		} else if (other instanceof Shrub it) {
+			if (!it.getKind().equals(kind)) {
 				report.accept(String.format("In shrub with ID #%d:\tKinds differ", id));
 				return false;
-			} else if (((Shrub) other).getPopulation() > population) {
+			} else if (it.getPopulation() > population) {
 				report.accept(String.format("In shrub %s (#%d):\tHas higher count than we do", kind, id));
 				return false;
 			} else {

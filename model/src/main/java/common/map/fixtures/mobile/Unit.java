@@ -247,13 +247,13 @@ public final class Unit implements IMutableUnit {
 	 */
 	@Override
 	public boolean equals(final Object obj) {
-		if (obj instanceof IUnit) {
-			return ((IUnit) obj).getOwner().getPlayerId() == owner.getPlayerId() &&
-				kind.equals(((IUnit) obj).getKind()) &&
-				name.equals(((IUnit) obj).getName()) &&
-				((IUnit) obj).getId() == id &&
-				members.containsAll(((IUnit) obj).stream().collect(Collectors.toList())) &&
-				((IUnit) obj).stream().collect(Collectors.toList()).containsAll(members);
+		if (obj instanceof IUnit that) {
+			return that.getOwner().getPlayerId() == owner.getPlayerId() &&
+				kind.equals(that.getKind()) &&
+				name.equals(that.getName()) &&
+				that.getId() == id &&
+				members.containsAll(that.stream().collect(Collectors.toList())) &&
+				that.stream().collect(Collectors.toList()).containsAll(members);
 		} else {
 			return false;
 		}
@@ -298,16 +298,16 @@ public final class Unit implements IMutableUnit {
 	 */
 	@Override
 	public boolean equalsIgnoringID(final IFixture fixture) {
-		if (fixture instanceof IUnit &&
-				((IUnit) fixture).getOwner().getPlayerId() == owner.getPlayerId() &&
-				((IUnit) fixture).getKind().equals(kind) &&
-				((IUnit) fixture).getName().equals(name)) {
+		if (fixture instanceof IUnit that &&
+				that.getOwner().getPlayerId() == owner.getPlayerId() &&
+				that.getKind().equals(kind) &&
+				that.getName().equals(name)) {
 			for (final UnitMember member : this) {
-				if (((IUnit) fixture).stream().noneMatch(member::equalsIgnoringID)) {
+				if (that.stream().noneMatch(member::equalsIgnoringID)) {
 					return false;
 				}
 			}
-			for (final UnitMember member : (IUnit) fixture) {
+			for (final UnitMember member : that) {
 				if (members.stream().noneMatch(member::equalsIgnoringID)) {
 					return false;
 				}
@@ -387,9 +387,9 @@ public final class Unit implements IMutableUnit {
 	}
 
 	private static int memberComparison(final UnitMember one, final UnitMember two) {
-		if (one instanceof IWorker) {
-			if (two instanceof IWorker) {
-				return ((IWorker) one).getName().compareTo(((IWorker) two).getName());
+		if (one instanceof IWorker first) {
+			if (two instanceof IWorker second) {
+				return first.getName().compareTo(second.getName());
 			} else {
 				return -1;
 			}
@@ -403,35 +403,35 @@ public final class Unit implements IMutableUnit {
 			}
 		} else if (two instanceof Immortal) {
 			return 1;
-		} else if (one instanceof Animal) {
-			if (two instanceof Animal) {
+		} else if (one instanceof Animal first) {
+			if (two instanceof Animal second) {
 				return Comparator.comparing(Animal::getKind)
 					.thenComparing(Comparator.comparingInt(Animal::getPopulation)
 						.reversed())
-					.compare((Animal) one, (Animal) two);
+					.compare(first, second);
 			} else {
 				return -1;
 			}
 		} else if (two instanceof Animal) {
 			return 1;
-		} else if (one instanceof Implement) {
-			if (two instanceof Implement) {
+		} else if (one instanceof Implement first) {
+			if (two instanceof Implement second) {
 				return Comparator.comparing(Implement::getKind)
 					.thenComparing(Comparator.comparingInt(Implement::getPopulation)
 						.reversed())
-					.compare((Implement) one, (Implement) two);
+					.compare(first, second);
 			} else {
 				return -1;
 			}
 		} else if (two instanceof Implement) {
 			return 1;
-		} else if (one instanceof IResourcePile) {
-			if (two instanceof IResourcePile) {
+		} else if (one instanceof IResourcePile first) {
+			if (two instanceof IResourcePile second) {
 				return Comparator.comparing(IResourcePile::getKind)
 					.thenComparing(IResourcePile::getContents)
 					.thenComparing(Comparator.comparing(IResourcePile::getQuantity)
 						.reversed())
-					.compare((IResourcePile) one, (IResourcePile) two);
+					.compare(first, second);
 			} else {
 				return -1;
 			}

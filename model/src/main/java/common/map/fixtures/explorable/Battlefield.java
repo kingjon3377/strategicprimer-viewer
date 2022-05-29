@@ -72,8 +72,8 @@ public class Battlefield implements ExplorableFixture {
 	public boolean equals(final Object obj) {
 		if (this == obj) {
 			return true;
-		} else if (obj instanceof Battlefield) {
-			return ((Battlefield) obj).getId() == id;
+		} else if (obj instanceof Battlefield b) {
+			return b.getId() == id;
 		} else {
 			return false;
 		}

@@ -80,14 +80,14 @@ public class ExplorableTabularReportGenerator
 		final String brief;
 		final String owner;
 		final String longDesc;
-		if (item instanceof TextFixture) {
-			if (((TextFixture) item).getTurn() >= 0) {
-				brief = String.format("Text Note (%d)", ((TextFixture) item).getTurn());
+		if (item instanceof TextFixture tf) {
+			if (tf.getTurn() >= 0) {
+				brief = String.format("Text Note (%d)", tf.getTurn());
 			} else {
 				brief = "Text Note";
 			}
 			owner = "---";
-			longDesc = ((TextFixture) item).getText();
+			longDesc = tf.getText();
 		} else if (item instanceof Battlefield) {
 			brief = "ancient battlefield";
 			owner = "---";
@@ -96,25 +96,25 @@ public class ExplorableTabularReportGenerator
 			brief = "caves nearby";
 			owner = "---";
 			longDesc = "";
-		} else if (item instanceof Portal) {
-			if (((Portal) item).getDestinationCoordinates().isValid()) {
-				brief = "portal to world " + ((Portal) item).getDestinationWorld();
+		} else if (item instanceof Portal p) {
+			if (p.getDestinationCoordinates().isValid()) {
+				brief = "portal to world " + p.getDestinationWorld();
 			} else {
 				brief = "portal to another world";
 			}
 			owner = "---";
 			longDesc = "";
-		} else if (item instanceof AdventureFixture) {
-			brief = ((AdventureFixture) item).getBriefDescription();
+		} else if (item instanceof AdventureFixture af) {
+			brief = af.getBriefDescription();
 			// TODO: Don't we have a helper method for this?
-			if (player.equals(((AdventureFixture) item).getOwner())) {
+			if (player.equals(af.getOwner())) {
 				owner = "You";
-			} else if (((AdventureFixture) item).getOwner().isIndependent()) {
+			} else if (af.getOwner().isIndependent()) {
 				owner = "No-one";
 			} else {
-				owner = ownerString(player, ((AdventureFixture) item).getOwner());
+				owner = ownerString(player, af.getOwner());
 			}
-			longDesc = ((AdventureFixture) item).getFullDescription();
+			longDesc = af.getFullDescription();
 		} else {
 			return Collections.emptyList();
 		}

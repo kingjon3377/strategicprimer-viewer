@@ -66,16 +66,14 @@ import java.util.stream.Collectors;
 			getPlayerOrIndependent(element, warner, players));
 		fix.setPortrait(getAttribute(element, "portrait", ""));
 		for (final XMLEvent event : stream) {
-			if (event instanceof StartElement && isSPStartElement(event)) {
+			if (event instanceof StartElement se && isSPStartElement(event)) {
 				if (fix.getPopulation() == null) {
-					fix.setPopulation(readCommunityStats((StartElement) event,
+					fix.setPopulation(readCommunityStats(se,
 						element.getName(), stream, players, warner, idFactory));
 				} else {
-					throw new UnwantedChildException(element.getName(),
-						(StartElement) event);
+					throw new UnwantedChildException(element.getName(), se);
 				}
-			} else if (event instanceof EndElement &&
-					((EndElement) event).getName().equals(element.getName())) {
+			} else if (event instanceof EndElement ee && ee.getName().equals(element.getName())) {
 				break;
 			}
 		}
@@ -108,16 +106,16 @@ import java.util.stream.Collectors;
 			getPlayerOrIndependent(element, warner, players));
 		fix.setPortrait(getAttribute(element, "portrait", ""));
 		for (final XMLEvent event : stream) {
-			if (event instanceof StartElement && isSPStartElement(event)) {
+			if (event instanceof StartElement se && isSPStartElement(event)) {
 				if (fix.getPopulation() == null) {
-					fix.setPopulation(readCommunityStats((StartElement) event,
+					fix.setPopulation(readCommunityStats(se,
 						element.getName(), stream, players, warner, idFactory));
 				} else {
 					throw new UnwantedChildException(element.getName(),
-						(StartElement) event);
+						se);
 				}
-			} else if (event instanceof EndElement &&
-					((EndElement) event).getName().equals(element.getName())) {
+			} else if (event instanceof EndElement ee &&
+					ee.getName().equals(element.getName())) {
 				break;
 			}
 		}
@@ -149,16 +147,15 @@ import java.util.stream.Collectors;
 			getPlayerOrIndependent(element, warner, players));
 		fix.setPortrait(getAttribute(element, "portrait", ""));
 		for (final XMLEvent event : stream) {
-			if (event instanceof StartElement && isSPStartElement(event)) {
+			if (event instanceof StartElement se && isSPStartElement(event)) {
 				if (fix.getPopulation() == null) {
-					fix.setPopulation(readCommunityStats((StartElement) event,
+					fix.setPopulation(readCommunityStats(se,
 						element.getName(), stream, players, warner, idFactory));
 				} else {
 					throw new UnwantedChildException(element.getName(),
-						(StartElement) event);
+						se);
 				}
-			} else if (event instanceof EndElement &&
-					((EndElement) event).getName().equals(element.getName())) {
+			} else if (event instanceof EndElement ee && ee.getName().equals(element.getName())) {
 				break;
 			}
 		}
@@ -185,16 +182,14 @@ import java.util.stream.Collectors;
 				RaceFactory.randomRace(new Random(idNum))));
 		retval.setPortrait(getAttribute(element, "portrait", ""));
 		for (final XMLEvent event : stream) {
-			if (event instanceof StartElement && isSPStartElement(event)) {
+			if (event instanceof StartElement se && isSPStartElement(event)) {
 				if (retval.getPopulation() == null) {
-					retval.setPopulation(readCommunityStats((StartElement) event,
+					retval.setPopulation(readCommunityStats(se,
 						element.getName(), stream, players, warner, idFactory));
 				} else {
-					throw new UnwantedChildException(element.getName(),
-						(StartElement) event);
+					throw new UnwantedChildException(element.getName(), se);
 				}
-			} else if (event instanceof EndElement &&
-					((EndElement) event).getName().equals(element.getName())) {
+			} else if (event instanceof EndElement ee && ee.getName().equals(element.getName())) {
 				break;
 			}
 		}
@@ -211,31 +206,30 @@ import java.util.stream.Collectors;
 		final Deque<StartElement> stack = new LinkedList<>();
 		stack.addFirst(element);
 		for (final XMLEvent event : stream) {
-			if (event instanceof EndElement &&
-					((EndElement) event).getName().equals(element.getName())) {
+			if (event instanceof EndElement ee && ee.getName().equals(element.getName())) {
 				break;
-			} else if (event instanceof StartElement && isSPStartElement(event)) {
-				switch (((StartElement) event).getName().getLocalPart().toLowerCase()) {
+			} else if (event instanceof StartElement se && isSPStartElement(event)) {
+				switch (se.getName().getLocalPart().toLowerCase()) {
 				case "expertise":
-					expectAttributes((StartElement) event, warner, "skill", "level");
-					retval.setSkillLevel(getAttribute((StartElement) event, "skill"),
-						getIntegerAttribute((StartElement) event, "level"));
-					stack.addFirst((StartElement) event);
+					expectAttributes(se, warner, "skill", "level");
+					retval.setSkillLevel(getAttribute(se, "skill"),
+						getIntegerAttribute(se, "level"));
+					stack.addFirst(se);
 					break;
 				case "claim":
-					expectAttributes((StartElement) event, warner, "resource");
-					retval.addWorkedField(getIntegerAttribute((StartElement) event,
+					expectAttributes(se, warner, "resource");
+					retval.addWorkedField(getIntegerAttribute(se,
 						"resource"));
-					stack.addFirst((StartElement) event);
+					stack.addFirst(se);
 					break;
 				case "production": case "consumption":
 					if (current == null) {
-						expectAttributes((StartElement) event, warner);
-						current = ((StartElement) event).getName().getLocalPart();
-						stack.addFirst((StartElement) event);
+						expectAttributes(se, warner);
+						current = se.getName().getLocalPart();
+						stack.addFirst(se);
 					} else {
 						throw new UnwantedChildException(
-							stack.peekFirst().getName(), (StartElement) event);
+							stack.peekFirst().getName(), se);
 					}
 					break;
 				case "resource":
@@ -247,23 +241,21 @@ import java.util.stream.Collectors;
 						lambda = retval.getYearlyConsumption()::add;
 					} else {
 						throw UnwantedChildException.listingExpectedTags(
-							top.getName(), (StartElement) event, "production",
+							top.getName(), se, "production",
 							"consumption");
 					}
-					lambda.accept(FluidResourceHandler.readResource(
-						(StartElement) event, top.getName(),
+					lambda.accept(FluidResourceHandler.readResource(se, top.getName(),
 						stream, players, warner, idFactory));
 					break;
 				default:
 					throw UnwantedChildException.listingExpectedTags(
-						((StartElement) event).getName(), element, "expertise",
+						se.getName(), element, "expertise",
 						"claim", "production", "consumption", "resource");
 				}
-			} else if (event instanceof EndElement && !stack.isEmpty() &&
-					((EndElement) event).getName()
-						.equals(stack.peekFirst().getName())) {
+			} else if (event instanceof EndElement ee && !stack.isEmpty() &&
+					ee.getName().equals(stack.peekFirst().getName())) {
 				final StartElement top = stack.peekFirst();
-				stack.removeFirst();
+				stack.removeFirst(); // FIXME: Combine with previous line; removeFirst() returns the top ...
 				if (top.equals(element)) {
 					break;
 				} else if (top.getName().getLocalPart().equals(current)) {

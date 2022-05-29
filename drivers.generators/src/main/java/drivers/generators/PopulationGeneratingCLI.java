@@ -270,7 +270,7 @@ public class PopulationGeneratingCLI implements CLIDriver {
 				reserved = map.getFixtures(location).stream()
 					.filter(Forest.class::isInstance).map(Forest.class::cast)
 					.map(Forest::getAcres).filter(n -> n.doubleValue() > 0.0)
-					.map(n -> {// TODO: extract this as decimalize()
+					.map(n -> {// FIXME: Use lovelace.util.Decimalize
 						if (n instanceof BigDecimal) {
 							return (BigDecimal) n;
 						} else {
@@ -300,7 +300,7 @@ public class PopulationGeneratingCLI implements CLIDriver {
 			reserved = map.getFixtures(location).stream().filter(HasExtent.class::isInstance)
 				.filter(f -> !(f instanceof Forest)) // already counted above
 				.map(HasExtent.class::cast).map(HasExtent::getAcres)
-				.filter(n -> n.doubleValue() > 0.0).map(n -> {// TODO: extract this as decimalize()
+				.filter(n -> n.doubleValue() > 0.0).map(n -> {// FIXME: lovelace.util.Decimalize
 					if (n instanceof BigDecimal) {
 						return (BigDecimal) n;
 					} else {

@@ -182,15 +182,15 @@ public final class WorkerStats {
 
 	@Override
 	public boolean equals(final Object obj) {
-		if (obj instanceof WorkerStats) {
-			return hitPoints == ((WorkerStats) obj).hitPoints &&
-				maxHitPoints == ((WorkerStats) obj).maxHitPoints &&
-				strength == ((WorkerStats) obj).strength &&
-				dexterity == ((WorkerStats) obj).dexterity &&
-				constitution == ((WorkerStats) obj).constitution &&
-				intelligence == ((WorkerStats) obj).intelligence &&
-				wisdom == ((WorkerStats) obj).wisdom &&
-				charisma == ((WorkerStats) obj).charisma;
+		if (obj instanceof WorkerStats that) {
+			return hitPoints == that.hitPoints &&
+				maxHitPoints == that.maxHitPoints &&
+				strength == that.strength &&
+				dexterity == that.dexterity &&
+				constitution == that.constitution &&
+				intelligence == that.intelligence &&
+				wisdom == that.wisdom &&
+				charisma == that.charisma;
 		} else {
 			return false;
 		}

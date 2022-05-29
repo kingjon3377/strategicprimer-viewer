@@ -38,9 +38,8 @@ import java.util.HashMap;
 		Point retval = null;
 		for (final Point location : map.getLocations()) {
 			for (final TileFixture fixture : map.getFixtures(location)) {
-				if (fixture instanceof IFortress &&
-						player.equals(((IFortress) fixture).getOwner())) {
-					if ("hq".equals(((IFortress) fixture).getName())) {
+				if (fixture instanceof IFortress f && player.equals(f.getOwner())) {
+					if ("hq".equals(f.getName())) {
 						return location;
 					} else if (location.isValid() && retval == null) {
 						retval = location;
@@ -61,15 +60,15 @@ import java.util.HashMap;
 					key, mapping.get(key), val);
 			}
 			mapping.put(key, val);
-			if (fixture instanceof FixtureIterable) {
-				for (final IFixture inner : (FixtureIterable<?>) fixture) {
+			if (fixture instanceof FixtureIterable<?> fi) {
+				for (final IFixture inner : fi) {
 					addToMap(location, inner, idf, mapping);
 				}
-			} else if (fixture instanceof IWorker) {
-				if (((IWorker) fixture).getMount() != null) {
-					addToMap(location, ((IWorker) fixture).getMount(), idf, mapping);
+			} else if (fixture instanceof IWorker w) {
+				if (w.getMount() != null) {
+					addToMap(location, w.getMount(), idf, mapping);
 				}
-				for (final Implement inner : ((IWorker) fixture).getEquipment()) {
+				for (final Implement inner : w.getEquipment()) {
 					addToMap(location, inner, idf, mapping);
 				}
 			}
@@ -103,8 +102,8 @@ import java.util.HashMap;
 	                                  final Iterable<? extends IFixture> stream) {
 		for (final IFixture fixture : stream) {
 			retval.put(fixture.getId(), parent.getId());
-			if (fixture instanceof FixtureIterable) {
-				parentMapImpl(retval, fixture, (FixtureIterable<?>) fixture);
+			if (fixture instanceof FixtureIterable<?> fi) {
+				parentMapImpl(retval, fixture, fi);
 			}
 		}
 	}
@@ -116,8 +115,8 @@ import java.util.HashMap;
 		final Map<Integer, Integer> retval = new HashMap<>();
 		for (final Point location : map.getLocations()) {
 			for (final TileFixture fixture : map.getFixtures(location)) {
-				if (fixture instanceof FixtureIterable) {
-					parentMapImpl(retval, fixture, (FixtureIterable<?>) fixture);
+				if (fixture instanceof FixtureIterable<?> fi) {
+					parentMapImpl(retval, fixture, fi);
 				}
 			}
 		}

@@ -86,8 +86,8 @@ public class ReportCLI implements ReadOnlyDriver {
 	@Override
 	public void startDriver() throws DriverFailedException {
 		try {
-			if (model instanceof IMultiMapModel) {
-				for (final IMapNG map : ((IMultiMapModel) model).getAllMaps()) {
+			if (model instanceof IMultiMapModel mmm) {
+				for (final IMapNG map : mmm.getAllMaps()) {
 					writeReport(map.getFilename(), map);
 				}
 			} else {

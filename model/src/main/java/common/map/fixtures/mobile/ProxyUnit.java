@@ -170,8 +170,8 @@ public class ProxyUnit implements IUnit, ProxyFor<IUnit> {
 	@Override
 	public boolean equalsIgnoringID(final IFixture fixture) {
 		LovelaceLogger.error("ProxyUnit.equalsIgnoringID called");
-		if (fixture instanceof ProxyUnit) {
-			return proxiedList.stream().allMatch(m -> (((ProxyUnit) fixture).proxiedList.stream().anyMatch(m::equals))); // TODO: Should check the converse as well
+		if (fixture instanceof ProxyUnit pu) {
+			return proxiedList.stream().allMatch(m -> (pu.proxiedList.stream().anyMatch(m::equals))); // TODO: Should check the converse as well
 		} else {
 			return false;
 		}
@@ -213,15 +213,15 @@ public class ProxyUnit implements IUnit, ProxyFor<IUnit> {
 					final int memberID = member.getId();
 					if (map.containsKey(memberID)) {
 						proxy = map.get(memberID);
-						if (proxy instanceof WorkerProxy) {
-							if (member instanceof IWorker) {
-								((WorkerProxy) proxy).addProxied((IWorker) member);
+						if (proxy instanceof WorkerProxy wp) {
+							if (member instanceof IWorker w) {
+								wp.addProxied(w);
 							} else {
 								LovelaceLogger.warning("ProxyWorker matched non-worker");
 							}
-						} else if (proxy instanceof AnimalProxy) {
-							if (member instanceof Animal) {
-								((AnimalProxy) proxy).addProxied((Animal) member);
+						} else if (proxy instanceof AnimalProxy ap) {
+							if (member instanceof Animal a) {
+								ap.addProxied(a);
 							} else {
 								LovelaceLogger.warning("ProxyAnimal matched non-animal");
 							}
@@ -229,10 +229,10 @@ public class ProxyUnit implements IUnit, ProxyFor<IUnit> {
 							((UnitMemberProxy<UnitMember>) proxy).addProxied(member);
 						}
 					} else {
-						if (member instanceof IWorker) {
-							proxy = new ProxyWorker((IWorker) member);
-						} else if (member instanceof Animal) {
-							proxy = new ProxyAnimal((Animal) member);
+						if (member instanceof IWorker w) {
+							proxy = new ProxyWorker(w);
+						} else if (member instanceof Animal a) {
+							proxy = new ProxyAnimal(a);
 						} else {
 							proxy = new ProxyMember(member);
 						}
@@ -315,11 +315,11 @@ public class ProxyUnit implements IUnit, ProxyFor<IUnit> {
 
 	@Override
 	public boolean equals(final Object obj) {
-		if (obj instanceof ProxyUnit) {
-			return parallel == ((ProxyUnit) obj).parallel &&
-				Objects.equals(commonID, ((ProxyUnit) obj).commonID) &&
-				Objects.equals(commonKind, ((ProxyUnit) obj).commonKind) &&
-				proxiedList.equals(((ProxyUnit) obj).proxiedList);
+		if (obj instanceof ProxyUnit pu) {
+			return parallel == pu.parallel &&
+				Objects.equals(commonID, pu.commonID) &&
+				Objects.equals(commonKind, pu.commonKind) &&
+				proxiedList.equals(pu.proxiedList);
 		} else {
 			return false;
 		}

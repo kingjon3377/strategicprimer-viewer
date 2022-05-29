@@ -56,8 +56,7 @@ import common.map.fixtures.mobile.worker.IJob;
 	}
 
 	private void writeMember(final Writer writer, final @Nullable UnitMember member) throws IOException {
-		if (member instanceof IWorker) {
-			final IWorker worker = (IWorker) member;
+		if (member instanceof final IWorker worker) {
 			writer.write(worker.getName());
 			final List<IJob> jobs;
 			if (options.hasOption("--include-unleveled-jobs")) {
@@ -88,8 +87,7 @@ import common.map.fixtures.mobile.worker.IJob;
 			if (needsClosingParen) {
 				writer.write(")");
 			}
-		} else if (member instanceof Animal) {
-			final Animal animal = (Animal) member;
+		} else if (member instanceof final Animal animal) {
 			if (animal.getPopulation() > 1) {
 				writer.write(String.format("%d ", animal.getPopulation()));
 			}
@@ -115,8 +113,8 @@ import common.map.fixtures.mobile.worker.IJob;
 		final List<UnitMember> nonWorkers = new ArrayList<>();
 		final List<IWorker> unleveledWorkers = new ArrayList<>();
 		for (final UnitMember member : unit) {
-			if (member instanceof IWorker) {
-				if (StreamSupport.stream(((IWorker) member).spliterator(), false)
+			if (member instanceof IWorker w) {
+				if (StreamSupport.stream(w.spliterator(), false)
 						.mapToInt(IJob::getLevel).anyMatch(x -> x > 0)) {
 					leveledWorkers.add((IWorker) member);
 				} else {
@@ -164,8 +162,8 @@ import common.map.fixtures.mobile.worker.IJob;
 	}
 
 	private static String workerString(final @Nullable UnitMember member) {
-		if (member instanceof HasName) {
-			return ((HasName) member).getName();
+		if (member instanceof HasName hn) {
+			return hn.getName();
 		} else if (member == null) {
 			return "";
 		} else {

@@ -199,14 +199,14 @@ public class Worker implements IMutableWorker {
 
 	@Override
 	public boolean equalsIgnoringID(final IFixture fixture) {
-		if (fixture instanceof IWorker) {
-			return ((IWorker) fixture).getName().equals(name) &&
-				jobSetsEqual(jobSet, ((IWorker) fixture)) &&
-				((IWorker) fixture).getRace().equals(race) &&
-				Objects.equals(stats, ((IWorker) fixture).getStats()) &&
-				equipmentImpl.containsAll(((IWorker) fixture).getEquipment()) &&
-				((IWorker) fixture).getEquipment().containsAll(equipmentImpl) &&
-				Objects.equals(mount, ((IWorker) fixture).getMount());
+		if (fixture instanceof IWorker that) {
+			return that.getName().equals(name) &&
+				jobSetsEqual(jobSet, that) &&
+				that.getRace().equals(race) &&
+				Objects.equals(stats, that.getStats()) &&
+				equipmentImpl.containsAll(that.getEquipment()) &&
+				that.getEquipment().containsAll(equipmentImpl) &&
+				Objects.equals(mount, that.getMount());
 		} else {
 			return false;
 		}
@@ -214,8 +214,8 @@ public class Worker implements IMutableWorker {
 
 	@Override
 	public boolean equals(final Object obj) {
-		if (obj instanceof IWorker) {
-			return ((IWorker) obj).getId() == id && equalsIgnoringID((IWorker) obj);
+		if (obj instanceof IWorker that) {
+			return that.getId() == id && equalsIgnoringID(that);
 		} else {
 			return false;
 		}
@@ -252,17 +252,17 @@ public class Worker implements IMutableWorker {
 	@Override
 	public boolean isSubset(final IFixture obj, final Consumer<String> report) {
 		if (obj.getId() == id) {
-			if (obj instanceof IWorker) {
+			if (obj instanceof IWorker that) {
 				final Consumer<String> localReport =
 					s -> report.accept(String.format("In worker %s (ID #%d):\t%s",
 						name, id, s));
-				if (!name.equals(((IWorker) obj).getName())) {
+				if (!name.equals(that.getName())) {
 					localReport.accept("Names differ");
 					return false;
-				} else if (!race.equals(((IWorker) obj).getRace())) {
+				} else if (!race.equals(that.getRace())) {
 					localReport.accept("Races differ");
 					return false;
-				} else if (!Objects.equals(stats, ((IWorker) obj).getStats())) {
+				} else if (!Objects.equals(stats, that.getStats())) {
 					localReport.accept("Stats differ");
 					return false;
 				}
@@ -270,7 +270,7 @@ public class Worker implements IMutableWorker {
 					jobSet.stream().collect(Collectors.toMap(IJob::getName,
 						Function.identity()));
 				boolean retval = true;
-				for (final IJob job : (IWorker) obj) {
+				for (final IJob job : that) {
 					if (ours.containsKey(job.getName())) {
 						if (!ours.get(job.getName()).isSubset(job, localReport)) {
 							retval = false;
@@ -280,7 +280,7 @@ public class Worker implements IMutableWorker {
 						retval = false;
 					}
 				}
-				final Animal theirMount = ((IWorker) obj).getMount();
+				final Animal theirMount = that.getMount();
 				if (theirMount != null) {
 					if (mount != null && !theirMount.equals(mount)) { // TODO: Use isSubset() instead?
 						localReport.accept("Mounts differ");
@@ -290,8 +290,8 @@ public class Worker implements IMutableWorker {
 						retval = false;
 					}
 				}
-				for (final Implement item : ((IWorker) obj).getEquipment()) {
-					if (!equipmentImpl.contains(item)) {
+				for (final Implement item : that.getEquipment()) {
+					if (!equipmentImpl.contains(item)) { // TODO: Subset: a worker with 1 axe should be a subset of one with 2
 						localReport.accept("Extra equipment: " + item);
 						retval = false;
 					}

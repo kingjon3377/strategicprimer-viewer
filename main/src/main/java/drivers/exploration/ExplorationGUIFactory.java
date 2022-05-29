@@ -56,8 +56,8 @@ public class ExplorationGUIFactory implements GUIDriverFactory {
 
 	@Override
 	public GUIDriver createDriver(final ICLIHelper cli, final SPOptions options, final IDriverModel model) {
-		if (model instanceof IExplorationModel) {
-			return new ExplorationGUI(cli, options, (IExplorationModel) model);
+		if (model instanceof IExplorationModel em) {
+			return new ExplorationGUI(cli, options, em);
 		} else {
 			return createDriver(cli, options, new ExplorationModel(model));
 		}

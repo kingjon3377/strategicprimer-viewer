@@ -77,9 +77,9 @@ public final class Quantity implements Subsettable<Quantity>, Comparable<Quantit
 	public boolean equals(final Object obj) {
 		if (this == obj) {
 			return true;
-		} else if (obj instanceof Quantity) {
-			return units.equals(((Quantity) obj).getUnits()) &&
-				new NumberComparator().compare(number, ((Quantity) obj).getNumber()) == 0;
+		} else if (obj instanceof Quantity q) {
+			return units.equals(q.getUnits()) &&
+				new NumberComparator().compare(number, q.getNumber()) == 0; // FIXME: Cache comparator?
 		} else {
 			return false;
 		}

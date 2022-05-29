@@ -221,10 +221,9 @@ import org.jetbrains.annotations.Nullable;
 	 * Whether the given XML element is a {@link StartElement} and in a namespace we support.
 	 */
 	protected static boolean isSPStartElement(final XMLEvent element) {
-		return element instanceof StartElement &&
-				       (SP_NAMESPACE.equals(((StartElement) element).getName().getNamespaceURI()) ||
-						        XMLConstants.NULL_NS_URI.equals(((StartElement) element).getName()
-								        .getNamespaceURI()));
+		return element instanceof StartElement se &&
+				       (SP_NAMESPACE.equals(se.getName().getNamespaceURI()) ||
+						        XMLConstants.NULL_NS_URI.equals(se.getName().getNamespaceURI()));
 	}
 
 	/**
@@ -239,10 +238,10 @@ import org.jetbrains.annotations.Nullable;
 	protected static void spinUntilEnd(final QName tag, final Iterable<XMLEvent> reader)
 			throws SPFormatException {
 		for (final XMLEvent event : reader) {
-			if (event instanceof StartElement && isSPStartElement(event)) {
-				throw new UnwantedChildException(tag, (StartElement) event);
-			} else if (event instanceof EndElement &&
-					tag.equals(((EndElement) event).getName())) {
+			if (event instanceof StartElement se && isSPStartElement(event)) {
+				throw new UnwantedChildException(tag, se);
+			} else if (event instanceof EndElement ee &&
+					tag.equals(ee.getName())) {
 				break;
 			}
 		}
@@ -576,15 +575,15 @@ import org.jetbrains.annotations.Nullable;
 		for (final Pair<String, ?> pair : attributes) {
 			final String name = pair.getValue0();
 			final Object item = pair.getValue1();
-			if (item instanceof String) {
-				ostream.writeAttribute(SP_NAMESPACE, name, (String) item);
-			} else if (item instanceof BigDecimal) {
-				if (((BigDecimal) item).scale() <= 0) {
+			if (item instanceof String s) {
+				ostream.writeAttribute(SP_NAMESPACE, name, s);
+			} else if (item instanceof BigDecimal bd) {
+				if (bd.scale() <= 0) {
 					ostream.writeAttribute(SP_NAMESPACE, name,
-						Integer.toString(((BigDecimal) item).intValue()));
+						Integer.toString(bd.intValue()));
 				} else {
 					ostream.writeAttribute(SP_NAMESPACE, name,
-						((BigDecimal) item).toPlainString());
+						bd.toPlainString());
 				}
 			} else if (item instanceof BigInteger || item instanceof Integer ||
 					item instanceof Boolean || item instanceof Long) {
@@ -625,8 +624,8 @@ import org.jetbrains.annotations.Nullable;
 	 * @param warner The Warning instance to use if the object can't have an image but the XML specifies one
 	 */
 	protected static <Type> Type setImage(final Type obj, final StartElement element, final Warning warner) {
-		if (obj instanceof HasMutableImage) {
-			((HasMutableImage) obj).setImage(getAttribute(element, "image", ""));
+		if (obj instanceof HasMutableImage hmi) {
+			hmi.setImage(getAttribute(element, "image", ""));
 		} else if (hasAttribute(element, "image")) {
 			warner.handle(new UnsupportedPropertyException(element, "image"));
 		}
@@ -645,12 +644,11 @@ import org.jetbrains.annotations.Nullable;
 			throws SPFormatException {
 		final StringBuilder builder = new StringBuilder();
 		for (final XMLEvent event : stream) {
-			if (event instanceof StartElement && isSPStartElement(event)) {
-				throw new UnwantedChildException(tag, (StartElement) event);
-			} else if (event instanceof Characters) {
-				builder.append(((Characters) event).getData());
-			} else if (event instanceof EndElement &&
-					tag.equals(((EndElement) event).getName())) {
+			if (event instanceof StartElement se && isSPStartElement(event)) {
+				throw new UnwantedChildException(tag, se);
+			} else if (event instanceof Characters c) {
+				builder.append(c.getData());
+			} else if (event instanceof EndElement ee && tag.equals(ee.getName())) {
 				break;
 			}
 		}

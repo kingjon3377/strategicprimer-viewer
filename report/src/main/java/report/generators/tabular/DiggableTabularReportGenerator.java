@@ -71,18 +71,18 @@ public class DiggableTabularReportGenerator implements ITableGenerator<MineralFi
 			final int key, final Point loc, final Map<Integer, Integer> parentMap) {
 		final String classField;
 		final String statusField;
-		if (item instanceof Ground) {
+		if (item instanceof Ground g) {
 			classField = "ground";
-			statusField = (((Ground) item).isExposed()) ? "exposed" : "not exposed";
-		} else if (item instanceof Mine) {
+			statusField = g.isExposed() ? "exposed" : "not exposed";
+		} else if (item instanceof Mine m) {
 			classField = "mine";
-			statusField = ((Mine) item).getStatus().toString();
+			statusField = m.getStatus().toString();
 		} else if (item instanceof StoneDeposit) {
 			classField = "deposit";
 			statusField = "exposed";
-		} else if (item instanceof MineralVein) {
+		} else if (item instanceof MineralVein mv) {
 			classField = "vein";
-			statusField = (((MineralVein) item).isExposed()) ? "exposed" : "not exposed";
+			statusField = mv.isExposed() ? "exposed" : "not exposed";
 		} else {
 			return Collections.emptyList();
 		}

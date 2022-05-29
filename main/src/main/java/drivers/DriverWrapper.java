@@ -59,7 +59,7 @@ import lovelace.util.LovelaceLogger;
 	}
 
 	private List<Path> extendArguments(final String... args) throws IncorrectUsageException {
-		if (factory instanceof GUIDriverFactory) {
+		if (factory instanceof GUIDriverFactory gdf) {
 			final List<Path> files = new ArrayList<>();
 			if (args.length > 0) {
 				files.addAll(MapIOHelper.namesToFiles(args));
@@ -71,7 +71,7 @@ import lovelace.util.LovelaceLogger;
 					!tooManyArguments(files.size() + 1)) {
 				final List<Path> requested;
 				try {
-					requested = ((GUIDriverFactory) factory).askUserForFiles();
+					requested = gdf.askUserForFiles();
 				} catch (final DriverFailedException except) {
 					LovelaceLogger.warning(except, "User presumably canceled");
 					throw new IncorrectUsageException(factory.getUsage());
@@ -102,11 +102,11 @@ import lovelace.util.LovelaceLogger;
 
 	public void startCatchingErrors(final ICLIHelper cli, final SPOptions options, final String... args) {
 		try {
-			if (factory instanceof UtilityDriverFactory) {
+			if (factory instanceof UtilityDriverFactory udf) {
 				checkArguments(args);
-				((UtilityDriverFactory) factory).createDriver(cli, options).startDriver(args);
-			} else if (factory instanceof ModelDriverFactory) { // TODO: refactor to avoid successive instanceof tests
-				if (factory instanceof GUIDriverFactory) {
+				udf.createDriver(cli, options).startDriver(args);
+			} else if (factory instanceof ModelDriverFactory mdf) { // TODO: refactor to avoid successive instanceof tests
+				if (mdf instanceof GUIDriverFactory) {
 					if (ParamCount.One == factory.getUsage().getParamsWanted() && args.length > 1) {
 						for (final String arg : args) {
 							startCatchingErrors(cli, options, arg);
@@ -118,7 +118,7 @@ import lovelace.util.LovelaceLogger;
 						final IMultiMapModel model = MapReaderAdapter.readMultiMapModel(Warning.WARN,
 							files.get(0), files.stream().skip(1).toArray(Path[]::new));
 						fixCurrentTurn(options, model);
-						((GUIDriverFactory) factory).createDriver(cli, options, model).startDriver();
+						mdf.createDriver(cli, options, model).startDriver();
 					}
 				} else {
 					checkArguments(args);
@@ -128,7 +128,7 @@ import lovelace.util.LovelaceLogger;
 					final IMultiMapModel model = MapReaderAdapter.readMultiMapModel(Warning.WARN,
 						files.get(0), files.stream().skip(1).toArray(Path[]::new));
 					fixCurrentTurn(options, model);
-					final ModelDriver driver = ((ModelDriverFactory) factory).createDriver(cli, options, model);
+					final ModelDriver driver = mdf.createDriver(cli, options, model);
 					driver.startDriver();
 					if (driver instanceof CLIDriver) {
 						MapReaderAdapter.writeModel(model);

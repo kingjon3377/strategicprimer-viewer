@@ -56,10 +56,8 @@ public final class MapDimensionsImpl implements MapDimensions {
 	public boolean equals(final Object obj) {
 		if (this == obj) {
 			return true;
-		} else if (obj instanceof MapDimensions) {
-			return ((MapDimensions) obj).getRows() == rows &&
-				((MapDimensions) obj).getColumns() == columns &&
-				((MapDimensions) obj).getVersion() == version;
+		} else if (obj instanceof MapDimensions md) {
+			return md.getRows() == rows && md.getColumns() == columns && md.getVersion() == version;
 		} else {
 			return false;
 		}

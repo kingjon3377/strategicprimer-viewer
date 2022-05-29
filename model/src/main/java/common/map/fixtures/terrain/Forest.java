@@ -122,11 +122,11 @@ public class Forest implements TerrainFixture, HasMutableImage, HasKind, HasExte
 
 	@Override
 	public boolean equals(final Object obj) {
-		if (obj instanceof Forest) {
-			return ((Forest) obj).getId() == id &&
-				kind.equals(((Forest) obj).getKind()) &&
-				rows == ((Forest) obj).isRows() &&
-				acres.equals(((Forest) obj).getAcres());
+		if (obj instanceof Forest it) {
+			return it.getId() == id &&
+				kind.equals(it.getKind()) &&
+				rows == it.isRows() &&
+				acres.equals(it.getAcres());
 		} else {
 			return false;
 		}
@@ -139,10 +139,10 @@ public class Forest implements TerrainFixture, HasMutableImage, HasKind, HasExte
 
 	@Override
 	public boolean equalsIgnoringID(final IFixture fixture) {
-		if (fixture instanceof Forest) {
-			return ((Forest) fixture).getKind().equals(kind) &&
-				((Forest) fixture).isRows() == rows &&
-				((Forest) fixture).getAcres().equals(acres);
+		if (fixture instanceof Forest it) {
+			return it.getKind().equals(kind) &&
+				it.isRows() == rows &&
+				it.getAcres().equals(acres);
 		} else {
 			return false;
 		}
@@ -180,19 +180,19 @@ public class Forest implements TerrainFixture, HasMutableImage, HasKind, HasExte
 		if (id != other.getId()) {
 			report.accept("Different IDs");
 			return false;
-		} else if (other instanceof Forest) {
-			if (!((Forest) other).getKind().equals(kind)) {
+		} else if (other instanceof Forest it) {
+			if (!it.getKind().equals(kind)) {
 				report.accept(String.format("In forest with ID #%d: Kinds differ", id));
 				return false;
 			}
 			boolean retval = true;
 			final Consumer<String> localReport = s -> report.accept(
 				String.format("In %s forest (ID #%d):\t%s", kind, id, s));
-			if (((Forest) other).isRows() && !rows) {
+			if (it.isRows() && !rows) {
 				localReport.accept("In rows when we aren't");
 				retval = false;
 			}
-			if (new NumberComparator().compare(((Forest) other).acres, acres) > 0) {
+			if (new NumberComparator().compare(it.acres, acres) > 0) {
 				localReport.accept("Has larger extent than we do");
 				retval = false;
 			}

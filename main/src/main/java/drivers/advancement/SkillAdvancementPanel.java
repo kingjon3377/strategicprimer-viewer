@@ -146,8 +146,8 @@ import drivers.common.IAdvancementModel;
 	@Override
 	public void memberSelected(final @Nullable UnitMember previousSelection,
 	                           final @Nullable UnitMember selected) {
-		if (selected instanceof IWorker) {
-			worker = (IWorker) selected;
+		if (selected instanceof IWorker w) {
+			worker = w;
 		} else {
 			worker = null;
 		}

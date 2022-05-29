@@ -39,8 +39,8 @@ public class SPMapNG implements IMutableMapNG {
 	 * Whether the given fixture should be zeroed out if the map is for the given player.
 	 */
 	private static boolean shouldZero(final TileFixture fixture, final @Nullable Player player) {
-		if (player != null && fixture instanceof HasOwner) {
-			return player.equals(((HasOwner) fixture).getOwner());
+		if (player != null && fixture instanceof HasOwner owned) {
+			return player.equals(owned.getOwner());
 		} else {
 			return true;
 		}
@@ -51,10 +51,10 @@ public class SPMapNG implements IMutableMapNG {
 	 * true; otherwise return false.
 	 */
 	private static boolean subsetCheck(final TileFixture one, final TileFixture two) {
-		if (one instanceof SubsettableFixture && ((SubsettableFixture) one).isSubset(two, x -> {})) {
+		if (one instanceof SubsettableFixture sf && sf.isSubset(two, x -> {})) {
 			return true;
 		} else {
-			return two instanceof SubsettableFixture && ((SubsettableFixture) two).isSubset(one, x -> {});
+			return two instanceof SubsettableFixture sf && sf.isSubset(one, x -> {});
 		}
 	}
 
@@ -524,24 +524,20 @@ public class SPMapNG implements IMutableMapNG {
 
 	@Override
 	public boolean equals(final Object obj) {
-		if (obj instanceof IMapNG) {
-			if (getDimensions().equals(((IMapNG) obj).getDimensions()) &&
-					getPlayers().containsAll(((IMapNG) obj).getPlayers()) &&
-					((IMapNG) obj).getPlayers().containsAll(getPlayers()) &&
-					currentTurn == ((IMapNG) obj).getCurrentTurn() &&
-					getCurrentPlayer().equals(((IMapNG) obj).getCurrentPlayer())) {
+		if (obj instanceof IMapNG that) {
+			if (getDimensions().equals(that.getDimensions()) &&
+					getPlayers().containsAll(that.getPlayers()) &&
+					that.getPlayers().containsAll(getPlayers()) &&
+					currentTurn == that.getCurrentTurn() &&
+					getCurrentPlayer().equals(that.getCurrentPlayer())) {
 				for (final Point point : getLocations()) {
-					if (getBaseTerrain(point) != ((IMapNG) obj).getBaseTerrain(point) ||
-							isMountainous(point) !=
-								((IMapNG) obj).isMountainous(point) ||
+					if (getBaseTerrain(point) != that.getBaseTerrain(point) ||
+							isMountainous(point) != that.isMountainous(point) ||
 							!getRivers(point).equals(
-								((IMapNG) obj).getRivers(point)) ||
-							!getFixtures(point).containsAll(
-								((IMapNG) obj).getFixtures(point)) ||
-							!((IMapNG) obj).getFixtures(point).containsAll(
-								getFixtures(point)) ||
-							!getRoads(point).equals(
-								((IMapNG) obj).getRoads(point))) {
+								that.getRivers(point)) ||
+							!getFixtures(point).containsAll(that.getFixtures(point)) ||
+							!that.getFixtures(point).containsAll(getFixtures(point)) ||
+							!getRoads(point).equals(that.getRoads(point))) {
 						return false;
 					}
 				}
@@ -628,8 +624,8 @@ public class SPMapNG implements IMutableMapNG {
 		if (exactly || count == 1) {
 			if (!matchPoint.equals(location)) {
 				final String idStr;
-				if (match instanceof IUnit && ((IUnit) match).getOwner().isIndependent()) {
-					idStr = " (ID #" + ((IUnit) match).getId();
+				if (match instanceof IUnit unit && unit.getOwner().isIndependent()) {
+					idStr = " (ID #" + unit.getId();
 				} else {
 					idStr = "";
 				}
@@ -638,8 +634,7 @@ public class SPMapNG implements IMutableMapNG {
 				retval = false;
 			}
 			retval = match.isSubset(desideratum, ostream) && retval;
-		} else if (desideratum instanceof TileFixture &&
-				movedFrom.test(location, (TileFixture) desideratum)) {
+		} else if (desideratum instanceof TileFixture tf && movedFrom.test(location, tf)) {
 			retval = false;
 		} else if (count == 0) {
 			retval = false;
@@ -677,7 +672,7 @@ public class SPMapNG implements IMutableMapNG {
 			for (final Map.Entry<TileFixture, Point> entry : ourLocations.entrySet()) {
 				final Point point = entry.getValue();
 				final TileFixture fixture = entry.getKey();
-				if (fixture instanceof IUnit) {
+				if (fixture instanceof IUnit unit) {
 					final List<Pair<IUnit, Point>> list;
 					final List<Pair<IUnit, Point>> temp =
 						ourUnits.get(fixture.getId());
@@ -686,9 +681,9 @@ public class SPMapNG implements IMutableMapNG {
 					} else {
 						list = temp;
 					}
-					list.add(Pair.with((IUnit) fixture, point));
+					list.add(Pair.with(unit, point));
 					ourUnits.put(fixture.getId(), list);
-				} else if (fixture instanceof AbstractTown) {
+				} else if (fixture instanceof AbstractTown town) {
 					final List<Pair<AbstractTown, Point>> list;
 					final List<Pair<AbstractTown, Point>> temp =
 						ourTowns.get(fixture.getId());
@@ -697,7 +692,7 @@ public class SPMapNG implements IMutableMapNG {
 					} else {
 						list = temp;
 					}
-					list.add(Pair.with((AbstractTown) fixture, point));
+					list.add(Pair.with(town, point));
 					ourTowns.put(fixture.getId(), list);
 				} else if (fixture instanceof Subsettable) {
 					final List<Pair<Subsettable<IFixture>, Point>> list;
@@ -776,9 +771,9 @@ public class SPMapNG implements IMutableMapNG {
 							unitLocs != null) {
 						retval = testAgainstList(fixture, point,
 							unitLocs, localReport, movedFrom) && retval;
-					} else if (fixture instanceof AbstractTown &&
+					} else if (fixture instanceof AbstractTown town &&
 							townLocs != null) {
-						retval = testAgainstList((AbstractTown) fixture, point,
+						retval = testAgainstList(town, point,
 								townLocs, localReport, movedFrom)
 							&& retval;
 					} else if (fixture instanceof Subsettable &&

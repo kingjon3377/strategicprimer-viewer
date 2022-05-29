@@ -90,8 +90,8 @@ public class Centaur implements Immortal, HasMutableImage, HasKind {
 
 	@Override
 	public boolean equals(final Object obj) {
-		if (obj instanceof Centaur) {
-			return ((Centaur) obj).getKind().equals(kind) && ((Centaur) obj).getId() == id;
+		if (obj instanceof Centaur c) {
+			return c.getKind().equals(kind) && c.getId() == id;
 		} else {
 			return false;
 		}
@@ -104,8 +104,8 @@ public class Centaur implements Immortal, HasMutableImage, HasKind {
 
 	@Override
 	public boolean equalsIgnoringID(final IFixture fixture) {
-		if (fixture instanceof Centaur) {
-			return ((Centaur) fixture).getKind().equals(kind);
+		if (fixture instanceof Centaur c) {
+			return c.getKind().equals(kind);
 		} else {
 			return false;
 		}
@@ -114,8 +114,8 @@ public class Centaur implements Immortal, HasMutableImage, HasKind {
 	@Override
 	public boolean isSubset(final IFixture obj, final Consumer<String> report) {
 		if (obj.getId() == id) {
-			if (obj instanceof Centaur) {
-				if (((Centaur) obj).getKind().equals(kind)) {
+			if (obj instanceof Centaur c) {
+				if (c.getKind().equals(kind)) {
 					return true;
 				} else {
 					report.accept("\tDifferent kinds of centaur for ID #" + id);

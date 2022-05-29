@@ -128,8 +128,8 @@ import org.jetbrains.annotations.Nullable;
 					cli.println("Nothing in the trap");
 					time -= nothingCost;
 					break;
-				} else if (item instanceof AnimalTracks) {
-					cli.println(String.format("Found evidence of %s escaping", ((AnimalTracks) item).getKind()));
+				} else if (item instanceof AnimalTracks at) {
+					cli.println(String.format("Found evidence of %s escaping", at.getKind()));
 					model.copyToSubMaps(center, item, IFixture.CopyBehavior.ZERO);
 					time -= nothingCost;
 					break;

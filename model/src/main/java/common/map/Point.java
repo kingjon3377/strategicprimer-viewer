@@ -45,8 +45,8 @@ public final class Point implements Comparable<Point> {
 	public boolean equals(final @Nullable Object obj) {
 		if (this == obj) {
 			return true;
-		} else if (obj instanceof Point) {
-			return row == ((Point) obj).getRow() && column == ((Point) obj).getColumn();
+		} else if (obj instanceof Point p) {
+			return row == p.getRow() && column == p.getColumn();
 		} else {
 			return false;
 		}

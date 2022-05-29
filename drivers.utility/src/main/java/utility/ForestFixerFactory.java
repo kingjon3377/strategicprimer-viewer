@@ -31,8 +31,8 @@ public class ForestFixerFactory implements ModelDriverFactory {
 
 	@Override
 	public ModelDriver createDriver(final ICLIHelper cli, final SPOptions options, final IDriverModel model) {
-		if (model instanceof UtilityDriverModel) {
-			return new ForestFixerDriver(cli, (UtilityDriverModel) model);
+		if (model instanceof UtilityDriverModel udm) {
+			return new ForestFixerDriver(cli, udm);
 		} else {
 			return createDriver(cli, options, new UtilityDriverModel(model));
 		}

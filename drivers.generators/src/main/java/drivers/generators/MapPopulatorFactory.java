@@ -32,8 +32,8 @@ public class MapPopulatorFactory implements ModelDriverFactory {
 
 	@Override
 	public ModelDriver createDriver(final ICLIHelper cli, final SPOptions options, final IDriverModel model) {
-		if (model instanceof IPopulatorDriverModel) {
-			return new MapPopulatorDriver(cli, options, (IPopulatorDriverModel) model);
+		if (model instanceof IPopulatorDriverModel pdm) {
+			return new MapPopulatorDriver(cli, options, pdm);
 		} else {
 			return createDriver(cli, options, new PopulatorDriverModel(model));
 		}

@@ -33,8 +33,8 @@ public class TypesafeXMLEventReader implements Iterator<XMLEvent>, Closeable {
 
 	public TypesafeXMLEventReader (final XMLEventReader reader, final Closeable... closeMethods) {
 		wrapped = reader;
-		if (reader instanceof Closeable) {
-			closeHandles.add((Closeable) reader);
+		if (reader instanceof Closeable c) {
+			closeHandles.add(c);
 		}
 		closeHandles.addAll(Arrays.asList(closeMethods));
 	}

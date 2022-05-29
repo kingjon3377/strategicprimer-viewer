@@ -131,8 +131,7 @@ public class AdventureFixture implements ExplorableFixture, HasMutableOwner, Sub
 	public boolean equalsIgnoringID(final IFixture fixture) {
 		if (this == fixture) {
 			return true;
-		} else if (fixture instanceof AdventureFixture) {
-			final AdventureFixture obj = ((AdventureFixture) fixture);
+		} else if (fixture instanceof final AdventureFixture obj) {
 			return ((owner.isIndependent() && obj.getOwner().isIndependent()) ||
 					(owner.getPlayerId() == obj.getOwner().getPlayerId())) &&
 				briefDescription.equals(obj.getBriefDescription()) &&
@@ -146,8 +145,8 @@ public class AdventureFixture implements ExplorableFixture, HasMutableOwner, Sub
 	public boolean equals(final Object obj) {
 		if (this == obj) {
 			return true;
-		} else if (obj instanceof AdventureFixture) {
-			return id == ((AdventureFixture) obj).getId() && equalsIgnoringID((AdventureFixture) obj);
+		} else if (obj instanceof AdventureFixture af) {
+			return id == af.getId() && equalsIgnoringID(af);
 		} else {
 			return false;
 		}
@@ -181,17 +180,17 @@ public class AdventureFixture implements ExplorableFixture, HasMutableOwner, Sub
 	@Override
 	public boolean isSubset(final IFixture obj, final Consumer<String> report) {
 		if (obj.getId() == id) {
-			if (obj instanceof AdventureFixture) {
+			if (obj instanceof AdventureFixture af) {
 				final Consumer<String> localReport =
 					(str) -> report.accept(String.format("In adventure with ID #%d: %s", id, str));
-				if (!briefDescription.equals(((AdventureFixture) obj).getBriefDescription())) {
+				if (!briefDescription.equals(af.getBriefDescription())) {
 					localReport.accept("Brief descriptions differ");
 					return false;
-				} else if (!fullDescription.equals(((AdventureFixture) obj).getFullDescription())) {
+				} else if (!fullDescription.equals(af.getFullDescription())) {
 					localReport.accept("Full descriptions differ");
 					return false;
-				} else if (owner.getPlayerId() != ((AdventureFixture) obj).getOwner().getPlayerId() &&
-						!((AdventureFixture) obj).getOwner().isIndependent()) {
+				} else if (owner.getPlayerId() != af.getOwner().getPlayerId() &&
+						af.getOwner().isIndependent()) {
 					localReport.accept("Owners differ");
 					return false;
 				} else {

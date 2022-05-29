@@ -158,22 +158,22 @@ public final class WorkerTree extends JTree implements UnitMemberSelectionSource
 	private void treeSelectionChanged(final TreeSelectionEvent event) {
 		final Object sel = Optional.ofNullable(event.getNewLeadSelectionPath())
 			.map(TreePath::getLastPathComponent).map(wtModel::getModelObject).orElse(null);
-		if (sel instanceof IUnit) {
+		if (sel instanceof IUnit u) {
 			LovelaceLogger.debug("Selection in workerTree is an IUnit");
 			for (final UnitSelectionListener listener : selectionListeners) {
-				listener.selectUnit((IUnit) sel);
+				listener.selectUnit(u);
 			}
-			final IWorker proxy = new ProxyWorker((IUnit) sel);
+			final IWorker proxy = new ProxyWorker(u);
 			for (final UnitMemberListener listener : memberListeners) {
 				listener.memberSelected(null, proxy);
 			}
-		} else if (sel instanceof UnitMember) {
+		} else if (sel instanceof UnitMember um) {
 			LovelaceLogger.debug("workerTree selection is a UnitMember, but not an IUnit");
 			for (final UnitSelectionListener listener : selectionListeners) {
 				listener.selectUnit(null);
 			}
 			for (final UnitMemberListener listener : memberListeners) {
-				listener.memberSelected(null, (UnitMember) sel);
+				listener.memberSelected(null, um);
 			}
 		} else {
 			if (sel instanceof String) {
@@ -237,12 +237,11 @@ public final class WorkerTree extends JTree implements UnitMemberSelectionSource
 				if (last != null && parentObj != null) {
 					final Object parent = wtModel.getModelObject(parentObj);
 					final Object selection = wtModel.getModelObject(last);
-					if (parent instanceof IUnit && selection instanceof UnitMember) {
-						membersToTransfer.add(Pair.with((UnitMember) selection,
-							(IUnit) parent));
-					} else if (selection instanceof IUnit &&
+					if (parent instanceof IUnit unit && selection instanceof UnitMember member) {
+						membersToTransfer.add(Pair.with(member, unit));
+					} else if (selection instanceof IUnit unit &&
 							selection instanceof HasMutableKind) {
-						unitsToTransfer.add((IUnit) selection);
+						unitsToTransfer.add(unit);
 					} else {
 						LovelaceLogger.info("Selection included non-UnitMember: %s", selection.getClass());
 					}
@@ -270,10 +269,8 @@ public final class WorkerTree extends JTree implements UnitMemberSelectionSource
 		@Override
 		public boolean canImport(final TransferSupport support) {
 			if (support.isDataFlavorSupported(UnitMemberTransferable.FLAVOR) &&
-					support.getDropLocation() instanceof JTree.DropLocation &&
-					((JTree.DropLocation) support.getDropLocation()).getPath() != null) {
-				final Object last = ((JTree.DropLocation) support.getDropLocation())
-					.getPath().getLastPathComponent();
+					support.getDropLocation() instanceof JTree.DropLocation dl && dl.getPath() != null) {
+				final Object last = dl.getPath().getLastPathComponent();
 				final Object lastObj = Optional.ofNullable(last).map(wtModel::getModelObject)
 					.orElse(null);
 				if (lastObj instanceof IUnit || lastObj instanceof UnitMember) {
@@ -281,10 +278,8 @@ public final class WorkerTree extends JTree implements UnitMemberSelectionSource
 				}
 			}
 			if (support.isDataFlavorSupported(UnitTransferable.FLAVOR) &&
-					support.getDropLocation() instanceof JTree.DropLocation &&
-					((JTree.DropLocation) support.getDropLocation()).getPath() != null) {
-				final Object last = ((JTree.DropLocation) support.getDropLocation())
-					.getPath().getLastPathComponent();
+					support.getDropLocation() instanceof JTree.DropLocation dl && dl.getPath() != null) {
+				final Object last = dl.getPath().getLastPathComponent();
 				return Optional.ofNullable(last).map(wtModel::getModelObject).orElse(null) instanceof String;
 			}
 			return false;
@@ -296,9 +291,8 @@ public final class WorkerTree extends JTree implements UnitMemberSelectionSource
 		@Override
 		public boolean importData(final TransferSupport support) {
 			if (canImport(support) &&
-					support.getDropLocation() instanceof JTree.DropLocation &&
-					((JTree.DropLocation) support.getDropLocation()).getPath() != null) {
-				final TreePath path = ((JTree.DropLocation) support.getDropLocation()).getPath();
+					support.getDropLocation() instanceof JTree.DropLocation dl && dl.getPath() != null) {
+				final TreePath path = dl.getPath();
 				final Object pathLast = path.getLastPathComponent();
 				if (pathLast == null) {
 					return false;
@@ -317,7 +311,7 @@ public final class WorkerTree extends JTree implements UnitMemberSelectionSource
 				final Transferable trans = support.getTransferable();
 				final boolean shouldBeExpanded = isExpanded.test(targetPath);
 				try {
-					if (tempTarget instanceof IUnit &&
+					if (tempTarget instanceof IUnit unit &&
 							trans.isDataFlavorSupported(
 								UnitMemberTransferable.FLAVOR)) {
 						final List<Pair<UnitMember, IUnit>> list =
@@ -326,19 +320,19 @@ public final class WorkerTree extends JTree implements UnitMemberSelectionSource
 									UnitMemberTransferable.FLAVOR);
 						for (final Pair<UnitMember, IUnit> pair : list) {
 							wtModel.moveMember(pair.getValue0(),
-								pair.getValue1(), (IUnit) tempTarget);
+								pair.getValue1(), unit);
 						}
 						if (!shouldBeExpanded) {
 							collapsePath.accept(targetPath);
 						}
 						return true;
-					} else if (tempTarget instanceof String &&
+					} else if (tempTarget instanceof String str &&
 							trans.isDataFlavorSupported(
 								UnitTransferable.FLAVOR)) {
 						final List<IUnit> list = (List<IUnit>)
 							trans.getTransferData(UnitTransferable.FLAVOR);
 						for (final IUnit unit : list) {
-							wtModel.changeKind(unit, (String) tempTarget);
+							wtModel.changeKind(unit, str);
 						}
 						return true;
 					} else {
@@ -503,22 +497,20 @@ public final class WorkerTree extends JTree implements UnitMemberSelectionSource
 			final Object internal = Optional.of(item).filter(DefaultMutableTreeNode.class::isInstance)
 				.map(DefaultMutableTreeNode.class::cast)
 				.map(DefaultMutableTreeNode::getUserObject).orElse(item);
-			if (internal instanceof HasImage && component instanceof JLabel) {
-				((JLabel) component).setIcon(getIcon((HasImage) internal));
+			if (internal instanceof HasImage hi && component instanceof JLabel label) {
+				label.setIcon(getIcon(hi));
 			}
 			BackgroundState background = BackgroundState.NONE;
-			if (internal instanceof IWorker && component instanceof JLabel) {
-				final IWorker worker = (IWorker) internal;
+			if (internal instanceof final IWorker worker && component instanceof JLabel label) {
 				if ("human".equals(worker.getRace())) {
-					((JLabel) component).setText(String.format("<html><p>%s%s</p></html>",
+					label.setText(String.format("<html><p>%s%s</p></html>",
 						worker.getName(), jobCSL(worker)));
 				} else {
-					((JLabel) component).setText(String.format(
+					label.setText(String.format(
 						"<html><p>%s, a %s%s</p></html>", worker.getName(),
 						worker.getRace(), jobCSL(worker)));
 				}
-			} else if (internal instanceof Animal && component instanceof JLabel) {
-				final Animal animal = (Animal) internal;
+			} else if (internal instanceof final Animal animal && component instanceof JLabel label) {
 				final Map<String, Integer> maturityAges = MaturityModel.getMaturityAges();
 				if (animal.getBorn() >= 0 && MaturityModel.getCurrentTurn() >= 0 &&
 						maturityAges.containsKey(animal.getKind()) &&
@@ -526,7 +518,7 @@ public final class WorkerTree extends JTree implements UnitMemberSelectionSource
 							maturityAges.get(animal.getKind())) {
 					final int age = MaturityModel.getCurrentTurn() - animal.getBorn();
 					if (animal.getPopulation() > 1) {
-						((JLabel) component).setText(String.format(
+						label.setText(String.format(
 							"%d %d-turn-old %s", animal.getPopulation(), age,
 							AnimalPlurals.get(animal.getKind())));
 					} else {
@@ -538,25 +530,23 @@ public final class WorkerTree extends JTree implements UnitMemberSelectionSource
 						animal.getPopulation(),
 						AnimalPlurals.get(animal.getKind())));
 				} // else leave the default of animal.toString()
-			} else if (internal instanceof IUnit &&
-					component instanceof DefaultTreeCellRenderer) {
-				final IUnit unit = (IUnit) internal;
+			} else if (internal instanceof final IUnit unit &&
+					component instanceof DefaultTreeCellRenderer dtcr) {
 				if (expanded || unit.isEmpty()) {
-					((DefaultTreeCellRenderer) component).setText(unit.getName());
+					dtcr.setText(unit.getName());
 				} else {
-					((DefaultTreeCellRenderer) component).setText(String.format(
+					dtcr.setText(String.format(
 						"%s (%d workers)", unit.getName(),
 						unit.stream().filter(IWorker.class::isInstance).count()));
 				}
 				final BackgroundState result = shouldChangeBackground(unit);
 				background = BackgroundState.larger(background, result);
-			} else if (orderCheck && internal instanceof String) {
-				final BackgroundState result = shouldChangeBackground((String) internal);
+			} else if (orderCheck && internal instanceof String kind) {
+				final BackgroundState result = shouldChangeBackground(kind);
 				background = BackgroundState.larger(background, result);
 			}
-			if (component instanceof DefaultTreeCellRenderer) {
+			if (component instanceof final DefaultTreeCellRenderer comp) {
 				final @Nullable Color backgroundColor = background.getColor();
-				final DefaultTreeCellRenderer comp = (DefaultTreeCellRenderer) component;
 				if (backgroundColor == null) {
 					comp.setBackgroundSelectionColor(DEFAULT_STORER
 							.getBackgroundSelectionColor());
