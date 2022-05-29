@@ -115,18 +115,13 @@ import common.map.fixtures.mobile.AnimalTracks;
 			final Function<Pair<Key, Count>, String> each, final int indent) {
 		if (counter.getTotal().doubleValue() > 0.0) {
 			if (indent > 0) {
-				// TODO: Once in Java 11, change to print("  ".repeat(indent - 1));
-				for (int i = 0; i < indent - 1; i++) {
-					cli.print("  ");
-				}
+				cli.print("  ".repeat(indent - 1));
 				cli.print("- ");
 			}
 			cli.println(total);
-			// TODO: Once in Java 11, use "  ".repeat(indent) to prepend indentation and stream().map(each) ...
+			// TODO: use stream().map(each) ?
 			for (final Pair<Key, Count> pair : counter) {
-				for (int i = 0; i < indent; i++) {
-					cli.print("  ");
-				}
+				cli.print("  ".repeat(indent));
 				cli.println(each.apply(pair));
 			}
 			if (indent <= 0) {
