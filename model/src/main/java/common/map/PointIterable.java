@@ -53,12 +53,12 @@ public class PointIterable implements Iterable<Point> {
 		/**
 		 * The maximum row in the map.
 		 */
-		private final int maxRow = dimensions.getRows() - 1;
+		private final int maxRow = dimensions.rows() - 1;
 
 		/**
 		 * The maximum column in the map.
 		 */
-		private final int maxColumn = dimensions.getColumns() - 1;
+		private final int maxColumn = dimensions.columns() - 1;
 
 		/**
 		 * The row where we started.
@@ -79,8 +79,8 @@ public class PointIterable implements Iterable<Point> {
 
 		public PointIteratorImpl() {
 			if (selection != null) {
-				startRow = wrap(selection.getRow(), maxRow);
-				startColumn = wrap(selection.getColumn(), maxColumn);
+				startRow = wrap(selection.row(), maxRow);
+				startColumn = wrap(selection.column(), maxColumn);
 			} else if (forwards) {
 				startRow = maxRow;
 				startColumn = maxColumn;

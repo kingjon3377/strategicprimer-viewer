@@ -75,7 +75,7 @@ public abstract class AbstractTown implements HasMutableImage,
 	 * The player that owns the town, fortification, or city
 	 */
 	@Override
-	public final Player getOwner() {
+	public final Player owner() {
 		return owner;
 	}
 
@@ -201,7 +201,7 @@ public abstract class AbstractTown implements HasMutableImage,
 			localReport.accept("Has different population details");
 			retval = false;
 		}
-		if (!owner.equals(other.getOwner()) && !other.getOwner().isIndependent()) {
+		if (!owner.equals(other.owner()) && !other.owner().isIndependent()) {
 			localReport.accept("Has different owner");
 			retval = false;
 		}
@@ -214,7 +214,7 @@ public abstract class AbstractTown implements HasMutableImage,
 	protected final boolean equalsContents(final AbstractTown fixture) {
 		return fixture.getTownSize() == townSize &&
 			fixture.getName().equals(name) && fixture.getStatus() == status &&
-			fixture.getOwner().equals(owner) &&
+			fixture.owner().equals(owner) &&
 			Objects.equals(population, fixture.getPopulation());
 	}
 

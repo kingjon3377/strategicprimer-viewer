@@ -9,39 +9,39 @@ public interface MapDimensions {
 	/**
 	 * The number of rows in the map.
 	 */
-	int getRows();
+	int rows();
 
 	/**
 	 * The number of columns in the map.
 	 */
-	int getColumns();
+	int columns();
 
 	/**
 	 * The map version.
 	 */
-	int getVersion();
+	int version();
 
 	default boolean contains(final Point point) {
-		return point.isValid() && point.getRow() < getRows() && point.getColumn() < getColumns();
+		return point.isValid() && point.row() < rows() && point.column() < columns();
 	}
 
 	/**
 	 * The distance between two points in a map with these dimensions.
 	 */
 	default double distance(final Point first, final Point second) {
-		final int rawXDiff = first.getRow() - second.getRow();
-		final int rawYDiff = first.getColumn() - second.getColumn();
+		final int rawXDiff = first.row() - second.row();
+		final int rawYDiff = first.column() - second.column();
 		final int xDiff;
-		if (rawXDiff < (getRows() / 2)) {
+		if (rawXDiff < (rows() / 2)) {
 			xDiff = rawXDiff;
 		} else {
-			xDiff = getRows() - rawXDiff;
+			xDiff = rows() - rawXDiff;
 		}
 		final int yDiff;
-		if (rawYDiff < (getColumns() / 2)) {
+		if (rawYDiff < (columns() / 2)) {
 			yDiff = rawYDiff;
 		} else {
-			yDiff = getColumns() - rawYDiff;
+			yDiff = columns() - rawYDiff;
 		}
 		return Math.sqrt(xDiff * xDiff + yDiff * yDiff);
 	}

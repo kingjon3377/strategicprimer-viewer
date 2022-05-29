@@ -38,7 +38,7 @@ import java.util.HashMap;
 		Point retval = null;
 		for (final Point location : map.getLocations()) {
 			for (final TileFixture fixture : map.getFixtures(location)) {
-				if (fixture instanceof IFortress f && player.equals(f.getOwner())) {
+				if (fixture instanceof IFortress f && player.equals(f.owner())) {
 					if ("hq".equals(f.getName())) {
 						return location;
 					} else if (location.isValid() && retval == null) {

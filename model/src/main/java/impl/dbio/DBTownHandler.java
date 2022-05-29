@@ -67,15 +67,15 @@ final class DBTownHandler extends AbstractDatabaseWriter<AbstractTown, Point> im
 	@Override
 	public void write(final Transactional db, final AbstractTown obj, final Point context) throws SQLException {
 		final List<Param> params = new ArrayList<>();
-		params.add(value("row", context.getRow()));
-		params.add(value("column", context.getColumn()));
+		params.add(value("row", context.row()));
+		params.add(value("column", context.column()));
 		params.add(value("id", obj.getId()));
 		params.add(value("kind", obj.getKind()));
 		params.add(value("status", obj.getStatus().toString()));
 		params.add(value("size", obj.getTownSize().toString()));
 		params.add(value("dc", obj.getDC()));
 		params.add(value("name", obj.getName()));
-		params.add(value("owner", obj.getOwner().getPlayerId()));
+		params.add(value("owner", obj.owner().getPlayerId()));
 		params.add(value("image", obj.getImage()));
 		params.add(value("portrait", obj.getPortrait()));
 		final CommunityStats stats = obj.getPopulation();

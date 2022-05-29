@@ -55,7 +55,7 @@ public class Fortification extends AbstractTown {
 	@Override
 	public Fortification copy(final CopyBehavior zero) {
 		final Fortification retval = new Fortification(getStatus(), getTownSize(),
-			(zero == CopyBehavior.ZERO) ? 0 : getDC(), getName(), id, getOwner());
+			(zero == CopyBehavior.ZERO) ? 0 : getDC(), getName(), id, owner());
 		retval.setImage(getImage());
 		if (zero == CopyBehavior.KEEP) {
 			retval.setPopulation(getPopulation());

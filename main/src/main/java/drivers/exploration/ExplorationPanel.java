@@ -404,7 +404,7 @@ import worker.common.IFixtureEditHelper;
 		private void discoverFixtures(final Iterable<TileFixture> fixtures) {
 			final Point destPoint = driverModel.getSelectedUnitLocation();
 			final Player player = Optional.ofNullable(driverModel.getSelectedUnit())
-				.map(IUnit::getOwner).orElse(new PlayerImpl(- 1, "no-one"));
+				.map(IUnit::owner).orElse(new PlayerImpl(- 1, "no-one"));
 
 			driverModel.copyTerrainToSubMaps(destPoint);
 			for (final TileFixture fixture : fixtures) {
@@ -413,7 +413,7 @@ import worker.common.IFixtureEditHelper;
 					continue;
 				} else {
 					final IFixture.CopyBehavior zero;
-					if (fixture instanceof HasOwner owned && (!player.equals(owned.getOwner()) ||
+					if (fixture instanceof HasOwner owned && (!player.equals(owned.owner()) ||
 								fixture instanceof Village)) {
 						zero = IFixture.CopyBehavior.ZERO;
 					} else if (fixture instanceof HasPopulation || fixture instanceof HasExtent)

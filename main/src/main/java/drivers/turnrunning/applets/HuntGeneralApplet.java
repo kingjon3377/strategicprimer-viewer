@@ -64,7 +64,7 @@ import org.jetbrains.annotations.Nullable;
 
 	protected @Nullable Boolean handleCapture(final Animal find) {
 		final IUnit unit = chooseFromList(model.getUnits(Optional.ofNullable(model.getSelectedUnit())
-							.map(IUnit::getOwner).orElse(model.getMap().getCurrentPlayer())),
+							.map(IUnit::owner).orElse(model.getMap().getCurrentPlayer())),
 			"Available units:", "No units", "Unit to add animals to:", ICLIHelper.ListChoiceBehavior.ALWAYS_PROMPT, HuntGeneralApplet::describeUnit);
 		if (unit == null) {
 			return false;
@@ -149,7 +149,7 @@ import org.jetbrains.annotations.Nullable;
 			model.copyToSubMaps(loc, find, IFixture.CopyBehavior.ZERO);
 		}
 		if (model.getSelectedUnit() != null) {
-			resourceEntry(model.getSelectedUnit().getOwner());
+			resourceEntry(model.getSelectedUnit().owner());
 		}
 		return cost;
 	}

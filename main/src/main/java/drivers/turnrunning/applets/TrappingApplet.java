@@ -74,7 +74,7 @@ import org.jetbrains.annotations.Nullable;
 			model.copyToSubMaps(center, new AnimalTracks(item.getKind()), IFixture.CopyBehavior.KEEP);
 		}
 		if (model.getSelectedUnit() != null) {
-			resourceEntry(model.getSelectedUnit().getOwner());
+			resourceEntry(model.getSelectedUnit().owner());
 		}
 		return cost;
 	}

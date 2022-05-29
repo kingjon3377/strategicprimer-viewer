@@ -413,7 +413,7 @@ public class TurnRunningModel extends ExplorationModel implements ITurnRunningMo
 			for (final FixtureIterable<?> container : map.streamAllFixtures()
 					.flatMap(TurnRunningModel::partiallyFlattenFortresses)
 					.filter(HasOwner.class::isInstance).map(HasOwner.class::cast)
-					.filter(f -> f.getOwner().equals(owner))
+					.filter(f -> f.owner().equals(owner))
 					.filter(FixtureIterable.class::isInstance).map(FixtureIterable.class::cast)
 					.collect(Collectors.toList())) {
 				boolean found = false;
@@ -424,7 +424,7 @@ public class TurnRunningModel extends ExplorationModel implements ITurnRunningMo
 					if (resource.isSubset(item, x -> {}) || // TODO: is that the right way around?
 							    (resource.getKind().equals(item.getKind()) &&
 									     resource.getContents().equals(item.getContents()) && resource.getId() == item.getId())) {
-						final BigDecimal qty = decimalize(item.getQuantity().getNumber());
+						final BigDecimal qty = decimalize(item.getQuantity().number());
 						if (qty.compareTo(amount) <= 0) {
 							if (container instanceof IMutableUnit unit) {
 								unit.removeMember(item);
@@ -436,7 +436,7 @@ public class TurnRunningModel extends ExplorationModel implements ITurnRunningMo
 							}
 						} else {
 							item.setQuantity(new Quantity(qty.subtract(amount),
-								resource.getQuantity().getUnits()));
+								resource.getQuantity().units()));
 						}
 						map.setModified(true);
 						any = true;
@@ -469,7 +469,7 @@ public class TurnRunningModel extends ExplorationModel implements ITurnRunningMo
 			for (final FixtureIterable<?> container : map.streamAllFixtures()
 					.flatMap(TurnRunningModel::partiallyFlattenFortresses)
 					.filter(HasOwner.class::isInstance).map(HasOwner.class::cast)
-					.filter(f -> f.getOwner().equals(owner))
+					.filter(f -> f.owner().equals(owner))
 					.filter(FixtureIterable.class::isInstance).map(FixtureIterable.class::cast)
 					.collect(Collectors.toList())) {
 				boolean found = false;
@@ -512,7 +512,7 @@ public class TurnRunningModel extends ExplorationModel implements ITurnRunningMo
 			final IMutableUnit matching = map.streamAllFixtures()
 				.flatMap(TurnRunningModel::unflattenNonFortresses)
 				.filter(IMutableUnit.class::isInstance).map(IMutableUnit.class::cast)
-				.filter(u -> u.getOwner().equals(unit.getOwner()))
+				.filter(u -> u.owner().equals(unit.owner()))
 				.filter(u -> u.getKind().equals(unit.getKind()))
 				.filter(u -> u.getName().equals(unit.getName()))
 				.filter(u -> u.getId() == unit.getId()).findAny().orElse(null);
@@ -537,7 +537,7 @@ public class TurnRunningModel extends ExplorationModel implements ITurnRunningMo
 			final IMutableUnit matching = map.streamAllFixtures()
 				.flatMap(TurnRunningModel::unflattenNonFortresses)
 				.filter(IMutableUnit.class::isInstance).map(IMutableUnit.class::cast)
-				.filter(u -> u.getOwner().equals(unit.getOwner()))
+				.filter(u -> u.owner().equals(unit.owner()))
 				.filter(u -> u.getKind().equals(unit.getKind()))
 				.filter(u -> u.getName().equals(unit.getName()))
 				.filter(u -> u.getId() == unit.getId()).findAny().orElse(null);
@@ -669,7 +669,7 @@ public class TurnRunningModel extends ExplorationModel implements ITurnRunningMo
 			final IMutableUnit matching = map.streamAllFixtures()
 				.flatMap(TurnRunningModel::unflattenNonFortresses)
 				.filter(IMutableUnit.class::isInstance).map(IMutableUnit.class::cast)
-				.filter(u -> u.getOwner().equals(container.getOwner()))
+				.filter(u -> u.owner().equals(container.owner()))
 				.filter(u -> u.getKind().equals(container.getKind()))
 				.filter(u -> u.getName().equals(container.getName()))
 				.filter(u -> u.getId() == container.getId()).findAny().orElse(null);
@@ -701,14 +701,14 @@ public class TurnRunningModel extends ExplorationModel implements ITurnRunningMo
 					.filter(FixtureIterable.class::isInstance)
 					.filter(HasOwner.class::isInstance)
 					.map(HasOwner.class::cast)
-					.filter(f -> f.getOwner().equals(to.getOwner()))
+					.filter(f -> f.owner().equals(to.owner()))
 					.map(FixtureIterable.class::cast).collect(Collectors.toList())) {
 				final IMutableResourcePile matching = container.stream()
 					.filter(IMutableResourcePile.class::isInstance).map(IMutableResourcePile.class::cast)
 					.filter(r -> r.getKind().equals(from.getKind()))
 					.filter(r -> r.getContents().equals(from.getContents()))
 					.filter(r -> r.getCreated() == from.getCreated())
-					.filter(r -> r.getQuantity().getUnits().equals(from.getQuantity().getUnits()))
+					.filter(r -> r.getQuantity().units().equals(from.getQuantity().units()))
 					.filter(r -> r.getId() == from.getId()).findAny().orElse(null);
 				// TODO: Match destination by owner and kind, not just name and ID?
 				final IMutableUnit destination = map.streamAllFixtures()
@@ -718,7 +718,7 @@ public class TurnRunningModel extends ExplorationModel implements ITurnRunningMo
 					.filter(u -> u.getId() == to.getId()).findAny().orElse(null);
 				if (matching != null && destination != null) {
 					map.setModified(true);
-					if (quantity.doubleValue() >= matching.getQuantity().getNumber().doubleValue()) {
+					if (quantity.doubleValue() >= matching.getQuantity().number().doubleValue()) {
 						if (container instanceof IMutableFortress fort) { // TODO: Combine with other block when a supertype is added for this method
 							fort.removeMember(matching);
 						} else if (container instanceof IMutableUnit unit) {
@@ -730,10 +730,10 @@ public class TurnRunningModel extends ExplorationModel implements ITurnRunningMo
 					} else {
 						final IMutableResourcePile split = new ResourcePileImpl(id.getAsInt(),
 							matching.getKind(), matching.getContents(),
-							new Quantity(quantity, matching.getQuantity().getUnits()));
+							new Quantity(quantity, matching.getQuantity().units()));
 						split.setCreated(matching.getCreated());
 						matching.setQuantity(new Quantity(decimalize(matching.getQuantity()
-							.getNumber()).subtract(quantity), matching.getQuantity().getUnits()));
+							.number()).subtract(quantity), matching.getQuantity().units()));
 					}
 					any = true;
 					break;
@@ -763,14 +763,14 @@ public class TurnRunningModel extends ExplorationModel implements ITurnRunningMo
 					.filter(FixtureIterable.class::isInstance)
 					.filter(HasOwner.class::isInstance)
 					.map(HasOwner.class::cast)
-					.filter(f -> f.getOwner().equals(to.getOwner()))
+					.filter(f -> f.owner().equals(to.owner()))
 					.map(FixtureIterable.class::cast).collect(Collectors.toList())) {
 				final IMutableResourcePile matching = container.stream()
 					.filter(IMutableResourcePile.class::isInstance).map(IMutableResourcePile.class::cast)
 					.filter(r -> r.getKind().equals(from.getKind()))
 					.filter(r -> r.getContents().equals(from.getContents()))
 					.filter(r -> r.getCreated() == from.getCreated())
-					.filter(r -> r.getQuantity().getUnits().equals(from.getQuantity().getUnits()))
+					.filter(r -> r.getQuantity().units().equals(from.getQuantity().units()))
 					.filter(r -> r.getId() == from.getId()).findAny().orElse(null);
 				// TODO: Match destination by owner and kind, not just name and ID?
 				final IMutableFortress destination = map.streamAllFixtures()
@@ -779,7 +779,7 @@ public class TurnRunningModel extends ExplorationModel implements ITurnRunningMo
 					.filter(f -> f.getId() == to.getId()).findAny().orElse(null);
 				if (matching != null && destination != null) {
 					map.setModified(true);
-					if (quantity.doubleValue() >= matching.getQuantity().getNumber().doubleValue()) {
+					if (quantity.doubleValue() >= matching.getQuantity().number().doubleValue()) {
 						if (container instanceof IMutableFortress fort) { // TODO: Combine with other block when a supertype is added for this method
 							fort.removeMember(matching);
 						} else if (container instanceof IMutableUnit unit) {
@@ -791,10 +791,10 @@ public class TurnRunningModel extends ExplorationModel implements ITurnRunningMo
 					} else {
 						final IMutableResourcePile split = new ResourcePileImpl(id.getAsInt(),
 							matching.getKind(), matching.getContents(),
-							new Quantity(quantity, matching.getQuantity().getUnits()));
+							new Quantity(quantity, matching.getQuantity().units()));
 						split.setCreated(matching.getCreated());
 						matching.setQuantity(new Quantity(decimalize(matching.getQuantity()
-							.getNumber()).subtract(quantity), matching.getQuantity().getUnits()));
+							.number()).subtract(quantity), matching.getQuantity().units()));
 					}
 					any = true;
 					break;
@@ -819,7 +819,7 @@ public class TurnRunningModel extends ExplorationModel implements ITurnRunningMo
 			final Supplier<Stream<IMutableFortress>> supp =
 				() -> map.streamAllFixtures()
 					.filter(IMutableFortress.class::isInstance).map(IMutableFortress.class::cast)
-					.filter(f -> f.getOwner().equals(owner));
+					.filter(f -> f.owner().equals(owner));
 			final IMutableFortress result = supp.get().filter(f -> fortName.equals(f.getName())).findAny()
 				.orElseGet(() -> supp.get().findAny().orElse(null));
 			if (result == null) {

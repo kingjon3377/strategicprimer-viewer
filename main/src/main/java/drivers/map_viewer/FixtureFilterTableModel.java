@@ -72,14 +72,14 @@ public class FixtureFilterTableModel extends AbstractTableModel
 	}
 
 	public FixtureFilterTableModel() {
-		FixtureMatcher.complements(IUnit.class, u -> !u.getOwner().isIndependent(),
+		FixtureMatcher.complements(IUnit.class, u -> !u.owner().isIndependent(),
 			"Units", "Independent Units").forEach(matchers::add);
 		matchers.add(FixtureMatcher.trivialMatcher(IFortress.class, "Fortresses"));
 		FixtureMatcher.complements(AbstractTown.class, t -> TownStatus.Active == t.getStatus(),
 			"Active Cities, Towns, & Fortifications",
 			"Ruined, Abandoned, & Burned Communities").forEach(matchers::add);
 		// TODO: break up by owner beyond owned/independent
-		FixtureMatcher.complements(Village.class, v -> v.getOwner().isIndependent(),
+		FixtureMatcher.complements(Village.class, v -> v.owner().isIndependent(),
 			"Independent Villages", "Villages With Suzerain").forEach(matchers::add);
 		// TODO: Use for-each loops and Arrays.asList() to condense stretches where we don't provide the plural
 		matchers.add(FixtureMatcher.trivialMatcher(Mine.class));

@@ -59,7 +59,7 @@ import org.jetbrains.annotations.Nullable;
 				break;
 			}
 			if (model.addExistingResource(resource,
-					Optional.ofNullable(model.getSelectedUnit()).map(IUnit::getOwner)
+					Optional.ofNullable(model.getSelectedUnit()).map(IUnit::owner)
 							.orElse(model.getMap().getCurrentPlayer()))) {
 				builder.append("Added ").append(resource).append(". ");
 			} else {

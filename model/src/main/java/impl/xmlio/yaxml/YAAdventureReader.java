@@ -55,8 +55,8 @@ import lovelace.util.ThrowingConsumer;
 			throws IOException {
 		writeTag(ostream, "adventure", indent);
 		writeProperty(ostream, "id", obj.getId());
-		if (!obj.getOwner().isIndependent()) {
-			writeProperty(ostream, "owner", obj.getOwner().getPlayerId());
+		if (!obj.owner().isIndependent()) {
+			writeProperty(ostream, "owner", obj.owner().getPlayerId());
 		}
 		writeNonemptyProperty(ostream, "brief", obj.getBriefDescription());
 		writeNonemptyProperty(ostream, "full", obj.getFullDescription());

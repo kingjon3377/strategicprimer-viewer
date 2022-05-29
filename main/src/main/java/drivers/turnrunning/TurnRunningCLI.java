@@ -92,7 +92,7 @@ import org.jetbrains.annotations.Nullable;
 	 */
 	private static Stream<IUnit> getUnitsImpl(final Stream<? extends IFixture> s, final Player player) {
 		return s.flatMap(TurnRunningCLI::flatten).filter(IUnit.class::isInstance).map(IUnit.class::cast)
-			.filter(u -> player.equals(u.getOwner()));
+			.filter(u -> player.equals(u.owner()));
 	}
 
 	private Stream<IUnit> getUnits(final Player player) {
@@ -204,7 +204,7 @@ import org.jetbrains.annotations.Nullable;
 		final Boolean runFoodSpoilageAnswer = cli.inputBooleanInSeries(
 			"Run food spoilage and report it under this unit's results?");
 		if (runFoodSpoilageAnswer != null && runFoodSpoilageAnswer) {
-			spoilageApplet.setOwner(unit.getOwner());
+			spoilageApplet.setOwner(unit.owner());
 			spoilageApplet.setTurn(turn);
 			final String foodSpoilageResult = spoilageApplet.run();
 			if (foodSpoilageResult != null) {

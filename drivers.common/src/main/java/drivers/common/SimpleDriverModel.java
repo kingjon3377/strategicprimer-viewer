@@ -66,7 +66,7 @@ public class SimpleDriverModel implements IDriverModel {
 	@Override
 	public void setMap(final IMutableMapNG newMap) {
 		for (final VersionChangeListener listener : vcListeners) {
-			listener.changeVersion(mapDim.getVersion(), newMap.getDimensions().getVersion());
+			listener.changeVersion(mapDim.version(), newMap.getDimensions().version());
 		}
 		mainMap = newMap;
 		mapDim = newMap.getDimensions();

@@ -86,7 +86,7 @@ public class AdventureFixture implements ExplorableFixture, HasMutableOwner, Sub
 	 * The player that has undertaken the adventure.
 	 */
 	@Override
-	public Player getOwner() {
+	public Player owner() {
 		return owner;
 	}
 
@@ -132,8 +132,8 @@ public class AdventureFixture implements ExplorableFixture, HasMutableOwner, Sub
 		if (this == fixture) {
 			return true;
 		} else if (fixture instanceof final AdventureFixture obj) {
-			return ((owner.isIndependent() && obj.getOwner().isIndependent()) ||
-					(owner.getPlayerId() == obj.getOwner().getPlayerId())) &&
+			return ((owner.isIndependent() && obj.owner().isIndependent()) ||
+					(owner.getPlayerId() == obj.owner().getPlayerId())) &&
 				briefDescription.equals(obj.getBriefDescription()) &&
 				fullDescription.equals(obj.getFullDescription());
 		} else {
@@ -189,8 +189,8 @@ public class AdventureFixture implements ExplorableFixture, HasMutableOwner, Sub
 				} else if (!fullDescription.equals(af.getFullDescription())) {
 					localReport.accept("Full descriptions differ");
 					return false;
-				} else if (owner.getPlayerId() != af.getOwner().getPlayerId() &&
-						af.getOwner().isIndependent()) {
+				} else if (owner.getPlayerId() != af.owner().getPlayerId() &&
+						af.owner().isIndependent()) {
 					localReport.accept("Owners differ");
 					return false;
 				} else {

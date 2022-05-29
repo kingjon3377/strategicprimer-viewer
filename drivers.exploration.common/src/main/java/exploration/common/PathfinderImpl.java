@@ -24,7 +24,7 @@ import java.util.Optional;
 	public PathfinderImpl(final IMapNG map) {
 		this.map = map;
 		final MapDimensions dims = map.getDimensions();
-		size = dims.getRows() * dims.getColumns();
+		size = dims.rows() * dims.columns();
 		LovelaceLogger.debug("Map has %d tiles", size);
 		tentativeDistances = new HashMap<>(size);
 	}
@@ -42,26 +42,26 @@ import java.util.Optional;
 	}
 
 	private static Direction getDirection(final Point one, final Point two) {
-		if (one.getRow() < two.getRow()) {
-			if (one.getColumn() < two.getColumn()) {
+		if (one.row() < two.row()) {
+			if (one.column() < two.column()) {
 				return Direction.Northeast;
-			} else if (one.getColumn() == two.getColumn()) {
+			} else if (one.column() == two.column()) {
 				return Direction.North;
 			} else {
 				return Direction.Northwest;
 			}
-		} else if (one.getRow() == two.getRow()) {
-			if (one.getColumn() < two.getColumn()) {
+		} else if (one.row() == two.row()) {
+			if (one.column() < two.column()) {
 				return Direction.East;
-			} else if (one.getColumn() == two.getColumn()) {
+			} else if (one.column() == two.column()) {
 				return Direction.Nowhere;
 			} else {
 				return Direction.West;
 			}
 		} else {
-			if (one.getColumn() < two.getColumn()) {
+			if (one.column() < two.column()) {
 				return Direction.Southeast;
-			} else if (one.getColumn() == two.getColumn()) {
+			} else if (one.column() == two.column()) {
 				return Direction.South;
 			} else {
 				return Direction.Southwest;

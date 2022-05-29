@@ -25,11 +25,11 @@ import lovelace.util.LovelaceLogger;
 	}
 
 	public static ScrollInputVerifier horizontal(final Supplier<MapDimensions> mapDimsSource) {
-		return new ScrollInputVerifier(() -> mapDimsSource.get().getColumns(), "horizontal");
+		return new ScrollInputVerifier(() -> mapDimsSource.get().columns(), "horizontal");
 	}
 
 	public static ScrollInputVerifier vertical(final Supplier<MapDimensions> mapDimsSource) {
-		return new ScrollInputVerifier(() -> mapDimsSource.get().getRows(), "vertical");
+		return new ScrollInputVerifier(() -> mapDimsSource.get().rows(), "vertical");
 	}
 
 	/**

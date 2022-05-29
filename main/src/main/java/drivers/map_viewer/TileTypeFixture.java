@@ -8,24 +8,16 @@ import lovelace.util.LovelaceLogger;
  * A fake "TileFixture" to represent the tile's terrain type, so it can be
  * copied via drag-and-drop like a fixture.
  */
-/* package */ class TileTypeFixture implements FakeFixture {
-	private final TileType tileType;
+/* package */ record TileTypeFixture(TileType tileType) implements FakeFixture {
 
-	public TileType getTileType() {
-		return tileType;
-	}
-
-	public TileTypeFixture(final TileType tileType) {
-		this.tileType = tileType;
-	}
 
 	/**
 	 * Clone the object.
 	 *
+	 * @param zero
 	 * @deprecated This class should only ever be used in a
 	 * FixtureListModel, and copying a tile's terrain type should be
 	 * handled specially anyway, so this method should never be called.
-	 * @param zero
 	 */
 	@Deprecated
 	@Override
@@ -40,18 +32,13 @@ import lovelace.util.LovelaceLogger;
 	}
 
 	@Override
-	public int hashCode() {
-		return tileType.hashCode();
-	}
-
-	@Override
 	public String toString() {
 		return "Terrain: " + tileType;
 	}
 
 	/**
 	 * The filename of an image to represent the object.
-	 *
+	 * <p>
 	 * There are now actually images in the repository for each tile type;
 	 * they are not suitable for using as tile images, but are suitable for
 	 * use in fixture lists. They are all public domain, found on either

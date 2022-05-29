@@ -158,7 +158,7 @@ public final class ResourcePileImpl implements IMutableResourcePile {
 
 	@Override
 	public String toString() {
-		if (quantity.getUnits().isEmpty()) {
+		if (quantity.units().isEmpty()) {
 			if (createdTurn < 0) {
 				return String.format("A pile of %s %s (%s)", quantity, contents, kind);
 			} else {

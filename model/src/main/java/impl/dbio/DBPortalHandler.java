@@ -51,14 +51,14 @@ final class DBPortalHandler extends AbstractDatabaseWriter<Portal, Point> implem
 	@Override
 	public void write(final Transactional db, final Portal obj, final Point context) throws SQLException {
 		final List<Param> params = new ArrayList<>();
-		params.add(value("row", context.getRow()));
-		params.add(value("column", context.getColumn()));
+		params.add(value("row", context.row()));
+		params.add(value("column", context.column()));
 		params.add(value("id", obj.getId()));
 		params.add(value("image", obj.getImage()));
 		params.add(value("destination_world", obj.getDestinationWorld()));
 		if (obj.getDestinationCoordinates().isValid()) {
-			params.add(value("destination_row", obj.getDestinationCoordinates().getRow()));
-			params.add(value("destination_column", obj.getDestinationCoordinates().getColumn()));
+			params.add(value("destination_row", obj.getDestinationCoordinates().row()));
+			params.add(value("destination_column", obj.getDestinationCoordinates().column()));
 		}
 		INSERT_SQL.on(params).execute(db.connection());
 	}

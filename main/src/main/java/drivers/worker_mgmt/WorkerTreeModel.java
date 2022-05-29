@@ -420,7 +420,7 @@ import java.util.stream.Collectors;
 
 	@Override
 	public void changeOwner(final HasOwner item, final Player newOwner) {
-		if (item instanceof IUnit unit && item.getOwner().equals(player)) {
+		if (item instanceof IUnit unit && item.owner().equals(player)) {
 			// TODO: What if it's the only unit with this kind?
 			final TreeModelEvent event = new TreeModelEvent(this,
 				new TreePath(new Object[] { player, unit.getKind() }),

@@ -49,13 +49,13 @@ public interface IFortress extends HasImage, ITownFixture, HasName,
 
 	@Override
 	default String getShortDescription() {
-		if (getOwner().isCurrent()) {
+		if (owner().isCurrent()) {
 			return String.format("a fortress, %s, owned by you", getName());
-		} else if (getOwner().isIndependent()) {
+		} else if (owner().isIndependent()) {
 			return "an independent fortress, " + getName();
 		} else {
 			return String.format("a fortress, %s, owned by %s", getName(),
-				getOwner().getName());
+				owner().getName());
 		}
 	}
 

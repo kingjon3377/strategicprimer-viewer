@@ -60,7 +60,7 @@ final class DBSimpleTerrainHandler extends AbstractDatabaseWriter<TerrainFixture
 		} else {
 			throw new IllegalArgumentException("Unhandled terrain fixture type");
 		}
-		INSERT.on(value("row", context.getRow()), value("column", context.getColumn()), value("type", type),
+		INSERT.on(value("row", context.row()), value("column", context.column()), value("type", type),
 				value("id", obj.getId()), value("image", ((HasImage) obj).getImage())).execute(db.connection());
 	}
 

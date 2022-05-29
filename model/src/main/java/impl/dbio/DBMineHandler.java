@@ -44,7 +44,7 @@ final class DBMineHandler extends AbstractDatabaseWriter<Mine, Point> implements
 
 	@Override
 	public void write(final Transactional db, final Mine obj, final Point context) throws SQLException {
-		INSERT_SQL.on(value("row", context.getRow()), value("column", context.getColumn()),
+		INSERT_SQL.on(value("row", context.row()), value("column", context.column()),
 					value("id", obj.getId()), value("kind", obj.getKind()),
 					value("status", obj.getStatus().toString()), value("image", obj.getImage()))
 				.execute(db.connection());

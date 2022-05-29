@@ -122,18 +122,18 @@ import common.map.Point;
 		final String columnText = columnField.getText();
 		errorLabel.setText("");
 		final MapDimensions dimensions = model.getMapDimensions();
-		final NumberState columnState = checkNumber(columnText, dimensions.getColumns() - 1);
+		final NumberState columnState = checkNumber(columnText, dimensions.columns() - 1);
 		if (NumberState.Valid != columnState) {
 			errorLabel.setText(errorLabel.getText() + "Column" +
-				getErrorMessage(columnState, dimensions.getColumns()));
+				getErrorMessage(columnState, dimensions.columns()));
 			columnField.setText("-1");
 			columnField.selectAll();
 		}
 
-		final NumberState rowState = checkNumber(rowText, dimensions.getRows() - 1);
+		final NumberState rowState = checkNumber(rowText, dimensions.rows() - 1);
 		if (NumberState.Valid != rowState) {
 			errorLabel.setText(errorLabel.getText() + "Row " +
-				getErrorMessage(rowState, dimensions.getRows()));
+				getErrorMessage(rowState, dimensions.rows()));
 			rowField.setText("-1");
 			rowField.selectAll();
 		}

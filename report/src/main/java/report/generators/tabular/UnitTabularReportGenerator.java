@@ -72,16 +72,16 @@ public class UnitTabularReportGenerator implements ITableGenerator<IUnit> {
 			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures, final IUnit item,
 			final int key, final Point loc, final Map<Integer, Integer> parentMap) {
 		final List<String> retval = Arrays.asList(distanceString(loc, hq, dimensions),
-			locationString(loc), ownerString(player, item.getOwner()), item.getKind(),
+			locationString(loc), ownerString(player, item.owner()), item.getKind(),
 			item.getName(),
 			Optional.ofNullable(item.getAllOrders().lastEntry())
 				.map(Map.Entry::getValue).orElse(""),
-			(player.equals(item.getOwner())) ? Integer.toString(item.getId()) : "---");
+			(player.equals(item.owner())) ? Integer.toString(item.getId()) : "---");
 		for (final UnitMember member : item) {
 			if (member instanceof Animal) {
 				// We don't want animals inside a unit showing up in the wild-animal report
 				fixtures.remove(member.getId());
-			} else if (!player.equals(item.getOwner())) {
+			} else if (!player.equals(item.owner())) {
 				// A player shouldn't be able to see the details of another player's units.
 				fixtures.remove(member.getId());
 			}
@@ -98,7 +98,7 @@ public class UnitTabularReportGenerator implements ITableGenerator<IUnit> {
 	public Comparator<Pair<Point, IUnit>> comparePairs() {
 		return Comparator.<Pair<Point, IUnit>, Point>comparing(Pair::getValue0, distanceComparator)
 			.thenComparing(Pair::getValue1,
-				Comparator.comparing(IUnit::getOwner)
+				Comparator.comparing(IUnit::owner)
 					.thenComparing(IUnit::getKind)
 					.thenComparing(IUnit::getName));
 	}

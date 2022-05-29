@@ -103,9 +103,9 @@ public class FixtureListModel implements ListModel<TileFixture>, SelectionChange
 
 	private void fireIntervalReplaced(final Range oldRange, final Range newRange) {
 		final ListDataEvent removeEvent = new ListDataEvent(this, ListDataEvent.INTERVAL_REMOVED,
-			oldRange.getLowerBound(), oldRange.getUpperBound());
+			oldRange.lowerBound(), oldRange.upperBound());
 		final ListDataEvent addEvent = new ListDataEvent(this, ListDataEvent.INTERVAL_ADDED,
-			newRange.getLowerBound(), newRange.getUpperBound());
+			newRange.lowerBound(), newRange.upperBound());
 		for (final ListDataListener listener : listDataListeners) {
 			listener.intervalRemoved(removeEvent);
 			listener.intervalAdded(addEvent);
@@ -114,7 +114,7 @@ public class FixtureListModel implements ListModel<TileFixture>, SelectionChange
 
 	private void fireContentsChanged(final Range range) {
 		final ListDataEvent event = new ListDataEvent(this, ListDataEvent.CONTENTS_CHANGED,
-			range.getLowerBound(), range.getUpperBound());
+			range.lowerBound(), range.upperBound());
 		for (final ListDataListener listener : listDataListeners) {
 			listener.contentsChanged(event);
 		}
@@ -122,7 +122,7 @@ public class FixtureListModel implements ListModel<TileFixture>, SelectionChange
 
 	private void fireIntervalAdded(final Range range) {
 		final ListDataEvent event = new ListDataEvent(this, ListDataEvent.INTERVAL_ADDED,
-			range.getLowerBound(), range.getUpperBound());
+			range.lowerBound(), range.upperBound());
 		for (final ListDataListener listener : listDataListeners) {
 			listener.intervalAdded(event);
 		}
@@ -130,7 +130,7 @@ public class FixtureListModel implements ListModel<TileFixture>, SelectionChange
 
 	private void fireIntervalRemoved(final Range range) {
 		final ListDataEvent event = new ListDataEvent(this, ListDataEvent.INTERVAL_REMOVED,
-			range.getLowerBound(), range.getUpperBound());
+			range.lowerBound(), range.upperBound());
 		for (final ListDataListener listener : listDataListeners) {
 			listener.intervalRemoved(event);
 		}
@@ -212,17 +212,17 @@ public class FixtureListModel implements ListModel<TileFixture>, SelectionChange
 		if (fixture instanceof final TileTypeFixture ttf) {
 			final TileType existingTerrain = terrainSource.apply(point);
 			if (existingTerrain != null) {
-				if (existingTerrain == ttf.getTileType()) {
+				if (existingTerrain == ttf.tileType()) {
 					return true;
 				} else if (terrainSink != null) {
-					terrainSink.accept(point, ttf.getTileType());
+					terrainSink.accept(point, ttf.tileType());
 					fireContentsChanged(new Range(0, 0));
 					return true;
 				} else {
 					return false;
 				}
 			} else if (terrainSink != null) {
-				terrainSink.accept(point, ttf.getTileType());
+				terrainSink.accept(point, ttf.tileType());
 				fireIntervalAdded(new Range(0, 0));
 				return true;
 			} else {
@@ -305,7 +305,7 @@ public class FixtureListModel implements ListModel<TileFixture>, SelectionChange
 				final TileType currentTerrain = terrainSource.apply(point);
 				if (currentTerrain != null &&
 						    currentTerrain == ((TileTypeFixture) fixture)
-								    .getTileType()) {
+								    .tileType()) {
 					if (terrainSink == null) {
 						retval = false;
 					} else {

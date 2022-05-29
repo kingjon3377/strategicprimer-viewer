@@ -76,7 +76,7 @@ public class Village implements IMutableTownFixture, HasMutableImage, IFixture,
 	 * The player the village has pledged to serve and support, if any.
 	 */
 	@Override
-	public Player getOwner() {
+	public Player owner() {
 		return owner;
 	}
 
@@ -214,7 +214,7 @@ public class Village implements IMutableTownFixture, HasMutableImage, IFixture,
 	public boolean equals(final Object obj) {
 		if (obj instanceof Village it && status == it.getStatus() &&
 				name.equals(it.getName()) && id == it.getId() &&
-				owner.equals(it.getOwner()) &&
+				owner.equals(it.owner()) &&
 				race.equals(it.getRace())) {
 			return Objects.equals(population, it.getPopulation());
 		} else {
@@ -238,7 +238,7 @@ public class Village implements IMutableTownFixture, HasMutableImage, IFixture,
 	public boolean equalsIgnoringID(final IFixture fixture) {
 		if (fixture instanceof Village it && status == it.getStatus() &&
 				name.equals(it.getName()) &&
-				owner.equals(it.getOwner())) {
+				owner.equals(it.owner())) {
 			return Objects.equals(population, it.getPopulation());
 		} else {
 			return false;
@@ -278,8 +278,8 @@ public class Village implements IMutableTownFixture, HasMutableImage, IFixture,
 			} else if (!race.equals(it.getRace())) {
 				report.accept(String.format("In village %s (ID #%d):\tDominant race differs",
 					name, id));
-			} else if (owner.getPlayerId() != it.getOwner().getPlayerId() &&
-					it.getOwner().isIndependent()) {
+			} else if (owner.getPlayerId() != it.owner().getPlayerId() &&
+					it.owner().isIndependent()) {
 				report.accept(String.format("In village %s (ID #%d):\tOwners differ",
 					name, id));
 			} else if (population != null) {

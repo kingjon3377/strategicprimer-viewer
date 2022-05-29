@@ -304,7 +304,7 @@ import java.util.stream.Collectors;
 		writeProperty(ostream, "dc", obj.getDC());
 		writeNonemptyProperty(ostream, "name", obj.getName());
 		writeProperty(ostream, "id", obj.getId());
-		writeProperty(ostream, "owner", obj.getOwner().getPlayerId());
+		writeProperty(ostream, "owner", obj.owner().getPlayerId());
 		writeImageXML(ostream, obj);
 		writeNonemptyProperty(ostream, "portrait", obj.getPortrait());
 		if (obj.getPopulation() == null) {
@@ -378,7 +378,7 @@ import java.util.stream.Collectors;
 			writeProperty(ostream, "status", obj.getStatus().toString());
 			writeNonemptyProperty(ostream, "name", obj.getName());
 			writeProperty(ostream, "id", obj.getId());
-			writeProperty(ostream, "owner", obj.getOwner().getPlayerId());
+			writeProperty(ostream, "owner", obj.owner().getPlayerId());
 			writeProperty(ostream, "race", v.getRace());
 			writeImageXML(ostream, v);
 			writeNonemptyProperty(ostream, "portrait", obj.getPortrait());
@@ -391,7 +391,7 @@ import java.util.stream.Collectors;
 			}
 		} else if (obj instanceof IFortress f) {
 			writeTag(ostream, "fortress", tabs);
-			writeProperty(ostream, "owner", obj.getOwner().getPlayerId());
+			writeProperty(ostream, "owner", obj.owner().getPlayerId());
 			writeNonemptyProperty(ostream, "name", obj.getName());
 			if (TownSize.Small != obj.getTownSize()) {
 				writeProperty(ostream, "size", obj.getTownSize().toString());

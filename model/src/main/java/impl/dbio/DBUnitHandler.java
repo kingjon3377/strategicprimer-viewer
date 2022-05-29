@@ -81,16 +81,16 @@ final class DBUnitHandler extends AbstractDatabaseWriter<IUnit, Object> implemen
 		db.transaction().accept(sql -> {
 				final String portrait = obj.getPortrait();
 				if (context instanceof Point p) {
-					INSERT_UNIT.on(value("row", p.getRow()),
-							value("column", p.getColumn()),
-							 value("owner", obj.getOwner().getPlayerId()),
+					INSERT_UNIT.on(value("row", p.row()),
+							value("column", p.column()),
+							 value("owner", obj.owner().getPlayerId()),
 							value("kind", obj.getKind()), value("name", obj.getName()),
 							value("id", obj.getId()), value("image", obj.getImage()),
 							value("portrait", portrait)).execute(sql);
 				} else if (context instanceof IFortress f) {
 					INSERT_UNIT.on(
 							value("parent", f.getId()),
-							value("owner", obj.getOwner().getPlayerId()), value("kind", obj.getKind()),
+							value("owner", obj.owner().getPlayerId()), value("kind", obj.getKind()),
 							value("name", obj.getName()), value("id", obj.getId()),
 							value("image", obj.getImage()), value("portrait", portrait)).execute(sql);
 				} else {

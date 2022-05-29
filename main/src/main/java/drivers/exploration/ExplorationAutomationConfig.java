@@ -23,21 +23,21 @@ import org.jetbrains.annotations.Nullable;
 	public ExplorationAutomationConfig(final Player player) {
 		this.player = player;
 		conditions = List.of(new Condition<>("at others' fortresses",
-						fixture -> "a fortress belonging to " + fixture.getOwner(), IFortress.class), new Condition<>("at active towns",
+						fixture -> "a fortress belonging to " + fixture.owner(), IFortress.class), new Condition<>("at active towns",
 						fixture -> String.format("a %s active %s", fixture.getTownSize(), fixture.getKind()),
 						AbstractTown.class, t -> TownStatus.Active == t.getStatus()), new Condition<>("at inactive towns",
 						fixture -> String.format("a %s %s %s", fixture.getTownSize(),
 								fixture.getStatus(), fixture.getKind()),
 						AbstractTown.class, t -> TownStatus.Active != t.getStatus()), new Condition<>("at independent villages", "an independent village",
-						Village.class, v -> v.getOwner().isIndependent()), new Condition<>("at other players' villages", "another player's village",
-						Village.class, v -> !v.getOwner().equals(this.player), v -> !v.getOwner().isIndependent()),
+						Village.class, v -> v.owner().isIndependent()), new Condition<>("at other players' villages", "another player's village",
+						Village.class, v -> !v.owner().equals(this.player), v -> !v.owner().isIndependent()),
 				// TODO: For "your villages" (and perhaps other towns), include name in stop message
 				new Condition<>("at villages sworn to you", "one of your villages",
-						Village.class, v -> v.getOwner().equals(this.player)), new Condition<>("on meeting other players' units",
-						unit -> "a unit belonging to " + unit.getOwner(), IUnit.class,
-						u -> !u.getOwner().equals(this.player), u -> !u.getOwner().isIndependent()), new Condition<>("on meeting independent units", "an independent unit", IUnit.class,
+						Village.class, v -> v.owner().equals(this.player)), new Condition<>("on meeting other players' units",
+						unit -> "a unit belonging to " + unit.owner(), IUnit.class,
+						u -> !u.owner().equals(this.player), u -> !u.owner().isIndependent()), new Condition<>("on meeting independent units", "an independent unit", IUnit.class,
 						// TODO: Provide helper default methods isIndependent() and sameOwner() in HasOwner?
-						u -> u.getOwner().isIndependent()), new Condition<>("on meeting an immortal", i -> "a(n) " + i.getShortDescription(),
+						u -> u.owner().isIndependent()), new Condition<>("on meeting an immortal", i -> "a(n) " + i.getShortDescription(),
 						Immortal.class));
 	}
 

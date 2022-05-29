@@ -107,12 +107,12 @@ public class ExplorableTabularReportGenerator
 		} else if (item instanceof AdventureFixture af) {
 			brief = af.getBriefDescription();
 			// TODO: Don't we have a helper method for this?
-			if (player.equals(af.getOwner())) {
+			if (player.equals(af.owner())) {
 				owner = "You";
-			} else if (af.getOwner().isIndependent()) {
+			} else if (af.owner().isIndependent()) {
 				owner = "No-one";
 			} else {
-				owner = ownerString(player, af.getOwner());
+				owner = ownerString(player, af.owner());
 			}
 			longDesc = af.getFullDescription();
 		} else {

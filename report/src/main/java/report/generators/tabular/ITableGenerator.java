@@ -115,17 +115,17 @@ public interface ITableGenerator<T extends IFixture> {
 	 * distance, for efficiency.
 	 */
 	default int distance(final Point first, final Point second, final MapDimensions dimensions) {
-		final int colDistRaw = Math.abs(first.getColumn() - second.getColumn());
-		final int rowDistRaw = Math.abs(first.getRow() - second.getRow());
+		final int colDistRaw = Math.abs(first.column() - second.column());
+		final int rowDistRaw = Math.abs(first.row() - second.row());
 		final int colDist;
 		final int rowDist;
-		if (colDistRaw > dimensions.getColumns() / 2) {
-			colDist = dimensions.getColumns() - colDistRaw;
+		if (colDistRaw > dimensions.columns() / 2) {
+			colDist = dimensions.columns() - colDistRaw;
 		} else {
 			colDist = colDistRaw;
 		}
-		if (rowDistRaw > dimensions.getRows() / 2) {
-			rowDist = dimensions.getRows() - rowDistRaw;
+		if (rowDistRaw > dimensions.rows() / 2) {
+			rowDist = dimensions.rows() - rowDistRaw;
 		} else {
 			rowDist = rowDistRaw;
 		}

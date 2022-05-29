@@ -51,8 +51,8 @@ import common.xmlio.Warning;
 		writeProperty(ostream, "id", obj.getId());
 		writeProperty(ostream, "kind", obj.getKind());
 		writeProperty(ostream, "contents", obj.getContents());
-		writeProperty(ostream, "quantity", obj.getQuantity().getNumber().toString());
-		writeProperty(ostream, "unit", obj.getQuantity().getUnits());
+		writeProperty(ostream, "quantity", obj.getQuantity().number().toString());
+		writeProperty(ostream, "unit", obj.getQuantity().units());
 		if (obj.getCreated() >= 0) {
 			writeProperty(ostream, "created", obj.getCreated());
 		}

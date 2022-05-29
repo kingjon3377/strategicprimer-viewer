@@ -42,7 +42,7 @@ final class DBShrubHandler extends AbstractDatabaseWriter<Shrub, Point> implemen
 
 	@Override
 	public void write(final Transactional db, final Shrub obj, final Point context) throws SQLException {
-		INSERT_SQL.on(value("row", context.getRow()), value("column", context.getColumn()),
+		INSERT_SQL.on(value("row", context.row()), value("column", context.column()),
 				value("id", obj.getId()), value("kind", obj.getKind()),
 				value("count", obj.getPopulation()),
 				value("image", obj.getImage())).execute(db.connection());

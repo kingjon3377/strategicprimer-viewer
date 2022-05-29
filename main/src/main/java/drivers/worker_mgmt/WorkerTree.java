@@ -565,59 +565,53 @@ public final class WorkerTree extends JTree implements UnitMemberSelectionSource
 		}
 	}
 
-	private static class TreeModelHandler implements TreeModelListener {
-		// TODO: Combine with some other class? Probably the tree itself.
-
-		public TreeModelHandler(final JTree tree) {
-			this.tree = tree;
-		}
-
-		private final JTree tree;
+	private record TreeModelHandler(JTree tree) implements TreeModelListener {
+			// TODO: Combine with some other class? Probably the tree itself.
 
 		@Override
-		public void treeStructureChanged(final TreeModelEvent event) {
-			final TreePath path = event.getTreePath();
-			final TreePath parent = Optional.ofNullable(path)
-				.map(TreePath::getParentPath).orElse(null);
-			if (parent != null) {
-				tree.expandPath(parent);
-			} else if (path != null) {
-				tree.expandPath(path);
-			}
-			for (int i = 0; i < tree.getRowCount(); i++) {
-				tree.expandRow(i);
-			}
-			tree.updateUI();
-		}
-
-		@Override
-		public void treeNodesRemoved(final TreeModelEvent event) {
-			final TreePath path = event.getTreePath().pathByAddingChild(event.getChildren()[0]);
-			LovelaceLogger.trace("About to remove this path from selection: %s", path);
-			tree.removeSelectionPath(path);
-			tree.updateUI();
-		}
-
-		@Override
-		public void treeNodesInserted(final TreeModelEvent event) {
-			final TreePath path = event.getTreePath();
-			if (path != null) {
-				tree.expandPath(path);
-				final TreePath parent = path.getParentPath();
+			public void treeStructureChanged(final TreeModelEvent event) {
+				final TreePath path = event.getTreePath();
+				final TreePath parent = Optional.ofNullable(path)
+						                        .map(TreePath::getParentPath).orElse(null);
 				if (parent != null) {
 					tree.expandPath(parent);
+				} else if (path != null) {
+					tree.expandPath(path);
 				}
+				for (int i = 0; i < tree.getRowCount(); i++) {
+					tree.expandRow(i);
+				}
+				tree.updateUI();
 			}
-			tree.updateUI();
-		}
 
-		@Override
-		public void treeNodesChanged(final TreeModelEvent event) {
-			Optional.ofNullable(event.getTreePath()).map(TreePath::getParentPath)
-				.ifPresent(tree::expandPath);
-			tree.updateUI();
+			@Override
+			public void treeNodesRemoved(final TreeModelEvent event) {
+				final TreePath path = event.getTreePath().pathByAddingChild(event.getChildren()[0]);
+				LovelaceLogger.trace("About to remove this path from selection: %s", path);
+				tree.removeSelectionPath(path);
+				tree.updateUI();
+			}
+
+			@Override
+			public void treeNodesInserted(final TreeModelEvent event) {
+				final TreePath path = event.getTreePath();
+				if (path != null) {
+					tree.expandPath(path);
+					final TreePath parent = path.getParentPath();
+					if (parent != null) {
+						tree.expandPath(parent);
+					}
+				}
+				tree.updateUI();
+			}
+
+			@Override
+			public void treeNodesChanged(final TreeModelEvent event) {
+				Optional.ofNullable(event.getTreePath()).map(TreePath::getParentPath)
+						.ifPresent(tree::expandPath);
+				tree.updateUI();
+			}
 		}
-	}
 
 	private static class TreeMouseListener extends MouseAdapter {
 		public TreeMouseListener(final JTree tree, final Iterable<Player> players, final IWorkerTreeModel wtModel,

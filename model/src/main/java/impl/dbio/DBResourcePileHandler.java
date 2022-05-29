@@ -61,8 +61,8 @@ final class DBResourcePileHandler
 	@Override
 	public void write(final Transactional db, final IResourcePile obj, final TileFixture context) throws SQLException {
 		INSERT_SQL.on(value("parent", context.getId()), value("id", obj.getId()), value("kind", obj.getKind()),
-				value("contents", obj.getContents()), value("quantity", obj.getQuantity().getNumber().toString()),
-				value("units", obj.getQuantity().getUnits()), value("created", obj.getCreated()),
+				value("contents", obj.getContents()), value("quantity", obj.getQuantity().number().toString()),
+				value("units", obj.getQuantity().units()), value("created", obj.getCreated()),
 				value("image", obj.getImage())).execute(db.connection());
 	}
 

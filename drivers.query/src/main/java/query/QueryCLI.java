@@ -65,7 +65,7 @@ public class QueryCLI implements ReadOnlyDriver {
 		int retval = 0;
 		for (final IFixture fixture : fixtures) {
 			if (fixture instanceof IWorker && fixtures instanceof HasOwner owned &&
-					player.equals(owned.getOwner())) {
+					player.equals(owned.owner())) {
 				retval++;
 			} else if (fixture instanceof FixtureIterable iter) {
 				retval += countWorkersInIterable(player, iter);
@@ -268,22 +268,22 @@ public class QueryCLI implements ReadOnlyDriver {
 					} else {
 						cli.print(town.getKind());
 					}
-					if (town.getOwner().isIndependent()) {
+					if (town.owner().isIndependent()) {
 						cli.print(", independent");
-					} else if (!map.getCurrentPlayer().equals(town.getOwner())) {
-						cli.print(", allied to ", town.getOwner().toString());
+					} else if (!map.getCurrentPlayer().equals(town.owner())) {
+						cli.print(", allied to ", town.owner().toString());
 					}
 					cli.println(". Its yearly production:");
 					for (final IResourcePile resource :
 							town.getPopulation().getYearlyProduction()) {
 						cli.print("- ", resource.getKind(), ": ");
-						cli.print(resource.getQuantity().getNumber().toString());
-						if (resource.getQuantity().getUnits().isEmpty()) {
+						cli.print(resource.getQuantity().number().toString());
+						if (resource.getQuantity().units().isEmpty()) {
 							cli.print(" ");
-						} else if ("dozen".equals(resource.getQuantity().getUnits())) {
+						} else if ("dozen".equals(resource.getQuantity().units())) {
 							cli.print(" dozen ");
 						} else {
-							cli.print(" ", resource.getQuantity().getUnits(),
+							cli.print(" ", resource.getQuantity().units(),
 								" of ");
 						}
 						cli.println(resource.getContents());

@@ -45,7 +45,7 @@ final class DBForestHandler extends AbstractDatabaseWriter<Forest, Point> implem
 
 	@Override
 	public void write(final Transactional db, final Forest obj, final Point context) throws SQLException {
-		INSERT_SQL.on(value("row", context.getRow()), value("column", context.getColumn()),
+		INSERT_SQL.on(value("row", context.row()), value("column", context.column()),
 				value("id", obj.getId()), value("kind", obj.getKind()), value("rows", obj.isRows()),
 				value("acres", obj.getAcres().toString()), value("image", obj.getImage())).execute(db.connection());
 	}

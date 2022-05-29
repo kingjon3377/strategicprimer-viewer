@@ -183,7 +183,7 @@ import java.util.List;
 	@Override
 	public void write(final ThrowingConsumer<String, IOException> ostream, final IUnit obj, final int indent) throws IOException {
 		writeTag(ostream, "unit", indent);
-		writeProperty(ostream, "owner", obj.getOwner().getPlayerId());
+		writeProperty(ostream, "owner", obj.owner().getPlayerId());
 		writeNonemptyProperty(ostream, "kind", obj.getKind());
 		writeNonemptyProperty(ostream, "name", obj.getName());
 		writeProperty(ostream, "id", obj.getId());

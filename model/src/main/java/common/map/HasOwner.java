@@ -7,5 +7,5 @@ public interface HasOwner {
 	/**
 	 * The owner of whatever this is.
 	 */
-	Player getOwner();
+	Player owner();
 }

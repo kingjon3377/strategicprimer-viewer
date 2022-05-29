@@ -157,7 +157,7 @@ public class Ver2TileDrawHelper implements TileDrawHelper {
 			}
 		}
 
-		return ColorHelper.get(map.getDimensions().getVersion(), map.getBaseTerrain(location));
+		return ColorHelper.get(map.getDimensions().version(), map.getBaseTerrain(location));
 	}
 
 	/**
@@ -201,16 +201,16 @@ public class Ver2TileDrawHelper implements TileDrawHelper {
 	 */
 	private void drawIcon(final Graphics pen, final String icon, final Coordinate coordinates, final Coordinate dimensions) {
 		final Image image = getImage(icon);
-		pen.drawImage(image, coordinates.getX(), coordinates.getY(),
-			dimensions.getX(), dimensions.getY(), observer);
+		pen.drawImage(image, coordinates.x(), coordinates.y(),
+			dimensions.x(), dimensions.y(), observer);
 	}
 
 	/**
 	 * Draw an icon at the specified coordinates.
 	 */
 	private void drawIcon(final Graphics pen, final Image icon, final Coordinate coordinates, final Coordinate dimensions) {
-		pen.drawImage(icon, coordinates.getX(), coordinates.getY(),
-			dimensions.getX(), dimensions.getY(), observer);
+		pen.drawImage(icon, coordinates.x(), coordinates.y(),
+			dimensions.x(), dimensions.y(), observer);
 	}
 
 	/**
@@ -225,13 +225,13 @@ public class Ver2TileDrawHelper implements TileDrawHelper {
 		if (needsFixtureColor(map, location)) {
 			localColor = getFixtureColor(map, location);
 		} else {
-			localColor = ColorHelper.get(map.getDimensions().getVersion(),
+			localColor = ColorHelper.get(map.getDimensions().version(),
 				map.getBaseTerrain(location));
 		}
 		if (localColor != null) {
 			pen.setColor(localColor);
-			pen.fillRect(coordinates.getX(), coordinates.getY(),
-				dimensions.getX(), dimensions.getY());
+			pen.fillRect(coordinates.x(), coordinates.y(),
+				dimensions.x(), dimensions.y());
 		}
 		for (final River river : map.getRivers(location)) {
 			// TODO: Do something to avoid String.format(), which is probably slow
@@ -253,7 +253,7 @@ public class Ver2TileDrawHelper implements TileDrawHelper {
 			drawIcon(pen, "bookmark.png", coordinates, dimensions);
 		}
 		pen.setColor(Color.black);
-		pen.drawRect(coordinates.getX(), coordinates.getY(), dimensions.getX(), dimensions.getY());
+		pen.drawRect(coordinates.x(), coordinates.y(), dimensions.x(), dimensions.y());
 	}
 
 	/**

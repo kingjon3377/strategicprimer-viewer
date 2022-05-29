@@ -33,7 +33,7 @@ import java.util.function.Consumer;
 		this.model = model;
 		this.zof = zof;
 		this.comparator = comparator;
-		menu = new TerrainChangingMenu(model.getMapDimensions().getVersion(), model);
+		menu = new TerrainChangingMenu(model.getMapDimensions().version(), model);
 		model.addSelectionChangeListener(menu);
 		model.addVersionChangeListener(menu);
 	}
@@ -65,7 +65,7 @@ import java.util.function.Consumer;
 	private Point pointFor(final MouseEvent event) {
 		final java.awt.Point eventPoint = event.getPoint();
 		final MapDimensions mapDimensions = model.getMapDimensions();
-		final int tileSize = scaleZoom(model.getZoomLevel(), mapDimensions.getVersion());
+		final int tileSize = scaleZoom(model.getZoomLevel(), mapDimensions.version());
 		final VisibleDimensions visibleDimensions = model.getVisibleDimensions();
 		return new Point((int) ((eventPoint.getY() / tileSize) + visibleDimensions.getMinimumRow()),
 			(int) ((eventPoint.getX() / tileSize) + visibleDimensions.getMinimumColumn()));
@@ -75,8 +75,8 @@ import java.util.function.Consumer;
 	public @Nullable String getToolTipText(final MouseEvent event) {
 		final MapDimensions mapDimensions = model.getMapDimensions();
 		final Point point = pointFor(event);
-		if (point.isValid() && point.getRow() < mapDimensions.getRows() &&
-				point.getColumn() < mapDimensions.getColumns()) {
+		if (point.isValid() && point.row() < mapDimensions.rows() &&
+				point.column() < mapDimensions.columns()) {
 			final String mountainString = (model.getMap().isMountainous(point)) ?
 				", mountainous" : "";
 			return String.format("<html><body>%s: %s%s<br />%s</body></html>", point,
@@ -94,8 +94,8 @@ import java.util.function.Consumer;
 		final MapDimensions mapDimensions = model.getMapDimensions();
 		final Point point = pointFor(event);
 		LovelaceLogger.trace("User clicked on %s", point);
-		if (point.isValid() && point.getRow() < mapDimensions.getRows() &&
-				point.getColumn() < mapDimensions.getColumns()) {
+		if (point.isValid() && point.row() < mapDimensions.rows() &&
+				point.column() < mapDimensions.columns()) {
 			if (event.isPopupTrigger()) {
 				model.setInteraction(point);
 				menu.show(event.getComponent(), event.getX(), event.getY());
@@ -123,11 +123,11 @@ import java.util.function.Consumer;
 
 	private Pair<Integer, Integer> screenPointFor(final Point point) {
 		final MapDimensions mapDimensions = model.getMapDimensions();
-		final int tileSize = scaleZoom(model.getZoomLevel(), mapDimensions.getVersion());
+		final int tileSize = scaleZoom(model.getZoomLevel(), mapDimensions.version());
 		final VisibleDimensions visibleDimensions = model.getVisibleDimensions();
 		return Pair.with(
-			(point.getColumn() - visibleDimensions.getMinimumColumn()) * tileSize + tileSize / 2,
-			(point.getRow() - visibleDimensions.getMinimumRow()) * tileSize + tileSize / 2);
+			(point.column() - visibleDimensions.getMinimumColumn()) * tileSize + tileSize / 2,
+			(point.row() - visibleDimensions.getMinimumRow()) * tileSize + tileSize / 2);
 	}
 
 	public void showMenuAtSelection(final @Nullable Component parent) {

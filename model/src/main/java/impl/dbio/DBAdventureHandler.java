@@ -44,9 +44,9 @@ final class DBAdventureHandler extends AbstractDatabaseWriter<AdventureFixture, 
 
 	@Override
 	public void write(final Transactional db, final AdventureFixture obj, final Point context) throws SQLException {
-		INSERT_QUERY.on(value("row", context.getRow()), value("column", context.getColumn()),
+		INSERT_QUERY.on(value("row", context.row()), value("column", context.column()),
 				value("id", obj.getId()), value("brief", obj.getBriefDescription()),
-				value("full", obj.getFullDescription()), value("owner", obj.getOwner().getPlayerId()),
+				value("full", obj.getFullDescription()), value("owner", obj.owner().getPlayerId()),
 				value("image", obj.getImage())).execute(db.connection());
 	}
 

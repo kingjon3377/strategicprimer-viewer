@@ -37,8 +37,8 @@ import lovelace.util.ThrowingConsumer;
 	public void write(final ThrowingConsumer<String, IOException> ostream, final Portal obj, final int indent) throws IOException {
 		writeTag(ostream, "portal", indent);
 		writeProperty(ostream, "world", obj.getDestinationWorld());
-		writeProperty(ostream, "row", obj.getDestinationCoordinates().getRow());
-		writeProperty(ostream, "column", obj.getDestinationCoordinates().getColumn());
+		writeProperty(ostream, "row", obj.getDestinationCoordinates().row());
+		writeProperty(ostream, "column", obj.getDestinationCoordinates().column());
 		writeProperty(ostream, "id", obj.getId());
 		writeImageXML(ostream, obj);
 		closeLeafTag(ostream);

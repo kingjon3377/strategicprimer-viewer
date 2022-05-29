@@ -124,7 +124,7 @@ public class FortressReportGenerator extends AbstractReportGenerator<IFortress> 
 		ostream.accept("<h5>Fortress ");
 		ostream.accept(item.getName());
 		ostream.accept("belonging to ");
-		ostream.accept((item.getOwner().equals(currentPlayer)) ? "you" : item.getOwner().toString());
+		ostream.accept((item.owner().equals(currentPlayer)) ? "you" : item.owner().toString());
 		ostream.accept("""
 				</h5>
 				<ul>
@@ -194,7 +194,7 @@ public class FortressReportGenerator extends AbstractReportGenerator<IFortress> 
 				.collect(Collectors.toList())) {
 			final Point loc = pair.getValue0();
 			final IFortress fort = pair.getValue1();
-			if (currentPlayer.equals(fort.getOwner())) {
+			if (currentPlayer.equals(fort.owner())) {
 				ours.put(fort, loc);
 			} else {
 				others.put(fort, loc);

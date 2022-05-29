@@ -171,7 +171,7 @@ public final class SimpleMovementModel {
 	 */
 	public static boolean shouldAlwaysNotice(final HasOwner unit, final @Nullable TileFixture fixture) {
 		if (fixture instanceof ITownFixture town) {
-			return town.getOwner().equals(unit.getOwner());
+			return town.owner().equals(unit.owner());
 		} else {
 			return fixture instanceof Hill || fixture instanceof Forest;
 		}

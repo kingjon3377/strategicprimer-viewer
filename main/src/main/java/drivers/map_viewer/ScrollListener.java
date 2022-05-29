@@ -45,17 +45,17 @@ import common.map.fixtures.mobile.IUnit;
 		mapDimensions = mapModel.getMapDimensions();
 		final Point cursor = mapModel.getCursor();
 		horizontalBarModel = horizontal.getModel();
-		horizontalBarModel.setRangeProperties(constrainToRange(cursor.getColumn(), 0,
-				mapDimensions.getColumns() - 1),
-			Math.min(mapDimensions.getColumns(), visibleDimensions.getWidth()), 0,
-			mapDimensions.getColumns(), false);
+		horizontalBarModel.setRangeProperties(constrainToRange(cursor.column(), 0,
+				mapDimensions.columns() - 1),
+			Math.min(mapDimensions.columns(), visibleDimensions.getWidth()), 0,
+			mapDimensions.columns(), false);
 		horizontal.setInputVerifier(
 			ScrollInputVerifier.horizontal(mapModel::getMapDimensions));
 		verticalBarModel = vertical.getModel();
-		verticalBarModel.setRangeProperties(constrainToRange(cursor.getRow(), 0,
-				mapDimensions.getRows() - 1),
-			Math.min(mapDimensions.getRows(), visibleDimensions.getHeight()), 0,
-			mapDimensions.getRows(), false);
+		verticalBarModel.setRangeProperties(constrainToRange(cursor.row(), 0,
+				mapDimensions.rows() - 1),
+			Math.min(mapDimensions.rows(), visibleDimensions.getHeight()), 0,
+			mapDimensions.rows(), false);
 		vertical.setInputVerifier(ScrollInputVerifier.vertical(
 				mapModel::getMapDimensions));
 
@@ -141,12 +141,12 @@ import common.map.fixtures.mobile.IUnit;
 		if (mutex) {
 			mutex = false;
 			visibleDimensions = newDimensions;
-			setRangeProperties(horizontalBarModel, Math.max(model.getCursor().getColumn(), 0),
-				Math.min(newDimensions.getWidth(), mapDimensions.getColumns()),
-				0, mapDimensions.getColumns());
-			setRangeProperties(verticalBarModel, Math.max(model.getCursor().getRow(), 0),
-				Math.min(newDimensions.getHeight(), mapDimensions.getRows()), 0,
-				mapDimensions.getRows());
+			setRangeProperties(horizontalBarModel, Math.max(model.getCursor().column(), 0),
+				Math.min(newDimensions.getWidth(), mapDimensions.columns()),
+				0, mapDimensions.columns());
+			setRangeProperties(verticalBarModel, Math.max(model.getCursor().row(), 0),
+				Math.min(newDimensions.getHeight(), mapDimensions.rows()), 0,
+				mapDimensions.rows());
 			mutex = true;
 		}
 	}
@@ -164,13 +164,13 @@ import common.map.fixtures.mobile.IUnit;
 	@Override
 	public void cursorPointChanged(final @Nullable Point previous, final Point newCursor) {
 		final VisibleDimensions temp = model.getVisibleDimensions();
-		if (!temp.getColumns().contains(newCursor.getColumn()) &&
-				horizontalBarModel.getValue() != Math.max(newCursor.getColumn(), 0)) {
-			horizontalBarModel.setValue(Math.max(newCursor.getColumn(), 0));
+		if (!temp.getColumns().contains(newCursor.column()) &&
+				horizontalBarModel.getValue() != Math.max(newCursor.column(), 0)) {
+			horizontalBarModel.setValue(Math.max(newCursor.column(), 0));
 		}
-		if (!temp.getRows().contains(newCursor.getRow()) &&
-				verticalBarModel.getValue() != Math.max(newCursor.getRow(), 0)) {
-			verticalBarModel.setValue(Math.max(newCursor.getRow(), 0));
+		if (!temp.getRows().contains(newCursor.row()) &&
+				verticalBarModel.getValue() != Math.max(newCursor.row(), 0)) {
+			verticalBarModel.setValue(Math.max(newCursor.row(), 0));
 		}
 	}
 
@@ -188,11 +188,11 @@ import common.map.fixtures.mobile.IUnit;
 		mapDimensions = model.getMapDimensions();
 		visibleDimensions = model.getVisibleDimensions();
 		horizontalBarModel.setRangeProperties(0,
-			Math.min(visibleDimensions.getWidth(), mapDimensions.getColumns()), 0,
-			mapDimensions.getColumns(), false);
+			Math.min(visibleDimensions.getWidth(), mapDimensions.columns()), 0,
+			mapDimensions.columns(), false);
 		verticalBarModel.setRangeProperties(0,
-			Math.min(visibleDimensions.getHeight(), mapDimensions.getRows()), 0,
-			mapDimensions.getRows(), false);
+			Math.min(visibleDimensions.getHeight(), mapDimensions.rows()), 0,
+			mapDimensions.rows(), false);
 	}
 
 	@Override

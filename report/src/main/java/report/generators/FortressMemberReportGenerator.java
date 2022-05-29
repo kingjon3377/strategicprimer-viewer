@@ -68,7 +68,7 @@ public class FortressMemberReportGenerator extends AbstractReportGenerator<Fortr
 			fixtures.remove(item.getId());
 			ostream.accept("A pile of ");
 			ostream.accept(r.getQuantity().toString());
-			if (r.getQuantity().getUnits().isEmpty()) {
+			if (r.getQuantity().units().isEmpty()) {
 				ostream.accept(" ");
 			} else {
 				ostream.accept(" of ");

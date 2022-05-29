@@ -135,13 +135,13 @@ public class UnitReportGenerator extends AbstractReportGenerator<IUnit> {
 		ostream.accept(" (");
 		ostream.accept(item.getKind());
 		ostream.accept("), ");
-		if (item.getOwner().isIndependent()) {
+		if (item.owner().isIndependent()) {
 			ostream.accept("independent");
-		} else if (item.getOwner().equals(currentPlayer)) {
+		} else if (item.owner().equals(currentPlayer)) {
 			ostream.accept("owned by you");
 		} else {
 			ostream.accept("owned by ");
-			ostream.accept(item.getOwner().toString());
+			ostream.accept(item.owner().toString());
 		}
 		if (!item.isEmpty()) {
 			final List<IWorker> workers = new ArrayList<>();
@@ -176,7 +176,7 @@ public class UnitReportGenerator extends AbstractReportGenerator<IUnit> {
 					<ul>
 					""");
 			final IReportGenerator<IWorker> workerReportGenerator;
-			if (item.getOwner().equals(currentPlayer)) {
+			if (item.owner().equals(currentPlayer)) {
 				workerReportGenerator = ourWorkerReportGenerator;
 			} else {
 				workerReportGenerator = otherWorkerReportGenerator;
@@ -234,7 +234,7 @@ public class UnitReportGenerator extends AbstractReportGenerator<IUnit> {
 				.collect(Collectors.toList())) {
 			final IUnit unit = pair.getValue1();
 			final Point loc = pair.getValue0();
-			if (currentPlayer.equals(unit.getOwner())) {
+			if (currentPlayer.equals(unit.owner())) {
 				ours.put(unit, loc);
 			} else {
 				foreign.put(unit, loc);

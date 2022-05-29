@@ -251,8 +251,8 @@ import common.map.HasExtent;
 		writeTag(ostream, "resource", indent, true);
 		writeAttributes(ostream, Pair.with("id", obj.getId()), Pair.with("kind", obj.getKind()),
 			Pair.with("contents", obj.getContents()),
-			Pair.with("quantity", obj.getQuantity().getNumber()),
-			Pair.with("unit", obj.getQuantity().getUnits()));
+			Pair.with("quantity", obj.getQuantity().number()),
+			Pair.with("unit", obj.getQuantity().units()));
 		if (obj.getCreated() >= 0) {
 			writeAttributes(ostream, Pair.with("created", obj.getCreated()));
 		}

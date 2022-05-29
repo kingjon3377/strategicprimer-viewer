@@ -56,8 +56,8 @@ final class DBFortressHandler extends AbstractDatabaseWriter<IFortress, Point> i
 
 	@Override
 	public void write(final Transactional db, final IFortress obj, final Point context) throws SQLException {
-		INSERT_SQL.on(value("row", context.getRow()), value("column", context.getColumn()),
-					value("owner", obj.getOwner().getPlayerId()), value("name", obj.getName()),
+		INSERT_SQL.on(value("row", context.row()), value("column", context.column()),
+					value("owner", obj.owner().getPlayerId()), value("name", obj.getName()),
 					value("size", obj.getTownSize().toString()), value("id", obj.getId()),
 					value("image", obj.getImage()), value("portrait", obj.getPortrait()))
 				.execute(db.connection());

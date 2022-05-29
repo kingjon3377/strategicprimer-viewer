@@ -65,11 +65,11 @@ public class ConsumptionApplet extends AbstractTurnApplet {
 
 	private static String describeFood(final IResourcePile food) {
 		if (food.getCreated() < 0) {
-			return String.format("%.2f %s of %s", food.getQuantity().getNumber().doubleValue(),
-				food.getQuantity().getUnits(), food.getContents());
+			return String.format("%.2f %s of %s", food.getQuantity().number().doubleValue(),
+				food.getQuantity().units(), food.getContents());
 		} else {
-			return String.format("%.2f %s of %s (turn #%d)",  food.getQuantity().getNumber().doubleValue(),
-				food.getQuantity().getUnits(), food.getContents(), food.getCreated());
+			return String.format("%.2f %s of %s (turn #%d)",  food.getQuantity().number().doubleValue(),
+				food.getQuantity().units(), food.getContents(), food.getCreated());
 		}
 	}
 
@@ -84,22 +84,22 @@ public class ConsumptionApplet extends AbstractTurnApplet {
 		while (remainingConsumption.signum() > 0) { // TODO: extract loop body as a function?
 			cli.println(String.format("%.1f pounds of consumption unaccounted-for",
 				remainingConsumption.doubleValue()));
-			final IResourcePile food = chooseFromList(getFoodFor(localUnit.getOwner(), turn),
+			final IResourcePile food = chooseFromList(getFoodFor(localUnit.owner(), turn),
 				"Food stocks owned by player:", "No food stocks found", "Food to consume from:",
 				ICLIHelper.ListChoiceBehavior.ALWAYS_PROMPT, ConsumptionApplet::describeFood); // TODO: should only count food *in the same place* (but unit movement away from HQ should ask user how much food to take along, and to choose what food in a similar manner to this)
 			if (food == null) {
 				return null;
 			}
-			if (food.getQuantity().getNumber().doubleValue() <= remainingConsumption.doubleValue()) {
+			if (food.getQuantity().number().doubleValue() <= remainingConsumption.doubleValue()) {
 				final Boolean resp = cli.inputBooleanInSeries(String.format("Consume all of the %s?",
 					food.getContents()), "consume-all-of");
 				if (resp == null) {
 					return null;
 				} else if (resp) {
-					model.reduceResourceBy(food, decimalize(food.getQuantity().getNumber()),
-						localUnit.getOwner());
+					model.reduceResourceBy(food, decimalize(food.getQuantity().number()),
+						localUnit.owner());
 					remainingConsumption = remainingConsumption.subtract(
-						decimalize(food.getQuantity().getNumber()));
+						decimalize(food.getQuantity().number()));
 					continue;
 				} else { // TODO: extract this as a function?
 					final BigDecimal amountToConsume = cli.inputDecimal(String.format(
@@ -108,8 +108,8 @@ public class ConsumptionApplet extends AbstractTurnApplet {
 						return null;
 					}
 					final BigDecimal minuend = amountToConsume.min(decimalize(
-						food.getQuantity().getNumber()));
-					model.reduceResourceBy(food, minuend, localUnit.getOwner());
+						food.getQuantity().number()));
+					model.reduceResourceBy(food, minuend, localUnit.owner());
 					remainingConsumption = remainingConsumption.subtract(minuend);
 					continue;
 				}
@@ -119,7 +119,7 @@ public class ConsumptionApplet extends AbstractTurnApplet {
 			if (resp == null) {
 				return null;
 			} else if (resp) {
-				model.reduceResourceBy(food, remainingConsumption, localUnit.getOwner());
+				model.reduceResourceBy(food, remainingConsumption, localUnit.owner());
 				remainingConsumption = decimalize(0);
 			} else { // TODO: extract this as a function?
 				final BigDecimal amountToConsume = cli.inputDecimal(String.format(
@@ -127,11 +127,11 @@ public class ConsumptionApplet extends AbstractTurnApplet {
 				if (amountToConsume == null) {
 					return null;
 				} else if (amountToConsume.compareTo(remainingConsumption) > 0) {
-					model.reduceResourceBy(food, remainingConsumption, localUnit.getOwner());
+					model.reduceResourceBy(food, remainingConsumption, localUnit.owner());
 					remainingConsumption = decimalize(0);
 					continue;
 				} else {
-					model.reduceResourceBy(food, amountToConsume, localUnit.getOwner());
+					model.reduceResourceBy(food, amountToConsume, localUnit.owner());
 					remainingConsumption = remainingConsumption.subtract(amountToConsume);
 					continue;
 				}

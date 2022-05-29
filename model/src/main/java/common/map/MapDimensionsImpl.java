@@ -2,53 +2,41 @@ package common.map;
 
 /**
  * An encapsulation of a map's dimensions (and its map version as well).
+ *
+ * TODO: Now this is a record class, merge back with interface, surely?
+ *
+ * @param version The map version.
+ * @param rows    The number of rows in the map.
+ * @param columns The number of columns in the map.
  */
-public final class MapDimensionsImpl implements MapDimensions {
-	public MapDimensionsImpl(final int rows, final int columns, final int version) {
+public record MapDimensionsImpl(int rows, int columns, int version) implements MapDimensions {
+	public MapDimensionsImpl {
 		if (rows < 0 || columns < 0) {
 			throw new IllegalArgumentException("Dimensions cannot be negative");
 		}
-		this.rows = rows;
-		this.columns = columns;
-		this.version = version;
 	}
 
 	/**
 	 * The map version.
 	 */
-	private final int version;
-
-	/**
-	 * The map version.
-	 */
 	@Override
-	public int getVersion() {
+	public int version() {
 		return version;
 	}
 
 	/**
 	 * The number of rows in the map.
 	 */
-	private final int rows;
-
-	/**
-	 * The number of rows in the map.
-	 */
 	@Override
-	public int getRows() {
+	public int rows() {
 		return rows;
 	}
 
 	/**
 	 * The number of columns in the map.
 	 */
-	private final int columns;
-
-	/**
-	 * The number of columns in the map.
-	 */
 	@Override
-	public int getColumns() {
+	public int columns() {
 		return columns;
 	}
 
@@ -57,7 +45,7 @@ public final class MapDimensionsImpl implements MapDimensions {
 		if (this == obj) {
 			return true;
 		} else if (obj instanceof MapDimensions md) {
-			return md.getRows() == rows && md.getColumns() == columns && md.getVersion() == version;
+			return md.rows() == rows && md.columns() == columns && md.version() == version;
 		} else {
 			return false;
 		}

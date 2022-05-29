@@ -136,7 +136,7 @@ import java.util.function.Predicate;
 	private static boolean matchesOwner(final String pattern, final @Nullable Integer idNum, final IFixture fixture,
 	                                    final boolean caseSensitivity) {
 		if (fixture instanceof HasOwner owned) {
-			final Player owner = owned.getOwner();
+			final Player owner = owned.owner();
 			final String ownerName = (caseSensitivity) ? owner.getName() :
 				owner.getName().toLowerCase();
 			if (idNum != null && (owner.getPlayerId() == idNum ||

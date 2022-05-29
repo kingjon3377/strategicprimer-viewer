@@ -93,14 +93,14 @@ final class DBAnimalHandler extends AbstractDatabaseWriter<AnimalOrTracks, /*Poi
 			if (context instanceof IUnit || context instanceof IWorker) { // TODO: Invert test so we can use Ceylon-like type-inferring instanceof
 				throw new IllegalArgumentException("Animal tracks can't occur inside a unit or worker");
 			}
-			INSERT_TRACKS.on(value("row", ((Point) context).getRow()), value("column", ((Point) context).getColumn()),
+			INSERT_TRACKS.on(value("row", ((Point) context).row()), value("column", ((Point) context).column()),
 						value("kind", obj.getKind()), value("image", ((AnimalTracks) obj).getImage()))
 					.execute(db.connection());
 		} else if (obj instanceof Animal a) {
 			final List<Param> params = new ArrayList<>();
 			if (context instanceof Point p) {
-				params.add(value("row", p.getRow()));
-				params.add(value("column", p.getColumn()));
+				params.add(value("row", p.row()));
+				params.add(value("column", p.column()));
 			} else {
 				params.add(value("parent", ((IFixture) context).getId()));
 			}

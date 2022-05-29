@@ -93,9 +93,9 @@ final class DBMapWriter extends AbstractDatabaseWriter<IMutableMapNG, IMapNG> {
 	@Override
 	public void write(final Transactional db, final IMutableMapNG obj, final IMapNG context) throws SQLException {
 		final Connection conn = db.connection(); // TODO: work inside a transaction instead, surely?
-		INSERT_METADATA.on(value("version", obj.getDimensions().getVersion()),
-				value("rows", obj.getDimensions().getRows()),
-				value("columns", obj.getDimensions().getColumns()),
+		INSERT_METADATA.on(value("version", obj.getDimensions().version()),
+				value("rows", obj.getDimensions().rows()),
+				value("columns", obj.getDimensions().columns()),
 				value("turn", obj.getCurrentTurn())).execute(conn);
 		currentTurn = obj.getCurrentTurn(); // TODO: move up to reuse it in previous insertion query
 		playerWriter.initialize(db);
@@ -106,7 +106,7 @@ final class DBMapWriter extends AbstractDatabaseWriter<IMutableMapNG, IMapNG> {
 		int fixtureCount = 0;
 		for (final Point location : obj.getLocations()) {
 			final Collection<River> rivers = obj.getRivers(location);
-			INSERT_TERRAIN.on(value("row", location.getRow()), value("column", location.getColumn()),
+			INSERT_TERRAIN.on(value("row", location.row()), value("column", location.column()),
 					value("terrain", Optional.ofNullable(obj.getBaseTerrain(location))
 							.map(TileType::getXml).orElse("")),
 					value("mountain", obj.isMountainous(location)),
@@ -120,11 +120,11 @@ final class DBMapWriter extends AbstractDatabaseWriter<IMutableMapNG, IMapNG> {
 				fixtureCount++;
 			}
 			for (final Player player : obj.getAllBookmarks(location)) {
-				INSERT_BOOKMARK.on(value("row", location.getRow()), value("column", location.getColumn()),
+				INSERT_BOOKMARK.on(value("row", location.row()), value("column", location.column()),
 						value("player", player.getPlayerId())).execute(conn);
 			}
 			for (final Map.Entry<Direction, Integer> entry : obj.getRoads(location).entrySet()) {
-				INSERT_ROADS.on(value("row", location.getRow()), value("column", location.getColumn()),
+				INSERT_ROADS.on(value("row", location.row()), value("column", location.column()),
 						value("direction", entry.getKey().toString()),
 						value("quality", entry.getValue())).execute(conn);
 			}

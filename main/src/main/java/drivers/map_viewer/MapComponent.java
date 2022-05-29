@@ -118,7 +118,7 @@ import java.awt.image.BufferedImage;
 
 	// TODO: cache this?
 	private int getTileSize() {
-		return scaleZoom(mapModel.getZoomLevel(), mapModel.getMapDimensions().getVersion());
+		return scaleZoom(mapModel.getZoomLevel(), mapModel.getMapDimensions().version());
 	}
 
 	private Rectangle boundsCheck(final @Nullable Rectangle rect) {
@@ -133,8 +133,8 @@ import java.awt.image.BufferedImage;
 
 	private void fixVisibility() {
 		final Point selectedPoint = mapModel.getSelection();
-		final int selectedRow = Math.max(selectedPoint.getRow(), 0);
-		final int selectedColumn = Math.max(selectedPoint.getColumn(), 0);
+		final int selectedRow = Math.max(selectedPoint.row(), 0);
+		final int selectedColumn = Math.max(selectedPoint.column(), 0);
 		final VisibleDimensions visibleDimensions = mapModel.getVisibleDimensions();
 		int minimumRow = visibleDimensions.getMinimumRow();
 		int maximumRow = visibleDimensions.getMaximumRow();
@@ -194,8 +194,8 @@ import java.awt.image.BufferedImage;
 
 	private boolean isSelectionVisible() {
 		final Point selectedPoint = mapModel.getSelection();
-		final int selectedRow = Math.max(selectedPoint.getRow(), 0);
-		final int selectedColumn = Math.max(selectedPoint.getColumn(), 0);
+		final int selectedRow = Math.max(selectedPoint.row(), 0);
+		final int selectedColumn = Math.max(selectedPoint.column(), 0);
 		final VisibleDimensions visibleDimensions = mapModel.getVisibleDimensions();
 		return visibleDimensions.getRows().contains(selectedRow) &&
 			visibleDimensions.getColumns().contains(selectedColumn);
@@ -208,8 +208,8 @@ import java.awt.image.BufferedImage;
 	 */
 	private void repaintPoint(final Point point) {
 		final VisibleDimensions visibleDimensions = mapModel.getVisibleDimensions();
-		final int row = Math.max(point.getRow(), 0);
-		final int column = Math.max(point.getColumn(), 0);
+		final int row = Math.max(point.row(), 0);
+		final int column = Math.max(point.column(), 0);
 		final int tileSize = getTileSize();
 		if (visibleDimensions.getRows().contains(row) &&
 				visibleDimensions.getColumns().contains(column)) {
@@ -246,8 +246,8 @@ import java.awt.image.BufferedImage;
 		} else {
 			final VisibleDimensions visibleDimensions = mapModel.getVisibleDimensions();
 			final MapDimensions mapDimensions = mapModel.getMapDimensions();
-			final double horizontalScaling = ((double) temp.getWidth()) / mapDimensions.getColumns();
-			final double verticalScaling = ((double) temp.getHeight()) / mapDimensions.getRows();
+			final double horizontalScaling = ((double) temp.getWidth()) / mapDimensions.columns();
+			final double verticalScaling = ((double) temp.getHeight()) / mapDimensions.rows();
 			final int x = (int) (visibleDimensions.getMinimumColumn() * horizontalScaling);
 			final int y = (int) (visibleDimensions.getMinimumRow() * verticalScaling);
 			final int sliceWidth = (int) (visibleDimensions.getWidth() * horizontalScaling);
@@ -294,9 +294,9 @@ import java.awt.image.BufferedImage;
 			drawMapPortion(context, tileSize, (int) ((bounds.getMinX() / tileSize) + 0.1),
 					(int) ((bounds.getMinY() / tileSize) + 0.1),
 				Math.min((int) ((bounds.getMaxX() / tileSize) + 1.1),
-					mapDimensions.getColumns()),
+					mapDimensions.columns()),
 				Math.min((int) ((bounds.getMaxY() / tileSize) + 1.1),
-					mapDimensions.getRows()));
+					mapDimensions.rows()));
 		} finally {
 			context.dispose();
 		}
@@ -347,10 +347,10 @@ import java.awt.image.BufferedImage;
 			if (visibleColumns != oldDimensions.getWidth() ||
 					visibleRows != oldDimensions.getHeight()) {
 				final Pair<Integer, Integer> constrainedRows =
-					constrain(mapDimensions.getRows(), visibleRows,
+					constrain(mapDimensions.rows(), visibleRows,
 						oldDimensions.getMinimumRow());
 				final Pair<Integer, Integer> constrainedCols =
-					constrain(mapDimensions.getColumns(), visibleColumns,
+					constrain(mapDimensions.columns(), visibleColumns,
 						oldDimensions.getMinimumColumn());
 				mapModel.setVisibleDimensions(new VisibleDimensions(
 					constrainedRows.getValue0(), constrainedRows.getValue1(),
@@ -375,7 +375,7 @@ import java.awt.image.BufferedImage;
 
 	@Override
 	public void mapMetadataChanged() {
-		if (mapModel.getMapDimensions().getVersion() != 2) {
+		if (mapModel.getMapDimensions().version() != 2) {
 			LovelaceLogger.warning("Treating map of unsupported format version as version 2");
 		}
 		helper = new Ver2TileDrawHelper(this, zOrderFilter, matchers);

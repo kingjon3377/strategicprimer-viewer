@@ -40,7 +40,7 @@ public class SPMapNG implements IMutableMapNG {
 	 */
 	private static boolean shouldZero(final TileFixture fixture, final @Nullable Player player) {
 		if (player != null && fixture instanceof HasOwner owned) {
-			return player.equals(owned.getOwner());
+			return player.equals(owned.owner());
 		} else {
 			return true;
 		}
@@ -187,7 +187,7 @@ public class SPMapNG implements IMutableMapNG {
 	}
 
 	public SPMapNG(final MapDimensions dimensions, final IMutablePlayerCollection players, final int turn) {
-		final int size = dimensions.getRows() * dimensions.getColumns();
+		final int size = dimensions.rows() * dimensions.columns();
 		terrain = new HashMap<>(reduceLarge(size), 0.5f);
 		fixturesMap = new HashMap<>(reduceLarge(size), 0.5f);
 		riversMap = new HashMap<>(reduceMore(size), 0.5f);
@@ -551,10 +551,10 @@ public class SPMapNG implements IMutableMapNG {
 	public String toString() {
 		final StringBuilder builder = new StringBuilder();
 		builder.append("SPMapNG:").append(System.lineSeparator())
-			.append("Map version: ").append(getDimensions().getVersion())
+			.append("Map version: ").append(getDimensions().version())
 			.append(System.lineSeparator())
-			.append("Rows: ").append(getDimensions().getRows()).append(System.lineSeparator())
-			.append("Columns: ").append(getDimensions().getColumns())
+			.append("Rows: ").append(getDimensions().rows()).append(System.lineSeparator())
+			.append("Columns: ").append(getDimensions().columns())
 			.append(System.lineSeparator())
 			.append("Current Turn: ").append(currentTurn).append(System.lineSeparator())
 			.append("Players:").append(System.lineSeparator());
@@ -624,7 +624,7 @@ public class SPMapNG implements IMutableMapNG {
 		if (exactly || count == 1) {
 			if (!matchPoint.equals(location)) {
 				final String idStr;
-				if (match instanceof IUnit unit && unit.getOwner().isIndependent()) {
+				if (match instanceof IUnit unit && unit.owner().isIndependent()) {
 					idStr = " (ID #" + unit.getId();
 				} else {
 					idStr = "";

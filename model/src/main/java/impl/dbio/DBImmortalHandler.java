@@ -109,8 +109,8 @@ final class DBImmortalHandler extends AbstractDatabaseWriter<Immortal, /*Point|I
 		if (obj instanceof SimpleImmortal || obj instanceof ImmortalAnimal) {
 			try {
 				if (context instanceof Point p) {
-					INSERT_SIMPLE.on(value("row", p.getRow()),
-						value("column", p.getColumn()),
+					INSERT_SIMPLE.on(value("row", p.row()),
+						value("column", p.column()),
 						value("type", ((HasKind) obj).getKind()), value("id", obj.getId()),
 						value("image", ((HasImage) obj).getImage())).executeUpdate(db.connection());
 				} else if (context instanceof IUnit u) {
@@ -146,8 +146,8 @@ final class DBImmortalHandler extends AbstractDatabaseWriter<Immortal, /*Point|I
 				throw new IllegalArgumentException("Unexpected immortal type");
 			}
 			if (context instanceof Point p) {
-				INSERT_KINDED.on(value("row", p.getRow()),
-						value("column", p.getColumn()),
+				INSERT_KINDED.on(value("row", p.row()),
+						value("column", p.column()),
 						value("type", type), value("kind", ((HasKind) obj).getKind()),
 						value("id", obj.getId()), value("image", ((HasImage) obj).getImage())).execute(db.connection());
 			} else if (context instanceof IUnit u) {

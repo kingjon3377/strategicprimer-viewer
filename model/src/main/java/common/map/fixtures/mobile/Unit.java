@@ -91,7 +91,7 @@ public final class Unit implements IMutableUnit {
 	 * The player that owns the unit.
 	 */
 	@Override
-	public Player getOwner() {
+	public Player owner() {
 		return owner;
 	}
 
@@ -248,7 +248,7 @@ public final class Unit implements IMutableUnit {
 	@Override
 	public boolean equals(final Object obj) {
 		if (obj instanceof IUnit that) {
-			return that.getOwner().getPlayerId() == owner.getPlayerId() &&
+			return that.owner().getPlayerId() == owner.getPlayerId() &&
 				kind.equals(that.getKind()) &&
 				name.equals(that.getName()) &&
 				that.getId() == id &&
@@ -299,7 +299,7 @@ public final class Unit implements IMutableUnit {
 	@Override
 	public boolean equalsIgnoringID(final IFixture fixture) {
 		if (fixture instanceof IUnit that &&
-				that.getOwner().getPlayerId() == owner.getPlayerId() &&
+				that.owner().getPlayerId() == owner.getPlayerId() &&
 				that.getKind().equals(kind) &&
 				that.getName().equals(name)) {
 			for (final UnitMember member : this) {

@@ -39,14 +39,14 @@ public /* sealed */ interface HerdModel /* of PoultryModel | MammalModel | Small
 	 * How much is produced by a flock of the given size.
 	 */
 	default Quantity scaledProduction(final int heads) {
-		return new Quantity(getProductionPerHead().getNumber().doubleValue() * heads,
-			getProductionPerHead().getUnits());
+		return new Quantity(getProductionPerHead().number().doubleValue() * heads,
+			getProductionPerHead().units());
 	}
 
 	/**
 	 * How many pounds are produced by a flock of the given size.
 	 */
 	default double scaledPoundsProduction(final int heads) {
-		return getProductionPerHead().getNumber().doubleValue() * heads * getPoundsCoefficient();
+		return getProductionPerHead().number().doubleValue() * heads * getPoundsCoefficient();
 	}
 }

@@ -182,8 +182,8 @@ import org.jetbrains.annotations.Nullable;
 				mapRow++;
 			}
 			final IMutableMapNG finalRetval = new SPMapNG(new MapDimensionsImpl(
-					retval.keySet().stream().mapToInt(Point::getRow).max().orElse(0) + 1,
-					retval.keySet().stream().mapToInt(Point::getColumn).max().orElse(0) + 1, 2),
+					retval.keySet().stream().mapToInt(Point::row).max().orElse(0) + 1,
+					retval.keySet().stream().mapToInt(Point::column).max().orElse(0) + 1, 2),
 					new PlayerCollection(), -1);
 			for (final Map.Entry<Point, HasName> entry : retval.entrySet()) {
 				final Point point = entry.getKey();

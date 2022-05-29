@@ -165,25 +165,13 @@ public class HuntingModel {
 		}
 	}
 
-	private static class ResultStream<Type> implements Iterable<Type> {
-		public ResultStream(final Collection<Type> stream,
-		                    final double nothingProportion, final Type nothingValue,
-		                    final ToIntFunction<Type> dcGetter) {
-			this.stream = stream;
-			this.nothingProportion = nothingProportion;
-			this.nothingValue = nothingValue;
-			this.dcGetter = dcGetter;
-		}
-		private final Collection<Type> stream;
-		private final double nothingProportion;
-		private final Type nothingValue;
-		private final ToIntFunction<Type> dcGetter;
-
+	private record ResultStream<Type>(Collection<Type> stream, double nothingProportion, Type nothingValue,
+	                                  ToIntFunction<Type> dcGetter) implements Iterable<Type> {
 		@Override
-		public Iterator<Type> iterator() {
-			return new ResultIterator<>(stream, nothingProportion, nothingValue, dcGetter);
+			public Iterator<Type> iterator() {
+				return new ResultIterator<>(stream, nothingProportion, nothingValue, dcGetter);
+			}
 		}
-	}
 
 	/**
 	 * A *non-infinite* iterator that returns 'nothing found' values in the
@@ -228,22 +216,14 @@ public class HuntingModel {
 		}
 	}
 
-	private static class FiniteResultStream<Type> implements Iterable<Type> {
-		private final Iterable<Type> stream;
-		private final double nothingProportion;
-		private final Type nothingValue;
-		public FiniteResultStream(final Iterable<Type> stream, final double nothingProportion,
-		                          final Type nothingValue) {
-			this.stream = stream;
-			this.nothingProportion = nothingProportion;
-			this.nothingValue = nothingValue;
-		}
+	private record FiniteResultStream<Type>(Iterable<Type> stream, double nothingProportion,
+	                                        Type nothingValue) implements Iterable<Type> {
 
 		@Override
-		public Iterator<Type> iterator() {
-			return new FiniteResultIterator<>(stream, nothingProportion, nothingValue);
+			public Iterator<Type> iterator() {
+				return new FiniteResultIterator<>(stream, nothingProportion, nothingValue);
+			}
 		}
-	}
 
 	/**
 	 * The map to hunt in.
@@ -395,16 +375,11 @@ public class HuntingModel {
 		return new PairSupplier(retval);
 	}
 
-	private static class PairSupplier implements Supplier<Pair<Point, TileFixture>> {
-		private final List<Pair<Point, TileFixture>> retval;
-
-		public PairSupplier(final List<Pair<Point, TileFixture>> retval) {
-			this.retval = retval;
-		}
+	private record PairSupplier(List<Pair<Point, TileFixture>> retval) implements Supplier<Pair<Point, TileFixture>> {
 
 		@Override
-		public Pair<Point, TileFixture> get() {
-			return retval.get(SingletonRandom.SINGLETON_RANDOM.nextInt(retval.size()));
+			public Pair<Point, TileFixture> get() {
+				return retval.get(SingletonRandom.SINGLETON_RANDOM.nextInt(retval.size()));
+			}
 		}
-	}
 }

@@ -91,15 +91,15 @@ final class DBCommunityStatsHandler extends AbstractDatabaseWriter<CommunityStat
 				for (final IResourcePile resource : obj.getYearlyProduction()) {
 					INSERT_PRODUCTION.on(value("town", context.getId()), value("id", resource.getId()),
 							value("kind", resource.getKind()), value("contents", resource.getContents()),
-							value("quantity", resource.getQuantity().getNumber().toString()),
-							value("units", resource.getQuantity().getUnits()),
+							value("quantity", resource.getQuantity().number().toString()),
+							value("units", resource.getQuantity().units()),
 							value("created", resource.getCreated())).execute(sql);
 				}
 				for (final IResourcePile resource : obj.getYearlyConsumption()) {
 					INSERT_CONSUMPTION.on(value("town", context.getId()), value("id", resource.getId()),
 							value("kind", resource.getKind()), value("contents", resource.getContents()),
-							value("quantity", resource.getQuantity().getNumber().toString()),
-							value("units", resource.getQuantity().getUnits()),
+							value("quantity", resource.getQuantity().number().toString()),
+							value("units", resource.getQuantity().units()),
 							value("created", resource.getCreated())).execute(sql);
 				}
 			});

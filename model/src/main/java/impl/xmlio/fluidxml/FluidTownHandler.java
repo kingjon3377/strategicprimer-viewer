@@ -272,7 +272,7 @@ import java.util.stream.Collectors;
 		writeAttributes(ostream, Pair.with("status", obj.getStatus().toString()));
 		writeNonEmptyAttributes(ostream, Pair.with("name", obj.getName()));
 		writeAttributes(ostream, Pair.with("id", obj.getId()),
-			Pair.with("owner", obj.getOwner().getPlayerId()),
+			Pair.with("owner", obj.owner().getPlayerId()),
 			Pair.with("race", obj.getRace()));
 		writeImage(ostream, obj);
 		writeNonEmptyAttributes(ostream, Pair.with("portrait", obj.getPortrait()));
@@ -289,7 +289,7 @@ import java.util.stream.Collectors;
 			Pair.with("size", obj.getTownSize().toString()), Pair.with("dc", obj.getDC()));
 		writeNonEmptyAttributes(ostream, Pair.with("name", obj.getName()));
 		writeAttributes(ostream, Pair.with("id", obj.getId()),
-			Pair.with("owner", obj.getOwner().getPlayerId()));
+			Pair.with("owner", obj.owner().getPlayerId()));
 		writeImage(ostream, obj);
 		writeNonEmptyAttributes(ostream, Pair.with("portrait", obj.getPortrait()));
 		if (obj.getPopulation() != null) {

@@ -44,8 +44,8 @@ final class DBTextHandler extends AbstractDatabaseWriter<TextFixture, Point> imp
 	@Override
 	public void write(final Transactional db, final TextFixture obj, final Point context) throws SQLException {
 		final List<Param> params = new ArrayList<>();
-		params.add(value("row", context.getRow()));
-		params.add(value("column", context.getColumn()));
+		params.add(value("row", context.row()));
+		params.add(value("column", context.column()));
 		if (obj.getTurn() >= 0) {
 			params.add(value("turn", obj.getTurn()));
 		}

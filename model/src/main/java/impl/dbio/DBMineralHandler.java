@@ -66,7 +66,7 @@ final class DBMineralHandler extends AbstractDatabaseWriter<MineralFixture, Poin
 		} else {
 			throw new IllegalArgumentException("Unhandled mineral fixture type");
 		}
-		INSERT_SQL.on(value("row", context.getRow()), value("column", context.getColumn()),
+		INSERT_SQL.on(value("row", context.row()), value("column", context.column()),
 				value("type", type), value("id", obj.getId()), value("kind", obj.getKind()),
 				value("exposed", exposed), value("dc", obj.getDC()),
 				value("image", ((HasImage) obj).getImage())).execute(db.connection());

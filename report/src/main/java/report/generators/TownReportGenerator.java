@@ -84,7 +84,7 @@ public class TownReportGenerator extends AbstractReportGenerator<ITownFixture> {
 			ostream.accept(": ");
 			ostream.accept(item.getName());
 			ostream.accept(", ");
-			if (item.getOwner().isIndependent()) {
+			if (item.owner().isIndependent()) {
 				ostream.accept("an independent ");
 				ostream.accept(item.getTownSize().toString());
 				ostream.accept(" ");
@@ -96,10 +96,10 @@ public class TownReportGenerator extends AbstractReportGenerator<ITownFixture> {
 				ostream.accept(item.getTownSize().toString());
 				ostream.accept(" ");
 				ostream.accept(item.getStatus().toString());
-				if (item.getOwner().equals(currentPlayer)) {
+				if (item.owner().equals(currentPlayer)) {
 					ostream.accept(" allied with you");
 				} else {
-					ostream.accept(item.getOwner().toString());
+					ostream.accept(item.owner().toString());
 				}
 			}
 			ostream.accept(" ");

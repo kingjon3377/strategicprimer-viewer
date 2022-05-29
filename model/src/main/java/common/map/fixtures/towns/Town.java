@@ -51,7 +51,7 @@ public class Town extends AbstractTown {
 	@Override
 	public Town copy(final CopyBehavior zero) {
 		final Town retval = new Town(getStatus(), getTownSize(),
-			(zero == CopyBehavior.ZERO) ? 0 : getDC(), getName(), id, getOwner());
+			(zero == CopyBehavior.ZERO) ? 0 : getDC(), getName(), id, owner());
 		retval.setImage(getImage());
 		if (zero == CopyBehavior.KEEP) {
 			retval.setPopulation(getPopulation());

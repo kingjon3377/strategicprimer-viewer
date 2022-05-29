@@ -106,7 +106,7 @@ public class FixtureEditMenu extends JPopupMenu {
 		final Object player = JOptionPane.showInputDialog(getParent(), "Fixture's new owner:",
 			"Change Fixture Owner", JOptionPane.PLAIN_MESSAGE, null,
 			StreamSupport.stream(players.spliterator(), false).toArray(Player[]::new),
-			fix.getOwner());
+			fix.owner());
 		if (player instanceof Player p) {
 			handler.changeOwner(fix, p);
 		}

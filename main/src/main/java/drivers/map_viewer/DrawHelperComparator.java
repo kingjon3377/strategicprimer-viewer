@@ -55,15 +55,15 @@ public class DrawHelperComparator implements UtilityDriver {
 	private static long first(final TileDrawHelper helper, final IMapNG map, final int reps,
 	                          final int tileSize) {
 		final MapDimensions mapDimensions = map.getDimensions();
-		final BufferedImage image = new BufferedImage(tileSize * mapDimensions.getColumns(),
-			tileSize * mapDimensions.getRows(), BufferedImage.TYPE_INT_RGB);
+		final BufferedImage image = new BufferedImage(tileSize * mapDimensions.columns(),
+			tileSize * mapDimensions.rows(), BufferedImage.TYPE_INT_RGB);
 		final long start = System.currentTimeMillis();
 		final Coordinate dimensions = new Coordinate(tileSize, tileSize);
 		for (int rep = 0; rep < reps; rep++) {
 			image.flush();
 			for (final Point point : map.getLocations()) {
 				helper.drawTile(image.createGraphics(), map, point,
-					new Coordinate(point.getRow() * tileSize, point.getColumn() * tileSize),
+					new Coordinate(point.row() * tileSize, point.column() * tileSize),
 					dimensions);
 				}
 		}
@@ -76,16 +76,16 @@ public class DrawHelperComparator implements UtilityDriver {
 	 */
 	private static long second(final TileDrawHelper helper, final IMapNG map, final int reps, final int tileSize) {
 		final MapDimensions mapDimensions = map.getDimensions();
-		final BufferedImage image = new BufferedImage(tileSize * mapDimensions.getColumns(),
-			tileSize * mapDimensions.getRows(), BufferedImage.TYPE_INT_RGB);
+		final BufferedImage image = new BufferedImage(tileSize * mapDimensions.columns(),
+			tileSize * mapDimensions.rows(), BufferedImage.TYPE_INT_RGB);
 		final long start = System.currentTimeMillis();
 		for (int rep = 0; rep < reps; rep++) {
 			image.flush();
 			final Graphics pen = image.createGraphics();
 			final Coordinate dimensions = new Coordinate(tileSize, tileSize);
 			for (final Point point : map.getLocations()) {
-				helper.drawTile(pen, map, point, new Coordinate(point.getRow() * tileSize,
-					point.getColumn() * tileSize), dimensions);
+				helper.drawTile(pen, map, point, new Coordinate(point.row() * tileSize,
+					point.column() * tileSize), dimensions);
 			}
 			pen.dispose();
 		}
@@ -101,8 +101,8 @@ public class DrawHelperComparator implements UtilityDriver {
 	 */
 	private static long thirdOne(final TileDrawHelper helper, final IMapNG map, final int reps, final int tileSize) {
 		final MapDimensions mapDimensions = map.getDimensions();
-		final BufferedImage image = new BufferedImage(tileSize * mapDimensions.getColumns(),
-			tileSize * mapDimensions.getRows(), BufferedImage.TYPE_INT_RGB);
+		final BufferedImage image = new BufferedImage(tileSize * mapDimensions.columns(),
+			tileSize * mapDimensions.rows(), BufferedImage.TYPE_INT_RGB);
 		final long start = System.currentTimeMillis();
 		for (int rep = 0; rep < reps; rep++) {
 			image.flush();
@@ -123,18 +123,18 @@ public class DrawHelperComparator implements UtilityDriver {
 
 	private static long thirdTwo(final TileDrawHelper helper, final IMapNG map, final int reps, final int tileSize) {
 		final MapDimensions mapDimensions = map.getDimensions();
-		final BufferedImage image = new BufferedImage(tileSize * mapDimensions.getColumns(),
-			tileSize * mapDimensions.getRows(), BufferedImage.TYPE_INT_RGB);
+		final BufferedImage image = new BufferedImage(tileSize * mapDimensions.columns(),
+			tileSize * mapDimensions.rows(), BufferedImage.TYPE_INT_RGB);
 		final long start = System.currentTimeMillis();
 		for (int rep = 0; rep < reps; rep++) {
 			image.flush();
 			final Graphics pen = image.createGraphics();
 			final Coordinate dimensions = new Coordinate(tileSize, tileSize);
 			for (final Point point : map.getLocations()) {
-				if (testRowSpan.contains(point.getRow()) &&
-						testColSpan.contains(point.getColumn())) {
+				if (testRowSpan.contains(point.row()) &&
+						testColSpan.contains(point.column())) {
 					helper.drawTile(pen, map, point,
-						new Coordinate(point.getRow() * tileSize, point.getColumn() * tileSize),
+						new Coordinate(point.row() * tileSize, point.column() * tileSize),
 						dimensions);
 				}
 			}
@@ -212,7 +212,7 @@ public class DrawHelperComparator implements UtilityDriver {
 				final String caseDesc = inner.getValue1();
 				final LongAccumulator accumulator = getResultsAccumulator(fileName, caseDesc, testDesc);
 				accumulator.add(printStats(caseDesc, test.runTest(testCase, map, repetitions,
-								scaleZoom(ViewerModel.DEFAULT_ZOOM_LEVEL, map.getDimensions().getVersion())),
+								scaleZoom(ViewerModel.DEFAULT_ZOOM_LEVEL, map.getDimensions().version())),
 						repetitions));
 			}
 		}

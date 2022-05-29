@@ -76,17 +76,7 @@ public class UtilityDriverModel extends SimpleMultiMapModel {
 		}
 	}
 
-	private static class Mock implements HasOwner {
-		public Mock(final Player owner) {
-			this.owner = owner;
-		}
-
-		private final Player owner;
-
-		@Override
-		public Player getOwner() {
-			return owner;
-		}
+	private record Mock(Player owner) implements HasOwner {
 	}
 
 	public UtilityDriverModel(final IMutableMapNG map) {
@@ -345,7 +335,7 @@ public class UtilityDriverModel extends SimpleMultiMapModel {
 		}
 		final IFixture.CopyBehavior cb;
 		if (fixture instanceof HasOwner owned && !(fixture instanceof ITownFixture) &&
-				    owned.getOwner().equals(currentPlayer)) {
+				    owned.owner().equals(currentPlayer)) {
 			cb = IFixture.CopyBehavior.KEEP;
 		} else {
 			cb = IFixture.CopyBehavior.ZERO;

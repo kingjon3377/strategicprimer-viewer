@@ -96,33 +96,29 @@ public class MapCheckerCLI implements UtilityDriver {
 			"leather water skin", "water-skin", "leather water-skin", "leather satchel", "satchel", "woolen cloak",
 			"leather boots", "pair leather boots", "woolen tunic", "linen tunic");
 
-	private static class OwnerChecker {
-		private final IMapNG map;
-		public OwnerChecker(final IMapNG map) {
-			this.map = map;
-		}
+	private record OwnerChecker(IMapNG map) {
 
 		public boolean check(final TileType terrain, final Point context, final IFixture fixture, final Warning warner) {
-			boolean retval = false;
-			if (fixture instanceof HasOwner owned) {
-				if (owned.getOwner().getName().isBlank()) {
-					warner.handle(new SPContentWarning(context,
-						String.format("Fixture owned by %s, who has no name",
-							owned.getOwner())));
-					retval = true;
+				boolean retval = false;
+				if (fixture instanceof HasOwner owned) {
+					if (owned.owner().getName().isBlank()) {
+						warner.handle(new SPContentWarning(context,
+								String.format("Fixture owned by %s, who has no name",
+										owned.owner())));
+						retval = true;
+					}
+					if (StreamSupport.stream(map.getPlayers().spliterator(), true)
+							    .mapToInt(Player::getPlayerId)
+							    .noneMatch(n -> owned.owner().getPlayerId() == n)) {
+						warner.handle(new SPContentWarning(context, String.format(
+								"Fixture owned by %s, not known by the map",
+								owned.owner())));
+						retval = true;
+					}
 				}
-				if (StreamSupport.stream(map.getPlayers().spliterator(), true)
-						.mapToInt(Player::getPlayerId)
-						.noneMatch(n -> owned.getOwner().getPlayerId() == n)) {
-					warner.handle(new SPContentWarning(context, String.format(
-						"Fixture owned by %s, not known by the map",
-						owned.getOwner())));
-					retval = true;
-				}
+				return retval;
 			}
-			return retval;
 		}
-	}
 
 	private static boolean lateriteChecker(final TileType terrain, final Point context, final IFixture fixture,
 	                                       final Warning warner) {
@@ -236,7 +232,7 @@ public class MapCheckerCLI implements UtilityDriver {
 				warner.handle(new SPContentWarning(context, String.format(
 					"Resource pile, ID #%d, has placeholder contents: %s",
 					fixture.getId(), rp.getContents())));
-			} else if (PLACEHOLDER_UNITS.contains(rp.getQuantity().getUnits())) {
+			} else if (PLACEHOLDER_UNITS.contains(rp.getQuantity().units())) {
 				warner.handle(new SPContentWarning(context, String.format(
 					"Resource pile, ID #%d, has placeholder units", fixture.getId())));
 			} else if (((IResourcePile) fixture).getContents().contains("#")) {

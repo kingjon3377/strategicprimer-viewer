@@ -184,7 +184,7 @@ import worker.common.IFixtureEditHelper;
 						}
 					}
 					if (selectedValue instanceof HasOwner owned) {
-						final String playerPortraitName = owned.getOwner().getPortrait();
+						final String playerPortraitName = owned.owner().getPortrait();
 						if (!playerPortraitName.isEmpty()) {
 							try {
 								portrait = ImageLoader

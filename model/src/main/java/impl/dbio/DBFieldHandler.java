@@ -51,7 +51,7 @@ final class DBFieldHandler extends AbstractDatabaseWriter<Meadow, Point> impleme
 
 	@Override
 	public void write(final Transactional db, final Meadow obj, final Point context) throws SQLException {
-		INSERT_SQL.on(value("row", context.getRow()), value("column", context.getColumn()),
+		INSERT_SQL.on(value("row", context.row()), value("column", context.column()),
 				value("id", obj.getId()), value("type", obj.isField() ? "field" : "meadow"),
 				value("kind", obj.getKind()), value("cultivated", obj.isCultivated()),
 				value("status", obj.getStatus().toString()), value("acres", obj.getAcres().toString()),

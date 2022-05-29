@@ -46,7 +46,7 @@ import javax.swing.event.ChangeEvent;
 		if (newValue < 0) {
 			LovelaceLogger.warning("Tried to scroll to negative column, skipping ...");
 			return;
-		} else if (newValue > (model.getMapDimensions().getColumns() +
+		} else if (newValue > (model.getMapDimensions().columns() +
 				oldDimensions.getColumns().size())) {
 			LovelaceLogger.warning("Tried to scroll too far to the right, skipping ...");
 			return;
@@ -84,7 +84,7 @@ import javax.swing.event.ChangeEvent;
 		}
 		final boolean oldAdjusting = adjusting;
 		adjusting = true;
-		model.setCursor(new Point(model.getCursor().getRow(), newValue));
+		model.setCursor(new Point(model.getCursor().row(), newValue));
 		model.setVisibleDimensions(newDimensions);
 		adjusting = oldAdjusting;
 	}
@@ -104,7 +104,7 @@ import javax.swing.event.ChangeEvent;
 		if (newValue < 0) {
 			LovelaceLogger.warning("Tried to scroll to negative row, skipping ...");
 			return;
-		} else if (newValue > (model.getMapDimensions().getRows() +
+		} else if (newValue > (model.getMapDimensions().rows() +
 				oldDimensions.getRows().size())) {
 			LovelaceLogger.warning("Tried to scroll too far down, skipping ...");
 			return;
@@ -142,7 +142,7 @@ import javax.swing.event.ChangeEvent;
 		}
 		final boolean oldAdjusting = adjusting;
 		adjusting = true;
-		model.setCursor(new Point(newValue, model.getCursor().getColumn()));
+		model.setCursor(new Point(newValue, model.getCursor().column()));
 		model.setVisibleDimensions(newDimensions);
 		adjusting = oldAdjusting;
 	}

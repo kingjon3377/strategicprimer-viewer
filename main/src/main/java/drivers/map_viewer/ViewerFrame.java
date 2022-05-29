@@ -85,7 +85,7 @@ public final class ViewerFrame extends SPFrame implements MapGUI {
 		mapModel.addMapChangeListener(mapPanel);
 		mapModel.addSelectionChangeListener(mapPanel);
 
-		final DetailPanel detailPane = new DetailPanel(mapModel.getMapDimensions().getVersion(), mapModel,
+		final DetailPanel detailPane = new DetailPanel(mapModel.getMapDimensions().version(), mapModel,
 			tableModel);
 		mapModel.addVersionChangeListener(detailPane);
 		mapModel.addSelectionChangeListener(detailPane);

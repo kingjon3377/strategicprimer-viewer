@@ -69,7 +69,7 @@ public class TownTabularReportGenerator implements ITableGenerator<AbstractTown>
 			final AbstractTown item, final int key, final Point loc, final Map<Integer, Integer> parentMap) {
 		fixtures.remove(key);
 		return Collections.singletonList(Arrays.asList(distanceString(loc, hq, dimensions),
-			locationString(loc), ownerString(player, item.getOwner()), item.getKind(),
+			locationString(loc), ownerString(player, item.owner()), item.getKind(),
 			item.getTownSize().toString(), item.getStatus().toString(), item.getName()));
 	}
 

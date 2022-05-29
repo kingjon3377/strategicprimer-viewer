@@ -268,7 +268,7 @@ import common.map.fixtures.towns.Village;
 	 */
 	private Worker generateWorkerFrom(final Village village, final String name, final IDRegistrar idf) {
 		final Worker worker = new Worker(name, village.getRace(), idf.createID());
-		worker.setNote(village.getOwner(), String.format("From %s.", village.getName()));
+		worker.setNote(village.owner(), String.format("From %s.", village.getName()));
 		if (village.getPopulation() == null) {
 			cli.println("No population details, so no levels.");
 			final WorkerStats stats = createWorkerStats(village.getRace(), 0);
@@ -509,8 +509,8 @@ import common.map.fixtures.towns.Village;
 		final List<Triplet<Integer, Double, Village>> villages = model.getMap().streamLocations()
 				.flatMap(l -> model.getMap().getFixtures(l).stream()
 					.filter(Village.class::isInstance).map(Village.class::cast)
-					.filter(v -> v.getOwner().equals(unit.getOwner()))
-					.filter(filterRecentVillages(unit.getOwner()))
+					.filter(v -> v.owner().equals(unit.owner()))
+					.filter(filterRecentVillages(unit.owner()))
 					.map(v -> Pair.with(l, v)))
 				.map(p -> travelDistance.apply(p.getValue0()).addAt2(p.getValue1()))
 				.sorted(Comparator.comparingInt(Triplet::getValue0))

@@ -60,23 +60,23 @@ public class EchoDriver implements UtilityDriver {
 				throw new DriverFailedException(except, "SP map format error in " + inArg);
 			}
 			final IDRegistrar idFactory = IDFactoryFiller.createIDFactory(map);
-			final int columnCount = map.getDimensions().getColumns();
+			final int columnCount = map.getDimensions().columns();
 			for (final Point location : map.getLocations()) {
 				final Forest mainForest = map.getFixtures(location).stream()
 					.filter(Forest.class::isInstance).map(Forest.class::cast)
 					.findFirst().orElse(null);
 				if (mainForest != null && mainForest.getId() < 0) {
 					mainForest.setId(idFactory.register(
-						1147200 + location.getRow() * columnCount +
-							location.getColumn()));
+						1147200 + location.row() * columnCount +
+							location.column()));
 				}
 				final Ground mainGround = map.getFixtures(location).stream()
 					.filter(Ground.class::isInstance).map(Ground.class::cast)
 					.findFirst().orElse(null);
 				if (mainGround != null && mainGround.getId() < 0) {
 					mainGround.setId(idFactory.register(
-						1171484 + location.getRow() * columnCount +
-							location.getColumn()));
+						1171484 + location.row() * columnCount +
+							location.column()));
 				}
 				for (final TileFixture fixture : map.getFixtures(location)) {
 					if (fixture instanceof Forest f && fixture.getId() < 0) {

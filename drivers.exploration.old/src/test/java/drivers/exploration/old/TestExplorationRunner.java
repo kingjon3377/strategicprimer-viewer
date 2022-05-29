@@ -210,17 +210,17 @@ public class TestExplorationRunner {
 		public static final MockDimensions INSTANCE = new MockDimensions();
 		private MockDimensions() {}
 		@Override
-		public int getRows() {
+		public int rows() {
 			throw new IllegalStateException("Should not be called");
 		}
 
 		@Override
-		public int getColumns() {
+		public int columns() {
 			throw new IllegalStateException("Should not be called");
 		}
 
 		@Override
-		public int getVersion() {
+		public int version() {
 			throw new IllegalStateException("Should not be called");
 		}
 	}

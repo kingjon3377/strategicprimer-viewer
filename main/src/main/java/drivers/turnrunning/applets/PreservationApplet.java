@@ -59,7 +59,7 @@ import static lovelace.util.Decimalize.decimalize;
 		final List<String> foods = new ArrayList<>();
 		while (true) {
 			// TODO: should verb be "preserve" or "cook" instead of "convert"?
-			final IResourcePile item = chooseFromList(getFoodFor(unit.getOwner(),
+			final IResourcePile item = chooseFromList(getFoodFor(unit.owner(),
 				model.getMap().getCurrentTurn()), "Available food:", "No food available",
 				"Choose food to convert:", ICLIHelper.ListChoiceBehavior.ALWAYS_PROMPT, PreservationApplet::describePile);
 			if (item == null) {
@@ -95,17 +95,17 @@ import static lovelace.util.Decimalize.decimalize;
 			if (useAll == null) {
 				return null;
 			} else if (useAll) {
-				subtrahend = decimalize(item.getQuantity().getNumber());
+				subtrahend = decimalize(item.getQuantity().number());
 			} else {
 				subtrahend = cli.inputDecimal(String.format("How many %s to use?",
-					item.getQuantity().getUnits()));
+					item.getQuantity().units()));
 				if (subtrahend == null || subtrahend.signum() <= 0) {
 					return null;
 				}
 			}
-			model.reduceResourceBy(item, subtrahend, unit.getOwner());
+			model.reduceResourceBy(item, subtrahend, unit.owner());
 			// TODO: findHQ() should instead take the unit and find the fortress in the same tile, if any
-			final IFortress hq = model.findHQ(unit.getOwner());
+			final IFortress hq = model.findHQ(unit.owner());
 			if (hq == null) {
 				model.addResource(unit, idf.createID(), "food", convertedForm,
 						new Quantity(newPounds, "pounds"), turn);

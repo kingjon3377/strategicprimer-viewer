@@ -70,7 +70,7 @@ import lovelace.util.LovelaceLogger;
 public class MapTradeCLI implements CLIDriver {
 	private static List<FixtureMatcher> initializeMatchers() {
 		final List<FixtureMatcher> retval = new ArrayList<>();
-		FixtureMatcher.complements(IUnit.class, u -> !u.getOwner().isIndependent(),
+		FixtureMatcher.complements(IUnit.class, u -> !u.owner().isIndependent(),
 			"Units", "Independent Units").forEach(retval::add);
 		retval.add(FixtureMatcher.trivialMatcher(IFortress.class, "Fortresses"));
 		retval.add(FixtureMatcher.trivialMatcher(TextFixture.class, "Arbitrary-Text Notes"));

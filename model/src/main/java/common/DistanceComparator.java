@@ -32,17 +32,17 @@ public final class DistanceComparator implements Comparator<Point> {
 	 * taking an expensive square root.
 	 */
 	private int distance(final Point point) {
-		final int colDistRaw = Math.abs(point.getColumn() - base.getColumn());
-		final int rowDistRaw = Math.abs(point.getRow() - base.getRow());
+		final int colDistRaw = Math.abs(point.column() - base.column());
+		final int rowDistRaw = Math.abs(point.row() - base.row());
 		final int colDist;
 		final int rowDist;
-		if (dimensions != null && colDistRaw > dimensions.getColumns() / 2) {
-			colDist = dimensions.getColumns() - colDistRaw;
+		if (dimensions != null && colDistRaw > dimensions.columns() / 2) {
+			colDist = dimensions.columns() - colDistRaw;
 		} else {
 			colDist = colDistRaw;
 		}
-		if (dimensions != null && rowDistRaw > dimensions.getRows() / 2) {
-			rowDist = dimensions.getRows() - rowDistRaw;
+		if (dimensions != null && rowDistRaw > dimensions.rows() / 2) {
+			rowDist = dimensions.rows() - rowDistRaw;
 		} else {
 			rowDist = rowDistRaw;
 		}

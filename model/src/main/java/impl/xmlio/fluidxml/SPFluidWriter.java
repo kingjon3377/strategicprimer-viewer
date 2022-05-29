@@ -157,37 +157,30 @@ public class SPFluidWriter implements SPWriter {
 		}
 	}
 
-	private static class SimpleFixtureWriter<Type> implements FluidXMLWriter<Type> {
-		public SimpleFixtureWriter(final Class<Type> cls, final String tag) {
-			this.cls = cls;
-			this.tag = tag;
-		}
-
-		private final Class<Type> cls;
-		private final String tag;
+	private record SimpleFixtureWriter<Type>(Class<Type> cls, String tag) implements FluidXMLWriter<Type> {
 
 		@Override
-		public void write(final XMLStreamWriter ostream, final Object obj, final int indentation)
-				throws XMLStreamException {
-			if (!cls.isInstance(obj)) {
-				throw new IllegalArgumentException("Can only write " + cls.getName());
-			} else if (!(obj instanceof IFixture)) {
-				throw new IllegalArgumentException("Can only \"simply\" write fixtures.");
+			public void write(final XMLStreamWriter ostream, final Object obj, final int indentation)
+					throws XMLStreamException {
+				if (!cls.isInstance(obj)) {
+					throw new IllegalArgumentException("Can only write " + cls.getName());
+				} else if (!(obj instanceof IFixture)) {
+					throw new IllegalArgumentException("Can only \"simply\" write fixtures.");
+				}
+				writeTag(ostream, tag, indentation, true);
+				if (obj instanceof HasKind hk) {
+					writeAttributes(ostream, Pair.with("kind", hk.getKind()));
+				}
+				writeAttributes(ostream, Pair.with("id", ((IFixture) obj).getId()));
+				if (obj instanceof HasImage hi) {
+					writeImage(ostream, hi);
+				}
 			}
-			writeTag(ostream, tag, indentation, true);
-			if (obj instanceof HasKind hk) {
-				writeAttributes(ostream, Pair.with("kind", hk.getKind()));
-			}
-			writeAttributes(ostream, Pair.with("id", ((IFixture) obj).getId()));
-			if (obj instanceof HasImage hi) {
-				writeImage(ostream, hi);
-			}
-		}
 
-		public Class<Type> getType() {
-			return cls;
+			public Class<Type> getType() {
+				return cls;
+			}
 		}
-	}
 
 	private static void writeUnitOrders(final XMLStreamWriter ostream, final int indentation, final int turn,
 	                                    final String tag, final String text) throws XMLStreamException {
@@ -209,7 +202,7 @@ public class SPFluidWriter implements SPWriter {
 			obj.getAllOrders().values().stream().allMatch(String::isEmpty) &&
 			obj.getAllResults().values().stream().allMatch(String::isEmpty);
 		writeTag(ostream, "unit", indentation, empty);
-		writeAttributes(ostream, Pair.with("owner", obj.getOwner().getPlayerId()));
+		writeAttributes(ostream, Pair.with("owner", obj.owner().getPlayerId()));
 		writeNonEmptyAttributes(ostream, Pair.with("kind", obj.getKind()),
 			Pair.with("name", obj.getName()));
 		writeAttributes(ostream, Pair.with("id", obj.getId()));
@@ -235,7 +228,7 @@ public class SPFluidWriter implements SPWriter {
 	private void writeFortress(final XMLStreamWriter ostream, final IFortress obj, final int indentation)
 			throws XMLStreamException {
 		writeTag(ostream, "fortress", indentation, false);
-		writeAttributes(ostream, Pair.with("owner", obj.getOwner().getPlayerId()));
+		writeAttributes(ostream, Pair.with("owner", obj.owner().getPlayerId()));
 		writeNonEmptyAttributes(ostream, Pair.with("name", obj.getName()));
 		if (TownSize.Small != obj.getTownSize()) {
 			writeAttributes(ostream, Pair.with("size", obj.getTownSize().toString()));
@@ -259,15 +252,15 @@ public class SPFluidWriter implements SPWriter {
 			Pair.with("current_turn", obj.getCurrentTurn()));
 		writeTag(ostream, "map", indentation + 1, false);
 		final MapDimensions dimensions = obj.getDimensions();
-		writeAttributes(ostream, Pair.with("version", dimensions.getVersion()),
-			Pair.with("rows", dimensions.getRows()),
-			Pair.with("columns", dimensions.getColumns()));
+		writeAttributes(ostream, Pair.with("version", dimensions.version()),
+			Pair.with("rows", dimensions.rows()),
+			Pair.with("columns", dimensions.columns()));
 		for (final Player player : obj.getPlayers()) {
 			writePlayer(ostream, player, indentation + 2);
 		}
-		for (int i = 0; i < dimensions.getRows(); i++) {
+		for (int i = 0; i < dimensions.rows(); i++) {
 			boolean rowEmpty = true;
-			for (int j = 0; j < dimensions.getColumns(); j++) {
+			for (int j = 0; j < dimensions.columns(); j++) {
 				final Point loc = new Point(i, j);
 				final TileType terrain = obj.getBaseTerrain(loc);
 				if (!obj.isLocationEmpty(loc)) {

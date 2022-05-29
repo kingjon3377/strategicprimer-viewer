@@ -27,8 +27,8 @@ public class SurroundingPointIterable implements Iterable<Point> {
 			final int upperBound = inner;
 			for (int row = lowerBound; row <= upperBound; row++) {
 				for (int column = lowerBound; column <= upperBound; column++) {
-					points.add(new Point(roundRow(startingPoint.getRow() + row),
-						roundColumn(startingPoint.getColumn() + column)));
+					points.add(new Point(roundRow(startingPoint.row() + row),
+						roundColumn(startingPoint.column() + column)));
 				}
 			}
 		}
@@ -36,17 +36,17 @@ public class SurroundingPointIterable implements Iterable<Point> {
 
 	private int roundColumn(final int column) {
 		if (column < 0) {
-			return dimensions.getColumns() + column; // TODO: Should probably pass to roundColumn(), inc case column is -1000 or something.
+			return dimensions.columns() + column; // TODO: Should probably pass to roundColumn(), inc case column is -1000 or something.
 		} else {
-			return column % dimensions.getColumns();
+			return column % dimensions.columns();
 		}
 	}
 
 	private int roundRow(final int row) {
 		if (row < 0) {
-			return dimensions.getRows() + row;
+			return dimensions.rows() + row;
 		} else {
-			return row % dimensions.getRows();
+			return row % dimensions.rows();
 		}
 	}
 

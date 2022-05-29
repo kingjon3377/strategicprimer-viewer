@@ -202,12 +202,12 @@ import java.util.function.Predicate;
 		final MapDimensions dimensions;
 		final MapDimensions readDimensions = new MapDimensionsImpl(getIntegerParameter(mapTag, "rows"),
 			getIntegerParameter(mapTag, "columns"), getIntegerParameter(mapTag, "version"));
-		if (readDimensions.getVersion() == 2) {
+		if (readDimensions.version() == 2) {
 			dimensions = readDimensions;
 		} else {
-			warner.handle(new MapVersionException(mapTag, readDimensions.getVersion(), 2, 2));
-			dimensions = new MapDimensionsImpl(readDimensions.getRows(),
-				readDimensions.getColumns(), 2);
+			warner.handle(new MapVersionException(mapTag, readDimensions.version(), 2, 2));
+			dimensions = new MapDimensionsImpl(readDimensions.rows(),
+				readDimensions.columns(), 2);
 		}
 		final Deque<QName> tagStack = new LinkedList<>();
 		tagStack.addFirst(element.getName());
@@ -302,8 +302,8 @@ import java.util.function.Predicate;
 								    retval.getFixtures(point).stream()
 										    .filter(IFortress.class::isInstance)
 										    .map(IFortress.class::cast)
-										    .map(IFortress::getOwner)
-										    .anyMatch(f.getOwner()::equals)) {
+										    .map(IFortress::owner)
+										    .anyMatch(f.owner()::equals)) {
 							warner.handle(new UnwantedChildException(top, se,
 									"Multiple fortresses owned by one player on a tile"));
 						}
@@ -381,16 +381,16 @@ import java.util.function.Predicate;
 		finishParentTag(ostream);
 		writeTag(ostream, "map", tabs + 1);
 		final MapDimensions dimensions = obj.getDimensions();
-		writeProperty(ostream, "version", dimensions.getVersion());
-		writeProperty(ostream, "rows", dimensions.getRows());
-		writeProperty(ostream, "columns", dimensions.getColumns());
+		writeProperty(ostream, "version", dimensions.version());
+		writeProperty(ostream, "rows", dimensions.rows());
+		writeProperty(ostream, "columns", dimensions.columns());
 		finishParentTag(ostream);
 		for (final Player player : obj.getPlayers()) {
 			playerReader.write(ostream, player, tabs + 2);
 		}
-		for (int i = 0; i < dimensions.getRows(); i++) {
+		for (int i = 0; i < dimensions.rows(); i++) {
 			boolean rowEmpty = true;
-			for (int j = 0; j < dimensions.getColumns(); j++) {
+			for (int j = 0; j < dimensions.columns(); j++) {
 				final Point loc = new Point(i, j);
 				final TileType terrain = obj.getBaseTerrain(loc);
 				if (!obj.isLocationEmpty(loc)) {

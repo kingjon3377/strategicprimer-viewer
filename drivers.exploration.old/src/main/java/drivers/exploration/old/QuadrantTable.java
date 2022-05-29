@@ -37,8 +37,8 @@ class QuadrantTable implements EncounterTable {
 			final Map<Point, String> retval = new HashMap<>();
 			final int columns = possResults.size() / quadrantRowCount;
 			int i = 0;
-			final int mapColumns = dimensions.getColumns();
-			final int mapRows = dimensions.getRows();
+			final int mapColumns = dimensions.columns();
+			final int mapRows = dimensions.rows();
 			final int columnRemainder = mapColumns % columns;
 			final int rowRemainder = mapRows % quadrantRowCount;
 			final int columnStep = mapColumns / columns;
@@ -92,8 +92,8 @@ class QuadrantTable implements EncounterTable {
 		for (final Point key : resultsMap.keySet().stream()
 				.sorted(Comparator.reverseOrder())
 				.collect(Collectors.toList())) {
-			if (key.getRow() <= row && key.getRow() > bestKey.getRow() &&
-					key.getColumn() <= column && key.getColumn() > bestKey.getColumn()) {
+			if (key.row() <= row && key.row() > bestKey.row() &&
+					key.column() <= column && key.column() > bestKey.column()) {
 				bestKey = key;
 			}
 		}
@@ -108,7 +108,7 @@ class QuadrantTable implements EncounterTable {
 	@Override
 	public String generateEvent(final Point point, final @Nullable TileType terrain, final boolean mountainous,
 	                            final Iterable<TileFixture> fixtures, final MapDimensions mapDimensions) {
-		return getQuadrantValue(point.getRow(), point.getColumn(), mapDimensions);
+		return getQuadrantValue(point.row(), point.column(), mapDimensions);
 	}
 
 	@Override

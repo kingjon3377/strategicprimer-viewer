@@ -5,35 +5,25 @@ import org.jetbrains.annotations.Nullable;
 
 /**
  * A structure encapsulating two coordinates: a row and column in the map.
+ *
+ * @param row    The first coordinate, the point's row.
+ * @param column The second coordinate, the point's column.
  */
-public final class Point implements Comparable<Point> {
+public record Point(int row, int column) implements Comparable<Point> {
 	/**
 	 * The first coordinate, the point's row.
 	 */
-	private final int row;
-
-	/**
-	 * The first coordinate, the point's row.
-	 */
-	public int getRow() {
+	@Override
+	public int row() {
 		return row;
 	}
 
 	/**
 	 * The second coordinate, the point's column.
 	 */
-	private final int column;
-
-	/**
-	 * The second coordinate, the point's column.
-	 */
-	public int getColumn() {
+	@Override
+	public int column() {
 		return column;
-	}
-
-	public Point(final int row, final int column) {
-		this.row = row;
-		this.column = column;
 	}
 
 	/**
@@ -46,7 +36,7 @@ public final class Point implements Comparable<Point> {
 		if (this == obj) {
 			return true;
 		} else if (obj instanceof Point p) {
-			return row == p.getRow() && column == p.getColumn();
+			return row == p.row() && column == p.column();
 		} else {
 			return false;
 		}
@@ -57,20 +47,9 @@ public final class Point implements Comparable<Point> {
 		return row << 9 + column;
 	}
 
-	private volatile @Nullable String string = null;
-
-	private synchronized String maybeString() {
-		if (string == null) {
-			// String.format("(%d, %d)", row, column) // perf bottleneck
-			string = "(" + row + ", " + column + ")";
-		}
-		return string;
-	}
-
 	@Override
 	public String toString() {
-		final String str = string;
-		return str == null ? maybeString() : str;
+		return "(" + row + "," + column + ")";
 	}
 
 	/**
@@ -78,8 +57,8 @@ public final class Point implements Comparable<Point> {
 	 */
 	@Override
 	public int compareTo(final Point point) {
-		return Comparator.comparing(Point::getRow, Comparator.naturalOrder())
-				.thenComparing(Point::getColumn).compare(this, point);
+		return Comparator.comparing(Point::row, Comparator.naturalOrder())
+				       .thenComparing(Point::column).compare(this, point);
 	}
 
 	/**

@@ -937,8 +937,8 @@ public final class TestXMLIO {
 	 * A factory to encapsulate rivers in a simple map.
 	 */
 	private static IMapNG encapsulateRivers(final Point point, final River... rivers) {
-		final IMutableMapNG retval = new SPMapNG(new MapDimensionsImpl(point.getRow() + 1,
-			point.getColumn() + 1, 2), new PlayerCollection(), -1);
+		final IMutableMapNG retval = new SPMapNG(new MapDimensionsImpl(point.row() + 1,
+			point.column() + 1, 2), new PlayerCollection(), -1);
 		retval.setBaseTerrain(point, TileType.Plains);
 		retval.addRivers(point, rivers);
 		return retval;
@@ -949,8 +949,8 @@ public final class TestXMLIO {
 	 */
 	@SafeVarargs
 	private static IMutableMapNG createSimpleMap(final Point dims, final Pair<Point, TileType>... terrain) {
-		final IMutableMapNG retval = new SPMapNG(new MapDimensionsImpl(dims.getRow(),
-			dims.getColumn(), 2), new PlayerCollection(), -1);
+		final IMutableMapNG retval = new SPMapNG(new MapDimensionsImpl(dims.row(),
+			dims.column(), 2), new PlayerCollection(), -1);
 		for (final Pair<Point, TileType> pair : terrain) {
 			retval.setBaseTerrain(pair.getValue0(), pair.getValue1());
 		}

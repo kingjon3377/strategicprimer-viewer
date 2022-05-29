@@ -46,7 +46,7 @@ public class FortressImpl implements IMutableFortress {
 	 * The player who owns the fortress.
 	 */
 	@Override
-	public Player getOwner() {
+	public Player owner() {
 		return owner;
 	}
 
@@ -221,7 +221,7 @@ public class FortressImpl implements IMutableFortress {
 			final Set<FortressMember> theirs =
 				it.stream().collect(Collectors.toSet());
 			return name.equals(it.getName()) &&
-				owner.getPlayerId() == it.getOwner().getPlayerId() &&
+				owner.getPlayerId() == it.owner().getPlayerId() &&
 				members.containsAll(theirs) && theirs.containsAll(members);
 		} else {
 			return false;
@@ -240,15 +240,15 @@ public class FortressImpl implements IMutableFortress {
 			builder.append("\t\t\t");
 			if (member instanceof IUnit unit) {
 				builder.append(unit.getName());
-				if (unit.getOwner().equals(owner)) {
+				if (unit.owner().equals(owner)) {
 					builder.append(" (").append(unit.getKind()).append(")");
-				} else if (unit.getOwner().isIndependent()) {
+				} else if (unit.owner().isIndependent()) {
 					builder.append(", an independent ")
 						.append(unit.getKind());
 				} else {
 					builder.append(" (").append(unit.getKind())
 						.append("), belonging to ")
-						.append(unit.getOwner());
+						.append(unit.owner());
 				}
 			} else {
 				builder.append(member.toString());
@@ -281,7 +281,7 @@ public class FortressImpl implements IMutableFortress {
 			return false;
 		}
 		if ((name.equals(fort.getName()) || "unknown".equals(fort.getName())) &&
-				fort.getOwner().getPlayerId() == owner.getPlayerId()) {
+				fort.owner().getPlayerId() == owner.getPlayerId()) {
 			final Map<Integer, FortressMember> ours = members.stream()
 				.collect(Collectors.toMap(FortressMember::getId, m -> m));
 			boolean retval = true;

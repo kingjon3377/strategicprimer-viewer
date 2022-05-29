@@ -89,8 +89,8 @@ import common.xmlio.SPFormatException;
 	                                  final int indent) throws XMLStreamException {
 		writeTag(ostream, "adventure", indent, true);
 		writeAttributes(ostream, Pair.with("id", obj.getId()));
-		if (!obj.getOwner().isIndependent()) {
-			writeAttributes(ostream, Pair.with("owner", obj.getOwner().getPlayerId()));
+		if (!obj.owner().isIndependent()) {
+			writeAttributes(ostream, Pair.with("owner", obj.owner().getPlayerId()));
 		}
 		writeNonEmptyAttributes(ostream, Pair.with("brief", obj.getBriefDescription()),
 			Pair.with("full", obj.getFullDescription()));
@@ -101,8 +101,8 @@ import common.xmlio.SPFormatException;
 			throws XMLStreamException {
 		writeTag(ostream, "portal", indent, true);
 		writeAttributes(ostream, Pair.with("world", obj.getDestinationWorld()),
-			Pair.with("row", obj.getDestinationCoordinates().getRow()),
-			Pair.with("column", obj.getDestinationCoordinates().getColumn()),
+			Pair.with("row", obj.getDestinationCoordinates().row()),
+			Pair.with("column", obj.getDestinationCoordinates().column()),
 			Pair.with("id", obj.getId()));
 		writeImage(ostream, obj);
 	}

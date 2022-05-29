@@ -65,7 +65,7 @@ final class DBExplorableHandler extends AbstractDatabaseWriter<ExplorableFixture
 		} else {
 			throw new IllegalArgumentException("Only supports caves and battlefields");
 		}
-		sql.on(value("row", context.getRow()), value("column", context.getColumn()), value("id", obj.getId()),
+		sql.on(value("row", context.row()), value("column", context.column()), value("id", obj.getId()),
 				value("dc", obj.getDC()), value("image", obj.getImage())).execute(db.connection());
 	}
 

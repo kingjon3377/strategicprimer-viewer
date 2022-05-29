@@ -654,7 +654,7 @@ public class WorkerTreeModelAlt extends DefaultTreeModel implements IWorkerTreeM
 	@Override
 	public void changeOwner(final HasOwner item, final Player newOwner) {
 		final PlayerNode playerNode = (PlayerNode) getRoot();
-		if (item instanceof IUnit unit && item.getOwner().equals(model.getCurrentPlayer())) {
+		if (item instanceof IUnit unit && item.owner().equals(model.getCurrentPlayer())) {
 			final TreeNode kindNode = getNode(playerNode, unit.getKind());
 			final TreeNode node = Optional.ofNullable(kindNode).map(n -> getNode(n, item))
 				.orElse(null);

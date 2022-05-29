@@ -54,20 +54,20 @@ public class VillageReportGenerator extends AbstractReportGenerator<Village> {
 				.collect(Collectors.toList())) {
 			final Point loc = pair.getValue0();
 			final Village village = pair.getValue1();
-			if (village.getOwner().equals(currentPlayer)) {
+			if (village.owner().equals(currentPlayer)) {
 				own.put(village, loc);
-			} else if (village.getOwner().isIndependent()) {
+			} else if (village.owner().isIndependent()) {
 				independents.put(village, loc);
 			} else {
 				final HeadedMap<Village, Point> mapping;
-				if (others.containsKey(village.getOwner())) {
-					mapping = others.get(village.getOwner());
+				if (others.containsKey(village.owner())) {
+					mapping = others.get(village.owner());
 				} else {
 					mapping = new HeadedMapImpl<>(String.format(
 							"<h5>Villages sworn to %s</h5>%n",
-							village.getOwner().getName()),
+							village.owner().getName()),
 						villageComparator);
-					others.put(village.getOwner(), mapping);
+					others.put(village.owner(), mapping);
 				}
 				mapping.put(village, loc);
 			}
@@ -101,13 +101,13 @@ public class VillageReportGenerator extends AbstractReportGenerator<Village> {
 		ostream.accept(", a(n) ");
 		ostream.accept(item.getRace());
 		ostream.accept(" village, ");
-		if (item.getOwner().isIndependent()) {
+		if (item.owner().isIndependent()) {
 			ostream.accept("independent ");
-		} else if (item.getOwner().equals(currentPlayer)) {
+		} else if (item.owner().equals(currentPlayer)) {
 			ostream.accept("sworn to you ");
 		} else {
 			ostream.accept("sworn to ");
-			ostream.accept(item.getOwner().getName());
+			ostream.accept(item.owner().getName());
 			ostream.accept(" ");
 		}
 		ostream.accept(distanceString.apply(loc));

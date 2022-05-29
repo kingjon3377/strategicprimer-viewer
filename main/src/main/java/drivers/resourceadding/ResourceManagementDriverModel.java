@@ -61,7 +61,7 @@ import java.math.BigDecimal;
 						.map(IMutableFortress.class::cast)
 						.filter(f -> "HQ".equals(f.getName()))
 						.filter(f -> mapPlayer.getPlayerId() ==
-							f.getOwner().getPlayerId())
+							f.owner().getPlayerId())
 						.findAny().orElse(null);
 				if (fortress == null) {
 					LovelaceLogger.warning("Didn't find HQ for %s", mapPlayer);

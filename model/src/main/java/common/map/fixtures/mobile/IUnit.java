@@ -115,7 +115,7 @@ public interface IUnit extends MobileFixture, HasImage, HasKind, HasName,
 				final Consumer<String> localSimpleReport =
 					s -> report.accept(String.format("In Unit of ID #%d:\t%s",
 						getId(), s));
-				if (getOwner().getPlayerId() != that.getOwner().getPlayerId()) {
+				if (owner().getPlayerId() != that.owner().getPlayerId()) {
 					localSimpleReport.accept("Owners differ");
 					return false;
 				} else if (!getName().equals(that.getName())) {

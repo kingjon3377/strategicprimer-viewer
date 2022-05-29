@@ -134,7 +134,7 @@ import org.jetbrains.annotations.Nullable;
 	}
 
 	public @Nullable BigDecimal amountSpoiling(final Quantity qty, final ICLIHelper cli) {
-		final BigDecimal amt = decimalize(qty.getNumber());
+		final BigDecimal amt = decimalize(qty.number());
 		final BigDecimal fractional = Optional.ofNullable(fractionSpoilingDaily).map(amt::multiply).orElse(null);
 		return Stream.of(fractional, minimumSpoilage).filter(Objects::nonNull)
 				.max(Comparator.naturalOrder()).orElseGet(() -> cli.inputDecimal("How many pounds spoil?"));

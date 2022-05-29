@@ -61,12 +61,12 @@ import static lovelace.util.Decimalize.decimalize;
 				return; // TODO: Find a way to propagate the EOF to caller
 			}
 			else if (takeAll) {
-				model.transferResource(chosen, unit, decimalize(chosen.getQuantity().getNumber()),
+				model.transferResource(chosen, unit, decimalize(chosen.getQuantity().number()),
 					idf::createID);
 				resources.remove(chosen);
 			} else {
 				final BigDecimal amount = cli.inputDecimal(String.format("Amount to take (in %s):",
-					chosen.getQuantity().getUnits()));
+					chosen.getQuantity().units()));
 				if (amount != null && amount.signum() > 0) {
 					model.transferResource(chosen, unit, amount, idf::createID);
 					resources.clear();
@@ -94,10 +94,10 @@ import static lovelace.util.Decimalize.decimalize;
 			final Point newPosition = model.getSelectedUnitLocation();
 			final IFortress startingFort = model.getMap().getFixtures(oldPosition).stream()
 				.filter(IFortress.class::isInstance).map(IFortress.class::cast)
-				.filter(f -> f.getOwner().equals(mover.getOwner())).findAny().orElse(null);
+				.filter(f -> f.owner().equals(mover.owner())).findAny().orElse(null);
 			if (startingFort != null && model.getMap().getFixtures(newPosition).stream()
 					.filter(IFortress.class::isInstance).map(IFortress.class::cast)
-					.noneMatch(f -> f.getOwner().equals(mover.getOwner()))) {
+					.noneMatch(f -> f.owner().equals(mover.owner()))) {
 				final Boolean pack = cli.inputBooleanInSeries("Leaving a fortress. Take provisions along?");
 				if (pack == null) {
 					return null;

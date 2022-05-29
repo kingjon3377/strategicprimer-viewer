@@ -145,13 +145,13 @@ public class ProxyUnit implements IUnit, ProxyFor<IUnit> {
 	@Override
 	public String getShortDescription() {
 		if (parallel || proxiedList.size() == 1) {
-			if (getOwner().isCurrent()) {
+			if (owner().isCurrent()) {
 				return String.format("a(n) %s unit belonging to you", getKind());
-			} else if (getOwner().isIndependent()) {
+			} else if (owner().isIndependent()) {
 				return String.format("an independent %s unit", getKind());
 			} else {
 				return String.format("a(n) %s unit belonging to %s", getKind(),
-						getOwner());
+						owner());
 			}
 		} else {
 			return "Multiple units of kind " + getKind();
@@ -264,8 +264,8 @@ public class ProxyUnit implements IUnit, ProxyFor<IUnit> {
 	}
 
 	@Override
-	public Player getOwner() {
-		final Player retval = getConsensus(IUnit::getOwner);
+	public Player owner() {
+		final Player retval = getConsensus(IUnit::owner);
 		return retval == null ? defaultPlayer : retval;
 	}
 

@@ -60,9 +60,9 @@ public class AdventureReportGenerator extends AbstractReportGenerator<AdventureF
 		ostream.accept(item.getFullDescription());
 		ostream.accept(" ");
 		ostream.accept(distanceString.apply(loc));
-		if (!item.getOwner().isIndependent()) {
+		if (!item.owner().isIndependent()) {
 			ostream.accept(" (already investigated by ");
-			if (item.getOwner().equals(currentPlayer)) {
+			if (item.owner().equals(currentPlayer)) {
 				ostream.accept(" you)");
 			} else {
 				ostream.accept(" another player)");

@@ -230,11 +230,11 @@ import common.map.fixtures.mobile.AnimalTracks;
 	}
 
 	private static String resourcePileKeyExtractor(final IResourcePile pile) {
-		if (pile.getContents().contains(pile.getQuantity().getUnits()) ||
-				    pile.getQuantity().getUnits().contains(pile.getContents())) {
+		if (pile.getContents().contains(pile.getQuantity().units()) ||
+				    pile.getQuantity().units().contains(pile.getContents())) {
 			return pile.getContents();
 		} else {
-			return pile.getQuantity().getUnits() + " " + pile.getContents();
+			return pile.getQuantity().units() + " " + pile.getContents();
 		}
 	}
 
@@ -242,7 +242,7 @@ import common.map.fixtures.mobile.AnimalTracks;
 	public void startDriver() { // TODO: Reduce duplication
 		final IMapNG map = model.getMap();
 		cli.println(String.format("There are %d tiles in all.",
-			map.getDimensions().getRows() * map.getDimensions().getColumns()));
+			map.getDimensions().rows() * map.getDimensions().columns()));
 		final EnumCounter<TileType> tileTypeCounts = new EnumCounter<>();
 		tileTypeCounts.countMany(map.streamLocations()
 			.map(map::getBaseTerrain).filter(Objects::nonNull).toArray(TileType[]::new));
@@ -337,7 +337,7 @@ import common.map.fixtures.mobile.AnimalTracks;
 		final MappedCounter<IUnit, String, Integer> independentUnits =
 			simpleCounter(IUnit::getName);
 		allFixtures.stream().filter(IUnit.class::isInstance).map(IUnit.class::cast)
-			.filter(u -> u.getOwner().isIndependent()).forEach(independentUnits::add);
+			.filter(u -> u.owner().isIndependent()).forEach(independentUnits::add);
 		printSummary(independentUnits, "Independent Units:");
 
 		final MappedCounter<IWorker, String, Integer> workers = simpleCounter(IWorker::getRace);
@@ -376,7 +376,7 @@ import common.map.fixtures.mobile.AnimalTracks;
 			cli.println("Resources:");
 			for (final Map.Entry<String, List<IResourcePile>> entry : groupedResources.entrySet()) {
 				final MappedCounter<IResourcePile, String, BigDecimal> counter = new MappedCounter<>(
-						CountingCLI::resourcePileKeyExtractor, r -> decimalize(r.getQuantity().getNumber()),
+						CountingCLI::resourcePileKeyExtractor, r -> decimalize(r.getQuantity().number()),
 						DecimalAccumulator::new, BigDecimal.ZERO);
 				entry.getValue().forEach(counter::add);
 				printSummary(counter, entry.getKey(), 1);

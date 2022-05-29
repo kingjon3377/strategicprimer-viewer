@@ -51,7 +51,7 @@ public class City extends AbstractTown {
 	@Override
 	public City copy(final CopyBehavior zero) {
 		final City retval = new City(getStatus(), getTownSize(), (zero == CopyBehavior.ZERO) ? 0 : getDC(),
-			getName(), id, getOwner());
+			getName(), id, owner());
 		retval.setImage(getImage());
 		if (zero == CopyBehavior.KEEP) {
 			retval.setPopulation(getPopulation());

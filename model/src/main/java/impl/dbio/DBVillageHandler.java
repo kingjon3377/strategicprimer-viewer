@@ -58,12 +58,12 @@ final class DBVillageHandler extends AbstractDatabaseWriter<Village, Point> impl
 	@Override
 	public void write(final Transactional db, final Village obj, final Point context) throws SQLException {
 		final List<Param> params = new ArrayList<>();
-		params.add(value("row", context.getRow()));
-		params.add(value("column", context.getColumn()));
+		params.add(value("row", context.row()));
+		params.add(value("column", context.column()));
 		params.add(value("status", obj.getStatus().toString()));
 		params.add(value("name", obj.getName()));
 		params.add(value("id", obj.getId()));
-		params.add(value("owner", obj.getOwner().getPlayerId()));
+		params.add(value("owner", obj.owner().getPlayerId()));
 		params.add(value("race", obj.getRace()));
 		params.add(value("image", obj.getImage()));
 		params.add(value("portrait", obj.getPortrait()));

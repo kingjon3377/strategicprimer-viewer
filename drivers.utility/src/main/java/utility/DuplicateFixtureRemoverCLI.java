@@ -108,8 +108,8 @@ public class DuplicateFixtureRemoverCLI implements CLIDriver {
 		final IResourcePile top = list[0];
 		final IMutableResourcePile combined = new ResourcePileImpl(top.getId(), top.getKind(),
 			top.getContents(), new Quantity(Stream.of(list).map(IResourcePile::getQuantity)
-				.map(Quantity::getNumber).map(Decimalize::decimalize)
-				.reduce(BigDecimal.ZERO, BigDecimal::add), top.getQuantity().getUnits()));
+				.map(Quantity::number).map(Decimalize::decimalize)
+				.reduce(BigDecimal.ZERO, BigDecimal::add), top.getQuantity().units()));
 		combined.setCreated(top.getCreated());
 		return combined;
 	}
@@ -186,7 +186,7 @@ public class DuplicateFixtureRemoverCLI implements CLIDriver {
 		mapping.put(IResourcePile.class, new CoalescedHolder<>(IResourcePile.class,
 				IResourcePile[]::new,
 				pile -> Quartet.with(pile.getKind(), pile.getContents(),
-						pile.getQuantity().getUnits(), pile.getCreated()),
+						pile.getQuantity().units(), pile.getCreated()),
 				DuplicateFixtureRemoverCLI::combineResources));
 		mapping.put(Animal.class, new CoalescedHolder<>(
 				Animal.class, Animal[]::new,

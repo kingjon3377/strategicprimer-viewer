@@ -93,7 +93,7 @@ public class ExplorationCLIHelper implements MovementCostListener, SelectionChan
 				cli.println(fixture.getShortDescription());
 			}
 			final IFixture.CopyBehavior zero;
-			if (fixture instanceof HasOwner owned && (!owned.getOwner().equals(mover.getOwner())
+			if (fixture instanceof HasOwner owned && (!owned.owner().equals(mover.owner())
 					|| fixture instanceof Village)) {
 				zero = IFixture.CopyBehavior.ZERO;
 			} else if (fixture instanceof HasPopulation || fixture instanceof HasExtent)
@@ -141,8 +141,8 @@ public class ExplorationCLIHelper implements MovementCostListener, SelectionChan
 				totalMP = number;
 				runningTotal = decimalize(number);
 			}
-			if (!automationConfig.getPlayer().equals(newSelection.getOwner())) {
-				automationConfig = new ExplorationAutomationConfig(newSelection.getOwner());
+			if (!automationConfig.getPlayer().equals(newSelection.owner())) {
+				automationConfig = new ExplorationAutomationConfig(newSelection.owner());
 			}
 		}
 	}

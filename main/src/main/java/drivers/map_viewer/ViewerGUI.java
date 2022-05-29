@@ -68,25 +68,25 @@ public class ViewerGUI implements ViewerDriver {
 			visible.getMinimumRow(), visible.getMinimumColumn(), visible.getMaximumRow(),
 			visible.getMaximumColumn(), visible.getHeight(), visible.getWidth());
 		final int topRow;
-		if (selection.getRow() - (visible.getHeight() / 2) <= 0) {
+		if (selection.row() - (visible.getHeight() / 2) <= 0) {
 			LovelaceLogger.trace("Close enough to the top to go flush to it");
 			topRow = 0;
-		} else if (selection.getRow() + (visible.getHeight() / 2) >= dimensions.getRows()) {
+		} else if (selection.row() + (visible.getHeight() / 2) >= dimensions.rows()) {
 			LovelaceLogger.trace("Close enough to the bottom to go flush to it");
-			topRow = dimensions.getRows() - visible.getHeight(); // TODO: do we need an off-by-one adjustment?
+			topRow = dimensions.rows() - visible.getHeight(); // TODO: do we need an off-by-one adjustment?
 		} else {
-			topRow = selection.getRow() - (visible.getHeight() / 2);
+			topRow = selection.row() - (visible.getHeight() / 2);
 			LovelaceLogger.trace("Setting top row to %d", topRow);
 		}
 		final int leftColumn;
-		if (selection.getColumn() - (visible.getWidth() / 2) <= 0) {
+		if (selection.column() - (visible.getWidth() / 2) <= 0) {
 			LovelaceLogger.trace("Close enough to left edge to go flush to it");
 			leftColumn = 0;
-		} else if (selection.getColumn() + (visible.getWidth() / 2) >= dimensions.getColumns()) {
+		} else if (selection.column() + (visible.getWidth() / 2) >= dimensions.columns()) {
 			LovelaceLogger.trace("Close enough to right edge to go flush to it");
-			leftColumn = dimensions.getColumns() - visible.getWidth();
+			leftColumn = dimensions.columns() - visible.getWidth();
 		} else {
-			leftColumn = selection.getColumn() - (visible.getWidth() / 2);
+			leftColumn = selection.column() - (visible.getWidth() / 2);
 			LovelaceLogger.trace("Setting left column to %d", leftColumn);
 		}
 		// Original Java version had topRow + dimensions.rows and

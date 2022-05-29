@@ -68,7 +68,7 @@ public class VillageTabularReportGenerator implements ITableGenerator<Village> {
 			final int key, final Point loc, final Map<Integer, Integer> parentMap) {
 		fixtures.remove(key);
 		return Collections.singletonList(Arrays.asList(distanceString(loc, hq, dimensions),
-			locationString(loc), ownerString(player, item.getOwner()), item.getName()));
+			locationString(loc), ownerString(player, item.owner()), item.getName()));
 	}
 
 	/**
@@ -78,7 +78,7 @@ public class VillageTabularReportGenerator implements ITableGenerator<Village> {
 	@Override
 	public Comparator<Pair<Point, Village>> comparePairs() {
 		return Comparator.<Pair<Point, Village>, Point>comparing(Pair::getValue0, distanceComparator)
-			.thenComparing(Pair::getValue1, Comparator.comparing(Village::getOwner)
+			.thenComparing(Pair::getValue1, Comparator.comparing(Village::owner)
 					.thenComparing(Village::getName));
 	}
 }

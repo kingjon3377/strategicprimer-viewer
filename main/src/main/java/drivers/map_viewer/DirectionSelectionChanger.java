@@ -54,8 +54,8 @@ import common.map.Point;
 	 */
 	public void up(final boolean selection) {
 		final Point old = get(selection);
-		if (old.getRow() > 0) {
-			set(selection, new Point(old.getRow() - 1, old.getColumn()));
+		if (old.row() > 0) {
+			set(selection, new Point(old.row() - 1, old.column()));
 		}
 	}
 
@@ -71,8 +71,8 @@ import common.map.Point;
 	 */
 	public void left(final boolean selection) {
 		final Point old = get(selection);
-		if (old.getColumn() > 0) {
-			set(selection, new Point(old.getRow(), old.getColumn() - 1));
+		if (old.column() > 0) {
+			set(selection, new Point(old.row(), old.column() - 1));
 		}
 	}
 
@@ -88,8 +88,8 @@ import common.map.Point;
 	 */
 	public void down(final boolean selection) {
 		final Point old = get(selection);
-		if (old.getRow() < model.getMapDimensions().getRows() - 1) {
-			set(selection, new Point(old.getRow() + 1, old.getColumn()));
+		if (old.row() < model.getMapDimensions().rows() - 1) {
+			set(selection, new Point(old.row() + 1, old.column()));
 		}
 	}
 
@@ -105,8 +105,8 @@ import common.map.Point;
 	 */
 	public void right(final boolean selection) {
 		final Point old = get(selection);
-		if (old.getColumn()<model.getMapDimensions().getColumns() - 1) {
-			set(selection, new Point(old.getRow(), old.getColumn() + 1));
+		if (old.column()<model.getMapDimensions().columns() - 1) {
+			set(selection, new Point(old.row(), old.column() + 1));
 		}
 	}
 
@@ -115,8 +115,8 @@ import common.map.Point;
 	 */
 	public void jumpUp() {
 		final Point old = model.getSelection();
-		if (old.getRow() > 0) {
-			model.setSelection(new Point(0, old.getColumn()));
+		if (old.row() > 0) {
+			model.setSelection(new Point(0, old.column()));
 		}
 	}
 
@@ -125,9 +125,9 @@ import common.map.Point;
 	 */
 	public void jumpDown() {
 		final Point old = model.getSelection();
-		if (old.getRow() < model.getMapDimensions().getRows()) {
-			model.setSelection(new Point(model.getMapDimensions().getRows() - 1,
-				old.getColumn()));
+		if (old.row() < model.getMapDimensions().rows()) {
+			model.setSelection(new Point(model.getMapDimensions().rows() - 1,
+				old.column()));
 		}
 	}
 
@@ -136,8 +136,8 @@ import common.map.Point;
 	 */
 	public void jumpLeft() {
 		final Point old = model.getSelection();
-		if (old.getColumn() > 0) {
-			model.setSelection(new Point(old.getRow(), 0));
+		if (old.column() > 0) {
+			model.setSelection(new Point(old.row(), 0));
 		}
 	}
 
@@ -146,9 +146,9 @@ import common.map.Point;
 	 */
 	public void jumpRight() {
 		final Point old = model.getSelection();
-		if (old.getColumn()<model.getMapDimensions().getColumns()) {
-			model.setSelection(new Point(old.getRow(),
-				model.getMapDimensions().getColumns() - 1));
+		if (old.column()<model.getMapDimensions().columns()) {
+			model.setSelection(new Point(old.row(),
+				model.getMapDimensions().columns() - 1));
 		}
 	}
 

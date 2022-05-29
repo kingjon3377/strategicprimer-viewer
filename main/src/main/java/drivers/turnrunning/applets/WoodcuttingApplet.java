@@ -140,7 +140,7 @@ import org.jetbrains.annotations.Nullable;
 			if (unit == null) {
 				cli.println("No selected unit");
 			} else if (!model.addExistingResource(new ResourcePileImpl(idf.createID(), "wood",
-					"production-ready wood", new Quantity(footage, "cubic feet")), unit.getOwner())) {
+					"production-ready wood", new Quantity(footage, "cubic feet")), unit.owner())) {
 				cli.println("Failed to find a fortress to add to in any map");
 			}
 		}

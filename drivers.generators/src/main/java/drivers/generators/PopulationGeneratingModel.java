@@ -228,17 +228,17 @@ public class PopulationGeneratingModel extends SimpleMultiMapModel { // TODO: Ex
 	 */
 	public void addWorkerToUnit(final IUnit unit, final IWorker worker) {
 		final String existingNote;
-		if (worker.getNote(unit.getOwner()).isEmpty()) {
+		if (worker.getNote(unit.owner()).isEmpty()) {
 			existingNote = "";
 		} else {
-			existingNote = String.format("%s ", worker.getNote(unit.getOwner()));
+			existingNote = String.format("%s ", worker.getNote(unit.owner()));
 		}
 		for (final IMutableMapNG map : getRestrictedAllMaps()) {
 			final Optional<IMutableUnit> localUnit = map.streamAllFixtures()
 					.flatMap(PopulationGeneratingModel::flattenFortresses)
 					.filter(IMutableUnit.class::isInstance)
 					.map(IMutableUnit.class::cast)
-					.filter(u -> unit.getOwner().equals(u.getOwner()))
+					.filter(u -> unit.owner().equals(u.owner()))
 					.filter(u -> unit.getKind().equals(u.getKind()))
 					.filter(u -> unit.getName().equals(u.getName()))
 					.filter(u -> u.getId() == unit.getId())
@@ -247,7 +247,7 @@ public class PopulationGeneratingModel extends SimpleMultiMapModel { // TODO: Ex
 				final int turn = map.getCurrentTurn();
 				final IWorker addend = worker.copy(IFixture.CopyBehavior.KEEP);
 				if (turn >= 0) {
-					addend.setNote(localUnit.get().getOwner(),
+					addend.setNote(localUnit.get().owner(),
 						String.format("%sNewcomer in turn #%d", existingNote, turn));
 				}
 				localUnit.get().addMember(addend);
@@ -271,7 +271,7 @@ public class PopulationGeneratingModel extends SimpleMultiMapModel { // TODO: Ex
 		return getMap().streamAllFixtures()
 			.flatMap(PopulationGeneratingModel::flattenFortresses)
 			.filter(IUnit.class::isInstance).map(IUnit.class::cast)
-			.filter(u -> u.getOwner().equals(player)).collect(Collectors.toList());
+			.filter(u -> u.owner().equals(player)).collect(Collectors.toList());
 	}
 
 	/**
@@ -318,7 +318,7 @@ public class PopulationGeneratingModel extends SimpleMultiMapModel { // TODO: Ex
 			for (final IUnit container : map.streamAllFixtures()
 					.flatMap(PopulationGeneratingModel::flattenFortresses)
 					.filter(IUnit.class::isInstance).map(IUnit.class::cast)
-					.filter(u -> u.getOwner().equals(unit.getOwner()))
+					.filter(u -> u.owner().equals(unit.owner()))
 					.collect(Collectors.toList())) {
 				final Optional<IWorker> matching =
 					container.stream().filter(IWorker.class::isInstance).map(IWorker.class::cast)

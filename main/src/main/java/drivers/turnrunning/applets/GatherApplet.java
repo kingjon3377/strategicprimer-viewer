@@ -99,7 +99,7 @@ import org.jetbrains.annotations.Nullable;
 							if ("food".equals(resource.getKind())) {
 								resource.setCreated(model.getMap().getCurrentTurn());
 							}
-							if (!model.addExistingResource(resource, unit.getOwner())) {
+							if (!model.addExistingResource(resource, unit.owner())) {
 								cli.println("Failed to find a fortress to add to in any map");
 							}
 						}

@@ -116,57 +116,44 @@ public class SPFluidReader implements IMapReader, ISPReader {
 		throw UnsupportedTagException.future(element);
 	}
 
-	private static class SimpleFixtureReader {
-		private final String tag;
-		private final IntFunction<Object> factory;
-
-		public SimpleFixtureReader(final String tag, final IntFunction<Object> factory) {
-			this.tag = tag;
-			this.factory = factory;
-		}
+	private record SimpleFixtureReader(String tag, IntFunction<Object> factory) {
 
 		public Object reader(final StartElement element, final QName parent, final Iterable<XMLEvent> stream,
-		                     final IMutablePlayerCollection players, final Warning warner, final IDRegistrar idFactory)
-				throws SPFormatException {
-			requireTag(element, parent, tag);
-			expectAttributes(element, warner, "id", "image");
-			spinUntilEnd(element.getName(), stream);
-			return setImage(factory.apply(getOrGenerateID(element, warner,
-				idFactory)), element, warner);
-		}
+				final IMutablePlayerCollection players, final Warning warner, final IDRegistrar idFactory)
+					throws SPFormatException {
+				requireTag(element, parent, tag);
+				expectAttributes(element, warner, "id", "image");
+				spinUntilEnd(element.getName(), stream);
+				return setImage(factory.apply(getOrGenerateID(element, warner,
+						idFactory)), element, warner);
+			}
 
-		public Pair<String, FluidXMLReader<?>> getPair() {
-			return Pair.with(tag, this::reader);
+			public Pair<String, FluidXMLReader<?>> getPair() {
+				return Pair.with(tag, this::reader);
+			}
 		}
-	}
 
 	@FunctionalInterface
 	private interface HasKindFactory {
 		HasKind apply(String string, int integer);
 	}
 
-	private static class SimpleHasKindReader {
-		private final String tag;
-		private final HasKindFactory factory;
-		public SimpleHasKindReader(final String tag, final HasKindFactory factory) {
-			this.tag = tag;
-			this.factory = factory;
-		}
+	private record SimpleHasKindReader(String tag, HasKindFactory factory) {
 
 		public Object reader(final StartElement element, final QName parent, final Iterable<XMLEvent> stream,
-		                     final IMutablePlayerCollection players, final Warning warner, final IDRegistrar idFactory)
-				throws SPFormatException {
-			requireTag(element, parent, tag);
-			expectAttributes(element, warner, "id", "kind", "image");
-			spinUntilEnd(element.getName(), stream);
-			return setImage(factory.apply(getAttribute(element, "kind"),
-				getOrGenerateID(element, warner, idFactory)), element, warner);
-		}
+				final IMutablePlayerCollection players, final Warning warner, final IDRegistrar idFactory)
+					throws SPFormatException {
+				requireTag(element, parent, tag);
+				expectAttributes(element, warner, "id", "kind", "image");
+				spinUntilEnd(element.getName(), stream);
+				return setImage(factory.apply(getAttribute(element, "kind"),
+						getOrGenerateID(element, warner, idFactory)), element, warner);
+			}
 
-		public Pair<String, FluidXMLReader<?>> getPair() {
-			return Pair.with(tag, this::reader);
+			public Pair<String, FluidXMLReader<?>> getPair() {
+				return Pair.with(tag, this::reader);
+			}
 		}
-	}
 
 	private static StartElement firstStartElement(final Iterable<XMLEvent> stream, final StartElement parent)
 			throws SPFormatException {
@@ -229,7 +216,7 @@ public class SPFluidReader implements IMapReader, ISPReader {
 					map.getFixtures(currentTile).stream()
 						.filter(IFortress.class::isInstance)
 						.map(IFortress.class::cast)
-						.anyMatch(f -> f.getOwner().equals(fort.getOwner()))) {
+						.anyMatch(f -> f.owner().equals(fort.owner()))) {
 				warner.handle(new UnwantedChildException(parent.getName(), element,
 					"Multiple fortresses owned by same player on same tile"));
 			}
@@ -325,12 +312,12 @@ public class SPFluidReader implements IMapReader, ISPReader {
 			getIntegerAttribute(mapTag, "rows"),
 			getIntegerAttribute(mapTag, "columns"),
 			getIntegerAttribute(mapTag, "version"));
-		if (readDimensions.getVersion() == 2) {
+		if (readDimensions.version() == 2) {
 			dimensions = readDimensions;
 		} else {
-			warner.handle(new MapVersionException(mapTag, readDimensions.getVersion(), 2, 2));
-			dimensions = new MapDimensionsImpl(readDimensions.getRows(),
-					readDimensions.getColumns(), 2);
+			warner.handle(new MapVersionException(mapTag, readDimensions.version(), 2, 2));
+			dimensions = new MapDimensionsImpl(readDimensions.rows(),
+					readDimensions.columns(), 2);
 		}
 		final Deque<QName> tagStack = new LinkedList<>();
 		tagStack.addFirst(element.getName());
