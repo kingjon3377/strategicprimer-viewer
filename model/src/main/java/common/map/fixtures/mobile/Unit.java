@@ -45,6 +45,8 @@ public final class Unit implements IMutableUnit {
 
 	/**
 	 * The members of the unit.
+	 *
+	 * TODO: For speed of contains() operations, use LinkedHashSet instead?
 	 */
 	private final ArraySet<UnitMember> members = new ArraySet<>();
 
@@ -253,7 +255,7 @@ public final class Unit implements IMutableUnit {
 				name.equals(that.getName()) &&
 				that.getId() == id &&
 				members.containsAll(that.stream().collect(Collectors.toList())) &&
-				that.stream().collect(Collectors.toList()).containsAll(members);
+				that.stream().collect(Collectors.toSet()).containsAll(members);
 		} else {
 			return false;
 		}

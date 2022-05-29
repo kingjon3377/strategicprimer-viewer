@@ -1,5 +1,6 @@
 package worker.common;
 
+import java.util.Set;
 import java.util.stream.StreamSupport;
 import java.util.stream.Collectors;
 import java.util.Objects;
@@ -65,12 +66,16 @@ public class TestWorkerModel {
 		}
 	}
 
+	/**
+	 * Test whether two collections contain the same elements (ignoring order and duplications!), or for
+	 * non-iterable objects test object equality.
+	 */
 	private static boolean iterableEquality(final Object one, final Object two) {
 		if (one instanceof Iterable && two instanceof Iterable) {
-			final List<Object> listOne = StreamSupport.stream(((Iterable<?>) one).spliterator(), false)
-				.collect(Collectors.toList());
-			final List<Object> listTwo = StreamSupport.stream(((Iterable<?>) two).spliterator(), false)
-				.collect(Collectors.toList());
+			final Set<Object> listOne = StreamSupport.stream(((Iterable<?>) one).spliterator(), false)
+				.collect(Collectors.toSet());
+			final Set<Object> listTwo = StreamSupport.stream(((Iterable<?>) two).spliterator(), false)
+				.collect(Collectors.toSet());
 			return listOne.containsAll(listTwo) && listTwo.containsAll(listOne);
 		} else {
 			return Objects.equals(one, two);

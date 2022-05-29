@@ -122,8 +122,7 @@ import org.jetbrains.annotations.Nullable;
 				System.out.println("No app specified; use one of the following invocations:");
 				System.out.println();
 				for (final DriverFactory driver : driverCache.values().stream()
-						.flatMap(l -> StreamSupport.stream(l.spliterator(), false)).distinct()
-						.collect(Collectors.toList())) {
+						.flatMap(l -> StreamSupport.stream(l.spliterator(), false)).collect(Collectors.toSet())) {
 					// TODO: in Java 11+ use String.lines()
 					final String[] lines = AppChooserState.usageMessage(driver.getUsage(), "true".equals(
 							options.getArgument("--verbose"))).split(System.lineSeparator());

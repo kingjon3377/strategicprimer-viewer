@@ -347,8 +347,8 @@ public class PopulationGeneratingCLI implements CLIDriver {
 	public void startDriver() {
 		for (final String kind : map.streamAllFixtures()
 				.filter(Animal.class::isInstance).map(Animal.class::cast)
-				.filter(a -> a.getPopulation() <= 0).map(Animal::getKind).distinct()
-				.collect(Collectors.toList())) {
+				.filter(a -> a.getPopulation() <= 0).map(Animal::getKind)
+				.collect(Collectors.toSet())) {
 			generateAnimalPopulations(true, kind);
 			generateAnimalPopulations(false, kind);
 		}

@@ -41,9 +41,9 @@ public class Worker implements IMutableWorker {
 	 */
 	private static boolean jobSetsEqual(final Iterable<IJob> first, final Iterable<IJob> second) {
 		final Collection<IJob> firstFiltered = StreamSupport.stream(first.spliterator(), true)
-			.filter(j -> !j.isEmpty()).collect(Collectors.toList());
+			.filter(j -> !j.isEmpty()).collect(Collectors.toSet());
 		final Collection<IJob> secondFiltered = StreamSupport.stream(second.spliterator(), true)
-			.filter(j -> !j.isEmpty()).collect(Collectors.toList());
+			.filter(j -> !j.isEmpty()).collect(Collectors.toSet());
 		return firstFiltered.containsAll(secondFiltered) &&
 			secondFiltered.containsAll(firstFiltered);
 	}

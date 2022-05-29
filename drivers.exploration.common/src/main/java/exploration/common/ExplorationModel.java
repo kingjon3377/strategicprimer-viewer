@@ -121,8 +121,9 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 		} else {
 			description = unit.getShortDescription();
 		}
-		for (final Point point : new SurroundingPointIterable(dest, dimensions).stream().distinct()
-				.collect(Collectors.toList())) {
+		// TODO: Make a method for this so we can use Stream::forEach instead of using a Collector
+		for (final Point point : new SurroundingPointIterable(dest, dimensions).stream()
+				.collect(Collectors.toSet())) {
 			for (final TileFixture fixture : map.getFixtures(point)) {
 				if (fixture instanceof HasOwner owned &&
 						owned.owner().isIndependent() &&

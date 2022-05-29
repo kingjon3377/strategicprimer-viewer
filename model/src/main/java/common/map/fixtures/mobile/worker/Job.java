@@ -115,7 +115,7 @@ public final class Job implements IMutableJob {
 				StreamSupport.stream(that.spliterator(), true)
 					.allMatch(skillSet.values()::contains) &&
 				StreamSupport.stream(that.spliterator(), true)
-					.collect(Collectors.toList()) // FIXME: Should be Set
+					.collect(Collectors.toSet())
 					.containsAll(skillSet.values());
 		} else {
 			return false;
