@@ -249,7 +249,7 @@ import common.map.fixtures.towns.Village;
 			racialBonus.getConstitution());
 		int hp = 8 + conBonus;
 		for (int level = 0; level < levels; level++) {
-			hp = hp + die(8) + conBonus;
+			hp += die(8) + conBonus;
 		}
 		return WorkerStats.adjusted(hp, base, racialBonus);
 	}

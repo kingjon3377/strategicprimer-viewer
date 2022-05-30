@@ -210,7 +210,7 @@ public class HuntingModel {
 				return wrapped.next();
 			} else {
 				switched = true;
-				counter = (int) (counter * nothingProportion);
+				counter *= nothingProportion;
 				return nothingValue;
 			}
 		}
