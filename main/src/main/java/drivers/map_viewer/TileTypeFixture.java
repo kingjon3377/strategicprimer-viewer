@@ -27,11 +27,6 @@ import lovelace.util.LovelaceLogger;
 	}
 
 	@Override
-	public boolean equals(final Object obj) {
-		return obj instanceof TileTypeFixture fix && fix.tileType == tileType;
-	}
-
-	@Override
 	public String toString() {
 		return "Terrain: " + tileType;
 	}
