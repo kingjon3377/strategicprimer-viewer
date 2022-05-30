@@ -57,7 +57,7 @@ public class UnwantedChildException extends SPFormatException {
 			parent.getLocalPart()), child.getLocation(), cause);
 		tag = parent;
 		this.child = child.getName();
-		this.location = child.getLocation();
+		location = child.getLocation();
 	}
 
 	/**
@@ -69,7 +69,7 @@ public class UnwantedChildException extends SPFormatException {
 			parent.getLocalPart()), child.getLocation());
 		tag = parent;
 		this.child = child.getName();
-		this.location = child.getLocation();
+		location = child.getLocation();
 	}
 
 	/**
@@ -80,7 +80,7 @@ public class UnwantedChildException extends SPFormatException {
 			parent.getLocalPart()), except.location);
 		tag = parent;
 		child = except.getChild();
-		this.location = except.location;
+		location = except.location;
 	}
 
 	/**
@@ -93,7 +93,7 @@ public class UnwantedChildException extends SPFormatException {
 			child.getLocation());
 		tag = parent;
 		this.child = child.getName();
-		this.location = child.getLocation();
+		location = child.getLocation();
 	}
 
 	/**
@@ -106,7 +106,7 @@ public class UnwantedChildException extends SPFormatException {
 				child.getLocation());
 		tag = parent;
 		this.child = child.getName();
-		this.location = child.getLocation();
+		location = child.getLocation();
 	}
 	/**
 	 * Where the caller asserted that a tag was one of a specified list.
@@ -144,7 +144,7 @@ public class UnwantedChildException extends SPFormatException {
 			child.getLocation().getLineNumber(), child.getLocation().getColumnNumber());
 		tag = parent;
 		this.child = child.getName();
-		this.location = child.getLocation();
+		location = child.getLocation();
 	}
 
 	/**
@@ -169,7 +169,7 @@ public class UnwantedChildException extends SPFormatException {
 			child.getLocation().getLineNumber(), child.getLocation().getColumnNumber());
 		tag = parent;
 		this.child = child.getName();
-		this.location = child.getLocation();
+		location = child.getLocation();
 	}
 
 	public QName getChild() {
