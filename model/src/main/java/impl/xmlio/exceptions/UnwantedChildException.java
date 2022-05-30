@@ -6,6 +6,7 @@ import java.util.Collection;
 import javax.xml.namespace.QName;
 import javax.xml.stream.Location;
 import javax.xml.stream.events.StartElement;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * A custom exception for when a tag has a child tag it can't handle.
@@ -22,11 +23,17 @@ public class UnwantedChildException extends SPFormatException {
 	 */
 	private final QName child;
 
+	/**
+	 * The location in the XML where this happens, if any.
+	 */
+	private final @Nullable Location location;
+
 	private UnwantedChildException(final QName parent, final QName child, final Location location, final Throwable cause) {
 		super(String.format("Unexpected child %s in tag %s", child.getLocalPart(),
 			parent.getLocalPart()), location);
 		tag = parent;
 		this.child = child;
+		this.location = location;
 	}
 
 	/**
@@ -50,6 +57,7 @@ public class UnwantedChildException extends SPFormatException {
 			parent.getLocalPart()), child.getLocation(), cause);
 		tag = parent;
 		this.child = child.getName();
+		this.location = child.getLocation();
 	}
 
 	/**
@@ -61,6 +69,7 @@ public class UnwantedChildException extends SPFormatException {
 			parent.getLocalPart()), child.getLocation());
 		tag = parent;
 		this.child = child.getName();
+		this.location = child.getLocation();
 	}
 
 	/**
@@ -68,9 +77,10 @@ public class UnwantedChildException extends SPFormatException {
 	 */
 	public UnwantedChildException(final QName parent, final UnwantedChildException except) {
 		super(String.format("Unexpected child %s in tag %s", except.getChild().getLocalPart(),
-			parent.getLocalPart()), except.getLine(), except.getColumn()); // TODO: Expose location as a property
+			parent.getLocalPart()), except.location);
 		tag = parent;
 		child = except.getChild();
+		this.location = except.location;
 	}
 
 	/**
@@ -83,6 +93,7 @@ public class UnwantedChildException extends SPFormatException {
 			child.getLocation());
 		tag = parent;
 		this.child = child.getName();
+		this.location = child.getLocation();
 	}
 
 	/**
@@ -95,6 +106,7 @@ public class UnwantedChildException extends SPFormatException {
 				child.getLocation());
 		tag = parent;
 		this.child = child.getName();
+		this.location = child.getLocation();
 	}
 	/**
 	 * Where the caller asserted that a tag was one of a specified list.
@@ -132,6 +144,7 @@ public class UnwantedChildException extends SPFormatException {
 			child.getLocation().getLineNumber(), child.getLocation().getColumnNumber());
 		tag = parent;
 		this.child = child.getName();
+		this.location = child.getLocation();
 	}
 
 	/**
@@ -156,6 +169,7 @@ public class UnwantedChildException extends SPFormatException {
 			child.getLocation().getLineNumber(), child.getLocation().getColumnNumber());
 		tag = parent;
 		this.child = child.getName();
+		this.location = child.getLocation();
 	}
 
 	public QName getChild() {
@@ -164,5 +178,9 @@ public class UnwantedChildException extends SPFormatException {
 
 	public QName getTag() {
 		return tag;
+	}
+
+	public Location getLocation() {
+		return location;
 	}
 }
