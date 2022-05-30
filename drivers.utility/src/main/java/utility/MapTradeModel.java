@@ -57,11 +57,9 @@ public class MapTradeModel extends SimpleMultiMapModel {
 	                                final IFixture.CopyBehavior zeroFixtures) {
 		final IMapNG map = getMap();
 		for (final IMutableMapNG second : getRestrictedSubordinateMaps()) {
-			// TODO: Just use if() for condition, instead of streaming and collecting.
-			for (final TileFixture fixture : map.getFixtures(location).stream().filter(condition).toList()) {
-				if (fixture.getId() >= 0 &&
-						second.getFixtures(location).stream()
-							.noneMatch(f -> f.getId() == fixture.getId())) {
+			for (final TileFixture fixture : map.getFixtures(location)) {
+				if (condition.test(fixture) && fixture.getId() >= 0 &&
+						    second.getFixtures(location).stream().noneMatch(f -> f.getId() == fixture.getId())) {
 					second.addFixture(location, fixture.copy(zeroFixtures));
 					setGlobalModifiedFlag();
 				}
