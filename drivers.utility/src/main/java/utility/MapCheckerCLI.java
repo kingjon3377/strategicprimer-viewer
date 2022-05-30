@@ -1,5 +1,6 @@
 package utility;
 
+import common.map.HasName;
 import common.map.fixtures.Implement;
 import common.map.fixtures.mobile.IUnit;
 import common.map.fixtures.towns.CommunityStats;
@@ -310,12 +311,45 @@ public class MapCheckerCLI implements UtilityDriver {
 		}
 	}
 
-	// FIXME: Add checks: 1. Hill in ocean 2. Tracks when matching animal already known 3. HasName named "unnamed" 4. "food" resources with non-"pounds" units
+	private static boolean hillInOceanCheck(final TileType terrain, final Point context, final IFixture fixture,
+			final Warning warner) {
+		if (terrain == TileType.Ocean && fixture instanceof Hill) {
+			warner.handle(new SPContentWarning(context, String.format("Hill in ocean, ID #%d", fixture.getId())));
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	private static boolean unnamedCheck(final TileType terrain, final Point context, final IFixture fixture,
+			final Warning warner) {
+		if (fixture instanceof HasName hn && "unnamed".equalsIgnoreCase(hn.getName())) {
+			warner.handle(new SPContentWarning(context, String.format("'Unnamed' %s, ID #",
+					fixture.getClass().getName(), fixture.getId())));
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	private static boolean nonPoundsFoodCheck(final TileType terrain, final Point context, final IFixture fixture,
+			final Warning warner) {
+		if (fixture instanceof IResourcePile rp && "food".equals(rp.getKind()) && !"pounds".equals(rp.getQuantity().units())) {
+			warner.handle(new SPContentWarning(context, String.format("Non-pounds units '%s' in food, ID #%d",
+					rp.getQuantity().units(), fixture.getId())));
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	// FIXME: Add checks: 1. Tracks when matching animal already known
 	// TODO: Add automatic fixes (removing offending fixtures) for these and others to TodoFixerDriver
 	private static final List<Checker> EXTRA_CHECKS = List.of(MapCheckerCLI::lateriteChecker,
 			MapCheckerCLI::aquaticVillageChecker, MapCheckerCLI::suspiciousSkillCheck,
 			MapCheckerCLI::resourcePlaceholderChecker, MapCheckerCLI::oasisChecker,
-			MapCheckerCLI::personalEquipmentCheck, MapCheckerCLI::noResultsCheck);
+			MapCheckerCLI::personalEquipmentCheck, MapCheckerCLI::noResultsCheck, MapCheckerCLI::hillInOceanCheck,
+			MapCheckerCLI::unnamedCheck, MapCheckerCLI::nonPoundsFoodCheck);
 
 	private static boolean contentCheck(final Checker checker, final @Nullable TileType terrain, final Point context,
 	                                    final Warning warner, final Iterable<? extends IFixture> list) {
