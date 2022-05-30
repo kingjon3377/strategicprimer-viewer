@@ -367,7 +367,7 @@ public class MapCheckerCLI implements UtilityDriver {
 	private static boolean unnamedCheck(final TileType terrain, final Point context, final IFixture fixture,
 			final Warning warner) {
 		if (fixture instanceof HasName hn && "unnamed".equalsIgnoreCase(hn.getName())) {
-			warner.handle(new SPContentWarning(context, String.format("'Unnamed' %s, ID #",
+			warner.handle(new SPContentWarning(context, String.format("'Unnamed' %s, ID #%d",
 					fixture.getClass().getName(), fixture.getId())));
 			return true;
 		} else {
