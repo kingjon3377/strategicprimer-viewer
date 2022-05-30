@@ -279,7 +279,7 @@ public class Village implements IMutableTownFixture, HasMutableImage, IFixture,
 				report.accept(String.format("In village %s (ID #%d):\tDominant race differs",
 					name, id));
 			} else if (owner.getPlayerId() != it.owner().getPlayerId() &&
-					it.owner().isIndependent()) {
+					!it.owner().isIndependent()) {
 				report.accept(String.format("In village %s (ID #%d):\tOwners differ",
 					name, id));
 			} else if (population != null) {
