@@ -22,7 +22,8 @@ public class ResourceInputStream extends InputStream {
 
 	public ResourceInputStream(final String filename, final Class<?> sourceClass) throws NoSuchFileException {
 		InputStream temp;
-		try { // TODO: Use static method from Files class, if one exists
+		try {
+			// N.B. we don't use Files::newInputStream because we'd have to either catch or throw IOException.
 			temp = new BufferedInputStream(new FileInputStream(filename));
 		} catch (final FileNotFoundException except) {
 			temp = sourceClass.getResourceAsStream("/" + filename);
