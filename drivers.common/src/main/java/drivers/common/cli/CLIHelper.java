@@ -306,7 +306,7 @@ public final class CLIHelper implements ICLIHelper {
 		final StringBuilder builder = new StringBuilder();
 		printlnAtInterval("Type . on a line by itself to end input, or , to start over.");
 		while (true) {
-			if (builder.length() == 0) {
+			if (builder.isEmpty()) {
 				writePrompt(prompt);
 			} else {
 				print("> ");

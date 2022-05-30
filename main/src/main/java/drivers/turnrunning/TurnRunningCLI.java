@@ -152,7 +152,7 @@ import org.jetbrains.annotations.Nullable;
 			}
 		}
 		final String prompt;
-		if (buffer.length() == 0) {
+		if (buffer.isEmpty()) {
 			prompt = "Results: ";
 		} else {
 			prompt = "Additional Results: ";

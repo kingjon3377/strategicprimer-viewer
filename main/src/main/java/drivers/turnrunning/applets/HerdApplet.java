@@ -139,7 +139,7 @@ import query.SmallAnimalModel;
 			buffer.append(System.lineSeparator());
 		};
 		for (final Map.Entry<HerdModel, List<Animal>> entry : modelMap.entrySet()) {
-			if (buffer.length() > 0) {
+			if (!buffer.isEmpty()) {
 				buffer.append(System.lineSeparator());
 				buffer.append(System.lineSeparator());
 			}
