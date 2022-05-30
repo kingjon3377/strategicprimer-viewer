@@ -44,7 +44,7 @@
     <dependency>
       <groupId>org.roaringbitmap</groupId>
       <artifactId>RoaringBitmap</artifactId>
-      <version>0.9.22</version>
+      <version>0.9.27</version>
     </dependency>
     <dependency>
       <groupId>org.xerial</groupId>
