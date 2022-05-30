@@ -109,7 +109,8 @@ import java.util.stream.Collectors;
 
 	public static void writeRivers(final XMLStreamWriter ostream, final Collection<River> obj, final int indent)
 			throws XMLStreamException {
-		for (final River river : obj.stream().sorted().toList()) { // TODO: Convert to forEach(lambda)
+		// Can't use forEach() instead of collecting to a new list because of declared exception
+		for (final River river : obj.stream().sorted().toList()) {
 			writeRiver(ostream, river, indent);
 		}
 	}
