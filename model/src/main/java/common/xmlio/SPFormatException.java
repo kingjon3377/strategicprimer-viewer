@@ -31,16 +31,6 @@ public abstract class SPFormatException extends Exception {
 	}
 
 	/**
-	 * @deprecated Use constructor taking Location if possible
-	 */
-	@Deprecated
-	protected SPFormatException(final String errorMessage, final int line, final int column, final Throwable errorCause) {
-		super(String.format("Incorrect SP XML at line %d, column %d: %s", line, column, errorMessage), errorCause);
-		this.line = line;
-		this.column = column;
-	}
-
-	/**
 	 * @param errorMessage The exception message to possibly show to the user.
 	 * @param line The line of the XML file containing the mistake.
 	 * @param column The column of the XML file where the mistake begins.
