@@ -49,8 +49,7 @@ public class ExpansionDriver implements CLIDriver {
 	@Override
 	public void startDriver() {
 		for (final Player player : model.streamSubordinateMaps()
-				.map(IMapNG::getCurrentPlayer).filter(not(Player::isIndependent))
-				.distinct().collect(Collectors.toSet())) {
+				.map(IMapNG::getCurrentPlayer).filter(not(Player::isIndependent)).collect(Collectors.toSet())) {
 			for (final Point point : model.getMap().streamLocations()
 					.filter(containsSwornVillage(model.getMap(), player)).toList()) {
 				model.expandAroundPoint(point, player);
