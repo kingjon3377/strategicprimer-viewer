@@ -458,7 +458,6 @@ public class MapCheckerCLI implements UtilityDriver {
 
 	@Override
 	public void startDriver(final String... args) {
-		// TODO: Convert to stream/functional form?
 		for (final String filename : args) {
 			if (filename == null) {
 				continue;
