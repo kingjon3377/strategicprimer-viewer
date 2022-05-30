@@ -192,7 +192,7 @@ public class Forest implements TerrainFixture, HasMutableImage, HasKind, HasExte
 				localReport.accept("In rows when we aren't");
 				retval = false;
 			}
-			if (new NumberComparator().compare(it.acres, acres) > 0) {
+			if (NumberComparator.compareNumbers(it.acres, acres) > 0) {
 				localReport.accept("Has larger extent than we do");
 				retval = false;
 			}

@@ -13,8 +13,7 @@ public class NumberComparator implements Comparator<Number> {
 	 * built-in comparison function; if not, convert both to doubles and
 	 * return the result of comparing those.
 	 */
-	@Override
-	public int compare(final Number one, final Number two) {
+	public static int compareNumbers(final Number one, final Number two) {
 		if ((one instanceof Integer || one instanceof Long) &&
 				(two instanceof Integer || two instanceof Long)) {
 			return Long.compare(one.longValue(), two.longValue());
@@ -28,5 +27,15 @@ public class NumberComparator implements Comparator<Number> {
 		} else {
 			return Double.compare(one.doubleValue(), two.doubleValue());
 		}
+	}
+
+	/**
+	 * Compare two numbers. If they are the same type, delegate to their
+	 * built-in comparison function; if not, convert both to doubles and
+	 * return the result of comparing those.
+	 */
+	@Override
+	public final int compare(final Number one, final Number two) {
+		return compareNumbers(one, two);
 	}
 }

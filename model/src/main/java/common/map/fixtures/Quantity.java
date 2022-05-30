@@ -52,7 +52,7 @@ public record Quantity(Number number, String units) implements Subsettable<Quant
 	@Override
 	public boolean isSubset(final Quantity obj, final Consumer<String> report) {
 		if (units.equals(obj.units())) {
-			if (new NumberComparator().compare(number, obj.number()) < 0) {
+			if (NumberComparator.compareNumbers(number, obj.number()) < 0) {
 				report.accept("Has greater quantity than we do");
 				return false;
 			} else {
@@ -70,7 +70,7 @@ public record Quantity(Number number, String units) implements Subsettable<Quant
 			return true;
 		} else if (obj instanceof Quantity q) {
 			return units.equals(q.units()) &&
-					       new NumberComparator().compare(number, q.number()) == 0; // FIXME: Cache comparator?
+					       NumberComparator.compareNumbers(number, q.number()) == 0;
 		} else {
 			return false;
 		}
@@ -84,7 +84,7 @@ public record Quantity(Number number, String units) implements Subsettable<Quant
 	@Override
 	public int compareTo(final Quantity quantity) {
 		return Comparator.comparing(Quantity::units)
-				       .thenComparing(Quantity::number, new NumberComparator())
+				       .thenComparing(Quantity::number, NumberComparator::compareNumbers)
 				       .compare(this, quantity);
 	}
 }

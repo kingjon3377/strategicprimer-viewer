@@ -175,7 +175,7 @@ public class Meadow implements HarvestableFixture, HasExtent<Meadow> {
 					       status == it.getStatus() &&
 				cultivated == it.isCultivated() &&
 				id == it.getId() &&
-				new NumberComparator().compare(acres, it.getAcres()) == 0;
+				NumberComparator.compareNumbers(acres, it.getAcres()) == 0;
 		} else {
 			return false;
 		}
@@ -188,7 +188,7 @@ public class Meadow implements HarvestableFixture, HasExtent<Meadow> {
 				field == it.isField() &&
 					       status == it.getStatus() &&
 				cultivated == it.isCultivated() &&
-				new NumberComparator().compare(acres, it.getAcres()) == 0;
+				NumberComparator.compareNumbers(acres, it.getAcres()) == 0;
 		} else {
 			return false;
 		}
@@ -226,7 +226,7 @@ public class Meadow implements HarvestableFixture, HasExtent<Meadow> {
 				localReport.accept("Cultivation status differs");
 				retval = false;
 			}
-			if (new NumberComparator().compare(acres, it.getAcres()) < 0) {
+			if (NumberComparator.compareNumbers(acres, it.getAcres()) < 0) {
 				localReport.accept("Has larger extent");
 				retval = false;
 			}
