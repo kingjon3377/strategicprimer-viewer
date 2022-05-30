@@ -389,8 +389,8 @@ public class MapCheckerCLI implements UtilityDriver {
 
 		for (final Point location : map.getLocations()) {
 			if (map.getBaseTerrain(location) != null) {
-				// TODO: Make acreageChecker() take terrain so
-				// this can go in the same loop as above
+				// N.B. acreageChecker() can't be moved into EXTRA_CHECKS since it operates on *all* fixtures at once,
+				// not one at a time as each checker does in contentCheck().
 				result = acreageChecker(location, warner, map.getFixtures(location))
 					|| result;
 			}
