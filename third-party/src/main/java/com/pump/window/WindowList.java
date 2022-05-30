@@ -100,7 +100,7 @@ public final class WindowList {
 
 				proofRunnable.run();
 
-				/**
+				/*
 				 * Run this test later. If we received a WINDOW_CLOSING event,
 				 * then a window is not yet invisible... but it will by the time
 				 * this runnable runs.

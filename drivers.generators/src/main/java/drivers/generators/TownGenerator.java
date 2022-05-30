@@ -427,14 +427,10 @@ import java.math.BigDecimal;
 	private CommunityStats generateStats(final IDRegistrar idf, final Point location, final ITownFixture town,
 	                                     final IMapNG map) throws MissingTableException {
 		final Random rng = new Random(town.getId());
-		/**
-		 * A die roll using our pre-seeded RNG.
-		 */
+		// A die roll using our pre-seeded RNG.
 		final IntToIntFunction roll = (die) -> rng.nextInt(die) + 1;
 
-		/**
-		 * Repeatedly roll our pre-seeded RNG-die, optionally adding a constant value.
-		 */
+		// Repeatedly roll our pre-seeded RNG-die, optionally adding a constant value.
 		final RepeatedRoller repeatedlyRoll = (count, die, addend) -> {
 			int sum = addend;
 			for (int i = 0; i < count; i++) {
