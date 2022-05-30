@@ -2,6 +2,7 @@ package utility;
 
 import common.map.HasName;
 import common.map.fixtures.Implement;
+import common.map.fixtures.mobile.Animal;
 import common.map.fixtures.mobile.IUnit;
 import common.map.fixtures.towns.CommunityStats;
 import common.map.fixtures.FixtureIterable;
@@ -13,6 +14,8 @@ import java.util.Collection;
 import java.util.List;
 import java.util.OptionalInt;
 import java.util.function.Consumer;
+import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.stream.StreamSupport;
 import java.util.stream.Stream;
 import java.util.stream.Collectors;
@@ -337,6 +340,21 @@ public class MapCheckerCLI implements UtilityDriver {
 		}
 	}
 
+	private static boolean pointlessTracksCheck(final TileType terrain, final Point context, final boolean mtn,
+			final Warning warner, final Collection<? extends IFixture> fixtures) {
+		final Predicate<IFixture> isAnimal = Animal.class::isInstance;
+		final Function<IFixture, Animal> castToAnimal = Animal.class::cast;
+		for (final IFixture fixture : fixtures) {
+			if (fixture instanceof AnimalTracks at && fixtures.stream().filter(isAnimal).map(castToAnimal)
+					                                          .map(Animal::getKind).anyMatch(at.getKind()::equals)) {
+				warner.handle(new SPContentWarning(context,
+						String.format("Tracks of %s as well as the animal population", at.getKind())));
+				return true;
+			}
+		}
+		return false;
+	}
+
 	private static boolean hillInOceanCheck(final TileType terrain, final Point context, final IFixture fixture,
 			final Warning warner) {
 		if (terrain == TileType.Ocean && fixture instanceof Hill) {
@@ -369,7 +387,6 @@ public class MapCheckerCLI implements UtilityDriver {
 		}
 	}
 
-	// FIXME: Add checks: 1. Tracks when matching animal already known
 	// TODO: Add automatic fixes (removing offending fixtures) for these and others to TodoFixerDriver
 	private static final List<Checker> EXTRA_CHECKS = List.of(MapCheckerCLI::lateriteChecker,
 			MapCheckerCLI::aquaticVillageChecker, MapCheckerCLI::suspiciousSkillCheck,
@@ -378,7 +395,7 @@ public class MapCheckerCLI implements UtilityDriver {
 			MapCheckerCLI::unnamedCheck, MapCheckerCLI::nonPoundsFoodCheck);
 
 	private static final List<MultiFixtureChecker> EXTRA_MULTI_CHECKS = List.of(MapCheckerCLI::acreageChecker,
-			MapCheckerCLI::hillInMountainCheck);
+			MapCheckerCLI::hillInMountainCheck, MapCheckerCLI::pointlessTracksCheck);
 
 	private static boolean contentCheck(final Checker checker, final @Nullable TileType terrain, final Point context,
 	                                    final Warning warner, final Iterable<? extends IFixture> list) {
