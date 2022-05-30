@@ -7,7 +7,6 @@ import org.javatuples.Pair;
 import java.util.Comparator;
 import java.util.Map;
 import java.util.HashMap;
-import java.util.stream.Collectors;
 
 import lovelace.util.DelayedRemovalMap;
 

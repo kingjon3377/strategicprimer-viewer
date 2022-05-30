@@ -13,7 +13,6 @@ import java.nio.file.Path;
 import common.map.fixtures.FixtureIterable;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
-import java.util.stream.Collectors;
 import java.util.function.Predicate;
 import org.javatuples.Pair;
 import java.util.List;

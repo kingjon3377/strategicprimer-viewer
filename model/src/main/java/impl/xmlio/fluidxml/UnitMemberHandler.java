@@ -37,7 +37,6 @@ import common.xmlio.SPFormatException;
 import java.util.List;
 import java.util.stream.StreamSupport;
 import java.util.function.Predicate;
-import java.util.stream.Collectors;
 import common.map.fixtures.mobile.Immortal;
 import javax.xml.stream.XMLStreamException;
 

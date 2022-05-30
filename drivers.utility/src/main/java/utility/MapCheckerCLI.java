@@ -18,7 +18,6 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.StreamSupport;
 import java.util.stream.Stream;
-import java.util.stream.Collectors;
 import javax.xml.stream.XMLStreamException;
 import lovelace.util.LovelaceLogger;
 import org.javatuples.Pair;

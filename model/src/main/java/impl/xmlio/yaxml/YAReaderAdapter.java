@@ -26,7 +26,6 @@ import java.util.Map;
 import lovelace.util.LovelaceLogger;
 import lovelace.util.ThrowingConsumer;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * A class to hide the complexity of YAXML from callers.

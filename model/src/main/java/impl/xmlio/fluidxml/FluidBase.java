@@ -34,7 +34,6 @@ import java.math.BigInteger;
 import lovelace.util.IteratorWrapper;
 
 import java.util.stream.Stream;
-import java.util.stream.Collectors;
 
 import java.util.List;
 

@@ -82,7 +82,6 @@ import java.util.Map;
 import java.util.regex.Pattern;
 import lovelace.util.ThrowingConsumer;
 import java.util.function.Predicate;
-import java.util.stream.Collectors;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;

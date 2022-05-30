@@ -9,7 +9,6 @@ import java.util.Map;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 import java.util.HashMap;
-import java.util.stream.Collectors;
 import java.util.Optional;
 
 import lovelace.util.DelayedRemovalMap;

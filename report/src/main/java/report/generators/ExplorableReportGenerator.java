@@ -5,7 +5,6 @@ import lovelace.util.LovelaceLogger;
 import org.jetbrains.annotations.Nullable;
 import org.javatuples.Pair;
 import java.util.List;
-import java.util.stream.Collectors;
 import java.util.Arrays;
 
 import lovelace.util.DelayedRemovalMap;

@@ -2,7 +2,6 @@ package drivers.map_viewer;
 
 import static drivers.map_viewer.TileViewSize.scaleZoom;
 import java.util.List;
-import java.util.stream.Collectors;
 import common.map.TileType;
 import java.util.Optional;
 import lovelace.util.LovelaceLogger;

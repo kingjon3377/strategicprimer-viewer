@@ -7,7 +7,6 @@ import org.javatuples.Triplet;
 import java.util.Comparator;
 import lovelace.util.DelayedRemovalMap;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import common.map.IFixture;
 import common.map.Point;

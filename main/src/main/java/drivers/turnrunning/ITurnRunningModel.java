@@ -4,7 +4,6 @@ import common.map.IFixture;
 import org.jetbrains.annotations.Nullable;
 
 import common.map.IMapNG;
-import java.util.stream.Collectors;
 import java.util.function.IntSupplier;
 import common.map.HasExtent;
 import common.map.HasPopulation;

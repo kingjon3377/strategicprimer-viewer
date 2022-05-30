@@ -41,7 +41,6 @@ import common.map.fixtures.FortressMember;
 import java.util.Optional;
 import java.util.Map;
 import java.util.Comparator;
-import java.util.stream.Collectors;
 
 /**
  * A reader for fortresses, villages, and other towns.

@@ -35,7 +35,6 @@ import javax.xml.stream.XMLStreamException;
 import java.util.function.Consumer;
 
 import java.util.Map;
-import java.util.stream.Collectors;
 
 /* package */ class FluidTownHandler extends FluidBase {
 	// FIXME: Extract a common readAbstractTown() method taking the

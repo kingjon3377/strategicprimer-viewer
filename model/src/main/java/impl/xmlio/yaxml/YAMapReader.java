@@ -43,7 +43,6 @@ import static common.map.fixtures.mobile.Immortal.IMMORTAL_ANIMALS;
 import common.map.fixtures.towns.IFortress;
 
 import java.util.List;
-import java.util.stream.Collectors;
 import java.text.ParseException;
 import java.util.Collection;
 import java.util.function.Predicate;

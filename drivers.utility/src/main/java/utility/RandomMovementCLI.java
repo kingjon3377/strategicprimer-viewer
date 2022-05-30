@@ -1,6 +1,5 @@
 package utility;
 
-import java.util.stream.Collectors;
 import common.map.fixtures.mobile.IUnit;
 import drivers.common.SPOptions;
 import drivers.common.CLIDriver;

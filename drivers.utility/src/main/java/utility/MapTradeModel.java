@@ -7,7 +7,6 @@ import drivers.common.IDriverModel;
 import drivers.common.SimpleMultiMapModel;
 
 import java.util.function.Predicate;
-import java.util.stream.Collectors;
 import common.map.River;
 import common.map.Direction;
 import common.map.IMapNG;

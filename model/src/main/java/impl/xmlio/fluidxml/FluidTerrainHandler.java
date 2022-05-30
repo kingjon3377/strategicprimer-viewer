@@ -19,7 +19,6 @@ import common.xmlio.Warning;
 import impl.xmlio.exceptions.MissingPropertyException;
 import common.xmlio.SPFormatException;
 import common.map.HasExtent;
-import java.util.stream.Collectors;
 
 /* package */ class FluidTerrainHandler extends FluidBase {
 	public static Ground readGround(final StartElement element, final QName parent, final Iterable<XMLEvent> stream,

@@ -8,7 +8,6 @@ import common.map.TileFixture;
 
 import java.util.List;
 import java.util.stream.Stream;
-import java.util.stream.Collectors;
 
 /**
  * A class to transfer a list of TileFixtures by drag-and-drop.
