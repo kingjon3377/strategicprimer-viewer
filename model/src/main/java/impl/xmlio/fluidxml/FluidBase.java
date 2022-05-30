@@ -353,8 +353,7 @@ import org.jetbrains.annotations.Nullable;
 	protected static void writeImage(final XMLStreamWriter ostream, final HasImage obj)
 			throws XMLStreamException {
 		final String image = obj.getImage();
-		// FIXME: Should also skip empty image
-		if (!image.equals(obj.getDefaultImage())) {
+		if (!image.isEmpty() && !image.equals(obj.getDefaultImage())) {
 			writeNonEmptyAttributes(ostream, Pair.with("image", image));
 		}
 	}
