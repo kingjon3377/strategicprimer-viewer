@@ -82,6 +82,22 @@ public class MapCheckerCLI implements UtilityDriver {
 		boolean check(@Nullable TileType terrain, Point location, IFixture fixture, Warning warner);
 	}
 
+	/**
+	 * An interface for checks that look at more than one fixture on a tile at once. As with {@link Checker}, checkers
+	 * should return true iff they report at least one warning.
+	 */
+	private interface MultiFixtureChecker {
+		/**
+		 * @param terrain the terrain at a point
+		 * @param location the location being checked
+		 * @param mtn whether this location is mountainous
+		 * @param warner the Warning instance to report specific errors on
+		 * @param fixtures the collection of fixtures being checked
+		 * @return true iff at least one warning was reported.
+		 */
+		boolean check(@Nullable TileType terrain, Point location, boolean mtn, Warning warner, Collection<? extends IFixture> fixtures);
+	}
+
 	private static class SPContentWarning extends Exception {
 		private static final long serialVersionUID = 1L;
 		public SPContentWarning(final Point context, final String message) {
@@ -286,8 +302,8 @@ public class MapCheckerCLI implements UtilityDriver {
 			case Large -> 80.0;
 		};
 	}
-	private static boolean acreageChecker(final Point context, final Warning warner,
-	                                      final Collection<? extends IFixture> fixtures) {
+	private static boolean acreageChecker(final TileType terrain, final Point context, final boolean mtn,
+			final Warning warner, final Collection<? extends IFixture> fixtures) {
 		final boolean retval = false;
 		double total = fixtures.stream().filter(HasExtent.class::isInstance).map(HasExtent.class::cast)
 				.filter(MapCheckerCLI::positiveAcres).map(HasExtent::getAcres).mapToDouble(Number::doubleValue).sum();
@@ -308,6 +324,16 @@ public class MapCheckerCLI implements UtilityDriver {
 			return true;
 		} else {
 			return retval;
+		}
+	}
+
+	private static boolean hillInMountainCheck(final TileType terrain, final Point context, final boolean mtn,
+			final Warning warner, final Collection<? extends IFixture> fixtures) {
+		if (mtn && fixtures.stream().anyMatch(Hill.class::isInstance)) {
+			warner.handle(new SPContentWarning(context, "Hill in mountainous tile"));
+			return true;
+		} else {
+			return false;
 		}
 	}
 
@@ -350,6 +376,9 @@ public class MapCheckerCLI implements UtilityDriver {
 			MapCheckerCLI::resourcePlaceholderChecker, MapCheckerCLI::oasisChecker,
 			MapCheckerCLI::personalEquipmentCheck, MapCheckerCLI::noResultsCheck, MapCheckerCLI::hillInOceanCheck,
 			MapCheckerCLI::unnamedCheck, MapCheckerCLI::nonPoundsFoodCheck);
+
+	private static final List<MultiFixtureChecker> EXTRA_MULTI_CHECKS = List.of(MapCheckerCLI::acreageChecker,
+			MapCheckerCLI::hillInMountainCheck);
 
 	private static boolean contentCheck(final Checker checker, final @Nullable TileType terrain, final Point context,
 	                                    final Warning warner, final Iterable<? extends IFixture> list) {
@@ -421,17 +450,10 @@ public class MapCheckerCLI implements UtilityDriver {
 			LovelaceLogger.debug("Finished a check for %s", file);
 		}
 
-		for (final Point location : map.getLocations()) {
-			if (map.getBaseTerrain(location) != null) {
-				// N.B. acreageChecker() can't be moved into EXTRA_CHECKS since it operates on *all* fixtures at once,
-				// not one at a time as each checker does in contentCheck().
-				result = acreageChecker(location, warner, map.getFixtures(location))
-					|| result;
-			}
-			if (map.isMountainous(location) &&
-					map.getFixtures(location).stream().anyMatch(Hill.class::isInstance)) {
-				warner.handle(new SPContentWarning(location, "Hill in mountainous tile"));
-				result = true;
+		for (final MultiFixtureChecker checker : EXTRA_MULTI_CHECKS) {
+			for (final Point location : map.getLocations()) {
+				result = checker.check(map.getBaseTerrain(location), location, map.isMountainous(location), warner,
+						map.getFixtures(location)) || result;
 			}
 		}
 
