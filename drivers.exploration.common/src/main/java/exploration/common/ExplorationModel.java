@@ -75,7 +75,7 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 	}
 
 	private static Stream<IFixture> flattenIncluding(final IFixture fixture) {
-		if (fixture instanceof FixtureIterable iter) {
+		if (fixture instanceof FixtureIterable<?> iter) {
 			return Stream.concat(Stream.of(fixture), iter.stream());
 		} else {
 			return Stream.of(fixture);
@@ -180,7 +180,7 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 		for (final IFixture member : stream) {
 			if (Objects.equals(member, fixture)) {
 				return true;
-			} else if (member instanceof FixtureIterable iter &&
+			} else if (member instanceof FixtureIterable<?> iter &&
 					doesStreamContainFixture(iter, fixture)) {
 				return true;
 			}
