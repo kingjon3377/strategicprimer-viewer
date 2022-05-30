@@ -94,8 +94,6 @@ public class IntMap<Item> extends AbstractMap<Integer, Item> implements DelayedR
 
 	@Override
 	public final @NotNull Set<Entry<Integer, Item>> entrySet() {
-//		TODO: Switch to Collectors.toUnmodifiableSet() once JDK version bumped to 10+
-//		return backing.entrySet().stream().filter(entry -> !toRemove.contains(entry.getKey())).collect(Collectors.toUnmodifiableSet());
 		return backing.entrySet().stream().filter(entry -> !toRemove.contains(entry.getKey())).collect(Collectors.toUnmodifiableSet());
 	}
 }
