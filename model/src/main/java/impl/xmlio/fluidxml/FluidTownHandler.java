@@ -254,8 +254,7 @@ import java.util.stream.Collectors;
 				}
 			} else if (event instanceof EndElement ee && !stack.isEmpty() &&
 					ee.getName().equals(stack.peekFirst().getName())) {
-				final StartElement top = stack.peekFirst();
-				stack.removeFirst(); // FIXME: Combine with previous line; removeFirst() returns the top ...
+				final StartElement top = stack.removeFirst();
 				if (top.equals(element)) {
 					break;
 				} else if (top.getName().getLocalPart().equals(current)) {
