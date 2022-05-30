@@ -33,10 +33,6 @@ public final class CommunityStats implements Subsettable<@Nullable CommunityStat
 	private int population;
 
 	/**
-	 * Population cannot be negative
-	 */
-
-	/**
 	 * Approximately how many adults live in the community.
 	 */
 	public int getPopulation() {
