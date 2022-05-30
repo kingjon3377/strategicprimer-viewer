@@ -69,7 +69,7 @@ public class MapTradeModel extends SimpleMultiMapModel {
 	public void copyRiversAt(final Point location) {
 		final IMapNG map = getMap();
 		for (final IMutableMapNG second : getRestrictedSubordinateMaps()) {
-			second.addRivers(location, map.getRivers(location).toArray(new River[0]));
+			second.addRivers(location, map.getRivers(location).toArray(River[]::new));
 			setGlobalModifiedFlag();
 		}
 	}

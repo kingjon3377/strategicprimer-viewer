@@ -253,13 +253,13 @@ public final class WorkerTree extends JTree implements UnitMemberSelectionSource
 					return null;
 				} else {
 					// TODO: Make UnitTransferable take Iterable in its constructor
-					return new UnitTransferable(unitsToTransfer.toArray(new IUnit[0]));
+					return new UnitTransferable(unitsToTransfer.toArray(IUnit[]::new));
 				}
 			} else {
 				if (!unitsToTransfer.isEmpty()) { // TODO: combine with containing else?
 					LovelaceLogger.warning("Selection included both units and unit members");
 				}
-				return new UnitMemberTransferable(membersToTransfer.toArray(new Pair[0]));
+				return new UnitMemberTransferable(membersToTransfer.toArray(Pair[]::new));
 			}
 		}
 

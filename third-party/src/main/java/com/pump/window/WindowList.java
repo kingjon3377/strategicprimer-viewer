@@ -212,7 +212,7 @@ public final class WindowList {
 				a++;
 			}
 		}
-		return returnValue.toArray(new Window[returnValue.size()]);
+		return returnValue.toArray(Window[]::new);
 	}
 
 	/**
@@ -255,7 +255,7 @@ public final class WindowList {
 				a++;
 			}
 		}
-		return returnValue.toArray(new Frame[returnValue.size()]);
+		return returnValue.toArray(Frame[]::new);
 	}
 
 	/**

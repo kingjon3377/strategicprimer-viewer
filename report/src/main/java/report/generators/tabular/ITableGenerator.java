@@ -54,11 +54,11 @@ public interface ITableGenerator<T extends IFixture> {
 				(T) e.getValue().getValue1()))
 			.sorted(Comparator.comparing(Triplet::removeFrom0, comparePairs()))
 			.collect(Collectors.toList());
-		writeRow(ostream, getHeaderRow().toArray(new String[0]));
+		writeRow(ostream, getHeaderRow().toArray(String[]::new));
 		for (final Triplet<Integer, Point, T> triplet : values) {
 			for (final List<String> row : produce(fixtures, triplet.getValue2(),
 					triplet.getValue0(), triplet.getValue1(), parentMap)) {
-				writeRow(ostream, row.toArray(new String[0]));
+				writeRow(ostream, row.toArray(String[]::new));
 			}
 		}
 		fixtures.coalesce();
@@ -84,7 +84,7 @@ public interface ITableGenerator<T extends IFixture> {
 					triplet.getValue0(), triplet.getValue1(), parentMap)) {
 				// TODO: We'd like special handling of numeric fields ...
 				// TODO: Offer a version of addRow() that takes a List?
-				retval.addRow(row.toArray(new String[0]));
+				retval.addRow(row.toArray(String[]::new));
 				count++;
 			}
 		}

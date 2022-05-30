@@ -103,7 +103,7 @@ import common.map.IFixture;
 				interim.add(ours.next().combined(theirs.next()));
 			}
 			if (!ours.hasNext() && theirs.hasNext()) { // sizes match
-				return new ProxyAnimal(interim.toArray(new Animal[0]));
+				return new ProxyAnimal(interim.toArray(Animal[]::new));
 			}
 		}
 		return new ProxyAnimal(animals.stream().map((a) -> a.combined(addend)).toArray(Animal[]::new));

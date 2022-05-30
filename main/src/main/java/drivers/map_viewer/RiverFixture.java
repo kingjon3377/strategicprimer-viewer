@@ -48,7 +48,7 @@ import lovelace.util.LovelaceLogger;
 	@Override
 	public RiverFixture copy(final CopyBehavior zero) {
 		LovelaceLogger.warning(new Exception("dummy"), "TileTypeFixture.copy called");
-		return new RiverFixture(rivers.toArray(new River[0]));
+		return new RiverFixture(rivers.toArray(River[]::new));
 	}
 
 	@Override

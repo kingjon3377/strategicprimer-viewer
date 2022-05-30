@@ -147,7 +147,7 @@ import org.jetbrains.annotations.Nullable;
 //				try {
 				SwingUtilities.invokeLater(
 						() -> new AppChooserGUI(cli, currentOptionsTyped)
-								.startDriver(others.toArray(new String[0])));
+								.startDriver(others.toArray(String[]::new)));
 //				} catch (DriverFailedException except) {
 //					LovelaceLogger.error(except, except.getMessage());
 //					SwingUtilities.invokeLater(() -> showErrorDialog(null,
@@ -159,7 +159,7 @@ import org.jetbrains.annotations.Nullable;
 						.filter(AppStarter::includeInCLIList).collect(Collectors.toList()), "CLI apps available:", "No applications available", "App to start: ", ICLIHelper.ListChoiceBehavior.AUTO_CHOOSE_ONLY).getValue1();
 				if (chosenDriver != null) {
 					new DriverWrapper(chosenDriver).startCatchingErrors(cli, options,
-							others.toArray(new String[0]));
+							others.toArray(String[]::new));
 				}
 			}
 		}

@@ -158,7 +158,7 @@ public class ResourceTabularReportGenerator
 					e.getValue().getValue1()))
 			.sorted(Comparator.comparing(Triplet::removeFrom0, comparePairs()))
 			.collect(Collectors.toList());
-		writeRow(ostream, getHeaderRow().toArray(new String[0]));
+		writeRow(ostream, getHeaderRow().toArray(String[]::new));
 		final Map<Pair<Point, String>, Integer> implementCounts = new HashMap<>();
 		for (final Triplet<Integer, Point, IFixture> triplet : values) {
 			final int key = triplet.getValue0();
@@ -171,7 +171,7 @@ public class ResourceTabularReportGenerator
 				fixtures.remove(key);
 			} else {
 				for (final List<String> row : produce(fixtures, fixture, key, loc, parentMap)) {
-					writeRow(ostream, row.toArray(new String[0]));
+					writeRow(ostream, row.toArray(String[]::new));
 					fixtures.remove(key);
 				}
 			}

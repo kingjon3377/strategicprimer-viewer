@@ -228,7 +228,7 @@ public class WorkerTreeModelAlt extends DefaultTreeModel implements IWorkerTreeM
 			final int index = 0;
 			for (final String kind : model.getUnitKinds(player)) {
 				insert(new KindNode(kind,
-						model.getUnits(player, kind).toArray(new IUnit[0])), index);
+						model.getUnits(player, kind).toArray(IUnit[]::new)), index);
 			}
 			if (getChildCount() == 0) {
 				LovelaceLogger.warning("No unit kinds in player node for player %s", player);

@@ -108,7 +108,7 @@ import java.util.Comparator;
 					} else {
 						throw UnwantedChildException.listingExpectedTags(
 							stack.peekFirst().getName(), se,
-								expectedCommunityStatsTags(current).toArray(new String[0]));
+								expectedCommunityStatsTags(current).toArray(String[]::new));
 					}
 					break;
 				case "claim":
@@ -121,7 +121,7 @@ import java.util.Comparator;
 					} else {
 						throw UnwantedChildException.listingExpectedTags(
 							stack.peekFirst().getName(), se,
-								expectedCommunityStatsTags(current).toArray(new String[0]));
+								expectedCommunityStatsTags(current).toArray(String[]::new));
 					}
 					break;
 				case "production":
@@ -133,7 +133,7 @@ import java.util.Comparator;
 					} else {
 						throw UnwantedChildException.listingExpectedTags(
 								stack.peekFirst().getName(), se,
-								expectedCommunityStatsTags(current).toArray(new String[0]));
+								expectedCommunityStatsTags(current).toArray(String[]::new));
 					}
 					break;
 				case "resource":
@@ -146,7 +146,7 @@ import java.util.Comparator;
 						throw UnwantedChildException.listingExpectedTags(
 							stack.peekFirst().getName(), se,
 								expectedCommunityStatsTags(current == null ?
-										                           "population" : current).toArray(new String[0]));
+										                           "population" : current).toArray(String[]::new));
 					}
 					lambda.accept(resourceReader.read(se,
 						stack.peekFirst().getName(), stream));
@@ -156,7 +156,7 @@ import java.util.Comparator;
 						stack.isEmpty() ? element.getName() :
 							stack.peekFirst().getName(),
 						se, expectedCommunityStatsTags(current == null ?
-									                           "population" : current).toArray(new String[0]));
+									                           "population" : current).toArray(String[]::new));
 				}
 			} else if (event instanceof EndElement ee && !stack.isEmpty() &&
 					ee.getName().equals(stack.peekFirst().getName())) {

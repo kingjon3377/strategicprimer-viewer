@@ -311,7 +311,7 @@ public final class ExplorationRunner {
 						items.add(source.next());
 					}
 					loadTable(name, new QuadrantTable(rows,
-							items.toArray(new String[0])));
+							items.toArray(String[]::new)));
 				} else {
 					throw new IllegalArgumentException(
 						"File doesn't start with number of rows of quadrants");
@@ -342,7 +342,7 @@ public final class ExplorationRunner {
 							Stream.of(splitted).skip(1)
 								.collect(Collectors.joining(" "))));
 						loadTable(name, new RandomTable(
-								listR.toArray(new Pair[0])));
+								listR.toArray(Pair[]::new)));
 					}
 				}
 				break;
@@ -376,7 +376,7 @@ public final class ExplorationRunner {
 								.collect(Collectors.joining(" "))));
 					}
 				}
-				loadTable(name, new TerrainTable(listT.toArray(new Pair[0])));
+				loadTable(name, new TerrainTable(listT.toArray(Pair[]::new)));
 				break;
 			default:
 				throw new IllegalArgumentException(String.format(

@@ -149,7 +149,7 @@ public class FixtureListModel implements ListModel<TileFixture>, SelectionChange
 		LovelaceLogger.trace("FixtureListModel.selectedPointChanged: Accounted for base terrain");
 		final Collection<River> rivers = riversSource.apply(newPoint);
 		if (rivers.iterator().hasNext()) {
-			cachedTerrainList.add(new RiverFixture(rivers.toArray(new River[0])));
+			cachedTerrainList.add(new RiverFixture(rivers.toArray(River[]::new)));
 		}
 		// TODO: Add support for roads
 		LovelaceLogger.trace("FixtureListModel.selectedPointChanged: Accounted for rivers");
@@ -236,7 +236,7 @@ public class FixtureListModel implements ListModel<TileFixture>, SelectionChange
 					return true;
 				} else if (addRivers != null) {
 					addRivers.accept(point,
-							rf.getRivers().toArray(new River[0]));
+							rf.getRivers().toArray(River[]::new));
 					int index = -1;
 					for (int i = 0; i < cachedTerrainList.size(); i++) {
 						if (cachedTerrainList.get(i) instanceof RiverFixture) {
@@ -246,14 +246,14 @@ public class FixtureListModel implements ListModel<TileFixture>, SelectionChange
 					}
 					fireContentsChanged(new Range(index, index)); // TODO: move to after update?
 					cachedTerrainList.set(index,
-						new RiverFixture(riversSource.apply(point).toArray(new River[0])));
+						new RiverFixture(riversSource.apply(point).toArray(River[]::new)));
 					return true;
 				} else {
 					return false;
 				}
 			} else if (addRivers != null) {
 				addRivers.accept(point,
-						rf.getRivers().toArray(new River[0]));
+						rf.getRivers().toArray(River[]::new));
 				final int index = cachedTerrainList.size();
 				cachedTerrainList.add(fixture);
 				fireIntervalAdded(new Range(index, index));
@@ -319,7 +319,7 @@ public class FixtureListModel implements ListModel<TileFixture>, SelectionChange
 				} else {
 					final int index = cachedTerrainList.indexOf(fixture);
 					removeRivers.accept(point,
-							((RiverFixture) fixture).getRivers().toArray(new River[0]));
+							((RiverFixture) fixture).getRivers().toArray(River[]::new));
 					cachedTerrainList.remove(fixture);
 					fireIntervalRemoved(new Range(index, index));
 				}
