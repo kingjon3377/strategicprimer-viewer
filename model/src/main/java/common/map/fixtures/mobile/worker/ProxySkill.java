@@ -14,7 +14,7 @@ import common.map.fixtures.mobile.ProxyFor;
 /**
  * An implementation of ISkill whose operations act on multiple workers at once.
  *
- * TODO: Figure out how we can make this satisfy ProxyFor&lt;ISkill&gt;?
+ * TODO: Figure out how we can make this satisfy {@code ProxyFor<ISkill>}?
  *
  * @deprecated We're trying to get rid of the notion of 'proxies' in favor of
  * driver model methods.
