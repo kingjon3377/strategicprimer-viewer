@@ -109,7 +109,7 @@ import org.jetbrains.annotations.Nullable;
 		}
 		int time = startingTime;
 		while (time > 0) {
-			final TrapperCommand command = ((Pair<Integer, @Nullable TrapperCommand>) cli.chooseFromList((List<? extends TrapperCommand>) trapperCommands, prompt, "Oops! No commands", "Next action: ", ICLIHelper.ListChoiceBehavior.ALWAYS_PROMPT)).getValue1();
+			final TrapperCommand command = ((Pair<Integer, ? extends @Nullable TrapperCommand>) cli.chooseFromList((List<? extends TrapperCommand>) trapperCommands, prompt, "Oops! No commands", "Next action: ", ICLIHelper.ListChoiceBehavior.ALWAYS_PROMPT)).getValue1();
 			if (command == null || TrapperCommand.Quit == command) {
 				break;
 			}
