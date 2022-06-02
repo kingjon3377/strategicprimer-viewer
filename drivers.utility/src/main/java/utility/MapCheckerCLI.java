@@ -400,7 +400,7 @@ public class MapCheckerCLI implements UtilityDriver {
 	                                    final Warning warner, final Iterable<? extends IFixture> list) {
 		boolean retval = false;
 		for (final IFixture fixture : list) {
-			if (fixture instanceof FixtureIterable iter) {
+			if (fixture instanceof FixtureIterable<?> iter) {
 				retval = contentCheck(checker, terrain, context, warner,
 					iter) || retval;
 			}

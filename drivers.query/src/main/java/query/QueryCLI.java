@@ -67,7 +67,7 @@ public class QueryCLI implements ReadOnlyDriver {
 			if (fixture instanceof IWorker && fixtures instanceof HasOwner owned &&
 					player.equals(owned.owner())) {
 				retval++;
-			} else if (fixture instanceof FixtureIterable iter) {
+			} else if (fixture instanceof FixtureIterable<?> iter) {
 				retval += countWorkersInIterable(player, iter);
 			}
 		}
