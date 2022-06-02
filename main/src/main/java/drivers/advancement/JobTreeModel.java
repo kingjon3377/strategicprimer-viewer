@@ -1,5 +1,7 @@
 package drivers.advancement;
 
+import java.util.function.Function;
+import java.util.function.ToIntFunction;
 import javax.swing.tree.DefaultTreeSelectionModel;
 import lovelace.util.LovelaceLogger;
 import org.jetbrains.annotations.Nullable;
@@ -60,12 +62,13 @@ import java.util.stream.StreamSupport;
 
 	@Override
 	public HasName getChild(final Object parent, final int index) {
-		if (index >= 0 && (parent instanceof IWorker || parent instanceof IJob)) {
-			return StreamSupport.stream(
-					((Iterable<? extends HasName>) parent).spliterator(), false)
-				.skip(index - 1).findFirst()
-				.orElseThrow(() -> new ArrayIndexOutOfBoundsException(
-					"Parent does not have that child"));
+		final Function<Iterable<? extends HasName>, HasName> impl =
+				par -> StreamSupport.stream(par.spliterator(), false).skip(index - 1).findFirst()
+						       .orElseThrow(() -> new ArrayIndexOutOfBoundsException("Parent does not have that child"));
+		if (index >= 0 && parent instanceof IWorker w) {
+			return impl.apply(w);
+		} else if (index >= 0 && parent instanceof IJob j) {
+			return impl.apply(j);
 		} else {
 			throw new ArrayIndexOutOfBoundsException("Parent does not have that child");
 		}
@@ -73,10 +76,12 @@ import java.util.stream.StreamSupport;
 
 	@Override
 	public int getChildCount(final Object parent) {
-		if (parent instanceof IWorker || parent instanceof IJob) {
-			return (int) StreamSupport.stream(
-					((Iterable<? extends HasName>) parent).spliterator(), false)
-				.count();
+		final ToIntFunction<Iterable<? extends HasName>> impl =
+				par -> (int) StreamSupport.stream(par.spliterator(), false).count();
+		if (parent instanceof IWorker w) {
+			return impl.applyAsInt(w);
+		} else if (parent instanceof IJob j) {
+			return impl.applyAsInt(j);
 		} else if (parent instanceof ISkill) {
 			return 0;
 		} else {
