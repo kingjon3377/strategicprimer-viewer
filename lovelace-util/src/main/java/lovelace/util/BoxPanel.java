@@ -39,7 +39,7 @@ public final class BoxPanel extends JPanel {
 	/**
 	 * Add "glue" (elasticity) between components.
 	 */
-	public final void addGlue() {
+	public void addGlue() {
 		switch (axis) {
 		case LineAxis -> add(Box.createHorizontalGlue());
 		case PageAxis -> add(Box.createVerticalGlue());
@@ -49,7 +49,7 @@ public final class BoxPanel extends JPanel {
 	/**
 	 * Add a rigid (fixed-size) area between components.
 	 */
-	public final void addRigidArea(final int dimension) {
+	public void addRigidArea(final int dimension) {
 		final Dimension dimensionObject = switch (axis) {
 			case LineAxis -> new Dimension(dimension, 0);
 			case PageAxis -> new Dimension(0, dimension);
