@@ -80,29 +80,6 @@ import worker.common.IFixtureEditHelper;
 		setDividerLocation(0.9);
 	}
 
-	private static JComponent keyElement(final int version, final @Nullable TileType type) {
-		final BoxPanel retval = new BoxPanel(BoxAxis.LineAxis);
-		retval.addGlue();
-		retval.addRigidArea(7);
-
-		final BoxPanel panel = new BoxPanel(BoxAxis.PageAxis);
-		panel.addRigidArea(4);
-		final int tileSize = scaleZoom(ViewerModel.DEFAULT_ZOOM_LEVEL, version);
-		final Color color = Optional.ofNullable(ColorHelper.get(version, type)).orElse(Color.white);
-		panel.add(new KeyElementComponent(color, new Dimension(4, 4), new Dimension(8, 8),
-			new Dimension(tileSize, tileSize)));
-		panel.addRigidArea(4);
-		final JLabel label = new JLabel(ColorHelper.getDescription(type));
-		panel.add(label);
-		panel.addRigidArea(4);
-		retval.add(panel);
-		retval.addRigidArea(7);
-		retval.addGlue();
-		retval.setMinimumSize(new Dimension(Math.max(4, (int) label.getMinimumSize().getWidth()) + 14,
-			16 + (int) label.getMinimumSize().getHeight()));
-		return retval;
-	}
-
 	private static final class KeyPanel extends JPanel implements VersionChangeListener {
 		private static final long serialVersionUID = 1L;
 		public KeyPanel(final int version) {
@@ -120,6 +97,29 @@ import worker.common.IFixtureEditHelper;
 			for (final TileType type : TileType.getValuesForVersion(newVersion)) {
 				add(keyElement(newVersion, type));
 			}
+		}
+
+		private static JComponent keyElement(final int version, final @Nullable TileType type) {
+			final BoxPanel retval = new BoxPanel(BoxAxis.LineAxis);
+			retval.addGlue();
+			retval.addRigidArea(7);
+
+			final BoxPanel panel = new BoxPanel(BoxAxis.PageAxis);
+			panel.addRigidArea(4);
+			final int tileSize = scaleZoom(ViewerModel.DEFAULT_ZOOM_LEVEL, version);
+			final Color color = Optional.ofNullable(ColorHelper.get(version, type)).orElse(Color.white);
+			panel.add(new KeyElementComponent(color, new Dimension(4, 4), new Dimension(8, 8),
+					new Dimension(tileSize, tileSize)));
+			panel.addRigidArea(4);
+			final JLabel label = new JLabel(ColorHelper.getDescription(type));
+			panel.add(label);
+			panel.addRigidArea(4);
+			retval.add(panel);
+			retval.addRigidArea(7);
+			retval.addGlue();
+			retval.setMinimumSize(new Dimension(Math.max(4, (int) label.getMinimumSize().getWidth()) + 14,
+					16 + (int) label.getMinimumSize().getHeight()));
+			return retval;
 		}
 	}
 
