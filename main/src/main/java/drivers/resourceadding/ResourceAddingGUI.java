@@ -75,37 +75,6 @@ import java.io.IOException;
 import java.io.FileNotFoundException;
 
 /* package */ class ResourceAddingGUI implements MultiMapGUIDriver {
-	// TODO: Probably move inside frame class
-	private static JPanel pairPanel(final Component first, final Component second) {
-		return BorderedPanel.verticalPanel(first, null, second);
-	}
-
-	private static final String CSS = "color:black; margin-bottom: 0.5em; margin-top: 0.5em;";
-
-	private static void logAddition(final StreamingLabel logLabel, final Player currentPlayer, final String addend) {
-		logLabel.append(String.format("<p style=\"%s\">Added %s for %s</p>", CSS,
-			addend, currentPlayer.getName()));
-	}
-
-	private static final String ERROR_CSS = "color:red; margin-bottom: 0.5em; margin-top: 0.5em;";
-
-	private static Consumer<String> logError(final StreamingLabel logLabel) {
-		return message -> logLabel.append(String.format("<p style=\"%s\">%s</p>",
-			ERROR_CSS, message));
-	}
-
-	private static void addListenerToField(final JSpinner field, final ActionListener listener,
-	                                       final StreamingLabel logLabel) {
-		if (field.getEditor() instanceof JTextField tf) {
-			tf.addActionListener(listener);
-		} else if (field.getEditor() instanceof JSpinner.DefaultEditor ed) {
-			ed.getTextField().addActionListener(listener);
-		} else {
-			logLabel.append("Spinner's editor wasn't a text field, but a ");
-			logLabel.appendLine(field.getEditor().getClass().getName());
-		}
-	}
-
 
 	private final ResourceManagementDriverModel model;
 
@@ -136,6 +105,36 @@ import java.io.FileNotFoundException;
 	 * TODO: Make dependencies explicit to make this static.
 	 */
 	private final class ResourceAddingFrame extends SPFrame implements PlayerChangeListener {
+		private static JPanel pairPanel(final Component first, final Component second) {
+			return BorderedPanel.verticalPanel(first, null, second);
+		}
+
+		private static final String CSS = "color:black; margin-bottom: 0.5em; margin-top: 0.5em;";
+
+		private static void logAddition(final StreamingLabel logLabel, final Player currentPlayer, final String addend) {
+			logLabel.append(String.format("<p style=\"%s\">Added %s for %s</p>", CSS,
+					addend, currentPlayer.getName()));
+		}
+
+		private static final String ERROR_CSS = "color:red; margin-bottom: 0.5em; margin-top: 0.5em;";
+
+		private static Consumer<String> logError(final StreamingLabel logLabel) {
+			return message -> logLabel.append(String.format("<p style=\"%s\">%s</p>",
+					ERROR_CSS, message));
+		}
+
+		private static void addListenerToField(final JSpinner field, final ActionListener listener,
+				final StreamingLabel logLabel) {
+			if (field.getEditor() instanceof JTextField tf) {
+				tf.addActionListener(listener);
+			} else if (field.getEditor() instanceof JSpinner.DefaultEditor ed) {
+				ed.getTextField().addActionListener(listener);
+			} else {
+				logLabel.append("Spinner's editor wasn't a text field, but a ");
+				logLabel.appendLine(field.getEditor().getClass().getName());
+			}
+		}
+
 		private static final long serialVersionUID = 1L;
 		private final IDRegistrar idf;
 		private Player currentPlayer;
