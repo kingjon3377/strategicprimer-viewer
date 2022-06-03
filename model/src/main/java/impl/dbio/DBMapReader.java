@@ -173,11 +173,15 @@ final class DBMapReader {
 		for (final MapContentsReader reader : readers) {
 			try {
 				reader.readMapContents(conn, retval, containers, containees, warner);
+			} catch (final RuntimeException exception) {
+				if (exception.getMessage().contains("no such table")) {
+					continue;
+				} else {
+					throw exception;
+				}
 			} catch (final Exception exception) {
 				if (exception.getMessage().contains("no such table")) {
 					continue;
-				} else if (exception instanceof RuntimeException) { // TODO: catch and test message to avoid cast
-					throw (RuntimeException) exception;
 				} else {
 					// TODO: declare checked exception instead?
 					throw new RuntimeException(exception);
