@@ -173,7 +173,7 @@ final class DBMapReader {
 		for (final MapContentsReader reader : readers) {
 			try {
 				reader.readMapContents(conn, retval, containers, containees, warner);
-			} catch (final RuntimeException exception) {
+			} catch (final RuntimeException|SQLException exception) {
 				if (exception.getMessage().contains("no such table")) {
 					continue;
 				} else {
