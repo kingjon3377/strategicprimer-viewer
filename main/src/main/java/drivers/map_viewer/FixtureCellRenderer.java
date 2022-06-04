@@ -70,7 +70,7 @@ import lovelace.util.LovelaceLogger;
 	 */
 	private static void setComponentPreferredSize(final JComponent component, final int width) {
 		final View view = (View) component.getClientProperty(BasicHTML.propertyKey);
-		view.setSize((float) width, (float) 0.0);
+		view.setSize((float) width, 0.0f);
 		final int wid = (int) Math.ceil(view.getPreferredSpan(View.X_AXIS));
 		final int height = (int) Math.ceil(view.getPreferredSpan(View.Y_AXIS));
 		component.setPreferredSize(new Dimension(wid, height)); // TODO: Use Dimension constructor taking doubles instead?
