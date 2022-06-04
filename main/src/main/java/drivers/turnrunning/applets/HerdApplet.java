@@ -164,7 +164,7 @@ import query.SmallAnimalModel;
 				} else if (cleaningDay) {
 					addLineToOrders.accept(String.format(
 						"Cleaning up after them takes %.1f hours.",
-						pm.dailyExtraTime((int) flockPerHerder) / 60.0));
+						PoultryModel.dailyExtraTime((int) flockPerHerder) / 60.0));
 					minutesSpent += PoultryModel.getExtraTimePerHead() * flockPerHerder;
 				}
 			} else if (herdModel instanceof MammalModel) {
