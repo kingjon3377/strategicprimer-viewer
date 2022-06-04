@@ -151,9 +151,9 @@ public final class WorkerStats {
 	/**
 	 * Takes an existing set of stats and a set of adjustments to produce
 	 * an adjusted set.
-	 * @param hp The number to use for {@link hitPoints} and {@link maxHitPoints}
+	 * @param hp The number to use for {@link #hitPoints} and {@link #maxHitPoints}
 	 * @param base A set of base stats to use for the other stats.
-	 * @param A set of adjustments to add to those stats.
+	 * @param adjustment A set of adjustments to add to those stats.
 	 */
 	public static WorkerStats adjusted(final int hp, final WorkerStats base, final WorkerStats adjustment) {
 		return new WorkerStats(hp, hp, base.strength + adjustment.strength,

@@ -85,9 +85,9 @@ public class ViewerModel extends SimpleDriverModel implements IViewerModel {
 	}
 
 	/**
-	 * If {@link fixture} is a {@link IFortress fortress}, return it; otherwise,
+	 * If the given fixture is a {@link IFortress fortress}, return it; otherwise,
 	 * return a Singleton containing it. This is intended to be used in
-	 * {@link Iterable#flatMap}.
+	 * {@link Stream#flatMap}.
 	 */
 	private static Stream<IFixture> unflattenNonFortresses(final TileFixture fixture) {
 		if (fixture instanceof IFortress f) {

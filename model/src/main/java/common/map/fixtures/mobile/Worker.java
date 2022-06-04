@@ -227,7 +227,7 @@ public class Worker implements IMutableWorker {
 	}
 
 	/**
-	 * We only use the worker's name and race for {@link toString}
+	 * We only use the worker's name and race for {@link #toString}
 	 */
 	@Override
 	public String toString() {
@@ -237,7 +237,7 @@ public class Worker implements IMutableWorker {
 	/**
 	 * The filename of the icon to use by default. This is just for icons
 	 * in lists and such, not the map, since this isn't a {@link
-	 * strategicprimer.model.common.map.TileFixture}.
+	 * common.map.TileFixture}.
 	 */
 	@Override
 	public String getDefaultImage() {

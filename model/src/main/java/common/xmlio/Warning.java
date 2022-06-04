@@ -8,7 +8,7 @@ import lovelace.util.LovelaceLogger;
  * A slightly-customizable warning-handling interface.
  *
  * TODO: Move these to lovelace.util.common (figure out how to make the
- * filtering in {@link WarningLevels#WARN} work first ...
+ * filtering in {@link #WARN} work first ...
  */
 public final class Warning {
 	/**

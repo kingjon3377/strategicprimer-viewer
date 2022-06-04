@@ -183,7 +183,7 @@ abstract class YAAbstractReader<Item, Value> implements YAReader<Item, Value> {
 	/**
 	 * Replace XML meta-characters in a string with their equivalents.
 	 *
-	 * @param delimeter The character that will mark the end of the string
+	 * @param delimiter The character that will mark the end of the string
 	 * as far as XML is concerned.  If a single or double quote, that
 	 * character will be encoded every time it occurs in the string; if a
 	 * greater-than sign or an equal sign, both types of quotes will be; if

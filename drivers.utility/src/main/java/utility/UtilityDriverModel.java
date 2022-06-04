@@ -88,7 +88,7 @@ public class UtilityDriverModel extends SimpleMultiMapModel {
 	}
 
 	/**
-	 * Copy rivers at the given {@link location} missing from subordinate
+	 * Copy rivers at the given location missing from subordinate
 	 * maps, where they have other terrain information, from the main map.
 	 */
 	public void copyRiversAt(final Point location) {

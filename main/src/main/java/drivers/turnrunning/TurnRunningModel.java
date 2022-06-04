@@ -400,8 +400,8 @@ public class TurnRunningModel extends ExplorationModel implements ITurnRunningMo
 	/**
 	 * Reduce the matching {@link IResourcePile resource}, in a {@link
 	 * common.map.fixtures.mobile.IUnit unit} or {@link IFortress fortress}
-	 * owned by the specified player, by {@link amount the
-	 * specified amount}. Returns true if any (mutable) resource piles
+	 * owned by the specified player, by the
+	 * specified amount. Returns true if any (mutable) resource piles
 	 * matched in any of the maps, false otherwise.
 	 */
 	@Override
@@ -451,11 +451,11 @@ public class TurnRunningModel extends ExplorationModel implements ITurnRunningMo
 	/**
 	 * Remove the given {@link IResourcePile resource} from a {@link
 	 * common.map.fixtures.mobile.IUnit unit} or {@link
-	 * common.map.fixtures.towns.IFortress fortress} owned by {@link owner
-	 * the specified player} in all maps. Returns true if any matched in
+	 * common.map.fixtures.towns.IFortress fortress} owned by
+	 * the specified player in all maps. Returns true if any matched in
 	 * any of the maps, false otherwise.
 	 *
-	 * @deprecated Use {@link reduceResourceBy} when possible instead.
+	 * @deprecated Use {@link #reduceResourceBy} when possible instead.
 	 */
 	@Deprecated
 	@Override
@@ -676,9 +676,9 @@ public class TurnRunningModel extends ExplorationModel implements ITurnRunningMo
 		return any;
 	}
 
-	/** Transfer {@link quantity} units from {@link from a resource} to (if
-	 * not all of it) another resource in {@link to a unit } in
-	 * all maps. If this leaves any behind in any map, {@link idFactory}
+	/** Transfer "quantity" units from a resource to (if
+	 * not all of it) another resource in the given unit in
+	 * all maps. If this leaves any behind in any map, "idFactory"
 	 * will be called exactly once to generate the ID number for the
 	 * resource in the destination in maps where that is the case. Returns
 	 * true if a matching (mutable) resource and destination are found (and
@@ -738,9 +738,9 @@ public class TurnRunningModel extends ExplorationModel implements ITurnRunningMo
 	}
 
 	/**
-	 * Transfer {@link quantity} units from {@link from a resource} to (if
-	 * not all of it) another resource in {@link to a fortress} in all
-	 * maps. If this leaves any behind in any map, {@link idFactory} will
+	 * Transfer "quantity" units from a resource to (if
+	 * not all of it) another resource in the specified fortress in all
+	 * maps. If this leaves any behind in any map, "idFactory" will
 	 * be called exactly once to generate the ID number for the resource in
 	 * the destination in maps where that is the case. Returns true if a
 	 * matching (mutable) resource and destination are found (and the

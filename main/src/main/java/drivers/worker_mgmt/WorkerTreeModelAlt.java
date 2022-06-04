@@ -90,7 +90,7 @@ public class WorkerTreeModelAlt extends DefaultTreeModel implements IWorkerTreeM
 		 * will not complain if you pass an object in that is not a
 		 * {@link NodeObject}, that will cause an exception to be thrown.
 		 *
-		 * @throws IllegalArgumentException if {@link obj} is not a {@link NodeObject}.
+		 * @throws IllegalArgumentException if "obj" is not a {@link NodeObject}.
 		 */
 		@Override
 		public final void setUserObject(final Object obj) {
@@ -102,7 +102,7 @@ public class WorkerTreeModelAlt extends DefaultTreeModel implements IWorkerTreeM
 
 		/**
 		 * Explicitly delegate to the {@link DefaultMutableTreeNode}
-		 * default {@link toString} implementation. (This, with a cast
+		 * default {@link #toString} implementation. (This, with a cast
 		 * specifying which supertype's implementation to use, was
 		 * required in Ceylon for the code to compile.)
 		 */
@@ -326,7 +326,7 @@ public class WorkerTreeModelAlt extends DefaultTreeModel implements IWorkerTreeM
 
 	/**
 	 * Add a unit to the driver-model and the map. Delegates to {@link
-	 * addUnit}; the two have the same functionality, but are required by
+	 * #addUnit}; the two have the same functionality, but are required by
 	 * different interfaces.
 	 */
 	@Override
@@ -503,8 +503,8 @@ public class WorkerTreeModelAlt extends DefaultTreeModel implements IWorkerTreeM
 	}
 
 	/**
-	 * Add {@link sibling a unit-member} to the unit containing {@link base
-	 * the given unit-member}. This is primarily used when the user asks to
+	 * Add a unit-member, "sibling" to the unit containing
+	 * the given unit-member, "base". This is primarily used when the user asks to
 	 * split an animal population.
 	 */
 	@Override

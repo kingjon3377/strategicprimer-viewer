@@ -29,7 +29,7 @@ public class UtilityMenuHandler {
 	/**
 	 * Show the About dialog (as a response to a menu-item event).
 	 *
-	 * Note that this can't be made static because it refers to {@link window}.
+	 * Note that this can't be made static because it refers to {@link #window}.
 	 *
 	 * TODO: We'd like to cache the dialog, maybe?
 	 */

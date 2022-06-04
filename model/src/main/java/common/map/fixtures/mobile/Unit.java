@@ -39,7 +39,7 @@ public final class Unit implements IMutableUnit {
 
 	/**
 	 * The unit's results. This is serialized to and from XML, but does not
-	 * affect equality or hashing, and is not printed in {@link toString}.
+	 * affect equality or hashing, and is not printed in {@link #toString}.
 	 */
 	private final NavigableMap<Integer, String> results = new TreeMap<>();
 
@@ -286,7 +286,7 @@ public final class Unit implements IMutableUnit {
 	/**
 	 * An icon to represent units by default.
 	 *
-	 * @author {@link https://openclipart.org/detail/28731/sword-and-shield-icon purzen}
+	 * @author <a href="https://openclipart.org/detail/28731/sword-and-shield-icon">purzen</a>
 	 */
 	@Override
 	public String getDefaultImage() {

@@ -57,7 +57,7 @@ import common.map.fixtures.mobile.worker.Skill;
  */
 public class WorkerModel extends SimpleMultiMapModel implements IWorkerModel {
 	/**
-	 * If {@link fixture the argument} is a {@link IFortress fortress},
+	 * If the argument is a {@link IFortress fortress},
 	 * return a stream of its members; otherwise, return a stream
 	 * containing only the argument. This allows callers to get a flattened
 	 * stream of units, including those in fortresses.
@@ -419,7 +419,7 @@ public class WorkerModel extends SimpleMultiMapModel implements IWorkerModel {
 	/**
 	 * Move a unit-member from one unit to another. If all three objects
 	 * are proxies, we use a special algorithm that unwraps the proxies,
-	 * which was extracted as {@link moveProxied}.
+	 * which was extracted as {@link #moveProxied}.
 	 */
 	@Override
 	public void moveMember(final UnitMember member, final IUnit old, final IUnit newOwner) {
@@ -772,8 +772,8 @@ public class WorkerModel extends SimpleMultiMapModel implements IWorkerModel {
 	 * all maps.  Returns true if a matching worker was found in at least
 	 * one map, false otherwise. If the worker doesn't have that Skill in
 	 * that Job, it is added first; if the worker doesn't have that Job, it
-	 * is added first as in {@link addJobToWorker}, then the skill is added
-	 * to it. The {@link contextValue} is passed to {@link
+	 * is added first as in {@link #addJobToWorker}, then the skill is added
+	 * to it. The "contextValue" is passed to {@link
 	 * common.map.fixtures.mobile.worker.IMutableSkill#addHours}; it should
 	 * be a random number between 0 and 99.
 	 */
@@ -828,8 +828,8 @@ public class WorkerModel extends SimpleMultiMapModel implements IWorkerModel {
 	 * least one worker received hours, false otherwise. If a worker
 	 * doesn't have that skill in that Job, it is added first; if it
 	 * doesn't have that Job, it is added first as in {@link
-	 * addJobToWorker}, then the skill is added to it. The {@link
-	 * contextValue} is used to calculate a new value passed to {@link
+	 * #addJobToWorker}, then the skill is added to it. The
+	 * "contextValue" is used to calculate a new value passed to {@link
 	 * common.map.fixtures.mobile.worker.IMutableSkill#addHours} for each
 	 * worker.
 	 *
@@ -850,9 +850,9 @@ public class WorkerModel extends SimpleMultiMapModel implements IWorkerModel {
 	}
 
 	/**
-	 * Replace {@link delenda one skill} with {@link replacement
-	 * another} in the specified job in the specified worker in all maps.
-	 * Unlike {@link addHoursToSkill}, if a map does not have an
+	 * Replace one skill, "delenda", with
+	 * another, "replacement", in the specified job in the specified worker in all maps.
+	 * Unlike {@link #addHoursToSkill}, if a map does not have an
 	 * <em>equal</em> Job in the matching worker, that map is completely
 	 * skipped.  If the replacement is already present, just remove the
 	 * first skill. Returns true if the operation was carried out in any of

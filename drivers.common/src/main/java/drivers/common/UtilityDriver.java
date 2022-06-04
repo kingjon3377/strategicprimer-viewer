@@ -8,7 +8,7 @@ package drivers.common;
 public interface UtilityDriver extends ISPDriver {
 	/**
 	 * Run the driver. If the driver is a GUI driver, this should use
-	 * {@link SwingUtilities#invokeLater}; if it's a CLI driver, that's not
+	 * {@link javax.swing.SwingUtilities#invokeLater}; if it's a CLI driver, that's not
 	 * necessary.
 	 *
 	 * @param args Any command-line arguments, such as filenames, that

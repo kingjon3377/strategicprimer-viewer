@@ -98,8 +98,7 @@ public class Cave implements ExplorableFixture {
 	}
 
 	/**
-	 * @author MrBeast
-	 * @see http://opengameart.org/content/cave-tileset-0
+	 * @author <a href="http://opengameart.org/content/cave-tileset-0">MrBeast</a>
 	 */
 	@Override
 	public String getDefaultImage() {
