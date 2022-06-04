@@ -132,7 +132,7 @@ import org.jetbrains.annotations.Nullable;
 
 		/**
 		 * The description of the fixture that matched, if any, so caller doesn't have to figure out which fixture
-		 * matched to use {@link stopExplanation}.
+		 * matched to use {@link #stopExplanation}.
 		 */
 		public String explain() {
 			return Optional.ofNullable(matched).map(stopExplanation).orElse("");

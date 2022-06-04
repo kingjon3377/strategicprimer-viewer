@@ -132,9 +132,9 @@ public class DuplicateFixtureRemoverCLI implements CLIDriver {
 	}
 
 	/**
-	 * If {@link matching} is not null, ask the user whether to remove
-	 * {@link fixture}, and return the user's answer (null on EOF). If
-	 * {@link matching} is null, return false.
+	 * If "matching" is not null, ask the user whether to remove
+	 * the fixture, and return the user's answer (null on EOF). If
+	 * "matching" is null, return false.
 	 */
 	private @Nullable Boolean approveRemoval(final Point location, final TileFixture fixture, final @Nullable TileFixture matching) {
 		if (matching == null) {

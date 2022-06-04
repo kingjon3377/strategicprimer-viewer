@@ -71,7 +71,7 @@ public class PointIterable implements Iterable<Point> {
 		private final int startColumn;
 
 		/**
-		 * If {@link item} is zero or positive, return it; otherwise, return {@link wrap}.
+		 * If "item" is zero or positive, return it; otherwise, return "wrap".
 		 */
 		int wrap(final int item, final int wrap) {
 			return (item < 0) ? wrap : item;

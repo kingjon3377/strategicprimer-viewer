@@ -14,7 +14,7 @@ import common.map.MapDimensions;
 /**
  * A mock {@link EncounterTable} for the apparatus to test the
  * ExplorationRunner, to produce the events the tests want in the order they
- * want, and guarantee that the runner never calls {@link getAllEvents}.
+ * want, and guarantee that the runner never calls {@link #getAllEvents}.
  */
 class MockTable implements EncounterTable {
 	private final Deque<String> queue = new LinkedList<>();

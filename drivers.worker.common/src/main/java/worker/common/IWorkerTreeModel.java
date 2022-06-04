@@ -28,7 +28,7 @@ public interface IWorkerTreeModel extends TreeModel, IFixtureEditHelper {
 	TreePath nextProblem(@Nullable TreePath starting, int turn);
 
 	/**
-	 * If {@link arg} is a node in the tree, return its children, if any;
+	 * If "arg" is a node in the tree, return its children, if any;
 	 * otherwise, return an empty collection.
 	 */
 	Iterable<Object> childrenOf(Object arg);

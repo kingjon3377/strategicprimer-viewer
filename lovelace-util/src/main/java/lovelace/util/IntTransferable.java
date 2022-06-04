@@ -13,7 +13,7 @@ public final class IntTransferable implements Transferable {
 	private final int payload;
 
 	/**
-	 * @param flavor the {@link flavor DataFlavor} we should advertise support for
+	 * @param flavor the {@link DataFlavor flavor} we should advertise support for
 	 * @param payload the integer to transfer
 	 */
 	public IntTransferable(final DataFlavor flavor, final int payload) {
@@ -22,7 +22,7 @@ public final class IntTransferable implements Transferable {
 	}
 
 	/**
-	 * A single-element array containing the provided {@link flavor}.
+	 * A single-element array containing the provided {@link #flavor}.
 	 */
 	@Override
 	public DataFlavor[] getTransferDataFlavors() {
@@ -30,7 +30,7 @@ public final class IntTransferable implements Transferable {
 	}
 
 	/**
-	 * Only the provided {@link flavor} is supported.
+	 * Only the provided {@link #flavor} is supported.
 	 */
 	@Override
 	public boolean isDataFlavorSupported(final DataFlavor possibility) {
@@ -38,8 +38,8 @@ public final class IntTransferable implements Transferable {
 	}
 
 	/**
-	 * If {@link wantedFlavor} is equal to {@link flavor}, return {@link
-	 * payload}; otherwise throw an {@link UnsupportedFlavorException}.
+	 * If "wantedFlavor" is equal to {@link #flavor}, return {@link
+	 * #payload}; otherwise throw an {@link UnsupportedFlavorException}.
 	 */
 	@Override
 	public Integer getTransferData(final DataFlavor wantedFlavor) throws UnsupportedFlavorException {
@@ -59,7 +59,7 @@ public final class IntTransferable implements Transferable {
 	}
 
 	/**
-	 * Use the {@link payload} as the hash value.
+	 * Use the {@link #payload} as the hash value.
 	 */
 	@Override
 	public int hashCode() {
@@ -67,7 +67,7 @@ public final class IntTransferable implements Transferable {
 	}
 
 	/**
-	 * An object is equal iff it is an IntTransferable with the same {@link flavor} and {@link payload}.
+	 * An object is equal iff it is an IntTransferable with the same {@link #flavor} and {@link #payload}.
 	 */
 	@Override
 	public boolean equals(final Object that) {

@@ -8,7 +8,7 @@ public final class Decimalize {
 	}
 
 	/**
-	 * If {@link number} is a {@link BigDecimal}, return it; otherwise,
+	 * If "number" is a {@link BigDecimal}, return it; otherwise,
 	 * return a BigDecimal representation of the same number. Note that
 	 * this will most likely throw if it is a floating-point number and
 	 * either infinity or `NaN`.

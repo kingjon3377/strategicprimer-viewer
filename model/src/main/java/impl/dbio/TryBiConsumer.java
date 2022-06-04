@@ -5,8 +5,6 @@ import java.util.Objects;
 import java.util.function.Consumer;
 
 /**
- * @see buckelieg.jdbc.fn.TryConsumer
- *
  * @author Jonathan Lovelace (skeleton, {@code accept}, {@code partial})
  * @author rest adapted from @buckelieg/jdbc-fn TryConsumer
  */

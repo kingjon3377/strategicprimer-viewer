@@ -1,7 +1,7 @@
 package drivers.map_viewer;
 
 /**
- * An encapsulation of the {@link scaleZoom} method.
+ * An encapsulation of the {@link #scaleZoom} method.
  *
  * TODO: Move into some class ... which?
  */

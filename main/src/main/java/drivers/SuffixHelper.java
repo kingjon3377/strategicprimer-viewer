@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 /* package */ final class SuffixHelper {
 	private SuffixHelper() {}
 	/**
-	 * Get the last {@link count} path elements in {@link file the given path}.
+	 * Get the last "count" path elements in the given path.
 	 */
 	private static String suffix(final Path file, final int count) {
 		final LinkedList<Path> list = StreamSupport.stream(file.spliterator(), false)
@@ -29,9 +29,9 @@ import java.util.stream.Collectors;
 	}
 
 	/**
-	 * Divide the given {@link file filename} into prefix and suffix,
+	 * Divide the given filename into prefix and suffix,
 	 * returning the suffix, such that the prefix is shared with all files
-	 * in {@link all}, but is otherwise as long as possible.
+	 * in "all", but is otherwise as long as possible.
 	 */
 	public static String shortestSuffix(final Collection<Path> all, final Path file) {
 		final int longestPath = all.stream().mapToInt(Path::getNameCount).max().orElse(1);

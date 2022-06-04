@@ -19,7 +19,7 @@ import lovelace.util.Platform;
  * do nothing on close to let us ask the user to confirm closing a modified
  * file) dialogs are set to dispose on close, and we set up hotkeys so both
  * Command/Control+W and Escape hide and dispose the window. We also add a
- * {@link showWindow} method so calling code doesn't have to create a lambda to show a dialog.
+ * {@link #showWindow} method so calling code doesn't have to create a lambda to show a dialog.
  */
 public class SPDialog extends JDialog {
 	private static final long serialVersionUID = 1L;

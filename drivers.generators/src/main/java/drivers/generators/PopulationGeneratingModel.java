@@ -43,7 +43,7 @@ import java.util.stream.Collectors;
 public class PopulationGeneratingModel extends SimpleMultiMapModel { // TODO: Extract interface
 	/**
 	 * The intersection of two sets; here so it can be passed as a method
-	 * reference rather than a lambda in {@link playerChoices}.
+	 * reference rather than a lambda in {@link #getPlayerChoices}.
 	 *
 	 * TODO: Move * to lovelace.util? Or is there some equivalent
 	 * method-reference logic with curry() or uncurry() or some such?
@@ -64,8 +64,8 @@ public class PopulationGeneratingModel extends SimpleMultiMapModel { // TODO: Ex
 	}
 
 	/**
-	 * Set the population of {@link kind} animals (talking or not per
-	 * {@link talking}) at {@link location} to {@link population}. Returns
+	 * Set the population of "kind" animals (talking or not per
+	 * "talking") at "location" to "population". Returns
 	 * true if a population was in fact set (i.e. if there was a matching
 	 * object there in any of the maps), false otherwise.
 	 */
@@ -87,8 +87,8 @@ public class PopulationGeneratingModel extends SimpleMultiMapModel { // TODO: Ex
 	}
 
 	/**
-	 * Set the population of {@link kind} trees (in a grove or orchard) at
-	 * {@link location} to {@link population}. Returns true if a population
+	 * Set the population of "kind" trees (in a grove or orchard) at
+	 * "location" to "population". Returns true if a population
 	 * was in fact set (i.e. if there was a matching grove or orchard there
 	 * in any of the maps), false otherwise.
 	 */
@@ -109,8 +109,8 @@ public class PopulationGeneratingModel extends SimpleMultiMapModel { // TODO: Ex
 	}
 
 	/**
-	 * Set the population of {@link kind} shrubs at {@link location} to
-	 * {@link population}.  Returns true if a population was in fact set
+	 * Set the population of "kind" shrubs at "location" to
+	 * "population".  Returns true if a population was in fact set
 	 * (i.e. there were in fact matching shrubs there in any of the maps),
 	 * false otherwise.
 	 */
@@ -131,8 +131,8 @@ public class PopulationGeneratingModel extends SimpleMultiMapModel { // TODO: Ex
 	}
 
 	/**
-	 * Set the extent of the given {@link field field or meadow} at {@link
-	 * location} to {@link acres} in maps where that field or meadow is
+	 * Set the extent of the given field or meadow at
+	 * "location" to "acres" in maps where that field or meadow is
 	 * known. Returns true if any of the maps had it at that location, false otherwise.
 	 */
 	public boolean setFieldExtent(final Point location, final Meadow field, final double acres) {
@@ -157,8 +157,8 @@ public class PopulationGeneratingModel extends SimpleMultiMapModel { // TODO: Ex
 	}
 
 	/**
-	 * Set the extent of the given {@link forest} at {@link location} to
-	 * {@link acres} in maps where that forest is known. Returns true if
+	 * Set the extent of the given forest at "location" to
+	 * "acres" in maps where that forest is known. Returns true if
 	 * any of the maps had it at that location, false otherwise.
 	 */
 	public boolean setForestExtent(final Point location, final Forest forest, final Number acres) {
@@ -181,9 +181,9 @@ public class PopulationGeneratingModel extends SimpleMultiMapModel { // TODO: Ex
 	}
 
 	/**
-	 * Assign the given {@link stats population details object} to the town
-	 * identified by the given {@link townId ID number} and {@link name} at
-	 * the given {@link location} in each map. Returns true if such a town
+	 * Assign the given population details object to the town
+	 * identified by the given ID number and name at
+	 * the given location in each map. Returns true if such a town
 	 * was in any of the maps, false otherwise.
 	 *
 	 * TODO: Should use a copy of the stats object, not it itself
@@ -295,7 +295,7 @@ public class PopulationGeneratingModel extends SimpleMultiMapModel { // TODO: Ex
 	}
 
 	/**
-	 * Add the given {@link unit} at the given {@link location}.
+	 * Add the given unit at the given location.
 	 *
 	 * TODO: If more than one map, return a proxy for the units; otherwise, return the unit
 	 */

@@ -33,7 +33,7 @@ public final class Unit implements IMutableUnit {
 
 	/**
 	 * The unit's orders. This is serialized to and from XML, but does not
-	 * affect equality or hashing, and is not printed in {@link toString}.
+	 * affect equality or hashing, and is not printed in {@link #toString}.
 	 */
 	private final NavigableMap<Integer, String> orders = new TreeMap<>();
 

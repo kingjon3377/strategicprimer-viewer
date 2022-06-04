@@ -7,7 +7,7 @@ import java.util.List;
  * certqin CLI apps.
  *
  * In Ceylon this interface took a generic type argument Arguments, to allow
- * {@link invoke} to take arguments while preserving type-safety, but Java does
+ * {@link #invoke} to take arguments while preserving type-safety, but Java does
  * not provide any way to abstract over functions of different arity, and as
  * far as I can tell no implementation actually takes a non-empty arguments
  * list.

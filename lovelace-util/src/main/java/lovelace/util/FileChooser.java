@@ -27,7 +27,7 @@ import either.Either;
  * On most platforms, {@link JFileChooser the Swing JFileChooser} is close
  * enough to the native widget in appearance and functionality; on macOS, it is
  * decidedly <em>not</em>, and it's impossible to conform to the platform HIG
- * without using {@link FIleDialog the AWT FileDialog} class instead. This
+ * without using {@link FileDialog the AWT FileDialog} class instead. This
  * class leaves the choice of which one to use to its callers, but abstracts
  * over the differences between them.
  */
@@ -241,7 +241,7 @@ public class FileChooser {
 	}
 
 	/**
-	 * Show the dialog to the user and update {@link storedFile} with his or her choice(s).
+	 * Show the dialog to the user and update {@link #storedFile} with his or her choice(s).
 	 */
 	void haveUserChooseFiles() {
 		LovelaceLogger.debug("In FileChooser.haveUserChooseFiles");

@@ -112,9 +112,9 @@ public interface IMutableMapNG extends IMapNG {
 	}
 
 	/**
-	 * Replace {@link original an existing fixture}, if present, with
-	 * {@link replacement a new one}. If {@link original} was not present,
-	 * add {@link replacement} anyway.  Order within the list of fixtures
+	 * Replace an existing fixture, "original", if present, with
+	 * a new one, "replacement". If "original" was not present,
+	 * add "replacement" anyway.  Order within the list of fixtures
 	 * is of course not guaranteed, but subclass implementations are
 	 * encouraged to use a replace-in-place operation to minimize churn in
 	 * the XML serialized form.

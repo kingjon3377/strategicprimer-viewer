@@ -10,7 +10,7 @@ import java.util.Optional;
 /**
  * A class to count references to enumerated objects---though it does not do
  * any sort of check that its type parameter is an enumerated type. For every
- * object ever passed to {@link count} (or {@link countMany}), it keeps a
+ * object ever passed to {@link #count} (or {@link #countMany}), it keeps a
  * running total of the number of times it has been passed that object.
  */
 public class EnumCounter<Type> {

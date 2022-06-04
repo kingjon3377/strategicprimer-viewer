@@ -74,7 +74,7 @@ import org.jetbrains.annotations.Nullable;
 	}
 
 	/**
-	 * If {@link fixture the argument} is a {@link IFortress fortress},
+	 * If the argument is a {@link IFortress fortress},
 	 * return a stream of its contents; otherwise, return a stream
 	 * containing only the argument. This allows callers to get a flattened
 	 * stream of units, including those in fortresses.

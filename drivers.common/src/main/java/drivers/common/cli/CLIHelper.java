@@ -143,7 +143,7 @@ public final class CLIHelper implements ICLIHelper {
 	}
 
 	/**
-	 * Implementation of {@link chooseFromList} and {@link chooseStringFromList}.
+	 * Implementation of {@link #chooseFromList} and {@link #chooseStringFromList}.
 	 */
 	private <Element> Pair<Integer, @Nullable Element> chooseFromListImpl(final List<@NonNull ? extends Element> items,
 	                                                                      final String description, final String none, final String prompt,

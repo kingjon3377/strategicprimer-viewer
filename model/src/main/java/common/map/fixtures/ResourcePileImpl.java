@@ -129,7 +129,7 @@ public final class ResourcePileImpl implements IMutableResourcePile {
 	/**
 	 * Clone the object.
 	 *
-	 * TODO: If {@link zero}, probably shouldn't expose <em>precise</em> quantity.
+	 * TODO: If {@link common.map.IFixture.CopyBehavior#ZERO}, probably shouldn't expose <em>precise</em> quantity.
 	 */
 	@Override
 	public ResourcePileImpl copy(final CopyBehavior zero) {

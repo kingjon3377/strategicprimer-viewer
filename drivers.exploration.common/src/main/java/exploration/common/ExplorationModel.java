@@ -85,7 +85,7 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 	/**
 	 * If the item in the entry is a {@link IFortress fortress}, return a
 	 * stream of its contents paired with its location; otherwise, return a
-	 * {@link Singleton} of the argument.
+	 * {@link Collections#singleton singleton} of the argument.
 	 */
 	private static Iterable<Pair<Point, IFixture>> flattenEntries(final Pair<Point, IFixture> entry) {
 		if (entry.getValue1() instanceof IFortress fort) {
@@ -189,7 +189,7 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 	}
 
 	/**
-	 * Specialization of {@link doesStreamContainFixture} for units.
+	 * Specialization of {@link #doesStreamContainFixture} for units.
 	 */
 	private static boolean doesStreamContainUnit(final Iterable<? extends IFixture> stream, final IUnit unit) {
 		for (final IFixture member : stream) {
@@ -204,7 +204,7 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 	}
 
 	/**
-	 * Specialization of {@link doesStreamContainFixture} for fortresses.
+	 * Specialization of {@link #doesStreamContainFixture} for fortresses.
 	 */
 	private static boolean doesStreamContainFortress(final Iterable<? extends IFixture> stream, final IFortress fort) {
 		for (final IFixture member : stream) {
@@ -252,7 +252,7 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 
 	/**
 	 * The intersection of two sets; here so it can be passed as a method
-	 * reference rather than a lambda in {@link playerChoices}.
+	 * reference rather than a lambda in {@link #getPlayerChoices}.
 	 */
 	private static <T> Set<T> intersection(final Set<T> one, final Set<T> two) {
 		final Set<T> retval = new HashSet<>(one);
@@ -261,7 +261,7 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 	}
 
 	/**
-	 * If {@link fixture} is a {@link IFortress fortress}, return a stream of its contents;
+	 * If the fixture is a {@link IFortress fortress}, return a stream of its contents;
 	 * otherwise, return a stream containing only it. This is intended to
 	 * be used in {@link Stream#flatMap}.
 	 */
@@ -725,7 +725,7 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 	}
 
 	/**
-	 * Add the given {@link unit} at the given {@link location}.
+	 * Add the given unit at the given location.
 	 */
 	@Override
 	public void addUnitAtLocation(final IUnit unit, final Point location) { // TODO: If more than one map, return a proxy for the units; otherwise, return the unit
@@ -738,7 +738,7 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 	/**
 	 * Copy the given fixture from the main map to subordinate maps. (It is
 	 * found in the main map by ID, rather than trusting the input.) If it
-	 * is a cache, remove it from the main map. If {@link zero}, remove
+	 * is a cache, remove it from the main map. If "zero" is {@link IFixture.CopyBehavior#ZERO} remove
 	 * sensitive information from the copies.
 	 */
 	@Override

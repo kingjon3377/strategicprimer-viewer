@@ -89,7 +89,7 @@ public interface IExplorationModel extends IMultiMapModel, SelectionChangeSource
 	void dig();
 
 	/**
-	 * Add the given {@link unit} at the given {@link location}.
+	 * Add the given unit at the given location.
 	 */
 	void addUnitAtLocation(IUnit unit, Point location);
 
@@ -108,7 +108,7 @@ public interface IExplorationModel extends IMultiMapModel, SelectionChangeSource
 	 * Copy the given fixture from the main map to subordinate maps. (It is
 	 * found in the main map by ID, rather than trusting the input, unless
 	 * it is animal tracks.) If it is a cache, remove it from the main map.
-	 * If {@link zero}, remove sensitive information from the copies.
+	 * If "zero" is {@link IFixture.CopyBehavior#ZERO}, remove sensitive information from the copies.
 	 * Returns true if we think this changed anything in any of the sub-maps.
 	 */
 	boolean copyToSubMaps(Point location, TileFixture fixture, IFixture.CopyBehavior zero);

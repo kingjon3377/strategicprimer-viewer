@@ -32,8 +32,7 @@ public abstract class SPFormatException extends Exception {
 
 	/**
 	 * @param errorMessage The exception message to possibly show to the user.
-	 * @param line The line of the XML file containing the mistake.
-	 * @param column The column of the XML file where the mistake begins.
+	 * @param location The line and column of the XML file where the mistake begins.
 	 */
 	protected SPFormatException(final String errorMessage, final Location location) {
 		super(String.format("Incorrect SP XML at line %d, column %d: %s", location.getLineNumber(), location.getColumnNumber(),

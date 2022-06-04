@@ -52,7 +52,7 @@ public interface IMapNG extends Subsettable<IMapNG> {
 	Iterable<Point> getLocations();
 
 	/**
-	 * A stream of the locations in the map, the same as provided in {@link getLocations}.
+	 * A stream of the locations in the map, the same as provided in {@link #getLocations}.
 	 */
 	Stream<Point> streamLocations();
 

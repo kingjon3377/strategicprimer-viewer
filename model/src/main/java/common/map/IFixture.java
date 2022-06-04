@@ -2,7 +2,7 @@ package common.map;
 
 /**
  * A supertype for both {@link TileFixture} and any {@link
- * model.common.map.fixtures.UnitMember UnitMembers} (etc.) that shouldn't be
+ * common.map.fixtures.UnitMember UnitMembers} (etc.) that shouldn't be
  * {@link TileFixture TileFixtures}s, so we don't have to special-case them for
  * things like searching.
  *
@@ -41,10 +41,6 @@ public interface IFixture {
 	 * not break subset checking.
 	 *
 	 * @param zero Whether to "zero out" (omit) sensitive information in the copy.
-	 *
-	 * TODO: convert {@link zero} to an enum so we don't have to remember,
-	 * when reading code that calls this, whether 'true' means 'zero out'
-	 * or 'keep sensitive information'.
 	 */
 	IFixture copy(CopyBehavior zero);
 }

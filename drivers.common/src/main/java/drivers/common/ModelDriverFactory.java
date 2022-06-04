@@ -21,7 +21,7 @@ public interface ModelDriverFactory extends DriverFactory {
 	ModelDriver createDriver(ICLIHelper cli, SPOptions options, IDriverModel model);
 
 	/**
-	 * Create a model to pass to {@link createDriver}. The 'modified' flag is set to false.
+	 * Create a model to pass to {@link #createDriver}. The 'modified' flag is set to false.
 	 * @param map The map
 	 */
 	default IDriverModel createModel(final IMutableMapNG map) {

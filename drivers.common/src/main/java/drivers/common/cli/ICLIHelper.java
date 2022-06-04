@@ -93,7 +93,7 @@ public interface ICLIHelper {
 	}
 
 	/**
-	 * Returns null if {@link input} is "quit" and false otherwise.
+	 * Returns null if "input" is "quit" and false otherwise.
 	 */
 	default @Nullable Boolean defaultQuitHandler(final String input) {
 		if ("quit".equals(input)) {
@@ -114,8 +114,8 @@ public interface ICLIHelper {
 	}
 
 	/**
-	 * Ask the user a yes-or-no question. Returns null on EOF or if {@link
-	 * quitResultFactory} returns null.
+	 * Ask the user a yes-or-no question. Returns null on EOF or if
+	 * {@link #defaultQuitHandler} returns null.
 	 *
 	 * @param prompt The prompt to prompt the user with.
 	 * @param quitResultFactory A function to produce null (to return) if
@@ -126,12 +126,9 @@ public interface ICLIHelper {
 	/**
 	 * Ask the user a yes-or-no question, allowing "yes to all" or "no to
 	 * all" to forestall further similar questions. Returns null on EOF or
-	 * if {@link quitResultFactory} returns null.
+	 * if {@link #defaultQuitHandler} returns null.
 	 *
-	 * @param prompt The prompt to prompt the user with.
-	 * @param key The prompt (or other key) to compare to others to define "similar" questions.
-	 * @param quitResultFactory A function to produce null (to return) if
-	 * an input should short-circuit the loop.
+	 * @param prompt The prompt to prompt the user with, also used as the key to identify similar questions.
 	 */
 	default @Nullable Boolean inputBooleanInSeries(final String prompt) {
 		return inputBooleanInSeries(prompt, prompt);
@@ -140,12 +137,10 @@ public interface ICLIHelper {
 	/**
 	 * Ask the user a yes-or-no question, allowing "yes to all" or "no to
 	 * all" to forestall further similar questions. Returns null on EOF or
-	 * if {@link quitResultFactory} returns null.
+	 * if {@link #defaultQuitHandler} returns null.
 	 *
 	 * @param prompt The prompt to prompt the user with.
 	 * @param key The prompt (or other key) to compare to others to define "similar" questions.
-	 * @param quitResultFactory A function to produce null (to return) if
-	 * an input should short-circuit the loop.
 	 */
 	default @Nullable Boolean inputBooleanInSeries(final String prompt, final String key) {
 		return inputBooleanInSeries(prompt, key, this::defaultQuitHandler);
@@ -154,7 +149,7 @@ public interface ICLIHelper {
 	/**
 	 * Ask the user a yes-or-no question, allowing "yes to all" or "no to
 	 * all" to forestall further similar questions. Returns null on EOF or
-	 * if {@link quitResultFactory} returns null.
+	 * if "quitResultFactory" returns null.
 	 *
 	 * @param prompt The prompt to prompt the user with.
 	 * @param key The prompt (or other key) to compare to others to define "similar" questions.
@@ -192,14 +187,13 @@ public interface ICLIHelper {
 	 * TODO: Add test of this in CLITests
 	 *
 	 * @param line The line to print
-	 * @param interval The minimum number of lines between occurrences
 	 */
 	default void printlnAtInterval(final String line) {
 		printlnAtInterval(line, 30);
 	}
 
 	/**
-	 * Print the specified string, if it hasn't been printed in the last {@link interval} lines.
+	 * Print the specified string, if it hasn't been printed in the last "interval" lines.
 	 *
 	 * TODO: Add test of this in CLITests
 	 *
@@ -210,7 +204,7 @@ public interface ICLIHelper {
 
 	/**
 	 * Get a {@link Point} from the user. This is a convenience wrapper
-	 * around {@link inputNumber}. Returns null on EOF.
+	 * around {@link #inputNumber}. Returns null on EOF.
 	 *
 	 * @param prompt The prompt to use to prompt the user.
 	 */

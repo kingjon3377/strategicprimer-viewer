@@ -16,7 +16,7 @@ public interface IMutableJob extends IJob {
 	 * Skill object, nor that any changes made to it will be applied to the
 	 * Skill that the Job already had or that is actually added. If levels
 	 * or hours *need* to be added, callers should get the Skill the Job
-	 * contains after this returns using {@link getSkill} and apply changes to
+	 * contains after this returns using {@link #getSkill} and apply changes to
 	 * that.
 	 *
 	 * FIXME: Remove that limitation

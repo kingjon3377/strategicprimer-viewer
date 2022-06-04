@@ -203,7 +203,7 @@ import java.awt.image.BufferedImage;
 
 	/**
 	 * If the point is currently visible, call the overloading of {@link
-	 * repaint} that takes coordinates, passing the coordinates describing
+	 * #repaint} that takes coordinates, passing the coordinates describing
 	 * the point.
 	 */
 	private void repaintPoint(final Point point) {

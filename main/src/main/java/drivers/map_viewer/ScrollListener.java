@@ -153,7 +153,7 @@ import common.map.fixtures.mobile.IUnit;
 
 	/**
 	 * Ignored; other listeners will adjust the dimensions, causing {@link
-	 * dimensionsChanged} to be called.
+	 * #dimensionsChanged} to be called.
 	 */
 	@Override
 	public void tileSizeChanged(final int oldSize, final int newSize) { }

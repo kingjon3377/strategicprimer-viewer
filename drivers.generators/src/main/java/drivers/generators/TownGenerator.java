@@ -158,7 +158,7 @@ import java.math.BigDecimal;
 	}
 
 	/**
-	 * Get the fixture in the given {@link map} identified by the given {@link id ID number}.
+	 * Get the fixture in the given map identified by the given ID number.
 	 *
 	 * TODO: search inside fortresses and units
 	 */
@@ -169,8 +169,8 @@ import java.math.BigDecimal;
 	}
 
 	/**
-	 * Find the location in the given {@link map} of the fixture identified
-	 * by the given {@link id ID number}.
+	 * Find the location in the given map of the fixture identified
+	 * by the given ID number.
 	 *
 	 * TODO: search inside fortresses and units
 	 */
@@ -181,8 +181,8 @@ import java.math.BigDecimal;
 	}
 
 	/**
-	 * Whether, in the given {@link map}, any town claims a resource
-	 * identified by the given {@link id ID number}.
+	 * Whether, in the given map, any town claims a resource
+	 * identified by the given ID number.
 	 */
 	private static boolean isClaimedField(final IMapNG map, final int id) {
 		return map.streamAllFixtures()
@@ -193,9 +193,9 @@ import java.math.BigDecimal;
 	}
 
 	/**
-	 * Whether, in the given {@link map}, the given {@link id ID number}
+	 * Whether, in the given map, the given ID number
 	 * refers to {@link HarvestableFixture a resource that can be worked}
-	 * that {@link isClaimedField is presently unclaimed}.
+	 * that {@link #isClaimedField is presently unclaimed}.
 	 */
 	private static boolean isUnclaimedField(final IMapNG map, final int id) {
 		return !isClaimedField(map, id) && findByID(map, id) instanceof HarvestableFixture;
@@ -214,7 +214,7 @@ import java.math.BigDecimal;
 	}
 
 	/**
-	 * Whether the given {@link fix fixture} is actually claimable: an
+	 * Whether the given fixture is actually claimable: an
 	 * unexposed mineral vein, an uncultivated field or meadow, an
 	 * uncultivated grove or orchard, an abandoned mine, or a cache is not claimable.
 	 */
@@ -418,7 +418,7 @@ import java.math.BigDecimal;
 	/**
 	 * Generate expertise and production and consumption data for the given town.
 	 *
-	 * Note that in Ceylon the type of {@link town} was {@code AbstractTown|Village},
+	 * Note that in Ceylon the type of "town" was {@code AbstractTown|Village},
 	 * excluding fortresses.
 	 *
 	 * To ensure consistency between runs of this algorithm, we seed the

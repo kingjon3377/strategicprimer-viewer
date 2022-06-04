@@ -51,8 +51,8 @@ public interface ITurnRunningModel extends IExplorationModel, IAdvancementModel 
 	/**
 	 * Reduce the matching {@link IResourcePile resource}, in a {@link
 	 * IUnit unit} or {@link common.map.fixtures.towns.IFortress fortress}
-	 * owned by {@link owner the specified player}, by {@link amount the
-	 * specified amount}. Returns true if any (mutable) resource piles
+	 * owned by the specified player, by the
+	 * specified amount. Returns true if any (mutable) resource piles
 	 * matched in any of the maps, false otherwise.
 	 */
 	boolean reduceResourceBy(IResourcePile resource, BigDecimal amount, Player owner);
@@ -60,10 +60,10 @@ public interface ITurnRunningModel extends IExplorationModel, IAdvancementModel 
 	/**
 	 * Remove the given {@link IResourcePile resource} from a {@link IUnit
 	 * unit} or {@link common.map.fixtures.towns.IFortress fortress} owned
-	 * by {@link owner the specified player} in all maps. Returns true if
+	 * by the specified player in all maps. Returns true if
 	 * any matched in any of the maps, false otherwise.
 	 *
-	 * @deprecated Use {@link reduceResourceBy} when possible instead.
+	 * @deprecated Use {@link #reduceResourceBy} when possible instead.
 	 */
 	@Deprecated
 	boolean removeResource(IResourcePile resource, Player owner);
@@ -183,9 +183,9 @@ public interface ITurnRunningModel extends IExplorationModel, IAdvancementModel 
 	}
 
 	/**
-	 * Transfer {@link quantity} units from {@link from a resource} to (if
-	 * not all of it) another resource in {@link to a unit } in all maps.
-	 * If this leaves any behind in any map, {@link id} will be called
+	 * Transfer "quantity" units from "from" to (if
+	 * not all of it) another resource in "to" in all maps.
+	 * If this leaves any behind in any map, "id" will be called
 	 * exactly once to generate the ID number for the resource in the
 	 * destination in maps where that is the case. Returns true if a
 	 * matching resource and destination are found (and the transfer
@@ -194,9 +194,9 @@ public interface ITurnRunningModel extends IExplorationModel, IAdvancementModel 
 	boolean transferResource(IResourcePile from, IUnit to, BigDecimal quantity, IntSupplier id);
 
 	/**
-	 * Transfer {@link quantity} units from {@link from a resource} to (if
-	 * not all of it) another resource in {@link to a fortress} in all
-	 * maps. If this leaves any behind in any map, {@link id} will be
+	 * Transfer "quantity" units from "from" to (if
+	 * not all of it) another resource in "to" in all
+	 * maps. If this leaves any behind in any map, "id" will be
 	 * called exactly once to generate the ID number for the resource in
 	 * the destination in maps where that is the case. Returns true if a
 	 * matching resource and destination are found (and the transfer

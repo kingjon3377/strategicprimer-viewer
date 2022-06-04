@@ -16,7 +16,7 @@ public final class TestReaderFactory {
 
 	/**
 	 * The "new" (currently-used-by-default) reader implementation.
-	 * (Actually older than {@link oldReader}, but we switched back because
+	 * (Actually older than {@link #getOldSPReader}, but we switched back because
 	 * this is the faster implementation.
 	 */
 	public static ISPReader getNewSPReader() {
@@ -25,7 +25,7 @@ public final class TestReaderFactory {
 
 	/**
 	 * The "new" (currently-used-by-default) reader implementation.
-	 * (Actually older than {@link oldReader}, but we switched back because
+	 * (Actually older than {@link #getOldMapReader()}, but we switched back because
 	 * this is the faster implementation.
 	 */
 	public static IMapReader getNewMapReader() {

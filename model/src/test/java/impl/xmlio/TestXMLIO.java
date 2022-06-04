@@ -160,9 +160,9 @@ public final class TestXMLIO {
 	/**
 	 * Assert that the given XML will produce the given kind of warning and
 	 * that the warning satisfies the given additional assertions. If
-	 * {@link desideratum} is {@code null}, assert that the exception
+	 * "desideratum" is {@code null}, assert that the exception
 	 * is always thrown; if not, assert that the XML will fail with
-	 * warnings made fatal, but will pass and produce {@link desideratum}
+	 * warnings made fatal, but will pass and produce "desideratum"
 	 * with warnings ignored.
 	 *
 	 * TODO: Split 'fatal error' and 'warning' cases into separate methods?
@@ -458,7 +458,7 @@ public final class TestXMLIO {
 	 * conversely, anymore) produce, but want to accept---will be handled
 	 * properly by both readers.
 	 *
-	 * TODO: should {@link assertion} be a Consumer instead of a Predicate?
+	 * TODO: should "assertion" be a Consumer instead of a Predicate?
 	 *
 	 * @param message The assertion message
 	 * @param xml The serialized form
@@ -478,7 +478,7 @@ public final class TestXMLIO {
 	 * conversely, anymore) produce, but want to accept---will be handled
 	 * properly by both readers.
 	 *
-	 * TODO: should {@link assertion} be a Consumer instead of a Predicate?
+	 * TODO: should "assertion" be a Consumer instead of a Predicate?
 	 *
 	 * @param message The assertion message
 	 * @param xml The serialized form
@@ -540,7 +540,7 @@ public final class TestXMLIO {
 	}
 
 	/**
-	 * @deprecated Use {@link lovelace.util.AssertAny} and {@link Assertions#assertInstanceOf}.
+	 * @deprecated Use {@link lovelace.util.AssertAny} and {@link org.junit.jupiter.api.Assertions#assertInstanceOf}.
 	 */
 	@Deprecated
 	@SafeVarargs
@@ -1603,7 +1603,7 @@ public final class TestXMLIO {
 	}
 
 	/**
-	 * Test (de)serialization of {@link UnitMember members} of {@link IUnit units}.
+	 * Test (de)serialization of {@link common.map.fixtures.UnitMember members} of {@link IUnit units}.
 	 */
 	@Test
 	public void testUnitMemberSerialization()
@@ -1706,7 +1706,7 @@ public final class TestXMLIO {
 	}
 
 	/**
-	 * Test that {@link IUnit units'} {@link HasPortrait#portrait
+	 * Test that {@link IUnit units'} {@link HasPortrait#getPortrait
 	 * portraits} are preserved in (de)serialization.
 	 */
 	@ParameterizedTest

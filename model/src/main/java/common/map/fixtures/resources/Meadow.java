@@ -138,7 +138,7 @@ public class Meadow implements HarvestableFixture, HasExtent<Meadow> {
 	/**
 	 * The name of an image to use as an icon by default.
 	 *
-	 * TODO: Make more granular based on {@link kind}
+	 * TODO: Make more granular based on {@link #kind}
 	 */
 	@Override
 	public String getDefaultImage() {

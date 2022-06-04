@@ -90,16 +90,16 @@ public abstract class AbstractTown implements HasMutableImage,
 	/**
 	 * The DC to discover the town, fortification, or city
 	 *
-	 * TODO: Provide reasonable default, depending on {@link population}
-	 * members as well as {@link status} and {@link townSize}")
+	 * TODO: Provide reasonable default, depending on {@link #population}
+	 * members as well as {@link #status} and {@link #townSize}")
 	 */
 	private final int dc;
 
 	/**
 	 * The DC to discover the town, fortification, or city
 	 *
-	 * TODO: Provide reasonable default, depending on {@link population}
-	 * members as well as {@link status} and {@link townSize}")
+	 * TODO: Provide reasonable default, depending on {@link #population}
+	 * members as well as {@link #status} and {@link #townSize}")
 	 */
 	@Override
 	public final int getDC() {

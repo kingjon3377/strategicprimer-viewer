@@ -125,7 +125,7 @@ import org.jetbrains.annotations.Nullable;
 	 * @throws SPFormatException if the tag doesn't have that parameter and no default was provided
 	 * @param element The current tag.
 	 * @param param The parameter we want to get
-	 * @param default The value to return if the tag doesn't have that parameter
+	 * @param defaultValue The value to return if the tag doesn't have that parameter
 	 */
 	protected static boolean getBooleanAttribute(final StartElement element, final String param,
 	                                             final boolean defaultValue) {
@@ -139,7 +139,7 @@ import org.jetbrains.annotations.Nullable;
 	 *
 	 * @param element The current tag.
 	 * @param param The parameter we want to get
-	 * @param default The value to return if the tag doesn't have that parameter
+	 * @param defaultValue The value to return if the tag doesn't have that parameter
 	 * @param warner The {@link Warning} instance to use if the attribute was present but non-Boolean but a default was provided
 	 */
 	protected static boolean getBooleanAttribute(final StartElement element, final String param,
@@ -193,7 +193,7 @@ import org.jetbrains.annotations.Nullable;
 
 	/**
 	 * Require (or recommend) that a parameter (to be subsequently
-	 * retrieved via {@link getAttribute}) be non-empty.
+	 * retrieved via {@link #getAttribute}) be non-empty.
 	 *
 	 * @throws SPFormatException if mandatory and missing
 	 * @param element The current tag.
@@ -371,7 +371,7 @@ import org.jetbrains.annotations.Nullable;
 	/**
 	 * Parse an Integer parameter.
 	 *
-	 * TODO: Replace this with a conversion function passed to {@link getAttribute}
+	 * TODO: Replace this with a conversion function passed to {@link #getAttribute}
 	 *
 	 * @throws SPFormatException if the tag doesn't have that parameter and
 	 * no default given, or if its value is non-numeric or otherwise
@@ -389,7 +389,7 @@ import org.jetbrains.annotations.Nullable;
 	/**
 	 * Parse an Integer parameter.
 	 *
-	 * TODO: Replace this with a conversion function passed to {@link getAttribute}
+	 * TODO: Replace this with a conversion function passed to {@link #getAttribute}
 	 *
 	 * @param tag The tag to get the parameter from
 	 * @param parameter The name of the desired parameter
@@ -417,7 +417,7 @@ import org.jetbrains.annotations.Nullable;
 	/**
 	 * Parse an Integer parameter.
 	 *
-	 * TODO: Replace this with a conversion function passed to {@link getAttribute}
+	 * TODO: Replace this with a conversion function passed to {@link #getAttribute}
 	 *
 	 * @throws SPFormatException if the tag doesn't have that parameter, or
 	 * if its value is non-numeric or otherwise malformed
@@ -445,7 +445,7 @@ import org.jetbrains.annotations.Nullable;
 	/**
 	 * Parse an XML parameter whose value can be an Integer or a Decimal.
 	 *
-	 * TODO: Replace this with a conversion function passed to {@link getAttribute}
+	 * TODO: Replace this with a conversion function passed to {@link #getAttribute}
 	 *
 	 * @throws SPFormatException if the tag's value is non-numeric or
 	 * otherwise malformed
@@ -461,7 +461,7 @@ import org.jetbrains.annotations.Nullable;
 	/**
 	 * Parse an XML parameter whose value can be an Integer or a Decimal.
 	 *
-	 * TODO: Replace this with a conversion function passed to {@link getAttribute}
+	 * TODO: Replace this with a conversion function passed to {@link #getAttribute}
 	 *
 	 * @throws SPFormatException if the tag's value is non-numeric or
 	 * otherwise malformed
@@ -498,7 +498,7 @@ import org.jetbrains.annotations.Nullable;
 	/**
 	 * Parse an XML parameter whose value can be an Integer or a Decimal.
 	 *
-	 * TODO: Replace this with a conversion function passed to {@link getAttribute}
+	 * TODO: Replace this with a conversion function passed to {@link #getAttribute}
 	 *
 	 * @throws SPFormatException if the tag doesn't have that parameter, or
 	 * if its value is non-numeric or otherwise malformed

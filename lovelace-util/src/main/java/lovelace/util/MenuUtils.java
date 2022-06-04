@@ -46,7 +46,7 @@ public final class MenuUtils {
 	 * @param component the component defining the action's context
 	 * @param action the String to use to identify the action
 	 * @param handler the listener that should handle the action
-	 * @param condition See {@link JComponent#getInputMap(Integer)}
+	 * @param condition See {@link JComponent#getInputMap(int)}
 	 * @param keys the keys to use as hot-keys.
 	 */
 	public static void createHotKey(final JComponent component, final String action, final ActionListener handler,
@@ -76,7 +76,7 @@ public final class MenuUtils {
 	 * Create a menu item, where the listener doesn't care about the event object.
 	 * @param item the text of the item
 	 * @param mnemonic the mnemonic key
-	 * @param the description to show to accessibility software
+	 * @param description the description to show to accessibility software
 	 * @param listener the listener to handle when the item is selected
 	 * @param accelerators the keyboard accelerators (hot-keys).
 	 *
@@ -91,7 +91,7 @@ public final class MenuUtils {
 	 * Create a menu item.
 	 * @param item the text of the item
 	 * @param mnemonic the mnemonic key
-	 * @param the description to show to accessibility software
+	 * @param description the description to show to accessibility software
 	 * @param listener the listener to handle when the item is selected
 	 * @param accelerators the keyboard accelerators (hot-keys).
 	 *

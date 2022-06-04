@@ -135,7 +135,7 @@ public interface ITableGenerator<T extends IFixture> {
 	/**
 	 * A String showing the distance between two points, suitable to be
 	 * displayed, rounded to a tenth of a tile. This default implementation
-	 * just takes the square root of {@link distance} and formats it,
+	 * just takes the square root of {@link #distance} and formats it,
 	 * unless one or both of the points is null or invalid, in which case it prints "unknown" instead.
 	 */
 	default String distanceString(final @Nullable Point first, final @Nullable Point second,
@@ -148,7 +148,7 @@ public interface ITableGenerator<T extends IFixture> {
 	}
 
 	/**
-	 * If the given {@link location point} is valid, return its {@link
+	 * If the given point is valid, return its {@link
 	 * Point#toString} string representation}; otherwise, return "unknown".
 	 */
 	default String locationString(final Point location) {

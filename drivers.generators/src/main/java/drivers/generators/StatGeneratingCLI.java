@@ -105,7 +105,7 @@ import common.map.fixtures.towns.Village;
 	}
 
 	/**
-	 * The chance that someone from a village located a {@link days}-day
+	 * The chance that someone from a village located a "days"-day
 	 * journey away will come as a volunteer.
 	 */
 	private static double villageChance(final int days) {

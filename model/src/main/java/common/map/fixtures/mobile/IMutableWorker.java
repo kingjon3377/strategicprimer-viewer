@@ -19,7 +19,7 @@ public interface IMutableWorker extends IWorker, HasMutableImage, HasMutablePort
 	 * Job object, nor that any changes made to it will be applied to the
 	 * Job that the worker already had or that is actually added. If levels
 	 * *need* to be added, callers should geth the Job the worker contains
-	 * after this returns using {@link getJob} and apply changes to that.
+	 * after this returns using {@link #getJob} and apply changes to that.
 	 *
 	 * TODO: Make sure that pre-applied experience is applied if the worker
 	 * already had a Job by this name

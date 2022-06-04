@@ -13,7 +13,7 @@ import java.util.Map;
 import java.util.HashMap;
 
 /**
- * A class that, like the {@link lovelace.util.common.EnumCounter} class, keeps
+ * A class that, like the {@link lovelace.util.EnumCounter} class, keeps
  * a running total for arguments it is given; unlike that class, it groups on
  * the basis of a field (or equivalent mapping) provided to its constructor and
  * increments the total by the value of another field instead of a constant
@@ -31,7 +31,7 @@ class MappedCounter<Base, Key, Count extends Number&Comparable<Count>> implement
 	 * @param keyExtractor An accessor method to get the key to use for each object that is to be counted.
 	 * @param countExtractor An accessor method to get the quantity to
 	 * increment the count by for each object that is to be counted.
-	 * @param A constructor for an accumulator for the count type.
+	 * @param factory A constructor for an accumulator for the count type.
 	 * @param zero Zero in the count type.
 	 */
 	public MappedCounter(final Function<Base, Key> keyExtractor, final Function<Base, Count> countExtractor,

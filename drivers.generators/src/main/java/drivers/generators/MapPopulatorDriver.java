@@ -17,7 +17,7 @@ import java.util.Collections;
 
 /**
  * A driver to add some kind of fixture to suitable tiles throughout the map.
- * Customize the {@link populator} field before each use.
+ * Customize the {@link #populator} field before each use.
  */
 // TODO: Write GUI equivalent of Map Populator Driver
 public class MapPopulatorDriver implements CLIDriver {

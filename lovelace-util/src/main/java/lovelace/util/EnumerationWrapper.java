@@ -11,8 +11,6 @@ import java.util.Iterator;
  * parameterized properly.
  *
  * TODO: Take Class object for desired type to assert that elements are of it?
- *
- * @see ConvertingIterable
  */
 public final class EnumerationWrapper<Element> implements Iterator<Element> {
 	private final Enumeration<?> wrapped;

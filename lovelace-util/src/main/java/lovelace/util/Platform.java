@@ -20,7 +20,7 @@ public final class Platform {
 	}
 
 	/**
-	 * @deprecated Just use {@link JComponent.putClientProperty(String, String)}.
+	 * @deprecated Just use {@link JComponent#putClientProperty}.
 	 */
 	@Deprecated
 	public static void setStringProperty(final JComponent component, final String key, final String val) {

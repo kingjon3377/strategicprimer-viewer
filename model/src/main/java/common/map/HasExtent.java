@@ -119,12 +119,12 @@ public interface HasExtent<Self extends HasExtent<Self>> extends SubsettableFixt
 
 	/**
 	 * Returns a copy of this object, except with its extent increased by
-	 * the extent of the {@link addend}, which must be of the same type.
+	 * the extent of the addend, which must be of the same type.
 	 */
 	Self combined(Self addend);
 
 	/**
-	 * Returns a copy of this object, except with its extent reduced by {@link subtrahend} acres.
+	 * Returns a copy of this object, except with its extent reduced by "subtrahend" acres.
 	 */
 	Self reduced(Number subtrahend);
 }

@@ -134,7 +134,7 @@ public final class ProxyJob implements IJob, ProxyFor<IJob> {
 	}
 
 	/**
-	 * Delegates to {@link getName}.
+	 * Delegates to {@link #getName}.
 	 *
 	 * TODO: Indicate we're a proxy?
 	 */

@@ -12,7 +12,7 @@ public final class NumParsingHelper {
 	}
 
 	/**
-	 * Whether the given string contains numeric data, such as will be successfully parsed by {@link parseInt}.
+	 * Whether the given string contains numeric data, such as will be successfully parsed by {@link #parseInt}.
 	 */
 	public static boolean isNumeric(final String string) {
 		try {

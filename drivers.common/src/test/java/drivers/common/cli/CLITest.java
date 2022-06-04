@@ -29,7 +29,6 @@ public final class CLITest {
 	/**
 	 * A helper method to condense tests.
 	 * @param method The method under test.
-	 * @param arguments The arguments to pass to the method
 	 * @param input The lines of input to pass to the CLIHelper's input stream.
 	 * @param expectedOutput What the CLIHelper is expected to print to its
 	 * output stream. If an Iterable, it's the lines of output, each
@@ -213,7 +212,7 @@ public final class CLITest {
 	}
 
 	/**
-	 * Test that {@link ICLIHelper.inputBooleanInSeries} handles the basic "truthy" inputs properly.
+	 * Test that {@link ICLIHelper#inputBooleanInSeries} handles the basic "truthy" inputs properly.
 	 */
 	@ParameterizedTest
 	@MethodSource("truePossibilities")
@@ -377,7 +376,7 @@ public final class CLITest {
 	}
 
 	/**
-	 * Test {@link ICLIHelper.inputPoint}.
+	 * Test {@link ICLIHelper#inputPoint}.
 	 */
 	@Test
 	public void testInputPoint() {

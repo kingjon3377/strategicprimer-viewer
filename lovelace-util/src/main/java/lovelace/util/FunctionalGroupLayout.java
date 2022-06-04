@@ -15,10 +15,9 @@ public final class FunctionalGroupLayout extends GroupLayout {
 		FLUSH
 	}
 	/**
-	 * Add components and/or groups to a group. Var-arg arguments ({@link
-	 * components}) must be either {@link Component} or {@link Group}
-	 * instances, even though this cannot be expressed in the function
-	 * signature in Java.
+	 * Add components and/or groups to a group. Var-arg arguments must
+	 * be either {@link Component} or {@link Group} instances, even
+	 * though this cannot be expressed in the function signature in Java.
 	 */
 	private static <SpecificGroup extends Group> SpecificGroup
 			initializeGroup(final SpecificGroup group,
@@ -38,19 +37,17 @@ public final class FunctionalGroupLayout extends GroupLayout {
 	// Do *not* make these factories static; the methods they call are
 	// GroupLayout instance methods, so the code will not compile.
 	/**
-	 * Factory for a parallel group.  Var-arg arguments ({@link
-	 * components}) must be either {@link Component} or {@link Group}
-	 * instances, even though this cannot be expressed in the function
-	 * signature in Java.
+	 * Factory for a parallel group.  Var-arg arguments must be either
+	 * {@link Component} or {@link Group} instances, even though this
+	 * cannot be expressed in the function signature in Java.
 	 */
 	public ParallelGroup parallelGroupOf(final Object... components) {
 		return initializeGroup(createParallelGroup(), components);
 	}
 	/**
-	 * Factory for a sequential group.  Var-arg arguments ({@link
-	 * components}) must be either {@link Component} or {@link Group}
-	 * instances, even though this cannot be expressed in the function
-	 * signature in Java.
+	 * Factory for a sequential group.  Var-arg arguments  must be either
+	 * {@link Component} or {@link Group} instances, even though this
+	 * cannot be expressed in the function signature in Java.
 	 */
 	public SequentialGroup sequentialGroupOf(final Object... components) {
 		return initializeGroup(createSequentialGroup(), components);

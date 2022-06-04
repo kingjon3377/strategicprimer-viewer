@@ -40,7 +40,7 @@ import common.map.fixtures.towns.CommunityStats;
  */
 public final class SubsetTest {
 	/**
-	 * Assert that {@link two} is a "strict subset," by our loose definition, of {@link one}.
+	 * Assert that "two" is a "strict subset," by our loose definition, of "one".
 	 */
 	private static <SpecificType, GeneralType extends Subsettable<SpecificType>>
 			void assertIsSubset(final GeneralType one, final SpecificType two, final String message) {
@@ -48,8 +48,8 @@ public final class SubsetTest {
 	}
 
 	/**
-	 * Assert that {@link two} is <em>not</em> a "strict subset," even by our loose definition,
-	 * of {@link one}.
+	 * Assert that "two" is <em>not</em> a "strict subset," even by our loose definition,
+	 * of "one".
 	 */
 	private static <SpecificType, GeneralType extends Subsettable<SpecificType>>
 			void assertNotSubset(final GeneralType one, final SpecificType two, final String message) {

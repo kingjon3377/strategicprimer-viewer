@@ -43,7 +43,7 @@ import static lovelace.util.Decimalize.decimalize;
 
 public class TurnRunningModel extends ExplorationModel implements ITurnRunningModel {
 	/**
-	 * If {@link fixture} is a {@link IFortress fortress}, return a stream
+	 * If "fixture" is a {@link IFortress fortress}, return a stream
 	 * of its contents; otherwise, return stream containing only it. This
 	 * is intended to be used in {@link Stream#flatMap}.
 	 */
@@ -56,7 +56,7 @@ public class TurnRunningModel extends ExplorationModel implements ITurnRunningMo
 	}
 
 	/**
-	 * If {@link fixture} is a {@link IFortress fortress}, return a stream
+	 * If "fixture" is a {@link IFortress fortress}, return a stream
 	 * of it and its contents; otherwise, return a stream of only it. This
 	 * is intended to be used in {@link Stream#flatMap}.
 	 */
@@ -143,7 +143,7 @@ public class TurnRunningModel extends ExplorationModel implements ITurnRunningMo
 	/**
 	 * Reduce the acreage of a fixture, and copy the reduced form into all subordinate maps.
 	 *
-	 * FIXME: Add tests of this and {@link reducePopulation}, to cover all
+	 * FIXME: Add tests of this and {@link #reducePopulation}, to cover all
 	 * possible cases (present, not present, larger, smaller, exactly equal
 	 * population/extent, etc., in main and sub-maps in various
 	 * combinations ...) In porting I'm not 100% confident the logic here is right.
@@ -285,8 +285,8 @@ public class TurnRunningModel extends ExplorationModel implements ITurnRunningMo
 	 * least one worker received hours, false otherwise. If a worker
 	 * doesn't have that skill in that Job, it is added first; if it
 	 * doesn't have that Job, it is added first as in {@link
-	 * addJobToWorker}, then the skill is added to it. The {@link
-	 * contextValue} is used to calculate a new value passed to {@link
+	 * #addJobToWorker}, then the skill is added to it. The "contextValue" is
+	 * used to calculate a new value passed to {@link
 	 * common.map.fixtures.mobile.worker.IMutableSkill#addHours} for each
 	 * worker.
 	 *
@@ -311,8 +311,8 @@ public class TurnRunningModel extends ExplorationModel implements ITurnRunningMo
 	 * all maps.  Returns true if a matching worker was found in at least
 	 * one map, false otherwise. If the worker doesn't have that Skill in
 	 * that Job, it is added first; if the worker doesn't have that Job, it
-	 * is added first as in {@link addJobToWorker}, then the skill is added
-	 * to it. The {@link contextValue} is passed to {@link
+	 * is added first as in {@link #addJobToWorker}, then the skill is added
+	 * to it. The "contextValue" is passed to {@link
 	 * common.map.fixtures.mobile.worker.IMutableSkill#addHours}; it should
 	 * be a random number between 0 and 99.
 	 */
@@ -357,9 +357,9 @@ public class TurnRunningModel extends ExplorationModel implements ITurnRunningMo
 	}
 
 	/**
-	 * Replace {@link delenda one skill} with {@link replacement another}
+	 * Replace one skill, "delenda" with another, "replacement",
 	 * in the specified job in the specified worker in all maps. Unlike
-	 * {@link addHoursToSkill}, if a map does not have an <em>equal</em>
+	 * {@link #addHoursToSkill}, if a map does not have an <em>equal</em>
 	 * Skill in the matching Job in the matching worker, that map is
 	 * completely skipped.  If the replacement is already present, just
 	 * remove the first skill. Returns true if the operation was carried
@@ -400,7 +400,7 @@ public class TurnRunningModel extends ExplorationModel implements ITurnRunningMo
 	/**
 	 * Reduce the matching {@link IResourcePile resource}, in a {@link
 	 * common.map.fixtures.mobile.IUnit unit} or {@link IFortress fortress}
-	 * owned by {@link owner the specified player}, by {@link amount the
+	 * owned by the specified player, by {@link amount the
 	 * specified amount}. Returns true if any (mutable) resource piles
 	 * matched in any of the maps, false otherwise.
 	 */

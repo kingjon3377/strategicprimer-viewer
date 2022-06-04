@@ -32,7 +32,7 @@ public abstract class AbstractReportGenerator<Type extends IFixture> implements 
 
 	/**
 	 * A comparator for subclasses to use to compare fixtures on the basis
-	 * of distance from {@link referencePoint}.
+	 * of distance from the reference point.
 	 */
 	protected final Comparator<Point> distComparator;
 
@@ -49,7 +49,7 @@ public abstract class AbstractReportGenerator<Type extends IFixture> implements 
 	 * TODO: Don't require callers to pss in mapDimensions if referencePoint is absent. (Split constructor.)
 	 *
 	 * @param mapDimensions The dimensions of the map. If null, {@link
-	 * distComparator} and {@link distanceString} will give inaccurate
+	 * #distComparator} and {@link #distanceString} will give inaccurate
 	 * results whenever the shortest distance between two points involves
 	 * wrapping around an edge of the map.
 	 * @param referencePoint The base point to use for distance
@@ -73,7 +73,7 @@ public abstract class AbstractReportGenerator<Type extends IFixture> implements 
 	}
 
 	/**
-	 * A list that produces HTML in its {@link toString} method.
+	 * A list that produces HTML in its {@link #toString} method.
 	 *
 	 * Assuming this is supposed to be static ...
 	 */
@@ -169,7 +169,7 @@ public abstract class AbstractReportGenerator<Type extends IFixture> implements 
 	}
 
 	/**
-	 * A list of Points that produces a comma-separated list in its {@link toString} and has a "header".
+	 * A list of Points that produces a comma-separated list in its {@link #toString} and has a "header".
 	 */
 	protected static class PointList extends ArrayList<Point> implements HeadedList<Point> {
 		private static final long serialVersionUID = 1L;
@@ -212,7 +212,7 @@ public abstract class AbstractReportGenerator<Type extends IFixture> implements 
 		private final Map<Key, Value> wrapped;
 
 		/**
-		 * @param header The header to prepend to the items in {@link toString}.
+		 * @param header The header to prepend to the items in {@link #toString}.
 		 */
 		public HeadedMapImpl(final String header) {
 			this.header = header;
@@ -220,7 +220,7 @@ public abstract class AbstractReportGenerator<Type extends IFixture> implements 
 		}
 
 		/**
-		 * @param header The header to prepend to the items in {@link toString}.
+		 * @param header The header to prepend to the items in {@link #toString}.
 		 */
 		public HeadedMapImpl(final String header, final Map<Key, Value> initial) {
 			this.header = header;
@@ -228,9 +228,8 @@ public abstract class AbstractReportGenerator<Type extends IFixture> implements 
 		}
 
 		/**
-		 * @param header The header to prepend to the items in {@link toString}.
+		 * @param header The header to prepend to the items in {@link #toString}.
 		 * @param comparator A comparator to sort the map by.
-		 * @param initial Initial entries in the map
 		 */
 		public HeadedMapImpl(final String header, final Comparator<Key> comparator) {
 			this.header = header;
@@ -238,7 +237,7 @@ public abstract class AbstractReportGenerator<Type extends IFixture> implements 
 		}
 
 		/**
-		 * @param header The header to prepend to the items in {@link toString}.
+		 * @param header The header to prepend to the items in {@link #toString}.
 		 * @param comparator A comparator to sort the map by.
 		 * @param initial Initial entries in the map
 		 */

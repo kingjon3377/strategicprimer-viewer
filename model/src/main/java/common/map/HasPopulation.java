@@ -28,7 +28,7 @@ public interface HasPopulation<Self extends HasPopulation<Self>> extends Subsett
 
 	/**
 	 * Return a copy of this object, except with its population increased
-	 * to its current population plus that of the {@link addend}, which
+	 * to its current population plus that of the addend, which
 	 * must be of the same type.
 	 */
 	Self combined(Self addend);

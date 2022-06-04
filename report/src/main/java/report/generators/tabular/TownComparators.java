@@ -10,7 +10,7 @@ import common.map.fixtures.towns.Town;
 import common.map.fixtures.towns.Fortification;
 
 /**
- * A class to provide {@link compareTowns a total ordering} for {@link
+ * A class to provide {@link #compareTowns a total ordering} for {@link
  * ITownFixture towns}. The methods it uses to derive that ordering are useful
  * by themselves as well, and so are also public.
  */

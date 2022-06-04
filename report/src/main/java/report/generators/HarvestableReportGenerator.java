@@ -86,9 +86,10 @@ public class HarvestableReportGenerator extends AbstractReportGenerator<Harvesta
 
 	/**
 	 * Produce a sub-report(s) dealing with a single "harvestable"
-	 * fixture(s). It is to be removed from the collection. {@link Cave Caves} and
-	 * {@link Battlefield battlefields}, though implementing the {@link
-	 * HarvestableFixture} interface, are <em>not</em> handled here.
+	 * fixture(s). It is to be removed from the collection.
+	 * {@link common.map.fixtures.explorable.Cave Caves} and
+	 * {@link common.map.fixtures.explorable.Battlefield battlefields}, though
+	 * implementing the {@link HarvestableFixture} interface, are <em>not</em> handled here.
 	 */
 	@Override
 	public void produceSingle(final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
@@ -139,7 +140,8 @@ public class HarvestableReportGenerator extends AbstractReportGenerator<Harvesta
 	/**
 	 * Produce the sub-report(s) dealing with "harvestable" fixtures. All
 	 * fixtures referred to in this report are to be removed from the
-	 * collection. {@link Cave Caves} and {@link Battlefield battlefields},
+	 * collection. {@link common.map.fixtures.explorable.Cave Caves} and {@link
+	 * common.map.fixtures.explorable.Battlefield battlefields},
 	 * though implementing {@link HarvestableFixture}, are presumed to have
 	 * been handled already.
 	 */

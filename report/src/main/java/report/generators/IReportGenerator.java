@@ -49,7 +49,7 @@ public interface IReportGenerator<T extends IFixture> {
 	/**
 	 * Write a (sub-)report on a single item to a stream.
 	 *
-	 * TODO: Move back into {@link produce}
+	 * TODO: Move back into {@link #produce}
 	 *
 	 * @param fixtures The set of fixtures in the map.
 	 * @param map The map. (Needed to get terrain type for some reports.)
@@ -61,7 +61,7 @@ public interface IReportGenerator<T extends IFixture> {
 		IMapNG map, Consumer<String> ostream, T item, Point loc);
 
 	/**
-	 * A factory for a default formatter for {@link writeMap}.
+	 * A factory for a default formatter for {@link #writeMap}.
 	 */
 	default TriConsumer<T, Point, Consumer<String>> defaultFormatter(
 			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures, final IMapNG map) {
@@ -78,7 +78,7 @@ public interface IReportGenerator<T extends IFixture> {
 	 * @param ostream The stream to write to.
 	 * @param map The map to write. Has to be a {@link HeadedMap} so we can get its heading.
 	 * @param lambda The method to write each item.
-	 * @param An optional sorting method to run the map through before printing.
+	 * @param sorter A sorting method to run the map through before printing.
 	 */
 	default <Key extends IFixture> void writeMap(final Consumer<String> ostream,
 	                                             final HeadedMap<? extends Key, Point> map,
@@ -104,7 +104,6 @@ public interface IReportGenerator<T extends IFixture> {
 	 * @param ostream The stream to write to.
 	 * @param map The map to write. Has to be a {@link HeadedMap} so we can get its heading.
 	 * @param lambda The method to write each item.
-	 * @param An optional sorting method to run the map through before printing.
 	 */
 	default <Key extends IFixture> void writeMap(final Consumer<String> ostream,
 	                                             final HeadedMap<? extends Key, Point> map,
