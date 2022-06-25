@@ -142,6 +142,38 @@
           </execution>
         </executions>
       </plugin>
+      <plugin>
+        <groupId>de.perdian.maven.plugins</groupId>
+        <artifactId>macosappbundler-maven-plugin</artifactId>
+        <version>1.18.0</version>
+        <configuration>
+          <plist>
+            <!--FIXME <CFBundleIconFile>icon.icns</CFBundleIconFile>-->
+            <CFBundleDisplayName>Strategic Primer Helpers</CFBundleDisplayName>
+            <CFBundleName>${project.artifactId}-${project.version}</CFBundleName>
+            <JVMMainModuleName>main/drivers.Main</JVMMainModuleName>
+            <JVMVersion>17+</JVMVersion>
+            <JVMOptions>
+              <string>apple.eawt.quitStrategy=CLOSE_ALL_WINDOWS</string>
+            </JVMOptions>
+	    <!-- TODO: If plugin's dialect ever supports this:
+                <CFBundleTypeName>Strategic Primer map files</CFBundleTypeName>
+            -->
+	    <CFBundleTypeExtensions>
+               <string>map</string>
+               <string>xml</string>
+	    </CFBundleTypeExtensions>
+          </plist>
+        </configuration>
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>bundle</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
     </plugins>
   </build>
 </project>
