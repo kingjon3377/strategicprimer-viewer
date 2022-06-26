@@ -8,30 +8,19 @@ jobs:
   build_and_test:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Set up Java
-        uses: actions/setup-java@v2
+        uses: actions/setup-java@v3
         with:
-          java-version: 8
+          java-version: 17
           distribution: 'adopt'
+          cache: maven
       - name: Install packaged dependencies
-        run: sudo apt-get install ant-optional ant-contrib icnsutils icoutils genisoimage python3-pip
-      - name: Install unpackaged dependencies
-        shell: bash
-        run: ./install-deps.sh
-        env:
-          GITHUB_REF: ${{ github.ref }}
-      - name: Populate Ceylon modules cache if Herd down
-        shell: bash
-        run: .github/scripts/populate-cache.sh
-        env:
-          CEYLON_DEPS_CACHE_URL: ${{ secrets.CEYLON_DEPS_CACHE }}
+        run: sudo apt-get install icnsutils icoutils imagemagick genisoimage
       - name: Build and test
-        shell: bash
-        run: ./run_tests.sh
+        run: mvn --batch-mode compile test
       - if: startsWith(github.ref, 'refs/tags/')
         name: Build release
-        shell: bash
         run: ./build_release.sh
       - if: startsWith(github.ref, 'refs/tags/')
         name: Upload release
