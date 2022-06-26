@@ -1,0 +1,9 @@
+woodcutter;1	woodcutting axe;woolen tunic
+woodcutter;2	woodcutting axe;woolen tunic
+woodcutter;3	woodcutting axe;iron wedge;woolen tunic
+woodcutter;4	woodcutting axe;iron wedge;woolen tunic
+woodcutter;5	steel woodcutting axe;woolen tunic
+woodcutter;6	steel woodcutting axe;woolen tunic
+woodcutter;7	steel woodcutting axe;iron wedge;woolen tunic
+woodcutter;8	steel woodcutting axe;iron wedge;woolen tunic
+woodcutter;9	steel woodcutting axe;iron crosscut saw;woolen tunic

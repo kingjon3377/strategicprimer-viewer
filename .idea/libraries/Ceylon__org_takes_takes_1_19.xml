@@ -1,9 +1,0 @@
-<component name="libraryTable">
-  <library name="Ceylon: org.takes:takes/1.19">
-    <CLASSES>
-      <root url="jar://$MAVEN_REPOSITORY$/org/takes/takes/1.19/takes-1.19.jar!/" />
-    </CLASSES>
-    <JAVADOC />
-    <SOURCES />
-  </library>
-</component>

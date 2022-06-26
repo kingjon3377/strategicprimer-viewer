@@ -39,4 +39,6 @@ modules/*
 /.exploded/
 .swp
 .swo
-resource/strategicprimer/viewer/invocation
+main/src/main/resources/invocation
+*/target/
+main/dependency-reduced-pom.xml
