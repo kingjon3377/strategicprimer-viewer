@@ -109,6 +109,145 @@
         </executions>
       </plugin>
       <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>exec-maven-plugin</artifactId>
+        <version>3.0.0</version>
+        <!-- TODO: Is there any way to reduce repetition in these, short of defining a shell script? -->
+        <executions>
+          <execution>
+            <id>512px</id>
+            <phase>package</phase>
+            <goals><goal>exec</goal></goals>
+            <configuration>
+              <executable>convert</executable>
+              <arguments>
+                <argument>src/main/resources/images/icon.png</argument>
+                <argument>-adaptive-resize</argument>
+                <argument>512x512</argument>
+                <argument>icon_512px.png</argument>
+              </arguments>
+            </configuration>
+          </execution>
+          <execution>
+            <id>256px</id>
+            <phase>package</phase>
+            <goals><goal>exec</goal></goals>
+            <configuration>
+              <executable>convert</executable>
+              <arguments>
+                <argument>src/main/resources/images/icon.png</argument>
+                <argument>-adaptive-resize</argument>
+                <argument>256x256</argument>
+                <argument>icon_256px.png</argument>
+              </arguments>
+            </configuration>
+          </execution>
+          <execution>
+            <id>128px</id>
+            <phase>package</phase>
+            <goals><goal>exec</goal></goals>
+            <configuration>
+              <executable>convert</executable>
+              <arguments>
+                <argument>src/main/resources/images/icon.png</argument>
+                <argument>-adaptive-resize</argument>
+                <argument>128x128</argument>
+                <argument>icon_128px.png</argument>
+              </arguments>
+            </configuration>
+          </execution>
+          <execution>
+            <id>64px</id>
+            <phase>package</phase>
+            <goals><goal>exec</goal></goals>
+            <configuration>
+              <executable>convert</executable>
+              <arguments>
+                <argument>src/main/resources/images/icon.png</argument>
+                <argument>-adaptive-resize</argument>
+                <argument>64x64</argument>
+                <argument>icon_64px.png</argument>
+              </arguments>
+            </configuration>
+          </execution>
+          <execution>
+            <id>48px</id>
+            <phase>package</phase>
+            <goals><goal>exec</goal></goals>
+            <configuration>
+              <executable>convert</executable>
+              <arguments>
+                <argument>src/main/resources/images/icon.png</argument>
+                <argument>-adaptive-resize</argument>
+                <argument>48x48</argument>
+                <argument>icon_48px.png</argument>
+              </arguments>
+            </configuration>
+          </execution>
+          <execution>
+            <id>32px</id>
+            <phase>package</phase>
+            <goals><goal>exec</goal></goals>
+            <configuration>
+              <executable>convert</executable>
+              <arguments>
+                <argument>src/main/resources/images/icon.png</argument>
+                <argument>-adaptive-resize</argument>
+                <argument>32x32</argument>
+                <argument>icon_32px.png</argument>
+              </arguments>
+            </configuration>
+          </execution>
+          <execution>
+            <id>16px</id>
+            <phase>package</phase>
+            <goals><goal>exec</goal></goals>
+            <configuration>
+              <executable>convert</executable>
+              <arguments>
+                <argument>src/main/resources/images/icon.png</argument>
+                <argument>-adaptive-resize</argument>
+                <argument>16x16</argument>
+                <argument>icon_16px.png</argument>
+              </arguments>
+            </configuration>
+          </execution>
+          <execution>
+            <id>ico</id>
+            <phase>package</phase>
+            <goals><goal>exec</goal></goals>
+            <configuration>
+              <executable>icotool</executable>
+              <arguments>
+                <argument>-o</argument>
+                <argument>icon.ico</argument>
+                <argument>--create</argument>
+                <argument>icon_64px.png</argument>
+                <argument>icon_32px.png</argument>
+                <argument>icon_16px.png</argument>
+              </arguments>
+            </configuration>
+          </execution>
+          <execution>
+            <id>icns</id>
+            <phase>package</phase>
+            <goals><goal>exec</goal></goals>
+            <configuration>
+              <executable>png2icns</executable>
+              <arguments>
+                <argument>icon.icns</argument>
+                <argument>icon_512px.png</argument>
+                <argument>icon_256px.png</argument>
+                <argument>icon_128px.png</argument>
+                <argument>icon_48px.png</argument>
+                <argument>icon_32px.png</argument>
+                <argument>icon_16px.png</argument>
+              </arguments>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
         <groupId>com.akathist.maven.plugins.launch4j</groupId>
         <artifactId>launch4j-maven-plugin</artifactId>
         <version>2.1.2</version>
@@ -123,7 +262,7 @@
               <jar>target/${project.artifactId}-${project.version}.jar</jar>
               <errTitle>Strategic Primer Map Viewer error</errTitle>
 	      <stayAlive>false</stayAlive>
-	      <!-- FIXME: <icon>icon.ico</icon> -->
+	      <icon>icon.ico</icon>
               <jre>
                 <minVersion>1.9</minVersion>
               </jre>
@@ -148,7 +287,7 @@
         <version>1.18.0</version>
         <configuration>
           <plist>
-            <!--FIXME <CFBundleIconFile>icon.icns</CFBundleIconFile>-->
+            <CFBundleIconFile>icon.icns</CFBundleIconFile>
             <CFBundleDisplayName>Strategic Primer Helpers</CFBundleDisplayName>
             <CFBundleName>${project.artifactId}-${project.version}</CFBundleName>
             <JVMMainModuleName>main/drivers.Main</JVMMainModuleName>
