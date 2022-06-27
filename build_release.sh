@@ -1,10 +1,15 @@
-#!/bin/sh
+#!/bin/bash
 # This is for use by CI, to build the artifacts and give them the names we want.
 set -ex
 mvn --batch-mode package
 mkdir -p release
 cd main/target
-appname=*.app
+appnames=( *.app )
+if "${#appnames}" -ne 1;then
+	echo "Unexpected number of Mac apps" 1>&2
+	exit 1
+fi
+appname="${appnames[0]}"
 for file in main-*.app main-*.exe main-*.jar; do
 	mv "${file}" ../../release/viewer-"${file##main-}"
 done
