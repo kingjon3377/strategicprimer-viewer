@@ -7,11 +7,11 @@
   <parent>
     <groupId>com.github.strategic-primer</groupId>
     <artifactId>assistive-programs</artifactId>
-    <version>0.5-SNAPSHOT</version>
+    <version>${revision}</version>
   </parent>
 
   <artifactId>model</artifactId>
-  <version>0.5-SNAPSHOT</version>
+  <version>${parent.version}</version>
 
   <dependencies>
     <dependency>
