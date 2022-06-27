@@ -1,7 +1,12 @@
 #!/bin/bash
 # This is for use by CI, to build the artifacts and give them the names we want.
 set -ex
-mvn --batch-mode package
+case "${GITHUB_REF}" in
+refs/tags/v*) localrevision=( -Drevision="${GITHUB_REF##refs/tags/v}" ) ;;
+refs/tags/*) localrevision=( -Drevision="${GITHUB_REF##refs/tags/}" ) ;;
+*) localrevision=( ) ;;
+esac
+mvn --batch-mode package "${localrevision[@]}"
 mkdir -p release
 cd main/target
 appnames=( *.app )

@@ -6,9 +6,10 @@
 
   <groupId>com.github.strategic-primer</groupId>
   <artifactId>assistive-programs</artifactId>
-  <version>0.5-SNAPSHOT</version>
+  <version>${revision}</version>
 
   <properties>
+    <revision>0.5-SNAPSHOT</revision>
     <maven.compiler.release>17</maven.compiler.release>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <junit.platform.version>1.8.0</junit.platform.version>
