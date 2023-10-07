@@ -451,7 +451,7 @@ public final class TestDBIO {
 			if (ds == null) {
 				ds = new SQLiteDataSource();
 				ds.setSharedCache(true);
-				ds.setReadUncommited(true);
+				ds.setReadUncommitted(true);
 				ds.setUrl("jdbc:sqlite::memory:");
 				source = ds;
 				connection = new PersistentConnection(ds.getConnection());
