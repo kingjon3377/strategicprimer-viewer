@@ -180,7 +180,7 @@ public class UnwantedChildException extends SPFormatException {
 		return tag;
 	}
 
-	public Location getLocation() {
+	public @Nullable Location getLocation() {
 		return location;
 	}
 }
