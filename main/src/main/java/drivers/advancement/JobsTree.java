@@ -89,7 +89,7 @@ import common.map.fixtures.mobile.worker.IJob;
 			if (path.length < 2) {
 				job = null;
 			} else {
-				job = Optional.ofNullable(path[path.length - 2]).filter(IJob.class::isInstance)
+				job = Optional.of(path[path.length - 2]).filter(IJob.class::isInstance)
 						.map(IJob.class::cast).orElse(null);
 			}
 		} else {
