@@ -234,7 +234,7 @@ import common.map.fixtures.terrain.Hill;
 		removalItem.addActionListener(this::removeTerrain);
 		for (final TileType type : TileType.getValuesForVersion(version)) {
 			final String desc;
-			final Integer mnemonic;
+			final int mnemonic;
 			switch (type) {
 			case Tundra -> {
 				desc = "tundra";
