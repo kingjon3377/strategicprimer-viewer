@@ -316,7 +316,7 @@
             <CFBundleDisplayName>Strategic Primer Helpers</CFBundleDisplayName>
             <CFBundleName>${project.artifactId}-${project.version}</CFBundleName>
             <JVMMainModuleName>main/drivers.Main</JVMMainModuleName>
-            <JVMVersion>17+</JVMVersion>
+            <JVMVersion>21+</JVMVersion>
             <JVMOptions>
               <string>apple.eawt.quitStrategy=CLOSE_ALL_WINDOWS</string>
             </JVMOptions>
