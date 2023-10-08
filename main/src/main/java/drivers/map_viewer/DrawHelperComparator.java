@@ -37,6 +37,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Optional;
 import javax.xml.stream.XMLStreamException;
+
+import lovelace.util.Accumulator;
 import lovelace.util.LongAccumulator;
 import lovelace.util.Range;
 import org.javatuples.Pair;
@@ -211,7 +213,7 @@ public class DrawHelperComparator implements UtilityDriver {
 			for (final Pair<TileDrawHelper, String> inner : helpers) {
 				final TileDrawHelper testCase = inner.getValue0();
 				final String caseDesc = inner.getValue1();
-				final LongAccumulator accumulator = getResultsAccumulator(fileName, caseDesc, testDesc);
+				final Accumulator<Long> accumulator = getResultsAccumulator(fileName, caseDesc, testDesc);
 				accumulator.add(printStats(caseDesc, test.runTest(testCase, map, repetitions,
 								scaleZoom(ViewerModel.DEFAULT_ZOOM_LEVEL, map.getDimensions().version())),
 						repetitions));
