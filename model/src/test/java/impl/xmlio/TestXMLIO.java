@@ -656,10 +656,17 @@ public final class TestXMLIO {
 	private static Stream<Arguments> testVillagePopulationSerialization() {
 		return Stream.of(TownStatus.values()).flatMap(a ->
 			races.stream().collect(toShuffledStream()).limit(3).map(b ->
-				Arguments.of(a, b, SINGLETON_RANDOM.nextInt(), SINGLETON_RANDOM.nextInt(),
-					SINGLETON_RANDOM.nextInt(), SINGLETON_RANDOM.nextInt(),
-					SINGLETON_RANDOM.nextInt(), SINGLETON_RANDOM.nextInt(),
-					SINGLETON_RANDOM.nextInt())));
+				Arguments.of(a, b, randomInteger(), randomInteger(),
+					randomInteger(), randomInteger(),
+					randomInteger(), randomInteger(),
+					randomInteger())));
+	}
+
+	/**
+	 * @return a random integer for parameterized tests.
+	 */
+	private static int randomInteger() {
+		return SINGLETON_RANDOM.nextInt();
 	}
 
 	@AfterEach
@@ -723,8 +730,8 @@ public final class TestXMLIO {
 	private static Stream<Arguments> testCitySerialization() {
 		return Stream.of(TownSize.values()).flatMap(a -> Stream.of(TownStatus.values()).flatMap(b ->
 			treeTypes.stream().collect(toShuffledStream()).limit(2).map(c ->
-				Arguments.of(a, b, SINGLETON_RANDOM.nextInt(),
-					SINGLETON_RANDOM.nextInt(), c))));
+				Arguments.of(a, b, randomInteger(),
+					randomInteger(), c))));
 	}
 
 	/**
@@ -752,10 +759,10 @@ public final class TestXMLIO {
 		return treeTypes.stream().collect(toShuffledStream()).limit(2).flatMap(a ->
 			Stream.of(TownSize.values()).flatMap(b -> Stream.of(TownStatus.values()).flatMap(c ->
 				races.stream().collect(toShuffledStream()).limit(3).map(d ->
-					Arguments.of(a, b, c, d, SINGLETON_RANDOM.nextInt(),
-						SINGLETON_RANDOM.nextInt(), SINGLETON_RANDOM.nextInt(),
-						SINGLETON_RANDOM.nextInt(), SINGLETON_RANDOM.nextInt(),
-						SINGLETON_RANDOM.nextInt(), SINGLETON_RANDOM.nextInt())))));
+					Arguments.of(a, b, c, d, randomInteger(),
+						randomInteger(), randomInteger(),
+						randomInteger(), randomInteger(),
+						randomInteger(), randomInteger())))));
 	}
 
 	/**
