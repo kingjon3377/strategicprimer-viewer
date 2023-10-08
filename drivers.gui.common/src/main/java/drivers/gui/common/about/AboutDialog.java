@@ -8,6 +8,8 @@ import java.awt.Component;
 import java.awt.Frame;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.util.Optional;
+import java.util.function.Predicate;
 import java.util.regex.Pattern;
 
 import javax.swing.JEditorPane;
@@ -36,7 +38,8 @@ public final class AboutDialog extends SPDialog {
 		final StringBuilder sb = new StringBuilder();
 		resource.forEach(sb::append);
 		final String raw = sb.toString();
-		final String html = APP_NAME.matcher(raw).replaceAll((app == null || app.isEmpty()) ? "Strategic Primer Assistive Programs" : app); // TODO: Use Optional instead of ternary
+		final String html = APP_NAME.matcher(raw).replaceAll(Optional.ofNullable(app)
+			.filter(Predicate.not(String::isEmpty)).orElse("Strategic Primer Assistive Programs"));
 		final JEditorPane pane = new JEditorPane("text/html", html);
 		pane.setCaretPosition(0); // scroll to the top
 		pane.setEditable(false);
