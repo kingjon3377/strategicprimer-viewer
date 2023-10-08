@@ -652,7 +652,7 @@ public final class TestXMLIO {
 		assertPortraitSerialization("Village portrait property is preserved", village);
 	}
 
-	// TODO: Pass some bound to each of these nextInt() calls, instead of calling assume() so much in the test method.
+	// FIXME: Pass some bound to each of these nextInt() calls, instead of calling assume() so much in the test method.
 	private static Stream<Arguments> testVillagePopulationSerialization() {
 		return Stream.of(TownStatus.values()).flatMap(a ->
 			races.stream().collect(toShuffledStream()).limit(3).map(b ->
