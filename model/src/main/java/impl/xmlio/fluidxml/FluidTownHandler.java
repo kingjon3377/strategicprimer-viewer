@@ -204,6 +204,8 @@ import java.util.Map;
 		@Nullable String current = null;
 		final Deque<StartElement> stack = new LinkedList<>();
 		stack.addFirst(element);
+        final Consumer<IMutableResourcePile> addProduction = retval.getYearlyProduction()::add; // TODO: Should really be doing the getYearlyProduction() call at call-time, not here ...
+        final Consumer<IMutableResourcePile> addConsumption = retval.getYearlyConsumption()::add;
 		for (final XMLEvent event : stream) {
 			if (event instanceof EndElement ee && ee.getName().equals(element.getName())) {
 				break;
@@ -235,9 +237,9 @@ import java.util.Map;
 					final StartElement top = stack.peekFirst();
 					final Consumer<IMutableResourcePile> lambda;
 					if ("production".equals(current)) {
-						lambda = retval.getYearlyProduction()::add;
+						lambda = addProduction;
 					} else if ("consumption".equals(current)) {
-						lambda = retval.getYearlyConsumption()::add;
+						lambda = addConsumption;
 					} else {
 						throw UnwantedChildException.listingExpectedTags(
 							top.getName(), se, "production",

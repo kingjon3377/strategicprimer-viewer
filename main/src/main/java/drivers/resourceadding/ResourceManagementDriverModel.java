@@ -1,5 +1,7 @@
 package drivers.resourceadding;
 
+import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.stream.StreamSupport;
 import java.util.stream.Collectors;
 import lovelace.util.LovelaceLogger;
@@ -50,6 +52,8 @@ import java.math.BigDecimal;
 	 * TODO: Use the "HQ or, failing that, any other fortress" algorithm used by other driver models.
 	 */
 	public void addResource(final FortressMember resource, final Player player) {
+        final Predicate<Object> isFortress = IMutableFortress.class::isInstance;
+        final Function<Object, IMutableFortress> fortressCast = IMutableFortress.class::cast;
 		for (final IMutableMapNG map : getRestrictedAllMaps()) {
 			final Player mapPlayer = map.getCurrentPlayer();
 			// Operate on maps where the current player is independent OR matches
@@ -57,8 +61,8 @@ import java.math.BigDecimal;
 			if (mapPlayer.isIndependent() || mapPlayer.getPlayerId() < 0 ||
 					mapPlayer.getPlayerId() == player.getPlayerId()) {
 				final IMutableFortress fortress = map.streamAllFixtures()
-						.filter(IMutableFortress.class::isInstance)
-						.map(IMutableFortress.class::cast)
+						.filter(isFortress)
+						.map(fortressCast)
 						.filter(f -> "HQ".equals(f.getName()))
 						.filter(f -> mapPlayer.getPlayerId() ==
 							f.owner().getPlayerId())

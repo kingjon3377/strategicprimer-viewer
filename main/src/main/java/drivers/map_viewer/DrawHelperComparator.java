@@ -206,7 +206,8 @@ public class DrawHelperComparator implements UtilityDriver {
 		for (final Pair<String, TestInterface> pair : TESTS) {
 			final String testDesc = pair.getValue0();
 			final TestInterface test = pair.getValue1();
-			cli.println(testDesc + ":");
+            cli.print(testDesc);
+			cli.println(":");
 			for (final Pair<TileDrawHelper, String> inner : helpers) {
 				final TileDrawHelper testCase = inner.getValue0();
 				final String caseDesc = inner.getValue1();
@@ -256,7 +257,8 @@ public class DrawHelperComparator implements UtilityDriver {
 			}
 			mapSizes.put(arg, (int) map.streamLocations().count());
 			final String filename = path.getFileName().toString();
-			cli.println("Testing using " + filename);
+            cli.print("Testing using ");
+			cli.println(filename);
 			runAllTests(map, filename, REPS);
 		}
 		final String reportFilename = options.getArgument("--report");

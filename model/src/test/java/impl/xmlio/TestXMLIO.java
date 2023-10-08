@@ -222,11 +222,13 @@ public final class TestXMLIO {
 	 */
 	private <Type> void assertUnsupportedTag(final String xml, final String tag, final @Nullable Type desideratum)
 			throws SPFormatException, XMLStreamException, IOException {
-		for (final ISPReader reader : spReaders) {
+		final Consumer<UnsupportedTagException> assertion =
+                (except) -> assertEquals(tag, except.getTag().getLocalPart(),
+                        "Unsupported tag was the tag we expected");
+        for (final ISPReader reader : spReaders) {
 			assertFormatIssue(reader, xml, desideratum,
 				UnsupportedTagException.class,
-				(except) -> assertEquals(tag, except.getTag().getLocalPart(),
-					"Unsupported tag was the tag we expected"));
+				assertion);
 		}
 	}
 
@@ -253,11 +255,13 @@ public final class TestXMLIO {
 	private <Type> void assertMissingProperty(final String xml, final String property,
 	                                          final @Nullable Type desideratum)
 			throws SPFormatException, XMLStreamException, IOException {
+		final Consumer<MissingPropertyException> assertion =
+			(except) -> assertEquals(property, except.getParam(),
+				"Missing property should be the one we're expecting");
 		for (final ISPReader reader : spReaders) {
 			assertFormatIssue(reader, xml, desideratum,
 				MissingPropertyException.class,
-				(except) -> assertEquals(property, except.getParam(),
-					"Missing property should be the one we're expecting"));
+				assertion);
 		}
 	}
 
@@ -281,17 +285,18 @@ public final class TestXMLIO {
 	private <Type> void assertDeprecatedProperty(final String xml, final String deprecated, final String preferred,
 	                                             final String tag, final @Nullable Type desideratum)
 			throws SPFormatException, XMLStreamException, IOException {
+		final Consumer<DeprecatedPropertyException> assertion = (except) -> { // FIXME: assertFormatIssue takes assertions as varargs, so split
+			assertEquals(deprecated, except.getOld(),
+				"Missing property should be the one we're expecting");
+			assertEquals(tag, except.getTag().getLocalPart(),
+				"Missing property should be on the tag we expect");
+			assertEquals(preferred, except.getPreferred(),
+				"Preferred form should be as expected");
+		};
 		for (final ISPReader reader : spReaders) {
 			assertFormatIssue(reader, xml, desideratum,
 				DeprecatedPropertyException.class,
-				(except) -> {
-					assertEquals(deprecated, except.getOld(),
-						"Missing property should be the one we're expecting");
-					assertEquals(tag, except.getTag().getLocalPart(),
-						"Missing property should be on the tag we expect");
-					assertEquals(preferred, except.getPreferred(),
-						"Preferred form should be as expected");
-				});
+				assertion);
 		}
 	}
 
@@ -564,14 +569,16 @@ public final class TestXMLIO {
 	 */
 	private void assertInvalid(final String xml)
 			throws SPFormatException, XMLStreamException, IOException {
+		final Consumer<Exception> assertion = // TODO: Extract 'assert instance of any' helper method (in lovelace-util)
+			except -> assertAny("Exception is of an expected type: was %s".formatted(except.getClass().getName()),
+				() -> assertInstanceOf(NoSuchElementException.class, except),
+				() -> assertInstanceOf(IllegalArgumentException.class, except),
+				() -> assertInstanceOf(XMLStreamException.class, except),
+				() -> assertInstanceOf(NoSuchFileException.class, except) // TODO: NSFE not needed anymore with no 'import', right?
+			);
 		for (final ISPReader reader : spReaders) {
 			assertFormatIssue(reader, xml, null, Exception.class,
-				except -> assertAny("Exception is of an expected type: was %s".formatted(except.getClass().getName()),
-						() -> assertInstanceOf(NoSuchElementException.class, except),
-						() -> assertInstanceOf(IllegalArgumentException.class, except),
-						() -> assertInstanceOf(XMLStreamException.class, except),
-						() -> assertInstanceOf(NoSuchFileException.class, except) // TODO: NSFE not needed anymore with no 'import', right?
-						));
+				assertion);
 		}
 	}
 
@@ -1305,6 +1312,11 @@ public final class TestXMLIO {
 						<map xmlns="%s" version="2" rows="1" columns="1" current_player="1" xmlns:xy="xyzzy">
 						<player number="1" code_name="playerOne" /><xy:xyzzy><row index="0">
 						<tile row="0" column="0" kind="steppe"><xy:hill id="0" /></tile></row></xy:xyzzy></map>""".formatted(SP_NAMESPACE));
+		final Consumer<Exception> adventureAssertion =
+			except -> assertAny("Exception is of expected type: was %s".formatted(except.getClass().getName()),
+				() -> assertInstanceOf(UnwantedChildException.class, except),
+				() -> assertInstanceOf(XMLStreamException.class, except)
+			);
 		for (final ISPReader reader : spReaders) {
 			TestXMLIO.<IMapNG, Exception>assertFormatIssue(reader,
 				"""
@@ -1329,10 +1341,7 @@ public final class TestXMLIO {
 			TestXMLIO.<AdventureFixture, Exception>assertFormatIssue(reader, """
 							<adventure xmlns="xyzzy" id="1" brief="one" full="two" />""", null,
 				Exception.class,
-				except -> assertAny("Exception is of expected type: was %s".formatted(except.getClass().getName()),
-						() -> assertInstanceOf(UnwantedChildException.class, except),
-						() -> assertInstanceOf(XMLStreamException.class, except)
-						));
+				adventureAssertion);
 		}
 	}
 

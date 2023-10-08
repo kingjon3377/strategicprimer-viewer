@@ -191,11 +191,11 @@ public class UnitReportGenerator extends AbstractReportGenerator<IUnit> {
 				ostream.accept("""
 						<li>Resources:
 						<ul>""");
+				final Consumer<IResourcePile> lambda =
+					member -> memberReportGenerator.produceSingle(fixtures, map, ostream, member, loc);
 				for (final Map.Entry<String, List<IResourcePile>> entry : resources.entrySet()) {
 					produceInner(fixtures, ostream, entry.getKey(), entry.getValue(),
-						(IResourcePile member) ->
-							memberReportGenerator.produceSingle(fixtures, map,
-								ostream, member, loc));
+						lambda);
 				}
 				ostream.accept("""
 						</ul>

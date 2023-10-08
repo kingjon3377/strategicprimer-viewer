@@ -29,6 +29,7 @@ import java.math.BigDecimal;
 
 import lovelace.util.SingletonRandom;
 
+import java.util.function.Function;
 import java.util.function.Predicate;
 
 import java.util.Collections;
@@ -258,9 +259,23 @@ public class PopulationGeneratingCLI implements CLIDriver {
 				.anyMatch(f -> f.getAcres().doubleValue() <= 0.0))
 			.collect(Collectors.toList());
 		Collections.shuffle(locations);
+        final Predicate<Object> isForest = Forest.class::isInstance;
+        final Function<Object, Forest> forestCast = Forest.class::cast;
+        final Predicate<Object> isGrove = Grove.class::isInstance;
+        final Function<Object, Grove> groveCast = Grove.class::cast;
+        final Predicate<Object> hasExtent = HasExtent.class::isInstance;
+        final Function<Object, HasExtent> heCast = HasExtent.class::cast;
+        final BigDecimal fifteen = new BigDecimal(15);
+        final BigDecimal forty = new BigDecimal(40);
+        final BigDecimal eighty = new BigDecimal(80);
+        final BigDecimal oneSixty = new BigDecimal(160);
+        final BigDecimal fiveHundred = new BigDecimal(500);
+        final BigDecimal two = new BigDecimal(2); // TODO: Use BigDecimal.TWO once Java lang version bump
+        final BigDecimal four = new BigDecimal(4);
+        final BigDecimal five = new BigDecimal(5);
 		for (final Point location : locations) {
 			final Forest primaryForest = map.getFixtures(location).stream()
-				.filter(Forest.class::isInstance).map(Forest.class::cast)
+				.filter(isForest).map(forestCast)
 				.findFirst().orElseThrow(
 					() -> new IllegalStateException("Not found despite double-checking"));
 			BigDecimal reserved = BigDecimal.ZERO;
@@ -268,7 +283,7 @@ public class PopulationGeneratingCLI implements CLIDriver {
 				cli.println(String.format("First forest at %s had acreage set already.",
 					location));
 				reserved = map.getFixtures(location).stream()
-					.filter(Forest.class::isInstance).map(Forest.class::cast)
+					.filter(isForest).map(forestCast)
 					.map(Forest::getAcres).filter(n -> n.doubleValue() > 0.0)
 					.map(n -> {// FIXME: Use lovelace.util.Decimalize
 						if (n instanceof BigDecimal) {
@@ -279,25 +294,25 @@ public class PopulationGeneratingCLI implements CLIDriver {
 					}).reduce(reserved, BigDecimal::add);
 			}
 			final List<Forest> otherForests = map.getFixtures(location).stream()
-				.filter(Forest.class::isInstance).map(Forest.class::cast)
-				.filter(f -> !Objects.equals(f, primaryForest))
+				.filter(isForest).map(forestCast)
+				.filter(Predicate.not(Predicate.isEqual(primaryForest)))
 				.filter(f -> f.getAcres().doubleValue() <= 0.0).toList();
 			final int adjacentCount = countAdjacentForests(location, primaryForest.getKind());
 			for (final ITownFixture town : map.getFixtures(location).stream()
 					.filter(ITownFixture.class::isInstance).map(ITownFixture.class::cast).toList()) {
 				reserved = switch (town.getTownSize()) { // TODO: Pull the reserved.add() to outside the expression
-					case Small -> reserved.add(new BigDecimal(15));
-					case Medium -> reserved.add(new BigDecimal(40));
-					case Large -> reserved.add(new BigDecimal(80));
+					case Small -> reserved.add(fifteen);
+					case Medium -> reserved.add(forty);
+					case Large -> reserved.add(eighty);
 				};
 			}
 			reserved = reserved.add(new BigDecimal(map.getFixtures(location).stream()
-				.filter(Grove.class::isInstance).map(Grove.class::cast)
+				.filter(isGrove).map(groveCast)
 				.mapToInt(Grove::getPopulation).filter(p -> p > 0).sum())
-				.divide(new BigDecimal(500)));
-			reserved = map.getFixtures(location).stream().filter(HasExtent.class::isInstance)
+				.divide(fiveHundred));
+			reserved = map.getFixtures(location).stream().filter(hasExtent)
 				.filter(f -> !(f instanceof Forest)) // already counted above
-				.map(HasExtent.class::cast).map(HasExtent::getAcres)
+				.map(heCast).map(HasExtent::getAcres)
 				.filter(n -> n.doubleValue() > 0.0).map(n -> {// FIXME: lovelace.util.Decimalize
 					if (n instanceof BigDecimal) {
 						return (BigDecimal) n;
@@ -305,7 +320,7 @@ public class PopulationGeneratingCLI implements CLIDriver {
 						return new BigDecimal(n.doubleValue());
 					}
 				}).reduce(reserved, BigDecimal::add);
-			final BigDecimal fullTile = new BigDecimal(160);
+			final BigDecimal fullTile = oneSixty;
 			if (reserved.compareTo(fullTile) >= 0) {
 				cli.println("The whole tile or more was reserved, despite forests, at " + location);
 				continue;
@@ -316,20 +331,20 @@ public class PopulationGeneratingCLI implements CLIDriver {
 					acreage = fullTile.subtract(reserved);
 				} else if (adjacentCount > 4) {
 					acreage = fullTile.subtract(reserved)
-						.multiply(new BigDecimal(4).divide(new BigDecimal(5)));
+						.multiply(four.divide(five));
 				} else {
 					acreage = fullTile.subtract(reserved)
-						.multiply(new BigDecimal(2).divide(new BigDecimal(5)));
+						.multiply(two.divide(five));
 				}
 				model.setForestExtent(location, primaryForest, acreage);
 			} else {
 				final BigDecimal acreage;
 				if (adjacentCount > 4) {
 					acreage = fullTile.subtract(reserved)
-						.multiply(new BigDecimal(4).divide(new BigDecimal(5)));
+						.multiply(four.divide(five));
 				} else {
 					acreage = fullTile.subtract(reserved)
-						.multiply(new BigDecimal(2).divide(new BigDecimal(5)));
+						.multiply(two.divide(five));
 				}
 				model.setForestExtent(location, primaryForest, acreage);
 				reserved = reserved.add(acreage);

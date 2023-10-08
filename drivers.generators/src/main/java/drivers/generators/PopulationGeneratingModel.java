@@ -36,6 +36,8 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.HashSet;
 import java.util.Collections;
+import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 import java.util.stream.Collectors;
@@ -71,11 +73,15 @@ public class PopulationGeneratingModel extends SimpleMultiMapModel { // TODO: Ex
 	 */
 	public boolean setAnimalPopulation(final Point location, final boolean talking, final String kind, final int population) {
 		boolean retval = false;
+        final Predicate<Object> isAnimal = Animal.class::isInstance;
+        final Function<Object, Animal> animalCast = Animal.class::cast;
+        final Predicate<Animal> equalKind = a -> kind.equals(a.getKind());
+        final Predicate<Animal> sameTalking = a -> a.isTalking() == talking;
 		for (final IMutableMapNG map : getRestrictedAllMaps()) { // TODO: Should submaps really all get this information?
 			final Optional<Animal> animal = map.getFixtures(location).stream()
-				.filter(Animal.class::isInstance).map(Animal.class::cast)
-				.filter(a -> a.isTalking() == talking)
-				.filter(a -> kind.equals(a.getKind()))
+				.filter(isAnimal).map(animalCast)
+				.filter(sameTalking)
+				.filter(equalKind)
 				.findAny(); // TODO: Only match those without an existing population?
 			if (animal.isPresent()) {
 				final Animal replacement = animal.get().reduced(population);
@@ -94,10 +100,13 @@ public class PopulationGeneratingModel extends SimpleMultiMapModel { // TODO: Ex
 	 */
 	public boolean setGrovePopulation(final Point location, final String kind, final int population) {
 		boolean retval = false;
+        final Predicate<Object> isGrove = Grove.class::isInstance;
+        final Function<Object, Grove> groveCast = Grove.class::cast;
+        final Predicate<Grove> sameKind = g -> kind.equals(g.getKind());
 		for (final IMutableMapNG map : getRestrictedAllMaps()) { // TODO: Should submaps really all get this information?
 			final Optional<Grove> grove = map.getFixtures(location).stream()
-				.filter(Grove.class::isInstance).map(Grove.class::cast)
-				.filter(g -> kind.equals(g.getKind()))
+				.filter(isGrove).map(groveCast)
+				.filter(sameKind)
 				.findAny(); // TODO: Only match those without an existing population?
 			if (grove.isPresent()) {
 				final Grove replacement = grove.get().reduced(population);
@@ -116,10 +125,13 @@ public class PopulationGeneratingModel extends SimpleMultiMapModel { // TODO: Ex
 	 */
 	public boolean setShrubPopulation(final Point location, final String kind, final int population) {
 		boolean retval = false;
+        final Predicate<Object> isShrub = Shrub.class::isInstance;
+        final Function<Object, Shrub> shrubCast = Shrub.class::cast;
+        final Predicate<Shrub> sameKind = s -> kind.equals(s.getKind());
 		for (final IMutableMapNG map : getRestrictedAllMaps()) { // TODO: Should submaps really all get this information?
 			final Optional<Shrub> shrub = map.getFixtures(location).stream()
-				.filter(Shrub.class::isInstance).map(Shrub.class::cast)
-				.filter(s -> kind.equals(s.getKind()))
+				.filter(isShrub).map(shrubCast)
+				.filter(sameKind)
 				.findAny(); // TODO: Only match without an existing count?
 			if (shrub.isPresent()) {
 				final Shrub replacement = shrub.get().reduced(population);
@@ -137,14 +149,21 @@ public class PopulationGeneratingModel extends SimpleMultiMapModel { // TODO: Ex
 	 */
 	public boolean setFieldExtent(final Point location, final Meadow field, final double acres) {
 		boolean retval = false;
+        final Predicate<Object> isMeadow = Meadow.class::isInstance;
+        final Function<Object, Meadow> meadowCast = Meadow.class::cast;
+        final Predicate<Meadow> sameKind = m -> field.getKind().equals(m.getKind());
+        final Predicate<Meadow> sameField = m -> field.isField() == m.isField();
+        final Predicate<Meadow> sameCultivated = m -> field.isCultivated() == m.isCultivated();
+        final Predicate<Meadow> sameStatus = m -> field.getStatus() == m.getStatus();
+        final Predicate<Meadow> sameId = m -> field.getId() == m.getId();
 		for (final IMutableMapNG map : getRestrictedAllMaps()) { // TODO: Should submaps really all get this information?
 			final Optional<Meadow> existing = map.getFixtures(location).stream()
-				.filter(Meadow.class::isInstance).map(Meadow.class::cast)
-				.filter(m -> field.getKind().equals(m.getKind()))
-				.filter(m -> field.isField() == m.isField())
-				.filter(m -> field.isCultivated() == m.isCultivated())
-				.filter(m -> field.getStatus() == m.getStatus())
-				.filter(m -> field.getId() == m.getId())
+				.filter(isMeadow).map(meadowCast)
+				.filter(sameKind)
+				.filter(sameField)
+				.filter(sameCultivated)
+				.filter(sameStatus)
+				.filter(sameId)
 				.findAny(); // TODO: only match without an existing extent?
 			if (existing.isPresent()) {
 				final Meadow replacement = new Meadow(field.getKind(), field.isField(),
@@ -163,12 +182,17 @@ public class PopulationGeneratingModel extends SimpleMultiMapModel { // TODO: Ex
 	 */
 	public boolean setForestExtent(final Point location, final Forest forest, final Number acres) {
 		boolean retval = false;
+        final Predicate<Object> isForest = Forest.class::isInstance;
+        final Function<Object, Forest> forestCast = Forest.class::cast;
+        final Predicate<Forest> sameKind = f -> forest.getKind().equals(f.getKind());
+        final Predicate<Forest> sameRows = f -> forest.isRows() == f.isRows();
+        final Predicate<Forest> sameId = f -> forest.getId() == f.getId();
 		for (final IMutableMapNG map : getRestrictedAllMaps()) { // TODO: Should submaps really all get this information?
 			final Optional<Forest> existing = map.getFixtures(location).stream()
-				.filter(Forest.class::isInstance).map(Forest.class::cast)
-				.filter(f -> forest.getKind().equals(f.getKind()))
-				.filter(f -> forest.isRows() == f.isRows())
-				.filter(f -> forest.getId() == f.getId())
+				.filter(isForest).map(forestCast)
+				.filter(sameKind)
+				.filter(sameRows)
+				.filter(sameId)
 				.findAny();
 			if (existing.isPresent()) {
 				final Forest replacement = new Forest(forest.getKind(), forest.isRows(),
@@ -190,12 +214,15 @@ public class PopulationGeneratingModel extends SimpleMultiMapModel { // TODO: Ex
 	 */
 	public boolean assignTownStats(final Point location, final int townId, final String name, final CommunityStats stats) {
 		boolean retval = false;
+        final Function<Object, ITownFixture> townCast = ITownFixture.class::cast;
+        final Predicate<ITownFixture> sameId = f -> f.getId() == townId;
+        final Predicate<ITownFixture> sameName = f -> name.equals(f.getName());
 		for (final IMutableMapNG map : getRestrictedAllMaps()) { // TODO: Should submaps really all get this information?
 			final Optional<ITownFixture> town = map.getFixtures(location).stream()
 				.filter(f -> f instanceof AbstractTown || f instanceof Village) // TODO: extract IMutableTown interface
-				.map(ITownFixture.class::cast)
-				.filter(f -> f.getId() == townId)
-				.filter(f -> name.equals(f.getName()))
+				.map(townCast)
+				.filter(sameId)
+				.filter(sameName)
 				.findAny();
 			if (town.isPresent()) {
 				if (town.get() instanceof AbstractTown t) {
@@ -233,15 +260,21 @@ public class PopulationGeneratingModel extends SimpleMultiMapModel { // TODO: Ex
 		} else {
 			existingNote = String.format("%s ", worker.getNote(unit.owner()));
 		}
+        final Predicate<IFixture> isUnit = IMutableUnit.class::isInstance;
+        final Function<IFixture, IMutableUnit> unitCast = IMutableUnit.class::cast;
+        final Predicate<IMutableUnit> sameOwner = u -> unit.owner().equals(u.owner());
+        final Predicate<IMutableUnit> sameKind = u -> unit.getKind().equals(u.getKind());
+        final Predicate<IMutableUnit> sameName = u -> unit.getName().equals(u.getName());
+        final Predicate<IMutableUnit> sameId = u -> u.getId() == unit.getId();
 		for (final IMutableMapNG map : getRestrictedAllMaps()) {
 			final Optional<IMutableUnit> localUnit = map.streamAllFixtures()
 					.flatMap(PopulationGeneratingModel::flattenFortresses)
-					.filter(IMutableUnit.class::isInstance)
-					.map(IMutableUnit.class::cast)
-					.filter(u -> unit.owner().equals(u.owner()))
-					.filter(u -> unit.getKind().equals(u.getKind()))
-					.filter(u -> unit.getName().equals(u.getName()))
-					.filter(u -> u.getId() == unit.getId())
+					.filter(isUnit)
+					.map(unitCast)
+					.filter(sameOwner)
+					.filter(sameKind)
+					.filter(sameName)
+					.filter(sameId)
 					.findAny();
 			if (localUnit.isPresent()) {
 				final int turn = map.getCurrentTurn();
@@ -314,16 +347,21 @@ public class PopulationGeneratingModel extends SimpleMultiMapModel { // TODO: Ex
 	 */
 	public boolean addJobLevel(final IUnit unit, final IWorker worker, final String jobName) {
 		boolean any = false;
+        final Predicate<Object> isWorker = IWorker.class::isInstance;
+        final Function<Object, IWorker> workerCast = IWorker.class::cast;
+        final Predicate<IWorker> sameRace = w -> worker.getRace().equals(w.getRace());
+        final Predicate<IWorker> sameName = w -> worker.getName().equals(w.getName());
+        final Predicate<IWorker> sameId = w -> worker.getId() == w.getId();
 		for (final IMutableMapNG map : getRestrictedAllMaps()) {
 			for (final IUnit container : map.streamAllFixtures()
 					.flatMap(PopulationGeneratingModel::flattenFortresses)
 					.filter(IUnit.class::isInstance).map(IUnit.class::cast)
 					.filter(u -> u.owner().equals(unit.owner())).toList()) {
 				final Optional<IWorker> matching =
-					container.stream().filter(IWorker.class::isInstance).map(IWorker.class::cast)
-						.filter(w -> worker.getRace().equals(w.getRace()))
-						.filter(w -> worker.getName().equals(w.getName()))
-						.filter(w -> worker.getId() == w.getId())
+					container.stream().filter(isWorker).map(workerCast)
+						.filter(sameRace)
+						.filter(sameName)
+						.filter(sameId)
 						.findAny();
 				if (matching.isPresent()) { // FIXME: 'worker' below should be 'matching', right?
 					final Optional<IMutableJob> streamedJob =

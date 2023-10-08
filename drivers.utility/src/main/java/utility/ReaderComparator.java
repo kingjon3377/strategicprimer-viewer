@@ -54,7 +54,8 @@ public class ReaderComparator implements UtilityDriver {
 		final SPWriter writerTwo = TestReaderFactory.getNewWriter();
 		final Warning warner = Warning.IGNORE;
 		for (final String arg : args) {
-			cli.println(arg + ":");
+            cli.print(arg);
+			cli.println(":");
 			final Path path = Paths.get(arg);
 			final String contents;
 			try {
@@ -99,7 +100,8 @@ public class ReaderComparator implements UtilityDriver {
 			if (mapOne.equals(mapTwo)) {
 				cli.println("Readers produce identical results");
 			} else {
-				cli.println("Readers differ on " + arg);
+                cli.print("Readers differ on ");
+				cli.println(arg);
 			}
 			final StringBuilder outOne = new StringBuilder();
 			final long writeStartOne = System.nanoTime();
@@ -133,7 +135,8 @@ public class ReaderComparator implements UtilityDriver {
 				// TODO: try with a global replacement of all whitespace with single spaces
 				cli.println("Writers produce identical results except for whitespace");
 			} else {
-				cli.println("Writers differ on " + arg);
+                cli.print("Writers differ on ");
+				cli.println(arg);
 			}
 		}
 	}

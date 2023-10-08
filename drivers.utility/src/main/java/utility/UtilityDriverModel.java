@@ -116,6 +116,8 @@ public class UtilityDriverModel extends SimpleMultiMapModel {
 		final List<Quartet<Consumer<TileFixture>, @Nullable Path, TileFixture, Iterable<? extends TileFixture>>>
 			duplicatesList = new ArrayList<>();
 		final List<TileFixture> checked = new ArrayList<>();
+		final Predicate<TileFixture> noneMatch =
+			item -> checked.stream().noneMatch(inner -> item == inner);
 		for (final IMutableMapNG map : getRestrictedAllMaps()) {
 			for (final TileFixture fixture : map.getFixtures(location)) {
 				checked.add(fixture);
@@ -131,7 +133,7 @@ public class UtilityDriverModel extends SimpleMultiMapModel {
 					continue;
 				}
 				final List<TileFixture> matching = map.getFixtures(location).stream()
-					.filter(item -> checked.stream().noneMatch(inner -> item == inner))
+					.filter(noneMatch)
 					.filter(fixture::equalsIgnoringID)
 					.collect(Collectors.toList());
 				if (!matching.isEmpty()) {

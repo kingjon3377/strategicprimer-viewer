@@ -345,7 +345,7 @@ public class MapCheckerCLI implements UtilityDriver {
 		final Function<IFixture, Animal> castToAnimal = Animal.class::cast;
 		for (final IFixture fixture : fixtures) {
 			if (fixture instanceof AnimalTracks at && fixtures.stream().filter(isAnimal).map(castToAnimal)
-					                                          .map(Animal::getKind).anyMatch(at.getKind()::equals)) {
+					                                          .map(Animal::getKind).anyMatch(Predicate.isEqual(at.getKind()))) {
 				warner.handle(new SPContentWarning(context,
 						String.format("Tracks of %s as well as the animal population", at.getKind())));
 				return true;

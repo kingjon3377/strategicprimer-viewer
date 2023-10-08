@@ -29,6 +29,7 @@ import report.generators.TextReportGenerator;
 import report.generators.AdventureReportGenerator;
 import drivers.common.cli.ICLIHelper;
 import java.io.IOException;
+import java.util.function.Consumer;
 
 /**
  * Produces reports based on maps.
@@ -44,8 +45,9 @@ public final class ReportGenerator {
 	private static void createSubReports(final StringBuilder builder,
 	                                     final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures, final IMapNG map,
 	                                     final Player player, final IReportGenerator<?>... generators) throws IOException {
+        final Consumer<String> lambda = builder::append;
 		for (final IReportGenerator<?> generator : generators) {
-			generator.produce(fixtures, map, builder::append);
+			generator.produce(fixtures, map, lambda);
 			fixtures.coalesce();
 		}
 	}

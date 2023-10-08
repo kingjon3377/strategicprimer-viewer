@@ -209,6 +209,7 @@ public class DuplicateFixtureRemoverCLI implements CLIDriver {
 		mapping.put(Shrub.class, new CoalescedHolder<>(Shrub.class, Shrub[]::new,
 				Shrub::getKind, DuplicateFixtureRemoverCLI::combinePopulations));
 
+        final Consumer<String> println = cli::println;
 		for (final Quartet<Runnable, String, String, Collection<? extends IFixture>> q :
 				model.conditionallyCoalesceResources(location, mapping)) {
 			final Runnable callback = q.getValue0();
@@ -217,7 +218,7 @@ public class DuplicateFixtureRemoverCLI implements CLIDriver {
 			final Collection<? extends IFixture> fixtures = q.getValue3();
 			cli.print(context);
 			cli.println(String.format("The following %s can be combined:", plural));
-			fixtures.stream().map(Object::toString).forEach(cli::println);
+			fixtures.stream().map(Object::toString).forEach(println);
 			final Boolean resp = cli.inputBooleanInSeries("Combine them? ",
 				memberKind(fixtures.iterator().next()));
 			if (resp == null) {

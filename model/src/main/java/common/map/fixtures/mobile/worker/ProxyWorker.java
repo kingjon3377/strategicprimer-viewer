@@ -86,6 +86,7 @@ public class ProxyWorker implements WorkerProxy {
 
 	public ProxyWorker(final IUnit unit) {
 		this(false);
+        final Consumer<String> addJobName = jobNames::add;
 		for (final UnitMember member : unit) {
 			if (member instanceof IWorker w) {
 				final WorkerStats tempStats = w.getStats();
@@ -97,7 +98,7 @@ public class ProxyWorker implements WorkerProxy {
 				}
 				workers.add(w);
 				StreamSupport.stream(w.spliterator(), true)
-					.map(IJob::getName).forEach(jobNames::add);
+					.map(IJob::getName).forEach(addJobName);
 			}
 		}
 		for (final String job : jobNames) {
@@ -113,6 +114,7 @@ public class ProxyWorker implements WorkerProxy {
 
 	public ProxyWorker(final IWorker... proxiedWorkers) {
 		this(true);
+        final Consumer<String> addJobName = jobNames::add;
 		for (final IWorker worker : proxiedWorkers) {
 				final WorkerStats tempStats = (worker).getStats();
 				final WorkerStats priorStats = statsCache;
@@ -125,7 +127,7 @@ public class ProxyWorker implements WorkerProxy {
 				}
 				workers.add(worker);
 				StreamSupport.stream(worker.spliterator(), true)
-					.map(IJob::getName).forEach(jobNames::add);
+					.map(IJob::getName).forEach(addJobName);
 		}
 		for (final String job : jobNames) {
 			proxyJobs.add(new ProxyJob(job, false, proxiedWorkers));

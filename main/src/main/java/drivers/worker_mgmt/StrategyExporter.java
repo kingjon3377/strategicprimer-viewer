@@ -8,6 +8,8 @@ import java.nio.charset.StandardCharsets;
 import common.map.fixtures.towns.IFortress;
 import java.io.Writer;
 import java.io.BufferedWriter;
+import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.stream.StreamSupport;
 import java.util.stream.Collectors;
 import java.util.Map;
@@ -235,6 +237,8 @@ import common.map.fixtures.mobile.worker.IJob;
 			writer.write("## Workers:");
 			writer.newLine();
 			writer.newLine();
+            final Predicate<Object> isImplement = Implement.class::isInstance;
+            final Function<Object, Implement> implementCast = Implement.class::cast;
 			for (final Map.Entry<String, List<IUnit>> entry : unitsByKind.entrySet()) {
 				final String kind = entry.getKey();
 				final List<IUnit> list = entry.getValue();
@@ -324,8 +328,8 @@ import common.map.fixtures.mobile.worker.IJob;
 					writer.newLine();
 					writer.newLine();
 					final List<Implement> equipment =
-						fortress.stream().filter(Implement.class::isInstance)
-							.map(Implement.class::cast).toList();
+						fortress.stream().filter(isImplement)
+							.map(implementCast).toList();
 					if (!equipment.isEmpty()) {
 						writer.write("- Equipment not in a unit:");
 						writer.newLine();
@@ -360,8 +364,9 @@ import common.map.fixtures.mobile.worker.IJob;
 							fortress.getName()); // TODO: Take ICLIHelper to report diagnostics on
 					}
 				}
+                final Predicate<Object> isWorker = IWorker.class::isInstance;
 				for (final IUnit unit : model.getUnits(currentPlayer)) {
-					if (unit.stream().allMatch(IWorker.class::isInstance)) {
+					if (unit.stream().allMatch(isWorker)) {
 						continue;
 					}
 					writer.write("- With unit ");

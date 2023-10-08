@@ -124,7 +124,7 @@ import org.jetbrains.annotations.Nullable;
 		}
 		LovelaceLogger.debug("--size parameter is %s", size);
 		for (final String arg : args) {
-			final ResourceInputStream res;
+			final ResourceInputStream res; // FIXME: Probably never closed
 			try {
 				res = new ResourceInputStream(arg, ImporterDriver.class);
 			} catch (final NoSuchFileException except) {

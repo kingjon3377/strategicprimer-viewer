@@ -90,6 +90,8 @@ import java.util.Comparator;
 		requireTag(element, parent, "population");
 		expectAttributes(element, "size");
 		final CommunityStats retval = new CommunityStats(getIntegerParameter(element, "size"));
+        final Consumer<IResourcePile> addProductionLambda = retval.getYearlyProduction()::add;
+        final Consumer<IResourcePile> addConsumptionLambda = retval.getYearlyConsumption()::add;
 		String current = null;
 		final Deque<StartElement> stack = new LinkedList<>();
 		stack.addFirst(element);
@@ -139,9 +141,9 @@ import java.util.Comparator;
 				case "resource":
 					final Consumer<IResourcePile> lambda;
 					if ("production".equals(current)) {
-						lambda = retval.getYearlyProduction()::add;
+						lambda = addProductionLambda;
 					} else if ("consumption".equals(current)) {
-						lambda = retval.getYearlyConsumption()::add;
+						lambda = addConsumptionLambda;
 					} else {
 						throw UnwantedChildException.listingExpectedTags(
 							stack.peekFirst().getName(), se,

@@ -7,7 +7,9 @@ import java.util.List;
 
 import java.util.Map;
 import java.util.Optional;
+import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 import lovelace.util.SingletonRandom;
@@ -61,6 +63,7 @@ public class AdvancementCLIHelper implements LevelGainSource {
 	 */
 	private void advanceJob(final IWorker worker, final IJob job, final boolean allowExpertMentoring) {
 		final List<ISkill> skills = StreamSupport.stream(job.spliterator(), false).collect(Collectors.toList());
+        final Consumer<ISkill> addToList = skills::add;
 		while (true) {
 			final Pair<Integer, @Nullable ISkill> chosen = cli.chooseFromList(skills, "Skills in Job:", "No existing Skills.", "Skill to advance: ", ICLIHelper.ListChoiceBehavior.ALWAYS_PROMPT);
 			final ISkill skill;
@@ -73,7 +76,7 @@ public class AdvancementCLIHelper implements LevelGainSource {
 				} else {
 					model.addSkillToWorker(worker, job.getName(), skillName);
 					skills.clear();
-					job.forEach(skills::add);
+					job.forEach(addToList);
 					final ISkill temp = skills.stream().filter(s -> skillName.equals(s.getName()))
 						.findFirst().orElse(null);
 					if (temp == null) {
@@ -128,6 +131,7 @@ public class AdvancementCLIHelper implements LevelGainSource {
 	 */
 	private void advanceSingleWorker(final IWorker worker, final boolean allowExpertMentoring) {
 		final List<IJob> jobs = StreamSupport.stream(worker.spliterator(), false).collect(Collectors.toList());
+        final Consumer<IJob> addToList = jobs::add;
 		while (true) {
 			final Pair<Integer, @Nullable IJob> chosen = cli.chooseFromList(jobs, "Jobs in worker:", "No existing Jobs.", "Job to advance: ", ICLIHelper.ListChoiceBehavior.ALWAYS_PROMPT);
 			final IJob job;
@@ -140,7 +144,7 @@ public class AdvancementCLIHelper implements LevelGainSource {
 				}
 				model.addJobToWorker(worker, jobName);
 				jobs.clear();
-				worker.forEach(jobs::add);
+				worker.forEach(addToList);
 				final IJob temp = jobs.stream().filter(j -> jobName.equals(j.getName()))
 					.findFirst().orElse(null);
 				if (temp == null) {
@@ -244,6 +248,9 @@ public class AdvancementCLIHelper implements LevelGainSource {
 		final List<String> skills = unit.stream().filter(IWorker.class::isInstance).map(IWorker.class::cast)
 				.flatMap(w -> StreamSupport.stream(w.getJob(jobName).spliterator(), false)).map(ISkill::getName)
 				.distinct().collect(Collectors.toList());
+        final Consumer<String> addToList = skills::add;
+        final Predicate<Object> isWorker = IWorker.class::isInstance;
+        final Function<Object, IWorker> workerCast = IWorker.class::cast;
 		while (true) {
 			final Pair<Integer, @Nullable String> chosen = cli.chooseStringFromList(skills, "Skills in Jobs:", "No existing skills.", "Skill to advance: ", ICLIHelper.ListChoiceBehavior.ALWAYS_PROMPT);
 			final String skill;
@@ -258,12 +265,12 @@ public class AdvancementCLIHelper implements LevelGainSource {
 				}
 				model.addSkillToAllWorkers(unit, jobName, skillName);
 				skills.clear();
-				unit.stream().filter(IWorker.class::isInstance).map(IWorker.class::cast)
+				unit.stream().filter(isWorker).map(workerCast)
 						.flatMap(w -> StreamSupport.stream(w.getJob(jobName).spliterator(), false)).map(ISkill::getName)
-						.distinct().forEach(skills::add);
+						.distinct().forEach(addToList);
 				skill = skillName;
 			}
-			advanceWorkersInSkill(jobName, skill, unit.stream().filter(IWorker.class::isInstance).map(IWorker.class::cast)
+			advanceWorkersInSkill(jobName, skill, unit.stream().filter(isWorker).map(workerCast)
 					.toArray(IWorker[]::new));
 			final Boolean continuation = cli.inputBoolean("Select another Skill in this Job?");
 			if (continuation == null || !continuation) {
@@ -279,6 +286,8 @@ public class AdvancementCLIHelper implements LevelGainSource {
 		final List<IWorker> workers = unit.stream()
 				.filter(IWorker.class::isInstance).map(IWorker.class::cast).collect(Collectors.toList());
 		final Boolean individualAdvancement = cli.inputBooleanInSeries("Add experience to workers individually? ");
+        final Predicate<Object> isWorker = IWorker.class::isInstance;
+        final Function<Object, IWorker> workerCast = IWorker.class::cast;
 		if (individualAdvancement == null) {
 			return;
 		} else if (individualAdvancement) {
@@ -299,9 +308,10 @@ public class AdvancementCLIHelper implements LevelGainSource {
 				cli.println("No workers in unit.");
 				return;
 			}
-			final List<String> jobs = unit.stream().filter(IWorker.class::isInstance).map(IWorker.class::cast)
+			final List<String> jobs = unit.stream().filter(isWorker).map(workerCast)
 					.flatMap(w -> StreamSupport.stream(w.spliterator(), false)).map(IJob::getName).distinct()
 					.collect(Collectors.toList());
+            final Consumer<String> addJob = jobs::add;
 			while (true) {
 				final Pair<Integer, @Nullable String> chosen = cli.chooseStringFromList(jobs, "Jobs in workers:", "No existing jobs.", "Job to advance: ", ICLIHelper.ListChoiceBehavior.ALWAYS_PROMPT);
 				final String job;
@@ -319,8 +329,8 @@ public class AdvancementCLIHelper implements LevelGainSource {
 					}
 					jobs.clear();
 					job = jobName;
-					unit.stream().filter(IWorker.class::isInstance).map(IWorker.class::cast)
-							.flatMap(w -> StreamSupport.stream(w.spliterator(), false)).map(IJob::getName).distinct().forEach(jobs::add);
+					unit.stream().filter(isWorker).map(workerCast)
+							.flatMap(w -> StreamSupport.stream(w.spliterator(), false)).map(IJob::getName).distinct().forEach(addJob);
 				}
 				advanceWorkersInJob(job, unit);
 				final Boolean continuation = cli.inputBoolean("Select another Job in these workers?");

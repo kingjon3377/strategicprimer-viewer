@@ -45,6 +45,7 @@ import common.map.fixtures.towns.IFortress;
 import java.util.List;
 import java.text.ParseException;
 import java.util.Collection;
+import java.util.function.Function;
 import java.util.function.Predicate;
 
 /**
@@ -213,6 +214,8 @@ import java.util.function.Predicate;
 		tagStack.addFirst(mapTag.getName());
 		final IMutableMapNG retval = new SPMapNG(dimensions, players, currentTurn);
 		Point point = null;
+        final Predicate<Object> isFortress = IFortress.class::isInstance;
+        final Function<Object, IFortress> fortressCast = IFortress.class::cast;
 		for (final XMLEvent event : stream) {
 			if (event instanceof StartElement se && isSupportedNamespace(se.getName())) {
 				final String type = se.getName().getLocalPart().toLowerCase();
@@ -299,10 +302,10 @@ import java.util.function.Predicate;
 						final TileFixture child = parseFixture(se, top, stream);
 						if (child instanceof IFortress f &&
 								    retval.getFixtures(point).stream()
-										    .filter(IFortress.class::isInstance)
-										    .map(IFortress.class::cast)
+										    .filter(isFortress)
+										    .map(fortressCast)
 										    .map(IFortress::owner)
-										    .anyMatch(f.owner()::equals)) {
+										    .anyMatch(Predicate.isEqual(f.owner()))) {
 							warner.handle(new UnwantedChildException(top, se,
 									"Multiple fortresses owned by one player on a tile"));
 						}
@@ -387,6 +390,10 @@ import java.util.function.Predicate;
 		for (final Player player : obj.getPlayers()) {
 			playerReader.write(ostream, player, tabs + 2);
 		}
+        final Predicate<Object> isGround = Ground.class::isInstance;
+        final Function<Object, Ground> groundCast = Ground.class::cast;
+        final Predicate<Object> isForest = Forest.class::isInstance;
+        final Function<Object, Forest> forestCast = Forest.class::cast;
 		for (int i = 0; i < dimensions.rows(); i++) {
 			boolean rowEmpty = true;
 			for (int j = 0; j < dimensions.columns(); j++) {
@@ -442,7 +449,7 @@ import java.util.function.Predicate;
 					// avoid churn in existing maps, put the first Ground and Forest
 					// before other fixtures.
 					final Ground ground = obj.getFixtures(loc).stream()
-						.filter(Ground.class::isInstance).map(Ground.class::cast)
+						.filter(isGround).map(groundCast)
 						.findFirst().orElse(null);
 					if (ground != null) {
 						eolIfNeeded(needEol, ostream);
@@ -450,7 +457,7 @@ import java.util.function.Predicate;
 						writeChild(ostream, ground, tabs + 4);
 					}
 					final Forest forest = obj.getFixtures(loc).stream()
-						.filter(Forest.class::isInstance).map(Forest.class::cast)
+						.filter(isForest).map(forestCast)
 						.findFirst().orElse(null);
 					if (forest != null) {
 						eolIfNeeded(needEol, ostream);

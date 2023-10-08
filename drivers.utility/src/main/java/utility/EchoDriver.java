@@ -3,6 +3,8 @@ package utility;
 import java.nio.file.NoSuchFileException;
 import java.nio.file.Paths;
 import java.io.IOException;
+import java.util.function.Function;
+import java.util.function.Predicate;
 import javax.xml.stream.XMLStreamException;
 
 import common.map.Point;
@@ -61,9 +63,13 @@ public class EchoDriver implements UtilityDriver {
 			}
 			final IDRegistrar idFactory = IDFactoryFiller.createIDFactory(map);
 			final int columnCount = map.getDimensions().columns();
+            final Predicate<Object> isForest = Forest.class::isInstance;
+            final Function<Object, Forest> forestCast = Forest.class::cast;
+            final Predicate<Object> isGround = Ground.class::isInstance;
+            final Function<Object, Ground> groundCast = Ground.class::cast;
 			for (final Point location : map.getLocations()) {
 				final Forest mainForest = map.getFixtures(location).stream()
-					.filter(Forest.class::isInstance).map(Forest.class::cast)
+					.filter(isForest).map(forestCast)
 					.findFirst().orElse(null);
 				if (mainForest != null && mainForest.getId() < 0) {
 					mainForest.setId(idFactory.register(
@@ -71,7 +77,7 @@ public class EchoDriver implements UtilityDriver {
 							location.column()));
 				}
 				final Ground mainGround = map.getFixtures(location).stream()
-					.filter(Ground.class::isInstance).map(Ground.class::cast)
+					.filter(isGround).map(groundCast)
 					.findFirst().orElse(null);
 				if (mainGround != null && mainGround.getId() < 0) {
 					mainGround.setId(idFactory.register(

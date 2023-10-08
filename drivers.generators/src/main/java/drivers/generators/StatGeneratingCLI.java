@@ -401,6 +401,7 @@ import common.map.fixtures.towns.Village;
 				maybeAdd.accept("satchel", "leather satchel", 0.75);
 				maybeAdd.accept("waterskin", "leather waterskin", 0.75);
 				// TODO: Accept strings until empty line instead of boolean-prompting every time
+                final Predicate<String> notInSeries = cli::inputBoolean;
 				while (equipmentQuery.test(equipmentPrompt)) {
 					final String equipment = cli.inputString("Kind of equipment: ");
 					if (equipment == null || equipment.isEmpty()) {
@@ -408,7 +409,7 @@ import common.map.fixtures.towns.Village;
 					}
 					worker.addEquipment(new Implement(equipment, idf.createID()));
 					equipmentPrompt = "Does the worker have any more equipment?";
-					equipmentQuery = cli::inputBoolean;
+					equipmentQuery = notInSeries;
 				}
 				return worker;
 			}

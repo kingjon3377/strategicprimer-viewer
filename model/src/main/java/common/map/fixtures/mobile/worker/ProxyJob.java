@@ -10,6 +10,7 @@ import java.util.Set;
 
 import java.util.function.Consumer;
 
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -31,13 +32,15 @@ public final class ProxyJob implements IJob, ProxyFor<IJob> {
 		this.parallel = parallel;
 		this.name = name;
 
+        final Consumer<String> addSkillName = skillNames::add;
+        final Predicate<IJob> isMatchingJob = j -> name.equals(j.getName());
 		for (final IWorker worker : proxiedWorkers) {
 			boolean unmodified = true;
 			for (final IJob job : worker) {
 				if (name.equals(job.getName())) {
 					proxiedJobs.add(job);
 					StreamSupport.stream(job.spliterator(), false)
-						.map(ISkill::getName).forEach(skillNames::add);
+						.map(ISkill::getName).forEach(addSkillName);
 					unmodified = false;
 				}
 			}
@@ -45,7 +48,7 @@ public final class ProxyJob implements IJob, ProxyFor<IJob> {
 				final IMutableJob job = new Job(name, 0);
 				mw.addJob(job);
 				proxiedJobs.add(StreamSupport.stream(worker.spliterator(), false)
-					.filter(j -> name.equals(j.getName()))
+					.filter(isMatchingJob)
 					.findAny().orElse(job));
 			} else if (unmodified) {
 				LovelaceLogger.warning("Can't add job to immutable worker");

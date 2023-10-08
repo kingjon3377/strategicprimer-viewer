@@ -300,6 +300,7 @@ public class FixtureListModel implements ListModel<TileFixture>, SelectionChange
 	 */
 	public boolean removeAll(final Collection<? extends TileFixture> fixtures) {
 		boolean retval = true;
+        final Range zeroRange = new Range(0, 0);
 		for (final TileFixture fixture : fixtures) {
 			if (fixture instanceof TileTypeFixture) {
 				final TileType currentTerrain = terrainSource.apply(point);
@@ -310,7 +311,7 @@ public class FixtureListModel implements ListModel<TileFixture>, SelectionChange
 						retval = false;
 					} else {
 						terrainSink.accept(point, null);
-						fireIntervalRemoved(new Range(0, 0));
+						fireIntervalRemoved(zeroRange);
 					}
 				}
 			} else if (fixture instanceof RiverFixture) {

@@ -38,6 +38,9 @@ import java.nio.file.Paths;
 import java.nio.file.Files;
 import org.javatuples.Pair;
 import java.util.Objects;
+import java.util.function.Function;
+import java.util.function.Predicate;
+
 import org.jetbrains.annotations.Nullable;
 
 /**
@@ -322,10 +325,12 @@ public class TodoFixerCLI implements CLIDriver {
 		totalCount = map.streamAllFixtures()
 			.filter(IMutableUnit.class::isInstance).map(IMutableUnit.class::cast)
 			.filter(u -> "TODO".equals(u.getKind())).count();
+		final Predicate<Object> isUnit = IMutableUnit.class::isInstance;
+		final Function<Object, IMutableUnit> unitCast = IMutableUnit.class::cast;
 		for (final Point point : map.getLocations()) {
 			final SimpleTerrain terrain = getTerrain(map, point);
-			map.getFixtures(point).stream().filter(IMutableUnit.class::isInstance)
-					.map(IMutableUnit.class::cast).filter(u -> "TODO".equals(u.getKind()))
+			map.getFixtures(point).stream().filter(isUnit)
+					.map(unitCast).filter(u -> "TODO".equals(u.getKind()))
 					.forEach(fixture -> fixUnit(fixture, terrain));
 		}
 	}

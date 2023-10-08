@@ -283,7 +283,7 @@ import java.util.stream.Collectors;
 	@Override
 	public void addSibling(final UnitMember base, final UnitMember sibling) {
 		for (final IUnit unit : model.getUnits(player)) {
-			if (unit.stream().anyMatch(base::equals)) {
+			if (unit.stream().anyMatch(Predicate.isEqual(base))) {
 				final int existingMembersCount = (int) unit.stream().count();
 				model.addSibling(base, sibling);
 				final int countAfterAdding = (int) unit.stream().count();

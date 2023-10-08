@@ -1,6 +1,7 @@
 package drivers.turnrunning.applets;
 
 import common.idreg.IDRegistrar;
+import common.map.HasOwner;
 import common.map.Point;
 import common.map.fixtures.IResourcePile;
 import common.map.fixtures.mobile.IUnit;
@@ -11,6 +12,10 @@ import drivers.turnrunning.ITurnRunningModel;
 import java.math.BigDecimal;
 import java.util.Collections;
 import java.util.List;
+import java.util.function.Consumer;
+import java.util.function.Function;
+import java.util.function.IntSupplier;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import org.jetbrains.annotations.Nullable;
 
@@ -49,6 +54,10 @@ import static lovelace.util.Decimalize.decimalize;
 		}
 		final List<IResourcePile> resources = fortress.stream()
 				.filter(IResourcePile.class::isInstance).map(IResourcePile.class::cast).collect(Collectors.toList());
+        final IntSupplier createID = idf::createID;
+        final Predicate<Object> isResource = IResourcePile.class::isInstance;
+        final Function<Object, IResourcePile> resourceCast = IResourcePile.class::cast;
+        final Consumer<IResourcePile> addResource = resources::add;
 		while (true) {
 			final IResourcePile chosen =
 				chooseFromList(resources, String.format("Resources in %s:", fortress.getName()), "No resources in fortress.",
@@ -62,16 +71,16 @@ import static lovelace.util.Decimalize.decimalize;
 			}
 			else if (takeAll) {
 				model.transferResource(chosen, unit, decimalize(chosen.getQuantity().number()),
-					idf::createID);
+					createID);
 				resources.remove(chosen);
 			} else {
 				final BigDecimal amount = cli.inputDecimal(String.format("Amount to take (in %s):",
 					chosen.getQuantity().units()));
 				if (amount != null && amount.signum() > 0) {
-					model.transferResource(chosen, unit, amount, idf::createID);
+					model.transferResource(chosen, unit, amount, createID);
 					resources.clear();
-					fortress.stream().filter(IResourcePile.class::isInstance).map(IResourcePile.class::cast)
-						.forEach(resources::add);
+					fortress.stream().filter(isResource).map(resourceCast)
+						.forEach(addResource);
 				}
 			}
 		}
@@ -88,16 +97,19 @@ import static lovelace.util.Decimalize.decimalize;
 		}
 		// Ask the user about total MP, through explorationCLI listening for the selection-change event
 		model.setSelectedUnit(mover);
+        final Predicate<Object> isFortress = IFortress.class::isInstance;
+        final Function<Object, IFortress> fortressCast = IFortress.class::cast;
+        final Predicate<HasOwner> sameOwner = f -> f.owner().equals(mover.owner());
 		while (explorationCLI.getMovement() > 0) {
 			final Point oldPosition = model.getSelectedUnitLocation();
 			explorationCLI.moveOneStep();
 			final Point newPosition = model.getSelectedUnitLocation();
 			final IFortress startingFort = model.getMap().getFixtures(oldPosition).stream()
-				.filter(IFortress.class::isInstance).map(IFortress.class::cast)
-				.filter(f -> f.owner().equals(mover.owner())).findAny().orElse(null);
+				.filter(isFortress).map(fortressCast)
+				.filter(sameOwner).findAny().orElse(null);
 			if (startingFort != null && model.getMap().getFixtures(newPosition).stream()
-					.filter(IFortress.class::isInstance).map(IFortress.class::cast)
-					.noneMatch(f -> f.owner().equals(mover.owner()))) {
+					.filter(isFortress).map(fortressCast)
+					.noneMatch(sameOwner)) {
 				final Boolean pack = cli.inputBooleanInSeries("Leaving a fortress. Take provisions along?");
 				if (pack == null) {
 					return null;

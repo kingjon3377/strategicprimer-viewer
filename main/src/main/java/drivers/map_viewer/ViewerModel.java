@@ -11,6 +11,8 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Optional;
 import java.nio.file.Path;
 import common.map.fixtures.FixtureIterable;
+
+import java.util.function.Function;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 import java.util.function.Predicate;
@@ -527,7 +529,7 @@ public class ViewerModel extends SimpleDriverModel implements IViewerModel {
 					for (final IMutableFortress fort : getMap().getFixtures(location).stream()
 							.filter(IMutableFortress.class::isInstance)
 							.map(IMutableFortress.class::cast).toList()) {
-						if (fort.stream().anyMatch(fixture::equals)) {
+						if (fort.stream().anyMatch(Predicate.isEqual(fixture))) {
 							fort.removeMember(fixture);
 							getRestrictedMap().setModified(true);
 							LovelaceLogger.trace(
@@ -669,7 +671,7 @@ public class ViewerModel extends SimpleDriverModel implements IViewerModel {
 				.flatMap(ViewerModel::unflattenNonFortresses)
 				.filter(IMutableUnit.class::isInstance).map(IMutableUnit.class::cast)
 				.filter(u -> getMap().getPlayers().getCurrentPlayer().equals(u.owner())).toList()) {
-			final UnitMember matching = unit.stream().filter(member::equals) // FIXME: equals() will really not do here ...
+			final UnitMember matching = unit.stream().filter(Predicate.isEqual(member)) // FIXME: equals() will really not do here ...
 				.findAny().orElse(null);
 			if (matching != null) {
 				unit.removeMember(matching);
@@ -691,7 +693,7 @@ public class ViewerModel extends SimpleDriverModel implements IViewerModel {
 				.flatMap(ViewerModel::unflattenNonFortresses)
 				.filter(IMutableUnit.class::isInstance).map(IMutableUnit.class::cast)
 				.filter(u -> getMap().getPlayers().getCurrentPlayer().equals(u.owner())).toList()) {
-			if (unit.stream().anyMatch(existing::equals)) { // TODO: look beyond equals() for matching-in-existing?
+			if (unit.stream().anyMatch(Predicate.isEqual(existing))) { // TODO: look beyond equals() for matching-in-existing?
 				unit.addMember(sibling.copy(IFixture.CopyBehavior.KEEP));
 				getRestrictedMap().setModified(true);
 				return true;
@@ -744,10 +746,13 @@ public class ViewerModel extends SimpleDriverModel implements IViewerModel {
 	@Override
 	public void addUnit(final IUnit unit) {
 		Point hqLoc = Point.INVALID_POINT;
+		final Predicate<Object> isFortress = IFortress.class::isInstance;
+		final Function<Object, IFortress> fortressCast = IFortress.class::cast;
+		final Predicate<IFortress> matchingOwner = f -> f.owner().equals(unit.owner());
 		for (final Point location : getMap().getLocations()) {
 			final IFortress fortress = getMap().getFixtures(location).stream()
-				.filter(IFortress.class::isInstance).map(IFortress.class::cast)
-				.filter(f -> f.owner().equals(unit.owner()))
+				.filter(isFortress).map(fortressCast)
+				.filter(matchingOwner)
 				.findAny().orElse(null);
 			if (fortress != null) {
 				if ("HQ".equals(fortress.getName())) {

@@ -79,6 +79,7 @@ import lovelace.util.TypeStream;
 import static impl.xmlio.fluidxml.FluidBase.*;
 
 import java.util.Map;
+import java.util.function.Function;
 import java.util.regex.Pattern;
 import lovelace.util.ThrowingConsumer;
 import java.util.function.Predicate;
@@ -257,6 +258,10 @@ public class SPFluidWriter implements SPWriter {
 		for (final Player player : obj.getPlayers()) {
 			writePlayer(ostream, player, indentation + 2);
 		}
+        final Predicate<Object> isGround = Ground.class::isInstance;
+        final Predicate<Object> isForest = Forest.class::isInstance;
+        final Function<Object, Ground> groundCast = Ground.class::cast;
+        final Function<Object, Forest> forestCast = Forest.class::cast;
 		for (int i = 0; i < dimensions.rows(); i++) {
 			boolean rowEmpty = true;
 			for (int j = 0; j < dimensions.columns(); j++) {
@@ -306,14 +311,14 @@ public class SPFluidWriter implements SPWriter {
 					// avoid churn in existing maps, put the first Ground and Forest
 					// before other fixtures.
 					final Ground ground = obj.getFixtures(loc).stream()
-						.filter(Ground.class::isInstance).map(Ground.class::cast)
+						.filter(isGround).map(groundCast)
 						.findFirst().orElse(null);
 					if (ground != null) {
 						anyContents = true;
 						writeSPObjectImpl(ostream, ground, indentation + 4);
 					}
 					final Forest forest = obj.getFixtures(loc).stream()
-						.filter(Forest.class::isInstance).map(Forest.class::cast)
+						.filter(isForest).map(forestCast)
 						.findFirst().orElse(null);
 					if (forest != null) {
 						anyContents = true;

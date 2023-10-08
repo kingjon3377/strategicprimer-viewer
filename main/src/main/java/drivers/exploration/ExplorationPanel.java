@@ -1,15 +1,33 @@
 package drivers.exploration;
 
-import common.map.IFixture;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Comparator;
 import java.util.EnumMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import common.map.Direction;
+import common.map.FakeFixture;
+import common.map.HasExtent;
+import common.map.HasOwner;
+import common.map.HasPopulation;
+import common.map.IFixture;
+import common.map.IMapNG;
+import common.map.Player;
+import common.map.PlayerImpl;
+import common.map.Point;
+import common.map.River;
+import common.map.TileFixture;
+import common.map.TileType;
 import lovelace.util.BorderedPanel;
 import static lovelace.util.MenuUtils.createMenuItem;
 import static lovelace.util.MenuUtils.createHotKey;
@@ -49,18 +67,6 @@ import common.map.fixtures.mobile.Animal;
 
 import java.awt.Dimension;
 
-import common.map.FakeFixture;
-import common.map.HasExtent;
-import common.map.IMapNG;
-import common.map.PlayerImpl;
-import common.map.Player;
-import common.map.TileFixture;
-import common.map.HasOwner;
-import common.map.TileType;
-import common.map.Point;
-import common.map.Direction;
-import common.map.HasPopulation;
-
 import javax.swing.event.ListDataListener;
 import javax.swing.event.ListDataEvent;
 
@@ -79,10 +85,6 @@ import javax.swing.KeyStroke;
 
 import common.idreg.IDRegistrar;
 import common.idreg.IDFactoryFiller;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 
 import org.jetbrains.annotations.Nullable;
 import worker.common.IFixtureEditHelper;
@@ -137,7 +139,7 @@ import worker.common.IFixtureEditHelper;
 		final JLabel remainingMPLabel = new JLabel("Remaining Movement Points:");
 		final JSpinner mpField = new JSpinner(mpModel);
 		mpField.setMaximumSize(new Dimension(Short.MAX_VALUE,
-			(int) mpField.getPreferredSize().getHeight()));
+			(int) mpField.getPreferredSize().getHeight())); // FIXME: Here and elsewhere, 'height'/'width' is a public int field; skip double getter
 
 		final JLabel speedLabel = new JLabel("Current relative speed:");
 
@@ -174,13 +176,21 @@ import worker.common.IFixtureEditHelper;
 		LovelaceLogger.trace("ExplorationPanel: huntingModel created");
 
 		final IFixtureEditHelper feh = new FixtureEditHelper(driverModel);
+        final Function<Point, Collection<TileFixture>> getFixturesMain = driverModel.getMap()::getFixtures;
+        final Function<Point, @Nullable TileType> getBaseTerrainMain = driverModel.getMap()::getBaseTerrain;
+        final Function<Point, Collection<River>> getRiversMain = driverModel.getMap()::getRivers;
+        final Predicate<Point> isMountainousMain = driverModel.getMap()::isMountainous;
+        final Function<Point, Collection<TileFixture>> getFixturesSecond = secondMap::getFixtures;
+        final Function<Point, @Nullable TileType> getBaseTerrainSecond = secondMap::getBaseTerrain;
+        final Function<Point, Collection<River>> getRiversSecond = secondMap::getRivers;
+        final Predicate<Point> isMountainousSecond = secondMap::isMountainous;
 
 		for (final Direction direction : Direction.values()) {
 			LovelaceLogger.trace("ExplorationPanel: Starting to initialize for %s", direction);
 			final FixtureList mainList = new FixtureList(tilesPanel,
-				new FixtureListModel(driverModel.getMap()::getFixtures,
-					driverModel.getMap()::getBaseTerrain,
-					driverModel.getMap()::getRivers, driverModel.getMap()::isMountainous,
+				new FixtureListModel(getFixturesMain,
+					getBaseTerrainMain,
+					getRiversMain, isMountainousMain,
 					this::tracksCreator, null, null, null, null, null, null,
 					Comparator.naturalOrder()), // TODO: Replace nulls with implementations?
 				feh, idf, driverModel.getMap().getPlayers());
@@ -214,8 +224,8 @@ import worker.common.IFixtureEditHelper;
 			LovelaceLogger.trace("ExplorationPanel: ell set up for %s", direction);
 
 			final FixtureList secList = new FixtureList(tilesPanel,
-				new FixtureListModel(secondMap::getFixtures, secondMap::getBaseTerrain,
-					secondMap::getRivers, secondMap::isMountainous, ExplorationPanel::createNull,
+				new FixtureListModel(getFixturesSecond, getBaseTerrainSecond,
+					getRiversSecond, isMountainousSecond, ExplorationPanel::createNull,
 					driverModel::setSubMapTerrain, driverModel::copyRiversToSubMaps,
 					driverModel::setMountainousInSubMap, driverModel::copyToSubMaps,
 					driverModel::removeRiversFromSubMaps,

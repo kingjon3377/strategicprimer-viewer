@@ -138,10 +138,12 @@ public final class Job implements IMutableJob {
 			return false;
 		} else {
 			boolean retval = true;
+            final Consumer<String> presentLambda =
+                    s -> report.accept(String.format("In Job %s:\t%s", name, s));
 			for (final ISkill skill : obj) {
 				if (skillSet.containsKey(skill.getName())) {
 					retval = skillSet.get(skill.getName()).isSubset(skill,
-						s -> report.accept(String.format("In Job %s:\t%s", name, s)))
+						presentLambda)
 						&& retval;
 				} else {
 					report.accept(String.format("In Job %s:\tExtra skill %s",

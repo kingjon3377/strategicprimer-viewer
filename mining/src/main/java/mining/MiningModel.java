@@ -15,10 +15,12 @@ import java.util.Deque;
 
 import java.util.Random;
 
+import java.util.function.Consumer;
 import java.util.function.Function;
 
 import org.jetbrains.annotations.Nullable;
 
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 /**
@@ -143,11 +145,13 @@ import java.util.stream.Collectors;
 			treeMap(unnormalized.keySet()
 					.stream().collect(Collectors.<Pair<Integer, Integer>, Integer>groupingBy(Pair::getValue0)),
 				Comparator.reverseOrder());
+        final Predicate<? super Pair<Integer, Integer>> containsKey = unnormalized::containsKey;
+        final Consumer<? super Pair<Integer, Integer>> removePoint = unnormalized::remove;
 		for (final Map.Entry<Integer, List<Pair<Integer, Integer>>> entry : byRow.entrySet()) {
 			final int row = entry.getKey();
 			final List<Pair<Integer, Integer>> points = entry.getValue();
-			if (points.stream().anyMatch(unnormalized::containsKey)) {
-				points.forEach(unnormalized::remove);
+			if (points.stream().anyMatch(containsKey)) {
+				points.forEach(removePoint);
 			}
 		}
 
@@ -157,8 +161,8 @@ import java.util.stream.Collectors;
 		for (final Map.Entry<Integer, List<Pair<Integer, Integer>>> entry : byColumnIncreasing.entrySet()) {
 			final int column = entry.getKey();
 			final List<Pair<Integer, Integer>> points = entry.getValue();
-			if (points.stream().anyMatch(unnormalized::containsKey)) {
-				points.forEach(unnormalized::remove);
+			if (points.stream().anyMatch(containsKey)) {
+				points.forEach(removePoint);
 			}
 		}
 
@@ -169,8 +173,8 @@ import java.util.stream.Collectors;
 		for (final Map.Entry<Integer, List<Pair<Integer, Integer>>> entry : byColumnDecreasing.entrySet()) {
 			final int column = entry.getKey();
 			final List<Pair<Integer, Integer>> points = entry.getValue();
-			if (points.stream().anyMatch(unnormalized::containsKey)) {
-				points.forEach(unnormalized::remove);
+			if (points.stream().anyMatch(containsKey)) {
+				points.forEach(removePoint);
 			}
 		}
 

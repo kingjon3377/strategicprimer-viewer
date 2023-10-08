@@ -3,6 +3,7 @@ package drivers.map_viewer;
 import lovelace.util.LovelaceLogger;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.function.Predicate;
 import java.util.stream.Stream;
 import java.util.Optional;
 import java.util.List;
@@ -227,7 +228,7 @@ public final class FixtureList extends JList<TileFixture>
 			for (final DataFlavor flavor : dtde.getCurrentDataFlavorsAsList()) {
 				if (Stream.of(FixtureTransferable.FLAVOR,
 							CurriedFixtureTransferable.FLAVOR)
-						.anyMatch(flavor::equals)) {
+						.anyMatch(Predicate.isEqual(flavor))) {
 					try {
 						dtde.acceptDrop(dtde.getDropAction());
 						final Transferable t = dtde.getTransferable();
