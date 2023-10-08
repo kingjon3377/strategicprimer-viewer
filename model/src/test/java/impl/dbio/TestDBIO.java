@@ -531,9 +531,9 @@ public final class TestDBIO {
 	}
 
 	private static Stream<Arguments> testPortalSerialization() {
-		return SINGLETON_RANDOM.ints(2).boxed().flatMap(a ->
+		return SINGLETON_RANDOM.ints(2, -1, Integer.MAX_VALUE).boxed().flatMap(a ->
 			SINGLETON_RANDOM.ints(2).boxed().flatMap(b ->
-				SINGLETON_RANDOM.ints(2).boxed().map(c ->
+				SINGLETON_RANDOM.ints(2, -1, Integer.MAX_VALUE).boxed().map(c ->
 					Arguments.of(a, b, c))));
 	}
 
