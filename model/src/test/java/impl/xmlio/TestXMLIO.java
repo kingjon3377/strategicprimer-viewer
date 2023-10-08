@@ -666,7 +666,7 @@ public final class TestXMLIO {
 	 * @return a random integer for parameterized tests.
 	 */
 	private static int randomInteger() {
-		return SINGLETON_RANDOM.nextInt();
+		return SINGLETON_RANDOM.nextInt(Integer.MAX_VALUE);
 	}
 
 	@AfterEach
