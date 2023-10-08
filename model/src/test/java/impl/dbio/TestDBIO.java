@@ -153,6 +153,7 @@ public final class TestDBIO {
 
 	private static final Collection<String> races = new HashSet<>(RaceFactory.RACES);
 
+	@SuppressWarnings("JDBCPrepareStatementWithNonConstantString") // This is a delegating wrapper class.
 	private record PersistentConnection(Connection wrapped) implements Connection {
 
 		@Override
@@ -439,7 +440,7 @@ public final class TestDBIO {
 		private @Nullable PersistentConnection connection;
 		public void tearDown() throws SQLException {
 			if (connection != null) {
-				connection.close();
+				connection.reallyClose();
 			}
 			connection = null;
 			source = null;
