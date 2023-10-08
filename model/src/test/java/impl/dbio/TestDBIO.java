@@ -596,7 +596,7 @@ public final class TestDBIO {
 		return SINGLETON_RANDOM.ints(2).boxed().flatMap(a ->
 			Stream.of(TownStatus.values()).flatMap(b ->
 				Stream.of(TownSize.values()).map(c ->
-					Arguments.of(a, b, c, SINGLETON_RANDOM.nextInt())))); // TODO: Pass upper bound to get lower bound
+					Arguments.of(a, b, c, SINGLETON_RANDOM.nextInt(Integer.MAX_VALUE)))));
 	}
 
 	@ParameterizedTest
@@ -671,8 +671,8 @@ public final class TestDBIO {
 	private static Stream<Arguments> testMeadowSerialization() {
 		return bools().flatMap(a -> bools().flatMap(b ->
 			Stream.of(FieldStatus.values()).map(c ->
-				Arguments.of(a, b, SINGLETON_RANDOM.nextInt(), c, // TODO: Pass upper bound to get lower bound
-					SINGLETON_RANDOM.nextInt()))));
+				Arguments.of(a, b, SINGLETON_RANDOM.nextInt(Integer.MAX_VALUE), c,
+					SINGLETON_RANDOM.nextInt(Integer.MAX_VALUE)))));
 	}
 
 	@ParameterizedTest
@@ -692,8 +692,8 @@ public final class TestDBIO {
 	}
 
 	private static Stream<Arguments> testForestSerialization() {
-		return bools().map(a -> Arguments.of(a, SINGLETON_RANDOM.nextInt(), // TODO: Pass upper bound to get lower bound
-			SINGLETON_RANDOM.nextInt()));
+		return bools().map(a -> Arguments.of(a, SINGLETON_RANDOM.nextInt(Integer.MAX_VALUE),
+			SINGLETON_RANDOM.nextInt(Integer.MAX_VALUE)));
 	}
 
 	@ParameterizedTest
@@ -756,7 +756,7 @@ public final class TestDBIO {
 		return bools().flatMap(a -> bools().flatMap(b ->
 			SINGLETON_RANDOM.ints(2).boxed().flatMap(c ->
 				races.stream().collect(toShuffledStream(1)).map(d ->
-					Arguments.of(a, b, c, SINGLETON_RANDOM.nextInt(), d))))); // TODO: Pass upper bound to get lower bound
+					Arguments.of(a, b, c, SINGLETON_RANDOM.nextInt(Integer.MAX_VALUE), d)))));
 	}
 
 	@ParameterizedTest
@@ -894,7 +894,7 @@ public final class TestDBIO {
 	private static Stream<Arguments> testVillageSerialization() {
 		return Stream.of(TownStatus.values()).flatMap(a ->
 			races.stream().collect(toShuffledStream(3)).map(b ->
-				Arguments.of(a, SINGLETON_RANDOM.nextInt(), b))); // TODO: Pass upper bound to get lower bound
+				Arguments.of(a, SINGLETON_RANDOM.nextInt(Integer.MAX_VALUE), b)));
 	}
 
 	@ParameterizedTest
@@ -906,7 +906,8 @@ public final class TestDBIO {
 
 	private static Stream<Arguments> testNotesSerialization() {
 		return races.stream().collect(toShuffledStream(2)).map(a ->
-			Arguments.of(SINGLETON_RANDOM.nextInt(), SINGLETON_RANDOM.nextInt(), a)); // TODO: Pass upper bound to get lower bound
+			Arguments.of(SINGLETON_RANDOM.nextInt(Integer.MAX_VALUE),
+				SINGLETON_RANDOM.nextInt(Integer.MAX_VALUE), a));
 	}
 
 	@ParameterizedTest
