@@ -2362,9 +2362,9 @@ public final class TestXMLIO {
 
 	private static Stream<Arguments> testRoadSerialization() {
 		return Stream.of(Direction.values()).flatMap(a ->
-			SINGLETON_RANDOM.ints(8).boxed().limit(1).flatMap(b ->
+			SINGLETON_RANDOM.ints(1, 0, 8).boxed().flatMap(b ->
 				Stream.of(Direction.values()).flatMap(c ->
-					SINGLETON_RANDOM.ints(8).boxed().limit(1).map(d ->
+					SINGLETON_RANDOM.ints(1, 0, 8).boxed().map(d ->
 						Arguments.of(a, b, c, d)))));
 	}
 

@@ -947,9 +947,9 @@ public final class TestDBIO {
 
 	private static Stream<Arguments> testRoadSerialization() {
 		return Stream.of(Direction.values()).flatMap(a ->
-			SINGLETON_RANDOM.ints(7).map(i -> i + 1).boxed().limit(1).flatMap(b ->
+			SINGLETON_RANDOM.ints(1, 0, 7).map(i -> i + 1).boxed().flatMap(b ->
 				Stream.of(Direction.values()).flatMap(c ->
-					SINGLETON_RANDOM.ints(7).map(i -> i + 1).boxed().limit(1)
+					SINGLETON_RANDOM.ints(1, 0, 7).map(i -> i + 1).boxed()
 						.map(d -> Arguments.of(a, b, c, d)))));
 	}
 
