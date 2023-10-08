@@ -20,17 +20,17 @@ import com.google.auto.service.AutoService;
  */
 @AutoService(DriverFactory.class)
 public final class MiningCLIFactory implements UtilityDriverFactory {
-	public static final IDriverUsage USAGE = new DriverUsage(false, "mining", ParamCount.Two,
-			"Create a model of a mine", "Create a CSV spreadsheet representing a mine's area",
-			true, false, "output.csv", "status", "--seed=NN", "--banded");
+    public static final IDriverUsage USAGE = new DriverUsage(false, "mining", ParamCount.Two,
+            "Create a model of a mine", "Create a CSV spreadsheet representing a mine's area",
+            true, false, "output.csv", "status", "--seed=NN", "--banded");
 
-	@Override
-	public IDriverUsage getUsage() {
-		return USAGE;
-	}
+    @Override
+    public IDriverUsage getUsage() {
+        return USAGE;
+    }
 
-	@Override
-	public UtilityDriver createDriver(final ICLIHelper cli, final SPOptions options) {
-		return new MiningCLI(cli, options);
-	}
+    @Override
+    public UtilityDriver createDriver(final ICLIHelper cli, final SPOptions options) {
+        return new MiningCLI(cli, options);
+    }
 }

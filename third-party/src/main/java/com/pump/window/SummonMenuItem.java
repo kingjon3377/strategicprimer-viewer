@@ -21,42 +21,42 @@ import javax.swing.JCheckBoxMenuItem;
  */
 public final class SummonMenuItem extends JCheckBoxMenuItem {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	private final Frame frame;
+    private final Frame frame;
 
-	/**
-	 * Create a new {@code SummonMenuItem}.
-	 *
-	 * @param f
-	 *            the frame to bring to front when this menu item is activated
-	 */
-	public SummonMenuItem(final Frame f) {
-		frame = f;
-		addActionListener(this::handler);
-		updateText();
+    /**
+     * Create a new {@code SummonMenuItem}.
+     *
+     * @param f
+     *            the frame to bring to front when this menu item is activated
+     */
+    public SummonMenuItem(final Frame f) {
+        frame = f;
+        addActionListener(this::handler);
+        updateText();
 
-		frame.addPropertyChangeListener("title", e -> updateText());
+        frame.addPropertyChangeListener("title", e -> updateText());
 
-		// this UI is buggy, and has issues.
-		// the main issue is that it won't even show up on Macs
-		// if you use the screen menubar, and since the goal
-		// is to emulate macs: why bother?
-		// if(frame instanceof JFrame f)
-		// setUI(new FrameMenuItemUI(f));
-	}
+        // this UI is buggy, and has issues.
+        // the main issue is that it won't even show up on Macs
+        // if you use the screen menubar, and since the goal
+        // is to emulate macs: why bother?
+        // if(frame instanceof JFrame f)
+        // setUI(new FrameMenuItemUI(f));
+    }
 
-	private void updateText() {
-		String text = frame.getTitle();
-		if (text == null || text.isBlank())
-			text = "Untitled";
-		setText(text);
-	}
+    private void updateText() {
+        String text = frame.getTitle();
+        if (text == null || text.isBlank())
+            text = "Untitled";
+        setText(text);
+    }
 
-	private void handler(final ActionEvent ignored) {
-		frame.toFront();
-		if (frame.getExtendedState() == Frame.ICONIFIED)
-			frame.setExtendedState(Frame.NORMAL);
-		setSelected(true);
-	}
+    private void handler(final ActionEvent ignored) {
+        frame.toFront();
+        if (frame.getExtendedState() == Frame.ICONIFIED)
+            frame.setExtendedState(Frame.NORMAL);
+        setSelected(true);
+    }
 }

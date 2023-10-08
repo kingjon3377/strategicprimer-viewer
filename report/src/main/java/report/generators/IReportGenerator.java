@@ -1,6 +1,7 @@
 package report.generators;
 
 import java.util.function.Consumer;
+
 import lovelace.util.TriConsumer;
 import org.javatuples.Pair;
 import lovelace.util.DelayedRemovalMap;
@@ -8,6 +9,7 @@ import lovelace.util.DelayedRemovalMap;
 import common.map.Point;
 import common.map.IFixture;
 import common.map.IMapNG;
+
 import java.util.Map;
 import java.util.List;
 import java.util.Comparator;
@@ -44,7 +46,7 @@ public interface IReportGenerator<T extends IFixture> {
 	 * @param ostream The stream to write to
 	 */
 	void produce(DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-		IMapNG map, Consumer<String> ostream);
+				 IMapNG map, Consumer<String> ostream);
 
 	/**
 	 * Write a (sub-)report on a single item to a stream.
@@ -58,13 +60,13 @@ public interface IReportGenerator<T extends IFixture> {
 	 * @param loc Its location
 	 */
 	void produceSingle(DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-		IMapNG map, Consumer<String> ostream, T item, Point loc);
+					   IMapNG map, Consumer<String> ostream, T item, Point loc);
 
 	/**
 	 * A factory for a default formatter for {@link #writeMap}.
 	 */
 	default TriConsumer<T, Point, Consumer<String>> defaultFormatter(
-			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures, final IMapNG map) {
+		final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures, final IMapNG map) {
 		return (item, loc, formatter) ->
 			produceSingle(fixtures, map, formatter, item, loc);
 	}
@@ -81,14 +83,14 @@ public interface IReportGenerator<T extends IFixture> {
 	 * @param sorter A sorting method to run the map through before printing.
 	 */
 	default <Key extends IFixture> void writeMap(final Consumer<String> ostream,
-	                                             final HeadedMap<? extends Key, Point> map,
-	                                             final TriConsumer<? super Key, Point, Consumer<String>> lambda,
-	                                             final Comparator<Pair<? super Key, Point>> sorter) {
+												 final HeadedMap<? extends Key, Point> map,
+												 final TriConsumer<? super Key, Point, Consumer<String>> lambda,
+												 final Comparator<Pair<? super Key, Point>> sorter) {
 		if (!map.isEmpty()) {
 			ostream.accept(String.format("%s%n<ul>%n", map.getHeader()));
 			final List<Pair<Key, Point>> sorted = map.entrySet().stream()
-					.map((e) -> Pair.<Key, Point>with(e.getKey(), e.getValue()))
-					.sorted(sorter).toList();
+				.map((e) -> Pair.<Key, Point>with(e.getKey(), e.getValue()))
+				.sorted(sorter).toList();
 			for (final Pair<Key, Point> pair : sorted) {
 				ostream.accept("<li>");
 				lambda.accept(pair.getValue0(), pair.getValue1(), ostream);
@@ -106,8 +108,8 @@ public interface IReportGenerator<T extends IFixture> {
 	 * @param lambda The method to write each item.
 	 */
 	default <Key extends IFixture> void writeMap(final Consumer<String> ostream,
-	                                             final HeadedMap<? extends Key, Point> map,
-	                                             final TriConsumer<? super Key, Point, Consumer<String>> lambda) {
+												 final HeadedMap<? extends Key, Point> map,
+												 final TriConsumer<? super Key, Point, Consumer<String>> lambda) {
 		if (!map.isEmpty()) {
 			ostream.accept(String.format("%s%n<ul>%n", map.getHeader()));
 			final List<Pair<Key, Point>> sorted = map.entrySet().stream()

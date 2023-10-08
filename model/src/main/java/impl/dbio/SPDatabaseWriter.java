@@ -3,6 +3,7 @@ package impl.dbio;
 import impl.xmlio.SPWriter;
 import io.jenetics.facilejdbc.Query;
 import io.jenetics.facilejdbc.Transactional;
+
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
@@ -10,13 +11,19 @@ import java.util.Set;
 import java.util.HashSet;
 import java.util.HashMap;
 import javax.xml.stream.XMLStreamException;
+
 import lovelace.util.LovelaceLogger;
 import org.sqlite.SQLiteDataSource;
+
 import javax.sql.DataSource;
+
 import common.map.HasNotes;
 import common.map.IMapNG;
+
 import java.nio.file.Path;
+
 import lovelace.util.ThrowingConsumer;
+
 import java.io.IOException;
 import java.util.regex.Pattern;
 
@@ -70,22 +77,22 @@ public final class SPDatabaseWriter implements SPWriter {
 	public void writeSPObjectInContext(final Transactional sql, final Object obj, final Object context) throws SQLException {
 		if (!notesInitialized.contains(sql)) {
 			sql.transaction().accept(db -> {
-					NOTES_SCHEMA.execute(db);
-					LovelaceLogger.debug("Executed initializer beginning %s",
-						LINEBREAK.split(NOTES_SCHEMA.rawSql())[0]);
-				});
+				NOTES_SCHEMA.execute(db);
+				LovelaceLogger.debug("Executed initializer beginning %s",
+					LINEBREAK.split(NOTES_SCHEMA.rawSql())[0]);
+			});
 			notesInitialized.add(sql);
 		}
 		if (obj instanceof HasNotes hn) {
 			sql.transaction().accept(db -> {
-					for (final Integer player : hn.getNotesPlayers()) {
-						final String note = hn.getNote(player);
-						if (!note.isEmpty()) {
-							INSERT_NOTE.on(value("fixture", hn.getId()),
-									value("player", player), value("note", note)).executeInsert(db);
-						}
+				for (final Integer player : hn.getNotesPlayers()) {
+					final String note = hn.getNote(player);
+					if (!note.isEmpty()) {
+						INSERT_NOTE.on(value("fixture", hn.getId()),
+							value("player", player), value("note", note)).executeInsert(db);
 					}
-				});
+				}
+			});
 		}
 		for (final DatabaseWriter<?, ?> writer : writers) {
 			if (writer.canWrite(obj, context)) {
@@ -121,7 +128,7 @@ public final class SPDatabaseWriter implements SPWriter {
 
 	@Override
 	public void write(final ThrowingConsumer<String, IOException> arg, final IMapNG map) throws XMLStreamException,
-			                                                                                                IOException {
+		IOException {
 		writeSPObject(arg, map);
 	}
 

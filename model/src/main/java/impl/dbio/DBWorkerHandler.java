@@ -4,6 +4,7 @@ import common.map.IFixture;
 import common.map.fixtures.Implement;
 import io.jenetics.facilejdbc.Query;
 import io.jenetics.facilejdbc.Transactional;
+
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
@@ -39,41 +40,41 @@ final class DBWorkerHandler extends AbstractDatabaseWriter<IWorker, IUnit> imple
 	private final DBImplementHandler equipmentHandler = new DBImplementHandler();
 
 	private static final List<Query> INITIALIZERS = List.of(
-			Query.of("CREATE TABLE IF NOT EXISTS workers (" +
-					         "   unit INTEGER NOT NULL," +
-					         "   id INTEGER NOT NULL," +
-					         "   name VARCHAR(64) NOT NULL," +
-					         "   race VARCHAR(32) NOT NULL," +
-					         "   image VARCHAR(255)," +
-					         "   portrait VARCHAR(255)," +
-					         "   hp INTEGER," +
-					         "   max_hp INTEGER CHECK((hp IS NULL AND max_hp IS NULL) OR" +
-					         "       (hp IS NOT NULL AND max_hp IS NOT NULL))," +
-					         "   str INTEGER CHECK((hp IS NULL AND str IS NULL) OR" +
-					         "       (hp IS NOT NULL AND str IS NOT NULL))," +
-					         "   dex INTEGER CHECK((hp IS NULL AND dex IS NULL) OR" +
-					         "       (hp IS NOT NULL AND dex IS NOT NULL))," +
-					         "   con INTEGER CHECK((hp IS NULL AND con IS NULL) OR" +
-					         "       (hp IS NOT NULL AND con IS NOT NULL))," +
-					         "   int INTEGER CHECK((hp IS NULL AND int IS NULL) OR" +
-					         "       (hp IS NOT NULL AND int IS NOT NULL))," +
-					         "   wis INTEGER CHECK((hp IS NULL AND wis IS NULL) OR" +
-					         "       (hp IS NOT NULL AND wis IS NOT NULL))," +
-					         "   cha INTEGER CHECK((hp IS NULL AND cha IS NULL) OR" +
-					         "       (hp IS NOT NULL AND cha IS NOT NULL))" +
-					         ");"),
-			Query.of("CREATE TABLE IF NOT EXISTS worker_job_levels (" +
-					         "    worker INTEGER NOT NULL," +
-					         "    job VARCHAR(32) NOT NULL," +
-					         "    level INTEGER NOT NULL CHECK(level >= 0)" +
-					         ");"),
-			Query.of("CREATE TABLE IF NOT EXISTS worker_skill_levels (" +
-					         "    worker INTEGER NOT NULL," +
-					         "    associated_job VARCHAR(32) NOT NULL," +
-					         "    skill VARCHAR(32) NOT NULL," +
-					         "    level INTEGER NOT NULL check(level >= 0)," +
-					         "    hours INTEGER NOT NULL check(hours >= 0)" +
-					         ");"));
+		Query.of("CREATE TABLE IF NOT EXISTS workers (" +
+			"   unit INTEGER NOT NULL," +
+			"   id INTEGER NOT NULL," +
+			"   name VARCHAR(64) NOT NULL," +
+			"   race VARCHAR(32) NOT NULL," +
+			"   image VARCHAR(255)," +
+			"   portrait VARCHAR(255)," +
+			"   hp INTEGER," +
+			"   max_hp INTEGER CHECK((hp IS NULL AND max_hp IS NULL) OR" +
+			"       (hp IS NOT NULL AND max_hp IS NOT NULL))," +
+			"   str INTEGER CHECK((hp IS NULL AND str IS NULL) OR" +
+			"       (hp IS NOT NULL AND str IS NOT NULL))," +
+			"   dex INTEGER CHECK((hp IS NULL AND dex IS NULL) OR" +
+			"       (hp IS NOT NULL AND dex IS NOT NULL))," +
+			"   con INTEGER CHECK((hp IS NULL AND con IS NULL) OR" +
+			"       (hp IS NOT NULL AND con IS NOT NULL))," +
+			"   int INTEGER CHECK((hp IS NULL AND int IS NULL) OR" +
+			"       (hp IS NOT NULL AND int IS NOT NULL))," +
+			"   wis INTEGER CHECK((hp IS NULL AND wis IS NULL) OR" +
+			"       (hp IS NOT NULL AND wis IS NOT NULL))," +
+			"   cha INTEGER CHECK((hp IS NULL AND cha IS NULL) OR" +
+			"       (hp IS NOT NULL AND cha IS NOT NULL))" +
+			");"),
+		Query.of("CREATE TABLE IF NOT EXISTS worker_job_levels (" +
+			"    worker INTEGER NOT NULL," +
+			"    job VARCHAR(32) NOT NULL," +
+			"    level INTEGER NOT NULL CHECK(level >= 0)" +
+			");"),
+		Query.of("CREATE TABLE IF NOT EXISTS worker_skill_levels (" +
+			"    worker INTEGER NOT NULL," +
+			"    associated_job VARCHAR(32) NOT NULL," +
+			"    skill VARCHAR(32) NOT NULL," +
+			"    level INTEGER NOT NULL check(level >= 0)," +
+			"    hours INTEGER NOT NULL check(hours >= 0)" +
+			");"));
 	// FIXME: Also pull in Animal initializers
 
 	@Override
@@ -97,43 +98,43 @@ final class DBWorkerHandler extends AbstractDatabaseWriter<IWorker, IUnit> imple
 	@Override
 	public void write(final Transactional db, final IWorker obj, final IUnit context) throws SQLException {
 		db.transaction().accept(sql -> {
-				final String portrait = obj.getPortrait();
-				final WorkerStats stats = obj.getStats();
-				if (stats == null) {
-					WORKER_SQL.on(value("unit", context.getId()), value("id", obj.getId()),
-							value("name", obj.getName()), value("race", obj.getRace()),
-							value("image", obj.getImage()), value("portrait", portrait)).execute(sql);
-				} else {
-					WORKER_SQL.on(value("unit", context.getId()), value("id", obj.getId()),
-							value("name", obj.getName()), value("race", obj.getRace()),
-							value("image", obj.getImage()), value("portrait", portrait),
-							value("hp", stats.getHitPoints()), value("max_hp", stats.getMaxHitPoints()),
-							value("str", stats.getStrength()), value("dex", stats.getDexterity()),
-							value("con", stats.getConstitution()), value("int", stats.getIntelligence()),
-							value("wis", stats.getWisdom()), value("cha", stats.getCharisma())).execute(sql);
+			final String portrait = obj.getPortrait();
+			final WorkerStats stats = obj.getStats();
+			if (stats == null) {
+				WORKER_SQL.on(value("unit", context.getId()), value("id", obj.getId()),
+					value("name", obj.getName()), value("race", obj.getRace()),
+					value("image", obj.getImage()), value("portrait", portrait)).execute(sql);
+			} else {
+				WORKER_SQL.on(value("unit", context.getId()), value("id", obj.getId()),
+					value("name", obj.getName()), value("race", obj.getRace()),
+					value("image", obj.getImage()), value("portrait", portrait),
+					value("hp", stats.getHitPoints()), value("max_hp", stats.getMaxHitPoints()),
+					value("str", stats.getStrength()), value("dex", stats.getDexterity()),
+					value("con", stats.getConstitution()), value("int", stats.getIntelligence()),
+					value("wis", stats.getWisdom()), value("cha", stats.getCharisma())).execute(sql);
+			}
+			for (final IJob job : obj) {
+				JOB_SQL.on(value("worker", obj.getId()), value("job", job.getName()),
+					value("level", job.getLevel())).execute(sql);
+				for (final ISkill skill : job) {
+					SKILL_SQL.on(value("worker", obj.getId()), value("job", job.getName()),
+						value("skill", skill.getName()), value("level", skill.getLevel()),
+						value("hours", skill.getHours())).execute(sql);
 				}
-				for (final IJob job : obj) {
-					JOB_SQL.on(value("worker", obj.getId()), value("job", job.getName()),
-							value("level", job.getLevel())).execute(sql);
-					for (final ISkill skill : job) {
-						SKILL_SQL.on(value("worker", obj.getId()), value("job", job.getName()),
-								value("skill", skill.getName()), value("level", skill.getLevel()),
-								value("hours", skill.getHours())).execute(sql);
-					}
-				}
-				if (obj.getMount() != null) {
-					animalHandler.initialize(db);
-					animalHandler.write(db, obj.getMount(), obj);
-				}
-				for (final Implement item : obj.getEquipment()) {
-					equipmentHandler.initialize(db);
-					equipmentHandler.write(db, item, obj);
-				}
-			});
+			}
+			if (obj.getMount() != null) {
+				animalHandler.initialize(db);
+				animalHandler.write(db, obj.getMount(), obj);
+			}
+			for (final Implement item : obj.getEquipment()) {
+				equipmentHandler.initialize(db);
+				equipmentHandler.write(db, item, obj);
+			}
+		});
 	}
 
 	private TryBiConsumer<Map<String, Object>, Warning, SQLException> readWorkerStats(final IMutableMapNG map,
-			final Map<Integer, Worker> workers, final Map<Integer, List<Object>> containees) {
+																					  final Map<Integer, Worker> workers, final Map<Integer, List<Object>> containees) {
 		return (dbRow, warner) -> {
 			final int unitId = (Integer) dbRow.get("unit");
 			final int id = (Integer) dbRow.get("id");
@@ -168,7 +169,7 @@ final class DBWorkerHandler extends AbstractDatabaseWriter<IWorker, IUnit> imple
 	}
 
 	private static TryBiConsumer<Map<String, Object>, Warning, SQLException>
-			readJobLevel(final IMutableMapNG map, final Map<Integer, Worker> workers) {
+	readJobLevel(final IMutableMapNG map, final Map<Integer, Worker> workers) {
 		return (dbRow, warner) -> {
 			final int id = (Integer) dbRow.get("worker");
 			final Worker worker = workers.get(id);
@@ -179,7 +180,7 @@ final class DBWorkerHandler extends AbstractDatabaseWriter<IWorker, IUnit> imple
 	}
 
 	private static TryBiConsumer<Map<String, Object>, Warning, SQLException>
-			readSkillLevel(final IMutableMapNG map, final Map<Integer, Worker> workers) {
+	readSkillLevel(final IMutableMapNG map, final Map<Integer, Worker> workers) {
 		return (dbRow, warner) -> {
 			final int id = (Integer) dbRow.get("worker");
 			final Worker worker = workers.get(id);
@@ -192,7 +193,7 @@ final class DBWorkerHandler extends AbstractDatabaseWriter<IWorker, IUnit> imple
 	}
 
 	private static TryBiConsumer<Map<String, Object>, Warning, SQLException>
-			readWorkerNotes(final IMapNG map, final Map<Integer, Worker> workers) {
+	readWorkerNotes(final IMapNG map, final Map<Integer, Worker> workers) {
 		return (dbRow, warner) -> {
 			final int id = (Integer) dbRow.get("fixture");
 			final Worker worker = workers.get(id);
@@ -208,9 +209,10 @@ final class DBWorkerHandler extends AbstractDatabaseWriter<IWorker, IUnit> imple
 	private static final Query JOB_SELECT = Query.of("SELECT * FROM worker_job_levels");
 	private static final Query SKILL_SELECT = Query.of("SELECT * FROM worker_skill_levels");
 	private static final Query NOTE_SELECT = Query.of("SELECT * FROM notes");
+
 	@Override
 	public void readMapContents(final Connection db, final IMutableMapNG map, final Map<Integer, IFixture> containers,
-			final Map<Integer, List<Object>> containees, final Warning warner) throws SQLException {
+								final Map<Integer, List<Object>> containees, final Warning warner) throws SQLException {
 		final Map<Integer, Worker> workers = new HashMap<>();
 		handleQueryResults(db, warner, "worker stats", readWorkerStats(map, workers, containees), WORKER_SELECT);
 		handleQueryResults(db, warner, "Job levels", readJobLevel(map, workers), JOB_SELECT);

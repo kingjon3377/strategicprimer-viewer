@@ -66,90 +66,90 @@ import javax.swing.event.ChangeListener;
  *      Adding a Window Menu</a>
  */
 public class WindowMenu extends JMenu {
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	/** The menu item that minimizes this window. */
-	final JMenuItem minimizeItem = new JMenuItem("Minimize");
+    /** The menu item that minimizes this window. */
+    final JMenuItem minimizeItem = new JMenuItem("Minimize");
 
-	/**
-	 * The "Bright All to Front" menu item. TODO: this is implemented hackish-ly
-	 * and causes windows to flicker over one another. I'm not sure it's worth
-	 * keeping; for now the lines that add it to the menu are commented out.
-	 */
-	final JMenuItem bringItem = new JMenuItem("Bring All To Front");
+    /**
+     * The "Bright All to Front" menu item. TODO: this is implemented hackish-ly
+     * and causes windows to flicker over one another. I'm not sure it's worth
+     * keeping; for now the lines that add it to the menu are commented out.
+     */
+    final JMenuItem bringItem = new JMenuItem("Bring All To Front");
 
-	private void update() {
-		removeAll();
-		add(minimizeItem);
-		if (customItems.length != 0) {
-			addSeparator();
-			Stream.of(customItems).filter(Objects::nonNull).forEach(this::add);
-		}
-		addSeparator();
-		add(bringItem);
-		addSeparator();
-		final Frame[] frames = WindowList.getFrames(false, false, true);
-		for (final Frame frame : frames) {
-			final JCheckBoxMenuItem item = new SummonMenuItem(frame);
-			item.setSelected(frame == myFrame);
-			add(item);
-		}
-	}
+    private void update() {
+        removeAll();
+        add(minimizeItem);
+        if (customItems.length != 0) {
+            addSeparator();
+            Stream.of(customItems).filter(Objects::nonNull).forEach(this::add);
+        }
+        addSeparator();
+        add(bringItem);
+        addSeparator();
+        final Frame[] frames = WindowList.getFrames(false, false, true);
+        for (final Frame frame : frames) {
+            final JCheckBoxMenuItem item = new SummonMenuItem(frame);
+            item.setSelected(frame == myFrame);
+            add(item);
+        }
+    }
 
-	private final JFrame myFrame;
+    private final JFrame myFrame;
 
-	final ActionListener actionListener;
+    final ActionListener actionListener;
 
-	final JMenuItem[] customItems;
+    final JMenuItem[] customItems;
 
-	/**
-	 * Creates a new WindowMenu for a specific JFrame.
-	 *
-	 * @param frame
-	 *            the frame that this menu belongs to.
-	 */
-	public WindowMenu(final JFrame frame) {
-		this(frame, new JMenuItem[] {});
-	}
+    /**
+     * Creates a new WindowMenu for a specific JFrame.
+     *
+     * @param frame
+     *            the frame that this menu belongs to.
+     */
+    public WindowMenu(final JFrame frame) {
+        this(frame, new JMenuItem[]{});
+    }
 
-	/**
-	 * Creates a new WindowMenu for a specific JFrame.
-	 *
-	 * @param frame
-	 *            the frame that this menu belongs to.
-	 * @param extraItems
-	 *            an optional array of extra items to put in this menu.
-	 */
-	public WindowMenu(final JFrame frame, final JMenuItem... extraItems) {
-		super("Window");
-		myFrame = frame;
-		actionListener = e -> {
-			final Object src = e.getSource();
-			if (src == minimizeItem) {
-				myFrame.setExtendedState(Frame.ICONIFIED);
-			} else if (src == bringItem) {
-				final Frame[] frames = WindowList.getFrames(false, false, true);
-				for (final Frame w : frames) {
-					if (w.isVisible() || frame
-							.getExtendedState() == Frame.ICONIFIED) {
-						w.toFront();
-						if (w.getExtendedState() == Frame.ICONIFIED)
-							w.setExtendedState(Frame.NORMAL);
-					}
-				}
-			}
-		};
-		minimizeItem.addActionListener(actionListener);
-		bringItem.addActionListener(actionListener);
+    /**
+     * Creates a new WindowMenu for a specific JFrame.
+     *
+     * @param frame
+     *            the frame that this menu belongs to.
+     * @param extraItems
+     *            an optional array of extra items to put in this menu.
+     */
+    public WindowMenu(final JFrame frame, final JMenuItem... extraItems) {
+        super("Window");
+        myFrame = frame;
+        actionListener = e -> {
+            final Object src = e.getSource();
+            if (src == minimizeItem) {
+                myFrame.setExtendedState(Frame.ICONIFIED);
+            } else if (src == bringItem) {
+                final Frame[] frames = WindowList.getFrames(false, false, true);
+                for (final Frame w : frames) {
+                    if (w.isVisible() || frame
+                            .getExtendedState() == Frame.ICONIFIED) {
+                        w.toFront();
+                        if (w.getExtendedState() == Frame.ICONIFIED)
+                            w.setExtendedState(Frame.NORMAL);
+                    }
+                }
+            }
+        };
+        minimizeItem.addActionListener(actionListener);
+        bringItem.addActionListener(actionListener);
 
-		customItems = new JMenuItem[extraItems.length];
-		System.arraycopy(extraItems, 0, customItems, 0, extraItems.length);
+        customItems = new JMenuItem[extraItems.length];
+        System.arraycopy(extraItems, 0, customItems, 0, extraItems.length);
 
-		minimizeItem.setAccelerator(KeyStroke.getKeyStroke('M',
-				Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
+        minimizeItem.setAccelerator(KeyStroke.getKeyStroke('M',
+                Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
 
-		final ChangeListener changeListener = e -> SwingUtilities.invokeLater(this::update);
-		WindowList.addChangeListener(changeListener);
-		update();
-	}
+        final ChangeListener changeListener = e -> SwingUtilities.invokeLater(this::update);
+        WindowList.addChangeListener(changeListener);
+        update();
+    }
 }

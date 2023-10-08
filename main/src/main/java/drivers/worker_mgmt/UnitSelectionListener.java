@@ -10,8 +10,8 @@ import org.jetbrains.annotations.Nullable;
  * TODO: Combine with other similar interfaces?
  */
 public interface UnitSelectionListener {
-	/**
-	 * Respond to the fact that the given unit is the new selected unit.
-	 */
-	void selectUnit(@Nullable IUnit unit);
+    /**
+     * Respond to the fact that the given unit is the new selected unit.
+     */
+    void selectUnit(@Nullable IUnit unit);
 }

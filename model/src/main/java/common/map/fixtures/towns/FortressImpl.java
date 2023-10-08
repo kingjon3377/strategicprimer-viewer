@@ -281,7 +281,7 @@ public class FortressImpl implements IMutableFortress {
 			return false;
 		}
 		if ((name.equals(fort.getName()) || "unknown".equals(fort.getName())) &&
-				fort.owner().getPlayerId() == owner.getPlayerId()) {
+			fort.owner().getPlayerId() == owner.getPlayerId()) {
 			final Map<Integer, FortressMember> ours = members.stream()
 				.collect(Collectors.toMap(FortressMember::getId, m -> m));
 			boolean retval = true;
@@ -294,7 +294,7 @@ public class FortressImpl implements IMutableFortress {
 					}
 				} else {
 					localFormat.accept(String.format("Extra member:\t%s, ID #%d",
-							member, member.getId()));
+						member, member.getId()));
 					retval = false;
 				}
 			}
@@ -311,7 +311,7 @@ public class FortressImpl implements IMutableFortress {
 	@Override
 	public int getDC() {
 		return members.stream().filter(TileFixture.class::isInstance).map(TileFixture.class::cast)
-				.mapToInt(TileFixture::getDC).min().orElse(20) - members.size() -
+			.mapToInt(TileFixture::getDC).min().orElse(20) - members.size() -
 			townSize.ordinal() * 2;
 	}
 

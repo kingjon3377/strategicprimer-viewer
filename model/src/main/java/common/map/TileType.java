@@ -14,122 +14,122 @@ import java.util.stream.Collectors;
  * TODO: Other additional types for use in other worlds' maps?
  */
 public enum TileType implements HasName {
-	/**
-	 * Tundra.
-	 */
-	Tundra("tundra", "tundra", 2),
+    /**
+     * Tundra.
+     */
+    Tundra("tundra", "tundra", 2),
 
-	/**
-	 * Desert.
-	 */
-	Desert("desert", "desert", 2),
+    /**
+     * Desert.
+     */
+    Desert("desert", "desert", 2),
 
-	/**
-	 * Ocean, or water more generally.
-	 */
-	Ocean("ocean", "ocean", 2),
+    /**
+     * Ocean, or water more generally.
+     */
+    Ocean("ocean", "ocean", 2),
 
-	/**
-	 * Plains.
-	 */
-	Plains("plains", "plains", 2),
+    /**
+     * Plains.
+     */
+    Plains("plains", "plains", 2),
 
-	/**
-	 * Jungle.
-	 */
-	Jungle("jungle", "jungle", 2),
+    /**
+     * Jungle.
+     */
+    Jungle("jungle", "jungle", 2),
 
-	/**
-	 * Steppe. This is like plains, but higher-latitude and colder.
-	 * Beginning in version 2, a temperate forest is plains plus forest,
-	 * and a boreal forest is steppe plus forest, while a mountain tile is
-	 * either a desert, a plain, or a steppe that is mountainous.
-	 */
-	Steppe("steppe", "steppe", 2),
+    /**
+     * Steppe. This is like plains, but higher-latitude and colder.
+     * Beginning in version 2, a temperate forest is plains plus forest,
+     * and a boreal forest is steppe plus forest, while a mountain tile is
+     * either a desert, a plain, or a steppe that is mountainous.
+     */
+    Steppe("steppe", "steppe", 2),
 
-	/**
-	 * Swamp.
-	 */
-	Swamp("swamp", "swamp", 2);
+    /**
+     * Swamp.
+     */
+    Swamp("swamp", "swamp", 2);
 
-	/**
-	 * A description of the instance, for human consumption
-	 */
-	private final String string;
+    /**
+     * A description of the instance, for human consumption
+     */
+    private final String string;
 
-	/**
-	 * A description of the instance, for human consumption
-	 */
-	@Override
-	public String toString() {
-		return string;
-	}
+    /**
+     * A description of the instance, for human consumption
+     */
+    @Override
+    public String toString() {
+        return string;
+    }
 
-	/**
-	 * How to represent the instance in XML
-	 */
-	private final String xml;
+    /**
+     * How to represent the instance in XML
+     */
+    private final String xml;
 
-	/**
-	 * How to represent the instance in XML
-	 */
-	public String getXml() {
-		return xml;
-	}
+    /**
+     * How to represent the instance in XML
+     */
+    public String getXml() {
+        return xml;
+    }
 
-	/**
-	 * The map versions that support the tile type as such. (For example,
-	 * version 2 an later replace forests as a tile type with forests as
-	 * something on the tile.)
-	 */
-	private final Set<Integer> versions = new HashSet<>();
+    /**
+     * The map versions that support the tile type as such. (For example,
+     * version 2 an later replace forests as a tile type with forests as
+     * something on the tile.)
+     */
+    private final Set<Integer> versions = new HashSet<>();
 
-	/**
-	 * The map versions that support the tile type as such. (For example,
-	 * version 2 an later replace forests as a tile type with forests as
-	 * something on the tile.)
-	 */
-	public Collection<Integer> getVersions() {
-		return Collections.unmodifiableSet(versions);
-	}
+    /**
+     * The map versions that support the tile type as such. (For example,
+     * version 2 an later replace forests as a tile type with forests as
+     * something on the tile.)
+     */
+    public Collection<Integer> getVersions() {
+        return Collections.unmodifiableSet(versions);
+    }
 
-	TileType(final String desc, final String xmlDesc, final int... vers) {
-		string = desc;
-		xml = xmlDesc;
-		for (final int ver : vers) {
-			versions.add(ver);
-		}
-	}
+    TileType(final String desc, final String xmlDesc, final int... vers) {
+        string = desc;
+        xml = xmlDesc;
+        for (final int ver : vers) {
+            versions.add(ver);
+        }
+    }
 
-	/**
-	 * Whether this the given map version supports this tile type.
-	 */
-	public boolean isSupportedByVersion(final int version) {
-		return versions.contains(version);
-	}
+    /**
+     * Whether this the given map version supports this tile type.
+     */
+    public boolean isSupportedByVersion(final int version) {
+        return versions.contains(version);
+    }
 
-	/**
-	 * A description of the instance, for human consumption
-	 */
-	@Override
-	public String getName() {
-		return string;
-	}
+    /**
+     * A description of the instance, for human consumption
+     */
+    @Override
+    public String getName() {
+        return string;
+    }
 
-	/**
-	 * All tile types the given version supports.
-	 *
-	 * TODO: Write tests for this
-	 */
-	public static Iterable<TileType> getValuesForVersion(final int version) {
-		return Stream.of(values()).filter((t) -> t.isSupportedByVersion(version)).collect(Collectors.toList());
-	}
+    /**
+     * All tile types the given version supports.
+     *
+     * TODO: Write tests for this
+     */
+    public static Iterable<TileType> getValuesForVersion(final int version) {
+        return Stream.of(values()).filter((t) -> t.isSupportedByVersion(version)).collect(Collectors.toList());
+    }
 
-	/**
-	 * Parse an XML representation of a tile type.
-	 */
-	public static TileType parse(final String xml) throws ParseException {
-		return Stream.of(values()).filter((t) -> xml.equals(t.getXml())).findAny()
-			.orElseThrow(() -> new ParseException("Failed to parse TileType from " + xml, -1));
-	}
+    /**
+     * Parse an XML representation of a tile type.
+     */
+    public static TileType parse(final String xml) throws ParseException {
+        return Stream.of(values()).filter((t) -> xml.equals(t.getXml())).findAny()
+                .orElseThrow(() -> new ParseException("Failed to parse TileType from " + xml, -1));
+    }
 }

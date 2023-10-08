@@ -1,6 +1,7 @@
 package drivers.common;
 
 import java.util.stream.Stream;
+
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -76,7 +77,7 @@ public class SimpleMultiMapModel extends SimpleDriverModel implements IMultiMapM
 	@Override
 	public final int getCurrentTurn() {
 		return streamAllMaps().mapToInt(IMapNG::getCurrentTurn).filter(i -> i >= 0)
-				.findFirst().orElseGet(getMap()::getCurrentTurn);
+			.findFirst().orElseGet(getMap()::getCurrentTurn);
 	}
 
 	@Override

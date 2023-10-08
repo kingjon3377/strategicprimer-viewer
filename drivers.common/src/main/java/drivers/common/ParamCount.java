@@ -6,33 +6,33 @@ package drivers.common;
  * TODO: Helper methods should probably go into this class, right?
  */
 public enum ParamCount {
-	/**
-	 * None at all.
-	 */
-	None,
+    /**
+     * None at all.
+     */
+    None,
 
-	/**
-	 * Exactly one.
-	 */
-	One,
+    /**
+     * Exactly one.
+     */
+    One,
 
-	/**
-	 * Exactly two.
-	 */
-	Two,
+    /**
+     * Exactly two.
+     */
+    Two,
 
-	/**
-	 * One or more.
-	 */
-	AtLeastOne,
+    /**
+     * One or more.
+     */
+    AtLeastOne,
 
-	/**
-	 * Two or more.
-	 */
-	AtLeastTwo,
+    /**
+     * Two or more.
+     */
+    AtLeastTwo,
 
-	/**
-	 * Zero or more.
-	 */
-	AnyNumber
+    /**
+     * Zero or more.
+     */
+    AnyNumber
 }

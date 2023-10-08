@@ -2,6 +2,7 @@ package report.generators;
 
 import org.jetbrains.annotations.Nullable;
 import org.javatuples.Pair;
+
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.TreeMap;
@@ -12,6 +13,7 @@ import common.DistanceComparator;
 import common.map.IFixture;
 import common.map.MapDimensions;
 import common.map.Point;
+
 import java.util.function.Function;
 import java.util.Comparator;
 import java.util.List;
@@ -43,8 +45,9 @@ public abstract class AbstractReportGenerator<Type extends IFixture> implements 
 
 	private static <First, Second> Comparator<Pair<First, Second>> pairComparator(final Comparator<First> first, final Comparator<Second> second) {
 		return Comparator.<Pair<First, Second>, First>comparing(Pair::getValue0, first)
-				.thenComparing(Pair::getValue1, second);
+			.thenComparing(Pair::getValue1, second);
 	}
+
 	/**
 	 * TODO: Don't require callers to pss in mapDimensions if referencePoint is absent. (Split constructor.)
 	 *
@@ -61,14 +64,14 @@ public abstract class AbstractReportGenerator<Type extends IFixture> implements 
 			distComparator = (one, two) -> 0;
 			distanceString = (ignored) -> "unknown";
 			pairComparator = pairComparator((one, two) -> 0,
-					Comparator.comparing(IFixture::hashCode));
+				Comparator.comparing(IFixture::hashCode));
 		} else {
 			final DistanceComparator distCalculator = new DistanceComparator(referencePoint,
 				mapDimensions);
 			distComparator = distCalculator;
 			distanceString = distCalculator::distanceString;
 			pairComparator = pairComparator(new DistanceComparator(referencePoint, mapDimensions),
-					Comparator.comparing(IFixture::hashCode));
+				Comparator.comparing(IFixture::hashCode));
 		}
 	}
 
@@ -104,15 +107,15 @@ public abstract class AbstractReportGenerator<Type extends IFixture> implements 
 				builder.append(header);
 				builder.append("""
 
-								<ul>
-								""");
+					<ul>
+					""");
 				for (final String item : this) {
 					builder.append("<li>").append(item).append("</li>")
 						.append(System.lineSeparator());
 				}
 				builder.append("""
-						</ul>
-						""");
+					</ul>
+					""");
 				return builder.toString();
 			}
 		}
@@ -174,6 +177,7 @@ public abstract class AbstractReportGenerator<Type extends IFixture> implements 
 	protected static class PointList extends ArrayList<Point> implements HeadedList<Point> {
 		private static final long serialVersionUID = 1L;
 		private final String header;
+
 		/**
 		 * The "header" to print before the points in the list.
 		 */
@@ -204,6 +208,7 @@ public abstract class AbstractReportGenerator<Type extends IFixture> implements 
 	 */
 	protected static class HeadedMapImpl<Key, Value> implements HeadedMap<Key, Value> {
 		private final String header;
+
 		@Override
 		public String getHeader() {
 			return header;

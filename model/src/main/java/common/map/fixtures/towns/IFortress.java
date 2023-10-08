@@ -13,7 +13,7 @@ import common.map.fixtures.FixtureIterable;
  * FIXME: We need something about buildings yet
  */
 public interface IFortress extends HasImage, ITownFixture, HasName,
-		FixtureIterable<FortressMember>, SubsettableFixture {
+	FixtureIterable<FortressMember>, SubsettableFixture {
 	/**
 	 * Clone the fortress.
 	 */

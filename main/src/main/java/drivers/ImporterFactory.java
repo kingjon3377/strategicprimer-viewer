@@ -17,18 +17,18 @@ import com.google.auto.service.AutoService;
  */
 @AutoService(DriverFactory.class)
 public class ImporterFactory implements UtilityDriverFactory {
-	private static final DriverUsage USAGE = new DriverUsage(false, "import",
-		ParamCount.AtLeastOne, "Import terrain data from a raster image",
-		"Import terrain data from a raster image", false, false, "/path/to/image.png",
-		"/path/to/image.png", "--size=NN");
+    private static final DriverUsage USAGE = new DriverUsage(false, "import",
+            ParamCount.AtLeastOne, "Import terrain data from a raster image",
+            "Import terrain data from a raster image", false, false, "/path/to/image.png",
+            "/path/to/image.png", "--size=NN");
 
-	@Override
-	public IDriverUsage getUsage() {
-		return USAGE;
-	}
+    @Override
+    public IDriverUsage getUsage() {
+        return USAGE;
+    }
 
-	@Override
-	public UtilityDriver createDriver(final ICLIHelper cli, final SPOptions options) {
-		return new ImporterDriver(cli, options);
-	}
+    @Override
+    public UtilityDriver createDriver(final ICLIHelper cli, final SPOptions options) {
+        return new ImporterDriver(cli, options);
+    }
 }

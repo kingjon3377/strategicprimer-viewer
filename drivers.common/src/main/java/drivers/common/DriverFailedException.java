@@ -4,16 +4,17 @@ package drivers.common;
  * An exception to throw whenever a driver fails, so drivers only have to directly handle one exception class.
  */
 public class DriverFailedException extends Exception {
-	private static final long serialVersionUID = 1L;
-	public DriverFailedException(final Throwable cause, final String message) {
-		super(message, cause);
-	}
+    private static final long serialVersionUID = 1L;
 
-	public DriverFailedException(final Throwable cause) {
-		this(cause, "The app could not start because of an exception:");
-	}
+    public DriverFailedException(final Throwable cause, final String message) {
+        super(message, cause);
+    }
 
-	public static DriverFailedException illegalState(final String message) {
-		return new DriverFailedException(new IllegalStateException(message), message);
-	}
+    public DriverFailedException(final Throwable cause) {
+        this(cause, "The app could not start because of an exception:");
+    }
+
+    public static DriverFailedException illegalState(final String message) {
+        return new DriverFailedException(new IllegalStateException(message), message);
+    }
 }

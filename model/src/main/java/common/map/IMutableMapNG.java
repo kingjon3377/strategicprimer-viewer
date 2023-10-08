@@ -1,6 +1,7 @@
 package common.map;
 
 import java.nio.file.Path;
+
 import org.jetbrains.annotations.Nullable;
 
 /**

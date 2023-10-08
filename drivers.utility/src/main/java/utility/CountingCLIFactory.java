@@ -21,22 +21,22 @@ import com.google.auto.service.AutoService;
  */
 @AutoService(DriverFactory.class)
 public class CountingCLIFactory implements ModelDriverFactory {
-	private static final IDriverUsage USAGE = new DriverUsage(false, "count", ParamCount.One,
-		"Calculate statistics of map contents", "Print statistical report of map contents.",
-		false, false);
+    private static final IDriverUsage USAGE = new DriverUsage(false, "count", ParamCount.One,
+            "Calculate statistics of map contents", "Print statistical report of map contents.",
+            false, false);
 
-	@Override
-	public IDriverUsage getUsage() {
-		return USAGE;
-	}
+    @Override
+    public IDriverUsage getUsage() {
+        return USAGE;
+    }
 
-	@Override
-	public ModelDriver createDriver(final ICLIHelper cli, final SPOptions options, final IDriverModel model) {
-		return new CountingCLI(cli, model);
-	}
+    @Override
+    public ModelDriver createDriver(final ICLIHelper cli, final SPOptions options, final IDriverModel model) {
+        return new CountingCLI(cli, model);
+    }
 
-	@Override
-	public IDriverModel createModel(final IMutableMapNG map) {
-		return new SimpleDriverModel(map);
-	}
+    @Override
+    public IDriverModel createModel(final IMutableMapNG map) {
+        return new SimpleDriverModel(map);
+    }
 }

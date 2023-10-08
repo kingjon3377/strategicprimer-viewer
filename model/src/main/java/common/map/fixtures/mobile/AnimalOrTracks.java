@@ -9,4 +9,5 @@ import common.map.fixtures.UnitMember;
  *
  * TODO: Why do we need to keep them combined?
  */
-public interface AnimalOrTracks extends IFixture, UnitMember, HasKind {}
+public interface AnimalOrTracks extends IFixture, UnitMember, HasKind {
+}

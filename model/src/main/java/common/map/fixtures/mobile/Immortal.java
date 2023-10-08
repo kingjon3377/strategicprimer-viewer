@@ -26,6 +26,6 @@ public interface Immortal extends MobileFixture, UnitMember {
 	 */
 	@Deprecated
 	List<String> IMMORTAL_ANIMALS =
-			List.of("snowbird", "thunderbird", "pegasus", "unicorn", "kraken");
+		List.of("snowbird", "thunderbird", "pegasus", "unicorn", "kraken");
 }
 

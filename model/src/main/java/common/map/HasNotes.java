@@ -7,8 +7,11 @@ package common.map;
  * serialized to disk.
  */
 public interface HasNotes extends IFixture {
-	String getNote(Player player);
-	String getNote(int player);
-	void setNote(Player player, String note);
-	Iterable<Integer> getNotesPlayers();
+    String getNote(Player player);
+
+    String getNote(int player);
+
+    void setNote(Player player, String note);
+
+    Iterable<Integer> getNotesPlayers();
 }

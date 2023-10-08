@@ -30,6 +30,7 @@ import io.jenetics.facilejdbc.Query;
 import io.jenetics.facilejdbc.Row;
 import io.jenetics.facilejdbc.RowParser;
 import io.jenetics.facilejdbc.Transactional;
+
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -39,6 +40,7 @@ import java.util.Objects;
 import java.text.ParseException;
 
 import java.util.stream.Stream;
+
 import lovelace.util.Accumulator;
 import lovelace.util.IntAccumulator;
 import lovelace.util.LovelaceLogger;
@@ -84,23 +86,27 @@ final class DBMapReader {
 	}
 
 	private static final Query TERRAIN_SELECT = Query.of("SELECT * FROM terrain");
+
 	private static Triplet<Point, @Nullable TileType, Sextet<Boolean, Boolean, Boolean, Boolean, Boolean, Boolean>> parseTerrain(final Row row, final Connection sql) throws SQLException {
 		return Triplet.with(new Point(row.getInt("row"), row.getInt("column")), parseTileType(row.getString("terrain")),
-				Sextet.with(row.getBoolean("mountainous"), row.getBoolean("north_river"),
-						row.getBoolean("south_river"), row.getBoolean("east_river"), row.getBoolean("west_river"),
-						row.getBoolean("lake")));
+			Sextet.with(row.getBoolean("mountainous"), row.getBoolean("north_river"),
+				row.getBoolean("south_river"), row.getBoolean("east_river"), row.getBoolean("west_river"),
+				row.getBoolean("lake")));
 	}
 
 	private static final Query ROAD_SELECT = Query.of("SELECT * FROM roads");
+
 	private static Triplet<Point, Direction, Integer> parseRoads(final Row row, final Connection sql) throws SQLException {
 		return Triplet.with(new Point(row.getInt("row"), row.getInt("column")),
-				Objects.requireNonNull(Direction.parse(row.getString("direction"))), row.getInt("quality"));
+			Objects.requireNonNull(Direction.parse(row.getString("direction"))), row.getInt("quality"));
 	}
 
 	private static final Query BOOKMARK_SELECT = Query.of("SELECT * FROM BOOKMARKS");
+
 	private static Pair<Point, Integer> parseBookmark(final Row row, final Connection sql) throws SQLException {
 		return Pair.with(new Point(row.getInt("row"), row.getInt("column")), row.getInt("player"));
 	}
+
 	public IMutableMapNG readMap(final Transactional db, final Warning warner) throws SQLException {
 		final Connection conn = db.connection();
 		final @Nullable Quartet<Integer, Integer, Integer, Integer> metadata = METADATA_SELECT.as(((RowParser<Quartet<Integer, Integer, Integer, Integer>>) DBMapReader::parseMetadata).singleNull(), conn);
@@ -125,8 +131,8 @@ final class DBMapReader {
 			new SPMapNG(new MapDimensionsImpl(rows, columns, version), players, turn);
 		final Accumulator<Integer> count = new IntAccumulator(0);
 		try (final Stream<Triplet<Point, @Nullable TileType, Sextet<Boolean, Boolean, Boolean, Boolean, Boolean, Boolean>>> terrainStream =
-				     TERRAIN_SELECT.as(((RowParser<Triplet<Point, @Nullable TileType, Sextet<Boolean, Boolean, Boolean, Boolean, Boolean, Boolean>>>)
-						                        DBMapReader::parseTerrain).stream(), conn)) {
+				 TERRAIN_SELECT.as(((RowParser<Triplet<Point, @Nullable TileType, Sextet<Boolean, Boolean, Boolean, Boolean, Boolean, Boolean>>>)
+					 DBMapReader::parseTerrain).stream(), conn)) {
 			terrainStream.forEach(dbRow -> {
 				final Sextet<Boolean, Boolean, Boolean, Boolean, Boolean, Boolean> tuple = dbRow.getValue2();
 				final boolean mtn = tuple.getValue0();
@@ -159,7 +165,7 @@ final class DBMapReader {
 				count.add(1);
 				if (count.getSum() % 50 == 0) {
 					LovelaceLogger.debug("Read terrain for %d tiles",
-							count.getSum());
+						count.getSum());
 				}
 			});
 		}
@@ -173,7 +179,7 @@ final class DBMapReader {
 		for (final MapContentsReader reader : readers) {
 			try {
 				reader.readMapContents(conn, retval, containers, containees, warner);
-			} catch (final RuntimeException|SQLException exception) {
+			} catch (final RuntimeException | SQLException exception) {
 				if (exception.getMessage().contains("no such table")) {
 					continue;
 				} else {
@@ -205,22 +211,22 @@ final class DBMapReader {
 				} else if (parent instanceof IMutableUnit p && member instanceof UnitMember m) {
 					p.addMember(m);
 				} else if (parent instanceof AbstractTown p && member instanceof CommunityStats m &&
-						p.getPopulation() == null) {
+					p.getPopulation() == null) {
 					p.setPopulation(m);
 				} else if (parent instanceof Village p && member instanceof CommunityStats m &&
-						p.getPopulation() == null) {
+					p.getPopulation() == null) {
 					p.setPopulation(m);
 				} else if (parent instanceof IMutableWorker p && member instanceof Animal m &&
-						p.getMount() == null) {
+					p.getMount() == null) {
 					p.setMount(m);
 				} else if (parent instanceof IMutableWorker p && member instanceof Implement m) {
 					p.addEquipment(m);
 				} else if (parent instanceof AbstractTown p && member instanceof CommunityStats && // TODO: combine with earlier AbstractTown case?
-						p.getPopulation() != null) {
+					p.getPopulation() != null) {
 					throw new IllegalStateException("Community stats already set");
 				} else {
 					throw new IllegalStateException(String.format("DB parent-child type invariants not met (parent %s, child %s)",
-							parent.getClass().getSimpleName(), member.getClass().getSimpleName()));
+						parent.getClass().getSimpleName(), member.getClass().getSimpleName()));
 				}
 			}
 		}

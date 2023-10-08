@@ -21,23 +21,23 @@ import com.google.auto.service.AutoService;
  */
 @AutoService(DriverFactory.class)
 public class QueryCLIFactory implements ModelDriverFactory {
-	private static final IDriverUsage USAGE = new DriverUsage(false, "query",
-		ParamCount.One, "Answer questions about a map.",
-		"Answer questions about a map, such as counting workers or calculating distances.",
-		true, false);
+    private static final IDriverUsage USAGE = new DriverUsage(false, "query",
+            ParamCount.One, "Answer questions about a map.",
+            "Answer questions about a map, such as counting workers or calculating distances.",
+            true, false);
 
-	@Override
-	public IDriverUsage getUsage() {
-		return USAGE;
-	}
+    @Override
+    public IDriverUsage getUsage() {
+        return USAGE;
+    }
 
-	@Override
-	public ModelDriver createDriver(final ICLIHelper cli, final SPOptions options, final IDriverModel model) {
-		return new QueryCLI(cli, model);
-	}
+    @Override
+    public ModelDriver createDriver(final ICLIHelper cli, final SPOptions options, final IDriverModel model) {
+        return new QueryCLI(cli, model);
+    }
 
-	@Override
-	public IDriverModel createModel(final IMutableMapNG map) {
-		return new SimpleDriverModel(map);
-	}
+    @Override
+    public IDriverModel createModel(final IMutableMapNG map) {
+        return new SimpleDriverModel(map);
+    }
 }

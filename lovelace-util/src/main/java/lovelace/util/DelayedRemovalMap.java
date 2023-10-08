@@ -7,8 +7,8 @@ import java.util.Map;
  * avoid concurrent-modification errors.
  */
 public interface DelayedRemovalMap<Key, Item> extends Map<Key, Item> {
-	/**
-	 * Apply all scheduled and pending removals.
-	 */
-	void coalesce();
+    /**
+     * Apply all scheduled and pending removals.
+     */
+    void coalesce();
 }

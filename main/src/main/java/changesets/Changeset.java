@@ -8,33 +8,33 @@ import common.map.IMutableMapNG;
  * and a later map.
  *
  * TODO: Tests
- * 
+ *
  * TODO: Think of how to implement this
  */
 public interface Changeset {
-	/**
-	 * The number of the turn before the changeset is applied.
-	 */
-	int getFrom();
+    /**
+     * The number of the turn before the changeset is applied.
+     */
+    int getFrom();
 
-	/**
-	 * The number of the turn after the changeset is applied.
-	 */
-	int getTo();
+    /**
+     * The number of the turn after the changeset is applied.
+     */
+    int getTo();
 
-	/**
-	 * The inverse of this set of operations.
-	 */
-	Changeset invert();
+    /**
+     * The inverse of this set of operations.
+     */
+    Changeset invert();
 
-	/**
-	 * Apply the changeset to a map.
-	 *
-	 * TODO: Should this possibly take different arguments?
-	 *
-	 * TODO: Should this possibly take {@link common.map.IMapNG} and return
-	 * the modified map, instead of modifying an {@link IMutableMapNG} in
-	 * place?
-	 */
-	void apply(IMutableMapNG map);
+    /**
+     * Apply the changeset to a map.
+     *
+     * TODO: Should this possibly take different arguments?
+     *
+     * TODO: Should this possibly take {@link common.map.IMapNG} and return
+     * the modified map, instead of modifying an {@link IMutableMapNG} in
+     * place?
+     */
+    void apply(IMutableMapNG map);
 }

@@ -3,6 +3,7 @@ package impl.dbio;
 import common.map.IFixture;
 import io.jenetics.facilejdbc.Query;
 import io.jenetics.facilejdbc.Transactional;
+
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
@@ -37,29 +38,29 @@ final class DBUnitHandler extends AbstractDatabaseWriter<IUnit, Object> implemen
 	}
 
 	private static final List<Query> INITIALIZERS = List.of(
-			Query.of("CREATE TABLE IF NOT EXISTS units (" +
-					         "    row INTEGER," +
-					         "    column INTEGER CHECK ((row IS NOT NULL AND column IS NOT NULL) OR" +
-					         "       (row IS NULL AND column IS NULL))," +
-					         "    parent INTEGER CHECK ((row IS NOT NULL AND parent IS NULL) OR" +
-					         "       (row IS NULL AND parent IS NOT NULL))," +
-					         "    owner INTEGER NOT NULL," +
-					         "    kind VARCHAR(32) NOT NULL," +
-					         "    name VARCHAR(64) NOT NULL," +
-					         "    id INTEGER NOT NULL," +
-					         "    image VARCHAR(255)," +
-					         "    portrait VARCHAR(255)" +
-					         ");"),
-			Query.of("CREATE TABLE IF NOT EXISTS orders (" +
-					        "    unit INTEGER NOT NULL," +
-					        "    turn INTEGER," +
-					        "    orders VARCHAR(2048) NOT NULL" +
-					        ");"),
-			Query.of("CREATE TABLE IF NOT EXISTS results (" +
-					         "    unit INTEGER NOT NULL," +
-					         "    turn INTEGER," +
-					         "    result VARCHAR(2048) NOT NULL" +
-					         ");"));
+		Query.of("CREATE TABLE IF NOT EXISTS units (" +
+			"    row INTEGER," +
+			"    column INTEGER CHECK ((row IS NOT NULL AND column IS NOT NULL) OR" +
+			"       (row IS NULL AND column IS NULL))," +
+			"    parent INTEGER CHECK ((row IS NOT NULL AND parent IS NULL) OR" +
+			"       (row IS NULL AND parent IS NOT NULL))," +
+			"    owner INTEGER NOT NULL," +
+			"    kind VARCHAR(32) NOT NULL," +
+			"    name VARCHAR(64) NOT NULL," +
+			"    id INTEGER NOT NULL," +
+			"    image VARCHAR(255)," +
+			"    portrait VARCHAR(255)" +
+			");"),
+		Query.of("CREATE TABLE IF NOT EXISTS orders (" +
+			"    unit INTEGER NOT NULL," +
+			"    turn INTEGER," +
+			"    orders VARCHAR(2048) NOT NULL" +
+			");"),
+		Query.of("CREATE TABLE IF NOT EXISTS results (" +
+			"    unit INTEGER NOT NULL," +
+			"    turn INTEGER," +
+			"    result VARCHAR(2048) NOT NULL" +
+			");"));
 
 	@Override
 	public List<Query> getInitializers() {
@@ -79,33 +80,33 @@ final class DBUnitHandler extends AbstractDatabaseWriter<IUnit, Object> implemen
 	@Override
 	public void write(final Transactional db, final IUnit obj, final Object context) throws SQLException {
 		db.transaction().accept(sql -> {
-				final String portrait = obj.getPortrait();
-				if (context instanceof Point p) {
-					INSERT_UNIT.on(value("row", p.row()),
-							value("column", p.column()),
-							 value("owner", obj.owner().getPlayerId()),
-							value("kind", obj.getKind()), value("name", obj.getName()),
-							value("id", obj.getId()), value("image", obj.getImage()),
-							value("portrait", portrait)).execute(sql);
-				} else if (context instanceof IFortress f) {
-					INSERT_UNIT.on(
-							value("parent", f.getId()),
-							value("owner", obj.owner().getPlayerId()), value("kind", obj.getKind()),
-							value("name", obj.getName()), value("id", obj.getId()),
-							value("image", obj.getImage()), value("portrait", portrait)).execute(sql);
-				} else {
-					throw new IllegalArgumentException(
-						"Context must be point or fortress");
-				}
-				for (final Map.Entry<Integer, String> entry : obj.getAllOrders().entrySet()) {
-					INSERT_ORDER.on(value("unit", obj.getId()), value("turn", entry.getKey()),
-							value("orders", entry.getValue())).execute(sql);
-				}
-				for (final Map.Entry<Integer, String> entry : obj.getAllResults().entrySet()) {
-					INSERT_RESULT.on(value("unit", obj.getId()), value("turn", entry.getKey()),
-							value("result", entry.getValue())).execute(sql);
-				}
-			});
+			final String portrait = obj.getPortrait();
+			if (context instanceof Point p) {
+				INSERT_UNIT.on(value("row", p.row()),
+					value("column", p.column()),
+					value("owner", obj.owner().getPlayerId()),
+					value("kind", obj.getKind()), value("name", obj.getName()),
+					value("id", obj.getId()), value("image", obj.getImage()),
+					value("portrait", portrait)).execute(sql);
+			} else if (context instanceof IFortress f) {
+				INSERT_UNIT.on(
+					value("parent", f.getId()),
+					value("owner", obj.owner().getPlayerId()), value("kind", obj.getKind()),
+					value("name", obj.getName()), value("id", obj.getId()),
+					value("image", obj.getImage()), value("portrait", portrait)).execute(sql);
+			} else {
+				throw new IllegalArgumentException(
+					"Context must be point or fortress");
+			}
+			for (final Map.Entry<Integer, String> entry : obj.getAllOrders().entrySet()) {
+				INSERT_ORDER.on(value("unit", obj.getId()), value("turn", entry.getKey()),
+					value("orders", entry.getValue())).execute(sql);
+			}
+			for (final Map.Entry<Integer, String> entry : obj.getAllResults().entrySet()) {
+				INSERT_RESULT.on(value("unit", obj.getId()), value("turn", entry.getKey()),
+					value("result", entry.getValue())).execute(sql);
+			}
+		});
 		for (final UnitMember member : obj) {
 			parent.writeSPObjectInContext(db, member, obj);
 		}
@@ -129,8 +130,9 @@ final class DBUnitHandler extends AbstractDatabaseWriter<IUnit, Object> implemen
 
 	private static final Query SELECT_ORDERS = Query.of("SELECT * FROM orders WHERE unit = ?"); // TODO: named param?
 	private static final Query SELECT_RESULTS = Query.of("SELECT * FROM results WHERE unit = ?"); // TODO: named param?
+
 	private TryBiConsumer<Map<String, Object>, Warning, SQLException> readUnit(final IMutableMapNG map, final Connection db,
-			final Map<Integer, IFixture> containers, final Map<Integer, List<Object>> containees) {
+																			   final Map<Integer, IFixture> containers, final Map<Integer, List<Object>> containees) {
 		return (dbRow, warner) -> {
 			final int ownerNum = (Integer) dbRow.get("owner");
 			final String kind = (String) dbRow.get("kind");
@@ -161,9 +163,10 @@ final class DBUnitHandler extends AbstractDatabaseWriter<IUnit, Object> implemen
 	}
 
 	private static final Query SELECT_UNITS = Query.of("SELECT * FROM units");
+
 	@Override
 	public void readMapContents(final Connection db, final IMutableMapNG map, final Map<Integer, IFixture> containers,
-			final Map<Integer, List<Object>> containees, final Warning warner) throws SQLException {
+								final Map<Integer, List<Object>> containees, final Warning warner) throws SQLException {
 		// FIXME: Move orders and results handling to here so we don't have to pass DB to the row-handler
 		handleQueryResults(db, warner, "units", readUnit(map, db, containers, containees), SELECT_UNITS);
 	}

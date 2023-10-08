@@ -1,8 +1,10 @@
 package exploration.common;
 
 import common.map.IFixture;
+
 import java.util.Collection;
 import java.util.List;
+
 import org.jetbrains.annotations.Nullable;
 import drivers.common.IFixtureEditingModel;
 import drivers.common.SelectionChangeSource;
@@ -19,7 +21,7 @@ import common.map.fixtures.mobile.IUnit;
  * A model for exploration apps.
  */
 public interface IExplorationModel extends IMultiMapModel, SelectionChangeSource,
-		MovementCostSource, IFixtureEditingModel {
+	MovementCostSource, IFixtureEditingModel {
 	/**
 	 * Players that are shared by all the maps.
 	 */

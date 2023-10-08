@@ -11,7 +11,9 @@ import drivers.common.cli.ICLIHelper;
 import lovelace.util.SingletonRandom;
 
 import java.util.List;
+
 import common.map.Point;
+
 import java.util.stream.Collectors;
 import java.util.Collections;
 
@@ -21,61 +23,62 @@ import java.util.Collections;
  */
 // TODO: Write GUI equivalent of Map Populator Driver
 public class MapPopulatorDriver implements CLIDriver {
-	public MapPopulatorDriver(final ICLIHelper cli, final SPOptions options, final IPopulatorDriverModel model) {
-		this.cli = cli;
-		this.options = options;
-		this.model = model;
-	}
+    public MapPopulatorDriver(final ICLIHelper cli, final SPOptions options, final IPopulatorDriverModel model) {
+        this.cli = cli;
+        this.options = options;
+        this.model = model;
+    }
 
-	private final ICLIHelper cli;
-	private final SPOptions options;
+    private final ICLIHelper cli;
+    private final SPOptions options;
 
-	@Override
-	public SPOptions getOptions() {
-		return options;
-	}
+    @Override
+    public SPOptions getOptions() {
+        return options;
+    }
 
-	private final IPopulatorDriverModel model;
-	@Override
-	public IPopulatorDriverModel getModel() {
-		return model;
-	}
+    private final IPopulatorDriverModel model;
 
-	/**
-	 * The object that does the heavy lifting of populating the map. This
-	 * is the one field that should be changed before each populating pass.
-	 */
-	private final MapPopulator populator = new SampleMapPopulator();
+    @Override
+    public IPopulatorDriverModel getModel() {
+        return model;
+    }
 
-	private int suitableCount = 0;
+    /**
+     * The object that does the heavy lifting of populating the map. This
+     * is the one field that should be changed before each populating pass.
+     */
+    private final MapPopulator populator = new SampleMapPopulator();
 
-	private int changedCount = 0;
+    private int suitableCount = 0;
 
-	/**
-	 * Populate the map. You shouldn't need to customize this.
-	 */
-	private void populate(final IPopulatorDriverModel model) {
-		final IDRegistrar idf = IDFactoryFiller.createIDFactory(model.getMap());
-		final List<Point> locations = model.getMap().streamLocations().collect(Collectors.toList());
-		Collections.shuffle(locations);
-		for (final Point location : locations) {
-			if (populator.isSuitable(model.getMap(), location)) {
-				suitableCount++;
-				if (SingletonRandom.SINGLETON_RANDOM.nextDouble() < populator.getChance()) {
-					changedCount++;
-					populator.create(location, model, idf);
-				}
-			}
-		}
-	}
+    private int changedCount = 0;
 
-	@Override
-	public void startDriver() {
-		populate(model);
-		cli.println(String.format("%d/%d suitable locations were changed", // TODO: add printf() to ICLIHelper
-			changedCount, suitableCount));
-		if (changedCount > 0) {
-			model.setMapModified(true);
-		}
-	}
+    /**
+     * Populate the map. You shouldn't need to customize this.
+     */
+    private void populate(final IPopulatorDriverModel model) {
+        final IDRegistrar idf = IDFactoryFiller.createIDFactory(model.getMap());
+        final List<Point> locations = model.getMap().streamLocations().collect(Collectors.toList());
+        Collections.shuffle(locations);
+        for (final Point location : locations) {
+            if (populator.isSuitable(model.getMap(), location)) {
+                suitableCount++;
+                if (SingletonRandom.SINGLETON_RANDOM.nextDouble() < populator.getChance()) {
+                    changedCount++;
+                    populator.create(location, model, idf);
+                }
+            }
+        }
+    }
+
+    @Override
+    public void startDriver() {
+        populate(model);
+        cli.println(String.format("%d/%d suitable locations were changed", // TODO: add printf() to ICLIHelper
+                changedCount, suitableCount));
+        if (changedCount > 0) {
+            model.setMapModified(true);
+        }
+    }
 }

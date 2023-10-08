@@ -4,6 +4,7 @@ import common.map.IFixture;
 import io.jenetics.facilejdbc.Query;
 import io.jenetics.facilejdbc.Param;
 import io.jenetics.facilejdbc.Transactional;
+
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Collections;
@@ -42,9 +43,10 @@ final class DBPlayerHandler extends AbstractDatabaseWriter<Player, IMapNG> imple
 
 	private static final Query INSERT_SQL =
 		Query.of("INSERT INTO players (id, codename, current, portrait, country) " +
-				         "VALUES(:id, :codename, :current, :portrait, :country);");
+			"VALUES(:id, :codename, :current, :portrait, :country);");
 
 	private static final Query UPDATE_SCHEMA = Query.of("ALTER TABLE players ADD COLUMN country VARCHAR(64)");
+
 	@Override
 	public void write(final Transactional db, final Player obj, final IMapNG context) throws SQLException {
 		final List<Param> params = new ArrayList<>();
@@ -87,9 +89,10 @@ final class DBPlayerHandler extends AbstractDatabaseWriter<Player, IMapNG> imple
 	}
 
 	private static final Query SELECT = Query.of("SELECT * FROM players");
+
 	@Override
 	public void readMapContents(final Connection db, final IMutableMapNG map, final Map<Integer, IFixture> containers,
-			final Map<Integer, List<Object>> containees, final Warning warner) throws SQLException {
+								final Map<Integer, List<Object>> containees, final Warning warner) throws SQLException {
 		handleQueryResults(db, warner, "players", readPlayer(map), SELECT);
 	}
 }

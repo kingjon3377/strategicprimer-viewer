@@ -8,19 +8,19 @@ import java.util.EventListener;
  * TODO: Take a polymorphic Event object instead of specifying two methods?
  */
 public interface GraphicalParamsListener extends EventListener {
-	/**
-	 * Handle a change in map dimensions.
-	 *
-	 * @param oldDimensions The previous dimensions
-	 * @param newDimensions The new dimensions
-	 */
-	void dimensionsChanged(VisibleDimensions oldDimensions, VisibleDimensions newDimensions);
+    /**
+     * Handle a change in map dimensions.
+     *
+     * @param oldDimensions The previous dimensions
+     * @param newDimensions The new dimensions
+     */
+    void dimensionsChanged(VisibleDimensions oldDimensions, VisibleDimensions newDimensions);
 
-	/**
-	 * Handle a change in tile size (that is, zoom level).
-	 *
-	 * @param oldSize The previous tile size/zoom level
-	 * @param newSize The new tile size/zoom level
-	 */
-	void tileSizeChanged(int oldSize, int newSize);
+    /**
+     * Handle a change in tile size (that is, zoom level).
+     *
+     * @param oldSize The previous tile size/zoom level
+     * @param newSize The new tile size/zoom level
+     */
+    void tileSizeChanged(int oldSize, int newSize);
 }

@@ -3,6 +3,7 @@ package drivers.map_viewer;
 import drivers.common.DriverFailedException;
 import drivers.common.ViewerDriver;
 import drivers.common.ViewerDriverFactory;
+
 import java.util.List;
 
 import java.nio.file.Path;
@@ -27,41 +28,41 @@ import lovelace.util.LovelaceLogger;
  */
 @AutoService({DriverFactory.class, ViewerDriverFactory.class})
 public class ViewerGUIFactory implements ViewerDriverFactory {
-	private static final IDriverUsage USAGE = new DriverUsage(true, "view-map", ParamCount.One,
-		"Map viewer", "Look at the map visually. This is probably the app you want.",
-		false, true, "--current-turn=NN", "--background=image.png",
-		"--starting-row=NN --starting-column=NN");
+    private static final IDriverUsage USAGE = new DriverUsage(true, "view-map", ParamCount.One,
+            "Map viewer", "Look at the map visually. This is probably the app you want.",
+            false, true, "--current-turn=NN", "--background=image.png",
+            "--starting-row=NN --starting-column=NN");
 
-	@Override
-	public IDriverUsage getUsage() {
-		return USAGE;
-	}
+    @Override
+    public IDriverUsage getUsage() {
+        return USAGE;
+    }
 
-	/**
-	 * Ask the user to choose a file or files.
-	 */
-	@Override
-	public List<Path> askUserForFiles() throws DriverFailedException {
-		try {
-			return SPFileChooser.open((Path) null).getFiles();
-		} catch (final FileChooser.ChoiceInterruptedException except) {
-			throw new DriverFailedException(except, "Choice interrupted or user didn't choose");
-		}
-	}
+    /**
+     * Ask the user to choose a file or files.
+     */
+    @Override
+    public List<Path> askUserForFiles() throws DriverFailedException {
+        try {
+            return SPFileChooser.open((Path) null).getFiles();
+        } catch (final FileChooser.ChoiceInterruptedException except) {
+            throw new DriverFailedException(except, "Choice interrupted or user didn't choose");
+        }
+    }
 
-	@Override
-	public ViewerDriver createDriver(final ICLIHelper cli, final SPOptions options, final IDriverModel model) {
-		return ViewerGUI.createDriver(cli, options, model);
-	}
+    @Override
+    public ViewerDriver createDriver(final ICLIHelper cli, final SPOptions options, final IDriverModel model) {
+        return ViewerGUI.createDriver(cli, options, model);
+    }
 
-	@Override
-	public IViewerModel createModel(final IMutableMapNG map) {
-		final Path path = map.getFilename();
-		if (path == null) {
-			LovelaceLogger.trace("Creating a viewer model for a null path");
-		} else {
-			LovelaceLogger.trace("Creating a viewer model for path %s", path);
-		}
-		return new ViewerModel(map);
-	}
+    @Override
+    public IViewerModel createModel(final IMutableMapNG map) {
+        final Path path = map.getFilename();
+        if (path == null) {
+            LovelaceLogger.trace("Creating a viewer model for a null path");
+        } else {
+            LovelaceLogger.trace("Creating a viewer model for path %s", path);
+        }
+        return new ViewerModel(map);
+    }
 }

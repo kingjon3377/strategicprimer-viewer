@@ -8,9 +8,9 @@ import common.map.SubsettableFixture;
  * TODO: Members?
  */
 public interface FortressMember extends SubsettableFixture {
-	/**
-	 * Specialization.
-	 */
-	@Override
-	FortressMember copy(CopyBehavior zero);
+    /**
+     * Specialization.
+     */
+    @Override
+    FortressMember copy(CopyBehavior zero);
 }

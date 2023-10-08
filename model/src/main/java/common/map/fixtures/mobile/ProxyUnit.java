@@ -24,8 +24,10 @@ import common.map.Player;
 import common.map.PlayerImpl;
 import common.map.fixtures.UnitMember;
 import common.map.fixtures.mobile.worker.ProxyWorker;
+
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
+
 import lovelace.util.LovelaceLogger;
 import org.jetbrains.annotations.Nullable;
 
@@ -151,7 +153,7 @@ public class ProxyUnit implements IUnit, ProxyFor<IUnit> {
 				return String.format("an independent %s unit", getKind());
 			} else {
 				return String.format("a(n) %s unit belonging to %s", getKind(),
-						owner());
+					owner());
 			}
 		} else {
 			return "Multiple units of kind " + getKind();

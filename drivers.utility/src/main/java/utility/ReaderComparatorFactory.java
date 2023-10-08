@@ -17,18 +17,18 @@ import com.google.auto.service.AutoService;
  */
 @AutoService(DriverFactory.class)
 public class ReaderComparatorFactory implements UtilityDriverFactory {
-	private final IDriverUsage USAGE = new DriverUsage(false, "compare-readers", ParamCount.AtLeastOne,
-		"Test map readers",
-		"Test map-reading implementations by comparing their results on the same file.",
-		true, false);
+    private final IDriverUsage USAGE = new DriverUsage(false, "compare-readers", ParamCount.AtLeastOne,
+            "Test map readers",
+            "Test map-reading implementations by comparing their results on the same file.",
+            true, false);
 
-	@Override
-	public IDriverUsage getUsage() {
-		return USAGE;
-	}
+    @Override
+    public IDriverUsage getUsage() {
+        return USAGE;
+    }
 
-	@Override
-	public UtilityDriver createDriver(final ICLIHelper cli, final SPOptions options) {
-		return new ReaderComparator(cli);
-	}
+    @Override
+    public UtilityDriver createDriver(final ICLIHelper cli, final SPOptions options) {
+        return new ReaderComparator(cli);
+    }
 }

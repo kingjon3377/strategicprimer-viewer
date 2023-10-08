@@ -8,6 +8,7 @@ import common.xmlio.Warning;
 import io.jenetics.facilejdbc.Query;
 import io.jenetics.facilejdbc.Row;
 import io.jenetics.facilejdbc.RowParser;
+
 import java.sql.Connection;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
@@ -18,6 +19,7 @@ import java.util.List;
 import java.util.Map;
 
 import java.util.stream.Stream;
+
 import lovelace.util.Accumulator;
 import lovelace.util.IntAccumulator;
 
@@ -36,7 +38,7 @@ interface MapContentsReader {
 	 * @param warner Warning instance to use
 	 */
 	void readMapContents(Connection db, IMutableMapNG map, Map<Integer, IFixture> containers,
-			Map<Integer, List<Object>> containees, Warning warner) throws SQLException;
+						 Map<Integer, List<Object>> containees, Warning warner) throws SQLException;
 
 	private static Map<String, Object> parseToMap(final Row rs, final Connection conn) throws SQLException {
 		final ResultSetMetaData rsm = rs.getMetaData();
@@ -46,14 +48,15 @@ interface MapContentsReader {
 		}
 		return retval;
 	}
+
 	/**
 	 * Run the given method on each row returned by the given query.
 	 *
 	 * FIXME: Provide a version taking a RowParser, for the more common case of 1:1 object-to-row mapping
 	 */
 	default void handleQueryResults(final Connection db, final Warning warner, final String description,
-	                                final TryBiConsumer<Map<String, Object>, Warning, SQLException> handler, final Query query,
-	                                final Object... args) throws SQLException {
+									final TryBiConsumer<Map<String, Object>, Warning, SQLException> handler, final Query query,
+									final Object... args) throws SQLException {
 		LovelaceLogger.debug("About to read %s", description);
 		final Accumulator<Integer> count = new IntAccumulator(0);
 		try (final Stream<Map<String, Object>> stream = query.as(((RowParser<Map<String, Object>>) MapContentsReader::parseToMap).stream(), db)) {
@@ -100,11 +103,11 @@ interface MapContentsReader {
 				return true;
 			} else {
 				throw new SQLException("Invalid Boolean value",
-						new IllegalArgumentException("Outside range of Boolean"));
+					new IllegalArgumentException("Outside range of Boolean"));
 			}
 		} else {
 			throw new SQLException("Invalid Boolean value",
-					new IllegalArgumentException("Field maps to non-Boolean value"));
+				new IllegalArgumentException("Field maps to non-Boolean value"));
 		}
 	}
 }

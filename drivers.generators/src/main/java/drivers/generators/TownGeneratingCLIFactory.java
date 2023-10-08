@@ -20,27 +20,27 @@ import com.google.auto.service.AutoService;
  */
 @AutoService(DriverFactory.class)
 public class TownGeneratingCLIFactory implements ModelDriverFactory {
-	private static final IDriverUsage USAGE = new DriverUsage(false, "generate-towns",
-		ParamCount.AtLeastOne,
-		"Enter or generate stats and contents for towns and villages",
-		"Enter or generate stats and contents for towns and villages", true, false);
+    private static final IDriverUsage USAGE = new DriverUsage(false, "generate-towns",
+            ParamCount.AtLeastOne,
+            "Enter or generate stats and contents for towns and villages",
+            "Enter or generate stats and contents for towns and villages", true, false);
 
-	@Override
-	public final IDriverUsage getUsage() {
-		return USAGE;
-	}
+    @Override
+    public final IDriverUsage getUsage() {
+        return USAGE;
+    }
 
-	@Override
-	public ModelDriver createDriver(final ICLIHelper cli, final SPOptions options, final IDriverModel model) {
-		if (model instanceof PopulationGeneratingModel pgm) {
-			return new TownGeneratingCLI(cli, pgm);
-		} else {
-			return createDriver(cli, options, new PopulationGeneratingModel(model));
-		}
-	}
+    @Override
+    public ModelDriver createDriver(final ICLIHelper cli, final SPOptions options, final IDriverModel model) {
+        if (model instanceof PopulationGeneratingModel pgm) {
+            return new TownGeneratingCLI(cli, pgm);
+        } else {
+            return createDriver(cli, options, new PopulationGeneratingModel(model));
+        }
+    }
 
-	@Override
-	public IDriverModel createModel(final IMutableMapNG map) {
-		return new PopulationGeneratingModel(map);
-	}
+    @Override
+    public IDriverModel createModel(final IMutableMapNG map) {
+        return new PopulationGeneratingModel(map);
+    }
 }

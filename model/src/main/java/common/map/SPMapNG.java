@@ -3,6 +3,7 @@ package common.map;
 import common.map.fixtures.mobile.IUnit;
 
 import java.util.Arrays;
+
 import lovelace.util.LovelaceLogger;
 import org.javatuples.Pair;
 
@@ -51,10 +52,12 @@ public class SPMapNG implements IMutableMapNG {
 	 * true; otherwise return false.
 	 */
 	private static boolean subsetCheck(final TileFixture one, final TileFixture two) {
-		if (one instanceof SubsettableFixture sf && sf.isSubset(two, x -> {})) {
+		if (one instanceof SubsettableFixture sf && sf.isSubset(two, x -> {
+		})) {
 			return true;
 		} else {
-			return two instanceof SubsettableFixture sf && sf.isSubset(one, x -> {});
+			return two instanceof SubsettableFixture sf && sf.isSubset(one, x -> {
+			});
 		}
 	}
 
@@ -238,9 +241,9 @@ public class SPMapNG implements IMutableMapNG {
 	public Stream<Point> streamLocations() {
 		// TODO: Add stream() to PointIterable
 		return Stream.concat(
-				StreamSupport.stream(new PointIterable(getDimensions(), true, true).spliterator(),
-						false),
-				fixturesMap.keySet().stream()).distinct();
+			StreamSupport.stream(new PointIterable(getDimensions(), true, true).spliterator(),
+				false),
+			fixturesMap.keySet().stream()).distinct();
 	}
 
 	/**
@@ -526,18 +529,18 @@ public class SPMapNG implements IMutableMapNG {
 	public boolean equals(final Object obj) {
 		if (obj instanceof IMapNG that) {
 			if (getDimensions().equals(that.getDimensions()) &&
-					getPlayers().containsAll(that.getPlayers()) &&
-					that.getPlayers().containsAll(getPlayers()) &&
-					currentTurn == that.getCurrentTurn() &&
-					getCurrentPlayer().equals(that.getCurrentPlayer())) {
+				getPlayers().containsAll(that.getPlayers()) &&
+				that.getPlayers().containsAll(getPlayers()) &&
+				currentTurn == that.getCurrentTurn() &&
+				getCurrentPlayer().equals(that.getCurrentPlayer())) {
 				for (final Point point : getLocations()) {
 					if (getBaseTerrain(point) != that.getBaseTerrain(point) ||
-							isMountainous(point) != that.isMountainous(point) ||
-							!getRivers(point).equals(
-								that.getRivers(point)) ||
-							!getFixtures(point).containsAll(that.getFixtures(point)) ||
-							!that.getFixtures(point).containsAll(getFixtures(point)) ||
-							!getRoads(point).equals(that.getRoads(point))) {
+						isMountainous(point) != that.isMountainous(point) ||
+						!getRivers(point).equals(
+							that.getRivers(point)) ||
+						!getFixtures(point).containsAll(that.getFixtures(point)) ||
+						!that.getFixtures(point).containsAll(getFixtures(point)) ||
+						!getRoads(point).equals(that.getRoads(point))) {
 						return false;
 					}
 				}
@@ -600,9 +603,9 @@ public class SPMapNG implements IMutableMapNG {
 	// FIXME: Inline this into all callers, or figure out what's missing
 	// FIXME: Remove 'movedFrom' once that's converted to a member function
 	private static <Target extends IFixture, SubsetType extends Subsettable<Target>>
-		boolean testAgainstList(final Target desideratum, final Point location,
-		                        final Collection<Pair<SubsetType, Point>> list, final Consumer<String> ostream,
-		                        final BiPredicate<Point, TileFixture> movedFrom) {
+	boolean testAgainstList(final Target desideratum, final Point location,
+							final Collection<Pair<SubsetType, Point>> list, final Consumer<String> ostream,
+							final BiPredicate<Point, TileFixture> movedFrom) {
 		int count = 0;
 		boolean unmatched = true;
 		@Nullable SubsetType match = null;
@@ -615,7 +618,8 @@ public class SPMapNG implements IMutableMapNG {
 			if (match.equals(desideratum)) {
 				exactly = true;
 				break;
-			} else if (match.isSubset(desideratum, x -> {})) {
+			} else if (match.isSubset(desideratum, x -> {
+			})) {
 				unmatched = false;
 				break;
 			}
@@ -630,7 +634,7 @@ public class SPMapNG implements IMutableMapNG {
 					idStr = "";
 				}
 				ostream.accept(String.format("%s%s apparently moved from our %s to %s",
-						match, idStr, matchPoint, location));
+					match, idStr, matchPoint, location));
 				retval = false;
 			}
 			retval = match.isSubset(desideratum, ostream) && retval;
@@ -660,7 +664,7 @@ public class SPMapNG implements IMutableMapNG {
 			final List<TileFixture> ourFixtures = new ArrayList<>();
 			// TODO: Use Guava Multimap for this
 			final Map<Integer, List<Pair<Subsettable<IFixture>, Point>>> ourSubsettables =
-					new HashMap<>(50, 0.4f);
+				new HashMap<>(50, 0.4f);
 			final Map<TileFixture, Point> ourLocations = fixturesMap.entrySet().stream()
 				.flatMap(e -> e.getValue().stream().map(f -> Pair.with(f, e.getKey())))
 				.collect(Collectors.toMap(Pair::getValue0, Pair::getValue1));
@@ -713,8 +717,8 @@ public class SPMapNG implements IMutableMapNG {
 				final Point tPoint = ourLocations.get(fixture);
 				if (tPoint != null && !tPoint.equals(point)) {
 					report.accept(String.format("%s moved from our %s to %s",
-							fixture, tPoint,
-							point));
+						fixture, tPoint,
+						point));
 					return true;
 				} else {
 					return false;
@@ -734,7 +738,7 @@ public class SPMapNG implements IMutableMapNG {
 							retval = false;
 							continue;
 						} else if (!getRivers(point).isEmpty() &&
-								obj.getRivers(point).isEmpty()) {
+							obj.getRivers(point).isEmpty()) {
 							localReport.accept("Has terrain but not our rivers");
 						}
 					} else {
@@ -754,7 +758,7 @@ public class SPMapNG implements IMutableMapNG {
 					if (fixture instanceof IUnit && ourUnits.containsKey(idNum)) {
 						continue;
 					} else if (fixture instanceof AbstractTown &&
-							ourTowns.containsKey(idNum)) {
+						ourTowns.containsKey(idNum)) {
 						continue;
 					} else { // FIXME: Also check ourSubsettables, right?
 						ourFixtures.add(fixture);
@@ -768,16 +772,16 @@ public class SPMapNG implements IMutableMapNG {
 					if (ourFixtures.contains(fixture) || fixture.subsetShouldSkip()) {
 						continue;
 					} else if (fixture instanceof IUnit &&
-							unitLocs != null) {
+						unitLocs != null) {
 						retval = testAgainstList(fixture, point,
 							unitLocs, localReport, movedFrom) && retval;
 					} else if (fixture instanceof AbstractTown town &&
-							townLocs != null) {
+						townLocs != null) {
 						retval = testAgainstList(town, point,
-								townLocs, localReport, movedFrom)
+							townLocs, localReport, movedFrom)
 							&& retval;
 					} else if (fixture instanceof Subsettable &&
-							subsetLocs != null) {
+						subsetLocs != null) {
 						retval = testAgainstList(fixture, point,
 							subsetLocs,
 							localReport, movedFrom) && retval;

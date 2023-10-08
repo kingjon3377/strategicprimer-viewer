@@ -3,6 +3,7 @@ package impl.dbio;
 import common.map.IFixture;
 import io.jenetics.facilejdbc.Query;
 import io.jenetics.facilejdbc.Transactional;
+
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Collections;
@@ -40,14 +41,14 @@ final class DBMineHandler extends AbstractDatabaseWriter<Mine, Point> implements
 
 	private static final Query INSERT_SQL =
 		Query.of("INSERT INTO mines (row, column, id, kind, status, image) " +
-				         "VALUES(:row, :column, :id, :kind, :status, :image);");
+			"VALUES(:row, :column, :id, :kind, :status, :image);");
 
 	@Override
 	public void write(final Transactional db, final Mine obj, final Point context) throws SQLException {
 		INSERT_SQL.on(value("row", context.row()), value("column", context.column()),
-					value("id", obj.getId()), value("kind", obj.getKind()),
-					value("status", obj.getStatus().toString()), value("image", obj.getImage()))
-				.execute(db.connection());
+				value("id", obj.getId()), value("kind", obj.getKind()),
+				value("status", obj.getStatus().toString()), value("image", obj.getImage()))
+			.execute(db.connection());
 	}
 
 	private static TryBiConsumer<Map<String, Object>, Warning, SQLException> readMine(final IMutableMapNG map) {
@@ -67,9 +68,10 @@ final class DBMineHandler extends AbstractDatabaseWriter<Mine, Point> implements
 	}
 
 	private static final Query SELECT = Query.of("SELECT * FROM mines");
+
 	@Override
 	public void readMapContents(final Connection db, final IMutableMapNG map, final Map<Integer, IFixture> containers,
-			final Map<Integer, List<Object>> containees, final Warning warner) throws SQLException {
+								final Map<Integer, List<Object>> containees, final Warning warner) throws SQLException {
 		handleQueryResults(db, warner, "mines", readMine(map), SELECT);
 	}
 }

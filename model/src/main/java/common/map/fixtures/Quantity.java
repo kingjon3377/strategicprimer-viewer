@@ -70,7 +70,7 @@ public record Quantity(Number number, String units) implements Subsettable<Quant
 			return true;
 		} else if (obj instanceof Quantity q) {
 			return units.equals(q.units()) &&
-					       NumberComparator.compareNumbers(number, q.number()) == 0;
+				NumberComparator.compareNumbers(number, q.number()) == 0;
 		} else {
 			return false;
 		}
@@ -84,7 +84,7 @@ public record Quantity(Number number, String units) implements Subsettable<Quant
 	@Override
 	public int compareTo(final Quantity quantity) {
 		return Comparator.comparing(Quantity::units)
-				       .thenComparing(Quantity::number, NumberComparator::compareNumbers)
-				       .compare(this, quantity);
+			.thenComparing(Quantity::number, NumberComparator::compareNumbers)
+			.compare(this, quantity);
 	}
 }

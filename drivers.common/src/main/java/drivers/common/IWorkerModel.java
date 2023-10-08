@@ -1,6 +1,7 @@
 package drivers.common;
 
 import java.util.Collection;
+
 import org.jetbrains.annotations.Nullable;
 
 import common.map.Player;
@@ -13,7 +14,7 @@ import common.map.fixtures.towns.IFortress;
  * to provide a hierarchical view of the units in the map and their members,
  * regardless of their location.
  */
-public interface IWorkerModel extends  IMultiMapModel, IAdvancementModel, IFixtureEditingModel {
+public interface IWorkerModel extends IMultiMapModel, IAdvancementModel, IFixtureEditingModel {
 	/**
 	 * All the players in all the maps.
 	 */

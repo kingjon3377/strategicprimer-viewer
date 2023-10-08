@@ -55,7 +55,7 @@ public interface IAdvancementModel extends IDriverModel {
 	 * TODO: Take a level-up listener?
 	 */
 	boolean addHoursToSkill(IWorker worker, String jobName, String skillName, int hours,
-		int contextValue);
+							int contextValue);
 
 	/**
 	 * Add hours to a Skill to the specified Job in all workers in the
@@ -72,7 +72,7 @@ public interface IAdvancementModel extends IDriverModel {
 	 * TODO: Take a level-up listener?
 	 */
 	boolean addHoursToSkillInAll(IUnit unit, String jobName, String skillName,
-			int hours, int contextValue);
+								 int hours, int contextValue);
 
 	/**
 	 * Replace "delenda" with "replacement" in the specified job in the

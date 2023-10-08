@@ -1,6 +1,7 @@
 package drivers.gui.common;
 
 import javax.swing.JRootPane;
+
 import org.jetbrains.annotations.Nullable;
 
 import java.awt.Frame;
@@ -23,6 +24,7 @@ import lovelace.util.Platform;
  */
 public class SPDialog extends JDialog {
 	private static final long serialVersionUID = 1L;
+
 	public SPDialog(final @Nullable Frame parentFrame, final String title) {
 		super(parentFrame, title);
 		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);

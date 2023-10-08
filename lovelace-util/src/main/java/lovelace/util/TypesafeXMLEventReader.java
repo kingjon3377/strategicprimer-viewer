@@ -27,89 +27,89 @@ import java.nio.charset.MalformedInputException;
  * N.B. in Java we don't take and implement {@link AutoCloseable} because that would require us to declare 'throws exception'.
  */
 public class TypesafeXMLEventReader implements Iterator<XMLEvent>, Closeable {
-	private final XMLEventReader wrapped;
-	private final Queue<Closeable> closeHandles = new LinkedList<>();
-	private boolean closed = false;
+    private final XMLEventReader wrapped;
+    private final Queue<Closeable> closeHandles = new LinkedList<>();
+    private boolean closed = false;
 
-	public TypesafeXMLEventReader (final XMLEventReader reader, final Closeable... closeMethods) {
-		wrapped = reader;
-		if (reader instanceof Closeable c) {
-			closeHandles.add(c);
-		}
-		closeHandles.addAll(Arrays.asList(closeMethods));
-	}
+    public TypesafeXMLEventReader(final XMLEventReader reader, final Closeable... closeMethods) {
+        wrapped = reader;
+        if (reader instanceof Closeable c) {
+            closeHandles.add(c);
+        }
+        closeHandles.addAll(Arrays.asList(closeMethods));
+    }
 
-	public TypesafeXMLEventReader(final Reader reader, final Closeable... closeMethods)
-			throws XMLStreamException {
-		final XMLInputFactory factory = XMLInputFactory.newInstance();
-		factory.setProperty(XMLInputFactory.SUPPORT_DTD, Boolean.FALSE);
-		factory.setProperty("javax.xml.stream.isSupportingExternalEntities",
-			Boolean.FALSE);
-		wrapped = factory.createXMLEventReader(reader);
-		closeHandles.add(reader);
-		closeHandles.addAll(Arrays.asList(closeMethods));
-	}
+    public TypesafeXMLEventReader(final Reader reader, final Closeable... closeMethods)
+            throws XMLStreamException {
+        final XMLInputFactory factory = XMLInputFactory.newInstance();
+        factory.setProperty(XMLInputFactory.SUPPORT_DTD, Boolean.FALSE);
+        factory.setProperty("javax.xml.stream.isSupportingExternalEntities",
+                Boolean.FALSE);
+        wrapped = factory.createXMLEventReader(reader);
+        closeHandles.add(reader);
+        closeHandles.addAll(Arrays.asList(closeMethods));
+    }
 
-	/**
-	 * Close the wrapped stream and prevent reading any further data.
-	 */
-	@Override
-	public void close() throws IOException {
-		try {
-			wrapped.close();
-		} catch (final XMLStreamException except) {
-			throw new IOException(except);
-		}
-		for (final Closeable handle : closeHandles) {
-			handle.close();
-		}
-		closed = true;
-	}
+    /**
+     * Close the wrapped stream and prevent reading any further data.
+     */
+    @Override
+    public void close() throws IOException {
+        try {
+            wrapped.close();
+        } catch (final XMLStreamException except) {
+            throw new IOException(except);
+        }
+        for (final Closeable handle : closeHandles) {
+            handle.close();
+        }
+        closed = true;
+    }
 
-	/**
-	 * @throws XMLStreamException on malformed XML
-	 */
-	@Override
-	public XMLEvent next() throws NoSuchElementException {
-		if (closed) {
-			throw new NoSuchElementException();
-		} else {
-			try {
-				if (wrapped.hasNext()) {
-					final XMLEvent retval = wrapped.nextEvent();
-					if (retval == null) {
-						close();
-						throw new NoSuchElementException();
-					} else {
-						if (!wrapped.hasNext()) {
-							close();
-						}
-						return retval;
-					}
-				} else {
-					close();
-					throw new NoSuchElementException();
-				}
-			} catch (final XMLStreamException exception) {
-				final Throwable cause = exception.getCause();
-				if (cause instanceof MalformedInputException) {
-					throw new RuntimeException("Invalid character in map file, probably a different encoding.",
-							cause);
-				} else {
-					throw new RuntimeException(exception);
-				}
-			} catch (final IOException except) {
-				throw new RuntimeException(except);
-			}
-		}
-	}
+    /**
+     * @throws XMLStreamException on malformed XML
+     */
+    @Override
+    public XMLEvent next() throws NoSuchElementException {
+        if (closed) {
+            throw new NoSuchElementException();
+        } else {
+            try {
+                if (wrapped.hasNext()) {
+                    final XMLEvent retval = wrapped.nextEvent();
+                    if (retval == null) {
+                        close();
+                        throw new NoSuchElementException();
+                    } else {
+                        if (!wrapped.hasNext()) {
+                            close();
+                        }
+                        return retval;
+                    }
+                } else {
+                    close();
+                    throw new NoSuchElementException();
+                }
+            } catch (final XMLStreamException exception) {
+                final Throwable cause = exception.getCause();
+                if (cause instanceof MalformedInputException) {
+                    throw new RuntimeException("Invalid character in map file, probably a different encoding.",
+                            cause);
+                } else {
+                    throw new RuntimeException(exception);
+                }
+            } catch (final IOException except) {
+                throw new RuntimeException(except);
+            }
+        }
+    }
 
-	@Override
-	public boolean hasNext() {
-		if (closed) {
-			return false;
-		} else {
-			return wrapped.hasNext();
-		}
-	}
+    @Override
+    public boolean hasNext() {
+        if (closed) {
+            return false;
+        } else {
+            return wrapped.hasNext();
+        }
+    }
 }

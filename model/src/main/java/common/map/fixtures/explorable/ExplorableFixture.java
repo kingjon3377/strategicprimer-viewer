@@ -8,4 +8,5 @@ import common.map.TileFixture;
  *
  * TODO: What methods should this have?
  */
-public interface ExplorableFixture extends TileFixture, HasMutableImage {}
+public interface ExplorableFixture extends TileFixture, HasMutableImage {
+}

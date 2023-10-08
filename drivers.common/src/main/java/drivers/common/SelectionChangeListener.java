@@ -13,10 +13,12 @@ public interface SelectionChangeListener {
 	 * The selected tile's location changed.
 	 */
 	void selectedPointChanged(@Nullable Point previousSelection, Point newSelection);
+
 	/**
 	 * The selected unit changed.
 	 */
 	void selectedUnitChanged(@Nullable IUnit previousSelection, @Nullable IUnit newSelection);
+
 	/**
 	 * The "interaction point" changed. (That is, the user right-clicked on
 	 * something.) Because this the current value of the "interaction
@@ -26,6 +28,7 @@ public interface SelectionChangeListener {
 	 * from where it is stored themselves.
 	 */
 	void interactionPointChanged();
+
 	/**
 	 * The point pointed to by the scroll-bars changed.
 	 */

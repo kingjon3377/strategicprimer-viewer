@@ -110,8 +110,8 @@ public class BorderedPanel extends JPanel {
 	 * Constructors.
 	 */
 	public BorderedPanel(final @Nullable Component center, final @Nullable Component pageStart,
-	                     final @Nullable Component pageEnd, final @Nullable Component lineEnd,
-	                     final @Nullable Component lineStart) {
+						 final @Nullable Component pageEnd, final @Nullable Component lineEnd,
+						 final @Nullable Component lineStart) {
 		super(new BorderLayout());
 		setCenter(center);
 		setPageStart(pageStart);
@@ -121,12 +121,12 @@ public class BorderedPanel extends JPanel {
 	}
 
 	public BorderedPanel(final @Nullable Component center, final @Nullable Component pageStart,
-	                     final @Nullable Component pageEnd, final @Nullable Component lineEnd) {
+						 final @Nullable Component pageEnd, final @Nullable Component lineEnd) {
 		this(center, pageStart, pageEnd, lineEnd, null);
 	}
 
 	public BorderedPanel(final @Nullable Component center, final @Nullable Component pageStart,
-	                     final @Nullable Component pageEnd) {
+						 final @Nullable Component pageEnd) {
 		this(center, pageStart, pageEnd, null);
 	}
 
@@ -147,7 +147,7 @@ public class BorderedPanel extends JPanel {
 	 * position to be left empty) in a vertical line.
 	 */
 	public static BorderedPanel verticalPanel(final @Nullable Component pageStart,
-	                                          final @Nullable Component center, final @Nullable Component pageEnd) {
+											  final @Nullable Component center, final @Nullable Component pageEnd) {
 		return new BorderedPanel(center, pageStart, pageEnd);
 	}
 
@@ -156,8 +156,8 @@ public class BorderedPanel extends JPanel {
 	 * position to be left empty) in a horizontal line.
 	 */
 	public static BorderedPanel horizontalPanel(final @Nullable Component lineStart,
-	                                            final @Nullable Component center, final @Nullable Component lineEnd) {
+												final @Nullable Component center, final @Nullable Component lineEnd) {
 		return new BorderedPanel(center, null, null, lineEnd,
-				lineStart);
+			lineStart);
 	}
 }

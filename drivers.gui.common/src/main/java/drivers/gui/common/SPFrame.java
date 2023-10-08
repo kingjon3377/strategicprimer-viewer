@@ -3,17 +3,21 @@ package drivers.gui.common;
 import java.nio.file.NoSuchFileException;
 import javax.swing.TransferHandler;
 import javax.xml.stream.XMLStreamException;
+
 import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
+
 import common.xmlio.SPFormatException;
 import common.map.IMapNG;
+
 import java.awt.Dimension;
 import java.nio.file.Path;
 
 import javax.swing.JFrame;
 import javax.swing.WindowConstants;
 import javax.swing.SwingUtilities;
+
 import drivers.common.ISPDriver;
 import drivers.common.ModelDriver;
 import drivers.common.MapChangeListener;
@@ -24,6 +28,7 @@ import drivers.common.MapChangeListener;
  */
 public class SPFrame extends JFrame implements ISPWindow {
 	private static final long serialVersionUID = 1L;
+
 	@FunctionalInterface
 	public interface IDroppedFileHandler {
 		void accept(Path file) throws SPFormatException, IOException, NoSuchFileException,
@@ -78,8 +83,8 @@ public class SPFrame extends JFrame implements ISPWindow {
 	 * @param windowName The name of the window, for use in customizing the About dialog
 	 */
 	public SPFrame(final String windowTitle, final ISPDriver driver, final @Nullable Dimension minSize,
-	               final boolean supportsDroppedFiles, final IDroppedFileHandler droppedFileHandler,
-	               final String windowName) {
+				   final boolean supportsDroppedFiles, final IDroppedFileHandler droppedFileHandler,
+				   final String windowName) {
 		super(windowTitle);
 		this.windowTitle = windowTitle;
 		this.driver = driver;
@@ -119,13 +124,14 @@ public class SPFrame extends JFrame implements ISPWindow {
 	}
 
 	public SPFrame(final String windowTitle, final ISPDriver driver, final @Nullable Dimension minSize,
-	               final boolean supportsDroppedFiles, final IDroppedFileHandler droppedFileHandler) {
+				   final boolean supportsDroppedFiles, final IDroppedFileHandler droppedFileHandler) {
 		this(windowTitle, driver, minSize, supportsDroppedFiles, droppedFileHandler, windowTitle);
 	}
 
 	public SPFrame(final String windowTitle, final ISPDriver driver, final @Nullable Dimension minSize,
-	               final boolean supportsDroppedFiles) {
-		this(windowTitle, driver, minSize, supportsDroppedFiles, p -> {});
+				   final boolean supportsDroppedFiles) {
+		this(windowTitle, driver, minSize, supportsDroppedFiles, p -> {
+		});
 	}
 
 	public SPFrame(final String windowTitle, final ISPDriver driver, final @Nullable Dimension minSize) {
@@ -138,7 +144,7 @@ public class SPFrame extends JFrame implements ISPWindow {
 
 	private String refreshTitle() {
 		if (driver instanceof ModelDriver md &&
-				md.getModel().getMap().getFilename() != null) {
+			md.getModel().getMap().getFilename() != null) {
 			final IMapNG map = md.getModel().getMap();
 			return String.format("%s%s | %s", map.isModified() ? "*" : "",
 				map.getFilename(), windowTitle);
@@ -151,7 +157,7 @@ public class SPFrame extends JFrame implements ISPWindow {
 	 * Handle a dropped file.
 	 */
 	public void acceptDroppedFile(final Path file)
-			throws SPFormatException, IOException, NoSuchFileException, XMLStreamException { // TODO: Wrap XMLStreamException in SPFormatException (subclass) in MapIOHelper or elsewhere, to reduce exception-declaration surface
+		throws SPFormatException, IOException, NoSuchFileException, XMLStreamException { // TODO: Wrap XMLStreamException in SPFormatException (subclass) in MapIOHelper or elsewhere, to reduce exception-declaration surface
 		droppedFileHandler.accept(file);
 	}
 

@@ -12,36 +12,36 @@ import common.map.HasMutablePortrait;
  * An interface for mutator methods on units.
  */
 public interface IMutableUnit extends IUnit, HasMutableKind, HasMutableName,
-		HasMutableImage, HasMutableOwner, HasMutablePortrait {
-	/**
-	 * Set the unit's orders for a turn.
-	 */
-	void setOrders(int turn, String newOrders);
+        HasMutableImage, HasMutableOwner, HasMutablePortrait {
+    /**
+     * Set the unit's orders for a turn.
+     */
+    void setOrders(int turn, String newOrders);
 
-	/**
-	 * Set the unit's results for a turn.
-	 */
-	void setResults(int turn, String newResults);
+    /**
+     * Set the unit's results for a turn.
+     */
+    void setResults(int turn, String newResults);
 
-	/**
-	 * Add a member.
-	 */
-	void addMember(UnitMember member);
+    /**
+     * Add a member.
+     */
+    void addMember(UnitMember member);
 
-	/**
-	 * Remove a member
-	 */
-	void removeMember(UnitMember member);
+    /**
+     * Remove a member
+     */
+    void removeMember(UnitMember member);
 
-	/**
-	 * Change the internal order of members to be sorted. Sort order is
-	 * implementation-defined.
-	 */
-	void sortMembers();
+    /**
+     * Change the internal order of members to be sorted. Sort order is
+     * implementation-defined.
+     */
+    void sortMembers();
 
-	/**
-	 * Clone the unit.
-	 */
-	@Override
-	IMutableUnit copy(CopyBehavior zero);
+    /**
+     * Clone the unit.
+     */
+    @Override
+    IMutableUnit copy(CopyBehavior zero);
 }

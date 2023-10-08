@@ -8,22 +8,23 @@ import javax.swing.DefaultListModel;
  * class also takes its initial elements as constructor parameters.
  */
 public final class ReorderableListModel<Element> extends DefaultListModel<Element> implements Reorderable {
-	private static final long serialVersionUID = 1;
-	@SafeVarargs
-	public ReorderableListModel(final Element... initialElements) {
-		for (final Element element : initialElements) {
-			addElement(element);
-		}
-	}
+    private static final long serialVersionUID = 1;
 
-	@Override
-	public void reorder(final int fromIndex, final int toIndex) {
-		if (fromIndex != toIndex) {
-			if (fromIndex > toIndex) {
-				add(toIndex, remove(fromIndex));
-			} else {
-				add(toIndex - 1, remove(fromIndex));
-			}
-		}
-	}
+    @SafeVarargs
+    public ReorderableListModel(final Element... initialElements) {
+        for (final Element element : initialElements) {
+            addElement(element);
+        }
+    }
+
+    @Override
+    public void reorder(final int fromIndex, final int toIndex) {
+        if (fromIndex != toIndex) {
+            if (fromIndex > toIndex) {
+                add(toIndex, remove(fromIndex));
+            } else {
+                add(toIndex - 1, remove(fromIndex));
+            }
+        }
+    }
 }

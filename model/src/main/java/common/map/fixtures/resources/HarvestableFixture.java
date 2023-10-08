@@ -10,4 +10,5 @@ import common.map.HasKind;
  *
  * TODO: What methods should this have?
  */
-public interface HarvestableFixture extends TileFixture, HasMutableImage, HasKind {}
+public interface HarvestableFixture extends TileFixture, HasMutableImage, HasKind {
+}

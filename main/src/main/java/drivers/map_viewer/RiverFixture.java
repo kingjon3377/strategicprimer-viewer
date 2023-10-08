@@ -10,6 +10,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.EnumSet;
 import java.util.stream.Collectors;
+
 import lovelace.util.LovelaceLogger;
 
 /**
@@ -17,66 +18,66 @@ import lovelace.util.LovelaceLogger;
  * in the list of the tile's contents.
  */
 /* package */ class RiverFixture implements FakeFixture {
-	@Override
-	public String getDefaultImage() {
-		return "river.png";
-	}
+    @Override
+    public String getDefaultImage() {
+        return "river.png";
+    }
 
-	private final Set<River> rivers;
+    private final Set<River> rivers;
 
-	public Collection<River> getRivers() {
-		return rivers;
-	}
+    public Collection<River> getRivers() {
+        return rivers;
+    }
 
-	public RiverFixture(final River... rivers) {
-		if (rivers.length == 0) {
-			this.rivers = Collections.emptySet();
-		} else {
-			this.rivers = EnumSet.copyOf(Arrays.asList(rivers));
-		}
-	}
+    public RiverFixture(final River... rivers) {
+        if (rivers.length == 0) {
+            this.rivers = Collections.emptySet();
+        } else {
+            this.rivers = EnumSet.copyOf(Arrays.asList(rivers));
+        }
+    }
 
-	/**
-	 * Clone the object.
-	 *
-	 * @deprecated This class should only ever be used in a
-	 * FixtureListModel, and copying a tile's rivers should be handled
-	 * specially anyway, so this method should never be called.
-	 * @param zero
-	 */
-	@Deprecated
-	@Override
-	public RiverFixture copy(final CopyBehavior zero) {
-		LovelaceLogger.warning(new Exception("dummy"), "TileTypeFixture.copy called");
-		return new RiverFixture(rivers.toArray(River[]::new));
-	}
+    /**
+     * Clone the object.
+     *
+     * @deprecated This class should only ever be used in a
+     * FixtureListModel, and copying a tile's rivers should be handled
+     * specially anyway, so this method should never be called.
+     * @param zero
+     */
+    @Deprecated
+    @Override
+    public RiverFixture copy(final CopyBehavior zero) {
+        LovelaceLogger.warning(new Exception("dummy"), "TileTypeFixture.copy called");
+        return new RiverFixture(rivers.toArray(River[]::new));
+    }
 
-	@Override
-	public boolean equals(final Object obj) {
-		return obj instanceof RiverFixture rf && rivers.containsAll(rf.rivers) && rf.rivers.containsAll(rivers);
-	}
+    @Override
+    public boolean equals(final Object obj) {
+        return obj instanceof RiverFixture rf && rivers.containsAll(rf.rivers) && rf.rivers.containsAll(rivers);
+    }
 
-	@Override
-	public int hashCode() {
-		return rivers.hashCode();
-	}
+    @Override
+    public int hashCode() {
+        return rivers.hashCode();
+    }
 
-	@Override
-	public String toString() {
-		return rivers.stream().map(River::toString)
-			.collect(Collectors.joining(", ", "Rivers: ", ""));
-	}
+    @Override
+    public String toString() {
+        return rivers.stream().map(River::toString)
+                .collect(Collectors.joining(", ", "Rivers: ", ""));
+    }
 
-	@Override
-	public String getShortDescription() {
-		return toString();
-	}
+    @Override
+    public String getShortDescription() {
+        return toString();
+    }
 
-	/**
-	 * The required Perception check for an explorer to find the fixture.
-	 */
-	@Override
-	public int getDC() {
-		return 0;
-	}
+    /**
+     * The required Perception check for an explorer to find the fixture.
+     */
+    @Override
+    public int getDC() {
+        return 0;
+    }
 }

@@ -10,6 +10,7 @@ import javax.swing.JScrollPane;
 
 import lovelace.util.ListenedButton;
 import lovelace.util.BorderedPanel;
+
 import static lovelace.util.FunctionalSplitPane.verticalSplit;
 import static lovelace.util.FunctionalSplitPane.horizontalSplit;
 
@@ -22,6 +23,7 @@ import common.map.IMapNG;
 import common.map.Player;
 
 import static drivers.worker_mgmt.WorkerMenu.workerMenu;
+
 import drivers.worker_mgmt.TreeExpansionOrderListener;
 import drivers.worker_mgmt.WorkerTreeModelAlt;
 import drivers.worker_mgmt.TreeExpansionHandler;
@@ -42,84 +44,85 @@ import drivers.gui.common.MenuBroker;
  * A GUI to let a user manage workers.
  */
 /* package */ final class AdvancementFrame extends SPFrame implements PlayerChangeListener {
-	private static final long serialVersionUID = 1L;
-	private final FormattedLabel playerLabel;
-	private final IWorkerTreeModel treeModel;
-	public AdvancementFrame(final IWorkerModel model, final MenuBroker menuHandler, final ModelDriver driver,
-	                        final ICLIHelper cli) {
-		super("Worker Advancement", driver, new Dimension(640, 480), true,
-			(file) -> model.addSubordinateMap(MapIOHelper.readMap(file)));
-		final IMapNG map = model.getMap();
-		treeModel = new WorkerTreeModelAlt(model);
-		final IDRegistrar idf = IDFactoryFiller.createIDFactory(map);
+    private static final long serialVersionUID = 1L;
+    private final FormattedLabel playerLabel;
+    private final IWorkerTreeModel treeModel;
 
-		// TODO: replace lambda with (model::getMap).andThen(IMapNG::getCurrentTurn)?
-		final WorkerTree tree = new WorkerTree(treeModel, model.getPlayers(),
-			() -> model.getMap().getCurrentTurn(), false, idf);
+    public AdvancementFrame(final IWorkerModel model, final MenuBroker menuHandler, final ModelDriver driver,
+                            final ICLIHelper cli) {
+        super("Worker Advancement", driver, new Dimension(640, 480), true,
+                (file) -> model.addSubordinateMap(MapIOHelper.readMap(file)));
+        final IMapNG map = model.getMap();
+        treeModel = new WorkerTreeModelAlt(model);
+        final IDRegistrar idf = IDFactoryFiller.createIDFactory(map);
 
-		final WorkerCreationListener newWorkerListener = new WorkerCreationListener(treeModel, idf);
+        // TODO: replace lambda with (model::getMap).andThen(IMapNG::getCurrentTurn)?
+        final WorkerTree tree = new WorkerTree(treeModel, model.getPlayers(),
+                () -> model.getMap().getCurrentTurn(), false, idf);
 
-		tree.addUnitSelectionListener(newWorkerListener);
+        final WorkerCreationListener newWorkerListener = new WorkerCreationListener(treeModel, idf);
 
-		final JobTreeModel jobsTreeModel = new JobTreeModel(model);
-		tree.addUnitMemberListener(jobsTreeModel);
+        tree.addUnitSelectionListener(newWorkerListener);
 
-		final ItemAdditionPanel jobAdditionPanel = new ItemAdditionPanel("job");
-		jobAdditionPanel.addAddRemoveListener(jobsTreeModel);
+        final JobTreeModel jobsTreeModel = new JobTreeModel(model);
+        tree.addUnitMemberListener(jobsTreeModel);
 
-		final ItemAdditionPanel skillAdditionPanel = new ItemAdditionPanel("skill");
-		skillAdditionPanel.addAddRemoveListener(jobsTreeModel);
+        final ItemAdditionPanel jobAdditionPanel = new ItemAdditionPanel("job");
+        jobAdditionPanel.addAddRemoveListener(jobsTreeModel);
 
-		final LevelListener levelListener = new LevelListener(cli);
+        final ItemAdditionPanel skillAdditionPanel = new ItemAdditionPanel("skill");
+        skillAdditionPanel.addAddRemoveListener(jobsTreeModel);
 
-		tree.addUnitMemberListener(levelListener);
+        final LevelListener levelListener = new LevelListener(cli);
 
-		final JobsTree jobsTreeObject = new JobsTree(jobsTreeModel);
-		jobsTreeObject.addSkillSelectionListener(levelListener);
+        tree.addUnitMemberListener(levelListener);
 
-		final SkillAdvancementPanel hoursAdditionPanel = new SkillAdvancementPanel(model);
-		tree.addUnitMemberListener(hoursAdditionPanel);
-		jobsTreeObject.addSkillSelectionListener(hoursAdditionPanel);
-		hoursAdditionPanel.addLevelGainListener(levelListener);
+        final JobsTree jobsTreeObject = new JobsTree(jobsTreeModel);
+        jobsTreeObject.addSkillSelectionListener(levelListener);
 
-		final TreeExpansionOrderListener expander = new TreeExpansionHandler(tree);
-		menuHandler.register(ignored -> expander.expandAll(), "expand all");
-		menuHandler.register(ignored -> expander.collapseAll(), "collapse all");
-		menuHandler.register(event -> expander.expandSome(2), "expand unit kinds");
-		expander.expandAll();
+        final SkillAdvancementPanel hoursAdditionPanel = new SkillAdvancementPanel(model);
+        tree.addUnitMemberListener(hoursAdditionPanel);
+        jobsTreeObject.addSkillSelectionListener(hoursAdditionPanel);
+        hoursAdditionPanel.addLevelGainListener(levelListener);
 
-		playerLabel = new FormattedLabel("%s's Units:", "An Unknown Player");
-		setContentPane(horizontalSplit(BorderedPanel.verticalPanel(playerLabel,
-			new JScrollPane(tree),
-			new ListenedButton("Add worker to selected unit ...", newWorkerListener)),
-			verticalSplit(BorderedPanel.verticalPanel(html("Worker's Jobs and Skills:"),
-					new JScrollPane(jobsTreeObject), null),
-				BorderedPanel.verticalPanel(null,
-					BorderedPanel.verticalPanel(BorderedPanel.verticalPanel(
-							html("Add a job to the worker:"), null,
-							jobAdditionPanel), null,
-						BorderedPanel.verticalPanel(
-							html("Add a Skill to the selected Job:"),
-							null, skillAdditionPanel)),
-					hoursAdditionPanel), 0.5, 0.3)));
+        final TreeExpansionOrderListener expander = new TreeExpansionHandler(tree);
+        menuHandler.register(ignored -> expander.expandAll(), "expand all");
+        menuHandler.register(ignored -> expander.collapseAll(), "collapse all");
+        menuHandler.register(event -> expander.expandSome(2), "expand unit kinds");
+        expander.expandAll();
 
-		playerChanged(null, model.getCurrentPlayer());
-		setJMenuBar(workerMenu(menuHandler, this, driver));
-		pack();
-	}
+        playerLabel = new FormattedLabel("%s's Units:", "An Unknown Player");
+        setContentPane(horizontalSplit(BorderedPanel.verticalPanel(playerLabel,
+                        new JScrollPane(tree),
+                        new ListenedButton("Add worker to selected unit ...", newWorkerListener)),
+                verticalSplit(BorderedPanel.verticalPanel(html("Worker's Jobs and Skills:"),
+                                new JScrollPane(jobsTreeObject), null),
+                        BorderedPanel.verticalPanel(null,
+                                BorderedPanel.verticalPanel(BorderedPanel.verticalPanel(
+                                                html("Add a job to the worker:"), null,
+                                                jobAdditionPanel), null,
+                                        BorderedPanel.verticalPanel(
+                                                html("Add a Skill to the selected Job:"),
+                                                null, skillAdditionPanel)),
+                                hoursAdditionPanel), 0.5, 0.3)));
 
-	@Override
-	public void playerChanged(final @Nullable Player old, final Player newPlayer) {
-		playerLabel.setArguments(newPlayer.getName());
-		treeModel.playerChanged(old, newPlayer);
-	}
+        playerChanged(null, model.getCurrentPlayer());
+        setJMenuBar(workerMenu(menuHandler, this, driver));
+        pack();
+    }
 
-	@Override
-	public String getWindowName() {
-		return "Worker Advancement";
-	}
+    @Override
+    public void playerChanged(final @Nullable Player old, final Player newPlayer) {
+        playerLabel.setArguments(newPlayer.getName());
+        treeModel.playerChanged(old, newPlayer);
+    }
 
-	private static JLabel html(final String string) {
-		return new JLabel(String.format("<html><p align=\"left\">%s</p></html>", string));
-	}
+    @Override
+    public String getWindowName() {
+        return "Worker Advancement";
+    }
+
+    private static JLabel html(final String string) {
+        return new JLabel(String.format("<html><p align=\"left\">%s</p></html>", string));
+    }
 }

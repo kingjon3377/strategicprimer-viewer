@@ -17,17 +17,17 @@ import com.google.auto.service.AutoService;
  */
 @AutoService(DriverFactory.class)
 public class MapCheckerCLIFactory implements UtilityDriverFactory {
-	private static final IDriverUsage USAGE = new DriverUsage(false, "check",
-		ParamCount.AtLeastOne, "Check map for errors",
-		"Check a map file for errors, deprecated syntax, etc.", true, false);
+    private static final IDriverUsage USAGE = new DriverUsage(false, "check",
+            ParamCount.AtLeastOne, "Check map for errors",
+            "Check a map file for errors, deprecated syntax, etc.", true, false);
 
-	@Override
-	public IDriverUsage getUsage() {
-		return USAGE;
-	}
+    @Override
+    public IDriverUsage getUsage() {
+        return USAGE;
+    }
 
-	@Override
-	public UtilityDriver createDriver(final ICLIHelper cli, final SPOptions options) {
-		return new MapCheckerCLI(cli::println, cli::println);
-	}
+    @Override
+    public UtilityDriver createDriver(final ICLIHelper cli, final SPOptions options) {
+        return new MapCheckerCLI(cli::println, cli::println);
+    }
 }

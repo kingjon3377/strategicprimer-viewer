@@ -10,7 +10,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import lovelace.util.Platform;
+
 import static lovelace.util.BoxPanel.BoxAxis;
+
 import lovelace.util.ListenedButton;
 import lovelace.util.BoxPanel;
 import lovelace.util.SimpleCardLayout;
@@ -26,79 +28,80 @@ import lovelace.util.SimpleCardLayout;
  * Or <del>try to convert back to a class now we have</del> merge with(?) SimpleCardLayout
  */
 /* package */ final class ItemAdditionPanel extends JPanel implements AddRemoveSource {
-	private static final long serialVersionUID = 1L;
-	/**
-	 * @param what What we're adding
-	 */
-	public ItemAdditionPanel(final String what) {
-		this.what = what;
-		layoutObj = new SimpleCardLayout(this);
-		setPanelSizes(this);
-		final JPanel first = new BoxPanel(BoxAxis.LineAxis);
-		first.add(new ListenedButton("+", ignored -> {
-				// I had wondered if Component.requestFocusInWindow() would make CardLayout
-				// flip to the card containing the component, but it apparently doesn't
-				// work that way.
-				layoutObj.goNext();
-				field.requestFocusInWindow();
-			}));
-		setPanelSizes(first);
-		add(first);
+    private static final long serialVersionUID = 1L;
 
-		final JPanel second = new BoxPanel(BoxAxis.PageAxis);
-		second.add(field);
+    /**
+     * @param what What we're adding
+     */
+    public ItemAdditionPanel(final String what) {
+        this.what = what;
+        layoutObj = new SimpleCardLayout(this);
+        setPanelSizes(this);
+        final JPanel first = new BoxPanel(BoxAxis.LineAxis);
+        first.add(new ListenedButton("+", ignored -> {
+            // I had wondered if Component.requestFocusInWindow() would make CardLayout
+            // flip to the card containing the component, but it apparently doesn't
+            // work that way.
+            layoutObj.goNext();
+            field.requestFocusInWindow();
+        }));
+        setPanelSizes(first);
+        add(first);
 
-		field.addActionListener(ignored -> okListener());
-		field.setActionCommand("OK");
+        final JPanel second = new BoxPanel(BoxAxis.PageAxis);
+        second.add(field);
 
-		final JPanel okPanel = new BoxPanel(BoxAxis.LineAxis);
-		final JButton okButton = new ListenedButton("OK", this::okListener);
-		okPanel.add(okButton);
+        field.addActionListener(ignored -> okListener());
+        field.setActionCommand("OK");
 
-		final JButton cancelButton = new ListenedButton("Cancel", ignored -> {
-				layoutObj.goFirst();
-				field.setText("");
-			});
+        final JPanel okPanel = new BoxPanel(BoxAxis.LineAxis);
+        final JButton okButton = new ListenedButton("OK", this::okListener);
+        okPanel.add(okButton);
 
-		// TODO: IIRC the Mac HIG requires OK and Cancel to be backwards from other platforms ...
-		Platform.makeButtonsSegmented(okButton, cancelButton);
-		okPanel.add(cancelButton);
+        final JButton cancelButton = new ListenedButton("Cancel", ignored -> {
+            layoutObj.goFirst();
+            field.setText("");
+        });
 
-		second.add(okPanel);
-		setPanelSizes(second);
-		add(second);
-	}
+        // TODO: IIRC the Mac HIG requires OK and Cancel to be backwards from other platforms ...
+        Platform.makeButtonsSegmented(okButton, cancelButton);
+        okPanel.add(cancelButton);
 
-	private final String what;
+        second.add(okPanel);
+        setPanelSizes(second);
+        add(second);
+    }
 
-	private final List<AddRemoveListener> listeners = new ArrayList<>();
+    private final String what;
 
-	private final JTextField field = new JTextField(10);
+    private final List<AddRemoveListener> listeners = new ArrayList<>();
 
-	@Override
-	public void addAddRemoveListener(final AddRemoveListener listener) {
-		listeners.add(listener);
-	}
+    private final JTextField field = new JTextField(10);
 
-	@Override
-	public void removeAddRemoveListener(final AddRemoveListener listener) {
-		listeners.remove(listener);
-	}
+    @Override
+    public void addAddRemoveListener(final AddRemoveListener listener) {
+        listeners.add(listener);
+    }
 
-	private final SimpleCardLayout layoutObj;
+    @Override
+    public void removeAddRemoveListener(final AddRemoveListener listener) {
+        listeners.remove(listener);
+    }
 
-	private static void setPanelSizes(final JPanel panel) {
-		panel.setMinimumSize(new Dimension(60, 40));
-		panel.setPreferredSize(new Dimension(80, 50));
-		panel.setMaximumSize(new Dimension(90, 50));
-	}
+    private final SimpleCardLayout layoutObj;
 
-	private void okListener() {
-		final String text = field.getText();
-		for (final AddRemoveListener listener : listeners) {
-			listener.add(what, text);
-		}
-		layoutObj.goFirst();
-		field.setText("");
-	}
+    private static void setPanelSizes(final JPanel panel) {
+        panel.setMinimumSize(new Dimension(60, 40));
+        panel.setPreferredSize(new Dimension(80, 50));
+        panel.setMaximumSize(new Dimension(90, 50));
+    }
+
+    private void okListener() {
+        final String text = field.getText();
+        for (final AddRemoveListener listener : listeners) {
+            listener.add(what, text);
+        }
+        layoutObj.goFirst();
+        field.setText("");
+    }
 }

@@ -36,6 +36,7 @@ public interface IFixture {
 		 */
 		ZERO
 	}
+
 	/**
 	 * Clone the fixture, optionally "sanitizing" it in a way that should
 	 * not break subset checking.

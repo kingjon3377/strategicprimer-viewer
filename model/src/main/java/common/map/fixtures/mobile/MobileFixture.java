@@ -7,4 +7,5 @@ import common.map.TileFixture;
  *
  * TODO: What methods should this contain?
  */
-public interface MobileFixture extends TileFixture {}
+public interface MobileFixture extends TileFixture {
+}

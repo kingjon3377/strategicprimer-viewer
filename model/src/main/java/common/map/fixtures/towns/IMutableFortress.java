@@ -12,20 +12,20 @@ import common.map.fixtures.FortressMember;
  * FIXME: We need something about buildings yet
  */
 public interface IMutableFortress extends IFortress, HasMutableImage,
-		IMutableTownFixture, HasMutableName {
-	/**
-	 * Add a member to the fortress.
-	 */
-	void addMember(FortressMember member);
+        IMutableTownFixture, HasMutableName {
+    /**
+     * Add a member to the fortress.
+     */
+    void addMember(FortressMember member);
 
-	/**
-	 * Remove a member from the fortress.
-	 */
-	void removeMember(FortressMember member);
+    /**
+     * Remove a member from the fortress.
+     */
+    void removeMember(FortressMember member);
 
-	/**
-	 * Clone the fortress.
-	 */
-	@Override
-	IMutableFortress copy(CopyBehavior zero);
+    /**
+     * Clone the fortress.
+     */
+    @Override
+    IMutableFortress copy(CopyBehavior zero);
 }

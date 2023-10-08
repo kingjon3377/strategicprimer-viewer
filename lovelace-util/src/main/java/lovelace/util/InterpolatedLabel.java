@@ -2,6 +2,7 @@ package lovelace.util;
 
 import javax.swing.JLabel;
 import java.util.function.Function;
+
 import org.jetbrains.annotations.Nullable;
 
 /**
@@ -13,19 +14,20 @@ import org.jetbrains.annotations.Nullable;
  */
 @Deprecated
 public class InterpolatedLabel<@Nullable T> extends JLabel {
-	private static final long serialVersionUID = 1;
-	private final Function<? super T, String> function;
-	/**
-	 * @param function The function to use to produce the label's text.
-	 * @param defaultArgument The argument to pass to the function to
-	 * produce the label's initial text.
-	 */
-	public InterpolatedLabel(final Function<? super T, String> function, final T defaultArgument) {
-		super(function.apply(defaultArgument));
-		this.function = function;
-	}
+    private static final long serialVersionUID = 1;
+    private final Function<? super T, String> function;
 
-	public void setArgument(final T argument) {
-		setText(function.apply(argument));
-	}
+    /**
+     * @param function The function to use to produce the label's text.
+     * @param defaultArgument The argument to pass to the function to
+     * produce the label's initial text.
+     */
+    public InterpolatedLabel(final Function<? super T, String> function, final T defaultArgument) {
+        super(function.apply(defaultArgument));
+        this.function = function;
+    }
+
+    public void setArgument(final T argument) {
+        setText(function.apply(argument));
+    }
 }

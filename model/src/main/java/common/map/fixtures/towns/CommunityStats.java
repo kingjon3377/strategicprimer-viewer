@@ -27,6 +27,7 @@ public final class CommunityStats implements Subsettable<@Nullable CommunityStat
 	public CommunityStats(final int population) {
 		setPopulation(population);
 	}
+
 	/**
 	 * Approximately how many adults live in the community.
 	 */
@@ -206,8 +207,9 @@ public final class CommunityStats implements Subsettable<@Nullable CommunityStat
 			} else {
 				for (final IResourcePile resource : other.getYearlyProduction()) {
 					if (yearlyProduction.contains(resource) ||
-							yearlyProduction.stream().anyMatch(
-								r -> r.isSubset(resource, s -> {}))) {
+						yearlyProduction.stream().anyMatch(
+							r -> r.isSubset(resource, s -> {
+							}))) {
 						continue;
 					} else {
 						report.accept(
@@ -218,8 +220,9 @@ public final class CommunityStats implements Subsettable<@Nullable CommunityStat
 				}
 				for (final IResourcePile resource : other.getYearlyConsumption()) {
 					if (yearlyConsumption.contains(resource) ||
-							yearlyConsumption.stream().anyMatch(
-								r -> r.isSubset(resource, s -> {}))) {
+						yearlyConsumption.stream().anyMatch(
+							r -> r.isSubset(resource, s -> {
+							}))) {
 						continue;
 					} else {
 						report.accept(

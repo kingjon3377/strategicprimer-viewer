@@ -3,6 +3,7 @@ package impl.dbio;
 import common.map.IFixture;
 import io.jenetics.facilejdbc.Query;
 import io.jenetics.facilejdbc.Transactional;
+
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Collections;
@@ -57,17 +58,17 @@ final class DBFortressHandler extends AbstractDatabaseWriter<IFortress, Point> i
 	@Override
 	public void write(final Transactional db, final IFortress obj, final Point context) throws SQLException {
 		INSERT_SQL.on(value("row", context.row()), value("column", context.column()),
-					value("owner", obj.owner().getPlayerId()), value("name", obj.getName()),
-					value("size", obj.getTownSize().toString()), value("id", obj.getId()),
-					value("image", obj.getImage()), value("portrait", obj.getPortrait()))
-				.execute(db.connection());
+				value("owner", obj.owner().getPlayerId()), value("name", obj.getName()),
+				value("size", obj.getTownSize().toString()), value("id", obj.getId()),
+				value("image", obj.getImage()), value("portrait", obj.getPortrait()))
+			.execute(db.connection());
 		for (final FortressMember member : obj) {
 			parent.writeSPObjectInContext(db, member, obj);
 		}
 	}
 
 	private static TryBiConsumer<Map<String, Object>, Warning, SQLException> readFortress(final IMutableMapNG map,
-			final Map<Integer, IFixture> containers) {
+																						  final Map<Integer, IFixture> containers) {
 		return (dbRow, warner) -> {
 			final int row = (Integer) dbRow.get("row");
 			final int column = (Integer) dbRow.get("column");
@@ -91,9 +92,10 @@ final class DBFortressHandler extends AbstractDatabaseWriter<IFortress, Point> i
 	}
 
 	private static final Query SELECT = Query.of("SELECT * FROM fortresses");
+
 	@Override
 	public void readMapContents(final Connection db, final IMutableMapNG map, final Map<Integer, IFixture> containers,
-			final Map<Integer, List<Object>> containees, final Warning warner) throws SQLException {
+								final Map<Integer, List<Object>> containees, final Warning warner) throws SQLException {
 		handleQueryResults(db, warner, "fortresses", readFortress(map, containers), SELECT);
 	}
 }

@@ -11,15 +11,15 @@ import java.awt.event.ActionListener;
  * single method accepting an {@link ActionEvent}.
  */
 public class ActionWrapper extends AbstractAction {
-	private static final long serialVersionUID = 1L;
-	private final ActionListener wrapped;
+    private static final long serialVersionUID = 1L;
+    private final ActionListener wrapped;
 
-	public ActionWrapper(final ActionListener wrappedListener) {
-		wrapped = wrappedListener;
-	}
+    public ActionWrapper(final ActionListener wrappedListener) {
+        wrapped = wrappedListener;
+    }
 
-	@Override
-	public void actionPerformed(final ActionEvent event) {
-		wrapped.actionPerformed(event);
-	}
+    @Override
+    public void actionPerformed(final ActionEvent event) {
+        wrapped.actionPerformed(event);
+    }
 }

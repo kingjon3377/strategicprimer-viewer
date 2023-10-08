@@ -7,8 +7,8 @@ import common.map.TileFixture;
  */
 @FunctionalInterface
 public interface ZOrderFilter {
-	/**
-	 * Whether the fixture should be displayed.
-	 */
-	boolean shouldDisplay(TileFixture fixture);
+    /**
+     * Whether the fixture should be displayed.
+     */
+    boolean shouldDisplay(TileFixture fixture);
 }

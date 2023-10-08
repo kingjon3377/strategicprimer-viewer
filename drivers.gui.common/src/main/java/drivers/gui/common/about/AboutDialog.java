@@ -15,6 +15,7 @@ import java.util.regex.Pattern;
 import javax.swing.JEditorPane;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.JScrollPane;
+
 import lovelace.util.ListenedButton;
 import lovelace.util.BoxPanel;
 import lovelace.util.Platform;

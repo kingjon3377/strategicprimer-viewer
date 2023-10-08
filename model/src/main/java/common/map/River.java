@@ -13,54 +13,54 @@ import java.util.stream.Stream;
  * TODO: Extend to cover other directions?
  */
 public enum River {
-	North("north"),
-	East("east"),
-	South("south"),
-	West("west"),
-	/**
-	 * A lake (to be depicted as being in the center of the tile).
-	 */
-	Lake("lake");
+    North("north"),
+    East("east"),
+    South("south"),
+    West("west"),
+    /**
+     * A lake (to be depicted as being in the center of the tile).
+     */
+    Lake("lake");
 
-	River(final String description) {
-		this.description = description;
-		string = description.substring(0, 1).toUpperCase() + description.substring(1);
+    River(final String description) {
+        this.description = description;
+        string = description.substring(0, 1).toUpperCase() + description.substring(1);
 
-	}
+    }
 
-	/**
-	 * A descriptive string representing the direction, suitable for use in XML as well.
-	 */
-	private final String description;
+    /**
+     * A descriptive string representing the direction, suitable for use in XML as well.
+     */
+    private final String description;
 
-	/**
-	 * A descriptive string representing the direction, suitable for use in XML as well.
-	 */
-	public String getDescription() {
-		return description;
-	}
+    /**
+     * A descriptive string representing the direction, suitable for use in XML as well.
+     */
+    public String getDescription() {
+        return description;
+    }
 
-	/**
-	 * The description with the first letter capitalized.
-	 */
-	private final String string;
+    /**
+     * The description with the first letter capitalized.
+     */
+    private final String string;
 
-	@Override
-	public String toString() {
-		return string;
-	}
+    @Override
+    public String toString() {
+        return string;
+    }
 
-	/**
-	 * Get the river matching the given description.
-	 */
-	public static River parse(final String description) throws ParseException {
-		final Optional<River> retval = Stream.of(values())
-			.filter((r) -> description.equals(r.description)).findAny();
-		if (retval.isPresent()) {
-			return retval.get();
-		} else { // TODO: orElseThrow()
-			throw new ParseException(
-				String.format("Failed to parse River from '%s'", description), -1);
-		}
-	}
+    /**
+     * Get the river matching the given description.
+     */
+    public static River parse(final String description) throws ParseException {
+        final Optional<River> retval = Stream.of(values())
+                .filter((r) -> description.equals(r.description)).findAny();
+        if (retval.isPresent()) {
+            return retval.get();
+        } else { // TODO: orElseThrow()
+            throw new ParseException(
+                    String.format("Failed to parse River from '%s'", description), -1);
+        }
+    }
 }

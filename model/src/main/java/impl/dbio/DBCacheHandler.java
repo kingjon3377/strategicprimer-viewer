@@ -3,6 +3,7 @@ package impl.dbio;
 import common.map.IFixture;
 import io.jenetics.facilejdbc.Query;
 import io.jenetics.facilejdbc.Transactional;
+
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Collections;
@@ -38,13 +39,13 @@ final class DBCacheHandler extends AbstractDatabaseWriter<CacheFixture, Point> i
 
 	private static final Query INSERT_SQL =
 		Query.of("INSERT INTO caches(row, column, id, kind, contents, image) " +
-				         "VALUES(:row, :column, :id, :kind, :contents, :image);");
+			"VALUES(:row, :column, :id, :kind, :contents, :image);");
 
 	@Override
 	public void write(final Transactional db, final CacheFixture obj, final Point context) throws SQLException {
 		INSERT_SQL.on(value("row", context.row()), value("column", context.column()), value("id", obj.getId()),
-				value("kind", obj.getKind()), value("contents", obj.getContents()),
-						value("image", obj.getImage())).execute(db.connection());
+			value("kind", obj.getKind()), value("contents", obj.getContents()),
+			value("image", obj.getImage())).execute(db.connection());
 	}
 
 	private static TryBiConsumer<Map<String, Object>, Warning, SQLException> readCache(final IMutableMapNG map) {
@@ -64,9 +65,10 @@ final class DBCacheHandler extends AbstractDatabaseWriter<CacheFixture, Point> i
 	}
 
 	private static final Query SELECT = Query.of("SELECT * FROM caches");
+
 	@Override
 	public void readMapContents(final Connection db, final IMutableMapNG map, final Map<Integer, IFixture> containers,
-			final Map<Integer, List<Object>> containees, final Warning warner) throws SQLException {
+								final Map<Integer, List<Object>> containees, final Warning warner) throws SQLException {
 		handleQueryResults(db, warner, "caches", readCache(map), SELECT);
 	}
 }

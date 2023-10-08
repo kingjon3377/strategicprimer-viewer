@@ -3,6 +3,7 @@ package impl.dbio;
 import common.map.IFixture;
 import io.jenetics.facilejdbc.Query;
 import io.jenetics.facilejdbc.Transactional;
+
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
@@ -18,7 +19,7 @@ import common.xmlio.Warning;
 import static io.jenetics.facilejdbc.Param.value;
 
 final class DBExplorableHandler extends AbstractDatabaseWriter<ExplorableFixture, Point>
-		implements MapContentsReader {
+	implements MapContentsReader {
 	public DBExplorableHandler() {
 		super(ExplorableFixture.class, Point.class);
 	}
@@ -29,20 +30,20 @@ final class DBExplorableHandler extends AbstractDatabaseWriter<ExplorableFixture
 	}
 
 	private static final List<Query> INITIALIZERS = List.of(
-			Query.of("CREATE TABLE IF NOT EXISTS caves (" +
-					         "    row INTEGER NOT NULL," +
-					         "    column INTEGER NOT NULL," +
-					         "    id INTEGER NOT NULL," +
-					         "    dc INTEGER NOT NULL," +
-					         "    image VARCHAR(255)" +
-					         ");"),
-			Query.of("CREATE TABLE IF NOT EXISTS battlefields (" +
-					         "    row INTEGER NOT NULL," +
-					         "    column INTEGER NOT NULL," +
-					         "    id INTEGER NOT NULL," +
-					         "    dc INTEGER NOT NULL," +
-					         "    image VARCHAR(255)" +
-					         ");"));
+		Query.of("CREATE TABLE IF NOT EXISTS caves (" +
+			"    row INTEGER NOT NULL," +
+			"    column INTEGER NOT NULL," +
+			"    id INTEGER NOT NULL," +
+			"    dc INTEGER NOT NULL," +
+			"    image VARCHAR(255)" +
+			");"),
+		Query.of("CREATE TABLE IF NOT EXISTS battlefields (" +
+			"    row INTEGER NOT NULL," +
+			"    column INTEGER NOT NULL," +
+			"    id INTEGER NOT NULL," +
+			"    dc INTEGER NOT NULL," +
+			"    image VARCHAR(255)" +
+			");"));
 
 	@Override
 	public List<Query> getInitializers() {
@@ -66,7 +67,7 @@ final class DBExplorableHandler extends AbstractDatabaseWriter<ExplorableFixture
 			throw new IllegalArgumentException("Only supports caves and battlefields");
 		}
 		sql.on(value("row", context.row()), value("column", context.column()), value("id", obj.getId()),
-				value("dc", obj.getDC()), value("image", obj.getImage())).execute(db.connection());
+			value("dc", obj.getDC()), value("image", obj.getImage())).execute(db.connection());
 	}
 
 	private static TryBiConsumer<Map<String, Object>, Warning, SQLException> readCave(final IMutableMapNG map) {
@@ -101,9 +102,10 @@ final class DBExplorableHandler extends AbstractDatabaseWriter<ExplorableFixture
 
 	private static final Query SELECT_CAVES = Query.of("SELECT * FROM caves");
 	private static final Query SELECT_BATTLES = Query.of("SELECT * FROM battlefields");
+
 	@Override
 	public void readMapContents(final Connection db, final IMutableMapNG map, final Map<Integer, IFixture> containers,
-			final Map<Integer, List<Object>> containees, final Warning warner) throws SQLException {
+								final Map<Integer, List<Object>> containees, final Warning warner) throws SQLException {
 		handleQueryResults(db, warner, "caves", readCave(map), SELECT_CAVES);
 		handleQueryResults(db, warner, "battlefields", readBattlefield(map), SELECT_BATTLES);
 	}

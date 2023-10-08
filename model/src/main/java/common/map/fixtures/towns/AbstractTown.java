@@ -17,7 +17,7 @@ import org.jetbrains.annotations.Nullable;
  * // FIXME: Probably Needs to implement SubsettableFixture instead of {@code Subsettable<AbstractTown>}
  */
 public abstract class AbstractTown implements HasMutableImage,
-		IMutableTownFixture, Subsettable<AbstractTown> {
+	IMutableTownFixture, Subsettable<AbstractTown> {
 	// TODO: Should probably take ID as a constructor parameter too?
 	protected AbstractTown(final TownStatus status, final TownSize townSize, final String name, final Player owner, final int dc) {
 		this.status = status;
@@ -247,12 +247,12 @@ public abstract class AbstractTown implements HasMutableImage,
 		if (owner.isIndependent()) {
 			// TODO: Split into if/else rather than having the conditional inside format() call
 			return String.format("An independent %s %s %s of DC %s %s",
-					townSize, status, getKind(), dc,
+				townSize, status, getKind(), dc,
 				name.isEmpty() ? "with no name" : "named " + name);
 		} else {
 			// TODO: Split into if/else rather than having the conditional inside format() call
 			return String.format("A %s %s %s of DC %d %s, owned by %s",
-					townSize, status, getKind(), dc,
+				townSize, status, getKind(), dc,
 				name.isEmpty() ? "with no name" : "named " + name,
 				owner.isCurrent() ? "you" : owner.getName());
 		}
@@ -263,12 +263,12 @@ public abstract class AbstractTown implements HasMutableImage,
 		if (owner.isIndependent()) {
 			// TODO: Split into if/else rather than having the conditional inside format() call
 			return String.format("An independent %s %s %s %s", townSize,
-					status, getKind(),
+				status, getKind(),
 				name.isEmpty() ? "with no name" : "named " + name);
 		} else {
 			// TODO: Split into if/else rather than having the conditional inside format() call
 			return String.format("A %s %s %s %s, owned by %s", townSize,
-					status, getKind(),
+				status, getKind(),
 				name.isEmpty() ? "with no name" : "named " + name,
 				owner.isCurrent() ? "you" : owner.getName());
 		}

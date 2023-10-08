@@ -20,26 +20,26 @@ import com.google.auto.service.AutoService;
  */
 @AutoService(DriverFactory.class)
 public class ResourceAddingCLIFactory implements ModelDriverFactory {
-	private static final IDriverUsage USAGE = new DriverUsage(false, "add-resource",
-		ParamCount.AtLeastOne, "Add resources to maps", "Add resources for players to maps.",
-		true, false, "--current-turn=NN");
+    private static final IDriverUsage USAGE = new DriverUsage(false, "add-resource",
+            ParamCount.AtLeastOne, "Add resources to maps", "Add resources for players to maps.",
+            true, false, "--current-turn=NN");
 
-	@Override
-	public IDriverUsage getUsage() {
-		return USAGE;
-	}
+    @Override
+    public IDriverUsage getUsage() {
+        return USAGE;
+    }
 
-	@Override
-	public ModelDriver createDriver(final ICLIHelper cli, final SPOptions options, final IDriverModel model) {
-		if (model instanceof ResourceManagementDriverModel rmdm) {
-			return new ResourceAddingCLI(cli, options, rmdm);
-		} else {
-			return createDriver(cli, options, new ResourceManagementDriverModel(model));
-		}
-	}
+    @Override
+    public ModelDriver createDriver(final ICLIHelper cli, final SPOptions options, final IDriverModel model) {
+        if (model instanceof ResourceManagementDriverModel rmdm) {
+            return new ResourceAddingCLI(cli, options, rmdm);
+        } else {
+            return createDriver(cli, options, new ResourceManagementDriverModel(model));
+        }
+    }
 
-	@Override
-	public IDriverModel createModel(final IMutableMapNG map) {
-		return new ResourceManagementDriverModel(map);
-	}
+    @Override
+    public IDriverModel createModel(final IMutableMapNG map) {
+        return new ResourceManagementDriverModel(map);
+    }
 }

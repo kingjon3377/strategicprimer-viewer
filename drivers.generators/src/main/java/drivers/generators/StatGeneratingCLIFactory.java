@@ -20,26 +20,26 @@ import com.google.auto.service.AutoService;
  */
 @AutoService(DriverFactory.class)
 public class StatGeneratingCLIFactory implements ModelDriverFactory {
-	private static final IDriverUsage USAGE = new DriverUsage(false, "generate-stats",
-		ParamCount.AtLeastOne, "Generate new workers.",
-		"Generate new workers with random stats and experience.", true, false, "--current-turn=NN");
+    private static final IDriverUsage USAGE = new DriverUsage(false, "generate-stats",
+            ParamCount.AtLeastOne, "Generate new workers.",
+            "Generate new workers with random stats and experience.", true, false, "--current-turn=NN");
 
-	@Override
-	public IDriverUsage getUsage() {
-		return USAGE;
-	}
+    @Override
+    public IDriverUsage getUsage() {
+        return USAGE;
+    }
 
-	@Override
-	public ModelDriver createDriver(final ICLIHelper cli, final SPOptions options, final IDriverModel model) {
-		if (model instanceof PopulationGeneratingModel pgm) {
-			return new StatGeneratingCLI(cli, pgm);
-		} else {
-			return createDriver(cli, options, new PopulationGeneratingModel(model));
-		}
-	}
+    @Override
+    public ModelDriver createDriver(final ICLIHelper cli, final SPOptions options, final IDriverModel model) {
+        if (model instanceof PopulationGeneratingModel pgm) {
+            return new StatGeneratingCLI(cli, pgm);
+        } else {
+            return createDriver(cli, options, new PopulationGeneratingModel(model));
+        }
+    }
 
-	@Override
-	public IDriverModel createModel(final IMutableMapNG map) {
-		return new PopulationGeneratingModel(map);
-	}
+    @Override
+    public IDriverModel createModel(final IMutableMapNG map) {
+        return new PopulationGeneratingModel(map);
+    }
 }

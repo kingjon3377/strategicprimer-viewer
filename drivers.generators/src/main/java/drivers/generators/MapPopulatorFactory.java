@@ -20,27 +20,27 @@ import com.google.auto.service.AutoService;
  */
 @AutoService(DriverFactory.class)
 public class MapPopulatorFactory implements ModelDriverFactory {
-	private static final IDriverUsage USAGE = new DriverUsage(false, "populate-map", ParamCount.One,
-		"Add missing fixtures to a map",
-		"Add specified kinds of fixtures to suitable points throughout a map", true, false,
-		"--current-turn=NN");
+    private static final IDriverUsage USAGE = new DriverUsage(false, "populate-map", ParamCount.One,
+            "Add missing fixtures to a map",
+            "Add specified kinds of fixtures to suitable points throughout a map", true, false,
+            "--current-turn=NN");
 
-	@Override
-	public IDriverUsage getUsage() {
-		return USAGE;
-	}
+    @Override
+    public IDriverUsage getUsage() {
+        return USAGE;
+    }
 
-	@Override
-	public ModelDriver createDriver(final ICLIHelper cli, final SPOptions options, final IDriverModel model) {
-		if (model instanceof IPopulatorDriverModel pdm) {
-			return new MapPopulatorDriver(cli, options, pdm);
-		} else {
-			return createDriver(cli, options, new PopulatorDriverModel(model));
-		}
-	}
+    @Override
+    public ModelDriver createDriver(final ICLIHelper cli, final SPOptions options, final IDriverModel model) {
+        if (model instanceof IPopulatorDriverModel pdm) {
+            return new MapPopulatorDriver(cli, options, pdm);
+        } else {
+            return createDriver(cli, options, new PopulatorDriverModel(model));
+        }
+    }
 
-	@Override
-	public IPopulatorDriverModel createModel(final IMutableMapNG map) {
-		return new PopulatorDriverModel(map);
-	}
+    @Override
+    public IPopulatorDriverModel createModel(final IMutableMapNG map) {
+        return new PopulatorDriverModel(map);
+    }
 }

@@ -1,16 +1,22 @@
 package drivers.turnrunning.applets;
 
 import common.map.IFixture;
+
 import java.util.ArrayList;
+
 import common.map.fixtures.UnitMember;
 import common.map.fixtures.FortressMember;
 import common.map.IMapNG;
+
 import java.util.Comparator;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+
 import org.javatuples.Pair;
+
 import java.util.List;
+
 import drivers.common.cli.ICLIHelper;
 import common.map.Point;
 import common.map.Player;
@@ -38,14 +44,14 @@ public abstract class AbstractTurnApplet implements TurnApplet {
 
 	// This was "shared" in Ceylon, but I expect only subclasses will be able to use it.
 	protected <Type> @Nullable Type chooseFromList(final List<Type> items, final String description, final String none,
-	                                               final String prompt, final ICLIHelper.ListChoiceBehavior behavior) {
+												   final String prompt, final ICLIHelper.ListChoiceBehavior behavior) {
 		return chooseFromList(items, description, none, prompt, behavior, Object::toString);
 	}
 
 	// This was "shared" in Ceylon, but I expect only subclasses will be able to use it.
 	protected <Type> @Nullable Type chooseFromList(final List<Type> items, final String description, final String none,
-	                                               final String prompt, final ICLIHelper.ListChoiceBehavior behavior,
-	                                               final Function<? super Type, String> converter) {
+												   final String prompt, final ICLIHelper.ListChoiceBehavior behavior,
+												   final Function<? super Type, String> converter) {
 		final Pair<Integer, @Nullable String> entry = cli.chooseStringFromList(
 			items.stream().map(converter).collect(Collectors.toList()), description,
 			none, prompt, behavior);
@@ -78,6 +84,7 @@ public abstract class AbstractTurnApplet implements TurnApplet {
 			return retval;
 		}
 	}
+
 	// TODO: These should be configurable, either by callers or the user's SPOptions
 	protected final int encountersPerHour = 4;
 	protected final int noResultCost = 60 / encountersPerHour;
@@ -86,8 +93,8 @@ public abstract class AbstractTurnApplet implements TurnApplet {
 	 * Reduce the population of a group of plants, animals, etc., and copy
 	 * the reduced form into all subordinate maps.
 	 */
-	protected <T extends HasPopulation<? extends TileFixture>&TileFixture> void reducePopulation(
-			final Point point, final T fixture, final String plural, final IFixture.CopyBehavior zero) {
+	protected <T extends HasPopulation<? extends TileFixture> & TileFixture> void reducePopulation(
+		final Point point, final T fixture, final String plural, final IFixture.CopyBehavior zero) {
 		// TODO: make nullable and return null on EOF?
 		final int count = Math.min(
 			Optional.ofNullable(cli.inputNumber(String.format(
@@ -119,20 +126,20 @@ public abstract class AbstractTurnApplet implements TurnApplet {
 					for (final FortressMember member : fort) {
 						if (member instanceof final IResourcePile pile && fort.owner().equals(player)) {
 							if ("food".equals(pile.getKind()) &&
-									"pounds".equals(pile.getQuantity()
-										.units()) &&
-									pile.getCreated() <= turn) {
+								"pounds".equals(pile.getQuantity()
+									.units()) &&
+								pile.getCreated() <= turn) {
 								retval.add(pile);
 							}
 						} else if (member instanceof IUnit unit && unit.owner().equals(player)) {
 							for (final UnitMember inner : unit) {
 								if (inner instanceof final IResourcePile pile) {
 									if ("food".equals(pile.getKind()) &&
-											"pounds".equals(
-												pile.getQuantity()
-													.units()) &&
-											pile.getCreated()
-												<= turn) {
+										"pounds".equals(
+											pile.getQuantity()
+												.units()) &&
+										pile.getCreated()
+											<= turn) {
 										retval.add(pile);
 									}
 								}
@@ -143,9 +150,9 @@ public abstract class AbstractTurnApplet implements TurnApplet {
 					for (final UnitMember inner : unit) {
 						if (inner instanceof final IResourcePile pile) {
 							if ("food".equals(pile.getKind()) &&
-									"pounds".equals(pile.getQuantity()
-											.units()) &&
-									pile.getCreated() <= turn) {
+								"pounds".equals(pile.getQuantity()
+									.units()) &&
+								pile.getCreated() <= turn) {
 								retval.add(pile);
 							}
 						}

@@ -1,7 +1,9 @@
 package drivers.generators;
 
 import java.io.IOException;
+
 import drivers.exploration.old.MissingTableException;
+
 import java.util.Optional;
 import java.util.Arrays;
 import java.util.Collections;
@@ -60,6 +62,7 @@ import org.javatuples.Triplet;
 import org.javatuples.Pair;
 
 import org.jetbrains.annotations.Nullable;
+
 import java.math.BigDecimal;
 
 /**
@@ -246,7 +249,7 @@ import java.math.BigDecimal;
 			return Collections.emptyList();
 		} else {
 			return new SurroundingPointIterable(location,
-					map.getDimensions(), 10).stream().distinct()
+				map.getDimensions(), 10).stream().distinct()
 				.filter(l -> bothOrNeitherOcean(base, map.getBaseTerrain(l)))
 				.flatMap(l -> map.getFixtures(l).stream())
 				.filter(HarvestableFixture.class::isInstance)
@@ -259,7 +262,7 @@ import java.math.BigDecimal;
 	 * Have the user enter expertise levels and claimed resources for a town.
 	 */
 	private static CommunityStats enterStats(final ICLIHelper cli, final IDRegistrar idf, final IMapNG map, final Point location,
-			/*ModifiableTown*/ final ITownFixture town) {
+		/*ModifiableTown*/ final ITownFixture town) {
 		final CommunityStats retval = new CommunityStats(Optional.ofNullable(
 			cli.inputNumber("Population: ")).orElse(0));
 		cli.println("Now enter Skill levels, the highest in the community for each Job.");
@@ -301,7 +304,7 @@ import java.math.BigDecimal;
 				cli.println("That field is already worked by another town");
 			} else if (fieldLoc != null) {
 				if (!bothOrNeitherOcean(map.getBaseTerrain(location),
-						map.getBaseTerrain(fieldLoc))) {
+					map.getBaseTerrain(fieldLoc))) {
 					if (TileType.Ocean == map.getBaseTerrain(location)) {
 						cli.println(
 							"That would be a land resource worked by an aquatic town.");
@@ -425,7 +428,7 @@ import java.math.BigDecimal;
 	 * random number generator with the town's ID.
 	 */
 	private CommunityStats generateStats(final IDRegistrar idf, final Point location, final ITownFixture town,
-	                                     final IMapNG map) throws MissingTableException {
+										 final IMapNG map) throws MissingTableException {
 		final Random rng = new Random(town.getId());
 		// A die roll using our pre-seeded RNG.
 		final IntToIntFunction roll = (die) -> rng.nextInt(die) + 1;
@@ -434,7 +437,7 @@ import java.math.BigDecimal;
 		final RepeatedRoller repeatedlyRoll = (count, die, addend) -> {
 			int sum = addend;
 			for (int i = 0; i < count; i++) {
-				sum +=roll.apply(die);
+				sum += roll.apply(die);
 			}
 			return sum;
 		};
@@ -454,25 +457,25 @@ import java.math.BigDecimal;
 			resourceCount = repeatedlyRoll.repeatedlyRoll(2, 3);
 		} else if (town instanceof AbstractTown) {
 			switch (town.getTownSize()) {
-			case Small -> {
-				population = repeatedlyRoll.repeatedlyRoll(4, 10, 5);
-				skillCount = repeatedlyRoll.repeatedlyRoll(3, 4);
-				skillLevelSource = () -> repeatedlyRoll.repeatedlyRoll(2, 6);
-				resourceCount = repeatedlyRoll.repeatedlyRoll(2, 3);
-			}
-			case Medium -> {
-				population = repeatedlyRoll.repeatedlyRoll(20, 20, 50);
-				skillCount = repeatedlyRoll.repeatedlyRoll(4, 6);
-				skillLevelSource = () -> repeatedlyRoll.repeatedlyRoll(3, 6);
-				resourceCount = repeatedlyRoll.repeatedlyRoll(2, 6);
-			}
-			case Large -> {
-				population = repeatedlyRoll.repeatedlyRoll(23, 100, 200);
-				skillCount = repeatedlyRoll.repeatedlyRoll(6, 8);
-				skillLevelSource = () -> repeatedlyRoll.repeatedlyRoll(3, 8);
-				resourceCount = repeatedlyRoll.repeatedlyRoll(4, 6);
-			}
-			default -> throw new IllegalStateException("Non-exhaustive switch");
+				case Small -> {
+					population = repeatedlyRoll.repeatedlyRoll(4, 10, 5);
+					skillCount = repeatedlyRoll.repeatedlyRoll(3, 4);
+					skillLevelSource = () -> repeatedlyRoll.repeatedlyRoll(2, 6);
+					resourceCount = repeatedlyRoll.repeatedlyRoll(2, 3);
+				}
+				case Medium -> {
+					population = repeatedlyRoll.repeatedlyRoll(20, 20, 50);
+					skillCount = repeatedlyRoll.repeatedlyRoll(4, 6);
+					skillLevelSource = () -> repeatedlyRoll.repeatedlyRoll(3, 6);
+					resourceCount = repeatedlyRoll.repeatedlyRoll(2, 6);
+				}
+				case Large -> {
+					population = repeatedlyRoll.repeatedlyRoll(23, 100, 200);
+					skillCount = repeatedlyRoll.repeatedlyRoll(6, 8);
+					skillLevelSource = () -> repeatedlyRoll.repeatedlyRoll(3, 8);
+					resourceCount = repeatedlyRoll.repeatedlyRoll(4, 6);
+				}
+				default -> throw new IllegalStateException("Non-exhaustive switch");
 			}
 		} else {
 			throw new IllegalStateException("Unhandled town type");
@@ -505,7 +508,7 @@ import java.math.BigDecimal;
 				map.getFixtures(location), map.getDimensions());
 			final int level = skillLevelSource.getAsInt();
 			if (Optional.ofNullable(retval.getHighestSkillLevels().get(skill)).orElse(0)
-					< level) {
+				< level) {
 				retval.setSkillLevel(skill, level);
 			}
 		}

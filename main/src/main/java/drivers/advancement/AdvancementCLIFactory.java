@@ -23,26 +23,26 @@ import com.google.auto.service.AutoService;
  */
 @AutoService(DriverFactory.class)
 public class AdvancementCLIFactory implements ModelDriverFactory {
-	private static final IDriverUsage USAGE = new DriverUsage(false, "advance", ParamCount.AtLeastOne,
-		"View a player's workers and manage their advancement",
-		"View a player's units, the workers in those units, each worker's Jobs, and his or her level in each Skill in each Job.", true, false, "--current-turn=NN", "--allow-expert-mentoring");
+    private static final IDriverUsage USAGE = new DriverUsage(false, "advance", ParamCount.AtLeastOne,
+            "View a player's workers and manage their advancement",
+            "View a player's units, the workers in those units, each worker's Jobs, and his or her level in each Skill in each Job.", true, false, "--current-turn=NN", "--allow-expert-mentoring");
 
-	@Override
-	public IDriverUsage getUsage() {
-		return USAGE;
-	}
+    @Override
+    public IDriverUsage getUsage() {
+        return USAGE;
+    }
 
-	@Override
-	public ModelDriver createDriver(final ICLIHelper cli, final SPOptions options, final IDriverModel model) {
-		if (model instanceof IWorkerModel wm) {
-			return new AdvancementCLI(cli, options, wm);
-		} else {
-			return createDriver(cli, options, new WorkerModel(model));
-		}
-	}
+    @Override
+    public ModelDriver createDriver(final ICLIHelper cli, final SPOptions options, final IDriverModel model) {
+        if (model instanceof IWorkerModel wm) {
+            return new AdvancementCLI(cli, options, wm);
+        } else {
+            return createDriver(cli, options, new WorkerModel(model));
+        }
+    }
 
-	@Override
-	public IDriverModel createModel(final IMutableMapNG map) {
-		return new WorkerModel(map);
-	}
+    @Override
+    public IDriverModel createModel(final IMutableMapNG map) {
+        return new WorkerModel(map);
+    }
 }

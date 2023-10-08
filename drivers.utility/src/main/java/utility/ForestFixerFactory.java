@@ -20,26 +20,26 @@ import com.google.auto.service.AutoService;
  */
 @AutoService(DriverFactory.class)
 public class ForestFixerFactory implements ModelDriverFactory {
-	private static final IDriverUsage USAGE = new DriverUsage(false, "fix-forests",
-		ParamCount.AtLeastTwo, "Fix forest IDs",
-		"Make sure that forest IDs in submaps match the main map", false, false);
+    private static final IDriverUsage USAGE = new DriverUsage(false, "fix-forests",
+            ParamCount.AtLeastTwo, "Fix forest IDs",
+            "Make sure that forest IDs in submaps match the main map", false, false);
 
-	@Override
-	public IDriverUsage getUsage() {
-		return USAGE;
-	}
+    @Override
+    public IDriverUsage getUsage() {
+        return USAGE;
+    }
 
-	@Override
-	public ModelDriver createDriver(final ICLIHelper cli, final SPOptions options, final IDriverModel model) {
-		if (model instanceof UtilityDriverModel udm) {
-			return new ForestFixerDriver(cli, udm);
-		} else {
-			return createDriver(cli, options, new UtilityDriverModel(model));
-		}
-	}
+    @Override
+    public ModelDriver createDriver(final ICLIHelper cli, final SPOptions options, final IDriverModel model) {
+        if (model instanceof UtilityDriverModel udm) {
+            return new ForestFixerDriver(cli, udm);
+        } else {
+            return createDriver(cli, options, new UtilityDriverModel(model));
+        }
+    }
 
-	@Override
-	public IDriverModel createModel(final IMutableMapNG map) {
-		return new UtilityDriverModel(map);
-	}
+    @Override
+    public IDriverModel createModel(final IMutableMapNG map) {
+        return new UtilityDriverModel(map);
+    }
 }

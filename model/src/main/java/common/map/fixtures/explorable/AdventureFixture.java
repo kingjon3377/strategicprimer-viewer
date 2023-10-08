@@ -1,7 +1,9 @@
 package common.map.fixtures.explorable;
 
 import common.map.SubsettableFixture;
+
 import java.util.function.Consumer;
+
 import common.map.IFixture;
 import common.map.HasMutableOwner;
 import common.map.Player;
@@ -133,7 +135,7 @@ public class AdventureFixture implements ExplorableFixture, HasMutableOwner, Sub
 			return true;
 		} else if (fixture instanceof final AdventureFixture obj) {
 			return ((owner.isIndependent() && obj.owner().isIndependent()) ||
-					(owner.getPlayerId() == obj.owner().getPlayerId())) &&
+				(owner.getPlayerId() == obj.owner().getPlayerId())) &&
 				briefDescription.equals(obj.getBriefDescription()) &&
 				fullDescription.equals(obj.getFullDescription());
 		} else {
@@ -190,7 +192,7 @@ public class AdventureFixture implements ExplorableFixture, HasMutableOwner, Sub
 					localReport.accept("Full descriptions differ");
 					return false;
 				} else if (owner.getPlayerId() != af.owner().getPlayerId() &&
-						af.owner().isIndependent()) {
+					af.owner().isIndependent()) {
 					localReport.accept("Owners differ");
 					return false;
 				} else {

@@ -13,25 +13,26 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 public final class FileContentsReader {
-	private FileContentsReader() {
-	}
+    private FileContentsReader() {
+    }
 
-	private static InputStream getResourceAsStream(final Class<?> cls, final String filename) throws NoSuchFileException {
-		return Optional.ofNullable(Optional.ofNullable(cls.getResourceAsStream(filename))
-				                           .orElseGet(() -> cls.getClassLoader().getResourceAsStream(filename)))
-				       .orElseThrow(() -> new NoSuchFileException(filename));
-	}
-	public static Iterable<String> readFileContents(final Class<?> cls,
-	                                                final String filename) throws IOException {
-		final Path onDisk = Paths.get(filename);
-		if (Files.isReadable(onDisk)) {
-			return Files.readAllLines(onDisk,
-				StandardCharsets.UTF_8);
-		} else {
-			try (final BufferedReader reader = new BufferedReader(new InputStreamReader(getResourceAsStream(cls, filename),
-					StandardCharsets.UTF_8))) {
-				return reader.lines().collect(Collectors.toList());
-			}
-		}
-	}
+    private static InputStream getResourceAsStream(final Class<?> cls, final String filename) throws NoSuchFileException {
+        return Optional.ofNullable(Optional.ofNullable(cls.getResourceAsStream(filename))
+                        .orElseGet(() -> cls.getClassLoader().getResourceAsStream(filename)))
+                .orElseThrow(() -> new NoSuchFileException(filename));
+    }
+
+    public static Iterable<String> readFileContents(final Class<?> cls,
+                                                    final String filename) throws IOException {
+        final Path onDisk = Paths.get(filename);
+        if (Files.isReadable(onDisk)) {
+            return Files.readAllLines(onDisk,
+                    StandardCharsets.UTF_8);
+        } else {
+            try (final BufferedReader reader = new BufferedReader(new InputStreamReader(getResourceAsStream(cls, filename),
+                    StandardCharsets.UTF_8))) {
+                return reader.lines().collect(Collectors.toList());
+            }
+        }
+    }
 }
