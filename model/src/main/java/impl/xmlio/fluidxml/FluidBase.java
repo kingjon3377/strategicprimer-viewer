@@ -37,6 +37,7 @@ import java.math.BigInteger;
 
 import lovelace.util.IteratorWrapper;
 
+import java.util.Objects;
 import java.util.stream.Stream;
 
 import java.util.List;
@@ -95,11 +96,7 @@ import org.jetbrains.annotations.Nullable;
         if (attr != null) {
             retval = attr.getValue();
         }
-        if (retval == null) {
-            return defaultValue;
-        } else {
-            return retval;
-        }
+        return Objects.requireNonNullElse(retval, defaultValue);
     }
 
     /**

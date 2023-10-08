@@ -7,6 +7,7 @@ import java.util.List;
 import common.map.IFixture;
 import common.map.fixtures.UnitMember;
 
+import java.util.Objects;
 import java.util.function.Consumer;
 
 import lovelace.util.LovelaceLogger;
@@ -73,11 +74,7 @@ class ProxyMember implements UnitMemberProxy<UnitMember> {
             return "a proxy for no unit members";
         }
         final String retval = getConsensus(UnitMember::toString);
-        if (retval == null) {
-            return "a proxy for a variety of unit members";
-        } else {
-            return retval;
-        }
+        return Objects.requireNonNullElse(retval, "a proxy for a variety of unit members");
     }
 
     /**
