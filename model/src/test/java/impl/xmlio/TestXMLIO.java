@@ -2,9 +2,12 @@ package impl.xmlio;
 
 import static lovelace.util.SingletonRandom.SINGLETON_RANDOM;
 
+import common.map.fixtures.UnitMember;
 import common.map.fixtures.mobile.MaturityModel;
 import java.nio.file.NoSuchFileException;
 import javax.xml.stream.XMLStreamException;
+
+import lovelace.util.AssertAny;
 import org.jetbrains.annotations.Nullable;
 
 import org.javatuples.Pair;
@@ -21,6 +24,7 @@ import static org.junit.jupiter.api.Assumptions.assumeTrue;
 import static org.junit.jupiter.api.Assumptions.assumeFalse;
 
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -116,6 +120,7 @@ import java.util.List;
 import java.util.Set;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.regex.Pattern;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -147,6 +152,8 @@ public final class TestXMLIO {
 	 * The "filename" to give to map-readers when they require one.
 	 */
 	private static final Path FAKE_FILENAME = Paths.get("");
+	private static final Pattern SPACED_SELF_CLOSING_TAG = Pattern.compile("\" />");
+	private static final Pattern KIND_EQUALS_PATTERN = Pattern.compile("kind=");
 
 	/**
 	 * The map readers to test each other against.
@@ -545,7 +552,7 @@ public final class TestXMLIO {
 	}
 
 	/**
-	 * @deprecated Use {@link lovelace.util.AssertAny} and {@link org.junit.jupiter.api.Assertions#assertInstanceOf}.
+	 * @deprecated Use {@link AssertAny} and {@link Assertions#assertInstanceOf}.
 	 */
 	@Deprecated
 	@SafeVarargs
@@ -1145,7 +1152,7 @@ public final class TestXMLIO {
 		final String serializedForm = createSerializedForm(five, false);
 		assertAny("Multiple units", () -> assertEquals(xmlTwoLogical, serializedForm, "Logical form matches"),
 			() -> assertEquals(xmlTwoAlphabetical, serializedForm, "Alphabetical form matches"),
-			() -> assertEquals(xmlTwoLogical.replaceAll("\" />", "\"/>"), serializedForm,
+			() -> assertEquals(SPACED_SELF_CLOSING_TAG.matcher(xmlTwoLogical).replaceAll("\"/>"), serializedForm,
 					"Logical form with tags snugged matches"));
 		assertEquals("""
 						<view xmlns="%s" current_player="-1" current_turn="-1">
@@ -1488,7 +1495,7 @@ public final class TestXMLIO {
 		final Mine mine = new Mine(kind, status, id);
 		assertSerialization("Test of Mine serialization", mine);
 		assertDeprecatedProperty(
-			createSerializedForm(mine, deprecatedWriter).replaceAll("kind=", "product="),
+			KIND_EQUALS_PATTERN.matcher(createSerializedForm(mine, deprecatedWriter)).replaceAll("product="),
 			"product", "kind", "mine", mine);
 		this.<Mine>assertUnwantedChild("""
 						<mine kind="%s" status="%s"><troll /></mine>""".formatted(kind, status), null);
@@ -1619,7 +1626,7 @@ public final class TestXMLIO {
 	}
 
 	/**
-	 * Test (de)serialization of {@link common.map.fixtures.UnitMember members} of {@link IUnit units}.
+	 * Test (de)serialization of {@link UnitMember members} of {@link IUnit units}.
 	 */
 	@Test
 	public void testUnitMemberSerialization()

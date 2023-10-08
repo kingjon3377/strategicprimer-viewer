@@ -8,6 +8,7 @@ import java.awt.Component;
 import java.awt.Frame;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.util.regex.Pattern;
 
 import javax.swing.JEditorPane;
 import javax.swing.ScrollPaneConstants;
@@ -25,6 +26,8 @@ import lovelace.util.FileContentsReader;
  */
 public final class AboutDialog extends SPDialog {
 	private static final long serialVersionUID = 1L;
+	private static final Pattern APP_NAME = Pattern.compile("App Name Here");
+
 	public AboutDialog(final @Nullable Component parentComponent, final @Nullable String app) throws IOException {
 		super(parentComponent instanceof Frame f ? f : null, "About");
 		setLayout(new BorderLayout()); // TODO: Use a BorderedPanel for contentPane
@@ -33,8 +36,7 @@ public final class AboutDialog extends SPDialog {
 		final StringBuilder sb = new StringBuilder();
 		resource.forEach(sb::append);
 		final String raw = sb.toString();
-		final String html = raw.replaceAll("App Name Here",
-			(app == null || app.isEmpty()) ? "Strategic Primer Assistive Programs" : app);
+		final String html = APP_NAME.matcher(raw).replaceAll((app == null || app.isEmpty()) ? "Strategic Primer Assistive Programs" : app); // TODO: Use Optional instead of ternary
 		final JEditorPane pane = new JEditorPane("text/html", html);
 		pane.setCaretPosition(0); // scroll to the top
 		pane.setEditable(false);

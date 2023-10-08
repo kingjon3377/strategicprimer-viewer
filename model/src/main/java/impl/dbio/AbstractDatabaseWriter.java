@@ -6,9 +6,13 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Set;
 import java.util.HashSet;
+import java.util.regex.Pattern;
+
 import lovelace.util.LovelaceLogger;
 
 abstract class AbstractDatabaseWriter<Item, Context> implements DatabaseWriter<Item, Context> {
+	private static final Pattern LINEBREAK = Pattern.compile("\\R");
+
 	protected AbstractDatabaseWriter(final Class<Item> itemClass, final Class<Context> contextClass) {
 		this.itemClass = itemClass;
 		this.contextClass = contextClass;
@@ -40,7 +44,7 @@ abstract class AbstractDatabaseWriter<Item, Context> implements DatabaseWriter<I
 				for (final Query initializer : getInitializers()) {
 					initializer.execute(db);
 					LovelaceLogger.debug("Executed initializer beginning %s",
-						initializer.rawSql().split("\\R")[0]);
+						LINEBREAK.split(initializer.rawSql())[0]);
 				}
 			});
 			connections.add(sql);

@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import java.util.Collections;
 import java.util.Map;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import common.map.IMutableMapNG;
 import common.map.Point;
@@ -36,6 +37,8 @@ import static io.jenetics.facilejdbc.Param.value;
 
 final class DBImmortalHandler extends AbstractDatabaseWriter<Immortal, /*Point|IUnit*/ Object>
 		implements MapContentsReader {
+	private static final Pattern SIMPLE_IMMORTAL_REFRESH_PATTERN = Pattern.compile("simple_immortals ");
+
 	public DBImmortalHandler() {
 		super(Immortal.class, Object.class);
 	}
@@ -89,7 +92,7 @@ final class DBImmortalHandler extends AbstractDatabaseWriter<Immortal, /*Point|I
 	}
 
 	private static final List<Query> SIMPLE_IMMORTAL_REFRESH =
-			Collections.singletonList(Query.of(SIMPLE_IMMORTALS_SCHEMA.replaceAll("simple_immortals ", "simple_immortals_replacement ") +
+			Collections.singletonList(Query.of(SIMPLE_IMMORTAL_REFRESH_PATTERN.matcher(SIMPLE_IMMORTALS_SCHEMA).replaceAll("simple_immortals_replacement ") +
 					         "INSERT INTO simple_immortals_replacement SELECT * FROM simple_immortals;" +
 					         "DROP TABLE simple_immortals;" + "ALTER TABLE simple_immortals_replacement RENAME TO simple_immortals;"));
 	private static List<Query> refreshSimpleSchema() {

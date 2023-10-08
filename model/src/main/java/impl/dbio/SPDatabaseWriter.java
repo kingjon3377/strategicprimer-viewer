@@ -18,10 +18,12 @@ import common.map.IMapNG;
 import java.nio.file.Path;
 import lovelace.util.ThrowingConsumer;
 import java.io.IOException;
+import java.util.regex.Pattern;
 
 import static io.jenetics.facilejdbc.Param.value;
 
 public final class SPDatabaseWriter implements SPWriter {
+	private static final Pattern LINEBREAK = Pattern.compile("\\R");
 	private final Map<Path, Transactional> connections = new HashMap<>();
 
 	private static DataSource getBaseConnection(final Path path) {
@@ -70,7 +72,7 @@ public final class SPDatabaseWriter implements SPWriter {
 			sql.transaction().accept(db -> {
 					NOTES_SCHEMA.execute(db);
 					LovelaceLogger.debug("Executed initializer beginning %s",
-						NOTES_SCHEMA.rawSql().split("\\R")[0]);
+						LINEBREAK.split(NOTES_SCHEMA.rawSql())[0]);
 				});
 			notesInitialized.add(sql);
 		}
