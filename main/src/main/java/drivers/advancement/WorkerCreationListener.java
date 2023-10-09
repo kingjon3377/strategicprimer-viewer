@@ -1,5 +1,8 @@
 package drivers.advancement;
 
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.GridLayout;
 import java.io.Serial;
 import java.util.stream.IntStream;
 
@@ -8,23 +11,19 @@ import org.jetbrains.annotations.Nullable;
 
 import org.javatuples.Pair;
 
-import java.awt.GridLayout;
-import java.awt.Dimension;
-
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
-import javax.swing.JTextField;
-import javax.swing.JPanel;
-import javax.swing.JLabel;
-import javax.swing.WindowConstants;
-import javax.swing.JFrame;
-import javax.swing.SpinnerNumberModel;
-import javax.swing.JSpinner;
 import javax.swing.JComponent;
-
-import static lovelace.util.ShowErrorDialog.showErrorDialog;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JSpinner;
+import javax.swing.JTextField;
+import javax.swing.SpinnerNumberModel;
+import javax.swing.WindowConstants;
 
 import lovelace.util.Platform;
 import lovelace.util.ListenedButton;
@@ -69,8 +68,9 @@ import java.util.function.Consumer;
     public void addNewWorker(final IWorker worker) {
         if (selectedUnit == null) {
             LovelaceLogger.warning("New worker created when no unit selected");
-            showErrorDialog(null, "Strategic Primer Worker Advancement",
-                    "As no unit was selected, the new worker wasn't added to a unit.");
+            JOptionPane.showMessageDialog(null,
+				"As no unit was selected, the new worker wasn't added to a unit.",
+				"Strategic Primer Worker Advancement", JOptionPane.ERROR_MESSAGE);
         } else {
             model.addUnitMember(selectedUnit, worker);
         }
@@ -193,8 +193,9 @@ import java.util.function.Consumer;
                                 stat)).append(System.lineSeparator());
                     }
                 }
-                showErrorDialog(getParent(), "Strategic Primer Worker Advancement",
-                        builder.toString());
+                final @Nullable Component parent = getParent();
+                JOptionPane.showMessageDialog(parent, builder.toString(),
+					"Strategic Primer Worker Advancement", JOptionPane.ERROR_MESSAGE);
             }
         }
 

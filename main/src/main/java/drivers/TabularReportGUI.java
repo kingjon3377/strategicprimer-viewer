@@ -1,5 +1,6 @@
 package drivers;
 
+import java.awt.Dimension;
 import java.util.OptionalInt;
 
 import lovelace.util.LovelaceLogger;
@@ -20,14 +21,11 @@ import drivers.common.cli.ICLIHelper;
 
 import common.map.IMutableMapNG;
 
+import javax.swing.JOptionPane;
+import javax.swing.JTabbedPane;
 import javax.swing.SwingConstants;
 
-import lovelace.util.ShowErrorDialog;
 import report.TabularReportGenerator;
-
-import javax.swing.JTabbedPane;
-
-import java.awt.Dimension;
 
 import drivers.gui.common.SPFrame;
 import drivers.gui.common.WindowCloseListener;
@@ -96,8 +94,9 @@ public class TabularReportGUI implements GUIDriver {
                         TabularReportGenerator.createGUITabularReports(frame::addTab, model.getMap(), hq);
                     }
                 } catch (final IOException except) {
-                    ShowErrorDialog.showErrorDialog(window, "Strategic Primer Tabular Reports",
-                            String.format("I/O error while generating reports:%n%s", except.getLocalizedMessage()));
+					JOptionPane.showMessageDialog(window,
+						String.format("I/O error while generating reports:%n%s", except.getLocalizedMessage()),
+						"Strategic Primer Tabular Reports", JOptionPane.ERROR_MESSAGE);
                     LovelaceLogger.error(except, "I/O error while generating tabular reports");
                 }
             }

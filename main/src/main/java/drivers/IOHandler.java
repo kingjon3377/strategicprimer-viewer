@@ -49,7 +49,6 @@ import java.awt.Frame;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
-import lovelace.util.ShowErrorDialog;
 import lovelace.util.ComponentParentStream;
 
 /**
@@ -139,7 +138,7 @@ public class IOHandler implements ActionListener {
             message = except.getMessage();
         }
         LovelaceLogger.error(except, message);
-        ShowErrorDialog.showErrorDialog(source, errorTitle, message);
+        JOptionPane.showMessageDialog(source, message, errorTitle, JOptionPane.ERROR_MESSAGE);
     }
 
     private static Consumer<Path> loadHandlerImpl(final Consumer<IMutableMapNG> handler, final @Nullable Component source,
@@ -325,8 +324,9 @@ public class IOHandler implements ActionListener {
                             StreamSupport.stream(ServiceLoader.load(ViewerDriverFactory.class).spliterator(), false)
                                     .findAny().orElse(null);
                     if (vdf == null) {
-                        ShowErrorDialog.showErrorDialog(null, "Strategic Primer Assistive Programs",
-                                "Either the map viewer was not included in this edition of the assistive programs, or the logic to load it failed.");
+                        JOptionPane.showMessageDialog(null,
+							"Either the map viewer was not included in this edition of the assistive programs, or the logic to load it failed.",
+							"Strategic Primer Assistive Programs", JOptionPane.ERROR_MESSAGE);
                         LovelaceLogger.error("Map viewer was not included in this assembly, or service discovery failed");
                     } else {
                         SwingUtilities.invokeLater(() -> {
@@ -336,8 +336,9 @@ public class IOHandler implements ActionListener {
                             } catch (final DriverFailedException except) {
                                 LovelaceLogger.error(Objects.requireNonNullElse(except.getCause(), except),
                                         "Error thrown from viewer driver");
-                                ShowErrorDialog.showErrorDialog(null, "Strategic Primer Assistive Programs",
-                                        String.format("Error starting map viewer:%n%s", except.getMessage()));
+								JOptionPane.showMessageDialog(null,
+									String.format("Error starting map viewer:%n%s", except.getMessage()),
+									"Strategic Primer Assistive Programs", JOptionPane.ERROR_MESSAGE);
                             }
                         });
                     }

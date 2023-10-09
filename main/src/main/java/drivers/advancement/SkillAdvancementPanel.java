@@ -2,20 +2,18 @@ package drivers.advancement;
 
 import org.jetbrains.annotations.Nullable;
 
+import java.awt.Dimension;
 import java.io.Serial;
 import java.util.ArrayList;
 import java.util.List;
 
-import java.awt.Dimension;
-
 import java.awt.event.ActionEvent;
 
 import javax.swing.JButton;
-import javax.swing.JTextField;
-import javax.swing.JPanel;
 import javax.swing.JLabel;
-
-import static lovelace.util.ShowErrorDialog.showErrorDialog;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
 
 import lovelace.util.Platform;
 
@@ -75,8 +73,8 @@ import drivers.common.IAdvancementModel;
             try {
                 number = Integer.parseInt(hours.getText());
             } catch (final NumberFormatException except) {
-                showErrorDialog(hours, "Strategic Primer Worker Advancement",
-                        "Hours to add must be a number");
+                JOptionPane.showMessageDialog(hours, "Hours to add must be a number",
+					"Strategic Primer Worker Advancement", JOptionPane.ERROR_MESSAGE);
                 return;
             }
             // TODO: Make frequency of leveling checks (i.e. size of hour-chunks to

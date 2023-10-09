@@ -4,6 +4,7 @@ import drivers.common.DriverFailedException;
 
 import java.io.IOException;
 import java.nio.file.Path;
+import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
 import drivers.gui.common.about.AboutDialog;
@@ -15,7 +16,6 @@ import drivers.common.MultiMapGUIDriver;
 import drivers.common.IWorkerModel;
 import drivers.common.WorkerGUI;
 import lovelace.util.LovelaceLogger;
-import lovelace.util.ShowErrorDialog;
 import worker.common.WorkerModel;
 
 import java.awt.event.ActionEvent;
@@ -125,8 +125,9 @@ public class WorkerMgmtGUI implements MultiMapGUIDriver, WorkerGUI {
                     new WorkerMgmtGUI(cli, options, new WorkerModel(map))
                             .startDriver();
                 } catch (final DriverFailedException except) {
-                    ShowErrorDialog.showErrorDialog(null, "Strategic Primer Worker Management",
-                            String.format("Failed to open new window:%n%s", except.getMessage()));
+					JOptionPane.showMessageDialog(null,
+						String.format("Failed to open new window:%n%s", except.getMessage()),
+						"Strategic Primer Worker Management", JOptionPane.ERROR_MESSAGE);
                     LovelaceLogger.error(except, "Failed to open new window");
                 }
             });

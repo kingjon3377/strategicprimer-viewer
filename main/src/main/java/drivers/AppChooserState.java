@@ -19,8 +19,7 @@ import java.io.IOException;
 
 import java.util.stream.Stream;
 
-import static lovelace.util.ShowErrorDialog.showErrorDialog;
-
+import javax.swing.JOptionPane;
 import javax.xml.stream.XMLStreamException;
 
 import drivers.common.IDriverUsage;
@@ -193,17 +192,20 @@ import org.jetbrains.annotations.Nullable;
                 try {
                     topWindow.acceptDroppedFile(file.toPath());
                 } catch (final SPFormatException except) {
-                    showErrorDialog(topWindow, "Strategic Primer Map Format Error", except.getMessage());
-                    LovelaceLogger.error(except.getMessage());
+					JOptionPane.showMessageDialog(topWindow, except.getMessage(), "Strategic Primer Map Format Error",
+						JOptionPane.ERROR_MESSAGE);
+					LovelaceLogger.error(except.getMessage());
                 } catch (final FileNotFoundException | NoSuchFileException except) {
-                    showErrorDialog(topWindow, "File Not Found", except.getMessage());
-                    LovelaceLogger.error(except, "Dropped file not found");
+					JOptionPane.showMessageDialog(topWindow, except.getMessage(), "File Not Found",
+						JOptionPane.ERROR_MESSAGE);
+					LovelaceLogger.error(except, "Dropped file not found");
                 } catch (final IOException except) {
-                    showErrorDialog(topWindow, "I/O Error", except.getMessage());
-                    LovelaceLogger.error("I/O error reading dropped file: %s", except.getMessage());
+					JOptionPane.showMessageDialog(topWindow, except.getMessage(), "I/O Error", JOptionPane.ERROR_MESSAGE);
+					LovelaceLogger.error("I/O error reading dropped file: %s", except.getMessage());
                 } catch (final XMLStreamException except) {
-                    showErrorDialog(topWindow, "Strategic Primer Map Format Error", except.getMessage());
-                    LovelaceLogger.error(except, "Malformed XML in %s", file);
+					JOptionPane.showMessageDialog(topWindow, except.getMessage(), "Strategic Primer Map Format Error",
+						JOptionPane.ERROR_MESSAGE);
+					LovelaceLogger.error(except, "Malformed XML in %s", file);
                 }
             }
         }
