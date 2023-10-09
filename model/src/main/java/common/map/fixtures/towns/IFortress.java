@@ -1,6 +1,5 @@
 package common.map.fixtures.towns;
 
-import common.map.HasName;
 import common.map.HasImage;
 import common.map.SubsettableFixture;
 import common.map.fixtures.FortressMember;
@@ -12,8 +11,8 @@ import common.map.fixtures.FixtureIterable;
  *
  * FIXME: We need something about buildings yet
  */
-public interface IFortress extends HasImage, ITownFixture, HasName,
-	FixtureIterable<FortressMember>, SubsettableFixture {
+public interface IFortress extends HasImage, ITownFixture,
+        FixtureIterable<FortressMember>, SubsettableFixture {
 	/**
 	 * Clone the fortress.
 	 */

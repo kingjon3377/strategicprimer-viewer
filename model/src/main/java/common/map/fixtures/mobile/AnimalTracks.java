@@ -4,7 +4,6 @@ import java.util.function.Consumer;
 
 import common.map.IFixture;
 import common.map.HasMutableImage;
-import common.map.HasKind;
 
 /**
  * Animal tracks or other traces.
@@ -12,7 +11,7 @@ import common.map.HasKind;
  * TODO: We'd prefer this to not be MobileFixture, but changing that would
  * require serious refactoring of XML I/O code.
  */
-public class AnimalTracks implements HasMutableImage, HasKind, MobileFixture,
+public class AnimalTracks implements HasMutableImage, MobileFixture,
         AnimalOrTracks {
     public AnimalTracks(final String kind) {
         this.kind = kind;

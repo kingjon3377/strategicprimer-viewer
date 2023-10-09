@@ -4,15 +4,13 @@ import java.util.function.Consumer;
 
 import common.map.HasPopulation;
 import common.map.IFixture;
-import common.map.HasKind;
 import common.map.HasImage;
-import common.map.fixtures.UnitMember;
 
 /**
  * An animal or group of animals.
  */
 public interface Animal extends AnimalOrTracks, MobileFixture, HasImage,
-	HasKind, UnitMember, HasPopulation<Animal> {
+        HasPopulation<Animal> {
 	/**
 	 * Whether this is a talking animal.
 	 *

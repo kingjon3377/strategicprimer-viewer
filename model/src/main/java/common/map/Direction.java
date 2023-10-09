@@ -12,7 +12,7 @@ import org.jetbrains.annotations.Nullable;
  * the order of cases. We use the ordinal to get a consistent sort order for UI
  * purposes.
  */
-public enum Direction implements Comparable<Direction> {
+public enum Direction {
     Northwest("northwest"),
     North("north"),
     Northeast("northeast"),
