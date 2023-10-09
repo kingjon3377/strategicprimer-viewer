@@ -140,7 +140,7 @@ public class ProxyUnit implements IUnit, ProxyFor<IUnit> {
 			final String retval = getConsensus(IUnit::getKind);
 			return retval == null ? "proxied" : retval;
 		} else {
-			return commonKind;
+			return Objects.requireNonNullElse(commonKind, "proxied");
 		}
 	}
 
@@ -163,7 +163,7 @@ public class ProxyUnit implements IUnit, ProxyFor<IUnit> {
 	@Override
 	public int getId() {
 		if (parallel) {
-			return commonID;
+			return Objects.requireNonNullElse(commonID, -1);
 		} else {
 			return -1;
 		}
@@ -346,7 +346,7 @@ public class ProxyUnit implements IUnit, ProxyFor<IUnit> {
 	public void addProxied(final IUnit item) {
 		if (item == this) {
 			return;
-		} else if (parallel && item.getId() != commonID) {
+		} else if (parallel && !Objects.equals(item.getId(), commonID)) {
 			throw new IllegalArgumentException("Unit must have ID #" + commonID);
 		} else if (!parallel && !Objects.equals(commonKind, item.getKind())) {
 			throw new IllegalArgumentException("Unit must have kind " + commonKind);

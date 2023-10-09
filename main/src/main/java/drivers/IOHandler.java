@@ -69,7 +69,7 @@ public class IOHandler implements ActionListener {
      * If any files are marked as modified, ask the user whether to save
      * them before closing/quitting.
      */
-    private void maybeSave(final String verb, final @Nullable Frame window, final @Nullable Component source,
+    private void maybeSave(final String verb, final @Nullable Frame window, final Component source,
                            final Runnable ifNotCanceled) { // TODO: Use the possibly-throwing interface from j.u.concurrent?
         final ModelDriver md = (ModelDriver) driver;
         LovelaceLogger.trace("Checking if we need to save ...");
@@ -209,15 +209,11 @@ public class IOHandler implements ActionListener {
     @Override
     public void actionPerformed(final ActionEvent event) {
         final Component source = Optional.ofNullable(event.getSource())
-                .filter(Component.class::isInstance).map(Component.class::cast).orElse(null);
-        final Frame parentWindow;
-        if (source == null) {
-            parentWindow = null;
-        } else {
-            parentWindow = new ComponentParentStream(source).stream()
+                .filter(Component.class::isInstance).map(Component.class::cast)
+			.orElseThrow(() -> new IllegalStateException("Can't get source of event"));
+        final Frame parentWindow = new ComponentParentStream(source).stream()
                     .filter(Frame.class::isInstance).map(Frame.class::cast)
                     .findFirst().orElse(null);
-        }
         final String errorTitle = Optional.ofNullable(parentWindow).filter(ISPWindow.class::isInstance)
                 .map(ISPWindow.class::cast).map(ISPWindow::getWindowName)
                 .orElse("Strategic Primer Assistive Programs");

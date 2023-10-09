@@ -9,6 +9,7 @@ import java.sql.SQLException;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import common.map.Point;
 import common.map.IMutableMapNG;
@@ -63,7 +64,7 @@ final class DBFortressHandler extends AbstractDatabaseWriter<IFortress, Point> i
 				value("image", obj.getImage()), value("portrait", obj.getPortrait()))
 			.execute(db.connection());
 		for (final FortressMember member : obj) {
-			parent.writeSPObjectInContext(db, member, obj);
+			Objects.requireNonNull(parent).writeSPObjectInContext(db, member, obj);
 		}
 	}
 

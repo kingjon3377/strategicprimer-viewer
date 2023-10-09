@@ -25,6 +25,8 @@ import common.xmlio.Warning;
 import impl.xmlio.exceptions.MissingPropertyException;
 import impl.xmlio.exceptions.UnwantedChildException;
 
+import java.util.Objects;
+import java.util.Optional;
 import java.util.Random;
 import java.util.Deque;
 import java.util.LinkedList;
@@ -40,6 +42,7 @@ import java.util.function.Consumer;
 import java.util.Map;
 
 /* package */ class FluidTownHandler extends FluidBase {
+	private static final QName NULL_QNAME = new QName("null");
 	// FIXME: Extract a common readAbstractTown() method taking the
 	// expected tag and a constructor reference, since readTown(),
 	// readFortification(), and readCity() are very nearly identical
@@ -234,7 +237,8 @@ import java.util.Map;
 							stack.addFirst(se);
 						} else {
 							throw new UnwantedChildException(
-								stack.peekFirst().getName(), se);
+								Optional.ofNullable(stack.peekFirst()).map(StartElement::getName).orElse(NULL_QNAME),
+								se);
 						}
 						break;
 					case "resource":
@@ -246,10 +250,11 @@ import java.util.Map;
 							lambda = addConsumption;
 						} else {
 							throw UnwantedChildException.listingExpectedTags(
-								top.getName(), se, "production",
-								"consumption");
+								Optional.ofNullable(top).map(StartElement::getName).orElse(NULL_QNAME), se,
+								"production", "consumption");
 						}
-						lambda.accept(FluidResourceHandler.readResource(se, top.getName(),
+						lambda.accept(FluidResourceHandler.readResource(se,
+							Optional.ofNullable(top).map(StartElement::getName).orElse(NULL_QNAME),
 							stream, players, warner, idFactory));
 						break;
 					default:
@@ -258,7 +263,7 @@ import java.util.Map;
 							"claim", "production", "consumption", "resource");
 				}
 			} else if (event instanceof final EndElement ee && !stack.isEmpty() &&
-				ee.getName().equals(stack.peekFirst().getName())) {
+					ee.getName().equals(Objects.requireNonNull(stack.peekFirst()).getName())) {
 				final StartElement top = stack.removeFirst();
 				if (top.equals(element)) {
 					break;

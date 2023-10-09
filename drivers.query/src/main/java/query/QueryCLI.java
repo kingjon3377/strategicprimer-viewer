@@ -261,9 +261,10 @@ public class QueryCLI implements ReadOnlyDriver {
             for (final ITownFixture town : map.getFixtures(location).stream()
                     .filter(ITownFixture.class::isInstance)
                     .map(ITownFixture.class::cast).toList()) {
+				final CommunityStats population = town.getPopulation();
                 if (TownStatus.Active == town.getStatus() &&
-                        town.getPopulation() != null &&
-                        !town.getPopulation().getYearlyProduction().isEmpty()) {
+                        population != null &&
+                        population.getYearlyProduction().isEmpty()) {
                     cli.print("At ", location.toString());
                     cli.print(comparator.distanceString(location, "base"), ": ");
                     cli.print(town.getName(), ", a ", town.getTownSize().toString(), " ");
@@ -280,7 +281,7 @@ public class QueryCLI implements ReadOnlyDriver {
                     }
                     cli.println(". Its yearly production:");
                     for (final IResourcePile resource :
-                            town.getPopulation().getYearlyProduction()) {
+                            population.getYearlyProduction()) {
                         cli.print("- ", resource.getKind(), ": ");
                         cli.print(resource.getQuantity().number().toString());
                         if (resource.getQuantity().units().isEmpty()) {

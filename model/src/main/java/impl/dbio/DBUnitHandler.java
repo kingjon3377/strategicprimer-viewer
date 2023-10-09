@@ -8,6 +8,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import common.map.IMutableMapNG;
 import common.map.Point;
@@ -30,6 +31,7 @@ final class DBUnitHandler extends AbstractDatabaseWriter<IUnit, Object> implemen
 	/**
 	 * What we use to write members. Called "parent" because *it* actually owns *this* object.
 	 */
+	@Nullable
 	private final SPDatabaseWriter parent;
 
 	@Override
@@ -108,7 +110,7 @@ final class DBUnitHandler extends AbstractDatabaseWriter<IUnit, Object> implemen
 			}
 		});
 		for (final UnitMember member : obj) {
-			parent.writeSPObjectInContext(db, member, obj);
+			Objects.requireNonNull(parent).writeSPObjectInContext(db, member, obj);
 		}
 	}
 
