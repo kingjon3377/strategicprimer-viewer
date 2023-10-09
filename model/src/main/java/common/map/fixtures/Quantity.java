@@ -1,5 +1,6 @@
 package common.map.fixtures;
 
+import java.io.Serializable;
 import java.util.Comparator;
 import java.util.function.Consumer;
 
@@ -13,7 +14,7 @@ import lovelace.util.NumberComparator;
  * @param number The numeric quantity.
  * @param units  The units in which that number is measured.
  */
-public record Quantity(Number number, String units) implements Subsettable<Quantity>, Comparable<Quantity> {
+public record Quantity(Number number, String units) implements Subsettable<Quantity>, Comparable<Quantity>, Serializable {
 	/**
 	 * The numeric quantity.
 	 */
