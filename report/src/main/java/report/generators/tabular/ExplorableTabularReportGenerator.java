@@ -83,7 +83,7 @@ public class ExplorableTabularReportGenerator
         final String owner;
         final String longDesc;
         switch (item) {
-            case TextFixture tf -> {
+            case final TextFixture tf -> {
                 if (tf.getTurn() >= 0) { // TODO: Pull up to conditions on switch case (splitting it)?
                     brief = String.format("Text Note (%d)", tf.getTurn());
                 } else {
@@ -92,17 +92,17 @@ public class ExplorableTabularReportGenerator
                 owner = "---";
                 longDesc = tf.getText();
             }
-            case Battlefield battlefield -> {
+            case final Battlefield battlefield -> {
                 brief = "ancient battlefield";
                 owner = "---";
                 longDesc = "";
             }
-            case Cave cave -> {
+            case final Cave cave -> {
                 brief = "caves nearby";
                 owner = "---";
                 longDesc = "";
             }
-            case Portal p -> { // TODO: Pull up to conditions on switch case (splitting it)?
+            case final Portal p -> { // TODO: Pull up to conditions on switch case (splitting it)?
                 if (p.getDestinationCoordinates().isValid()) {
                     brief = "portal to world " + p.getDestinationWorld();
                 } else {
@@ -111,7 +111,7 @@ public class ExplorableTabularReportGenerator
                 owner = "---";
                 longDesc = "";
             }
-            case AdventureFixture af -> {
+            case final AdventureFixture af -> {
                 brief = af.getBriefDescription();
                 // TODO: Don't we have a helper method for this?
                 if (player.equals(af.owner())) { // TODO: Pull up to conditions on switch case (splitting it)?

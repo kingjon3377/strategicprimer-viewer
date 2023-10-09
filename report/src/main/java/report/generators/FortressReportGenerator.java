@@ -65,7 +65,7 @@ public class FortressReportGenerator extends AbstractReportGenerator<IFortress> 
             ostream.accept(", mountainous");
         }
         for (final TileFixture fixture : map.getFixtures(point)) {
-            if (unforested && fixture instanceof Forest f) {
+            if (unforested && fixture instanceof final Forest f) {
                 unforested = false;
                 ostream.accept(", forested with ");
                 ostream.accept(f.getKind());
@@ -153,9 +153,9 @@ public class FortressReportGenerator extends AbstractReportGenerator<IFortress> 
         final List<FortressMember> contents = new ArrayList<>();
         for (final FortressMember member : item) {
             switch (member) {
-                case IUnit u -> units.add(u);
-                case Implement i -> equipment.add(i);
-                case IResourcePile r -> {
+                case final IUnit u -> units.add(u);
+                case final Implement i -> equipment.add(i);
+                case final IResourcePile r -> {
                     final List<IResourcePile> list = Optional.ofNullable(resources.get(r.getKind()))
                             .orElseGet(ArrayList::new);
                     list.add(r);

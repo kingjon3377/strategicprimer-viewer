@@ -168,7 +168,7 @@ public class Meadow implements HarvestableFixture, HasExtent<Meadow> {
 
     @Override
     public boolean equals(final Object obj) {
-        if (obj instanceof Meadow it) {
+        if (obj instanceof final Meadow it) {
             // TODO: Make NumberComparator.compare() static first, with the dynamic one delegating?
             return kind.equals(it.getKind()) &&
                     field == it.isField() &&
@@ -183,7 +183,7 @@ public class Meadow implements HarvestableFixture, HasExtent<Meadow> {
 
     @Override
     public boolean equalsIgnoringID(final IFixture fixture) {
-        if (fixture instanceof Meadow it) {
+        if (fixture instanceof final Meadow it) {
             return kind.equals(it.getKind()) &&
                     field == it.isField() &&
                     status == it.getStatus() &&
@@ -199,7 +199,7 @@ public class Meadow implements HarvestableFixture, HasExtent<Meadow> {
         if (other.getId() != id) {
             report.accept("IDs differ");
             return false;
-        } else if (other instanceof Meadow it) {
+        } else if (other instanceof final Meadow it) {
             if (field != it.isField()) {
                 report.accept("One field, one meadow for ID #" + id);
                 return false;

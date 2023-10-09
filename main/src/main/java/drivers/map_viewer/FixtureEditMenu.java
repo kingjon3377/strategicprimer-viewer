@@ -51,7 +51,7 @@ public class FixtureEditMenu extends JPopupMenu {
                 fixture instanceof HasMutableOwner);
         addMenuItem(new JMenuItem("Dismiss", KeyEvent.VK_D), ignored -> dismissHandler(),
                 fixture instanceof UnitMember);
-        final boolean isAnimalPopulation = fixture instanceof Animal a && a.getPopulation() > 1;
+        final boolean isAnimalPopulation = fixture instanceof final Animal a && a.getPopulation() > 1;
 
         addMenuItem(new JMenuItem("Split animal population", KeyEvent.VK_S),
                 ignored -> splitAnimalHandler(), isAnimalPopulation);
@@ -59,7 +59,7 @@ public class FixtureEditMenu extends JPopupMenu {
         addMenuItem(new JMenuItem("Sort", KeyEvent.VK_R), ignored -> sortHandler(),
                 fixture instanceof IUnit);
 
-        final boolean isEmptyUnit = fixture instanceof IUnit u && u.isEmpty();
+        final boolean isEmptyUnit = fixture instanceof final IUnit u && u.isEmpty();
 
         addMenuItem(new JMenuItem("Remove Unit", KeyEvent.VK_M), ignored -> removeUnitHandler(),
                 isEmptyUnit);
@@ -84,7 +84,7 @@ public class FixtureEditMenu extends JPopupMenu {
         final String originalName = fix.getName();
         final Object result = JOptionPane.showInputDialog(getParent(), "Fixture's new name:",
                 "Rename Fixture", JOptionPane.PLAIN_MESSAGE, null, null, originalName);
-        if (result instanceof String s) {
+        if (result instanceof final String s) {
             final String resultString = s.strip();
             if (!resultString.equals(originalName.strip())) {
                 handler.renameItem(fix, resultString);
@@ -97,7 +97,7 @@ public class FixtureEditMenu extends JPopupMenu {
         final String originalKind = fix.getKind();
         final Object result = JOptionPane.showInputDialog(getParent(), "Fixture's new kind:",
                 "Change Fixture Kind", JOptionPane.PLAIN_MESSAGE, null, null, originalKind);
-        if (result instanceof String s) {
+        if (result instanceof final String s) {
             final String resultString = s.strip();
             if (!resultString.equals(originalKind.strip())) {
                 handler.changeKind(fix, resultString);
@@ -111,7 +111,7 @@ public class FixtureEditMenu extends JPopupMenu {
                 "Change Fixture Owner", JOptionPane.PLAIN_MESSAGE, null,
                 StreamSupport.stream(players.spliterator(), false).toArray(Player[]::new),
                 fix.owner());
-        if (player instanceof Player p) {
+        if (player instanceof final Player p) {
             handler.changeOwner(fix, p);
         }
     }
@@ -136,7 +136,7 @@ public class FixtureEditMenu extends JPopupMenu {
         final Object result = JOptionPane.showInputDialog(getParent(),
                 "Number of animals to split to new population:", "Split Animal Population",
                 JOptionPane.PLAIN_MESSAGE, null, null, "0");
-        if (result instanceof String s) {
+        if (result instanceof final String s) {
             final int num;
             try {
                 num = Integer.parseInt(s.strip());
@@ -158,7 +158,7 @@ public class FixtureEditMenu extends JPopupMenu {
     }
 
     private void sortHandler() {
-        if (fixture instanceof IUnit u) {
+        if (fixture instanceof final IUnit u) {
             handler.sortMembers(u);
         }
         // TODO: Allow sorting fortresses as well.

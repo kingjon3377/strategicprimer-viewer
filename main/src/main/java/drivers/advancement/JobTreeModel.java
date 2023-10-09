@@ -66,9 +66,9 @@ import java.util.stream.StreamSupport;
         final Function<Iterable<? extends HasName>, HasName> impl =
                 par -> StreamSupport.stream(par.spliterator(), false).skip(index - 1).findFirst()
                         .orElseThrow(() -> new ArrayIndexOutOfBoundsException("Parent does not have that child"));
-        if (index >= 0 && parent instanceof IWorker w) {
+        if (index >= 0 && parent instanceof final IWorker w) {
             return impl.apply(w);
-        } else if (index >= 0 && parent instanceof IJob j) {
+        } else if (index >= 0 && parent instanceof final IJob j) {
             return impl.apply(j);
         } else {
             throw new ArrayIndexOutOfBoundsException("Parent does not have that child");
@@ -80,9 +80,9 @@ import java.util.stream.StreamSupport;
         final ToIntFunction<Iterable<? extends HasName>> impl =
                 par -> (int) StreamSupport.stream(par.spliterator(), false).count();
         return switch (parent) {
-            case IWorker w -> impl.applyAsInt(w);
-            case IJob j -> impl.applyAsInt(j);
-            case ISkill iSkill -> 0;
+            case final IWorker w -> impl.applyAsInt(w);
+            case final IJob j -> impl.applyAsInt(j);
+            case final ISkill iSkill -> 0;
             default -> throw new IllegalArgumentException("Unexpected element type");
         };
     }
@@ -202,7 +202,7 @@ import java.util.stream.StreamSupport;
      */
     @Override
     public void memberSelected(final @Nullable UnitMember old, final @Nullable UnitMember selected) {
-        if (selected instanceof IWorker w) {
+        if (selected instanceof final IWorker w) {
             localRoot = w;
             fireTreeStructureChanged(new TreeModelEvent(this, new TreePath(selected)));
         } else {

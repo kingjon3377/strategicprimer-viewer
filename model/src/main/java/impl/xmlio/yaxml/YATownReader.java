@@ -101,9 +101,9 @@ import java.util.Comparator;
         final Deque<StartElement> stack = new LinkedList<>();
         stack.addFirst(element);
         for (final XMLEvent event : stream) {
-            if (event instanceof EndElement ee && ee.getName().equals(element.getName())) {
+            if (event instanceof final EndElement ee && ee.getName().equals(element.getName())) {
                 break;
-            } else if (event instanceof StartElement se && isSupportedNamespace(se.getName())) {
+            } else if (event instanceof final StartElement se && isSupportedNamespace(se.getName())) {
                 switch (se.getName().getLocalPart().toLowerCase()) {
                     case "expertise":
                         if (current == null) {
@@ -165,7 +165,7 @@ import java.util.Comparator;
                                 se, expectedCommunityStatsTags(current == null ?
                                         "population" : current).toArray(String[]::new));
                 }
-            } else if (event instanceof EndElement ee && !stack.isEmpty() &&
+            } else if (event instanceof final EndElement ee && !stack.isEmpty() &&
                     ee.getName().equals(stack.peekFirst().getName())) {
                 final StartElement top = stack.removeFirst();
                 if (top.equals(element)) {
@@ -201,7 +201,7 @@ import java.util.Comparator;
         retval.setImage(getParameter(element, "image", ""));
         retval.setPortrait(getParameter(element, "portrait", ""));
         for (final XMLEvent event : stream) {
-            if (event instanceof StartElement se && isSupportedNamespace(se.getName())) {
+            if (event instanceof final StartElement se && isSupportedNamespace(se.getName())) {
                 if (retval.getPopulation() == null) {
                     retval.setPopulation(parseCommunityStats(se,
                             element.getName(), stream));
@@ -244,7 +244,7 @@ import java.util.Comparator;
                     element.getName().getLocalPart());
         };
         for (final XMLEvent event : stream) {
-            if (event instanceof StartElement se && isSupportedNamespace(se.getName())) {
+            if (event instanceof final StartElement se && isSupportedNamespace(se.getName())) {
                 if (retval.getPopulation() == null) {
                     retval.setPopulation(parseCommunityStats(se, element.getName(), stream));
                 } else {
@@ -274,7 +274,7 @@ import java.util.Comparator;
         retval = new FortressImpl(getOwnerOrIndependent(element),
                 getParameter(element, "name", ""), getOrGenerateID(element), size);
         for (final XMLEvent event : stream) {
-            if (event instanceof StartElement se && isSupportedNamespace(se.getName())) {
+            if (event instanceof final StartElement se && isSupportedNamespace(se.getName())) {
                 final String memberTag = se.getName().getLocalPart().toLowerCase();
                 final Optional<YAReader<? extends FortressMember, ? extends FortressMember>>
                         reader = memberReaders.stream()
@@ -377,9 +377,9 @@ import java.util.Comparator;
 
     @Override
     public void write(final ThrowingConsumer<String, IOException> ostream, final ITownFixture obj, final int tabs) throws IOException {
-        if (obj instanceof AbstractTown at) {
+        if (obj instanceof final AbstractTown at) {
             writeAbstractTown(ostream, at, tabs);
-        } else if (obj instanceof Village v) {
+        } else if (obj instanceof final Village v) {
             writeTag(ostream, "village", tabs);
             writeProperty(ostream, "status", obj.getStatus().toString());
             writeNonemptyProperty(ostream, "name", obj.getName());
@@ -395,7 +395,7 @@ import java.util.Comparator;
                 writeCommunityStats(ostream, obj.getPopulation(), tabs + 1);
                 closeTag(ostream, tabs, "village");
             }
-        } else if (obj instanceof IFortress f) {
+        } else if (obj instanceof final IFortress f) {
             writeTag(ostream, "fortress", tabs);
             writeProperty(ostream, "owner", obj.owner().getPlayerId());
             writeNonemptyProperty(ostream, "name", obj.getName());

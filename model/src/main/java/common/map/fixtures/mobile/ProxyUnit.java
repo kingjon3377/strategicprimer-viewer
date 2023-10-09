@@ -172,7 +172,7 @@ public class ProxyUnit implements IUnit, ProxyFor<IUnit> {
 	@Override
 	public boolean equalsIgnoringID(final IFixture fixture) {
 		LovelaceLogger.error("ProxyUnit.equalsIgnoringID called");
-		if (fixture instanceof ProxyUnit pu) {
+		if (fixture instanceof final ProxyUnit pu) {
 			return proxiedList.stream().allMatch(m -> (pu.proxiedList.stream().anyMatch(m::equals))); // TODO: Should check the converse as well
 		} else {
 			return false;
@@ -215,14 +215,14 @@ public class ProxyUnit implements IUnit, ProxyFor<IUnit> {
 					final int memberID = member.getId();
 					if (map.containsKey(memberID)) {
 						proxy = map.get(memberID);
-						if (proxy instanceof WorkerProxy wp) {
-							if (member instanceof IWorker w) {
+						if (proxy instanceof final WorkerProxy wp) {
+							if (member instanceof final IWorker w) {
 								wp.addProxied(w);
 							} else {
 								LovelaceLogger.warning("ProxyWorker matched non-worker");
 							}
-						} else if (proxy instanceof AnimalProxy ap) {
-							if (member instanceof Animal a) {
+						} else if (proxy instanceof final AnimalProxy ap) {
+							if (member instanceof final Animal a) {
 								ap.addProxied(a);
 							} else {
 								LovelaceLogger.warning("ProxyAnimal matched non-animal");
@@ -231,9 +231,9 @@ public class ProxyUnit implements IUnit, ProxyFor<IUnit> {
 							((UnitMemberProxy<UnitMember>) proxy).addProxied(member);
 						}
 					} else {
-						if (member instanceof IWorker w) {
+						if (member instanceof final IWorker w) {
 							proxy = new ProxyWorker(w);
-						} else if (member instanceof Animal a) {
+						} else if (member instanceof final Animal a) {
 							proxy = new ProxyAnimal(a);
 						} else {
 							proxy = new ProxyMember(member);
@@ -317,7 +317,7 @@ public class ProxyUnit implements IUnit, ProxyFor<IUnit> {
 
 	@Override
 	public boolean equals(final Object obj) {
-		if (obj instanceof ProxyUnit pu) {
+		if (obj instanceof final ProxyUnit pu) {
 			return parallel == pu.parallel &&
 				Objects.equals(commonID, pu.commonID) &&
 				Objects.equals(commonKind, pu.commonKind) &&

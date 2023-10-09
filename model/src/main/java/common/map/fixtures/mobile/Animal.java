@@ -71,7 +71,7 @@ public interface Animal extends AnimalOrTracks, MobileFixture, HasImage,
 
 	@Override
 	default boolean equalsIgnoringID(final IFixture fixture) {
-		return fixture instanceof Animal a && equalExceptPopulation(a) &&
+		return fixture instanceof final Animal a && equalExceptPopulation(a) &&
 			getPopulation() == (a).getPopulation();
 	}
 
@@ -87,7 +87,7 @@ public interface Animal extends AnimalOrTracks, MobileFixture, HasImage,
 	@Override
 	default boolean isSubset(final IFixture obj, final Consumer<String> report) {
 		if (obj.getId() == getId()) {
-			if (obj instanceof Animal a) {
+			if (obj instanceof final Animal a) {
 				if (!getKind().equals(a.getKind())) {
 					report.accept("Different kinds of animal for ID #" + getId());
 					return false;
@@ -106,7 +106,7 @@ public interface Animal extends AnimalOrTracks, MobileFixture, HasImage,
 				} else {
 					return true;
 				}
-			} else if (obj instanceof AnimalTracks at && getKind().equals(at.getKind())) {
+			} else if (obj instanceof final AnimalTracks at && getKind().equals(at.getKind())) {
 				return true;
 			} else {
 				report.accept(String.format("For ID #%d, different kinds of members", getId()));

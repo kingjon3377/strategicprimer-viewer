@@ -44,7 +44,7 @@ public record MapDimensionsImpl(int rows, int columns, int version) implements M
     public boolean equals(final Object obj) {
         if (this == obj) {
             return true;
-        } else if (obj instanceof MapDimensions md) {
+        } else if (obj instanceof final MapDimensions md) {
             return md.rows() == rows && md.columns() == columns && md.version() == version;
         } else {
             return false;

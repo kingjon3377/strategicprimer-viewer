@@ -181,7 +181,7 @@ import query.SmallAnimalModel;
 					baseCost, MammalModel.getDailyTimeFloor()));
 				minutesSpent += baseCost;
 				minutesSpent += MammalModel.getDailyTimeFloor();
-			} else if (herdModel instanceof SmallAnimalModel smm) {
+			} else if (herdModel instanceof final SmallAnimalModel smm) {
 				addToOrders.accept("Tending the ");
 				addToOrders.accept(AnimalPlurals.get(combinedAnimal.getKind()));
 				final long baseCost;

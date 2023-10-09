@@ -110,7 +110,7 @@ public final class Job implements IMutableJob {
      */
     @Override
     public boolean equals(final Object obj) {
-        if (obj instanceof Job that) {
+        if (obj instanceof final Job that) {
             return name.equals(that.getName()) && levelNum == that.getLevel() &&
                     StreamSupport.stream(that.spliterator(), true)
                             .allMatch(skillSet.values()::contains) &&

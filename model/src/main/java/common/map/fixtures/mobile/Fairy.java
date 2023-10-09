@@ -86,7 +86,7 @@ public class Fairy implements Immortal, HasMutableImage, HasKind {
 
     @Override
     public boolean equals(final Object obj) {
-        if (obj instanceof Fairy f) {
+        if (obj instanceof final Fairy f) {
             return f.getKind().equals(kind) && f.getId() == id;
         } else {
             return false;
@@ -100,7 +100,7 @@ public class Fairy implements Immortal, HasMutableImage, HasKind {
 
     @Override
     public boolean equalsIgnoringID(final IFixture fixture) {
-        if (fixture instanceof Fairy f) {
+        if (fixture instanceof final Fairy f) {
             return f.getKind().equals(kind);
         } else {
             return false;
@@ -110,7 +110,7 @@ public class Fairy implements Immortal, HasMutableImage, HasKind {
     @Override
     public boolean isSubset(final IFixture obj, final Consumer<String> report) {
         if (obj.getId() == id) {
-            if (obj instanceof Fairy f) {
+            if (obj instanceof final Fairy f) {
                 if (f.getKind().equals(kind)) {
                     return true;
                 } else {

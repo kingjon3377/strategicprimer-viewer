@@ -36,7 +36,7 @@ public record Point(int row, int column) implements Comparable<Point> {
 	public boolean equals(final @Nullable Object obj) {
 		if (this == obj) {
 			return true;
-		} else if (obj instanceof Point p) {
+		} else if (obj instanceof final Point p) {
 			return row == p.row() && column == p.column();
 		} else {
 			return false;

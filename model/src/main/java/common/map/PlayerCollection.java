@@ -159,7 +159,7 @@ public class PlayerCollection implements IMutablePlayerCollection {
     @Override
     public void setCurrentPlayer(final Player currentPlayer) {
         final Player oldCurrent = current;
-        if (oldCurrent instanceof MutablePlayer mp) {
+        if (oldCurrent instanceof final MutablePlayer mp) {
             mp.setCurrent(false);
         } else {
             LovelaceLogger.warning("Previous current player wasn't mutable");
@@ -169,7 +169,7 @@ public class PlayerCollection implements IMutablePlayerCollection {
         } else { // TODO: Why not add()?
             current = players.values().stream().filter((p) -> p.getPlayerId() == currentPlayer.getPlayerId()).findAny().orElse(currentPlayer);
         }
-        if (current instanceof MutablePlayer mp) {
+        if (current instanceof final MutablePlayer mp) {
             mp.setCurrent(true);
         } else {
             LovelaceLogger.warning("Newly current player wasn't mutable");
@@ -184,7 +184,7 @@ public class PlayerCollection implements IMutablePlayerCollection {
     public boolean equals(final Object obj) {
         if (obj == this) {
             return true;
-        } else if (obj instanceof IPlayerCollection pc) {
+        } else if (obj instanceof final IPlayerCollection pc) {
             return isSubset(pc, (ignored) -> {
             }) &&
                     pc.isSubset(this, (ignored) -> {

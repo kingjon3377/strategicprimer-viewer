@@ -33,7 +33,7 @@ public class PopulationGeneratingCLIFactory implements ModelDriverFactory {
 
     @Override
     public ModelDriver createDriver(final ICLIHelper cli, final SPOptions options, final IDriverModel model) {
-        if (model instanceof PopulationGeneratingModel pgm) {
+        if (model instanceof final PopulationGeneratingModel pgm) {
             return new PopulationGeneratingCLI(cli, pgm);
         } else {
             return createDriver(cli, options, new PopulationGeneratingModel(model));

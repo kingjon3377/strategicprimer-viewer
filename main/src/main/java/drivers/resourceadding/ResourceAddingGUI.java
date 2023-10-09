@@ -132,9 +132,9 @@ import java.io.FileNotFoundException;
 
         private static void addListenerToField(final JSpinner field, final ActionListener listener,
                                                final StreamingLabel logLabel) {
-            if (field.getEditor() instanceof JTextField tf) {
+            if (field.getEditor() instanceof final JTextField tf) {
                 tf.addActionListener(listener);
-            } else if (field.getEditor() instanceof JSpinner.DefaultEditor ed) {
+            } else if (field.getEditor() instanceof final JSpinner.DefaultEditor ed) {
                 ed.getTextField().addActionListener(listener);
             } else {
                 logLabel.append("Spinner's editor wasn't a text field, but a ");

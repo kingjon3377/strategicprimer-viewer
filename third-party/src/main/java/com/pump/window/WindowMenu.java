@@ -125,7 +125,7 @@ public class WindowMenu extends JMenu {
     public WindowMenu(final JFrame frame, final JMenuItem... extraItems) {
         super("Window");
         myFrame = frame;
-		ActionListener actionListener = e -> {
+		final ActionListener actionListener = e -> {
 			final Object src = e.getSource();
 			if (src == minimizeItem) {
 				myFrame.setExtendedState(Frame.ICONIFIED);

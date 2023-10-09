@@ -19,7 +19,7 @@ interface TryBiConsumer<T1, T2, E extends Throwable> {
 
 	default TryBiConsumer<T1, T2, E> andThen(final TryBiConsumer<? super T1, ? super T2, E> after) throws E {
 		Objects.requireNonNull(after);
-		return (T1 t1, T2 t2) -> {
+		return (final T1 t1, final T2 t2) -> {
 			accept(t1, t2);
 			after.accept(t1, t2);
 		};
@@ -27,7 +27,7 @@ interface TryBiConsumer<T1, T2, E extends Throwable> {
 
 	default TryBiConsumer<T1, T2, E> compose(final TryBiConsumer<? super T1, ? super T2, E> before) throws E {
 		Objects.requireNonNull(before);
-		return (T1 t1, T2 t2) -> {
+		return (final T1 t1, final T2 t2) -> {
 			before.accept(t1, t2);
 			accept(t1, t2);
 		};
@@ -38,7 +38,7 @@ interface TryBiConsumer<T1, T2, E extends Throwable> {
 //	}
 //
 	default Consumer<T1> wrappedPartial(final T2 t2) {
-		return (T1 t1) -> {
+		return (final T1 t1) -> {
 			try {
 				accept(t1, t2);
 			} catch (final RuntimeException except) {

@@ -97,9 +97,9 @@ final class DBAnimalHandler extends AbstractDatabaseWriter<AnimalOrTracks, /*Poi
 			INSERT_TRACKS.on(value("row", ((Point) context).row()), value("column", ((Point) context).column()),
 					value("kind", obj.getKind()), value("image", ((AnimalTracks) obj).getImage()))
 				.execute(db.connection());
-		} else if (obj instanceof Animal a) {
+		} else if (obj instanceof final Animal a) {
 			final List<Param> params = new ArrayList<>();
-			if (context instanceof Point p) {
+			if (context instanceof final Point p) {
 				params.add(value("row", p.row()));
 				params.add(value("column", p.column()));
 			} else {

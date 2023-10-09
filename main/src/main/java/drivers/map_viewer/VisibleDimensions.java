@@ -113,7 +113,7 @@ public class VisibleDimensions {
 
     @Override
     public boolean equals(final Object that) {
-        return that instanceof VisibleDimensions vd &&
+        return that instanceof final VisibleDimensions vd &&
                 vd.minimumRow == minimumRow &&
                 vd.maximumRow == maximumRow &&
                 vd.minimumColumn == minimumColumn &&

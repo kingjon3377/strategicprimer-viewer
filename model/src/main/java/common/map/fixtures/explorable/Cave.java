@@ -72,7 +72,7 @@ public class Cave implements ExplorableFixture {
     public boolean equals(final Object obj) {
         if (this == obj) {
             return true;
-        } else if (obj instanceof Cave c) {
+        } else if (obj instanceof final Cave c) {
             return c.getId() == id;
         } else {
             return false;

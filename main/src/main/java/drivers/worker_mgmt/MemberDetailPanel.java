@@ -283,7 +283,7 @@ public class MemberDetailPanel extends BorderedPanel implements UnitMemberListen
             }
         }
         portraitComponent.setPortrait(null);
-        if (local instanceof HasPortrait hp) {
+        if (local instanceof final HasPortrait hp) {
             final String portraitName = hp.getPortrait();
             if (!portraitName.isEmpty()) {
                 try {
@@ -298,7 +298,7 @@ public class MemberDetailPanel extends BorderedPanel implements UnitMemberListen
 
     @Override
     public void memberSelected(final @Nullable UnitMember old, final @Nullable UnitMember selected) {
-        if (selected instanceof ProxyFor p) {
+        if (selected instanceof final ProxyFor p) {
             if (p.isParallel()) {
                 final Iterator<? extends UnitMember> proxied =
                         ((ProxyFor<? extends UnitMember>) selected).getProxied().iterator();

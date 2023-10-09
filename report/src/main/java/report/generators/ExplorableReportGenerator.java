@@ -39,9 +39,9 @@ public class ExplorableReportGenerator extends AbstractReportGenerator<Explorabl
 	public void produceSingle(final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
 							  final IMapNG map, final Consumer<String> ostream, final ExplorableFixture item, final Point loc) {
 		switch (item) {
-			case Cave cave -> ostream.accept("Caves beneath ");
-			case Battlefield battlefield -> ostream.accept("Signs of a long-ago battle on ");
-			case Portal portal -> ostream.accept("A portal to another world at ");
+			case final Cave cave -> ostream.accept("Caves beneath ");
+			case final Battlefield battlefield -> ostream.accept("Signs of a long-ago battle on ");
+			case final Portal portal -> ostream.accept("A portal to another world at ");
 			default -> {
 				LovelaceLogger.warning("Unandled ExplorableFixture class (single item)");
 				return;
@@ -73,9 +73,9 @@ public class ExplorableReportGenerator extends AbstractReportGenerator<Explorabl
 			final Point loc = pair.getValue0();
 			final ExplorableFixture item = pair.getValue1();
             switch (item) {
-                case Portal portal -> portals.add(loc);
-                case Battlefield battlefield -> battles.add(loc);
-                case Cave cave -> caves.add(loc);
+                case final Portal portal -> portals.add(loc);
+                case final Battlefield battlefield -> battles.add(loc);
+                case final Cave cave -> caves.add(loc);
                 case null, default -> {
                     LovelaceLogger.warning("Unandled ExplorableFixture class (in loop)");
                     continue;

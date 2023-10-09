@@ -129,7 +129,7 @@ public class Portal implements ExplorableFixture, SubsettableFixture {
     public boolean equalsIgnoringID(final IFixture fixture) {
         if (this == fixture) {
             return true;
-        } else if (fixture instanceof Portal p) {
+        } else if (fixture instanceof final Portal p) {
             return destinationWorld.equals(p.getDestinationWorld()) &&
                     destinationCoordinates.equals(p.getDestinationCoordinates());
         } else {
@@ -141,7 +141,7 @@ public class Portal implements ExplorableFixture, SubsettableFixture {
     public boolean equals(final Object obj) {
         if (this == obj) {
             return true;
-        } else if (obj instanceof Portal p) {
+        } else if (obj instanceof final Portal p) {
             return p.getId() == id && equalsIgnoringID(p);
         } else {
             return false;
@@ -164,7 +164,7 @@ public class Portal implements ExplorableFixture, SubsettableFixture {
     @Override
     public boolean isSubset(final IFixture obj, final Consumer<String> report) {
         if (obj.getId() == id) {
-            if (obj instanceof Portal p) {
+            if (obj instanceof final Portal p) {
                 final Consumer<String> localReport =
                         (str) -> report.accept(String.format("In portal with ID #%d: %s", id, str));
                 if (!destinationWorld.equals(p.getDestinationWorld()) &&

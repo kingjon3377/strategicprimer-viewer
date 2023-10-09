@@ -225,7 +225,7 @@ public class PopulationGeneratingModel extends SimpleMultiMapModel { // TODO: Ex
                     .filter(sameName)
                     .findAny();
             if (town.isPresent()) {
-                if (town.get() instanceof AbstractTown t) {
+                if (town.get() instanceof final AbstractTown t) {
                     t.setPopulation(stats);
                 } else {
                     ((Village) (town.get())).setPopulation(stats);
@@ -243,7 +243,7 @@ public class PopulationGeneratingModel extends SimpleMultiMapModel { // TODO: Ex
      * a fortress's contents into a stream of tile fixtures.
      */
     private static Stream<IFixture> flattenFortresses(final IFixture fixture) {
-        if (fixture instanceof IFortress fort) {
+        if (fixture instanceof final IFortress fort) {
             return fort.stream().map(IFixture.class::cast);
         } else {
             return Stream.of(fixture);
@@ -374,9 +374,9 @@ public class PopulationGeneratingModel extends SimpleMultiMapModel { // TODO: Ex
                     if (streamedJob.isPresent()) {
                         streamedJob.get().setLevel(
                                 streamedJob.get().getLevel() + 1);
-                    } else if (queriedJob instanceof IMutableJob mj) {
+                    } else if (queriedJob instanceof final IMutableJob mj) {
                         mj.setLevel(queriedJob.getLevel() + 1);
-                    } else if (matching.get() instanceof IMutableWorker mw &&
+                    } else if (matching.get() instanceof final IMutableWorker mw &&
                             StreamSupport.stream(mw.spliterator(), true)
                                     .noneMatch(j -> j.getName().equals(jobName))) {
                         mw.addJob(new Job(jobName, 1));

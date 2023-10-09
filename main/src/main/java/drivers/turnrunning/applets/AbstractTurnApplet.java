@@ -122,7 +122,7 @@ public abstract class AbstractTurnApplet implements TurnApplet {
 		final IMapNG map = model.getMap();
 		for (final Point loc : map.getLocations()) {
 			for (final TileFixture fix : map.getFixtures(loc)) {
-				if (fix instanceof IFortress fort) {
+				if (fix instanceof final IFortress fort) {
 					for (final FortressMember member : fort) {
 						if (member instanceof final IResourcePile pile && fort.owner().equals(player)) {
 							if ("food".equals(pile.getKind()) &&
@@ -131,7 +131,7 @@ public abstract class AbstractTurnApplet implements TurnApplet {
 								pile.getCreated() <= turn) {
 								retval.add(pile);
 							}
-						} else if (member instanceof IUnit unit && unit.owner().equals(player)) {
+						} else if (member instanceof final IUnit unit && unit.owner().equals(player)) {
 							for (final UnitMember inner : unit) {
 								if (inner instanceof final IResourcePile pile) {
 									if ("food".equals(pile.getKind()) &&
@@ -146,7 +146,7 @@ public abstract class AbstractTurnApplet implements TurnApplet {
 							}
 						}
 					}
-				} else if (fix instanceof IUnit unit && unit.owner().equals(player)) {
+				} else if (fix instanceof final IUnit unit && unit.owner().equals(player)) {
 					for (final UnitMember inner : unit) {
 						if (inner instanceof final IResourcePile pile) {
 							if ("food".equals(pile.getKind()) &&

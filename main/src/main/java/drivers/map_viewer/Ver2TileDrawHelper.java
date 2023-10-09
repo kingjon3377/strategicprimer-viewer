@@ -184,7 +184,7 @@ public class Ver2TileDrawHelper implements TileDrawHelper {
      * Get the image representing the given fixture.
      */
     private Image getImageForFixture(final TileFixture fixture) {
-        if (fixture instanceof HasImage hi) {
+        if (fixture instanceof final HasImage hi) {
             final String image = hi.getImage();
             if (image.isEmpty() || missingFiles.contains(image)) {
                 return getImage(hi.getDefaultImage());

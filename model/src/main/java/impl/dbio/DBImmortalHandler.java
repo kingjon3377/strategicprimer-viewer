@@ -113,12 +113,12 @@ final class DBImmortalHandler extends AbstractDatabaseWriter<Immortal, /*Point|I
 	public void write(final Transactional db, final Immortal obj, final Object context) throws SQLException {
 		if (obj instanceof SimpleImmortal || obj instanceof ImmortalAnimal) {
 			try {
-				if (context instanceof Point p) {
+				if (context instanceof final Point p) {
 					INSERT_SIMPLE.on(value("row", p.row()),
 						value("column", p.column()),
 						value("type", ((HasKind) obj).getKind()), value("id", obj.getId()),
 						value("image", ((HasImage) obj).getImage())).executeUpdate(db.connection());
-				} else if (context instanceof IUnit u) {
+				} else if (context instanceof final IUnit u) {
 					INSERT_SIMPLE.on(
 						value("parent", u.getId()), value("type", ((HasKind) obj).getKind()),
 						value("id", obj.getId()), value("image", ((HasImage) obj).getImage())).execute(db.connection());
@@ -139,18 +139,18 @@ final class DBImmortalHandler extends AbstractDatabaseWriter<Immortal, /*Point|I
 			}
 		} else {
 			final String type = switch (obj) {
-                case Centaur centaur -> "centaur";
-                case Dragon dragon -> "dragon";
-                case Fairy fairy -> "fairy";
-                case Giant giant -> "giant";
+                case final Centaur centaur -> "centaur";
+                case final Dragon dragon -> "dragon";
+                case final Fairy fairy -> "fairy";
+                case final Giant giant -> "giant";
                 default -> throw new IllegalArgumentException("Unexpected immortal type");
             };
-            if (context instanceof Point p) {
+            if (context instanceof final Point p) {
 				INSERT_KINDED.on(value("row", p.row()),
 					value("column", p.column()),
 					value("type", type), value("kind", ((HasKind) obj).getKind()),
 					value("id", obj.getId()), value("image", ((HasImage) obj).getImage())).execute(db.connection());
-			} else if (context instanceof IUnit u) {
+			} else if (context instanceof final IUnit u) {
 				INSERT_KINDED.on(
 					value("parent", u.getId()), value("type", type),
 					value("kind", ((HasKind) obj).getKind()), value("id", obj.getId()),

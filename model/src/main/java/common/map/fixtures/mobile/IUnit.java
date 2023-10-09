@@ -112,7 +112,7 @@ public interface IUnit extends MobileFixture, HasImage, HasKind, HasName,
     @Override
     default boolean isSubset(final IFixture obj, final Consumer<String> report) {
         if (obj.getId() == getId()) {
-            if (obj instanceof IUnit that) {
+            if (obj instanceof final IUnit that) {
                 final Consumer<String> localSimpleReport =
                         s -> report.accept(String.format("In Unit of ID #%d:\t%s",
                                 getId(), s));

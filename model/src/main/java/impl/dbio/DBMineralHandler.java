@@ -57,7 +57,7 @@ final class DBMineralHandler extends AbstractDatabaseWriter<MineralFixture, Poin
 	public void write(final Transactional db, final MineralFixture obj, final Point context) throws SQLException {
 		final String type;
 		final boolean exposed;
-		if (obj instanceof MineralVein m) {
+		if (obj instanceof final MineralVein m) {
 			type = "mineral";
 			exposed = m.isExposed();
 		} else if (obj instanceof StoneDeposit) {

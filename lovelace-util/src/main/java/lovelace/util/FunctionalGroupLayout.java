@@ -24,9 +24,9 @@ public final class FunctionalGroupLayout extends GroupLayout {
     initializeGroup(final SpecificGroup group,
                     final Object... components) {
         for (final Object component : components) {
-            if (component instanceof Component c) {
+            if (component instanceof final Component c) {
                 group.addComponent(c);
-            } else if (component instanceof Group g) {
+            } else if (component instanceof final Group g) {
                 group.addGroup(g);
             } else {
                 throw new IllegalArgumentException("Must be a Component or Group");

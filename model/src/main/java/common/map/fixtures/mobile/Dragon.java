@@ -89,7 +89,7 @@ public class Dragon implements Immortal, HasMutableImage, HasKind {
 
     @Override
     public boolean equals(final Object obj) {
-        if (obj instanceof Dragon d) {
+        if (obj instanceof final Dragon d) {
             return d.getKind().equals(kind) && d.getId() == id;
         } else {
             return false;
@@ -103,7 +103,7 @@ public class Dragon implements Immortal, HasMutableImage, HasKind {
 
     @Override
     public boolean equalsIgnoringID(final IFixture fixture) {
-        if (fixture instanceof Dragon d) {
+        if (fixture instanceof final Dragon d) {
             return d.getKind().equals(kind);
         } else {
             return false;
@@ -113,7 +113,7 @@ public class Dragon implements Immortal, HasMutableImage, HasKind {
     @Override
     public boolean isSubset(final IFixture obj, final Consumer<String> report) {
         if (obj.getId() == id) {
-            if (obj instanceof Dragon d) {
+            if (obj instanceof final Dragon d) {
                 if (d.getKind().equals(kind)) {
                     return true;
                 } else {

@@ -33,7 +33,7 @@ public class ExpansionDriverFactory implements ModelDriverFactory {
 
     @Override
     public ModelDriver createDriver(final ICLIHelper cli, final SPOptions options, final IDriverModel model) {
-        if (model instanceof UtilityDriverModel udm) {
+        if (model instanceof final UtilityDriverModel udm) {
             return new ExpansionDriver(options, udm);
         } else {
             return createDriver(cli, options, new UtilityDriverModel(model));

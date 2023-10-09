@@ -49,7 +49,7 @@ public class YAXMLReader implements IMapReader, ISPReader {
             final Iterable<XMLEvent> eventReader = new IteratorWrapper<>(reader);
             final IDRegistrar idFactory = new IDFactory();
             for (final XMLEvent event : eventReader) {
-                if (event instanceof StartElement se) { // TODO: Check namespace, surely?
+                if (event instanceof final StartElement se) { // TODO: Check namespace, surely?
                     return (Element) new YAReaderAdapter(warner, idFactory)
                             .parse(se, new QName("root"), eventReader);
                 }

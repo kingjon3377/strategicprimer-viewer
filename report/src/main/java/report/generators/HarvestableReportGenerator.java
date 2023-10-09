@@ -108,19 +108,19 @@ public class HarvestableReportGenerator extends AbstractReportGenerator<Harvesta
         ostream.accept(loc.toString());
         ostream.accept(": ");
         switch (item) {
-            case CacheFixture cf -> {
+            case final CacheFixture cf -> {
                 ostream.accept("A cache of ");
                 ostream.accept(item.getKind());
                 ostream.accept(", containing ");
                 ostream.accept(cf.getContents());
             }
-            case Grove g -> {
+            case final Grove g -> {
                 ostream.accept(g.isCultivated() ? "cultivated " : "wild ");
                 ostream.accept(item.getKind());
                 ostream.accept(g.isOrchard() ? " orchard " : " grove ");
                 ostream.accept(populationCountString(((Grove) item), "tree"));
             }
-            case Meadow m -> {
+            case final Meadow m -> {
                 ostream.accept(m.getStatus().toString());
                 ostream.accept(m.isCultivated() ? " cultivated " :
                         " wild or abandoned ");
@@ -128,12 +128,12 @@ public class HarvestableReportGenerator extends AbstractReportGenerator<Harvesta
                 ostream.accept(m.isField() ? " field " : " meadow ");
                 ostream.accept(acreageString(m));
             }
-            case Mine mine -> ostream.accept(item.toString());
-            case MineralVein mv -> {
+            case final Mine mine -> ostream.accept(item.toString());
+            case final MineralVein mv -> {
                 ostream.accept(mv.isExposed() ? "An exposed vein of " : "An unexposed vein of ");
                 ostream.accept(item.getKind());
             }
-            case Shrub s -> {
+            case final Shrub s -> {
                 ostream.accept(item.getKind());
                 ostream.accept(" ");
                 ostream.accept(populationCountString(s, "plant"));
@@ -184,16 +184,16 @@ public class HarvestableReportGenerator extends AbstractReportGenerator<Harvesta
             final Point point = pair.getValue0();
             final HarvestableFixture item = pair.getValue1();
             // TODO: Use a Map by type
-            if (item instanceof CacheFixture c) {
+            if (item instanceof final CacheFixture c) {
                 caches.put(c, point);
                 fixtures.remove(item.getId());
-            } else if (item instanceof Grove g) {
+            } else if (item instanceof final Grove g) {
                 groves.put(g, point);
                 fixtures.remove(item.getId());
-            } else if (item instanceof Meadow m) {
+            } else if (item instanceof final Meadow m) {
                 meadows.put(m, point);
                 fixtures.remove(item.getId());
-            } else if (item instanceof Mine m) {
+            } else if (item instanceof final Mine m) {
                 mines.put(m, point);
                 fixtures.remove(item.getId());
             } else if (item instanceof MineralVein) {

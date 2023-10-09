@@ -118,7 +118,7 @@ import common.map.fixtures.mobile.worker.IJob;
         final List<UnitMember> nonWorkers = new ArrayList<>();
         final List<IWorker> unleveledWorkers = new ArrayList<>();
         for (final UnitMember member : unit) {
-            if (member instanceof IWorker w) {
+            if (member instanceof final IWorker w) {
                 if (StreamSupport.stream(w.spliterator(), false)
                         .mapToInt(IJob::getLevel).anyMatch(x -> x > 0)) {
                     leveledWorkers.add((IWorker) member);
@@ -167,7 +167,7 @@ import common.map.fixtures.mobile.worker.IJob;
     }
 
     private static String workerString(final @Nullable UnitMember member) {
-        if (member instanceof HasName hn) {
+        if (member instanceof final HasName hn) {
             return hn.getName();
         } else if (member == null) {
             return "";

@@ -57,7 +57,7 @@ import javax.xml.stream.XMLStreamException;
                 element, warner);
         retval.setPortrait(getAttribute(element, "portrait", ""));
         for (final XMLEvent event : stream) {
-            if (event instanceof StartElement se && isSPStartElement(event)) {
+            if (event instanceof final StartElement se && isSPStartElement(event)) {
                 switch (se.getName().getLocalPart().toLowerCase()) {
                     case "job" -> retval.addJob(readJob(se, element.getName(),
                             stream, players, warner, idFactory));
@@ -70,7 +70,7 @@ import javax.xml.stream.XMLStreamException;
                         if (retval.getMount() == null) {
                             final AnimalOrTracks animal = readAnimal(se, element.getName(), stream, players,
                                     warner, idFactory);
-                            if (animal instanceof Animal a) {
+                            if (animal instanceof final Animal a) {
                                 retval.setMount(a);
                                 break;
                             }
@@ -83,7 +83,7 @@ import javax.xml.stream.XMLStreamException;
                     default -> throw UnwantedChildException.listingExpectedTags(element.getName(),
                             se, "job", "stats", "note", "animal", "implement");
                 }
-            } else if (event instanceof EndElement ee && element.getName().equals(ee.getName())) {
+            } else if (event instanceof final EndElement ee && element.getName().equals(ee.getName())) {
                 break;
             }
         }
@@ -96,11 +96,11 @@ import javax.xml.stream.XMLStreamException;
         expectAttributes(element, warner, "player");
         final StringBuilder retval = new StringBuilder();
         for (final XMLEvent event : stream) {
-            if (event instanceof StartElement se && isSPStartElement(event)) {
+            if (event instanceof final StartElement se && isSPStartElement(event)) {
                 throw new UnwantedChildException(element.getName(), se);
-            } else if (event instanceof EndElement ee && element.getName().equals(ee.getName())) {
+            } else if (event instanceof final EndElement ee && element.getName().equals(ee.getName())) {
                 break;
-            } else if (event instanceof Characters c) {
+            } else if (event instanceof final Characters c) {
                 retval.append(c.getData());
             }
         }
@@ -115,14 +115,14 @@ import javax.xml.stream.XMLStreamException;
         final IMutableJob retval = new Job(getAttribute(element, "name"),
                 getIntegerAttribute(element, "level"));
         for (final XMLEvent event : stream) {
-            if (event instanceof StartElement se && isSPStartElement(event)) {
+            if (event instanceof final StartElement se && isSPStartElement(event)) {
                 if ("skill".equalsIgnoreCase(se.getName().getLocalPart())) {
                     retval.addSkill(readSkill(se, element.getName(),
                             stream, players, warner, idFactory));
                 } else {
                     throw UnwantedChildException.listingExpectedTags(element.getName(), se, "skill");
                 }
-            } else if (event instanceof EndElement ee && element.getName().equals(ee.getName())) {
+            } else if (event instanceof final EndElement ee && element.getName().equals(ee.getName())) {
                 break;
             }
         }

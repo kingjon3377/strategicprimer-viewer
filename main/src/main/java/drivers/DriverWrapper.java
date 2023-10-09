@@ -59,7 +59,7 @@ import lovelace.util.LovelaceLogger;
 	}
 
 	private List<Path> extendArguments(final String... args) throws IncorrectUsageException {
-		if (factory instanceof GUIDriverFactory gdf) {
+		if (factory instanceof final GUIDriverFactory gdf) {
 			final List<Path> files = new ArrayList<>();
 			if (args.length > 0) {
 				files.addAll(MapIOHelper.namesToFiles(args));
@@ -102,10 +102,10 @@ import lovelace.util.LovelaceLogger;
 
 	public void startCatchingErrors(final ICLIHelper cli, final SPOptions options, final String... args) {
 		try {
-			if (factory instanceof UtilityDriverFactory udf) {
+			if (factory instanceof final UtilityDriverFactory udf) {
 				checkArguments(args);
 				udf.createDriver(cli, options).startDriver(args);
-			} else if (factory instanceof ModelDriverFactory mdf) { // TODO: refactor to avoid successive instanceof tests
+			} else if (factory instanceof final ModelDriverFactory mdf) { // TODO: refactor to avoid successive instanceof tests
 				if (mdf instanceof GUIDriverFactory) {
 					if (ParamCount.One == factory.getUsage().getParamsWanted() && args.length > 1) {
 						for (final String arg : args) {

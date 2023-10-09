@@ -217,7 +217,7 @@ public class FortressImpl implements IMutableFortress {
 
 	@Override
 	public boolean equalsIgnoringID(final IFixture fixture) {
-		if (fixture instanceof IFortress it) {
+		if (fixture instanceof final IFortress it) {
 			final Set<FortressMember> theirs =
 				it.stream().collect(Collectors.toSet());
 			return name.equals(it.getName()) &&
@@ -238,7 +238,7 @@ public class FortressImpl implements IMutableFortress {
 		for (final FortressMember member : members) {
 			builder.append(System.lineSeparator());
 			builder.append("\t\t\t");
-			if (member instanceof IUnit unit) {
+			if (member instanceof final IUnit unit) {
 				builder.append(unit.getName());
 				if (unit.owner().equals(owner)) {
 					builder.append(" (").append(unit.getKind()).append(")");
@@ -317,7 +317,7 @@ public class FortressImpl implements IMutableFortress {
 
 	@Override
 	public boolean equals(final Object obj) {
-		if (obj instanceof IFortress it) {
+		if (obj instanceof final IFortress it) {
 			return equalsIgnoringID(it) && id == it.getId();
 		} else {
 			return false;

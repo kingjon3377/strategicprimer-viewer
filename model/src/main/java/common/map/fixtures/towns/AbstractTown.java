@@ -220,7 +220,7 @@ public abstract class AbstractTown implements HasMutableImage,
 
 	@Override
 	public boolean equals(final Object obj) {
-		if (obj instanceof AbstractTown it) {
+		if (obj instanceof final AbstractTown it) {
 			return getId() == it.getId() && equalsContents(it);
 		} else {
 			return false;
@@ -230,7 +230,7 @@ public abstract class AbstractTown implements HasMutableImage,
 	// TODO: Make this final? Or make this final and merge it with equalsContents()?
 	@Override
 	public boolean equalsIgnoringID(final IFixture fixture) {
-		if (fixture instanceof AbstractTown it) {
+		if (fixture instanceof final AbstractTown it) {
 			return equalsContents(it);
 		} else {
 			return false;

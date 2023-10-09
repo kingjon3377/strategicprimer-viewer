@@ -1348,7 +1348,7 @@ public final class TestXMLIO {
 					<player number="1" code_name="playerOne" /><row index="0">
 					<tile row="0" column="0" kind="steppe" /></row></map>""", null,
 				Exception.class, (except) -> {
-					if (except instanceof UnwantedChildException uce) {
+					if (except instanceof final UnwantedChildException uce) {
 						assertEquals("root", uce.getTag().getLocalPart(),
 							"'Tag' with the unexpected child was what we expected");
 						assertEquals(new QName("xyzzy", "map"),
@@ -2209,16 +2209,16 @@ public final class TestXMLIO {
 		throws SPFormatException, XMLStreamException, IOException {
 		final HasImage item = constructor.apply(id);
         switch (item) {
-            case HasKind hk -> {
+            case final HasKind hk -> {
                 assertSerialization(hk.getKind() + " serialization", item);
                 assertMissingProperty(String.format("<%s />",
                         hk.getKind()), "id", (HasKind) constructor.apply(0));
             }
-            case Hill hill -> {
+            case final Hill hill -> {
                 assertSerialization("Hill serialization", item);
                 assertMissingProperty("<hill />", "id", new Hill(0));
             }
-            case Oasis oasis -> {
+            case final Oasis oasis -> {
                 assertSerialization("Hill serialization", item);
                 assertMissingProperty("<oasis />", "id", new Oasis(0));
             }

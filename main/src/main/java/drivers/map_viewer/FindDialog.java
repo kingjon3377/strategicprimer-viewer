@@ -120,7 +120,7 @@ import java.util.function.Predicate;
      * Whether the fixture has a name matching the given pattern.
      */
     private static boolean matchesName(final String pattern, final IFixture fixture, final boolean caseSensitivity) {
-        if (fixture instanceof HasName named) {
+        if (fixture instanceof final HasName named) {
             final String name = (caseSensitivity) ? named.getName() : named.getName().toLowerCase();
             return name.contains(pattern);
         } else {
@@ -132,7 +132,7 @@ import java.util.function.Predicate;
      * Whether the fixture has a kind matching the given pattern.
      */
     private static boolean matchesKind(final String pattern, final IFixture fixture, final boolean caseSensitivity) {
-        if (fixture instanceof HasKind hk) {
+        if (fixture instanceof final HasKind hk) {
             final String kind = (caseSensitivity) ? hk.getKind() : hk.getKind().toLowerCase();
             return kind.contains(pattern);
         } else {
@@ -145,7 +145,7 @@ import java.util.function.Predicate;
      */
     private static boolean matchesOwner(final String pattern, final @Nullable Integer idNum, final IFixture fixture,
                                         final boolean caseSensitivity) {
-        if (fixture instanceof HasOwner owned) {
+        if (fixture instanceof final HasOwner owned) {
             final Player owner = owned.owner();
             final String ownerName = (caseSensitivity) ? owner.getName() :
                     owner.getName().toLowerCase();
@@ -169,7 +169,7 @@ import java.util.function.Predicate;
                                   final boolean caseSensitivity) {
         if (pattern.isEmpty()) {
             return true;
-        } else if (fixture instanceof TileFixture tf && !filterList.shouldDisplay(tf)) {
+        } else if (fixture instanceof final TileFixture tf && !filterList.shouldDisplay(tf)) {
             return false;
         } else if (idNum != null && idNum == fixture.getId()) {
             return true;
@@ -260,7 +260,7 @@ import java.util.function.Predicate;
     }
 
     private void populate(final Object fixture) {
-        if (fixture instanceof TileFixture tf) {
+        if (fixture instanceof final TileFixture tf) {
             filterList.shouldDisplay(tf);
         } else if (fixture instanceof Iterable) {
             ((Iterable<?>) fixture).forEach(this::populate);

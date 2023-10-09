@@ -81,17 +81,17 @@ public class ResourceTabularReportGenerator
         final String quantity;
         final String specifics;
         switch (item) {
-            case Implement i -> {
+            case final Implement i -> {
                 kind = "equipment";
                 quantity = Integer.toString(i.getCount());
                 specifics = i.getKind();
             }
-            case CacheFixture cf -> {
+            case final CacheFixture cf -> {
                 kind = cf.getKind();
                 quantity = "---";
                 specifics = cf.getContents();
             }
-            case IResourcePile rp -> {
+            case final IResourcePile rp -> {
                 kind = rp.getKind();
                 quantity = rp.getQuantity().toString();
                 specifics = rp.getContents();
@@ -108,8 +108,8 @@ public class ResourceTabularReportGenerator
     private static int compareItems(/*Implement|CacheFixture|IResourcePile*/final IFixture first,
             /*Implement|CacheFixture|IResourcePile*/final IFixture second) {
         switch (first) {
-            case Implement one -> {
-                if (second instanceof Implement two) {
+            case final Implement one -> {
+                if (second instanceof final Implement two) {
                     return Comparator.comparing(Implement::getKind)
                             .thenComparing(Implement::getCount, Comparator.reverseOrder())
                             .compare(one, two);
@@ -119,8 +119,8 @@ public class ResourceTabularReportGenerator
                     return -1;
                 }
             }
-            case CacheFixture one -> {
-                if (second instanceof CacheFixture two) {
+            case final CacheFixture one -> {
+                if (second instanceof final CacheFixture two) {
                     return Comparator.comparing(CacheFixture::getKind)
                             .thenComparing(CacheFixture::getContents)
                             .compare(one, two);
@@ -128,8 +128,8 @@ public class ResourceTabularReportGenerator
                     return 1;
                 }
             }
-            case IResourcePile one -> {
-                if (second instanceof IResourcePile two) {
+            case final IResourcePile one -> {
+                if (second instanceof final IResourcePile two) {
                     return Comparator.comparing(IResourcePile::getKind)
                             .thenComparing(IResourcePile::getContents)
                             .thenComparing(IResourcePile::getQuantity, Comparator.reverseOrder())
@@ -176,7 +176,7 @@ public class ResourceTabularReportGenerator
             final int key = triplet.getValue0();
             final Point loc = triplet.getValue1();
             final IFixture fixture = triplet.getValue2();
-            if (fixture instanceof Implement i) {
+            if (fixture instanceof final Implement i) {
                 final int num;
                 num = implementCounts.getOrDefault(Pair.with(loc, i.getKind()), 0);
                 implementCounts.put(Pair.with(loc, i.getKind()), num + i.getCount());

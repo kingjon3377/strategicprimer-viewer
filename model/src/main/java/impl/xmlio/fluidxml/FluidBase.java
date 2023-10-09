@@ -222,7 +222,7 @@ import org.jetbrains.annotations.Nullable;
      * Whether the given XML element is a {@link StartElement} and in a namespace we support.
      */
     protected static boolean isSPStartElement(final XMLEvent element) {
-        return element instanceof StartElement se &&
+        return element instanceof final StartElement se &&
                 (SP_NAMESPACE.equals(se.getName().getNamespaceURI()) ||
                         XMLConstants.NULL_NS_URI.equals(se.getName().getNamespaceURI()));
     }
@@ -239,9 +239,9 @@ import org.jetbrains.annotations.Nullable;
     protected static void spinUntilEnd(final QName tag, final Iterable<XMLEvent> reader)
             throws SPFormatException {
         for (final XMLEvent event : reader) {
-            if (event instanceof StartElement se && isSPStartElement(event)) {
+            if (event instanceof final StartElement se && isSPStartElement(event)) {
                 throw new UnwantedChildException(tag, se);
-            } else if (event instanceof EndElement ee &&
+            } else if (event instanceof final EndElement ee &&
                     tag.equals(ee.getName())) {
                 break;
             }
@@ -575,9 +575,9 @@ import org.jetbrains.annotations.Nullable;
         for (final Pair<String, ?> pair : attributes) {
             final String name = pair.getValue0();
             final Object item = pair.getValue1();
-            if (item instanceof String s) {
+            if (item instanceof final String s) {
                 ostream.writeAttribute(SP_NAMESPACE, name, s);
-            } else if (item instanceof BigDecimal bd) {
+            } else if (item instanceof final BigDecimal bd) {
                 if (bd.scale() <= 0) {
                     ostream.writeAttribute(SP_NAMESPACE, name,
                             Integer.toString(bd.intValue()));
@@ -624,7 +624,7 @@ import org.jetbrains.annotations.Nullable;
      * @param warner The Warning instance to use if the object can't have an image but the XML specifies one
      */
     protected static <Type> Type setImage(final Type obj, final StartElement element, final Warning warner) {
-        if (obj instanceof HasMutableImage hmi) {
+        if (obj instanceof final HasMutableImage hmi) {
             hmi.setImage(getAttribute(element, "image", ""));
         } else if (hasAttribute(element, "image")) {
             warner.handle(new UnsupportedPropertyException(element, "image"));
@@ -644,11 +644,11 @@ import org.jetbrains.annotations.Nullable;
             throws SPFormatException {
         final StringBuilder builder = new StringBuilder();
         for (final XMLEvent event : stream) {
-            if (event instanceof StartElement se && isSPStartElement(event)) {
+            if (event instanceof final StartElement se && isSPStartElement(event)) {
                 throw new UnwantedChildException(tag, se);
-            } else if (event instanceof Characters c) {
+            } else if (event instanceof final Characters c) {
                 builder.append(c.getData());
-            } else if (event instanceof EndElement ee && tag.equals(ee.getName())) {
+            } else if (event instanceof final EndElement ee && tag.equals(ee.getName())) {
                 break;
             }
         }

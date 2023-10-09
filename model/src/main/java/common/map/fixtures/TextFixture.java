@@ -89,7 +89,7 @@ public final class TextFixture implements TileFixture, HasMutableImage {
     public boolean equals(final Object obj) {
         if (this == obj) {
             return true;
-        } else if (obj instanceof TextFixture tf) {
+        } else if (obj instanceof final TextFixture tf) {
             return tf.getText().equals(text) && tf.turn == turn;
         } else {
             return false;

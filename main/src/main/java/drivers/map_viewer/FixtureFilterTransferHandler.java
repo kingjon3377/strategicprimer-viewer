@@ -49,9 +49,9 @@ import drivers.common.FixtureMatcher;
      */
     @Override
     public Transferable createTransferable(final JComponent component) {
-        if (component instanceof JList l) {
+        if (component instanceof final JList l) {
             return new IntTransferable(FLAVOR, l.getSelectedIndex());
-        } else if (component instanceof JTable t) {
+        } else if (component instanceof final JTable t) {
             return new IntTransferable(FLAVOR, t.getSelectedRow());
         } else {
             throw new IllegalArgumentException("component must be a JList or a JTable");
@@ -84,13 +84,13 @@ import drivers.common.FixtureMatcher;
             LovelaceLogger.debug(except, "Transfer failure");
             return false;
         }
-        if (component instanceof JList l && l.getModel() instanceof Reorderable model
-                && dropLocation instanceof JList.DropLocation dl) {
+        if (component instanceof final JList l && l.getModel() instanceof final Reorderable model
+                && dropLocation instanceof final JList.DropLocation dl) {
             final int index = dl.getIndex();
             model.reorder(payload, index);
             return true;
-        } else if (component instanceof JTable t && t.getModel() instanceof Reorderable model &&
-                dropLocation instanceof JTable.DropLocation dl) {
+        } else if (component instanceof final JTable t && t.getModel() instanceof final Reorderable model &&
+                dropLocation instanceof final JTable.DropLocation dl) {
             final int index = dl.getRow();
             final int selection = t.getSelectedRow();
             model.reorder(payload, index);

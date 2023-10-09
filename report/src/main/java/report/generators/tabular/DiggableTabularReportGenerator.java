@@ -74,19 +74,19 @@ public class DiggableTabularReportGenerator implements ITableGenerator<MineralFi
         final String classField;
         final String statusField;
         switch (item) {
-            case Ground g -> {
+            case final Ground g -> {
                 classField = "ground";
                 statusField = g.isExposed() ? "exposed" : "not exposed";
             }
-            case Mine m -> {
+            case final Mine m -> {
                 classField = "mine";
                 statusField = m.getStatus().toString();
             }
-            case StoneDeposit stoneDeposit -> {
+            case final StoneDeposit stoneDeposit -> {
                 classField = "deposit";
                 statusField = "exposed";
             }
-            case MineralVein mv -> {
+            case final MineralVein mv -> {
                 classField = "vein";
                 statusField = mv.isExposed() ? "exposed" : "not exposed";
             }

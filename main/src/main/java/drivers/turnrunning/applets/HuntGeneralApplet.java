@@ -159,17 +159,17 @@ import org.jetbrains.annotations.Nullable;
     private @Nullable Integer handleEncounter(final StringBuilder buffer, final int time, final Point loc,
             /*Animal|AnimalTracks|HuntingModel.NothingFound*/ final TileFixture find) {
         switch (find) {
-            case HuntingModel.NothingFound nothingFound -> {
+            case final HuntingModel.NothingFound nothingFound -> {
                 cli.println(String.format("Found nothing for the next %d minutes.", noResultCost));
                 return noResultCost;
             }
-            case AnimalTracks at -> {
+            case final AnimalTracks at -> {
                 model.copyToSubMaps(loc, find, IFixture.CopyBehavior.ZERO);
                 cli.println(String.format("Found only tracks or traces from %s for the next %d minutes.",
                         at.getKind(), noResultCost));
                 return noResultCost;
             }
-            case Animal a -> {
+            case final Animal a -> {
                 final Boolean fight = cli.inputBooleanInSeries(String.format("Found %s. Should they %s?",
                         populationDescription(a), verb), a.getKind());
                 if (fight == null) {

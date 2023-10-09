@@ -84,7 +84,7 @@ public class ViewerModel extends SimpleDriverModel implements IViewerModel {
      * stream of the provided entry alone.
      */
     private static Stream<Pair<Point, IFixture>> flattenEntries(final Pair<Point, IFixture> entry) {
-        if (entry.getValue1() instanceof IFortress f) {
+        if (entry.getValue1() instanceof final IFortress f) {
             return f.stream().map(m -> Pair.with(entry.getValue0(), m));
         } else {
             return Stream.of(entry);
@@ -97,7 +97,7 @@ public class ViewerModel extends SimpleDriverModel implements IViewerModel {
      * {@link Stream#flatMap}.
      */
     private static Stream<IFixture> unflattenNonFortresses(final TileFixture fixture) {
-        if (fixture instanceof IFortress f) {
+        if (fixture instanceof final IFortress f) {
             return f.stream().map(IFixture.class::cast);
         } else {
             return Stream.of(fixture);
@@ -494,7 +494,7 @@ public class ViewerModel extends SimpleDriverModel implements IViewerModel {
     private static Predicate<Pair<Point, IFixture>> unitMatching(final IUnit unit) {
         return entry -> {
             final IFixture fixture = entry.getValue1();
-            return fixture instanceof IUnit u && fixture.getId() == unit.getId() &&
+            return fixture instanceof final IUnit u && fixture.getId() == unit.getId() &&
                     u.owner().equals(unit.owner());
         };
     }
@@ -577,7 +577,7 @@ public class ViewerModel extends SimpleDriverModel implements IViewerModel {
 
     @Override
     public boolean renameItem(final HasName item, final String newName) {
-        if (item instanceof IUnit unit) {
+        if (item instanceof final IUnit unit) {
             final IUnit matching = getMap().streamAllFixtures()
                     .flatMap(ViewerModel::unflattenNonFortresses)
                     .filter(IUnit.class::isInstance).map(IUnit.class::cast)
@@ -586,7 +586,7 @@ public class ViewerModel extends SimpleDriverModel implements IViewerModel {
                     .filter(u -> u.getKind().equals(unit.getKind()))
                     .filter(u -> u.getId() == unit.getId())
                     .findAny().orElse(null);
-            if (matching instanceof HasMutableName hmn) {
+            if (matching instanceof final HasMutableName hmn) {
                 hmn.setName(newName);
                 getRestrictedMap().setModified(true);
                 return true;
@@ -594,7 +594,7 @@ public class ViewerModel extends SimpleDriverModel implements IViewerModel {
                 LovelaceLogger.warning("Unable to find unit to rename");
                 return false;
             }
-        } else if (item instanceof UnitMember um) {
+        } else if (item instanceof final UnitMember um) {
             final HasMutableName matching = getMap().streamAllFixtures()
                     .flatMap(ViewerModel::unflattenNonFortresses)
                     .filter(IUnit.class::isInstance).map(IUnit.class::cast)
@@ -623,7 +623,7 @@ public class ViewerModel extends SimpleDriverModel implements IViewerModel {
 
     @Override
     public boolean changeKind(final HasKind item, final String newKind) {
-        if (item instanceof IUnit unit) {
+        if (item instanceof final IUnit unit) {
             // TODO: Extract this pipeline to a method
             final IUnit matching = getMap().streamAllFixtures()
                     .flatMap(ViewerModel::unflattenNonFortresses)
@@ -633,7 +633,7 @@ public class ViewerModel extends SimpleDriverModel implements IViewerModel {
                     .filter(u -> u.getKind().equals(item.getKind()))
                     .filter(u -> u.getId() == unit.getId())
                     .findAny().orElse(null);
-            if (matching instanceof HasMutableKind hmk) {
+            if (matching instanceof final HasMutableKind hmk) {
                 hmk.setKind(newKind);
                 getRestrictedMap().setModified(true);
                 return true;
@@ -641,7 +641,7 @@ public class ViewerModel extends SimpleDriverModel implements IViewerModel {
                 LovelaceLogger.warning("Unable to find unit to change kind");
                 return false;
             }
-        } else if (item instanceof UnitMember um) {
+        } else if (item instanceof final UnitMember um) {
             // TODO: Extract parts of this pipeline to a method, passing in the class to narrow
             // to and relevant predicate(s).
             final HasMutableKind matching = getMap().streamAllFixtures()

@@ -152,15 +152,15 @@ public class UnitReportGenerator extends AbstractReportGenerator<IUnit> {
             final List<UnitMember> others = new ArrayList<>();
             for (final UnitMember member : item) {
                 switch (member) {
-                    case IWorker w -> workers.add(w);
-                    case Implement i -> equipment.add(i);
-                    case IResourcePile r -> {
+                    case final IWorker w -> workers.add(w);
+                    case final Implement i -> equipment.add(i);
+                    case final IResourcePile r -> {
                         final List<IResourcePile> list = Optional.ofNullable(resources.get(r.getKind()))
                                 .orElseGet(ArrayList::new);
                         list.add(r);
                         resources.put(r.getKind(), list);
                     }
-                    case Animal a -> {
+                    case final Animal a -> {
                         final Animal existing = findAndRemoveFirst(animals,
                                 a::equalExceptPopulation);
                         if (existing == null) {

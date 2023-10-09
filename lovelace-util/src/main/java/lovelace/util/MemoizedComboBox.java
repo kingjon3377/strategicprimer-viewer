@@ -56,7 +56,7 @@ public class MemoizedComboBox extends ImprovedComboBox<String> {
         final Object retval = super.getSelectedItem();
         if (retval == null) {
             return null;
-        } else if (retval instanceof String s) {
+        } else if (retval instanceof final String s) {
             return s.strip();
         } else {
             return retval.toString().strip();
@@ -74,7 +74,7 @@ public class MemoizedComboBox extends ImprovedComboBox<String> {
 
     public @Nullable String getSelectedString() {
         final Object inner = getEditor().getEditorComponent();
-        if (inner instanceof JTextField tf) {
+        if (inner instanceof final JTextField tf) {
             final String text = tf.getText().strip();
             if (!text.isEmpty()) {
                 setSelectedItem(text);
@@ -86,7 +86,7 @@ public class MemoizedComboBox extends ImprovedComboBox<String> {
 
     public void addSubmitListener(final ActionListener listener) {
         final Object inner = getEditor().getEditorComponent();
-        if (inner instanceof JTextField tf) {
+        if (inner instanceof final JTextField tf) {
             tf.addActionListener(listener);
         } else {
             logger.accept("Editor wasn't a text field, but a " + inner.getClass().getName());

@@ -125,10 +125,10 @@ public class OrdersPanel extends BorderedPanel implements OrdersContainer {
     private @Nullable Object selection = null;
 
     private void fixColor() {
-        if (selection instanceof IUnit sel && !isCurrent.isCurrent(sel,
+        if (selection instanceof final IUnit sel && !isCurrent.isCurrent(sel,
                 spinnerModel.getNumber().intValue())) {
             area.setBackground(LIGHT_BLUE);
-        } else if (selection instanceof String sel) {
+        } else if (selection instanceof final String sel) {
             final int turn = spinnerModel.getNumber().intValue();
             for (final IUnit unit : playerUnits.apply(currentPlayer, sel)) {
                 if (!isCurrent.isCurrent(unit, turn)) {
@@ -147,7 +147,7 @@ public class OrdersPanel extends BorderedPanel implements OrdersContainer {
      */
     @Override
     public void apply() {
-        if (selection instanceof IUnit sel) {
+        if (selection instanceof final IUnit sel) {
             if (ordersConsumer != null) {
                 ordersConsumer.accept(sel,
                         spinnerModel.getNumber().intValue(),
@@ -155,7 +155,7 @@ public class OrdersPanel extends BorderedPanel implements OrdersContainer {
             }
             fixColor();
             getParent().getParent().repaint();
-        } else if (selection instanceof String sel) {
+        } else if (selection instanceof final String sel) {
             if (ordersConsumer != null) {
                 final int turn = spinnerModel.getNumber().intValue();
                 for (final IUnit unit : playerUnits.apply(currentPlayer, sel)) {
@@ -173,11 +173,11 @@ public class OrdersPanel extends BorderedPanel implements OrdersContainer {
      */
     @Override
     public void revert() {
-        if (selection instanceof IUnit sel) {
+        if (selection instanceof final IUnit sel) {
             area.setEnabled(true);
             area.setText(ordersSupplier.getOrders(sel,
                     spinnerModel.getNumber().intValue()));
-        } else if (selection instanceof String sel) {
+        } else if (selection instanceof final String sel) {
             area.setEnabled(true);
             @Nullable String orders = null;
             final int turn = spinnerModel.getNumber().intValue();
@@ -206,7 +206,7 @@ public class OrdersPanel extends BorderedPanel implements OrdersContainer {
         final TreePath selectedPath = event.getNewLeadSelectionPath();
         if (selectedPath != null) {
             final Object sel = selectedPath.getLastPathComponent();
-            if (sel instanceof DefaultMutableTreeNode dmtn) {
+            if (sel instanceof final DefaultMutableTreeNode dmtn) {
                 selection = dmtn.getUserObject();
             } else {
                 selection = sel;

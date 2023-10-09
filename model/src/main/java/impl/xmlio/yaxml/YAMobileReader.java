@@ -152,7 +152,7 @@ import common.xmlio.Warning;
             }
         }
         spinUntilEnd(element.getName(), stream);
-        if (retval instanceof HasMutableImage hmi) {
+        if (retval instanceof final HasMutableImage hmi) {
             hmi.setImage(getParameter(element, "image", ""));
         }
         return retval;
@@ -162,12 +162,12 @@ import common.xmlio.Warning;
     public void write(final ThrowingConsumer<String, IOException> ostream, final MobileFixture obj, final int indent) throws IOException {
         if (obj instanceof IUnit) {
             throw new IllegalArgumentException("Unit handled elsewhere");
-        } else if (obj instanceof AnimalTracks at) {
+        } else if (obj instanceof final AnimalTracks at) {
             writeTag(ostream, "animal", indent);
             writeProperty(ostream, "kind", at.getKind());
             writeProperty(ostream, "traces", "true");
             writeImageXML(ostream, at);
-        } else if (obj instanceof Animal a) {
+        } else if (obj instanceof final Animal a) {
             writeTag(ostream, "animal", indent);
             writeProperty(ostream, "kind", a.getKind());
             if (a.isTalking()) {
@@ -197,11 +197,11 @@ import common.xmlio.Warning;
             writeImageXML(ostream, (HasImage) obj);
         } else if (TAG_MAP.containsKey(obj.getClass())) {
             writeTag(ostream, TAG_MAP.get(obj.getClass()), indent);
-            if (obj instanceof HasKind hk) {
+            if (obj instanceof final HasKind hk) {
                 writeProperty(ostream, "kind", hk.getKind());
             }
             writeProperty(ostream, "id", obj.getId());
-            if (obj instanceof HasImage hi) {
+            if (obj instanceof final HasImage hi) {
                 writeImageXML(ostream, hi);
             }
         } else {

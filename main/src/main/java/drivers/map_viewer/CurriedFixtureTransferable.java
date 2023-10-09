@@ -51,7 +51,7 @@ import java.util.stream.Stream;
 
     @Override
     public boolean equals(final Object obj) {
-        return obj instanceof CurriedFixtureTransferable cft && cft.payload.equals(payload);
+        return obj instanceof final CurriedFixtureTransferable cft && cft.payload.equals(payload);
     }
 
     @Override

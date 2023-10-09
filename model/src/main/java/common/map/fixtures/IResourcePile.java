@@ -33,7 +33,7 @@ public interface IResourcePile extends UnitMember, FortressMember, HasKind, HasI
      */
     @Override
     default boolean equalsIgnoringID(final IFixture fixture) {
-        if (fixture instanceof IResourcePile rp) {
+        if (fixture instanceof final IResourcePile rp) {
             return rp.getKind().equals(getKind()) &&
                     rp.getContents().equals(getContents()) &&
                     rp.getQuantity().equals(getQuantity()) &&
@@ -51,7 +51,7 @@ public interface IResourcePile extends UnitMember, FortressMember, HasKind, HasI
     @Override
     default boolean isSubset(final IFixture obj, final Consumer<String> report) {
         if (obj.getId() == getId()) {
-            if (obj instanceof IResourcePile rp) {
+            if (obj instanceof final IResourcePile rp) {
                 boolean retval = true;
                 final Consumer<String> localReport =
                         (str) -> report.accept(String.format("In Resource Pile, ID #%d: %s", getId(), str));

@@ -70,10 +70,10 @@ public class QueryCLI implements ReadOnlyDriver {
     private static int countWorkersInIterable(final Player player, final Iterable<? extends IFixture> fixtures) {
         int retval = 0;
         for (final IFixture fixture : fixtures) {
-            if (fixture instanceof IWorker && fixtures instanceof HasOwner owned &&
+            if (fixture instanceof IWorker && fixtures instanceof final HasOwner owned &&
                     player.equals(owned.owner())) {
                 retval++;
-            } else if (fixture instanceof FixtureIterable<?> iter) {
+            } else if (fixture instanceof final FixtureIterable<?> iter) {
                 retval += countWorkersInIterable(player, iter);
             }
         }
@@ -267,7 +267,7 @@ public class QueryCLI implements ReadOnlyDriver {
                     cli.print("At ", location.toString());
                     cli.print(comparator.distanceString(location, "base"), ": ");
                     cli.print(town.getName(), ", a ", town.getTownSize().toString(), " ");
-                    if (town instanceof Village v &&
+                    if (town instanceof final Village v &&
                             !"human".equals(v.getRace())) {
                         cli.print(v.getRace(), " village");
                     } else {

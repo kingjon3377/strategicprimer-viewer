@@ -94,7 +94,7 @@ public class CropTabularReportGenerator implements ITableGenerator</*Forest|Shru
         final String size;
         final String sizeUnit;
         final String crop = ((HasKind) item).getKind();
-        if (item instanceof Forest f) {
+        if (item instanceof final Forest f) {
             kind = (f.isRows()) ? "rows" : "forest";
             cultivation = "---";
             status = "---";
@@ -105,7 +105,7 @@ public class CropTabularReportGenerator implements ITableGenerator</*Forest|Shru
                 size = "unknown";
                 sizeUnit = "---";
             }
-        } else if (item instanceof Shrub s) {
+        } else if (item instanceof final Shrub s) {
             kind = "shrub";
             cultivation = "---";
             status = "---";
@@ -116,7 +116,7 @@ public class CropTabularReportGenerator implements ITableGenerator</*Forest|Shru
                 size = "unknown";
                 sizeUnit = "---";
             }
-        } else if (item instanceof Meadow m) {
+        } else if (item instanceof final Meadow m) {
             kind = m.isField() ? "field" : "meadow";
             cultivation = m.isCultivated() ? "cultivated" : "wild";
             status = m.getStatus().toString();
@@ -127,7 +127,7 @@ public class CropTabularReportGenerator implements ITableGenerator</*Forest|Shru
                 size = "unknown";
                 sizeUnit = "---";
             }
-        } else if (item instanceof Grove g) {
+        } else if (item instanceof final Grove g) {
             kind = g.isOrchard() ? "orchard" : "grove";
             cultivation = g.isCultivated() ? "cultivated" : "wild";
             status = "---";

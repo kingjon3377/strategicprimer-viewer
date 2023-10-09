@@ -149,12 +149,12 @@ import java.util.Set;
     public void write(final ThrowingConsumer<String, IOException> ostream, final HarvestableFixture obj, final int indent)
             throws IOException {
         switch (obj) {
-            case CacheFixture c -> {
+            case final CacheFixture c -> {
                 writeTag(ostream, "cache", indent);
                 writeProperty(ostream, "kind", obj.getKind());
                 writeProperty(ostream, "contents", c.getContents());
             }
-            case Meadow m -> {
+            case final Meadow m -> {
                 writeTag(ostream, m.isField() ? "field" : "meadow", indent);
                 writeProperty(ostream, "kind", obj.getKind());
                 writeProperty(ostream, "cultivated", Boolean.toString(m.isCultivated()));
@@ -163,7 +163,7 @@ import java.util.Set;
                     writeProperty(ostream, "acres", m.getAcres().toString());
                 }
             }
-            case Grove g -> {
+            case final Grove g -> {
                 writeTag(ostream, g.isOrchard() ? "orchard" : "grove", indent);
                 writeProperty(ostream, "cultivated", Boolean.toString(g.isCultivated()));
                 writeProperty(ostream, "kind", obj.getKind());
@@ -171,25 +171,25 @@ import java.util.Set;
                     writeProperty(ostream, "count", g.getPopulation());
                 }
             }
-            case Mine m -> {
+            case final Mine m -> {
                 writeTag(ostream, "mine", indent);
                 writeProperty(ostream, "kind", obj.getKind());
                 writeProperty(ostream, "status", m.getStatus().toString());
             }
-            case MineralVein mv -> {
+            case final MineralVein mv -> {
                 writeTag(ostream, "mineral", indent);
                 writeProperty(ostream, "kind", obj.getKind());
                 writeProperty(ostream, "exposed", Boolean.toString(mv.isExposed()));
                 writeProperty(ostream, "dc", obj.getDC());
             }
-            case Shrub s -> {
+            case final Shrub s -> {
                 writeTag(ostream, "shrub", indent);
                 writeProperty(ostream, "kind", obj.getKind());
                 if (s.getPopulation() >= 1) {
                     writeProperty(ostream, "count", s.getPopulation());
                 }
             }
-            case StoneDeposit sd -> {
+            case final StoneDeposit sd -> {
                 writeTag(ostream, "stone", indent);
                 writeProperty(ostream, "kind", sd.getStone().toString());
                 writeProperty(ostream, "dc", obj.getDC());

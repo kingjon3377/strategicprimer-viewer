@@ -83,7 +83,7 @@ public final class SPDatabaseWriter implements SPWriter {
 			});
 			notesInitialized.add(sql);
 		}
-		if (obj instanceof HasNotes hn) {
+		if (obj instanceof final HasNotes hn) {
 			sql.transaction().accept(db -> {
 				for (final Integer player : hn.getNotesPlayers()) {
 					final String note = hn.getNote(player);

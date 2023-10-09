@@ -63,7 +63,7 @@ public class Hill implements TerrainFixture, HasMutableImage {
 
     @Override
     public boolean equals(final Object obj) {
-        if (obj instanceof Hill it) {
+        if (obj instanceof final Hill it) {
             return it.getId() == id;
         } else {
             return false;

@@ -206,22 +206,22 @@ final class DBMapReader {
 					throw new IllegalArgumentException("Null parent");
 				} else if (member == null) {
 					throw new IllegalArgumentException("Null member");
-				} else if (parent instanceof IMutableFortress p && member instanceof FortressMember m) {
+				} else if (parent instanceof final IMutableFortress p && member instanceof final FortressMember m) {
 					p.addMember(m);
-				} else if (parent instanceof IMutableUnit p && member instanceof UnitMember m) {
+				} else if (parent instanceof final IMutableUnit p && member instanceof final UnitMember m) {
 					p.addMember(m);
-				} else if (parent instanceof AbstractTown p && member instanceof CommunityStats m &&
+				} else if (parent instanceof final AbstractTown p && member instanceof final CommunityStats m &&
 					p.getPopulation() == null) {
 					p.setPopulation(m);
-				} else if (parent instanceof Village p && member instanceof CommunityStats m &&
+				} else if (parent instanceof final Village p && member instanceof final CommunityStats m &&
 					p.getPopulation() == null) {
 					p.setPopulation(m);
-				} else if (parent instanceof IMutableWorker p && member instanceof Animal m &&
+				} else if (parent instanceof final IMutableWorker p && member instanceof final Animal m &&
 					p.getMount() == null) {
 					p.setMount(m);
-				} else if (parent instanceof IMutableWorker p && member instanceof Implement m) {
+				} else if (parent instanceof final IMutableWorker p && member instanceof final Implement m) {
 					p.addEquipment(m);
-				} else if (parent instanceof AbstractTown p && member instanceof CommunityStats && // TODO: combine with earlier AbstractTown case?
+				} else if (parent instanceof final AbstractTown p && member instanceof CommunityStats && // TODO: combine with earlier AbstractTown case?
 					p.getPopulation() != null) {
 					throw new IllegalStateException("Community stats already set");
 				} else {

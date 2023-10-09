@@ -207,7 +207,7 @@ import common.map.fixtures.mobile.AnimalTracks;
         if (number instanceof Integer || number instanceof Long
                 || number instanceof Short || number instanceof Byte) {
             return BigDecimal.valueOf(number.longValue());
-        } else if (number instanceof BigDecimal d) {
+        } else if (number instanceof final BigDecimal d) {
             return d;
         } else {
             return BigDecimal.valueOf(number.doubleValue());
@@ -216,7 +216,7 @@ import common.map.fixtures.mobile.AnimalTracks;
 
     private static Stream<?> flatten(final @Nullable Object item) {
         // Note that workers are counted separately, so while we include their equipment and mounts we don't include them.
-        if (item instanceof IWorker w) {
+        if (item instanceof final IWorker w) {
             return Stream.concat(Stream.concat(StreamSupport.stream(w.spliterator(), false),
                             w.getEquipment().stream()), Stream.of(w.getMount()))
                     .filter(Objects::nonNull);
@@ -396,7 +396,7 @@ import common.map.fixtures.mobile.AnimalTracks;
             cli.println("Remaining fixtures:");
             cli.println();
             for (final IFixture fixture : remaining) {
-                if (fixture instanceof TileFixture tf) {
+                if (fixture instanceof final TileFixture tf) {
                     cli.println(String.format("- %s", tf.getShortDescription())); // TODO: Move getShortDescription up to IFixture?
                 } else {
                     cli.println(String.format("- %s", fixture.toString()));

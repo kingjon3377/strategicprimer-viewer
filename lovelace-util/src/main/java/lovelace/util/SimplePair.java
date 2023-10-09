@@ -29,7 +29,7 @@ public final class SimplePair<Type> {
     public boolean equals(final Object obj) {
         if (this == obj) {
             return true;
-        } else if (obj instanceof SimplePair sp) {
+        } else if (obj instanceof final SimplePair sp) {
             return Objects.equals(first, sp.getFirst()) && Objects.equals(second, sp.getSecond());
         } else {
             return false;

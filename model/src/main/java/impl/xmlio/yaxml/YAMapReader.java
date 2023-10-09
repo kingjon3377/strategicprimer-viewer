@@ -97,7 +97,7 @@ import java.util.function.Predicate;
     private static StartElement getFirstStartElement(final Iterable<XMLEvent> stream, final StartElement parent)
             throws SPFormatException, XMLStreamException {
         for (final XMLEvent element : stream) {
-            if (element instanceof StartElement se && isSupportedNamespace(se.getName())) {
+            if (element instanceof final StartElement se && isSupportedNamespace(se.getName())) {
                 return se;
             }
         }
@@ -221,7 +221,7 @@ import java.util.function.Predicate;
         final Predicate<Object> isFortress = IFortress.class::isInstance;
         final Function<Object, IFortress> fortressCast = IFortress.class::cast;
         for (final XMLEvent event : stream) {
-            if (event instanceof StartElement se && isSupportedNamespace(se.getName())) {
+            if (event instanceof final StartElement se && isSupportedNamespace(se.getName())) {
                 final String type = se.getName().getLocalPart().toLowerCase();
                 if ("player".equals(type)) {
                     retval.addPlayer(playerReader.read(se, tagStack.peekFirst(), stream));
@@ -304,7 +304,7 @@ import java.util.function.Predicate;
                         default -> {
                             final QName top = tagStack.peekFirst();
                             final TileFixture child = parseFixture(se, top, stream);
-                            if (child instanceof IFortress f &&
+                            if (child instanceof final IFortress f &&
                                     retval.getFixtures(point).stream()
                                             .filter(isFortress)
                                             .map(fortressCast)
@@ -322,7 +322,7 @@ import java.util.function.Predicate;
                             tagStack.peekFirst(), se, "tile",
                             "elsewhere");
                 }
-            } else if (event instanceof EndElement ee) {
+            } else if (event instanceof final EndElement ee) {
                 if (!tagStack.isEmpty() &&
                         tagStack.peekFirst().equals(ee.getName())) {
                     tagStack.removeFirst();
@@ -333,7 +333,7 @@ import java.util.function.Predicate;
                         "elsewhere".equalsIgnoreCase(ee.getName().getLocalPart())) {
                     point = null;
                 }
-            } else if (event instanceof Characters c) {
+            } else if (event instanceof final Characters c) {
                 final String data = c.getData().strip();
                 if (!data.isEmpty()) {
                     retval.addFixture(point == null ? Point.INVALID_POINT : point,

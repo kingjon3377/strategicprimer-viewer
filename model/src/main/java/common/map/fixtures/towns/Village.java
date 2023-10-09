@@ -213,7 +213,7 @@ public class Village implements IMutableTownFixture, HasMutableImage, IFixture,
      */
     @Override
     public boolean equals(final Object obj) {
-        if (obj instanceof Village it && status == it.getStatus() &&
+        if (obj instanceof final Village it && status == it.getStatus() &&
                 name.equals(it.getName()) && id == it.getId() &&
                 owner.equals(it.owner()) &&
                 race.equals(it.getRace())) {
@@ -237,7 +237,7 @@ public class Village implements IMutableTownFixture, HasMutableImage, IFixture,
      */
     @Override
     public boolean equalsIgnoringID(final IFixture fixture) {
-        if (fixture instanceof Village it && status == it.getStatus() &&
+        if (fixture instanceof final Village it && status == it.getStatus() &&
                 name.equals(it.getName()) &&
                 owner.equals(it.owner())) {
             return Objects.equals(population, it.getPopulation());
@@ -267,7 +267,7 @@ public class Village implements IMutableTownFixture, HasMutableImage, IFixture,
      */
     @Override
     public boolean isSubset(final IFixture obj, final Consumer<String> report) {
-        if (obj instanceof Village it) {
+        if (obj instanceof final Village it) {
             if (id != obj.getId()) {
                 report.accept("IDs differ");
             } else if (status != it.getStatus()) {

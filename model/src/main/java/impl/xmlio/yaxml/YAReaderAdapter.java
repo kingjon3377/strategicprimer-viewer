@@ -128,9 +128,9 @@ import java.util.List;
      */
     public void write(final ThrowingConsumer<String, IOException> ostream, final Object obj, final int indent) throws IOException {
         final Class<?> cls = obj.getClass();
-        if (obj instanceof River r) {
+        if (obj instanceof final River r) {
             YAMapReader.writeRiver(ostream, r, indent);
-        } else if (obj instanceof ProxyFor<?> p) {
+        } else if (obj instanceof final ProxyFor<?> p) {
             if (p.getProxied().isEmpty()) {
                 throw new IllegalArgumentException(
                         "To write a proxy object, it has to be proxying for at least one object.");
@@ -140,11 +140,11 @@ import java.util.List;
                     "Wanted to write a proxy");
             write(ostream, p.getProxied().iterator().next(), indent);
             return;
-        } else if (obj instanceof IJob j) {
+        } else if (obj instanceof final IJob j) {
             YAWorkerReader.writeJob(ostream, j, indent);
-        } else if (obj instanceof ISkill s) {
+        } else if (obj instanceof final ISkill s) {
             YAWorkerReader.writeSkill(ostream, s, indent);
-        } else if (obj instanceof CommunityStats cs) {
+        } else if (obj instanceof final CommunityStats cs) {
             townReader.writeCommunityStats(ostream, cs, indent);
         } else if (writerCache.containsKey(cls)) {
             writerCache.get(cls).writeRaw(ostream, obj, indent);

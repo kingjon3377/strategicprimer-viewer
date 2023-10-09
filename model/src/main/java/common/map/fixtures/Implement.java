@@ -99,7 +99,7 @@ public class Implement implements UnitMember, FortressMember, HasKind, HasMutabl
     public boolean equalsIgnoringID(final IFixture fixture) {
         if (this == fixture) {
             return true;
-        } else if (fixture instanceof Implement that) {
+        } else if (fixture instanceof final Implement that) {
             return kind.equals(that.kind) && that.getCount() == count;
         } else {
             return false;
@@ -114,7 +114,7 @@ public class Implement implements UnitMember, FortressMember, HasKind, HasMutabl
         if (this == obj) {
             return true;
         } else if (obj.getId() == id) {
-            if (obj instanceof Implement that) {
+            if (obj instanceof final Implement that) {
                 if (kind.equals(that.getKind())) {
                     if (that.getCount() <= count) {
                         return true;
@@ -160,7 +160,7 @@ public class Implement implements UnitMember, FortressMember, HasKind, HasMutabl
     public boolean equals(final Object obj) {
         if (this == obj) {
             return true;
-        } else if (obj instanceof Implement that) {
+        } else if (obj instanceof final Implement that) {
             return that.getId() == id && kind.equals(that.getKind()) &&
                     that.getCount() == count;
         } else {

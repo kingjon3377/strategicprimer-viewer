@@ -31,7 +31,7 @@ public class TurnRunningCLIFactory implements ModelDriverFactory {
 
     @Override
     public ModelDriver createDriver(final ICLIHelper cli, final SPOptions options, final IDriverModel model) {
-        if (model instanceof ITurnRunningModel trm) {
+        if (model instanceof final ITurnRunningModel trm) {
             return new TurnRunningCLI(cli, trm);
         } else {
             return createDriver(cli, options, new TurnRunningModel(model));

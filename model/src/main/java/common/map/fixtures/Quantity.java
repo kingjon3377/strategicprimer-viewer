@@ -68,7 +68,7 @@ public record Quantity(Number number, String units) implements Subsettable<Quant
 	public boolean equals(final Object obj) {
 		if (this == obj) {
 			return true;
-		} else if (obj instanceof Quantity q) {
+		} else if (obj instanceof final Quantity q) {
 			return units.equals(q.units()) &&
 				NumberComparator.compareNumbers(number, q.number()) == 0;
 		} else {

@@ -123,7 +123,7 @@ public abstract /* sealed */ class SimpleImmortal
 
     @Override
     public final boolean equals(final Object obj) {
-        if (obj instanceof SimpleImmortal si) {
+        if (obj instanceof final SimpleImmortal si) {
             return si.getId() == id &&
                     kind.equals(si.getKind());
         } else {
@@ -141,7 +141,7 @@ public abstract /* sealed */ class SimpleImmortal
      */
     @Override
     public final boolean equalsIgnoringID(final IFixture fixture) {
-        if (fixture instanceof SimpleImmortal si) {
+        if (fixture instanceof final SimpleImmortal si) {
             return si.getKind().equals(kind);
         } else {
             return false;
@@ -154,7 +154,7 @@ public abstract /* sealed */ class SimpleImmortal
     @Override
     public final boolean isSubset(final IFixture obj, final Consumer<String> report) {
         if (obj.getId() == id) {
-            if (obj instanceof SimpleImmortal si &&
+            if (obj instanceof final SimpleImmortal si &&
                     si.getKind().equals(kind)) {
                 return true;
             } else {

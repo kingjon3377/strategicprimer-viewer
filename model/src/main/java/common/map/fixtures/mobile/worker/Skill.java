@@ -62,7 +62,7 @@ public final class Skill implements IMutableSkill {
      */
     @Override
     public boolean equals(final Object obj) {
-        if (obj instanceof ISkill that) {
+        if (obj instanceof final ISkill that) {
             return name.equals(that.getName()) &&
                     skillLevel == that.getLevel() &&
                     time == that.getHours();

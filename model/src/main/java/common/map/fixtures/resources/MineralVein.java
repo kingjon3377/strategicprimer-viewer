@@ -115,7 +115,7 @@ public class MineralVein implements HarvestableFixture, MineralFixture {
 
     @Override
     public boolean equalsIgnoringID(final IFixture fixture) {
-        if (fixture instanceof MineralVein it) {
+        if (fixture instanceof final MineralVein it) {
             return kind.equals(it.getKind()) &&
                     exposed == it.isExposed();
         } else {
@@ -125,7 +125,7 @@ public class MineralVein implements HarvestableFixture, MineralFixture {
 
     @Override
     public boolean equals(final Object obj) {
-        if (obj instanceof MineralVein it && equalsIgnoringID(it)) {
+        if (obj instanceof final MineralVein it && equalsIgnoringID(it)) {
             return it.getId() == id;
         } else {
             return false;

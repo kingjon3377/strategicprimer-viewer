@@ -182,7 +182,7 @@ public final class WorkerStats {
 
     @Override
     public boolean equals(final Object obj) {
-        if (obj instanceof WorkerStats that) {
+        if (obj instanceof final WorkerStats that) {
             return hitPoints == that.hitPoints &&
                     maxHitPoints == that.maxHitPoints &&
                     strength == that.strength &&

@@ -55,7 +55,7 @@ public class TurnRunningModel extends ExplorationModel implements ITurnRunningMo
 	 * is intended to be used in {@link Stream#flatMap}.
 	 */
 	private static Stream<IFixture> unflattenNonFortresses(final TileFixture fixture) {
-		if (fixture instanceof IFortress f) {
+		if (fixture instanceof final IFortress f) {
 			return f.stream().map(IFixture.class::cast);
 		} else {
 			return Stream.of(fixture);
@@ -68,7 +68,7 @@ public class TurnRunningModel extends ExplorationModel implements ITurnRunningMo
 	 * is intended to be used in {@link Stream#flatMap}.
 	 */
 	private static Stream<IFixture> partiallyFlattenFortresses(final TileFixture fixture) {
-		if (fixture instanceof IFortress f) {
+		if (fixture instanceof final IFortress f) {
 			return Stream.concat(Stream.of(fixture), f.stream());
 		} else {
 			return Stream.of(fixture);
@@ -330,7 +330,7 @@ public class TurnRunningModel extends ExplorationModel implements ITurnRunningMo
 		boolean any = false;
 		final Random rng = new Random(contextValue);
 		for (final UnitMember member : unit) {
-			if (member instanceof IWorker w && addHoursToSkill(w, jobName, skillName, hours,
+			if (member instanceof final IWorker w && addHoursToSkill(w, jobName, skillName, hours,
 				rng.nextInt(100))) {
 				any = true;
 			}
@@ -480,9 +480,9 @@ public class TurnRunningModel extends ExplorationModel implements ITurnRunningMo
 							resource.getContents().equals(item.getContents()) && resource.getId() == item.getId())) {
 						final BigDecimal qty = decimalize(item.getQuantity().number());
 						if (qty.compareTo(amount) <= 0) {
-							if (container instanceof IMutableUnit unit) {
+							if (container instanceof final IMutableUnit unit) {
 								unit.removeMember(item);
-							} else if (container instanceof IMutableFortress fort) {
+							} else if (container instanceof final IMutableFortress fort) {
 								fort.removeMember(item);
 							} else {
 								throw new IllegalStateException(
@@ -531,9 +531,9 @@ public class TurnRunningModel extends ExplorationModel implements ITurnRunningMo
 					.map(IMutableResourcePile.class::cast).toList()) {
 					if (resource.isSubset(item, x -> {
 					})) { // TODO: is that the right way around?
-						if (container instanceof IMutableUnit unit) {
+						if (container instanceof final IMutableUnit unit) {
 							unit.removeMember(item);
-						} else if (container instanceof IMutableFortress fort) {
+						} else if (container instanceof final IMutableFortress fort) {
 							fort.removeMember(item);
 						} else {
 							throw new IllegalStateException(
@@ -826,9 +826,9 @@ public class TurnRunningModel extends ExplorationModel implements ITurnRunningMo
 				if (matching != null && destination != null) {
 					map.setModified(true);
 					if (quantity.doubleValue() >= matching.getQuantity().number().doubleValue()) {
-						if (container instanceof IMutableFortress fort) { // TODO: Combine with other block when a supertype is added for this method
+						if (container instanceof final IMutableFortress fort) { // TODO: Combine with other block when a supertype is added for this method
 							fort.removeMember(matching);
-						} else if (container instanceof IMutableUnit unit) {
+						} else if (container instanceof final IMutableUnit unit) {
 							unit.removeMember(matching);
 						} else {
 							throw new IllegalStateException("Unexpected fixture-container type");
@@ -898,9 +898,9 @@ public class TurnRunningModel extends ExplorationModel implements ITurnRunningMo
 				if (matching != null && destination != null) {
 					map.setModified(true);
 					if (quantity.doubleValue() >= matching.getQuantity().number().doubleValue()) {
-						if (container instanceof IMutableFortress fort) { // TODO: Combine with other block when a supertype is added for this method
+						if (container instanceof final IMutableFortress fort) { // TODO: Combine with other block when a supertype is added for this method
 							fort.removeMember(matching);
-						} else if (container instanceof IMutableUnit unit) {
+						} else if (container instanceof final IMutableUnit unit) {
 							unit.removeMember(matching);
 						} else {
 							throw new IllegalStateException("Unexpected fixture-container type");

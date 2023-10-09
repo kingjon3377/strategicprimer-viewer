@@ -350,7 +350,7 @@ import worker.common.IFixtureEditHelper;
         LovelaceLogger.trace("ExplorationPanel.tracksCreator: Determined which source to use");
         final TileFixture animal = source.apply(point).iterator().next().getValue1();
         LovelaceLogger.trace("ExplorationPanel.tracksCreator: Got first item from source");
-        if (animal instanceof Animal a) {
+        if (animal instanceof final Animal a) {
             return new AnimalTracks(a.getKind());
         } else if (animal instanceof AnimalTracks) {
             return ((AnimalTracks) animal).copy(IFixture.CopyBehavior.ZERO);
@@ -431,7 +431,7 @@ import worker.common.IFixtureEditHelper;
                     continue;
                 } else {
                     final IFixture.CopyBehavior zero;
-                    if (fixture instanceof HasOwner owned && (!player.equals(owned.owner()) ||
+                    if (fixture instanceof final HasOwner owned && (!player.equals(owned.owner()) ||
                             fixture instanceof Village)) {
                         zero = IFixture.CopyBehavior.ZERO;
                     } else if (fixture instanceof HasPopulation || fixture instanceof HasExtent)

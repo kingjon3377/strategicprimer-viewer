@@ -135,7 +135,7 @@ public final class MapReaderAdapter {
                 throw new DriverFailedException(except, "I/O error writing to " + mainFile);
             }
         }
-        if (model instanceof IMultiMapModel mmm) {
+        if (model instanceof final IMultiMapModel mmm) {
             for (final IMapNG map : mmm.getSubordinateMaps()) {
                 final Path filename = map.getFilename();
                 if (filename == null) {

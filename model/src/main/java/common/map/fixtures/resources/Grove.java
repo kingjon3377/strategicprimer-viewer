@@ -160,7 +160,7 @@ public class Grove implements HarvestableFixture, HasPopulation<Grove> {
 
     @Override
     public boolean equals(final Object obj) {
-        if (obj instanceof Grove that) {
+        if (obj instanceof final Grove that) {
             return kind.equals(that.getKind()) &&
                     orchard == that.isOrchard() &&
                     cultivated == that.isCultivated() &&
@@ -178,7 +178,7 @@ public class Grove implements HarvestableFixture, HasPopulation<Grove> {
 
     @Override
     public boolean equalsIgnoringID(final IFixture fixture) {
-        if (fixture instanceof Grove that) {
+        if (fixture instanceof final Grove that) {
             return kind.equals(that.getKind()) &&
                     orchard == that.isOrchard() &&
                     cultivated == that.isCultivated() &&
@@ -193,7 +193,7 @@ public class Grove implements HarvestableFixture, HasPopulation<Grove> {
         if (other.getId() != id) {
             report.accept("Different IDs");
             return false;
-        } else if (other instanceof Grove it) {
+        } else if (other instanceof final Grove it) {
             boolean retval = true;
             final Consumer<String> localReport;
             if (orchard) {

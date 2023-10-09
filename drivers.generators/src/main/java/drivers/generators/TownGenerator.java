@@ -222,13 +222,13 @@ import java.math.BigDecimal;
 	 * uncultivated grove or orchard, an abandoned mine, or a cache is not claimable.
 	 */
 	private static boolean isReallyClaimable(final HarvestableFixture fix) {
-		if (fix instanceof MineralVein mv) {
+		if (fix instanceof final MineralVein mv) {
 			return mv.isExposed();
-		} else if (fix instanceof Meadow m) {
+		} else if (fix instanceof final Meadow m) {
 			return m.isCultivated();
-		} else if (fix instanceof Grove g) {
+		} else if (fix instanceof final Grove g) {
 			return g.isCultivated();
-		} else if (fix instanceof Mine m) {
+		} else if (fix instanceof final Mine m) {
 			return TownStatus.Active == m.getStatus();
 		} else if (fix instanceof CacheFixture) {
 			return false;
@@ -384,10 +384,10 @@ import java.math.BigDecimal;
 	 */
 	private static String getHarvestableKind(final HarvestableFixture fixture) {
         return switch (fixture) {
-            case Grove g -> (g.isOrchard()) ? "food" : "wood";
-            case Meadow m -> (m.isField()) ? "food" : "fodder";
-            case MineralVein mineralVein -> "mineral";
-            case StoneDeposit stoneDeposit -> "stone";
+            case final Grove g -> (g.isOrchard()) ? "food" : "wood";
+            case final Meadow m -> (m.isField()) ? "food" : "fodder";
+            case final MineralVein mineralVein -> "mineral";
+            case final StoneDeposit stoneDeposit -> "stone";
             default -> "unknown"; // TODO: log this case?
         };
 	}

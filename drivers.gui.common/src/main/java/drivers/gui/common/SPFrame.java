@@ -145,7 +145,7 @@ public class SPFrame extends JFrame implements ISPWindow {
 	}
 
 	private String refreshTitle() {
-		if (driver instanceof ModelDriver md &&
+		if (driver instanceof final ModelDriver md &&
 			md.getModel().getMap().getFilename() != null) {
 			final IMapNG map = md.getModel().getMap();
 			return String.format("%s%s | %s", map.isModified() ? "*" : "",

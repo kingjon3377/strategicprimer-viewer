@@ -66,7 +66,7 @@ public final class NotesPanel extends BorderedPanel
 	@Override
 	public void memberSelected(final @Nullable UnitMember previousSelection, final @Nullable UnitMember selected) {
 		if (!Objects.equals(selected, current)) {
-			if (selected instanceof HasNotes hn) {
+			if (selected instanceof final HasNotes hn) {
 				current = hn;
 				notesArea.setEnabled(true);
 				revertNotes();

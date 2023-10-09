@@ -73,7 +73,7 @@ import java.util.Set;
     @Override
     public void write(final ThrowingConsumer<String, IOException> ostream, final TerrainFixture obj, final int indent) throws IOException {
         switch (obj) {
-            case Forest f -> {
+            case final Forest f -> {
                 writeTag(ostream, "forest", indent);
                 writeProperty(ostream, "kind", f.getKind());
                 if (f.isRows()) {
@@ -83,8 +83,8 @@ import java.util.Set;
                     writeProperty(ostream, "acres", f.getAcres().toString());
                 }
             }
-            case Hill hill -> writeTag(ostream, "hill", indent);
-            case Oasis oasis -> writeTag(ostream, "oasis", indent);
+            case final Hill hill -> writeTag(ostream, "hill", indent);
+            case final Oasis oasis -> writeTag(ostream, "oasis", indent);
             default -> throw new IllegalArgumentException("Unhandled TerrainFixture type");
         }
         // All types we currently support implement HasImage

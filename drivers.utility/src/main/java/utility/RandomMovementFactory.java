@@ -36,7 +36,7 @@ public class RandomMovementFactory implements ModelDriverFactory {
 
     @Override
     public ModelDriver createDriver(final ICLIHelper cli, final SPOptions options, final IDriverModel model) {
-        if (model instanceof IExplorationModel em) {
+        if (model instanceof final IExplorationModel em) {
             return new RandomMovementCLI(options, em);
         } else {
             return createDriver(cli, options, new ExplorationModel(model));

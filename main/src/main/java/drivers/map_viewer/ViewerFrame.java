@@ -60,7 +60,7 @@ public final class ViewerFrame extends SPFrame implements MapGUI {
     private static final long serialVersionUID = 1L;
 
     private static JFrame containingWindow(final Component component) {
-        if (component instanceof JFrame f) {
+        if (component instanceof final JFrame f) {
             return f;
         } else {
             return containingWindow(component.getParent());

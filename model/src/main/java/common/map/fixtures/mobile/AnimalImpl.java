@@ -189,7 +189,7 @@ public class AnimalImpl implements Animal, HasMutableImage {
     public boolean equals(final Object obj) {
         if (this == obj) {
             return true;
-        } else if (obj instanceof Animal a) {
+        } else if (obj instanceof final Animal a) {
             return a.getId() == id && equalsIgnoringID(a);
         } else {
             return false;

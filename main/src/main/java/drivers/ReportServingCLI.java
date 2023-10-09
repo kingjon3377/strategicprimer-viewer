@@ -68,7 +68,7 @@ import org.takes.http.Exit;
 
     private void serveReports(final int port, final @Nullable Player currentPlayer) throws DriverFailedException {
         final Map<Path, String> cache = new HashMap<>();
-        if (model instanceof IMultiMapModel mmm) { // TODO: Also require there to be 1+ sub-maps w/ filenames for this case
+        if (model instanceof final IMultiMapModel mmm) { // TODO: Also require there to be 1+ sub-maps w/ filenames for this case
             for (final IMapNG map : mmm.getAllMaps()) {
                 final Path file = map.getFilename();
                 if (file == null) {

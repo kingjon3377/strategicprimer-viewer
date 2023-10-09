@@ -35,9 +35,9 @@ import impl.xmlio.exceptions.UnwantedChildException;
         expectAttributes(element, "turn", "image");
         final StringBuilder builder = new StringBuilder();
         for (final XMLEvent event : stream) {
-            if (event instanceof StartElement se) {
+            if (event instanceof final StartElement se) {
                 throw new UnwantedChildException(element.getName(), se);
-            } else if (event instanceof Characters c) {
+            } else if (event instanceof final Characters c) {
                 builder.append(c.getData());
             } else if (isMatchingEnd(element.getName(), event)) {
                 break;

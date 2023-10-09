@@ -115,11 +115,11 @@ import impl.xmlio.exceptions.UnwantedChildException;
         expectAttributes(element, "player");
         final StringBuilder retval = new StringBuilder();
         for (final XMLEvent event : stream) {
-            if (event instanceof StartElement se && isSupportedNamespace(se.getName())) {
+            if (event instanceof final StartElement se && isSupportedNamespace(se.getName())) {
                 throw new UnwantedChildException(element.getName(), se);
             } else if (isMatchingEnd(element.getName(), event)) {
                 break;
-            } else if (event instanceof Characters c) {
+            } else if (event instanceof final Characters c) {
                 retval.append(c.getData());
             }
         }
@@ -133,7 +133,7 @@ import impl.xmlio.exceptions.UnwantedChildException;
         final IMutableJob retval = new Job(getParameter(element, "name"),
                 getIntegerParameter(element, "level"));
         for (final XMLEvent event : stream) {
-            if (event instanceof StartElement se && isSupportedNamespace(se.getName())) {
+            if (event instanceof final StartElement se && isSupportedNamespace(se.getName())) {
                 if ("skill".equalsIgnoreCase(se.getName().getLocalPart())) {
                     retval.addSkill(parseSkill(se, element.getName()));
                     spinUntilEnd(se.getName(), stream);
@@ -174,7 +174,7 @@ import impl.xmlio.exceptions.UnwantedChildException;
         retval.setImage(getParameter(element, "image", ""));
         retval.setPortrait(getParameter(element, "portrait", ""));
         for (final XMLEvent event : stream) {
-            if (event instanceof StartElement se && isSupportedNamespace(se.getName())) {
+            if (event instanceof final StartElement se && isSupportedNamespace(se.getName())) {
                 if ("job".equalsIgnoreCase(se.getName().getLocalPart())) {
                     retval.addJob(parseJob(se, element.getName(), stream));
                 } else if ("stats".equalsIgnoreCase(se.getName().getLocalPart())) {
@@ -185,7 +185,7 @@ import impl.xmlio.exceptions.UnwantedChildException;
                             readNote(se, element.getName(), stream));
                 } else if ("animal".equalsIgnoreCase(se.getName().getLocalPart()) && retval.getMount() == null) {
                     final MobileFixture animal = mobileReader.read(se, element.getName(), stream);
-                    if (animal instanceof Animal a) {
+                    if (animal instanceof final Animal a) {
                         retval.setMount(a);
                     } else {
                         throw new UnwantedChildException(se.getName(), element);

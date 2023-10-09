@@ -147,7 +147,7 @@ public class AdventureFixture implements ExplorableFixture, HasMutableOwner, Sub
 	public boolean equals(final Object obj) {
 		if (this == obj) {
 			return true;
-		} else if (obj instanceof AdventureFixture af) {
+		} else if (obj instanceof final AdventureFixture af) {
 			return id == af.getId() && equalsIgnoringID(af);
 		} else {
 			return false;
@@ -182,7 +182,7 @@ public class AdventureFixture implements ExplorableFixture, HasMutableOwner, Sub
 	@Override
 	public boolean isSubset(final IFixture obj, final Consumer<String> report) {
 		if (obj.getId() == id) {
-			if (obj instanceof AdventureFixture af) {
+			if (obj instanceof final AdventureFixture af) {
 				final Consumer<String> localReport =
 					(str) -> report.accept(String.format("In adventure with ID #%d: %s", id, str));
 				if (!briefDescription.equals(af.getBriefDescription())) {

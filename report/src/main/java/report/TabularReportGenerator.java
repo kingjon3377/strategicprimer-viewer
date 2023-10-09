@@ -129,12 +129,12 @@ public final class TabularReportGenerator {
     private static int sorter(final Object one, final Object two) {
         final String actualOne;
         final String actualTwo;
-        if (one instanceof String s) {
+        if (one instanceof final String s) {
             actualOne = s;
         } else {
             actualOne = one.toString();
         }
-        if (two instanceof String s) {
+        if (two instanceof final String s) {
             actualTwo = s;
         } else {
             actualTwo = two.toString();

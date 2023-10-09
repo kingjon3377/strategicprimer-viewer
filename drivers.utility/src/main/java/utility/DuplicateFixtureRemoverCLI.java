@@ -61,7 +61,7 @@ public class DuplicateFixtureRemoverCLI implements CLIDriver {
             return ((HasKind) member).getKind();
         } else if (member == null) {
             return "null";
-        } else if (member instanceof IResourcePile rp) {
+        } else if (member instanceof final IResourcePile rp) {
             return rp.getContents();
         } else {
             return member.toString();

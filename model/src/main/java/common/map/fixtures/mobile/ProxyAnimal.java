@@ -96,7 +96,7 @@ import common.map.IFixture;
 
     @Override
     public Animal combined(final Animal addend) {
-        if (addend instanceof AnimalProxy ap && ap.isParallel()) {
+        if (addend instanceof final AnimalProxy ap && ap.isParallel()) {
             final List<Animal> interim = new ArrayList<>();
             final Iterator<Animal> ours = getProxied().iterator();
             final Iterator<Animal> theirs = ap.getProxied().iterator();
@@ -145,7 +145,7 @@ import common.map.IFixture;
     public boolean equals(final Object obj) {
         if (this == obj) {
             return true;
-        } else if (obj instanceof Animal a) {
+        } else if (obj instanceof final Animal a) {
             return a.getId() == getId() && equalsIgnoringID(a);
         } else {
             return false;

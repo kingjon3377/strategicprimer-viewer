@@ -184,7 +184,7 @@ public class ViewerGUI implements ViewerDriver {
     /* package */
     static ViewerGUI createDriver(final ICLIHelper cli, final SPOptions options,
                                   final IDriverModel model) {
-        if (model instanceof IViewerModel vm) {
+        if (model instanceof final IViewerModel vm) {
             LovelaceLogger.trace("Creating a viewer-GUI instance for a model of the proper type");
             return new ViewerGUI(vm, options, cli);
         } else {

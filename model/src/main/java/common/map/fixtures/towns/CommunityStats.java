@@ -182,7 +182,7 @@ public final class CommunityStats implements Subsettable<@Nullable CommunityStat
 
 	@Override
 	public boolean equals(final Object that) {
-		if (that instanceof CommunityStats it) {
+		if (that instanceof final CommunityStats it) {
 			return population == it.getPopulation() &&
 				skillLevels.equals(it.getHighestSkillLevels()) &&
 				workedFieldIDs.equals(it.getWorkedFields()) &&

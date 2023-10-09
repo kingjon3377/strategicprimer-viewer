@@ -98,7 +98,7 @@ public class IOHandler implements ActionListener {
             LovelaceLogger.trace("main map was not modified");
         }
 
-        if (md instanceof MultiMapGUIDriver mmgd && mmgd.getModel().streamSubordinateMaps()
+        if (md instanceof final MultiMapGUIDriver mmgd && mmgd.getModel().streamSubordinateMaps()
                 .anyMatch(IMapNG::isModified)) {
             LovelaceLogger.trace("Subordinate map(s) modified.");
             final int answer = JOptionPane.showConfirmDialog(window,
@@ -153,10 +153,10 @@ public class IOHandler implements ActionListener {
     }
 
     private void loadHandler(final @Nullable Component source, final String errorTitle) {
-        if (driver instanceof GUIDriver gd) {
+        if (driver instanceof final GUIDriver gd) {
             SPFileChooser.open((Path) null)
                     .call(loadHandlerImpl(gd::open, source, errorTitle));
-        } else if (driver instanceof UtilityGUI ug) {
+        } else if (driver instanceof final UtilityGUI ug) {
             SPFileChooser.open((Path) null).call(ug::open);
         } else {
             LovelaceLogger.error("IOHandler asked to 'load' in app that doesn't support that");
@@ -275,7 +275,7 @@ public class IOHandler implements ActionListener {
                 break;
 
             case "new":
-                if (driver instanceof ModelDriver md) {
+                if (driver instanceof final ModelDriver md) {
                     SwingUtilities.invokeLater(() -> startNewViewerWindow(md));
                 } else {
                     LovelaceLogger.error("IOHandler asked to 'new' in driver it can't do that from");
@@ -285,7 +285,7 @@ public class IOHandler implements ActionListener {
             case "load secondary":
                 // TODO: Investigate how various apps handle transitioning between no secondaries
                 // and one secondary map.
-                if (driver instanceof MultiMapGUIDriver mmgd) {
+                if (driver instanceof final MultiMapGUIDriver mmgd) {
                     SPFileChooser.open((Path) null).call(loadHandlerImpl(
                             mmgd.getModel()::addSubordinateMap,
                             source, errorTitle));
@@ -296,7 +296,7 @@ public class IOHandler implements ActionListener {
                 break;
 
             case "save all":
-                if (driver instanceof MultiMapGUIDriver mmgd) {
+                if (driver instanceof final MultiMapGUIDriver mmgd) {
                     for (final IMapNG map : mmgd.getModel().getAllMaps()) {
                         // FIXME: Doesn't MapIOHelper have a method for this?
                         final Path file = map.getFilename();
@@ -319,7 +319,7 @@ public class IOHandler implements ActionListener {
                 break;
 
             case "open in map viewer":
-                if (driver instanceof ModelDriver md) {
+                if (driver instanceof final ModelDriver md) {
                     final ViewerDriverFactory vdf =
                             StreamSupport.stream(ServiceLoader.load(ViewerDriverFactory.class).spliterator(), false)
                                     .findAny().orElse(null);
@@ -349,7 +349,7 @@ public class IOHandler implements ActionListener {
                 break;
 
             case "open secondary map in map viewer":
-                if (driver instanceof MultiMapGUIDriver mmgd) {
+                if (driver instanceof final MultiMapGUIDriver mmgd) {
                     final IDriverModel newModel = mmgd.getModel().fromSecondMap();
                     if (newModel == null) {
                         LovelaceLogger.error(

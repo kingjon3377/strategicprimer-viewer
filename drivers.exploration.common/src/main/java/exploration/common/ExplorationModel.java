@@ -77,7 +77,7 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 	}
 
 	private static Stream<IFixture> flattenIncluding(final IFixture fixture) {
-		if (fixture instanceof FixtureIterable<?> iter) {
+		if (fixture instanceof final FixtureIterable<?> iter) {
 			return Stream.concat(Stream.of(fixture), iter.stream());
 		} else {
 			return Stream.of(fixture);
@@ -90,7 +90,7 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 	 * {@link Collections#singleton singleton} of the argument.
 	 */
 	private static Iterable<Pair<Point, IFixture>> flattenEntries(final Pair<Point, IFixture> entry) {
-		if (entry.getValue1() instanceof IFortress fort) {
+		if (entry.getValue1() instanceof final IFortress fort) {
 			return fort.stream().map(IFixture.class::cast)
 				.map(each -> Pair.with(entry.getValue0(), each))
 				.collect(Collectors.toList());
@@ -127,7 +127,7 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 		for (final Point point : new SurroundingPointIterable(dest, dimensions).stream()
 			.collect(Collectors.toSet())) {
 			for (final TileFixture fixture : map.getFixtures(point)) {
-				if (fixture instanceof HasOwner owned &&
+				if (fixture instanceof final HasOwner owned &&
 					owned.owner().isIndependent() &&
 					!owned.owner().equals(unit.owner())) {
 					System.out.printf( // FIXME: Make a new interface for reporting this, and write to UI in a listener
@@ -147,7 +147,7 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 			if (Objects.equals(unit, fixture)) {
 				outside = true;
 				break;
-			} else if (fixture instanceof IMutableFortress fort) {
+			} else if (fixture instanceof final IMutableFortress fort) {
 				final Optional<FortressMember> item = fort.stream()
 					.filter(Predicate.isEqual(unit)).findAny();
 				if (item.isPresent()) {
@@ -182,7 +182,7 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 		for (final IFixture member : stream) {
 			if (Objects.equals(member, fixture)) {
 				return true;
-			} else if (member instanceof FixtureIterable<?> iter &&
+			} else if (member instanceof final FixtureIterable<?> iter &&
 				doesStreamContainFixture(iter, fixture)) {
 				return true;
 			}
@@ -195,10 +195,10 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 	 */
 	private static boolean doesStreamContainUnit(final Iterable<? extends IFixture> stream, final IUnit unit) {
 		for (final IFixture member : stream) {
-			if (member.getId() == unit.getId() && member instanceof IUnit memUnit && memUnit.owner().equals(unit.owner()) &&
+			if (member.getId() == unit.getId() && member instanceof final IUnit memUnit && memUnit.owner().equals(unit.owner()) &&
 				memUnit.getKind().equals(unit.getKind()) && memUnit.getName().equals(unit.getName())) {
 				return true;
-			} else if (member instanceof FixtureIterable iter && doesStreamContainUnit(iter, unit)) {
+			} else if (member instanceof final FixtureIterable iter && doesStreamContainUnit(iter, unit)) {
 				return true;
 			}
 		}
@@ -210,10 +210,10 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 	 */
 	private static boolean doesStreamContainFortress(final Iterable<? extends IFixture> stream, final IFortress fort) {
 		for (final IFixture member : stream) {
-			if (member.getId() == fort.getId() && member instanceof IFortress memFort && memFort.owner().equals(fort.owner()) &&
+			if (member.getId() == fort.getId() && member instanceof final IFortress memFort && memFort.owner().equals(fort.owner()) &&
 				memFort.getName().equals(fort.getName())) {
 				return true;
-			} else if (member instanceof FixtureIterable iter && doesStreamContainFortress(iter, fort)) {
+			} else if (member instanceof final FixtureIterable iter && doesStreamContainFortress(iter, fort)) {
 				return true;
 			}
 		}
@@ -224,9 +224,9 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 	 * Whether the given fixture is at the given location in the given map.
 	 */
 	private static boolean doesLocationHaveFixture(final IMapNG map, final Point point, final TileFixture fixture) {
-		if (fixture instanceof IUnit unit) {
+		if (fixture instanceof final IUnit unit) {
 			return doesStreamContainUnit(map.getFixtures(point), unit);
-		} else if (fixture instanceof IFortress fort) {
+		} else if (fixture instanceof final IFortress fort) {
 			return doesStreamContainFortress(map.getFixtures(point), fort);
 		} else {
 			return doesStreamContainFixture(map.getFixtures(point), fixture);
@@ -268,7 +268,7 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 	 * be used in {@link Stream#flatMap}.
 	 */
 	private static Stream<IFixture> unflattenNonFortresses(final TileFixture fixture) {
-		if (fixture instanceof IFortress fort) {
+		if (fixture instanceof final IFortress fort) {
 			return fort.stream().map(IFixture.class::cast);
 		} else {
 			return Stream.of(fixture);
@@ -511,7 +511,7 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 	}
 
 	private boolean mapsAgreeOnLocation(final IUnit unit) {
-		if (unit instanceof ProxyUnit proxy) {
+		if (unit instanceof final ProxyUnit proxy) {
 			if (proxy.getProxied().isEmpty()) {
 				return false;
 			} else {
@@ -705,9 +705,9 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 			}
 			final TileFixture oldFixture = diggables.get(0);
 			final TileFixture newFixture = oldFixture.copy(IFixture.CopyBehavior.KEEP);
-			if (newFixture instanceof Ground g) { // TODO: Extract an interface for this field so we only have to do one test
+			if (newFixture instanceof final Ground g) { // TODO: Extract an interface for this field so we only have to do one test
 				g.setExposed(true);
-			} else if (newFixture instanceof MineralVein mv) {
+			} else if (newFixture instanceof final MineralVein mv) {
 				mv.setExposed(true);
 			}
 			final BiConsumer<IMutableMapNG, IFixture.CopyBehavior> addToMap = (map, condition) -> {
@@ -924,7 +924,7 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 		return (pair) -> {
 			final Point location = pair.getValue0();
 			final IFixture fixture = pair.getValue1();
-			return fixture instanceof IUnit matching && fixture.getId() == unit.getId() &&
+			return fixture instanceof final IUnit matching && fixture.getId() == unit.getId() &&
 				matching.owner().equals(unit.owner());
 		};
 	}
@@ -1038,7 +1038,7 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 		final Predicate<Object> hasMutableName = HasMutableName.class::isInstance;
 		final Function<Object, IUnit> unitCast = IUnit.class::cast;
 		final Function<Object, HasMutableName> hmnCast = HasMutableName.class::cast;
-		if (item instanceof IUnit unit) {
+		if (item instanceof final IUnit unit) {
 			final Predicate<IUnit> matchingOwner = u -> u.owner().equals(unit.owner());
 			final Predicate<IUnit> matchingName = u -> u.getName().equals(unit.getName());
 			final Predicate<IUnit> matchingKind = u -> u.getKind().equals(unit.getKind());
@@ -1064,7 +1064,7 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 				LovelaceLogger.warning("Unable to find unit to rename");
 			}
 			return any;
-		} else if (item instanceof UnitMember member) {
+		} else if (item instanceof final UnitMember member) {
 			final Predicate<HasMutableName> matchingName = u -> u.getName().equals(item.getName());
 			final Predicate<IFixture> matchingId = u -> u.getId() == member.getId();
 			for (final IMutableMapNG map : getRestrictedAllMaps()) {
@@ -1100,7 +1100,7 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 		final Function<Object, IUnit> unitCast = IUnit.class::cast;
 		final Predicate<Object> hasMutableKind = HasMutableKind.class::isInstance;
 		final Function<Object, HasMutableKind> hmkCast = HasMutableKind.class::cast;
-		if (item instanceof IUnit unit) {
+		if (item instanceof final IUnit unit) {
 			final Predicate<IUnit> matchingOwner = u -> u.owner().equals(unit.owner());
 			final Predicate<IUnit> matchingName = u -> u.getName().equals(unit.getName());
 			final Predicate<IUnit> matchingKind = u -> u.getKind().equals(unit.getKind());
@@ -1124,7 +1124,7 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 				LovelaceLogger.warning("Unable to find unit to change kind");
 			}
 			return any;
-		} else if (item instanceof UnitMember member) {
+		} else if (item instanceof final UnitMember member) {
 			final Predicate<HasMutableKind> matchingKind = m -> m.getKind().equals(item.getKind());
 			final Predicate<HasMutableKind> matchingId = m -> ((IFixture) m).getId() == member.getId();
 			for (final IMutableMapNG map : getRestrictedAllMaps()) {

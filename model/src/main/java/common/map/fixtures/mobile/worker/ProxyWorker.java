@@ -89,7 +89,7 @@ public class ProxyWorker implements WorkerProxy {
         this(false);
         final Consumer<String> addJobName = jobNames::add;
         for (final UnitMember member : unit) {
-            if (member instanceof IWorker w) {
+            if (member instanceof final IWorker w) {
                 final WorkerStats tempStats = w.getStats();
                 final WorkerStats priorStats = statsCache;
                 if (workers.isEmpty()) {
@@ -155,7 +155,7 @@ public class ProxyWorker implements WorkerProxy {
 
     @Override
     public boolean equalsIgnoringID(final IFixture fixture) {
-        if (fixture instanceof ProxyWorker pw) {
+        if (fixture instanceof final ProxyWorker pw) {
             return parallel == pw.parallel && proxyJobs.equals(pw.proxyJobs);
         } else {
             return false;

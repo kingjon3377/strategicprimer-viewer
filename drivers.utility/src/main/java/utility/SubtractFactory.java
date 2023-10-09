@@ -32,7 +32,7 @@ public class SubtractFactory implements ModelDriverFactory {
 
     @Override
     public ModelDriver createDriver(final ICLIHelper cli, final SPOptions options, final IDriverModel model) {
-        if (model instanceof UtilityDriverModel udm) {
+        if (model instanceof final UtilityDriverModel udm) {
             return new SubtractCLI(udm);
         } else {
             return createDriver(cli, options, new UtilityDriverModel(model));

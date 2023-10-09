@@ -142,7 +142,7 @@ public /* sealed */ abstract class ImmortalAnimal
 
     @Override
     public final boolean equals(final Object obj) {
-        if (obj instanceof ImmortalAnimal i) {
+        if (obj instanceof final ImmortalAnimal i) {
             return i.getId() == id &&
                     kind.equals(i.getKind());
         } else {
@@ -160,7 +160,7 @@ public /* sealed */ abstract class ImmortalAnimal
      */
     @Override
     public final boolean equalsIgnoringID(final IFixture fixture) {
-        if (fixture instanceof ImmortalAnimal i) {
+        if (fixture instanceof final ImmortalAnimal i) {
             return i.getKind().equals(kind);
         } else {
             return false;
@@ -173,7 +173,7 @@ public /* sealed */ abstract class ImmortalAnimal
     @Override
     public final boolean isSubset(final IFixture obj, final Consumer<String> report) {
         if (obj.getId() == id) {
-            if (obj instanceof ImmortalAnimal i &&
+            if (obj instanceof final ImmortalAnimal i &&
                     i.getKind().equals(kind)) {
                 return true;
             } else {

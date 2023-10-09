@@ -147,7 +147,7 @@ import common.map.fixtures.mobile.ProxyFor;
 
     @Override
     public boolean equals(final Object that) {
-        if (that instanceof ISkill it) {
+        if (that instanceof final ISkill it) {
             return name.equals(it.getName()) &&
                     it.getLevel() == getLevel() &&
                     it.getHours() == getHours();

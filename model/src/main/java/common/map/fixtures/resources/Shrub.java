@@ -110,7 +110,7 @@ public class Shrub implements HarvestableFixture, HasPopulation<Shrub> {
 
     @Override
     public boolean equals(final Object obj) {
-        if (obj instanceof Shrub it) {
+        if (obj instanceof final Shrub it) {
             return it.getId() == id &&
                     it.getKind().equals(kind) &&
                     population == it.getPopulation();
@@ -126,7 +126,7 @@ public class Shrub implements HarvestableFixture, HasPopulation<Shrub> {
 
     @Override
     public boolean equalsIgnoringID(final IFixture fixture) {
-        if (fixture instanceof Shrub it) {
+        if (fixture instanceof final Shrub it) {
             return kind.equals(it.getKind()) && population == it.getPopulation();
         } else {
             return false;
@@ -152,7 +152,7 @@ public class Shrub implements HarvestableFixture, HasPopulation<Shrub> {
         if (other.getId() != id) {
             report.accept("Different IDs");
             return false;
-        } else if (other instanceof Shrub it) {
+        } else if (other instanceof final Shrub it) {
             if (!it.getKind().equals(kind)) {
                 report.accept(String.format("In shrub with ID #%d:\tKinds differ", id));
                 return false;

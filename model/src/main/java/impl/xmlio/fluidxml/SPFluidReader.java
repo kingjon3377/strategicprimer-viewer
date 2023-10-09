@@ -161,7 +161,7 @@ public class SPFluidReader implements IMapReader, ISPReader {
     private static StartElement firstStartElement(final Iterable<XMLEvent> stream, final StartElement parent)
             throws SPFormatException {
         for (final XMLEvent event : stream) {
-            if (event instanceof StartElement se && isSPStartElement(event)) {
+            if (event instanceof final StartElement se && isSPStartElement(event)) {
                 return se;
             }
         }
@@ -212,10 +212,10 @@ public class SPFluidReader implements IMapReader, ISPReader {
             return;
         }
         final Object child = readSPObject(element, parent.getName(), stream, players, warner, idFactory);
-        if (child instanceof River r) {
+        if (child instanceof final River r) {
             map.addRivers(currentTile, r);
-        } else if (child instanceof TileFixture tf) {
-            if (tf instanceof IFortress fort &&
+        } else if (child instanceof final TileFixture tf) {
+            if (tf instanceof final IFortress fort &&
                     map.getFixtures(currentTile).stream()
                             .filter(IFortress.class::isInstance)
                             .map(IFortress.class::cast)
@@ -251,12 +251,12 @@ public class SPFluidReader implements IMapReader, ISPReader {
             map.setMountainous(loc, true);
         }
         for (final XMLEvent event : stream) {
-            if (event instanceof StartElement se && isSPStartElement(event)) {
+            if (event instanceof final StartElement se && isSPStartElement(event)) {
                 parseTileChild(map, element, stream, players, warner, idFactory, loc, se);
                 continue;
-            } else if (event instanceof EndElement ee && element.getName().equals(ee.getName())) {
+            } else if (event instanceof final EndElement ee && element.getName().equals(ee.getName())) {
                 break;
-            } else if (event instanceof Characters c) {
+            } else if (event instanceof final Characters c) {
                 final String data = c.getData().strip();
                 if (!data.isEmpty()) {
                     map.addFixture(loc, new TextFixture(data, -1));
@@ -271,12 +271,12 @@ public class SPFluidReader implements IMapReader, ISPReader {
         expectAttributes(element, warner);
         final Point loc = Point.INVALID_POINT;
         for (final XMLEvent event : stream) {
-            if (event instanceof StartElement se && isSPStartElement(event)) {
+            if (event instanceof final StartElement se && isSPStartElement(event)) {
                 parseTileChild(map, element, stream, players, warner, idFactory, loc, se);
                 continue;
-            } else if (event instanceof EndElement ee && element.getName().equals(ee.getName())) {
+            } else if (event instanceof final EndElement ee && element.getName().equals(ee.getName())) {
                 break;
-            } else if (event instanceof Characters c) {
+            } else if (event instanceof final Characters c) {
                 final String data = c.getData().strip();
                 if (!data.isEmpty()) {
                     map.addFixture(loc, new TextFixture(data, -1));
@@ -328,7 +328,7 @@ public class SPFluidReader implements IMapReader, ISPReader {
         final IMutableMapNG retval = new SPMapNG(dimensions, players, currentTurn);
         for (final XMLEvent event : stream) {
             final QName stackTop = tagStack.peekFirst();
-            if (event instanceof StartElement se && isSPStartElement(event)) {
+            if (event instanceof final StartElement se && isSPStartElement(event)) {
                 final String type = se.getName().getLocalPart().toLowerCase();
                 if ("row".equals(type)) {
                     expectAttributes(se, warner, "index");
@@ -347,19 +347,19 @@ public class SPFluidReader implements IMapReader, ISPReader {
                     continue;
                 }
                 final Object player = readSPObject(se, stackTop, stream, players, warner, idFactory);
-                if (player instanceof Player p) {
+                if (player instanceof final Player p) {
                     retval.addPlayer(p);
                 } else {
                     throw new UnwantedChildException(mapTag.getName(), se);
                 }
-            } else if (event instanceof EndElement ee) {
+            } else if (event instanceof final EndElement ee) {
                 if (ee.getName().equals(stackTop)) {
                     tagStack.removeFirst();
                 }
                 if (element.getName().equals(ee.getName())) {
                     break;
                 }
-            } else if (event instanceof Characters c && !c.getData().isBlank()) {
+            } else if (event instanceof final Characters c && !c.getData().isBlank()) {
                 warner.handle(UnwantedChildException.childInTag(stackTop,
                         new QName(XMLConstants.NULL_NS_URI, "text"),
                         event.getLocation(),
@@ -392,7 +392,7 @@ public class SPFluidReader implements IMapReader, ISPReader {
         // upgrade to even read their maps once we start doing so, we *now* only *warn*
         // instead of *dying* if the XML contains that idiom.
         for (final XMLEvent event : stream) {
-            if (event instanceof StartElement se && isSPStartElement(event)) {
+            if (event instanceof final StartElement se && isSPStartElement(event)) {
                 if ("orders".equalsIgnoreCase(se.getName().getLocalPart()) ||
                         "results".equalsIgnoreCase(se.getName().getLocalPart()) ||
                         "science".equalsIgnoreCase(se.getName().getLocalPart())) {
@@ -400,7 +400,7 @@ public class SPFluidReader implements IMapReader, ISPReader {
                 } else {
                     throw new UnwantedChildException(element.getName(), se);
                 }
-            } else if (event instanceof EndElement ee &&
+            } else if (event instanceof final EndElement ee &&
                     element.getName().equals(ee.getName())) {
                 break;
             }
@@ -456,7 +456,7 @@ public class SPFluidReader implements IMapReader, ISPReader {
         retval.setPortrait(getAttribute(element, "portrait", ""));
         final StringBuilder orders = new StringBuilder();
         for (final XMLEvent event : stream) {
-            if (event instanceof StartElement se && isSPStartElement(event)) {
+            if (event instanceof final StartElement se && isSPStartElement(event)) {
                 if ("orders".equalsIgnoreCase(se.getName().getLocalPart())) {
                     parseOrders((StartElement) event, retval, stream, warner);
                     continue;
@@ -466,14 +466,14 @@ public class SPFluidReader implements IMapReader, ISPReader {
                 }
                 final Object child = readSPObject(se, element.getName(), stream,
                         players, warner, idFactory);
-                if (child instanceof UnitMember um) {
+                if (child instanceof final UnitMember um) {
                     retval.addMember(um);
                 } else {
                     throw new UnwantedChildException(element.getName(), se);
                 }
-            } else if (event instanceof Characters c) {
+            } else if (event instanceof final Characters c) {
                 orders.append(c.getData());
-            } else if (event instanceof EndElement ee && element.getName().equals(ee.getName())) {
+            } else if (event instanceof final EndElement ee && element.getName().equals(ee.getName())) {
                 break;
             }
         }
@@ -503,7 +503,7 @@ public class SPFluidReader implements IMapReader, ISPReader {
                 getAttribute(element, "name", ""),
                 getOrGenerateID(element, warner, idFactory), size);
         for (final XMLEvent event : stream) {
-            if (event instanceof StartElement se && isSPStartElement(event)) {
+            if (event instanceof final StartElement se && isSPStartElement(event)) {
                 // We're thinking about storing per-fortress "standing orders" or general
                 // regulations, building-progress results, and possibly scientific
                 // research progress within fortresses. To ease the transition, we *now*
@@ -517,12 +517,12 @@ public class SPFluidReader implements IMapReader, ISPReader {
                 }
                 final Object child = readSPObject(se, element.getName(), stream,
                         players, warner, idFactory);
-                if (child instanceof FortressMember fm) {
+                if (child instanceof final FortressMember fm) {
                     retval.addMember(fm);
                 } else {
                     throw new UnwantedChildException(element.getName(), se);
                 }
-            } else if (event instanceof EndElement ee && element.getName().equals(ee.getName())) {
+            } else if (event instanceof final EndElement ee && element.getName().equals(ee.getName())) {
                 break;
             }
         }
@@ -605,7 +605,7 @@ public class SPFluidReader implements IMapReader, ISPReader {
             final IMutablePlayerCollection players = new PlayerCollection();
             final IDRegistrar idFactory = new IDFactory();
             for (final XMLEvent event : eventReader) {
-                if (event instanceof StartElement se &&
+                if (event instanceof final StartElement se &&
                         isSPStartElement(event)) {
                     return (Type) readSPObject(se, new QName("root"), eventReader, players, warner, idFactory);
                 }

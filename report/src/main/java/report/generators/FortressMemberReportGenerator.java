@@ -54,10 +54,10 @@ public class FortressMemberReportGenerator extends AbstractReportGenerator<Fortr
                               final IMapNG map, final Consumer<String> ostream, final FortressMember item, final Point loc) {
         //	assert (is IUnit|IResourcePile|Implement item);
         switch (item) {
-            case IUnit u -> // TODO: Should be a field, right? Or else a constructor parameter?
+            case final IUnit u -> // TODO: Should be a field, right? Or else a constructor parameter?
                     new UnitReportGenerator(currentPlayer, dimensions,
                             currentTurn, hq).produceSingle(fixtures, map, ostream, u, loc);
-            case Implement i -> {
+            case final Implement i -> {
                 fixtures.remove(item.getId());
                 ostream.accept("Equipment: ");
                 ostream.accept(i.getKind());
@@ -67,7 +67,7 @@ public class FortressMemberReportGenerator extends AbstractReportGenerator<Fortr
                     ostream.accept(")");
                 }
             }
-            case IResourcePile r -> {
+            case final IResourcePile r -> {
                 fixtures.remove(item.getId());
                 ostream.accept("A pile of ");
                 ostream.accept(r.getQuantity().toString());

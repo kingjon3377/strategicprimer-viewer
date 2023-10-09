@@ -251,7 +251,7 @@ public final class Unit implements IMutableUnit {
      */
     @Override
     public boolean equals(final Object obj) {
-        if (obj instanceof IUnit that) {
+        if (obj instanceof final IUnit that) {
             return that.owner().getPlayerId() == owner.getPlayerId() &&
                     kind.equals(that.getKind()) &&
                     name.equals(that.getName()) &&
@@ -302,7 +302,7 @@ public final class Unit implements IMutableUnit {
      */
     @Override
     public boolean equalsIgnoringID(final IFixture fixture) {
-        if (fixture instanceof IUnit that &&
+        if (fixture instanceof final IUnit that &&
                 that.owner().getPlayerId() == owner.getPlayerId() &&
                 that.getKind().equals(kind) &&
                 that.getName().equals(name)) {
@@ -391,8 +391,8 @@ public final class Unit implements IMutableUnit {
     }
 
     private static int memberComparison(final UnitMember one, final UnitMember two) {
-        if (one instanceof IWorker first) {
-            if (two instanceof IWorker second) {
+        if (one instanceof final IWorker first) {
+            if (two instanceof final IWorker second) {
                 return first.getName().compareTo(second.getName());
             } else {
                 return -1;
@@ -407,8 +407,8 @@ public final class Unit implements IMutableUnit {
             }
         } else if (two instanceof Immortal) {
             return 1;
-        } else if (one instanceof Animal first) {
-            if (two instanceof Animal second) {
+        } else if (one instanceof final Animal first) {
+            if (two instanceof final Animal second) {
                 return Comparator.comparing(Animal::getKind)
                         .thenComparing(Comparator.comparingInt(Animal::getPopulation)
                                 .reversed())
@@ -418,8 +418,8 @@ public final class Unit implements IMutableUnit {
             }
         } else if (two instanceof Animal) {
             return 1;
-        } else if (one instanceof Implement first) {
-            if (two instanceof Implement second) {
+        } else if (one instanceof final Implement first) {
+            if (two instanceof final Implement second) {
                 return Comparator.comparing(Implement::getKind)
                         .thenComparing(Comparator.comparingInt(Implement::getPopulation)
                                 .reversed())
@@ -429,8 +429,8 @@ public final class Unit implements IMutableUnit {
             }
         } else if (two instanceof Implement) {
             return 1;
-        } else if (one instanceof IResourcePile first) {
-            if (two instanceof IResourcePile second) {
+        } else if (one instanceof final IResourcePile first) {
+            if (two instanceof final IResourcePile second) {
                 return Comparator.comparing(IResourcePile::getKind)
                         .thenComparing(IResourcePile::getContents)
                         .thenComparing(Comparator.comparing(IResourcePile::getQuantity)

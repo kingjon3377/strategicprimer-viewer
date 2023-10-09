@@ -202,7 +202,7 @@ public class Worker implements IMutableWorker {
 
     @Override
     public boolean equalsIgnoringID(final IFixture fixture) {
-        if (fixture instanceof IWorker that) {
+        if (fixture instanceof final IWorker that) {
             return that.getName().equals(name) &&
                     jobSetsEqual(jobSet, that) &&
                     that.getRace().equals(race) &&
@@ -217,7 +217,7 @@ public class Worker implements IMutableWorker {
 
     @Override
     public boolean equals(final Object obj) {
-        if (obj instanceof IWorker that) {
+        if (obj instanceof final IWorker that) {
             return that.getId() == id && equalsIgnoringID(that);
         } else {
             return false;
@@ -255,7 +255,7 @@ public class Worker implements IMutableWorker {
     @Override
     public boolean isSubset(final IFixture obj, final Consumer<String> report) {
         if (obj.getId() == id) {
-            if (obj instanceof IWorker that) {
+            if (obj instanceof final IWorker that) {
                 final Consumer<String> localReport =
                         s -> report.accept(String.format("In worker %s (ID #%d):\t%s",
                                 name, id, s));

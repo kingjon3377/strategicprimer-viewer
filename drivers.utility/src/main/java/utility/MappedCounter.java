@@ -86,12 +86,12 @@ class MappedCounter<Base, Key, Count extends Number & Comparable<Count>> impleme
 
     private Count plus(final Count one, final Count two) {
         return switch (one) {
-            case Integer i -> (Count) Integer.valueOf(i + (Integer) two);
-            case Long l -> (Count) Long.valueOf(l + (Long) two);
-            case Double v -> (Count) Double.valueOf(v + (Double) two);
-            case Float v -> (Count) Float.valueOf(v + (Float) two);
-            case BigInteger bigInteger -> (Count) bigInteger.add((BigInteger) two);
-            case BigDecimal bigDecimal -> (Count) bigDecimal.add((BigDecimal) two);
+            case final Integer i -> (Count) Integer.valueOf(i + (Integer) two);
+            case final Long l -> (Count) Long.valueOf(l + (Long) two);
+            case final Double v -> (Count) Double.valueOf(v + (Double) two);
+            case final Float v -> (Count) Float.valueOf(v + (Float) two);
+            case final BigInteger bigInteger -> (Count) bigInteger.add((BigInteger) two);
+            case final BigDecimal bigDecimal -> (Count) bigDecimal.add((BigDecimal) two);
             default -> throw new IllegalStateException("Unhandled Count class");
         };
     }

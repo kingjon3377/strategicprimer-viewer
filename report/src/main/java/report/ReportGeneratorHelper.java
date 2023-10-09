@@ -38,7 +38,7 @@ import java.util.HashMap;
         Point retval = null;
         for (final Point location : map.getLocations()) {
             for (final TileFixture fixture : map.getFixtures(location)) {
-                if (fixture instanceof IFortress f && player.equals(f.owner())) {
+                if (fixture instanceof final IFortress f && player.equals(f.owner())) {
                     if ("hq".equals(f.getName())) {
                         return location;
                     } else if (location.isValid() && retval == null) {
@@ -60,11 +60,11 @@ import java.util.HashMap;
                         key, mapping.get(key), val);
             }
             mapping.put(key, val);
-            if (fixture instanceof FixtureIterable<?> fi) {
+            if (fixture instanceof final FixtureIterable<?> fi) {
                 for (final IFixture inner : fi) {
                     addToMap(location, inner, idf, mapping);
                 }
-            } else if (fixture instanceof IWorker w) {
+            } else if (fixture instanceof final IWorker w) {
                 if (w.getMount() != null) {
                     addToMap(location, w.getMount(), idf, mapping);
                 }
@@ -102,7 +102,7 @@ import java.util.HashMap;
                                       final Iterable<? extends IFixture> stream) {
         for (final IFixture fixture : stream) {
             retval.put(fixture.getId(), parent.getId());
-            if (fixture instanceof FixtureIterable<?> fi) {
+            if (fixture instanceof final FixtureIterable<?> fi) {
                 parentMapImpl(retval, fixture, fi);
             }
         }
@@ -115,7 +115,7 @@ import java.util.HashMap;
         final Map<Integer, Integer> retval = new HashMap<>();
         for (final Point location : map.getLocations()) {
             for (final TileFixture fixture : map.getFixtures(location)) {
-                if (fixture instanceof FixtureIterable<?> fi) {
+                if (fixture instanceof final FixtureIterable<?> fi) {
                     parentMapImpl(retval, fixture, fi);
                 }
             }

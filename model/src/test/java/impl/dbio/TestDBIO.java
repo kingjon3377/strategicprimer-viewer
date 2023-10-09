@@ -511,7 +511,7 @@ public final class TestDBIO {
 		firstMap.addFixture(new Point(0, 0), fixture);
 		final IMutableMapNG secondMap = new SPMapNG(dimensions, new PlayerCollection(), -1);
 		secondMap.addFixture(new Point(1, 1), fixture);
-		if (fixture instanceof HasOwner owned) {
+		if (fixture instanceof final HasOwner owned) {
 			firstMap.addPlayer(owned.owner());
 			secondMap.addPlayer(owned.owner());
 		}

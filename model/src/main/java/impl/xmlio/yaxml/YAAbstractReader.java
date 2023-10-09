@@ -160,7 +160,7 @@ abstract class YAAbstractReader<Item, Value> implements YAReader<Item, Value> {
      * Whether the given XML event is an end element matching the given tag.
      */
     protected static boolean isMatchingEnd(final QName tag, final XMLEvent event) {
-        return event instanceof EndElement ee && tag.equals(ee.getName());
+        return event instanceof final EndElement ee && tag.equals(ee.getName());
     }
 
     /**
@@ -426,7 +426,7 @@ abstract class YAAbstractReader<Item, Value> implements YAReader<Item, Value> {
     protected void spinUntilEnd(final QName tag, final Iterable<XMLEvent> reader, final String... futureTags)
             throws SPFormatException {
         for (final XMLEvent event : reader) {
-            if (event instanceof StartElement se && isSupportedNamespace(se.getName())) {
+            if (event instanceof final StartElement se && isSupportedNamespace(se.getName())) {
                 if (FUTURE_TAGS.stream().anyMatch(se.getName().getLocalPart()::equalsIgnoreCase)) {
                     warner.handle(new UnwantedChildException(tag, se));
                 } else {

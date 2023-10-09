@@ -68,14 +68,14 @@ import java.util.Map;
 			getPlayerOrIndependent(element, warner, players));
 		fix.setPortrait(getAttribute(element, "portrait", ""));
 		for (final XMLEvent event : stream) {
-			if (event instanceof StartElement se && isSPStartElement(event)) {
+			if (event instanceof final StartElement se && isSPStartElement(event)) {
 				if (fix.getPopulation() == null) {
 					fix.setPopulation(readCommunityStats(se,
 						element.getName(), stream, players, warner, idFactory));
 				} else {
 					throw new UnwantedChildException(element.getName(), se);
 				}
-			} else if (event instanceof EndElement ee && ee.getName().equals(element.getName())) {
+			} else if (event instanceof final EndElement ee && ee.getName().equals(element.getName())) {
 				break;
 			}
 		}
@@ -108,7 +108,7 @@ import java.util.Map;
 			getPlayerOrIndependent(element, warner, players));
 		fix.setPortrait(getAttribute(element, "portrait", ""));
 		for (final XMLEvent event : stream) {
-			if (event instanceof StartElement se && isSPStartElement(event)) {
+			if (event instanceof final StartElement se && isSPStartElement(event)) {
 				if (fix.getPopulation() == null) {
 					fix.setPopulation(readCommunityStats(se,
 						element.getName(), stream, players, warner, idFactory));
@@ -116,7 +116,7 @@ import java.util.Map;
 					throw new UnwantedChildException(element.getName(),
 						se);
 				}
-			} else if (event instanceof EndElement ee &&
+			} else if (event instanceof final EndElement ee &&
 				ee.getName().equals(element.getName())) {
 				break;
 			}
@@ -149,7 +149,7 @@ import java.util.Map;
 			getPlayerOrIndependent(element, warner, players));
 		fix.setPortrait(getAttribute(element, "portrait", ""));
 		for (final XMLEvent event : stream) {
-			if (event instanceof StartElement se && isSPStartElement(event)) {
+			if (event instanceof final StartElement se && isSPStartElement(event)) {
 				if (fix.getPopulation() == null) {
 					fix.setPopulation(readCommunityStats(se,
 						element.getName(), stream, players, warner, idFactory));
@@ -157,7 +157,7 @@ import java.util.Map;
 					throw new UnwantedChildException(element.getName(),
 						se);
 				}
-			} else if (event instanceof EndElement ee && ee.getName().equals(element.getName())) {
+			} else if (event instanceof final EndElement ee && ee.getName().equals(element.getName())) {
 				break;
 			}
 		}
@@ -184,14 +184,14 @@ import java.util.Map;
 				RaceFactory.randomRace(new Random(idNum))));
 		retval.setPortrait(getAttribute(element, "portrait", ""));
 		for (final XMLEvent event : stream) {
-			if (event instanceof StartElement se && isSPStartElement(event)) {
+			if (event instanceof final StartElement se && isSPStartElement(event)) {
 				if (retval.getPopulation() == null) {
 					retval.setPopulation(readCommunityStats(se,
 						element.getName(), stream, players, warner, idFactory));
 				} else {
 					throw new UnwantedChildException(element.getName(), se);
 				}
-			} else if (event instanceof EndElement ee && ee.getName().equals(element.getName())) {
+			} else if (event instanceof final EndElement ee && ee.getName().equals(element.getName())) {
 				break;
 			}
 		}
@@ -210,9 +210,9 @@ import java.util.Map;
 		final Consumer<IMutableResourcePile> addProduction = retval.getYearlyProduction()::add; // TODO: Should really be doing the getYearlyProduction() call at call-time, not here ...
 		final Consumer<IMutableResourcePile> addConsumption = retval.getYearlyConsumption()::add;
 		for (final XMLEvent event : stream) {
-			if (event instanceof EndElement ee && ee.getName().equals(element.getName())) {
+			if (event instanceof final EndElement ee && ee.getName().equals(element.getName())) {
 				break;
-			} else if (event instanceof StartElement se && isSPStartElement(event)) {
+			} else if (event instanceof final StartElement se && isSPStartElement(event)) {
 				switch (se.getName().getLocalPart().toLowerCase()) {
 					case "expertise":
 						expectAttributes(se, warner, "skill", "level");
@@ -257,7 +257,7 @@ import java.util.Map;
 							se.getName(), element, "expertise",
 							"claim", "production", "consumption", "resource");
 				}
-			} else if (event instanceof EndElement ee && !stack.isEmpty() &&
+			} else if (event instanceof final EndElement ee && !stack.isEmpty() &&
 				ee.getName().equals(stack.peekFirst().getName())) {
 				final StartElement top = stack.removeFirst();
 				if (top.equals(element)) {

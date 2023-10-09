@@ -54,7 +54,7 @@ import common.map.fixtures.mobile.IUnit;
 
     @Override
     public boolean equals(final Object that) {
-        if (that instanceof UnitMemberTransferable umt) {
+        if (that instanceof final UnitMemberTransferable umt) {
             return payload.equals(umt.payload);
         } else {
             return false;

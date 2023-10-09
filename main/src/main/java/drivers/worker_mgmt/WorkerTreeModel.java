@@ -59,9 +59,9 @@ import java.util.stream.Collectors;
 	public Object getChild(final Object parent, final int index) {
 		// TODO: Make IWorkerModel methods return List to simplify this?
         return switch (parent) {
-            case Player p -> StreamSupport.stream(model.getUnitKinds(p).spliterator(), false).toList().get(index);
-            case String kind -> new ArrayList<>(model.getUnits(player, kind)).get(index);
-            case IUnit unit -> unit.stream().toList().get(index);
+            case final Player p -> StreamSupport.stream(model.getUnitKinds(p).spliterator(), false).toList().get(index);
+            case final String kind -> new ArrayList<>(model.getUnits(player, kind)).get(index);
+            case final IUnit unit -> unit.stream().toList().get(index);
             default -> throw new ArrayIndexOutOfBoundsException("Unrecognized parent");
         };
 	}
@@ -69,12 +69,12 @@ import java.util.stream.Collectors;
 	@Override
 	public int getChildCount(final Object parent) {
         return switch (parent) {
-            case Player p -> (int) StreamSupport.stream(model.getUnitKinds(p).spliterator(),
+            case final Player p -> (int) StreamSupport.stream(model.getUnitKinds(p).spliterator(),
                     false).count();
-            case String kind when StreamSupport.stream(
+            case final String kind when StreamSupport.stream(
                     model.getUnitKinds(player).spliterator(), false).anyMatch(parent::equals) ->
                     model.getUnits(player, kind).size();
-            case IUnit unit -> (int) unit.stream().count();
+            case final IUnit unit -> (int) unit.stream().count();
             default -> throw new IllegalArgumentException("Not a possible member of the tree");
         };
 	}
@@ -92,13 +92,13 @@ import java.util.stream.Collectors;
 	@Override
 	public int getIndexOfChild(final Object parent, final Object child) {
         return switch (parent) {
-            case Player p when child instanceof IUnit -> // FIXME: This case shouldn't be allowed, right?
+            case final Player p when child instanceof IUnit -> // FIXME: This case shouldn't be allowed, right?
                     new ArrayList<>(model.getUnits(p)).indexOf(child);
-			case Player p when child instanceof String ->
+			case final Player p when child instanceof String ->
                     StreamSupport.stream(model.getUnitKinds(p).spliterator(), false).toList().indexOf(child);
-            case String kind when child instanceof IUnit ->
+            case final String kind when child instanceof IUnit ->
                     new ArrayList<>(model.getUnits(player, kind)).indexOf(child);
-            case IUnit unit -> unit.stream().toList().indexOf(child);
+            case final IUnit unit -> unit.stream().toList().indexOf(child);
             default -> -1;
         };
 	}
@@ -193,11 +193,11 @@ import java.util.stream.Collectors;
 		final TreePath path;
 		final int[] indices;
 		final Object[] children;
-		if (item instanceof IUnit unit) {
+		if (item instanceof final IUnit unit) {
 			path = new TreePath(new Object[]{player, unit.getKind()});
 			indices = new int[]{getIndexOfChild(unit.getKind(), item)};
 			children = new Object[]{item};
-		} else if (item instanceof UnitMember member) {
+		} else if (item instanceof final UnitMember member) {
 			final IUnit parent = model.getUnits(player).stream()
 				.filter(containingItem(member)).findAny().orElse(null);
 			if (parent == null) {
@@ -237,7 +237,7 @@ import java.util.stream.Collectors;
 			indices = new int[]{getIndexOfChild(player, item.getKind()),
 				getIndexOfChild(player, newKind)};
 			children = new Object[]{item.getKind(), newKind};
-		} else if (item instanceof UnitMember um) {
+		} else if (item instanceof final UnitMember um) {
 			final IUnit parent = model.getUnits(player).stream()
 				.filter(containingItem(um)).findAny().orElse(null);
 			if (parent == null) {
@@ -378,9 +378,9 @@ import java.util.stream.Collectors;
 	@Override
 	public Iterable<Object> childrenOf(final Object obj) {
         return switch (obj) {
-            case Player p -> (Iterable<Object>) ((Iterable<?>) model.getUnitKinds(p));
-            case String kind -> (Iterable<Object>) ((Iterable<?>) model.getUnits(player, kind));
-            case IUnit unit -> (Iterable<Object>) ((Iterable<?>) unit);
+            case final Player p -> (Iterable<Object>) ((Iterable<?>) model.getUnitKinds(p));
+            case final String kind -> (Iterable<Object>) ((Iterable<?>) model.getUnits(player, kind));
+            case final IUnit unit -> (Iterable<Object>) ((Iterable<?>) unit);
             default -> Collections.emptyList();
         };
 	}
@@ -415,7 +415,7 @@ import java.util.stream.Collectors;
 
 	@Override
 	public void changeOwner(final HasOwner item, final Player newOwner) {
-		if (item instanceof IUnit unit && item.owner().equals(player)) {
+		if (item instanceof final IUnit unit && item.owner().equals(player)) {
 			// TODO: What if it's the only unit with this kind?
 			final TreeModelEvent event = new TreeModelEvent(this,
 				new TreePath(new Object[]{player, unit.getKind()}),
@@ -426,7 +426,7 @@ import java.util.stream.Collectors;
 					listener.treeNodesRemoved(event);
 				}
 			}
-		} else if (item instanceof IUnit unit && newOwner.equals(player)) {
+		} else if (item instanceof final IUnit unit && newOwner.equals(player)) {
 			final TreeModelEvent event;
 			final String kind = unit.getKind();
 			// TODO: Make getUnitKinds() return Collection

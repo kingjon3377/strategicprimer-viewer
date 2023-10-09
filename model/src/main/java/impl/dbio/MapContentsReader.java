@@ -94,12 +94,12 @@ interface MapContentsReader {
 		final Object val = dbRow.get(key);
         switch (val) {
             case null -> throw new SQLException("No value for key " + key);
-            case Boolean b -> {  // Can't happen in SQLite, but we can dream ...
+            case final Boolean b -> {  // Can't happen in SQLite, but we can dream ...
                 return b;
             }
-            case Integer i when i == 0 -> { return false; }
-			case Integer i when i == 1 -> { return true; }
-			case Integer i -> throw new SQLException("Invalid Boolean value",
+            case final Integer i when i == 0 -> { return false; }
+			case final Integer i when i == 1 -> { return true; }
+			case final Integer i -> throw new SQLException("Invalid Boolean value",
 				new IllegalArgumentException("Outside range of Boolean"));
             default -> throw new SQLException("Invalid Boolean value",
                     new IllegalArgumentException("Field maps to non-Boolean value"));

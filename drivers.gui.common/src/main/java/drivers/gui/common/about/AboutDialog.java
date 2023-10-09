@@ -34,7 +34,7 @@ public final class AboutDialog extends SPDialog {
 	private static final Pattern APP_NAME = Pattern.compile("App Name Here");
 
 	public AboutDialog(final @Nullable Component parentComponent, final @Nullable String app) throws IOException {
-		super(parentComponent instanceof Frame f ? f : null, "About");
+		super(parentComponent instanceof final Frame f ? f : null, "About");
 		setLayout(new BorderLayout()); // TODO: Use a BorderedPanel for contentPane
 		final Iterable<String> resource = FileContentsReader.readFileContents(AboutDialog.class,
 			"about.html");

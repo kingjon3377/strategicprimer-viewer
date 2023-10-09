@@ -44,7 +44,7 @@ import common.map.TileFixture;
 
     @Override
     public boolean equals(final Object that) {
-        return that instanceof FixtureTransferable ft && ft.payload.equals(payload);
+        return that instanceof final FixtureTransferable ft && ft.payload.equals(payload);
     }
 
     @Override

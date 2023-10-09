@@ -54,9 +54,9 @@ public class PlayerChangeMenuListener implements ActionListener, PlayerChangeSou
     private static @Nullable Frame getContainingFrame(final @Nullable Component component) {
         Component temp = component;
         while (temp != null) {
-            if (temp instanceof Frame f) {
+            if (temp instanceof final Frame f) {
                 return f;
-            } else if (temp instanceof JPopupMenu menu) {
+            } else if (temp instanceof final JPopupMenu menu) {
                 temp = menu.getInvoker();
             } else {
                 temp = temp.getParent();
@@ -74,7 +74,7 @@ public class PlayerChangeMenuListener implements ActionListener, PlayerChangeSou
     public void actionPerformed(final ActionEvent event) {
         final Player currentPlayer;
         final Iterable<Player> players;
-        if (model instanceof IWorkerModel wm) {
+        if (model instanceof final IWorkerModel wm) {
             currentPlayer = wm.getCurrentPlayer();
             players = wm.getPlayers();
         } else {
@@ -87,8 +87,8 @@ public class PlayerChangeMenuListener implements ActionListener, PlayerChangeSou
                 "Player to view:", "Choose New Player:", JOptionPane.PLAIN_MESSAGE, null,
                 StreamSupport.stream(players.spliterator(), false).toArray(Player[]::new),
                 currentPlayer);
-        if (retval instanceof Player p) {
-            if (model instanceof IWorkerModel wm) {
+        if (retval instanceof final Player p) {
+            if (model instanceof final IWorkerModel wm) {
                 wm.setCurrentPlayer(p);
             }
             for (final PlayerChangeListener listener : listeners) {

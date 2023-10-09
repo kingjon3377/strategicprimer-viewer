@@ -188,7 +188,7 @@ import worker.common.IFixtureEditHelper;
             portrait = null;
             if (selections.size() == 1) {
                 final TileFixture selectedValue = selections.get(0);
-                if (selectedValue instanceof HasPortrait hp) {
+                if (selectedValue instanceof final HasPortrait hp) {
                     final String portraitName = hp.getPortrait();
                     if (!portraitName.isEmpty()) {
                         try {
@@ -199,7 +199,7 @@ import worker.common.IFixtureEditHelper;
                             LovelaceLogger.warning(except, "I/O error loading portrait");
                         }
                     }
-                    if (selectedValue instanceof HasOwner owned) {
+                    if (selectedValue instanceof final HasOwner owned) {
                         final String playerPortraitName = owned.owner().getPortrait();
                         if (!playerPortraitName.isEmpty()) {
                             try {

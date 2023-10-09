@@ -122,7 +122,7 @@ public class Forest implements TerrainFixture, HasMutableImage, HasKind, HasExte
 
     @Override
     public boolean equals(final Object obj) {
-        if (obj instanceof Forest it) {
+        if (obj instanceof final Forest it) {
             return it.getId() == id &&
                     kind.equals(it.getKind()) &&
                     rows == it.isRows() &&
@@ -139,7 +139,7 @@ public class Forest implements TerrainFixture, HasMutableImage, HasKind, HasExte
 
     @Override
     public boolean equalsIgnoringID(final IFixture fixture) {
-        if (fixture instanceof Forest it) {
+        if (fixture instanceof final Forest it) {
             return it.getKind().equals(kind) &&
                     it.isRows() == rows &&
                     it.getAcres().equals(acres);
@@ -180,7 +180,7 @@ public class Forest implements TerrainFixture, HasMutableImage, HasKind, HasExte
         if (id != other.getId()) {
             report.accept("Different IDs");
             return false;
-        } else if (other instanceof Forest it) {
+        } else if (other instanceof final Forest it) {
             if (!it.getKind().equals(kind)) {
                 report.accept(String.format("In forest with ID #%d: Kinds differ", id));
                 return false;
