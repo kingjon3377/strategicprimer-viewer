@@ -10,6 +10,8 @@
  */
 package com.pump.window;
 
+import org.jetbrains.annotations.Nullable;
+
 import java.awt.Frame;
 import java.awt.Toolkit;
 import java.awt.event.ActionListener;
@@ -100,7 +102,7 @@ public class WindowMenu extends JMenu {
 
     final ActionListener actionListener;
 
-    final JMenuItem[] customItems;
+    final JMenuItem @Nullable [] customItems;
 
     /**
      * Creates a new WindowMenu for a specific JFrame.
