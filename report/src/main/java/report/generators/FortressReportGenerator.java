@@ -152,17 +152,16 @@ public class FortressReportGenerator extends AbstractReportGenerator<IFortress> 
         final Map<String, List<IResourcePile>> resources = new HashMap<>(); // TODO: Use a multimap
         final List<FortressMember> contents = new ArrayList<>();
         for (final FortressMember member : item) {
-            if (member instanceof IUnit u) {
-                units.add(u);
-            } else if (member instanceof Implement i) {
-                equipment.add(i);
-            } else if (member instanceof IResourcePile r) {
-                final List<IResourcePile> list = Optional.ofNullable(resources.get(r.getKind()))
-                        .orElseGet(ArrayList::new);
-                list.add(r);
-                resources.put(r.getKind(), list);
-            } else {
-                contents.add(member);
+            switch (member) {
+                case IUnit u -> units.add(u);
+                case Implement i -> equipment.add(i);
+                case IResourcePile r -> {
+                    final List<IResourcePile> list = Optional.ofNullable(resources.get(r.getKind()))
+                            .orElseGet(ArrayList::new);
+                    list.add(r);
+                    resources.put(r.getKind(), list);
+                }
+                case null, default -> contents.add(member);
             }
             fixtures.remove(item.getId());
         }

@@ -151,25 +151,25 @@ public class UnitReportGenerator extends AbstractReportGenerator<IUnit> {
             final List<Animal> animals = new ArrayList<>();
             final List<UnitMember> others = new ArrayList<>();
             for (final UnitMember member : item) {
-                if (member instanceof IWorker w) {
-                    workers.add(w);
-                } else if (member instanceof Implement i) {
-                    equipment.add(i);
-                } else if (member instanceof IResourcePile r) {
-                    final List<IResourcePile> list = Optional.ofNullable(resources.get(r.getKind()))
-                            .orElseGet(ArrayList::new);
-                    list.add(r);
-                    resources.put(r.getKind(), list);
-                } else if (member instanceof Animal a) {
-                    final Animal existing = findAndRemoveFirst(animals,
-                            a::equalExceptPopulation);
-                    if (existing == null) {
-                        animals.add(a);
-                    } else {
-                        animals.add(a.combined(existing));
+                switch (member) {
+                    case IWorker w -> workers.add(w);
+                    case Implement i -> equipment.add(i);
+                    case IResourcePile r -> {
+                        final List<IResourcePile> list = Optional.ofNullable(resources.get(r.getKind()))
+                                .orElseGet(ArrayList::new);
+                        list.add(r);
+                        resources.put(r.getKind(), list);
                     }
-                } else {
-                    others.add(member);
+                    case Animal a -> {
+                        final Animal existing = findAndRemoveFirst(animals,
+                                a::equalExceptPopulation);
+                        if (existing == null) {
+                            animals.add(a);
+                        } else {
+                            animals.add(a.combined(existing));
+                        }
+                    }
+                    default -> others.add(member);
                 }
             }
             ostream.accept("""

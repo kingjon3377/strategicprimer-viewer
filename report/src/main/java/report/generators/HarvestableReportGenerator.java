@@ -107,36 +107,44 @@ public class HarvestableReportGenerator extends AbstractReportGenerator<Harvesta
         ostream.accept("At ");
         ostream.accept(loc.toString());
         ostream.accept(": ");
-        if (item instanceof CacheFixture cf) {
-            ostream.accept("A cache of ");
-            ostream.accept(item.getKind());
-            ostream.accept(", containing ");
-            ostream.accept(cf.getContents());
-        } else if (item instanceof Grove g) {
-            ostream.accept(g.isCultivated() ? "cultivated " : "wild ");
-            ostream.accept(item.getKind());
-            ostream.accept(g.isOrchard() ? " orchard " : " grove ");
-            ostream.accept(populationCountString(((Grove) item), "tree"));
-        } else if (item instanceof Meadow m) {
-            ostream.accept(m.getStatus().toString());
-            ostream.accept(m.isCultivated() ? " cultivated " :
-                    " wild or abandoned ");
-            ostream.accept(item.getKind());
-            ostream.accept(m.isField() ? " field " : " meadow ");
-            ostream.accept(acreageString(m));
-        } else if (item instanceof Mine) {
-            ostream.accept(item.toString());
-        } else if (item instanceof MineralVein mv) {
-            ostream.accept(mv.isExposed() ? "An exposed vein of " : "An unexposed vein of ");
-            ostream.accept(item.getKind());
-        } else if (item instanceof Shrub s) {
-            ostream.accept(item.getKind());
-            ostream.accept(" ");
-            ostream.accept(populationCountString(s, "plant"));
-        } else /*if (item instanceof StoneDeposit)*/ {
-            ostream.accept("An exposed ");
-            ostream.accept(item.getKind());
-            ostream.accept(" deposit");
+        switch (item) {
+            case CacheFixture cf -> {
+                ostream.accept("A cache of ");
+                ostream.accept(item.getKind());
+                ostream.accept(", containing ");
+                ostream.accept(cf.getContents());
+            }
+            case Grove g -> {
+                ostream.accept(g.isCultivated() ? "cultivated " : "wild ");
+                ostream.accept(item.getKind());
+                ostream.accept(g.isOrchard() ? " orchard " : " grove ");
+                ostream.accept(populationCountString(((Grove) item), "tree"));
+            }
+            case Meadow m -> {
+                ostream.accept(m.getStatus().toString());
+                ostream.accept(m.isCultivated() ? " cultivated " :
+                        " wild or abandoned ");
+                ostream.accept(item.getKind());
+                ostream.accept(m.isField() ? " field " : " meadow ");
+                ostream.accept(acreageString(m));
+            }
+            case Mine mine -> ostream.accept(item.toString());
+            case MineralVein mv -> {
+                ostream.accept(mv.isExposed() ? "An exposed vein of " : "An unexposed vein of ");
+                ostream.accept(item.getKind());
+            }
+            case Shrub s -> {
+                ostream.accept(item.getKind());
+                ostream.accept(" ");
+                ostream.accept(populationCountString(s, "plant"));
+            }
+            default -> {
+                /*if (item instanceof StoneDeposit)*/
+
+                ostream.accept("An exposed ");
+                ostream.accept(item.getKind());
+                ostream.accept(" deposit");
+            }
         }
         ostream.accept(" ");
         ostream.accept(distanceString.apply(loc));

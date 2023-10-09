@@ -158,28 +158,33 @@ import org.jetbrains.annotations.Nullable;
 
     private @Nullable Integer handleEncounter(final StringBuilder buffer, final int time, final Point loc,
             /*Animal|AnimalTracks|HuntingModel.NothingFound*/ final TileFixture find) {
-        if (find instanceof HuntingModel.NothingFound) {
-            cli.println(String.format("Found nothing for the next %d minutes.", noResultCost));
-            return noResultCost;
-        } else if (find instanceof AnimalTracks at) {
-            model.copyToSubMaps(loc, find, IFixture.CopyBehavior.ZERO);
-            cli.println(String.format("Found only tracks or traces from %s for the next %d minutes.",
-                    at.getKind(), noResultCost));
-            return noResultCost;
-        } else if (find instanceof Animal a) {
-            final Boolean fight = cli.inputBooleanInSeries(String.format("Found %s. Should they %s?",
-                    populationDescription(a), verb), a.getKind());
-            if (fight == null) {
-                return null;
-            } else if (fight) {
-                return handleFight(loc, (Animal) find, time);
-            } else {
-                model.copyToSubMaps(loc, find, IFixture.CopyBehavior.ZERO);
+        switch (find) {
+            case HuntingModel.NothingFound nothingFound -> {
+                cli.println(String.format("Found nothing for the next %d minutes.", noResultCost));
                 return noResultCost;
             }
-        } else {
-            LovelaceLogger.error("Unhandled case from hunting model");
-            return null;
+            case AnimalTracks at -> {
+                model.copyToSubMaps(loc, find, IFixture.CopyBehavior.ZERO);
+                cli.println(String.format("Found only tracks or traces from %s for the next %d minutes.",
+                        at.getKind(), noResultCost));
+                return noResultCost;
+            }
+            case Animal a -> {
+                final Boolean fight = cli.inputBooleanInSeries(String.format("Found %s. Should they %s?",
+                        populationDescription(a), verb), a.getKind());
+                if (fight == null) {
+                    return null;
+                } else if (fight) {
+                    return handleFight(loc, (Animal) find, time);
+                } else {
+                    model.copyToSubMaps(loc, find, IFixture.CopyBehavior.ZERO);
+                    return noResultCost;
+                }
+            }
+            default -> {
+                LovelaceLogger.error("Unhandled case from hunting model");
+                return null;
+            }
         }
     }
 

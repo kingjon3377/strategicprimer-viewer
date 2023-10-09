@@ -2208,19 +2208,22 @@ public final class TestXMLIO {
 	public void testSimpleSerialization(final IntFunction<? extends HasImage> constructor, final int id)
 		throws SPFormatException, XMLStreamException, IOException {
 		final HasImage item = constructor.apply(id);
-		if (item instanceof HasKind hk) {
-			assertSerialization(hk.getKind() + " serialization", item);
-			assertMissingProperty(String.format("<%s />",
-				hk.getKind()), "id", (HasKind) constructor.apply(0));
-		} else if (item instanceof Hill) {
-			assertSerialization("Hill serialization", item);
-			assertMissingProperty("<hill />", "id", new Hill(0));
-		} else if (item instanceof Oasis) {
-			assertSerialization("Hill serialization", item);
-			assertMissingProperty("<oasis />", "id", new Oasis(0));
-		} else {
-			fail("Unhandled type");
-		}
+        switch (item) {
+            case HasKind hk -> {
+                assertSerialization(hk.getKind() + " serialization", item);
+                assertMissingProperty(String.format("<%s />",
+                        hk.getKind()), "id", (HasKind) constructor.apply(0));
+            }
+            case Hill hill -> {
+                assertSerialization("Hill serialization", item);
+                assertMissingProperty("<hill />", "id", new Hill(0));
+            }
+            case Oasis oasis -> {
+                assertSerialization("Hill serialization", item);
+                assertMissingProperty("<oasis />", "id", new Oasis(0));
+            }
+            case null, default -> fail("Unhandled type");
+        }
 	}
 
 	private static Stream<Arguments> testCaveSerialization() {

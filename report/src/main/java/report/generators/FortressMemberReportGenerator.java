@@ -2,6 +2,7 @@ package report.generators;
 
 import java.util.function.Consumer;
 
+import lovelace.util.LovelaceLogger;
 import org.jetbrains.annotations.Nullable;
 import org.javatuples.Pair;
 
@@ -52,35 +53,40 @@ public class FortressMemberReportGenerator extends AbstractReportGenerator<Fortr
     public void produceSingle(final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
                               final IMapNG map, final Consumer<String> ostream, final FortressMember item, final Point loc) {
         //	assert (is IUnit|IResourcePile|Implement item);
-        if (item instanceof IUnit u) {
-            // TODO: Should be a field, right? Or else a constructor parameter?
-            new UnitReportGenerator(currentPlayer, dimensions,
-                    currentTurn, hq).produceSingle(fixtures, map, ostream, u, loc);
-        } else if (item instanceof Implement i) {
-            fixtures.remove(item.getId());
-            ostream.accept("Equipment: ");
-            ostream.accept(i.getKind());
-            if (i.getCount() > 1) {
+        switch (item) {
+            case IUnit u -> // TODO: Should be a field, right? Or else a constructor parameter?
+                    new UnitReportGenerator(currentPlayer, dimensions,
+                            currentTurn, hq).produceSingle(fixtures, map, ostream, u, loc);
+            case Implement i -> {
+                fixtures.remove(item.getId());
+                ostream.accept("Equipment: ");
+                ostream.accept(i.getKind());
+                if (i.getCount() > 1) {
+                    ostream.accept(" (");
+                    ostream.accept(Integer.toString(i.getCount()));
+                    ostream.accept(")");
+                }
+            }
+            case IResourcePile r -> {
+                fixtures.remove(item.getId());
+                ostream.accept("A pile of ");
+                ostream.accept(r.getQuantity().toString());
+                if (r.getQuantity().units().isEmpty()) {
+                    ostream.accept(" ");
+                } else {
+                    ostream.accept(" of ");
+                }
+                ostream.accept(r.getContents());
                 ostream.accept(" (");
-                ostream.accept(Integer.toString(i.getCount()));
+                ostream.accept(r.getKind());
                 ostream.accept(")");
+                if (r.getCreated() >= 0) {
+                    ostream.accept(" from turn ");
+                    ostream.accept(Integer.toString(r.getCreated()));
+                }
             }
-        } else if (item instanceof IResourcePile r) {
-            fixtures.remove(item.getId());
-            ostream.accept("A pile of ");
-            ostream.accept(r.getQuantity().toString());
-            if (r.getQuantity().units().isEmpty()) {
-                ostream.accept(" ");
-            } else {
-                ostream.accept(" of ");
-            }
-            ostream.accept(r.getContents());
-            ostream.accept(" (");
-            ostream.accept(r.getKind());
-            ostream.accept(")");
-            if (r.getCreated() >= 0) {
-                ostream.accept(" from turn ");
-                ostream.accept(Integer.toString(r.getCreated()));
+            default -> {
+				LovelaceLogger.warning("Unhandled case in FortressMemberReportGenerator.produceSingle()");
             }
         }
     }

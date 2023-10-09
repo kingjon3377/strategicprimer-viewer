@@ -80,20 +80,25 @@ public class ResourceTabularReportGenerator
         final String kind;
         final String quantity;
         final String specifics;
-        if (item instanceof Implement i) {
-            kind = "equipment";
-            quantity = Integer.toString(i.getCount());
-            specifics = i.getKind();
-        } else if (item instanceof CacheFixture cf) {
-            kind = cf.getKind();
-            quantity = "---";
-            specifics = cf.getContents();
-        } else if (item instanceof IResourcePile rp) {
-            kind = rp.getKind();
-            quantity = rp.getQuantity().toString();
-            specifics = rp.getContents();
-        } else {
-            return Collections.emptyList();
+        switch (item) {
+            case Implement i -> {
+                kind = "equipment";
+                quantity = Integer.toString(i.getCount());
+                specifics = i.getKind();
+            }
+            case CacheFixture cf -> {
+                kind = cf.getKind();
+                quantity = "---";
+                specifics = cf.getContents();
+            }
+            case IResourcePile rp -> {
+                kind = rp.getKind();
+                quantity = rp.getQuantity().toString();
+                specifics = rp.getContents();
+            }
+            default -> {
+                return Collections.emptyList();
+            }
         }
         fixtures.remove(key);
         return Collections.singletonList(Arrays.asList(distanceString(loc, hq, dimensions),
@@ -102,36 +107,41 @@ public class ResourceTabularReportGenerator
 
     private static int compareItems(/*Implement|CacheFixture|IResourcePile*/final IFixture first,
             /*Implement|CacheFixture|IResourcePile*/final IFixture second) {
-        if (first instanceof Implement one) {
-            if (second instanceof Implement two) {
-                return Comparator.comparing(Implement::getKind)
-                        .thenComparing(Implement::getCount, Comparator.reverseOrder())
-                        .compare(one, two);
-            } else if (second instanceof IResourcePile) {
-                return 1;
-            } else {
-                return -1;
+        switch (first) {
+            case Implement one -> {
+                if (second instanceof Implement two) {
+                    return Comparator.comparing(Implement::getKind)
+                            .thenComparing(Implement::getCount, Comparator.reverseOrder())
+                            .compare(one, two);
+                } else if (second instanceof IResourcePile) {
+                    return 1;
+                } else {
+                    return -1;
+                }
             }
-        } else if (first instanceof CacheFixture one) {
-            if (second instanceof CacheFixture two) {
-                return Comparator.comparing(CacheFixture::getKind)
-                        .thenComparing(CacheFixture::getContents)
-                        .compare(one, two);
-            } else {
-                return 1;
+            case CacheFixture one -> {
+                if (second instanceof CacheFixture two) {
+                    return Comparator.comparing(CacheFixture::getKind)
+                            .thenComparing(CacheFixture::getContents)
+                            .compare(one, two);
+                } else {
+                    return 1;
+                }
             }
-        } else if (first instanceof IResourcePile one) {
-            if (second instanceof IResourcePile two) {
-                return Comparator.comparing(IResourcePile::getKind)
-                        .thenComparing(IResourcePile::getContents)
-                        .thenComparing(IResourcePile::getQuantity, Comparator.reverseOrder())
-                        .compare(one, two);
-            } else {
-                return -1;
+            case IResourcePile one -> {
+                if (second instanceof IResourcePile two) {
+                    return Comparator.comparing(IResourcePile::getKind)
+                            .thenComparing(IResourcePile::getContents)
+                            .thenComparing(IResourcePile::getQuantity, Comparator.reverseOrder())
+                            .compare(one, two);
+                } else {
+                    return -1;
+                }
             }
-        } else {
-            // give up
-            return 0;
+            default -> {
+                // give up
+                return 0;
+            }
         }
     }
 

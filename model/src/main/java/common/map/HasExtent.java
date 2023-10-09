@@ -13,21 +13,15 @@ public interface HasExtent<Self extends HasExtent<Self>> extends SubsettableFixt
      * Determine whether the given number is positive.
      */
     static boolean isPositive(final Number number) {
-        if (number instanceof Integer) {
-            return number.intValue() > 0;
-        } else if (number instanceof Long) {
-            return number.longValue() > 0L;
-        } else if (number instanceof Float) {
-            return number.floatValue() > 0.0f;
-        } else if (number instanceof Double) {
-            return number.doubleValue() > 0.0;
-        } else if (number instanceof BigInteger) {
-            return ((BigInteger) number).signum() > 0;
-        } else if (number instanceof BigDecimal) {
-            return ((BigDecimal) number).signum() > 0;
-        } else {
-            return number.doubleValue() > 0.0;
-        }
+        return switch (number) {
+            case Integer i -> number.intValue() > 0;
+            case Long l -> number.longValue() > 0L;
+            case Float v -> number.floatValue() > 0.0f;
+            case Double v -> number.doubleValue() > 0.0;
+            case BigInteger bigInteger -> bigInteger.signum() > 0;
+            case BigDecimal bigDecimal -> bigDecimal.signum() > 0;
+            default -> number.doubleValue() > 0.0;
+        };
     }
 
     /**

@@ -79,15 +79,12 @@ import java.util.stream.StreamSupport;
     public int getChildCount(final Object parent) {
         final ToIntFunction<Iterable<? extends HasName>> impl =
                 par -> (int) StreamSupport.stream(par.spliterator(), false).count();
-        if (parent instanceof IWorker w) {
-            return impl.applyAsInt(w);
-        } else if (parent instanceof IJob j) {
-            return impl.applyAsInt(j);
-        } else if (parent instanceof ISkill) {
-            return 0;
-        } else {
-            throw new IllegalArgumentException("Unexpected element type");
-        }
+        return switch (parent) {
+            case IWorker w -> impl.applyAsInt(w);
+            case IJob j -> impl.applyAsInt(j);
+            case ISkill iSkill -> 0;
+            default -> throw new IllegalArgumentException("Unexpected element type");
+        };
     }
 
     @Override

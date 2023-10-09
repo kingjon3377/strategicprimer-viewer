@@ -138,19 +138,14 @@ final class DBImmortalHandler extends AbstractDatabaseWriter<Immortal, /*Point|I
 				}
 			}
 		} else {
-			final String type;
-			if (obj instanceof Centaur) {
-				type = "centaur";
-			} else if (obj instanceof Dragon) {
-				type = "dragon";
-			} else if (obj instanceof Fairy) {
-				type = "fairy";
-			} else if (obj instanceof Giant) {
-				type = "giant";
-			} else {
-				throw new IllegalArgumentException("Unexpected immortal type");
-			}
-			if (context instanceof Point p) {
+			final String type = switch (obj) {
+                case Centaur centaur -> "centaur";
+                case Dragon dragon -> "dragon";
+                case Fairy fairy -> "fairy";
+                case Giant giant -> "giant";
+                default -> throw new IllegalArgumentException("Unexpected immortal type");
+            };
+            if (context instanceof Point p) {
 				INSERT_KINDED.on(value("row", p.row()),
 					value("column", p.column()),
 					value("type", type), value("kind", ((HasKind) obj).getKind()),

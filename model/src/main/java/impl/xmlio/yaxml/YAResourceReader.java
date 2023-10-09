@@ -148,46 +148,53 @@ import java.util.Set;
     @Override
     public void write(final ThrowingConsumer<String, IOException> ostream, final HarvestableFixture obj, final int indent)
             throws IOException {
-        if (obj instanceof CacheFixture c) {
-            writeTag(ostream, "cache", indent);
-            writeProperty(ostream, "kind", obj.getKind());
-            writeProperty(ostream, "contents", c.getContents());
-        } else if (obj instanceof Meadow m) {
-            writeTag(ostream, m.isField() ? "field" : "meadow", indent);
-            writeProperty(ostream, "kind", obj.getKind());
-            writeProperty(ostream, "cultivated", Boolean.toString(m.isCultivated()));
-            writeProperty(ostream, "status", m.getStatus().toString());
-            if (HasExtent.isPositive(m.getAcres())) {
-                writeProperty(ostream, "acres", m.getAcres().toString());
+        switch (obj) {
+            case CacheFixture c -> {
+                writeTag(ostream, "cache", indent);
+                writeProperty(ostream, "kind", obj.getKind());
+                writeProperty(ostream, "contents", c.getContents());
             }
-        } else if (obj instanceof Grove g) {
-            writeTag(ostream, g.isOrchard() ? "orchard" : "grove", indent);
-            writeProperty(ostream, "cultivated", Boolean.toString(g.isCultivated()));
-            writeProperty(ostream, "kind", obj.getKind());
-            if (g.getPopulation() >= 1) {
-                writeProperty(ostream, "count", g.getPopulation());
+            case Meadow m -> {
+                writeTag(ostream, m.isField() ? "field" : "meadow", indent);
+                writeProperty(ostream, "kind", obj.getKind());
+                writeProperty(ostream, "cultivated", Boolean.toString(m.isCultivated()));
+                writeProperty(ostream, "status", m.getStatus().toString());
+                if (HasExtent.isPositive(m.getAcres())) {
+                    writeProperty(ostream, "acres", m.getAcres().toString());
+                }
             }
-        } else if (obj instanceof Mine m) {
-            writeTag(ostream, "mine", indent);
-            writeProperty(ostream, "kind", obj.getKind());
-            writeProperty(ostream, "status", m.getStatus().toString());
-        } else if (obj instanceof MineralVein mv) {
-            writeTag(ostream, "mineral", indent);
-            writeProperty(ostream, "kind", obj.getKind());
-            writeProperty(ostream, "exposed", Boolean.toString(mv.isExposed()));
-            writeProperty(ostream, "dc", obj.getDC());
-        } else if (obj instanceof Shrub s) {
-            writeTag(ostream, "shrub", indent);
-            writeProperty(ostream, "kind", obj.getKind());
-            if (s.getPopulation() >= 1) {
-                writeProperty(ostream, "count", s.getPopulation());
+            case Grove g -> {
+                writeTag(ostream, g.isOrchard() ? "orchard" : "grove", indent);
+                writeProperty(ostream, "cultivated", Boolean.toString(g.isCultivated()));
+                writeProperty(ostream, "kind", obj.getKind());
+                if (g.getPopulation() >= 1) {
+                    writeProperty(ostream, "count", g.getPopulation());
+                }
             }
-        } else if (obj instanceof StoneDeposit sd) {
-            writeTag(ostream, "stone", indent);
-            writeProperty(ostream, "kind", sd.getStone().toString());
-            writeProperty(ostream, "dc", obj.getDC());
-        } else {
-            throw new IllegalArgumentException("Unhandled HarvestableFixture type");
+            case Mine m -> {
+                writeTag(ostream, "mine", indent);
+                writeProperty(ostream, "kind", obj.getKind());
+                writeProperty(ostream, "status", m.getStatus().toString());
+            }
+            case MineralVein mv -> {
+                writeTag(ostream, "mineral", indent);
+                writeProperty(ostream, "kind", obj.getKind());
+                writeProperty(ostream, "exposed", Boolean.toString(mv.isExposed()));
+                writeProperty(ostream, "dc", obj.getDC());
+            }
+            case Shrub s -> {
+                writeTag(ostream, "shrub", indent);
+                writeProperty(ostream, "kind", obj.getKind());
+                if (s.getPopulation() >= 1) {
+                    writeProperty(ostream, "count", s.getPopulation());
+                }
+            }
+            case StoneDeposit sd -> {
+                writeTag(ostream, "stone", indent);
+                writeProperty(ostream, "kind", sd.getStone().toString());
+                writeProperty(ostream, "dc", obj.getDC());
+            }
+            default -> throw new IllegalArgumentException("Unhandled HarvestableFixture type");
         }
         writeProperty(ostream, "id", obj.getId());
         writeImageXML(ostream, obj);

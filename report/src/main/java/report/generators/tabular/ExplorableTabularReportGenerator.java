@@ -82,43 +82,50 @@ public class ExplorableTabularReportGenerator
         final String brief;
         final String owner;
         final String longDesc;
-        if (item instanceof TextFixture tf) {
-            if (tf.getTurn() >= 0) {
-                brief = String.format("Text Note (%d)", tf.getTurn());
-            } else {
-                brief = "Text Note";
+        switch (item) {
+            case TextFixture tf -> {
+                if (tf.getTurn() >= 0) { // TODO: Pull up to conditions on switch case (splitting it)?
+                    brief = String.format("Text Note (%d)", tf.getTurn());
+                } else {
+                    brief = "Text Note";
+                }
+                owner = "---";
+                longDesc = tf.getText();
             }
-            owner = "---";
-            longDesc = tf.getText();
-        } else if (item instanceof Battlefield) {
-            brief = "ancient battlefield";
-            owner = "---";
-            longDesc = "";
-        } else if (item instanceof Cave) {
-            brief = "caves nearby";
-            owner = "---";
-            longDesc = "";
-        } else if (item instanceof Portal p) {
-            if (p.getDestinationCoordinates().isValid()) {
-                brief = "portal to world " + p.getDestinationWorld();
-            } else {
-                brief = "portal to another world";
+            case Battlefield battlefield -> {
+                brief = "ancient battlefield";
+                owner = "---";
+                longDesc = "";
             }
-            owner = "---";
-            longDesc = "";
-        } else if (item instanceof AdventureFixture af) {
-            brief = af.getBriefDescription();
-            // TODO: Don't we have a helper method for this?
-            if (player.equals(af.owner())) {
-                owner = "You";
-            } else if (af.owner().isIndependent()) {
-                owner = "No-one";
-            } else {
-                owner = ownerString(player, af.owner());
+            case Cave cave -> {
+                brief = "caves nearby";
+                owner = "---";
+                longDesc = "";
             }
-            longDesc = af.getFullDescription();
-        } else {
-            return Collections.emptyList();
+            case Portal p -> { // TODO: Pull up to conditions on switch case (splitting it)?
+                if (p.getDestinationCoordinates().isValid()) {
+                    brief = "portal to world " + p.getDestinationWorld();
+                } else {
+                    brief = "portal to another world";
+                }
+                owner = "---";
+                longDesc = "";
+            }
+            case AdventureFixture af -> {
+                brief = af.getBriefDescription();
+                // TODO: Don't we have a helper method for this?
+                if (player.equals(af.owner())) { // TODO: Pull up to conditions on switch case (splitting it)?
+                    owner = "You";
+                } else if (af.owner().isIndependent()) {
+                    owner = "No-one";
+                } else {
+                    owner = ownerString(player, af.owner());
+                }
+                longDesc = af.getFullDescription();
+            }
+            default -> {
+                return Collections.emptyList();
+            }
         }
         fixtures.remove(key);
         return Collections.singletonList(Arrays.asList(distanceString(loc, hq, dimensions),

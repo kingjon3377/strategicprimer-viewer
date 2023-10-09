@@ -383,18 +383,13 @@ import java.math.BigDecimal;
 	 * TODO: Provide and use lookup tables for specific crops to avoid miscategorizations
 	 */
 	private static String getHarvestableKind(final HarvestableFixture fixture) {
-		if (fixture instanceof Grove g) {
-			return (g.isOrchard()) ? "food" : "wood";
-		} else if (fixture instanceof Meadow m) {
-			return (m.isField()) ? "food" : "fodder";
-		} else if (fixture instanceof MineralVein) {
-			return "mineral";
-		} else if (fixture instanceof StoneDeposit) {
-			return "stone";
-		} else {
-			// TODO: log this case?
-			return "unknown";
-		}
+        return switch (fixture) {
+            case Grove g -> (g.isOrchard()) ? "food" : "wood";
+            case Meadow m -> (m.isField()) ? "food" : "fodder";
+            case MineralVein mineralVein -> "mineral";
+            case StoneDeposit stoneDeposit -> "stone";
+            default -> "unknown"; // TODO: log this case?
+        };
 	}
 
 	/**

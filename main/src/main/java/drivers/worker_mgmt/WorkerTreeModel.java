@@ -58,30 +58,25 @@ import java.util.stream.Collectors;
 	@Override
 	public Object getChild(final Object parent, final int index) {
 		// TODO: Make IWorkerModel methods return List to simplify this?
-		if (parent instanceof Player p) {
-			return StreamSupport.stream(model.getUnitKinds(p).spliterator(), false).toList().get(index);
-		} else if (parent instanceof String kind) {
-			return new ArrayList<>(model.getUnits(player, kind)).get(index);
-		} else if (parent instanceof IUnit unit) {
-			return (unit).stream().toList().get(index);
-		} else {
-			throw new ArrayIndexOutOfBoundsException("Unrecognized parent");
-		}
+        return switch (parent) {
+            case Player p -> StreamSupport.stream(model.getUnitKinds(p).spliterator(), false).toList().get(index);
+            case String kind -> new ArrayList<>(model.getUnits(player, kind)).get(index);
+            case IUnit unit -> unit.stream().toList().get(index);
+            default -> throw new ArrayIndexOutOfBoundsException("Unrecognized parent");
+        };
 	}
 
 	@Override
 	public int getChildCount(final Object parent) {
-		if (parent instanceof Player p) {
-			return (int) StreamSupport.stream(model.getUnitKinds(p).spliterator(),
-				false).count();
-		} else if (parent instanceof String kind && StreamSupport.stream(
-			model.getUnitKinds(player).spliterator(), false).anyMatch(parent::equals)) {
-			return model.getUnits(player, kind).size();
-		} else if (parent instanceof IUnit unit) {
-			return (int) unit.stream().count();
-		} else {
-			throw new IllegalArgumentException("Not a possible member of the tree");
-		}
+        return switch (parent) {
+            case Player p -> (int) StreamSupport.stream(model.getUnitKinds(p).spliterator(),
+                    false).count();
+            case String kind when StreamSupport.stream(
+                    model.getUnitKinds(player).spliterator(), false).anyMatch(parent::equals) ->
+                    model.getUnits(player, kind).size();
+            case IUnit unit -> (int) unit.stream().count();
+            default -> throw new IllegalArgumentException("Not a possible member of the tree");
+        };
 	}
 
 	@Override
@@ -96,18 +91,16 @@ import java.util.stream.Collectors;
 
 	@Override
 	public int getIndexOfChild(final Object parent, final Object child) {
-		if (parent instanceof Player p && child instanceof IUnit) {
-			// FIXME: This case shouldn't be allowed, right?
-			return new ArrayList<>(model.getUnits(p)).indexOf(child);
-		} else if (parent instanceof Player p && child instanceof String) {
-			return StreamSupport.stream(model.getUnitKinds(p).spliterator(), false).toList().indexOf(child);
-		} else if (parent instanceof String kind && child instanceof IUnit) {
-			return new ArrayList<>(model.getUnits(player, kind)).indexOf(child);
-		} else if (parent instanceof IUnit unit) {
-			return unit.stream().toList().indexOf(child);
-		} else {
-			return -1;
-		}
+        return switch (parent) {
+            case Player p when child instanceof IUnit -> // FIXME: This case shouldn't be allowed, right?
+                    new ArrayList<>(model.getUnits(p)).indexOf(child);
+			case Player p when child instanceof String ->
+                    StreamSupport.stream(model.getUnitKinds(p).spliterator(), false).toList().indexOf(child);
+            case String kind when child instanceof IUnit ->
+                    new ArrayList<>(model.getUnits(player, kind)).indexOf(child);
+            case IUnit unit -> unit.stream().toList().indexOf(child);
+            default -> -1;
+        };
 	}
 
 	@Override
@@ -384,15 +377,12 @@ import java.util.stream.Collectors;
 
 	@Override
 	public Iterable<Object> childrenOf(final Object obj) {
-		if (obj instanceof Player p) {
-			return (Iterable<Object>) ((Iterable<?>) model.getUnitKinds(p));
-		} else if (obj instanceof String kind) {
-			return (Iterable<Object>) ((Iterable<?>) model.getUnits(player, kind));
-		} else if (obj instanceof IUnit) {
-			return (Iterable<Object>) obj;
-		} else {
-			return Collections.emptyList();
-		}
+        return switch (obj) {
+            case Player p -> (Iterable<Object>) ((Iterable<?>) model.getUnitKinds(p));
+            case String kind -> (Iterable<Object>) ((Iterable<?>) model.getUnits(player, kind));
+            case IUnit unit -> (Iterable<Object>) ((Iterable<?>) unit);
+            default -> Collections.emptyList();
+        };
 	}
 
 	@Override
