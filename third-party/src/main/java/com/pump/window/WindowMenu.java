@@ -102,8 +102,6 @@ public class WindowMenu extends JMenu {
 
     private final JFrame myFrame;
 
-    private final ActionListener actionListener;
-
     private final JMenuItem @Nullable [] customItems;
 
     /**
@@ -127,22 +125,22 @@ public class WindowMenu extends JMenu {
     public WindowMenu(final JFrame frame, final JMenuItem... extraItems) {
         super("Window");
         myFrame = frame;
-        actionListener = e -> {
-            final Object src = e.getSource();
-            if (src == minimizeItem) {
-                myFrame.setExtendedState(Frame.ICONIFIED);
-            } else if (src == bringItem) {
-                final Frame[] frames = WindowList.getFrames(false, false, true);
-                for (final Frame w : frames) {
-                    if (w.isVisible() || frame
-                            .getExtendedState() == Frame.ICONIFIED) {
-                        w.toFront();
-                        if (w.getExtendedState() == Frame.ICONIFIED)
-                            w.setExtendedState(Frame.NORMAL);
-                    }
-                }
-            }
-        };
+		ActionListener actionListener = e -> {
+			final Object src = e.getSource();
+			if (src == minimizeItem) {
+				myFrame.setExtendedState(Frame.ICONIFIED);
+			} else if (src == bringItem) {
+				final Frame[] frames = WindowList.getFrames(false, false, true);
+				for (final Frame w : frames) {
+					if (w.isVisible() || frame
+						.getExtendedState() == Frame.ICONIFIED) {
+						w.toFront();
+						if (w.getExtendedState() == Frame.ICONIFIED)
+							w.setExtendedState(Frame.NORMAL);
+					}
+				}
+			}
+		};
         minimizeItem.addActionListener(actionListener);
         bringItem.addActionListener(actionListener);
 
