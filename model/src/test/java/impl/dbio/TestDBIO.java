@@ -452,9 +452,9 @@ public final class TestDBIO {
 
 		@Override
 		public Connection connection() throws SQLException {
-			SQLiteDataSource ds = source;
-			if (ds == null) {
-				ds = new SQLiteDataSource();
+			SQLiteDataSource existingSource = source;
+			if (existingSource == null) {
+				final SQLiteDataSource ds = new SQLiteDataSource();
 				ds.setSharedCache(true);
 				ds.setReadUncommitted(true);
 				ds.setUrl("jdbc:sqlite::memory:");
@@ -467,7 +467,7 @@ public final class TestDBIO {
 			} else if (connection != null) {
 				return connection;
 			} else {
-				connection = new PersistentConnection(ds.getConnection());
+				connection = new PersistentConnection(existingSource.getConnection());
 				connection.setAutoCommit(false);
 				connection.setTransactionIsolation(
 					Connection.TRANSACTION_READ_UNCOMMITTED);
