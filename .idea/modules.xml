@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/assistive-programs.iml" filepath="$PROJECT_DIR$/assistive-programs.iml" />
+      <module fileurl="file://$PROJECT_DIR$/lovelace-util/lovelace-util.iml" filepath="$PROJECT_DIR$/lovelace-util/lovelace-util.iml" />
     </modules>
   </component>
 </project>
