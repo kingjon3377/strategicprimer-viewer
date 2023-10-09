@@ -497,9 +497,8 @@ public final class WorkerTree extends JTree implements UnitMemberSelectionSource
         }
 
         /**
-         * Returns true if orders (for any unit with this "kind")
-         * contain FIXME, false, if orders contain TODO or XXX, and
-         * null otherwise (except that units with no members are ignored).
+         * Returns an enum value indicating whether orders (for any unit with this "kind")
+         * contain keywords that should flag the user's attention.
          */
         private BackgroundState shouldChangeBackground(final String item) {
             return StreamSupport.stream(wtModel.childrenOf(item).spliterator(), false)

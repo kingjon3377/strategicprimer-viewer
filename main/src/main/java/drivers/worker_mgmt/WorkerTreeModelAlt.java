@@ -108,8 +108,8 @@ public class WorkerTreeModelAlt extends DefaultTreeModel implements IWorkerTreeM
         }
 
         /**
-         * Explicitly delegate to the {@link DefaultMutableTreeNode}
-         * default {@link #toString} implementation. (This, with a cast
+         * Explicitly delegate to the
+         * {@link DefaultMutableTreeNode#toString default superclass implementation}. (This, with a cast
          * specifying which supertype's implementation to use, was
          * required in Ceylon for the code to compile.)
          */
@@ -119,7 +119,7 @@ public class WorkerTreeModelAlt extends DefaultTreeModel implements IWorkerTreeM
         }
 
         /**
-         * Add a child. If it is not a {@link WorkerTreeNode} of some sort,
+         * Add a child. If it is not a WorkerTreeNode of some sort,
          * we log this (at the info level) but otherwise ignore the
          * request instead of adding it.
          */
