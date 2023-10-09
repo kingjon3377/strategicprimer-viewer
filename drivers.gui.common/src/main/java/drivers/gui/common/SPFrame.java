@@ -1,5 +1,6 @@
 package drivers.gui.common;
 
+import java.io.Serial;
 import java.nio.file.NoSuchFileException;
 import javax.swing.TransferHandler;
 import javax.xml.stream.XMLStreamException;
@@ -27,7 +28,8 @@ import drivers.common.MapChangeListener;
  * things that can't be done in an interface.
  */
 public class SPFrame extends JFrame implements ISPWindow {
-	private static final long serialVersionUID = 1L;
+	@Serial
+    private static final long serialVersionUID = 1L;
 
 	@FunctionalInterface
 	public interface IDroppedFileHandler {

@@ -3,6 +3,7 @@ package drivers.map_viewer;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.io.Serial;
 
 import javax.swing.JComponent;
 
@@ -10,6 +11,7 @@ import javax.swing.JComponent;
  * The part of the key showing a tile's color.
  */
 /* package */ final class KeyElementComponent extends JComponent {
+    @Serial
     private static final long serialVersionUID = 1L;
 
     public KeyElementComponent(final Color color, final Dimension minimum, final Dimension preferred,

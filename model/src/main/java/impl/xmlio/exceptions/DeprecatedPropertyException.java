@@ -4,11 +4,13 @@ import common.xmlio.SPFormatException;
 
 import javax.xml.namespace.QName;
 import javax.xml.stream.events.StartElement;
+import java.io.Serial;
 
 /**
  * A custom exception for cases where one property is deprecated in favor of another.
  */
 public class DeprecatedPropertyException extends SPFormatException {
+    @Serial
     private static final long serialVersionUID = 1L;
     /**
      * The current tag.

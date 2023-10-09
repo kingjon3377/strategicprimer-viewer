@@ -1,5 +1,6 @@
 package drivers.map_viewer;
 
+import java.io.Serial;
 import java.util.function.Predicate;
 import java.util.Iterator;
 import java.util.ArrayList;
@@ -64,6 +65,7 @@ import drivers.common.FixtureMatcher;
  */
 public class FixtureFilterTableModel extends AbstractTableModel
         implements Reorderable, ZOrderFilter, Iterable<FixtureMatcher>, Comparator<TileFixture> {
+    @Serial
     private static final long serialVersionUID = 1L;
     private final List<FixtureMatcher> matchers = new ArrayList<>();
 

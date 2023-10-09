@@ -17,12 +17,14 @@ import common.map.fixtures.resources.Grove;
 import common.map.fixtures.resources.Meadow;
 import drivers.common.FixtureMatcher;
 
+import java.io.Serial;
 import java.util.function.Predicate;
 
 /**
  * A list to let the user select which fixtures ought to be searched.
  */
 /* package */ final class FixtureFilterList extends JList<FixtureMatcher> implements ZOrderFilter {
+    @Serial
     private static final long serialVersionUID = 1L;
 
     public FixtureFilterList() {

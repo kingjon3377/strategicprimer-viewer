@@ -1,6 +1,7 @@
 package lovelace.util;
 
 import java.awt.event.ActionListener;
+import java.io.Serial;
 
 import javax.swing.JButton;
 
@@ -8,6 +9,7 @@ import javax.swing.JButton;
  * A button that takes its listeners as constructor parameters.
  */
 public final class ListenedButton extends JButton {
+    @Serial
     private static final long serialVersionUID = 1;
 
     /**

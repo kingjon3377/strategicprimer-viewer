@@ -5,6 +5,7 @@ import java.awt.Color;
 
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.Serial;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -30,6 +31,7 @@ import drivers.gui.common.SPFrame;
  * TODO: Merge into MapCheckerGUI
  */
 /* package */ final class MapCheckerFrame extends SPFrame {
+    @Serial
     private static final long serialVersionUID = 1L;
 
     private static final class AutoDisposeExecutor extends WindowAdapter {

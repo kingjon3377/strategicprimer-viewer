@@ -4,6 +4,7 @@ import drivers.common.cli.ICLIHelper;
 import org.jetbrains.annotations.Nullable;
 
 import java.awt.Dimension;
+import java.io.Serial;
 
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
@@ -44,6 +45,7 @@ import drivers.gui.common.MenuBroker;
  * A GUI to let a user manage workers.
  */
 /* package */ final class AdvancementFrame extends SPFrame implements PlayerChangeListener {
+    @Serial
     private static final long serialVersionUID = 1L;
     private final FormattedLabel playerLabel;
     private final IWorkerTreeModel treeModel;

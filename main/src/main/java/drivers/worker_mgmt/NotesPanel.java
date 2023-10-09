@@ -1,5 +1,6 @@
 package drivers.worker_mgmt;
 
+import java.io.Serial;
 import java.util.Objects;
 import drivers.common.PlayerChangeListener;
 import lovelace.util.BorderedPanel;
@@ -18,7 +19,8 @@ import org.jetbrains.annotations.Nullable;
 
 public final class NotesPanel extends BorderedPanel
 		implements UnitMemberListener, PlayerChangeListener {
-	private static final long serialVersionUID = 1L;
+	@Serial
+    private static final long serialVersionUID = 1L;
 	private final JTextArea notesArea = new JTextArea();
 	private @Nullable HasNotes current = null;
 	private Player player;

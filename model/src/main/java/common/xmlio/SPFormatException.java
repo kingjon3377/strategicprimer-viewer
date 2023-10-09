@@ -1,6 +1,7 @@
 package common.xmlio;
 
 import javax.xml.stream.Location;
+import java.io.Serial;
 
 /**
  * A custom exception for XML format errors.
@@ -8,6 +9,7 @@ import javax.xml.stream.Location;
  * TODO: Take filename as well as location in the file?
  */
 public abstract class SPFormatException extends Exception {
+    @Serial
     private static final long serialVersionUID = 1L;
     /**
      * The line of the XML file containing the mistake.

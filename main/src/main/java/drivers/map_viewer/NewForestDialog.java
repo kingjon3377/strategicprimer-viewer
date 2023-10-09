@@ -1,5 +1,6 @@
 package drivers.map_viewer;
 
+import java.io.Serial;
 import java.util.OptionalInt;
 
 import lovelace.util.LovelaceLogger;
@@ -39,6 +40,7 @@ import java.math.BigDecimal;
  * A dialog to let the user add a new forest to a tile.
  */
 public final class NewForestDialog extends SPDialog implements NewFixtureSource {
+    @Serial
     private static final long serialVersionUID = 1L;
 
     public NewForestDialog(final IDRegistrar idf) {

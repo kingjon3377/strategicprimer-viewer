@@ -12,10 +12,13 @@ import exploration.common.IExplorationModel;
 import lovelace.util.LovelaceLogger;
 import org.jetbrains.annotations.Nullable;
 
+import java.io.Serial;
+
 /**
  * The list model for the list of units to choose the explorer (or otherwise moving unit) from.
  */
 /* package */ class UnitListModel extends DefaultListModel<IUnit> implements PlayerChangeListener {
+    @Serial
     private static final long serialVersionUID = 1L;
 
     public UnitListModel(final IExplorationModel model) {

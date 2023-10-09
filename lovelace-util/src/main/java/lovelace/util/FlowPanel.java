@@ -1,6 +1,7 @@
 package lovelace.util;
 
 import java.awt.Component;
+import java.io.Serial;
 import javax.swing.JPanel;
 
 /**
@@ -8,6 +9,7 @@ import javax.swing.JPanel;
  * children to add as constructor parameters.
  */
 public final class FlowPanel extends JPanel {
+    @Serial
     private static final long serialVersionUID = 1;
 
     public FlowPanel(final Component... components) {

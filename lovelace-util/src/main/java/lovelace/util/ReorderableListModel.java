@@ -1,6 +1,7 @@
 package lovelace.util;
 
 import javax.swing.DefaultListModel;
+import java.io.Serial;
 
 /**
  * An extension of the {@link DefaultListModel} class to add an implementation
@@ -8,6 +9,7 @@ import javax.swing.DefaultListModel;
  * class also takes its initial elements as constructor parameters.
  */
 public final class ReorderableListModel<Element> extends DefaultListModel<Element> implements Reorderable {
+    @Serial
     private static final long serialVersionUID = 1;
 
     @SafeVarargs

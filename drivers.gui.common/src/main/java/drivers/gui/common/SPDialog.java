@@ -6,6 +6,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.awt.Frame;
 import java.awt.event.KeyEvent;
+import java.io.Serial;
 
 import javax.swing.JDialog;
 import javax.swing.WindowConstants;
@@ -23,7 +24,9 @@ import lovelace.util.Platform;
  * {@link #showWindow} method so calling code doesn't have to create a lambda to show a dialog.
  */
 public class SPDialog extends JDialog {
-	private static final long serialVersionUID = 1L;
+	@Serial
+    @Serial
+    private static final long serialVersionUID = 1L;
 
 	public SPDialog(final @Nullable Frame parentFrame, final String title) {
 		super(parentFrame, title);

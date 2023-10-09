@@ -5,6 +5,7 @@ import drivers.gui.common.SPDialog;
 import drivers.common.NewFixtureSource;
 import drivers.common.NewFixtureListener;
 
+import java.io.Serial;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,6 +28,7 @@ import java.util.function.IntSupplier;
  * TODO: Add the ability to edit an existing note.
  */
 public final class TextNoteDialog extends SPDialog implements NewFixtureSource {
+    @Serial
     private static final long serialVersionUID = 1L;
     private final IntSupplier currentTurn;
 

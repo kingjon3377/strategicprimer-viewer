@@ -1,5 +1,6 @@
 package drivers.map_viewer;
 
+import java.io.Serial;
 import java.util.function.Function;
 
 import drivers.common.ViewerDriver;
@@ -55,6 +56,7 @@ import java.awt.image.BufferedImage;
  * The main window for the map viewer app.
  */
 public final class ViewerFrame extends SPFrame implements MapGUI {
+    @Serial
     private static final long serialVersionUID = 1L;
 
     private static JFrame containingWindow(final Component component) {

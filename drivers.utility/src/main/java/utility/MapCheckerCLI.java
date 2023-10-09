@@ -10,6 +10,7 @@ import common.map.fixtures.towns.IFortress;
 import common.map.fixtures.towns.TownSize;
 import common.map.TileFixture;
 
+import java.io.Serial;
 import java.nio.file.NoSuchFileException;
 import java.util.Collection;
 import java.util.List;
@@ -106,6 +107,7 @@ public class MapCheckerCLI implements UtilityDriver {
     }
 
     private static class SPContentWarning extends Exception {
+        @Serial
         private static final long serialVersionUID = 1L;
 
         public SPContentWarning(final Point context, final String message) {

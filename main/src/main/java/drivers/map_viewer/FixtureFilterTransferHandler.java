@@ -7,6 +7,7 @@ import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.datatransfer.Transferable;
 
 import java.io.IOException;
+import java.io.Serial;
 
 import javax.swing.JTable;
 import javax.swing.JList;
@@ -23,6 +24,7 @@ import drivers.common.FixtureMatcher;
  */
 /* package */ class FixtureFilterTransferHandler extends TransferHandler {
     private static final DataFlavor FLAVOR = new DataFlavor(FixtureMatcher.class, "FixtureMatcher");
+    @Serial
     private static final long serialVersionUID = 1L;
 
     /**

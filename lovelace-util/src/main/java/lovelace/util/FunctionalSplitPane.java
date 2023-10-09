@@ -3,6 +3,7 @@ package lovelace.util;
 import javax.swing.JSplitPane;
 
 import java.awt.Component;
+import java.io.Serial;
 
 /**
  * A version of {@link JSplitPane} that takes the divider location and resize
@@ -11,6 +12,7 @@ import java.awt.Component;
  * split.
  */
 public final class FunctionalSplitPane extends JSplitPane {
+    @Serial
     private static final long serialVersionUID = 1;
 
     private FunctionalSplitPane(final int orientation, final Component left, final Component right,

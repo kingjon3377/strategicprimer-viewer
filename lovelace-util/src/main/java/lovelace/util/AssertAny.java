@@ -2,6 +2,7 @@ package lovelace.util;
 
 import org.opentest4j.AssertionFailedError;
 
+import java.io.Serial;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -19,6 +20,7 @@ public final class AssertAny {
 
     // Adapted from my memory of the class of the same name in the Ceylon SDK
     public static class MultipleFailureException extends AssertionFailedError {
+        @Serial
         private static final long serialVersionUID = 0L;
         private final List<AssertionFailedError> failures;
 

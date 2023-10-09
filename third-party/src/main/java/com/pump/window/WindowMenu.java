@@ -16,6 +16,7 @@ import java.awt.Frame;
 import java.awt.Toolkit;
 import java.awt.event.ActionListener;
 
+import java.io.Serial;
 import java.util.Objects;
 import java.util.stream.Stream;
 import javax.swing.JCheckBoxMenuItem;
@@ -68,7 +69,8 @@ import javax.swing.event.ChangeListener;
  *      Adding a Window Menu</a>
  */
 public class WindowMenu extends JMenu {
-    private static final long serialVersionUID = 1L;
+    @Serial
+	private static final long serialVersionUID = 1L;
 
     /** The menu item that minimizes this window. */
     private final JMenuItem minimizeItem = new JMenuItem("Minimize");

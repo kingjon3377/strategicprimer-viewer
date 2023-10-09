@@ -3,11 +3,13 @@ package impl.xmlio.exceptions;
 import common.xmlio.SPFormatException;
 
 import javax.xml.stream.events.StartElement;
+import java.io.Serial;
 
 /**
  * An exception to indicate that a map file specified a map version not supported by the code reading it.
  */
 public class MapVersionException extends SPFormatException {
+    @Serial
     private static final long serialVersionUID = 1L;
 
     private static String messageFragment(final int minimum, final int maximum) {

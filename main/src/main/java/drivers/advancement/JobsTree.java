@@ -10,6 +10,7 @@ import javax.swing.JTree;
 
 import javax.swing.tree.TreePath;
 
+import java.io.Serial;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -24,6 +25,7 @@ import common.map.fixtures.mobile.worker.IJob;
  * TreeSelectionModel, so we can make callers use a bog-standard JTree?
  */
 /* package */ final class JobsTree extends JTree implements SkillSelectionSource {
+    @Serial
     private static final long serialVersionUID = 1L;
 
     public JobsTree(final JobTreeModel jtModel) {

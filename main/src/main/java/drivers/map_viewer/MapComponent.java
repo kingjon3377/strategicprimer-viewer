@@ -3,6 +3,7 @@ package drivers.map_viewer;
 import lovelace.util.LovelaceLogger;
 import org.jetbrains.annotations.Nullable;
 
+import java.io.Serial;
 import java.util.function.IntSupplier;
 import java.awt.event.ComponentListener;
 import java.awt.Image;
@@ -57,6 +58,7 @@ import java.awt.image.BufferedImage;
  */
 /* package */ final class MapComponent extends JComponent implements MapGUI, MapChangeListener,
         SelectionChangeListener, GraphicalParamsListener {
+    @Serial
     private static final long serialVersionUID = 1L;
     private final IViewerModel mapModel;
     private final Predicate<TileFixture> zOrderFilter;
@@ -98,6 +100,7 @@ import java.awt.image.BufferedImage;
         ArrowListenerInitializer.setUpArrowListeners(dsl, localInputMap, localActionMap);
         localInputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_T, 0), "show-terrain-menu");
         localActionMap.put("show-terrain-menu", new AbstractAction() { // FIXME: Use ActionWrapper
+            @Serial
             private static final long serialVersionUID = 1L;
 
             @Override

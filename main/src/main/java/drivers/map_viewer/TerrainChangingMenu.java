@@ -1,5 +1,6 @@
 package drivers.map_viewer;
 
+import java.io.Serial;
 import java.util.Collection;
 import java.util.EnumMap;
 import java.util.List;
@@ -33,6 +34,7 @@ import common.map.fixtures.terrain.Hill;
  */
 /* package */ class TerrainChangingMenu extends JPopupMenu
         implements VersionChangeListener, SelectionChangeListener {
+    @Serial
     private static final long serialVersionUID = 1L;
     private final IViewerModel model;
     private final IDRegistrar idf;

@@ -4,11 +4,13 @@ import common.xmlio.SPFormatException;
 
 import javax.xml.namespace.QName;
 import javax.xml.stream.events.StartElement;
+import java.io.Serial;
 
 /**
  * A custom exception for cases where a tag has a property it doesn't support.
  */
 public class UnsupportedPropertyException extends SPFormatException {
+    @Serial
     private static final long serialVersionUID = 1L;
     /**
      * The unsupported property.

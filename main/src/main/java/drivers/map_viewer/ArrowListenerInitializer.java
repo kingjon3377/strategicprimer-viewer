@@ -1,5 +1,6 @@
 package drivers.map_viewer;
 
+import java.io.Serial;
 import java.util.List;
 import java.awt.event.KeyEvent;
 import java.awt.event.ActionEvent;
@@ -62,6 +63,7 @@ import java.util.Arrays;
     }
 
     private static class DirectionListener extends AbstractAction {
+        @Serial
         private static final long serialVersionUID = 1L;
         private final Runnable action;
         private final int num;

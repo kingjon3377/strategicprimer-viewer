@@ -6,6 +6,7 @@ import javax.swing.JButton;
 import javax.swing.JTextField;
 import javax.swing.JPanel;
 
+import java.io.Serial;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,6 +29,7 @@ import lovelace.util.SimpleCardLayout;
  * Or <del>try to convert back to a class now we have</del> merge with(?) SimpleCardLayout
  */
 /* package */ final class ItemAdditionPanel extends JPanel implements AddRemoveSource {
+    @Serial
     private static final long serialVersionUID = 1L;
 
     /**

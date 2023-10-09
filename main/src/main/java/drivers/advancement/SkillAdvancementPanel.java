@@ -2,6 +2,7 @@ package drivers.advancement;
 
 import org.jetbrains.annotations.Nullable;
 
+import java.io.Serial;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,6 +42,7 @@ import drivers.common.IAdvancementModel;
  */
 /* package */ final class SkillAdvancementPanel extends BorderedPanel
         implements SkillSelectionListener, LevelGainSource, UnitMemberListener {
+    @Serial
     private static final long serialVersionUID = 1L;
 
     private static JPanel secondPanelFactory(final JButton... buttons) {

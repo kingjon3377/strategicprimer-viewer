@@ -5,13 +5,15 @@ import org.jetbrains.annotations.Nullable;
 import javax.swing.JPanel;
 import java.awt.BorderLayout;
 import java.awt.Component;
+import java.io.Serial;
 
 /**
  * A {@link JPanel panel} laid out by a {@link BorderLayout}, with helper
  * methods/attributes to assign components to its different sectors.
  */
 public class BorderedPanel extends JPanel {
-	private static final long serialVersionUID = 1L;
+	@Serial
+    private static final long serialVersionUID = 1L;
 	private @Nullable Component center = null;
 
 	/**

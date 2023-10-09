@@ -1,5 +1,6 @@
 package drivers.map_viewer;
 
+import java.io.Serial;
 import java.util.stream.StreamSupport;
 import java.util.Optional;
 import java.awt.event.ActionListener;
@@ -26,6 +27,7 @@ import common.idreg.IDRegistrar;
  * A pop-up menu to let the user edit a fixture.
  */
 public class FixtureEditMenu extends JPopupMenu {
+    @Serial
     private static final long serialVersionUID = 1L;
 
     /**

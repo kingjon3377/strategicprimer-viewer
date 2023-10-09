@@ -8,10 +8,13 @@ import drivers.common.MapChangeListener;
 
 import exploration.common.IExplorationModel;
 
+import java.io.Serial;
+
 /**
  * A list model for players in the exploration GUI.
  */
 /* package */ class PlayerListModel extends DefaultListModel<Player> implements MapChangeListener {
+    @Serial
     private static final long serialVersionUID = 1L;
 
     public PlayerListModel(final IExplorationModel model) {

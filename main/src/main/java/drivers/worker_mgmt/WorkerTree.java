@@ -1,5 +1,6 @@
 package drivers.worker_mgmt;
 
+import java.io.Serial;
 import java.util.Comparator;
 
 import lovelace.util.LovelaceLogger;
@@ -75,6 +76,7 @@ import java.util.stream.Collectors;
  * A tree of a player's units.
  */
 public final class WorkerTree extends JTree implements UnitMemberSelectionSource, UnitSelectionSource {
+    @Serial
     private static final long serialVersionUID = 1L;
     // TODO: Move into the inner class that uses this
     private static final DefaultTreeCellRenderer DEFAULT_STORER = new DefaultTreeCellRenderer();
@@ -206,6 +208,7 @@ public final class WorkerTree extends JTree implements UnitMemberSelectionSource
 
     // TODO: Move this class to its own file?
     private static class WorkerTreeTransferHandler extends TransferHandler {
+        @Serial
         private static final long serialVersionUID = 1L;
         private final IWorkerTreeModel wtModel;
         private final Predicate<TreePath> isExpanded;
@@ -366,6 +369,7 @@ public final class WorkerTree extends JTree implements UnitMemberSelectionSource
 
     // TODO: Move this class to its own file?
     private static class UnitMemberCellRenderer extends DefaultTreeCellRenderer {
+        @Serial
         private static final long serialVersionUID = 1L;
 
         public UnitMemberCellRenderer(final IWorkerTreeModel wtModel, final IntSupplier turnSource,

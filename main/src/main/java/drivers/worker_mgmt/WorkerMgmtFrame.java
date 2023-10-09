@@ -1,5 +1,6 @@
 package drivers.worker_mgmt;
 
+import java.io.Serial;
 import java.nio.file.Paths;
 import java.io.IOException;
 
@@ -59,6 +60,7 @@ import drivers.worker_mgmt.orderspanel.OrdersPanel;
  * A window to let the player manage units.
  */
 /* package */ final class WorkerMgmtFrame extends SPFrame implements PlayerChangeListener {
+    @Serial
     private static final long serialVersionUID = 1L;
     private final IWorkerModel model;
     private final WorkerTree tree;

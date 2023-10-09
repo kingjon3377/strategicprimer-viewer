@@ -7,6 +7,7 @@ import javax.xml.stream.XMLStreamException;
 import lovelace.util.LovelaceLogger;
 import org.jetbrains.annotations.Nullable;
 
+import java.io.Serial;
 import java.nio.file.Path;
 import java.nio.file.NoSuchFileException;
 
@@ -141,6 +142,7 @@ import java.io.FileNotFoundException;
             }
         }
 
+        @Serial
         private static final long serialVersionUID = 1L;
         private final IDRegistrar idf;
         private Player currentPlayer;

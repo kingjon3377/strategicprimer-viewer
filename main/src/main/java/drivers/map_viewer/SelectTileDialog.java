@@ -3,6 +3,7 @@ package drivers.map_viewer;
 import lovelace.util.LovelaceLogger;
 import org.jetbrains.annotations.Nullable;
 
+import java.io.Serial;
 import java.text.ParseException;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -31,6 +32,7 @@ import common.map.Point;
  * A dialog to let the user select a tile by coordinates.
  */
 /* package */ final class SelectTileDialog extends SPDialog {
+    @Serial
     private static final long serialVersionUID = 1L;
 
     private enum NumberState {Valid, NonNumeric, Negative, Overflow}

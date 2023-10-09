@@ -3,11 +3,13 @@ package lovelace.util;
 import javax.swing.JEditorPane;
 
 import java.awt.Color;
+import java.io.Serial;
 
 /**
  * A label that can easily be written (appended) to.
  */
 public final class StreamingLabel extends JEditorPane {
+    @Serial
     private static final long serialVersionUID = 1;
 
     /**

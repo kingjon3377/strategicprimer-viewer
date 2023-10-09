@@ -1,5 +1,6 @@
 package drivers.exploration;
 
+import java.io.Serial;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
@@ -96,6 +97,7 @@ import worker.common.IFixtureEditHelper;
  * TODO: try to split controller-functionality from presentation
  */
 /* package */ class ExplorationPanel extends BorderedPanel implements SelectionChangeListener {
+    @Serial
     private static final long serialVersionUID = 1L;
 
     private static KeyStroke key(final int code) {

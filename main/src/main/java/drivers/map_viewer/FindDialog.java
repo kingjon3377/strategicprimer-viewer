@@ -1,6 +1,7 @@
 package drivers.map_viewer;
 
 import java.awt.event.ActionListener;
+import java.io.Serial;
 import java.util.Arrays;
 
 import common.map.fixtures.FixtureIterable;
@@ -50,6 +51,7 @@ import java.util.function.Predicate;
  * Comparator?)
  */
 /* package */ final class FindDialog extends SPDialog {
+    @Serial
     private static final long serialVersionUID = 1L;
 
     public FindDialog(final Frame parent, final IViewerModel model) {

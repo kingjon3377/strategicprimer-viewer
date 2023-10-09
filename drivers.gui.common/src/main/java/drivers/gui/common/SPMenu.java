@@ -30,6 +30,7 @@ import lovelace.util.ComponentParentStream;
 
 import java.awt.Component;
 import java.awt.event.ActionListener;
+import java.io.Serial;
 import java.util.Objects;
 import java.util.stream.Stream;
 
@@ -37,6 +38,8 @@ import java.util.stream.Stream;
  * A class to hold the logic for building our menus.
  */
 public final class SPMenu extends JMenuBar {
+    @Serial
+    @Serial
     private static final long serialVersionUID = 1L;
 
     private static void simpleQuit() {

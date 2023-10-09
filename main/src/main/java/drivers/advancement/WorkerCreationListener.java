@@ -1,5 +1,6 @@
 package drivers.advancement;
 
+import java.io.Serial;
 import java.util.stream.IntStream;
 
 import lovelace.util.LovelaceLogger;
@@ -78,6 +79,7 @@ import java.util.function.Consumer;
     private final WorkerCreationFrame workerCreationFrame;
 
     private static final class WorkerCreationFrame extends JFrame {
+        @Serial
         private static final long serialVersionUID = 1L;
         private final JTextField name;
         private final JTextField race;

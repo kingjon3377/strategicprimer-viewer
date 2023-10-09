@@ -3,6 +3,7 @@ package report.generators;
 import org.jetbrains.annotations.Nullable;
 import org.javatuples.Pair;
 
+import java.io.Serial;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.TreeMap;
@@ -81,7 +82,8 @@ public abstract class AbstractReportGenerator<Type extends IFixture> implements 
 	 * Assuming this is supposed to be static ...
 	 */
 	protected static class HtmlList extends ArrayList<String> implements HeadedList<String> {
-		private static final long serialVersionUID = 1L;
+		@Serial
+        private static final long serialVersionUID = 1L;
 		private final String header;
 
 		@Override
@@ -175,7 +177,8 @@ public abstract class AbstractReportGenerator<Type extends IFixture> implements 
 	 * A list of Points that produces a comma-separated list in its {@link #toString} and has a "header".
 	 */
 	protected static class PointList extends ArrayList<Point> implements HeadedList<Point> {
-		private static final long serialVersionUID = 1L;
+		@Serial
+        private static final long serialVersionUID = 1L;
 		private final String header;
 
 		/**

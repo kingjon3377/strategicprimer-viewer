@@ -13,6 +13,7 @@ package com.pump.window;
 import java.awt.Frame;
 
 import java.awt.event.ActionEvent;
+import java.io.Serial;
 import javax.swing.JCheckBoxMenuItem;
 
 /**
@@ -21,6 +22,7 @@ import javax.swing.JCheckBoxMenuItem;
  */
 public final class SummonMenuItem extends JCheckBoxMenuItem {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     private final Frame frame;

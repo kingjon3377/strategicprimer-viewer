@@ -4,6 +4,7 @@ import goldberg.ImprovedComboBox;
 
 import javax.swing.JTextField;
 import java.awt.event.ActionListener;
+import java.io.Serial;
 import java.util.function.Consumer;
 import java.util.HashSet;
 import java.util.Set;
@@ -14,6 +15,7 @@ import org.jetbrains.annotations.Nullable;
  * Extends {@link ImprovedComboBox} to keep a running collection of values.
  */
 public class MemoizedComboBox extends ImprovedComboBox<String> {
+    @Serial
     private static final long serialVersionUID = 1L;
 
     private final Consumer<String> logger;

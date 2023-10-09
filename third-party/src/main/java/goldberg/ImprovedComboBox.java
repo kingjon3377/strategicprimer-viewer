@@ -4,6 +4,7 @@ import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 
 import java.awt.Component;
+import java.io.Serial;
 
 import javax.swing.JComboBox;
 import javax.swing.ComboBoxModel;
@@ -12,6 +13,7 @@ import javax.swing.ComboBoxModel;
  * An extension to {@link JComboBox} to improve it by making the Tab key do what one expects.
  */
 public class ImprovedComboBox<Element> extends JComboBox<Element> {
+    @Serial
     private static final long serialVersionUID = 1;
 
     public ImprovedComboBox() {

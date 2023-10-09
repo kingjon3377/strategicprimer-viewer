@@ -1,9 +1,12 @@
 package common.idreg;
 
+import java.io.Serial;
+
 /**
  * An exception to warn about duplicate IDs.
  */
 public class DuplicateIDException extends Exception {
+    @Serial
     private static final long serialVersionUID = 1L;
 
     public DuplicateIDException(final int id) {

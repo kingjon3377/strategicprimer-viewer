@@ -7,11 +7,13 @@ import javax.swing.BoxLayout;
 import javax.swing.JPanel;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.io.Serial;
 
 /**
  * A {@link JPanel} laid out by a {@link BoxLayout}.
  */
 public final class BoxPanel extends JPanel {
+    @Serial
     private static final long serialVersionUID = 1L;
 
     /**

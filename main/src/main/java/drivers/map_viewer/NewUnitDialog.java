@@ -1,5 +1,6 @@
 package drivers.map_viewer;
 
+import java.io.Serial;
 import java.util.OptionalInt;
 import java.util.ArrayList;
 import java.util.List;
@@ -37,6 +38,7 @@ import static lovelace.util.NumParsingHelper.parseInt;
  * to handle other kinds of fixtures
  */
 public final class NewUnitDialog extends SPDialog implements NewUnitSource, PlayerChangeListener {
+    @Serial
     private static final long serialVersionUID = 1L;
 
     public NewUnitDialog(final Player player, final IDRegistrar idf) {

@@ -8,6 +8,7 @@ import java.awt.Component;
 import java.awt.Frame;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.io.Serial;
 import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.regex.Pattern;
@@ -28,7 +29,8 @@ import lovelace.util.FileContentsReader;
  * FIXME: Credits for other images?
  */
 public final class AboutDialog extends SPDialog {
-	private static final long serialVersionUID = 1L;
+	@Serial
+    private static final long serialVersionUID = 1L;
 	private static final Pattern APP_NAME = Pattern.compile("App Name Here");
 
 	public AboutDialog(final @Nullable Component parentComponent, final @Nullable String app) throws IOException {

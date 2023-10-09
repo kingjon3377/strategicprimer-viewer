@@ -1,11 +1,13 @@
 package lovelace.util;
 
 import javax.swing.JLabel;
+import java.io.Serial;
 
 /**
  * A JLabel that takes a format string in its constructor and later takes format-string arguments to produce its text.
  */
 public class FormattedLabel extends JLabel {
+    @Serial
     private static final long serialVersionUID = 1;
     private final String formatString;
 

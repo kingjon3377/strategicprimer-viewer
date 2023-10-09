@@ -5,6 +5,7 @@ import common.map.HasOwner;
 import lovelace.util.LovelaceLogger;
 import org.jetbrains.annotations.Nullable;
 
+import java.io.Serial;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.Optional;
@@ -43,6 +44,7 @@ import drivers.common.IWorkerModel;
  * TODO: We want a way for the user to manage 'personal equipment'
  */
 public class WorkerTreeModelAlt extends DefaultTreeModel implements IWorkerTreeModel {
+    @Serial
     private static final long serialVersionUID = 1L;
 
     /**
@@ -52,6 +54,7 @@ public class WorkerTreeModelAlt extends DefaultTreeModel implements IWorkerTreeM
      */
     protected static class WorkerTreeNode<NodeObject> extends DefaultMutableTreeNode
             implements Iterable<TreeNode> {
+        @Serial
         private static final long serialVersionUID = 1L;
 
         public WorkerTreeNode(final Class<NodeObject> cls, final NodeObject userObj) {
@@ -134,6 +137,7 @@ public class WorkerTreeModelAlt extends DefaultTreeModel implements IWorkerTreeM
      * A class for tree-nodes representing members of units.
      */
     private static class UnitMemberNode extends WorkerTreeNode<UnitMember> {
+        @Serial
         private static final long serialVersionUID = 1L;
 
         public UnitMemberNode(final UnitMember member) {
@@ -145,6 +149,7 @@ public class WorkerTreeModelAlt extends DefaultTreeModel implements IWorkerTreeM
      * A class for tree-nodes representing units.
      */
     private static final class UnitNode extends WorkerTreeNode<IUnit> {
+        @Serial
         private static final long serialVersionUID = 1L;
         private final IUnit unit;
 
@@ -209,6 +214,7 @@ public class WorkerTreeModelAlt extends DefaultTreeModel implements IWorkerTreeM
      * the tree.
      */
     private static final class KindNode extends WorkerTreeNode<String> {
+        @Serial
         private static final long serialVersionUID = 1L;
 
         public KindNode(final String kind, final IUnit... units) {
@@ -229,6 +235,7 @@ public class WorkerTreeModelAlt extends DefaultTreeModel implements IWorkerTreeM
      * units are in (divided between) multiple fortresses.
      */
     private static final class PlayerNode extends WorkerTreeNode<Player> {
+        @Serial
         private static final long serialVersionUID = 1L;
 
         public PlayerNode(final Player player, final IWorkerModel model) {

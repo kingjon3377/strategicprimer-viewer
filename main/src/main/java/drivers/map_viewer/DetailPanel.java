@@ -3,6 +3,7 @@ package drivers.map_viewer;
 import static drivers.map_viewer.TileViewSize.scaleZoom;
 import static drivers.map_viewer.ImageLoader.ColorHelper;
 
+import java.io.Serial;
 import java.util.Optional;
 
 import lovelace.util.LovelaceLogger;
@@ -57,6 +58,7 @@ import worker.common.IFixtureEditHelper;
  * TODO: Separate controller functionality from presentation
  */
 /* package */ final class DetailPanel extends JSplitPane implements VersionChangeListener, SelectionChangeListener {
+    @Serial
     private static final long serialVersionUID = 1L;
 
     private final KeyPanel keyPanel;
@@ -90,6 +92,7 @@ import worker.common.IFixtureEditHelper;
     }
 
     private static final class KeyPanel extends JPanel implements VersionChangeListener {
+        @Serial
         private static final long serialVersionUID = 1L;
 
         public KeyPanel(final int version) {
@@ -160,6 +163,7 @@ import worker.common.IFixtureEditHelper;
     }
 
     private static class PortraitComponent extends JComponent implements ListSelectionListener {
+        @Serial
         private static final long serialVersionUID = 1L;
         private final JList<TileFixture> fixtureListObject;
 

@@ -1,6 +1,7 @@
 package lovelace.util;
 
 import javax.swing.JLabel;
+import java.io.Serial;
 import java.util.function.Function;
 
 import org.jetbrains.annotations.Nullable;
@@ -14,6 +15,7 @@ import org.jetbrains.annotations.Nullable;
  */
 @Deprecated
 public class InterpolatedLabel<@Nullable T> extends JLabel {
+    @Serial
     private static final long serialVersionUID = 1;
     private final Function<? super T, String> function;
 

@@ -7,6 +7,7 @@ import java.awt.GridLayout;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.Serial;
 import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 import javax.swing.DefaultComboBoxModel;
@@ -47,6 +48,7 @@ import org.eclipse.jdt.annotation.Nullable;
  * The main window for the exploration GUI.
  */
 /* package */ final class ExplorationFrame extends SPFrame {
+    @Serial
     private static final long serialVersionUID = 1L;
     private final SimpleCardLayout layoutObj;
     private final JList<Player> playerList;

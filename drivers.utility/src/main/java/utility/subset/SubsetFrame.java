@@ -3,6 +3,7 @@ package utility.subset;
 import drivers.common.DriverFailedException;
 
 import javax.xml.stream.XMLStreamException;
+import java.io.Serial;
 import java.nio.file.NoSuchFileException;
 import java.io.FileNotFoundException;
 import java.nio.file.Path;
@@ -35,6 +36,7 @@ import drivers.common.ISPDriver;
  * A window to show the result of running subset tests.
  */
 /* package */ final class SubsetFrame extends SPFrame {
+    @Serial
     private static final long serialVersionUID = 1L;
 
     public SubsetFrame(final ISPDriver driver) {

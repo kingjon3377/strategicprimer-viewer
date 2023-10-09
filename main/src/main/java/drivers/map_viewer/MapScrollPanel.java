@@ -4,6 +4,8 @@ import javax.swing.JComponent;
 
 import lovelace.util.BorderedPanel;
 
+import java.io.Serial;
+
 /**
  * Encapsulate the map component in a panel with scroll-bars and set up the
  * connection between the scroll-bars and the map's scrolling.
@@ -11,6 +13,7 @@ import lovelace.util.BorderedPanel;
  * TODO: convert (back) to static method in MapComponent or some such?
  */
 /* package */ class MapScrollPanel extends BorderedPanel {
+    @Serial
     private static final long serialVersionUID = 1L;
 
     public MapScrollPanel(final IViewerModel model, final JComponent component) {

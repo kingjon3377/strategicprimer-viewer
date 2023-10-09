@@ -3,6 +3,7 @@ package drivers.map_viewer;
 import lovelace.util.LovelaceLogger;
 import org.jetbrains.annotations.Nullable;
 
+import java.io.Serial;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 import java.util.Optional;
@@ -55,7 +56,8 @@ import worker.common.IFixtureEditHelper;
  */
 public final class FixtureList extends JList<TileFixture>
         implements DragGestureListener, SelectionChangeListener {
-    private static final long serialVersionUID = 1L;
+    @Serial
+	private static final long serialVersionUID = 1L;
     private final JComponent parentComponent;
     private final FixtureListModel listModel;
     private final IFixtureEditHelper feh;

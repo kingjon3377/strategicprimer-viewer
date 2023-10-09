@@ -1,5 +1,6 @@
 package lovelace.util;
 
+import java.io.Serial;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -39,6 +40,7 @@ public class FileChooser {
      * An exception to throw when the user cancels the file-chooser.
      */
     public static class ChoiceInterruptedException extends Exception {
+        @Serial
         private static final long serialVersionUID = 1L;
 
         public ChoiceInterruptedException() {
