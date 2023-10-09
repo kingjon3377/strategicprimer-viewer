@@ -17,27 +17,27 @@ import lovelace.util.FileSplitter;
  * DC.
  */
 public final class AnimalDiscoveryDCs {
-    private AnimalDiscoveryDCs() {
-    }
+	private AnimalDiscoveryDCs() {
+	}
 
-    private static Map<String, Integer> initDcs() {
-        try {
-            return FileSplitter.getFileContents(
-                    "animal_data/discovery_dc.txt",
-                    Integer::parseInt);
-        } catch (final IOException except) {
-            throw new RuntimeException(except);
-        }
-    }
+	private static Map<String, Integer> initDcs() {
+		try {
+			return FileSplitter.getFileContents(
+				"animal_data/discovery_dc.txt",
+				Integer::parseInt);
+		} catch (final IOException except) {
+			throw new RuntimeException(except);
+		}
+	}
 
-    private static final Map<String, Integer> DCS = initDcs();
+	private static final Map<String, Integer> DCS = initDcs();
 
-    public static int get(final String key) {
-        return DCS.getOrDefault(key, 22);
-    }
+	public static int get(final String key) {
+		return DCS.getOrDefault(key, 22);
+	}
 
-    public static boolean containsKey(final String key) {
-        return DCS.containsKey(key);
-    }
+	public static boolean containsKey(final String key) {
+		return DCS.containsKey(key);
+	}
 }
 

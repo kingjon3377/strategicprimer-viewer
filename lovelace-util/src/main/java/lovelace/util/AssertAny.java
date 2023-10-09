@@ -15,60 +15,60 @@ import java.util.Collections;
  * the suite.
  */
 public final class AssertAny {
-    private AssertAny() {
-    }
+	private AssertAny() {
+	}
 
-    // Adapted from my memory of the class of the same name in the Ceylon SDK
-    public static class MultipleFailureException extends AssertionFailedError {
-        @Serial
-        private static final long serialVersionUID = 0L;
-        private final List<AssertionFailedError> failures;
+	// Adapted from my memory of the class of the same name in the Ceylon SDK
+	public static class MultipleFailureException extends AssertionFailedError {
+		@Serial
+		private static final long serialVersionUID = 0L;
+		private final List<AssertionFailedError> failures;
 
-        public MultipleFailureException(final List<AssertionFailedError> list, final String message) {
-            super(message, list.get(0));
-            failures = list;
-        }
+		public MultipleFailureException(final List<AssertionFailedError> list, final String message) {
+			super(message, list.get(0));
+			failures = list;
+		}
 
-        public List<AssertionFailedError> getFailures() {
-            return Collections.unmodifiableList(failures);
-        }
-    }
+		public List<AssertionFailedError> getFailures() {
+			return Collections.unmodifiableList(failures);
+		}
+	}
 
-    /**
-     * Verify that at least one of the given assertions passes.
-     *
-     * @param message the message describing the problem
-     * @param assertions the gorup of assertions
-     */
-    public static void assertAny(final String message, final Runnable... assertions) {
-        final List<AssertionFailedError> failures = new ArrayList<>();
-        for (final Runnable assertion : assertions) {
-            try {
-                assertion.run();
-                return;
-            } catch (final AssertionFailedError failure) {
-                failures.add(failure);
-            }
-        }
-        throw new MultipleFailureException(failures, message);
-    }
+	/**
+	 * Verify that at least one of the given assertions passes.
+	 *
+	 * @param message the message describing the problem
+	 * @param assertions the gorup of assertions
+	 */
+	public static void assertAny(final String message, final Runnable... assertions) {
+		final List<AssertionFailedError> failures = new ArrayList<>();
+		for (final Runnable assertion : assertions) {
+			try {
+				assertion.run();
+				return;
+			} catch (final AssertionFailedError failure) {
+				failures.add(failure);
+			}
+		}
+		throw new MultipleFailureException(failures, message);
+	}
 
-    /**
-     * Verify that at least one of the given assertions passes.
-     *
-     * @param assertions the gorup of assertions
-     */
-    public static void assertAny(final Runnable... assertions) {
-        final List<AssertionFailedError> failures = new ArrayList<>();
-        for (final Runnable assertion : assertions) {
-            try {
-                assertion.run();
-                return;
-            } catch (final AssertionFailedError failure) {
-                failures.add(failure);
-            }
-        }
-        throw new MultipleFailureException(failures,
-                String.format("%d assertions failed", failures.size()));
-    }
+	/**
+	 * Verify that at least one of the given assertions passes.
+	 *
+	 * @param assertions the gorup of assertions
+	 */
+	public static void assertAny(final Runnable... assertions) {
+		final List<AssertionFailedError> failures = new ArrayList<>();
+		for (final Runnable assertion : assertions) {
+			try {
+				assertion.run();
+				return;
+			} catch (final AssertionFailedError failure) {
+				failures.add(failure);
+			}
+		}
+		throw new MultipleFailureException(failures,
+			String.format("%d assertions failed", failures.size()));
+	}
 }

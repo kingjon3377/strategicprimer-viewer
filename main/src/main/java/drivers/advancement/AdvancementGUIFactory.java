@@ -33,38 +33,38 @@ import com.google.auto.service.AutoService;
  */
 @AutoService(DriverFactory.class)
 public class AdvancementGUIFactory implements GUIDriverFactory {
-    private static final IDriverUsage USAGE = new DriverUsage(true, "advance", ParamCount.AtLeastOne,
-            "Worker Skill Advancement", "View a player's units, the workers in those units, each worker's Jobs, and his or her level in each Skill in each Job.",
-            false, true, "--current-turn=NN");
+	private static final IDriverUsage USAGE = new DriverUsage(true, "advance", ParamCount.AtLeastOne,
+		"Worker Skill Advancement", "View a player's units, the workers in those units, each worker's Jobs, and his or her level in each Skill in each Job.",
+		false, true, "--current-turn=NN");
 
-    @Override
-    public IDriverUsage getUsage() {
-        return USAGE;
-    }
+	@Override
+	public IDriverUsage getUsage() {
+		return USAGE;
+	}
 
-    /**
-     * Ask the user to choose a file or files.
-     */
-    @Override
-    public List<Path> askUserForFiles() throws DriverFailedException {
-        try {
-            return SPFileChooser.open((Path) null).getFiles();
-        } catch (final FileChooser.ChoiceInterruptedException except) {
-            throw new DriverFailedException(except, "Choice interrupted or user didn't choose");
-        }
-    }
+	/**
+	 * Ask the user to choose a file or files.
+	 */
+	@Override
+	public List<Path> askUserForFiles() throws DriverFailedException {
+		try {
+			return SPFileChooser.open((Path) null).getFiles();
+		} catch (final FileChooser.ChoiceInterruptedException except) {
+			throw new DriverFailedException(except, "Choice interrupted or user didn't choose");
+		}
+	}
 
-    @Override
-    public GUIDriver createDriver(final ICLIHelper cli, final SPOptions options, final IDriverModel model) {
-        if (model instanceof final IWorkerModel wm) {
-            return new AdvancementGUI(cli, options, wm);
-        } else {
-            return createDriver(cli, options, new WorkerModel(model));
-        }
-    }
+	@Override
+	public GUIDriver createDriver(final ICLIHelper cli, final SPOptions options, final IDriverModel model) {
+		if (model instanceof final IWorkerModel wm) {
+			return new AdvancementGUI(cli, options, wm);
+		} else {
+			return createDriver(cli, options, new WorkerModel(model));
+		}
+	}
 
-    @Override
-    public IDriverModel createModel(final IMutableMapNG map) {
-        return new WorkerModel(map);
-    }
+	@Override
+	public IDriverModel createModel(final IMutableMapNG map) {
+		return new WorkerModel(map);
+	}
 }

@@ -12,24 +12,24 @@ import lovelace.util.FileSplitter;
  * same as the singular.
  */
 public final class AnimalPlurals {
-    private AnimalPlurals() {
-    }
+	private AnimalPlurals() {
+	}
 
-    private static Map<String, String> initPlurals() {
-        try {
-            return FileSplitter.getFileContents("animal_data/plurals.txt", str -> str);
-        } catch (final IOException except) {
-            throw new RuntimeException(except);
-        }
-    }
+	private static Map<String, String> initPlurals() {
+		try {
+			return FileSplitter.getFileContents("animal_data/plurals.txt", str -> str);
+		} catch (final IOException except) {
+			throw new RuntimeException(except);
+		}
+	}
 
-    private static final Map<String, String> PLURALS = initPlurals();
+	private static final Map<String, String> PLURALS = initPlurals();
 
-    public static String get(final String key) {
-        return PLURALS.getOrDefault(key, key);
-    }
+	public static String get(final String key) {
+		return PLURALS.getOrDefault(key, key);
+	}
 
-    public static boolean hasKey(final String key) {
-        return PLURALS.containsKey(key);
-    }
+	public static boolean hasKey(final String key) {
+		return PLURALS.containsKey(key);
+	}
 }

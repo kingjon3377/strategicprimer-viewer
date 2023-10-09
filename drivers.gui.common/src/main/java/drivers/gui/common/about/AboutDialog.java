@@ -30,7 +30,7 @@ import lovelace.util.FileContentsReader;
  */
 public final class AboutDialog extends SPDialog {
 	@Serial
-    private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 	private static final Pattern APP_NAME = Pattern.compile("App Name Here");
 
 	public AboutDialog(final @Nullable Component parentComponent, final @Nullable String app) throws IOException {

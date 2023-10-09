@@ -10,7 +10,7 @@ import common.map.HasImage;
  * An animal or group of animals.
  */
 public interface Animal extends AnimalOrTracks, MobileFixture, HasImage,
-        HasPopulation<Animal> {
+	HasPopulation<Animal> {
 	/**
 	 * Whether this is a talking animal.
 	 *

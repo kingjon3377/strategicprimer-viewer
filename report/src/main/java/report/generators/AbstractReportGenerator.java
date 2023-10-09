@@ -83,7 +83,7 @@ public abstract class AbstractReportGenerator<Type extends IFixture> implements 
 	 */
 	protected static class HtmlList extends ArrayList<String> implements HeadedList<String> {
 		@Serial
-        private static final long serialVersionUID = 1L;
+		private static final long serialVersionUID = 1L;
 		private final String header;
 
 		@Override
@@ -178,7 +178,7 @@ public abstract class AbstractReportGenerator<Type extends IFixture> implements 
 	 */
 	protected static class PointList extends ArrayList<Point> implements HeadedList<Point> {
 		@Serial
-        private static final long serialVersionUID = 1L;
+		private static final long serialVersionUID = 1L;
 		private final String header;
 
 		/**

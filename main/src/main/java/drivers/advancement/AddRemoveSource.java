@@ -6,13 +6,13 @@ package drivers.advancement;
  * TODO: Move to lovelace.util?
  */
 interface AddRemoveSource {
-    /**
-     * Add a listener.
-     */
-    void addAddRemoveListener(AddRemoveListener listener);
+	/**
+	 * Add a listener.
+	 */
+	void addAddRemoveListener(AddRemoveListener listener);
 
-    /**
-     * Remove a listener.
-     */
-    void removeAddRemoveListener(AddRemoveListener listener);
+	/**
+	 * Remove a listener.
+	 */
+	void removeAddRemoveListener(AddRemoveListener listener);
 }

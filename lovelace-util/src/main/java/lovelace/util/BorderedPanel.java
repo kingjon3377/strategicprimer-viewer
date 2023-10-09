@@ -13,7 +13,7 @@ import java.io.Serial;
  */
 public class BorderedPanel extends JPanel {
 	@Serial
-    private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 	private @Nullable Component center = null;
 
 	/**
