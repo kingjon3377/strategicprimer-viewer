@@ -39,7 +39,6 @@ import java.util.stream.Stream;
  */
 public final class SPMenu extends JMenuBar {
     @Serial
-    @Serial
     private static final long serialVersionUID = 1L;
 
     private static void simpleQuit() {

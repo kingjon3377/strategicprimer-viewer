@@ -25,7 +25,6 @@ import lovelace.util.Platform;
  */
 public class SPDialog extends JDialog {
 	@Serial
-    @Serial
     private static final long serialVersionUID = 1L;
 
 	public SPDialog(final @Nullable Frame parentFrame, final String title) {
