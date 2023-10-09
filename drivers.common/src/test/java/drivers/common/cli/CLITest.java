@@ -242,7 +242,7 @@ public final class CLITest {
      * TODO: convert to parameterized tests
      */
     @Test
-    public void testInputBooleanInSeries() {
+    public void testInputBooleanInSeriesAll() {
         assertCLI(cli -> cli.inputBooleanInSeries("prompt three "), Arrays.asList("nothing", "true"),
                 String.format(
                         "prompt three Please enter \"yes\", \"no\", \"true\", or \"false\", " +
@@ -264,8 +264,17 @@ public final class CLITest {
         // IOException? We had an assertion of that commented out in the Ceylon version of this test,
         // commented out because of a bug in the Java interop of the Ceylon metamodel used by the
         // assertThatException().hasType() idiom.
-        ostream.setLength(0);
-        cli = new CLIHelper(new LinkedList<>(Collections.singletonList("none"))::pollFirst, ostream::append);
+	}
+
+	/**
+	 * Test that {@link ICLIHelper#inputBooleanInSeries} supports "always" and "never" and synonyms.
+	 *
+	 * TODO: convert to parameterized tests
+	 */
+	@Test
+	public void testInputBooleanInSeriesNone() {
+		final StringBuilder ostream = new StringBuilder();
+		ICLIHelper cli = new CLIHelper(new LinkedList<>(Collections.singletonList("none"))::pollFirst, ostream::append);
         assertEquals(false, cli.inputBooleanInSeries("prompt five "),
                 "inputBooleanInSeries allows no-to-all");
         assertEquals(false, cli.inputBooleanInSeries("prompt five "),
@@ -274,24 +283,51 @@ public final class CLITest {
                 "inputBooleanInSeries shows automatic no");
         // TODO: Should we assert that [() -> cli.inputBooleanInSeries("other prompt")] throws
         // IOException? (See above.)
-        ostream.setLength(0);
-        cli = new CLIHelper(new LinkedList<>(Collections.singletonList("always"))::pollFirst, ostream::append);
+	}
+
+	/**
+	 * Test that {@link ICLIHelper#inputBooleanInSeries} supports "always" and "never" and synonyms.
+	 *
+	 * TODO: convert to parameterized tests
+	 */
+	@Test
+	public void testInputBooleanInSeriesAlways() {
+		final StringBuilder ostream = new StringBuilder();
+		ICLIHelper cli = new CLIHelper(new LinkedList<>(Collections.singletonList("always"))::pollFirst, ostream::append);
         assertEquals(true, cli.inputBooleanInSeries("prompt six ", "key"),
                 "inputBooleanInSeries allows yes-to-all");
         assertEquals(true, cli.inputBooleanInSeries("prompt seven ", "key"),
                 "inputBooleanInSeries honors yes-to-all if prompt differs, same key");
         assertEquals(String.format("prompt six prompt seven yes%n"), ostream.toString(),
                 "inputBooleanInSeries shows automatic yes");
-        ostream.setLength(0);
-        cli = new CLIHelper(new LinkedList<>(Collections.singletonList("never"))::pollFirst, ostream::append);
+	}
+
+	/**
+	 * Test that {@link ICLIHelper#inputBooleanInSeries} supports "always" and "never" and synonyms.
+	 *
+	 * TODO: convert to parameterized tests
+	 */
+	@Test
+	public void testInputBooleanInSeriesNever() {
+		final StringBuilder ostream = new StringBuilder();
+		ICLIHelper cli = new CLIHelper(new LinkedList<>(Collections.singletonList("never"))::pollFirst, ostream::append);
         assertEquals(false, cli.inputBooleanInSeries("prompt eight ", "secondKey"),
                 "inputBooleanInSeries allows no-to-all");
         assertEquals(false, cli.inputBooleanInSeries("prompt nine ", "secondKey"),
                 "inputBooleanInSeries honors no-to-all if prompt differs, same key");
         assertEquals(String.format("prompt eight prompt nine no%n"), ostream.toString(),
                 "inputBooleanInSeries shows automatic no");
-        ostream.setLength(0);
-        cli = new CLIHelper(new LinkedList<>(Arrays.asList("all", "none"))::pollFirst, ostream::append);
+	}
+
+	/**
+	 * Test that {@link ICLIHelper#inputBooleanInSeries} supports "always" and "never" and synonyms.
+	 *
+	 * TODO: convert to parameterized tests
+	 */
+	@Test
+	public void testInputBooleanInSeriesSeparateKeys() {
+		final StringBuilder ostream = new StringBuilder();
+		ICLIHelper cli = new CLIHelper(new LinkedList<>(Arrays.asList("all", "none"))::pollFirst, ostream::append);
         assertEquals(true, cli.inputBooleanInSeries("prompt ten ", "thirdKey"),
                 "inputBooleanInSeries allows yes-to-all with one key");
         assertEquals(false, cli.inputBooleanInSeries("prompt eleven ", "fourthKey"),
