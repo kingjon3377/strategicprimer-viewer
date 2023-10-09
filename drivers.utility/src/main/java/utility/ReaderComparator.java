@@ -132,7 +132,7 @@ public class ReaderComparator implements UtilityDriver {
             }
             final long writeEndTwo = System.nanoTime();
             cli.println("New writer took " + (writeEndTwo - writeStartTwo));
-            if (outOne.toString().equals(outTwo.toString())) {
+            if (outOne.toString().contentEquals(outTwo)) {
                 cli.println("Writers produce identical results");
             } else if (outOne.toString().strip().equals(outTwo.toString().strip())) {
                 // TODO: try with a global replacement of all whitespace with single spaces
