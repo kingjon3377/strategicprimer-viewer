@@ -72,14 +72,14 @@ public class TypesafeXMLEventReader implements Iterator<XMLEvent>, Closeable {
     @Override
     public XMLEvent next() throws NoSuchElementException {
         if (closed) {
-            throw new NoSuchElementException();
+            throw new NoSuchElementException("Reader is closed");
         } else {
             try {
                 if (wrapped.hasNext()) {
                     final XMLEvent retval = wrapped.nextEvent();
                     if (retval == null) {
                         close();
-                        throw new NoSuchElementException();
+                        throw new NoSuchElementException("End of input");
                     } else {
                         if (!wrapped.hasNext()) {
                             close();
@@ -88,7 +88,7 @@ public class TypesafeXMLEventReader implements Iterator<XMLEvent>, Closeable {
                     }
                 } else {
                     close();
-                    throw new NoSuchElementException();
+                    throw new NoSuchElementException("End of input");
                 }
             } catch (final XMLStreamException exception) {
                 final Throwable cause = exception.getCause();

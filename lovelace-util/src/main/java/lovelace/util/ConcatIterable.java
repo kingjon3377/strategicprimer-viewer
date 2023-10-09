@@ -50,7 +50,7 @@ public final class ConcatIterable<T> implements Iterable<T> {
                     wrapped.removeFirst();
                 }
             }
-            throw new NoSuchElementException();
+            throw new NoSuchElementException("All iterators exhausted.");
         }
     }
 }

@@ -463,7 +463,7 @@ public class SPMapNG implements IMutableMapNG {
 	public boolean addFixture(final Point location, final TileFixture fixture) {
 		if (fixture instanceof FakeFixture) {
 			LovelaceLogger.error("Fake fixture passed to SPMapNG.addFixture()");
-			LovelaceLogger.debug(new Exception(), "Stack trace for fake fixture in SPMapNG.addFixture()");
+			LovelaceLogger.debug(new Exception("Fake fixture"), "Stack trace for fake fixture in SPMapNG.addFixture()");
 			return false;
 		}
 		modified = true; // TODO: Only if this is a change
@@ -490,7 +490,7 @@ public class SPMapNG implements IMutableMapNG {
 				local.add(fixture);
 				fixturesMap.put(location, local);
 				LovelaceLogger.warning("Inserted duplicate-ID fixture at %s", location);
-				LovelaceLogger.debug(new Exception(), "Stack trace of this location: ");
+				LovelaceLogger.debug(new Exception("Duplicate ID"), "Stack trace of this location: ");
 				LovelaceLogger.info("Existing fixture was: %s", existing.get().getShortDescription());
 				LovelaceLogger.info("Added: %s", fixture.getShortDescription());
 				return true;

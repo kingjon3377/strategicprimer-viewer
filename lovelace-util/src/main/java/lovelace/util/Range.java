@@ -51,7 +51,7 @@ public record Range(int lowerBound, int upperBound) implements Iterable<Integer>
                 current++;
                 return current;
             } else {
-                throw new NoSuchElementException();
+                throw new NoSuchElementException("Finished the range");
             }
         }
     }

@@ -203,7 +203,7 @@ public class HuntingModel {
         public Type next() {
             if (switched) {
                 if (counter <= 0) {
-                    throw new NoSuchElementException();
+                    throw new NoSuchElementException("Ran out of items");
                 } else {
                     counter--;
                     return nothingValue;

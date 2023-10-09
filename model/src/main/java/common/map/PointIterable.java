@@ -125,7 +125,7 @@ public class PointIterable implements Iterable<Point> {
         @Override
         public Point next() throws NoSuchElementException {
             if (started && row == startRow && column == startColumn) {
-                throw new NoSuchElementException();
+                throw new NoSuchElementException("Iteration finished");
             } else {
                 started = true;
                 if (horizontal) {

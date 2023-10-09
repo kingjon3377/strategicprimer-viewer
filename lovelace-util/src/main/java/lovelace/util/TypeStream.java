@@ -60,7 +60,7 @@ public class TypeStream implements Iterable<Class<?>> {
                     return item;
                 }
             }
-            throw new NoSuchElementException();
+            throw new NoSuchElementException("No more supertypes");
         }
     }
 }

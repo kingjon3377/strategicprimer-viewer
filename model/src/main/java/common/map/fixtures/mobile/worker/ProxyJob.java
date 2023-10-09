@@ -52,7 +52,7 @@ public final class ProxyJob implements IJob, ProxyFor<IJob> {
                         .findAny().orElse(job));
             } else if (unmodified) {
                 LovelaceLogger.warning("Can't add job to immutable worker");
-                LovelaceLogger.trace(new Exception(), "Stack trace for immutable-worker condition");
+                LovelaceLogger.trace(new Exception("Can't add job to immutable worker"), "Stack trace for immutable-worker condition");
             }
         }
 
