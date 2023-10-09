@@ -116,7 +116,7 @@ import common.map.fixtures.towns.Village;
 
     private final ICLIHelper cli;
     private final PopulationGeneratingModel model;
-    private int currentTurn;
+    private int currentTurn = -1;
 
     @Override
     public PopulationGeneratingModel getModel() {
