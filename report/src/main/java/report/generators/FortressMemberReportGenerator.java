@@ -85,9 +85,7 @@ public class FortressMemberReportGenerator extends AbstractReportGenerator<Fortr
                     ostream.accept(Integer.toString(r.getCreated()));
                 }
             }
-            default -> {
-				LovelaceLogger.warning("Unhandled case in FortressMemberReportGenerator.produceSingle()");
-            }
+            default -> LovelaceLogger.warning("Unhandled case in FortressMemberReportGenerator.produceSingle()");
         }
     }
 
