@@ -45,11 +45,6 @@
             <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>com.massisframework</groupId>
-            <artifactId>orange-extensions</artifactId>
-            <version>${orange-extensions.version}</version>
-        </dependency>
-        <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter</artifactId>
             <version>${junit.jupiter.version}</version>

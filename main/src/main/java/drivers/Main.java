@@ -1,5 +1,6 @@
 package drivers;
 
+import java.awt.Desktop;
 import java.util.Arrays;
 
 import java.util.Objects;
@@ -17,8 +18,6 @@ import drivers.common.IncorrectUsageException;
 import drivers.common.SPOptionsImpl;
 
 import drivers.common.cli.CLIHelper;
-
-import com.apple.eawt.Application;
 
 public final class Main {
     private Main() {
@@ -45,7 +44,7 @@ public final class Main {
         LovelaceLogger.trace("If you can see this, trace-level log messages are enabled.");
         final SPOptionsImpl options = new SPOptionsImpl();
         if (Platform.SYSTEM_IS_MAC) {
-            Application.getApplication().setOpenFileHandler(AppChooserState::handleDroppedFiles);
+			Desktop.getDesktop().setOpenFileHandler(AppChooserState::handleDroppedFiles);
         }
         final AppStarter appStarter = new AppStarter();
         try {

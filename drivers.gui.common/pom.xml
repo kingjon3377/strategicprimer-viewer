@@ -24,10 +24,5 @@
             <artifactId>drivers.common</artifactId>
             <version>${project.version}</version>
         </dependency>
-        <dependency>
-            <groupId>com.massisframework</groupId>
-            <artifactId>orange-extensions</artifactId>
-            <version>${orange-extensions.version}</version>
-        </dependency>
     </dependencies>
 </project>

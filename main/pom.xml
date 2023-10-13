@@ -65,11 +65,6 @@
       <version>${project.version}</version>
     </dependency>
     <dependency>
-      <groupId>com.massisframework</groupId>
-      <artifactId>orange-extensions</artifactId>
-      <version>${orange-extensions.version}</version>
-    </dependency>
-    <dependency>
       <groupId>org.takes</groupId>
       <artifactId>takes</artifactId>
       <version>1.19</version>
@@ -318,7 +313,7 @@
             <JVMMainModuleName>main/drivers.Main</JVMMainModuleName>
             <JVMVersion>21+</JVMVersion>
             <JVMOptions>
-              <string>apple.eawt.quitStrategy=CLOSE_ALL_WINDOWS</string>
+              <string>java.desktop.quitStrategy=CLOSE_ALL_WINDOWS</string>
             </JVMOptions>
             <!-- TODO: If plugin's dialect ever supports this:
                 <CFBundleTypeName>Strategic Primer map files</CFBundleTypeName>

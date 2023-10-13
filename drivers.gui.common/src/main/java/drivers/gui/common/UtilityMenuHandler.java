@@ -2,12 +2,12 @@ package drivers.gui.common;
 
 import drivers.common.UtilityGUI;
 
+import java.awt.Desktop;
+import java.awt.desktop.AboutEvent;
 import java.awt.event.ActionEvent;
 
 import lovelace.util.LovelaceLogger;
 import lovelace.util.Platform;
-import com.apple.eawt.Application;
-import com.apple.eawt.AppEvent;
 import drivers.gui.common.about.AboutDialog;
 
 import java.nio.file.Path;
@@ -22,7 +22,7 @@ public class UtilityMenuHandler {
         this.driver = driver;
         this.window = window;
         if (Platform.SYSTEM_IS_MAC) {
-            Application.getApplication().setAboutHandler(this::macAboutHandler);
+			Desktop.getDesktop().setAboutHandler(this::macAboutHandler);
         }
     }
 
@@ -48,7 +48,7 @@ public class UtilityMenuHandler {
     /**
      * Show the About dialog (as a response to the About item in the Mac app-menu being chosen).
      */
-    private void macAboutHandler(final AppEvent.AboutEvent event) {
+    private void macAboutHandler(final AboutEvent event) {
         aboutHandler();
     }
 

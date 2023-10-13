@@ -1,5 +1,6 @@
 package drivers;
 
+import java.awt.desktop.OpenFilesEvent;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.net.URISyntaxException;
@@ -24,8 +25,6 @@ import javax.xml.stream.XMLStreamException;
 
 import drivers.common.IDriverUsage;
 import drivers.common.DriverFactory;
-
-import com.apple.eawt.AppEvent;
 
 import com.pump.window.WindowList;
 
@@ -184,7 +183,7 @@ import org.jetbrains.annotations.Nullable;
 		return builder.toString();
 	}
 
-	public static void handleDroppedFiles(final AppEvent.OpenFilesEvent openFilesEvent) {
+	public static void handleDroppedFiles(final OpenFilesEvent openFilesEvent) {
 		final SPFrame topWindow = Stream.of(WindowList.getWindows(true, false)).filter(SPFrame.class::isInstance)
 			.map(SPFrame.class::cast).reduce((first, second) -> second).orElse(null);
 		if (topWindow != null) {

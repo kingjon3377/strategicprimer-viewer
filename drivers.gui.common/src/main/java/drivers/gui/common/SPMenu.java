@@ -2,8 +2,9 @@ package drivers.gui.common;
 
 import com.pump.window.WindowList;
 import com.pump.window.WindowMenu;
-import com.apple.eawt.Application;
 
+import java.awt.Component;
+import java.awt.Desktop;
 import java.awt.event.ActionEvent;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
@@ -28,7 +29,6 @@ import static lovelace.util.MenuUtils.*;
 
 import lovelace.util.ComponentParentStream;
 
-import java.awt.Component;
 import java.awt.event.ActionListener;
 import java.io.Serial;
 import java.util.Objects;
@@ -155,12 +155,12 @@ public final class SPMenu extends JMenuBar {
                 handler, createAccelerator(KeyEvent.VK_W)));
 
         if (Platform.SYSTEM_IS_MAC) {
-            Application.getApplication().setAboutHandler(
+			Desktop.getDesktop().setAboutHandler(
                     (event) -> handler.actionPerformed(new ActionEvent(Stream.<Object>of(
                                     WindowList.getWindows(true, false)).filter(Objects::nonNull)
                             .reduce((first, second) -> second).orElse(event),
                             ActionEvent.ACTION_FIRST, "About")));
-            Application.getApplication().setQuitHandler((event, quitResponse) -> {
+            Desktop.getDesktop().setQuitHandler((event, quitResponse) -> {
                 localDefaultQuit = quitResponse::performQuit;
                 handler.actionPerformed(new ActionEvent(
                         Stream.<Object>of(WindowList.getWindows(true, false))
