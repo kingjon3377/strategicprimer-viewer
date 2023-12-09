@@ -1,6 +1,6 @@
 package drivers.exploration;
 
-import legacy.map.IMapNG;
+import legacy.map.ILegacyMap;
 import common.map.Player;
 import legacy.map.Point;
 import legacy.map.TileFixture;
@@ -128,7 +128,7 @@ import org.jetbrains.annotations.Nullable;
         /**
          * Returns true when the given tile matches this condition.
          */
-        public boolean matches(final IMapNG map, final Point point) {
+        public boolean matches(final ILegacyMap map, final Point point) {
             return map.getFixtures(point).stream().anyMatch(this::allConditions);
         }
 
@@ -145,7 +145,7 @@ import org.jetbrains.annotations.Nullable;
 
     private @Nullable List<Condition<? extends TileFixture>> enabledConditions = null;
 
-    public boolean stopAtPoint(final ICLIHelper cli, final IMapNG map, final Point point) {
+    public boolean stopAtPoint(final ICLIHelper cli, final ILegacyMap map, final Point point) {
         final List<Condition<? extends TileFixture>> localEnabledConditions;
         if (enabledConditions == null) {
             final List<Condition<? extends TileFixture>> temp = new ArrayList<>();

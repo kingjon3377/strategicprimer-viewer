@@ -16,7 +16,7 @@ import drivers.common.DriverFactory;
 import drivers.common.GUIDriverFactory;
 import drivers.common.IWorkerModel;
 import worker.common.WorkerModel;
-import legacy.map.IMutableMapNG;
+import legacy.map.IMutableLegacyMap;
 import lovelace.util.FileChooser;
 import drivers.gui.common.SPFileChooser;
 
@@ -59,7 +59,7 @@ public class WorkerMgmtGUIFactory implements GUIDriverFactory {
     }
 
     @Override
-    public IDriverModel createModel(final IMutableMapNG map) {
+    public IDriverModel createModel(final IMutableLegacyMap map) {
         return new WorkerModel(map);
     }
 }

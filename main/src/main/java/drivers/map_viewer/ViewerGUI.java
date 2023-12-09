@@ -17,7 +17,7 @@ import drivers.common.ViewerDriver;
 import drivers.common.cli.ICLIHelper;
 import legacy.map.MapDimensions;
 import legacy.map.Point;
-import legacy.map.IMutableMapNG;
+import legacy.map.IMutableLegacyMap;
 import drivers.gui.common.about.AboutDialog;
 import drivers.IOHandler;
 import drivers.gui.common.WindowCloseListener;
@@ -220,7 +220,7 @@ public class ViewerGUI implements ViewerDriver {
     }
 
     @Override
-    public void open(final IMutableMapNG map) {
+    public void open(final IMutableLegacyMap map) {
         if (model.isMapModified()) {
             SwingUtilities.invokeLater(() -> new ViewerGUI(new ViewerModel(map),
                     options.copy(), cli).startDriver());

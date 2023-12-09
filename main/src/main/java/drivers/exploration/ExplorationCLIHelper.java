@@ -5,7 +5,7 @@ import legacy.map.HasExtent;
 import legacy.map.HasOwner;
 import legacy.map.HasPopulation;
 import legacy.map.IFixture;
-import legacy.map.IMapNG;
+import legacy.map.ILegacyMap;
 import legacy.map.Point;
 import legacy.map.River;
 import legacy.map.TileFixture;
@@ -238,7 +238,7 @@ public class ExplorationCLIHelper implements MovementCostListener, SelectionChan
             }
 
             final List<TileFixture> constants = new ArrayList<>();
-            final IMapNG map = model.getMap();
+            final ILegacyMap map = model.getMap();
             final List<TileFixture> allFixtures = new ArrayList<>();
 
             for (final TileFixture fixture : map.getFixtures(destPoint)) {

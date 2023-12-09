@@ -15,7 +15,7 @@ import java.util.Map;
 import java.math.BigDecimal;
 
 import legacy.map.Point;
-import legacy.map.IMutableMapNG;
+import legacy.map.IMutableLegacyMap;
 import legacy.map.fixtures.terrain.Forest;
 import common.xmlio.Warning;
 
@@ -53,7 +53,7 @@ public final class DBForestHandler extends AbstractDatabaseWriter<Forest, Point>
 				value("acres", obj.getAcres().toString()), value("image", obj.getImage())).execute(db.connection());
 	}
 
-	private TryBiConsumer<Map<String, Object>, Warning, SQLException> readForest(final IMutableMapNG map) {
+	private TryBiConsumer<Map<String, Object>, Warning, SQLException> readForest(final IMutableLegacyMap map) {
 		return (dbRow, warner) -> {
 			final int row = (Integer) dbRow.get("row");
 			final int column = (Integer) dbRow.get("column");
@@ -78,8 +78,8 @@ public final class DBForestHandler extends AbstractDatabaseWriter<Forest, Point>
 
 	private static final Query SELECT = Query.of("SELECT * FROM forests");
 	@Override
-	public void readMapContents(final Connection db, final IMutableMapNG map, final Map<Integer, IFixture> containers,
-			final Map<Integer, List<Object>> containees, final Warning warner) throws SQLException {
+	public void readMapContents(final Connection db, final IMutableLegacyMap map, final Map<Integer, IFixture> containers,
+                                final Map<Integer, List<Object>> containees, final Warning warner) throws SQLException {
 		handleQueryResults(db, warner, "forests", readForest(map), SELECT);
 	}
 }

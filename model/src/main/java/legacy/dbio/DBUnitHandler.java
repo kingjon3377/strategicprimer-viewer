@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-import legacy.map.IMutableMapNG;
+import legacy.map.IMutableLegacyMap;
 import legacy.map.Point;
 import legacy.map.fixtures.mobile.IMutableUnit;
 import legacy.map.fixtures.mobile.IUnit;
@@ -136,8 +136,8 @@ public final class DBUnitHandler extends AbstractDatabaseWriter<IUnit, Object> i
 	private static final Query SELECT_ORDERS = Query.of("SELECT * FROM orders WHERE unit = ?"); // TODO: named param?
 	private static final Query SELECT_RESULTS = Query.of("SELECT * FROM results WHERE unit = ?"); // TODO: named param?
 
-	private TryBiConsumer<Map<String, Object>, Warning, SQLException> readUnit(final IMutableMapNG map, final Connection db,
-																			   final Map<Integer, IFixture> containers, final Map<Integer, List<Object>> containees) {
+	private TryBiConsumer<Map<String, Object>, Warning, SQLException> readUnit(final IMutableLegacyMap map, final Connection db,
+                                                                               final Map<Integer, IFixture> containers, final Map<Integer, List<Object>> containees) {
 		return (dbRow, warner) -> {
 			final int ownerNum = (Integer) dbRow.get("owner");
 			final String kind = (String) dbRow.get("kind");
@@ -170,8 +170,8 @@ public final class DBUnitHandler extends AbstractDatabaseWriter<IUnit, Object> i
 	private static final Query SELECT_UNITS = Query.of("SELECT * FROM units");
 
 	@Override
-	public void readMapContents(final Connection db, final IMutableMapNG map, final Map<Integer, IFixture> containers,
-								final Map<Integer, List<Object>> containees, final Warning warner) throws SQLException {
+	public void readMapContents(final Connection db, final IMutableLegacyMap map, final Map<Integer, IFixture> containers,
+                                final Map<Integer, List<Object>> containees, final Warning warner) throws SQLException {
 		// FIXME: Move orders and results handling to here so we don't have to pass DB to the row-handler
 		handleQueryResults(db, warner, "units", readUnit(map, db, containers, containees), SELECT_UNITS);
 	}

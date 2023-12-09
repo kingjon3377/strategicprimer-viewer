@@ -2,7 +2,7 @@ package legacy.dbio;
 
 import legacy.map.IFixture;
 import legacy.map.Point;
-import legacy.map.IMutableMapNG;
+import legacy.map.IMutableLegacyMap;
 import legacy.map.fixtures.mobile.IUnit;
 import legacy.map.fixtures.mobile.Animal;
 import legacy.map.fixtures.mobile.IWorker;
@@ -123,7 +123,7 @@ public final class DBAnimalHandler extends AbstractDatabaseWriter<AnimalOrTracks
 	}
 
 	private TryBiConsumer<Map<String, Object>, Warning, SQLException>
-	readAnimal(final IMutableMapNG map, final Map<Integer, List<Object>> containees) {
+	readAnimal(final IMutableLegacyMap map, final Map<Integer, List<Object>> containees) {
 		return (dbRow, warner) -> {
 			final String kind = (String) dbRow.get("kind");
 			final boolean talking = getBooleanValue(dbRow, "talking");
@@ -149,7 +149,7 @@ public final class DBAnimalHandler extends AbstractDatabaseWriter<AnimalOrTracks
 	}
 
 	private static TryBiConsumer<Map<String, Object>, Warning, SQLException>
-	readTracks(final IMutableMapNG map) {
+	readTracks(final IMutableLegacyMap map) {
 		return (dbRow, warner) -> {
 			final int row = (Integer) dbRow.get("row");
 			final int column = (Integer) dbRow.get("column");
@@ -167,8 +167,8 @@ public final class DBAnimalHandler extends AbstractDatabaseWriter<AnimalOrTracks
 	private static final Query SELECT_TRACKS = Query.of("SELECT * FROM tracks");
 
 	@Override
-	public void readMapContents(final Connection db, final IMutableMapNG map, final Map<Integer, IFixture> containers,
-								final Map<Integer, List<Object>> containees, final Warning warner) throws SQLException {
+	public void readMapContents(final Connection db, final IMutableLegacyMap map, final Map<Integer, IFixture> containers,
+                                final Map<Integer, List<Object>> containees, final Warning warner) throws SQLException {
 		handleQueryResults(db, warner, "animal populations", readAnimal(map, containees),
 			SELECT_ANIMALS);
 		handleQueryResults(db, warner, "animal tracks", readTracks(map),

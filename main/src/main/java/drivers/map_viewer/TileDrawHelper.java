@@ -1,7 +1,7 @@
 package drivers.map_viewer;
 
 import legacy.map.Point;
-import legacy.map.IMapNG;
+import legacy.map.ILegacyMap;
 
 import java.awt.Graphics;
 
@@ -19,6 +19,6 @@ public interface TileDrawHelper {
      * @param coordinates The coordinates of the tile's upper-left corner.
      * @param dimensions The width ('x') and height ('y') to draw the tile within.
      */
-    void drawTile(Graphics pen, IMapNG map, Point location, Coordinate coordinates,
+    void drawTile(Graphics pen, ILegacyMap map, Point location, Coordinate coordinates,
                   Coordinate dimensions);
 }

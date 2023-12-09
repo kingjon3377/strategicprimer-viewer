@@ -10,7 +10,7 @@ import legacy.map.IFixture;
 import common.map.Player;
 import legacy.map.Point;
 import legacy.map.MapDimensions;
-import legacy.map.IMapNG;
+import legacy.map.ILegacyMap;
 
 import legacy.map.fixtures.TerrainFixture;
 import legacy.map.fixtures.Ground;
@@ -44,7 +44,7 @@ public final class ReportGenerator {
      * {@link DelayedRemovalMap#coalesce} on the fixtures collection after each.
      */
     private static void createSubReports(final StringBuilder builder,
-                                         final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures, final IMapNG map,
+                                         final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures, final ILegacyMap map,
                                          final Player player, final IReportGenerator<?>... generators) throws IOException {
         final Consumer<String> lambda = builder::append;
         for (final IReportGenerator<?> generator : generators) {
@@ -57,7 +57,7 @@ public final class ReportGenerator {
         return 0;
     }
 
-    public static String createReport(final IMapNG map, final ICLIHelper cli) throws IOException {
+    public static String createReport(final ILegacyMap map, final ICLIHelper cli) throws IOException {
         return createReport(map, cli, map.getCurrentPlayer());
     }
 
@@ -67,7 +67,7 @@ public final class ReportGenerator {
      * TODO: Consider generating Markdown instead of HTML. OTOH, we'd have
      * to keep a list nesting level parameter or something.
      */
-    public static String createReport(final IMapNG map, final ICLIHelper cli, final Player player)
+    public static String createReport(final ILegacyMap map, final ICLIHelper cli, final Player player)
             throws IOException {
         final MapDimensions dimensions = map.getDimensions();
         final StringBuilder builder = new StringBuilder();

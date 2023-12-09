@@ -15,8 +15,8 @@ import javax.xml.stream.XMLStreamException;
 import legacy.dbio.SPDatabaseWriter;
 import legacy.dbio.SPDatabaseReader;
 import common.xmlio.SPFormatException;
-import legacy.map.IMutableMapNG;
-import legacy.map.IMapNG;
+import legacy.map.IMutableLegacyMap;
+import legacy.map.ILegacyMap;
 import impl.xmlio.SPWriter;
 import legacy.xmlio.fluidxml.SPFluidReader;
 import legacy.xmlio.yaxml.YAXMLWriter;
@@ -64,7 +64,7 @@ public final class MapIOHelper {
     /**
      * Read a map from a file.
      */
-    public static IMutableMapNG readMap(final Path file)
+    public static IMutableLegacyMap readMap(final Path file)
             throws SPFormatException, IOException, NoSuchFileException, XMLStreamException {
         return readMap(file, Warning.WARN);
     }
@@ -72,10 +72,10 @@ public final class MapIOHelper {
     /**
      * Read a map from a file.
      */
-    public static IMutableMapNG readMap(final Path file, final Warning warner)
+    public static IMutableLegacyMap readMap(final Path file, final Warning warner)
             throws SPFormatException, IOException, NoSuchFileException, XMLStreamException {
         LovelaceLogger.debug("In mapIOHelper.readMap");
-        final IMutableMapNG retval;
+        final IMutableLegacyMap retval;
         if (file.toString().endsWith(".db")) {
             LovelaceLogger.debug("Reading from %s as an SQLite database",
                     file.toString());
@@ -92,7 +92,7 @@ public final class MapIOHelper {
     /**
      * Read a map from a stream.
      */
-    public static IMutableMapNG readMap(final Reader stream)
+    public static IMutableLegacyMap readMap(final Reader stream)
             throws SPFormatException, XMLStreamException, IOException {
         return readMap(stream, Warning.WARN);
     }
@@ -100,7 +100,7 @@ public final class MapIOHelper {
     /**
      * Read a map from a stream.
      */
-    public static IMutableMapNG readMap(final Reader stream, final Warning warner)
+    public static IMutableLegacyMap readMap(final Reader stream, final Warning warner)
             throws SPFormatException, XMLStreamException, IOException {
         LovelaceLogger.debug("In mapIOHelper.readMap");
         LovelaceLogger.debug("Reading from a Reader");
@@ -110,7 +110,7 @@ public final class MapIOHelper {
     /**
      * Write a map to file.
      */
-    public static void writeMap(final Path file, final IMapNG map) throws IOException, XMLStreamException {
+    public static void writeMap(final Path file, final ILegacyMap map) throws IOException, XMLStreamException {
         if (file.toString().endsWith(".db") || file.toString().isEmpty()) {
             LovelaceLogger.debug("Writing to %s as an SQLite database", file);
             DB_WRITER.write(file, map);

@@ -8,7 +8,7 @@ import org.jetbrains.annotations.Nullable;
 /**
  * A mutable map.
  */
-public interface IMutableMapNG extends IMapNG {
+public interface IMutableLegacyMap extends ILegacyMap {
 	/**
 	 * Add a player to the map.
 	 */

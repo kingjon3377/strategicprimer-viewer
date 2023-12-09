@@ -11,7 +11,7 @@ import legacy.map.Point;
 import legacy.map.TileFixture;
 import legacy.idreg.IDRegistrar;
 import legacy.idreg.IDFactoryFiller;
-import legacy.map.IMutableMapNG;
+import legacy.map.IMutableLegacyMap;
 import legacy.map.fixtures.Ground;
 import legacy.map.fixtures.terrain.Forest;
 import legacy.xmlio.MapIOHelper;
@@ -49,7 +49,7 @@ public class EchoDriver implements UtilityDriver {
         if (args.length == 2) {
             final String inArg = args[0];
             final String outArg = args[1];
-            final IMutableMapNG map;
+            final IMutableLegacyMap map;
             try {
                 map = MapIOHelper.readMap(Paths.get(inArg), Warning.IGNORE);
             } catch (final NoSuchFileException except) {

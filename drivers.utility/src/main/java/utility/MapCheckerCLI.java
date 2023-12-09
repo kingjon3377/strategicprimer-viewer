@@ -40,7 +40,7 @@ import common.map.Player;
 import legacy.map.HasOwner;
 import legacy.map.Point;
 import legacy.map.TileType;
-import legacy.map.IMapNG;
+import legacy.map.ILegacyMap;
 
 import legacy.map.fixtures.mobile.IWorker;
 import legacy.map.fixtures.mobile.AnimalTracks;
@@ -123,7 +123,7 @@ public class MapCheckerCLI implements UtilityDriver {
             "leather water skin", "water-skin", "leather water-skin", "leather satchel", "satchel", "woolen cloak",
             "leather boots", "pair leather boots", "woolen tunic", "linen tunic");
 
-    private record OwnerChecker(IMapNG map) {
+    private record OwnerChecker(ILegacyMap map) {
 
         public boolean check(final TileType terrain, final Point context, final IFixture fixture, final Warning warner) {
             boolean retval = false;
@@ -438,7 +438,7 @@ public class MapCheckerCLI implements UtilityDriver {
 
     public void check(final Path file, final Warning warner) {
         stdout.accept("Starting " + file);
-        final IMapNG map;
+        final ILegacyMap map;
         try {
             map = MapIOHelper.readMap(file, warner);
         } catch (final NoSuchFileException except) {

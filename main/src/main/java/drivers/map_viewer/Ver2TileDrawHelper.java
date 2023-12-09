@@ -29,7 +29,7 @@ import java.io.FileNotFoundException;
 import legacy.map.HasImage;
 import legacy.map.Point;
 import legacy.map.TileFixture;
-import legacy.map.IMapNG;
+import legacy.map.ILegacyMap;
 import legacy.map.FakeFixture;
 
 import legacy.map.fixtures.TerrainFixture;
@@ -144,7 +144,7 @@ public class Ver2TileDrawHelper implements TileDrawHelper {
     /**
      * Get the color representing a "not-on-top" terrain fixture at the given location.
      */
-    private @Nullable Color getFixtureColor(final IMapNG map, final Point location) {
+    private @Nullable Color getFixtureColor(final ILegacyMap map, final Point location) {
         final TileFixture top = getTopFixture(map, location);
         if (top != null) {
             final Color color = getDrawableFixtures(map, location)
@@ -220,7 +220,7 @@ public class Ver2TileDrawHelper implements TileDrawHelper {
      * context is disposed, we alter the state freely and don't restore it.
      */
     @Override
-    public void drawTile(final Graphics pen, final IMapNG map, final Point location,
+    public void drawTile(final Graphics pen, final ILegacyMap map, final Point location,
                          final Coordinate coordinates, final Coordinate dimensions) {
         final Color localColor;
         if (needsFixtureColor(map, location)) {
@@ -260,7 +260,7 @@ public class Ver2TileDrawHelper implements TileDrawHelper {
     /**
      * The drawable fixtures at the given location.
      */
-    private Stream<TileFixture> getDrawableFixtures(final IMapNG map, final Point location) {
+    private Stream<TileFixture> getDrawableFixtures(final ILegacyMap map, final Point location) {
         return map.getFixtures(location).stream().filter(f -> !(f instanceof FakeFixture))
                 .filter(filter).sorted(this::compareFixtures);
     }
@@ -268,14 +268,14 @@ public class Ver2TileDrawHelper implements TileDrawHelper {
     /**
      * Get the "top" fixture at the given location
      */
-    private @Nullable TileFixture getTopFixture(final IMapNG map, final Point location) {
+    private @Nullable TileFixture getTopFixture(final ILegacyMap map, final Point location) {
         return getDrawableFixtures(map, location).findFirst().orElse(null);
     }
 
     /**
      * Whether there is a "terrain fixture" at the gtiven location.
      */
-    private boolean hasTerrainFixture(final IMapNG map, final Point location) {
+    private boolean hasTerrainFixture(final ILegacyMap map, final Point location) {
         // TODO: Should we really return true if there is exactly one drawable fixture that happens to be a terrain fixture?
         if (getDrawableFixtures(map, location).anyMatch(TerrainFixture.class::isInstance)) {
             return true;
@@ -289,7 +289,7 @@ public class Ver2TileDrawHelper implements TileDrawHelper {
      * Whether we need a different background color to show a non-top
      * fixture (forest, for example) at the given location.
      */
-    private boolean needsFixtureColor(final IMapNG map, final Point location) {
+    private boolean needsFixtureColor(final ILegacyMap map, final Point location) {
         final TileFixture top = getTopFixture(map, location);
         if (hasTerrainFixture(map, location) && top != null) {
             final TileFixture bottom = getDrawableFixtures(map, location)

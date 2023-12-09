@@ -15,8 +15,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.ArrayList;
 
-import legacy.map.IMapNG;
-import legacy.map.IMutableMapNG;
+import legacy.map.ILegacyMap;
+import legacy.map.IMutableLegacyMap;
 import common.map.MutablePlayer;
 import common.map.Player;
 import common.map.PlayerImpl;
@@ -25,9 +25,9 @@ import common.xmlio.Warning;
 
 import static io.jenetics.facilejdbc.Param.value;
 
-public final class DBPlayerHandler extends AbstractDatabaseWriter<Player, IMapNG> implements MapContentsReader {
+public final class DBPlayerHandler extends AbstractDatabaseWriter<Player, ILegacyMap> implements MapContentsReader {
 	public DBPlayerHandler() {
-		super(Player.class, IMapNG.class);
+		super(Player.class, ILegacyMap.class);
 	}
 
 	private static final List<Query> INITIALIZERS = Collections.singletonList(
@@ -51,7 +51,7 @@ public final class DBPlayerHandler extends AbstractDatabaseWriter<Player, IMapNG
 	private static final Query UPDATE_SCHEMA = Query.of("ALTER TABLE players ADD COLUMN country VARCHAR(64)");
 
 	@Override
-	public void write(final Transactional db, final Player obj, final IMapNG context) throws SQLException {
+	public void write(final Transactional db, final Player obj, final ILegacyMap context) throws SQLException {
 		final List<Param> params = new ArrayList<>();
 		params.add(value("id", obj.getPlayerId()));
 		params.add(value("codename", obj.getName()));
@@ -75,7 +75,7 @@ public final class DBPlayerHandler extends AbstractDatabaseWriter<Player, IMapNG
 		}
 	}
 
-	private TryBiConsumer<Map<String, Object>, Warning, SQLException> readPlayer(final IMutableMapNG map) {
+	private TryBiConsumer<Map<String, Object>, Warning, SQLException> readPlayer(final IMutableLegacyMap map) {
 		return (dbRow, warner) -> {
 			final int id = (Integer) dbRow.get("id");
 			final String name = (String) dbRow.get("codename");
@@ -94,7 +94,7 @@ public final class DBPlayerHandler extends AbstractDatabaseWriter<Player, IMapNG
 	private static final Query SELECT = Query.of("SELECT * FROM players");
 
 	@Override
-	public void readMapContents(final Connection db, final IMutableMapNG map, final Map<Integer, IFixture> containers,
+	public void readMapContents(final Connection db, final IMutableLegacyMap map, final Map<Integer, IFixture> containers,
 								final Map<Integer, List<Object>> containees, final Warning warner) throws SQLException {
 		handleQueryResults(db, warner, "players", readPlayer(map), SELECT);
 	}

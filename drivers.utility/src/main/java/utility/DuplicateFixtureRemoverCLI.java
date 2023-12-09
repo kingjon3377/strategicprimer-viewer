@@ -25,7 +25,7 @@ import legacy.map.HasPopulation;
 import legacy.map.TileFixture;
 import legacy.map.HasExtent;
 import legacy.map.Point;
-import legacy.map.IMapNG;
+import legacy.map.ILegacyMap;
 
 import legacy.map.fixtures.IMutableResourcePile;
 import legacy.map.fixtures.IResourcePile;
@@ -161,7 +161,7 @@ public class DuplicateFixtureRemoverCLI implements CLIDriver {
      * hills, forests of the same kind, oases, etc.---we use {@link
      * TileFixture#equalsIgnoringID}) from every tile in a map.
      */
-    private void removeDuplicateFixtures(final IMapNG map) {
+    private void removeDuplicateFixtures(final ILegacyMap map) {
         for (final Point location : model.getMap().getLocations()) {
             for (final Quartet<Consumer<TileFixture>, @Nullable Path, TileFixture,
                     Iterable<? extends TileFixture>> q :
@@ -241,7 +241,7 @@ public class DuplicateFixtureRemoverCLI implements CLIDriver {
     @Override
     public void startDriver() {
         if (model.getSubordinateMaps().iterator().hasNext()) {
-            for (final IMapNG map : model.getAllMaps()) {
+            for (final ILegacyMap map : model.getAllMaps()) {
                 removeDuplicateFixtures(map);
                 model.setMapModified(map, true);
             }

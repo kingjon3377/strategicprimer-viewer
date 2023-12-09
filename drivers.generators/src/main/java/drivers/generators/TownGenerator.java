@@ -23,7 +23,7 @@ import common.map.fixtures.towns.TownSize;
 import legacy.map.IFixture;
 import legacy.map.Point;
 import legacy.map.TileType;
-import legacy.map.IMapNG;
+import legacy.map.ILegacyMap;
 
 import legacy.map.fixtures.IResourcePile;
 import legacy.map.fixtures.ResourcePileImpl;
@@ -151,7 +151,7 @@ import java.math.BigDecimal;
 	 * alias nor use a union type in Java and so use the nearest supertype,
 	 * {@link ITownFixture}.
 	 */
-	static List<Pair<Point, ITownFixture>> unstattedTowns(final IMapNG map) {
+	static List<Pair<Point, ITownFixture>> unstattedTowns(final ILegacyMap map) {
 		return map.streamLocations()
 			.flatMap(l -> map.getFixtures(l).stream().filter(ITownFixture.class::isInstance)
 				.map(ITownFixture.class::cast)
@@ -165,7 +165,7 @@ import java.math.BigDecimal;
 	 *
 	 * TODO: search inside fortresses and units
 	 */
-	private static @Nullable IFixture findByID(final IMapNG map, final int id) {
+	private static @Nullable IFixture findByID(final ILegacyMap map, final int id) {
 		return map.streamAllFixtures()
 			.filter(f -> f.getId() == id)
 			.findAny().orElse(null);
@@ -177,7 +177,7 @@ import java.math.BigDecimal;
 	 *
 	 * TODO: search inside fortresses and units
 	 */
-	private static @Nullable Point findLocById(final IMapNG map, final int id) {
+	private static @Nullable Point findLocById(final ILegacyMap map, final int id) {
 		return map.streamLocations()
 			.filter(l -> map.getFixtures(l).stream().anyMatch(f -> f.getId() == id))
 			.findAny().orElse(null);
@@ -187,7 +187,7 @@ import java.math.BigDecimal;
 	 * Whether, in the given map, any town claims a resource
 	 * identified by the given ID number.
 	 */
-	private static boolean isClaimedField(final IMapNG map, final int id) {
+	private static boolean isClaimedField(final ILegacyMap map, final int id) {
 		return map.streamAllFixtures()
 			.filter(ITownFixture.class::isInstance).map(ITownFixture.class::cast)
 			.map(ITownFixture::getPopulation).filter(Objects::nonNull)
@@ -200,7 +200,7 @@ import java.math.BigDecimal;
 	 * refers to {@link HarvestableFixture a resource that can be worked}
 	 * that {@link #isClaimedField is presently unclaimed}.
 	 */
-	private static boolean isUnclaimedField(final IMapNG map, final int id) {
+	private static boolean isUnclaimedField(final ILegacyMap map, final int id) {
 		return !isClaimedField(map, id) && findByID(map, id) instanceof HarvestableFixture;
 	}
 
@@ -243,7 +243,7 @@ import java.math.BigDecimal;
 	/**
 	 * Find the nearest claimable resources to the given location.
 	 */
-	private static List<HarvestableFixture> findNearestFields(final IMapNG map, final Point location) {
+	private static List<HarvestableFixture> findNearestFields(final ILegacyMap map, final Point location) {
 		final TileType base = map.getBaseTerrain(location);
 		if (base == null) {
 			return Collections.emptyList();
@@ -261,7 +261,7 @@ import java.math.BigDecimal;
 	/**
 	 * Have the user enter expertise levels and claimed resources for a town.
 	 */
-	private static CommunityStats enterStats(final ICLIHelper cli, final IDRegistrar idf, final IMapNG map, final Point location,
+	private static CommunityStats enterStats(final ICLIHelper cli, final IDRegistrar idf, final ILegacyMap map, final Point location,
 		/*ModifiableTown*/ final ITownFixture town) {
 		final CommunityStats retval = new CommunityStats(Optional.ofNullable(
 			cli.inputNumber("Population: ")).orElse(0));
@@ -423,7 +423,7 @@ import java.math.BigDecimal;
 	 * random number generator with the town's ID.
 	 */
 	private CommunityStats generateStats(final IDRegistrar idf, final Point location, final ITownFixture town,
-										 final IMapNG map) throws MissingTableException {
+										 final ILegacyMap map) throws MissingTableException {
 		final Random rng = new Random(town.getId());
 		// A die roll using our pre-seeded RNG.
 		final IntToIntFunction roll = (die) -> rng.nextInt(die) + 1;

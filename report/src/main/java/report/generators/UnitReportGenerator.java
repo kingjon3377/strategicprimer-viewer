@@ -19,7 +19,7 @@ import common.map.Player;
 import legacy.map.IFixture;
 import legacy.map.Point;
 import legacy.map.MapDimensions;
-import legacy.map.IMapNG;
+import legacy.map.ILegacyMap;
 import legacy.map.fixtures.IResourcePile;
 import legacy.map.fixtures.FortressMember;
 import legacy.map.fixtures.Implement;
@@ -130,7 +130,7 @@ public class UnitReportGenerator extends AbstractReportGenerator<IUnit> {
      */
     @Override
     public void produceSingle(final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-                              final IMapNG map, final Consumer<String> ostream, final IUnit item, final Point loc) {
+                              final ILegacyMap map, final Consumer<String> ostream, final IUnit item, final Point loc) {
         ostream.accept("Unit ");
         ostream.accept(item.getName());
         ostream.accept(" (");
@@ -213,7 +213,7 @@ public class UnitReportGenerator extends AbstractReportGenerator<IUnit> {
     }
 
     private void unitFormatter(final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-                               final IMapNG map, final IUnit unit, final Point loc, final Consumer<String> formatter) {
+                               final ILegacyMap map, final IUnit unit, final Point loc, final Consumer<String> formatter) {
         formatter.accept("At ");
         formatter.accept(loc.toString());
         formatter.accept(distanceString.apply(loc));
@@ -225,7 +225,7 @@ public class UnitReportGenerator extends AbstractReportGenerator<IUnit> {
      */
     @Override
     public void produce(final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-                        final IMapNG map, final Consumer<String> ostream) {
+                        final ILegacyMap map, final Consumer<String> ostream) {
         final HeadedMap<IUnit, Point> foreign = new HeadedMapImpl<>("<h5>Foreign Units</h5>");
         final HeadedMap<IUnit, Point> ours = new HeadedMapImpl<>("<h5>Your units</h5>");
         for (final Pair<Point, IUnit> pair : fixtures.values().stream()

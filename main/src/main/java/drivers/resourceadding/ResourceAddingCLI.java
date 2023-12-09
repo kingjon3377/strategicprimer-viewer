@@ -7,7 +7,7 @@ import drivers.common.cli.ICLIHelper;
 
 import legacy.idreg.IDFactoryFiller;
 
-import legacy.map.IMapNG;
+import legacy.map.ILegacyMap;
 import common.map.Player;
 
 import drivers.common.SPOptions;
@@ -27,7 +27,7 @@ import legacy.map.fixtures.Implement;
         this.options = options;
         this.model = model;
         helper = new ResourceAddingCLIHelper(cli, IDFactoryFiller
-                .createIDFactory(model.streamAllMaps().toArray(IMapNG[]::new)));
+                .createIDFactory(model.streamAllMaps().toArray(ILegacyMap[]::new)));
     }
 
     private final ICLIHelper cli;

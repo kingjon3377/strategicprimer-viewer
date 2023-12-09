@@ -18,7 +18,7 @@ import java.awt.event.MouseEvent;
 import legacy.map.MapDimensions;
 import legacy.map.Point;
 import legacy.map.TileFixture;
-import legacy.map.IMapNG;
+import legacy.map.ILegacyMap;
 import legacy.map.fixtures.TerrainFixture;
 
 import java.awt.Component;
@@ -48,7 +48,7 @@ import java.util.function.Consumer;
     private final TerrainChangingMenu menu;
 
     private String terrainFixturesAndTop(final Point point) {
-        final IMapNG map = model.getMap();
+        final ILegacyMap map = model.getMap();
         final StringBuilder builder = new StringBuilder();
         final Consumer<TileFixture> c = fixture -> {
             if (!builder.toString().isEmpty()) {

@@ -15,8 +15,8 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
-import legacy.map.IMutableMapNG;
-import legacy.map.SPMapNG;
+import legacy.map.IMutableLegacyMap;
+import legacy.map.LegacyMap;
 import legacy.map.Point;
 import legacy.map.MapDimensionsImpl;
 import common.map.Player;
@@ -110,7 +110,7 @@ public class TestWorkerModel {
         fixtures.add(new Oasis(8));
         final LinkedList<TileFixture> shuffled = new LinkedList<>(fixtures);
         Collections.shuffle(shuffled);
-        final IMutableMapNG map = new SPMapNG(new MapDimensionsImpl(3, 3, 2), new PlayerCollection(), -1);
+        final IMutableLegacyMap map = new LegacyMap(new MapDimensionsImpl(3, 3, 2), new PlayerCollection(), -1);
         final Iterator<Point> locations = map.getLocations().iterator();
         while (locations.hasNext() && !shuffled.isEmpty()) {
             final Point point = locations.next();

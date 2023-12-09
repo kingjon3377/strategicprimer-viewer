@@ -14,7 +14,7 @@ import java.util.HashMap;
 import java.util.ArrayList;
 import java.util.List;
 
-import legacy.map.IMapNG;
+import legacy.map.ILegacyMap;
 import legacy.map.Direction;
 import legacy.map.Point;
 import legacy.map.fixtures.terrain.Forest;
@@ -24,7 +24,7 @@ import java.util.Collections;
 import java.util.Optional;
 
 /* package */ class PathfinderImpl implements Pathfinder {
-    public PathfinderImpl(final IMapNG map) {
+    public PathfinderImpl(final ILegacyMap map) {
         this.map = map;
         final MapDimensions dims = map.getDimensions();
         size = dims.rows() * dims.columns();
@@ -32,7 +32,7 @@ import java.util.Optional;
         tentativeDistances = new HashMap<>(size);
     }
 
-    private final IMapNG map;
+    private final ILegacyMap map;
     private final Map<SimplePair<Point>, Integer> tentativeDistances;
     private final int size;
 

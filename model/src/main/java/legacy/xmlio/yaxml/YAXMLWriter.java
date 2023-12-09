@@ -4,7 +4,7 @@ import java.nio.charset.StandardCharsets;
 import java.io.BufferedWriter;
 import java.io.IOException;
 
-import legacy.map.IMapNG;
+import legacy.map.ILegacyMap;
 import impl.xmlio.SPWriter;
 
 import java.nio.file.Path;
@@ -53,7 +53,7 @@ public class YAXMLWriter implements SPWriter {
      * @param map The map to write.
      */
     @Override
-    public void write(final Path arg, final IMapNG map) throws XMLStreamException, IOException {
+    public void write(final Path arg, final ILegacyMap map) throws XMLStreamException, IOException {
         writeSPObject(arg, map);
     }
 
@@ -65,7 +65,7 @@ public class YAXMLWriter implements SPWriter {
      * @param map The map to write.
      */
     @Override
-    public void write(final ThrowingConsumer<String, IOException> arg, final IMapNG map)
+    public void write(final ThrowingConsumer<String, IOException> arg, final ILegacyMap map)
             throws XMLStreamException, IOException {
         writeSPObject(arg, map);
     }

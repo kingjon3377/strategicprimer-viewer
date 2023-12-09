@@ -12,8 +12,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Map;
 
-import legacy.map.IMutableMapNG;
-import legacy.map.IMapNG;
+import legacy.map.IMutableLegacyMap;
+import legacy.map.ILegacyMap;
 import legacy.map.River;
 import common.map.Player;
 import legacy.map.Direction;
@@ -23,9 +23,9 @@ import lovelace.util.LovelaceLogger;
 
 import static io.jenetics.facilejdbc.Param.value;
 
-public final class DBMapWriter extends AbstractDatabaseWriter<IMutableMapNG, IMapNG> {
-	public DBMapWriter(final SPDatabaseWriter parent, final AbstractDatabaseWriter<Player, IMapNG> playerWriter) {
-		super(IMutableMapNG.class, IMapNG.class);
+public final class DBMapWriter extends AbstractDatabaseWriter<IMutableLegacyMap, ILegacyMap> {
+	public DBMapWriter(final SPDatabaseWriter parent, final AbstractDatabaseWriter<Player, ILegacyMap> playerWriter) {
+		super(IMutableLegacyMap.class, ILegacyMap.class);
 		this.parent = parent;
 		this.playerWriter = playerWriter;
 	}
@@ -76,7 +76,7 @@ public final class DBMapWriter extends AbstractDatabaseWriter<IMutableMapNG, IMa
 		return INITIALIZERS;
 	}
 
-	private final AbstractDatabaseWriter<Player, IMapNG> playerWriter;
+	private final AbstractDatabaseWriter<Player, ILegacyMap> playerWriter;
 
 	private static final Query INSERT_TERRAIN =
 		Query.of("INSERT INTO terrain (row, column, terrain, mountainous, north_river, " +
@@ -93,7 +93,7 @@ public final class DBMapWriter extends AbstractDatabaseWriter<IMutableMapNG, IMa
 		"INSERT INTO metadata (version, rows, columns, current_turn) VALUES(:version, :rows, :columns, :turn);");
 
 	@Override
-	public void write(final Transactional db, final IMutableMapNG obj, final IMapNG context) throws SQLException {
+	public void write(final Transactional db, final IMutableLegacyMap obj, final ILegacyMap context) throws SQLException {
 		final Connection conn = db.connection(); // TODO: work inside a transaction instead, surely?
 		INSERT_METADATA.on(value("version", obj.getDimensions().version()),
 			value("rows", obj.getDimensions().rows()),

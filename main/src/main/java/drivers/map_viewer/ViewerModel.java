@@ -34,7 +34,7 @@ import legacy.map.HasMutableKind;
 import legacy.map.HasMutableName;
 import legacy.map.HasMutableOwner;
 import legacy.map.IFixture;
-import legacy.map.IMutableMapNG;
+import legacy.map.IMutableLegacyMap;
 import common.map.Player;
 import legacy.map.River;
 import legacy.map.TileFixture;
@@ -185,7 +185,7 @@ public class ViewerModel extends SimpleDriverModel implements IViewerModel {
     /**
      * @param theMap The initial map
      */
-    public ViewerModel(final IMutableMapNG theMap) {
+    public ViewerModel(final IMutableLegacyMap theMap) {
         super(theMap);
         visDimensions = new VisibleDimensions(0, theMap.getDimensions().rows() - 1,
                 0, theMap.getDimensions().columns() - 1);
@@ -381,7 +381,7 @@ public class ViewerModel extends SimpleDriverModel implements IViewerModel {
      * the visible dimensions and the zoom level.
      */
     @Override
-    public void setMap(final IMutableMapNG newMap) {
+    public void setMap(final IMutableLegacyMap newMap) {
         super.setMap(newMap);
         clearSelection();
         visDimensions = new VisibleDimensions(0, newMap.getDimensions().rows() - 1, 0,

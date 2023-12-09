@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Map;
 
 import legacy.map.Point;
-import legacy.map.IMutableMapNG;
+import legacy.map.IMutableLegacyMap;
 
 import legacy.map.fixtures.TextFixture;
 import common.xmlio.Warning;
@@ -57,7 +57,7 @@ public final class DBTextHandler extends AbstractDatabaseWriter<TextFixture, Poi
 		INSERT.on(params).execute(db.connection());
 	}
 
-	private static TryBiConsumer<Map<String, Object>, Warning, SQLException> readTextNote(final IMutableMapNG map) {
+	private static TryBiConsumer<Map<String, Object>, Warning, SQLException> readTextNote(final IMutableLegacyMap map) {
 		return (dbRow, warner) -> {
 			final int row = (Integer) dbRow.get("row");
 			final int column = (Integer) dbRow.get("column");
@@ -74,8 +74,8 @@ public final class DBTextHandler extends AbstractDatabaseWriter<TextFixture, Poi
 
 	private static final Query SELECT = Query.of("SELECT * FROM text_notes");
 	@Override
-	public void readMapContents(final Connection db, final IMutableMapNG map, final Map<Integer, IFixture> containers,
-			final Map<Integer, List<Object>> containees, final Warning warner) throws SQLException {
+	public void readMapContents(final Connection db, final IMutableLegacyMap map, final Map<Integer, IFixture> containers,
+                                final Map<Integer, List<Object>> containees, final Warning warner) throws SQLException {
 		handleQueryResults(db, warner, "text notes", readTextNote(map), SELECT);
 	}
 }

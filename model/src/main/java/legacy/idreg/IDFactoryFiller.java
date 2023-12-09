@@ -2,7 +2,7 @@ package legacy.idreg;
 
 import legacy.map.Point;
 import legacy.map.IFixture;
-import legacy.map.IMapNG;
+import legacy.map.ILegacyMap;
 import legacy.map.fixtures.mobile.IWorker;
 import legacy.map.fixtures.towns.ITownFixture;
 import legacy.map.fixtures.FixtureIterable;
@@ -16,9 +16,9 @@ public final class IDFactoryFiller {
     /**
      * Fill a new ID factory from the given map.
      */
-    public static IDRegistrar createIDFactory(final IMapNG... arg) {
+    public static IDRegistrar createIDFactory(final ILegacyMap... arg) {
         final IDRegistrar retval = new IDFactory();
-        for (final IMapNG map : arg) {
+        for (final ILegacyMap map : arg) {
             recursiveRegister(retval, map);
         }
         return retval;
@@ -33,7 +33,7 @@ public final class IDFactoryFiller {
         return retval;
     }
 
-    static void recursiveRegister(final IDRegistrar factory, final IMapNG map) {
+    static void recursiveRegister(final IDRegistrar factory, final ILegacyMap map) {
         for (final Point loc : map.getLocations()) {
             recursiveRegister(factory, map.getFixtures(loc));
         }

@@ -12,7 +12,7 @@ import drivers.common.IWorkerModel;
 
 import drivers.common.cli.ICLIHelper;
 
-import legacy.map.IMutableMapNG;
+import legacy.map.IMutableLegacyMap;
 
 import worker.common.WorkerModel;
 
@@ -42,7 +42,7 @@ public class AdvancementCLIFactory implements ModelDriverFactory {
 	}
 
 	@Override
-	public IDriverModel createModel(final IMutableMapNG map) {
+	public IDriverModel createModel(final IMutableLegacyMap map) {
 		return new WorkerModel(map);
 	}
 }

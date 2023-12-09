@@ -5,8 +5,8 @@ import drivers.common.IDriverModel;
 import drivers.common.SimpleMultiMapModel;
 
 import legacy.map.IFixture;
-import legacy.map.IMapNG;
-import legacy.map.IMutableMapNG;
+import legacy.map.ILegacyMap;
+import legacy.map.IMutableLegacyMap;
 import common.map.Player;
 import legacy.map.Point;
 
@@ -56,7 +56,7 @@ public class PopulationGeneratingModel extends SimpleMultiMapModel { // TODO: Ex
         return retval;
     }
 
-    public PopulationGeneratingModel(final IMutableMapNG map) {
+    public PopulationGeneratingModel(final IMutableLegacyMap map) {
         super(map);
     }
 
@@ -77,7 +77,7 @@ public class PopulationGeneratingModel extends SimpleMultiMapModel { // TODO: Ex
         final Function<Object, Animal> animalCast = Animal.class::cast;
         final Predicate<Animal> equalKind = a -> kind.equals(a.getKind());
         final Predicate<Animal> sameTalking = a -> a.isTalking() == talking;
-        for (final IMutableMapNG map : getRestrictedAllMaps()) { // TODO: Should submaps really all get this information?
+        for (final IMutableLegacyMap map : getRestrictedAllMaps()) { // TODO: Should submaps really all get this information?
             final Optional<Animal> animal = map.getFixtures(location).stream()
                     .filter(isAnimal).map(animalCast)
                     .filter(sameTalking)
@@ -103,7 +103,7 @@ public class PopulationGeneratingModel extends SimpleMultiMapModel { // TODO: Ex
         final Predicate<Object> isGrove = Grove.class::isInstance;
         final Function<Object, Grove> groveCast = Grove.class::cast;
         final Predicate<Grove> sameKind = g -> kind.equals(g.getKind());
-        for (final IMutableMapNG map : getRestrictedAllMaps()) { // TODO: Should submaps really all get this information?
+        for (final IMutableLegacyMap map : getRestrictedAllMaps()) { // TODO: Should submaps really all get this information?
             final Optional<Grove> grove = map.getFixtures(location).stream()
                     .filter(isGrove).map(groveCast)
                     .filter(sameKind)
@@ -128,7 +128,7 @@ public class PopulationGeneratingModel extends SimpleMultiMapModel { // TODO: Ex
         final Predicate<Object> isShrub = Shrub.class::isInstance;
         final Function<Object, Shrub> shrubCast = Shrub.class::cast;
         final Predicate<Shrub> sameKind = s -> kind.equals(s.getKind());
-        for (final IMutableMapNG map : getRestrictedAllMaps()) { // TODO: Should submaps really all get this information?
+        for (final IMutableLegacyMap map : getRestrictedAllMaps()) { // TODO: Should submaps really all get this information?
             final Optional<Shrub> shrub = map.getFixtures(location).stream()
                     .filter(isShrub).map(shrubCast)
                     .filter(sameKind)
@@ -156,7 +156,7 @@ public class PopulationGeneratingModel extends SimpleMultiMapModel { // TODO: Ex
         final Predicate<Meadow> sameCultivated = m -> field.isCultivated() == m.isCultivated();
         final Predicate<Meadow> sameStatus = m -> field.getStatus() == m.getStatus();
         final Predicate<Meadow> sameId = m -> field.getId() == m.getId();
-        for (final IMutableMapNG map : getRestrictedAllMaps()) { // TODO: Should submaps really all get this information?
+        for (final IMutableLegacyMap map : getRestrictedAllMaps()) { // TODO: Should submaps really all get this information?
             final Optional<Meadow> existing = map.getFixtures(location).stream()
                     .filter(isMeadow).map(meadowCast)
                     .filter(sameKind)
@@ -187,7 +187,7 @@ public class PopulationGeneratingModel extends SimpleMultiMapModel { // TODO: Ex
         final Predicate<Forest> sameKind = f -> forest.getKind().equals(f.getKind());
         final Predicate<Forest> sameRows = f -> forest.isRows() == f.isRows();
         final Predicate<Forest> sameId = f -> forest.getId() == f.getId();
-        for (final IMutableMapNG map : getRestrictedAllMaps()) { // TODO: Should submaps really all get this information?
+        for (final IMutableLegacyMap map : getRestrictedAllMaps()) { // TODO: Should submaps really all get this information?
             final Optional<Forest> existing = map.getFixtures(location).stream()
                     .filter(isForest).map(forestCast)
                     .filter(sameKind)
@@ -217,7 +217,7 @@ public class PopulationGeneratingModel extends SimpleMultiMapModel { // TODO: Ex
         final Function<Object, ITownFixture> townCast = ITownFixture.class::cast;
         final Predicate<ITownFixture> sameId = f -> f.getId() == townId;
         final Predicate<ITownFixture> sameName = f -> name.equals(f.getName());
-        for (final IMutableMapNG map : getRestrictedAllMaps()) { // TODO: Should submaps really all get this information?
+        for (final IMutableLegacyMap map : getRestrictedAllMaps()) { // TODO: Should submaps really all get this information?
             final Optional<ITownFixture> town = map.getFixtures(location).stream()
                     .filter(f -> f instanceof AbstractTown || f instanceof Village) // TODO: extract IMutableTown interface
                     .map(townCast)
@@ -266,7 +266,7 @@ public class PopulationGeneratingModel extends SimpleMultiMapModel { // TODO: Ex
         final Predicate<IMutableUnit> sameKind = u -> unit.getKind().equals(u.getKind());
         final Predicate<IMutableUnit> sameName = u -> unit.getName().equals(u.getName());
         final Predicate<IMutableUnit> sameId = u -> u.getId() == unit.getId();
-        for (final IMutableMapNG map : getRestrictedAllMaps()) {
+        for (final IMutableLegacyMap map : getRestrictedAllMaps()) {
             final Optional<IMutableUnit> localUnit = map.streamAllFixtures()
                     .flatMap(PopulationGeneratingModel::flattenFortresses)
                     .filter(isUnit)
@@ -314,7 +314,7 @@ public class PopulationGeneratingModel extends SimpleMultiMapModel { // TODO: Ex
      */
     public Iterable<Player> getPlayerChoices() {
         Set<Player> set = null;
-        for (final IMapNG map : getAllMaps()) {
+        for (final ILegacyMap map : getAllMaps()) {
             if (set == null) {
                 set = StreamSupport.stream(map.getPlayers().spliterator(), true)
                         .collect(Collectors.toSet());
@@ -333,7 +333,7 @@ public class PopulationGeneratingModel extends SimpleMultiMapModel { // TODO: Ex
      * TODO: If more than one map, return a proxy for the units; otherwise, return the unit
      */
     public void addUnitAtLocation(final IUnit unit, final Point location) {
-        for (final IMutableMapNG indivMap : getRestrictedAllMaps()) {
+        for (final IMutableLegacyMap indivMap : getRestrictedAllMaps()) {
             indivMap.addFixture(location, unit); // FIXME: Check for existing matching unit there already
             indivMap.setModified(true);
         }
@@ -352,7 +352,7 @@ public class PopulationGeneratingModel extends SimpleMultiMapModel { // TODO: Ex
         final Predicate<IWorker> sameRace = w -> worker.getRace().equals(w.getRace());
         final Predicate<IWorker> sameName = w -> worker.getName().equals(w.getName());
         final Predicate<IWorker> sameId = w -> worker.getId() == w.getId();
-        for (final IMutableMapNG map : getRestrictedAllMaps()) {
+        for (final IMutableLegacyMap map : getRestrictedAllMaps()) {
             for (final IUnit container : map.streamAllFixtures()
                     .flatMap(PopulationGeneratingModel::flattenFortresses)
                     .filter(IUnit.class::isInstance).map(IUnit.class::cast)

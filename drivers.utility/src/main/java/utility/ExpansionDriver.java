@@ -6,7 +6,7 @@ import java.util.function.Predicate;
 import common.map.Player;
 import legacy.map.HasOwner;
 import legacy.map.Point;
-import legacy.map.IMapNG;
+import legacy.map.ILegacyMap;
 
 import legacy.map.fixtures.towns.ITownFixture;
 
@@ -37,7 +37,7 @@ public class ExpansionDriver implements CLIDriver {
         return model;
     }
 
-    private static Predicate<Point> containsSwornVillage(final IMapNG map, final Player currentPlayer) {
+    private static Predicate<Point> containsSwornVillage(final ILegacyMap map, final Player currentPlayer) {
         return (point) -> map.getFixtures(point).stream().filter(ITownFixture.class::isInstance)
                 .map(ITownFixture.class::cast).map(HasOwner::owner)
                 .anyMatch(currentPlayer::equals);
@@ -50,7 +50,7 @@ public class ExpansionDriver implements CLIDriver {
     @Override
     public void startDriver() {
         for (final Player player : model.streamSubordinateMaps()
-                .map(IMapNG::getCurrentPlayer).filter(not(Player::isIndependent)).collect(Collectors.toSet())) {
+                .map(ILegacyMap::getCurrentPlayer).filter(not(Player::isIndependent)).collect(Collectors.toSet())) {
             for (final Point point : model.getMap().streamLocations()
                     .filter(containsSwornVillage(model.getMap(), player)).toList()) {
                 model.expandAroundPoint(point, player);

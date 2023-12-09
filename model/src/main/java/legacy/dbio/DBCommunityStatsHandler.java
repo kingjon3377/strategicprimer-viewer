@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Map;
 import java.math.BigDecimal;
 
-import legacy.map.IMutableMapNG;
+import legacy.map.IMutableLegacyMap;
 import legacy.map.fixtures.ResourcePileImpl;
 import legacy.map.fixtures.IResourcePile;
 import legacy.map.fixtures.IMutableResourcePile;
@@ -109,7 +109,7 @@ public final class DBCommunityStatsHandler extends AbstractDatabaseWriter<Commun
 		});
 	}
 
-	private TryBiConsumer<Map<String, Object>, Warning, SQLException> readTownPopulations(final IMutableMapNG map,
+	private TryBiConsumer<Map<String, Object>, Warning, SQLException> readTownPopulations(final IMutableLegacyMap map,
 																						  final Map<Integer, List<Object>> containees) {
 		return (dbRow, warner) -> {
 			final int id = (Integer) dbRow.get("id");
@@ -120,7 +120,7 @@ public final class DBCommunityStatsHandler extends AbstractDatabaseWriter<Commun
 		};
 	}
 
-	private TryBiConsumer<Map<String, Object>, Warning, SQLException> readTownExpertise(final IMutableMapNG map,
+	private TryBiConsumer<Map<String, Object>, Warning, SQLException> readTownExpertise(final IMutableLegacyMap map,
 																						final Map<Integer, List<Object>> containees) {
 		return (dbRow, warner) -> {
 			final int townId = (Integer) dbRow.get("town");
@@ -133,7 +133,7 @@ public final class DBCommunityStatsHandler extends AbstractDatabaseWriter<Commun
 		};
 	}
 
-	private TryBiConsumer<Map<String, Object>, Warning, SQLException> readWorkedResource(final IMutableMapNG map,
+	private TryBiConsumer<Map<String, Object>, Warning, SQLException> readWorkedResource(final IMutableLegacyMap map,
 																						 final Map<Integer, List<Object>> containees) {
 		return (dbRow, warner) -> {
 			final int townId = (Integer) dbRow.get("town");
@@ -146,7 +146,7 @@ public final class DBCommunityStatsHandler extends AbstractDatabaseWriter<Commun
 	}
 
 	private TryBiConsumer<Map<String, Object>, Warning, SQLException>
-	readProducedResource(final IMutableMapNG map, final Map<Integer, List<Object>> containees) {
+	readProducedResource(final IMutableLegacyMap map, final Map<Integer, List<Object>> containees) {
 		return (dbRow, warner) -> {
 			final int townId = (Integer) dbRow.get("town");
 			final CommunityStats population = containees.get(townId).stream().filter(CommunityStats.class::isInstance)
@@ -174,7 +174,7 @@ public final class DBCommunityStatsHandler extends AbstractDatabaseWriter<Commun
 	}
 
 	private TryBiConsumer<Map<String, Object>, Warning, SQLException>
-	readConsumedResource(final IMutableMapNG map, final Map<Integer, List<Object>> containees) {
+	readConsumedResource(final IMutableLegacyMap map, final Map<Integer, List<Object>> containees) {
 		return (dbRow, warner) -> {
 			final int townId = (Integer) dbRow.get("town");
 			final CommunityStats population = containees.get(townId).stream().filter(CommunityStats.class::isInstance)
@@ -208,8 +208,8 @@ public final class DBCommunityStatsHandler extends AbstractDatabaseWriter<Commun
 	private static final Query SELECT_CONSUMPTION = Query.of("SELECT * FROM town_consumption");
 
 	@Override
-	public void readMapContents(final Connection db, final IMutableMapNG map, final Map<Integer, IFixture> containers,
-								final Map<Integer, List<Object>> containees, final Warning warner) throws SQLException {
+	public void readMapContents(final Connection db, final IMutableLegacyMap map, final Map<Integer, IFixture> containers,
+                                final Map<Integer, List<Object>> containees, final Warning warner) throws SQLException {
 		handleQueryResults(db, warner, "town expertise levels",
 			readTownExpertise(map, containees), SELECT_EXPERTISE);
 		handleQueryResults(db, warner, "town worked resources",

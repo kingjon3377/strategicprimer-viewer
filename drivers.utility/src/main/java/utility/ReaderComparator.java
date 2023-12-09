@@ -11,7 +11,7 @@ import java.nio.file.Files;
 
 import java.io.StringReader;
 
-import legacy.map.IMapNG;
+import legacy.map.ILegacyMap;
 
 import common.xmlio.Warning;
 
@@ -67,7 +67,7 @@ public class ReaderComparator implements UtilityDriver {
                 throw new DriverFailedException(except, "I/O error reading file");
             }
             final long readStartOne = System.nanoTime();
-            final IMapNG mapOne;
+            final ILegacyMap mapOne;
             try {
                 mapOne = readerOne.readMapFromStream(path,
                         new StringReader(contents), warner);
@@ -84,7 +84,7 @@ public class ReaderComparator implements UtilityDriver {
             final long readEndOne = System.nanoTime();
             cli.println("Old reader took " + (readEndOne - readStartOne));
             final long readStartTwo = System.nanoTime();
-            final IMapNG mapTwo;
+            final ILegacyMap mapTwo;
             try {
                 mapTwo = readerTwo.readMapFromStream(path,
                         new StringReader(contents), warner);

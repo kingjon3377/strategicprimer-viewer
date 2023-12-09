@@ -25,7 +25,7 @@ import legacy.map.HasPopulation;
 import legacy.map.HasExtent;
 import legacy.map.Point;
 import legacy.map.MapDimensions;
-import legacy.map.IMapNG;
+import legacy.map.ILegacyMap;
 import legacy.map.fixtures.resources.Meadow;
 import legacy.map.fixtures.resources.CacheFixture;
 import legacy.map.fixtures.resources.Mine;
@@ -100,7 +100,7 @@ public class HarvestableReportGenerator extends AbstractReportGenerator<Harvesta
      */
     @Override
     public void produceSingle(final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-                              final IMapNG map, final Consumer<String> ostream, final HarvestableFixture item, final Point loc) {
+                              final ILegacyMap map, final Consumer<String> ostream, final HarvestableFixture item, final Point loc) {
         if (!(item instanceof CacheFixture || item instanceof Grove || item instanceof Meadow
                 || item instanceof Mine || item instanceof MineralVein
                 || item instanceof Shrub || item instanceof StoneDeposit)) {
@@ -162,7 +162,7 @@ public class HarvestableReportGenerator extends AbstractReportGenerator<Harvesta
      */
     @Override
     public void produce(final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-                        final IMapNG map, final Consumer<String> ostream) {
+                        final ILegacyMap map, final Consumer<String> ostream) {
         final Map<String, List<Point>> stone = new HashMap<>();
         final Map<String, List<Point>> shrubs = new HashMap<>();
         final Map<String, List<Point>> minerals = new HashMap<>();

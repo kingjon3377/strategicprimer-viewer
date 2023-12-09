@@ -39,7 +39,7 @@ import org.jetbrains.annotations.Nullable;
 /**
  * A class to represent a game-world map and its contents.
  */
-public class SPMapNG implements IMutableMapNG {
+public class LegacyMap implements IMutableLegacyMap {
 	/**
 	 * Whether the given fixture should be zeroed out if the map is for the given player.
 	 */
@@ -193,7 +193,7 @@ public class SPMapNG implements IMutableMapNG {
 		}
 	}
 
-	public SPMapNG(final MapDimensions dimensions, final IMutablePlayerCollection players, final int turn) {
+	public LegacyMap(final MapDimensions dimensions, final IMutablePlayerCollection players, final int turn) {
 		final int size = dimensions.rows() * dimensions.columns();
 		terrain = new HashMap<>(reduceLarge(size), 0.5f);
 		fixturesMap = new HashMap<>(reduceLarge(size), 0.5f);
@@ -531,7 +531,7 @@ public class SPMapNG implements IMutableMapNG {
 
 	@Override
 	public boolean equals(final Object obj) {
-		if (obj instanceof final IMapNG that) {
+		if (obj instanceof final ILegacyMap that) {
 			if (getDimensions().equals(that.getDimensions()) &&
 				getPlayers().containsAll(that.getPlayers()) &&
 				that.getPlayers().containsAll(getPlayers()) &&
@@ -661,7 +661,7 @@ public class SPMapNG implements IMutableMapNG {
 	 * except for those cases we deliberately ignore.
 	 */
 	@Override
-	public boolean isSubset(final IMapNG obj, final Consumer<String> report) {
+	public boolean isSubset(final ILegacyMap obj, final Consumer<String> report) {
 		if (getDimensions().equals(obj.getDimensions())) {
 			boolean retval = playerCollection.isSubset(obj.getPlayers(), report);
 			// Declared here to avoid object allocations in the loop.
@@ -829,9 +829,9 @@ public class SPMapNG implements IMutableMapNG {
 	 * FIXME: (In the interface) split with-player and without-player into separate signatures
 	 */
 	@Override
-	public IMapNG copy(final IFixture.CopyBehavior zero, final @Nullable Player player) {
+	public ILegacyMap copy(final IFixture.CopyBehavior zero, final @Nullable Player player) {
 		// FIXME: Should declare as SPMapNG and use collection bulk-add methods
-		final IMutableMapNG retval = new SPMapNG(getDimensions(), playerCollection.copy(),
+		final IMutableLegacyMap retval = new LegacyMap(getDimensions(), playerCollection.copy(),
 			currentTurn);
 		for (final Point point : getLocations()) {
 			final TileType tileType = terrain.get(point);

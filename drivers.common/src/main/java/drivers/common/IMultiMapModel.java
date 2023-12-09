@@ -1,7 +1,7 @@
 package drivers.common;
 
-import legacy.map.IMapNG;
-import legacy.map.IMutableMapNG;
+import legacy.map.ILegacyMap;
+import legacy.map.IMutableLegacyMap;
 
 import java.util.stream.Stream;
 
@@ -20,38 +20,38 @@ public interface IMultiMapModel extends IDriverModel {
 	 * Add a subordinate map.
 	 * @param map The map to add
 	 */
-	void addSubordinateMap(IMutableMapNG map);
+	void addSubordinateMap(IMutableLegacyMap map);
 
 	/**
 	 * Subordinate maps
 	 */
-	Iterable<IMapNG> getSubordinateMaps();
+	Iterable<ILegacyMap> getSubordinateMaps();
 
 	/**
 	 * Subordinate maps, as a stream.
 	 */
-	Stream<IMapNG> streamSubordinateMaps();
+	Stream<ILegacyMap> streamSubordinateMaps();
 
 	/**
 	 * Subordinate maps. For use by subclasses only.
 	 */
-	Iterable<IMutableMapNG> getRestrictedSubordinateMaps();
+	Iterable<IMutableLegacyMap> getRestrictedSubordinateMaps();
 
 	/**
 	 * All maps.
 	 */
-	default Iterable<IMapNG> getAllMaps() {
+	default Iterable<ILegacyMap> getAllMaps() {
 		return new ConcatIterable<>(Collections.singleton(getMap()), getSubordinateMaps());
 	}
 
-	default Stream<IMapNG> streamAllMaps() {
+	default Stream<ILegacyMap> streamAllMaps() {
 		return Stream.concat(Stream.of(getMap()), streamSubordinateMaps());
 	}
 
 	/**
 	 * All maps. For use by subclasses only.
 	 */
-	default Iterable<IMutableMapNG> getRestrictedAllMaps() {
+	default Iterable<IMutableLegacyMap> getRestrictedAllMaps() {
 		return new ConcatIterable<>(Collections.singleton(getRestrictedMap()),
 			getRestrictedSubordinateMaps());
 	}
@@ -68,10 +68,10 @@ public interface IMultiMapModel extends IDriverModel {
 	 * @deprecated Modification to the map should ideally only come through model methods
 	 */
 	@Deprecated
-	void setMapModified(IMapNG map, boolean flag);
+	void setMapModified(ILegacyMap map, boolean flag);
 
 	/**
 	 * Clear the modified flag on the given map. (For the code that saves the map to file.)
 	 */
-	void clearModifiedFlag(IMapNG map);
+	void clearModifiedFlag(ILegacyMap map);
 }

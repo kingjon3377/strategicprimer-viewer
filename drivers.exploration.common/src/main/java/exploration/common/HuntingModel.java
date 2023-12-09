@@ -8,7 +8,7 @@ import org.javatuples.Pair;
 import legacy.map.TileType;
 import legacy.map.MapDimensions;
 import legacy.map.Point;
-import legacy.map.IMapNG;
+import legacy.map.ILegacyMap;
 import legacy.map.TileFixture;
 import legacy.map.IFixture;
 import legacy.map.fixtures.mobile.Animal;
@@ -231,9 +231,9 @@ public class HuntingModel {
     /**
      * The map to hunt in.
      */
-    private final IMapNG map;
+    private final ILegacyMap map;
 
-    public HuntingModel(final IMapNG map) {
+    public HuntingModel(final ILegacyMap map) {
         this.map = map;
         fishKinds = map.streamLocations()
                 .filter(l -> TileType.Ocean == map.getBaseTerrain(l))

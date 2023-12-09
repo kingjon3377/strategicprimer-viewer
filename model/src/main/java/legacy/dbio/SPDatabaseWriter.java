@@ -13,38 +13,13 @@ import java.util.HashSet;
 import java.util.HashMap;
 import javax.xml.stream.XMLStreamException;
 
-import legacy.dbio.DBAdventureHandler;
-import legacy.dbio.DBAnimalHandler;
-import legacy.dbio.DBCacheHandler;
-import legacy.dbio.DBCommunityStatsHandler;
-import legacy.dbio.DBExplorableHandler;
-import legacy.dbio.DBFieldHandler;
-import legacy.dbio.DBForestHandler;
-import legacy.dbio.DBFortressHandler;
-import legacy.dbio.DBGroundHandler;
-import legacy.dbio.DBGroveHandler;
-import legacy.dbio.DBImmortalHandler;
-import legacy.dbio.DBImplementHandler;
-import legacy.dbio.DBMapWriter;
-import legacy.dbio.DBMineHandler;
-import legacy.dbio.DBMineralHandler;
-import legacy.dbio.DBPlayerHandler;
-import legacy.dbio.DBPortalHandler;
-import legacy.dbio.DBResourcePileHandler;
-import legacy.dbio.DBShrubHandler;
-import legacy.dbio.DBSimpleTerrainHandler;
-import legacy.dbio.DBTextHandler;
-import legacy.dbio.DBTownHandler;
-import legacy.dbio.DBUnitHandler;
-import legacy.dbio.DBVillageHandler;
-import legacy.dbio.DBWorkerHandler;
 import lovelace.util.LovelaceLogger;
 import org.sqlite.SQLiteDataSource;
 
 import javax.sql.DataSource;
 
 import legacy.map.HasNotes;
-import legacy.map.IMapNG;
+import legacy.map.ILegacyMap;
 
 import java.nio.file.Path;
 
@@ -148,17 +123,17 @@ public final class SPDatabaseWriter implements SPWriter {
 	}
 
 	@Override
-	public void write(final Path arg, final IMapNG map) throws XMLStreamException, IOException {
+	public void write(final Path arg, final ILegacyMap map) throws XMLStreamException, IOException {
 		writeSPObject(arg, map);
 	}
 
 	@Override
-	public void write(final ThrowingConsumer<String, IOException> arg, final IMapNG map) throws XMLStreamException,
+	public void write(final ThrowingConsumer<String, IOException> arg, final ILegacyMap map) throws XMLStreamException,
 		IOException {
 		writeSPObject(arg, map);
 	}
 
-	public void writeToDatabase(final Transactional db, final IMapNG map) throws SQLException {
+	public void writeToDatabase(final Transactional db, final ILegacyMap map) throws SQLException {
 		writeSPObjectInContext(db, map, map);
 	}
 }

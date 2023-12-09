@@ -21,7 +21,7 @@ import lovelace.util.DelayedRemovalMap;
 import legacy.map.IFixture;
 import legacy.map.Point;
 import legacy.map.MapDimensions;
-import legacy.map.IMapNG;
+import legacy.map.ILegacyMap;
 import legacy.map.fixtures.mobile.Centaur;
 import legacy.map.fixtures.mobile.Fairy;
 import legacy.map.fixtures.mobile.Giant;
@@ -59,7 +59,7 @@ public class ImmortalsReportGenerator extends AbstractReportGenerator<Immortal> 
      */
     @Override
     public void produceSingle(final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-                              final IMapNG map, final Consumer<String> ostream, final Immortal item, final Point loc) {
+                              final ILegacyMap map, final Consumer<String> ostream, final Immortal item, final Point loc) {
         fixtures.remove(item.getId());
         ostream.accept("At ");
         ostream.accept(loc.toString());
@@ -74,7 +74,7 @@ public class ImmortalsReportGenerator extends AbstractReportGenerator<Immortal> 
      */
     @Override
     public void produce(final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-                        final IMapNG map, final Consumer<String> ostream) {
+                        final ILegacyMap map, final Consumer<String> ostream) {
         final Map<Class<? extends IFixture>, BiConsumer<String, Point>> meta = new HashMap<>();
         final Map<String, List<Point>> simples = new HashMap<>();
         final BiConsumer<Class<? extends Immortal>, String> handleSimple =

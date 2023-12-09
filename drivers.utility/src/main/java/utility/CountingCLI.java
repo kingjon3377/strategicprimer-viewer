@@ -22,7 +22,7 @@ import drivers.common.SPOptions;
 
 import drivers.common.cli.ICLIHelper;
 
-import legacy.map.IMapNG;
+import legacy.map.ILegacyMap;
 import legacy.map.TileType;
 import legacy.map.River;
 import legacy.map.TileFixture;
@@ -239,7 +239,7 @@ import legacy.map.fixtures.mobile.AnimalTracks;
 
     @Override
     public void startDriver() { // TODO: Reduce duplication
-        final IMapNG map = model.getMap();
+        final ILegacyMap map = model.getMap();
         cli.println(String.format("There are %d tiles in all.",
                 map.getDimensions().rows() * map.getDimensions().columns()));
         final EnumCounter<TileType> tileTypeCounts = new EnumCounter<>();

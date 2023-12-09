@@ -6,7 +6,7 @@ import javax.xml.stream.XMLStreamException;
 
 import lovelace.util.ThrowingConsumer;
 
-import legacy.map.IMapNG;
+import legacy.map.ILegacyMap;
 
 /**
  * An interface for map (and other SP XML) writers.
@@ -17,14 +17,14 @@ public interface SPWriter {
      * @param file The file or stream to write to.
      * @param map The map to write
      */
-    void write(Path file, IMapNG map) throws XMLStreamException, IOException;
+    void write(Path file, ILegacyMap map) throws XMLStreamException, IOException;
 
     /**
      * Write a map to a stream.
      * @param stream The file or stream to write to.
      * @param map The map to write
      */
-    void write(ThrowingConsumer<String, IOException> stream, IMapNG map) throws XMLStreamException, IOException;
+    void write(ThrowingConsumer<String, IOException> stream, ILegacyMap map) throws XMLStreamException, IOException;
 
     /**
      * Write an object to a file.

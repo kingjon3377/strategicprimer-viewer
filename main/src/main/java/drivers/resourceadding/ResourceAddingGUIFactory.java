@@ -10,7 +10,7 @@ import java.util.List;
 
 import lovelace.util.FileChooser;
 
-import legacy.map.IMutableMapNG;
+import legacy.map.IMutableLegacyMap;
 
 import drivers.gui.common.SPFileChooser;
 
@@ -61,7 +61,7 @@ public class ResourceAddingGUIFactory implements GUIDriverFactory {
     }
 
     @Override
-    public IDriverModel createModel(final IMutableMapNG map) {
+    public IDriverModel createModel(final IMutableLegacyMap map) {
         return new ResourceManagementDriverModel(map);
     }
 }

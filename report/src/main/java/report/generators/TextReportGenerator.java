@@ -15,7 +15,7 @@ import java.util.List;
 import legacy.map.IFixture;
 import legacy.map.Point;
 import legacy.map.MapDimensions;
-import legacy.map.IMapNG;
+import legacy.map.ILegacyMap;
 import legacy.map.fixtures.TextFixture;
 
 /**
@@ -39,7 +39,7 @@ public class TextReportGenerator extends AbstractReportGenerator<TextFixture> {
      */
     @Override
     public void produceSingle(final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-                              final IMapNG map, final Consumer<String> ostream, final TextFixture item, final Point loc) {
+                              final ILegacyMap map, final Consumer<String> ostream, final TextFixture item, final Point loc) {
         ostream.accept("At ");
         ostream.accept(loc.toString());
         ostream.accept(" ");
@@ -62,7 +62,7 @@ public class TextReportGenerator extends AbstractReportGenerator<TextFixture> {
      */
     @Override
     public void produce(final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-                        final IMapNG map, final Consumer<String> ostream) {
+                        final ILegacyMap map, final Consumer<String> ostream) {
         final List<Triplet<Integer, Point, TextFixture>> items =
                 fixtures.entrySet().stream()
                         .filter(e -> e.getValue().getValue1() instanceof TextFixture)

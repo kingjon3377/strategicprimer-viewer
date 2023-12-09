@@ -5,9 +5,9 @@ import java.nio.file.Path;
 import java.util.List;
 import java.util.ArrayList;
 
-import legacy.map.SPMapNG;
-import legacy.map.IMapNG;
-import legacy.map.IMutableMapNG;
+import legacy.map.LegacyMap;
+import legacy.map.ILegacyMap;
+import legacy.map.IMutableLegacyMap;
 import legacy.map.MapDimensions;
 import legacy.map.MapDimensionsImpl;
 import common.map.PlayerCollection;
@@ -36,13 +36,13 @@ public class SimpleDriverModel implements IDriverModel {
 	/**
 	 * The main map.
 	 */
-	private IMutableMapNG mainMap;
+	private IMutableLegacyMap mainMap;
 
 	public SimpleDriverModel() {
-		this(new SPMapNG(new MapDimensionsImpl(-1, -1, -1), new PlayerCollection(), -1));
+		this(new LegacyMap(new MapDimensionsImpl(-1, -1, -1), new PlayerCollection(), -1));
 	}
 
-	public SimpleDriverModel(final IMutableMapNG map) {
+	public SimpleDriverModel(final IMutableLegacyMap map) {
 		mainMap = map;
 		mapDim = mainMap.getDimensions();
 	}
@@ -64,7 +64,7 @@ public class SimpleDriverModel implements IDriverModel {
 	 * Set a new main map.
 	 */
 	@Override
-	public void setMap(final IMutableMapNG newMap) {
+	public void setMap(final IMutableLegacyMap newMap) {
 		for (final VersionChangeListener listener : vcListeners) {
 			listener.changeVersion(mapDim.version(), newMap.getDimensions().version());
 		}
@@ -79,7 +79,7 @@ public class SimpleDriverModel implements IDriverModel {
 	 * The (main) map.
 	 */
 	@Override
-	public final IMapNG getMap() {
+	public final ILegacyMap getMap() {
 		return mainMap;
 	}
 
@@ -88,7 +88,7 @@ public class SimpleDriverModel implements IDriverModel {
 	 * wrapper implementation of IMapNG?
 	 */
 	@Override
-	public final IMutableMapNG getRestrictedMap() {
+	public final IMutableLegacyMap getRestrictedMap() {
 		return mainMap;
 	}
 

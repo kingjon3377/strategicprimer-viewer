@@ -2,7 +2,7 @@ package legacy.dbio;
 
 import legacy.map.IFixture;
 import legacy.map.Point;
-import legacy.map.IMutableMapNG;
+import legacy.map.IMutableLegacyMap;
 import legacy.map.fixtures.explorable.AdventureFixture;
 import common.xmlio.Warning;
 
@@ -54,7 +54,7 @@ public final class DBAdventureHandler extends AbstractDatabaseWriter<AdventureFi
 	}
 
 	private static TryBiConsumer<Map<String, Object>, Warning, SQLException>
-			readAdventure(final IMutableMapNG map) {
+			readAdventure(final IMutableLegacyMap map) {
 		return (dbRow, warner) -> {
 			final int row = (Integer) dbRow.get("row");
 //			final int row = Integer.parseInt(dbRow.get("row"));
@@ -78,8 +78,8 @@ public final class DBAdventureHandler extends AbstractDatabaseWriter<AdventureFi
 
 	private static final Query SELECT = Query.of("SELECT * FROM adventures");
 	@Override
-	public void readMapContents(final Connection db, final IMutableMapNG map, final Map<Integer, IFixture> containers,
-			final Map<Integer, List<Object>> containees, final Warning warner) throws SQLException {
+	public void readMapContents(final Connection db, final IMutableLegacyMap map, final Map<Integer, IFixture> containers,
+                                final Map<Integer, List<Object>> containees, final Warning warner) throws SQLException {
 		handleQueryResults(db, warner, "adventures", readAdventure(map), SELECT);
 	}
 }

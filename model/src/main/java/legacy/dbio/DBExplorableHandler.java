@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Map;
 
 import legacy.map.Point;
-import legacy.map.IMutableMapNG;
+import legacy.map.IMutableLegacyMap;
 import legacy.map.fixtures.explorable.Battlefield;
 import legacy.map.fixtures.explorable.ExplorableFixture;
 import legacy.map.fixtures.explorable.Cave;
@@ -73,7 +73,7 @@ public final class DBExplorableHandler extends AbstractDatabaseWriter<Explorable
 			value("dc", obj.getDC()), value("image", obj.getImage())).execute(db.connection());
 	}
 
-	private static TryBiConsumer<Map<String, Object>, Warning, SQLException> readCave(final IMutableMapNG map) {
+	private static TryBiConsumer<Map<String, Object>, Warning, SQLException> readCave(final IMutableLegacyMap map) {
 		return (dbRow, warner) -> {
 			final int row = (Integer) dbRow.get("row");
 			final int column = (Integer) dbRow.get("column");
@@ -88,7 +88,7 @@ public final class DBExplorableHandler extends AbstractDatabaseWriter<Explorable
 		};
 	}
 
-	private static TryBiConsumer<Map<String, Object>, Warning, SQLException> readBattlefield(final IMutableMapNG map) {
+	private static TryBiConsumer<Map<String, Object>, Warning, SQLException> readBattlefield(final IMutableLegacyMap map) {
 		return (dbRow, warner) -> {
 			final int row = (Integer) dbRow.get("row");
 			final int column = (Integer) dbRow.get("column");
@@ -107,8 +107,8 @@ public final class DBExplorableHandler extends AbstractDatabaseWriter<Explorable
 	private static final Query SELECT_BATTLES = Query.of("SELECT * FROM battlefields");
 
 	@Override
-	public void readMapContents(final Connection db, final IMutableMapNG map, final Map<Integer, IFixture> containers,
-								final Map<Integer, List<Object>> containees, final Warning warner) throws SQLException {
+	public void readMapContents(final Connection db, final IMutableLegacyMap map, final Map<Integer, IFixture> containers,
+                                final Map<Integer, List<Object>> containees, final Warning warner) throws SQLException {
 		handleQueryResults(db, warner, "caves", readCave(map), SELECT_CAVES);
 		handleQueryResults(db, warner, "battlefields", readBattlefield(map), SELECT_BATTLES);
 	}

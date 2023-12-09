@@ -23,7 +23,7 @@ import legacy.map.HasOwner;
 import legacy.map.TileType;
 import legacy.map.MapDimensions;
 import legacy.map.Point;
-import legacy.map.IMapNG;
+import legacy.map.ILegacyMap;
 
 import java.util.Set;
 import java.util.LinkedList;
@@ -95,7 +95,7 @@ public class QueryCLI implements ReadOnlyDriver {
     }
 
     private final ICLIHelper cli;
-    private final IMapNG map;
+    private final ILegacyMap map;
 
     @Override
     public SPOptions getOptions() {

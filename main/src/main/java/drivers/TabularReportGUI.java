@@ -19,7 +19,7 @@ import drivers.common.MapChangeListener;
 
 import drivers.common.cli.ICLIHelper;
 
-import legacy.map.IMutableMapNG;
+import legacy.map.IMutableLegacyMap;
 
 import javax.swing.JOptionPane;
 import javax.swing.JTabbedPane;
@@ -131,7 +131,7 @@ public class TabularReportGUI implements GUIDriver {
     }
 
     @Override
-    public void open(final IMutableMapNG map) {
+    public void open(final IMutableLegacyMap map) {
         model.setMap(map);
     }
 }

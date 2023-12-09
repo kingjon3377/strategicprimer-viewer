@@ -17,7 +17,7 @@ import lovelace.util.TypesafeXMLEventReader;
 
 import legacy.idreg.IDRegistrar;
 import legacy.idreg.IDFactory;
-import legacy.map.IMutableMapNG;
+import legacy.map.IMutableLegacyMap;
 import legacy.xmlio.IMapReader;
 import impl.xmlio.ISPReader;
 import common.xmlio.SPFormatException;
@@ -69,7 +69,7 @@ public class YAXMLReader implements IMapReader, ISPReader {
      * @throws ClassCastException if reader does not produce the requested type
      */
     @Override
-    public IMutableMapNG readMapFromStream(final Path file, final Reader istream, final Warning warner)
+    public IMutableLegacyMap readMapFromStream(final Path file, final Reader istream, final Warning warner)
             throws SPFormatException, XMLStreamException, IOException {
         return readXML(file, istream, warner);
     }
@@ -84,7 +84,7 @@ public class YAXMLReader implements IMapReader, ISPReader {
      * @param warner The Warning instance to use for warnings
      */
     @Override
-    public IMutableMapNG readMap(final Path file, final Warning warner)
+    public IMutableLegacyMap readMap(final Path file, final Warning warner)
             throws SPFormatException, NoSuchFileException, XMLStreamException, IOException {
         try (final Reader istream = Files.newBufferedReader(file, StandardCharsets.UTF_8)) {
             return readMapFromStream(file, istream, warner);

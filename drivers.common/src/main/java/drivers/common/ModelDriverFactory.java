@@ -1,6 +1,6 @@
 package drivers.common;
 
-import legacy.map.IMutableMapNG;
+import legacy.map.IMutableLegacyMap;
 import drivers.common.cli.ICLIHelper;
 
 /**
@@ -24,7 +24,7 @@ public interface ModelDriverFactory extends DriverFactory {
 	 * Create a model to pass to {@link #createDriver}. The 'modified' flag is set to false.
 	 * @param map The map
 	 */
-	default IDriverModel createModel(final IMutableMapNG map) {
+	default IDriverModel createModel(final IMutableLegacyMap map) {
 		return new SimpleDriverModel(map);
 	}
 }

@@ -14,7 +14,7 @@ import java.util.Map;
 import java.util.List;
 import java.util.regex.Pattern;
 
-import legacy.map.IMutableMapNG;
+import legacy.map.IMutableLegacyMap;
 import legacy.map.Point;
 import legacy.map.HasKind;
 import legacy.map.HasImage;
@@ -165,7 +165,7 @@ public final class DBImmortalHandler extends AbstractDatabaseWriter<Immortal, /*
 	}
 
 	private TryBiConsumer<Map<String, Object>, Warning, SQLException>
-	readSimpleImmortal(final IMutableMapNG map, final Map<Integer, List<Object>> containees) {
+	readSimpleImmortal(final IMutableLegacyMap map, final Map<Integer, List<Object>> containees) {
 		return (dbRow, warner) -> {
 			final String type = (String) dbRow.get("type");
 			final int id = (Integer) dbRow.get("id");
@@ -196,7 +196,7 @@ public final class DBImmortalHandler extends AbstractDatabaseWriter<Immortal, /*
 	}
 
 	private TryBiConsumer<Map<String, Object>, Warning, SQLException>
-	readKindedImmortal(final IMutableMapNG map, final Map<Integer, List<Object>> containees) {
+	readKindedImmortal(final IMutableLegacyMap map, final Map<Integer, List<Object>> containees) {
 		return (dbRow, warner) -> {
 			final String type = (String) dbRow.get("type");
 			final String kind = (String) dbRow.get("kind");
@@ -227,8 +227,8 @@ public final class DBImmortalHandler extends AbstractDatabaseWriter<Immortal, /*
 	private static final Query KINDED_SELECT = Query.of("SELECT * FROM kinded_immortals");
 
 	@Override
-	public void readMapContents(final Connection db, final IMutableMapNG map, final Map<Integer, IFixture> containers,
-								final Map<Integer, List<Object>> containees, final Warning warner) throws SQLException {
+	public void readMapContents(final Connection db, final IMutableLegacyMap map, final Map<Integer, IFixture> containers,
+                                final Map<Integer, List<Object>> containees, final Warning warner) throws SQLException {
 		handleQueryResults(db, warner, "simple immortals", readSimpleImmortal(map, containees),
 			SIMPLE_SELECT);
 		handleQueryResults(db, warner, "immortals with kinds", readKindedImmortal(map, containees),

@@ -1,9 +1,9 @@
 package legacy.dbio;
 
 import legacy.map.IFixture;
-import legacy.map.IMutableMapNG;
+import legacy.map.IMutableLegacyMap;
 import common.map.Player;
-import legacy.map.SPMapNG;
+import legacy.map.LegacyMap;
 import legacy.map.MapDimensionsImpl;
 import common.map.PlayerImpl;
 import common.map.MutablePlayer;
@@ -108,7 +108,7 @@ public final class DBMapReader {
 		return Pair.with(new Point(row.getInt("row"), row.getInt("column")), row.getInt("player"));
 	}
 
-	public IMutableMapNG readMap(final Transactional db, final Warning warner) throws SQLException {
+	public IMutableLegacyMap readMap(final Transactional db, final Warning warner) throws SQLException {
 		final Connection conn = db.connection();
 		final @Nullable Quartet<Integer, Integer, Integer, Integer> metadata = METADATA_SELECT.as(((RowParser<Quartet<Integer, Integer, Integer, Integer>>) DBMapReader::parseMetadata).singleNull(), conn);
 		if (metadata == null) {
@@ -128,8 +128,8 @@ public final class DBMapReader {
 			playerStream.forEach(players::add);
 		}
 		LovelaceLogger.debug("Finished reading players, about to start on terrain");
-		final IMutableMapNG retval =
-			new SPMapNG(new MapDimensionsImpl(rows, columns, version), players, turn);
+		final IMutableLegacyMap retval =
+			new LegacyMap(new MapDimensionsImpl(rows, columns, version), players, turn);
 		final Accumulator<Integer> count = new IntAccumulator(0);
 		try (final Stream<Triplet<Point, @Nullable TileType, Sextet<Boolean, Boolean, Boolean, Boolean, Boolean, Boolean>>> terrainStream =
 				 TERRAIN_SELECT.as(((RowParser<Triplet<Point, @Nullable TileType, Sextet<Boolean, Boolean, Boolean, Boolean, Boolean, Boolean>>>)

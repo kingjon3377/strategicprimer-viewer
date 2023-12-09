@@ -14,7 +14,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-import legacy.map.IMutableMapNG;
+import legacy.map.IMutableLegacyMap;
 import common.map.Player;
 import legacy.map.Point;
 
@@ -92,7 +92,7 @@ public final class DBTownHandler extends AbstractDatabaseWriter<AbstractTown, Po
 		}
 	}
 
-	private TryBiConsumer<Map<String, Object>, Warning, SQLException> readTown(final IMutableMapNG map,
+	private TryBiConsumer<Map<String, Object>, Warning, SQLException> readTown(final IMutableLegacyMap map,
 																			   final Map<Integer, IFixture> containers, final Map<Integer, List<Object>> containees) {
 		return (dbRow, warner) -> {
 			final int row = (Integer) dbRow.get("row");
@@ -134,8 +134,8 @@ public final class DBTownHandler extends AbstractDatabaseWriter<AbstractTown, Po
 
 	private static final Query SELECT = Query.of("SELECT * FROM towns");
 	@Override
-	public void readMapContents(final Connection db, final IMutableMapNG map, final Map<Integer, IFixture> containers,
-			final Map<Integer, List<Object>> containees, final Warning warner) throws SQLException {
+	public void readMapContents(final Connection db, final IMutableLegacyMap map, final Map<Integer, IFixture> containers,
+                                final Map<Integer, List<Object>> containees, final Warning warner) throws SQLException {
 		handleQueryResults(db, warner, "towns", readTown(map, containers, containees), SELECT);
 	}
 }

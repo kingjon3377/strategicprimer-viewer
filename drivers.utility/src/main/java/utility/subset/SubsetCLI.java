@@ -9,7 +9,7 @@ import drivers.common.SPOptions;
 
 import drivers.common.cli.ICLIHelper;
 
-import legacy.map.IMapNG;
+import legacy.map.ILegacyMap;
 
 import java.util.function.Consumer;
 import java.util.Optional;
@@ -43,7 +43,7 @@ public class SubsetCLI implements ReadOnlyDriver {
 
     @Override
     public void startDriver() {
-        for (final IMapNG map : model.getSubordinateMaps()) {
+        for (final ILegacyMap map : model.getSubordinateMaps()) {
             final String filename = Optional.ofNullable(map.getFilename()).map(Path::toString)
                     .orElse("map without a filename");
             cli.print(filename, "\t...\t\t");

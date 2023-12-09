@@ -53,10 +53,10 @@ import legacy.map.River;
 import legacy.map.TileType;
 import legacy.map.HasMutableImage;
 import common.map.PlayerCollection;
-import legacy.map.IMutableMapNG;
-import legacy.map.IMapNG;
+import legacy.map.IMutableLegacyMap;
+import legacy.map.ILegacyMap;
 import legacy.map.HasNotes;
-import legacy.map.SPMapNG;
+import legacy.map.LegacyMap;
 import legacy.map.Direction;
 import legacy.map.fixtures.TextFixture;
 import legacy.map.fixtures.Implement;
@@ -540,7 +540,7 @@ public final class TestXMLIO {
 	/**
 	 * Assert that a map is properly deserialized (by the main map-deserialization methods).
 	 */
-	private void assertMapDeserialization(final String message, final IMapNG expected, final String xml)
+	private void assertMapDeserialization(final String message, final ILegacyMap expected, final String xml)
 		throws SPFormatException, XMLStreamException, IOException {
 		for (final IMapReader reader : mapReaders) {
 			try (final StringReader stringReader = new StringReader(xml)) {
@@ -968,8 +968,8 @@ public final class TestXMLIO {
 	/**
 	 * A factory to encapsulate rivers in a simple map.
 	 */
-	private static IMapNG encapsulateRivers(final Point point, final River... rivers) {
-		final IMutableMapNG retval = new SPMapNG(new MapDimensionsImpl(point.row() + 1,
+	private static ILegacyMap encapsulateRivers(final Point point, final River... rivers) {
+		final IMutableLegacyMap retval = new LegacyMap(new MapDimensionsImpl(point.row() + 1,
 			point.column() + 1, 2), new PlayerCollection(), -1);
 		retval.setBaseTerrain(point, TileType.Plains);
 		retval.addRivers(point, rivers);
@@ -980,8 +980,8 @@ public final class TestXMLIO {
 	 * Create a simple map.
 	 */
 	@SafeVarargs
-	private static IMutableMapNG createSimpleMap(final Point dims, final Pair<Point, TileType>... terrain) {
-		final IMutableMapNG retval = new SPMapNG(new MapDimensionsImpl(dims.row(),
+	private static IMutableLegacyMap createSimpleMap(final Point dims, final Pair<Point, TileType>... terrain) {
+		final IMutableLegacyMap retval = new LegacyMap(new MapDimensionsImpl(dims.row(),
 			dims.column(), 2), new PlayerCollection(), -1);
 		for (final Pair<Point, TileType> pair : terrain) {
 			retval.setBaseTerrain(pair.getValue0(), pair.getValue1());
@@ -1029,8 +1029,8 @@ public final class TestXMLIO {
 	@Test
 	public void testRiverSerializationOne()
 		throws SPFormatException, XMLStreamException, IOException {
-		this.<IMapNG>assertUnwantedChild(encapsulateTileString("<lake><troll /></lake>"), null);
-		this.<IMapNG>assertMissingProperty(encapsulateTileString("<river />"), "direction", null);
+		this.<ILegacyMap>assertUnwantedChild(encapsulateTileString("<lake><troll /></lake>"), null);
+		this.<ILegacyMap>assertMissingProperty(encapsulateTileString("<river />"), "direction", null);
 		final Set<River> setOne = EnumSet.of(River.North, River.South);
 		final Set<River> setTwo = EnumSet.of(River.South, River.North);
 		assertEquals(setOne, setTwo, "Rivers added in different order to set");
@@ -1044,7 +1044,7 @@ public final class TestXMLIO {
 			"Tile equality with different order of rivers");
 		assertSerialization("Two rivers", encapsulateRivers(new Point(1, 2),
 			River.North, River.South));
-		this.<IMapNG>assertMissingProperty(
+		this.<ILegacyMap>assertMissingProperty(
 			encapsulateTileString("""
 				<river direction="invalid" />"""), "direction",
 			null);
@@ -1060,26 +1060,26 @@ public final class TestXMLIO {
 		throws SPFormatException, XMLStreamException, IOException {
 		assertSerialization("Simple Tile", createSimpleMap(new Point(1, 1),
 			Pair.with(new Point(0, 0), TileType.Desert)));
-		final IMutableMapNG firstMap = createSimpleMap(new Point(2, 2),
+		final IMutableLegacyMap firstMap = createSimpleMap(new Point(2, 2),
 			Pair.with(new Point(1, 1), TileType.Plains));
 		firstMap.addFixture(new Point(1, 1), new Griffin(1));
 		assertSerialization("Tile with one fixture", firstMap);
-		final IMutableMapNG secondMap = createSimpleMap(new Point(3, 3),
+		final IMutableLegacyMap secondMap = createSimpleMap(new Point(3, 3),
 			Pair.with(new Point(2, 2), TileType.Steppe));
 		secondMap.addFixture(new Point(2, 2),
 			new Unit(new PlayerImpl(-1, ""), "unitOne", "firstUnit", 1));
 		secondMap.addFixture(new Point(2, 2), new Forest("forestKind", true, 8));
 		assertSerialization("Tile with two fixtures", secondMap);
-		this.<IMapNG>assertMissingProperty("""
+		this.<ILegacyMap>assertMissingProperty("""
 				<map version="2" rows="1" columns="1"><tile column="0" kind="plains" /></map>""",
 			"row", null);
-		this.<IMapNG>assertMissingProperty("""
+		this.<ILegacyMap>assertMissingProperty("""
 				<map version="2" rows="1" columns="1"><tile row="0" kind="plains" /></map>""",
 			"column", null);
-		this.<IMapNG>assertMissingProperty("""
+		this.<ILegacyMap>assertMissingProperty("""
 				<map version="2" rows="1" columns="1"><tile row="0" column="0" /></map>""",
-			"kind", new SPMapNG(new MapDimensionsImpl(1, 1, 2), new PlayerCollection(), 0));
-		this.<IMapNG>assertUnwantedChild(encapsulateTileString("""
+			"kind", new LegacyMap(new MapDimensionsImpl(1, 1, 2), new PlayerCollection(), 0));
+		this.<ILegacyMap>assertUnwantedChild(encapsulateTileString("""
 			<tile row="2" column="0" kind="plains" />"""), null);
 	}
 
@@ -1089,7 +1089,7 @@ public final class TestXMLIO {
 	@Test
 	public void testTileSerialization()
 		throws SPFormatException, XMLStreamException, IOException {
-		final IMutableMapNG thirdMap = createSimpleMap(new Point(4, 4),
+		final IMutableLegacyMap thirdMap = createSimpleMap(new Point(4, 4),
 			Pair.with(new Point(3, 3), TileType.Jungle));
 		final Player playerOne = new PlayerImpl(2, "");
 		final IMutableFortress fort = new FortressImpl(playerOne, "fortOne", 1,
@@ -1114,7 +1114,7 @@ public final class TestXMLIO {
 	@MethodSource
 	public void testTileDeprecatedIdiom(final TileType terrain, final boolean deprecatedWriter)
 		throws SPFormatException, XMLStreamException, IOException {
-		final IMapNG map = createSimpleMap(new Point(5, 5), Pair.with(new Point(4, 4), terrain));
+		final ILegacyMap map = createSimpleMap(new Point(5, 5), Pair.with(new Point(4, 4), terrain));
 		assertDeprecatedProperty(createSerializedForm(map, deprecatedWriter)
 			.replace("kind", "type"), "type", "kind", "tile", map);
 	}
@@ -1125,7 +1125,7 @@ public final class TestXMLIO {
 	@Test
 	public void testTileSerializationTwo()
 		throws SPFormatException, XMLStreamException, IOException {
-		final IMutableMapNG five = createSimpleMap(new Point(3, 4), Pair.with(new Point(2, 3),
+		final IMutableLegacyMap five = createSimpleMap(new Point(3, 4), Pair.with(new Point(2, 3),
 			TileType.Jungle));
 		final Player player = new PlayerImpl(2, "playerName");
 		five.addFixture(new Point(2, 3), new Unit(player, "explorer", "name one", 1));
@@ -1211,7 +1211,7 @@ public final class TestXMLIO {
 	@MethodSource
 	public void testTileSerializationThree(final boolean deprecatedWriter)
 		throws SPFormatException, XMLStreamException, IOException {
-		final IMutableMapNG six = new SPMapNG(new MapDimensionsImpl(2, 2, 2),
+		final IMutableLegacyMap six = new LegacyMap(new MapDimensionsImpl(2, 2, 2),
 			new PlayerCollection(), 5);
 		six.setMountainous(new Point(0, 0), true);
 		six.addFixture(new Point(0, 1), new Ground(22, "basalt", false));
@@ -1242,13 +1242,13 @@ public final class TestXMLIO {
 			"""
 				<map rows="1" columns="1" version="2" current_player="-1"><future /></map>""",
 			Warning.IGNORE);
-		this.<IMapNG>assertUnsupportedTag("""
+		this.<ILegacyMap>assertUnsupportedTag("""
 				<map rows="1" columns="1" version="2" current_player="-1"><future /></map>""",
-			"future", new SPMapNG(new MapDimensionsImpl(1, 1, 2), new PlayerCollection(), 0));
-		final IMutableMapNG expected =
-			new SPMapNG(new MapDimensionsImpl(1, 1, 2), new PlayerCollection(), 0);
+			"future", new LegacyMap(new MapDimensionsImpl(1, 1, 2), new PlayerCollection(), 0));
+		final IMutableLegacyMap expected =
+			new LegacyMap(new MapDimensionsImpl(1, 1, 2), new PlayerCollection(), 0);
 		expected.setBaseTerrain(new Point(0, 0), TileType.Steppe);
-		this.<IMapNG>assertUnsupportedTag("""
+		this.<ILegacyMap>assertUnsupportedTag("""
 				<map rows="1" columns="1" version="2" current_player="-1">
 				<tile row="0" column="0" kind="steppe"><futureTag /></tile></map>""",
 			"futureTag", expected);
@@ -1260,19 +1260,19 @@ public final class TestXMLIO {
 	@Test
 	public void testMapSerialization()
 		throws SPFormatException, XMLStreamException, IOException {
-		this.<IMapNG>assertUnwantedChild("""
+		this.<ILegacyMap>assertUnwantedChild("""
 			<map rows="1" columns="1" version="2"><hill /></map>""", null);
 		final MutablePlayer player = new PlayerImpl(1, "playerOne");
 		player.setCurrent(true);
-		final IMutableMapNG firstMap = new SPMapNG(new MapDimensionsImpl(1, 1, 2),
+		final IMutableLegacyMap firstMap = new LegacyMap(new MapDimensionsImpl(1, 1, 2),
 			new PlayerCollection(), 0);
 		firstMap.addPlayer(player);
 		final Point loc = new Point(0, 0);
 		firstMap.setBaseTerrain(loc, TileType.Plains);
 		assertSerialization("Simple Map serialization", firstMap);
-		this.<IMapNG>assertMissingProperty("""
+		this.<ILegacyMap>assertMissingProperty("""
 			<map version="2" columns="1" />""", "rows", null);
-		this.<IMapNG>assertMissingProperty("""
+		this.<ILegacyMap>assertMissingProperty("""
 			<map version="2" rows="1" />""", "columns", null);
 		final String originalFormOne = createSerializedForm(firstMap, false);
 		final String originalFormTwo = createSerializedForm(firstMap, true);
@@ -1283,23 +1283,23 @@ public final class TestXMLIO {
 			"Explicitly not visible tile is not serialized");
 		firstMap.setMountainous(loc, true);
 		assertSerialization("Map with a mountainous point", firstMap);
-		this.<IMapNG>assertMissingProperty("""
+		this.<ILegacyMap>assertMissingProperty("""
 				<view current_turn="0"><map version="2" rows="1" columns="1" /></view>""",
-			"current_player", new SPMapNG(new MapDimensionsImpl(1, 1, 2),
+			"current_player", new LegacyMap(new MapDimensionsImpl(1, 1, 2),
 				new PlayerCollection(), 0));
-		this.<IMapNG>assertMissingProperty("""
+		this.<ILegacyMap>assertMissingProperty("""
 				<view current_player="0"><map version="2" rows="1" columns="1"></view>""",
 			"current_turn", null);
-		this.<IMapNG>assertMissingChild("""
+		this.<ILegacyMap>assertMissingChild("""
 			<view current_player="1" current_turn="0" />""");
-		this.<IMapNG>assertMissingChild("""
+		this.<ILegacyMap>assertMissingChild("""
 			<view current_player="1" current_turn="13" />""");
-		this.<IMapNG>assertUnwantedChild("""
+		this.<ILegacyMap>assertUnwantedChild("""
 			<view current_player="0" current_turn="0">
 			<map version="2" rows="1" columns="1" />
 			<map version="2" rows="1" columns="1" />
 			</view>""", null);
-		this.<IMapNG>assertUnwantedChild("""
+		this.<ILegacyMap>assertUnwantedChild("""
 			<view current_player="0" current_turn="0"><hill /></view>""", null);
 		assertMapDeserialization("Proper deserialization of map without view tag", firstMap,
 			"""
@@ -1316,8 +1316,8 @@ public final class TestXMLIO {
 		throws SPFormatException, XMLStreamException, IOException {
 		final MutablePlayer player = new PlayerImpl(1, "playerOne");
 		player.setCurrent(true);
-		final IMutableMapNG firstMap =
-			new SPMapNG(new MapDimensionsImpl(1, 1, 2), new PlayerCollection(), 0);
+		final IMutableLegacyMap firstMap =
+			new LegacyMap(new MapDimensionsImpl(1, 1, 2), new PlayerCollection(), 0);
 		firstMap.addPlayer(player);
 		final Point loc = new Point(0, 0);
 		firstMap.setBaseTerrain(loc, TileType.Steppe);
@@ -1343,7 +1343,7 @@ public final class TestXMLIO {
 				() -> assertInstanceOf(XMLStreamException.class, except)
 			);
 		for (final ISPReader reader : spReaders) {
-			TestXMLIO.<IMapNG, Exception>assertFormatIssue(reader,
+			TestXMLIO.<ILegacyMap, Exception>assertFormatIssue(reader,
 				"""
 					<map xmlns="xyzzy" version="2" rows="1" columns="1" current_player="1">
 					<player number="1" code_name="playerOne" /><row index="0">
@@ -1376,8 +1376,8 @@ public final class TestXMLIO {
 	@Test
 	public void testDuplicateID()
 		throws SPFormatException, XMLStreamException, IOException {
-		final IMutableMapNG expected =
-			new SPMapNG(new MapDimensionsImpl(1, 1, 2), new PlayerCollection(), 0);
+		final IMutableLegacyMap expected =
+			new LegacyMap(new MapDimensionsImpl(1, 1, 2), new PlayerCollection(), 0);
 		final Point point = new Point(0, 0);
 		expected.setBaseTerrain(point, TileType.Steppe);
 		final MutablePlayer player = new PlayerImpl(1, "playerOne");
@@ -1567,7 +1567,7 @@ public final class TestXMLIO {
 		this.<TextFixture>assertUnwantedChild("""
 			<text turn="%d"><troll></text>""".formatted(turn), null);
 		assertImageSerialization("Text image property is preserved", testee);
-		final IMutableMapNG wrapper = createSimpleMap(new Point(1, 1),
+		final IMutableLegacyMap wrapper = createSimpleMap(new Point(1, 1),
 			Pair.with(new Point(0, 0), TileType.Plains));
 		wrapper.addFixture(new Point(0, 0), new TextFixture(text, -1));
 		wrapper.setCurrentTurn(0);
@@ -1669,7 +1669,7 @@ public final class TestXMLIO {
 		secondWorker.addEquipment(new Implement("implKind", 12));
 		secondWorker.addEquipment(new Implement("implKindTwo", 13));
 		assertSerialization("Worker can have equipment", secondWorker);
-		this.<IMapNG>assertUnwantedChild("""
+		this.<ILegacyMap>assertUnwantedChild("""
 			<map version="2" rows="1" columns="1">
 			<tile row="0" column="0" kind="plains">
 			<worker name="name" id="1" /></tile></map>""", null);
@@ -1772,7 +1772,7 @@ public final class TestXMLIO {
 		final AdventureFixture second = new AdventureFixture(new PlayerImpl(2, "player"),
 			"second hook brief", "second hook full", idTwo);
 		assertNotEquals(first, second, "Two different hooks are not equal");
-		final IMutableMapNG wrapper = createSimpleMap(new Point(1, 1),
+		final IMutableLegacyMap wrapper = createSimpleMap(new Point(1, 1),
 			Pair.with(new Point(0, 0), TileType.Plains));
 		wrapper.addPlayer(independent);
 		wrapper.addFixture(new Point(0, 0), first);
@@ -2032,7 +2032,7 @@ public final class TestXMLIO {
 		this.<Forest>assertMissingProperty("<forest />", "kind", null);
 		assertImageSerialization("Forest image property is preserved", testee);
 		final Point loc = new Point(0, 0);
-		final IMutableMapNG map = createSimpleMap(new Point(1, 1), Pair.with(loc, TileType.Plains));
+		final IMutableLegacyMap map = createSimpleMap(new Point(1, 1), Pair.with(loc, TileType.Plains));
 		map.addFixture(loc, new Forest("trees", false, 4));
 		map.addFixture(loc, new Forest("secondForest", true, 5));
 		assertSerialization("Map with multiple Forests on a tile", map);
@@ -2122,7 +2122,7 @@ public final class TestXMLIO {
 		throws SPFormatException, XMLStreamException, IOException {
 		assertSerialization("First test of Ground serialization", new Ground(id, "one", true));
 		final Point loc = new Point(0, 0);
-		final IMutableMapNG map = createSimpleMap(new Point(1, 1), Pair.with(loc, TileType.Plains));
+		final IMutableLegacyMap map = createSimpleMap(new Point(1, 1), Pair.with(loc, TileType.Plains));
 		map.addFixture(loc, new Ground(-1, "four", true));
 		assertSerialization("Test that reader handles ground as a fixture", map);
 		assertForwardDeserializationEquality("Duplicate Ground ignored", """
@@ -2344,7 +2344,7 @@ public final class TestXMLIO {
 	@MethodSource
 	public void testElsewhere(final int id)
 		throws SPFormatException, XMLStreamException, IOException {
-		final IMutableMapNG map = createSimpleMap(new Point(1, 1));
+		final IMutableLegacyMap map = createSimpleMap(new Point(1, 1));
 		map.addFixture(Point.INVALID_POINT, new Ogre(id));
 		assertSerialization(
 			"Map with fixture 'elsewhere' should be properly serialized", map);
@@ -2362,7 +2362,7 @@ public final class TestXMLIO {
 	@MethodSource
 	public void testBookmarkSerialization(final boolean deprecatedReader, final boolean deprecatedWriter)
 		throws SPFormatException, XMLStreamException, IOException {
-		final IMutableMapNG map = new SPMapNG(new MapDimensionsImpl(1, 1, 2), new PlayerCollection(), 1);
+		final IMutableLegacyMap map = new LegacyMap(new MapDimensionsImpl(1, 1, 2), new PlayerCollection(), 1);
 		final Player player = map.getPlayers().getPlayer(1);
 		map.setCurrentPlayer(player);
 		assertFalse(map.getBookmarks().contains(new Point(0, 0)),
@@ -2371,7 +2371,7 @@ public final class TestXMLIO {
 		map.setBaseTerrain(new Point(0, 0), TileType.Plains);
 		map.addBookmark(new Point(0, 0));
 		final IMapReader reader = mapReaders.get((deprecatedReader) ? 0 : 1);
-		final IMapNG deserialized;
+		final ILegacyMap deserialized;
 		try (final StringReader stringReader =
 				 new StringReader(createSerializedForm(map, deprecatedWriter))) {
 			deserialized = reader.readMapFromStream(FAKE_FILENAME, stringReader, Warning.DIE);
@@ -2399,7 +2399,7 @@ public final class TestXMLIO {
 		assumeFalse(directionOne == directionTwo, "We can't have the same direction twice");
 		assumeTrue(qualityOne >= 0, "Road quality can't be negative");
 		assumeTrue(qualityTwo >= 0, "Road quality can't be negative");
-		final IMutableMapNG map = createSimpleMap(new Point(1, 1),
+		final IMutableLegacyMap map = createSimpleMap(new Point(1, 1),
 			Pair.with(new Point(0, 0), TileType.Plains));
 		if (Direction.Nowhere != directionOne) {
 			map.setRoadLevel(new Point(0, 0), directionOne, qualityOne);

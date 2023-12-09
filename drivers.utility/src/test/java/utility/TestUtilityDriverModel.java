@@ -1,6 +1,6 @@
 package utility;
 
-import legacy.map.IMutableMapNG;
+import legacy.map.IMutableLegacyMap;
 import common.map.IMutablePlayerCollection;
 import legacy.map.MapDimensions;
 import legacy.map.MapDimensionsImpl;
@@ -8,7 +8,7 @@ import common.map.MutablePlayer;
 import common.map.PlayerCollection;
 import common.map.PlayerImpl;
 import legacy.map.Point;
-import legacy.map.SPMapNG;
+import legacy.map.LegacyMap;
 import legacy.map.TileType;
 import common.map.fixtures.towns.TownStatus;
 import legacy.map.fixtures.towns.Village;
@@ -39,8 +39,8 @@ public class TestUtilityDriverModel {
 	@Test
 	public void testExpansionWithSubsets() {
 		final MapDimensions dims = new MapDimensionsImpl(2, 2, 2);
-		final IMutableMapNG master = new SPMapNG(dims, playerCollection("independent", "main", "second", "independent"), 0);
-		final IMutableMapNG subMap = new SPMapNG(dims, playerCollection("main", "main", "second", "independent"), 0);
+		final IMutableLegacyMap master = new LegacyMap(dims, playerCollection("independent", "main", "second", "independent"), 0);
+		final IMutableLegacyMap subMap = new LegacyMap(dims, playerCollection("main", "main", "second", "independent"), 0);
 		for (final Point point : master.getLocations()) {
 			master.setBaseTerrain(point, TileType.Plains);
 			subMap.setBaseTerrain(point, TileType.Plains);

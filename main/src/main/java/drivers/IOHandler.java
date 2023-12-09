@@ -30,10 +30,10 @@ import drivers.gui.common.ISPWindow;
 import drivers.gui.common.SPFileChooser;
 import common.xmlio.Warning;
 import common.xmlio.SPFormatException;
-import legacy.map.IMapNG;
+import legacy.map.ILegacyMap;
 import common.map.PlayerCollection;
-import legacy.map.IMutableMapNG;
-import legacy.map.SPMapNG;
+import legacy.map.IMutableLegacyMap;
+import legacy.map.LegacyMap;
 
 import drivers.common.IDriverModel;
 import drivers.common.ISPDriver;
@@ -99,7 +99,7 @@ public class IOHandler implements ActionListener {
         }
 
         if (md instanceof final MultiMapGUIDriver mmgd && mmgd.getModel().streamSubordinateMaps()
-                .anyMatch(IMapNG::isModified)) {
+                .anyMatch(ILegacyMap::isModified)) {
             LovelaceLogger.trace("Subordinate map(s) modified.");
             final int answer = JOptionPane.showConfirmDialog(window,
                     String.format("Subordinate map(s) have unsaved changes. Save all before %s?",
@@ -141,8 +141,8 @@ public class IOHandler implements ActionListener {
         JOptionPane.showMessageDialog(source, message, errorTitle, JOptionPane.ERROR_MESSAGE);
     }
 
-    private static Consumer<Path> loadHandlerImpl(final Consumer<IMutableMapNG> handler, final @Nullable Component source,
-                                                  final String errorTitle) {
+    private static Consumer<Path> loadHandlerImpl(final Consumer<IMutableLegacyMap> handler, final @Nullable Component source,
+												  final String errorTitle) {
         return path -> {
             try {
                 handler.accept(MapIOHelper.readMap(path, Warning.getDefaultHandler()));
@@ -178,7 +178,7 @@ public class IOHandler implements ActionListener {
         } else {
             try {
                 vdf.createDriver(cli, driver.getOptions().copy(),
-                                new ViewerModel(new SPMapNG(driver.getModel().getMapDimensions(),
+                                new ViewerModel(new LegacyMap(driver.getModel().getMapDimensions(),
                                         new PlayerCollection(),
                                         driver.getModel().getMap().getCurrentTurn())))
                         .startDriver();
@@ -293,7 +293,7 @@ public class IOHandler implements ActionListener {
 
             case "save all":
                 if (driver instanceof final MultiMapGUIDriver mmgd) {
-                    for (final IMapNG map : mmgd.getModel().getAllMaps()) {
+                    for (final ILegacyMap map : mmgd.getModel().getAllMaps()) {
                         // FIXME: Doesn't MapIOHelper have a method for this?
                         final Path file = map.getFilename();
                         if (file != null) {

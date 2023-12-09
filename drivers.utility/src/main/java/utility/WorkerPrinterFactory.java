@@ -14,7 +14,7 @@ import drivers.common.cli.ICLIHelper;
 import exploration.common.IExplorationModel;
 import exploration.common.ExplorationModel;
 
-import legacy.map.IMutableMapNG;
+import legacy.map.IMutableLegacyMap;
 
 import com.google.auto.service.AutoService;
 
@@ -43,7 +43,7 @@ public class WorkerPrinterFactory implements ModelDriverFactory {
     }
 
     @Override
-    public IDriverModel createModel(final IMutableMapNG map) {
+    public IDriverModel createModel(final IMutableLegacyMap map) {
         return new ExplorationModel(map);
     }
 }

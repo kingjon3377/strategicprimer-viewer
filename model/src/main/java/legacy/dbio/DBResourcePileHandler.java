@@ -14,7 +14,7 @@ import java.util.Map;
 
 import java.math.BigDecimal;
 
-import legacy.map.IMutableMapNG;
+import legacy.map.IMutableLegacyMap;
 import legacy.map.TileFixture;
 import legacy.map.fixtures.IResourcePile;
 import legacy.map.fixtures.IMutableResourcePile;
@@ -69,7 +69,7 @@ public final class DBResourcePileHandler
 				value("image", obj.getImage())).execute(db.connection());
 	}
 
-	private TryBiConsumer<Map<String, Object>, Warning, SQLException> readResourcePile(final IMutableMapNG map,
+	private TryBiConsumer<Map<String, Object>, Warning, SQLException> readResourcePile(final IMutableLegacyMap map,
 																					   final Map<Integer, List<Object>> containees) {
 		return (dbRow, warner) -> {
 			final int parentId = (Integer) dbRow.get("parent");
@@ -100,8 +100,8 @@ public final class DBResourcePileHandler
 
 	private static final Query SELECT = Query.of("SELECT * FROM resource_piles");
 	@Override
-	public void readMapContents(final Connection db, final IMutableMapNG map, final Map<Integer, IFixture> containers,
-			final Map<Integer, List<Object>> containees, final Warning warner) throws SQLException {
+	public void readMapContents(final Connection db, final IMutableLegacyMap map, final Map<Integer, IFixture> containers,
+                                final Map<Integer, List<Object>> containees, final Warning warner) throws SQLException {
 		handleQueryResults(db, warner, "resource piles", readResourcePile(map, containees), SELECT);
 	}
 }

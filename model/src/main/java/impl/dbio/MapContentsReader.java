@@ -2,7 +2,7 @@ package impl.dbio;
 
 import lovelace.util.LovelaceLogger;
 import legacy.map.IFixture;
-import legacy.map.IMutableMapNG;
+import legacy.map.IMutableLegacyMap;
 import common.xmlio.Warning;
 
 import io.jenetics.facilejdbc.Query;
@@ -37,7 +37,7 @@ public interface MapContentsReader {
 	 *                      to be added to their containers later.
 	 * @param warner Warning instance to use
 	 */
-	void readMapContents(Connection db, IMutableMapNG map, Map<Integer, IFixture> containers,
+	void readMapContents(Connection db, IMutableLegacyMap map, Map<Integer, IFixture> containers,
 						 Map<Integer, List<Object>> containees, Warning warner) throws SQLException;
 
 	private static Map<String, Object> parseToMap(final Row rs, final Connection conn) throws SQLException {

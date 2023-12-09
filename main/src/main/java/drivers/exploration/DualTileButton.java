@@ -12,7 +12,7 @@ import drivers.map_viewer.Ver2TileDrawHelper;
 import drivers.map_viewer.Coordinate;
 
 import legacy.map.Point;
-import legacy.map.IMapNG;
+import legacy.map.ILegacyMap;
 
 import drivers.common.FixtureMatcher;
 
@@ -25,10 +25,10 @@ import drivers.common.FixtureMatcher;
     private static final int MARGIN = 2;
     private Point localPoint = Point.INVALID_POINT;
     private final TileDrawHelper helper;
-    private final IMapNG master;
-    private final IMapNG subordinate;
+    private final ILegacyMap master;
+    private final ILegacyMap subordinate;
 
-    public DualTileButton(final IMapNG master, final IMapNG subordinate, final Iterable<FixtureMatcher> matchers) {
+    public DualTileButton(final ILegacyMap master, final ILegacyMap subordinate, final Iterable<FixtureMatcher> matchers) {
         this.master = master;
         this.subordinate = subordinate;
         helper = new Ver2TileDrawHelper(this, fix -> true,

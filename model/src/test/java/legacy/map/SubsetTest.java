@@ -135,8 +135,8 @@ public final class SubsetTest {
      * Create a map with the given terrain.
      */
     @SafeVarargs
-    private static IMutableMapNG createMap(final Pair<Point, TileType>... terrain) {
-        final IMutableMapNG retval = new SPMapNG(new MapDimensionsImpl(2, 2, 2),
+    private static IMutableLegacyMap createMap(final Pair<Point, TileType>... terrain) {
+        final IMutableLegacyMap retval = new LegacyMap(new MapDimensionsImpl(2, 2, 2),
                 new PlayerCollection(), -1);
         for (final Pair<Point, TileType> pair : terrain) {
             retval.setBaseTerrain(pair.getValue0(), pair.getValue1());
@@ -145,14 +145,14 @@ public final class SubsetTest {
     }
 
     /**
-     * Test the {@link IMapNG} subset feature
+     * Test the {@link ILegacyMap} subset feature
      */
     @Test
     public void testMapSubset() {
-        final IMutableMapNG firstMap = createMap(Pair.with(new Point(0, 0), TileType.Jungle));
-        final IMutableMapNG secondMap = createMap(Pair.with(new Point(0, 0), TileType.Jungle),
+        final IMutableLegacyMap firstMap = createMap(Pair.with(new Point(0, 0), TileType.Jungle));
+        final IMutableLegacyMap secondMap = createMap(Pair.with(new Point(0, 0), TileType.Jungle),
                 Pair.with(new Point(1, 1), TileType.Ocean));
-        final IMapNG zero = createMap();
+        final ILegacyMap zero = createMap();
         assertIsSubset(zero, zero, "None is a subset of itself");
         assertIsSubset(firstMap, zero, "None is a subset of one");
         assertIsSubset(secondMap, zero, "None is a subset of one");
@@ -182,7 +182,7 @@ public final class SubsetTest {
 
     @FunctionalInterface
     private interface ITestMethod {
-        void apply(IMapNG one, IMapNG two, String message);
+        void apply(ILegacyMap one, ILegacyMap two, String message);
     }
 
     /**
@@ -190,7 +190,7 @@ public final class SubsetTest {
      */
     @Test
     public void testMapOffByOne() {
-        final IMutableMapNG baseMap = new SPMapNG(new MapDimensionsImpl(2, 2, 2),
+        final IMutableLegacyMap baseMap = new LegacyMap(new MapDimensionsImpl(2, 2, 2),
                 new PlayerCollection(), -1);
         for (final Point point : baseMap.getLocations()) {
             baseMap.setBaseTerrain(point, TileType.Plains);
@@ -199,7 +199,7 @@ public final class SubsetTest {
         baseMap.addFixture(new Point(1, 1), new AnimalImpl("skunk", false, "wild", 2));
         baseMap.addRivers(new Point(1, 1), River.East);
 
-        final IMutableMapNG testMap = new SPMapNG(new MapDimensionsImpl(2, 2, 2),
+        final IMutableLegacyMap testMap = new LegacyMap(new MapDimensionsImpl(2, 2, 2),
                 new PlayerCollection(), -1);
         for (final Point point : testMap.getLocations()) {
             testMap.setBaseTerrain(point, TileType.Plains);
@@ -237,14 +237,14 @@ public final class SubsetTest {
      */
     @Test
     public void testSubsetsAndCopy() {
-        final IMutableMapNG firstMap = new SPMapNG(new MapDimensionsImpl(2, 2, 2),
+        final IMutableLegacyMap firstMap = new LegacyMap(new MapDimensionsImpl(2, 2, 2),
                 new PlayerCollection(), -1);
         firstMap.setBaseTerrain(new Point(0, 0), TileType.Jungle);
-        final IMapNG zero = new SPMapNG(new MapDimensionsImpl(2, 2, 2),
+        final ILegacyMap zero = new LegacyMap(new MapDimensionsImpl(2, 2, 2),
                 new PlayerCollection(), -1);
         assertIsSubset(firstMap, zero, "zero is a subset of one before copy");
-        final IMutableMapNG secondMap =
-                new SPMapNG(new MapDimensionsImpl(2, 2, 2), new PlayerCollection(), -1);
+        final IMutableLegacyMap secondMap =
+                new LegacyMap(new MapDimensionsImpl(2, 2, 2), new PlayerCollection(), -1);
         secondMap.setBaseTerrain(new Point(0, 0), TileType.Jungle);
         firstMap.setBaseTerrain(new Point(1, 1), TileType.Plains);
         secondMap.setBaseTerrain(new Point(1, 1), TileType.Plains);
@@ -255,7 +255,7 @@ public final class SubsetTest {
                 new Fortification(TownStatus.Burned, TownSize.Large, 15, "fortification", 6,
                         new PlayerImpl(0, "")));
         assertEquals(firstMap, firstMap.copy(IFixture.CopyBehavior.KEEP, null), "Cloned map equals original");
-        final IMapNG clone = firstMap.copy(IFixture.CopyBehavior.ZERO, null);
+        final ILegacyMap clone = firstMap.copy(IFixture.CopyBehavior.ZERO, null);
         assertIsSubset(clone, zero, "unfilled map is still a subset of zeroed clone");
         // DCs, the only thing zeroed out in *map* copy() at the moment, are ignored by
         // equals().

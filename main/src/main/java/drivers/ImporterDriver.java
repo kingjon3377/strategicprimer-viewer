@@ -31,12 +31,12 @@ import lovelace.util.EnumCounter;
 
 import legacy.map.TileType;
 import legacy.map.Point;
-import legacy.map.IMutableMapNG;
-import legacy.map.SPMapNG;
+import legacy.map.IMutableLegacyMap;
+import legacy.map.LegacyMap;
 import legacy.map.MapDimensionsImpl;
 import common.map.PlayerCollection;
 import common.map.HasName;
-import legacy.map.IMapNG;
+import legacy.map.ILegacyMap;
 
 import legacy.xmlio.MapIOHelper;
 
@@ -105,7 +105,7 @@ import org.jetbrains.annotations.Nullable;
 
     private final IDRegistrar idf = new IDFactory();
 
-    private static @Nullable String findAdjacentForest(final IMapNG map, final Point location) {
+    private static @Nullable String findAdjacentForest(final ILegacyMap map, final Point location) {
         final List<Forest> forests =
                 new SurroundingPointIterable(location, map.getDimensions(), 1).stream()
                         .flatMap(l -> map.getFixtures(l).stream())
@@ -182,7 +182,7 @@ import org.jetbrains.annotations.Nullable;
                 baseRow += size;
                 mapRow++;
             }
-            final IMutableMapNG finalRetval = new SPMapNG(new MapDimensionsImpl(
+            final IMutableLegacyMap finalRetval = new LegacyMap(new MapDimensionsImpl(
                     retval.keySet().stream().mapToInt(Point::row).max().orElse(0) + 1,
                     retval.keySet().stream().mapToInt(Point::column).max().orElse(0) + 1, 2),
                     new PlayerCollection(), -1);

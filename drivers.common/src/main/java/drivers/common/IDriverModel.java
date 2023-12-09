@@ -1,7 +1,7 @@
 package drivers.common;
 
-import legacy.map.IMapNG;
-import legacy.map.IMutableMapNG;
+import legacy.map.ILegacyMap;
+import legacy.map.IMutableLegacyMap;
 import legacy.map.MapDimensions;
 
 import java.nio.file.Path;
@@ -15,12 +15,12 @@ public interface IDriverModel extends MapChangeSource, VersionChangeSource {
 	 * Set the (main) map
 	 * @param newMap The new map
 	 */
-	void setMap(IMutableMapNG newMap);
+	void setMap(IMutableLegacyMap newMap);
 
 	/**
 	 * The (main) map.
 	 */
-	IMapNG getMap();
+	ILegacyMap getMap();
 
 	/**
 	 * Set the map filename.
@@ -30,7 +30,7 @@ public interface IDriverModel extends MapChangeSource, VersionChangeSource {
 	/**
 	 * The (main) map, for use by subclasses only.
 	 */
-	IMutableMapNG getRestrictedMap();
+	IMutableLegacyMap getRestrictedMap();
 
 	/**
 	 * The map's dimensions.

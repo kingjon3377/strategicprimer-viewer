@@ -11,7 +11,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-import legacy.map.IMutableMapNG;
+import legacy.map.IMutableLegacyMap;
 import legacy.map.fixtures.Implement;
 import legacy.map.fixtures.mobile.IUnit;
 import legacy.map.fixtures.towns.IFortress;
@@ -56,7 +56,7 @@ public final class DBImplementHandler extends AbstractDatabaseWriter<Implement, 
 				value("image", obj.getImage())).execute(db.connection());
 	}
 
-	private TryBiConsumer<Map<String, Object>, Warning, SQLException> readImplement(final IMutableMapNG map,
+	private TryBiConsumer<Map<String, Object>, Warning, SQLException> readImplement(final IMutableLegacyMap map,
 																					final Map<Integer, List<Object>> containees) {
 		return (dbRow, warner) -> {
 			final int parentId = (Integer) dbRow.get("parent");
@@ -74,8 +74,8 @@ public final class DBImplementHandler extends AbstractDatabaseWriter<Implement, 
 
 	private static final Query SELECT = Query.of("SELECT * FROM implements");
 	@Override
-	public void readMapContents(final Connection db, final IMutableMapNG map, final Map<Integer, IFixture> containers,
-			final Map<Integer, List<Object>> containees, final Warning warner) throws SQLException {
+	public void readMapContents(final Connection db, final IMutableLegacyMap map, final Map<Integer, IFixture> containers,
+                                final Map<Integer, List<Object>> containees, final Warning warner) throws SQLException {
 		handleQueryResults(db, warner, "pieces of equipment", readImplement(map, containees), SELECT);
 	}
 }

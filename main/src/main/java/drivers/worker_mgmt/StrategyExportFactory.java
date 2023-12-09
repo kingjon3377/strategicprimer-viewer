@@ -12,7 +12,7 @@ import drivers.common.IWorkerModel;
 import drivers.common.cli.ICLIHelper;
 import worker.common.WorkerModel;
 
-import legacy.map.IMutableMapNG;
+import legacy.map.IMutableLegacyMap;
 
 import com.google.auto.service.AutoService;
 
@@ -41,7 +41,7 @@ public class StrategyExportFactory implements ModelDriverFactory {
     }
 
     @Override
-    public IDriverModel createModel(final IMutableMapNG map) {
+    public IDriverModel createModel(final IMutableLegacyMap map) {
         return new WorkerModel(map);
     }
 }

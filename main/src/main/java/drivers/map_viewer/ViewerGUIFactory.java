@@ -15,7 +15,7 @@ import drivers.common.SPOptions;
 import drivers.common.ParamCount;
 import drivers.common.DriverFactory;
 import drivers.common.cli.ICLIHelper;
-import legacy.map.IMutableMapNG;
+import legacy.map.IMutableLegacyMap;
 import drivers.gui.common.SPFileChooser;
 
 import lovelace.util.FileChooser;
@@ -56,7 +56,7 @@ public class ViewerGUIFactory implements ViewerDriverFactory {
     }
 
     @Override
-    public IViewerModel createModel(final IMutableMapNG map) {
+    public IViewerModel createModel(final IMutableLegacyMap map) {
         final Path path = map.getFilename();
         if (path == null) {
             LovelaceLogger.trace("Creating a viewer model for a null path");

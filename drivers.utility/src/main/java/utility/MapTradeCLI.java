@@ -14,7 +14,7 @@ import drivers.common.EmptyOptions;
 
 import drivers.common.cli.ICLIHelper;
 
-import legacy.map.IMapNG;
+import legacy.map.ILegacyMap;
 import legacy.map.TileFixture;
 
 import java.util.ArrayList;
@@ -168,11 +168,11 @@ public class MapTradeCLI implements CLIDriver {
 
     @Override
     public void startDriver() throws DriverFailedException {
-        final IMapNG first = model.getMap();
+        final ILegacyMap first = model.getMap();
         if (!model.getSubordinateMaps().iterator().hasNext()) {
             throw new IncorrectUsageException(MapTradeFactory.USAGE);
         }
-        final IMapNG second = model.getSubordinateMaps().iterator().next();
+        final ILegacyMap second = model.getSubordinateMaps().iterator().next();
         final Boolean copyPlayers = cli.inputBoolean("Copy players?");
         if (copyPlayers == null) {
             return;

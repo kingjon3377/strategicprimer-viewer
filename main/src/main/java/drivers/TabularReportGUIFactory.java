@@ -18,7 +18,7 @@ import drivers.common.SimpleDriverModel;
 
 import drivers.common.cli.ICLIHelper;
 
-import legacy.map.IMutableMapNG;
+import legacy.map.IMutableLegacyMap;
 
 import drivers.gui.common.SPFileChooser;
 
@@ -59,7 +59,7 @@ public class TabularReportGUIFactory implements GUIDriverFactory {
     }
 
     @Override
-    public IDriverModel createModel(final IMutableMapNG map) {
+    public IDriverModel createModel(final IMutableLegacyMap map) {
         return new SimpleDriverModel(map);
     }
 }

@@ -34,9 +34,9 @@ import org.jetbrains.annotations.Nullable;
  *
  * Mutator methods, including those used in constructing the map object, are
  * deliberately out of the scope of this interface.
- * @see IMutableMapNG
+ * @see IMutableLegacyMap
  */
-public interface IMapNG extends Subsettable<IMapNG> {
+public interface ILegacyMap extends Subsettable<ILegacyMap> {
 	/**
 	 * The dimensions (and version) of the map.
 	 */
@@ -132,7 +132,7 @@ public interface IMapNG extends Subsettable<IMapNG> {
 	 * @param zero Whether to "zero" sensitive data TODO: move CopyBehavior elsewhere than IFixture
 	 * @param player The player for whom the copied map is being prepared, if any."
 	 */
-	IMapNG copy(IFixture.CopyBehavior zero, @Nullable Player player);
+	ILegacyMap copy(IFixture.CopyBehavior zero, @Nullable Player player);
 
 	/**
 	 * The file from which the map was loaded, or to which it should be saved, if known

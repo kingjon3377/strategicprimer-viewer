@@ -18,7 +18,7 @@ import drivers.common.cli.ICLIHelper;
 import legacy.map.MapDimensions;
 import legacy.map.TileFixture;
 import legacy.map.Point;
-import legacy.map.IMapNG;
+import legacy.map.ILegacyMap;
 
 import legacy.xmlio.MapIOHelper;
 
@@ -55,7 +55,7 @@ public class DrawHelperComparator implements UtilityDriver {
     /**
      * The first test: Basic drawing.
      */
-    private static long first(final TileDrawHelper helper, final IMapNG map, final int reps,
+    private static long first(final TileDrawHelper helper, final ILegacyMap map, final int reps,
                               final int tileSize) {
         final MapDimensions mapDimensions = map.getDimensions();
         final BufferedImage image = new BufferedImage(tileSize * mapDimensions.columns(),
@@ -77,7 +77,7 @@ public class DrawHelperComparator implements UtilityDriver {
     /**
      * Second test: Basic drawing, reusing Graphics.
      */
-    private static long second(final TileDrawHelper helper, final IMapNG map, final int reps, final int tileSize) {
+    private static long second(final TileDrawHelper helper, final ILegacyMap map, final int reps, final int tileSize) {
         final MapDimensions mapDimensions = map.getDimensions();
         final BufferedImage image = new BufferedImage(tileSize * mapDimensions.columns(),
             tileSize * mapDimensions.rows(), BufferedImage.TYPE_INT_RGB);
@@ -102,7 +102,7 @@ public class DrawHelperComparator implements UtilityDriver {
     /**
      * Third test, part one: iterating.
      */
-    private static long thirdOne(final TileDrawHelper helper, final IMapNG map, final int reps, final int tileSize) {
+    private static long thirdOne(final TileDrawHelper helper, final ILegacyMap map, final int reps, final int tileSize) {
         final MapDimensions mapDimensions = map.getDimensions();
         final BufferedImage image = new BufferedImage(tileSize * mapDimensions.columns(),
             tileSize * mapDimensions.rows(), BufferedImage.TYPE_INT_RGB);
@@ -124,7 +124,7 @@ public class DrawHelperComparator implements UtilityDriver {
         return end - start;
     }
 
-    private static long thirdTwo(final TileDrawHelper helper, final IMapNG map, final int reps, final int tileSize) {
+    private static long thirdTwo(final TileDrawHelper helper, final ILegacyMap map, final int reps, final int tileSize) {
         final MapDimensions mapDimensions = map.getDimensions();
         final BufferedImage image = new BufferedImage(tileSize * mapDimensions.columns(),
             tileSize * mapDimensions.rows(), BufferedImage.TYPE_INT_RGB);
@@ -149,7 +149,7 @@ public class DrawHelperComparator implements UtilityDriver {
 
     @FunctionalInterface
     private interface TestInterface {
-        long runTest(TileDrawHelper tdh, IMapNG map, int reps, int tileSize);
+        long runTest(TileDrawHelper tdh, ILegacyMap map, int reps, int tileSize);
     }
 
     private static final List<Pair<String, TestInterface>> TESTS =
@@ -205,7 +205,7 @@ public class DrawHelperComparator implements UtilityDriver {
     /**
      * Run all the tests on the specified map.
      */
-    private void runAllTests(final IMapNG map, final String fileName, final int repetitions) {
+    private void runAllTests(final ILegacyMap map, final String fileName, final int repetitions) {
         for (final Pair<String, TestInterface> pair : TESTS) {
             final String testDesc = pair.getValue0();
             final TestInterface test = pair.getValue1();
@@ -246,7 +246,7 @@ public class DrawHelperComparator implements UtilityDriver {
         final Map<String, Integer> mapSizes = new HashMap<>();
         for (final String arg : args) {
             final Path path = Paths.get(arg);
-            final IMapNG map;
+            final ILegacyMap map;
             try {
                 map = MapIOHelper.readMap(path, Warning.IGNORE);
             } catch (final SPFormatException except) {

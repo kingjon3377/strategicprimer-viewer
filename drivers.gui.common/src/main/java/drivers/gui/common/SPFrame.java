@@ -10,7 +10,7 @@ import org.jetbrains.annotations.Nullable;
 import java.io.IOException;
 
 import common.xmlio.SPFormatException;
-import legacy.map.IMapNG;
+import legacy.map.ILegacyMap;
 
 import java.awt.Dimension;
 import java.nio.file.Path;
@@ -147,7 +147,7 @@ public class SPFrame extends JFrame implements ISPWindow {
 	private String refreshTitle() {
 		if (driver instanceof final ModelDriver md &&
 			md.getModel().getMap().getFilename() != null) {
-			final IMapNG map = md.getModel().getMap();
+			final ILegacyMap map = md.getModel().getMap();
 			return String.format("%s%s | %s", map.isModified() ? "*" : "",
 				map.getFilename(), windowTitle);
 		} else {

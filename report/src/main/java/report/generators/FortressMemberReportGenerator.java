@@ -16,7 +16,7 @@ import common.map.Player;
 import legacy.map.IFixture;
 import legacy.map.Point;
 import legacy.map.MapDimensions;
-import legacy.map.IMapNG;
+import legacy.map.ILegacyMap;
 import legacy.map.fixtures.IResourcePile;
 import legacy.map.fixtures.Implement;
 import legacy.map.fixtures.FortressMember;
@@ -51,7 +51,7 @@ public class FortressMemberReportGenerator extends AbstractReportGenerator<Fortr
      */
     @Override
     public void produceSingle(final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-                              final IMapNG map, final Consumer<String> ostream, final FortressMember item, final Point loc) {
+                              final ILegacyMap map, final Consumer<String> ostream, final FortressMember item, final Point loc) {
         //	assert (is IUnit|IResourcePile|Implement item);
         switch (item) {
             case final IUnit u -> // TODO: Should be a field, right? Or else a constructor parameter?
@@ -98,7 +98,7 @@ public class FortressMemberReportGenerator extends AbstractReportGenerator<Fortr
      */
     @Override
     public void produce(final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-                        final IMapNG map, final Consumer<String> ostream) {
+                        final ILegacyMap map, final Consumer<String> ostream) {
         final HeadedMap<Implement, Point> equipment = new HeadedMapImpl<>("<li>Equipment:",
                 Comparator.comparing(Implement::getKind)
                         .thenComparing(Implement::getCount,

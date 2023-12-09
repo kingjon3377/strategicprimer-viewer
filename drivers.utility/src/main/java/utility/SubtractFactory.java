@@ -9,7 +9,7 @@ import drivers.common.ModelDriver;
 import drivers.common.SPOptions;
 import drivers.common.IDriverModel;
 import drivers.common.cli.ICLIHelper;
-import legacy.map.IMutableMapNG;
+import legacy.map.IMutableLegacyMap;
 
 import com.google.auto.service.AutoService;
 
@@ -40,7 +40,7 @@ public class SubtractFactory implements ModelDriverFactory {
     }
 
     @Override
-    public IDriverModel createModel(final IMutableMapNG map) {
+    public IDriverModel createModel(final IMutableLegacyMap map) {
         return new UtilityDriverModel(map);
     }
 }

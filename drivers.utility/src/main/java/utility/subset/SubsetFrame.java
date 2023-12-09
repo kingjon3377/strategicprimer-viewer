@@ -24,8 +24,8 @@ import static lovelace.util.StreamingLabel.LabelTextColor;
 
 import legacy.map.MapDimensionsImpl;
 import common.map.PlayerCollection;
-import legacy.map.IMapNG;
-import legacy.map.SPMapNG;
+import legacy.map.ILegacyMap;
+import legacy.map.LegacyMap;
 import legacy.xmlio.MapIOHelper;
 import common.xmlio.Warning;
 import common.xmlio.SPFormatException;
@@ -76,9 +76,9 @@ import drivers.common.ISPDriver;
         label.append(String.format("<p style=\"color:%s\">%s</p>", color, paragraph));
     }
 
-    private IMapNG mainMap = new SPMapNG(new MapDimensionsImpl(0, 0, 2), new PlayerCollection(), -1);
+    private ILegacyMap mainMap = new LegacyMap(new MapDimensionsImpl(0, 0, 2), new PlayerCollection(), -1);
 
-    public void loadMain(final IMapNG arg) {
+    public void loadMain(final ILegacyMap arg) {
         mainMap = arg;
         printParagraph("<span style=\"color:green\">OK</span> if strict subset, " +
                 "<span style=\"color:yellow\">WARN</span> if apparently not (but " +
@@ -89,7 +89,7 @@ import drivers.common.ISPDriver;
     /**
      * Test a map against the main map, to see if it's a strict subset of it.
      */
-    public void testMap(final IMapNG map, final @Nullable Path file) {
+    public void testMap(final ILegacyMap map, final @Nullable Path file) {
         final String filename;
         if (file == null) {
             LovelaceLogger.warning("Given a map with no filename");
@@ -142,7 +142,7 @@ import drivers.common.ISPDriver;
      */
     public void testFile(final Path path) {
         printParagraph(String.format("Testing %s ...", path));
-        final IMapNG map;
+        final ILegacyMap map;
         try {
             map = MapIOHelper.readMap(path, Warning.IGNORE);
         } catch (final NoSuchFileException | FileNotFoundException except) {

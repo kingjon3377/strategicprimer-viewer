@@ -24,9 +24,9 @@ import legacy.map.River;
 import legacy.map.TileType;
 import common.map.IMutablePlayerCollection;
 import legacy.map.TileFixture;
-import legacy.map.IMutableMapNG;
-import legacy.map.IMapNG;
-import legacy.map.SPMapNG;
+import legacy.map.IMutableLegacyMap;
+import legacy.map.ILegacyMap;
+import legacy.map.LegacyMap;
 import legacy.map.Direction;
 import legacy.map.fixtures.TextFixture;
 import legacy.map.fixtures.Ground;
@@ -55,7 +55,7 @@ import java.util.function.Predicate;
 /**
  * A reader for Strategic Primer maps.
  */
-/* package */ class YAMapReader extends YAAbstractReader<IMapNG, IMapNG> {
+/* package */ class YAMapReader extends YAAbstractReader<ILegacyMap, ILegacyMap> {
 
     /**
      * @param warner The Warning instance to use
@@ -179,7 +179,7 @@ import java.util.function.Predicate;
      * Read a map from XML.
      */
     @Override
-    public IMutableMapNG read(final StartElement element, final QName parent, final Iterable<XMLEvent> stream)
+    public IMutableLegacyMap read(final StartElement element, final QName parent, final Iterable<XMLEvent> stream)
             throws SPFormatException, XMLStreamException {
         requireTag(element, parent, "map", "view");
         final int currentTurn;
@@ -216,7 +216,7 @@ import java.util.function.Predicate;
         final Deque<QName> tagStack = new LinkedList<>();
         tagStack.addFirst(element.getName());
         tagStack.addFirst(mapTag.getName());
-        final IMutableMapNG retval = new SPMapNG(dimensions, players, currentTurn);
+        final IMutableLegacyMap retval = new LegacyMap(dimensions, players, currentTurn);
         Point point = null;
         final Predicate<Object> isFortress = IFortress.class::isInstance;
         final Function<Object, IFortress> fortressCast = IFortress.class::cast;
@@ -380,7 +380,7 @@ import java.util.function.Predicate;
      * Write a map.
      */
     @Override
-    public void write(final ThrowingConsumer<String, IOException> ostream, final IMapNG obj, final int tabs) throws IOException {
+    public void write(final ThrowingConsumer<String, IOException> ostream, final ILegacyMap obj, final int tabs) throws IOException {
         writeTag(ostream, "view", tabs);
         writeProperty(ostream, "current_player", obj.getCurrentPlayer().getPlayerId());
         writeProperty(ostream, "current_turn", obj.getCurrentTurn());
@@ -510,6 +510,6 @@ import java.util.function.Predicate;
 
     @Override
     public boolean canWrite(final Object obj) {
-        return obj instanceof IMapNG;
+        return obj instanceof ILegacyMap;
     }
 }

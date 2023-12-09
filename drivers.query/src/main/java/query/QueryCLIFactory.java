@@ -1,6 +1,6 @@
 package query;
 
-import legacy.map.IMutableMapNG;
+import legacy.map.IMutableLegacyMap;
 
 import drivers.common.SPOptions;
 import drivers.common.ParamCount;
@@ -37,7 +37,7 @@ public class QueryCLIFactory implements ModelDriverFactory {
     }
 
     @Override
-    public IDriverModel createModel(final IMutableMapNG map) {
+    public IDriverModel createModel(final IMutableLegacyMap map) {
         return new SimpleDriverModel(map);
     }
 }

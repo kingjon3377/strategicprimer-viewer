@@ -18,7 +18,7 @@ import common.map.Player;
 import legacy.map.IFixture;
 import legacy.map.Point;
 import legacy.map.MapDimensions;
-import legacy.map.IMapNG;
+import legacy.map.ILegacyMap;
 import common.map.fixtures.towns.TownStatus;
 import legacy.map.fixtures.towns.ITownFixture;
 import legacy.map.fixtures.towns.IFortress;
@@ -75,7 +75,7 @@ public class TownReportGenerator extends AbstractReportGenerator<ITownFixture> {
      */
     @Override
     public void produceSingle(final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-                              final IMapNG map, final Consumer<String> ostream, final ITownFixture item, final Point loc) {
+                              final ILegacyMap map, final Consumer<String> ostream, final ITownFixture item, final Point loc) {
         if (item instanceof final Village v) {
             new VillageReportGenerator(currentPlayer, dimensions, hq)
                     .produceSingle(fixtures, map, ostream, v, loc);
@@ -124,7 +124,7 @@ public class TownReportGenerator extends AbstractReportGenerator<ITownFixture> {
      */
     @Override
     public void produce(final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-                        final IMapNG map, final Consumer<String> ostream) {
+                        final ILegacyMap map, final Consumer<String> ostream) {
         final HeadedMap<ITownFixture, Point> abandoned =
                 new HeadedMapImpl<>("<h5>Abandoned Communities</h5>");
         final HeadedMap<ITownFixture, Point> active =

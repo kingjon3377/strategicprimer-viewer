@@ -22,7 +22,7 @@ import drivers.common.ReadOnlyDriver;
 import drivers.common.cli.ICLIHelper;
 
 import common.map.Player;
-import legacy.map.IMapNG;
+import legacy.map.ILegacyMap;
 
 import report.ReportGenerator;
 
@@ -50,7 +50,7 @@ public class ReportCLI implements ReadOnlyDriver {
         return model;
     }
 
-    private void writeReport(final @Nullable Path filename, final IMapNG map) throws IOException {
+    private void writeReport(final @Nullable Path filename, final ILegacyMap map) throws IOException {
         if (filename == null) {
             LovelaceLogger.error("Asked to make report from map with no filename");
         } else {
@@ -87,7 +87,7 @@ public class ReportCLI implements ReadOnlyDriver {
     public void startDriver() throws DriverFailedException {
         try {
             if (model instanceof final IMultiMapModel mmm) {
-                for (final IMapNG map : mmm.getAllMaps()) {
+                for (final ILegacyMap map : mmm.getAllMaps()) {
                     writeReport(map.getFilename(), map);
                 }
             } else {

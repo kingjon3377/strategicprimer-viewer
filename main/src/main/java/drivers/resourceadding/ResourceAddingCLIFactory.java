@@ -2,7 +2,7 @@ package drivers.resourceadding;
 
 import drivers.common.cli.ICLIHelper;
 
-import legacy.map.IMutableMapNG;
+import legacy.map.IMutableLegacyMap;
 
 import drivers.common.SPOptions;
 import drivers.common.ModelDriver;
@@ -39,7 +39,7 @@ public class ResourceAddingCLIFactory implements ModelDriverFactory {
     }
 
     @Override
-    public IDriverModel createModel(final IMutableMapNG map) {
+    public IDriverModel createModel(final IMutableLegacyMap map) {
         return new ResourceManagementDriverModel(map);
     }
 }

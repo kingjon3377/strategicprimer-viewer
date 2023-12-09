@@ -33,9 +33,9 @@ import org.jetbrains.annotations.Nullable;
 import org.junit.jupiter.api.AfterEach;
 import org.sqlite.SQLiteDataSource;
 
-import legacy.map.IMapNG;
-import legacy.map.IMutableMapNG;
-import legacy.map.SPMapNG;
+import legacy.map.ILegacyMap;
+import legacy.map.IMutableLegacyMap;
+import legacy.map.LegacyMap;
 import legacy.map.MapDimensions;
 import legacy.map.MapDimensionsImpl;
 import common.map.PlayerImpl;
@@ -495,11 +495,11 @@ public final class TestDBIO {
 		db.tearDown();
 	}
 
-	private IMapNG assertDatabaseSerialization(final IMapNG map) throws SQLException, IOException {
+	private ILegacyMap assertDatabaseSerialization(final ILegacyMap map) throws SQLException, IOException {
 		final TestDatabase db = new TestDatabase();
 		writer.writeToDatabase(db, map);
 		reader.clearCache();
-		final IMapNG deserialized = reader.readMapFromDatabase(db, Warning.DIE);
+		final ILegacyMap deserialized = reader.readMapFromDatabase(db, Warning.DIE);
 		assertEquals(map, deserialized, "Deserialized form is the same as original");
 		db.tearDown();
 		return deserialized;
@@ -508,16 +508,16 @@ public final class TestDBIO {
 	private <FixtureType extends TileFixture> FixtureType
 	assertFixtureSerialization(final FixtureType fixture) throws SQLException, IOException {
 		final MapDimensions dimensions = new MapDimensionsImpl(2, 2, 2);
-		final IMutableMapNG firstMap = new SPMapNG(dimensions, new PlayerCollection(), -1);
+		final IMutableLegacyMap firstMap = new LegacyMap(dimensions, new PlayerCollection(), -1);
 		firstMap.addFixture(new Point(0, 0), fixture);
-		final IMutableMapNG secondMap = new SPMapNG(dimensions, new PlayerCollection(), -1);
+		final IMutableLegacyMap secondMap = new LegacyMap(dimensions, new PlayerCollection(), -1);
 		secondMap.addFixture(new Point(1, 1), fixture);
 		if (fixture instanceof final HasOwner owned) {
 			firstMap.addPlayer(owned.owner());
 			secondMap.addPlayer(owned.owner());
 		}
-		final IMapNG deserializedFirst = assertDatabaseSerialization(firstMap);
-		final IMapNG deserializedSecond = assertDatabaseSerialization(secondMap);
+		final ILegacyMap deserializedFirst = assertDatabaseSerialization(firstMap);
+		final ILegacyMap deserializedSecond = assertDatabaseSerialization(secondMap);
 		assertNotEquals(deserializedFirst, deserializedSecond,
 			"DB round-trip preserves not-equality of with and without fixture");
 		return (FixtureType) deserializedFirst.getFixtures(new Point(0, 0))
@@ -930,7 +930,7 @@ public final class TestDBIO {
 
 	@Test
 	public void testBookmarkSerialization() throws SQLException, IOException {
-		final IMutableMapNG map = new SPMapNG(new MapDimensionsImpl(1, 1, 2), new PlayerCollection(), 1);
+		final IMutableLegacyMap map = new LegacyMap(new MapDimensionsImpl(1, 1, 2), new PlayerCollection(), 1);
 		final Player player = map.getPlayers().getPlayer(1);
 		map.setCurrentPlayer(player);
 		assertFalse(map.getBookmarks().contains(new Point(0, 0)),
@@ -938,7 +938,7 @@ public final class TestDBIO {
 		assertEquals(0, map.getAllBookmarks(new Point(0, 0)).size(),
 			"Map by default has no bookmarks");
 		map.addBookmark(new Point(0, 0));
-		final IMutableMapNG deserialized = (IMutableMapNG) assertDatabaseSerialization(map);
+		final IMutableLegacyMap deserialized = (IMutableLegacyMap) assertDatabaseSerialization(map);
 		assertNotSame(map, deserialized, "Deserialization doesn't just return the input");
 		assertTrue(deserialized.getBookmarks().contains(new Point(0, 0)),
 			"Deserialized map has the bookmark we saved");
@@ -957,7 +957,7 @@ public final class TestDBIO {
 									  final int qualityTwo) throws SQLException, IOException {
 		assumeFalse(directionOne == directionTwo, "We can't have the same direction twice");
 		assumeTrue(qualityOne >= 0 && qualityTwo >= 0, "Road quality must be nonnegative");
-		final IMutableMapNG map = new SPMapNG(new MapDimensionsImpl(1, 1, 2), new PlayerCollection(), 1);
+		final IMutableLegacyMap map = new LegacyMap(new MapDimensionsImpl(1, 1, 2), new PlayerCollection(), 1);
 		map.setBaseTerrain(new Point(0, 0), TileType.Plains);
 		if (Direction.Nowhere != directionOne) {
 			map.setRoadLevel(new Point(0, 0), directionOne, qualityOne);

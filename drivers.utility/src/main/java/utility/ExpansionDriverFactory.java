@@ -1,6 +1,6 @@
 package utility;
 
-import legacy.map.IMutableMapNG;
+import legacy.map.IMutableLegacyMap;
 
 import drivers.common.IDriverModel;
 import drivers.common.SPOptions;
@@ -41,7 +41,7 @@ public class ExpansionDriverFactory implements ModelDriverFactory {
     }
 
     @Override
-    public IDriverModel createModel(final IMutableMapNG map) {
+    public IDriverModel createModel(final IMutableLegacyMap map) {
         return new UtilityDriverModel(map);
     }
 }

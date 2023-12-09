@@ -28,7 +28,7 @@ import drivers.common.SPOptions;
 
 import legacy.map.TileType;
 import legacy.map.Point;
-import legacy.map.IMapNG;
+import legacy.map.ILegacyMap;
 
 import legacy.map.fixtures.terrain.Forest;
 
@@ -117,7 +117,7 @@ public class TodoFixerCLI implements CLIDriver {
      *
      * We don't just use TileType because we need mountains and forests in ver-2 maps.
      */
-    private static SimpleTerrain getTerrain(final IMapNG map, final Point location) {
+    private static SimpleTerrain getTerrain(final ILegacyMap map, final Point location) {
         final TileType terrain = map.getBaseTerrain(location);
         if (terrain == null) {
             return SimpleTerrain.Unforested;
@@ -162,7 +162,7 @@ public class TodoFixerCLI implements CLIDriver {
         }
     }
 
-    private static String simpleTerrain(final IMapNG map, final Point loc) {
+    private static String simpleTerrain(final ILegacyMap map, final Point loc) {
         final TileType terrain = map.getBaseTerrain(loc);
         if (TileType.Ocean == terrain) {
             return "ocean";
@@ -189,7 +189,7 @@ public class TodoFixerCLI implements CLIDriver {
     /**
      * Search for and fix aquatic villages with non-aquatic races.
      */
-    private void fixAllVillages(final IMapNG map) throws MissingTableException, IOException {
+    private void fixAllVillages(final ILegacyMap map) throws MissingTableException, IOException {
         final List<Village> villages = map.streamLocations()
                 .filter(l -> TileType.Ocean == map.getBaseTerrain(l))
                 .flatMap(l -> map.getFixtures(l).stream())
@@ -327,7 +327,7 @@ public class TodoFixerCLI implements CLIDriver {
     /**
      * Search for and fix units with kinds missing.
      */
-    private void fixAllUnits(final IMapNG map) {
+    private void fixAllUnits(final ILegacyMap map) {
         totalCount = map.streamAllFixtures()
                 .filter(IMutableUnit.class::isInstance).map(IMutableUnit.class::cast)
                 .filter(u -> "TODO".equals(u.getKind())).count();
@@ -344,7 +344,7 @@ public class TodoFixerCLI implements CLIDriver {
     @Override
     public void startDriver() throws DriverFailedException {
         if (model.getSubordinateMaps().iterator().hasNext()) {
-            for (final IMapNG map : model.getAllMaps()) {
+            for (final ILegacyMap map : model.getAllMaps()) {
                 fixAllUnits(map);
                 try {
                     fixAllVillages(map);

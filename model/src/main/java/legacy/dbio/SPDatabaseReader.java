@@ -1,10 +1,9 @@
 package legacy.dbio;
 
 import common.xmlio.SPFormatException;
-import legacy.dbio.DBMapReader;
 import legacy.xmlio.IMapReader;
 import common.xmlio.Warning;
-import legacy.map.IMutableMapNG;
+import legacy.map.IMutableLegacyMap;
 import io.jenetics.facilejdbc.Transactional;
 import java.io.IOException;
 import java.io.Reader;
@@ -47,7 +46,7 @@ public class SPDatabaseReader implements IMapReader {
 	private final DBMapReader dbMapReader = new DBMapReader();
 
 	@Override
-	public IMutableMapNG readMap(final Path file, final Warning warner)
+	public IMutableLegacyMap readMap(final Path file, final Warning warner)
 			throws SPFormatException, NoSuchFileException, XMLStreamException, IOException {
 		final Transactional db = getSQL(file);
 		try {
@@ -58,11 +57,11 @@ public class SPDatabaseReader implements IMapReader {
 	}
 
 	@Override
-	public IMutableMapNG readMapFromStream(final Path file, final Reader istream, final Warning warner) throws SPFormatException, XMLStreamException, IOException {
+	public IMutableLegacyMap readMapFromStream(final Path file, final Reader istream, final Warning warner) throws SPFormatException, XMLStreamException, IOException {
 		throw new UnsupportedOperationException("Can't read a database from a stream");
 	}
 
-	public IMutableMapNG readMapFromDatabase(final Transactional db, final Warning warner) throws IOException {
+	public IMutableLegacyMap readMapFromDatabase(final Transactional db, final Warning warner) throws IOException {
 		try {
 			return dbMapReader.readMap(db, warner);
 		} catch (final SQLException except) {

@@ -20,7 +20,7 @@ import lovelace.util.FormattedLabel;
 import legacy.idreg.IDFactoryFiller;
 import legacy.idreg.IDRegistrar;
 
-import legacy.map.IMapNG;
+import legacy.map.ILegacyMap;
 import common.map.Player;
 
 import static drivers.worker_mgmt.WorkerMenu.workerMenu;
@@ -54,7 +54,7 @@ import drivers.gui.common.MenuBroker;
 							final ICLIHelper cli) {
 		super("Worker Advancement", driver, new Dimension(640, 480), true,
 			(file) -> model.addSubordinateMap(MapIOHelper.readMap(file)));
-		final IMapNG map = model.getMap();
+		final ILegacyMap map = model.getMap();
 		treeModel = new WorkerTreeModelAlt(model);
 		final IDRegistrar idf = IDFactoryFiller.createIDFactory(map);
 

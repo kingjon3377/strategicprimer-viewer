@@ -23,7 +23,7 @@ import legacy.map.IFixture;
 import legacy.map.Point;
 import legacy.map.River;
 import legacy.map.TileType;
-import legacy.map.IMapNG;
+import legacy.map.ILegacyMap;
 import legacy.map.TileFixture;
 import legacy.map.Direction;
 
@@ -133,12 +133,12 @@ public class SPFluidWriter implements SPWriter {
     }
 
     @Override
-    public void write(final Path arg, final IMapNG map) throws XMLStreamException, IOException {
+    public void write(final Path arg, final ILegacyMap map) throws XMLStreamException, IOException {
         writeSPObject(arg, map);
     }
 
     @Override
-    public void write(final ThrowingConsumer<String, IOException> arg, final IMapNG map)
+    public void write(final ThrowingConsumer<String, IOException> arg, final ILegacyMap map)
             throws XMLStreamException, IOException {
         writeSPObject(arg, map);
     }
@@ -247,7 +247,7 @@ public class SPFluidWriter implements SPWriter {
         ostream.writeEndElement();
     }
 
-    private void writeMap(final XMLStreamWriter ostream, final IMapNG obj, final int indentation)
+    private void writeMap(final XMLStreamWriter ostream, final ILegacyMap obj, final int indentation)
             throws XMLStreamException {
         writeTag(ostream, "view", indentation, false);
         writeAttributes(ostream, Pair.with("current_player", obj.getCurrentPlayer().getPlayerId()),
@@ -409,7 +409,7 @@ public class SPFluidWriter implements SPWriter {
         addWriterToMap(temp, IFortress.class, this::writeFortress);
         addWriterToMap(temp, Village.class, FluidTownHandler::writeVillage);
         addWriterToMap(temp, AbstractTown.class, FluidTownHandler::writeTown);
-        addWriterToMap(temp, IMapNG.class, this::writeMap);
+        addWriterToMap(temp, ILegacyMap.class, this::writeMap);
         addWriterToMap(temp, Player.class, SPFluidWriter::writePlayer);
         addWriterToMap(temp, CommunityStats.class, FluidTownHandler::writeCommunityStats);
         writers = Collections.unmodifiableMap(temp);

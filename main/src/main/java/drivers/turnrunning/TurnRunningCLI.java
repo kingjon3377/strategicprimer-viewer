@@ -3,7 +3,7 @@ package drivers.turnrunning;
 import legacy.idreg.IDFactoryFiller;
 import legacy.idreg.IDRegistrar;
 import legacy.map.IFixture;
-import legacy.map.IMapNG;
+import legacy.map.ILegacyMap;
 import common.map.Player;
 import legacy.map.fixtures.mobile.IUnit;
 import legacy.map.fixtures.mobile.ProxyUnit;
@@ -41,7 +41,7 @@ import org.jetbrains.annotations.Nullable;
     public TurnRunningCLI(final ICLIHelper cli, final ITurnRunningModel model) {
         this.cli = cli;
         this.model = model;
-        idf = IDFactoryFiller.createIDFactory(model.streamAllMaps().toArray(IMapNG[]::new));
+        idf = IDFactoryFiller.createIDFactory(model.streamAllMaps().toArray(ILegacyMap[]::new));
         advancementCLI = new AdvancementCLIHelper(model, cli);
         appletChooser = new AppletChooser<>(cli,
                 StreamSupport.stream(ServiceLoader.load(TurnAppletFactory.class).spliterator(), false)

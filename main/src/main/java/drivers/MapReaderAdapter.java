@@ -16,8 +16,8 @@ import drivers.common.IMultiMapModel;
 import drivers.common.SimpleDriverModel;
 import drivers.common.SimpleMultiMapModel;
 
-import legacy.map.IMapNG;
-import legacy.map.IMutableMapNG;
+import legacy.map.ILegacyMap;
+import legacy.map.IMutableLegacyMap;
 import lovelace.util.LovelaceLogger;
 
 /**
@@ -37,7 +37,7 @@ public final class MapReaderAdapter {
      * a {@link DriverFailedException} it throws instead. (It was returned
      * in Ceylon, but there's no easy way to do that in Java.)
      */
-    public static IMutableMapNG readMap(final Path file, final Warning warner) throws DriverFailedException {
+    public static IMutableLegacyMap readMap(final Path file, final Warning warner) throws DriverFailedException {
         try {
             return MapIOHelper.readMap(file, warner);
         } catch (final FileNotFoundException | NoSuchFileException except) {
@@ -136,7 +136,7 @@ public final class MapReaderAdapter {
             }
         }
         if (model instanceof final IMultiMapModel mmm) {
-            for (final IMapNG map : mmm.getSubordinateMaps()) {
+            for (final ILegacyMap map : mmm.getSubordinateMaps()) {
                 final Path filename = map.getFilename();
                 if (filename == null) {
                     LovelaceLogger.error("A map didn't have a filename, and so wasn't written.");

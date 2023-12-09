@@ -23,8 +23,8 @@ import drivers.common.cli.ICLIHelper;
 import java.awt.Dimension;
 import java.awt.Component;
 
-import legacy.map.IMutableMapNG;
-import legacy.map.IMapNG;
+import legacy.map.IMutableLegacyMap;
+import legacy.map.ILegacyMap;
 import common.map.Player;
 import common.map.PlayerImpl;
 
@@ -171,7 +171,7 @@ import java.io.FileNotFoundException;
             super("Resource Entry", outer, null, true);
             this.menuHandler = menuHandler;
             idf = IDFactoryFiller.createIDFactory(model.streamAllMaps()
-                    .toArray(IMapNG[]::new));
+                    .toArray(ILegacyMap[]::new));
             currentPlayer = new PlayerImpl(-1, "");
             mainPanel = new BoxPanel(BoxAxis.PageAxis);
 
@@ -362,7 +362,7 @@ import java.io.FileNotFoundException;
     }
 
     @Override
-    public void open(final IMutableMapNG map) {
+    public void open(final IMutableLegacyMap map) {
         if (model.isMapModified()) {
             SwingUtilities.invokeLater(() -> new ResourceAddingGUI(cli, options,
                     new ResourceManagementDriverModel(map)).startDriver());

@@ -15,7 +15,7 @@ import java.util.Map;
 import java.math.BigDecimal;
 
 import legacy.map.Point;
-import legacy.map.IMutableMapNG;
+import legacy.map.IMutableLegacyMap;
 import legacy.map.fixtures.resources.Meadow;
 import common.map.fixtures.resources.FieldStatus;
 import common.xmlio.Warning;
@@ -61,7 +61,7 @@ public final class DBFieldHandler extends AbstractDatabaseWriter<Meadow, Point> 
 				value("image", obj.getImage())).execute(db.connection());
 	}
 
-	private TryBiConsumer<Map<String, Object>, Warning, SQLException> readMeadow(final IMutableMapNG map) {
+	private TryBiConsumer<Map<String, Object>, Warning, SQLException> readMeadow(final IMutableLegacyMap map) {
 		return (dbRow, warner) -> {
 			final int row = (Integer) dbRow.get("row");
 			final int column = (Integer) dbRow.get("column");
@@ -93,8 +93,8 @@ public final class DBFieldHandler extends AbstractDatabaseWriter<Meadow, Point> 
 
 	private static final Query SELECT = Query.of("SELECT * FROM fields");
 	@Override
-	public void readMapContents(final Connection db, final IMutableMapNG map, final Map<Integer, IFixture> containers,
-			final Map<Integer, List<Object>> containees, final Warning warner) throws SQLException {
+	public void readMapContents(final Connection db, final IMutableLegacyMap map, final Map<Integer, IFixture> containers,
+                                final Map<Integer, List<Object>> containees, final Warning warner) throws SQLException {
 		handleQueryResults(db, warner, "meadows", readMeadow(map), SELECT);
 	}
 }

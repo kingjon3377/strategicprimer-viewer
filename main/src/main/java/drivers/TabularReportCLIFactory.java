@@ -12,7 +12,7 @@ import drivers.common.SimpleMultiMapModel;
 
 import drivers.common.cli.ICLIHelper;
 
-import legacy.map.IMutableMapNG;
+import legacy.map.IMutableLegacyMap;
 
 
 import com.google.auto.service.AutoService;
@@ -41,7 +41,7 @@ public class TabularReportCLIFactory implements ModelDriverFactory {
     }
 
     @Override
-    public IDriverModel createModel(final IMutableMapNG map) {
+    public IDriverModel createModel(final IMutableLegacyMap map) {
         return new SimpleMultiMapModel(map);
     }
 }

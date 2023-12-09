@@ -45,8 +45,8 @@ import legacy.map.River;
 import common.map.IMutablePlayerCollection;
 import legacy.map.TileFixture;
 import common.map.PlayerCollection;
-import legacy.map.IMutableMapNG;
-import legacy.map.SPMapNG;
+import legacy.map.IMutableLegacyMap;
+import legacy.map.LegacyMap;
 import legacy.map.Direction;
 import legacy.map.fixtures.FortressMember;
 import legacy.map.fixtures.UnitMember;
@@ -177,9 +177,9 @@ public class SPFluidReader implements IMapReader, ISPReader {
         }
     }
 
-    private void parseTileChild(final IMutableMapNG map, final StartElement parent,
-                                final Iterable<XMLEvent> stream, final IMutablePlayerCollection players, final Warning warner,
-                                final IDRegistrar idFactory, final Point currentTile, final StartElement element)
+    private void parseTileChild(final IMutableLegacyMap map, final StartElement parent,
+								final Iterable<XMLEvent> stream, final IMutablePlayerCollection players, final Warning warner,
+								final IDRegistrar idFactory, final Point currentTile, final StartElement element)
             throws SPFormatException {
         final String type = element.getName().getLocalPart().toLowerCase();
         if (isFutureTag(element, warner)) {
@@ -229,8 +229,8 @@ public class SPFluidReader implements IMapReader, ISPReader {
         }
     }
 
-    private void parseTile(final IMutableMapNG map, final StartElement element, final Iterable<XMLEvent> stream,
-                           final IMutablePlayerCollection players, final Warning warner, final IDRegistrar idFactory)
+    private void parseTile(final IMutableLegacyMap map, final StartElement element, final Iterable<XMLEvent> stream,
+						   final IMutablePlayerCollection players, final Warning warner, final IDRegistrar idFactory)
             throws SPFormatException {
         expectAttributes(element, warner, "row", "column", "kind", "type", "mountain");
         final Point loc = new Point(getIntegerAttribute(element, "row"),
@@ -265,8 +265,8 @@ public class SPFluidReader implements IMapReader, ISPReader {
         }
     }
 
-    private void parseElsewhere(final IMutableMapNG map, final StartElement element, final Iterable<XMLEvent> stream,
-                                final IMutablePlayerCollection players, final Warning warner, final IDRegistrar idFactory)
+    private void parseElsewhere(final IMutableLegacyMap map, final StartElement element, final Iterable<XMLEvent> stream,
+								final IMutablePlayerCollection players, final Warning warner, final IDRegistrar idFactory)
             throws SPFormatException {
         expectAttributes(element, warner);
         final Point loc = Point.INVALID_POINT;
@@ -285,8 +285,8 @@ public class SPFluidReader implements IMapReader, ISPReader {
         }
     }
 
-    private IMutableMapNG readMapOrViewTag(final StartElement element, final QName parent, final Iterable<XMLEvent> stream,
-                                           final IMutablePlayerCollection players, final Warning warner, final IDRegistrar idFactory)
+    private IMutableLegacyMap readMapOrViewTag(final StartElement element, final QName parent, final Iterable<XMLEvent> stream,
+											   final IMutablePlayerCollection players, final Warning warner, final IDRegistrar idFactory)
             throws SPFormatException {
         requireTag(element, parent, "map", "view");
         final int currentTurn;
@@ -325,7 +325,7 @@ public class SPFluidReader implements IMapReader, ISPReader {
         final Deque<QName> tagStack = new LinkedList<>();
         tagStack.addFirst(element.getName());
         tagStack.addFirst(mapTag.getName());
-        final IMutableMapNG retval = new SPMapNG(dimensions, players, currentTurn);
+        final IMutableLegacyMap retval = new LegacyMap(dimensions, players, currentTurn);
         for (final XMLEvent event : stream) {
             final QName stackTop = tagStack.peekFirst();
             if (event instanceof final StartElement se && isSPStartElement(event)) {
@@ -617,7 +617,7 @@ public class SPFluidReader implements IMapReader, ISPReader {
     }
 
     @Override
-    public IMutableMapNG readMap(final Path file, final Warning warner)
+    public IMutableLegacyMap readMap(final Path file, final Warning warner)
             throws SPFormatException, NoSuchFileException, XMLStreamException, IOException {
         try (final BufferedReader istream = Files.newBufferedReader(file, StandardCharsets.UTF_8)) {
             return readMapFromStream(file, istream, warner);
@@ -629,7 +629,7 @@ public class SPFluidReader implements IMapReader, ISPReader {
     }
 
     @Override
-    public IMutableMapNG readMapFromStream(final Path file, final Reader istream, final Warning warner)
+    public IMutableLegacyMap readMapFromStream(final Path file, final Reader istream, final Warning warner)
             throws SPFormatException, XMLStreamException, IOException {
         return readXML(file, istream, warner);
     }

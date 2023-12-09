@@ -9,7 +9,7 @@ import drivers.common.cli.ICLIHelper;
 
 import legacy.map.Point;
 import legacy.map.HasExtent;
-import legacy.map.IMapNG;
+import legacy.map.ILegacyMap;
 
 import legacy.map.fixtures.mobile.Animal;
 
@@ -77,7 +77,7 @@ public class PopulationGeneratingCLI implements CLIDriver {
         map = model.getMap();
     }
 
-    private final IMapNG map;
+    private final ILegacyMap map;
 
     /**
      * Generate {@link Animal} populations.

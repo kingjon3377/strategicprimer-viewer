@@ -20,7 +20,7 @@ import common.map.fixtures.Quantity;
 import legacy.map.fixtures.ResourcePileImpl;
 
 import common.map.Player;
-import legacy.map.IMutableMapNG;
+import legacy.map.IMutableLegacyMap;
 
 import java.math.BigDecimal;
 
@@ -31,7 +31,7 @@ import java.math.BigDecimal;
     // TODO: Make these private and expose them as fromMap() and
     // fromDriverModel() static factory methods, as they were (in effect)
     // in Ceylon?
-    public ResourceManagementDriverModel(final IMutableMapNG map) {
+    public ResourceManagementDriverModel(final IMutableLegacyMap map) {
         super(map);
     }
 
@@ -55,7 +55,7 @@ import java.math.BigDecimal;
     public void addResource(final FortressMember resource, final Player player) {
         final Predicate<Object> isFortress = IMutableFortress.class::isInstance;
         final Function<Object, IMutableFortress> fortressCast = IMutableFortress.class::cast;
-        for (final IMutableMapNG map : getRestrictedAllMaps()) {
+        for (final IMutableLegacyMap map : getRestrictedAllMaps()) {
             final Player mapPlayer = map.getCurrentPlayer();
             // Operate on maps where the current player is independent OR matches
             // ("independent" also including negative ID)

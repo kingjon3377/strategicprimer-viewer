@@ -16,7 +16,7 @@ import common.map.Player;
 import legacy.map.IFixture;
 import legacy.map.Point;
 import legacy.map.MapDimensions;
-import legacy.map.IMapNG;
+import legacy.map.ILegacyMap;
 import legacy.map.fixtures.mobile.IWorker;
 import common.map.fixtures.mobile.worker.WorkerStats;
 import legacy.map.fixtures.mobile.worker.ISkill;
@@ -83,7 +83,7 @@ import legacy.map.fixtures.mobile.worker.IJob;
      */
     @Override
     public void produceSingle(final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-                              final IMapNG map, final Consumer<String> ostream, final IWorker worker, final Point loc) {
+                              final ILegacyMap map, final Consumer<String> ostream, final IWorker worker, final Point loc) {
         if (details && worker.getStats() != null) {
             ostream.accept("""
 
@@ -137,7 +137,7 @@ import legacy.map.fixtures.mobile.worker.IJob;
      */
     @Override
     public void produce(final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-                        final IMapNG map, final Consumer<String> ostream) {
+                        final ILegacyMap map, final Consumer<String> ostream) {
         final List<Pair<IWorker, Point>> workers = fixtures.values().stream()
                 .filter(p -> p.getValue1() instanceof IWorker)
                 .sorted(pairComparator)

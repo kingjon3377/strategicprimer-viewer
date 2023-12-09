@@ -1,6 +1,6 @@
 package drivers.generators;
 
-import legacy.map.IMapNG;
+import legacy.map.ILegacyMap;
 import legacy.map.Point;
 
 import legacy.idreg.IDRegistrar;
@@ -14,7 +14,7 @@ interface MapPopulator {
     /**
      * Whether a point is suitable for the kind of fixture we're creating.
      */
-    boolean isSuitable(IMapNG map, Point location);
+    boolean isSuitable(ILegacyMap map, Point location);
 
     /**
      * The probability of adding something to any given tile.

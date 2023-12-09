@@ -15,8 +15,8 @@ import java.util.Map;
 import java.util.HashMap;
 
 import common.idreg.DuplicateIDException;
-import legacy.map.IMapNG;
-import legacy.map.IMutableMapNG;
+import legacy.map.ILegacyMap;
+import legacy.map.IMutableLegacyMap;
 import legacy.map.fixtures.mobile.IUnit;
 import legacy.map.fixtures.mobile.IWorker;
 import legacy.map.fixtures.mobile.Worker;
@@ -136,7 +136,7 @@ public final class DBWorkerHandler extends AbstractDatabaseWriter<IWorker, IUnit
 		});
 	}
 
-	private TryBiConsumer<Map<String, Object>, Warning, SQLException> readWorkerStats(final IMutableMapNG map,
+	private TryBiConsumer<Map<String, Object>, Warning, SQLException> readWorkerStats(final IMutableLegacyMap map,
 																					  final Map<Integer, Worker> workers, final Map<Integer, List<Object>> containees) {
 		return (dbRow, warner) -> {
 			final int unitId = (Integer) dbRow.get("unit");
@@ -172,7 +172,7 @@ public final class DBWorkerHandler extends AbstractDatabaseWriter<IWorker, IUnit
 	}
 
 	private static TryBiConsumer<Map<String, Object>, Warning, SQLException>
-	readJobLevel(final IMutableMapNG map, final Map<Integer, Worker> workers) {
+	readJobLevel(final IMutableLegacyMap map, final Map<Integer, Worker> workers) {
 		return (dbRow, warner) -> {
 			final int id = (Integer) dbRow.get("worker");
 			final Worker worker = workers.get(id);
@@ -183,7 +183,7 @@ public final class DBWorkerHandler extends AbstractDatabaseWriter<IWorker, IUnit
 	}
 
 	private static TryBiConsumer<Map<String, Object>, Warning, SQLException>
-	readSkillLevel(final IMutableMapNG map, final Map<Integer, Worker> workers) {
+	readSkillLevel(final IMutableLegacyMap map, final Map<Integer, Worker> workers) {
 		return (dbRow, warner) -> {
 			final int id = (Integer) dbRow.get("worker");
 			final Worker worker = workers.get(id);
@@ -196,7 +196,7 @@ public final class DBWorkerHandler extends AbstractDatabaseWriter<IWorker, IUnit
 	}
 
 	private static TryBiConsumer<Map<String, Object>, Warning, SQLException>
-	readWorkerNotes(final IMapNG map, final Map<Integer, Worker> workers) {
+	readWorkerNotes(final ILegacyMap map, final Map<Integer, Worker> workers) {
 		return (dbRow, warner) -> {
 			final int id = (Integer) dbRow.get("fixture");
 			final Worker worker = workers.get(id);
@@ -214,7 +214,7 @@ public final class DBWorkerHandler extends AbstractDatabaseWriter<IWorker, IUnit
 	private static final Query NOTE_SELECT = Query.of("SELECT * FROM notes");
 
 	@Override
-	public void readMapContents(final Connection db, final IMutableMapNG map, final Map<Integer, IFixture> containers,
+	public void readMapContents(final Connection db, final IMutableLegacyMap map, final Map<Integer, IFixture> containers,
 								final Map<Integer, List<Object>> containees, final Warning warner) throws SQLException {
 		final Map<Integer, Worker> workers = new HashMap<>();
 		handleQueryResults(db, warner, "worker stats", readWorkerStats(map, workers, containees), WORKER_SELECT);

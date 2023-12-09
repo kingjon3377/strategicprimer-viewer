@@ -1,6 +1,6 @@
 package changesets;
 
-import legacy.map.IMutableMapNG;
+import legacy.map.IMutableLegacyMap;
 
 /**
  * An interface to represent a set of changes that can be made to a map (TODO:
@@ -33,8 +33,8 @@ public interface Changeset {
      * TODO: Should this possibly take different arguments?
      *
      * TODO: Should this possibly take {@link common.map.IMapNG} and return
-     * the modified map, instead of modifying an {@link IMutableMapNG} in
+     * the modified map, instead of modifying an {@link IMutableLegacyMap} in
      * place?
      */
-    void apply(IMutableMapNG map);
+    void apply(IMutableLegacyMap map);
 }

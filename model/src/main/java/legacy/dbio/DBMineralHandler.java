@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Map;
 
 import legacy.map.Point;
-import legacy.map.IMutableMapNG;
+import legacy.map.IMutableLegacyMap;
 
 import legacy.map.fixtures.resources.MineralVein;
 import legacy.map.fixtures.MineralFixture;
@@ -75,7 +75,7 @@ public final class DBMineralHandler extends AbstractDatabaseWriter<MineralFixtur
 				value("image", ((HasImage) obj).getImage())).execute(db.connection());
 	}
 
-	private TryBiConsumer<Map<String, Object>, Warning, SQLException> readMineralVein(final IMutableMapNG map) {
+	private TryBiConsumer<Map<String, Object>, Warning, SQLException> readMineralVein(final IMutableLegacyMap map) {
 		return (dbRow, warner) -> {
 			final int row = (Integer) dbRow.get("row");
 			final int column = (Integer) dbRow.get("column");
@@ -92,7 +92,7 @@ public final class DBMineralHandler extends AbstractDatabaseWriter<MineralFixtur
 		};
 	}
 
-	private static TryBiConsumer<Map<String, Object>, Warning, SQLException> readStoneDeposit(final IMutableMapNG map) {
+	private static TryBiConsumer<Map<String, Object>, Warning, SQLException> readStoneDeposit(final IMutableLegacyMap map) {
 		return (dbRow, warner) -> {
 			final int row = (Integer) dbRow.get("row");
 			final int column = (Integer) dbRow.get("column");
@@ -113,8 +113,8 @@ public final class DBMineralHandler extends AbstractDatabaseWriter<MineralFixtur
 	private static final Query SELECT_MINERAL =
 			Query.of("SELECT row, column, id, kind, exposed, dc, image FROM minerals WHERE type = 'mineral'");
 	@Override
-	public void readMapContents(final Connection db, final IMutableMapNG map, final Map<Integer, IFixture> containers,
-			final Map<Integer, List<Object>> containees, final Warning warner) throws SQLException {
+	public void readMapContents(final Connection db, final IMutableLegacyMap map, final Map<Integer, IFixture> containers,
+                                final Map<Integer, List<Object>> containees, final Warning warner) throws SQLException {
 		handleQueryResults(db, warner, "stone deposits", readStoneDeposit(map), SELECT_STONE);
 		handleQueryResults(db, warner, "mineral veins", readMineralVein(map), SELECT_MINERAL);
 	}

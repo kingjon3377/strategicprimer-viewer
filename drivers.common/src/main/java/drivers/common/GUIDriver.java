@@ -2,7 +2,7 @@ package drivers.common;
 
 import java.nio.file.Path;
 
-import legacy.map.IMutableMapNG;
+import legacy.map.IMutableLegacyMap;
 
 /**
  * An interface for drivers which operate on a map model of some kind; being
@@ -22,5 +22,5 @@ public interface GUIDriver extends ModelDriver {
 	 * subordinate map; replacing the main map in the current window would
 	 * be acceptable unless the "modified" flag is set for the currently-main map.
 	 */
-	void open(IMutableMapNG map);
+	void open(IMutableLegacyMap map);
 }

@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 import legacy.map.fixtures.UnitMember;
 import legacy.map.fixtures.FortressMember;
-import legacy.map.IMapNG;
+import legacy.map.ILegacyMap;
 
 import java.util.Comparator;
 import java.util.Optional;
@@ -119,7 +119,7 @@ public abstract class AbstractTurnApplet implements TurnApplet {
 			.filter((IResourcePile r) -> r.getCreated() <= turn) // TODO: add sorting in this version
 			.collect(Collectors.<IResourcePile>toList()); */ // Doesn't compile, with impossible errors
 		final List<IResourcePile> retval = new ArrayList<>();
-		final IMapNG map = model.getMap();
+		final ILegacyMap map = model.getMap();
 		for (final Point loc : map.getLocations()) {
 			for (final TileFixture fix : map.getFixtures(loc)) {
 				if (fix instanceof final IFortress fort) {

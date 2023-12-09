@@ -12,7 +12,7 @@ import common.map.Player;
 import legacy.map.IFixture;
 import legacy.map.Point;
 import legacy.map.MapDimensions;
-import legacy.map.IMapNG;
+import legacy.map.ILegacyMap;
 import legacy.map.fixtures.explorable.AdventureFixture;
 
 /**
@@ -35,7 +35,7 @@ public class AdventureReportGenerator extends AbstractReportGenerator<AdventureF
 	 * Produce the report on all adventure hooks in the map.
 	 */
 	@Override
-	public void produce(final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures, final IMapNG map,
+	public void produce(final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures, final ILegacyMap map,
 						final Consumer<String> ostream) {
 		writeMap(ostream, fixtures.values().stream()
 				.filter(p -> p.getValue1() instanceof AdventureFixture)
@@ -54,7 +54,7 @@ public class AdventureReportGenerator extends AbstractReportGenerator<AdventureF
 	 */
 	@Override
 	public void produceSingle(final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-							  final IMapNG map, final Consumer<String> ostream, final AdventureFixture item, final Point loc) {
+                              final ILegacyMap map, final Consumer<String> ostream, final AdventureFixture item, final Point loc) {
 		fixtures.remove(item.getId());
 		ostream.accept(item.getBriefDescription());
 		ostream.accept(" at ");

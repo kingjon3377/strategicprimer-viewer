@@ -34,8 +34,8 @@ import legacy.map.HasExtent;
 import legacy.map.HasOwner;
 import legacy.map.HasPopulation;
 import legacy.map.IFixture;
-import legacy.map.IMapNG;
-import legacy.map.IMutableMapNG;
+import legacy.map.ILegacyMap;
+import legacy.map.IMutableLegacyMap;
 import common.map.Player;
 import legacy.map.Point;
 import legacy.map.TileFixture;
@@ -88,7 +88,7 @@ public class UtilityDriverModel extends SimpleMultiMapModel {
     private record Mock(Player owner) implements HasOwner {
     }
 
-    public UtilityDriverModel(final IMutableMapNG map) {
+    public UtilityDriverModel(final IMutableLegacyMap map) {
         super(map);
     }
 
@@ -101,8 +101,8 @@ public class UtilityDriverModel extends SimpleMultiMapModel {
      * maps, where they have other terrain information, from the main map.
      */
     public void copyRiversAt(final Point location) {
-        final IMapNG map = getMap();
-        for (final IMutableMapNG subordinateMap : getRestrictedSubordinateMaps()) {
+        final ILegacyMap map = getMap();
+        for (final IMutableLegacyMap subordinateMap : getRestrictedSubordinateMaps()) {
             final TileType mainTerrain = map.getBaseTerrain(location);
             final TileType subTerrain = subordinateMap.getBaseTerrain(location);
             if (mainTerrain != null && subTerrain != null && mainTerrain == subTerrain &&
@@ -127,7 +127,7 @@ public class UtilityDriverModel extends SimpleMultiMapModel {
         final List<TileFixture> checked = new ArrayList<>();
         final Predicate<TileFixture> noneMatch =
                 item -> checked.stream().noneMatch(inner -> item == inner);
-        for (final IMutableMapNG map : getRestrictedAllMaps()) {
+        for (final IMutableLegacyMap map : getRestrictedAllMaps()) {
             for (final TileFixture fixture : map.getFixtures(location)) {
                 checked.add(fixture);
                 if (fixture instanceof final IUnit u && u.getKind().contains("TODO")) {
@@ -225,7 +225,7 @@ public class UtilityDriverModel extends SimpleMultiMapModel {
                                    final Map<Class<? extends IFixture>,
                                            CoalescedHolder<? extends IFixture, ?>> handlers) {
         final List<Quartet<Runnable, String, String, Collection<? extends IFixture>>> retval = new ArrayList<>();
-        for (final IMutableMapNG map : getRestrictedAllMaps()) {
+        for (final IMutableLegacyMap map : getRestrictedAllMaps()) {
             retval.addAll(coalesceImpl(
                     String.format("In %s: At %s: ",
                             Optional.ofNullable(map.getFilename())
@@ -243,8 +243,8 @@ public class UtilityDriverModel extends SimpleMultiMapModel {
      * Remove information in the main map from subordinate maps.
      */
     public void subtractAtPoint(final Point location) {
-        final IMapNG map = getMap();
-        for (final IMutableMapNG subMap : getRestrictedSubordinateMaps()) {
+        final ILegacyMap map = getMap();
+        for (final IMutableLegacyMap subMap : getRestrictedSubordinateMaps()) {
             subMap.setModified(true);
             final TileType terrain = map.getBaseTerrain(location);
             final TileType ours = subMap.getBaseTerrain(location);
@@ -278,18 +278,18 @@ public class UtilityDriverModel extends SimpleMultiMapModel {
         }
     }
 
-    private static List<Forest> extractForests(final IMapNG map, final Point location) {
+    private static List<Forest> extractForests(final ILegacyMap map, final Point location) {
         return map.getFixtures(location).stream().filter(Forest.class::isInstance)
                 .map(Forest.class::cast).collect(Collectors.toList());
     }
 
-    private static List<Ground> extractGround(final IMapNG map, final Point location) {
+    private static List<Ground> extractGround(final ILegacyMap map, final Point location) {
         return map.getFixtures(location).stream().filter(Ground.class::isInstance)
                 .map(Ground.class::cast).collect(Collectors.toList());
     }
 
     public void fixForestsAndGround(final Consumer<String> ostream) {
-        for (final IMapNG map : getSubordinateMaps()) {
+        for (final ILegacyMap map : getSubordinateMaps()) {
             ostream.accept(String.format("Starting %s",
                     Optional.ofNullable(map.getFilename())
                             .map(Path::toString).orElse("a map with no associated path")));
@@ -336,7 +336,7 @@ public class UtilityDriverModel extends SimpleMultiMapModel {
         }
     }
 
-    private static void safeAdd(final IMutableMapNG map, final Player currentPlayer, final Point point, final TileFixture fixture) {
+    private static void safeAdd(final IMutableLegacyMap map, final Player currentPlayer, final Point point, final TileFixture fixture) {
         final Predicate<TileFixture> equality = fixture::equals;
         final Consumer<String> noop = x -> {
         };
@@ -370,9 +370,9 @@ public class UtilityDriverModel extends SimpleMultiMapModel {
 
     public void expandAroundPoint(final Point center, final Player currentPlayer) {
         final Mock mock = new Mock(currentPlayer);
-        final IMapNG map = getMap();
+        final ILegacyMap map = getMap();
         final long seed = SingletonRandom.SINGLETON_RANDOM.nextLong();
-        for (final IMutableMapNG subMap : getRestrictedSubordinateMaps()) {
+        for (final IMutableLegacyMap subMap : getRestrictedSubordinateMaps()) {
             if (!subMap.getCurrentPlayer().equals(currentPlayer)) {
                 continue;
             }

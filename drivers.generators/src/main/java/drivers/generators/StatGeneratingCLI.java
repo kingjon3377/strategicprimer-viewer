@@ -25,7 +25,7 @@ import legacy.idreg.IDRegistrar;
 import legacy.idreg.IDFactoryFiller;
 import drivers.common.DriverFailedException;
 
-import legacy.map.IMapNG;
+import legacy.map.ILegacyMap;
 import common.map.Player;
 import legacy.map.Point;
 
@@ -627,7 +627,7 @@ import legacy.map.fixtures.towns.Village;
     @Override
     public void startDriver() throws DriverFailedException {
         final IDRegistrar idf = IDFactoryFiller.createIDFactory(
-                model.streamAllMaps().toArray(IMapNG[]::new));
+                model.streamAllMaps().toArray(ILegacyMap[]::new));
         currentTurn = model.getMap().getCurrentTurn();
         // TODO: Make getPlayerChoices() return Collection
         final List<Player> players = StreamSupport.stream(

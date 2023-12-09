@@ -1,6 +1,6 @@
 package drivers.generators;
 
-import legacy.map.IMapNG;
+import legacy.map.ILegacyMap;
 import legacy.map.Point;
 import legacy.map.TileType;
 
@@ -18,7 +18,7 @@ import legacy.map.fixtures.mobile.AnimalImpl;
      * Hares won't appear in mountains, forests, or ocean.
      */
     @Override
-    public boolean isSuitable(final IMapNG map, final Point location) {
+    public boolean isSuitable(final ILegacyMap map, final Point location) {
         final TileType terrain = map.getBaseTerrain(location);
         return terrain != null && !map.isMountainous(location) &&
                 TileType.Ocean != terrain &&

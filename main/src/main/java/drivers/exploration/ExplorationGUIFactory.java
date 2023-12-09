@@ -24,7 +24,7 @@ import java.util.List;
 
 import lovelace.util.FileChooser;
 
-import legacy.map.IMutableMapNG;
+import legacy.map.IMutableLegacyMap;
 
 import com.google.auto.service.AutoService;
 
@@ -65,7 +65,7 @@ public class ExplorationGUIFactory implements GUIDriverFactory {
     }
 
     @Override
-    public IDriverModel createModel(final IMutableMapNG map) {
+    public IDriverModel createModel(final IMutableLegacyMap map) {
         return new ExplorationModel(map);
     }
 }

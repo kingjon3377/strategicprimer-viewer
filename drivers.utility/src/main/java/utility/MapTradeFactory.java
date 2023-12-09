@@ -11,7 +11,7 @@ import drivers.common.ModelDriver;
 
 import drivers.common.cli.ICLIHelper;
 
-import legacy.map.IMutableMapNG;
+import legacy.map.IMutableLegacyMap;
 
 import com.google.auto.service.AutoService;
 
@@ -39,7 +39,7 @@ public class MapTradeFactory implements ModelDriverFactory {
     }
 
     @Override
-    public MapTradeModel createModel(final IMutableMapNG map) {
+    public MapTradeModel createModel(final IMutableLegacyMap map) {
         return new MapTradeModel(map);
     }
 }

@@ -30,7 +30,7 @@ import drivers.common.ReadOnlyDriver;
 
 import drivers.common.cli.ICLIHelper;
 
-import legacy.map.IMapNG;
+import legacy.map.ILegacyMap;
 
 import report.TabularReportGenerator;
 
@@ -71,7 +71,7 @@ import org.takes.http.Exit;
 	}
 
 	private void serveReports(final int port) throws DriverFailedException {
-		final Map<Path, IMapNG> mapping;
+		final Map<Path, ILegacyMap> mapping;
 		if (model instanceof final IMultiMapModel mmm) {
 			mapping = mmm.streamAllMaps()
 				.collect(Collectors.toMap(
@@ -100,7 +100,7 @@ import org.takes.http.Exit;
 			};
 		};
 
-		final ThrowingBiConsumer<IMapNG, @Nullable Path, DriverFailedException> createReports =
+		final ThrowingBiConsumer<ILegacyMap, @Nullable Path, DriverFailedException> createReports =
 			(map, mapFile) -> {
 				try {
 					if (mapFile == null) {
@@ -117,7 +117,7 @@ import org.takes.http.Exit;
 			};
 
 		if (model instanceof final IMultiMapModel mmm) {
-			for (final IMapNG map : mmm.getAllMaps()) {
+			for (final ILegacyMap map : mmm.getAllMaps()) {
 				createReports.accept(map, Optional.ofNullable(map.getFilename())
 					.orElseGet(() -> Paths.get("unknown.xml")));
 			}

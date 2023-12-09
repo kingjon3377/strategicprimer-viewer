@@ -3,7 +3,7 @@ package drivers.turnrunning;
 import legacy.map.IFixture;
 import org.jetbrains.annotations.Nullable;
 
-import legacy.map.IMapNG;
+import legacy.map.ILegacyMap;
 
 import java.util.function.IntSupplier;
 
@@ -171,7 +171,7 @@ public interface ITurnRunningModel extends IExplorationModel, IAdvancementModel 
      */
     default @Nullable IFortress findHQ(final Player player, final String fortressName) {
         IFortress retval = null;
-        final IMapNG map = getMap();
+        final ILegacyMap map = getMap();
         for (final IFortress fortress : map.streamAllFixtures()
                 .filter(IFortress.class::isInstance).map(IFortress.class::cast)
                 .filter(f -> player.equals(f.owner())).toList()) {

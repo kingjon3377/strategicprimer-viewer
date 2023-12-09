@@ -25,7 +25,7 @@ import common.map.Player;
 import legacy.map.IFixture;
 import legacy.map.MapDimensions;
 import legacy.map.Point;
-import legacy.map.IMapNG;
+import legacy.map.ILegacyMap;
 import legacy.map.fixtures.TerrainFixture;
 import report.generators.tabular.UnitTabularReportGenerator;
 import report.generators.tabular.FortressTabularReportGenerator;
@@ -66,7 +66,7 @@ public final class TabularReportGenerator {
      *
      * Unfortunately, 'source' needs to take ThrowingConsumer because console and file I/O can fail.
      */
-    public static void createTabularReports(final IMapNG map,
+    public static void createTabularReports(final ILegacyMap map,
                                             final ThrowingFunction<String, ThrowingConsumer<String, IOException>, IOException> source,
                                             final ICLIHelper cli) throws IOException {
         final Player player = map.getCurrentPlayer();
@@ -79,7 +79,7 @@ public final class TabularReportGenerator {
      *
      * Unfortunately, 'source' needs to take ThrowingConsumer because console and file I/O can fail.
      */
-    public static void createTabularReports(final IMapNG map,
+    public static void createTabularReports(final ILegacyMap map,
                                             final ThrowingFunction<String, ThrowingConsumer<String, IOException>, IOException> source,
                                             final ICLIHelper cli, final @Nullable Point hq)
             throws IOException {
@@ -152,7 +152,7 @@ public final class TabularReportGenerator {
      * @param consumer The way to add the tables to the GUI
      * @param map The map to base the reports on
      */
-    public static void createGUITabularReports(final BiConsumer<String, Component> consumer, final IMapNG map)
+    public static void createGUITabularReports(final BiConsumer<String, Component> consumer, final ILegacyMap map)
             throws IOException {
         final Player player = map.getCurrentPlayer();
         final @Nullable Point hq = ReportGeneratorHelper.findHQ(map, player);
@@ -166,7 +166,7 @@ public final class TabularReportGenerator {
      * @param hq the point to count distances from
      */
     public static void createGUITabularReports(final BiConsumer<String, Component> consumer,
-                                               final IMapNG map, final @Nullable Point hq) throws IOException {
+                                               final ILegacyMap map, final @Nullable Point hq) throws IOException {
         final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures =
                 ReportGeneratorHelper.getFixtures(map);
         final Map<Integer, Integer> parentMap = ReportGeneratorHelper.getParentMap(map);

@@ -6,7 +6,7 @@ import java.nio.file.Path;
 import java.io.Reader;
 import java.io.IOException;
 
-import legacy.map.IMutableMapNG;
+import legacy.map.IMutableLegacyMap;
 
 import common.xmlio.SPFormatException;
 import common.xmlio.Warning;
@@ -30,7 +30,7 @@ public interface IMapReader {
      *@param file the file to read
      * @param warner the Warning instance to use for warnings
      */
-    IMutableMapNG readMap(Path file, Warning warner)
+    IMutableLegacyMap readMap(Path file, Warning warner)
             throws SPFormatException, NoSuchFileException, XMLStreamException, IOException;
 
     /**
@@ -44,6 +44,6 @@ public interface IMapReader {
      * @param istream the reader to read from
      * @param warner the Warning instance to use for warnings
      */
-    IMutableMapNG readMapFromStream(Path file, Reader istream, Warning warner)
+    IMutableLegacyMap readMapFromStream(Path file, Reader istream, Warning warner)
             throws SPFormatException, XMLStreamException, IOException;
 }

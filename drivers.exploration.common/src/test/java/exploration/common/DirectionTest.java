@@ -8,7 +8,7 @@ import legacy.map.Point;
 import common.map.PlayerCollection;
 import legacy.map.MapDimensionsImpl;
 import legacy.map.Direction;
-import legacy.map.SPMapNG;
+import legacy.map.LegacyMap;
 
 /**
  * Tests that the movement code gets its most basic functionality, namely
@@ -34,7 +34,7 @@ public class DirectionTest {
      */
     @Test
     public void testEast() {
-        final IExplorationModel model = new ExplorationModel(new SPMapNG(new MapDimensionsImpl(5, 5, 2),
+        final IExplorationModel model = new ExplorationModel(new LegacyMap(new MapDimensionsImpl(5, 5, 2),
                 new PlayerCollection(), 0));
         final DirectionAssertion localAssert = directionAssert(model, Direction.East);
         localAssert.call(new Point(0, 0), new Point(0, 1), "");
@@ -48,7 +48,7 @@ public class DirectionTest {
      */
     @Test
     public void testNorth() {
-        final IExplorationModel model = new ExplorationModel(new SPMapNG(new MapDimensionsImpl(5, 5, 2),
+        final IExplorationModel model = new ExplorationModel(new LegacyMap(new MapDimensionsImpl(5, 5, 2),
                 new PlayerCollection(), 0));
         final DirectionAssertion localAssert = directionAssert(model, Direction.North);
         localAssert.call(new Point(0, 0), new Point(4, 0), " in a 5x5 map");
@@ -62,7 +62,7 @@ public class DirectionTest {
      */
     @Test
     public void testSouth() {
-        final IExplorationModel model = new ExplorationModel(new SPMapNG(new MapDimensionsImpl(5, 5, 2),
+        final IExplorationModel model = new ExplorationModel(new LegacyMap(new MapDimensionsImpl(5, 5, 2),
                 new PlayerCollection(), 0));
         final DirectionAssertion localAssert = directionAssert(model, Direction.South);
         localAssert.call(new Point(0, 0), new Point(1, 0), "");
@@ -76,7 +76,7 @@ public class DirectionTest {
      */
     @Test
     public void testWest() {
-        final IExplorationModel model = new ExplorationModel(new SPMapNG(new MapDimensionsImpl(5, 5, 2),
+        final IExplorationModel model = new ExplorationModel(new LegacyMap(new MapDimensionsImpl(5, 5, 2),
                 new PlayerCollection(), 0));
         final DirectionAssertion localAssert = directionAssert(model, Direction.West);
         localAssert.call(new Point(0, 0), new Point(0, 4), " in a 5x5 map");
@@ -90,7 +90,7 @@ public class DirectionTest {
      */
     @Test
     public void testNortheast() {
-        final IExplorationModel model = new ExplorationModel(new SPMapNG(new MapDimensionsImpl(5, 5, 2),
+        final IExplorationModel model = new ExplorationModel(new LegacyMap(new MapDimensionsImpl(5, 5, 2),
                 new PlayerCollection(), 0));
         final DirectionAssertion localAssert = directionAssert(model, Direction.Northeast);
         localAssert.call(new Point(0, 0), new Point(4, 1), " in a 5x5 map");
@@ -104,7 +104,7 @@ public class DirectionTest {
      */
     @Test
     public void testNorthwest() {
-        final IExplorationModel model = new ExplorationModel(new SPMapNG(new MapDimensionsImpl(5, 5, 2),
+        final IExplorationModel model = new ExplorationModel(new LegacyMap(new MapDimensionsImpl(5, 5, 2),
                 new PlayerCollection(), 0));
         final DirectionAssertion localAssert = directionAssert(model, Direction.Northwest);
         localAssert.call(new Point(0, 0), new Point(4, 4), " in a 5x5 map");
@@ -118,7 +118,7 @@ public class DirectionTest {
      */
     @Test
     public void testSoutheast() {
-        final IExplorationModel model = new ExplorationModel(new SPMapNG(new MapDimensionsImpl(5, 5, 2),
+        final IExplorationModel model = new ExplorationModel(new LegacyMap(new MapDimensionsImpl(5, 5, 2),
                 new PlayerCollection(), 0));
         final DirectionAssertion localAssert = directionAssert(model, Direction.Southeast);
         localAssert.call(new Point(0, 0), new Point(1, 1), "");
@@ -132,7 +132,7 @@ public class DirectionTest {
      */
     @Test
     public void testSouthwest() {
-        final IExplorationModel model = new ExplorationModel(new SPMapNG(new MapDimensionsImpl(5, 5, 2),
+        final IExplorationModel model = new ExplorationModel(new LegacyMap(new MapDimensionsImpl(5, 5, 2),
                 new PlayerCollection(), 0));
         final DirectionAssertion localAssert = directionAssert(model, Direction.Southwest);
         localAssert.call(new Point(0, 0), new Point(1, 4), " in a 5x5 map");
@@ -146,7 +146,7 @@ public class DirectionTest {
      */
     @Test
     public void testNowhere() {
-        final IExplorationModel model = new ExplorationModel(new SPMapNG(new MapDimensionsImpl(5, 5, 2),
+        final IExplorationModel model = new ExplorationModel(new LegacyMap(new MapDimensionsImpl(5, 5, 2),
                 new PlayerCollection(), 0));
         final DirectionAssertion localAssert = directionAssert(model, Direction.Nowhere);
         localAssert.call(new Point(0, 0), new Point(0, 0), "");

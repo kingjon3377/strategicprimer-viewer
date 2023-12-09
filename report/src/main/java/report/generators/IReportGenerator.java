@@ -8,7 +8,7 @@ import lovelace.util.DelayedRemovalMap;
 
 import legacy.map.Point;
 import legacy.map.IFixture;
-import legacy.map.IMapNG;
+import legacy.map.ILegacyMap;
 
 import java.util.Map;
 import java.util.List;
@@ -46,7 +46,7 @@ public interface IReportGenerator<T extends IFixture> {
 	 * @param ostream The stream to write to
 	 */
 	void produce(DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-				 IMapNG map, Consumer<String> ostream);
+                 ILegacyMap map, Consumer<String> ostream);
 
 	/**
 	 * Write a (sub-)report on a single item to a stream.
@@ -60,13 +60,13 @@ public interface IReportGenerator<T extends IFixture> {
 	 * @param loc Its location
 	 */
 	void produceSingle(DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-					   IMapNG map, Consumer<String> ostream, T item, Point loc);
+                       ILegacyMap map, Consumer<String> ostream, T item, Point loc);
 
 	/**
 	 * A factory for a default formatter for {@link #writeMap}.
 	 */
 	default TriConsumer<T, Point, Consumer<String>> defaultFormatter(
-		final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures, final IMapNG map) {
+		final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures, final ILegacyMap map) {
 		return (item, loc, formatter) ->
 			produceSingle(fixtures, map, formatter, item, loc);
 	}

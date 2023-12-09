@@ -22,7 +22,7 @@ import legacy.map.HasExtent;
 import legacy.map.HasOwner;
 import legacy.map.HasPopulation;
 import legacy.map.IFixture;
-import legacy.map.IMapNG;
+import legacy.map.ILegacyMap;
 import common.map.Player;
 import common.map.PlayerImpl;
 import legacy.map.Point;
@@ -174,10 +174,10 @@ import worker.common.IFixtureEditHelper;
         // about extra logic needed in the setter) to IExplorationModel
         // (as IMap), to improve no-second-map to a-second-map
         // transition
-        final IMapNG secondMap = driverModel.streamSubordinateMaps().findFirst().orElseGet(driverModel::getMap);
+        final ILegacyMap secondMap = driverModel.streamSubordinateMaps().findFirst().orElseGet(driverModel::getMap);
 
         final IDRegistrar idf = IDFactoryFiller.createIDFactory(
-                driverModel.streamAllMaps().toArray(IMapNG[]::new));
+                driverModel.streamAllMaps().toArray(ILegacyMap[]::new));
         huntingModel = new HuntingModel(driverModel.getMap());
 
         LovelaceLogger.trace("ExplorationPanel: huntingModel created");

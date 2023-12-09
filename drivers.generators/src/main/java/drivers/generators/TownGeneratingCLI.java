@@ -4,7 +4,7 @@ import java.io.IOException;
 
 import drivers.common.DriverFailedException;
 import drivers.exploration.old.MissingTableException;
-import legacy.map.IMapNG;
+import legacy.map.ILegacyMap;
 import drivers.common.CLIDriver;
 import drivers.common.EmptyOptions;
 import drivers.common.SPOptions;
@@ -49,7 +49,7 @@ public class TownGeneratingCLI implements CLIDriver {
             throw new DriverFailedException(except, "I/O error initializing generator");
         }
         final IDRegistrar idf = IDFactoryFiller.createIDFactory(
-                model.streamAllMaps().toArray(IMapNG[]::new));
+                model.streamAllMaps().toArray(ILegacyMap[]::new));
         final Boolean specific = cli.inputBoolean("Enter or generate stats for just specific towns? ");
         if (specific == null) {
             return;

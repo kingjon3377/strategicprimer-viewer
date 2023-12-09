@@ -43,7 +43,7 @@ import lovelace.util.BorderedPanel;
 import static lovelace.util.FunctionalSplitPane.verticalSplit;
 
 import drivers.common.FixtureMatcher;
-import legacy.map.IMutableMapNG;
+import legacy.map.IMutableLegacyMap;
 import drivers.MapReaderAdapter;
 import common.xmlio.Warning;
 
@@ -140,7 +140,7 @@ public final class ViewerFrame extends SPFrame implements MapGUI {
 
     private void alternateAcceptDroppedFile(final Path file) {
         try {
-            final IMutableMapNG mapOrError = MapReaderAdapter.readMap(file,
+            final IMutableLegacyMap mapOrError = MapReaderAdapter.readMap(file,
                     Warning.getDefaultHandler());
             SwingUtilities.invokeLater(() -> mapModel.setMap(mapOrError));
         } catch (final DriverFailedException except) {

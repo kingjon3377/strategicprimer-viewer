@@ -15,7 +15,7 @@ import java.util.Map;
 import java.util.Objects;
 
 import legacy.map.Point;
-import legacy.map.IMutableMapNG;
+import legacy.map.IMutableLegacyMap;
 import legacy.map.fixtures.towns.FortressImpl;
 import legacy.map.fixtures.towns.IFortress;
 import legacy.map.fixtures.towns.IMutableFortress;
@@ -71,7 +71,7 @@ public final class DBFortressHandler extends AbstractDatabaseWriter<IFortress, P
 		}
 	}
 
-	private static TryBiConsumer<Map<String, Object>, Warning, SQLException> readFortress(final IMutableMapNG map,
+	private static TryBiConsumer<Map<String, Object>, Warning, SQLException> readFortress(final IMutableLegacyMap map,
 																						  final Map<Integer, IFixture> containers) {
 		return (dbRow, warner) -> {
 			final int row = (Integer) dbRow.get("row");
@@ -98,8 +98,8 @@ public final class DBFortressHandler extends AbstractDatabaseWriter<IFortress, P
 	private static final Query SELECT = Query.of("SELECT * FROM fortresses");
 
 	@Override
-	public void readMapContents(final Connection db, final IMutableMapNG map, final Map<Integer, IFixture> containers,
-								final Map<Integer, List<Object>> containees, final Warning warner) throws SQLException {
+	public void readMapContents(final Connection db, final IMutableLegacyMap map, final Map<Integer, IFixture> containers,
+                                final Map<Integer, List<Object>> containees, final Warning warner) throws SQLException {
 		handleQueryResults(db, warner, "fortresses", readFortress(map, containers), SELECT);
 	}
 }

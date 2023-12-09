@@ -44,7 +44,7 @@ import worker.common.IWorkerTreeModel;
 import legacy.idreg.IDFactoryFiller;
 import legacy.idreg.IDRegistrar;
 import common.map.Player;
-import legacy.map.IMapNG;
+import legacy.map.ILegacyMap;
 import legacy.map.fixtures.mobile.IUnit;
 import drivers.map_viewer.NewUnitDialog;
 import legacy.xmlio.MapIOHelper;
@@ -72,7 +72,7 @@ import drivers.worker_mgmt.orderspanel.OrdersPanel;
         this.model = model;
         mainMap = model.getMap();
         final IDRegistrar idf = IDFactoryFiller.createIDFactory(model.streamAllMaps()
-                .toArray(IMapNG[]::new));
+                .toArray(ILegacyMap[]::new));
         newUnitFrame = new NewUnitDialog(model.getCurrentPlayer(), idf);
         final IWorkerTreeModel treeModel = new WorkerTreeModelAlt(model); // TODO: Try with WorkerTreeModel again?
 
@@ -152,7 +152,7 @@ import drivers.worker_mgmt.orderspanel.OrdersPanel;
     private final OrdersPanel ordersPanelObj; // TODO: rename to ordersPanel;
     private final FormattedLabel playerLabel;
 
-    private final IMapNG mainMap;
+    private final ILegacyMap mainMap;
     private final NewUnitDialog newUnitFrame;
 
     private static boolean isCurrent(final IUnit unit, final int turn) {

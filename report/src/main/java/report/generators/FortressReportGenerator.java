@@ -24,7 +24,7 @@ import legacy.map.IFixture;
 import legacy.map.Point;
 import legacy.map.River;
 import legacy.map.MapDimensions;
-import legacy.map.IMapNG;
+import legacy.map.ILegacyMap;
 import legacy.map.fixtures.Implement;
 import legacy.map.fixtures.IResourcePile;
 import legacy.map.fixtures.FortressMember;
@@ -55,7 +55,7 @@ public class FortressReportGenerator extends AbstractReportGenerator<IFortress> 
     private final IReportGenerator<FortressMember> memberReportGenerator;
     private final Player currentPlayer;
 
-    private static void terrain(final Consumer<String> ostream, final IMapNG map, final Point point,
+    private static void terrain(final Consumer<String> ostream, final ILegacyMap map, final Point point,
                                 final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures) {
         ostream.accept("Surrounding terrain: ");
         ostream.accept(Optional.ofNullable(map.getBaseTerrain(point)).map(Object::toString)
@@ -101,7 +101,7 @@ public class FortressReportGenerator extends AbstractReportGenerator<IFortress> 
 
     private <Type extends IFixture> void printList(
             final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-            final Consumer<String> ostream, final IMapNG map, final Collection<? extends Type> list,
+            final Consumer<String> ostream, final ILegacyMap map, final Collection<? extends Type> list,
             final String header, final IReportGenerator<Type> helper, final Point loc) {
         if (!list.isEmpty()) {
             ostream.accept("<li>");
@@ -122,7 +122,7 @@ public class FortressReportGenerator extends AbstractReportGenerator<IFortress> 
      */
     @Override
     public void produceSingle(final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-                              final IMapNG map, final Consumer<String> ostream, final IFortress item, final Point loc) {
+                              final ILegacyMap map, final Consumer<String> ostream, final IFortress item, final Point loc) {
         ostream.accept("<h5>Fortress ");
         ostream.accept(item.getName());
         ostream.accept("belonging to ");
@@ -185,7 +185,7 @@ public class FortressReportGenerator extends AbstractReportGenerator<IFortress> 
      */
     @Override
     public void produce(final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-                        final IMapNG map, final Consumer<String> ostream) {
+                        final ILegacyMap map, final Consumer<String> ostream) {
         final Map<IFortress, Point> ours = new HashMap<>();
         final Map<IFortress, Point> others = new HashMap<>();
         for (final Pair<Point, IFortress> pair : fixtures.values().stream()

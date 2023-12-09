@@ -22,7 +22,7 @@ import drivers.common.ReadOnlyDriver;
 
 import drivers.common.cli.ICLIHelper;
 
-import legacy.map.IMapNG;
+import legacy.map.ILegacyMap;
 
 import report.TabularReportGenerator;
 
@@ -70,7 +70,7 @@ public class TabularReportCLI implements ReadOnlyDriver {
         };
     }
 
-    private void createReports(final IMapNG map, final @Nullable Path mapFile) throws DriverFailedException {
+    private void createReports(final ILegacyMap map, final @Nullable Path mapFile) throws DriverFailedException {
         try {
             if (mapFile == null) {
                 LovelaceLogger.error("Asked to create reports from map with no filename");
@@ -89,7 +89,7 @@ public class TabularReportCLI implements ReadOnlyDriver {
     public void startDriver() throws DriverFailedException {
         try {
             if (model instanceof final IMultiMapModel mmm) {
-                for (final IMapNG map : mmm.getAllMaps()) {
+                for (final ILegacyMap map : mmm.getAllMaps()) {
                     createReports(map, map.getFilename());
                 }
             } else {

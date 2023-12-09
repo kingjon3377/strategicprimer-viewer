@@ -15,7 +15,7 @@ import legacy.map.IFixture;
 import common.map.Player;
 import legacy.map.TileFixture;
 import legacy.map.Point;
-import legacy.map.IMapNG;
+import legacy.map.ILegacyMap;
 
 import legacy.map.fixtures.FixtureIterable;
 
@@ -34,7 +34,7 @@ import java.util.HashMap;
     /**
      * Find the location of the given player's HQ in the given map, or null if not found.
      */
-    public static @Nullable Point findHQ(final IMapNG map, final Player player) {
+    public static @Nullable Point findHQ(final ILegacyMap map, final Player player) {
         Point retval = null;
         for (final Point location : map.getLocations()) {
             for (final TileFixture fixture : map.getFixtures(location)) {
@@ -87,7 +87,7 @@ import java.util.HashMap;
      * Create a mapping from ID numbers to Pairs of fixtures and their
      * location for all fixtures in the map.
      */
-    public static DelayedRemovalMap<Integer, Pair<Point, IFixture>> getFixtures(final IMapNG map) {
+    public static DelayedRemovalMap<Integer, Pair<Point, IFixture>> getFixtures(final ILegacyMap map) {
         final DelayedRemovalMap<Integer, Pair<Point, IFixture>> retval = new IntMap<>();
         final IDRegistrar idf = IDFactoryFiller.createIDFactory(map);
         for (final Point location : map.getLocations()) {
@@ -111,7 +111,7 @@ import java.util.HashMap;
     /**
      * Create a mapping from child ID numbers to parent ID numbers.
      */
-    public static Map<Integer, Integer> getParentMap(final IMapNG map) {
+    public static Map<Integer, Integer> getParentMap(final ILegacyMap map) {
         final Map<Integer, Integer> retval = new HashMap<>();
         for (final Point location : map.getLocations()) {
             for (final TileFixture fixture : map.getFixtures(location)) {

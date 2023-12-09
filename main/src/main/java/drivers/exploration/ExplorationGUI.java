@@ -26,7 +26,7 @@ import drivers.gui.common.SPFileChooser;
 
 import lovelace.util.FileChooser;
 
-import legacy.map.IMutableMapNG;
+import legacy.map.IMutableLegacyMap;
 import lovelace.util.LovelaceLogger;
 
 /**
@@ -90,7 +90,7 @@ import lovelace.util.LovelaceLogger;
     }
 
     @Override
-    public void open(final IMutableMapNG map) {
+    public void open(final IMutableLegacyMap map) {
         if (model.isMapModified()) {
             SwingUtilities.invokeLater(() -> new ExplorationGUI(cli, options,
                     new ExplorationModel(map)).startDriver());

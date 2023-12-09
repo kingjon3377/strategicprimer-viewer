@@ -20,7 +20,7 @@ import worker.common.WorkerModel;
 
 import java.awt.event.ActionEvent;
 
-import legacy.map.IMutableMapNG;
+import legacy.map.IMutableLegacyMap;
 import lovelace.util.FileChooser;
 import drivers.gui.common.WindowCloseListener;
 import drivers.gui.common.MenuBroker;
@@ -118,7 +118,7 @@ public class WorkerMgmtGUI implements MultiMapGUIDriver, WorkerGUI {
     }
 
     @Override
-    public void open(final IMutableMapNG map) {
+    public void open(final IMutableLegacyMap map) {
         if (model.isMapModified()) {
             SwingUtilities.invokeLater(() -> {
                 try {
