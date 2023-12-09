@@ -1,6 +1,6 @@
 package worker.common;
 
-import common.map.fixtures.mobile.IUnit;
+import legacy.map.fixtures.mobile.IUnit;
 
 import java.util.EventListener;
 

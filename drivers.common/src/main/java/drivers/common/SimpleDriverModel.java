@@ -5,11 +5,11 @@ import java.nio.file.Path;
 import java.util.List;
 import java.util.ArrayList;
 
-import common.map.SPMapNG;
-import common.map.IMapNG;
-import common.map.IMutableMapNG;
-import common.map.MapDimensions;
-import common.map.MapDimensionsImpl;
+import legacy.map.SPMapNG;
+import legacy.map.IMapNG;
+import legacy.map.IMutableMapNG;
+import legacy.map.MapDimensions;
+import legacy.map.MapDimensionsImpl;
 import common.map.PlayerCollection;
 
 import lovelace.util.LovelaceLogger;

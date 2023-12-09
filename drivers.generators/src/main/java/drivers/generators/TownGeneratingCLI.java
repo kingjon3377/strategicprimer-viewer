@@ -4,15 +4,15 @@ import java.io.IOException;
 
 import drivers.common.DriverFailedException;
 import drivers.exploration.old.MissingTableException;
-import common.map.IMapNG;
+import legacy.map.IMapNG;
 import drivers.common.CLIDriver;
 import drivers.common.EmptyOptions;
 import drivers.common.SPOptions;
 
 import drivers.common.cli.ICLIHelper;
 
-import common.idreg.IDRegistrar;
-import common.idreg.IDFactoryFiller;
+import legacy.idreg.IDRegistrar;
+import legacy.idreg.IDFactoryFiller;
 
 /**
  * A driver to let the user enter or generate 'stats' for towns.

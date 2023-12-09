@@ -15,12 +15,12 @@ import drivers.common.IncorrectUsageException;
 
 import drivers.common.cli.ICLIHelper;
 
-import common.map.MapDimensions;
-import common.map.TileFixture;
-import common.map.Point;
-import common.map.IMapNG;
+import legacy.map.MapDimensions;
+import legacy.map.TileFixture;
+import legacy.map.Point;
+import legacy.map.IMapNG;
 
-import impl.xmlio.MapIOHelper;
+import legacy.xmlio.MapIOHelper;
 
 import common.xmlio.Warning;
 

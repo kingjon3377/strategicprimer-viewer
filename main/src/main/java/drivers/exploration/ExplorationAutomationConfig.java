@@ -1,15 +1,15 @@
 package drivers.exploration;
 
-import common.map.IMapNG;
+import legacy.map.IMapNG;
 import common.map.Player;
-import common.map.Point;
-import common.map.TileFixture;
-import common.map.fixtures.mobile.IUnit;
-import common.map.fixtures.mobile.Immortal;
-import common.map.fixtures.towns.AbstractTown;
-import common.map.fixtures.towns.IFortress;
+import legacy.map.Point;
+import legacy.map.TileFixture;
+import legacy.map.fixtures.mobile.IUnit;
+import legacy.map.fixtures.mobile.Immortal;
+import legacy.map.fixtures.towns.AbstractTown;
+import legacy.map.fixtures.towns.IFortress;
 import common.map.fixtures.towns.TownStatus;
-import common.map.fixtures.towns.Village;
+import legacy.map.fixtures.towns.Village;
 import drivers.common.cli.ICLIHelper;
 
 import java.util.ArrayList;

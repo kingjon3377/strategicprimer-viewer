@@ -7,10 +7,10 @@ import java.util.LinkedList;
 import java.util.Set;
 import java.util.stream.Stream;
 
-import common.map.Point;
-import common.map.TileType;
-import common.map.TileFixture;
-import common.map.MapDimensions;
+import legacy.map.Point;
+import legacy.map.TileType;
+import legacy.map.TileFixture;
+import legacy.map.MapDimensions;
 
 /**
  * A mock {@link EncounterTable} for the apparatus to test the

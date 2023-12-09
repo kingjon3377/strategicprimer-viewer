@@ -16,29 +16,29 @@ import org.javatuples.Pair;
 import java.util.function.Consumer;
 import java.nio.file.Path;
 
-import common.map.HasKind;
+import legacy.map.HasKind;
 
 import java.math.BigDecimal;
 
-import common.map.IFixture;
-import common.map.HasPopulation;
-import common.map.TileFixture;
-import common.map.HasExtent;
-import common.map.Point;
-import common.map.IMapNG;
+import legacy.map.IFixture;
+import legacy.map.HasPopulation;
+import legacy.map.TileFixture;
+import legacy.map.HasExtent;
+import legacy.map.Point;
+import legacy.map.IMapNG;
 
-import common.map.fixtures.IMutableResourcePile;
-import common.map.fixtures.IResourcePile;
+import legacy.map.fixtures.IMutableResourcePile;
+import legacy.map.fixtures.IResourcePile;
 import common.map.fixtures.Quantity;
-import common.map.fixtures.ResourcePileImpl;
-import common.map.fixtures.Implement;
+import legacy.map.fixtures.ResourcePileImpl;
+import legacy.map.fixtures.Implement;
 
-import common.map.fixtures.mobile.Animal;
-import common.map.fixtures.mobile.AnimalImpl;
+import legacy.map.fixtures.mobile.Animal;
+import legacy.map.fixtures.mobile.AnimalImpl;
 
-import common.map.fixtures.resources.Grove;
-import common.map.fixtures.resources.Meadow;
-import common.map.fixtures.resources.Shrub;
+import legacy.map.fixtures.resources.Grove;
+import legacy.map.fixtures.resources.Meadow;
+import legacy.map.fixtures.resources.Shrub;
 
 import drivers.common.cli.ICLIHelper;
 
@@ -46,7 +46,7 @@ import drivers.common.CLIDriver;
 import drivers.common.EmptyOptions;
 import drivers.common.SPOptions;
 
-import common.map.fixtures.terrain.Forest;
+import legacy.map.fixtures.terrain.Forest;
 
 /**
  * A driver to remove duplicate hills, forests, etc. from the map (to reduce

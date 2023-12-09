@@ -2,7 +2,7 @@ package drivers.turnrunning.applets;
 
 import drivers.common.cli.ICLIHelper;
 
-import common.idreg.IDRegistrar;
+import legacy.idreg.IDRegistrar;
 
 import drivers.turnrunning.ITurnRunningModel;
 import java.util.Collections;

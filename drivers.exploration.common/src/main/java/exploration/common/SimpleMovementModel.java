@@ -7,22 +7,22 @@ import java.util.ArrayList;
 
 import lovelace.util.SingletonRandom;
 
-import common.map.River;
-import common.map.TileType;
-import common.map.TileFixture;
-import common.map.Direction;
-import common.map.HasOwner;
+import legacy.map.River;
+import legacy.map.TileType;
+import legacy.map.TileFixture;
+import legacy.map.Direction;
+import legacy.map.HasOwner;
 
 import common.map.fixtures.mobile.worker.WorkerStats;
-import common.map.fixtures.mobile.worker.ISkill;
+import legacy.map.fixtures.mobile.worker.ISkill;
 
-import common.map.fixtures.mobile.IUnit;
-import common.map.fixtures.mobile.IWorker;
+import legacy.map.fixtures.mobile.IUnit;
+import legacy.map.fixtures.mobile.IWorker;
 
-import common.map.fixtures.terrain.Hill;
-import common.map.fixtures.terrain.Forest;
+import legacy.map.fixtures.terrain.Hill;
+import legacy.map.fixtures.terrain.Forest;
 
-import common.map.fixtures.towns.ITownFixture;
+import legacy.map.fixtures.towns.ITownFixture;
 
 import java.util.Collections;
 import java.util.Collection;

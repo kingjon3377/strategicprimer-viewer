@@ -4,11 +4,11 @@ import java.util.HashSet;
 
 import org.javatuples.Pair;
 import org.jetbrains.annotations.Nullable;
-import common.map.TileType;
-import common.map.Point;
-import common.map.MapDimensions;
-import common.map.TileFixture;
-import common.map.fixtures.terrain.Forest;
+import legacy.map.TileType;
+import legacy.map.Point;
+import legacy.map.MapDimensions;
+import legacy.map.TileFixture;
+import legacy.map.fixtures.terrain.Forest;
 
 import java.util.Set;
 import java.util.Map;

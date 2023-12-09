@@ -1,21 +1,21 @@
 package utility;
 
-import common.map.IFixture;
+import legacy.map.IFixture;
 
 import java.util.Map;
 
-import common.map.TileType;
+import legacy.map.TileType;
 import drivers.common.IDriverModel;
 import drivers.common.SimpleMultiMapModel;
 
 import java.util.function.Predicate;
 
-import common.map.River;
-import common.map.Direction;
-import common.map.IMapNG;
-import common.map.IMutableMapNG;
-import common.map.Point;
-import common.map.TileFixture;
+import legacy.map.River;
+import legacy.map.Direction;
+import legacy.map.IMapNG;
+import legacy.map.IMutableMapNG;
+import legacy.map.Point;
+import legacy.map.TileFixture;
 
 public class MapTradeModel extends SimpleMultiMapModel {
     public MapTradeModel(final IMutableMapNG map) {

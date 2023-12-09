@@ -2,8 +2,8 @@ package drivers.generators;
 
 import drivers.common.IDriverModel;
 
-import common.map.Point;
-import common.map.TileFixture;
+import legacy.map.Point;
+import legacy.map.TileFixture;
 
 public interface IPopulatorDriverModel extends IDriverModel { // TODO: Extend IMultiMapDriverModel?
     /**

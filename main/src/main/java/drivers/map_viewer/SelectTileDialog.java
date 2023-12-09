@@ -25,8 +25,8 @@ import lovelace.util.BoxPanel;
 import lovelace.util.AlignedLabel;
 
 import drivers.gui.common.SPDialog;
-import common.map.MapDimensions;
-import common.map.Point;
+import legacy.map.MapDimensions;
+import legacy.map.Point;
 
 /**
  * A dialog to let the user select a tile by coordinates.

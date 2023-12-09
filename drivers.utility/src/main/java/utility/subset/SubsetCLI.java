@@ -9,7 +9,7 @@ import drivers.common.SPOptions;
 
 import drivers.common.cli.ICLIHelper;
 
-import common.map.IMapNG;
+import legacy.map.IMapNG;
 
 import java.util.function.Consumer;
 import java.util.Optional;

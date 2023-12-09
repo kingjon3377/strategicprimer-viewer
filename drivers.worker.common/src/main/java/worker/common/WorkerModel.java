@@ -1,7 +1,7 @@
 package worker.common;
 
 import common.map.HasName;
-import common.map.HasOwner;
+import legacy.map.HasOwner;
 
 import java.util.Collection;
 import java.util.Random;
@@ -9,13 +9,13 @@ import java.util.function.BiPredicate;
 import java.util.Collections;
 import java.util.Optional;
 
-import common.map.fixtures.FixtureIterable;
+import legacy.map.fixtures.FixtureIterable;
 
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
-import common.map.fixtures.mobile.worker.IJob;
+import legacy.map.fixtures.mobile.worker.IJob;
 import lovelace.util.LovelaceLogger;
 import org.javatuples.Pair;
 import org.jetbrains.annotations.Nullable;
@@ -30,35 +30,35 @@ import java.util.Map;
 import java.util.TreeMap;
 import java.util.Deque;
 
-import common.map.HasKind;
-import common.map.HasMutableKind;
-import common.map.HasMutableName;
-import common.map.HasMutableOwner;
-import common.map.IFixture;
-import common.map.IMapNG;
-import common.map.IMutableMapNG;
-import common.map.Point;
+import legacy.map.HasKind;
+import legacy.map.HasMutableKind;
+import legacy.map.HasMutableName;
+import legacy.map.HasMutableOwner;
+import legacy.map.IFixture;
+import legacy.map.IMapNG;
+import legacy.map.IMutableMapNG;
+import legacy.map.Point;
 import common.map.Player;
 
-import common.map.fixtures.UnitMember;
+import legacy.map.fixtures.UnitMember;
 
-import common.map.fixtures.mobile.ProxyFor;
-import common.map.fixtures.mobile.IMutableUnit;
-import common.map.fixtures.mobile.IMutableWorker;
-import common.map.fixtures.mobile.IUnit;
-import common.map.fixtures.mobile.IWorker;
-import common.map.fixtures.mobile.ProxyUnit;
-import common.map.fixtures.towns.IFortress;
-import common.map.fixtures.towns.IMutableFortress;
+import legacy.map.fixtures.mobile.ProxyFor;
+import legacy.map.fixtures.mobile.IMutableUnit;
+import legacy.map.fixtures.mobile.IMutableWorker;
+import legacy.map.fixtures.mobile.IUnit;
+import legacy.map.fixtures.mobile.IWorker;
+import legacy.map.fixtures.mobile.ProxyUnit;
+import legacy.map.fixtures.towns.IFortress;
+import legacy.map.fixtures.towns.IMutableFortress;
 import drivers.common.SimpleMultiMapModel;
 import drivers.common.IDriverModel;
 import drivers.common.IWorkerModel;
 
-import common.map.fixtures.mobile.worker.IMutableJob;
-import common.map.fixtures.mobile.worker.IMutableSkill;
-import common.map.fixtures.mobile.worker.ISkill;
-import common.map.fixtures.mobile.worker.Job;
-import common.map.fixtures.mobile.worker.Skill;
+import legacy.map.fixtures.mobile.worker.IMutableJob;
+import legacy.map.fixtures.mobile.worker.IMutableSkill;
+import legacy.map.fixtures.mobile.worker.ISkill;
+import legacy.map.fixtures.mobile.worker.Job;
+import legacy.map.fixtures.mobile.worker.Skill;
 
 /**
  * A model to underlie the advancement GUI, etc.
@@ -825,7 +825,7 @@ public class WorkerModel extends SimpleMultiMapModel implements IWorkerModel {
 	 * that Job, it is added first; if the worker doesn't have that Job, it
 	 * is added first as in {@link #addJobToWorker}, then the skill is added
 	 * to it. The "contextValue" is passed to {@link
-	 * common.map.fixtures.mobile.worker.IMutableSkill#addHours}; it should
+	 * IMutableSkill#addHours}; it should
 	 * be a random number between 0 and 99.
 	 */
 	@Override
@@ -892,7 +892,7 @@ public class WorkerModel extends SimpleMultiMapModel implements IWorkerModel {
 	 * doesn't have that Job, it is added first as in {@link
 	 * #addJobToWorker}, then the skill is added to it. The
 	 * "contextValue" is used to calculate a new value passed to {@link
-	 * common.map.fixtures.mobile.worker.IMutableSkill#addHours} for each
+	 * IMutableSkill#addHours} for each
 	 * worker.
 	 *
 	 * TODO: Take a level-up listener?

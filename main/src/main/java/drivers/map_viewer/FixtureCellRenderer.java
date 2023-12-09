@@ -3,8 +3,8 @@ package drivers.map_viewer;
 import java.io.FileNotFoundException;
 import java.nio.file.NoSuchFileException;
 
-import common.map.TileFixture;
-import common.map.HasImage;
+import legacy.map.TileFixture;
+import legacy.map.HasImage;
 
 import java.awt.image.BufferedImage;
 

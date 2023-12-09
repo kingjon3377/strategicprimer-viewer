@@ -5,8 +5,8 @@ import org.jetbrains.annotations.Nullable;
 import java.awt.BorderLayout;
 import java.awt.Adjustable;
 
-import common.map.MapDimensions;
-import common.map.Point;
+import legacy.map.MapDimensions;
+import legacy.map.Point;
 
 import lovelace.util.BorderedPanel;
 
@@ -16,7 +16,7 @@ import drivers.common.SelectionChangeListener;
 import javax.swing.JScrollBar;
 import javax.swing.BoundedRangeModel;
 
-import common.map.fixtures.mobile.IUnit;
+import legacy.map.fixtures.mobile.IUnit;
 
 /**
  * A class to change the visible area of the map based on the user's use of the scrollbars.

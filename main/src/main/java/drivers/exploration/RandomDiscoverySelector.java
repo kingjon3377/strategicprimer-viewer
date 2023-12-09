@@ -2,7 +2,7 @@ package drivers.exploration;
 
 import drivers.common.SelectionChangeListener;
 
-import common.map.fixtures.mobile.IUnit;
+import legacy.map.fixtures.mobile.IUnit;
 
 import drivers.map_viewer.FixtureList;
 
@@ -11,8 +11,8 @@ import java.util.function.Supplier;
 import javax.swing.ListModel;
 import javax.swing.SwingUtilities;
 
-import common.map.TileFixture;
-import common.map.Point;
+import legacy.map.TileFixture;
+import legacy.map.Point;
 
 import exploration.common.SimpleMovementModel;
 import exploration.common.IExplorationModel;

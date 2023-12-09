@@ -3,9 +3,9 @@ package drivers.generators;
 import drivers.common.IDriverModel;
 import drivers.common.SimpleDriverModel;
 
-import common.map.IMutableMapNG;
-import common.map.Point;
-import common.map.TileFixture;
+import legacy.map.IMutableMapNG;
+import legacy.map.Point;
+import legacy.map.TileFixture;
 
 public class PopulatorDriverModel extends SimpleDriverModel implements IPopulatorDriverModel {
 	public PopulatorDriverModel(final IMutableMapNG map) {

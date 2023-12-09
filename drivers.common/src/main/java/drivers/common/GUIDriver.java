@@ -2,7 +2,7 @@ package drivers.common;
 
 import java.nio.file.Path;
 
-import common.map.IMutableMapNG;
+import legacy.map.IMutableMapNG;
 
 /**
  * An interface for drivers which operate on a map model of some kind; being

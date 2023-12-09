@@ -12,7 +12,7 @@ import drivers.common.SimpleDriverModel;
 
 import drivers.common.cli.ICLIHelper;
 
-import common.map.IMutableMapNG;
+import legacy.map.IMutableMapNG;
 
 import com.google.auto.service.AutoService;
 

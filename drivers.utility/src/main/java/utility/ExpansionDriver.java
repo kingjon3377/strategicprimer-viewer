@@ -4,11 +4,11 @@ import java.util.stream.Collectors;
 import java.util.function.Predicate;
 
 import common.map.Player;
-import common.map.HasOwner;
-import common.map.Point;
-import common.map.IMapNG;
+import legacy.map.HasOwner;
+import legacy.map.Point;
+import legacy.map.IMapNG;
 
-import common.map.fixtures.towns.ITownFixture;
+import legacy.map.fixtures.towns.ITownFixture;
 
 import drivers.common.SPOptions;
 import drivers.common.CLIDriver;

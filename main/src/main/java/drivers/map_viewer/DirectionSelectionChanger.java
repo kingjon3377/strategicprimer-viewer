@@ -5,7 +5,7 @@ import java.awt.event.MouseWheelEvent;
 
 import lovelace.util.Platform;
 
-import common.map.Point;
+import legacy.map.Point;
 
 /**
  * A class for moving the cursor around the single-component map UI, including

@@ -1,21 +1,21 @@
 package drivers.turnrunning.applets;
 
-import common.map.IFixture;
+import legacy.map.IFixture;
 import common.map.Player;
-import common.map.Point;
+import legacy.map.Point;
 
-import common.map.TileFixture;
-import common.map.fixtures.IMutableResourcePile;
+import legacy.map.TileFixture;
+import legacy.map.fixtures.IMutableResourcePile;
 import exploration.common.HuntingModel;
 
-import common.map.fixtures.mobile.AnimalTracks;
-import common.map.fixtures.mobile.Animal;
-import common.map.fixtures.mobile.IUnit;
+import legacy.map.fixtures.mobile.AnimalTracks;
+import legacy.map.fixtures.mobile.Animal;
+import legacy.map.fixtures.mobile.IUnit;
 import common.map.fixtures.mobile.AnimalPlurals;
 
 import drivers.common.cli.ICLIHelper;
 
-import common.idreg.IDRegistrar;
+import legacy.idreg.IDRegistrar;
 
 import drivers.resourceadding.ResourceAddingCLIHelper;
 

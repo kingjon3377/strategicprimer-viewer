@@ -10,10 +10,10 @@ import java.util.TreeMap;
 import java.util.HashMap;
 import java.util.Set;
 
-import common.DistanceComparator;
-import common.map.IFixture;
-import common.map.MapDimensions;
-import common.map.Point;
+import legacy.DistanceComparator;
+import legacy.map.IFixture;
+import legacy.map.MapDimensions;
+import legacy.map.Point;
 
 import java.util.function.Function;
 import java.util.Comparator;

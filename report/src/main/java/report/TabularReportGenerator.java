@@ -22,11 +22,11 @@ import lovelace.util.BorderedPanel;
 import lovelace.util.ThrowingConsumer;
 
 import common.map.Player;
-import common.map.IFixture;
-import common.map.MapDimensions;
-import common.map.Point;
-import common.map.IMapNG;
-import common.map.fixtures.TerrainFixture;
+import legacy.map.IFixture;
+import legacy.map.MapDimensions;
+import legacy.map.Point;
+import legacy.map.IMapNG;
+import legacy.map.fixtures.TerrainFixture;
 import report.generators.tabular.UnitTabularReportGenerator;
 import report.generators.tabular.FortressTabularReportGenerator;
 import report.generators.tabular.AnimalTabularReportGenerator;

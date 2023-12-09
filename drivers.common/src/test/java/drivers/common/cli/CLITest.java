@@ -16,7 +16,7 @@ import java.util.Collections;
 
 import common.map.PlayerImpl;
 import common.map.Player;
-import common.map.Point;
+import legacy.map.Point;
 
 import java.math.BigDecimal;
 import java.util.function.Function;

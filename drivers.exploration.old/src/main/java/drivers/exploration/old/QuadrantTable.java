@@ -11,11 +11,11 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Collections;
 
-import common.map.Point;
-import common.map.TileType;
-import common.map.TileFixture;
-import common.map.MapDimensions;
-import common.map.MapDimensionsImpl;
+import legacy.map.Point;
+import legacy.map.TileType;
+import legacy.map.TileFixture;
+import legacy.map.MapDimensions;
+import legacy.map.MapDimensionsImpl;
 
 /**
  * An {@link EncounterTable} where results are by quadrant of the map.

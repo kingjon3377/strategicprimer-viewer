@@ -28,10 +28,10 @@ import static lovelace.util.FunctionalSplitPane.horizontalSplit;
 
 import lovelace.util.FormattedLabel;
 import common.map.HasPortrait;
-import common.map.HasOwner;
-import common.map.TileFixture;
-import common.map.TileType;
-import common.map.Point;
+import legacy.map.HasOwner;
+import legacy.map.TileFixture;
+import legacy.map.TileType;
+import legacy.map.Point;
 
 import javax.swing.event.ListSelectionListener;
 import javax.swing.event.ListSelectionEvent;
@@ -44,11 +44,11 @@ import java.awt.Color;
 import drivers.common.VersionChangeListener;
 import drivers.common.IFixtureEditingModel;
 import drivers.common.SelectionChangeListener;
-import common.idreg.IDFactoryFiller;
+import legacy.idreg.IDFactoryFiller;
 
 import java.util.Comparator;
 
-import common.map.fixtures.mobile.IUnit;
+import legacy.map.fixtures.mobile.IUnit;
 
 import worker.common.IFixtureEditHelper;
 

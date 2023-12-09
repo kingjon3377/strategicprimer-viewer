@@ -12,11 +12,11 @@ import lovelace.util.DelayedRemovalMap;
 
 import java.util.List;
 
-import common.map.IFixture;
-import common.map.Point;
-import common.map.MapDimensions;
-import common.map.IMapNG;
-import common.map.fixtures.TextFixture;
+import legacy.map.IFixture;
+import legacy.map.Point;
+import legacy.map.MapDimensions;
+import legacy.map.IMapNG;
+import legacy.map.fixtures.TextFixture;
 
 /**
  * A report generator for arbitrary-text notes.

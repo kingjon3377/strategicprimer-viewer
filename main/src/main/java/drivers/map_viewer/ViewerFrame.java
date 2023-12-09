@@ -43,7 +43,7 @@ import lovelace.util.BorderedPanel;
 import static lovelace.util.FunctionalSplitPane.verticalSplit;
 
 import drivers.common.FixtureMatcher;
-import common.map.IMutableMapNG;
+import legacy.map.IMutableMapNG;
 import drivers.MapReaderAdapter;
 import common.xmlio.Warning;
 

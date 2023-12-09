@@ -4,11 +4,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.Test;
 
-import common.map.Point;
+import legacy.map.Point;
 import common.map.PlayerCollection;
-import common.map.MapDimensionsImpl;
-import common.map.Direction;
-import common.map.SPMapNG;
+import legacy.map.MapDimensionsImpl;
+import legacy.map.Direction;
+import legacy.map.SPMapNG;
 
 /**
  * Tests that the movement code gets its most basic functionality, namely

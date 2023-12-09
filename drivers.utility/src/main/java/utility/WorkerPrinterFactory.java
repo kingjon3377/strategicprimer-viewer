@@ -14,7 +14,7 @@ import drivers.common.cli.ICLIHelper;
 import exploration.common.IExplorationModel;
 import exploration.common.ExplorationModel;
 
-import common.map.IMutableMapNG;
+import legacy.map.IMutableMapNG;
 
 import com.google.auto.service.AutoService;
 

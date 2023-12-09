@@ -1,7 +1,7 @@
 package drivers.map_viewer;
 
-import common.map.TileType;
-import common.map.FakeFixture;
+import legacy.map.TileType;
+import legacy.map.FakeFixture;
 import lovelace.util.LovelaceLogger;
 
 /**

@@ -10,9 +10,9 @@ import org.jetbrains.annotations.Nullable;
 import lovelace.util.DelayedRemovalMap;
 
 import common.map.Player;
-import common.map.IFixture;
-import common.map.MapDimensions;
-import common.map.Point;
+import legacy.map.IFixture;
+import legacy.map.MapDimensions;
+import legacy.map.Point;
 
 import javax.swing.table.TableModel;
 import javax.swing.table.DefaultTableModel;

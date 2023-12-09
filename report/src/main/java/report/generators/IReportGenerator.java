@@ -6,9 +6,9 @@ import lovelace.util.TriConsumer;
 import org.javatuples.Pair;
 import lovelace.util.DelayedRemovalMap;
 
-import common.map.Point;
-import common.map.IFixture;
-import common.map.IMapNG;
+import legacy.map.Point;
+import legacy.map.IFixture;
+import legacy.map.IMapNG;
 
 import java.util.Map;
 import java.util.List;

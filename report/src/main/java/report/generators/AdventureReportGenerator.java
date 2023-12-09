@@ -9,11 +9,11 @@ import lovelace.util.DelayedRemovalMap;
 import java.util.stream.Collectors;
 
 import common.map.Player;
-import common.map.IFixture;
-import common.map.Point;
-import common.map.MapDimensions;
-import common.map.IMapNG;
-import common.map.fixtures.explorable.AdventureFixture;
+import legacy.map.IFixture;
+import legacy.map.Point;
+import legacy.map.MapDimensions;
+import legacy.map.IMapNG;
+import legacy.map.fixtures.explorable.AdventureFixture;
 
 /**
  * A report generator for adventure hooks.

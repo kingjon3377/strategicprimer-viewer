@@ -1,6 +1,6 @@
 package changesets;
 
-import common.map.IMutableMapNG;
+import legacy.map.IMutableMapNG;
 
 /**
  * An interface to represent a set of changes that can be made to a map (TODO:

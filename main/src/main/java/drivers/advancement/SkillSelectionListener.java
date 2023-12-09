@@ -1,7 +1,7 @@
 package drivers.advancement;
 
-import common.map.fixtures.mobile.worker.ISkill;
-import common.map.fixtures.mobile.worker.IJob;
+import legacy.map.fixtures.mobile.worker.ISkill;
+import legacy.map.fixtures.mobile.worker.IJob;
 
 import org.jetbrains.annotations.Nullable;
 

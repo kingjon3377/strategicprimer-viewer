@@ -1,34 +1,34 @@
 package drivers.turnrunning;
 
-import common.map.HasExtent;
-import common.map.HasOwner;
-import common.map.HasPopulation;
-import common.map.IFixture;
-import common.map.IMutableMapNG;
+import legacy.map.HasExtent;
+import legacy.map.HasOwner;
+import legacy.map.HasPopulation;
+import legacy.map.IFixture;
+import legacy.map.IMutableMapNG;
 import common.map.Player;
-import common.map.Point;
-import common.map.TileFixture;
-import common.map.fixtures.FixtureIterable;
-import common.map.fixtures.FortressMember;
-import common.map.fixtures.IMutableResourcePile;
-import common.map.fixtures.IResourcePile;
+import legacy.map.Point;
+import legacy.map.TileFixture;
+import legacy.map.fixtures.FixtureIterable;
+import legacy.map.fixtures.FortressMember;
+import legacy.map.fixtures.IMutableResourcePile;
+import legacy.map.fixtures.IResourcePile;
 import common.map.fixtures.Quantity;
-import common.map.fixtures.ResourcePileImpl;
-import common.map.fixtures.UnitMember;
-import common.map.fixtures.mobile.Animal;
-import common.map.fixtures.mobile.AnimalImpl;
-import common.map.fixtures.mobile.IMutableUnit;
-import common.map.fixtures.mobile.IMutableWorker;
-import common.map.fixtures.mobile.IUnit;
-import common.map.fixtures.mobile.IWorker;
-import common.map.fixtures.mobile.worker.IJob;
-import common.map.fixtures.mobile.worker.IMutableJob;
-import common.map.fixtures.mobile.worker.IMutableSkill;
-import common.map.fixtures.mobile.worker.Job;
-import common.map.fixtures.mobile.worker.ISkill;
-import common.map.fixtures.mobile.worker.Skill;
-import common.map.fixtures.towns.IFortress;
-import common.map.fixtures.towns.IMutableFortress;
+import legacy.map.fixtures.ResourcePileImpl;
+import legacy.map.fixtures.UnitMember;
+import legacy.map.fixtures.mobile.Animal;
+import legacy.map.fixtures.mobile.AnimalImpl;
+import legacy.map.fixtures.mobile.IMutableUnit;
+import legacy.map.fixtures.mobile.IMutableWorker;
+import legacy.map.fixtures.mobile.IUnit;
+import legacy.map.fixtures.mobile.IWorker;
+import legacy.map.fixtures.mobile.worker.IJob;
+import legacy.map.fixtures.mobile.worker.IMutableJob;
+import legacy.map.fixtures.mobile.worker.IMutableSkill;
+import legacy.map.fixtures.mobile.worker.Job;
+import legacy.map.fixtures.mobile.worker.ISkill;
+import legacy.map.fixtures.mobile.worker.Skill;
+import legacy.map.fixtures.towns.IFortress;
+import legacy.map.fixtures.towns.IMutableFortress;
 import drivers.common.IDriverModel;
 import exploration.common.ExplorationModel;
 
@@ -318,7 +318,7 @@ public class TurnRunningModel extends ExplorationModel implements ITurnRunningMo
 	 * doesn't have that Job, it is added first as in {@link
 	 * #addJobToWorker}, then the skill is added to it. The "contextValue" is
 	 * used to calculate a new value passed to {@link
-	 * common.map.fixtures.mobile.worker.IMutableSkill#addHours} for each
+	 * IMutableSkill#addHours} for each
 	 * worker.
 	 *
 	 * TODO: Take a level-up listener?
@@ -344,7 +344,7 @@ public class TurnRunningModel extends ExplorationModel implements ITurnRunningMo
 	 * that Job, it is added first; if the worker doesn't have that Job, it
 	 * is added first as in {@link #addJobToWorker}, then the skill is added
 	 * to it. The "contextValue" is passed to {@link
-	 * common.map.fixtures.mobile.worker.IMutableSkill#addHours}; it should
+	 * IMutableSkill#addHours}; it should
 	 * be a random number between 0 and 99.
 	 */
 	@Override
@@ -455,7 +455,7 @@ public class TurnRunningModel extends ExplorationModel implements ITurnRunningMo
 
 	/**
 	 * Reduce the matching {@link IResourcePile resource}, in a {@link
-	 * common.map.fixtures.mobile.IUnit unit} or {@link IFortress fortress}
+	 * legacy.map.fixtures.mobile.IUnit unit} or {@link IFortress fortress}
 	 * owned by the specified player, by the
 	 * specified amount. Returns true if any (mutable) resource piles
 	 * matched in any of the maps, false otherwise.
@@ -507,8 +507,8 @@ public class TurnRunningModel extends ExplorationModel implements ITurnRunningMo
 
 	/**
 	 * Remove the given {@link IResourcePile resource} from a {@link
-	 * common.map.fixtures.mobile.IUnit unit} or {@link
-	 * common.map.fixtures.towns.IFortress fortress} owned by
+	 * legacy.map.fixtures.mobile.IUnit unit} or {@link
+	 * IFortress fortress} owned by
 	 * the specified player in all maps. Returns true if any matched in
 	 * any of the maps, false otherwise.
 	 *
@@ -748,7 +748,7 @@ public class TurnRunningModel extends ExplorationModel implements ITurnRunningMo
 	 * unit was found in at least one map, false otherwise.
 	 *
 	 * Note the last two parameters are <em>reversed</em> from the {@link
-	 * common.map.fixtures.mobile.AnimalImpl} constructor, to better fit the needs of <em>our</em> callers.
+	 * legacy.map.fixtures.mobile.AnimalImpl} constructor, to better fit the needs of <em>our</em> callers.
 	 */
 	@Override
 	public boolean addAnimal(final IUnit container, final String kind, final String status, final int id, final int population, final int born) {

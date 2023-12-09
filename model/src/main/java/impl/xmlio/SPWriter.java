@@ -6,7 +6,7 @@ import javax.xml.stream.XMLStreamException;
 
 import lovelace.util.ThrowingConsumer;
 
-import common.map.IMapNG;
+import legacy.map.IMapNG;
 
 /**
  * An interface for map (and other SP XML) writers.

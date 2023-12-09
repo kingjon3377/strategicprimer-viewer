@@ -1,6 +1,6 @@
 package utility;
 
-import common.map.SubsettableFixture;
+import legacy.map.SubsettableFixture;
 
 import java.util.Collection;
 import java.util.Random;
@@ -10,15 +10,15 @@ import lovelace.util.LovelaceLogger;
 import lovelace.util.SingletonRandom;
 import org.jetbrains.annotations.Nullable;
 
-import common.map.TileType;
+import legacy.map.TileType;
 
 import java.util.stream.Collectors;
 import java.util.Optional;
 
-import common.map.River;
-import common.map.fixtures.FixtureIterable;
-import common.map.fixtures.UnitMember;
-import common.map.fixtures.FortressMember;
+import legacy.map.River;
+import legacy.map.fixtures.FixtureIterable;
+import legacy.map.fixtures.UnitMember;
+import legacy.map.fixtures.FortressMember;
 
 import java.util.Collections;
 import java.util.LinkedList;
@@ -29,16 +29,16 @@ import org.javatuples.Quartet;
 import java.nio.file.Path;
 import java.util.Map;
 
-import common.map.Direction;
-import common.map.HasExtent;
-import common.map.HasOwner;
-import common.map.HasPopulation;
-import common.map.IFixture;
-import common.map.IMapNG;
-import common.map.IMutableMapNG;
+import legacy.map.Direction;
+import legacy.map.HasExtent;
+import legacy.map.HasOwner;
+import legacy.map.HasPopulation;
+import legacy.map.IFixture;
+import legacy.map.IMapNG;
+import legacy.map.IMutableMapNG;
 import common.map.Player;
-import common.map.Point;
-import common.map.TileFixture;
+import legacy.map.Point;
+import legacy.map.TileFixture;
 
 import drivers.common.SimpleMultiMapModel;
 import drivers.common.IDriverModel;
@@ -46,18 +46,18 @@ import drivers.common.IDriverModel;
 import java.util.List;
 import java.util.ArrayList;
 
-import common.map.fixtures.Ground;
+import legacy.map.fixtures.Ground;
 
-import common.map.fixtures.resources.CacheFixture;
+import legacy.map.fixtures.resources.CacheFixture;
 
-import common.map.fixtures.mobile.Animal;
-import common.map.fixtures.mobile.IMutableUnit;
-import common.map.fixtures.mobile.IUnit;
+import legacy.map.fixtures.mobile.Animal;
+import legacy.map.fixtures.mobile.IMutableUnit;
+import legacy.map.fixtures.mobile.IUnit;
 
-import common.map.fixtures.terrain.Forest;
+import legacy.map.fixtures.terrain.Forest;
 
-import common.map.fixtures.towns.IMutableFortress;
-import common.map.fixtures.towns.ITownFixture;
+import legacy.map.fixtures.towns.IMutableFortress;
+import legacy.map.fixtures.towns.ITownFixture;
 
 import exploration.common.Speed;
 import exploration.common.SurroundingPointIterable;

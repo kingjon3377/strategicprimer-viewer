@@ -40,11 +40,11 @@ import drivers.common.MapChangeListener;
 import drivers.common.SelectionChangeListener;
 import drivers.common.FixtureMatcher;
 
-import common.map.Point;
-import common.map.TileFixture;
-import common.map.MapDimensions;
+import legacy.map.Point;
+import legacy.map.TileFixture;
+import legacy.map.MapDimensions;
 
-import common.map.fixtures.mobile.IUnit;
+import legacy.map.fixtures.mobile.IUnit;
 
 import java.awt.image.BufferedImage;
 

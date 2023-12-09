@@ -4,7 +4,7 @@ import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.datatransfer.Transferable;
 
-import common.map.TileFixture;
+import legacy.map.TileFixture;
 
 /**
  * A class to transfer a TileFixture by drag-and-drop.

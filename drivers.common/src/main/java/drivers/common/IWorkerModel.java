@@ -6,8 +6,8 @@ import org.jetbrains.annotations.Nullable;
 
 import common.map.Player;
 
-import common.map.fixtures.mobile.IUnit;
-import common.map.fixtures.towns.IFortress;
+import legacy.map.fixtures.mobile.IUnit;
+import legacy.map.fixtures.towns.IFortress;
 
 /**
  * A driver model for the worker management app and the advancement app, aiming

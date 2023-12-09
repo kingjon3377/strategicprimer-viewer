@@ -2,7 +2,7 @@ package drivers.resourceadding;
 
 import drivers.common.cli.ICLIHelper;
 
-import common.map.IMutableMapNG;
+import legacy.map.IMutableMapNG;
 
 import drivers.common.SPOptions;
 import drivers.common.ModelDriver;

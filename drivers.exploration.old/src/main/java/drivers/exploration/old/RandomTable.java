@@ -2,10 +2,10 @@ package drivers.exploration.old;
 
 import org.javatuples.Pair;
 import org.jetbrains.annotations.Nullable;
-import common.map.TileType;
-import common.map.Point;
-import common.map.MapDimensions;
-import common.map.TileFixture;
+import legacy.map.TileType;
+import legacy.map.Point;
+import legacy.map.MapDimensions;
+import legacy.map.TileFixture;
 import lovelace.util.SingletonRandom;
 
 import java.util.stream.Stream;

@@ -29,21 +29,21 @@ import javax.imageio.ImageIO;
 
 import lovelace.util.EnumCounter;
 
-import common.map.TileType;
-import common.map.Point;
-import common.map.IMutableMapNG;
-import common.map.SPMapNG;
-import common.map.MapDimensionsImpl;
+import legacy.map.TileType;
+import legacy.map.Point;
+import legacy.map.IMutableMapNG;
+import legacy.map.SPMapNG;
+import legacy.map.MapDimensionsImpl;
 import common.map.PlayerCollection;
 import common.map.HasName;
-import common.map.IMapNG;
+import legacy.map.IMapNG;
 
-import impl.xmlio.MapIOHelper;
+import legacy.xmlio.MapIOHelper;
 
-import common.idreg.IDRegistrar;
-import common.idreg.IDFactory;
+import legacy.idreg.IDRegistrar;
+import legacy.idreg.IDFactory;
 
-import common.map.fixtures.terrain.Forest;
+import legacy.map.fixtures.terrain.Forest;
 
 import exploration.common.SurroundingPointIterable;
 import org.javatuples.Pair;

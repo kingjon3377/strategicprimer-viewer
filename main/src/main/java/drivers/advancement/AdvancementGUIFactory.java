@@ -20,7 +20,7 @@ import worker.common.WorkerModel;
 
 import drivers.gui.common.SPFileChooser;
 
-import common.map.IMutableMapNG;
+import legacy.map.IMutableMapNG;
 
 import lovelace.util.FileChooser;
 

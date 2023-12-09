@@ -1,8 +1,8 @@
 package drivers.common;
 
-import common.map.IMapNG;
-import common.map.IMutableMapNG;
-import common.map.MapDimensions;
+import legacy.map.IMapNG;
+import legacy.map.IMutableMapNG;
+import legacy.map.MapDimensions;
 
 import java.nio.file.Path;
 

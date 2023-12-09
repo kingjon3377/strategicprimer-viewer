@@ -30,7 +30,7 @@ import drivers.common.ReadOnlyDriver;
 
 import drivers.common.cli.ICLIHelper;
 
-import common.map.IMapNG;
+import legacy.map.IMapNG;
 
 import report.TabularReportGenerator;
 

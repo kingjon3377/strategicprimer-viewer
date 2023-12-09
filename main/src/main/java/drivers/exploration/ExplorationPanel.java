@@ -16,19 +16,19 @@ import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import common.map.Direction;
-import common.map.FakeFixture;
-import common.map.HasExtent;
-import common.map.HasOwner;
-import common.map.HasPopulation;
-import common.map.IFixture;
-import common.map.IMapNG;
+import legacy.map.Direction;
+import legacy.map.FakeFixture;
+import legacy.map.HasExtent;
+import legacy.map.HasOwner;
+import legacy.map.HasPopulation;
+import legacy.map.IFixture;
+import legacy.map.IMapNG;
 import common.map.Player;
 import common.map.PlayerImpl;
-import common.map.Point;
-import common.map.River;
-import common.map.TileFixture;
-import common.map.TileType;
+import legacy.map.Point;
+import legacy.map.River;
+import legacy.map.TileFixture;
+import legacy.map.TileType;
 import lovelace.util.BorderedPanel;
 
 import static lovelace.util.MenuUtils.createMenuItem;
@@ -52,7 +52,7 @@ import exploration.common.Speed;
 import exploration.common.TraversalImpossibleException;
 import exploration.common.IExplorationModel;
 
-import common.map.fixtures.towns.Village;
+import legacy.map.fixtures.towns.Village;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
@@ -65,9 +65,9 @@ import drivers.map_viewer.FixtureFilterTableModel;
 import drivers.map_viewer.FixtureListModel;
 import drivers.map_viewer.FixtureList;
 
-import common.map.fixtures.mobile.IUnit;
-import common.map.fixtures.mobile.AnimalTracks;
-import common.map.fixtures.mobile.Animal;
+import legacy.map.fixtures.mobile.IUnit;
+import legacy.map.fixtures.mobile.AnimalTracks;
+import legacy.map.fixtures.mobile.Animal;
 
 import java.awt.Dimension;
 
@@ -87,8 +87,8 @@ import javax.swing.JPanel;
 import javax.swing.ComboBoxModel;
 import javax.swing.KeyStroke;
 
-import common.idreg.IDRegistrar;
-import common.idreg.IDFactoryFiller;
+import legacy.idreg.IDRegistrar;
+import legacy.idreg.IDFactoryFiller;
 
 import org.jetbrains.annotations.Nullable;
 import worker.common.IFixtureEditHelper;

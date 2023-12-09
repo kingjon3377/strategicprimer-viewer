@@ -9,15 +9,15 @@ import java.io.Reader;
 
 import common.xmlio.SPFormatException;
 import common.xmlio.Warning;
-import impl.xmlio.MapIOHelper;
+import legacy.xmlio.MapIOHelper;
 import drivers.common.IDriverModel;
 import drivers.common.DriverFailedException;
 import drivers.common.IMultiMapModel;
 import drivers.common.SimpleDriverModel;
 import drivers.common.SimpleMultiMapModel;
 
-import common.map.IMapNG;
-import common.map.IMutableMapNG;
+import legacy.map.IMapNG;
+import legacy.map.IMutableMapNG;
 import lovelace.util.LovelaceLogger;
 
 /**

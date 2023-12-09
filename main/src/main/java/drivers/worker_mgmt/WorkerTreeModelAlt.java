@@ -1,7 +1,7 @@
 package drivers.worker_mgmt;
 
 import common.map.HasName;
-import common.map.HasOwner;
+import legacy.map.HasOwner;
 import lovelace.util.LovelaceLogger;
 import org.jetbrains.annotations.Nullable;
 
@@ -16,7 +16,7 @@ import java.util.stream.StreamSupport;
 import java.util.stream.Collectors;
 import java.util.Iterator;
 
-import common.map.fixtures.UnitMember;
+import legacy.map.fixtures.UnitMember;
 
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.MutableTreeNode;
@@ -24,9 +24,9 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
 
-import common.map.fixtures.mobile.IUnit;
+import legacy.map.fixtures.mobile.IUnit;
 import common.map.Player;
-import common.map.HasKind;
+import legacy.map.HasKind;
 import worker.common.IWorkerTreeModel;
 import lovelace.util.IteratorWrapper;
 import lovelace.util.EnumerationWrapper;

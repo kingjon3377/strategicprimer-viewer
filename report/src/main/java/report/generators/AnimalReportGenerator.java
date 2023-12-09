@@ -13,15 +13,15 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Optional;
 
-import common.map.IFixture;
-import common.map.Point;
-import common.map.MapDimensions;
-import common.map.IMapNG;
-import common.map.fixtures.mobile.Animal;
+import legacy.map.IFixture;
+import legacy.map.Point;
+import legacy.map.MapDimensions;
+import legacy.map.IMapNG;
+import legacy.map.fixtures.mobile.Animal;
 import common.map.fixtures.mobile.MaturityModel;
 import common.map.fixtures.mobile.AnimalPlurals;
-import common.map.fixtures.mobile.AnimalTracks;
-import common.map.fixtures.mobile.AnimalOrTracks;
+import legacy.map.fixtures.mobile.AnimalTracks;
+import legacy.map.fixtures.mobile.AnimalOrTracks;
 
 /**
  * A report generator for sightings of animals.

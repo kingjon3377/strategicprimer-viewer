@@ -5,9 +5,9 @@ import java.util.stream.StreamSupport;
 
 import drivers.common.cli.ICLIHelper;
 
-import common.idreg.IDFactoryFiller;
+import legacy.idreg.IDFactoryFiller;
 
-import common.map.IMapNG;
+import legacy.map.IMapNG;
 import common.map.Player;
 
 import drivers.common.SPOptions;
@@ -15,8 +15,8 @@ import drivers.common.CLIDriver;
 
 import java.util.List;
 
-import common.map.fixtures.IResourcePile;
-import common.map.fixtures.Implement;
+import legacy.map.fixtures.IResourcePile;
+import legacy.map.fixtures.Implement;
 
 /**
  * A driver to let the user enter a player's resources and equipment.

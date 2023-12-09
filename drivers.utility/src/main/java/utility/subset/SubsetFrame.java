@@ -22,11 +22,11 @@ import lovelace.util.StreamingLabel;
 
 import static lovelace.util.StreamingLabel.LabelTextColor;
 
-import common.map.MapDimensionsImpl;
+import legacy.map.MapDimensionsImpl;
 import common.map.PlayerCollection;
-import common.map.IMapNG;
-import common.map.SPMapNG;
-import impl.xmlio.MapIOHelper;
+import legacy.map.IMapNG;
+import legacy.map.SPMapNG;
+import legacy.xmlio.MapIOHelper;
 import common.xmlio.Warning;
 import common.xmlio.SPFormatException;
 import drivers.gui.common.SPFrame;

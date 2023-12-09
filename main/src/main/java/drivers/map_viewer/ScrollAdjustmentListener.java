@@ -3,7 +3,7 @@ package drivers.map_viewer;
 import lovelace.util.LovelaceLogger;
 import org.jetbrains.annotations.Nullable;
 
-import common.map.Point;
+import legacy.map.Point;
 
 import javax.swing.BoundedRangeModel;
 

@@ -2,7 +2,7 @@ package drivers.exploration;
 
 import javax.swing.DefaultListModel;
 
-import common.map.fixtures.mobile.IUnit;
+import legacy.map.fixtures.mobile.IUnit;
 
 import drivers.common.PlayerChangeListener;
 

@@ -1,7 +1,7 @@
 package drivers.worker_mgmt;
 
 import common.map.HasName;
-import common.map.HasOwner;
+import legacy.map.HasOwner;
 
 import java.util.Collection;
 
@@ -12,16 +12,16 @@ import java.util.Collections;
 import javax.swing.event.TreeModelListener;
 import javax.swing.event.TreeModelEvent;
 
-import common.map.fixtures.UnitMember;
+import legacy.map.fixtures.UnitMember;
 
 import javax.swing.tree.TreePath;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import common.map.fixtures.mobile.IUnit;
+import legacy.map.fixtures.mobile.IUnit;
 import common.map.Player;
-import common.map.HasKind;
+import legacy.map.HasKind;
 import worker.common.IWorkerTreeModel;
 import drivers.common.IWorkerModel;
 

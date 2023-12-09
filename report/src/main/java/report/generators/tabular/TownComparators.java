@@ -2,12 +2,12 @@ package report.generators.tabular;
 
 import java.util.Comparator;
 
-import common.map.fixtures.towns.ITownFixture;
-import common.map.fixtures.towns.IFortress;
-import common.map.fixtures.towns.Village;
-import common.map.fixtures.towns.City;
-import common.map.fixtures.towns.Town;
-import common.map.fixtures.towns.Fortification;
+import legacy.map.fixtures.towns.ITownFixture;
+import legacy.map.fixtures.towns.IFortress;
+import legacy.map.fixtures.towns.Village;
+import legacy.map.fixtures.towns.City;
+import legacy.map.fixtures.towns.Town;
+import legacy.map.fixtures.towns.Fortification;
 
 /**
  * A class to provide {@link #compareTowns a total ordering} for {@link

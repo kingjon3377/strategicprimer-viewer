@@ -15,7 +15,7 @@ import exploration.common.IExplorationModel;
 
 import common.map.Player;
 
-import common.map.fixtures.mobile.IUnit;
+import legacy.map.fixtures.mobile.IUnit;
 
 /**
  * A CLI to help running exploration.

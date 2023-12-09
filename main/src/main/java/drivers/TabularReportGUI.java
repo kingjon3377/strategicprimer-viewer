@@ -5,7 +5,7 @@ import java.util.OptionalInt;
 
 import lovelace.util.LovelaceLogger;
 import org.jetbrains.annotations.Nullable;
-import common.map.Point;
+import legacy.map.Point;
 import drivers.common.DriverFailedException;
 
 import java.nio.file.Path;
@@ -19,7 +19,7 @@ import drivers.common.MapChangeListener;
 
 import drivers.common.cli.ICLIHelper;
 
-import common.map.IMutableMapNG;
+import legacy.map.IMutableMapNG;
 
 import javax.swing.JOptionPane;
 import javax.swing.JTabbedPane;

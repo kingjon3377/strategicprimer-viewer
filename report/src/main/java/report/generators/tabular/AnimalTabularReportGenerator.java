@@ -5,14 +5,14 @@ import java.util.List;
 import org.javatuples.Pair;
 import lovelace.util.DelayedRemovalMap;
 
-import common.DistanceComparator;
-import common.map.IFixture;
-import common.map.MapDimensions;
-import common.map.Point;
-import common.map.fixtures.mobile.Animal;
+import legacy.DistanceComparator;
+import legacy.map.IFixture;
+import legacy.map.MapDimensions;
+import legacy.map.Point;
+import legacy.map.fixtures.mobile.Animal;
 import common.map.fixtures.mobile.MaturityModel;
-import common.map.fixtures.mobile.AnimalTracks;
-import common.map.fixtures.mobile.AnimalOrTracks;
+import legacy.map.fixtures.mobile.AnimalTracks;
+import legacy.map.fixtures.mobile.AnimalOrTracks;
 
 import org.jetbrains.annotations.Nullable;
 

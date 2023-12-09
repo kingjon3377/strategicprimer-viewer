@@ -5,16 +5,16 @@ import java.util.function.Supplier;
 import lovelace.util.LovelaceLogger;
 import org.javatuples.Pair;
 
-import common.map.TileType;
-import common.map.MapDimensions;
-import common.map.Point;
-import common.map.IMapNG;
-import common.map.TileFixture;
-import common.map.IFixture;
-import common.map.fixtures.mobile.Animal;
-import common.map.fixtures.resources.Grove;
-import common.map.fixtures.resources.Shrub;
-import common.map.fixtures.resources.Meadow;
+import legacy.map.TileType;
+import legacy.map.MapDimensions;
+import legacy.map.Point;
+import legacy.map.IMapNG;
+import legacy.map.TileFixture;
+import legacy.map.IFixture;
+import legacy.map.fixtures.mobile.Animal;
+import legacy.map.fixtures.resources.Grove;
+import legacy.map.fixtures.resources.Shrub;
+import legacy.map.fixtures.resources.Meadow;
 import lovelace.util.SingletonRandom;
 
 import java.util.Set;

@@ -1,6 +1,6 @@
 package report.generators;
 
-import common.map.fixtures.Implement;
+import legacy.map.fixtures.Implement;
 
 import java.util.function.Consumer;
 
@@ -13,14 +13,14 @@ import java.util.stream.Collectors;
 import java.util.List;
 
 import common.map.Player;
-import common.map.IFixture;
-import common.map.Point;
-import common.map.MapDimensions;
-import common.map.IMapNG;
-import common.map.fixtures.mobile.IWorker;
+import legacy.map.IFixture;
+import legacy.map.Point;
+import legacy.map.MapDimensions;
+import legacy.map.IMapNG;
+import legacy.map.fixtures.mobile.IWorker;
 import common.map.fixtures.mobile.worker.WorkerStats;
-import common.map.fixtures.mobile.worker.ISkill;
-import common.map.fixtures.mobile.worker.IJob;
+import legacy.map.fixtures.mobile.worker.ISkill;
+import legacy.map.fixtures.mobile.worker.IJob;
 
 /**
  * A report generator for Workers.

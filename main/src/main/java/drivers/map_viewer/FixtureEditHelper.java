@@ -1,15 +1,15 @@
 package drivers.map_viewer;
 
 import common.map.HasName;
-import common.map.HasOwner;
+import legacy.map.HasOwner;
 import org.jetbrains.annotations.Nullable;
 
-import common.map.fixtures.UnitMember;
+import legacy.map.fixtures.UnitMember;
 
-import common.map.fixtures.mobile.IUnit;
+import legacy.map.fixtures.mobile.IUnit;
 
 import common.map.Player;
-import common.map.HasKind;
+import legacy.map.HasKind;
 
 import worker.common.IFixtureEditHelper;
 

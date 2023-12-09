@@ -8,12 +8,12 @@ import org.jetbrains.annotations.Nullable;
 
 import drivers.common.cli.ICLIHelper;
 
-import common.idreg.IDRegistrar;
+import legacy.idreg.IDRegistrar;
 
-import common.map.fixtures.IMutableResourcePile;
+import legacy.map.fixtures.IMutableResourcePile;
 import common.map.fixtures.Quantity;
-import common.map.fixtures.ResourcePileImpl;
-import common.map.fixtures.Implement;
+import legacy.map.fixtures.ResourcePileImpl;
+import legacy.map.fixtures.Implement;
 
 import java.util.Set;
 import java.util.Map;

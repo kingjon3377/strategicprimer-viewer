@@ -1,7 +1,7 @@
 package exploration.common;
 
 import org.javatuples.Pair;
-import common.map.Point;
+import legacy.map.Point;
 
 /**
  * An implementation of a pathfinding algorithm, such as Dijkstra's shortest-path algorithm.

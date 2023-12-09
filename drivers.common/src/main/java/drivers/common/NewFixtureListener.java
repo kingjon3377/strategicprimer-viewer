@@ -1,6 +1,6 @@
 package drivers.common;
 
-import common.map.TileFixture;
+import legacy.map.TileFixture;
 
 /**
  * An interface for things that want to accept a new user-created tile fixture.

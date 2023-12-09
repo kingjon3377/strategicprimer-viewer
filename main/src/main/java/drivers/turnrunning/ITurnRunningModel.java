@@ -1,17 +1,17 @@
 package drivers.turnrunning;
 
-import common.map.IFixture;
+import legacy.map.IFixture;
 import org.jetbrains.annotations.Nullable;
 
-import common.map.IMapNG;
+import legacy.map.IMapNG;
 
 import java.util.function.IntSupplier;
 
-import common.map.HasExtent;
-import common.map.HasPopulation;
+import legacy.map.HasExtent;
+import legacy.map.HasPopulation;
 import common.map.Player;
-import common.map.Point;
-import common.map.TileFixture;
+import legacy.map.Point;
+import legacy.map.TileFixture;
 
 import exploration.common.IExplorationModel;
 
@@ -19,13 +19,13 @@ import java.math.BigDecimal;
 
 import drivers.common.IAdvancementModel;
 
-import common.map.fixtures.FortressMember;
-import common.map.fixtures.IResourcePile;
+import legacy.map.fixtures.FortressMember;
+import legacy.map.fixtures.IResourcePile;
 import common.map.fixtures.Quantity;
 
-import common.map.fixtures.mobile.IUnit;
+import legacy.map.fixtures.mobile.IUnit;
 
-import common.map.fixtures.towns.IFortress;
+import legacy.map.fixtures.towns.IFortress;
 
 /**
  * A model for turn-running apps.
@@ -52,7 +52,7 @@ public interface ITurnRunningModel extends IExplorationModel, IAdvancementModel 
 
     /**
      * Reduce the matching {@link IResourcePile resource}, in a {@link
-     * IUnit unit} or {@link common.map.fixtures.towns.IFortress fortress}
+     * IUnit unit} or {@link IFortress fortress}
      * owned by the specified player, by the
      * specified amount. Returns true if any (mutable) resource piles
      * matched in any of the maps, false otherwise.
@@ -61,7 +61,7 @@ public interface ITurnRunningModel extends IExplorationModel, IAdvancementModel 
 
     /**
      * Remove the given {@link IResourcePile resource} from a {@link IUnit
-     * unit} or {@link common.map.fixtures.towns.IFortress fortress} owned
+     * unit} or {@link IFortress fortress} owned
      * by the specified player in all maps. Returns true if
      * any matched in any of the maps, false otherwise.
      *

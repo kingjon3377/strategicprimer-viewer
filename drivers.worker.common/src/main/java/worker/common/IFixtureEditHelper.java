@@ -1,15 +1,15 @@
 package worker.common;
 
 import common.map.HasName;
-import common.map.HasOwner;
-import common.map.fixtures.UnitMember;
+import legacy.map.HasOwner;
+import legacy.map.fixtures.UnitMember;
 
 import drivers.common.PlayerChangeListener;
 import drivers.common.MapChangeListener;
 
-import common.map.fixtures.mobile.IUnit;
+import legacy.map.fixtures.mobile.IUnit;
 
-import common.map.HasKind;
+import legacy.map.HasKind;
 import common.map.Player;
 
 /**

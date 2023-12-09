@@ -1,21 +1,23 @@
 package exploration.common;
 
-import common.map.IFixture;
+import legacy.map.IFixture;
 
 import java.util.Collection;
 import java.util.List;
 
+import legacy.map.fixtures.Ground;
+import legacy.map.fixtures.resources.StoneDeposit;
 import org.jetbrains.annotations.Nullable;
 import drivers.common.IFixtureEditingModel;
 import drivers.common.SelectionChangeSource;
 import drivers.common.IMultiMapModel;
-import common.map.Point;
+import legacy.map.Point;
 import common.map.Player;
-import common.map.Direction;
-import common.map.River;
-import common.map.TileFixture;
-import common.map.TileType;
-import common.map.fixtures.mobile.IUnit;
+import legacy.map.Direction;
+import legacy.map.River;
+import legacy.map.TileFixture;
+import legacy.map.TileType;
+import legacy.map.fixtures.mobile.IUnit;
 
 /**
  * A model for exploration apps.
@@ -83,9 +85,9 @@ public interface IExplorationModel extends IMultiMapModel, SelectionChangeSource
 
 	/**
 	 * If there is a currently selected unit, change one
-	 * {@link common.map.fixtures.Ground},
-	 * {@link common.map.fixtures.resources.StoneDeposit}, or
-	 * {common.map.fixtures.resources.MineralVein} at the location of that
+	 * {@link Ground},
+	 * {@link StoneDeposit}, or
+	 * {legacy.map.fixtures.resources.MineralVein} at the location of that
 	 * unit from unexposed to exposed (and discover it). This costs MP.
 	 */
 	void dig();

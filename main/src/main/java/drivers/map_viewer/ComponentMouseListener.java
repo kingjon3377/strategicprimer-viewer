@@ -4,7 +4,7 @@ import static drivers.map_viewer.TileViewSize.scaleZoom;
 
 import java.util.List;
 
-import common.map.TileType;
+import legacy.map.TileType;
 
 import java.util.Optional;
 
@@ -15,11 +15,11 @@ import org.javatuples.Pair;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-import common.map.MapDimensions;
-import common.map.Point;
-import common.map.TileFixture;
-import common.map.IMapNG;
-import common.map.fixtures.TerrainFixture;
+import legacy.map.MapDimensions;
+import legacy.map.Point;
+import legacy.map.TileFixture;
+import legacy.map.IMapNG;
+import legacy.map.fixtures.TerrainFixture;
 
 import java.awt.Component;
 

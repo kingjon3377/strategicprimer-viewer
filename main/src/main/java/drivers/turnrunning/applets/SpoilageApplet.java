@@ -1,7 +1,7 @@
 package drivers.turnrunning.applets;
 
 import common.map.Player;
-import common.map.fixtures.IResourcePile;
+import legacy.map.fixtures.IResourcePile;
 import drivers.common.cli.ICLIHelper;
 import drivers.turnrunning.ITurnRunningModel;
 import java.math.BigDecimal;

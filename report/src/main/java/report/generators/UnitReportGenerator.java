@@ -16,18 +16,18 @@ import java.util.Optional;
 import lovelace.util.DelayedRemovalMap;
 
 import common.map.Player;
-import common.map.IFixture;
-import common.map.Point;
-import common.map.MapDimensions;
-import common.map.IMapNG;
-import common.map.fixtures.IResourcePile;
-import common.map.fixtures.FortressMember;
-import common.map.fixtures.Implement;
-import common.map.fixtures.UnitMember;
-import common.map.fixtures.mobile.IWorker;
-import common.map.fixtures.mobile.IUnit;
-import common.map.fixtures.mobile.Animal;
-import common.map.fixtures.mobile.AnimalOrTracks;
+import legacy.map.IFixture;
+import legacy.map.Point;
+import legacy.map.MapDimensions;
+import legacy.map.IMapNG;
+import legacy.map.fixtures.IResourcePile;
+import legacy.map.fixtures.FortressMember;
+import legacy.map.fixtures.Implement;
+import legacy.map.fixtures.UnitMember;
+import legacy.map.fixtures.mobile.IWorker;
+import legacy.map.fixtures.mobile.IUnit;
+import legacy.map.fixtures.mobile.Animal;
+import legacy.map.fixtures.mobile.AnimalOrTracks;
 
 /**
  * A report generator for units.

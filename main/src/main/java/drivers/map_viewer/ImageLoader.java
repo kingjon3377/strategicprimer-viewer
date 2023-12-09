@@ -8,9 +8,9 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Collections;
 import java.awt.Color;
 
-import common.map.fixtures.terrain.Oasis;
-import common.map.fixtures.terrain.Hill;
-import common.map.fixtures.terrain.Forest;
+import legacy.map.fixtures.terrain.Oasis;
+import legacy.map.fixtures.terrain.Hill;
+import legacy.map.fixtures.terrain.Forest;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
@@ -22,8 +22,8 @@ import lovelace.util.ResourceInputStream;
 
 import java.awt.image.BufferedImage;
 
-import common.map.TileType;
-import common.map.TileFixture;
+import legacy.map.TileType;
+import legacy.map.TileFixture;
 
 import java.io.IOException;
 import java.awt.Image;

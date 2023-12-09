@@ -5,12 +5,12 @@ import org.jetbrains.annotations.Nullable;
 
 import common.map.HasName;
 
-import common.map.fixtures.UnitMember;
+import legacy.map.fixtures.UnitMember;
 
 import drivers.worker_mgmt.UnitMemberListener;
 
-import common.map.fixtures.mobile.worker.ISkill;
-import common.map.fixtures.mobile.worker.IJob;
+import legacy.map.fixtures.mobile.worker.ISkill;
+import legacy.map.fixtures.mobile.worker.IJob;
 
 /**
  * A listener to print a line whenever a worker gains a level.

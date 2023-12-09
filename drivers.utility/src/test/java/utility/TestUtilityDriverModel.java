@@ -1,17 +1,17 @@
 package utility;
 
-import common.map.IMutableMapNG;
+import legacy.map.IMutableMapNG;
 import common.map.IMutablePlayerCollection;
-import common.map.MapDimensions;
-import common.map.MapDimensionsImpl;
+import legacy.map.MapDimensions;
+import legacy.map.MapDimensionsImpl;
 import common.map.MutablePlayer;
 import common.map.PlayerCollection;
 import common.map.PlayerImpl;
-import common.map.Point;
-import common.map.SPMapNG;
-import common.map.TileType;
+import legacy.map.Point;
+import legacy.map.SPMapNG;
+import legacy.map.TileType;
 import common.map.fixtures.towns.TownStatus;
-import common.map.fixtures.towns.Village;
+import legacy.map.fixtures.towns.Village;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;

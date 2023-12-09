@@ -11,7 +11,7 @@ import drivers.common.DriverFactory;
 import drivers.common.ModelDriverFactory;
 import drivers.common.ModelDriver;
 
-import common.map.IMutableMapNG;
+import legacy.map.IMutableMapNG;
 
 import com.google.auto.service.AutoService;
 

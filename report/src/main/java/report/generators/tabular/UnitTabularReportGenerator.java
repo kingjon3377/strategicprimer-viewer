@@ -7,14 +7,14 @@ import org.jetbrains.annotations.Nullable;
 
 import lovelace.util.DelayedRemovalMap;
 
-import common.DistanceComparator;
+import legacy.DistanceComparator;
 import common.map.Player;
-import common.map.IFixture;
-import common.map.MapDimensions;
-import common.map.Point;
-import common.map.fixtures.mobile.IUnit;
-import common.map.fixtures.mobile.Animal;
-import common.map.fixtures.UnitMember;
+import legacy.map.IFixture;
+import legacy.map.MapDimensions;
+import legacy.map.Point;
+import legacy.map.fixtures.mobile.IUnit;
+import legacy.map.fixtures.mobile.Animal;
+import legacy.map.fixtures.UnitMember;
 
 import java.util.Comparator;
 import java.util.Map;

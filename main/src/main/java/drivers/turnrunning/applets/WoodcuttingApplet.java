@@ -1,23 +1,23 @@
 package drivers.turnrunning.applets;
 
-import common.map.IFixture;
-import common.map.fixtures.mobile.IUnit;
+import legacy.map.IFixture;
+import legacy.map.fixtures.mobile.IUnit;
 import drivers.common.cli.ICLIHelper;
 
-import common.idreg.IDRegistrar;
+import legacy.idreg.IDRegistrar;
 
-import common.map.fixtures.ResourcePileImpl;
+import legacy.map.fixtures.ResourcePileImpl;
 import common.map.fixtures.Quantity;
 
 import java.math.BigDecimal;
 
 import static lovelace.util.Decimalize.decimalize;
 
-import common.map.fixtures.terrain.Forest;
+import legacy.map.fixtures.terrain.Forest;
 
-import common.map.Point;
-import common.map.HasExtent;
-import common.map.TileFixture;
+import legacy.map.Point;
+import legacy.map.HasExtent;
+import legacy.map.TileFixture;
 
 import drivers.turnrunning.ITurnRunningModel;
 import java.math.RoundingMode;

@@ -4,7 +4,7 @@ import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.datatransfer.Transferable;
 
-import common.map.TileFixture;
+import legacy.map.TileFixture;
 
 import java.util.List;
 import java.util.stream.Stream;

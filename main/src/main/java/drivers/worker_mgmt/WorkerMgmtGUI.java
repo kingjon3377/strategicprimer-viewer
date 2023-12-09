@@ -20,7 +20,7 @@ import worker.common.WorkerModel;
 
 import java.awt.event.ActionEvent;
 
-import common.map.IMutableMapNG;
+import legacy.map.IMutableMapNG;
 import lovelace.util.FileChooser;
 import drivers.gui.common.WindowCloseListener;
 import drivers.gui.common.MenuBroker;

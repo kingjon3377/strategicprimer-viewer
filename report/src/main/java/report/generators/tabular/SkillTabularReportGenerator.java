@@ -4,11 +4,11 @@ import java.util.Comparator;
 
 import org.javatuples.Pair;
 
-import common.map.IFixture;
-import common.map.Point;
-import common.map.fixtures.mobile.IWorker;
-import common.map.fixtures.mobile.worker.IJob;
-import common.map.fixtures.mobile.worker.ISkill;
+import legacy.map.IFixture;
+import legacy.map.Point;
+import legacy.map.fixtures.mobile.IWorker;
+import legacy.map.fixtures.mobile.worker.IJob;
+import legacy.map.fixtures.mobile.worker.ISkill;
 import lovelace.util.DelayedRemovalMap;
 
 import java.util.List;

@@ -4,7 +4,7 @@ import java.awt.event.ActionListener;
 import java.io.Serial;
 import java.util.Arrays;
 
-import common.map.fixtures.FixtureIterable;
+import legacy.map.fixtures.FixtureIterable;
 
 import java.util.stream.StreamSupport;
 
@@ -31,14 +31,14 @@ import static lovelace.util.BoxPanel.BoxAxis;
 
 import lovelace.util.BorderedPanel;
 
-import common.map.IFixture;
+import legacy.map.IFixture;
 import common.map.HasName;
-import common.map.HasKind;
+import legacy.map.HasKind;
 import common.map.Player;
-import common.map.HasOwner;
-import common.map.TileFixture;
-import common.map.PointIterable;
-import common.map.Point;
+import legacy.map.HasOwner;
+import legacy.map.TileFixture;
+import legacy.map.PointIterable;
+import legacy.map.Point;
 import drivers.gui.common.SPDialog;
 
 import java.util.function.Predicate;

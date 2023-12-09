@@ -6,8 +6,8 @@ import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.datatransfer.Transferable;
 
-import common.map.fixtures.mobile.IUnit;
-import common.map.HasMutableKind;
+import legacy.map.fixtures.mobile.IUnit;
+import legacy.map.HasMutableKind;
 
 /**
  * A class to transfer a Unit (to change its kind) by drag-and-drop.

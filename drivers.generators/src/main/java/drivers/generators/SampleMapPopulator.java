@@ -1,14 +1,14 @@
 package drivers.generators;
 
-import common.map.IMapNG;
-import common.map.Point;
-import common.map.TileType;
+import legacy.map.IMapNG;
+import legacy.map.Point;
+import legacy.map.TileType;
 
-import common.idreg.IDRegistrar;
+import legacy.idreg.IDRegistrar;
 
-import common.map.fixtures.terrain.Forest;
+import legacy.map.fixtures.terrain.Forest;
 
-import common.map.fixtures.mobile.AnimalImpl;
+import legacy.map.fixtures.mobile.AnimalImpl;
 
 /**
  * A sample map-populator.

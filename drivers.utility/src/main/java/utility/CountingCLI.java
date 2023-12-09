@@ -1,9 +1,9 @@
 package utility;
 
-import common.map.IFixture;
-import common.map.fixtures.FixtureIterable;
-import common.map.fixtures.IResourcePile;
-import common.map.fixtures.Implement;
+import legacy.map.IFixture;
+import legacy.map.fixtures.FixtureIterable;
+import legacy.map.fixtures.IResourcePile;
+import legacy.map.fixtures.Implement;
 
 import java.util.Map;
 import java.util.Objects;
@@ -22,10 +22,10 @@ import drivers.common.SPOptions;
 
 import drivers.common.cli.ICLIHelper;
 
-import common.map.IMapNG;
-import common.map.TileType;
-import common.map.River;
-import common.map.TileFixture;
+import legacy.map.IMapNG;
+import legacy.map.TileType;
+import legacy.map.River;
+import legacy.map.TileFixture;
 
 import lovelace.util.IntAccumulator;
 import lovelace.util.DecimalAccumulator;
@@ -33,9 +33,9 @@ import lovelace.util.EnumCounter;
 
 import java.math.BigDecimal;
 
-import common.map.fixtures.terrain.Forest;
-import common.map.fixtures.terrain.Hill;
-import common.map.fixtures.terrain.Oasis;
+import legacy.map.fixtures.terrain.Forest;
+import legacy.map.fixtures.terrain.Hill;
+import legacy.map.fixtures.terrain.Oasis;
 
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -44,31 +44,31 @@ import java.util.List;
 import java.util.Collection;
 import java.util.stream.Collectors;
 
-import common.map.fixtures.Ground;
+import legacy.map.fixtures.Ground;
 
-import common.map.fixtures.resources.StoneDeposit;
-import common.map.fixtures.resources.MineralVein;
-import common.map.fixtures.resources.Mine;
-import common.map.fixtures.resources.CacheFixture;
-import common.map.fixtures.resources.Meadow;
-import common.map.fixtures.resources.Grove;
-import common.map.fixtures.resources.Shrub;
+import legacy.map.fixtures.resources.StoneDeposit;
+import legacy.map.fixtures.resources.MineralVein;
+import legacy.map.fixtures.resources.Mine;
+import legacy.map.fixtures.resources.CacheFixture;
+import legacy.map.fixtures.resources.Meadow;
+import legacy.map.fixtures.resources.Grove;
+import legacy.map.fixtures.resources.Shrub;
 
-import common.map.fixtures.explorable.AdventureFixture;
-import common.map.fixtures.explorable.Portal;
-import common.map.fixtures.explorable.Battlefield;
-import common.map.fixtures.explorable.Cave;
+import legacy.map.fixtures.explorable.AdventureFixture;
+import legacy.map.fixtures.explorable.Portal;
+import legacy.map.fixtures.explorable.Battlefield;
+import legacy.map.fixtures.explorable.Cave;
 
-import common.map.fixtures.towns.IFortress;
-import common.map.fixtures.towns.AbstractTown;
+import legacy.map.fixtures.towns.IFortress;
+import legacy.map.fixtures.towns.AbstractTown;
 import common.map.fixtures.towns.TownStatus;
-import common.map.fixtures.towns.Village;
+import legacy.map.fixtures.towns.Village;
 
-import common.map.fixtures.mobile.IUnit;
-import common.map.fixtures.mobile.IWorker;
-import common.map.fixtures.mobile.Immortal;
-import common.map.fixtures.mobile.Animal;
-import common.map.fixtures.mobile.AnimalTracks;
+import legacy.map.fixtures.mobile.IUnit;
+import legacy.map.fixtures.mobile.IWorker;
+import legacy.map.fixtures.mobile.Immortal;
+import legacy.map.fixtures.mobile.Animal;
+import legacy.map.fixtures.mobile.AnimalTracks;
 
 /**
  * An app to report statistics on the contents of the map.

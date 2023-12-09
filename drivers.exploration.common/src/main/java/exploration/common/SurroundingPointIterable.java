@@ -4,8 +4,8 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import common.map.Point;
-import common.map.MapDimensions;
+import legacy.map.Point;
+import legacy.map.MapDimensions;
 
 import java.util.Spliterator;
 import java.util.stream.Stream;

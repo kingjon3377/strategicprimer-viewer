@@ -9,7 +9,7 @@ import org.javatuples.Pair;
 import java.util.Arrays;
 import javax.swing.JComponent;
 
-import common.idreg.IDRegistrar;
+import legacy.idreg.IDRegistrar;
 import drivers.gui.common.SPDialog;
 import drivers.common.NewFixtureSource;
 import drivers.common.NewFixtureListener;
@@ -26,7 +26,7 @@ import java.text.NumberFormat;
 import static lovelace.util.NumParsingHelper.isNumeric;
 import static lovelace.util.NumParsingHelper.parseInt;
 
-import common.map.fixtures.terrain.Forest;
+import legacy.map.fixtures.terrain.Forest;
 
 import java.awt.GridLayout;
 import java.awt.Dimension;

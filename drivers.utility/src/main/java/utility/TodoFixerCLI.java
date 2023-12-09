@@ -1,6 +1,6 @@
 package utility;
 
-import common.map.fixtures.mobile.IMutableUnit;
+import legacy.map.fixtures.mobile.IMutableUnit;
 import drivers.common.DriverFailedException;
 
 import java.io.IOException;
@@ -9,9 +9,9 @@ import drivers.exploration.old.MissingTableException;
 
 import java.util.Set;
 
-import common.map.fixtures.towns.Village;
-import common.map.fixtures.towns.ITownFixture;
-import common.map.fixtures.towns.CommunityStats;
+import legacy.map.fixtures.towns.Village;
+import legacy.map.fixtures.towns.ITownFixture;
+import legacy.map.fixtures.towns.CommunityStats;
 
 import java.util.Random;
 
@@ -26,14 +26,14 @@ import drivers.common.CLIDriver;
 import drivers.common.EmptyOptions;
 import drivers.common.SPOptions;
 
-import common.map.TileType;
-import common.map.Point;
-import common.map.IMapNG;
+import legacy.map.TileType;
+import legacy.map.Point;
+import legacy.map.IMapNG;
 
-import common.map.fixtures.terrain.Forest;
+import legacy.map.fixtures.terrain.Forest;
 
-import common.map.fixtures.IResourcePile;
-import common.map.fixtures.ResourcePileImpl;
+import legacy.map.fixtures.IResourcePile;
+import legacy.map.fixtures.ResourcePileImpl;
 
 import drivers.exploration.old.ExplorationRunner;
 

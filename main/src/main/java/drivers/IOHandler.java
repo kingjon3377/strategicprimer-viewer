@@ -20,7 +20,7 @@ import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 import java.util.function.Consumer;
 
-import impl.xmlio.MapIOHelper;
+import legacy.xmlio.MapIOHelper;
 import drivers.map_viewer.ViewerModel;
 
 import java.awt.event.ActionEvent;
@@ -30,10 +30,10 @@ import drivers.gui.common.ISPWindow;
 import drivers.gui.common.SPFileChooser;
 import common.xmlio.Warning;
 import common.xmlio.SPFormatException;
-import common.map.IMapNG;
+import legacy.map.IMapNG;
 import common.map.PlayerCollection;
-import common.map.IMutableMapNG;
-import common.map.SPMapNG;
+import legacy.map.IMutableMapNG;
+import legacy.map.SPMapNG;
 
 import drivers.common.IDriverModel;
 import drivers.common.ISPDriver;

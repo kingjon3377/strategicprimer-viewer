@@ -1,7 +1,7 @@
 package drivers.map_viewer;
 
 import common.map.HasName;
-import common.map.HasOwner;
+import legacy.map.HasOwner;
 
 import java.util.Collections;
 import java.util.HashSet;
@@ -13,7 +13,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Optional;
 import java.nio.file.Path;
 
-import common.map.fixtures.FixtureIterable;
+import legacy.map.fixtures.FixtureIterable;
 
 import java.util.function.Function;
 import java.util.stream.Stream;
@@ -28,25 +28,25 @@ import java.util.ArrayList;
 import drivers.common.SimpleDriverModel;
 import drivers.common.IDriverModel;
 import drivers.common.SelectionChangeListener;
-import common.map.Point;
-import common.map.HasKind;
-import common.map.HasMutableKind;
-import common.map.HasMutableName;
-import common.map.HasMutableOwner;
-import common.map.IFixture;
-import common.map.IMutableMapNG;
+import legacy.map.Point;
+import legacy.map.HasKind;
+import legacy.map.HasMutableKind;
+import legacy.map.HasMutableName;
+import legacy.map.HasMutableOwner;
+import legacy.map.IFixture;
+import legacy.map.IMutableMapNG;
 import common.map.Player;
-import common.map.River;
-import common.map.TileFixture;
-import common.map.TileType;
+import legacy.map.River;
+import legacy.map.TileFixture;
+import legacy.map.TileType;
 
-import common.map.fixtures.UnitMember;
+import legacy.map.fixtures.UnitMember;
 
-import common.map.fixtures.mobile.IMutableUnit;
-import common.map.fixtures.mobile.IUnit;
+import legacy.map.fixtures.mobile.IMutableUnit;
+import legacy.map.fixtures.mobile.IUnit;
 
-import common.map.fixtures.towns.IFortress;
-import common.map.fixtures.towns.IMutableFortress;
+import legacy.map.fixtures.towns.IFortress;
+import legacy.map.fixtures.towns.IMutableFortress;
 import lovelace.util.Range;
 
 /**

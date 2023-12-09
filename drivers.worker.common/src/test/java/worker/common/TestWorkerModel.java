@@ -15,26 +15,26 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
-import common.map.IMutableMapNG;
-import common.map.SPMapNG;
-import common.map.Point;
-import common.map.MapDimensionsImpl;
+import legacy.map.IMutableMapNG;
+import legacy.map.SPMapNG;
+import legacy.map.Point;
+import legacy.map.MapDimensionsImpl;
 import common.map.Player;
 import common.map.PlayerImpl;
-import common.map.TileFixture;
+import legacy.map.TileFixture;
 import common.map.PlayerCollection;
 
-import common.map.fixtures.mobile.ProxyFor;
-import common.map.fixtures.mobile.IUnit;
-import common.map.fixtures.mobile.Unit;
-import common.map.fixtures.mobile.ProxyUnit;
-import common.map.fixtures.mobile.AnimalImpl;
-import common.map.fixtures.terrain.Oasis;
-import common.map.fixtures.terrain.Hill;
-import common.map.fixtures.terrain.Forest;
-import common.map.fixtures.towns.IMutableFortress;
+import legacy.map.fixtures.mobile.ProxyFor;
+import legacy.map.fixtures.mobile.IUnit;
+import legacy.map.fixtures.mobile.Unit;
+import legacy.map.fixtures.mobile.ProxyUnit;
+import legacy.map.fixtures.mobile.AnimalImpl;
+import legacy.map.fixtures.terrain.Oasis;
+import legacy.map.fixtures.terrain.Hill;
+import legacy.map.fixtures.terrain.Forest;
+import legacy.map.fixtures.towns.IMutableFortress;
 import common.map.fixtures.towns.TownSize;
-import common.map.fixtures.towns.FortressImpl;
+import legacy.map.fixtures.towns.FortressImpl;
 import drivers.common.IWorkerModel;
 
 /**

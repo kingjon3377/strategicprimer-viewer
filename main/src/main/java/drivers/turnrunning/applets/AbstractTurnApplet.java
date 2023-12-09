@@ -1,12 +1,12 @@
 package drivers.turnrunning.applets;
 
-import common.map.IFixture;
+import legacy.map.IFixture;
 
 import java.util.ArrayList;
 
-import common.map.fixtures.UnitMember;
-import common.map.fixtures.FortressMember;
-import common.map.IMapNG;
+import legacy.map.fixtures.UnitMember;
+import legacy.map.fixtures.FortressMember;
+import legacy.map.IMapNG;
 
 import java.util.Comparator;
 import java.util.Optional;
@@ -18,14 +18,14 @@ import org.javatuples.Pair;
 import java.util.List;
 
 import drivers.common.cli.ICLIHelper;
-import common.map.Point;
+import legacy.map.Point;
 import common.map.Player;
-import common.map.TileFixture;
-import common.map.HasPopulation;
+import legacy.map.TileFixture;
+import legacy.map.HasPopulation;
 
-import common.map.fixtures.towns.IFortress;
-import common.map.fixtures.IResourcePile;
-import common.map.fixtures.mobile.IUnit;
+import legacy.map.fixtures.towns.IFortress;
+import legacy.map.fixtures.IResourcePile;
+import legacy.map.fixtures.mobile.IUnit;
 
 import drivers.turnrunning.ITurnRunningModel;
 

@@ -24,14 +24,14 @@ import lovelace.util.FlowPanel;
 
 import lovelace.util.SingletonRandom;
 
-import common.map.fixtures.mobile.worker.ISkill;
-import common.map.fixtures.mobile.worker.IJob;
+import legacy.map.fixtures.mobile.worker.ISkill;
+import legacy.map.fixtures.mobile.worker.IJob;
 
 import drivers.worker_mgmt.UnitMemberListener;
 
-import common.map.fixtures.UnitMember;
+import legacy.map.fixtures.UnitMember;
 
-import common.map.fixtures.mobile.IWorker;
+import legacy.map.fixtures.mobile.IWorker;
 
 import drivers.common.IAdvancementModel;
 

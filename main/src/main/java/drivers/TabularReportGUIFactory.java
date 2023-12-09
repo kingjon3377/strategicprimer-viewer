@@ -18,7 +18,7 @@ import drivers.common.SimpleDriverModel;
 
 import drivers.common.cli.ICLIHelper;
 
-import common.map.IMutableMapNG;
+import legacy.map.IMutableMapNG;
 
 import drivers.gui.common.SPFileChooser;
 

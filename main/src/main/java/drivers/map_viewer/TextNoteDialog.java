@@ -12,7 +12,7 @@ import java.util.List;
 import javax.swing.JTextArea;
 import javax.swing.JButton;
 
-import common.map.fixtures.TextFixture;
+import legacy.map.fixtures.TextFixture;
 
 import lovelace.util.ListenedButton;
 import lovelace.util.BorderedPanel;

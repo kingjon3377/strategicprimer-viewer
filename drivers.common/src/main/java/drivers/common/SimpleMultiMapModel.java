@@ -8,8 +8,8 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Collections;
 
-import common.map.IMapNG;
-import common.map.IMutableMapNG;
+import legacy.map.IMapNG;
+import legacy.map.IMutableMapNG;
 
 /**
  * A superclass for implementations of interfaces inheriting from {@link IMultiMapModel}.

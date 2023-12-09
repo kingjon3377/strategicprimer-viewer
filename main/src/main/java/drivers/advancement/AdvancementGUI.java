@@ -27,7 +27,7 @@ import drivers.gui.common.SPFileChooser;
 
 import java.awt.event.ActionEvent;
 
-import common.map.IMutableMapNG;
+import legacy.map.IMutableMapNG;
 
 import lovelace.util.FileChooser;
 

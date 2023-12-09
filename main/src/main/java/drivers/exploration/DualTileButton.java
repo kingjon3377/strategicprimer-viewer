@@ -11,8 +11,8 @@ import drivers.map_viewer.TileDrawHelper;
 import drivers.map_viewer.Ver2TileDrawHelper;
 import drivers.map_viewer.Coordinate;
 
-import common.map.Point;
-import common.map.IMapNG;
+import legacy.map.Point;
+import legacy.map.IMapNG;
 
 import drivers.common.FixtureMatcher;
 

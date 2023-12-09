@@ -10,7 +10,7 @@ import java.util.List;
 
 import lovelace.util.FileChooser;
 
-import common.map.IMutableMapNG;
+import legacy.map.IMutableMapNG;
 
 import drivers.gui.common.SPFileChooser;
 

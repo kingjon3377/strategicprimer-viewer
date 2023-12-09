@@ -15,7 +15,7 @@ import drivers.common.SPOptions;
 import drivers.common.ParamCount;
 import drivers.common.DriverFactory;
 import drivers.common.cli.ICLIHelper;
-import common.map.IMutableMapNG;
+import legacy.map.IMutableMapNG;
 import drivers.gui.common.SPFileChooser;
 
 import lovelace.util.FileChooser;

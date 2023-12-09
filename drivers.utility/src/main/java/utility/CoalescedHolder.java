@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import common.map.IFixture;
+import legacy.map.IFixture;
 
 import java.util.function.Function;
 import java.util.function.IntFunction;

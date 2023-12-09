@@ -12,11 +12,11 @@ import common.map.HasName;
 import javax.swing.event.TreeModelListener;
 import javax.swing.event.TreeModelEvent;
 
-import common.map.fixtures.mobile.IWorker;
+import legacy.map.fixtures.mobile.IWorker;
 
 import drivers.worker_mgmt.UnitMemberListener;
 
-import common.map.fixtures.UnitMember;
+import legacy.map.fixtures.UnitMember;
 
 import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
@@ -26,8 +26,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import common.map.fixtures.mobile.worker.IJob;
-import common.map.fixtures.mobile.worker.ISkill;
+import legacy.map.fixtures.mobile.worker.IJob;
+import legacy.map.fixtures.mobile.worker.ISkill;
 
 import drivers.common.IAdvancementModel;
 

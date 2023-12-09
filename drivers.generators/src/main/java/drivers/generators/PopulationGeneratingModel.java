@@ -4,33 +4,33 @@ import lovelace.util.LovelaceLogger;
 import drivers.common.IDriverModel;
 import drivers.common.SimpleMultiMapModel;
 
-import common.map.IFixture;
-import common.map.IMapNG;
-import common.map.IMutableMapNG;
+import legacy.map.IFixture;
+import legacy.map.IMapNG;
+import legacy.map.IMutableMapNG;
 import common.map.Player;
-import common.map.Point;
+import legacy.map.Point;
 
-import common.map.fixtures.mobile.Animal;
-import common.map.fixtures.mobile.IMutableUnit;
-import common.map.fixtures.mobile.IMutableWorker;
-import common.map.fixtures.mobile.IUnit;
-import common.map.fixtures.mobile.IWorker;
+import legacy.map.fixtures.mobile.Animal;
+import legacy.map.fixtures.mobile.IMutableUnit;
+import legacy.map.fixtures.mobile.IMutableWorker;
+import legacy.map.fixtures.mobile.IUnit;
+import legacy.map.fixtures.mobile.IWorker;
 
-import common.map.fixtures.terrain.Forest;
+import legacy.map.fixtures.terrain.Forest;
 
-import common.map.fixtures.resources.Grove;
-import common.map.fixtures.resources.Meadow;
-import common.map.fixtures.resources.Shrub;
+import legacy.map.fixtures.resources.Grove;
+import legacy.map.fixtures.resources.Meadow;
+import legacy.map.fixtures.resources.Shrub;
 
-import common.map.fixtures.towns.AbstractTown;
-import common.map.fixtures.towns.CommunityStats;
-import common.map.fixtures.towns.IFortress;
-import common.map.fixtures.towns.ITownFixture;
-import common.map.fixtures.towns.Village;
+import legacy.map.fixtures.towns.AbstractTown;
+import legacy.map.fixtures.towns.CommunityStats;
+import legacy.map.fixtures.towns.IFortress;
+import legacy.map.fixtures.towns.ITownFixture;
+import legacy.map.fixtures.towns.Village;
 
-import common.map.fixtures.mobile.worker.IJob;
-import common.map.fixtures.mobile.worker.IMutableJob;
-import common.map.fixtures.mobile.worker.Job;
+import legacy.map.fixtures.mobile.worker.IJob;
+import legacy.map.fixtures.mobile.worker.IMutableJob;
+import legacy.map.fixtures.mobile.worker.Job;
 
 import java.util.Optional;
 import java.util.Set;

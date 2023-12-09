@@ -6,7 +6,7 @@ import java.math.BigDecimal;
 
 import static lovelace.util.Decimalize.decimalize;
 
-import common.map.fixtures.IResourcePile;
+import legacy.map.fixtures.IResourcePile;
 import common.map.fixtures.Quantity;
 
 import java.util.Comparator;

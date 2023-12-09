@@ -11,8 +11,8 @@ import common.map.Player;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
-import common.map.fixtures.mobile.IWorker;
-import common.map.fixtures.mobile.IUnit;
+import legacy.map.fixtures.mobile.IWorker;
+import legacy.map.fixtures.mobile.IUnit;
 
 import java.util.List;
 

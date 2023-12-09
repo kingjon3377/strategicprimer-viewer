@@ -1,12 +1,12 @@
 package drivers.turnrunning.applets;
 
-import common.idreg.IDRegistrar;
+import legacy.idreg.IDRegistrar;
 import common.map.fixtures.Quantity;
-import common.map.fixtures.mobile.Animal;
+import legacy.map.fixtures.mobile.Animal;
 import common.map.fixtures.mobile.AnimalPlurals;
-import common.map.fixtures.mobile.IUnit;
-import common.map.fixtures.mobile.IWorker;
-import common.map.fixtures.towns.IFortress;
+import legacy.map.fixtures.mobile.IUnit;
+import legacy.map.fixtures.mobile.IWorker;
+import legacy.map.fixtures.towns.IFortress;
 import drivers.common.cli.ICLIHelper;
 import drivers.turnrunning.ITurnRunningModel;
 import java.util.ArrayList;

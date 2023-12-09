@@ -1,6 +1,6 @@
 package drivers.map_viewer;
 
-import common.map.MapDimensions;
+import legacy.map.MapDimensions;
 
 import javax.swing.JScrollBar;
 import javax.swing.JComponent;

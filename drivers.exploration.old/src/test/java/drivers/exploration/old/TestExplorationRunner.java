@@ -12,12 +12,12 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import org.junit.jupiter.api.Test;
 
-import common.map.Point;
-import common.map.TileType;
-import common.map.MapDimensionsImpl;
-import common.map.MapDimensions;
+import legacy.map.Point;
+import legacy.map.TileType;
+import legacy.map.MapDimensionsImpl;
+import legacy.map.MapDimensions;
 
-import common.map.fixtures.terrain.Forest;
+import legacy.map.fixtures.terrain.Forest;
 
 import java.util.Collections;
 import java.util.Arrays;

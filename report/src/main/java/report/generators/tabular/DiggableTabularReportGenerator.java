@@ -7,15 +7,15 @@ import org.jetbrains.annotations.Nullable;
 
 import lovelace.util.DelayedRemovalMap;
 
-import common.DistanceComparator;
-import common.map.IFixture;
-import common.map.MapDimensions;
-import common.map.Point;
-import common.map.fixtures.Ground;
-import common.map.fixtures.MineralFixture;
-import common.map.fixtures.resources.MineralVein;
-import common.map.fixtures.resources.Mine;
-import common.map.fixtures.resources.StoneDeposit;
+import legacy.DistanceComparator;
+import legacy.map.IFixture;
+import legacy.map.MapDimensions;
+import legacy.map.Point;
+import legacy.map.fixtures.Ground;
+import legacy.map.fixtures.MineralFixture;
+import legacy.map.fixtures.resources.MineralVein;
+import legacy.map.fixtures.resources.Mine;
+import legacy.map.fixtures.resources.StoneDeposit;
 
 import java.util.Arrays;
 import java.util.Comparator;

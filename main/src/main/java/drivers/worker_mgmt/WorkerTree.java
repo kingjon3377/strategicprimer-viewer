@@ -13,18 +13,18 @@ import java.util.Map;
 import java.util.function.Function;
 import java.awt.image.BufferedImage;
 
-import common.map.fixtures.UnitMember;
+import legacy.map.fixtures.UnitMember;
 
 import java.awt.Component;
 import java.awt.Graphics2D;
 import java.awt.Color;
 
-import common.map.fixtures.mobile.worker.ProxyWorker;
+import legacy.map.fixtures.mobile.worker.ProxyWorker;
 import common.map.fixtures.mobile.worker.WorkerStats;
-import common.map.fixtures.mobile.worker.IJob;
-import common.map.HasImage;
-import common.map.IFixture;
-import common.map.HasMutableKind;
+import legacy.map.fixtures.mobile.worker.IJob;
+import legacy.map.HasImage;
+import legacy.map.IFixture;
+import legacy.map.HasMutableKind;
 import common.map.Player;
 
 import javax.swing.event.TreeSelectionEvent;
@@ -41,9 +41,9 @@ import javax.swing.ImageIcon;
 import javax.swing.Icon;
 import javax.swing.DropMode;
 
-import common.map.fixtures.mobile.IWorker;
-import common.map.fixtures.mobile.IUnit;
-import common.map.fixtures.mobile.Animal;
+import legacy.map.fixtures.mobile.IWorker;
+import legacy.map.fixtures.mobile.IUnit;
+import legacy.map.fixtures.mobile.Animal;
 import common.map.fixtures.mobile.MaturityModel;
 import common.map.fixtures.mobile.AnimalPlurals;
 import drivers.map_viewer.ImageLoader;
@@ -60,7 +60,7 @@ import java.util.List;
 import java.io.IOException;
 
 import worker.common.IWorkerTreeModel;
-import common.idreg.IDRegistrar;
+import legacy.idreg.IDRegistrar;
 
 import java.util.function.ToIntFunction;
 import java.util.function.IntSupplier;

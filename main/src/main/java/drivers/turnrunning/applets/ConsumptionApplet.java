@@ -2,10 +2,10 @@ package drivers.turnrunning.applets;
 
 import drivers.common.cli.ICLIHelper;
 
-import common.map.fixtures.mobile.IUnit;
-import common.map.fixtures.mobile.IWorker;
+import legacy.map.fixtures.mobile.IUnit;
+import legacy.map.fixtures.mobile.IWorker;
 
-import common.map.fixtures.IResourcePile;
+import legacy.map.fixtures.IResourcePile;
 
 import java.math.BigDecimal;
 

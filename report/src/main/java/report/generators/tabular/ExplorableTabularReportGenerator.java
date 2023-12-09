@@ -1,6 +1,6 @@
 package report.generators.tabular;
 
-import common.map.fixtures.explorable.ExplorableFixture;
+import legacy.map.fixtures.explorable.ExplorableFixture;
 
 import java.util.List;
 
@@ -9,17 +9,17 @@ import org.jetbrains.annotations.Nullable;
 
 import lovelace.util.DelayedRemovalMap;
 
-import common.DistanceComparator;
+import legacy.DistanceComparator;
 import common.map.Player;
-import common.map.IFixture;
-import common.map.MapDimensions;
-import common.map.Point;
-import common.map.TileFixture;
-import common.map.fixtures.TextFixture;
-import common.map.fixtures.explorable.Cave;
-import common.map.fixtures.explorable.Portal;
-import common.map.fixtures.explorable.AdventureFixture;
-import common.map.fixtures.explorable.Battlefield;
+import legacy.map.IFixture;
+import legacy.map.MapDimensions;
+import legacy.map.Point;
+import legacy.map.TileFixture;
+import legacy.map.fixtures.TextFixture;
+import legacy.map.fixtures.explorable.Cave;
+import legacy.map.fixtures.explorable.Portal;
+import legacy.map.fixtures.explorable.AdventureFixture;
+import legacy.map.fixtures.explorable.Battlefield;
 
 import java.util.Comparator;
 import java.util.Map;

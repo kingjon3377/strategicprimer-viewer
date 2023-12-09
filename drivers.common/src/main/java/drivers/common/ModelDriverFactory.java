@@ -1,6 +1,6 @@
 package drivers.common;
 
-import common.map.IMutableMapNG;
+import legacy.map.IMutableMapNG;
 import drivers.common.cli.ICLIHelper;
 
 /**

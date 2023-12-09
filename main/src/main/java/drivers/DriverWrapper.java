@@ -15,7 +15,7 @@ import drivers.common.ParamCount;
 import drivers.common.SPOptions;
 import drivers.common.UtilityDriverFactory;
 import drivers.common.cli.ICLIHelper;
-import impl.xmlio.MapIOHelper;
+import legacy.xmlio.MapIOHelper;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collections;

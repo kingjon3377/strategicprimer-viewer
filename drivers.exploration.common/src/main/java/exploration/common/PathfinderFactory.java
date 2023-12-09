@@ -3,7 +3,7 @@ package exploration.common;
 import java.util.Map;
 import java.util.HashMap;
 
-import common.map.IMapNG;
+import legacy.map.IMapNG;
 
 public final class PathfinderFactory {
     private PathfinderFactory() {

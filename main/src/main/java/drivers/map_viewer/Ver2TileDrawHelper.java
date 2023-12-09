@@ -26,21 +26,21 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.FileNotFoundException;
 
-import common.map.HasImage;
-import common.map.Point;
-import common.map.TileFixture;
-import common.map.IMapNG;
-import common.map.FakeFixture;
+import legacy.map.HasImage;
+import legacy.map.Point;
+import legacy.map.TileFixture;
+import legacy.map.IMapNG;
+import legacy.map.FakeFixture;
 
-import common.map.fixtures.TerrainFixture;
+import legacy.map.fixtures.TerrainFixture;
 
 import drivers.common.FixtureMatcher;
 
 import java.util.function.Predicate;
 import java.util.List;
 
-import common.map.River;
-import common.map.Direction;
+import legacy.map.River;
+import legacy.map.Direction;
 
 /**
  * A {@link TileDrawHelper} for version-2 maps.

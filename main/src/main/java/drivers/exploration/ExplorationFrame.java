@@ -33,7 +33,7 @@ import lovelace.util.SimpleCardLayout;
 
 import common.map.Player;
 
-import common.map.fixtures.mobile.IUnit;
+import legacy.map.fixtures.mobile.IUnit;
 
 import drivers.gui.common.SPFrame;
 import drivers.gui.common.SPMenu;
@@ -41,7 +41,7 @@ import drivers.gui.common.MenuBroker;
 
 import exploration.common.Speed;
 
-import impl.xmlio.MapIOHelper;
+import legacy.xmlio.MapIOHelper;
 import org.eclipse.jdt.annotation.Nullable;
 
 /**

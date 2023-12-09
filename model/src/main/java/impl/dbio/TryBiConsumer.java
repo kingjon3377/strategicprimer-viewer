@@ -9,7 +9,7 @@ import java.util.function.Consumer;
  * @author rest adapted from @buckelieg/jdbc-fn TryConsumer
  */
 @FunctionalInterface
-interface TryBiConsumer<T1, T2, E extends Throwable> {
+public interface TryBiConsumer<T1, T2, E extends Throwable> {
 	void accept(T1 t1, T2 t2) throws E;
 
 	static <T1, T2, E extends Throwable> TryBiConsumer<T1, T2, E> of(

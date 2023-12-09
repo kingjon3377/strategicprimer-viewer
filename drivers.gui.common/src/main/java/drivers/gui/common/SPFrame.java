@@ -10,7 +10,7 @@ import org.jetbrains.annotations.Nullable;
 import java.io.IOException;
 
 import common.xmlio.SPFormatException;
-import common.map.IMapNG;
+import legacy.map.IMapNG;
 
 import java.awt.Dimension;
 import java.nio.file.Path;

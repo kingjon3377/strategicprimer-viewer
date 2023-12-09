@@ -1,13 +1,13 @@
 package drivers.turnrunning;
 
-import common.idreg.IDFactoryFiller;
-import common.idreg.IDRegistrar;
-import common.map.IFixture;
-import common.map.IMapNG;
+import legacy.idreg.IDFactoryFiller;
+import legacy.idreg.IDRegistrar;
+import legacy.map.IFixture;
+import legacy.map.IMapNG;
 import common.map.Player;
-import common.map.fixtures.mobile.IUnit;
-import common.map.fixtures.mobile.ProxyUnit;
-import common.map.fixtures.towns.IFortress;
+import legacy.map.fixtures.mobile.IUnit;
+import legacy.map.fixtures.mobile.ProxyUnit;
+import legacy.map.fixtures.towns.IFortress;
 import drivers.advancement.AdvancementCLIHelper;
 import drivers.advancement.LevelGainListener;
 import drivers.common.CLIDriver;

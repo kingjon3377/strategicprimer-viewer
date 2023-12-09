@@ -29,11 +29,11 @@ import lovelace.util.Platform;
 import lovelace.util.ListenedButton;
 import lovelace.util.BorderedPanel;
 
-import common.idreg.IDRegistrar;
+import legacy.idreg.IDRegistrar;
 
-import common.map.fixtures.mobile.IUnit;
-import common.map.fixtures.mobile.Worker;
-import common.map.fixtures.mobile.IWorker;
+import legacy.map.fixtures.mobile.IUnit;
+import legacy.map.fixtures.mobile.Worker;
+import legacy.map.fixtures.mobile.IWorker;
 
 import common.map.fixtures.mobile.worker.WorkerStats;
 import common.map.fixtures.mobile.worker.RaceFactory;

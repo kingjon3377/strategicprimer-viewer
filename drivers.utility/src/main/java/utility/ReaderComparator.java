@@ -11,12 +11,12 @@ import java.nio.file.Files;
 
 import java.io.StringReader;
 
-import common.map.IMapNG;
+import legacy.map.IMapNG;
 
 import common.xmlio.Warning;
 
-import impl.xmlio.IMapReader;
-import impl.xmlio.TestReaderFactory;
+import legacy.xmlio.IMapReader;
+import legacy.xmlio.TestReaderFactory;
 import impl.xmlio.SPWriter;
 
 import drivers.common.UtilityDriver;

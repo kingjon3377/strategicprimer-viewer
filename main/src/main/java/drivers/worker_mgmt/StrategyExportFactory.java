@@ -12,7 +12,7 @@ import drivers.common.IWorkerModel;
 import drivers.common.cli.ICLIHelper;
 import worker.common.WorkerModel;
 
-import common.map.IMutableMapNG;
+import legacy.map.IMutableMapNG;
 
 import com.google.auto.service.AutoService;
 

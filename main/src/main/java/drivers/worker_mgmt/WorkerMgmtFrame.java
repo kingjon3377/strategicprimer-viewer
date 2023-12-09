@@ -41,13 +41,13 @@ import drivers.common.SPOptions;
 import drivers.common.PlayerChangeListener;
 import drivers.common.IWorkerModel;
 import worker.common.IWorkerTreeModel;
-import common.idreg.IDFactoryFiller;
-import common.idreg.IDRegistrar;
+import legacy.idreg.IDFactoryFiller;
+import legacy.idreg.IDRegistrar;
 import common.map.Player;
-import common.map.IMapNG;
-import common.map.fixtures.mobile.IUnit;
+import legacy.map.IMapNG;
+import legacy.map.fixtures.mobile.IUnit;
 import drivers.map_viewer.NewUnitDialog;
-import impl.xmlio.MapIOHelper;
+import legacy.xmlio.MapIOHelper;
 
 import drivers.gui.common.SPFrame;
 import drivers.gui.common.MenuBroker;

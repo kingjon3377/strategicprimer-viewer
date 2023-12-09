@@ -2,6 +2,8 @@ package report.generators;
 
 import java.util.function.Consumer;
 
+import legacy.map.fixtures.explorable.Battlefield;
+import legacy.map.fixtures.explorable.Cave;
 import org.jetbrains.annotations.Nullable;
 import org.javatuples.Pair;
 
@@ -18,20 +20,20 @@ import java.util.stream.Collectors;
 import java.util.HashMap;
 import java.util.Collections;
 
-import common.map.IFixture;
-import common.map.HasPopulation;
-import common.map.HasExtent;
-import common.map.Point;
-import common.map.MapDimensions;
-import common.map.IMapNG;
-import common.map.fixtures.resources.Meadow;
-import common.map.fixtures.resources.CacheFixture;
-import common.map.fixtures.resources.Mine;
-import common.map.fixtures.resources.StoneDeposit;
-import common.map.fixtures.resources.Shrub;
-import common.map.fixtures.resources.MineralVein;
-import common.map.fixtures.resources.Grove;
-import common.map.fixtures.resources.HarvestableFixture;
+import legacy.map.IFixture;
+import legacy.map.HasPopulation;
+import legacy.map.HasExtent;
+import legacy.map.Point;
+import legacy.map.MapDimensions;
+import legacy.map.IMapNG;
+import legacy.map.fixtures.resources.Meadow;
+import legacy.map.fixtures.resources.CacheFixture;
+import legacy.map.fixtures.resources.Mine;
+import legacy.map.fixtures.resources.StoneDeposit;
+import legacy.map.fixtures.resources.Shrub;
+import legacy.map.fixtures.resources.MineralVein;
+import legacy.map.fixtures.resources.Grove;
+import legacy.map.fixtures.resources.HarvestableFixture;
 
 import java.text.NumberFormat;
 
@@ -92,8 +94,8 @@ public class HarvestableReportGenerator extends AbstractReportGenerator<Harvesta
     /**
      * Produce a sub-report(s) dealing with a single "harvestable"
      * fixture(s). It is to be removed from the collection.
-     * {@link common.map.fixtures.explorable.Cave Caves} and
-     * {@link common.map.fixtures.explorable.Battlefield battlefields}, though
+     * {@link Cave Caves} and
+     * {@link Battlefield battlefields}, though
      * implementing the {@link HarvestableFixture} interface, are <em>not</em> handled here.
      */
     @Override
@@ -153,8 +155,8 @@ public class HarvestableReportGenerator extends AbstractReportGenerator<Harvesta
     /**
      * Produce the sub-report(s) dealing with "harvestable" fixtures. All
      * fixtures referred to in this report are to be removed from the
-     * collection. {@link common.map.fixtures.explorable.Cave Caves} and {@link
-     * common.map.fixtures.explorable.Battlefield battlefields},
+     * collection. {@link Cave Caves} and {@link
+     * Battlefield battlefields},
      * though implementing {@link HarvestableFixture}, are presumed to have
      * been handled already.
      */

@@ -18,28 +18,28 @@ import java.util.ArrayList;
 
 import lovelace.util.DelayedRemovalMap;
 
-import common.map.IFixture;
-import common.map.Point;
-import common.map.MapDimensions;
-import common.map.IMapNG;
-import common.map.fixtures.mobile.Centaur;
-import common.map.fixtures.mobile.Fairy;
-import common.map.fixtures.mobile.Giant;
-import common.map.fixtures.mobile.Dragon;
-import common.map.fixtures.mobile.Immortal;
-import common.map.fixtures.mobile.Ogre;
-import common.map.fixtures.mobile.Troll;
-import common.map.fixtures.mobile.Sphinx;
-import common.map.fixtures.mobile.Phoenix;
-import common.map.fixtures.mobile.Griffin;
-import common.map.fixtures.mobile.Djinn;
-import common.map.fixtures.mobile.Simurgh;
-import common.map.fixtures.mobile.Minotaur;
-import common.map.fixtures.mobile.Thunderbird;
-import common.map.fixtures.mobile.Kraken;
-import common.map.fixtures.mobile.Snowbird;
-import common.map.fixtures.mobile.Unicorn;
-import common.map.fixtures.mobile.Pegasus;
+import legacy.map.IFixture;
+import legacy.map.Point;
+import legacy.map.MapDimensions;
+import legacy.map.IMapNG;
+import legacy.map.fixtures.mobile.Centaur;
+import legacy.map.fixtures.mobile.Fairy;
+import legacy.map.fixtures.mobile.Giant;
+import legacy.map.fixtures.mobile.Dragon;
+import legacy.map.fixtures.mobile.Immortal;
+import legacy.map.fixtures.mobile.Ogre;
+import legacy.map.fixtures.mobile.Troll;
+import legacy.map.fixtures.mobile.Sphinx;
+import legacy.map.fixtures.mobile.Phoenix;
+import legacy.map.fixtures.mobile.Griffin;
+import legacy.map.fixtures.mobile.Djinn;
+import legacy.map.fixtures.mobile.Simurgh;
+import legacy.map.fixtures.mobile.Minotaur;
+import legacy.map.fixtures.mobile.Thunderbird;
+import legacy.map.fixtures.mobile.Kraken;
+import legacy.map.fixtures.mobile.Snowbird;
+import legacy.map.fixtures.mobile.Unicorn;
+import legacy.map.fixtures.mobile.Pegasus;
 
 /**
  * A report generator for {@link Immortal "immortals"}---dragons, fairies, centaurs, and such.

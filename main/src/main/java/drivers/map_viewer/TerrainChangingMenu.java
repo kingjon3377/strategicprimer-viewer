@@ -17,17 +17,17 @@ import javax.swing.JCheckBoxMenuItem;
 
 import drivers.common.VersionChangeListener;
 import drivers.common.SelectionChangeListener;
-import common.idreg.IDFactoryFiller;
-import common.idreg.IDRegistrar;
-import common.map.Point;
-import common.map.TileType;
-import common.map.River;
-import common.map.TileFixture;
-import common.map.fixtures.mobile.IUnit;
+import legacy.idreg.IDFactoryFiller;
+import legacy.idreg.IDRegistrar;
+import legacy.map.Point;
+import legacy.map.TileType;
+import legacy.map.River;
+import legacy.map.TileFixture;
+import legacy.map.fixtures.mobile.IUnit;
 
 import java.util.Map;
 
-import common.map.fixtures.terrain.Hill;
+import legacy.map.fixtures.terrain.Hill;
 
 /**
  * A popup menu to let the user change a tile's terrain type, or add a unit.

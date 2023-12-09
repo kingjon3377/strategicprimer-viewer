@@ -11,7 +11,7 @@ import java.util.regex.Pattern;
 
 import lovelace.util.LovelaceLogger;
 
-abstract class AbstractDatabaseWriter<Item, Context> implements DatabaseWriter<Item, Context> {
+public abstract class AbstractDatabaseWriter<Item, Context> implements DatabaseWriter<Item, Context> {
 	private static final Pattern LINEBREAK = Pattern.compile("\\R");
 
 	protected AbstractDatabaseWriter(final Class<Item> itemClass, final Class<Context> contextClass) {

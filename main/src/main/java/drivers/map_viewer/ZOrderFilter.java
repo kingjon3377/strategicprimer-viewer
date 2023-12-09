@@ -1,6 +1,6 @@
 package drivers.map_viewer;
 
-import common.map.TileFixture;
+import legacy.map.TileFixture;
 
 /**
  * An interface for a filter to tell whether a given fixture should be displayed.

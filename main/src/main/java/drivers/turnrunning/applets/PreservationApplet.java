@@ -1,10 +1,10 @@
 package drivers.turnrunning.applets;
 
-import common.idreg.IDRegistrar;
-import common.map.fixtures.IResourcePile;
+import legacy.idreg.IDRegistrar;
+import legacy.map.fixtures.IResourcePile;
 import common.map.fixtures.Quantity;
-import common.map.fixtures.mobile.IUnit;
-import common.map.fixtures.towns.IFortress;
+import legacy.map.fixtures.mobile.IUnit;
+import legacy.map.fixtures.towns.IFortress;
 import drivers.common.cli.ICLIHelper;
 import drivers.turnrunning.ITurnRunningModel;
 import java.math.BigDecimal;

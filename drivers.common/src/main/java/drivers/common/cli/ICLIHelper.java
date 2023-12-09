@@ -4,7 +4,7 @@ import org.jetbrains.annotations.Nullable;
 import org.javatuples.Pair;
 
 import common.map.HasName;
-import common.map.Point;
+import legacy.map.Point;
 
 import java.math.BigDecimal;
 import java.util.List;

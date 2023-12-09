@@ -19,12 +19,12 @@ import java.util.Iterator;
 
 import lovelace.util.FileContentsReader;
 
-import common.map.Point;
-import common.map.TileType;
-import common.map.TileFixture;
-import common.map.MapDimensions;
+import legacy.map.Point;
+import legacy.map.TileType;
+import legacy.map.TileFixture;
+import legacy.map.MapDimensions;
 
-import common.map.fixtures.terrain.Forest;
+import legacy.map.fixtures.terrain.Forest;
 
 import java.io.IOException;
 import java.nio.file.Path;

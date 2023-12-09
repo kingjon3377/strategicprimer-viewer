@@ -13,11 +13,11 @@ import lovelace.util.DelayedRemovalMap;
 import java.util.Arrays;
 import java.util.Collections;
 
-import common.DistanceComparator;
-import common.map.IFixture;
-import common.map.MapDimensions;
-import common.map.Point;
-import common.map.fixtures.mobile.Immortal;
+import legacy.DistanceComparator;
+import legacy.map.IFixture;
+import legacy.map.MapDimensions;
+import legacy.map.Point;
+import legacy.map.fixtures.mobile.Immortal;
 
 /**
  * A tabular report generator for {@link Immortal "immortals."}

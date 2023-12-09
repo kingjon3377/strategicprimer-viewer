@@ -1,6 +1,8 @@
 package exploration.common;
 
 import common.map.HasName;
+import legacy.map.fixtures.resources.MineralVein;
+import legacy.map.fixtures.resources.StoneDeposit;
 import lovelace.util.LovelaceLogger;
 import org.javatuples.Pair;
 import org.jetbrains.annotations.Nullable;
@@ -26,42 +28,41 @@ import java.util.EnumSet;
 import drivers.common.SimpleMultiMapModel;
 import drivers.common.IDriverModel;
 import drivers.common.SelectionChangeListener;
-import common.map.fixtures.FixtureIterable;
-import common.map.fixtures.FortressMember;
-import common.map.FakeFixture;
-import common.map.IFixture;
+import legacy.map.fixtures.FixtureIterable;
+import legacy.map.fixtures.FortressMember;
+import legacy.map.FakeFixture;
+import legacy.map.IFixture;
 import common.map.Player;
-import common.map.HasKind;
-import common.map.HasMutableKind;
-import common.map.HasMutableName;
-import common.map.HasMutableOwner;
-import common.map.HasOwner;
-import common.map.MapDimensions;
-import common.map.Point;
-import common.map.River;
-import common.map.TileFixture;
-import common.map.TileType;
-import common.map.IMutableMapNG;
-import common.map.Direction;
-import common.map.IMapNG;
-import common.map.fixtures.Ground;
-import common.map.fixtures.MineralFixture;
-import common.map.fixtures.UnitMember;
-import common.map.fixtures.mobile.Animal;
-import common.map.fixtures.mobile.AnimalTracks;
-import common.map.fixtures.mobile.IMutableUnit;
-import common.map.fixtures.mobile.IUnit;
-import common.map.fixtures.mobile.ProxyUnit;
-import common.map.fixtures.mobile.MobileFixture;
-import common.map.fixtures.resources.CacheFixture;
-import common.map.fixtures.resources.Grove;
-import common.map.fixtures.resources.Meadow;
-import common.map.fixtures.resources.Mine;
-import common.map.fixtures.resources.MineralVein;
-import common.map.fixtures.terrain.Forest;
-import common.map.fixtures.towns.IMutableFortress;
-import common.map.fixtures.towns.Village;
-import common.map.fixtures.towns.IFortress;
+import legacy.map.HasKind;
+import legacy.map.HasMutableKind;
+import legacy.map.HasMutableName;
+import legacy.map.HasMutableOwner;
+import legacy.map.HasOwner;
+import legacy.map.MapDimensions;
+import legacy.map.Point;
+import legacy.map.River;
+import legacy.map.TileFixture;
+import legacy.map.TileType;
+import legacy.map.IMutableMapNG;
+import legacy.map.Direction;
+import legacy.map.IMapNG;
+import legacy.map.fixtures.Ground;
+import legacy.map.fixtures.MineralFixture;
+import legacy.map.fixtures.UnitMember;
+import legacy.map.fixtures.mobile.Animal;
+import legacy.map.fixtures.mobile.AnimalTracks;
+import legacy.map.fixtures.mobile.IMutableUnit;
+import legacy.map.fixtures.mobile.IUnit;
+import legacy.map.fixtures.mobile.ProxyUnit;
+import legacy.map.fixtures.mobile.MobileFixture;
+import legacy.map.fixtures.resources.CacheFixture;
+import legacy.map.fixtures.resources.Grove;
+import legacy.map.fixtures.resources.Meadow;
+import legacy.map.fixtures.resources.Mine;
+import legacy.map.fixtures.terrain.Forest;
+import legacy.map.fixtures.towns.IMutableFortress;
+import legacy.map.fixtures.towns.Village;
+import legacy.map.fixtures.towns.IFortress;
 
 // TODO: Make sure all methods are still used; at least one driver now uses a different model interface.
 
@@ -102,8 +103,8 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 	/**
 	 * Check whether two fixtures are "equal enough" for the purposes of
 	 * updating a map after digging. This method is needed because equals()
-	 * in {@link common.map.fixtures.resources.StoneDeposit} and {@link
-	 * common.map.fixtures.resources.MineralVein} compares DCs.
+	 * in {@link StoneDeposit} and {@link
+	 * MineralVein} compares DCs.
 	 */
 	private static boolean areDiggablesEqual(final IFixture firstFixture, final IFixture secondFixture) {
 		return Objects.equals(firstFixture, secondFixture) ||

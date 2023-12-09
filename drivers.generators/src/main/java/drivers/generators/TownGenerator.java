@@ -13,32 +13,32 @@ import java.util.function.IntSupplier;
 
 import drivers.common.cli.ICLIHelper;
 
-import common.map.fixtures.towns.ITownFixture;
+import legacy.map.fixtures.towns.ITownFixture;
 import common.map.fixtures.towns.TownStatus;
-import common.map.fixtures.towns.CommunityStats;
-import common.map.fixtures.towns.AbstractTown;
-import common.map.fixtures.towns.Village;
+import legacy.map.fixtures.towns.CommunityStats;
+import legacy.map.fixtures.towns.AbstractTown;
+import legacy.map.fixtures.towns.Village;
 import common.map.fixtures.towns.TownSize;
 
-import common.map.IFixture;
-import common.map.Point;
-import common.map.TileType;
-import common.map.IMapNG;
+import legacy.map.IFixture;
+import legacy.map.Point;
+import legacy.map.TileType;
+import legacy.map.IMapNG;
 
-import common.map.fixtures.IResourcePile;
-import common.map.fixtures.ResourcePileImpl;
+import legacy.map.fixtures.IResourcePile;
+import legacy.map.fixtures.ResourcePileImpl;
 import common.map.fixtures.Quantity;
 
-import common.idreg.IDRegistrar;
+import legacy.idreg.IDRegistrar;
 
-import common.map.fixtures.resources.HarvestableFixture;
-import common.map.fixtures.resources.MineralVein;
-import common.map.fixtures.resources.Meadow;
-import common.map.fixtures.resources.Mine;
-import common.map.fixtures.resources.Grove;
-import common.map.fixtures.resources.StoneDeposit;
-import common.map.fixtures.resources.CacheFixture;
-import common.map.fixtures.resources.Shrub;
+import legacy.map.fixtures.resources.HarvestableFixture;
+import legacy.map.fixtures.resources.MineralVein;
+import legacy.map.fixtures.resources.Meadow;
+import legacy.map.fixtures.resources.Mine;
+import legacy.map.fixtures.resources.Grove;
+import legacy.map.fixtures.resources.StoneDeposit;
+import legacy.map.fixtures.resources.CacheFixture;
+import legacy.map.fixtures.resources.Shrub;
 
 import exploration.common.SurroundingPointIterable;
 
@@ -46,7 +46,7 @@ import java.util.Random;
 
 import drivers.exploration.old.ExplorationRunner;
 
-import common.map.fixtures.terrain.Forest;
+import legacy.map.fixtures.terrain.Forest;
 
 import java.util.LinkedList;
 import java.util.Deque;

@@ -3,7 +3,7 @@ package drivers.common;
 import java.util.Arrays;
 import java.util.function.Predicate;
 
-import common.map.TileFixture;
+import legacy.map.TileFixture;
 
 /**
  * A wrapper around {@code Predicate<TileFixture>}, used to determine Z-order of fixtures.

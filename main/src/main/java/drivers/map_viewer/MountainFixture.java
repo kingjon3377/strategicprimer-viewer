@@ -1,6 +1,6 @@
 package drivers.map_viewer;
 
-import common.map.FakeFixture;
+import legacy.map.FakeFixture;
 import lovelace.util.LovelaceLogger;
 
 /**

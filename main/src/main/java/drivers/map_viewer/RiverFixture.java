@@ -1,7 +1,7 @@
 package drivers.map_viewer;
 
-import common.map.River;
-import common.map.FakeFixture;
+import legacy.map.River;
+import legacy.map.FakeFixture;
 
 import java.util.Arrays;
 

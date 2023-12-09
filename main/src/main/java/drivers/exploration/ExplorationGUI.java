@@ -26,7 +26,7 @@ import drivers.gui.common.SPFileChooser;
 
 import lovelace.util.FileChooser;
 
-import common.map.IMutableMapNG;
+import legacy.map.IMutableMapNG;
 import lovelace.util.LovelaceLogger;
 
 /**

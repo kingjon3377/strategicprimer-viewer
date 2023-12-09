@@ -1,9 +1,10 @@
 package drivers.common;
 
-import common.map.fixtures.mobile.IUnit;
-import common.map.fixtures.mobile.IWorker;
+import legacy.map.fixtures.mobile.IUnit;
+import legacy.map.fixtures.mobile.IWorker;
 
-import common.map.fixtures.mobile.worker.ISkill;
+import legacy.map.fixtures.mobile.worker.ISkill;
+import legacy.map.fixtures.mobile.worker.IMutableSkill;
 
 /**
  * An interface for methods needed for worker advancement. Implementations of
@@ -49,7 +50,7 @@ public interface IAdvancementModel extends IDriverModel {
 	 * that Job, it is added first; if the worker doesn't have that Job, it
 	 * is added first as in {@link #addJobToWorker}, then the skill is added
 	 * to it. The "contextValue" is passed to {@link
-	 * common.map.fixtures.mobile.worker.IMutableSkill#addHours}; it should be a
+	 * IMutableSkill#addHours}; it should be a
 	 * random number between 0 and 99.
 	 *
 	 * TODO: Take a level-up listener?
@@ -66,7 +67,7 @@ public interface IAdvancementModel extends IDriverModel {
 	 * doesn't have that Job, it is added first as in {@link
 	 * #addJobToWorker}, then the skill is added to it. The contextValue
 	 * parameter is used to calculate a new value passed to {@link
-	 * common.map.fixtures.mobile.worker.IMutableSkill#addHours} for each
+	 * IMutableSkill#addHours} for each
 	 * worker.
 	 *
 	 * TODO: Take a level-up listener?

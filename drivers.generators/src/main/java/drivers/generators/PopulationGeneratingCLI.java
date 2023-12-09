@@ -7,23 +7,23 @@ import drivers.common.SPOptions;
 
 import drivers.common.cli.ICLIHelper;
 
-import common.map.Point;
-import common.map.HasExtent;
-import common.map.IMapNG;
+import legacy.map.Point;
+import legacy.map.HasExtent;
+import legacy.map.IMapNG;
 
-import common.map.fixtures.mobile.Animal;
+import legacy.map.fixtures.mobile.Animal;
 
 import java.util.Random;
 
-import common.map.fixtures.resources.Grove;
-import common.map.fixtures.resources.Shrub;
-import common.map.fixtures.resources.Meadow;
+import legacy.map.fixtures.resources.Grove;
+import legacy.map.fixtures.resources.Shrub;
+import legacy.map.fixtures.resources.Meadow;
 
-import common.map.fixtures.terrain.Forest;
+import legacy.map.fixtures.terrain.Forest;
 
 import exploration.common.SurroundingPointIterable;
 
-import common.map.fixtures.towns.ITownFixture;
+import legacy.map.fixtures.towns.ITownFixture;
 
 import java.math.BigDecimal;
 

@@ -21,10 +21,10 @@ import org.jetbrains.annotations.Nullable;
 
 import drivers.common.PlayerChangeListener;
 import worker.common.NewUnitListener;
-import common.idreg.IDRegistrar;
+import legacy.idreg.IDRegistrar;
 import common.map.Player;
-import common.map.fixtures.mobile.IUnit;
-import common.map.fixtures.mobile.Unit;
+import legacy.map.fixtures.mobile.IUnit;
+import legacy.map.fixtures.mobile.Unit;
 import drivers.gui.common.SPDialog;
 import drivers.worker_mgmt.NewUnitSource;
 

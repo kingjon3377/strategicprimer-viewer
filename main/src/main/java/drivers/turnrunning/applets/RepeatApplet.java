@@ -1,6 +1,6 @@
 package drivers.turnrunning.applets;
 
-import common.idreg.IDRegistrar;
+import legacy.idreg.IDRegistrar;
 import drivers.common.cli.AppletChooser;
 import drivers.common.cli.ICLIHelper;
 import drivers.turnrunning.ITurnRunningModel;

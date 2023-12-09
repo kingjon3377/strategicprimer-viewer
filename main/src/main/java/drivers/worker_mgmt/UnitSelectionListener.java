@@ -1,6 +1,6 @@
 package drivers.worker_mgmt;
 
-import common.map.fixtures.mobile.IUnit;
+import legacy.map.fixtures.mobile.IUnit;
 
 import org.jetbrains.annotations.Nullable;
 

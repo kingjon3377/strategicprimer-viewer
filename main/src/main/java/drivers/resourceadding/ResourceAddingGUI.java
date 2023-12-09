@@ -13,7 +13,7 @@ import java.nio.file.NoSuchFileException;
 
 import java.util.function.Consumer;
 
-import impl.xmlio.MapIOHelper;
+import legacy.xmlio.MapIOHelper;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -23,19 +23,19 @@ import drivers.common.cli.ICLIHelper;
 import java.awt.Dimension;
 import java.awt.Component;
 
-import common.map.IMutableMapNG;
-import common.map.IMapNG;
+import legacy.map.IMutableMapNG;
+import legacy.map.IMapNG;
 import common.map.Player;
 import common.map.PlayerImpl;
 
 import drivers.PlayerChangeMenuListener;
 import drivers.IOHandler;
 
-import common.map.fixtures.IResourcePile;
-import common.map.fixtures.Implement;
+import legacy.map.fixtures.IResourcePile;
+import legacy.map.fixtures.Implement;
 
-import common.idreg.IDRegistrar;
-import common.idreg.IDFactoryFiller;
+import legacy.idreg.IDRegistrar;
+import legacy.idreg.IDFactoryFiller;
 
 import drivers.gui.common.about.AboutDialog;
 

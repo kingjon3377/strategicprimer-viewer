@@ -14,14 +14,14 @@ import java.util.Comparator;
 import lovelace.util.DelayedRemovalMap;
 import lovelace.util.ThrowingConsumer;
 
-import common.DistanceComparator;
+import legacy.DistanceComparator;
 
-import common.map.MapDimensions;
-import common.map.IFixture;
-import common.map.Point;
-import common.map.fixtures.Implement;
-import common.map.fixtures.IResourcePile;
-import common.map.fixtures.resources.CacheFixture;
+import legacy.map.MapDimensions;
+import legacy.map.IFixture;
+import legacy.map.Point;
+import legacy.map.fixtures.Implement;
+import legacy.map.fixtures.IResourcePile;
+import legacy.map.fixtures.resources.CacheFixture;
 
 import java.util.Arrays;
 import java.util.Collections;

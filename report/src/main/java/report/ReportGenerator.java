@@ -6,14 +6,14 @@ import org.javatuples.Pair;
 
 import lovelace.util.DelayedRemovalMap;
 
-import common.map.IFixture;
+import legacy.map.IFixture;
 import common.map.Player;
-import common.map.Point;
-import common.map.MapDimensions;
-import common.map.IMapNG;
+import legacy.map.Point;
+import legacy.map.MapDimensions;
+import legacy.map.IMapNG;
 
-import common.map.fixtures.TerrainFixture;
-import common.map.fixtures.Ground;
+import legacy.map.fixtures.TerrainFixture;
+import legacy.map.fixtures.Ground;
 
 import report.generators.AnimalReportGenerator;
 import report.generators.VillageReportGenerator;

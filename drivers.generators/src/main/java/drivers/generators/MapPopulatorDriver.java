@@ -1,7 +1,7 @@
 package drivers.generators;
 
-import common.idreg.IDFactoryFiller;
-import common.idreg.IDRegistrar;
+import legacy.idreg.IDFactoryFiller;
+import legacy.idreg.IDRegistrar;
 
 import drivers.common.CLIDriver;
 import drivers.common.SPOptions;
@@ -12,7 +12,7 @@ import lovelace.util.SingletonRandom;
 
 import java.util.List;
 
-import common.map.Point;
+import legacy.map.Point;
 
 import java.util.stream.Collectors;
 import java.util.Collections;

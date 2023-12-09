@@ -1,14 +1,14 @@
 package drivers.turnrunning.applets;
 
-import common.idreg.IDRegistrar;
-import common.map.HasKind;
-import common.map.IFixture;
-import common.map.Point;
-import common.map.TileFixture;
-import common.map.fixtures.IMutableResourcePile;
-import common.map.fixtures.mobile.IUnit;
-import common.map.fixtures.resources.Meadow;
-import common.map.fixtures.resources.Shrub;
+import legacy.idreg.IDRegistrar;
+import legacy.map.HasKind;
+import legacy.map.IFixture;
+import legacy.map.Point;
+import legacy.map.TileFixture;
+import legacy.map.fixtures.IMutableResourcePile;
+import legacy.map.fixtures.mobile.IUnit;
+import legacy.map.fixtures.resources.Meadow;
+import legacy.map.fixtures.resources.Shrub;
 import drivers.common.cli.ICLIHelper;
 import drivers.resourceadding.ResourceAddingCLIHelper;
 import drivers.turnrunning.ITurnRunningModel;

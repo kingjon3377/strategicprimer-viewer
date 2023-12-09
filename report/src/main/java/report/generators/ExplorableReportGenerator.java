@@ -11,14 +11,14 @@ import java.util.Arrays;
 
 import lovelace.util.DelayedRemovalMap;
 
-import common.map.IFixture;
-import common.map.Point;
-import common.map.MapDimensions;
-import common.map.IMapNG;
-import common.map.fixtures.explorable.Cave;
-import common.map.fixtures.explorable.Portal;
-import common.map.fixtures.explorable.Battlefield;
-import common.map.fixtures.explorable.ExplorableFixture;
+import legacy.map.IFixture;
+import legacy.map.Point;
+import legacy.map.MapDimensions;
+import legacy.map.IMapNG;
+import legacy.map.fixtures.explorable.Cave;
+import legacy.map.fixtures.explorable.Portal;
+import legacy.map.fixtures.explorable.Battlefield;
+import legacy.map.fixtures.explorable.ExplorableFixture;
 
 /**
  * A report generator for caves, battlefields, and portals.

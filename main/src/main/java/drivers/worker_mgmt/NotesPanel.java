@@ -10,8 +10,8 @@ import javax.swing.JTextArea;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import common.map.Player;
-import common.map.HasNotes;
-import common.map.fixtures.UnitMember;
+import legacy.map.HasNotes;
+import legacy.map.fixtures.UnitMember;
 
 import java.awt.Toolkit;
 

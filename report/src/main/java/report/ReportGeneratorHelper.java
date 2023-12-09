@@ -1,25 +1,25 @@
 package report;
 
-import common.map.fixtures.Implement;
-import common.map.fixtures.mobile.IWorker;
+import legacy.map.fixtures.Implement;
+import legacy.map.fixtures.mobile.IWorker;
 import lovelace.util.LovelaceLogger;
 import org.jetbrains.annotations.Nullable;
 import org.javatuples.Pair;
 import lovelace.util.DelayedRemovalMap;
 import lovelace.util.IntMap;
 
-import common.idreg.IDRegistrar;
-import common.idreg.IDFactoryFiller;
+import legacy.idreg.IDRegistrar;
+import legacy.idreg.IDFactoryFiller;
 
-import common.map.IFixture;
+import legacy.map.IFixture;
 import common.map.Player;
-import common.map.TileFixture;
-import common.map.Point;
-import common.map.IMapNG;
+import legacy.map.TileFixture;
+import legacy.map.Point;
+import legacy.map.IMapNG;
 
-import common.map.fixtures.FixtureIterable;
+import legacy.map.fixtures.FixtureIterable;
 
-import common.map.fixtures.towns.IFortress;
+import legacy.map.fixtures.towns.IFortress;
 
 import java.util.Map;
 import java.util.HashMap;

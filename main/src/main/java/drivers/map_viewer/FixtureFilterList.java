@@ -11,10 +11,10 @@ import javax.swing.DropMode;
 
 import lovelace.util.ReorderableListModel;
 
-import common.map.TileFixture;
-import common.map.fixtures.Ground;
-import common.map.fixtures.resources.Grove;
-import common.map.fixtures.resources.Meadow;
+import legacy.map.TileFixture;
+import legacy.map.fixtures.Ground;
+import legacy.map.fixtures.resources.Grove;
+import legacy.map.fixtures.resources.Meadow;
 import drivers.common.FixtureMatcher;
 
 import java.io.Serial;

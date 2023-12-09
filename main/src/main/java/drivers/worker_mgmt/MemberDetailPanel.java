@@ -33,17 +33,17 @@ import lovelace.util.Platform;
 import lovelace.util.InterpolatedLabel;
 
 import common.map.HasPortrait;
-import common.map.fixtures.UnitMember;
-import common.map.fixtures.Implement;
-import common.map.fixtures.IResourcePile;
-import common.map.fixtures.mobile.IWorker;
-import common.map.fixtures.mobile.ProxyFor;
-import common.map.fixtures.mobile.Animal;
+import legacy.map.fixtures.UnitMember;
+import legacy.map.fixtures.Implement;
+import legacy.map.fixtures.IResourcePile;
+import legacy.map.fixtures.mobile.IWorker;
+import legacy.map.fixtures.mobile.ProxyFor;
+import legacy.map.fixtures.mobile.Animal;
 import common.map.fixtures.mobile.MaturityModel;
 import common.map.fixtures.mobile.AnimalPlurals;
 import common.map.fixtures.mobile.worker.WorkerStats;
-import common.map.fixtures.mobile.worker.IJob;
-import common.map.fixtures.mobile.worker.ISkill;
+import legacy.map.fixtures.mobile.worker.IJob;
+import legacy.map.fixtures.mobile.worker.ISkill;
 import drivers.map_viewer.ImageLoader;
 
 import java.util.Objects;

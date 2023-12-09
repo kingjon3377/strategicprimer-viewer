@@ -4,10 +4,10 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.function.Predicate;
 
-import common.map.Point;
-import common.map.River;
-import common.map.TileFixture;
-import common.map.TileType;
+import legacy.map.Point;
+import legacy.map.River;
+import legacy.map.TileFixture;
+import legacy.map.TileType;
 import drivers.common.IFixtureEditingModel;
 import drivers.common.SelectionChangeSource;
 

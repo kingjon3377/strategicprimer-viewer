@@ -1,17 +1,17 @@
 package drivers.turnrunning.applets;
 
-import common.idreg.IDRegistrar;
+import legacy.idreg.IDRegistrar;
 
-import common.map.IFixture;
-import common.map.TileFixture;
+import legacy.map.IFixture;
+import legacy.map.TileFixture;
 import drivers.common.cli.ICLIHelper;
 
 import exploration.common.HuntingModel;
 
-import common.map.Point;
+import legacy.map.Point;
 
-import common.map.fixtures.mobile.AnimalTracks;
-import common.map.fixtures.mobile.Animal;
+import legacy.map.fixtures.mobile.AnimalTracks;
+import legacy.map.fixtures.mobile.Animal;
 
 import drivers.turnrunning.ITurnRunningModel;
 import java.util.Collections;

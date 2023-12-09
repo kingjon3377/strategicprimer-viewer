@@ -15,15 +15,15 @@ import java.util.stream.Collectors;
 import lovelace.util.DelayedRemovalMap;
 
 import common.map.Player;
-import common.map.IFixture;
-import common.map.Point;
-import common.map.MapDimensions;
-import common.map.IMapNG;
+import legacy.map.IFixture;
+import legacy.map.Point;
+import legacy.map.MapDimensions;
+import legacy.map.IMapNG;
 import common.map.fixtures.towns.TownStatus;
-import common.map.fixtures.towns.ITownFixture;
-import common.map.fixtures.towns.IFortress;
-import common.map.fixtures.towns.Village;
-import common.map.fixtures.towns.AbstractTown;
+import legacy.map.fixtures.towns.ITownFixture;
+import legacy.map.fixtures.towns.IFortress;
+import legacy.map.fixtures.towns.Village;
+import legacy.map.fixtures.towns.AbstractTown;
 
 /**
  * A report generator for towns.

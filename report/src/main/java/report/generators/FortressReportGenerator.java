@@ -17,22 +17,22 @@ import java.util.stream.Collectors;
 
 import lovelace.util.DelayedRemovalMap;
 
-import common.map.Direction;
-import common.map.TileFixture;
+import legacy.map.Direction;
+import legacy.map.TileFixture;
 import common.map.Player;
-import common.map.IFixture;
-import common.map.Point;
-import common.map.River;
-import common.map.MapDimensions;
-import common.map.IMapNG;
-import common.map.fixtures.Implement;
-import common.map.fixtures.IResourcePile;
-import common.map.fixtures.FortressMember;
-import common.map.fixtures.mobile.IUnit;
-import common.map.fixtures.terrain.Oasis;
-import common.map.fixtures.terrain.Hill;
-import common.map.fixtures.terrain.Forest;
-import common.map.fixtures.towns.IFortress;
+import legacy.map.IFixture;
+import legacy.map.Point;
+import legacy.map.River;
+import legacy.map.MapDimensions;
+import legacy.map.IMapNG;
+import legacy.map.fixtures.Implement;
+import legacy.map.fixtures.IResourcePile;
+import legacy.map.fixtures.FortressMember;
+import legacy.map.fixtures.mobile.IUnit;
+import legacy.map.fixtures.terrain.Oasis;
+import legacy.map.fixtures.terrain.Hill;
+import legacy.map.fixtures.terrain.Forest;
+import legacy.map.fixtures.towns.IFortress;
 
 /**
  * A report generator for fortresses.

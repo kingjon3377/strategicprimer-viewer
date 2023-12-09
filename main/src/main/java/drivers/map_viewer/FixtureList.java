@@ -10,8 +10,8 @@ import java.util.Optional;
 import java.util.List;
 
 import common.map.Player;
-import common.map.TileFixture;
-import common.map.Point;
+import legacy.map.TileFixture;
+import legacy.map.Point;
 
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.UnsupportedFlavorException;
@@ -45,9 +45,9 @@ import javax.swing.SwingUtilities;
 
 import drivers.common.SelectionChangeListener;
 
-import common.idreg.IDRegistrar;
+import legacy.idreg.IDRegistrar;
 
-import common.map.fixtures.mobile.IUnit;
+import legacy.map.fixtures.mobile.IUnit;
 
 import worker.common.IFixtureEditHelper;
 

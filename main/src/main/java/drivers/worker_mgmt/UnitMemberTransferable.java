@@ -6,13 +6,13 @@ import java.util.Collections;
 import java.util.Arrays;
 import java.util.List;
 
-import common.map.fixtures.UnitMember;
+import legacy.map.fixtures.UnitMember;
 
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.datatransfer.Transferable;
 
-import common.map.fixtures.mobile.IUnit;
+import legacy.map.fixtures.mobile.IUnit;
 
 /**
  * A class to transfer a UnitMember via drag-and-drop.

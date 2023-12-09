@@ -1,6 +1,6 @@
 package utility;
 
-import common.map.fixtures.mobile.IUnit;
+import legacy.map.fixtures.mobile.IUnit;
 import drivers.common.SPOptions;
 import drivers.common.CLIDriver;
 
@@ -8,7 +8,7 @@ import exploration.common.IExplorationModel;
 import exploration.common.Speed;
 import exploration.common.TraversalImpossibleException;
 
-import common.map.Direction;
+import legacy.map.Direction;
 import common.map.Player;
 
 import java.util.Random;

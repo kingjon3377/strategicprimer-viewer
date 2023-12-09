@@ -6,10 +6,10 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Collection;
 
 import lovelace.util.Range;
-import common.map.Point;
-import common.map.River;
-import common.map.TileFixture;
-import common.map.TileType;
+import legacy.map.Point;
+import legacy.map.River;
+import legacy.map.TileFixture;
+import legacy.map.TileType;
 
 import javax.swing.ListModel;
 
@@ -18,8 +18,8 @@ import drivers.common.SelectionChangeListener;
 import java.util.ArrayList;
 import java.util.List;
 
-import common.map.fixtures.mobile.AnimalTracks;
-import common.map.fixtures.mobile.IUnit;
+import legacy.map.fixtures.mobile.AnimalTracks;
+import legacy.map.fixtures.mobile.IUnit;
 
 import javax.swing.event.ListDataListener;
 import javax.swing.event.ListDataEvent;

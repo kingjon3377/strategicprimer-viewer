@@ -1,6 +1,6 @@
 package query;
 
-import common.map.IMutableMapNG;
+import legacy.map.IMutableMapNG;
 
 import drivers.common.SPOptions;
 import drivers.common.ParamCount;

@@ -1,7 +1,7 @@
 package utility;
 
 import common.map.Player;
-import common.map.fixtures.UnitMember;
+import legacy.map.fixtures.UnitMember;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -14,12 +14,12 @@ import drivers.common.ReadOnlyDriver;
 import drivers.common.EmptyOptions;
 import drivers.common.SPOptions;
 
-import common.map.fixtures.mobile.IUnit;
-import common.map.fixtures.mobile.IWorker;
+import legacy.map.fixtures.mobile.IUnit;
+import legacy.map.fixtures.mobile.IWorker;
 
 import drivers.common.cli.ICLIHelper;
 
-import common.map.fixtures.mobile.worker.IJob;
+import legacy.map.fixtures.mobile.worker.IJob;
 import common.map.fixtures.mobile.worker.WorkerStats;
 
 import exploration.common.IExplorationModel;

@@ -1,6 +1,6 @@
 package exploration.common;
 
-import common.map.Direction;
+import legacy.map.Direction;
 import common.map.HasName;
 
 /**

@@ -8,19 +8,19 @@ import java.util.stream.Collectors;
 import lovelace.util.LovelaceLogger;
 import org.jetbrains.annotations.Nullable;
 
-import common.map.fixtures.towns.IMutableFortress;
+import legacy.map.fixtures.towns.IMutableFortress;
 
 import drivers.common.SimpleMultiMapModel;
 import drivers.common.IDriverModel;
 
-import common.map.fixtures.FortressMember;
-import common.map.fixtures.IMutableResourcePile;
-import common.map.fixtures.IResourcePile;
+import legacy.map.fixtures.FortressMember;
+import legacy.map.fixtures.IMutableResourcePile;
+import legacy.map.fixtures.IResourcePile;
 import common.map.fixtures.Quantity;
-import common.map.fixtures.ResourcePileImpl;
+import legacy.map.fixtures.ResourcePileImpl;
 
 import common.map.Player;
-import common.map.IMutableMapNG;
+import legacy.map.IMutableMapNG;
 
 import java.math.BigDecimal;
 

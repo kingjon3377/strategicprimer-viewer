@@ -15,12 +15,12 @@ import java.util.stream.StreamSupport;
 
 import lovelace.util.SingletonRandom;
 
-import common.map.fixtures.mobile.IWorker;
-import common.map.fixtures.mobile.IUnit;
+import legacy.map.fixtures.mobile.IWorker;
+import legacy.map.fixtures.mobile.IUnit;
 
-import common.map.fixtures.mobile.worker.IJob;
-import common.map.fixtures.mobile.worker.ISkill;
-import common.map.fixtures.mobile.worker.Skill;
+import legacy.map.fixtures.mobile.worker.IJob;
+import legacy.map.fixtures.mobile.worker.ISkill;
+import legacy.map.fixtures.mobile.worker.Skill;
 
 import drivers.common.IAdvancementModel;
 import org.javatuples.Pair;

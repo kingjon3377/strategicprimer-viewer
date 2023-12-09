@@ -1,13 +1,13 @@
 package query;
 
-import common.map.fixtures.IResourcePile;
-import common.map.fixtures.towns.CommunityStats;
+import legacy.map.fixtures.IResourcePile;
+import legacy.map.fixtures.towns.CommunityStats;
 
 import java.util.Comparator;
 import java.util.Map;
 import java.util.Optional;
 
-import common.map.fixtures.FixtureIterable;
+import legacy.map.fixtures.FixtureIterable;
 
 import java.util.stream.StreamSupport;
 import java.util.stream.Collectors;
@@ -17,13 +17,13 @@ import org.jetbrains.annotations.Nullable;
 
 import java.text.DecimalFormat;
 
-import common.map.IFixture;
+import legacy.map.IFixture;
 import common.map.Player;
-import common.map.HasOwner;
-import common.map.TileType;
-import common.map.MapDimensions;
-import common.map.Point;
-import common.map.IMapNG;
+import legacy.map.HasOwner;
+import legacy.map.TileType;
+import legacy.map.MapDimensions;
+import legacy.map.Point;
+import legacy.map.IMapNG;
 
 import java.util.Set;
 import java.util.LinkedList;
@@ -37,25 +37,25 @@ import drivers.common.ReadOnlyDriver;
 import drivers.common.EmptyOptions;
 import drivers.common.SPOptions;
 
-import common.map.fixtures.Ground;
+import legacy.map.fixtures.Ground;
 
 import drivers.common.cli.ICLIHelper;
 import drivers.common.cli.SimpleApplet;
 import drivers.common.cli.AppletChooser;
 
-import common.map.fixtures.terrain.Forest;
+import legacy.map.fixtures.terrain.Forest;
 
-import common.map.fixtures.mobile.IWorker;
+import legacy.map.fixtures.mobile.IWorker;
 
 import exploration.common.SurroundingPointIterable;
 import exploration.common.PathfinderFactory;
 import exploration.common.Pathfinder;
 
-import common.DistanceComparator;
+import legacy.DistanceComparator;
 
-import common.map.fixtures.towns.ITownFixture;
+import legacy.map.fixtures.towns.ITownFixture;
 import common.map.fixtures.towns.TownStatus;
-import common.map.fixtures.towns.Village;
+import legacy.map.fixtures.towns.Village;
 import either.Either;
 
 /**

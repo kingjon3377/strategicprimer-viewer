@@ -2,7 +2,7 @@ package drivers.worker_mgmt;
 
 import java.util.EventListener;
 
-import common.map.fixtures.UnitMember;
+import legacy.map.fixtures.UnitMember;
 
 import org.jetbrains.annotations.Nullable;
 

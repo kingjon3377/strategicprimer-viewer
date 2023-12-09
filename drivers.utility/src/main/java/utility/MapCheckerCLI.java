@@ -1,14 +1,14 @@
 package utility;
 
 import common.map.HasName;
-import common.map.fixtures.Implement;
-import common.map.fixtures.mobile.Animal;
-import common.map.fixtures.mobile.IUnit;
-import common.map.fixtures.towns.CommunityStats;
-import common.map.fixtures.FixtureIterable;
-import common.map.fixtures.towns.IFortress;
+import legacy.map.fixtures.Implement;
+import legacy.map.fixtures.mobile.Animal;
+import legacy.map.fixtures.mobile.IUnit;
+import legacy.map.fixtures.towns.CommunityStats;
+import legacy.map.fixtures.FixtureIterable;
+import legacy.map.fixtures.towns.IFortress;
 import common.map.fixtures.towns.TownSize;
-import common.map.TileFixture;
+import legacy.map.TileFixture;
 
 import java.io.Serial;
 import java.nio.file.NoSuchFileException;
@@ -34,39 +34,39 @@ import drivers.common.UtilityDriver;
 import drivers.common.EmptyOptions;
 import drivers.common.SPOptions;
 
-import common.map.HasExtent;
-import common.map.IFixture;
+import legacy.map.HasExtent;
+import legacy.map.IFixture;
 import common.map.Player;
-import common.map.HasOwner;
-import common.map.Point;
-import common.map.TileType;
-import common.map.IMapNG;
+import legacy.map.HasOwner;
+import legacy.map.Point;
+import legacy.map.TileType;
+import legacy.map.IMapNG;
 
-import common.map.fixtures.mobile.IWorker;
-import common.map.fixtures.mobile.AnimalTracks;
+import legacy.map.fixtures.mobile.IWorker;
+import legacy.map.fixtures.mobile.AnimalTracks;
 
-import common.map.fixtures.mobile.worker.IJob;
+import legacy.map.fixtures.mobile.worker.IJob;
 
-import static common.map.fixtures.mobile.worker.IJob.SUSPICIOUS_SKILLS;
+import static legacy.map.fixtures.mobile.worker.IJob.SUSPICIOUS_SKILLS;
 
-import common.map.fixtures.mobile.worker.ISkill;
+import legacy.map.fixtures.mobile.worker.ISkill;
 
-import common.map.fixtures.resources.StoneDeposit;
-import common.map.fixtures.resources.StoneKind;
-import common.map.fixtures.resources.Grove;
+import legacy.map.fixtures.resources.StoneDeposit;
+import legacy.map.fixtures.resources.StoneKind;
+import legacy.map.fixtures.resources.Grove;
 
-import common.map.fixtures.towns.Village;
-import common.map.fixtures.towns.ITownFixture;
+import legacy.map.fixtures.towns.Village;
+import legacy.map.fixtures.towns.ITownFixture;
 
-import impl.xmlio.MapIOHelper;
+import legacy.xmlio.MapIOHelper;
 
 import common.xmlio.Warning;
 import common.xmlio.SPFormatException;
 
-import common.map.fixtures.IResourcePile;
+import legacy.map.fixtures.IResourcePile;
 
-import common.map.fixtures.terrain.Hill;
-import common.map.fixtures.terrain.Oasis;
+import legacy.map.fixtures.terrain.Hill;
+import legacy.map.fixtures.terrain.Oasis;
 import org.jetbrains.annotations.Nullable;
 
 /**

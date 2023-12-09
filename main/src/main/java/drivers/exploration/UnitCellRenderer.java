@@ -5,7 +5,7 @@ import javax.swing.ListCellRenderer;
 import javax.swing.JLabel;
 import javax.swing.JList;
 
-import common.map.fixtures.mobile.IUnit;
+import legacy.map.fixtures.mobile.IUnit;
 
 import java.awt.Component;
 

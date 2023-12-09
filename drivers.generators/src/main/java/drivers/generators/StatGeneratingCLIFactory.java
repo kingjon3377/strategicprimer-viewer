@@ -1,6 +1,6 @@
 package drivers.generators;
 
-import common.map.IMutableMapNG;
+import legacy.map.IMutableMapNG;
 
 import drivers.common.IDriverModel;
 import drivers.common.IDriverUsage;

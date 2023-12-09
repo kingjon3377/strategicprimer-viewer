@@ -17,10 +17,10 @@ import static lovelace.util.FunctionalSplitPane.horizontalSplit;
 
 import lovelace.util.FormattedLabel;
 
-import common.idreg.IDFactoryFiller;
-import common.idreg.IDRegistrar;
+import legacy.idreg.IDFactoryFiller;
+import legacy.idreg.IDRegistrar;
 
-import common.map.IMapNG;
+import legacy.map.IMapNG;
 import common.map.Player;
 
 import static drivers.worker_mgmt.WorkerMenu.workerMenu;
@@ -36,7 +36,7 @@ import drivers.common.PlayerChangeListener;
 import drivers.common.ModelDriver;
 import drivers.common.IWorkerModel;
 
-import impl.xmlio.MapIOHelper;
+import legacy.xmlio.MapIOHelper;
 
 import drivers.gui.common.SPFrame;
 import drivers.gui.common.MenuBroker;

@@ -10,18 +10,18 @@ import javax.swing.JOptionPane;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 
-import common.map.HasMutableKind;
-import common.map.HasMutableName;
-import common.map.IFixture;
+import legacy.map.HasMutableKind;
+import legacy.map.HasMutableName;
+import legacy.map.IFixture;
 import common.map.HasName;
 import common.map.Player;
-import common.map.HasMutableOwner;
-import common.map.fixtures.UnitMember;
+import legacy.map.HasMutableOwner;
+import legacy.map.fixtures.UnitMember;
 
 import worker.common.IFixtureEditHelper;
-import common.map.fixtures.mobile.IUnit;
-import common.map.fixtures.mobile.Animal;
-import common.idreg.IDRegistrar;
+import legacy.map.fixtures.mobile.IUnit;
+import legacy.map.fixtures.mobile.Animal;
+import legacy.idreg.IDRegistrar;
 
 /**
  * A pop-up menu to let the user edit a fixture.

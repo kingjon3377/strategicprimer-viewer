@@ -1,7 +1,7 @@
 package drivers.turnrunning.applets;
 
 import com.google.auto.service.AutoService;
-import common.idreg.IDRegistrar;
+import legacy.idreg.IDRegistrar;
 import drivers.common.cli.ICLIHelper;
 import drivers.turnrunning.ITurnRunningModel;
 

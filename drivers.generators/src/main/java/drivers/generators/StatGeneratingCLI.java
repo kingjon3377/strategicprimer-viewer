@@ -1,7 +1,7 @@
 package drivers.generators;
 
-import common.map.fixtures.Implement;
-import common.map.fixtures.mobile.AnimalImpl;
+import legacy.map.fixtures.Implement;
+import legacy.map.fixtures.mobile.AnimalImpl;
 
 import java.util.Comparator;
 import java.util.function.Predicate;
@@ -21,26 +21,26 @@ import java.util.LinkedList;
 import java.util.regex.Pattern;
 import java.util.regex.Matcher;
 
-import common.idreg.IDRegistrar;
-import common.idreg.IDFactoryFiller;
+import legacy.idreg.IDRegistrar;
+import legacy.idreg.IDFactoryFiller;
 import drivers.common.DriverFailedException;
 
-import common.map.IMapNG;
+import legacy.map.IMapNG;
 import common.map.Player;
-import common.map.Point;
+import legacy.map.Point;
 
-import common.map.fixtures.UnitMember;
+import legacy.map.fixtures.UnitMember;
 
-import common.map.fixtures.mobile.IUnit;
-import common.map.fixtures.mobile.Unit;
-import common.map.fixtures.mobile.Worker;
-import common.map.fixtures.mobile.IWorker;
-import common.map.fixtures.mobile.IMutableWorker;
+import legacy.map.fixtures.mobile.IUnit;
+import legacy.map.fixtures.mobile.Unit;
+import legacy.map.fixtures.mobile.Worker;
+import legacy.map.fixtures.mobile.IWorker;
+import legacy.map.fixtures.mobile.IMutableWorker;
 
 import common.map.fixtures.mobile.worker.WorkerStats;
-import common.map.fixtures.mobile.worker.IJob;
+import legacy.map.fixtures.mobile.worker.IJob;
 import common.map.fixtures.mobile.worker.RaceFactory;
-import common.map.fixtures.mobile.worker.Job;
+import legacy.map.fixtures.mobile.worker.Job;
 
 import drivers.common.CLIDriver;
 import drivers.common.EmptyOptions;
@@ -67,7 +67,7 @@ import java.nio.file.NoSuchFileException;
 import lovelace.util.FileContentsReader;
 import lovelace.util.SingletonRandom;
 
-import common.map.fixtures.towns.Village;
+import legacy.map.fixtures.towns.Village;
 
 /**
  * A driver to generate new workers.

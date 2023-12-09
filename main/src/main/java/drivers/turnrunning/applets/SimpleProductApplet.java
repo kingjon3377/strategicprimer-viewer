@@ -1,10 +1,10 @@
 package drivers.turnrunning.applets;
 
-import common.map.fixtures.IResourcePile;
-import common.map.fixtures.mobile.IUnit;
+import legacy.map.fixtures.IResourcePile;
+import legacy.map.fixtures.mobile.IUnit;
 import drivers.common.cli.ICLIHelper;
 
-import common.idreg.IDRegistrar;
+import legacy.idreg.IDRegistrar;
 
 import drivers.resourceadding.ResourceAddingCLIHelper;
 

@@ -11,12 +11,12 @@ import common.map.Player;
 import common.map.PlayerImpl;
 import common.map.fixtures.towns.TownStatus;
 import common.map.fixtures.towns.TownSize;
-import common.map.fixtures.towns.FortressImpl;
-import common.map.fixtures.towns.ITownFixture;
-import common.map.fixtures.towns.Village;
-import common.map.fixtures.towns.City;
-import common.map.fixtures.towns.Town;
-import common.map.fixtures.towns.Fortification;
+import legacy.map.fixtures.towns.FortressImpl;
+import legacy.map.fixtures.towns.ITownFixture;
+import legacy.map.fixtures.towns.Village;
+import legacy.map.fixtures.towns.City;
+import legacy.map.fixtures.towns.Town;
+import legacy.map.fixtures.towns.Fortification;
 
 import java.util.Collections;
 import java.util.Arrays;

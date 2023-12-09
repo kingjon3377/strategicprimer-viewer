@@ -1,7 +1,7 @@
 package drivers.map_viewer;
 
-import common.map.Point;
-import common.map.IMapNG;
+import legacy.map.Point;
+import legacy.map.IMapNG;
 
 import java.awt.Graphics;
 

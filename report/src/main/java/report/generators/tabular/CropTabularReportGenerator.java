@@ -7,16 +7,16 @@ import org.jetbrains.annotations.Nullable;
 
 import lovelace.util.DelayedRemovalMap;
 
-import common.DistanceComparator;
-import common.map.IFixture;
-import common.map.TileFixture;
-import common.map.MapDimensions;
-import common.map.Point;
-import common.map.HasKind;
-import common.map.fixtures.resources.Grove;
-import common.map.fixtures.resources.Meadow;
-import common.map.fixtures.resources.Shrub;
-import common.map.fixtures.terrain.Forest;
+import legacy.DistanceComparator;
+import legacy.map.IFixture;
+import legacy.map.TileFixture;
+import legacy.map.MapDimensions;
+import legacy.map.Point;
+import legacy.map.HasKind;
+import legacy.map.fixtures.resources.Grove;
+import legacy.map.fixtures.resources.Meadow;
+import legacy.map.fixtures.resources.Shrub;
+import legacy.map.fixtures.terrain.Forest;
 
 import java.util.Arrays;
 import java.util.Comparator;

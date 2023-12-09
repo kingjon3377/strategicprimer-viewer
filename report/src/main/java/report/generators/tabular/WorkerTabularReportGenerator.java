@@ -7,11 +7,11 @@ import org.jetbrains.annotations.Nullable;
 
 import lovelace.util.DelayedRemovalMap;
 
-import common.DistanceComparator;
-import common.map.IFixture;
-import common.map.MapDimensions;
-import common.map.Point;
-import common.map.fixtures.mobile.IWorker;
+import legacy.DistanceComparator;
+import legacy.map.IFixture;
+import legacy.map.MapDimensions;
+import legacy.map.Point;
+import legacy.map.fixtures.mobile.IWorker;
 import common.map.fixtures.mobile.worker.WorkerStats;
 
 import java.util.Comparator;

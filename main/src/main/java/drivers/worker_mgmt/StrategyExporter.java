@@ -7,7 +7,7 @@ import org.jetbrains.annotations.Nullable;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
-import common.map.fixtures.towns.IFortress;
+import legacy.map.fixtures.towns.IFortress;
 
 import java.io.Writer;
 import java.io.BufferedWriter;
@@ -27,14 +27,14 @@ import drivers.common.PlayerChangeListener;
 import drivers.common.IWorkerModel;
 import common.map.Player;
 import common.map.HasName;
-import common.map.fixtures.Implement;
-import common.map.fixtures.IResourcePile;
-import common.map.fixtures.UnitMember;
-import common.map.fixtures.mobile.IWorker;
-import common.map.fixtures.mobile.IUnit;
-import common.map.fixtures.mobile.Animal;
+import legacy.map.fixtures.Implement;
+import legacy.map.fixtures.IResourcePile;
+import legacy.map.fixtures.UnitMember;
+import legacy.map.fixtures.mobile.IWorker;
+import legacy.map.fixtures.mobile.IUnit;
+import legacy.map.fixtures.mobile.Animal;
 import common.map.fixtures.mobile.AnimalPlurals;
-import common.map.fixtures.mobile.worker.IJob;
+import legacy.map.fixtures.mobile.worker.IJob;
 
 /**
  * A class to write a proto-strategy to file.

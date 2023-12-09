@@ -7,12 +7,12 @@ import org.jetbrains.annotations.Nullable;
 
 import lovelace.util.DelayedRemovalMap;
 
-import common.DistanceComparator;
+import legacy.DistanceComparator;
 import common.map.Player;
-import common.map.IFixture;
-import common.map.MapDimensions;
-import common.map.Point;
-import common.map.fixtures.towns.IFortress;
+import legacy.map.IFixture;
+import legacy.map.MapDimensions;
+import legacy.map.Point;
+import legacy.map.fixtures.towns.IFortress;
 
 import java.util.Comparator;
 import java.util.Map;

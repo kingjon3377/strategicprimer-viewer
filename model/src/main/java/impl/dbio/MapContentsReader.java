@@ -1,8 +1,8 @@
 package impl.dbio;
 
 import lovelace.util.LovelaceLogger;
-import common.map.IFixture;
-import common.map.IMutableMapNG;
+import legacy.map.IFixture;
+import legacy.map.IMutableMapNG;
 import common.xmlio.Warning;
 
 import io.jenetics.facilejdbc.Query;
@@ -26,7 +26,7 @@ import lovelace.util.IntAccumulator;
 /**
  * An interface for code to read map contents from an SQL database.
  */
-interface MapContentsReader {
+public interface MapContentsReader {
 	/**
 	 * Read map contents---that is, anything directly at a location on the map.
 	 *

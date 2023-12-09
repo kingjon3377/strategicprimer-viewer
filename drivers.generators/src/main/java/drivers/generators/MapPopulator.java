@@ -1,9 +1,9 @@
 package drivers.generators;
 
-import common.map.IMapNG;
-import common.map.Point;
+import legacy.map.IMapNG;
+import legacy.map.Point;
 
-import common.idreg.IDRegistrar;
+import legacy.idreg.IDRegistrar;
 
 /**
  * An interface for map-populating passes to implement. Create an object

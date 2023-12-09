@@ -3,7 +3,7 @@ package worker.common;
 import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreePath;
 
-import common.map.fixtures.mobile.IUnit;
+import legacy.map.fixtures.mobile.IUnit;
 
 import org.jetbrains.annotations.Nullable;
 

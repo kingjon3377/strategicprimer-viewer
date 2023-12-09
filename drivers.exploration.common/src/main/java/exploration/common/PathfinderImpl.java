@@ -1,8 +1,8 @@
 package exploration.common;
 
 import lovelace.util.LovelaceLogger;
-import common.map.MapDimensions;
-import common.map.TileFixture;
+import legacy.map.MapDimensions;
+import legacy.map.TileFixture;
 import lovelace.util.SimplePair;
 import org.jetbrains.annotations.Nullable;
 import org.javatuples.Pair;
@@ -14,10 +14,10 @@ import java.util.HashMap;
 import java.util.ArrayList;
 import java.util.List;
 
-import common.map.IMapNG;
-import common.map.Direction;
-import common.map.Point;
-import common.map.fixtures.terrain.Forest;
+import legacy.map.IMapNG;
+import legacy.map.Direction;
+import legacy.map.Point;
+import legacy.map.fixtures.terrain.Forest;
 
 import java.util.function.Predicate;
 import java.util.Collections;

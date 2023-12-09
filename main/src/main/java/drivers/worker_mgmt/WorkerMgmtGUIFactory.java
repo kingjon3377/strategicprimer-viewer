@@ -16,7 +16,7 @@ import drivers.common.DriverFactory;
 import drivers.common.GUIDriverFactory;
 import drivers.common.IWorkerModel;
 import worker.common.WorkerModel;
-import common.map.IMutableMapNG;
+import legacy.map.IMutableMapNG;
 import lovelace.util.FileChooser;
 import drivers.gui.common.SPFileChooser;
 
