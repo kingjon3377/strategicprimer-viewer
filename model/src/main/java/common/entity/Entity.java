@@ -18,7 +18,7 @@ public class Entity implements IEntity {
 	private @NotNull Location location;
 	private final @NotNull EntityIdentifier id;
 	private final @NotNull String type;
-	private final Map<String, Object> properties = new HashMap<>();
+	private final Map<String, EntityProperty<?>> properties = new HashMap<>();
 	@Override
 	public final @NotNull Location getLocation() {
 		return location;
@@ -41,35 +41,19 @@ public class Entity implements IEntity {
 	}
 
 	@Override
-	public final @Nullable Class<?> getPropertyType(final @NotNull String propertyName) {
-		final Object property = properties.get(propertyName);
-		if (null == property) {
-			return null;
-		} else {
-			return property.getClass();
-		}
-	}
-
-	@Override
-	public final @Nullable Object getProperty(final @NotNull String propertyName) {
+	public final @Nullable EntityProperty<?> getProperty(final @NotNull String propertyName) {
 		return properties.get(propertyName);
 	}
 
-	@Override
-	public final <T> @Nullable T getTypedProperty(final @NotNull String propertyName, final @NotNull Class<T> type) {
-		final Object retval = properties.get(propertyName);
-		if (type.isInstance(retval)) {
-			return type.cast(retval);
-		} else {
-			return null;
-		}
+	public void setProperty(final @NotNull EntityProperty<?> property) {
+		properties.put(property.getPropertyName(), property);
 	}
 
-	public void setProperty(final @NotNull String propertyName, final @Nullable Object value) {
-		if (value == null) {
-			properties.remove(propertyName);
-		} else {
-			properties.put(propertyName, value);
-		}
+	public void removeProperty(final @NotNull String propertyName) {
+		properties.remove(propertyName);
+	}
+
+	public void removeProperty(final @NotNull EntityProperty<?> property) {
+		properties.remove(property.getPropertyName(), property);
 	}
 }
