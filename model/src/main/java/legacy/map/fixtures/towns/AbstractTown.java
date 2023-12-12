@@ -3,7 +3,7 @@ package legacy.map.fixtures.towns;
 import common.map.fixtures.towns.TownSize;
 import common.map.fixtures.towns.TownStatus;
 import legacy.map.IFixture;
-import common.map.Subsettable;
+import legacy.map.Subsettable;
 import legacy.map.HasMutableImage;
 import common.map.Player;
 

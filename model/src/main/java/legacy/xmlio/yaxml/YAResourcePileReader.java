@@ -6,6 +6,7 @@ import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 import java.io.IOException;
 
+import legacy.map.fixtures.LegacyQuantity;
 import lovelace.util.ThrowingConsumer;
 import common.xmlio.SPFormatException;
 import legacy.idreg.IDRegistrar;
@@ -30,7 +31,7 @@ import common.xmlio.Warning;
         expectAttributes(element, "quantity", "kind", "contents", "unit", "created", "id", "image");
         final IMutableResourcePile retval = new ResourcePileImpl(getOrGenerateID(element),
                 getParameter(element, "kind"), getParameter(element, "contents"),
-                new Quantity(getNumericParameter(element, "quantity"),
+                new LegacyQuantity(getNumericParameter(element, "quantity"),
                         getParameter(element, "unit", "")));
         if (hasParameter(element, "created")) {
             retval.setCreated(getIntegerParameter(element, "created"));

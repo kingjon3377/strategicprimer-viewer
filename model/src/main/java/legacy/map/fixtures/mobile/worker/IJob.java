@@ -1,6 +1,6 @@
 package legacy.map.fixtures.mobile.worker;
 
-import common.map.Subsettable;
+import legacy.map.Subsettable;
 import common.map.HasName;
 
 import java.util.List;

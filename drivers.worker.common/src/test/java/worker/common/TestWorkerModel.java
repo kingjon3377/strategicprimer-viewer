@@ -9,6 +9,7 @@ import java.util.Iterator;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import legacy.map.LegacyPlayerCollection;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -110,7 +111,7 @@ public class TestWorkerModel {
         fixtures.add(new Oasis(8));
         final LinkedList<TileFixture> shuffled = new LinkedList<>(fixtures);
         Collections.shuffle(shuffled);
-        final IMutableLegacyMap map = new LegacyMap(new MapDimensionsImpl(3, 3, 2), new PlayerCollection(), -1);
+        final IMutableLegacyMap map = new LegacyMap(new MapDimensionsImpl(3, 3, 2), new LegacyPlayerCollection(), -1);
         final Iterator<Point> locations = map.getLocations().iterator();
         while (locations.hasNext() && !shuffled.isEmpty()) {
             final Point point = locations.next();

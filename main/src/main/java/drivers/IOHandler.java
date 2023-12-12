@@ -8,6 +8,7 @@ import java.util.Objects;
 import java.util.ServiceLoader;
 import javax.xml.stream.XMLStreamException;
 
+import legacy.map.LegacyPlayerCollection;
 import lovelace.util.LovelaceLogger;
 import org.jetbrains.annotations.Nullable;
 
@@ -179,7 +180,7 @@ public class IOHandler implements ActionListener {
             try {
                 vdf.createDriver(cli, driver.getOptions().copy(),
                                 new ViewerModel(new LegacyMap(driver.getModel().getMapDimensions(),
-                                        new PlayerCollection(),
+                                        new LegacyPlayerCollection(),
                                         driver.getModel().getMap().getCurrentTurn())))
                         .startDriver();
             } catch (final DriverFailedException except) {

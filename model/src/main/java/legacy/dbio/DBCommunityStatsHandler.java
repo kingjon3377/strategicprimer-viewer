@@ -14,6 +14,7 @@ import java.util.Map;
 import java.math.BigDecimal;
 
 import legacy.map.IMutableLegacyMap;
+import legacy.map.fixtures.LegacyQuantity;
 import legacy.map.fixtures.ResourcePileImpl;
 import legacy.map.fixtures.IResourcePile;
 import legacy.map.fixtures.IMutableResourcePile;
@@ -164,7 +165,7 @@ public final class DBCommunityStatsHandler extends AbstractDatabaseWriter<Commun
 				quantity = new BigDecimal(qtyString);
 			}
 			final IMutableResourcePile pile =
-				new ResourcePileImpl(id, kind, contents, new Quantity(quantity, units));
+				new ResourcePileImpl(id, kind, contents, new LegacyQuantity(quantity, units));
 			if (created != null) {
 				pile.setCreated(created);
 			}
@@ -193,7 +194,7 @@ public final class DBCommunityStatsHandler extends AbstractDatabaseWriter<Commun
 				quantity = new BigDecimal(qtyString);
 			}
 			final IMutableResourcePile pile =
-				new ResourcePileImpl(id, kind, contents, new Quantity(quantity, units));
+				new ResourcePileImpl(id, kind, contents, new LegacyQuantity(quantity, units));
 			if (created != null) {
 				pile.setCreated(created);
 			}

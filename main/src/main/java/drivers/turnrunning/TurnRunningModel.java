@@ -12,7 +12,7 @@ import legacy.map.fixtures.FixtureIterable;
 import legacy.map.fixtures.FortressMember;
 import legacy.map.fixtures.IMutableResourcePile;
 import legacy.map.fixtures.IResourcePile;
-import common.map.fixtures.Quantity;
+import legacy.map.fixtures.LegacyQuantity;
 import legacy.map.fixtures.ResourcePileImpl;
 import legacy.map.fixtures.UnitMember;
 import legacy.map.fixtures.mobile.Animal;
@@ -488,7 +488,7 @@ public class TurnRunningModel extends ExplorationModel implements ITurnRunningMo
 									"Unexpected fixture container type");
 							}
 						} else {
-							item.setQuantity(new Quantity(qty.subtract(amount),
+							item.setQuantity(new LegacyQuantity(qty.subtract(amount),
 								resource.getQuantity().units()));
 						}
 						map.setModified(true);
@@ -620,7 +620,7 @@ public class TurnRunningModel extends ExplorationModel implements ITurnRunningMo
 	 * mutable) unit was found in at least one map, false otherwise.
 	 */
 	@Override
-	public boolean addResource(final IUnit container, final int id, final String kind, final String contents, final Quantity quantity) {
+	public boolean addResource(final IUnit container, final int id, final String kind, final String contents, final LegacyQuantity quantity) {
 		boolean any = false;
 		final IMutableResourcePile resource = new ResourcePileImpl(id, kind, contents, quantity);
 		final Predicate<Object> isUnit = IMutableUnit.class::isInstance;
@@ -653,7 +653,7 @@ public class TurnRunningModel extends ExplorationModel implements ITurnRunningMo
 	 * mutable) fortress was found in at least one map, false otherwise.
 	 */
 	@Override
-	public boolean addResource(final IFortress container, final int id, final String kind, final String contents, final Quantity quantity) {
+	public boolean addResource(final IFortress container, final int id, final String kind, final String contents, final LegacyQuantity quantity) {
 		boolean any = false;
 		final IMutableResourcePile resource = new ResourcePileImpl(id, kind, contents, quantity);
 		final Predicate<Object> isFortress = IMutableFortress.class::isInstance;
@@ -682,7 +682,7 @@ public class TurnRunningModel extends ExplorationModel implements ITurnRunningMo
 	 * otherwise.
 	 */
 	@Override
-	public boolean addResource(final IUnit container, final int id, final String kind, final String contents, final Quantity quantity,
+	public boolean addResource(final IUnit container, final int id, final String kind, final String contents, final LegacyQuantity quantity,
 							   final int createdDate) {
 		boolean any = false;
 		final IMutableResourcePile resource = new ResourcePileImpl(id, kind, contents, quantity);
@@ -718,7 +718,7 @@ public class TurnRunningModel extends ExplorationModel implements ITurnRunningMo
 	 * otherwise.
 	 */
 	@Override
-	public boolean addResource(final IFortress container, final int id, final String kind, final String contents, final Quantity quantity,
+	public boolean addResource(final IFortress container, final int id, final String kind, final String contents, final LegacyQuantity quantity,
 							   final int createdDate) {
 		boolean any = false;
 		final IMutableResourcePile resource = new ResourcePileImpl(id, kind, contents, quantity);
@@ -836,9 +836,9 @@ public class TurnRunningModel extends ExplorationModel implements ITurnRunningMo
 					} else {
 						final IMutableResourcePile split = new ResourcePileImpl(id.getAsInt(),
 							matching.getKind(), matching.getContents(),
-							new Quantity(quantity, matching.getQuantity().units()));
+							new LegacyQuantity(quantity, matching.getQuantity().units()));
 						split.setCreated(matching.getCreated());
-						matching.setQuantity(new Quantity(decimalize(matching.getQuantity()
+						matching.setQuantity(new LegacyQuantity(decimalize(matching.getQuantity()
 							.number()).subtract(quantity), matching.getQuantity().units()));
 					}
 					any = true;
@@ -908,9 +908,9 @@ public class TurnRunningModel extends ExplorationModel implements ITurnRunningMo
 					} else {
 						final IMutableResourcePile split = new ResourcePileImpl(id.getAsInt(),
 							matching.getKind(), matching.getContents(),
-							new Quantity(quantity, matching.getQuantity().units()));
+							new LegacyQuantity(quantity, matching.getQuantity().units()));
 						split.setCreated(matching.getCreated());
-						matching.setQuantity(new Quantity(decimalize(matching.getQuantity()
+						matching.setQuantity(new LegacyQuantity(decimalize(matching.getQuantity()
 							.number()).subtract(quantity), matching.getQuantity().units()));
 					}
 					any = true;

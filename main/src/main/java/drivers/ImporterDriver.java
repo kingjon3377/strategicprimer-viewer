@@ -21,6 +21,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import javax.xml.stream.XMLStreamException;
 
+import legacy.map.LegacyPlayerCollection;
 import lovelace.util.LovelaceLogger;
 import lovelace.util.Range;
 import lovelace.util.ResourceInputStream;
@@ -185,7 +186,7 @@ import org.jetbrains.annotations.Nullable;
             final IMutableLegacyMap finalRetval = new LegacyMap(new MapDimensionsImpl(
                     retval.keySet().stream().mapToInt(Point::row).max().orElse(0) + 1,
                     retval.keySet().stream().mapToInt(Point::column).max().orElse(0) + 1, 2),
-                    new PlayerCollection(), -1);
+                    new LegacyPlayerCollection(), -1);
             for (final Map.Entry<Point, HasName> entry : retval.entrySet()) {
                 final Point point = entry.getKey();
                 final HasName type = entry.getValue();

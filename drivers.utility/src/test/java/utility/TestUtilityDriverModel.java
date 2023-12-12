@@ -2,6 +2,8 @@ package utility;
 
 import legacy.map.IMutableLegacyMap;
 import common.map.IMutablePlayerCollection;
+import legacy.map.IMutableLegacyPlayerCollection;
+import legacy.map.LegacyPlayerCollection;
 import legacy.map.MapDimensions;
 import legacy.map.MapDimensionsImpl;
 import common.map.MutablePlayer;
@@ -18,8 +20,8 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class TestUtilityDriverModel {
-	private static IMutablePlayerCollection playerCollection(final String current, final String... players) {
-		final IMutablePlayerCollection retval = new PlayerCollection();
+	private static IMutableLegacyPlayerCollection playerCollection(final String current, final String... players) {
+		final IMutableLegacyPlayerCollection retval = new LegacyPlayerCollection();
 		int i = 0;
 		for (final String name : players) {
 			final MutablePlayer player = new PlayerImpl(i, name);

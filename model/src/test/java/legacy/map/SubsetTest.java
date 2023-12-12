@@ -61,17 +61,17 @@ public final class SubsetTest {
     }
 
     /**
-     * A test of {@link PlayerCollection}'s subset feature
+     * A test of {@link LegacyPlayerCollection}'s subset feature
      */
     @Test
     public void testPlayerCollectionSubset() {
         // TODO: Make a way to initialize one declaratively
-        final IMutablePlayerCollection firstCollection = new PlayerCollection();
+        final IMutableLegacyPlayerCollection firstCollection = new LegacyPlayerCollection();
         firstCollection.add(new PlayerImpl(1, "one"));
-        final IMutablePlayerCollection secondCollection = new PlayerCollection();
+        final IMutableLegacyPlayerCollection secondCollection = new LegacyPlayerCollection();
         secondCollection.add(new PlayerImpl(1, "one"));
         secondCollection.add(new PlayerImpl(2, "two"));
-        final IPlayerCollection zero = new PlayerCollection();
+        final ILegacyPlayerCollection zero = new LegacyPlayerCollection();
         assertIsSubset(zero, zero, "Empty is subset of self");
         assertIsSubset(firstCollection, zero, "Empty is subset of one");
         assertIsSubset(secondCollection, zero, "Empty is subset of two");
@@ -137,7 +137,7 @@ public final class SubsetTest {
     @SafeVarargs
     private static IMutableLegacyMap createMap(final Pair<Point, TileType>... terrain) {
         final IMutableLegacyMap retval = new LegacyMap(new MapDimensionsImpl(2, 2, 2),
-                new PlayerCollection(), -1);
+                new LegacyPlayerCollection(), -1);
         for (final Pair<Point, TileType> pair : terrain) {
             retval.setBaseTerrain(pair.getValue0(), pair.getValue1());
         }
@@ -191,7 +191,7 @@ public final class SubsetTest {
     @Test
     public void testMapOffByOne() {
         final IMutableLegacyMap baseMap = new LegacyMap(new MapDimensionsImpl(2, 2, 2),
-                new PlayerCollection(), -1);
+                new LegacyPlayerCollection(), -1);
         for (final Point point : baseMap.getLocations()) {
             baseMap.setBaseTerrain(point, TileType.Plains);
         }
@@ -200,7 +200,7 @@ public final class SubsetTest {
         baseMap.addRivers(new Point(1, 1), River.East);
 
         final IMutableLegacyMap testMap = new LegacyMap(new MapDimensionsImpl(2, 2, 2),
-                new PlayerCollection(), -1);
+                new LegacyPlayerCollection(), -1);
         for (final Point point : testMap.getLocations()) {
             testMap.setBaseTerrain(point, TileType.Plains);
         }
@@ -238,13 +238,13 @@ public final class SubsetTest {
     @Test
     public void testSubsetsAndCopy() {
         final IMutableLegacyMap firstMap = new LegacyMap(new MapDimensionsImpl(2, 2, 2),
-                new PlayerCollection(), -1);
+                new LegacyPlayerCollection(), -1);
         firstMap.setBaseTerrain(new Point(0, 0), TileType.Jungle);
         final ILegacyMap zero = new LegacyMap(new MapDimensionsImpl(2, 2, 2),
-                new PlayerCollection(), -1);
+                new LegacyPlayerCollection(), -1);
         assertIsSubset(firstMap, zero, "zero is a subset of one before copy");
         final IMutableLegacyMap secondMap =
-                new LegacyMap(new MapDimensionsImpl(2, 2, 2), new PlayerCollection(), -1);
+                new LegacyMap(new MapDimensionsImpl(2, 2, 2), new LegacyPlayerCollection(), -1);
         secondMap.setBaseTerrain(new Point(0, 0), TileType.Jungle);
         firstMap.setBaseTerrain(new Point(1, 1), TileType.Plains);
         secondMap.setBaseTerrain(new Point(1, 1), TileType.Plains);

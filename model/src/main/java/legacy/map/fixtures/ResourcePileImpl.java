@@ -9,7 +9,7 @@ import common.map.fixtures.Quantity;
  */
 public final class ResourcePileImpl implements IMutableResourcePile {
 
-    public ResourcePileImpl(final int id, final String kind, final String contents, final Quantity quantity) {
+    public ResourcePileImpl(final int id, final String kind, final String contents, final LegacyQuantity quantity) {
         this.id = id;
         this.kind = kind;
         this.contents = contents;
@@ -63,20 +63,20 @@ public final class ResourcePileImpl implements IMutableResourcePile {
     /**
      * How much of that thing is in the pile, including units.
      */
-    private Quantity quantity;
+    private LegacyQuantity quantity;
 
     /**
      * How much of that thing is in the pile, including units.
      */
     @Override
-    public Quantity getQuantity() {
+    public LegacyQuantity getQuantity() {
         return quantity;
     }
 
     /**
      * Set how much of that thing is in the pile, including units.
      */
-    public void setQuantity(final Quantity quantity) {
+    public void setQuantity(final LegacyQuantity quantity) {
         this.quantity = quantity;
     }
 

@@ -1,9 +1,7 @@
 package legacy.map;
 
-import common.map.IMutablePlayerCollection;
 import common.map.IPlayerCollection;
 import common.map.Player;
-import common.map.Subsettable;
 import legacy.map.fixtures.mobile.IUnit;
 
 import java.util.Arrays;
@@ -120,7 +118,7 @@ public class LegacyMap implements IMutableLegacyMap {
 	/**
 	 * The players in the map.
 	 */
-	private final IMutablePlayerCollection playerCollection;
+	private final IMutableLegacyPlayerCollection playerCollection;
 
 	/**
 	 * Fixtures at various points, other than the main ground and forest.
@@ -193,7 +191,7 @@ public class LegacyMap implements IMutableLegacyMap {
 		}
 	}
 
-	public LegacyMap(final MapDimensions dimensions, final IMutablePlayerCollection players, final int turn) {
+	public LegacyMap(final MapDimensions dimensions, final IMutableLegacyPlayerCollection players, final int turn) {
 		final int size = dimensions.rows() * dimensions.columns();
 		terrain = new HashMap<>(reduceLarge(size), 0.5f);
 		fixturesMap = new HashMap<>(reduceLarge(size), 0.5f);

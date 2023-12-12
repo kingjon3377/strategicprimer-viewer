@@ -8,7 +8,6 @@ import java.util.stream.Stream;
 
 import common.map.IPlayerCollection;
 import common.map.Player;
-import common.map.Subsettable;
 import org.jetbrains.annotations.Nullable;
 
 /**

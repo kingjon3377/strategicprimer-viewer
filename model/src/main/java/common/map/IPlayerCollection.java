@@ -3,7 +3,7 @@ package common.map;
 /**
  * An interface for collections of players.
  */
-public interface IPlayerCollection extends Iterable<Player>, Subsettable<Iterable<Player>> {
+public interface IPlayerCollection extends Iterable<Player> {
     /**
      * Get the player with the given player-ID, or a new player with that
      * number if we didn't have one. In the latter case, if this is

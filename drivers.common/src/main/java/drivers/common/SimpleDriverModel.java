@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import legacy.map.LegacyMap;
 import legacy.map.ILegacyMap;
 import legacy.map.IMutableLegacyMap;
+import legacy.map.LegacyPlayerCollection;
 import legacy.map.MapDimensions;
 import legacy.map.MapDimensionsImpl;
 import common.map.PlayerCollection;
@@ -39,7 +40,7 @@ public class SimpleDriverModel implements IDriverModel {
 	private IMutableLegacyMap mainMap;
 
 	public SimpleDriverModel() {
-		this(new LegacyMap(new MapDimensionsImpl(-1, -1, -1), new PlayerCollection(), -1));
+		this(new LegacyMap(new MapDimensionsImpl(-1, -1, -1), new LegacyPlayerCollection(), -1));
 	}
 
 	public SimpleDriverModel(final IMutableLegacyMap map) {

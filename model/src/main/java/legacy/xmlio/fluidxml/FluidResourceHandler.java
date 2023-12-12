@@ -2,6 +2,7 @@ package legacy.xmlio.fluidxml;
 
 import javax.xml.stream.XMLStreamException;
 
+import legacy.map.fixtures.LegacyQuantity;
 import org.javatuples.Pair;
 
 import javax.xml.namespace.QName;
@@ -46,7 +47,7 @@ import legacy.map.HasExtent;
                 getOrGenerateID(element, warner, idFactory),
                 getAttribute(element, "kind"),
                 getAttribute(element, "contents"),
-                new Quantity(getNumericAttribute(element, "quantity"), getAttribute(element,
+                new LegacyQuantity(getNumericAttribute(element, "quantity"), getAttribute(element,
                         "unit", "")));
         if (hasAttribute(element, "created")) {
             retval.setCreated(getIntegerAttribute(element, "created"));

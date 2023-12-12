@@ -13,6 +13,7 @@ import javax.xml.stream.events.EndElement;
 import javax.xml.stream.events.Characters;
 import java.io.IOException;
 
+import legacy.map.IMutableLegacyPlayerCollection;
 import lovelace.util.ThrowingConsumer;
 import common.xmlio.SPFormatException;
 import legacy.idreg.IDRegistrar;
@@ -62,7 +63,7 @@ import java.util.function.Predicate;
      * @param idRegistrar The factory for ID numbers
      * @param players The map's collection of players
      */
-    public YAMapReader(final Warning warner, final IDRegistrar idRegistrar, final IMutablePlayerCollection players) {
+    public YAMapReader(final Warning warner, final IDRegistrar idRegistrar, final IMutableLegacyPlayerCollection players) {
         super(warner, idRegistrar);
         playerReader = new YAPlayerReader(warner, idRegistrar);
         readers = List.of(new YAMobileReader(warner, idRegistrar), new YAResourceReader(warner, idRegistrar), new YATerrainReader(warner, idRegistrar), new YATextReader(warner, idRegistrar), new YATownReader(warner, idRegistrar, players), new YAGroundReader(warner, idRegistrar), new YAAdventureReader(warner, idRegistrar, players), new YAPortalReader(warner, idRegistrar), new YAExplorableReader(warner, idRegistrar), new YAUnitReader(warner, idRegistrar, players));
@@ -72,7 +73,7 @@ import java.util.function.Predicate;
 
     private final Warning warner;
 
-    private final IMutablePlayerCollection players; // TODO: IPlayerCollection instead?
+    private final IMutableLegacyPlayerCollection players; // TODO: ILegacyPlayerCollection instead?
 
     /**
      * The reader for players

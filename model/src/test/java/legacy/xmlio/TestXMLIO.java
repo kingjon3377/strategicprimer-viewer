@@ -2,6 +2,8 @@ package legacy.xmlio;
 
 import static lovelace.util.SingletonRandom.SINGLETON_RANDOM;
 
+import legacy.map.LegacyPlayerCollection;
+import legacy.map.fixtures.LegacyQuantity;
 import legacy.map.fixtures.UnitMember;
 import common.map.fixtures.mobile.MaturityModel;
 
@@ -717,9 +719,9 @@ public final class TestXMLIO {
 		// TODO: Here and below, randomize strings in production, consumption, and skills
 		// TODO: We'd like to randomize number of skills, number of worked fields, etc.
 		pop.getYearlyProduction().add(new ResourcePileImpl(producedId, "prodKind", "production",
-			new Quantity(producedQty, "single units")));
+			new LegacyQuantity(producedQty, "single units")));
 		pop.getYearlyConsumption().add(new ResourcePileImpl(consumedId, "consKind", "consumption",
-			new Quantity(consumedQty, "double units")));
+			new LegacyQuantity(consumedQty, "double units")));
 		assertSerialization("Village stats can have both production and consumption",
 			village);
 	}
@@ -803,7 +805,7 @@ public final class TestXMLIO {
 		population.addWorkedField(workedField);
 		population.setSkillLevel("citySkill", skillLevel);
 		population.getYearlyConsumption().add(new ResourcePileImpl(producedId, "cityResource",
-			"citySpecific", new Quantity(producedQty, "cityUnit")));
+			"citySpecific", new LegacyQuantity(producedQty, "cityUnit")));
 		city.setPopulation(population);
 		assertSerialization("Community-stats can be serialized", population);
 		assertSerialization("City can have community-stats", city);
@@ -866,7 +868,7 @@ public final class TestXMLIO {
 		population.addWorkedField((workedField * 13) % 31);
 		population.setSkillLevel("fortSkill", skillLevel);
 		population.getYearlyProduction().add(new ResourcePileImpl(producedId, "fortResource",
-			"fortSpecific", new Quantity(1, "fortUnit")));
+			"fortSpecific", new LegacyQuantity(1, "fortUnit")));
 		fort.setPopulation(population);
 		assertSerialization("Fortification can have community-stats", fort);
 	}
@@ -910,9 +912,9 @@ public final class TestXMLIO {
 		population.setSkillLevel("townSkill", 3);
 		population.setSkillLevel("secondSkill", 5);
 		population.getYearlyProduction().add(new ResourcePileImpl(5, "townResource", "townSpecific",
-			new Quantity(1, "TownUnit")));
+			new LegacyQuantity(1, "TownUnit")));
 		population.getYearlyProduction().add(new ResourcePileImpl(8, "townResource", "secondSpecific",
-			new Quantity(2, "townUnit")));
+			new LegacyQuantity(2, "townUnit")));
 		town.setPopulation(population);
 		assertSerialization("Fortification can have community-stats", town);
 	}
@@ -970,7 +972,7 @@ public final class TestXMLIO {
 	 */
 	private static ILegacyMap encapsulateRivers(final Point point, final River... rivers) {
 		final IMutableLegacyMap retval = new LegacyMap(new MapDimensionsImpl(point.row() + 1,
-			point.column() + 1, 2), new PlayerCollection(), -1);
+			point.column() + 1, 2), new LegacyPlayerCollection(), -1);
 		retval.setBaseTerrain(point, TileType.Plains);
 		retval.addRivers(point, rivers);
 		return retval;
@@ -982,7 +984,7 @@ public final class TestXMLIO {
 	@SafeVarargs
 	private static IMutableLegacyMap createSimpleMap(final Point dims, final Pair<Point, TileType>... terrain) {
 		final IMutableLegacyMap retval = new LegacyMap(new MapDimensionsImpl(dims.row(),
-			dims.column(), 2), new PlayerCollection(), -1);
+			dims.column(), 2), new LegacyPlayerCollection(), -1);
 		for (final Pair<Point, TileType> pair : terrain) {
 			retval.setBaseTerrain(pair.getValue0(), pair.getValue1());
 		}
@@ -1078,7 +1080,7 @@ public final class TestXMLIO {
 			"column", null);
 		this.<ILegacyMap>assertMissingProperty("""
 				<map version="2" rows="1" columns="1"><tile row="0" column="0" /></map>""",
-			"kind", new LegacyMap(new MapDimensionsImpl(1, 1, 2), new PlayerCollection(), 0));
+			"kind", new LegacyMap(new MapDimensionsImpl(1, 1, 2), new LegacyPlayerCollection(), 0));
 		this.<ILegacyMap>assertUnwantedChild(encapsulateTileString("""
 			<tile row="2" column="0" kind="plains" />"""), null);
 	}
@@ -1212,7 +1214,7 @@ public final class TestXMLIO {
 	public void testTileSerializationThree(final boolean deprecatedWriter)
 		throws SPFormatException, XMLStreamException, IOException {
 		final IMutableLegacyMap six = new LegacyMap(new MapDimensionsImpl(2, 2, 2),
-			new PlayerCollection(), 5);
+			new LegacyPlayerCollection(), 5);
 		six.setMountainous(new Point(0, 0), true);
 		six.addFixture(new Point(0, 1), new Ground(22, "basalt", false));
 		six.addFixture(new Point(1, 0), new Forest("pine", false, 19));
@@ -1244,9 +1246,9 @@ public final class TestXMLIO {
 			Warning.IGNORE);
 		this.<ILegacyMap>assertUnsupportedTag("""
 				<map rows="1" columns="1" version="2" current_player="-1"><future /></map>""",
-			"future", new LegacyMap(new MapDimensionsImpl(1, 1, 2), new PlayerCollection(), 0));
+			"future", new LegacyMap(new MapDimensionsImpl(1, 1, 2), new LegacyPlayerCollection(), 0));
 		final IMutableLegacyMap expected =
-			new LegacyMap(new MapDimensionsImpl(1, 1, 2), new PlayerCollection(), 0);
+			new LegacyMap(new MapDimensionsImpl(1, 1, 2), new LegacyPlayerCollection(), 0);
 		expected.setBaseTerrain(new Point(0, 0), TileType.Steppe);
 		this.<ILegacyMap>assertUnsupportedTag("""
 				<map rows="1" columns="1" version="2" current_player="-1">
@@ -1265,7 +1267,7 @@ public final class TestXMLIO {
 		final MutablePlayer player = new PlayerImpl(1, "playerOne");
 		player.setCurrent(true);
 		final IMutableLegacyMap firstMap = new LegacyMap(new MapDimensionsImpl(1, 1, 2),
-			new PlayerCollection(), 0);
+			new LegacyPlayerCollection(), 0);
 		firstMap.addPlayer(player);
 		final Point loc = new Point(0, 0);
 		firstMap.setBaseTerrain(loc, TileType.Plains);
@@ -1286,7 +1288,7 @@ public final class TestXMLIO {
 		this.<ILegacyMap>assertMissingProperty("""
 				<view current_turn="0"><map version="2" rows="1" columns="1" /></view>""",
 			"current_player", new LegacyMap(new MapDimensionsImpl(1, 1, 2),
-				new PlayerCollection(), 0));
+				new LegacyPlayerCollection(), 0));
 		this.<ILegacyMap>assertMissingProperty("""
 				<view current_player="0"><map version="2" rows="1" columns="1"></view>""",
 			"current_turn", null);
@@ -1317,7 +1319,7 @@ public final class TestXMLIO {
 		final MutablePlayer player = new PlayerImpl(1, "playerOne");
 		player.setCurrent(true);
 		final IMutableLegacyMap firstMap =
-			new LegacyMap(new MapDimensionsImpl(1, 1, 2), new PlayerCollection(), 0);
+			new LegacyMap(new MapDimensionsImpl(1, 1, 2), new LegacyPlayerCollection(), 0);
 		firstMap.addPlayer(player);
 		final Point loc = new Point(0, 0);
 		firstMap.setBaseTerrain(loc, TileType.Steppe);
@@ -1377,7 +1379,7 @@ public final class TestXMLIO {
 	public void testDuplicateID()
 		throws SPFormatException, XMLStreamException, IOException {
 		final IMutableLegacyMap expected =
-			new LegacyMap(new MapDimensionsImpl(1, 1, 2), new PlayerCollection(), 0);
+			new LegacyMap(new MapDimensionsImpl(1, 1, 2), new LegacyPlayerCollection(), 0);
 		final Point point = new Point(0, 0);
 		expected.setBaseTerrain(point, TileType.Steppe);
 		final MutablePlayer player = new PlayerImpl(1, "playerOne");
@@ -1804,15 +1806,15 @@ public final class TestXMLIO {
 		firstFort.addMember(new Implement("implKindTwo", 8));
 		assertSerialization("Implement can be more than one in one object", firstFort);
 		firstFort.addMember(new ResourcePileImpl(3, "generalKind", "specificKind",
-			new Quantity(10, "each")));
+			new LegacyQuantity(10, "each")));
 		assertSerialization("Fortress can have a ResourcePile as a member", firstFort);
 		final IMutableResourcePile resource = new ResourcePileImpl(4, "generalKind", "specificKind",
-			new Quantity(15, "pounds"));
+			new LegacyQuantity(15, "pounds"));
 		resource.setCreated(5); // TODO: Provide constructor taking this field
 		assertSerialization("Resource pile can know what turn it was created", resource);
 		assertSerialization("Resource pile can have non-integer quantity", new ResourcePileImpl(5,
 			"resourceKind", "specificKind2",
-			new Quantity(new BigDecimal(3).divide(new BigDecimal(2)), "cubic feet")));
+			new LegacyQuantity(new BigDecimal(3).divide(new BigDecimal(2)), "cubic feet")));
 	}
 
 	private static Stream<Arguments> testAnimalTracksSerialization() {
@@ -2362,7 +2364,7 @@ public final class TestXMLIO {
 	@MethodSource
 	public void testBookmarkSerialization(final boolean deprecatedReader, final boolean deprecatedWriter)
 		throws SPFormatException, XMLStreamException, IOException {
-		final IMutableLegacyMap map = new LegacyMap(new MapDimensionsImpl(1, 1, 2), new PlayerCollection(), 1);
+		final IMutableLegacyMap map = new LegacyMap(new MapDimensionsImpl(1, 1, 2), new LegacyPlayerCollection(), 1);
 		final Player player = map.getPlayers().getPlayer(1);
 		map.setCurrentPlayer(player);
 		assertFalse(map.getBookmarks().contains(new Point(0, 0)),

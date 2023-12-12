@@ -3,6 +3,7 @@ package query;
 import common.map.fixtures.Quantity;
 
 import common.map.HasName;
+import legacy.map.fixtures.LegacyQuantity;
 
 /**
  * Models of (game statistics for) herding.
@@ -38,8 +39,8 @@ public /* sealed */ interface HerdModel /* of PoultryModel | MammalModel | Small
     /**
      * How much is produced by a flock of the given size.
      */
-    default Quantity scaledProduction(final int heads) {
-        return new Quantity(getProductionPerHead().number().doubleValue() * heads,
+    default LegacyQuantity scaledProduction(final int heads) {
+        return new LegacyQuantity(getProductionPerHead().number().doubleValue() * heads,
                 getProductionPerHead().units());
     }
 

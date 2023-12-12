@@ -5,6 +5,7 @@ import java.util.function.Predicate;
 import java.util.stream.StreamSupport;
 import java.util.stream.Collectors;
 
+import legacy.map.fixtures.LegacyQuantity;
 import lovelace.util.LovelaceLogger;
 import org.jetbrains.annotations.Nullable;
 
@@ -83,7 +84,7 @@ import java.math.BigDecimal;
     public IResourcePile addResourcePile(final Player player, final int id, final String kind, final String resource,
                                          final BigDecimal quantity, final String units, final @Nullable Integer created) {
         final IMutableResourcePile pile = new ResourcePileImpl(id, kind, resource,
-                new Quantity(quantity, units));
+                new LegacyQuantity(quantity, units));
         if (created != null) {
             pile.setCreated(created);
         }

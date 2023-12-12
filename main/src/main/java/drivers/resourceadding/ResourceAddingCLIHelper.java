@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.ArrayList;
 
+import legacy.map.fixtures.LegacyQuantity;
 import org.jetbrains.annotations.Nullable;
 
 import drivers.common.cli.ICLIHelper;
@@ -136,7 +137,7 @@ public class ResourceAddingCLIHelper {
             return null;
         }
         final ResourcePileImpl retval = new ResourcePileImpl(idf.createID(), kind, contents,
-                new Quantity(quantity, units));
+                new LegacyQuantity(quantity, units));
         final Boolean setCreated = cli.inputBooleanInSeries("Set created date?", "created" + origContents);
         if (setCreated == null) {
             return null;

@@ -3,6 +3,7 @@ package drivers.turnrunning.applets;
 import legacy.idreg.IDRegistrar;
 import legacy.map.fixtures.IResourcePile;
 import common.map.fixtures.Quantity;
+import legacy.map.fixtures.LegacyQuantity;
 import legacy.map.fixtures.mobile.IUnit;
 import legacy.map.fixtures.towns.IFortress;
 import drivers.common.cli.ICLIHelper;
@@ -108,9 +109,9 @@ import static lovelace.util.Decimalize.decimalize;
 			final IFortress hq = model.findHQ(unit.owner());
 			if (hq == null) {
 				model.addResource(unit, idf.createID(), "food", convertedForm,
-						new Quantity(newPounds, "pounds"), turn);
+						new LegacyQuantity(newPounds, "pounds"), turn);
 			} else {
-				model.addResource(hq, idf.createID(), "food", convertedForm, new Quantity(newPounds, "pounds"), turn);
+				model.addResource(hq, idf.createID(), "food", convertedForm, new LegacyQuantity(newPounds, "pounds"), turn);
 			}
 			final String results = cli.inputMultilineString("Description for results:");
 			if (results == null) {

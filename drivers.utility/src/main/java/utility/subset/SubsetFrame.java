@@ -8,6 +8,7 @@ import java.nio.file.NoSuchFileException;
 import java.io.FileNotFoundException;
 import java.nio.file.Path;
 
+import legacy.map.LegacyPlayerCollection;
 import lovelace.util.LovelaceLogger;
 import org.jetbrains.annotations.Nullable;
 
@@ -76,7 +77,7 @@ import drivers.common.ISPDriver;
         label.append(String.format("<p style=\"color:%s\">%s</p>", color, paragraph));
     }
 
-    private ILegacyMap mainMap = new LegacyMap(new MapDimensionsImpl(0, 0, 2), new PlayerCollection(), -1);
+    private ILegacyMap mainMap = new LegacyMap(new MapDimensionsImpl(0, 0, 2), new LegacyPlayerCollection(), -1);
 
     public void loadMain(final ILegacyMap arg) {
         mainMap = arg;

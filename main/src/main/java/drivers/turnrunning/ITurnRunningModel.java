@@ -1,6 +1,7 @@
 package drivers.turnrunning;
 
 import legacy.map.IFixture;
+import legacy.map.fixtures.LegacyQuantity;
 import org.jetbrains.annotations.Nullable;
 
 import legacy.map.ILegacyMap;
@@ -21,7 +22,6 @@ import drivers.common.IAdvancementModel;
 
 import legacy.map.fixtures.FortressMember;
 import legacy.map.fixtures.IResourcePile;
-import common.map.fixtures.Quantity;
 
 import legacy.map.fixtures.mobile.IUnit;
 
@@ -76,8 +76,8 @@ public interface ITurnRunningModel extends IExplorationModel, IAdvancementModel 
      * matching (and mutable) unit was found in at least one map, false
      * otherwise.
      */
-    boolean addResource(IUnit container, int id, String kind, String contents, Quantity quantity,
-                        int createdDate);
+    boolean addResource(IUnit container, int id, String kind, String contents, LegacyQuantity quantity,
+						int createdDate);
 
     /**
      * Add a resource with the given ID, kind, contents, quantity, and
@@ -85,22 +85,22 @@ public interface ITurnRunningModel extends IExplorationModel, IAdvancementModel 
      * matching (and mutable) fortress was found in at least one map, false
      * otherwise.
      */
-    boolean addResource(IFortress container, int id, String kind, String contents, Quantity quantity,
-                        int createdDate);
+    boolean addResource(IFortress container, int id, String kind, String contents, LegacyQuantity quantity,
+						int createdDate);
 
     /**
      * Add a resource with the given ID, kind, contents, and quantity in
      * the given unit in all maps.  Returns true if a matching (and
      * mutable) unit was found in at least one map, false otherwise.
      */
-    boolean addResource(IUnit container, int id, String kind, String contents, Quantity quantity);
+    boolean addResource(IUnit container, int id, String kind, String contents, LegacyQuantity quantity);
 
     /**
      * Add a resource with the given ID, kind, contents, and quantity in
      * the given fortress in all maps.  Returns true if a matching (and
      * mutable) fortress was found in at least one map, false otherwise.
      */
-    boolean addResource(IFortress container, int id, String kind, String contents, Quantity quantity);
+    boolean addResource(IFortress container, int id, String kind, String contents, LegacyQuantity quantity);
 
     /**
      * Add (a copy of) an existing resource to the given player's HQ, or

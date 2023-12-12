@@ -3,7 +3,9 @@ package legacy.dbio;
 import legacy.map.IFixture;
 import legacy.map.IMutableLegacyMap;
 import common.map.Player;
+import legacy.map.IMutableLegacyPlayerCollection;
 import legacy.map.LegacyMap;
+import legacy.map.LegacyPlayerCollection;
 import legacy.map.MapDimensionsImpl;
 import common.map.PlayerImpl;
 import common.map.MutablePlayer;
@@ -121,7 +123,7 @@ public final class DBMapReader {
 		if (version != 2) {
 			warner.handle(MapVersionException.nonXML(version, 2, 2));
 		}
-		final IMutablePlayerCollection players = new PlayerCollection();
+		final IMutableLegacyPlayerCollection players = new LegacyPlayerCollection();
 		LovelaceLogger.debug("About to read players");
 		// TODO: Players should have 'country' and 'portrait' flags as well
 		try (final Stream<Player> playerStream = PLAYER_SELECT.as(((RowParser<Player>) DBMapReader::parsePlayer).stream(), conn)) {

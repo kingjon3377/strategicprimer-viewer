@@ -18,6 +18,7 @@ import legacy.map.IMutableLegacyMap;
 import legacy.map.TileFixture;
 import legacy.map.fixtures.IResourcePile;
 import legacy.map.fixtures.IMutableResourcePile;
+import legacy.map.fixtures.LegacyQuantity;
 import legacy.map.fixtures.ResourcePileImpl;
 import common.map.fixtures.Quantity;
 import legacy.map.fixtures.mobile.IUnit;
@@ -87,7 +88,7 @@ public final class DBResourcePileHandler
 				quantity = new BigDecimal(qtyString);
 			}
 			final IMutableResourcePile pile = new ResourcePileImpl(id, kind, contents,
-				new Quantity(quantity, units));
+				new LegacyQuantity(quantity, units));
 			if (image != null) {
 				pile.setImage(image);
 			}

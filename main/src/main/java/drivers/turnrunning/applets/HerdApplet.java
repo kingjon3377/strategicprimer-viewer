@@ -2,6 +2,7 @@ package drivers.turnrunning.applets;
 
 import legacy.idreg.IDRegistrar;
 import common.map.fixtures.Quantity;
+import legacy.map.fixtures.LegacyQuantity;
 import legacy.map.fixtures.mobile.Animal;
 import common.map.fixtures.mobile.AnimalPlurals;
 import legacy.map.fixtures.mobile.IUnit;
@@ -148,7 +149,7 @@ import query.SmallAnimalModel;
 			final Animal combinedAnimal = animals.stream().reduce(Animal::combined).get();
 			final long flockPerHerder =
 				(combinedAnimal.getPopulation() + workerCount - 1) / workerCount;
-			final Quantity production = herdModel.scaledProduction(combinedAnimal.getPopulation());
+			final LegacyQuantity production = herdModel.scaledProduction(combinedAnimal.getPopulation());
 			final double pounds = herdModel.scaledPoundsProduction(combinedAnimal.getPopulation());
 			final String resourceProduced;
 			if (herdModel instanceof final PoultryModel pm) {

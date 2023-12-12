@@ -1,10 +1,12 @@
 package common.map;
 
+import java.util.function.BiPredicate;
 import java.util.function.Consumer;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.function.Predicate;
 
 import lovelace.util.LovelaceLogger;
 
@@ -18,8 +20,10 @@ public class PlayerCollection implements IMutablePlayerCollection {
 
     /**
      * The collection this class wraps.
+	 *
+	 * TODO: Make private again once legacy version is dropped.
      */
-    private final Map<Integer, Player> players = new TreeMap<>();
+    protected final Map<Integer, Player> players = new TreeMap<>();
 
     /**
      * The player for "independent" fixtures.
@@ -48,32 +52,6 @@ public class PlayerCollection implements IMutablePlayerCollection {
     @Override
     public Iterator<Player> iterator() {
         return players.values().iterator();
-    }
-
-    /**
-     * A player collection is a subset if it has no players we don't.
-     */
-    @Override
-    public boolean isSubset(final Iterable<Player> obj, final Consumer<String> report) {
-        boolean retval = true;
-        for (final Player player : obj) {
-            if (!players.containsValue(player)) {
-                if (players.containsKey(player.getPlayerId())) {
-                    final Player match = players.get(player.getPlayerId());
-                    if (player.getName().isEmpty() || "unknown".equalsIgnoreCase(player.getName())) {
-                        continue;
-                    } else {
-                        report.accept(String.format(
-                                "Matching players differ: our %s, their %s",
-                                match.toString(), player));
-                    }
-                } else {
-                    report.accept("Extra player " + player.getName());
-                }
-                retval = false;
-            }
-        }
-        return retval;
     }
 
     @Override
@@ -182,13 +160,27 @@ public class PlayerCollection implements IMutablePlayerCollection {
      */
     @Override
     public boolean equals(final Object obj) {
-        if (obj == this) {
+		Predicate<String> unknownName = str -> str.isEmpty() || "unknown".equalsIgnoreCase(str);
+		if (obj == this) {
             return true;
         } else if (obj instanceof final IPlayerCollection pc) {
-            return isSubset(pc, (ignored) -> {
-            }) &&
-                    pc.isSubset(this, (ignored) -> {
-                    });
+			// TODO: What about "current player" flag?
+			for (final Player player : pc) {
+				if (players.containsValue(player)) {
+					continue;
+				}
+				Player ours = players.get(player.getPlayerId());
+				if (ours == null || !unknownName.test(ours.getName())) {
+					return false;
+				}
+			}
+			for (final Player player : this) {
+				Player theirs = pc.getPlayer(player.getPlayerId());
+				if (!theirs.getName().equals(player.getName()) && !unknownName.test(theirs.getName())) {
+					return false;
+				}
+			}
+			return true;
         } else {
             return false;
         }

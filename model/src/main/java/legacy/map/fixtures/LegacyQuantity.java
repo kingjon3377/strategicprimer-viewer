@@ -1,9 +1,11 @@
-package common.map.fixtures;
+package legacy.map.fixtures;
 
+import legacy.map.Subsettable;
 import lovelace.util.NumberComparator;
 
 import java.io.Serializable;
 import java.util.Comparator;
+import java.util.function.Consumer;
 
 /**
  * A number paired with its units. This class is immutable.
@@ -11,7 +13,7 @@ import java.util.Comparator;
  * @param number The numeric quantity.
  * @param units  The units in which that number is measured.
  */
-public record Quantity(Number number, String units) implements Comparable<Quantity>, Serializable {
+public record LegacyQuantity(Number number, String units) implements Subsettable<LegacyQuantity>, Comparable<LegacyQuantity>, Serializable {
 	/**
 	 * The numeric quantity.
 	 */
@@ -43,11 +45,30 @@ public record Quantity(Number number, String units) implements Comparable<Quanti
 		return String.format("%s %s", number, units);
 	}
 
+	/**
+	 * A Quantity is a subset iff it has the same units and either the same
+	 * or a lesser quantity.
+	 */
+	@Override
+	public boolean isSubset(final LegacyQuantity obj, final Consumer<String> report) {
+		if (units.equals(obj.units())) {
+			if (NumberComparator.compareNumbers(number, obj.number()) < 0) {
+				report.accept("Has greater quantity than we do");
+				return false;
+			} else {
+				return true;
+			}
+		} else {
+			report.accept("Units differ");
+			return false;
+		}
+	}
+
 	@Override
 	public boolean equals(final Object obj) {
 		if (this == obj) {
 			return true;
-		} else if (obj instanceof final Quantity q) {
+		} else if (obj instanceof final LegacyQuantity q) {
 			return units.equals(q.units()) &&
 				NumberComparator.compareNumbers(number, q.number()) == 0;
 		} else {
@@ -61,9 +82,9 @@ public record Quantity(Number number, String units) implements Comparable<Quanti
 	}
 
 	@Override
-	public int compareTo(final Quantity quantity) {
-		return Comparator.comparing(Quantity::units)
-			.thenComparing(Quantity::number, NumberComparator::compareNumbers)
+	public int compareTo(final LegacyQuantity quantity) {
+		return Comparator.comparing(LegacyQuantity::units)
+			.thenComparing(LegacyQuantity::number, NumberComparator::compareNumbers)
 			.compare(this, quantity);
 	}
 }

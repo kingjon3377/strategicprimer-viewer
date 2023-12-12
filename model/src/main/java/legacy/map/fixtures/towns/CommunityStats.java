@@ -10,7 +10,7 @@ import java.util.Set;
 import java.util.function.Consumer;
 
 import legacy.map.fixtures.IResourcePile;
-import common.map.Subsettable;
+import legacy.map.Subsettable;
 
 import legacy.map.fixtures.resources.HarvestableFixture;
 import org.jetbrains.annotations.Nullable;

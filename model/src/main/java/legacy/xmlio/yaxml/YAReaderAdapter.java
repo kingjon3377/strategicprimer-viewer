@@ -11,6 +11,8 @@ import javax.xml.stream.events.XMLEvent;
 
 import legacy.idreg.IDRegistrar;
 import legacy.idreg.IDFactory;
+import legacy.map.IMutableLegacyPlayerCollection;
+import legacy.map.LegacyPlayerCollection;
 import legacy.map.River;
 import common.map.IMutablePlayerCollection;
 import common.map.PlayerCollection;
@@ -47,7 +49,7 @@ import java.util.List;
      * @param idFactory The factory for ID numbers
      */
     public YAReaderAdapter(final Warning warning, final IDRegistrar idFactory) {
-        final IMutablePlayerCollection players = new PlayerCollection();
+        final IMutableLegacyPlayerCollection players = new LegacyPlayerCollection();
         mapReader = new YAMapReader(warning, idFactory, players);
         townReader = new YATownReader(warning, idFactory, players);
         readers = List.of(new YAAdventureReader(warning, idFactory, players), new YAExplorableReader(warning, idFactory), new YAGroundReader(warning, idFactory), new YAImplementReader(warning, idFactory), mapReader, new YAMobileReader(warning, idFactory), new YAPlayerReader(warning, idFactory), new YAPortalReader(warning, idFactory), new YAResourcePileReader(warning, idFactory), new YAResourceReader(warning, idFactory), new YATerrainReader(warning, idFactory), new YATextReader(warning, idFactory), townReader, new YAUnitReader(warning, idFactory, players), new YAWorkerReader(warning, idFactory, players));

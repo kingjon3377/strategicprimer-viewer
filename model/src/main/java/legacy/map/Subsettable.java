@@ -1,4 +1,4 @@
-package common.map;
+package legacy.map;
 
 import java.util.function.Consumer;
 

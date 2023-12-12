@@ -13,6 +13,7 @@ import java.util.function.IntSupplier;
 
 import drivers.common.cli.ICLIHelper;
 
+import legacy.map.fixtures.LegacyQuantity;
 import legacy.map.fixtures.towns.ITownFixture;
 import common.map.fixtures.towns.TownStatus;
 import legacy.map.fixtures.towns.CommunityStats;
@@ -80,13 +81,13 @@ import java.math.BigDecimal;
 	/**
 	 * Load consumption possibilities from file.
 	 */
-	private static Map<String, List<Triplet<Quantity, String, String>>> initConsumption() throws IOException {
-		final Map<String, List<Triplet<Quantity, String, String>>> retval = new HashMap<>();
+	private static Map<String, List<Triplet<LegacyQuantity, String, String>>> initConsumption() throws IOException {
+		final Map<String, List<Triplet<LegacyQuantity, String, String>>> retval = new HashMap<>();
 		for (final String terrain : Arrays.asList("mountain", "forest", "plains", "ocean")) {
 			final String file = terrain + "_consumption";
 			final Iterable<String> tableContents =
 				FileContentsReader.readFileContents(TownGenerator.class, "tables/" + file);
-			final List<Triplet<Quantity, String, String>> inner = new ArrayList<>();
+			final List<Triplet<LegacyQuantity, String, String>> inner = new ArrayList<>();
 			for (final String line : tableContents) {
 				if (line.isEmpty()) {
 					continue;
@@ -96,7 +97,7 @@ import java.math.BigDecimal;
 				final String units = split[1];
 				final String kind = split[2];
 				final String resource = split[3];
-				inner.add(Triplet.with(new Quantity(quantity, units), kind, resource));
+				inner.add(Triplet.with(new LegacyQuantity(quantity, units), kind, resource));
 			}
 			retval.put(terrain, Collections.unmodifiableList(inner));
 		}
@@ -140,7 +141,7 @@ import java.math.BigDecimal;
 		return retval;
 	}
 
-	private final Map<String, List<Triplet<Quantity, String, String>>> consumption;
+	private final Map<String, List<Triplet<LegacyQuantity, String, String>>> consumption;
 	private final ExplorationRunner runner;
 
 	/**
@@ -347,7 +348,7 @@ import java.math.BigDecimal;
 				break;
 			}
 			final IResourcePile pile = new ResourcePileImpl(idf.createID(), kind, contents,
-				new Quantity(quantity, units));
+				new LegacyQuantity(quantity, units));
 			retval.getYearlyProduction().add(pile);
 		}
 
@@ -371,7 +372,7 @@ import java.math.BigDecimal;
 				break;
 			}
 			retval.getYearlyConsumption().add(new ResourcePileImpl(idf.createID(), kind,
-				contents, new Quantity(quantity, units)));
+				contents, new LegacyQuantity(quantity, units)));
 		}
 
 		return retval;
@@ -514,7 +515,7 @@ import java.math.BigDecimal;
 			retval.addWorkedField(field.getId());
 			retval.getYearlyProduction().add(new ResourcePileImpl(idf.createID(),
 				getHarvestableKind(field), getHarvestedProduct(field),
-				new Quantity(1, "unit")));
+				new LegacyQuantity(1, "unit")));
 		}
 
 		for (final Map.Entry<String, Integer> entry : retval.getHighestSkillLevels().entrySet()) {
@@ -528,32 +529,32 @@ import java.math.BigDecimal;
 						runner.consultTable(tableName, location,
 							map.getBaseTerrain(location), map.isMountainous(location),
 							map.getFixtures(location), map.getDimensions()),
-						new Quantity(Math.pow(2, level - 1),
+						new LegacyQuantity(Math.pow(2, level - 1),
 							(level == 1) ? "unit" : "units")));
 				} catch (final MissingTableException except) {
 					LovelaceLogger.warning(except, "Missing table");
 					retval.getYearlyProduction().add(new ResourcePileImpl(
 						idf.createID(), "unknown", "product of " + skill,
-						new Quantity(1, "unit")));
+						new LegacyQuantity(1, "unit")));
 				}
 			} else {
 				retval.getYearlyProduction().add(new ResourcePileImpl(idf.createID(),
-					"unknown", "product of " + skill, new Quantity(1, "unit")));
+					"unknown", "product of " + skill, new LegacyQuantity(1, "unit")));
 			}
 		}
 
 		if (!consumption.containsKey(consumptionTableName)) {
 			throw new IllegalStateException("Appropriate consumption table missing");
 		}
-		final List<Triplet<Quantity, String, String>> consumptionTable =
+		final List<Triplet<LegacyQuantity, String, String>> consumptionTable =
 			consumption.get(consumptionTableName);
-		for (final Triplet<Quantity, String, String> triplet : consumptionTable) {
+		for (final Triplet<LegacyQuantity, String, String> triplet : consumptionTable) {
 			retval.getYearlyConsumption().add(new ResourcePileImpl(idf.createID(),
 				triplet.getValue1(), triplet.getValue2(), triplet.getValue0()));
 		}
 
 		retval.getYearlyConsumption().add(new ResourcePileImpl(idf.createID(), "food", "various",
-			new Quantity(4 * 14 * population, "pounds")));
+			new LegacyQuantity(4 * 14 * population, "pounds")));
 		return retval;
 	}
 

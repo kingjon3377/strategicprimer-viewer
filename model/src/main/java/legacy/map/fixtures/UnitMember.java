@@ -1,6 +1,6 @@
 package legacy.map.fixtures;
 
-import common.map.Subsettable;
+import legacy.map.Subsettable;
 import legacy.map.SubsettableFixture;
 
 /**

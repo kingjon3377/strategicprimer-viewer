@@ -2,6 +2,8 @@ package legacy.dbio;
 
 import static lovelace.util.SingletonRandom.SINGLETON_RANDOM;
 
+import legacy.map.LegacyPlayerCollection;
+import legacy.map.fixtures.LegacyQuantity;
 import legacy.map.fixtures.mobile.IMutableWorker;
 import io.jenetics.facilejdbc.Transactional;
 
@@ -508,9 +510,9 @@ public final class TestDBIO {
 	private <FixtureType extends TileFixture> FixtureType
 	assertFixtureSerialization(final FixtureType fixture) throws SQLException, IOException {
 		final MapDimensions dimensions = new MapDimensionsImpl(2, 2, 2);
-		final IMutableLegacyMap firstMap = new LegacyMap(dimensions, new PlayerCollection(), -1);
+		final IMutableLegacyMap firstMap = new LegacyMap(dimensions, new LegacyPlayerCollection(), -1);
 		firstMap.addFixture(new Point(0, 0), fixture);
-		final IMutableLegacyMap secondMap = new LegacyMap(dimensions, new PlayerCollection(), -1);
+		final IMutableLegacyMap secondMap = new LegacyMap(dimensions, new LegacyPlayerCollection(), -1);
 		secondMap.addFixture(new Point(1, 1), fixture);
 		if (fixture instanceof final HasOwner owned) {
 			firstMap.addPlayer(owned.owner());
@@ -616,13 +618,13 @@ public final class TestDBIO {
 		stats.setSkillLevel("skillOne", 2);
 		stats.setSkillLevel("skillTwo", 5);
 		stats.getYearlyProduction().add(new ResourcePileImpl(1, "first", "first detail",
-			new Quantity(5, "pounds")));
+			new LegacyQuantity(5, "pounds")));
 		stats.getYearlyProduction().add(new ResourcePileImpl(2, "second", "second detail",
-			new Quantity(BigDecimal.ONE.divide(new BigDecimal(2)), "quarts")));
+			new LegacyQuantity(BigDecimal.ONE.divide(new BigDecimal(2)), "quarts")));
 		stats.getYearlyConsumption().add(new ResourcePileImpl(3, "third", "third detail",
-			new Quantity(8, "pecks")));
+			new LegacyQuantity(8, "pecks")));
 		stats.getYearlyConsumption().add(new ResourcePileImpl(4, "fourth", "fourth detail",
-			new Quantity(new BigDecimal(5).divide(new BigDecimal(4)), "square feet")));
+			new LegacyQuantity(new BigDecimal(5).divide(new BigDecimal(4)), "square feet")));
 		town.setPopulation(stats);
 		assertFixtureSerialization(town);
 	}
@@ -639,13 +641,13 @@ public final class TestDBIO {
 		stats.setSkillLevel("skillOne", 2);
 		stats.setSkillLevel("skillTwo", 5);
 		stats.getYearlyProduction().add(new ResourcePileImpl(1, "first", "first detail",
-			new Quantity(5, "pounds")));
+			new LegacyQuantity(5, "pounds")));
 		stats.getYearlyProduction().add(new ResourcePileImpl(2, "second", "second detail",
-			new Quantity(BigDecimal.ONE.divide(new BigDecimal(2)), "quarts")));
+			new LegacyQuantity(BigDecimal.ONE.divide(new BigDecimal(2)), "quarts")));
 		stats.getYearlyConsumption().add(new ResourcePileImpl(3, "third", "third detail",
-			new Quantity(8, "pecks")));
+			new LegacyQuantity(8, "pecks")));
 		stats.getYearlyConsumption().add(new ResourcePileImpl(4, "fourth", "fourth detail",
-			new Quantity(new BigDecimal(5).divide(new BigDecimal(4)), "square feet")));
+			new LegacyQuantity(new BigDecimal(5).divide(new BigDecimal(4)), "square feet")));
 		town.setPopulation(stats);
 		assertFixtureSerialization(town);
 	}
@@ -662,13 +664,13 @@ public final class TestDBIO {
 		stats.setSkillLevel("skillOne", 2);
 		stats.setSkillLevel("skillTwo", 5);
 		stats.getYearlyProduction().add(new ResourcePileImpl(1, "first", "first detail",
-			new Quantity(5, "pounds")));
+			new LegacyQuantity(5, "pounds")));
 		stats.getYearlyProduction().add(new ResourcePileImpl(2, "second", "second detail",
-			new Quantity(BigDecimal.ONE.divide(new BigDecimal(2)), "quarts")));
+			new LegacyQuantity(BigDecimal.ONE.divide(new BigDecimal(2)), "quarts")));
 		stats.getYearlyConsumption().add(new ResourcePileImpl(3, "third", "third detail",
-			new Quantity(8, "pecks")));
+			new LegacyQuantity(8, "pecks")));
 		stats.getYearlyConsumption().add(new ResourcePileImpl(4, "fourth", "fourth detail",
-			new Quantity(new BigDecimal(5).divide(new BigDecimal(4)), "square feet")));
+			new LegacyQuantity(new BigDecimal(5).divide(new BigDecimal(4)), "square feet")));
 		town.setPopulation(stats);
 		assertFixtureSerialization(town);
 	}
@@ -728,11 +730,11 @@ public final class TestDBIO {
 		unit.addMember(new Worker("workerName", "human", id + 3, new Job("jobName", 2)));
 		unit.addMember(new Sphinx(id + 5));
 		unit.addMember(new ResourcePileImpl(id + 6, "resource kind", "resource contents",
-			new Quantity(8, "counts")));
+			new LegacyQuantity(8, "counts")));
 		fortress.addMember(unit);
 		fortress.addMember(new Implement("equipment", id + 4, 2));
 		fortress.addMember(new ResourcePileImpl(id + 7, "second resource", "second contents",
-			new Quantity(new BigDecimal(3).divide(new BigDecimal(4)), "gallon")));
+			new LegacyQuantity(new BigDecimal(3).divide(new BigDecimal(4)), "gallon")));
 		assertFixtureSerialization(fortress);
 	}
 
@@ -930,7 +932,7 @@ public final class TestDBIO {
 
 	@Test
 	public void testBookmarkSerialization() throws SQLException, IOException {
-		final IMutableLegacyMap map = new LegacyMap(new MapDimensionsImpl(1, 1, 2), new PlayerCollection(), 1);
+		final IMutableLegacyMap map = new LegacyMap(new MapDimensionsImpl(1, 1, 2), new LegacyPlayerCollection(), 1);
 		final Player player = map.getPlayers().getPlayer(1);
 		map.setCurrentPlayer(player);
 		assertFalse(map.getBookmarks().contains(new Point(0, 0)),
@@ -957,7 +959,7 @@ public final class TestDBIO {
 									  final int qualityTwo) throws SQLException, IOException {
 		assumeFalse(directionOne == directionTwo, "We can't have the same direction twice");
 		assumeTrue(qualityOne >= 0 && qualityTwo >= 0, "Road quality must be nonnegative");
-		final IMutableLegacyMap map = new LegacyMap(new MapDimensionsImpl(1, 1, 2), new PlayerCollection(), 1);
+		final IMutableLegacyMap map = new LegacyMap(new MapDimensionsImpl(1, 1, 2), new LegacyPlayerCollection(), 1);
 		map.setBaseTerrain(new Point(0, 0), TileType.Plains);
 		if (Direction.Nowhere != directionOne) {
 			map.setRoadLevel(new Point(0, 0), directionOne, qualityOne);

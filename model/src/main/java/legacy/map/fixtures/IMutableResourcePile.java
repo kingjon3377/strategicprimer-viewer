@@ -12,7 +12,7 @@ public interface IMutableResourcePile extends IResourcePile, HasMutableImage {
      *
      * TODO: Replace with method returning a similar pile with a different quantity (or reduced-by)?
      */
-    void setQuantity(Quantity quantity);
+    void setQuantity(LegacyQuantity quantity);
 
     /**
      * Set the turn on which the resource was created.

@@ -21,7 +21,7 @@ public interface IResourcePile extends UnitMember, FortressMember, HasKind, HasI
     /**
      * How much of that thing is in the pile, including units.
      */
-    Quantity getQuantity();
+    LegacyQuantity getQuantity();
 
     /**
      * The turn on which the resource was created.

@@ -29,7 +29,7 @@ import legacy.map.ILegacyMap;
 
 import legacy.map.fixtures.IMutableResourcePile;
 import legacy.map.fixtures.IResourcePile;
-import common.map.fixtures.Quantity;
+import legacy.map.fixtures.LegacyQuantity;
 import legacy.map.fixtures.ResourcePileImpl;
 import legacy.map.fixtures.Implement;
 
@@ -112,8 +112,8 @@ public class DuplicateFixtureRemoverCLI implements CLIDriver {
         }
         final IResourcePile top = list[0];
         final IMutableResourcePile combined = new ResourcePileImpl(top.getId(), top.getKind(),
-                top.getContents(), new Quantity(Stream.of(list).map(IResourcePile::getQuantity)
-                .map(Quantity::number).map(Decimalize::decimalize)
+                top.getContents(), new LegacyQuantity(Stream.of(list).map(IResourcePile::getQuantity)
+                .map(LegacyQuantity::number).map(Decimalize::decimalize)
                 .reduce(BigDecimal.ZERO, BigDecimal::add), top.getQuantity().units()));
         combined.setCreated(top.getCreated());
         return combined;

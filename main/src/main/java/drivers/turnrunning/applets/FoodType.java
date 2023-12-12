@@ -14,6 +14,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Stream;
 
+import legacy.map.fixtures.LegacyQuantity;
 import org.jetbrains.annotations.Nullable;
 
 /* package */ enum FoodType {
@@ -135,7 +136,7 @@ import org.jetbrains.annotations.Nullable;
         }
     }
 
-    public @Nullable BigDecimal amountSpoiling(final Quantity qty, final ICLIHelper cli) {
+    public @Nullable BigDecimal amountSpoiling(final LegacyQuantity qty, final ICLIHelper cli) {
         final BigDecimal amt = decimalize(qty.number());
         final BigDecimal fractional = Optional.ofNullable(fractionSpoilingDaily).map(amt::multiply).orElse(null);
         return Stream.of(fractional, minimumSpoilage).filter(Objects::nonNull)
