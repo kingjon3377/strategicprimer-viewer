@@ -24,12 +24,12 @@ public interface Changeset {
 	 *
 	 * TODO: Argument presumably needs to be declared mutable.
      */
-    void applyInPlace(IMap map);
+    void applyInPlace(IMap map) throws ChangesetFailureException;
 
 	/**
 	 * Apply this changeset to a map, leaving it unmodified and returning a version that with the modification applied.
 	 *
 	 * TODO: Is this argument all we need?
 	 */
-	IMap apply(IMap map);
+	IMap apply(IMap map) throws ChangesetFailureException;
 }
