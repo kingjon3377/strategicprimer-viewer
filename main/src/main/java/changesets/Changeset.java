@@ -1,6 +1,7 @@
 package changesets;
 
 import common.map.IMap;
+import common.map.IMutableMap;
 
 /**
  * An interface to represent a set of changes that can be made to a map (TODO:
@@ -21,15 +22,15 @@ public interface Changeset {
      * Apply the changeset to a map, changing it in place.
      *
      * TODO: Should this possibly take different arguments?
-	 *
-	 * TODO: Argument presumably needs to be declared mutable.
      */
-    void applyInPlace(IMap map) throws ChangesetFailureException;
+    void applyInPlace(IMutableMap map) throws ChangesetFailureException;
 
 	/**
 	 * Apply this changeset to a map, leaving it unmodified and returning a version that with the modification applied.
 	 *
 	 * TODO: Is this argument all we need?
+	 *
+	 * TODO: Consider making all IMutableMap methods return a modified IMap instead of actually mutating in place?
 	 */
 	IMap apply(IMap map) throws ChangesetFailureException;
 }

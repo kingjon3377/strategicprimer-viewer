@@ -1,6 +1,7 @@
 package changesets;
 
 import common.map.IMap;
+import common.map.IMutableMap;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -35,7 +36,7 @@ public class CompositeChangeset implements Changeset {
 	}
 
 	@Override
-	public void applyInPlace(IMap map) throws ChangesetFailureException {
+	public void applyInPlace(IMutableMap map) throws ChangesetFailureException {
 		Deque<Changeset> alreadyApplied = new LinkedList<>();
 		try {
 			for (Changeset changeset : changesets) {
