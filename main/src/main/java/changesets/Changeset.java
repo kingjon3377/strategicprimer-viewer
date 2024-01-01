@@ -22,7 +22,7 @@ public interface Changeset {
      *
      * TODO: Should this possibly take different arguments?
 	 *
-	 * TODO: Argument preesumably needs to be declared mutable.
+	 * TODO: Argument presumably needs to be declared mutable.
      */
     void applyInPlace(IMap map);
 
