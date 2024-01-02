@@ -24,4 +24,10 @@ public interface IMap {
 	 * mutable and modify it in place?
 	 */
 	IPlayerCollection getPlayers();
+	/**
+	 * TODO: Do we want to have some notion of "copy for whom" in this version of the API?
+	 *
+	 * @return a deep copy of the map
+	 */
+	IMap copy();
 }

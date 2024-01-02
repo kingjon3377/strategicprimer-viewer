@@ -43,4 +43,7 @@ public interface IMutableMap extends IMap {
 	 * with the same ID as "toAdd".
 	 */
 	void replacePlayer(Player toRemove, Player toAdd);
+
+	@Override
+	IMutableMap copy();
 }
