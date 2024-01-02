@@ -1,57 +1,52 @@
 package legacy.xmlio.yaxml;
 
-import javax.xml.namespace.QName;
-import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.events.XMLEvent;
-import javax.xml.stream.events.StartElement;
-import javax.xml.stream.events.EndElement;
-import java.io.IOException;
-
-import lovelace.util.LovelaceLogger;
-import lovelace.util.ThrowingConsumer;
-import common.xmlio.SPFormatException;
-import legacy.idreg.IDRegistrar;
-import common.map.IPlayerCollection;
-import common.map.Player;
 import common.map.fixtures.mobile.worker.RaceFactory;
-import legacy.map.fixtures.towns.FortressImpl;
-import legacy.map.fixtures.towns.IFortress;
-import common.map.fixtures.towns.TownStatus;
 import common.map.fixtures.towns.TownSize;
-import legacy.map.fixtures.towns.ITownFixture;
-import legacy.map.fixtures.towns.IMutableFortress;
-import legacy.map.fixtures.towns.Village;
-import legacy.map.fixtures.towns.AbstractTown;
-import legacy.map.fixtures.towns.City;
-import legacy.map.fixtures.towns.Fortification;
-import legacy.map.fixtures.towns.Town;
-import legacy.map.fixtures.towns.CommunityStats;
+import common.map.fixtures.towns.TownStatus;
+import common.xmlio.SPFormatException;
 import common.xmlio.Warning;
 import impl.xmlio.exceptions.MissingPropertyException;
 import impl.xmlio.exceptions.UnwantedChildException;
+import legacy.idreg.IDRegistrar;
+import legacy.map.ILegacyPlayerCollection;
+import legacy.map.Player;
+import legacy.map.fixtures.FortressMember;
+import legacy.map.fixtures.IResourcePile;
+import legacy.map.fixtures.towns.AbstractTown;
+import legacy.map.fixtures.towns.City;
+import legacy.map.fixtures.towns.CommunityStats;
+import legacy.map.fixtures.towns.Fortification;
+import legacy.map.fixtures.towns.FortressImpl;
+import legacy.map.fixtures.towns.IFortress;
+import legacy.map.fixtures.towns.IMutableFortress;
+import legacy.map.fixtures.towns.ITownFixture;
+import legacy.map.fixtures.towns.Town;
+import legacy.map.fixtures.towns.Village;
+import lovelace.util.LovelaceLogger;
+import lovelace.util.ThrowingConsumer;
 
-import java.util.Random;
+import javax.xml.namespace.QName;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.events.EndElement;
+import javax.xml.stream.events.StartElement;
+import javax.xml.stream.events.XMLEvent;
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Deque;
 import java.util.LinkedList;
-import java.util.function.Consumer;
-import java.util.Collections;
-import java.util.Arrays;
-
-import legacy.map.fixtures.IResourcePile;
-
 import java.util.List;
-
-import legacy.map.fixtures.FortressMember;
-
-import java.util.Optional;
 import java.util.Map;
-import java.util.Comparator;
+import java.util.Optional;
+import java.util.Random;
+import java.util.function.Consumer;
 
 /**
  * A reader for fortresses, villages, and other towns.
  */
 /* package */ class YATownReader extends YAAbstractReader<ITownFixture, ITownFixture> {
-    public YATownReader(final Warning warner, final IDRegistrar idRegistrar, final IPlayerCollection players) {
+    public YATownReader(final Warning warner, final IDRegistrar idRegistrar, final ILegacyPlayerCollection players) {
         super(warner, idRegistrar);
         resourceReader = new YAResourcePileReader(warner, idRegistrar);
         memberReaders = List.of(new YAUnitReader(warner,
@@ -62,7 +57,7 @@ import java.util.Comparator;
 
     private final Warning warner;
 
-    private final IPlayerCollection players;
+    private final ILegacyPlayerCollection players;
 
     private final YAReader<IResourcePile, IResourcePile> resourceReader;
 

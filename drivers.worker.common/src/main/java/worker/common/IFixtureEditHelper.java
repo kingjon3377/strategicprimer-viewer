@@ -10,7 +10,7 @@ import drivers.common.MapChangeListener;
 import legacy.map.fixtures.mobile.IUnit;
 
 import legacy.map.HasKind;
-import common.map.Player;
+import legacy.map.Player;
 
 /**
  * An interface for helpers to allow the worker tree component, the fixture

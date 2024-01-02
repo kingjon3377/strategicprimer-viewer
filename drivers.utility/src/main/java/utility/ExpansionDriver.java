@@ -3,7 +3,7 @@ package utility;
 import java.util.stream.Collectors;
 import java.util.function.Predicate;
 
-import common.map.Player;
+import legacy.map.Player;
 import legacy.map.HasOwner;
 import legacy.map.Point;
 import legacy.map.ILegacyMap;

@@ -1,29 +1,28 @@
 package legacy.xmlio.fluidxml;
 
-import org.javatuples.Pair;
-
-import javax.xml.namespace.QName;
-import javax.xml.stream.XMLStreamWriter;
-import javax.xml.stream.events.StartElement;
-import javax.xml.stream.events.XMLEvent;
-import javax.xml.stream.XMLStreamException;
-
+import common.xmlio.SPFormatException;
+import common.xmlio.Warning;
 import legacy.idreg.IDRegistrar;
-import common.map.IPlayerCollection;
+import legacy.map.ILegacyPlayerCollection;
+import legacy.map.Player;
 import legacy.map.Point;
-import common.map.Player;
 import legacy.map.fixtures.TextFixture;
-import legacy.map.fixtures.explorable.Portal;
 import legacy.map.fixtures.explorable.AdventureFixture;
 import legacy.map.fixtures.explorable.Battlefield;
 import legacy.map.fixtures.explorable.Cave;
-import common.xmlio.Warning;
-import common.xmlio.SPFormatException;
+import legacy.map.fixtures.explorable.Portal;
+import org.javatuples.Pair;
+
+import javax.xml.namespace.QName;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamWriter;
+import javax.xml.stream.events.StartElement;
+import javax.xml.stream.events.XMLEvent;
 
 /* package */ class FluidExplorableHandler extends FluidBase {
     public static AdventureFixture readAdventure(final StartElement element, final QName parent,
-                                                 final Iterable<XMLEvent> stream, final IPlayerCollection players, final Warning warner,
-                                                 final IDRegistrar idFactory) throws SPFormatException {
+												 final Iterable<XMLEvent> stream, final ILegacyPlayerCollection players, final Warning warner,
+												 final IDRegistrar idFactory) throws SPFormatException {
         requireTag(element, parent, "adventure");
         expectAttributes(element, warner, "owner", "brief", "full", "id", "image");
         final Player player;
@@ -41,7 +40,7 @@ import common.xmlio.SPFormatException;
     }
 
     public static Portal readPortal(final StartElement element, final QName parent,
-                                    final Iterable<XMLEvent> stream, final IPlayerCollection players, final Warning warner,
+                                    final Iterable<XMLEvent> stream, final ILegacyPlayerCollection players, final Warning warner,
                                     final IDRegistrar idFactory) throws SPFormatException {
         requireTag(element, parent, "portal");
         expectAttributes(element, warner, "row", "column", "world", "id", "image");
@@ -55,7 +54,7 @@ import common.xmlio.SPFormatException;
     }
 
     public static Cave readCave(final StartElement element, final QName parent, final Iterable<XMLEvent> stream,
-                                final IPlayerCollection players, final Warning warner, final IDRegistrar idFactory)
+                                final ILegacyPlayerCollection players, final Warning warner, final IDRegistrar idFactory)
             throws SPFormatException {
         requireTag(element, parent, "cave");
         expectAttributes(element, warner, "id", "dc", "image");
@@ -66,7 +65,7 @@ import common.xmlio.SPFormatException;
     }
 
     public static Battlefield readBattlefield(final StartElement element, final QName parent,
-                                              final Iterable<XMLEvent> stream, final IPlayerCollection players, final Warning warner,
+                                              final Iterable<XMLEvent> stream, final ILegacyPlayerCollection players, final Warning warner,
                                               final IDRegistrar idFactory) throws SPFormatException {
         requireTag(element, parent, "battlefield");
         expectAttributes(element, warner, "id", "dc", "image");
@@ -77,7 +76,7 @@ import common.xmlio.SPFormatException;
     }
 
     public static TextFixture readTextFixture(final StartElement element, final QName parent,
-                                              final Iterable<XMLEvent> stream, final IPlayerCollection players, final Warning warner,
+                                              final Iterable<XMLEvent> stream, final ILegacyPlayerCollection players, final Warning warner,
                                               final IDRegistrar idFactory) throws SPFormatException {
         requireTag(element, parent, "text");
         expectAttributes(element, warner, "turn", "image");

@@ -6,7 +6,7 @@ import java.util.function.Consumer;
 
 import legacy.map.IFixture;
 import legacy.map.HasMutableOwner;
-import common.map.Player;
+import legacy.map.Player;
 
 /**
  * A Fixture representing an adventure hook. Satisfies Subsettable because

@@ -12,7 +12,7 @@ import java.util.HashMap;
 
 import lovelace.util.DelayedRemovalMap;
 
-import common.map.Player;
+import legacy.map.Player;
 import legacy.map.IFixture;
 import legacy.map.Point;
 import legacy.map.MapDimensions;

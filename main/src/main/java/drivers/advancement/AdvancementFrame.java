@@ -21,7 +21,7 @@ import legacy.idreg.IDFactoryFiller;
 import legacy.idreg.IDRegistrar;
 
 import legacy.map.ILegacyMap;
-import common.map.Player;
+import legacy.map.Player;
 
 import static drivers.worker_mgmt.WorkerMenu.workerMenu;
 

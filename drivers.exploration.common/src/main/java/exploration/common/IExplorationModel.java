@@ -12,7 +12,7 @@ import drivers.common.IFixtureEditingModel;
 import drivers.common.SelectionChangeSource;
 import drivers.common.IMultiMapModel;
 import legacy.map.Point;
-import common.map.Player;
+import legacy.map.Player;
 import legacy.map.Direction;
 import legacy.map.River;
 import legacy.map.TileFixture;

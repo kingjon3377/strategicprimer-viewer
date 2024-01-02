@@ -25,7 +25,7 @@ import legacy.map.fixtures.mobile.worker.IJob;
 import legacy.map.HasImage;
 import legacy.map.IFixture;
 import legacy.map.HasMutableKind;
-import common.map.Player;
+import legacy.map.Player;
 
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeModelEvent;

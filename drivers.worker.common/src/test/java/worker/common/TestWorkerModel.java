@@ -20,8 +20,8 @@ import legacy.map.IMutableLegacyMap;
 import legacy.map.LegacyMap;
 import legacy.map.Point;
 import legacy.map.MapDimensionsImpl;
-import common.map.Player;
-import common.map.PlayerImpl;
+import legacy.map.Player;
+import legacy.map.PlayerImpl;
 import legacy.map.TileFixture;
 import common.map.PlayerCollection;
 

@@ -11,7 +11,6 @@ import legacy.map.IMutableLegacyMap;
 import legacy.map.LegacyPlayerCollection;
 import legacy.map.MapDimensions;
 import legacy.map.MapDimensionsImpl;
-import common.map.PlayerCollection;
 
 import lovelace.util.LovelaceLogger;
 

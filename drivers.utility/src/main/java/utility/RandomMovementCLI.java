@@ -9,7 +9,7 @@ import exploration.common.Speed;
 import exploration.common.TraversalImpossibleException;
 
 import legacy.map.Direction;
-import common.map.Player;
+import legacy.map.Player;
 
 import java.util.Random;
 

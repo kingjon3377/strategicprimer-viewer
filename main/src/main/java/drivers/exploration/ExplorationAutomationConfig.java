@@ -1,7 +1,7 @@
 package drivers.exploration;
 
 import legacy.map.ILegacyMap;
-import common.map.Player;
+import legacy.map.Player;
 import legacy.map.Point;
 import legacy.map.TileFixture;
 import legacy.map.fixtures.mobile.IUnit;

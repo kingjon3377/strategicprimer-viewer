@@ -43,7 +43,7 @@ import drivers.common.IWorkerModel;
 import worker.common.IWorkerTreeModel;
 import legacy.idreg.IDFactoryFiller;
 import legacy.idreg.IDRegistrar;
-import common.map.Player;
+import legacy.map.Player;
 import legacy.map.ILegacyMap;
 import legacy.map.fixtures.mobile.IUnit;
 import drivers.map_viewer.NewUnitDialog;

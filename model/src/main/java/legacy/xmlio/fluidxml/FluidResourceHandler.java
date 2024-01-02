@@ -1,43 +1,40 @@
 package legacy.xmlio.fluidxml;
 
-import javax.xml.stream.XMLStreamException;
-
+import common.map.fixtures.resources.FieldStatus;
+import common.map.fixtures.towns.TownStatus;
+import common.xmlio.SPFormatException;
+import common.xmlio.Warning;
+import impl.xmlio.exceptions.DeprecatedPropertyException;
+import impl.xmlio.exceptions.MissingPropertyException;
+import impl.xmlio.exceptions.UnwantedChildException;
+import legacy.idreg.IDRegistrar;
+import legacy.map.HasExtent;
+import legacy.map.ILegacyPlayerCollection;
+import legacy.map.fixtures.IMutableResourcePile;
+import legacy.map.fixtures.IResourcePile;
+import legacy.map.fixtures.Implement;
 import legacy.map.fixtures.LegacyQuantity;
+import legacy.map.fixtures.ResourcePileImpl;
+import legacy.map.fixtures.resources.CacheFixture;
+import legacy.map.fixtures.resources.Grove;
+import legacy.map.fixtures.resources.Meadow;
+import legacy.map.fixtures.resources.Mine;
+import legacy.map.fixtures.resources.MineralVein;
+import legacy.map.fixtures.resources.Shrub;
+import legacy.map.fixtures.resources.StoneDeposit;
+import legacy.map.fixtures.resources.StoneKind;
 import org.javatuples.Pair;
 
 import javax.xml.namespace.QName;
+import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
+import javax.xml.stream.events.EndElement;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
-import javax.xml.stream.events.EndElement;
-
-import legacy.idreg.IDRegistrar;
-import common.map.IPlayerCollection;
-import legacy.map.fixtures.IMutableResourcePile;
-import legacy.map.fixtures.IResourcePile;
-import common.map.fixtures.Quantity;
-import legacy.map.fixtures.ResourcePileImpl;
-import legacy.map.fixtures.Implement;
-import common.map.fixtures.resources.FieldStatus;
-import legacy.map.fixtures.resources.Grove;
-import legacy.map.fixtures.resources.Meadow;
-import legacy.map.fixtures.resources.CacheFixture;
-import legacy.map.fixtures.resources.Mine;
-import legacy.map.fixtures.resources.StoneDeposit;
-import legacy.map.fixtures.resources.StoneKind;
-import legacy.map.fixtures.resources.Shrub;
-import legacy.map.fixtures.resources.MineralVein;
-import common.map.fixtures.towns.TownStatus;
-import common.xmlio.Warning;
-import impl.xmlio.exceptions.MissingPropertyException;
-import impl.xmlio.exceptions.DeprecatedPropertyException;
-import impl.xmlio.exceptions.UnwantedChildException;
-import common.xmlio.SPFormatException;
-import legacy.map.HasExtent;
 
 /* package */ class FluidResourceHandler extends FluidBase {
     public static IMutableResourcePile readResource(final StartElement element, final QName parent,
-                                                    final Iterable<XMLEvent> stream, final IPlayerCollection players, final Warning warner,
+                                                    final Iterable<XMLEvent> stream, final ILegacyPlayerCollection players, final Warning warner,
                                                     final IDRegistrar idFactory) throws SPFormatException {
         requireTag(element, parent, "resource");
         expectAttributes(element, warner, "quantity", "kind", "contents", "unit",
@@ -56,8 +53,8 @@ import legacy.map.HasExtent;
     }
 
     public static Implement readImplement(final StartElement element, final QName parent,
-                                          final Iterable<XMLEvent> stream, final IPlayerCollection players, final Warning warner,
-                                          final IDRegistrar idFactory) throws SPFormatException {
+										  final Iterable<XMLEvent> stream, final ILegacyPlayerCollection players, final Warning warner,
+										  final IDRegistrar idFactory) throws SPFormatException {
         requireTag(element, parent, "implement");
         expectAttributes(element, warner, "kind", "id", "count", "image");
         spinUntilEnd(element.getName(), stream);
@@ -67,7 +64,7 @@ import legacy.map.HasExtent;
     }
 
     public static CacheFixture readCache(final StartElement element, final QName parent,
-                                         final Iterable<XMLEvent> stream, final IPlayerCollection players, final Warning warner,
+                                         final Iterable<XMLEvent> stream, final ILegacyPlayerCollection players, final Warning warner,
                                          final IDRegistrar idFactory) throws SPFormatException {
         requireTag(element, parent, "cache");
         expectAttributes(element, warner, "kind", "contents", "id", "image");
@@ -95,7 +92,7 @@ import legacy.map.HasExtent;
     }
 
     public static Grove readGrove(final StartElement element, final QName parent, final Iterable<XMLEvent> stream,
-                                  final IPlayerCollection players, final Warning warner, final IDRegistrar idFactory)
+                                  final ILegacyPlayerCollection players, final Warning warner, final IDRegistrar idFactory)
             throws SPFormatException {
         requireTag(element, parent, "grove");
         expectAttributes(element, warner, "cultivated", "wild", "kind", "tree", "id",
@@ -118,7 +115,7 @@ import legacy.map.HasExtent;
     }
 
     public static Grove readOrchard(final StartElement element, final QName parent, final Iterable<XMLEvent> stream,
-                                    final IPlayerCollection players, final Warning warner, final IDRegistrar idFactory)
+                                    final ILegacyPlayerCollection players, final Warning warner, final IDRegistrar idFactory)
             throws SPFormatException {
         requireTag(element, parent, "orchard");
         expectAttributes(element, warner, "cultivated", "wild", "kind", "tree", "id",
@@ -141,7 +138,7 @@ import legacy.map.HasExtent;
     }
 
     public static Meadow readMeadow(final StartElement element, final QName parent, final Iterable<XMLEvent> stream,
-                                    final IPlayerCollection players, final Warning warner, final IDRegistrar idFactory)
+                                    final ILegacyPlayerCollection players, final Warning warner, final IDRegistrar idFactory)
             throws SPFormatException {
         requireTag(element, parent, "meadow");
         expectAttributes(element, warner, "status", "kind", "cultivated", "id", "image",
@@ -164,7 +161,7 @@ import legacy.map.HasExtent;
     }
 
     public static Meadow readField(final StartElement element, final QName parent, final Iterable<XMLEvent> stream,
-                                   final IPlayerCollection players, final Warning warner, final IDRegistrar idFactory)
+                                   final ILegacyPlayerCollection players, final Warning warner, final IDRegistrar idFactory)
             throws SPFormatException {
         requireTag(element, parent, "field");
         expectAttributes(element, warner, "status", "kind", "cultivated", "id", "image",
@@ -187,7 +184,7 @@ import legacy.map.HasExtent;
     }
 
     public static Mine readMine(final StartElement element, final QName parent, final Iterable<XMLEvent> stream,
-                                final IPlayerCollection players, final Warning warner, final IDRegistrar idFactory)
+                                final ILegacyPlayerCollection players, final Warning warner, final IDRegistrar idFactory)
             throws SPFormatException {
         requireTag(element, parent, "mine");
         expectAttributes(element, warner, "status", "kind", "product", "id", "image");
@@ -205,7 +202,7 @@ import legacy.map.HasExtent;
     }
 
     public static MineralVein readMineral(final StartElement element, final QName parent, final Iterable<XMLEvent> stream,
-                                          final IPlayerCollection players, final Warning warner, final IDRegistrar idFactory)
+                                          final ILegacyPlayerCollection players, final Warning warner, final IDRegistrar idFactory)
             throws SPFormatException {
         requireTag(element, parent, "mineral");
         expectAttributes(element, warner, "kind", "mineral", "exposed", "dc", "id", "image");
@@ -219,7 +216,7 @@ import legacy.map.HasExtent;
     }
 
     public static Shrub readShrub(final StartElement element, final QName parent, final Iterable<XMLEvent> stream,
-                                  final IPlayerCollection players, final Warning warner, final IDRegistrar idFactory)
+                                  final ILegacyPlayerCollection players, final Warning warner, final IDRegistrar idFactory)
             throws SPFormatException {
         requireTag(element, parent, "shrub");
         expectAttributes(element, warner, "kind", "shrub", "id", "image", "count");
@@ -231,7 +228,7 @@ import legacy.map.HasExtent;
     }
 
     public static StoneDeposit readStone(final StartElement element, final QName parent, final Iterable<XMLEvent> stream,
-                                         final IPlayerCollection players, final Warning warner, final IDRegistrar idFactory)
+                                         final ILegacyPlayerCollection players, final Warning warner, final IDRegistrar idFactory)
             throws SPFormatException {
         requireTag(element, parent, "stone");
         expectAttributes(element, warner, "kind", "stone", "dc", "id", "image");

@@ -1,39 +1,38 @@
 package legacy.xmlio.yaxml;
 
-import javax.xml.namespace.QName;
-import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.events.StartElement;
-import javax.xml.stream.events.XMLEvent;
-import javax.xml.stream.events.Characters;
-import java.io.IOException;
-
-import lovelace.util.ThrowingConsumer;
 import common.xmlio.SPFormatException;
+import common.xmlio.Warning;
+import impl.xmlio.exceptions.MissingPropertyException;
+import impl.xmlio.exceptions.UnwantedChildException;
 import legacy.idreg.IDRegistrar;
-import common.map.IPlayerCollection;
+import legacy.map.ILegacyPlayerCollection;
 import legacy.map.fixtures.UnitMember;
 import legacy.map.fixtures.mobile.IMutableUnit;
 import legacy.map.fixtures.mobile.IUnit;
 import legacy.map.fixtures.mobile.Unit;
-import common.xmlio.Warning;
-import impl.xmlio.exceptions.MissingPropertyException;
-import impl.xmlio.exceptions.UnwantedChildException;
+import lovelace.util.ThrowingConsumer;
 
-import java.util.Map;
+import javax.xml.namespace.QName;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.events.Characters;
+import javax.xml.stream.events.StartElement;
+import javax.xml.stream.events.XMLEvent;
+import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 /**
  * A reader for units.
  */
 /* package */ class YAUnitReader extends YAAbstractReader<IUnit, IUnit> {
-    public YAUnitReader(final Warning warner, final IDRegistrar idRegistrar, final IPlayerCollection players) {
+    public YAUnitReader(final Warning warner, final IDRegistrar idRegistrar, final ILegacyPlayerCollection players) {
         super(warner, idRegistrar);
         this.players = players;
         this.warner = warner;
         readers = List.of(new YAMobileReader(warner, idRegistrar), new YAWorkerReader(warner, idRegistrar, players), new YAResourcePileReader(warner, idRegistrar), new YAImplementReader(warner, idRegistrar));
     }
 
-    private final IPlayerCollection players;
+    private final ILegacyPlayerCollection players;
     private final Warning warner;
 
     private final List<YAReader<?, ?>> readers;

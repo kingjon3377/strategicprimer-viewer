@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import legacy.map.fixtures.mobile.IUnit;
-import common.map.Player;
+import legacy.map.Player;
 import legacy.map.HasKind;
 import worker.common.IWorkerTreeModel;
 import drivers.common.IWorkerModel;

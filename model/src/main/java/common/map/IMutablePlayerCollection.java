@@ -24,9 +24,4 @@ public interface IMutablePlayerCollection extends IPlayerCollection {
      */
     @Override
     IMutablePlayerCollection copy();
-
-    /**
-     * Set the current player.
-     */
-    void setCurrentPlayer(Player currentPlayer);
 }

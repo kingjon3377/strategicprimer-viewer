@@ -14,8 +14,8 @@ import java.util.LinkedList;
 import java.util.Arrays;
 import java.util.Collections;
 
-import common.map.PlayerImpl;
-import common.map.Player;
+import legacy.map.PlayerImpl;
+import legacy.map.Player;
 import legacy.map.Point;
 
 import java.math.BigDecimal;

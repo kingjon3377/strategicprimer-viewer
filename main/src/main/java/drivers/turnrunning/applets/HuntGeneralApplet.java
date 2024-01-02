@@ -1,7 +1,7 @@
 package drivers.turnrunning.applets;
 
 import legacy.map.IFixture;
-import common.map.Player;
+import legacy.map.Player;
 import legacy.map.Point;
 
 import legacy.map.TileFixture;

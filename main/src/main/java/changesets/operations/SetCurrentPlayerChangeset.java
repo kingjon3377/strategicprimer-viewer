@@ -5,11 +5,12 @@ import changesets.ChangesetFailureException;
 import changesets.PreconditionFailureException;
 import common.map.IMap;
 import common.map.IMutableMap;
-import common.map.MutablePlayer;
 import common.map.Player;
 import common.map.PlayerImpl;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.Objects;
 
 public class SetCurrentPlayerChangeset implements Changeset {
 	private final Player oldCurrent;
@@ -51,28 +52,23 @@ public class SetCurrentPlayerChangeset implements Changeset {
 	}
 
 	// TODO: Inline once PlayerImpl (-> Player) constructor covers all fields
-	private static Player playerFactory(final int playerId, final @NotNull String name, final @Nullable String country,
-										final @NotNull String portrait, final boolean current) {
-		final PlayerImpl retval;
-		if (country == null) {
-			retval = new PlayerImpl(playerId, name);
-		} else {
-			retval = new PlayerImpl(playerId, name, country);
-		}
-		retval.setPortrait(portrait);
-		retval.setCurrent(current);
-		return retval;
-	}
+
 	@Override
 	public void applyInPlace(IMutableMap map) throws ChangesetFailureException {
 		checkPreconditions(map);
 		// FIXME: Make 'current' an immutable field and constructor parameter
 		final Player matchingOld = map.getPlayers().getPlayer(oldCurrent.getPlayerId());
 		final Player matchingNew = map.getPlayers().getPlayer(newCurrent.getPlayerId());
-		final Player matchingOldCopy = playerFactory(matchingOld.getPlayerId(), matchingOld.getName(),
-			matchingOld.getCountry(), matchingOld.getPortrait(), false);
-		final Player matchingNewCopy = playerFactory(matchingNew.getPlayerId(), matchingNew.getName(),
-			matchingNew.getCountry(), matchingNew.getPortrait(), true);
+		final int playerId1 = matchingOld.getPlayerId();
+		final @NotNull String name1 = matchingOld.getName();
+		final @Nullable String country1 = matchingOld.getCountry();
+		final @NotNull String portrait1 = matchingOld.getPortrait();
+		final Player matchingOldCopy = new PlayerImpl(playerId1, name1, Objects.requireNonNullElse(country1, ""), false, portrait1);
+		final int playerId = matchingNew.getPlayerId();
+		final @NotNull String name = matchingNew.getName();
+		final @Nullable String country = matchingNew.getCountry();
+		final @NotNull String portrait = matchingNew.getPortrait();
+		final Player matchingNewCopy = new PlayerImpl(playerId, name, Objects.requireNonNullElse(country, ""), true, portrait);
 		// TODO: try-catch here, in case the first operation fails?
 		map.replacePlayer(matchingOld, matchingOldCopy);
 		map.replacePlayer(matchingNew, matchingNewCopy);

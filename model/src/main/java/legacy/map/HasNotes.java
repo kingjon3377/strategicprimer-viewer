@@ -1,7 +1,5 @@
 package legacy.map;
 
-import common.map.Player;
-
 /**
  * An interface for fixtures players can record notes on. These notes should be
  * ignored in subset calculations, should generally not be shared in map

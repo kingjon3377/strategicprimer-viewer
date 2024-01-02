@@ -8,7 +8,7 @@ import java.util.List;
 
 import lovelace.util.ArraySet;
 import legacy.map.IFixture;
-import common.map.Player;
+import legacy.map.Player;
 
 import common.map.fixtures.mobile.worker.WorkerStats;
 import legacy.map.fixtures.mobile.worker.Job;

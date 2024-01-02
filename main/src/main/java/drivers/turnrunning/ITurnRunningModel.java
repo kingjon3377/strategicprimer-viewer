@@ -10,7 +10,7 @@ import java.util.function.IntSupplier;
 
 import legacy.map.HasExtent;
 import legacy.map.HasPopulation;
-import common.map.Player;
+import legacy.map.Player;
 import legacy.map.Point;
 import legacy.map.TileFixture;
 

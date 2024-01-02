@@ -7,7 +7,7 @@ import drivers.common.SimpleMultiMapModel;
 import legacy.map.IFixture;
 import legacy.map.ILegacyMap;
 import legacy.map.IMutableLegacyMap;
-import common.map.Player;
+import legacy.map.Player;
 import legacy.map.Point;
 
 import legacy.map.fixtures.mobile.Animal;

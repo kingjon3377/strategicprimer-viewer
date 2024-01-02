@@ -1,6 +1,6 @@
 package legacy.map.fixtures.towns;
 
-import common.map.Player;
+import legacy.map.Player;
 import common.map.fixtures.towns.TownSize;
 import common.map.fixtures.towns.TownStatus;
 

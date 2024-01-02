@@ -1,20 +1,24 @@
-package common.map;
-
-import java.util.Objects;
+package legacy.map;
 
 import org.jetbrains.annotations.Nullable;
+
+import java.util.Objects;
 
 /**
  * A representation of a player in the game.
  */
-public final class PlayerImpl implements Player {
+public final class PlayerImpl implements MutablePlayer {
 
-    public PlayerImpl(final int playerId, final String name, final String country, final boolean current, final String portrait) {
+    public PlayerImpl(final int playerId, final String name, final String country) {
         this.playerId = playerId;
         this.name = name;
         this.country = country;
-		this.current = current;
-		this.portrait = portrait;
+    }
+
+    public PlayerImpl(final int playerId, final String name) {
+        this.playerId = playerId;
+        this.name = name;
+        country = null;
     }
 
     /**
@@ -26,7 +30,7 @@ public final class PlayerImpl implements Player {
      * The player's number.
      */
     @Override
-    public final int getPlayerId() {
+    public int getPlayerId() {
         return playerId;
     }
 
@@ -48,7 +52,7 @@ public final class PlayerImpl implements Player {
      *
      * TODO: Should this really be encapsulated in Player, not PlayerCollection?"
      */
-    private final boolean current;
+    private boolean current = false;
 
     /**
      * Whether this is the current player or not.
@@ -58,21 +62,26 @@ public final class PlayerImpl implements Player {
         return current;
     }
 
+    @Override
+    public void setCurrent(final boolean current) {
+        this.current = current;
+    }
+
     /**
      * The country the player is associated with.
      */
-    private final String country;
+    private final @Nullable String country;
 
     /**
      * The country the player is associated with.
      */
     @Override
-    public String getCountry() {
+    public @Nullable String getCountry() {
         return country;
     }
 
     /**
-     * An object is equal iff it is a Player with the same number, name, and country. TODO: Match "current"?
+     * An object is equal iff it is a Player with the same number, name, and country.
      */
     @Override
     public boolean equals(final Object obj) {
@@ -81,7 +90,7 @@ public final class PlayerImpl implements Player {
         } else if (obj instanceof final Player p) {
             return playerId == p.getPlayerId() &&
                     name.equals(p.getName()) &&
-                    country.equals(p.getCountry());
+                    Objects.equals(country, p.getCountry());
         } else {
             return false;
         }
@@ -109,10 +118,15 @@ public final class PlayerImpl implements Player {
         }
     }
 
-    private final String portrait;
+    private String portrait = "";
 
     @Override
     public String getPortrait() {
         return portrait;
+    }
+
+    @Override
+    public void setPortrait(final String portrait) {
+        this.portrait = portrait;
     }
 }

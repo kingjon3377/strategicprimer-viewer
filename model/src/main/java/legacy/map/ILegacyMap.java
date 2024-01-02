@@ -6,8 +6,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Stream;
 
-import common.map.IPlayerCollection;
-import common.map.Player;
 import org.jetbrains.annotations.Nullable;
 
 /**
@@ -44,7 +42,7 @@ public interface ILegacyMap extends Subsettable<ILegacyMap> {
 	/**
 	 * (A view of) the players in the map.
 	 */
-	IPlayerCollection getPlayers();
+	ILegacyPlayerCollection getPlayers();
 
 	/**
 	 * The locations in the map. This should <em>not</em> include locations

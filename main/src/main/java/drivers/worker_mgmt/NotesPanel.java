@@ -9,7 +9,7 @@ import static lovelace.util.BoxPanel.centeredHorizontalBox;
 import javax.swing.JTextArea;
 import javax.swing.JButton;
 import javax.swing.JPanel;
-import common.map.Player;
+import legacy.map.Player;
 import legacy.map.HasNotes;
 import legacy.map.fixtures.UnitMember;
 

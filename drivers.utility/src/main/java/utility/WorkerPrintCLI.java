@@ -1,6 +1,6 @@
 package utility;
 
-import common.map.Player;
+import legacy.map.Player;
 import legacy.map.fixtures.UnitMember;
 
 import java.util.ArrayList;

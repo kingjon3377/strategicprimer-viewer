@@ -8,8 +8,8 @@ import java.io.IOException;
 
 import common.xmlio.SPFormatException;
 import legacy.idreg.IDRegistrar;
-import common.map.Player;
-import common.map.PlayerImpl;
+import legacy.map.Player;
+import legacy.map.PlayerImpl;
 import common.xmlio.Warning;
 
 import lovelace.util.ThrowingConsumer;

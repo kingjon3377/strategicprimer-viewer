@@ -15,7 +15,7 @@ import java.util.Map;
 import legacy.map.IMutableLegacyMap;
 import legacy.map.ILegacyMap;
 import legacy.map.River;
-import common.map.Player;
+import legacy.map.Player;
 import legacy.map.Direction;
 import legacy.map.TileFixture;
 import legacy.map.Point;

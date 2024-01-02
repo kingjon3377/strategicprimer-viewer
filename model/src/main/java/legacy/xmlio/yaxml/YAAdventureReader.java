@@ -1,27 +1,26 @@
 package legacy.xmlio.yaxml;
 
-import java.io.IOException;
+import common.xmlio.SPFormatException;
+import common.xmlio.Warning;
+import legacy.idreg.IDRegistrar;
+import legacy.map.ILegacyPlayerCollection;
+import legacy.map.Player;
+import legacy.map.fixtures.explorable.AdventureFixture;
+import lovelace.util.ThrowingConsumer;
+
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
-
-import common.xmlio.SPFormatException;
-import legacy.idreg.IDRegistrar;
-import common.map.IPlayerCollection;
-import common.map.Player;
-import legacy.map.fixtures.explorable.AdventureFixture;
-import common.xmlio.Warning;
-
-import lovelace.util.ThrowingConsumer;
+import java.io.IOException;
 
 /**
  * A reader for adventure hooks.
  */
 /* package */ class YAAdventureReader extends YAAbstractReader<AdventureFixture, AdventureFixture> {
-    private final IPlayerCollection players;
+    private final ILegacyPlayerCollection players;
 
-    public YAAdventureReader(final Warning warner, final IDRegistrar idFactory, final IPlayerCollection players) {
+    public YAAdventureReader(final Warning warner, final IDRegistrar idFactory, final ILegacyPlayerCollection players) {
         super(warner, idFactory);
         this.players = players;
     }

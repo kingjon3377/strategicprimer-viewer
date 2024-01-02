@@ -1,4 +1,4 @@
-package common.map;
+package legacy.map;
 
 /**
  * A {@link Player} object that can be set as current or not.

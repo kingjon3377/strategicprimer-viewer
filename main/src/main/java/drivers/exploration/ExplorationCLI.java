@@ -13,7 +13,7 @@ import drivers.common.cli.ICLIHelper;
 
 import exploration.common.IExplorationModel;
 
-import common.map.Player;
+import legacy.map.Player;
 
 import legacy.map.fixtures.mobile.IUnit;
 

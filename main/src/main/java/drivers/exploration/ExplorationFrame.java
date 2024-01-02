@@ -31,7 +31,7 @@ import lovelace.util.FunctionalGroupLayout;
 import lovelace.util.LovelaceLogger;
 import lovelace.util.SimpleCardLayout;
 
-import common.map.Player;
+import legacy.map.Player;
 
 import legacy.map.fixtures.mobile.IUnit;
 

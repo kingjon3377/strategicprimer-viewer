@@ -22,7 +22,7 @@ import org.jetbrains.annotations.Nullable;
 import drivers.common.PlayerChangeListener;
 import worker.common.NewUnitListener;
 import legacy.idreg.IDRegistrar;
-import common.map.Player;
+import legacy.map.Player;
 import legacy.map.fixtures.mobile.IUnit;
 import legacy.map.fixtures.mobile.Unit;
 import drivers.gui.common.SPDialog;

@@ -17,7 +17,7 @@ import javax.xml.stream.XMLStreamException;
 
 import legacy.map.HasKind;
 import legacy.map.HasImage;
-import common.map.Player;
+import legacy.map.Player;
 import legacy.map.MapDimensions;
 import legacy.map.IFixture;
 import legacy.map.Point;

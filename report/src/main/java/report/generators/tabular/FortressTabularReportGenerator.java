@@ -8,7 +8,7 @@ import org.jetbrains.annotations.Nullable;
 import lovelace.util.DelayedRemovalMap;
 
 import legacy.DistanceComparator;
-import common.map.Player;
+import legacy.map.Player;
 import legacy.map.IFixture;
 import legacy.map.MapDimensions;
 import legacy.map.Point;

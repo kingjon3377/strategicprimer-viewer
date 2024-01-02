@@ -19,7 +19,7 @@ import lovelace.util.DelayedRemovalMap;
 
 import legacy.map.Direction;
 import legacy.map.TileFixture;
-import common.map.Player;
+import legacy.map.Player;
 import legacy.map.IFixture;
 import legacy.map.Point;
 import legacy.map.River;

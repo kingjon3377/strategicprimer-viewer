@@ -19,7 +19,7 @@ import java.util.List;
 
 import drivers.common.cli.ICLIHelper;
 import legacy.map.Point;
-import common.map.Player;
+import legacy.map.Player;
 import legacy.map.TileFixture;
 import legacy.map.HasPopulation;
 

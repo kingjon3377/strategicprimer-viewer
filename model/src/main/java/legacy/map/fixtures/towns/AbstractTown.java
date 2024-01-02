@@ -5,7 +5,7 @@ import common.map.fixtures.towns.TownStatus;
 import legacy.map.IFixture;
 import legacy.map.Subsettable;
 import legacy.map.HasMutableImage;
-import common.map.Player;
+import legacy.map.Player;
 
 import java.util.Objects;
 

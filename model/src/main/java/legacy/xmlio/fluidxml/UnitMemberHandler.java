@@ -1,52 +1,47 @@
 package legacy.xmlio.fluidxml;
 
-import legacy.map.fixtures.Implement;
-import org.javatuples.Pair;
-
-import legacy.map.HasImage;
-import legacy.map.HasKind;
-
-import javax.xml.namespace.QName;
-import javax.xml.stream.XMLStreamWriter;
-import javax.xml.stream.events.StartElement;
-import javax.xml.stream.events.XMLEvent;
-import javax.xml.stream.events.Characters;
-import javax.xml.stream.events.EndElement;
-
-import legacy.map.fixtures.mobile.AnimalOrTracks;
-import legacy.idreg.IDRegistrar;
-import common.map.IPlayerCollection;
-import legacy.map.fixtures.mobile.IWorker;
-import legacy.map.fixtures.mobile.Worker;
-import legacy.map.fixtures.mobile.SimpleImmortal;
-import legacy.map.fixtures.mobile.Animal;
 import common.map.fixtures.mobile.MaturityModel;
-import legacy.map.fixtures.mobile.AnimalImpl;
-import legacy.map.fixtures.mobile.AnimalTracks;
-import legacy.map.fixtures.mobile.ImmortalAnimal;
-import legacy.map.fixtures.mobile.worker.IJob;
-import legacy.map.fixtures.mobile.worker.IMutableJob;
-import legacy.map.fixtures.mobile.worker.Job;
 import common.map.fixtures.mobile.worker.WorkerStats;
-import legacy.map.fixtures.mobile.worker.ISkill;
-import legacy.map.fixtures.mobile.worker.Skill;
+import common.xmlio.SPFormatException;
 import common.xmlio.Warning;
-import impl.xmlio.exceptions.UnwantedChildException;
 import impl.xmlio.exceptions.UnsupportedPropertyException;
 import impl.xmlio.exceptions.UnsupportedTagException;
-import common.xmlio.SPFormatException;
-
-import java.util.List;
-import java.util.stream.StreamSupport;
-import java.util.function.Predicate;
-
+import impl.xmlio.exceptions.UnwantedChildException;
+import legacy.idreg.IDRegistrar;
+import legacy.map.HasImage;
+import legacy.map.HasKind;
+import legacy.map.ILegacyPlayerCollection;
+import legacy.map.fixtures.Implement;
+import legacy.map.fixtures.mobile.Animal;
+import legacy.map.fixtures.mobile.AnimalImpl;
+import legacy.map.fixtures.mobile.AnimalOrTracks;
+import legacy.map.fixtures.mobile.AnimalTracks;
+import legacy.map.fixtures.mobile.IWorker;
 import legacy.map.fixtures.mobile.Immortal;
+import legacy.map.fixtures.mobile.ImmortalAnimal;
+import legacy.map.fixtures.mobile.SimpleImmortal;
+import legacy.map.fixtures.mobile.Worker;
+import legacy.map.fixtures.mobile.worker.IJob;
+import legacy.map.fixtures.mobile.worker.IMutableJob;
+import legacy.map.fixtures.mobile.worker.ISkill;
+import legacy.map.fixtures.mobile.worker.Job;
+import legacy.map.fixtures.mobile.worker.Skill;
+import org.javatuples.Pair;
 
+import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamWriter;
+import javax.xml.stream.events.Characters;
+import javax.xml.stream.events.EndElement;
+import javax.xml.stream.events.StartElement;
+import javax.xml.stream.events.XMLEvent;
+import java.util.List;
+import java.util.function.Predicate;
+import java.util.stream.StreamSupport;
 
 /* package */ class UnitMemberHandler extends FluidBase {
     public static Worker readWorker(final StartElement element, final QName parent, final Iterable<XMLEvent> stream,
-                                    final IPlayerCollection players, final Warning warner, final IDRegistrar idFactory)
+									final ILegacyPlayerCollection players, final Warning warner, final IDRegistrar idFactory)
             throws SPFormatException {
         requireTag(element, parent, "worker");
         expectAttributes(element, warner, "name", "race", "portrait", "id", "image");
@@ -108,7 +103,7 @@ import javax.xml.stream.XMLStreamException;
     }
 
     public static IJob readJob(final StartElement element, final QName parent, final Iterable<XMLEvent> stream,
-                               final IPlayerCollection players, final Warning warner, final IDRegistrar idFactory)
+                               final ILegacyPlayerCollection players, final Warning warner, final IDRegistrar idFactory)
             throws SPFormatException {
         requireTag(element, parent, "job");
         expectAttributes(element, warner, "name", "level");
@@ -130,7 +125,7 @@ import javax.xml.stream.XMLStreamException;
     }
 
     public static ISkill readSkill(final StartElement element, final QName parent, final Iterable<XMLEvent> stream,
-                                   final IPlayerCollection players, final Warning warner, final IDRegistrar idFactory)
+                                   final ILegacyPlayerCollection players, final Warning warner, final IDRegistrar idFactory)
             throws SPFormatException {
         requireTag(element, parent, "skill");
         expectAttributes(element, warner, "name", "level", "hours");
@@ -142,7 +137,7 @@ import javax.xml.stream.XMLStreamException;
     }
 
     public static WorkerStats readStats(final StartElement element, final QName parent, final Iterable<XMLEvent> stream,
-                                        final IPlayerCollection players, final Warning warner, final IDRegistrar idFactory)
+                                        final ILegacyPlayerCollection players, final Warning warner, final IDRegistrar idFactory)
             throws SPFormatException {
         requireTag(element, parent, "stats");
         expectAttributes(element, warner, "hp", "max", "str", "dex", "con", "int",
@@ -242,7 +237,7 @@ import javax.xml.stream.XMLStreamException;
 
     // TODO: split into Animal and Tracks methods, if at all possible
     public static AnimalOrTracks readAnimal(final StartElement element, final QName parent,
-                                            final Iterable<XMLEvent> stream, final IPlayerCollection players, final Warning warner,
+                                            final Iterable<XMLEvent> stream, final ILegacyPlayerCollection players, final Warning warner,
                                             final IDRegistrar idFactory) throws SPFormatException {
         requireTag(element, parent, "animal");
         final String tag = element.getName().getLocalPart().toLowerCase();

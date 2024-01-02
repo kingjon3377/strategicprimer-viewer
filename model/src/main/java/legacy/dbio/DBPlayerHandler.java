@@ -17,9 +17,9 @@ import java.util.ArrayList;
 
 import legacy.map.ILegacyMap;
 import legacy.map.IMutableLegacyMap;
-import common.map.MutablePlayer;
-import common.map.Player;
-import common.map.PlayerImpl;
+import legacy.map.MutablePlayer;
+import legacy.map.Player;
+import legacy.map.PlayerImpl;
 
 import common.xmlio.Warning;
 

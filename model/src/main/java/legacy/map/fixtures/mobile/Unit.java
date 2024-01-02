@@ -9,7 +9,7 @@ import java.util.TreeMap;
 import lovelace.util.ArraySet;
 import legacy.map.IFixture;
 import legacy.map.TileFixture;
-import common.map.Player;
+import legacy.map.Player;
 import legacy.map.fixtures.Implement;
 import legacy.map.fixtures.IResourcePile;
 import legacy.map.fixtures.UnitMember;

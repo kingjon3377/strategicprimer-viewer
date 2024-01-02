@@ -15,7 +15,7 @@ import java.util.Optional;
 
 import lovelace.util.DelayedRemovalMap;
 
-import common.map.Player;
+import legacy.map.Player;
 import legacy.map.IFixture;
 import legacy.map.Point;
 import legacy.map.MapDimensions;

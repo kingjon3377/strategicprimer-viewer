@@ -25,7 +25,7 @@ import java.nio.file.Files;
 import drivers.common.SPOptions;
 import drivers.common.PlayerChangeListener;
 import drivers.common.IWorkerModel;
-import common.map.Player;
+import legacy.map.Player;
 import common.map.HasName;
 import legacy.map.fixtures.Implement;
 import legacy.map.fixtures.IResourcePile;

@@ -35,7 +35,7 @@ import legacy.map.HasMutableName;
 import legacy.map.HasMutableOwner;
 import legacy.map.IFixture;
 import legacy.map.IMutableLegacyMap;
-import common.map.Player;
+import legacy.map.Player;
 import legacy.map.River;
 import legacy.map.TileFixture;
 import legacy.map.TileType;

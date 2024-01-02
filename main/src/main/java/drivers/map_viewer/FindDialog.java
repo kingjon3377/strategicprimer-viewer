@@ -34,7 +34,7 @@ import lovelace.util.BorderedPanel;
 import legacy.map.IFixture;
 import common.map.HasName;
 import legacy.map.HasKind;
-import common.map.Player;
+import legacy.map.Player;
 import legacy.map.HasOwner;
 import legacy.map.TileFixture;
 import legacy.map.PointIterable;

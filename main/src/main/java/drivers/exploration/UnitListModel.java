@@ -6,7 +6,7 @@ import legacy.map.fixtures.mobile.IUnit;
 
 import drivers.common.PlayerChangeListener;
 
-import common.map.Player;
+import legacy.map.Player;
 
 import exploration.common.IExplorationModel;
 import lovelace.util.LovelaceLogger;

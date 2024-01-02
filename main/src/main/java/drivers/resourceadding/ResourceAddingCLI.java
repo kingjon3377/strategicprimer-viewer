@@ -8,7 +8,7 @@ import drivers.common.cli.ICLIHelper;
 import legacy.idreg.IDFactoryFiller;
 
 import legacy.map.ILegacyMap;
-import common.map.Player;
+import legacy.map.Player;
 
 import drivers.common.SPOptions;
 import drivers.common.CLIDriver;

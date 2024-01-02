@@ -2,7 +2,7 @@ package drivers.exploration;
 
 import javax.swing.DefaultListModel;
 
-import common.map.Player;
+import legacy.map.Player;
 
 import drivers.common.MapChangeListener;
 

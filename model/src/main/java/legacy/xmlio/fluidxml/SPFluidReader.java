@@ -1,101 +1,91 @@
 package legacy.xmlio.fluidxml;
 
-import javax.xml.stream.XMLStreamException;
-
-import legacy.map.IMutableLegacyPlayerCollection;
-import legacy.map.LegacyPlayerCollection;
-import org.javatuples.Pair;
-
-import java.io.IOException;
-import java.io.BufferedReader;
-import java.text.ParseException;
-import java.util.function.IntFunction;
-
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Map;
-import java.util.HashMap;
-import java.util.Deque;
-import java.util.LinkedList;
-
-import java.io.Reader;
-import java.io.FileNotFoundException;
-import java.nio.file.Path;
-import java.nio.file.Files;
-import java.nio.file.NoSuchFileException;
-
-import javax.xml.XMLConstants;
-import javax.xml.namespace.QName;
-import javax.xml.stream.events.StartElement;
-import javax.xml.stream.events.XMLEvent;
-import javax.xml.stream.events.Characters;
-import javax.xml.stream.events.EndElement;
-
-import lovelace.util.IteratorWrapper;
-import lovelace.util.TypesafeXMLEventReader;
-
-import legacy.idreg.IDRegistrar;
+import common.map.fixtures.mobile.MaturityModel;
+import common.map.fixtures.towns.TownSize;
+import common.xmlio.SPFormatException;
+import common.xmlio.Warning;
+import impl.xmlio.ISPReader;
+import impl.xmlio.exceptions.MapVersionException;
+import impl.xmlio.exceptions.MissingChildException;
+import impl.xmlio.exceptions.MissingPropertyException;
+import impl.xmlio.exceptions.UnsupportedTagException;
+import impl.xmlio.exceptions.UnwantedChildException;
 import legacy.idreg.IDFactory;
+import legacy.idreg.IDRegistrar;
+import legacy.map.Direction;
 import legacy.map.HasKind;
-import common.map.Player;
-import common.map.PlayerImpl;
+import legacy.map.IMutableLegacyMap;
+import legacy.map.IMutableLegacyPlayerCollection;
+import legacy.map.LegacyMap;
+import legacy.map.LegacyPlayerCollection;
 import legacy.map.MapDimensions;
 import legacy.map.MapDimensionsImpl;
+import legacy.map.Player;
+import legacy.map.PlayerImpl;
 import legacy.map.Point;
-import legacy.map.TileType;
 import legacy.map.River;
-import common.map.IMutablePlayerCollection;
 import legacy.map.TileFixture;
-import common.map.PlayerCollection;
-import legacy.map.IMutableLegacyMap;
-import legacy.map.LegacyMap;
-import legacy.map.Direction;
+import legacy.map.TileType;
 import legacy.map.fixtures.FortressMember;
-import legacy.map.fixtures.UnitMember;
 import legacy.map.fixtures.TextFixture;
+import legacy.map.fixtures.UnitMember;
+import legacy.map.fixtures.mobile.Centaur;
+import legacy.map.fixtures.mobile.Djinn;
+import legacy.map.fixtures.mobile.Dragon;
+import legacy.map.fixtures.mobile.Fairy;
+import legacy.map.fixtures.mobile.Giant;
+import legacy.map.fixtures.mobile.Griffin;
 import legacy.map.fixtures.mobile.IMutableUnit;
 import legacy.map.fixtures.mobile.IUnit;
-import legacy.map.fixtures.mobile.Unit;
-import legacy.map.fixtures.mobile.Giant;
-import legacy.map.fixtures.mobile.Centaur;
-import legacy.map.fixtures.mobile.Fairy;
-import legacy.map.fixtures.mobile.Dragon;
-import legacy.map.fixtures.mobile.Ogre;
-import legacy.map.fixtures.mobile.Troll;
-import legacy.map.fixtures.mobile.Sphinx;
-import legacy.map.fixtures.mobile.Phoenix;
-import legacy.map.fixtures.mobile.Griffin;
-import legacy.map.fixtures.mobile.Djinn;
-import legacy.map.fixtures.mobile.Simurgh;
-import legacy.map.fixtures.mobile.Minotaur;
 import legacy.map.fixtures.mobile.Immortal;
-import common.map.fixtures.mobile.MaturityModel;
-import legacy.map.fixtures.mobile.Snowbird;
-import legacy.map.fixtures.mobile.Thunderbird;
-import legacy.map.fixtures.mobile.Pegasus;
-import legacy.map.fixtures.mobile.Unicorn;
-import legacy.map.fixtures.mobile.Kraken;
 import legacy.map.fixtures.mobile.ImmortalAnimal;
+import legacy.map.fixtures.mobile.Kraken;
+import legacy.map.fixtures.mobile.Minotaur;
+import legacy.map.fixtures.mobile.Ogre;
+import legacy.map.fixtures.mobile.Pegasus;
+import legacy.map.fixtures.mobile.Phoenix;
+import legacy.map.fixtures.mobile.Simurgh;
+import legacy.map.fixtures.mobile.Snowbird;
+import legacy.map.fixtures.mobile.Sphinx;
+import legacy.map.fixtures.mobile.Thunderbird;
+import legacy.map.fixtures.mobile.Troll;
+import legacy.map.fixtures.mobile.Unicorn;
+import legacy.map.fixtures.mobile.Unit;
 import legacy.map.fixtures.terrain.Hill;
 import legacy.map.fixtures.terrain.Oasis;
 import legacy.map.fixtures.towns.FortressImpl;
 import legacy.map.fixtures.towns.IFortress;
 import legacy.map.fixtures.towns.IMutableFortress;
-import common.map.fixtures.towns.TownSize;
 import legacy.xmlio.IMapReader;
-import impl.xmlio.ISPReader;
-import common.xmlio.Warning;
-import impl.xmlio.exceptions.UnsupportedTagException;
-import impl.xmlio.exceptions.MissingChildException;
-import impl.xmlio.exceptions.UnwantedChildException;
-import impl.xmlio.exceptions.MissingPropertyException;
-import impl.xmlio.exceptions.MapVersionException;
+import lovelace.util.IteratorWrapper;
+import lovelace.util.TypesafeXMLEventReader;
+import org.javatuples.Pair;
+
+import javax.xml.XMLConstants;
+import javax.xml.namespace.QName;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.events.Characters;
+import javax.xml.stream.events.EndElement;
+import javax.xml.stream.events.StartElement;
+import javax.xml.stream.events.XMLEvent;
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.Reader;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.NoSuchFileException;
+import java.nio.file.Path;
+import java.text.ParseException;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Deque;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.Map;
+import java.util.function.IntFunction;
 
 import static legacy.xmlio.fluidxml.FluidBase.*;
-
-import common.xmlio.SPFormatException;
-
-import java.nio.charset.StandardCharsets;
 
 /**
  * The main reader-from-XML class in the 'fluid XML' implementation.
@@ -124,7 +114,7 @@ public class SPFluidReader implements IMapReader, ISPReader {
     private record SimpleFixtureReader(String tag, IntFunction<Object> factory) {
 
         public Object reader(final StartElement element, final QName parent, final Iterable<XMLEvent> stream,
-                             final IMutablePlayerCollection players, final Warning warner, final IDRegistrar idFactory)
+                             final IMutableLegacyPlayerCollection players, final Warning warner, final IDRegistrar idFactory)
                 throws SPFormatException {
             requireTag(element, parent, tag);
             expectAttributes(element, warner, "id", "image");
@@ -146,7 +136,7 @@ public class SPFluidReader implements IMapReader, ISPReader {
     private record SimpleHasKindReader(String tag, HasKindFactory factory) {
 
         public Object reader(final StartElement element, final QName parent, final Iterable<XMLEvent> stream,
-                             final IMutablePlayerCollection players, final Warning warner, final IDRegistrar idFactory)
+                             final IMutableLegacyPlayerCollection players, final Warning warner, final IDRegistrar idFactory)
                 throws SPFormatException {
             requireTag(element, parent, tag);
             expectAttributes(element, warner, "id", "kind", "image");
@@ -382,7 +372,7 @@ public class SPFluidReader implements IMapReader, ISPReader {
     }
 
     private static Player readPlayer(final StartElement element, final QName parent, final Iterable<XMLEvent> stream,
-                                     final IMutablePlayerCollection players, final Warning warner, final IDRegistrar idFactory)
+                                     final IMutableLegacyPlayerCollection players, final Warning warner, final IDRegistrar idFactory)
             throws SPFormatException {
         requireTag(element, parent, "player");
         requireNonEmptyAttribute(element, "number", true, warner);

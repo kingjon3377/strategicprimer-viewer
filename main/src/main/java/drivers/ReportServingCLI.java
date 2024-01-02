@@ -22,7 +22,7 @@ import drivers.common.ReadOnlyDriver;
 
 import drivers.common.cli.ICLIHelper;
 
-import common.map.Player;
+import legacy.map.Player;
 import legacy.map.ILegacyMap;
 
 import report.ReportGenerator;

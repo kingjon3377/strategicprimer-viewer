@@ -20,7 +20,7 @@ import legacy.map.fixtures.IResourcePile;
 import common.map.fixtures.Quantity;
 import legacy.map.fixtures.ResourcePileImpl;
 
-import common.map.Player;
+import legacy.map.Player;
 import legacy.map.IMutableLegacyMap;
 
 import java.math.BigDecimal;

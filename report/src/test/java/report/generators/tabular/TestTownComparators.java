@@ -7,8 +7,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.Test;
 
-import common.map.Player;
-import common.map.PlayerImpl;
+import legacy.map.Player;
+import legacy.map.PlayerImpl;
 import common.map.fixtures.towns.TownStatus;
 import common.map.fixtures.towns.TownSize;
 import legacy.map.fixtures.towns.FortressImpl;

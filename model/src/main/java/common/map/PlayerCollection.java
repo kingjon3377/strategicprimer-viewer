@@ -28,7 +28,7 @@ public class PlayerCollection implements IMutablePlayerCollection {
     /**
      * The player for "independent" fixtures.
      */
-    private Player independentPlayer = new PlayerImpl(-1, "Independent");
+    private Player independentPlayer = new PlayerImpl(-1, "Independent", "", false, "");
 
     /**
      * Get a player by ID number.
@@ -38,9 +38,9 @@ public class PlayerCollection implements IMutablePlayerCollection {
         if (players.containsKey(player)) {
             return players.get(player);
         } else if (player < 0) {
-            return new PlayerImpl(player, "");
+            return new PlayerImpl(player, "", "", false, "");
         } else {
-            final Player retval = new PlayerImpl(player, "");
+            final Player retval = new PlayerImpl(player, "", "", false, "");
             players.put(player, retval);
             return retval;
         }
@@ -64,7 +64,7 @@ public class PlayerCollection implements IMutablePlayerCollection {
         return String.format("Player collection with %d players", players.size());
     }
 
-    private Player current = new PlayerImpl(-1, "");
+    private Player current = new PlayerImpl(-1, "", "", true, "");
 
     /**
      * Add a player to the collection.
@@ -97,10 +97,10 @@ public class PlayerCollection implements IMutablePlayerCollection {
             final Player removed = players.remove(obj);
             if (independentPlayer.equals(removed)) {
                 independentPlayer = players.values().stream().filter(Player::isIndependent)
-                        .findAny().orElseGet(() -> new PlayerImpl(-1, "Independent"));
+                        .findAny().orElseGet(() -> new PlayerImpl(-1, "Independent", "", false, ""));
             }
             if (current.equals(removed)) {
-                current = new PlayerImpl(-1, "");
+                current = new PlayerImpl(-1, "", "", true, "");
             }
         }
     }
@@ -131,30 +131,7 @@ public class PlayerCollection implements IMutablePlayerCollection {
         return current;
     }
 
-    /**
-     * Set the current player.
-     */
-    @Override
-    public void setCurrentPlayer(final Player currentPlayer) {
-        final Player oldCurrent = current;
-        if (oldCurrent instanceof final MutablePlayer mp) {
-            mp.setCurrent(false);
-        } else {
-            LovelaceLogger.warning("Previous current player wasn't mutable");
-        }
-        if (players.containsValue(currentPlayer)) {
-            current = currentPlayer;
-        } else { // TODO: Why not add()?
-            current = players.values().stream().filter((p) -> p.getPlayerId() == currentPlayer.getPlayerId()).findAny().orElse(currentPlayer);
-        }
-        if (current instanceof final MutablePlayer mp) {
-            mp.setCurrent(true);
-        } else {
-            LovelaceLogger.warning("Newly current player wasn't mutable");
-        }
-    }
-
-    /**
+   /**
      * An object is equal iff it is a player collection with exactly the
      * players we have.
      */

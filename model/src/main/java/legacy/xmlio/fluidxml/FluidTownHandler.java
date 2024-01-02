@@ -1,45 +1,38 @@
 package legacy.xmlio.fluidxml;
 
-import org.javatuples.Pair;
-
-import org.jetbrains.annotations.Nullable;
-
-import javax.xml.namespace.QName;
-import javax.xml.stream.XMLStreamWriter;
-import javax.xml.stream.events.StartElement;
-import javax.xml.stream.events.XMLEvent;
-import javax.xml.stream.events.EndElement;
-
-import legacy.idreg.IDRegistrar;
-import common.map.IPlayerCollection;
 import common.map.fixtures.mobile.worker.RaceFactory;
-import common.map.fixtures.towns.TownStatus;
 import common.map.fixtures.towns.TownSize;
-import legacy.map.fixtures.towns.Village;
-import legacy.map.fixtures.towns.AbstractTown;
-import legacy.map.fixtures.towns.City;
-import legacy.map.fixtures.towns.Town;
-import legacy.map.fixtures.towns.Fortification;
-import legacy.map.fixtures.towns.CommunityStats;
+import common.map.fixtures.towns.TownStatus;
+import common.xmlio.SPFormatException;
 import common.xmlio.Warning;
 import impl.xmlio.exceptions.MissingPropertyException;
 import impl.xmlio.exceptions.UnwantedChildException;
+import legacy.idreg.IDRegistrar;
+import legacy.map.ILegacyPlayerCollection;
+import legacy.map.fixtures.IMutableResourcePile;
+import legacy.map.fixtures.IResourcePile;
+import legacy.map.fixtures.towns.AbstractTown;
+import legacy.map.fixtures.towns.City;
+import legacy.map.fixtures.towns.CommunityStats;
+import legacy.map.fixtures.towns.Fortification;
+import legacy.map.fixtures.towns.Town;
+import legacy.map.fixtures.towns.Village;
+import org.javatuples.Pair;
+import org.jetbrains.annotations.Nullable;
 
+import javax.xml.namespace.QName;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamWriter;
+import javax.xml.stream.events.EndElement;
+import javax.xml.stream.events.StartElement;
+import javax.xml.stream.events.XMLEvent;
+import java.util.Deque;
+import java.util.LinkedList;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Random;
-import java.util.Deque;
-import java.util.LinkedList;
-
-import legacy.map.fixtures.IMutableResourcePile;
-import common.xmlio.SPFormatException;
-import legacy.map.fixtures.IResourcePile;
-
-import javax.xml.stream.XMLStreamException;
-
 import java.util.function.Consumer;
-
-import java.util.Map;
 
 /* package */ class FluidTownHandler extends FluidBase {
 	private static final QName NULL_QNAME = new QName("null");
@@ -47,7 +40,7 @@ import java.util.Map;
 	// expected tag and a constructor reference, since readTown(),
 	// readFortification(), and readCity() are very nearly identical
 	public static Town readTown(final StartElement element, final QName parent, final Iterable<XMLEvent> stream,
-								final IPlayerCollection players, final Warning warner, final IDRegistrar idFactory)
+								final ILegacyPlayerCollection players, final Warning warner, final IDRegistrar idFactory)
 		throws SPFormatException {
 		requireTag(element, parent, "town");
 		expectAttributes(element, warner, "name", "size", "status", "dc", "id",
@@ -86,7 +79,7 @@ import java.util.Map;
 	}
 
 	public static Fortification readFortification(final StartElement element, final QName parent,
-												  final Iterable<XMLEvent> stream, final IPlayerCollection players, final Warning warner,
+												  final Iterable<XMLEvent> stream, final ILegacyPlayerCollection players, final Warning warner,
 												  final IDRegistrar idFactory) throws SPFormatException {
 		requireTag(element, parent, "fortification");
 		expectAttributes(element, warner, "name", "size", "status", "dc", "id",
@@ -128,7 +121,7 @@ import java.util.Map;
 	}
 
 	public static City readCity(final StartElement element, final QName parent, final Iterable<XMLEvent> stream,
-								final IPlayerCollection players, final Warning warner, final IDRegistrar idFactory)
+								final ILegacyPlayerCollection players, final Warning warner, final IDRegistrar idFactory)
 		throws SPFormatException {
 		requireTag(element, parent, "city");
 		expectAttributes(element, warner, "name", "size", "status", "dc", "id",
@@ -168,7 +161,7 @@ import java.util.Map;
 	}
 
 	public static Village readVillage(final StartElement element, final QName parent, final Iterable<XMLEvent> stream,
-									  final IPlayerCollection players, final Warning warner, final IDRegistrar idFactory)
+									  final ILegacyPlayerCollection players, final Warning warner, final IDRegistrar idFactory)
 		throws SPFormatException {
 		requireTag(element, parent, "village");
 		expectAttributes(element, warner, "status", "race", "owner", "id", "image",
@@ -202,7 +195,7 @@ import java.util.Map;
 	}
 
 	public static CommunityStats readCommunityStats(final StartElement element, final QName parent,
-													final Iterable<XMLEvent> stream, final IPlayerCollection players, final Warning warner,
+													final Iterable<XMLEvent> stream, final ILegacyPlayerCollection players, final Warning warner,
 													final IDRegistrar idFactory) throws SPFormatException {
 		requireTag(element, parent, "population");
 		expectAttributes(element, warner, "size");

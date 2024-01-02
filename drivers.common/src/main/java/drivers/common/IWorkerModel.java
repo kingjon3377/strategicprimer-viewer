@@ -4,7 +4,7 @@ import java.util.Collection;
 
 import org.jetbrains.annotations.Nullable;
 
-import common.map.Player;
+import legacy.map.Player;
 
 import legacy.map.fixtures.mobile.IUnit;
 import legacy.map.fixtures.towns.IFortress;

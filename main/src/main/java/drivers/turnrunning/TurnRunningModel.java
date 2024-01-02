@@ -5,7 +5,7 @@ import legacy.map.HasOwner;
 import legacy.map.HasPopulation;
 import legacy.map.IFixture;
 import legacy.map.IMutableLegacyMap;
-import common.map.Player;
+import legacy.map.Player;
 import legacy.map.Point;
 import legacy.map.TileFixture;
 import legacy.map.fixtures.FixtureIterable;

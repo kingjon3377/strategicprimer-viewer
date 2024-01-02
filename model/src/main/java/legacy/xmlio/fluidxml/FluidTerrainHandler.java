@@ -1,29 +1,27 @@
 package legacy.xmlio.fluidxml;
 
-import java.util.Collection;
-import javax.xml.stream.XMLStreamException;
-
+import common.xmlio.SPFormatException;
+import common.xmlio.Warning;
+import impl.xmlio.exceptions.MissingPropertyException;
+import legacy.idreg.IDRegistrar;
+import legacy.map.HasExtent;
+import legacy.map.ILegacyPlayerCollection;
+import legacy.map.River;
+import legacy.map.fixtures.Ground;
+import legacy.map.fixtures.terrain.Forest;
 import org.javatuples.Pair;
 
 import javax.xml.namespace.QName;
+import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 import java.text.ParseException;
-
-import legacy.idreg.IDRegistrar;
-import common.map.IPlayerCollection;
-import legacy.map.River;
-import legacy.map.fixtures.Ground;
-import legacy.map.fixtures.terrain.Forest;
-import common.xmlio.Warning;
-import impl.xmlio.exceptions.MissingPropertyException;
-import common.xmlio.SPFormatException;
-import legacy.map.HasExtent;
+import java.util.Collection;
 
 /* package */ class FluidTerrainHandler extends FluidBase {
     public static Ground readGround(final StartElement element, final QName parent, final Iterable<XMLEvent> stream,
-                                    final IPlayerCollection players, final Warning warner, final IDRegistrar idFactory)
+									final ILegacyPlayerCollection players, final Warning warner, final IDRegistrar idFactory)
             throws SPFormatException {
         requireTag(element, parent, "ground");
         expectAttributes(element, warner, "id", "kind", "ground", "image", "exposed");
@@ -38,7 +36,7 @@ import legacy.map.HasExtent;
     }
 
     public static Forest readForest(final StartElement element, final QName parent, final Iterable<XMLEvent> stream,
-                                    final IPlayerCollection players, final Warning warner, final IDRegistrar idFactory)
+                                    final ILegacyPlayerCollection players, final Warning warner, final IDRegistrar idFactory)
             throws SPFormatException {
         requireTag(element, parent, "forest");
         expectAttributes(element, warner, "id", "kind", "rows", "image", "acres");
@@ -76,7 +74,7 @@ import legacy.map.HasExtent;
     }
 
     public static River readLake(final StartElement element, final QName parent, final Iterable<XMLEvent> stream,
-                                 final IPlayerCollection players, final Warning warner, final IDRegistrar idFactory)
+                                 final ILegacyPlayerCollection players, final Warning warner, final IDRegistrar idFactory)
             throws SPFormatException {
         requireTag(element, parent, "lake");
         expectAttributes(element, warner);
@@ -85,7 +83,7 @@ import legacy.map.HasExtent;
     }
 
     public static River readRiver(final StartElement element, final QName parent, final Iterable<XMLEvent> stream,
-                                  final IPlayerCollection players, final Warning warner, final IDRegistrar idFactory)
+                                  final ILegacyPlayerCollection players, final Warning warner, final IDRegistrar idFactory)
             throws SPFormatException {
         requireTag(element, parent, "river");
         expectAttributes(element, warner, "direction");

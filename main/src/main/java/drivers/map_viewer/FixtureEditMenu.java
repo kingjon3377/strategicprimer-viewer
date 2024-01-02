@@ -14,7 +14,7 @@ import legacy.map.HasMutableKind;
 import legacy.map.HasMutableName;
 import legacy.map.IFixture;
 import common.map.HasName;
-import common.map.Player;
+import legacy.map.Player;
 import legacy.map.HasMutableOwner;
 import legacy.map.fixtures.UnitMember;
 

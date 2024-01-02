@@ -12,7 +12,7 @@ import legacy.idreg.IDRegistrar;
 import legacy.idreg.IDFactoryFiller;
 
 import legacy.map.IFixture;
-import common.map.Player;
+import legacy.map.Player;
 import legacy.map.TileFixture;
 import legacy.map.Point;
 import legacy.map.ILegacyMap;

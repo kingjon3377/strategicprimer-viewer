@@ -1,33 +1,30 @@
 package legacy.xmlio.yaxml;
 
+import common.map.fixtures.mobile.worker.WorkerStats;
+import common.xmlio.SPFormatException;
+import common.xmlio.Warning;
+import impl.xmlio.exceptions.UnwantedChildException;
+import legacy.idreg.IDRegistrar;
+import legacy.map.ILegacyPlayerCollection;
 import legacy.map.fixtures.Implement;
 import legacy.map.fixtures.mobile.Animal;
+import legacy.map.fixtures.mobile.IWorker;
 import legacy.map.fixtures.mobile.MobileFixture;
-
-import javax.xml.stream.XMLStreamException;
-
+import legacy.map.fixtures.mobile.Worker;
+import legacy.map.fixtures.mobile.worker.IJob;
+import legacy.map.fixtures.mobile.worker.IMutableJob;
+import legacy.map.fixtures.mobile.worker.ISkill;
+import legacy.map.fixtures.mobile.worker.Job;
+import legacy.map.fixtures.mobile.worker.Skill;
+import lovelace.util.ThrowingConsumer;
 import org.jetbrains.annotations.Nullable;
 
 import javax.xml.namespace.QName;
-import javax.xml.stream.events.StartElement;
+import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.Characters;
+import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 import java.io.IOException;
-
-import lovelace.util.ThrowingConsumer;
-import common.xmlio.SPFormatException;
-import legacy.idreg.IDRegistrar;
-import common.map.IPlayerCollection;
-import legacy.map.fixtures.mobile.IWorker;
-import legacy.map.fixtures.mobile.Worker;
-import common.map.fixtures.mobile.worker.WorkerStats;
-import legacy.map.fixtures.mobile.worker.Job;
-import legacy.map.fixtures.mobile.worker.IMutableJob;
-import legacy.map.fixtures.mobile.worker.IJob;
-import legacy.map.fixtures.mobile.worker.Skill;
-import legacy.map.fixtures.mobile.worker.ISkill;
-import common.xmlio.Warning;
-import impl.xmlio.exceptions.UnwantedChildException;
 
 /**
  * A reader for workers.
@@ -72,12 +69,12 @@ import impl.xmlio.exceptions.UnwantedChildException;
         closeTag(ostream, 0, "note");
     }
 
-    private final IPlayerCollection players;
+    private final ILegacyPlayerCollection players;
     // TODO: Figure out some way to inject these without having to have our own copies (or provide them as constructor parameters)
     private final YAMobileReader mobileReader;
     private final YAImplementReader implementReader;
 
-    public YAWorkerReader(final Warning warning, final IDRegistrar idRegistrar, final IPlayerCollection players) {
+    public YAWorkerReader(final Warning warning, final IDRegistrar idRegistrar, final ILegacyPlayerCollection players) {
         super(warning, idRegistrar);
         this.players = players;
         mobileReader = new YAMobileReader(warning, idRegistrar);

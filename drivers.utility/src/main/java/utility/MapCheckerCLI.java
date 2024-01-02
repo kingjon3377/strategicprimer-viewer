@@ -36,7 +36,7 @@ import drivers.common.SPOptions;
 
 import legacy.map.HasExtent;
 import legacy.map.IFixture;
-import common.map.Player;
+import legacy.map.Player;
 import legacy.map.HasOwner;
 import legacy.map.Point;
 import legacy.map.TileType;

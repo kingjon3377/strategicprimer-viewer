@@ -4,7 +4,7 @@ import common.map.fixtures.towns.TownSize;
 import common.map.fixtures.towns.TownStatus;
 import legacy.map.IFixture;
 import legacy.map.HasMutableImage;
-import common.map.Player;
+import legacy.map.Player;
 
 import legacy.map.SubsettableFixture;
 

@@ -32,7 +32,7 @@ import legacy.map.fixtures.FixtureIterable;
 import legacy.map.fixtures.FortressMember;
 import legacy.map.FakeFixture;
 import legacy.map.IFixture;
-import common.map.Player;
+import legacy.map.Player;
 import legacy.map.HasKind;
 import legacy.map.HasMutableKind;
 import legacy.map.HasMutableName;

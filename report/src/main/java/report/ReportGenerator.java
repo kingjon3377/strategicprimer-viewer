@@ -7,7 +7,7 @@ import org.javatuples.Pair;
 import lovelace.util.DelayedRemovalMap;
 
 import legacy.map.IFixture;
-import common.map.Player;
+import legacy.map.Player;
 import legacy.map.Point;
 import legacy.map.MapDimensions;
 import legacy.map.ILegacyMap;

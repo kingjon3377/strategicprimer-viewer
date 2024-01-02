@@ -21,7 +21,7 @@ import lovelace.util.Platform;
 import lovelace.util.BorderedPanel;
 import lovelace.util.ThrowingConsumer;
 
-import common.map.Player;
+import legacy.map.Player;
 import legacy.map.IFixture;
 import legacy.map.MapDimensions;
 import legacy.map.Point;

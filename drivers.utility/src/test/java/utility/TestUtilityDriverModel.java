@@ -1,18 +1,16 @@
 package utility;
 
+import legacy.map.MutablePlayer;
+import legacy.map.PlayerImpl;
+import common.map.fixtures.towns.TownStatus;
 import legacy.map.IMutableLegacyMap;
-import common.map.IMutablePlayerCollection;
 import legacy.map.IMutableLegacyPlayerCollection;
+import legacy.map.LegacyMap;
 import legacy.map.LegacyPlayerCollection;
 import legacy.map.MapDimensions;
 import legacy.map.MapDimensionsImpl;
-import common.map.MutablePlayer;
-import common.map.PlayerCollection;
-import common.map.PlayerImpl;
 import legacy.map.Point;
-import legacy.map.LegacyMap;
 import legacy.map.TileType;
-import common.map.fixtures.towns.TownStatus;
 import legacy.map.fixtures.towns.Village;
 import org.junit.jupiter.api.Test;
 

@@ -1,5 +1,7 @@
-package common.map;
+package legacy.map;
 
+import common.map.HasMutablePortrait;
+import common.map.HasName;
 import org.jetbrains.annotations.Nullable;
 
 /**
@@ -7,7 +9,7 @@ import org.jetbrains.annotations.Nullable;
  *
  * TODO: Split mutability into separate interface (or just move down to impl?)
  */
-public interface Player extends Comparable<Player>, HasName, HasPortrait {
+public interface Player extends Comparable<Player>, HasName, HasMutablePortrait {
     /**
      * The player's ID number.
      */
@@ -31,6 +33,12 @@ public interface Player extends Comparable<Player>, HasName, HasPortrait {
      */
     @Override
     String getPortrait();
+
+    /**
+     * @param portrait The filename of a flag for the player.
+     */
+    @Override
+    void setPortrait(String portrait);
 
     /**
      * The country the player is associated with. TODO: Should this be required to be unique in a map?

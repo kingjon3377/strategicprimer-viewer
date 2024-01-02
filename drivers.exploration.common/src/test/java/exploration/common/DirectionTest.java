@@ -6,7 +6,6 @@ import legacy.map.LegacyPlayerCollection;
 import org.junit.jupiter.api.Test;
 
 import legacy.map.Point;
-import common.map.PlayerCollection;
 import legacy.map.MapDimensionsImpl;
 import legacy.map.Direction;
 import legacy.map.LegacyMap;

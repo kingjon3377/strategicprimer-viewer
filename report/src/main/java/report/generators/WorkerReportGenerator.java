@@ -12,7 +12,7 @@ import java.util.stream.StreamSupport;
 import java.util.stream.Collectors;
 import java.util.List;
 
-import common.map.Player;
+import legacy.map.Player;
 import legacy.map.IFixture;
 import legacy.map.Point;
 import legacy.map.MapDimensions;

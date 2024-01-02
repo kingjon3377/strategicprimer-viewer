@@ -20,8 +20,8 @@ import static java.util.Map.Entry;
 
 import legacy.map.IFixture;
 import legacy.map.TileFixture;
-import common.map.Player;
-import common.map.PlayerImpl;
+import legacy.map.Player;
+import legacy.map.PlayerImpl;
 import legacy.map.fixtures.UnitMember;
 import legacy.map.fixtures.mobile.worker.ProxyWorker;
 

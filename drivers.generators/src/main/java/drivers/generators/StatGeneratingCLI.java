@@ -26,7 +26,7 @@ import legacy.idreg.IDFactoryFiller;
 import drivers.common.DriverFailedException;
 
 import legacy.map.ILegacyMap;
-import common.map.Player;
+import legacy.map.Player;
 import legacy.map.Point;
 
 import legacy.map.fixtures.UnitMember;

@@ -50,13 +50,7 @@ public class RenamePlayerChangeset implements Changeset {
 
 	@NotNull
 	private Player alteredCopy(Player oldPlayer) {
-		final Player newPlayer;
-		if (!Objects.requireNonNullElse(oldPlayer.getCountry(), "").isEmpty()) {
-			newPlayer = new PlayerImpl(playerId, newName, oldPlayer.getCountry());
-		} else {
-			newPlayer = new PlayerImpl(playerId, newName);
-		}
-		return newPlayer;
+        return new PlayerImpl(playerId, newName, oldPlayer.getCountry(), oldPlayer.isCurrent(), oldPlayer.getPortrait());
 	}
 
 	@Override

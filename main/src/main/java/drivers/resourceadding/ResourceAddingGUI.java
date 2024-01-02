@@ -25,8 +25,8 @@ import java.awt.Component;
 
 import legacy.map.IMutableLegacyMap;
 import legacy.map.ILegacyMap;
-import common.map.Player;
-import common.map.PlayerImpl;
+import legacy.map.Player;
+import legacy.map.PlayerImpl;
 
 import drivers.PlayerChangeMenuListener;
 import drivers.IOHandler;

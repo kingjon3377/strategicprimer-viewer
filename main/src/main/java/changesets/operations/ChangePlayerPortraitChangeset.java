@@ -48,14 +48,7 @@ public class ChangePlayerPortraitChangeset implements Changeset {
 
 	@NotNull
 	private Player alteredCopy(Player oldPlayer) {
-		final Player newPlayer;
-		if (oldPlayer.getCountry().isEmpty()) {
-			newPlayer = new PlayerImpl(playerId, oldPlayer.getName());
-		} else {
-			newPlayer = new PlayerImpl(playerId, oldPlayer.getName(), oldPlayer.getCountry());
-		}
-		newPlayer.setPortrait(newPortrait); // FIXME: Make this immutable and a constructor parameter---or else make a builder class
-		return newPlayer;
+        return new PlayerImpl(playerId, oldPlayer.getName(), oldPlayer.getCountry(), oldPlayer.isCurrent(), newPortrait);
 	}
 
 	@Override

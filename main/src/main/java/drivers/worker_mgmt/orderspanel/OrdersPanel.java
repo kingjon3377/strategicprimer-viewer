@@ -21,7 +21,7 @@ import lovelace.util.BorderedPanel;
 import static lovelace.util.MenuUtils.createHotKey;
 
 import lovelace.util.Platform;
-import common.map.Player;
+import legacy.map.Player;
 import legacy.map.fixtures.mobile.IUnit;
 
 import javax.swing.SpinnerNumberModel;

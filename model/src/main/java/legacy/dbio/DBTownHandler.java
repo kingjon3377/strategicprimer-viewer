@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Map;
 
 import legacy.map.IMutableLegacyMap;
-import common.map.Player;
+import legacy.map.Player;
 import legacy.map.Point;
 
 import legacy.map.fixtures.towns.AbstractTown;

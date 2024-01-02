@@ -3,7 +3,7 @@ package drivers.common;
 import legacy.map.HasKind;
 import common.map.HasName;
 import legacy.map.HasOwner;
-import common.map.Player;
+import legacy.map.Player;
 
 import legacy.map.fixtures.UnitMember;
 

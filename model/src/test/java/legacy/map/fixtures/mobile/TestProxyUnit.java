@@ -1,8 +1,7 @@
 package legacy.map.fixtures.mobile;
 
-import common.map.Player;
-import common.map.PlayerImpl;
-import common.map.fixtures.mobile.*;
+import legacy.map.Player;
+import legacy.map.PlayerImpl;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;

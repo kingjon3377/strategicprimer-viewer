@@ -14,8 +14,6 @@ import legacy.idreg.IDFactory;
 import legacy.map.IMutableLegacyPlayerCollection;
 import legacy.map.LegacyPlayerCollection;
 import legacy.map.River;
-import common.map.IMutablePlayerCollection;
-import common.map.PlayerCollection;
 import legacy.map.fixtures.mobile.ProxyFor;
 import legacy.map.fixtures.mobile.worker.IJob;
 import legacy.map.fixtures.mobile.worker.ISkill;

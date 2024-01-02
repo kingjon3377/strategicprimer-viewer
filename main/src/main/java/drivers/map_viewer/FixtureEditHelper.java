@@ -8,7 +8,7 @@ import legacy.map.fixtures.UnitMember;
 
 import legacy.map.fixtures.mobile.IUnit;
 
-import common.map.Player;
+import legacy.map.Player;
 import legacy.map.HasKind;
 
 import worker.common.IFixtureEditHelper;

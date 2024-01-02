@@ -21,7 +21,7 @@ import java.util.ArrayList;
 import java.awt.Frame;
 import java.awt.Component;
 
-import common.map.Player;
+import legacy.map.Player;
 
 /**
  * A class to respond to "change current player" menu items.

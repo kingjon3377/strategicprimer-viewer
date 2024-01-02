@@ -1,48 +1,40 @@
 package legacy.xmlio.fluidxml;
 
-import java.text.NumberFormat;
-import java.text.ParseException;
-
-import javax.xml.XMLConstants;
-import javax.xml.namespace.QName;
-import javax.xml.stream.XMLStreamWriter;
-import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.Location;
-import javax.xml.stream.events.StartElement;
-import javax.xml.stream.events.XMLEvent;
-import javax.xml.stream.events.EndElement;
-import javax.xml.stream.events.Attribute;
-import javax.xml.stream.events.Characters;
-
-import lovelace.util.LovelaceLogger;
-import org.javatuples.Pair;
-
+import common.xmlio.SPFormatException;
+import common.xmlio.Warning;
+import impl.xmlio.exceptions.DeprecatedPropertyException;
+import impl.xmlio.exceptions.MissingPropertyException;
+import impl.xmlio.exceptions.UnsupportedPropertyException;
+import impl.xmlio.exceptions.UnwantedChildException;
 import legacy.idreg.IDRegistrar;
 import legacy.map.HasImage;
 import legacy.map.HasMutableImage;
-import common.map.Player;
-import common.map.IPlayerCollection;
-import common.xmlio.SPFormatException;
-import common.xmlio.Warning;
+import legacy.map.ILegacyPlayerCollection;
+import legacy.map.Player;
+import lovelace.util.IteratorWrapper;
+import lovelace.util.LovelaceLogger;
+import org.javatuples.Pair;
+import org.jetbrains.annotations.Nullable;
 
-import static impl.xmlio.ISPReader.SP_NAMESPACE;
-
-import impl.xmlio.exceptions.UnwantedChildException;
-import impl.xmlio.exceptions.MissingPropertyException;
-import impl.xmlio.exceptions.DeprecatedPropertyException;
-import impl.xmlio.exceptions.UnsupportedPropertyException;
-
+import javax.xml.XMLConstants;
+import javax.xml.namespace.QName;
+import javax.xml.stream.Location;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamWriter;
+import javax.xml.stream.events.Attribute;
+import javax.xml.stream.events.Characters;
+import javax.xml.stream.events.EndElement;
+import javax.xml.stream.events.StartElement;
+import javax.xml.stream.events.XMLEvent;
 import java.math.BigDecimal;
 import java.math.BigInteger;
-
-import lovelace.util.IteratorWrapper;
-
+import java.text.NumberFormat;
+import java.text.ParseException;
+import java.util.List;
 import java.util.Objects;
 import java.util.stream.Stream;
 
-import java.util.List;
-
-import org.jetbrains.annotations.Nullable;
+import static impl.xmlio.ISPReader.SP_NAMESPACE;
 
 /* package */ abstract class FluidBase {
     private static final NumberFormat NUM_PARSER = NumberFormat.getIntegerInstance();
@@ -608,7 +600,7 @@ import org.jetbrains.annotations.Nullable;
      * @param players The collection of players to refer to
      */
     protected static Player getPlayerOrIndependent(final StartElement element, final Warning warner,
-                                                   final IPlayerCollection players) throws SPFormatException {
+                                                   final ILegacyPlayerCollection players) throws SPFormatException {
         if (hasAttribute(element, "owner")) {
             return players.getPlayer(getIntegerAttribute(element, "owner"));
         } else {

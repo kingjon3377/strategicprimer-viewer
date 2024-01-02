@@ -1,7 +1,5 @@
 package legacy.map;
 
-import common.map.IPlayerCollection;
-import common.map.Player;
 import legacy.map.fixtures.mobile.IUnit;
 
 import java.util.Arrays;
@@ -216,7 +214,7 @@ public class LegacyMap implements IMutableLegacyMap {
 	 * A stream of the players known in the map
 	 */
 	@Override
-	public IPlayerCollection getPlayers() {
+	public ILegacyPlayerCollection getPlayers() {
 		return playerCollection;
 	}
 

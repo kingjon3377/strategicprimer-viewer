@@ -4,7 +4,7 @@ import legacy.idreg.IDFactoryFiller;
 import legacy.idreg.IDRegistrar;
 import legacy.map.IFixture;
 import legacy.map.ILegacyMap;
-import common.map.Player;
+import legacy.map.Player;
 import legacy.map.fixtures.mobile.IUnit;
 import legacy.map.fixtures.mobile.ProxyUnit;
 import legacy.map.fixtures.towns.IFortress;

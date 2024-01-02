@@ -6,7 +6,7 @@ import drivers.common.IWorkerModel;
 
 import drivers.common.cli.ICLIHelper;
 
-import common.map.Player;
+import legacy.map.Player;
 
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;

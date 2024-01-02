@@ -1,20 +1,25 @@
 package legacy.dbio;
 
+import common.xmlio.Warning;
+import impl.dbio.MapContentsReader;
+import impl.xmlio.exceptions.MapVersionException;
+import io.jenetics.facilejdbc.Query;
+import io.jenetics.facilejdbc.Row;
+import io.jenetics.facilejdbc.RowParser;
+import io.jenetics.facilejdbc.Transactional;
+import legacy.map.Direction;
 import legacy.map.IFixture;
 import legacy.map.IMutableLegacyMap;
-import common.map.Player;
 import legacy.map.IMutableLegacyPlayerCollection;
 import legacy.map.LegacyMap;
 import legacy.map.LegacyPlayerCollection;
 import legacy.map.MapDimensionsImpl;
-import common.map.PlayerImpl;
-import common.map.MutablePlayer;
+import legacy.map.MutablePlayer;
+import legacy.map.Player;
+import legacy.map.PlayerImpl;
 import legacy.map.Point;
-import legacy.map.TileType;
 import legacy.map.River;
-import common.map.IMutablePlayerCollection;
-import common.map.PlayerCollection;
-import legacy.map.Direction;
+import legacy.map.TileType;
 import legacy.map.fixtures.FortressMember;
 import legacy.map.fixtures.Implement;
 import legacy.map.fixtures.UnitMember;
@@ -25,25 +30,6 @@ import legacy.map.fixtures.towns.AbstractTown;
 import legacy.map.fixtures.towns.CommunityStats;
 import legacy.map.fixtures.towns.IMutableFortress;
 import legacy.map.fixtures.towns.Village;
-import common.xmlio.Warning;
-import impl.dbio.MapContentsReader;
-import impl.xmlio.exceptions.MapVersionException;
-
-import io.jenetics.facilejdbc.Query;
-import io.jenetics.facilejdbc.Row;
-import io.jenetics.facilejdbc.RowParser;
-import io.jenetics.facilejdbc.Transactional;
-
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.List;
-import java.util.Objects;
-import java.text.ParseException;
-
-import java.util.stream.Stream;
-
 import lovelace.util.Accumulator;
 import lovelace.util.IntAccumulator;
 import lovelace.util.LovelaceLogger;
@@ -52,6 +38,15 @@ import org.javatuples.Pair;
 import org.javatuples.Quartet;
 import org.javatuples.Sextet;
 import org.javatuples.Triplet;
+
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.text.ParseException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.stream.Stream;
 
 public final class DBMapReader {
 	// FIXME: Passing null when we don't want to construct the parent object is a *really* bad idea!

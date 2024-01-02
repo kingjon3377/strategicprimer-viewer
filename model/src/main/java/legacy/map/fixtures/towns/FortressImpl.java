@@ -12,7 +12,7 @@ import java.util.stream.Stream;
 import common.map.fixtures.towns.TownSize;
 import legacy.map.IFixture;
 import legacy.map.TileFixture;
-import common.map.Player;
+import legacy.map.Player;
 import legacy.map.fixtures.FortressMember;
 import legacy.map.fixtures.mobile.IUnit;
 

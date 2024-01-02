@@ -19,7 +19,7 @@ import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
-import common.map.Player;
+import legacy.map.Player;
 import legacy.map.IFixture;
 import legacy.map.fixtures.UnitMember;
 import legacy.map.fixtures.mobile.IUnit;
