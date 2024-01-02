@@ -17,7 +17,6 @@ import drivers.common.IDriverModel;
 import legacy.map.fixtures.FortressMember;
 import legacy.map.fixtures.IMutableResourcePile;
 import legacy.map.fixtures.IResourcePile;
-import common.map.fixtures.Quantity;
 import legacy.map.fixtures.ResourcePileImpl;
 
 import legacy.map.Player;

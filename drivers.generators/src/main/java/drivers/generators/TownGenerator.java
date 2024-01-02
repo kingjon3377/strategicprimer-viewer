@@ -28,7 +28,6 @@ import legacy.map.ILegacyMap;
 
 import legacy.map.fixtures.IResourcePile;
 import legacy.map.fixtures.ResourcePileImpl;
-import common.map.fixtures.Quantity;
 
 import legacy.idreg.IDRegistrar;
 
