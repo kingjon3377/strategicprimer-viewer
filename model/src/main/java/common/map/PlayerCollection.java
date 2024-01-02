@@ -74,10 +74,10 @@ public class PlayerCollection implements IMutablePlayerCollection {
         if (player.isIndependent()) {
             independentPlayer = player;
         }
-        if (player.isCurrent() && (current.getPlayerId() < 0 || !current.isCurrent())) {
+        if (player.current() && (current.playerId() < 0 || !current.current())) {
             current = player;
         }
-        players.put(player.getPlayerId(), player);
+        players.put(player.playerId(), player);
     }
 
     /**
@@ -85,7 +85,7 @@ public class PlayerCollection implements IMutablePlayerCollection {
      */
     @Override
     public void remove(final Player obj) {
-        remove(obj.getPlayerId());
+        remove(obj.playerId());
     }
 
     /**
@@ -146,13 +146,13 @@ public class PlayerCollection implements IMutablePlayerCollection {
 				if (players.containsValue(player)) {
 					continue;
 				}
-				Player ours = players.get(player.getPlayerId());
+				Player ours = players.get(player.playerId());
 				if (ours == null || !unknownName.test(ours.getName())) {
 					return false;
 				}
 			}
 			for (final Player player : this) {
-				Player theirs = pc.getPlayer(player.getPlayerId());
+				Player theirs = pc.getPlayer(player.playerId());
 				if (!theirs.getName().equals(player.getName()) && !unknownName.test(theirs.getName())) {
 					return false;
 				}

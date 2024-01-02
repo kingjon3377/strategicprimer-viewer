@@ -24,7 +24,7 @@ public class AddPlayerChangeset implements Changeset {
 	private void checkPrecondition(final @NotNull IMap map) throws ChangesetFailureException {
 		final IPlayerCollection players = map.getPlayers();
 		for (Player item : players) {
-			if (item.getPlayerId() == player.getPlayerId()) {
+			if (item.playerId() == player.playerId()) {
 				throw new PreconditionFailureException("Cannot add player if another exists with same ID");
 			}
 		}

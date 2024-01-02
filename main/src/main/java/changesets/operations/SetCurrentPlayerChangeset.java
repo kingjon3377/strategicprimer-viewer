@@ -16,7 +16,7 @@ public class SetCurrentPlayerChangeset implements Changeset {
 	private final Player oldCurrent;
 	private final Player newCurrent;
 	public SetCurrentPlayerChangeset(final @NotNull Player oldCurrent, final @NotNull Player newCurrent) {
-		if (oldCurrent.getPlayerId() == newCurrent.getPlayerId()) {
+		if (oldCurrent.playerId() == newCurrent.playerId()) {
 			throw new IllegalArgumentException("Changing current player to the same player doesn't make sense");
 		}
 		this.oldCurrent = oldCurrent;
@@ -32,15 +32,15 @@ public class SetCurrentPlayerChangeset implements Changeset {
 		Player matchingOld = null;
 		Player matchingNew = null;
 		for (final Player player : map.getPlayers()) {
-            if (player.getPlayerId() == oldCurrent.getPlayerId()) {
-                if (!player.isCurrent()) {
+            if (player.playerId() == oldCurrent.playerId()) {
+                if (!player.current()) {
                     throw new PreconditionFailureException("Can't change current player when 'old current' player isn't current");
                 } else {
 					matchingOld = player;
                 }
-            } else if (player.isCurrent() && player.getPlayerId() != oldCurrent.getPlayerId()) {
+            } else if (player.current() && player.playerId() != oldCurrent.playerId()) {
                 throw new PreconditionFailureException("Can't change current player when unexpected player is current");
-            } else if (player.getPlayerId() == newCurrent.getPlayerId()) {
+            } else if (player.playerId() == newCurrent.playerId()) {
 				matchingNew = player;
 			}
 		}
@@ -57,17 +57,17 @@ public class SetCurrentPlayerChangeset implements Changeset {
 	public void applyInPlace(IMutableMap map) throws ChangesetFailureException {
 		checkPreconditions(map);
 		// FIXME: Make 'current' an immutable field and constructor parameter
-		final Player matchingOld = map.getPlayers().getPlayer(oldCurrent.getPlayerId());
-		final Player matchingNew = map.getPlayers().getPlayer(newCurrent.getPlayerId());
-		final int playerId1 = matchingOld.getPlayerId();
+		final Player matchingOld = map.getPlayers().getPlayer(oldCurrent.playerId());
+		final Player matchingNew = map.getPlayers().getPlayer(newCurrent.playerId());
+		final int playerId1 = matchingOld.playerId();
 		final @NotNull String name1 = matchingOld.getName();
-		final @Nullable String country1 = matchingOld.getCountry();
-		final @NotNull String portrait1 = matchingOld.getPortrait();
+		final @Nullable String country1 = matchingOld.country();
+		final @NotNull String portrait1 = matchingOld.portrait();
 		final Player matchingOldCopy = new PlayerImpl(playerId1, name1, Objects.requireNonNullElse(country1, ""), false, portrait1);
-		final int playerId = matchingNew.getPlayerId();
+		final int playerId = matchingNew.playerId();
 		final @NotNull String name = matchingNew.getName();
-		final @Nullable String country = matchingNew.getCountry();
-		final @NotNull String portrait = matchingNew.getPortrait();
+		final @Nullable String country = matchingNew.country();
+		final @NotNull String portrait = matchingNew.portrait();
 		final Player matchingNewCopy = new PlayerImpl(playerId, name, Objects.requireNonNullElse(country, ""), true, portrait);
 		// TODO: try-catch here, in case the first operation fails?
 		map.replacePlayer(matchingOld, matchingOldCopy);

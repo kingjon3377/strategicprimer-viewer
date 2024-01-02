@@ -28,8 +28,8 @@ public class RenameCountryChangeset implements Changeset {
 	private void checkPrecondition(final @NotNull IMap map) throws ChangesetFailureException {
 		final IPlayerCollection players = map.getPlayers();
 		for (Player item : players) {
-			if (item.getPlayerId() == playerId) {
-				if (Objects.requireNonNullElse(item.getCountry(), "").equals(oldCountry)) {
+			if (item.playerId() == playerId) {
+				if (Objects.requireNonNullElse(item.country(), "").equals(oldCountry)) {
 					return;
 				} else {
 					throw new PreconditionFailureException("Cannot rename player's country if old name doesn't match");
@@ -47,7 +47,7 @@ public class RenameCountryChangeset implements Changeset {
 
 	@NotNull
 	private Player alteredCopy(Player oldPlayer) {
-        return new PlayerImpl(playerId, oldPlayer.getName(), newCountry, oldPlayer.isCurrent(), oldPlayer.getPortrait());
+        return new PlayerImpl(playerId, oldPlayer.getName(), newCountry, oldPlayer.current(), oldPlayer.portrait());
 	}
 
 	@Override

@@ -5,36 +5,49 @@ import org.jetbrains.annotations.Nullable;
 /**
  * An interface for the representation of a player in the game.
  *
- * TODO: Split mutability into separate interface (or just move down to impl?)
+ * TODO: Maybe drop the Has* interfaces?
  */
 public interface Player extends Comparable<Player>, HasName, HasPortrait {
     /**
      * The player's ID number.
      */
-    int getPlayerId();
+    int playerId();
 
     /**
      * Whether this is the current player.
      */
-    boolean isCurrent();
+    boolean current();
+	/**
+	 * The (code) name of the player
+	 */
+	String name();
+
+	@Override
+	default String getName() {
+		return name();
+	}
 
     /**
      * Whether this is the (or an) "independent" player---the "owner" of
      * unowned fixtures.
      */
     default boolean isIndependent() {
-        return "independent".equalsIgnoreCase(getName());
+        return "independent".equalsIgnoreCase(name());
     }
 
     /**
      * The filename of a flag for the player.
      */
-    @Override
-    String getPortrait();
+	String portrait();
+
+	@Override
+	default String getPortrait() {
+		return portrait();
+	}
 
     /**
      * The country the player is associated with. TODO: Should this be required to be unique in a map?
      */
     @Nullable
-    String getCountry();
+    String country();
 }

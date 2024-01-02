@@ -10,8 +10,6 @@ import common.map.Player;
 import common.map.PlayerImpl;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Objects;
-
 /**
  * A changeeset for changing the name of a player in the map.
  */
@@ -31,7 +29,7 @@ public class RenamePlayerChangeset implements Changeset {
 	private void checkPrecondition(final @NotNull IMap map) throws ChangesetFailureException {
 		final IPlayerCollection players = map.getPlayers();
 		for (Player item : players) {
-            if (item.getPlayerId() == playerId) {
+            if (item.playerId() == playerId) {
                 if (oldName.equals(item.getName())) {
                     return;
                 } else {
@@ -50,7 +48,7 @@ public class RenamePlayerChangeset implements Changeset {
 
 	@NotNull
 	private Player alteredCopy(Player oldPlayer) {
-        return new PlayerImpl(playerId, newName, oldPlayer.getCountry(), oldPlayer.isCurrent(), oldPlayer.getPortrait());
+        return new PlayerImpl(playerId, newName, oldPlayer.country(), oldPlayer.current(), oldPlayer.portrait());
 	}
 
 	@Override
