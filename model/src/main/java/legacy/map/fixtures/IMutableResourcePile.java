@@ -1,6 +1,5 @@
 package legacy.map.fixtures;
 
-import common.map.fixtures.Quantity;
 import legacy.map.HasMutableImage;
 
 // TODO: If the mutators are used, surely this should extend HasMutableKind?

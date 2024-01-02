@@ -2,7 +2,6 @@ package legacy.map;
 
 import java.nio.file.Path;
 
-import legacy.map.Player;
 import org.jetbrains.annotations.Nullable;
 
 /**

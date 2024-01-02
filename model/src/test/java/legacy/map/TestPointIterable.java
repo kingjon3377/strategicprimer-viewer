@@ -4,9 +4,6 @@ import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.assertIterableEquals;
 
-import legacy.map.MapDimensionsImpl;
-import legacy.map.Point;
-import legacy.map.PointIterable;
 import org.junit.jupiter.api.Test;
 
 /**

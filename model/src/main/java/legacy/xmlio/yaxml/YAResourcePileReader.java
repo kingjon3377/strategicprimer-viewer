@@ -12,7 +12,6 @@ import common.xmlio.SPFormatException;
 import legacy.idreg.IDRegistrar;
 import legacy.map.fixtures.IMutableResourcePile;
 import legacy.map.fixtures.IResourcePile;
-import common.map.fixtures.Quantity;
 import legacy.map.fixtures.ResourcePileImpl;
 import common.xmlio.Warning;
 

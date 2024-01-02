@@ -1,7 +1,5 @@
 package legacy.map.fixtures;
 
-import common.map.fixtures.Quantity;
-
 /**
  * A quantity of some kind of resource.
  *

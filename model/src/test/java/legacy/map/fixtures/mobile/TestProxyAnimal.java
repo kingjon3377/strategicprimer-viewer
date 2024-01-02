@@ -4,9 +4,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import legacy.map.IFixture;
-import legacy.map.fixtures.mobile.Animal;
-import legacy.map.fixtures.mobile.AnimalImpl;
-import legacy.map.fixtures.mobile.ProxyAnimal;
 import org.eclipse.jdt.annotation.Nullable;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.ParameterizedTest;

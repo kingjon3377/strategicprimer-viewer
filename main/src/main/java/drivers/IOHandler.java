@@ -32,7 +32,6 @@ import drivers.gui.common.SPFileChooser;
 import common.xmlio.Warning;
 import common.xmlio.SPFormatException;
 import legacy.map.ILegacyMap;
-import common.map.PlayerCollection;
 import legacy.map.IMutableLegacyMap;
 import legacy.map.LegacyMap;
 

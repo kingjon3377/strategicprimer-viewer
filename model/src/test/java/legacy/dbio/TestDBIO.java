@@ -48,7 +48,6 @@ import legacy.map.Point;
 import legacy.map.Direction;
 import legacy.map.TileType;
 import legacy.map.fixtures.ResourcePileImpl;
-import common.map.fixtures.Quantity;
 import legacy.map.fixtures.Implement;
 import legacy.map.fixtures.Ground;
 import legacy.map.fixtures.TextFixture;

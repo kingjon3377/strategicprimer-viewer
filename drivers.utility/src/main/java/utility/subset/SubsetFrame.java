@@ -24,7 +24,6 @@ import lovelace.util.StreamingLabel;
 import static lovelace.util.StreamingLabel.LabelTextColor;
 
 import legacy.map.MapDimensionsImpl;
-import common.map.PlayerCollection;
 import legacy.map.ILegacyMap;
 import legacy.map.LegacyMap;
 import legacy.xmlio.MapIOHelper;

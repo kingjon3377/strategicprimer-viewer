@@ -2,7 +2,6 @@ package legacy.map.fixtures;
 
 import java.util.function.Consumer;
 
-import common.map.fixtures.Quantity;
 import legacy.map.IFixture;
 import legacy.map.HasImage;
 import legacy.map.HasKind;

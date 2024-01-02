@@ -64,7 +64,6 @@ import legacy.map.fixtures.Implement;
 import legacy.map.fixtures.IMutableResourcePile;
 import legacy.map.fixtures.ResourcePileImpl;
 import legacy.map.fixtures.Ground;
-import common.map.fixtures.Quantity;
 import legacy.map.fixtures.explorable.Portal;
 import legacy.map.fixtures.explorable.AdventureFixture;
 import legacy.map.fixtures.explorable.Battlefield;

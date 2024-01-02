@@ -1,6 +1,5 @@
 package common.map;
 
-import common.entity.EntityIdentifier;
 import common.entity.IEntity;
 
 /**

@@ -23,7 +23,6 @@ import legacy.map.MapDimensionsImpl;
 import legacy.map.Player;
 import legacy.map.PlayerImpl;
 import legacy.map.TileFixture;
-import common.map.PlayerCollection;
 
 import legacy.map.fixtures.mobile.ProxyFor;
 import legacy.map.fixtures.mobile.IUnit;

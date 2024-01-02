@@ -12,7 +12,6 @@ import drivers.common.cli.ICLIHelper;
 import legacy.idreg.IDRegistrar;
 
 import legacy.map.fixtures.IMutableResourcePile;
-import common.map.fixtures.Quantity;
 import legacy.map.fixtures.ResourcePileImpl;
 import legacy.map.fixtures.Implement;
 

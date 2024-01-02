@@ -35,7 +35,6 @@ import legacy.map.Point;
 import legacy.map.IMutableLegacyMap;
 import legacy.map.LegacyMap;
 import legacy.map.MapDimensionsImpl;
-import common.map.PlayerCollection;
 import common.map.HasName;
 import legacy.map.ILegacyMap;
 

@@ -2,7 +2,6 @@ package drivers.turnrunning.applets;
 
 import legacy.idreg.IDRegistrar;
 import legacy.map.fixtures.IResourcePile;
-import common.map.fixtures.Quantity;
 import legacy.map.fixtures.LegacyQuantity;
 import legacy.map.fixtures.mobile.IUnit;
 import legacy.map.fixtures.towns.IFortress;

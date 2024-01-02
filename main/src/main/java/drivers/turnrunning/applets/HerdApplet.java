@@ -1,7 +1,6 @@
 package drivers.turnrunning.applets;
 
 import legacy.idreg.IDRegistrar;
-import common.map.fixtures.Quantity;
 import legacy.map.fixtures.LegacyQuantity;
 import legacy.map.fixtures.mobile.Animal;
 import common.map.fixtures.mobile.AnimalPlurals;

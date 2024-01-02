@@ -20,7 +20,6 @@ import legacy.map.fixtures.IResourcePile;
 import legacy.map.fixtures.IMutableResourcePile;
 import legacy.map.fixtures.LegacyQuantity;
 import legacy.map.fixtures.ResourcePileImpl;
-import common.map.fixtures.Quantity;
 import legacy.map.fixtures.mobile.IUnit;
 import legacy.map.fixtures.towns.IFortress;
 import common.xmlio.Warning;

@@ -8,7 +8,6 @@ import drivers.common.cli.ICLIHelper;
 import legacy.idreg.IDRegistrar;
 
 import legacy.map.fixtures.ResourcePileImpl;
-import common.map.fixtures.Quantity;
 
 import java.math.BigDecimal;
 

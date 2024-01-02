@@ -18,7 +18,6 @@ import legacy.map.fixtures.LegacyQuantity;
 import legacy.map.fixtures.ResourcePileImpl;
 import legacy.map.fixtures.IResourcePile;
 import legacy.map.fixtures.IMutableResourcePile;
-import common.map.fixtures.Quantity;
 import legacy.map.fixtures.towns.CommunityStats;
 import legacy.map.fixtures.towns.ITownFixture;
 import common.xmlio.Warning;
