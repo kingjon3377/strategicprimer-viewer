@@ -1,38 +1,35 @@
 package legacy.map;
 
-import common.map.*;
-import org.javatuples.Pair;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-
-import org.junit.jupiter.params.provider.MethodSource;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.Arguments;
-import org.junit.jupiter.api.Test;
-
-import java.util.stream.Stream;
-
+import common.map.fixtures.towns.TownSize;
+import common.map.fixtures.towns.TownStatus;
 import legacy.map.fixtures.TextFixture;
-import legacy.map.fixtures.mobile.Worker;
-import legacy.map.fixtures.mobile.Unit;
 import legacy.map.fixtures.mobile.AnimalImpl;
 import legacy.map.fixtures.mobile.AnimalTracks;
+import legacy.map.fixtures.mobile.Unit;
+import legacy.map.fixtures.mobile.Worker;
 import legacy.map.fixtures.mobile.worker.Job;
 import legacy.map.fixtures.resources.CacheFixture;
 import legacy.map.fixtures.terrain.Forest;
-import common.map.fixtures.towns.TownSize;
+import legacy.map.fixtures.towns.AbstractTown;
+import legacy.map.fixtures.towns.City;
+import legacy.map.fixtures.towns.CommunityStats;
+import legacy.map.fixtures.towns.Fortification;
 import legacy.map.fixtures.towns.FortressImpl;
 import legacy.map.fixtures.towns.IFortress;
 import legacy.map.fixtures.towns.IMutableFortress;
-import legacy.map.fixtures.towns.AbstractTown;
-import common.map.fixtures.towns.TownStatus;
-import legacy.map.fixtures.towns.Fortification;
 import legacy.map.fixtures.towns.Town;
-import legacy.map.fixtures.towns.City;
-import legacy.map.fixtures.towns.CommunityStats;
+import org.javatuples.Pair;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
+
+import java.util.stream.Stream;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * A collection of tests of the subset-checking features.
