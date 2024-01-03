@@ -158,7 +158,7 @@ public final class CLIHelper implements ICLIHelper {
         }
         println(description);
         if (behavior == ListChoiceBehavior.AUTO_CHOOSE_ONLY && items.size() == 1) {
-            final Element first = items.get(0);
+            final Element first = items.getFirst();
             println(String.format("Automatically choosing only item, %s.", func.apply(first)));
             return Pair.with(0, first);
         } else {

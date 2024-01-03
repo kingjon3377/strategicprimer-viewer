@@ -101,7 +101,7 @@ public final class FixtureList extends JList<TileFixture>
         if (!selection.isEmpty()) {
             final Transferable payload;
             if (selection.size() == 1) {
-                payload = new FixtureTransferable(selection.get(0));
+                payload = new FixtureTransferable(selection.getFirst());
             } else {
                 payload = new CurriedFixtureTransferable(
                         selection.toArray(TileFixture[]::new));

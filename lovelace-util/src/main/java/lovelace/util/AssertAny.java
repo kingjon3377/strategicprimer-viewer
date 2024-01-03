@@ -25,7 +25,7 @@ public final class AssertAny {
 		private final List<AssertionFailedError> failures;
 
 		public MultipleFailureException(final List<AssertionFailedError> list, final String message) {
-			super(message, list.get(0));
+			super(message, list.getFirst());
 			failures = list;
 		}
 

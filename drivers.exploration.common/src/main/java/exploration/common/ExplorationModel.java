@@ -699,12 +699,12 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 			}
 			int i = 0;
 			boolean first = true;
-			while (first || (i < 4 && !(diggables.get(0) instanceof Ground))) {
+			while (first || (i < 4 && !(diggables.getFirst() instanceof Ground))) {
 				Collections.shuffle(diggables);
 				first = false;
 				i++;
 			}
-			final TileFixture oldFixture = diggables.get(0);
+			final TileFixture oldFixture = diggables.getFirst();
 			final TileFixture newFixture = oldFixture.copy(IFixture.CopyBehavior.KEEP);
 			if (newFixture instanceof final Ground g) { // TODO: Extract an interface for this field so we only have to do one test
 				g.setExposed(true);

@@ -116,7 +116,7 @@ import lovelace.util.LovelaceLogger;
 						final List<Path> files = extendArguments(args);
 						// TODO: Make MapReaderAdapter just take args directly, not split, to reduce inconvenience here
 						final IMultiMapModel model = MapReaderAdapter.readMultiMapModel(Warning.WARN,
-							files.get(0), files.stream().skip(1).toArray(Path[]::new));
+							files.getFirst(), files.stream().skip(1).toArray(Path[]::new));
 						fixCurrentTurn(options, model);
 						mdf.createDriver(cli, options, model).startDriver();
 					}
@@ -126,7 +126,7 @@ import lovelace.util.LovelaceLogger;
 					// In Ceylon we asserted args was nonempty, but didn't address this case
 					final List<Path> files = MapIOHelper.namesToFiles(args);
 					final IMultiMapModel model = MapReaderAdapter.readMultiMapModel(Warning.WARN,
-						files.get(0), files.stream().skip(1).toArray(Path[]::new));
+						files.getFirst(), files.stream().skip(1).toArray(Path[]::new));
 					fixCurrentTurn(options, model);
 					final ModelDriver driver = mdf.createDriver(cli, options, model);
 					driver.startDriver();

@@ -132,7 +132,7 @@ public abstract class AbstractReportGenerator<Type extends IFixture> implements 
 		if (list.isEmpty()) {
 			return "";
 		} else if (list.size() == 1) {
-			return list.get(0).toString();
+			return list.getFirst().toString();
 		} else if (list.size() == 2) {
 			return String.format("%s and %s", list.get(0).toString(), list.get(1).toString());
 		}

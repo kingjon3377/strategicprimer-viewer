@@ -187,7 +187,7 @@ import worker.common.IFixtureEditHelper;
                     fixtureListObject.getSelectedValuesList();
             portrait = null;
             if (selections.size() == 1) {
-                final TileFixture selectedValue = selections.get(0);
+                final TileFixture selectedValue = selections.getFirst();
                 if (selectedValue instanceof final HasPortrait hp) {
                     final String portraitName = hp.getPortrait();
                     if (!portraitName.isEmpty()) {

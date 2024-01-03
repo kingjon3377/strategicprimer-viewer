@@ -70,7 +70,7 @@ public class SimpleMultiMapModel extends SimpleDriverModel implements IMultiMapM
 		if (subordinateMapsList.isEmpty()) {
 			return null;
 		} else {
-			return new SimpleDriverModel(subordinateMapsList.get(0));
+			return new SimpleDriverModel(subordinateMapsList.getFirst());
 		}
 	}
 

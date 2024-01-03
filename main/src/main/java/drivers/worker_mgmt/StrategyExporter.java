@@ -134,7 +134,7 @@ import legacy.map.fixtures.mobile.worker.IJob;
             if (unleveledWorkers.isEmpty()) {
                 needComma = false;
             } else {
-                writeMember(writer, unleveledWorkers.get(0));
+                writeMember(writer, unleveledWorkers.getFirst());
                 if (unleveledWorkers.size() > 1) {
                     writer.write(String.format(", %d other unleveled workers",
                             unleveledWorkers.size() - 1));

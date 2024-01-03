@@ -291,7 +291,7 @@ import java.math.BigDecimal;
 					() -> new IllegalStateException(
 						"Failed to parse after we determined input was numeric"));
 			} else if ("nearest".equalsIgnoreCase(input) && !nearestFields.isEmpty()) {
-				final HarvestableFixture nearest = nearestFields.remove(0);
+				final HarvestableFixture nearest = nearestFields.removeFirst();
 				cli.println("Nearest harvestable fixture is as follows:");
 				cli.println(nearest.getShortDescription());
 				field = nearest.getId();

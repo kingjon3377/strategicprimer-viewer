@@ -92,8 +92,8 @@ public final class ExplorationRunner {
             if (broken.size() < 2) {
                 throw new IllegalStateException(String.format("Unexpected result of split: '%s' -> %s", result, broken));
             }
-            final String before = broken.remove(0);
-            final String middle = broken.remove(0);
+            final String before = broken.removeFirst();
+            final String middle = broken.removeFirst();
             final StringBuilder builder = new StringBuilder();
             builder.append(before);
             builder.append(recursiveConsultTable(middle, location, terrain, mountainous,

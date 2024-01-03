@@ -103,7 +103,7 @@ import org.takes.http.Exit;
             final Fork rootHandler;
             if (localCache.size() == 1) {
                 rootHandler = new FkRegex("/",
-                        new TkRedirect("/" + localCache.get(0).getValue0()));
+                        new TkRedirect("/" + localCache.getFirst().getValue0()));
             } else {
                 final StringBuilder builder = new StringBuilder();
                 builder.append("<!DOCTYPE html>").append(System.lineSeparator())

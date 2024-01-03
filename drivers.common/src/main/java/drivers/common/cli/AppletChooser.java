@@ -110,7 +110,7 @@ public class AppletChooser<AppletClass extends Applet> {
 				usageMessage();
 				return null;
 			} else {
-				return Either.left(matches.get(0).getValue());
+				return Either.left(matches.getFirst().getValue());
 			}
 		}
 	}

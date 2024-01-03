@@ -112,7 +112,7 @@ import org.jetbrains.annotations.Nullable;
                         .filter(Forest.class::isInstance).map(Forest.class::cast)
                         .collect(Collectors.toList());
         Collections.shuffle(forests);
-        return forests.isEmpty() ? null : forests.get(0).getKind();
+        return forests.isEmpty() ? null : forests.getFirst().getKind();
     }
 
     @Override
