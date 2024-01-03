@@ -51,12 +51,9 @@ public class SetCurrentPlayerChangeset implements Changeset {
 		}
 	}
 
-	// TODO: Inline once PlayerImpl (-> Player) constructor covers all fields
-
 	@Override
 	public void applyInPlace(IMutableMap map) throws ChangesetFailureException {
 		checkPreconditions(map);
-		// FIXME: Make 'current' an immutable field and constructor parameter
 		final Player matchingOld = map.getPlayers().getPlayer(oldCurrent.playerId());
 		final Player matchingNew = map.getPlayers().getPlayer(newCurrent.playerId());
 		final int playerId1 = matchingOld.playerId();
