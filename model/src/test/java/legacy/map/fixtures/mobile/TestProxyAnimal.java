@@ -1,7 +1,7 @@
 package legacy.map.fixtures.mobile;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 
 import legacy.map.IFixture;
 import org.eclipse.jdt.annotation.Nullable;
@@ -30,7 +30,7 @@ public class TestProxyAnimal {
         assertEquals(3, base.reduced(3, newId).getPopulation(),
                 "Test that reduced() works the way we expect in the non-proxy case.");
         final Animal reduced = proxy.reduced(3, newId);
-        assertTrue(reduced instanceof ProxyAnimal, "Proxy reduction produces another proxy");
+        assertInstanceOf(ProxyAnimal.class, reduced, "Proxy reduction produces another proxy");
         for (final Animal proxied : ((ProxyAnimal) reduced).getProxied()) {
             assertEquals(newId, proxied.getId(), "Each animal proxied by it has the correct ID");
             assertEquals(3, proxied.getPopulation(),
