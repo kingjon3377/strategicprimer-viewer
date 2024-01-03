@@ -3,6 +3,7 @@ package drivers;
 import java.nio.file.Path;
 
 import java.util.Collection;
+import java.util.Deque;
 import java.util.LinkedList;
 import java.util.Set;
 import java.util.HashSet;
@@ -22,7 +23,7 @@ import java.util.stream.Collectors;
      * Get the last "count" path elements in the given path.
      */
     private static String suffix(final Path file, final int count) {
-        final LinkedList<Path> list = StreamSupport.stream(file.spliterator(), false)
+        final Deque<Path> list = StreamSupport.stream(file.spliterator(), false)
                 .collect(Collectors.toCollection(LinkedList::new));
         while (list.size() > count) {
             list.removeFirst();
