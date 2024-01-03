@@ -1,6 +1,5 @@
 package legacy.map;
 
-import common.map.HasMutablePortrait;
 import common.map.HasName;
 import org.jetbrains.annotations.Nullable;
 

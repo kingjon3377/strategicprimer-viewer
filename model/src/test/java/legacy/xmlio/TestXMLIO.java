@@ -44,7 +44,7 @@ import javax.xml.namespace.QName;
 import static lovelace.util.AssertAny.assertAny;
 
 import common.idreg.DuplicateIDException;
-import common.map.HasMutablePortrait;
+import legacy.map.HasMutablePortrait;
 import common.map.HasPortrait;
 import legacy.map.Player;
 import legacy.map.MutablePlayer;

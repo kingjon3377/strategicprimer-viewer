@@ -4,7 +4,7 @@ import legacy.map.fixtures.Implement;
 import legacy.map.fixtures.mobile.worker.IJob;
 
 import legacy.map.HasMutableImage;
-import common.map.HasMutablePortrait;
+import legacy.map.HasMutablePortrait;
 import org.eclipse.jdt.annotation.Nullable;
 
 /**

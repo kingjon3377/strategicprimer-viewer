@@ -1,4 +1,6 @@
-package common.map;
+package legacy.map;
+
+import common.map.HasPortrait;
 
 /**
  * An interface for model objects that may have a "portrait" to display in the

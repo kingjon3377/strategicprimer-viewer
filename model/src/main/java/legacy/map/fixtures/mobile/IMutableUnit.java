@@ -6,7 +6,7 @@ import legacy.map.HasMutableImage;
 import legacy.map.HasMutableKind;
 import legacy.map.HasMutableName;
 import legacy.map.HasMutableOwner;
-import common.map.HasMutablePortrait;
+import legacy.map.HasMutablePortrait;
 
 /**
  * An interface for mutator methods on units.
