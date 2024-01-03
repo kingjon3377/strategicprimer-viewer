@@ -256,7 +256,7 @@ import legacy.map.fixtures.towns.Village;
         return WorkerStats.adjusted(hp, base, racialBonus);
     }
 
-    private void maybeAddEquipment(final IDRegistrar idf,
+    private static void maybeAddEquipment(final IDRegistrar idf,
                                    final IMutableWorker worker, final String equipment,
                                    final double chance) {
         if (chance >= 1.0 || SingletonRandom.SINGLETON_RANDOM.nextDouble() < chance) {

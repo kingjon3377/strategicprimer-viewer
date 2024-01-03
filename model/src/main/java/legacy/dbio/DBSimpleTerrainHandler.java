@@ -67,7 +67,7 @@ public final class DBSimpleTerrainHandler extends AbstractDatabaseWriter<Terrain
 				value("id", obj.getId()), value("image", ((HasImage) obj).getImage())).execute(db.connection());
 	}
 
-	private TryBiConsumer<Map<String, Object>, Warning, SQLException> readSimpleTerrain(final IMutableLegacyMap map) {
+	private static TryBiConsumer<Map<String, Object>, Warning, SQLException> readSimpleTerrain(final IMutableLegacyMap map) {
 		return (dbRow, warner) -> {
 			final int row = (Integer) dbRow.get("row");
 			final int column = (Integer) dbRow.get("column");

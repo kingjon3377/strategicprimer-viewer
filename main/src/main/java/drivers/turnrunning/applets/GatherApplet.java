@@ -79,8 +79,8 @@ import org.jetbrains.annotations.Nullable;
             final Point loc = pair.getValue0();
             final TileFixture find = pair.getValue1();
             if (find instanceof HuntingModel.NothingFound) {
-                noResultsTime += noResultCost;
-                time -= noResultCost;
+                noResultsTime += NO_RESULT_COST;
+                time -= NO_RESULT_COST;
             } else {
                 if (noResultsTime > 0) {
                     // TODO: Add to results?
@@ -124,7 +124,7 @@ import org.jetbrains.annotations.Nullable;
                     cli.print(inHours(time));
                     cli.println(" remaining.");
                 } else {
-                    time -= noResultCost;
+                    time -= NO_RESULT_COST;
                 }
                 model.copyToSubMaps(loc, find, IFixture.CopyBehavior.ZERO);
             }

@@ -120,7 +120,7 @@ public final class DBCommunityStatsHandler extends AbstractDatabaseWriter<Commun
 		};
 	}
 
-	private TryBiConsumer<Map<String, Object>, Warning, SQLException> readTownExpertise(final IMutableLegacyMap map,
+	private static TryBiConsumer<Map<String, Object>, Warning, SQLException> readTownExpertise(final IMutableLegacyMap map,
 																						final Map<Integer, List<Object>> containees) {
 		return (dbRow, warner) -> {
 			final int townId = (Integer) dbRow.get("town");
@@ -133,7 +133,7 @@ public final class DBCommunityStatsHandler extends AbstractDatabaseWriter<Commun
 		};
 	}
 
-	private TryBiConsumer<Map<String, Object>, Warning, SQLException> readWorkedResource(final IMutableLegacyMap map,
+	private static TryBiConsumer<Map<String, Object>, Warning, SQLException> readWorkedResource(final IMutableLegacyMap map,
 																						 final Map<Integer, List<Object>> containees) {
 		return (dbRow, warner) -> {
 			final int townId = (Integer) dbRow.get("town");
@@ -145,7 +145,7 @@ public final class DBCommunityStatsHandler extends AbstractDatabaseWriter<Commun
 		};
 	}
 
-	private TryBiConsumer<Map<String, Object>, Warning, SQLException>
+	private static TryBiConsumer<Map<String, Object>, Warning, SQLException>
 	readProducedResource(final IMutableLegacyMap map, final Map<Integer, List<Object>> containees) {
 		return (dbRow, warner) -> {
 			final int townId = (Integer) dbRow.get("town");
@@ -173,7 +173,7 @@ public final class DBCommunityStatsHandler extends AbstractDatabaseWriter<Commun
 		};
 	}
 
-	private TryBiConsumer<Map<String, Object>, Warning, SQLException>
+	private static TryBiConsumer<Map<String, Object>, Warning, SQLException>
 	readConsumedResource(final IMutableLegacyMap map, final Map<Integer, List<Object>> containees) {
 		return (dbRow, warner) -> {
 			final int townId = (Integer) dbRow.get("town");

@@ -73,7 +73,7 @@ public class PointIterable implements Iterable<Point> {
         /**
          * If "item" is zero or positive, return it; otherwise, return "wrap".
          */
-        int wrap(final int item, final int wrap) {
+        private static int wrap(final int item, final int wrap) {
             return (item < 0) ? wrap : item;
         }
 

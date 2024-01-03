@@ -37,7 +37,7 @@ import org.jetbrains.annotations.Nullable;
 		return "check traps for animals or fish they may have caught";
 	}
 
-	private final List<TrapperCommand> trapperCommands =
+	private static final List<TrapperCommand> TRAPPER_COMMANDS =
 			List.of(TrapperCommand.values());
 
 	private @Nullable Integer handleFound(final Point center, final Point loc, final Animal item) {
@@ -109,7 +109,7 @@ import org.jetbrains.annotations.Nullable;
 		}
 		int time = startingTime;
 		while (time > 0) {
-			final TrapperCommand command = cli.chooseFromList(trapperCommands, prompt,
+			final TrapperCommand command = cli.chooseFromList(TRAPPER_COMMANDS, prompt,
 				"Oops! No commands", "Next action: ", ICLIHelper.ListChoiceBehavior.ALWAYS_PROMPT).getValue1();
 			if (command == null || TrapperCommand.Quit == command) {
 				break;

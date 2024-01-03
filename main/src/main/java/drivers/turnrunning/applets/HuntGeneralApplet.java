@@ -160,14 +160,14 @@ import org.jetbrains.annotations.Nullable;
             /*Animal|AnimalTracks|HuntingModel.NothingFound*/ final TileFixture find) {
         switch (find) {
             case final HuntingModel.NothingFound nothingFound -> {
-                cli.println(String.format("Found nothing for the next %d minutes.", noResultCost));
-                return noResultCost;
+                cli.println(String.format("Found nothing for the next %d minutes.", NO_RESULT_COST));
+                return NO_RESULT_COST;
             }
             case final AnimalTracks at -> {
                 model.copyToSubMaps(loc, find, IFixture.CopyBehavior.ZERO);
                 cli.println(String.format("Found only tracks or traces from %s for the next %d minutes.",
-                        at.getKind(), noResultCost));
-                return noResultCost;
+                        at.getKind(), NO_RESULT_COST));
+                return NO_RESULT_COST;
             }
             case final Animal a -> {
                 final Boolean fight = cli.inputBooleanInSeries(String.format("Found %s. Should they %s?",
@@ -178,7 +178,7 @@ import org.jetbrains.annotations.Nullable;
                     return handleFight(loc, (Animal) find, time);
                 } else {
                     model.copyToSubMaps(loc, find, IFixture.CopyBehavior.ZERO);
-                    return noResultCost;
+                    return NO_RESULT_COST;
                 }
             }
             default -> {
@@ -209,8 +209,8 @@ import org.jetbrains.annotations.Nullable;
             final Point loc = pair.getValue0();
             final TileFixture find = pair.getValue1();
             if (find instanceof HuntingModel.NothingFound) {
-                noResultsTime += noResultCost;
-                time -= noResultCost;
+                noResultsTime += NO_RESULT_COST;
+                time -= NO_RESULT_COST;
                 if (time <= 0) {
                     cli.print("Found nothing for the next ");
                     cli.println(inHours(noResultsTime));

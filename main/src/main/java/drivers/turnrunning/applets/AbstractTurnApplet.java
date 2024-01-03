@@ -86,8 +86,8 @@ public abstract class AbstractTurnApplet implements TurnApplet {
 	}
 
 	// TODO: These should be configurable, either by callers or the user's SPOptions
-	protected final int encountersPerHour = 4;
-	protected final int noResultCost = 60 / encountersPerHour;
+	protected static final int ENCOUNTERS_PER_HOUR = 4;
+	protected static final int NO_RESULT_COST = 60 / ENCOUNTERS_PER_HOUR;
 
 	/**
 	 * Reduce the population of a group of plants, animals, etc., and copy

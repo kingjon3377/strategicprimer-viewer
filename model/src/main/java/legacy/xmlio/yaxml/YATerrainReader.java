@@ -30,17 +30,17 @@ import java.util.Set;
     }
 
     // TODO: This seems overkill for this (in Java)
-    private final Set<String> supportedTags = Set.of("forest", "hill", "oasis");
+    private static final Set<String> SUPPORTED_TAGS = Set.of("forest", "hill", "oasis");
 
     @Override
     public boolean isSupportedTag(final String tag) {
-        return supportedTags.contains(tag.toLowerCase());
+        return SUPPORTED_TAGS.contains(tag.toLowerCase());
     }
 
     @Override
     public TerrainFixture read(final StartElement element, final QName parent, final Iterable<XMLEvent> stream)
             throws SPFormatException, XMLStreamException {
-        requireTag(element, parent, supportedTags);
+        requireTag(element, parent, SUPPORTED_TAGS);
         final TerrainFixture retval;
         switch (element.getName().getLocalPart().toLowerCase()) {
             case "forest" -> {

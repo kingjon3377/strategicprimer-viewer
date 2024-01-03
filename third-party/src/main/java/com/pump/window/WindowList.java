@@ -142,7 +142,7 @@ public final class WindowList {
             }
         };
 
-        private WeakReference<?>[] wrap(final Object[] array) {
+        private static WeakReference<?>[] wrap(final Object[] array) {
             final WeakReference<?>[] references = new WeakReference[array.length];
             for (int a = 0; a < references.length; a++) {
                 references[a] = new WeakReference<>(array[a]);
@@ -150,7 +150,7 @@ public final class WindowList {
             return references;
         }
 
-        private boolean arrayEquals(final Object[] obj1, final WeakReference<?>[] obj2) {
+        private static boolean arrayEquals(final Object[] obj1, final WeakReference<?>[] obj2) {
             if (obj1.length != obj2.length)
                 return false;
             for (int a = 0; a < obj1.length; a++) {
