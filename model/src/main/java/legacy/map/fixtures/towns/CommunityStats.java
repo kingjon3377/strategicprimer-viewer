@@ -19,7 +19,7 @@ import org.jetbrains.annotations.Nullable;
  * TODO: Convert to an interface, or otherwise provide an alternative for
  * non-active communities to suggest contents to be found there
  *
- * TODO: Allow towns to contain {@link common.map.fixtures.mobile.Worker}, so
+ * TODO: Allow towns to contain {@link legacy.map.fixtures.mobile.Worker}, so
  * inhabitants players know about can be represented
  *
  * TODO: Convert to immutable with copy-with-mutation methods?

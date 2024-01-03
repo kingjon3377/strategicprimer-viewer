@@ -1,5 +1,7 @@
 package legacy.map.fixtures;
 
+import legacy.map.IFixture.CopyBehavior;
+
 /**
  * A quantity of some kind of resource.
  *
@@ -129,7 +131,7 @@ public final class ResourcePileImpl implements IMutableResourcePile {
     /**
      * Clone the object.
      *
-     * TODO: If {@link common.map.IFixture.CopyBehavior#ZERO}, probably shouldn't expose <em>precise</em> quantity.
+     * TODO: If {@link CopyBehavior#ZERO}, probably shouldn't expose <em>precise</em> quantity.
      */
     @Override
     public ResourcePileImpl copy(final CopyBehavior zero) {

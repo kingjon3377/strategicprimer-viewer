@@ -6,7 +6,7 @@ import legacy.map.HasPopulation;
 import java.util.function.Consumer;
 
 /**
- * A {@link common.map.TileFixture} to represent shrubs,
+ * A {@link legacy.map.TileFixture} to represent shrubs,
  * or their aquatic equivalents, on a tile.
  */
 public class Shrub implements HarvestableFixture, HasPopulation<Shrub> {

@@ -31,7 +31,7 @@ import org.jetbrains.annotations.Nullable;
 
 /**
  * A worker (or soldier) in a unit. This is deliberately not a
- * {@link common.map.TileFixture TileFixture}: these
+ * {@link legacy.map.TileFixture TileFixture}: these
  * should only be part of a unit, not as a top-level tag.
  *
  * TODO: Convert some other {@link MobileFixture}s similarly?
@@ -240,7 +240,7 @@ public class Worker implements IMutableWorker {
     /**
      * The filename of the icon to use by default. This is just for icons
      * in lists and such, not the map, since this isn't a {@link
-     * common.map.TileFixture}.
+     * legacy.map.TileFixture}.
      */
     @Override
     public String getDefaultImage() {

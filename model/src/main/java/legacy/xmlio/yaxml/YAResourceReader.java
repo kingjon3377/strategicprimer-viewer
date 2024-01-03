@@ -28,7 +28,7 @@ import impl.xmlio.exceptions.DeprecatedPropertyException;
 import java.util.Set;
 
 /**
- * A reader for resource-bearing {@link common.map.TileFixture}s.
+ * A reader for resource-bearing {@link legacy.map.TileFixture}s.
  */
 /* package */ class YAResourceReader extends YAAbstractReader<HarvestableFixture, HarvestableFixture> {
     public YAResourceReader(final Warning warner, final IDRegistrar idRegistrar) {

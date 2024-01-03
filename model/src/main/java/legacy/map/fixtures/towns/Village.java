@@ -17,7 +17,7 @@ import org.jetbrains.annotations.Nullable;
 /**
  * A village in the map.
  *
- * TODO: We'd like to be able to have {@link common.map.fixtures.mobile.Worker}
+ * TODO: We'd like to be able to have {@link legacy.map.fixtures.mobile.Worker}
  * members (directly or in {@link CommunityStats}) to represent villagers that
  * players have been informed about by name.
  */

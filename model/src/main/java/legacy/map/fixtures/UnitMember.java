@@ -8,7 +8,7 @@ import legacy.map.SubsettableFixture;
  *
  * We extend {@link Subsettable} to make Unit's subset calculation show
  * differences in workers, but without hard-coding {@link
- * common.map.fixtures.mobile.Worker} in the Unit implementation. Most
+ * legacy.map.fixtures.mobile.Worker} in the Unit implementation. Most
  * implementations of this will essentially delegate {@link #isSubset} to
  * {@link #equals}.
  *

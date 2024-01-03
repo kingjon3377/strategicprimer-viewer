@@ -3,6 +3,7 @@ package common.map.fixtures.mobile;
 import java.io.IOException;
 import java.util.Map;
 
+import legacy.map.fixtures.mobile.Animal;
 import lovelace.util.FileSplitter;
 
 /**
