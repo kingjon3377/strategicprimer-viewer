@@ -20,7 +20,7 @@ public class CompositeChangeset implements Changeset {
 		if (changesets.isEmpty()) {
 			throw new IllegalArgumentException("Cannot have an empty composite changeset");
 		}
-		this.changesets = Collections.unmodifiableList(new ArrayList<>(changesets));
+		this.changesets = List.copyOf(changesets);
 	}
 
 	public CompositeChangeset(final @NotNull Changeset... changesets) {
