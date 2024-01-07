@@ -28,6 +28,8 @@ public final class CLITest {
 
     private static final List<String> FALSE_POSSIBILITIES = List.of("no", "false", "n", "f");
 
+	private static final Runnable NOOP = () -> {};
+
     /**
      * A helper method to condense tests.
      * @param method The method under test.
@@ -46,7 +48,7 @@ public final class CLITest {
     static <T> void assertCLI(final Function<ICLIHelper, @Nullable T> method, final List<String> input, final String expectedOutput,
                               final @Nullable T expectedResult, final String resultMessage, final String outputMessage) {
         final StringBuilder ostream = new StringBuilder();
-        final ICLIHelper cli = new CLIHelper(new LinkedList<>(input)::pollFirst, ostream::append);
+        final ICLIHelper cli = new CLIHelper(new LinkedList<>(input)::pollFirst, ostream::append, NOOP);
         assertEquals(expectedResult, method.apply(cli), resultMessage);
         assertEquals(expectedOutput, ostream.toString(), outputMessage);
     }
@@ -253,7 +255,7 @@ public final class CLITest {
                 "inputBoolean gives message on invalid input");
         final StringBuilder ostream = new StringBuilder();
         ICLIHelper cli = new CLIHelper(new LinkedList<>(Collections.singletonList("all"))::pollFirst,
-                ostream::append);
+                ostream::append, NOOP);
         assertEquals(true, cli.inputBooleanInSeries("prompt four "),
                 "inputBooleanInSeries allows yes-to-all");
         assertEquals(true, cli.inputBooleanInSeries("prompt four "),
@@ -274,7 +276,7 @@ public final class CLITest {
 	@Test
 	public void testInputBooleanInSeriesNone() {
 		final StringBuilder ostream = new StringBuilder();
-		ICLIHelper cli = new CLIHelper(new LinkedList<>(Collections.singletonList("none"))::pollFirst, ostream::append);
+		ICLIHelper cli = new CLIHelper(new LinkedList<>(Collections.singletonList("none"))::pollFirst, ostream::append, NOOP);
         assertEquals(false, cli.inputBooleanInSeries("prompt five "),
                 "inputBooleanInSeries allows no-to-all");
         assertEquals(false, cli.inputBooleanInSeries("prompt five "),
@@ -293,7 +295,7 @@ public final class CLITest {
 	@Test
 	public void testInputBooleanInSeriesAlways() {
 		final StringBuilder ostream = new StringBuilder();
-		ICLIHelper cli = new CLIHelper(new LinkedList<>(Collections.singletonList("always"))::pollFirst, ostream::append);
+		ICLIHelper cli = new CLIHelper(new LinkedList<>(Collections.singletonList("always"))::pollFirst, ostream::append, NOOP);
         assertEquals(true, cli.inputBooleanInSeries("prompt six ", "key"),
                 "inputBooleanInSeries allows yes-to-all");
         assertEquals(true, cli.inputBooleanInSeries("prompt seven ", "key"),
@@ -310,7 +312,7 @@ public final class CLITest {
 	@Test
 	public void testInputBooleanInSeriesNever() {
 		final StringBuilder ostream = new StringBuilder();
-		ICLIHelper cli = new CLIHelper(new LinkedList<>(Collections.singletonList("never"))::pollFirst, ostream::append);
+		ICLIHelper cli = new CLIHelper(new LinkedList<>(Collections.singletonList("never"))::pollFirst, ostream::append, NOOP);
         assertEquals(false, cli.inputBooleanInSeries("prompt eight ", "secondKey"),
                 "inputBooleanInSeries allows no-to-all");
         assertEquals(false, cli.inputBooleanInSeries("prompt nine ", "secondKey"),
@@ -327,7 +329,7 @@ public final class CLITest {
 	@Test
 	public void testInputBooleanInSeriesSeparateKeys() {
 		final StringBuilder ostream = new StringBuilder();
-		ICLIHelper cli = new CLIHelper(new LinkedList<>(Arrays.asList("all", "none"))::pollFirst, ostream::append);
+		ICLIHelper cli = new CLIHelper(new LinkedList<>(Arrays.asList("all", "none"))::pollFirst, ostream::append, NOOP);
         assertEquals(true, cli.inputBooleanInSeries("prompt ten ", "thirdKey"),
                 "inputBooleanInSeries allows yes-to-all with one key");
         assertEquals(false, cli.inputBooleanInSeries("prompt eleven ", "fourthKey"),
@@ -401,13 +403,13 @@ public final class CLITest {
     @Test
     public void testPrinting() {
         final StringBuilder ostream = new StringBuilder();
-        new CLIHelper(new LinkedList<String>()::pollFirst, ostream::append).print("test string");
+        new CLIHelper(new LinkedList<String>()::pollFirst, ostream::append, NOOP).print("test string");
         assertEquals("test string", ostream.toString(), "print() prints string");
         ostream.setLength(0);
-        new CLIHelper(new LinkedList<String>()::pollFirst, ostream::append).println("test two");
+        new CLIHelper(new LinkedList<String>()::pollFirst, ostream::append, NOOP).println("test two");
         assertEquals(String.format("test two%n"), ostream.toString(), "println() adds newline");
         ostream.setLength(0);
-        new CLIHelper(new LinkedList<String>()::pollFirst, ostream::append)
+        new CLIHelper(new LinkedList<String>()::pollFirst, ostream::append, NOOP)
                 .print("test three ", "test four");
         assertEquals("test three test four", ostream.toString(),
                 "print() with multiple arguments works");

@@ -39,9 +39,10 @@ public final class CLIHelper implements ICLIHelper {
         @Nullable String readLine() throws IOException;
     }
 
-    public CLIHelper(final IOSource istream, final Consumer<String> ostream) {
+    public CLIHelper(final IOSource istream, final Consumer<String> ostream, final Runnable flushOstream) {
         this.istream = istream;
         this.ostream = ostream;
+		this.flushOstream = flushOstream;
     }
 
     private static IOSource stdin() {
@@ -54,7 +55,7 @@ public final class CLIHelper implements ICLIHelper {
     }
 
     public CLIHelper() {
-        this(stdin(), System.out::print);
+        this(stdin(), System.out::print, System.out::flush);
     }
 
     /**
@@ -66,6 +67,11 @@ public final class CLIHelper implements ICLIHelper {
      * A consumer of output, presumably sending it to the user.
      */
     private final Consumer<String> ostream;
+
+	/**
+	 * A method to flush the output stream, or a noop if that doesn't make sense.
+	 */
+	private final Runnable flushOstream;
 
     /**
      * The current state of the yes-to-all/no-to-all possibility. Absent if
@@ -89,6 +95,14 @@ public final class CLIHelper implements ICLIHelper {
             ostream.accept(part);
         }
     }
+
+	/**
+	 * Flush the output stream, if a means to do so has been provided.
+	 */
+	@Override
+	public void flush() {
+		flushOstream.run();
+	}
 
     /**
      * Print the specified string, then a newline.

@@ -183,6 +183,11 @@ public interface ICLIHelper {
      */
     void print(String... text);
 
+	/**
+	 * Flush the output stream, if this is an operation that makes sense.
+	 */
+	void flush();
+
     /**
      * Print the specified string, if it hasn't been printed in the last 30 lines.
      *

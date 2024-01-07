@@ -125,7 +125,7 @@ import java.util.stream.Collectors;
                 cli.println(String.format("(%d,%d)", point.getValue0(), point.getValue1()));
             } else if (counter % 1000L == 0L) {
                 cli.print(".");
-                System.out.flush(); // TODO: Either make ICLIHelper#print do this, or add a flush() method to interface
+                cli.flush();
             }
             // Limit the size of the output spreadsheet.
             if (Math.abs(point.getValue0()) > 200 || Math.abs(point.getValue1()) > 100) {
