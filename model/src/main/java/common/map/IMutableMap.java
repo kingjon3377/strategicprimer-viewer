@@ -5,10 +5,21 @@ import common.entity.IEntity;
 /**
  * These mutators should only be called from a changeset or from initialization code (such as deserialization code
  * or test code).
- *
- * TODO: addMapRegion(), replaceMapRegion() (need precondition-checking algorithm first), for symmetry removeMapRegion()
  */
 public interface IMutableMap extends IMap {
+	/**
+	 * Add the given region to the map. Precondition: It does not overlap any existing region (sharing an edge is fine).
+	 */
+	void addMapRegion(MapRegion region);
+	/**
+	 * Remove the given region from the map. Precondition: An "equal" region exists in the map.
+	 */
+	void removeMapRegion(MapRegion region);
+	/**
+	 * Remove "toRemove" from the map and add "toAdd". Preconditions: A region equal to "toRemove" exists in the map,
+	 * and "toAdd" overlaps with either no region in the map or only with "toRemove".
+	 */
+	void replaceMapRegion(MapRegion toRemove, MapRegion toAdd);
 	/**
 	 * Add the given entity to the map. Precondition: No entity with its ID exists in the map.
 	 */
