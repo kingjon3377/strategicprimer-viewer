@@ -32,8 +32,7 @@ public class SPDatabaseReader implements IMapReader {
 		return retval;
 	}
 
-	// TODO: Rename to getDB
-	private Transactional getSQL(final Path path) {
+	private Transactional getDB(final Path path) {
 		if (connections.containsKey(path)) {
 			return connections.get(path);
 		} else {
@@ -48,7 +47,7 @@ public class SPDatabaseReader implements IMapReader {
 	@Override
 	public IMutableLegacyMap readMap(final Path file, final Warning warner)
 			throws SPFormatException, NoSuchFileException, XMLStreamException, IOException {
-		final Transactional db = getSQL(file);
+		final Transactional db = getDB(file);
 		try {
 			return dbMapReader.readMap(db, warner);
 		} catch (final SQLException except) {

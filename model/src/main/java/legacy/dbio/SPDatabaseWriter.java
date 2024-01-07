@@ -46,8 +46,7 @@ public final class SPDatabaseWriter implements SPWriter {
 		return retval;
 	}
 
-	// TODO: Rename to getDB
-	private Transactional getSQL(final Path path) {
+	private Transactional getDB(final Path path) {
 		if (connections.containsKey(path)) {
 			return connections.get(path);
 		} else {
@@ -108,7 +107,7 @@ public final class SPDatabaseWriter implements SPWriter {
 
 	@Override
 	public void writeSPObject(final Path arg, final Object obj) throws XMLStreamException, IOException {
-		final Transactional db = getSQL(arg);
+		final Transactional db = getDB(arg);
 		try {
 			writeSPObjectInContext(db, obj, obj);
 		} catch (final SQLException except) {
