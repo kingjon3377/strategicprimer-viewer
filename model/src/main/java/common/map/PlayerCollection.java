@@ -16,10 +16,8 @@ public class PlayerCollection implements IMutablePlayerCollection {
 
     /**
      * The collection this class wraps.
-	 *
-	 * TODO: Make private again once legacy version is dropped.
      */
-    protected final Map<Integer, Player> players = new TreeMap<>();
+    private final Map<Integer, Player> players = new TreeMap<>();
 
     /**
      * The player for "independent" fixtures.
