@@ -13,7 +13,7 @@ public interface IMap {
 	Collection<IEntity> getAllEntities();
 
 	/**
-	 * Map regions' geometry should be scaled uniformly. Invariant: No region overlaps another. (Sharing an edge is fine.)'
+	 * Map regions' geometry should be scaled uniformly. Invariant: No region overlaps another. (Sharing an edge is fine.)
 	 */
 	Collection<MapRegion> getRegions();
 
