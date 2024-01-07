@@ -30,7 +30,6 @@ import java.util.Collection;
  * TODO: Pass a Formatter around instead of relying on String.format or String::formatted, which instantiates a Formatter in every call
  */
 public abstract class AbstractReportGenerator<Type extends IFixture> implements IReportGenerator<Type> {
-	// TODO: Should probably be Comparator<Pair<Point, ? super Type>>
 	protected final Comparator<Pair<Point, IFixture>> pairComparator;
 
 	/**
