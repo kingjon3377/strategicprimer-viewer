@@ -1,5 +1,6 @@
 package legacy.dbio;
 
+import common.entity.LegacyIdentifier;
 import legacy.map.IFixture;
 import legacy.map.fixtures.Implement;
 import impl.dbio.AbstractDatabaseWriter;
@@ -164,7 +165,7 @@ public final class DBWorkerHandler extends AbstractDatabaseWriter<IWorker, IUnit
 				worker.setPortrait(portrait);
 			}
 			if (workers.containsKey(id)) {
-				warner.handle(new DuplicateIDException(id));
+				warner.handle(new DuplicateIDException(new LegacyIdentifier(id)));
 			}
 			workers.put(id, worker);
 			multimapPut(containees, unitId, worker);

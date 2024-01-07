@@ -1,5 +1,6 @@
 package legacy.idreg;
 
+import common.entity.LegacyIdentifier;
 import common.idreg.DuplicateIDException;
 import org.roaringbitmap.RoaringBitmap;
 
@@ -37,9 +38,9 @@ public final class IDFactory implements IDRegistrar {
         if (id >= 0) {
             if (usedIDs.contains(id)) {
                 if (location == null) {
-                    warning.handle(new DuplicateIDException(id));
+                    warning.handle(new DuplicateIDException(new LegacyIdentifier(id)));
                 } else {
-                    warning.handle(new DuplicateIDException(id,
+                    warning.handle(new DuplicateIDException(new LegacyIdentifier(id),
                             location.getLineNumber(), location.getColumnNumber()));
                 }
             }
