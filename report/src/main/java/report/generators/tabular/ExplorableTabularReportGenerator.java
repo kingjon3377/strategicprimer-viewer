@@ -83,12 +83,13 @@ public class ExplorableTabularReportGenerator
         final String owner;
         final String longDesc;
         switch (item) {
-            case final TextFixture tf -> {
-                if (tf.getTurn() >= 0) { // TODO: Pull up to conditions on switch case (splitting it)?
-                    brief = String.format("Text Note (%d)", tf.getTurn());
-                } else {
-                    brief = "Text Note";
-                }
+            case final TextFixture tf when tf.getTurn() >= 0 -> {
+				brief = String.format("Text Note (%d)", tf.getTurn());
+				owner = "---";
+				longDesc = tf.getText();
+			}
+			case final TextFixture tf -> {
+				brief = "Text Note";
                 owner = "---";
                 longDesc = tf.getText();
             }
@@ -102,25 +103,29 @@ public class ExplorableTabularReportGenerator
                 owner = "---";
                 longDesc = "";
             }
-            case final Portal p -> { // TODO: Pull up to conditions on switch case (splitting it)?
-                if (p.getDestinationCoordinates().isValid()) {
-                    brief = "portal to world " + p.getDestinationWorld();
-                } else {
-                    brief = "portal to another world";
-                }
+            case final Portal p when p.getDestinationCoordinates().isValid() -> {
+				brief = "portal to world " + p.getDestinationWorld();
+				owner = "---";
+				longDesc = "";
+			}
+			case final Portal p -> {
+				brief = "portal to another world";
                 owner = "---";
                 longDesc = "";
             }
-            case final AdventureFixture af -> {
-                brief = af.getBriefDescription();
-                // TODO: Don't we have a helper method for this?
-                if (player.equals(af.owner())) { // TODO: Pull up to conditions on switch case (splitting it)?
-                    owner = "You";
-                } else if (af.owner().isIndependent()) {
-                    owner = "No-one";
-                } else {
-                    owner = ownerString(player, af.owner());
-                }
+            case final AdventureFixture af when player.equals(af.owner()) -> {
+				brief = af.getBriefDescription();
+				owner = "You";
+				longDesc = af.getFullDescription();
+			}
+			case final AdventureFixture af when af.owner().isIndependent() -> {
+				brief = af.getBriefDescription();
+				owner = "No-one";
+				longDesc = af.getFullDescription();
+			}
+			case final AdventureFixture af -> {
+				brief = af.getBriefDescription();
+				owner = ownerString(player, af.owner());
                 longDesc = af.getFullDescription();
             }
             default -> {
