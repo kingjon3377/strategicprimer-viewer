@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Map;
+import java.util.OptionalInt;
 
 import static io.jenetics.facilejdbc.Param.value;
 
@@ -41,15 +42,15 @@ public final class DBAnimalHandler extends AbstractDatabaseWriter<AnimalOrTracks
 	}
 
 
-	private static Optional<Integer> born(final Animal animal) { // TODO: OptionalInt
+	private static OptionalInt born(final Animal animal) {
 		final Map<String, Integer> model = MaturityModel.getMaturityAges();
 		if (model.containsKey(animal.getKind())) {
 			final int maturityAge = model.get(animal.getKind());
 			if (maturityAge <= (DBMapWriter.currentTurn - animal.getBorn())) {
-				return Optional.empty();
+				return OptionalInt.empty();
 			}
 		}
-		return Optional.of(animal.getBorn());
+		return OptionalInt.of(animal.getBorn());
 	}
 
 	private static final List<Query> INITIALIZERS = List.of(Query.of("CREATE TABLE IF NOT EXISTS animals (" +
@@ -111,9 +112,9 @@ public final class DBAnimalHandler extends AbstractDatabaseWriter<AnimalOrTracks
 			params.add(value("kind", obj.getKind()));
 			params.add(value("talking", a.isTalking()));
 			params.add(value("status", a.getStatus()));
-			final Optional<Integer> born = born(a);
+			final OptionalInt born = born(a);
 			if (born.isPresent()) {
-				params.add(value("born", born.get()));
+				params.add(value("born", born.getAsInt()));
 			}
 			params.add(value("count", a.getPopulation()));
 			params.add(value("id", obj.getId()));
