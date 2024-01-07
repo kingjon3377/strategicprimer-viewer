@@ -18,4 +18,10 @@ public record ComplexIdentifier(@NotNull String originWorld, int creatingPlayer,
 			throw new IllegalArgumentException("Player ID must be -1 if unknown, or nonnegative");
 		}
 	}
+
+
+	@Override
+	public @NotNull String getIdentifierString() {
+		return String.format("%s (%s-%d)", id, originWorld, creatingPlayer);
+	}
 }
