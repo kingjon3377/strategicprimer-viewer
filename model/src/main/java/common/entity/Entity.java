@@ -15,10 +15,12 @@ public class Entity implements IEntity {
 		}
 		this.type = type;
 	}
+
 	private @NotNull Location location;
 	private final @NotNull EntityIdentifier id;
 	private final @NotNull String type;
 	private final Map<String, EntityProperty<?>> properties = new HashMap<>();
+
 	@Override
 	public final @NotNull Location getLocation() {
 		return location;
@@ -27,14 +29,17 @@ public class Entity implements IEntity {
 	public final void setLocation(final @NotNull Location location) {
 		this.location = location;
 	}
+
 	@Override
 	public final @NotNull EntityIdentifier getId() {
 		return id;
 	}
+
 	@Override
 	public final @NotNull String getType() {
 		return type;
 	}
+
 	@Override
 	public final boolean hasProperty(final @NotNull String propertyName) {
 		return properties.containsKey(propertyName);
