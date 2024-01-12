@@ -62,14 +62,12 @@ public final class SetCurrentPlayerChangeset implements Changeset {
 		final @NotNull String name1 = matchingOld.getName();
 		final @Nullable String country1 = matchingOld.country();
 		final @NotNull String portrait1 = matchingOld.portrait();
-		final Player matchingOldCopy = new PlayerImpl(playerId1, name1, Objects.requireNonNullElse(country1, ""), false,
-			portrait1);
+		final Player matchingOldCopy = new PlayerImpl(playerId1, name1, country1, false, portrait1);
 		final int playerId = matchingNew.playerId();
 		final @NotNull String name = matchingNew.getName();
 		final @Nullable String country = matchingNew.country();
 		final @NotNull String portrait = matchingNew.portrait();
-		final Player matchingNewCopy = new PlayerImpl(playerId, name, Objects.requireNonNullElse(country, ""), true,
-			portrait);
+		final Player matchingNewCopy = new PlayerImpl(playerId, name, country, true, portrait);
 		// TODO: try-catch here, in case the first operation fails?
 		map.replacePlayer(matchingOld, matchingOldCopy);
 		map.replacePlayer(matchingNew, matchingNewCopy);

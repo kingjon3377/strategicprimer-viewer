@@ -46,8 +46,8 @@ public interface Player extends Comparable<Player>, HasName, HasPortrait {
 	}
 
     /**
-     * The country the player is associated with. TODO: Should this be required to be unique in a map?
+     * The country the player is associated with. The empty string if not provided. TODO: Should this be required to be
+	 * unique in a map?
      */
-    @Nullable
     String country();
 }
