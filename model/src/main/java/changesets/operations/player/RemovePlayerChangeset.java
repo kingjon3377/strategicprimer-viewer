@@ -20,7 +20,7 @@ public class RemovePlayerChangeset implements Changeset {
 
 	private void checkPrecondition(final @NotNull IMap map) throws ChangesetFailureException {
 		final IPlayerCollection players = map.getPlayers();
-		for (Player item : players) {
+		for (final Player item : players) {
 			if (item.equals(player)) {
 				return;
 			}
@@ -28,13 +28,13 @@ public class RemovePlayerChangeset implements Changeset {
 		throw new PreconditionFailureException("Cannot remove player if not present in the map");
 	}
 	@Override
-	public void applyInPlace(IMutableMap map) throws ChangesetFailureException {
+	public void applyInPlace(final IMutableMap map) throws ChangesetFailureException {
 		checkPrecondition(map);
 		map.removePlayer(player);
 	}
 
 	@Override
-	public IMap apply(IMap map) throws ChangesetFailureException {
+	public IMap apply(final IMap map) throws ChangesetFailureException {
 		checkPrecondition(map);
 		final IMutableMap retval = (IMutableMap) map.copy();
 		retval.removePlayer(player);

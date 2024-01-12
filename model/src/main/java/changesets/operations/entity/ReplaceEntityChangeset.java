@@ -29,7 +29,7 @@ public class ReplaceEntityChangeset implements Changeset {
 
 	private void checkPrecondition(final @NotNull IMap map) throws ChangesetFailureException {
 		boolean met = false;
-		for (IEntity item : map.getAllEntities()) {
+		for (final IEntity item : map.getAllEntities()) {
 			if (item.equals(toRemove)) {
 				met = true;
 			} else if (Objects.equals(item.getId(), toAdd.getId())) {
@@ -42,13 +42,13 @@ public class ReplaceEntityChangeset implements Changeset {
 	}
 
 	@Override
-	public void applyInPlace(IMutableMap map) throws ChangesetFailureException {
+	public void applyInPlace(final IMutableMap map) throws ChangesetFailureException {
 		checkPrecondition(map);
 		map.replaceEntity(toRemove, toAdd);
 	}
 
 	@Override
-	public IMap apply(IMap map) throws ChangesetFailureException {
+	public IMap apply(final IMap map) throws ChangesetFailureException {
 		checkPrecondition(map);
 		final IMutableMap retval = (IMutableMap) map.copy();
 		retval.replaceEntity(toRemove, toAdd);

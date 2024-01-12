@@ -23,7 +23,7 @@ public class AddPlayerChangeset implements Changeset {
 
 	private void checkPrecondition(final @NotNull IMap map) throws ChangesetFailureException {
 		final IPlayerCollection players = map.getPlayers();
-		for (Player item : players) {
+		for (final Player item : players) {
 			if (item.playerId() == player.playerId()) {
 				throw new PreconditionFailureException("Cannot add player if another exists with same ID");
 			}
@@ -31,13 +31,13 @@ public class AddPlayerChangeset implements Changeset {
 	}
 
 	@Override
-	public void applyInPlace(IMutableMap map) throws ChangesetFailureException {
+	public void applyInPlace(final IMutableMap map) throws ChangesetFailureException {
 		checkPrecondition(map);
 		map.addPlayer(player);
 	}
 
 	@Override
-	public IMap apply(IMap map) throws ChangesetFailureException {
+	public IMap apply(final IMap map) throws ChangesetFailureException {
 		checkPrecondition(map);
 		final IMutableMap retval = (IMutableMap) map.copy();
 		retval.addPlayer(player);

@@ -26,7 +26,7 @@ public class AddEntityChangeset implements Changeset {
 	}
 
 	private void checkPrecondition(final @NotNull IMap map) throws ChangesetFailureException {
-		for (IEntity item : map.getAllEntities()) {
+		for (final IEntity item : map.getAllEntities()) {
 			if (Objects.equals(item.getId(), entity.getId())) {
 				throw new PreconditionFailureException("Cannot add entity if another exists with same ID");
 			}
@@ -34,13 +34,13 @@ public class AddEntityChangeset implements Changeset {
 	}
 
 	@Override
-	public void applyInPlace(IMutableMap map) throws ChangesetFailureException {
+	public void applyInPlace(final IMutableMap map) throws ChangesetFailureException {
 		checkPrecondition(map);
 		map.addEntity(entity);
 	}
 
 	@Override
-	public IMap apply(IMap map) throws ChangesetFailureException {
+	public IMap apply(final IMap map) throws ChangesetFailureException {
 		checkPrecondition(map);
 		final IMutableMap retval = (IMutableMap) map.copy();
 		retval.addEntity(entity);

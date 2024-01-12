@@ -28,7 +28,7 @@ public class RenamePlayerChangeset implements Changeset {
 
 	private void checkPrecondition(final @NotNull IMap map) throws ChangesetFailureException {
 		final IPlayerCollection players = map.getPlayers();
-		for (Player item : players) {
+		for (final Player item : players) {
             if (item.playerId() == playerId) {
                 if (oldName.equals(item.getName())) {
                     return;
@@ -40,18 +40,18 @@ public class RenamePlayerChangeset implements Changeset {
 		throw new PreconditionFailureException("Cannot rename player if not present in the map");
 	}
 	@Override
-	public void applyInPlace(IMutableMap map) throws ChangesetFailureException {
+	public void applyInPlace(final IMutableMap map) throws ChangesetFailureException {
 		checkPrecondition(map);
 		final Player oldPlayer = map.getPlayers().getPlayer(playerId);
 		map.replacePlayer(oldPlayer, alteredCopy(oldPlayer));
 	}
 
-	private @NotNull Player alteredCopy(Player oldPlayer) {
+	private @NotNull Player alteredCopy(final Player oldPlayer) {
         return new PlayerImpl(playerId, newName, oldPlayer.country(), oldPlayer.current(), oldPlayer.portrait());
 	}
 
 	@Override
-	public IMap apply(IMap map) throws ChangesetFailureException {
+	public IMap apply(final IMap map) throws ChangesetFailureException {
 		checkPrecondition(map);
 		final IMutableMap retval = (IMutableMap) map.copy();
 		final Player oldPlayer = map.getPlayers().getPlayer(playerId);

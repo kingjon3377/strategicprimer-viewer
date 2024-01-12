@@ -36,19 +36,19 @@ public class CompositeChangeset implements Changeset {
 	}
 
 	@Override
-	public void applyInPlace(IMutableMap map) throws ChangesetFailureException {
-		Deque<Changeset> alreadyApplied = new LinkedList<>();
+	public void applyInPlace(final IMutableMap map) throws ChangesetFailureException {
+		final Deque<Changeset> alreadyApplied = new LinkedList<>();
 		try {
-			for (Changeset changeset : changesets) {
+			for (final Changeset changeset : changesets) {
 				changeset.applyInPlace(map); // FIXME: What if this fails?
 				alreadyApplied.push(changeset);
 			}
-		} catch (ChangesetFailureException except) {
+		} catch (final ChangesetFailureException except) {
 			try {
-				for (Changeset changeset : alreadyApplied) {
+				for (final Changeset changeset : alreadyApplied) {
 					changeset.applyInPlace(map);
 				}
-			} catch (ChangesetFailureException inner) {
+			} catch (final ChangesetFailureException inner) {
 				final IllegalStateException toThrow =
 					new IllegalStateException("Failed to roll back already-applied changesets", inner);
 				toThrow.addSuppressed(except);
@@ -59,9 +59,9 @@ public class CompositeChangeset implements Changeset {
 	}
 
 	@Override
-	public IMap apply(IMap map) throws ChangesetFailureException {
+	public IMap apply(final IMap map) throws ChangesetFailureException {
 		IMap retval = map;
-		for (Changeset changeset : changesets) {
+		for (final Changeset changeset : changesets) {
 			retval = changeset.apply(retval);
 		}
 		return retval;

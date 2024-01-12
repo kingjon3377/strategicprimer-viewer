@@ -52,7 +52,7 @@ public class SetCurrentPlayerChangeset implements Changeset {
 	}
 
 	@Override
-	public void applyInPlace(IMutableMap map) throws ChangesetFailureException {
+	public void applyInPlace(final IMutableMap map) throws ChangesetFailureException {
 		checkPreconditions(map);
 		final Player matchingOld = map.getPlayers().getPlayer(oldCurrent.playerId());
 		final Player matchingNew = map.getPlayers().getPlayer(newCurrent.playerId());
@@ -72,7 +72,7 @@ public class SetCurrentPlayerChangeset implements Changeset {
 	}
 
 	@Override
-	public IMap apply(IMap map) throws ChangesetFailureException {
+	public IMap apply(final IMap map) throws ChangesetFailureException {
 		final IMutableMap retval = (IMutableMap) map.copy();
 		applyInPlace(retval);
 		return retval;
