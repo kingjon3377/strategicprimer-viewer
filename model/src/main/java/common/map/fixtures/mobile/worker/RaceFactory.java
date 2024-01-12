@@ -18,7 +18,7 @@ public final class RaceFactory {
      */
     public static final List<String> RACES = Collections.unmodifiableList(
             Stream.concat(Stream.of("dwarf", "elf", "gnome", "half-elf", "Danan"),
-                            Stream.generate(() -> "human")).limit(20)
+                            Stream.generate(() -> "human")).limit(20L)
                     .collect(Collectors.toList()));
 
     /**
