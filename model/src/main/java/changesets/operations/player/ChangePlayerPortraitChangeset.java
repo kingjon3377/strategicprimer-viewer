@@ -1,4 +1,4 @@
-package changesets.operations;
+package changesets.operations.player;
 
 import changesets.Changeset;
 import changesets.ChangesetFailureException;
@@ -10,34 +10,34 @@ import common.map.Player;
 import common.map.PlayerImpl;
 import org.jetbrains.annotations.NotNull;
 
-/**
- * A changeeset for changing the name of a player in the map.
- */
-public class RenamePlayerChangeset implements Changeset {
+import java.util.Objects;
+
+public class ChangePlayerPortraitChangeset implements Changeset {
 	private final int playerId;
-	private final @NotNull String oldName;
-	private final @NotNull String newName;
-	public RenamePlayerChangeset(final int playerId, final @NotNull String oldName, final @NotNull String newName) {
+	private final @NotNull String oldPortrait;
+	private final @NotNull String newPortrait;
+	public ChangePlayerPortraitChangeset(final int playerId, final @NotNull String oldPortrait,
+										 final @NotNull String newPortrait) {
 		this.playerId = playerId;
-		this.oldName = oldName;
-		this.newName = newName;
+		this.oldPortrait = oldPortrait;
+		this.newPortrait = newPortrait;
 	}
 	public Changeset invert() {
-		return new RenamePlayerChangeset(playerId, newName, oldName);
+		return new RenameCountryChangeset(playerId, newPortrait, oldPortrait);
 	}
 
 	private void checkPrecondition(final @NotNull IMap map) throws ChangesetFailureException {
 		final IPlayerCollection players = map.getPlayers();
 		for (Player item : players) {
-            if (item.playerId() == playerId) {
-                if (oldName.equals(item.getName())) {
-                    return;
-                } else {
-					throw new PreconditionFailureException("Cannot rename player if old name doesn't match");
+			if (item.playerId() == playerId) {
+				if (Objects.requireNonNullElse(item.portrait(), "").equals(oldPortrait)) {
+					return;
+				} else {
+					throw new PreconditionFailureException("Cannot change player's portrait if old portrait doesn't match");
 				}
-            }
+			}
 		}
-		throw new PreconditionFailureException("Cannot rename player if not present in the map");
+		throw new PreconditionFailureException("Cannot change player's portrait if not present in the map");
 	}
 	@Override
 	public void applyInPlace(IMutableMap map) throws ChangesetFailureException {
@@ -48,7 +48,7 @@ public class RenamePlayerChangeset implements Changeset {
 
 	@NotNull
 	private Player alteredCopy(Player oldPlayer) {
-        return new PlayerImpl(playerId, newName, oldPlayer.country(), oldPlayer.current(), oldPlayer.portrait());
+        return new PlayerImpl(playerId, oldPlayer.getName(), oldPlayer.country(), oldPlayer.current(), newPortrait);
 	}
 
 	@Override

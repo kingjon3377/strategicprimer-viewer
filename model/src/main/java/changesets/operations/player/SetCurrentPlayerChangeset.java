@@ -1,4 +1,4 @@
-package changesets.operations;
+package changesets.operations.player;
 
 import changesets.Changeset;
 import changesets.ChangesetFailureException;
