@@ -38,7 +38,7 @@ public class SPMap implements IMutableMap {
 	}
 
 	@Override
-	public void addMapRegion(MapRegion region) {
+	public void addMapRegion(final MapRegion region) {
 		final List<MapRegion> temp = new ArrayList<>(regionMap.values());
 		temp.add(region);
 		if (IMap.areRegionsValid(temp)) {
@@ -50,7 +50,7 @@ public class SPMap implements IMutableMap {
 
 	@Override
 	public final void removeMapRegion(final MapRegion region) {
-		MapRegion matching = regionMap.get(region.getRegionId());
+		final MapRegion matching = regionMap.get(region.getRegionId());
 		if (Objects.equals(region, matching)) {
 			regionMap.remove(region.getRegionId(), matching);
 		} else {
@@ -120,7 +120,7 @@ public class SPMap implements IMutableMap {
 	}
 
 	@Override
-	public void replacePlayer(Player toRemove, Player toAdd) {
+	public void replacePlayer(final Player toRemove, final Player toAdd) {
 		// TODO: Add replace() method to IMutablePlayerCollection?
 		if (!Objects.equals(toRemove, players.getPlayer(toRemove.playerId()))) {
 			throw new IllegalArgumentException("Player to remove must exist in the map");

@@ -138,7 +138,7 @@ public class PlayerCollection implements IMutablePlayerCollection {
      */
     @Override
     public boolean equals(final Object obj) {
-		Predicate<String> unknownName = str -> str.isEmpty() || "unknown".equalsIgnoreCase(str);
+		final Predicate<String> unknownName = str -> str.isEmpty() || "unknown".equalsIgnoreCase(str);
 		if (obj == this) {
             return true;
         } else if (obj instanceof final IPlayerCollection pc) {
@@ -147,13 +147,13 @@ public class PlayerCollection implements IMutablePlayerCollection {
 				if (players.containsValue(player)) {
 					continue;
 				}
-				Player ours = players.get(player.playerId());
+				final Player ours = players.get(player.playerId());
 				if (ours == null || !unknownName.test(ours.getName())) {
 					return false;
 				}
 			}
 			for (final Player player : this) {
-				Player theirs = pc.getPlayer(player.playerId());
+				final Player theirs = pc.getPlayer(player.playerId());
 				if (!theirs.getName().equals(player.getName()) && !unknownName.test(theirs.getName())) {
 					return false;
 				}
