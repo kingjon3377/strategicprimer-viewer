@@ -3,6 +3,7 @@ package common.map;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Objects;
 import java.util.TreeMap;
 import java.util.function.Predicate;
 
@@ -65,6 +66,9 @@ public class PlayerCollection implements IMutablePlayerCollection {
      */
     @Override
     public void add(final Player player) {
+		if (players.containsKey(player.playerId())) {
+			throw new IllegalArgumentException("Player must not already exist in players");
+		}
         if (player.isIndependent()) {
             independentPlayer = player;
         }
@@ -79,6 +83,9 @@ public class PlayerCollection implements IMutablePlayerCollection {
      */
     @Override
     public void remove(final Player obj) {
+		if (!Objects.equals(obj, players.get(obj.playerId()))) {
+			throw new IllegalArgumentException("Player must be in the collection to be removed");
+		}
         remove(obj.playerId());
     }
 
