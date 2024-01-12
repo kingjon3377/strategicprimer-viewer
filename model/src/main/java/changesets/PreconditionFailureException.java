@@ -15,7 +15,7 @@ public class PreconditionFailureException extends ChangesetFailureException {
 		super(message);
 		this.failedPreconditions = List.of(failedPreconditions);
 	}
-	private List<String> failedPreconditions;
+	private final List<String> failedPreconditions;
 
 	public List<String> getFailedPreconditions() {
 		return failedPreconditions;
