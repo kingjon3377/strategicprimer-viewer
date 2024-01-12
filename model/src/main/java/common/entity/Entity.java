@@ -6,7 +6,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Entity implements IEntity {
+public class Entity implements IMutableEntity {
 	public Entity(final @NotNull EntityIdentifier id, final @NotNull Location location, final @NotNull String type) {
 		this.location = location;
 		this.id = id;
