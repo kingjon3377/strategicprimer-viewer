@@ -13,7 +13,7 @@ public final class RemoveEntityChangeset implements Changeset {
 	public RemoveEntityChangeset(final @NotNull IEntity entity) {
 		this.entity = entity;
 	}
-	public Changeset invert() {
+	public @NotNull Changeset invert() {
 		return new AddEntityChangeset(entity);
 	}
 	private void checkPrecondition(final @NotNull IMap map) throws ChangesetFailureException {
@@ -23,13 +23,13 @@ public final class RemoveEntityChangeset implements Changeset {
 	}
 
 	@Override
-	public void applyInPlace(final IMutableMap map) throws ChangesetFailureException {
+	public void applyInPlace(final @NotNull IMutableMap map) throws ChangesetFailureException {
 		checkPrecondition(map);
 		map.removeEntity(entity);
 	}
 
 	@Override
-	public IMap apply(final IMap map) throws ChangesetFailureException {
+	public @NotNull IMap apply(final @NotNull IMap map) throws ChangesetFailureException {
 		checkPrecondition(map);
 		final IMutableMap retval = (IMutableMap) map.copy();
 		retval.removeEntity(entity);

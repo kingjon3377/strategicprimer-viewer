@@ -19,7 +19,7 @@ public final class AddPlayerChangeset implements Changeset {
 		this.player = player;
 	}
 
-	public Changeset invert() {
+	public @NotNull Changeset invert() {
 		return new RemovePlayerChangeset(player);
 	}
 
@@ -33,13 +33,13 @@ public final class AddPlayerChangeset implements Changeset {
 	}
 
 	@Override
-	public void applyInPlace(final IMutableMap map) throws ChangesetFailureException {
+	public void applyInPlace(final @NotNull IMutableMap map) throws ChangesetFailureException {
 		checkPrecondition(map);
 		map.addPlayer(player);
 	}
 
 	@Override
-	public IMap apply(final IMap map) throws ChangesetFailureException {
+	public @NotNull IMap apply(final @NotNull IMap map) throws ChangesetFailureException {
 		checkPrecondition(map);
 		final IMutableMap retval = (IMutableMap) map.copy();
 		retval.addPlayer(player);

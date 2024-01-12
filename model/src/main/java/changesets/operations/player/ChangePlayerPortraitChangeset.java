@@ -24,7 +24,7 @@ public final class ChangePlayerPortraitChangeset implements Changeset {
 		this.newPortrait = newPortrait;
 	}
 
-	public Changeset invert() {
+	public @NotNull Changeset invert() {
 		return new RenameCountryChangeset(playerId, newPortrait, oldPortrait);
 	}
 
@@ -43,7 +43,7 @@ public final class ChangePlayerPortraitChangeset implements Changeset {
 	}
 
 	@Override
-	public void applyInPlace(final IMutableMap map) throws ChangesetFailureException {
+	public void applyInPlace(final @NotNull IMutableMap map) throws ChangesetFailureException {
 		checkPrecondition(map);
 		final Player oldPlayer = map.getPlayers().getPlayer(playerId);
 		map.replacePlayer(oldPlayer, alteredCopy(oldPlayer));
@@ -54,7 +54,7 @@ public final class ChangePlayerPortraitChangeset implements Changeset {
 	}
 
 	@Override
-	public IMap apply(final IMap map) throws ChangesetFailureException {
+	public @NotNull IMap apply(final @NotNull IMap map) throws ChangesetFailureException {
 		checkPrecondition(map);
 		final IMutableMap retval = (IMutableMap) map.copy();
 		final Player oldPlayer = map.getPlayers().getPlayer(playerId);

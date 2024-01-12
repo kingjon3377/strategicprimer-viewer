@@ -21,7 +21,7 @@ public final class AddEntityChangeset implements Changeset {
 	}
 
 	@Override
-	public Changeset invert() {
+	public @NotNull Changeset invert() {
 		return new RemoveEntityChangeset(entity);
 	}
 
@@ -34,13 +34,13 @@ public final class AddEntityChangeset implements Changeset {
 	}
 
 	@Override
-	public void applyInPlace(final IMutableMap map) throws ChangesetFailureException {
+	public void applyInPlace(final @NotNull IMutableMap map) throws ChangesetFailureException {
 		checkPrecondition(map);
 		map.addEntity(entity);
 	}
 
 	@Override
-	public IMap apply(final IMap map) throws ChangesetFailureException {
+	public @NotNull IMap apply(final @NotNull IMap map) throws ChangesetFailureException {
 		checkPrecondition(map);
 		final IMutableMap retval = (IMutableMap) map.copy();
 		retval.addEntity(entity);
