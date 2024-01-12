@@ -19,7 +19,7 @@ public class PreconditionFailureException extends ChangesetFailureException {
 
 	private final List<String> failedPreconditions;
 
-	public List<String> getFailedPreconditions() {
+	public final List<String> getFailedPreconditions() {
 		return failedPreconditions;
 	}
 }
