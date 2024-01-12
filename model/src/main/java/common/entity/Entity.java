@@ -56,4 +56,11 @@ public class Entity implements IEntity {
 	public void removeProperty(final @NotNull EntityProperty<?> property) {
 		properties.remove(property.getPropertyName(), property);
 	}
+
+	@Override
+	public final @NotNull Entity copy() {
+		final Entity retval = new Entity(id, location, type);
+		properties.values().forEach(retval::setProperty);
+		return retval;
+	}
 }

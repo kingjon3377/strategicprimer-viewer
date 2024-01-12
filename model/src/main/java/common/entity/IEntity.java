@@ -17,4 +17,5 @@ public interface IEntity {
 	@NotNull String getType();
 	boolean hasProperty(@NotNull String propertyName);
 	@Nullable EntityProperty<?> getProperty(@NotNull String propertyName);
+	IEntity copy();
 }
