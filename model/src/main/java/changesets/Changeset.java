@@ -11,16 +11,16 @@ import common.map.IMutableMap;
  */
 public interface Changeset {
 	/**
-     * The inverse of this set of operations.
-     */
-    Changeset invert();
+	 * The inverse of this set of operations.
+	 */
+	Changeset invert();
 
-    /**
-     * Apply the changeset to a map, changing it in place.
-     *
-     * TODO: Should this possibly take different arguments?
-     */
-    void applyInPlace(IMutableMap map) throws ChangesetFailureException;
+	/**
+	 * Apply the changeset to a map, changing it in place.
+	 *
+	 * TODO: Should this possibly take different arguments?
+	 */
+	void applyInPlace(IMutableMap map) throws ChangesetFailureException;
 
 	/**
 	 * Apply this changeset to a map, leaving it unmodified and returning a version that with the modification applied.
