@@ -14,9 +14,11 @@ import org.jetbrains.annotations.NotNull;
  */
 public class AddPlayerChangeset implements Changeset {
 	private final Player player;
+
 	public AddPlayerChangeset(final @NotNull Player player) {
 		this.player = player;
 	}
+
 	public Changeset invert() {
 		return new RemovePlayerChangeset(player);
 	}

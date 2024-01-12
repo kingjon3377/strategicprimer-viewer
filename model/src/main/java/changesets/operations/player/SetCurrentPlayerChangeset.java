@@ -15,6 +15,7 @@ import java.util.Objects;
 public class SetCurrentPlayerChangeset implements Changeset {
 	private final Player oldCurrent;
 	private final Player newCurrent;
+
 	public SetCurrentPlayerChangeset(final @NotNull Player oldCurrent, final @NotNull Player newCurrent) {
 		if (oldCurrent.playerId() == newCurrent.playerId()) {
 			throw new IllegalArgumentException("Changing current player to the same player doesn't make sense");
@@ -32,16 +33,16 @@ public class SetCurrentPlayerChangeset implements Changeset {
 		Player matchingOld = null;
 		Player matchingNew = null;
 		for (final Player player : map.getPlayers()) {
-            if (player.playerId() == oldCurrent.playerId()) {
-                if (player.current()) {
-                    matchingOld = player;
-                } else {
-                    throw new PreconditionFailureException(
+			if (player.playerId() == oldCurrent.playerId()) {
+				if (player.current()) {
+					matchingOld = player;
+				} else {
+					throw new PreconditionFailureException(
 						"Can't change current player when 'old current' player isn't current");
-                }
-            } else if (player.current() && player.playerId() != oldCurrent.playerId()) {
-                throw new PreconditionFailureException("Can't change current player when unexpected player is current");
-            } else if (player.playerId() == newCurrent.playerId()) {
+				}
+			} else if (player.current() && player.playerId() != oldCurrent.playerId()) {
+				throw new PreconditionFailureException("Can't change current player when unexpected player is current");
+			} else if (player.playerId() == newCurrent.playerId()) {
 				matchingNew = player;
 			}
 		}

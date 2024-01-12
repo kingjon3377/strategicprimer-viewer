@@ -17,11 +17,13 @@ public class RenamePlayerChangeset implements Changeset {
 	private final int playerId;
 	private final @NotNull String oldName;
 	private final @NotNull String newName;
+
 	public RenamePlayerChangeset(final int playerId, final @NotNull String oldName, final @NotNull String newName) {
 		this.playerId = playerId;
 		this.oldName = oldName;
 		this.newName = newName;
 	}
+
 	public Changeset invert() {
 		return new RenamePlayerChangeset(playerId, newName, oldName);
 	}
@@ -29,16 +31,17 @@ public class RenamePlayerChangeset implements Changeset {
 	private void checkPrecondition(final @NotNull IMap map) throws ChangesetFailureException {
 		final IPlayerCollection players = map.getPlayers();
 		for (final Player item : players) {
-            if (item.playerId() == playerId) {
-                if (oldName.equals(item.getName())) {
-                    return;
-                } else {
+			if (item.playerId() == playerId) {
+				if (oldName.equals(item.getName())) {
+					return;
+				} else {
 					throw new PreconditionFailureException("Cannot rename player if old name doesn't match");
 				}
-            }
+			}
 		}
 		throw new PreconditionFailureException("Cannot rename player if not present in the map");
 	}
+
 	@Override
 	public void applyInPlace(final IMutableMap map) throws ChangesetFailureException {
 		checkPrecondition(map);
@@ -47,7 +50,7 @@ public class RenamePlayerChangeset implements Changeset {
 	}
 
 	private @NotNull Player alteredCopy(final Player oldPlayer) {
-        return new PlayerImpl(playerId, newName, oldPlayer.country(), oldPlayer.current(), oldPlayer.portrait());
+		return new PlayerImpl(playerId, newName, oldPlayer.country(), oldPlayer.current(), oldPlayer.portrait());
 	}
 
 	@Override

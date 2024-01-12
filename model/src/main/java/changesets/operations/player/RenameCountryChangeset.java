@@ -16,11 +16,13 @@ public class RenameCountryChangeset implements Changeset {
 	private final int playerId;
 	private final @NotNull String oldCountry;
 	private final @NotNull String newCountry;
+
 	public RenameCountryChangeset(final int playerId, final @NotNull String oldCountry, final @NotNull String newCountry) {
 		this.playerId = playerId;
 		this.oldCountry = oldCountry;
 		this.newCountry = newCountry;
 	}
+
 	public Changeset invert() {
 		return new RenameCountryChangeset(playerId, newCountry, oldCountry);
 	}
@@ -38,6 +40,7 @@ public class RenameCountryChangeset implements Changeset {
 		}
 		throw new PreconditionFailureException("Cannot rename player's country if not present in the map");
 	}
+
 	@Override
 	public void applyInPlace(final IMutableMap map) throws ChangesetFailureException {
 		checkPrecondition(map);
@@ -46,7 +49,7 @@ public class RenameCountryChangeset implements Changeset {
 	}
 
 	private @NotNull Player alteredCopy(final Player oldPlayer) {
-        return new PlayerImpl(playerId, oldPlayer.getName(), newCountry, oldPlayer.current(), oldPlayer.portrait());
+		return new PlayerImpl(playerId, oldPlayer.getName(), newCountry, oldPlayer.current(), oldPlayer.portrait());
 	}
 
 	@Override

@@ -16,12 +16,14 @@ public class ChangePlayerPortraitChangeset implements Changeset {
 	private final int playerId;
 	private final @NotNull String oldPortrait;
 	private final @NotNull String newPortrait;
+
 	public ChangePlayerPortraitChangeset(final int playerId, final @NotNull String oldPortrait,
 										 final @NotNull String newPortrait) {
 		this.playerId = playerId;
 		this.oldPortrait = oldPortrait;
 		this.newPortrait = newPortrait;
 	}
+
 	public Changeset invert() {
 		return new RenameCountryChangeset(playerId, newPortrait, oldPortrait);
 	}
@@ -39,6 +41,7 @@ public class ChangePlayerPortraitChangeset implements Changeset {
 		}
 		throw new PreconditionFailureException("Cannot change player's portrait if not present in the map");
 	}
+
 	@Override
 	public void applyInPlace(final IMutableMap map) throws ChangesetFailureException {
 		checkPrecondition(map);
@@ -47,7 +50,7 @@ public class ChangePlayerPortraitChangeset implements Changeset {
 	}
 
 	private @NotNull Player alteredCopy(final Player oldPlayer) {
-        return new PlayerImpl(playerId, oldPlayer.getName(), oldPlayer.country(), oldPlayer.current(), newPortrait);
+		return new PlayerImpl(playerId, oldPlayer.getName(), oldPlayer.country(), oldPlayer.current(), newPortrait);
 	}
 
 	@Override
