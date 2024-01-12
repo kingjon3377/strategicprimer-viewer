@@ -1,9 +1,7 @@
 package common.map;
 
-import common.entity.Entity;
 import common.entity.EntityIdentifier;
 import common.entity.IEntity;
-import lovelace.util.IntMap;
 
 import java.util.ArrayList;
 import java.util.Collection;

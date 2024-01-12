@@ -1,7 +1,5 @@
 package common.map;
 
-import org.jetbrains.annotations.Nullable;
-
 /**
  * An interface for the representation of a player in the game.
  *

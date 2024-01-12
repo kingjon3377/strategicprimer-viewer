@@ -10,8 +10,6 @@ import common.map.PlayerImpl;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Objects;
-
 public final class SetCurrentPlayerChangeset implements Changeset {
 	private final Player oldCurrent;
 	private final Player newCurrent;
