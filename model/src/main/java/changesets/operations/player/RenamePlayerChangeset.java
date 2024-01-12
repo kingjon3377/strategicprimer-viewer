@@ -11,7 +11,7 @@ import common.map.PlayerImpl;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * A changeeset for changing the name of a player in the map.
+ * A changeset for changing the name of a player in the map.
  */
 public final class RenamePlayerChangeset implements Changeset {
 	private final int playerId;
