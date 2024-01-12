@@ -8,7 +8,8 @@ import common.entity.IEntity;
  */
 public interface IMutableMap extends IMap {
 	/**
-	 * Add the given region to the map. Precondition: It does not overlap any existing region (sharing an edge is fine).
+	 * Add the given region to the map. Precondition: It does not overlap any existing region (sharing an edge is fine),
+	 * and no region with its ID exists in the map.
 	 */
 	void addMapRegion(MapRegion region);
 	/**
@@ -17,7 +18,8 @@ public interface IMutableMap extends IMap {
 	void removeMapRegion(MapRegion region);
 	/**
 	 * Remove "toRemove" from the map and add "toAdd". Preconditions: A region equal to "toRemove" exists in the map,
-	 * and "toAdd" overlaps with either no region in the map or only with "toRemove".
+	 * "toAdd" overlaps with either no region in the map or only with "toRemove", and either no region in the map has
+	 * the same ID or only "toRemove" has the same ID.
 	 */
 	void replaceMapRegion(MapRegion toRemove, MapRegion toAdd);
 	/**

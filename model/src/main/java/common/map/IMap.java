@@ -7,14 +7,15 @@ import java.awt.geom.Area;
 import java.util.Collection;
 
 /**
- * A game-world within the game. TODO: terrain information, etc.
+ * A game-world within the game. TODO: terrain information, etc. TODO: Add nullness annotations
  */
 public interface IMap {
 	IEntity getEntity(EntityIdentifier id);
 	Collection<IEntity> getAllEntities();
 
 	/**
-	 * Map regions' geometry should be scaled uniformly. Invariant: No region overlaps another. (Sharing an edge is fine.)
+	 * Map regions' geometry should be scaled uniformly. Invariant: No region overlaps another (sharing an edge is fine),
+	 * and no two regions have the same ID number.
 	 */
 	Collection<MapRegion> getRegions();
 	static boolean areRegionsValid(final Collection<? extends MapRegion> regions) {
@@ -22,6 +23,8 @@ public interface IMap {
 			for (final MapRegion second : regions) {
 				if (first == second) {
 					continue;
+				} else if (first.getRegionId() == second.getRegionId()) {
+					return false;
 				}
 				final Area area = new Area(first.getArea());
 				area.intersect(second.getArea());
