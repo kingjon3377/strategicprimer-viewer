@@ -33,10 +33,10 @@ public class SetCurrentPlayerChangeset implements Changeset {
 		Player matchingNew = null;
 		for (final Player player : map.getPlayers()) {
             if (player.playerId() == oldCurrent.playerId()) {
-                if (!player.current()) {
-                    throw new PreconditionFailureException("Can't change current player when 'old current' player isn't current");
+                if (player.current()) {
+                    matchingOld = player;
                 } else {
-					matchingOld = player;
+                    throw new PreconditionFailureException("Can't change current player when 'old current' player isn't current");
                 }
             } else if (player.current() && player.playerId() != oldCurrent.playerId()) {
                 throw new PreconditionFailureException("Can't change current player when unexpected player is current");
