@@ -4,13 +4,10 @@ import common.map.IMap;
 import common.map.IMutableMap;
 
 /**
- * An interface to represent a set of changes that can be made to a map (TODO:
- * or to what?).  It'll be used to represent the differences between an earlier
- * and a later map.
+ * An interface to represent a set of changes that can be made to a map.  It'll be used to represent the differences
+ * between an earlier and a later map.
  *
  * TODO: Tests
- *
- * TODO: Think of how to implement this
  */
 public interface Changeset {
 	/**
