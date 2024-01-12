@@ -9,7 +9,7 @@ import common.map.IPlayerCollection;
 import common.map.Player;
 import org.jetbrains.annotations.NotNull;
 
-public class RemovePlayerChangeset implements Changeset {
+public final class RemovePlayerChangeset implements Changeset {
 	private final Player player;
 	public RemovePlayerChangeset(final @NotNull Player player) {
 		this.player = player;

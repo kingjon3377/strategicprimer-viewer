@@ -13,7 +13,7 @@ import org.jetbrains.annotations.NotNull;
 /**
  * A changeeset for changing the name of a player in the map.
  */
-public class RenamePlayerChangeset implements Changeset {
+public final class RenamePlayerChangeset implements Changeset {
 	private final int playerId;
 	private final @NotNull String oldName;
 	private final @NotNull String newName;

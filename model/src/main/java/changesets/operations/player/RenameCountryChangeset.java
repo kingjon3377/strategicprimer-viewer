@@ -12,7 +12,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
 
-public class RenameCountryChangeset implements Changeset {
+public final class RenameCountryChangeset implements Changeset {
 	private final int playerId;
 	private final @NotNull String oldCountry;
 	private final @NotNull String newCountry;

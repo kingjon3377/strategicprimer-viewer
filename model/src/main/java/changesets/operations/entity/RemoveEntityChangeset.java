@@ -8,7 +8,7 @@ import common.map.IMap;
 import common.map.IMutableMap;
 import org.jetbrains.annotations.NotNull;
 
-public class RemoveEntityChangeset implements Changeset {
+public final class RemoveEntityChangeset implements Changeset {
 	private final IEntity entity;
 	public RemoveEntityChangeset(final @NotNull IEntity entity) {
 		this.entity = entity;

@@ -11,7 +11,7 @@ import java.util.List;
 /**
  * Multiple changesets treated as a single unit.
  */
-public class CompositeChangeset implements Changeset {
+public final class CompositeChangeset implements Changeset {
 	private final List<Changeset> changesets;
 
 	public CompositeChangeset(final @NotNull List<Changeset> changesets) {

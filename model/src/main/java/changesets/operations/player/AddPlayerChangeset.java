@@ -12,7 +12,7 @@ import org.jetbrains.annotations.NotNull;
 /**
  * A changeset to add a player to the game.
  */
-public class AddPlayerChangeset implements Changeset {
+public final class AddPlayerChangeset implements Changeset {
 	private final Player player;
 
 	public AddPlayerChangeset(final @NotNull Player player) {

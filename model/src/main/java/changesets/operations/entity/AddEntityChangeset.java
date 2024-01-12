@@ -13,7 +13,7 @@ import java.util.Objects;
 /**
  * A changeset to add an entity to the game-world. TODO: Should we really allow/ask callers to construct the Entities?
  */
-public class AddEntityChangeset implements Changeset {
+public final class AddEntityChangeset implements Changeset {
 	private final IEntity entity;
 
 	public AddEntityChangeset(final @NotNull IEntity entity) {

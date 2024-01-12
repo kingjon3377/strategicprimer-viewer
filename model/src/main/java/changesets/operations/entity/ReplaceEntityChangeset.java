@@ -13,7 +13,7 @@ import java.util.Objects;
 /**
  * A changeset operation to replace one entity with another.
  */
-public class ReplaceEntityChangeset implements Changeset {
+public final class ReplaceEntityChangeset implements Changeset {
 	private final @NotNull IEntity toRemove;
 	private final @NotNull IEntity toAdd;
 

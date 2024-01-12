@@ -12,7 +12,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
 
-public class ChangePlayerPortraitChangeset implements Changeset {
+public final class ChangePlayerPortraitChangeset implements Changeset {
 	private final int playerId;
 	private final @NotNull String oldPortrait;
 	private final @NotNull String newPortrait;

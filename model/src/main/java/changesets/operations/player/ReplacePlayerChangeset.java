@@ -12,7 +12,7 @@ import org.jetbrains.annotations.NotNull;
 /**
  * A changeset operation to replace one player with another.
  */
-public class ReplacePlayerChangeset implements Changeset {
+public final class ReplacePlayerChangeset implements Changeset {
 	private final @NotNull Player toRemove;
 	private final @NotNull Player toAdd;
 
