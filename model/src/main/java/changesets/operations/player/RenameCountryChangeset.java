@@ -45,8 +45,7 @@ public class RenameCountryChangeset implements Changeset {
 		map.replacePlayer(oldPlayer, alteredCopy(oldPlayer));
 	}
 
-	@NotNull
-	private Player alteredCopy(Player oldPlayer) {
+	private @NotNull Player alteredCopy(Player oldPlayer) {
         return new PlayerImpl(playerId, oldPlayer.getName(), newCountry, oldPlayer.current(), oldPlayer.portrait());
 	}
 
