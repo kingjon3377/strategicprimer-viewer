@@ -3,6 +3,8 @@ package common.entity;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -67,5 +69,10 @@ public class Entity implements IMutableEntity {
 		final Entity retval = new Entity(id, location, type);
 		properties.values().forEach(retval::setProperty);
 		return retval;
+	}
+
+	@Override
+	public final @NotNull Collection<EntityProperty<?>> getAllProperties() {
+		return Collections.unmodifiableCollection(properties.values());
 	}
 }

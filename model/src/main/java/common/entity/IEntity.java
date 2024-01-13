@@ -3,6 +3,8 @@ package common.entity;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Collection;
+
 /**
  * An interface for game-world entities.
  *
@@ -17,5 +19,6 @@ public interface IEntity {
 	@NotNull String getType();
 	boolean hasProperty(@NotNull String propertyName);
 	@Nullable EntityProperty<?> getProperty(@NotNull String propertyName);
+	@NotNull Collection<EntityProperty<?>> getAllProperties();
 	IEntity copy();
 }
