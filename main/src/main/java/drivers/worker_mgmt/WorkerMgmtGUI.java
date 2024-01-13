@@ -125,9 +125,9 @@ public class WorkerMgmtGUI implements MultiMapGUIDriver, WorkerGUI {
                     new WorkerMgmtGUI(cli, options, new WorkerModel(map))
                             .startDriver();
                 } catch (final DriverFailedException except) {
-					JOptionPane.showMessageDialog(null,
-						String.format("Failed to open new window:%n%s", except.getMessage()),
-						"Strategic Primer Worker Management", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(null,
+                            String.format("Failed to open new window:%n%s", except.getMessage()),
+                            "Strategic Primer Worker Management", JOptionPane.ERROR_MESSAGE);
                     LovelaceLogger.error(except, "Failed to open new window");
                 }
             });

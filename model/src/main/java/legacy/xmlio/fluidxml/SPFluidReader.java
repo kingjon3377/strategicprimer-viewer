@@ -170,8 +170,8 @@ public class SPFluidReader implements IMapReader, ISPReader {
     }
 
     private void parseTileChild(final IMutableLegacyMap map, final StartElement parent,
-								final Iterable<XMLEvent> stream, final IMutableLegacyPlayerCollection players, final Warning warner,
-								final IDRegistrar idFactory, final Point currentTile, final StartElement element)
+                                final Iterable<XMLEvent> stream, final IMutableLegacyPlayerCollection players, final Warning warner,
+                                final IDRegistrar idFactory, final Point currentTile, final StartElement element)
             throws SPFormatException {
         final String type = element.getName().getLocalPart().toLowerCase();
         if (isFutureTag(element, warner)) {
@@ -222,7 +222,7 @@ public class SPFluidReader implements IMapReader, ISPReader {
     }
 
     private void parseTile(final IMutableLegacyMap map, final StartElement element, final Iterable<XMLEvent> stream,
-						   final IMutableLegacyPlayerCollection players, final Warning warner, final IDRegistrar idFactory)
+                           final IMutableLegacyPlayerCollection players, final Warning warner, final IDRegistrar idFactory)
             throws SPFormatException {
         expectAttributes(element, warner, "row", "column", "kind", "type", "mountain");
         final Point loc = new Point(getIntegerAttribute(element, "row"),
@@ -258,7 +258,7 @@ public class SPFluidReader implements IMapReader, ISPReader {
     }
 
     private void parseElsewhere(final IMutableLegacyMap map, final StartElement element, final Iterable<XMLEvent> stream,
-								final IMutableLegacyPlayerCollection players, final Warning warner, final IDRegistrar idFactory)
+                                final IMutableLegacyPlayerCollection players, final Warning warner, final IDRegistrar idFactory)
             throws SPFormatException {
         expectAttributes(element, warner);
         final Point loc = Point.INVALID_POINT;
@@ -278,7 +278,7 @@ public class SPFluidReader implements IMapReader, ISPReader {
     }
 
     private IMutableLegacyMap readMapOrViewTag(final StartElement element, final QName parent, final Iterable<XMLEvent> stream,
-											   final IMutableLegacyPlayerCollection players, final Warning warner, final IDRegistrar idFactory)
+                                               final IMutableLegacyPlayerCollection players, final Warning warner, final IDRegistrar idFactory)
             throws SPFormatException {
         requireTag(element, parent, "map", "view");
         final int currentTurn;

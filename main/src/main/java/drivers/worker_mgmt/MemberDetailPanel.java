@@ -54,7 +54,7 @@ import java.util.Iterator;
  */
 public class MemberDetailPanel extends BorderedPanel implements UnitMemberListener {
     @Serial
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
     public MemberDetailPanel(final JPanel resultsPanel, final JPanel notesPanel) { // TODO: Move initialization of those into here?
         final JPanel statPanel = new JPanel();
@@ -165,7 +165,7 @@ public class MemberDetailPanel extends BorderedPanel implements UnitMemberListen
 
     private static class PortraitComponent extends JComponent {
         @Serial
-		private static final long serialVersionUID = 1L;
+        private static final long serialVersionUID = 1L;
         private @Nullable Image portrait = null;
 
         public void setPortrait(final @Nullable Image portrait) {

@@ -269,7 +269,7 @@ public final class TestXMLIO {
 	 * made fatal.
 	 */
 	private <Type> void assertMissingProperty(final String xml, final String property,
-											  final @Nullable Type desideratum)
+	                                          final @Nullable Type desideratum)
 		throws SPFormatException, XMLStreamException, IOException {
 		final Consumer<MissingPropertyException> assertion =
 			(except) -> assertEquals(property, except.getParam(),
@@ -299,7 +299,7 @@ public final class TestXMLIO {
 	 * made fatal.
 	 */
 	private <Type> void assertDeprecatedProperty(final String xml, final String deprecated, final String preferred,
-												 final String tag, final @Nullable Type desideratum)
+	                                             final String tag, final @Nullable Type desideratum)
 		throws SPFormatException, XMLStreamException, IOException {
 		final Consumer<DeprecatedPropertyException> assertion = (except) -> { // FIXME: assertFormatIssue takes assertions as varargs, so split
 			assertEquals(deprecated, except.getOld(),
@@ -361,12 +361,12 @@ public final class TestXMLIO {
 		throws SPFormatException, XMLStreamException, IOException {
 		for (final ISPReader reader : spReaders) {
 			try (final StringReader stringReader =
-					 new StringReader(createSerializedForm(obj, false))) {
+				     new StringReader(createSerializedForm(obj, false))) {
 				assertEquals(obj, reader.readXML(FAKE_FILENAME, stringReader,
 					warner), message);
 			}
 			try (final StringReader stringReader =
-					 new StringReader(createSerializedForm(obj, true))) {
+				     new StringReader(createSerializedForm(obj, true))) {
 				assertEquals(obj, reader.readXML(FAKE_FILENAME, stringReader,
 					warner), message);
 			}
@@ -396,7 +396,7 @@ public final class TestXMLIO {
 			for (final Boolean deprecated : BOOLS) {
 				obj.setImage("xyzzy"); // TODO: Should randomly generate a string
 				try (final StringReader stringReader =
-						 new StringReader(createSerializedForm(obj, deprecated))) {
+					     new StringReader(createSerializedForm(obj, deprecated))) {
 					assertEquals(obj.getImage(), reader.<HasMutableImage>readXML(
 							FAKE_FILENAME, stringReader, Warning.IGNORE).getImage(),
 						message);
@@ -422,7 +422,7 @@ public final class TestXMLIO {
 		for (final ISPReader reader : spReaders) {
 			for (final Boolean deprecated : BOOLS) {
 				try (final StringReader stringReader =
-						 new StringReader(createSerializedForm(obj, deprecated))) {
+					     new StringReader(createSerializedForm(obj, deprecated))) {
 					final HasNotes read = reader.readXML(FAKE_FILENAME,
 						stringReader, Warning.IGNORE);
 					for (final Integer player : obj.getNotesPlayers()) {
@@ -450,7 +450,7 @@ public final class TestXMLIO {
 			for (final Boolean deprecated : BOOLS) {
 				obj.setPortrait("xyzzy");
 				try (final StringReader stringReader =
-						 new StringReader(createSerializedForm(obj, deprecated))) {
+					     new StringReader(createSerializedForm(obj, deprecated))) {
 					assertEquals(obj.getPortrait(), reader.<HasPortrait>readXML(
 							FAKE_FILENAME, stringReader, Warning.IGNORE).getPortrait(),
 						message);
@@ -464,7 +464,7 @@ public final class TestXMLIO {
 	}
 
 	private <Type> void assertForwardDeserialization(final String message, final String xml,
-													 final Predicate<Type> assertion)
+	                                                 final Predicate<Type> assertion)
 		throws SPFormatException, XMLStreamException, IOException {
 		assertForwardDeserialization(message, xml, assertion, Warning.DIE);
 	}
@@ -487,7 +487,7 @@ public final class TestXMLIO {
 	 * @param warner The warning level to use for this assertion
 	 */
 	private <Type> void assertForwardDeserializationEquality(final String message, final String xml,
-															 final Type expected, final Warning warner) throws SPFormatException, XMLStreamException, IOException {
+	                                                         final Type expected, final Warning warner) throws SPFormatException, XMLStreamException, IOException {
 		for (final ISPReader reader : spReaders) {
 			try (final StringReader stringReader = new StringReader(xml)) {
 				assertEquals(expected, reader.readXML(FAKE_FILENAME, stringReader, warner), message);
@@ -508,7 +508,7 @@ public final class TestXMLIO {
 	 * @param warner The warning level to use for this assertion
 	 */
 	private <Type> void assertForwardDeserialization(final String message, final String xml,
-													 final Predicate<Type> assertion, final Warning warner)
+	                                                 final Predicate<Type> assertion, final Warning warner)
 		throws SPFormatException, XMLStreamException, IOException {
 		for (final ISPReader reader : spReaders) {
 			try (final StringReader stringReader = new StringReader(xml)) {
@@ -526,10 +526,10 @@ public final class TestXMLIO {
 	 * @param warningLevel The warning level to use
 	 */
 	private void assertEquivalentForms(final String message, final String firstForm, final String secondForm,
-									   final Warning warningLevel) throws SPFormatException, XMLStreamException, IOException {
+	                                   final Warning warningLevel) throws SPFormatException, XMLStreamException, IOException {
 		for (final ISPReader reader : spReaders) {
 			try (final StringReader firstReader = new StringReader(firstForm);
-				 final StringReader secondReader = new StringReader(secondForm)) {
+			     final StringReader secondReader = new StringReader(secondForm)) {
 				assertEquals((Object) reader.readXML(FAKE_FILENAME, firstReader, warningLevel),
 					reader.readXML(FAKE_FILENAME, secondReader, warningLevel),
 					message);
@@ -697,8 +697,8 @@ public final class TestXMLIO {
 	@ParameterizedTest
 	@MethodSource
 	public void testVillagePopulationSerialization(final TownStatus status, final String race, final int id,
-												   final int populationSize, final int workedField, final int producedId, final int producedQty,
-												   final int consumedId, final int consumedQty)
+	                                               final int populationSize, final int workedField, final int producedId, final int producedQty,
+	                                               final int consumedId, final int consumedQty)
 		throws SPFormatException, XMLStreamException, IOException {
 		assumeTrue(populationSize >= 0, "Population can't be negative");
 		assumeTrue(workedField >= 0, "Field ID won't ever be negative");
@@ -738,7 +738,7 @@ public final class TestXMLIO {
 	@ParameterizedTest
 	@MethodSource
 	public void testCityWantsName(final TownSize size, final TownStatus status, final int id, final int dc,
-								  final boolean deprecatedWriter)
+	                              final boolean deprecatedWriter)
 		throws SPFormatException, XMLStreamException, IOException {
 		final City city = new City(status, size, dc, "", id, new PlayerImpl(-1, ""));
 		assertMissingProperty(createSerializedForm(city, deprecatedWriter), "name", city);
@@ -789,8 +789,8 @@ public final class TestXMLIO {
 	@ParameterizedTest
 	@MethodSource
 	public void testCityPopulationSerialization(final String name, final TownSize size, final TownStatus status,
-												final String race, final int id, final int dc, final int populationSize, final int workedField,
-												final int skillLevel, final int producedId, final int producedQty)
+	                                            final String race, final int id, final int dc, final int populationSize, final int workedField,
+	                                            final int skillLevel, final int producedId, final int producedQty)
 		throws SPFormatException, XMLStreamException, IOException {
 		assumeTrue(populationSize >= 0, "Population can't be negative");
 		assumeTrue(workedField >= 0, "Field ID won't ever be negative");
@@ -816,7 +816,7 @@ public final class TestXMLIO {
 	@ParameterizedTest
 	@MethodSource("testCityWantsName")
 	public void testFortificationWantsName(final TownSize size, final TownStatus status, final int id, final int dc,
-										   final boolean deprecatedWriter)
+	                                       final boolean deprecatedWriter)
 		throws SPFormatException, XMLStreamException, IOException {
 		final Fortification fort = new Fortification(status, size, dc, "", id, new PlayerImpl(-1, ""));
 		assertMissingProperty(createSerializedForm(fort, deprecatedWriter), "name", fort);
@@ -828,7 +828,7 @@ public final class TestXMLIO {
 	@ParameterizedTest
 	@MethodSource("testCitySerialization")
 	public void testFortificationSerialization(final TownSize size, final TownStatus status, final int id, final int dc,
-											   final String name) throws SPFormatException, XMLStreamException, IOException {
+	                                           final String name) throws SPFormatException, XMLStreamException, IOException {
 		final Player owner = new PlayerImpl(-1, "");
 		assertSerialization("Fortification serialization",
 			new Fortification(status, size, dc, name, id, owner));
@@ -851,8 +851,8 @@ public final class TestXMLIO {
 	@ParameterizedTest
 	@MethodSource("testCityPopulationSerialization")
 	public void testFortificationPopulationSerialization(final String name, final TownSize size, final TownStatus status,
-														 final String race, final int id, final int dc, final int populationSize, final int workedField,
-														 final int skillLevel, final int producedId, final int producedQty)
+	                                                     final String race, final int id, final int dc, final int populationSize, final int workedField,
+	                                                     final int skillLevel, final int producedId, final int producedQty)
 		throws SPFormatException, XMLStreamException, IOException {
 		assumeTrue(populationSize >= 0, "Population can't be negative");
 		assumeTrue(workedField >= 0, "Field ID won't ever be negative");
@@ -877,7 +877,7 @@ public final class TestXMLIO {
 	@ParameterizedTest
 	@MethodSource("testCityWantsName")
 	public void testTownWantsName(final TownSize size, final TownStatus status, final int id, final int dc,
-								  final boolean deprecatedWriter)
+	                              final boolean deprecatedWriter)
 		throws SPFormatException, XMLStreamException, IOException {
 		final Town town = new Town(status, size, dc, "", id, new PlayerImpl(-1, ""));
 		assertMissingProperty(createSerializedForm(town, deprecatedWriter), "name", town);
@@ -1461,7 +1461,7 @@ public final class TestXMLIO {
 	@ParameterizedTest
 	@MethodSource
 	public void testMeadowSerialization(final int id, final FieldStatus status, final String kind, final boolean field,
-										final boolean cultivated)
+	                                    final boolean cultivated)
 		throws SPFormatException, XMLStreamException, IOException {
 		assertSerialization("Test of Meadow serialization",
 			new Meadow(kind, field, cultivated, id, status));
@@ -1501,7 +1501,7 @@ public final class TestXMLIO {
 	@ParameterizedTest
 	@MethodSource
 	public void testMineSerialization(final int id, final String kind, final TownStatus status,
-									  final boolean deprecatedWriter)
+	                                  final boolean deprecatedWriter)
 		throws SPFormatException, XMLStreamException, IOException {
 		final Mine mine = new Mine(kind, status, id);
 		assertSerialization("Test of Mine serialization", mine);
@@ -2195,7 +2195,7 @@ public final class TestXMLIO {
 	@ParameterizedTest
 	@MethodSource
 	public void testSimpleImageSerialization(final IntFunction<? extends HasMutableImage> constructor,
-											 final int id)
+	                                         final int id)
 		throws SPFormatException, XMLStreamException, IOException {
 		final HasMutableImage item = constructor.apply(id);
 		assertImageSerialization("Image property is preserved", item);
@@ -2209,22 +2209,22 @@ public final class TestXMLIO {
 	public void testSimpleSerialization(final IntFunction<? extends HasImage> constructor, final int id)
 		throws SPFormatException, XMLStreamException, IOException {
 		final HasImage item = constructor.apply(id);
-        switch (item) {
-            case final HasKind hk -> {
-                assertSerialization(hk.getKind() + " serialization", item);
-                assertMissingProperty(String.format("<%s />",
-                        hk.getKind()), "id", (HasKind) constructor.apply(0));
-            }
-            case final Hill hill -> {
-                assertSerialization("Hill serialization", item);
-                assertMissingProperty("<hill />", "id", new Hill(0));
-            }
-            case final Oasis oasis -> {
-                assertSerialization("Hill serialization", item);
-                assertMissingProperty("<oasis />", "id", new Oasis(0));
-            }
-            case null, default -> fail("Unhandled type");
-        }
+		switch (item) {
+			case final HasKind hk -> {
+				assertSerialization(hk.getKind() + " serialization", item);
+				assertMissingProperty(String.format("<%s />",
+					hk.getKind()), "id", (HasKind) constructor.apply(0));
+			}
+			case final Hill hill -> {
+				assertSerialization("Hill serialization", item);
+				assertMissingProperty("<hill />", "id", new Hill(0));
+			}
+			case final Oasis oasis -> {
+				assertSerialization("Hill serialization", item);
+				assertMissingProperty("<oasis />", "id", new Oasis(0));
+			}
+			case null, default -> fail("Unhandled type");
+		}
 	}
 
 	private static Stream<Arguments> testCaveSerialization() {
@@ -2265,7 +2265,7 @@ public final class TestXMLIO {
 	@ParameterizedTest
 	@MethodSource
 	public void testMineralSerialization(final int dc, final int id, final String kind, final boolean exposed,
-										 final boolean deprecatedWriter)
+	                                     final boolean deprecatedWriter)
 		throws SPFormatException, XMLStreamException, IOException {
 		final MineralVein secondVein = new MineralVein(kind, exposed, dc, id);
 		assertSerialization("MineralVein serialization", secondVein);
@@ -2373,7 +2373,7 @@ public final class TestXMLIO {
 		final IMapReader reader = mapReaders.get((deprecatedReader) ? 0 : 1);
 		final ILegacyMap deserialized;
 		try (final StringReader stringReader =
-				 new StringReader(createSerializedForm(map, deprecatedWriter))) {
+			     new StringReader(createSerializedForm(map, deprecatedWriter))) {
 			deserialized = reader.readMapFromStream(FAKE_FILENAME, stringReader, Warning.DIE);
 		}
 		assertNotSame(map, deserialized, "Deserialization doesn't just return the input");
@@ -2394,7 +2394,7 @@ public final class TestXMLIO {
 	@ParameterizedTest
 	@MethodSource
 	public void testRoadSerialization(final Direction directionOne, final int qualityOne, final Direction directionTwo,
-									  final int qualityTwo)
+	                                  final int qualityTwo)
 		throws SPFormatException, XMLStreamException, IOException {
 		assumeFalse(directionOne == directionTwo, "We can't have the same direction twice");
 		assumeTrue(qualityOne >= 0, "Road quality can't be negative");

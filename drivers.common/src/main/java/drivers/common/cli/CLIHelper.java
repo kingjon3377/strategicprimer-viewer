@@ -42,7 +42,7 @@ public final class CLIHelper implements ICLIHelper {
     public CLIHelper(final IOSource istream, final Consumer<String> ostream, final Runnable flushOstream) {
         this.istream = istream;
         this.ostream = ostream;
-		this.flushOstream = flushOstream;
+        this.flushOstream = flushOstream;
     }
 
     private static IOSource stdin() {
@@ -68,10 +68,10 @@ public final class CLIHelper implements ICLIHelper {
      */
     private final Consumer<String> ostream;
 
-	/**
-	 * A method to flush the output stream, or a noop if that doesn't make sense.
-	 */
-	private final Runnable flushOstream;
+    /**
+     * A method to flush the output stream, or a noop if that doesn't make sense.
+     */
+    private final Runnable flushOstream;
 
     /**
      * The current state of the yes-to-all/no-to-all possibility. Absent if
@@ -96,13 +96,13 @@ public final class CLIHelper implements ICLIHelper {
         }
     }
 
-	/**
-	 * Flush the output stream, if a means to do so has been provided.
-	 */
-	@Override
-	public void flush() {
-		flushOstream.run();
-	}
+    /**
+     * Flush the output stream, if a means to do so has been provided.
+     */
+    @Override
+    public void flush() {
+        flushOstream.run();
+    }
 
     /**
      * Print the specified string, then a newline.

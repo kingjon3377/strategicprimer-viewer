@@ -10,10 +10,10 @@ import java.util.Comparator;
  * A class providing a comparison for {@link Number numbers} of unknown or varied types.
  */
 public class NumberComparator implements Comparator<Number>, Serializable {
-	@Serial
-	private static final long serialVersionUID = 0L;
+    @Serial
+    private static final long serialVersionUID = 0L;
 
-	/**
+    /**
      * Compare two numbers. If they are the same type, delegate to their
      * built-in comparison function; if not, convert both to doubles and
      * return the result of comparing those.

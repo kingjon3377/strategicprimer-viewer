@@ -6,6 +6,7 @@ import impl.dbio.MapContentsReader;
 import impl.dbio.TryBiConsumer;
 import io.jenetics.facilejdbc.Query;
 import io.jenetics.facilejdbc.Transactional;
+
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Collections;
@@ -27,8 +28,8 @@ import common.xmlio.Warning;
 import static io.jenetics.facilejdbc.Param.value;
 
 public final class DBResourcePileHandler
-		extends AbstractDatabaseWriter<IResourcePile, /*IUnit|IFortress*/TileFixture>
-		implements MapContentsReader {
+	extends AbstractDatabaseWriter<IResourcePile, /*IUnit|IFortress*/TileFixture>
+	implements MapContentsReader {
 	public DBResourcePileHandler() {
 		super(IResourcePile.class, TileFixture.class);
 	}
@@ -64,13 +65,13 @@ public final class DBResourcePileHandler
 	@Override
 	public void write(final Transactional db, final IResourcePile obj, final TileFixture context) throws SQLException {
 		INSERT_SQL.on(value("parent", context.getId()), value("id", obj.getId()), value("kind", obj.getKind()),
-				value("contents", obj.getContents()), value("quantity", obj.getQuantity().number().toString()),
-				value("units", obj.getQuantity().units()), value("created", obj.getCreated()),
-				value("image", obj.getImage())).execute(db.connection());
+			value("contents", obj.getContents()), value("quantity", obj.getQuantity().number().toString()),
+			value("units", obj.getQuantity().units()), value("created", obj.getCreated()),
+			value("image", obj.getImage())).execute(db.connection());
 	}
 
 	private TryBiConsumer<Map<String, Object>, Warning, SQLException> readResourcePile(final IMutableLegacyMap map,
-																					   final Map<Integer, List<Object>> containees) {
+	                                                                                   final Map<Integer, List<Object>> containees) {
 		return (dbRow, warner) -> {
 			final int parentId = (Integer) dbRow.get("parent");
 			final int id = (Integer) dbRow.get("id");
@@ -99,9 +100,10 @@ public final class DBResourcePileHandler
 	}
 
 	private static final Query SELECT = Query.of("SELECT * FROM resource_piles");
+
 	@Override
 	public void readMapContents(final Connection db, final IMutableLegacyMap map, final Map<Integer, IFixture> containers,
-                                final Map<Integer, List<Object>> containees, final Warning warner) throws SQLException {
+	                            final Map<Integer, List<Object>> containees, final Warning warner) throws SQLException {
 		handleQueryResults(db, warner, "resource piles", readResourcePile(map, containees), SELECT);
 	}
 }

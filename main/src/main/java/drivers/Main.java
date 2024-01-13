@@ -44,7 +44,7 @@ public final class Main {
         LovelaceLogger.trace("If you can see this, trace-level log messages are enabled.");
         final SPOptionsImpl options = new SPOptionsImpl();
         if (Platform.SYSTEM_IS_MAC) {
-			Desktop.getDesktop().setOpenFileHandler(AppChooserState::handleDroppedFiles);
+            Desktop.getDesktop().setOpenFileHandler(AppChooserState::handleDroppedFiles);
         }
         final AppStarter appStarter = new AppStarter();
         try {

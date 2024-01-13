@@ -69,8 +69,8 @@ import java.util.function.Consumer;
         if (selectedUnit == null) {
             LovelaceLogger.warning("New worker created when no unit selected");
             JOptionPane.showMessageDialog(null,
-				"As no unit was selected, the new worker wasn't added to a unit.",
-				"Strategic Primer Worker Advancement", JOptionPane.ERROR_MESSAGE);
+                    "As no unit was selected, the new worker wasn't added to a unit.",
+                    "Strategic Primer Worker Advancement", JOptionPane.ERROR_MESSAGE);
         } else {
             model.addUnitMember(selectedUnit, worker);
         }
@@ -195,7 +195,7 @@ import java.util.function.Consumer;
                 }
                 final @Nullable Component parent = getParent();
                 JOptionPane.showMessageDialog(parent, builder.toString(),
-					"Strategic Primer Worker Advancement", JOptionPane.ERROR_MESSAGE);
+                        "Strategic Primer Worker Advancement", JOptionPane.ERROR_MESSAGE);
             }
         }
 

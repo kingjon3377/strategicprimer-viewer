@@ -77,7 +77,7 @@ public interface ITurnRunningModel extends IExplorationModel, IAdvancementModel 
      * otherwise.
      */
     boolean addResource(IUnit container, int id, String kind, String contents, LegacyQuantity quantity,
-						int createdDate);
+                        int createdDate);
 
     /**
      * Add a resource with the given ID, kind, contents, quantity, and
@@ -86,7 +86,7 @@ public interface ITurnRunningModel extends IExplorationModel, IAdvancementModel 
      * otherwise.
      */
     boolean addResource(IFortress container, int id, String kind, String contents, LegacyQuantity quantity,
-						int createdDate);
+                        int createdDate);
 
     /**
      * Add a resource with the given ID, kind, contents, and quantity in

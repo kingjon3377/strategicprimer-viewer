@@ -7,6 +7,7 @@ import impl.dbio.TryBiConsumer;
 import io.jenetics.facilejdbc.Param;
 import io.jenetics.facilejdbc.Query;
 import io.jenetics.facilejdbc.Transactional;
+
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -86,9 +87,10 @@ public final class DBPortalHandler extends AbstractDatabaseWriter<Portal, Point>
 	}
 
 	private static final Query SELECT = Query.of("SELECT * FROM portals");
+
 	@Override
 	public void readMapContents(final Connection db, final IMutableLegacyMap map, final Map<Integer, IFixture> containers,
-                                final Map<Integer, List<Object>> containees, final Warning warner) throws SQLException {
+	                            final Map<Integer, List<Object>> containees, final Warning warner) throws SQLException {
 		handleQueryResults(db, warner, "portals", readPortal(map), SELECT);
 	}
 }

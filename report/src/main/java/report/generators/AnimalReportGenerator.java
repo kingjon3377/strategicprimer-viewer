@@ -45,7 +45,7 @@ public class AnimalReportGenerator extends AbstractReportGenerator</*Animal|Anim
 	 */
 	@Override
 	public void produceSingle(final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-                              final ILegacyMap map, final Consumer<String> ostream,
+	                          final ILegacyMap map, final Consumer<String> ostream,
 		/*Animal|AnimalTracks*/final AnimalOrTracks item, final Point loc) {
 		// TODO: Extract helper method for the "At (loc):" idiom
 		ostream.accept("At ");
@@ -92,7 +92,7 @@ public class AnimalReportGenerator extends AbstractReportGenerator</*Animal|Anim
 	 */
 	@Override
 	public void produce(final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures, final ILegacyMap map,
-						final Consumer<String> ostream) {
+	                    final Consumer<String> ostream) {
 		// TODO: Use a multimap, either from Guava or a custom impl in lovelace.util
 		final Map<String, List<Point>> items = new HashMap<>();
 		for (final Triplet<Integer, Point, AnimalOrTracks> triplet : fixtures.entrySet().stream()

@@ -142,7 +142,7 @@ public class IOHandler implements ActionListener {
     }
 
     private static Consumer<Path> loadHandlerImpl(final Consumer<IMutableLegacyMap> handler, final @Nullable Component source,
-												  final String errorTitle) {
+                                                  final String errorTitle) {
         return path -> {
             try {
                 handler.accept(MapIOHelper.readMap(path, Warning.getDefaultHandler()));
@@ -210,10 +210,10 @@ public class IOHandler implements ActionListener {
     public void actionPerformed(final ActionEvent event) {
         final Component source = Optional.ofNullable(event.getSource())
                 .filter(Component.class::isInstance).map(Component.class::cast)
-			.orElseThrow(() -> new IllegalStateException("Can't get source of event"));
+                .orElseThrow(() -> new IllegalStateException("Can't get source of event"));
         final Frame parentWindow = new ComponentParentStream(source).stream()
-                    .filter(Frame.class::isInstance).map(Frame.class::cast)
-                    .findFirst().orElse(null);
+                .filter(Frame.class::isInstance).map(Frame.class::cast)
+                .findFirst().orElse(null);
         final String errorTitle = Optional.ofNullable(parentWindow).filter(ISPWindow.class::isInstance)
                 .map(ISPWindow.class::cast).map(ISPWindow::getWindowName)
                 .orElse("Strategic Primer Assistive Programs");
@@ -321,8 +321,8 @@ public class IOHandler implements ActionListener {
                                     .findAny().orElse(null);
                     if (vdf == null) {
                         JOptionPane.showMessageDialog(null,
-							"Either the map viewer was not included in this edition of the assistive programs, or the logic to load it failed.",
-							"Strategic Primer Assistive Programs", JOptionPane.ERROR_MESSAGE);
+                                "Either the map viewer was not included in this edition of the assistive programs, or the logic to load it failed.",
+                                "Strategic Primer Assistive Programs", JOptionPane.ERROR_MESSAGE);
                         LovelaceLogger.error("Map viewer was not included in this assembly, or service discovery failed");
                     } else {
                         SwingUtilities.invokeLater(() -> {
@@ -332,9 +332,9 @@ public class IOHandler implements ActionListener {
                             } catch (final DriverFailedException except) {
                                 LovelaceLogger.error(Objects.requireNonNullElse(except.getCause(), except),
                                         "Error thrown from viewer driver");
-								JOptionPane.showMessageDialog(null,
-									String.format("Error starting map viewer:%n%s", except.getMessage()),
-									"Strategic Primer Assistive Programs", JOptionPane.ERROR_MESSAGE);
+                                JOptionPane.showMessageDialog(null,
+                                        String.format("Error starting map viewer:%n%s", except.getMessage()),
+                                        "Strategic Primer Assistive Programs", JOptionPane.ERROR_MESSAGE);
                             }
                         });
                     }

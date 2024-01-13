@@ -21,7 +21,7 @@ import java.util.Collection;
 
 /* package */ class FluidTerrainHandler extends FluidBase {
     public static Ground readGround(final StartElement element, final QName parent, final Iterable<XMLEvent> stream,
-									final ILegacyPlayerCollection players, final Warning warner, final IDRegistrar idFactory)
+                                    final ILegacyPlayerCollection players, final Warning warner, final IDRegistrar idFactory)
             throws SPFormatException {
         requireTag(element, parent, "ground");
         expectAttributes(element, warner, "id", "kind", "ground", "image", "exposed");

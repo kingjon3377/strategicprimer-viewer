@@ -38,7 +38,7 @@ public interface MapContentsReader {
 	 * @param warner Warning instance to use
 	 */
 	void readMapContents(Connection db, IMutableLegacyMap map, Map<Integer, IFixture> containers,
-						 Map<Integer, List<Object>> containees, Warning warner) throws SQLException;
+	                     Map<Integer, List<Object>> containees, Warning warner) throws SQLException;
 
 	private static Map<String, Object> parseToMap(final Row rs, final Connection conn) throws SQLException {
 		final ResultSetMetaData rsm = rs.getMetaData();
@@ -55,8 +55,8 @@ public interface MapContentsReader {
 	 * FIXME: Provide a version taking a RowParser, for the more common case of 1:1 object-to-row mapping
 	 */
 	default void handleQueryResults(final Connection db, final Warning warner, final String description,
-									final TryBiConsumer<Map<String, Object>, Warning, SQLException> handler, final Query query,
-									final Object... args) throws SQLException {
+	                                final TryBiConsumer<Map<String, Object>, Warning, SQLException> handler, final Query query,
+	                                final Object... args) throws SQLException {
 		LovelaceLogger.debug("About to read %s", description);
 		final Accumulator<Integer> count = new IntAccumulator(0);
 		try (final Stream<Map<String, Object>> stream = query.as(((RowParser<Map<String, Object>>) MapContentsReader::parseToMap).stream(), db)) {
@@ -92,17 +92,21 @@ public interface MapContentsReader {
 			throw new SQLException("Expected key not in the schema"); // TODO: specify which key
 		}
 		final Object val = dbRow.get(key);
-        switch (val) {
-            case null -> throw new SQLException("No value for key " + key);
-            case final Boolean b -> {  // Can't happen in SQLite, but we can dream ...
-                return b;
-            }
-            case final Integer i when i == 0 -> { return false; }
-			case final Integer i when i == 1 -> { return true; }
+		switch (val) {
+			case null -> throw new SQLException("No value for key " + key);
+			case final Boolean b -> {  // Can't happen in SQLite, but we can dream ...
+				return b;
+			}
+			case final Integer i when i == 0 -> {
+				return false;
+			}
+			case final Integer i when i == 1 -> {
+				return true;
+			}
 			case final Integer i -> throw new SQLException("Invalid Boolean value",
 				new IllegalArgumentException("Outside range of Boolean"));
-            default -> throw new SQLException("Invalid Boolean value",
-                    new IllegalArgumentException("Field maps to non-Boolean value"));
-        }
+			default -> throw new SQLException("Invalid Boolean value",
+				new IllegalArgumentException("Field maps to non-Boolean value"));
+		}
 	}
 }

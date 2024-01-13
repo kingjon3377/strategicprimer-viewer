@@ -21,8 +21,8 @@ import javax.xml.stream.events.XMLEvent;
 
 /* package */ class FluidExplorableHandler extends FluidBase {
     public static AdventureFixture readAdventure(final StartElement element, final QName parent,
-												 final Iterable<XMLEvent> stream, final ILegacyPlayerCollection players, final Warning warner,
-												 final IDRegistrar idFactory) throws SPFormatException {
+                                                 final Iterable<XMLEvent> stream, final ILegacyPlayerCollection players, final Warning warner,
+                                                 final IDRegistrar idFactory) throws SPFormatException {
         requireTag(element, parent, "adventure");
         expectAttributes(element, warner, "owner", "brief", "full", "id", "image");
         final Player player;

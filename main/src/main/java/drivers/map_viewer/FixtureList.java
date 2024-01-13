@@ -57,7 +57,7 @@ import worker.common.IFixtureEditHelper;
 public final class FixtureList extends JList<TileFixture>
         implements DragGestureListener, SelectionChangeListener {
     @Serial
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
     private final JComponent parentComponent;
     private final FixtureListModel listModel;
     private final IFixtureEditHelper feh;

@@ -155,7 +155,7 @@ public final class SPMenu extends JMenuBar {
                 handler, createAccelerator(KeyEvent.VK_W)));
 
         if (Platform.SYSTEM_IS_MAC) {
-			Desktop.getDesktop().setAboutHandler(
+            Desktop.getDesktop().setAboutHandler(
                     (event) -> handler.actionPerformed(new ActionEvent(Stream.<Object>of(
                                     WindowList.getWindows(true, false)).filter(Objects::nonNull)
                             .reduce((first, second) -> second).orElse(event),

@@ -41,7 +41,7 @@ import java.util.stream.StreamSupport;
 
 /* package */ class UnitMemberHandler extends FluidBase {
     public static Worker readWorker(final StartElement element, final QName parent, final Iterable<XMLEvent> stream,
-									final ILegacyPlayerCollection players, final Warning warner, final IDRegistrar idFactory)
+                                    final ILegacyPlayerCollection players, final Warning warner, final IDRegistrar idFactory)
             throws SPFormatException {
         requireTag(element, parent, "worker");
         expectAttributes(element, warner, "name", "race", "portrait", "id", "image");

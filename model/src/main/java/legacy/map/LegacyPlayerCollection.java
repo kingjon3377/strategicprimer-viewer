@@ -152,31 +152,33 @@ public class LegacyPlayerCollection implements IMutableLegacyPlayerCollection {
 		}
 		return true;
 	}
-    /**
-     * A player collection is a subset if it has no players we don't.
-     */
-    @Override
-    public boolean isSubset(final Iterable<Player> obj, final Consumer<String> report) {
-        boolean retval = true;
-        for (final Player player : obj) {
-            if (!players.containsValue(player)) {
-                if (players.containsKey(player.getPlayerId())) {
-                    final Player match = players.get(player.getPlayerId());
-                    if (player.getName().isEmpty() || "unknown".equalsIgnoreCase(player.getName())) {
-                        continue;
-                    } else {
-                        report.accept(String.format(
-                                "Matching players differ: our %s, their %s",
-                                match.toString(), player));
-                    }
-                } else {
-                    report.accept("Extra player " + player.getName());
-                }
-                retval = false;
-            }
-        }
-        return retval;
-    }
+
+	/**
+	 * A player collection is a subset if it has no players we don't.
+	 */
+	@Override
+	public boolean isSubset(final Iterable<Player> obj, final Consumer<String> report) {
+		boolean retval = true;
+		for (final Player player : obj) {
+			if (!players.containsValue(player)) {
+				if (players.containsKey(player.getPlayerId())) {
+					final Player match = players.get(player.getPlayerId());
+					if (player.getName().isEmpty() || "unknown".equalsIgnoreCase(player.getName())) {
+						continue;
+					} else {
+						report.accept(String.format(
+							"Matching players differ: our %s, their %s",
+							match.toString(), player));
+					}
+				} else {
+					report.accept("Extra player " + player.getName());
+				}
+				retval = false;
+			}
+		}
+		return retval;
+	}
+
 	/**
 	 * Clone the collection.
 	 */
@@ -186,6 +188,7 @@ public class LegacyPlayerCollection implements IMutableLegacyPlayerCollection {
 		players.values().forEach(retval::add);
 		return retval;
 	}
+
 	/**
 	 * An object is equal iff it is a player collection with exactly the
 	 * players we have.

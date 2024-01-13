@@ -6,6 +6,7 @@ import impl.dbio.MapContentsReader;
 import impl.dbio.TryBiConsumer;
 import io.jenetics.facilejdbc.Query;
 import io.jenetics.facilejdbc.Transactional;
+
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Collections;
@@ -55,10 +56,10 @@ public final class DBFieldHandler extends AbstractDatabaseWriter<Meadow, Point> 
 	@Override
 	public void write(final Transactional db, final Meadow obj, final Point context) throws SQLException {
 		INSERT_SQL.on(value("row", context.row()), value("column", context.column()),
-				value("id", obj.getId()), value("type", obj.isField() ? "field" : "meadow"),
-				value("kind", obj.getKind()), value("cultivated", obj.isCultivated()),
-				value("status", obj.getStatus().toString()), value("acres", obj.getAcres().toString()),
-				value("image", obj.getImage())).execute(db.connection());
+			value("id", obj.getId()), value("type", obj.isField() ? "field" : "meadow"),
+			value("kind", obj.getKind()), value("cultivated", obj.isCultivated()),
+			value("status", obj.getStatus().toString()), value("acres", obj.getAcres().toString()),
+			value("image", obj.getImage())).execute(db.connection());
 	}
 
 	private TryBiConsumer<Map<String, Object>, Warning, SQLException> readMeadow(final IMutableLegacyMap map) {
@@ -92,9 +93,10 @@ public final class DBFieldHandler extends AbstractDatabaseWriter<Meadow, Point> 
 	}
 
 	private static final Query SELECT = Query.of("SELECT * FROM fields");
+
 	@Override
 	public void readMapContents(final Connection db, final IMutableLegacyMap map, final Map<Integer, IFixture> containers,
-                                final Map<Integer, List<Object>> containees, final Warning warner) throws SQLException {
+	                            final Map<Integer, List<Object>> containees, final Warning warner) throws SQLException {
 		handleQueryResults(db, warner, "meadows", readMeadow(map), SELECT);
 	}
 }

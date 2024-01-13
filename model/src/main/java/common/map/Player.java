@@ -6,15 +6,16 @@ package common.map;
  * TODO: Maybe drop the Has* interfaces?
  */
 public interface Player extends Comparable<Player>, HasName, HasPortrait {
-    /**
-     * The player's ID number.
-     */
-    int playerId();
+	/**
+	 * The player's ID number.
+	 */
+	int playerId();
 
-    /**
-     * Whether this is the current player.
-     */
-    boolean current();
+	/**
+	 * Whether this is the current player.
+	 */
+	boolean current();
+
 	/**
 	 * The (code) name of the player
 	 */
@@ -25,17 +26,17 @@ public interface Player extends Comparable<Player>, HasName, HasPortrait {
 		return name();
 	}
 
-    /**
-     * Whether this is the (or an) "independent" player---the "owner" of
-     * unowned fixtures.
-     */
-    default boolean isIndependent() {
-        return "independent".equalsIgnoreCase(name());
-    }
+	/**
+	 * Whether this is the (or an) "independent" player---the "owner" of
+	 * unowned fixtures.
+	 */
+	default boolean isIndependent() {
+		return "independent".equalsIgnoreCase(name());
+	}
 
-    /**
-     * The filename of a flag for the player.
-     */
+	/**
+	 * The filename of a flag for the player.
+	 */
 	String portrait();
 
 	@Override
@@ -43,9 +44,9 @@ public interface Player extends Comparable<Player>, HasName, HasPortrait {
 		return portrait();
 	}
 
-    /**
-     * The country the player is associated with. The empty string if not provided. TODO: Should this be required to be
+	/**
+	 * The country the player is associated with. The empty string if not provided. TODO: Should this be required to be
 	 * unique in a map?
-     */
-    String country();
+	 */
+	String country();
 }

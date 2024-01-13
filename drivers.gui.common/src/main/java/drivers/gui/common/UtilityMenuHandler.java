@@ -22,7 +22,7 @@ public class UtilityMenuHandler {
         this.driver = driver;
         this.window = window;
         if (Platform.SYSTEM_IS_MAC) {
-			Desktop.getDesktop().setAboutHandler(this::macAboutHandler);
+            Desktop.getDesktop().setAboutHandler(this::macAboutHandler);
         }
     }
 

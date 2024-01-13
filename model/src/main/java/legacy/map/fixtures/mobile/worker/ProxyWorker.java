@@ -148,7 +148,7 @@ public class ProxyWorker implements WorkerProxy {
     @Override
     public int getId() {
         if (parallel) {
-			return Objects.requireNonNullElse(getConsensus(IWorker::getId), -1);
+            return Objects.requireNonNullElse(getConsensus(IWorker::getId), -1);
         } else {
             return -1;
         }
@@ -231,7 +231,7 @@ public class ProxyWorker implements WorkerProxy {
 
     @Override
     public String getImage() {
-		return Objects.requireNonNullElse(getConsensus(IWorker::getImage), "");
+        return Objects.requireNonNullElse(getConsensus(IWorker::getImage), "");
     }
 
     @Override
