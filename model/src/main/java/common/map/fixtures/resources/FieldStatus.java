@@ -53,7 +53,7 @@ public enum FieldStatus {
 
     private static final Supplier<List<FieldStatus>> FS_CACHE = new Cache();
 
-    public static FieldStatus random(final int seed) {
+    public static FieldStatus random(final long seed) {
         final List<FieldStatus> statuses = FS_CACHE.get();
         return statuses.get(new Random(seed).nextInt(statuses.size()));
     }
