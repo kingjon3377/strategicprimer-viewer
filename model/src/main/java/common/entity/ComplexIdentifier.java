@@ -7,8 +7,8 @@ import java.util.UUID;
 /**
  * A way to identify entities that should be much more resistant to collisions than a simple increasing integer.
  *
- * @param originWorld The game-world where this entity originated, in case it travels to anotheer world.
- * @param creatingPlayer The ID numbeer of the player whose action caused the entity to be created, or a negative ID
+ * @param originWorld The game-world where this entity originated, in case it travels to another world.
+ * @param creatingPlayer The ID number of the player whose action caused the entity to be created, or a negative ID
  *                       if it was not created due to player action.
  * @param id A unique identifying number for the entity.
  */
