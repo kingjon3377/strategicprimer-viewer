@@ -51,11 +51,11 @@ public abstract class SPFormatException extends Exception {
         column = location.getColumnNumber();
     }
 
-    public int getLine() {
+    public final int getLine() {
         return line;
     }
 
-    public int getColumn() {
+    public final int getColumn() {
         return column;
     }
 }

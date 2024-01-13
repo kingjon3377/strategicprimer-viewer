@@ -50,15 +50,15 @@ public class Entity implements IMutableEntity {
 		return properties.get(propertyName);
 	}
 
-	public void setProperty(final @NotNull EntityProperty<?> property) {
+	public final void setProperty(final @NotNull EntityProperty<?> property) {
 		properties.put(property.getPropertyName(), property);
 	}
 
-	public void removeProperty(final @NotNull String propertyName) {
+	public final void removeProperty(final @NotNull String propertyName) {
 		properties.remove(propertyName);
 	}
 
-	public void removeProperty(final @NotNull EntityProperty<?> property) {
+	public final void removeProperty(final @NotNull EntityProperty<?> property) {
 		properties.remove(property.getPropertyName(), property);
 	}
 

@@ -31,12 +31,12 @@ public class SPMap implements IMutableMap {
 	}
 
 	@Override
-	public IPlayerCollection getPlayers() {
+	public final IPlayerCollection getPlayers() {
 		return players.copy();
 	}
 
 	@Override
-	public void addMapRegion(final MapRegion region) {
+	public final void addMapRegion(final MapRegion region) {
 		final List<MapRegion> temp = new ArrayList<>(regionMap.values());
 		temp.add(region);
 		if (IMap.areRegionsValid(temp)) {
@@ -118,7 +118,7 @@ public class SPMap implements IMutableMap {
 	}
 
 	@Override
-	public void replacePlayer(final Player toRemove, final Player toAdd) {
+	public final void replacePlayer(final Player toRemove, final Player toAdd) {
 		// TODO: Add replace() method to IMutablePlayerCollection?
 		if (!Objects.equals(toRemove, players.getPlayer(toRemove.playerId()))) {
 			throw new IllegalArgumentException("Player to remove must exist in the map");
