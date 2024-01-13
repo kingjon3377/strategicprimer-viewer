@@ -31,3 +31,4 @@ indent_style = tab
 indent_size = 4
 wildcard_import_limit = 999
 ij_java_class_count_to_use_import_on_demand = 999
+ij_smart_tabs = true
