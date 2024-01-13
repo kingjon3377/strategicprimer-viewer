@@ -72,7 +72,7 @@ public final class SetCurrentPlayerChangeset implements Changeset {
 	}
 
 	@Override
-	public @NotNull IMap apply(final IMap map) throws ChangesetFailureException {
+	public @NotNull IMap apply(final @NotNull IMap map) throws ChangesetFailureException {
 		final IMutableMap retval = (IMutableMap) map.copy();
 		applyInPlace(retval);
 		return retval;

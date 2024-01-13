@@ -29,12 +29,12 @@ public final class CompositeChangeset implements Changeset {
 	}
 
 	@Override
-	public Changeset invert() {
+	public @NotNull Changeset invert() {
 		return new CompositeChangeset(changesets.reversed().stream().map(Changeset::invert).toList());
 	}
 
 	@Override
-	public void applyInPlace(final IMutableMap map) throws ChangesetFailureException {
+	public void applyInPlace(final @NotNull IMutableMap map) throws ChangesetFailureException {
 		final Deque<Changeset> alreadyApplied = new LinkedList<>();
 		try {
 			for (final Changeset changeset : changesets) {
@@ -57,7 +57,7 @@ public final class CompositeChangeset implements Changeset {
 	}
 
 	@Override
-	public IMap apply(final IMap map) throws ChangesetFailureException {
+	public @NotNull IMap apply(final @NotNull IMap map) throws ChangesetFailureException {
 		IMap retval = map;
 		for (final Changeset changeset : changesets) {
 			retval = changeset.apply(retval);
