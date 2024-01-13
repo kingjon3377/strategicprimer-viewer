@@ -2,6 +2,8 @@ package common.map;
 
 import common.entity.EntityIdentifier;
 import common.entity.IEntity;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.awt.geom.Area;
 import java.util.Collection;
@@ -10,15 +12,15 @@ import java.util.Collection;
  * A game-world within the game. TODO: terrain information, etc. TODO: Add nullness annotations
  */
 public interface IMap {
-	IEntity getEntity(EntityIdentifier id);
-	Collection<IEntity> getAllEntities();
+	@Nullable IEntity getEntity(@NotNull EntityIdentifier id);
+	@NotNull Collection<IEntity> getAllEntities();
 
 	/**
 	 * Map regions' geometry should be scaled uniformly. Invariant: No region overlaps another (sharing an edge is fine),
 	 * and no two regions have the same ID number.
 	 */
-	Collection<MapRegion> getRegions();
-	static boolean areRegionsValid(final Collection<? extends MapRegion> regions) {
+	@NotNull Collection<MapRegion> getRegions();
+	static boolean areRegionsValid(final @NotNull Collection<? extends MapRegion> regions) {
 		for (final MapRegion first : regions) {
 			for (final MapRegion second : regions) {
 				if (first == second) {
@@ -42,11 +44,11 @@ public interface IMap {
 	 * TODO: Move the specialized functionality up to IMap etc., so users can't determine the player collection is
 	 * mutable and modify it in place?
 	 */
-	IPlayerCollection getPlayers();
+	@NotNull IPlayerCollection getPlayers();
 	/**
 	 * TODO: Do we want to have some notion of "copy for whom" in this version of the API?
 	 *
 	 * @return a deep copy of the map
 	 */
-	IMap copy();
+	@NotNull IMap copy();
 }
