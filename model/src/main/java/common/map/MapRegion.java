@@ -3,7 +3,8 @@ package common.map;
 import java.awt.Polygon;
 import java.awt.geom.Area;
 
-// TODO: Should this be a record instead? Would probably silence SPMap "feature envy" warnings about repeated access to this class.
+// TODO: Should this be a record instead? Would probably silence SPMap "feature envy" warnings about repeated access to
+//  this class.
 public interface MapRegion {
 	/**
 	 * TODO: Should regions really only be identified by a number? Should they have a name?
