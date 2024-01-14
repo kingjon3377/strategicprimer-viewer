@@ -204,6 +204,7 @@ public final class WorkerStats {
                 (wisdom << 18) + (charisma << 21);
     }
 
+    @SuppressWarnings("HardcodedFileSeparator")
     @Override
     public String toString() {
         return String.format("HP: %d / %d%nStr: %d%nDex: %d%nCon: %d%nInt: %d%nWis: %d%nCha: %d%n",

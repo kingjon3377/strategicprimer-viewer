@@ -1,6 +1,7 @@
 package drivers.generators;
 
 import java.io.IOException;
+import java.nio.file.Paths;
 import java.util.Map;
 
 import lovelace.util.LovelaceLogger;
@@ -32,7 +33,7 @@ import java.util.HashMap;
         final Map<String, Map<String, Integer>> retval = new HashMap<>();
         final Map<String, Integer> initial;
         try {
-            initial = FileSplitter.getFileContents("generation/minimum_stats.txt",
+            initial = FileSplitter.getFileContents(Paths.get("generation", "minimum_stats.txt"),
                     Integer::parseInt);
         } catch (final IOException except) {
             throw new RuntimeException(except);

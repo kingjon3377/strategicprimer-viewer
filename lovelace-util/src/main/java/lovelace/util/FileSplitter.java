@@ -2,6 +2,7 @@ package lovelace.util;
 
 import java.io.IOException;
 
+import java.nio.file.Path;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -51,13 +52,10 @@ public final class FileSplitter {
      * first field) to values (the remainder passed through the provided
      * factory).
      */
-    public static <Type> Map<String, Type> getFileContents(final String filename,
-                                                           final Function<String, Type> factory) throws IOException {
-        final Iterable<String> textContent =
-                FileContentsReader.readFileContents(FileSplitter.class, filename);
-        return StreamSupport.stream(textContent.spliterator(), false)
-                .map(FileSplitter::splitOnFirstTab)
-                .map(str -> lineToEntry(str, factory))
-                .collect(Collectors.toMap(Pair::getValue0, Pair::getValue1));
-    }
+	public static <Type> Map<String, Type> getFileContents(final Path path, final Function<String, Type> factory)
+			throws IOException {
+		final Iterable<String> textContent = FileContentsReader.readFileContents(FileSplitter.class, path);
+		return StreamSupport.stream(textContent.spliterator(), false).map(FileSplitter::splitOnFirstTab)
+			.map(str -> lineToEntry(str, factory)).collect(Collectors.toMap(Pair::getValue0, Pair::getValue1));
+	}
 }

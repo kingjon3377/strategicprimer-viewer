@@ -1,6 +1,7 @@
 package common.map.fixtures.mobile;
 
 import java.io.IOException;
+import java.nio.file.Paths;
 import java.util.Map;
 
 import legacy.map.fixtures.mobile.Animal;
@@ -24,7 +25,7 @@ public final class AnimalDiscoveryDCs {
 	private static Map<String, Integer> initDcs() {
 		try {
 			return FileSplitter.getFileContents(
-				"animal_data/discovery_dc.txt",
+				Paths.get("animal_data", "discovery_dc.txt"),
 				Integer::parseInt);
 		} catch (final IOException except) {
 			throw new RuntimeException(except);

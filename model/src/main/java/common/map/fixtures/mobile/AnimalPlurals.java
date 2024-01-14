@@ -1,6 +1,7 @@
 package common.map.fixtures.mobile;
 
 import java.io.IOException;
+import java.nio.file.Paths;
 import java.util.Map;
 
 import lovelace.util.FileSplitter;
@@ -17,7 +18,7 @@ public final class AnimalPlurals {
 
 	private static Map<String, String> initPlurals() {
 		try {
-			return FileSplitter.getFileContents("animal_data/plurals.txt", str -> str);
+			return FileSplitter.getFileContents(Paths.get("animal_data", "plurals.txt"), str -> str);
 		} catch (final IOException except) {
 			throw new RuntimeException(except);
 		}

@@ -9,6 +9,7 @@ import java.awt.Frame;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.io.Serial;
+import java.nio.file.Paths;
 import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.regex.Pattern;
@@ -37,7 +38,7 @@ public final class AboutDialog extends SPDialog {
 		super(parentComponent instanceof final Frame f ? f : null, "About");
 		setLayout(new BorderLayout()); // TODO: Use a BorderedPanel for contentPane
 		final Iterable<String> resource = FileContentsReader.readFileContents(AboutDialog.class,
-			"about.html");
+			Paths.get("about.html"));
 		final StringBuilder sb = new StringBuilder();
 		resource.forEach(sb::append);
 		final String raw = sb.toString();

@@ -410,7 +410,7 @@ public final class ExplorationRunner {
 
     public void loadTableFromFile(final Class<?> cls, final String file) throws IOException {
         loadTableFromDataStream(FileContentsReader.readFileContents(
-                cls, "tables/" + file).iterator(), file);
+                cls, Paths.get("tables", file)).iterator(), file);
     }
 
     /**

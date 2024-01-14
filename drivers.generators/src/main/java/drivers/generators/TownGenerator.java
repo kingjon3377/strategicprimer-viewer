@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import drivers.exploration.old.MissingTableException;
 
+import java.nio.file.Paths;
 import java.util.Optional;
 import java.util.Arrays;
 import java.util.Collections;
@@ -85,7 +86,7 @@ import java.math.BigDecimal;
         for (final String terrain : Arrays.asList("mountain", "forest", "plains", "ocean")) {
             final String file = terrain + "_consumption";
             final Iterable<String> tableContents =
-                    FileContentsReader.readFileContents(TownGenerator.class, "tables/" + file);
+                    FileContentsReader.readFileContents(TownGenerator.class, Paths.get("tables", file));
             final List<Triplet<LegacyQuantity, String, String>> inner = new ArrayList<>();
             for (final String line : tableContents) {
                 if (line.isEmpty()) {

@@ -187,7 +187,7 @@ import legacy.map.fixtures.towns.Village;
         try {
             final Iterable<String> textContent = FileContentsReader
                     .readFileContents(WorkerStats.class,
-                            String.format("racial_stat_adjustments/%s.txt", race));
+                            Paths.get("racial_stat_adjustments", race + ".txt"));
             final List<Integer> parsed = new ArrayList<>(6);
             for (final String line : textContent) {
                 parsed.add(Integer.parseInt(line.strip()));

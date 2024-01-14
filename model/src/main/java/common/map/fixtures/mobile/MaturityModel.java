@@ -1,6 +1,7 @@
 package common.map.fixtures.mobile;
 
 import java.io.IOException;
+import java.nio.file.Paths;
 import java.util.Collections;
 import java.util.Map;
 
@@ -21,7 +22,7 @@ public final class MaturityModel {
 
     private static Map<String, Integer> initMaturityAges() {
         try {
-            return FileSplitter.getFileContents("animal_data/maturity.txt",
+            return FileSplitter.getFileContents(Paths.get("animal_data", "maturity.txt"),
                     Integer::parseInt);
         } catch (final IOException except) {
             throw new RuntimeException(except);

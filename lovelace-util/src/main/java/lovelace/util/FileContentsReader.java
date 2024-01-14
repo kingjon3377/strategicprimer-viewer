@@ -22,17 +22,14 @@ public final class FileContentsReader {
                 .orElseThrow(() -> new NoSuchFileException(filename));
     }
 
-    public static Iterable<String> readFileContents(final Class<?> cls,
-                                                    final String filename) throws IOException {
-        final Path onDisk = Paths.get(filename);
-        if (Files.isReadable(onDisk)) {
-            return Files.readAllLines(onDisk,
-                    StandardCharsets.UTF_8);
-        } else {
-            try (final BufferedReader reader = new BufferedReader(new InputStreamReader(getResourceAsStream(cls, filename),
-                    StandardCharsets.UTF_8))) {
-                return reader.lines().collect(Collectors.toList());
-            }
-        }
-    }
+	public static Iterable<String> readFileContents(final Class<?> cls, final Path path) throws IOException {
+		if (Files.isReadable(path)) {
+			return Files.readAllLines(path, StandardCharsets.UTF_8);
+		} else {
+			try (final BufferedReader reader = new BufferedReader(new InputStreamReader(getResourceAsStream(cls,
+					path.toString()), StandardCharsets.UTF_8))) {
+				return reader.lines().collect(Collectors.toList());
+			}
+		}
+	}
 }

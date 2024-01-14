@@ -1,6 +1,7 @@
 package drivers.generators;
 
 import java.io.IOException;
+import java.nio.file.Paths;
 import java.util.Collections;
 import java.util.Map;
 
@@ -34,7 +35,7 @@ import java.util.Optional;
         final Map<String, List<String>> retval = new HashMap<>();
         final Map<String, String> initial;
         try {
-            initial = FileSplitter.getFileContents("generation/standard_equipment.txt",
+            initial = FileSplitter.getFileContents(Paths.get("generation, standard_equipment.txt"),
                     x -> x);
         } catch (final IOException except) {
             throw new RuntimeException(except);
