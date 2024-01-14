@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -284,7 +285,7 @@ public class FortressImpl implements IMutableFortress {
 		if ((name.equals(fort.getName()) || "unknown".equals(fort.getName())) &&
 			fort.owner().getPlayerId() == owner.getPlayerId()) {
 			final Map<Integer, FortressMember> ours = members.stream()
-				.collect(Collectors.toMap(FortressMember::getId, m -> m));
+				.collect(Collectors.toMap(FortressMember::getId, Function.identity()));
 			boolean retval = true;
 			final Consumer<String> localFormat = s -> report.accept(String.format(
 				"In fortress %s (ID #%d):\t%s", name, id, s));

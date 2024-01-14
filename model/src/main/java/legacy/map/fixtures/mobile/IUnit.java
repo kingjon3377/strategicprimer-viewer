@@ -13,6 +13,7 @@ import legacy.map.fixtures.FortressMember;
 
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.function.Consumer;
@@ -127,7 +128,7 @@ public interface IUnit extends MobileFixture, HasImage, HasKind, HasName,
                     return false;
                 }
                 final Map<Integer, UnitMember> ours =
-                        stream().collect(Collectors.toMap(IFixture::getId, m -> m));
+                        stream().collect(Collectors.toMap(IFixture::getId, Function.identity()));
                 boolean retval = true;
                 final Consumer<String> localReport =
                         s -> report.accept(String.format("In unit of %s (%s) (ID #%d):\t%s",

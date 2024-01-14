@@ -11,6 +11,7 @@ import lovelace.util.FileSplitter;
 import java.util.List;
 import java.util.HashMap;
 import java.util.Optional;
+import java.util.function.Function;
 
 /**
  * Standard equipment to always (or nearly always, for level-1 workers) provide
@@ -36,7 +37,7 @@ import java.util.Optional;
         final Map<String, String> initial;
         try {
             initial = FileSplitter.getFileContents(Paths.get("generation, standard_equipment.txt"),
-                    x -> x);
+                    Function.identity());
         } catch (final IOException except) {
             throw new RuntimeException(except);
         }

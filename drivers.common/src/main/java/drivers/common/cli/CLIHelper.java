@@ -324,7 +324,7 @@ public final class CLIHelper implements ICLIHelper {
     public Pair<Integer, @Nullable String> chooseStringFromList(final List<String> items,
                                                                 final String description, final String none,
                                                                 final String prompt, final ListChoiceBehavior behavior) {
-        return chooseFromListImpl(items, description, none, prompt, behavior, s -> s);
+        return chooseFromListImpl(items, description, none, prompt, behavior, Function.identity());
     }
 
     /**

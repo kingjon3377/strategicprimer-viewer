@@ -30,6 +30,7 @@ import java.awt.Image;
 import java.awt.Graphics;
 
 import java.util.Objects;
+import java.util.function.Function;
 import java.util.stream.Stream;
 import java.util.stream.Collectors;
 
@@ -150,7 +151,7 @@ public final class ImageLoader {
          */
         private static final Map<TileType, String> DESCRIPTIONS =
                 Collections.unmodifiableMap(Stream.of(TileType.values())
-                        .collect(Collectors.toMap(t -> t, t -> wrap(t.name()))));
+                        .collect(Collectors.toMap(Function.identity(), t -> wrap(t.name()))));
 
         /**
          * A map from types of features to the colors they can make the
