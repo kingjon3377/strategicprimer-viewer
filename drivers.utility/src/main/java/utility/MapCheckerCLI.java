@@ -290,7 +290,7 @@ public class MapCheckerCLI implements UtilityDriver {
     private static boolean noResultsCheck(final TileType terrain, final Point context, final IFixture fixture,
                                           final Warning warner) {
         if (fixture instanceof final IUnit unit && !unit.isEmpty()) {
-            final OptionalInt turn = unit.getAllOrders().keySet().stream().mapToInt(x -> x).max();
+            final OptionalInt turn = unit.getAllOrders().keySet().stream().mapToInt(Integer::intValue).max();
             final String results = turn.stream().mapToObj(unit::getResults).map(String::toLowerCase).findAny().orElse("");
             if (results.isEmpty() || results.contains("todo") || results.contains("fixme")) {
                 warner.handle(new SPContentWarning(context, String.format(
