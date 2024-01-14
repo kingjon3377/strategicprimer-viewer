@@ -59,7 +59,7 @@ public final class PlayerCollection implements IMutablePlayerCollection {
 		return String.format("Player collection with %d players", players.size());
 	}
 
-	private Player current = new PlayerImpl(-1, "", "", true, "");
+	private Player currentPlayer = new PlayerImpl(-1, "", "", true, "");
 
 	/**
 	 * Add a player to the collection.
@@ -72,8 +72,8 @@ public final class PlayerCollection implements IMutablePlayerCollection {
 		if (player.isIndependent()) {
 			independentPlayer = player;
 		}
-		if (player.current() && (current.playerId() < 0 || !current.current())) {
-			current = player;
+		if (player.current() && (currentPlayer.playerId() < 0 || !currentPlayer.current())) {
+			currentPlayer = player;
 		}
 		players.put(player.playerId(), player);
 	}
@@ -100,8 +100,8 @@ public final class PlayerCollection implements IMutablePlayerCollection {
 				independentPlayer = players.values().stream().filter(Player::isIndependent)
 					.findAny().orElseGet(() -> new PlayerImpl(-1, "Independent", "", false, ""));
 			}
-			if (current.equals(removed)) {
-				current = new PlayerImpl(-1, "", "", true, "");
+			if (currentPlayer.equals(removed)) {
+				currentPlayer = new PlayerImpl(-1, "", "", true, "");
 			}
 		}
 	}
@@ -129,7 +129,7 @@ public final class PlayerCollection implements IMutablePlayerCollection {
 	 */
 	@Override
 	public Player getCurrentPlayer() {
-		return current;
+		return currentPlayer;
 	}
 
 	/**

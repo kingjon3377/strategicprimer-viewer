@@ -32,16 +32,16 @@ public final class MaturityModel {
         return Collections.unmodifiableMap(MATURITY_AGES);
     }
 
-    private static int currentTurnLocal = -1;
+    private static int currentTurn = -1;
 
     public static int getCurrentTurn() {
-        return currentTurnLocal;
+        return currentTurn;
     }
 
     public static void setCurrentTurn(final int currentTurn) {
-        if (currentTurnLocal < 0) {
-            currentTurnLocal = currentTurn;
-        } else if (currentTurnLocal != currentTurn) {
+        if (MaturityModel.currentTurn < 0) {
+            MaturityModel.currentTurn = currentTurn;
+        } else if (MaturityModel.currentTurn != currentTurn) {
             LovelaceLogger.warning("Tried to reset current turn");
         }
     }
@@ -52,7 +52,7 @@ public final class MaturityModel {
      * TODO: Can we restrict access somehow?
      */
     public static void resetCurrentTurn() {
-        currentTurnLocal = -1;
+        currentTurn = -1;
     }
 }
 
