@@ -148,7 +148,7 @@ public class MapTradeCLI implements CLIDriver {
     private void askAbout(final FixtureMatcher matcher, final String key) {
         final Boolean retval = cli.inputBooleanInSeries(String.format("Include %s items?",
                 matcher.getDescription()), key);
-	    if (Objects.isNull(retval)) {
+        if (Objects.isNull(retval)) {
             throw new IllegalStateException("EOF in fixture-matcher query");
         }
         matcher.setDisplayed(retval);
@@ -175,17 +175,17 @@ public class MapTradeCLI implements CLIDriver {
         }
         final ILegacyMap second = model.getSubordinateMaps().iterator().next();
         final Boolean copyPlayers = cli.inputBoolean("Copy players?");
-	    if (Objects.isNull(copyPlayers)) {
+        if (Objects.isNull(copyPlayers)) {
             return;
         } else if (copyPlayers) {
             model.copyPlayers();
         }
         final Boolean copyRivers = cli.inputBoolean("Include rivers?");
-	    if (Objects.isNull(copyRivers)) {
+        if (Objects.isNull(copyRivers)) {
             return;
         }
         final Boolean copyRoads = cli.inputBoolean("Include roads?");
-	    if (Objects.isNull(copyRoads)) {
+        if (Objects.isNull(copyRoads)) {
             return;
         }
         matchers.forEach(this::askAbout);

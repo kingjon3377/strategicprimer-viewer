@@ -172,7 +172,7 @@ public class IOHandler implements ActionListener {
         final ViewerDriverFactory vdf =
                 StreamSupport.stream(ServiceLoader.load(ViewerDriverFactory.class).spliterator(), false)
                         .findAny().orElse(null);
-	    if (Objects.isNull(vdf)) {
+        if (Objects.isNull(vdf)) {
             // FIXME: Show error dialog
             LovelaceLogger.error("Map viewer was not included in this assembly, or service discovery failed");
         } else {
@@ -193,7 +193,7 @@ public class IOHandler implements ActionListener {
         final ViewerDriverFactory vdf =
                 StreamSupport.stream(ServiceLoader.load(ViewerDriverFactory.class).spliterator(), false)
                         .findAny().orElse(null);
-	    if (Objects.isNull(vdf)) {
+        if (Objects.isNull(vdf)) {
             // FIXME: Show error dialog
             LovelaceLogger.error("Map viewer was not included in this assembly, or service discovery failed");
         } else {
@@ -236,7 +236,7 @@ public class IOHandler implements ActionListener {
             case "save":
                 if (driver instanceof final ModelDriver md) {
                     final Path givenFile = md.getModel().getMap().getFilename();
-	                if (Objects.isNull(givenFile)) {
+                    if (Objects.isNull(givenFile)) {
                         actionPerformed(new ActionEvent(event.getSource(), event.getID(),
                                 "save as", event.getWhen(), event.getModifiers()));
                     } else {
@@ -296,7 +296,7 @@ public class IOHandler implements ActionListener {
                     for (final ILegacyMap map : mmgd.getModel().getAllMaps()) {
                         // FIXME: Doesn't MapIOHelper have a method for this?
                         final Path file = map.getFilename();
-	                    if (!Objects.isNull(file)) {
+                        if (!Objects.isNull(file)) {
                             try {
                                 MapIOHelper.writeMap(file, map);
                                 mmgd.getModel().clearModifiedFlag(map);
@@ -319,7 +319,7 @@ public class IOHandler implements ActionListener {
                     final ViewerDriverFactory vdf =
                             StreamSupport.stream(ServiceLoader.load(ViewerDriverFactory.class).spliterator(), false)
                                     .findAny().orElse(null);
-	                if (Objects.isNull(vdf)) {
+                    if (Objects.isNull(vdf)) {
                         JOptionPane.showMessageDialog(null,
                                 "Either the map viewer was not included in this edition of the assistive programs, or the logic to load it failed.",
                                 "Strategic Primer Assistive Programs", JOptionPane.ERROR_MESSAGE);
@@ -347,7 +347,7 @@ public class IOHandler implements ActionListener {
             case "open secondary map in map viewer":
                 if (driver instanceof final MultiMapGUIDriver mmgd) {
                     final IDriverModel newModel = mmgd.getModel().fromSecondMap();
-	                if (Objects.isNull(newModel)) {
+                    if (Objects.isNull(newModel)) {
                         LovelaceLogger.error(
                                 "IOHandler asked to 'open secondary in map viewer'; none there");
                     } else {
@@ -361,7 +361,7 @@ public class IOHandler implements ActionListener {
                 break;
 
             case "close":
-	            if (Objects.isNull(parentWindow)) {
+                if (Objects.isNull(parentWindow)) {
                     LovelaceLogger.error("IOHandler asked to close but couldn't get current window");
                     LovelaceLogger.debug("Event details: %s", event);
                     LovelaceLogger.debug("Source: %s", source);

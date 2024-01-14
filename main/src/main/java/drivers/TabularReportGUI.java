@@ -89,7 +89,7 @@ public class TabularReportGUI implements GUIDriver {
             public void mapChanged() {
                 frame.removeAll();
                 try {
-	                if (Objects.isNull(hq)) {
+                    if (Objects.isNull(hq)) {
                         TabularReportGenerator.createGUITabularReports(frame::addTab, model.getMap());
                     } else {
                         TabularReportGenerator.createGUITabularReports(frame::addTab, model.getMap(), hq);

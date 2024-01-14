@@ -316,7 +316,7 @@ public class PopulationGeneratingModel extends SimpleMultiMapModel { // TODO: Ex
     public Iterable<Player> getPlayerChoices() {
         Set<Player> set = null;
         for (final ILegacyMap map : getAllMaps()) {
-			if (Objects.isNull(set)) {
+            if (Objects.isNull(set)) {
                 set = StreamSupport.stream(map.getPlayers().spliterator(), true)
                         .collect(Collectors.toSet());
             } else {

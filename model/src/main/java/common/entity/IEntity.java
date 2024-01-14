@@ -15,10 +15,16 @@ import java.util.Collection;
  */
 public interface IEntity {
 	@NotNull Location getLocation();
+
 	@NotNull EntityIdentifier getId();
+
 	@NotNull String getType();
+
 	boolean hasProperty(@NotNull String propertyName);
+
 	@Nullable EntityProperty<?> getProperty(@NotNull String propertyName);
+
 	@NotNull Collection<EntityProperty<?>> getAllProperties();
+
 	IEntity copy();
 }

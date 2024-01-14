@@ -31,216 +31,216 @@ import java.util.Objects;
  * A reader for workers.
  */
 /* package */ class YAWorkerReader extends YAAbstractReader<IWorker, IWorker> {
-    public static void writeSkill(final ThrowingConsumer<String, IOException> ostream, final ISkill obj, final int indent)
-            throws IOException {
-        if (!obj.isEmpty()) {
-            writeTag(ostream, "skill", indent);
-            writeProperty(ostream, "name", obj.getName());
-            writeProperty(ostream, "level", obj.getLevel());
-            writeProperty(ostream, "hours", obj.getHours());
-            closeLeafTag(ostream);
-        }
-    }
+	public static void writeSkill(final ThrowingConsumer<String, IOException> ostream, final ISkill obj, final int indent)
+		throws IOException {
+		if (!obj.isEmpty()) {
+			writeTag(ostream, "skill", indent);
+			writeProperty(ostream, "name", obj.getName());
+			writeProperty(ostream, "level", obj.getLevel());
+			writeProperty(ostream, "hours", obj.getHours());
+			closeLeafTag(ostream);
+		}
+	}
 
-    public static void writeJob(final ThrowingConsumer<String, IOException> ostream, final IJob obj, final int indent)
-            throws IOException {
-        if (obj.getLevel() <= 0 && obj.isEmpty()) {
-            return;
-        }
-        writeTag(ostream, "job", indent);
-        writeProperty(ostream, "name", obj.getName());
-        writeProperty(ostream, "level", obj.getLevel());
-        if (obj.isEmpty()) {
-            closeLeafTag(ostream);
-        } else {
-            finishParentTag(ostream);
-            for (final ISkill skill : obj) {
-                writeSkill(ostream, skill, indent + 1);
-            }
-            closeTag(ostream, indent, "job");
-        }
-    }
+	public static void writeJob(final ThrowingConsumer<String, IOException> ostream, final IJob obj, final int indent)
+		throws IOException {
+		if (obj.getLevel() <= 0 && obj.isEmpty()) {
+			return;
+		}
+		writeTag(ostream, "job", indent);
+		writeProperty(ostream, "name", obj.getName());
+		writeProperty(ostream, "level", obj.getLevel());
+		if (obj.isEmpty()) {
+			closeLeafTag(ostream);
+		} else {
+			finishParentTag(ostream);
+			for (final ISkill skill : obj) {
+				writeSkill(ostream, skill, indent + 1);
+			}
+			closeTag(ostream, indent, "job");
+		}
+	}
 
-    private static void writeNote(final ThrowingConsumer<String, IOException> ostream, final int player, final String note, final int indent)
-            throws IOException {
-        writeTag(ostream, "note", indent);
-        writeProperty(ostream, "player", player);
-        ostream.accept(">"); // We don't use finishParentTag() because we don't want a newline yet
-        ostream.accept(note);
-        closeTag(ostream, 0, "note");
-    }
+	private static void writeNote(final ThrowingConsumer<String, IOException> ostream, final int player, final String note, final int indent)
+		throws IOException {
+		writeTag(ostream, "note", indent);
+		writeProperty(ostream, "player", player);
+		ostream.accept(">"); // We don't use finishParentTag() because we don't want a newline yet
+		ostream.accept(note);
+		closeTag(ostream, 0, "note");
+	}
 
-    private final ILegacyPlayerCollection players;
-    // TODO: Figure out some way to inject these without having to have our own copies (or provide them as constructor parameters)
-    private final YAMobileReader mobileReader;
-    private final YAImplementReader implementReader;
+	private final ILegacyPlayerCollection players;
+	// TODO: Figure out some way to inject these without having to have our own copies (or provide them as constructor parameters)
+	private final YAMobileReader mobileReader;
+	private final YAImplementReader implementReader;
 
-    public YAWorkerReader(final Warning warning, final IDRegistrar idRegistrar, final ILegacyPlayerCollection players) {
-        super(warning, idRegistrar);
-        this.players = players;
-        mobileReader = new YAMobileReader(warning, idRegistrar);
-        implementReader = new YAImplementReader(warning, idRegistrar);
-    }
+	public YAWorkerReader(final Warning warning, final IDRegistrar idRegistrar, final ILegacyPlayerCollection players) {
+		super(warning, idRegistrar);
+		this.players = players;
+		mobileReader = new YAMobileReader(warning, idRegistrar);
+		implementReader = new YAImplementReader(warning, idRegistrar);
+	}
 
-    @FunctionalInterface
-    private interface ReadToIntFunction<Type> {
-        int apply(Type item) throws SPFormatException;
-    }
+	@FunctionalInterface
+	private interface ReadToIntFunction<Type> {
+		int apply(Type item) throws SPFormatException;
+	}
 
-    private WorkerStats parseStats(final StartElement element, final QName parent, final Iterable<XMLEvent> stream)
-            throws SPFormatException {
-        requireTag(element, parent, "stats");
-        expectAttributes(element, "hp", "max", "str", "dex", "con", "int", "wis", "cha");
-        final ReadToIntFunction<String> inner = attr -> getIntegerParameter(element, attr);
-        final WorkerStats retval = new WorkerStats(inner.apply("hp"), inner.apply("max"),
-                inner.apply("str"), inner.apply("dex"), inner.apply("con"), inner.apply("int"),
-                inner.apply("wis"), inner.apply("cha"));
-        spinUntilEnd(element.getName(), stream);
-        return retval;
-    }
+	private WorkerStats parseStats(final StartElement element, final QName parent, final Iterable<XMLEvent> stream)
+		throws SPFormatException {
+		requireTag(element, parent, "stats");
+		expectAttributes(element, "hp", "max", "str", "dex", "con", "int", "wis", "cha");
+		final ReadToIntFunction<String> inner = attr -> getIntegerParameter(element, attr);
+		final WorkerStats retval = new WorkerStats(inner.apply("hp"), inner.apply("max"),
+			inner.apply("str"), inner.apply("dex"), inner.apply("con"), inner.apply("int"),
+			inner.apply("wis"), inner.apply("cha"));
+		spinUntilEnd(element.getName(), stream);
+		return retval;
+	}
 
-    private ISkill parseSkill(final StartElement element, final QName parent) throws SPFormatException {
-        requireTag(element, parent, "skill");
-        expectAttributes(element, "name", "level", "hours");
-        // TODO: Should require no children, right? So spinUntilEnd() here, not in the caller?
-        return new Skill(getParameter(element, "name"), getIntegerParameter(element, "level"),
-                getIntegerParameter(element, "hours"));
-    }
+	private ISkill parseSkill(final StartElement element, final QName parent) throws SPFormatException {
+		requireTag(element, parent, "skill");
+		expectAttributes(element, "name", "level", "hours");
+		// TODO: Should require no children, right? So spinUntilEnd() here, not in the caller?
+		return new Skill(getParameter(element, "name"), getIntegerParameter(element, "level"),
+			getIntegerParameter(element, "hours"));
+	}
 
-    private String readNote(final StartElement element, final QName parent, final Iterable<XMLEvent> stream)
-            throws SPFormatException {
-        requireTag(element, parent, "note");
-        expectAttributes(element, "player");
-        final StringBuilder retval = new StringBuilder();
-        for (final XMLEvent event : stream) {
-            if (event instanceof final StartElement se && isSupportedNamespace(se.getName())) {
-                throw new UnwantedChildException(element.getName(), se);
-            } else if (isMatchingEnd(element.getName(), event)) {
-                break;
-            } else if (event instanceof final Characters c) {
-                retval.append(c.getData());
-            }
-        }
-        return retval.toString().strip();
-    }
+	private String readNote(final StartElement element, final QName parent, final Iterable<XMLEvent> stream)
+		throws SPFormatException {
+		requireTag(element, parent, "note");
+		expectAttributes(element, "player");
+		final StringBuilder retval = new StringBuilder();
+		for (final XMLEvent event : stream) {
+			if (event instanceof final StartElement se && isSupportedNamespace(se.getName())) {
+				throw new UnwantedChildException(element.getName(), se);
+			} else if (isMatchingEnd(element.getName(), event)) {
+				break;
+			} else if (event instanceof final Characters c) {
+				retval.append(c.getData());
+			}
+		}
+		return retval.toString().strip();
+	}
 
-    private IJob parseJob(final StartElement element, final QName parent, final Iterable<XMLEvent> stream)
-            throws SPFormatException {
-        requireTag(element, parent, "job");
-        expectAttributes(element, "name", "level");
-        final IMutableJob retval = new Job(getParameter(element, "name"),
-                getIntegerParameter(element, "level"));
-        for (final XMLEvent event : stream) {
-            if (event instanceof final StartElement se && isSupportedNamespace(se.getName())) {
-                if ("skill".equalsIgnoreCase(se.getName().getLocalPart())) {
-                    retval.addSkill(parseSkill(se, element.getName()));
-                    spinUntilEnd(se.getName(), stream);
-                } else {
-                    throw UnwantedChildException.listingExpectedTags(element.getName(),
-                            se, "skill");
-                }
-            } else if (isMatchingEnd(element.getName(), event)) {
-                break;
-            }
-        }
-        return retval;
-    }
+	private IJob parseJob(final StartElement element, final QName parent, final Iterable<XMLEvent> stream)
+		throws SPFormatException {
+		requireTag(element, parent, "job");
+		expectAttributes(element, "name", "level");
+		final IMutableJob retval = new Job(getParameter(element, "name"),
+			getIntegerParameter(element, "level"));
+		for (final XMLEvent event : stream) {
+			if (event instanceof final StartElement se && isSupportedNamespace(se.getName())) {
+				if ("skill".equalsIgnoreCase(se.getName().getLocalPart())) {
+					retval.addSkill(parseSkill(se, element.getName()));
+					spinUntilEnd(se.getName(), stream);
+				} else {
+					throw UnwantedChildException.listingExpectedTags(element.getName(),
+						se, "skill");
+				}
+			} else if (isMatchingEnd(element.getName(), event)) {
+				break;
+			}
+		}
+		return retval;
+	}
 
-    private static void writeStats(final ThrowingConsumer<String, IOException> ostream, final @Nullable WorkerStats stats, final int indent)
-            throws IOException {
-	    if (!Objects.isNull(stats)) {
-            writeTag(ostream, "stats", indent);
-            writeProperty(ostream, "hp", stats.getHitPoints());
-            writeProperty(ostream, "max", stats.getMaxHitPoints());
-            writeProperty(ostream, "str", stats.getStrength());
-            writeProperty(ostream, "dex", stats.getDexterity());
-            writeProperty(ostream, "con", stats.getConstitution());
-            writeProperty(ostream, "int", stats.getIntelligence());
-            writeProperty(ostream, "wis", stats.getWisdom());
-            writeProperty(ostream, "cha", stats.getCharisma());
-            closeLeafTag(ostream);
-        }
-    }
+	private static void writeStats(final ThrowingConsumer<String, IOException> ostream, final @Nullable WorkerStats stats, final int indent)
+		throws IOException {
+		if (!Objects.isNull(stats)) {
+			writeTag(ostream, "stats", indent);
+			writeProperty(ostream, "hp", stats.getHitPoints());
+			writeProperty(ostream, "max", stats.getMaxHitPoints());
+			writeProperty(ostream, "str", stats.getStrength());
+			writeProperty(ostream, "dex", stats.getDexterity());
+			writeProperty(ostream, "con", stats.getConstitution());
+			writeProperty(ostream, "int", stats.getIntelligence());
+			writeProperty(ostream, "wis", stats.getWisdom());
+			writeProperty(ostream, "cha", stats.getCharisma());
+			closeLeafTag(ostream);
+		}
+	}
 
-    @Override
-    public IWorker read(final StartElement element, final QName parent, final Iterable<XMLEvent> stream)
-            throws SPFormatException, XMLStreamException {
-        requireTag(element, parent, "worker");
-        expectAttributes(element, "name", "race", "image", "portrait", "id");
-        final Worker retval = new Worker(getParameter(element, "name"),
-                getParameter(element, "race", "human"), getOrGenerateID(element));
-        retval.setImage(getParameter(element, "image", ""));
-        retval.setPortrait(getParameter(element, "portrait", ""));
-        for (final XMLEvent event : stream) {
-            if (event instanceof final StartElement se && isSupportedNamespace(se.getName())) {
-                if ("job".equalsIgnoreCase(se.getName().getLocalPart())) {
-                    retval.addJob(parseJob(se, element.getName(), stream));
-                } else if ("stats".equalsIgnoreCase(se.getName().getLocalPart())) {
-                    retval.setStats(parseStats(se, element.getName(), stream));
-                } else if ("note".equalsIgnoreCase(se.getName().getLocalPart())) {
-                    retval.setNote(
-                            players.getPlayer(getIntegerParameter(se, "player")),
-                            readNote(se, element.getName(), stream));
-                } else if ("animal".equalsIgnoreCase(se.getName().getLocalPart()) && Objects.isNull(retval.getMount())) {
-                    final MobileFixture animal = mobileReader.read(se, element.getName(), stream);
-                    if (animal instanceof final Animal a) {
-                        retval.setMount(a);
-                    } else {
-                        throw new UnwantedChildException(se.getName(), element);
-                    }
-                } else if ("implement".equalsIgnoreCase(se.getName().getLocalPart())) {
-                    retval.addEquipment(implementReader.read(se, element.getName(), stream));
-                } else {
-                    throw UnwantedChildException.listingExpectedTags(element.getName(),
-                            se, "job", "stats", "note", "animal", "implement");
-                }
-            } else if (isMatchingEnd(element.getName(), event)) {
-                break;
-            }
-        }
-        return retval;
-    }
+	@Override
+	public IWorker read(final StartElement element, final QName parent, final Iterable<XMLEvent> stream)
+		throws SPFormatException, XMLStreamException {
+		requireTag(element, parent, "worker");
+		expectAttributes(element, "name", "race", "image", "portrait", "id");
+		final Worker retval = new Worker(getParameter(element, "name"),
+			getParameter(element, "race", "human"), getOrGenerateID(element));
+		retval.setImage(getParameter(element, "image", ""));
+		retval.setPortrait(getParameter(element, "portrait", ""));
+		for (final XMLEvent event : stream) {
+			if (event instanceof final StartElement se && isSupportedNamespace(se.getName())) {
+				if ("job".equalsIgnoreCase(se.getName().getLocalPart())) {
+					retval.addJob(parseJob(se, element.getName(), stream));
+				} else if ("stats".equalsIgnoreCase(se.getName().getLocalPart())) {
+					retval.setStats(parseStats(se, element.getName(), stream));
+				} else if ("note".equalsIgnoreCase(se.getName().getLocalPart())) {
+					retval.setNote(
+						players.getPlayer(getIntegerParameter(se, "player")),
+						readNote(se, element.getName(), stream));
+				} else if ("animal".equalsIgnoreCase(se.getName().getLocalPart()) && Objects.isNull(retval.getMount())) {
+					final MobileFixture animal = mobileReader.read(se, element.getName(), stream);
+					if (animal instanceof final Animal a) {
+						retval.setMount(a);
+					} else {
+						throw new UnwantedChildException(se.getName(), element);
+					}
+				} else if ("implement".equalsIgnoreCase(se.getName().getLocalPart())) {
+					retval.addEquipment(implementReader.read(se, element.getName(), stream));
+				} else {
+					throw UnwantedChildException.listingExpectedTags(element.getName(),
+						se, "job", "stats", "note", "animal", "implement");
+				}
+			} else if (isMatchingEnd(element.getName(), event)) {
+				break;
+			}
+		}
+		return retval;
+	}
 
-    @Override
-    public void write(final ThrowingConsumer<String, IOException> ostream, final IWorker obj, final int indent) throws IOException {
-        writeTag(ostream, "worker", indent);
-        writeProperty(ostream, "name", obj.getName());
-        if (!"human".equals(obj.getRace())) {
-            writeProperty(ostream, "race", obj.getRace());
-        }
-        writeProperty(ostream, "id", obj.getId());
-        writeImageXML(ostream, obj);
-        writeNonemptyProperty(ostream, "portrait", obj.getPortrait());
-        if (obj.iterator().hasNext() || !Objects.isNull(obj.getStats()) ||
-                obj.getNotesPlayers().iterator().hasNext() || !Objects.isNull(obj.getMount()) ||
-                !obj.getEquipment().isEmpty()) {
-            finishParentTag(ostream);
-            writeStats(ostream, obj.getStats(), indent + 1);
-	        if (!Objects.isNull(obj.getMount())) {
-                mobileReader.write(ostream, obj.getMount(), indent + 1);
-            }
-            for (final Implement item : obj.getEquipment()) {
-                implementReader.write(ostream, item, indent + 1);
-            }
-            for (final IJob job : obj) {
-                writeJob(ostream, job, indent + 1);
-            }
-            for (final Integer player : obj.getNotesPlayers()) {
-                writeNote(ostream, player, obj.getNote(player), indent + 1);
-            }
-            closeTag(ostream, indent, "worker");
-        } else {
-            closeLeafTag(ostream);
-        }
-    }
+	@Override
+	public void write(final ThrowingConsumer<String, IOException> ostream, final IWorker obj, final int indent) throws IOException {
+		writeTag(ostream, "worker", indent);
+		writeProperty(ostream, "name", obj.getName());
+		if (!"human".equals(obj.getRace())) {
+			writeProperty(ostream, "race", obj.getRace());
+		}
+		writeProperty(ostream, "id", obj.getId());
+		writeImageXML(ostream, obj);
+		writeNonemptyProperty(ostream, "portrait", obj.getPortrait());
+		if (obj.iterator().hasNext() || !Objects.isNull(obj.getStats()) ||
+			obj.getNotesPlayers().iterator().hasNext() || !Objects.isNull(obj.getMount()) ||
+			!obj.getEquipment().isEmpty()) {
+			finishParentTag(ostream);
+			writeStats(ostream, obj.getStats(), indent + 1);
+			if (!Objects.isNull(obj.getMount())) {
+				mobileReader.write(ostream, obj.getMount(), indent + 1);
+			}
+			for (final Implement item : obj.getEquipment()) {
+				implementReader.write(ostream, item, indent + 1);
+			}
+			for (final IJob job : obj) {
+				writeJob(ostream, job, indent + 1);
+			}
+			for (final Integer player : obj.getNotesPlayers()) {
+				writeNote(ostream, player, obj.getNote(player), indent + 1);
+			}
+			closeTag(ostream, indent, "worker");
+		} else {
+			closeLeafTag(ostream);
+		}
+	}
 
-    @Override
-    public boolean isSupportedTag(final String tag) {
-        return "worker".equalsIgnoreCase(tag);
-    }
+	@Override
+	public boolean isSupportedTag(final String tag) {
+		return "worker".equalsIgnoreCase(tag);
+	}
 
-    @Override
-    public boolean canWrite(final Object obj) {
-        return obj instanceof IWorker;
-    }
+	@Override
+	public boolean canWrite(final Object obj) {
+		return obj instanceof IWorker;
+	}
 }

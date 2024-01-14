@@ -168,7 +168,7 @@ import java.util.Optional;
             LovelaceLogger.debug("Finished checking neighbors of %s", current);
             unvisited.remove(current);
             final Point next = nextUnvisited(start, unvisited);
-	        if (Objects.isNull(next)) {
+            if (Objects.isNull(next)) {
                 LovelaceLogger.info(
                         "Couldn't find a smallest-estimate unchecked tile after %d iterations",
                         iterations);

@@ -93,7 +93,7 @@ public final class SimpleMovementModel {
      */
     public static int movementCost(final @Nullable TileType terrain, final boolean forest, final boolean mountain,
                                    final boolean river, final Iterable<TileFixture> fixtures) {
-	    if (Objects.isNull(terrain)) {
+        if (Objects.isNull(terrain)) {
             return Integer.MAX_VALUE - 1;
         } else if (TileType.Ocean == terrain) {
             return Integer.MAX_VALUE - 1;
@@ -126,7 +126,7 @@ public final class SimpleMovementModel {
      */
     public static boolean shouldSometimesNotice(final HasOwner unit, final Speed speed,
                                                 final @Nullable TileFixture fixture) {
-	    if (Objects.isNull(fixture)) {
+        if (Objects.isNull(fixture)) {
             return false;
         } else if (unit.equals(fixture)) {
             return false;

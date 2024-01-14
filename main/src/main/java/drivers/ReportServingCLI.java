@@ -72,7 +72,7 @@ import org.takes.http.Exit;
         if (model instanceof final IMultiMapModel mmm) { // TODO: Also require there to be 1+ sub-maps w/ filenames for this case
             for (final ILegacyMap map : mmm.getAllMaps()) {
                 final Path file = map.getFilename();
-	            if (Objects.isNull(file)) {
+                if (Objects.isNull(file)) {
                     continue;
                 }
                 if (!cache.containsKey(file)) {

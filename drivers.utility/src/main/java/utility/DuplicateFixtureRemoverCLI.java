@@ -144,7 +144,7 @@ public class DuplicateFixtureRemoverCLI implements CLIDriver {
      * "matching" is null, return false.
      */
     private @Nullable Boolean approveRemoval(final Point location, final TileFixture fixture, final @Nullable TileFixture matching) {
-	    if (Objects.isNull(matching)) {
+        if (Objects.isNull(matching)) {
             return false;
         } else {
             final String fCls = fixture.getClass().getName();
@@ -173,7 +173,7 @@ public class DuplicateFixtureRemoverCLI implements CLIDriver {
                 final Iterable<? extends TileFixture> duplicates = q.getValue3();
                 for (final TileFixture duplicate : duplicates) {
                     final Boolean approval = approveRemoval(location, duplicate, fixture);
-	                if (Objects.isNull(approval)) {
+                    if (Objects.isNull(approval)) {
                         return;
                     } else if (approval) {
                         deleteCallback.accept(duplicate);
@@ -228,7 +228,7 @@ public class DuplicateFixtureRemoverCLI implements CLIDriver {
             fixtures.stream().map(Object::toString).forEach(println);
             final Boolean resp = cli.inputBooleanInSeries("Combine them? ",
                     memberKind(fixtures.iterator().next()));
-	        if (Objects.isNull(resp)) {
+            if (Objects.isNull(resp)) {
                 return;
             } else if (resp) {
                 callback.run();

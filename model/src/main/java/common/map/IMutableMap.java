@@ -13,16 +13,19 @@ public interface IMutableMap extends IMap {
 	 * and no region with its ID exists in the map.
 	 */
 	void addMapRegion(@NotNull MapRegion region);
+
 	/**
 	 * Remove the given region from the map. Precondition: An "equal" region exists in the map.
 	 */
 	void removeMapRegion(@NotNull MapRegion region);
+
 	/**
 	 * Remove "toRemove" from the map and add "toAdd". Preconditions: A region equal to "toRemove" exists in the map,
 	 * "toAdd" overlaps with either no region in the map or only with "toRemove", and either no region in the map has
 	 * the same ID or only "toRemove" has the same ID.
 	 */
 	void replaceMapRegion(@NotNull MapRegion toRemove, @NotNull MapRegion toAdd);
+
 	/**
 	 * Add the given entity to the map. Precondition: No entity with its ID exists in the map.
 	 */

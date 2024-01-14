@@ -13,6 +13,7 @@ import org.jetbrains.annotations.NotNull;
  */
 public final class RemoveRegionChangeset implements Changeset {
 	private final MapRegion region;
+
 	public RemoveRegionChangeset(final @NotNull MapRegion region) {
 		this.region = region;
 	}

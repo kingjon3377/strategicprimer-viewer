@@ -119,7 +119,7 @@ public class TodoFixerCLI implements CLIDriver {
      */
     private static SimpleTerrain getTerrain(final ILegacyMap map, final Point location) {
         final TileType terrain = map.getBaseTerrain(location);
-	    if (Objects.isNull(terrain)) {
+        if (Objects.isNull(terrain)) {
             return SimpleTerrain.Unforested;
         }
         switch (terrain) {
@@ -148,7 +148,7 @@ public class TodoFixerCLI implements CLIDriver {
     private @Nullable ExplorationRunner _runner = null;
 
     private ExplorationRunner getRunner() throws IOException {
-	    if (Objects.isNull(_runner)) {
+        if (Objects.isNull(_runner)) {
             final ExplorationRunner retval = new ExplorationRunner();
             final Path directory = Paths.get("tables");
             if (!Files.isDirectory(directory)) {
@@ -199,7 +199,7 @@ public class TodoFixerCLI implements CLIDriver {
             if (raceList.isEmpty()) {
                 while (true) {
                     final String race = cli.inputString("Next aquatic rae: ");
-	                if (Objects.isNull(race)) {
+                    if (Objects.isNull(race)) {
                         return;
                     } else if (race.isEmpty()) {
                         break;
@@ -318,7 +318,7 @@ public class TodoFixerCLI implements CLIDriver {
         }
         final String kind = cli.inputString(String.format("What's the next possible kind for %s? ",
                 description));
-	    if (!Objects.isNull(kind)) {
+        if (!Objects.isNull(kind)) {
             unit.setKind(kind);
             jobList.add(kind);
         }

@@ -92,7 +92,7 @@ import drivers.common.ISPDriver;
      */
     public void testMap(final ILegacyMap map, final @Nullable Path file) {
         final String filename;
-	    if (Objects.isNull(file)) {
+        if (Objects.isNull(file)) {
             LovelaceLogger.warning("Given a map with no filename");
             printParagraph("Given a map with no filename", LabelTextColor.YELLOW);
             filename = "an unnamed file";

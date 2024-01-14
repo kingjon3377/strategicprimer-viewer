@@ -52,7 +52,7 @@ public class TownGeneratingCLI implements CLIDriver {
         final IDRegistrar idf = IDFactoryFiller.createIDFactory(
                 model.streamAllMaps().toArray(ILegacyMap[]::new));
         final Boolean specific = cli.inputBoolean("Enter or generate stats for just specific towns? ");
-	    if (Objects.isNull(specific)) {
+        if (Objects.isNull(specific)) {
             return;
         } else if (specific) {
             generator.generateSpecificTowns(idf, model);

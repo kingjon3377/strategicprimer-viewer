@@ -73,7 +73,7 @@ public class TabularReportCLI implements ReadOnlyDriver {
 
     private void createReports(final ILegacyMap map, final @Nullable Path mapFile) throws DriverFailedException {
         try {
-	        if (Objects.isNull(mapFile)) {
+            if (Objects.isNull(mapFile)) {
                 LovelaceLogger.error("Asked to create reports from map with no filename");
                 TabularReportGenerator.createTabularReports(map,
                         filenameFunction(Paths.get("unknown.xml")), cli);

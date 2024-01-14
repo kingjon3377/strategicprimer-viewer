@@ -42,7 +42,7 @@ class TerrainTable implements EncounterTable {
     @Override
     public String generateEvent(final Point point, final @Nullable TileType terrain, final boolean mountainous,
                                 final Iterable<TileFixture> fixtures, final MapDimensions mapDimensions) {
-		if (Objects.isNull(terrain)) {
+        if (Objects.isNull(terrain)) {
             throw new IllegalArgumentException(
                     "Terrain table can only account for visible terrain");
         }

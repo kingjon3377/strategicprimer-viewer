@@ -233,7 +233,7 @@ public class MapCheckerCLI implements UtilityDriver {
             final String matching = f.stream().filter(Implement.class::isInstance)
                     .map(Implement.class::cast).map(Implement::getKind).filter(PERSONAL_EQUIPMENT::contains)
                     .findAny().orElse(null);
-	        if (Objects.isNull(matching)) {
+            if (Objects.isNull(matching)) {
                 return false;
             } else {
                 warner.handle(new SPContentWarning(context,
@@ -469,7 +469,7 @@ public class MapCheckerCLI implements UtilityDriver {
         for (final Checker checker : Stream.concat(Stream.of(new OwnerChecker(map)::check),
                 EXTRA_CHECKS.stream()).toList()) {
             for (final Point location : map.getLocations()) {
-	            if (!Objects.isNull(map.getBaseTerrain(location))) {
+                if (!Objects.isNull(map.getBaseTerrain(location))) {
                     result = contentCheck(checker, map.getBaseTerrain(location),
                             location, warner, map.getFixtures(location)) || result;
                 }
@@ -490,7 +490,7 @@ public class MapCheckerCLI implements UtilityDriver {
                             .map(f -> Pair.with(l, f))).toList()) {
                 final Point location = pair.getValue0();
                 final TileFixture fixture = pair.getValue1();
-	            if (!Objects.isNull(map.getBaseTerrain(location))) {
+                if (!Objects.isNull(map.getBaseTerrain(location))) {
                     result = animalTracksChecker(map.getBaseTerrain(location),
                             location, fixture, warner) || result;
                 }
@@ -508,7 +508,7 @@ public class MapCheckerCLI implements UtilityDriver {
     @Override
     public void startDriver(final String... args) {
         for (final String filename : args) {
-	        if (Objects.isNull(filename)) {
+            if (Objects.isNull(filename)) {
                 continue;
             }
             check(Paths.get(filename));

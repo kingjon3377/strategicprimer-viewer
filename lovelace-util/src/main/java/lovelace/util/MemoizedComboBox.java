@@ -40,7 +40,7 @@ public class MemoizedComboBox extends ImprovedComboBox<String> {
      */
     public void checkAndClear() {
         final String selectedItem = getSelectedItem();
-	    if (Objects.isNull(selectedItem)) {
+        if (Objects.isNull(selectedItem)) {
             return;
         } else {
             final String item = selectedItem.strip();
@@ -55,7 +55,7 @@ public class MemoizedComboBox extends ImprovedComboBox<String> {
     @Override
     public @Nullable String getSelectedItem() {
         final Object retval = super.getSelectedItem();
-	    if (Objects.isNull(retval)) {
+        if (Objects.isNull(retval)) {
             return null;
         } else if (retval instanceof final String s) {
             return s.strip();

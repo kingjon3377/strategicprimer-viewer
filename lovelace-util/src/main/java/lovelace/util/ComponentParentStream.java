@@ -26,19 +26,19 @@ public final class ComponentParentStream implements Iterable<Component> {
 
         @Override
         public boolean hasNext() {
-	        return !Objects.isNull(current);
+            return !Objects.isNull(current);
         }
 
         @Override
         public @NotNull Component next() {
             final @Nullable Component retval = current;
-	        if (Objects.isNull(current)) {
+            if (Objects.isNull(current)) {
                 throw new NoSuchElementException("Last parent reached");
             } else {
                 current = retval.getParent();
-		        if (Objects.isNull(current) && retval instanceof final JPopupMenu menu) {
+                if (Objects.isNull(current) && retval instanceof final JPopupMenu menu) {
                     current = menu.getInvoker();
-		        } else if (Objects.isNull(current) && retval instanceof final JMenu menu) {
+                } else if (Objects.isNull(current) && retval instanceof final JMenu menu) {
                     current = menu.getPopupMenu();
                 }
                 return retval;
