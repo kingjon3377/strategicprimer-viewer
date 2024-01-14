@@ -80,8 +80,8 @@ import query.SmallAnimalModel;
 				.filter(k -> !herdModels.containsKey(k)).toList()) {
 			final HerdModel herdModel = chooseHerdModel(kind);
 			if (herdModel == null) {
-				final Boolean cont = cli.inputBoolean("Skip?");
-				if (cont != null && cont) {
+				final Boolean cont = cli.inputBoolean("Skip?"); // TODO: Inline
+				if (Boolean.TRUE.equals(cont)) {
 					continue;
 				} else {
 					cli.println("Aborting ...");
@@ -108,9 +108,9 @@ import query.SmallAnimalModel;
 				list.add(group);
 				continue;
 			}
-			final Boolean cont = cli.inputBoolean(String.format(
+			final Boolean cont = cli.inputBoolean(String.format( // TODO: Inline
 				"No model for %s. Really skip?", group.getKind()));
-			if (cont != null && cont) {
+			if (Boolean.TRUE.equals(cont)) {
 				continue;
 			} else {
 				cli.println("Aborting ...");

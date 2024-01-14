@@ -58,7 +58,7 @@ public class AdvancementCLI implements CLIDriver {
 			units.remove(chosen);
 			helper.advanceWorkersInUnit(chosen, allowExpertMentoring);
 			final Boolean continuation = cli.inputBoolean("Choose another unit?");
-			if (continuation == null || !continuation) {
+			if (!Boolean.TRUE.equals(continuation)) {
 				break;
 			}
 		}
@@ -78,7 +78,7 @@ public class AdvancementCLI implements CLIDriver {
 			playerList.remove(chosen);
 			advanceWorkers(model, chosen, options.hasOption("--allow-expert-mentoring"));
 			final Boolean continuation = cli.inputBoolean("Select another player?");
-			if (continuation == null || !continuation) {
+			if (!Boolean.TRUE.equals(continuation)) {
 				break;
 			}
 		}

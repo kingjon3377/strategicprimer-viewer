@@ -57,7 +57,7 @@ import org.jetbrains.annotations.Nullable;
 			}
 			final Boolean bool = command.fromRight().orElse(null);
 			final TurnApplet applet = command.fromLeft().orElse(null);
-			if (bool != null && !bool) {
+			if (Boolean.FALSE.equals(bool)) {
 				return null;
 			} else if (applet != null) {
 				final String results = applet.run();

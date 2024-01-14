@@ -121,7 +121,7 @@ public class AdvancementCLIHelper implements LevelGainSource {
 					skill.getLevel());
 			}
 			final Boolean continuation = cli.inputBoolean("Select another Skill in this Job?");
-			if (continuation == null || !continuation) {
+			if (!Boolean.TRUE.equals(continuation)) {
 				break;
 			}
 		}
@@ -159,7 +159,7 @@ public class AdvancementCLIHelper implements LevelGainSource {
 			}
 			advanceJob(worker, job, allowExpertMentoring);
 			final Boolean continuation = cli.inputBoolean("Select another Job in this worker?");
-			if (continuation == null || !continuation) {
+			if (!Boolean.TRUE.equals(continuation)) {
 				break;
 			}
 		}
@@ -274,7 +274,7 @@ public class AdvancementCLIHelper implements LevelGainSource {
 			advanceWorkersInSkill(jobName, skill, unit.stream().filter(isWorker).map(workerCast)
 				.toArray(IWorker[]::new));
 			final Boolean continuation = cli.inputBoolean("Select another Skill in this Job?");
-			if (continuation == null || !continuation) {
+			if (!Boolean.TRUE.equals(continuation)) {
 				break;
 			}
 		}
@@ -300,7 +300,7 @@ public class AdvancementCLIHelper implements LevelGainSource {
 				workers.remove(chosen);
 				advanceSingleWorker(chosen, allowExpertMentoring);
 				final Boolean continuation = cli.inputBoolean("Choose another worker?");
-				if (continuation == null || !continuation) {
+				if (!Boolean.TRUE.equals(continuation)) {
 					break;
 				}
 			}
@@ -335,7 +335,7 @@ public class AdvancementCLIHelper implements LevelGainSource {
 				}
 				advanceWorkersInJob(job, unit);
 				final Boolean continuation = cli.inputBoolean("Select another Job in these workers?");
-				if (continuation == null || !continuation) {
+				if (!Boolean.TRUE.equals(continuation)) {
 					break;
 				}
 			}

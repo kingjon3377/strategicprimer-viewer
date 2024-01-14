@@ -140,7 +140,7 @@ import org.jetbrains.annotations.Nullable;
                     .map(Optional::get).orElse(null);
             final TurnApplet applet = Optional.ofNullable(command).map(Either::fromLeft).filter(Optional::isPresent)
                     .map(Optional::get).orElse(null);
-            if (bool != null && !bool) {
+            if (Boolean.FALSE.equals(bool)) {
                 return ""; // TODO: why not null? (making the method return type nullable) also below
             } else if (applet != null) {
                 if (!applet.getCommands().contains("other")) {
@@ -165,7 +165,7 @@ import org.jetbrains.annotations.Nullable;
         }
         buffer.append(addendum);
         final Boolean runAdvancement = cli.inputBooleanInSeries("Run advancement for this unit now?");
-        if (runAdvancement != null && runAdvancement) {
+        if (Boolean.TRUE.equals(runAdvancement)) {
             final Boolean expertMentoring = cli.inputBooleanInSeries("Account for expert mentoring?");
             if (expertMentoring != null) {
                 buffer.append(System.lineSeparator());
@@ -189,7 +189,7 @@ import org.jetbrains.annotations.Nullable;
         }
         final Boolean runFoodConsumptionAnswer = cli.inputBooleanInSeries(
                 "Run food consumption for this unit now?");
-        if (runFoodConsumptionAnswer != null && runFoodConsumptionAnswer) {
+        if (Boolean.TRUE.equals(runFoodConsumptionAnswer)) {
             consumptionApplet.setTurn(turn);
             consumptionApplet.setUnit(unit);
             final String consumptionResults = consumptionApplet.run();
@@ -205,7 +205,7 @@ import org.jetbrains.annotations.Nullable;
         }
         final Boolean runFoodSpoilageAnswer = cli.inputBooleanInSeries(
                 "Run food spoilage and report it under this unit's results?");
-        if (runFoodSpoilageAnswer != null && runFoodSpoilageAnswer) {
+        if (Boolean.TRUE.equals(runFoodSpoilageAnswer)) {
             spoilageApplet.setOwner(unit.owner());
             spoilageApplet.setTurn(turn);
             final String foodSpoilageResult = spoilageApplet.run();
