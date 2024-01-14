@@ -2,6 +2,7 @@ package drivers.exploration;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import org.jetbrains.annotations.Nullable;
 
@@ -60,9 +61,9 @@ import legacy.map.fixtures.mobile.IUnit;
         model.addSelectionChangeListener(eCLI);
         model.addMovementCostListener(eCLI);
         final Player player = choosePlayer();
-        if (player != null) {
+	    if (!Objects.isNull(player)) {
             final IUnit unit = chooseUnit(player);
-            if (unit != null) {
+		    if (!Objects.isNull(unit)) {
                 model.setSelectedUnit(unit);
                 while (eCLI.getMovement() > 0) {
                     eCLI.moveOneStep();

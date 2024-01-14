@@ -12,6 +12,7 @@ import lovelace.util.DelayedRemovalMap;
 
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Objects;
 
 import legacy.DistanceComparator;
 import legacy.map.IFixture;
@@ -31,7 +32,7 @@ public class ImmortalsTabularReportGenerator implements ITableGenerator<Immortal
     public ImmortalsTabularReportGenerator(final @Nullable Point hq, final MapDimensions dimensions) {
         this.hq = hq;
         this.dimensions = dimensions;
-        if (hq == null) {
+	    if (Objects.isNull(hq)) {
             distanceComparator = (one, two) -> 0;
         } else {
             distanceComparator = new DistanceComparator(hq, dimensions);

@@ -285,11 +285,11 @@ public class Village implements IMutableTownFixture, HasMutableImage,
                     !it.owner().isIndependent()) {
                 report.accept(String.format("In village %s (ID #%d):\tOwners differ",
                         name, id));
-            } else if (population != null) {
+            } else if (!Objects.isNull(population)) {
                 return population.isSubset(it.getPopulation(),
                         (st) -> report.accept(String.format("In village %s (ID #%d):\t%s",
                                 name, id, st)));
-            } else if (it.getPopulation() != null) {
+            } else if (!Objects.isNull(it.getPopulation())) {
                 report.accept(String.format(
                         "In village %s (ID #%d):\tHas extra population details", name, id));
             } else {
@@ -313,7 +313,7 @@ public class Village implements IMutableTownFixture, HasMutableImage,
     @Override
     public int getDC() {
         if (TownStatus.Active == status) {
-            if (population == null) {
+	        if (Objects.isNull(population)) {
                 return 15;
             } else if (population.getPopulation() < 10) {
                 return 20;

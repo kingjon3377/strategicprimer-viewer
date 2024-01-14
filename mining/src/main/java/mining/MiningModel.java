@@ -4,6 +4,7 @@ import drivers.common.cli.ICLIHelper;
 import org.javatuples.Pair;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.SortedMap;
 import java.util.TreeMap;
 import java.util.Map;
@@ -40,7 +41,7 @@ import java.util.stream.Collectors;
     private final Random rng;
 
     private void unnormalizedSet(final Pair<Integer, Integer> loc, final @Nullable LodeStatus status) {
-        if (status == null) {
+	    if (Objects.isNull(status)) {
             unnormalized.remove(loc);
         } else {
             unnormalized.put(loc, status);

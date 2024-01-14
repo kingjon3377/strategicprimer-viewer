@@ -13,6 +13,7 @@ import drivers.turnrunning.ITurnRunningModel;
 import java.math.BigDecimal;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.IntSupplier;
@@ -51,7 +52,7 @@ import static lovelace.util.Decimalize.decimalize;
     }
 
     private void packFood(final @Nullable IFortress fortress, final IUnit unit) {
-        if (fortress == null) {
+	    if (Objects.isNull(fortress)) {
             return;
         }
         final List<IResourcePile> resources = fortress.stream()
@@ -64,11 +65,11 @@ import static lovelace.util.Decimalize.decimalize;
             final IResourcePile chosen =
                     chooseFromList(resources, String.format("Resources in %s:", fortress.getName()), "No resources in fortress.",
                             "Resource to take (from):", ICLIHelper.ListChoiceBehavior.ALWAYS_PROMPT);
-            if (chosen == null) {
+	        if (Objects.isNull(chosen)) {
                 break;
             }
             final Boolean takeAll = cli.inputBooleanInSeries("Take it all?");
-            if (takeAll == null) {
+	        if (Objects.isNull(takeAll)) {
                 return; // TODO: Find a way to propagate the EOF to caller
             } else if (takeAll) {
                 model.transferResource(chosen, unit, decimalize(chosen.getQuantity().number()),
@@ -77,7 +78,7 @@ import static lovelace.util.Decimalize.decimalize;
             } else {
                 final BigDecimal amount = cli.inputDecimal(String.format("Amount to take (in %s):",
                         chosen.getQuantity().units()));
-                if (amount != null && amount.signum() > 0) {
+		        if (!Objects.isNull(amount) && amount.signum() > 0) {
                     model.transferResource(chosen, unit, amount, createID);
                     resources.clear();
                     fortress.stream().filter(isResource).map(resourceCast)
@@ -92,7 +93,7 @@ import static lovelace.util.Decimalize.decimalize;
         final StringBuilder buffer = new StringBuilder();
         model.addSelectionChangeListener(explorationCLI);
         final IUnit mover = model.getSelectedUnit();
-        if (mover == null) {
+	    if (Objects.isNull(mover)) {
             cli.println("No currently selected unit");
             return "";
         }
@@ -108,18 +109,18 @@ import static lovelace.util.Decimalize.decimalize;
             final IFortress startingFort = model.getMap().getFixtures(oldPosition).stream()
                     .filter(isFortress).map(fortressCast)
                     .filter(sameOwner).findAny().orElse(null);
-            if (startingFort != null && model.getMap().getFixtures(newPosition).stream()
+            if (!Objects.isNull(startingFort) && model.getMap().getFixtures(newPosition).stream()
                     .filter(isFortress).map(fortressCast)
                     .noneMatch(sameOwner)) {
                 final Boolean pack = cli.inputBooleanInSeries("Leaving a fortress. Take provisions along?");
-                if (pack == null) {
+	            if (Objects.isNull(pack)) {
                     return null;
                 } else if (pack) {
                     packFood(startingFort, mover);
                 }
             }
             final String addendum = cli.inputMultilineString("Add to results:");
-            if (addendum == null) {
+	        if (Objects.isNull(addendum)) {
                 return null;
             }
             buffer.append(addendum);

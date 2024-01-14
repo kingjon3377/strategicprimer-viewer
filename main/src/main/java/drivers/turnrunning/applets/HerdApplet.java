@@ -14,6 +14,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -67,7 +68,7 @@ import query.SmallAnimalModel;
 	@Override
 	public @Nullable String run() {
 		final IUnit unit = model.getSelectedUnit();
-		if (unit == null) {
+		if (Objects.isNull(unit)) {
 			return null;
 		}
 		final StringBuilder buffer = new StringBuilder();
@@ -79,7 +80,7 @@ import query.SmallAnimalModel;
 				.map(Animal::getKind).distinct()
 				.filter(k -> !herdModels.containsKey(k)).toList()) {
 			final HerdModel herdModel = chooseHerdModel(kind);
-			if (herdModel == null) {
+			if (Objects.isNull(herdModel)) {
 				final Boolean cont = cli.inputBoolean("Skip?"); // TODO: Inline
 				if (Boolean.TRUE.equals(cont)) {
 					continue;
@@ -120,7 +121,7 @@ import query.SmallAnimalModel;
 		long workerCount = unit.stream().filter(IWorker.class::isInstance).map(IWorker.class::cast).count();
 		final Integer addendum = cli.inputNumber(String.format(
 			"%d workers in this unit. Any additional workers to account for:", workerCount));
-		if (addendum != null && addendum >= 0) {
+		if (!Objects.isNull(addendum) && addendum >= 0) {
 			workerCount += addendum;
 		} else {
 			return null;
@@ -159,7 +160,7 @@ import query.SmallAnimalModel;
 				addLineToOrders.accept(String.format("Gathering %s eggs took the %d workers %d min",
 					combinedAnimal, workerCount, pm.dailyTime((int) flockPerHerder)));
 				minutesSpent += pm.getDailyTimePerHead() * flockPerHerder;
-				if (cleaningDay == null) {
+				if (Objects.isNull(cleaningDay)) {
 					return null;
 				} else if (cleaningDay) {
 					addLineToOrders.accept(String.format(
@@ -197,7 +198,7 @@ import query.SmallAnimalModel;
 				final Boolean extra = cli.inputBoolean(String.format(
 					"Is this the one turn in every %d to clean up after the animals?",
 					smm.getExtraChoresInterval() + 1));
-				if (extra == null) {
+				if (Objects.isNull(extra)) {
 					return null;
 				} else {
 					addLineToOrders.accept(String.format("Cleaning up after them took %d minutes.",
@@ -211,7 +212,7 @@ import query.SmallAnimalModel;
 			}
 			addLineToOrders.accept(String.format("This produced %.1f %s, %.1f lbs, of %s.",
 				production.number().doubleValue(), production.units(), pounds, resourceProduced));
-			if (home != null) {
+			if (!Objects.isNull(home)) {
 				// FIXME: 'production' is in gallons; we want only pound-denominated food resources in the map
 				// TODO: If 'home' is null, should probably add to the unit itself ...
 				model.addResource(home, idf.createID(), "food", resourceProduced, production,

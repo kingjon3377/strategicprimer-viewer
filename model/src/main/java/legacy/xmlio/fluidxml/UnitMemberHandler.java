@@ -36,6 +36,7 @@ import javax.xml.stream.events.EndElement;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 import java.util.List;
+import java.util.Objects;
 import java.util.function.Predicate;
 import java.util.stream.StreamSupport;
 
@@ -62,7 +63,7 @@ import java.util.stream.StreamSupport;
                             players.getPlayer(getIntegerAttribute(se, "player")),
                             readNote(se, element.getName(), stream, warner));
                     case "animal" -> {
-                        if (retval.getMount() == null) {
+	                    if (Objects.isNull(retval.getMount())) {
                             final AnimalOrTracks animal = readAnimal(se, element.getName(), stream, players,
                                     warner, idFactory);
                             if (animal instanceof final Animal a) {
@@ -159,7 +160,7 @@ import java.util.stream.StreamSupport;
         final List<IJob> jobs = StreamSupport.stream(obj.spliterator(), true)
                 .filter(((Predicate<IJob>) IJob::isEmpty).negate()).toList();
         final boolean hasJobs = !jobs.isEmpty();
-        writeTag(ostream, "worker", indentation, !hasJobs && stats == null);
+        writeTag(ostream, "worker", indentation, !hasJobs && Objects.isNull(stats));
         writeAttributes(ostream, Pair.with("name", obj.getName()));
         if (!"human".equals(obj.getRace())) {
             writeAttributes(ostream, Pair.with("race", obj.getRace()));
@@ -167,11 +168,11 @@ import java.util.stream.StreamSupport;
         writeAttributes(ostream, Pair.with("id", obj.getId()));
         writeImage(ostream, obj);
         writeNonEmptyAttributes(ostream, Pair.with("portrait", obj.getPortrait()));
-        if (stats != null) {
+	    if (!Objects.isNull(stats)) {
             writeStats(ostream, stats, indentation + 1);
         }
         final Animal mount = obj.getMount();
-        if (mount != null) {
+	    if (!Objects.isNull(mount)) {
             writeAnimal(ostream, mount, indentation + 1);
         }
         for (final Implement item : obj.getEquipment()) {
@@ -183,7 +184,7 @@ import java.util.stream.StreamSupport;
         for (final Integer player : obj.getNotesPlayers()) {
             writeNote(ostream, player, obj.getNote(player), indentation + 1);
         }
-        if (hasJobs || stats != null || mount != null || obj.getNotesPlayers().iterator().hasNext() ||
+        if (hasJobs || !Objects.isNull(stats) || !Objects.isNull(mount) || obj.getNotesPlayers().iterator().hasNext() ||
                 !obj.getEquipment().isEmpty()) {
             indent(ostream, indentation);
             ostream.writeEndElement();

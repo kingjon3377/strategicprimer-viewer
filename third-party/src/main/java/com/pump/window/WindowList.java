@@ -20,6 +20,7 @@ import java.lang.ref.Reference;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import javax.swing.SwingUtilities;
 import javax.swing.event.ChangeEvent;
@@ -205,7 +206,7 @@ public final class WindowList {
         while (a < list.size()) {
             final WeakReference<Window> r = list.get(a);
             final Window w = r.get();
-            if (w == null) {
+	        if (Objects.isNull(w)) {
                 list.remove(a);
             } else {
                 if (includeInvisible || w.isVisible()) {
@@ -243,7 +244,7 @@ public final class WindowList {
         while (a < list.size()) {
             final WeakReference<Window> r = list.get(a);
             final Window w = r.get();
-            if (w == null) {
+	        if (Objects.isNull(w)) {
                 list.remove(a);
             } else {
                 if (w instanceof final Frame f) {

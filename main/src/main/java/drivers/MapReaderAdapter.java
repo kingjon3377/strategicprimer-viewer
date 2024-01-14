@@ -6,6 +6,7 @@ import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 import java.io.IOException;
 import java.io.Reader;
+import java.util.Objects;
 
 import common.xmlio.SPFormatException;
 import common.xmlio.Warning;
@@ -122,7 +123,7 @@ public final class MapReaderAdapter {
      */
     public static void writeModel(final IDriverModel model) throws DriverFailedException {
         final Path mainFile = model.getMap().getFilename();
-        if (mainFile == null) {
+        if (Objects.isNull(mainFile)) {
             LovelaceLogger.error("Model didn't contain filename for main map, so didn't write it");
         } else {
             try {
@@ -138,7 +139,7 @@ public final class MapReaderAdapter {
         if (model instanceof final IMultiMapModel mmm) {
             for (final ILegacyMap map : mmm.getSubordinateMaps()) {
                 final Path filename = map.getFilename();
-                if (filename == null) {
+                if (Objects.isNull(filename)) {
                     LovelaceLogger.error("A map didn't have a filename, and so wasn't written.");
                 } else {
                     try {

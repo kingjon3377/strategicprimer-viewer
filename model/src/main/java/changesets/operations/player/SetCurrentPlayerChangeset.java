@@ -10,6 +10,8 @@ import common.map.PlayerImpl;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Objects;
+
 public final class SetCurrentPlayerChangeset implements Changeset {
 	private final Player oldCurrent;
 	private final Player newCurrent;
@@ -44,9 +46,9 @@ public final class SetCurrentPlayerChangeset implements Changeset {
 				matchingNew = player;
 			}
 		}
-		if (matchingOld == null) {
+		if (Objects.isNull(matchingOld)) {
 			throw new PreconditionFailureException("Can't change current player from not-found player");
-		} else if (matchingNew == null) {
+		} else if (Objects.isNull(matchingNew)) {
 			throw new PreconditionFailureException("Can't change current player to not-found player");
 		}
 	}

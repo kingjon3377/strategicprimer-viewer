@@ -65,7 +65,7 @@ import java.util.function.Consumer;
 		fix.setPortrait(getAttribute(element, "portrait", ""));
 		for (final XMLEvent event : stream) {
 			if (event instanceof final StartElement se && isSPStartElement(event)) {
-				if (fix.getPopulation() == null) {
+				if (Objects.isNull(fix.getPopulation())) {
 					fix.setPopulation(readCommunityStats(se,
 						element.getName(), stream, players, warner, idFactory));
 				} else {
@@ -105,7 +105,7 @@ import java.util.function.Consumer;
 		fix.setPortrait(getAttribute(element, "portrait", ""));
 		for (final XMLEvent event : stream) {
 			if (event instanceof final StartElement se && isSPStartElement(event)) {
-				if (fix.getPopulation() == null) {
+				if (Objects.isNull(fix.getPopulation())) {
 					fix.setPopulation(readCommunityStats(se,
 						element.getName(), stream, players, warner, idFactory));
 				} else {
@@ -146,7 +146,7 @@ import java.util.function.Consumer;
 		fix.setPortrait(getAttribute(element, "portrait", ""));
 		for (final XMLEvent event : stream) {
 			if (event instanceof final StartElement se && isSPStartElement(event)) {
-				if (fix.getPopulation() == null) {
+				if (Objects.isNull(fix.getPopulation())) {
 					fix.setPopulation(readCommunityStats(se,
 						element.getName(), stream, players, warner, idFactory));
 				} else {
@@ -181,7 +181,7 @@ import java.util.function.Consumer;
 		retval.setPortrait(getAttribute(element, "portrait", ""));
 		for (final XMLEvent event : stream) {
 			if (event instanceof final StartElement se && isSPStartElement(event)) {
-				if (retval.getPopulation() == null) {
+				if (Objects.isNull(retval.getPopulation())) {
 					retval.setPopulation(readCommunityStats(se,
 						element.getName(), stream, players, warner, idFactory));
 				} else {
@@ -224,7 +224,7 @@ import java.util.function.Consumer;
 						break;
 					case "production":
 					case "consumption":
-						if (current == null) {
+						if (Objects.isNull(current)) {
 							expectAttributes(se, warner);
 							current = se.getName().getLocalPart();
 							stack.addFirst(se);
@@ -270,7 +270,7 @@ import java.util.function.Consumer;
 
 	public static void writeVillage(final XMLStreamWriter ostream, final Village obj, final int indent)
 		throws XMLStreamException {
-		writeTag(ostream, "village", indent, obj.getPopulation() == null);
+		writeTag(ostream, "village", indent, Objects.isNull(obj.getPopulation()));
 		writeAttributes(ostream, Pair.with("status", obj.getStatus().toString()));
 		writeNonEmptyAttributes(ostream, Pair.with("name", obj.getName()));
 		writeAttributes(ostream, Pair.with("id", obj.getId()),
@@ -278,7 +278,7 @@ import java.util.function.Consumer;
 			Pair.with("race", obj.getRace()));
 		writeImage(ostream, obj);
 		writeNonEmptyAttributes(ostream, Pair.with("portrait", obj.getPortrait()));
-		if (obj.getPopulation() != null) {
+		if (!Objects.isNull(obj.getPopulation())) {
 			writeCommunityStats(ostream, obj.getPopulation(), indent);
 			ostream.writeEndElement();
 		}
@@ -286,7 +286,7 @@ import java.util.function.Consumer;
 
 	public static void writeTown(final XMLStreamWriter ostream, final AbstractTown obj, final int indent)
 		throws XMLStreamException {
-		writeTag(ostream, obj.getKind(), indent, obj.getPopulation() == null);
+		writeTag(ostream, obj.getKind(), indent, Objects.isNull(obj.getPopulation()));
 		writeAttributes(ostream, Pair.with("status", obj.getStatus().toString()),
 			Pair.with("size", obj.getTownSize().toString()), Pair.with("dc", obj.getDC()));
 		writeNonEmptyAttributes(ostream, Pair.with("name", obj.getName()));
@@ -294,7 +294,7 @@ import java.util.function.Consumer;
 			Pair.with("owner", obj.owner().getPlayerId()));
 		writeImage(ostream, obj);
 		writeNonEmptyAttributes(ostream, Pair.with("portrait", obj.getPortrait()));
-		if (obj.getPopulation() != null) {
+		if (!Objects.isNull(obj.getPopulation())) {
 			writeCommunityStats(ostream, obj.getPopulation(), indent);
 			ostream.writeEndElement();
 		}

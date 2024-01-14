@@ -12,6 +12,7 @@ import java.nio.file.Files;
 import java.io.BufferedWriter;
 
 import java.io.IOException;
+import java.util.Objects;
 
 import drivers.common.IMultiMapModel;
 import drivers.common.IDriverModel;
@@ -51,7 +52,7 @@ public class ReportCLI implements ReadOnlyDriver {
     }
 
     private void writeReport(final @Nullable Path filename, final ILegacyMap map) throws IOException {
-        if (filename == null) {
+        if (Objects.isNull(filename)) {
             LovelaceLogger.error("Asked to make report from map with no filename");
         } else {
             Player player;

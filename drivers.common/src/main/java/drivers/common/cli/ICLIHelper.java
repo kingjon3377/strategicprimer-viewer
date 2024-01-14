@@ -8,6 +8,7 @@ import legacy.map.Point;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * An interface for the "CLI helper," which encapsulates input and output
@@ -221,9 +222,9 @@ public interface ICLIHelper {
 			print(" ");
 		}
 		final Integer row = inputNumber("Row: ");
-		if (row != null) {
+		if (!Objects.isNull(row)) {
 			final Integer column = inputNumber("Column: ");
-			if (column != null) {
+			if (!Objects.isNull(column)) {
 				return new Point(row, column);
 			}
 		}

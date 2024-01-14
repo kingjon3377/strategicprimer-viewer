@@ -145,7 +145,7 @@ public class MemberDetailPanel extends BorderedPanel implements UnitMemberListen
 
     private static Function<@Nullable WorkerStats, String> labelFormat(final ToIntFunction<WorkerStats> stat) {
         return (stats) -> {
-            if (stats == null) {
+	        if (Objects.isNull(stats)) {
                 return "";
             } else {
                 return WorkerStats.getModifierString(stat.applyAsInt(stats));
@@ -175,7 +175,7 @@ public class MemberDetailPanel extends BorderedPanel implements UnitMemberListen
         @Override
         public void paintComponent(final Graphics pen) {
             super.paintComponent(pen);
-            if (portrait != null) {
+	        if (!Objects.isNull(portrait)) {
                 pen.drawImage(portrait, 0, 0, getWidth(), getHeight(), this);
             }
         }
@@ -199,7 +199,7 @@ public class MemberDetailPanel extends BorderedPanel implements UnitMemberListen
             for (final InterpolatedLabel<@Nullable WorkerStats> label : statLabels) {
                 label.setArgument(stats);
             }
-            if (worker.getMount() != null) {
+	        if (!Objects.isNull(worker.getMount())) {
                 jobsPanel.add(new JLabel("Mounted on " + worker.getMount().getKind()));
             }
             for (final IJob job : worker) {
@@ -267,7 +267,7 @@ public class MemberDetailPanel extends BorderedPanel implements UnitMemberListen
             for (final InterpolatedLabel<@Nullable WorkerStats> label : statLabels) {
                 label.setArgument(null);
             }
-        } else if (local == null) {
+        } else if (Objects.isNull(local)) {
             typeLabel.setText("");
             nameLabel.setText("");
             kindLabel.setText("");
@@ -311,12 +311,12 @@ public class MemberDetailPanel extends BorderedPanel implements UnitMemberListen
                 return;
             }
         }
-        if (selected != null) {
+	    if (!Objects.isNull(selected)) {
             if (!Objects.equals(current, selected)) {
                 current = selected;
                 recache();
             }
-        } else if (current != null) {
+	    } else if (!Objects.isNull(current)) {
             current = null;
             recache();
         }

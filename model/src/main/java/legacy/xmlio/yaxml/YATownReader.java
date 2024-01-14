@@ -38,6 +38,7 @@ import java.util.Deque;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Random;
 import java.util.function.Consumer;
@@ -101,7 +102,7 @@ import java.util.function.Consumer;
             } else if (event instanceof final StartElement se && isSupportedNamespace(se.getName())) {
                 switch (se.getName().getLocalPart().toLowerCase()) {
                     case "expertise":
-                        if (current == null) {
+	                    if (Objects.isNull(current)) {
                             expectAttributes(se, "skill", "level");
                             retval.setSkillLevel(getParameter(se, "skill"),
                                     getIntegerParameter(se, "level"));
@@ -114,7 +115,7 @@ import java.util.function.Consumer;
                         }
                         break;
                     case "claim":
-                        if (current == null) {
+	                    if (Objects.isNull(current)) {
                             expectAttributes(se, "resource");
                             retval.addWorkedField(getIntegerParameter(
                                     se, "resource"));
@@ -128,7 +129,7 @@ import java.util.function.Consumer;
                         break;
                     case "production":
                     case "consumption":
-                        if (current == null) {
+	                    if (Objects.isNull(current)) {
                             expectAttributes(se);
                             stack.addFirst(se);
                             current = se.getName().getLocalPart();
@@ -147,8 +148,7 @@ import java.util.function.Consumer;
                         } else {
                             throw UnwantedChildException.listingExpectedTags(
                                     stack.peekFirst().getName(), se,
-                                    expectedCommunityStatsTags(current == null ?
-                                            "population" : current).toArray(String[]::new));
+                                    expectedCommunityStatsTags(Objects.requireNonNullElse(current, "population")).toArray(String[]::new));
                         }
                         lambda.accept(resourceReader.read(se,
                                 stack.peekFirst().getName(), stream));
@@ -157,15 +157,14 @@ import java.util.function.Consumer;
                         throw UnwantedChildException.listingExpectedTags(
                                 stack.isEmpty() ? element.getName() :
                                         stack.peekFirst().getName(),
-                                se, expectedCommunityStatsTags(current == null ?
-                                        "population" : current).toArray(String[]::new));
+                                se, expectedCommunityStatsTags(Objects.requireNonNullElse(current, "population")).toArray(String[]::new));
                 }
             } else if (event instanceof final EndElement ee && !stack.isEmpty() &&
                     ee.getName().equals(stack.peekFirst().getName())) {
                 final StartElement top = stack.removeFirst();
                 if (top.equals(element)) {
                     break;
-                } else if (current != null &&
+                } else if (!Objects.isNull(current) &&
                         top.getName().getLocalPart().equals(current)) {
                     if ("population".equals(stack.peekFirst().getName()
                             .getLocalPart())) {
@@ -197,7 +196,7 @@ import java.util.function.Consumer;
         retval.setPortrait(getParameter(element, "portrait", ""));
         for (final XMLEvent event : stream) {
             if (event instanceof final StartElement se && isSupportedNamespace(se.getName())) {
-                if (retval.getPopulation() == null) {
+	            if (Objects.isNull(retval.getPopulation())) {
                     retval.setPopulation(parseCommunityStats(se,
                             element.getName(), stream));
                 } else {
@@ -240,7 +239,7 @@ import java.util.function.Consumer;
         };
         for (final XMLEvent event : stream) {
             if (event instanceof final StartElement se && isSupportedNamespace(se.getName())) {
-                if (retval.getPopulation() == null) {
+	            if (Objects.isNull(retval.getPopulation())) {
                     retval.setPopulation(parseCommunityStats(se, element.getName(), stream));
                 } else {
                     throw new UnwantedChildException(element.getName(), se);
@@ -308,7 +307,7 @@ import java.util.function.Consumer;
         writeProperty(ostream, "owner", obj.owner().getPlayerId());
         writeImageXML(ostream, obj);
         writeNonemptyProperty(ostream, "portrait", obj.getPortrait());
-        if (obj.getPopulation() == null) {
+	    if (Objects.isNull(obj.getPopulation())) {
             closeLeafTag(ostream);
         } else {
             finishParentTag(ostream);
@@ -383,7 +382,7 @@ import java.util.function.Consumer;
             writeProperty(ostream, "race", v.getRace());
             writeImageXML(ostream, v);
             writeNonemptyProperty(ostream, "portrait", obj.getPortrait());
-            if (obj.getPopulation() == null) {
+	        if (Objects.isNull(obj.getPopulation())) {
                 closeLeafTag(ostream);
             } else {
                 finishParentTag(ostream);

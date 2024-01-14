@@ -1,5 +1,6 @@
 package drivers.resourceadding;
 
+import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -56,41 +57,41 @@ import legacy.map.fixtures.Implement;
                 false).collect(Collectors.toList());
         while (!players.isEmpty()) {
             final Player chosen = cli.chooseFromList((List<? extends Player>) players, "Players in the maps:", "No players found.", "Player to add resources for: ", ICLIHelper.ListChoiceBehavior.ALWAYS_PROMPT).getValue1();
-            if (chosen == null) {
+	        if (Objects.isNull(chosen)) {
                 break;
             }
             players.remove(chosen);
             while (true) {
                 final Boolean resp = cli.inputBoolean("Keep going? ");
-                if (resp == null) {
+	            if (Objects.isNull(resp)) {
                     return;
                 } else if (!resp) {
                     break;
                 }
                 final Boolean res = cli.inputBooleanInSeries("Enter a (quantified) resource? ");
-                if (res == null) {
+	            if (Objects.isNull(res)) {
                     return;
                 } else if (res) {
                     final IResourcePile resource = helper.enterResource();
-                    if (resource == null) {
+		            if (Objects.isNull(resource)) {
                         return;
                     }
                     model.addResource(resource, chosen);
                     continue;
                 }
                 final Boolean eq = cli.inputBooleanInSeries("Enter equipment etc.? ");
-                if (eq == null) {
+	            if (Objects.isNull(eq)) {
                     return;
                 } else if (eq) {
                     final Implement implement = helper.enterImplement();
-                    if (implement == null) {
+		            if (Objects.isNull(implement)) {
                         return;
                     }
                     model.addResource(implement, chosen);
                 }
             }
             final Boolean continuation = cli.inputBoolean("Choose another player?");
-            if (continuation == null) {
+	        if (Objects.isNull(continuation)) {
                 return;
             } else if (!continuation) {
                 break;

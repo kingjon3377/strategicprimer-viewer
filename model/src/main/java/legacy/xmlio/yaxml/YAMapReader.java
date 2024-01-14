@@ -49,6 +49,7 @@ import legacy.map.fixtures.towns.IFortress;
 import java.util.List;
 import java.text.ParseException;
 import java.util.Collection;
+import java.util.Objects;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
@@ -231,7 +232,7 @@ import java.util.function.Predicate;
                     // Deliberately ignore "row"
                     continue;
                 } else if ("tile".equals(type)) {
-                    if (point != null) {
+	                if (!Objects.isNull(point)) {
                         throw new UnwantedChildException(tagStack.peekFirst(), se);
                     }
                     expectAttributes(se, "row", "column", "kind",
@@ -257,7 +258,7 @@ import java.util.function.Predicate;
                         retval.setMountainous(localPoint, true);
                     }
                 } else if ("elsewhere".equals(type)) {
-                    if (point != null) {
+	                if (!Objects.isNull(point)) {
                         throw new UnwantedChildException(tagStack.peekFirst(), se);
                     }
                     expectAttributes(se);
@@ -269,7 +270,7 @@ import java.util.function.Predicate;
                 } else if ("sandbar".equals(type)) {
                     tagStack.addFirst(se.getName());
                     warner.handle(UnsupportedTagException.obsolete(se));
-                } else if (point != null) {
+                } else if (!Objects.isNull(point)) {
                     switch (type) {
                         case "lake", "river" -> {
                             retval.addRivers(point,
@@ -336,7 +337,7 @@ import java.util.function.Predicate;
             } else if (event instanceof final Characters c) {
                 final String data = c.getData().strip();
                 if (!data.isEmpty()) {
-                    retval.addFixture(point == null ? Point.INVALID_POINT : point,
+                    retval.addFixture(Objects.requireNonNullElse(point, Point.INVALID_POINT),
                             new TextFixture(data, -1));
                 }
             }
@@ -413,7 +414,7 @@ import java.util.function.Predicate;
                     writeTag(ostream, "tile", tabs + 3);
                     writeProperty(ostream, "row", i);
                     writeProperty(ostream, "column", j);
-                    if (terrain != null) {
+	                if (!Objects.isNull(terrain)) {
                         writeProperty(ostream, "kind", terrain.getXml());
                     }
                     ostream.accept(">");
@@ -455,7 +456,7 @@ import java.util.function.Predicate;
                     final Ground ground = obj.getFixtures(loc).stream()
                             .filter(isGround).map(groundCast)
                             .findFirst().orElse(null);
-                    if (ground != null) {
+	                if (!Objects.isNull(ground)) {
                         eolIfNeeded(needEol, ostream);
                         needEol = false;
                         writeChild(ostream, ground, tabs + 4);
@@ -463,7 +464,7 @@ import java.util.function.Predicate;
                     final Forest forest = obj.getFixtures(loc).stream()
                             .filter(isForest).map(forestCast)
                             .findFirst().orElse(null);
-                    if (forest != null) {
+	                if (!Objects.isNull(forest)) {
                         eolIfNeeded(needEol, ostream);
                         needEol = false;
                         writeChild(ostream, forest, tabs + 4);

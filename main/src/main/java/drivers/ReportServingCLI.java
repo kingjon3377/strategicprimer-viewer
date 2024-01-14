@@ -1,6 +1,7 @@
 package drivers;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 import java.util.stream.Stream;
@@ -71,7 +72,7 @@ import org.takes.http.Exit;
         if (model instanceof final IMultiMapModel mmm) { // TODO: Also require there to be 1+ sub-maps w/ filenames for this case
             for (final ILegacyMap map : mmm.getAllMaps()) {
                 final Path file = map.getFilename();
-                if (file == null) {
+	            if (Objects.isNull(file)) {
                     continue;
                 }
                 if (!cache.containsKey(file)) {
@@ -83,7 +84,7 @@ import org.takes.http.Exit;
                     }
                 }
             }
-        } else if (model.getMap().getFilename() != null) {
+        } else if (!Objects.isNull(model.getMap().getFilename())) {
             try {
                 cache.put(model.getMap().getFilename(), ReportGenerator.createReport(model.getMap(), cli,
                         Optional.ofNullable(currentPlayer).orElse(model.getMap().getCurrentPlayer())));

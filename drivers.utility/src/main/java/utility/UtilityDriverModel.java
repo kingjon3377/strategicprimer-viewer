@@ -3,6 +3,7 @@ package utility;
 import legacy.map.SubsettableFixture;
 
 import java.util.Collection;
+import java.util.Objects;
 import java.util.Random;
 import java.util.function.Predicate;
 
@@ -105,7 +106,7 @@ public class UtilityDriverModel extends SimpleMultiMapModel {
         for (final IMutableLegacyMap subordinateMap : getRestrictedSubordinateMaps()) {
             final TileType mainTerrain = map.getBaseTerrain(location);
             final TileType subTerrain = subordinateMap.getBaseTerrain(location);
-            if (mainTerrain != null && subTerrain != null && mainTerrain == subTerrain &&
+            if (!Objects.isNull(mainTerrain) && !Objects.isNull(subTerrain) && mainTerrain == subTerrain &&
                     !map.getRivers(location).isEmpty() &&
                     subordinateMap.getRivers(location).isEmpty()) {
                 subordinateMap.addRivers(location,
@@ -248,7 +249,7 @@ public class UtilityDriverModel extends SimpleMultiMapModel {
             subMap.setModified(true);
             final TileType terrain = map.getBaseTerrain(location);
             final TileType ours = subMap.getBaseTerrain(location);
-            if (terrain != null && ours != null && terrain == ours) {
+            if (!Objects.isNull(terrain) && !Objects.isNull(ours) && terrain == ours) {
                 subMap.setBaseTerrain(location, null);
             }
             subMap.removeRivers(location,
@@ -303,7 +304,7 @@ public class UtilityDriverModel extends SimpleMultiMapModel {
                     }
                     final Forest matching = mainForests.stream()
                             .filter(forest::equalsIgnoringID).findAny().orElse(null);
-                    if (matching == null) {
+	                if (Objects.isNull(matching)) {
                         ostream.accept(String.format("Unmatched forest in %s: %s",
                                 location, forest));
                         getRestrictedMap().addFixture(location, forest.copy(IFixture.CopyBehavior.KEEP));
@@ -322,7 +323,7 @@ public class UtilityDriverModel extends SimpleMultiMapModel {
                     }
                     final Ground matching = mainGround.stream()
                             .filter(ground::equalsIgnoringID).findAny().orElse(null);
-                    if (matching == null) {
+	                if (Objects.isNull(matching)) {
                         ostream.accept(String.format("Unmatched ground in %s: %s",
                                 location, ground));
                         getRestrictedMap().addFixture(location, ground.copy(IFixture.CopyBehavior.KEEP));
@@ -380,7 +381,7 @@ public class UtilityDriverModel extends SimpleMultiMapModel {
             final Random rng = new Random(seed);
 
             for (final Point neighbor : new SurroundingPointIterable(center, subMap.getDimensions())) {
-                if (subMap.getBaseTerrain(neighbor) == null) {
+	            if (Objects.isNull(subMap.getBaseTerrain(neighbor))) {
                     subMap.setBaseTerrain(neighbor, map.getBaseTerrain(neighbor));
                     if (map.isMountainous(neighbor)) {
                         subMap.setMountainous(neighbor, true);

@@ -17,6 +17,7 @@ import java.util.HashMap;
 
 import drivers.common.cli.ICLIHelper;
 
+import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import javax.xml.stream.XMLStreamException;
@@ -159,7 +160,7 @@ import org.jetbrains.annotations.Nullable;
 
                     final Pair<Integer, Integer> dominant = counter.streamAllCounts()
                             .max(Comparator.comparing(Pair::getValue1)).orElse(null);
-                    if (dominant != null) {
+	                if (!Objects.isNull(dominant)) {
                         if (mapping.containsKey(dominant.getValue0())) {
                             final HasName type = mapping.get(dominant.getValue0());
                             LovelaceLogger.debug("Type for (%d, %d) deduced to be %s",
@@ -170,7 +171,7 @@ import org.jetbrains.annotations.Nullable;
                                     ", ", Integer.toString(mapColumn),
                                     "): ");
                             final HasName type = askFor(dominant.getValue0());
-                            if (type != null) {
+			                if (!Objects.isNull(type)) {
                                 mapping.put(dominant.getValue0(), type);
                                 retval.put(new Point(mapRow, mapColumn), type);
                             }
@@ -202,13 +203,13 @@ import org.jetbrains.annotations.Nullable;
                         case TemperateForest -> {
                             finalRetval.setBaseTerrain(point, TileType.Plains);
                             final String foundTForest = findAdjacentForest(finalRetval, point);
-                            if (foundTForest != null) {
+	                        if (!Objects.isNull(foundTForest)) {
                                 finalRetval.addFixture(point, new Forest(foundTForest, false,
                                         idf.createID()));
                                 continue;
                             }
                             final String inputTForest = cli.inputString("Kind of tree for a temperate forest: ");
-                            if (inputTForest == null) {
+	                        if (Objects.isNull(inputTForest)) {
                                 return;
                             } else {
                                 finalRetval.addFixture(point, new Forest(inputTForest, false,
@@ -218,13 +219,13 @@ import org.jetbrains.annotations.Nullable;
                         case BorealForest -> {
                             finalRetval.setBaseTerrain(point, TileType.Steppe);
                             final String foundBForest = findAdjacentForest(finalRetval, point);
-                            if (foundBForest != null) {
+	                        if (!Objects.isNull(foundBForest)) {
                                 finalRetval.addFixture(point, new Forest(foundBForest, false,
                                         idf.createID()));
                                 continue;
                             }
                             final String inputBForest = cli.inputString("Kind of tree for a boreal forest: ");
-                            if (inputBForest == null) {
+	                        if (Objects.isNull(inputBForest)) {
                                 return;
                             } else {
                                 finalRetval.addFixture(point, new Forest(inputBForest, false, idf.createID()));

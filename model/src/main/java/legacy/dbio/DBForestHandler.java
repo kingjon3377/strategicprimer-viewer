@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 import java.math.BigDecimal;
+import java.util.Objects;
 
 import legacy.map.Point;
 import legacy.map.IMutableLegacyMap;
@@ -70,7 +71,7 @@ public final class DBForestHandler extends AbstractDatabaseWriter<Forest, Point>
                 acres = new BigDecimal(acresString);
             }
             final Forest forest = new Forest(kind, rows, id, acres);
-            if (image != null) {
+	        if (!Objects.isNull(image)) {
                 forest.setImage(image);
             }
             map.addFixture(new Point(row, column), forest);

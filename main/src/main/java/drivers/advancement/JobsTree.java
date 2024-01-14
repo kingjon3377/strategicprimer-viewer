@@ -13,6 +13,7 @@ import javax.swing.tree.TreePath;
 import java.io.Serial;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 import legacy.map.fixtures.mobile.worker.ISkill;
@@ -87,7 +88,7 @@ import legacy.map.fixtures.mobile.worker.IJob;
         final @Nullable ISkill retval;
         final @Nullable IJob job;
         final TreePath selectionPath = event.getNewLeadSelectionPath();
-        if (selectionPath != null && selectionPath.getLastPathComponent() instanceof ISkill) {
+        if (!Objects.isNull(selectionPath) && selectionPath.getLastPathComponent() instanceof ISkill) {
             retval = (ISkill) selectionPath.getLastPathComponent();
             final Object[] path = selectionPath.getPath();
             if (path.length < 2) {

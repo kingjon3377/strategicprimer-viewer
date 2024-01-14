@@ -5,6 +5,7 @@ import goldberg.ImprovedComboBox;
 import javax.swing.JTextField;
 import java.awt.event.ActionListener;
 import java.io.Serial;
+import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.HashSet;
 import java.util.Set;
@@ -39,7 +40,7 @@ public class MemoizedComboBox extends ImprovedComboBox<String> {
      */
     public void checkAndClear() {
         final String selectedItem = getSelectedItem();
-        if (selectedItem == null) {
+	    if (Objects.isNull(selectedItem)) {
             return;
         } else {
             final String item = selectedItem.strip();
@@ -54,7 +55,7 @@ public class MemoizedComboBox extends ImprovedComboBox<String> {
     @Override
     public @Nullable String getSelectedItem() {
         final Object retval = super.getSelectedItem();
-        if (retval == null) {
+	    if (Objects.isNull(retval)) {
             return null;
         } else if (retval instanceof final String s) {
             return s.strip();
@@ -65,7 +66,7 @@ public class MemoizedComboBox extends ImprovedComboBox<String> {
 
     @Override
     public void setSelectedItem(final @Nullable Object selectedItem) {
-        if (selectedItem instanceof String || selectedItem == null) {
+        if (selectedItem instanceof String || Objects.isNull(selectedItem)) {
             super.setSelectedItem(selectedItem);
         } else {
             logger.accept("Failed to set selectedItem: must be a String.");

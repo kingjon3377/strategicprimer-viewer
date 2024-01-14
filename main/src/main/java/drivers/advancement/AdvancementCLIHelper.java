@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -68,11 +69,11 @@ public class AdvancementCLIHelper implements LevelGainSource {
 		while (true) {
 			final Pair<Integer, @Nullable ISkill> chosen = cli.chooseFromList(skills, "Skills in Job:", "No existing Skills.", "Skill to advance: ", ICLIHelper.ListChoiceBehavior.ALWAYS_PROMPT);
 			final ISkill skill;
-			if (chosen.getValue1() != null) {
+			if (!Objects.isNull(chosen.getValue1())) {
 				skill = chosen.getValue1();
 			} else if (chosen.getValue0() <= skills.size()) {
 				final String skillName = cli.inputString("Name of new Skill: ");
-				if (skillName == null) {
+				if (Objects.isNull(skillName)) {
 					return;
 				} else {
 					model.addSkillToWorker(worker, job.getName(), skillName);
@@ -80,7 +81,7 @@ public class AdvancementCLIHelper implements LevelGainSource {
 					job.forEach(addToList);
 					final ISkill temp = skills.stream().filter(s -> skillName.equals(s.getName()))
 						.findFirst().orElse(null);
-					if (temp == null) {
+					if (Objects.isNull(temp)) {
 						cli.println("Select the new item at the next prompt.");
 						continue;
 					} else {
@@ -136,11 +137,11 @@ public class AdvancementCLIHelper implements LevelGainSource {
 		while (true) {
 			final Pair<Integer, @Nullable IJob> chosen = cli.chooseFromList(jobs, "Jobs in worker:", "No existing Jobs.", "Job to advance: ", ICLIHelper.ListChoiceBehavior.ALWAYS_PROMPT);
 			final IJob job;
-			if (chosen.getValue1() != null) {
+			if (!Objects.isNull(chosen.getValue1())) {
 				job = chosen.getValue1();
 			} else if (chosen.getValue0() <= jobs.size()) {
 				final String jobName = cli.inputString("Name of new Job: ");
-				if (jobName == null) {
+				if (Objects.isNull(jobName)) {
 					return;
 				}
 				model.addJobToWorker(worker, jobName);
@@ -148,7 +149,7 @@ public class AdvancementCLIHelper implements LevelGainSource {
 				worker.forEach(addToList);
 				final IJob temp = jobs.stream().filter(j -> jobName.equals(j.getName()))
 					.findFirst().orElse(null);
-				if (temp == null) {
+				if (Objects.isNull(temp)) {
 					cli.println("Select the new item at the next prompt.");
 					continue;
 				} else {
@@ -186,7 +187,7 @@ public class AdvancementCLIHelper implements LevelGainSource {
 					final Boolean chooseAnother = cli.inputBooleanInSeries(String.format(
 						"%s gained %d level(s) in miscellaneous, choose another skill?",
 						worker.getName(), skill.getLevel()), "misc-replacement");
-					if (chooseAnother == null) {
+					if (Objects.isNull(chooseAnother)) {
 						return;
 					} else if (!chooseAnother) {
 						continue;
@@ -200,7 +201,7 @@ public class AdvancementCLIHelper implements LevelGainSource {
 								.collect(Collectors.toList()),
 							"Skill to gain level in:", "No other skill", "Chosen skill:",
 							ICLIHelper.ListChoiceBehavior.ALWAYS_PROMPT);
-						if (choice.getValue1() != null) {
+						if (!Objects.isNull(choice.getValue1())) {
 							replacement = choice.getValue1();
 							model.replaceSkillInJob(worker, job.getName(), skill, replacement);
 							model.addHoursToSkill(worker, job.getName(), replacement.getName(),
@@ -210,7 +211,7 @@ public class AdvancementCLIHelper implements LevelGainSource {
 							continue;
 						}
 						final String replacementName = cli.inputString("Skill to gain level in: ");
-						if (replacementName == null) {
+						if (Objects.isNull(replacementName)) {
 							return;
 						}
 						replacement = new Skill(replacementName, 1, 0);
@@ -255,13 +256,13 @@ public class AdvancementCLIHelper implements LevelGainSource {
 		while (true) {
 			final Pair<Integer, @Nullable String> chosen = cli.chooseStringFromList(skills, "Skills in Jobs:", "No existing skills.", "Skill to advance: ", ICLIHelper.ListChoiceBehavior.ALWAYS_PROMPT);
 			final String skill;
-			if (chosen.getValue1() != null) {
+			if (!Objects.isNull(chosen.getValue1())) {
 				skill = chosen.getValue1();
 			} else if (chosen.getValue0() > skills.size()) {
 				break;
 			} else {
 				final String skillName = cli.inputString("Name of the new skill: ");
-				if (skillName == null) {
+				if (Objects.isNull(skillName)) {
 					return;
 				}
 				model.addSkillToAllWorkers(unit, jobName, skillName);
@@ -289,12 +290,12 @@ public class AdvancementCLIHelper implements LevelGainSource {
 		final Boolean individualAdvancement = cli.inputBooleanInSeries("Add experience to workers individually? ");
 		final Predicate<Object> isWorker = IWorker.class::isInstance;
 		final Function<Object, IWorker> workerCast = IWorker.class::cast;
-		if (individualAdvancement == null) {
+		if (Objects.isNull(individualAdvancement)) {
 			return;
 		} else if (individualAdvancement) {
 			while (!workers.isEmpty()) {
 				final IWorker chosen = cli.chooseFromList((List<? extends IWorker>) workers, "Workers in unit:", "No unadvanced workers remain.", "Chosen worker: ", ICLIHelper.ListChoiceBehavior.ALWAYS_PROMPT).getValue1();
-				if (chosen == null) {
+				if (Objects.isNull(chosen)) {
 					break;
 				}
 				workers.remove(chosen);
@@ -316,13 +317,13 @@ public class AdvancementCLIHelper implements LevelGainSource {
 			while (true) {
 				final Pair<Integer, @Nullable String> chosen = cli.chooseStringFromList(jobs, "Jobs in workers:", "No existing jobs.", "Job to advance: ", ICLIHelper.ListChoiceBehavior.ALWAYS_PROMPT);
 				final String job;
-				if (chosen.getValue1() != null) {
+				if (!Objects.isNull(chosen.getValue1())) {
 					job = chosen.getValue1();
 				} else if (chosen.getValue0() > jobs.size()) {
 					break;
 				} else {
 					final String jobName = cli.inputString("Name of new Job: ");
-					if (jobName == null) {
+					if (Objects.isNull(jobName)) {
 						return;
 					}
 					for (final IWorker worker : workers) {

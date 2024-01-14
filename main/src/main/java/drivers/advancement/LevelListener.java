@@ -12,6 +12,8 @@ import drivers.worker_mgmt.UnitMemberListener;
 import legacy.map.fixtures.mobile.worker.ISkill;
 import legacy.map.fixtures.mobile.worker.IJob;
 
+import java.util.Objects;
+
 /**
  * A listener to print a line whenever a worker gains a level.
  */
@@ -79,14 +81,14 @@ import legacy.map.fixtures.mobile.worker.IJob;
         final String actualSkillName;
         if (!workerName.isEmpty() && !"unknown".equals(workerName)) {
             actualWorkerName = workerName;
-        } else if (worker == null) {
+        } else if (Objects.isNull(worker)) {
             return;
         } else {
             actualWorkerName = getName(worker);
         }
         if (!skillName.isEmpty() && !"unknown".equals(skillName)) {
             actualSkillName = skillName;
-        } else if (skill == null) {
+        } else if (Objects.isNull(skill)) {
             return;
         } else {
             actualSkillName = getName(skill);

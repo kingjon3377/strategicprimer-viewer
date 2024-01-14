@@ -2,6 +2,7 @@ package drivers.map_viewer;
 
 import java.nio.file.NoSuchFileException;
 
+import java.util.Objects;
 import java.util.stream.Stream;
 
 import lovelace.util.LovelaceLogger;
@@ -146,12 +147,12 @@ public class Ver2TileDrawHelper implements TileDrawHelper {
      */
     private @Nullable Color getFixtureColor(final ILegacyMap map, final Point location) {
         final TileFixture top = getTopFixture(map, location);
-        if (top != null) {
+	    if (!Objects.isNull(top)) {
             final Color color = getDrawableFixtures(map, location)
                     .filter(f -> !top.equals(f)).filter(TerrainFixture.class::isInstance)
                     .map(TerrainFixture.class::cast).findFirst()
                     .map(ColorHelper::getFeatureColor).orElse(null);
-            if (color != null) {
+		    if (!Objects.isNull(color)) {
                 return color;
             } else if (map.isMountainous(location)) {
                 return ColorHelper.MOUNTAIN_COLOR;
@@ -229,7 +230,7 @@ public class Ver2TileDrawHelper implements TileDrawHelper {
             localColor = ColorHelper.get(map.getDimensions().version(),
                     map.getBaseTerrain(location));
         }
-        if (localColor != null) {
+	    if (!Objects.isNull(localColor)) {
             pen.setColor(localColor);
             pen.fillRect(coordinates.x(), coordinates.y(),
                     dimensions.x(), dimensions.y());
@@ -245,7 +246,7 @@ public class Ver2TileDrawHelper implements TileDrawHelper {
                     coordinates, dimensions);
         }
         final TileFixture top = getTopFixture(map, location);
-        if (top != null) {
+	    if (!Objects.isNull(top)) {
             drawIcon(pen, getImageForFixture(top), coordinates, dimensions);
         } else if (map.isMountainous(location)) {
             drawIcon(pen, "mountain.png", coordinates, dimensions);
@@ -291,13 +292,13 @@ public class Ver2TileDrawHelper implements TileDrawHelper {
      */
     private boolean needsFixtureColor(final ILegacyMap map, final Point location) {
         final TileFixture top = getTopFixture(map, location);
-        if (hasTerrainFixture(map, location) && top != null) {
+        if (hasTerrainFixture(map, location) && !Objects.isNull(top)) {
             final TileFixture bottom = getDrawableFixtures(map, location)
                     .filter(TerrainFixture.class::isInstance)
                     .map(TerrainFixture.class::cast)
                     .reduce((first, second) -> second)
                     .orElse(null);
-            if (bottom == null) {
+	        if (Objects.isNull(bottom)) {
                 return map.isMountainous(location);
             } else {
                 return !top.equals(bottom);

@@ -4,6 +4,7 @@ import legacy.map.fixtures.Implement;
 import legacy.map.fixtures.mobile.AnimalImpl;
 
 import java.util.Comparator;
+import java.util.Objects;
 import java.util.function.Predicate;
 
 import lovelace.util.LovelaceLogger;
@@ -139,7 +140,7 @@ import legacy.map.fixtures.towns.Village;
     private void enterWorkerJobs(final IUnit unit, final IWorker worker, final int levels) {
         for (int i = 0; i < levels; i++) {
             final String jobName = cli.inputString("Which Job does worker have a level in? ");
-            if (jobName == null) {
+			if (Objects.isNull(jobName)) {
                 break;
             } else if (!model.addJobLevel(unit, worker, jobName)) {
                 LovelaceLogger.warning("Adding or incrementing Job failed somehow ...");
@@ -164,7 +165,7 @@ import legacy.map.fixtures.towns.Village;
         } else {
             final Boolean retval = cli.inputBoolean(String.format(
                     "Has a newcomer come from %s in the last 7 turns?", village.getName()));
-            if (retval == null) {
+			if (Objects.isNull(retval)) {
                 return false;
             }
             excludedVillages.put(village, retval);
@@ -271,7 +272,7 @@ import legacy.map.fixtures.towns.Village;
     private Worker generateWorkerFrom(final Village village, final String name, final IDRegistrar idf) {
         final Worker worker = new Worker(name, village.getRace(), idf.createID());
         worker.setNote(village.owner(), String.format("From %s.", village.getName()));
-        if (village.getPopulation() == null) {
+		if (Objects.isNull(village.getPopulation())) {
             cli.println("No population details, so no levels.");
             final WorkerStats stats = createWorkerStats(village.getRace(), 0);
             worker.setStats(stats);
@@ -363,7 +364,7 @@ import legacy.map.fixtures.towns.Village;
                 final boolean hasMount = cli.inputBooleanInSeries("Is the worker mounted?", "mounted-" + training.getName());
                 if (hasMount) {
                     final String mountKind = cli.inputString("Kind of mount: ");
-                    if (mountKind != null && !mountKind.isEmpty()) {
+					if (!Objects.isNull(mountKind) && !mountKind.isEmpty()) {
                         worker.setMount(new AnimalImpl(mountKind, false, "tame", idf.createID()));
                     }
                 }
@@ -406,7 +407,7 @@ import legacy.map.fixtures.towns.Village;
                 final Predicate<String> notInSeries = cli::inputBoolean;
                 while (equipmentQuery.test(equipmentPrompt)) {
                     final String equipment = cli.inputString("Kind of equipment: ");
-                    if (equipment == null || equipment.isEmpty()) {
+					if (Objects.isNull(equipment) || equipment.isEmpty()) {
                         break;
                     }
                     worker.addEquipment(new Implement(equipment, idf.createID()));
@@ -427,7 +428,7 @@ import legacy.map.fixtures.towns.Village;
             final String race = RaceFactory.randomRace();
             final Worker worker;
             final String name = cli.inputString(String.format("Work is a %s. Worker name: ", race));
-            if (name == null) {
+			if (Objects.isNull(name)) {
                 break;
             }
             worker = new Worker(name, race, idf.createID());
@@ -480,7 +481,7 @@ import legacy.map.fixtures.towns.Village;
         final int count = Optional.ofNullable(cli.inputNumber("How many workers to generate? ")).orElse(0);
         final Deque<String> names;
         final String filename = cli.inputString("Filename to load names from: ");
-        if (filename == null) {
+		if (Objects.isNull(filename)) {
             return;
         } else if (Files.exists(Paths.get(filename))) {
             names = new LinkedList<>(Files.readAllLines(Paths.get(filename)));
@@ -499,7 +500,7 @@ import legacy.map.fixtures.towns.Village;
         } else {
             cli.println("That unit's location not found in main map.");
             final Point point = cli.inputPoint("Location to use for village distances:");
-            if (point == null) {
+			if (Objects.isNull(point)) {
                 return;
             } else {
                 hqLoc = point;
@@ -524,7 +525,7 @@ import legacy.map.fixtures.towns.Village;
             final String name;
             if (names.isEmpty()) {
                 final String temp = cli.inputString("Next worker name: ");
-                if (temp == null) {
+				if (Objects.isNull(temp)) {
                     break;
                 } else {
                     name = temp;
@@ -552,7 +553,7 @@ import legacy.map.fixtures.towns.Village;
             }
             villages.removeAll(villagesToRemove);
             final Worker worker;
-            if (home == null) {
+			if (Objects.isNull(home)) {
                 final String race = RaceFactory.randomRace();
                 cli.println(String.format("Worker %s is a %s", name, race));
                 worker = new Worker(name, race, idf.createID());
@@ -591,13 +592,13 @@ import legacy.map.fixtures.towns.Village;
         while (true) {
             final Pair<Integer, @Nullable IUnit> chosen = cli.chooseFromList(units, "Which unit contains the worker in question? (Select -1 to create new.)", "There are no units owned by that player.", "Unit selection: ", ICLIHelper.ListChoiceBehavior.ALWAYS_PROMPT);
             final IUnit item;
-            if (chosen.getValue1() != null) {
+			if (!Objects.isNull(chosen.getValue1())) {
                 item = chosen.getValue1();
             } else if (chosen.getValue0() <= units.size()) {
                 final Point point = cli.inputPoint("Where to put new unit? ");
-                final String kind = point == null ? null : cli.inputString("Kind of unit: ");
-                final String name = kind == null ? null : cli.inputString("Unit name: ");
-                if (point == null || kind == null || name == null) {
+				final String kind = Objects.isNull(point) ? null : cli.inputString("Kind of unit: ");
+				final String name = Objects.isNull(kind) ? null : cli.inputString("Unit name: ");
+				if (Objects.isNull(point) || Objects.isNull(kind) || Objects.isNull(name)) {
                     return;
                 } else {
                     final IUnit temp = new Unit(player, kind, name, idf.createID());
@@ -610,7 +611,7 @@ import legacy.map.fixtures.towns.Village;
             }
             final Boolean load = cli.inputBooleanInSeries(
                     "Load names from file and use randomly generated stats?");
-            if (load == null) {
+			if (Objects.isNull(load)) {
                 return;
             } else if (load) {
                 createWorkersFromFile(idf, item);
@@ -634,7 +635,7 @@ import legacy.map.fixtures.towns.Village;
                 model.getPlayerChoices().spliterator(), false).collect(Collectors.toList());
         while (!players.isEmpty()) {
             final Player chosen = cli.chooseFromList((List<? extends Player>) players, "Which player owns the new worker(s)?", "There are no players shared by all the maps.", "Player selection: ", ICLIHelper.ListChoiceBehavior.ALWAYS_PROMPT).getValue1();
-            if (chosen == null) {
+			if (Objects.isNull(chosen)) {
                 break;
             }
             players.remove(chosen);
@@ -645,7 +646,7 @@ import legacy.map.fixtures.towns.Village;
                     throw new DriverFailedException(except, "I/O error");
                 }
                 final Boolean continuation = cli.inputBoolean("Add more workers to another unit?");
-                if (continuation == null) {
+				if (Objects.isNull(continuation)) {
                     return;
                 } else if (!continuation) {
                     break;

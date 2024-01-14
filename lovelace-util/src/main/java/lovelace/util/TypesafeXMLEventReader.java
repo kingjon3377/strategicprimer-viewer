@@ -12,6 +12,7 @@ import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.events.XMLEvent;
+import java.util.Objects;
 import java.util.Queue;
 import java.util.LinkedList;
 
@@ -77,7 +78,7 @@ public class TypesafeXMLEventReader implements Iterator<XMLEvent>, Closeable {
             try {
                 if (wrapped.hasNext()) {
                     final XMLEvent retval = wrapped.nextEvent();
-                    if (retval == null) {
+	                if (Objects.isNull(retval)) {
                         close();
                         throw new NoSuchElementException("End of input");
                     } else {

@@ -6,6 +6,7 @@ import javax.swing.JPanel;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.io.Serial;
+import java.util.Objects;
 
 /**
  * A {@link JPanel panel} laid out by a {@link BorderLayout}, with helper
@@ -24,9 +25,9 @@ public class BorderedPanel extends JPanel {
 	}
 
 	public final void setCenter(final @Nullable Component center) {
-		if (center != null) {
+		if (!Objects.isNull(center)) {
 			add(center, BorderLayout.CENTER);
-		} else if (this.center != null) {
+		} else if (!Objects.isNull(this.center)) {
 			remove(this.center);
 		}
 		this.center = center;
@@ -43,9 +44,9 @@ public class BorderedPanel extends JPanel {
 	}
 
 	public final void setLineStart(final @Nullable Component lineStart) {
-		if (lineStart != null) {
+		if (!Objects.isNull(lineStart)) {
 			add(lineStart, BorderLayout.LINE_START);
-		} else if (this.lineStart != null) {
+		} else if (!Objects.isNull(this.lineStart)) {
 			remove(this.lineStart);
 		}
 		this.lineStart = lineStart;
@@ -62,9 +63,9 @@ public class BorderedPanel extends JPanel {
 	}
 
 	public final void setLineEnd(final @Nullable Component lineEnd) {
-		if (lineEnd != null) {
+		if (!Objects.isNull(lineEnd)) {
 			add(lineEnd, BorderLayout.LINE_END);
-		} else if (this.lineEnd != null) {
+		} else if (!Objects.isNull(this.lineEnd)) {
 			remove(this.lineEnd);
 		}
 		this.lineEnd = lineEnd;
@@ -81,9 +82,9 @@ public class BorderedPanel extends JPanel {
 	}
 
 	public final void setPageStart(final @Nullable Component pageStart) {
-		if (pageStart != null) {
+		if (!Objects.isNull(pageStart)) {
 			add(pageStart, BorderLayout.PAGE_START);
-		} else if (this.pageStart != null) {
+		} else if (!Objects.isNull(this.pageStart)) {
 			remove(this.pageStart);
 		}
 		this.pageStart = pageStart;
@@ -100,9 +101,9 @@ public class BorderedPanel extends JPanel {
 	}
 
 	public final void setPageEnd(final @Nullable Component pageEnd) {
-		if (pageEnd != null) {
+		if (!Objects.isNull(pageEnd)) {
 			add(pageEnd, BorderLayout.PAGE_END);
-		} else if (this.pageEnd != null) {
+		} else if (!Objects.isNull(this.pageEnd)) {
 			remove(this.pageEnd);
 		}
 		this.pageEnd = pageEnd;

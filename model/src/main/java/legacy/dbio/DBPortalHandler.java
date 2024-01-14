@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import legacy.map.Point;
 import legacy.map.IMutableLegacyMap;
@@ -76,10 +77,10 @@ public final class DBPortalHandler extends AbstractDatabaseWriter<Portal, Point>
 			final Integer destinationRow = (Integer) dbRow.get("destination_row");
 			final Integer destinationColumn = (Integer) dbRow.get("destination_column");
 			final String image = (String) dbRow.get("image");
-			final Portal portal = new Portal(destinationWorld == null ? "unknown" : destinationWorld,
-				new Point(destinationRow == null ? -1 : destinationRow,
-					destinationColumn == null ? -1 : destinationColumn), id);
-			if (image != null) {
+			final Portal portal = new Portal(Objects.requireNonNullElse(destinationWorld, "unknown"),
+				new Point(Objects.requireNonNullElse(destinationRow, -1),
+					Objects.requireNonNullElse(destinationColumn, -1)), id);
+			if (!Objects.isNull(image)) {
 				portal.setImage(image);
 			}
 			map.addFixture(new Point(row, column), portal);

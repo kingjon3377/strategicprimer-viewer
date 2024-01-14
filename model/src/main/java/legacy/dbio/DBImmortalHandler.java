@@ -12,6 +12,7 @@ import java.sql.SQLException;
 import java.util.Collections;
 import java.util.Map;
 import java.util.List;
+import java.util.Objects;
 import java.util.regex.Pattern;
 
 import legacy.map.IMutableLegacyMap;
@@ -181,13 +182,13 @@ public final class DBImmortalHandler extends AbstractDatabaseWriter<Immortal, /*
                 case "troll" -> new Troll(id);
                 default -> ImmortalAnimal.parse(type).apply(id);
             };
-            if (image != null) {
+	        if (!Objects.isNull(image)) {
                 ((HasMutableImage) immortal).setImage(image);
             }
             final Integer row = (Integer) dbRow.get("row");
             final Integer column = (Integer) dbRow.get("column");
             final Integer parentId = (Integer) dbRow.get("parent");
-            if (row != null && column != null) {
+            if (!Objects.isNull(row) && !Objects.isNull(column)) {
                 map.addFixture(new Point(row, column), immortal);
             } else {
                 multimapPut(containees, parentId, immortal);
@@ -209,13 +210,13 @@ public final class DBImmortalHandler extends AbstractDatabaseWriter<Immortal, /*
                 case "giant" -> new Giant(kind, id);
                 default -> throw new IllegalArgumentException("Unexpected immortal kind");
             };
-            if (image != null) {
+	        if (!Objects.isNull(image)) {
                 ((HasMutableImage) immortal).setImage(image);
             }
             final Integer row = (Integer) dbRow.get("row");
             final Integer column = (Integer) dbRow.get("column");
             final Integer parentId = (Integer) dbRow.get("parent");
-            if (row != null && column != null) {
+            if (!Objects.isNull(row) && !Objects.isNull(column)) {
                 map.addFixture(new Point(row, column), immortal);
             } else {
                 multimapPut(containees, parentId, immortal);

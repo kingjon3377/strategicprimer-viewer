@@ -7,6 +7,7 @@ import lovelace.util.LovelaceLogger;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.FileNotFoundException;
+import java.util.Objects;
 import java.util.stream.StreamSupport;
 import java.nio.file.NoSuchFileException;
 import java.util.Map;
@@ -137,7 +138,7 @@ public final class WorkerTree extends JTree implements UnitMemberSelectionSource
                 .map(TreePath::getLastPathComponent).map(wtModel::getModelObject)
                 .filter(IWorker.class::isInstance).map(IWorker.class::cast)
                 .map(IWorker::getStats).orElse(null);
-        if (stats == null) {
+	    if (Objects.isNull(stats)) {
             return null;
         } else {
             return statReferencesList.stream().map(statHelper(stats))
@@ -191,7 +192,7 @@ public final class WorkerTree extends JTree implements UnitMemberSelectionSource
         } else {
             if (sel instanceof String) {
                 LovelaceLogger.debug("workerTree selection is a String, i.e. a unit-kind node");
-            } else if (sel == null) {
+            } else if (Objects.isNull(sel)) {
                 LovelaceLogger.debug("Selection in workerTree is null");
             } else {
                 LovelaceLogger.warning("Unexpected type of selection in workerTree: %s",
@@ -250,7 +251,7 @@ public final class WorkerTree extends JTree implements UnitMemberSelectionSource
             for (final TreePath path : paths) {
                 final Object last = path.getLastPathComponent();
                 final Object parentObj = path.getParentPath().getLastPathComponent();
-                if (last != null && parentObj != null) {
+                if (!Objects.isNull(last) && !Objects.isNull(parentObj)) {
                     final Object parent = wtModel.getModelObject(parentObj);
                     final Object selection = wtModel.getModelObject(last);
                     if (parent instanceof final IUnit unit && selection instanceof final UnitMember member) {
@@ -285,7 +286,7 @@ public final class WorkerTree extends JTree implements UnitMemberSelectionSource
         @Override
         public boolean canImport(final TransferSupport support) {
             if (support.isDataFlavorSupported(UnitMemberTransferable.FLAVOR) &&
-                    support.getDropLocation() instanceof final JTree.DropLocation dl && dl.getPath() != null) {
+	            support.getDropLocation() instanceof final JTree.DropLocation dl && !Objects.isNull(dl.getPath())) {
                 final Object last = dl.getPath().getLastPathComponent();
                 final Object lastObj = Optional.ofNullable(last).map(wtModel::getModelObject)
                         .orElse(null);
@@ -294,7 +295,7 @@ public final class WorkerTree extends JTree implements UnitMemberSelectionSource
                 }
             }
             if (support.isDataFlavorSupported(UnitTransferable.FLAVOR) &&
-                    support.getDropLocation() instanceof final JTree.DropLocation dl && dl.getPath() != null) {
+	            support.getDropLocation() instanceof final JTree.DropLocation dl && !Objects.isNull(dl.getPath())) {
                 final Object last = dl.getPath().getLastPathComponent();
                 return Optional.ofNullable(last).map(wtModel::getModelObject).orElse(null) instanceof String;
             }
@@ -307,10 +308,10 @@ public final class WorkerTree extends JTree implements UnitMemberSelectionSource
         @Override
         public boolean importData(final TransferSupport support) {
             if (canImport(support) &&
-                    support.getDropLocation() instanceof final JTree.DropLocation dl && dl.getPath() != null) {
+	            support.getDropLocation() instanceof final JTree.DropLocation dl && !Objects.isNull(dl.getPath())) {
                 final TreePath path = dl.getPath();
                 final Object pathLast = path.getLastPathComponent();
-                if (pathLast == null) {
+	            if (Objects.isNull(pathLast)) {
                     return false;
                 }
                 final Object local = wtModel.getModelObject(pathLast);
@@ -443,7 +444,7 @@ public final class WorkerTree extends JTree implements UnitMemberSelectionSource
             final String image = obj.getImage();
             if (!image.isEmpty()) {
                 final Icon icon = getIconForFile(image);
-                if (icon != null) {
+	            if (!Objects.isNull(icon)) {
                     return icon;
                 }
             }
@@ -568,7 +569,7 @@ public final class WorkerTree extends JTree implements UnitMemberSelectionSource
             }
             if (component instanceof final DefaultTreeCellRenderer comp) {
                 final @Nullable Color backgroundColor = background.getColor();
-                if (backgroundColor == null) {
+	            if (Objects.isNull(backgroundColor)) {
                     comp.setBackgroundSelectionColor(DEFAULT_STORER
                             .getBackgroundSelectionColor());
                     comp.setBackgroundNonSelectionColor(DEFAULT_STORER
@@ -594,9 +595,9 @@ public final class WorkerTree extends JTree implements UnitMemberSelectionSource
             final TreePath path = event.getTreePath();
             final TreePath parent = Optional.ofNullable(path)
                     .map(TreePath::getParentPath).orElse(null);
-            if (parent != null) {
+	        if (!Objects.isNull(parent)) {
                 tree.expandPath(parent);
-            } else if (path != null) {
+	        } else if (!Objects.isNull(path)) {
                 tree.expandPath(path);
             }
             for (int i = 0; i < tree.getRowCount(); i++) {
@@ -616,10 +617,10 @@ public final class WorkerTree extends JTree implements UnitMemberSelectionSource
         @Override
         public void treeNodesInserted(final TreeModelEvent event) {
             final TreePath path = event.getTreePath();
-            if (path != null) {
+	        if (!Objects.isNull(path)) {
                 tree.expandPath(path);
                 final TreePath parent = path.getParentPath();
-                if (parent != null) {
+		        if (!Objects.isNull(parent)) {
                     tree.expandPath(parent);
                 }
             }

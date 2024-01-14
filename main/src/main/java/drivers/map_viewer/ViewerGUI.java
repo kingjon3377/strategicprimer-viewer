@@ -29,6 +29,7 @@ import lovelace.util.FileChooser;
 import javax.imageio.ImageIO;
 
 import java.io.File;
+import java.util.Objects;
 
 /**
  * A driver to start the map viewer.
@@ -115,7 +116,7 @@ public class ViewerGUI implements ViewerDriver {
 
     private FindDialog getFindDialog(final ViewerFrame parent) {
         final FindDialog temp = finder;
-        if (temp == null) {
+	    if (Objects.isNull(temp)) {
             final FindDialog local = new FindDialog(parent, model);
             finder = local;
             return local;

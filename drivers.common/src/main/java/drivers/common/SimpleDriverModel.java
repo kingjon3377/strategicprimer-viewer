@@ -4,6 +4,7 @@ import java.nio.file.Path;
 
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Objects;
 
 import legacy.map.LegacyMap;
 import legacy.map.ILegacyMap;
@@ -145,7 +146,7 @@ public class SimpleDriverModel implements IDriverModel {
 
 	@Override
 	public final void setMapFilename(final Path filename) {
-		if (mainMap.getFilename() != null) {
+		if (!Objects.isNull(mainMap.getFilename())) {
 			LovelaceLogger.warning("Overwriting existing filename");
 		}
 		mainMap.setFilename(filename);

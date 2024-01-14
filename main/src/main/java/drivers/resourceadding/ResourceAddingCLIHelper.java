@@ -15,6 +15,7 @@ import legacy.map.fixtures.IMutableResourcePile;
 import legacy.map.fixtures.ResourcePileImpl;
 import legacy.map.fixtures.Implement;
 
+import java.util.Objects;
 import java.util.Set;
 import java.util.Map;
 import java.util.HashSet;
@@ -44,11 +45,11 @@ public class ResourceAddingCLIHelper {
         final String one = cli.chooseStringFromList(new ArrayList<>(resourceKinds),
                 "Possible kinds of resources:", "No resource kinds entered yet",
                 "Chosen kind: ", ICLIHelper.ListChoiceBehavior.ALWAYS_PROMPT).getValue1();
-        if (one != null) {
+	    if (!Objects.isNull(one)) {
             return one;
         }
         final String two = cli.inputString("Resource kind to use: ");
-        if (two == null || two.isEmpty()) {
+        if (Objects.isNull(two) || two.isEmpty()) {
             return null;
         }
         resourceKinds.add(two);
@@ -64,11 +65,11 @@ public class ResourceAddingCLIHelper {
         final String one = cli.chooseStringFromList(list,
                 String.format("Possible resources in the %s category:", kind),
                 "No resources entered yet", "Choose resource: ", ICLIHelper.ListChoiceBehavior.ALWAYS_PROMPT).getValue1();
-        if (one != null) {
+	    if (!Objects.isNull(one)) {
             return one;
         }
         final String two = cli.inputString("Resource to use: ");
-        if (two == null || two.isEmpty()) {
+        if (Objects.isNull(two) || two.isEmpty()) {
             return null;
         }
         list.add(two);
@@ -85,7 +86,7 @@ public class ResourceAddingCLIHelper {
             final Boolean resp = cli.inputBooleanInSeries(
                     String.format("Is %s the correct unit for %s", unit, resource),
                     String.format("correct;%s;%s", unit, resource));
-            if (resp == null) {
+	        if (Objects.isNull(resp)) {
                 return null;
             } else if (resp) {
                 return unit;
@@ -93,7 +94,7 @@ public class ResourceAddingCLIHelper {
         }
         // N.B. ICLIHelper trims input before returning
         final String retval = cli.inputString(String.format("Unit to use for %s: ", resource));
-        if (retval == null || retval.isEmpty()) {
+        if (Objects.isNull(retval) || retval.isEmpty()) {
             return null;
         }
         resourceUnits.put(resource, retval);
@@ -105,26 +106,26 @@ public class ResourceAddingCLIHelper {
      */
     public @Nullable IMutableResourcePile enterResource() {
         final String kind = getResourceKind();
-        if (kind == null) {
+	    if (Objects.isNull(kind)) {
             return null;
         }
         final String origContents = getResourceContents(kind);
-        if (origContents == null) {
+	    if (Objects.isNull(origContents)) {
             return null;
         }
         final String units = getResourceUnits(origContents);
-        if (units == null) {
+	    if (Objects.isNull(units)) {
             return null;
         }
         final Boolean usePrefix = cli.inputBooleanInSeries(
                 "Qualify the particular resource with a prefix?", "prefix" + origContents);
-        if (usePrefix == null) {
+	    if (Objects.isNull(usePrefix)) {
             return null;
         }
         final String contents;
         if (usePrefix) {
             final String prefix = cli.inputString("Prefix to use: ");
-            if (prefix == null || prefix.isEmpty()) {
+            if (Objects.isNull(prefix) || prefix.isEmpty()) {
                 return null;
             }
             contents = prefix + " " + origContents;
@@ -132,17 +133,17 @@ public class ResourceAddingCLIHelper {
             contents = origContents;
         }
         final BigDecimal quantity = cli.inputDecimal(String.format("Quantity in %s?", units));
-        if (quantity == null || quantity.signum() < 0) {
+        if (Objects.isNull(quantity) || quantity.signum() < 0) {
             return null;
         }
         final ResourcePileImpl retval = new ResourcePileImpl(idf.createID(), kind, contents,
                 new LegacyQuantity(quantity, units));
         final Boolean setCreated = cli.inputBooleanInSeries("Set created date?", "created" + origContents);
-        if (setCreated == null) {
+	    if (Objects.isNull(setCreated)) {
             return null;
         } else if (setCreated) {
             final Integer created = cli.inputNumber("Turn created?");
-            if (created != null) {
+		    if (!Objects.isNull(created)) {
                 retval.setCreated(created);
             } // IIRC we allow "EOF" here to mitigate mistyped 'y' on previous prompt
         }
@@ -155,17 +156,17 @@ public class ResourceAddingCLIHelper {
      */
     public @Nullable Implement enterImplement() {
         final String kind = cli.inputString("Kind of equipment: ");
-        if (kind == null || kind.isEmpty()) {
+        if (Objects.isNull(kind) || kind.isEmpty()) {
             return null;
         }
         final Boolean multiple = cli.inputBooleanInSeries("Add more than one? ");
-        if (multiple == null) {
+	    if (Objects.isNull(multiple)) {
             return null;
         }
         final int count;
         if (multiple) {
             final Integer temp = cli.inputNumber("Number to add: ");
-            if (temp == null) {
+	        if (Objects.isNull(temp)) {
                 return null;
             }
             count = temp;

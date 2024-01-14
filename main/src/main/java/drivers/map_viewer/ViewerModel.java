@@ -5,6 +5,7 @@ import legacy.map.HasOwner;
 
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 import lovelace.util.LovelaceLogger;
@@ -484,7 +485,7 @@ public class ViewerModel extends SimpleDriverModel implements IViewerModel {
                 .filter(u -> newOwner.getId() == u.getId()).findAny().orElse(null);
         final UnitMember matchingMember = Optional.ofNullable(matchingOld).map(FixtureIterable::stream).orElse(Stream.empty())
                 .filter(member::equals).findAny().orElse(null); // TODO: equals() isn't ideal for finding a matching member ...
-        if (matchingOld != null && matchingMember != null && matchingNew != null) {
+        if (!Objects.isNull(matchingOld) && !Objects.isNull(matchingMember) && !Objects.isNull(matchingNew)) {
             matchingOld.removeMember(matchingMember);
             matchingNew.addMember(matchingMember);
             getRestrictedMap().setModified(true);
@@ -515,7 +516,7 @@ public class ViewerModel extends SimpleDriverModel implements IViewerModel {
                         .map(f -> Pair.<Point, IFixture>with(l, f)))
                 .flatMap(ViewerModel::flattenEntries).filter(unitMatching(unit))
                 .findAny().orElse(null);
-        if (pair == null) {
+	    if (Objects.isNull(pair)) {
             LovelaceLogger.trace("No matching units");
             return false;
         } else {
@@ -569,7 +570,7 @@ public class ViewerModel extends SimpleDriverModel implements IViewerModel {
                 .filter(u -> u.getName().equals(unit.getName()))
                 .filter(u -> u.getKind().equals(unit.getKind()))
                 .filter(u -> u.getId() == unit.getId()).findAny().orElse(null);
-        if (matching != null) {
+	    if (!Objects.isNull(matching)) {
             matching.addMember(member.copy(IFixture.CopyBehavior.KEEP));
             getRestrictedMap().setModified(true);
         }
@@ -607,7 +608,7 @@ public class ViewerModel extends SimpleDriverModel implements IViewerModel {
                     .filter(m -> ((UnitMember) m).getId() == // TODO: Move above cast, to resolve spurious warnings
                             um.getId())
                     .findAny().orElse(null); // FIXME: We should have a firmer identification than just name and ID
-            if (matching == null) {
+	        if (Objects.isNull(matching)) {
                 LovelaceLogger.warning("Unable to find unit member to rename");
                 return false;
             } else {
@@ -656,7 +657,7 @@ public class ViewerModel extends SimpleDriverModel implements IViewerModel {
                     .filter(m -> ((UnitMember) m).getId() == // TODO: Move above cast line
                             um.getId())
                     .findAny().orElse(null); // FIXME: We should have a firmer identification than just kind and ID
-            if (matching == null) {
+	        if (Objects.isNull(matching)) {
                 LovelaceLogger.warning("Unable to find unit member to change kind");
                 return false;
             } else {
@@ -678,7 +679,7 @@ public class ViewerModel extends SimpleDriverModel implements IViewerModel {
                 .filter(u -> getMap().getPlayers().getCurrentPlayer().equals(u.owner())).toList()) {
             final UnitMember matching = unit.stream().filter(Predicate.isEqual(member)) // FIXME: equals() will really not do here ...
                     .findAny().orElse(null);
-            if (matching != null) {
+	        if (!Objects.isNull(matching)) {
                 unit.removeMember(matching);
                 dismissedMembers.add(member);
                 getRestrictedMap().setModified(true);
@@ -718,7 +719,7 @@ public class ViewerModel extends SimpleDriverModel implements IViewerModel {
                 .filter(HasMutableOwner.class::isInstance).map(HasMutableOwner.class::cast)
                 .filter(item::equals) // TODO: equals() is not the best way to find it ...
                 .findAny().orElse(null);
-        if (matching != null) {
+	    if (!Objects.isNull(matching)) {
             if (StreamSupport.stream(getMap().getPlayers().spliterator(), true)
                     .noneMatch(newOwner::equals)) { // TODO: looser identification?
                 getRestrictedMap().addPlayer(newOwner);
@@ -740,7 +741,7 @@ public class ViewerModel extends SimpleDriverModel implements IViewerModel {
                 .filter(u -> u.getKind().equals(fixture.getKind()))
                 .filter(u -> u.getId() == fixture.getId())
                 .findAny().orElse(null);
-        if (matching != null) {
+	    if (!Objects.isNull(matching)) {
             matching.sortMembers();
             getRestrictedMap().setModified(true);
             return true;
@@ -759,7 +760,7 @@ public class ViewerModel extends SimpleDriverModel implements IViewerModel {
                     .filter(isFortress).map(fortressCast)
                     .filter(matchingOwner)
                     .findAny().orElse(null);
-            if (fortress != null) {
+	        if (!Objects.isNull(fortress)) {
                 if ("HQ".equals(fortress.getName())) {
                     hqLoc = location;
                     break;

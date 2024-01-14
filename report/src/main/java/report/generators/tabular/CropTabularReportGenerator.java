@@ -23,6 +23,7 @@ import java.util.Comparator;
 import java.util.Collections;
 import java.util.Map;
 import java.text.NumberFormat;
+import java.util.Objects;
 
 /**
  * A tabular report generator for crops---forests, groves, orchards, fields,
@@ -56,7 +57,7 @@ public class CropTabularReportGenerator implements ITableGenerator</*Forest|Shru
     public CropTabularReportGenerator(final @Nullable Point hq, final MapDimensions dimensions) {
         this.hq = hq;
         this.dimensions = dimensions;
-        if (hq == null) {
+	    if (Objects.isNull(hq)) {
             distanceComparator = (one, two) -> 0;
         } else {
             distanceComparator = new DistanceComparator(hq, dimensions);

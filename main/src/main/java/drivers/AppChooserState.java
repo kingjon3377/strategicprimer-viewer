@@ -13,6 +13,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.ServiceLoader;
 
@@ -90,14 +91,14 @@ import org.jetbrains.annotations.Nullable;
 	}
 
 	private static @Nullable Path getContainingApp(final @Nullable Path path) {
-		if (path == null) {
+		if (Objects.isNull(path)) {
 			return null;
 		}
 		if (path.toString().endsWith(".app") || path.toString().endsWith(".app/")) {
 			return path;
 		}
 		final Path root = path.getRoot();
-		if (root == null || root.equals(path)) {
+		if (Objects.isNull(root) || root.equals(path)) {
 			return null;
 		} else {
 			return getContainingApp(path.getParent());
@@ -121,7 +122,7 @@ import org.jetbrains.annotations.Nullable;
 			} else if (clsPath.endsWith(".jar")) {
 				if (Platform.SYSTEM_IS_MAC && clsPath.contains(".app/")) {
 					final Path containingApp = getContainingApp(clsSource.toPath());
-					if (containingApp == null) {
+					if (Objects.isNull(containingApp)) {
 						mainInvocation = "java -jar " + Paths.get(".").toAbsolutePath().relativize(clsSource.toPath());
 					} else {
 						mainInvocation = "open " + Paths.get(".").toAbsolutePath().relativize(containingApp) + " --args";
@@ -186,7 +187,7 @@ import org.jetbrains.annotations.Nullable;
 	public static void handleDroppedFiles(final OpenFilesEvent openFilesEvent) {
 		final SPFrame topWindow = Stream.of(WindowList.getWindows(true, false)).filter(SPFrame.class::isInstance)
 			.map(SPFrame.class::cast).reduce((first, second) -> second).orElse(null);
-		if (topWindow != null) {
+		if (!Objects.isNull(topWindow)) {
 			for (final File file : openFilesEvent.getFiles()) {
 				try {
 					topWindow.acceptDroppedFile(file.toPath());

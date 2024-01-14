@@ -267,7 +267,7 @@ public class WorkerTreeModelAlt extends DefaultTreeModel implements IWorkerTreeM
         } else if (node instanceof WorkerTreeNode && node.getAllowsChildren()) {
             for (final TreeNode child : (WorkerTreeNode<?>) node) {
                 final MutableTreeNode result = getNode(child, obj);
-                if (result != null) {
+	            if (!Objects.isNull(result)) {
                     return result;
                 }
             }
@@ -291,12 +291,12 @@ public class WorkerTreeModelAlt extends DefaultTreeModel implements IWorkerTreeM
         final MutableTreeNode oldNode = getNode(playerNode, old);
         final MutableTreeNode newNode = getNode(playerNode, newOwner);
         final MutableTreeNode node = getNode(playerNode, member);
-        if (newNode != null && node != null) {
-            final int oldIndex = (oldNode == null) ? -1 : oldNode.getIndex(node);
+        if (!Objects.isNull(newNode) && !Objects.isNull(node)) {
+            final int oldIndex = (Objects.isNull(oldNode)) ? -1 : oldNode.getIndex(node);
             fireTreeNodesRemoved(this,
                     new Object[]{playerNode, getNode(playerNode, old.getKind()), oldNode},
                     new int[]{oldIndex}, new Object[]{node});
-            if (oldNode != null) {
+	        if (!Objects.isNull(oldNode)) {
                 oldNode.remove(node);
             }
             model.moveMember(member, old, newOwner);
@@ -317,7 +317,7 @@ public class WorkerTreeModelAlt extends DefaultTreeModel implements IWorkerTreeM
         model.addUnit(unit);
         final PlayerNode temp = (PlayerNode) getRoot();
         final IUnit matchingUnit = model.getUnitByID(temp.getUserObject(), unit.getId());
-        if (matchingUnit != null) {
+	    if (!Objects.isNull(matchingUnit)) {
             final MutableTreeNode node = new UnitNode(matchingUnit);
             final String kind = unit.getKind();
             boolean any = false;
@@ -395,7 +395,7 @@ public class WorkerTreeModelAlt extends DefaultTreeModel implements IWorkerTreeM
         final UnitNode unitNode = Optional.ofNullable(kindNode).map(WorkerTreeNode::stream)
                 .orElse(Stream.empty()).filter(UnitNode.class::isInstance).map(UnitNode.class::cast)
                 .filter(n -> unit.equals(n.getUserObject())).findAny().orElse(null);
-        if (kindNode != null && unitNode != null) {
+        if (!Objects.isNull(kindNode) && !Objects.isNull(unitNode)) {
             model.addUnitMember(unit, member);
             final MutableTreeNode newNode = new UnitMemberNode(member);
             unitNode.add(newNode);
@@ -414,7 +414,7 @@ public class WorkerTreeModelAlt extends DefaultTreeModel implements IWorkerTreeM
     public void renameItem(final HasName item, final String newName) {
         final PlayerNode temp = (PlayerNode) getRoot();
         final MutableTreeNode node = getNode(temp, item);
-        if (node != null && model.renameItem(item, newName)) {
+        if (!Objects.isNull(node) && model.renameItem(item, newName)) {
             final TreeNode[] path = getPathToRoot(node);
             final int index = getIndexOfChild(path[path.length - 2], node);
             fireTreeNodesChanged(this,
@@ -440,7 +440,7 @@ public class WorkerTreeModelAlt extends DefaultTreeModel implements IWorkerTreeM
         final PlayerNode temp = (PlayerNode) getRoot();
         if (item instanceof UnitMember) {
             final MutableTreeNode node = getNode(temp, item);
-            if (node != null) {
+	        if (!Objects.isNull(node)) {
                 final TreeNode[] path = getPathToRoot(node);
                 final int index = getIndexOfChild(path[path.length - 1], node);
                 if (model.changeKind(item, newKind)) {
@@ -453,7 +453,7 @@ public class WorkerTreeModelAlt extends DefaultTreeModel implements IWorkerTreeM
             }
         } else if (item instanceof IUnit) {
             final MutableTreeNode node = getNode(temp, item);
-            if (node == null) {
+	        if (Objects.isNull(node)) {
                 LovelaceLogger.debug("changeKind() called for unit not in the tree");
                 return;
             }
@@ -483,7 +483,7 @@ public class WorkerTreeModelAlt extends DefaultTreeModel implements IWorkerTreeM
                         new Object[]{node});
             }
             model.changeKind(item, newKind);
-            if (nodeTwo == null) {
+	        if (Objects.isNull(nodeTwo)) {
                 final MutableTreeNode kindNode = new KindNode(newKind, (IUnit) item);
                 temp.add(kindNode);
                 fireTreeNodesInserted(this, new Object[]{temp},
@@ -505,7 +505,7 @@ public class WorkerTreeModelAlt extends DefaultTreeModel implements IWorkerTreeM
     public void dismissUnitMember(final UnitMember member) {
         final TreeNode temp = (TreeNode) getRoot();
         final MutableTreeNode node = getNode(temp, member);
-        if (node != null) {
+	    if (!Objects.isNull(node)) {
             final UnitNode parentNode = (UnitNode) node.getParent();
             // Note that getPathToRoot() returns a path that does
             // *not* include the node itself
@@ -530,7 +530,7 @@ public class WorkerTreeModelAlt extends DefaultTreeModel implements IWorkerTreeM
         final TreeNode temp = (TreeNode) getRoot();
         final TreeNode node = getNode(temp, base);
         final TreeNode parentNode = Optional.ofNullable(node).map(TreeNode::getParent).orElse(null);
-        if (node != null && parentNode instanceof final UnitNode un && model.addSibling(base, sibling)) {
+        if (!Objects.isNull(node) && parentNode instanceof final UnitNode un && model.addSibling(base, sibling)) {
             boolean found = false;
             final int index = 0;
             for (final UnitMember child : un.getUserObject()) {
@@ -562,7 +562,7 @@ public class WorkerTreeModelAlt extends DefaultTreeModel implements IWorkerTreeM
         final Iterable<WorkerTreeNode<?>> sequence;
         boolean leading;
         final WorkerTreeNode<?> toTrim;
-        if (starting == null) {
+	    if (Objects.isNull(starting)) {
             sequence = wrapped;
             leading = false;
             toTrim = null;
@@ -623,7 +623,7 @@ public class WorkerTreeModelAlt extends DefaultTreeModel implements IWorkerTreeM
             return (Iterable<Object>) obj;
         }
         final TreeNode node = getNode(temp, obj);
-        if (node == null) {
+	    if (Objects.isNull(node)) {
             return Collections.emptyList();
         } else {
             return childrenOf(node); // FIXME: This looks like possible infinite recursion ...

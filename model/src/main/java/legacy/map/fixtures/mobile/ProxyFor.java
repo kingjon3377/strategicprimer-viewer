@@ -4,6 +4,7 @@ import java.util.Collection;
 
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Objects;
 import java.util.function.Function;
 
 /**
@@ -33,7 +34,7 @@ public interface ProxyFor<Type> /* implements Type */ {
         @Nullable MemberType retval = null;
         for (final Type proxied : getProxied()) {
             final MemberType item = accessor.apply(proxied);
-            if (retval == null) {
+	        if (Objects.isNull(retval)) {
                 retval = item;
             } else if (!retval.equals(item)) {
                 return null;

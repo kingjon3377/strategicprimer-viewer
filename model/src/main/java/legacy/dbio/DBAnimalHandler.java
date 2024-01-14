@@ -23,6 +23,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Map;
 import java.util.OptionalInt;
@@ -134,14 +135,14 @@ public final class DBAnimalHandler extends AbstractDatabaseWriter<AnimalOrTracks
             final int id = (Integer) dbRow.get("id");
             final String image = (String) dbRow.get("image");
             final AnimalImpl animal = new AnimalImpl(kind, talking, status,
-                    id, (born == null) ? -1 : born, count);
-            if (image != null) {
+                    id, Objects.requireNonNullElse(born, -1), count);
+	        if (!Objects.isNull(image)) {
                 animal.setImage(image);
             }
             final Integer row = (Integer) dbRow.get("row");
             final Integer column = (Integer) dbRow.get("column");
             final Integer parentId = (Integer) dbRow.get("parent");
-            if (row != null && column != null) {
+            if (!Objects.isNull(row) && !Objects.isNull(column)) {
                 map.addFixture(new Point(row, column), animal);
             } else {
                 multimapPut(containees, parentId, animal);
@@ -157,7 +158,7 @@ public final class DBAnimalHandler extends AbstractDatabaseWriter<AnimalOrTracks
             final String kind = (String) dbRow.get("kind");
             final String image = (String) dbRow.get("image");
             final AnimalTracks track = new AnimalTracks(kind);
-            if (image != null) {
+	        if (!Objects.isNull(image)) {
                 track.setImage(image);
             }
             map.addFixture(new Point(row, column), track);

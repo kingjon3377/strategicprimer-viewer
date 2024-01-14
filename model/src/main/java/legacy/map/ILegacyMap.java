@@ -3,6 +3,7 @@ package legacy.map;
 import java.nio.file.Path;
 import java.util.Collection;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Stream;
 
@@ -147,7 +148,7 @@ public interface ILegacyMap extends Subsettable<ILegacyMap> {
 	 * rivers, no roads, no bookmarks, and no other fixtures
 	 */
 	default boolean isLocationEmpty(final Point location) {
-		if (getBaseTerrain(location) != null) {
+		if (!Objects.isNull(getBaseTerrain(location))) {
 			return false;
 		} else if (isMountainous(location)) {
 			return false;

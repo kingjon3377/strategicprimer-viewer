@@ -32,6 +32,7 @@ import legacy.map.fixtures.mobile.worker.IJob;
 import legacy.map.fixtures.mobile.worker.IMutableJob;
 import legacy.map.fixtures.mobile.worker.Job;
 
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.HashSet;
@@ -315,7 +316,7 @@ public class PopulationGeneratingModel extends SimpleMultiMapModel { // TODO: Ex
     public Iterable<Player> getPlayerChoices() {
         Set<Player> set = null;
         for (final ILegacyMap map : getAllMaps()) {
-            if (set == null) {
+			if (Objects.isNull(set)) {
                 set = StreamSupport.stream(map.getPlayers().spliterator(), true)
                         .collect(Collectors.toSet());
             } else {

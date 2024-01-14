@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import legacy.map.Point;
 import legacy.map.IMutableLegacyMap;
@@ -72,11 +73,11 @@ public final class DBVillageHandler extends AbstractDatabaseWriter<Village, Poin
         params.add(value("image", obj.getImage()));
         params.add(value("portrait", obj.getPortrait()));
         final CommunityStats stats = obj.getPopulation();
-        if (stats != null) {
+	    if (!Objects.isNull(stats)) {
             params.add(value("population", stats.getPopulation()));
         }
         INSERT_SQL.on(params).execute(db.connection());
-        if (stats != null) {
+	    if (!Objects.isNull(stats)) {
             CS_WRITER.initialize(db);
             CS_WRITER.write(db, stats, obj);
         }
@@ -96,13 +97,13 @@ public final class DBVillageHandler extends AbstractDatabaseWriter<Village, Poin
             final Integer population = (Integer) dbRow.get("population");
             final Village village = new Village(status, name, id, map.getPlayers().getPlayer(ownerId),
                     race);
-            if (image != null) {
+	        if (!Objects.isNull(image)) {
                 village.setImage(image);
             }
-            if (portrait != null) {
+	        if (!Objects.isNull(portrait)) {
                 village.setPortrait(portrait);
             }
-            if (population != null) {
+	        if (!Objects.isNull(population)) {
                 village.setPopulation(new CommunityStats(population));
             }
             map.addFixture(new Point(row, column), village);

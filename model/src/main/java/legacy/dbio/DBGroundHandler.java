@@ -12,6 +12,7 @@ import java.sql.SQLException;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import legacy.map.Point;
 import legacy.map.IMutableLegacyMap;
@@ -59,7 +60,7 @@ public final class DBGroundHandler extends AbstractDatabaseWriter<Ground, Point>
             final boolean exposed = getBooleanValue(dbRow, "exposed");
             final String image = (String) dbRow.get("image");
             final Ground ground = new Ground(id, kind, exposed);
-            if (image != null) {
+	        if (!Objects.isNull(image)) {
                 ground.setImage(image);
             }
             map.addFixture(new Point(row, column), ground);

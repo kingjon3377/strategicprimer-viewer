@@ -6,6 +6,7 @@ import java.util.Arrays;
 
 import legacy.map.fixtures.FixtureIterable;
 
+import java.util.Objects;
 import java.util.stream.StreamSupport;
 
 import lovelace.util.LovelaceLogger;
@@ -149,7 +150,7 @@ import java.util.function.Predicate;
             final Player owner = owned.owner();
             final String ownerName = (caseSensitivity) ? owner.getName() :
                     owner.getName().toLowerCase();
-            if (idNum != null && (owner.getPlayerId() == idNum ||
+            if (!Objects.isNull(idNum) && (owner.getPlayerId() == idNum || // FIXME: Parenthesization seems wrong here
                     ownerName.contains(pattern))) {
                 return true;
             } else if ("me".equalsIgnoreCase(pattern) && owner.isCurrent()) {
@@ -171,7 +172,7 @@ import java.util.function.Predicate;
             return true;
         } else if (fixture instanceof final TileFixture tf && !filterList.shouldDisplay(tf)) {
             return false;
-        } else if (idNum != null && idNum == fixture.getId()) {
+        } else if (!Objects.isNull(idNum) && idNum == fixture.getId()) {
             return true;
         } else {
             return matchesName(pattern, fixture, caseSensitivity) ||
@@ -236,7 +237,7 @@ import java.util.function.Predicate;
                         !backwards.isSelected(), !vertically.isSelected(),
                         model.getSelection()).spliterator(), false)
                 .filter(matchesPoint(pattern, idNum, caseSensitivity)).findFirst().orElse(null);
-        if (result != null) {
+	    if (!Objects.isNull(result)) {
             LovelaceLogger.debug("Found in point %s", result);
             model.setSelection(result);
         }

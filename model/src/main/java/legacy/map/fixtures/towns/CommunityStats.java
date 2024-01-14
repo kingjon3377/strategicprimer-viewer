@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 import java.util.function.Consumer;
@@ -196,7 +197,7 @@ public final class CommunityStats implements Subsettable<@Nullable CommunityStat
 
 	@Override
 	public boolean isSubset(final @Nullable CommunityStats other, final Consumer<String> report) {
-		if (other == null) {
+		if (Objects.isNull(other)) {
 			return true;
 		} else {
 			if (population < other.getPopulation()) {

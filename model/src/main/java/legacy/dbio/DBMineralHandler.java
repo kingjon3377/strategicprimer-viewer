@@ -12,6 +12,7 @@ import java.sql.SQLException;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import legacy.map.Point;
 import legacy.map.IMutableLegacyMap;
@@ -87,7 +88,7 @@ public final class DBMineralHandler extends AbstractDatabaseWriter<MineralFixtur
             final int dc = (Integer) dbRow.get("dc");
             final String image = (String) dbRow.get("image");
             final MineralVein mineral = new MineralVein(kind, exposed, dc, id);
-            if (image != null) {
+	        if (!Objects.isNull(image)) {
                 mineral.setImage(image);
             }
             map.addFixture(new Point(row, column), mineral);
@@ -103,7 +104,7 @@ public final class DBMineralHandler extends AbstractDatabaseWriter<MineralFixtur
             final int dc = (Integer) dbRow.get("dc");
             final String image = (String) dbRow.get("image");
             final StoneDeposit stone = new StoneDeposit(kind, dc, id);
-            if (image != null) {
+	        if (!Objects.isNull(image)) {
                 stone.setImage(image);
             }
             map.addFixture(new Point(row, column), stone);

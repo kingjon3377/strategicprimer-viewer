@@ -10,6 +10,8 @@ import legacy.map.fixtures.terrain.Forest;
 
 import legacy.map.fixtures.mobile.AnimalImpl;
 
+import java.util.Objects;
+
 /**
  * A sample map-populator.
  */
@@ -20,7 +22,7 @@ import legacy.map.fixtures.mobile.AnimalImpl;
     @Override
     public boolean isSuitable(final ILegacyMap map, final Point location) {
         final TileType terrain = map.getBaseTerrain(location);
-        return terrain != null && !map.isMountainous(location) &&
+        return !Objects.isNull(terrain) && !map.isMountainous(location) &&
                 TileType.Ocean != terrain &&
                 map.getFixtures(location).stream().noneMatch(Forest.class::isInstance);
     }

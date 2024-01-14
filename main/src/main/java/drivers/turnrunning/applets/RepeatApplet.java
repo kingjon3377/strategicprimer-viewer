@@ -7,6 +7,7 @@ import drivers.turnrunning.ITurnRunningModel;
 import either.Either;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.ServiceLoader;
 import java.util.stream.StreamSupport;
 import org.jetbrains.annotations.Nullable;
@@ -52,16 +53,16 @@ import org.jetbrains.annotations.Nullable;
 		final StringBuilder buffer = new StringBuilder();
 		while (true) {
 			final Either<TurnApplet, Boolean> command = appletChooser.chooseApplet();
-			if (command == null) {
+			if (Objects.isNull(command)) {
 				return null;
 			}
 			final Boolean bool = command.fromRight().orElse(null);
 			final TurnApplet applet = command.fromLeft().orElse(null);
 			if (Boolean.FALSE.equals(bool)) {
 				return null;
-			} else if (applet != null) {
+			} else if (!Objects.isNull(applet)) {
 				final String results = applet.run();
-				if (results == null) {
+				if (Objects.isNull(results)) {
 					return null;
 				}
 				buffer.append(results);
@@ -69,7 +70,7 @@ import org.jetbrains.annotations.Nullable;
 				continue;
 			}
 			final Boolean cont = cli.inputBoolean("Create more results for this unit?");
-			if (cont == null) {
+			if (Objects.isNull(cont)) {
 				return null;
 			} else if (!cont) {
 				break;

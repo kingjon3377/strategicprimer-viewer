@@ -6,6 +6,7 @@ import org.jetbrains.annotations.Nullable;
 
 import legacy.map.ILegacyMap;
 
+import java.util.Objects;
 import java.util.function.IntSupplier;
 
 import legacy.map.HasExtent;
@@ -177,7 +178,7 @@ public interface ITurnRunningModel extends IExplorationModel, IAdvancementModel 
                 .filter(f -> player.equals(f.owner())).toList()) {
             if (fortressName.equals(fortress.getName())) {
                 return fortress;
-            } else if (retval == null) {
+            } else if (Objects.isNull(retval)) {
                 retval = fortress;
             }
         }

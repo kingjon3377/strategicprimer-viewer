@@ -48,7 +48,7 @@ public class FileChooser {
         }
 
         public ChoiceInterruptedException(final @Nullable Throwable cause) {
-            super(cause == null ? "No file was selected" :
+            super(Objects.isNull(cause) ? "No file was selected" :
                     "Choice of a file was interrupted by an exception:", cause);
         }
     }
@@ -105,7 +105,7 @@ public class FileChooser {
                 LovelaceLogger.debug("FileChooser invoked for a custom dialog with Swing JFileChooser");
                 chooser = Either.left(fileChooser);
                 chooserFunction = (component) -> fileChooser.showDialog(component, approveText);
-                if (loc == null) {
+	            if (Objects.isNull(loc)) {
                     LovelaceLogger.debug("No file was passed in");
                     storedFile = Collections.emptyList();
                 } else {
@@ -124,7 +124,7 @@ public class FileChooser {
                 chooser = Either.left(fileChooser);
                 chooserFunction = fileChooser::showOpenDialog;
                 fileChooser.setMultiSelectionEnabled(true);
-                if (loc == null) {
+	            if (Objects.isNull(loc)) {
                     LovelaceLogger.debug("No file was passed in");
                     storedFile = Collections.emptyList();
                 } else {
@@ -136,7 +136,7 @@ public class FileChooser {
                 LovelaceLogger.debug("FileChooser invoked for Save dialog using Swing JFileChooser");
                 chooserFunction = fileChooser::showSaveDialog;
                 chooser = Either.left(fileChooser);
-                if (loc == null) {
+	            if (Objects.isNull(loc)) {
                     LovelaceLogger.debug("No file was passed in");
                     storedFile = Collections.emptyList();
                 } else {
@@ -160,7 +160,7 @@ public class FileChooser {
                     return 0;
                 };
                 fileChooser.setMultipleMode(true);
-                if (loc == null) {
+	            if (Objects.isNull(loc)) {
                     LovelaceLogger.debug("No file was passed in");
                     storedFile = Collections.emptyList();
                 } else {
@@ -176,7 +176,7 @@ public class FileChooser {
                     fileChooser.setVisible(true);
                     return 0;
                 };
-                if (loc == null) {
+	            if (Objects.isNull(loc)) {
                     LovelaceLogger.debug("No file was passed in");
                     storedFile = Collections.emptyList();
                 } else {
@@ -261,7 +261,7 @@ public class FileChooser {
                 if (!retval.isEmpty()) {
                     LovelaceLogger.debug("Saving the file(s) the user chose via Swing");
                     storedFile = retval;
-                } else if (fc.getSelectedFile() != null) {
+                } else if (!Objects.isNull(fc.getSelectedFile())) {
                     final File selectedFile = fc.getSelectedFile();
                     LovelaceLogger.debug("Saving the singular file the user chose via Swing");
                     storedFile = Collections.singletonList(selectedFile.toPath());
@@ -279,7 +279,7 @@ public class FileChooser {
             if (!retval.isEmpty()) {
                 LovelaceLogger.debug("Saving the file(s) the user chose via AWT");
                 storedFile = retval;
-            } else if (fd.getFile() != null) {
+            } else if (!Objects.isNull(fd.getFile())) {
                 final String selectedFile = fd.getFile();
                 LovelaceLogger.debug("Saving the singular file the user chose via AWT");
                 storedFile = Collections.singletonList(Paths.get(selectedFile));

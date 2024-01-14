@@ -26,6 +26,7 @@ import legacy.map.fixtures.towns.ITownFixture;
 
 import java.util.Collections;
 import java.util.Collection;
+import java.util.Objects;
 import java.util.function.Function;
 import java.util.stream.StreamSupport;
 import java.util.Optional;
@@ -57,7 +58,7 @@ public final class SimpleMovementModel {
      * Whether land movement is possible on the given terrain.
      */
     public static boolean landMovementPossible(final @Nullable TileType terrain) {
-        return terrain != null && TileType.Ocean != terrain;
+        return !Objects.isNull(terrain) && TileType.Ocean != terrain;
     }
 
     /**
@@ -92,7 +93,7 @@ public final class SimpleMovementModel {
      */
     public static int movementCost(final @Nullable TileType terrain, final boolean forest, final boolean mountain,
                                    final boolean river, final Iterable<TileFixture> fixtures) {
-        if (terrain == null) {
+	    if (Objects.isNull(terrain)) {
             return Integer.MAX_VALUE - 1;
         } else if (TileType.Ocean == terrain) {
             return Integer.MAX_VALUE - 1;
@@ -125,7 +126,7 @@ public final class SimpleMovementModel {
      */
     public static boolean shouldSometimesNotice(final HasOwner unit, final Speed speed,
                                                 final @Nullable TileFixture fixture) {
-        if (fixture == null) {
+	    if (Objects.isNull(fixture)) {
             return false;
         } else if (unit.equals(fixture)) {
             return false;

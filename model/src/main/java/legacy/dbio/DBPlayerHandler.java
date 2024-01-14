@@ -14,6 +14,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.ArrayList;
+import java.util.Objects;
 
 import legacy.map.ILegacyMap;
 import legacy.map.IMutableLegacyMap;
@@ -59,7 +60,7 @@ public final class DBPlayerHandler extends AbstractDatabaseWriter<Player, ILegac
 		if (!obj.getPortrait().isEmpty()) {
 			params.add(value("portrait", obj.getPortrait()));
 		}
-		if (obj.getCountry() != null && !obj.getPortrait().isEmpty()) {
+		if (!Objects.isNull(obj.getCountry()) && !obj.getPortrait().isEmpty()) {
 			params.add(value("country", obj.getCountry()));
 		}
 		try {
@@ -84,7 +85,7 @@ public final class DBPlayerHandler extends AbstractDatabaseWriter<Player, ILegac
 			final String country = (String) dbRow.get("country");
 			final MutablePlayer player = new PlayerImpl(id, name, country);
 			player.setCurrent(current);
-			if (portrait != null) {
+			if (!Objects.isNull(portrait)) {
 				player.setPortrait(portrait);
 			}
 			map.addPlayer(player);

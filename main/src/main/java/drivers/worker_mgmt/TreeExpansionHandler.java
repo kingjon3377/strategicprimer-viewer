@@ -2,6 +2,7 @@ package drivers.worker_mgmt;
 
 import javax.swing.JTree;
 import javax.swing.tree.TreePath;
+import java.util.Objects;
 
 /**
  * A class to handle "expand all," "collapse all," etc.
@@ -49,7 +50,7 @@ public class TreeExpansionHandler implements TreeExpansionOrderListener {
         int i = 0;
         while (i < tree.getRowCount()) {
             final TreePath path = tree.getPathForRow(i);
-            if (path != null && path.getPathCount() <= levels) {
+            if (!Objects.isNull(path) && path.getPathCount() <= levels) {
                 tree.expandRow(i);
             }
             i++;

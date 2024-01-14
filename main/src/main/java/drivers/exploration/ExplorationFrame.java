@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.io.Serial;
 import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
+import java.util.Objects;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JTextField;
 import javax.swing.JScrollPane;
@@ -137,7 +138,7 @@ import org.eclipse.jdt.annotation.Nullable;
         layoutObj.goFirst();
         if (!playerList.isSelectionEmpty()) {
             final @Nullable Player newPlayer = playerList.getSelectedValue();
-            if (newPlayer != null) {
+	        if (!Objects.isNull(newPlayer)) {
                 unitListModel.playerChanged(null, newPlayer);
             }
         }
@@ -146,7 +147,7 @@ import org.eclipse.jdt.annotation.Nullable;
     private void buttonListener() {
         LovelaceLogger.trace("In ExplorationFrame.buttonListener");
         final @Nullable IUnit selectedValue = unitList.getSelectedValue();
-        if (selectedValue != null && !unitList.isSelectionEmpty()) {
+        if (!Objects.isNull(selectedValue) && !unitList.isSelectionEmpty()) {
             driver.getModel().setSelectedUnit(selectedValue);
             LovelaceLogger.trace("ExplorationFrame.buttonListener: after selectedUnit setter call");
             layoutObj.goNext();

@@ -8,6 +8,7 @@ import drivers.common.cli.ICLIHelper;
 
 import legacy.map.Player;
 
+import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -52,7 +53,7 @@ public class AdvancementCLI implements CLIDriver {
 			.filter(u -> u.stream().anyMatch(IWorker.class::isInstance)).collect(Collectors.toList());
 		while (!units.isEmpty()) {
 			final IUnit chosen = cli.chooseFromList((List<? extends IUnit>) units, String.format("%s's units:", player.getName()), "No unadvanced units remain.", "Chosen unit:", ICLIHelper.ListChoiceBehavior.ALWAYS_PROMPT).getValue1();
-			if (chosen == null) {
+			if (Objects.isNull(chosen)) {
 				break;
 			}
 			units.remove(chosen);
@@ -72,7 +73,7 @@ public class AdvancementCLI implements CLIDriver {
 		final List<Player> playerList = StreamSupport.stream(model.getPlayers().spliterator(), false).collect(Collectors.toList());
 		while (!playerList.isEmpty()) {
 			final Player chosen = cli.chooseFromList((List<? extends Player>) playerList, "Available players:", "No players found.", "Chosen player:", ICLIHelper.ListChoiceBehavior.ALWAYS_PROMPT).getValue1();
-			if (chosen == null) {
+			if (Objects.isNull(chosen)) {
 				break;
 			}
 			playerList.remove(chosen);

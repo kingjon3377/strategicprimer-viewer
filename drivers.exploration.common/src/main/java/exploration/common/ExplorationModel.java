@@ -166,7 +166,7 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 	 * Ensure that a given map has at least terrain information for the specified location.
 	 */
 	private static void ensureTerrain(final ILegacyMap mainMap, final IMutableLegacyMap map, final Point point) {
-		if (map.getBaseTerrain(point) == null) {
+		if (Objects.isNull(map.getBaseTerrain(point))) {
 			map.setBaseTerrain(point, mainMap.getBaseTerrain(point));
 		}
 		if (mainMap.isMountainous(point)) {
@@ -425,13 +425,13 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 		final Pair<Point, @Nullable IUnit> local = selection;
 		final Point point = local.getValue0();
 		final IUnit unit = local.getValue1();
-		if (unit == null) {
+		if (Objects.isNull(unit)) {
 			throw new IllegalStateException("No mover selected");
 		}
 		final Point dest = getDestination(point, direction);
 		final TileType terrain = getMap().getBaseTerrain(dest);
 		final TileType startingTerrain = getMap().getBaseTerrain(point);
-		if (terrain != null && startingTerrain != null &&
+		if (!Objects.isNull(terrain) && !Objects.isNull(startingTerrain) &&
 			((SimpleMovementModel.landMovementPossible(terrain) &&
 				TileType.Ocean != startingTerrain) ||
 				(TileType.Ocean == startingTerrain &&
@@ -468,9 +468,9 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 			fixMovedUnits(dest);
 			return retval;
 		} else {
-			if (getMap().getBaseTerrain(point) == null) {
+			if (Objects.isNull(getMap().getBaseTerrain(point))) {
 				LovelaceLogger.debug("Started outside explored territory in main map");
-			} else if (getMap().getBaseTerrain(dest) == null) {
+			} else if (Objects.isNull(getMap().getBaseTerrain(dest))) {
 				LovelaceLogger.debug("Main map doesn't have terrain for destination");
 			} else {
 				if (SimpleMovementModel.landMovementPossible(terrain) &&
@@ -478,11 +478,11 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 					LovelaceLogger.debug("Starting in ocean, trying to get to %s", terrain);
 				} else if (TileType.Ocean == startingTerrain && TileType.Ocean != terrain) {
 					LovelaceLogger.debug("Land movement not possible from ocean to %s",
-						terrain == null ? "unexplored" : terrain);
+						Objects.requireNonNullElse(terrain, "unexplored"));
 				} else if (TileType.Ocean != startingTerrain &&
 					TileType.Ocean == terrain) {
 					LovelaceLogger.debug("Starting in %s, trying to get to ocean",
-						startingTerrain == null ? "unexplored" : startingTerrain);
+						Objects.requireNonNullElse(startingTerrain, "unexplored"));
 				} else {
 					LovelaceLogger.debug("Unknown reason for movement-impossible condition");
 				}
@@ -553,7 +553,7 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 		final Point oldLoc = selection.getValue0();
 		final IUnit oldSelection = selection.getValue1();
 		final Point loc;
-		if (selectedUnit == null) {
+		if (Objects.isNull(selectedUnit)) {
 			LovelaceLogger.debug("Unsetting currently-selected-unit property");
 			loc = Point.INVALID_POINT;
 		} else {
@@ -623,7 +623,7 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 		final Pair<Point, @Nullable IUnit> localSelection = selection;
 		final Point currentPoint = localSelection.getValue0();
 		final IUnit unit = localSelection.getValue1();
-		if (unit != null) {
+		if (!Objects.isNull(unit)) {
 			final Player owner = unit.owner();
 			final List<Village> villages = streamAllMaps().flatMap(m -> m.getFixtures(currentPoint).stream())
 				.filter(Village.class::isInstance)
@@ -759,7 +759,7 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 			matching = getMap().getFixtures(location).stream()
 				.filter(f -> f.getId() == fixture.getId()).findAny().orElse(null);
 		}
-		if (matching == null) {
+		if (Objects.isNull(matching)) {
 			LovelaceLogger.warning("Skipping because not in the main map");
 		} else {
 			for (final IMutableLegacyMap subMap : getRestrictedSubordinateMaps()) {
@@ -788,7 +788,7 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 				subMap.setModified(true);
 			}
 			final TileType terrain = getMap().getBaseTerrain(location);
-			if (terrain != null &&
+			if (!Objects.isNull(terrain) &&
 				terrain != subMap.getBaseTerrain(location)) {
 				subMap.setBaseTerrain(location, terrain);
 				subMap.setModified(true);
@@ -1025,7 +1025,7 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 		final Pair<Point, @Nullable IUnit> selection = this.selection; // TODO: Ceylon used "value", so may have been wrong here
 		final IUnit unit = selection.getValue1();
 		final Player currentPlayer = Optional.ofNullable(unit).map(IUnit::owner).orElse(null);
-		if (currentPlayer == null) {
+		if (Objects.isNull(currentPlayer)) {
 			return false;
 		} else {
 			return fixture.owner().equals(currentPlayer);

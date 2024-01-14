@@ -1,6 +1,7 @@
 package utility;
 
 import java.util.Collection;
+import java.util.Objects;
 import java.util.stream.Stream;
 
 import lovelace.util.Decimalize;
@@ -59,7 +60,7 @@ public class DuplicateFixtureRemoverCLI implements CLIDriver {
                 member instanceof Forest || member instanceof Grove ||
                 member instanceof Meadow) {
             return ((HasKind) member).getKind();
-        } else if (member == null) {
+        } else if (Objects.isNull(member)) {
             return "null";
         } else if (member instanceof final IResourcePile rp) {
             return rp.getContents();
@@ -143,7 +144,7 @@ public class DuplicateFixtureRemoverCLI implements CLIDriver {
      * "matching" is null, return false.
      */
     private @Nullable Boolean approveRemoval(final Point location, final TileFixture fixture, final @Nullable TileFixture matching) {
-        if (matching == null) {
+	    if (Objects.isNull(matching)) {
             return false;
         } else {
             final String fCls = fixture.getClass().getName();
@@ -172,7 +173,7 @@ public class DuplicateFixtureRemoverCLI implements CLIDriver {
                 final Iterable<? extends TileFixture> duplicates = q.getValue3();
                 for (final TileFixture duplicate : duplicates) {
                     final Boolean approval = approveRemoval(location, duplicate, fixture);
-                    if (approval == null) {
+	                if (Objects.isNull(approval)) {
                         return;
                     } else if (approval) {
                         deleteCallback.accept(duplicate);
@@ -227,7 +228,7 @@ public class DuplicateFixtureRemoverCLI implements CLIDriver {
             fixtures.stream().map(Object::toString).forEach(println);
             final Boolean resp = cli.inputBooleanInSeries("Combine them? ",
                     memberKind(fixtures.iterator().next()));
-            if (resp == null) {
+	        if (Objects.isNull(resp)) {
                 return;
             } else if (resp) {
                 callback.run();

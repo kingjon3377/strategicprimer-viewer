@@ -2,6 +2,7 @@ package drivers;
 
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.StreamSupport;
 import javax.swing.JOptionPane;
@@ -53,7 +54,7 @@ public class PlayerChangeMenuListener implements ActionListener, PlayerChangeSou
      */
     private static @Nullable Frame getContainingFrame(final @Nullable Component component) {
         Component temp = component;
-        while (temp != null) {
+        while (!Objects.isNull(temp)) {
             if (temp instanceof final Frame f) {
                 return f;
             } else if (temp instanceof final JPopupMenu menu) {

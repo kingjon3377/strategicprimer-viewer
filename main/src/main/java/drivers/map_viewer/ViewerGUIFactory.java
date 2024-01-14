@@ -7,6 +7,7 @@ import drivers.common.ViewerDriverFactory;
 import java.util.List;
 
 import java.nio.file.Path;
+import java.util.Objects;
 
 import drivers.common.IDriverModel;
 import drivers.common.IDriverUsage;
@@ -58,7 +59,7 @@ public class ViewerGUIFactory implements ViewerDriverFactory {
     @Override
     public IViewerModel createModel(final IMutableLegacyMap map) {
         final Path path = map.getFilename();
-        if (path == null) {
+	    if (Objects.isNull(path)) {
             LovelaceLogger.trace("Creating a viewer model for a null path");
         } else {
             LovelaceLogger.trace("Creating a viewer model for path %s", path);

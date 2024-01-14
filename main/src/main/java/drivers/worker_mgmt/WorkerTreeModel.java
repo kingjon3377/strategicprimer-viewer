@@ -25,6 +25,7 @@ import legacy.map.HasKind;
 import worker.common.IWorkerTreeModel;
 import drivers.common.IWorkerModel;
 
+import java.util.Objects;
 import java.util.function.Predicate;
 import java.util.stream.StreamSupport;
 import java.util.stream.Stream;
@@ -197,7 +198,7 @@ import java.util.stream.Collectors;
 		} else if (item instanceof final UnitMember member) {
 			final IUnit parent = model.getUnits(player).stream()
 				.filter(containingItem(member)).findAny().orElse(null);
-			if (parent == null) {
+			if (Objects.isNull(parent)) {
 				LovelaceLogger.warning(
 					"In WorkerTreeModel.renameItem(), unit member belonged to no unit");
 				return;
@@ -237,7 +238,7 @@ import java.util.stream.Collectors;
 		} else if (item instanceof final UnitMember um) {
 			final IUnit parent = model.getUnits(player).stream()
 				.filter(containingItem(um)).findAny().orElse(null);
-			if (parent == null) {
+			if (Objects.isNull(parent)) {
 				LovelaceLogger.warning(
 					"In WorkerTreeModel.changeKind(), unit member belonged to no unit");
 				return;
@@ -314,7 +315,7 @@ import java.util.stream.Collectors;
 		Iterable<IUnit> sequence;
 		boolean leading;
 		final Predicate<IUnit> leadingFilter;
-		if (starting == null) {
+		if (Objects.isNull(starting)) {
 			leading = false;
 			leadingFilter = null;
 			sequence = model.getUnits(player);
@@ -325,10 +326,10 @@ import java.util.stream.Collectors;
 				.map(String.class::cast).findFirst().orElse(null);
 			final Collection<IUnit> temp = model.getUnits(player);
 			sequence = Stream.concat(temp.stream(), temp.stream()).collect(Collectors.toList());
-			if (startingUnit != null) {
+			if (!Objects.isNull(startingUnit)) {
 				leading = true;
 				leadingFilter = startingUnit::equals;
-			} else if (startingKind == null) {
+			} else if (Objects.isNull(startingKind)) {
 				leading = false;
 				leadingFilter = null;
 				sequence = model.getUnits(player);

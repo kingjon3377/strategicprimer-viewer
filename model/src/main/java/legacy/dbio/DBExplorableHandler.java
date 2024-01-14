@@ -11,6 +11,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import legacy.map.Point;
 import legacy.map.IMutableLegacyMap;
@@ -81,7 +82,7 @@ public final class DBExplorableHandler extends AbstractDatabaseWriter<Explorable
             final int dc = (Integer) dbRow.get("dc");
             final String image = (String) dbRow.get("image");
             final Cave cave = new Cave(dc, id);
-            if (image != null) {
+	        if (!Objects.isNull(image)) {
                 cave.setImage(image);
             }
             map.addFixture(new Point(row, column), cave);
@@ -96,7 +97,7 @@ public final class DBExplorableHandler extends AbstractDatabaseWriter<Explorable
             final int dc = (Integer) dbRow.get("dc");
             final String image = (String) dbRow.get("image");
             final Battlefield battlefield = new Battlefield(dc, id);
-            if (image != null) {
+	        if (!Objects.isNull(image)) {
                 battlefield.setImage(image);
             }
             map.addFixture(new Point(row, column), battlefield);

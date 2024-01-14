@@ -6,6 +6,7 @@ import legacy.map.Point;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Comparator;
+import java.util.Objects;
 
 /**
  * A class to compare {@link Point}s based on their distance to a specified
@@ -37,12 +38,12 @@ public final class DistanceComparator implements Comparator<Point> {
         final int rowDistRaw = Math.abs(point.row() - base.row());
         final int colDist;
         final int rowDist;
-        if (dimensions != null && colDistRaw > dimensions.columns() / 2) {
+        if (!Objects.isNull(dimensions) && colDistRaw > dimensions.columns() / 2) {
             colDist = dimensions.columns() - colDistRaw;
         } else {
             colDist = colDistRaw;
         }
-        if (dimensions != null && rowDistRaw > dimensions.rows() / 2) {
+        if (!Objects.isNull(dimensions) && rowDistRaw > dimensions.rows() / 2) {
             rowDist = dimensions.rows() - rowDistRaw;
         } else {
             rowDist = rowDistRaw;

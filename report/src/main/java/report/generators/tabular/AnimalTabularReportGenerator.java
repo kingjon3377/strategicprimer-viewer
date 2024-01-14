@@ -20,6 +20,7 @@ import java.util.Map;
 import java.util.Comparator;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Objects;
 
 /**
  * A report generator for {@link Animal animal populations} and {@link
@@ -121,7 +122,7 @@ public class AnimalTabularReportGenerator implements ITableGenerator<AnimalOrTra
 
 	private int comparePairsImpl(final Pair<Point, AnimalOrTracks> one, final Pair<Point, AnimalOrTracks> two) {
 		final int cmp;
-		if (hq == null) {
+		if (Objects.isNull(hq)) {
 			cmp = 0;
 		} else {
 			cmp = new DistanceComparator(hq, dimensions).compare(one.getValue0(),

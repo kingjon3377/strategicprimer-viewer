@@ -8,6 +8,7 @@ import legacy.map.Point;
 import javax.swing.BoundedRangeModel;
 
 import javax.swing.event.ChangeEvent;
+import java.util.Objects;
 
 /* package */ class ScrollAdjustmentListener { // FIXME: Listen to some events so we can reset on map or selected point change
 	private final IViewerModel model;
@@ -50,7 +51,7 @@ import javax.swing.event.ChangeEvent;
 				oldDimensions.getColumns().size())) {
 			LovelaceLogger.warning("Tried to scroll too far to the right, skipping ...");
 			return;
-		} else if (oldColumn == null) {
+		} else if (Objects.isNull(oldColumn)) {
 			final int newMinColumn;
 			final int newMaxColumn;
 			if (oldDimensions.getMinimumColumn() > newValue) {
@@ -124,7 +125,7 @@ import javax.swing.event.ChangeEvent;
 				oldDimensions.getRows().size())) {
 			LovelaceLogger.warning("Tried to scroll too far down, skipping ...");
 			return;
-		} else if (oldRow != null) {
+		} else if (!Objects.isNull(oldRow)) {
 			if (oldRow == newValue) {
 				LovelaceLogger.trace(
 					"Vertical scroll to same value, possibly reentrant. Skipping ...");

@@ -14,6 +14,7 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
+import java.util.Objects;
 
 import common.idreg.DuplicateIDException;
 import legacy.map.ILegacyMap;
@@ -104,7 +105,7 @@ public final class DBWorkerHandler extends AbstractDatabaseWriter<IWorker, IUnit
 		db.transaction().accept(sql -> {
 			final String portrait = obj.getPortrait();
 			final WorkerStats stats = obj.getStats();
-			if (stats == null) {
+			if (Objects.isNull(stats)) {
 				WORKER_SQL.on(value("unit", context.getId()), value("id", obj.getId()),
 					value("name", obj.getName()), value("race", obj.getRace()),
 					value("image", obj.getImage()), value("portrait", portrait)).execute(sql);
@@ -126,7 +127,7 @@ public final class DBWorkerHandler extends AbstractDatabaseWriter<IWorker, IUnit
 						value("hours", skill.getHours())).execute(sql);
 				}
 			}
-			if (obj.getMount() != null) {
+			if (!Objects.isNull(obj.getMount())) {
 				animalHandler.initialize(db);
 				animalHandler.write(db, obj.getMount(), obj);
 			}
@@ -155,13 +156,13 @@ public final class DBWorkerHandler extends AbstractDatabaseWriter<IWorker, IUnit
 			final Integer wis = (Integer) dbRow.get("wis");
 			final Integer cha = (Integer) dbRow.get("cha");
 			final Worker worker = new Worker(name, race, id);
-			if (hp != null) {
+			if (!Objects.isNull(hp)) {
 				worker.setStats(new WorkerStats(hp, maxHp, str, dex, con, intel, wis, cha));
 			}
-			if (image != null) {
+			if (!Objects.isNull(image)) {
 				worker.setImage(image);
 			}
-			if (portrait != null) {
+			if (!Objects.isNull(portrait)) {
 				worker.setPortrait(portrait);
 			}
 			if (workers.containsKey(id)) {
@@ -203,7 +204,7 @@ public final class DBWorkerHandler extends AbstractDatabaseWriter<IWorker, IUnit
 			final Worker worker = workers.get(id);
 			final int player = (Integer) dbRow.get("player");
 			final String note = (String) dbRow.get("note");
-			if (worker != null) {
+			if (!Objects.isNull(worker)) {
 				worker.setNote(map.getPlayers().getPlayer(player), note);
 			}
 		};

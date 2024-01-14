@@ -4,6 +4,7 @@ import lovelace.util.LovelaceLogger;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.Serial;
+import java.util.Objects;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 import java.util.Optional;
@@ -238,7 +239,7 @@ public final class FixtureList extends JList<TileFixture>
                     try {
                         dtde.acceptDrop(dtde.getDropAction());
                         final Transferable t = dtde.getTransferable();
-                        if (t != null) {
+	                    if (!Objects.isNull(t)) {
                             handleDrop(t);
                         }
                         return;

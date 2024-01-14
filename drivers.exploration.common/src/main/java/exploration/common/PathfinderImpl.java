@@ -7,6 +7,7 @@ import lovelace.util.SimplePair;
 import org.jetbrains.annotations.Nullable;
 import org.javatuples.Pair;
 
+import java.util.Objects;
 import java.util.Set;
 import java.util.Map;
 import java.util.HashSet;
@@ -167,7 +168,7 @@ import java.util.Optional;
             LovelaceLogger.debug("Finished checking neighbors of %s", current);
             unvisited.remove(current);
             final Point next = nextUnvisited(start, unvisited);
-            if (next == null) {
+	        if (Objects.isNull(next)) {
                 LovelaceLogger.info(
                         "Couldn't find a smallest-estimate unchecked tile after %d iterations",
                         iterations);

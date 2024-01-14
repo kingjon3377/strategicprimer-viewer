@@ -12,6 +12,7 @@ import legacy.map.LegacyPlayerCollection;
 import lovelace.util.LovelaceLogger;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Objects;
 import java.util.regex.Pattern;
 
 import java.awt.Dimension;
@@ -91,7 +92,7 @@ import drivers.common.ISPDriver;
      */
     public void testMap(final ILegacyMap map, final @Nullable Path file) {
         final String filename;
-        if (file == null) {
+	    if (Objects.isNull(file)) {
             LovelaceLogger.warning("Given a map with no filename");
             printParagraph("Given a map with no filename", LabelTextColor.YELLOW);
             filename = "an unnamed file";

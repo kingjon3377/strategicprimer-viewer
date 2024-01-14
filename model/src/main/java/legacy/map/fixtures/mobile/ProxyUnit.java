@@ -120,11 +120,9 @@ public class ProxyUnit implements IUnit, ProxyFor<IUnit> {
 	public IUnit copy(final CopyBehavior zero) {
 		final ProxyUnit retval;
 		if (parallel) {
-			assert (commonID != null);
-			retval = new ProxyUnit(commonID);
+			retval = new ProxyUnit(Objects.requireNonNull(commonID));
 		} else {
-			assert (commonKind != null);
-			retval = new ProxyUnit(commonKind);
+			retval = new ProxyUnit(Objects.requireNonNull(commonKind));
 		}
 		for (final IUnit unit : proxiedList) {
 			retval.addProxied(unit.copy(zero));
@@ -138,7 +136,7 @@ public class ProxyUnit implements IUnit, ProxyFor<IUnit> {
 	public String getKind() {
 		if (parallel) {
 			final String retval = getConsensus(IUnit::getKind);
-			return retval == null ? "proxied" : retval;
+			return Objects.requireNonNullElse(retval, "proxied");
 		} else {
 			return Objects.requireNonNullElse(commonKind, "proxied");
 		}
@@ -191,13 +189,13 @@ public class ProxyUnit implements IUnit, ProxyFor<IUnit> {
 			return "";
 		}
 		final String img = getConsensus(IUnit::getDefaultImage);
-		return img == null ? "unit.png" : img;
+		return Objects.requireNonNullElse(img, "unit.png");
 	}
 
 	@Override
 	public String getImage() {
 		final String img = getConsensus(IUnit::getImage);
-		return img == null ? "" : img;
+		return Objects.requireNonNullElse(img, "");
 	}
 
 	@Override
@@ -256,19 +254,19 @@ public class ProxyUnit implements IUnit, ProxyFor<IUnit> {
 	@Override
 	public String getName() {
 		final String retval = getConsensus(IUnit::getName);
-		return retval == null ? "proxied" : retval;
+		return Objects.requireNonNullElse(retval, "proxied");
 	}
 
 	@Override
 	public String getPortrait() {
 		final String retval = getConsensus(IUnit::getPortrait);
-		return retval == null ? "" : retval;
+		return Objects.requireNonNullElse(retval, "");
 	}
 
 	@Override
 	public Player owner() {
 		final Player retval = getConsensus(IUnit::owner);
-		return retval == null ? defaultPlayer : retval;
+		return Objects.requireNonNullElse(retval, defaultPlayer);
 	}
 
 	@Override
@@ -280,13 +278,13 @@ public class ProxyUnit implements IUnit, ProxyFor<IUnit> {
 	@Override
 	public String getOrders(final int turn) {
 		final String retval = getConsensus(u -> u.getOrders(turn));
-		return retval == null ? "" : retval;
+		return Objects.requireNonNullElse(retval, "");
 	}
 
 	@Override
 	public String getResults(final int turn) {
 		final String retval = getConsensus(u -> u.getResults(turn));
-		return retval == null ? "" : retval;
+		return Objects.requireNonNullElse(retval, "");
 	}
 
 	@Override
@@ -336,7 +334,7 @@ public class ProxyUnit implements IUnit, ProxyFor<IUnit> {
 	@Override
 	public int getDC() {
 		final Integer retval = getConsensus(IUnit::getDC);
-		return retval == null ? 10 : retval;
+		return Objects.requireNonNullElse(retval, 10);
 	}
 
 	/**

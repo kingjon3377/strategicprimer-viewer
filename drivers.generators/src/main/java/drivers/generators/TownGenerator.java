@@ -246,7 +246,7 @@ import java.math.BigDecimal;
      */
     private static List<HarvestableFixture> findNearestFields(final ILegacyMap map, final Point location) {
         final TileType base = map.getBaseTerrain(location);
-        if (base == null) {
+	    if (Objects.isNull(base)) {
             return Collections.emptyList();
         } else {
             return new SurroundingPointIterable(location,
@@ -270,11 +270,11 @@ import java.math.BigDecimal;
         cli.println("(Empty to end.)");
         while (true) {
             final String job = cli.inputString("Job: ");
-            if (job == null || job.isEmpty()) {
+            if (Objects.isNull(job) || job.isEmpty()) {
                 break;
             }
             final Integer level = cli.inputNumber("Level: ");
-            if (level == null) {
+	        if (Objects.isNull(level)) {
                 break;
             }
             retval.setSkillLevel(job, level);
@@ -303,7 +303,7 @@ import java.math.BigDecimal;
             final Point fieldLoc = findLocById(map, field); // TODO: This wasn't initialized until isClaimedField() check in Ceylon, but a variable can't be declared in an if statement in Java
             if (isClaimedField(map, field)) {
                 cli.println("That field is already worked by another town");
-            } else if (fieldLoc != null) {
+            } else if (!Objects.isNull(fieldLoc)) {
                 if (!bothOrNeitherOcean(map.getBaseTerrain(location),
                         map.getBaseTerrain(fieldLoc))) {
                     if (TileType.Ocean == map.getBaseTerrain(location)) {
@@ -332,19 +332,19 @@ import java.math.BigDecimal;
         while (true) {
             final String kind = cli.inputString("General kind of resource: ");
             // N.B. inputString() trims leading and trailing whitespace.
-            if (kind == null || kind.isEmpty()) {
+            if (Objects.isNull(kind) || kind.isEmpty()) {
                 break;
             }
             final String contents = cli.inputString("Specific kind of resource: ");
-            if (contents == null || contents.isEmpty()) {
+            if (Objects.isNull(contents) || contents.isEmpty()) {
                 break;
             }
             final BigDecimal quantity = cli.inputDecimal("Quantity of the resource produced: ");
-            if (quantity == null) {
+	        if (Objects.isNull(quantity)) {
                 break;
             }
             final String units = cli.inputString("Units of that quantity: ");
-            if (units == null) { // TODO: What about empty units?
+	        if (Objects.isNull(units)) { // TODO: What about empty units?
                 break;
             }
             final IResourcePile pile = new ResourcePileImpl(idf.createID(), kind, contents,
@@ -356,19 +356,19 @@ import java.math.BigDecimal;
         while (true) {
             final String kind = cli.inputString("General kind of resource: ");
             // N.B. inputString() trims leading and trailing whitespace.
-            if (kind == null || kind.isEmpty()) {
+            if (Objects.isNull(kind) || kind.isEmpty()) {
                 break;
             }
             final String contents = cli.inputString("Specific kind of resource: ");
-            if (contents == null || contents.isEmpty()) {
+            if (Objects.isNull(contents) || contents.isEmpty()) {
                 break;
             }
             final BigDecimal quantity = cli.inputDecimal("Quantity of the resource produced: ");
-            if (quantity == null) {
+	        if (Objects.isNull(quantity)) {
                 break;
             }
             final String units = cli.inputString("Units of that quantity: ");
-            if (units == null) { // TODO: What about empty units?
+	        if (Objects.isNull(units)) { // TODO: What about empty units?
                 break;
             }
             retval.getYearlyConsumption().add(new ResourcePileImpl(idf.createID(), kind,
@@ -481,7 +481,7 @@ import java.math.BigDecimal;
         final String skillTable;
         final String consumptionTableName;
         final TileType terrain = map.getBaseTerrain(location);
-        if (terrain == null) {
+	    if (Objects.isNull(terrain)) {
             skillTable = "plains_skills";
             consumptionTableName = "plains";
         } else if (TileType.Ocean == terrain) {
@@ -564,7 +564,7 @@ import java.math.BigDecimal;
     public void generateSpecificTowns(final IDRegistrar idf, final PopulationGeneratingModel model) {
         while (true) {
             final String input = cli.inputString("ID or name of town to create stats for: ");
-            if (input == null || input.isBlank()) {
+            if (Objects.isNull(input) || input.isBlank()) {
                 break;
             }
             final @Nullable Point location;
@@ -587,7 +587,7 @@ import java.math.BigDecimal;
                 town = temp.map(Pair::getValue1).orElse(null);
             }
             try {
-                if (town == null || location == null) {
+                if (Objects.isNull(town) || Objects.isNull(location)) {
                     cli.println("No matching town found.");
                 } else {
                     final CommunityStats stats;
@@ -621,7 +621,7 @@ import java.math.BigDecimal;
             final Boolean resp = cli.inputBooleanInSeries(
                     "Enter stats rather than generating them?", "enter stats");
             try {
-                if (resp == null) {
+	            if (Objects.isNull(resp)) {
                     break;
                 } else if (resp) {
                     stats = enterStats(cli, idf, model.getMap(), location, town);

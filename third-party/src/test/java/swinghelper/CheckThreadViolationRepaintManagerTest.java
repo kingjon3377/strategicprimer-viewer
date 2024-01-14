@@ -9,6 +9,7 @@ import javax.swing.JFrame;
 import javax.swing.RepaintManager;
 import javax.swing.SwingUtilities;
 import java.lang.reflect.InvocationTargetException;
+import java.util.Objects;
 
 public class CheckThreadViolationRepaintManagerTest {
 	static void simpleTest() {
@@ -43,8 +44,7 @@ public class CheckThreadViolationRepaintManagerTest {
 		} catch (final Exception except) {
 			except.printStackTrace();
 		}
-		final JButton localTest = test;
-		assert (localTest != null);
+		final JButton localTest = Objects.requireNonNull(test);
 		// repaint(Rectangle) should be ok
 		localTest.repaint(localTest.getBounds());
 		localTest.repaint(0, 0, 100, 100);

@@ -1,5 +1,6 @@
 package report.generators;
 
+import java.util.Objects;
 import java.util.function.Consumer;
 
 import org.jetbrains.annotations.Nullable;
@@ -163,7 +164,7 @@ public class UnitReportGenerator extends AbstractReportGenerator<IUnit> {
                     case final Animal a -> {
                         final Animal existing = findAndRemoveFirst(animals,
                                 a::equalExceptPopulation);
-                        if (existing == null) {
+	                    if (Objects.isNull(existing)) {
                             animals.add(a);
                         } else {
                             animals.add(a.combined(existing));

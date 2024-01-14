@@ -4,6 +4,7 @@ import lovelace.util.LovelaceLogger;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.Serial;
+import java.util.Objects;
 import java.util.function.IntSupplier;
 import java.awt.event.ComponentListener;
 import java.awt.Image;
@@ -130,7 +131,7 @@ import java.awt.image.BufferedImage;
     }
 
     private Rectangle boundsCheck(final @Nullable Rectangle rect) {
-        if (rect == null) {
+	    if (Objects.isNull(rect)) {
             final VisibleDimensions dimensions = mapModel.getVisibleDimensions();
             return new Rectangle(0, 0, dimensions.getWidth() * getTileSize(),
                     dimensions.getHeight() * getTileSize());
@@ -230,7 +231,7 @@ import java.awt.image.BufferedImage;
     public void selectedPointChanged(final @Nullable Point old, final Point newPoint) {
         SwingUtilities.invokeLater(this::requestFocusInWindow);
         if (isSelectionVisible()) {
-            if (old != null && !old.equals(newPoint)) {
+            if (!Objects.isNull(old) && !old.equals(newPoint)) {
                 repaintPoint(old);
             }
             repaintPoint(newPoint);
@@ -250,7 +251,7 @@ import java.awt.image.BufferedImage;
 
     private void drawBackgroundImage(final Graphics context, final int tileSize) {
         final BufferedImage temp = backgroundImage;
-        if (temp == null) {
+	    if (Objects.isNull(temp)) {
             context.setColor(Color.white); // TODO: save and restore afterwards?
             context.fillRect(0, 0, getWidth(), getHeight());
         } else {

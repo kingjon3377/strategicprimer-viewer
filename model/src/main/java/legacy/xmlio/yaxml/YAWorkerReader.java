@@ -25,6 +25,7 @@ import javax.xml.stream.events.Characters;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 import java.io.IOException;
+import java.util.Objects;
 
 /**
  * A reader for workers.
@@ -147,7 +148,7 @@ import java.io.IOException;
 
     private static void writeStats(final ThrowingConsumer<String, IOException> ostream, final @Nullable WorkerStats stats, final int indent)
             throws IOException {
-        if (stats != null) {
+	    if (!Objects.isNull(stats)) {
             writeTag(ostream, "stats", indent);
             writeProperty(ostream, "hp", stats.getHitPoints());
             writeProperty(ostream, "max", stats.getMaxHitPoints());
@@ -180,7 +181,7 @@ import java.io.IOException;
                     retval.setNote(
                             players.getPlayer(getIntegerParameter(se, "player")),
                             readNote(se, element.getName(), stream));
-                } else if ("animal".equalsIgnoreCase(se.getName().getLocalPart()) && retval.getMount() == null) {
+                } else if ("animal".equalsIgnoreCase(se.getName().getLocalPart()) && Objects.isNull(retval.getMount())) {
                     final MobileFixture animal = mobileReader.read(se, element.getName(), stream);
                     if (animal instanceof final Animal a) {
                         retval.setMount(a);
@@ -210,12 +211,12 @@ import java.io.IOException;
         writeProperty(ostream, "id", obj.getId());
         writeImageXML(ostream, obj);
         writeNonemptyProperty(ostream, "portrait", obj.getPortrait());
-        if (obj.iterator().hasNext() || obj.getStats() != null ||
-                obj.getNotesPlayers().iterator().hasNext() || obj.getMount() != null ||
+        if (obj.iterator().hasNext() || !Objects.isNull(obj.getStats()) ||
+                obj.getNotesPlayers().iterator().hasNext() || !Objects.isNull(obj.getMount()) ||
                 !obj.getEquipment().isEmpty()) {
             finishParentTag(ostream);
             writeStats(ostream, obj.getStats(), indent + 1);
-            if (obj.getMount() != null) {
+	        if (!Objects.isNull(obj.getMount())) {
                 mobileReader.write(ostream, obj.getMount(), indent + 1);
             }
             for (final Implement item : obj.getEquipment()) {

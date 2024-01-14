@@ -5,6 +5,7 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 import java.io.IOException;
+import java.util.Objects;
 
 import common.xmlio.SPFormatException;
 import legacy.idreg.IDRegistrar;
@@ -37,7 +38,7 @@ class YAPlayerReader extends YAAbstractReader<Player, Player> {
         // that idiom.
         spinUntilEnd(element.getName(), stream, "orders", "results", "science");
         final Player retval;
-        if (country == null) {
+	    if (Objects.isNull(country)) {
             retval = new PlayerImpl(getIntegerParameter(element, "number"),
                     getParameter(element, "code_name"));
         } else {
@@ -61,7 +62,7 @@ class YAPlayerReader extends YAAbstractReader<Player, Player> {
             writeProperty(ostream, "code_name", obj.getName());
             writeNonemptyProperty(ostream, "portrait", obj.getPortrait());
             final String country = obj.getCountry();
-            if (country != null) {
+	        if (!Objects.isNull(country)) {
                 writeNonemptyProperty(ostream, "country", country);
             }
             closeLeafTag(ostream);

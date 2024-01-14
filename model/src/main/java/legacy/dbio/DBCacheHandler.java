@@ -12,6 +12,7 @@ import java.sql.SQLException;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import legacy.map.Point;
 import legacy.map.IMutableLegacyMap;
@@ -60,7 +61,7 @@ public final class DBCacheHandler extends AbstractDatabaseWriter<CacheFixture, P
             final String contents = (String) dbRow.get("contents");
             final String image = (String) dbRow.get("image");
             final CacheFixture cache = new CacheFixture(kind, contents, id);
-            if (image != null) {
+	        if (!Objects.isNull(image)) {
                 cache.setImage(image);
             }
             map.addFixture(new Point(row, column), cache);

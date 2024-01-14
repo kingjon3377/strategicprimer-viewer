@@ -4,6 +4,7 @@ import common.map.HasName;
 import legacy.map.HasOwner;
 
 import java.util.Collection;
+import java.util.Objects;
 import java.util.Random;
 import java.util.function.BiPredicate;
 import java.util.Collections;
@@ -99,7 +100,7 @@ public class WorkerModel extends SimpleMultiMapModel implements IWorkerModel {
 		final IMutableFortress fortress = map.getFixtures(location).stream()
 			.filter(IMutableFortress.class::isInstance).map(IMutableFortress.class::cast)
 			.filter(f -> f.owner().equals(unit.owner())).findAny().orElse(null);
-		if (fortress == null) {
+		if (Objects.isNull(fortress)) {
 			map.addFixture(location, unit.copy(IFixture.CopyBehavior.KEEP));
 		} else {
 			fortress.addMember(unit.copy(IFixture.CopyBehavior.KEEP));
@@ -127,7 +128,7 @@ public class WorkerModel extends SimpleMultiMapModel implements IWorkerModel {
 	 */
 	@Override
 	public Player getCurrentPlayer() {
-		if (currentPlayerImpl == null) {
+		if (Objects.isNull(currentPlayerImpl)) {
 			for (final ILegacyMap localMap : getAllMaps()) {
 				final Player temp = localMap.getCurrentPlayer();
 				if (!getUnits(temp).isEmpty()) {
@@ -268,11 +269,11 @@ public class WorkerModel extends SimpleMultiMapModel implements IWorkerModel {
 			if ("HQ".equals(fixture.getName())) {
 				addUnitAtLocation(unit, point);
 				return;
-			} else if (temp == null) {
+			} else if (Objects.isNull(temp)) {
 				temp = Pair.with(fixture, point);
 			}
 		}
-		if (temp != null) {
+		if (!Objects.isNull(temp)) {
 			final IMutableFortress fortress = temp.getValue0();
 			final Point loc = temp.getValue1();
 			LovelaceLogger.info("Added unit at fortress %s, not HQ", fortress.getName());
@@ -320,7 +321,7 @@ public class WorkerModel extends SimpleMultiMapModel implements IWorkerModel {
 				.flatMap(p -> flattenEntries(p.getValue0(), p.getValue1()))
 				.filter(testPair)
 				.findAny().orElse(null);
-			if (pair != null) {
+			if (!Objects.isNull(pair)) {
 				LovelaceLogger.debug("Map has matching unit");
 				final Point location = pair.getValue0();
 				final IUnit fixture = (IUnit) pair.getValue1();
@@ -450,7 +451,7 @@ public class WorkerModel extends SimpleMultiMapModel implements IWorkerModel {
 				.filter(isUnit).map(unitCast).filter(matchingOldKind)
 				.filter(matchingOldName).filter(matchingOldId)
 				.findAny().orElse(null);
-			if (matchingOld != null) {
+			if (!Objects.isNull(matchingOld)) {
 				final UnitMember matchingMember = matchingOld.stream().filter(Predicate.isEqual(member)) // TODO: equals() isn't ideal for finding a matching member ...
 					.findAny().orElse(null);
 				final IMutableUnit matchingNew = getUnitsImpl(map.streamAllFixtures()
@@ -459,7 +460,7 @@ public class WorkerModel extends SimpleMultiMapModel implements IWorkerModel {
 					.filter(isUnit).map(unitCast).filter(matchingNewKind)
 					.filter(matchingNewName).filter(matchingNewId)
 					.findAny().orElse(null);
-				if (matchingMember != null && matchingNew != null) {
+				if (!Objects.isNull(matchingMember) && !Objects.isNull(matchingNew)) {
 					matchingOld.removeMember(matchingMember);
 					matchingNew.addMember(matchingMember);
 					map.setModified(true);
@@ -480,7 +481,7 @@ public class WorkerModel extends SimpleMultiMapModel implements IWorkerModel {
 				.map(IMutableUnit.class::cast).toList()) {
 				final UnitMember matching = unit.stream().filter(Predicate.isEqual(member)) // FIXME: equals() will really not do here ...
 					.findAny().orElse(null);
-				if (matching != null) {
+				if (!Objects.isNull(matching)) {
 					any = true;
 					unit.removeMember(matching);
 					map.setModified(true);
@@ -518,7 +519,7 @@ public class WorkerModel extends SimpleMultiMapModel implements IWorkerModel {
 				.filter(matchingKind)
 				.filter(matchingId)
 				.findAny().orElse(null);
-			if (matching != null) {
+			if (!Objects.isNull(matching)) {
 				matching.addMember(member.copy(IFixture.CopyBehavior.KEEP));
 				map.setModified(true);
 				continue;
@@ -566,7 +567,7 @@ public class WorkerModel extends SimpleMultiMapModel implements IWorkerModel {
 						.filter(matchingId)
 						.filter(matchingName)
 						.findAny().orElse(null); // FIXME: We should have a firmer identification than just name and ID
-				if (matching != null) {
+				if (!Objects.isNull(matching)) {
 					any = true;
 					((HasMutableName) matching).setName(newName);
 					map.setModified(true);
@@ -621,7 +622,7 @@ public class WorkerModel extends SimpleMultiMapModel implements IWorkerModel {
 					.map(hmkCast)
 					.filter(matchingKind)
 					.findAny().orElse(null); // FIXME: We should have a firmer identification than just kind and ID
-				if (matching != null) {
+				if (!Objects.isNull(matching)) {
 					any = true;
 					matching.setKind(newKind);
 					map.setModified(true);
@@ -681,7 +682,7 @@ public class WorkerModel extends SimpleMultiMapModel implements IWorkerModel {
 				.map(hmoCast)
 				.filter(Predicate.isEqual(item)) // TODO: equals() is not the best way to find it ...
 				.findAny().orElse(null);
-			if (matching != null) {
+			if (!Objects.isNull(matching)) {
 				if (StreamSupport.stream(map.getPlayers().spliterator(), true)
 					.noneMatch(Predicate.isEqual(newOwner))) {
 					map.addPlayer(newOwner);
@@ -710,7 +711,7 @@ public class WorkerModel extends SimpleMultiMapModel implements IWorkerModel {
 				.filter(matchingKind)
 				.filter(matchingId)
 				.findAny().orElse(null);
-			if (matching != null) {
+			if (!Objects.isNull(matching)) {
 				matching.sortMembers();
 				map.setModified(true);
 				any = true;
@@ -742,7 +743,7 @@ public class WorkerModel extends SimpleMultiMapModel implements IWorkerModel {
 				.filter(matchingName)
 				.filter(matchingId)
 				.findAny().orElse(null);
-			if (matching != null) {
+			if (!Objects.isNull(matching)) {
 				if (StreamSupport.stream(matching.spliterator(), true)
 					.noneMatch(matchingJob)) {
 					map.setModified(true);
@@ -779,11 +780,11 @@ public class WorkerModel extends SimpleMultiMapModel implements IWorkerModel {
 					.flatMap(IUnit::stream).filter(isWorker).map(workerCast)
 					.filter(matchingRace).filter(matchingName)
 					.filter(matchingId).findAny().orElse(null);
-			if (matching != null) {
+			if (!Objects.isNull(matching)) {
 				final IMutableJob job = StreamSupport.stream(matching.spliterator(), false)
 					.filter(isMutableJob).map(mjCast)
 					.filter(matchingJob).findAny().orElse(null);
-				if (job == null) {
+				if (Objects.isNull(job)) {
 					map.setModified(true);
 					final Job newJob = new Job(jobName, 0);
 					newJob.addSkill(new Skill(skillName, 0, 0));
@@ -852,14 +853,14 @@ public class WorkerModel extends SimpleMultiMapModel implements IWorkerModel {
 				.filter(matchingName)
 				.filter(matchingId)
 				.findAny().orElse(null);
-			if (matching != null) {
+			if (!Objects.isNull(matching)) {
 				map.setModified(true);
 				any = true;
 				final IMutableJob job;
 				final IMutableJob temp = StreamSupport.stream(matching.spliterator(), true)
 					.filter(isMutableJob).map(mjCast)
 					.filter(matchingJob).findAny().orElse(null);
-				if (temp == null) {
+				if (Objects.isNull(temp)) {
 					job = new Job(jobName, 0);
 					matching.addJob(job); // FIXME: The IWorker API doc explicitly says the Job object can't be assumed to have been preserved
 				} else {
@@ -871,7 +872,7 @@ public class WorkerModel extends SimpleMultiMapModel implements IWorkerModel {
 					.map(msCast)
 					.filter(matchingSkill)
 					.findAny().orElse(null);
-				if (tempSkill == null) {
+				if (Objects.isNull(tempSkill)) {
 					skill = new Skill(skillName, 0, 0);
 					job.addSkill(skill); // FIXME: Similarly, assumes behavior the API doc explicitly warns against
 				} else {
@@ -942,18 +943,18 @@ public class WorkerModel extends SimpleMultiMapModel implements IWorkerModel {
 				.filter(matchingName)
 				.filter(matchingId)
 				.findAny().orElse(null);
-			if (matchingWorker != null) {
+			if (!Objects.isNull(matchingWorker)) {
 				final IMutableJob matchingJob = StreamSupport.stream(
 						matchingWorker.spliterator(), true)
 					.filter(isMutableJob).map(mjCast)
 					.filter(matchingJobName).findAny().orElse(null);
-				if (matchingJob == null) {
+				if (Objects.isNull(matchingJob)) {
 					LovelaceLogger.warning("No matching skill in matching worker");
 				} else {
 					final ISkill matchingSkill = StreamSupport.stream(
 							matchingJob.spliterator(), true)
 						.filter(Predicate.isEqual(delenda)).findAny().orElse(null);
-					if (matchingSkill == null) {
+					if (Objects.isNull(matchingSkill)) {
 						LovelaceLogger.warning("No matching skill in matching worker");
 					} else {
 						map.setModified(true);
@@ -991,7 +992,7 @@ public class WorkerModel extends SimpleMultiMapModel implements IWorkerModel {
 				.filter(matchingName)
 				.filter(matchingId)
 				.findAny().orElse(null);
-			if (matching != null) {
+			if (!Objects.isNull(matching)) {
 				matching.setOrders(turn, results);
 				map.setModified(true);
 				any = true;
@@ -1024,7 +1025,7 @@ public class WorkerModel extends SimpleMultiMapModel implements IWorkerModel {
 				.filter(matchingName)
 				.filter(matchingId)
 				.findAny().orElse(null);
-			if (matching != null) {
+			if (!Objects.isNull(matching)) {
 				matching.setResults(turn, results);
 				map.setModified(true);
 				any = true;

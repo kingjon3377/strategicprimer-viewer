@@ -23,6 +23,7 @@ import legacy.map.fixtures.towns.IFortress;
 
 import java.util.Map;
 import java.util.HashMap;
+import java.util.Objects;
 
 /**
  * An encapsulation of helper methods for report generators.
@@ -41,7 +42,7 @@ import java.util.HashMap;
                 if (fixture instanceof final IFortress f && player.equals(f.owner())) {
                     if ("hq".equals(f.getName())) {
                         return location;
-                    } else if (location.isValid() && retval == null) {
+                    } else if (location.isValid() && Objects.isNull(retval)) {
                         retval = location;
                     }
                 }
@@ -65,7 +66,7 @@ import java.util.HashMap;
                     addToMap(location, inner, idf, mapping);
                 }
             } else if (fixture instanceof final IWorker w) {
-                if (w.getMount() != null) {
+	            if (!Objects.isNull(w.getMount())) {
                     addToMap(location, w.getMount(), idf, mapping);
                 }
                 for (final Implement inner : w.getEquipment()) {

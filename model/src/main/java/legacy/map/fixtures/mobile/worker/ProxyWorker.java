@@ -185,12 +185,12 @@ public class ProxyWorker implements WorkerProxy {
         if (workers.isEmpty()) {
             statsCache = tempStats;
             equipmentImpl.addAll(item.getEquipment());
-        } else if (tempStats != null) {
-            if (priorStats != null && !Objects.equals(tempStats, priorStats)) {
+        } else if (!Objects.isNull(tempStats)) {
+	        if (!Objects.isNull(priorStats) && !Objects.equals(tempStats, priorStats)) {
                 statsCache = null;
             }
             equipmentImpl.retainAll(item.getEquipment());
-        } else if (priorStats != null) {
+        } else if (!Objects.isNull(priorStats)) {
             statsCache = null;
             equipmentImpl.retainAll(item.getEquipment());
         }
@@ -220,13 +220,13 @@ public class ProxyWorker implements WorkerProxy {
     public String getDefaultImage() {
         String retval = null;
         for (final IWorker worker : workers) {
-            if (retval == null) {
+	        if (Objects.isNull(retval)) {
                 retval = worker.getDefaultImage();
             } else if (!retval.equals(worker.getDefaultImage())) {
                 return "worker.png";
             }
         }
-        return (retval == null) ? "worker.png" : retval;
+	    return Objects.requireNonNullElse(retval, "worker.png");
     }
 
     @Override
@@ -237,19 +237,19 @@ public class ProxyWorker implements WorkerProxy {
     @Override
     public String getRace() {
         final String retval = getConsensus(IWorker::getRace);
-        return (retval == null) ? "proxied" : retval;
+	    return Objects.requireNonNullElse(retval, "proxied");
     }
 
     @Override
     public String getName() {
         final String retval = getConsensus(IWorker::getName);
-        return (retval == null) ? "proxied" : retval;
+	    return Objects.requireNonNullElse(retval, "proxied");
     }
 
     @Override
     public String getPortrait() {
         final String retval = getConsensus(IWorker::getPortrait);
-        return (retval == null) ? "" : retval;
+	    return Objects.requireNonNullElse(retval, "");
     }
 
     @Override
@@ -274,13 +274,13 @@ public class ProxyWorker implements WorkerProxy {
     @Override
     public String getNote(final Player player) {
         final String retval = getConsensus(worker -> worker.getNote(player));
-        return (retval == null) ? "" : retval;
+	    return Objects.requireNonNullElse(retval, "");
     }
 
     @Override
     public String getNote(final int player) {
         final String retval = getConsensus(worker -> worker.getNote(player));
-        return (retval == null) ? "" : retval;
+	    return Objects.requireNonNullElse(retval, "");
     }
 
     @Override

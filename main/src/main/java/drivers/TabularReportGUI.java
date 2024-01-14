@@ -1,6 +1,7 @@
 package drivers;
 
 import java.awt.Dimension;
+import java.util.Objects;
 import java.util.OptionalInt;
 
 import lovelace.util.LovelaceLogger;
@@ -88,7 +89,7 @@ public class TabularReportGUI implements GUIDriver {
             public void mapChanged() {
                 frame.removeAll();
                 try {
-                    if (hq == null) {
+	                if (Objects.isNull(hq)) {
                         TabularReportGenerator.createGUITabularReports(frame::addTab, model.getMap());
                     } else {
                         TabularReportGenerator.createGUITabularReports(frame::addTab, model.getMap(), hq);

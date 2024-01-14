@@ -6,6 +6,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.Files;
+import java.util.Objects;
 
 import drivers.common.DriverFailedException;
 import drivers.common.UtilityDriver;
@@ -54,7 +55,7 @@ public final class MiningCLI implements UtilityDriver {
         }
 
         LodeStatus initial = LodeStatus.parse(second);
-        if (initial == null) {
+	    if (Objects.isNull(initial)) {
             try {
                 final int index = Integer.parseInt(second);
                 if (index >= 0 && index < LodeStatus.values().length) {
@@ -90,7 +91,7 @@ public final class MiningCLI implements UtilityDriver {
             for (int row = 0; row <= lowerRightRow; row++) {
                 for (int col = 0; col <= lowerRightColumn; col++) {
                     final LodeStatus status = model.statusAt(row, col);
-                    if (status == null) {
+	                if (Objects.isNull(status)) {
                         writer.write("-1,");
                     } else {
                         writer.write(Integer.toString(status.getRatio()));

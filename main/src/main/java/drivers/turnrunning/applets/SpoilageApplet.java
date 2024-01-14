@@ -7,6 +7,8 @@ import drivers.turnrunning.ITurnRunningModel;
 import java.math.BigDecimal;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
+
 import lovelace.util.LovelaceLogger;
 import org.jetbrains.annotations.Nullable;
 
@@ -65,17 +67,17 @@ public class SpoilageApplet extends AbstractTurnApplet {
 			cli.print("Food is ");
 			cli.println(food.toString());
 			final FoodType type = FoodType.askFoodType(cli, food.getContents());
-			if (type == null) {
+			if (Objects.isNull(type)) {
 				LovelaceLogger.warning("Didn't get a food type");
 				return null;
 			}
 			final Boolean spoiled = type.hasSpoiled(food, turn, cli);
-			if (spoiled == null) {
+			if (Objects.isNull(spoiled)) {
 				LovelaceLogger.warning("EOF on has-this-spoiled");
 				return null;
 			} else if (spoiled) {
 				final BigDecimal spoilage = type.amountSpoiling(food.getQuantity(), cli);
-				if (spoilage == null) {
+				if (Objects.isNull(spoilage)) {
 					LovelaceLogger.warning("Non-numeric spoilage amount");
 					return null;
 				}

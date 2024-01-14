@@ -12,6 +12,7 @@ import java.sql.SQLException;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import legacy.map.Point;
 import legacy.map.IMutableLegacyMap;
@@ -63,7 +64,7 @@ public final class DBMineHandler extends AbstractDatabaseWriter<Mine, Point> imp
             final TownStatus status = TownStatus.parse((String) dbRow.get("status"));
             final String image = (String) dbRow.get("image");
             final Mine mine = new Mine(kind, status, id);
-            if (image != null) {
+	        if (!Objects.isNull(image)) {
                 mine.setImage(image);
             }
             map.addFixture(new Point(row, column), mine);

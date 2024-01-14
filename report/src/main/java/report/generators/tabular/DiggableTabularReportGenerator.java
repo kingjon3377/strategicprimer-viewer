@@ -21,6 +21,7 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Map;
 import java.util.Collections;
+import java.util.Objects;
 
 /**
  * A tabular report generator for resources that can be mined---mines, mineral
@@ -35,7 +36,7 @@ public class DiggableTabularReportGenerator implements ITableGenerator<MineralFi
     public DiggableTabularReportGenerator(final @Nullable Point hq, final MapDimensions dimensions) {
         this.hq = hq;
         this.dimensions = dimensions;
-        if (hq == null) {
+	    if (Objects.isNull(hq)) {
             distanceComparator = (one, two) -> 0;
         } else {
             distanceComparator = new DistanceComparator(hq, dimensions);

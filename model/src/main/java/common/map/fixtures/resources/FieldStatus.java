@@ -1,6 +1,7 @@
 package common.map.fixtures.resources;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Random;
 import java.util.function.Supplier;
 
@@ -44,7 +45,7 @@ public enum FieldStatus {
         private @Nullable List<FieldStatus> cache;
 
         public List<FieldStatus> get() {
-            if (cache == null) {
+            if (Objects.isNull(cache)) {
                 cache = List.of(values());
             }
             return cache;

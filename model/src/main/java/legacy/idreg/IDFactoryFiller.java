@@ -8,6 +8,7 @@ import legacy.map.fixtures.towns.ITownFixture;
 import legacy.map.fixtures.FixtureIterable;
 
 import java.util.Collections;
+import java.util.Objects;
 
 public final class IDFactoryFiller {
     private IDFactoryFiller() {
@@ -51,12 +52,12 @@ public final class IDFactoryFiller {
             if (fixture instanceof FixtureIterable) {
                 recursiveRegister(factory, (FixtureIterable<?>) fixture);
             }
-            if (fixture instanceof final ITownFixture town && town.getPopulation() != null) {
+            if (fixture instanceof final ITownFixture town && !Objects.isNull(town.getPopulation())) {
                 recursiveRegister(factory, town.getPopulation().getYearlyProduction());
                 recursiveRegister(factory, town.getPopulation().getYearlyConsumption());
             }
             if (fixture instanceof final IWorker w) {
-                if (w.getMount() != null) {
+	            if (!Objects.isNull(w.getMount())) {
                     recursiveRegister(factory, Collections.singleton(w.getMount()));
                 }
                 recursiveRegister(factory, ((IWorker) fixture).getEquipment());

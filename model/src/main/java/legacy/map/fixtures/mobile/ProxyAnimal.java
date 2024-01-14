@@ -2,6 +2,7 @@ package legacy.map.fixtures.mobile;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.Optional;
 import java.util.Iterator;
@@ -54,7 +55,7 @@ import legacy.map.IFixture;
     @Override
     public int getBorn() {
         final Integer retval = getConsensus(Animal::getBorn);
-        return (retval == null) ? -1 : retval;
+	    return Objects.requireNonNullElse(retval, -1);
     }
 
     @Override
@@ -65,7 +66,7 @@ import legacy.map.IFixture;
     @Override
     public int getId() {
         final Integer retval = getConsensus(Animal::getId);
-        return (retval == null) ? -1 : retval;
+	    return Objects.requireNonNullElse(retval, -1);
     }
 
     @Override
@@ -81,7 +82,7 @@ import legacy.map.IFixture;
     @Override
     public int getPopulation() {
         final Integer retval = getConsensus(Animal::getPopulation);
-        return (retval == null) ? -1 : retval;
+	    return Objects.requireNonNullElse(retval, -1);
     }
 
     @Override
@@ -124,7 +125,7 @@ import legacy.map.IFixture;
     @Override
     public int getDC() {
         final Integer retval = getConsensus(Animal::getDC);
-        return (retval == null) ? 22 : retval;
+	    return Objects.requireNonNullElse(retval, 22);
     }
 
     @Override

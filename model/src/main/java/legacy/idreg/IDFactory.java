@@ -10,6 +10,8 @@ import javax.xml.stream.Location;
 
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Objects;
+
 /**
  * A class to register IDs with and produce not-yet-used IDs. We use a bit-set
  * implementation that's as fast as we can find, but we don't want to go to
@@ -37,7 +39,7 @@ public final class IDFactory implements IDRegistrar {
     public int register(final int id, final Warning warning, final @Nullable Location location) {
         if (id >= 0) {
             if (usedIDs.contains(id)) {
-                if (location == null) {
+	            if (Objects.isNull(location)) {
                     warning.handle(new DuplicateIDException(new LegacyIdentifier(id)));
                 } else {
                     warning.handle(new DuplicateIDException(new LegacyIdentifier(id),

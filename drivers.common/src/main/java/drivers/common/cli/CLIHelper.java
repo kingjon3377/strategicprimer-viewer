@@ -3,6 +3,7 @@ package drivers.common.cli;
 import java.io.BufferedReader;
 import java.io.Console;
 import java.io.InputStreamReader;
+import java.util.Objects;
 import java.util.function.Consumer;
 
 import lovelace.util.LovelaceLogger;
@@ -47,7 +48,7 @@ public final class CLIHelper implements ICLIHelper {
 
     private static IOSource stdin() {
         final Console console = System.console();
-        if (console == null) {
+	    if (Objects.isNull(console)) {
             return new BufferedReader(new InputStreamReader(SystemIn.STDIN))::readLine; // TODO: Does this consume the newline character?
         } else {
             return console::readLine;
@@ -131,7 +132,7 @@ public final class CLIHelper implements ICLIHelper {
         while (true) {
             final String input = Optional.ofNullable(inputString(prompt))
                     .map(String::toLowerCase).orElse(null);
-            if (input == null || quitResultFactory.test(input) == null) {
+            if (Objects.isNull(input) || Objects.isNull(quitResultFactory.test(input))) {
                 return null;
             } else if ("yes".equals(input) || "true".equals(input) ||
                     "y".equals(input) || "t".equals(input)) {
@@ -178,7 +179,7 @@ public final class CLIHelper implements ICLIHelper {
         } else {
             printList(items, func);
             final Integer retval = inputNumber(prompt);
-            if (retval == null) {
+	        if (Objects.isNull(retval)) {
                 return Pair.with(-2, null);
             } else if (retval < 0 || retval >= items.size()) {
                 return Pair.with(retval, null);
@@ -220,7 +221,7 @@ public final class CLIHelper implements ICLIHelper {
         while (retval < 0) {
             writePrompt(prompt);
             final String input = readLine();
-            if (input == null) {
+	        if (Objects.isNull(input)) {
                 return null;
             }
             if (isNumeric(input)) {
@@ -244,7 +245,7 @@ public final class CLIHelper implements ICLIHelper {
         while (retval.compareTo(zero) < 0) {
             writePrompt(prompt);
             final String input = readLine();
-            if (input == null) {
+	        if (Objects.isNull(input)) {
                 return null;
             }
             try {
@@ -282,7 +283,7 @@ public final class CLIHelper implements ICLIHelper {
         while (true) {
             final String input = Optional.ofNullable(inputString(prompt))
                     .map(String::toLowerCase).orElse(null);
-            if (input == null || quitResultFactory.test(input) == null) {
+            if (Objects.isNull(input) || Objects.isNull(quitResultFactory.test(input))) {
                 return null;
             }
             switch (input) {
@@ -341,7 +342,7 @@ public final class CLIHelper implements ICLIHelper {
                 print("> ");
             }
             final String line = readLine();
-            if (line == null) {
+	        if (Objects.isNull(line)) {
                 return null;
             } else if (".".equals(line.strip())) {
                 final String retval = builder.toString();

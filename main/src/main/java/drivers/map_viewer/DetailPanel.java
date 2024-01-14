@@ -4,6 +4,7 @@ import static drivers.map_viewer.TileViewSize.scaleZoom;
 import static drivers.map_viewer.ImageLoader.ColorHelper;
 
 import java.io.Serial;
+import java.util.Objects;
 import java.util.Optional;
 
 import lovelace.util.LovelaceLogger;
@@ -176,7 +177,7 @@ import worker.common.IFixtureEditHelper;
         @Override
         public void paintComponent(final Graphics pen) {
             super.paintComponent(pen);
-            if (portrait != null) {
+	        if (!Objects.isNull(portrait)) {
                 pen.drawImage(portrait, 0, 0, getWidth(), getHeight(), this);
             }
         }

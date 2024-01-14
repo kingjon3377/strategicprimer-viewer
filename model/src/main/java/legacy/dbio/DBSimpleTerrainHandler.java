@@ -12,6 +12,7 @@ import java.sql.SQLException;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import legacy.map.IMutableLegacyMap;
 import legacy.map.HasImage;
@@ -86,7 +87,7 @@ public final class DBSimpleTerrainHandler extends AbstractDatabaseWriter<Terrain
                 case "oasis" -> fixture = new Oasis(id);
                 default -> throw new IllegalArgumentException("Unhandled simple terrain-fixture type");
             }
-            if (image != null) {
+	        if (!Objects.isNull(image)) {
                 ((HasMutableImage) fixture).setImage(image);
             }
             map.addFixture(new Point(row, column), fixture);

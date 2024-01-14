@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import legacy.map.IMutableLegacyMap;
 import legacy.map.Player;
@@ -83,11 +84,11 @@ public final class DBTownHandler extends AbstractDatabaseWriter<AbstractTown, Po
         params.add(value("image", obj.getImage()));
         params.add(value("portrait", obj.getPortrait()));
         final CommunityStats stats = obj.getPopulation();
-        if (stats != null) {
+	    if (!Objects.isNull(stats)) {
             params.add(value("population", stats.getPopulation()));
         }
         INSERT_SQL.on(params).execute(db.connection());
-        if (stats != null) {
+	    if (!Objects.isNull(stats)) {
             CS_WRITER.initialize(db);
             CS_WRITER.write(db, stats, obj);
         }
@@ -116,13 +117,13 @@ public final class DBTownHandler extends AbstractDatabaseWriter<AbstractTown, Po
                 case "town" -> new Town(status, size, dc, name, id, owner);
                 default -> throw new IllegalArgumentException("Unhandled kind of town");
             };
-            if (image != null) {
+	        if (!Objects.isNull(image)) {
                 town.setImage(image);
             }
-            if (portrait != null) {
+	        if (!Objects.isNull(portrait)) {
                 town.setPortrait(portrait);
             }
-            if (population != null) {
+	        if (!Objects.isNull(population)) {
                 // Don't add it directly because it's also read in the
                 // CommunityStats handler, which needs to get it out of the
                 // containees to avoid conflicts.

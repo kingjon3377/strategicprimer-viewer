@@ -11,6 +11,7 @@ import java.io.Serial;
 import java.nio.file.Path;
 import java.nio.file.NoSuchFileException;
 
+import java.util.Objects;
 import java.util.function.Consumer;
 
 import legacy.xmlio.MapIOHelper;
@@ -253,13 +254,13 @@ import java.io.FileNotFoundException;
             final String kind = resourceKindBox.getSelectedString();
             final String resource = resourceBox.getSelectedString();
             final String units = resourceUnitsBox.getSelectedString();
-            if (kind == null || kind.isEmpty()) {
+            if (Objects.isNull(kind) || kind.isEmpty()) {
                 resourceKindBox.requestFocusInWindow();
                 return;
-            } else if (resource == null || resource.isEmpty()) {
+            } else if (Objects.isNull(resource) || resource.isEmpty()) {
                 resourceBox.requestFocusInWindow();
                 return;
-            } else if (units == null || units.isEmpty()) {
+            } else if (Objects.isNull(units) || units.isEmpty()) {
                 resourceUnitsBox.requestFocusInWindow();
                 return;
             }
@@ -285,7 +286,7 @@ import java.io.FileNotFoundException;
         private void implementListener(final ActionEvent ignored) { // Param required for use in fields
             confirmPlayer();
             final String kind = implementKindBox.getSelectedString();
-            if (kind == null || kind.isEmpty()) {
+            if (Objects.isNull(kind) || kind.isEmpty()) {
                 implementKindBox.requestFocusInWindow();
                 return;
             }

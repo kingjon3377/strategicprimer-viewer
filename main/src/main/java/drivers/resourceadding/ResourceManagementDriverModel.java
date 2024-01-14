@@ -1,5 +1,6 @@
 package drivers.resourceadding;
 
+import java.util.Objects;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.StreamSupport;
@@ -68,7 +69,7 @@ import java.math.BigDecimal;
                         .filter(f -> mapPlayer.getPlayerId() ==
                                 f.owner().getPlayerId())
                         .findAny().orElse(null);
-                if (fortress == null) {
+	            if (Objects.isNull(fortress)) {
                     LovelaceLogger.warning("Didn't find HQ for %s", mapPlayer);
                 } else {
                     fortress.addMember(resource);
@@ -84,7 +85,7 @@ import java.math.BigDecimal;
                                          final BigDecimal quantity, final String units, final @Nullable Integer created) {
         final IMutableResourcePile pile = new ResourcePileImpl(id, kind, resource,
                 new LegacyQuantity(quantity, units));
-        if (created != null) {
+	    if (!Objects.isNull(created)) {
             pile.setCreated(created);
         }
         addResource(pile, player);

@@ -19,6 +19,7 @@ import legacy.map.TileFixture;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import legacy.map.fixtures.towns.AbstractTown;
 import legacy.map.fixtures.towns.IFortress;
@@ -147,7 +148,7 @@ public class MapTradeCLI implements CLIDriver {
     private void askAbout(final FixtureMatcher matcher, final String key) {
         final Boolean retval = cli.inputBooleanInSeries(String.format("Include %s items?",
                 matcher.getDescription()), key);
-        if (retval == null) {
+	    if (Objects.isNull(retval)) {
             throw new IllegalStateException("EOF in fixture-matcher query");
         }
         matcher.setDisplayed(retval);
@@ -174,17 +175,17 @@ public class MapTradeCLI implements CLIDriver {
         }
         final ILegacyMap second = model.getSubordinateMaps().iterator().next();
         final Boolean copyPlayers = cli.inputBoolean("Copy players?");
-        if (copyPlayers == null) {
+	    if (Objects.isNull(copyPlayers)) {
             return;
         } else if (copyPlayers) {
             model.copyPlayers();
         }
         final Boolean copyRivers = cli.inputBoolean("Include rivers?");
-        if (copyRivers == null) {
+	    if (Objects.isNull(copyRivers)) {
             return;
         }
         final Boolean copyRoads = cli.inputBoolean("Include roads?");
-        if (copyRoads == null) {
+	    if (Objects.isNull(copyRoads)) {
             return;
         }
         matchers.forEach(this::askAbout);

@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 import java.math.BigDecimal;
+import java.util.Objects;
 
 import legacy.map.Point;
 import legacy.map.IMutableLegacyMap;
@@ -85,7 +86,7 @@ public final class DBFieldHandler extends AbstractDatabaseWriter<Meadow, Point> 
 				default -> throw new IllegalArgumentException("Unhandled field type");
 			};
 			final Meadow meadow = new Meadow(kind, field, cultivated, id, status, acres);
-			if (image != null) {
+			if (!Objects.isNull(image)) {
 				meadow.setImage(image);
 			}
 			map.addFixture(new Point(row, column), meadow);

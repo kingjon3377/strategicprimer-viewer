@@ -3,6 +3,7 @@ package utility;
 import java.nio.file.NoSuchFileException;
 import java.nio.file.Paths;
 import java.io.IOException;
+import java.util.Objects;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import javax.xml.stream.XMLStreamException;
@@ -71,7 +72,7 @@ public class EchoDriver implements UtilityDriver {
                 final Forest mainForest = map.getFixtures(location).stream()
                         .filter(isForest).map(forestCast)
                         .findFirst().orElse(null);
-                if (mainForest != null && mainForest.getId() < 0) {
+                if (!Objects.isNull(mainForest) && mainForest.getId() < 0) {
                     mainForest.setId(idFactory.register(
                             1147200 + location.row() * columnCount +
                                     location.column()));
@@ -79,7 +80,7 @@ public class EchoDriver implements UtilityDriver {
                 final Ground mainGround = map.getFixtures(location).stream()
                         .filter(isGround).map(groundCast)
                         .findFirst().orElse(null);
-                if (mainGround != null && mainGround.getId() < 0) {
+                if (!Objects.isNull(mainGround) && mainGround.getId() < 0) {
                     mainGround.setId(idFactory.register(
                             1171484 + location.row() * columnCount +
                                     location.column()));

@@ -17,6 +17,7 @@ import legacy.map.Point;
 import javax.swing.table.TableModel;
 import javax.swing.table.DefaultTableModel;
 
+import java.util.Objects;
 import java.util.regex.Pattern;
 
 import org.javatuples.Pair;
@@ -142,7 +143,7 @@ public interface ITableGenerator<T extends IFixture> {
      */
     default String distanceString(final @Nullable Point first, final @Nullable Point second,
                                   final MapDimensions dimensions) {
-        if (first != null && second != null && first.isValid() && second.isValid()) {
+        if (!Objects.isNull(first) && !Objects.isNull(second) && first.isValid() && second.isValid()) {
             return String.format("%1.1f", Math.sqrt(distance(first, second, dimensions)));
         } else {
             return "unknown";

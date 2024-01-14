@@ -15,6 +15,7 @@ import drivers.common.cli.ICLIHelper;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -147,12 +148,12 @@ import org.jetbrains.annotations.Nullable;
 
     public boolean stopAtPoint(final ICLIHelper cli, final ILegacyMap map, final Point point) {
         final List<Condition<? extends TileFixture>> localEnabledConditions;
-        if (enabledConditions == null) {
+        if (Objects.isNull(enabledConditions)) {
             final List<Condition<? extends TileFixture>> temp = new ArrayList<>();
             for (final Condition<? extends TileFixture> condition : conditions) {
                 final Boolean resp = cli.inputBooleanInSeries("Stop for instructions " +
                         condition.getConfigExplanation() + "?");
-                if (resp == null) {
+                if (Objects.isNull(resp)) {
                     // EOF, so we want to abort the caller's loop
                     return true;
                 } else if (resp) {
@@ -166,7 +167,7 @@ import org.jetbrains.annotations.Nullable;
         }
         final Condition<? extends TileFixture> matchingCondition = localEnabledConditions.stream()
                 .filter(c -> c.matches(map, point)).findFirst().orElse(null);
-        if (matchingCondition == null) {
+        if (Objects.isNull(matchingCondition)) {
             return false;
         } else {
             cli.println(String.format("There is %s here, so the explorer stops.",

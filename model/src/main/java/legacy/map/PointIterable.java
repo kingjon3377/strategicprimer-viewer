@@ -2,6 +2,7 @@ package legacy.map;
 
 import java.util.Iterator;
 import java.util.NoSuchElementException;
+import java.util.Objects;
 
 import org.jetbrains.annotations.Nullable;
 
@@ -78,7 +79,7 @@ public class PointIterable implements Iterable<Point> {
         }
 
         public PointIteratorImpl() {
-            if (selection != null) {
+	        if (!Objects.isNull(selection)) {
                 startRow = wrap(selection.row(), maxRow);
                 startColumn = wrap(selection.column(), maxColumn);
             } else if (forwards) {

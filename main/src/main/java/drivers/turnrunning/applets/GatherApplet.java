@@ -16,6 +16,7 @@ import exploration.common.HuntingModel;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Supplier;
 
@@ -63,11 +64,11 @@ import org.jetbrains.annotations.Nullable;
     public @Nullable String run() {
         final StringBuilder buffer = new StringBuilder();
         final Point center = confirmPoint("Location to search around: ");
-        if (center == null) {
+	    if (Objects.isNull(center)) {
             return ""; // TODO: null, surely?
         }
         final Integer startingTime = cli.inputNumber("Minutes to spend gathering: ");
-        if (startingTime == null) {
+	    if (Objects.isNull(startingTime)) {
             return ""; // TODO: null, surely?
         }
         int time = startingTime;
@@ -90,14 +91,14 @@ import org.jetbrains.annotations.Nullable;
                 }
                 final Boolean resp = cli.inputBooleanInSeries(String.format("Gather from %s%s",
                         find.getShortDescription(), meadowStatus(find)), ((HasKind) find).getKind());
-                if (resp == null) {
+	            if (Objects.isNull(resp)) {
                     return null;
                 } else if (resp) {
                     final IUnit unit = model.getSelectedUnit();
-                    if (unit != null) {
+		            if (!Objects.isNull(unit)) {
                         cli.println("Enter details of harvest (any empty string aborts):");
                         IMutableResourcePile resource;
-                        while ((resource = resourceAddingHelper.enterResource()) != null) {
+			            while (!Objects.isNull((resource = resourceAddingHelper.enterResource()))) {
                             if ("food".equals(resource.getKind())) {
                                 resource.setCreated(model.getMap().getCurrentTurn());
                             }
@@ -112,7 +113,7 @@ import org.jetbrains.annotations.Nullable;
                     // TODO: Once model supports remaining-quantity-in-fields data, offer to reduce it here
                     if (find instanceof final Shrub s && s.getPopulation() > 0) {
                         final Boolean reduce = cli.inputBooleanInSeries("Reduce shrub population here?");
-                        if (reduce == null) {
+			            if (Objects.isNull(reduce)) {
                             return null;
                         } else if (reduce) {
                             reducePopulation(loc, (Shrub) find, "plants", IFixture.CopyBehavior.ZERO);
@@ -129,7 +130,7 @@ import org.jetbrains.annotations.Nullable;
                 model.copyToSubMaps(loc, find, IFixture.CopyBehavior.ZERO);
             }
             final String addendum = cli.inputMultilineString("Add to results about that:");
-            if (addendum == null) {
+	        if (Objects.isNull(addendum)) {
                 return null;
             } else {
                 buffer.append(addendum);

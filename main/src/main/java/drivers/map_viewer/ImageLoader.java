@@ -100,7 +100,7 @@ public final class ImageLoader {
             try (final ResourceInputStream res = new ResourceInputStream("images/" + file,
                     ImageLoader.class)) { // TODO: Change back to IOHandler once ported?
                 final Image image = ImageIO.read(res);
-                if (image == null) {
+	            if (Objects.isNull(image)) {
                     throw new IOException("No reader could read the file images/" + file);
                 } else {
                     IMAGE_CACHE.put(file, image);
@@ -193,7 +193,7 @@ public final class ImageLoader {
          * support that tile type. TODO: throw instead, as we used to do in Java?
          */
         public static @Nullable Color get(final int version, final @Nullable TileType type) {
-            if (type == null) {
+	        if (Objects.isNull(type)) {
                 return null;
             } else if (COLORS.containsKey(version)) {
                 final Map<TileType, Color> map = COLORS.get(version);
@@ -214,7 +214,7 @@ public final class ImageLoader {
          * type. TODO: throw on not-found instead of returning null?
          */
         public static @Nullable String getDescription(final @Nullable TileType type) {
-            if (type == null) {
+	        if (Objects.isNull(type)) {
                 return "Unknown";
             } else if (DESCRIPTIONS.containsKey(type)) {
                 return DESCRIPTIONS.get(type);

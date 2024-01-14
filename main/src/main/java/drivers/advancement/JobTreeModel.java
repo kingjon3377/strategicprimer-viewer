@@ -147,7 +147,7 @@ import java.util.stream.StreamSupport;
     public void add(final String category, final String addendum) {
         final IWorker currentRoot = localRoot;
         if ("job".equals(category)) {
-            if (currentRoot == null) {
+            if (Objects.isNull(currentRoot)) {
                 LovelaceLogger.warning("Can't add a new Job when no worker selected");
             } else if (StreamSupport.stream(currentRoot.spliterator(), false).map(IJob::getName).anyMatch(addendum::equals)) {
                 LovelaceLogger.info("Addition would be no-op");
@@ -157,7 +157,7 @@ import java.util.stream.StreamSupport;
                     final IJob job = StreamSupport.stream(currentRoot.spliterator(), false)
                             .filter(j -> addendum.equals(j.getName()))
                             .findAny().orElse(null);
-                    if (job == null) {
+                    if (Objects.isNull(job)) {
                         LovelaceLogger.warning("Worker not found");
                     } else {
                         fireTreeNodesInserted(new TreeModelEvent(this,
@@ -170,7 +170,7 @@ import java.util.stream.StreamSupport;
             }
         } else if ("skill".equals(category)) {
             final TreePath selectionPath = selectionModel.getSelectionPath();
-            if (currentRoot != null && selectionPath != null &&
+            if (!Objects.isNull(currentRoot) && !Objects.isNull(selectionPath) &&
                     selectionPath.getLastPathComponent() instanceof final IJob job) {
                 final int childCount = getChildCount(job);
                 if (driverModel.addHoursToSkill(currentRoot, job.getName(), addendum,
@@ -178,7 +178,7 @@ import java.util.stream.StreamSupport;
                     final ISkill skill = StreamSupport.stream(job.spliterator(), false)
                             .filter(s -> addendum.equals(s.getName()))
                             .findAny().orElse(null);
-                    if (skill == null) {
+                    if (Objects.isNull(skill)) {
                         LovelaceLogger.warning(
                                 "Worker not found, or skill-adding otherwise failed");
                     } else {

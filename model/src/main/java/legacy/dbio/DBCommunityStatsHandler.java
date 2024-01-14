@@ -12,6 +12,7 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 import java.math.BigDecimal;
+import java.util.Objects;
 
 import legacy.map.IMutableLegacyMap;
 import legacy.map.fixtures.LegacyQuantity;
@@ -126,9 +127,9 @@ public final class DBCommunityStatsHandler extends AbstractDatabaseWriter<Commun
             final int townId = (Integer) dbRow.get("town");
             final CommunityStats population = containees.get(townId).stream().filter(CommunityStats.class::isInstance)
                     .map(CommunityStats.class::cast).findAny().orElse(null);
+			Objects.requireNonNull(population);
             final String skill = (String) dbRow.get("skill");
             final int level = (Integer) dbRow.get("level");
-            assert population != null;
             population.setSkillLevel(skill, level);
         };
     }
@@ -139,8 +140,8 @@ public final class DBCommunityStatsHandler extends AbstractDatabaseWriter<Commun
             final int townId = (Integer) dbRow.get("town");
             final CommunityStats population = containees.get(townId).stream().filter(CommunityStats.class::isInstance)
                     .map(CommunityStats.class::cast).findAny().orElse(null);
+			Objects.requireNonNull(population);
             final int resource = (Integer) dbRow.get("resource");
-            assert population != null;
             population.addWorkedField(resource);
         };
     }
@@ -151,6 +152,7 @@ public final class DBCommunityStatsHandler extends AbstractDatabaseWriter<Commun
             final int townId = (Integer) dbRow.get("town");
             final CommunityStats population = containees.get(townId).stream().filter(CommunityStats.class::isInstance)
                     .map(CommunityStats.class::cast).findAny().orElse(null);
+			Objects.requireNonNull(population);
             final int id = (Integer) dbRow.get("id");
             final String kind = (String) dbRow.get("kind");
             final String contents = (String) dbRow.get("contents");
@@ -165,10 +167,9 @@ public final class DBCommunityStatsHandler extends AbstractDatabaseWriter<Commun
             }
             final IMutableResourcePile pile =
                     new ResourcePileImpl(id, kind, contents, new LegacyQuantity(quantity, units));
-            if (created != null) {
+	        if (!Objects.isNull(created)) {
                 pile.setCreated(created);
             }
-            assert population != null;
             population.getYearlyProduction().add(pile);
         };
     }
@@ -179,6 +180,7 @@ public final class DBCommunityStatsHandler extends AbstractDatabaseWriter<Commun
             final int townId = (Integer) dbRow.get("town");
             final CommunityStats population = containees.get(townId).stream().filter(CommunityStats.class::isInstance)
                     .map(CommunityStats.class::cast).findAny().orElse(null);
+			Objects.requireNonNull(population);
             final int id = (Integer) dbRow.get("id");
             final String kind = (String) dbRow.get("kind");
             final String contents = (String) dbRow.get("contents");
@@ -194,10 +196,9 @@ public final class DBCommunityStatsHandler extends AbstractDatabaseWriter<Commun
             }
             final IMutableResourcePile pile =
                     new ResourcePileImpl(id, kind, contents, new LegacyQuantity(quantity, units));
-            if (created != null) {
+	        if (!Objects.isNull(created)) {
                 pile.setCreated(created);
             }
-            assert population != null;
             population.getYearlyConsumption().add(pile);
         };
     }

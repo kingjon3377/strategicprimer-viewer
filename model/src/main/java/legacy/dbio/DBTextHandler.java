@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import legacy.map.Point;
 import legacy.map.IMutableLegacyMap;
@@ -65,8 +66,8 @@ public final class DBTextHandler extends AbstractDatabaseWriter<TextFixture, Poi
             final Integer turn = (Integer) dbRow.get("turn");
             final String text = (String) dbRow.get("text");
             final String image = (String) dbRow.get("image");
-            final TextFixture fixture = new TextFixture(text, turn == null ? -1 : turn);
-            if (image != null) {
+            final TextFixture fixture = new TextFixture(text, Objects.requireNonNullElse(turn, -1));
+	        if (!Objects.isNull(image)) {
                 fixture.setImage(image);
             }
             map.addFixture(new Point(row, column), fixture);

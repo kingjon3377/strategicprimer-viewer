@@ -84,12 +84,12 @@ class ProxyMember implements UnitMemberProxy<UnitMember> {
     @Override
     public int getId() {
         final Integer retval = getConsensus(UnitMember::getId);
-        return (retval == null) ? -1 : retval;
+	    return Objects.requireNonNullElse(retval, -1);
     }
 
     @Override
     public String getPlural() {
         final String retval = getConsensus(UnitMember::getPlural);
-        return (retval == null) ? "Various Unit Members" : retval;
+	    return Objects.requireNonNullElse(retval, "Various Unit Members");
     }
 }

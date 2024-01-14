@@ -28,6 +28,7 @@ import report.TabularReportGenerator;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * A driver to produce tabular (CSV) reports of the contents of a player's map.
@@ -72,7 +73,7 @@ public class TabularReportCLI implements ReadOnlyDriver {
 
     private void createReports(final ILegacyMap map, final @Nullable Path mapFile) throws DriverFailedException {
         try {
-            if (mapFile == null) {
+	        if (Objects.isNull(mapFile)) {
                 LovelaceLogger.error("Asked to create reports from map with no filename");
                 TabularReportGenerator.createTabularReports(map,
                         filenameFunction(Paths.get("unknown.xml")), cli);

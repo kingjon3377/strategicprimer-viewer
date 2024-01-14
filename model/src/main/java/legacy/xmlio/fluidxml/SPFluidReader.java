@@ -83,6 +83,7 @@ import java.util.Deque;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
+import java.util.Objects;
 import java.util.function.IntFunction;
 
 import static legacy.xmlio.fluidxml.FluidBase.*;
@@ -197,7 +198,7 @@ public class SPFluidReader implements IMapReader, ISPReader {
             } catch (final IllegalArgumentException except) {
                 throw new MissingPropertyException(element, "direction", except);
             }
-            if (direction == null) {
+	        if (Objects.isNull(direction)) {
                 throw new MissingPropertyException(element, "direction");
             }
             map.setRoadLevel(currentTile, direction, getIntegerAttribute(element, "quality"));
@@ -437,7 +438,7 @@ public class SPFluidReader implements IMapReader, ISPReader {
         } catch (final MissingPropertyException except) {
             warner.handle(except);
         }
-        final String kind = temp == null ? "" : temp;
+	    final String kind = Objects.requireNonNullElse(temp, "");
         if (kind.isEmpty()) {
             warner.handle(new MissingPropertyException(element, "kind"));
         }

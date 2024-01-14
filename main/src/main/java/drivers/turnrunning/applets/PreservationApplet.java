@@ -11,6 +11,8 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
+
 import org.jetbrains.annotations.Nullable;
 
 import static lovelace.util.Decimalize.decimalize;
@@ -52,7 +54,7 @@ import static lovelace.util.Decimalize.decimalize;
 	public @Nullable String run() {
 		final StringBuilder builder = new StringBuilder();
 		final IUnit unit = model.getSelectedUnit();
-		if (unit == null) {
+		if (Objects.isNull(unit)) {
 			cli.println("No current unit");
 			return "";
 		}
@@ -62,15 +64,15 @@ import static lovelace.util.Decimalize.decimalize;
 			final IResourcePile item = chooseFromList(getFoodFor(unit.owner(),
 				model.getMap().getCurrentTurn()), "Available food:", "No food available",
 				"Choose food to convert:", ICLIHelper.ListChoiceBehavior.ALWAYS_PROMPT, PreservationApplet::describePile);
-			if (item == null) {
+			if (Objects.isNull(item)) {
 				break;
 			}
 			final String convertedForm;
 			final String tempOne = chooseFromList(foods, "Preserved food types:", "",
 				"Type that converts into:", ICLIHelper.ListChoiceBehavior.ALWAYS_PROMPT);
-			if (tempOne == null) {
+			if (Objects.isNull(tempOne)) {
 				final String tempTwo = cli.inputString("Type of food that converts into:");
-				if (tempTwo == null || tempTwo.isEmpty()) {
+				if (Objects.isNull(tempTwo) || tempTwo.isEmpty()) {
 					return null;
 				} else {
 					convertedForm = tempTwo;
@@ -81,39 +83,39 @@ import static lovelace.util.Decimalize.decimalize;
 			}
 			final int turn;
 			final Integer tempThree = cli.inputNumber("What turn should spoilage counter start from?");
-			if (tempThree == null || tempThree < 0) {
+			if (Objects.isNull(tempThree) || tempThree < 0) {
 				return null;
 			}
 			turn = tempThree;
 			final BigDecimal newPounds =
 				cli.inputDecimal("How many pounds of that are produced from this source?");
-			if (newPounds == null || newPounds.signum() <= 0) {
+			if (Objects.isNull(newPounds) || newPounds.signum() <= 0) {
 				return null;
 			}
 			final BigDecimal subtrahend;
 			final Boolean useAll = cli.inputBoolean(String.format("Use all %s?", item.getQuantity()));
-			if (useAll == null) {
+			if (Objects.isNull(useAll)) {
 				return null;
 			} else if (useAll) {
 				subtrahend = decimalize(item.getQuantity().number());
 			} else {
 				subtrahend = cli.inputDecimal(String.format("How many %s to use?",
 					item.getQuantity().units()));
-				if (subtrahend == null || subtrahend.signum() <= 0) {
+				if (Objects.isNull(subtrahend) || subtrahend.signum() <= 0) {
 					return null;
 				}
 			}
 			model.reduceResourceBy(item, subtrahend, unit.owner());
 			// TODO: findHQ() should instead take the unit and find the fortress in the same tile, if any
 			final IFortress hq = model.findHQ(unit.owner());
-			if (hq == null) {
+			if (Objects.isNull(hq)) {
 				model.addResource(unit, idf.createID(), "food", convertedForm,
 						new LegacyQuantity(newPounds, "pounds"), turn);
 			} else {
 				model.addResource(hq, idf.createID(), "food", convertedForm, new LegacyQuantity(newPounds, "pounds"), turn);
 			}
 			final String results = cli.inputMultilineString("Description for results:");
-			if (results == null) {
+			if (Objects.isNull(results)) {
 				return null;
 			}
 			builder.append(results);

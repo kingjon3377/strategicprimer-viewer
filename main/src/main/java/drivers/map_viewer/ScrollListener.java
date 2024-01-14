@@ -4,6 +4,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.awt.BorderLayout;
 import java.awt.Adjustable;
+import java.util.Objects;
 
 import legacy.map.MapDimensions;
 import legacy.map.Point;
@@ -73,7 +74,7 @@ import legacy.map.fixtures.mobile.IUnit;
     private ScrollListener(final IViewerModel mapModel, final BorderedPanel component, final JScrollBar horizontalBar,
                            final JScrollBar verticalBar) {
         this(mapModel, horizontalBar, verticalBar);
-        if (component.getPageEnd() != null || component.getLineEnd() != null) {
+        if (!Objects.isNull(component.getPageEnd()) || !Objects.isNull(component.getLineEnd())) {
             throw new IllegalArgumentException(
                     "We don't want to replace existing components with scrollbars");
         }

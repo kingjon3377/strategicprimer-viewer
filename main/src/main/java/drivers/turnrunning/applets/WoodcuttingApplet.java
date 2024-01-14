@@ -23,6 +23,7 @@ import drivers.turnrunning.ITurnRunningModel;
 import java.math.RoundingMode;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 import org.jetbrains.annotations.Nullable;
 
@@ -61,26 +62,26 @@ import org.jetbrains.annotations.Nullable;
 		final StringBuilder builder = new StringBuilder();
 		// FIXME: support other forms of woodcutting: logs, long beams, land-clearing, etc.
 		final Point loc = confirmPoint("Where are they cutting wood?");
-		if (loc == null) {
+		if (Objects.isNull(loc)) {
 			return null;
 		}
 		final int workers;
 		final Integer tempW = cli.inputNumber("How many workers cutting?");
-		if (tempW != null && tempW > 0) {
+		if (!Objects.isNull(tempW) && tempW > 0) {
 			workers = tempW;
 		} else {
 			return null;
 		}
 		final int baseHours;
 		final Integer tempBH = cli.inputNumber("How many hours into a tree were they before?");
-		if (tempBH != null && tempBH >= 0) {
+		if (!Objects.isNull(tempBH) && tempBH >= 0) {
 			baseHours = tempBH;
 		} else {
 			return null;
 		}
 		final int totalHours;
 		final Integer tempTH = cli.inputNumber("How many hours does each worker work?");
-		if (tempTH != null && tempTH > 0) {
+		if (!Objects.isNull(tempTH) && tempTH > 0) {
 			totalHours = tempTH * workers + baseHours;
 		} else {
 			return null;
@@ -93,7 +94,7 @@ import org.jetbrains.annotations.Nullable;
 			cli.println(String.format(" and %d into the next.", totalHours % 100));
 		}
 		final Boolean tCorrect = cli.inputBoolean("Is that correct?");
-		if (tCorrect == null) {
+		if (Objects.isNull(tCorrect)) {
 			return null;
 		} else if (tCorrect) {
 			builder.append(String.format("The %d workers cut down and process %d trees", workers, treeCount));
@@ -102,13 +103,13 @@ import org.jetbrains.annotations.Nullable;
 			}
 		} else {
 			final String str = cli.inputMultilineString("Description of trees cut:");
-			if (str == null) {
+			if (Objects.isNull(str)) {
 				return null;
 			} else {
 				builder.append(str);
 			}
 			final Integer count = cli.inputNumber("Number of trees cut and processed: ");
-			if (count != null && count > 0) {
+			if (!Objects.isNull(count) && count > 0) {
 				treeCount = count;
 			} else {
 				return null;
@@ -116,19 +117,19 @@ import org.jetbrains.annotations.Nullable;
 		}
 		int footage = treeCount * 300;
 		final Boolean fCorrect = cli.inputBoolean(String.format("Is %d cubic feet correct?", footage));
-		if (fCorrect == null) {
+		if (Objects.isNull(fCorrect)) {
 			return null;
 		} else if (fCorrect) {
 			builder.append(String.format(", producing %d cubic feet of wood", footage));
 		} else {
 			final String str = cli.inputMultilineString("Description of production:");
-			if (str == null) {
+			if (Objects.isNull(str)) {
 				return null;
 			} else {
 				builder.append(str);
 			}
 			final Integer count = cli.inputNumber("Cubic feet production-ready wood: ");
-			if (count == null) { // TODO: or < 0? But allow 0 to skip adding resource.
+			if (Objects.isNull(count)) { // TODO: or < 0? But allow 0 to skip adding resource.
 				return null;
 			} else {
 				footage = count;
@@ -137,7 +138,7 @@ import org.jetbrains.annotations.Nullable;
 		if (footage > 0) {
 			final IUnit unit = model.getSelectedUnit();
 			// FIXME: Use model.addResource() rather than creating pile here ourselves
-			if (unit == null) {
+			if (Objects.isNull(unit)) {
 				cli.println("No selected unit");
 			} else if (!model.addExistingResource(new ResourcePileImpl(idf.createID(), "wood",
 					"production-ready wood", new LegacyQuantity(footage, "cubic feet")), unit.owner())) {
@@ -149,27 +150,27 @@ import org.jetbrains.annotations.Nullable;
 					.filter(Forest.class::isInstance).map(Forest.class::cast)
 					.collect(Collectors.toList()),
 				"Forests on tile:", "No forests on tile", "Forest being cleared: ", ICLIHelper.ListChoiceBehavior.ALWAYS_PROMPT);
-			if (forest != null && forest.getAcres().doubleValue() > 0.0) {
+			if (!Objects.isNull(forest) && forest.getAcres().doubleValue() > 0.0) {
 				BigDecimal acres = decimalize(treeCount * 10 / 72)
 					.divide(decimalize(100), RoundingMode.HALF_EVEN)
 					.min(decimalize(forest.getAcres()));
 				final Boolean aCorrect = cli.inputBoolean(String.format(
 					"Is %.2f (of %.2f) cleared correct?", acres.doubleValue(),
 					forest.getAcres().doubleValue()));
-				if (aCorrect == null) {
+				if (Objects.isNull(aCorrect)) {
 					return null;
 				} else if (aCorrect) {
 					builder.append(String.format(", clearing %.2f acres (~ %d sq ft) of land.",
 						acres, acres.multiply(decimalize(43560)).intValue())); // TODO: Make Decimal constant static final
 				} else {
 					final String str = cli.inputMultilineString("Description of cleared land:");
-					if (str == null) {
+					if (Objects.isNull(str)) {
 						return null;
 					} else {
 						builder.append(str);
 					}
 					final BigDecimal tAcres = cli.inputDecimal("Acres cleared:");
-					if (tAcres == null) {
+					if (Objects.isNull(tAcres)) {
 						return null;
 					} else {
 						acres = tAcres;

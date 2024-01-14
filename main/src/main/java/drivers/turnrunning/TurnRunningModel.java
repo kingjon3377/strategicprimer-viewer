@@ -33,6 +33,7 @@ import drivers.common.IDriverModel;
 import exploration.common.ExplorationModel;
 
 import java.math.BigDecimal;
+import java.util.Objects;
 import java.util.Random;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -122,7 +123,7 @@ public class TurnRunningModel extends ExplorationModel implements ITurnRunningMo
 				} else {
 					cb = zero;
 				}
-				if (matching != null) {
+				if (!Objects.isNull(matching)) {
 					if (all) {
 						map.removeFixture(location, matching);
 					} else if (matching.getPopulation() > 0) {
@@ -177,7 +178,7 @@ public class TurnRunningModel extends ExplorationModel implements ITurnRunningMo
 				} else {
 					cb = zero;
 				}
-				if (matching != null) {
+				if (!Objects.isNull(matching)) {
 					if (all) {
 						map.removeFixture(location, matching);
 					} else if (matching.getAcres().doubleValue() > 0.0) {
@@ -230,7 +231,7 @@ public class TurnRunningModel extends ExplorationModel implements ITurnRunningMo
 				.filter(matchingRace)
 				.filter(matchingName)
 				.filter(matchingId).findAny().orElse(null);
-			if (matching != null) {
+			if (!Objects.isNull(matching)) {
 				if (StreamSupport.stream(matching.spliterator(), true)
 					.noneMatch(matchingJob)) {
 					map.setModified(true);
@@ -270,11 +271,11 @@ public class TurnRunningModel extends ExplorationModel implements ITurnRunningMo
 					.flatMap(IUnit::stream).filter(isWorker).map(workerCast)
 					.filter(matchingRace).filter(matchingName)
 					.filter(matchingId).findAny().orElse(null);
-			if (matching != null) {
+			if (!Objects.isNull(matching)) {
 				final IMutableJob job = StreamSupport.stream(matching.spliterator(), false)
 					.filter(isMutableJob).map(mutableJobCast)
 					.filter(matchingJob).findAny().orElse(null);
-				if (job == null) {
+				if (Objects.isNull(job)) {
 					map.setModified(true);
 					final Job newJob = new Job(jobName, 0);
 					newJob.addSkill(new Skill(skillName, 0, 0));
@@ -371,14 +372,14 @@ public class TurnRunningModel extends ExplorationModel implements ITurnRunningMo
 				.filter(matchingRace)
 				.filter(matchingName)
 				.filter(matchingId).findAny().orElse(null);
-			if (matching != null) {
+			if (!Objects.isNull(matching)) {
 				map.setModified(true);
 				any = true;
 				final IMutableJob job;
 				final IMutableJob temp = StreamSupport.stream(matching.spliterator(), false)
 					.filter(isMutableJob).map(mutableJobCast)
 					.filter(matchingJob).findAny().orElse(null);
-				if (temp == null) {
+				if (Objects.isNull(temp)) {
 					job = new Job(jobName, 0);
 					matching.addJob(job); // FIXME: addJob() is documented to not guarantee to reuse the object
 				} else {
@@ -388,7 +389,7 @@ public class TurnRunningModel extends ExplorationModel implements ITurnRunningMo
 				final IMutableSkill tSkill = StreamSupport.stream(job.spliterator(), false)
 					.filter(isMutableSkill).map(mutableSkillCast)
 					.filter(matchingSkill).findAny().orElse(null);
-				if (tSkill == null) {
+				if (Objects.isNull(tSkill)) {
 					skill = new Skill(skillName, 0, 0);
 					job.addSkill(skill); // FIXME: IIRC addSkill() is documented to not guarantee to reuse the object
 				} else {
@@ -432,14 +433,14 @@ public class TurnRunningModel extends ExplorationModel implements ITurnRunningMo
 				.filter(matchingRace)
 				.filter(matchingName)
 				.filter(matchingId).findAny().orElse(null);
-			if (matching != null) {
+			if (!Objects.isNull(matching)) {
 				final IMutableJob matchingJob = StreamSupport.stream(matching.spliterator(), true)
 					.filter(isMutableJob).map(mutableJobCast)
 					.filter(matchingJobName).findAny().orElse(null);
-				if (matchingJob != null) {
+				if (!Objects.isNull(matchingJob)) {
 					final ISkill matchingSkill = StreamSupport.stream(matchingJob.spliterator(), true)
 						.filter(Predicate.isEqual(delenda)).findAny().orElse(null);
-					if (matchingSkill != null) {
+					if (!Objects.isNull(matchingSkill)) {
 						map.setModified(true);
 						any = true;
 						matchingJob.removeSkill(matchingSkill);
@@ -574,7 +575,7 @@ public class TurnRunningModel extends ExplorationModel implements ITurnRunningMo
 				.filter(matchingKind)
 				.filter(matchingName)
 				.filter(matchingId).findAny().orElse(null);
-			if (matching != null) {
+			if (!Objects.isNull(matching)) {
 				matching.setOrders(turn, results);
 				map.setModified(true);
 				any = true;
@@ -605,7 +606,7 @@ public class TurnRunningModel extends ExplorationModel implements ITurnRunningMo
 				.filter(matchingKind)
 				.filter(matchingName)
 				.filter(matchingId).findAny().orElse(null);
-			if (matching != null) {
+			if (!Objects.isNull(matching)) {
 				matching.setResults(turn, results);
 				map.setModified(true);
 				any = true;
@@ -771,7 +772,7 @@ public class TurnRunningModel extends ExplorationModel implements ITurnRunningMo
 				.filter(matchingKind)
 				.filter(matchingName)
 				.filter(matchingId).findAny().orElse(null);
-			if (matching != null) {
+			if (!Objects.isNull(matching)) {
 				matching.addMember(animal.copy(IFixture.CopyBehavior.KEEP));
 				any = true;
 				map.setModified(true);
@@ -822,7 +823,7 @@ public class TurnRunningModel extends ExplorationModel implements ITurnRunningMo
 					.filter(isUnit).map(unitCast)
 					.filter(matchingUnitName)
 					.filter(matchingUnitId).findAny().orElse(null);
-				if (matching != null && destination != null) {
+				if (!Objects.isNull(matching) && !Objects.isNull(destination)) {
 					map.setModified(true);
 					if (quantity.doubleValue() >= matching.getQuantity().number().doubleValue()) {
 						if (container instanceof final IMutableFortress fort) { // TODO: Combine with other block when a supertype is added for this method
@@ -894,7 +895,7 @@ public class TurnRunningModel extends ExplorationModel implements ITurnRunningMo
 					.filter(isFortress).map(fortressCast)
 					.filter(matchingFortName)
 					.filter(matchingFortId).findAny().orElse(null);
-				if (matching != null && destination != null) {
+				if (!Objects.isNull(matching) && !Objects.isNull(destination)) {
 					map.setModified(true);
 					if (quantity.doubleValue() >= matching.getQuantity().number().doubleValue()) {
 						if (container instanceof final IMutableFortress fort) { // TODO: Combine with other block when a supertype is added for this method
@@ -941,7 +942,7 @@ public class TurnRunningModel extends ExplorationModel implements ITurnRunningMo
 		for (final IMutableLegacyMap map : getRestrictedAllMaps()) {
 			final IMutableFortress result = supp.apply(map).filter(matchingName).findAny()
 				.orElseGet(() -> supp.apply(map).findAny().orElse(null));
-			if (result == null) {
+			if (Objects.isNull(result)) {
 				continue;
 			}
 			any = true;
@@ -962,7 +963,7 @@ public class TurnRunningModel extends ExplorationModel implements ITurnRunningMo
 
 		@Override
 		public int getAsInt() {
-			if (generatedId == null) {
+			if (Objects.isNull(generatedId)) {
 				final int temp = idFactory.getAsInt();
 				generatedId = temp;
 				return temp;

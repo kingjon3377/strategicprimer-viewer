@@ -25,6 +25,7 @@ import legacy.map.fixtures.resources.CacheFixture;
 
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
@@ -41,7 +42,7 @@ public class ResourceTabularReportGenerator
     public ResourceTabularReportGenerator(final @Nullable Point hq, final MapDimensions dimensions) {
         this.hq = hq;
         this.dimensions = dimensions;
-        if (hq == null) {
+	    if (Objects.isNull(hq)) {
             distanceComparator = (one, two) -> 0;
         } else {
             distanceComparator = new DistanceComparator(hq, dimensions);

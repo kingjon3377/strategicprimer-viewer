@@ -123,6 +123,7 @@ import impl.xmlio.exceptions.DeprecatedPropertyException;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -188,7 +189,7 @@ public final class TestXMLIO {
 		final ISPReader reader, final String xml, final @Nullable Type desideratum,
 		final Class<Expectation> exceptionClass, final Consumer<Expectation>... checks)
 		throws SPFormatException, XMLStreamException, IOException {
-		if (desideratum == null) {
+		if (Objects.isNull(desideratum)) {
 			try (final StringReader stringReader = new StringReader(xml)) {
 				reader.<Type>readXML(FAKE_FILENAME, stringReader, Warning.IGNORE);
 				fail(String.format("Expected a(n) %s to be thrown",

@@ -2,6 +2,7 @@ package drivers.worker_mgmt.orderspanel;
 
 import java.io.Serial;
 import java.util.Collection;
+import java.util.Objects;
 import java.util.Optional;
 
 import org.jetbrains.annotations.Nullable;
@@ -102,7 +103,7 @@ public class OrdersPanel extends BorderedPanel implements OrdersContainer {
         setPageStart(BorderedPanel.horizontalPanel(new JLabel(topLabel), null,
                 BorderedPanel.horizontalPanel(null, new JLabel("Turn "),
                         new JSpinner(spinnerModel))));
-        if (ordersConsumer != null) {
+	    if (!Objects.isNull(ordersConsumer)) {
             final JButton applyButton = new ListenedButton("Apply", this::apply);
             final JButton revertButton = new ListenedButton("Revert", this::revert);
             Platform.makeButtonsSegmented(applyButton, revertButton);
@@ -148,7 +149,7 @@ public class OrdersPanel extends BorderedPanel implements OrdersContainer {
     @Override
     public void apply() {
         if (selection instanceof final IUnit sel) {
-            if (ordersConsumer != null) {
+	        if (!Objects.isNull(ordersConsumer)) {
                 ordersConsumer.accept(sel,
                         spinnerModel.getNumber().intValue(),
                         area.getText());
@@ -156,7 +157,7 @@ public class OrdersPanel extends BorderedPanel implements OrdersContainer {
             fixColor();
             getParent().getParent().repaint();
         } else if (selection instanceof final String sel) {
-            if (ordersConsumer != null) {
+	        if (!Objects.isNull(ordersConsumer)) {
                 final int turn = spinnerModel.getNumber().intValue();
                 for (final IUnit unit : playerUnits.apply(currentPlayer, sel)) {
                     ordersConsumer.accept(unit, turn, area.getText());
@@ -182,7 +183,7 @@ public class OrdersPanel extends BorderedPanel implements OrdersContainer {
             @Nullable String orders = null;
             final int turn = spinnerModel.getNumber().intValue();
             for (final IUnit unit : playerUnits.apply(currentPlayer, sel)) {
-                if (orders == null) {
+	            if (Objects.isNull(orders)) {
                     orders = ordersSupplier.getOrders(unit, turn);
                 } else if (!orders.equals(ordersSupplier.getOrders(unit, turn))) {
                     area.setText("");
@@ -204,7 +205,7 @@ public class OrdersPanel extends BorderedPanel implements OrdersContainer {
     @Override
     public void valueChanged(final TreeSelectionEvent event) {
         final TreePath selectedPath = event.getNewLeadSelectionPath();
-        if (selectedPath != null) {
+	    if (!Objects.isNull(selectedPath)) {
             final Object sel = selectedPath.getLastPathComponent();
             if (sel instanceof final DefaultMutableTreeNode dmtn) {
                 selection = dmtn.getUserObject();

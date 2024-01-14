@@ -14,6 +14,7 @@ import legacy.map.ILegacyMap;
 
 import java.awt.Dimension;
 import java.nio.file.Path;
+import java.util.Objects;
 
 import javax.swing.JFrame;
 import javax.swing.WindowConstants;
@@ -115,7 +116,7 @@ public class SPFrame extends JFrame implements ISPWindow {
             });
         }
         setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
-        if (minSize != null) {
+	    if (!Objects.isNull(minSize)) {
             setMinimumSize(minSize);
         }
         setTransferHandler(new FileDropHandler(this));
@@ -146,7 +147,7 @@ public class SPFrame extends JFrame implements ISPWindow {
 
     private String refreshTitle() {
         if (driver instanceof final ModelDriver md &&
-                md.getModel().getMap().getFilename() != null) {
+	        !Objects.isNull(md.getModel().getMap().getFilename())) {
             final ILegacyMap map = md.getModel().getMap();
             return String.format("%s%s | %s", map.isModified() ? "*" : "",
                     map.getFilename(), windowTitle);

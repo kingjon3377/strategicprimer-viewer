@@ -337,7 +337,7 @@ import worker.common.IFixtureEditHelper;
 
     private @Nullable AnimalTracks tracksCreator(final Point point) {
         final TileType terrain = driverModel.getMap().getBaseTerrain(point);
-        if (terrain == null) {
+	    if (Objects.isNull(terrain)) {
             return null;
         }
         LovelaceLogger.trace("In ExplorationPanel.tracksCreator");

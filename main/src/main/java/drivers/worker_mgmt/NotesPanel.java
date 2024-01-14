@@ -52,7 +52,7 @@ public final class NotesPanel extends BorderedPanel
     }
 
     private void saveNotes() {
-        if (current == null) {
+	    if (Objects.isNull(current)) {
             Toolkit.getDefaultToolkit().beep();
         } else {
             current.setNote(player, notesArea.getText().strip());
@@ -60,7 +60,7 @@ public final class NotesPanel extends BorderedPanel
     }
 
     private void revertNotes() {
-        if (current == null) {
+	    if (Objects.isNull(current)) {
             Toolkit.getDefaultToolkit().beep();
         } else {
             notesArea.setText(current.getNote(player));

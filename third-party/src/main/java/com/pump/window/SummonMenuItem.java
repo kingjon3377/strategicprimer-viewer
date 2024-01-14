@@ -14,6 +14,7 @@ import java.awt.Frame;
 
 import java.awt.event.ActionEvent;
 import java.io.Serial;
+import java.util.Objects;
 import javax.swing.JCheckBoxMenuItem;
 
 /**
@@ -50,7 +51,7 @@ public final class SummonMenuItem extends JCheckBoxMenuItem {
 
     private void updateText() {
         String text = frame.getTitle();
-        if (text == null || text.isBlank())
+        if (Objects.isNull(text) || text.isBlank())
             text = "Untitled";
         setText(text);
     }

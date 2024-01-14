@@ -20,6 +20,7 @@ import java.awt.Toolkit;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.KeyEvent;
+import java.util.Objects;
 
 import javax.swing.JScrollPane;
 import javax.swing.JComponent;
@@ -171,7 +172,7 @@ import drivers.worker_mgmt.orderspanel.OrdersPanel;
         final IWorkerTreeModel treeModel = (IWorkerTreeModel) tree.getModel();
         final TreePath currentSelection = tree.getSelectionModel().getSelectionPath();
         final TreePath nextPath = treeModel.nextProblem(currentSelection, mainMap.getCurrentTurn());
-        if (nextPath == null) {
+	    if (Objects.isNull(nextPath)) {
             LovelaceLogger.trace("Nowhere to jump to, about to beep");
             Toolkit.getDefaultToolkit().beep();
         } else {

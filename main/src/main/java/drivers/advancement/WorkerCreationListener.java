@@ -4,6 +4,7 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.io.Serial;
+import java.util.Objects;
 import java.util.stream.IntStream;
 
 import lovelace.util.LovelaceLogger;
@@ -66,7 +67,7 @@ import java.util.function.Consumer;
     private @Nullable IUnit selectedUnit = null;
 
     public void addNewWorker(final IWorker worker) {
-        if (selectedUnit == null) {
+	    if (Objects.isNull(selectedUnit)) {
             LovelaceLogger.warning("New worker created when no unit selected");
             JOptionPane.showMessageDialog(null,
                     "As no unit was selected, the new worker wasn't added to a unit.",

@@ -11,6 +11,7 @@ import java.sql.SQLException;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import legacy.map.IMutableLegacyMap;
 import legacy.map.fixtures.Implement;
@@ -66,7 +67,7 @@ public final class DBImplementHandler extends AbstractDatabaseWriter<Implement, 
             final int count = (Integer) dbRow.get("count");
             final String image = (String) dbRow.get("image");
             final Implement implement = new Implement(kind, id, count);
-            if (image != null) {
+	        if (!Objects.isNull(image)) {
                 implement.setImage(image);
             }
             multimapPut(containees, parentId, implement);

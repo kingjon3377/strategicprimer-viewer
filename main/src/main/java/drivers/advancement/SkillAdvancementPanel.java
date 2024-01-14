@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import java.awt.event.ActionEvent;
+import java.util.Objects;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -67,7 +68,7 @@ import drivers.common.IAdvancementModel;
 		// TODO: In Ceylon we assigned all of these to local variables, as the typechecker
 		// enforced thread-safety of reading mutable nullable variables; we should really
 		// do the same here to avoid TOCTOU races
-		if (worker != null && job != null && skill != null) {
+		if (!Objects.isNull(worker) && !Objects.isNull(job) && !Objects.isNull(skill)) {
 			final int level = skill.getLevel();
 			final int number;
 			try {
@@ -127,7 +128,7 @@ import drivers.common.IAdvancementModel;
 	@Override
 	public void selectSkill(final @Nullable ISkill selectedSkill) {
 		skill = selectedSkill;
-		if (selectedSkill != null) {
+		if (!Objects.isNull(selectedSkill)) {
 			hours.requestFocusInWindow();
 		}
 	}

@@ -1,6 +1,7 @@
 package lovelace.util;
 
 import java.util.Arrays;
+import java.util.Objects;
 import java.util.Set;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -52,7 +53,7 @@ public class TypeStream implements Iterable<Class<?>> {
                 if (!classes.contains(item)) {
                     classes.add(item);
                     final Class<?> superclass = item.getSuperclass();
-                    if (superclass != null) {
+	                if (!Objects.isNull(superclass)) {
                         queue.add(superclass);
                     }
                     queue.addAll(Arrays.asList(item.getInterfaces()));

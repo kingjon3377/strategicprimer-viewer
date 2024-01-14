@@ -2,6 +2,7 @@ package utility.subset;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Objects;
 import java.util.stream.Stream;
 
 import javax.swing.SwingUtilities;
@@ -50,7 +51,7 @@ public class SubsetGUI implements UtilityGUI {
             throw new IncorrectUsageException(SubsetGUIFactory.USAGE);
         }
         final SubsetFrame localFrame = frame;
-        if (localFrame == null) {
+	    if (Objects.isNull(localFrame)) {
             throw new DriverFailedException(new IllegalStateException("Window not open"));
         }
         SwingUtilities.invokeLater(localFrame::showWindow);
@@ -62,7 +63,7 @@ public class SubsetGUI implements UtilityGUI {
 
     @Override
     public void open(final Path path) {
-        if (frame != null) {
+	    if (!Objects.isNull(frame)) {
             frame.testFile(path);
         }
     }

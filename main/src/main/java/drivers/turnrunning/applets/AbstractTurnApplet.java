@@ -9,6 +9,7 @@ import legacy.map.fixtures.FortressMember;
 import legacy.map.ILegacyMap;
 
 import java.util.Comparator;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -56,7 +57,7 @@ public abstract class AbstractTurnApplet implements TurnApplet {
 			items.stream().map(converter).collect(Collectors.toList()), description,
 			none, prompt, behavior);
 		// N.B. can't inline using Optional because we *test* the right side of the pair, then *use* the left side.
-		if (entry.getValue1() == null) {
+		if (Objects.isNull(entry.getValue1())) {
 			return null;
 		} else {
 			return items.get(entry.getValue0());
@@ -66,7 +67,7 @@ public abstract class AbstractTurnApplet implements TurnApplet {
 	// This was "shared" in Ceylon, but I expect only subclasses will be able to use it.
 	protected @Nullable Point confirmPoint(final String prompt) {
 		final Point retval = cli.inputPoint(prompt);
-		if (retval == null) {
+		if (Objects.isNull(retval)) {
 			return null;
 		}
 		final Point selectedLocation = model.getSelectedUnitLocation();

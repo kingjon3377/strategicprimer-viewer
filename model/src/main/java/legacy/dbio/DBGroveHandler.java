@@ -12,6 +12,7 @@ import java.sql.SQLException;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import legacy.map.Point;
 import legacy.map.IMutableLegacyMap;
@@ -71,7 +72,7 @@ public final class DBGroveHandler extends AbstractDatabaseWriter<Grove, Point> i
                 default -> throw new IllegalArgumentException("Unexpected grove type");
             };
             final Grove grove = new Grove(orchard, cultivated, kind, id, count);
-            if (image != null) {
+	        if (!Objects.isNull(image)) {
                 grove.setImage(image);
             }
             map.addFixture(new Point(row, column), grove);

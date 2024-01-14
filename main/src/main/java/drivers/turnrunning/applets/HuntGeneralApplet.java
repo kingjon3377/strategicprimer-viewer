@@ -22,6 +22,7 @@ import drivers.resourceadding.ResourceAddingCLIHelper;
 import drivers.turnrunning.ITurnRunningModel;
 
 import java.util.Iterator;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Function;
 
@@ -68,11 +69,11 @@ import org.jetbrains.annotations.Nullable;
         final IUnit unit = chooseFromList(model.getUnits(Optional.ofNullable(model.getSelectedUnit())
                         .map(IUnit::owner).orElse(model.getMap().getCurrentPlayer())),
                 "Available units:", "No units", "Unit to add animals to:", ICLIHelper.ListChoiceBehavior.ALWAYS_PROMPT, HuntGeneralApplet::describeUnit);
-        if (unit == null) {
+	    if (Objects.isNull(unit)) {
             return false;
         } else {
             final Integer num = cli.inputNumber("Number captured:");
-            if (num == null) {
+		    if (Objects.isNull(num)) {
                 return null;
             } else {
                 return model.addAnimal(unit, find.getKind(), "wild", idf.createID(), num);
@@ -84,16 +85,16 @@ import org.jetbrains.annotations.Nullable;
         int cost = 0;
         // TODO: somehow handle processing-in-parallel case
         final Integer iterations = cli.inputNumber("How many carcasses?");
-        if (iterations == null) {
+	    if (Objects.isNull(iterations)) {
             return null;
         }
         for (int i = 0; i < iterations; i++) {
             final Integer mass = cli.inputNumber("Weight of this animal's meat in pounds: ");
-            if (mass == null) {
+	        if (Objects.isNull(mass)) {
                 return null;
             }
             final Integer hands = cli.inputNumber("# of workers processing this carcass: ");
-            if (hands == null) {
+	        if (Objects.isNull(hands)) {
                 return null;
             }
             cost += (int) Math.round(HuntingModel.processingTime(mass) / hands);
@@ -105,7 +106,7 @@ import org.jetbrains.annotations.Nullable;
         cli.println("Enter resources produced (any empty string aborts):");
         while (true) {
             final IMutableResourcePile resource = resourceAddingHelper.enterResource();
-            if (resource == null) {
+	        if (Objects.isNull(resource)) {
                 break;
             }
             if ("food".equals(resource.getKind())) {
@@ -120,37 +121,37 @@ import org.jetbrains.annotations.Nullable;
     private @Nullable Integer handleFight(final Point loc, final Animal find, final int time) {
         int cost;
         final Integer temp = cli.inputNumber(String.format("Time to %s: ", verb));
-        if (temp == null) {
+	    if (Objects.isNull(temp)) {
             return null;
         } else {
             cost = temp;
         }
         final Boolean capture = cli.inputBooleanInSeries("Capture any animals?");
-        if (capture == null) {
+	    if (Objects.isNull(capture)) {
             return null;
-        } else if (capture && handleCapture(find) == null) {
+	    } else if (capture && Objects.isNull(handleCapture(find))) {
             return null;
         }
         final Boolean processNow = cli.inputBooleanInSeries("Process carcasses now?");
-        if (processNow == null) {
+	    if (Objects.isNull(processNow)) {
             return null;
         } else if (processNow) {
             final Integer processingTime = processMeat();
-            if (processingTime == null) {
+		    if (Objects.isNull(processingTime)) {
                 return null;
             }
             cost += processingTime;
         }
         final Boolean reduce = cli.inputBooleanInSeries(String.format(
                 "Reduce animal group population of %d?", find.getPopulation()));
-        if (reduce == null) {
+	    if (Objects.isNull(reduce)) {
             return null;
         } else if (reduce) {
             reducePopulation(loc, find, "animals", IFixture.CopyBehavior.ZERO);
         } else {
             model.copyToSubMaps(loc, find, IFixture.CopyBehavior.ZERO);
         }
-        if (model.getSelectedUnit() != null) {
+	    if (!Objects.isNull(model.getSelectedUnit())) {
             resourceEntry(model.getSelectedUnit().owner());
         }
         return cost;
@@ -172,7 +173,7 @@ import org.jetbrains.annotations.Nullable;
             case final Animal a -> {
                 final Boolean fight = cli.inputBooleanInSeries(String.format("Found %s. Should they %s?",
                         populationDescription(a), verb), a.getKind());
-                if (fight == null) {
+	            if (Objects.isNull(fight)) {
                     return null;
                 } else if (fight) {
                     return handleFight(loc, (Animal) find, time);
@@ -194,11 +195,11 @@ import org.jetbrains.annotations.Nullable;
     protected @Nullable String impl(final String command, final Function<Point, Iterable<Pair<Point, TileFixture>>> encounterSrc) {
         final StringBuilder buffer = new StringBuilder();
         final Point center = confirmPoint("Location to search around: ");
-        if (center == null) {
+	    if (Objects.isNull(center)) {
             return ""; // TODO: return null, surely?
         }
         final Integer startingTime = cli.inputNumber(String.format("Minutes to spend %sing: ", command));
-        if (startingTime == null) {
+	    if (Objects.isNull(startingTime)) {
             return ""; // TODO: return null, surely?
         }
         int time = startingTime;
@@ -220,7 +221,7 @@ import org.jetbrains.annotations.Nullable;
                 cli.print("Found nothing for the next ");
                 cli.println(inHours(noResultsTime));
                 final String addendum = cli.inputMultilineString("Add to results about that:");
-                if (addendum == null) {
+	            if (Objects.isNull(addendum)) {
                     return null;
                 }
                 buffer.append(addendum);
@@ -229,12 +230,12 @@ import org.jetbrains.annotations.Nullable;
             cli.print(inHours(time));
             cli.println(" remaining.");
             final Integer cost = handleEncounter(buffer, time, loc, find);
-            if (cost == null) {
+	        if (Objects.isNull(cost)) {
                 return null;
             }
             time -= cost;
             final String addendum = cli.inputMultilineString("Add to results about that:");
-            if (addendum == null) {
+	        if (Objects.isNull(addendum)) {
                 return null;
             }
             buffer.append(addendum);

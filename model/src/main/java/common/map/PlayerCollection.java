@@ -148,7 +148,7 @@ public final class PlayerCollection implements IMutablePlayerCollection {
 					continue;
 				}
 				final Player ours = players.get(player.playerId());
-				if (ours == null || !unknownName.test(ours.getName())) {
+				if (Objects.isNull(ours) || !unknownName.test(ours.getName())) {
 					return false;
 				}
 			}

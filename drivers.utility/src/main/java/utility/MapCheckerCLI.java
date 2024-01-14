@@ -14,6 +14,7 @@ import java.io.Serial;
 import java.nio.file.NoSuchFileException;
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 import java.util.OptionalInt;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -232,7 +233,7 @@ public class MapCheckerCLI implements UtilityDriver {
             final String matching = f.stream().filter(Implement.class::isInstance)
                     .map(Implement.class::cast).map(Implement::getKind).filter(PERSONAL_EQUIPMENT::contains)
                     .findAny().orElse(null);
-            if (matching == null) {
+	        if (Objects.isNull(matching)) {
                 return false;
             } else {
                 warner.handle(new SPContentWarning(context,
@@ -270,7 +271,7 @@ public class MapCheckerCLI implements UtilityDriver {
                 return false;
             }
             return true;
-        } else if (fixture instanceof final ITownFixture t && t.getPopulation() != null) {
+        } else if (fixture instanceof final ITownFixture t && !Objects.isNull(t.getPopulation())) {
             final CommunityStats stats = t.getPopulation();
             boolean retval = false;
             for (final IResourcePile resource : stats.getYearlyConsumption()) {
@@ -468,7 +469,7 @@ public class MapCheckerCLI implements UtilityDriver {
         for (final Checker checker : Stream.concat(Stream.of(new OwnerChecker(map)::check),
                 EXTRA_CHECKS.stream()).toList()) {
             for (final Point location : map.getLocations()) {
-                if (map.getBaseTerrain(location) != null) {
+	            if (!Objects.isNull(map.getBaseTerrain(location))) {
                     result = contentCheck(checker, map.getBaseTerrain(location),
                             location, warner, map.getFixtures(location)) || result;
                 }
@@ -489,7 +490,7 @@ public class MapCheckerCLI implements UtilityDriver {
                             .map(f -> Pair.with(l, f))).toList()) {
                 final Point location = pair.getValue0();
                 final TileFixture fixture = pair.getValue1();
-                if (map.getBaseTerrain(location) != null) {
+	            if (!Objects.isNull(map.getBaseTerrain(location))) {
                     result = animalTracksChecker(map.getBaseTerrain(location),
                             location, fixture, warner) || result;
                 }
@@ -507,7 +508,7 @@ public class MapCheckerCLI implements UtilityDriver {
     @Override
     public void startDriver(final String... args) {
         for (final String filename : args) {
-            if (filename == null) {
+	        if (Objects.isNull(filename)) {
                 continue;
             }
             check(Paths.get(filename));

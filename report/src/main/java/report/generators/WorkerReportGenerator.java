@@ -2,6 +2,7 @@ package report.generators;
 
 import legacy.map.fixtures.Implement;
 
+import java.util.Objects;
 import java.util.function.Consumer;
 
 import org.jetbrains.annotations.Nullable;
@@ -84,7 +85,7 @@ import legacy.map.fixtures.mobile.worker.IJob;
     @Override
     public void produceSingle(final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
                               final ILegacyMap map, final Consumer<String> ostream, final IWorker worker, final Point loc) {
-        if (details && worker.getStats() != null) {
+        if (details && !Objects.isNull(worker.getStats())) {
             ostream.accept("""
 
                     %s, a %s.
@@ -108,7 +109,7 @@ import legacy.map.fixtures.mobile.worker.IJob;
             }
             println(ostream, "</ul>");
         }
-        if (details && worker.getMount() != null) {
+        if (details && !Objects.isNull(worker.getMount())) {
             ostream.accept("(S)he is mounted on the following animal:");
             animalReportGenerator.produceSingle(fixtures, map, ostream, worker.getMount(), loc);
         }

@@ -12,6 +12,7 @@ import java.sql.SQLException;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import legacy.map.Point;
 import legacy.map.IMutableLegacyMap;
@@ -60,8 +61,8 @@ public final class DBShrubHandler extends AbstractDatabaseWriter<Shrub, Point> i
             final String kind = (String) dbRow.get("kind");
             final Integer count = (Integer) dbRow.get("count");
             final String image = (String) dbRow.get("image");
-            final Shrub shrub = new Shrub(kind, id, count == null ? -1 : count);
-            if (image != null) {
+            final Shrub shrub = new Shrub(kind, id, Objects.requireNonNullElse(count, -1));
+	        if (!Objects.isNull(image)) {
                 shrub.setImage(image);
             }
             map.addFixture(new Point(row, column), shrub);

@@ -70,7 +70,7 @@ import static impl.xmlio.ISPReader.SP_NAMESPACE;
      */
     private static @Nullable Attribute getAttributeByName(final StartElement element, final String param) {
         Attribute retval = element.getAttributeByName(new QName(SP_NAMESPACE, param));
-        if (retval == null) {
+	    if (Objects.isNull(retval)) {
             retval = element.getAttributeByName(new QName(param));
         }
         return retval;
@@ -85,7 +85,7 @@ import static impl.xmlio.ISPReader.SP_NAMESPACE;
     protected static String getAttribute(final StartElement element, final String param, final String defaultValue) {
         final Attribute attr = getAttributeByName(element, param);
         String retval = null;
-        if (attr != null) {
+	    if (!Objects.isNull(attr)) {
             retval = attr.getValue();
         }
         return Objects.requireNonNullElse(retval, defaultValue);
@@ -100,11 +100,11 @@ import static impl.xmlio.ISPReader.SP_NAMESPACE;
      */
     protected static String getAttribute(final StartElement element, final String param) throws SPFormatException {
         final Attribute attr = getAttributeByName(element, param);
-        if (attr == null) {
+	    if (Objects.isNull(attr)) {
             throw new MissingPropertyException(element, param);
         }
         final String retval = attr.getValue();
-        if (retval == null) {
+	    if (Objects.isNull(retval)) {
             throw new MissingPropertyException(element, param);
         } else {
             return retval;
@@ -139,11 +139,11 @@ import static impl.xmlio.ISPReader.SP_NAMESPACE;
     protected static boolean getBooleanAttribute(final StartElement element, final String param,
                                                  final boolean defaultValue, final Warning warner) {
         final Attribute attr = getAttributeByName(element, param);
-        if (attr == null) {
+	    if (Objects.isNull(attr)) {
             return defaultValue;
         }
         final String val = attr.getValue();
-        if (val == null || val.isEmpty()) {
+        if (Objects.isNull(val) || val.isEmpty()) {
             return defaultValue;
         }
         if ("true".equalsIgnoreCase(val)) {
@@ -168,11 +168,11 @@ import static impl.xmlio.ISPReader.SP_NAMESPACE;
     protected static boolean getBooleanAttribute(final StartElement element, final String param)
             throws SPFormatException {
         final Attribute attr = getAttributeByName(element, param);
-        if (attr == null) {
+	    if (Objects.isNull(attr)) {
             throw new MissingPropertyException(element, param);
         }
         final String val = attr.getValue();
-        if (val == null || val.isEmpty()) {
+        if (Objects.isNull(val) || val.isEmpty()) {
             throw new MissingPropertyException(element, param);
         }
         if ("true".equalsIgnoreCase(val)) {
@@ -247,7 +247,7 @@ import static impl.xmlio.ISPReader.SP_NAMESPACE;
      * @param param The parameter we want
      */
     protected static boolean hasAttribute(final StartElement element, final String param) {
-        return getAttributeByName(element, param) != null;
+	    return !Objects.isNull(getAttributeByName(element, param));
     }
 
     /**
@@ -393,11 +393,11 @@ import static impl.xmlio.ISPReader.SP_NAMESPACE;
     protected static int getIntegerAttribute(final StartElement tag, final String parameter, final int defaultValue,
                                              final Warning warner) {
         final Attribute attr = getAttributeByName(tag, parameter);
-        if (attr == null) {
+	    if (Objects.isNull(attr)) {
             return defaultValue;
         }
         final String val = attr.getValue();
-        if (val == null) {
+	    if (Objects.isNull(val)) {
             return defaultValue;
         }
         try {
@@ -422,11 +422,11 @@ import static impl.xmlio.ISPReader.SP_NAMESPACE;
     public static int getIntegerAttribute(final StartElement tag, final String parameter)
             throws SPFormatException {
         final Attribute attr = getAttributeByName(tag, parameter);
-        if (attr == null) {
+	    if (Objects.isNull(attr)) {
             throw new MissingPropertyException(tag, parameter);
         }
         final String val = attr.getValue();
-        if (val == null) {
+	    if (Objects.isNull(val)) {
             throw new MissingPropertyException(tag, parameter);
         }
         try {
@@ -467,11 +467,11 @@ import static impl.xmlio.ISPReader.SP_NAMESPACE;
     protected static Number getNumericAttribute(final StartElement tag, final String parameter,
                                                 final Number defaultValue, final Warning warner) throws SPFormatException {
         final Attribute attr = getAttributeByName(tag, parameter);
-        if (attr == null) {
+	    if (Objects.isNull(attr)) {
             return defaultValue;
         }
         final String val = attr.getValue();
-        if (val == null) {
+	    if (Objects.isNull(val)) {
             return defaultValue;
         }
         if (val.contains(".")) {
@@ -502,11 +502,11 @@ import static impl.xmlio.ISPReader.SP_NAMESPACE;
     protected static Number getNumericAttribute(final StartElement tag, final String parameter)
             throws SPFormatException {
         final Attribute attr = getAttributeByName(tag, parameter);
-        if (attr == null) {
+	    if (Objects.isNull(attr)) {
             throw new MissingPropertyException(tag, parameter);
         }
         final String val = attr.getValue();
-        if (val == null) {
+	    if (Objects.isNull(val)) {
             throw new MissingPropertyException(tag, parameter);
         }
         if (val.contains(".")) {

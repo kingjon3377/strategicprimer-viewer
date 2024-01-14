@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.ServiceLoader;
 import java.util.TreeMap;
@@ -142,10 +143,10 @@ import org.jetbrains.annotations.Nullable;
                     .map(Optional::get).orElse(null);
             if (Boolean.FALSE.equals(bool)) {
                 return ""; // TODO: why not null? (making the method return type nullable) also below
-            } else if (applet != null) {
+            } else if (!Objects.isNull(applet)) {
                 if (!applet.getCommands().contains("other")) {
                     final String results = applet.run();
-                    if (results == null) {
+		            if (Objects.isNull(results)) {
                         return "";
                     }
                     buffer.append(results);
@@ -160,14 +161,14 @@ import org.jetbrains.annotations.Nullable;
             prompt = "Additional Results: ";
         }
         final String addendum = cli.inputMultilineString(prompt);
-        if (addendum == null) {
+	    if (Objects.isNull(addendum)) {
             return "";
         }
         buffer.append(addendum);
         final Boolean runAdvancement = cli.inputBooleanInSeries("Run advancement for this unit now?");
         if (Boolean.TRUE.equals(runAdvancement)) {
             final Boolean expertMentoring = cli.inputBooleanInSeries("Account for expert mentoring?");
-            if (expertMentoring != null) {
+	        if (!Objects.isNull(expertMentoring)) {
                 buffer.append(System.lineSeparator());
                 buffer.append(System.lineSeparator());
                 final LevelGainListener levelListener =
@@ -193,7 +194,7 @@ import org.jetbrains.annotations.Nullable;
             consumptionApplet.setTurn(turn);
             consumptionApplet.setUnit(unit);
             final String consumptionResults = consumptionApplet.run();
-            if (consumptionResults == null) {
+	        if (Objects.isNull(consumptionResults)) {
                 return "";
             }
             if (!consumptionResults.isEmpty()) {
@@ -209,7 +210,7 @@ import org.jetbrains.annotations.Nullable;
             spoilageApplet.setOwner(unit.owner());
             spoilageApplet.setTurn(turn);
             final String foodSpoilageResult = spoilageApplet.run();
-            if (foodSpoilageResult != null) {
+	        if (!Objects.isNull(foodSpoilageResult)) {
                 buffer.append(System.lineSeparator());
                 buffer.append(System.lineSeparator());
                 buffer.append(foodSpoilageResult);
@@ -223,7 +224,7 @@ import org.jetbrains.annotations.Nullable;
     public void startDriver() {
         final int currentTurn = model.getMap().getCurrentTurn();
         final Player player = cli.chooseFromList((List<? extends Player>) new ArrayList<>(model.getPlayerChoices()), "Players in the maps:", "No players found", "Player to run:", ICLIHelper.ListChoiceBehavior.ALWAYS_PROMPT).getValue1();
-        if (player == null) {
+	    if (Objects.isNull(player)) {
             return;
         }
         final List<IUnit> units = getUnits(player).filter(unfinishedResults(currentTurn)).collect(Collectors.toList());
@@ -231,7 +232,7 @@ import org.jetbrains.annotations.Nullable;
             final Pair<Integer, @Nullable IUnit> pair = cli.chooseFromList(units, String.format("Units belonging to %s:", player), "Player has no units without apparently-final results", "Unit to run:", ICLIHelper.ListChoiceBehavior.ALWAYS_PROMPT);
             final int index = pair.getValue0();
             final IUnit unit = pair.getValue1();
-            if (unit == null) {
+	        if (Objects.isNull(unit)) {
                 break;
             }
             final String results = createResults(unit, currentTurn);

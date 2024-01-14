@@ -9,6 +9,7 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import java.util.Objects;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.function.Function;
 import java.util.stream.Stream;
@@ -48,7 +49,7 @@ public class TestProxyAnimal {
 
         @Override
         public Stream<Arguments> apply(final Integer curr) {
-            if (prev == null) {
+	        if (Objects.isNull(prev)) {
                 prev = curr;
                 return Stream.empty();
             }

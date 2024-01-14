@@ -5,6 +5,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.NoSuchElementException;
+import java.util.Objects;
 import java.util.Scanner;
 import java.util.stream.Stream;
 
@@ -35,7 +36,7 @@ public final class CLIHelper {
             final boolean auto,
             final Pair<String, Element>... choices) {
         if (choices.length > 0) {
-            if (header != null) {
+	        if (!Objects.isNull(header)) {
                 System.out.println(header);
             }
             if (auto && choices.length == 1) {
@@ -47,7 +48,7 @@ public final class CLIHelper {
             } else {
                 printList(Stream.of(choices).map(Pair::getValue0).toArray(String[]::new));
                 final @Nullable Integer index = inputNumber(prompt);
-                if (index != null && index >= 0 && index < choices.length) {
+                if (!Objects.isNull(index) && index >= 0 && index < choices.length) {
                     return choices[index].getValue1();
                 } else {
                     return null;

@@ -6,6 +6,7 @@ import org.javatuples.Pair;
 import java.io.Serial;
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.Objects;
 import java.util.TreeMap;
 import java.util.HashMap;
 import java.util.Set;
@@ -60,7 +61,7 @@ public abstract class AbstractReportGenerator<Type extends IFixture> implements 
 	 * for whom the report is being prepared.
 	 */
 	protected AbstractReportGenerator(final @Nullable MapDimensions mapDimensions, final @Nullable Point referencePoint) {
-		if (referencePoint == null) {
+		if (Objects.isNull(referencePoint)) {
 			distComparator = (one, two) -> 0;
 			distanceString = (ignored) -> "unknown";
 			pairComparator = pairComparator((one, two) -> 0,

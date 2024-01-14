@@ -79,6 +79,7 @@ import lovelace.util.TypeStream;
 import static legacy.xmlio.fluidxml.FluidBase.*;
 
 import java.util.Map;
+import java.util.Objects;
 import java.util.function.Function;
 import java.util.regex.Pattern;
 
@@ -153,7 +154,7 @@ public class SPFluidWriter implements SPWriter {
             writeAttributes(ostream, Pair.with("number", obj.getPlayerId()),
                     Pair.with("code_name", obj.getName()));
             writeNonEmptyAttributes(ostream, Pair.with("portrait", obj.getPortrait()));
-            if (obj.getCountry() != null) {
+	        if (!Objects.isNull(obj.getCountry())) {
                 writeNonEmptyAttributes(ostream, Pair.with("country", obj.getCountry()));
             }
         }
@@ -278,7 +279,7 @@ public class SPFluidWriter implements SPWriter {
                     writeTag(ostream, "tile", indentation + 3, false);
                     writeAttributes(ostream, Pair.with("row", i),
                             Pair.with("column", j));
-                    if (terrain != null) {
+	                if (!Objects.isNull(terrain)) {
                         writeAttributes(ostream, Pair.with("kind",
                                 terrain.getXml()));
                     }
@@ -315,14 +316,14 @@ public class SPFluidWriter implements SPWriter {
                     final Ground ground = obj.getFixtures(loc).stream()
                             .filter(isGround).map(groundCast)
                             .findFirst().orElse(null);
-                    if (ground != null) {
+	                if (!Objects.isNull(ground)) {
                         anyContents = true;
                         writeSPObjectImpl(ostream, ground, indentation + 4);
                     }
                     final Forest forest = obj.getFixtures(loc).stream()
                             .filter(isForest).map(forestCast)
                             .findFirst().orElse(null);
-                    if (forest != null) {
+	                if (!Objects.isNull(forest)) {
                         anyContents = true;
                         writeSPObjectImpl(ostream, forest, indentation + 4);
                     }

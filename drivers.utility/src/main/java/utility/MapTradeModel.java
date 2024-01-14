@@ -8,6 +8,7 @@ import legacy.map.TileType;
 import drivers.common.IDriverModel;
 import drivers.common.SimpleMultiMapModel;
 
+import java.util.Objects;
 import java.util.function.Predicate;
 
 import legacy.map.River;
@@ -48,7 +49,7 @@ public class MapTradeModel extends SimpleMultiMapModel {
         final ILegacyMap map = getMap();
         for (final IMutableLegacyMap second : getRestrictedSubordinateMaps()) {
             final TileType terrain = map.getBaseTerrain(location);
-            if (second.getBaseTerrain(location) == null && terrain != null) {
+            if (Objects.isNull(second.getBaseTerrain(location)) && !Objects.isNull(terrain)) {
                 second.setBaseTerrain(location, terrain);
                 setGlobalModifiedFlag();
             }

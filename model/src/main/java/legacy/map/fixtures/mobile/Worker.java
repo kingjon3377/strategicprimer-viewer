@@ -284,11 +284,11 @@ public class Worker implements IMutableWorker {
                     }
                 }
                 final Animal theirMount = that.getMount();
-                if (theirMount != null) {
-                    if (mount != null && !theirMount.equals(mount)) { // TODO: Use isSubset() instead?
+	            if (!Objects.isNull(theirMount)) {
+		            if (!Objects.isNull(mount) && !theirMount.equals(mount)) { // TODO: Use isSubset() instead?
                         localReport.accept("Mounts differ");
                         retval = false;
-                    } else if (mount == null) {
+		            } else if (Objects.isNull(mount)) {
                         localReport.accept("Has mount we don't");
                         retval = false;
                     }
@@ -320,7 +320,7 @@ public class Worker implements IMutableWorker {
         retval.setImage(image);
         if (zero == CopyBehavior.KEEP) {
             final WorkerStats localStats = stats;
-            if (localStats != null) {
+	        if (!Objects.isNull(localStats)) {
                 retval.setStats(localStats.copy());
             }
             for (final IJob job : this) {
@@ -328,7 +328,7 @@ public class Worker implements IMutableWorker {
                     retval.addJob(job.copy());
                 }
             }
-            if (mount != null) {
+	        if (!Objects.isNull(mount)) {
                 retval.setMount(mount.copy(zero));
             }
             for (final Implement item : equipmentImpl) {

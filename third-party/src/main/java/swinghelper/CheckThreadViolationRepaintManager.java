@@ -6,6 +6,7 @@ import javax.swing.JComponent;
 import javax.swing.RepaintManager;
 import javax.swing.SwingUtilities;
 import java.lang.ref.WeakReference;
+import java.util.Objects;
 
 /**
  * This class is used to detect Event Dispatch Thread rule violations.
@@ -92,7 +93,7 @@ public class CheckThreadViolationRepaintManager extends RepaintManager {
 				return;
 			}
 			// ignore the last processed component
-			if (lastComponent != null && c == lastComponent.get()) {
+			if (!Objects.isNull(lastComponent) && c == lastComponent.get()) {
 				return;
 			}
 			lastComponent = new WeakReference<>(c);
@@ -107,7 +108,7 @@ public class CheckThreadViolationRepaintManager extends RepaintManager {
 	 */
 	@Override
 	public synchronized void addInvalidComponent(final @Nullable JComponent component) {
-		if (component != null) {
+		if (!Objects.isNull(component)) {
 			checkThreadViolations(component);
 			super.addInvalidComponent(component);
 		}
@@ -125,7 +126,7 @@ public class CheckThreadViolationRepaintManager extends RepaintManager {
 	@Override
 	public void addDirtyRegion(final @Nullable JComponent component,
 							   final int x, final int y, final int w, final int h) {
-		if (component != null) {
+		if (!Objects.isNull(component)) {
 			checkThreadViolations(component);
 			super.addDirtyRegion(component, x, y, w, h);
 		}

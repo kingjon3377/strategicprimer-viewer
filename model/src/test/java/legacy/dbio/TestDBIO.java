@@ -27,6 +27,7 @@ import java.sql.Statement;
 import java.sql.Struct;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Properties;
 import java.util.concurrent.Executor;
 
@@ -444,7 +445,7 @@ public final class TestDBIO {
 		private @Nullable PersistentConnection connection;
 
 		public void tearDown() throws SQLException {
-			if (connection != null) {
+			if (!Objects.isNull(connection)) {
 				connection.reallyClose();
 			}
 			connection = null;
@@ -454,7 +455,7 @@ public final class TestDBIO {
 		@Override
 		public Connection connection() throws SQLException {
 			SQLiteDataSource existingSource = source;
-			if (existingSource == null) {
+			if (Objects.isNull(existingSource)) {
 				final SQLiteDataSource ds = new SQLiteDataSource();
 				ds.setSharedCache(true);
 				ds.setReadUncommitted(true);
@@ -465,7 +466,7 @@ public final class TestDBIO {
 				connection.setTransactionIsolation(
 					Connection.TRANSACTION_READ_UNCOMMITTED);
 				return connection;
-			} else if (connection != null) {
+			} else if (!Objects.isNull(connection)) {
 				return connection;
 			} else {
 				connection = new PersistentConnection(existingSource.getConnection());

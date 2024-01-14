@@ -18,6 +18,7 @@ import java.util.Comparator;
 import java.util.Map;
 import java.util.Collections;
 import java.util.Arrays;
+import java.util.Objects;
 import java.util.stream.Stream;
 import java.util.stream.IntStream;
 import java.util.stream.Collectors;
@@ -40,7 +41,7 @@ public class WorkerTabularReportGenerator implements ITableGenerator<IWorker> {
     public WorkerTabularReportGenerator(final @Nullable Point hq, final MapDimensions dimensions) {
         this.hq = hq;
         this.dimensions = dimensions;
-        if (hq == null) {
+	    if (Objects.isNull(hq)) {
             distanceComparator = (one, two) -> 0;
         } else {
             distanceComparator = new DistanceComparator(hq, dimensions);
@@ -75,7 +76,7 @@ public class WorkerTabularReportGenerator implements ITableGenerator<IWorker> {
             final int key, final Point loc, final Map<Integer, Integer> parentMap) {
         fixtures.remove(key);
         final WorkerStats stats = item.getStats();
-        if (stats == null) {
+	    if (Objects.isNull(stats)) {
             return Collections.singletonList(Stream.concat(Stream.of(
                             distanceString(loc, hq, dimensions), locationString(loc),
                             item.getName(), item.getRace()),

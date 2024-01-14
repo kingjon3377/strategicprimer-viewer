@@ -17,6 +17,7 @@ import java.sql.SQLException;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import static io.jenetics.facilejdbc.Param.value;
 
@@ -70,7 +71,7 @@ public final class DBAdventureHandler extends AbstractDatabaseWriter<AdventureFi
             final String image = (String) dbRow.get("image");
             final AdventureFixture adventure = new AdventureFixture(map.getPlayers().getPlayer(ownerId),
                     brief, full, id);
-            if (image != null) {
+	        if (!Objects.isNull(image)) {
                 adventure.setImage(image);
             }
             map.addFixture(new Point(row, column), adventure);

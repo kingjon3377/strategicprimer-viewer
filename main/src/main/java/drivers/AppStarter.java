@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.List;
 
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.function.BiConsumer;
 
@@ -55,7 +56,7 @@ import org.jetbrains.annotations.Nullable;
 		};
 
 		for (final String arg : args) {
-			if (arg == null) {
+			if (Objects.isNull(arg)) {
 				continue;
 			} else if ("-g".equals(arg) || "--gui".equals(arg)) {
 				LovelaceLogger.trace("User specified either -g or --gui");
@@ -99,7 +100,7 @@ import org.jetbrains.annotations.Nullable;
 				// TODO: Drop StreamSupport use if driverCache is changed to specify List.
 				.map(l -> StreamSupport.stream(l.spliterator(), false).collect(Collectors.toList()))
 				.orElse(Collections.emptyList());
-		if (command != null && !drivers.isEmpty()) {
+		if (!Objects.isNull(command) && !drivers.isEmpty()) {
 			final DriverFactory first = drivers.stream().findFirst().orElse(null);
 			LovelaceLogger.trace("Found a driver or drivers");
 			if (drivers.size() == 1) {
@@ -116,7 +117,7 @@ import org.jetbrains.annotations.Nullable;
 			currentDriver = null;
 		}
 		if (currentOptions.hasOption("--help")) {
-			if (currentDriver == null) {
+			if (Objects.isNull(currentDriver)) {
 				LovelaceLogger.trace("No driver selected, so giving choices.");
 				System.out.println("Strategic Primer assistive programs suite");
 				System.out.println("No app specified; use one of the following invocations:");
@@ -137,7 +138,7 @@ import org.jetbrains.annotations.Nullable;
 				System.out.println(AppChooserState.usageMessage(currentUsage,
 						"true".equals(options.getArgument("--verbose"))));
 			}
-		} else if (currentDriver != null) {
+		} else if (!Objects.isNull(currentDriver)) {
 			LovelaceLogger.trace("Starting chosen app.");
 			startChosenDriver.accept(currentDriver, currentOptions.copy());
 		} else {
@@ -157,7 +158,7 @@ import org.jetbrains.annotations.Nullable;
 				final DriverFactory chosenDriver = cli.chooseFromList(driverCache.values().stream()
 						.flatMap(i -> StreamSupport.stream(i.spliterator(), false))
 						.filter(AppStarter::includeInCLIList).collect(Collectors.toList()), "CLI apps available:", "No applications available", "App to start: ", ICLIHelper.ListChoiceBehavior.AUTO_CHOOSE_ONLY).getValue1();
-				if (chosenDriver != null) {
+				if (!Objects.isNull(chosenDriver)) {
 					new DriverWrapper(chosenDriver).startCatchingErrors(cli, options,
 							others.toArray(String[]::new));
 				}

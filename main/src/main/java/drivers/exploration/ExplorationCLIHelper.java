@@ -33,6 +33,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -77,7 +78,7 @@ public class ExplorationCLIHelper implements MovementCostListener, SelectionChan
      */
     private void changeSpeed() {
         final Speed temp = cli.chooseFromList(SPEED_CHOICES, "Possible Speeds:", "No speeds available", "Chosen Speed: ", ICLIHelper.ListChoiceBehavior.AUTO_CHOOSE_ONLY).getValue1();
-        if (temp != null) {
+	    if (!Objects.isNull(temp)) {
             speed = temp;
         }
     }
@@ -87,7 +88,7 @@ public class ExplorationCLIHelper implements MovementCostListener, SelectionChan
      */
     private void printAndTransferFixture(final Point destPoint, final @Nullable TileFixture fixture, final HasOwner mover,
                                          final boolean automatic) {
-        if (fixture != null) {
+	    if (!Objects.isNull(fixture)) {
             // TODO: Print a description of the form that will be copied (omitting acreage, etc.) unless already in sub-map(s).
             cli.print("- ");
             if (automatic) {
@@ -135,13 +136,13 @@ public class ExplorationCLIHelper implements MovementCostListener, SelectionChan
      */
     @Override
     public void selectedUnitChanged(final @Nullable IUnit old, final @Nullable IUnit newSelection) {
-        if (newSelection != null) { // TODO What if old == newSelection?
+	    if (!Objects.isNull(newSelection)) { // TODO What if old == newSelection?
             cli.print("Details of the unit (apparently at ");
             cli.print(model.getSelectedUnitLocation().toString());
             cli.println("):");
             cli.println(newSelection.getVerbose());
             final Integer number = cli.inputNumber("MP the unit has: ");
-            if (number != null) {
+		    if (!Objects.isNull(number)) {
                 totalMP = number;
                 runningTotal = decimalize(number);
             }
@@ -164,13 +165,13 @@ public class ExplorationCLIHelper implements MovementCostListener, SelectionChan
     // ExplorationModel.move() always sets it.
     public void moveOneStep() {
         final IUnit mover = model.getSelectedUnit();
-        if (mover == null) {
+	    if (Objects.isNull(mover)) {
             cli.println("No unit is selected");
         } else {
             final Point point = model.getSelectedUnitLocation();
             final Direction direction;
             final Point proposedDestination = proposedPath.pollFirst();
-            if (proposedDestination == null) {
+		    if (Objects.isNull(proposedDestination)) {
                 cli.println(String.format("%d/%d MP remaining. Current speed: %s.",
                         runningTotal.intValue(), totalMP, speed.getShortName()));
                 cli.printlnAtInterval(usage);
@@ -191,7 +192,7 @@ public class ExplorationCLIHelper implements MovementCostListener, SelectionChan
                     case 9 -> direction = Direction.Northeast;
                     case 10 -> {
                         final Point destination = cli.inputPoint("Location to move toward: ");
-                        if (destination == null) {
+					    if (Objects.isNull(destination)) {
                             // EOF
                             runningTotal = BigDecimal.ZERO;
                         } else {
@@ -269,19 +270,18 @@ public class ExplorationCLIHelper implements MovementCostListener, SelectionChan
             if (Direction.Nowhere == direction) {
                 while (true) {
                     final Boolean response = cli.inputBooleanInSeries("Take an action here?");
-                    if (response == null) {
+				    if (Objects.isNull(response)) {
                         // EOF
                         runningTotal = BigDecimal.ZERO;
                         return;
                     } else if (!response) {
                         break;
                     }
-                    final Either<SimpleApplet, Boolean> choice = appletChooser.chooseApplet();
-                    assert choice != null;
+                    final Either<SimpleApplet, Boolean> choice = Objects.requireNonNull(appletChooser.chooseApplet());
                     final SimpleApplet applet = choice.fromLeft().orElse(null);
                     final Boolean bool = choice.fromRight().orElse(null);
-                    if (applet == null) {
-                        if (bool == null) {
+				    if (Objects.isNull(applet)) {
+					    if (Objects.isNull(bool)) {
                             // EOF
                             runningTotal = BigDecimal.ZERO;
                             return;

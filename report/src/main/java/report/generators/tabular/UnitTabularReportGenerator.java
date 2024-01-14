@@ -19,6 +19,7 @@ import legacy.map.fixtures.UnitMember;
 import java.util.Comparator;
 import java.util.Map;
 import java.util.Arrays;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Collections;
 
@@ -39,7 +40,7 @@ public class UnitTabularReportGenerator implements ITableGenerator<IUnit> {
         this.player = player;
         this.hq = hq;
         this.dimensions = dimensions;
-        if (hq == null) {
+	    if (Objects.isNull(hq)) {
             distanceComparator = (one, two) -> 0;
         } else {
             distanceComparator = new DistanceComparator(hq, dimensions);

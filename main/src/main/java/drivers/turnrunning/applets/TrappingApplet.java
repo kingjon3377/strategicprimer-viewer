@@ -17,6 +17,8 @@ import drivers.turnrunning.ITurnRunningModel;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
+
 import org.javatuples.Pair;
 import org.jetbrains.annotations.Nullable;
 
@@ -44,36 +46,36 @@ import org.jetbrains.annotations.Nullable;
 		int cost;
 		cli.println(String.format("Found either %s or evidence of it escaping.", item.getKind()));
 		final Integer num = cli.inputNumber("How long to check and deal with the animal? ");
-		if (num == null) {
+		if (Objects.isNull(num)) {
 			return null;
 		}
 		cost = num;
 		final Boolean live = cli.inputBooleanInSeries("Is an animal captured live?");
-		if (live == null) {
+		if (Objects.isNull(live)) {
 			return null;
-		} else if (live && handleCapture(item) == null) {
+		} else if (live && Objects.isNull(handleCapture(item))) {
 			return null;
 		}
 		final Boolean process = cli.inputBooleanInSeries("Handle processing now?");
-		if (process == null) {
+		if (Objects.isNull(process)) {
 			return null;
 		} else if (process) {
 			final Integer processingTime = processMeat();
-			if (processingTime == null) {
+			if (Objects.isNull(processingTime)) {
 				return null;
 			}
 			cost += processingTime;
 		}
 		final Boolean reduce = cli.inputBooleanInSeries(String.format("Reduce animal group population of %d?",
 			item.getPopulation()));
-		if (reduce == null) {
+		if (Objects.isNull(reduce)) {
 			return null;
 		} else if (reduce) {
 			reducePopulation(loc, item, "animals", IFixture.CopyBehavior.ZERO);
 		} else {
 			model.copyToSubMaps(center, new AnimalTracks(item.getKind()), IFixture.CopyBehavior.KEEP);
 		}
-		if (model.getSelectedUnit() != null) {
+		if (!Objects.isNull(model.getSelectedUnit())) {
 			resourceEntry(model.getSelectedUnit().owner());
 		}
 		return cost;
@@ -84,15 +86,15 @@ import org.jetbrains.annotations.Nullable;
 		final StringBuilder buffer = new StringBuilder();
 		final Boolean fishing = cli.inputBooleanInSeries(
 			"Is this a fisherman trapping fish rather than a trapper?");
-		if (fishing == null) {
+		if (Objects.isNull(fishing)) {
 			return ""; // TODO: null, surely?
 		}
 		final Point center = confirmPoint("Location to search around: ");
-		if (center == null) {
+		if (Objects.isNull(center)) {
 			return ""; // TODO: null, surely?
 		}
 		final Integer startingTime = cli.inputNumber("Minutes to spend working: ");
-		if (startingTime == null) {
+		if (Objects.isNull(startingTime)) {
 			return ""; // TODO: null, surely?
 		}
 		final Iterator<Pair<Point, /*Animal|AnimalTracks|HuntingModel.NothingFound*/TileFixture>> encounters;
@@ -111,7 +113,7 @@ import org.jetbrains.annotations.Nullable;
 		while (time > 0) {
 			final TrapperCommand command = cli.chooseFromList(TRAPPER_COMMANDS, prompt,
 				"Oops! No commands", "Next action: ", ICLIHelper.ListChoiceBehavior.ALWAYS_PROMPT).getValue1();
-			if (command == null || TrapperCommand.Quit == command) {
+			if (Objects.isNull(command) || TrapperCommand.Quit == command) {
 				break;
 			}
 			boolean out = false;
@@ -138,7 +140,7 @@ import org.jetbrains.annotations.Nullable;
 					throw new IllegalStateException("Unhandled case from HuntingModel");
 				}
 				final Integer cost = handleFound(center, loc, (Animal) item);
-				if (cost == null) {
+				if (Objects.isNull(cost)) {
 					return null;
 				}
 				time -= cost;
@@ -172,7 +174,7 @@ import org.jetbrains.annotations.Nullable;
 			cli.print(inHours(time));
 			cli.println(" remaining.");
 			final String addendum = cli.inputMultilineString("Add to results about that:");
-			if (addendum == null) {
+			if (Objects.isNull(addendum)) {
 				return null;
 			}
 			buffer.append(addendum);

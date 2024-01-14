@@ -8,6 +8,7 @@ import javax.swing.JList;
 import legacy.map.fixtures.mobile.IUnit;
 
 import java.awt.Component;
+import java.util.Objects;
 
 import org.jetbrains.annotations.Nullable;
 
@@ -19,7 +20,7 @@ import org.jetbrains.annotations.Nullable;
                                                   final int index, final boolean isSelected, final boolean cellHasFocus) {
         final Component retval = DEFAULT_RENDERER.getListCellRendererComponent(list, val, index,
                 isSelected, cellHasFocus);
-        if (val != null && retval instanceof final JLabel label) {
+        if (!Objects.isNull(val) && retval instanceof final JLabel label) {
             label.setText(String.format("%s (%s)", val.getName(), val.getKind()));
         }
         return retval;

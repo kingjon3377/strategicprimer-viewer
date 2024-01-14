@@ -6,6 +6,7 @@ import java.util.HashMap;
 import either.Either;
 
 import java.util.Collections;
+import java.util.Objects;
 import java.util.stream.Stream;
 import java.util.List;
 import java.util.Optional;
@@ -66,7 +67,7 @@ public class AppletChooser<AppletClass extends Applet> {
 	public @Nullable Either<AppletClass, Boolean> chooseApplet() {
 		final String command = Optional.ofNullable(cli.inputString("Command:"))
 			.map(String::toLowerCase).orElse(null);
-		if (command == null) {
+		if (Objects.isNull(command)) {
 			return Either.right(false);
 		} else {
 			final List<Map.Entry<String, AppletClass>> matches =

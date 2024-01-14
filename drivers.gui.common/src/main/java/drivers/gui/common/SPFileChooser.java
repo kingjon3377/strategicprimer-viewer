@@ -16,6 +16,7 @@ import java.awt.Frame;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.io.File;
+import java.util.Objects;
 
 /**
  * An extension of the more-generic {@link FileChooser} class that, by default,
@@ -67,13 +68,13 @@ public class SPFileChooser extends FileChooser {
                                                                        final Path current, final @Nullable FileFilter filter) {
         if (Platform.SYSTEM_IS_MAC) {
             final FileDialog retval = new FileDialog((Frame) null);
-            if (filter != null) {
+	        if (!Objects.isNull(filter)) {
                 retval.setFilenameFilter((dir, name) -> filter.accept(new File(dir, name)));
             }
             return Either.right(retval);
         } else {
             final JFileChooser retval = new JFileChooser(current.toFile());
-            if (filter != null) {
+	        if (!Objects.isNull(filter)) {
                 retval.setFileFilter(filter);
             }
             return Either.left(retval);

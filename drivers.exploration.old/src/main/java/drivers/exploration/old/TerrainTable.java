@@ -10,6 +10,7 @@ import legacy.map.MapDimensions;
 import legacy.map.TileFixture;
 import legacy.map.fixtures.terrain.Forest;
 
+import java.util.Objects;
 import java.util.Set;
 import java.util.Map;
 import java.util.HashMap;
@@ -41,7 +42,7 @@ class TerrainTable implements EncounterTable {
     @Override
     public String generateEvent(final Point point, final @Nullable TileType terrain, final boolean mountainous,
                                 final Iterable<TileFixture> fixtures, final MapDimensions mapDimensions) {
-        if (terrain == null) {
+		if (Objects.isNull(terrain)) {
             throw new IllegalArgumentException(
                     "Terrain table can only account for visible terrain");
         }

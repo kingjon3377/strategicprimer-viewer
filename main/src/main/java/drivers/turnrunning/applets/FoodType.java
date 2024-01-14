@@ -29,7 +29,7 @@ import org.jetbrains.annotations.Nullable;
         for (final FoodType type : values()) {
             final Boolean resp = cli.inputBooleanInSeries(String.format("Is \"%s\" %s?", foodKind, type),
                     foodKind + type);
-            if (resp == null) {
+	        if (Objects.isNull(resp)) {
                 return null; // EOF
             } else if (resp) {
                 return type;
@@ -100,29 +100,29 @@ import org.jetbrains.annotations.Nullable;
             return false;
         } else if (pile.getCreated() >= turn) { // Created this turn or in the future
             return false;
-        } else if (keepsFor != null && age < keepsFor) {
+        } else if (!Objects.isNull(keepsFor) && age < keepsFor) {
             return false;
-        } else if (keepsForIfCool != null && age < keepsForIfCool) {
+        } else if (!Objects.isNull(keepsForIfCool) && age < keepsForIfCool) {
             final Boolean resp = cli.inputBooleanInSeries("Was this kept cool?", pile.getKind() + string + "cool");
-            if (resp == null) {
+	        if (Objects.isNull(resp)) {
                 return null;
             } else if (resp) {
                 return false;
             }
         }
-        if (keepsForRefrigerated != null && age < keepsForRefrigerated) {
+        if (!Objects.isNull(keepsForRefrigerated) && age < keepsForRefrigerated) {
             final Boolean resp = cli.inputBooleanInSeries("Was this kept refrigerated?",
                     pile.getKind() + string + "refrig");
-            if (resp == null) {
+	        if (Objects.isNull(resp)) {
                 return null;
             } else if (resp) {
                 return false;
             }
         }
-        if (keepsForFrozen != null && age < keepsForFrozen) {
+        if (!Objects.isNull(keepsForFrozen) && age < keepsForFrozen) {
             final Boolean resp = cli.inputBooleanInSeries("Was this kept frozen?",
                     pile.getKind() + string + "frozen");
-            if (resp == null) {
+	        if (Objects.isNull(resp)) {
                 return null;
             } else if (resp) {
                 return false;

@@ -23,6 +23,7 @@ import legacy.map.fixtures.mobile.IUnit;
 
 import javax.swing.event.ListDataListener;
 import javax.swing.event.ListDataEvent;
+import java.util.Objects;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.BiPredicate;
@@ -150,7 +151,7 @@ public class FixtureListModel implements ListModel<TileFixture>, SelectionChange
         final int oldSize = getSize();
         cachedTerrainList = Collections.emptyList();
         final TileType terrain = terrainSource.apply(newPoint);
-        if (terrain != null) {
+	    if (!Objects.isNull(terrain)) {
             cachedTerrainList = new ArrayList<>(Collections.singleton(
                     new TileTypeFixture(terrain)));
         }
@@ -168,7 +169,7 @@ public class FixtureListModel implements ListModel<TileFixture>, SelectionChange
         point = newPoint;
         currentTracks.clear();
         final AnimalTracks tracks = tracksSource.apply(newPoint);
-        if (tracks != null) {
+	    if (!Objects.isNull(tracks)) {
             currentTracks.add(tracks);
         }
         LovelaceLogger.trace("FixtureListModel.selectedPointChanged: Accounted for animal tracks");
@@ -219,17 +220,17 @@ public class FixtureListModel implements ListModel<TileFixture>, SelectionChange
     public boolean addFixture(final TileFixture fixture) {
         if (fixture instanceof final TileTypeFixture ttf) {
             final TileType existingTerrain = terrainSource.apply(point);
-            if (existingTerrain != null) {
+	        if (!Objects.isNull(existingTerrain)) {
                 if (existingTerrain == ttf.tileType()) {
                     return true;
-                } else if (terrainSink != null) {
+		        } else if (!Objects.isNull(terrainSink)) {
                     terrainSink.accept(point, ttf.tileType());
                     fireContentsChanged(new Range(0, 0));
                     return true;
                 } else {
                     return false;
                 }
-            } else if (terrainSink != null) {
+	        } else if (!Objects.isNull(terrainSink)) {
                 terrainSink.accept(point, ttf.tileType());
                 fireIntervalAdded(new Range(0, 0));
                 return true;
@@ -242,7 +243,7 @@ public class FixtureListModel implements ListModel<TileFixture>, SelectionChange
                 final Collection<River> coll = new ArrayList<>(existingRivers);
                 if (coll.containsAll(rf.getRivers())) {
                     return true;
-                } else if (addRivers != null) {
+                } else if (!Objects.isNull(addRivers)) {
                     addRivers.accept(point,
                             rf.getRivers().toArray(River[]::new));
                     int index = -1;
@@ -259,7 +260,7 @@ public class FixtureListModel implements ListModel<TileFixture>, SelectionChange
                 } else {
                     return false;
                 }
-            } else if (addRivers != null) {
+            } else if (!Objects.isNull(addRivers)) {
                 addRivers.accept(point,
                         rf.getRivers().toArray(River[]::new));
                 final int index = cachedTerrainList.size();
@@ -272,7 +273,7 @@ public class FixtureListModel implements ListModel<TileFixture>, SelectionChange
         } else if (fixture instanceof MountainFixture) {
             if (mountainSource.test(point)) {
                 return true;
-            } else if (mountainSink != null) {
+            } else if (!Objects.isNull(mountainSink)) {
                 final int index = cachedTerrainList.size();
                 mountainSink.accept(point, true);
                 fireIntervalAdded(new Range(index, index));
@@ -280,7 +281,7 @@ public class FixtureListModel implements ListModel<TileFixture>, SelectionChange
             } else {
                 return false;
             }
-        } else if (addFixtureLambda != null && addFixtureLambda.test(point, fixture)) {
+        } else if (!Objects.isNull(addFixtureLambda) && addFixtureLambda.test(point, fixture)) {
             final int index = indexOf(fixturesSource.apply(point), fixture);
             if (index >= 0) {
                 final int adjusted = adjustedIndex(index); // FIXME: Can this be right?
@@ -289,7 +290,7 @@ public class FixtureListModel implements ListModel<TileFixture>, SelectionChange
             } else {
                 return false; // TODO: This returns failure if a more-up-to-date version is already there
             }
-        } else if (addFixtureLambda != null) {
+        } else if (!Objects.isNull(addFixtureLambda)) {
             final int index = indexOf(fixturesSource.apply(point), fixture);
             if (index >= 0) {
                 final int adjusted = adjustedIndex(index);
@@ -312,10 +313,10 @@ public class FixtureListModel implements ListModel<TileFixture>, SelectionChange
         for (final TileFixture fixture : fixtures) {
             if (fixture instanceof TileTypeFixture) {
                 final TileType currentTerrain = terrainSource.apply(point);
-                if (currentTerrain != null &&
+                if (!Objects.isNull(currentTerrain) &&
                         currentTerrain == ((TileTypeFixture) fixture)
                                 .tileType()) {
-                    if (terrainSink == null) {
+	                if (Objects.isNull(terrainSink)) {
                         retval = false;
                     } else {
                         terrainSink.accept(point, null);
@@ -323,7 +324,7 @@ public class FixtureListModel implements ListModel<TileFixture>, SelectionChange
                     }
                 }
             } else if (fixture instanceof RiverFixture) {
-                if (removeRivers == null) {
+	            if (Objects.isNull(removeRivers)) {
                     retval = false;
                 } else {
                     final int index = cachedTerrainList.indexOf(fixture);
@@ -333,7 +334,7 @@ public class FixtureListModel implements ListModel<TileFixture>, SelectionChange
                     fireIntervalRemoved(new Range(index, index));
                 }
             } else if (fixture instanceof MountainFixture) {
-                if (mountainSink == null) {
+	            if (Objects.isNull(mountainSink)) {
                     retval = false;
                 } else {
                     final int index = cachedTerrainList.indexOf(fixture);
@@ -343,7 +344,7 @@ public class FixtureListModel implements ListModel<TileFixture>, SelectionChange
                 }
             } else if (fixturesSource.apply(point).contains(fixture)) {
                 final int index = indexOf(fixturesSource.apply(point), fixture);
-                if (removeFixture == null) {
+	            if (Objects.isNull(removeFixture)) {
                     retval = false;
                 } else {
                     removeFixture.accept(point, fixture);

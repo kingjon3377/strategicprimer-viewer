@@ -73,7 +73,7 @@ public final class DBMapReader {
 	}
 
 	private static @Nullable TileType parseTileType(final @Nullable String string) {
-		if (string == null || string.isEmpty()) {
+		if (Objects.isNull(string) || string.isEmpty()) {
 			return null;
 		}
 		try {
@@ -108,7 +108,7 @@ public final class DBMapReader {
 	public IMutableLegacyMap readMap(final Transactional db, final Warning warner) throws SQLException {
 		final Connection conn = db.connection();
 		final @Nullable Quartet<Integer, Integer, Integer, Integer> metadata = METADATA_SELECT.as(((RowParser<Quartet<Integer, Integer, Integer, Integer>>) DBMapReader::parseMetadata).singleNull(), conn);
-		if (metadata == null) {
+		if (Objects.isNull(metadata)) {
 			throw new IllegalStateException("No metadata in database");
 		}
 		final int version = metadata.getValue0();
@@ -141,7 +141,7 @@ public final class DBMapReader {
 				final boolean lake = tuple.getValue5();
 				final Point location = dbRow.getValue0();
 				final @Nullable TileType tileType = dbRow.getValue1();
-				if (tileType != null) {
+				if (!Objects.isNull(tileType)) {
 					retval.setBaseTerrain(location, tileType);
 				}
 				retval.setMountainous(location, mtn);
@@ -200,27 +200,27 @@ public final class DBMapReader {
 				final IFixture parent = containers.get(parentId);
 				if (!containers.containsKey(parentId)) {
 					throw new IllegalArgumentException("No parent for " + member);
-				} else if (parent == null) {
+				} else if (Objects.isNull(parent)) {
 					throw new IllegalArgumentException("Null parent");
-				} else if (member == null) {
+				} else if (Objects.isNull(member)) {
 					throw new IllegalArgumentException("Null member");
 				} else if (parent instanceof final IMutableFortress p && member instanceof final FortressMember m) {
 					p.addMember(m);
 				} else if (parent instanceof final IMutableUnit p && member instanceof final UnitMember m) {
 					p.addMember(m);
 				} else if (parent instanceof final AbstractTown p && member instanceof final CommunityStats m &&
-					p.getPopulation() == null) {
+					Objects.isNull(p.getPopulation())) {
 					p.setPopulation(m);
 				} else if (parent instanceof final Village p && member instanceof final CommunityStats m &&
-					p.getPopulation() == null) {
+					Objects.isNull(p.getPopulation())) {
 					p.setPopulation(m);
 				} else if (parent instanceof final IMutableWorker p && member instanceof final Animal m &&
-					p.getMount() == null) {
+					Objects.isNull(p.getMount())) {
 					p.setMount(m);
 				} else if (parent instanceof final IMutableWorker p && member instanceof final Implement m) {
 					p.addEquipment(m);
 				} else if (parent instanceof final AbstractTown p && member instanceof CommunityStats && // TODO: combine with earlier AbstractTown case?
-					p.getPopulation() != null) {
+					!Objects.isNull(p.getPopulation())) {
 					throw new IllegalStateException("Community stats already set");
 				} else {
 					throw new IllegalStateException(String.format("DB parent-child type invariants not met (parent %s, child %s)",

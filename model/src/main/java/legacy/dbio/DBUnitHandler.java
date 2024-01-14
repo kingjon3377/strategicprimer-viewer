@@ -121,7 +121,7 @@ public final class DBUnitHandler extends AbstractDatabaseWriter<IUnit, Object> i
         return (dbRow, warner) -> {
             final Integer turn = (Integer) dbRow.get("turn");
             final String orders = (String) dbRow.get("orders");
-            unit.setOrders(turn == null ? -1 : turn, orders);
+            unit.setOrders(Objects.requireNonNullElse(turn, -1), orders);
         };
     }
 
@@ -129,7 +129,7 @@ public final class DBUnitHandler extends AbstractDatabaseWriter<IUnit, Object> i
         return (dbRow, warner) -> {
             final Integer turn = (Integer) dbRow.get("turn");
             final String results = (String) dbRow.get("results");
-            unit.setResults(turn == null ? -1 : turn, results);
+            unit.setResults(Objects.requireNonNullElse(turn, -1), results);
         };
     }
 
@@ -146,10 +146,10 @@ public final class DBUnitHandler extends AbstractDatabaseWriter<IUnit, Object> i
             final String image = (String) dbRow.get("image");
             final String portrait = (String) dbRow.get("portrait");
             final IMutableUnit unit = new Unit(map.getPlayers().getPlayer(ownerNum), kind, name, id);
-            if (image != null) {
+	        if (!Objects.isNull(image)) {
                 unit.setImage(image);
             }
-            if (portrait != null) {
+	        if (!Objects.isNull(portrait)) {
                 unit.setPortrait(portrait);
             }
             handleQueryResults(db, warner, "turns' orders", readOrders(unit),
@@ -158,7 +158,7 @@ public final class DBUnitHandler extends AbstractDatabaseWriter<IUnit, Object> i
                     SELECT_RESULTS, id);
             final Integer row = (Integer) dbRow.get("row");
             final Integer column = (Integer) dbRow.get("column");
-            if (row != null && column != null) {
+            if (!Objects.isNull(row) && !Objects.isNull(column)) {
                 map.addFixture(new Point(row, column), unit);
             } else {
                 multimapPut(containees, (Integer) dbRow.get("parent"), unit);

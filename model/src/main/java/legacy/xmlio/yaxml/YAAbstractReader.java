@@ -29,6 +29,7 @@ import impl.xmlio.exceptions.UnsupportedPropertyException;
 import impl.xmlio.exceptions.UnsupportedTagException;
 import lovelace.util.IteratorWrapper;
 
+import java.util.Objects;
 import java.util.regex.Pattern;
 
 import static impl.xmlio.ISPReader.SP_NAMESPACE;
@@ -121,7 +122,7 @@ abstract class YAAbstractReader<Item, Value> implements YAReader<Item, Value> {
      */
     private static @Nullable Attribute getAttributeByName(final StartElement element, final String parameter) {
         final Attribute retval = element.getAttributeByName(qname(parameter));
-        if (retval == null) {
+	    if (Objects.isNull(retval)) {
             return element.getAttributeByName(new QName(parameter));
         } else {
             return retval;
@@ -133,9 +134,9 @@ abstract class YAAbstractReader<Item, Value> implements YAReader<Item, Value> {
      */
     protected static String getParameter(final StartElement element, final String param) throws SPFormatException {
         final Attribute attr = getAttributeByName(element, param);
-        if (attr != null) {
+	    if (!Objects.isNull(attr)) {
             final String retval = attr.getValue();
-            if (retval != null) {
+		    if (!Objects.isNull(retval)) {
                 return retval;
             }
         }
@@ -147,9 +148,9 @@ abstract class YAAbstractReader<Item, Value> implements YAReader<Item, Value> {
      */
     protected static String getParameter(final StartElement element, final String param, final String defaultValue) {
         final Attribute attr = getAttributeByName(element, param);
-        if (attr != null) {
+	    if (!Objects.isNull(attr)) {
             final String retval = attr.getValue();
-            if (retval != null) {
+		    if (!Objects.isNull(retval)) {
                 return retval;
             }
         }
@@ -167,7 +168,7 @@ abstract class YAAbstractReader<Item, Value> implements YAReader<Item, Value> {
      * Whether the given tag has the given parameter.
      */
     protected static boolean hasParameter(final StartElement element, final String param) {
-        return getAttributeByName(element, param) != null;
+	    return !Objects.isNull(getAttributeByName(element, param));
     }
 
     /**
@@ -269,9 +270,9 @@ abstract class YAAbstractReader<Item, Value> implements YAReader<Item, Value> {
     protected static int getIntegerParameter(final StartElement element, final String parameter)
             throws SPFormatException {
         final Attribute attr = getAttributeByName(element, parameter);
-        if (attr != null) {
+	    if (!Objects.isNull(attr)) {
             final String retval = attr.getValue();
-            if (retval != null) {
+		    if (!Objects.isNull(retval)) {
                 try {
                     return parseInt(retval, element.getLocation());
                 } catch (final ParseException except) {
@@ -288,9 +289,9 @@ abstract class YAAbstractReader<Item, Value> implements YAReader<Item, Value> {
     protected static int getIntegerParameter(final StartElement element, final String parameter, final int defaultValue)
             throws SPFormatException {
         final Attribute attr = getAttributeByName(element, parameter);
-        if (attr != null) {
+	    if (!Objects.isNull(attr)) {
             final String retval = attr.getValue();
-            if (retval != null) {
+		    if (!Objects.isNull(retval)) {
                 try {
                     return parseInt(retval, element.getLocation());
                 } catch (final ParseException except) {
@@ -448,7 +449,7 @@ abstract class YAAbstractReader<Item, Value> implements YAReader<Item, Value> {
     protected static boolean getBooleanParameter(final StartElement element, final String parameter)
             throws SPFormatException {
         final Attribute attr = getAttributeByName(element, parameter);
-        if (attr != null) {
+	    if (!Objects.isNull(attr)) {
             final String val = attr.getValue();
             if ("true".equalsIgnoreCase(val)) {
                 return true;
@@ -468,9 +469,9 @@ abstract class YAAbstractReader<Item, Value> implements YAReader<Item, Value> {
     protected boolean getBooleanParameter(final StartElement element, final String parameter, final boolean defaultValue)
             throws SPFormatException {
         final Attribute attr = getAttributeByName(element, parameter);
-        if (attr != null) {
+	    if (!Objects.isNull(attr)) {
             final String val = attr.getValue();
-            if (val != null && !val.isEmpty()) {
+            if (!Objects.isNull(val) && !val.isEmpty()) { // TODO: Convert (inverted) to 'else' below
                 if ("true".equalsIgnoreCase(val)) {
                     return true;
                 } else if ("false".equalsIgnoreCase(val)) {
@@ -530,16 +531,16 @@ abstract class YAAbstractReader<Item, Value> implements YAReader<Item, Value> {
     protected String getParamWithDeprecatedForm(final StartElement element, final String preferred,
                                                 final String deprecated) throws SPFormatException {
         final Attribute preferredProperty = getAttributeByName(element, preferred);
-        if (preferredProperty != null) {
+	    if (!Objects.isNull(preferredProperty)) {
             final String retval = preferredProperty.getValue();
-            if (retval != null) {
+		    if (!Objects.isNull(retval)) {
                 return retval;
             }
         }
         final Attribute deprecatedProperty = getAttributeByName(element, deprecated);
-        if (deprecatedProperty != null) {
+	    if (!Objects.isNull(deprecatedProperty)) {
             final String retval = deprecatedProperty.getValue();
-            if (retval != null) {
+		    if (!Objects.isNull(retval)) {
                 warner.handle(new DeprecatedPropertyException(element, deprecated,
                         preferred));
                 return retval;

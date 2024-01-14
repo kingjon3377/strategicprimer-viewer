@@ -7,6 +7,7 @@ import legacy.map.fixtures.mobile.IUnit;
 import drivers.map_viewer.FixtureList;
 
 import java.util.Collections;
+import java.util.Objects;
 import java.util.function.Supplier;
 import javax.swing.ListModel;
 import javax.swing.SwingUtilities;
@@ -42,7 +43,7 @@ import org.jetbrains.annotations.Nullable;
 
     private void selectedPointChangedImpl() {
         final IUnit selectedUnit = driverModel.getSelectedUnit();
-        if (outsideCritical && selectedUnit != null) {
+        if (outsideCritical && !Objects.isNull(selectedUnit)) {
             outsideCritical = false;
             mainList.clearSelection();
             final List<Pair<Integer, TileFixture>> constants = new ArrayList<>();

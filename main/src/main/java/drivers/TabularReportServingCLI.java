@@ -2,6 +2,7 @@ package drivers;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Function;
 
@@ -78,7 +79,7 @@ import org.takes.http.Exit;
 					map -> Optional.ofNullable(map.getFilename()).orElseGet(
 						() -> Paths.get("unknown.xml")),
 					Function.identity()));
-		} else if (model.getMap().getFilename() != null) {
+		} else if (!Objects.isNull(model.getMap().getFilename())) {
 			mapping = Collections.singletonMap(model.getMap().getFilename(), model.getMap());
 		} else {
 			mapping = Collections.singletonMap(Paths.get("unknown.xml"), model.getMap());
@@ -103,7 +104,7 @@ import org.takes.http.Exit;
 		final ThrowingBiConsumer<ILegacyMap, @Nullable Path, DriverFailedException> createReports =
 			(map, mapFile) -> {
 				try {
-					if (mapFile == null) {
+					if (Objects.isNull(mapFile)) {
 						LovelaceLogger.error("Asked to create reports from map with no filename");
 						TabularReportGenerator.createTabularReports(map,
 								filenameFunction.apply(Paths.get("unknown.xml")), cli);

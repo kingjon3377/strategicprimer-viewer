@@ -32,7 +32,7 @@ public final class RemoveEntityPropertyChangeset<PropertyType> implements Change
 
 	private void checkPreconditions(final @NotNull IMap map) throws ChangesetFailureException {
 		final IEntity matching = map.getEntity(id);
-		if (matching == null) {
+		if (Objects.isNull(matching)) {
 			throw new PreconditionFailureException("Cannot remove property from nonexistent entity");
 		} else if (!Objects.equals(matching.getProperty(propertyName), propertyValue)) {
 			throw new PreconditionFailureException("Cannot remove property from entity when value doesn't match");

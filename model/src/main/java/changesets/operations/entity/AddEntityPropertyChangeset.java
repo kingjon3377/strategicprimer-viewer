@@ -32,7 +32,7 @@ public final class AddEntityPropertyChangeset<PropertyType> implements Changeset
 
 	private void checkPreconditions(final @NotNull IMap map) throws ChangesetFailureException {
 		final IEntity entity = map.getEntity(id);
-		if (entity == null) {
+		if (Objects.isNull(entity)) {
 			throw new PreconditionFailureException("Cannot add property to entity that does not exist in the map");
 		} else if (entity.hasProperty(propertyName)) {
 			throw new PreconditionFailureException("Cannot add already-existing property to entity");

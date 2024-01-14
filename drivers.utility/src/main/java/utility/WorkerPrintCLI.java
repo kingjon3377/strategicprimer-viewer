@@ -5,6 +5,7 @@ import legacy.map.fixtures.UnitMember;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.Objects;
 import java.util.stream.StreamSupport;
 import java.util.stream.IntStream;
 import java.util.stream.Collectors;
@@ -65,7 +66,7 @@ import exploration.common.IExplorationModel;
                 cli.print(" (", worker.getRace(), ")");
             }
 
-            if (worker.getMount() != null) {
+	        if (!Objects.isNull(worker.getMount())) {
                 cli.print(" (mounted on ", worker.getMount().getKind(), ")");
             }
 
@@ -78,7 +79,7 @@ import exploration.common.IExplorationModel;
             }
 
             final WorkerStats stats = worker.getStats();
-            if (stats != null) {
+	        if (!Objects.isNull(stats)) {
                 final Iterator<String> statsIterator = IntStream.of(stats.array())
                         .mapToObj(WorkerStats::getModifierString).iterator();
                 final Iterator<String> labelIterator = statLabelArray.iterator();
@@ -101,9 +102,9 @@ import exploration.common.IExplorationModel;
     @Override
     public void startDriver() {
         final Player player = cli.chooseFromList((List<? extends Player>) new ArrayList<>(model.getPlayerChoices()), "Players in the map:", "No players", "Player owning the unit:", ICLIHelper.ListChoiceBehavior.ALWAYS_PROMPT).getValue1();
-        if (player != null) {
+	    if (!Objects.isNull(player)) {
             final IUnit unit = cli.chooseFromList((List<? extends IUnit>) model.getUnits(player), "Units of that player:", "No units", "Unit to print:", ICLIHelper.ListChoiceBehavior.ALWAYS_PROMPT).getValue1();
-            if (unit != null) {
+		    if (!Objects.isNull(unit)) {
                 printWorkers(unit);
             }
         }

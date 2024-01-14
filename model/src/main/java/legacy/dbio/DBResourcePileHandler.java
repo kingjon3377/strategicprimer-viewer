@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 import java.math.BigDecimal;
+import java.util.Objects;
 
 import legacy.map.IMutableLegacyMap;
 import legacy.map.TileFixture;
@@ -89,10 +90,10 @@ public final class DBResourcePileHandler
 			}
 			final IMutableResourcePile pile = new ResourcePileImpl(id, kind, contents,
 				new LegacyQuantity(quantity, units));
-			if (image != null) {
+			if (!Objects.isNull(image)) {
 				pile.setImage(image);
 			}
-			if (created != null) {
+			if (!Objects.isNull(created)) {
 				pile.setCreated(created);
 			}
 			multimapPut(containees, parentId, pile);

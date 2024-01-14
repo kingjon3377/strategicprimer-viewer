@@ -12,6 +12,7 @@ import drivers.turnrunning.ITurnRunningModel;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 import org.jetbrains.annotations.Nullable;
@@ -50,14 +51,14 @@ import org.jetbrains.annotations.Nullable;
         final StringBuilder builder = new StringBuilder();
         boolean another;
         final Boolean respOne = cli.inputBooleanInSeries("Add resources to the map?", name + "resources");
-        if (respOne == null) {
+	    if (Objects.isNull(respOne)) {
             return null;
         } else {
             another = respOne;
         }
         while (another) {
             final IResourcePile resource = raHelper.enterResource();
-            if (resource == null) {
+	        if (Objects.isNull(resource)) {
                 break;
             }
             if (model.addExistingResource(resource,
@@ -68,14 +69,14 @@ import org.jetbrains.annotations.Nullable;
                 cli.println("Failed to find a fortress to add to in any map");
             }
             final Boolean respTwo = cli.inputBoolean("Add another resource?");
-            if (respTwo == null) {
+	        if (Objects.isNull(respTwo)) {
                 return null;
             } else {
                 another = respTwo;
             }
         }
         final String addendum = cli.inputMultilineString("Description of results:");
-        if (addendum == null) {
+	    if (Objects.isNull(addendum)) {
             return null;
         } else {
             builder.append(addendum);

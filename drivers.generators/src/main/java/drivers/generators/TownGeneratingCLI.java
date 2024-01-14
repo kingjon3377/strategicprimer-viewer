@@ -1,6 +1,7 @@
 package drivers.generators;
 
 import java.io.IOException;
+import java.util.Objects;
 
 import drivers.common.DriverFailedException;
 import drivers.exploration.old.MissingTableException;
@@ -51,7 +52,7 @@ public class TownGeneratingCLI implements CLIDriver {
         final IDRegistrar idf = IDFactoryFiller.createIDFactory(
                 model.streamAllMaps().toArray(ILegacyMap[]::new));
         final Boolean specific = cli.inputBoolean("Enter or generate stats for just specific towns? ");
-        if (specific == null) {
+	    if (Objects.isNull(specific)) {
             return;
         } else if (specific) {
             generator.generateSpecificTowns(idf, model);

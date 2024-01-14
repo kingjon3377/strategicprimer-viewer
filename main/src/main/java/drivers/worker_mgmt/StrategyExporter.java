@@ -11,6 +11,7 @@ import legacy.map.fixtures.towns.IFortress;
 
 import java.io.Writer;
 import java.io.BufferedWriter;
+import java.util.Objects;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.StreamSupport;
@@ -74,7 +75,7 @@ import legacy.map.fixtures.mobile.worker.IJob;
                         .collect(Collectors.toList());
             }
             boolean needsClosingParen = false;
-            if (((IWorker) member).getMount() != null) {
+	        if (!Objects.isNull(((IWorker) member).getMount())) {
                 writer.write(" (on ");
                 writer.write(((IWorker) member).getMount().getKind());
                 needsClosingParen = true;
@@ -108,7 +109,7 @@ import legacy.map.fixtures.mobile.worker.IJob;
             if (animal.getBorn() >= 0) {
                 writer.write(String.format(" (born turn %d)", animal.getBorn()));
             }
-        } else if (member != null) {
+        } else if (!Objects.isNull(member)) {
             writer.write(member.toString());
         }
     }
@@ -169,7 +170,7 @@ import legacy.map.fixtures.mobile.worker.IJob;
     private static String workerString(final @Nullable UnitMember member) {
         if (member instanceof final HasName hn) {
             return hn.getName();
-        } else if (member == null) {
+        } else if (Objects.isNull(member)) {
             return "";
         } else {
             return member.toString();
@@ -210,7 +211,7 @@ import legacy.map.fixtures.mobile.worker.IJob;
             writer.write("[Player: ");
             writer.write(playerName);
             writer.newLine();
-            if (currentPlayer.getCountry() != null &&
+            if (!Objects.isNull(currentPlayer.getCountry()) &&
                     !currentPlayer.getCountry().isBlank()) {
                 writer.write("Country: ");
                 writer.write(currentPlayer.getCountry());
