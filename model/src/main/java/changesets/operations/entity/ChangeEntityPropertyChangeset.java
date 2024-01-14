@@ -8,7 +8,6 @@ import common.entity.EntityIdentifier;
 import common.entity.EntityProperty;
 import common.entity.IEntity;
 import common.entity.IMutableEntity;
-import common.entity.PropertyImpl;
 import common.map.IMap;
 import common.map.IMutableMap;
 import org.jetbrains.annotations.NotNull;
@@ -47,11 +46,11 @@ public final class ChangeEntityPropertyChangeset<FromType, ToType> implements Ch
 	public void applyInPlace(final @NotNull IMutableMap map) throws ChangesetFailureException {
 		checkPreconditions(map);
 		final IEntity matching = Objects.requireNonNull(map.getEntity(id));
-		final EntityProperty<ToType> property = new PropertyImpl<>(propertyName, newValue);
+		final EntityProperty<ToType> property = new EntityProperty<>(propertyName, newValue);
 		if (matching instanceof final IMutableEntity entity) {
 			entity.setProperty(property);
 		} else {
-			final EntityProperty<FromType> oldProperty = new PropertyImpl<>(propertyName, oldValue);
+			final EntityProperty<FromType> oldProperty = new EntityProperty<>(propertyName, oldValue);
 			final IMutableEntity entity = new Entity(matching.getId(), matching.getLocation(), matching.getType());
 			matching.getAllProperties().stream().filter(Predicate.not(oldProperty::equals)).forEach(entity::setProperty);
 			entity.setProperty(property);
@@ -64,8 +63,8 @@ public final class ChangeEntityPropertyChangeset<FromType, ToType> implements Ch
 		checkPreconditions(map);
 		final IMutableMap retval = (IMutableMap) map.copy();
 		final IEntity matching = Objects.requireNonNull(map.getEntity(id));
-		final EntityProperty<FromType> oldProperty = new PropertyImpl<>(propertyName, oldValue);
-		final EntityProperty<ToType> newProperty = new PropertyImpl<>(propertyName, newValue);
+		final EntityProperty<FromType> oldProperty = new EntityProperty<>(propertyName, oldValue);
+		final EntityProperty<ToType> newProperty = new EntityProperty<>(propertyName, newValue);
 		final IMutableEntity entity = new Entity(matching.getId(), matching.getLocation(), matching.getType());
 		matching.getAllProperties().stream().filter(Predicate.not(oldProperty::equals)).forEach(entity::setProperty);
 		entity.setProperty(newProperty);

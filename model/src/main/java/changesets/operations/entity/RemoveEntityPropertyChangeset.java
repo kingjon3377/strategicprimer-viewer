@@ -8,7 +8,6 @@ import common.entity.EntityIdentifier;
 import common.entity.EntityProperty;
 import common.entity.IEntity;
 import common.entity.IMutableEntity;
-import common.entity.PropertyImpl;
 import common.map.IMap;
 import common.map.IMutableMap;
 import org.jetbrains.annotations.NotNull;
@@ -44,7 +43,7 @@ public final class RemoveEntityPropertyChangeset<PropertyType> implements Change
 	public void applyInPlace(final @NotNull IMutableMap map) throws ChangesetFailureException {
 		checkPreconditions(map);
 		final IEntity matching = Objects.requireNonNull(map.getEntity(id));
-		final EntityProperty<PropertyType> property = new PropertyImpl<>(propertyName, propertyValue);
+		final EntityProperty<PropertyType> property = new EntityProperty<>(propertyName, propertyValue);
 		if (matching instanceof final IMutableEntity entity) {
 			entity.removeProperty(property);
 		} else {
@@ -60,7 +59,7 @@ public final class RemoveEntityPropertyChangeset<PropertyType> implements Change
 		checkPreconditions(map);
 		final IMutableMap retval = (IMutableMap) map.copy();
 		final IEntity matching = Objects.requireNonNull(map.getEntity(id));
-		final EntityProperty<PropertyType> property = new PropertyImpl<>(propertyName, propertyValue);
+		final EntityProperty<PropertyType> property = new EntityProperty<>(propertyName, propertyValue);
 		final IMutableEntity entity = new Entity(matching.getId(), matching.getLocation(), matching.getType());
 		matching.getAllProperties().stream().filter(p -> !Objects.equals(p, property)).forEach(entity::setProperty);
 		retval.replaceEntity(matching, entity);

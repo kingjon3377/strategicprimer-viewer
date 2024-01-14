@@ -53,7 +53,7 @@ public class Entity implements IMutableEntity {
 	}
 
 	public final void setProperty(final @NotNull EntityProperty<?> property) {
-		properties.put(property.getPropertyName(), property);
+		properties.put(property.propertyName(), property);
 	}
 
 	public final void removeProperty(final @NotNull String propertyName) {
@@ -61,7 +61,7 @@ public class Entity implements IMutableEntity {
 	}
 
 	public final void removeProperty(final @NotNull EntityProperty<?> property) {
-		properties.remove(property.getPropertyName(), property);
+		properties.remove(property.propertyName(), property);
 	}
 
 	@Override

@@ -3,11 +3,8 @@ package common.entity;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * An interface for strongly-typed entity properties. Basically an object and its type, for use in serialization, but
- * for ease of use also including the property name. TODO: Convert to record, combining with PropertyImpl?
+ * A class for strongly-typed entity properties. Basically a strongly-typed object, for use in serialization, but
+ * for ease of use also including the property name.
  */
-public interface EntityProperty<T> {
-	@NotNull String getPropertyName();
-
-	@NotNull T getPropertyValue();
+public record EntityProperty<T>(@NotNull String propertyName, @NotNull T propertyValue) {
 }
