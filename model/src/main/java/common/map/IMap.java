@@ -13,6 +13,7 @@ import java.util.Collection;
  */
 public interface IMap {
 	@Nullable IEntity getEntity(@NotNull EntityIdentifier id);
+
 	@NotNull Collection<IEntity> getAllEntities();
 
 	/**
@@ -20,6 +21,7 @@ public interface IMap {
 	 * and no two regions have the same ID number.
 	 */
 	@NotNull Collection<MapRegion> getRegions();
+
 	static boolean areRegionsValid(final @NotNull Collection<? extends MapRegion> regions) {
 		for (final MapRegion first : regions) {
 			for (final MapRegion second : regions) {
@@ -45,6 +47,7 @@ public interface IMap {
 	 * mutable and modify it in place?
 	 */
 	@NotNull IPlayerCollection getPlayers();
+
 	/**
 	 * TODO: Do we want to have some notion of "copy for whom" in this version of the API?
 	 *

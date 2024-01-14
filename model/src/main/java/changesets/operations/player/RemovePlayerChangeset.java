@@ -11,9 +11,11 @@ import org.jetbrains.annotations.NotNull;
 
 public final class RemovePlayerChangeset implements Changeset {
 	private final Player player;
+
 	public RemovePlayerChangeset(final @NotNull Player player) {
 		this.player = player;
 	}
+
 	public @NotNull Changeset invert() {
 		return new AddPlayerChangeset(player);
 	}
@@ -27,6 +29,7 @@ public final class RemovePlayerChangeset implements Changeset {
 		}
 		throw new PreconditionFailureException("Cannot remove player if not present in the map");
 	}
+
 	@Override
 	public void applyInPlace(final @NotNull IMutableMap map) throws ChangesetFailureException {
 		checkPrecondition(map);

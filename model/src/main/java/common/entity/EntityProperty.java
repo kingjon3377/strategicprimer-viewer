@@ -8,5 +8,6 @@ import org.jetbrains.annotations.NotNull;
  */
 public interface EntityProperty<T> {
 	@NotNull String getPropertyName();
+
 	@NotNull T getPropertyValue();
 }
