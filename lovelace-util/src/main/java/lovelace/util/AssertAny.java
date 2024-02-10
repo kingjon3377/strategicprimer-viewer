@@ -46,7 +46,7 @@ public final class AssertAny {
 			try {
 				assertion.run();
 				return;
-			} catch (final AssertionFailedError failure) {
+			} catch (@SuppressWarnings("ErrorNotRethrown") final AssertionFailedError failure) {
 				failures.add(failure);
 			}
 		}
