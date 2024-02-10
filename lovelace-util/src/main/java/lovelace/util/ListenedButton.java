@@ -24,7 +24,7 @@ public final class ListenedButton extends JButton {
 
     /**
      * Alternate constructor for the common case where there's only one listener
-     * and it doesn't care about the parameter.
+     * that doesn't care about the parameter.
      */
     public ListenedButton(final String text, final Runnable listener) {
         this(text, ignored -> listener.run());
