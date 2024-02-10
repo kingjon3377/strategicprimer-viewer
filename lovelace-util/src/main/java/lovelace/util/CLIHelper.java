@@ -20,26 +20,25 @@ public final class CLIHelper {
 	}
 
 	/**
-	 * Ask the user to choose an item from the given list; return the item the user chooses, or null if the process
-	 * fails for any reason or the list was empty.
+	 * If the given list contains exactly one item, return it; if it is empty return null; otherwise ask the user to
+	 * choose an item from the list, and return the item the user chooses, or null if the process
+	 * fails for any reason.
 	 *
 	 * @param header  The header to print before the list. If null, no header is printed.
 	 * @param prompt  The prompt to print to ask the user for his or her choice.
-	 * @param auto  If true, and there is only one item in the list, return it without prompting the user.
 	 * @param choices The list for the user to choose from, defined as tuples of user-friendly descriptions and the
 	 *                objects themselves.
 	 */
 	@SafeVarargs
-	public static @Nullable <Element> Element chooseFromList(
+	public static @Nullable <Element> Element chooseFromListWithAuto(
 		final @Nullable String header,
 		final @NotNull String prompt,
-		final boolean auto,
 		final Pair<String, Element>... choices) {
 		if (choices.length > 0) {
 			if (!Objects.isNull(header)) {
 				System.out.println(header);
 			}
-			if (auto && choices.length == 1) {
+			if (choices.length == 1) { // TODO: Why print the header in this case?
 				final String desc = choices[0].getValue0();
 				final Element item = choices[0].getValue1();
 				System.out.print("Automatically choosing only item, ");
@@ -53,6 +52,37 @@ public final class CLIHelper {
 				} else {
 					return null;
 				}
+			}
+		} else {
+			return null;
+		}
+	}
+
+	/**
+	 * Ask the user to choose an item from the given list; return the item the user chooses, or null if the process
+	 * fails for any reason or the list was empty.
+	 *
+	 * @param header  The header to print before the list. If null, no header is printed.
+	 * @param prompt  The prompt to print to ask the user for his or her choice.
+	 * @param auto  If true, and there is only one item in the list, return it without prompting the user.
+	 * @param choices The list for the user to choose from, defined as tuples of user-friendly descriptions and the
+	 *                objects themselves.
+	 */
+	@SafeVarargs
+	public static @Nullable <Element> Element chooseFromList(
+		final @Nullable String header,
+		final @NotNull String prompt,
+		final Pair<String, Element>... choices) {
+		if (choices.length > 0) {
+			if (!Objects.isNull(header)) {
+				System.out.println(header);
+			}
+			printList(Stream.of(choices).map(Pair::getValue0).toArray(String[]::new));
+			final @Nullable Integer index = inputNumber(prompt);
+			if (!Objects.isNull(index) && index >= 0 && index < choices.length) {
+				return choices[index].getValue1();
+			} else {
+				return null;
 			}
 		} else {
 			return null;
