@@ -40,9 +40,7 @@ public class MemoizedComboBox extends ImprovedComboBox<String> {
      */
     public void checkAndClear() {
         final String selectedItem = getSelectedItem();
-        if (Objects.isNull(selectedItem)) {
-            return;
-        } else {
+        if (Objects.nonNull(selectedItem)) {
             final String item = selectedItem.strip();
             if (!item.isEmpty() && !values.contains(item)) {
                 values.add(item);
