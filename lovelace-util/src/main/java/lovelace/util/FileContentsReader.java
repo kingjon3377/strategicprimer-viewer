@@ -13,21 +13,22 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 public final class FileContentsReader {
-    private FileContentsReader() {
-    }
+	private FileContentsReader() {
+	}
 
-    private static InputStream getResourceAsStream(final Class<?> cls, final String filename) throws NoSuchFileException {
-        return Optional.ofNullable(Optional.ofNullable(cls.getResourceAsStream(filename))
-                        .orElseGet(() -> cls.getClassLoader().getResourceAsStream(filename)))
-                .orElseThrow(() -> new NoSuchFileException(filename));
-    }
+	private static InputStream getResourceAsStream(final Class<?> cls, final String filename)
+			throws NoSuchFileException {
+		return Optional.ofNullable(Optional.ofNullable(cls.getResourceAsStream(filename))
+				.orElseGet(() -> cls.getClassLoader().getResourceAsStream(filename)))
+			.orElseThrow(() -> new NoSuchFileException(filename));
+	}
 
 	public static Iterable<String> readFileContents(final Class<?> cls, final Path path) throws IOException {
 		if (Files.isReadable(path)) {
 			return Files.readAllLines(path, StandardCharsets.UTF_8);
 		} else {
 			try (final BufferedReader reader = new BufferedReader(new InputStreamReader(getResourceAsStream(cls,
-					path.toString()), StandardCharsets.UTF_8))) {
+				path.toString()), StandardCharsets.UTF_8))) {
 				return reader.lines().collect(Collectors.toList());
 			}
 		}
