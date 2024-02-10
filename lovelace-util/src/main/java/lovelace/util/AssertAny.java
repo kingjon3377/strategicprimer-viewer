@@ -61,7 +61,7 @@ public final class AssertAny {
 	/**
 	 * Verify that at least one of the given assertions passes.
 	 *
-	 * @param assertions the gorup of assertions
+	 * @param assertions the group of assertions
 	 */
 	public static void assertAny(final Runnable... assertions) {
 		final List<AssertionFailedError> failures = new ArrayList<>();
