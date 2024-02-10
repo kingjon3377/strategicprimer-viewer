@@ -50,6 +50,11 @@ public final class AssertAny {
 				failures.add(failure);
 			}
 		}
+		if (failures.isEmpty()) {
+			return; // only happens if no assertions provided
+		} else if (failures.size() == 1) {
+			throw failures.getFirst();
+		}
 		throw new MultipleFailureException(failures, message);
 	}
 
