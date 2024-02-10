@@ -13,7 +13,7 @@ public final class TestIsNumeric {
 	@Test
 	public void testIsNumeric() {
 		assertTrue(isNumeric("1"), "1 is numeric");
-		assertFalse(isNumeric("xyzzy"), "xyzzy is not numeric");
+		assertFalse(isNumeric("non-numeric"), "a word is not numeric");
 		assertTrue(isNumeric("1,000"), "A number with commas is numeric");
 	}
 
