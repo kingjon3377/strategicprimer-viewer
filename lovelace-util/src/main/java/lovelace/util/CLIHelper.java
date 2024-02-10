@@ -113,6 +113,21 @@ public final class CLIHelper {
 	}
 
 	/**
+	 * Parse a single number from a Scanner's next line. Returns null on EOF or error reading the line; returns -1 on
+	 * non-numeric input.
+	 */
+	private static @Nullable Integer inputNumberImpl(final Scanner scanner) {
+		try {
+			final String input = scanner.nextLine();
+			return Integer.parseInt(input);
+		} catch (final NoSuchElementException | IllegalStateException except) {
+			return null;
+		} catch (final NumberFormatException except) {
+			return -1;
+		}
+	}
+
+	/**
 	 * Ask the user to enter a nonnegative integer. Loops until one is
 	 * provided on the standard input. Returns null on EOF.
 	 */
@@ -121,13 +136,11 @@ public final class CLIHelper {
 		try (final Scanner scanner = new Scanner(SystemIn.STDIN)) {
 			while (retval < 0) {
 				writePrompt(prompt);
-				try {
-					final String input = scanner.nextLine();
-					retval = Integer.parseInt(input);
-				} catch (final NoSuchElementException | IllegalStateException except) {
+				Integer temp = inputNumberImpl(scanner);
+				if (temp == null) {
 					return null;
-				} catch (final NumberFormatException except) {
-					retval = -1;
+				} else {
+					retval = temp;
 				}
 			}
 			return retval;
