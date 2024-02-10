@@ -315,6 +315,7 @@ public class FileChooser {
 			invoke(this::haveUserChooseFiles);
 		}
 		if (storedFile.isEmpty()) {
+			//noinspection NewExceptionWithoutArguments
 			throw new ChoiceInterruptedException();
 		} else {
 			return storedFile;
