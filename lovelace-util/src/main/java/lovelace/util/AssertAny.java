@@ -38,7 +38,7 @@ public final class AssertAny {
 	 * Verify that at least one of the given assertions passes.
 	 *
 	 * @param message the message describing the problem
-	 * @param assertions the gorup of assertions
+	 * @param assertions the group of assertions
 	 */
 	public static void assertAny(final String message, final Runnable... assertions) {
 		final List<AssertionFailedError> failures = new ArrayList<>();

@@ -60,7 +60,7 @@ public final class BoxPanel extends JPanel {
 		add(Box.createRigidArea(dimensionObject));
 	}
 
-	/* Create a panel laid out by a {@link }BoxLayout} on the line axis, with glue at each end and a
+	/* Create a panel laid out by a {@link BoxLayout} on the line axis, with glue at each end and a
 	small rigid area between each component. */
 	public static BoxPanel centeredHorizontalBox(final Component... items) {
 		final BoxPanel retval = new BoxPanel(BoxAxis.LineAxis);
