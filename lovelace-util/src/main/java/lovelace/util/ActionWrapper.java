@@ -24,4 +24,9 @@ public class ActionWrapper extends AbstractAction {
 	public void actionPerformed(final ActionEvent event) {
 		wrapped.actionPerformed(event);
 	}
+
+	@Override
+	public String toString() {
+		return "ActionWrapper wrapping " + wrapped;
+	}
 }

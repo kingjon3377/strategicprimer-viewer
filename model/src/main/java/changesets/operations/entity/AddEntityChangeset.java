@@ -46,4 +46,9 @@ public final class AddEntityChangeset implements Changeset {
 		retval.addEntity(entity);
 		return retval;
 	}
+
+	@Override
+	public String toString() {
+		return "AddEntityChangeset adding " + entity;
+	}
 }
