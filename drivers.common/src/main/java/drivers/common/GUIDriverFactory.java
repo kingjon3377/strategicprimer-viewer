@@ -17,7 +17,7 @@ public interface GUIDriverFactory extends ModelDriverFactory {
 	 *
 	 * @param cli The interface to interact with the user, either on the
 	 * console or in a window emulating a console
-	 * @param options Any (already-processed) command-line options"
+	 * @param options Any (already-processed) command-line options
 	 * @param model The driver-model that should be used by the app.
 	 */
 	@Override

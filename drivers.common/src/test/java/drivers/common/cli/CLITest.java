@@ -42,7 +42,7 @@ public final class CLITest {
 	 * @param resultMessage The assertion message for the assertion that the result is as expected.
 	 * @param outputMessage The assertion message for the assertion that the output is as expected.
 	 *
-	 * In Ceylon we provided defaults for resultMessage and outputMessage ("CLIHelper method result
+	 * In Ceylon, we provided defaults for resultMessage and outputMessage ("CLIHelper method result
 	 * was as expected" and "CLIHelper output was as expected"
 	 * respectively), but I won't add overloads for that unless I have to.
 	 */

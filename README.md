@@ -40,14 +40,14 @@ significantly incompatible with past versions.
 
 Past development activities have been recorded in "monthly" development reports
 on [the game's
-blog](https://strategicprimer.wordpress.com/category/development-reports) and, before that, 
+blog](https://strategicprimer.wordpress.com/category/development-reports) and, before that,
 [on the author's main blog](https://shinecycle.wordpress.com/tag/assistive/).
 Interested developers or users can help by reporting issues, requesting
 features, or contributing patches; discussion of the game itself, rather than
 the assistive programs that will support it, is welcome on [the
 list](https://groups.io/g/strategicprimer) or in private communications.
 
-Changes to this project are automatically tested using Github Actions continuous
+Changes to this project are automatically tested using GitHub Actions continuous
 integration: [![Build
 Status](https://github.com/kingjon3377/strategicprimer-viewer/actions/workflows/build.yml/badge.svg)
 ](https://github.com/kingjon3377/strategicprimer-viewer/actions/workflows/build.yml)

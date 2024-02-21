@@ -81,14 +81,14 @@ public enum TileType implements HasName {
 
     /**
      * The map versions that support the tile type as such. (For example,
-     * version 2 an later replace forests as a tile type with forests as
+     * versions 2 and later replace forests as a tile type with forests as
      * something on the tile.)
      */
     private final Set<Integer> versions = new HashSet<>();
 
     /**
      * The map versions that support the tile type as such. (For example,
-     * version 2 an later replace forests as a tile type with forests as
+     * versions 2 and later replace forests as a tile type with forests as
      * something on the tile.)
      */
     public Collection<Integer> getVersions() {

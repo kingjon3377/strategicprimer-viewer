@@ -183,7 +183,7 @@ public final class ProxyJob implements IJob, ProxyFor<IJob> {
     }
 
     /**
-     * Whether all of the Jobs this is a proxy for are "empty," ie having
+     * Whether every Job this is a proxy for is "empty," ie having
      * no levels and containing no Skills that report either levels or
      * hours of experience.
      */

@@ -349,7 +349,7 @@ public class HuntingModel {
 
     /**
      * Get a stream of fishing results from the area surrounding the given
-     * tile. About half will be "nothing". May be an infinite stream.
+     * tile. About half will be "nothing". This may be an infinite stream.
      *
      * @param point Whereabouts to search
      */

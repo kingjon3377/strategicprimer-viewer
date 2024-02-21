@@ -152,7 +152,7 @@ public interface ITableGenerator<T extends IFixture> {
 
     /**
      * If the given point is valid, return its {@link
-     * Point#toString} string representation}; otherwise, return "unknown".
+     * Point#toString} string representation; otherwise, return "unknown".
      */
     default String locationString(final Point location) {
         return (location.isValid()) ? location.toString() : "unknown";

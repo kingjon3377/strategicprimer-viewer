@@ -85,8 +85,8 @@ import java.util.stream.Collectors;
 	}
 
 	/**
-	 * A mapping from positions (normalized so they could be spit out into
-	 * a spreadsheet) to {@link LodeStatus}es.
+	 * A mapping from positions (normalized to allow writing into a spreadsheet)
+	 * to {@link LodeStatus}es.
 	 */
 	private final Map<Pair<Integer, Integer>, LodeStatus> data;
 

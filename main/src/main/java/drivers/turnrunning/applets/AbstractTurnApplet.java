@@ -56,7 +56,7 @@ public abstract class AbstractTurnApplet implements TurnApplet {
 		final Pair<Integer, @Nullable String> entry = cli.chooseStringFromList(
 			items.stream().map(converter).collect(Collectors.toList()), description,
 			none, prompt, behavior);
-		// N.B. can't inline using Optional because we *test* the right side of the pair, then *use* the left side.
+		// N.B. can't use Optional to inline because we *test* the right side of the pair, then *use* the left side.
 		if (Objects.isNull(entry.getValue1())) {
 			return null;
 		} else {

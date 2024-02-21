@@ -195,7 +195,7 @@ public final class WindowList {
 	 *            activated window.
 	 * @param includeInvisible
 	 *            if this is false then only visible Windows will be returned.
-	 *            Otherwise all Windows will be returned.
+	 *            Otherwise, all Windows will be returned.
 	 */
 	public static Window[] getWindows(final boolean sortByLayer,
 	                                  final boolean includeInvisible) {

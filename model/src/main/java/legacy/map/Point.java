@@ -28,7 +28,7 @@ public record Point(int row, int column) implements Comparable<Point> {
 	}
 
 	/**
-	 * The standard "invalid point.
+	 * The standard "invalid point."
 	 */
 	public static final Point INVALID_POINT = new Point(-1, -1);
 

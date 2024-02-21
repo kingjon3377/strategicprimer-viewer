@@ -54,7 +54,7 @@ public final class SPMenu extends JMenuBar {
     // FIXME: setDefaultQuit()
 
     /**
-     * If the given driver isn't of any of the specfied driver types, disable the
+     * If the given driver isn't one of the specfied driver types, disable the
      * given menu-item; regardless, return the menu item.
      */
     @SafeVarargs

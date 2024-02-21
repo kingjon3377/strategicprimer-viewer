@@ -29,7 +29,7 @@ import legacy.map.IMutableLegacyMap;
 import com.google.auto.service.AutoService;
 
 /**
- * An factory for the exploration GUI.
+ * A factory for the exploration GUI.
  */
 @AutoService(DriverFactory.class)
 public class ExplorationGUIFactory implements GUIDriverFactory {

@@ -39,7 +39,7 @@ import lovelace.util.LovelaceLogger;
      * use in fixture lists. They are all public domain, found on either
      * OpenClipArt or Pixabay and then adjusted to a square aspect ratio.
      * (Except for 'mountain', which has been in the repository for a long
-     * time because it was used by the Mountain tile fixture.
+     * time because it was used by the Mountain tile fixture.)
      */
     @Override
     public String getDefaultImage() {

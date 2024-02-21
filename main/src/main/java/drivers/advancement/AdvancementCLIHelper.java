@@ -28,7 +28,7 @@ import org.javatuples.Pair;
 import org.jetbrains.annotations.Nullable;
 
 /**
- * Logic extracted from the advancement CLI so it can be used by the turn-running CLI as well.
+ * Logic extracted from the advancement CLI to also use in the turn-running CLI as well.
  */
 public class AdvancementCLIHelper implements LevelGainSource {
 	public AdvancementCLIHelper(final IAdvancementModel model, final ICLIHelper cli) {

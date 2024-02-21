@@ -212,9 +212,9 @@ import java.util.function.Predicate;
 
 	/**
 	 * Search for the current pattern. If the pattern is found (as the ID
-	 * of a fixture, or the name of a {@link HasName}, or the kind of a
-	 * {@link HasKind}), select the tile containing the thing found. If the
-	 * pattern is the empty string, don't search.
+	 * of a fixture, or the name of a {@link HasName}, or a {@link HasKind}'s
+	 * kind), select the tile containing the thing found. If the pattern is
+	 * the empty string, don't search.
 	 */
 	public void search() {
 		final String pattern;

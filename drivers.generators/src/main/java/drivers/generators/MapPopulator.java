@@ -8,7 +8,7 @@ import legacy.idreg.IDRegistrar;
 /**
  * An interface for map-populating passes to implement. Create an object
  * satisfying this interface, and assign a reference to it to the designated
- * field in {@link MapPopulatorDriver}, and run the driver."
+ * field in {@link MapPopulatorDriver}, and run the driver.
  /* package */
 interface MapPopulator {
     /**

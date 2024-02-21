@@ -3,7 +3,7 @@ package legacy.map;
 /**
  * An encapsulation of a map's dimensions (and its map version as well).
  */
-// This is an interface so we can make a mock object "implementing" it and
+// This is an interface to allow us to make a mock object "implementing" it and
 // guarantee it is never referenced by making all of its getters throw.
 public interface MapDimensions {
     /**

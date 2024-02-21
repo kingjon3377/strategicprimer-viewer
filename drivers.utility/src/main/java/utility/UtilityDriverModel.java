@@ -119,7 +119,7 @@ public class UtilityDriverModel extends SimpleMultiMapModel {
 	/**
 	 * Conditionally remove duplicate fixtures. Returns a list of fixtures
 	 * that would be removed and a callback to do the removal; the initial
-	 * caller of this asks the user for approval.
+	 * caller of this method asks the user for approval.
 	 */
 	public Iterable<Quartet<Consumer<TileFixture>, @Nullable Path, TileFixture, Iterable<? extends TileFixture>>>
 	conditionallyRemoveDuplicates(final Point location) {

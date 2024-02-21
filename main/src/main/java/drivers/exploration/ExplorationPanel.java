@@ -459,7 +459,7 @@ import worker.common.IFixtureEditHelper;
 		}
 
 		/**
-		 * A menu of actions the explorer can take when moving 'nowhere'."
+		 * A menu of actions the explorer can take when moving 'nowhere'.
 		 */
 		public JPopupMenu getExplorerActionsMenu() {
 			return explorerActionsMenu;

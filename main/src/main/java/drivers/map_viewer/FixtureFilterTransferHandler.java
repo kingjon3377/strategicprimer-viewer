@@ -28,8 +28,8 @@ import drivers.common.FixtureMatcher;
     private static final long serialVersionUID = 1L;
 
     /**
-     * A drag/drop operation is supported iff it is a supported flavor and
-     * it is or can be coerced to be a move operation.
+     * A drag/drop operation is supported if and only if both it is a
+     * supported flavor and it is or can be coerced to be a move operation.
      */
     @Override
     public boolean canImport(final TransferSupport support) {

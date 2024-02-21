@@ -142,7 +142,7 @@ public class Ground implements MineralFixture, HasMutableImage {
     }
 
     /**
-     * If we ignore ID, a fixture is equal if if it is a Ground with equal
+     * If we ignore ID, a fixture is equal if it is a Ground with equal
      * kind and either both or neither are exposed.
      */
     @Override

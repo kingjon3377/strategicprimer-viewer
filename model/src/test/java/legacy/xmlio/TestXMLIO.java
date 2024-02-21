@@ -693,7 +693,7 @@ public final class TestXMLIO {
 	}
 
 	/**
-	 * Test (de)serialization of {@link Village villages'} {@link CommunityStats population details}."
+	 * Test (de)serialization of {@link Village villages'} {@link CommunityStats population details}.
 	 */
 	@ParameterizedTest
 	@MethodSource

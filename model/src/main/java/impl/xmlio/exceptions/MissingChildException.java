@@ -7,7 +7,7 @@ import javax.xml.stream.events.StartElement;
 import java.io.Serial;
 
 /**
- * A custom exception for when a tag requires a child and it isn't there.
+ * A custom exception for when a tag requires a child but the child is not present.
  */
 public class MissingChildException extends SPFormatException {
     @Serial

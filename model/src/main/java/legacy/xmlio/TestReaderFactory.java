@@ -19,7 +19,7 @@ public final class TestReaderFactory {
     /**
      * The "new" (currently-used-by-default) reader implementation.
      * (Actually older than {@link #getOldSPReader}, but we switched back because
-     * this is the faster implementation.
+     * this is the faster implementation.)
      */
     public static ISPReader getNewSPReader() {
         return new SPFluidReader();
@@ -28,7 +28,7 @@ public final class TestReaderFactory {
     /**
      * The "new" (currently-used-by-default) reader implementation.
      * (Actually older than {@link #getOldMapReader()}, but we switched back because
-     * this is the faster implementation.
+     * this is the faster implementation.)
      */
     public static IMapReader getNewMapReader() {
         return new SPFluidReader();
