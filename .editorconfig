@@ -25,6 +25,8 @@ indent_size = 4
 [sample_map.xml]
 indent_style = tab
 indent_size = 4
+xml_space_before_self_closing = true
+space_before_self_closing = true
 
 [*.java]
 indent_style = tab
