@@ -20,26 +20,26 @@ import com.google.auto.service.AutoService;
  */
 @AutoService(DriverFactory.class)
 public class TurnRunningCLIFactory implements ModelDriverFactory {
-    private static final IDriverUsage USAGE = new DriverUsage(false, "run-turn", ParamCount.AtLeastTwo,
-            "Run a turn's orders and enter results", "Run a player's orders for a turn and enter results.",
-            true, false, "--current-turn=NN");
+	private static final IDriverUsage USAGE = new DriverUsage(false, "run-turn", ParamCount.AtLeastTwo,
+			"Run a turn's orders and enter results", "Run a player's orders for a turn and enter results.",
+			true, false, "--current-turn=NN");
 
-    @Override
-    public IDriverUsage getUsage() {
-        return USAGE;
-    }
+	@Override
+	public IDriverUsage getUsage() {
+		return USAGE;
+	}
 
-    @Override
-    public ModelDriver createDriver(final ICLIHelper cli, final SPOptions options, final IDriverModel model) {
-        if (model instanceof final ITurnRunningModel trm) {
-            return new TurnRunningCLI(cli, trm);
-        } else {
-            return createDriver(cli, options, new TurnRunningModel(model));
-        }
-    }
+	@Override
+	public ModelDriver createDriver(final ICLIHelper cli, final SPOptions options, final IDriverModel model) {
+		if (model instanceof final ITurnRunningModel trm) {
+			return new TurnRunningCLI(cli, trm);
+		} else {
+			return createDriver(cli, options, new TurnRunningModel(model));
+		}
+	}
 
-    @Override
-    public IDriverModel createModel(final IMutableLegacyMap map) {
-        return new TurnRunningModel(map);
-    }
+	@Override
+	public IDriverModel createModel(final IMutableLegacyMap map) {
+		return new TurnRunningModel(map);
+	}
 }

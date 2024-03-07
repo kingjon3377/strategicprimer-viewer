@@ -28,9 +28,9 @@ public class FixtureMatcher {
 	 * type that additionally match the given predicate.
 	 */
 	public static <FixtureType extends TileFixture> FixtureMatcher simpleMatcher(
-		final Class<FixtureType> type, final Predicate<FixtureType> method, final String description) {
+			final Class<FixtureType> type, final Predicate<FixtureType> method, final String description) {
 		final Predicate<TileFixture> predicate = (fixture) ->
-			type.isInstance(fixture) && method.test((FixtureType) fixture);
+				type.isInstance(fixture) && method.test((FixtureType) fixture);
 		return new FixtureMatcher(predicate, description);
 	}
 
@@ -39,10 +39,10 @@ public class FixtureMatcher {
 	 * that match and that do not match the given predicate.
 	 */
 	public static <FixtureType extends TileFixture> Iterable<FixtureMatcher> complements(
-		final Class<FixtureType> cls, final Predicate<FixtureType> method, final String firstDescription,
-		final String secondDescription) {
+			final Class<FixtureType> cls, final Predicate<FixtureType> method, final String firstDescription,
+			final String secondDescription) {
 		return Arrays.asList(simpleMatcher(cls, method, firstDescription),
-			simpleMatcher(cls, method.negate(), secondDescription));
+				simpleMatcher(cls, method.negate(), secondDescription));
 	}
 
 	private final Predicate<TileFixture> matchesImpl;

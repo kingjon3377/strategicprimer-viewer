@@ -11,27 +11,27 @@ import javax.swing.JComponent;
  * The part of the key showing a tile's color.
  */
 /* package */ final class KeyElementComponent extends JComponent {
-    @Serial
-    private static final long serialVersionUID = 1L;
+	@Serial
+	private static final long serialVersionUID = 1L;
 
-    public KeyElementComponent(final Color color, final Dimension minimum, final Dimension preferred,
-                               final Dimension maximum) {
-        setMinimumSize(minimum);
-        setPreferredSize(preferred);
-        setMaximumSize(maximum);
-        this.color = color;
-    }
+	public KeyElementComponent(final Color color, final Dimension minimum, final Dimension preferred,
+							   final Dimension maximum) {
+		setMinimumSize(minimum);
+		setPreferredSize(preferred);
+		setMaximumSize(maximum);
+		this.color = color;
+	}
 
-    private final Color color;
+	private final Color color;
 
-    @Override
-    public void paint(final Graphics pen) {
-        final Graphics context = pen.create();
-        try {
-            context.setColor(color);
-            context.fillRect(0, 0, getWidth(), getHeight());
-        } finally {
-            context.dispose();
-        }
-    }
+	@Override
+	public void paint(final Graphics pen) {
+		final Graphics context = pen.create();
+		try {
+			context.setColor(color);
+			context.fillRect(0, 0, getWidth(), getHeight());
+		} finally {
+			context.dispose();
+		}
+	}
 }

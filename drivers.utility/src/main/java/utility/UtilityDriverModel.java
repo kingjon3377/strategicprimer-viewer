@@ -69,7 +69,7 @@ import exploration.common.SimpleMovementModel;
  */
 public class UtilityDriverModel extends SimpleMultiMapModel {
 	private static <Desired, Provided> Consumer<Provided> ifApplicable(final Consumer<Desired> func,
-	                                                                   final Class<Desired> cls) {
+																	   final Class<Desired> cls) {
 		return (item) -> {
 			if (cls.isInstance(item)) {
 				func.accept((Desired) item);
@@ -107,10 +107,10 @@ public class UtilityDriverModel extends SimpleMultiMapModel {
 			final TileType mainTerrain = map.getBaseTerrain(location);
 			final TileType subTerrain = subordinateMap.getBaseTerrain(location);
 			if (!Objects.isNull(mainTerrain) && !Objects.isNull(subTerrain) && mainTerrain == subTerrain &&
-				!map.getRivers(location).isEmpty() &&
-				subordinateMap.getRivers(location).isEmpty()) {
+					!map.getRivers(location).isEmpty() &&
+					subordinateMap.getRivers(location).isEmpty()) {
 				subordinateMap.addRivers(location,
-					map.getRivers(location).toArray(River[]::new));
+						map.getRivers(location).toArray(River[]::new));
 				subordinateMap.setModified(true);
 			}
 		}
@@ -124,10 +124,10 @@ public class UtilityDriverModel extends SimpleMultiMapModel {
 	public Iterable<Quartet<Consumer<TileFixture>, @Nullable Path, TileFixture, Iterable<? extends TileFixture>>>
 	conditionallyRemoveDuplicates(final Point location) {
 		final List<Quartet<Consumer<TileFixture>, @Nullable Path, TileFixture, Iterable<? extends TileFixture>>>
-			duplicatesList = new ArrayList<>();
+				duplicatesList = new ArrayList<>();
 		final List<TileFixture> checked = new ArrayList<>();
 		final Predicate<TileFixture> noneMatch =
-			item -> checked.stream().noneMatch(inner -> item == inner);
+				item -> checked.stream().noneMatch(inner -> item == inner);
 		for (final IMutableLegacyMap map : getRestrictedAllMaps()) {
 			for (final TileFixture fixture : map.getFixtures(location)) {
 				checked.add(fixture);
@@ -136,20 +136,20 @@ public class UtilityDriverModel extends SimpleMultiMapModel {
 				} else if (fixture instanceof CacheFixture) {
 					continue;
 				} else if (fixture instanceof final HasPopulation hp &&
-					hp.getPopulation() > 0) {
+						hp.getPopulation() > 0) {
 					continue;
 				} else if (fixture instanceof final HasExtent he &&
-					he.getAcres().doubleValue() > 0.0) {
+						he.getAcres().doubleValue() > 0.0) {
 					continue;
 				}
 				final List<TileFixture> matching = map.getFixtures(location).stream()
-					.filter(noneMatch)
-					.filter(fixture::equalsIgnoringID)
-					.collect(Collectors.toList());
+						.filter(noneMatch)
+						.filter(fixture::equalsIgnoringID)
+						.collect(Collectors.toList());
 				if (!matching.isEmpty()) {
 					duplicatesList.add(Quartet.with(
-						item -> map.removeFixture(location, item),
-						map.getFilename(), fixture, matching));
+							item -> map.removeFixture(location, item),
+							map.getFilename(), fixture, matching));
 				}
 			}
 		}
@@ -157,29 +157,29 @@ public class UtilityDriverModel extends SimpleMultiMapModel {
 	}
 
 	private static List<Quartet<Runnable, String, String, Collection<? extends IFixture>>> coalesceImpl(
-		final String context, final Iterable<? extends IFixture> stream, final Consumer<IFixture> add,
-		final Consumer<IFixture> remove, final Runnable setModFlag,
-		final Map<Class<? extends IFixture>, CoalescedHolder<? extends IFixture, ?>> handlers) {
+			final String context, final Iterable<? extends IFixture> stream, final Consumer<IFixture> add,
+			final Consumer<IFixture> remove, final Runnable setModFlag,
+			final Map<Class<? extends IFixture>, CoalescedHolder<? extends IFixture, ?>> handlers) {
 		final List<Quartet<Runnable, String, String, Collection<? extends IFixture>>> retval =
-			new ArrayList<>();
+				new ArrayList<>();
 		for (final IFixture fixture : stream) {
 			if (fixture instanceof FixtureIterable) {
 				final String shortDesc = (fixture instanceof final TileFixture tf) ?
-					tf.getShortDescription() : fixture.toString();
+						tf.getShortDescription() : fixture.toString();
 				if (fixture instanceof final IMutableUnit u) {
 					retval.addAll(coalesceImpl(
-						String.format("%sIn %s: ", context, shortDesc),
-						u,
-						ifApplicable(u::addMember, UnitMember.class),
-						ifApplicable(u::removeMember, UnitMember.class),
-						setModFlag, handlers));
+							String.format("%sIn %s: ", context, shortDesc),
+							u,
+							ifApplicable(u::addMember, UnitMember.class),
+							ifApplicable(u::removeMember, UnitMember.class),
+							setModFlag, handlers));
 				} else if (fixture instanceof final IMutableFortress f) {
 					retval.addAll(coalesceImpl(
-						String.format("%sIn %s: ", context, shortDesc),
-						(IMutableFortress) fixture,
-						ifApplicable(f::addMember, FortressMember.class),
-						ifApplicable(f::removeMember, FortressMember.class),
-						setModFlag, handlers));
+							String.format("%sIn %s: ", context, shortDesc),
+							(IMutableFortress) fixture,
+							ifApplicable(f::addMember, FortressMember.class),
+							ifApplicable(f::removeMember, FortressMember.class),
+							setModFlag, handlers));
 				} else {
 					LovelaceLogger.warning("Unhandled fixture in coalesceImpl()");
 				}
@@ -206,7 +206,7 @@ public class UtilityDriverModel extends SimpleMultiMapModel {
 				}
 				retval.add(Quartet.with(() -> {
 					final IFixture combined = handler.combineRaw(
-						list.toArray(IFixture[]::new));
+							list.toArray(IFixture[]::new));
 					list.forEach(remove);
 					add.accept(combined);
 					setModFlag.run();
@@ -223,19 +223,19 @@ public class UtilityDriverModel extends SimpleMultiMapModel {
 	 */
 	public Collection<Quartet<Runnable, String, String, Collection<? extends IFixture>>>
 	conditionallyCoalesceResources(final Point location,
-	                               final Map<Class<? extends IFixture>,
-		                               CoalescedHolder<? extends IFixture, ?>> handlers) {
+								   final Map<Class<? extends IFixture>,
+										   CoalescedHolder<? extends IFixture, ?>> handlers) {
 		final List<Quartet<Runnable, String, String, Collection<? extends IFixture>>> retval = new ArrayList<>();
 		for (final IMutableLegacyMap map : getRestrictedAllMaps()) {
 			retval.addAll(coalesceImpl(
-				String.format("In %s: At %s: ",
-					Optional.ofNullable(map.getFilename())
-						.map(Path::toString).orElse("a new file"),
-					location),
-				map.getFixtures(location),
-				ifApplicable(fix -> map.addFixture(location, fix), TileFixture.class),
-				ifApplicable(fix -> map.removeFixture(location, fix), TileFixture.class),
-				() -> map.setModified(true), handlers));
+					String.format("In %s: At %s: ",
+							Optional.ofNullable(map.getFilename())
+									.map(Path::toString).orElse("a new file"),
+							location),
+					map.getFixtures(location),
+					ifApplicable(fix -> map.addFixture(location, fix), TileFixture.class),
+					ifApplicable(fix -> map.removeFixture(location, fix), TileFixture.class),
+					() -> map.setModified(true), handlers));
 		}
 		return retval;
 	}
@@ -253,7 +253,7 @@ public class UtilityDriverModel extends SimpleMultiMapModel {
 				subMap.setBaseTerrain(location, null);
 			}
 			subMap.removeRivers(location,
-				map.getRivers(location).toArray(River[]::new));
+					map.getRivers(location).toArray(River[]::new));
 			final Map<Direction, Integer> mainRoads = map.getRoads(location);
 			final Map<Direction, Integer> knownRoads = subMap.getRoads(location);
 			for (final Map.Entry<Direction, Integer> entry : knownRoads.entrySet()) {
@@ -269,7 +269,7 @@ public class UtilityDriverModel extends SimpleMultiMapModel {
 			final List<TileFixture> toRemove = new ArrayList<>();
 			for (final TileFixture fixture : subMap.getFixtures(location)) {
 				if (map.getFixtures(location).stream()
-					.anyMatch(item -> isSubset(item, fixture))) {
+						.anyMatch(item -> isSubset(item, fixture))) {
 					toRemove.add(fixture);
 				}
 			}
@@ -281,19 +281,19 @@ public class UtilityDriverModel extends SimpleMultiMapModel {
 
 	private static List<Forest> extractForests(final ILegacyMap map, final Point location) {
 		return map.getFixtures(location).stream().filter(Forest.class::isInstance)
-			.map(Forest.class::cast).collect(Collectors.toList());
+				.map(Forest.class::cast).collect(Collectors.toList());
 	}
 
 	private static List<Ground> extractGround(final ILegacyMap map, final Point location) {
 		return map.getFixtures(location).stream().filter(Ground.class::isInstance)
-			.map(Ground.class::cast).collect(Collectors.toList());
+				.map(Ground.class::cast).collect(Collectors.toList());
 	}
 
 	public void fixForestsAndGround(final Consumer<String> ostream) {
 		for (final ILegacyMap map : getSubordinateMaps()) {
 			ostream.accept(String.format("Starting %s",
-				Optional.ofNullable(map.getFilename())
-					.map(Path::toString).orElse("a map with no associated path")));
+					Optional.ofNullable(map.getFilename())
+							.map(Path::toString).orElse("a map with no associated path")));
 
 			for (final Point location : map.getLocations()) {
 				final List<Forest> mainForests = extractForests(getMap(), location);
@@ -303,10 +303,10 @@ public class UtilityDriverModel extends SimpleMultiMapModel {
 						continue;
 					}
 					final Forest matching = mainForests.stream()
-						.filter(forest::equalsIgnoringID).findAny().orElse(null);
+							.filter(forest::equalsIgnoringID).findAny().orElse(null);
 					if (Objects.isNull(matching)) {
 						ostream.accept(String.format("Unmatched forest in %s: %s",
-							location, forest));
+								location, forest));
 						getRestrictedMap().addFixture(location, forest.copy(IFixture.CopyBehavior.KEEP));
 						setMapModified(true);
 					} else {
@@ -322,10 +322,10 @@ public class UtilityDriverModel extends SimpleMultiMapModel {
 						continue;
 					}
 					final Ground matching = mainGround.stream()
-						.filter(ground::equalsIgnoringID).findAny().orElse(null);
+							.filter(ground::equalsIgnoringID).findAny().orElse(null);
 					if (Objects.isNull(matching)) {
 						ostream.accept(String.format("Unmatched ground in %s: %s",
-							location, ground));
+								location, ground));
 						getRestrictedMap().addFixture(location, ground.copy(IFixture.CopyBehavior.KEEP));
 						setMapModified(true);
 					} else {
@@ -342,13 +342,13 @@ public class UtilityDriverModel extends SimpleMultiMapModel {
 		final Consumer<String> noop = x -> {
 		};
 		final Predicate<TileFixture> newSubsetOfOld =
-			f -> f instanceof final SubsettableFixture sf && sf.isSubset(fixture, noop);
+				f -> f instanceof final SubsettableFixture sf && sf.isSubset(fixture, noop);
 		if (map.getFixtures(point).stream().anyMatch(equality.or(newSubsetOfOld))) {
 			return;
 		}
 		final IFixture.CopyBehavior cb;
 		if (fixture instanceof final HasOwner owned && !(fixture instanceof ITownFixture) &&
-			owned.owner().equals(currentPlayer)) {
+				owned.owner().equals(currentPlayer)) {
 			cb = IFixture.CopyBehavior.KEEP;
 		} else {
 			cb = IFixture.CopyBehavior.ZERO;
@@ -356,9 +356,9 @@ public class UtilityDriverModel extends SimpleMultiMapModel {
 		final TileFixture zeroed = fixture.copy(cb);
 		final Predicate<TileFixture> zeroedEquals = zeroed::equals;
 		final Predicate<TileFixture> zeroedSubsetOfOld =
-			f -> f instanceof final SubsettableFixture sf && sf.isSubset(zeroed, noop);
+				f -> f instanceof final SubsettableFixture sf && sf.isSubset(zeroed, noop);
 		final Predicate<TileFixture> oldSubsetOfZeroed =
-			f -> zeroed instanceof final SubsettableFixture sf && sf.isSubset(f, noop);
+				f -> zeroed instanceof final SubsettableFixture sf && sf.isSubset(f, noop);
 		if (map.getFixtures(point).stream().noneMatch(zeroedEquals.or(zeroedSubsetOfOld))) {
 			final Optional<TileFixture> matching = map.getFixtures(point).stream().filter(oldSubsetOfZeroed).findAny();
 			if (matching.isPresent()) {
@@ -390,12 +390,12 @@ public class UtilityDriverModel extends SimpleMultiMapModel {
 				final LinkedList<TileFixture> possibilities = new LinkedList<>();
 				for (final TileFixture fixture : map.getFixtures(neighbor)) {
 					if (fixture instanceof CacheFixture ||
-						subMap.getFixtures(neighbor).contains(fixture)) {
+							subMap.getFixtures(neighbor).contains(fixture)) {
 						continue;
 					} else if (SimpleMovementModel.shouldAlwaysNotice(mock, fixture)) {
 						safeAdd(subMap, currentPlayer, neighbor, fixture);
 					} else if (SimpleMovementModel.shouldSometimesNotice(mock,
-						Speed.Careful, fixture)) {
+							Speed.Careful, fixture)) {
 						possibilities.add(fixture);
 					}
 				}

@@ -142,7 +142,8 @@ import legacy.map.fixtures.TerrainFixture;
  */
 public final class TestDBIO {
 	private static final Collection<IntFunction<Immortal>> simpleImmortalConstructors =
-		java.util.List.of(Sphinx::new, Djinn::new, Griffin::new, Minotaur::new, Ogre::new, Phoenix::new, Simurgh::new, Troll::new, Snowbird::new, Thunderbird::new, Pegasus::new, Unicorn::new, Kraken::new);
+			java.util.List.of(Sphinx::new, Djinn::new, Griffin::new, Minotaur::new, Ogre::new, Phoenix::new, Simurgh::new,
+					Troll::new, Snowbird::new, Thunderbird::new, Pegasus::new, Unicorn::new, Kraken::new);
 
 
 	@FunctionalInterface
@@ -151,10 +152,10 @@ public final class TestDBIO {
 	}
 
 	private static final Collection<StringIntConstructor<Immortal>> kindedImmortalConstructors =
-		java.util.List.of(Centaur::new, Dragon::new, Fairy::new, Giant::new);
+			java.util.List.of(Centaur::new, Dragon::new, Fairy::new, Giant::new);
 
 	private static final Collection<IntFunction<TileFixture>> simpleTerrainConstructors =
-		java.util.List.of(Hill::new, Oasis::new);
+			java.util.List.of(Hill::new, Oasis::new);
 
 	private static final Collection<String> races = new HashSet<>(RaceFactory.RACES);
 
@@ -268,7 +269,8 @@ public final class TestDBIO {
 		}
 
 		@Override
-		public CallableStatement prepareCall(final String sql, final int resultSetType, final int resultSetConcurrency) throws SQLException {
+		public CallableStatement prepareCall(final String sql, final int resultSetType, final int resultSetConcurrency)
+				throws SQLException {
 			return wrapped.prepareCall(sql, resultSetType, resultSetConcurrency);
 		}
 
@@ -326,7 +328,7 @@ public final class TestDBIO {
 
 		@Override
 		public CallableStatement prepareCall(final String sql, final int resultSetType, final int resultSetConcurrency
-			, final int resultSetHoldability) throws SQLException {
+				, final int resultSetHoldability) throws SQLException {
 			return wrapped.prepareCall(sql, resultSetType, resultSetConcurrency, resultSetHoldability);
 		}
 
@@ -464,7 +466,7 @@ public final class TestDBIO {
 				connection = new PersistentConnection(ds.getConnection());
 				connection.setAutoCommit(false);
 				connection.setTransactionIsolation(
-					Connection.TRANSACTION_READ_UNCOMMITTED);
+						Connection.TRANSACTION_READ_UNCOMMITTED);
 				return connection;
 			} else if (!Objects.isNull(connection)) {
 				return connection;
@@ -472,7 +474,7 @@ public final class TestDBIO {
 				connection = new PersistentConnection(existingSource.getConnection());
 				connection.setAutoCommit(false);
 				connection.setTransactionIsolation(
-					Connection.TRANSACTION_READ_UNCOMMITTED);
+						Connection.TRANSACTION_READ_UNCOMMITTED);
 				return connection;
 			}
 		}
@@ -520,7 +522,7 @@ public final class TestDBIO {
 		final ILegacyMap deserializedFirst = assertDatabaseSerialization(firstMap);
 		final ILegacyMap deserializedSecond = assertDatabaseSerialization(secondMap);
 		assertNotEquals(deserializedFirst, deserializedSecond,
-			"DB round-trip preserves not-equality of with and without fixture");
+				"DB round-trip preserves not-equality of with and without fixture");
 		return (FixtureType) deserializedFirst.getFixtures(new Point(0, 0))
 				.stream().findFirst().get();
 	}
@@ -533,21 +535,21 @@ public final class TestDBIO {
 	@MethodSource("fewIntegers")
 	public void testAdventureSerialization(final int id) throws SQLException, IOException {
 		assertFixtureSerialization(new AdventureFixture(new PlayerImpl(1, "independent"),
-			"hook brief", "hook full", id));
+				"hook brief", "hook full", id));
 	}
 
 	private static Stream<Arguments> testPortalSerialization() {
 		return SINGLETON_RANDOM.ints(2, -1, Integer.MAX_VALUE).boxed().flatMap(a ->
-			SINGLETON_RANDOM.ints(2).boxed().flatMap(b ->
-				SINGLETON_RANDOM.ints(2, -1, Integer.MAX_VALUE).boxed().map(c ->
-					Arguments.of(a, b, c))));
+				SINGLETON_RANDOM.ints(2).boxed().flatMap(b ->
+						SINGLETON_RANDOM.ints(2, -1, Integer.MAX_VALUE).boxed().map(c ->
+								Arguments.of(a, b, c))));
 	}
 
 	@ParameterizedTest
 	@MethodSource
 	public void testPortalSerialization(final int id, final int row, final int column) throws SQLException, IOException {
 		assumeTrue((row == -1 && column == -1) || (row >= 0 && column >= 0),
-			"Destination row and column must be either both -1 or both nonnegative");
+				"Destination row and column must be either both -1 or both nonnegative");
 		assertFixtureSerialization(new Portal("portal dest", new Point(row, column), id));
 	}
 
@@ -561,7 +563,7 @@ public final class TestDBIO {
 
 	private static Stream<Arguments> testAnimalSerialization() {
 		return SINGLETON_RANDOM.ints(2).boxed().flatMap(a ->
-			bools().map(b -> Arguments.of(a, b)));
+				bools().map(b -> Arguments.of(a, b)));
 	}
 
 	@ParameterizedTest
@@ -583,7 +585,7 @@ public final class TestDBIO {
 
 	private static Stream<Arguments> testCaveSerialization() {
 		return SINGLETON_RANDOM.ints(2).boxed().flatMap(a ->
-			SINGLETON_RANDOM.ints(2).boxed().map(b -> Arguments.of(a, b)));
+				SINGLETON_RANDOM.ints(2).boxed().map(b -> Arguments.of(a, b)));
 	}
 
 	@ParameterizedTest
@@ -600,15 +602,15 @@ public final class TestDBIO {
 
 	private static Stream<Arguments> testCitySerialization() {
 		return SINGLETON_RANDOM.ints(2).boxed().flatMap(a ->
-			Stream.of(TownStatus.values()).flatMap(b ->
-				Stream.of(TownSize.values()).map(c ->
-					Arguments.of(a, b, c, SINGLETON_RANDOM.nextInt(Integer.MAX_VALUE)))));
+				Stream.of(TownStatus.values()).flatMap(b ->
+						Stream.of(TownSize.values()).map(c ->
+								Arguments.of(a, b, c, SINGLETON_RANDOM.nextInt(Integer.MAX_VALUE)))));
 	}
 
 	@ParameterizedTest
 	@MethodSource("testCitySerialization")
 	public void testFortificationSerialization(final int id, final TownStatus status, final TownSize size, final int dc)
-		throws SQLException, IOException {
+			throws SQLException, IOException {
 		// TODO: We want more of the state to be random
 		final Fortification town = new Fortification(status, size, dc, "name", id, new PlayerImpl(0, ""));
 		final CommunityStats stats = new CommunityStats(5);
@@ -617,13 +619,13 @@ public final class TestDBIO {
 		stats.setSkillLevel("skillOne", 2);
 		stats.setSkillLevel("skillTwo", 5);
 		stats.getYearlyProduction().add(new ResourcePileImpl(1, "first", "first detail",
-			new LegacyQuantity(5, "pounds")));
+				new LegacyQuantity(5, "pounds")));
 		stats.getYearlyProduction().add(new ResourcePileImpl(2, "second", "second detail",
-			new LegacyQuantity(BigDecimal.ONE.divide(new BigDecimal(2)), "quarts")));
+				new LegacyQuantity(BigDecimal.ONE.divide(new BigDecimal(2)), "quarts")));
 		stats.getYearlyConsumption().add(new ResourcePileImpl(3, "third", "third detail",
-			new LegacyQuantity(8, "pecks")));
+				new LegacyQuantity(8, "pecks")));
 		stats.getYearlyConsumption().add(new ResourcePileImpl(4, "fourth", "fourth detail",
-			new LegacyQuantity(new BigDecimal(5).divide(new BigDecimal(4)), "square feet")));
+				new LegacyQuantity(new BigDecimal(5).divide(new BigDecimal(4)), "square feet")));
 		town.setPopulation(stats);
 		assertFixtureSerialization(town);
 	}
@@ -631,7 +633,7 @@ public final class TestDBIO {
 	@ParameterizedTest
 	@MethodSource
 	public void testCitySerialization(final int id, final TownStatus status, final TownSize size, final int dc)
-		throws SQLException, IOException {
+			throws SQLException, IOException {
 		// TODO: We want more of the state to be random
 		final City town = new City(status, size, dc, "name", id, new PlayerImpl(0, ""));
 		final CommunityStats stats = new CommunityStats(5);
@@ -640,13 +642,13 @@ public final class TestDBIO {
 		stats.setSkillLevel("skillOne", 2);
 		stats.setSkillLevel("skillTwo", 5);
 		stats.getYearlyProduction().add(new ResourcePileImpl(1, "first", "first detail",
-			new LegacyQuantity(5, "pounds")));
+				new LegacyQuantity(5, "pounds")));
 		stats.getYearlyProduction().add(new ResourcePileImpl(2, "second", "second detail",
-			new LegacyQuantity(BigDecimal.ONE.divide(new BigDecimal(2)), "quarts")));
+				new LegacyQuantity(BigDecimal.ONE.divide(new BigDecimal(2)), "quarts")));
 		stats.getYearlyConsumption().add(new ResourcePileImpl(3, "third", "third detail",
-			new LegacyQuantity(8, "pecks")));
+				new LegacyQuantity(8, "pecks")));
 		stats.getYearlyConsumption().add(new ResourcePileImpl(4, "fourth", "fourth detail",
-			new LegacyQuantity(new BigDecimal(5).divide(new BigDecimal(4)), "square feet")));
+				new LegacyQuantity(new BigDecimal(5).divide(new BigDecimal(4)), "square feet")));
 		town.setPopulation(stats);
 		assertFixtureSerialization(town);
 	}
@@ -654,7 +656,7 @@ public final class TestDBIO {
 	@ParameterizedTest
 	@MethodSource("testCitySerialization")
 	public void testTownSerialization(final int id, final TownStatus status, final TownSize size, final int dc)
-		throws SQLException, IOException {
+			throws SQLException, IOException {
 		// TODO: We want more of the state to be random
 		final Town town = new Town(status, size, dc, "name", id, new PlayerImpl(0, ""));
 		final CommunityStats stats = new CommunityStats(5);
@@ -663,28 +665,28 @@ public final class TestDBIO {
 		stats.setSkillLevel("skillOne", 2);
 		stats.setSkillLevel("skillTwo", 5);
 		stats.getYearlyProduction().add(new ResourcePileImpl(1, "first", "first detail",
-			new LegacyQuantity(5, "pounds")));
+				new LegacyQuantity(5, "pounds")));
 		stats.getYearlyProduction().add(new ResourcePileImpl(2, "second", "second detail",
-			new LegacyQuantity(BigDecimal.ONE.divide(new BigDecimal(2)), "quarts")));
+				new LegacyQuantity(BigDecimal.ONE.divide(new BigDecimal(2)), "quarts")));
 		stats.getYearlyConsumption().add(new ResourcePileImpl(3, "third", "third detail",
-			new LegacyQuantity(8, "pecks")));
+				new LegacyQuantity(8, "pecks")));
 		stats.getYearlyConsumption().add(new ResourcePileImpl(4, "fourth", "fourth detail",
-			new LegacyQuantity(new BigDecimal(5).divide(new BigDecimal(4)), "square feet")));
+				new LegacyQuantity(new BigDecimal(5).divide(new BigDecimal(4)), "square feet")));
 		town.setPopulation(stats);
 		assertFixtureSerialization(town);
 	}
 
 	private static Stream<Arguments> testMeadowSerialization() {
 		return bools().flatMap(a -> bools().flatMap(b ->
-			Stream.of(FieldStatus.values()).map(c ->
-				Arguments.of(a, b, SINGLETON_RANDOM.nextInt(Integer.MAX_VALUE), c,
-					SINGLETON_RANDOM.nextInt(Integer.MAX_VALUE)))));
+				Stream.of(FieldStatus.values()).map(c ->
+						Arguments.of(a, b, SINGLETON_RANDOM.nextInt(Integer.MAX_VALUE), c,
+								SINGLETON_RANDOM.nextInt(Integer.MAX_VALUE)))));
 	}
 
 	@ParameterizedTest
 	@MethodSource
-	public void testMeadowSerialization(final boolean field, final boolean cultivated, final int id, final FieldStatus status,
-										final int acres) throws SQLException, IOException {
+	public void testMeadowSerialization(final boolean field, final boolean cultivated, final int id,
+										final FieldStatus status, final int acres) throws SQLException, IOException {
 		assertFixtureSerialization(new Meadow("kind", field, cultivated, id, status, acres));
 	}
 
@@ -694,30 +696,32 @@ public final class TestDBIO {
 	public void testFractionalMeadowSerialization(final boolean field, final boolean cultivated, final int id,
 												  final FieldStatus status, final int acres) throws SQLException, IOException {
 		assertFixtureSerialization(new Meadow("kind", field, cultivated, id, status,
-			new BigDecimal(acres).add(BigDecimal.ONE.divide(new BigDecimal(2)))));
+				new BigDecimal(acres).add(BigDecimal.ONE.divide(new BigDecimal(2)))));
 	}
 
 	private static Stream<Arguments> testForestSerialization() {
 		return bools().map(a -> Arguments.of(a, SINGLETON_RANDOM.nextInt(Integer.MAX_VALUE),
-			SINGLETON_RANDOM.nextInt(Integer.MAX_VALUE)));
+				SINGLETON_RANDOM.nextInt(Integer.MAX_VALUE)));
 	}
 
 	@ParameterizedTest
 	@MethodSource
-	public void testForestSerialization(final boolean rows, final int id, final int acres) throws SQLException, IOException {
+	public void testForestSerialization(final boolean rows, final int id, final int acres)
+			throws SQLException, IOException {
 		assertFixtureSerialization(new Forest("kind", rows, id, acres));
 	}
 
 	@ParameterizedTest
 	@MethodSource("testForestSerialization")
-	public void testFractionalForestSerialization(final boolean rows, final int id, final int acres) throws SQLException, IOException {
+	public void testFractionalForestSerialization(final boolean rows, final int id, final int acres)
+			throws SQLException, IOException {
 		assertFixtureSerialization(new Forest("kind", rows, id,
-			new BigDecimal(acres).add(BigDecimal.ONE.divide(new BigDecimal(4)))));
+				new BigDecimal(acres).add(BigDecimal.ONE.divide(new BigDecimal(4)))));
 	}
 
 	private static Stream<Arguments> testFortressSerialization() {
 		return SINGLETON_RANDOM.ints(2).boxed().flatMap(a ->
-			Stream.of(TownSize.values()).map(b -> Arguments.of(a, b)));
+				Stream.of(TownSize.values()).map(b -> Arguments.of(a, b)));
 	}
 
 	@ParameterizedTest
@@ -729,11 +733,11 @@ public final class TestDBIO {
 		unit.addMember(new Worker("workerName", "human", id + 3, new Job("jobName", 2)));
 		unit.addMember(new Sphinx(id + 5));
 		unit.addMember(new ResourcePileImpl(id + 6, "resource kind", "resource contents",
-			new LegacyQuantity(8, "counts")));
+				new LegacyQuantity(8, "counts")));
 		fortress.addMember(unit);
 		fortress.addMember(new Implement("equipment", id + 4, 2));
 		fortress.addMember(new ResourcePileImpl(id + 7, "second resource", "second contents",
-			new LegacyQuantity(new BigDecimal(3).divide(new BigDecimal(4)), "gallon")));
+				new LegacyQuantity(new BigDecimal(3).divide(new BigDecimal(4)), "gallon")));
 		assertFixtureSerialization(fortress);
 	}
 
@@ -747,22 +751,23 @@ public final class TestDBIO {
 
 	private static Stream<Arguments> testGroundSerialization() {
 		return SINGLETON_RANDOM.ints(2).boxed().flatMap(a ->
-			bools().flatMap(b ->
-				races.stream().collect(toShuffledStream(2)).map(c ->
-					Arguments.of(a, b, c))));
+				bools().flatMap(b ->
+						races.stream().collect(toShuffledStream(2)).map(c ->
+								Arguments.of(a, b, c))));
 	}
 
 	@ParameterizedTest
 	@MethodSource
-	public void testGroundSerialization(final int id, final boolean exposed, final String kind) throws SQLException, IOException {
+	public void testGroundSerialization(final int id, final boolean exposed, final String kind)
+			throws SQLException, IOException {
 		assertFixtureSerialization(new Ground(id, kind, exposed));
 	}
 
 	private static Stream<Arguments> testGroveSerialization() {
 		return bools().flatMap(a -> bools().flatMap(b ->
-			SINGLETON_RANDOM.ints(2).boxed().flatMap(c ->
-				races.stream().collect(toShuffledStream(1)).map(d ->
-					Arguments.of(a, b, c, SINGLETON_RANDOM.nextInt(Integer.MAX_VALUE), d)))));
+				SINGLETON_RANDOM.ints(2).boxed().flatMap(c ->
+						races.stream().collect(toShuffledStream(1)).map(d ->
+								Arguments.of(a, b, c, SINGLETON_RANDOM.nextInt(Integer.MAX_VALUE), d)))));
 	}
 
 	@ParameterizedTest
@@ -774,21 +779,22 @@ public final class TestDBIO {
 
 	private static Stream<Arguments> testSimpleImmortalSerialization() {
 		return simpleImmortalConstructors.stream().flatMap(a ->
-			SINGLETON_RANDOM.ints(2).boxed().map(b ->
-				Arguments.of(a, b)));
+				SINGLETON_RANDOM.ints(2).boxed().map(b ->
+						Arguments.of(a, b)));
 	}
 
 	@ParameterizedTest
 	@MethodSource
-	public void testSimpleImmortalSerialization(final IntFunction<Immortal> constructor, final int id) throws SQLException, IOException {
+	public void testSimpleImmortalSerialization(final IntFunction<Immortal> constructor, final int id)
+			throws SQLException, IOException {
 		assertFixtureSerialization(constructor.apply(id));
 	}
 
 	private static Stream<Arguments> testKindedImmortalSerialization() {
 		return kindedImmortalConstructors.stream().flatMap(a ->
-			SINGLETON_RANDOM.ints(2).boxed().flatMap(b ->
-				races.stream().collect(toShuffledStream(2)).map(c ->
-					Arguments.of(a, b, c))));
+				SINGLETON_RANDOM.ints(2).boxed().flatMap(b ->
+						races.stream().collect(toShuffledStream(2)).map(c ->
+								Arguments.of(a, b, c))));
 	}
 
 	@ParameterizedTest
@@ -800,36 +806,38 @@ public final class TestDBIO {
 
 	private static Stream<Arguments> testMineSerialization() {
 		return Stream.of(TownStatus.values()).flatMap(a ->
-			SINGLETON_RANDOM.ints(2).boxed().flatMap(b ->
-				races.stream().collect(toShuffledStream(1)).map(c ->
-					Arguments.of(a, b, c))));
+				SINGLETON_RANDOM.ints(2).boxed().flatMap(b ->
+						races.stream().collect(toShuffledStream(1)).map(c ->
+								Arguments.of(a, b, c))));
 	}
 
 	@ParameterizedTest
 	@MethodSource
-	public void testMineSerialization(final TownStatus status, final int id, final String kind) throws SQLException, IOException {
+	public void testMineSerialization(final TownStatus status, final int id, final String kind)
+			throws SQLException, IOException {
 		assertFixtureSerialization(new Mine(kind, status, id));
 	}
 
 	private static Stream<Arguments> testMineralSerialization() {
 		return bools().flatMap(a ->
-			SINGLETON_RANDOM.ints(2).boxed().flatMap(b ->
-				SINGLETON_RANDOM.ints(2).boxed().flatMap(c ->
-					races.stream().collect(toShuffledStream(1)).map(d ->
-						Arguments.of(a, b, c, d)))));
+				SINGLETON_RANDOM.ints(2).boxed().flatMap(b ->
+						SINGLETON_RANDOM.ints(2).boxed().flatMap(c ->
+								races.stream().collect(toShuffledStream(1)).map(d ->
+										Arguments.of(a, b, c, d)))));
 	}
 
 	@ParameterizedTest
 	@MethodSource
-	public void testMineralSerialization(final boolean exposed, final int dc, final int id, final String kind) throws SQLException, IOException {
+	public void testMineralSerialization(final boolean exposed, final int dc, final int id, final String kind)
+			throws SQLException, IOException {
 		assertFixtureSerialization(new MineralVein(kind, exposed, dc, id));
 	}
 
 	private static Stream<Arguments> testStoneSerialization() {
 		return Stream.of(StoneKind.values()).flatMap(a ->
-			SINGLETON_RANDOM.ints(2).boxed().flatMap(b ->
-				SINGLETON_RANDOM.ints(2).boxed().map(c ->
-					Arguments.of(a, b, c))));
+				SINGLETON_RANDOM.ints(2).boxed().flatMap(b ->
+						SINGLETON_RANDOM.ints(2).boxed().map(c ->
+								Arguments.of(a, b, c))));
 	}
 
 	@ParameterizedTest
@@ -840,9 +848,9 @@ public final class TestDBIO {
 
 	private static Stream<Arguments> testShrubSerialization() {
 		return SINGLETON_RANDOM.ints(2).boxed().flatMap(a ->
-			SINGLETON_RANDOM.ints(2).boxed().flatMap(b ->
-				races.stream().collect(toShuffledStream(1)).map(c ->
-					Arguments.of(a, b, c))));
+				SINGLETON_RANDOM.ints(2).boxed().flatMap(b ->
+						races.stream().collect(toShuffledStream(1)).map(c ->
+								Arguments.of(a, b, c))));
 	}
 
 	@ParameterizedTest
@@ -853,13 +861,14 @@ public final class TestDBIO {
 
 	private static Stream<Arguments> testSimpleTerrainSerialization() {
 		return simpleTerrainConstructors.stream().flatMap(a ->
-			SINGLETON_RANDOM.ints(2).boxed().map(b ->
-				Arguments.of(a, b)));
+				SINGLETON_RANDOM.ints(2).boxed().map(b ->
+						Arguments.of(a, b)));
 	}
 
 	@ParameterizedTest
 	@MethodSource
-	public void testSimpleTerrainSerialization(final IntFunction<TerrainFixture> constructor, final int id) throws SQLException, IOException {
+	public void testSimpleTerrainSerialization(final IntFunction<TerrainFixture> constructor, final int id)
+			throws SQLException, IOException {
 		assertFixtureSerialization(constructor.apply(id));
 	}
 
@@ -877,8 +886,8 @@ public final class TestDBIO {
 		final Player owner = new PlayerImpl(1, "owner");
 		final IMutableUnit unit = new Unit(owner, "unitKind", "unitName", id);
 		unit.addMember(new Worker("worker name", "elf", id + 1, new Job("job name", 2,
-			new Skill("first skill", 1, 2), new Skill("second skill", 3, 4)),
-			new Job("second job", 4)));
+				new Skill("first skill", 1, 2), new Skill("second skill", 3, 4)),
+				new Job("second job", 4)));
 		unit.addMember(new Centaur("horse", id + 5));
 		unit.addMember(new AnimalImpl("elephant", false, "domesticated", id + 6, -1, 4));
 		assertFixtureSerialization(unit);
@@ -899,26 +908,28 @@ public final class TestDBIO {
 
 	private static Stream<Arguments> testVillageSerialization() {
 		return Stream.of(TownStatus.values()).flatMap(a ->
-			races.stream().collect(toShuffledStream(3)).map(b ->
-				Arguments.of(a, SINGLETON_RANDOM.nextInt(Integer.MAX_VALUE), b)));
+				races.stream().collect(toShuffledStream(3)).map(b ->
+						Arguments.of(a, SINGLETON_RANDOM.nextInt(Integer.MAX_VALUE), b)));
 	}
 
 	@ParameterizedTest
 	@MethodSource
-	public void testVillageSerialization(final TownStatus status, final int id, final String race) throws SQLException, IOException {
+	public void testVillageSerialization(final TownStatus status, final int id, final String race)
+			throws SQLException, IOException {
 		assertFixtureSerialization(new Village(status, "village name", id,
-			new PlayerImpl(1, "player name"), race));
+				new PlayerImpl(1, "player name"), race));
 	}
 
 	private static Stream<Arguments> testNotesSerialization() {
 		return races.stream().collect(toShuffledStream(2)).map(a ->
-			Arguments.of(SINGLETON_RANDOM.nextInt(Integer.MAX_VALUE),
-				SINGLETON_RANDOM.nextInt(Integer.MAX_VALUE), a));
+				Arguments.of(SINGLETON_RANDOM.nextInt(Integer.MAX_VALUE),
+						SINGLETON_RANDOM.nextInt(Integer.MAX_VALUE), a));
 	}
 
 	@ParameterizedTest
 	@MethodSource
-	public void testNotesSerialization(final int id, final int player, final String note) throws SQLException, IOException {
+	public void testNotesSerialization(final int id, final int player, final String note)
+			throws SQLException, IOException {
 		final Worker worker = new Worker("test worker", "human", id);
 		final Player playerObj = new PlayerImpl(player, "");
 		worker.setNote(playerObj, note);
@@ -926,7 +937,7 @@ public final class TestDBIO {
 		unit.addMember(worker);
 		final IUnit deserializedUnit = assertFixtureSerialization(unit);
 		assertEquals(note, ((IWorker) deserializedUnit.iterator().next()).getNote(playerObj),
-			"Note was deserialized");
+				"Note was deserialized");
 	}
 
 	@Test
@@ -935,21 +946,21 @@ public final class TestDBIO {
 		final Player player = map.getPlayers().getPlayer(1);
 		map.setCurrentPlayer(player);
 		assertFalse(map.getBookmarks().contains(new Point(0, 0)),
-			"Map by default doesn't have a bookmark");
+				"Map by default doesn't have a bookmark");
 		assertEquals(0, map.getAllBookmarks(new Point(0, 0)).size(),
-			"Map by default has no bookmarks");
+				"Map by default has no bookmarks");
 		map.addBookmark(new Point(0, 0));
 		final IMutableLegacyMap deserialized = (IMutableLegacyMap) assertDatabaseSerialization(map);
 		assertNotSame(map, deserialized, "Deserialization doesn't just return the input");
 		assertTrue(deserialized.getBookmarks().contains(new Point(0, 0)),
-			"Deserialized map has the bookmark we saved");
+				"Deserialized map has the bookmark we saved");
 	}
 
 	private static Stream<Arguments> testRoadSerialization() {
 		return Stream.of(Direction.values()).flatMap(a ->
-			Stream.of(Direction.values()).map(b ->
-				Arguments.of(a, SINGLETON_RANDOM.nextInt(7) + 1, b,
-					SINGLETON_RANDOM.nextInt(7) + 1)));
+				Stream.of(Direction.values()).map(b ->
+						Arguments.of(a, SINGLETON_RANDOM.nextInt(7) + 1, b,
+								SINGLETON_RANDOM.nextInt(7) + 1)));
 	}
 
 	@ParameterizedTest

@@ -31,14 +31,14 @@ import javax.swing.event.ChangeListener;
  * This is a Window menu resembling <A HREF=
  * "http://developer.apple.com/documentation/UserExperience/Conceptual/AppleHIGuidelines/XHIGMenus/chapter_17_section_4.html#//apple_ref/doc/uid/TP30000356-TPXREF106"
  * >the menu</A> found in most Cocoa applications.
- * <P>
+ *
  * This menu will automatically update itself to always list all visible Frames.
  * Their title will appear in this menu, or the text "Untitled" will be used if
  * no frame title is available.
- * <P>
+ *
  * This uses the {@link com.pump.window.WindowList} to keep track of frames,
  * their order, and their layering.
- * <P>
+ *
  * As of this version, this class is not a perfect replica of Apple's menu. It
  * lacks a few key elements: <BR>
  * 1. The "Zoom" menu item. In Java it is not directly possible to emulate this
@@ -55,11 +55,10 @@ import javax.swing.event.ChangeListener;
  * I was able to implement this when a JMenuBar is placed in the JFrame, but not
  * when the screen menubar is used.
  *
- * <P>
  * So ironically: I can get more Mac-like behavior on non-Macs. (Which defeats
  * the purpose.) But in the mean time: really all I personally need from my
  * Window menu is a list of available frames, so this meets my needs for now.
- * <P>
+ *
  * This can't run inside a Java sandbox because it refers to the WindowList
  * which invokes
  * {@code Toolkit.getDefaultToolkit().addAWTEventListener(..)}.
@@ -133,7 +132,7 @@ public class WindowMenu extends JMenu {
 				final Frame[] frames = WindowList.getFrames(false, false, true);
 				for (final Frame w : frames) {
 					if (w.isVisible() || frame
-						.getExtendedState() == Frame.ICONIFIED) {
+							.getExtendedState() == Frame.ICONIFIED) {
 						w.toFront();
 						if (w.getExtendedState() == Frame.ICONIFIED)
 							w.setExtendedState(Frame.NORMAL);
@@ -148,7 +147,7 @@ public class WindowMenu extends JMenu {
 		System.arraycopy(extraItems, 0, customItems, 0, extraItems.length);
 
 		minimizeItem.setAccelerator(KeyStroke.getKeyStroke('M',
-			Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
+				Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
 
 		final ChangeListener changeListener = e -> SwingUtilities.invokeLater(this::update);
 		WindowList.addChangeListener(changeListener);

@@ -13,7 +13,8 @@ import java.util.function.Consumer;
  * @param number The numeric quantity.
  * @param units  The units in which that number is measured.
  */
-public record LegacyQuantity(Number number, String units) implements Subsettable<LegacyQuantity>, Comparable<LegacyQuantity>, Serializable {
+public record LegacyQuantity(Number number, String units)
+		implements Subsettable<LegacyQuantity>, Comparable<LegacyQuantity>, Serializable {
 	/**
 	 * The numeric quantity.
 	 */
@@ -70,7 +71,7 @@ public record LegacyQuantity(Number number, String units) implements Subsettable
 			return true;
 		} else if (obj instanceof final LegacyQuantity q) {
 			return units.equals(q.units()) &&
-				NumberComparator.compareNumbers(number, q.number()) == 0;
+					NumberComparator.compareNumbers(number, q.number()) == 0;
 		} else {
 			return false;
 		}
@@ -84,7 +85,7 @@ public record LegacyQuantity(Number number, String units) implements Subsettable
 	@Override
 	public int compareTo(final LegacyQuantity quantity) {
 		return Comparator.comparing(LegacyQuantity::units)
-			.thenComparing(LegacyQuantity::number, NumberComparator::compareNumbers)
-			.compare(this, quantity);
+				.thenComparing(LegacyQuantity::number, NumberComparator::compareNumbers)
+				.compare(this, quantity);
 	}
 }

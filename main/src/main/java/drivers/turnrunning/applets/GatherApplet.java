@@ -73,7 +73,7 @@ import org.jetbrains.annotations.Nullable;
 		}
 		int time = startingTime;
 		final Supplier<Pair<Point, /*Grove|Shrub|Meadow|HuntingModel.NothingFound*/TileFixture>> encounters =
-			huntingModel.gather(center);
+				huntingModel.gather(center);
 		int noResultsTime = 0;
 		while (time > 0) {
 			final Pair<Point, TileFixture> pair = encounters.get();
@@ -90,7 +90,7 @@ import org.jetbrains.annotations.Nullable;
 					noResultsTime = 0;
 				}
 				final Boolean resp = cli.inputBooleanInSeries(String.format("Gather from %s%s",
-					find.getShortDescription(), meadowStatus(find)), ((HasKind) find).getKind());
+						find.getShortDescription(), meadowStatus(find)), ((HasKind) find).getKind());
 				if (Objects.isNull(resp)) {
 					return null;
 				} else if (resp) {
@@ -108,7 +108,7 @@ import org.jetbrains.annotations.Nullable;
 						}
 					}
 					final int cost = Optional.ofNullable(cli.inputNumber("Time to gather: "))
-						.orElse((int) Short.MAX_VALUE);
+							.orElse((int) Short.MAX_VALUE);
 					time -= cost;
 					// TODO: Once model supports remaining-quantity-in-fields data, offer to reduce it here
 					if (find instanceof final Shrub s && s.getPopulation() > 0) {

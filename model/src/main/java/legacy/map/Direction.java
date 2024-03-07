@@ -13,36 +13,36 @@ import org.jetbrains.annotations.Nullable;
  * purposes.
  */
 public enum Direction {
-    Northwest("northwest"),
-    North("north"),
-    Northeast("northeast"),
-    West("west"),
-    Nowhere("nowhere"),
-    East("east"),
-    Southwest("southwest"),
-    South("south"),
-    Southeast("southeast");
+	Northwest("northwest"),
+	North("north"),
+	Northeast("northeast"),
+	West("west"),
+	Nowhere("nowhere"),
+	East("east"),
+	Southwest("southwest"),
+	South("south"),
+	Southeast("southeast");
 
-    Direction(final String string) {
-        this.string = string;
-    }
+	Direction(final String string) {
+		this.string = string;
+	}
 
-    /**
-     * A representation of the direction for debugging and UI purposes.
-     */
-    private final String string;
+	/**
+	 * A representation of the direction for debugging and UI purposes.
+	 */
+	private final String string;
 
-    /**
-     * A representation of the direction for debugging and UI purposes.
-     */
-    @Override
-    public String toString() {
-        return string;
-    }
+	/**
+	 * A representation of the direction for debugging and UI purposes.
+	 */
+	@Override
+	public String toString() {
+		return string;
+	}
 
-    public static @Nullable Direction parse(final String direction) {
-        return Stream.of(values())
-                .filter((dir) -> Objects.equals(dir.toString(), direction))
-                .findAny().orElse(null);
-    }
+	public static @Nullable Direction parse(final String direction) {
+		return Stream.of(values())
+				.filter((dir) -> Objects.equals(dir.toString(), direction))
+				.findAny().orElse(null);
+	}
 }

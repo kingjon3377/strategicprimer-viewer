@@ -23,6 +23,7 @@ public interface IMutableLegacyPlayerCollection extends ILegacyPlayerCollection 
 	 * Set the current player.
 	 */
 	void setCurrentPlayer(Player currentPlayer);
+
 	/**
 	 * Clone the collection.
 	 */

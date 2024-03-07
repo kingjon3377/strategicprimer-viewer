@@ -29,21 +29,21 @@ import javax.swing.event.ChangeListener;
 /**
  * This keeps track of the origin and layering of windows and frames within this
  * JVM.
- * <P>
+ *
  * By "origin" I mean: when that window was first activated. This serves as a
  * running list of windows in the order they were used.
- * <P>
+ *
  * All windows are tracked by {@code WeakReferences}, just to make sure
  * this static monitor doesn't accidentally let windows linger in memory that
  * should otherwise be marked for garbage collection.
- * <P>
+ *
  * The layering is monitored by an {@code AWTEventListener} that listens
  * for all {@code WindowEvent.WINDOW_ACTIVATED} events. Whenever a window
  * is activated: it gets put on the top of the stack of windows.
- * <P>
+ *
  * When any change occurs to any of the lists in this class: the
  * {@code ChangeListeners} are notified.
- * <P>
+ *
  * This can't run inside a Java sandbox because it invokes
  * {@code Toolkit.getDefaultToolkit().addAWTEventListener(..)}.
  *
@@ -175,7 +175,7 @@ public final class WindowList {
 
 	static {
 		Toolkit.getDefaultToolkit().addAWTEventListener(windowListener,
-			AWTEvent.WINDOW_EVENT_MASK);
+				AWTEvent.WINDOW_EVENT_MASK);
 		final Window[] windows = Window.getWindows();
 		for (final Window window : windows) {
 			windowLayerList.add(new WeakReference<>(window));
@@ -198,9 +198,9 @@ public final class WindowList {
 	 *            Otherwise, all Windows will be returned.
 	 */
 	public static Window[] getWindows(final boolean sortByLayer,
-	                                  final boolean includeInvisible) {
+									  final boolean includeInvisible) {
 		final ArrayList<WeakReference<Window>> list = sortByLayer ? windowLayerList
-			: windowList;
+				: windowList;
 		final List<Window> returnValue = new ArrayList<>();
 		int a = 0;
 		while (a < list.size()) {
@@ -236,9 +236,9 @@ public final class WindowList {
 	 *            if this is true then iconified Frames will be returned.
 	 */
 	public static Frame[] getFrames(final boolean sortByLayer,
-	                                final boolean includeInvisible, final boolean includeIconified) {
+									final boolean includeInvisible, final boolean includeIconified) {
 		final ArrayList<WeakReference<Window>> list = sortByLayer ? windowLayerList
-			: windowList;
+				: windowList;
 		final List<Frame> returnValue = new ArrayList<>();
 		int a = 0;
 		while (a < list.size()) {
@@ -251,7 +251,7 @@ public final class WindowList {
 					if (includeInvisible || f.isVisible()) {
 						returnValue.add(f);
 					} else if (includeIconified
-						&& f.getExtendedState() == Frame.ICONIFIED) {
+							&& f.getExtendedState() == Frame.ICONIFIED) {
 						returnValue.add(f);
 					}
 				}
@@ -263,7 +263,7 @@ public final class WindowList {
 
 	/**
 	 * Add a ChangeListener.
-	 * <P>
+	 *
 	 * This listener will be notified when new windows are activated, layering
 	 * of windows changes, or windows close.
 	 *

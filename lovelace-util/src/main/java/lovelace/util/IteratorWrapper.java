@@ -9,14 +9,14 @@ import java.util.Iterator;
  * TODO: Add stream()
  */
 public final class IteratorWrapper<Element> implements Iterable<Element> {
-    private final Iterator<Element> wrapped;
+	private final Iterator<Element> wrapped;
 
-    public IteratorWrapper(final Iterator<Element> wrapped) {
-        this.wrapped = wrapped;
-    }
+	public IteratorWrapper(final Iterator<Element> wrapped) {
+		this.wrapped = wrapped;
+	}
 
-    @Override
-    public Iterator<Element> iterator() {
-        return wrapped;
-    }
+	@Override
+	public Iterator<Element> iterator() {
+		return wrapped;
+	}
 }

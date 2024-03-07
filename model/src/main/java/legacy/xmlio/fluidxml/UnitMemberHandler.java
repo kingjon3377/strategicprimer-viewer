@@ -42,30 +42,30 @@ import java.util.stream.StreamSupport;
 
 /* package */ class UnitMemberHandler extends FluidBase {
 	public static Worker readWorker(final StartElement element, final QName parent, final Iterable<XMLEvent> stream,
-	                                final ILegacyPlayerCollection players, final Warning warner, final IDRegistrar idFactory)
-		throws SPFormatException {
+									final ILegacyPlayerCollection players, final Warning warner, final IDRegistrar idFactory)
+			throws SPFormatException {
 		requireTag(element, parent, "worker");
 		expectAttributes(element, warner, "name", "race", "portrait", "id", "image");
 		final Worker retval = setImage(
-			new Worker(getAttribute(element, "name"),
-				getAttribute(element, "race", "human"),
-				getOrGenerateID(element, warner, idFactory)),
-			element, warner);
+				new Worker(getAttribute(element, "name"),
+						getAttribute(element, "race", "human"),
+						getOrGenerateID(element, warner, idFactory)),
+				element, warner);
 		retval.setPortrait(getAttribute(element, "portrait", ""));
 		for (final XMLEvent event : stream) {
 			if (event instanceof final StartElement se && isSPStartElement(event)) {
 				switch (se.getName().getLocalPart().toLowerCase()) {
 					case "job" -> retval.addJob(readJob(se, element.getName(),
-						stream, players, warner, idFactory));
+							stream, players, warner, idFactory));
 					case "stats" -> retval.setStats(readStats(se, element.getName(),
-						stream, players, warner, idFactory));
+							stream, players, warner, idFactory));
 					case "note" -> retval.setNote(
-						players.getPlayer(getIntegerAttribute(se, "player")),
-						readNote(se, element.getName(), stream, warner));
+							players.getPlayer(getIntegerAttribute(se, "player")),
+							readNote(se, element.getName(), stream, warner));
 					case "animal" -> {
 						if (Objects.isNull(retval.getMount())) {
 							final AnimalOrTracks animal = readAnimal(se, element.getName(), stream, players,
-								warner, idFactory);
+									warner, idFactory);
 							if (animal instanceof final Animal a) {
 								retval.setMount(a);
 								break;
@@ -74,10 +74,10 @@ import java.util.stream.StreamSupport;
 						throw new UnwantedChildException(se.getName(), element);
 					}
 					case "implement" -> retval.addEquipment(FluidResourceHandler.readImplement(se, element.getName()
-						, stream,
-						players, warner, idFactory));
+							, stream,
+							players, warner, idFactory));
 					default -> throw UnwantedChildException.listingExpectedTags(element.getName(),
-						se, "job", "stats", "note", "animal", "implement");
+							se, "job", "stats", "note", "animal", "implement");
 				}
 			} else if (event instanceof final EndElement ee && element.getName().equals(ee.getName())) {
 				break;
@@ -87,7 +87,7 @@ import java.util.stream.StreamSupport;
 	}
 
 	private static String readNote(final StartElement element, final QName parent, final Iterable<XMLEvent> stream,
-	                               final Warning warner) throws SPFormatException {
+								   final Warning warner) throws SPFormatException {
 		requireTag(element, parent, "note");
 		expectAttributes(element, warner, "player");
 		final StringBuilder retval = new StringBuilder();
@@ -104,17 +104,17 @@ import java.util.stream.StreamSupport;
 	}
 
 	public static IJob readJob(final StartElement element, final QName parent, final Iterable<XMLEvent> stream,
-	                           final ILegacyPlayerCollection players, final Warning warner, final IDRegistrar idFactory)
-		throws SPFormatException {
+							   final ILegacyPlayerCollection players, final Warning warner, final IDRegistrar idFactory)
+			throws SPFormatException {
 		requireTag(element, parent, "job");
 		expectAttributes(element, warner, "name", "level");
 		final IMutableJob retval = new Job(getAttribute(element, "name"),
-			getIntegerAttribute(element, "level"));
+				getIntegerAttribute(element, "level"));
 		for (final XMLEvent event : stream) {
 			if (event instanceof final StartElement se && isSPStartElement(event)) {
 				if ("skill".equalsIgnoreCase(se.getName().getLocalPart())) {
 					retval.addSkill(readSkill(se, element.getName(),
-						stream, players, warner, idFactory));
+							stream, players, warner, idFactory));
 				} else {
 					throw UnwantedChildException.listingExpectedTags(element.getName(), se, "skill");
 				}
@@ -126,39 +126,39 @@ import java.util.stream.StreamSupport;
 	}
 
 	public static ISkill readSkill(final StartElement element, final QName parent, final Iterable<XMLEvent> stream,
-	                               final ILegacyPlayerCollection players, final Warning warner, final IDRegistrar idFactory)
-		throws SPFormatException {
+								   final ILegacyPlayerCollection players, final Warning warner, final IDRegistrar idFactory)
+			throws SPFormatException {
 		requireTag(element, parent, "skill");
 		expectAttributes(element, warner, "name", "level", "hours");
 		requireNonEmptyAttribute(element, "name", true, warner);
 		spinUntilEnd(element.getName(), stream);
 		return new Skill(getAttribute(element, "name"),
-			getIntegerAttribute(element, "level"),
-			getIntegerAttribute(element, "hours"));
+				getIntegerAttribute(element, "level"),
+				getIntegerAttribute(element, "hours"));
 	}
 
 	public static WorkerStats readStats(final StartElement element, final QName parent, final Iterable<XMLEvent> stream,
-	                                    final ILegacyPlayerCollection players, final Warning warner, final IDRegistrar idFactory)
-		throws SPFormatException {
+										final ILegacyPlayerCollection players, final Warning warner, final IDRegistrar idFactory)
+			throws SPFormatException {
 		requireTag(element, parent, "stats");
 		expectAttributes(element, warner, "hp", "max", "str", "dex", "con", "int",
-			"wis", "cha");
+				"wis", "cha");
 		spinUntilEnd(element.getName(), stream);
 		return new WorkerStats(getIntegerAttribute(element, "hp"),
-			getIntegerAttribute(element, "max"),
-			getIntegerAttribute(element, "str"),
-			getIntegerAttribute(element, "dex"),
-			getIntegerAttribute(element, "con"),
-			getIntegerAttribute(element, "int"),
-			getIntegerAttribute(element, "wis"),
-			getIntegerAttribute(element, "cha"));
+				getIntegerAttribute(element, "max"),
+				getIntegerAttribute(element, "str"),
+				getIntegerAttribute(element, "dex"),
+				getIntegerAttribute(element, "con"),
+				getIntegerAttribute(element, "int"),
+				getIntegerAttribute(element, "wis"),
+				getIntegerAttribute(element, "cha"));
 	}
 
 	public static void writeWorker(final XMLStreamWriter ostream, final IWorker obj, final int indentation)
-		throws XMLStreamException {
+			throws XMLStreamException {
 		final WorkerStats stats = obj.getStats();
 		final List<IJob> jobs = StreamSupport.stream(obj.spliterator(), true)
-			.filter(((Predicate<IJob>) IJob::isEmpty).negate()).toList();
+				.filter(((Predicate<IJob>) IJob::isEmpty).negate()).toList();
 		final boolean hasJobs = !jobs.isEmpty();
 		writeTag(ostream, "worker", indentation, !hasJobs && Objects.isNull(stats));
 		writeAttributes(ostream, Pair.with("name", obj.getName()));
@@ -185,14 +185,14 @@ import java.util.stream.StreamSupport;
 			writeNote(ostream, player, obj.getNote(player), indentation + 1);
 		}
 		if (hasJobs || !Objects.isNull(stats) || !Objects.isNull(mount) || obj.getNotesPlayers().iterator().hasNext() ||
-			!obj.getEquipment().isEmpty()) {
+				!obj.getEquipment().isEmpty()) {
 			indent(ostream, indentation);
 			ostream.writeEndElement();
 		}
 	}
 
 	private static void writeNote(final XMLStreamWriter ostream, final int player, final String note, final int indentation)
-		throws XMLStreamException {
+			throws XMLStreamException {
 		writeTag(ostream, "note", indentation, false);
 		writeAttributes(ostream, Pair.with("player", player));
 		ostream.writeCharacters(note);
@@ -200,24 +200,24 @@ import java.util.stream.StreamSupport;
 	}
 
 	public static void writeStats(final XMLStreamWriter ostream, final WorkerStats obj, final int indentation)
-		throws XMLStreamException {
+			throws XMLStreamException {
 		writeTag(ostream, "stats", indentation, true);
 		writeAttributes(ostream, Pair.with("hp", obj.getHitPoints()),
-			Pair.with("max", obj.getMaxHitPoints()),
-			Pair.with("str", obj.getStrength()), Pair.with("dex", obj.getDexterity()),
-			Pair.with("con", obj.getConstitution()), Pair.with("int", obj.getIntelligence()),
-			Pair.with("wis", obj.getWisdom()), Pair.with("cha", obj.getCharisma()));
+				Pair.with("max", obj.getMaxHitPoints()),
+				Pair.with("str", obj.getStrength()), Pair.with("dex", obj.getDexterity()),
+				Pair.with("con", obj.getConstitution()), Pair.with("int", obj.getIntelligence()),
+				Pair.with("wis", obj.getWisdom()), Pair.with("cha", obj.getCharisma()));
 	}
 
 	public static void writeJob(final XMLStreamWriter ostream, final IJob obj, final int indentation)
-		throws XMLStreamException {
+			throws XMLStreamException {
 		final boolean hasSkills = !obj.isEmpty();
 		if (obj.getLevel() <= 0 && !hasSkills) {
 			return;
 		}
 		writeTag(ostream, "job", indentation, !hasSkills);
 		writeAttributes(ostream, Pair.with("name", obj.getName()),
-			Pair.with("level", obj.getLevel()));
+				Pair.with("level", obj.getLevel()));
 		for (final ISkill skill : obj) {
 			writeSkill(ostream, skill, indentation + 1);
 		}
@@ -228,24 +228,24 @@ import java.util.stream.StreamSupport;
 	}
 
 	public static void writeSkill(final XMLStreamWriter ostream, final ISkill obj, final int indentation)
-		throws XMLStreamException {
+			throws XMLStreamException {
 		if (!obj.isEmpty()) {
 			writeTag(ostream, "skill", indentation, true);
 			writeAttributes(ostream, Pair.with("name", obj.getName()),
-				Pair.with("level", obj.getLevel()), Pair.with("hours", obj.getHours()));
+					Pair.with("level", obj.getLevel()), Pair.with("hours", obj.getHours()));
 		}
 	}
 
 	// TODO: split into Animal and Tracks methods, if at all possible
 	public static AnimalOrTracks readAnimal(final StartElement element, final QName parent,
-	                                        final Iterable<XMLEvent> stream, final ILegacyPlayerCollection players, final Warning warner,
-	                                        final IDRegistrar idFactory) throws SPFormatException {
+											final Iterable<XMLEvent> stream, final ILegacyPlayerCollection players, final Warning warner,
+											final IDRegistrar idFactory) throws SPFormatException {
 		requireTag(element, parent, "animal");
 		final String tag = element.getName().getLocalPart().toLowerCase();
 		final String kind;
 		if ("animal".equals(tag)) {
 			expectAttributes(element, warner, "traces", "id", "count", "kind", "talking",
-				"status", "wild", "born", "image");
+					"status", "wild", "born", "image");
 			kind = getAttribute(element, "kind");
 		} else {
 			warner.handle(UnsupportedTagException.future(element));
@@ -258,8 +258,8 @@ import java.util.stream.StreamSupport;
 		// ever becomes unnecessary, I will change the default-value here to
 		// simply `false`.
 		final boolean traces = getBooleanAttribute(element, "traces",
-			hasAttribute(element, "traces") && getAttribute(element, "traces", "").isEmpty(),
-			warner);
+				hasAttribute(element, "traces") && getAttribute(element, "traces", "").isEmpty(),
+				warner);
 		final boolean talking = getBooleanAttribute(element, "talking", false, warner);
 		final String status = getAttribute(element, "status", "wild");
 		final int born = getIntegerAttribute(element, "born", -1, warner);
@@ -269,41 +269,41 @@ import java.util.stream.StreamSupport;
 		if (traces) {
 			if (hasAttribute(element, "id")) {
 				warner.handle(UnsupportedPropertyException.inContext(element, "id",
-					"when tracks=\"true\""));
+						"when tracks=\"true\""));
 			}
 			if (talking) {
 				warner.handle(UnsupportedPropertyException.inContext(element, "talking",
-					"when tracks=\"true\""));
+						"when tracks=\"true\""));
 			}
 			if (!"wild".equals(status)) {
 				warner.handle(UnsupportedPropertyException.inContext(element, "status",
-					"when tracks=\"true\""));
+						"when tracks=\"true\""));
 			}
 			if (born != -1) {
 				warner.handle(UnsupportedPropertyException.inContext(element, "born",
-					"when tracks=\"true\""));
+						"when tracks=\"true\""));
 			}
 			if (count != 1) {
 				warner.handle(UnsupportedPropertyException.inContext(element, "count",
-					"when tracks=\"true\""));
+						"when tracks=\"true\""));
 			}
 			return setImage(new AnimalTracks(kind), element, warner);
 		} else {
 			id = getOrGenerateID(element, warner, idFactory);
 			return setImage(
-				new AnimalImpl(kind, talking, status, id, born, count), element, warner);
+					new AnimalImpl(kind, talking, status, id, born, count), element, warner);
 		}
 	}
 
 	public static void writeAnimalTracks(final XMLStreamWriter ostream, final AnimalTracks obj,
-	                                     final int indentation) throws XMLStreamException {
+										 final int indentation) throws XMLStreamException {
 		writeTag(ostream, "animal", indentation, true);
 		writeAttributes(ostream, Pair.with("kind", obj.getKind()), Pair.with("traces", true));
 		writeImage(ostream, obj);
 	}
 
 	public static void writeAnimal(final XMLStreamWriter ostream, final Animal obj, final int indentation)
-		throws XMLStreamException {
+			throws XMLStreamException {
 		writeTag(ostream, "animal", indentation, true);
 		writeAttributes(ostream, Pair.with("kind", obj.getKind()));
 		if (obj.isTalking()) {
@@ -317,8 +317,8 @@ import java.util.stream.StreamSupport;
 			// Write turn-of-birth if and only if it is fewer turns before the current
 			// turn than this kind of animal's age of maturity.
 			if (MaturityModel.getCurrentTurn() < 0 ||
-				!MaturityModel.getMaturityAges().containsKey(obj.getKind()) ||
-				MaturityModel.getMaturityAges().get(obj.getKind()) > (MaturityModel.getCurrentTurn() - obj.getBorn())) {
+					!MaturityModel.getMaturityAges().containsKey(obj.getKind()) ||
+					MaturityModel.getMaturityAges().get(obj.getKind()) > (MaturityModel.getCurrentTurn() - obj.getBorn())) {
 				writeAttributes(ostream, Pair.with("born", obj.getBorn()));
 			}
 		}
@@ -329,7 +329,7 @@ import java.util.stream.StreamSupport;
 	}
 
 	public static void writeSimpleImmortal(final XMLStreamWriter ostream, final Immortal obj, final int indentation)
-		throws XMLStreamException {
+			throws XMLStreamException {
 		// TODO: split this method so we can get this back in the type system
 		if (!(obj instanceof SimpleImmortal || obj instanceof ImmortalAnimal)) {
 			throw new IllegalArgumentException("Only works with simple immortals");

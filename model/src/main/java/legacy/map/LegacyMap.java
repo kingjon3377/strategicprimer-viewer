@@ -230,9 +230,9 @@ public class LegacyMap implements IMutableLegacyMap {
 	@Override
 	public Iterable<Point> getLocations() {
 		return Stream.concat(
-			StreamSupport.stream(new PointIterable(getDimensions(), true, true).spliterator(),
-				false),
-			fixturesMap.keySet().stream()).distinct().collect(Collectors.toList());
+				StreamSupport.stream(new PointIterable(getDimensions(), true, true).spliterator(),
+						false),
+				fixturesMap.keySet().stream()).distinct().collect(Collectors.toList());
 	}
 
 	/**
@@ -242,9 +242,9 @@ public class LegacyMap implements IMutableLegacyMap {
 	public Stream<Point> streamLocations() {
 		// TODO: Add stream() to PointIterable
 		return Stream.concat(
-			StreamSupport.stream(new PointIterable(getDimensions(), true, true).spliterator(),
-				false),
-			fixturesMap.keySet().stream()).distinct();
+				StreamSupport.stream(new PointIterable(getDimensions(), true, true).spliterator(),
+						false),
+				fixturesMap.keySet().stream()).distinct();
 	}
 
 	/**
@@ -365,7 +365,7 @@ public class LegacyMap implements IMutableLegacyMap {
 	@Override
 	public Set<Point> getBookmarksFor(final Player player) {
 		return bookmarksImpl.entrySet().stream().filter(e -> e.getValue().contains(player))
-			.map(Map.Entry::getKey).collect(Collectors.toSet());
+				.map(Map.Entry::getKey).collect(Collectors.toSet());
 	}
 
 	@Override
@@ -476,7 +476,7 @@ public class LegacyMap implements IMutableLegacyMap {
 			local = temp;
 		}
 		final Optional<TileFixture> existing = local.stream()
-			.filter(f -> f.getId() == fixture.getId()).findAny();
+				.filter(f -> f.getId() == fixture.getId()).findAny();
 		if (fixture.getId() >= 0 && existing.isPresent()) {
 			if (existing.get().equals(fixture) || subsetCheck(existing.get(), fixture)) {
 				local.remove(existing.get());
@@ -530,18 +530,18 @@ public class LegacyMap implements IMutableLegacyMap {
 	public boolean equals(final Object obj) {
 		if (obj instanceof final ILegacyMap that) {
 			if (getDimensions().equals(that.getDimensions()) &&
-				getPlayers().containsAll(that.getPlayers()) &&
-				that.getPlayers().containsAll(getPlayers()) &&
-				currentTurn == that.getCurrentTurn() &&
-				getCurrentPlayer().equals(that.getCurrentPlayer())) {
+					getPlayers().containsAll(that.getPlayers()) &&
+					that.getPlayers().containsAll(getPlayers()) &&
+					currentTurn == that.getCurrentTurn() &&
+					getCurrentPlayer().equals(that.getCurrentPlayer())) {
 				for (final Point point : getLocations()) {
 					if (getBaseTerrain(point) != that.getBaseTerrain(point) ||
-						isMountainous(point) != that.isMountainous(point) ||
-						!getRivers(point).equals(
-							that.getRivers(point)) ||
-						!getFixtures(point).containsAll(that.getFixtures(point)) ||
-						!that.getFixtures(point).containsAll(getFixtures(point)) ||
-						!getRoads(point).equals(that.getRoads(point))) {
+							isMountainous(point) != that.isMountainous(point) ||
+							!getRivers(point).equals(
+									that.getRivers(point)) ||
+							!getFixtures(point).containsAll(that.getFixtures(point)) ||
+							!that.getFixtures(point).containsAll(getFixtures(point)) ||
+							!getRoads(point).equals(that.getRoads(point))) {
 						return false;
 					}
 				}
@@ -555,13 +555,13 @@ public class LegacyMap implements IMutableLegacyMap {
 	public String toString() {
 		final StringBuilder builder = new StringBuilder();
 		builder.append("SPMapNG:").append(System.lineSeparator())
-			.append("Map version: ").append(getDimensions().version())
-			.append(System.lineSeparator())
-			.append("Rows: ").append(getDimensions().rows()).append(System.lineSeparator())
-			.append("Columns: ").append(getDimensions().columns())
-			.append(System.lineSeparator())
-			.append("Current Turn: ").append(currentTurn).append(System.lineSeparator())
-			.append("Players:").append(System.lineSeparator());
+				.append("Map version: ").append(getDimensions().version())
+				.append(System.lineSeparator())
+				.append("Rows: ").append(getDimensions().rows()).append(System.lineSeparator())
+				.append("Columns: ").append(getDimensions().columns())
+				.append(System.lineSeparator())
+				.append("Current Turn: ").append(currentTurn).append(System.lineSeparator())
+				.append("Players:").append(System.lineSeparator());
 		for (final Player player : getPlayers()) {
 			builder.append(player.toString());
 			if (player.isCurrent()) {
@@ -586,15 +586,15 @@ public class LegacyMap implements IMutableLegacyMap {
 			if (!getRivers(location).isEmpty()) {
 				builder.append("rivers: ");
 				builder.append(getRivers(location).stream().map(Object::toString)
-					.collect(Collectors.joining(" ")));
+						.collect(Collectors.joining(" ")));
 				builder.append(", ");
 			}
 			final Collection<TileFixture> localFixtures =
-				fixturesMap.get(location);
+					fixturesMap.get(location);
 			if (!Objects.isNull(localFixtures)) {
 				builder.append("fixtures: ").append(System.lineSeparator());
 				builder.append(localFixtures.stream().map(Object::toString)
-					.collect(Collectors.joining(System.lineSeparator())));
+						.collect(Collectors.joining(System.lineSeparator())));
 			}
 			builder.append(System.lineSeparator());
 		}
@@ -635,7 +635,7 @@ public class LegacyMap implements IMutableLegacyMap {
 					idStr = "";
 				}
 				ostream.accept(String.format("%s%s apparently moved from our %s to %s",
-					match, idStr, matchPoint, location));
+						match, idStr, matchPoint, location));
 				retval = false;
 			}
 			retval = match.isSubset(desideratum, ostream) && retval;
@@ -646,8 +646,8 @@ public class LegacyMap implements IMutableLegacyMap {
 			ostream.accept("Extra fixture:\t" + desideratum);
 		} else if (unmatched) {
 			ostream.accept(String.format(
-				"Fixture with ID #%d didn't match any of the subsettable fixtures sharing that ID",
-				desideratum.getId()));
+					"Fixture with ID #%d didn't match any of the subsettable fixtures sharing that ID",
+					desideratum.getId()));
 			retval = false;
 		}
 		return retval;
@@ -665,10 +665,10 @@ public class LegacyMap implements IMutableLegacyMap {
 			final List<TileFixture> ourFixtures = new ArrayList<>();
 			// TODO: Use Guava Multimap for this
 			final Map<Integer, List<Pair<Subsettable<IFixture>, Point>>> ourSubsettables =
-				new HashMap<>(50, 0.4f);
+					new HashMap<>(50, 0.4f);
 			final Map<TileFixture, Point> ourLocations = fixturesMap.entrySet().stream()
-				.flatMap(e -> e.getValue().stream().map(f -> Pair.with(f, e.getKey())))
-				.collect(Collectors.toMap(Pair::getValue0, Pair::getValue1));
+					.flatMap(e -> e.getValue().stream().map(f -> Pair.with(f, e.getKey())))
+					.collect(Collectors.toMap(Pair::getValue0, Pair::getValue1));
 			// IUnit is Subsettable<IUnit> and thus incompatible with SubsettableFixture // FIXME: No longer true
 			final Map<Integer, List<Pair<IUnit, Point>>> ourUnits = new HashMap<>(50, 0.4f);
 			// AbstractTown is Subsettable<AbstractTown>
@@ -680,7 +680,7 @@ public class LegacyMap implements IMutableLegacyMap {
 				if (fixture instanceof final IUnit unit) {
 					final List<Pair<IUnit, Point>> list;
 					final List<Pair<IUnit, Point>> temp =
-						ourUnits.get(fixture.getId());
+							ourUnits.get(fixture.getId());
 					if (Objects.isNull(temp)) {
 						list = new ArrayList<>();
 					} else {
@@ -691,7 +691,7 @@ public class LegacyMap implements IMutableLegacyMap {
 				} else if (fixture instanceof final AbstractTown town) {
 					final List<Pair<AbstractTown, Point>> list;
 					final List<Pair<AbstractTown, Point>> temp =
-						ourTowns.get(fixture.getId());
+							ourTowns.get(fixture.getId());
 					if (Objects.isNull(temp)) {
 						list = new ArrayList<>();
 					} else {
@@ -702,7 +702,7 @@ public class LegacyMap implements IMutableLegacyMap {
 				} else if (fixture instanceof Subsettable) {
 					final List<Pair<Subsettable<IFixture>, Point>> list;
 					final List<Pair<Subsettable<IFixture>, Point>> temp =
-						ourSubsettables.get(fixture.getId());
+							ourSubsettables.get(fixture.getId());
 					if (Objects.isNull(temp)) {
 						list = new ArrayList<>();
 					} else {
@@ -718,8 +718,8 @@ public class LegacyMap implements IMutableLegacyMap {
 				final Point tPoint = ourLocations.get(fixture);
 				if (!Objects.isNull(tPoint) && !tPoint.equals(point)) {
 					report.accept(String.format("%s moved from our %s to %s",
-						fixture, tPoint,
-						point));
+							fixture, tPoint,
+							point));
 					return true;
 				} else {
 					return false;
@@ -728,8 +728,8 @@ public class LegacyMap implements IMutableLegacyMap {
 
 			for (final Point point : getLocations()) {
 				final Consumer<String> localReport =
-					str -> report.accept(String.format(
-						"At %s:\t%s", point.toString(), str));
+						str -> report.accept(String.format(
+								"At %s:\t%s", point.toString(), str));
 				final TileType theirTerrain = obj.getBaseTerrain(point);
 				final TileType ourTerrain = terrain.get(point);
 				if (!Objects.isNull(theirTerrain)) {
@@ -739,7 +739,7 @@ public class LegacyMap implements IMutableLegacyMap {
 							retval = false;
 							continue;
 						} else if (!getRivers(point).isEmpty() &&
-							obj.getRivers(point).isEmpty()) {
+								obj.getRivers(point).isEmpty()) {
 							localReport.accept("Has terrain but not our rivers");
 						}
 					} else {
@@ -759,7 +759,7 @@ public class LegacyMap implements IMutableLegacyMap {
 					if (fixture instanceof IUnit && ourUnits.containsKey(idNum)) {
 						continue;
 					} else if (fixture instanceof AbstractTown &&
-						ourTowns.containsKey(idNum)) {
+							ourTowns.containsKey(idNum)) {
 						continue;
 					} else { // FIXME: Also check ourSubsettables, right?
 						ourFixtures.add(fixture);
@@ -773,19 +773,19 @@ public class LegacyMap implements IMutableLegacyMap {
 					if (ourFixtures.contains(fixture) || fixture.subsetShouldSkip()) {
 						continue;
 					} else if (fixture instanceof IUnit &&
-						!Objects.isNull(unitLocs)) {
+							!Objects.isNull(unitLocs)) {
 						retval = testAgainstList(fixture, point,
-							unitLocs, localReport, movedFrom) && retval;
+								unitLocs, localReport, movedFrom) && retval;
 					} else if (fixture instanceof final AbstractTown town &&
-						!Objects.isNull(townLocs)) {
+							!Objects.isNull(townLocs)) {
 						retval = testAgainstList(town, point,
-							townLocs, localReport, movedFrom)
-							&& retval;
+								townLocs, localReport, movedFrom)
+								&& retval;
 					} else if (fixture instanceof Subsettable &&
-						!Objects.isNull(subsetLocs)) {
+							!Objects.isNull(subsetLocs)) {
 						retval = testAgainstList(fixture, point,
-							subsetLocs,
-							localReport, movedFrom) && retval;
+								subsetLocs,
+								localReport, movedFrom) && retval;
 					} else if (movedFrom.test(point, fixture)) {
 						retval = false; // return false;
 					} else {
@@ -829,7 +829,7 @@ public class LegacyMap implements IMutableLegacyMap {
 	public ILegacyMap copy(final IFixture.CopyBehavior zero, final @Nullable Player player) {
 		// FIXME: Should declare as SPMapNG and use collection bulk-add methods
 		final IMutableLegacyMap retval = new LegacyMap(getDimensions(), playerCollection.copy(),
-			currentTurn);
+				currentTurn);
 		for (final Point point : getLocations()) {
 			final TileType tileType = terrain.get(point);
 			if (!Objects.isNull(tileType)) {

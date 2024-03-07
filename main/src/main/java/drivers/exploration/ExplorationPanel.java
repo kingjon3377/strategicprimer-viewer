@@ -114,39 +114,40 @@ import worker.common.IFixtureEditHelper;
 	}
 
 	public ExplorationPanel(final SpinnerNumberModel mpModel, final ComboBoxModel<Speed> speedModel,
-	                        final JPanel headerPanel, final FunctionalGroupLayout headerLayout,
-	                        final JPanel tilesPanel, final IExplorationModel driverModel,
-	                        final Runnable explorerChangeButtonListener) {
+							final JPanel headerPanel, final FunctionalGroupLayout headerLayout,
+							final JPanel tilesPanel, final IExplorationModel driverModel,
+							final Runnable explorerChangeButtonListener) {
 		super(verticalSplit(headerPanel, tilesPanel));
 		this.driverModel = driverModel;
 		this.mpModel = mpModel;
 		LovelaceLogger.trace("In ExplorationPanel initializer");
 		final Map<Direction, KeyStroke> arrowKeys = Stream.of(
-				Pair.with(Direction.North, key(KeyEvent.VK_UP)),
-				Pair.with(Direction.South, key(KeyEvent.VK_DOWN)),
-				Pair.with(Direction.West, key(KeyEvent.VK_LEFT)),
-				Pair.with(Direction.East, key(KeyEvent.VK_RIGHT)))
-			.collect(Collectors.toMap(Pair::getValue0, Pair::getValue1));
+						Pair.with(Direction.North, key(KeyEvent.VK_UP)),
+						Pair.with(Direction.South, key(KeyEvent.VK_DOWN)),
+						Pair.with(Direction.West, key(KeyEvent.VK_LEFT)),
+						Pair.with(Direction.East, key(KeyEvent.VK_RIGHT)))
+				.collect(Collectors.toMap(Pair::getValue0, Pair::getValue1));
 
 		final Map<Direction, KeyStroke> numKeys = Stream.of(
-				Pair.with(Direction.North, key(KeyEvent.VK_NUMPAD8)),
-				Pair.with(Direction.South, key(KeyEvent.VK_NUMPAD2)),
-				Pair.with(Direction.West, key(KeyEvent.VK_NUMPAD4)),
-				Pair.with(Direction.East, key(KeyEvent.VK_NUMPAD6)),
-				Pair.with(Direction.Northeast, key(KeyEvent.VK_NUMPAD9)),
-				Pair.with(Direction.Northwest, key(KeyEvent.VK_NUMPAD7)),
-				Pair.with(Direction.Southeast, key(KeyEvent.VK_NUMPAD3)),
-				Pair.with(Direction.Southwest, key(KeyEvent.VK_NUMPAD1)),
-				Pair.with(Direction.Nowhere, key(KeyEvent.VK_NUMPAD5)))
-			.collect(Collectors.toMap(Pair::getValue0, Pair::getValue1));
+						Pair.with(Direction.North, key(KeyEvent.VK_NUMPAD8)),
+						Pair.with(Direction.South, key(KeyEvent.VK_NUMPAD2)),
+						Pair.with(Direction.West, key(KeyEvent.VK_NUMPAD4)),
+						Pair.with(Direction.East, key(KeyEvent.VK_NUMPAD6)),
+						Pair.with(Direction.Northeast, key(KeyEvent.VK_NUMPAD9)),
+						Pair.with(Direction.Northwest, key(KeyEvent.VK_NUMPAD7)),
+						Pair.with(Direction.Southeast, key(KeyEvent.VK_NUMPAD3)),
+						Pair.with(Direction.Southwest, key(KeyEvent.VK_NUMPAD1)),
+						Pair.with(Direction.Nowhere, key(KeyEvent.VK_NUMPAD5)))
+				.collect(Collectors.toMap(Pair::getValue0, Pair::getValue1));
 		driverModel.addMovementCostListener(this::movementDeductionTracker);
 		final JButton explorerChangeButton = new ListenedButton("Select a different explorer",
-			explorerChangeButtonListener);
+				explorerChangeButtonListener);
 
 		final JLabel remainingMPLabel = new JLabel("Remaining Movement Points:");
 		final JSpinner mpField = new JSpinner(mpModel);
+		// FIXME: Here and elsewhere, 'height'/'width' is a public int field; skip double getter
 		mpField.setMaximumSize(new Dimension(Short.MAX_VALUE,
-			(int) mpField.getPreferredSize().getHeight())); // FIXME: Here and elsewhere, 'height'/'width' is a public int field; skip double getter
+				(int) mpField.getPreferredSize().getHeight()));
 
 		final JLabel speedLabel = new JLabel("Current relative speed:");
 
@@ -163,10 +164,10 @@ import worker.common.IFixtureEditHelper;
 		LovelaceLogger.trace("ExplorationPanel: headerPanel contents added");
 
 		headerLayout.setHorizontalGroup(
-			headerLayout.sequentialGroupOf(explorerChangeButton, locLabel,
-				remainingMPLabel, mpField, speedLabel, speedBox));
+				headerLayout.sequentialGroupOf(explorerChangeButton, locLabel,
+						remainingMPLabel, mpField, speedLabel, speedBox));
 		headerLayout.setVerticalGroup(headerLayout.parallelGroupOf(explorerChangeButton,
-			locLabel, remainingMPLabel, mpField, speedLabel, speedBox));
+				locLabel, remainingMPLabel, mpField, speedLabel, speedBox));
 
 		LovelaceLogger.trace("ExplorationPanel: headerPanel layout adjusted");
 
@@ -177,7 +178,7 @@ import worker.common.IFixtureEditHelper;
 		final ILegacyMap secondMap = driverModel.streamSubordinateMaps().findFirst().orElseGet(driverModel::getMap);
 
 		final IDRegistrar idf = IDFactoryFiller.createIDFactory(
-			driverModel.streamAllMaps().toArray(ILegacyMap[]::new));
+				driverModel.streamAllMaps().toArray(ILegacyMap[]::new));
 		huntingModel = new HuntingModel(driverModel.getMap());
 
 		LovelaceLogger.trace("ExplorationPanel: huntingModel created");
@@ -195,12 +196,12 @@ import worker.common.IFixtureEditHelper;
 		for (final Direction direction : Direction.values()) {
 			LovelaceLogger.trace("ExplorationPanel: Starting to initialize for %s", direction);
 			final FixtureList mainList = new FixtureList(tilesPanel,
-				new FixtureListModel(getFixturesMain,
-					getBaseTerrainMain,
-					getRiversMain, isMountainousMain,
-					this::tracksCreator, null, null, null, null, null, null,
-					Comparator.naturalOrder()), // TODO: Replace nulls with implementations?
-				feh, idf, driverModel.getMap().getPlayers());
+					new FixtureListModel(getFixturesMain,
+							getBaseTerrainMain,
+							getRiversMain, isMountainousMain,
+							this::tracksCreator, null, null, null, null, null, null,
+							Comparator.naturalOrder()), // TODO: Replace nulls with implementations?
+					feh, idf, driverModel.getMap().getPlayers());
 			tilesPanel.add(new JScrollPane(mainList));
 
 			LovelaceLogger.trace("ExplorationPanel: main list set up for %s", direction);
@@ -212,17 +213,17 @@ import worker.common.IFixtureEditHelper;
 			LovelaceLogger.trace("ExplorationPanel: Added button for %s", direction);
 
 			final ExplorationClickListener ecl = new ExplorationClickListener(driverModel, this, this::movementDeductionTracker,
-				direction, mainList);
+					direction, mainList);
 			if (Direction.Nowhere == direction) {
 				dtb.setComponentPopupMenu(ecl.getExplorerActionsMenu());
 			}
 			createHotKey(dtb, direction.toString(), ecl, JComponent.WHEN_IN_FOCUSED_WINDOW,
-				Stream.of(arrowKeys.get(direction), numKeys.get(direction))
-					.filter(Objects::nonNull).toArray(KeyStroke[]::new));
+					Stream.of(arrowKeys.get(direction), numKeys.get(direction))
+							.filter(Objects::nonNull).toArray(KeyStroke[]::new));
 			dtb.addActionListener(ecl);
 
 			final RandomDiscoverySelector ell = new RandomDiscoverySelector(driverModel,
-				mainList, speedSource);
+					mainList, speedSource);
 
 			// mainList.model.addListDataListener(ell);
 			driverModel.addSelectionChangeListener(ell);
@@ -231,13 +232,13 @@ import worker.common.IFixtureEditHelper;
 			LovelaceLogger.trace("ExplorationPanel: ell set up for %s", direction);
 
 			final FixtureList secList = new FixtureList(tilesPanel,
-				new FixtureListModel(getFixturesSecond, getBaseTerrainSecond,
-					getRiversSecond, isMountainousSecond, ExplorationPanel::createNull,
-					driverModel::setSubMapTerrain, driverModel::copyRiversToSubMaps,
-					driverModel::setMountainousInSubMap, driverModel::copyToSubMaps,
-					driverModel::removeRiversFromSubMaps,
-					driverModel::removeFixtureFromSubMaps, Comparator.naturalOrder()),
-				feh, idf, secondMap.getPlayers());
+					new FixtureListModel(getFixturesSecond, getBaseTerrainSecond,
+							getRiversSecond, isMountainousSecond, ExplorationPanel::createNull,
+							driverModel::setSubMapTerrain, driverModel::copyRiversToSubMaps,
+							driverModel::setMountainousInSubMap, driverModel::copyToSubMaps,
+							driverModel::removeRiversFromSubMaps,
+							driverModel::removeFixtureFromSubMaps, Comparator.naturalOrder()),
+					feh, idf, secondMap.getPlayers());
 			tilesPanel.add(new JScrollPane(secList));
 
 			LovelaceLogger.trace("ExploratonPanel: Second list set up for %s", direction);
@@ -261,7 +262,8 @@ import worker.common.IFixtureEditHelper;
 	}
 
 	private final FormattedLabel locLabel = new FormattedLabel(
-		"<html><body>Currently exploring %s; click a tile to explore it. Selected fixtures in its left-hand list will be 'discovered'.</body></html>", Point.INVALID_POINT);
+			"<html><body>Currently exploring %s; click a tile to explore it. Selected fixtures in its left-hand list will be 'discovered'.</body></html>",
+			Point.INVALID_POINT);
 
 	private final Map<Direction, SelectionChangeListener> mains = new EnumMap<>(Direction.class);
 	private final Map<Direction, SelectionChangeListener> seconds = new EnumMap<>(Direction.class);
@@ -362,21 +364,21 @@ import worker.common.IFixtureEditHelper;
 	// TODO: Try to make this static
 	private class ExplorationClickListener implements SelectionChangeSource, ActionListener {
 		public ExplorationClickListener(final IExplorationModel driverModel, final SelectionChangeListener outer,
-		                                final MovementCostListener movementDeductionTracker, final Direction direction,
-		                                final FixtureList mainList) {
+										final MovementCostListener movementDeductionTracker, final Direction direction,
+										final FixtureList mainList) {
 			this.direction = direction;
 			this.mainList = mainList;
 			this.driverModel = driverModel;
 			this.outer = outer;
 			this.movementDeductionTracker = movementDeductionTracker;
 			explorerActionsMenu = new FunctionalPopupMenu(
-				createMenuItem("Swear any villages", KeyEvent.VK_V,
-					"Swear any independent villages on this tile to the player's service",
-					this::villageSwearingAction),
-				createMenuItem("Dig to expose ground", KeyEvent.VK_D,
-					"Dig to find what kind of ground is here", driverModel::dig),
-				createMenuItem("Search again", KeyEvent.VK_S,
-					"Search this tile, as if arriving on it again", this::searchCurrentTile));
+					createMenuItem("Swear any villages", KeyEvent.VK_V,
+							"Swear any independent villages on this tile to the player's service",
+							this::villageSwearingAction),
+					createMenuItem("Dig to expose ground", KeyEvent.VK_D,
+							"Dig to find what kind of ground is here", driverModel::dig),
+					createMenuItem("Search again", KeyEvent.VK_S,
+							"Search this tile, as if arriving on it again", this::searchCurrentTile));
 		}
 
 		private final IExplorationModel driverModel;
@@ -403,7 +405,7 @@ import worker.common.IFixtureEditHelper;
 			final List<TileFixture> retval = new ArrayList<>();
 			for (final int index : selections) {
 				retval.add(listModel.getElementAt(index < listModel.getSize() ?
-					index : listModel.getSize() - 1));
+						index : listModel.getSize() - 1));
 			}
 			return retval;
 		}
@@ -411,8 +413,8 @@ import worker.common.IFixtureEditHelper;
 		private void villageSwearingAction() {
 			driverModel.swearVillages();
 			driverModel.getMap().getFixtures(driverModel.getSelectedUnitLocation())
-				.stream().filter(Village.class::isInstance).map(Village.class::cast)
-				.forEach(v -> getSelectedValuesList().add(v));
+					.stream().filter(Village.class::isInstance).map(Village.class::cast)
+					.forEach(v -> getSelectedValuesList().add(v));
 			// FIXME: Adding to that list doesn't actually do anything, if I read it correctly ...
 		}
 
@@ -422,7 +424,7 @@ import worker.common.IFixtureEditHelper;
 		private void discoverFixtures(final Iterable<TileFixture> fixtures) {
 			final Point destPoint = driverModel.getSelectedUnitLocation();
 			final Player player = Optional.ofNullable(driverModel.getSelectedUnit())
-				.map(IUnit::owner).orElse(new PlayerImpl(-1, "no-one"));
+					.map(IUnit::owner).orElse(new PlayerImpl(-1, "no-one"));
 
 			driverModel.copyTerrainToSubMaps(destPoint);
 			for (final TileFixture fixture : fixtures) {
@@ -432,7 +434,7 @@ import worker.common.IFixtureEditHelper;
 				} else {
 					final IFixture.CopyBehavior zero;
 					if (fixture instanceof final HasOwner owned && (!player.equals(owned.owner()) ||
-						fixture instanceof Village)) {
+							fixture instanceof Village)) {
 						zero = IFixture.CopyBehavior.ZERO;
 					} else if (fixture instanceof HasPopulation || fixture instanceof HasExtent)
 						zero = IFixture.CopyBehavior.ZERO;

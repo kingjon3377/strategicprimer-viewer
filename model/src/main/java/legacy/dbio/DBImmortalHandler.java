@@ -41,7 +41,7 @@ import common.xmlio.Warning;
 import static io.jenetics.facilejdbc.Param.value;
 
 public final class DBImmortalHandler extends AbstractDatabaseWriter<Immortal, /*Point|IUnit*/ Object>
-	implements MapContentsReader {
+		implements MapContentsReader {
 	private static final Pattern SIMPLE_IMMORTAL_REFRESH_PATTERN = Pattern.compile("simple_immortals ");
 
 	public DBImmortalHandler() {
@@ -54,38 +54,38 @@ public final class DBImmortalHandler extends AbstractDatabaseWriter<Immortal, /*
 	}
 
 	private static final String SIMPLE_IMMORTALS_SCHEMA =
-		"CREATE TABLE IF NOT EXISTS simple_immortals (" +
-			"    row INTEGER," +
-			"    column INTEGER" +
-			"        CHECK ((row IS NOT NULL AND column IS NOT NULL)" +
-			"            OR (row IS NULL AND column IS NULL))," +
-			"    parent INTEGER" +
-			"        CHECK ((row IS NOT NULL AND parent IS NULL)" +
-			"            OR (row IS NULL AND parent IS NOT NULL))," +
-			"    type VARCHAR(16) NOT NULL" +
-			"        CHECK (type IN('sphinx', 'djinn', 'griffin', 'minotaur', 'ogre'," +
-			"            'phoenix', 'simurgh', 'troll', 'snowbird', 'thunderbird'," +
-			"            'pegasus', 'unicorn', 'kraken'))," +
-			"    id INTEGER NOT NULL," +
-			"    image VARCHAR(255)" +
-			");";
+			"CREATE TABLE IF NOT EXISTS simple_immortals (" +
+					"    row INTEGER," +
+					"    column INTEGER" +
+					"        CHECK ((row IS NOT NULL AND column IS NOT NULL)" +
+					"            OR (row IS NULL AND column IS NULL))," +
+					"    parent INTEGER" +
+					"        CHECK ((row IS NOT NULL AND parent IS NULL)" +
+					"            OR (row IS NULL AND parent IS NOT NULL))," +
+					"    type VARCHAR(16) NOT NULL" +
+					"        CHECK (type IN('sphinx', 'djinn', 'griffin', 'minotaur', 'ogre'," +
+					"            'phoenix', 'simurgh', 'troll', 'snowbird', 'thunderbird'," +
+					"            'pegasus', 'unicorn', 'kraken'))," +
+					"    id INTEGER NOT NULL," +
+					"    image VARCHAR(255)" +
+					");";
 
 	private static final List<Query> INITIALIZERS = List.of(
-		Query.of(SIMPLE_IMMORTALS_SCHEMA),
-		Query.of("CREATE TABLE IF NOT EXISTS kinded_immortals (" +
-			"    row INTEGER," +
-			"    column INTEGER" +
-			"        CHECK ((row IS NOT NULL AND column IS NOT NULL)" +
-			"            OR (row IS NULL AND column IS NULL))," +
-			"    parent INTEGER" +
-			"        CHECK ((row IS NOT NULL AND parent IS NULL)" +
-			"            OR (row IS NULL AND parent IS NOT NULL))," +
-			"    type VARCHAR(16) NOT NULL" +
-			"        CHECK (type IN ('centaur', 'dragon', 'fairy', 'giant'))," +
-			"    kind VARCHAR(32) NOT NULL," +
-			"    id INTEGER NOT NULL," +
-			"    image VARCHAR(255)" +
-			");"));
+			Query.of(SIMPLE_IMMORTALS_SCHEMA),
+			Query.of("CREATE TABLE IF NOT EXISTS kinded_immortals (" +
+					"    row INTEGER," +
+					"    column INTEGER" +
+					"        CHECK ((row IS NOT NULL AND column IS NOT NULL)" +
+					"            OR (row IS NULL AND column IS NULL))," +
+					"    parent INTEGER" +
+					"        CHECK ((row IS NOT NULL AND parent IS NULL)" +
+					"            OR (row IS NULL AND parent IS NOT NULL))," +
+					"    type VARCHAR(16) NOT NULL" +
+					"        CHECK (type IN ('centaur', 'dragon', 'fairy', 'giant'))," +
+					"    kind VARCHAR(32) NOT NULL," +
+					"    id INTEGER NOT NULL," +
+					"    image VARCHAR(255)" +
+					");"));
 
 	@Override
 	public List<Query> getInitializers() {
@@ -97,21 +97,22 @@ public final class DBImmortalHandler extends AbstractDatabaseWriter<Immortal, /*
 	}
 
 	private static final List<Query> SIMPLE_IMMORTAL_REFRESH =
-		Collections.singletonList(Query.of(SIMPLE_IMMORTAL_REFRESH_PATTERN.matcher(SIMPLE_IMMORTALS_SCHEMA).replaceAll("simple_immortals_replacement ") +
-			"INSERT INTO simple_immortals_replacement SELECT * FROM simple_immortals;" +
-			"DROP TABLE simple_immortals;" + "ALTER TABLE simple_immortals_replacement RENAME TO simple_immortals;"));
+			Collections.singletonList(Query.of(SIMPLE_IMMORTAL_REFRESH_PATTERN.matcher(SIMPLE_IMMORTALS_SCHEMA)
+					.replaceAll("simple_immortals_replacement ") +
+					"INSERT INTO simple_immortals_replacement SELECT * FROM simple_immortals;" +
+					"DROP TABLE simple_immortals;" + "ALTER TABLE simple_immortals_replacement RENAME TO simple_immortals;"));
 
 	private static List<Query> refreshSimpleSchema() {
 		return SIMPLE_IMMORTAL_REFRESH;
 	}
 
 	private static final Query INSERT_SIMPLE = Query.of(
-		"INSERT INTO simple_immortals (row, column, parent, type, id, image) " +
-			"VALUES(:row, :column, :parent, :type, :id, :image);");
+			"INSERT INTO simple_immortals (row, column, parent, type, id, image) " +
+					"VALUES(:row, :column, :parent, :type, :id, :image);");
 
 	private static final Query INSERT_KINDED = Query.of(
-		"INSERT INTO kinded_immortals (row, column, parent, type, kind, id, image) " +
-			"VALUES(:row, :column, :parent, :type, :kind, :id, :image);");
+			"INSERT INTO kinded_immortals (row, column, parent, type, kind, id, image) " +
+					"VALUES(:row, :column, :parent, :type, :kind, :id, :image);");
 
 	@Override
 	public void write(final Transactional db, final Immortal obj, final Object context) throws SQLException {
@@ -119,13 +120,13 @@ public final class DBImmortalHandler extends AbstractDatabaseWriter<Immortal, /*
 			try {
 				if (context instanceof final Point p) {
 					INSERT_SIMPLE.on(value("row", p.row()),
-						value("column", p.column()),
-						value("type", ((HasKind) obj).getKind()), value("id", obj.getId()),
-						value("image", ((HasImage) obj).getImage())).executeUpdate(db.connection());
+							value("column", p.column()),
+							value("type", ((HasKind) obj).getKind()), value("id", obj.getId()),
+							value("image", ((HasImage) obj).getImage())).executeUpdate(db.connection());
 				} else if (context instanceof final IUnit u) {
 					INSERT_SIMPLE.on(
-						value("parent", u.getId()), value("type", ((HasKind) obj).getKind()),
-						value("id", obj.getId()), value("image", ((HasImage) obj).getImage())).execute(db.connection());
+							value("parent", u.getId()), value("type", ((HasKind) obj).getKind()),
+							value("id", obj.getId()), value("image", ((HasImage) obj).getImage())).execute(db.connection());
 				} else {
 					throw new IllegalArgumentException("context must be Point or IUnit");
 				}
@@ -151,14 +152,14 @@ public final class DBImmortalHandler extends AbstractDatabaseWriter<Immortal, /*
 			};
 			if (context instanceof final Point p) {
 				INSERT_KINDED.on(value("row", p.row()),
-					value("column", p.column()),
-					value("type", type), value("kind", ((HasKind) obj).getKind()),
-					value("id", obj.getId()), value("image", ((HasImage) obj).getImage())).execute(db.connection());
+						value("column", p.column()),
+						value("type", type), value("kind", ((HasKind) obj).getKind()),
+						value("id", obj.getId()), value("image", ((HasImage) obj).getImage())).execute(db.connection());
 			} else if (context instanceof final IUnit u) {
 				INSERT_KINDED.on(
-					value("parent", u.getId()), value("type", type),
-					value("kind", ((HasKind) obj).getKind()), value("id", obj.getId()),
-					value("image", ((HasImage) obj).getImage())).execute(db.connection());
+						value("parent", u.getId()), value("type", type),
+						value("kind", ((HasKind) obj).getKind()), value("id", obj.getId()),
+						value("image", ((HasImage) obj).getImage())).execute(db.connection());
 			} else {
 				throw new IllegalArgumentException("context must be Point or IUnit");
 			}
@@ -229,10 +230,10 @@ public final class DBImmortalHandler extends AbstractDatabaseWriter<Immortal, /*
 
 	@Override
 	public void readMapContents(final Connection db, final IMutableLegacyMap map, final Map<Integer, IFixture> containers,
-	                            final Map<Integer, List<Object>> containees, final Warning warner) throws SQLException {
+								final Map<Integer, List<Object>> containees, final Warning warner) throws SQLException {
 		handleQueryResults(db, warner, "simple immortals", readSimpleImmortal(map, containees),
-			SIMPLE_SELECT);
+				SIMPLE_SELECT);
 		handleQueryResults(db, warner, "immortals with kinds", readKindedImmortal(map, containees),
-			KINDED_SELECT);
+				KINDED_SELECT);
 	}
 }

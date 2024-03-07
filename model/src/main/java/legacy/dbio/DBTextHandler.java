@@ -30,13 +30,13 @@ public final class DBTextHandler extends AbstractDatabaseWriter<TextFixture, Poi
 	}
 
 	private static final List<Query> INITIALIZERS = Collections.singletonList(
-		Query.of("CREATE TABLE IF NOT EXISTS text_notes (" +
-			"    row INTEGER NOT NULL," +
-			"    column INTEGER NOT NULL," +
-			"    turn INTEGER," +
-			"    text VARCHAR(1024) NOT NULL," +
-			"    image VARCHAR(255)" +
-			");"));
+			Query.of("CREATE TABLE IF NOT EXISTS text_notes (" +
+					"    row INTEGER NOT NULL," +
+					"    column INTEGER NOT NULL," +
+					"    turn INTEGER," +
+					"    text VARCHAR(1024) NOT NULL," +
+					"    image VARCHAR(255)" +
+					");"));
 
 	@Override
 	public List<Query> getInitializers() {
@@ -44,7 +44,7 @@ public final class DBTextHandler extends AbstractDatabaseWriter<TextFixture, Poi
 	}
 
 	private static final Query INSERT = Query.of(
-		"INSERT INTO text_notes (row, column, turn, text, image) VALUES(:row, :column, :turn, :text, :image);");
+			"INSERT INTO text_notes (row, column, turn, text, image) VALUES(:row, :column, :turn, :text, :image);");
 
 	@Override
 	public void write(final Transactional db, final TextFixture obj, final Point context) throws SQLException {
@@ -78,7 +78,7 @@ public final class DBTextHandler extends AbstractDatabaseWriter<TextFixture, Poi
 
 	@Override
 	public void readMapContents(final Connection db, final IMutableLegacyMap map, final Map<Integer, IFixture> containers,
-	                            final Map<Integer, List<Object>> containees, final Warning warner) throws SQLException {
+								final Map<Integer, List<Object>> containees, final Warning warner) throws SQLException {
 		handleQueryResults(db, warner, "text notes", readTextNote(map), SELECT);
 	}
 }

@@ -48,7 +48,7 @@ public final class CompositeChangeset implements Changeset {
 				}
 			} catch (final ChangesetFailureException inner) {
 				final IllegalStateException toThrow =
-					new IllegalStateException("Failed to roll back already-applied changesets", inner);
+						new IllegalStateException("Failed to roll back already-applied changesets", inner);
 				toThrow.addSuppressed(except);
 				throw toThrow;
 			}

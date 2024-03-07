@@ -67,30 +67,30 @@ import drivers.worker_mgmt.orderspanel.OrdersPanel;
 	private final WorkerTree tree;
 
 	public WorkerMgmtFrame(final SPOptions options, final IWorkerModel model, final MenuBroker menuHandler,
-	                       final WorkerMgmtGUI driver) {
+						   final WorkerMgmtGUI driver) {
 		super("Worker Management", driver, new Dimension(640, 480), true,
-			(file) -> model.addSubordinateMap(MapIOHelper.readMap(file)));
+				(file) -> model.addSubordinateMap(MapIOHelper.readMap(file)));
 		this.model = model;
 		mainMap = model.getMap();
 		final IDRegistrar idf = IDFactoryFiller.createIDFactory(model.streamAllMaps()
-			.toArray(ILegacyMap[]::new));
+				.toArray(ILegacyMap[]::new));
 		newUnitFrame = new NewUnitDialog(model.getCurrentPlayer(), idf);
 		final IWorkerTreeModel treeModel = new WorkerTreeModelAlt(model); // TODO: Try with WorkerTreeModel again?
 
 		tree = new WorkerTree(treeModel, model.getPlayers(),
-			mainMap::getCurrentTurn, true, idf);
+				mainMap::getCurrentTurn, true, idf);
 		newUnitFrame.addNewUnitListener(treeModel);
 
 		final int keyMask = Platform.SHORTCUT_MASK;
 		createHotKey(tree, "openUnits", ignored -> tree.requestFocusInWindow(),
-			JComponent.WHEN_IN_FOCUSED_WINDOW,
-			KeyStroke.getKeyStroke(KeyEvent.VK_U, keyMask));
+				JComponent.WHEN_IN_FOCUSED_WINDOW,
+				KeyStroke.getKeyStroke(KeyEvent.VK_U, keyMask));
 
 		playerLabel = new FormattedLabel(String.format("Units belonging to %%s: (%sU)",
-			Platform.SHORTCUT_DESCRIPTION), model.getCurrentPlayer().getName());
+				Platform.SHORTCUT_DESCRIPTION), model.getCurrentPlayer().getName());
 		ordersPanelObj = new OrdersPanel("Orders", mainMap.getCurrentTurn(),
-			model.getCurrentPlayer(), model::getUnits, IUnit::getLatestOrders,
-			model::setUnitOrders, WorkerMgmtFrame::isCurrent); // TODO: inline isCurrent?
+				model.getCurrentPlayer(), model::getUnits, IUnit::getLatestOrders,
+				model::setUnitOrders, WorkerMgmtFrame::isCurrent); // TODO: inline isCurrent?
 		tree.addTreeSelectionListener(ordersPanelObj);
 
 		final OrdersPanel.IIsCurrent trueSupplier = (unit, turn) -> true;
@@ -102,8 +102,8 @@ import drivers.worker_mgmt.orderspanel.OrdersPanel;
 			resultsSupplier = null;
 		}
 		final OrdersPanel resultsPanel = new OrdersPanel("Results", mainMap.getCurrentTurn(),
-			model.getCurrentPlayer(), model::getUnits, IUnit::getResults,
-			resultsSupplier, trueSupplier);
+				model.getCurrentPlayer(), model::getUnits, IUnit::getResults,
+				resultsSupplier, trueSupplier);
 		tree.addTreeSelectionListener(resultsPanel);
 
 		final NotesPanel notesPanelInstance = new NotesPanel(model.getMap().getCurrentPlayer());
@@ -113,22 +113,22 @@ import drivers.worker_mgmt.orderspanel.OrdersPanel;
 		tree.addUnitMemberListener(mdp);
 
 		final JButton jumpButton = new ListenedButton(String.format("Jump to Next Blank (%sJ)",
-			Platform.SHORTCUT_DESCRIPTION), ignored -> SwingUtilities.invokeLater(this::jumpNext));
+				Platform.SHORTCUT_DESCRIPTION), ignored -> SwingUtilities.invokeLater(this::jumpNext));
 
 		strategyExporter = new StrategyExporter(model, options);
 
 		final BorderedPanel lowerLeft = BorderedPanel.verticalPanel(
-			new ListenedButton("Add New Unit", newUnitFrame::showWindow),
-			ordersPanelObj,
-			new ListenedButton("Export a proto-strategy", this::strategyWritingListener));
+				new ListenedButton("Add New Unit", newUnitFrame::showWindow),
+				ordersPanelObj,
+				new ListenedButton("Export a proto-strategy", this::strategyWritingListener));
 		setContentPane(horizontalSplit(verticalSplit(
-			BorderedPanel.verticalPanel(
-				BorderedPanel.horizontalPanel(playerLabel, null, jumpButton),
-				new JScrollPane(tree), null),
-			lowerLeft, 2.0 / 3.0), mdp));
+				BorderedPanel.verticalPanel(
+						BorderedPanel.horizontalPanel(playerLabel, null, jumpButton),
+						new JScrollPane(tree), null),
+				lowerLeft, 2.0 / 3.0), mdp));
 
 		createHotKey(jumpButton, "jumpToNext", ignored -> SwingUtilities.invokeLater(this::jumpNext),
-			JComponent.WHEN_IN_FOCUSED_WINDOW, createAccelerator(KeyEvent.VK_J));
+				JComponent.WHEN_IN_FOCUSED_WINDOW, createAccelerator(KeyEvent.VK_J));
 
 		expander = new TreeExpansionHandler(tree);
 

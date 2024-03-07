@@ -6,6 +6,7 @@ package lovelace.util;
 public interface Accumulator<Type extends Number> {
 	/**
 	 * Add to the accumulation.
+	 *
 	 * @param addend The amount to add
 	 */
 	void add(Type addend);

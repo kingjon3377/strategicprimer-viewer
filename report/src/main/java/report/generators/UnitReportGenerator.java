@@ -42,12 +42,12 @@ public class UnitReportGenerator extends AbstractReportGenerator<IUnit> {
 	public UnitReportGenerator(final Player currentPlayer, final MapDimensions dimensions, final int currentTurn, final @Nullable Point hq) {
 		super(dimensions, hq);
 		memberReportGenerator = new FortressMemberReportGenerator(currentPlayer, dimensions,
-			currentTurn, hq);
+				currentTurn, hq);
 		animalReportGenerator = new AnimalReportGenerator(dimensions, currentTurn, hq);
 		ourWorkerReportGenerator = new WorkerReportGenerator(true, dimensions,
-			currentPlayer, currentTurn, hq);
+				currentPlayer, currentTurn, hq);
 		otherWorkerReportGenerator = new WorkerReportGenerator(false, dimensions,
-			currentPlayer, currentTurn, hq);
+				currentPlayer, currentTurn, hq);
 		this.currentPlayer = currentPlayer;
 	}
 
@@ -64,9 +64,9 @@ public class UnitReportGenerator extends AbstractReportGenerator<IUnit> {
 		if (!item.getAllOrders().isEmpty() || !item.getAllResults().isEmpty()) {
 			println(formatter, "Orders and Results:<ul>");
 			for (final int turn : Stream.concat(item.getAllOrders().keySet().stream(),
-					item.getAllResults().keySet().stream())
-				.mapToInt(Integer::intValue).sorted()
-				.distinct().toArray()) {
+							item.getAllResults().keySet().stream())
+					.mapToInt(Integer::intValue).sorted()
+					.distinct().toArray()) {
 				formatter.accept("<li>Turn ");
 				formatter.accept(Integer.toString(turn));
 				println(formatter, ":<ul>");
@@ -83,9 +83,9 @@ public class UnitReportGenerator extends AbstractReportGenerator<IUnit> {
 					println(formatter, "</li>");
 				}
 				formatter.accept("""
-					</ul>
-					</li>
-					""");
+						</ul>
+						</li>
+						""");
 			}
 			println(formatter, "</ul>");
 		}
@@ -102,16 +102,16 @@ public class UnitReportGenerator extends AbstractReportGenerator<IUnit> {
 	}
 
 	private <Member extends UnitMember> void produceInner(
-		final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-		final Consumer<String> ostream, final String heading, final List<Member> collection,
-		final Consumer<Member> generator) {
+			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
+			final Consumer<String> ostream, final String heading, final List<Member> collection,
+			final Consumer<Member> generator) {
 		if (!collection.isEmpty()) {
 			ostream.accept("<li>");
 			ostream.accept(heading);
 			ostream.accept("""
-				:
-				<ul>
-				""");
+					:
+					<ul>
+					""");
 			for (final Member member : collection) {
 				ostream.accept("<li>");
 				generator.accept(member);
@@ -119,9 +119,9 @@ public class UnitReportGenerator extends AbstractReportGenerator<IUnit> {
 				fixtures.remove(member.getId());
 			}
 			ostream.accept("""
-				</ul>
-				</li>
-				""");
+					</ul>
+					</li>
+					""");
 		}
 	}
 
@@ -131,7 +131,7 @@ public class UnitReportGenerator extends AbstractReportGenerator<IUnit> {
 	 */
 	@Override
 	public void produceSingle(final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-	                          final ILegacyMap map, final Consumer<String> ostream, final IUnit item, final Point loc) {
+							  final ILegacyMap map, final Consumer<String> ostream, final IUnit item, final Point loc) {
 		ostream.accept("Unit ");
 		ostream.accept(item.getName());
 		ostream.accept(" (");
@@ -157,13 +157,13 @@ public class UnitReportGenerator extends AbstractReportGenerator<IUnit> {
 					case final Implement i -> equipment.add(i);
 					case final IResourcePile r -> {
 						final List<IResourcePile> list = Optional.ofNullable(resources.get(r.getKind()))
-							.orElseGet(ArrayList::new);
+								.orElseGet(ArrayList::new);
 						list.add(r);
 						resources.put(r.getKind(), list);
 					}
 					case final Animal a -> {
 						final Animal existing = findAndRemoveFirst(animals,
-							a::equalExceptPopulation);
+								a::equalExceptPopulation);
 						if (Objects.isNull(existing)) {
 							animals.add(a);
 						} else {
@@ -174,9 +174,9 @@ public class UnitReportGenerator extends AbstractReportGenerator<IUnit> {
 				}
 			}
 			ostream.accept("""
-				Members of the unit:
-				<ul>
-				""");
+					Members of the unit:
+					<ul>
+					""");
 			final IReportGenerator<IWorker> workerReportGenerator;
 			if (item.owner().equals(currentPlayer)) {
 				workerReportGenerator = ourWorkerReportGenerator;
@@ -184,29 +184,29 @@ public class UnitReportGenerator extends AbstractReportGenerator<IUnit> {
 				workerReportGenerator = otherWorkerReportGenerator;
 			}
 			produceInner(fixtures, ostream, "Workers", workers, (worker) ->
-				workerReportGenerator.produceSingle(fixtures, map, ostream, worker, loc));
+					workerReportGenerator.produceSingle(fixtures, map, ostream, worker, loc));
 			produceInner(fixtures, ostream, "Animals", animals,
-				(animal) -> animalReportGenerator
-					.produceSingle(fixtures, map, ostream, animal, loc));
+					(animal) -> animalReportGenerator
+							.produceSingle(fixtures, map, ostream, animal, loc));
 			produceInner(fixtures, ostream, "Equipment", equipment, (member) ->
-				memberReportGenerator.produceSingle(fixtures, map, ostream, member, loc));
+					memberReportGenerator.produceSingle(fixtures, map, ostream, member, loc));
 			if (!resources.isEmpty()) {
 				ostream.accept("""
-					<li>Resources:
-					<ul>""");
+						<li>Resources:
+						<ul>""");
 				final Consumer<IResourcePile> lambda =
-					member -> memberReportGenerator.produceSingle(fixtures, map, ostream, member, loc);
+						member -> memberReportGenerator.produceSingle(fixtures, map, ostream, member, loc);
 				for (final Map.Entry<String, List<IResourcePile>> entry : resources.entrySet()) {
 					produceInner(fixtures, ostream, entry.getKey(), entry.getValue(),
-						lambda);
+							lambda);
 				}
 				ostream.accept("""
-					</ul>
-					</li>
-					""");
+						</ul>
+						</li>
+						""");
 			}
 			produceInner(fixtures, ostream, "Others", others,
-				(it) -> ostream.accept(it.toString()));
+					(it) -> ostream.accept(it.toString()));
 			println(ostream, "</ul>");
 		}
 		produceOrders(item, ostream);
@@ -214,7 +214,7 @@ public class UnitReportGenerator extends AbstractReportGenerator<IUnit> {
 	}
 
 	private void unitFormatter(final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-	                           final ILegacyMap map, final IUnit unit, final Point loc, final Consumer<String> formatter) {
+							   final ILegacyMap map, final IUnit unit, final Point loc, final Consumer<String> formatter) {
 		formatter.accept("At ");
 		formatter.accept(loc.toString());
 		formatter.accept(distanceString.apply(loc));
@@ -226,13 +226,13 @@ public class UnitReportGenerator extends AbstractReportGenerator<IUnit> {
 	 */
 	@Override
 	public void produce(final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-	                    final ILegacyMap map, final Consumer<String> ostream) {
+						final ILegacyMap map, final Consumer<String> ostream) {
 		final HeadedMap<IUnit, Point> foreign = new HeadedMapImpl<>("<h5>Foreign Units</h5>");
 		final HeadedMap<IUnit, Point> ours = new HeadedMapImpl<>("<h5>Your units</h5>");
 		for (final Pair<Point, IUnit> pair : fixtures.values().stream()
-			.filter(p -> p.getValue1() instanceof IUnit)
-			.sorted(pairComparator)
-			.map(p -> Pair.with(p.getValue0(), (IUnit) p.getValue1())).toList()) {
+				.filter(p -> p.getValue1() instanceof IUnit)
+				.sorted(pairComparator)
+				.map(p -> Pair.with(p.getValue0(), (IUnit) p.getValue1())).toList()) {
 			final IUnit unit = pair.getValue1();
 			final Point loc = pair.getValue0();
 			if (currentPlayer.equals(unit.owner())) {
@@ -243,13 +243,13 @@ public class UnitReportGenerator extends AbstractReportGenerator<IUnit> {
 		}
 		if (!ours.isEmpty() || !foreign.isEmpty()) {
 			ostream.accept("""
-				<h4>Units in the map</h4>
-				<p>(Any units listed above are not described again.)</p>
-				""");
+					<h4>Units in the map</h4>
+					<p>(Any units listed above are not described again.)</p>
+					""");
 			writeMap(ostream, ours, (unit, loc, formatter) ->
-				unitFormatter(fixtures, map, unit, loc, formatter));
+					unitFormatter(fixtures, map, unit, loc, formatter));
 			writeMap(ostream, foreign, (unit, loc, formatter) ->
-				unitFormatter(fixtures, map, unit, loc, formatter));
+					unitFormatter(fixtures, map, unit, loc, formatter));
 		}
 	}
 }

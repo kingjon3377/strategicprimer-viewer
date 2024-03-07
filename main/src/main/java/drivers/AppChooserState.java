@@ -56,21 +56,21 @@ import org.jetbrains.annotations.Nullable;
 			final String command = factory.getUsage().getInvocation();
 			if (command.startsWith("-")) {
 				LovelaceLogger.error(
-					"An app wants to register an option, %s, not a subcommand", command);
+						"An app wants to register an option, %s, not a subcommand", command);
 			} else if (conflicts.containsKey(command)) {
 				LovelaceLogger.warning("Additional conflict for %s: %s", command,
-					factory.getUsage().getShortDescription());
+						factory.getUsage().getShortDescription());
 				conflicts.get(command).add(factory);
 			} else if (cache.containsKey(command) &&
-				cache.get(command).stream().anyMatch(f -> f.getUsage().isGraphical() ==
-					factory.getUsage().isGraphical())) {
+					cache.get(command).stream().anyMatch(f -> f.getUsage().isGraphical() ==
+							factory.getUsage().isGraphical())) {
 				final DriverFactory existing = cache.get(command).stream()
-					.filter(f -> f.getUsage().isGraphical() ==
-						factory.getUsage().isGraphical()).findAny().orElse(null);
+						.filter(f -> f.getUsage().isGraphical() ==
+								factory.getUsage().isGraphical()).findAny().orElse(null);
 				LovelaceLogger.warning("Invocation command conflict for %s between %s and %s",
-					command, factory.getUsage().getShortDescription(),
-					Optional.ofNullable(existing).map(DriverFactory::getUsage)
-						.map(IDriverUsage::getShortDescription).orElse("a null factory"));
+						command, factory.getUsage().getShortDescription(),
+						Optional.ofNullable(existing).map(DriverFactory::getUsage)
+								.map(IDriverUsage::getShortDescription).orElse("a null factory"));
 				conflicts.put(command, new ArrayList<>(Arrays.asList(factory, existing)));
 				final List<DriverFactory> existingList = cache.get(command);
 				existingList.remove(existing);
@@ -157,16 +157,16 @@ import org.jetbrains.annotations.Nullable;
 				break;
 			case AtLeastOne:
 				builder.append(" ").append(usage.getFirstParamDescription()).append(" [")
-					.append(usage.getSubsequentParamDescription()).append(" ...]");
+						.append(usage.getSubsequentParamDescription()).append(" ...]");
 				break;
 			case Two:
 				builder.append(" ").append(usage.getFirstParamDescription()).append(" ")
-					.append(usage.getSubsequentParamDescription());
+						.append(usage.getSubsequentParamDescription());
 				break;
 			case AtLeastTwo:
 				builder.append(" ").append(usage.getFirstParamDescription()).append(" ")
-					.append(usage.getSubsequentParamDescription()).append(" [")
-					.append(usage.getSubsequentParamDescription()).append(" ...]");
+						.append(usage.getSubsequentParamDescription()).append(" [")
+						.append(usage.getSubsequentParamDescription()).append(" ...]");
 				break;
 			case AnyNumber:
 				builder.append(" [").append(usage.getSubsequentParamDescription()).append(" ...]");
@@ -186,25 +186,25 @@ import org.jetbrains.annotations.Nullable;
 
 	public static void handleDroppedFiles(final OpenFilesEvent openFilesEvent) {
 		final SPFrame topWindow = Stream.of(WindowList.getWindows(true, false)).filter(SPFrame.class::isInstance)
-			.map(SPFrame.class::cast).reduce((first, second) -> second).orElse(null);
+				.map(SPFrame.class::cast).reduce((first, second) -> second).orElse(null);
 		if (!Objects.isNull(topWindow)) {
 			for (final File file : openFilesEvent.getFiles()) {
 				try {
 					topWindow.acceptDroppedFile(file.toPath());
 				} catch (final SPFormatException except) {
 					JOptionPane.showMessageDialog(topWindow, except.getMessage(), "Strategic Primer Map Format Error",
-						JOptionPane.ERROR_MESSAGE);
+							JOptionPane.ERROR_MESSAGE);
 					LovelaceLogger.error(except.getMessage());
 				} catch (final FileNotFoundException | NoSuchFileException except) {
 					JOptionPane.showMessageDialog(topWindow, except.getMessage(), "File Not Found",
-						JOptionPane.ERROR_MESSAGE);
+							JOptionPane.ERROR_MESSAGE);
 					LovelaceLogger.error(except, "Dropped file not found");
 				} catch (final IOException except) {
 					JOptionPane.showMessageDialog(topWindow, except.getMessage(), "I/O Error", JOptionPane.ERROR_MESSAGE);
 					LovelaceLogger.error("I/O error reading dropped file: %s", except.getMessage());
 				} catch (final XMLStreamException except) {
 					JOptionPane.showMessageDialog(topWindow, except.getMessage(), "Strategic Primer Map Format Error",
-						JOptionPane.ERROR_MESSAGE);
+							JOptionPane.ERROR_MESSAGE);
 					LovelaceLogger.error(except, "Malformed XML in %s", file);
 				}
 			}

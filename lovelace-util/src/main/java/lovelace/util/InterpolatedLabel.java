@@ -15,21 +15,21 @@ import org.jetbrains.annotations.Nullable;
  */
 @Deprecated
 public class InterpolatedLabel<@Nullable T> extends JLabel {
-    @Serial
-    private static final long serialVersionUID = 1;
-    private final Function<? super T, String> function;
+	@Serial
+	private static final long serialVersionUID = 1;
+	private final Function<? super T, String> function;
 
-    /**
-     * @param function The function to use to produce the label's text.
-     * @param defaultArgument The argument to pass to the function to
-     * produce the label's initial text.
-     */
-    public InterpolatedLabel(final Function<? super T, String> function, final T defaultArgument) {
-        super(function.apply(defaultArgument));
-        this.function = function;
-    }
+	/**
+	 * @param function        The function to use to produce the label's text.
+	 * @param defaultArgument The argument to pass to the function to
+	 *                        produce the label's initial text.
+	 */
+	public InterpolatedLabel(final Function<? super T, String> function, final T defaultArgument) {
+		super(function.apply(defaultArgument));
+		this.function = function;
+	}
 
-    public void setArgument(final T argument) {
-        setText(function.apply(argument));
-    }
+	public void setArgument(final T argument) {
+		setText(function.apply(argument));
+	}
 }

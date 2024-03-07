@@ -41,12 +41,13 @@ public interface IReportGenerator<T extends IFixture> {
 	/**
 	 * Write a (sub-)report to a stream. All fixtures that this report
 	 * references should be removed from the set before returning.
+	 *
 	 * @param fixtures The set of fixtures in the map.
-	 * @param map The map. (Needed to get terrain type for some reports.)
-	 * @param ostream The stream to write to
+	 * @param map      The map. (Needed to get terrain type for some reports.)
+	 * @param ostream  The stream to write to
 	 */
 	void produce(DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-	             ILegacyMap map, Consumer<String> ostream);
+				 ILegacyMap map, Consumer<String> ostream);
 
 	/**
 	 * Write a (sub-)report on a single item to a stream.
@@ -54,21 +55,21 @@ public interface IReportGenerator<T extends IFixture> {
 	 * TODO: Move back into {@link #produce}
 	 *
 	 * @param fixtures The set of fixtures in the map.
-	 * @param map The map. (Needed to get terrain type for some reports.)
-	 * @param ostream The stream to write to
-	 * @param item The specific item to write about
-	 * @param loc Its location
+	 * @param map      The map. (Needed to get terrain type for some reports.)
+	 * @param ostream  The stream to write to
+	 * @param item     The specific item to write about
+	 * @param loc      Its location
 	 */
 	void produceSingle(DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-	                   ILegacyMap map, Consumer<String> ostream, T item, Point loc);
+					   ILegacyMap map, Consumer<String> ostream, T item, Point loc);
 
 	/**
 	 * A factory for a default formatter for {@link #writeMap}.
 	 */
 	default TriConsumer<T, Point, Consumer<String>> defaultFormatter(
-		final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures, final ILegacyMap map) {
+			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures, final ILegacyMap map) {
 		return (item, loc, formatter) ->
-			produceSingle(fixtures, map, formatter, item, loc);
+				produceSingle(fixtures, map, formatter, item, loc);
 	}
 
 	String CLOSE_LI = "</li>" + System.lineSeparator();
@@ -78,19 +79,19 @@ public interface IReportGenerator<T extends IFixture> {
 	 * Write the contents of a Map to a stream as a list, but don't write anything if it is empty.
 	 *
 	 * @param ostream The stream to write to.
-	 * @param map The map to write. Has to be a {@link HeadedMap} so we can get its heading.
-	 * @param lambda The method to write each item.
-	 * @param sorter A sorting method to run the map through before printing.
+	 * @param map     The map to write. Has to be a {@link HeadedMap} so we can get its heading.
+	 * @param lambda  The method to write each item.
+	 * @param sorter  A sorting method to run the map through before printing.
 	 */
 	default <Key extends IFixture> void writeMap(final Consumer<String> ostream,
-	                                             final HeadedMap<? extends Key, Point> map,
-	                                             final TriConsumer<? super Key, Point, Consumer<String>> lambda,
-	                                             final Comparator<Pair<? super Key, Point>> sorter) {
+												 final HeadedMap<? extends Key, Point> map,
+												 final TriConsumer<? super Key, Point, Consumer<String>> lambda,
+												 final Comparator<Pair<? super Key, Point>> sorter) {
 		if (!map.isEmpty()) {
 			ostream.accept(String.format("%s%n<ul>%n", map.getHeader()));
 			final List<Pair<Key, Point>> sorted = map.entrySet().stream()
-				.map((e) -> Pair.<Key, Point>with(e.getKey(), e.getValue()))
-				.sorted(sorter).toList();
+					.map((e) -> Pair.<Key, Point>with(e.getKey(), e.getValue()))
+					.sorted(sorter).toList();
 			for (final Pair<Key, Point> pair : sorted) {
 				ostream.accept("<li>");
 				lambda.accept(pair.getValue0(), pair.getValue1(), ostream);
@@ -104,16 +105,16 @@ public interface IReportGenerator<T extends IFixture> {
 	 * Write the contents of a Map to a stream as a list, but don't write anything if it is empty.
 	 *
 	 * @param ostream The stream to write to.
-	 * @param map The map to write. Has to be a {@link HeadedMap} so we can get its heading.
-	 * @param lambda The method to write each item.
+	 * @param map     The map to write. Has to be a {@link HeadedMap} so we can get its heading.
+	 * @param lambda  The method to write each item.
 	 */
 	default <Key extends IFixture> void writeMap(final Consumer<String> ostream,
-	                                             final HeadedMap<? extends Key, Point> map,
-	                                             final TriConsumer<? super Key, Point, Consumer<String>> lambda) {
+												 final HeadedMap<? extends Key, Point> map,
+												 final TriConsumer<? super Key, Point, Consumer<String>> lambda) {
 		if (!map.isEmpty()) {
 			ostream.accept(String.format("%s%n<ul>%n", map.getHeader()));
 			final List<Pair<Key, Point>> sorted = map.entrySet().stream()
-				.map((e) -> Pair.<Key, Point>with(e.getKey(), e.getValue())).toList();
+					.map((e) -> Pair.<Key, Point>with(e.getKey(), e.getValue())).toList();
 			for (final Pair<Key, Point> pair : sorted) {
 				ostream.accept("<li>");
 				lambda.accept(pair.getValue0(), pair.getValue1(), ostream);

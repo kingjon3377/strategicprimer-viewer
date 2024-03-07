@@ -16,6 +16,7 @@ import java.util.Collection;
  */
 public final class AddRegionChangeset implements Changeset {
 	private final MapRegion region;
+
 	public AddRegionChangeset(final @NotNull MapRegion region) {
 		this.region = region;
 	}

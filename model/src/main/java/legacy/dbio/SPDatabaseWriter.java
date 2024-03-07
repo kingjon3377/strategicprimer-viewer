@@ -58,28 +58,36 @@ public final class SPDatabaseWriter implements SPWriter {
 
 	private final DBPlayerHandler playerHandler = new DBPlayerHandler();
 
-	private final List<DatabaseWriter<?, ?>> writers = List.of(new DBAdventureHandler(), new DBExplorableHandler(), new DBGroundHandler(), new DBImplementHandler(), new DBMapWriter(this, playerHandler), new DBAnimalHandler(), new DBImmortalHandler(), playerHandler, new DBPortalHandler(), new DBResourcePileHandler(), new DBCacheHandler(), new DBFieldHandler(), new DBGroveHandler(), new DBMineHandler(), new DBMineralHandler(), new DBShrubHandler(), new DBSimpleTerrainHandler(), new DBForestHandler(), new DBTextHandler(), new DBTownHandler(), new DBCommunityStatsHandler(), new DBVillageHandler(), new DBFortressHandler(this), new DBUnitHandler(this), new DBWorkerHandler());
+	private final List<DatabaseWriter<?, ?>> writers = List.of(new DBAdventureHandler(), new DBExplorableHandler(),
+			new DBGroundHandler(), new DBImplementHandler(), new DBMapWriter(this, playerHandler),
+			new DBAnimalHandler(), new DBImmortalHandler(), playerHandler, new DBPortalHandler(),
+			new DBResourcePileHandler(), new DBCacheHandler(), new DBFieldHandler(), new DBGroveHandler(),
+			new DBMineHandler(), new DBMineralHandler(), new DBShrubHandler(), new DBSimpleTerrainHandler(),
+			new DBForestHandler(), new DBTextHandler(), new DBTownHandler(), new DBCommunityStatsHandler(),
+			new DBVillageHandler(), new DBFortressHandler(this), new DBUnitHandler(this),
+			new DBWorkerHandler());
 
 	private static final Query NOTES_SCHEMA =
-		Query.of("CREATE TABLE IF NOT EXISTS notes (" +
-			"    fixture INTEGER NOT NULL," +
-			"    player INTEGER NOT NULL," +
-			"    note VARCHAR(255) NOT NULL" +
-			");");
+			Query.of("CREATE TABLE IF NOT EXISTS notes (" +
+					"    fixture INTEGER NOT NULL," +
+					"    player INTEGER NOT NULL," +
+					"    note VARCHAR(255) NOT NULL" +
+					");");
 
 	// FIXME: Make an AbstractDatabaseWriter/MapContentsReader for this so
 	// we don't have to keep this parallel set of DB objects here
 	private final Set<Transactional> notesInitialized = new HashSet<>();
 
 	private static final Query INSERT_NOTE =
-		Query.of("INSERT INTO notes (fixture, player, note) VALUES(:fixture, :player, :note)");
+			Query.of("INSERT INTO notes (fixture, player, note) VALUES(:fixture, :player, :note)");
 
-	public void writeSPObjectInContext(final Transactional sql, final Object obj, final Object context) throws SQLException {
+	public void writeSPObjectInContext(final Transactional sql, final Object obj, final Object context)
+			throws SQLException {
 		if (!notesInitialized.contains(sql)) {
 			sql.transaction().accept(db -> {
 				NOTES_SCHEMA.execute(db);
 				LovelaceLogger.debug("Executed initializer beginning %s",
-					LINEBREAK.split(NOTES_SCHEMA.rawSql())[0]);
+						LINEBREAK.split(NOTES_SCHEMA.rawSql())[0]);
 			});
 			notesInitialized.add(sql);
 		}
@@ -89,7 +97,7 @@ public final class SPDatabaseWriter implements SPWriter {
 					final String note = hn.getNote(player);
 					if (!note.isEmpty()) {
 						INSERT_NOTE.on(value("fixture", hn.getId()),
-							value("player", player), value("note", note)).executeInsert(db);
+								value("player", player), value("note", note)).executeInsert(db);
 					}
 				}
 			});
@@ -102,7 +110,7 @@ public final class SPDatabaseWriter implements SPWriter {
 			}
 		}
 		throw new IllegalStateException(String.format("No writer for %s found",
-			obj.getClass().getName()));
+				obj.getClass().getName()));
 	}
 
 	@Override
@@ -116,9 +124,10 @@ public final class SPDatabaseWriter implements SPWriter {
 	}
 
 	@Override
-	public void writeSPObject(final ThrowingConsumer<String, IOException> arg, final Object obj) throws XMLStreamException, IOException {
+	public void writeSPObject(final ThrowingConsumer<String, IOException> arg, final Object obj)
+			throws XMLStreamException, IOException {
 		throw new UnsupportedOperationException(
-			"SPDatabaseWriter can only write to a database file, not to a stream");
+				"SPDatabaseWriter can only write to a database file, not to a stream");
 	}
 
 	@Override
@@ -128,7 +137,7 @@ public final class SPDatabaseWriter implements SPWriter {
 
 	@Override
 	public void write(final ThrowingConsumer<String, IOException> arg, final ILegacyMap map) throws XMLStreamException,
-		IOException {
+			IOException {
 		writeSPObject(arg, map);
 	}
 

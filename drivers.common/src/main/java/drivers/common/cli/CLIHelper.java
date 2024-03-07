@@ -49,7 +49,8 @@ public final class CLIHelper implements ICLIHelper {
 	private static IOSource stdin() {
 		final Console console = System.console();
 		if (Objects.isNull(console)) {
-			return new BufferedReader(new InputStreamReader(SystemIn.STDIN))::readLine; // TODO: Does this consume the newline character?
+			// TODO: Does this consume the newline character?
+			return new BufferedReader(new InputStreamReader(SystemIn.STDIN))::readLine;
 		} else {
 			return console::readLine;
 		}
@@ -88,7 +89,7 @@ public final class CLIHelper implements ICLIHelper {
 	@Override
 	public void print(final String... text) {
 		final long newlines = Stream.of(text)
-			.mapToLong(s -> s.chars().filter(c -> c == '\n' || c == '\r').count()).sum();
+				.mapToLong(s -> s.chars().filter(c -> c == '\n' || c == '\r').count()).sum();
 		if (newlines > 0) {
 			intervals.replaceAll((key, lines) -> lines + newlines);
 		}
@@ -131,14 +132,14 @@ public final class CLIHelper implements ICLIHelper {
 	public Boolean inputBoolean(final String prompt, final TrinaryPredicate<String> quitResultFactory) {
 		while (true) {
 			final String input = Optional.ofNullable(inputString(prompt))
-				.map(String::toLowerCase).orElse(null);
+					.map(String::toLowerCase).orElse(null);
 			if (Objects.isNull(input) || Objects.isNull(quitResultFactory.test(input))) {
 				return null;
 			} else if ("yes".equals(input) || "true".equals(input) ||
-				"y".equals(input) || "t".equals(input)) {
+					"y".equals(input) || "t".equals(input)) {
 				return true;
 			} else if ("no".equals(input) || "false".equals(input) ||
-				"n".equals(input) || "f".equals(input)) {
+					"n".equals(input) || "f".equals(input)) {
 				return false;
 			} else {
 				println("Please enter \"yes\", \"no\", \"true\", or \"false\",");
@@ -164,9 +165,10 @@ public final class CLIHelper implements ICLIHelper {
 	 * Implementation of {@link #chooseFromList} and {@link #chooseStringFromList}.
 	 */
 	private <Element> Pair<Integer, @Nullable Element> chooseFromListImpl(final List<@NonNull ? extends Element> items,
-	                                                                      final String description, final String none, final String prompt,
-	                                                                      final ListChoiceBehavior behavior,
-	                                                                      final Function<? super Element, String> func) {
+																		  final String description, final String none,
+																		  final String prompt,
+																		  final ListChoiceBehavior behavior,
+																		  final Function<? super Element, String> func) {
 		if (items.isEmpty()) {
 			println(none);
 			return Pair.with(-1, null);
@@ -194,8 +196,8 @@ public final class CLIHelper implements ICLIHelper {
 	 */
 	@Override
 	public <Element extends HasName> Pair<Integer, @Nullable Element> chooseFromList(
-		final List<@NonNull ? extends Element> list, final String description, final String none, final String prompt,
-		final ListChoiceBehavior behavior) {
+			final List<@NonNull ? extends Element> list, final String description, final String none, final String prompt,
+			final ListChoiceBehavior behavior) {
 		return chooseFromListImpl(list, description, none, prompt, behavior, HasName::getName);
 	}
 
@@ -273,7 +275,7 @@ public final class CLIHelper implements ICLIHelper {
 	 */
 	@Override
 	public @Nullable Boolean inputBooleanInSeries(final String prompt, final String key,
-	                                              final TrinaryPredicate<String> quitResultFactory) {
+												  final TrinaryPredicate<String> quitResultFactory) {
 		if (seriesState.containsKey(key)) {
 			writePrompt(prompt);
 			final boolean retval = seriesState.get(key);
@@ -282,7 +284,7 @@ public final class CLIHelper implements ICLIHelper {
 		} // else
 		while (true) {
 			final String input = Optional.ofNullable(inputString(prompt))
-				.map(String::toLowerCase).orElse(null);
+					.map(String::toLowerCase).orElse(null);
 			if (Objects.isNull(input) || Objects.isNull(quitResultFactory.test(input))) {
 				return null;
 			}
@@ -323,8 +325,8 @@ public final class CLIHelper implements ICLIHelper {
 	 */
 	@Override
 	public Pair<Integer, @Nullable String> chooseStringFromList(final List<String> items,
-	                                                            final String description, final String none,
-	                                                            final String prompt, final ListChoiceBehavior behavior) {
+																final String description, final String none,
+																final String prompt, final ListChoiceBehavior behavior) {
 		return chooseFromListImpl(items, description, none, prompt, behavior, Function.identity());
 	}
 
@@ -348,7 +350,7 @@ public final class CLIHelper implements ICLIHelper {
 				final String retval = builder.toString();
 				if (retval.endsWith(System.lineSeparator() + System.lineSeparator())) {
 					return retval.strip() + System.lineSeparator() +
-						System.lineSeparator();
+							System.lineSeparator();
 				} else {
 					return retval.strip();
 				}

@@ -13,7 +13,7 @@ public interface TryBiConsumer<T1, T2, E extends Throwable> {
 	void accept(T1 t1, T2 t2) throws E;
 
 	static <T1, T2, E extends Throwable> TryBiConsumer<T1, T2, E> of(
-		final TryBiConsumer<T1, T2, E> tryConsumer) {
+			final TryBiConsumer<T1, T2, E> tryConsumer) {
 		return Objects.requireNonNull(tryConsumer);
 	}
 

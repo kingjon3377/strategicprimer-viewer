@@ -31,7 +31,7 @@ import java.util.OptionalInt;
 import static io.jenetics.facilejdbc.Param.value;
 
 public final class DBAnimalHandler extends AbstractDatabaseWriter<AnimalOrTracks, /*Point|IUnit|IWorker*/Object>
-	implements MapContentsReader {
+		implements MapContentsReader {
 	public DBAnimalHandler() {
 		super(AnimalOrTracks.class, Object.class);
 	}
@@ -39,7 +39,7 @@ public final class DBAnimalHandler extends AbstractDatabaseWriter<AnimalOrTracks
 	@Override
 	public boolean canWrite(final Object obj, final Object context) {
 		return (obj instanceof Animal || obj instanceof AnimalTracks) &&
-			(context instanceof Point || context instanceof IUnit);
+				(context instanceof Point || context instanceof IUnit);
 	}
 
 
@@ -55,28 +55,28 @@ public final class DBAnimalHandler extends AbstractDatabaseWriter<AnimalOrTracks
 	}
 
 	private static final List<Query> INITIALIZERS = List.of(Query.of("CREATE TABLE IF NOT EXISTS animals (" +
-			"    row INTEGER," +
-			"    column INTEGER" +
-			"    CHECK ((animals.row IS NOT NULL AND column IS NOT NULL) OR" +
-			"        (animals.row IS NULL AND column IS NULL))," +
-			"    parent INTEGER" +
-			"    CHECK ((row IS NOT NULL AND parent IS NULL) OR" +
-			"        (row IS NULL AND parent IS NOT NULL))," +
-			"    kind VARCHAR(32) NOT NULL," +
-			"    talking BOOLEAN NOT NULL," +
-			"    status VARCHAR(32) NOT NULL," +
-			"    born INTEGER," +
-			"    count INTEGER NOT NULL," +
-			"    id INTEGER NOT NULL," +
-			"    image VARCHAR(255)" +
-			");"),
-		// We assume that animal tracks can't occur inside a unit or fortress.
-		Query.of("CREATE TABLE IF NOT EXISTS tracks (" +
-			"    row INTEGER NOT NULL," +
-			"    column INTEGER NOT NULL," +
-			"    kind VARCHAR(32) NOT NULL," +
-			"    image VARCHAR(255)" +
-			");"));
+					"    row INTEGER," +
+					"    column INTEGER" +
+					"    CHECK ((animals.row IS NOT NULL AND column IS NOT NULL) OR" +
+					"        (animals.row IS NULL AND column IS NULL))," +
+					"    parent INTEGER" +
+					"    CHECK ((row IS NOT NULL AND parent IS NULL) OR" +
+					"        (row IS NULL AND parent IS NOT NULL))," +
+					"    kind VARCHAR(32) NOT NULL," +
+					"    talking BOOLEAN NOT NULL," +
+					"    status VARCHAR(32) NOT NULL," +
+					"    born INTEGER," +
+					"    count INTEGER NOT NULL," +
+					"    id INTEGER NOT NULL," +
+					"    image VARCHAR(255)" +
+					");"),
+			// We assume that animal tracks can't occur inside a unit or fortress.
+			Query.of("CREATE TABLE IF NOT EXISTS tracks (" +
+					"    row INTEGER NOT NULL," +
+					"    column INTEGER NOT NULL," +
+					"    kind VARCHAR(32) NOT NULL," +
+					"    image VARCHAR(255)" +
+					");"));
 
 	@Override
 	public List<Query> getInitializers() {
@@ -84,11 +84,11 @@ public final class DBAnimalHandler extends AbstractDatabaseWriter<AnimalOrTracks
 	}
 
 	private static final Query INSERT_TRACKS = Query.of("INSERT INTO tracks (row, column, kind, image) " +
-		"VALUES(:row, :column, :kind, :image);");
+			"VALUES(:row, :column, :kind, :image);");
 
 	private static final Query INSERT_ANIMAL = Query.of("INSERT INTO animals (row, column, parent, kind, " +
-		"talking, status, born, count, id, image) " +
-		"VALUES(:row, :column, :parent, :kind, :talking, :status, :born, :count, :id, :image);");
+			"talking, status, born, count, id, image) " +
+			"VALUES(:row, :column, :parent, :kind, :talking, :status, :born, :count, :id, :image);");
 
 	@Override
 	public void write(final Transactional db, final AnimalOrTracks obj, final Object context) throws SQLException {
@@ -96,12 +96,12 @@ public final class DBAnimalHandler extends AbstractDatabaseWriter<AnimalOrTracks
 			throw new IllegalArgumentException("context must be a point, a unit, or a worker");
 		}
 		if (obj instanceof AnimalTracks) {
-			if (context instanceof IUnit || context instanceof IWorker) { // TODO: Invert test so we can use Ceylon-like type-inferring instanceof
+			if (context instanceof IUnit || context instanceof IWorker) { // TODO: Invert test to use type-inferring instanceof
 				throw new IllegalArgumentException("Animal tracks can't occur inside a unit or worker");
 			}
 			INSERT_TRACKS.on(value("row", ((Point) context).row()), value("column", ((Point) context).column()),
-					value("kind", obj.getKind()), value("image", ((AnimalTracks) obj).getImage()))
-				.execute(db.connection());
+							value("kind", obj.getKind()), value("image", ((AnimalTracks) obj).getImage()))
+					.execute(db.connection());
 		} else if (obj instanceof final Animal a) {
 			final List<Param> params = new ArrayList<>();
 			if (context instanceof final Point p) {
@@ -135,7 +135,7 @@ public final class DBAnimalHandler extends AbstractDatabaseWriter<AnimalOrTracks
 			final int id = (Integer) dbRow.get("id");
 			final String image = (String) dbRow.get("image");
 			final AnimalImpl animal = new AnimalImpl(kind, talking, status,
-				id, Objects.requireNonNullElse(born, -1), count);
+					id, Objects.requireNonNullElse(born, -1), count);
 			if (!Objects.isNull(image)) {
 				animal.setImage(image);
 			}
@@ -170,10 +170,10 @@ public final class DBAnimalHandler extends AbstractDatabaseWriter<AnimalOrTracks
 
 	@Override
 	public void readMapContents(final Connection db, final IMutableLegacyMap map, final Map<Integer, IFixture> containers,
-	                            final Map<Integer, List<Object>> containees, final Warning warner) throws SQLException {
+								final Map<Integer, List<Object>> containees, final Warning warner) throws SQLException {
 		handleQueryResults(db, warner, "animal populations", readAnimal(map, containees),
-			SELECT_ANIMALS);
+				SELECT_ANIMALS);
 		handleQueryResults(db, warner, "animal tracks", readTracks(map),
-			SELECT_TRACKS);
+				SELECT_TRACKS);
 	}
 }

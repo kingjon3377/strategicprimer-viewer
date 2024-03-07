@@ -24,55 +24,56 @@ import java.util.Map;
  * anything from the {@link DelayedRemovalMap} we are passed.
  */
 public class SkillTabularReportGenerator implements ITableGenerator<IWorker> {
-    @Override
-    public boolean canHandle(final IFixture fixture) {
-        return fixture instanceof IWorker;
-    }
+	@Override
+	public boolean canHandle(final IFixture fixture) {
+		return fixture instanceof IWorker;
+	}
 
-    /**
-     * For this purpose, compare by worker name only.
-     * @return
-     */
-    @Override
-    public Comparator<Pair<Point, IWorker>> comparePairs() {
-        return Comparator.comparing(p -> p.getValue1().getName());
-    }
+	/**
+	 * For this purpose, compare by worker name only.
+	 *
+	 * @return
+	 */
+	@Override
+	public Comparator<Pair<Point, IWorker>> comparePairs() {
+		return Comparator.comparing(p -> p.getValue1().getName());
+	}
 
-    @Override
-    public List<String> getHeaderRow() {
-        return Arrays.asList("Worker", "Job", "Skill", "Containing Unit ID #");
-    }
+	@Override
+	public List<String> getHeaderRow() {
+		return Arrays.asList("Worker", "Job", "Skill", "Containing Unit ID #");
+	}
 
-    @Override
-    public List<List<String>> produce(
-            final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures, final IWorker item,
-            final int key, final Point loc, final Map<Integer, Integer> parentMap) {
-        final List<List<String>> retval = new ArrayList<>();
-        final String unitId = Optional.ofNullable(parentMap.get(item.getId()))
-                .map(Object::toString).orElse("---");
-        for (final IJob job : item) {
-            boolean any = false;
-            for (final ISkill skill : job) {
-                if (!skill.isEmpty()) {
-                    any = true;
-                    retval.add(Arrays.asList(item.getName(),
-                            String.format("%s %d", job.getName(), job.getLevel()),
-                            String.format("%s %d", skill.getName(), skill.getLevel()),
-                            unitId));
-                }
-            }
-            if (!any && job.getLevel() > 0) {
-                retval.add(Arrays.asList(item.getName(),
-                        String.format("%s %d", job.getName(), job.getLevel()),
-                        "---", unitId));
-            }
-        }
-        // We deliberately do *not* remove the worker from the collection!
-        return retval;
-    }
+	@Override
+	public List<List<String>> produce(
+			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures, final IWorker item,
+			final int key, final Point loc, final Map<Integer, Integer> parentMap) {
+		final List<List<String>> retval = new ArrayList<>();
+		final String unitId = Optional.ofNullable(parentMap.get(item.getId()))
+				.map(Object::toString).orElse("---");
+		for (final IJob job : item) {
+			boolean any = false;
+			for (final ISkill skill : job) {
+				if (!skill.isEmpty()) {
+					any = true;
+					retval.add(Arrays.asList(item.getName(),
+							String.format("%s %d", job.getName(), job.getLevel()),
+							String.format("%s %d", skill.getName(), skill.getLevel()),
+							unitId));
+				}
+			}
+			if (!any && job.getLevel() > 0) {
+				retval.add(Arrays.asList(item.getName(),
+						String.format("%s %d", job.getName(), job.getLevel()),
+						"---", unitId));
+			}
+		}
+		// We deliberately do *not* remove the worker from the collection!
+		return retval;
+	}
 
-    @Override
-    public String getTableName() {
-        return "skills";
-    }
+	@Override
+	public String getTableName() {
+		return "skills";
+	}
 }

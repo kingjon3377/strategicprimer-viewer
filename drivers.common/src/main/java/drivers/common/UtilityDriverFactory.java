@@ -8,8 +8,9 @@ import drivers.common.cli.ICLIHelper;
 public interface UtilityDriverFactory extends DriverFactory {
 	/**
 	 * The driver.
-	 * @param cli The interface to interact with the user, either on the
-	 * console or in a window emulating a console
+	 *
+	 * @param cli     The interface to interact with the user, either on the
+	 *                console or in a window emulating a console
 	 * @param options Any (already-processed) command-line options
 	 */
 	UtilityDriver createDriver(ICLIHelper cli, SPOptions options);

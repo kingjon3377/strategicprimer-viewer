@@ -161,6 +161,6 @@ public class BorderedPanel extends JPanel {
 	public static BorderedPanel horizontalPanel(final @Nullable Component lineStart,
 												final @Nullable Component center, final @Nullable Component lineEnd) {
 		return new BorderedPanel(center, null, null, lineEnd,
-			lineStart);
+				lineStart);
 	}
 }

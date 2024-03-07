@@ -12,7 +12,7 @@ import java.util.function.Consumer;
 public class Centaur implements Immortal, HasMutableImage, HasKind {
 	/**
 	 * @param kind what kind of centaur
-	 * @param id ID number
+	 * @param id   ID number
 	 */
 	public Centaur(final String kind, final int id) {
 		this.kind = kind;
@@ -127,7 +127,7 @@ public class Centaur implements Immortal, HasMutableImage, HasKind {
 			}
 		} else {
 			report.accept(String.format("\tCalled with different IDs, #%d and %d",
-				id, obj.getId()));
+					id, obj.getId()));
 			return false;
 		}
 	}

@@ -58,7 +58,7 @@ import java.awt.image.BufferedImage;
  * tiles back in every time the map was scrolled).
  */
 /* package */ final class MapComponent extends JComponent implements MapGUI, MapChangeListener,
-	SelectionChangeListener, GraphicalParamsListener {
+		SelectionChangeListener, GraphicalParamsListener {
 	@Serial
 	private static final long serialVersionUID = 1L;
 	private final IViewerModel mapModel;
@@ -83,8 +83,11 @@ import java.awt.image.BufferedImage;
 		this.backgroundImage = backgroundImage;
 	}
 
+	// FIXME: Create an interface extending both Iterable and Comparator, and make FixtureFixtureTableModel,
+	//  FixtureFilterListModel, etc., implement it, and take it here instead of taking Iterable and
+	//  casting to Comparator
 	public MapComponent(final IViewerModel model, final Predicate<TileFixture> zof,
-	                    final Iterable<FixtureMatcher> matchers) { // FIXME: Create an interface extending both Iterable and Comparator, and make FixtureFixtureTableModel, FixtureFilterListModel, etc., implement it, and take it here instead of taking Iterable and casting to Comparator
+						final Iterable<FixtureMatcher> matchers) {
 		mapModel = model;
 		cml = new ComponentMouseListener(model, zof, (Comparator<TileFixture>) matchers);
 		final DirectionSelectionChanger dsl = new DirectionSelectionChanger(model);
@@ -107,8 +110,8 @@ import java.awt.image.BufferedImage;
 			@Override
 			public void actionPerformed(final ActionEvent event) {
 				cml.showMenuAtSelection(Optional.ofNullable(event.getSource())
-					.filter(Component.class::isInstance)
-					.map(Component.class::cast).orElse(null));
+						.filter(Component.class::isInstance)
+						.map(Component.class::cast).orElse(null));
 			}
 		});
 		final MapSizeListener mapSizeListener = new MapSizeListener(model, this, this::getTileSize);
@@ -134,7 +137,7 @@ import java.awt.image.BufferedImage;
 		if (Objects.isNull(rect)) {
 			final VisibleDimensions dimensions = mapModel.getVisibleDimensions();
 			return new Rectangle(0, 0, dimensions.getWidth() * getTileSize(),
-				dimensions.getHeight() * getTileSize());
+					dimensions.getHeight() * getTileSize());
 		} else {
 			return rect;
 		}
@@ -168,7 +171,7 @@ import java.awt.image.BufferedImage;
 			maximumColumn += difference;
 		}
 		mapModel.setVisibleDimensions(new VisibleDimensions(minimumRow, maximumRow,
-			minimumColumn, maximumColumn));
+				minimumColumn, maximumColumn));
 	}
 
 	@Override
@@ -182,19 +185,19 @@ import java.awt.image.BufferedImage;
 	}
 
 	private void paintTile(final Graphics pen, final int tileSize, final Point point, final int row, final int column,
-	                       final boolean selected) {
+						   final boolean selected) {
 		if (!mapModel.getMap().getDimensions().contains(point)) {
 			return;
 		}
 		helper.drawTile(pen, mapModel.getMap(), point,
-			new Coordinate(column * tileSize, row * tileSize),
-			new Coordinate(tileSize, tileSize));
+				new Coordinate(column * tileSize, row * tileSize),
+				new Coordinate(tileSize, tileSize));
 		if (selected) {
 			final Graphics context = pen.create();
 			try {
 				context.setColor(Color.black);
 				context.drawRect((column * tileSize) + 1, (row * tileSize) + 1,
-					tileSize - 2, tileSize - 2);
+						tileSize - 2, tileSize - 2);
 			} finally {
 				context.dispose();
 			}
@@ -207,7 +210,7 @@ import java.awt.image.BufferedImage;
 		final int selectedColumn = Math.max(selectedPoint.column(), 0);
 		final VisibleDimensions visibleDimensions = mapModel.getVisibleDimensions();
 		return visibleDimensions.getRows().contains(selectedRow) &&
-			visibleDimensions.getColumns().contains(selectedColumn);
+				visibleDimensions.getColumns().contains(selectedColumn);
 	}
 
 	/**
@@ -221,9 +224,9 @@ import java.awt.image.BufferedImage;
 		final int column = Math.max(point.column(), 0);
 		final int tileSize = getTileSize();
 		if (visibleDimensions.getRows().contains(row) &&
-			visibleDimensions.getColumns().contains(column)) {
+				visibleDimensions.getColumns().contains(column)) {
 			repaint((column - visibleDimensions.getMinimumColumn()) * tileSize,
-				(row - visibleDimensions.getMinimumRow()) * tileSize, tileSize, tileSize);
+					(row - visibleDimensions.getMinimumRow()) * tileSize, tileSize, tileSize);
 		}
 	}
 
@@ -265,16 +268,16 @@ import java.awt.image.BufferedImage;
 			final int sliceHeight = (int) (visibleDimensions.getHeight() * verticalScaling);
 			// FIXME: Cache this, regenerating when visible dimensions change, somehow
 			final Image sliced = temp.getSubimage(Math.max(0, x), Math.max(0, y),
-				Math.min(temp.getWidth() - x - 1, sliceWidth),
-				Math.min(temp.getHeight() - y - 1, sliceHeight));
+					Math.min(temp.getWidth() - x - 1, sliceWidth),
+					Math.min(temp.getHeight() - y - 1, sliceHeight));
 			context.drawImage(sliced, 0, 0, visibleDimensions.getWidth() * tileSize,
-				visibleDimensions.getHeight() * tileSize, null); // TODO: supply observer
+					visibleDimensions.getHeight() * tileSize, null); // TODO: supply observer
 		}
 	}
 
 	// FIXME: Are these map or screen coordinates? If screen coordinates, what are they relative to?
 	private void drawMapPortion(final Graphics context, final int tileSize, final int minX, final int minY,
-	                            final int maxX, final int maxY) {
+								final int maxX, final int maxY) {
 		final int minRow = mapModel.getVisibleDimensions().getMinimumRow();
 		final int maxRow = mapModel.getVisibleDimensions().getMaximumRow();
 		final int minCol = mapModel.getVisibleDimensions().getMinimumColumn();
@@ -283,7 +286,7 @@ import java.awt.image.BufferedImage;
 			for (int j = minX; j <= maxX && (j + minCol) < (maxCol + 1); j++) {
 				final Point location = new Point(i + minRow, j + minCol);
 				paintTile(context, tileSize, location, i, j,
-					mapModel.getSelection().equals(location));
+						mapModel.getSelection().equals(location));
 			}
 		}
 	}
@@ -303,11 +306,11 @@ import java.awt.image.BufferedImage;
 			// operations for rounding in Ceylon; does casting to
 			// int do the same? Do we still need the added tenth in Java?
 			drawMapPortion(context, tileSize, (int) ((bounds.getMinX() / tileSize) + 0.1),
-				(int) ((bounds.getMinY() / tileSize) + 0.1),
-				Math.min((int) ((bounds.getMaxX() / tileSize) + 1.1),
-					mapDimensions.columns()),
-				Math.min((int) ((bounds.getMaxY() / tileSize) + 1.1),
-					mapDimensions.rows()));
+					(int) ((bounds.getMinY() / tileSize) + 0.1),
+					Math.min((int) ((bounds.getMaxX() / tileSize) + 1.1),
+							mapDimensions.columns()),
+					Math.min((int) ((bounds.getMaxY() / tileSize) + 1.1),
+							mapDimensions.rows()));
 		} finally {
 			context.dispose();
 		}
@@ -327,7 +330,7 @@ import java.awt.image.BufferedImage;
 		private final IntSupplier tileSizeFactory;
 
 		public MapSizeListener(final IViewerModel mapModel, final JComponent parent,
-		                       final IntSupplier tileSizeFactory) {
+							   final IntSupplier tileSizeFactory) {
 			this.mapModel = mapModel;
 			outer = parent;
 			this.tileSizeFactory = tileSizeFactory;
@@ -345,9 +348,9 @@ import java.awt.image.BufferedImage;
 		}
 
 		private static Quartet<Integer, Integer, Integer, Integer> concat(final Pair<Integer, Integer> one,
-		                                                                  final Pair<Integer, Integer> two) {
+																		  final Pair<Integer, Integer> two) {
 			return Quartet.with(one.getValue0(), one.getValue1(), two.getValue0(),
-				two.getValue1());
+					two.getValue1());
 		}
 
 		@Override
@@ -358,16 +361,16 @@ import java.awt.image.BufferedImage;
 			final VisibleDimensions oldDimensions = mapModel.getVisibleDimensions();
 			final MapDimensions mapDimensions = mapModel.getMapDimensions();
 			if (visibleColumns != oldDimensions.getWidth() ||
-				visibleRows != oldDimensions.getHeight()) {
+					visibleRows != oldDimensions.getHeight()) {
 				final Pair<Integer, Integer> constrainedRows =
-					constrain(mapDimensions.rows(), visibleRows,
-						oldDimensions.getMinimumRow());
+						constrain(mapDimensions.rows(), visibleRows,
+								oldDimensions.getMinimumRow());
 				final Pair<Integer, Integer> constrainedCols =
-					constrain(mapDimensions.columns(), visibleColumns,
-						oldDimensions.getMinimumColumn());
+						constrain(mapDimensions.columns(), visibleColumns,
+								oldDimensions.getMinimumColumn());
 				mapModel.setVisibleDimensions(new VisibleDimensions(
-					constrainedRows.getValue0(), constrainedRows.getValue1(),
-					constrainedCols.getValue0(), constrainedCols.getValue1()));
+						constrainedRows.getValue0(), constrainedRows.getValue1(),
+						constrainedCols.getValue0(), constrainedCols.getValue1()));
 			}
 		}
 

@@ -1,6 +1,7 @@
 package swinghelper;
 
 import javax.swing.WindowConstants;
+
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.JButton;

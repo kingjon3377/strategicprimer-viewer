@@ -72,7 +72,7 @@ public class QueryCLI implements ReadOnlyDriver {
 		int retval = 0;
 		for (final IFixture fixture : fixtures) {
 			if (fixture instanceof IWorker && fixtures instanceof final HasOwner owned &&
-				player.equals(owned.owner())) {
+					player.equals(owned.owner())) {
 				retval++;
 			} else if (fixture instanceof final FixtureIterable<?> iter) {
 				retval += countWorkersInIterable(player, iter);
@@ -109,19 +109,19 @@ public class QueryCLI implements ReadOnlyDriver {
 		map = model.getMap();
 		pather = PathfinderFactory.pathfinder(map);
 		appletChooser = new AppletChooser<>(cli,
-			new SimpleApplet(() -> fortressInfo(cli.inputPoint("Location of fortress?")),
-				"Show what a player automatically knows about a fortress's tile.",
-				"fortress"),
-			new SimpleApplet(this::printDistance, "Report the distance between two points.",
-				"distance"),
-			new SimpleApplet(() -> countWorkers(StreamSupport.stream(
-					model.getMap().getPlayers().spliterator(), true)
-				.collect(Collectors.toList())),
-				"Count how many workers belong to a player", "count"),
-			new SimpleApplet(this::findUnexploredCommand,
-				"Find the nearest unexplored tile not behind water.", "unexplored"),
-			new SimpleApplet(this::tradeCommand, "Suggest possible trading partners.", "trade"),
-			new SimpleApplet(this::findVillagesWithExpertise, "Find villages with a skill", "village-skill"));
+				new SimpleApplet(() -> fortressInfo(cli.inputPoint("Location of fortress?")),
+						"Show what a player automatically knows about a fortress's tile.",
+						"fortress"),
+				new SimpleApplet(this::printDistance, "Report the distance between two points.",
+						"distance"),
+				new SimpleApplet(() -> countWorkers(StreamSupport.stream(
+								model.getMap().getPlayers().spliterator(), true)
+						.collect(Collectors.toList())),
+						"Count how many workers belong to a player", "count"),
+				new SimpleApplet(this::findUnexploredCommand,
+						"Find the nearest unexplored tile not behind water.", "unexplored"),
+				new SimpleApplet(this::tradeCommand, "Suggest possible trading partners.", "trade"),
+				new SimpleApplet(this::findVillagesWithExpertise, "Find villages with a skill", "village-skill"));
 	}
 
 	private final Pathfinder pather;
@@ -130,10 +130,12 @@ public class QueryCLI implements ReadOnlyDriver {
 	 * Count the workers belonging to a player.
 	 */
 	private void countWorkers(final List<Player> players) {
-		final Player player = cli.chooseFromList((List<? extends Player>) players, "Players in the map:", "Map contains no players", "Owner of workers to count: ", ICLIHelper.ListChoiceBehavior.AUTO_CHOOSE_ONLY).getValue1();
+		final Player player = cli.chooseFromList((List<? extends Player>) players, "Players in the map:",
+				"Map contains no players", "Owner of workers to count: ",
+				ICLIHelper.ListChoiceBehavior.AUTO_CHOOSE_ONLY).getValue1();
 		if (!Objects.isNull(player)) {
 			final int count = countWorkersInIterable(player, map.streamAllFixtures()
-				.collect(Collectors.toList()));
+					.collect(Collectors.toList()));
 			cli.println(String.format("%s has %d workers", player.getName(), count));
 		}
 	}
@@ -149,10 +151,10 @@ public class QueryCLI implements ReadOnlyDriver {
 		}
 		// FIXME: Also limit search radius
 		for (final Pair<Point, ITownFixture> pair : map.streamLocations()
-			.sorted(Comparator.comparing(l -> distance(point, l, map.getDimensions())))
-			.flatMap(l -> map.getFixtures(l).stream().filter(ITownFixture.class::isInstance)
-				.map(ITownFixture.class::cast).filter(t -> !Objects.isNull(t.getPopulation()))
-				.map(f -> Pair.with(l, f))).toList()) {
+				.sorted(Comparator.comparing(l -> distance(point, l, map.getDimensions())))
+				.flatMap(l -> map.getFixtures(l).stream().filter(ITownFixture.class::isInstance)
+						.map(ITownFixture.class::cast).filter(t -> !Objects.isNull(t.getPopulation()))
+						.map(f -> Pair.with(l, f))).toList()) {
 			final Point loc = pair.getValue0();
 			final double delta = distance(point, loc, map.getDimensions());
 			final ITownFixture town = pair.getValue1();
@@ -162,7 +164,7 @@ public class QueryCLI implements ReadOnlyDriver {
 				final int level = entry.getValue();
 				if (expert.toLowerCase().contains(skill.toLowerCase())) {
 					cli.print("- At ", town.getName(), ", at ", loc.toString(), " (", String.format("%.1f", delta),
-						" tiles away), a level-", Integer.toString(level), " ");
+							" tiles away), a level-", Integer.toString(level), " ");
 					cli.println(expert);
 				}
 			}
@@ -182,11 +184,11 @@ public class QueryCLI implements ReadOnlyDriver {
 			if (groundTravel) {
 				cli.print("Distance (on the ground, in MP cost):\t");
 				cli.println(Integer.toString(pather.getTravelDistance(start, end)
-					.getValue0()));
+						.getValue0()));
 			} else {
 				cli.print("Distance (as the crow files, in tiles):\t");
 				cli.println(String.format("%.0f", distance(start, end,
-					map.getDimensions())));
+						map.getDimensions())));
 			}
 		}
 	}
@@ -200,12 +202,12 @@ public class QueryCLI implements ReadOnlyDriver {
 	private void fortressInfo(final @Nullable Point location) {
 		if (!Objects.isNull(location)) {
 			cli.println(String.format("Terrain is %s",
-				Optional.ofNullable(map.getBaseTerrain(location))
-					.map(TileType::toString).orElse("unknown")));
+					Optional.ofNullable(map.getBaseTerrain(location))
+							.map(TileType::toString).orElse("unknown")));
 			final List<Ground> ground = map.getFixtures(location).stream()
-				.filter(Ground.class::isInstance).map(Ground.class::cast).toList();
+					.filter(Ground.class::isInstance).map(Ground.class::cast).toList();
 			final List<Forest> forests = map.getFixtures(location).stream()
-				.filter(Forest.class::isInstance).map(Forest.class::cast).toList();
+					.filter(Forest.class::isInstance).map(Forest.class::cast).toList();
 			if (!ground.isEmpty()) {
 				cli.println("Kind(s) of ground (rock) on the tile:");
 				ground.stream().map(Object::toString).forEach(cli::println);
@@ -237,7 +239,7 @@ public class QueryCLI implements ReadOnlyDriver {
 				if (TileType.Ocean != currentTerrain) {
 					final double baseDistance = distance(base, current, dimensions);
 					for (final Point neighbor : new SurroundingPointIterable(current,
-						dimensions, 1)) {
+							dimensions, 1)) {
 						if (distance(base, neighbor, dimensions) >= baseDistance) {
 							queue.addLast(neighbor);
 						}
@@ -256,20 +258,20 @@ public class QueryCLI implements ReadOnlyDriver {
 	private void suggestTrade(final Point base, final int distance) {
 		final DistanceComparator comparator = new DistanceComparator(base, map.getDimensions());
 		for (final Point location : new SurroundingPointIterable(base,
-			map.getDimensions(), distance).stream().distinct()
-			.sorted(comparator).toList()) { // TODO: can we combine loops?
+				map.getDimensions(), distance).stream().distinct()
+				.sorted(comparator).toList()) { // TODO: can we combine loops?
 			for (final ITownFixture town : map.getFixtures(location).stream()
-				.filter(ITownFixture.class::isInstance)
-				.map(ITownFixture.class::cast).toList()) {
+					.filter(ITownFixture.class::isInstance)
+					.map(ITownFixture.class::cast).toList()) {
 				final CommunityStats population = town.getPopulation();
 				if (TownStatus.Active == town.getStatus() &&
-					!Objects.isNull(population) &&
-					population.getYearlyProduction().isEmpty()) {
+						!Objects.isNull(population) &&
+						population.getYearlyProduction().isEmpty()) {
 					cli.print("At ", location.toString());
 					cli.print(comparator.distanceString(location, "base"), ": ");
 					cli.print(town.getName(), ", a ", town.getTownSize().toString(), " ");
 					if (town instanceof final Village v &&
-						!"human".equals(v.getRace())) {
+							!"human".equals(v.getRace())) {
 						cli.print(v.getRace(), " village");
 					} else {
 						cli.print(town.getKind());
@@ -281,7 +283,7 @@ public class QueryCLI implements ReadOnlyDriver {
 					}
 					cli.println(". Its yearly production:");
 					for (final IResourcePile resource :
-						population.getYearlyProduction()) {
+							population.getYearlyProduction()) {
 						cli.print("- ", resource.getKind(), ": ");
 						cli.print(resource.getQuantity().number().toString());
 						if (resource.getQuantity().units().isEmpty()) {
@@ -290,7 +292,7 @@ public class QueryCLI implements ReadOnlyDriver {
 							cli.print(" dozen ");
 						} else {
 							cli.print(" ", resource.getQuantity().units(),
-								" of ");
+									" of ");
 						}
 						cli.println(resource.getContents());
 						if ("milk".equals(resource.getContents())) {
@@ -315,7 +317,7 @@ public class QueryCLI implements ReadOnlyDriver {
 			} else {
 				final double distanceTo = distance(base, unexplored, map.getDimensions());
 				cli.println(String.format("Nearest unexplored tile is %s, %s tiles away",
-					unexplored, ONE_PLACE_FORMAT.format(distanceTo)));
+						unexplored, ONE_PLACE_FORMAT.format(distanceTo)));
 			}
 		}
 	}
@@ -340,10 +342,10 @@ public class QueryCLI implements ReadOnlyDriver {
 		while (true) {
 			final Either<SimpleApplet, Boolean> selection = appletChooser.chooseApplet();
 			if (Objects.isNull(selection) || (selection.fromRight().isPresent() &&
-				selection.fromRight().get())) {
+					selection.fromRight().get())) {
 				continue;
 			} else if (selection.fromRight().isPresent() &&
-				!selection.fromRight().get()) {
+					!selection.fromRight().get()) {
 				break;
 			} else if (selection.fromLeft().isPresent()) {
 				selection.fromLeft().get().invoke();

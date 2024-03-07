@@ -36,15 +36,16 @@ import java.util.function.Consumer;
 
 /* package */ class FluidTownHandler extends FluidBase {
 	private static final QName NULL_QNAME = new QName("null");
+
 	// FIXME: Extract a common readAbstractTown() method taking the
 	// expected tag and a constructor reference, since readTown(),
 	// readFortification(), and readCity() are very nearly identical
 	public static Town readTown(final StartElement element, final QName parent, final Iterable<XMLEvent> stream,
 								final ILegacyPlayerCollection players, final Warning warner, final IDRegistrar idFactory)
-		throws SPFormatException {
+			throws SPFormatException {
 		requireTag(element, parent, "town");
 		expectAttributes(element, warner, "name", "size", "status", "dc", "id",
-			"portrait", "image", "owner");
+				"portrait", "image", "owner");
 		requireNonEmptyAttribute(element, "name", false, warner);
 		final TownSize size;
 		try {
@@ -59,15 +60,15 @@ import java.util.function.Consumer;
 			throw new MissingPropertyException(element, "status", except);
 		}
 		final Town fix = new Town(status, size, getIntegerAttribute(element, "dc"),
-			getAttribute(element, "name", ""),
-			getOrGenerateID(element, warner, idFactory),
-			getPlayerOrIndependent(element, warner, players));
+				getAttribute(element, "name", ""),
+				getOrGenerateID(element, warner, idFactory),
+				getPlayerOrIndependent(element, warner, players));
 		fix.setPortrait(getAttribute(element, "portrait", ""));
 		for (final XMLEvent event : stream) {
 			if (event instanceof final StartElement se && isSPStartElement(event)) {
 				if (Objects.isNull(fix.getPopulation())) {
 					fix.setPopulation(readCommunityStats(se,
-						element.getName(), stream, players, warner, idFactory));
+							element.getName(), stream, players, warner, idFactory));
 				} else {
 					throw new UnwantedChildException(element.getName(), se);
 				}
@@ -83,7 +84,7 @@ import java.util.function.Consumer;
 												  final IDRegistrar idFactory) throws SPFormatException {
 		requireTag(element, parent, "fortification");
 		expectAttributes(element, warner, "name", "size", "status", "dc", "id",
-			"portrait", "image", "owner");
+				"portrait", "image", "owner");
 		requireNonEmptyAttribute(element, "name", false, warner);
 		final TownSize size;
 		try {
@@ -98,22 +99,22 @@ import java.util.function.Consumer;
 			throw new MissingPropertyException(element, "status", except);
 		}
 		final Fortification fix = new Fortification(status, size,
-			getIntegerAttribute(element, "dc"),
-			getAttribute(element, "name", ""),
-			getOrGenerateID(element, warner, idFactory),
-			getPlayerOrIndependent(element, warner, players));
+				getIntegerAttribute(element, "dc"),
+				getAttribute(element, "name", ""),
+				getOrGenerateID(element, warner, idFactory),
+				getPlayerOrIndependent(element, warner, players));
 		fix.setPortrait(getAttribute(element, "portrait", ""));
 		for (final XMLEvent event : stream) {
 			if (event instanceof final StartElement se && isSPStartElement(event)) {
 				if (Objects.isNull(fix.getPopulation())) {
 					fix.setPopulation(readCommunityStats(se,
-						element.getName(), stream, players, warner, idFactory));
+							element.getName(), stream, players, warner, idFactory));
 				} else {
 					throw new UnwantedChildException(element.getName(),
-						se);
+							se);
 				}
 			} else if (event instanceof final EndElement ee &&
-				ee.getName().equals(element.getName())) {
+					ee.getName().equals(element.getName())) {
 				break;
 			}
 		}
@@ -122,10 +123,10 @@ import java.util.function.Consumer;
 
 	public static City readCity(final StartElement element, final QName parent, final Iterable<XMLEvent> stream,
 								final ILegacyPlayerCollection players, final Warning warner, final IDRegistrar idFactory)
-		throws SPFormatException {
+			throws SPFormatException {
 		requireTag(element, parent, "city");
 		expectAttributes(element, warner, "name", "size", "status", "dc", "id",
-			"portrait", "image", "owner");
+				"portrait", "image", "owner");
 		requireNonEmptyAttribute(element, "name", false, warner);
 		final TownSize size;
 		try {
@@ -140,18 +141,18 @@ import java.util.function.Consumer;
 			throw new MissingPropertyException(element, "status", except);
 		}
 		final City fix = new City(status, size, getIntegerAttribute(element, "dc"),
-			getAttribute(element, "name", ""),
-			getOrGenerateID(element, warner, idFactory),
-			getPlayerOrIndependent(element, warner, players));
+				getAttribute(element, "name", ""),
+				getOrGenerateID(element, warner, idFactory),
+				getPlayerOrIndependent(element, warner, players));
 		fix.setPortrait(getAttribute(element, "portrait", ""));
 		for (final XMLEvent event : stream) {
 			if (event instanceof final StartElement se && isSPStartElement(event)) {
 				if (Objects.isNull(fix.getPopulation())) {
 					fix.setPopulation(readCommunityStats(se,
-						element.getName(), stream, players, warner, idFactory));
+							element.getName(), stream, players, warner, idFactory));
 				} else {
 					throw new UnwantedChildException(element.getName(),
-						se);
+							se);
 				}
 			} else if (event instanceof final EndElement ee && ee.getName().equals(element.getName())) {
 				break;
@@ -162,10 +163,10 @@ import java.util.function.Consumer;
 
 	public static Village readVillage(final StartElement element, final QName parent, final Iterable<XMLEvent> stream,
 									  final ILegacyPlayerCollection players, final Warning warner, final IDRegistrar idFactory)
-		throws SPFormatException {
+			throws SPFormatException {
 		requireTag(element, parent, "village");
 		expectAttributes(element, warner, "status", "race", "owner", "id", "image",
-			"portrait", "name");
+				"portrait", "name");
 		requireNonEmptyAttribute(element, "name", false, warner);
 		final int idNum = getOrGenerateID(element, warner, idFactory);
 		final TownStatus status;
@@ -175,15 +176,15 @@ import java.util.function.Consumer;
 			throw new MissingPropertyException(element, "status", except);
 		}
 		final Village retval = new Village(status, getAttribute(element, "name", ""), idNum,
-			getPlayerOrIndependent(element, warner, players),
-			getAttribute(element, "race",
-				RaceFactory.randomRace(new Random(idNum))));
+				getPlayerOrIndependent(element, warner, players),
+				getAttribute(element, "race",
+						RaceFactory.randomRace(new Random(idNum))));
 		retval.setPortrait(getAttribute(element, "portrait", ""));
 		for (final XMLEvent event : stream) {
 			if (event instanceof final StartElement se && isSPStartElement(event)) {
 				if (Objects.isNull(retval.getPopulation())) {
 					retval.setPopulation(readCommunityStats(se,
-						element.getName(), stream, players, warner, idFactory));
+							element.getName(), stream, players, warner, idFactory));
 				} else {
 					throw new UnwantedChildException(element.getName(), se);
 				}
@@ -203,7 +204,8 @@ import java.util.function.Consumer;
 		@Nullable String current = null;
 		final Deque<StartElement> stack = new LinkedList<>();
 		stack.addFirst(element);
-		final Consumer<IMutableResourcePile> addProduction = retval.getYearlyProduction()::add; // TODO: Should really be doing the getYearlyProduction() call at call-time, not here ...
+		// TODO: Should really be doing the getYearlyProduction() call at call-time, not here ...
+		final Consumer<IMutableResourcePile> addProduction = retval.getYearlyProduction()::add;
 		final Consumer<IMutableResourcePile> addConsumption = retval.getYearlyConsumption()::add;
 		for (final XMLEvent event : stream) {
 			if (event instanceof final EndElement ee && ee.getName().equals(element.getName())) {
@@ -213,13 +215,13 @@ import java.util.function.Consumer;
 					case "expertise":
 						expectAttributes(se, warner, "skill", "level");
 						retval.setSkillLevel(getAttribute(se, "skill"),
-							getIntegerAttribute(se, "level"));
+								getIntegerAttribute(se, "level"));
 						stack.addFirst(se);
 						break;
 					case "claim":
 						expectAttributes(se, warner, "resource");
 						retval.addWorkedField(getIntegerAttribute(se,
-							"resource"));
+								"resource"));
 						stack.addFirst(se);
 						break;
 					case "production":
@@ -230,8 +232,8 @@ import java.util.function.Consumer;
 							stack.addFirst(se);
 						} else {
 							throw new UnwantedChildException(
-								Optional.ofNullable(stack.peekFirst()).map(StartElement::getName).orElse(NULL_QNAME),
-								se);
+									Optional.ofNullable(stack.peekFirst()).map(StartElement::getName).orElse(NULL_QNAME),
+									se);
 						}
 						break;
 					case "resource":
@@ -243,17 +245,17 @@ import java.util.function.Consumer;
 							lambda = addConsumption;
 						} else {
 							throw UnwantedChildException.listingExpectedTags(
-								Optional.ofNullable(top).map(StartElement::getName).orElse(NULL_QNAME), se,
-								"production", "consumption");
+									Optional.ofNullable(top).map(StartElement::getName).orElse(NULL_QNAME), se,
+									"production", "consumption");
 						}
 						lambda.accept(FluidResourceHandler.readResource(se,
-							Optional.ofNullable(top).map(StartElement::getName).orElse(NULL_QNAME),
-							stream, players, warner, idFactory));
+								Optional.ofNullable(top).map(StartElement::getName).orElse(NULL_QNAME),
+								stream, players, warner, idFactory));
 						break;
 					default:
 						throw UnwantedChildException.listingExpectedTags(
-							se.getName(), element, "expertise",
-							"claim", "production", "consumption", "resource");
+								se.getName(), element, "expertise",
+								"claim", "production", "consumption", "resource");
 				}
 			} else if (event instanceof final EndElement ee && !stack.isEmpty() &&
 					ee.getName().equals(Objects.requireNonNull(stack.peekFirst()).getName())) {
@@ -269,13 +271,13 @@ import java.util.function.Consumer;
 	}
 
 	public static void writeVillage(final XMLStreamWriter ostream, final Village obj, final int indent)
-		throws XMLStreamException {
+			throws XMLStreamException {
 		writeTag(ostream, "village", indent, Objects.isNull(obj.getPopulation()));
 		writeAttributes(ostream, Pair.with("status", obj.getStatus().toString()));
 		writeNonEmptyAttributes(ostream, Pair.with("name", obj.getName()));
 		writeAttributes(ostream, Pair.with("id", obj.getId()),
-			Pair.with("owner", obj.owner().getPlayerId()),
-			Pair.with("race", obj.getRace()));
+				Pair.with("owner", obj.owner().getPlayerId()),
+				Pair.with("race", obj.getRace()));
 		writeImage(ostream, obj);
 		writeNonEmptyAttributes(ostream, Pair.with("portrait", obj.getPortrait()));
 		if (!Objects.isNull(obj.getPopulation())) {
@@ -285,13 +287,13 @@ import java.util.function.Consumer;
 	}
 
 	public static void writeTown(final XMLStreamWriter ostream, final AbstractTown obj, final int indent)
-		throws XMLStreamException {
+			throws XMLStreamException {
 		writeTag(ostream, obj.getKind(), indent, Objects.isNull(obj.getPopulation()));
 		writeAttributes(ostream, Pair.with("status", obj.getStatus().toString()),
-			Pair.with("size", obj.getTownSize().toString()), Pair.with("dc", obj.getDC()));
+				Pair.with("size", obj.getTownSize().toString()), Pair.with("dc", obj.getDC()));
 		writeNonEmptyAttributes(ostream, Pair.with("name", obj.getName()));
 		writeAttributes(ostream, Pair.with("id", obj.getId()),
-			Pair.with("owner", obj.owner().getPlayerId()));
+				Pair.with("owner", obj.owner().getPlayerId()));
 		writeImage(ostream, obj);
 		writeNonEmptyAttributes(ostream, Pair.with("portrait", obj.getPortrait()));
 		if (!Objects.isNull(obj.getPopulation())) {
@@ -305,10 +307,10 @@ import java.util.function.Consumer;
 		writeTag(ostream, "population", indent, false);
 		writeAttributes(ostream, Pair.with("size", obj.getPopulation()));
 		for (final Map.Entry<String, Integer> entry : obj.getHighestSkillLevels().entrySet()
-			.stream().sorted(Map.Entry.comparingByKey()).toList()) {
+				.stream().sorted(Map.Entry.comparingByKey()).toList()) {
 			writeTag(ostream, "expertise", indent + 1, true);
 			writeAttributes(ostream, Pair.with("skill", entry.getKey()),
-				Pair.with("level", entry.getValue()));
+					Pair.with("level", entry.getValue()));
 		}
 		for (final Integer claim : obj.getWorkedFields()) {
 			writeTag(ostream, "claim", indent + 1, true);

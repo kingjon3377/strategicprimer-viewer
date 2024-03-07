@@ -5,13 +5,13 @@ package drivers.map_viewer;
  * the tile size/zoom level changed.
  */
 public interface GraphicalParamsSource {
-    /**
-     * Add a listener.
-     */
-    void addGraphicalParamsListener(GraphicalParamsListener listener);
+	/**
+	 * Add a listener.
+	 */
+	void addGraphicalParamsListener(GraphicalParamsListener listener);
 
-    /**
-     * Remove a listener.
-     */
-    void removeGraphicalParamsListener(GraphicalParamsListener listener);
+	/**
+	 * Remove a listener.
+	 */
+	void removeGraphicalParamsListener(GraphicalParamsListener listener);
 }

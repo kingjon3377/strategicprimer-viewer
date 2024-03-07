@@ -13,7 +13,7 @@ import legacy.map.fixtures.FixtureIterable;
  * FIXME: We need something about buildings yet
  */
 public interface IFortress extends HasImage, ITownFixture,
-        FixtureIterable<FortressMember>, SubsettableFixture {
+		FixtureIterable<FortressMember>, SubsettableFixture {
 	/**
 	 * Clone the fortress.
 	 */
@@ -55,7 +55,7 @@ public interface IFortress extends HasImage, ITownFixture,
 			return "an independent fortress, " + getName();
 		} else {
 			return String.format("a fortress, %s, owned by %s", getName(),
-				owner().getName());
+					owner().getName());
 		}
 	}
 

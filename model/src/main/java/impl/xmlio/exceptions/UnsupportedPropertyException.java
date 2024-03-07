@@ -10,44 +10,44 @@ import java.io.Serial;
  * A custom exception for cases where a tag has a property it doesn't support.
  */
 public class UnsupportedPropertyException extends SPFormatException {
-    @Serial
-    private static final long serialVersionUID = 1L;
-    /**
-     * The unsupported property.
-     */
-    private final String param;
+	@Serial
+	private static final long serialVersionUID = 1L;
+	/**
+	 * The unsupported property.
+	 */
+	private final String param;
 
-    /**
-     * The current tag.
-     */
-    private final QName tag;
+	/**
+	 * The current tag.
+	 */
+	private final QName tag;
 
-    public UnsupportedPropertyException(final StartElement context, final String param) {
-        super(String.format("Unsupported property %s in tag %s", param,
-                context.getName().getLocalPart()), context.getLocation());
-        this.param = param;
-        tag = context.getName();
-    }
+	public UnsupportedPropertyException(final StartElement context, final String param) {
+		super(String.format("Unsupported property %s in tag %s", param,
+				context.getName().getLocalPart()), context.getLocation());
+		this.param = param;
+		tag = context.getName();
+	}
 
-    private UnsupportedPropertyException(final StartElement tag, final String param, final String context) {
-        super(String.format("Unsupported property %s in tag %s %s", param,
-                tag.getName().getLocalPart(), context), tag.getLocation());
-        this.tag = tag.getName();
-        this.param = param;
-    }
+	private UnsupportedPropertyException(final StartElement tag, final String param, final String context) {
+		super(String.format("Unsupported property %s in tag %s %s", param,
+				tag.getName().getLocalPart(), context), tag.getLocation());
+		this.tag = tag.getName();
+		this.param = param;
+	}
 
-    /**
-     * A variation for when a property is *conditionally* supported.
-     */
-    public static UnsupportedPropertyException inContext(final StartElement tag, final String param, final String context) {
-        return new UnsupportedPropertyException(tag, param, context);
-    }
+	/**
+	 * A variation for when a property is *conditionally* supported.
+	 */
+	public static UnsupportedPropertyException inContext(final StartElement tag, final String param, final String context) {
+		return new UnsupportedPropertyException(tag, param, context);
+	}
 
-    public String getParam() {
-        return param;
-    }
+	public String getParam() {
+		return param;
+	}
 
-    public QName getTag() {
-        return tag;
-    }
+	public QName getTag() {
+		return tag;
+	}
 }

@@ -62,11 +62,11 @@ public final class MiningCLI implements UtilityDriver {
 					initial = LodeStatus.values()[index];
 				} else {
 					throw new DriverFailedException(new ArrayIndexOutOfBoundsException(index),
-						"Status must be valid status or the index of a valid status");
+							"Status must be valid status or the index of a valid status");
 				}
 			} catch (final NumberFormatException except) {
 				throw new DriverFailedException(except,
-					"Status must be a valid status or the index of a valid status");
+						"Status must be a valid status or the index of a valid status");
 			}
 		}
 
@@ -85,7 +85,7 @@ public final class MiningCLI implements UtilityDriver {
 		final Path path = Paths.get(filename);
 		if (Files.exists(path)) {
 			throw new DriverFailedException(new Exception(
-				String.format("Output file %s already exists", filename)));
+					String.format("Output file %s already exists", filename)));
 		}
 		try (final BufferedWriter writer = Files.newBufferedWriter(path, StandardCharsets.UTF_8)) {
 			for (int row = 0; row <= lowerRightRow; row++) {

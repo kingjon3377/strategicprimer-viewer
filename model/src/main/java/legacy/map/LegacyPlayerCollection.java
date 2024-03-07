@@ -95,7 +95,7 @@ public class LegacyPlayerCollection implements IMutableLegacyPlayerCollection {
 			final Player removed = players.remove(obj);
 			if (independentPlayer.equals(removed)) {
 				independentPlayer = players.values().stream().filter(Player::isIndependent)
-					.findAny().orElseGet(() -> new PlayerImpl(-1, "Independent"));
+						.findAny().orElseGet(() -> new PlayerImpl(-1, "Independent"));
 			}
 			if (current.equals(removed)) {
 				current = new PlayerImpl(-1, "");
@@ -133,7 +133,8 @@ public class LegacyPlayerCollection implements IMutableLegacyPlayerCollection {
 		if (players.containsValue(currentPlayer)) {
 			current = currentPlayer;
 		} else { // TODO: Why not add()?
-			current = players.values().stream().filter((p) -> p.getPlayerId() == currentPlayer.getPlayerId()).findAny().orElse(currentPlayer);
+			current = players.values().stream().filter((p) -> p.getPlayerId() == currentPlayer.getPlayerId()).findAny()
+					.orElse(currentPlayer);
 		}
 		if (current instanceof final MutablePlayer mp) {
 			mp.setCurrent(true);
@@ -167,8 +168,8 @@ public class LegacyPlayerCollection implements IMutableLegacyPlayerCollection {
 						continue;
 					} else {
 						report.accept(String.format(
-							"Matching players differ: our %s, their %s",
-							match.toString(), player));
+								"Matching players differ: our %s, their %s",
+								match.toString(), player));
 					}
 				} else {
 					report.accept("Extra player " + player.getName());
@@ -200,8 +201,8 @@ public class LegacyPlayerCollection implements IMutableLegacyPlayerCollection {
 		} else if (obj instanceof final ILegacyPlayerCollection pc) {
 			return isSubset(pc, (ignored) -> {
 			}) &&
-				pc.isSubset(this, (ignored) -> {
-				});
+					pc.isSubset(this, (ignored) -> {
+					});
 		} else {
 			return false;
 		}

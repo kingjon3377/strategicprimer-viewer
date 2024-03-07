@@ -20,8 +20,8 @@ public interface IFixtureEditHelper extends NewUnitListener, PlayerChangeListene
 	/**
 	 * Move a member between units.
 	 *
-	 * @param member The member to move.
-	 * @param old Its prior owner
+	 * @param member   The member to move.
+	 * @param old      Its prior owner
 	 * @param newOwner Its new owner
 	 */
 	void moveMember(UnitMember member, IUnit old, IUnit newOwner);
@@ -43,7 +43,7 @@ public interface IFixtureEditHelper extends NewUnitListener, PlayerChangeListene
 	/**
 	 * Add a new member to a unit.
 	 *
-	 * @param unit The unit that should contain the member
+	 * @param unit   The unit that should contain the member
 	 * @param member The member to add to the unit
 	 */
 	void addUnitMember(IUnit unit, UnitMember member);
@@ -70,7 +70,7 @@ public interface IFixtureEditHelper extends NewUnitListener, PlayerChangeListene
 	 * base is not in the tree, the model is likely to simply ignore the
 	 * call, but the behavior is undefined.
 	 *
-	 * @param base The member that is already in the tree.
+	 * @param base    The member that is already in the tree.
 	 * @param sibling The member to add as its sibling.
 	 */
 	void addSibling(UnitMember base, UnitMember sibling);

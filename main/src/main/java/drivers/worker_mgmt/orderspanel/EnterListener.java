@@ -2,6 +2,7 @@ package drivers.worker_mgmt.orderspanel;
 
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+
 import lovelace.util.Platform;
 
 /* package */ class EnterListener extends KeyAdapter {

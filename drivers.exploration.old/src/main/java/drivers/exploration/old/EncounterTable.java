@@ -15,25 +15,25 @@ import java.util.Set;
  * Perception modifier and perhaps other data.
  */
 public interface EncounterTable {
-    /**
-     * Generates an appropriate event, an "encounter." For {@link
-     * QuadrantTable}s this is always the same for each tile, for
-     * random-event tables the result is randomly selected from that table,
-     * and so on.
-     *
-     * @param point The location of the tile in question.
-     * @param terrain The terrain there. Null if unknown.
-     * @param mountainous Whether the tile is mountainous.
-     * @param fixtures The fixtures on the tile, if any.
-     * @param mapDimensions The dimensions of the map.
-     */
-    String generateEvent(Point point, @Nullable TileType terrain, boolean mountainous,
-                         Iterable<TileFixture> fixtures, MapDimensions mapDimensions);
+	/**
+	 * Generates an appropriate event, an "encounter." For {@link
+	 * QuadrantTable}s this is always the same for each tile, for
+	 * random-event tables the result is randomly selected from that table,
+	 * and so on.
+	 *
+	 * @param point         The location of the tile in question.
+	 * @param terrain       The terrain there. Null if unknown.
+	 * @param mountainous   Whether the tile is mountainous.
+	 * @param fixtures      The fixtures on the tile, if any.
+	 * @param mapDimensions The dimensions of the map.
+	 */
+	String generateEvent(Point point, @Nullable TileType terrain, boolean mountainous,
+						 Iterable<TileFixture> fixtures, MapDimensions mapDimensions);
 
-    /**
-     * For table-debugging purposes, return the set of all events the table can return.
-     *
-     * TODO: Somehow restrict visibility of this
-     */
-    Set<String> getAllEvents();
+	/**
+	 * For table-debugging purposes, return the set of all events the table can return.
+	 *
+	 * TODO: Somehow restrict visibility of this
+	 */
+	Set<String> getAllEvents();
 }

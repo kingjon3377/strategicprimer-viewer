@@ -77,7 +77,7 @@ public class AdvancementGUI implements MultiMapGUIDriver, WorkerGUI {
 		}
 		if (model.streamAllMaps().allMatch(m -> model.getUnits(m.getCurrentPlayer()).isEmpty())) {
 			pcml.actionPerformed(new ActionEvent(frame, ActionEvent.ACTION_FIRST,
-				"change current player"));
+					"change current player"));
 		}
 		frame.showWindow();
 	}
@@ -86,8 +86,8 @@ public class AdvancementGUI implements MultiMapGUIDriver, WorkerGUI {
 	public void startDriver() {
 		final MenuBroker menuHandler = new MenuBroker();
 		menuHandler.register(new IOHandler(this, cli), "load", "save", "save as", "new",
-			"load secondary", "save all", "open in map viewer",
-			"open secondary map in map viewer", "close", "quit");
+				"load secondary", "save all", "open in map viewer",
+				"open secondary map in map viewer", "close", "quit");
 		final PlayerChangeMenuListener pcml = new PlayerChangeMenuListener(model);
 		menuHandler.register(pcml, "change current player");
 		SwingUtilities.invokeLater(() -> createWindow(menuHandler, pcml));
@@ -109,7 +109,7 @@ public class AdvancementGUI implements MultiMapGUIDriver, WorkerGUI {
 	public void open(final IMutableLegacyMap map) {
 		if (model.isMapModified()) {
 			SwingUtilities.invokeLater(() -> new AdvancementGUI(cli, options,
-				new WorkerModel(map)).startDriver());
+					new WorkerModel(map)).startDriver());
 		} else {
 			model.setMap(map);
 		}

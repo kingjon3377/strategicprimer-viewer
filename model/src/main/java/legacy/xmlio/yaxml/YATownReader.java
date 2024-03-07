@@ -51,7 +51,7 @@ import java.util.function.Consumer;
 		super(warner, idRegistrar);
 		resourceReader = new YAResourcePileReader(warner, idRegistrar);
 		memberReaders = List.of(new YAUnitReader(warner,
-			idRegistrar, players), resourceReader, new YAImplementReader(warner, idRegistrar));
+				idRegistrar, players), resourceReader, new YAImplementReader(warner, idRegistrar));
 		this.players = players;
 		this.warner = warner;
 	}
@@ -87,7 +87,7 @@ import java.util.function.Consumer;
 	}
 
 	public CommunityStats parseCommunityStats(final StartElement element, final QName parent,
-	                                          final Iterable<XMLEvent> stream) throws SPFormatException, XMLStreamException {
+											  final Iterable<XMLEvent> stream) throws SPFormatException, XMLStreamException {
 		requireTag(element, parent, "population");
 		expectAttributes(element, "size");
 		final CommunityStats retval = new CommunityStats(getIntegerParameter(element, "size"));
@@ -105,26 +105,26 @@ import java.util.function.Consumer;
 						if (Objects.isNull(current)) {
 							expectAttributes(se, "skill", "level");
 							retval.setSkillLevel(getParameter(se, "skill"),
-								getIntegerParameter(se, "level"));
+									getIntegerParameter(se, "level"));
 							stack.addFirst(se);
 							current = se.getName().getLocalPart();
 						} else {
 							throw UnwantedChildException.listingExpectedTags(
-								stack.peekFirst().getName(), se,
-								expectedCommunityStatsTags(current).toArray(String[]::new));
+									stack.peekFirst().getName(), se,
+									expectedCommunityStatsTags(current).toArray(String[]::new));
 						}
 						break;
 					case "claim":
 						if (Objects.isNull(current)) {
 							expectAttributes(se, "resource");
 							retval.addWorkedField(getIntegerParameter(
-								se, "resource"));
+									se, "resource"));
 							stack.addFirst(se);
 							current = se.getName().getLocalPart();
 						} else {
 							throw UnwantedChildException.listingExpectedTags(
-								stack.peekFirst().getName(), se,
-								expectedCommunityStatsTags(current).toArray(String[]::new));
+									stack.peekFirst().getName(), se,
+									expectedCommunityStatsTags(current).toArray(String[]::new));
 						}
 						break;
 					case "production":
@@ -135,8 +135,8 @@ import java.util.function.Consumer;
 							current = se.getName().getLocalPart();
 						} else {
 							throw UnwantedChildException.listingExpectedTags(
-								stack.peekFirst().getName(), se,
-								expectedCommunityStatsTags(current).toArray(String[]::new));
+									stack.peekFirst().getName(), se,
+									expectedCommunityStatsTags(current).toArray(String[]::new));
 						}
 						break;
 					case "resource":
@@ -147,27 +147,27 @@ import java.util.function.Consumer;
 							lambda = addConsumptionLambda;
 						} else {
 							throw UnwantedChildException.listingExpectedTags(
-								stack.peekFirst().getName(), se,
-								expectedCommunityStatsTags(Objects.requireNonNullElse(current, "population")).toArray(String[]::new));
+									stack.peekFirst().getName(), se,
+									expectedCommunityStatsTags(Objects.requireNonNullElse(current, "population")).toArray(String[]::new));
 						}
 						lambda.accept(resourceReader.read(se,
-							stack.peekFirst().getName(), stream));
+								stack.peekFirst().getName(), stream));
 						break;
 					default:
 						throw UnwantedChildException.listingExpectedTags(
-							stack.isEmpty() ? element.getName() :
-								stack.peekFirst().getName(),
-							se, expectedCommunityStatsTags(Objects.requireNonNullElse(current, "population")).toArray(String[]::new));
+								stack.isEmpty() ? element.getName() :
+										stack.peekFirst().getName(),
+								se, expectedCommunityStatsTags(Objects.requireNonNullElse(current, "population")).toArray(String[]::new));
 				}
 			} else if (event instanceof final EndElement ee && !stack.isEmpty() &&
-				ee.getName().equals(stack.peekFirst().getName())) {
+					ee.getName().equals(stack.peekFirst().getName())) {
 				final StartElement top = stack.removeFirst();
 				if (top.equals(element)) {
 					break;
 				} else if (!Objects.isNull(current) &&
-					top.getName().getLocalPart().equals(current)) {
+						top.getName().getLocalPart().equals(current)) {
 					if ("population".equals(stack.peekFirst().getName()
-						.getLocalPart())) {
+							.getLocalPart())) {
 						current = null;
 					} else {
 						current = stack.peekFirst().getName().getLocalPart();
@@ -179,7 +179,7 @@ import java.util.function.Consumer;
 	}
 
 	private ITownFixture parseVillage(final StartElement element, final Iterable<XMLEvent> stream)
-		throws SPFormatException, XMLStreamException {
+			throws SPFormatException, XMLStreamException {
 		expectAttributes(element, "status", "name", "race", "image", "portrait", "id", "owner");
 		requireNonEmptyParameter(element, "name", false);
 		final int idNum = getOrGenerateID(element);
@@ -190,15 +190,15 @@ import java.util.function.Consumer;
 			throw new MissingPropertyException(element, "status", except);
 		}
 		final Village retval = new Village(status, getParameter(element, "name", ""), idNum,
-			getOwnerOrIndependent(element), getParameter(element, "race",
-			RaceFactory.randomRace(new Random(idNum))));
+				getOwnerOrIndependent(element), getParameter(element, "race",
+				RaceFactory.randomRace(new Random(idNum))));
 		retval.setImage(getParameter(element, "image", ""));
 		retval.setPortrait(getParameter(element, "portrait", ""));
 		for (final XMLEvent event : stream) {
 			if (event instanceof final StartElement se && isSupportedNamespace(se.getName())) {
 				if (Objects.isNull(retval.getPopulation())) {
 					retval.setPopulation(parseCommunityStats(se,
-						element.getName(), stream));
+							element.getName(), stream));
 				} else {
 					throw new UnwantedChildException(element.getName(), se);
 				}
@@ -210,9 +210,9 @@ import java.util.function.Consumer;
 	}
 
 	private ITownFixture parseTown(final StartElement element, final Iterable<XMLEvent> stream)
-		throws SPFormatException, XMLStreamException {
+			throws SPFormatException, XMLStreamException {
 		expectAttributes(element, "name", "status", "size", "dc", "id", "image", "owner",
-			"portrait");
+				"portrait");
 		requireNonEmptyParameter(element, "name", false);
 		final String name = getParameter(element, "name", "");
 		final TownStatus status;
@@ -235,7 +235,7 @@ import java.util.function.Consumer;
 			case "city" -> new City(status, size, dc, name, id, owner);
 			case "fortification" -> new Fortification(status, size, dc, name, id, owner);
 			default -> throw new IllegalArgumentException("Unhandled town tag " +
-				element.getName().getLocalPart());
+					element.getName().getLocalPart());
 		};
 		for (final XMLEvent event : stream) {
 			if (event instanceof final StartElement se && isSupportedNamespace(se.getName())) {
@@ -254,7 +254,7 @@ import java.util.function.Consumer;
 	}
 
 	private ITownFixture parseFortress(final StartElement element, final Iterable<XMLEvent> stream)
-		throws SPFormatException, XMLStreamException {
+			throws SPFormatException, XMLStreamException {
 		expectAttributes(element, "owner", "name", "size", "status", "id", "portrait", "image");
 		requireNonEmptyParameter(element, "owner", false);
 		requireNonEmptyParameter(element, "name", false);
@@ -266,17 +266,17 @@ import java.util.function.Consumer;
 			throw new MissingPropertyException(element, "size", except);
 		}
 		retval = new FortressImpl(getOwnerOrIndependent(element),
-			getParameter(element, "name", ""), getOrGenerateID(element), size);
+				getParameter(element, "name", ""), getOrGenerateID(element), size);
 		for (final XMLEvent event : stream) {
 			if (event instanceof final StartElement se && isSupportedNamespace(se.getName())) {
 				final String memberTag = se.getName().getLocalPart().toLowerCase();
 				final Optional<YAReader<? extends FortressMember, ? extends FortressMember>>
-					reader = memberReaders.stream()
-					.filter(yar -> yar.isSupportedTag(memberTag)).findAny();
+						reader = memberReaders.stream()
+						.filter(yar -> yar.isSupportedTag(memberTag)).findAny();
 				if (reader.isPresent()) {
 					retval.addMember(reader.get().read(se, element.getName(), stream));
 				} else if ("orders".equals(memberTag) || "results".equals(memberTag) ||
-					"science".equals(memberTag)) {
+						"science".equals(memberTag)) {
 					// We're thinking about storing per-fortress "standing orders" or
 					// general regulations, building-progress results, and possibly
 					// scientific research progress within fortresses. To ease the
@@ -297,7 +297,7 @@ import java.util.function.Consumer;
 	}
 
 	private void writeAbstractTown(final ThrowingConsumer<String, IOException> ostream, final AbstractTown obj, final int tabs)
-		throws IOException {
+			throws IOException {
 		writeTag(ostream, obj.getKind(), tabs);
 		writeProperty(ostream, "status", obj.getStatus().toString());
 		writeProperty(ostream, "size", obj.getTownSize().toString());
@@ -317,12 +317,12 @@ import java.util.function.Consumer;
 	}
 
 	public void writeCommunityStats(final ThrowingConsumer<String, IOException> ostream, final CommunityStats obj, final int tabs)
-		throws IOException {
+			throws IOException {
 		writeTag(ostream, "population", tabs);
 		writeProperty(ostream, "size", obj.getPopulation());
 		finishParentTag(ostream);
 		for (final Map.Entry<String, Integer> entry : obj.getHighestSkillLevels().entrySet().stream()
-			.sorted(Map.Entry.comparingByKey(Comparator.naturalOrder())).toList()) {
+				.sorted(Map.Entry.comparingByKey(Comparator.naturalOrder())).toList()) {
 			writeTag(ostream, "expertise", tabs + 1);
 			writeProperty(ostream, "skill", entry.getKey());
 			writeProperty(ostream, "level", entry.getValue());
@@ -355,12 +355,12 @@ import java.util.function.Consumer;
 	@Override
 	public boolean isSupportedTag(final String tag) {
 		return Arrays.asList("village", "fortress", "town", "city", "fortification")
-			.contains(tag.toLowerCase());
+				.contains(tag.toLowerCase());
 	}
 
 	@Override
 	public ITownFixture read(final StartElement element, final QName parent, final Iterable<XMLEvent> stream)
-		throws SPFormatException, XMLStreamException {
+			throws SPFormatException, XMLStreamException {
 		requireTag(element, parent, "village", "fortress", "town", "city", "fortification");
 		return switch (element.getName().getLocalPart().toLowerCase()) {
 			case "village" -> parseVillage(element, stream);
@@ -404,13 +404,13 @@ import java.util.function.Consumer;
 				ostream.accept(System.lineSeparator());
 				for (final FortressMember member : f) {
 					final Optional<YAReader<? extends FortressMember, ? extends FortressMember>>
-						reader = memberReaders.stream()
-						.filter(yar -> yar.canWrite(member)).findAny();
+							reader = memberReaders.stream()
+							.filter(yar -> yar.canWrite(member)).findAny();
 					if (reader.isPresent()) {
 						reader.get().writeRaw(ostream, member, tabs + 1);
 					} else {
 						LovelaceLogger.error("Unhandled FortressMember type %s",
-							member.getClass().getName());
+								member.getClass().getName());
 					}
 				}
 				indent(ostream, tabs);

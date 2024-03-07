@@ -9,12 +9,12 @@ import javax.swing.JPanel;
  * children to add as constructor parameters.
  */
 public final class FlowPanel extends JPanel {
-    @Serial
-    private static final long serialVersionUID = 1;
+	@Serial
+	private static final long serialVersionUID = 1;
 
-    public FlowPanel(final Component... components) {
-        for (final Component component : components) {
-            add(component);
-        }
-    }
+	public FlowPanel(final Component... components) {
+		for (final Component component : components) {
+			add(component);
+		}
+	}
 }

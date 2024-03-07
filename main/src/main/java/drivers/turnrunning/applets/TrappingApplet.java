@@ -14,6 +14,7 @@ import legacy.map.fixtures.mobile.AnimalTracks;
 import legacy.map.fixtures.mobile.Animal;
 
 import drivers.turnrunning.ITurnRunningModel;
+
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
@@ -67,7 +68,7 @@ import org.jetbrains.annotations.Nullable;
 			cost += processingTime;
 		}
 		final Boolean reduce = cli.inputBooleanInSeries(String.format("Reduce animal group population of %d?",
-			item.getPopulation()));
+				item.getPopulation()));
 		if (Objects.isNull(reduce)) {
 			return null;
 		} else if (reduce) {
@@ -85,7 +86,7 @@ import org.jetbrains.annotations.Nullable;
 	public @Nullable String run() {
 		final StringBuilder buffer = new StringBuilder();
 		final Boolean fishing = cli.inputBooleanInSeries(
-			"Is this a fisherman trapping fish rather than a trapper?");
+				"Is this a fisherman trapping fish rather than a trapper?");
 		if (Objects.isNull(fishing)) {
 			return ""; // TODO: null, surely?
 		}
@@ -112,61 +113,61 @@ import org.jetbrains.annotations.Nullable;
 		int time = startingTime;
 		while (time > 0) {
 			final TrapperCommand command = cli.chooseFromList(TRAPPER_COMMANDS, prompt,
-				"Oops! No commands", "Next action: ", ICLIHelper.ListChoiceBehavior.ALWAYS_PROMPT).getValue1();
+					"Oops! No commands", "Next action: ", ICLIHelper.ListChoiceBehavior.ALWAYS_PROMPT).getValue1();
 			if (Objects.isNull(command) || TrapperCommand.Quit == command) {
 				break;
 			}
 			boolean out = false;
 			switch (command) {
-			case Check:
-				if (!encounters.hasNext()) {
-					out = true;
-					cli.println("Ran out of results!");
+				case Check:
+					if (!encounters.hasNext()) {
+						out = true;
+						cli.println("Ran out of results!");
+						break;
+					}
+					final Pair<Point, TileFixture> find = encounters.next();
+					final Point loc = find.getValue0();
+					final TileFixture item = find.getValue1();
+					if (item instanceof HuntingModel.NothingFound) {
+						cli.println("Nothing in the trap");
+						time -= nothingCost;
+						break;
+					} else if (item instanceof final AnimalTracks at) {
+						cli.println(String.format("Found evidence of %s escaping", at.getKind()));
+						model.copyToSubMaps(center, item, IFixture.CopyBehavior.ZERO);
+						time -= nothingCost;
+						break;
+					} else if (!(item instanceof Animal)) {
+						throw new IllegalStateException("Unhandled case from HuntingModel");
+					}
+					final Integer cost = handleFound(center, loc, (Animal) item);
+					if (Objects.isNull(cost)) {
+						return null;
+					}
+					time -= cost;
 					break;
-				}
-				final Pair<Point, TileFixture> find = encounters.next();
-				final Point loc = find.getValue0();
-				final TileFixture item = find.getValue1();
-				if (item instanceof HuntingModel.NothingFound) {
-					cli.println("Nothing in the trap");
-					time -= nothingCost;
+				case EasyReset:
+					if (fishing) {
+						time -= 20;
+					} else {
+						time -= 5;
+					}
 					break;
-				} else if (item instanceof final AnimalTracks at) {
-					cli.println(String.format("Found evidence of %s escaping", at.getKind()));
-					model.copyToSubMaps(center, item, IFixture.CopyBehavior.ZERO);
-					time -= nothingCost;
+				case Move:
+					time -= 2;
 					break;
-				} else if (!(item instanceof Animal)) {
-					throw new IllegalStateException("Unhandled case from HuntingModel");
-				}
-				final Integer cost = handleFound(center, loc, (Animal) item);
-				if (Objects.isNull(cost)) {
-					return null;
-				}
-				time -= cost;
-				break;
-			case EasyReset:
-				if (fishing) {
-					time -= 20;
-				} else {
-					time -= 5;
-				}
-				break;
-			case Move:
-				time -= 2;
-				break;
 //			case Quit:
 //				time = 0;
 //				break;
-			case SetTrap:
-				if (fishing) {
-					time -= 30;
-				} else {
-					time -= 45;
-				}
-				break;
-			default:
-				throw new IllegalStateException("Exhaustive switch wasn't");
+				case SetTrap:
+					if (fishing) {
+						time -= 30;
+					} else {
+						time -= 45;
+					}
+					break;
+				default:
+					throw new IllegalStateException("Exhaustive switch wasn't");
 			}
 			if (out) {
 				break;

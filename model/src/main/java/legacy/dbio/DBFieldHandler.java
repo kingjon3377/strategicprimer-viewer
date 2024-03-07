@@ -30,20 +30,20 @@ public final class DBFieldHandler extends AbstractDatabaseWriter<Meadow, Point> 
 	}
 
 	private static final List<Query> INITIALIZERS = Collections.singletonList(
-		Query.of("CREATE TABLE IF NOT EXISTS fields (" +
-			"    row INTEGER NOT NULL," +
-			"    column INTEGER NOT NULL," +
-			"    id INTEGER NOT NULL," +
-			"    type VARCHAR(6) NOT NULL" +
-			"        CHECK (type IN ('field', 'meadow'))," +
-			"    kind VARCHAR(64) NOT NULL," +
-			"    cultivated BOOLEAN NOT NULL," +
-			"    status VARCHAR(7) NOT NULL" +
-			"        CHECK (status IN ('fallow', 'seeding', 'growing', 'bearing'))," +
-			"    acres VARCHAR(128)" +
-			"        CHECK (acres NOT LIKE '%[^0-9.]%' AND acres NOT LIKE '%.%.%')," +
-			"    image VARCHAR(255)" +
-			");"));
+			Query.of("CREATE TABLE IF NOT EXISTS fields (" +
+					"    row INTEGER NOT NULL," +
+					"    column INTEGER NOT NULL," +
+					"    id INTEGER NOT NULL," +
+					"    type VARCHAR(6) NOT NULL" +
+					"        CHECK (type IN ('field', 'meadow'))," +
+					"    kind VARCHAR(64) NOT NULL," +
+					"    cultivated BOOLEAN NOT NULL," +
+					"    status VARCHAR(7) NOT NULL" +
+					"        CHECK (status IN ('fallow', 'seeding', 'growing', 'bearing'))," +
+					"    acres VARCHAR(128)" +
+					"        CHECK (acres NOT LIKE '%[^0-9.]%' AND acres NOT LIKE '%.%.%')," +
+					"    image VARCHAR(255)" +
+					");"));
 
 	@Override
 	public List<Query> getInitializers() {
@@ -51,16 +51,16 @@ public final class DBFieldHandler extends AbstractDatabaseWriter<Meadow, Point> 
 	}
 
 	private static final Query INSERT_SQL =
-		Query.of("INSERT INTO fields (row, column, id, type, kind, cultivated, status, acres, image) " +
-			"VALUES(:row, :column, :id, :type, :kind, :cultivated, :status, :acres, :image);");
+			Query.of("INSERT INTO fields (row, column, id, type, kind, cultivated, status, acres, image) " +
+					"VALUES(:row, :column, :id, :type, :kind, :cultivated, :status, :acres, :image);");
 
 	@Override
 	public void write(final Transactional db, final Meadow obj, final Point context) throws SQLException {
 		INSERT_SQL.on(value("row", context.row()), value("column", context.column()),
-			value("id", obj.getId()), value("type", obj.isField() ? "field" : "meadow"),
-			value("kind", obj.getKind()), value("cultivated", obj.isCultivated()),
-			value("status", obj.getStatus().toString()), value("acres", obj.getAcres().toString()),
-			value("image", obj.getImage())).execute(db.connection());
+				value("id", obj.getId()), value("type", obj.isField() ? "field" : "meadow"),
+				value("kind", obj.getKind()), value("cultivated", obj.isCultivated()),
+				value("status", obj.getStatus().toString()), value("acres", obj.getAcres().toString()),
+				value("image", obj.getImage())).execute(db.connection());
 	}
 
 	private TryBiConsumer<Map<String, Object>, Warning, SQLException> readMeadow(final IMutableLegacyMap map) {
@@ -97,7 +97,7 @@ public final class DBFieldHandler extends AbstractDatabaseWriter<Meadow, Point> 
 
 	@Override
 	public void readMapContents(final Connection db, final IMutableLegacyMap map, final Map<Integer, IFixture> containers,
-	                            final Map<Integer, List<Object>> containees, final Warning warner) throws SQLException {
+								final Map<Integer, List<Object>> containees, final Warning warner) throws SQLException {
 		handleQueryResults(db, warner, "meadows", readMeadow(map), SELECT);
 	}
 }

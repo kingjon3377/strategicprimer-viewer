@@ -15,6 +15,7 @@ public interface IMutableLegacyMap extends ILegacyMap {
 
 	/**
 	 * The base terrain at any given point.
+	 *
 	 * @return the prior terrain, if any
 	 */
 	@Nullable
@@ -22,6 +23,7 @@ public interface IMutableLegacyMap extends ILegacyMap {
 
 	/**
 	 * Whether the given point is mountainous.
+	 *
 	 * @return the prior value of the property there
 	 */
 	boolean setMountainous(Point location, boolean mountainous);
@@ -83,7 +85,7 @@ public interface IMutableLegacyMap extends ILegacyMap {
 	/**
 	 * Add a bookmark.
 	 *
-	 * @param point Where to place the bookmark
+	 * @param point  Where to place the bookmark
 	 * @param player The player to place the bookmark for
 	 */
 	void addBookmark(Point point, Player player);
@@ -99,13 +101,15 @@ public interface IMutableLegacyMap extends ILegacyMap {
 
 	/**
 	 * Remove a bookmark.
-	 * @param point Where to remove the bookmark
+	 *
+	 * @param point  Where to remove the bookmark
 	 * @param player The player to remove the bookmark for
 	 */
 	void removeBookmark(Point point, Player player);
 
 	/**
 	 * Remove a bookmark for the current player.
+	 *
 	 * @param point Where to remove the bookmark
 	 */
 	default void removeBookmark(final Point point) {

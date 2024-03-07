@@ -21,27 +21,27 @@ import com.google.auto.service.AutoService;
  */
 @AutoService(DriverFactory.class)
 public class ExpansionDriverFactory implements ModelDriverFactory {
-    private static final IDriverUsage USAGE = new DriverUsage(false, "expand", ParamCount.AtLeastTwo,
-            "Expand a player's map.",
-            "Ensure a player's map covers all terrain allied villages can see.", true,
-            false, "--current-turn=NN");
+	private static final IDriverUsage USAGE = new DriverUsage(false, "expand", ParamCount.AtLeastTwo,
+			"Expand a player's map.",
+			"Ensure a player's map covers all terrain allied villages can see.", true,
+			false, "--current-turn=NN");
 
-    @Override
-    public IDriverUsage getUsage() {
-        return USAGE;
-    }
+	@Override
+	public IDriverUsage getUsage() {
+		return USAGE;
+	}
 
-    @Override
-    public ModelDriver createDriver(final ICLIHelper cli, final SPOptions options, final IDriverModel model) {
-        if (model instanceof final UtilityDriverModel udm) {
-            return new ExpansionDriver(options, udm);
-        } else {
-            return createDriver(cli, options, new UtilityDriverModel(model));
-        }
-    }
+	@Override
+	public ModelDriver createDriver(final ICLIHelper cli, final SPOptions options, final IDriverModel model) {
+		if (model instanceof final UtilityDriverModel udm) {
+			return new ExpansionDriver(options, udm);
+		} else {
+			return createDriver(cli, options, new UtilityDriverModel(model));
+		}
+	}
 
-    @Override
-    public IDriverModel createModel(final IMutableLegacyMap map) {
-        return new UtilityDriverModel(map);
-    }
+	@Override
+	public IDriverModel createModel(final IMutableLegacyMap map) {
+		return new UtilityDriverModel(map);
+	}
 }

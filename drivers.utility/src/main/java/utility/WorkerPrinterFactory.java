@@ -24,26 +24,26 @@ import com.google.auto.service.AutoService;
  */
 @AutoService(DriverFactory.class)
 public class WorkerPrinterFactory implements ModelDriverFactory {
-    private static final IDriverUsage USAGE = new DriverUsage(false, "print-stats", ParamCount.One,
-            "Print stats of workers", "Print stats of workers in a unit in a brief list.", true,
-            false);
+	private static final IDriverUsage USAGE = new DriverUsage(false, "print-stats", ParamCount.One,
+			"Print stats of workers", "Print stats of workers in a unit in a brief list.", true,
+			false);
 
-    @Override
-    public IDriverUsage getUsage() {
-        return USAGE;
-    }
+	@Override
+	public IDriverUsage getUsage() {
+		return USAGE;
+	}
 
-    @Override
-    public ModelDriver createDriver(final ICLIHelper cli, final SPOptions options, final IDriverModel model) {
-        if (model instanceof final IExplorationModel em) {
-            return new WorkerPrintCLI(cli, em);
-        } else {
-            return createDriver(cli, options, new ExplorationModel(model));
-        }
-    }
+	@Override
+	public ModelDriver createDriver(final ICLIHelper cli, final SPOptions options, final IDriverModel model) {
+		if (model instanceof final IExplorationModel em) {
+			return new WorkerPrintCLI(cli, em);
+		} else {
+			return createDriver(cli, options, new ExplorationModel(model));
+		}
+	}
 
-    @Override
-    public IDriverModel createModel(final IMutableLegacyMap map) {
-        return new ExplorationModel(map);
-    }
+	@Override
+	public IDriverModel createModel(final IMutableLegacyMap map) {
+		return new ExplorationModel(map);
+	}
 }

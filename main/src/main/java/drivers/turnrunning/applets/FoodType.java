@@ -28,7 +28,7 @@ import org.jetbrains.annotations.Nullable;
 	public static @Nullable FoodType askFoodType(final ICLIHelper cli, final String foodKind) {
 		for (final FoodType type : values()) {
 			final Boolean resp = cli.inputBooleanInSeries(String.format("Is \"%s\" %s?", foodKind, type),
-				foodKind + type);
+					foodKind + type);
 			if (Objects.isNull(resp)) {
 				return null; // EOF
 			} else if (resp) {
@@ -82,9 +82,9 @@ import org.jetbrains.annotations.Nullable;
 	}
 
 	FoodType(final @Nullable Integer keepsFor, final @Nullable Integer keepsForIfCool,
-	         final @Nullable Integer keepsForRefrig, final @Nullable Integer keepsForFrozen,
-	         final @Nullable BigDecimal fracSpoilingDaily, final @Nullable BigDecimal minSpoilage,
-	         final String str) {
+			 final @Nullable Integer keepsForRefrig, final @Nullable Integer keepsForFrozen,
+			 final @Nullable BigDecimal fracSpoilingDaily, final @Nullable BigDecimal minSpoilage,
+			 final String str) {
 		this.keepsFor = keepsFor;
 		this.keepsForIfCool = keepsForIfCool;
 		keepsForRefrigerated = keepsForRefrig;
@@ -112,7 +112,7 @@ import org.jetbrains.annotations.Nullable;
 		}
 		if (!Objects.isNull(keepsForRefrigerated) && age < keepsForRefrigerated) {
 			final Boolean resp = cli.inputBooleanInSeries("Was this kept refrigerated?",
-				pile.getKind() + string + "refrig");
+					pile.getKind() + string + "refrig");
 			if (Objects.isNull(resp)) {
 				return null;
 			} else if (resp) {
@@ -121,7 +121,7 @@ import org.jetbrains.annotations.Nullable;
 		}
 		if (!Objects.isNull(keepsForFrozen) && age < keepsForFrozen) {
 			final Boolean resp = cli.inputBooleanInSeries("Was this kept frozen?",
-				pile.getKind() + string + "frozen");
+					pile.getKind() + string + "frozen");
 			if (Objects.isNull(resp)) {
 				return null;
 			} else if (resp) {
@@ -139,6 +139,6 @@ import org.jetbrains.annotations.Nullable;
 		final BigDecimal amt = decimalize(qty.number());
 		final BigDecimal fractional = Optional.ofNullable(fractionSpoilingDaily).map(amt::multiply).orElse(null);
 		return Stream.of(fractional, minimumSpoilage).filter(Objects::nonNull)
-			.max(Comparator.naturalOrder()).orElseGet(() -> cli.inputDecimal("How many pounds spoil?"));
+				.max(Comparator.naturalOrder()).orElseGet(() -> cli.inputDecimal("How many pounds spoil?"));
 	}
 }

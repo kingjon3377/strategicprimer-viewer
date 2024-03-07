@@ -70,8 +70,8 @@ import java.util.function.Consumer;
 		if (Objects.isNull(selectedUnit)) {
 			LovelaceLogger.warning("New worker created when no unit selected");
 			JOptionPane.showMessageDialog(null,
-				"As no unit was selected, the new worker wasn't added to a unit.",
-				"Strategic Primer Worker Advancement", JOptionPane.ERROR_MESSAGE);
+					"As no unit was selected, the new worker wasn't added to a unit.",
+					"Strategic Primer Worker Advancement", JOptionPane.ERROR_MESSAGE);
 		} else {
 			model.addUnitMember(selectedUnit, worker);
 		}
@@ -125,12 +125,12 @@ import java.util.function.Consumer;
 			addLabeledField(statsPanel, "Max HP:", new JSpinner(maxHP));
 
 			for (final Pair<String, SpinnerNumberModel> pair : Arrays.asList(
-				Pair.with("Strength:", strength),
-				Pair.with("Intelligence:", intelligence),
-				Pair.with("Dexterity:", dexterity),
-				Pair.with("Wisdom:", wisdom),
-				Pair.with("Constitution:", constitution),
-				Pair.with("Charisma:", charisma))) {
+					Pair.with("Strength:", strength),
+					Pair.with("Intelligence:", intelligence),
+					Pair.with("Dexterity:", dexterity),
+					Pair.with("Wisdom:", wisdom),
+					Pair.with("Constitution:", constitution),
+					Pair.with("Charisma:", charisma))) {
 				final String stat = pair.getValue0();
 				final SpinnerNumberModel model = pair.getValue1();
 				model.setValue(SingletonRandom.SINGLETON_RANDOM.ints(3, 1, 7).sum());
@@ -138,7 +138,7 @@ import java.util.function.Consumer;
 			}
 
 			setContentPane(BorderedPanel.verticalPanel(textPanel, statsPanel,
-				buttonPanel));
+					buttonPanel));
 
 			setMinimumSize(new Dimension(320, 240));
 
@@ -157,12 +157,12 @@ import java.util.function.Consumer;
 			final int wisValue = wisdom.getNumber().intValue();
 			final int chaValue = charisma.getNumber().intValue();
 			if (!nameText.isEmpty() && !raceText.isEmpty() && IntStream.of(hpValue, maxHPValue, strValue, dexValue,
-				conValue, intValue, wisValue, chaValue).allMatch(x -> x >= 0)) {
+					conValue, intValue, wisValue, chaValue).allMatch(x -> x >= 0)) {
 				// TODO: These logging statements should probably be "trace" i.e. "finer", not "debug" i.e. "fine"
 				LovelaceLogger.debug("All worker-creation-dialog fields are acceptable");
 				final Worker retval = new Worker(nameText, raceText, factory.createID());
 				retval.setStats(new WorkerStats(hpValue, maxHPValue, strValue,
-					dexValue, conValue, intValue, wisValue, chaValue));
+						dexValue, conValue, intValue, wisValue, chaValue));
 				addNewWorker.accept(retval);
 				LovelaceLogger.debug("Created and added the worker; about to hide the window");
 				setVisible(false);
@@ -178,25 +178,25 @@ import java.util.function.Consumer;
 					builder.append("Worker needs a race.").append(System.lineSeparator());
 				}
 				for (final Pair<String, Integer> pair : Arrays.asList(
-					Pair.with("HP", hpValue), Pair.with("Max HP", maxHPValue),
-					Pair.with("Strength", strValue),
-					Pair.with("Dexterity", dexValue),
-					Pair.with("Constitution", conValue),
-					Pair.with("Intelligence", intValue),
-					Pair.with("Wisdom", wisValue),
-					Pair.with("Charisma", chaValue))) {
+						Pair.with("HP", hpValue), Pair.with("Max HP", maxHPValue),
+						Pair.with("Strength", strValue),
+						Pair.with("Dexterity", dexValue),
+						Pair.with("Constitution", conValue),
+						Pair.with("Intelligence", intValue),
+						Pair.with("Wisdom", wisValue),
+						Pair.with("Charisma", chaValue))) {
 					final String stat = pair.getValue0();
 					final int val = pair.getValue1();
 					if (val < 0) {
 						LovelaceLogger.debug(
-							"Worker not created because non-positive %s provided", stat);
+								"Worker not created because non-positive %s provided", stat);
 						builder.append(String.format("%s must be a non-negative number.",
-							stat)).append(System.lineSeparator());
+								stat)).append(System.lineSeparator());
 					}
 				}
 				final @Nullable Component parent = getParent();
 				JOptionPane.showMessageDialog(parent, builder.toString(),
-					"Strategic Primer Worker Advancement", JOptionPane.ERROR_MESSAGE);
+						"Strategic Primer Worker Advancement", JOptionPane.ERROR_MESSAGE);
 			}
 		}
 
@@ -212,7 +212,7 @@ import java.util.function.Consumer;
 		public void revert() {
 			name.setText("");
 			for (final SpinnerNumberModel field : Arrays.asList(hpModel, maxHP, strength,
-				dexterity, constitution, intelligence, wisdom, charisma)) {
+					dexterity, constitution, intelligence, wisdom, charisma)) {
 				field.setValue(-1);
 			}
 			race.setText(RaceFactory.randomRace());

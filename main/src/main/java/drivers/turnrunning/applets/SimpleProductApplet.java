@@ -25,8 +25,8 @@ import org.jetbrains.annotations.Nullable;
 	private final ICLIHelper cli;
 	private final ResourceAddingCLIHelper raHelper;
 
-	public SimpleProductApplet(final String name, final String description, final ITurnRunningModel model, final ICLIHelper cli,
-	                           final IDRegistrar idf) {
+	public SimpleProductApplet(final String name, final String description, final ITurnRunningModel model,
+							   final ICLIHelper cli, final IDRegistrar idf) {
 		super(model, cli);
 		this.name = name;
 		commands = Collections.singletonList(name);
@@ -62,8 +62,8 @@ import org.jetbrains.annotations.Nullable;
 				break;
 			}
 			if (model.addExistingResource(resource,
-				Optional.ofNullable(model.getSelectedUnit()).map(IUnit::owner)
-					.orElse(model.getMap().getCurrentPlayer()))) {
+					Optional.ofNullable(model.getSelectedUnit()).map(IUnit::owner)
+							.orElse(model.getMap().getCurrentPlayer()))) {
 				builder.append("Added ").append(resource).append(". ");
 			} else {
 				cli.println("Failed to find a fortress to add to in any map");

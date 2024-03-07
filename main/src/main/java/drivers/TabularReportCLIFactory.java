@@ -22,26 +22,26 @@ import com.google.auto.service.AutoService;
  */
 @AutoService(DriverFactory.class)
 public class TabularReportCLIFactory implements ModelDriverFactory {
-    private static final IDriverUsage USAGE = new DriverUsage(false, "tabular-report",
-            ParamCount.AtLeastOne, "Tabular Report Generator",
-            "Produce CSV reports of the contents of a map.", true, false, "--serve[=8080]");
+	private static final IDriverUsage USAGE = new DriverUsage(false, "tabular-report",
+			ParamCount.AtLeastOne, "Tabular Report Generator",
+			"Produce CSV reports of the contents of a map.", true, false, "--serve[=8080]");
 
-    @Override
-    public IDriverUsage getUsage() {
-        return USAGE;
-    }
+	@Override
+	public IDriverUsage getUsage() {
+		return USAGE;
+	}
 
-    @Override
-    public ModelDriver createDriver(final ICLIHelper cli, final SPOptions options, final IDriverModel model) {
-        if (options.hasOption("--serve")) {
-            return new TabularReportServingCLI(cli, options, model);
-        } else {
-            return new TabularReportCLI(cli, options, model);
-        }
-    }
+	@Override
+	public ModelDriver createDriver(final ICLIHelper cli, final SPOptions options, final IDriverModel model) {
+		if (options.hasOption("--serve")) {
+			return new TabularReportServingCLI(cli, options, model);
+		} else {
+			return new TabularReportCLI(cli, options, model);
+		}
+	}
 
-    @Override
-    public IDriverModel createModel(final IMutableLegacyMap map) {
-        return new SimpleMultiMapModel(map);
-    }
+	@Override
+	public IDriverModel createModel(final IMutableLegacyMap map) {
+		return new SimpleMultiMapModel(map);
+	}
 }

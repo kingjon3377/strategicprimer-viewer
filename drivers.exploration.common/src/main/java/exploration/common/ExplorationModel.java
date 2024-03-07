@@ -93,8 +93,8 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 	private static Iterable<Pair<Point, IFixture>> flattenEntries(final Pair<Point, IFixture> entry) {
 		if (entry.getValue1() instanceof final IFortress fort) {
 			return fort.stream().map(IFixture.class::cast)
-				.map(each -> Pair.with(entry.getValue0(), each))
-				.collect(Collectors.toList());
+					.map(each -> Pair.with(entry.getValue0(), each))
+					.collect(Collectors.toList());
 		} else {
 			return Collections.singleton(entry);
 		}
@@ -108,7 +108,7 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 	 */
 	private static boolean areDiggablesEqual(final IFixture firstFixture, final IFixture secondFixture) {
 		return Objects.equals(firstFixture, secondFixture) ||
-			Objects.equals(firstFixture.copy(IFixture.CopyBehavior.ZERO), secondFixture.copy(IFixture.CopyBehavior.ZERO));
+				Objects.equals(firstFixture.copy(IFixture.CopyBehavior.ZERO), secondFixture.copy(IFixture.CopyBehavior.ZERO));
 	}
 
 	/**
@@ -126,14 +126,14 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 		}
 		// TODO: Make a method for this so we can use Stream::forEach instead of using a Collector
 		for (final Point point : new SurroundingPointIterable(dest, dimensions).stream()
-			.collect(Collectors.toSet())) {
+				.collect(Collectors.toSet())) {
 			for (final TileFixture fixture : map.getFixtures(point)) {
 				if (fixture instanceof final HasOwner owned &&
-					owned.owner().isIndependent() &&
-					!owned.owner().equals(unit.owner())) {
+						owned.owner().isIndependent() &&
+						!owned.owner().equals(unit.owner())) {
 					System.out.printf( // FIXME: Make a new interface for reporting this, and write to UI in a listener
-						"Motion of %s to %s could be observed by %s at %s%n",
-						description, dest, fixture.getShortDescription(), point);
+							"Motion of %s to %s could be observed by %s at %s%n",
+							description, dest, fixture.getShortDescription(), point);
 				}
 			}
 		}
@@ -150,7 +150,7 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 				break;
 			} else if (fixture instanceof final IMutableFortress fort) {
 				final Optional<FortressMember> item = fort.stream()
-					.filter(Predicate.isEqual(unit)).findAny();
+						.filter(Predicate.isEqual(unit)).findAny();
 				if (item.isPresent()) {
 					((IMutableFortress) fixture).removeMember(item.get());
 					return;
@@ -184,7 +184,7 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 			if (Objects.equals(member, fixture)) {
 				return true;
 			} else if (member instanceof final FixtureIterable<?> iter &&
-				doesStreamContainFixture(iter, fixture)) {
+					doesStreamContainFixture(iter, fixture)) {
 				return true;
 			}
 		}
@@ -196,8 +196,9 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 	 */
 	private static boolean doesStreamContainUnit(final Iterable<? extends IFixture> stream, final IUnit unit) {
 		for (final IFixture member : stream) {
-			if (member.getId() == unit.getId() && member instanceof final IUnit memUnit && memUnit.owner().equals(unit.owner()) &&
-				memUnit.getKind().equals(unit.getKind()) && memUnit.getName().equals(unit.getName())) {
+			if (member.getId() == unit.getId() && member instanceof final IUnit memUnit &&
+					memUnit.owner().equals(unit.owner()) && memUnit.getKind().equals(unit.getKind()) &&
+					memUnit.getName().equals(unit.getName())) {
 				return true;
 			} else if (member instanceof final FixtureIterable iter && doesStreamContainUnit(iter, unit)) {
 				return true;
@@ -211,8 +212,8 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 	 */
 	private static boolean doesStreamContainFortress(final Iterable<? extends IFixture> stream, final IFortress fort) {
 		for (final IFixture member : stream) {
-			if (member.getId() == fort.getId() && member instanceof final IFortress memFort && memFort.owner().equals(fort.owner()) &&
-				memFort.getName().equals(fort.getName())) {
+			if (member.getId() == fort.getId() && member instanceof final IFortress memFort &&
+					memFort.owner().equals(fort.owner()) && memFort.getName().equals(fort.getName())) {
 				return true;
 			} else if (member instanceof final FixtureIterable iter && doesStreamContainFortress(iter, fort)) {
 				return true;
@@ -236,8 +237,9 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 
 	/**
 	 * A "plus one" method with a configurable, low "overflow".
+	 *
 	 * @param number The number to increment
-	 * @param max The maximum number we want to return
+	 * @param max    The maximum number we want to return
 	 */
 	private static int increment(final int number, final int max) {
 		return (number >= max) ? 0 : (number + 1);
@@ -247,7 +249,7 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 	 * A "minus one" method that "underflows" after 0 to a configurable, low value.
 	 *
 	 * @param number The number to decrement
-	 * @param max The number to "underflow" to
+	 * @param max    The number to "underflow" to
 	 */
 	private static int decrement(final int number, final int max) {
 		return (number <= 0) ? max : (number - 1);
@@ -303,10 +305,10 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 		// TODO: Port this stream-based algorithm to Java
 //		return allMaps.map(IMapNG.players).map(set).fold(set(map.players))(intersection);
 		final Set<Player> retval = StreamSupport.stream(getMap().getPlayers().spliterator(), true)
-			.collect(Collectors.toSet());
+				.collect(Collectors.toSet());
 		for (final ILegacyMap map : getSubordinateMaps()) {
 			retval.retainAll(StreamSupport.stream(map.getPlayers().spliterator(), true)
-				.collect(Collectors.toSet()));
+					.collect(Collectors.toSet()));
 		}
 		return Collections.unmodifiableSet(retval);
 	}
@@ -317,11 +319,11 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 	@Override
 	public List<IUnit> getUnits(final Player player) {
 		return getMap().streamAllFixtures()
-			.flatMap(ExplorationModel::unflattenNonFortresses)
-			.filter(IUnit.class::isInstance)
-			.map(IUnit.class::cast)
-			.filter(u -> u.owner().equals(player))
-			.collect(Collectors.toList());
+				.flatMap(ExplorationModel::unflattenNonFortresses)
+				.filter(IUnit.class::isInstance)
+				.map(IUnit.class::cast)
+				.filter(u -> u.owner().equals(player))
+				.collect(Collectors.toList());
 	}
 
 	/**
@@ -378,23 +380,24 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 
 	private void fixMovedUnits(final Point base) {
 		final BiFunction<ILegacyMap, TileFixture, Iterable<Pair<Point, TileFixture>>> localFind =
-			(mapParam, target) -> mapParam.streamLocations()
-				.flatMap(l -> mapParam.getFixtures(l).stream().map(f -> Pair.with(l, f)))
-				.filter(p -> target.equals(p.getValue1())) // TODO: Filter should come earlier
-				.collect(Collectors.toList());
+				(mapParam, target) -> mapParam.streamLocations()
+						.flatMap(l -> mapParam.getFixtures(l).stream().map(f -> Pair.with(l, f)))
+						.filter(p -> target.equals(p.getValue1())) // TODO: Filter should come earlier
+						.collect(Collectors.toList());
 		// TODO: Unit vision range
 		final Iterable<Point> points = new SurroundingPointIterable(base, getMap().getDimensions(), 2);
-		for (final IMutableLegacyMap submap : getRestrictedSubordinateMaps()) { // TODO: Can we limit use of mutability to a narrower critical section?
+		for (final IMutableLegacyMap submap : getRestrictedSubordinateMaps()) {
+			// TODO: Can we limit use of mutability to a narrower critical section?
 			for (final Point point : points) {
 				for (final TileFixture fixture : submap.getFixtures(point)) {
 					if (fixture instanceof MobileFixture) {
 						for (final Pair<Point, TileFixture> pair :
-							localFind.apply(submap, fixture)) {
+								localFind.apply(submap, fixture)) {
 							final Point innerPoint = pair.getValue0();
 							final TileFixture match = pair.getValue1();
 							if (!innerPoint.equals(point) &&
-								!getMap().getFixtures(innerPoint)
-									.contains(match)) {
+									!getMap().getFixtures(innerPoint)
+											.contains(match)) {
 								submap.removeFixture(innerPoint, match);
 								submap.setModified(true);
 							}
@@ -416,9 +419,9 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 	 * of that cost). We return the cost of the move in MP, which we also
 	 * tell listeners about.
 	 *
-	 * @throws TraversalImpossibleException if movement in the specified direction is impossible
 	 * @param direction The direction to move
-	 * @param speed How hastily the explorer is moving
+	 * @param speed     How hastily the explorer is moving
+	 * @throws TraversalImpossibleException if movement in the specified direction is impossible
 	 */
 	@Override
 	public Number move(final Direction direction, final Speed speed) throws TraversalImpossibleException {
@@ -432,22 +435,22 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 		final TileType terrain = getMap().getBaseTerrain(dest);
 		final TileType startingTerrain = getMap().getBaseTerrain(point);
 		if (!Objects.isNull(terrain) && !Objects.isNull(startingTerrain) &&
-			((SimpleMovementModel.landMovementPossible(terrain) &&
-				TileType.Ocean != startingTerrain) ||
-				(TileType.Ocean == startingTerrain &&
-					terrain == TileType.Ocean))) {
+				((SimpleMovementModel.landMovementPossible(terrain) &&
+						TileType.Ocean != startingTerrain) ||
+						(TileType.Ocean == startingTerrain &&
+								terrain == TileType.Ocean))) {
 			final int base;
 			if (dest.equals(point)) {
 				base = 1;
 			} else {
 				final Iterable<TileFixture> fixtures = getMap().getFixtures(dest);
 				base = SimpleMovementModel.movementCost(getMap().getBaseTerrain(dest),
-					getMap().getFixtures(dest).stream()
-						.anyMatch(Forest.class::isInstance),
-					getMap().isMountainous(dest),
-					SimpleMovementModel.riversSpeedTravel(direction,
-						getMap().getRivers(point),
-						getMap().getRivers(dest)), fixtures);
+						getMap().getFixtures(dest).stream()
+								.anyMatch(Forest.class::isInstance),
+						getMap().isMountainous(dest),
+						SimpleMovementModel.riversSpeedTravel(direction,
+								getMap().getRivers(point),
+								getMap().getRivers(dest)), fixtures);
 			}
 			final double retval = base * speed.getMpMultiplier();
 			removeImpl(getRestrictedMap(), point, unit);
@@ -474,15 +477,15 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 				LovelaceLogger.debug("Main map doesn't have terrain for destination");
 			} else {
 				if (SimpleMovementModel.landMovementPossible(terrain) &&
-					TileType.Ocean == startingTerrain) {
+						TileType.Ocean == startingTerrain) {
 					LovelaceLogger.debug("Starting in ocean, trying to get to %s", terrain);
 				} else if (TileType.Ocean == startingTerrain && TileType.Ocean != terrain) {
 					LovelaceLogger.debug("Land movement not possible from ocean to %s",
-						Objects.requireNonNullElse(terrain, "unexplored"));
+							Objects.requireNonNullElse(terrain, "unexplored"));
 				} else if (TileType.Ocean != startingTerrain &&
-					TileType.Ocean == terrain) {
+						TileType.Ocean == terrain) {
 					LovelaceLogger.debug("Starting in %s, trying to get to ocean",
-						Objects.requireNonNullElse(startingTerrain, "unexplored"));
+							Objects.requireNonNullElse(startingTerrain, "unexplored"));
 				} else {
 					LovelaceLogger.debug("Unknown reason for movement-impossible condition");
 				}
@@ -626,9 +629,9 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 		if (!Objects.isNull(unit)) {
 			final Player owner = unit.owner();
 			final List<Village> villages = streamAllMaps().flatMap(m -> m.getFixtures(currentPoint).stream())
-				.filter(Village.class::isInstance)
-				.map(Village.class::cast)
-				.filter(v -> v.owner().isIndependent()).toList();
+					.filter(Village.class::isInstance)
+					.map(Village.class::cast)
+					.filter(v -> v.owner().isIndependent()).toList();
 			if (!villages.isEmpty()) {
 				IFixture.CopyBehavior subordinate = IFixture.CopyBehavior.KEEP;
 				for (final Village village : villages) {
@@ -641,40 +644,40 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 				}
 				final ILegacyMap mainMap = getMap();
 				final Iterable<Point> surroundingPoints =
-					new SurroundingPointIterable(currentPoint, getMapDimensions(), 1);
+						new SurroundingPointIterable(currentPoint, getMapDimensions(), 1);
 				final Predicate<Object> isForest = Forest.class::isInstance;
 				final Function<Object, Forest> forestCast = Forest.class::cast;
 				for (final Point point : surroundingPoints) {
 					for (final IMutableLegacyMap subMap : getRestrictedSubordinateMaps()) {
 						ensureTerrain(mainMap, subMap, point);
 						final Optional<Forest> subForest = subMap.getFixtures(point)
-							.stream().filter(isForest)
-							.map(forestCast).findFirst();
+								.stream().filter(isForest)
+								.map(forestCast).findFirst();
 						final Optional<Forest> forest = getMap().getFixtures(point).stream()
-							.filter(isForest)
-							.map(forestCast).findFirst();
+								.filter(isForest)
+								.map(forestCast).findFirst();
 						if (forest.isPresent() && subForest.isEmpty()) {
 							subMap.addFixture(point, forest.get());
 						}
 					}
 				}
 				final Iterable<Pair<Point, TileFixture>> surroundingFixtures =
-					StreamSupport.stream(surroundingPoints.spliterator(), true)
-						.flatMap(point -> mainMap.getFixtures(point).stream()
-							.map(fixture -> Pair.with(point, fixture)))
-						.collect(Collectors.toList());
+						StreamSupport.stream(surroundingPoints.spliterator(), true)
+								.flatMap(point -> mainMap.getFixtures(point).stream()
+										.map(fixture -> Pair.with(point, fixture)))
+								.collect(Collectors.toList());
 				final Optional<Pair<Point, TileFixture>> vegetation =
-					StreamSupport.stream(surroundingFixtures.spliterator(), false)
-						.filter(p -> p.getValue1() instanceof Meadow ||
-							p.getValue1() instanceof Grove).findFirst();
+						StreamSupport.stream(surroundingFixtures.spliterator(), false)
+								.filter(p -> p.getValue1() instanceof Meadow ||
+										p.getValue1() instanceof Grove).findFirst();
 				final Optional<Pair<Point, TileFixture>> animal =
-					StreamSupport.stream(surroundingFixtures.spliterator(), false)
-						.filter(p -> p.getValue1() instanceof Animal).findFirst();
+						StreamSupport.stream(surroundingFixtures.spliterator(), false)
+								.filter(p -> p.getValue1() instanceof Animal).findFirst();
 				for (final IMutableLegacyMap subMap : getRestrictedSubordinateMaps()) {
 					vegetation.ifPresent(objects -> subMap.addFixture(objects.getValue0(),
-						objects.getValue1().copy(IFixture.CopyBehavior.ZERO)));
+							objects.getValue1().copy(IFixture.CopyBehavior.ZERO)));
 					animal.ifPresent(objects -> subMap.addFixture(objects.getValue0(),
-						objects.getValue1().copy(IFixture.CopyBehavior.ZERO)));
+							objects.getValue1().copy(IFixture.CopyBehavior.ZERO)));
 				}
 			}
 			fireMovementCost(5);
@@ -693,7 +696,7 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 		if (currentPoint.isValid()) {
 			final IMutableLegacyMap mainMap = getRestrictedMap();
 			final List<TileFixture> diggables = mainMap.getFixtures(currentPoint)
-				.stream().filter(ExplorationModel::isDiggable).collect(Collectors.toList());
+					.stream().filter(ExplorationModel::isDiggable).collect(Collectors.toList());
 			if (diggables.isEmpty()) {
 				return;
 			}
@@ -706,14 +709,15 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 			}
 			final TileFixture oldFixture = diggables.getFirst();
 			final TileFixture newFixture = oldFixture.copy(IFixture.CopyBehavior.KEEP);
-			if (newFixture instanceof final Ground g) { // TODO: Extract an interface for this field so we only have to do one test
+			// TODO: Extract an interface for 'exposed' so we only have to do one test
+			if (newFixture instanceof final Ground g) {
 				g.setExposed(true);
 			} else if (newFixture instanceof final MineralVein mv) {
 				mv.setExposed(true);
 			}
 			final BiConsumer<IMutableLegacyMap, IFixture.CopyBehavior> addToMap = (map, condition) -> {
 				if (map.getFixtures(currentPoint).stream()
-					.anyMatch(f -> areDiggablesEqual(oldFixture, f))) {
+						.anyMatch(f -> areDiggablesEqual(oldFixture, f))) {
 					map.replace(currentPoint, oldFixture, newFixture.copy(condition));
 				} else {
 					map.addFixture(currentPoint, newFixture.copy(condition));
@@ -733,7 +737,8 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 	 * Add the given unit at the given location.
 	 */
 	@Override
-	public void addUnitAtLocation(final IUnit unit, final Point location) { // TODO: If more than one map, return a proxy for the units; otherwise, return the unit
+	// TODO: If more than one map, return a proxy for the units; otherwise, return the unit
+	public void addUnitAtLocation(final IUnit unit, final Point location) {
 		for (final IMutableLegacyMap indivMap : getRestrictedAllMaps()) {
 			indivMap.addFixture(location, unit); // FIXME: Check for existing matching unit there already
 			indivMap.setModified(true);
@@ -757,7 +762,7 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 			matching = fixture;
 		} else {
 			matching = getMap().getFixtures(location).stream()
-				.filter(f -> f.getId() == fixture.getId()).findAny().orElse(null);
+					.filter(f -> f.getId() == fixture.getId()).findAny().orElse(null);
 		}
 		if (Objects.isNull(matching)) {
 			LovelaceLogger.warning("Skipping because not in the main map");
@@ -769,9 +774,11 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 			}
 
 			if (matching instanceof CacheFixture) {
-				getRestrictedMap().removeFixture(location, matching); // TODO: make removeFixture() return Boolean, true if anything was removed
+				// TODO: make removeFixture() return Boolean, true if anything was removed
+				getRestrictedMap().removeFixture(location, matching);
 				retval = true;
-				getRestrictedMap().setModified(true); // TODO: Here and elsewhere, don't bother to setModified() if the earlier mutator method already sets the flag
+				// TODO: Here and elsewhere, don't bother to setModified() if an earlier mutator method already does so
+				getRestrictedMap().setModified(true);
 			}
 		}
 		return retval;
@@ -789,7 +796,7 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 			}
 			final TileType terrain = getMap().getBaseTerrain(location);
 			if (!Objects.isNull(terrain) &&
-				terrain != subMap.getBaseTerrain(location)) {
+					terrain != subMap.getBaseTerrain(location)) {
 				subMap.setBaseTerrain(location, terrain);
 				subMap.setModified(true);
 			}
@@ -800,10 +807,10 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 			final Map<Direction, Integer> subRoads = subMap.getRoads(location);
 			if (!getMap().getRoads(location).isEmpty()) { // TODO: Just omit this check?
 				for (final Map.Entry<Direction, Integer> entry :
-					getMap().getRoads(location).entrySet()) {
+						getMap().getRoads(location).entrySet()) {
 					if (subRoads.getOrDefault(entry.getKey(), -1) < entry.getValue()) {
 						subMap.setRoadLevel(location, entry.getKey(),
-							entry.getValue());
+								entry.getValue());
 						subMap.setModified(true);
 					}
 				}
@@ -831,10 +838,11 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 	@Override
 	public void copyRiversToSubMaps(final Point location, final River... rivers) {
 		final Collection<River> actualRivers = EnumSet.copyOf(Stream.of(rivers)
-			.collect(Collectors.toList()));
+				.collect(Collectors.toList()));
 		actualRivers.retainAll(getMap().getRivers(location));
 		for (final IMutableLegacyMap subMap : getRestrictedSubordinateMaps()) {
-			subMap.addRivers(location, actualRivers.toArray(River[]::new)); // TODO: Make it return Boolean if this was a change, and only set modified flag in that case
+			// TODO: Make addRivers() return Boolean if this was a change, and only set modified flag in that case
+			subMap.addRivers(location, actualRivers.toArray(River[]::new));
 			subMap.setModified(true);
 		}
 	}
@@ -848,7 +856,8 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 	@Override
 	public void removeRiversFromSubMaps(final Point location, final River... rivers) {
 		for (final IMutableLegacyMap subMap : getRestrictedSubordinateMaps()) {
-			subMap.removeRivers(location, rivers); // TODO: Make it return Boolean if this was a change, and only set modified flag in that case
+			// TODO: Make removeRivers() return Boolean if this was a change, and only set modified flag in that case
+			subMap.removeRivers(location, rivers);
 			subMap.setModified(true);
 		}
 	}
@@ -862,7 +871,8 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 	@Override
 	public void removeFixtureFromSubMaps(final Point location, final TileFixture fixture) {
 		for (final IMutableLegacyMap subMap : getRestrictedSubordinateMaps()) {
-			subMap.removeFixture(location, fixture); // TODO: Make it return Boolean if this was a change, and only set modified flag in that case
+			// TODO: Make removeFixture() return Boolean if this was a change, and only set modified flag in that case
+			subMap.removeFixture(location, fixture);
 			subMap.setModified(true);
 		}
 	}
@@ -891,29 +901,30 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 		final Predicate<Object> isMutableUnit = IMutableUnit.class::isInstance;
 		final Function<Object, IMutableUnit> mutableUnitCast = IMutableUnit.class::cast;
 		final Predicate<IUnit> matchingOldUnit = u -> u.owner().equals(old.owner()) &&
-			u.getKind().equals(old.getKind()) &&
-			u.getName().equals(old.getName()) && u.getId() == old.getId();
+				u.getKind().equals(old.getKind()) &&
+				u.getName().equals(old.getName()) && u.getId() == old.getId();
 		final Predicate<IUnit> matchingNewUnit = u -> u.owner().equals(newOwner.owner()) &&
-			u.getKind().equals(newOwner.getKind()) &&
-			u.getName().equals(newOwner.getName()) &&
-			u.getId() == newOwner.getId();
+				u.getKind().equals(newOwner.getKind()) &&
+				u.getName().equals(newOwner.getName()) &&
+				u.getId() == newOwner.getId();
+		// TODO: equals() isn't ideal for finding a matching member ...
 		final Function<IUnit, Optional<UnitMember>> searchUnit =
-			u -> u.stream().filter(Predicate.isEqual(member)).findAny(); // TODO: equals() isn't ideal for finding a matching member ...
+				u -> u.stream().filter(Predicate.isEqual(member)).findAny();
 		for (final IMutableLegacyMap map : getRestrictedSubordinateMaps()) {
 			final Optional<IMutableUnit> matchingOld = map.streamAllFixtures()
-				.flatMap(ExplorationModel::unflattenNonFortresses)
-				.filter(isMutableUnit).map(mutableUnitCast)
-				.filter(matchingOldUnit)
-				.findAny();
+					.flatMap(ExplorationModel::unflattenNonFortresses)
+					.filter(isMutableUnit).map(mutableUnitCast)
+					.filter(matchingOldUnit)
+					.findAny();
 			final Optional<UnitMember> matchingMember =
-				matchingOld.flatMap(searchUnit);
+					matchingOld.flatMap(searchUnit);
 			final Optional<IMutableUnit> matchingNew = map.streamAllFixtures()
-				.flatMap(ExplorationModel::unflattenNonFortresses)
-				.filter(isMutableUnit).map(mutableUnitCast)
-				.filter(matchingNewUnit)
-				.findAny();
+					.flatMap(ExplorationModel::unflattenNonFortresses)
+					.filter(isMutableUnit).map(mutableUnitCast)
+					.filter(matchingNewUnit)
+					.findAny();
 			if (matchingOld.isPresent() && matchingMember.isPresent() &&
-				matchingNew.isPresent()) {
+					matchingNew.isPresent()) {
 				matchingOld.get().removeMember(matchingMember.get());
 				matchingNew.get().addMember(matchingMember.get());
 				map.setModified(true);
@@ -926,7 +937,7 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 			final Point location = pair.getValue0();
 			final IFixture fixture = pair.getValue1();
 			return fixture instanceof final IUnit matching && fixture.getId() == unit.getId() &&
-				matching.owner().equals(unit.owner());
+					matching.owner().equals(unit.owner());
 		};
 	}
 
@@ -946,24 +957,24 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 		final List<Pair<IMutableLegacyMap, Pair<Point, IUnit>>> delenda = new ArrayList<>();
 		for (final IMutableLegacyMap map : getRestrictedAllMaps()) {
 			final Optional<Pair<Point, TileFixture>> pair = map.streamLocations()
-				.flatMap(l -> map.getFixtures(l).stream().map(f -> Pair.with(l, f)))
-				.filter(unitMatching(unit)).findAny();
+					.flatMap(l -> map.getFixtures(l).stream().map(f -> Pair.with(l, f)))
+					.filter(unitMatching(unit)).findAny();
 			if (pair.isPresent()) {
 				LovelaceLogger.debug("Map has matching unit");
 				final IUnit fixture = (IUnit) pair.get().getValue1();
 				if (fixture.getKind().equals(unit.getKind()) &&
-					fixture.getName().equals(unit.getName()) &&
-					!fixture.iterator().hasNext()) {
+						fixture.getName().equals(unit.getName()) &&
+						!fixture.iterator().hasNext()) {
 					LovelaceLogger.debug("Matching unit meets preconditions");
 					delenda.add(Pair.with(map,
-						Pair.with(pair.get().getValue0(), fixture)));
+							Pair.with(pair.get().getValue0(), fixture)));
 				} else {
 					LovelaceLogger.warning(
-						"Matching unit in %s fails preconditions for removal",
-						Optional.ofNullable(map.getFilename())
-							.map(Object::toString)
-							.filter(f -> !f.isEmpty())
-							.orElse("an unsaved map"));
+							"Matching unit in %s fails preconditions for removal",
+							Optional.ofNullable(map.getFilename())
+									.map(Object::toString)
+									.filter(f -> !f.isEmpty())
+									.orElse("an unsaved map"));
 					return false;
 				}
 			}
@@ -981,8 +992,8 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 			} else {
 				boolean any = false;
 				for (final IMutableFortress fort : map.getFixtures(location).stream()
-					.filter(IMutableFortress.class::isInstance)
-					.map(IMutableFortress.class::cast).toList()) {
+						.filter(IMutableFortress.class::isInstance)
+						.map(IMutableFortress.class::cast).toList()) {
 					if (fort.stream().anyMatch(fixture::equals)) {
 						fort.removeMember((FortressMember) fixture);
 						any = true;
@@ -1003,16 +1014,16 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 		final Predicate<Object> isMutableUnit = IMutableUnit.class::isInstance;
 		final Function<Object, IMutableUnit> mutableUnitCast = IMutableUnit.class::cast;
 		final Predicate<IMutableUnit> isMatchingUnit = u -> u.owner().equals(unit.owner()) &&
-			u.getName().equals(unit.getName()) &&
-			u.getKind().equals(unit.getKind()) &&
-			u.getId() == unit.getId();
+				u.getName().equals(unit.getName()) &&
+				u.getKind().equals(unit.getKind()) &&
+				u.getId() == unit.getId();
 		for (final IMutableLegacyMap map : getRestrictedAllMaps()) {
 			final Optional<IMutableUnit> matching = map.streamAllFixtures()
-				.flatMap(ExplorationModel::unflattenNonFortresses)
-				.filter(isMutableUnit)
-				.map(mutableUnitCast)
-				.filter(isMatchingUnit)
-				.findAny();
+					.flatMap(ExplorationModel::unflattenNonFortresses)
+					.filter(isMutableUnit)
+					.map(mutableUnitCast)
+					.filter(isMatchingUnit)
+					.findAny();
 			if (matching.isPresent()) {
 				matching.get().addMember(member.copy(IFixture.CopyBehavior.KEEP));
 				map.setModified(true);
@@ -1022,7 +1033,8 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 	}
 
 	boolean matchingPlayer(final HasOwner fixture) {
-		final Pair<Point, @Nullable IUnit> selection = this.selection; // TODO: Ceylon used "value", so may have been wrong here
+		// TODO: Ceylon used "value", so may have been wrong here
+		final Pair<Point, @Nullable IUnit> selection = this.selection;
 		final IUnit unit = selection.getValue1();
 		final Player currentPlayer = Optional.ofNullable(unit).map(IUnit::owner).orElse(null);
 		if (Objects.isNull(currentPlayer)) {
@@ -1046,15 +1058,15 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 			final Predicate<IUnit> matchingId = u -> u.getId() == unit.getId();
 			for (final IMutableLegacyMap map : getRestrictedAllMaps()) {
 				final Optional<HasMutableName> matching = map.streamAllFixtures()
-					.flatMap(ExplorationModel::unflattenNonFortresses)
-					.filter(isUnit)
-					.filter(hasMutableName)
-					.map(unitCast)
-					.filter(matchingOwner)
-					.filter(matchingName)
-					.filter(matchingKind)
-					.filter(matchingId)
-					.map(hmnCast).findAny();
+						.flatMap(ExplorationModel::unflattenNonFortresses)
+						.filter(isUnit)
+						.filter(hasMutableName)
+						.map(unitCast)
+						.filter(matchingOwner)
+						.filter(matchingName)
+						.filter(matchingKind)
+						.filter(matchingId)
+						.map(hmnCast).findAny();
 				if (matching.isPresent()) {
 					any = true;
 					matching.get().setName(newName);
@@ -1070,14 +1082,14 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 			final Predicate<IFixture> matchingId = u -> u.getId() == member.getId();
 			for (final IMutableLegacyMap map : getRestrictedAllMaps()) {
 				final Optional<HasMutableName> matching = map.streamAllFixtures()
-					.flatMap(ExplorationModel::unflattenNonFortresses)
-					.filter(isUnit).map(unitCast)
-					.filter(this::matchingPlayer).flatMap(FixtureIterable::stream)
-					.filter(matchingId)
-					.filter(hasMutableName)
-					.map(hmnCast)
-					.filter(matchingName)
-					.findAny();
+						.flatMap(ExplorationModel::unflattenNonFortresses)
+						.filter(isUnit).map(unitCast)
+						.filter(this::matchingPlayer).flatMap(FixtureIterable::stream)
+						.filter(matchingId)
+						.filter(hasMutableName)
+						.map(hmnCast)
+						.filter(matchingName)
+						.findAny();
 				if (matching.isPresent()) {
 					any = true;
 					matching.get().setName(newName);
@@ -1108,13 +1120,13 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 			final Predicate<IUnit> matchingId = u -> u.getId() == unit.getId();
 			for (final IMutableLegacyMap map : getRestrictedAllMaps()) {
 				final Optional<HasMutableKind> matching = map.streamAllFixtures()
-					.flatMap(ExplorationModel::unflattenNonFortresses)
-					.filter(isUnit).map(unitCast)
-					.filter(matchingOwner)
-					.filter(matchingName)
-					.filter(matchingKind)
-					.filter(matchingId)
-					.map(hmkCast).findAny();
+						.flatMap(ExplorationModel::unflattenNonFortresses)
+						.filter(isUnit).map(unitCast)
+						.filter(matchingOwner)
+						.filter(matchingName)
+						.filter(matchingKind)
+						.filter(matchingId)
+						.map(hmkCast).findAny();
 				if (matching.isPresent()) {
 					any = true;
 					matching.get().setKind(newKind);
@@ -1130,15 +1142,15 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 			final Predicate<HasMutableKind> matchingId = m -> ((IFixture) m).getId() == member.getId();
 			for (final IMutableLegacyMap map : getRestrictedAllMaps()) {
 				final Optional<HasMutableKind> matching = map.streamAllFixtures()
-					.flatMap(ExplorationModel::unflattenNonFortresses)
-					.filter(isUnit).map(unitCast)
-					.filter(this::matchingPlayer)
-					.flatMap(FixtureIterable::stream)
-					.filter(hasMutableKind)
-					.map(hmkCast)
-					.filter(matchingKind)
-					.filter(matchingId) // TODO: move above cast so we can drop cast in lambda
-					.findAny();
+						.flatMap(ExplorationModel::unflattenNonFortresses)
+						.filter(isUnit).map(unitCast)
+						.filter(this::matchingPlayer)
+						.flatMap(FixtureIterable::stream)
+						.filter(hasMutableKind)
+						.map(hmkCast)
+						.filter(matchingKind)
+						.filter(matchingId) // TODO: move above cast so we can drop cast in lambda
+						.findAny();
 				if (matching.isPresent()) {
 					any = true;
 					matching.get().setKind(newKind);
@@ -1160,10 +1172,10 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 	public void dismissUnitMember(final UnitMember member) {
 		for (final IMutableLegacyMap map : getRestrictedAllMaps()) {
 			for (final IMutableUnit unit : map.streamAllFixtures()
-				.flatMap(ExplorationModel::unflattenNonFortresses)
-				.filter(IMutableUnit.class::isInstance)
-				.map(IMutableUnit.class::cast)
-				.filter(this::matchingPlayer).toList()) {
+					.flatMap(ExplorationModel::unflattenNonFortresses)
+					.filter(IMutableUnit.class::isInstance)
+					.map(IMutableUnit.class::cast)
+					.filter(this::matchingPlayer).toList()) {
 				final Optional<UnitMember> matching = unit.stream().filter(Predicate.isEqual(member)).findAny();
 				if (matching.isPresent()) { // FIXME: equals() will really not do here ...
 					unit.removeMember(matching.get());
@@ -1185,10 +1197,10 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 		boolean any = false;
 		for (final IMutableLegacyMap map : getRestrictedAllMaps()) {
 			for (final IMutableUnit unit : map.streamAllFixtures()
-				.flatMap(ExplorationModel::unflattenNonFortresses)
-				.filter(IMutableUnit.class::isInstance)
-				.map(IMutableUnit.class::cast)
-				.filter(this::matchingPlayer).toList()) {
+					.flatMap(ExplorationModel::unflattenNonFortresses)
+					.filter(IMutableUnit.class::isInstance)
+					.map(IMutableUnit.class::cast)
+					.filter(this::matchingPlayer).toList()) {
 				if (unit.stream().anyMatch(Predicate.isEqual(existing))) { // TODO: look beyond equals() for matching-in-existing?
 					unit.addMember(sibling.copy(IFixture.CopyBehavior.KEEP));
 					any = true;
@@ -1211,13 +1223,14 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 		final Function<Object, HasMutableOwner> hmoCast = HasMutableOwner.class::cast;
 		for (final IMutableLegacyMap map : getRestrictedAllMaps()) {
 			final Optional<HasMutableOwner> matching = map.streamAllFixtures()
-				.flatMap(ExplorationModel::flattenIncluding).flatMap(ExplorationModel::flattenIncluding)
-				.filter(isOwned)
-				.map(hmoCast)
-				.filter(Predicate.isEqual(item)) // TODO: equals() is not the best way to find it ...
-				.findAny();
+					.flatMap(ExplorationModel::flattenIncluding).flatMap(ExplorationModel::flattenIncluding)
+					.filter(isOwned)
+					.map(hmoCast)
+					.filter(Predicate.isEqual(item)) // TODO: equals() is not the best way to find it ...
+					.findAny();
 			if (matching.isPresent()) {
-				if (StreamSupport.stream(map.getPlayers().spliterator(), true).noneMatch(Predicate.isEqual(newOwner))) { // FIXME: Add contains() method to IPlayerCollection and use that instead
+				// FIXME: Add contains() method to IPlayerCollection and use that instead
+				if (StreamSupport.stream(map.getPlayers().spliterator(), true).noneMatch(Predicate.isEqual(newOwner))) {
 					map.addPlayer(newOwner);
 				}
 				matching.get().setOwner(map.getPlayers().getPlayer(newOwner.getPlayerId()));
@@ -1238,14 +1251,14 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 		final Predicate<IMutableUnit> matchingId = u -> u.getId() == fixture.getId();
 		for (final IMutableLegacyMap map : getRestrictedAllMaps()) {
 			final Optional<IMutableUnit> matching = map.streamAllFixtures()
-				.flatMap(ExplorationModel::unflattenNonFortresses)
-				.filter(isUnit)
-				.map(unitCast)
-				.filter(this::matchingPlayer)
-				.filter(matchingName)
-				.filter(matchingKind)
-				.filter(matchingId)
-				.findAny();
+					.flatMap(ExplorationModel::unflattenNonFortresses)
+					.filter(isUnit)
+					.map(unitCast)
+					.filter(this::matchingPlayer)
+					.filter(matchingName)
+					.filter(matchingKind)
+					.filter(matchingId)
+					.findAny();
 			if (matching.isPresent()) {
 				matching.get().sortMembers();
 				map.setModified(true);
@@ -1263,8 +1276,8 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 		final Predicate<IFortress> matchingPlayer = f -> f.owner().equals(unit.owner());
 		for (final Point location : getMap().getLocations()) {
 			final Optional<IFortress> fortress = getMap().getFixtures(location).stream()
-				.filter(isFortress).map(fortressCast)
-				.filter(matchingPlayer).findAny();
+					.filter(isFortress).map(fortressCast)
+					.filter(matchingPlayer).findAny();
 			if (fortress.isPresent()) {
 				if ("HQ".equals(fortress.get().getName())) {
 					hqLoc = location;

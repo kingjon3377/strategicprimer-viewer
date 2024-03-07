@@ -9,39 +9,39 @@ import org.jetbrains.annotations.Nullable;
  * TODO: Split mutability into separate interface (or just move down to impl?)
  */
 public interface Player extends Comparable<Player>, HasName, HasMutablePortrait {
-    /**
-     * The player's ID number.
-     */
-    int getPlayerId();
+	/**
+	 * The player's ID number.
+	 */
+	int getPlayerId();
 
-    /**
-     * Whether this is the current player.
-     */
-    boolean isCurrent();
+	/**
+	 * Whether this is the current player.
+	 */
+	boolean isCurrent();
 
-    /**
-     * Whether this is the (or an) "independent" player---the "owner" of
-     * unowned fixtures.
-     */
-    default boolean isIndependent() {
-        return "independent".equalsIgnoreCase(getName());
-    }
+	/**
+	 * Whether this is the (or an) "independent" player---the "owner" of
+	 * unowned fixtures.
+	 */
+	default boolean isIndependent() {
+		return "independent".equalsIgnoreCase(getName());
+	}
 
-    /**
-     * The filename of a flag for the player.
-     */
-    @Override
-    String getPortrait();
+	/**
+	 * The filename of a flag for the player.
+	 */
+	@Override
+	String getPortrait();
 
-    /**
-     * @param portrait The filename of a flag for the player.
-     */
-    @Override
-    void setPortrait(String portrait);
+	/**
+	 * @param portrait The filename of a flag for the player.
+	 */
+	@Override
+	void setPortrait(String portrait);
 
-    /**
-     * The country the player is associated with. TODO: Should this be required to be unique in a map?
-     */
-    @Nullable
-    String getCountry();
+	/**
+	 * The country the player is associated with. TODO: Should this be required to be unique in a map?
+	 */
+	@Nullable
+	String getCountry();
 }

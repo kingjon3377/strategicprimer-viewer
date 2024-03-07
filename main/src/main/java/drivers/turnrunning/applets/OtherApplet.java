@@ -2,6 +2,7 @@ package drivers.turnrunning.applets;
 
 import java.util.Collections;
 import java.util.List;
+
 import org.jetbrains.annotations.Nullable;
 
 /* package */ class OtherApplet implements TurnApplet {

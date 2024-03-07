@@ -1,6 +1,7 @@
 package lovelace.util;
 
 import java.io.PrintStream;
+
 import org.jetbrains.annotations.NotNull;
 
 // FIXME: Include source class in log messages (or is this valuable?)
@@ -8,10 +9,13 @@ public final class LovelaceLogger {
 	private LovelaceLogger() {
 		// Do not instantiate.
 	}
+
 	private static PrintStream writer = System.out;
+
 	public static void setWriter(final @NotNull PrintStream newWriter) {
 		writer = newWriter;
 	}
+
 	public enum Level {
 		TRACE,
 		DEBUG,
@@ -19,10 +23,13 @@ public final class LovelaceLogger {
 		WARNING,
 		ERROR
 	}
+
 	private static Level level = Level.INFO;
+
 	public static void setLevel(final @NotNull Level newLevel) {
 		level = newLevel;
 	}
+
 	// TODO: We'd like some sort of "tagging" mechanism ("we want messages about X but not Y"), separate from priority
 	private static void log(final @NotNull Level messageLevel, final @NotNull String format, final Object... args) {
 		if (messageLevel.compareTo(level) >= 0) {
@@ -35,7 +42,7 @@ public final class LovelaceLogger {
 
 	// TODO: We'd like a way of saying "log this, but *don't* show the stack trace", while still passing in the exception
 	private static void log(final @NotNull Throwable exception, final @NotNull Level messageLevel,
-			final @NotNull String format, final Object... args) {
+							final @NotNull String format, final Object... args) {
 		if (messageLevel.compareTo(level) >= 0) {
 			writer.print(messageLevel);
 			writer.print(": ");

@@ -38,7 +38,7 @@ public final class SetCurrentPlayerChangeset implements Changeset {
 					matchingOld = player;
 				} else {
 					throw new PreconditionFailureException(
-						"Can't change current player when 'old current' player isn't current");
+							"Can't change current player when 'old current' player isn't current");
 				}
 			} else if (player.current() && player.playerId() != oldCurrent.playerId()) {
 				throw new PreconditionFailureException("Can't change current player when unexpected player is current");

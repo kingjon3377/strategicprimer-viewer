@@ -62,27 +62,27 @@ abstract class YAAbstractReader<Item, Value> implements YAReader<Item, Value> {
 	 * Patterns to match XML metacharacters, and their quoted forms.
 	 */
 	protected static final List<Pair<Pattern, String>> QUOTING =
-		List.of(Pair.with(Pattern.compile("&"), "&amp;"), Pair.with(Pattern.compile("<"), "&lt;"), Pair.with(Pattern.compile(">"), "&gt;"));
+			List.of(Pair.with(Pattern.compile("&"), "&amp;"), Pair.with(Pattern.compile("<"), "&lt;"), Pair.with(Pattern.compile(">"), "&gt;"));
 
 	protected static final Pair<Pattern, String> QUOTE_DOUBLE_QUOTE =
-		Pair.with(Pattern.compile("\""), "&quot;");
+			Pair.with(Pattern.compile("\""), "&quot;");
 
 	protected static final Pair<Pattern, String> QUOTE_SINGLE_QUOTE =
-		Pair.with(Pattern.compile("'"), "&apos;");
+			Pair.with(Pattern.compile("'"), "&apos;");
 
 	/**
 	 * Whether the given tag is in a namespace we support.
 	 */
 	protected static boolean isSupportedNamespace(final QName tag) {
 		return SP_NAMESPACE.equals(tag.getNamespaceURI()) ||
-			XMLConstants.NULL_NS_URI.equals(tag.getNamespaceURI());
+				XMLConstants.NULL_NS_URI.equals(tag.getNamespaceURI());
 	}
 
 	/**
 	 * Require that an element be one of the specified tags.
 	 */
 	protected static void requireTag(final StartElement element, final QName parent, final String... tags)
-		throws SPFormatException {
+			throws SPFormatException {
 		if (!isSupportedNamespace(element.getName())) {
 			throw UnwantedChildException.unexpectedNamespace(parent, element);
 		}
@@ -98,7 +98,7 @@ abstract class YAAbstractReader<Item, Value> implements YAReader<Item, Value> {
 	 * Require that an element be one of the specified tags.
 	 */
 	protected static void requireTag(final StartElement element, final QName parent, final Collection<String> tags)
-		throws SPFormatException {
+			throws SPFormatException {
 		if (!isSupportedNamespace(element.getName())) {
 			throw UnwantedChildException.unexpectedNamespace(parent, element);
 		}
@@ -193,20 +193,20 @@ abstract class YAAbstractReader<Item, Value> implements YAReader<Item, Value> {
 	 * Replace XML meta-characters in a string with their equivalents.
 	 *
 	 * @param delimiter The character that will mark the end of the string
-	 * as far as XML is concerned.  If a single or double quote, that
-	 * character will be encoded every time it occurs in the string; if a
-	 * greater-than sign or an equal sign, both types of quotes will be; if
-	 * a less-than sign, neither will be.
+	 *                  as far as XML is concerned.  If a single or double quote, that
+	 *                  character will be encoded every time it occurs in the string; if a
+	 *                  greater-than sign or an equal sign, both types of quotes will be; if
+	 *                  a less-than sign, neither will be.
 	 */
 	protected static String simpleQuote(final String text, final char delimiter) {
 		String retval = simpleQuote(text);
 		if (delimiter == '"' || delimiter == '>' || delimiter == '=') {
 			retval = QUOTE_DOUBLE_QUOTE.getValue0().matcher(retval)
-				.replaceAll(QUOTE_DOUBLE_QUOTE.getValue1());
+					.replaceAll(QUOTE_DOUBLE_QUOTE.getValue1());
 		}
 		if (delimiter == '\'' || delimiter == '>' || delimiter == '=') {
 			retval = QUOTE_SINGLE_QUOTE.getValue0().matcher(retval)
-				.replaceAll(QUOTE_SINGLE_QUOTE.getValue1());
+					.replaceAll(QUOTE_SINGLE_QUOTE.getValue1());
 		}
 		return retval;
 	}
@@ -215,7 +215,7 @@ abstract class YAAbstractReader<Item, Value> implements YAReader<Item, Value> {
 	 * Write a property to XML.
 	 */
 	protected static void writeProperty(final ThrowingConsumer<String, IOException> ostream, final String name, final String val)
-		throws IOException {
+			throws IOException {
 		ostream.accept(String.format(" %s=\"%s\"", simpleQuote(name, '='), simpleQuote(val, '"')));
 	}
 
@@ -223,7 +223,7 @@ abstract class YAAbstractReader<Item, Value> implements YAReader<Item, Value> {
 	 * Write a property to XML.
 	 */
 	protected static void writeProperty(final ThrowingConsumer<String, IOException> ostream, final String name, final int val)
-		throws IOException {
+			throws IOException {
 		writeProperty(ostream, name, Integer.toString(val));
 	}
 
@@ -231,7 +231,7 @@ abstract class YAAbstractReader<Item, Value> implements YAReader<Item, Value> {
 	 * Write a property to XML only if its value is nonempty.
 	 */
 	protected static void writeNonemptyProperty(final ThrowingConsumer<String, IOException> ostream, final String name, final String val)
-		throws IOException {
+			throws IOException {
 		if (!val.isEmpty()) {
 			writeProperty(ostream, name, val);
 		}
@@ -242,7 +242,7 @@ abstract class YAAbstractReader<Item, Value> implements YAReader<Item, Value> {
 	 * and differs from the default.
 	 */
 	protected static void writeImageXML(final ThrowingConsumer<String, IOException> ostream, final HasImage obj)
-		throws IOException {
+			throws IOException {
 		final String image = obj.getImage();
 		if (!image.equals(obj.getDefaultImage())) {
 			writeNonemptyProperty(ostream, "image", image);
@@ -257,8 +257,8 @@ abstract class YAAbstractReader<Item, Value> implements YAReader<Item, Value> {
 	 * us throw a more meaningful exception, so we can get rid of
 	 * SPMalformedInputException
 	 *
-	 * @throws ParseException on non-numeric input
 	 * @param location The current location in the document
+	 * @throws ParseException on non-numeric input
 	 */
 	protected static int parseInt(final String string, final Location location) throws ParseException {
 		return NUM_PARSER.parse(string).intValue();
@@ -268,7 +268,7 @@ abstract class YAAbstractReader<Item, Value> implements YAReader<Item, Value> {
 	 * Read a parameter from XML whose value must be an integer.
 	 */
 	protected static int getIntegerParameter(final StartElement element, final String parameter)
-		throws SPFormatException {
+			throws SPFormatException {
 		final Attribute attr = getAttributeByName(element, parameter);
 		if (!Objects.isNull(attr)) {
 			final String retval = attr.getValue();
@@ -287,7 +287,7 @@ abstract class YAAbstractReader<Item, Value> implements YAReader<Item, Value> {
 	 * Read a parameter from XML whose value must be an integer.
 	 */
 	protected static int getIntegerParameter(final StartElement element, final String parameter, final int defaultValue)
-		throws SPFormatException {
+			throws SPFormatException {
 		final Attribute attr = getAttributeByName(element, parameter);
 		if (!Objects.isNull(attr)) {
 			final String retval = attr.getValue();
@@ -306,7 +306,7 @@ abstract class YAAbstractReader<Item, Value> implements YAReader<Item, Value> {
 	 * Read a parameter from XML whose value can be an Integer or a Decimal.
 	 */
 	protected static Number getNumericParameter(final StartElement element, final String parameter)
-		throws SPFormatException {
+			throws SPFormatException {
 		if (hasParameter(element, parameter)) {
 			final String paramString = getParameter(element, parameter);
 			if (paramString.contains(".")) {
@@ -331,7 +331,7 @@ abstract class YAAbstractReader<Item, Value> implements YAReader<Item, Value> {
 	 * Read a parameter from XML whose value can be an Integer or a Decimal.
 	 */
 	protected static Number getNumericParameter(final StartElement element, final String parameter,
-	                                            final Number defaultValue) throws SPFormatException {
+												final Number defaultValue) throws SPFormatException {
 		if (hasParameter(element, parameter)) {
 			final String paramString = getParameter(element, parameter);
 			if (paramString.contains(".")) {
@@ -358,7 +358,7 @@ abstract class YAAbstractReader<Item, Value> implements YAReader<Item, Value> {
 	 * namespace declaration as well.
 	 */
 	protected static void writeTag(final ThrowingConsumer<String, IOException> ostream, final String tag, final int tabs)
-		throws IOException {
+			throws IOException {
 		indent(ostream, tabs);
 		ostream.accept(String.format("<%s", simpleQuote(tag, '>')));
 		if (tabs == 0) {
@@ -384,7 +384,7 @@ abstract class YAAbstractReader<Item, Value> implements YAReader<Item, Value> {
 	 * Write a closing tag to the stream, optionally indented, and followed by a newline.
 	 */
 	protected static void closeTag(final ThrowingConsumer<String, IOException> ostream, final int tabs, final String tag)
-		throws IOException {
+			throws IOException {
 		if (tabs > 0) {
 			indent(ostream, tabs);
 		}
@@ -396,7 +396,7 @@ abstract class YAAbstractReader<Item, Value> implements YAReader<Item, Value> {
 	 */
 	protected static Point parsePoint(final StartElement element) throws SPFormatException {
 		return new Point(getIntegerParameter(element, "row"),
-			getIntegerParameter(element, "column"));
+				getIntegerParameter(element, "column"));
 	}
 
 	/**
@@ -425,7 +425,7 @@ abstract class YAAbstractReader<Item, Value> implements YAReader<Item, Value> {
 	 * name, but object to any start elements.
 	 */
 	protected void spinUntilEnd(final QName tag, final Iterable<XMLEvent> reader, final String... futureTags)
-		throws SPFormatException {
+			throws SPFormatException {
 		for (final XMLEvent event : reader) {
 			if (event instanceof final StartElement se && isSupportedNamespace(se.getName())) {
 				if (FUTURE_TAGS.stream().anyMatch(se.getName().getLocalPart()::equalsIgnoreCase)) {
@@ -447,7 +447,7 @@ abstract class YAAbstractReader<Item, Value> implements YAReader<Item, Value> {
 	 * input, just returns false for everything but "true".
 	 */
 	protected static boolean getBooleanParameter(final StartElement element, final String parameter)
-		throws SPFormatException {
+			throws SPFormatException {
 		final Attribute attr = getAttributeByName(element, parameter);
 		if (!Objects.isNull(attr)) {
 			final String val = attr.getValue();
@@ -457,7 +457,7 @@ abstract class YAAbstractReader<Item, Value> implements YAReader<Item, Value> {
 				return false;
 			} else {
 				throw new MissingPropertyException(element, parameter,
-					new IllegalArgumentException("Boolean can only be true or false"));
+						new IllegalArgumentException("Boolean can only be true or false"));
 			}
 		}
 		throw new MissingPropertyException(element, parameter);
@@ -467,7 +467,7 @@ abstract class YAAbstractReader<Item, Value> implements YAReader<Item, Value> {
 	 * Read a parameter from XML whose value must be a boolean.
 	 */
 	protected boolean getBooleanParameter(final StartElement element, final String parameter, final boolean defaultValue)
-		throws SPFormatException {
+			throws SPFormatException {
 		final Attribute attr = getAttributeByName(element, parameter);
 		if (!Objects.isNull(attr)) {
 			final String val = attr.getValue();
@@ -478,8 +478,8 @@ abstract class YAAbstractReader<Item, Value> implements YAReader<Item, Value> {
 					return false;
 				} else {
 					warner.handle(new MissingPropertyException(element, parameter,
-						new IllegalArgumentException(
-							"Boolean can only be true or false")));
+							new IllegalArgumentException(
+									"Boolean can only be true or false")));
 				}
 			}
 		}
@@ -492,7 +492,7 @@ abstract class YAAbstractReader<Item, Value> implements YAReader<Item, Value> {
 	 * TODO: Try to avoid Boolean parameters
 	 */
 	protected void requireNonEmptyParameter(final StartElement element, final String parameter,
-	                                        final boolean mandatory) throws SPFormatException {
+											final boolean mandatory) throws SPFormatException {
 		if (getParameter(element, parameter, "").isEmpty()) {
 			final SPFormatException except = new MissingPropertyException(element, parameter);
 			if (mandatory) {
@@ -529,7 +529,7 @@ abstract class YAAbstractReader<Item, Value> implements YAReader<Item, Value> {
 	 * or in a deprecated form, in which case fire a warning.
 	 */
 	protected String getParamWithDeprecatedForm(final StartElement element, final String preferred,
-	                                            final String deprecated) throws SPFormatException {
+												final String deprecated) throws SPFormatException {
 		final Attribute preferredProperty = getAttributeByName(element, preferred);
 		if (!Objects.isNull(preferredProperty)) {
 			final String retval = preferredProperty.getValue();
@@ -542,7 +542,7 @@ abstract class YAAbstractReader<Item, Value> implements YAReader<Item, Value> {
 			final String retval = deprecatedProperty.getValue();
 			if (!Objects.isNull(retval)) {
 				warner.handle(new DeprecatedPropertyException(element, deprecated,
-					preferred));
+						preferred));
 				return retval;
 			}
 		}
@@ -554,12 +554,12 @@ abstract class YAAbstractReader<Item, Value> implements YAReader<Item, Value> {
 	 */
 	protected void expectAttributes(final StartElement element, final String... attributes) {
 		final Set<String> local = Stream.of(attributes).map(String::toLowerCase)
-			.collect(Collectors.toSet());
+				.collect(Collectors.toSet());
 		for (final String attribute : StreamSupport.stream(
-				new IteratorWrapper<>(
-					element.getAttributes()).spliterator(), true)
-			.map(Attribute::getName).filter(YAAbstractReader::isSupportedNamespace)
-			.map(QName::getLocalPart).map(String::toLowerCase).toList()) {
+						new IteratorWrapper<>(
+								element.getAttributes()).spliterator(), true)
+				.map(Attribute::getName).filter(YAAbstractReader::isSupportedNamespace)
+				.map(QName::getLocalPart).map(String::toLowerCase).toList()) {
 			if (!local.contains(attribute)) {
 				warner.handle(new UnsupportedPropertyException(element, attribute));
 			}

@@ -30,15 +30,15 @@ public interface MapContentsReader {
 	/**
 	 * Read map contents---that is, anything directly at a location on the map.
 	 *
-	 * @param db The database to read from.
-	 * @param map The map we're reading
+	 * @param db         The database to read from.
+	 * @param map        The map we're reading
 	 * @param containers A map by ID of fixtures that can contain others, to connect later.
 	 * @param containees A multimap (TODO: use one) by container ID of fixtures that are contained in other fixtures,
-	 *                      to be added to their containers later.
-	 * @param warner Warning instance to use
+	 *                   to be added to their containers later.
+	 * @param warner     Warning instance to use
 	 */
 	void readMapContents(Connection db, IMutableLegacyMap map, Map<Integer, IFixture> containers,
-	                     Map<Integer, List<Object>> containees, Warning warner) throws SQLException;
+						 Map<Integer, List<Object>> containees, Warning warner) throws SQLException;
 
 	private static Map<String, Object> parseToMap(final Row rs, final Connection conn) throws SQLException {
 		final ResultSetMetaData rsm = rs.getMetaData();
@@ -55,11 +55,12 @@ public interface MapContentsReader {
 	 * FIXME: Provide a version taking a RowParser, for the more common case of 1:1 object-to-row mapping
 	 */
 	default void handleQueryResults(final Connection db, final Warning warner, final String description,
-	                                final TryBiConsumer<Map<String, Object>, Warning, SQLException> handler, final Query query,
-	                                final Object... args) throws SQLException {
+									final TryBiConsumer<Map<String, Object>, Warning, SQLException> handler,
+									final Query query, final Object... args) throws SQLException {
 		LovelaceLogger.debug("About to read %s", description);
 		final Accumulator<Integer> count = new IntAccumulator(0);
-		try (final Stream<Map<String, Object>> stream = query.as(((RowParser<Map<String, Object>>) MapContentsReader::parseToMap).stream(), db)) {
+		try (final Stream<Map<String, Object>> stream = query
+				.as(((RowParser<Map<String, Object>>) MapContentsReader::parseToMap).stream(), db)) {
 			stream.forEach(handler.andThen((m, w) -> {
 				count.add(1);
 				if (count.getSum() % 50 == 0) {
@@ -104,9 +105,9 @@ public interface MapContentsReader {
 				return true;
 			}
 			case final Integer i -> throw new SQLException("Invalid Boolean value",
-				new IllegalArgumentException("Outside range of Boolean"));
+					new IllegalArgumentException("Outside range of Boolean"));
 			default -> throw new SQLException("Invalid Boolean value",
-				new IllegalArgumentException("Field maps to non-Boolean value"));
+					new IllegalArgumentException("Field maps to non-Boolean value"));
 		}
 	}
 }

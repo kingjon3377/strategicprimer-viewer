@@ -26,7 +26,8 @@ public interface IFixtureEditingModel extends IDriverModel {
 
 	/**
 	 * Add a new member to a unit.
-	 * @param unit The unit that should own the member
+	 *
+	 * @param unit   The unit that should own the member
 	 * @param member The member to add to the unit
 	 */
 	void addUnitMember(IUnit unit, UnitMember member);
@@ -54,7 +55,7 @@ public interface IFixtureEditingModel extends IDriverModel {
 	 * existing sibling, to which the new member was added, false
 	 * otherwise.
 	 *
-	 * @param base The member that is already in the tree
+	 * @param base    The member that is already in the tree
 	 * @param sibling The member to add as its sibling
 	 */
 	boolean addSibling(UnitMember base, UnitMember sibling);
@@ -67,6 +68,7 @@ public interface IFixtureEditingModel extends IDriverModel {
 
 	/**
 	 * Add a unit in its owner's HQ.
+	 *
 	 * @param unit The unit to add
 	 */
 	void addUnit(IUnit unit);

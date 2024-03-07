@@ -7,11 +7,11 @@ package legacy.map;
  * serialized to disk.
  */
 public interface HasNotes extends IFixture {
-    String getNote(Player player);
+	String getNote(Player player);
 
-    String getNote(int player);
+	String getNote(int player);
 
-    void setNote(Player player, String note);
+	void setNote(Player player, String note);
 
-    Iterable<Integer> getNotesPlayers();
+	Iterable<Integer> getNotesPlayers();
 }

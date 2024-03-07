@@ -5,8 +5,10 @@ import drivers.common.cli.ICLIHelper;
 import legacy.idreg.IDRegistrar;
 
 import drivers.turnrunning.ITurnRunningModel;
+
 import java.util.Collections;
 import java.util.List;
+
 import org.jetbrains.annotations.Nullable;
 
 /* package */ class FishingApplet extends HuntGeneralApplet {

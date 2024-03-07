@@ -17,18 +17,18 @@ import com.google.auto.service.AutoService;
  */
 @AutoService(DriverFactory.class)
 public class EchoDriverFactory implements UtilityDriverFactory {
-    public static final IDriverUsage USAGE = new DriverUsage(false, "echo", ParamCount.Two,
-            "Read, then write a map.", "Read and write a map, correcting deprecated syntax.",
-            true, false, "input.xml", "output.xml", "--current-turn=NN");
+	public static final IDriverUsage USAGE = new DriverUsage(false, "echo", ParamCount.Two,
+			"Read, then write a map.", "Read and write a map, correcting deprecated syntax.",
+			true, false, "input.xml", "output.xml", "--current-turn=NN");
 
-    @Override
-    public IDriverUsage getUsage() {
-        return USAGE;
-    }
+	@Override
+	public IDriverUsage getUsage() {
+		return USAGE;
+	}
 
-    @Override
-    public UtilityDriver createDriver(final ICLIHelper cli, final SPOptions options) {
-        return new EchoDriver(options);
-    }
+	@Override
+	public UtilityDriver createDriver(final ICLIHelper cli, final SPOptions options) {
+		return new EchoDriver(options);
+	}
 }
 

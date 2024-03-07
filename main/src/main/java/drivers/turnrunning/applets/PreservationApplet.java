@@ -7,6 +7,7 @@ import legacy.map.fixtures.mobile.IUnit;
 import legacy.map.fixtures.towns.IFortress;
 import drivers.common.cli.ICLIHelper;
 import drivers.turnrunning.ITurnRunningModel;
+
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -46,7 +47,7 @@ import static lovelace.util.Decimalize.decimalize;
 			return String.format("%s of %s", pile.getQuantity(), pile.getContents());
 		} else {
 			return String.format("%s of %s (turn #%d)", pile.getQuantity(), pile.getContents(),
-				pile.getCreated());
+					pile.getCreated());
 		}
 	}
 
@@ -62,14 +63,14 @@ import static lovelace.util.Decimalize.decimalize;
 		while (true) {
 			// TODO: should verb be "preserve" or "cook" instead of "convert"?
 			final IResourcePile item = chooseFromList(getFoodFor(unit.owner(),
-				model.getMap().getCurrentTurn()), "Available food:", "No food available",
-				"Choose food to convert:", ICLIHelper.ListChoiceBehavior.ALWAYS_PROMPT, PreservationApplet::describePile);
+							model.getMap().getCurrentTurn()), "Available food:", "No food available",
+					"Choose food to convert:", ICLIHelper.ListChoiceBehavior.ALWAYS_PROMPT, PreservationApplet::describePile);
 			if (Objects.isNull(item)) {
 				break;
 			}
 			final String convertedForm;
 			final String tempOne = chooseFromList(foods, "Preserved food types:", "",
-				"Type that converts into:", ICLIHelper.ListChoiceBehavior.ALWAYS_PROMPT);
+					"Type that converts into:", ICLIHelper.ListChoiceBehavior.ALWAYS_PROMPT);
 			if (Objects.isNull(tempOne)) {
 				final String tempTwo = cli.inputString("Type of food that converts into:");
 				if (Objects.isNull(tempTwo) || tempTwo.isEmpty()) {
@@ -88,7 +89,7 @@ import static lovelace.util.Decimalize.decimalize;
 			}
 			turn = tempThree;
 			final BigDecimal newPounds =
-				cli.inputDecimal("How many pounds of that are produced from this source?");
+					cli.inputDecimal("How many pounds of that are produced from this source?");
 			if (Objects.isNull(newPounds) || newPounds.signum() <= 0) {
 				return null;
 			}
@@ -100,7 +101,7 @@ import static lovelace.util.Decimalize.decimalize;
 				subtrahend = decimalize(item.getQuantity().number());
 			} else {
 				subtrahend = cli.inputDecimal(String.format("How many %s to use?",
-					item.getQuantity().units()));
+						item.getQuantity().units()));
 				if (Objects.isNull(subtrahend) || subtrahend.signum() <= 0) {
 					return null;
 				}

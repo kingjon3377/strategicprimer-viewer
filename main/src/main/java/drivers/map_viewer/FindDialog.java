@@ -74,9 +74,9 @@ import java.util.function.Predicate;
 		if (Platform.SYSTEM_IS_MAC) {
 			searchField.putClientProperty("JTextField.variant", "search");
 			searchField.putClientProperty("JTextField.Search.FindAction",
-				(ActionListener) ignored -> okListener());
+					(ActionListener) ignored -> okListener());
 			searchField.putClientProperty("JTextField.Search.CancelAction",
-				(ActionListener) ignored -> clearSearchField());
+					(ActionListener) ignored -> clearSearchField());
 		} else {
 			buttonPanel.addGlue();
 		}
@@ -84,22 +84,22 @@ import java.util.function.Predicate;
 		buttonPanel.add(cancelButton);
 		buttonPanel.addGlue();
 		final JPanel contentPanel = BorderedPanel.verticalPanel(searchField,
-			BorderedPanel.verticalPanel(backwards, vertically, caseSensitive), buttonPanel);
+				BorderedPanel.verticalPanel(backwards, vertically, caseSensitive), buttonPanel);
 
 		SwingUtilities.invokeLater(this::populateAll);
 		final JScrollPane scrollPane;
 		if (Platform.SYSTEM_IS_MAC) { // TODO: combine with above
 			scrollPane = new JScrollPane(filterList,
-				ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS,
-				ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
+					ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS,
+					ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
 		} else {
 			scrollPane = new JScrollPane(filterList,
-				ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,
-				ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+					ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,
+					ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		}
 
 		setContentPane(horizontalSplit(contentPanel,
-			BorderedPanel.verticalPanel(new JLabel("Find only ..."), scrollPane, null), 0.6));
+				BorderedPanel.verticalPanel(new JLabel("Find only ..."), scrollPane, null), 0.6));
 		pack();
 	}
 
@@ -145,13 +145,13 @@ import java.util.function.Predicate;
 	 * Whether the fixture has an owner matching the given pattern.
 	 */
 	private static boolean matchesOwner(final String pattern, final @Nullable Integer idNum, final IFixture fixture,
-	                                    final boolean caseSensitivity) {
+										final boolean caseSensitivity) {
 		if (fixture instanceof final HasOwner owned) {
 			final Player owner = owned.owner();
 			final String ownerName = (caseSensitivity) ? owner.getName() :
-				owner.getName().toLowerCase();
+					owner.getName().toLowerCase();
 			if (!Objects.isNull(idNum) && (owner.getPlayerId() == idNum || // FIXME: Parenthesization seems wrong here
-				ownerName.contains(pattern))) {
+					ownerName.contains(pattern))) {
 				return true;
 			} else if ("me".equalsIgnoreCase(pattern) && owner.isCurrent()) {
 				return true;
@@ -167,7 +167,7 @@ import java.util.function.Predicate;
 	 * Whether the fixture matches the pattern in any of our simple ways.
 	 */
 	private boolean matchesSimple(final String pattern, final @Nullable Integer idNum, final IFixture fixture,
-	                              final boolean caseSensitivity) {
+								  final boolean caseSensitivity) {
 		if (pattern.isEmpty()) {
 			return true;
 		} else if (fixture instanceof final TileFixture tf && !filterList.shouldDisplay(tf)) {
@@ -176,8 +176,8 @@ import java.util.function.Predicate;
 			return true;
 		} else {
 			return matchesName(pattern, fixture, caseSensitivity) ||
-				matchesKind(pattern, fixture, caseSensitivity) ||
-				matchesOwner(pattern, idNum, fixture, caseSensitivity);
+					matchesKind(pattern, fixture, caseSensitivity) ||
+					matchesOwner(pattern, idNum, fixture, caseSensitivity);
 		}
 	}
 
@@ -185,7 +185,7 @@ import java.util.function.Predicate;
 	 * Whether the given fixture matches the given pattern in any way we recognize.
 	 */
 	private Predicate<IFixture> matches(final String pattern, final @Nullable Integer idNum,
-	                                    final boolean caseSensitivity) {
+										final boolean caseSensitivity) {
 		return fixture -> {
 			if (matchesSimple(pattern, idNum, fixture, caseSensitivity)) {
 				return true;
@@ -198,14 +198,14 @@ import java.util.function.Predicate;
 	}
 
 	private Predicate<Point> matchesPoint(final String pattern, final @Nullable Integer id,
-	                                      final boolean caseSensitivity) {
+										  final boolean caseSensitivity) {
 		return point -> {
 			if ((caseSensitivity ? "bookmark".equals(pattern) : "bookmark".equalsIgnoreCase(pattern)) &&
-				model.getMap().getBookmarks().contains(point)) {
+					model.getMap().getBookmarks().contains(point)) {
 				return true;
 			} else {
 				return model.getMap().getFixtures(point).stream()
-					.anyMatch(matches(pattern, id, caseSensitivity));
+						.anyMatch(matches(pattern, id, caseSensitivity));
 			}
 		};
 	}
@@ -234,9 +234,9 @@ import java.util.function.Predicate;
 			// ignore non-numeric patterns
 		}
 		final Point result = StreamSupport.stream(new PointIterable(model.getMapDimensions(),
-				!backwards.isSelected(), !vertically.isSelected(),
-				model.getSelection()).spliterator(), false)
-			.filter(matchesPoint(pattern, idNum, caseSensitivity)).findFirst().orElse(null);
+						!backwards.isSelected(), !vertically.isSelected(),
+						model.getSelection()).spliterator(), false)
+				.filter(matchesPoint(pattern, idNum, caseSensitivity)).findFirst().orElse(null);
 		if (!Objects.isNull(result)) {
 			LovelaceLogger.debug("Found in point %s", result);
 			model.setSelection(result);

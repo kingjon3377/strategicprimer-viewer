@@ -5,13 +5,16 @@ import legacy.xmlio.IMapReader;
 import common.xmlio.Warning;
 import legacy.map.IMutableLegacyMap;
 import io.jenetics.facilejdbc.Transactional;
+
 import java.io.IOException;
 import java.io.Reader;
 import java.nio.file.NoSuchFileException;
 import java.sql.SQLException;
 import javax.xml.stream.XMLStreamException;
+
 import lovelace.util.LovelaceLogger;
 import org.sqlite.SQLiteDataSource;
+
 import java.util.Map;
 import java.util.HashMap;
 import javax.sql.DataSource;
@@ -56,7 +59,8 @@ public class SPDatabaseReader implements IMapReader {
 	}
 
 	@Override
-	public IMutableLegacyMap readMapFromStream(final Path file, final Reader istream, final Warning warner) throws SPFormatException, XMLStreamException, IOException {
+	public IMutableLegacyMap readMapFromStream(final Path file, final Reader istream, final Warning warner)
+			throws SPFormatException, XMLStreamException, IOException {
 		throw new UnsupportedOperationException("Can't read a database from a stream");
 	}
 
@@ -68,7 +72,7 @@ public class SPDatabaseReader implements IMapReader {
 		}
 	}
 
-	// TODO: Find a way to restrict access, or to make the two collections have their lifespan tied to a particular database
+	// TODO: Find a way to restrict access, or to make the two collections have their lifespan tied to a particular DB
 	public void clearCache() {
 		dbMapReader.clearCache();
 	}

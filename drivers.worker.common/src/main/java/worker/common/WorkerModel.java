@@ -98,8 +98,8 @@ public class WorkerModel extends SimpleMultiMapModel implements IWorkerModel {
 	 */
 	private static void addUnitAtLocationImpl(final IUnit unit, final Point location, final IMutableLegacyMap map) {
 		final IMutableFortress fortress = map.getFixtures(location).stream()
-			.filter(IMutableFortress.class::isInstance).map(IMutableFortress.class::cast)
-			.filter(f -> f.owner().equals(unit.owner())).findAny().orElse(null);
+				.filter(IMutableFortress.class::isInstance).map(IMutableFortress.class::cast)
+				.filter(f -> f.owner().equals(unit.owner())).findAny().orElse(null);
 		if (Objects.isNull(fortress)) {
 			map.addFixture(location, unit.copy(IFixture.CopyBehavior.KEEP));
 		} else {
@@ -158,17 +158,17 @@ public class WorkerModel extends SimpleMultiMapModel implements IWorkerModel {
 	 */
 	private static List<IUnit> getUnitsImpl(final Iterable<?> iter, final Player player) {
 		return StreamSupport.stream(iter.spliterator(), false).flatMap(WorkerModel::flatten)
-			.filter(IUnit.class::isInstance).map(IUnit.class::cast)
-			.filter(u -> u.owner().getPlayerId() == player.getPlayerId())
-			.collect(Collectors.toList());
+				.filter(IUnit.class::isInstance).map(IUnit.class::cast)
+				.filter(u -> u.owner().getPlayerId() == player.getPlayerId())
+				.collect(Collectors.toList());
 	}
 
 	@Override
 	public Iterable<IFortress> getFortresses(final Player player) {
 		return getMap().streamAllFixtures()
-			.filter(IFortress.class::isInstance).map(IFortress.class::cast)
-			.filter(f -> f.owner().equals(player))
-			.collect(Collectors.toList());
+				.filter(IFortress.class::isInstance).map(IFortress.class::cast)
+				.filter(f -> f.owner().equals(player))
+				.collect(Collectors.toList());
 	}
 
 	/**
@@ -177,8 +177,8 @@ public class WorkerModel extends SimpleMultiMapModel implements IWorkerModel {
 	@Override
 	public Iterable<Player> getPlayers() {
 		return streamAllMaps()
-			.flatMap(m -> StreamSupport.stream(m.getPlayers().spliterator(), false)).distinct()
-			.collect(Collectors.toList());
+				.flatMap(m -> StreamSupport.stream(m.getPlayers().spliterator(), false)).distinct()
+				.collect(Collectors.toList());
 	}
 
 	/**
@@ -196,9 +196,9 @@ public class WorkerModel extends SimpleMultiMapModel implements IWorkerModel {
 	public Collection<IUnit> getUnits(final Player player) {
 		if (getSubordinateMaps().iterator().hasNext()) {
 			final Iterable<IUnit> temp = streamAllMaps()
-				.flatMap((indivMap) -> getUnitsImpl(indivMap.streamAllFixtures()
-					.collect(Collectors.toList()), player).stream())
-				.collect(Collectors.toList());
+					.flatMap((indivMap) -> getUnitsImpl(indivMap.streamAllFixtures()
+							.collect(Collectors.toList()), player).stream())
+					.collect(Collectors.toList());
 			final Map<Integer, ProxyUnit> tempMap = new TreeMap<>();
 			for (final IUnit unit : temp) {
 				final int key = unit.getId();
@@ -213,15 +213,15 @@ public class WorkerModel extends SimpleMultiMapModel implements IWorkerModel {
 				proxy.addProxied(unit);
 			}
 			return tempMap.values().stream().sorted(Comparator.comparing(IUnit::getName,
-				String.CASE_INSENSITIVE_ORDER)).collect(Collectors.toList());
+					String.CASE_INSENSITIVE_ORDER)).collect(Collectors.toList());
 		} else {
 			// Just in case I missed something in the proxy implementation, make sure
 			// things work correctly when there's only one map.
 			return getUnitsImpl(getMap().streamAllFixtures()
-				.collect(Collectors.toList()), player)
-				.stream().sorted(Comparator.comparing(IUnit::getName,
-					String.CASE_INSENSITIVE_ORDER))
-				.collect(Collectors.toList());
+					.collect(Collectors.toList()), player)
+					.stream().sorted(Comparator.comparing(IUnit::getName,
+							String.CASE_INSENSITIVE_ORDER))
+					.collect(Collectors.toList());
 		}
 	}
 
@@ -231,7 +231,7 @@ public class WorkerModel extends SimpleMultiMapModel implements IWorkerModel {
 	@Override
 	public Iterable<String> getUnitKinds(final Player player) {
 		return getUnits(player).stream().map(IUnit::getKind).distinct().sorted(String.CASE_INSENSITIVE_ORDER)
-			.collect(Collectors.toList());
+				.collect(Collectors.toList());
 	}
 
 	/**
@@ -258,12 +258,12 @@ public class WorkerModel extends SimpleMultiMapModel implements IWorkerModel {
 	public void addUnit(final IUnit unit) {
 		Pair<IMutableFortress, Point> temp = null;
 		for (final Pair<Point, IMutableFortress> pair : getMap().streamLocations()
-			.flatMap(l -> getMap().getFixtures(l).stream()
-				.filter(IMutableFortress.class::isInstance)
-				.map(IMutableFortress.class::cast)
-				.filter(f -> f.owner().getPlayerId() ==
-					unit.owner().getPlayerId())
-				.map(f -> Pair.with(l, f))).toList()) {
+				.flatMap(l -> getMap().getFixtures(l).stream()
+						.filter(IMutableFortress.class::isInstance)
+						.map(IMutableFortress.class::cast)
+						.filter(f -> f.owner().getPlayerId() ==
+								unit.owner().getPlayerId())
+						.map(f -> Pair.with(l, f))).toList()) {
 			final Point point = pair.getValue0();
 			final IMutableFortress fixture = pair.getValue1();
 			if ("HQ".equals(fixture.getName())) {
@@ -281,7 +281,7 @@ public class WorkerModel extends SimpleMultiMapModel implements IWorkerModel {
 			return;
 		} else if (!unit.owner().isIndependent()) {
 			LovelaceLogger.warning("No suitable location found for unit %s, owned by %s",
-				unit.getName(), unit.owner());
+					unit.getName(), unit.owner());
 		}
 	}
 
@@ -291,13 +291,13 @@ public class WorkerModel extends SimpleMultiMapModel implements IWorkerModel {
 	@Override
 	public @Nullable IUnit getUnitByID(final Player owner, final int id) {
 		return getUnits(owner).parallelStream()
-			.filter(u -> u.getId() == id).findAny().orElse(null);
+				.filter(u -> u.getId() == id).findAny().orElse(null);
 	}
 
 	private static BiPredicate<Point, IFixture> unitMatching(final IUnit unit) {
 		return (point, fixture) ->
-			fixture instanceof final IUnit u && fixture.getId() == unit.getId() &&
-				u.owner().equals(unit.owner());
+				fixture instanceof final IUnit u && fixture.getId() == unit.getId() &&
+						u.owner().equals(unit.owner());
 	}
 
 	/**
@@ -313,28 +313,28 @@ public class WorkerModel extends SimpleMultiMapModel implements IWorkerModel {
 		LovelaceLogger.debug("In WorkerModel.removeUnit()");
 		final List<Pair<IMutableLegacyMap, Pair<Point, IUnit>>> delenda = new ArrayList<>();
 		final Predicate<Pair<Point, IFixture>> testPair =
-			p -> unitMatching(unit).test(p.getValue0(), p.getValue1());
+				p -> unitMatching(unit).test(p.getValue0(), p.getValue1());
 		for (final IMutableLegacyMap map : getRestrictedAllMaps()) {
 			final Pair<Point, IFixture> pair = map.streamLocations()
-				.flatMap(l -> map.getFixtures(l).stream()
-					.map(f -> Pair.with(l, f)))
-				.flatMap(p -> flattenEntries(p.getValue0(), p.getValue1()))
-				.filter(testPair)
-				.findAny().orElse(null);
+					.flatMap(l -> map.getFixtures(l).stream()
+							.map(f -> Pair.with(l, f)))
+					.flatMap(p -> flattenEntries(p.getValue0(), p.getValue1()))
+					.filter(testPair)
+					.findAny().orElse(null);
 			if (!Objects.isNull(pair)) {
 				LovelaceLogger.debug("Map has matching unit");
 				final Point location = pair.getValue0();
 				final IUnit fixture = (IUnit) pair.getValue1();
 				if (fixture.getKind().equals(unit.getKind()) &&
-					fixture.getName().equals(unit.getName()) &&
-					!fixture.iterator().hasNext()) {
+						fixture.getName().equals(unit.getName()) &&
+						!fixture.iterator().hasNext()) {
 					LovelaceLogger.debug("Matching unit meets preconditions");
 					delenda.add(Pair.with(map, Pair.with(location, fixture)));
 				} else {
 					LovelaceLogger.warning(
-						"Matching unit in %s fails preconditions for removal",
-						Optional.ofNullable(map.getFilename())
-							.map(Object::toString).orElse("an unsaved map"));
+							"Matching unit in %s fails preconditions for removal",
+							Optional.ofNullable(map.getFilename())
+									.map(Object::toString).orElse("an unsaved map"));
 					return false;
 				}
 			}
@@ -352,8 +352,8 @@ public class WorkerModel extends SimpleMultiMapModel implements IWorkerModel {
 			} else {
 				boolean any = false;
 				for (final IMutableFortress fort : map.getFixtures(location).stream()
-					.filter(IMutableFortress.class::isInstance)
-					.map(IMutableFortress.class::cast).toList()) {
+						.filter(IMutableFortress.class::isInstance)
+						.map(IMutableFortress.class::cast).toList()) {
 					if (fort.stream().anyMatch(Predicate.isEqual(fixture))) {
 						any = true;
 						fort.removeMember(fixture);
@@ -362,7 +362,7 @@ public class WorkerModel extends SimpleMultiMapModel implements IWorkerModel {
 				}
 				if (!any) {
 					LovelaceLogger.warning(
-						"Failed to find unit to remove that we thought might be in a fortress");
+							"Failed to find unit to remove that we thought might be in a fortress");
 				}
 			}
 		}
@@ -393,7 +393,7 @@ public class WorkerModel extends SimpleMultiMapModel implements IWorkerModel {
 	private boolean moveProxied(/*UnitMember&*/final ProxyFor<? extends UnitMember> member, final ProxyUnit old,
 											   final ProxyUnit newOwner) {
 		if (old.getProxied().size() == newOwner.getProxied().size() &&
-			old.getProxied().size() == member.getProxied().size()) {
+				old.getProxied().size() == member.getProxied().size()) {
 			final LinkedList<UnitMember> memberProxied = new LinkedList<>(member.getProxied());
 			final LinkedList<IUnit> oldProxied = new LinkedList<>(old.getProxied());
 			final LinkedList<IUnit> newProxied = new LinkedList<>(newOwner.getProxied());
@@ -434,7 +434,7 @@ public class WorkerModel extends SimpleMultiMapModel implements IWorkerModel {
 	@Override
 	public void moveMember(final UnitMember member, final IUnit old, final IUnit newOwner) {
 		if (member instanceof final ProxyFor proxyMember && old instanceof final ProxyUnit proxyOld &&
-			newOwner instanceof final ProxyUnit proxyNew && moveProxied(proxyMember, proxyOld, proxyNew)) {
+				newOwner instanceof final ProxyUnit proxyNew && moveProxied(proxyMember, proxyOld, proxyNew)) {
 			return;
 		}
 		final Predicate<Object> isUnit = IMutableUnit.class::isInstance;
@@ -447,19 +447,19 @@ public class WorkerModel extends SimpleMultiMapModel implements IWorkerModel {
 		final Predicate<IUnit> matchingNewId = u -> u.getId() == newOwner.getId();
 		for (final IMutableLegacyMap map : getRestrictedAllMaps()) {
 			final IMutableUnit matchingOld = getUnitsImpl(map.streamAllFixtures()
-				.collect(Collectors.toList()), old.owner()).stream()
-				.filter(isUnit).map(unitCast).filter(matchingOldKind)
-				.filter(matchingOldName).filter(matchingOldId)
-				.findAny().orElse(null);
+					.collect(Collectors.toList()), old.owner()).stream()
+					.filter(isUnit).map(unitCast).filter(matchingOldKind)
+					.filter(matchingOldName).filter(matchingOldId)
+					.findAny().orElse(null);
 			if (!Objects.isNull(matchingOld)) {
 				final UnitMember matchingMember = matchingOld.stream().filter(Predicate.isEqual(member)) // TODO: equals() isn't ideal for finding a matching member ...
-					.findAny().orElse(null);
+						.findAny().orElse(null);
 				final IMutableUnit matchingNew = getUnitsImpl(map.streamAllFixtures()
-					.collect(Collectors.toList()), newOwner.owner())
-					.stream()
-					.filter(isUnit).map(unitCast).filter(matchingNewKind)
-					.filter(matchingNewName).filter(matchingNewId)
-					.findAny().orElse(null);
+						.collect(Collectors.toList()), newOwner.owner())
+						.stream()
+						.filter(isUnit).map(unitCast).filter(matchingNewKind)
+						.filter(matchingNewName).filter(matchingNewId)
+						.findAny().orElse(null);
 				if (!Objects.isNull(matchingMember) && !Objects.isNull(matchingNew)) {
 					matchingOld.removeMember(matchingMember);
 					matchingNew.addMember(matchingMember);
@@ -475,12 +475,12 @@ public class WorkerModel extends SimpleMultiMapModel implements IWorkerModel {
 		// TODO: Handle proxies specially?
 		for (final IMutableLegacyMap map : getRestrictedAllMaps()) {
 			for (final IMutableUnit unit : getUnitsImpl(map.streamAllFixtures()
-					.collect(Collectors.toList()),
-				getCurrentPlayer()).stream()
-				.filter(IMutableUnit.class::isInstance)
-				.map(IMutableUnit.class::cast).toList()) {
+							.collect(Collectors.toList()),
+					getCurrentPlayer()).stream()
+					.filter(IMutableUnit.class::isInstance)
+					.map(IMutableUnit.class::cast).toList()) {
 				final UnitMember matching = unit.stream().filter(Predicate.isEqual(member)) // FIXME: equals() will really not do here ...
-					.findAny().orElse(null);
+						.findAny().orElse(null);
 				if (!Objects.isNull(matching)) {
 					any = true;
 					unit.removeMember(matching);
@@ -512,13 +512,13 @@ public class WorkerModel extends SimpleMultiMapModel implements IWorkerModel {
 		final Predicate<IUnit> matchingId = u -> u.getId() == unit.getId();
 		for (final IMutableLegacyMap map : getRestrictedAllMaps()) {
 			final IMutableUnit matching = getUnitsImpl(map.streamAllFixtures()
-				.collect(Collectors.toList()), unit.owner()).stream()
-				.filter(isUnit)
-				.map(unitCast)
-				.filter(matchingName)
-				.filter(matchingKind)
-				.filter(matchingId)
-				.findAny().orElse(null);
+					.collect(Collectors.toList()), unit.owner()).stream()
+					.filter(isUnit)
+					.map(unitCast)
+					.filter(matchingName)
+					.filter(matchingKind)
+					.filter(matchingId)
+					.findAny().orElse(null);
 			if (!Objects.isNull(matching)) {
 				matching.addMember(member.copy(IFixture.CopyBehavior.KEEP));
 				map.setModified(true);
@@ -536,13 +536,13 @@ public class WorkerModel extends SimpleMultiMapModel implements IWorkerModel {
 			final Predicate<IUnit> matchingId = u -> u.getId() == unit.getId();
 			for (final IMutableLegacyMap map : getRestrictedAllMaps()) {
 				final IUnit matching =
-					getUnitsImpl(map.streamAllFixtures()
-							.collect(Collectors.toList()),
-						unit.owner()).stream()
-						.filter(matchingName)
-						.filter(matchingKind)
-						.filter(matchingId)
-						.findAny().orElse(null);
+						getUnitsImpl(map.streamAllFixtures()
+										.collect(Collectors.toList()),
+								unit.owner()).stream()
+								.filter(matchingName)
+								.filter(matchingKind)
+								.filter(matchingId)
+								.findAny().orElse(null);
 				if (matching instanceof final HasMutableName matchNamed) {
 					any = true;
 					matchNamed.setName(newName);
@@ -557,16 +557,16 @@ public class WorkerModel extends SimpleMultiMapModel implements IWorkerModel {
 			final Predicate<Object> isNamed = HasMutableName.class::isInstance;
 			final Predicate<UnitMember> matchingId = m -> m.getId() == memberItem.getId();
 			final Predicate<UnitMember> matchingName =
-				m -> ((HasMutableName) m).getName().equals(item.getName());
+					m -> ((HasMutableName) m).getName().equals(item.getName());
 			for (final IMutableLegacyMap map : getRestrictedAllMaps()) {
 				final UnitMember matching =
-					getUnitsImpl(map.streamAllFixtures()
-						.collect(Collectors.toList()), getCurrentPlayer())
-						.stream().flatMap(FixtureIterable::stream)
-						.filter(isNamed)
-						.filter(matchingId)
-						.filter(matchingName)
-						.findAny().orElse(null); // FIXME: We should have a firmer identification than just name and ID
+						getUnitsImpl(map.streamAllFixtures()
+								.collect(Collectors.toList()), getCurrentPlayer())
+								.stream().flatMap(FixtureIterable::stream)
+								.filter(isNamed)
+								.filter(matchingId)
+								.filter(matchingName)
+								.findAny().orElse(null); // FIXME: We should have a firmer identification than just name and ID
 				if (!Objects.isNull(matching)) {
 					any = true;
 					((HasMutableName) matching).setName(newName);
@@ -592,12 +592,12 @@ public class WorkerModel extends SimpleMultiMapModel implements IWorkerModel {
 			final Predicate<IUnit> matchingId = u -> u.getId() == unit.getId();
 			for (final IMutableLegacyMap map : getRestrictedAllMaps()) {
 				final IUnit matching = getUnitsImpl(map.streamAllFixtures()
-						.collect(Collectors.toList()),
-					unit.owner()).stream()
-					.filter(matchingName)
-					.filter(matchingKind)
-					.filter(matchingId)
-					.findAny().orElse(null);
+								.collect(Collectors.toList()),
+						unit.owner()).stream()
+						.filter(matchingName)
+						.filter(matchingKind)
+						.filter(matchingId)
+						.findAny().orElse(null);
 				if (matching instanceof final HasMutableKind kinded) {
 					any = true;
 					kinded.setKind(newKind);
@@ -615,13 +615,13 @@ public class WorkerModel extends SimpleMultiMapModel implements IWorkerModel {
 			final Predicate<HasMutableKind> matchingKind = m -> m.getKind().equals(item.getKind());
 			for (final IMutableLegacyMap map : getRestrictedAllMaps()) {
 				final HasMutableKind matching = getUnitsImpl(map.streamAllFixtures()
-					.collect(Collectors.toList()), getCurrentPlayer())
-					.stream().flatMap(FixtureIterable::stream)
-					.filter(matchingId)
-					.filter(hasMutableKind)
-					.map(hmkCast)
-					.filter(matchingKind)
-					.findAny().orElse(null); // FIXME: We should have a firmer identification than just kind and ID
+						.collect(Collectors.toList()), getCurrentPlayer())
+						.stream().flatMap(FixtureIterable::stream)
+						.filter(matchingId)
+						.filter(hasMutableKind)
+						.map(hmkCast)
+						.filter(matchingKind)
+						.findAny().orElse(null); // FIXME: We should have a firmer identification than just kind and ID
 				if (!Objects.isNull(matching)) {
 					any = true;
 					matching.setKind(newKind);
@@ -643,9 +643,9 @@ public class WorkerModel extends SimpleMultiMapModel implements IWorkerModel {
 		boolean any = false;
 		for (final IMutableLegacyMap map : getRestrictedAllMaps()) {
 			for (final IMutableUnit unit : getUnitsImpl(map.streamAllFixtures()
-				.collect(Collectors.toList()), getCurrentPlayer())
-				.stream().filter(IMutableUnit.class::isInstance)
-				.map(IMutableUnit.class::cast).toList()) {
+					.collect(Collectors.toList()), getCurrentPlayer())
+					.stream().filter(IMutableUnit.class::isInstance)
+					.map(IMutableUnit.class::cast).toList()) {
 				if (unit.stream().anyMatch(Predicate.isEqual(existing))) {
 					// TODO: look beyond equals() for matching-in-existing?
 					unit.addMember(sibling.copy(IFixture.CopyBehavior.KEEP));
@@ -677,14 +677,14 @@ public class WorkerModel extends SimpleMultiMapModel implements IWorkerModel {
 		final Function<Object, HasMutableOwner> hmoCast = HasMutableOwner.class::cast;
 		for (final IMutableLegacyMap map : getRestrictedAllMaps()) {
 			final HasMutableOwner matching = map.streamAllFixtures()
-				.flatMap(WorkerModel::flattenIncluding)
-				.flatMap(WorkerModel::flattenIncluding).filter(isOwned)
-				.map(hmoCast)
-				.filter(Predicate.isEqual(item)) // TODO: equals() is not the best way to find it ...
-				.findAny().orElse(null);
+					.flatMap(WorkerModel::flattenIncluding)
+					.flatMap(WorkerModel::flattenIncluding).filter(isOwned)
+					.map(hmoCast)
+					.filter(Predicate.isEqual(item)) // TODO: equals() is not the best way to find it ...
+					.findAny().orElse(null);
 			if (!Objects.isNull(matching)) {
 				if (StreamSupport.stream(map.getPlayers().spliterator(), true)
-					.noneMatch(Predicate.isEqual(newOwner))) {
+						.noneMatch(Predicate.isEqual(newOwner))) {
 					map.addPlayer(newOwner);
 				}
 				matching.setOwner(map.getPlayers().getPlayer(newOwner.getPlayerId()));
@@ -705,12 +705,12 @@ public class WorkerModel extends SimpleMultiMapModel implements IWorkerModel {
 		final Predicate<IMutableUnit> matchingId = u -> u.getId() == fixture.getId();
 		for (final IMutableLegacyMap map : getRestrictedAllMaps()) {
 			final IMutableUnit matching = getUnitsImpl(map.streamAllFixtures()
-				.collect(Collectors.toList()), getCurrentPlayer()).stream()
-				.filter(isUnit).map(unitCast)
-				.filter(matchingName)
-				.filter(matchingKind)
-				.filter(matchingId)
-				.findAny().orElse(null);
+					.collect(Collectors.toList()), getCurrentPlayer()).stream()
+					.filter(isUnit).map(unitCast)
+					.filter(matchingName)
+					.filter(matchingKind)
+					.filter(matchingId)
+					.findAny().orElse(null);
 			if (!Objects.isNull(matching)) {
 				matching.sortMembers();
 				map.setModified(true);
@@ -736,16 +736,16 @@ public class WorkerModel extends SimpleMultiMapModel implements IWorkerModel {
 		final Predicate<IJob> matchingJob = j -> jobName.equals(j.getName());
 		for (final IMutableLegacyMap map : getRestrictedAllMaps()) {
 			final IMutableWorker matching = getUnitsImpl(map.streamAllFixtures()
-				.collect(Collectors.toList()), getCurrentPlayer()).stream()
-				.flatMap(FixtureIterable::stream).filter(isWorker)
-				.map(workerCast)
-				.filter(matchingRace)
-				.filter(matchingName)
-				.filter(matchingId)
-				.findAny().orElse(null);
+					.collect(Collectors.toList()), getCurrentPlayer()).stream()
+					.flatMap(FixtureIterable::stream).filter(isWorker)
+					.map(workerCast)
+					.filter(matchingRace)
+					.filter(matchingName)
+					.filter(matchingId)
+					.findAny().orElse(null);
 			if (!Objects.isNull(matching)) {
 				if (StreamSupport.stream(matching.spliterator(), true)
-					.noneMatch(matchingJob)) {
+						.noneMatch(matchingJob)) {
 					map.setModified(true);
 					matching.addJob(new Job(jobName, 0));
 				}
@@ -776,14 +776,14 @@ public class WorkerModel extends SimpleMultiMapModel implements IWorkerModel {
 		final Predicate<IJob> matchingJob = j -> jobName.equals(j.getName());
 		for (final IMutableLegacyMap map : getRestrictedAllMaps()) {
 			final IMutableWorker matching =
-				getUnitsImpl(map.streamAllFixtures().collect(Collectors.toList()), getCurrentPlayer()).stream()
-					.flatMap(IUnit::stream).filter(isWorker).map(workerCast)
-					.filter(matchingRace).filter(matchingName)
-					.filter(matchingId).findAny().orElse(null);
+					getUnitsImpl(map.streamAllFixtures().collect(Collectors.toList()), getCurrentPlayer()).stream()
+							.flatMap(IUnit::stream).filter(isWorker).map(workerCast)
+							.filter(matchingRace).filter(matchingName)
+							.filter(matchingId).findAny().orElse(null);
 			if (!Objects.isNull(matching)) {
 				final IMutableJob job = StreamSupport.stream(matching.spliterator(), false)
-					.filter(isMutableJob).map(mjCast)
-					.filter(matchingJob).findAny().orElse(null);
+						.filter(isMutableJob).map(mjCast)
+						.filter(matchingJob).findAny().orElse(null);
 				if (Objects.isNull(job)) {
 					map.setModified(true);
 					final Job newJob = new Job(jobName, 0);
@@ -846,20 +846,20 @@ public class WorkerModel extends SimpleMultiMapModel implements IWorkerModel {
 		final Predicate<ISkill> matchingSkill = s -> skillName.equals(s.getName());
 		for (final IMutableLegacyMap map : getRestrictedAllMaps()) {
 			final IMutableWorker matching = getUnitsImpl(map.streamAllFixtures()
-				.collect(Collectors.toList()), getCurrentPlayer()).stream()
-				.flatMap(FixtureIterable::stream).filter(isWorker)
-				.map(workerCast)
-				.filter(matchingRace)
-				.filter(matchingName)
-				.filter(matchingId)
-				.findAny().orElse(null);
+					.collect(Collectors.toList()), getCurrentPlayer()).stream()
+					.flatMap(FixtureIterable::stream).filter(isWorker)
+					.map(workerCast)
+					.filter(matchingRace)
+					.filter(matchingName)
+					.filter(matchingId)
+					.findAny().orElse(null);
 			if (!Objects.isNull(matching)) {
 				map.setModified(true);
 				any = true;
 				final IMutableJob job;
 				final IMutableJob temp = StreamSupport.stream(matching.spliterator(), true)
-					.filter(isMutableJob).map(mjCast)
-					.filter(matchingJob).findAny().orElse(null);
+						.filter(isMutableJob).map(mjCast)
+						.filter(matchingJob).findAny().orElse(null);
 				if (Objects.isNull(temp)) {
 					job = new Job(jobName, 0);
 					matching.addJob(job); // FIXME: The IWorker API doc explicitly says the Job object can't be assumed to have been preserved
@@ -868,10 +868,10 @@ public class WorkerModel extends SimpleMultiMapModel implements IWorkerModel {
 				}
 				final IMutableSkill skill;
 				final IMutableSkill tempSkill = StreamSupport.stream(job.spliterator(), true)
-					.filter(isMutableSkill)
-					.map(msCast)
-					.filter(matchingSkill)
-					.findAny().orElse(null);
+						.filter(isMutableSkill)
+						.map(msCast)
+						.filter(matchingSkill)
+						.findAny().orElse(null);
 				if (Objects.isNull(tempSkill)) {
 					skill = new Skill(skillName, 0, 0);
 					job.addSkill(skill); // FIXME: Similarly, assumes behavior the API doc explicitly warns against
@@ -905,7 +905,7 @@ public class WorkerModel extends SimpleMultiMapModel implements IWorkerModel {
 		final Random rng = new Random(contextValue);
 		for (final UnitMember member : unit) {
 			if (member instanceof final IWorker w && addHoursToSkill(w, jobName, skillName, hours,
-				rng.nextInt(100))) {
+					rng.nextInt(100))) {
 				any = true;
 			}
 		}
@@ -935,25 +935,25 @@ public class WorkerModel extends SimpleMultiMapModel implements IWorkerModel {
 		final Predicate<IJob> matchingJobName = j -> jobName.equals(j.getName());
 		for (final IMutableLegacyMap map : getRestrictedAllMaps()) {
 			final IMutableWorker matchingWorker = getUnitsImpl(map.streamAllFixtures()
-				.collect(Collectors.toList()), getCurrentPlayer()).stream()
-				.flatMap(FixtureIterable::stream)
-				.filter(isWorker)
-				.map(workerCast)
-				.filter(matchingRace)
-				.filter(matchingName)
-				.filter(matchingId)
-				.findAny().orElse(null);
+					.collect(Collectors.toList()), getCurrentPlayer()).stream()
+					.flatMap(FixtureIterable::stream)
+					.filter(isWorker)
+					.map(workerCast)
+					.filter(matchingRace)
+					.filter(matchingName)
+					.filter(matchingId)
+					.findAny().orElse(null);
 			if (!Objects.isNull(matchingWorker)) {
 				final IMutableJob matchingJob = StreamSupport.stream(
-						matchingWorker.spliterator(), true)
-					.filter(isMutableJob).map(mjCast)
-					.filter(matchingJobName).findAny().orElse(null);
+								matchingWorker.spliterator(), true)
+						.filter(isMutableJob).map(mjCast)
+						.filter(matchingJobName).findAny().orElse(null);
 				if (Objects.isNull(matchingJob)) {
 					LovelaceLogger.warning("No matching skill in matching worker");
 				} else {
 					final ISkill matchingSkill = StreamSupport.stream(
-							matchingJob.spliterator(), true)
-						.filter(Predicate.isEqual(delenda)).findAny().orElse(null);
+									matchingJob.spliterator(), true)
+							.filter(Predicate.isEqual(delenda)).findAny().orElse(null);
 					if (Objects.isNull(matchingSkill)) {
 						LovelaceLogger.warning("No matching skill in matching worker");
 					} else {
@@ -985,13 +985,13 @@ public class WorkerModel extends SimpleMultiMapModel implements IWorkerModel {
 		for (final IMutableLegacyMap map : getRestrictedAllMaps()) {
 			// TODO: Why not use getUnitsImpl?
 			final IMutableUnit matching = map.streamAllFixtures()
-				.flatMap(WorkerModel::flatten)
-				.filter(isUnit).map(unitCast)
-				.filter(matchingOwner)
-				.filter(matchingKind)
-				.filter(matchingName)
-				.filter(matchingId)
-				.findAny().orElse(null);
+					.flatMap(WorkerModel::flatten)
+					.filter(isUnit).map(unitCast)
+					.filter(matchingOwner)
+					.filter(matchingKind)
+					.filter(matchingName)
+					.filter(matchingId)
+					.findAny().orElse(null);
 			if (!Objects.isNull(matching)) {
 				matching.setOrders(turn, results);
 				map.setModified(true);
@@ -1018,13 +1018,13 @@ public class WorkerModel extends SimpleMultiMapModel implements IWorkerModel {
 		for (final IMutableLegacyMap map : getRestrictedAllMaps()) {
 			// TODO: Why not use getUnitsImpl?
 			final IMutableUnit matching = map.streamAllFixtures()
-				.flatMap(WorkerModel::flatten)
-				.filter(isUnit).map(unitCast)
-				.filter(matchingOwner)
-				.filter(matchingKind)
-				.filter(matchingName)
-				.filter(matchingId)
-				.findAny().orElse(null);
+					.flatMap(WorkerModel::flatten)
+					.filter(isUnit).map(unitCast)
+					.filter(matchingOwner)
+					.filter(matchingKind)
+					.filter(matchingName)
+					.filter(matchingId)
+					.findAny().orElse(null);
 			if (!Objects.isNull(matching)) {
 				matching.setResults(turn, results);
 				map.setModified(true);

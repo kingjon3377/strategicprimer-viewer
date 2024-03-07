@@ -6,11 +6,11 @@ package common.map;
  * @param playerId The player's number.
  * @param name     The player's code name.
  * @param current  Whether this is the current player or not.
- *                 TODO: Should this really be encapsulated in Player, not PlayerCollection?
+ *                                 TODO: Should this really be encapsulated in Player, not PlayerCollection?
  * @param country  The country the player is associated with.
  */
 public record PlayerImpl(int playerId, String name, String country, boolean current,
-						 String portrait) implements Player {
+                         String portrait) implements Player {
 
 	/**
 	 * The player's number.
@@ -53,8 +53,8 @@ public record PlayerImpl(int playerId, String name, String country, boolean curr
 			return true;
 		} else if (obj instanceof final Player p) {
 			return playerId == p.playerId() &&
-				name.equals(p.getName()) &&
-				country.equals(p.country());
+					name.equals(p.getName()) &&
+					country.equals(p.country());
 		} else {
 			return false;
 		}

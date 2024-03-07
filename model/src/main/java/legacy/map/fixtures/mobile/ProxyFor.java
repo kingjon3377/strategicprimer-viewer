@@ -9,6 +9,7 @@ import java.util.function.Function;
 
 /**
  * An interface for "proxy" implementations.
+ *
  * @deprecated We're trying to get rid of the notion of 'proxies' in favor of
  * driver model methods.
  */
@@ -46,6 +47,7 @@ public interface ProxyFor<Type> /* implements Type */ {
 	/**
 	 * If there is consensus on the given property among proxied items that
 	 * define it, return it; otherwise return null.
+	 *
 	 * @deprecated Use getConsensus
 	 */
 	@Deprecated

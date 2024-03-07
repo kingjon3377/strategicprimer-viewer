@@ -9,6 +9,7 @@ import legacy.map.fixtures.mobile.IWorker;
 import legacy.map.fixtures.towns.IFortress;
 import drivers.common.cli.ICLIHelper;
 import drivers.turnrunning.ITurnRunningModel;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -18,6 +19,7 @@ import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
 import lovelace.util.LovelaceLogger;
 import org.jetbrains.annotations.Nullable;
 import query.HerdModel;
@@ -53,16 +55,17 @@ import query.SmallAnimalModel;
 	// TODO: Pull up to AbstractTurnApplet for use by other applets?
 	private @Nullable IFortress containingFortress(final IUnit unit) {
 		return model.getMap().getFixtures(model.find(unit)).stream().filter(IFortress.class::isInstance)
-			.map(IFortress.class::cast).filter(f -> f.owner().equals(unit.owner()))
-			.findAny().orElse(null);
+				.map(IFortress.class::cast).filter(f -> f.owner().equals(unit.owner()))
+				.findAny().orElse(null);
 	}
 
 	private final Map<String, HerdModel> herdModels = new HashMap<>();
 
 	private @Nullable HerdModel chooseHerdModel(final String animal) {
 		return cli.chooseFromList(Stream.concat(Stream.of(MammalModel.values()), Stream.concat(
-						Stream.of(PoultryModel.values()), Stream.of(SmallAnimalModel.values())))
-				.collect(Collectors.toList()), String.format("What kind of animal(s) is/are %s?", animal), "No animal kinds found", "Kind of animal:", ICLIHelper.ListChoiceBehavior.ALWAYS_PROMPT).getValue1();
+								Stream.of(PoultryModel.values()), Stream.of(SmallAnimalModel.values())))
+						.collect(Collectors.toList()), String.format("What kind of animal(s) is/are %s?", animal),
+				"No animal kinds found", "Kind of animal:", ICLIHelper.ListChoiceBehavior.ALWAYS_PROMPT).getValue1();
 	}
 
 	@Override
@@ -76,7 +79,7 @@ import query.SmallAnimalModel;
 		for (final String kind : unit.stream()
 				.filter(Animal.class::isInstance).map(Animal.class::cast)
 				.filter(animal -> "domesticated".equals(animal.getStatus()) ||
-					"tame".equals(animal.getStatus()))
+						"tame".equals(animal.getStatus()))
 				.map(Animal::getKind).distinct()
 				.filter(k -> !herdModels.containsKey(k)).toList()) {
 			final HerdModel herdModel = chooseHerdModel(kind);
@@ -110,7 +113,7 @@ import query.SmallAnimalModel;
 				continue;
 			}
 			final Boolean cont = cli.inputBoolean(String.format( // TODO: Inline
-				"No model for %s. Really skip?", group.getKind()));
+					"No model for %s. Really skip?", group.getKind()));
 			if (Boolean.TRUE.equals(cont)) {
 				continue;
 			} else {
@@ -120,15 +123,15 @@ import query.SmallAnimalModel;
 		}
 		long workerCount = unit.stream().filter(IWorker.class::isInstance).map(IWorker.class::cast).count();
 		final Integer addendum = cli.inputNumber(String.format(
-			"%d workers in this unit. Any additional workers to account for:", workerCount));
+				"%d workers in this unit. Any additional workers to account for:", workerCount));
 		if (!Objects.isNull(addendum) && addendum >= 0) {
 			workerCount += addendum;
 		} else {
 			return null;
 		}
 		final boolean experts = unit.stream()
-			.filter(IWorker.class::isInstance).map(IWorker.class::cast)
-			.mapToInt(w -> w.getJob("herder").getLevel()).anyMatch(l -> l > 5);
+				.filter(IWorker.class::isInstance).map(IWorker.class::cast)
+				.mapToInt(w -> w.getJob("herder").getLevel()).anyMatch(l -> l > 5);
 		int minutesSpent = 0;
 		final Consumer<String> addToOrders = string -> {
 			cli.print(string);
@@ -148,24 +151,24 @@ import query.SmallAnimalModel;
 			final List<Animal> animals = entry.getValue();
 			final Animal combinedAnimal = animals.stream().reduce(Animal::combined).get();
 			final long flockPerHerder =
-				(combinedAnimal.getPopulation() + workerCount - 1) / workerCount;
+					(combinedAnimal.getPopulation() + workerCount - 1) / workerCount;
 			final LegacyQuantity production = herdModel.scaledProduction(combinedAnimal.getPopulation());
 			final double pounds = herdModel.scaledPoundsProduction(combinedAnimal.getPopulation());
 			final String resourceProduced;
 			if (herdModel instanceof final PoultryModel pm) {
 				resourceProduced = combinedAnimal.getKind() + " eggs";
 				final Boolean cleaningDay = cli.inputBoolean(String.format(
-					"Is this the one turn in every %d to clean up after birds?",
-					pm.getExtraChoresInterval() + 1));
+						"Is this the one turn in every %d to clean up after birds?",
+						pm.getExtraChoresInterval() + 1));
 				addLineToOrders.accept(String.format("Gathering %s eggs took the %d workers %d min",
-					combinedAnimal, workerCount, pm.dailyTime((int) flockPerHerder)));
+						combinedAnimal, workerCount, pm.dailyTime((int) flockPerHerder)));
 				minutesSpent += pm.getDailyTimePerHead() * flockPerHerder;
 				if (Objects.isNull(cleaningDay)) {
 					return null;
 				} else if (cleaningDay) {
 					addLineToOrders.accept(String.format(
-						"Cleaning up after them takes %.1f hours.",
-						PoultryModel.dailyExtraTime((int) flockPerHerder) / 60.0));
+							"Cleaning up after them takes %.1f hours.",
+							PoultryModel.dailyExtraTime((int) flockPerHerder) / 60.0));
 					minutesSpent += PoultryModel.getExtraTimePerHead() * flockPerHerder;
 				}
 			} else if (herdModel instanceof MammalModel) {
@@ -179,7 +182,7 @@ import query.SmallAnimalModel;
 					baseCost = flockPerHerder * herdModel.getDailyTimePerHead();
 				}
 				addLineToOrders.accept(String.format(" took %d min, plus %s min to gather them",
-					baseCost, MammalModel.getDailyTimeFloor()));
+						baseCost, MammalModel.getDailyTimeFloor()));
 				minutesSpent += baseCost;
 				minutesSpent += MammalModel.getDailyTimeFloor();
 			} else if (herdModel instanceof final SmallAnimalModel smm) {
@@ -188,21 +191,21 @@ import query.SmallAnimalModel;
 				final long baseCost;
 				if (experts) {
 					baseCost = (int) ((flockPerHerder * herdModel.getDailyTimePerHead() +
-						SmallAnimalModel.getDailyTimeFloor()) * 0.9);
+							SmallAnimalModel.getDailyTimeFloor()) * 0.9);
 				} else {
 					baseCost = flockPerHerder * herdModel.getDailyTimePerHead() +
-						SmallAnimalModel.getDailyTimeFloor();
+							SmallAnimalModel.getDailyTimeFloor();
 				}
 				minutesSpent += baseCost;
 				addLineToOrders.accept(String.format(" took the %d workers %d min.", workerCount, baseCost));
 				final Boolean extra = cli.inputBoolean(String.format(
-					"Is this the one turn in every %d to clean up after the animals?",
-					smm.getExtraChoresInterval() + 1));
+						"Is this the one turn in every %d to clean up after the animals?",
+						smm.getExtraChoresInterval() + 1));
 				if (Objects.isNull(extra)) {
 					return null;
 				} else {
 					addLineToOrders.accept(String.format("Cleaning up after them took %d minutes.",
-						SmallAnimalModel.getExtraTimePerHead() * flockPerHerder));
+							SmallAnimalModel.getExtraTimePerHead() * flockPerHerder));
 					minutesSpent += SmallAnimalModel.getExtraTimePerHead() * flockPerHerder;
 				}
 				continue;
@@ -211,12 +214,12 @@ import query.SmallAnimalModel;
 				return null;
 			}
 			addLineToOrders.accept(String.format("This produced %.1f %s, %.1f lbs, of %s.",
-				production.number().doubleValue(), production.units(), pounds, resourceProduced));
+					production.number().doubleValue(), production.units(), pounds, resourceProduced));
 			if (!Objects.isNull(home)) {
 				// FIXME: 'production' is in gallons; we want only pound-denominated food resources in the map
 				// TODO: If 'home' is null, should probably add to the unit itself ...
 				model.addResource(home, idf.createID(), "food", resourceProduced, production,
-					model.getMap().getCurrentTurn());
+						model.getMap().getCurrentTurn());
 			}
 		}
 		addToOrders.accept(String.format("In all, tending the animals took %s.", inHours(minutesSpent)));

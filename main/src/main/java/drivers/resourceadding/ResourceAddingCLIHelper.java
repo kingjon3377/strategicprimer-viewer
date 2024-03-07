@@ -43,8 +43,8 @@ public class ResourceAddingCLIHelper {
 	 */
 	private @Nullable String getResourceKind() {
 		final String one = cli.chooseStringFromList(new ArrayList<>(resourceKinds),
-			"Possible kinds of resources:", "No resource kinds entered yet",
-			"Chosen kind: ", ICLIHelper.ListChoiceBehavior.ALWAYS_PROMPT).getValue1();
+				"Possible kinds of resources:", "No resource kinds entered yet",
+				"Chosen kind: ", ICLIHelper.ListChoiceBehavior.ALWAYS_PROMPT).getValue1();
 		if (!Objects.isNull(one)) {
 			return one;
 		}
@@ -63,8 +63,8 @@ public class ResourceAddingCLIHelper {
 	private @Nullable String getResourceContents(final String kind) {
 		final List<String> list = resourceContents.getOrDefault(kind, new ArrayList<>());
 		final String one = cli.chooseStringFromList(list,
-			String.format("Possible resources in the %s category:", kind),
-			"No resources entered yet", "Choose resource: ", ICLIHelper.ListChoiceBehavior.ALWAYS_PROMPT).getValue1();
+				String.format("Possible resources in the %s category:", kind),
+				"No resources entered yet", "Choose resource: ", ICLIHelper.ListChoiceBehavior.ALWAYS_PROMPT).getValue1();
 		if (!Objects.isNull(one)) {
 			return one;
 		}
@@ -84,8 +84,8 @@ public class ResourceAddingCLIHelper {
 		if (resourceUnits.containsKey(resource)) {
 			final String unit = resourceUnits.get(resource);
 			final Boolean resp = cli.inputBooleanInSeries(
-				String.format("Is %s the correct unit for %s", unit, resource),
-				String.format("correct;%s;%s", unit, resource));
+					String.format("Is %s the correct unit for %s", unit, resource),
+					String.format("correct;%s;%s", unit, resource));
 			if (Objects.isNull(resp)) {
 				return null;
 			} else if (resp) {
@@ -118,7 +118,7 @@ public class ResourceAddingCLIHelper {
 			return null;
 		}
 		final Boolean usePrefix = cli.inputBooleanInSeries(
-			"Qualify the particular resource with a prefix?", "prefix" + origContents);
+				"Qualify the particular resource with a prefix?", "prefix" + origContents);
 		if (Objects.isNull(usePrefix)) {
 			return null;
 		}
@@ -137,7 +137,7 @@ public class ResourceAddingCLIHelper {
 			return null;
 		}
 		final ResourcePileImpl retval = new ResourcePileImpl(idf.createID(), kind, contents,
-			new LegacyQuantity(quantity, units));
+				new LegacyQuantity(quantity, units));
 		final Boolean setCreated = cli.inputBooleanInSeries("Set created date?", "created" + origContents);
 		if (Objects.isNull(setCreated)) {
 			return null;

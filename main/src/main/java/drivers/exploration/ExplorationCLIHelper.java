@@ -60,10 +60,10 @@ public class ExplorationCLIHelper implements MovementCostListener, SelectionChan
 		huntingModel = new HuntingModel(model.getMap());
 		pather = PathfinderFactory.pathfinder(model.streamSubordinateMaps().findFirst().orElseGet(model::getMap));
 		automationConfig = new ExplorationAutomationConfig(model.getMap()
-			.getCurrentPlayer());
+				.getCurrentPlayer());
 		appletChooser = new AppletChooser<>(this.cli,
-			new SimpleApplet(model::swearVillages, "Swear any village here to the player", "swear"),
-			new SimpleApplet(model::dig, "Dig to expose some ground here", "dig"));
+				new SimpleApplet(model::swearVillages, "Swear any village here to the player", "swear"),
+				new SimpleApplet(model::dig, "Dig to expose some ground here", "dig"));
 	}
 
 	/**
@@ -77,7 +77,8 @@ public class ExplorationCLIHelper implements MovementCostListener, SelectionChan
 	 * Let the user change the explorer's speed
 	 */
 	private void changeSpeed() {
-		final Speed temp = cli.chooseFromList(SPEED_CHOICES, "Possible Speeds:", "No speeds available", "Chosen Speed: ", ICLIHelper.ListChoiceBehavior.AUTO_CHOOSE_ONLY).getValue1();
+		final Speed temp = cli.chooseFromList(SPEED_CHOICES, "Possible Speeds:", "No speeds available", "Chosen Speed: ",
+				ICLIHelper.ListChoiceBehavior.AUTO_CHOOSE_ONLY).getValue1();
 		if (!Objects.isNull(temp)) {
 			speed = temp;
 		}
@@ -87,7 +88,7 @@ public class ExplorationCLIHelper implements MovementCostListener, SelectionChan
 	 * Copy the given fixture to subordinate maps and print it to the output stream.
 	 */
 	private void printAndTransferFixture(final Point destPoint, final @Nullable TileFixture fixture, final HasOwner mover,
-	                                     final boolean automatic) {
+										 final boolean automatic) {
 		if (!Objects.isNull(fixture)) {
 			// TODO: Print a description of the form that will be copied (omitting acreage, etc.) unless already in sub-map(s).
 			cli.print("- ");
@@ -99,7 +100,7 @@ public class ExplorationCLIHelper implements MovementCostListener, SelectionChan
 			}
 			final IFixture.CopyBehavior zero;
 			if (fixture instanceof final HasOwner owned && (!owned.owner().equals(mover.owner())
-				|| fixture instanceof Village)) {
+					|| fixture instanceof Village)) {
 				zero = IFixture.CopyBehavior.ZERO;
 			} else if (fixture instanceof HasPopulation || fixture instanceof HasExtent)
 				zero = IFixture.CopyBehavior.ZERO;
@@ -126,10 +127,11 @@ public class ExplorationCLIHelper implements MovementCostListener, SelectionChan
 
 	private ExplorationAutomationConfig automationConfig;
 
-	private static final List<String> COMMANDS = List.of("Set Speed", "SW", "S", "SE", "W", "Linger", "E", "NW", "N", "NE", "Toward Point", "Quit");
+	private static final List<String> COMMANDS = List.of("Set Speed", "SW", "S", "SE", "W", "Linger", "E", "NW", "N", "NE",
+			"Toward Point", "Quit");
 
 	private final String usage = IntStream.range(0, COMMANDS.size())
-		.mapToObj(i -> i + ": " + COMMANDS.get(i)).collect(Collectors.joining(", "));
+			.mapToObj(i -> i + ": " + COMMANDS.get(i)).collect(Collectors.joining(", "));
 
 	/**
 	 * When the selected unit changes, print the unit's details and ask how many MP the unit has.
@@ -173,7 +175,7 @@ public class ExplorationCLIHelper implements MovementCostListener, SelectionChan
 			final Point proposedDestination = proposedPath.pollFirst();
 			if (Objects.isNull(proposedDestination)) {
 				cli.println(String.format("%d/%d MP remaining. Current speed: %s.",
-					runningTotal.intValue(), totalMP, speed.getShortName()));
+						runningTotal.intValue(), totalMP, speed.getShortName()));
 				cli.printlnAtInterval(usage);
 				final int directionNum = Optional.ofNullable(cli.inputNumber("Direction to move: ")).orElse(-1);
 				switch (directionNum) {
@@ -197,14 +199,14 @@ public class ExplorationCLIHelper implements MovementCostListener, SelectionChan
 							runningTotal = BigDecimal.ZERO;
 						} else {
 							final Pair<Integer, Iterable<Point>> pair =
-								pather.getTravelDistance(point, destination);
+									pather.getTravelDistance(point, destination);
 							final int cost = pair.getValue0();
 							final Iterable<Point> path = pair.getValue1();
 							if (path.iterator().hasNext()) {
 								path.forEach(proposedPath::addLast);
 							} else {
 								cli.println(
-									"S/he doesn't know how to get there from here.");
+										"S/he doesn't know how to get there from here.");
 							}
 						}
 						return;
@@ -216,17 +218,17 @@ public class ExplorationCLIHelper implements MovementCostListener, SelectionChan
 				}
 			} else {
 				direction = Stream.of(Direction.values())
-					.filter(d -> proposedDestination.equals(model.getDestination(point, d)))
-					.findAny().orElse(Direction.Nowhere);
+						.filter(d -> proposedDestination.equals(model.getDestination(point, d)))
+						.findAny().orElse(Direction.Nowhere);
 				if (proposedDestination.equals(point)) {
 					return;
 				} else if (Direction.Nowhere == direction) {
 					cli.println(String.format("Next step %s isn't adjacent to %s",
-						proposedDestination, point));
+							proposedDestination, point));
 					return;
 				}
 				cli.println(String.format("%d/%d MP remaining. Current speed: %s.",
-					runningTotal.intValue(), totalMP, speed.getShortName()));
+						runningTotal.intValue(), totalMP, speed.getShortName()));
 			}
 
 			final Point destPoint = model.getDestination(point, direction);
@@ -303,8 +305,8 @@ public class ExplorationCLIHelper implements MovementCostListener, SelectionChan
 			model.copyTerrainToSubMaps(destPoint);
 
 			cli.print(String.format("The explorer comes to %s, a %s%s tile", destPoint, mtn,
-				Optional.ofNullable(map.getBaseTerrain(destPoint)).map(TileType::toString)
-					.orElse("unknown-terrain")));
+					Optional.ofNullable(map.getBaseTerrain(destPoint)).map(TileType::toString)
+							.orElse("unknown-terrain")));
 			final Collection<River> rivers = map.getRivers(destPoint);
 			final boolean anyRivers;
 			if (rivers.contains(River.Lake)) {
@@ -321,7 +323,7 @@ public class ExplorationCLIHelper implements MovementCostListener, SelectionChan
 				anyRivers = false;
 			}
 			cli.println(rivers.stream().filter(r -> River.Lake != r).map(River::toString)
-				.collect(Collectors.joining(", ")));
+					.collect(Collectors.joining(", ")));
 
 			if (!map.getRoads(destPoint).isEmpty()) {
 				if (anyRivers) {
@@ -330,10 +332,10 @@ public class ExplorationCLIHelper implements MovementCostListener, SelectionChan
 					cli.print(" with (a) road(s) to the ");
 				}
 				cli.println(map.getRoads(destPoint).keySet().stream().map(Direction::toString)
-					.collect(Collectors.joining(", "))); // TODO: Report on road quality
+						.collect(Collectors.joining(", "))); // TODO: Report on road quality
 			}
 			final Iterable<TileFixture> noticed = SimpleMovementModel.selectNoticed(allFixtures, Function.identity(),
-				mover, speed);
+					mover, speed);
 
 			if (!constants.isEmpty() || noticed.iterator().hasNext()) {
 				cli.println("The following were noticed:");
@@ -346,8 +348,8 @@ public class ExplorationCLIHelper implements MovementCostListener, SelectionChan
 			}
 
 			if (!proposedPath.isEmpty() && automationConfig.stopAtPoint(cli,
-				model.streamSubordinateMaps().findFirst().orElseGet(model::getMap),
-				destPoint)) {
+					model.streamSubordinateMaps().findFirst().orElseGet(model::getMap),
+					destPoint)) {
 				proposedPath.clear();
 			}
 		}

@@ -45,8 +45,8 @@ import org.jetbrains.annotations.Nullable;
 		idf = IDFactoryFiller.createIDFactory(model.streamAllMaps().toArray(ILegacyMap[]::new));
 		advancementCLI = new AdvancementCLIHelper(model, cli);
 		appletChooser = new AppletChooser<>(cli,
-			StreamSupport.stream(ServiceLoader.load(TurnAppletFactory.class).spliterator(), false)
-				.map(factory -> factory.create(model, cli, idf)).toArray(TurnApplet[]::new));
+				StreamSupport.stream(ServiceLoader.load(TurnAppletFactory.class).spliterator(), false)
+						.map(factory -> factory.create(model, cli, idf)).toArray(TurnApplet[]::new));
 		consumptionApplet = new ConsumptionApplet(model, cli);
 		spoilageApplet = new SpoilageApplet(model, cli);
 	}
@@ -72,7 +72,7 @@ import org.jetbrains.annotations.Nullable;
 		return unit -> {
 			final String results = unit.getResults(turn).toLowerCase();
 			return results.isEmpty() || results.contains("fixme") || results.contains("todo") ||
-				results.contains("xxx");
+					results.contains("xxx");
 		};
 	}
 
@@ -95,12 +95,12 @@ import org.jetbrains.annotations.Nullable;
 	 */
 	private static Stream<IUnit> getUnitsImpl(final Stream<? extends IFixture> s, final Player player) {
 		return s.flatMap(TurnRunningCLI::flatten).filter(IUnit.class::isInstance).map(IUnit.class::cast)
-			.filter(u -> player.equals(u.owner()));
+				.filter(u -> player.equals(u.owner()));
 	}
 
 	private Stream<IUnit> getUnits(final Player player) {
 		final List<IUnit> temp = model.streamAllMaps()
-			.flatMap(indivMap -> getUnitsImpl(indivMap.streamAllFixtures(), player)).toList();
+				.flatMap(indivMap -> getUnitsImpl(indivMap.streamAllFixtures(), player)).toList();
 		final Map<Integer, ProxyUnit> tempMap = new TreeMap<>();
 		for (final IUnit unit : temp) {
 			final int key = unit.getId();
@@ -115,7 +115,7 @@ import org.jetbrains.annotations.Nullable;
 			proxy.addProxied(unit);
 		}
 		return tempMap.values().stream().map(IUnit.class::cast)
-			.sorted(Comparator.comparing(IUnit::getName, String.CASE_INSENSITIVE_ORDER));
+				.sorted(Comparator.comparing(IUnit::getName, String.CASE_INSENSITIVE_ORDER));
 	}
 
 	private final AdvancementCLIHelper advancementCLI;
@@ -138,9 +138,9 @@ import org.jetbrains.annotations.Nullable;
 		while (true) {
 			final Either<TurnApplet, Boolean> command = appletChooser.chooseApplet();
 			final Boolean bool = Optional.ofNullable(command).map(Either::fromRight).filter(Optional::isPresent)
-				.map(Optional::get).orElse(null);
+					.map(Optional::get).orElse(null);
 			final TurnApplet applet = Optional.ofNullable(command).map(Either::fromLeft).filter(Optional::isPresent)
-				.map(Optional::get).orElse(null);
+					.map(Optional::get).orElse(null);
 			if (Boolean.FALSE.equals(bool)) {
 				return ""; // TODO: why not null? (making the method return type nullable) also below
 			} else if (!Objects.isNull(applet)) {
@@ -172,24 +172,24 @@ import org.jetbrains.annotations.Nullable;
 				buffer.append(System.lineSeparator());
 				buffer.append(System.lineSeparator());
 				final LevelGainListener levelListener =
-					(workerName, jobName, skillName, gains, currentLevel) -> {
-						buffer.append(workerName);
-						buffer.append(" showed improvement in the skill of ");
-						buffer.append(skillName);
-						if (gains > 1) {
-							buffer.append(" (");
-							buffer.append(gains);
-							buffer.append(" skill ranks)");
-						}
-						buffer.append(". ");
-					};
+						(workerName, jobName, skillName, gains, currentLevel) -> {
+							buffer.append(workerName);
+							buffer.append(" showed improvement in the skill of ");
+							buffer.append(skillName);
+							if (gains > 1) {
+								buffer.append(" (");
+								buffer.append(gains);
+								buffer.append(" skill ranks)");
+							}
+							buffer.append(". ");
+						};
 				advancementCLI.addLevelGainListener(levelListener);
 				advancementCLI.advanceWorkersInUnit(unit, expertMentoring);
 				advancementCLI.removeLevelGainListener(levelListener);
 			}
 		}
 		final Boolean runFoodConsumptionAnswer = cli.inputBooleanInSeries(
-			"Run food consumption for this unit now?");
+				"Run food consumption for this unit now?");
 		if (Boolean.TRUE.equals(runFoodConsumptionAnswer)) {
 			consumptionApplet.setTurn(turn);
 			consumptionApplet.setUnit(unit);
@@ -205,7 +205,7 @@ import org.jetbrains.annotations.Nullable;
 			}
 		}
 		final Boolean runFoodSpoilageAnswer = cli.inputBooleanInSeries(
-			"Run food spoilage and report it under this unit's results?");
+				"Run food spoilage and report it under this unit's results?");
 		if (Boolean.TRUE.equals(runFoodSpoilageAnswer)) {
 			spoilageApplet.setOwner(unit.owner());
 			spoilageApplet.setTurn(turn);

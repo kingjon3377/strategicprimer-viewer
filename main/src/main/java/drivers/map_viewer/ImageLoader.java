@@ -44,8 +44,8 @@ public final class ImageLoader {
 
 	static {
 		LovelaceLogger.debug(Stream.of(ImageIO.getReaderFileSuffixes()).filter(Objects::nonNull)
-			.collect(Collectors.joining(", ",
-				"Expect to be able to load the following image file formats: ", "")));
+				.collect(Collectors.joining(", ",
+						"Expect to be able to load the following image file formats: ", "")));
 	}
 
 	/**
@@ -58,7 +58,7 @@ public final class ImageLoader {
 	 */
 	private static Icon createTerrainIcon(final TileType tileType) {
 		final BufferedImage retval = new BufferedImage(FIXTURE_ICON_SIZE, FIXTURE_ICON_SIZE,
-			BufferedImage.TYPE_INT_ARGB);
+				BufferedImage.TYPE_INT_ARGB);
 		final Graphics pen = retval.createGraphics();
 		if (ColorHelper.supportsType(2, tileType)) {
 			pen.setColor(ColorHelper.get(2, tileType));
@@ -98,7 +98,7 @@ public final class ImageLoader {
 			return IMAGE_CACHE.get(file);
 		} else {
 			try (final ResourceInputStream res = new ResourceInputStream("images/" + file,
-				ImageLoader.class)) { // TODO: Change back to IOHandler once ported?
+					ImageLoader.class)) { // TODO: Change back to IOHandler once ported?
 				final Image image = ImageIO.read(res);
 				if (Objects.isNull(image)) {
 					throw new IOException("No reader could read the file images/" + file);
@@ -121,7 +121,7 @@ public final class ImageLoader {
 		} else {
 			final Image orig = loadImage(file);
 			final BufferedImage temp = new BufferedImage(FIXTURE_ICON_SIZE, FIXTURE_ICON_SIZE,
-				BufferedImage.TYPE_INT_ARGB);
+					BufferedImage.TYPE_INT_ARGB);
 			final Graphics pen = temp.createGraphics();
 			pen.drawImage(orig, 0, 0, temp.getWidth(), temp.getHeight(), null);
 			pen.dispose();
@@ -150,8 +150,8 @@ public final class ImageLoader {
 		 * that we don't forget to update this if we change the set of possible tile types.
 		 */
 		private static final Map<TileType, String> DESCRIPTIONS =
-			Collections.unmodifiableMap(Stream.of(TileType.values())
-				.collect(Collectors.toMap(Function.identity(), t -> wrap(t.name()))));
+				Collections.unmodifiableMap(Stream.of(TileType.values())
+						.collect(Collectors.toMap(Function.identity(), t -> wrap(t.name()))));
 
 		/**
 		 * A map from types of features to the colors they can make the
@@ -162,7 +162,8 @@ public final class ImageLoader {
 		private static final Map<Class<? extends TileFixture>, Color> FEATURE_COLORS;
 
 		static {
-			FEATURE_COLORS = Map.of(Forest.class, new Color(0, 117, 0), Oasis.class, new Color(72, 218, 164), Hill.class, new Color(141, 182, 0));
+			FEATURE_COLORS = Map.of(Forest.class, new Color(0, 117, 0), Oasis.class,
+					new Color(72, 218, 164), Hill.class, new Color(141, 182, 0));
 		}
 
 		/**

@@ -20,11 +20,13 @@ import legacy.map.HasExtent;
 import legacy.map.TileFixture;
 
 import drivers.turnrunning.ITurnRunningModel;
+
 import java.math.RoundingMode;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
+
 import org.jetbrains.annotations.Nullable;
 
 /* package */ class WoodcuttingApplet extends AbstractTurnApplet {
@@ -52,8 +54,8 @@ import org.jetbrains.annotations.Nullable;
 	}
 
 	// TODO: To simplify our lives in the crippled type-system of Java, make HasPopulation and HasExtent extend TileFixture
-	private <T extends HasExtent<? extends TileFixture>&TileFixture> void
-			reduceExtent(final Point point, final T fixture, final BigDecimal acres) {
+	private <T extends HasExtent<? extends TileFixture> & TileFixture> void
+	reduceExtent(final Point point, final T fixture, final BigDecimal acres) {
 		model.reduceExtent(point, fixture, IFixture.CopyBehavior.ZERO, acres);
 	}
 
@@ -147,21 +149,21 @@ import org.jetbrains.annotations.Nullable;
 		}
 		if (treeCount > 7) {
 			final Forest forest = chooseFromList(model.getMap().getFixtures(loc).stream()
-					.filter(Forest.class::isInstance).map(Forest.class::cast)
-					.collect(Collectors.toList()),
-				"Forests on tile:", "No forests on tile", "Forest being cleared: ", ICLIHelper.ListChoiceBehavior.ALWAYS_PROMPT);
+							.filter(Forest.class::isInstance).map(Forest.class::cast)
+							.collect(Collectors.toList()),
+					"Forests on tile:", "No forests on tile", "Forest being cleared: ", ICLIHelper.ListChoiceBehavior.ALWAYS_PROMPT);
 			if (!Objects.isNull(forest) && forest.getAcres().doubleValue() > 0.0) {
 				BigDecimal acres = decimalize(treeCount * 10 / 72)
-					.divide(decimalize(100), RoundingMode.HALF_EVEN)
-					.min(decimalize(forest.getAcres()));
+						.divide(decimalize(100), RoundingMode.HALF_EVEN)
+						.min(decimalize(forest.getAcres()));
 				final Boolean aCorrect = cli.inputBoolean(String.format(
-					"Is %.2f (of %.2f) cleared correct?", acres.doubleValue(),
-					forest.getAcres().doubleValue()));
+						"Is %.2f (of %.2f) cleared correct?", acres.doubleValue(),
+						forest.getAcres().doubleValue()));
 				if (Objects.isNull(aCorrect)) {
 					return null;
 				} else if (aCorrect) {
 					builder.append(String.format(", clearing %.2f acres (~ %d sq ft) of land.",
-						acres, acres.multiply(decimalize(43560)).intValue())); // TODO: Make Decimal constant static final
+							acres, acres.multiply(decimalize(43560)).intValue())); // TODO: Make Decimal constant static final
 				} else {
 					final String str = cli.inputMultilineString("Description of cleared land:");
 					if (Objects.isNull(str)) {

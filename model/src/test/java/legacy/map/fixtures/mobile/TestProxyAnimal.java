@@ -27,15 +27,15 @@ public class TestProxyAnimal {
 		// TODO: should take population of original and population to test as parameters?
 		final Animal base = new AnimalImpl("test", false, "status", id, -1, 12);
 		final ProxyAnimal proxy = new ProxyAnimal(base, base.copy(IFixture.CopyBehavior.KEEP),
-			base.copy(IFixture.CopyBehavior.KEEP));
+				base.copy(IFixture.CopyBehavior.KEEP));
 		assertEquals(3, base.reduced(3, newId).getPopulation(),
-			"Test that reduced() works the way we expect in the non-proxy case.");
+				"Test that reduced() works the way we expect in the non-proxy case.");
 		final Animal reduced = proxy.reduced(3, newId);
 		assertInstanceOf(ProxyAnimal.class, reduced, "Proxy reduction produces another proxy");
 		for (final Animal proxied : ((ProxyAnimal) reduced).getProxied()) {
 			assertEquals(newId, proxied.getId(), "Each animal proxied by it has the correct ID");
 			assertEquals(3, proxied.getPopulation(),
-				"Each animal proxied by it has the correct population");
+					"Each animal proxied by it has the correct population");
 		}
 	}
 
@@ -64,6 +64,6 @@ public class TestProxyAnimal {
 	static Stream<Arguments> testProxyAnimalReduction() {
 		final ThreadLocalRandom tlr = ThreadLocalRandom.current();
 		return tlr.ints(0, Integer.MAX_VALUE - 2).boxed().sequential()
-			.flatMap(new PairCollater()).limit(3);
+				.flatMap(new PairCollater()).limit(3);
 	}
 }

@@ -45,7 +45,7 @@ public abstract class AbstractDatabaseWriter<Item, Context> implements DatabaseW
 				for (final Query initializer : getInitializers()) {
 					initializer.execute(db);
 					LovelaceLogger.debug("Executed initializer beginning %s",
-						LINEBREAK.split(initializer.rawSql())[0]);
+							LINEBREAK.split(initializer.rawSql())[0]);
 				}
 			});
 			connections.add(sql);

@@ -52,13 +52,13 @@ import java.util.Objects;
 	}
 
 	private static void addToMap(final Point location, final IFixture fixture, final IDRegistrar idf,
-	                             final DelayedRemovalMap<Integer, Pair<Point, IFixture>> mapping) {
+								 final DelayedRemovalMap<Integer, Pair<Point, IFixture>> mapping) {
 		if (fixture instanceof TileFixture || fixture.getId() >= 0) {
 			final int key = checkID(idf, fixture);
 			final Pair<Point, IFixture> val = Pair.with(location, fixture);
 			if (mapping.containsKey(key) && !val.equals(mapping.get(key))) {
 				LovelaceLogger.warning("Duplicate key, %d, for Pairs %s and %s",
-					key, mapping.get(key), val);
+						key, mapping.get(key), val);
 			}
 			mapping.put(key, val);
 			if (fixture instanceof final FixtureIterable<?> fi) {
@@ -100,7 +100,7 @@ import java.util.Objects;
 	}
 
 	private static void parentMapImpl(final Map<Integer, Integer> retval, final IFixture parent,
-	                                  final Iterable<? extends IFixture> stream) {
+									  final Iterable<? extends IFixture> stream) {
 		for (final IFixture fixture : stream) {
 			retval.put(fixture.getId(), parent.getId());
 			if (fixture instanceof final FixtureIterable<?> fi) {

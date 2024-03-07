@@ -28,15 +28,15 @@ public final class DBMineHandler extends AbstractDatabaseWriter<Mine, Point> imp
 	}
 
 	private static final List<Query> INITIALIZERS = Collections.singletonList(
-		Query.of("CREATE TABLE IF NOT EXISTS mines (" +
-			"    row INTEGER NOT NULL," +
-			"    column INTEGER NOT NULL," +
-			"    id INTEGER NOT NULL," +
-			"    kind VARCHAR(128) NOT NULL," +
-			"    status VARCHAR(9) NOT NULL" +
-			"        CHECK(status IN ('abandoned', 'active', 'burned', 'ruined'))," +
-			"    image VARCHAR(255)" +
-			");"));
+			Query.of("CREATE TABLE IF NOT EXISTS mines (" +
+					"    row INTEGER NOT NULL," +
+					"    column INTEGER NOT NULL," +
+					"    id INTEGER NOT NULL," +
+					"    kind VARCHAR(128) NOT NULL," +
+					"    status VARCHAR(9) NOT NULL" +
+					"        CHECK(status IN ('abandoned', 'active', 'burned', 'ruined'))," +
+					"    image VARCHAR(255)" +
+					");"));
 
 	@Override
 	public List<Query> getInitializers() {
@@ -44,15 +44,15 @@ public final class DBMineHandler extends AbstractDatabaseWriter<Mine, Point> imp
 	}
 
 	private static final Query INSERT_SQL =
-		Query.of("INSERT INTO mines (row, column, id, kind, status, image) " +
-			"VALUES(:row, :column, :id, :kind, :status, :image);");
+			Query.of("INSERT INTO mines (row, column, id, kind, status, image) " +
+					"VALUES(:row, :column, :id, :kind, :status, :image);");
 
 	@Override
 	public void write(final Transactional db, final Mine obj, final Point context) throws SQLException {
 		INSERT_SQL.on(value("row", context.row()), value("column", context.column()),
-				value("id", obj.getId()), value("kind", obj.getKind()),
-				value("status", obj.getStatus().toString()), value("image", obj.getImage()))
-			.execute(db.connection());
+						value("id", obj.getId()), value("kind", obj.getKind()),
+						value("status", obj.getStatus().toString()), value("image", obj.getImage()))
+				.execute(db.connection());
 	}
 
 	private static TryBiConsumer<Map<String, Object>, Warning, SQLException> readMine(final IMutableLegacyMap map) {
@@ -75,7 +75,7 @@ public final class DBMineHandler extends AbstractDatabaseWriter<Mine, Point> imp
 
 	@Override
 	public void readMapContents(final Connection db, final IMutableLegacyMap map, final Map<Integer, IFixture> containers,
-	                            final Map<Integer, List<Object>> containees, final Warning warner) throws SQLException {
+								final Map<Integer, List<Object>> containees, final Warning warner) throws SQLException {
 		handleQueryResults(db, warner, "mines", readMine(map), SELECT);
 	}
 }

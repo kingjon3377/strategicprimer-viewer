@@ -27,7 +27,7 @@ import legacy.map.HasImage;
 import static io.jenetics.facilejdbc.Param.value;
 
 public final class DBMineralHandler extends AbstractDatabaseWriter<MineralFixture, Point>
-	implements MapContentsReader {
+		implements MapContentsReader {
 	public DBMineralHandler() {
 		super(MineralFixture.class, Point.class);
 	}
@@ -35,20 +35,20 @@ public final class DBMineralHandler extends AbstractDatabaseWriter<MineralFixtur
 	@Override
 	public boolean canWrite(final Object obj, final Object context) {
 		return (obj instanceof MineralVein || obj instanceof StoneDeposit) &&
-			context instanceof Point;
+				context instanceof Point;
 	}
 
 	private static final List<Query> INITIALIZERS = Collections.singletonList(
-		Query.of("CREATE TABLE IF NOT EXISTS minerals (" +
-			"    row INTEGER NOT NULL," +
-			"    column INTEGER NOT NULL," +
-			"    type VARCHAR(7) NOT NULL CHECK(type IN('stone', 'mineral'))," +
-			"    id INTEGER NOT NULL," +
-			"    kind VARCHAR(64) NOT NULL," +
-			"    exposed BOOLEAN NOT NULL CHECK(exposed OR type IN('mineral'))," +
-			"    dc INTEGER NOT NULL," +
-			"    image VARCHAR(255)" +
-			");"));
+			Query.of("CREATE TABLE IF NOT EXISTS minerals (" +
+					"    row INTEGER NOT NULL," +
+					"    column INTEGER NOT NULL," +
+					"    type VARCHAR(7) NOT NULL CHECK(type IN('stone', 'mineral'))," +
+					"    id INTEGER NOT NULL," +
+					"    kind VARCHAR(64) NOT NULL," +
+					"    exposed BOOLEAN NOT NULL CHECK(exposed OR type IN('mineral'))," +
+					"    dc INTEGER NOT NULL," +
+					"    image VARCHAR(255)" +
+					");"));
 
 	@Override
 	public List<Query> getInitializers() {
@@ -56,8 +56,8 @@ public final class DBMineralHandler extends AbstractDatabaseWriter<MineralFixtur
 	}
 
 	private static final Query INSERT_SQL =
-		Query.of("INSERT INTO minerals (row, column, type, id, kind, exposed, dc, image) " +
-			"VALUES(:row, :column, :type, :id, :kind, :exposed, :dc, :image);");
+			Query.of("INSERT INTO minerals (row, column, type, id, kind, exposed, dc, image) " +
+					"VALUES(:row, :column, :type, :id, :kind, :exposed, :dc, :image);");
 
 	@Override
 	public void write(final Transactional db, final MineralFixture obj, final Point context) throws SQLException {
@@ -73,9 +73,9 @@ public final class DBMineralHandler extends AbstractDatabaseWriter<MineralFixtur
 			throw new IllegalArgumentException("Unhandled mineral fixture type");
 		}
 		INSERT_SQL.on(value("row", context.row()), value("column", context.column()),
-			value("type", type), value("id", obj.getId()), value("kind", obj.getKind()),
-			value("exposed", exposed), value("dc", obj.getDC()),
-			value("image", ((HasImage) obj).getImage())).execute(db.connection());
+				value("type", type), value("id", obj.getId()), value("kind", obj.getKind()),
+				value("exposed", exposed), value("dc", obj.getDC()),
+				value("image", ((HasImage) obj).getImage())).execute(db.connection());
 	}
 
 	private TryBiConsumer<Map<String, Object>, Warning, SQLException> readMineralVein(final IMutableLegacyMap map) {
@@ -95,7 +95,8 @@ public final class DBMineralHandler extends AbstractDatabaseWriter<MineralFixtur
 		};
 	}
 
-	private static TryBiConsumer<Map<String, Object>, Warning, SQLException> readStoneDeposit(final IMutableLegacyMap map) {
+	private static TryBiConsumer<Map<String, Object>, Warning, SQLException> readStoneDeposit(
+			final IMutableLegacyMap map) {
 		return (dbRow, warner) -> {
 			final int row = (Integer) dbRow.get("row");
 			final int column = (Integer) dbRow.get("column");
@@ -112,13 +113,13 @@ public final class DBMineralHandler extends AbstractDatabaseWriter<MineralFixtur
 	}
 
 	private static final Query SELECT_STONE =
-		Query.of("SELECT row, column, id, kind, dc, image FROM minerals WHERE type = 'stone'");
+			Query.of("SELECT row, column, id, kind, dc, image FROM minerals WHERE type = 'stone'");
 	private static final Query SELECT_MINERAL =
-		Query.of("SELECT row, column, id, kind, exposed, dc, image FROM minerals WHERE type = 'mineral'");
+			Query.of("SELECT row, column, id, kind, exposed, dc, image FROM minerals WHERE type = 'mineral'");
 
 	@Override
 	public void readMapContents(final Connection db, final IMutableLegacyMap map, final Map<Integer, IFixture> containers,
-	                            final Map<Integer, List<Object>> containees, final Warning warner) throws SQLException {
+								final Map<Integer, List<Object>> containees, final Warning warner) throws SQLException {
 		handleQueryResults(db, warner, "stone deposits", readStoneDeposit(map), SELECT_STONE);
 		handleQueryResults(db, warner, "mineral veins", readMineralVein(map), SELECT_MINERAL);
 	}

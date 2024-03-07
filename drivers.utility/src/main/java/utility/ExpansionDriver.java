@@ -19,42 +19,42 @@ import drivers.common.CLIDriver;
  * FIXME: Write GUI for map-expanding driver
  */
 public class ExpansionDriver implements CLIDriver {
-    public ExpansionDriver(final SPOptions options, final UtilityDriverModel model) {
-        this.options = options;
-        this.model = model;
-    }
+	public ExpansionDriver(final SPOptions options, final UtilityDriverModel model) {
+		this.options = options;
+		this.model = model;
+	}
 
-    private final SPOptions options;
-    private final UtilityDriverModel model;
+	private final SPOptions options;
+	private final UtilityDriverModel model;
 
-    @Override
-    public SPOptions getOptions() {
-        return options;
-    }
+	@Override
+	public SPOptions getOptions() {
+		return options;
+	}
 
-    @Override
-    public UtilityDriverModel getModel() {
-        return model;
-    }
+	@Override
+	public UtilityDriverModel getModel() {
+		return model;
+	}
 
-    private static Predicate<Point> containsSwornVillage(final ILegacyMap map, final Player currentPlayer) {
-        return (point) -> map.getFixtures(point).stream().filter(ITownFixture.class::isInstance)
-                .map(ITownFixture.class::cast).map(HasOwner::owner)
-                .anyMatch(currentPlayer::equals);
-    }
+	private static Predicate<Point> containsSwornVillage(final ILegacyMap map, final Player currentPlayer) {
+		return (point) -> map.getFixtures(point).stream().filter(ITownFixture.class::isInstance)
+				.map(ITownFixture.class::cast).map(HasOwner::owner)
+				.anyMatch(currentPlayer::equals);
+	}
 
-    private static <T> Predicate<T> not(final Predicate<T> pred) {
-        return t -> !pred.test(t);
-    }
+	private static <T> Predicate<T> not(final Predicate<T> pred) {
+		return t -> !pred.test(t);
+	}
 
-    @Override
-    public void startDriver() {
-        for (final Player player : model.streamSubordinateMaps()
-                .map(ILegacyMap::getCurrentPlayer).filter(not(Player::isIndependent)).collect(Collectors.toSet())) {
-            for (final Point point : model.getMap().streamLocations()
-                    .filter(containsSwornVillage(model.getMap(), player)).toList()) {
-                model.expandAroundPoint(point, player);
-            }
-        }
-    }
+	@Override
+	public void startDriver() {
+		for (final Player player : model.streamSubordinateMaps()
+				.map(ILegacyMap::getCurrentPlayer).filter(not(Player::isIndependent)).collect(Collectors.toSet())) {
+			for (final Point point : model.getMap().streamLocations()
+					.filter(containsSwornVillage(model.getMap(), player)).toList()) {
+				model.expandAroundPoint(point, player);
+			}
+		}
+	}
 }

@@ -67,12 +67,12 @@ public class TownTabularReportGenerator implements ITableGenerator<AbstractTown>
 	 */
 	@Override
 	public List<List<String>> produce(
-		final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-		final AbstractTown item, final int key, final Point loc, final Map<Integer, Integer> parentMap) {
+			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
+			final AbstractTown item, final int key, final Point loc, final Map<Integer, Integer> parentMap) {
 		fixtures.remove(key);
 		return Collections.singletonList(Arrays.asList(distanceString(loc, hq, dimensions),
-			locationString(loc), ownerString(player, item.owner()), item.getKind(),
-			item.getTownSize().toString(), item.getStatus().toString(), item.getName()));
+				locationString(loc), ownerString(player, item.owner()), item.getKind(),
+				item.getTownSize().toString(), item.getStatus().toString(), item.getName()));
 	}
 
 	/**
@@ -80,14 +80,15 @@ public class TownTabularReportGenerator implements ITableGenerator<AbstractTown>
 	 * TownComparators#compareTowns} because there we want to have all
 	 * active communities together, and so on, while here we want all
 	 * fortifications together, and so on.
+	 *
 	 * @return
 	 */
 	@Override
 	public Comparator<Pair<Point, AbstractTown>> comparePairs() {
 		return Comparator.<Pair<Point, AbstractTown>, AbstractTown>comparing(Pair::getValue1, TownComparators::compareTownKind)
-			.thenComparing(Pair::getValue0, distanceComparator)
-			.thenComparing(Pair::getValue1, Comparator.comparing(AbstractTown::getTownSize)
-				.thenComparing(AbstractTown::getStatus)
-				.thenComparing(AbstractTown::getName));
+				.thenComparing(Pair::getValue0, distanceComparator)
+				.thenComparing(Pair::getValue1, Comparator.comparing(AbstractTown::getTownSize)
+						.thenComparing(AbstractTown::getStatus)
+						.thenComparing(AbstractTown::getName));
 	}
 }

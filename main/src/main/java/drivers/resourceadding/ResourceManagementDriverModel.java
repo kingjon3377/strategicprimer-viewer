@@ -45,7 +45,7 @@ import java.math.BigDecimal;
 	 */
 	public Iterable<Player> getPlayers() {
 		return streamAllMaps().flatMap(m -> StreamSupport.stream(m.getPlayers().spliterator(), false))
-			.collect(Collectors.toSet());
+				.collect(Collectors.toSet());
 	}
 
 	/**
@@ -61,14 +61,14 @@ import java.math.BigDecimal;
 			// Operate on maps where the current player is independent OR matches
 			// ("independent" also including negative ID)
 			if (mapPlayer.isIndependent() || mapPlayer.getPlayerId() < 0 ||
-				mapPlayer.getPlayerId() == player.getPlayerId()) {
+					mapPlayer.getPlayerId() == player.getPlayerId()) {
 				final IMutableFortress fortress = map.streamAllFixtures()
-					.filter(isFortress)
-					.map(fortressCast)
-					.filter(f -> "HQ".equals(f.getName()))
-					.filter(f -> mapPlayer.getPlayerId() ==
-						f.owner().getPlayerId())
-					.findAny().orElse(null);
+						.filter(isFortress)
+						.map(fortressCast)
+						.filter(f -> "HQ".equals(f.getName()))
+						.filter(f -> mapPlayer.getPlayerId() ==
+								f.owner().getPlayerId())
+						.findAny().orElse(null);
 				if (Objects.isNull(fortress)) {
 					LovelaceLogger.warning("Didn't find HQ for %s", mapPlayer);
 				} else {
@@ -82,9 +82,9 @@ import java.math.BigDecimal;
 	}
 
 	public IResourcePile addResourcePile(final Player player, final int id, final String kind, final String resource,
-	                                     final BigDecimal quantity, final String units, final @Nullable Integer created) {
+										 final BigDecimal quantity, final String units, final @Nullable Integer created) {
 		final IMutableResourcePile pile = new ResourcePileImpl(id, kind, resource,
-			new LegacyQuantity(quantity, units));
+				new LegacyQuantity(quantity, units));
 		if (!Objects.isNull(created)) {
 			pile.setCreated(created);
 		}
@@ -97,6 +97,6 @@ import java.math.BigDecimal;
 	 */
 	public @Nullable Player getCurrentPlayer() {
 		return StreamSupport.stream(getPlayers().spliterator(), false)
-			.filter(Player::isCurrent).findAny().orElse(null);
+				.filter(Player::isCurrent).findAny().orElse(null);
 	}
 }

@@ -8,9 +8,13 @@ import org.jetbrains.annotations.NotNull;
  */
 public interface IMutableEntity extends IEntity {
 	void setLocation(@NotNull Location location);
+
 	void setProperty(final @NotNull EntityProperty<?> property);
+
 	void removeProperty(final @NotNull String propertyName);
+
 	void removeProperty(final @NotNull EntityProperty<?> property);
+
 	@Override
 	IMutableEntity copy();
 }

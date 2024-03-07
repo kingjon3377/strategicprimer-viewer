@@ -14,7 +14,8 @@ import legacy.map.Player;
  * side of the world.
  */
 public class AdventureFixture implements ExplorableFixture, HasMutableOwner, SubsettableFixture {
-	public AdventureFixture(final Player owner, final String briefDescription, final String fullDescription, final int id) {
+	public AdventureFixture(final Player owner, final String briefDescription, final String fullDescription,
+							final int id) {
 		this.owner = owner;
 		this.briefDescription = briefDescription;
 		this.fullDescription = fullDescription;
@@ -106,7 +107,7 @@ public class AdventureFixture implements ExplorableFixture, HasMutableOwner, Sub
 	@Override
 	public AdventureFixture copy(final CopyBehavior zero) {
 		final AdventureFixture retval = new AdventureFixture(owner, briefDescription,
-			fullDescription, id);
+				fullDescription, id);
 		retval.setImage(image);
 		return retval;
 	}
@@ -135,9 +136,9 @@ public class AdventureFixture implements ExplorableFixture, HasMutableOwner, Sub
 			return true;
 		} else if (fixture instanceof final AdventureFixture obj) {
 			return ((owner.isIndependent() && obj.owner().isIndependent()) ||
-				(owner.getPlayerId() == obj.owner().getPlayerId())) &&
-				briefDescription.equals(obj.getBriefDescription()) &&
-				fullDescription.equals(obj.getFullDescription());
+					(owner.getPlayerId() == obj.owner().getPlayerId())) &&
+					briefDescription.equals(obj.getBriefDescription()) &&
+					fullDescription.equals(obj.getFullDescription());
 		} else {
 			return false;
 		}
@@ -184,7 +185,7 @@ public class AdventureFixture implements ExplorableFixture, HasMutableOwner, Sub
 		if (obj.getId() == id) {
 			if (obj instanceof final AdventureFixture af) {
 				final Consumer<String> localReport =
-					(str) -> report.accept(String.format("In adventure with ID #%d: %s", id, str));
+						(str) -> report.accept(String.format("In adventure with ID #%d: %s", id, str));
 				if (!briefDescription.equals(af.getBriefDescription())) {
 					localReport.accept("Brief descriptions differ");
 					return false;
@@ -192,7 +193,7 @@ public class AdventureFixture implements ExplorableFixture, HasMutableOwner, Sub
 					localReport.accept("Full descriptions differ");
 					return false;
 				} else if (owner.getPlayerId() != af.owner().getPlayerId() &&
-					af.owner().isIndependent()) {
+						af.owner().isIndependent()) {
 					localReport.accept("Owners differ");
 					return false;
 				} else {

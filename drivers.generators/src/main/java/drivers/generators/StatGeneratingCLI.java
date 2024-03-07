@@ -164,7 +164,7 @@ import legacy.map.fixtures.towns.Village;
 			return excludedVillages.get(village);
 		} else {
 			final Boolean retval = cli.inputBoolean(String.format(
-				"Has a newcomer come from %s in the last 7 turns?", village.getName()));
+					"Has a newcomer come from %s in the last 7 turns?", village.getName()));
 			if (Objects.isNull(retval)) {
 				return false;
 			}
@@ -187,14 +187,14 @@ import legacy.map.fixtures.towns.Village;
 		}
 		try {
 			final Iterable<String> textContent = FileContentsReader
-				.readFileContents(WorkerStats.class,
-					Paths.get("racial_stat_adjustments", race + ".txt"));
+					.readFileContents(WorkerStats.class,
+							Paths.get("racial_stat_adjustments", race + ".txt"));
 			final List<Integer> parsed = new ArrayList<>(6);
 			for (final String line : textContent) {
 				parsed.add(Integer.parseInt(line.strip()));
 			}
 			final WorkerStats retval = WorkerStats.factory(parsed.get(0), parsed.get(1), parsed.get(2), parsed.get(3),
-				parsed.get(4), parsed.get(5));
+					parsed.get(4), parsed.get(5));
 			racialBonuses.put(race, retval);
 			return retval;
 		} catch (final NoSuchFileException except) {
@@ -224,10 +224,10 @@ import legacy.map.fixtures.towns.Village;
 				bonusStat = lowestScore;
 			} else {
 				final int chosenBonus = cli.chooseStringFromList(Arrays.asList("Strength",
-						"Dexterity", "Constitution", "Intelligence", "Wisdom", "Charisma",
-						"Lowest", "Always Choose Lowest"), String.format(
-						"Character is a %s; which stat should get a +2 bonus?", race),
-					"", "Stat for bonus:", ICLIHelper.ListChoiceBehavior.ALWAYS_PROMPT).getValue0();
+								"Dexterity", "Constitution", "Intelligence", "Wisdom", "Charisma",
+								"Lowest", "Always Choose Lowest"), String.format(
+								"Character is a %s; which stat should get a +2 bonus?", race),
+						"", "Stat for bonus:", ICLIHelper.ListChoiceBehavior.ALWAYS_PROMPT).getValue0();
 				if (chosenBonus < 6) {
 					bonusStat = chosenBonus;
 				} else if (chosenBonus == 7) {
@@ -249,7 +249,7 @@ import legacy.map.fixtures.towns.Village;
 			racialBonus = loadRacialBonus(race);
 		}
 		final int conBonus = WorkerStats.getModifier(base.getConstitution() +
-			racialBonus.getConstitution());
+				racialBonus.getConstitution());
 		int hp = 8 + conBonus;
 		for (int level = 0; level < levels; level++) {
 			hp += die(8) + conBonus;
@@ -258,11 +258,11 @@ import legacy.map.fixtures.towns.Village;
 	}
 
 	private static void maybeAddEquipment(final IDRegistrar idf,
-	                                      final IMutableWorker worker, final String equipment,
-	                                      final double chance) {
+										  final IMutableWorker worker, final String equipment,
+										  final double chance) {
 		if (chance >= 1.0 || SingletonRandom.SINGLETON_RANDOM.nextDouble() < chance) {
 			worker.addEquipment(new Implement(equipment,
-				idf.createID()));
+					idf.createID()));
 		}
 	}
 
@@ -277,7 +277,7 @@ import legacy.map.fixtures.towns.Village;
 			final WorkerStats stats = createWorkerStats(village.getRace(), 0);
 			worker.setStats(stats);
 			cli.println(String.format("%s is a %s from %s. Stats:", name, village.getRace(),
-				village.getName()));
+					village.getName()));
 			cli.println(stats.getPrintable());
 			final boolean woolen = cli.inputBooleanInSeries("Is the worker's tunic woolen rather than linen?");
 			worker.addEquipment(new Implement(woolen ? "woolen tunic" : "linen tunic", idf.createID()));
@@ -289,7 +289,7 @@ import legacy.map.fixtures.towns.Village;
 		} else {
 			final List<IJob> candidates = new ArrayList<>();
 			for (final Map.Entry<String, Integer> entry :
-				village.getPopulation().getHighestSkillLevels().entrySet()) {
+					village.getPopulation().getHighestSkillLevels().entrySet()) {
 				final String job = entry.getKey();
 				final int level = entry.getValue();
 				final IntConsumer addCandidate = (lvl) -> candidates.add(new Job(job, lvl));
@@ -300,32 +300,32 @@ import legacy.map.fixtures.towns.Village;
 					addCandidate.accept(level - 7);
 					// TODO: For counts above 16 just use a hard-coded distribution (e.g. 4 each of 5, 6, 7, 8)?
 					SingletonRandom.SINGLETON_RANDOM.ints(16, 5, 9)
-						.forEach(addCandidate);
+							.forEach(addCandidate);
 					SingletonRandom.SINGLETON_RANDOM.ints(32, 1, 5)
-						.forEach(addCandidate);
+							.forEach(addCandidate);
 				} else if (level > 12) {
 					addCandidate.accept(level - 3);
 					SingletonRandom.SINGLETON_RANDOM.ints(8, 5, 9)
-						.forEach(addCandidate);
+							.forEach(addCandidate);
 					SingletonRandom.SINGLETON_RANDOM.ints(16, 1, 5)
-						.forEach(addCandidate);
+							.forEach(addCandidate);
 				} else if (level > 8) {
 					SingletonRandom.SINGLETON_RANDOM.ints(3, 5, 9)
-						.forEach(addCandidate);
+							.forEach(addCandidate);
 					SingletonRandom.SINGLETON_RANDOM.ints(6, 1, 5)
-						.forEach(addCandidate);
+							.forEach(addCandidate);
 				} else if (level > 4) {
 					SingletonRandom.SINGLETON_RANDOM.ints(2, 1, 5)
-						.forEach(addCandidate);
+							.forEach(addCandidate);
 				}
 			}
 			if (candidates.isEmpty()) {
 				cli.println(String.format("No training available in %s.",
-					village.getName()));
+						village.getName()));
 				final WorkerStats stats = createWorkerStats(village.getRace(), 0);
 				worker.setStats(stats);
 				cli.println(String.format("%s is a %s from %s. Stats:", name,
-					village.getRace(), village.getName()));
+						village.getRace(), village.getName()));
 				cli.println(stats.getPrintable());
 				final boolean woolen = cli.inputBooleanInSeries("Is the worker's tunic woolen rather than linen?");
 				worker.addEquipment(new Implement(woolen ? "woolen tunic" : "linen tunic", idf.createID()));
@@ -342,7 +342,7 @@ import legacy.map.fixtures.towns.Village;
 				while (true) {
 					iterations++;
 					final WorkerStats stats = createWorkerStats(village.getRace(),
-						training.getLevel());
+							training.getLevel());
 					if (iterations > 100) {
 						cli.println(String.format("Bypassing automated sanity check after %d iterations", iterations));
 					} else if (!suitable.test(stats)) {
@@ -350,12 +350,12 @@ import legacy.map.fixtures.towns.Village;
 						continue;
 					}
 					cli.println(String.format(
-						"%s, a %s, is a level-%d %s from %s. Proposed stats:",
-						name, village.getRace(), training.getLevel(),
-						training.getName(), village.getName()));
+							"%s, a %s, is a level-%d %s from %s. Proposed stats:",
+							name, village.getRace(), training.getLevel(),
+							training.getName(), village.getName()));
 					cli.println(stats.getPrintable());
 					final boolean acceptance = cli.inputBoolean( // TODO: handle EOF
-						"Do those stats fit that profile?");
+							"Do those stats fit that profile?");
 					if (acceptance) {
 						worker.setStats(stats);
 						break;
@@ -369,12 +369,12 @@ import legacy.map.fixtures.towns.Village;
 					}
 				}
 				final List<String> standardEquipment =
-					StandardEquipment.standardEquipment(
-						training.getName(), training.getLevel());
+						StandardEquipment.standardEquipment(
+								training.getName(), training.getLevel());
 				for (final String item : standardEquipment) {
 					LovelaceLogger.debug("Adding %s for %s, a level %d %s",
-						item, worker.getName(),
-						training.getLevel(), training.getName());
+							item, worker.getName(),
+							training.getLevel(), training.getName());
 					worker.addEquipment(new Implement(item, idf.createID()));
 				}
 				String equipmentPrompt = "Does the worker have any equipment?";
@@ -384,21 +384,23 @@ import legacy.map.fixtures.towns.Village;
 						worker.addEquipment(new Implement(arg, idf.createID()));
 					}
 				};
-				final Predicate<String> stdOmits = arg -> standardEquipment.stream().map(String::toLowerCase).noneMatch(s -> s.contains(arg));
+				final Predicate<String> stdOmits = arg -> standardEquipment.stream().map(String::toLowerCase)
+						.noneMatch(s -> s.contains(arg));
 				if (stdOmits.test("tunic")) {
-					final boolean woolen = cli.inputBooleanInSeries("Is the worker's tunic woolen rather than linen?", "tunic-" + training.getName());
+					final boolean woolen = cli.inputBooleanInSeries("Is the worker's tunic woolen rather than linen?",
+							"tunic-" + training.getName());
 					addIfStdOmits.accept("tunic",
-						woolen ? "woolen tunic" : "linen tunic");
+							woolen ? "woolen tunic" : "linen tunic");
 				}
 				final boolean hasMultipleLevels = training.getLevel() > 1;
 				final TriConsumer<String, String, Double> maybeAdd =
-					(key, item, chance) -> {
-						if (hasMultipleLevels || SingletonRandom.SINGLETON_RANDOM.nextDouble() < chance) {
-							addIfStdOmits.accept(key, item);
-						} else {
-							cli.println("Not adding " + key);
-						}
-					};
+						(key, item, chance) -> {
+							if (hasMultipleLevels || SingletonRandom.SINGLETON_RANDOM.nextDouble() < chance) {
+								addIfStdOmits.accept(key, item);
+							} else {
+								cli.println("Not adding " + key);
+							}
+						};
 				maybeAdd.accept("cloak", "woolen cloak", 0.9);
 				maybeAdd.accept("boots", "pair leather boots", 0.8);
 				maybeAdd.accept("satchel", "leather satchel", 0.75);
@@ -433,7 +435,7 @@ import legacy.map.fixtures.towns.Village;
 			}
 			worker = new Worker(name, race, idf.createID());
 			final int levels = (int) SingletonRandom.SINGLETON_RANDOM.ints(3, 0, 20)
-				.filter(n -> n == 0).count();
+					.filter(n -> n == 0).count();
 			if (levels == 1) {
 				cli.println("Worker has 1 Job level.");
 			} else if (levels > 1) {
@@ -450,7 +452,8 @@ import legacy.map.fixtures.towns.Village;
 		}
 	}
 
-	private static final Pattern VILLAGER_PATTERN = Pattern.compile(".*From \\([^.]*\\)\\. Newcomer in turn #\\([0-9]*\\)\\..*");
+	private static final Pattern VILLAGER_PATTERN =
+			Pattern.compile(".*From \\([^.]*\\)\\. Newcomer in turn #\\([0-9]*\\)\\..*");
 
 	/**
 	 * Filter out villages that have had volunteers come to the player's fortress(es) recently.
@@ -491,10 +494,10 @@ import legacy.map.fixtures.towns.Village;
 		}
 		final Point hqLoc;
 		final Optional<Point> found = model.getMap().streamLocations()
-			.flatMap(l -> model.getMap().getFixtures(l).stream()
-				.map(f -> Pair.with(l, f)))
-			.filter(pair -> pair.getValue1().getId() == unit.getId()) // TODO: look in forts too
-			.map(Pair::getValue0).findAny();
+				.flatMap(l -> model.getMap().getFixtures(l).stream()
+						.map(f -> Pair.with(l, f)))
+				.filter(pair -> pair.getValue1().getId() == unit.getId()) // TODO: look in forts too
+				.map(Pair::getValue0).findAny();
 		if (found.isPresent()) {
 			hqLoc = found.get();
 		} else {
@@ -508,19 +511,19 @@ import legacy.map.fixtures.towns.Village;
 		}
 		final Pathfinder pather = PathfinderFactory.pathfinder(model.getMap());
 		final Function<Point, Pair<Integer, Double>> travelDistance =
-			(dest) -> Pair.with(pather.getTravelDistance(hqLoc, dest).getValue0(),
-				model.getMapDimensions().distance(hqLoc, dest));
+				(dest) -> Pair.with(pather.getTravelDistance(hqLoc, dest).getValue0(),
+						model.getMapDimensions().distance(hqLoc, dest));
 		final List<Triplet<Integer, Double, Village>> villages = model.getMap().streamLocations()
-			.flatMap(l -> model.getMap().getFixtures(l).stream()
-				.filter(Village.class::isInstance).map(Village.class::cast)
-				.filter(v -> v.owner().equals(unit.owner()))
-				.filter(filterRecentVillages(unit.owner()))
-				.map(v -> Pair.with(l, v)))
-			.map(p -> travelDistance.apply(p.getValue0()).addAt2(p.getValue1()))
-			.sorted(Comparator.comparingInt(Triplet::getValue0))
-			.collect(Collectors.toList());
+				.flatMap(l -> model.getMap().getFixtures(l).stream()
+						.filter(Village.class::isInstance).map(Village.class::cast)
+						.filter(v -> v.owner().equals(unit.owner()))
+						.filter(filterRecentVillages(unit.owner()))
+						.map(v -> Pair.with(l, v)))
+				.map(p -> travelDistance.apply(p.getValue0()).addAt2(p.getValue1()))
+				.sorted(Comparator.comparingInt(Triplet::getValue0))
+				.collect(Collectors.toList());
 		final int mpPerDay = Optional.ofNullable(cli.inputNumber("MP per day for village volunteers:"))
-			.orElse(-1);
+				.orElse(-1);
 		for (int i = 0; i < count; i++) {
 			final String name;
 			if (names.isEmpty()) {
@@ -543,8 +546,8 @@ import legacy.map.fixtures.towns.Village;
 					villagesToRemove.add(triplet);
 					continue;
 				} else if (SingletonRandom.SINGLETON_RANDOM.nextDouble() <
-					villageChance((int) (Math.min((double) (mpDistance) / mpPerDay,
-						tileDistance / 12.0)) + 1)) {
+						villageChance((int) (Math.min((double) (mpDistance) / mpPerDay,
+								tileDistance / 12.0)) + 1)) {
 					excludedVillages.put(village, true);
 					villagesToRemove.add(triplet);
 					home = village;
@@ -558,8 +561,8 @@ import legacy.map.fixtures.towns.Village;
 				cli.println(String.format("Worker %s is a %s", name, race));
 				worker = new Worker(name, race, idf.createID());
 				final int levels = (int) SingletonRandom.SINGLETON_RANDOM.ints(3, 0, 20)
-					.filter(n -> n == 0)
-					.count();
+						.filter(n -> n == 0)
+						.count();
 				if (levels == 1) {
 					cli.println("Worker has 1 Job level.");
 				} else if (levels > 1) {
@@ -588,9 +591,12 @@ import legacy.map.fixtures.towns.Village;
 	 */
 	private void createWorkersForPlayer(final IDRegistrar idf, final Player player) throws IOException {
 		final List<IUnit> units = StreamSupport.stream(
-			model.getUnits(player).spliterator(), false).collect(Collectors.toList());
+				model.getUnits(player).spliterator(), false).collect(Collectors.toList());
 		while (true) {
-			final Pair<Integer, @Nullable IUnit> chosen = cli.chooseFromList(units, "Which unit contains the worker in question? (Select -1 to create new.)", "There are no units owned by that player.", "Unit selection: ", ICLIHelper.ListChoiceBehavior.ALWAYS_PROMPT);
+			final Pair<Integer, @Nullable IUnit> chosen = cli.chooseFromList(units,
+					"Which unit contains the worker in question? (Select -1 to create new.)",
+					"There are no units owned by that player.", "Unit selection: ",
+					ICLIHelper.ListChoiceBehavior.ALWAYS_PROMPT);
 			final IUnit item;
 			if (!Objects.isNull(chosen.getValue1())) {
 				item = chosen.getValue1();
@@ -610,7 +616,7 @@ import legacy.map.fixtures.towns.Village;
 				break;
 			}
 			final Boolean load = cli.inputBooleanInSeries(
-				"Load names from file and use randomly generated stats?");
+					"Load names from file and use randomly generated stats?");
 			if (Objects.isNull(load)) {
 				return;
 			} else if (load) {
@@ -619,7 +625,7 @@ import legacy.map.fixtures.towns.Village;
 				createWorkersForUnit(idf, item);
 			}
 			if (!Optional.ofNullable(cli.inputBoolean("Choose another unit? "))
-				.orElse(false)) {
+					.orElse(false)) {
 				break;
 			}
 		}
@@ -628,13 +634,15 @@ import legacy.map.fixtures.towns.Village;
 	@Override
 	public void startDriver() throws DriverFailedException {
 		final IDRegistrar idf = IDFactoryFiller.createIDFactory(
-			model.streamAllMaps().toArray(ILegacyMap[]::new));
+				model.streamAllMaps().toArray(ILegacyMap[]::new));
 		currentTurn = model.getMap().getCurrentTurn();
 		// TODO: Make getPlayerChoices() return Collection
 		final List<Player> players = StreamSupport.stream(
-			model.getPlayerChoices().spliterator(), false).collect(Collectors.toList());
+				model.getPlayerChoices().spliterator(), false).collect(Collectors.toList());
 		while (!players.isEmpty()) {
-			final Player chosen = cli.chooseFromList((List<? extends Player>) players, "Which player owns the new worker(s)?", "There are no players shared by all the maps.", "Player selection: ", ICLIHelper.ListChoiceBehavior.ALWAYS_PROMPT).getValue1();
+			final Player chosen = cli.chooseFromList((List<? extends Player>) players, "Which player owns the new worker(s)?",
+					"There are no players shared by all the maps.", "Player selection: ",
+					ICLIHelper.ListChoiceBehavior.ALWAYS_PROMPT).getValue1();
 			if (Objects.isNull(chosen)) {
 				break;
 			}
@@ -653,7 +661,7 @@ import legacy.map.fixtures.towns.Village;
 				}
 			}
 			if (!Optional.ofNullable(cli.inputBoolean("Choose another player?"))
-				.orElse(false)) {
+					.orElse(false)) {
 				break;
 			}
 		}

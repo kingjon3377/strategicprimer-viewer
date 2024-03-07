@@ -28,7 +28,7 @@ import legacy.map.fixtures.Implement;
 		this.options = options;
 		this.model = model;
 		helper = new ResourceAddingCLIHelper(cli, IDFactoryFiller
-			.createIDFactory(model.streamAllMaps().toArray(ILegacyMap[]::new)));
+				.createIDFactory(model.streamAllMaps().toArray(ILegacyMap[]::new)));
 	}
 
 	private final ICLIHelper cli;
@@ -54,9 +54,11 @@ import legacy.map.fixtures.Implement;
 	@Override
 	public void startDriver() {
 		final List<Player> players = StreamSupport.stream(model.getPlayers().spliterator(),
-			false).collect(Collectors.toList());
+				false).collect(Collectors.toList());
 		while (!players.isEmpty()) {
-			final Player chosen = cli.chooseFromList((List<? extends Player>) players, "Players in the maps:", "No players found.", "Player to add resources for: ", ICLIHelper.ListChoiceBehavior.ALWAYS_PROMPT).getValue1();
+			final Player chosen = cli.chooseFromList((List<? extends Player>) players, "Players in the maps:",
+					"No players found.", "Player to add resources for: ",
+					ICLIHelper.ListChoiceBehavior.ALWAYS_PROMPT).getValue1();
 			if (Objects.isNull(chosen)) {
 				break;
 			}

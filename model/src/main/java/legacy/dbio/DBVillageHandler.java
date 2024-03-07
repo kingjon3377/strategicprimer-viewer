@@ -33,19 +33,19 @@ public final class DBVillageHandler extends AbstractDatabaseWriter<Village, Poin
 	}
 
 	private static final List<Query> INITIALIZERS = Collections.singletonList(
-		Query.of("CREATE TABLE IF NOT EXISTS villages (" +
-			"    row INTEGER NOT NULL," +
-			"    column INTEGER NOT NULL," +
-			"    status VARCHAR(9) NOT NULL" +
-			"        CHECK(status IN ('abandoned', 'active', 'burned', 'ruined'))," +
-			"    name VARCHAR(128) NOT NULL," +
-			"    id INTEGER NOT NULL," +
-			"    owner INTEGER NOT NULL," +
-			"    race VARCHAR(32) NOT NULL," +
-			"    image VARCHAR(255)," +
-			"    portrait VARCHAR(255)," +
-			"    population INTEGER" +
-			");"));
+			Query.of("CREATE TABLE IF NOT EXISTS villages (" +
+					"    row INTEGER NOT NULL," +
+					"    column INTEGER NOT NULL," +
+					"    status VARCHAR(9) NOT NULL" +
+					"        CHECK(status IN ('abandoned', 'active', 'burned', 'ruined'))," +
+					"    name VARCHAR(128) NOT NULL," +
+					"    id INTEGER NOT NULL," +
+					"    owner INTEGER NOT NULL," +
+					"    race VARCHAR(32) NOT NULL," +
+					"    image VARCHAR(255)," +
+					"    portrait VARCHAR(255)," +
+					"    population INTEGER" +
+					");"));
 
 	@Override
 	public List<Query> getInitializers() {
@@ -53,12 +53,12 @@ public final class DBVillageHandler extends AbstractDatabaseWriter<Village, Poin
 	}
 
 	private static final Query INSERT_SQL =
-		Query.of("INSERT INTO villages (row, column, status, name, id, owner, race, " +
-			"    image, portrait, population) " +
-			"VALUES(:row, :column, :status, :name, :id, :owner, :race, :image, :portrait, :population);");
+			Query.of("INSERT INTO villages (row, column, status, name, id, owner, race, " +
+					"    image, portrait, population) " +
+					"VALUES(:row, :column, :status, :name, :id, :owner, :race, :image, :portrait, :population);");
 
 	private static final AbstractDatabaseWriter<CommunityStats, ITownFixture> CS_WRITER =
-		new DBCommunityStatsHandler();
+			new DBCommunityStatsHandler();
 
 	@Override
 	public void write(final Transactional db, final Village obj, final Point context) throws SQLException {
@@ -96,7 +96,7 @@ public final class DBVillageHandler extends AbstractDatabaseWriter<Village, Poin
 			final String portrait = (String) dbRow.get("portrait");
 			final Integer population = (Integer) dbRow.get("population");
 			final Village village = new Village(status, name, id, map.getPlayers().getPlayer(ownerId),
-				race);
+					race);
 			if (!Objects.isNull(image)) {
 				village.setImage(image);
 			}
@@ -114,7 +114,7 @@ public final class DBVillageHandler extends AbstractDatabaseWriter<Village, Poin
 
 	@Override
 	public void readMapContents(final Connection db, final IMutableLegacyMap map, final Map<Integer, IFixture> containers,
-	                            final Map<Integer, List<Object>> containees, final Warning warner) throws SQLException {
+								final Map<Integer, List<Object>> containees, final Warning warner) throws SQLException {
 		handleQueryResults(db, warner, "villages", readVillage(map), SELECT);
 	}
 }

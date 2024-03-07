@@ -44,11 +44,11 @@ public class Worker implements IMutableWorker {
 	 */
 	private static boolean jobSetsEqual(final Iterable<IJob> first, final Iterable<IJob> second) {
 		final Collection<IJob> firstFiltered = StreamSupport.stream(first.spliterator(), true)
-			.filter(j -> !j.isEmpty()).collect(Collectors.toSet());
+				.filter(j -> !j.isEmpty()).collect(Collectors.toSet());
 		final Collection<IJob> secondFiltered = StreamSupport.stream(second.spliterator(), true)
-			.filter(j -> !j.isEmpty()).collect(Collectors.toSet());
+				.filter(j -> !j.isEmpty()).collect(Collectors.toSet());
 		return firstFiltered.containsAll(secondFiltered) &&
-			secondFiltered.containsAll(firstFiltered);
+				secondFiltered.containsAll(firstFiltered);
 	}
 
 	/**
@@ -204,12 +204,12 @@ public class Worker implements IMutableWorker {
 	public boolean equalsIgnoringID(final IFixture fixture) {
 		if (fixture instanceof final IWorker that) {
 			return that.getName().equals(name) &&
-				jobSetsEqual(jobSet, that) &&
-				that.getRace().equals(race) &&
-				Objects.equals(stats, that.getStats()) &&
-				equipmentImpl.containsAll(that.getEquipment()) &&
-				that.getEquipment().containsAll(equipmentImpl) &&
-				Objects.equals(mount, that.getMount());
+					jobSetsEqual(jobSet, that) &&
+					that.getRace().equals(race) &&
+					Objects.equals(stats, that.getStats()) &&
+					equipmentImpl.containsAll(that.getEquipment()) &&
+					that.getEquipment().containsAll(equipmentImpl) &&
+					Objects.equals(mount, that.getMount());
 		} else {
 			return false;
 		}
@@ -257,8 +257,8 @@ public class Worker implements IMutableWorker {
 		if (obj.getId() == id) {
 			if (obj instanceof final IWorker that) {
 				final Consumer<String> localReport =
-					s -> report.accept(String.format("In worker %s (ID #%d):\t%s",
-						name, id, s));
+						s -> report.accept(String.format("In worker %s (ID #%d):\t%s",
+								name, id, s));
 				if (!name.equals(that.getName())) {
 					localReport.accept("Names differ");
 					return false;
@@ -270,8 +270,8 @@ public class Worker implements IMutableWorker {
 					return false;
 				}
 				final Map<String, IJob> ours =
-					jobSet.stream().collect(Collectors.toMap(IJob::getName,
-						Function.identity()));
+						jobSet.stream().collect(Collectors.toMap(IJob::getName,
+								Function.identity()));
 				boolean retval = true;
 				for (final IJob job : that) {
 					if (ours.containsKey(job.getName())) {
@@ -306,7 +306,7 @@ public class Worker implements IMutableWorker {
 			}
 		} else {
 			report.accept(String.format("Called with different IDs, #%d and #%d",
-				id, obj.getId()));
+					id, obj.getId()));
 			return false;
 		}
 	}

@@ -17,7 +17,8 @@ import lovelace.util.ThrowingConsumer;
 
 /**
  * A reader for {@link Player}s."
- /* package */
+ * /* package
+ */
 class YAPlayerReader extends YAAbstractReader<Player, Player> {
 	public YAPlayerReader(final Warning warning, final IDRegistrar idRegistrar) {
 		super(warning, idRegistrar);
@@ -25,7 +26,7 @@ class YAPlayerReader extends YAAbstractReader<Player, Player> {
 
 	@Override
 	public Player read(final StartElement element, final QName parent, final Iterable<XMLEvent> stream)
-		throws SPFormatException, XMLStreamException {
+			throws SPFormatException, XMLStreamException {
 		requireTag(element, parent, "player");
 		expectAttributes(element, "number", "code_name", "portrait", "country");
 		requireNonEmptyParameter(element, "number", true);
@@ -40,10 +41,10 @@ class YAPlayerReader extends YAAbstractReader<Player, Player> {
 		final Player retval;
 		if (Objects.isNull(country)) {
 			retval = new PlayerImpl(getIntegerParameter(element, "number"),
-				getParameter(element, "code_name"));
+					getParameter(element, "code_name"));
 		} else {
 			retval = new PlayerImpl(getIntegerParameter(element, "number"),
-				getParameter(element, "code_name"), country);
+					getParameter(element, "code_name"), country);
 		}
 		retval.setPortrait(getParameter(element, "portrait", ""));
 		return retval;

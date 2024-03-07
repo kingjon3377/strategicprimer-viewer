@@ -187,6 +187,7 @@ public class FortressImpl implements IMutableFortress {
 
 	/**
 	 * Clone the fortress.
+	 *
 	 * @param zero
 	 */
 	@Override
@@ -221,10 +222,10 @@ public class FortressImpl implements IMutableFortress {
 	public boolean equalsIgnoringID(final IFixture fixture) {
 		if (fixture instanceof final IFortress it) {
 			final Set<FortressMember> theirs =
-				it.stream().collect(Collectors.toSet());
+					it.stream().collect(Collectors.toSet());
 			return name.equals(it.getName()) &&
-				owner.getPlayerId() == it.owner().getPlayerId() &&
-				members.containsAll(theirs) && theirs.containsAll(members);
+					owner.getPlayerId() == it.owner().getPlayerId() &&
+					members.containsAll(theirs) && theirs.containsAll(members);
 		} else {
 			return false;
 		}
@@ -234,7 +235,7 @@ public class FortressImpl implements IMutableFortress {
 	public String toString() {
 		final StringBuilder builder = new StringBuilder();
 		builder.append("Fortress ").append(name).append(", owned by player ")
-			.append(owner).append(". Members:");
+				.append(owner).append(". Members:");
 		int count = 0;
 		final int size = members.size();
 		for (final FortressMember member : members) {
@@ -246,11 +247,11 @@ public class FortressImpl implements IMutableFortress {
 					builder.append(" (").append(unit.getKind()).append(")");
 				} else if (unit.owner().isIndependent()) {
 					builder.append(", an independent ")
-						.append(unit.getKind());
+							.append(unit.getKind());
 				} else {
 					builder.append(" (").append(unit.getKind())
-						.append("), belonging to ")
-						.append(unit.owner());
+							.append("), belonging to ")
+							.append(unit.owner());
 				}
 			} else {
 				builder.append(member.toString());
@@ -283,12 +284,12 @@ public class FortressImpl implements IMutableFortress {
 			return false;
 		}
 		if ((name.equals(fort.getName()) || "unknown".equals(fort.getName())) &&
-			fort.owner().getPlayerId() == owner.getPlayerId()) {
+				fort.owner().getPlayerId() == owner.getPlayerId()) {
 			final Map<Integer, FortressMember> ours = members.stream()
-				.collect(Collectors.toMap(FortressMember::getId, Function.identity()));
+					.collect(Collectors.toMap(FortressMember::getId, Function.identity()));
 			boolean retval = true;
 			final Consumer<String> localFormat = s -> report.accept(String.format(
-				"In fortress %s (ID #%d):\t%s", name, id, s));
+					"In fortress %s (ID #%d):\t%s", name, id, s));
 			for (final FortressMember member : fort) {
 				if (ours.containsKey(member.getId())) {
 					if (!ours.get(member.getId()).isSubset(member, localFormat)) {
@@ -296,7 +297,7 @@ public class FortressImpl implements IMutableFortress {
 					}
 				} else {
 					localFormat.accept(String.format("Extra member:\t%s, ID #%d",
-						member, member.getId()));
+							member, member.getId()));
 					retval = false;
 				}
 			}
@@ -313,8 +314,8 @@ public class FortressImpl implements IMutableFortress {
 	@Override
 	public int getDC() {
 		return members.stream().filter(TileFixture.class::isInstance).map(TileFixture.class::cast)
-			.mapToInt(TileFixture::getDC).min().orElse(20) - members.size() -
-			townSize.ordinal() * 2;
+				.mapToInt(TileFixture::getDC).min().orElse(20) - members.size() -
+				townSize.ordinal() * 2;
 	}
 
 	@Override

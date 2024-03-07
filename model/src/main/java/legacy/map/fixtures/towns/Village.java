@@ -22,7 +22,7 @@ import org.jetbrains.annotations.Nullable;
  * players have been informed about by name.
  */
 public class Village implements IMutableTownFixture, HasMutableImage,
-	SubsettableFixture {
+		SubsettableFixture {
 	public Village(final TownStatus status, final String name, final int id, final Player owner, final String race) {
 		this.status = status;
 		this.name = name;
@@ -216,9 +216,9 @@ public class Village implements IMutableTownFixture, HasMutableImage,
 	@Override
 	public boolean equals(final Object obj) {
 		if (obj instanceof final Village it && status == it.getStatus() &&
-			name.equals(it.getName()) && id == it.getId() &&
-			owner.equals(it.owner()) &&
-			race.equals(it.getRace())) {
+				name.equals(it.getName()) && id == it.getId() &&
+				owner.equals(it.owner()) &&
+				race.equals(it.getRace())) {
 			return Objects.equals(population, it.getPopulation());
 		} else {
 			return false;
@@ -240,8 +240,8 @@ public class Village implements IMutableTownFixture, HasMutableImage,
 	@Override
 	public boolean equalsIgnoringID(final IFixture fixture) {
 		if (fixture instanceof final Village it && status == it.getStatus() &&
-			name.equals(it.getName()) &&
-			owner.equals(it.owner())) {
+				name.equals(it.getName()) &&
+				owner.equals(it.owner())) {
 			return Objects.equals(population, it.getPopulation());
 		} else {
 			return false;
@@ -274,24 +274,24 @@ public class Village implements IMutableTownFixture, HasMutableImage,
 				report.accept("IDs differ");
 			} else if (status != it.getStatus()) {
 				report.accept(String.format("In village (ID #%d):\tVillage status differs",
-					id));
+						id));
 			} else if (!name.equals(it.getName())) {
 				report.accept(String.format("In village (ID #%d):\tVillage name differs",
-					id));
+						id));
 			} else if (!race.equals(it.getRace())) {
 				report.accept(String.format("In village %s (ID #%d):\tDominant race differs",
-					name, id));
+						name, id));
 			} else if (owner.getPlayerId() != it.owner().getPlayerId() &&
-				!it.owner().isIndependent()) {
+					!it.owner().isIndependent()) {
 				report.accept(String.format("In village %s (ID #%d):\tOwners differ",
-					name, id));
+						name, id));
 			} else if (!Objects.isNull(population)) {
 				return population.isSubset(it.getPopulation(),
-					(st) -> report.accept(String.format("In village %s (ID #%d):\t%s",
-						name, id, st)));
+						(st) -> report.accept(String.format("In village %s (ID #%d):\t%s",
+								name, id, st)));
 			} else if (!Objects.isNull(it.getPopulation())) {
 				report.accept(String.format(
-					"In village %s (ID #%d):\tHas extra population details", name, id));
+						"In village %s (ID #%d):\tHas extra population details", name, id));
 			} else {
 				return true;
 			}

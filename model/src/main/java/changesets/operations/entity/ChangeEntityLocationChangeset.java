@@ -22,8 +22,9 @@ public final class ChangeEntityLocationChangeset implements Changeset {
 	private final EntityIdentifier id;
 	private final Location fromLocation;
 	private final Location toLocation;
+
 	public ChangeEntityLocationChangeset(final @NotNull EntityIdentifier id, final @NotNull Location fromLocation,
-	                                     final @NotNull Location toLocation) {
+										 final @NotNull Location toLocation) {
 		this.id = id;
 		this.fromLocation = fromLocation;
 		this.toLocation = toLocation;

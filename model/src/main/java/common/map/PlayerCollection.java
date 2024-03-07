@@ -98,7 +98,7 @@ public final class PlayerCollection implements IMutablePlayerCollection {
 			final Player removed = players.remove(obj);
 			if (independentPlayer.equals(removed)) {
 				independentPlayer = players.values().stream().filter(Player::isIndependent)
-					.findAny().orElseGet(() -> new PlayerImpl(-1, "Independent", "", false, ""));
+						.findAny().orElseGet(() -> new PlayerImpl(-1, "Independent", "", false, ""));
 			}
 			if (currentPlayer.equals(removed)) {
 				currentPlayer = new PlayerImpl(-1, "", "", true, "");

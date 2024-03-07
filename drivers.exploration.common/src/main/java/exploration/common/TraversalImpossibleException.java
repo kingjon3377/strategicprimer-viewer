@@ -8,10 +8,10 @@ import java.io.Serial;
  * FIXME: Ocean isn't impassable to everything, of course.
  */
 public final class TraversalImpossibleException extends Exception {
-    @Serial
-    private static final long serialVersionUID = 1L;
+	@Serial
+	private static final long serialVersionUID = 1L;
 
-    public TraversalImpossibleException() {
-        super("Traversal is impossible.");
-    }
+	public TraversalImpossibleException() {
+		super("Traversal is impossible.");
+	}
 }

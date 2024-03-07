@@ -33,7 +33,7 @@ public class CropTabularReportGenerator implements ITableGenerator</*Forest|Shru
 	@Override
 	public boolean canHandle(final IFixture fixture) {
 		return fixture instanceof Forest || fixture instanceof Shrub || fixture instanceof Meadow ||
-			fixture instanceof Grove;
+				fixture instanceof Grove;
 	}
 
 	private static final NumberFormat NUM_FORMAT = NumberFormat.getInstance();
@@ -70,7 +70,7 @@ public class CropTabularReportGenerator implements ITableGenerator</*Forest|Shru
 	@Override
 	public List<String> getHeaderRow() {
 		return Arrays.asList("Distance", "Location", "Kind", "Size", "Size Unit", "Cultivation",
-			"Status", "Crop");
+				"Status", "Crop");
 	}
 
 	/**
@@ -86,9 +86,9 @@ public class CropTabularReportGenerator implements ITableGenerator</*Forest|Shru
 	 */
 	@Override
 	public List<List<String>> produce(
-		final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-		/*Forest|Shrub|Meadow|Grove*/ final TileFixture item, final int key, final Point loc,
-		final Map<Integer, Integer> parentMap) {
+			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
+			/*Forest|Shrub|Meadow|Grove*/ final TileFixture item, final int key, final Point loc,
+			final Map<Integer, Integer> parentMap) {
 		final String kind;
 		final String cultivation;
 		final String status;
@@ -144,18 +144,19 @@ public class CropTabularReportGenerator implements ITableGenerator</*Forest|Shru
 		}
 		fixtures.remove(key);
 		return Collections.singletonList(Arrays.asList(distanceString(loc, hq, dimensions),
-			locationString(loc), kind, size, sizeUnit, cultivation, status, crop));
+				locationString(loc), kind, size, sizeUnit, cultivation, status, crop));
 	}
 
 	/**
 	 * Compare two Point-fixture pairs.
+	 *
 	 * @return
 	 */
 	@Override
 	public Comparator<Pair<Point, TileFixture>> comparePairs() {
 		return Comparator.<Pair<Point, TileFixture>, String>comparing(p -> ((HasKind) p.getValue1()).getKind())
-			.thenComparing(Pair::getValue0, distanceComparator)
-			.thenComparing(p -> p.getValue1().getClass().hashCode())
-			.thenComparing(p -> p.getValue1().hashCode());
+				.thenComparing(Pair::getValue0, distanceComparator)
+				.thenComparing(p -> p.getValue1().getClass().hashCode())
+				.thenComparing(p -> p.getValue1().hashCode());
 	}
 }

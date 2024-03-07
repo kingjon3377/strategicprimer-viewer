@@ -42,14 +42,14 @@ public interface ITurnRunningModel extends IExplorationModel, IAdvancementModel 
 	 * Reduce the population of a group of plants, animals, etc., and copy
 	 * the reduced form into all subordinate maps.
 	 */
-	<T extends HasPopulation<? extends TileFixture> & TileFixture> void reducePopulation(Point location,
-	                                                                                     T fixture, IFixture.CopyBehavior zero, int reduction);
+	<T extends HasPopulation<? extends TileFixture> & TileFixture> void reducePopulation(
+			Point location, T fixture, IFixture.CopyBehavior zero, int reduction);
 
 	/**
 	 * Reduce the acreage of a fixture, and copy the reduced form into all subordinate maps.
 	 */
-	<T extends HasExtent<? extends TileFixture> & TileFixture> void reduceExtent(Point location,
-	                                                                             T fixture, IFixture.CopyBehavior zero, BigDecimal reduction);
+	<T extends HasExtent<? extends TileFixture> & TileFixture> void reduceExtent(
+			Point location, T fixture, IFixture.CopyBehavior zero, BigDecimal reduction);
 
 	/**
 	 * Reduce the matching {@link IResourcePile resource}, in a {@link
@@ -78,7 +78,7 @@ public interface ITurnRunningModel extends IExplorationModel, IAdvancementModel 
 	 * otherwise.
 	 */
 	boolean addResource(IUnit container, int id, String kind, String contents, LegacyQuantity quantity,
-	                    int createdDate);
+						int createdDate);
 
 	/**
 	 * Add a resource with the given ID, kind, contents, quantity, and
@@ -87,7 +87,7 @@ public interface ITurnRunningModel extends IExplorationModel, IAdvancementModel 
 	 * otherwise.
 	 */
 	boolean addResource(IFortress container, int id, String kind, String contents, LegacyQuantity quantity,
-	                    int createdDate);
+						int createdDate);
 
 	/**
 	 * Add a resource with the given ID, kind, contents, and quantity in
@@ -142,7 +142,8 @@ public interface ITurnRunningModel extends IExplorationModel, IAdvancementModel 
 	 * Returns true if the input makes sense and a matching (and mutable)
 	 * unit was found in at least one map, false otherwise.
 	 */
-	default boolean addAnimal(final IUnit container, final String kind, final String status, final int id, final int population) {
+	default boolean addAnimal(final IUnit container, final String kind, final String status, final int id,
+							  final int population) {
 		return addAnimal(container, kind, status, id, population, -1);
 	}
 
@@ -174,8 +175,8 @@ public interface ITurnRunningModel extends IExplorationModel, IAdvancementModel 
 		IFortress retval = null;
 		final ILegacyMap map = getMap();
 		for (final IFortress fortress : map.streamAllFixtures()
-			.filter(IFortress.class::isInstance).map(IFortress.class::cast)
-			.filter(f -> player.equals(f.owner())).toList()) {
+				.filter(IFortress.class::isInstance).map(IFortress.class::cast)
+				.filter(f -> player.equals(f.owner())).toList()) {
 			if (fortressName.equals(fortress.getName())) {
 				return fortress;
 			} else if (Objects.isNull(retval)) {

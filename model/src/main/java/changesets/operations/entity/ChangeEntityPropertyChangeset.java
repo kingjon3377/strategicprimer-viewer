@@ -20,8 +20,9 @@ public final class ChangeEntityPropertyChangeset<FromType, ToType> implements Ch
 	private final String propertyName;
 	private final FromType oldValue;
 	private final ToType newValue;
+
 	public ChangeEntityPropertyChangeset(final EntityIdentifier id, final String propertyName, final FromType oldValue,
-	                                     final ToType newValue) {
+										 final ToType newValue) {
 		this.id = id;
 		this.propertyName = propertyName;
 		this.oldValue = oldValue;

@@ -22,14 +22,16 @@ public interface IWorkerModel extends IMultiMapModel, IAdvancementModel, IFixtur
 
 	/**
 	 * The units in the map belonging to the given player.
+	 *
 	 * @param player The player whose units we want
 	 */
 	Collection<IUnit> getUnits(Player player);
 
 	/**
 	 * The units in the map of the given "kind" belonging to the given player.
+	 *
 	 * @param player The player whose units we want
-	 * @param kind Which "kind" to restrict to
+	 * @param kind   Which "kind" to restrict to
 	 */
 	Collection<IUnit> getUnits(Player player, String kind);
 

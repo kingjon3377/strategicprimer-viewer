@@ -25,14 +25,14 @@ public interface ICLIHelper {
 	 * Have the user choose an item from a list. Returns the index and the
 	 * item, if any.  On EOF, returns an index of -2.
 	 *
-	 * @param items The list of items to choose from.
+	 * @param items       The list of items to choose from.
 	 * @param description The description to give before printing the list.
-	 * @param none What to print if there are none.
-	 * @param prompt What to prompt the user with.
-	 * @param behavior How to handle a list of only one element
+	 * @param none        What to print if there are none.
+	 * @param prompt      What to prompt the user with.
+	 * @param behavior    How to handle a list of only one element
 	 */
 	<Element extends HasName> Pair<Integer, @Nullable Element> chooseFromList(
-		List<? extends Element> items, String description, String none, String prompt, ListChoiceBehavior behavior);
+			List<? extends Element> items, String description, String none, String prompt, ListChoiceBehavior behavior);
 
 	/**
 	 * Have the user choose an item from a list. Returns the index and the
@@ -40,14 +40,14 @@ public interface ICLIHelper {
 	 *
 	 * TODO: rename back to chooseFromList()?
 	 *
-	 * @param items The list of items to choose from.
+	 * @param items       The list of items to choose from.
 	 * @param description The description to give before printing the list.
-	 * @param none What to print if there are none.
-	 * @param prompt What to prompt the user with.
-	 * @param behavior How to handle a list of only one element
+	 * @param none        What to print if there are none.
+	 * @param prompt      What to prompt the user with.
+	 * @param behavior    How to handle a list of only one element
 	 */
 	Pair<Integer, @Nullable String> chooseStringFromList(List<String> items, String description,
-	                                                     String none, String prompt, ListChoiceBehavior behavior);
+														 String none, String prompt, ListChoiceBehavior behavior);
 
 	/**
 	 * Read from the input stream until a non-negative integer is entered,
@@ -120,9 +120,9 @@ public interface ICLIHelper {
 	 * Ask the user a yes-or-no question. Returns null on EOF or if
 	 * {@link #defaultQuitHandler} returns null.
 	 *
-	 * @param prompt The prompt to prompt the user with.
+	 * @param prompt            The prompt to prompt the user with.
 	 * @param quitResultFactory A function to produce null (to return) if
-	 * an input should short-circuit the loop.
+	 *                          an input should short-circuit the loop.
 	 */
 	@Nullable Boolean inputBoolean(String prompt, TrinaryPredicate<String> quitResultFactory);
 
@@ -143,7 +143,7 @@ public interface ICLIHelper {
 	 * if {@link #defaultQuitHandler} returns null.
 	 *
 	 * @param prompt The prompt to prompt the user with.
-	 * @param key The prompt (or other key) to compare to others to define "similar" questions.
+	 * @param key    The prompt (or other key) to compare to others to define "similar" questions.
 	 */
 	default @Nullable Boolean inputBooleanInSeries(final String prompt, final String key) {
 		return inputBooleanInSeries(prompt, key, this::defaultQuitHandler);
@@ -154,13 +154,13 @@ public interface ICLIHelper {
 	 * all" to forestall further similar questions. Returns null on EOF or
 	 * if "quitResultFactory" returns null.
 	 *
-	 * @param prompt The prompt to prompt the user with.
-	 * @param key The prompt (or other key) to compare to others to define "similar" questions.
+	 * @param prompt            The prompt to prompt the user with.
+	 * @param key               The prompt (or other key) to compare to others to define "similar" questions.
 	 * @param quitResultFactory A function to produce null (to return) if
-	 * an input should short-circuit the loop.
+	 *                          an input should short-circuit the loop.
 	 */
 	@Nullable Boolean inputBooleanInSeries(String prompt, String key,
-	                                       TrinaryPredicate<String> quitResultFactory);
+										   TrinaryPredicate<String> quitResultFactory);
 
 	/**
 	 * Print a newline.
@@ -171,6 +171,7 @@ public interface ICLIHelper {
 
 	/**
 	 * Print the specified string, then a newline.
+	 *
 	 * @param line The line to print
 	 */
 	void println(String line);
@@ -205,7 +206,7 @@ public interface ICLIHelper {
 	 *
 	 * TODO: Add test of this in CLITests
 	 *
-	 * @param line The line to print
+	 * @param line     The line to print
 	 * @param interval The minimum number of lines between occurrences
 	 */
 	void printlnAtInterval(String line, int interval);

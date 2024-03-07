@@ -19,9 +19,10 @@ import org.jetbrains.annotations.Nullable;
  * // FIXME: Probably Needs to implement SubsettableFixture instead of {@code Subsettable<AbstractTown>}
  */
 public abstract class AbstractTown implements HasMutableImage,
-	IMutableTownFixture, Subsettable<AbstractTown> {
+		IMutableTownFixture, Subsettable<AbstractTown> {
 	// TODO: Should probably take ID as a constructor parameter too?
-	protected AbstractTown(final TownStatus status, final TownSize townSize, final String name, final Player owner, final int dc) {
+	protected AbstractTown(final TownStatus status, final TownSize townSize, final String name, final Player owner,
+						   final int dc) {
 		this.status = status;
 		this.townSize = townSize;
 		this.name = name;
@@ -183,7 +184,7 @@ public abstract class AbstractTown implements HasMutableImage,
 			return false;
 		}
 		final Consumer<String> localReport = s -> report.accept(String.format(
-			"In %s %s, ID #%d:\t%s", getKind(), name, getId(), s));
+				"In %s %s, ID #%d:\t%s", getKind(), name, getId(), s));
 		boolean retval = true;
 		if (status != other.getStatus()) {
 			localReport.accept("Town status differs");
@@ -215,9 +216,9 @@ public abstract class AbstractTown implements HasMutableImage,
 	 */
 	protected final boolean equalsContents(final AbstractTown fixture) {
 		return fixture.getTownSize() == townSize &&
-			fixture.getName().equals(name) && fixture.getStatus() == status &&
-			fixture.owner().equals(owner) &&
-			Objects.equals(population, fixture.getPopulation());
+				fixture.getName().equals(name) && fixture.getStatus() == status &&
+				fixture.owner().equals(owner) &&
+				Objects.equals(population, fixture.getPopulation());
 	}
 
 	@Override
@@ -249,14 +250,14 @@ public abstract class AbstractTown implements HasMutableImage,
 		if (owner.isIndependent()) {
 			// TODO: Split into if/else rather than having the conditional inside format() call
 			return String.format("An independent %s %s %s of DC %s %s",
-				townSize, status, getKind(), dc,
-				name.isEmpty() ? "with no name" : "named " + name);
+					townSize, status, getKind(), dc,
+					name.isEmpty() ? "with no name" : "named " + name);
 		} else {
 			// TODO: Split into if/else rather than having the conditional inside format() call
 			return String.format("A %s %s %s of DC %d %s, owned by %s",
-				townSize, status, getKind(), dc,
-				name.isEmpty() ? "with no name" : "named " + name,
-				owner.isCurrent() ? "you" : owner.getName());
+					townSize, status, getKind(), dc,
+					name.isEmpty() ? "with no name" : "named " + name,
+					owner.isCurrent() ? "you" : owner.getName());
 		}
 	}
 
@@ -265,14 +266,14 @@ public abstract class AbstractTown implements HasMutableImage,
 		if (owner.isIndependent()) {
 			// TODO: Split into if/else rather than having the conditional inside format() call
 			return String.format("An independent %s %s %s %s", townSize,
-				status, getKind(),
-				name.isEmpty() ? "with no name" : "named " + name);
+					status, getKind(),
+					name.isEmpty() ? "with no name" : "named " + name);
 		} else {
 			// TODO: Split into if/else rather than having the conditional inside format() call
 			return String.format("A %s %s %s %s, owned by %s", townSize,
-				status, getKind(),
-				name.isEmpty() ? "with no name" : "named " + name,
-				owner.isCurrent() ? "you" : owner.getName());
+					status, getKind(),
+					name.isEmpty() ? "with no name" : "named " + name,
+					owner.isCurrent() ? "you" : owner.getName());
 		}
 	}
 }

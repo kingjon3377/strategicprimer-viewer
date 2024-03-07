@@ -28,7 +28,8 @@ import java.util.Collection;
  *
  * TODO: Investigate pure-Java equivalents of Ceylon sealed annotation. Maybe just make package-private?
  *
- * TODO: Pass a Formatter around instead of relying on String.format or String::formatted, which instantiates a Formatter in every call
+ * TODO: Pass a Formatter around instead of relying on String.format or String::formatted, which instantiates a
+ * Formatter in every call
  */
 public abstract class AbstractReportGenerator<Type extends IFixture> implements IReportGenerator<Type> {
 	protected final Comparator<Pair<Point, IFixture>> pairComparator;
@@ -44,35 +45,36 @@ public abstract class AbstractReportGenerator<Type extends IFixture> implements 
 	 */
 	protected final Function<Point, String> distanceString;
 
-	private static <First, Second> Comparator<Pair<First, Second>> pairComparator(final Comparator<First> first, final Comparator<Second> second) {
+	private static <First, Second> Comparator<Pair<First, Second>> pairComparator(final Comparator<First> first,
+																				  final Comparator<Second> second) {
 		return Comparator.<Pair<First, Second>, First>comparing(Pair::getValue0, first)
-			.thenComparing(Pair::getValue1, second);
+				.thenComparing(Pair::getValue1, second);
 	}
 
 	/**
 	 * TODO: Don't require callers to pss in mapDimensions if referencePoint is absent. (Split constructor.)
 	 *
-	 * @param mapDimensions The dimensions of the map. If null, {@link
-	 * #distComparator} and {@link #distanceString} will give inaccurate
-	 * results whenever the shortest distance between two points involves
-	 * wrapping around an edge of the map.
+	 * @param mapDimensions  The dimensions of the map. If null, {@link
+	 *                       #distComparator} and {@link #distanceString} will give inaccurate
+	 *                       results whenever the shortest distance between two points involves
+	 *                       wrapping around an edge of the map.
 	 * @param referencePoint The base point to use for distance
-	 * calculations. Usually the location of the headquarters of the player
-	 * for whom the report is being prepared.
+	 *                       calculations. Usually the location of the headquarters of the player
+	 *                       for whom the report is being prepared.
 	 */
 	protected AbstractReportGenerator(final @Nullable MapDimensions mapDimensions, final @Nullable Point referencePoint) {
 		if (Objects.isNull(referencePoint)) {
 			distComparator = (one, two) -> 0;
 			distanceString = (ignored) -> "unknown";
 			pairComparator = pairComparator((one, two) -> 0,
-				Comparator.comparing(IFixture::hashCode));
+					Comparator.comparing(IFixture::hashCode));
 		} else {
 			final DistanceComparator distCalculator = new DistanceComparator(referencePoint,
-				mapDimensions);
+					mapDimensions);
 			distComparator = distCalculator;
 			distanceString = distCalculator::distanceString;
 			pairComparator = pairComparator(new DistanceComparator(referencePoint, mapDimensions),
-				Comparator.comparing(IFixture::hashCode));
+					Comparator.comparing(IFixture::hashCode));
 		}
 	}
 
@@ -109,15 +111,15 @@ public abstract class AbstractReportGenerator<Type extends IFixture> implements 
 				builder.append(header);
 				builder.append("""
 
-					<ul>
-					""");
+						<ul>
+						""");
 				for (final String item : this) {
 					builder.append("<li>").append(item).append("</li>")
-						.append(System.lineSeparator());
+							.append(System.lineSeparator());
 				}
 				builder.append("""
-					</ul>
-					""");
+						</ul>
+						""");
 				return builder.toString();
 			}
 		}
@@ -236,7 +238,7 @@ public abstract class AbstractReportGenerator<Type extends IFixture> implements 
 		}
 
 		/**
-		 * @param header The header to prepend to the items in {@link #toString}.
+		 * @param header     The header to prepend to the items in {@link #toString}.
 		 * @param comparator A comparator to sort the map by.
 		 */
 		public HeadedMapImpl(final String header, final Comparator<Key> comparator) {
@@ -245,9 +247,9 @@ public abstract class AbstractReportGenerator<Type extends IFixture> implements 
 		}
 
 		/**
-		 * @param header The header to prepend to the items in {@link #toString}.
+		 * @param header     The header to prepend to the items in {@link #toString}.
 		 * @param comparator A comparator to sort the map by.
-		 * @param initial Initial entries in the map
+		 * @param initial    Initial entries in the map
 		 */
 		public HeadedMapImpl(final String header, final Comparator<Key> comparator, final Map<Key, Value> initial) {
 			this.header = header;

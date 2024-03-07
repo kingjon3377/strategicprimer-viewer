@@ -8,20 +8,20 @@ import common.map.HasName;
  * switch} on the values.
  */
 /* package */ enum TrapperCommand implements HasName {
-    SetTrap("Set or reset a trap"),
-    Check("Check a trap"),
-    Move("Move to another trap"),
-    EasyReset("Reset a foothold trap, e.g."),
-    Quit("Quit");
+	SetTrap("Set or reset a trap"),
+	Check("Check a trap"),
+	Move("Move to another trap"),
+	EasyReset("Reset a foothold trap, e.g."),
+	Quit("Quit");
 
-    TrapperCommand(final String name) {
-        this.name = name;
-    }
+	TrapperCommand(final String name) {
+		this.name = name;
+	}
 
-    private final String name;
+	private final String name;
 
-    @Override
-    public String getName() {
-        return name;
-    }
+	@Override
+	public String getName() {
+		return name;
+	}
 }

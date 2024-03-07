@@ -22,8 +22,8 @@ public abstract class SPFormatException extends Exception {
 
 	/**
 	 * @param errorMessage The exception message to possibly show to the user.
-	 * @param line The line of the XML file containing the mistake.
-	 * @param column The column of the XML file where the mistake begins.
+	 * @param line         The line of the XML file containing the mistake.
+	 * @param column       The column of the XML file where the mistake begins.
 	 * @deprecated Use constructor taking Location if possible
 	 */
 	@Deprecated
@@ -35,18 +35,18 @@ public abstract class SPFormatException extends Exception {
 
 	/**
 	 * @param errorMessage The exception message to possibly show to the user.
-	 * @param location The line and column of the XML file where the mistake begins.
+	 * @param location     The line and column of the XML file where the mistake begins.
 	 */
 	protected SPFormatException(final String errorMessage, final Location location) {
 		super(String.format("Incorrect SP XML at line %d, column %d: %s", location.getLineNumber(),
-			location.getColumnNumber(), errorMessage));
+				location.getColumnNumber(), errorMessage));
 		line = location.getLineNumber();
 		column = location.getColumnNumber();
 	}
 
 	protected SPFormatException(final String errorMessage, final Location location, final Throwable errorCause) {
 		super(String.format("Incorrect SP XML at line %d, column %d: %s", location.getLineNumber(),
-			location.getColumnNumber(), errorMessage), errorCause);
+				location.getColumnNumber(), errorMessage), errorCause);
 		line = location.getLineNumber();
 		column = location.getColumnNumber();
 	}

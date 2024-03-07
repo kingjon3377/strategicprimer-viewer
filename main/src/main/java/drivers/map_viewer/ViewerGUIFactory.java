@@ -30,9 +30,9 @@ import lovelace.util.LovelaceLogger;
 @AutoService({DriverFactory.class, ViewerDriverFactory.class})
 public class ViewerGUIFactory implements ViewerDriverFactory {
 	private static final IDriverUsage USAGE = new DriverUsage(true, "view-map", ParamCount.One,
-		"Map viewer", "Look at the map visually. This is probably the app you want.",
-		false, true, "--current-turn=NN", "--background=image.png",
-		"--starting-row=NN --starting-column=NN");
+			"Map viewer", "Look at the map visually. This is probably the app you want.",
+			false, true, "--current-turn=NN", "--background=image.png",
+			"--starting-row=NN --starting-column=NN");
 
 	@Override
 	public IDriverUsage getUsage() {

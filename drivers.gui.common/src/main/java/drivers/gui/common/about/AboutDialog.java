@@ -38,28 +38,28 @@ public final class AboutDialog extends SPDialog {
 		super(parentComponent instanceof final Frame f ? f : null, "About");
 		setLayout(new BorderLayout()); // TODO: Use a BorderedPanel for contentPane
 		final Iterable<String> resource = FileContentsReader.readFileContents(AboutDialog.class,
-			Paths.get("about.html"));
+				Paths.get("about.html"));
 		final StringBuilder sb = new StringBuilder();
 		resource.forEach(sb::append);
 		final String raw = sb.toString();
 		final String html = APP_NAME.matcher(raw).replaceAll(Optional.ofNullable(app)
-			.filter(Predicate.not(String::isEmpty)).orElse("Strategic Primer Assistive Programs"));
+				.filter(Predicate.not(String::isEmpty)).orElse("Strategic Primer Assistive Programs"));
 		final JEditorPane pane = new JEditorPane("text/html", html);
 		pane.setCaretPosition(0); // scroll to the top
 		pane.setEditable(false);
 		final JScrollPane scrollPane;
 		if (Platform.SYSTEM_IS_MAC) {
 			scrollPane = new JScrollPane(pane, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS,
-				ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
+					ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
 		} else {
 			scrollPane = new JScrollPane(pane, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,
-				ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+					ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		}
 		scrollPane.setMinimumSize(new Dimension(300, 400));
 		scrollPane.setPreferredSize(new Dimension(400, 500));
 		add(scrollPane, BorderLayout.CENTER);
 		add(BoxPanel.centeredHorizontalBox(new ListenedButton("Close", this::dispose)),
-			BorderLayout.PAGE_END);
+				BorderLayout.PAGE_END);
 		pack();
 	}
 }

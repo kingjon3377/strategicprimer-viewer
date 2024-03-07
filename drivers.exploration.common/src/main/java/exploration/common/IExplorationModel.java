@@ -23,7 +23,7 @@ import legacy.map.fixtures.mobile.IUnit;
  * A model for exploration apps.
  */
 public interface IExplorationModel extends IMultiMapModel, SelectionChangeSource,
-	MovementCostSource, IFixtureEditingModel {
+		MovementCostSource, IFixtureEditingModel {
 	/**
 	 * Players that are shared by all the maps.
 	 */

@@ -67,7 +67,8 @@ public class AdvancementCLIHelper implements LevelGainSource {
 		final List<ISkill> skills = StreamSupport.stream(job.spliterator(), false).collect(Collectors.toList());
 		final Consumer<ISkill> addToList = skills::add;
 		while (true) {
-			final Pair<Integer, @Nullable ISkill> chosen = cli.chooseFromList(skills, "Skills in Job:", "No existing Skills.", "Skill to advance: ", ICLIHelper.ListChoiceBehavior.ALWAYS_PROMPT);
+			final Pair<Integer, @Nullable ISkill> chosen = cli.chooseFromList(skills, "Skills in Job:", "No existing Skills.",
+					"Skill to advance: ", ICLIHelper.ListChoiceBehavior.ALWAYS_PROMPT);
 			final ISkill skill;
 			if (!Objects.isNull(chosen.getValue1())) {
 				skill = chosen.getValue1();
@@ -80,7 +81,7 @@ public class AdvancementCLIHelper implements LevelGainSource {
 					skills.clear();
 					job.forEach(addToList);
 					final ISkill temp = skills.stream().filter(s -> skillName.equals(s.getName()))
-						.findFirst().orElse(null);
+							.findFirst().orElse(null);
 					if (Objects.isNull(temp)) {
 						cli.println("Select the new item at the next prompt.");
 						continue;
@@ -95,7 +96,7 @@ public class AdvancementCLIHelper implements LevelGainSource {
 			final int hours = Optional.ofNullable(cli.inputNumber("Hours of experience to add: ")).orElse(0);
 			if (allowExpertMentoring) {
 				final int hoursPerHour = Optional.ofNullable(cli.inputNumber("'Hours' between hourly checks: "))
-					.orElse(0);
+						.orElse(0);
 				int remaining;
 				if (hoursPerHour > 0) {
 					remaining = hours;
@@ -104,22 +105,22 @@ public class AdvancementCLIHelper implements LevelGainSource {
 				}
 				while (remaining > 0) {
 					model.addHoursToSkill(worker, job.getName(), skill.getName(),
-						Math.max(remaining, hoursPerHour),
-						SingletonRandom.SINGLETON_RANDOM.nextInt(100));
+							Math.max(remaining, hoursPerHour),
+							SingletonRandom.SINGLETON_RANDOM.nextInt(100));
 					remaining -= hoursPerHour;
 				}
 			} else {
 				for (int hour = 0; hour < hours; hour++) {
 					model.addHoursToSkill(worker, job.getName(), skill.getName(), 1,
-						SingletonRandom.SINGLETON_RANDOM.nextInt(100));
+							SingletonRandom.SINGLETON_RANDOM.nextInt(100));
 				}
 			}
 			if (skill.getLevel() != oldLevel) {
 				final String count = (skill.getLevel() - oldLevel == 1) ? "a level"
-					: (skill.getLevel() - oldLevel) + " levels";
+						: (skill.getLevel() - oldLevel) + " levels";
 				cli.println(String.format("%s gained %s in %s", worker.getName(), count, skill.getName()));
 				fireLevelEvent(worker.getName(), job.getName(), skill.getName(), skill.getLevel() - oldLevel,
-					skill.getLevel());
+						skill.getLevel());
 			}
 			final Boolean continuation = cli.inputBoolean("Select another Skill in this Job?");
 			if (!Boolean.TRUE.equals(continuation)) {
@@ -135,7 +136,8 @@ public class AdvancementCLIHelper implements LevelGainSource {
 		final List<IJob> jobs = StreamSupport.stream(worker.spliterator(), false).collect(Collectors.toList());
 		final Consumer<IJob> addToList = jobs::add;
 		while (true) {
-			final Pair<Integer, @Nullable IJob> chosen = cli.chooseFromList(jobs, "Jobs in worker:", "No existing Jobs.", "Job to advance: ", ICLIHelper.ListChoiceBehavior.ALWAYS_PROMPT);
+			final Pair<Integer, @Nullable IJob> chosen = cli.chooseFromList(jobs, "Jobs in worker:", "No existing Jobs.",
+					"Job to advance: ", ICLIHelper.ListChoiceBehavior.ALWAYS_PROMPT);
 			final IJob job;
 			if (!Objects.isNull(chosen.getValue1())) {
 				job = chosen.getValue1();
@@ -148,7 +150,7 @@ public class AdvancementCLIHelper implements LevelGainSource {
 				jobs.clear();
 				worker.forEach(addToList);
 				final IJob temp = jobs.stream().filter(j -> jobName.equals(j.getName()))
-					.findFirst().orElse(null);
+						.findFirst().orElse(null);
 				if (Objects.isNull(temp)) {
 					cli.println("Select the new item at the next prompt.");
 					continue;
@@ -181,12 +183,12 @@ public class AdvancementCLIHelper implements LevelGainSource {
 			final ISkill skill = job.getSkill(skillName);
 			final int oldLevel = skill.getLevel();
 			model.addHoursToSkill(worker, jobName, skillName, hours,
-				SingletonRandom.SINGLETON_RANDOM.nextInt(100));
+					SingletonRandom.SINGLETON_RANDOM.nextInt(100));
 			if (skill.getLevel() != oldLevel) {
 				if (oldLevel == 0 && "miscellaneous".equals(skill.getName())) {
 					final Boolean chooseAnother = cli.inputBooleanInSeries(String.format(
-						"%s gained %d level(s) in miscellaneous, choose another skill?",
-						worker.getName(), skill.getLevel()), "misc-replacement");
+							"%s gained %d level(s) in miscellaneous, choose another skill?",
+							worker.getName(), skill.getLevel()), "misc-replacement");
 					if (Objects.isNull(chooseAnother)) {
 						return;
 					} else if (!chooseAnother) {
@@ -196,16 +198,16 @@ public class AdvancementCLIHelper implements LevelGainSource {
 					for (int i = 0; i < skill.getLevel(); i++) {
 						final ISkill replacement;
 						final Pair<Integer, @Nullable ISkill> choice = cli.chooseFromList(
-							StreamSupport.stream(job.spliterator(), false)
-								.filter(s -> !"miscellaneous".equals(s.getName()))
-								.collect(Collectors.toList()),
-							"Skill to gain level in:", "No other skill", "Chosen skill:",
-							ICLIHelper.ListChoiceBehavior.ALWAYS_PROMPT);
+								StreamSupport.stream(job.spliterator(), false)
+										.filter(s -> !"miscellaneous".equals(s.getName()))
+										.collect(Collectors.toList()),
+								"Skill to gain level in:", "No other skill", "Chosen skill:",
+								ICLIHelper.ListChoiceBehavior.ALWAYS_PROMPT);
 						if (!Objects.isNull(choice.getValue1())) {
 							replacement = choice.getValue1();
 							model.replaceSkillInJob(worker, job.getName(), skill, replacement);
 							model.addHoursToSkill(worker, job.getName(), replacement.getName(),
-								100, 0);
+									100, 0);
 							// FIXME: Add to {@link gains}? The listener should cover that
 							// already, but in practice it doesn't.
 							continue;
@@ -219,25 +221,25 @@ public class AdvancementCLIHelper implements LevelGainSource {
 						gains.add(replacementName);
 					}
 					final Map<String, Long> frequencies = gains.stream()
-						.collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
+							.collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
 					for (final Map.Entry<String, Long> entry : frequencies.entrySet()) {
 						final String name = entry.getKey();
 						final long count = entry.getValue();
 						if (count == 1L) {
 							cli.println(String.format("%s gained a level in %s",
-								worker.getName(), name));
+									worker.getName(), name));
 						} else {
 							cli.println(String.format("%s gained %d levels in %s",
-								worker.getName(), count, name));
+									worker.getName(), count, name));
 						}
 						fireLevelEvent(worker.getName(), job.getName(), name, (int) count,
-							job.getSkill(name).getLevel());
+								job.getSkill(name).getLevel());
 					}
 				} else {
 					cli.println(String.format("%s gained a level in %s", worker.getName(),
-						skill.getName()));
+							skill.getName()));
 					fireLevelEvent(worker.getName(), job.getName(), skill.getName(),
-						skill.getLevel() - oldLevel, skill.getLevel());
+							skill.getLevel() - oldLevel, skill.getLevel());
 				}
 			}
 		}
@@ -248,13 +250,14 @@ public class AdvancementCLIHelper implements LevelGainSource {
 	 */
 	private void advanceWorkersInJob(final String jobName, final IUnit unit) {
 		final List<String> skills = unit.stream().filter(IWorker.class::isInstance).map(IWorker.class::cast)
-			.flatMap(w -> StreamSupport.stream(w.getJob(jobName).spliterator(), false)).map(ISkill::getName)
-			.distinct().collect(Collectors.toList());
+				.flatMap(w -> StreamSupport.stream(w.getJob(jobName).spliterator(), false)).map(ISkill::getName)
+				.distinct().collect(Collectors.toList());
 		final Consumer<String> addToList = skills::add;
 		final Predicate<Object> isWorker = IWorker.class::isInstance;
 		final Function<Object, IWorker> workerCast = IWorker.class::cast;
 		while (true) {
-			final Pair<Integer, @Nullable String> chosen = cli.chooseStringFromList(skills, "Skills in Jobs:", "No existing skills.", "Skill to advance: ", ICLIHelper.ListChoiceBehavior.ALWAYS_PROMPT);
+			final Pair<Integer, @Nullable String> chosen = cli.chooseStringFromList(skills, "Skills in Jobs:",
+					"No existing skills.", "Skill to advance: ", ICLIHelper.ListChoiceBehavior.ALWAYS_PROMPT);
 			final String skill;
 			if (!Objects.isNull(chosen.getValue1())) {
 				skill = chosen.getValue1();
@@ -268,12 +271,12 @@ public class AdvancementCLIHelper implements LevelGainSource {
 				model.addSkillToAllWorkers(unit, jobName, skillName);
 				skills.clear();
 				unit.stream().filter(isWorker).map(workerCast)
-					.flatMap(w -> StreamSupport.stream(w.getJob(jobName).spliterator(), false)).map(ISkill::getName)
-					.distinct().forEach(addToList);
+						.flatMap(w -> StreamSupport.stream(w.getJob(jobName).spliterator(), false)).map(ISkill::getName)
+						.distinct().forEach(addToList);
 				skill = skillName;
 			}
 			advanceWorkersInSkill(jobName, skill, unit.stream().filter(isWorker).map(workerCast)
-				.toArray(IWorker[]::new));
+					.toArray(IWorker[]::new));
 			final Boolean continuation = cli.inputBoolean("Select another Skill in this Job?");
 			if (!Boolean.TRUE.equals(continuation)) {
 				break;
@@ -286,7 +289,7 @@ public class AdvancementCLIHelper implements LevelGainSource {
 	 */
 	public void advanceWorkersInUnit(final IUnit unit, final boolean allowExpertMentoring) {
 		final List<IWorker> workers = unit.stream()
-			.filter(IWorker.class::isInstance).map(IWorker.class::cast).collect(Collectors.toList());
+				.filter(IWorker.class::isInstance).map(IWorker.class::cast).collect(Collectors.toList());
 		final Boolean individualAdvancement = cli.inputBooleanInSeries("Add experience to workers individually? ");
 		final Predicate<Object> isWorker = IWorker.class::isInstance;
 		final Function<Object, IWorker> workerCast = IWorker.class::cast;
@@ -294,7 +297,8 @@ public class AdvancementCLIHelper implements LevelGainSource {
 			return;
 		} else if (individualAdvancement) {
 			while (!workers.isEmpty()) {
-				final IWorker chosen = cli.chooseFromList((List<? extends IWorker>) workers, "Workers in unit:", "No unadvanced workers remain.", "Chosen worker: ", ICLIHelper.ListChoiceBehavior.ALWAYS_PROMPT).getValue1();
+				final IWorker chosen = cli.chooseFromList((List<? extends IWorker>) workers, "Workers in unit:",
+						"No unadvanced workers remain.", "Chosen worker: ", ICLIHelper.ListChoiceBehavior.ALWAYS_PROMPT).getValue1();
 				if (Objects.isNull(chosen)) {
 					break;
 				}
@@ -311,11 +315,12 @@ public class AdvancementCLIHelper implements LevelGainSource {
 				return;
 			}
 			final List<String> jobs = unit.stream().filter(isWorker).map(workerCast)
-				.flatMap(w -> StreamSupport.stream(w.spliterator(), false)).map(IJob::getName).distinct()
-				.collect(Collectors.toList());
+					.flatMap(w -> StreamSupport.stream(w.spliterator(), false)).map(IJob::getName).distinct()
+					.collect(Collectors.toList());
 			final Consumer<String> addJob = jobs::add;
 			while (true) {
-				final Pair<Integer, @Nullable String> chosen = cli.chooseStringFromList(jobs, "Jobs in workers:", "No existing jobs.", "Job to advance: ", ICLIHelper.ListChoiceBehavior.ALWAYS_PROMPT);
+				final Pair<Integer, @Nullable String> chosen = cli.chooseStringFromList(jobs, "Jobs in workers:",
+						"No existing jobs.", "Job to advance: ", ICLIHelper.ListChoiceBehavior.ALWAYS_PROMPT);
 				final String job;
 				if (!Objects.isNull(chosen.getValue1())) {
 					job = chosen.getValue1();
@@ -332,7 +337,7 @@ public class AdvancementCLIHelper implements LevelGainSource {
 					jobs.clear();
 					job = jobName;
 					unit.stream().filter(isWorker).map(workerCast)
-						.flatMap(w -> StreamSupport.stream(w.spliterator(), false)).map(IJob::getName).distinct().forEach(addJob);
+							.flatMap(w -> StreamSupport.stream(w.spliterator(), false)).map(IJob::getName).distinct().forEach(addJob);
 				}
 				advanceWorkersInJob(job, unit);
 				final Boolean continuation = cli.inputBoolean("Select another Job in these workers?");

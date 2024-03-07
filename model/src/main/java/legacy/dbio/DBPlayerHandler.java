@@ -32,13 +32,13 @@ public final class DBPlayerHandler extends AbstractDatabaseWriter<Player, ILegac
 	}
 
 	private static final List<Query> INITIALIZERS = Collections.singletonList(
-		Query.of("CREATE TABLE IF NOT EXISTS players (" +
-			"    id INTEGER NOT NULL," +
-			"    codename VARCHAR(64) NOT NULL," +
-			"    current BOOLEAN NOT NULL," +
-			"    portrait VARCHAR(256)," +
-			"    country VARCHAR(64)" +
-			");"));
+			Query.of("CREATE TABLE IF NOT EXISTS players (" +
+					"    id INTEGER NOT NULL," +
+					"    codename VARCHAR(64) NOT NULL," +
+					"    current BOOLEAN NOT NULL," +
+					"    portrait VARCHAR(256)," +
+					"    country VARCHAR(64)" +
+					");"));
 
 	@Override
 	public List<Query> getInitializers() {
@@ -46,8 +46,8 @@ public final class DBPlayerHandler extends AbstractDatabaseWriter<Player, ILegac
 	}
 
 	private static final Query INSERT_SQL =
-		Query.of("INSERT INTO players (id, codename, current, portrait, country) " +
-			"VALUES(:id, :codename, :current, :portrait, :country);");
+			Query.of("INSERT INTO players (id, codename, current, portrait, country) " +
+					"VALUES(:id, :codename, :current, :portrait, :country);");
 
 	private static final Query UPDATE_SCHEMA = Query.of("ALTER TABLE players ADD COLUMN country VARCHAR(64)");
 

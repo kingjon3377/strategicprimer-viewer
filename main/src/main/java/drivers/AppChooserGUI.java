@@ -7,6 +7,7 @@ import drivers.common.cli.ICLIHelper;
 import drivers.gui.common.SPFrame;
 import drivers.gui.common.SPMenu;
 import drivers.gui.common.WindowCloseListener;
+
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics2D;
@@ -25,6 +26,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
+
 import lovelace.util.BorderedPanel;
 import lovelace.util.ListenedButton;
 
@@ -68,30 +70,32 @@ import lovelace.util.ListenedButton;
 		final SPFrame frame = new SPFrame("SP App Chooser", this, new Dimension((int) width, (int) height));
 		final JPanel buttonPanel = new JPanel(new GridLayout(0, 1));
 		final Consumer<DriverFactory> buttonHandler = (target) -> {
-				new DriverWrapper(target).startCatchingErrors(cli, options,
+			new DriverWrapper(target).startCatchingErrors(cli, options,
 					Stream.concat(Stream.of(args),
-						additionalFiles.stream()).toArray(String[]::new));
-				SwingUtilities.invokeLater(() -> {
-						frame.setVisible(false);
-						frame.dispose();
-					});
-			};
+							additionalFiles.stream()).toArray(String[]::new));
+			SwingUtilities.invokeLater(() -> {
+				frame.setVisible(false);
+				frame.dispose();
+			});
+		};
 		for (final DriverFactory driver : drivers) {
 			if (!includeInGUIList(driver)) {
 				continue;
 			}
 			buttonPanel.add(new ListenedButton(driver.getUsage().getShortDescription(),
-				ignored -> buttonHandler.accept(driver)));
+					ignored -> buttonHandler.accept(driver)));
 		}
 		final BorderedPanel mainPanel = BorderedPanel.verticalPanel(
-			new JLabel("Please choose one of the applications below"),
-			new JScrollPane(buttonPanel), null);
+				new JLabel("Please choose one of the applications below"),
+				new JScrollPane(buttonPanel), null);
 		frame.setContentPane(mainPanel);
 		frame.pack();
 		frame.setJMenuBar(SPMenu.forWindow(frame,
-			SPMenu.createFileMenu(new IOHandler(this, cli), this),
-			SPMenu.disabledMenu(SPMenu.createMapMenu(x -> {}, this)),
-			SPMenu.disabledMenu(SPMenu.createViewMenu(x -> {}, this))));
+				SPMenu.createFileMenu(new IOHandler(this, cli), this),
+				SPMenu.disabledMenu(SPMenu.createMapMenu(x -> {
+				}, this)),
+				SPMenu.disabledMenu(SPMenu.createViewMenu(x -> {
+				}, this))));
 		frame.addWindowListener(new WindowCloseListener(ignored -> frame.dispose()));
 		frame.setVisible(true);
 	}

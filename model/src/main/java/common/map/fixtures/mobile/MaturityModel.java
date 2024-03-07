@@ -14,46 +14,46 @@ import lovelace.util.FileSplitter;
  * the codebase, store a notion of the current turn here.
  */
 public final class MaturityModel {
-    private static final Map<String, Integer> MATURITY_AGES =
-            initMaturityAges();
+	private static final Map<String, Integer> MATURITY_AGES =
+			initMaturityAges();
 
-    private MaturityModel() {
-    }
+	private MaturityModel() {
+	}
 
-    private static Map<String, Integer> initMaturityAges() {
-        try {
-            return FileSplitter.getFileContents(Paths.get("animal_data", "maturity.txt"),
-                    Integer::parseInt);
-        } catch (final IOException except) {
-            throw new RuntimeException(except);
-        }
-    }
+	private static Map<String, Integer> initMaturityAges() {
+		try {
+			return FileSplitter.getFileContents(Paths.get("animal_data", "maturity.txt"),
+					Integer::parseInt);
+		} catch (final IOException except) {
+			throw new RuntimeException(except);
+		}
+	}
 
-    public static Map<String, Integer> getMaturityAges() {
-        return Collections.unmodifiableMap(MATURITY_AGES);
-    }
+	public static Map<String, Integer> getMaturityAges() {
+		return Collections.unmodifiableMap(MATURITY_AGES);
+	}
 
-    private static int currentTurn = -1;
+	private static int currentTurn = -1;
 
-    public static int getCurrentTurn() {
-        return currentTurn;
-    }
+	public static int getCurrentTurn() {
+		return currentTurn;
+	}
 
-    public static void setCurrentTurn(final int currentTurn) {
-        if (MaturityModel.currentTurn < 0) {
-            MaturityModel.currentTurn = currentTurn;
-        } else if (MaturityModel.currentTurn != currentTurn) {
-            LovelaceLogger.warning("Tried to reset current turn");
-        }
-    }
+	public static void setCurrentTurn(final int currentTurn) {
+		if (MaturityModel.currentTurn < 0) {
+			MaturityModel.currentTurn = currentTurn;
+		} else if (MaturityModel.currentTurn != currentTurn) {
+			LovelaceLogger.warning("Tried to reset current turn");
+		}
+	}
 
-    /**
-     * Clear the stored current turn
-     *
-     * TODO: Can we restrict access somehow?
-     */
-    public static void resetCurrentTurn() {
-        currentTurn = -1;
-    }
+	/**
+	 * Clear the stored current turn
+	 *
+	 * TODO: Can we restrict access somehow?
+	 */
+	public static void resetCurrentTurn() {
+		currentTurn = -1;
+	}
 }
 

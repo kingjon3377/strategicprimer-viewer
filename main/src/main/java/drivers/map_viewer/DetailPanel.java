@@ -64,7 +64,7 @@ import worker.common.IFixtureEditHelper;
 
 	private final KeyPanel keyPanel;
 	private final FormattedLabel header = new FormattedLabel(
-		"<html><body><p>Contents of the tile at %s:</p></body></html>", Point.INVALID_POINT);
+			"<html><body><p>Contents of the tile at %s:</p></body></html>", Point.INVALID_POINT);
 
 	public DetailPanel(final int version, final IFixtureEditingModel model, final Comparator<TileFixture> sortOrder) {
 		super(JSplitPane.HORIZONTAL_SPLIT, true);
@@ -74,18 +74,18 @@ import worker.common.IFixtureEditHelper;
 		final IFixtureEditHelper feh = new FixtureEditHelper(model);
 
 		final FixtureList fixtureListObject = new FixtureList(this,
-			new FixtureListModel(model.getMap()::getFixtures, model.getMap()::getBaseTerrain,
-				model.getMap()::getRivers, model.getMap()::isMountainous, (point) -> null,
-				null, null, null, null, null, null, sortOrder), // TODO: implementations instead of null?
-			feh, IDFactoryFiller.createIDFactory(model.getMap()),
-			model.getMap().getPlayers());
+				new FixtureListModel(model.getMap()::getFixtures, model.getMap()::getBaseTerrain,
+						model.getMap()::getRivers, model.getMap()::isMountainous, (point) -> null,
+						null, null, null, null, null, null, sortOrder), // TODO: implementations instead of null?
+				feh, IDFactoryFiller.createIDFactory(model.getMap()),
+				model.getMap().getPlayers());
 
 		delegate = fixtureListObject;
 		final PortraitComponent portrait = new PortraitComponent(fixtureListObject);
 		fixtureListObject.addListSelectionListener(portrait);
 
 		final JPanel listPanel = BorderedPanel.verticalPanel(header, new JScrollPane(fixtureListObject),
-			null);
+				null);
 		setLeftComponent(horizontalSplit(listPanel, portrait));
 		setRightComponent(keyPanel);
 		setResizeWeight(0.9);
@@ -99,8 +99,8 @@ import worker.common.IFixtureEditHelper;
 		public KeyPanel(final int version) {
 			super(new GridLayout(0, 4));
 			final Dimension size = new Dimension((int) keyElement(version, null)
-				.getMinimumSize().getWidth() * 4,
-				(int) getMinimumSize().getHeight());
+					.getMinimumSize().getWidth() * 4,
+					(int) getMinimumSize().getHeight());
 			setMinimumSize(size);
 			setPreferredSize(size);
 		}
@@ -123,7 +123,7 @@ import worker.common.IFixtureEditHelper;
 			final int tileSize = scaleZoom(ViewerModel.DEFAULT_ZOOM_LEVEL, version);
 			final Color color = Optional.ofNullable(ColorHelper.get(version, type)).orElse(Color.white);
 			panel.add(new KeyElementComponent(color, new Dimension(4, 4), new Dimension(8, 8),
-				new Dimension(tileSize, tileSize)));
+					new Dimension(tileSize, tileSize)));
 			panel.addRigidArea(4);
 			final JLabel label = new JLabel(ColorHelper.getDescription(type));
 			panel.add(label);
@@ -132,7 +132,7 @@ import worker.common.IFixtureEditHelper;
 			retval.addRigidArea(7);
 			retval.addGlue();
 			retval.setMinimumSize(new Dimension(Math.max(4, (int) label.getMinimumSize().getWidth()) + 14,
-				16 + (int) label.getMinimumSize().getHeight()));
+					16 + (int) label.getMinimumSize().getHeight()));
 			return retval;
 		}
 	}
@@ -185,7 +185,7 @@ import worker.common.IFixtureEditHelper;
 		@Override
 		public void valueChanged(final ListSelectionEvent event) {
 			final List<TileFixture> selections =
-				fixtureListObject.getSelectedValuesList();
+					fixtureListObject.getSelectedValuesList();
 			portrait = null;
 			if (selections.size() == 1) {
 				final TileFixture selectedValue = selections.getFirst();
@@ -205,7 +205,7 @@ import worker.common.IFixtureEditHelper;
 						if (!playerPortraitName.isEmpty()) {
 							try {
 								portrait = ImageLoader
-									.loadImage(playerPortraitName);
+										.loadImage(playerPortraitName);
 							} catch (final IOException except) {
 								LovelaceLogger.warning(except, "I/O error loading player portrait");
 							}

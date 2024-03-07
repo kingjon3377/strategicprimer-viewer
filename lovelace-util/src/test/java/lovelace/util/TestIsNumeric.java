@@ -21,9 +21,9 @@ public final class TestIsNumeric {
 	@Test
 	public void testParseInt() {
 		assertEquals(-5127, parseInt("-5,127").orElseThrow(IllegalStateException::new),
-			"parseInt() parses comma-containing numbers");
+				"parseInt() parses comma-containing numbers");
 		assertEquals(2345, parseInt("2345").orElseThrow(IllegalStateException::new),
-			"parseInt() doesn't require commas");
+				"parseInt() doesn't require commas");
 		assertFalse(parseInt("alphabetic").isPresent(), "parsing of non-numeric data fails");
 	}
 }

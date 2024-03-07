@@ -30,38 +30,39 @@ import com.google.auto.service.AutoService;
  */
 @AutoService(DriverFactory.class)
 public class ResourceAddingGUIFactory implements GUIDriverFactory {
-    private static final IDriverUsage USAGE = new DriverUsage(true, "add-resource",
-            ParamCount.AtLeastOne, "Add resources to maps", "Add resources for players to maps",
-            false, true, "--current-turn=NN");
+	private static final IDriverUsage USAGE = new DriverUsage(true, "add-resource",
+			ParamCount.AtLeastOne, "Add resources to maps", "Add resources for players to maps",
+			false, true, "--current-turn=NN");
 
-    @Override
-    public IDriverUsage getUsage() {
-        return USAGE;
-    }
+	@Override
+	public IDriverUsage getUsage() {
+		return USAGE;
+	}
 
-    /**
-     * Ask the user to choose a file or files.
-     */
-    @Override
-    public List<Path> askUserForFiles() throws DriverFailedException { // TODO: Make interface declare ChoiceInterruptedException instead of DriverFailedException?
-        try {
-            return SPFileChooser.open((Path) null).getFiles();
-        } catch (final FileChooser.ChoiceInterruptedException except) {
-            throw new DriverFailedException(except, "Choice interrupted or user didn't choose");
-        }
-    }
+	/**
+	 * Ask the user to choose a file or files.
+	 */
+	@Override
+	// TODO: Make interface declare ChoiceInterruptedException instead of DriverFailedException?
+	public List<Path> askUserForFiles() throws DriverFailedException {
+		try {
+			return SPFileChooser.open((Path) null).getFiles();
+		} catch (final FileChooser.ChoiceInterruptedException except) {
+			throw new DriverFailedException(except, "Choice interrupted or user didn't choose");
+		}
+	}
 
-    @Override
-    public GUIDriver createDriver(final ICLIHelper cli, final SPOptions options, final IDriverModel model) {
-        if (model instanceof final ResourceManagementDriverModel rmdm) {
-            return new ResourceAddingGUI(cli, options, rmdm);
-        } else {
-            return createDriver(cli, options, new ResourceManagementDriverModel(model));
-        }
-    }
+	@Override
+	public GUIDriver createDriver(final ICLIHelper cli, final SPOptions options, final IDriverModel model) {
+		if (model instanceof final ResourceManagementDriverModel rmdm) {
+			return new ResourceAddingGUI(cli, options, rmdm);
+		} else {
+			return createDriver(cli, options, new ResourceManagementDriverModel(model));
+		}
+	}
 
-    @Override
-    public IDriverModel createModel(final IMutableLegacyMap map) {
-        return new ResourceManagementDriverModel(map);
-    }
+	@Override
+	public IDriverModel createModel(final IMutableLegacyMap map) {
+		return new ResourceManagementDriverModel(map);
+	}
 }

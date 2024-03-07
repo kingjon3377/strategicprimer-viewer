@@ -53,14 +53,14 @@ import drivers.gui.common.MenuBroker;
 	public AdvancementFrame(final IWorkerModel model, final MenuBroker menuHandler, final ModelDriver driver,
 							final ICLIHelper cli) {
 		super("Worker Advancement", driver, new Dimension(640, 480), true,
-			(file) -> model.addSubordinateMap(MapIOHelper.readMap(file)));
+				(file) -> model.addSubordinateMap(MapIOHelper.readMap(file)));
 		final ILegacyMap map = model.getMap();
 		treeModel = new WorkerTreeModelAlt(model);
 		final IDRegistrar idf = IDFactoryFiller.createIDFactory(map);
 
 		// TODO: replace lambda with (model::getMap).andThen(IMapNG::getCurrentTurn)?
 		final WorkerTree tree = new WorkerTree(treeModel, model.getPlayers(),
-			() -> model.getMap().getCurrentTurn(), false, idf);
+				() -> model.getMap().getCurrentTurn(), false, idf);
 
 		final WorkerCreationListener newWorkerListener = new WorkerCreationListener(treeModel, idf);
 
@@ -95,18 +95,18 @@ import drivers.gui.common.MenuBroker;
 
 		playerLabel = new FormattedLabel("%s's Units:", "An Unknown Player");
 		setContentPane(horizontalSplit(BorderedPanel.verticalPanel(playerLabel,
-				new JScrollPane(tree),
-				new ListenedButton("Add worker to selected unit ...", newWorkerListener)),
-			verticalSplit(BorderedPanel.verticalPanel(html("Worker's Jobs and Skills:"),
-					new JScrollPane(jobsTreeObject), null),
-				BorderedPanel.verticalPanel(null,
-					BorderedPanel.verticalPanel(BorderedPanel.verticalPanel(
-							html("Add a job to the worker:"), null,
-							jobAdditionPanel), null,
-						BorderedPanel.verticalPanel(
-							html("Add a Skill to the selected Job:"),
-							null, skillAdditionPanel)),
-					hoursAdditionPanel), 0.5, 0.3)));
+						new JScrollPane(tree),
+						new ListenedButton("Add worker to selected unit ...", newWorkerListener)),
+				verticalSplit(BorderedPanel.verticalPanel(html("Worker's Jobs and Skills:"),
+								new JScrollPane(jobsTreeObject), null),
+						BorderedPanel.verticalPanel(null,
+								BorderedPanel.verticalPanel(BorderedPanel.verticalPanel(
+												html("Add a job to the worker:"), null,
+												jobAdditionPanel), null,
+										BorderedPanel.verticalPanel(
+												html("Add a Skill to the selected Job:"),
+												null, skillAdditionPanel)),
+								hoursAdditionPanel), 0.5, 0.3)));
 
 		playerChanged(null, model.getCurrentPlayer());
 		setJMenuBar(workerMenu(menuHandler, this, driver));

@@ -32,13 +32,14 @@ import java.util.Objects;
  * covered elsewhere: caves, battlefields, adventure hooks, and portals.
  */
 public class ExplorableTabularReportGenerator
-	implements ITableGenerator</*ExplorableFixture|TextFixture*/TileFixture> {
+		implements ITableGenerator</*ExplorableFixture|TextFixture*/TileFixture> {
 	@Override
 	public boolean canHandle(final IFixture fixture) {
 		return fixture instanceof ExplorableFixture || fixture instanceof TextFixture;
 	}
 
-	public ExplorableTabularReportGenerator(final Player player, final @Nullable Point hq, final MapDimensions dimensions) {
+	public ExplorableTabularReportGenerator(final Player player, final @Nullable Point hq,
+											final MapDimensions dimensions) {
 		this.player = player;
 		this.hq = hq;
 		this.dimensions = dimensions;
@@ -59,7 +60,7 @@ public class ExplorableTabularReportGenerator
 	@Override
 	public List<String> getHeaderRow() {
 		return Arrays.asList("Distance", "Location", "Brief Description", "Claimed By",
-			"Long Description");
+				"Long Description");
 	}
 
 	/**
@@ -77,9 +78,9 @@ public class ExplorableTabularReportGenerator
 	 */
 	@Override
 	public List<List<String>> produce(
-		final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-		/*ExplorableFixture|TextFixture*/final TileFixture item, final int key, final Point loc,
-		final Map<Integer, Integer> parentMap) {
+			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
+			/*ExplorableFixture|TextFixture*/final TileFixture item, final int key, final Point loc,
+			final Map<Integer, Integer> parentMap) {
 		final String brief;
 		final String owner;
 		final String longDesc;
@@ -135,7 +136,7 @@ public class ExplorableTabularReportGenerator
 		}
 		fixtures.remove(key);
 		return Collections.singletonList(Arrays.asList(distanceString(loc, hq, dimensions),
-			locationString(loc), brief, owner, longDesc));
+				locationString(loc), brief, owner, longDesc));
 	}
 
 	/**
@@ -144,6 +145,6 @@ public class ExplorableTabularReportGenerator
 	@Override
 	public Comparator<Pair<Point, TileFixture>> comparePairs() {
 		return Comparator.<Pair<Point, TileFixture>, Point>comparing(Pair::getValue0, distanceComparator)
-			.thenComparing(p -> p.getValue1().toString());
+				.thenComparing(p -> p.getValue1().toString());
 	}
 }

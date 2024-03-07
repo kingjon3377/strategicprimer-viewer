@@ -89,7 +89,7 @@ import org.eclipse.jdt.annotation.Nullable;
 		final FunctionalGroupLayout headerLayout = new FunctionalGroupLayout(headerPanel);
 
 		final ExplorationPanel explorationPanel = new ExplorationPanel(mpModel, speedModel, headerPanel,
-			headerLayout, tilesPanel, driver.getModel(), layoutObj::goNext);
+				headerLayout, tilesPanel, driver.getModel(), layoutObj::goNext);
 
 		driver.getModel().addSelectionChangeListener(explorationPanel);
 
@@ -98,23 +98,23 @@ import org.eclipse.jdt.annotation.Nullable;
 		}
 
 		add(new BorderedPanel(horizontalSplit(
-			BorderedPanel.verticalPanel(new JLabel("Players in all maps:"), playerList, null),
-			BorderedPanel.verticalPanel(new JLabel("<html><body><p>Units belonging to that player:</p>" +
-					"<p>(Selected unit will be used for exploration.)</p></body></html>"),
-				new JScrollPane(unitList), BorderedPanel.verticalPanel(
-					BorderedPanel.horizontalPanel(new JLabel("Unit's Movement Points"), null, mpField),
-					BorderedPanel.horizontalPanel(new JLabel("Unit's Relative Speed"),
-						null, new ImprovedComboBox<>(speedModel)),
-					new ListenedButton("Start exploring!", this::buttonListener))))));
+				BorderedPanel.verticalPanel(new JLabel("Players in all maps:"), playerList, null),
+				BorderedPanel.verticalPanel(new JLabel("<html><body><p>Units belonging to that player:</p>" +
+								"<p>(Selected unit will be used for exploration.)</p></body></html>"),
+						new JScrollPane(unitList), BorderedPanel.verticalPanel(
+								BorderedPanel.horizontalPanel(new JLabel("Unit's Movement Points"), null, mpField),
+								BorderedPanel.horizontalPanel(new JLabel("Unit's Relative Speed"),
+										null, new ImprovedComboBox<>(speedModel)),
+								new ListenedButton("Start exploring!", this::buttonListener))))));
 
 		add(explorationPanel);
 
 		setPreferredSize(new Dimension(1024, 640));
 
 		setJMenuBar(SPMenu.forWindowContaining(explorationPanel,
-			SPMenu.createFileMenu(menuHandler, driver),
-			SPMenu.disabledMenu(SPMenu.createMapMenu(menuHandler, driver)),
-			SPMenu.createViewMenu(menuHandler, driver)));
+				SPMenu.createFileMenu(menuHandler, driver),
+				SPMenu.disabledMenu(SPMenu.createMapMenu(menuHandler, driver)),
+				SPMenu.createViewMenu(menuHandler, driver)));
 		pack();
 	}
 

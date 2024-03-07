@@ -67,12 +67,12 @@ import legacy.map.fixtures.mobile.worker.IJob;
 			final List<IJob> jobs;
 			if (options.hasOption("--include-unleveled-jobs")) {
 				jobs = StreamSupport.stream(worker.spliterator(), false)
-					.filter(j -> !j.isEmpty())
-					.collect(Collectors.toList());
+						.filter(j -> !j.isEmpty())
+						.collect(Collectors.toList());
 			} else {
 				jobs = StreamSupport.stream(worker.spliterator(), false)
-					.filter(j -> j.getLevel() > 0)
-					.collect(Collectors.toList());
+						.filter(j -> j.getLevel() > 0)
+						.collect(Collectors.toList());
 			}
 			boolean needsClosingParen = false;
 			if (!Objects.isNull(((IWorker) member).getMount())) {
@@ -87,7 +87,7 @@ import legacy.map.fixtures.mobile.worker.IJob;
 					writer.write(" (");
 				}
 				writer.write(jobs.stream().map(StrategyExporter::jobString)
-					.collect(Collectors.joining(", ")));
+						.collect(Collectors.joining(", ")));
 				needsClosingParen = true;
 			}
 			if (needsClosingParen) {
@@ -121,7 +121,7 @@ import legacy.map.fixtures.mobile.worker.IJob;
 		for (final UnitMember member : unit) {
 			if (member instanceof final IWorker w) {
 				if (StreamSupport.stream(w.spliterator(), false)
-					.mapToInt(IJob::getLevel).anyMatch(x -> x > 0)) {
+						.mapToInt(IJob::getLevel).anyMatch(x -> x > 0)) {
 					leveledWorkers.add((IWorker) member);
 				} else {
 					unleveledWorkers.add((IWorker) member);
@@ -138,7 +138,7 @@ import legacy.map.fixtures.mobile.worker.IJob;
 				writeMember(writer, unleveledWorkers.getFirst());
 				if (unleveledWorkers.size() > 1) {
 					writer.write(String.format(", %d other unleveled workers",
-						unleveledWorkers.size() - 1));
+							unleveledWorkers.size() - 1));
 				}
 				needComma = true;
 			}
@@ -155,7 +155,7 @@ import legacy.map.fixtures.mobile.worker.IJob;
 			}
 			if (!unleveledWorkers.isEmpty()) {
 				writer.write(String.format(", %d unleveled workers",
-					unleveledWorkers.size()));
+						unleveledWorkers.size()));
 			}
 		}
 		for (final UnitMember member : nonWorkers) {
@@ -185,7 +185,7 @@ import legacy.map.fixtures.mobile.worker.IJob;
 			final Map<String, List<IUnit>> unitsByKind = new HashMap<>(); // TODO: Use multimap (as we did in Ceylon)
 			for (final IUnit unit : units) {
 				if (unit.iterator().hasNext() ||
-					"true".equals(options.getArgument("--print-empty"))) {
+						"true".equals(options.getArgument("--print-empty"))) {
 					final List<IUnit> list;
 					if (unitsByKind.containsKey(unit.getKind())) {
 						list = unitsByKind.get(unit.getKind());
@@ -198,21 +198,21 @@ import legacy.map.fixtures.mobile.worker.IJob;
 			}
 			final Map<IUnit, String> orders = new HashMap<>();
 			for (final IUnit unit : unitsByKind.entrySet().stream()
-				.flatMap(e -> e.getValue().stream()).toList()) {
+					.flatMap(e -> e.getValue().stream()).toList()) {
 				final String unitOrders = unit.getLatestOrders(turn);
 				final int ordersTurn = unit.getOrdersTurn(unitOrders);
 				if (unitOrders.equals(unit.getOrders(turn)) || ordersTurn < 0) {
 					orders.put(unit, unitOrders);
 				} else {
 					orders.put(unit, String.format("(From turn #%d) %s", ordersTurn,
-						unitOrders));
+							unitOrders));
 				}
 			}
 			writer.write("[Player: ");
 			writer.write(playerName);
 			writer.newLine();
 			if (!Objects.isNull(currentPlayer.getCountry()) &&
-				!currentPlayer.getCountry().isBlank()) {
+					!currentPlayer.getCountry().isBlank()) {
 				writer.write("Country: ");
 				writer.write(currentPlayer.getCountry());
 				writer.newLine();
@@ -232,8 +232,8 @@ import legacy.map.fixtures.mobile.worker.IJob;
 				writer.newLine();
 				writer.newLine();
 				writer.write(StreamSupport.stream(dismissed.spliterator(), false)
-					.map(StrategyExporter::workerString)
-					.collect(Collectors.joining(", ")));
+						.map(StrategyExporter::workerString)
+						.collect(Collectors.joining(", ")));
 				writer.newLine();
 				writer.newLine();
 			}
@@ -258,7 +258,8 @@ import legacy.map.fixtures.mobile.worker.IJob;
 					writer.write("#### ");
 					writer.write(unit.getName());
 					final boolean alreadyWroteMembers;
-					if (unit.stream().count() == 1L) { // TODO: Support the 'one person plus equipment/animals' case, and maybe the 'leader and helpers' case
+					// TODO: Support the 'one person plus equipment/animals' case, & maybe the 'leader and helpers' case
+					if (unit.stream().count() == 1L) {
 						writer.write(" [");
 						writeMember(writer, unit.stream().findAny().orElse(null));
 						writer.write("]");
@@ -272,9 +273,9 @@ import legacy.map.fixtures.mobile.worker.IJob;
 					if (unit.iterator().hasNext() && !alreadyWroteMembers) {
 						writer.write("- Members: ");
 						if (unit.stream().count() > 4L &&
-							"true".equals(options
-								.getArgument(
-									"--summarize-large-units"))) {
+								"true".equals(options
+										.getArgument(
+												"--summarize-large-units"))) {
 							summarizeUnitMembers(writer, unit);
 						} else {
 							boolean first = true;
@@ -293,7 +294,7 @@ import legacy.map.fixtures.mobile.worker.IJob;
 					if (options.hasOption("--results")) {
 						writer.write("- Orders: ");
 						if (orders.containsKey(unit) &&
-							!orders.get(unit).isEmpty()) {
+								!orders.get(unit).isEmpty()) {
 							writer.write(orders.get(unit));
 						} else {
 							writer.write("TODO");
@@ -312,7 +313,7 @@ import legacy.map.fixtures.mobile.worker.IJob;
 						writer.newLine();
 						writer.newLine();
 						if (orders.containsKey(unit) &&
-							!orders.get(unit).isEmpty()) {
+								!orders.get(unit).isEmpty()) {
 							writer.write(orders.get(unit));
 						} else {
 							writer.write("TODO");
@@ -332,8 +333,8 @@ import legacy.map.fixtures.mobile.worker.IJob;
 					writer.newLine();
 					writer.newLine();
 					final List<Implement> equipment =
-						fortress.stream().filter(isImplement)
-							.map(implementCast).toList();
+							fortress.stream().filter(isImplement)
+									.map(implementCast).toList();
 					if (!equipment.isEmpty()) {
 						writer.write("- Equipment not in a unit:");
 						writer.newLine();
@@ -344,11 +345,11 @@ import legacy.map.fixtures.mobile.worker.IJob;
 						}
 					}
 					for (final Map.Entry<String, List<IResourcePile>> entry :
-						fortress.stream().filter(IResourcePile.class::isInstance)
-							.map(IResourcePile.class::cast)
-							.collect(Collectors.groupingBy(
-								IResourcePile::getKind))
-							.entrySet()) {
+							fortress.stream().filter(IResourcePile.class::isInstance)
+									.map(IResourcePile.class::cast)
+									.collect(Collectors.groupingBy(
+											IResourcePile::getKind))
+									.entrySet()) {
 						final String kind = entry.getKey();
 						final List<IResourcePile> resources = entry.getValue();
 						writer.write("- "); // TODO: Markdown header instead?
@@ -362,10 +363,10 @@ import legacy.map.fixtures.mobile.worker.IJob;
 						}
 					}
 					if (!fortress.stream().allMatch(f -> f instanceof Implement ||
-						f instanceof IResourcePile ||
-						f instanceof IUnit)) {
+							f instanceof IResourcePile ||
+							f instanceof IUnit)) {
 						System.err.printf("Unhandled members in %s%n",
-							fortress.getName()); // TODO: Take ICLIHelper to report diagnostics on
+								fortress.getName()); // TODO: Take ICLIHelper to report diagnostics on
 					}
 				}
 				final Predicate<Object> isWorker = IWorker.class::isInstance;

@@ -59,9 +59,9 @@ import java.util.function.Predicate;
 /* package */ class YAMapReader extends YAAbstractReader<ILegacyMap, ILegacyMap> {
 
 	/**
-	 * @param warner The Warning instance to use
+	 * @param warner      The Warning instance to use
 	 * @param idRegistrar The factory for ID numbers
-	 * @param players The map's collection of players
+	 * @param players     The map's collection of players
 	 */
 	public YAMapReader(final Warning warner, final IDRegistrar idRegistrar, final IMutableLegacyPlayerCollection players) {
 		super(warner, idRegistrar);
@@ -86,17 +86,17 @@ import java.util.function.Predicate;
 	private final List<YAReader<? extends TileFixture, ? extends TileFixture>> readers;
 
 	private final Map<String, YAReader<? extends TileFixture, ? extends TileFixture>>
-		readerCache = new HashMap<>();
+			readerCache = new HashMap<>();
 
 	private final Map<Class<? extends TileFixture>,
-		YAReader<? extends TileFixture, ? extends TileFixture>> writerCache =
-		new HashMap<>();
+			YAReader<? extends TileFixture, ? extends TileFixture>> writerCache =
+			new HashMap<>();
 
 	/**
 	 * Get the first open-tag event in our namespace in the stream.
 	 */
 	private static StartElement getFirstStartElement(final Iterable<XMLEvent> stream, final StartElement parent)
-		throws SPFormatException, XMLStreamException {
+			throws SPFormatException, XMLStreamException {
 		for (final XMLEvent element : stream) {
 			if (element instanceof final StartElement se && isSupportedNamespace(se.getName())) {
 				return se;
@@ -150,7 +150,7 @@ import java.util.function.Predicate;
 	 * Parse what should be a {@link TileFixture} from the XML.
 	 */
 	private TileFixture parseFixture(final StartElement element, final QName parent, final Iterable<XMLEvent> stream)
-		throws SPFormatException, XMLStreamException {
+			throws SPFormatException, XMLStreamException {
 		final String name = element.getName().getLocalPart();
 		if (readerCache.containsKey(name.toLowerCase())) {
 			return readerCache.get(name.toLowerCase()).read(element, parent, stream);
@@ -173,7 +173,7 @@ import java.util.function.Predicate;
 			}
 		}
 		throw new UnwantedChildException(new QName(element.getName().getNamespaceURI(), "tile"),
-			element);
+				element);
 	}
 
 	/**
@@ -181,7 +181,7 @@ import java.util.function.Predicate;
 	 */
 	@Override
 	public IMutableLegacyMap read(final StartElement element, final QName parent, final Iterable<XMLEvent> stream)
-		throws SPFormatException, XMLStreamException {
+			throws SPFormatException, XMLStreamException {
 		requireTag(element, parent, "map", "view");
 		final int currentTurn;
 		final StartElement mapTag;
@@ -202,17 +202,17 @@ import java.util.function.Predicate;
 				expectAttributes(mapTag, "version", "rows", "columns", "current_player");
 			}
 			default -> throw UnwantedChildException.listingExpectedTags(new QName("xml"), element,
-				"map", "view");
+					"map", "view");
 		}
 		final MapDimensions dimensions;
 		final MapDimensions readDimensions = new MapDimensionsImpl(getIntegerParameter(mapTag, "rows"),
-			getIntegerParameter(mapTag, "columns"), getIntegerParameter(mapTag, "version"));
+				getIntegerParameter(mapTag, "columns"), getIntegerParameter(mapTag, "version"));
 		if (readDimensions.version() == 2) {
 			dimensions = readDimensions;
 		} else {
 			warner.handle(new MapVersionException(mapTag, readDimensions.version(), 2, 2));
 			dimensions = new MapDimensionsImpl(readDimensions.rows(),
-				readDimensions.columns(), 2);
+					readDimensions.columns(), 2);
 		}
 		final Deque<QName> tagStack = new LinkedList<>();
 		tagStack.addFirst(element.getName());
@@ -236,7 +236,7 @@ import java.util.function.Predicate;
 						throw new UnwantedChildException(tagStack.peekFirst(), se);
 					}
 					expectAttributes(se, "row", "column", "kind",
-						"type", "mountain");
+							"type", "mountain");
 					tagStack.addFirst(se.getName());
 					// TODO: Just assign to point, maybe?
 					final Point localPoint = parsePoint(se);
@@ -246,8 +246,8 @@ import java.util.function.Predicate;
 					if ((hasParameter(se, "kind") || hasParameter(se, "type"))) {
 						try {
 							retval.setBaseTerrain(localPoint,
-								TileType.parse(getParamWithDeprecatedForm(se, "kind",
-									"type")));
+									TileType.parse(getParamWithDeprecatedForm(se, "kind",
+											"type")));
 						} catch (final IllegalArgumentException | ParseException except) {
 							warner.handle(new MissingPropertyException(se, "kind", except));
 						}
@@ -274,7 +274,7 @@ import java.util.function.Predicate;
 					switch (type) {
 						case "lake", "river" -> {
 							retval.addRivers(point,
-								parseRiver(se, tagStack.peekFirst()));
+									parseRiver(se, tagStack.peekFirst()));
 							spinUntilEnd(se.getName(), stream);
 						}
 						case "mountain" -> {
@@ -285,8 +285,8 @@ import java.util.function.Predicate;
 							tagStack.addFirst(se.getName());
 							expectAttributes(se, "player");
 							retval.addBookmark(point,
-								players.getPlayer(getIntegerParameter(
-									se, "player")));
+									players.getPlayer(getIntegerParameter(
+											se, "player")));
 						}
 						case "road" -> {
 							tagStack.addFirst(se.getName());
@@ -294,25 +294,25 @@ import java.util.function.Predicate;
 							final Direction direction;
 							try {
 								direction = Direction.parse(
-									getParameter(se,
-										"direction"));
+										getParameter(se,
+												"direction"));
 							} catch (final IllegalArgumentException except) {
 								throw new MissingPropertyException(se, "direction", except);
 							}
 							retval.setRoadLevel(point, direction,
-								getIntegerParameter(se, "quality"));
+									getIntegerParameter(se, "quality"));
 						}
 						default -> {
 							final QName top = tagStack.peekFirst();
 							final TileFixture child = parseFixture(se, top, stream);
 							if (child instanceof final IFortress f &&
-								retval.getFixtures(point).stream()
-									.filter(isFortress)
-									.map(fortressCast)
-									.map(IFortress::owner)
-									.anyMatch(Predicate.isEqual(f.owner()))) {
+									retval.getFixtures(point).stream()
+											.filter(isFortress)
+											.map(fortressCast)
+											.map(IFortress::owner)
+											.anyMatch(Predicate.isEqual(f.owner()))) {
 								warner.handle(new UnwantedChildException(top, se,
-									"Multiple fortresses owned by one player on a tile"));
+										"Multiple fortresses owned by one player on a tile"));
 							}
 							retval.addFixture(point, child);
 						}
@@ -320,34 +320,34 @@ import java.util.function.Predicate;
 				} else {
 					// fixture outside tile
 					throw UnwantedChildException.listingExpectedTags(
-						tagStack.peekFirst(), se, "tile",
-						"elsewhere");
+							tagStack.peekFirst(), se, "tile",
+							"elsewhere");
 				}
 			} else if (event instanceof final EndElement ee) {
 				if (!tagStack.isEmpty() &&
-					tagStack.peekFirst().equals(ee.getName())) {
+						tagStack.peekFirst().equals(ee.getName())) {
 					tagStack.removeFirst();
 				} // **NOT** else if!
 				if (element.getName().equals(ee.getName())) {
 					break;
 				} else if ("tile".equalsIgnoreCase(ee.getName().getLocalPart()) ||
-					"elsewhere".equalsIgnoreCase(ee.getName().getLocalPart())) {
+						"elsewhere".equalsIgnoreCase(ee.getName().getLocalPart())) {
 					point = null;
 				}
 			} else if (event instanceof final Characters c) {
 				final String data = c.getData().strip();
 				if (!data.isEmpty()) {
 					retval.addFixture(Objects.requireNonNullElse(point, Point.INVALID_POINT),
-						new TextFixture(data, -1));
+							new TextFixture(data, -1));
 				}
 			}
 		}
 		if (hasParameter(mapTag, "current_player")) {
 			retval.setCurrentPlayer(players.getPlayer(getIntegerParameter(mapTag,
-				"current_player")));
+					"current_player")));
 		} else if (hasParameter(element, "current_player")) {
 			retval.setCurrentPlayer(players.getPlayer(getIntegerParameter(element,
-				"current_player")));
+					"current_player")));
 		} else {
 			warner.handle(new MissingPropertyException(mapTag, "current_player"));
 		}
@@ -359,7 +359,7 @@ import java.util.function.Predicate;
 	 * Write a child object
 	 */
 	private void writeChild(final ThrowingConsumer<String, IOException> ostream, final TileFixture child, final int tabs)
-		throws IOException {
+			throws IOException {
 		final Class<? extends TileFixture> cls = child.getClass();
 		if (writerCache.containsKey(cls)) {
 			writerCache.get(cls).writeRaw(ostream, child, tabs);
@@ -373,8 +373,8 @@ import java.util.function.Predicate;
 			}
 		}
 		throw new IllegalStateException(String.format(
-			"After checking %d readers, don't know how to write a(n) %s",
-			readers.size(), cls.getName()));
+				"After checking %d readers, don't know how to write a(n) %s",
+				readers.size(), cls.getName()));
 	}
 
 	/**
@@ -440,12 +440,12 @@ import java.util.function.Predicate;
 					}
 					// Roads are automatically sorted by direction, coming from an EnumMap
 					for (final Map.Entry<Direction, Integer> entry :
-						obj.getRoads(loc).entrySet()) {
+							obj.getRoads(loc).entrySet()) {
 						eolIfNeeded(needEol, ostream);
 						needEol = false;
 						writeTag(ostream, "road", tabs + 4);
 						writeProperty(ostream, "direction",
-							entry.getKey().toString());
+								entry.getKey().toString());
 						writeProperty(ostream, "quality", entry.getValue());
 						closeLeafTag(ostream);
 					}
@@ -454,16 +454,16 @@ import java.util.function.Predicate;
 					// avoid churn in existing maps, put the first Ground and Forest
 					// before other fixtures.
 					final Ground ground = obj.getFixtures(loc).stream()
-						.filter(isGround).map(groundCast)
-						.findFirst().orElse(null);
+							.filter(isGround).map(groundCast)
+							.findFirst().orElse(null);
 					if (!Objects.isNull(ground)) {
 						eolIfNeeded(needEol, ostream);
 						needEol = false;
 						writeChild(ostream, ground, tabs + 4);
 					}
 					final Forest forest = obj.getFixtures(loc).stream()
-						.filter(isForest).map(forestCast)
-						.findFirst().orElse(null);
+							.filter(isForest).map(forestCast)
+							.findFirst().orElse(null);
 					if (!Objects.isNull(forest)) {
 						eolIfNeeded(needEol, ostream);
 						needEol = false;
@@ -488,14 +488,14 @@ import java.util.function.Predicate;
 			}
 		}
 		if (obj.streamLocations().filter(((Predicate<Point>) Point::isValid).negate())
-			.map(obj::getFixtures)
-			.anyMatch(((Predicate<Collection<TileFixture>>) Collection::isEmpty)
-				.negate())) {
+				.map(obj::getFixtures)
+				.anyMatch(((Predicate<Collection<TileFixture>>) Collection::isEmpty)
+						.negate())) {
 			writeTag(ostream, "elsewhere", tabs + 2);
 			finishParentTag(ostream);
 			for (final TileFixture fixture : obj.streamLocations()
-				.filter(((Predicate<Point>) Point::isValid).negate())
-				.flatMap(p -> obj.getFixtures(p).stream()).toList()) {
+					.filter(((Predicate<Point>) Point::isValid).negate())
+					.flatMap(p -> obj.getFixtures(p).stream()).toList()) {
 				writeChild(ostream, fixture, tabs + 3);
 			}
 			closeTag(ostream, tabs + 2, "elsewhere");

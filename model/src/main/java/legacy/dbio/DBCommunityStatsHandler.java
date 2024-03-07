@@ -26,41 +26,41 @@ import common.xmlio.Warning;
 import static io.jenetics.facilejdbc.Param.value;
 
 public final class DBCommunityStatsHandler extends AbstractDatabaseWriter<CommunityStats, ITownFixture>
-	implements MapContentsReader {
+		implements MapContentsReader {
 	public DBCommunityStatsHandler() {
 		super(CommunityStats.class, ITownFixture.class);
 	}
 
 	private static final List<Query> INITIALIZERS = List.of(
-		Query.of("CREATE TABLE IF NOT EXISTS town_expertise (" +
-			"    town INTEGER NOT NULL," +
-			"    skill VARCHAR(255) NOT NULL," +
-			"    level INTEGER NOT NULL" +
-			");"),
-		Query.of("CREATE TABLE IF NOT EXISTS town_worked_resources (" +
-			"    town INTEGER NOT NULL," +
-			"    resource INTEGER NOT NULL" +
-			");"),
-		Query.of("CREATE TABLE IF NOT EXISTS town_production (" +
-			"    town INTEGER NOT NULL," +
-			"    id INTEGER NOT NULL," +
-			"    kind VARCHAR(64) NOT NULL," +
-			"    contents VARCHAR(64) NOT NULL," +
-			"    quantity VARCHAR(128) NOT NULL" +
-			"        CHECK (quantity NOT LIKE '%[^0-9.]%' AND quantity NOT LIKE '%.%.%')," +
-			"    units VARCHAR(32) NOT NULL," +
-			"    created INTEGER" +
-			");"),
-		Query.of("CREATE TABLE IF NOT EXISTS town_consumption (" +
-			"    town INTEGER NOT NULL," +
-			"    id INTEGER NOT NULL," +
-			"    kind VARCHAR(64) NOT NULL," +
-			"    contents VARCHAR(64) NOT NULL," +
-			"    quantity VARCHAR(128) NOT NULL" +
-			"        CHECK (quantity NOT LIKE '%[^0-9.]%' AND quantity NOT LIKE '%.%.%')," +
-			"    units VARCHAR(32) NOT NULL," +
-			"    created INTEGER" +
-			");"));
+			Query.of("CREATE TABLE IF NOT EXISTS town_expertise (" +
+					"    town INTEGER NOT NULL," +
+					"    skill VARCHAR(255) NOT NULL," +
+					"    level INTEGER NOT NULL" +
+					");"),
+			Query.of("CREATE TABLE IF NOT EXISTS town_worked_resources (" +
+					"    town INTEGER NOT NULL," +
+					"    resource INTEGER NOT NULL" +
+					");"),
+			Query.of("CREATE TABLE IF NOT EXISTS town_production (" +
+					"    town INTEGER NOT NULL," +
+					"    id INTEGER NOT NULL," +
+					"    kind VARCHAR(64) NOT NULL," +
+					"    contents VARCHAR(64) NOT NULL," +
+					"    quantity VARCHAR(128) NOT NULL" +
+					"        CHECK (quantity NOT LIKE '%[^0-9.]%' AND quantity NOT LIKE '%.%.%')," +
+					"    units VARCHAR(32) NOT NULL," +
+					"    created INTEGER" +
+					");"),
+			Query.of("CREATE TABLE IF NOT EXISTS town_consumption (" +
+					"    town INTEGER NOT NULL," +
+					"    id INTEGER NOT NULL," +
+					"    kind VARCHAR(64) NOT NULL," +
+					"    contents VARCHAR(64) NOT NULL," +
+					"    quantity VARCHAR(128) NOT NULL" +
+					"        CHECK (quantity NOT LIKE '%[^0-9.]%' AND quantity NOT LIKE '%.%.%')," +
+					"    units VARCHAR(32) NOT NULL," +
+					"    created INTEGER" +
+					");"));
 
 	@Override
 	public List<Query> getInitializers() {
@@ -68,50 +68,50 @@ public final class DBCommunityStatsHandler extends AbstractDatabaseWriter<Commun
 	}
 
 	private static final Query INSERT_EXPERTISE =
-		Query.of("INSERT INTO town_expertise (town, skill, level) VALUES(:town, :skill, :level);");
+			Query.of("INSERT INTO town_expertise (town, skill, level) VALUES(:town, :skill, :level);");
 
 	private static final Query INSERT_FIELDS =
-		Query.of("INSERT INTO town_worked_resources (town, resource) VALUES(:town, :resource);");
+			Query.of("INSERT INTO town_worked_resources (town, resource) VALUES(:town, :resource);");
 
 	private static final Query INSERT_PRODUCTION =
-		Query.of("INSERT INTO town_production(town, id, kind, contents, quantity, units, created) " +
-			"VALUES(:town, :id, :kind, :contents, :quantity, :units, :created);");
+			Query.of("INSERT INTO town_production(town, id, kind, contents, quantity, units, created) " +
+					"VALUES(:town, :id, :kind, :contents, :quantity, :units, :created);");
 
 	private static final Query INSERT_CONSUMPTION =
-		Query.of("INSERT INTO town_consumption(town, id, kind, contents, quantity, units, created) " +
-			"VALUES(:town, :id, :kind, :contents, :quantity, :units, :created);");
+			Query.of("INSERT INTO town_consumption(town, id, kind, contents, quantity, units, created) " +
+					"VALUES(:town, :id, :kind, :contents, :quantity, :units, :created);");
 
 	@Override
 	public void write(final Transactional db, final CommunityStats obj, final ITownFixture context) throws SQLException {
 		db.transaction().accept(sql -> {
 			// TODO: Use batch mode
 			for (final Map.Entry<String, Integer> entry :
-				obj.getHighestSkillLevels().entrySet()) {
+					obj.getHighestSkillLevels().entrySet()) {
 				INSERT_EXPERTISE.on(value("town", context.getId()), value("skill", entry.getKey()),
-					value("level", entry.getValue())).execute(sql);
+						value("level", entry.getValue())).execute(sql);
 			}
 			for (final Integer field : obj.getWorkedFields()) {
 				INSERT_FIELDS.on(value("town", context.getId()), value("resource", field)).execute(sql);
 			}
 			for (final IResourcePile resource : obj.getYearlyProduction()) {
 				INSERT_PRODUCTION.on(value("town", context.getId()), value("id", resource.getId()),
-					value("kind", resource.getKind()), value("contents", resource.getContents()),
-					value("quantity", resource.getQuantity().number().toString()),
-					value("units", resource.getQuantity().units()),
-					value("created", resource.getCreated())).execute(sql);
+						value("kind", resource.getKind()), value("contents", resource.getContents()),
+						value("quantity", resource.getQuantity().number().toString()),
+						value("units", resource.getQuantity().units()),
+						value("created", resource.getCreated())).execute(sql);
 			}
 			for (final IResourcePile resource : obj.getYearlyConsumption()) {
 				INSERT_CONSUMPTION.on(value("town", context.getId()), value("id", resource.getId()),
-					value("kind", resource.getKind()), value("contents", resource.getContents()),
-					value("quantity", resource.getQuantity().number().toString()),
-					value("units", resource.getQuantity().units()),
-					value("created", resource.getCreated())).execute(sql);
+						value("kind", resource.getKind()), value("contents", resource.getContents()),
+						value("quantity", resource.getQuantity().number().toString()),
+						value("units", resource.getQuantity().units()),
+						value("created", resource.getCreated())).execute(sql);
 			}
 		});
 	}
 
-	private TryBiConsumer<Map<String, Object>, Warning, SQLException> readTownPopulations(final IMutableLegacyMap map,
-	                                                                                      final Map<Integer, List<Object>> containees) {
+	private TryBiConsumer<Map<String, Object>, Warning, SQLException> readTownPopulations(
+			final IMutableLegacyMap map, final Map<Integer, List<Object>> containees) {
 		return (dbRow, warner) -> {
 			final int id = (Integer) dbRow.get("id");
 			final int population = (Integer) dbRow.get("population");
@@ -121,12 +121,12 @@ public final class DBCommunityStatsHandler extends AbstractDatabaseWriter<Commun
 		};
 	}
 
-	private static TryBiConsumer<Map<String, Object>, Warning, SQLException> readTownExpertise(final IMutableLegacyMap map,
-	                                                                                           final Map<Integer, List<Object>> containees) {
+	private static TryBiConsumer<Map<String, Object>, Warning, SQLException> readTownExpertise(
+			final IMutableLegacyMap map, final Map<Integer, List<Object>> containees) {
 		return (dbRow, warner) -> {
 			final int townId = (Integer) dbRow.get("town");
 			final CommunityStats population = containees.get(townId).stream().filter(CommunityStats.class::isInstance)
-				.map(CommunityStats.class::cast).findAny().orElse(null);
+					.map(CommunityStats.class::cast).findAny().orElse(null);
 			Objects.requireNonNull(population);
 			final String skill = (String) dbRow.get("skill");
 			final int level = (Integer) dbRow.get("level");
@@ -134,12 +134,12 @@ public final class DBCommunityStatsHandler extends AbstractDatabaseWriter<Commun
 		};
 	}
 
-	private static TryBiConsumer<Map<String, Object>, Warning, SQLException> readWorkedResource(final IMutableLegacyMap map,
-	                                                                                            final Map<Integer, List<Object>> containees) {
+	private static TryBiConsumer<Map<String, Object>, Warning, SQLException> readWorkedResource(
+			final IMutableLegacyMap map, final Map<Integer, List<Object>> containees) {
 		return (dbRow, warner) -> {
 			final int townId = (Integer) dbRow.get("town");
 			final CommunityStats population = containees.get(townId).stream().filter(CommunityStats.class::isInstance)
-				.map(CommunityStats.class::cast).findAny().orElse(null);
+					.map(CommunityStats.class::cast).findAny().orElse(null);
 			Objects.requireNonNull(population);
 			final int resource = (Integer) dbRow.get("resource");
 			population.addWorkedField(resource);
@@ -151,7 +151,7 @@ public final class DBCommunityStatsHandler extends AbstractDatabaseWriter<Commun
 		return (dbRow, warner) -> {
 			final int townId = (Integer) dbRow.get("town");
 			final CommunityStats population = containees.get(townId).stream().filter(CommunityStats.class::isInstance)
-				.map(CommunityStats.class::cast).findAny().orElse(null);
+					.map(CommunityStats.class::cast).findAny().orElse(null);
 			Objects.requireNonNull(population);
 			final int id = (Integer) dbRow.get("id");
 			final String kind = (String) dbRow.get("kind");
@@ -166,7 +166,7 @@ public final class DBCommunityStatsHandler extends AbstractDatabaseWriter<Commun
 				quantity = new BigDecimal(qtyString);
 			}
 			final IMutableResourcePile pile =
-				new ResourcePileImpl(id, kind, contents, new LegacyQuantity(quantity, units));
+					new ResourcePileImpl(id, kind, contents, new LegacyQuantity(quantity, units));
 			if (!Objects.isNull(created)) {
 				pile.setCreated(created);
 			}
@@ -179,7 +179,7 @@ public final class DBCommunityStatsHandler extends AbstractDatabaseWriter<Commun
 		return (dbRow, warner) -> {
 			final int townId = (Integer) dbRow.get("town");
 			final CommunityStats population = containees.get(townId).stream().filter(CommunityStats.class::isInstance)
-				.map(CommunityStats.class::cast).findAny().orElse(null);
+					.map(CommunityStats.class::cast).findAny().orElse(null);
 			Objects.requireNonNull(population);
 			final int id = (Integer) dbRow.get("id");
 			final String kind = (String) dbRow.get("kind");
@@ -195,7 +195,7 @@ public final class DBCommunityStatsHandler extends AbstractDatabaseWriter<Commun
 				quantity = new BigDecimal(qtyString);
 			}
 			final IMutableResourcePile pile =
-				new ResourcePileImpl(id, kind, contents, new LegacyQuantity(quantity, units));
+					new ResourcePileImpl(id, kind, contents, new LegacyQuantity(quantity, units));
 			if (!Objects.isNull(created)) {
 				pile.setCreated(created);
 			}
@@ -210,14 +210,14 @@ public final class DBCommunityStatsHandler extends AbstractDatabaseWriter<Commun
 
 	@Override
 	public void readMapContents(final Connection db, final IMutableLegacyMap map, final Map<Integer, IFixture> containers,
-	                            final Map<Integer, List<Object>> containees, final Warning warner) throws SQLException {
+								final Map<Integer, List<Object>> containees, final Warning warner) throws SQLException {
 		handleQueryResults(db, warner, "town expertise levels",
-			readTownExpertise(map, containees), SELECT_EXPERTISE);
+				readTownExpertise(map, containees), SELECT_EXPERTISE);
 		handleQueryResults(db, warner, "town worked resources",
-			readWorkedResource(map, containees), SELECT_WORKED);
+				readWorkedResource(map, containees), SELECT_WORKED);
 		handleQueryResults(db, warner, "town produced resources",
-			readProducedResource(map, containees), SELECT_PRODUCTION);
+				readProducedResource(map, containees), SELECT_PRODUCTION);
 		handleQueryResults(db, warner, "town consumed resources",
-			readConsumedResource(map, containees), SELECT_CONSUMPTION);
+				readConsumedResource(map, containees), SELECT_CONSUMPTION);
 	}
 }

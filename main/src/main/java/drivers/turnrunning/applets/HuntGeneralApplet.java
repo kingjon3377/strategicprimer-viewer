@@ -39,7 +39,8 @@ import org.jetbrains.annotations.Nullable;
 	protected final IDRegistrar idf;
 	protected final String verb;
 
-	protected HuntGeneralApplet(final String verb, final ITurnRunningModel model, final ICLIHelper cli, final IDRegistrar idf) {
+	protected HuntGeneralApplet(final String verb, final ITurnRunningModel model, final ICLIHelper cli,
+								final IDRegistrar idf) {
 		super(model, cli);
 		huntingModel = new HuntingModel(model.getMap());
 		resourceAddingHelper = new ResourceAddingCLIHelper(cli, idf);
@@ -55,7 +56,7 @@ import org.jetbrains.annotations.Nullable;
 	private static String populationDescription(final Animal animal) {
 		if (animal.getPopulation() > 1) {
 			return String.format("a group of perhaps %d %s", animal.getPopulation(),
-				AnimalPlurals.get(animal.getKind()));
+					AnimalPlurals.get(animal.getKind()));
 		} else {
 			return animal.getKind();
 		}
@@ -67,8 +68,9 @@ import org.jetbrains.annotations.Nullable;
 
 	protected @Nullable Boolean handleCapture(final Animal find) {
 		final IUnit unit = chooseFromList(model.getUnits(Optional.ofNullable(model.getSelectedUnit())
-				.map(IUnit::owner).orElse(model.getMap().getCurrentPlayer())),
-			"Available units:", "No units", "Unit to add animals to:", ICLIHelper.ListChoiceBehavior.ALWAYS_PROMPT, HuntGeneralApplet::describeUnit);
+						.map(IUnit::owner).orElse(model.getMap().getCurrentPlayer())),
+				"Available units:", "No units", "Unit to add animals to:", ICLIHelper.ListChoiceBehavior.ALWAYS_PROMPT,
+				HuntGeneralApplet::describeUnit);
 		if (Objects.isNull(unit)) {
 			return false;
 		} else {
@@ -143,7 +145,7 @@ import org.jetbrains.annotations.Nullable;
 			cost += processingTime;
 		}
 		final Boolean reduce = cli.inputBooleanInSeries(String.format(
-			"Reduce animal group population of %d?", find.getPopulation()));
+				"Reduce animal group population of %d?", find.getPopulation()));
 		if (Objects.isNull(reduce)) {
 			return null;
 		} else if (reduce) {
@@ -158,7 +160,7 @@ import org.jetbrains.annotations.Nullable;
 	}
 
 	private @Nullable Integer handleEncounter(final StringBuilder buffer, final int time, final Point loc,
-		/*Animal|AnimalTracks|HuntingModel.NothingFound*/ final TileFixture find) {
+			/*Animal|AnimalTracks|HuntingModel.NothingFound*/ final TileFixture find) {
 		switch (find) {
 			case final HuntingModel.NothingFound nothingFound -> {
 				cli.println(String.format("Found nothing for the next %d minutes.", NO_RESULT_COST));
@@ -167,12 +169,12 @@ import org.jetbrains.annotations.Nullable;
 			case final AnimalTracks at -> {
 				model.copyToSubMaps(loc, find, IFixture.CopyBehavior.ZERO);
 				cli.println(String.format("Found only tracks or traces from %s for the next %d minutes.",
-					at.getKind(), NO_RESULT_COST));
+						at.getKind(), NO_RESULT_COST));
 				return NO_RESULT_COST;
 			}
 			case final Animal a -> {
 				final Boolean fight = cli.inputBooleanInSeries(String.format("Found %s. Should they %s?",
-					populationDescription(a), verb), a.getKind());
+						populationDescription(a), verb), a.getKind());
 				if (Objects.isNull(fight)) {
 					return null;
 				} else if (fight) {
@@ -192,7 +194,8 @@ import org.jetbrains.annotations.Nullable;
 	// TODO: Distinguish hunting from fishing in no-result time cost (encounters / hour)?
 	// Note that the intended return type of encounterSrc::apply is Pair<Point, Animal|AnimalTracks|NothingFound>,
 	// but Java doesn't offer union types.
-	protected @Nullable String impl(final String command, final Function<Point, Iterable<Pair<Point, TileFixture>>> encounterSrc) {
+	protected @Nullable String impl(final String command,
+									final Function<Point, Iterable<Pair<Point, TileFixture>>> encounterSrc) {
 		final StringBuilder buffer = new StringBuilder();
 		final Point center = confirmPoint("Location to search around: ");
 		if (Objects.isNull(center)) {

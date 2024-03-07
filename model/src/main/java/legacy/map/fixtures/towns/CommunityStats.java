@@ -67,7 +67,7 @@ public final class CommunityStats implements Subsettable<@Nullable CommunityStat
 	public void setSkillLevel(final String skill, final int level) {
 		if (level < 0) {
 			throw new IllegalArgumentException(
-				"Skill level cannot be negative; zero removes the skill entirely");
+					"Skill level cannot be negative; zero removes the skill entirely");
 		} else if (level == 0) {
 			skillLevels.remove(skill);
 		} else {
@@ -161,12 +161,12 @@ public final class CommunityStats implements Subsettable<@Nullable CommunityStat
 		builder.append("Skills: ");
 		for (final Map.Entry<String, Integer> entry : skillLevels.entrySet()) {
 			builder.append("- ").append(entry.getKey()).append(": Level ")
-				.append(entry.getValue());
+					.append(entry.getValue());
 			builder.append(System.lineSeparator());
 		}
 		builder.append("ID #s of worked fields: ");
 		builder.append(String.join(", ",
-			workedFieldIDs.stream().map(Object::toString).toArray(String[]::new)));
+				workedFieldIDs.stream().map(Object::toString).toArray(String[]::new)));
 		builder.append(System.lineSeparator());
 		builder.append("Yearly Resource Production:");
 		for (final IResourcePile resource : yearlyProduction) {
@@ -186,10 +186,10 @@ public final class CommunityStats implements Subsettable<@Nullable CommunityStat
 	public boolean equals(final Object that) {
 		if (that instanceof final CommunityStats it) {
 			return population == it.getPopulation() &&
-				skillLevels.equals(it.getHighestSkillLevels()) &&
-				workedFieldIDs.equals(it.getWorkedFields()) &&
-				yearlyProduction.equals(it.getYearlyProduction()) &&
-				yearlyConsumption.equals(it.getYearlyConsumption());
+					skillLevels.equals(it.getHighestSkillLevels()) &&
+					workedFieldIDs.equals(it.getWorkedFields()) &&
+					yearlyProduction.equals(it.getYearlyProduction()) &&
+					yearlyConsumption.equals(it.getYearlyConsumption());
 		} else {
 			return false;
 		}
@@ -209,27 +209,27 @@ public final class CommunityStats implements Subsettable<@Nullable CommunityStat
 			} else {
 				for (final IResourcePile resource : other.getYearlyProduction()) {
 					if (yearlyProduction.contains(resource) ||
-						yearlyProduction.stream().anyMatch(
-							r -> r.isSubset(resource, s -> {
-							}))) {
+							yearlyProduction.stream().anyMatch(
+									r -> r.isSubset(resource, s -> {
+									}))) {
 						continue;
 					} else {
 						report.accept(
-							"Produces a resource we don't, or more than we do: " +
-								resource);
+								"Produces a resource we don't, or more than we do: " +
+										resource);
 						return false;
 					}
 				}
 				for (final IResourcePile resource : other.getYearlyConsumption()) {
 					if (yearlyConsumption.contains(resource) ||
-						yearlyConsumption.stream().anyMatch(
-							r -> r.isSubset(resource, s -> {
-							}))) {
+							yearlyConsumption.stream().anyMatch(
+									r -> r.isSubset(resource, s -> {
+									}))) {
 						continue;
 					} else {
 						report.accept(
-							"Consumes a resource we don't, or more than we do: " +
-								resource);
+								"Consumes a resource we don't, or more than we do: " +
+										resource);
 						return false;
 					}
 				}

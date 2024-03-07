@@ -29,16 +29,16 @@ public final class DBForestHandler extends AbstractDatabaseWriter<Forest, Point>
 	}
 
 	private static final List<Query> INITIALIZERS = Collections.singletonList(
-		Query.of("CREATE TABLE IF NOT EXISTS forests (" +
-			"    row INTEGER NOT NULL," +
-			"    column INTEGER NOT NULL," +
-			"    id INTEGER NOT NULL," +
-			"    kind VARCHAR(32) NOT NULL," +
-			"    rows BOOLEAN NOT NULL," +
-			"    acres VARCHAR(128)" +
-			"        CHECK (acres NOT LIKE '%[^0-9.]%' AND acres NOT LIKE '%.%.%')," +
-			"    image VARCHAR(255)" +
-			");"));
+			Query.of("CREATE TABLE IF NOT EXISTS forests (" +
+					"    row INTEGER NOT NULL," +
+					"    column INTEGER NOT NULL," +
+					"    id INTEGER NOT NULL," +
+					"    kind VARCHAR(32) NOT NULL," +
+					"    rows BOOLEAN NOT NULL," +
+					"    acres VARCHAR(128)" +
+					"        CHECK (acres NOT LIKE '%[^0-9.]%' AND acres NOT LIKE '%.%.%')," +
+					"    image VARCHAR(255)" +
+					");"));
 
 	@Override
 	public List<Query> getInitializers() {
@@ -46,13 +46,13 @@ public final class DBForestHandler extends AbstractDatabaseWriter<Forest, Point>
 	}
 
 	private static final Query INSERT_SQL = Query.of("INSERT INTO forests(row, column, id, kind, rows, acres, image) " +
-		"VALUES(:row, :column, :id, :kind, :rows, :acres, :image);");
+			"VALUES(:row, :column, :id, :kind, :rows, :acres, :image);");
 
 	@Override
 	public void write(final Transactional db, final Forest obj, final Point context) throws SQLException {
 		INSERT_SQL.on(value("row", context.row()), value("column", context.column()),
-			value("id", obj.getId()), value("kind", obj.getKind()), value("rows", obj.isRows()),
-			value("acres", obj.getAcres().toString()), value("image", obj.getImage())).execute(db.connection());
+				value("id", obj.getId()), value("kind", obj.getKind()), value("rows", obj.isRows()),
+				value("acres", obj.getAcres().toString()), value("image", obj.getImage())).execute(db.connection());
 	}
 
 	private TryBiConsumer<Map<String, Object>, Warning, SQLException> readForest(final IMutableLegacyMap map) {
@@ -82,7 +82,7 @@ public final class DBForestHandler extends AbstractDatabaseWriter<Forest, Point>
 
 	@Override
 	public void readMapContents(final Connection db, final IMutableLegacyMap map, final Map<Integer, IFixture> containers,
-	                            final Map<Integer, List<Object>> containees, final Warning warner) throws SQLException {
+								final Map<Integer, List<Object>> containees, final Warning warner) throws SQLException {
 		handleQueryResults(db, warner, "forests", readForest(map), SELECT);
 	}
 }

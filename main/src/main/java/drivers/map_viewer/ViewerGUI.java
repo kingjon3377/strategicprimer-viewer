@@ -65,9 +65,9 @@ public class ViewerGUI implements ViewerDriver {
 		final MapDimensions dimensions = model.getMapDimensions();
 		final VisibleDimensions visible = model.getVisibleDimensions();
 		LovelaceLogger.trace(
-			"Visible area is currently from (%d, %d) to (%d to %d), %d rows x %d cols.",
-			visible.getMinimumRow(), visible.getMinimumColumn(), visible.getMaximumRow(),
-			visible.getMaximumColumn(), visible.getHeight(), visible.getWidth());
+				"Visible area is currently from (%d, %d) to (%d to %d), %d rows x %d cols.",
+				visible.getMinimumRow(), visible.getMinimumColumn(), visible.getMaximumRow(),
+				visible.getMaximumColumn(), visible.getHeight(), visible.getWidth());
 		final int topRow;
 		if (selection.row() - (visible.getHeight() / 2) <= 0) {
 			LovelaceLogger.trace("Close enough to the top to go flush to it");
@@ -94,7 +94,7 @@ public class ViewerGUI implements ViewerDriver {
 		// leftColumn + dimensions.columns as max row and column; this seems
 		// plainly wrong.
 		model.setVisibleDimensions(new VisibleDimensions(topRow,
-			topRow + visible.getHeight(), leftColumn, leftColumn + visible.getWidth()));
+				topRow + visible.getHeight(), leftColumn, leftColumn + visible.getWidth()));
 	}
 
 	@Override
@@ -150,7 +150,7 @@ public class ViewerGUI implements ViewerDriver {
 		menuHandler.register(ignored -> getFindDialog(frame).search(), "find next");
 		try {
 			menuHandler.registerWindowShower(new AboutDialog(frame, frame.getWindowName()),
-				"about");
+					"about");
 		} catch (final IOException except) {
 			LovelaceLogger.error(except, "I/O error loading About dialog contents");
 		}
@@ -167,11 +167,11 @@ public class ViewerGUI implements ViewerDriver {
 					model.setSelection(starting);
 				} else {
 					LovelaceLogger.warning(
-						"Starting coordinates must be within the map's dimensions");
+							"Starting coordinates must be within the map's dimensions");
 				}
 			} catch (final NumberFormatException except) {
 				LovelaceLogger.warning(
-					"Arguments to --starting-row and --starting-column must be numeric");
+						"Arguments to --starting-row and --starting-column must be numeric");
 			}
 		} else if (options.hasOption("--starting-row")) {
 			LovelaceLogger.warning("--starting-row requires --starting-column");
@@ -184,7 +184,7 @@ public class ViewerGUI implements ViewerDriver {
 
 	/* package */
 	static ViewerGUI createDriver(final ICLIHelper cli, final SPOptions options,
-	                              final IDriverModel model) {
+								  final IDriverModel model) {
 		if (model instanceof final IViewerModel vm) {
 			LovelaceLogger.trace("Creating a viewer-GUI instance for a model of the proper type");
 			return new ViewerGUI(vm, options, cli);
@@ -199,8 +199,8 @@ public class ViewerGUI implements ViewerDriver {
 		LovelaceLogger.trace("In ViewerGUI.startDriver()");
 		final MenuBroker menuHandler = new MenuBroker();
 		menuHandler.register(new IOHandler(this, cli), "load", "save",
-			"save as", "new", "load secondary", "save all", "open in map viewer",
-			"open secondary map in map viewer", "close", "quit");
+				"save as", "new", "load secondary", "save all", "open in map viewer",
+				"open secondary map in map viewer", "close", "quit");
 		menuHandler.register(ignored -> zoomIn(), "zoom in");
 		menuHandler.register(ignored -> zoomOut(), "zoom out");
 		menuHandler.register(ignored -> resetZoom(), "reset zoom");
@@ -224,7 +224,7 @@ public class ViewerGUI implements ViewerDriver {
 	public void open(final IMutableLegacyMap map) {
 		if (model.isMapModified()) {
 			SwingUtilities.invokeLater(() -> new ViewerGUI(new ViewerModel(map),
-				options.copy(), cli).startDriver());
+					options.copy(), cli).startDriver());
 		} else {
 			model.setMap(map);
 		}

@@ -25,8 +25,8 @@ public final class AnimalDiscoveryDCs {
 	private static Map<String, Integer> initDcs() {
 		try {
 			return FileSplitter.getFileContents(
-				Paths.get("animal_data", "discovery_dc.txt"),
-				Integer::parseInt);
+					Paths.get("animal_data", "discovery_dc.txt"),
+					Integer::parseInt);
 		} catch (final IOException except) {
 			throw new RuntimeException(except);
 		}

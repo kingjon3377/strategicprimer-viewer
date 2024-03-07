@@ -18,6 +18,7 @@ import java.util.Collections;
 public interface IMultiMapModel extends IDriverModel {
 	/**
 	 * Add a subordinate map.
+	 *
 	 * @param map The map to add
 	 */
 	void addSubordinateMap(IMutableLegacyMap map);
@@ -53,7 +54,7 @@ public interface IMultiMapModel extends IDriverModel {
 	 */
 	default Iterable<IMutableLegacyMap> getRestrictedAllMaps() {
 		return new ConcatIterable<>(Collections.singleton(getRestrictedMap()),
-			getRestrictedSubordinateMaps());
+				getRestrictedSubordinateMaps());
 	}
 
 	/**

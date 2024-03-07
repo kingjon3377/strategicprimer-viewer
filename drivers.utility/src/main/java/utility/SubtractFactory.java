@@ -20,27 +20,27 @@ import com.google.auto.service.AutoService;
  */
 @AutoService(DriverFactory.class)
 public class SubtractFactory implements ModelDriverFactory {
-    private static final IDriverUsage USAGE = new DriverUsage(false, "subtract", ParamCount.AtLeastTwo,
-            "Subtract one map from another",
-            "Remove everything known in a base map from submaps for easier comparison", false, false,
-            "baseMap.xml", "operand.xml");
+	private static final IDriverUsage USAGE = new DriverUsage(false, "subtract", ParamCount.AtLeastTwo,
+			"Subtract one map from another",
+			"Remove everything known in a base map from submaps for easier comparison", false, false,
+			"baseMap.xml", "operand.xml");
 
-    @Override
-    public IDriverUsage getUsage() {
-        return USAGE;
-    }
+	@Override
+	public IDriverUsage getUsage() {
+		return USAGE;
+	}
 
-    @Override
-    public ModelDriver createDriver(final ICLIHelper cli, final SPOptions options, final IDriverModel model) {
-        if (model instanceof final UtilityDriverModel udm) {
-            return new SubtractCLI(udm);
-        } else {
-            return createDriver(cli, options, new UtilityDriverModel(model));
-        }
-    }
+	@Override
+	public ModelDriver createDriver(final ICLIHelper cli, final SPOptions options, final IDriverModel model) {
+		if (model instanceof final UtilityDriverModel udm) {
+			return new SubtractCLI(udm);
+		} else {
+			return createDriver(cli, options, new UtilityDriverModel(model));
+		}
+	}
 
-    @Override
-    public IDriverModel createModel(final IMutableLegacyMap map) {
-        return new UtilityDriverModel(map);
-    }
+	@Override
+	public IDriverModel createModel(final IMutableLegacyMap map) {
+		return new UtilityDriverModel(map);
+	}
 }

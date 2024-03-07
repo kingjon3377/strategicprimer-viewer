@@ -45,8 +45,8 @@ public class AnimalReportGenerator extends AbstractReportGenerator</*Animal|Anim
 	 */
 	@Override
 	public void produceSingle(final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-	                          final ILegacyMap map, final Consumer<String> ostream,
-		/*Animal|AnimalTracks*/final AnimalOrTracks item, final Point loc) {
+							  final ILegacyMap map, final Consumer<String> ostream,
+			/*Animal|AnimalTracks*/final AnimalOrTracks item, final Point loc) {
 		// TODO: Extract helper method for the "At (loc):" idiom
 		ostream.accept("At ");
 		ostream.accept(loc.toString());
@@ -65,7 +65,7 @@ public class AnimalReportGenerator extends AbstractReportGenerator</*Animal|Anim
 				} else if (animal.getBorn() == currentTurn) {
 					ostream.accept(" newborn");
 				} else if (!MaturityModel.getMaturityAges().containsKey(animal.getKind()) ||
-					MaturityModel.getMaturityAges().get(animal.getKind()) > (currentTurn - animal.getBorn())) {
+						MaturityModel.getMaturityAges().get(animal.getKind()) > (currentTurn - animal.getBorn())) {
 					ostream.accept(String.format(" %d-turn-old", currentTurn - animal.getBorn()));
 				}
 			}
@@ -92,14 +92,14 @@ public class AnimalReportGenerator extends AbstractReportGenerator</*Animal|Anim
 	 */
 	@Override
 	public void produce(final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures, final ILegacyMap map,
-	                    final Consumer<String> ostream) {
+						final Consumer<String> ostream) {
 		// TODO: Use a multimap, either from Guava or a custom impl in lovelace.util
 		final Map<String, List<Point>> items = new HashMap<>();
 		for (final Triplet<Integer, Point, AnimalOrTracks> triplet : fixtures.entrySet().stream()
-			.filter(e -> e.getValue().getValue1() instanceof AnimalOrTracks)
-			.sorted(Map.Entry.comparingByValue(pairComparator))
-			.map(e -> Triplet.with(e.getKey(), e.getValue().getValue0(),
-				(AnimalOrTracks) e.getValue().getValue1())).toList()) {
+				.filter(e -> e.getValue().getValue1() instanceof AnimalOrTracks)
+				.sorted(Map.Entry.comparingByValue(pairComparator))
+				.map(e -> Triplet.with(e.getKey(), e.getValue().getValue0(),
+						(AnimalOrTracks) e.getValue().getValue1())).toList()) {
 			final int key = triplet.getValue0();
 			final Point loc = triplet.getValue1();
 			final AnimalOrTracks animal = triplet.getValue2();
@@ -118,9 +118,9 @@ public class AnimalReportGenerator extends AbstractReportGenerator</*Animal|Anim
 		}
 		if (!items.isEmpty()) {
 			ostream.accept("""
-				<h4>Animal sightings or encounters</h4>
-				<ul>
-				""");
+					<h4>Animal sightings or encounters</h4>
+					<ul>
+					""");
 			for (final Map.Entry<String, List<Point>> entry : items.entrySet()) {
 				if (!entry.getValue().isEmpty()) {
 					ostream.accept("<li>");

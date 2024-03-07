@@ -16,73 +16,73 @@ import java.util.Objects;
  * like to support files under a path prefix (at least on the classpath).
  */
 public class ResourceInputStream extends InputStream {
-    private final InputStream wrapped;
+	private final InputStream wrapped;
 
-    public ResourceInputStream(final String filename) throws NoSuchFileException {
-        this(filename, ResourceInputStream.class);
-    }
+	public ResourceInputStream(final String filename) throws NoSuchFileException {
+		this(filename, ResourceInputStream.class);
+	}
 
-    public ResourceInputStream(final String filename, final Class<?> sourceClass) throws NoSuchFileException {
-        InputStream temp;
-        try {
-            // N.B. we don't use Files::newInputStream because we'd have to either catch or throw IOException.
-            temp = new BufferedInputStream(new FileInputStream(filename));
-        } catch (final FileNotFoundException except) {
-            temp = sourceClass.getResourceAsStream("/" + filename);
-            if (Objects.isNull(temp)) {
-                final NoSuchFileException wrapped = new NoSuchFileException(filename);
-                wrapped.initCause(except);
-                throw wrapped;
-            }
-        }
-        wrapped = temp;
-    }
+	public ResourceInputStream(final String filename, final Class<?> sourceClass) throws NoSuchFileException {
+		InputStream temp;
+		try {
+			// N.B. we don't use Files::newInputStream because we'd have to either catch or throw IOException.
+			temp = new BufferedInputStream(new FileInputStream(filename));
+		} catch (final FileNotFoundException except) {
+			temp = sourceClass.getResourceAsStream("/" + filename);
+			if (Objects.isNull(temp)) {
+				final NoSuchFileException wrapped = new NoSuchFileException(filename);
+				wrapped.initCause(except);
+				throw wrapped;
+			}
+		}
+		wrapped = temp;
+	}
 
-    /**
-     * Read a single byte from the wrapped stream.
-     */
-    @Override
-    public int read() throws IOException {
-        return wrapped.read();
-    }
+	/**
+	 * Read a single byte from the wrapped stream.
+	 */
+	@Override
+	public int read() throws IOException {
+		return wrapped.read();
+	}
 
-    /**
-     * Read from the wrapped stream into a provided buffer.
-     */
-    @Override
-    public int read(final byte[] buf) throws IOException {
-        return wrapped.read(buf);
-    }
+	/**
+	 * Read from the wrapped stream into a provided buffer.
+	 */
+	@Override
+	public int read(final byte[] buf) throws IOException {
+		return wrapped.read(buf);
+	}
 
-    /**
-     * Read from the wrapped stream into a provided buffer at some offset.
-     */
-    @Override
-    public int read(final byte[] buf, final int off, final int len) throws IOException {
-        return wrapped.read(buf, off, len);
-    }
+	/**
+	 * Read from the wrapped stream into a provided buffer at some offset.
+	 */
+	@Override
+	public int read(final byte[] buf, final int off, final int len) throws IOException {
+		return wrapped.read(buf, off, len);
+	}
 
-    /**
-     * Skip some bytes in the wrapped stream.
-     */
-    @Override
-    public long skip(final long num) throws IOException {
-        return wrapped.skip(num);
-    }
+	/**
+	 * Skip some bytes in the wrapped stream.
+	 */
+	@Override
+	public long skip(final long num) throws IOException {
+		return wrapped.skip(num);
+	}
 
-    /**
-     * How many bytes are estimated to be available in the wrapped stream.
-     */
-    @Override
-    public int available() throws IOException {
-        return wrapped.available();
-    }
+	/**
+	 * How many bytes are estimated to be available in the wrapped stream.
+	 */
+	@Override
+	public int available() throws IOException {
+		return wrapped.available();
+	}
 
-    /**
-     * Close the wrapped stream.
-     */
-    @Override
-    public void close() throws IOException {
-        wrapped.close();
-    }
+	/**
+	 * Close the wrapped stream.
+	 */
+	@Override
+	public void close() throws IOException {
+		wrapped.close();
+	}
 }

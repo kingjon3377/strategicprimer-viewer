@@ -13,6 +13,7 @@ import java.nio.file.Path;
 public interface IDriverModel extends MapChangeSource, VersionChangeSource {
 	/**
 	 * Set the (main) map
+	 *
 	 * @param newMap The new map
 	 */
 	void setMap(IMutableLegacyMap newMap);

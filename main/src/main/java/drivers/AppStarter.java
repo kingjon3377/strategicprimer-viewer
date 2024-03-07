@@ -35,10 +35,12 @@ import org.jetbrains.annotations.Nullable;
 		return driver.getUsage().includeInList(false);
 	}
 
-	public void startDriverOnArguments(final ICLIHelper cli, final SPOptions options, final String... args) throws DriverFailedException {
+	public void startDriverOnArguments(final ICLIHelper cli, final SPOptions options, final String... args)
+			throws DriverFailedException {
 		LovelaceLogger.trace("Inside AppStarter#startDriver()");
 		boolean gui = !GraphicsEnvironment.isHeadless();
-		final SPOptionsImpl currentOptions = new SPOptionsImpl(StreamSupport.stream(options.spliterator(), false).toArray(Map.Entry[]::new));
+		final SPOptionsImpl currentOptions = new SPOptionsImpl(StreamSupport.stream(options.spliterator(), false)
+				.toArray(Map.Entry[]::new));
 		if (!currentOptions.hasOption("--gui")) {
 			currentOptions.addOption("--gui", Boolean.toString(gui));
 		}
@@ -156,8 +158,9 @@ import org.jetbrains.annotations.Nullable;
 //				}
 			} else {
 				final DriverFactory chosenDriver = cli.chooseFromList(driverCache.values().stream()
-						.flatMap(i -> StreamSupport.stream(i.spliterator(), false))
-						.filter(AppStarter::includeInCLIList).collect(Collectors.toList()), "CLI apps available:", "No applications available", "App to start: ", ICLIHelper.ListChoiceBehavior.AUTO_CHOOSE_ONLY).getValue1();
+								.flatMap(i -> StreamSupport.stream(i.spliterator(), false))
+								.filter(AppStarter::includeInCLIList).collect(Collectors.toList()), "CLI apps available:",
+						"No applications available", "App to start: ", ICLIHelper.ListChoiceBehavior.AUTO_CHOOSE_ONLY).getValue1();
 				if (!Objects.isNull(chosenDriver)) {
 					new DriverWrapper(chosenDriver).startCatchingErrors(cli, options,
 							others.toArray(String[]::new));

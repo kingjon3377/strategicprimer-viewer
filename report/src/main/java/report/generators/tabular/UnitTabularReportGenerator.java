@@ -53,7 +53,7 @@ public class UnitTabularReportGenerator implements ITableGenerator<IUnit> {
 	@Override
 	public List<String> getHeaderRow() {
 		return Arrays.asList("Distance", "Location", "Owner", "Kind/Category", "Name", "Orders",
-			"ID #");
+				"ID #");
 	}
 
 	/**
@@ -71,14 +71,14 @@ public class UnitTabularReportGenerator implements ITableGenerator<IUnit> {
 	 */
 	@Override
 	public List<List<String>> produce(
-		final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures, final IUnit item,
-		final int key, final Point loc, final Map<Integer, Integer> parentMap) {
+			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures, final IUnit item,
+			final int key, final Point loc, final Map<Integer, Integer> parentMap) {
 		final List<String> retval = Arrays.asList(distanceString(loc, hq, dimensions),
-			locationString(loc), ownerString(player, item.owner()), item.getKind(),
-			item.getName(),
-			Optional.ofNullable(item.getAllOrders().lastEntry())
-				.map(Map.Entry::getValue).orElse(""),
-			(player.equals(item.owner())) ? Integer.toString(item.getId()) : "---");
+				locationString(loc), ownerString(player, item.owner()), item.getKind(),
+				item.getName(),
+				Optional.ofNullable(item.getAllOrders().lastEntry())
+						.map(Map.Entry::getValue).orElse(""),
+				(player.equals(item.owner())) ? Integer.toString(item.getId()) : "---");
 		for (final UnitMember member : item) {
 			if (member instanceof Animal) {
 				// We don't want animals inside a unit showing up in the wild-animal report
@@ -94,14 +94,15 @@ public class UnitTabularReportGenerator implements ITableGenerator<IUnit> {
 
 	/**
 	 * Compare two location-unit pairs.
+	 *
 	 * @return
 	 */
 	@Override
 	public Comparator<Pair<Point, IUnit>> comparePairs() {
 		return Comparator.<Pair<Point, IUnit>, Point>comparing(Pair::getValue0, distanceComparator)
-			.thenComparing(Pair::getValue1,
-				Comparator.comparing(IUnit::owner)
-					.thenComparing(IUnit::getKind)
-					.thenComparing(IUnit::getName));
+				.thenComparing(Pair::getValue1,
+						Comparator.comparing(IUnit::owner)
+								.thenComparing(IUnit::getKind)
+								.thenComparing(IUnit::getName));
 	}
 }

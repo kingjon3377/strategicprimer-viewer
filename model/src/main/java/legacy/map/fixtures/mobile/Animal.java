@@ -10,7 +10,7 @@ import legacy.map.HasImage;
  * An animal or group of animals.
  */
 public interface Animal extends AnimalOrTracks, MobileFixture, HasImage,
-	HasPopulation<Animal> {
+		HasPopulation<Animal> {
 	/**
 	 * Whether this is a talking animal.
 	 *
@@ -64,13 +64,13 @@ public interface Animal extends AnimalOrTracks, MobileFixture, HasImage,
 	 */
 	default boolean equalExceptPopulation(final Animal other) {
 		return getKind().equals(other.getKind()) && isTalking() == other.isTalking() &&
-			getStatus().equals(other.getStatus()) && getBorn() == other.getBorn();
+				getStatus().equals(other.getStatus()) && getBorn() == other.getBorn();
 	}
 
 	@Override
 	default boolean equalsIgnoringID(final IFixture fixture) {
 		return fixture instanceof final Animal a && equalExceptPopulation(a) &&
-			getPopulation() == (a).getPopulation();
+				getPopulation() == (a).getPopulation();
 	}
 
 	@Override

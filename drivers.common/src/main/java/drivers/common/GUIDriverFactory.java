@@ -15,10 +15,10 @@ public interface GUIDriverFactory extends ModelDriverFactory {
 	/**
 	 * Create a new instance of the driver with the given environment.
 	 *
-	 * @param cli The interface to interact with the user, either on the
-	 * console or in a window emulating a console
+	 * @param cli     The interface to interact with the user, either on the
+	 *                console or in a window emulating a console
 	 * @param options Any (already-processed) command-line options
-	 * @param model The driver-model that should be used by the app.
+	 * @param model   The driver-model that should be used by the app.
 	 */
 	@Override
 	GUIDriver createDriver(ICLIHelper cli, SPOptions options, IDriverModel model);

@@ -65,21 +65,22 @@ public class ImmortalsTabularReportGenerator implements ITableGenerator<Immortal
 	 */
 	@Override
 	public List<List<String>> produce(
-		final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-		final Immortal item, final int key, final Point loc, final Map<Integer, Integer> parentMap) {
+			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
+			final Immortal item, final int key, final Point loc, final Map<Integer, Integer> parentMap) {
 		fixtures.remove(key);
 		return Collections.singletonList(Arrays.asList(distanceString(loc, hq, dimensions),
-			locationString(loc), item.toString()));
+				locationString(loc), item.toString()));
 	}
 
 	/**
 	 * Compare two Point-fixture pairs.
+	 *
 	 * @return
 	 */
 	@Override
 	public Comparator<Pair<Point, Immortal>> comparePairs() {
 		return Comparator.<Pair<Point, Immortal>, Point>comparing(Pair::getValue0, distanceComparator)
-			.thenComparing(p -> p.getValue1().getClass().hashCode())
-			.thenComparing(p -> p.getValue1().hashCode());
+				.thenComparing(p -> p.getValue1().getClass().hashCode())
+				.thenComparing(p -> p.getValue1().hashCode());
 	}
 }

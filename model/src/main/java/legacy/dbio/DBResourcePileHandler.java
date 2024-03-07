@@ -29,8 +29,8 @@ import common.xmlio.Warning;
 import static io.jenetics.facilejdbc.Param.value;
 
 public final class DBResourcePileHandler
-	extends AbstractDatabaseWriter<IResourcePile, /*IUnit|IFortress*/TileFixture>
-	implements MapContentsReader {
+		extends AbstractDatabaseWriter<IResourcePile, /*IUnit|IFortress*/TileFixture>
+		implements MapContentsReader {
 	public DBResourcePileHandler() {
 		super(IResourcePile.class, TileFixture.class);
 	}
@@ -38,21 +38,21 @@ public final class DBResourcePileHandler
 	@Override
 	public boolean canWrite(final Object obj, final Object context) {
 		return obj instanceof IResourcePile &&
-			(context instanceof IFortress || context instanceof IUnit);
+				(context instanceof IFortress || context instanceof IUnit);
 	}
 
 	private static final List<Query> INITIALIZERS = Collections.singletonList(
-		Query.of("CREATE TABLE IF NOT EXISTS resource_piles (" +
-			"    parent INTEGER NOT NULL," +
-			"    id INTEGER NOT NULL," +
-			"    kind VARCHAR(64) NOT NULL," +
-			"    contents VARCHAR(64) NOT NULL," +
-			"    quantity VARCHAR(128) NOT NULL" +
-			"        CHECK (quantity NOT LIKE '%[^0-9.]%' AND quantity NOT LIKE '%.%.%')," +
-			"    units VARCHAR(32) NOT NULL," +
-			"    created INTEGER," +
-			"    image VARCHAR(255)" +
-			");"));
+			Query.of("CREATE TABLE IF NOT EXISTS resource_piles (" +
+					"    parent INTEGER NOT NULL," +
+					"    id INTEGER NOT NULL," +
+					"    kind VARCHAR(64) NOT NULL," +
+					"    contents VARCHAR(64) NOT NULL," +
+					"    quantity VARCHAR(128) NOT NULL" +
+					"        CHECK (quantity NOT LIKE '%[^0-9.]%' AND quantity NOT LIKE '%.%.%')," +
+					"    units VARCHAR(32) NOT NULL," +
+					"    created INTEGER," +
+					"    image VARCHAR(255)" +
+					");"));
 
 	@Override
 	public List<Query> getInitializers() {
@@ -60,19 +60,19 @@ public final class DBResourcePileHandler
 	}
 
 	private static final Query INSERT_SQL =
-		Query.of("INSERT INTO resource_piles (parent, id, kind, contents, quantity, units, created, image) " +
-			"VALUES(:parent, :id, :kind, :contents, :quantity, :units, :created, :image);");
+			Query.of("INSERT INTO resource_piles (parent, id, kind, contents, quantity, units, created, image) " +
+					"VALUES(:parent, :id, :kind, :contents, :quantity, :units, :created, :image);");
 
 	@Override
 	public void write(final Transactional db, final IResourcePile obj, final TileFixture context) throws SQLException {
 		INSERT_SQL.on(value("parent", context.getId()), value("id", obj.getId()), value("kind", obj.getKind()),
-			value("contents", obj.getContents()), value("quantity", obj.getQuantity().number().toString()),
-			value("units", obj.getQuantity().units()), value("created", obj.getCreated()),
-			value("image", obj.getImage())).execute(db.connection());
+				value("contents", obj.getContents()), value("quantity", obj.getQuantity().number().toString()),
+				value("units", obj.getQuantity().units()), value("created", obj.getCreated()),
+				value("image", obj.getImage())).execute(db.connection());
 	}
 
-	private TryBiConsumer<Map<String, Object>, Warning, SQLException> readResourcePile(final IMutableLegacyMap map,
-	                                                                                   final Map<Integer, List<Object>> containees) {
+	private TryBiConsumer<Map<String, Object>, Warning, SQLException> readResourcePile(
+			final IMutableLegacyMap map, final Map<Integer, List<Object>> containees) {
 		return (dbRow, warner) -> {
 			final int parentId = (Integer) dbRow.get("parent");
 			final int id = (Integer) dbRow.get("id");
@@ -89,7 +89,7 @@ public final class DBResourcePileHandler
 				quantity = new BigDecimal(qtyString);
 			}
 			final IMutableResourcePile pile = new ResourcePileImpl(id, kind, contents,
-				new LegacyQuantity(quantity, units));
+					new LegacyQuantity(quantity, units));
 			if (!Objects.isNull(image)) {
 				pile.setImage(image);
 			}
@@ -104,7 +104,7 @@ public final class DBResourcePileHandler
 
 	@Override
 	public void readMapContents(final Connection db, final IMutableLegacyMap map, final Map<Integer, IFixture> containers,
-	                            final Map<Integer, List<Object>> containees, final Warning warner) throws SQLException {
+								final Map<Integer, List<Object>> containees, final Warning warner) throws SQLException {
 		handleQueryResults(db, warner, "resource piles", readResourcePile(map, containees), SELECT);
 	}
 }

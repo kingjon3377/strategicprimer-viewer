@@ -38,23 +38,23 @@ public final class DBTownHandler extends AbstractDatabaseWriter<AbstractTown, Po
 	}
 
 	private static final List<Query> INITIALIZERS = Collections.singletonList(
-		Query.of("CREATE TABLE IF NOT EXISTS towns (" +
-			"    row INTEGER NOT NULL," +
-			"    column INTEGER NOT NULL," +
-			"    id INTEGER NOT NULL," +
-			"    kind VARCHAR(13) NOT NULL" +
-			"        CHECK(kind IN ('town', 'city', 'fortification'))," +
-			"    status VARCHAR(9) NOT NULL" +
-			"        CHECK(status IN ('abandoned', 'active', 'burned', 'ruined'))," +
-			"    size VARCHAR(6) NOT NULL" +
-			"        CHECK(size IN ('small', 'medium', 'large'))," +
-			"    dc INTEGER," +
-			"    name VARCHAR(128) NOT NULL," +
-			"    owner INTEGER NOT NULL," +
-			"    image VARCHAR(255)," +
-			"    portrait VARCHAR(255)," +
-			"    population INTEGER" +
-			");"));
+			Query.of("CREATE TABLE IF NOT EXISTS towns (" +
+					"    row INTEGER NOT NULL," +
+					"    column INTEGER NOT NULL," +
+					"    id INTEGER NOT NULL," +
+					"    kind VARCHAR(13) NOT NULL" +
+					"        CHECK(kind IN ('town', 'city', 'fortification'))," +
+					"    status VARCHAR(9) NOT NULL" +
+					"        CHECK(status IN ('abandoned', 'active', 'burned', 'ruined'))," +
+					"    size VARCHAR(6) NOT NULL" +
+					"        CHECK(size IN ('small', 'medium', 'large'))," +
+					"    dc INTEGER," +
+					"    name VARCHAR(128) NOT NULL," +
+					"    owner INTEGER NOT NULL," +
+					"    image VARCHAR(255)," +
+					"    portrait VARCHAR(255)," +
+					"    population INTEGER" +
+					");"));
 
 	@Override
 	public List<Query> getInitializers() {
@@ -62,12 +62,12 @@ public final class DBTownHandler extends AbstractDatabaseWriter<AbstractTown, Po
 	}
 
 	private static final Query INSERT_SQL =
-		Query.of("INSERT INTO towns (row, column, id, kind, status, size, dc, name, " +
-			"    owner, image, portrait, population) " +
-			"VALUES(:row, :column, :id, :kind, :status, :size, :dc, :name, :owner, :image, :portrait, :population);");
+			Query.of("INSERT INTO towns (row, column, id, kind, status, size, dc, name, " +
+					"    owner, image, portrait, population) " +
+					"VALUES(:row, :column, :id, :kind, :status, :size, :dc, :name, :owner, :image, :portrait, :population);");
 
 	private static final AbstractDatabaseWriter<CommunityStats, ITownFixture> CS_WRITER =
-		new DBCommunityStatsHandler();
+			new DBCommunityStatsHandler();
 
 	@Override
 	public void write(final Transactional db, final AbstractTown obj, final Point context) throws SQLException {
@@ -94,8 +94,9 @@ public final class DBTownHandler extends AbstractDatabaseWriter<AbstractTown, Po
 		}
 	}
 
-	private TryBiConsumer<Map<String, Object>, Warning, SQLException> readTown(final IMutableLegacyMap map,
-	                                                                           final Map<Integer, IFixture> containers, final Map<Integer, List<Object>> containees) {
+	private TryBiConsumer<Map<String, Object>, Warning, SQLException> readTown(
+			final IMutableLegacyMap map, final Map<Integer, IFixture> containers, final Map<Integer,
+			List<Object>> containees) {
 		return (dbRow, warner) -> {
 			final int row = (Integer) dbRow.get("row");
 			final int column = (Integer) dbRow.get("column");
@@ -138,7 +139,7 @@ public final class DBTownHandler extends AbstractDatabaseWriter<AbstractTown, Po
 
 	@Override
 	public void readMapContents(final Connection db, final IMutableLegacyMap map, final Map<Integer, IFixture> containers,
-	                            final Map<Integer, List<Object>> containees, final Warning warner) throws SQLException {
+								final Map<Integer, List<Object>> containees, final Warning warner) throws SQLException {
 		handleQueryResults(db, warner, "towns", readTown(map, containers, containees), SELECT);
 	}
 }

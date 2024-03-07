@@ -10,7 +10,8 @@ import javax.swing.BoundedRangeModel;
 import javax.swing.event.ChangeEvent;
 import java.util.Objects;
 
-/* package */ class ScrollAdjustmentListener { // FIXME: Listen to some events so we can reset on map or selected point change
+// FIXME: Listen to some events so we can reset on map or selected point change
+/* package */ class ScrollAdjustmentListener {
 	private final IViewerModel model;
 
 	public ScrollAdjustmentListener(final IViewerModel model) {
@@ -37,7 +38,7 @@ import java.util.Objects;
 		final BoundedRangeModel source = (BoundedRangeModel) event.getSource();
 		if (adjusting) {
 			LovelaceLogger.trace(
-				"Waiting for scrollbar to stop adjusting before handling horizontal scroll");
+					"Waiting for scrollbar to stop adjusting before handling horizontal scroll");
 			return;
 		}
 		LovelaceLogger.trace("Starting to respond to horizontal scroll");
@@ -69,11 +70,11 @@ import java.util.Objects;
 			}
 			oldColumn = newValue;
 			newDimensions = new VisibleDimensions(oldDimensions.getMinimumRow(),
-				oldDimensions.getMaximumRow(), newMinColumn, newMaxColumn);
+					oldDimensions.getMaximumRow(), newMinColumn, newMaxColumn);
 		} else {
 			if (oldColumn == newValue) {
 				LovelaceLogger.trace(
-					"Horizontal scroll to same value, possibly reentrant. Skipping ...");
+						"Horizontal scroll to same value, possibly reentrant. Skipping ...");
 				return;
 			}
 			final int offset = newValue - oldColumn;
@@ -82,21 +83,21 @@ import java.util.Objects;
 			if (oldDimensions.getMinimumColumn() + offset < 0) {
 				LovelaceLogger.debug("Offset would make negative columns visible, constraining the view.");
 				newDimensions = new VisibleDimensions(oldDimensions.getMinimumRow(),
-					oldDimensions.getMaximumRow(), 0, oldDimensions.getColumns().size() - 1);
+						oldDimensions.getMaximumRow(), 0, oldDimensions.getColumns().size() - 1);
 			} else if (oldDimensions.getMaximumColumn() + offset >
 					model.getMapDimensions().columns()) {
 				LovelaceLogger.debug("Offset would go too far to the right ([%d + %d] / %d), constraining the view.",
-					oldDimensions.getMaximumColumn(), offset,
-					model.getMapDimensions().columns());
+						oldDimensions.getMaximumColumn(), offset,
+						model.getMapDimensions().columns());
 				newDimensions = new VisibleDimensions(oldDimensions.getMinimumRow(),
-					oldDimensions.getMaximumRow(),
-					Math.max(0, model.getMapDimensions().columns() -
-						oldDimensions.getColumns().size() - 1),
-					model.getMapDimensions().columns() - 1);
+						oldDimensions.getMaximumRow(),
+						Math.max(0, model.getMapDimensions().columns() -
+								oldDimensions.getColumns().size() - 1),
+						model.getMapDimensions().columns() - 1);
 			} else { // TODO: check how this constraint effect makes scrolling feel
 				newDimensions = new VisibleDimensions(oldDimensions.getMinimumRow(),
-					oldDimensions.getMaximumRow(), oldDimensions.getMinimumColumn() + offset,
-					oldDimensions.getMaximumColumn() + offset);
+						oldDimensions.getMaximumRow(), oldDimensions.getMinimumColumn() + offset,
+						oldDimensions.getMaximumColumn() + offset);
 			}
 		}
 		final boolean oldAdjusting = adjusting;
@@ -111,7 +112,7 @@ import java.util.Objects;
 		if (adjusting) {
 			// TODO: We'd like to do *some* handling, in case the user is dragging the tongue. Mutex flag again?
 			LovelaceLogger.trace(
-				"Waiting for scrollbar to stop adjusting before handling vertical scroll");
+					"Waiting for scrollbar to stop adjusting before handling vertical scroll");
 			return;
 		}
 		LovelaceLogger.trace("Starting to respond to vertical scroll");
@@ -128,7 +129,7 @@ import java.util.Objects;
 		} else if (!Objects.isNull(oldRow)) {
 			if (oldRow == newValue) {
 				LovelaceLogger.trace(
-					"Vertical scroll to same value, possibly reentrant. Skipping ...");
+						"Vertical scroll to same value, possibly reentrant. Skipping ...");
 				return;
 			}
 			final int offset = newValue - oldRow;
@@ -137,19 +138,19 @@ import java.util.Objects;
 			if (oldDimensions.getMinimumRow() + offset < 0) {
 				LovelaceLogger.debug("Offset would make negative rows visible, constraining the view.");
 				newDimensions = new VisibleDimensions(0, oldDimensions.getRows().size() - 1,
-					oldDimensions.getMinimumColumn(), oldDimensions.getMaximumColumn());
+						oldDimensions.getMinimumColumn(), oldDimensions.getMaximumColumn());
 			} else if (oldDimensions.getMaximumRow() + offset > model.getMapDimensions().rows()) {
 				LovelaceLogger.debug("Offset would go too far down ([%d + %d] / %d), constraining the view.",
-					oldDimensions.getMaximumRow(), offset, model.getMapDimensions().rows());
+						oldDimensions.getMaximumRow(), offset, model.getMapDimensions().rows());
 				newDimensions = new VisibleDimensions(
-					Math.max(0, model.getMapDimensions().rows() -
-						oldDimensions.getRows().size() - 1),
-					model.getMapDimensions().rows() - 1,
-					oldDimensions.getMinimumColumn(), oldDimensions.getMaximumColumn());
+						Math.max(0, model.getMapDimensions().rows() -
+								oldDimensions.getRows().size() - 1),
+						model.getMapDimensions().rows() - 1,
+						oldDimensions.getMinimumColumn(), oldDimensions.getMaximumColumn());
 			} else { // TODO: check how this constraint effect makes scrolling feel
 				newDimensions = new VisibleDimensions(oldDimensions.getMinimumRow() + offset,
-					oldDimensions.getMaximumRow() + offset, oldDimensions.getMinimumColumn(),
-					oldDimensions.getMaximumColumn());
+						oldDimensions.getMaximumRow() + offset, oldDimensions.getMinimumColumn(),
+						oldDimensions.getMaximumColumn());
 			}
 		} else {
 			final int newMinRow;
@@ -169,7 +170,7 @@ import java.util.Objects;
 			}
 			oldRow = newValue;
 			newDimensions = new VisibleDimensions(newMinRow, newMaxRow,
-				oldDimensions.getMinimumColumn(), oldDimensions.getMaximumColumn());
+					oldDimensions.getMinimumColumn(), oldDimensions.getMaximumColumn());
 		}
 		final boolean oldAdjusting = adjusting;
 		adjusting = true;

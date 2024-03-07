@@ -7,13 +7,13 @@ package drivers.advancement;
  * (Probably not in Java, given non-reified generics.)
  */
 interface SkillSelectionSource {
-    /**
-     * Notify the given listener of newly selected skills.
-     */
-    void addSkillSelectionListener(SkillSelectionListener listener);
+	/**
+	 * Notify the given listener of newly selected skills.
+	 */
+	void addSkillSelectionListener(SkillSelectionListener listener);
 
-    /**
-     * Stop notifying the given listener.
-     */
-    void removeSkillSelectionListener(SkillSelectionListener listener);
+	/**
+	 * Stop notifying the given listener.
+	 */
+	void removeSkillSelectionListener(SkillSelectionListener listener);
 }

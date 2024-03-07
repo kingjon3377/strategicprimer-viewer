@@ -77,7 +77,7 @@ public class SimpleMultiMapModel extends SimpleDriverModel implements IMultiMapM
 	@Override
 	public final int getCurrentTurn() {
 		return streamAllMaps().mapToInt(ILegacyMap::getCurrentTurn).filter(i -> i >= 0)
-			.findFirst().orElseGet(getMap()::getCurrentTurn);
+				.findFirst().orElseGet(getMap()::getCurrentTurn);
 	}
 
 	@Override

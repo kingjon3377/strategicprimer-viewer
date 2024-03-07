@@ -27,14 +27,14 @@ public final class DBCacheHandler extends AbstractDatabaseWriter<CacheFixture, P
 	}
 
 	private static final List<Query> INITIALIZERS = Collections.singletonList(
-		Query.of("CREATE TABLE IF NOT EXISTS caches (" +
-			"    row INTEGER NOT NULL," +
-			"    column INTEGER NOT NULL," +
-			"    id INTEGER NOT NULL," +
-			"    kind VARCHAR(32) NOT NULL," +
-			"    contents VARCHAR(512) NOT NULL," +
-			"    image VARCHAR(256)" +
-			");"));
+			Query.of("CREATE TABLE IF NOT EXISTS caches (" +
+					"    row INTEGER NOT NULL," +
+					"    column INTEGER NOT NULL," +
+					"    id INTEGER NOT NULL," +
+					"    kind VARCHAR(32) NOT NULL," +
+					"    contents VARCHAR(512) NOT NULL," +
+					"    image VARCHAR(256)" +
+					");"));
 
 	@Override
 	public List<Query> getInitializers() {
@@ -42,14 +42,14 @@ public final class DBCacheHandler extends AbstractDatabaseWriter<CacheFixture, P
 	}
 
 	private static final Query INSERT_SQL =
-		Query.of("INSERT INTO caches(row, column, id, kind, contents, image) " +
-			"VALUES(:row, :column, :id, :kind, :contents, :image);");
+			Query.of("INSERT INTO caches(row, column, id, kind, contents, image) " +
+					"VALUES(:row, :column, :id, :kind, :contents, :image);");
 
 	@Override
 	public void write(final Transactional db, final CacheFixture obj, final Point context) throws SQLException {
 		INSERT_SQL.on(value("row", context.row()), value("column", context.column()), value("id", obj.getId()),
-			value("kind", obj.getKind()), value("contents", obj.getContents()),
-			value("image", obj.getImage())).execute(db.connection());
+				value("kind", obj.getKind()), value("contents", obj.getContents()),
+				value("image", obj.getImage())).execute(db.connection());
 	}
 
 	private static TryBiConsumer<Map<String, Object>, Warning, SQLException> readCache(final IMutableLegacyMap map) {
@@ -72,7 +72,7 @@ public final class DBCacheHandler extends AbstractDatabaseWriter<CacheFixture, P
 
 	@Override
 	public void readMapContents(final Connection db, final IMutableLegacyMap map, final Map<Integer, IFixture> containers,
-	                            final Map<Integer, List<Object>> containees, final Warning warner) throws SQLException {
+								final Map<Integer, List<Object>> containees, final Warning warner) throws SQLException {
 		handleQueryResults(db, warner, "caches", readCache(map), SELECT);
 	}
 }

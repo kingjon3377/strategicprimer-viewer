@@ -71,9 +71,10 @@ import java.util.stream.Collectors;
 	public int getChildCount(final Object parent) {
 		return switch (parent) {
 			case final Player p -> (int) StreamSupport.stream(model.getUnitKinds(p).spliterator(),
-				false).count();
+					false).count();
 			case final String kind when StreamSupport.stream(
-				model.getUnitKinds(player).spliterator(), false).anyMatch(parent::equals) -> model.getUnits(player, kind).size();
+					model.getUnitKinds(player).spliterator(), false).anyMatch(parent::equals) ->
+					model.getUnits(player, kind).size();
 			case final IUnit unit -> (int) unit.stream().count();
 			default -> throw new IllegalArgumentException("Not a possible member of the tree");
 		};
@@ -93,9 +94,11 @@ import java.util.stream.Collectors;
 	public int getIndexOfChild(final Object parent, final Object child) {
 		return switch (parent) {
 			case final Player p when child instanceof IUnit -> // FIXME: This case shouldn't be allowed, right?
-				new ArrayList<>(model.getUnits(p)).indexOf(child);
-			case final Player p when child instanceof String -> StreamSupport.stream(model.getUnitKinds(p).spliterator(), false).toList().indexOf(child);
-			case final String kind when child instanceof IUnit -> new ArrayList<>(model.getUnits(player, kind)).indexOf(child);
+					new ArrayList<>(model.getUnits(p)).indexOf(child);
+			case final Player p when child instanceof String ->
+					StreamSupport.stream(model.getUnitKinds(p).spliterator(), false).toList().indexOf(child);
+			case final String kind when child instanceof IUnit ->
+					new ArrayList<>(model.getUnits(player, kind)).indexOf(child);
 			case final IUnit unit -> unit.stream().toList().indexOf(child);
 			default -> -1;
 		};
@@ -115,20 +118,20 @@ import java.util.stream.Collectors;
 	public void moveMember(final UnitMember member, final IUnit old, final IUnit newOwner) {
 		final int oldIndex = getIndexOfChild(old, member);
 		final TreeModelEvent removedEvent = new TreeModelEvent(this,
-			new TreePath(new Object[]{player, old.getKind(), old}),
-			new int[]{oldIndex}, new Object[]{member});
+				new TreePath(new Object[]{player, old.getKind(), old}),
+				new int[]{oldIndex}, new Object[]{member});
 		final TreeModelEvent removedChangeEvent = new TreeModelEvent(this,
-			new TreePath(new Object[]{player, old.getKind(), old}));
+				new TreePath(new Object[]{player, old.getKind(), old}));
 		for (final TreeModelListener listener : listeners) {
 			listener.treeNodesRemoved(removedEvent);
 			listener.treeStructureChanged(removedChangeEvent);
 		}
 		model.moveMember(member, old, newOwner);
 		final TreeModelEvent insertedEvent = new TreeModelEvent(this,
-			new TreePath(new Object[]{player, newOwner.getKind(), newOwner}),
-			new int[]{getIndexOfChild(newOwner, member)}, new Object[]{member});
+				new TreePath(new Object[]{player, newOwner.getKind(), newOwner}),
+				new int[]{getIndexOfChild(newOwner, member)}, new Object[]{member});
 		final TreeModelEvent insertedChangeEvent = new TreeModelEvent(this,
-			new TreePath(new Object[]{player, newOwner.getKind(), newOwner}));
+				new TreePath(new Object[]{player, newOwner.getKind(), newOwner}));
 		for (final TreeModelListener listener : listeners) {
 			listener.treeNodesInserted(insertedEvent);
 			listener.treeStructureChanged(insertedChangeEvent);
@@ -197,10 +200,10 @@ import java.util.stream.Collectors;
 			children = new Object[]{item};
 		} else if (item instanceof final UnitMember member) {
 			final IUnit parent = model.getUnits(player).stream()
-				.filter(containingItem(member)).findAny().orElse(null);
+					.filter(containingItem(member)).findAny().orElse(null);
 			if (Objects.isNull(parent)) {
 				LovelaceLogger.warning(
-					"In WorkerTreeModel.renameItem(), unit member belonged to no unit");
+						"In WorkerTreeModel.renameItem(), unit member belonged to no unit");
 				return;
 			}
 			path = new TreePath(new Object[]{player, parent.getKind(), parent});
@@ -211,7 +214,7 @@ import java.util.stream.Collectors;
 			return;
 		} else {
 			LovelaceLogger.warning(
-				"In WorkerTreeModel.renameItem(), item was neither unit nor unit member");
+					"In WorkerTreeModel.renameItem(), item was neither unit nor unit member");
 			// Ignore, as it's something we don't know how to handle.
 			// If we see log messages, revisit.
 			return;
@@ -233,14 +236,14 @@ import java.util.stream.Collectors;
 			// TODO: should probably fire removal and addition events instead
 			path = new TreePath(new Object[]{player});
 			indices = new int[]{getIndexOfChild(player, item.getKind()),
-				getIndexOfChild(player, newKind)};
+					getIndexOfChild(player, newKind)};
 			children = new Object[]{item.getKind(), newKind};
 		} else if (item instanceof final UnitMember um) {
 			final IUnit parent = model.getUnits(player).stream()
-				.filter(containingItem(um)).findAny().orElse(null);
+					.filter(containingItem(um)).findAny().orElse(null);
 			if (Objects.isNull(parent)) {
 				LovelaceLogger.warning(
-					"In WorkerTreeModel.changeKind(), unit member belonged to no unit");
+						"In WorkerTreeModel.changeKind(), unit member belonged to no unit");
 				return;
 			}
 			path = new TreePath(new Object[]{player, parent.getKind(), parent});
@@ -265,8 +268,8 @@ import java.util.stream.Collectors;
 				if (member.equals(item)) {
 					model.dismissUnitMember(member);
 					final TreeModelEvent event = new TreeModelEvent(this,
-						new TreePath(new Object[]{player, unit}),
-						new int[]{index}, new Object[]{member});
+							new TreePath(new Object[]{player, unit}),
+							new int[]{index}, new Object[]{member});
 					for (final TreeModelListener listener : listeners) {
 						listener.treeNodesRemoved(event);
 					}
@@ -287,14 +290,14 @@ import java.util.stream.Collectors;
 				final TreeModelEvent event;
 				if (countAfterAdding > existingMembersCount) {
 					event = new TreeModelEvent(this,
-						new TreePath(new Object[]{player, unit.getKind(), unit}),
-						new int[]{existingMembersCount},
-						new Object[]{sibling});
+							new TreePath(new Object[]{player, unit.getKind(), unit}),
+							new int[]{existingMembersCount},
+							new Object[]{sibling});
 				} else {
 					event = new TreeModelEvent(this,
-						new TreePath(new Object[]{player, unit.getKind()}),
-						new int[]{getIndexOfChild(unit.getKind(), unit)},
-						new Object[]{unit});
+							new TreePath(new Object[]{player, unit.getKind()}),
+							new int[]{getIndexOfChild(unit.getKind(), unit)},
+							new Object[]{unit});
 				}
 				for (final TreeModelListener listener : listeners) {
 					listener.treeNodesInserted(event);
@@ -321,9 +324,9 @@ import java.util.stream.Collectors;
 			sequence = model.getUnits(player);
 		} else {
 			final IUnit startingUnit = Stream.of(starting.getPath()).filter(IUnit.class::isInstance)
-				.map(IUnit.class::cast).findFirst().orElse(null);
+					.map(IUnit.class::cast).findFirst().orElse(null);
 			final String startingKind = Stream.of(starting.getPath()).filter(String.class::isInstance)
-				.map(String.class::cast).findFirst().orElse(null);
+					.map(String.class::cast).findFirst().orElse(null);
 			final Collection<IUnit> temp = model.getUnits(player);
 			sequence = Stream.concat(temp.stream(), temp.stream()).collect(Collectors.toList());
 			if (!Objects.isNull(startingUnit)) {
@@ -350,7 +353,7 @@ import java.util.stream.Collectors;
 			}
 			final String orders = unit.getOrders(turn).toLowerCase().strip();
 			if (orders.isEmpty() || orders.contains("todo") || orders.contains("fixme") ||
-				orders.contains("xxx")) {
+					orders.contains("xxx")) {
 				if (orders.isEmpty()) {
 					LovelaceLogger.trace("Orders are empty");
 				} else if (orders.contains("todo")) {
@@ -361,7 +364,7 @@ import java.util.stream.Collectors;
 					LovelaceLogger.trace("Orders contain 'xxx'");
 				} else {
 					LovelaceLogger.warning(
-						"Orders are not problematic, but called a problem anyway");
+							"Orders are not problematic, but called a problem anyway");
 				}
 				return new TreePath(new Object[]{player, unit.getKind(), unit});
 			}
@@ -386,7 +389,7 @@ import java.util.stream.Collectors;
 	@Override
 	public void refreshChildren(final IUnit parent) {
 		final TreeModelEvent event = new TreeModelEvent(this, new TreePath(
-			new Object[]{player, parent.getKind(), parent}));
+				new Object[]{player, parent.getKind(), parent}));
 		for (final TreeModelListener listener : listeners) {
 			listener.treeStructureChanged(event);
 		}
@@ -397,9 +400,9 @@ import java.util.stream.Collectors;
 		LovelaceLogger.trace("In WorkerTreeModel.removeUnit()");
 		// FIXME: What if it's the only unit with this kind?
 		final TreeModelEvent event = new TreeModelEvent(this,
-			new TreePath(new Object[]{player, unit.getKind()}),
-			new int[]{getIndexOfChild(unit.getKind(), unit)},
-			new Object[]{unit});
+				new TreePath(new Object[]{player, unit.getKind()}),
+				new int[]{getIndexOfChild(unit.getKind(), unit)},
+				new Object[]{unit});
 		if (model.removeUnit(unit)) {
 			LovelaceLogger.trace("Removed unit from the map, about to notify tree listeners");
 			for (final TreeModelListener listener : listeners) {
@@ -416,9 +419,9 @@ import java.util.stream.Collectors;
 		if (item instanceof final IUnit unit && item.owner().equals(player)) {
 			// TODO: What if it's the only unit with this kind?
 			final TreeModelEvent event = new TreeModelEvent(this,
-				new TreePath(new Object[]{player, unit.getKind()}),
-				new int[]{getIndexOfChild(unit.getKind(), item)},
-				new Object[]{item});
+					new TreePath(new Object[]{player, unit.getKind()}),
+					new int[]{getIndexOfChild(unit.getKind(), item)},
+					new Object[]{item});
 			if (model.changeOwner(item, newOwner)) {
 				for (final TreeModelListener listener : listeners) {
 					listener.treeNodesRemoved(event);
@@ -429,18 +432,18 @@ import java.util.stream.Collectors;
 			final String kind = unit.getKind();
 			// TODO: Make getUnitKinds() return Collection
 			final boolean existingKind = StreamSupport.stream(model.getUnitKinds(player).spliterator(), false)
-				.anyMatch(kind::equals);
+					.anyMatch(kind::equals);
 			if (!model.changeOwner(item, newOwner)) {
 				return;
 			}
 			// TODO: double-check I passed the parameters a nodes-inserted listener expects
 			if (existingKind) {
 				event = new TreeModelEvent(this, new TreePath(new Object[]{player}),
-					new int[]{getIndexOfChild(player, kind)},
-					new Object[]{kind});
+						new int[]{getIndexOfChild(player, kind)},
+						new Object[]{kind});
 			} else {
 				event = new TreeModelEvent(this, new TreePath(new Object[]{player, kind}),
-					new int[]{getIndexOfChild(kind, item)}, new Object[]{item});
+						new int[]{getIndexOfChild(kind, item)}, new Object[]{item});
 			}
 			if (model.changeOwner(item, newOwner)) {
 				for (final TreeModelListener listener : listeners) {

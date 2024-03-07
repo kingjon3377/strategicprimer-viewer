@@ -9,24 +9,24 @@ import java.io.Serial;
  * class also takes its initial elements as constructor parameters.
  */
 public final class ReorderableListModel<Element> extends DefaultListModel<Element> implements Reorderable {
-    @Serial
-    private static final long serialVersionUID = 1;
+	@Serial
+	private static final long serialVersionUID = 1;
 
-    @SafeVarargs
-    public ReorderableListModel(final Element... initialElements) {
-        for (final Element element : initialElements) {
-            addElement(element);
-        }
-    }
+	@SafeVarargs
+	public ReorderableListModel(final Element... initialElements) {
+		for (final Element element : initialElements) {
+			addElement(element);
+		}
+	}
 
-    @Override
-    public void reorder(final int fromIndex, final int toIndex) {
-        if (fromIndex != toIndex) {
-            if (fromIndex > toIndex) {
-                add(toIndex, remove(fromIndex));
-            } else {
-                add(toIndex - 1, remove(fromIndex));
-            }
-        }
-    }
+	@Override
+	public void reorder(final int fromIndex, final int toIndex) {
+		if (fromIndex != toIndex) {
+			if (fromIndex > toIndex) {
+				add(toIndex, remove(fromIndex));
+			} else {
+				add(toIndex - 1, remove(fromIndex));
+			}
+		}
+	}
 }

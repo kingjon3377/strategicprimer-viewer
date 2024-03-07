@@ -102,8 +102,8 @@ import java.util.stream.Collectors;
 
 	/**
 	 * @param initial The status to give the mine's starting point.
-	 * @param seed A number to seed the RNG
-	 * @param kind What kind of mine to model
+	 * @param seed    A number to seed the RNG
+	 * @param kind    What kind of mine to model
 	 */
 	public MiningModel(final LodeStatus initial, final long seed, final MineKind kind, final ICLIHelper cli) {
 		unnormalized.put(Pair.with(0, 0), initial);
@@ -137,15 +137,16 @@ import java.util.stream.Collectors;
 			}
 		}
 		cli.println();
-		cli.println(String.format("Pruned %d branches beyond our boundaries", pruneCounter)); // TODO: printf() once added to interface
+		// TODO: printf() instead of println(format()) once added to interface
+		cli.println(String.format("Pruned %d branches beyond our boundaries", pruneCounter));
 
 		// FIXME: What is this procedure (by-row and by-column)
 		// supposed to do? On porting back to Java it looks like it's
 		// guaranteed to break on the first iteration in all three loops ...
 		final SortedMap<Integer, List<Pair<Integer, Integer>>> byRow =
-			treeMap(unnormalized.keySet()
-					.stream().collect(Collectors.<Pair<Integer, Integer>, Integer>groupingBy(Pair::getValue0)),
-				Comparator.reverseOrder());
+				treeMap(unnormalized.keySet()
+								.stream().collect(Collectors.<Pair<Integer, Integer>, Integer>groupingBy(Pair::getValue0)),
+						Comparator.reverseOrder());
 		final Predicate<? super Pair<Integer, Integer>> containsKey = unnormalized::containsKey;
 		final Consumer<? super Pair<Integer, Integer>> removePoint = unnormalized::remove;
 		for (final Map.Entry<Integer, List<Pair<Integer, Integer>>> entry : byRow.entrySet()) {
@@ -157,8 +158,8 @@ import java.util.stream.Collectors;
 		}
 
 		final SortedMap<Integer, List<Pair<Integer, Integer>>> byColumnIncreasing =
-			new TreeMap<>(unnormalized.keySet().stream()
-				.collect(Collectors.groupingBy(Pair::getValue1)));
+				new TreeMap<>(unnormalized.keySet().stream()
+						.collect(Collectors.groupingBy(Pair::getValue1)));
 		for (final Map.Entry<Integer, List<Pair<Integer, Integer>>> entry : byColumnIncreasing.entrySet()) {
 			final int column = entry.getKey();
 			final List<Pair<Integer, Integer>> points = entry.getValue();
@@ -168,9 +169,9 @@ import java.util.stream.Collectors;
 		}
 
 		final SortedMap<Integer, List<Pair<Integer, Integer>>> byColumnDecreasing =
-			treeMap(unnormalized.keySet().stream()
-					.collect(Collectors.<Pair<Integer, Integer>, Integer>groupingBy(Pair::getValue1)),
-				Comparator.reverseOrder());
+				treeMap(unnormalized.keySet().stream()
+								.collect(Collectors.<Pair<Integer, Integer>, Integer>groupingBy(Pair::getValue1)),
+						Comparator.reverseOrder());
 		for (final Map.Entry<Integer, List<Pair<Integer, Integer>>> entry : byColumnDecreasing.entrySet()) {
 			final int column = entry.getKey();
 			final List<Pair<Integer, Integer>> points = entry.getValue();
@@ -180,14 +181,14 @@ import java.util.stream.Collectors;
 		}
 
 		final int minimumColumn = unnormalized.keySet().stream().map(Pair::getValue1)
-			.mapToInt(Integer::intValue).min().orElse(0);
+				.mapToInt(Integer::intValue).min().orElse(0);
 		data = Collections.unmodifiableMap(unnormalized.entrySet().stream().collect(
-			Collectors.toMap(e -> Pair.with(e.getKey().getValue0(),
-				e.getKey().getValue1() - minimumColumn), Map.Entry::getValue)));
+				Collectors.toMap(e -> Pair.with(e.getKey().getValue0(),
+						e.getKey().getValue1() - minimumColumn), Map.Entry::getValue)));
 		maximumRow = data.keySet().stream().map(Pair::getValue0).mapToInt(Integer::intValue)
-			.max().orElse(0);
+				.max().orElse(0);
 		maximumColumn = data.keySet().stream().map(Pair::getValue1).mapToInt(Integer::intValue)
-			.max().orElse(0);
+				.max().orElse(0);
 	}
 
 	/**

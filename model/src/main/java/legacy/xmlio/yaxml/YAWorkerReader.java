@@ -32,7 +32,7 @@ import java.util.Objects;
  */
 /* package */ class YAWorkerReader extends YAAbstractReader<IWorker, IWorker> {
 	public static void writeSkill(final ThrowingConsumer<String, IOException> ostream, final ISkill obj, final int indent)
-		throws IOException {
+			throws IOException {
 		if (!obj.isEmpty()) {
 			writeTag(ostream, "skill", indent);
 			writeProperty(ostream, "name", obj.getName());
@@ -43,7 +43,7 @@ import java.util.Objects;
 	}
 
 	public static void writeJob(final ThrowingConsumer<String, IOException> ostream, final IJob obj, final int indent)
-		throws IOException {
+			throws IOException {
 		if (obj.getLevel() <= 0 && obj.isEmpty()) {
 			return;
 		}
@@ -62,7 +62,7 @@ import java.util.Objects;
 	}
 
 	private static void writeNote(final ThrowingConsumer<String, IOException> ostream, final int player, final String note, final int indent)
-		throws IOException {
+			throws IOException {
 		writeTag(ostream, "note", indent);
 		writeProperty(ostream, "player", player);
 		ostream.accept(">"); // We don't use finishParentTag() because we don't want a newline yet
@@ -88,13 +88,13 @@ import java.util.Objects;
 	}
 
 	private WorkerStats parseStats(final StartElement element, final QName parent, final Iterable<XMLEvent> stream)
-		throws SPFormatException {
+			throws SPFormatException {
 		requireTag(element, parent, "stats");
 		expectAttributes(element, "hp", "max", "str", "dex", "con", "int", "wis", "cha");
 		final ReadToIntFunction<String> inner = attr -> getIntegerParameter(element, attr);
 		final WorkerStats retval = new WorkerStats(inner.apply("hp"), inner.apply("max"),
-			inner.apply("str"), inner.apply("dex"), inner.apply("con"), inner.apply("int"),
-			inner.apply("wis"), inner.apply("cha"));
+				inner.apply("str"), inner.apply("dex"), inner.apply("con"), inner.apply("int"),
+				inner.apply("wis"), inner.apply("cha"));
 		spinUntilEnd(element.getName(), stream);
 		return retval;
 	}
@@ -104,11 +104,11 @@ import java.util.Objects;
 		expectAttributes(element, "name", "level", "hours");
 		// TODO: Should require no children, right? So spinUntilEnd() here, not in the caller?
 		return new Skill(getParameter(element, "name"), getIntegerParameter(element, "level"),
-			getIntegerParameter(element, "hours"));
+				getIntegerParameter(element, "hours"));
 	}
 
 	private String readNote(final StartElement element, final QName parent, final Iterable<XMLEvent> stream)
-		throws SPFormatException {
+			throws SPFormatException {
 		requireTag(element, parent, "note");
 		expectAttributes(element, "player");
 		final StringBuilder retval = new StringBuilder();
@@ -125,11 +125,11 @@ import java.util.Objects;
 	}
 
 	private IJob parseJob(final StartElement element, final QName parent, final Iterable<XMLEvent> stream)
-		throws SPFormatException {
+			throws SPFormatException {
 		requireTag(element, parent, "job");
 		expectAttributes(element, "name", "level");
 		final IMutableJob retval = new Job(getParameter(element, "name"),
-			getIntegerParameter(element, "level"));
+				getIntegerParameter(element, "level"));
 		for (final XMLEvent event : stream) {
 			if (event instanceof final StartElement se && isSupportedNamespace(se.getName())) {
 				if ("skill".equalsIgnoreCase(se.getName().getLocalPart())) {
@@ -137,7 +137,7 @@ import java.util.Objects;
 					spinUntilEnd(se.getName(), stream);
 				} else {
 					throw UnwantedChildException.listingExpectedTags(element.getName(),
-						se, "skill");
+							se, "skill");
 				}
 			} else if (isMatchingEnd(element.getName(), event)) {
 				break;
@@ -147,7 +147,7 @@ import java.util.Objects;
 	}
 
 	private static void writeStats(final ThrowingConsumer<String, IOException> ostream, final @Nullable WorkerStats stats, final int indent)
-		throws IOException {
+			throws IOException {
 		if (!Objects.isNull(stats)) {
 			writeTag(ostream, "stats", indent);
 			writeProperty(ostream, "hp", stats.getHitPoints());
@@ -164,11 +164,11 @@ import java.util.Objects;
 
 	@Override
 	public IWorker read(final StartElement element, final QName parent, final Iterable<XMLEvent> stream)
-		throws SPFormatException, XMLStreamException {
+			throws SPFormatException, XMLStreamException {
 		requireTag(element, parent, "worker");
 		expectAttributes(element, "name", "race", "image", "portrait", "id");
 		final Worker retval = new Worker(getParameter(element, "name"),
-			getParameter(element, "race", "human"), getOrGenerateID(element));
+				getParameter(element, "race", "human"), getOrGenerateID(element));
 		retval.setImage(getParameter(element, "image", ""));
 		retval.setPortrait(getParameter(element, "portrait", ""));
 		for (final XMLEvent event : stream) {
@@ -179,8 +179,8 @@ import java.util.Objects;
 					retval.setStats(parseStats(se, element.getName(), stream));
 				} else if ("note".equalsIgnoreCase(se.getName().getLocalPart())) {
 					retval.setNote(
-						players.getPlayer(getIntegerParameter(se, "player")),
-						readNote(se, element.getName(), stream));
+							players.getPlayer(getIntegerParameter(se, "player")),
+							readNote(se, element.getName(), stream));
 				} else if ("animal".equalsIgnoreCase(se.getName().getLocalPart()) && Objects.isNull(retval.getMount())) {
 					final MobileFixture animal = mobileReader.read(se, element.getName(), stream);
 					if (animal instanceof final Animal a) {
@@ -192,7 +192,7 @@ import java.util.Objects;
 					retval.addEquipment(implementReader.read(se, element.getName(), stream));
 				} else {
 					throw UnwantedChildException.listingExpectedTags(element.getName(),
-						se, "job", "stats", "note", "animal", "implement");
+							se, "job", "stats", "note", "animal", "implement");
 				}
 			} else if (isMatchingEnd(element.getName(), event)) {
 				break;
@@ -212,8 +212,8 @@ import java.util.Objects;
 		writeImageXML(ostream, obj);
 		writeNonemptyProperty(ostream, "portrait", obj.getPortrait());
 		if (obj.iterator().hasNext() || !Objects.isNull(obj.getStats()) ||
-			obj.getNotesPlayers().iterator().hasNext() || !Objects.isNull(obj.getMount()) ||
-			!obj.getEquipment().isEmpty()) {
+				obj.getNotesPlayers().iterator().hasNext() || !Objects.isNull(obj.getMount()) ||
+				!obj.getEquipment().isEmpty()) {
 			finishParentTag(ostream);
 			writeStats(ostream, obj.getStats(), indent + 1);
 			if (!Objects.isNull(obj.getMount())) {

@@ -18,52 +18,52 @@ import legacy.map.fixtures.mobile.IUnit;
  * A class to transfer a UnitMember via drag-and-drop.
  */
 /* package */ class UnitMemberTransferable implements Transferable {
-    public static final DataFlavor FLAVOR = new DataFlavor(List.class, "List<UnitMember>");
+	public static final DataFlavor FLAVOR = new DataFlavor(List.class, "List<UnitMember>");
 
-    private final List<Pair<UnitMember, IUnit>> payload;
+	private final List<Pair<UnitMember, IUnit>> payload;
 
-    @SafeVarargs
-    public UnitMemberTransferable(final Pair<UnitMember, IUnit>... data) {
-        payload = Arrays.asList(data);
-    }
+	@SafeVarargs
+	public UnitMemberTransferable(final Pair<UnitMember, IUnit>... data) {
+		payload = Arrays.asList(data);
+	}
 
-    @Override
-    public DataFlavor[] getTransferDataFlavors() {
-        return new DataFlavor[]{FLAVOR};
-    }
+	@Override
+	public DataFlavor[] getTransferDataFlavors() {
+		return new DataFlavor[]{FLAVOR};
+	}
 
-    @Override
-    public boolean isDataFlavorSupported(final DataFlavor candidate) {
-        return FLAVOR.equals(candidate);
-    }
+	@Override
+	public boolean isDataFlavorSupported(final DataFlavor candidate) {
+		return FLAVOR.equals(candidate);
+	}
 
-    @Override
-    public List<Pair<UnitMember, IUnit>> getTransferData(final DataFlavor candidate)
-            throws UnsupportedFlavorException {
-        if (FLAVOR.equals(candidate)) {
-            return Collections.unmodifiableList(payload);
-        } else {
-            throw new UnsupportedFlavorException(candidate);
-        }
-    }
+	@Override
+	public List<Pair<UnitMember, IUnit>> getTransferData(final DataFlavor candidate)
+			throws UnsupportedFlavorException {
+		if (FLAVOR.equals(candidate)) {
+			return Collections.unmodifiableList(payload);
+		} else {
+			throw new UnsupportedFlavorException(candidate);
+		}
+	}
 
-    @Override
-    public String toString() { // TODO: cache?
-        return String.format("UnitMemberTransferable conveying %d unit(s)", payload.size());
-    }
+	@Override
+	public String toString() { // TODO: cache?
+		return String.format("UnitMemberTransferable conveying %d unit(s)", payload.size());
+	}
 
-    @Override
-    public boolean equals(final Object that) {
-        if (that instanceof final UnitMemberTransferable umt) {
-            return payload.equals(umt.payload);
-        } else {
-            return false;
-        }
-    }
+	@Override
+	public boolean equals(final Object that) {
+		if (that instanceof final UnitMemberTransferable umt) {
+			return payload.equals(umt.payload);
+		} else {
+			return false;
+		}
+	}
 
 
-    @Override
-    public int hashCode() {
-        return payload.hashCode();
-    }
+	@Override
+	public int hashCode() {
+		return payload.hashCode();
+	}
 }

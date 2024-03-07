@@ -29,84 +29,84 @@ import exploration.common.IExplorationModel;
  * A driver to print a mini-report on workers, suitable for inclusion in a player's results.
  */
 /* package */ class WorkerPrintCLI implements ReadOnlyDriver {
-    private static final List<String> statLabelArray = List.of("Str", "Dex", "Con", "Int", "Wis", "Cha");
+	private static final List<String> statLabelArray = List.of("Str", "Dex", "Con", "Int", "Wis", "Cha");
 
-    private static String jobString(final IJob job) {
-        return String.format("%s %d", job.getName(), job.getLevel());
-    }
+	private static String jobString(final IJob job) {
+		return String.format("%s %d", job.getName(), job.getLevel());
+	}
 
-    private final ICLIHelper cli;
-    private final IExplorationModel model;
+	private final ICLIHelper cli;
+	private final IExplorationModel model;
 
-    @Override
-    public IExplorationModel getModel() {
-        return model;
-    }
+	@Override
+	public IExplorationModel getModel() {
+		return model;
+	}
 
-    @Override
-    public SPOptions getOptions() {
-        return EmptyOptions.EMPTY_OPTIONS;
-    }
+	@Override
+	public SPOptions getOptions() {
+		return EmptyOptions.EMPTY_OPTIONS;
+	}
 
-    public WorkerPrintCLI(final ICLIHelper cli, final IExplorationModel model) {
-        this.cli = cli;
-        this.model = model;
-    }
+	public WorkerPrintCLI(final ICLIHelper cli, final IExplorationModel model) {
+		this.cli = cli;
+		this.model = model;
+	}
 
-    private void printWorkers(final IUnit unit) {
-        for (final UnitMember member : unit) {
-            final IWorker worker;
-            if (member instanceof IWorker) {
-                worker = (IWorker) member;
-            } else {
-                continue;
-            }
-            cli.print("- ", worker.getName());
-            if (!"human".equals(worker.getRace())) {
-                cli.print(" (", worker.getRace(), ")");
-            }
+	private void printWorkers(final IUnit unit) {
+		for (final UnitMember member : unit) {
+			final IWorker worker;
+			if (member instanceof IWorker) {
+				worker = (IWorker) member;
+			} else {
+				continue;
+			}
+			cli.print("- ", worker.getName());
+			if (!"human".equals(worker.getRace())) {
+				cli.print(" (", worker.getRace(), ")");
+			}
 
-            if (!Objects.isNull(worker.getMount())) {
-                cli.print(" (mounted on ", worker.getMount().getKind(), ")");
-            }
+			if (!Objects.isNull(worker.getMount())) {
+				cli.print(" (mounted on ", worker.getMount().getKind(), ")");
+			}
 
-            final List<IJob> jobs = StreamSupport.stream(worker.spliterator(), false)
-                    .filter(j -> j.getLevel() > 0).toList();
-            if (!jobs.isEmpty()) {
-                cli.print(" (",
-                        jobs.stream().map(WorkerPrintCLI::jobString)
-                                .collect(Collectors.joining(", ")), ")");
-            }
+			final List<IJob> jobs = StreamSupport.stream(worker.spliterator(), false)
+					.filter(j -> j.getLevel() > 0).toList();
+			if (!jobs.isEmpty()) {
+				cli.print(" (",
+						jobs.stream().map(WorkerPrintCLI::jobString)
+								.collect(Collectors.joining(", ")), ")");
+			}
 
-            final WorkerStats stats = worker.getStats();
-            if (!Objects.isNull(stats)) {
-                final Iterator<String> statsIterator = IntStream.of(stats.array())
-                        .mapToObj(WorkerStats::getModifierString).iterator();
-                final Iterator<String> labelIterator = statLabelArray.iterator();
-                boolean first = true;
-                while (labelIterator.hasNext() && statsIterator.hasNext()) {
-                    if (first) {
-                        cli.print(" [");
-                        first = false;
-                    } else {
-                        cli.print(", ");
-                    }
-                    cli.print(labelIterator.next(), " ", statsIterator.next());
-                }
-                cli.print("]");
-            }
-            cli.println();
-        }
-    }
+			final WorkerStats stats = worker.getStats();
+			if (!Objects.isNull(stats)) {
+				final Iterator<String> statsIterator = IntStream.of(stats.array())
+						.mapToObj(WorkerStats::getModifierString).iterator();
+				final Iterator<String> labelIterator = statLabelArray.iterator();
+				boolean first = true;
+				while (labelIterator.hasNext() && statsIterator.hasNext()) {
+					if (first) {
+						cli.print(" [");
+						first = false;
+					} else {
+						cli.print(", ");
+					}
+					cli.print(labelIterator.next(), " ", statsIterator.next());
+				}
+				cli.print("]");
+			}
+			cli.println();
+		}
+	}
 
-    @Override
-    public void startDriver() {
-        final Player player = cli.chooseFromList((List<? extends Player>) new ArrayList<>(model.getPlayerChoices()), "Players in the map:", "No players", "Player owning the unit:", ICLIHelper.ListChoiceBehavior.ALWAYS_PROMPT).getValue1();
-        if (!Objects.isNull(player)) {
-            final IUnit unit = cli.chooseFromList((List<? extends IUnit>) model.getUnits(player), "Units of that player:", "No units", "Unit to print:", ICLIHelper.ListChoiceBehavior.ALWAYS_PROMPT).getValue1();
-            if (!Objects.isNull(unit)) {
-                printWorkers(unit);
-            }
-        }
-    }
+	@Override
+	public void startDriver() {
+		final Player player = cli.chooseFromList((List<? extends Player>) new ArrayList<>(model.getPlayerChoices()), "Players in the map:", "No players", "Player owning the unit:", ICLIHelper.ListChoiceBehavior.ALWAYS_PROMPT).getValue1();
+		if (!Objects.isNull(player)) {
+			final IUnit unit = cli.chooseFromList((List<? extends IUnit>) model.getUnits(player), "Units of that player:", "No units", "Unit to print:", ICLIHelper.ListChoiceBehavior.ALWAYS_PROMPT).getValue1();
+			if (!Objects.isNull(unit)) {
+				printWorkers(unit);
+			}
+		}
+	}
 }

@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 
 /**
  * Implementation of {@link DelayedRemovalMap} for {@link Integer} keys.
- * <p>
+ *
  * FIXME: Now we're relying on {@link AbstractMap}, this needs tests of all methods both pre-removal, post-removal, and
  * post-coalescence.
  */
@@ -95,6 +95,6 @@ public class IntMap<Item> extends AbstractMap<Integer, Item> implements DelayedR
 	@Override
 	public final @NotNull Set<Entry<Integer, Item>> entrySet() {
 		return backing.entrySet().stream().filter(entry -> !toRemove.contains(entry.getKey()))
-			.collect(Collectors.toUnmodifiableSet());
+				.collect(Collectors.toUnmodifiableSet());
 	}
 }

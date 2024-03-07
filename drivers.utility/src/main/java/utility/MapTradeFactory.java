@@ -20,26 +20,27 @@ import com.google.auto.service.AutoService;
  */
 @AutoService(DriverFactory.class)
 public class MapTradeFactory implements ModelDriverFactory {
-    public static final IDriverUsage USAGE = new DriverUsage(false, "trade-maps", ParamCount.Two,
-            "Trade maps", "Copy contents from one map to another.", true, false, "source.xml",
-            "destination.xml");
+	public static final IDriverUsage USAGE = new DriverUsage(false, "trade-maps", ParamCount.Two,
+			"Trade maps", "Copy contents from one map to another.", true, false, "source.xml",
+			"destination.xml");
 
-    @Override
-    public IDriverUsage getUsage() {
-        return USAGE;
-    }
+	@Override
+	public IDriverUsage getUsage() {
+		return USAGE;
+	}
 
-    @Override
-    public ModelDriver createDriver(final ICLIHelper cli, final SPOptions options, final IDriverModel model) {
-        if (model instanceof final MapTradeModel mtm) { // TODO: If any options, print a warning (here and in other empty-options drivers
-            return new MapTradeCLI(cli, mtm);
-        } else {
-            return createDriver(cli, options, new MapTradeModel(model));
-        }
-    }
+	@Override
+	public ModelDriver createDriver(final ICLIHelper cli, final SPOptions options, final IDriverModel model) {
+		// TODO: If any options, print a warning (here and in other empty-options drivers
+		if (model instanceof final MapTradeModel mtm) {
+			return new MapTradeCLI(cli, mtm);
+		} else {
+			return createDriver(cli, options, new MapTradeModel(model));
+		}
+	}
 
-    @Override
-    public MapTradeModel createModel(final IMutableLegacyMap map) {
-        return new MapTradeModel(map);
-    }
+	@Override
+	public MapTradeModel createModel(final IMutableLegacyMap map) {
+		return new MapTradeModel(map);
+	}
 }

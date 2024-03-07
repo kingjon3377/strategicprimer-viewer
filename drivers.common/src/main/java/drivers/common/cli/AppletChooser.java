@@ -24,11 +24,11 @@ public class AppletChooser<AppletClass extends Applet> {
 		for (final AppletClass applet : applets) {
 			for (final String command : applet.getCommands()) {
 				if ("help".equals(command) || "quit".equals(command) ||
-					"?".equals(command) || "exit".equals(command)) {
+						"?".equals(command) || "exit".equals(command)) {
 					throw new IllegalArgumentException("Applet with reserved command");
 				} else if (temp.containsKey(command)) {
 					throw new IllegalArgumentException(
-						"Two applets with the same command");
+							"Two applets with the same command");
 				}
 				temp.put(command, applet);
 			}
@@ -66,22 +66,22 @@ public class AppletChooser<AppletClass extends Applet> {
 	 */
 	public @Nullable Either<AppletClass, Boolean> chooseApplet() {
 		final String command = Optional.ofNullable(cli.inputString("Command:"))
-			.map(String::toLowerCase).orElse(null);
+				.map(String::toLowerCase).orElse(null);
 		if (Objects.isNull(command)) {
 			return Either.right(false);
 		} else {
 			final List<Map.Entry<String, AppletClass>> matches =
-				commands.entrySet().stream().filter(e -> e.getKey().startsWith(command)).toList();
+					commands.entrySet().stream().filter(e -> e.getKey().startsWith(command)).toList();
 			if ("quit".startsWith(command) || "exit".startsWith(command)) {
 				if (matches.isEmpty()) {
 					return Either.right(false);
 				} else {
 					cli.println("That command was ambiguous between the following:");
 					cli.println(String.join(", ",
-						Stream.concat(Stream.of("quit", "exit")
-									.filter(s -> s.startsWith(command)),
-								matches.stream().map(Map.Entry::getKey))
-							.toArray(String[]::new)));
+							Stream.concat(Stream.of("quit", "exit")
+													.filter(s -> s.startsWith(command)),
+											matches.stream().map(Map.Entry::getKey))
+									.toArray(String[]::new)));
 					usageMessage();
 					return null;
 				}
@@ -96,7 +96,7 @@ public class AppletChooser<AppletClass extends Applet> {
 					cli.println("That command was ambiguous between the following:");
 					cli.print("help, ");
 					cli.println(String.join(", ", matches.stream()
-						.map(Map.Entry::getKey).toArray(String[]::new)));
+							.map(Map.Entry::getKey).toArray(String[]::new)));
 					usageMessage();
 					return null;
 				}
@@ -107,7 +107,7 @@ public class AppletChooser<AppletClass extends Applet> {
 			} else if (matches.size() > 1) {
 				cli.println("That command was ambiguous between the following: ");
 				cli.println(String.join(", ", matches.stream().map(Map.Entry::getKey).
-					toArray(String[]::new)));
+						toArray(String[]::new)));
 				usageMessage();
 				return null;
 			} else {

@@ -32,6 +32,7 @@ import org.jetbrains.annotations.Nullable;
  *
  * Mutator methods, including those used in constructing the map object, are
  * deliberately out of the scope of this interface.
+ *
  * @see IMutableLegacyMap
  */
 public interface ILegacyMap extends Subsettable<ILegacyMap> {
@@ -127,7 +128,7 @@ public interface ILegacyMap extends Subsettable<ILegacyMap> {
 	 *
 	 * TODO: What should this do with the filename? Take a filename parameter?
 	 *
-	 * @param zero Whether to "zero" sensitive data TODO: move CopyBehavior elsewhere than IFixture
+	 * @param zero   Whether to "zero" sensitive data TODO: move CopyBehavior elsewhere than IFixture
 	 * @param player The player for whom the copied map is being prepared, if any.
 	 */
 	ILegacyMap copy(IFixture.CopyBehavior zero, @Nullable Player player);

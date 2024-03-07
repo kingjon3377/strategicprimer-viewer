@@ -40,7 +40,7 @@ import drivers.common.IAdvancementModel;
  * A panel to let a user add hours of experience to a Skill.
  */
 /* package */ final class SkillAdvancementPanel extends BorderedPanel
-	implements SkillSelectionListener, LevelGainSource, UnitMemberListener {
+		implements SkillSelectionListener, LevelGainSource, UnitMemberListener {
 	@Serial
 	private static final long serialVersionUID = 1L;
 
@@ -75,7 +75,7 @@ import drivers.common.IAdvancementModel;
 				number = Integer.parseInt(hours.getText());
 			} catch (final NumberFormatException except) {
 				JOptionPane.showMessageDialog(hours, "Hours to add must be a number",
-					"Strategic Primer Worker Advancement", JOptionPane.ERROR_MESSAGE);
+						"Strategic Primer Worker Advancement", JOptionPane.ERROR_MESSAGE);
 				return;
 			}
 			// TODO: Make frequency of leveling checks (i.e. size of hour-chunks to
@@ -86,14 +86,14 @@ import drivers.common.IAdvancementModel;
 			// each *actual* hour.
 			for (int hour = 0; hour < number; hour++) {
 				model.addHoursToSkill(worker, job.getName(), skill.getName(), 1,
-					SingletonRandom.SINGLETON_RANDOM.nextInt(100));
+						SingletonRandom.SINGLETON_RANDOM.nextInt(100));
 			}
 			final int newLevel = skill.getLevel();
 			if (newLevel != level) {
 				for (final LevelGainListener listener : listeners) {
 					// TODO: What if it's a proxy for all workers in a unit?
 					listener.level(worker.getName(), job.getName(),
-						skill.getName(), newLevel - level, newLevel);
+							skill.getName(), newLevel - level, newLevel);
 				}
 			}
 		} // FIXME: Better diagnostics on which condition of 'if' failed in an 'else' clause
@@ -107,9 +107,9 @@ import drivers.common.IAdvancementModel;
 
 	// We'd like to combine the two constructors, but that's far from trivial.
 	private SkillAdvancementPanel(final IAdvancementModel model, final JTextField hours, final JButton okButton,
-	                              final JButton cancelButton) {
+								  final JButton cancelButton) {
 		super(null, new FlowPanel(new JLabel("Add "), hours, new JLabel(" hours to skill?")),
-			secondPanelFactory(okButton, cancelButton));
+				secondPanelFactory(okButton, cancelButton));
 		this.model = model;
 		okButton.addActionListener(this::okListener);
 		cancelButton.addActionListener(this::cancelListener);
@@ -150,7 +150,7 @@ import drivers.common.IAdvancementModel;
 
 	@Override
 	public void memberSelected(final @Nullable UnitMember previousSelection,
-	                           final @Nullable UnitMember selected) {
+							   final @Nullable UnitMember selected) {
 		if (selected instanceof final IWorker w) {
 			worker = w;
 		} else {

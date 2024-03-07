@@ -33,7 +33,7 @@ public final class ReplaceRegionChangeset implements Changeset {
 		regions.add(toAdd);
 		if (!IMap.areRegionsValid(regions)) {
 			throw new PreconditionFailureException(
-				"Region to add must have unique ID and not overlap any existing region");
+					"Region to add must have unique ID and not overlap any existing region");
 		}
 	}
 

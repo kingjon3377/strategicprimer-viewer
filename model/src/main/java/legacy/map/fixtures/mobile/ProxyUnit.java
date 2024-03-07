@@ -67,8 +67,8 @@ public class ProxyUnit implements IUnit, ProxyFor<IUnit> {
 
 	NavigableMap<Integer, String> mergeMaps(final Function<IUnit, NavigableMap<Integer, String>> method) {
 		return proxiedList.stream().map(method).map(NavigableMap::entrySet).flatMap(Set::stream)
-			.collect(Collectors.toMap(Entry::getKey, Entry::getValue, ProxyUnit::mergeHelper,
-				TreeMap::new));
+				.collect(Collectors.toMap(Entry::getKey, Entry::getValue, ProxyUnit::mergeHelper,
+						TreeMap::new));
 	}
 
 	/**
@@ -151,7 +151,7 @@ public class ProxyUnit implements IUnit, ProxyFor<IUnit> {
 				return String.format("an independent %s unit", getKind());
 			} else {
 				return String.format("a(n) %s unit belonging to %s", getKind(),
-					owner());
+						owner());
 			}
 		} else {
 			return "Multiple units of kind " + getKind();
@@ -171,7 +171,8 @@ public class ProxyUnit implements IUnit, ProxyFor<IUnit> {
 	public boolean equalsIgnoringID(final IFixture fixture) {
 		LovelaceLogger.error("ProxyUnit.equalsIgnoringID called");
 		if (fixture instanceof final ProxyUnit pu) {
-			return proxiedList.stream().allMatch(m -> (pu.proxiedList.stream().anyMatch(m::equals))); // TODO: Should check the converse as well
+			// TODO: Should check the converse as well (we contain all theirs)
+			return proxiedList.stream().allMatch(m -> (pu.proxiedList.stream().anyMatch(m::equals)));
 		} else {
 			return false;
 		}
@@ -206,7 +207,7 @@ public class ProxyUnit implements IUnit, ProxyFor<IUnit> {
 			return cachedIterable.iterator();
 		} else {
 			final Map<Integer, UnitMemberProxy<? extends UnitMember>> map =
-				new LinkedHashMap<>();
+					new LinkedHashMap<>();
 			for (final IUnit unit : proxiedList) {
 				for (final UnitMember member : unit) {
 					final UnitMemberProxy<? extends UnitMember> proxy;
@@ -293,7 +294,7 @@ public class ProxyUnit implements IUnit, ProxyFor<IUnit> {
 			final Iterator<IUnit> iterator = proxiedList.iterator();
 			if (iterator.hasNext()) {
 				return "A proxy for units in several maps, such as the following:" + System.lineSeparator() +
-					iterator.next().getVerbose();
+						iterator.next().getVerbose();
 			} else {
 				return "A proxy for units in several maps, but no units yet.";
 			}
@@ -310,16 +311,16 @@ public class ProxyUnit implements IUnit, ProxyFor<IUnit> {
 	@Override
 	public String toString() {
 		return (parallel) ? "ProxyUnit for ID #" + commonID :
-			"ProxyUnit for units of kind " + commonKind;
+				"ProxyUnit for units of kind " + commonKind;
 	}
 
 	@Override
 	public boolean equals(final Object obj) {
 		if (obj instanceof final ProxyUnit pu) {
 			return parallel == pu.parallel &&
-				Objects.equals(commonID, pu.commonID) &&
-				Objects.equals(commonKind, pu.commonKind) &&
-				proxiedList.equals(pu.proxiedList);
+					Objects.equals(commonID, pu.commonID) &&
+					Objects.equals(commonKind, pu.commonKind) &&
+					proxiedList.equals(pu.proxiedList);
 		} else {
 			return false;
 		}

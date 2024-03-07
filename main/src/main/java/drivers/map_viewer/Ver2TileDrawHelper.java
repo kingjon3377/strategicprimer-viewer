@@ -63,7 +63,7 @@ public class Ver2TileDrawHelper implements TileDrawHelper {
 	private final List<FixtureMatcher> matchers;
 
 	public Ver2TileDrawHelper(final ImageObserver observer, final Predicate<TileFixture> filter,
-	                          final FixtureMatcher... matchers) {
+							  final FixtureMatcher... matchers) {
 		this.observer = observer;
 		this.filter = filter;
 		this.matchers = List.of(matchers);
@@ -79,7 +79,7 @@ public class Ver2TileDrawHelper implements TileDrawHelper {
 	}
 
 	public Ver2TileDrawHelper(final ImageObserver observer, final Predicate<TileFixture> filter,
-	                          final Iterable<FixtureMatcher> matchers) {
+							  final Iterable<FixtureMatcher> matchers) {
 		this.observer = observer;
 		this.filter = filter;
 		final List<FixtureMatcher> temp = new ArrayList<>();
@@ -149,9 +149,9 @@ public class Ver2TileDrawHelper implements TileDrawHelper {
 		final TileFixture top = getTopFixture(map, location);
 		if (!Objects.isNull(top)) {
 			final Color color = getDrawableFixtures(map, location)
-				.filter(f -> !top.equals(f)).filter(TerrainFixture.class::isInstance)
-				.map(TerrainFixture.class::cast).findFirst()
-				.map(ColorHelper::getFeatureColor).orElse(null);
+					.filter(f -> !top.equals(f)).filter(TerrainFixture.class::isInstance)
+					.map(TerrainFixture.class::cast).findFirst()
+					.map(ColorHelper::getFeatureColor).orElse(null);
 			if (!Objects.isNull(color)) {
 				return color;
 			} else if (map.isMountainous(location)) {
@@ -204,7 +204,7 @@ public class Ver2TileDrawHelper implements TileDrawHelper {
 	private void drawIcon(final Graphics pen, final String icon, final Coordinate coordinates, final Coordinate dimensions) {
 		final Image image = getImage(icon);
 		pen.drawImage(image, coordinates.x(), coordinates.y(),
-			dimensions.x(), dimensions.y(), observer);
+				dimensions.x(), dimensions.y(), observer);
 	}
 
 	/**
@@ -212,7 +212,7 @@ public class Ver2TileDrawHelper implements TileDrawHelper {
 	 */
 	private void drawIcon(final Graphics pen, final Image icon, final Coordinate coordinates, final Coordinate dimensions) {
 		pen.drawImage(icon, coordinates.x(), coordinates.y(),
-			dimensions.x(), dimensions.y(), observer);
+				dimensions.x(), dimensions.y(), observer);
 	}
 
 	/**
@@ -222,28 +222,28 @@ public class Ver2TileDrawHelper implements TileDrawHelper {
 	 */
 	@Override
 	public void drawTile(final Graphics pen, final ILegacyMap map, final Point location,
-	                     final Coordinate coordinates, final Coordinate dimensions) {
+						 final Coordinate coordinates, final Coordinate dimensions) {
 		final Color localColor;
 		if (needsFixtureColor(map, location)) {
 			localColor = getFixtureColor(map, location);
 		} else {
 			localColor = ColorHelper.get(map.getDimensions().version(),
-				map.getBaseTerrain(location));
+					map.getBaseTerrain(location));
 		}
 		if (!Objects.isNull(localColor)) {
 			pen.setColor(localColor);
 			pen.fillRect(coordinates.x(), coordinates.y(),
-				dimensions.x(), dimensions.y());
+					dimensions.x(), dimensions.y());
 		}
 		for (final River river : map.getRivers(location)) {
 			// TODO: Do something to avoid String.format(), which is probably slow
 			drawIcon(pen, String.format("river%d.png", river.ordinal()),
-				coordinates, dimensions);
+					coordinates, dimensions);
 		}
 		for (final Map.Entry<Direction, Integer> entry : map.getRoads(location).entrySet()) {
 			// TODO: Do something to avoid String.format(), which is probably slow
 			drawIcon(pen, String.format("road%d.png", entry.getKey().ordinal()),
-				coordinates, dimensions);
+					coordinates, dimensions);
 		}
 		final TileFixture top = getTopFixture(map, location);
 		if (!Objects.isNull(top)) {
@@ -263,7 +263,7 @@ public class Ver2TileDrawHelper implements TileDrawHelper {
 	 */
 	private Stream<TileFixture> getDrawableFixtures(final ILegacyMap map, final Point location) {
 		return map.getFixtures(location).stream().filter(f -> !(f instanceof FakeFixture))
-			.filter(filter).sorted(this::compareFixtures);
+				.filter(filter).sorted(this::compareFixtures);
 	}
 
 	/**
@@ -282,7 +282,7 @@ public class Ver2TileDrawHelper implements TileDrawHelper {
 			return true;
 		} else {
 			return getDrawableFixtures(map, location).anyMatch(x -> true) &&
-				map.isMountainous(location);
+					map.isMountainous(location);
 		}
 	}
 
@@ -294,10 +294,10 @@ public class Ver2TileDrawHelper implements TileDrawHelper {
 		final TileFixture top = getTopFixture(map, location);
 		if (hasTerrainFixture(map, location) && !Objects.isNull(top)) {
 			final TileFixture bottom = getDrawableFixtures(map, location)
-				.filter(TerrainFixture.class::isInstance)
-				.map(TerrainFixture.class::cast)
-				.reduce((first, second) -> second)
-				.orElse(null);
+					.filter(TerrainFixture.class::isInstance)
+					.map(TerrainFixture.class::cast)
+					.reduce((first, second) -> second)
+					.orElse(null);
 			if (Objects.isNull(bottom)) {
 				return map.isMountainous(location);
 			} else {

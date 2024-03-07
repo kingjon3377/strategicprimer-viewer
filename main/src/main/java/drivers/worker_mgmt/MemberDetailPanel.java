@@ -56,11 +56,12 @@ public class MemberDetailPanel extends BorderedPanel implements UnitMemberListen
 	@Serial
 	private static final long serialVersionUID = 1L;
 
-	public MemberDetailPanel(final JPanel resultsPanel, final JPanel notesPanel) { // TODO: Move initialization of those into here?
+	// TODO: Move initialization of the two sub-panels into here?
+	public MemberDetailPanel(final JPanel resultsPanel, final JPanel notesPanel) {
 		final JPanel statPanel = new JPanel();
 		final FunctionalGroupLayout statLayout = new FunctionalGroupLayout(statPanel,
-			FunctionalGroupLayout.ContainerGaps.AUTO_CREATE_GAPS,
-			FunctionalGroupLayout.ContainerGaps.AUTO_CREATE_GAPS);
+				FunctionalGroupLayout.ContainerGaps.AUTO_CREATE_GAPS,
+				FunctionalGroupLayout.ContainerGaps.AUTO_CREATE_GAPS);
 		statPanel.setLayout(statLayout);
 		statPanel.setBorder(BorderFactory.createEmptyBorder());
 
@@ -89,42 +90,42 @@ public class MemberDetailPanel extends BorderedPanel implements UnitMemberListen
 		jobsPanel = new JPanel(new GridLayout(0, 1));
 
 		statLayout.setVerticalGroup(statLayout.sequentialGroupOf(
-			statLayout.parallelGroupOf(typeCaption, typeLabel),
-			statLayout.parallelGroupOf(nameCaption, nameLabel),
-			statLayout.parallelGroupOf(kindCaption, kindLabel),
-			statLayout.parallelGroupOf(strCaption, strLabel, intCaption, intLabel),
-			statLayout.parallelGroupOf(dexCaption, dexLabel, wisCaption, wisLabel),
-			statLayout.parallelGroupOf(conCaption, conLabel, chaCaption, chaLabel),
-			statLayout.parallelGroupOf(jobsCaption, jobsPanel)));
+				statLayout.parallelGroupOf(typeCaption, typeLabel),
+				statLayout.parallelGroupOf(nameCaption, nameLabel),
+				statLayout.parallelGroupOf(kindCaption, kindLabel),
+				statLayout.parallelGroupOf(strCaption, strLabel, intCaption, intLabel),
+				statLayout.parallelGroupOf(dexCaption, dexLabel, wisCaption, wisLabel),
+				statLayout.parallelGroupOf(conCaption, conLabel, chaCaption, chaLabel),
+				statLayout.parallelGroupOf(jobsCaption, jobsPanel)));
 
 		statLayout.setHorizontalGroup(statLayout.parallelGroupOf(
-			statLayout.sequentialGroupOf(
-				statLayout.parallelGroupOf(typeCaption, nameCaption, kindCaption,
-					statLayout.sequentialGroupOf(strCaption, strLabel),
-					statLayout.sequentialGroupOf(dexCaption, dexLabel),
-					statLayout.sequentialGroupOf(conCaption, conLabel), jobsCaption),
-				statLayout.parallelGroupOf(typeLabel, nameLabel, kindLabel,
-					statLayout.sequentialGroupOf(intCaption, intLabel),
-					statLayout.sequentialGroupOf(wisCaption, wisLabel),
-					statLayout.sequentialGroupOf(chaCaption, chaLabel), jobsPanel))));
+				statLayout.sequentialGroupOf(
+						statLayout.parallelGroupOf(typeCaption, nameCaption, kindCaption,
+								statLayout.sequentialGroupOf(strCaption, strLabel),
+								statLayout.sequentialGroupOf(dexCaption, dexLabel),
+								statLayout.sequentialGroupOf(conCaption, conLabel), jobsCaption),
+						statLayout.parallelGroupOf(typeLabel, nameLabel, kindLabel,
+								statLayout.sequentialGroupOf(intCaption, intLabel),
+								statLayout.sequentialGroupOf(wisCaption, wisLabel),
+								statLayout.sequentialGroupOf(chaCaption, chaLabel), jobsPanel))));
 
 		statLayout.linkSize(SwingConstants.HORIZONTAL, typeCaption, nameCaption,
-			kindCaption, jobsCaption);
+				kindCaption, jobsCaption);
 		statLayout.linkSize(SwingConstants.HORIZONTAL, typeLabel, nameLabel,
-			kindLabel, jobsPanel);
+				kindLabel, jobsPanel);
 		statLayout.linkSize(strCaption, dexCaption, conCaption, intCaption,
-			wisCaption, chaCaption);
+				wisCaption, chaCaption);
 		statLayout.linkSize(statLabels.toArray(InterpolatedLabel[]::new));
 		statLayout.linkSize(SwingConstants.VERTICAL, typeCaption, typeLabel);
 		statLayout.linkSize(SwingConstants.VERTICAL, nameCaption, nameLabel);
 		statLayout.linkSize(SwingConstants.VERTICAL, kindCaption, kindLabel);
 
 		final JScrollPane statPanelWrapped = new JScrollPane(horizontalSplit(statPanel,
-			portraitComponent, 0.6),
-			(Platform.SYSTEM_IS_MAC) ? ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS
-				: ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,
-			(Platform.SYSTEM_IS_MAC) ? ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS
-				: ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+				portraitComponent, 0.6),
+				(Platform.SYSTEM_IS_MAC) ? ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS
+						: ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,
+				(Platform.SYSTEM_IS_MAC) ? ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS
+						: ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 
 		final JTabbedPane tabbed = new JTabbedPane();
 
@@ -207,11 +208,11 @@ public class MemberDetailPanel extends BorderedPanel implements UnitMemberListen
 					continue;
 				}
 				final JLabel label = new JLabel(String.format("%s %d", job.getName(),
-					job.getLevel()));
+						job.getLevel()));
 				if (job.iterator().hasNext()) {
 					label.setToolTipText(StreamSupport.stream(job.spliterator(), false)
-						.map(MemberDetailPanel::skillString)
-						.collect(Collectors.joining(", ", "Skills: ", "")));
+							.map(MemberDetailPanel::skillString)
+							.collect(Collectors.joining(", ", "Skills: ", "")));
 				}
 				jobsPanel.add(label);
 			}
@@ -223,13 +224,13 @@ public class MemberDetailPanel extends BorderedPanel implements UnitMemberListen
 			final String plural = AnimalPlurals.get(animal.getKind());
 			final Map<String, Integer> maturityAges = MaturityModel.getMaturityAges();
 			if (animal.getBorn() >= 0 && MaturityModel.getCurrentTurn() >= 0 &&
-				maturityAges.containsKey(animal.getKind()) &&
-				MaturityModel.getCurrentTurn() - animal.getBorn() <
-					maturityAges.get(animal.getKind())) {
+					maturityAges.containsKey(animal.getKind()) &&
+					MaturityModel.getCurrentTurn() - animal.getBorn() <
+							maturityAges.get(animal.getKind())) {
 				if (animal.getPopulation() > 1) {
 					typeLabel.setText("Young Animals");
 					kindLabel.setText(String.format("%d young %s",
-						animal.getPopulation(), plural));
+							animal.getPopulation(), plural));
 				} else {
 					typeLabel.setText("Young Animal");
 					kindLabel.setText("Young " + animal.getKind());
@@ -238,7 +239,7 @@ public class MemberDetailPanel extends BorderedPanel implements UnitMemberListen
 				if (animal.getPopulation() > 1) {
 					typeLabel.setText("Animals");
 					kindLabel.setText(String.format("%d %s", animal.getPopulation(),
-						plural));
+							plural));
 				} else {
 					typeLabel.setText("Animal");
 					kindLabel.setText(animal.getKind());
@@ -263,7 +264,7 @@ public class MemberDetailPanel extends BorderedPanel implements UnitMemberListen
 			typeLabel.setText("Resource");
 			nameLabel.setText("");
 			kindLabel.setText(String.format("%s %s (%s)", rp.getQuantity(), rp.getContents(),
-				rp.getKind()));
+					rp.getKind()));
 			for (final InterpolatedLabel<@Nullable WorkerStats> label : statLabels) {
 				label.setArgument(null);
 			}
@@ -301,7 +302,7 @@ public class MemberDetailPanel extends BorderedPanel implements UnitMemberListen
 		if (selected instanceof final ProxyFor p) {
 			if (p.isParallel()) {
 				final Iterator<? extends UnitMember> proxied =
-					((ProxyFor<? extends UnitMember>) selected).getProxied().iterator();
+						((ProxyFor<? extends UnitMember>) selected).getProxied().iterator();
 				if (proxied.hasNext()) {
 					memberSelected(old, proxied.next());
 					return;

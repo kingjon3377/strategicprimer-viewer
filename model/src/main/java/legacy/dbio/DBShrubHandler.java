@@ -28,14 +28,14 @@ public final class DBShrubHandler extends AbstractDatabaseWriter<Shrub, Point> i
 	}
 
 	private static final List<Query> INITIALIZERS = Collections.singletonList(
-		Query.of("CREATE TABLE IF NOT EXISTS shrubs (" +
-			"    row INTEGER NOT NULL," +
-			"    column INTEGER NOT NULL," +
-			"    id INTEGER NOT NULL," +
-			"    kind VARCHAR(64) NOT NULL," +
-			"    count INTEGER," +
-			"    image VARCHAR(255)" +
-			");"));
+			Query.of("CREATE TABLE IF NOT EXISTS shrubs (" +
+					"    row INTEGER NOT NULL," +
+					"    column INTEGER NOT NULL," +
+					"    id INTEGER NOT NULL," +
+					"    kind VARCHAR(64) NOT NULL," +
+					"    count INTEGER," +
+					"    image VARCHAR(255)" +
+					");"));
 
 	@Override
 	public List<Query> getInitializers() {
@@ -43,14 +43,14 @@ public final class DBShrubHandler extends AbstractDatabaseWriter<Shrub, Point> i
 	}
 
 	private static final Query INSERT_SQL = Query.of(
-		"INSERT INTO shrubs (row, column, id, kind, count, image) VALUES(:row, :column, :id, :kind, :count, :image);");
+			"INSERT INTO shrubs (row, column, id, kind, count, image) VALUES(:row, :column, :id, :kind, :count, :image);");
 
 	@Override
 	public void write(final Transactional db, final Shrub obj, final Point context) throws SQLException {
 		INSERT_SQL.on(value("row", context.row()), value("column", context.column()),
-			value("id", obj.getId()), value("kind", obj.getKind()),
-			value("count", obj.getPopulation()),
-			value("image", obj.getImage())).execute(db.connection());
+				value("id", obj.getId()), value("kind", obj.getKind()),
+				value("count", obj.getPopulation()),
+				value("image", obj.getImage())).execute(db.connection());
 	}
 
 	private static TryBiConsumer<Map<String, Object>, Warning, SQLException> readShrub(final IMutableLegacyMap map) {
@@ -73,7 +73,7 @@ public final class DBShrubHandler extends AbstractDatabaseWriter<Shrub, Point> i
 
 	@Override
 	public void readMapContents(final Connection db, final IMutableLegacyMap map, final Map<Integer, IFixture> containers,
-	                            final Map<Integer, List<Object>> containees, final Warning warner) throws SQLException {
+								final Map<Integer, List<Object>> containees, final Warning warner) throws SQLException {
 		handleQueryResults(db, warner, "shrubs", readShrub(map), SELECT);
 	}
 }

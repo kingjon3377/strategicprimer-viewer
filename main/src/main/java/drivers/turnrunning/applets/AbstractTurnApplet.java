@@ -54,8 +54,8 @@ public abstract class AbstractTurnApplet implements TurnApplet {
 												   final String prompt, final ICLIHelper.ListChoiceBehavior behavior,
 												   final Function<? super Type, String> converter) {
 		final Pair<Integer, @Nullable String> entry = cli.chooseStringFromList(
-			items.stream().map(converter).collect(Collectors.toList()), description,
-			none, prompt, behavior);
+				items.stream().map(converter).collect(Collectors.toList()), description,
+				none, prompt, behavior);
 		// N.B. can't use Optional to inline because we *test* the right side of the pair, then *use* the left side.
 		if (Objects.isNull(entry.getValue1())) {
 			return null;
@@ -73,8 +73,8 @@ public abstract class AbstractTurnApplet implements TurnApplet {
 		final Point selectedLocation = model.getSelectedUnitLocation();
 		if (selectedLocation.isValid()) {
 			final Boolean confirmation = cli.inputBoolean(
-				String.format("%s is %.1f away. Is that right?", retval,
-					model.getMapDimensions().distance(retval, selectedLocation)));
+					String.format("%s is %.1f away. Is that right?", retval,
+							model.getMapDimensions().distance(retval, selectedLocation)));
 			if (Boolean.TRUE.equals(confirmation)) {
 				return retval;
 			} else {
@@ -95,11 +95,11 @@ public abstract class AbstractTurnApplet implements TurnApplet {
 	 * the reduced form into all subordinate maps.
 	 */
 	protected <T extends HasPopulation<? extends TileFixture> & TileFixture> void reducePopulation(
-		final Point point, final T fixture, final String plural, final IFixture.CopyBehavior zero) {
+			final Point point, final T fixture, final String plural, final IFixture.CopyBehavior zero) {
 		// TODO: make nullable and return null on EOF?
 		final int count = Math.min(
-			Optional.ofNullable(cli.inputNumber(String.format(
-				"How many %s to remove: ", plural))).orElse(0), fixture.getPopulation());
+				Optional.ofNullable(cli.inputNumber(String.format(
+						"How many %s to remove: ", plural))).orElse(0), fixture.getPopulation());
 		model.reducePopulation(point, fixture, zero, count);
 	}
 
@@ -127,20 +127,20 @@ public abstract class AbstractTurnApplet implements TurnApplet {
 					for (final FortressMember member : fort) {
 						if (member instanceof final IResourcePile pile && fort.owner().equals(player)) {
 							if ("food".equals(pile.getKind()) &&
-								"pounds".equals(pile.getQuantity()
-									.units()) &&
-								pile.getCreated() <= turn) {
+									"pounds".equals(pile.getQuantity()
+											.units()) &&
+									pile.getCreated() <= turn) {
 								retval.add(pile);
 							}
 						} else if (member instanceof final IUnit unit && unit.owner().equals(player)) {
 							for (final UnitMember inner : unit) {
 								if (inner instanceof final IResourcePile pile) {
 									if ("food".equals(pile.getKind()) &&
-										"pounds".equals(
-											pile.getQuantity()
-												.units()) &&
-										pile.getCreated()
-											<= turn) {
+											"pounds".equals(
+													pile.getQuantity()
+															.units()) &&
+											pile.getCreated()
+													<= turn) {
 										retval.add(pile);
 									}
 								}
@@ -151,9 +151,9 @@ public abstract class AbstractTurnApplet implements TurnApplet {
 					for (final UnitMember inner : unit) {
 						if (inner instanceof final IResourcePile pile) {
 							if ("food".equals(pile.getKind()) &&
-								"pounds".equals(pile.getQuantity()
-									.units()) &&
-								pile.getCreated() <= turn) {
+									"pounds".equals(pile.getQuantity()
+											.units()) &&
+									pile.getCreated() <= turn) {
 								retval.add(pile);
 							}
 						}

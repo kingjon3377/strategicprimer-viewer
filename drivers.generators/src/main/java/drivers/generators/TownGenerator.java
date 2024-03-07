@@ -86,7 +86,7 @@ import java.math.BigDecimal;
 		for (final String terrain : Arrays.asList("mountain", "forest", "plains", "ocean")) {
 			final String file = terrain + "_consumption";
 			final Iterable<String> tableContents =
-				FileContentsReader.readFileContents(TownGenerator.class, Paths.get("tables", file));
+					FileContentsReader.readFileContents(TownGenerator.class, Paths.get("tables", file));
 			final List<Triplet<LegacyQuantity, String, String>> inner = new ArrayList<>();
 			for (final String line : tableContents) {
 				if (line.isEmpty()) {
@@ -110,7 +110,7 @@ import java.math.BigDecimal;
 	private static ExplorationRunner initProduction() throws MissingTableException, IOException {
 		final ExplorationRunner retval = new ExplorationRunner();
 		final Deque<String> firstTables = new LinkedList<>(Arrays.asList("mountain_skills",
-			"forest_skills", "plains_skills", "ocean_skills"));
+				"forest_skills", "plains_skills", "ocean_skills"));
 		final Deque<String> secondTables = new LinkedList<>();
 		while (!firstTables.isEmpty()) {
 			final String table = firstTables.removeFirst();
@@ -154,11 +154,11 @@ import java.math.BigDecimal;
 	 */
 	static List<Pair<Point, ITownFixture>> unstattedTowns(final ILegacyMap map) {
 		return map.streamLocations()
-			.flatMap(l -> map.getFixtures(l).stream().filter(ITownFixture.class::isInstance)
-				.map(ITownFixture.class::cast)
-				.filter(t -> TownStatus.Active == t.getStatus())
-				.map(f -> Pair.with(l, f)))
-			.collect(Collectors.toList());
+				.flatMap(l -> map.getFixtures(l).stream().filter(ITownFixture.class::isInstance)
+						.map(ITownFixture.class::cast)
+						.filter(t -> TownStatus.Active == t.getStatus())
+						.map(f -> Pair.with(l, f)))
+				.collect(Collectors.toList());
 	}
 
 	/**
@@ -168,8 +168,8 @@ import java.math.BigDecimal;
 	 */
 	private static @Nullable IFixture findByID(final ILegacyMap map, final int id) {
 		return map.streamAllFixtures()
-			.filter(f -> f.getId() == id)
-			.findAny().orElse(null);
+				.filter(f -> f.getId() == id)
+				.findAny().orElse(null);
 	}
 
 	/**
@@ -180,8 +180,8 @@ import java.math.BigDecimal;
 	 */
 	private static @Nullable Point findLocById(final ILegacyMap map, final int id) {
 		return map.streamLocations()
-			.filter(l -> map.getFixtures(l).stream().anyMatch(f -> f.getId() == id))
-			.findAny().orElse(null);
+				.filter(l -> map.getFixtures(l).stream().anyMatch(f -> f.getId() == id))
+				.findAny().orElse(null);
 	}
 
 	/**
@@ -190,10 +190,10 @@ import java.math.BigDecimal;
 	 */
 	private static boolean isClaimedField(final ILegacyMap map, final int id) {
 		return map.streamAllFixtures()
-			.filter(ITownFixture.class::isInstance).map(ITownFixture.class::cast)
-			.map(ITownFixture::getPopulation).filter(Objects::nonNull)
-			.flatMap(t -> t.getWorkedFields().stream())
-			.anyMatch(n -> id == n);
+				.filter(ITownFixture.class::isInstance).map(ITownFixture.class::cast)
+				.map(ITownFixture::getPopulation).filter(Objects::nonNull)
+				.flatMap(t -> t.getWorkedFields().stream())
+				.anyMatch(n -> id == n);
 	}
 
 	/**
@@ -250,12 +250,12 @@ import java.math.BigDecimal;
 			return Collections.emptyList();
 		} else {
 			return new SurroundingPointIterable(location,
-				map.getDimensions(), 10).stream().distinct()
-				.filter(l -> bothOrNeitherOcean(base, map.getBaseTerrain(l)))
-				.flatMap(l -> map.getFixtures(l).stream())
-				.filter(HarvestableFixture.class::isInstance)
-				.map(HarvestableFixture.class::cast).filter(TownGenerator::isReallyClaimable)
-				.collect(Collectors.toList());
+					map.getDimensions(), 10).stream().distinct()
+					.filter(l -> bothOrNeitherOcean(base, map.getBaseTerrain(l)))
+					.flatMap(l -> map.getFixtures(l).stream())
+					.filter(HarvestableFixture.class::isInstance)
+					.map(HarvestableFixture.class::cast).filter(TownGenerator::isReallyClaimable)
+					.collect(Collectors.toList());
 		}
 	}
 
@@ -263,9 +263,9 @@ import java.math.BigDecimal;
 	 * Have the user enter expertise levels and claimed resources for a town.
 	 */
 	private static CommunityStats enterStats(final ICLIHelper cli, final IDRegistrar idf, final ILegacyMap map, final Point location,
-		/*ModifiableTown*/ final ITownFixture town) {
+			/*ModifiableTown*/ final ITownFixture town) {
 		final CommunityStats retval = new CommunityStats(Optional.ofNullable(
-			cli.inputNumber("Population: ")).orElse(0));
+				cli.inputNumber("Population: ")).orElse(0));
 		cli.println("Now enter Skill levels, the highest in the community for each Job.");
 		cli.println("(Empty to end.)");
 		while (true) {
@@ -289,8 +289,8 @@ import java.math.BigDecimal;
 				break;
 			} else if (NumParsingHelper.isNumeric(input)) {
 				field = NumParsingHelper.parseInt(input).orElseThrow(
-					() -> new IllegalStateException(
-						"Failed to parse after we determined input was numeric"));
+						() -> new IllegalStateException(
+								"Failed to parse after we determined input was numeric"));
 			} else if ("nearest".equalsIgnoreCase(input) && !nearestFields.isEmpty()) {
 				final HarvestableFixture nearest = nearestFields.removeFirst();
 				cli.println("Nearest harvestable fixture is as follows:");
@@ -305,13 +305,13 @@ import java.math.BigDecimal;
 				cli.println("That field is already worked by another town");
 			} else if (!Objects.isNull(fieldLoc)) {
 				if (!bothOrNeitherOcean(map.getBaseTerrain(location),
-					map.getBaseTerrain(fieldLoc))) {
+						map.getBaseTerrain(fieldLoc))) {
 					if (TileType.Ocean == map.getBaseTerrain(location)) {
 						cli.println(
-							"That would be a land resource worked by an aquatic town.");
+								"That would be a land resource worked by an aquatic town.");
 					} else {
 						cli.println(
-							"That would be an ocean resource worked by a town on land.");
+								"That would be an ocean resource worked by a town on land.");
 					}
 					// TODO: Handle EOF (here and elsewhere) more gracefully
 					if (!cli.inputBooleanInSeries("Are you sure? ", "aquatic")) {
@@ -348,7 +348,7 @@ import java.math.BigDecimal;
 				break;
 			}
 			final IResourcePile pile = new ResourcePileImpl(idf.createID(), kind, contents,
-				new LegacyQuantity(quantity, units));
+					new LegacyQuantity(quantity, units));
 			retval.getYearlyProduction().add(pile);
 		}
 
@@ -372,7 +372,7 @@ import java.math.BigDecimal;
 				break;
 			}
 			retval.getYearlyConsumption().add(new ResourcePileImpl(idf.createID(), kind,
-				contents, new LegacyQuantity(quantity, units)));
+					contents, new LegacyQuantity(quantity, units)));
 		}
 
 		return retval;
@@ -424,7 +424,7 @@ import java.math.BigDecimal;
 	 * random number generator with the town's ID.
 	 */
 	private CommunityStats generateStats(final IDRegistrar idf, final Point location, final ITownFixture town,
-	                                     final ILegacyMap map) throws MissingTableException {
+										 final ILegacyMap map) throws MissingTableException {
 		final Random rng = new Random(town.getId());
 		// A die roll using our pre-seeded RNG.
 		final IntToIntFunction roll = (die) -> rng.nextInt(die) + 1;
@@ -445,7 +445,7 @@ import java.math.BigDecimal;
 		if (town instanceof Village) {
 			if (TownSize.Small != town.getTownSize()) {
 				throw new IllegalStateException(
-					"Don't know how to handle non-small villages");
+						"Don't know how to handle non-small villages");
 			}
 			population = repeatedlyRoll.repeatedlyRoll(3, 8, 3);
 			skillCount = repeatedlyRoll.repeatedlyRoll(2, 4);
@@ -500,22 +500,22 @@ import java.math.BigDecimal;
 
 		for (int i = 0; i < skillCount; i++) {
 			final String skill = runner.recursiveConsultTable(skillTable, location,
-				map.getBaseTerrain(location), map.isMountainous(location),
-				map.getFixtures(location), map.getDimensions());
+					map.getBaseTerrain(location), map.isMountainous(location),
+					map.getFixtures(location), map.getDimensions());
 			final int level = skillLevelSource.getAsInt();
 			if (Optional.ofNullable(retval.getHighestSkillLevels().get(skill)).orElse(0)
-				< level) {
+					< level) {
 				retval.setSkillLevel(skill, level);
 			}
 		}
 
 		final List<HarvestableFixture> workedFields = findNearestFields(map, location).stream()
-			.limit(resourceCount).toList();
+				.limit(resourceCount).toList();
 		for (final HarvestableFixture field : workedFields) {
 			retval.addWorkedField(field.getId());
 			retval.getYearlyProduction().add(new ResourcePileImpl(idf.createID(),
-				getHarvestableKind(field), getHarvestedProduct(field),
-				new LegacyQuantity(1, "unit")));
+					getHarvestableKind(field), getHarvestedProduct(field),
+					new LegacyQuantity(1, "unit")));
 		}
 
 		for (final Map.Entry<String, Integer> entry : retval.getHighestSkillLevels().entrySet()) {
@@ -525,21 +525,21 @@ import java.math.BigDecimal;
 			if (runner.hasTable(tableName)) {
 				try {
 					retval.getYearlyProduction().add(new ResourcePileImpl(
-						idf.createID(), "unknown",
-						runner.consultTable(tableName, location,
-							map.getBaseTerrain(location), map.isMountainous(location),
-							map.getFixtures(location), map.getDimensions()),
-						new LegacyQuantity(Math.pow(2, level - 1),
-							(level == 1) ? "unit" : "units")));
+							idf.createID(), "unknown",
+							runner.consultTable(tableName, location,
+									map.getBaseTerrain(location), map.isMountainous(location),
+									map.getFixtures(location), map.getDimensions()),
+							new LegacyQuantity(Math.pow(2, level - 1),
+									(level == 1) ? "unit" : "units")));
 				} catch (final MissingTableException except) {
 					LovelaceLogger.warning(except, "Missing table");
 					retval.getYearlyProduction().add(new ResourcePileImpl(
-						idf.createID(), "unknown", "product of " + skill,
-						new LegacyQuantity(1, "unit")));
+							idf.createID(), "unknown", "product of " + skill,
+							new LegacyQuantity(1, "unit")));
 				}
 			} else {
 				retval.getYearlyProduction().add(new ResourcePileImpl(idf.createID(),
-					"unknown", "product of " + skill, new LegacyQuantity(1, "unit")));
+						"unknown", "product of " + skill, new LegacyQuantity(1, "unit")));
 			}
 		}
 
@@ -547,14 +547,14 @@ import java.math.BigDecimal;
 			throw new IllegalStateException("Appropriate consumption table missing");
 		}
 		final List<Triplet<LegacyQuantity, String, String>> consumptionTable =
-			consumption.get(consumptionTableName);
+				consumption.get(consumptionTableName);
 		for (final Triplet<LegacyQuantity, String, String> triplet : consumptionTable) {
 			retval.getYearlyConsumption().add(new ResourcePileImpl(idf.createID(),
-				triplet.getValue1(), triplet.getValue2(), triplet.getValue0()));
+					triplet.getValue1(), triplet.getValue2(), triplet.getValue0()));
 		}
 
 		retval.getYearlyConsumption().add(new ResourcePileImpl(idf.createID(), "food", "various",
-			new LegacyQuantity(4 * 14 * population, "pounds")));
+				new LegacyQuantity(4 * 14 * population, "pounds")));
 		return retval;
 	}
 
@@ -571,18 +571,18 @@ import java.math.BigDecimal;
 			final @Nullable ITownFixture town; // ModifiableTown, i.e. AbstractTown|Village, in Ceylon
 			if (NumParsingHelper.isNumeric(input)) {
 				final int id = NumParsingHelper.parseInt(input).orElseThrow(
-					() -> new IllegalStateException(
-						"Failed to parse after input determined to be numeric"));
+						() -> new IllegalStateException(
+								"Failed to parse after input determined to be numeric"));
 				final Optional<Pair<Point, ITownFixture>> temp =
-					unstattedTowns(model.getMap()).stream()
-						.filter(p -> p.getValue1().getId() == id).findAny();
+						unstattedTowns(model.getMap()).stream()
+								.filter(p -> p.getValue1().getId() == id).findAny();
 				location = temp.map(Pair::getValue0).orElse(null);
 				town = temp.map(Pair::getValue1).orElse(null);
 			} else {
 				final Optional<Pair<Point, ITownFixture>> temp =
-					unstattedTowns(model.getMap()).stream()
-						.filter(p -> input.equals(p.getValue1().getName()))
-						.findAny();
+						unstattedTowns(model.getMap()).stream()
+								.filter(p -> input.equals(p.getValue1().getName()))
+								.findAny();
 				location = temp.map(Pair::getValue0).orElse(null);
 				town = temp.map(Pair::getValue1).orElse(null);
 			}
@@ -616,10 +616,10 @@ import java.math.BigDecimal;
 			final Point location = pair.getValue0();
 			final ITownFixture town = pair.getValue1();
 			cli.println(String.format("Next town is %s, at %s. ",
-				town.getShortDescription(), location));
+					town.getShortDescription(), location));
 			final CommunityStats stats;
 			final Boolean resp = cli.inputBooleanInSeries(
-				"Enter stats rather than generating them?", "enter stats");
+					"Enter stats rather than generating them?", "enter stats");
 			try {
 				if (Objects.isNull(resp)) {
 					break;

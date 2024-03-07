@@ -31,9 +31,9 @@ public final class CLIHelper {
 	 */
 	@SafeVarargs
 	public static @Nullable <Element> Element chooseFromListWithAuto(
-		final @Nullable String header,
-		final @NotNull String prompt,
-		final Pair<String, Element>... choices) {
+			final @Nullable String header,
+			final @NotNull String prompt,
+			final Pair<String, Element>... choices) {
 		if (choices.length > 0) {
 			if (!Objects.isNull(header)) {
 				System.out.println(header);
@@ -64,15 +64,15 @@ public final class CLIHelper {
 	 *
 	 * @param header  The header to print before the list. If null, no header is printed.
 	 * @param prompt  The prompt to print to ask the user for his or her choice.
-	 * @param auto  If true, and there is only one item in the list, return it without prompting the user.
+	 * @param auto    If true, and there is only one item in the list, return it without prompting the user.
 	 * @param choices The list for the user to choose from, defined as tuples of user-friendly descriptions and the
 	 *                objects themselves.
 	 */
 	@SafeVarargs
 	public static @Nullable <Element> Element chooseFromList(
-		final @Nullable String header,
-		final @NotNull String prompt,
-		final Pair<String, Element>... choices) {
+			final @Nullable String header,
+			final @NotNull String prompt,
+			final Pair<String, Element>... choices) {
 		if (choices.length > 0) {
 			if (!Objects.isNull(header)) {
 				System.out.println(header);

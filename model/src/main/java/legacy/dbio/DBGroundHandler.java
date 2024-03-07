@@ -27,14 +27,14 @@ public final class DBGroundHandler extends AbstractDatabaseWriter<Ground, Point>
 	}
 
 	private static final List<Query> INITIALIZERS = Collections.singletonList(
-		Query.of("CREATE TABLE IF NOT EXISTS ground (" +
-			"    row INTEGER NOT NULL," +
-			"    column INTEGER NOT NULL," +
-			"    id INTEGER NOT NULL," +
-			"    kind VARCHAR(32) NOT NULL," +
-			"    exposed BOOLEAN NOT NULL," +
-			"    image VARCHAR(255)" +
-			");"));
+			Query.of("CREATE TABLE IF NOT EXISTS ground (" +
+					"    row INTEGER NOT NULL," +
+					"    column INTEGER NOT NULL," +
+					"    id INTEGER NOT NULL," +
+					"    kind VARCHAR(32) NOT NULL," +
+					"    exposed BOOLEAN NOT NULL," +
+					"    image VARCHAR(255)" +
+					");"));
 
 	@Override
 	public List<Query> getInitializers() {
@@ -42,13 +42,13 @@ public final class DBGroundHandler extends AbstractDatabaseWriter<Ground, Point>
 	}
 
 	private static final Query INSERT_SQL = Query.of(
-		"INSERT INTO ground (row, column, id, kind, exposed, image) VALUES(:row, :column, :id, :kind, :exposed, :image);");
+			"INSERT INTO ground (row, column, id, kind, exposed, image) VALUES(:row, :column, :id, :kind, :exposed, :image);");
 
 	@Override
 	public void write(final Transactional db, final Ground obj, final Point context) throws SQLException {
 		INSERT_SQL.on(value("row", context.row()), value("column", context.column()),
-			value("id", obj.getId()), value("kind", obj.getKind()),
-			value("exposed", obj.isExposed()), value("image", obj.getImage())).execute(db.connection());
+				value("id", obj.getId()), value("kind", obj.getKind()),
+				value("exposed", obj.isExposed()), value("image", obj.getImage())).execute(db.connection());
 	}
 
 	private TryBiConsumer<Map<String, Object>, Warning, SQLException> readGround(final IMutableLegacyMap map) {
@@ -71,7 +71,7 @@ public final class DBGroundHandler extends AbstractDatabaseWriter<Ground, Point>
 
 	@Override
 	public void readMapContents(final Connection db, final IMutableLegacyMap map, final Map<Integer, IFixture> containers,
-	                            final Map<Integer, List<Object>> containees, final Warning warner) throws SQLException {
+								final Map<Integer, List<Object>> containees, final Warning warner) throws SQLException {
 		handleQueryResults(db, warner, "ground", readGround(map), SELECT);
 	}
 }

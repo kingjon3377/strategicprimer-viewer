@@ -45,7 +45,8 @@ public class OrdersPanel extends BorderedPanel implements OrdersContainer {
 	private final BiFunction<Player, String, Collection<IUnit>> playerUnits;
 
 	@FunctionalInterface
-	public interface IOrdersSupplier { // TODO: Move elsewhere; TODO: just use BiFunction<IUnit, Integer, String>? (See what callers try to pass in)
+	// TODO: Move elsewhere; TODO: just use BiFunction<IUnit, Integer, String>? (See what callers try to pass in)
+	public interface IOrdersSupplier {
 		String getOrders(IUnit unit, int turn);
 	}
 
@@ -70,9 +71,9 @@ public class OrdersPanel extends BorderedPanel implements OrdersContainer {
 	private final JTextArea area = new JTextArea();
 
 	public OrdersPanel(final String description, final int currentTurn, final Player currentPlayer,
-	                   final BiFunction<Player, String, Collection<IUnit>> playerUnits,
-	                   final IOrdersSupplier ordersSupplier, final @Nullable IOrdersConsumer ordersConsumer,
-	                   final IIsCurrent isCurrent) {
+					   final BiFunction<Player, String, Collection<IUnit>> playerUnits,
+					   final IOrdersSupplier ordersSupplier, final @Nullable IOrdersConsumer ordersConsumer,
+					   final IIsCurrent isCurrent) {
 		this.currentPlayer = currentPlayer;
 		this.playerUnits = playerUnits;
 		this.ordersSupplier = ordersSupplier;
@@ -89,20 +90,20 @@ public class OrdersPanel extends BorderedPanel implements OrdersContainer {
 		area.addKeyListener(new EnterListener(this::apply));
 
 		createHotKey(area, "openOrders", ignored -> focusOnArea(),
-			JComponent.WHEN_IN_FOCUSED_WINDOW,
-			KeyStroke.getKeyStroke(KeyEvent.VK_D, Platform.SHORTCUT_MASK));
+				JComponent.WHEN_IN_FOCUSED_WINDOW,
+				KeyStroke.getKeyStroke(KeyEvent.VK_D, Platform.SHORTCUT_MASK));
 
 		final String topLabel;
 		if ("Orders".equals(description)) {
 			topLabel = String.format("Orders for current selection, if a unit: (%sD)",
-				Platform.SHORTCUT_DESCRIPTION);
+					Platform.SHORTCUT_DESCRIPTION);
 		} else {
 			topLabel = description + " for current selection, if a unit:";
 		}
 
 		setPageStart(BorderedPanel.horizontalPanel(new JLabel(topLabel), null,
-			BorderedPanel.horizontalPanel(null, new JLabel("Turn "),
-				new JSpinner(spinnerModel))));
+				BorderedPanel.horizontalPanel(null, new JLabel("Turn "),
+						new JSpinner(spinnerModel))));
 		if (!Objects.isNull(ordersConsumer)) {
 			final JButton applyButton = new ListenedButton("Apply", this::apply);
 			final JButton revertButton = new ListenedButton("Revert", this::revert);
@@ -113,7 +114,7 @@ public class OrdersPanel extends BorderedPanel implements OrdersContainer {
 				buttonPanel = BoxPanel.centeredHorizontalBox(revertButton, applyButton);
 			} else {
 				buttonPanel = BorderedPanel.horizontalPanel(revertButton, null,
-					applyButton);
+						applyButton);
 			}
 			setPageEnd(buttonPanel);
 		}
@@ -127,7 +128,7 @@ public class OrdersPanel extends BorderedPanel implements OrdersContainer {
 
 	private void fixColor() {
 		if (selection instanceof final IUnit sel && !isCurrent.isCurrent(sel,
-			spinnerModel.getNumber().intValue())) {
+				spinnerModel.getNumber().intValue())) {
 			area.setBackground(LIGHT_BLUE);
 		} else if (selection instanceof final String sel) {
 			final int turn = spinnerModel.getNumber().intValue();
@@ -151,8 +152,8 @@ public class OrdersPanel extends BorderedPanel implements OrdersContainer {
 		if (selection instanceof final IUnit sel) {
 			if (!Objects.isNull(ordersConsumer)) {
 				ordersConsumer.accept(sel,
-					spinnerModel.getNumber().intValue(),
-					area.getText());
+						spinnerModel.getNumber().intValue(),
+						area.getText());
 			}
 			fixColor();
 			getParent().getParent().repaint();
@@ -177,7 +178,7 @@ public class OrdersPanel extends BorderedPanel implements OrdersContainer {
 		if (selection instanceof final IUnit sel) {
 			area.setEnabled(true);
 			area.setText(ordersSupplier.getOrders(sel,
-				spinnerModel.getNumber().intValue()));
+					spinnerModel.getNumber().intValue()));
 		} else if (selection instanceof final String sel) {
 			area.setEnabled(true);
 			@Nullable String orders = null;

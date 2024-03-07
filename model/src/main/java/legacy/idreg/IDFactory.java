@@ -43,7 +43,7 @@ public final class IDFactory implements IDRegistrar {
 					warning.handle(new DuplicateIDException(new LegacyIdentifier(id)));
 				} else {
 					warning.handle(new DuplicateIDException(new LegacyIdentifier(id),
-						location.getLineNumber(), location.getColumnNumber()));
+							location.getLineNumber(), location.getColumnNumber()));
 				}
 			}
 			usedIDs.add(id);

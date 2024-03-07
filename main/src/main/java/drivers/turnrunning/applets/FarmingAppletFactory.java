@@ -13,6 +13,6 @@ public class FarmingAppletFactory implements TurnAppletFactory {
 	@Override
 	public TurnApplet create(final ITurnRunningModel model, final ICLIHelper cli, final IDRegistrar idf) {
 		return new SimpleProductApplet("farm",
-			"Plant, weed or prune, or harvest a field, meadow, or orchard", model, cli, idf);
+				"Plant, weed or prune, or harvest a field, meadow, or orchard", model, cli, idf);
 	}
 }

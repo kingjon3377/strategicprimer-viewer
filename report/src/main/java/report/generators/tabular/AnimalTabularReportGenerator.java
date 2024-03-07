@@ -66,8 +66,8 @@ public class AnimalTabularReportGenerator implements ITableGenerator<AnimalOrTra
 	 */
 	@Override
 	public List<List<String>> produce(
-		final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-		final AnimalOrTracks item, final int key, final Point loc, final Map<Integer, Integer> parentMap) {
+			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
+			final AnimalOrTracks item, final int key, final Point loc, final Map<Integer, Integer> parentMap) {
 		final String kind;
 		final String age;
 		final String population;
@@ -94,8 +94,8 @@ public class AnimalTabularReportGenerator implements ITableGenerator<AnimalOrTra
 					} else if (animal.getBorn() == currentTurn) {
 						age = "newborn";
 					} else if (MaturityModel.getMaturityAges().containsKey(lkey) &&
-						MaturityModel.getMaturityAges().get(lkey) <=
-							(currentTurn - animal.getBorn())) {
+							MaturityModel.getMaturityAges().get(lkey) <=
+									(currentTurn - animal.getBorn())) {
 						age = "adult";
 					} else {
 						age = String.format("%d turns", currentTurn - animal.getBorn());
@@ -109,7 +109,7 @@ public class AnimalTabularReportGenerator implements ITableGenerator<AnimalOrTra
 		}
 		fixtures.remove(key);
 		return Collections.singletonList(Arrays.asList(distanceString(loc, hq, dimensions),
-			locationString(loc), population, kind, age));
+				locationString(loc), population, kind, age));
 	}
 
 	/**
@@ -126,7 +126,7 @@ public class AnimalTabularReportGenerator implements ITableGenerator<AnimalOrTra
 			cmp = 0;
 		} else {
 			cmp = new DistanceComparator(hq, dimensions).compare(one.getValue0(),
-				two.getValue0());
+					two.getValue0());
 		}
 		if (cmp == 0) {
 			// We'd like to extract the comparison on type to a function, which
@@ -136,11 +136,11 @@ public class AnimalTabularReportGenerator implements ITableGenerator<AnimalOrTra
 			if (one.getValue1() instanceof Animal) {
 				if (two.getValue1() instanceof Animal) {
 					return Comparator.comparing(Animal::isTalking)
-						.thenComparing(Animal::getKind)
-						.thenComparing(Animal::getPopulation,
-							Comparator.reverseOrder())
-						.thenComparing(Animal::getBorn)
-						.compare((Animal) one.getValue1(), (Animal) two.getValue1());
+							.thenComparing(Animal::getKind)
+							.thenComparing(Animal::getPopulation,
+									Comparator.reverseOrder())
+							.thenComparing(Animal::getBorn)
+							.compare((Animal) one.getValue1(), (Animal) two.getValue1());
 				} else {
 					return 1;
 				}
@@ -148,7 +148,7 @@ public class AnimalTabularReportGenerator implements ITableGenerator<AnimalOrTra
 				return -1;
 			} else {
 				return one.getValue1().getKind()
-					.compareTo(two.getValue1().getKind());
+						.compareTo(two.getValue1().getKind());
 			}
 		} else {
 			return cmp;

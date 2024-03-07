@@ -22,21 +22,21 @@ import java.util.Objects;
 import static io.jenetics.facilejdbc.Param.value;
 
 public final class DBAdventureHandler extends AbstractDatabaseWriter<AdventureFixture, Point>
-	implements MapContentsReader {
+		implements MapContentsReader {
 	public DBAdventureHandler() {
 		super(AdventureFixture.class, Point.class);
 	}
 
 	private static final List<Query> INITIALIZERS = Collections.singletonList(
-		Query.of("CREATE TABLE IF NOT EXISTS adventures (" +
-			"    row INTEGER NOT NULL," +
-			"    column INTEGER NOT NULL," +
-			"    id INTEGER NOT NULL," +
-			"    brief VARCHAR(255) NOT NULL," +
-			"    full VARCHAR(512) NOT NULL," +
-			"    owner INTEGER NOT NULL," +
-			"    image VARCHAR(255)" +
-			");"));
+			Query.of("CREATE TABLE IF NOT EXISTS adventures (" +
+					"    row INTEGER NOT NULL," +
+					"    column INTEGER NOT NULL," +
+					"    id INTEGER NOT NULL," +
+					"    brief VARCHAR(255) NOT NULL," +
+					"    full VARCHAR(512) NOT NULL," +
+					"    owner INTEGER NOT NULL," +
+					"    image VARCHAR(255)" +
+					");"));
 
 	@Override
 	public List<Query> getInitializers() {
@@ -44,15 +44,15 @@ public final class DBAdventureHandler extends AbstractDatabaseWriter<AdventureFi
 	}
 
 	private static final Query INSERT_QUERY = Query.of(
-		"INSERT INTO adventures (row, column, id, brief, full, owner, image) " +
-			"VALUES(:row, :column, :id, :brief, :full, :owner, :image);");
+			"INSERT INTO adventures (row, column, id, brief, full, owner, image) " +
+					"VALUES(:row, :column, :id, :brief, :full, :owner, :image);");
 
 	@Override
 	public void write(final Transactional db, final AdventureFixture obj, final Point context) throws SQLException {
 		INSERT_QUERY.on(value("row", context.row()), value("column", context.column()),
-			value("id", obj.getId()), value("brief", obj.getBriefDescription()),
-			value("full", obj.getFullDescription()), value("owner", obj.owner().getPlayerId()),
-			value("image", obj.getImage())).execute(db.connection());
+				value("id", obj.getId()), value("brief", obj.getBriefDescription()),
+				value("full", obj.getFullDescription()), value("owner", obj.owner().getPlayerId()),
+				value("image", obj.getImage())).execute(db.connection());
 	}
 
 	private static TryBiConsumer<Map<String, Object>, Warning, SQLException>
@@ -70,7 +70,7 @@ public final class DBAdventureHandler extends AbstractDatabaseWriter<AdventureFi
 //			final int ownerId = Integer.parseInt(dbRow.get("owner"));
 			final String image = (String) dbRow.get("image");
 			final AdventureFixture adventure = new AdventureFixture(map.getPlayers().getPlayer(ownerId),
-				brief, full, id);
+					brief, full, id);
 			if (!Objects.isNull(image)) {
 				adventure.setImage(image);
 			}
@@ -82,7 +82,7 @@ public final class DBAdventureHandler extends AbstractDatabaseWriter<AdventureFi
 
 	@Override
 	public void readMapContents(final Connection db, final IMutableLegacyMap map, final Map<Integer, IFixture> containers,
-	                            final Map<Integer, List<Object>> containees, final Warning warner) throws SQLException {
+								final Map<Integer, List<Object>> containees, final Warning warner) throws SQLException {
 		handleQueryResults(db, warner, "adventures", readAdventure(map), SELECT);
 	}
 }

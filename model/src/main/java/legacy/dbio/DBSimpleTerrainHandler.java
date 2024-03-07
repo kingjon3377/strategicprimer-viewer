@@ -27,7 +27,7 @@ import lovelace.util.LovelaceLogger;
 import static io.jenetics.facilejdbc.Param.value;
 
 public final class DBSimpleTerrainHandler extends AbstractDatabaseWriter<TerrainFixture, Point>
-	implements MapContentsReader {
+		implements MapContentsReader {
 	public DBSimpleTerrainHandler() {
 		super(TerrainFixture.class, Point.class);
 	}
@@ -38,14 +38,14 @@ public final class DBSimpleTerrainHandler extends AbstractDatabaseWriter<Terrain
 	}
 
 	private static final List<Query> INITIALIZERS = Collections.singletonList(
-		Query.of("CREATE TABLE IF NOT EXISTS simple_terrain (" +
-			"    row INTEGER NOT NULL," +
-			"    column INTEGER NOT NULL," +
-			"    type VARCHAR(7) NOT NULL" +
-			"        CHECK(type IN('hill', 'oasis', 'sandbar'))," +
-			"    id INTEGER NOT NULL," +
-			"    image VARCHAR(255)" +
-			");"));
+			Query.of("CREATE TABLE IF NOT EXISTS simple_terrain (" +
+					"    row INTEGER NOT NULL," +
+					"    column INTEGER NOT NULL," +
+					"    type VARCHAR(7) NOT NULL" +
+					"        CHECK(type IN('hill', 'oasis', 'sandbar'))," +
+					"    id INTEGER NOT NULL," +
+					"    image VARCHAR(255)" +
+					");"));
 
 	@Override
 	public List<Query> getInitializers() {
@@ -53,8 +53,8 @@ public final class DBSimpleTerrainHandler extends AbstractDatabaseWriter<Terrain
 	}
 
 	private static final Query INSERT = Query.of(
-		"INSERT INTO simple_terrain (row, column, type, id, image) " +
-			"VALUES(:row, :column, :type, :id, :image);");
+			"INSERT INTO simple_terrain (row, column, type, id, image) " +
+					"VALUES(:row, :column, :type, :id, :image);");
 
 	@Override
 	public void write(final Transactional db, final TerrainFixture obj, final Point context) throws SQLException {
@@ -67,10 +67,11 @@ public final class DBSimpleTerrainHandler extends AbstractDatabaseWriter<Terrain
 			throw new IllegalArgumentException("Unhandled terrain fixture type");
 		}
 		INSERT.on(value("row", context.row()), value("column", context.column()), value("type", type),
-			value("id", obj.getId()), value("image", ((HasImage) obj).getImage())).execute(db.connection());
+				value("id", obj.getId()), value("image", ((HasImage) obj).getImage())).execute(db.connection());
 	}
 
-	private static TryBiConsumer<Map<String, Object>, Warning, SQLException> readSimpleTerrain(final IMutableLegacyMap map) {
+	private static TryBiConsumer<Map<String, Object>, Warning, SQLException> readSimpleTerrain(
+			final IMutableLegacyMap map) {
 		return (dbRow, warner) -> {
 			final int row = (Integer) dbRow.get("row");
 			final int column = (Integer) dbRow.get("column");
@@ -98,7 +99,7 @@ public final class DBSimpleTerrainHandler extends AbstractDatabaseWriter<Terrain
 
 	@Override
 	public void readMapContents(final Connection db, final IMutableLegacyMap map, final Map<Integer, IFixture> containers,
-	                            final Map<Integer, List<Object>> containees, final Warning warner) throws SQLException {
+								final Map<Integer, List<Object>> containees, final Warning warner) throws SQLException {
 		handleQueryResults(db, warner, "simple terrain fixtures", readSimpleTerrain(map), SELECT);
 	}
 }

@@ -70,8 +70,8 @@ public class DiggableTabularReportGenerator implements ITableGenerator<MineralFi
 	 */
 	@Override
 	public List<List<String>> produce(
-		final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures, final MineralFixture item,
-		final int key, final Point loc, final Map<Integer, Integer> parentMap) {
+			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures, final MineralFixture item,
+			final int key, final Point loc, final Map<Integer, Integer> parentMap) {
 		final String classField;
 		final String statusField;
 		switch (item) {
@@ -97,7 +97,7 @@ public class DiggableTabularReportGenerator implements ITableGenerator<MineralFi
 		}
 		fixtures.remove(key);
 		return Collections.singletonList(Arrays.asList(distanceString(loc, hq, dimensions),
-			locationString(loc), classField, item.getKind(), statusField));
+				locationString(loc), classField, item.getKind(), statusField));
 	}
 
 	/**
@@ -106,7 +106,7 @@ public class DiggableTabularReportGenerator implements ITableGenerator<MineralFi
 	@Override
 	public Comparator<Pair<Point, MineralFixture>> comparePairs() {
 		return Comparator.<Pair<Point, MineralFixture>, String>comparing(p -> p.getValue1().getKind())
-			.thenComparing(Pair::getValue0, distanceComparator)
-			.thenComparing(p -> p.getValue1().hashCode());
+				.thenComparing(Pair::getValue0, distanceComparator)
+				.thenComparing(p -> p.getValue1().hashCode());
 	}
 }

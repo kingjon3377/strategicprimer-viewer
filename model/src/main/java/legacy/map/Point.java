@@ -59,7 +59,7 @@ public record Point(int row, int column) implements Comparable<Point> {
 	@Override
 	public int compareTo(final Point point) {
 		return Comparator.comparing(Point::row, Comparator.naturalOrder())
-			.thenComparing(Point::column).compare(this, point);
+				.thenComparing(Point::column).compare(this, point);
 	}
 
 	/**

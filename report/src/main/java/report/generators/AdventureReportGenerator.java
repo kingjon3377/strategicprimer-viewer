@@ -36,17 +36,17 @@ public class AdventureReportGenerator extends AbstractReportGenerator<AdventureF
 	 */
 	@Override
 	public void produce(final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures, final ILegacyMap map,
-	                    final Consumer<String> ostream) {
+						final Consumer<String> ostream) {
 		writeMap(ostream, fixtures.values().stream()
-				.filter(p -> p.getValue1() instanceof AdventureFixture)
-				.sorted(pairComparator)
-				.collect(Collectors.toMap(p -> (AdventureFixture) p.getValue1(),
-					Pair::getValue0, (u, v) -> {
-						throw new IllegalStateException("Duplicates in stream");
-					},
-					() -> new HeadedMapImpl<>(
-						"<h4>Possible Adventures</h4>"))),
-			defaultFormatter(fixtures, map));
+						.filter(p -> p.getValue1() instanceof AdventureFixture)
+						.sorted(pairComparator)
+						.collect(Collectors.toMap(p -> (AdventureFixture) p.getValue1(),
+								Pair::getValue0, (u, v) -> {
+									throw new IllegalStateException("Duplicates in stream");
+								},
+								() -> new HeadedMapImpl<>(
+										"<h4>Possible Adventures</h4>"))),
+				defaultFormatter(fixtures, map));
 	}
 
 	/**
@@ -54,7 +54,8 @@ public class AdventureReportGenerator extends AbstractReportGenerator<AdventureF
 	 */
 	@Override
 	public void produceSingle(final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-	                          final ILegacyMap map, final Consumer<String> ostream, final AdventureFixture item, final Point loc) {
+							  final ILegacyMap map, final Consumer<String> ostream, final AdventureFixture item,
+							  final Point loc) {
 		fixtures.remove(item.getId());
 		ostream.accept(item.getBriefDescription());
 		ostream.accept(" at ");

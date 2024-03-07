@@ -17,18 +17,18 @@ import drivers.common.cli.ICLIHelper;
  */
 @AutoService(DriverFactory.class)
 public class DrawHelperComparatorFactory implements UtilityDriverFactory {
-    public static final IDriverUsage USAGE = new DriverUsage(true, "drawing-performance", ParamCount.AtLeastOne,
-            "Test drawing performance.",
-            "Test the performance of the TileDrawHelper classes---which do the heavy lifting of rendering the map in the viewer---using a variety of automated tests.",
-            true, false, "--report=out.csv");
+	public static final IDriverUsage USAGE = new DriverUsage(true, "drawing-performance", ParamCount.AtLeastOne,
+			"Test drawing performance.",
+			"Test the performance of map-rendering implementations using a variety of automated tests.",
+			true, false, "--report=out.csv");
 
-    @Override
-    public IDriverUsage getUsage() {
-        return USAGE;
-    }
+	@Override
+	public IDriverUsage getUsage() {
+		return USAGE;
+	}
 
-    @Override
-    public UtilityDriver createDriver(final ICLIHelper cli, final SPOptions options) {
-        return new DrawHelperComparator(cli, options);
-    }
+	@Override
+	public UtilityDriver createDriver(final ICLIHelper cli, final SPOptions options) {
+		return new DrawHelperComparator(cli, options);
+	}
 }

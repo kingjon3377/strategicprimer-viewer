@@ -23,7 +23,7 @@ import common.xmlio.Warning;
 import static io.jenetics.facilejdbc.Param.value;
 
 public final class DBExplorableHandler extends AbstractDatabaseWriter<ExplorableFixture, Point>
-	implements MapContentsReader {
+		implements MapContentsReader {
 	public DBExplorableHandler() {
 		super(ExplorableFixture.class, Point.class);
 	}
@@ -34,20 +34,20 @@ public final class DBExplorableHandler extends AbstractDatabaseWriter<Explorable
 	}
 
 	private static final List<Query> INITIALIZERS = List.of(
-		Query.of("CREATE TABLE IF NOT EXISTS caves (" +
-			"    row INTEGER NOT NULL," +
-			"    column INTEGER NOT NULL," +
-			"    id INTEGER NOT NULL," +
-			"    dc INTEGER NOT NULL," +
-			"    image VARCHAR(255)" +
-			");"),
-		Query.of("CREATE TABLE IF NOT EXISTS battlefields (" +
-			"    row INTEGER NOT NULL," +
-			"    column INTEGER NOT NULL," +
-			"    id INTEGER NOT NULL," +
-			"    dc INTEGER NOT NULL," +
-			"    image VARCHAR(255)" +
-			");"));
+			Query.of("CREATE TABLE IF NOT EXISTS caves (" +
+					"    row INTEGER NOT NULL," +
+					"    column INTEGER NOT NULL," +
+					"    id INTEGER NOT NULL," +
+					"    dc INTEGER NOT NULL," +
+					"    image VARCHAR(255)" +
+					");"),
+			Query.of("CREATE TABLE IF NOT EXISTS battlefields (" +
+					"    row INTEGER NOT NULL," +
+					"    column INTEGER NOT NULL," +
+					"    id INTEGER NOT NULL," +
+					"    dc INTEGER NOT NULL," +
+					"    image VARCHAR(255)" +
+					");"));
 
 	@Override
 	public List<Query> getInitializers() {
@@ -55,10 +55,10 @@ public final class DBExplorableHandler extends AbstractDatabaseWriter<Explorable
 	}
 
 	private static final Query CAVE_INSERT =
-		Query.of("INSERT INTO caves (row, column, id, dc, image) VALUES(:row, :column, :id, :dc, :image);");
+			Query.of("INSERT INTO caves (row, column, id, dc, image) VALUES(:row, :column, :id, :dc, :image);");
 
 	private static final Query BATTLEFIELD_INSERT =
-		Query.of("INSERT INTO battlefields (row, column, id, dc, image) VALUES(:row, :column, :id, :dc, :image);");
+			Query.of("INSERT INTO battlefields (row, column, id, dc, image) VALUES(:row, :column, :id, :dc, :image);");
 
 	@Override
 	public void write(final Transactional db, final ExplorableFixture obj, final Point context) throws SQLException {
@@ -71,7 +71,7 @@ public final class DBExplorableHandler extends AbstractDatabaseWriter<Explorable
 			throw new IllegalArgumentException("Only supports caves and battlefields");
 		}
 		sql.on(value("row", context.row()), value("column", context.column()), value("id", obj.getId()),
-			value("dc", obj.getDC()), value("image", obj.getImage())).execute(db.connection());
+				value("dc", obj.getDC()), value("image", obj.getImage())).execute(db.connection());
 	}
 
 	private static TryBiConsumer<Map<String, Object>, Warning, SQLException> readCave(final IMutableLegacyMap map) {
@@ -109,7 +109,7 @@ public final class DBExplorableHandler extends AbstractDatabaseWriter<Explorable
 
 	@Override
 	public void readMapContents(final Connection db, final IMutableLegacyMap map, final Map<Integer, IFixture> containers,
-	                            final Map<Integer, List<Object>> containees, final Warning warner) throws SQLException {
+								final Map<Integer, List<Object>> containees, final Warning warner) throws SQLException {
 		handleQueryResults(db, warner, "caves", readCave(map), SELECT_CAVES);
 		handleQueryResults(db, warner, "battlefields", readBattlefield(map), SELECT_BATTLES);
 	}

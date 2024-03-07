@@ -67,10 +67,10 @@ public class FortressTabularReportGenerator implements ITableGenerator<IFortress
 	 */
 	@Override
 	public List<List<String>> produce(
-		final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-		final IFortress item, final int key, final Point loc, final Map<Integer, Integer> parentMap) {
+			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
+			final IFortress item, final int key, final Point loc, final Map<Integer, Integer> parentMap) {
 		final List<String> retval = Arrays.asList(distanceString(loc, hq, dimensions),
-			locationString(loc), ownerString(player, item.owner()), item.getName());
+				locationString(loc), ownerString(player, item.owner()), item.getName());
 		// Players shouldn't be able to see the contents of others' fortresses
 		// in other tables.
 		if (!player.equals(item.owner())) {
@@ -109,13 +109,14 @@ public class FortressTabularReportGenerator implements ITableGenerator<IFortress
 
 	/**
 	 * Compare two Point-IFortress pairs.
+	 *
 	 * @return
 	 */
 	@Override
 	public Comparator<Pair<Point, IFortress>> comparePairs() {
 		return Comparator.<Pair<Point, IFortress>, IFortress>comparing(Pair::getValue1, this::compareOwners)
-			.thenComparing(Pair::getValue0, distanceComparator)
-			.thenComparing(Pair::getValue1, FortressTabularReportGenerator::compareNames)
-			.thenComparing(p -> p.getValue1().owner());
+				.thenComparing(Pair::getValue0, distanceComparator)
+				.thenComparing(Pair::getValue1, FortressTabularReportGenerator::compareNames)
+				.thenComparing(p -> p.getValue1().owner());
 	}
 }

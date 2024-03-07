@@ -49,7 +49,7 @@ public class FileChooser {
 
 		public ChoiceInterruptedException(final @Nullable Throwable cause) {
 			super(Objects.isNull(cause) ? "No file was selected" :
-				"Choice of a file was interrupted by an exception:", cause);
+					"Choice of a file was interrupted by an exception:", cause);
 		}
 	}
 
@@ -98,7 +98,7 @@ public class FileChooser {
 	// We don't provide a constructor taking FileDialog and approveText, as it's (unfortunately)
 	// not possible to use a "custom" action with the AWT interface.
 	protected FileChooser(final ChooserMode mode, final JFileChooser fileChooser, final String approveText,
-	                      final @Nullable Path loc) {
+						  final @Nullable Path loc) {
 		switch (mode) {
 			case Open, Save -> throw new IllegalArgumentException("Approve text only supported for custom dialog");
 			case Custom -> {
@@ -240,7 +240,7 @@ public class FileChooser {
 			SwingUtilities.invokeAndWait(runnable);
 		} catch (final InvocationTargetException except) {
 			throw new ChoiceInterruptedException(
-				Optional.ofNullable(except.getCause()).orElse(except));
+					Optional.ofNullable(except.getCause()).orElse(except));
 		} catch (final InterruptedException except) {
 			throw new ChoiceInterruptedException(except);
 		}
@@ -257,7 +257,7 @@ public class FileChooser {
 			final JFileChooser fc = chooser.fromLeft().get();
 			if (JFileChooser.APPROVE_OPTION == status) {
 				final List<Path> retval = Stream.of(fc.getSelectedFiles()).filter(Objects::nonNull)
-					.map(File::toPath).collect(Collectors.toList());
+						.map(File::toPath).collect(Collectors.toList());
 				if (!retval.isEmpty()) {
 					LovelaceLogger.debug("Saving the file(s) the user chose via Swing");
 					storedFile = retval;
@@ -275,7 +275,7 @@ public class FileChooser {
 		} else {
 			final FileDialog fd = chooser.fromRight().get();
 			final List<Path> retval = Stream.of(fd.getFiles()).filter(Objects::nonNull)
-				.map(File::toPath).collect(Collectors.toList());
+					.map(File::toPath).collect(Collectors.toList());
 			if (!retval.isEmpty()) {
 				LovelaceLogger.debug("Saving the file(s) the user chose via AWT");
 				storedFile = retval;
@@ -286,7 +286,7 @@ public class FileChooser {
 			} else {
 				LovelaceLogger.info("User failed to choose?");
 				LovelaceLogger.debug("Returned iterable was %s (%s)", retval,
-					retval.getClass());
+						retval.getClass());
 				storedFile = Collections.emptyList();
 			}
 		}

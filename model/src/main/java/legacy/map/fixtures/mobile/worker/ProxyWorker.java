@@ -100,7 +100,7 @@ public class ProxyWorker implements WorkerProxy {
 				}
 				workers.add(w);
 				StreamSupport.stream(w.spliterator(), true)
-					.map(IJob::getName).forEach(addJobName);
+						.map(IJob::getName).forEach(addJobName);
 			}
 		}
 		for (final String job : jobNames) {
@@ -129,7 +129,7 @@ public class ProxyWorker implements WorkerProxy {
 			}
 			workers.add(worker);
 			StreamSupport.stream(worker.spliterator(), true)
-				.map(IJob::getName).forEach(addJobName);
+					.map(IJob::getName).forEach(addJobName);
 		}
 		for (final String job : jobNames) {
 			proxyJobs.add(new ProxyJob(job, false, proxiedWorkers));
@@ -255,7 +255,7 @@ public class ProxyWorker implements WorkerProxy {
 	@Override
 	public IJob getJob(final String jobName) {
 		final Optional<ProxyJob> temp =
-			proxyJobs.stream().filter(j -> jobName.equals(j.getName())).findAny();
+				proxyJobs.stream().filter(j -> jobName.equals(j.getName())).findAny();
 		if (temp.isPresent()) {
 			return temp.get();
 		}
@@ -293,7 +293,7 @@ public class ProxyWorker implements WorkerProxy {
 	@Override
 	public Collection<Integer> getNotesPlayers() {
 		return workers.stream().flatMap(w -> StreamSupport.stream(w.getNotesPlayers().spliterator(),
-			true)).collect(Collectors.toSet());
+				true)).collect(Collectors.toSet());
 	}
 
 	@Override

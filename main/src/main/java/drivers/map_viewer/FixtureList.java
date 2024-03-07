@@ -56,7 +56,7 @@ import worker.common.IFixtureEditHelper;
  * A visual list-based representation of the contents of a tile.
  */
 public final class FixtureList extends JList<TileFixture>
-	implements DragGestureListener, SelectionChangeListener {
+		implements DragGestureListener, SelectionChangeListener {
 	@Serial
 	private static final long serialVersionUID = 1L;
 	private final JComponent parentComponent;
@@ -66,7 +66,7 @@ public final class FixtureList extends JList<TileFixture>
 	private final Iterable<Player> players;
 
 	public FixtureList(final JComponent parentComponent, final FixtureListModel listModel,
-	                   final IFixtureEditHelper feh, final IDRegistrar idf, final Iterable<Player> players) {
+					   final IFixtureEditHelper feh, final IDRegistrar idf, final Iterable<Player> players) {
 		super(listModel);
 		this.parentComponent = parentComponent;
 		this.listModel = listModel;
@@ -77,15 +77,15 @@ public final class FixtureList extends JList<TileFixture>
 		setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 		addMouseListener(new FixtureMouseListener());
 		DragSource.getDefaultDragSource().createDefaultDragGestureRecognizer(this,
-			DnDConstants.ACTION_COPY, this);
+				DnDConstants.ACTION_COPY, this);
 
 		setDropTarget(new DropTarget(this, new DropListener()));
 
 		createHotKey(this, "delete",
-			event -> listModel.removeAll(getSelectedValuesList()),
-			JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT,
-			KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0),
-			KeyStroke.getKeyStroke(KeyEvent.VK_BACK_SPACE, 0));
+				event -> listModel.removeAll(getSelectedValuesList()),
+				JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT,
+				KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0),
+				KeyStroke.getKeyStroke(KeyEvent.VK_BACK_SPACE, 0));
 	}
 
 	@Override
@@ -105,7 +105,7 @@ public final class FixtureList extends JList<TileFixture>
 				payload = new FixtureTransferable(selection.getFirst());
 			} else {
 				payload = new CurriedFixtureTransferable(
-					selection.toArray(TileFixture[]::new));
+						selection.toArray(TileFixture[]::new));
 			}
 			event.startDrag(null, payload);
 		}
@@ -142,8 +142,8 @@ public final class FixtureList extends JList<TileFixture>
 				final int index = locationToIndex(event.getPoint());
 				if (index >= 0 && index < listModel.getSize()) {
 					new FixtureEditMenu(listModel.getElementAt(index), players,
-						idf, feh)
-						.show(event.getComponent(), event.getX(), event.getY());
+							idf, feh)
+							.show(event.getComponent(), event.getX(), event.getY());
 				}
 			}
 		}
@@ -173,11 +173,11 @@ public final class FixtureList extends JList<TileFixture>
 
 		private void handleDrag(final DropTargetDragEvent dtde) {
 			if ((dtde.getDropAction() & DnDConstants.ACTION_COPY) != 0 &&
-				(dtde.getCurrentDataFlavorsAsList()
-					.contains(FixtureTransferable.FLAVOR) ||
-					dtde.getCurrentDataFlavorsAsList().contains(
-						CurriedFixtureTransferable.FLAVOR)) &&
-				isXfrFromOutside(dtde)) {
+					(dtde.getCurrentDataFlavorsAsList()
+							.contains(FixtureTransferable.FLAVOR) ||
+							dtde.getCurrentDataFlavorsAsList().contains(
+									CurriedFixtureTransferable.FLAVOR)) &&
+					isXfrFromOutside(dtde)) {
 				dtde.acceptDrag(dtde.getDropAction());
 			} else {
 				dtde.rejectDrag();
@@ -201,7 +201,7 @@ public final class FixtureList extends JList<TileFixture>
 
 		private void handleDrop(final Transferable trans) throws UnsupportedFlavorException, IOException {
 			final DataFlavor[] flavors = Optional.ofNullable(trans.getTransferDataFlavors())
-				.orElseGet(() -> new DataFlavor[0]);
+					.orElseGet(() -> new DataFlavor[0]);
 			for (final DataFlavor flavor : flavors) {
 				if (FixtureTransferable.FLAVOR.equals(flavor)) {
 					final Object transferData = trans.getTransferData(flavor);
@@ -210,7 +210,7 @@ public final class FixtureList extends JList<TileFixture>
 					} // TODO: else what? log?
 				} else if (CurriedFixtureTransferable.FLAVOR.equals(flavor)) {
 					final List<Transferable> curried =
-						(List<Transferable>) trans.getTransferData(flavor);
+							(List<Transferable>) trans.getTransferData(flavor);
 					for (final Transferable t : curried) {
 						handleDrop(t);
 					}
@@ -221,7 +221,7 @@ public final class FixtureList extends JList<TileFixture>
 			}
 			if (flavors.length == 0) {
 				throw new UnsupportedFlavorException(
-					new DataFlavor(DataFlavor.class, "null"));
+						new DataFlavor(DataFlavor.class, "null"));
 			} else {
 				throw new UnsupportedFlavorException(flavors[0]);
 			}
@@ -234,8 +234,8 @@ public final class FixtureList extends JList<TileFixture>
 			}
 			for (final DataFlavor flavor : dtde.getCurrentDataFlavorsAsList()) {
 				if (Stream.of(FixtureTransferable.FLAVOR,
-						CurriedFixtureTransferable.FLAVOR)
-					.anyMatch(Predicate.isEqual(flavor))) {
+								CurriedFixtureTransferable.FLAVOR)
+						.anyMatch(Predicate.isEqual(flavor))) {
 					try {
 						dtde.acceptDrop(dtde.getDropAction());
 						final Transferable t = dtde.getTransferable();

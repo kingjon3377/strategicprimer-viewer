@@ -22,7 +22,7 @@ import java.awt.Toolkit;
 import org.jetbrains.annotations.Nullable;
 
 public final class NotesPanel extends BorderedPanel
-	implements UnitMemberListener, PlayerChangeListener {
+		implements UnitMemberListener, PlayerChangeListener {
 	@Serial
 	private static final long serialVersionUID = 1L;
 	private final JTextArea notesArea = new JTextArea();
@@ -38,7 +38,7 @@ public final class NotesPanel extends BorderedPanel
 			notesButtonPanel = centeredHorizontalBox(notesRevertButton, notesApplyButton);
 		} else {
 			notesButtonPanel = BorderedPanel.horizontalPanel(notesRevertButton, null,
-				notesApplyButton);
+					notesApplyButton);
 		}
 		player = currentPlayer;
 		notesApplyButton.addActionListener(ignored -> saveNotes());

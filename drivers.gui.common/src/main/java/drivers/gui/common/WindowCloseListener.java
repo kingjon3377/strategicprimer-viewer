@@ -13,17 +13,17 @@ import lovelace.util.LovelaceLogger;
  * close".
  */
 public class WindowCloseListener extends WindowAdapter {
-    public WindowCloseListener(final ActionListener menuListener) {
-        this.menuListener = menuListener;
-    }
+	public WindowCloseListener(final ActionListener menuListener) {
+		this.menuListener = menuListener;
+	}
 
-    private final ActionListener menuListener;
+	private final ActionListener menuListener;
 
-    @Override
-    public void windowClosing(final WindowEvent evt) {
-        LovelaceLogger.debug("About to send synthetic Close menu event");
-        menuListener.actionPerformed(new ActionEvent(evt.getSource(),
-                ActionEvent.ACTION_FIRST, "Close"));
-        LovelaceLogger.debug("Returned from Close menu handler");
-    }
+	@Override
+	public void windowClosing(final WindowEvent evt) {
+		LovelaceLogger.debug("About to send synthetic Close menu event");
+		menuListener.actionPerformed(new ActionEvent(evt.getSource(),
+				ActionEvent.ACTION_FIRST, "Close"));
+		LovelaceLogger.debug("Returned from Close menu handler");
+	}
 }

@@ -11,5 +11,5 @@ import java.util.stream.Stream;
  * Iterable} but iterate over something other than {@link IFixture fixtures}.
  */
 public interface FixtureIterable<Type extends IFixture> extends Iterable<Type> {
-    Stream<Type> stream();
+	Stream<Type> stream();
 }

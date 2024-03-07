@@ -7,7 +7,8 @@ import legacy.map.HasMutableImage;
  * An animal or population of animals in the map.
  */
 public class AnimalImpl implements Animal, HasMutableImage {
-	public AnimalImpl(final String kind, final boolean talking, final String status, final int id, final int born, final int population) {
+	public AnimalImpl(final String kind, final boolean talking, final String status, final int id, final int born,
+					  final int population) {
 		this.kind = kind;
 		this.talking = talking;
 		this.status = status;
@@ -145,7 +146,7 @@ public class AnimalImpl implements Animal, HasMutableImage {
 	@Override
 	public Animal copy(final CopyBehavior zero) {
 		final AnimalImpl retval = new AnimalImpl(kind, talking, status, id,
-			(zero == CopyBehavior.ZERO) ? -1 : born, (zero == CopyBehavior.ZERO) ? 1 : population);
+				(zero == CopyBehavior.ZERO) ? -1 : born, (zero == CopyBehavior.ZERO) ? 1 : population);
 		retval.setImage(image);
 		return retval;
 	}
@@ -158,7 +159,7 @@ public class AnimalImpl implements Animal, HasMutableImage {
 	@Override
 	public Animal combined(final Animal addend) {
 		return new AnimalImpl(kind, talking, status, id, born,
-			Math.max(0, population) + Math.max(0, addend.getPopulation()));
+				Math.max(0, population) + Math.max(0, addend.getPopulation()));
 	}
 
 	/**

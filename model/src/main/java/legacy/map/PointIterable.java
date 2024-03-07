@@ -35,7 +35,8 @@ public class PointIterable implements Iterable<Point> {
 	 */
 	private final @Nullable Point selection;
 
-	public PointIterable(final MapDimensions dimensions, final boolean forwards, final boolean horizontal, final Point selection) {
+	public PointIterable(final MapDimensions dimensions, final boolean forwards, final boolean horizontal,
+						 final Point selection) {
 		this.dimensions = dimensions;
 		this.forwards = forwards;
 		this.horizontal = horizontal;
@@ -113,9 +114,10 @@ public class PointIterable implements Iterable<Point> {
 		 */
 		@Override
 		public String toString() {
-			return String.format("PointIterator: Started at (%d, %d), currently at (%d, %d), searching %sly %swards and no farther than (%d, %d)",
-				startRow, startColumn, row, column, (horizontal) ? "horizontal" : "vertical",
-				(forwards) ? "for" : "back", maxRow, maxColumn);
+			return String.format(
+					"PointIterator: Started at (%d, %d), currently at (%d, %d), searching %sly %swards and no farther than (%d, %d)",
+					startRow, startColumn, row, column, (horizontal) ? "horizontal" : "vertical",
+					(forwards) ? "for" : "back", maxRow, maxColumn);
 		}
 
 		@Override

@@ -18,20 +18,20 @@ import legacy.map.MapDimensions;
  * want, and guarantee that the runner never calls {@link #getAllEvents}.
  */
 class MockTable implements EncounterTable {
-    private final Deque<String> queue = new LinkedList<>();
+	private final Deque<String> queue = new LinkedList<>();
 
-    public MockTable(final String... values) {
-        Stream.of(values).forEach(queue::addLast);
-    }
+	public MockTable(final String... values) {
+		Stream.of(values).forEach(queue::addLast);
+	}
 
-    @Override
-    public String generateEvent(final Point point, final @Nullable TileType terrain, final boolean mountainous,
-                                final Iterable<TileFixture> fixtures, final MapDimensions mapDimensions) {
-        return queue.removeFirst();
-    }
+	@Override
+	public String generateEvent(final Point point, final @Nullable TileType terrain, final boolean mountainous,
+								final Iterable<TileFixture> fixtures, final MapDimensions mapDimensions) {
+		return queue.removeFirst();
+	}
 
-    @Override
-    public Set<String> getAllEvents() {
-        throw new IllegalStateException("Don't call MockTable#getAllEvents");
-    }
+	@Override
+	public Set<String> getAllEvents() {
+		throw new IllegalStateException("Don't call MockTable#getAllEvents");
+	}
 }

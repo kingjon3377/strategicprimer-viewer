@@ -56,15 +56,15 @@ import static lovelace.util.Decimalize.decimalize;
 			return;
 		}
 		final List<IResourcePile> resources = fortress.stream()
-			.filter(IResourcePile.class::isInstance).map(IResourcePile.class::cast).collect(Collectors.toList());
+				.filter(IResourcePile.class::isInstance).map(IResourcePile.class::cast).collect(Collectors.toList());
 		final IntSupplier createID = idf::createID;
 		final Predicate<Object> isResource = IResourcePile.class::isInstance;
 		final Function<Object, IResourcePile> resourceCast = IResourcePile.class::cast;
 		final Consumer<IResourcePile> addResource = resources::add;
 		while (true) {
 			final IResourcePile chosen =
-				chooseFromList(resources, String.format("Resources in %s:", fortress.getName()), "No resources in fortress.",
-					"Resource to take (from):", ICLIHelper.ListChoiceBehavior.ALWAYS_PROMPT);
+					chooseFromList(resources, String.format("Resources in %s:", fortress.getName()), "No resources in fortress.",
+							"Resource to take (from):", ICLIHelper.ListChoiceBehavior.ALWAYS_PROMPT);
 			if (Objects.isNull(chosen)) {
 				break;
 			}
@@ -73,16 +73,16 @@ import static lovelace.util.Decimalize.decimalize;
 				return; // TODO: Find a way to propagate the EOF to caller
 			} else if (takeAll) {
 				model.transferResource(chosen, unit, decimalize(chosen.getQuantity().number()),
-					createID);
+						createID);
 				resources.remove(chosen);
 			} else {
 				final BigDecimal amount = cli.inputDecimal(String.format("Amount to take (in %s):",
-					chosen.getQuantity().units()));
+						chosen.getQuantity().units()));
 				if (!Objects.isNull(amount) && amount.signum() > 0) {
 					model.transferResource(chosen, unit, amount, createID);
 					resources.clear();
 					fortress.stream().filter(isResource).map(resourceCast)
-						.forEach(addResource);
+							.forEach(addResource);
 				}
 			}
 		}
@@ -107,11 +107,11 @@ import static lovelace.util.Decimalize.decimalize;
 			explorationCLI.moveOneStep();
 			final Point newPosition = model.getSelectedUnitLocation();
 			final IFortress startingFort = model.getMap().getFixtures(oldPosition).stream()
-				.filter(isFortress).map(fortressCast)
-				.filter(sameOwner).findAny().orElse(null);
+					.filter(isFortress).map(fortressCast)
+					.filter(sameOwner).findAny().orElse(null);
 			if (!Objects.isNull(startingFort) && model.getMap().getFixtures(newPosition).stream()
-				.filter(isFortress).map(fortressCast)
-				.noneMatch(sameOwner)) {
+					.filter(isFortress).map(fortressCast)
+					.noneMatch(sameOwner)) {
 				final Boolean pack = cli.inputBooleanInSeries("Leaving a fortress. Take provisions along?");
 				if (Objects.isNull(pack)) {
 					return null;

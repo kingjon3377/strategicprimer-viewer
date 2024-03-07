@@ -22,27 +22,27 @@ import com.google.auto.service.AutoService;
  */
 @AutoService(DriverFactory.class)
 public class DuplicateFixtureRemoverFactory implements ModelDriverFactory {
-    private static final IDriverUsage USAGE = new DriverUsage(false, "remove-duplicates",
-            ParamCount.AtLeastOne, "Remove duplicate fixtures",
-            "Remove duplicate fixtures (identical except ID# and on the same tile) from a map.",
-            true, false, "--current-turn=NN");
+	private static final IDriverUsage USAGE = new DriverUsage(false, "remove-duplicates",
+			ParamCount.AtLeastOne, "Remove duplicate fixtures",
+			"Remove duplicate fixtures (identical except ID# and on the same tile) from a map.",
+			true, false, "--current-turn=NN");
 
-    @Override
-    public IDriverUsage getUsage() {
-        return USAGE;
-    }
+	@Override
+	public IDriverUsage getUsage() {
+		return USAGE;
+	}
 
-    @Override
-    public ModelDriver createDriver(final ICLIHelper cli, final SPOptions options, final IDriverModel model) {
-        if (model instanceof final UtilityDriverModel udm) {
-            return new DuplicateFixtureRemoverCLI(cli, udm);
-        } else {
-            return createDriver(cli, options, new UtilityDriverModel(model));
-        }
-    }
+	@Override
+	public ModelDriver createDriver(final ICLIHelper cli, final SPOptions options, final IDriverModel model) {
+		if (model instanceof final UtilityDriverModel udm) {
+			return new DuplicateFixtureRemoverCLI(cli, udm);
+		} else {
+			return createDriver(cli, options, new UtilityDriverModel(model));
+		}
+	}
 
-    @Override
-    public IDriverModel createModel(final IMutableLegacyMap map) {
-        return new UtilityDriverModel(map);
-    }
+	@Override
+	public IDriverModel createModel(final IMutableLegacyMap map) {
+		return new UtilityDriverModel(map);
+	}
 }

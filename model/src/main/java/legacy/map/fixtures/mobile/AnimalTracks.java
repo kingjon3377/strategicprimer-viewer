@@ -12,7 +12,7 @@ import legacy.map.HasMutableImage;
  * require serious refactoring of XML I/O code.
  */
 public class AnimalTracks implements HasMutableImage, MobileFixture,
-	AnimalOrTracks {
+		AnimalOrTracks {
 	public AnimalTracks(final String kind) {
 		this.kind = kind;
 	}
@@ -111,8 +111,8 @@ public class AnimalTracks implements HasMutableImage, MobileFixture,
 				return true;
 			} else {
 				report.accept(String.format(
-					"Comparing tracks from different kinds of animals: %s and %s",
-					at.getKind(), kind));
+						"Comparing tracks from different kinds of animals: %s and %s",
+						at.getKind(), kind));
 				return false;
 			}
 		} else if (fixture instanceof final Animal a && a.getKind().equals(kind)) {

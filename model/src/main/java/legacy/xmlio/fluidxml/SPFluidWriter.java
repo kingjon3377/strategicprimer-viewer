@@ -99,7 +99,7 @@ public class SPFluidWriter implements SPWriter {
 	private static final Pattern SNUG_END_TAG = Pattern.compile("([^ ])/>");
 
 	private void writeSPObjectImpl(final XMLStreamWriter ostream, final Object obj, final int indentation)
-		throws XMLStreamException {
+			throws XMLStreamException {
 		for (final Class<?> type : new TypeStream(obj)) {
 			if (writers.containsKey(type)) {
 				writers.get(type).writeCasting(ostream, obj, indentation);
@@ -111,7 +111,7 @@ public class SPFluidWriter implements SPWriter {
 
 	@Override
 	public void writeSPObject(final ThrowingConsumer<String, IOException> ostream, final Object obj)
-		throws XMLStreamException, IOException {
+			throws XMLStreamException, IOException {
 		final XMLOutputFactory xof = XMLOutputFactory.newInstance();
 		final StringWriter writer = new StringWriter();
 		final XMLStreamWriter xsw = xof.createXMLStreamWriter(writer);
@@ -140,7 +140,7 @@ public class SPFluidWriter implements SPWriter {
 
 	@Override
 	public void write(final ThrowingConsumer<String, IOException> arg, final ILegacyMap map)
-		throws XMLStreamException, IOException {
+			throws XMLStreamException, IOException {
 		writeSPObject(arg, map);
 	}
 
@@ -148,11 +148,11 @@ public class SPFluidWriter implements SPWriter {
 	 * TODO: Does this really need to be an instance (non-static) method?
 	 */
 	private static void writePlayer(final XMLStreamWriter ostream, final Player obj, final int indentation)
-		throws XMLStreamException {
+			throws XMLStreamException {
 		if (!obj.getName().isEmpty()) {
 			writeTag(ostream, "player", indentation, true);
 			writeAttributes(ostream, Pair.with("number", obj.getPlayerId()),
-				Pair.with("code_name", obj.getName()));
+					Pair.with("code_name", obj.getName()));
 			writeNonEmptyAttributes(ostream, Pair.with("portrait", obj.getPortrait()));
 			if (!Objects.isNull(obj.getCountry())) {
 				writeNonEmptyAttributes(ostream, Pair.with("country", obj.getCountry()));
@@ -164,7 +164,7 @@ public class SPFluidWriter implements SPWriter {
 
 		@Override
 		public void write(final XMLStreamWriter ostream, final Object obj, final int indentation)
-			throws XMLStreamException {
+				throws XMLStreamException {
 			if (!cls.isInstance(obj)) {
 				throw new IllegalArgumentException("Can only write " + cls.getName());
 			} else if (!(obj instanceof IFixture)) {
@@ -186,7 +186,7 @@ public class SPFluidWriter implements SPWriter {
 	}
 
 	private static void writeUnitOrders(final XMLStreamWriter ostream, final int indentation, final int turn,
-	                                    final String tag, final String text) throws XMLStreamException {
+										final String tag, final String text) throws XMLStreamException {
 		// assert (tag == "orders" || tag == "results");
 		if (text.isEmpty()) {
 			return;
@@ -200,24 +200,24 @@ public class SPFluidWriter implements SPWriter {
 	}
 
 	private void writeUnit(final XMLStreamWriter ostream, final IUnit obj, final int indentation)
-		throws XMLStreamException {
+			throws XMLStreamException {
 		final boolean empty = obj.isEmpty() &&
-			obj.getAllOrders().values().stream().allMatch(String::isEmpty) &&
-			obj.getAllResults().values().stream().allMatch(String::isEmpty);
+				obj.getAllOrders().values().stream().allMatch(String::isEmpty) &&
+				obj.getAllResults().values().stream().allMatch(String::isEmpty);
 		writeTag(ostream, "unit", indentation, empty);
 		writeAttributes(ostream, Pair.with("owner", obj.owner().getPlayerId()));
 		writeNonEmptyAttributes(ostream, Pair.with("kind", obj.getKind()),
-			Pair.with("name", obj.getName()));
+				Pair.with("name", obj.getName()));
 		writeAttributes(ostream, Pair.with("id", obj.getId()));
 		writeImage(ostream, obj);
 		writeNonEmptyAttributes(ostream, Pair.with("portrait", obj.getPortrait()));
 		for (final Map.Entry<Integer, String> entry : obj.getAllOrders().entrySet()) {
 			writeUnitOrders(ostream, indentation + 1, entry.getKey(), "orders",
-				entry.getValue().strip());
+					entry.getValue().strip());
 		}
 		for (final Map.Entry<Integer, String> entry : obj.getAllResults().entrySet()) {
 			writeUnitOrders(ostream, indentation + 1, entry.getKey(), "results",
-				entry.getValue().strip());
+					entry.getValue().strip());
 		}
 		for (final UnitMember member : obj) {
 			writeSPObjectImpl(ostream, member, indentation + 1);
@@ -229,7 +229,7 @@ public class SPFluidWriter implements SPWriter {
 	}
 
 	private void writeFortress(final XMLStreamWriter ostream, final IFortress obj, final int indentation)
-		throws XMLStreamException {
+			throws XMLStreamException {
 		writeTag(ostream, "fortress", indentation, false);
 		writeAttributes(ostream, Pair.with("owner", obj.owner().getPlayerId()));
 		writeNonEmptyAttributes(ostream, Pair.with("name", obj.getName()));
@@ -249,15 +249,15 @@ public class SPFluidWriter implements SPWriter {
 	}
 
 	private void writeMap(final XMLStreamWriter ostream, final ILegacyMap obj, final int indentation)
-		throws XMLStreamException {
+			throws XMLStreamException {
 		writeTag(ostream, "view", indentation, false);
 		writeAttributes(ostream, Pair.with("current_player", obj.getCurrentPlayer().getPlayerId()),
-			Pair.with("current_turn", obj.getCurrentTurn()));
+				Pair.with("current_turn", obj.getCurrentTurn()));
 		writeTag(ostream, "map", indentation + 1, false);
 		final MapDimensions dimensions = obj.getDimensions();
 		writeAttributes(ostream, Pair.with("version", dimensions.version()),
-			Pair.with("rows", dimensions.rows()),
-			Pair.with("columns", dimensions.columns()));
+				Pair.with("rows", dimensions.rows()),
+				Pair.with("columns", dimensions.columns()));
 		for (final Player player : obj.getPlayers()) {
 			writePlayer(ostream, player, indentation + 2);
 		}
@@ -278,17 +278,17 @@ public class SPFluidWriter implements SPWriter {
 					}
 					writeTag(ostream, "tile", indentation + 3, false);
 					writeAttributes(ostream, Pair.with("row", i),
-						Pair.with("column", j));
+							Pair.with("column", j));
 					if (!Objects.isNull(terrain)) {
 						writeAttributes(ostream, Pair.with("kind",
-							terrain.getXml()));
+								terrain.getXml()));
 					}
 					boolean anyContents = false;
 					for (final Player bookmarkPlayer : obj.getAllBookmarks(loc)) {
 						anyContents = true;
 						writeTag(ostream, "bookmark", indentation + 4, true);
 						writeAttributes(ostream,
-							Pair.with("player", bookmarkPlayer.getPlayerId()));
+								Pair.with("player", bookmarkPlayer.getPlayerId()));
 					}
 					if (obj.isMountainous(loc)) {
 						anyContents = true;
@@ -303,26 +303,27 @@ public class SPFluidWriter implements SPWriter {
 					}
 					// Similarly, roads are in an EnumMap, which is automatically sorted
 					for (final Map.Entry<Direction, Integer> entry :
-						obj.getRoads(loc).entrySet()) {
+							obj.getRoads(loc).entrySet()) {
 						writeTag(ostream, "road", indentation + 4, true);
 						writeAttributes(ostream,
-							Pair.with("direction", entry.getKey().toString()),
-							Pair.with("quality", entry.getValue()));
+								Pair.with("direction", entry.getKey().toString()),
+								Pair.with("quality", entry.getValue()));
 					}
-					// TODO: Instead of special-casing ground and forest, and to minimize future churn with exploration, sort fixtures in some way.
+					// TODO: Instead of special-casing ground and forest, and to minimize future churn with exploration,
+					// sort fixtures in some way.
 					// To avoid breaking map-format-conversion tests, and to
 					// avoid churn in existing maps, put the first Ground and Forest
 					// before other fixtures.
 					final Ground ground = obj.getFixtures(loc).stream()
-						.filter(isGround).map(groundCast)
-						.findFirst().orElse(null);
+							.filter(isGround).map(groundCast)
+							.findFirst().orElse(null);
 					if (!Objects.isNull(ground)) {
 						anyContents = true;
 						writeSPObjectImpl(ostream, ground, indentation + 4);
 					}
 					final Forest forest = obj.getFixtures(loc).stream()
-						.filter(isForest).map(forestCast)
-						.findFirst().orElse(null);
+							.filter(isForest).map(forestCast)
+							.findFirst().orElse(null);
 					if (!Objects.isNull(forest)) {
 						anyContents = true;
 						writeSPObjectImpl(ostream, forest, indentation + 4);
@@ -346,12 +347,12 @@ public class SPFluidWriter implements SPWriter {
 			}
 		}
 		if (obj.streamLocations().filter(((Predicate<Point>) Point::isValid).negate())
-			.map(obj::getFixtures).anyMatch(((Predicate<Collection<TileFixture>>)
-				Collection::isEmpty).negate())) {
+				.map(obj::getFixtures).anyMatch(((Predicate<Collection<TileFixture>>)
+						Collection::isEmpty).negate())) {
 			writeTag(ostream, "elsewhere", indentation + 2, false);
 			for (final TileFixture fixture : obj.streamLocations()
-				.filter(((Predicate<Point>) Point::isValid).negate())
-				.flatMap(p -> obj.getFixtures(p).stream()).toList()) {
+					.filter(((Predicate<Point>) Point::isValid).negate())
+					.flatMap(p -> obj.getFixtures(p).stream()).toList()) {
 				writeSPObjectImpl(ostream, fixture, indentation + 3);
 			}
 			indent(ostream, indentation + 2);
@@ -366,7 +367,7 @@ public class SPFluidWriter implements SPWriter {
 	private final Map<Class<?>, FluidXMLWriter<?>> writers;
 
 	private static <Type> void addWriterToMap(final Map<Class<?>, FluidXMLWriter<?>> map,
-	                                          final Class<Type> cls, final FluidXMLWriter<Type> writer) {
+											  final Class<Type> cls, final FluidXMLWriter<Type> writer) {
 		map.put(cls, writer);
 	}
 
@@ -382,12 +383,12 @@ public class SPFluidWriter implements SPWriter {
 		addWriterToMap(temp, Animal.class, UnitMemberHandler::writeAnimal);
 		addWriterToMap(temp, AnimalTracks.class, UnitMemberHandler::writeAnimalTracks);
 		for (final SimpleFixtureWriter<?> writer : Arrays.asList(
-			new SimpleFixtureWriter<>(Hill.class, "hill"),
-			new SimpleFixtureWriter<>(Oasis.class, "oasis"),
-			new SimpleFixtureWriter<>(Centaur.class, "centaur"),
-			new SimpleFixtureWriter<>(Dragon.class, "dragon"),
-			new SimpleFixtureWriter<>(Fairy.class, "fairy"),
-			new SimpleFixtureWriter<>(Giant.class, "giant"))) {
+				new SimpleFixtureWriter<>(Hill.class, "hill"),
+				new SimpleFixtureWriter<>(Oasis.class, "oasis"),
+				new SimpleFixtureWriter<>(Centaur.class, "centaur"),
+				new SimpleFixtureWriter<>(Dragon.class, "dragon"),
+				new SimpleFixtureWriter<>(Fairy.class, "fairy"),
+				new SimpleFixtureWriter<>(Giant.class, "giant"))) {
 			temp.put(writer.getType(), writer);
 		}
 		addWriterToMap(temp, SimpleImmortal.class, UnitMemberHandler::writeSimpleImmortal);
