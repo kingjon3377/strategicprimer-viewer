@@ -80,8 +80,9 @@ public final class CLITest {
 				"chooseFromList chooses only choice when this is specified",
 				"chooseFromList automatically chose only choice");
 		assertCLI(cli -> cli.<Player>chooseFromList(Collections.singletonList(new PlayerImpl(1, "one")),
-						"test desc", "none present", "prompt", ICLIHelper.ListChoiceBehavior.ALWAYS_PROMPT), Collections.singletonList("0"),
-				String.format("test desc%n0: one%nprompt "), Pair.with(0, new PlayerImpl(1, "one")),
+						"test desc", "none present", "prompt", ICLIHelper.ListChoiceBehavior.ALWAYS_PROMPT),
+				Collections.singletonList("0"), String.format("test desc%n0: one%nprompt "),
+				Pair.with(0, new PlayerImpl(1, "one")),
 				"chooseFromList doesn't always auto-choose only choice",
 				"chooseFromList didn't automatically choose only choice");
 	}
@@ -353,9 +354,9 @@ public final class CLITest {
 	@Test
 	public void testChooseStringFromList() {
 		assertCLI(cli -> cli.chooseStringFromList(Arrays.asList("one", "two"),
-						"test desc", "none present", "prompt", ICLIHelper.ListChoiceBehavior.ALWAYS_PROMPT), Collections.singletonList("0"),
-				String.format("test desc%n0: one%n1: two%nprompt "), Pair.with(0, "one"),
-				"chooseStringFromList chooses the one specified by the user",
+						"test desc", "none present", "prompt", ICLIHelper.ListChoiceBehavior.ALWAYS_PROMPT),
+				Collections.singletonList("0"), String.format("test desc%n0: one%n1: two%nprompt "),
+				Pair.with(0, "one"), "chooseStringFromList chooses the one specified by the user",
 				"chooseStringFromList prompts the user");
 		assertCLI(cli -> cli.chooseStringFromList(Arrays.asList("one", "two", "three"),
 						"test desc", "none present", "prompt two", ICLIHelper.ListChoiceBehavior.AUTO_CHOOSE_ONLY),

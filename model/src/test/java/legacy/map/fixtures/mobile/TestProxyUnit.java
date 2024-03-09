@@ -7,7 +7,8 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
- * Tests that proxy-units work properly, initially to aid in debugging an issue with (the port to Java of) the advancement feature.
+ * Tests that proxy-units work properly, initially to aid in debugging an issue with (the port to Java of) the
+ * advancement feature.
  */
 public class TestProxyUnit {
 	private static IUnit createUnitForFirstTest(final Player owner) {

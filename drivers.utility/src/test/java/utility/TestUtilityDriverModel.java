@@ -39,8 +39,10 @@ public class TestUtilityDriverModel {
 	@Test
 	public void testExpansionWithSubsets() {
 		final MapDimensions dims = new MapDimensionsImpl(2, 2, 2);
-		final IMutableLegacyMap master = new LegacyMap(dims, playerCollection("independent", "main", "second", "independent"), 0);
-		final IMutableLegacyMap subMap = new LegacyMap(dims, playerCollection("main", "main", "second", "independent"), 0);
+		final IMutableLegacyMap master = new LegacyMap(dims,
+				playerCollection("independent", "main", "second", "independent"), 0);
+		final IMutableLegacyMap subMap = new LegacyMap(dims,
+				playerCollection("main", "main", "second", "independent"), 0);
 		for (final Point point : master.getLocations()) {
 			master.setBaseTerrain(point, TileType.Plains);
 			subMap.setBaseTerrain(point, TileType.Plains);

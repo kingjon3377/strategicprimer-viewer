@@ -171,8 +171,10 @@ public final class TestXMLIO {
 	 * TODO: Extract interface for ISPReader&amp;IMapReader, so we don't
 	 * have to maintain separate names for the same objects.
 	 */
-	private final List<ISPReader> spReaders = List.of(TestReaderFactory.getOldSPReader(), TestReaderFactory.getNewSPReader());
-	private final List<IMapReader> mapReaders = List.of(TestReaderFactory.getOldMapReader(), TestReaderFactory.getNewMapReader());
+	private final List<ISPReader> spReaders = List.of(TestReaderFactory.getOldSPReader(),
+			TestReaderFactory.getNewSPReader());
+	private final List<IMapReader> mapReaders = List.of(TestReaderFactory.getOldMapReader(),
+			TestReaderFactory.getNewMapReader());
 
 	/**
 	 * Assert that the given XML will produce the given kind of warning and

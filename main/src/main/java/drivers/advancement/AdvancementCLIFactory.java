@@ -25,7 +25,7 @@ import com.google.auto.service.AutoService;
 public class AdvancementCLIFactory implements ModelDriverFactory {
 	private static final IDriverUsage USAGE = new DriverUsage(false, "advance", ParamCount.AtLeastOne,
 			"View a player's workers and manage their advancement",
-			"View a player's units, the workers in those units, each worker's Jobs, and his/her level in each Skill in each Job.",
+			"View a player's units, workers in those units, each worker's Jobs, and Skill levels in each Job.",
 			true, false, "--current-turn=NN", "--allow-expert-mentoring");
 
 	@Override
