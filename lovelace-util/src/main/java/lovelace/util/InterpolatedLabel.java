@@ -14,7 +14,7 @@ import org.jetbrains.annotations.Nullable;
  * @deprecated Generally prefer {@link FormattedLabel}, right?
  */
 @Deprecated
-public class InterpolatedLabel<@Nullable T> extends JLabel {
+public class InterpolatedLabel<T> extends JLabel {
 	@Serial
 	private static final long serialVersionUID = 1;
 	private final Function<? super T, String> function;
@@ -24,12 +24,12 @@ public class InterpolatedLabel<@Nullable T> extends JLabel {
 	 * @param defaultArgument The argument to pass to the function to
 	 *                        produce the label's initial text.
 	 */
-	public InterpolatedLabel(final Function<? super T, String> function, final T defaultArgument) {
+	public InterpolatedLabel(final Function<? super T, String> function, final @Nullable T defaultArgument) {
 		super(function.apply(defaultArgument));
 		this.function = function;
 	}
 
-	public void setArgument(final T argument) {
+	public void setArgument(final @Nullable T argument) {
 		setText(function.apply(argument));
 	}
 }
