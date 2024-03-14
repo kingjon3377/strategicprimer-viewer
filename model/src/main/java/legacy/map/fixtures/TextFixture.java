@@ -3,6 +3,7 @@ package legacy.map.fixtures;
 import legacy.map.IFixture;
 import legacy.map.TileFixture;
 import legacy.map.HasMutableImage;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * A Fixture to encapsulate arbitrary text associated with a tile, so we can
@@ -48,7 +49,7 @@ public final class TextFixture implements TileFixture, HasMutableImage {
 	 * The filename of an image to use as an icon for this instance.
 	 */
 	@Override
-	public String getImage() {
+	public @NotNull String getImage() {
 		return image;
 	}
 
@@ -56,7 +57,7 @@ public final class TextFixture implements TileFixture, HasMutableImage {
 	 * Set the filename of an image to use as an icon for this instance.
 	 */
 	@Override
-	public void setImage(final String image) {
+	public void setImage(final @NotNull String image) {
 		this.image = image;
 	}
 
@@ -64,14 +65,14 @@ public final class TextFixture implements TileFixture, HasMutableImage {
 	 * Clone the object.
 	 */
 	@Override
-	public TextFixture copy(final CopyBehavior zero) {
+	public @NotNull TextFixture copy(final @NotNull CopyBehavior zero) {
 		final TextFixture retval = new TextFixture(text, turn);
 		retval.setImage(image);
 		return retval;
 	}
 
 	@Override
-	public String getShortDescription() {
+	public @NotNull String getShortDescription() {
 		return (turn == -1) ? text : String.format("%s (turn %d)", text, turn);
 	}
 
@@ -81,7 +82,7 @@ public final class TextFixture implements TileFixture, HasMutableImage {
 	}
 
 	@Override
-	public String getDefaultImage() {
+	public @NotNull String getDefaultImage() {
 		return "text.png";
 	}
 
@@ -114,12 +115,12 @@ public final class TextFixture implements TileFixture, HasMutableImage {
 	 * Since text fixtures don't have an ID, this can simply delegate to equals()
 	 */
 	@Override
-	public boolean equalsIgnoringID(final IFixture fixture) {
+	public boolean equalsIgnoringID(final @NotNull IFixture fixture) {
 		return equals(fixture);
 	}
 
 	@Override
-	public String getPlural() {
+	public @NotNull String getPlural() {
 		return "Arbitrary-text notes";
 	}
 

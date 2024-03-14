@@ -1,6 +1,7 @@
 package legacy.map.fixtures;
 
 import legacy.map.SubsettableFixture;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * A (marker) interface for things that can be in a fortress.
@@ -12,5 +13,6 @@ public interface FortressMember extends SubsettableFixture {
 	 * Specialization.
 	 */
 	@Override
-	FortressMember copy(CopyBehavior zero);
+	@NotNull
+	FortressMember copy(@NotNull CopyBehavior zero);
 }

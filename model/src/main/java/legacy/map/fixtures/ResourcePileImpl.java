@@ -1,6 +1,7 @@
 package legacy.map.fixtures;
 
 import legacy.map.IFixture.CopyBehavior;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * A quantity of some kind of resource.
@@ -17,7 +18,7 @@ public final class ResourcePileImpl implements IMutableResourcePile {
 	}
 
 	@Override
-	public String getPlural() {
+	public @NotNull String getPlural() {
 		return "Resource Piles";
 	}
 
@@ -43,7 +44,7 @@ public final class ResourcePileImpl implements IMutableResourcePile {
 	 * What general kind of thing is in the resource pile.
 	 */
 	@Override
-	public String getKind() {
+	public @NotNull String getKind() {
 		return kind;
 	}
 
@@ -89,7 +90,7 @@ public final class ResourcePileImpl implements IMutableResourcePile {
 	 * The filename of an image to use as an icon for this instance.
 	 */
 	@Override
-	public String getImage() {
+	public @NotNull String getImage() {
 		return image;
 	}
 
@@ -97,7 +98,7 @@ public final class ResourcePileImpl implements IMutableResourcePile {
 	 * Set the filename of an image to use as an icon for this instance.
 	 */
 	@Override
-	public void setImage(final String image) {
+	public void setImage(final @NotNull String image) {
 		this.image = image;
 	}
 
@@ -124,7 +125,7 @@ public final class ResourcePileImpl implements IMutableResourcePile {
 	}
 
 	@Override
-	public String getDefaultImage() {
+	public @NotNull String getDefaultImage() {
 		return "resource.png";
 	}
 
@@ -134,7 +135,7 @@ public final class ResourcePileImpl implements IMutableResourcePile {
 	 * TODO: If {@link CopyBehavior#ZERO}, probably shouldn't expose <em>precise</em> quantity.
 	 */
 	@Override
-	public ResourcePileImpl copy(final CopyBehavior zero) {
+	public @NotNull ResourcePileImpl copy(final @NotNull CopyBehavior zero) {
 		final ResourcePileImpl retval = new ResourcePileImpl(id, kind, contents, quantity);
 		if (zero == CopyBehavior.KEEP) {
 			retval.setCreated(createdTurn);

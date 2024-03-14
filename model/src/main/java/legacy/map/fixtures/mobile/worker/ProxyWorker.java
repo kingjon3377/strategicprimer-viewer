@@ -26,6 +26,7 @@ import legacy.map.fixtures.mobile.IUnit;
 import legacy.map.fixtures.mobile.IWorker;
 import legacy.map.fixtures.mobile.WorkerProxy;
 
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 /**
@@ -137,7 +138,7 @@ public class ProxyWorker implements WorkerProxy {
 	}
 
 	@Override
-	public IWorker copy(final CopyBehavior zero) {
+	public @NotNull IWorker copy(final CopyBehavior zero) {
 		final ProxyWorker retval = new ProxyWorker(parallel);
 		for (final IWorker worker : workers) {
 			retval.addProxied(worker.copy(zero));

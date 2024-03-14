@@ -5,6 +5,7 @@ import java.util.function.Consumer;
 import legacy.map.HasPopulation;
 import legacy.map.IFixture;
 import legacy.map.HasImage;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * An animal or group of animals.
@@ -77,6 +78,7 @@ public interface Animal extends AnimalOrTracks, MobileFixture, HasImage,
 	Animal reduced(int newPopulation, int newId);
 
 	@Override
+	@NotNull
 	Animal copy(CopyBehavior zero);
 
 	@Override

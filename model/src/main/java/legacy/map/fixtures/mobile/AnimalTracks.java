@@ -4,6 +4,7 @@ import java.util.function.Consumer;
 
 import legacy.map.IFixture;
 import legacy.map.HasMutableImage;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * Animal tracks or other traces.
@@ -88,7 +89,7 @@ public class AnimalTracks implements HasMutableImage, MobileFixture,
 	}
 
 	@Override
-	public AnimalTracks copy(final CopyBehavior zero) {
+	public @NotNull AnimalTracks copy(final CopyBehavior zero) {
 		return new AnimalTracks(kind);
 	}
 

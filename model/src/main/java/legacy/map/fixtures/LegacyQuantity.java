@@ -2,6 +2,7 @@ package legacy.map.fixtures;
 
 import legacy.map.Subsettable;
 import lovelace.util.NumberComparator;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.Serializable;
 import java.util.Comparator;
@@ -51,7 +52,7 @@ public record LegacyQuantity(Number number, String units)
 	 * or a lesser quantity.
 	 */
 	@Override
-	public boolean isSubset(final LegacyQuantity obj, final Consumer<String> report) {
+	public boolean isSubset(final LegacyQuantity obj, final @NotNull Consumer<String> report) {
 		if (units.equals(obj.units())) {
 			if (NumberComparator.compareNumbers(number, obj.number()) < 0) {
 				report.accept("Has greater quantity than we do");
@@ -83,7 +84,7 @@ public record LegacyQuantity(Number number, String units)
 	}
 
 	@Override
-	public int compareTo(final LegacyQuantity quantity) {
+	public int compareTo(final @NotNull LegacyQuantity quantity) {
 		return Comparator.comparing(LegacyQuantity::units)
 				.thenComparing(LegacyQuantity::number, NumberComparator::compareNumbers)
 				.compare(this, quantity);

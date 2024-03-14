@@ -2,6 +2,7 @@ package legacy.map.fixtures;
 
 import legacy.map.Subsettable;
 import legacy.map.SubsettableFixture;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * A (marker) interface for things that can be part of a unit.
@@ -19,5 +20,6 @@ public interface UnitMember extends SubsettableFixture {
 	 * Specialization.
 	 */
 	@Override
-	UnitMember copy(CopyBehavior zero);
+	@NotNull
+	UnitMember copy(@NotNull CopyBehavior zero);
 }

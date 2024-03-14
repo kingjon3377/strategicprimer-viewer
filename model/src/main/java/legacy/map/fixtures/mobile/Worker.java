@@ -27,6 +27,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 /**
@@ -315,7 +316,7 @@ public class Worker implements IMutableWorker {
 	 * Clone the object.
 	 */
 	@Override
-	public Worker copy(final CopyBehavior zero) {
+	public @NotNull Worker copy(final CopyBehavior zero) {
 		final Worker retval = new Worker(name, race, id);
 		retval.setImage(image);
 		if (zero == CopyBehavior.KEEP) {

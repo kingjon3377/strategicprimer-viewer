@@ -1,12 +1,14 @@
 package legacy.map.fixtures.mobile;
 
+import org.jetbrains.annotations.NotNull;
+
 public class Thunderbird extends ImmortalAnimal {
 	public Thunderbird(final int id) {
 		super("thunderbird", "Thunderbirds", 29, id);
 	}
 
 	@Override
-	public Thunderbird copy(final CopyBehavior zero) {
+	public @NotNull Thunderbird copy(final CopyBehavior zero) {
 		return new Thunderbird(getId());
 	}
 }

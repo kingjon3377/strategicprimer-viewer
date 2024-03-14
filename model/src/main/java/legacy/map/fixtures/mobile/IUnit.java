@@ -19,6 +19,7 @@ import java.util.stream.IntStream;
 import java.util.function.Consumer;
 
 import legacy.map.fixtures.FixtureIterable;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * An interface for units.
@@ -90,7 +91,8 @@ public interface IUnit extends MobileFixture, HasImage, HasKind, HasName,
 	 * Clone the unit.
 	 */
 	@Override
-	IUnit copy(CopyBehavior zero);
+    @NotNull
+    IUnit copy(CopyBehavior zero);
 
 	/**
 	 * The plural of Unit is Units

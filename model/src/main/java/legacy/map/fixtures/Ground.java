@@ -2,6 +2,7 @@ package legacy.map.fixtures;
 
 import legacy.map.IFixture;
 import legacy.map.HasMutableImage;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * A TileFixture to represent the basic rock beneath the tile, possibly exposed.
@@ -22,7 +23,7 @@ public class Ground implements MineralFixture, HasMutableImage {
 	 * The kind of ground.
 	 */
 	@Override
-	public String getKind() {
+	public @NotNull String getKind() {
 		return kind;
 	}
 
@@ -80,7 +81,7 @@ public class Ground implements MineralFixture, HasMutableImage {
 	 * The filename of an image to use as an icon for this instance.
 	 */
 	@Override
-	public String getImage() {
+	public @NotNull String getImage() {
 		return image;
 	}
 
@@ -88,7 +89,7 @@ public class Ground implements MineralFixture, HasMutableImage {
 	 * Set the filename of an image to use as an icon for this instance.
 	 */
 	@Override
-	public void setImage(final String image) {
+	public void setImage(final @NotNull String image) {
 		this.image = image;
 	}
 
@@ -96,7 +97,7 @@ public class Ground implements MineralFixture, HasMutableImage {
 	 * Clone the object.
 	 */
 	@Override
-	public Ground copy(final IFixture.CopyBehavior zero) {
+	public @NotNull Ground copy(final @NotNull IFixture.CopyBehavior zero) {
 		final Ground retval = new Ground(id, kind, exposed);
 		retval.setImage(image);
 		return retval;
@@ -106,7 +107,7 @@ public class Ground implements MineralFixture, HasMutableImage {
 	 * Default image depends on whether the ground is exposed or not.
 	 */
 	@Override
-	public String getDefaultImage() {
+	public @NotNull String getDefaultImage() {
 		return (exposed) ? "expground.png" : "blank.png";
 	}
 
@@ -132,7 +133,7 @@ public class Ground implements MineralFixture, HasMutableImage {
 	}
 
 	@Override
-	public String getShortDescription() {
+	public @NotNull String getShortDescription() {
 		return String.format("%s %s ground", (exposed) ? "Exposed" : "Unexposed", kind);
 	}
 
@@ -146,7 +147,7 @@ public class Ground implements MineralFixture, HasMutableImage {
 	 * kind and either both or neither are exposed.
 	 */
 	@Override
-	public boolean equalsIgnoringID(final IFixture fixture) {
+	public boolean equalsIgnoringID(final @NotNull IFixture fixture) {
 		if (this == fixture) {
 			return true;
 		} else if (fixture instanceof final Ground that) {
@@ -160,7 +161,7 @@ public class Ground implements MineralFixture, HasMutableImage {
 	 * This works as the plural for our purposes, since it functions as a collective noun.
 	 */
 	@Override
-	public String getPlural() {
+	public @NotNull String getPlural() {
 		return "Ground";
 	}
 

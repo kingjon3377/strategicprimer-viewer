@@ -29,6 +29,7 @@ import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
 import lovelace.util.LovelaceLogger;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 /**
@@ -117,7 +118,7 @@ public class ProxyUnit implements IUnit, ProxyFor<IUnit> {
 	}
 
 	@Override
-	public IUnit copy(final CopyBehavior zero) {
+	public @NotNull IUnit copy(final CopyBehavior zero) {
 		final ProxyUnit retval;
 		if (parallel) {
 			retval = new ProxyUnit(Objects.requireNonNull(commonID));

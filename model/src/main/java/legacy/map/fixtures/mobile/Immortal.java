@@ -1,6 +1,7 @@
 package legacy.map.fixtures.mobile;
 
 import legacy.map.fixtures.UnitMember;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
@@ -12,7 +13,8 @@ public interface Immortal extends MobileFixture, UnitMember {
 	 * Clone the object.
 	 */
 	@Override
-	Immortal copy(CopyBehavior zero);
+    @NotNull
+    Immortal copy(CopyBehavior zero);
 
 	/**
 	 * A list of immortals that used to be represented as {@link Animal

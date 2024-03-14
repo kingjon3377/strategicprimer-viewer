@@ -11,6 +11,7 @@ import java.util.Objects;
 import java.util.function.Consumer;
 
 import lovelace.util.LovelaceLogger;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * A proxy for non-worker unit members.
@@ -35,7 +36,7 @@ class ProxyMember implements UnitMemberProxy<UnitMember> {
 	}
 
 	@Override
-	public ProxyMember copy(final CopyBehavior zero) {
+	public @NotNull ProxyMember copy(final CopyBehavior zero) {
 		final ProxyMember retval = new ProxyMember();
 		for (final UnitMember member : proxiedMembers) {
 			retval.addProxied(member.copy(zero));

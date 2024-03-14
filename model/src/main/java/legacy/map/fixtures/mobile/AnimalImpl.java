@@ -2,6 +2,7 @@ package legacy.map.fixtures.mobile;
 
 import common.map.fixtures.mobile.AnimalDiscoveryDCs;
 import legacy.map.HasMutableImage;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * An animal or population of animals in the map.
@@ -144,7 +145,7 @@ public class AnimalImpl implements Animal, HasMutableImage {
 	 * TODO: change, here and elsewhere, so that "unknown" is -1 population
 	 */
 	@Override
-	public Animal copy(final CopyBehavior zero) {
+	public @NotNull Animal copy(final CopyBehavior zero) {
 		final AnimalImpl retval = new AnimalImpl(kind, talking, status, id,
 				(zero == CopyBehavior.ZERO) ? -1 : born, (zero == CopyBehavior.ZERO) ? 1 : population);
 		retval.setImage(image);
