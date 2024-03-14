@@ -162,7 +162,7 @@ public class FortressReportGenerator extends AbstractReportGenerator<IFortress> 
 					list.add(r);
 					resources.put(r.getKind(), list);
 				}
-				case null, default -> contents.add(member);
+				default -> contents.add(member);
 			}
 			fixtures.remove(item.getId());
 		}

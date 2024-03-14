@@ -77,7 +77,7 @@ public class ExplorableReportGenerator extends AbstractReportGenerator<Explorabl
 				case final Portal portal -> portals.add(loc);
 				case final Battlefield battlefield -> battles.add(loc);
 				case final Cave cave -> caves.add(loc);
-				case null, default -> {
+				default -> {
 					LovelaceLogger.warning("Unandled ExplorableFixture class (in loop)");
 					continue;
 				}
