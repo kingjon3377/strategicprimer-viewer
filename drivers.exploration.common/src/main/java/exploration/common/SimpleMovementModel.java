@@ -99,7 +99,7 @@ public final class SimpleMovementModel {
 			return Integer.MAX_VALUE - 1;
 		} else if (TileType.Jungle == terrain || TileType.Swamp == terrain) {
 			return (river) ? 4 : 6;
-		} else if (forest || mountain || Stream.of(fixtures)
+		} else if (forest || mountain || StreamSupport.stream(fixtures.spliterator(), false)
 				.anyMatch(fix -> (fix instanceof final Forest f && !f.isRows()) || fix instanceof Hill) ||
 				TileType.Desert == terrain) {
 			return (river) ? 2 : 3;
