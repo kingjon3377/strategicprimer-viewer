@@ -43,8 +43,8 @@
         <module name="drivers.gui.common" />
         <module name="drivers.utility" />
         <module name="drivers.exploration.old" />
-        <module name="main" />
         <module name="drivers.worker.common" />
+        <module name="main" />
         <module name="mining" />
         <module name="drivers.generators" />
         <module name="lovelace-util" />
@@ -52,8 +52,8 @@
         <module name="drivers.query" />
         <module name="report" />
         <module name="model" />
-        <module name="third-party" />
         <module name="drivers.exploration.common" />
+        <module name="third-party" />
       </profile>
     </annotationProcessing>
   </component>
