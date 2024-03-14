@@ -166,8 +166,9 @@ public class ResourceTabularReportGenerator
 							 final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
 							 final Map<Integer, Integer> parentMap) throws IOException {
 		final Iterable<Triplet<Integer, Point, IFixture>> values = fixtures.entrySet().stream()
-				.filter(e -> e instanceof CacheFixture || e instanceof Implement ||
-						e instanceof IResourcePile)
+				.filter(e -> e.getValue().getValue1() instanceof CacheFixture ||
+						e.getValue().getValue1() instanceof Implement ||
+						e.getValue().getValue1() instanceof IResourcePile)
 				.map(e -> Triplet.with(e.getKey(), e.getValue().getValue0(),
 						e.getValue().getValue1()))
 				.sorted(Comparator.comparing(Triplet::removeFrom0, comparePairs()))
