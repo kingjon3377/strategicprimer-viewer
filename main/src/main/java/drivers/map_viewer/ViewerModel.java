@@ -602,11 +602,10 @@ public class ViewerModel extends SimpleDriverModel implements IViewerModel {
 					.filter(u -> getMap().getPlayers().getCurrentPlayer()
 							.equals(u.owner()))
 					.flatMap(FixtureIterable::stream)
+					.filter(m -> m.getId() == um.getId())
 					.filter(HasMutableName.class::isInstance)
 					.map(HasMutableName.class::cast)
 					.filter(m -> m.getName().equals(item.getName()))
-					.filter(m -> ((UnitMember) m).getId() == // TODO: Move above cast, to resolve spurious warnings
-							um.getId())
 					.findAny().orElse(null); // FIXME: We should have a firmer identification than just name and ID
 			if (Objects.isNull(matching)) {
 				LovelaceLogger.warning("Unable to find unit member to rename");
@@ -629,7 +628,7 @@ public class ViewerModel extends SimpleDriverModel implements IViewerModel {
 			final IUnit matching = getMap().streamAllFixtures()
 					.flatMap(ViewerModel::unflattenNonFortresses)
 					.filter(IUnit.class::isInstance).map(IUnit.class::cast)
-					.filter(u -> u.owner().equals(((IUnit) item).owner()))
+					.filter(u -> u.owner().equals(unit.owner()))
 					.filter(u -> u.getName().equals(unit.getName()))
 					.filter(u -> u.getKind().equals(item.getKind()))
 					.filter(u -> u.getId() == unit.getId())
@@ -651,11 +650,10 @@ public class ViewerModel extends SimpleDriverModel implements IViewerModel {
 					.filter(u -> getMap().getPlayers().getCurrentPlayer()
 							.equals(u.owner()))
 					.flatMap(FixtureIterable::stream)
+					.filter(m -> m.getId() == um.getId())
 					.filter(HasMutableKind.class::isInstance)
 					.map(HasMutableKind.class::cast)
 					.filter(m -> m.getKind().equals(item.getKind()))
-					.filter(m -> ((UnitMember) m).getId() == // TODO: Move above cast line
-							um.getId())
 					.findAny().orElse(null); // FIXME: We should have a firmer identification than just kind and ID
 			if (Objects.isNull(matching)) {
 				LovelaceLogger.warning("Unable to find unit member to change kind");
