@@ -42,6 +42,7 @@ public class SubsetGUI implements UtilityGUI {
 
 	private final @Nullable SubsetFrame frame;
 
+	@SuppressWarnings("EmptyMethod")
 	private static <T> void noop(final T t) {
 	}
 

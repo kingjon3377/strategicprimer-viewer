@@ -37,6 +37,7 @@ public class MapCheckerGUI implements UtilityGUI {
 		return EmptyOptions.EMPTY_OPTIONS;
 	}
 
+	@SuppressWarnings("EmptyMethod")
 	private static <T> void noop(final T t) {
 	}
 

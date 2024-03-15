@@ -54,6 +54,7 @@ public final class SubsetTest {
 		assertFalse(one.isSubset(two, SubsetTest::noop), message);
 	}
 
+	@SuppressWarnings("EmptyMethod")
 	private static void noop(final String str) {
 	}
 
