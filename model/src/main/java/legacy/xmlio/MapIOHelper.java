@@ -65,7 +65,7 @@ public final class MapIOHelper {
 	 * Read a map from a file.
 	 */
 	public static IMutableLegacyMap readMap(final Path file)
-			throws SPFormatException, IOException, NoSuchFileException, XMLStreamException {
+			throws SPFormatException, IOException, XMLStreamException {
 		return readMap(file, Warning.WARN);
 	}
 
@@ -73,7 +73,7 @@ public final class MapIOHelper {
 	 * Read a map from a file.
 	 */
 	public static IMutableLegacyMap readMap(final Path file, final Warning warner)
-			throws SPFormatException, IOException, NoSuchFileException, XMLStreamException {
+			throws SPFormatException, IOException, XMLStreamException {
 		LovelaceLogger.debug("In mapIOHelper.readMap");
 		final IMutableLegacyMap retval;
 		if (file.toString().endsWith(".db")) {

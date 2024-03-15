@@ -34,8 +34,7 @@ public class SPFrame extends JFrame implements ISPWindow {
 
 	@FunctionalInterface
 	public interface IDroppedFileHandler {
-		void accept(Path file) throws SPFormatException, IOException, NoSuchFileException,
-				XMLStreamException;
+		void accept(Path file) throws SPFormatException, IOException, XMLStreamException;
 	}
 
 	private final String windowTitle;
@@ -160,7 +159,7 @@ public class SPFrame extends JFrame implements ISPWindow {
 	 * Handle a dropped file.
 	 */
 	public void acceptDroppedFile(final Path file)
-			throws SPFormatException, IOException, NoSuchFileException, XMLStreamException {
+			throws SPFormatException, IOException, XMLStreamException {
 		// TODO: Wrap XMLStreamException in SPFormatException (subclass) in MapIOHelper or elsewhere, to reduce
 		//  exception-declaration surface
 		droppedFileHandler.accept(file);

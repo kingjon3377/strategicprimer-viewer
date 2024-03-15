@@ -49,7 +49,7 @@ public class SPDatabaseReader implements IMapReader {
 
 	@Override
 	public IMutableLegacyMap readMap(final Path file, final Warning warner)
-			throws SPFormatException, NoSuchFileException, XMLStreamException, IOException {
+			throws SPFormatException, XMLStreamException, IOException {
 		final Transactional db = getDB(file);
 		try {
 			return dbMapReader.readMap(db, warner);

@@ -617,7 +617,7 @@ public class SPFluidReader implements IMapReader, ISPReader {
 
 	@Override
 	public IMutableLegacyMap readMap(final Path file, final Warning warner)
-			throws SPFormatException, NoSuchFileException, XMLStreamException, IOException {
+			throws SPFormatException, XMLStreamException, IOException {
 		try (final BufferedReader istream = Files.newBufferedReader(file, StandardCharsets.UTF_8)) {
 			return readMapFromStream(file, istream, warner);
 		} catch (final FileNotFoundException except) {
