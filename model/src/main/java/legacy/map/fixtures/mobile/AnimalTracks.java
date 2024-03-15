@@ -107,21 +107,24 @@ public class AnimalTracks implements HasMutableImage, MobileFixture,
 
 	@Override
 	public boolean isSubset(final IFixture fixture, final Consumer<String> report) {
-		if (fixture instanceof final AnimalTracks at) {
-			if (at.getKind().equals(kind)) {
+		switch (fixture) {
+			case final AnimalTracks at when at.getKind().equals(kind) -> {
 				return true;
-			} else {
+			}
+			case final AnimalTracks at -> {
 				report.accept(String.format(
 						"Comparing tracks from different kinds of animals: %s and %s",
 						at.getKind(), kind));
 				return false;
 			}
-		} else if (fixture instanceof final Animal a && a.getKind().equals(kind)) {
-			report.accept(String.format("Has full %s animal where we have only tracks", kind));
-			return false;
-		} else {
-			report.accept("Different kind of fixture");
-			return false;
+			case final Animal a when a.getKind().equals(kind) -> {
+				report.accept(String.format("Has full %s animal where we have only tracks", kind));
+				return false;
+			}
+			default -> {
+				report.accept("Different kind of fixture");
+				return false;
+			}
 		}
 	}
 

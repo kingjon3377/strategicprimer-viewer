@@ -2,6 +2,8 @@ package report.generators.tabular;
 
 import java.util.List;
 
+import legacy.map.HasExtent;
+import legacy.map.HasPopulation;
 import org.javatuples.Pair;
 import org.jetbrains.annotations.Nullable;
 
@@ -93,54 +95,52 @@ public class CropTabularReportGenerator implements ITableGenerator</*Forest|Shru
 		final String cultivation;
 		final String status;
 		final String size;
-		final String sizeUnit;
+		String sizeUnit = "unknown"; // Made mutable to simplify code flow for HasPopulation below
 		final String crop = ((HasKind) item).getKind();
-		if (item instanceof final Forest f) {
-			kind = (f.isRows()) ? "rows" : "forest";
-			cultivation = "---";
-			status = "---";
-			if (f.getAcres().doubleValue() > 0.0) {
-				size = truncatedNumberString(f.getAcres());
-				sizeUnit = "acres";
-			} else {
-				size = "unknown";
-				sizeUnit = "---";
+		switch (item) {
+			case final Forest f when f.isRows() -> {
+				kind = "rows";
+				cultivation = "---";
+				status = "---";
 			}
-		} else if (item instanceof final Shrub s) {
-			kind = "shrub";
-			cultivation = "---";
-			status = "---";
-			if (s.getPopulation() > 0) {
-				size = Integer.toString(s.getPopulation());
+			case final Forest f -> {
+				kind = "forest";
+				cultivation = "---";
+				status = "---";
+			}
+			case final Shrub s -> {
+				kind = "shrub";
+				cultivation = "---";
+				status = "---";
 				sizeUnit = "plants";
-			} else {
-				size = "unknown";
-				sizeUnit = "---";
 			}
-		} else if (item instanceof final Meadow m) {
-			kind = m.isField() ? "field" : "meadow";
-			cultivation = m.isCultivated() ? "cultivated" : "wild";
-			status = m.getStatus().toString();
-			if (m.getAcres().doubleValue() > 0.0) {
-				size = truncatedNumberString(m.getAcres());
-				sizeUnit = "acres";
-			} else {
-				size = "unknown";
-				sizeUnit = "---";
+			case final Meadow m -> {
+				kind = m.isField() ? "field" : "meadow";
+				cultivation = m.isCultivated() ? "cultivated" : "wild";
+				status = m.getStatus().toString();
 			}
-		} else if (item instanceof final Grove g) {
-			kind = g.isOrchard() ? "orchard" : "grove";
-			cultivation = g.isCultivated() ? "cultivated" : "wild";
-			status = "---";
-			if (g.getPopulation() > 0) {
-				size = Integer.toString(g.getPopulation());
+			case final Grove g -> {
+				kind = g.isOrchard() ? "orchard" : "grove";
+				cultivation = g.isCultivated() ? "cultivated" : "wild";
+				status = "---";
 				sizeUnit = "trees";
-			} else {
+			}
+			default -> {
+				return Collections.emptyList();
+			}
+		}
+		switch (item) {
+			case final HasExtent he when he.getAcres().doubleValue() > 0.0 -> {
+				size = truncatedNumberString(he.getAcres());
+				sizeUnit = "acres";
+			}
+			case final HasPopulation hp when hp.getPopulation() > 0 -> {
+				size = Integer.toString(hp.getPopulation());
+			}
+			default -> {
 				size = "unknown";
 				sizeUnit = "---";
 			}
-		} else {
-			return Collections.emptyList();
 		}
 		fixtures.remove(key);
 		return Collections.singletonList(Arrays.asList(distanceString(loc, hq, dimensions),

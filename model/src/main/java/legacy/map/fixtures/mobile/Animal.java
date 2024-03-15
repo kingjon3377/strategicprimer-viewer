@@ -87,30 +87,37 @@ public interface Animal extends AnimalOrTracks, MobileFixture, HasImage,
 	@Override
 	default boolean isSubset(final IFixture obj, final Consumer<String> report) {
 		if (obj.getId() == getId()) {
-			if (obj instanceof final Animal a) {
-				if (!getKind().equals(a.getKind())) {
+			switch (obj) {
+				case final Animal a when !getKind().equals(a.getKind()) -> {
 					report.accept("Different kinds of animal for ID #" + getId());
 					return false;
-				} else if (!isTalking() && a.isTalking()) {
+				}
+				case final Animal a when !isTalking() && a.isTalking() -> {
 					report.accept(String.format("In animal ID #%d:\tSubmap's is talking and master's isn't", getId()));
 					return false;
-				} else if (!getStatus().equals(a.getStatus())) {
+				}
+				case final Animal a when !getStatus().equals(a.getStatus()) -> {
 					report.accept("Animal domestication status differs at ID #" + getId());
 					return false;
-				} else if (a.getPopulation() > getPopulation()) {
+				}
+				case final Animal a when a.getPopulation() > getPopulation() -> {
 					report.accept(String.format("In animal #%d: Submap has greater population than master", getId()));
 					return false;
-				} else if (a.getBorn() < getBorn()) {
+				}
+				case final Animal a when a.getBorn() < getBorn() -> {
 					report.accept(String.format("In animal #%d: Submap has greater age than master", getId()));
 					return false;
-				} else {
+				}
+				case final Animal ignored -> {
 					return true;
 				}
-			} else if (obj instanceof final AnimalTracks at && getKind().equals(at.getKind())) {
-				return true;
-			} else {
-				report.accept(String.format("For ID #%d, different kinds of members", getId()));
-				return false;
+				case final AnimalTracks at when getKind().equals(at.getKind()) -> {
+					return true;
+				}
+				default -> {
+					report.accept(String.format("For ID #%d, different kinds of members", getId()));
+					return false;
+				}
 			}
 		} else {
 			report.accept(String.format("Called with different IDs, #%d and #%d", getId(), obj.getId()));

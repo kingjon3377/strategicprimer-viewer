@@ -71,41 +71,44 @@ public class AnimalTabularReportGenerator implements ITableGenerator<AnimalOrTra
 		final String kind;
 		final String age;
 		final String population;
-		if (item instanceof AnimalTracks) {
-			kind = "tracks or traces of " + item.getKind();
-			age = "---";
-			population = "---";
-		} else if (item instanceof final Animal animal) {
-			if (animal.isTalking()) {
+		switch (item) {
+			case AnimalTracks animalTracks -> {
+				kind = "tracks or traces of " + item.getKind();
+				age = "---";
+				population = "---";
+			}
+			case final Animal animal when animal.isTalking() -> {
 				kind = "talking " + item.getKind();
 				age = "---";
 				population = "---";
-			} else if ("wild".equals(animal.getStatus())) {
+			}
+			case final Animal animal when "wild".equals(animal.getStatus()) -> {
 				kind = item.getKind();
 				age = "---";
 				population = "---";
-			} else {
+			}
+			case final Animal animal when animal.getBorn() >= 0 -> {
 				kind = String.format("%s %s", animal.getStatus(), item.getKind());
 				population = Integer.toString(animal.getPopulation());
-				if (animal.getBorn() >= 0) {
-					final String lkey = animal.getKind();
-					if (animal.getBorn() > currentTurn) {
-						age = "unborn";
-					} else if (animal.getBorn() == currentTurn) {
-						age = "newborn";
-					} else if (MaturityModel.getMaturityAges().containsKey(lkey) &&
-							MaturityModel.getMaturityAges().get(lkey) <=
-									(currentTurn - animal.getBorn())) {
-						age = "adult";
-					} else {
-						age = String.format("%d turns", currentTurn - animal.getBorn());
-					}
-				} else {
+				final String lkey = animal.getKind();
+				if (animal.getBorn() > currentTurn) {
+					age = "unborn";
+				} else if (animal.getBorn() == currentTurn) {
+					age = "newborn";
+				} else if (MaturityModel.getMaturityAges().containsKey(lkey) &&
+						MaturityModel.getMaturityAges().get(lkey) <=
+								(currentTurn - animal.getBorn())) {
 					age = "adult";
+				} else {
+					age = String.format("%d turns", currentTurn - animal.getBorn());
 				}
 			}
-		} else {
-			throw new IllegalStateException("Unexpected AnimalOrTracks subtype");
+			case final Animal animal -> {
+				kind = String.format("%s %s", animal.getStatus(), item.getKind());
+				population = Integer.toString(animal.getPopulation());
+				age = "adult";
+			}
+			default -> throw new IllegalStateException("Unexpected AnimalOrTracks subtype");
 		}
 		fixtures.remove(key);
 		return Collections.singletonList(Arrays.asList(distanceString(loc, hq, dimensions),
