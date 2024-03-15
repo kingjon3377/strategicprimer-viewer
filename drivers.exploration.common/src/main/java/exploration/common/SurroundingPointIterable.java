@@ -65,6 +65,6 @@ public class SurroundingPointIterable implements Iterable<Point> {
 
 	@Override
 	public Spliterator<Point> spliterator() {
-		return Iterable.super.spliterator();
+		return points.spliterator();
 	}
 }
