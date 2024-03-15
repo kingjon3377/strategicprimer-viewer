@@ -33,7 +33,7 @@ public class AnimalTabularReportGenerator implements ITableGenerator<AnimalOrTra
 	}
 
 	public AnimalTabularReportGenerator(final @Nullable Point hq, final MapDimensions dimensions,
-										final int currentTurn) {
+	                                    final int currentTurn) {
 		this.hq = hq;
 		this.dimensions = dimensions;
 		this.currentTurn = currentTurn;

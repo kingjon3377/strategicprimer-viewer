@@ -91,8 +91,8 @@ public interface IUnit extends MobileFixture, HasImage, HasKind, HasName,
 	 * Clone the unit.
 	 */
 	@Override
-    @NotNull
-    IUnit copy(CopyBehavior zero);
+	@NotNull
+	IUnit copy(CopyBehavior zero);
 
 	/**
 	 * The plural of Unit is Units
