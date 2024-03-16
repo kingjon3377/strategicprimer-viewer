@@ -13,6 +13,7 @@ public final class Decimalize {
 	 * this will most likely throw if it is a floating-point number and
 	 * either infinity or `NaN`.
 	 */
+	@SuppressWarnings("ChainOfInstanceofChecks")
 	public static BigDecimal decimalize(final Number number) {
 		if (number instanceof BigDecimal) {
 			return (BigDecimal) number;

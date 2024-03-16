@@ -29,6 +29,7 @@ public final class ComponentParentStream implements Iterable<Component> {
 			return !Objects.isNull(current);
 		}
 
+		@SuppressWarnings("ChainOfInstanceofChecks")
 		@Override
 		public @NotNull Component next() {
 			final @Nullable Component retval = current;
