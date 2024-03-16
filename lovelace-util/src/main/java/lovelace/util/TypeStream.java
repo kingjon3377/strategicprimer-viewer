@@ -26,7 +26,7 @@ public final class TypeStream implements Iterable<Class<?>> {
 		return new TypeIterator(obj, cache);
 	}
 
-	private static class TypeIterator implements Iterator<Class<?>> {
+	private static final class TypeIterator implements Iterator<Class<?>> {
 		private final LinkedList<Class<?>> ourCopy;
 		private final List<Class<?>> cache;
 		private final Collection<Class<?>> classes = new HashSet<>();
