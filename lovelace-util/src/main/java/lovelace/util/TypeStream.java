@@ -13,7 +13,7 @@ import java.util.NoSuchElementException;
 /**
  * A stream of all the types that a given object satisfies.
  */
-public class TypeStream implements Iterable<Class<?>> {
+public final class TypeStream implements Iterable<Class<?>> {
 	private final Object obj;
 	private final List<Class<?>> cache = new LinkedList<>();
 
