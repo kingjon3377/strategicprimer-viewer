@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -12,7 +13,7 @@ import java.util.Set;
  */
 public class ArraySet<Element> extends AbstractSet<Element> {
 	/* The backing array. */
-	private final ArrayList<Element> impl;
+	private final List<Element> impl;
 
 	public ArraySet() {
 		impl = new ArrayList<>();
