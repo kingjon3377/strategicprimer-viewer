@@ -1,14 +1,14 @@
 package lovelace.util;
 
 import java.util.Arrays;
-import java.util.Objects;
-import java.util.Set;
+import java.util.Collection;
 import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.Queue;
-import java.util.List;
 import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Objects;
+import java.util.Queue;
 
 /**
  * A stream of all the types that a given object satisfies.
@@ -29,7 +29,7 @@ public final class TypeStream implements Iterable<Class<?>> {
 	private static class TypeIterator implements Iterator<Class<?>> {
 		private final LinkedList<Class<?>> ourCopy;
 		private final List<Class<?>> cache;
-		private final Set<Class<?>> classes = new HashSet<>();
+		private final Collection<Class<?>> classes = new HashSet<>();
 		private final Queue<Class<?>> queue = new LinkedList<>();
 
 		public TypeIterator(final Object obj, final List<Class<?>> cache) {
