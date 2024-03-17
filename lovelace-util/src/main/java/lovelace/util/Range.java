@@ -41,6 +41,11 @@ public record Range(int lowerBound, int upperBound) implements Iterable<Integer>
 		}
 
 		@Override
+		public String toString() {
+			return "RangeIterator (" + current + ", " + upperBound + ")";
+		}
+
+		@Override
 		public boolean hasNext() {
 			return current < upperBound;
 		}

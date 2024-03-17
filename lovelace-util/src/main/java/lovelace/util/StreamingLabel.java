@@ -26,6 +26,11 @@ public final class StreamingLabel extends JEditorPane {
 		LabelTextColor(final String color) {
 			colorName = color;
 		}
+
+		@Override
+		public String toString() {
+			return colorName;
+		}
 	}
 
 	private final StringBuilder buffer = new StringBuilder();
@@ -54,5 +59,10 @@ public final class StreamingLabel extends JEditorPane {
 		buffer.append("<br />");
 		setText("<html><body bgcolor=\"#000000\">" + buffer + "</body></html>");
 		repaint();
+	}
+
+	@Override
+	public String toString() {
+		return "StreamingLabel with " + buffer.length() + " characters.";
 	}
 }

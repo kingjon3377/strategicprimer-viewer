@@ -17,12 +17,14 @@ import java.util.Objects;
  */
 public class ResourceInputStream extends InputStream {
 	private final InputStream wrapped;
+	private final String filename;
 
 	public ResourceInputStream(final String filename) throws NoSuchFileException {
 		this(filename, ResourceInputStream.class);
 	}
 
 	public ResourceInputStream(final String filename, final Class<?> sourceClass) throws NoSuchFileException {
+		this.filename = filename;
 		InputStream temp;
 		try {
 			// N.B. we don't use Files::newInputStream because we'd have to either catch or throw IOException.
@@ -84,5 +86,10 @@ public class ResourceInputStream extends InputStream {
 	@Override
 	public void close() throws IOException {
 		wrapped.close();
+	}
+
+	@Override
+	public String toString() {
+		return "ResourceInputStream for: " + filename;
 	}
 }

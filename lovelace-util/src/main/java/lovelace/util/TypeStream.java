@@ -26,16 +26,23 @@ public final class TypeStream implements Iterable<Class<?>> {
 		return new TypeIterator(obj, cache);
 	}
 
+	@Override
+	public String toString() {
+		return "TypeStream for " + obj;
+	}
+
 	private static final class TypeIterator implements Iterator<Class<?>> {
 		private final LinkedList<Class<?>> ourCopy;
 		private final List<Class<?>> cache;
 		private final Collection<Class<?>> classes = new HashSet<>();
 		private final Queue<Class<?>> queue = new LinkedList<>();
+		private final String str;
 
 		public TypeIterator(final Object obj, final List<Class<?>> cache) {
 			this.cache = cache;
 			ourCopy = new LinkedList<>(cache);
 			queue.add(obj.getClass());
+			str = "TypeStream iterator for: " + obj;
 		}
 
 		@Override
@@ -62,6 +69,11 @@ public final class TypeStream implements Iterable<Class<?>> {
 				}
 			}
 			throw new NoSuchElementException("No more supertypes");
+		}
+
+		@Override
+		public String toString() {
+			return str;
 		}
 	}
 }

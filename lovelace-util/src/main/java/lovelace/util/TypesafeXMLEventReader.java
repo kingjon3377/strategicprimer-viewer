@@ -114,4 +114,9 @@ public class TypesafeXMLEventReader implements Iterator<XMLEvent>, Closeable {
 			return wrapped.hasNext();
 		}
 	}
+
+	@Override
+	public String toString() {
+		return "TypesafeXMLEventReader wrapping: " + wrapped;
+	}
 }

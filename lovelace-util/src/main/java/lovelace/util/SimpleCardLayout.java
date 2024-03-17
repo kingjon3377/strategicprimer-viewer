@@ -8,6 +8,7 @@ import java.io.Serial;
  * A convenience wrapper around {@link CardLayout} so callers don't have to
  * pass around a reference to the laid-out container to flip between cards.
  */
+@SuppressWarnings("ClassHasNoToStringMethod") // CardLayout toString suffices
 public class SimpleCardLayout extends CardLayout {
 	@Serial
 	private static final long serialVersionUID = 1;

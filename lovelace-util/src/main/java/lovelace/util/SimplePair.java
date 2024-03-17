@@ -45,4 +45,9 @@ public final class SimplePair<Type> {
 	public static <Type> SimplePair<Type> of(final Type first, final Type second) {
 		return new SimplePair<>(first, second);
 	}
+
+	@Override
+	public String toString() {
+		return "SimplePair["+ first + "," + second + "]";
+	}
 }
