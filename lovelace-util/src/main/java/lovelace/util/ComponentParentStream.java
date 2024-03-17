@@ -45,6 +45,11 @@ public final class ComponentParentStream implements Iterable<Component> {
 				return retval;
 			}
 		}
+
+		@Override
+		public String toString() {
+			return "ComponentParentIterator{current=%s}".formatted(current);
+		}
 	}
 
 	private final @NotNull Component widget;
@@ -60,5 +65,10 @@ public final class ComponentParentStream implements Iterable<Component> {
 
 	public Stream<Component> stream() {
 		return StreamSupport.stream(spliterator(), false);
+	}
+
+	@Override
+	public String toString() {
+		return "ComponentParentStream{widget=%s}".formatted(widget);
 	}
 }

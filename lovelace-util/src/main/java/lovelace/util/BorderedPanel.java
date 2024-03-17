@@ -163,4 +163,10 @@ public class BorderedPanel extends JPanel {
 		return new BorderedPanel(center, null, null, lineEnd,
 				lineStart);
 	}
+
+	@Override
+	public String toString() {
+		return "BorderedPanel{center=%s, lineStart=%s, lineEnd=%s, pageStart=%s, pageEnd=%s}".formatted(center,
+				lineStart, lineEnd, pageStart, pageEnd);
+	}
 }

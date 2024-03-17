@@ -7,6 +7,7 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * A {@link Set} backed by an {@link ArrayList}.
@@ -61,5 +62,10 @@ public class ArraySet<Element> extends AbstractSet<Element> {
 	/* Sort the underlying array by {@link the given comparison function|comparing} */
 	public void sort(final Comparator<Element> comparing) {
 		impl.sort(comparing);
+	}
+
+	@Override
+	public String toString() {
+		return impl.stream().map(Object::toString).collect(Collectors.joining(",", "{", "}"));
 	}
 }

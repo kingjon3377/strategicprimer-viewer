@@ -20,12 +20,19 @@ public final class BoxPanel extends JPanel {
 	 * The possible axes that a {@link BoxLayout} can be laid out on.
 	 */
 	public enum BoxAxis {
-		LineAxis(BoxLayout.LINE_AXIS),
-		PageAxis(BoxLayout.PAGE_AXIS);
+		LineAxis(BoxLayout.LINE_AXIS, "LINE_AXIS"),
+		PageAxis(BoxLayout.PAGE_AXIS, "PAGE_AXIS");
 		public final int axis;
+		private final String str;
 
-		BoxAxis(final int axis) {
+		BoxAxis(final int axis, final String str) {
 			this.axis = axis;
+			this.str = str;
+		}
+
+		@Override
+		public String toString() {
+			return str;
 		}
 	}
 
@@ -96,5 +103,10 @@ public final class BoxPanel extends JPanel {
 		}
 		retval.addGlue();
 		return retval;
+	}
+
+	@Override
+	public String toString() {
+		return "BoxPanel{axis=%s}".formatted(axis);
 	}
 }
