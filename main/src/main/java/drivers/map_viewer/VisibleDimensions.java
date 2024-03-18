@@ -93,7 +93,7 @@ public class VisibleDimensions {
 
 	@Override
 	public String toString() {
-		return String.format("VisibleDimensions: (%d, %d) to (%d, %d)", minimumRow,
+		return "VisibleDimensions: (%d, %d) to (%d, %d)".formatted(minimumRow,
 				minimumColumn, maximumRow, maximumColumn);
 	}
 

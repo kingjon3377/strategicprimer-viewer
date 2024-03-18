@@ -63,9 +63,9 @@ import query.SmallAnimalModel;
 
 	private @Nullable HerdModel chooseHerdModel(final String animal) {
 		return cli.chooseFromList(Stream.concat(Stream.of(MammalModel.values()), Stream.concat(
-								Stream.of(PoultryModel.values()), Stream.of(SmallAnimalModel.values())))
-						.collect(Collectors.toList()), String.format("What kind of animal(s) is/are %s?", animal),
-				"No animal kinds found", "Kind of animal:", ICLIHelper.ListChoiceBehavior.ALWAYS_PROMPT).getValue1();
+                                Stream.of(PoultryModel.values()), Stream.of(SmallAnimalModel.values())))
+                        .collect(Collectors.toList()), "What kind of animal(s) is/are %s?".formatted(animal),
+                "No animal kinds found", "Kind of animal:", ICLIHelper.ListChoiceBehavior.ALWAYS_PROMPT).getValue1();
 	}
 
 	@Override
@@ -112,8 +112,7 @@ import query.SmallAnimalModel;
 				list.add(group);
 				continue;
 			}
-			final Boolean cont = cli.inputBoolean(String.format( // TODO: Inline
-					"No model for %s. Really skip?", group.getKind()));
+			final Boolean cont = cli.inputBoolean("No model for %s. Really skip?".formatted(group.getKind()));
 			if (Boolean.TRUE.equals(cont)) {
 				continue;
 			} else {
@@ -122,8 +121,7 @@ import query.SmallAnimalModel;
 			}
 		}
 		long workerCount = unit.stream().filter(IWorker.class::isInstance).map(IWorker.class::cast).count();
-		final Integer addendum = cli.inputNumber(String.format(
-				"%d workers in this unit. Any additional workers to account for:", workerCount));
+		final Integer addendum = cli.inputNumber("%d workers in this unit. Any additional workers to account for:".formatted(workerCount));
 		if (!Objects.isNull(addendum) && addendum >= 0) {
 			workerCount += addendum;
 		} else {
@@ -157,18 +155,14 @@ import query.SmallAnimalModel;
 			final String resourceProduced;
 			if (herdModel instanceof final PoultryModel pm) {
 				resourceProduced = combinedAnimal.getKind() + " eggs";
-				final Boolean cleaningDay = cli.inputBoolean(String.format(
-						"Is this the one turn in every %d to clean up after birds?",
-						pm.getExtraChoresInterval() + 1));
-				addLineToOrders.accept(String.format("Gathering %s eggs took the %d workers %d min",
+				final Boolean cleaningDay = cli.inputBoolean("Is this the one turn in every %d to clean up after birds?".formatted(pm.getExtraChoresInterval() + 1));
+				addLineToOrders.accept("Gathering %s eggs took the %d workers %d min".formatted(
 						combinedAnimal, workerCount, pm.dailyTime((int) flockPerHerder)));
 				minutesSpent += pm.getDailyTimePerHead() * flockPerHerder;
 				if (Objects.isNull(cleaningDay)) {
 					return null;
 				} else if (cleaningDay) {
-					addLineToOrders.accept(String.format(
-							"Cleaning up after them takes %.1f hours.",
-							PoultryModel.dailyExtraTime((int) flockPerHerder) / 60.0));
+					addLineToOrders.accept("Cleaning up after them takes %.1f hours.".formatted(PoultryModel.dailyExtraTime((int) flockPerHerder) / 60.0));
 					minutesSpent += PoultryModel.getExtraTimePerHead() * flockPerHerder;
 				}
 			} else if (herdModel instanceof MammalModel) {
@@ -181,7 +175,7 @@ import query.SmallAnimalModel;
 				} else {
 					baseCost = flockPerHerder * herdModel.getDailyTimePerHead();
 				}
-				addLineToOrders.accept(String.format(" took %d min, plus %s min to gather them",
+				addLineToOrders.accept(" took %d min, plus %s min to gather them".formatted(
 						baseCost, MammalModel.getDailyTimeFloor()));
 				minutesSpent += baseCost;
 				minutesSpent += MammalModel.getDailyTimeFloor();
@@ -197,15 +191,12 @@ import query.SmallAnimalModel;
 							SmallAnimalModel.getDailyTimeFloor();
 				}
 				minutesSpent += baseCost;
-				addLineToOrders.accept(String.format(" took the %d workers %d min.", workerCount, baseCost));
-				final Boolean extra = cli.inputBoolean(String.format(
-						"Is this the one turn in every %d to clean up after the animals?",
-						smm.getExtraChoresInterval() + 1));
+				addLineToOrders.accept(" took the %d workers %d min.".formatted(workerCount, baseCost));
+				final Boolean extra = cli.inputBoolean("Is this the one turn in every %d to clean up after the animals?".formatted(smm.getExtraChoresInterval() + 1));
 				if (Objects.isNull(extra)) {
 					return null;
 				} else {
-					addLineToOrders.accept(String.format("Cleaning up after them took %d minutes.",
-							SmallAnimalModel.getExtraTimePerHead() * flockPerHerder));
+					addLineToOrders.accept("Cleaning up after them took %d minutes.".formatted(SmallAnimalModel.getExtraTimePerHead() * flockPerHerder));
 					minutesSpent += SmallAnimalModel.getExtraTimePerHead() * flockPerHerder;
 				}
 				continue;
@@ -213,7 +204,7 @@ import query.SmallAnimalModel;
 				LovelaceLogger.error("Unhandled animal type");
 				return null;
 			}
-			addLineToOrders.accept(String.format("This produced %.1f %s, %.1f lbs, of %s.",
+			addLineToOrders.accept("This produced %.1f %s, %.1f lbs, of %s.".formatted(
 					production.number().doubleValue(), production.units(), pounds, resourceProduced));
 			if (!Objects.isNull(home)) {
 				// FIXME: 'production' is in gallons; we want only pound-denominated food resources in the map
@@ -222,7 +213,7 @@ import query.SmallAnimalModel;
 						model.getMap().getCurrentTurn());
 			}
 		}
-		addToOrders.accept(String.format("In all, tending the animals took %s.", inHours(minutesSpent)));
+		addToOrders.accept("In all, tending the animals took %s.".formatted(inHours(minutesSpent)));
 		return buffer.toString().strip();
 	}
 }

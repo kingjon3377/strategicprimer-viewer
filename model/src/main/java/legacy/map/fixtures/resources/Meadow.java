@@ -157,10 +157,10 @@ public class Meadow implements HarvestableFixture, HasExtent<Meadow> {
 			acreage = acres + "-acre ";
 		}
 		if (field) {
-			return (cultivated) ? String.format("%s%s field", acreage, kind) :
-					String.format("Wild or abandoned %s%s field", acreage, kind);
+			return (cultivated) ? "%s%s field".formatted(acreage, kind) :
+					"Wild or abandoned %s%s field".formatted(acreage, kind);
 		} else {
-			return String.format("%s%s meadow", acreage, kind);
+			return "%s%s meadow".formatted(acreage, kind);
 		}
 	}
 
@@ -208,16 +208,16 @@ public class Meadow implements HarvestableFixture, HasExtent<Meadow> {
 				return false;
 			} else if (!kind.equals(it.getKind())) {
 				final String fieldString = (field) ? "field" : "meadow";
-				report.accept(String.format("In %s with ID #%d:\tKinds differ",
+				report.accept("In %s with ID #%d:\tKinds differ".formatted(
 						fieldString, id));
 				return false;
 			}
 			final Consumer<String> localReport;
 			if (field) {
-				localReport = s -> report.accept(String.format("In %s field (ID #%d):\t%s",
+				localReport = s -> report.accept("In %s field (ID #%d):\t%s".formatted(
 						kind, id, s));
 			} else {
-				localReport = s -> report.accept(String.format("In %s meadow (ID #%d):\t%s",
+				localReport = s -> report.accept("In %s meadow (ID #%d):\t%s".formatted(
 						kind, id, s));
 			}
 			boolean retval = true;

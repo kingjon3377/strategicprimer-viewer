@@ -56,7 +56,7 @@ public final class PlayerCollection implements IMutablePlayerCollection {
 
 	@Override
 	public String toString() {
-		return String.format("Player collection with %d players", players.size());
+        return "Player collection with %d players".formatted(players.size());
 	}
 
 	private Player currentPlayer = new PlayerImpl(-1, "", "", true, "");

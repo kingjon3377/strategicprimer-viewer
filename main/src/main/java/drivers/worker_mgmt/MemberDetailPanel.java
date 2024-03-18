@@ -207,7 +207,7 @@ public class MemberDetailPanel extends BorderedPanel implements UnitMemberListen
 				if (job.isEmpty()) {
 					continue;
 				}
-				final JLabel label = new JLabel(String.format("%s %d", job.getName(),
+				final JLabel label = new JLabel("%s %d".formatted(job.getName(),
 						job.getLevel()));
 				if (job.iterator().hasNext()) {
 					label.setToolTipText(StreamSupport.stream(job.spliterator(), false)
@@ -229,7 +229,7 @@ public class MemberDetailPanel extends BorderedPanel implements UnitMemberListen
 							maturityAges.get(animal.getKind())) {
 				if (animal.getPopulation() > 1) {
 					typeLabel.setText("Young Animals");
-					kindLabel.setText(String.format("%d young %s",
+					kindLabel.setText("%d young %s".formatted(
 							animal.getPopulation(), plural));
 				} else {
 					typeLabel.setText("Young Animal");
@@ -238,7 +238,7 @@ public class MemberDetailPanel extends BorderedPanel implements UnitMemberListen
 			} else {
 				if (animal.getPopulation() > 1) {
 					typeLabel.setText("Animals");
-					kindLabel.setText(String.format("%d %s", animal.getPopulation(),
+					kindLabel.setText("%d %s".formatted(animal.getPopulation(),
 							plural));
 				} else {
 					typeLabel.setText("Animal");
@@ -253,7 +253,7 @@ public class MemberDetailPanel extends BorderedPanel implements UnitMemberListen
 			typeLabel.setText("Equipment");
 			nameLabel.setText("");
 			if (eq.getCount() > 1) {
-				kindLabel.setText(String.format("%d x %s", eq.getCount(), eq.getKind()));
+				kindLabel.setText("%d x %s".formatted(eq.getCount(), eq.getKind()));
 			} else {
 				kindLabel.setText(eq.getKind());
 			}
@@ -263,7 +263,7 @@ public class MemberDetailPanel extends BorderedPanel implements UnitMemberListen
 		} else if (local instanceof final IResourcePile rp) {
 			typeLabel.setText("Resource");
 			nameLabel.setText("");
-			kindLabel.setText(String.format("%s %s (%s)", rp.getQuantity(), rp.getContents(),
+			kindLabel.setText("%s %s (%s)".formatted(rp.getQuantity(), rp.getContents(),
 					rp.getKind()));
 			for (final InterpolatedLabel<@Nullable WorkerStats> label : statLabels) {
 				label.setArgument(null);

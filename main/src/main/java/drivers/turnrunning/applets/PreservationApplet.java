@@ -44,9 +44,9 @@ import static lovelace.util.Decimalize.decimalize;
 
 	private static String describePile(final IResourcePile pile) {
 		if (pile.getCreated() < 0) {
-			return String.format("%s of %s", pile.getQuantity(), pile.getContents());
+			return "%s of %s".formatted(pile.getQuantity(), pile.getContents());
 		} else {
-			return String.format("%s of %s (turn #%d)", pile.getQuantity(), pile.getContents(),
+			return "%s of %s (turn #%d)".formatted(pile.getQuantity(), pile.getContents(),
 					pile.getCreated());
 		}
 	}
@@ -94,14 +94,13 @@ import static lovelace.util.Decimalize.decimalize;
 				return null;
 			}
 			final BigDecimal subtrahend;
-			final Boolean useAll = cli.inputBoolean(String.format("Use all %s?", item.getQuantity()));
+			final Boolean useAll = cli.inputBoolean("Use all %s?".formatted(item.getQuantity()));
 			if (Objects.isNull(useAll)) {
 				return null;
 			} else if (useAll) {
 				subtrahend = decimalize(item.getQuantity().number());
 			} else {
-				subtrahend = cli.inputDecimal(String.format("How many %s to use?",
-						item.getQuantity().units()));
+				subtrahend = cli.inputDecimal("How many %s to use?".formatted(item.getQuantity().units()));
 				if (Objects.isNull(subtrahend) || subtrahend.signum() <= 0) {
 					return null;
 				}

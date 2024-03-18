@@ -119,8 +119,7 @@ public class TestTownComparators {
 		shuffled.sort(TownComparators::compareTowns);
 //		for (int i = 0; i < shuffled.size(); i++) {
 //			assertEquals(expected.get(i), shuffled.get(i),
-//				String.format("%dth element in sorted list of towns is as expected",
-//					i));
+//				"%dth element in sorted list of towns is as expected".formatted(i));
 //		}
 		assertEquals(expected, shuffled, "Sorted list of towns is in the order we expect");
 	}

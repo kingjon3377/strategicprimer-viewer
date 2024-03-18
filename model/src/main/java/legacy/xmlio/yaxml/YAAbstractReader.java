@@ -216,7 +216,7 @@ abstract class YAAbstractReader<Item, Value> implements YAReader<Item, Value> {
 	 */
 	protected static void writeProperty(final ThrowingConsumer<String, IOException> ostream, final String name, final String val)
 			throws IOException {
-		ostream.accept(String.format(" %s=\"%s\"", simpleQuote(name, '='), simpleQuote(val, '"')));
+		ostream.accept(" %s=\"%s\"".formatted(simpleQuote(name, '='), simpleQuote(val, '"')));
 	}
 
 	/**
@@ -360,9 +360,9 @@ abstract class YAAbstractReader<Item, Value> implements YAReader<Item, Value> {
 	protected static void writeTag(final ThrowingConsumer<String, IOException> ostream, final String tag, final int tabs)
 			throws IOException {
 		indent(ostream, tabs);
-		ostream.accept(String.format("<%s", simpleQuote(tag, '>')));
+		ostream.accept("<%s".formatted(simpleQuote(tag, '>')));
 		if (tabs == 0) {
-			ostream.accept(String.format(" xmlns=\"%s\"", SP_NAMESPACE));
+			ostream.accept(" xmlns=\"%s\"".formatted(SP_NAMESPACE));
 		}
 	}
 
@@ -388,7 +388,7 @@ abstract class YAAbstractReader<Item, Value> implements YAReader<Item, Value> {
 		if (tabs > 0) {
 			indent(ostream, tabs);
 		}
-		ostream.accept(String.format("</%s>%n", simpleQuote(tag, '>')));
+		ostream.accept("</%s>%n".formatted(simpleQuote(tag, '>')));
 	}
 
 	/**

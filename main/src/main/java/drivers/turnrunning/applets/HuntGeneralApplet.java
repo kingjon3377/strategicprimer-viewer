@@ -55,7 +55,7 @@ import org.jetbrains.annotations.Nullable;
 	 */
 	private static String populationDescription(final Animal animal) {
 		if (animal.getPopulation() > 1) {
-			return String.format("a group of perhaps %d %s", animal.getPopulation(),
+			return "a group of perhaps %d %s".formatted(animal.getPopulation(),
 					AnimalPlurals.get(animal.getKind()));
 		} else {
 			return animal.getKind();
@@ -63,7 +63,7 @@ import org.jetbrains.annotations.Nullable;
 	}
 
 	private static String describeUnit(final IUnit unit) {
-		return String.format("%s (%s)", unit.getName(), unit.getKind());
+		return "%s (%s)".formatted(unit.getName(), unit.getKind());
 	}
 
 	protected @Nullable Boolean handleCapture(final Animal find) {
@@ -122,7 +122,7 @@ import org.jetbrains.annotations.Nullable;
 
 	private @Nullable Integer handleFight(final Point loc, final Animal find, final int time) {
 		int cost;
-		final Integer temp = cli.inputNumber(String.format("Time to %s: ", verb));
+		final Integer temp = cli.inputNumber("Time to %s: ".formatted(verb));
 		if (Objects.isNull(temp)) {
 			return null;
 		} else {
@@ -144,8 +144,7 @@ import org.jetbrains.annotations.Nullable;
 			}
 			cost += processingTime;
 		}
-		final Boolean reduce = cli.inputBooleanInSeries(String.format(
-				"Reduce animal group population of %d?", find.getPopulation()));
+		final Boolean reduce = cli.inputBooleanInSeries("Reduce animal group population of %d?".formatted(find.getPopulation()));
 		if (Objects.isNull(reduce)) {
 			return null;
 		} else if (reduce) {
@@ -163,17 +162,17 @@ import org.jetbrains.annotations.Nullable;
 			/*Animal|AnimalTracks|HuntingModel.NothingFound*/ final TileFixture find) {
 		switch (find) {
 			case final HuntingModel.NothingFound nothingFound -> {
-				cli.println(String.format("Found nothing for the next %d minutes.", NO_RESULT_COST));
+				cli.println("Found nothing for the next %d minutes.".formatted(NO_RESULT_COST));
 				return NO_RESULT_COST;
 			}
 			case final AnimalTracks at -> {
 				model.copyToSubMaps(loc, find, IFixture.CopyBehavior.ZERO);
-				cli.println(String.format("Found only tracks or traces from %s for the next %d minutes.",
+				cli.println("Found only tracks or traces from %s for the next %d minutes.".formatted(
 						at.getKind(), NO_RESULT_COST));
 				return NO_RESULT_COST;
 			}
 			case final Animal a -> {
-				final Boolean fight = cli.inputBooleanInSeries(String.format("Found %s. Should they %s?",
+				final Boolean fight = cli.inputBooleanInSeries("Found %s. Should they %s?".formatted(
 						populationDescription(a), verb), a.getKind());
 				if (Objects.isNull(fight)) {
 					return null;
@@ -201,7 +200,7 @@ import org.jetbrains.annotations.Nullable;
 		if (Objects.isNull(center)) {
 			return ""; // TODO: return null, surely?
 		}
-		final Integer startingTime = cli.inputNumber(String.format("Minutes to spend %sing: ", command));
+		final Integer startingTime = cli.inputNumber("Minutes to spend %sing: ".formatted(command));
 		if (Objects.isNull(startingTime)) {
 			return ""; // TODO: return null, surely?
 		}

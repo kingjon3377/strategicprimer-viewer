@@ -156,7 +156,7 @@ import java.util.List;
 					return;
 				}
 			}
-			throw new IllegalArgumentException(String.format("After checking %d readers, don't know how to write a %s",
+			throw new IllegalArgumentException("After checking %d readers, don't know how to write a %s".formatted(
 					readers.size(), cls.getName()));
 		}
 	}

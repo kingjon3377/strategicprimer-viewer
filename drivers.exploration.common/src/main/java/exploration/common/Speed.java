@@ -86,9 +86,9 @@ public enum Speed implements HasName {
 	Speed(final double multMod, final int addMod, final String desc) {
 		mpMultiplier = multMod;
 		perceptionModifier = addMod;
-		final String perceptionString = (addMod >= 0) ? String.format("+%d", addMod) :
+		final String perceptionString = (addMod >= 0) ? "+%d".formatted(addMod) :
 				Integer.toString(addMod);
-		name = String.format("%s: x%.1f MP costs, %s Perception", desc, multMod, perceptionString);
+		name = "%s: x%.1f MP costs, %s Perception".formatted(desc, multMod, perceptionString);
 		shortName = desc;
 	}
 

@@ -63,10 +63,8 @@ public class VillageReportGenerator extends AbstractReportGenerator<Village> {
 				if (others.containsKey(village.owner())) {
 					mapping = others.get(village.owner());
 				} else {
-					mapping = new HeadedMapImpl<>(String.format(
-							"<h5>Villages sworn to %s</h5>%n",
-							village.owner().getName()),
-							villageComparator);
+					mapping = new HeadedMapImpl<>("<h5>Villages sworn to %s</h5>%n".formatted(village.owner().getName()),
+                            villageComparator);
 					others.put(village.owner(), mapping);
 				}
 				mapping.put(village, loc);

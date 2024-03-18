@@ -109,7 +109,7 @@ import lovelace.util.LovelaceLogger;
 												  final boolean cellHasFocus) {
 		final JLabel component = (JLabel) DEFAULT_RENDERER.getListCellRendererComponent(list,
 				val, index, isSelected, cellHasFocus);
-		component.setText(String.format("<html><p>%s</p></html>", val.getShortDescription()));
+		component.setText("<html><p>%s</p></html>".formatted(val.getShortDescription()));
 		if (val instanceof final HasImage hi) {
 			component.setIcon(getIcon(hi));
 		} else {

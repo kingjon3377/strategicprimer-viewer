@@ -148,9 +148,9 @@ public class Grove implements HarvestableFixture, HasPopulation<Grove> {
 			type = "grove";
 		}
 		if (population < 0) {
-			return String.format("%s %s %s", cultivation, kind, type);
+			return "%s %s %s".formatted(cultivation, kind, type);
 		} else {
-			return String.format("%s %s %s of %d trees", cultivation, kind, type, population);
+			return "%s %s %s of %d trees".formatted(cultivation, kind, type, population);
 		}
 	}
 
@@ -198,11 +198,11 @@ public class Grove implements HarvestableFixture, HasPopulation<Grove> {
 			boolean retval = true;
 			final Consumer<String> localReport;
 			if (orchard) {
-				localReport = s -> report.accept(String.format(
-						"In orchard with ID #%d:\t%s", id, s));
+				localReport = s -> report.accept(
+						"In orchard with ID #%d:\t%s".formatted(id, s));
 			} else {
-				localReport = s -> report.accept(String.format(
-						"In grove with ID #%d:\t%s", id, s));
+				localReport = s -> report.accept(
+						"In grove with ID #%d:\t%s".formatted(id, s));
 			}
 			if (!kind.equals(it.getKind())) {
 				localReport.accept("Kinds differ");

@@ -121,8 +121,8 @@ public class FixtureEditMenu extends JPopupMenu {
 		final String name = Optional.of(fix).filter(HasName.class::isInstance).map(HasName.class::cast)
 				.map(HasName::getName).orElse("this " + fix);
 		final int reply = JOptionPane.showConfirmDialog(getParent(),
-				String.format("Are you sure you want to dismiss %s?", name), "Confirm Dismissal",
-				JOptionPane.YES_NO_OPTION);
+                "Are you sure you want to dismiss %s?".formatted(name), "Confirm Dismissal",
+                JOptionPane.YES_NO_OPTION);
 		if (reply == JOptionPane.YES_OPTION) {
 			handler.dismissUnitMember(fix);
 		}
@@ -167,7 +167,7 @@ public class FixtureEditMenu extends JPopupMenu {
 	private void removeUnitHandler() {
 		final IUnit fix = (IUnit) fixture;
 		final int reply = JOptionPane.showConfirmDialog(getParent(),
-				String.format("Are you sure you want to remove this %s unit, \"%s\"?",
+				"Are you sure you want to remove this %s unit, \"%s\"?".formatted(
 						fix.getKind(), fix.getName()),
 				"Confirm Removal", JOptionPane.YES_NO_OPTION);
 		if (reply == JOptionPane.YES_OPTION) {

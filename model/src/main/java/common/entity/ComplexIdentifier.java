@@ -23,6 +23,6 @@ public record ComplexIdentifier(@NotNull String originWorld, int creatingPlayer,
 
 	@Override
 	public @NotNull String getIdentifierString() {
-		return String.format("%s (%s-%d)", id, originWorld, creatingPlayer);
+		return "%s (%s-%d)".formatted(id, originWorld, creatingPlayer);
 	}
 }

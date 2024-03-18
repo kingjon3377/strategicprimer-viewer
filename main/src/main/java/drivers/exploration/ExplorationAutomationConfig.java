@@ -27,9 +27,9 @@ import org.jetbrains.annotations.Nullable;
 		this.player = player;
 		conditions = List.of(new Condition<>("at others' fortresses",
 						fixture -> "a fortress belonging to " + fixture.owner(), IFortress.class), new Condition<>("at active towns",
-						fixture -> String.format("a %s active %s", fixture.getTownSize(), fixture.getKind()),
+						fixture -> "a %s active %s".formatted(fixture.getTownSize(), fixture.getKind()),
 						AbstractTown.class, t -> TownStatus.Active == t.getStatus()), new Condition<>("at inactive towns",
-						fixture -> String.format("a %s %s %s", fixture.getTownSize(),
+						fixture -> "a %s %s %s".formatted(fixture.getTownSize(),
 								fixture.getStatus(), fixture.getKind()),
 						AbstractTown.class, t -> TownStatus.Active != t.getStatus()), new Condition<>("at independent villages",
 						"an independent village",
@@ -173,8 +173,7 @@ import org.jetbrains.annotations.Nullable;
 		if (Objects.isNull(matchingCondition)) {
 			return false;
 		} else {
-			cli.println(String.format("There is %s here, so the explorer stops.",
-					matchingCondition.explain()));
+			cli.println("There is %s here, so the explorer stops.".formatted(matchingCondition.explain()));
 			return true;
 		}
 	}

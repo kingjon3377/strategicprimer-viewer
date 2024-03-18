@@ -59,7 +59,7 @@ public class LegacyPlayerCollection implements IMutableLegacyPlayerCollection {
 
 	@Override
 	public String toString() {
-		return String.format("Player collection with %d players", players.size());
+        return "Player collection with %d players".formatted(players.size());
 	}
 
 	private Player current = new PlayerImpl(-1, "");
@@ -167,8 +167,7 @@ public class LegacyPlayerCollection implements IMutableLegacyPlayerCollection {
 					if (player.getName().isEmpty() || "unknown".equalsIgnoreCase(player.getName())) {
 						continue;
 					} else {
-						report.accept(String.format(
-								"Matching players differ: our %s, their %s",
+						report.accept("Matching players differ: our %s, their %s".formatted(
 								match.toString(), player));
 					}
 				} else {

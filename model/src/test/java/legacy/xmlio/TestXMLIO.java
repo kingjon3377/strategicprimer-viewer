@@ -194,8 +194,7 @@ public final class TestXMLIO {
 		if (Objects.isNull(desideratum)) {
 			try (final StringReader stringReader = new StringReader(xml)) {
 				reader.<Type>readXML(FAKE_FILENAME, stringReader, Warning.IGNORE);
-				fail(String.format("Expected a(n) %s to be thrown",
-						exceptionClass.getName()));
+				fail("Expected a(n) %s to be thrown".formatted(exceptionClass.getName()));
 			} catch (final RuntimeException except) {
 				final Throwable cause = except.getCause();
 				assertInstanceOf(exceptionClass, cause, "Exception should be of the right type");
@@ -2074,10 +2073,9 @@ public final class TestXMLIO {
 		// Can't give player names because our test environment doesn't
 		// let us pass a set of players in
 		final Player firstPlayer = new PlayerImpl(1, "");
-		assertSerialization(String.format("First test of %s Fortress serialization", size),
-				new FortressImpl(firstPlayer, "one", id, size));
-		assertSerialization(String.format("Second test of %s Fortress serialization",
-				size), new FortressImpl(firstPlayer, "two", id, size));
+		assertSerialization("First test of %s Fortress serialization".formatted(size),
+                new FortressImpl(firstPlayer, "one", id, size));
+		assertSerialization("Second test of %s Fortress serialization".formatted(size), new FortressImpl(firstPlayer, "two", id, size));
 		final Player secondPlayer = new PlayerImpl(2, "");
 		final IMutableFortress five = new FortressImpl(secondPlayer, "five", id, TownSize.Small);
 		five.addMember(new Unit(secondPlayer, "unitOne", "unitTwo", 1));
@@ -2216,8 +2214,7 @@ public final class TestXMLIO {
 		switch (item) {
 			case final HasKind hk -> {
 				assertSerialization(hk.getKind() + " serialization", item);
-				assertMissingProperty(String.format("<%s />",
-						hk.getKind()), "id", (HasKind) constructor.apply(0));
+				assertMissingProperty("<%s />".formatted(hk.getKind()), "id", (HasKind) constructor.apply(0));
 			}
 			case final Hill hill -> {
 				assertSerialization("Hill serialization", item);

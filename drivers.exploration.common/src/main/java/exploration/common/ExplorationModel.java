@@ -120,7 +120,7 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 		final MapDimensions dimensions = map.getDimensions();
 		final String description;
 		if (unit.owner().isIndependent()) {
-			description = String.format("%s (ID #%d)", unit.getShortDescription(), unit.getId());
+			description = "%s (ID #%d)".formatted(unit.getShortDescription(), unit.getId());
 		} else {
 			description = unit.getShortDescription();
 		}

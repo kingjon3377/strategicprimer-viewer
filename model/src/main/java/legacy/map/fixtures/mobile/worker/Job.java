@@ -139,14 +139,14 @@ public final class Job implements IMutableJob {
 		} else {
 			boolean retval = true;
 			final Consumer<String> presentLambda =
-					s -> report.accept(String.format("In Job %s:\t%s", name, s));
+					s -> report.accept("In Job %s:\t%s".formatted(name, s));
 			for (final ISkill skill : obj) {
 				if (skillSet.containsKey(skill.getName())) {
 					retval = skillSet.get(skill.getName()).isSubset(skill,
 							presentLambda)
 							&& retval;
 				} else {
-					report.accept(String.format("In Job %s:\tExtra skill %s",
+					report.accept("In Job %s:\tExtra skill %s".formatted(
 							name, skill.getName()));
 					retval = false;
 				}
@@ -165,7 +165,7 @@ public final class Job implements IMutableJob {
 
 	@Override
 	public String toString() {
-		return String.format("%s (%d)", name, levelNum);
+		return "%s (%d)".formatted(name, levelNum);
 	}
 
 	/**

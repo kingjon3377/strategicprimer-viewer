@@ -28,13 +28,13 @@ public interface TurnApplet extends Applet {
 		} else if (minutes == 1) {
 			return "1 minute";
 		} else if (minutes < 60) {
-			return String.format("%d minutes", minutes);
+            return "%d minutes".formatted(minutes);
 		} else if (minutes < 120) {
 			return "1 hour, " + inHours(minutes % 60);
 		} else if (minutes % 60 == 0) {
-			return String.format("%d hours", minutes / 60);
+            return "%d hours".formatted(minutes / 60);
 		} else {
-			return String.format("%d hours, %s", minutes / 60, inHours(minutes % 60));
+			return "%d hours, %s".formatted(minutes / 60, inHours(minutes % 60));
 		}
 	}
 }

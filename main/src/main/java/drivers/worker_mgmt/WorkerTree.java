@@ -125,7 +125,7 @@ public final class WorkerTree extends JTree implements UnitMemberSelectionSource
 
 	private static Function<Pair<String, ToIntFunction<WorkerStats>>, String> statHelper(
 			final WorkerStats stats) {
-		return pair -> String.format("%s %s", pair.getValue0(),
+		return pair -> "%s %s".formatted(pair.getValue0(),
 				WorkerStats.getModifierString(pair.getValue1().applyAsInt(stats)));
 	}
 
@@ -425,7 +425,7 @@ public final class WorkerTree extends JTree implements UnitMemberSelectionSource
 		}
 
 		private static String jobString(final IJob job) {
-			return String.format("%s %d", job.getName(), job.getLevel());
+			return "%s %d".formatted(job.getName(), job.getLevel());
 		}
 
 		private static String jobCSL(final IWorker worker) {
@@ -525,11 +525,10 @@ public final class WorkerTree extends JTree implements UnitMemberSelectionSource
 			BackgroundState background = BackgroundState.NONE;
 			if (internal instanceof final IWorker worker && component instanceof final JLabel label) {
 				if ("human".equals(worker.getRace())) {
-					label.setText(String.format("<html><p>%s%s</p></html>",
+					label.setText("<html><p>%s%s</p></html>".formatted(
 							worker.getName(), jobCSL(worker)));
 				} else {
-					label.setText(String.format(
-							"<html><p>%s, a %s%s</p></html>", worker.getName(),
+					label.setText("<html><p>%s, a %s%s</p></html>".formatted(worker.getName(),
 							worker.getRace(), jobCSL(worker)));
 				}
 			} else if (internal instanceof final Animal animal && component instanceof final JLabel label) {
@@ -540,15 +539,13 @@ public final class WorkerTree extends JTree implements UnitMemberSelectionSource
 								maturityAges.get(animal.getKind())) {
 					final int age = MaturityModel.getCurrentTurn() - animal.getBorn();
 					if (animal.getPopulation() > 1) {
-						label.setText(String.format(
-								"%d %d-turn-old %s", animal.getPopulation(), age,
+						label.setText("%d %d-turn-old %s".formatted(animal.getPopulation(), age,
 								AnimalPlurals.get(animal.getKind())));
 					} else {
-						((JLabel) component).setText(String.format(
-								"%d-turn-old %s", age, animal.getKind()));
+						((JLabel) component).setText("%d-turn-old %s".formatted(age, animal.getKind()));
 					}
 				} else if (animal.getPopulation() > 1) {
-					((JLabel) component).setText(String.format("%d %s",
+					((JLabel) component).setText("%d %s".formatted(
 							animal.getPopulation(),
 							AnimalPlurals.get(animal.getKind())));
 				} // else leave the default of animal.toString()
@@ -557,8 +554,7 @@ public final class WorkerTree extends JTree implements UnitMemberSelectionSource
 				if (expanded || unit.isEmpty()) {
 					dtcr.setText(unit.getName());
 				} else {
-					dtcr.setText(String.format(
-							"%s (%d workers)", unit.getName(),
+					dtcr.setText("%s (%d workers)".formatted(unit.getName(),
 							unit.stream().filter(IWorker.class::isInstance).count()));
 				}
 				final BackgroundState result = shouldChangeBackground(unit);

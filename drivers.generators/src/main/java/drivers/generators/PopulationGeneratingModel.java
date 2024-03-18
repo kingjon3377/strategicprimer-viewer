@@ -268,7 +268,7 @@ public class PopulationGeneratingModel extends SimpleMultiMapModel { // TODO: Ex
 		if (worker.getNote(unit.owner()).isEmpty()) {
 			existingNote = "";
 		} else {
-			existingNote = String.format("%s ", worker.getNote(unit.owner()));
+			existingNote = "%s ".formatted(worker.getNote(unit.owner()));
 		}
 		final Predicate<IFixture> isUnit = IMutableUnit.class::isInstance;
 		final Function<IFixture, IMutableUnit> unitCast = IMutableUnit.class::cast;
@@ -291,7 +291,7 @@ public class PopulationGeneratingModel extends SimpleMultiMapModel { // TODO: Ex
 				final IWorker addend = worker.copy(IFixture.CopyBehavior.KEEP);
 				if (turn >= 0) {
 					addend.setNote(localUnit.get().owner(),
-							String.format("%sNewcomer in turn #%d", existingNote, turn));
+							"%sNewcomer in turn #%d".formatted(existingNote, turn));
 				}
 				localUnit.get().addMember(addend);
 				if (localUnit.get().getOrders(turn).isEmpty()) {

@@ -310,14 +310,13 @@ public class TodoFixerCLI implements CLIDriver {
 		}
 		for (final String job : jobList) {
 			if (rng.nextBoolean()) {
-				cli.println(String.format("Setting unit with ID #%d (%d/%d) to kind %s",
+				cli.println("Setting unit with ID #%d (%d/%d) to kind %s".formatted(
 						unit.getId(), count, totalCount, job));
 				unit.setKind(job);
 				return;
 			}
 		}
-		final String kind = cli.inputString(String.format("What's the next possible kind for %s? ",
-				description));
+		final String kind = cli.inputString("What's the next possible kind for %s? ".formatted(description));
 		if (!Objects.isNull(kind)) {
 			unit.setKind(kind);
 			jobList.add(kind);

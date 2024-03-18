@@ -136,7 +136,7 @@ public abstract class AbstractReportGenerator<Type extends IFixture> implements 
 		} else if (list.size() == 1) {
 			return list.getFirst().toString();
 		} else if (list.size() == 2) {
-			return String.format("%s and %s", list.get(0).toString(), list.get(1).toString());
+			return "%s and %s".formatted(list.get(0).toString(), list.get(1).toString());
 		}
 		final StringBuilder builder = new StringBuilder();
 		for (int i = 0; i < list.size(); i++) {
@@ -161,7 +161,7 @@ public abstract class AbstractReportGenerator<Type extends IFixture> implements 
 		} else if (list.length == 1) {
 			return list[0].toString();
 		} else if (list.length == 2) {
-			return String.format("%s and %s", list[0], list[1]);
+			return "%s and %s".formatted(list[0], list[1]);
 		}
 		final StringBuilder builder = new StringBuilder();
 		for (int i = 0; i < list.length; i++) {
@@ -203,7 +203,7 @@ public abstract class AbstractReportGenerator<Type extends IFixture> implements 
 			if (isEmpty()) {
 				return "";
 			} else {
-				return String.format("%s %s", header, commaSeparatedList(this));
+				return "%s %s".formatted(header, commaSeparatedList(this));
 			}
 		}
 	}

@@ -175,8 +175,7 @@ import java.util.Map;
 				return;
 			}
 		}
-		throw new IllegalStateException(String.format(
-				"After checking %d readers, don't know how to write a %s",
+		throw new IllegalStateException("After checking %d readers, don't know how to write a %s".formatted(
 				readers.size(), child.getClass().getName()));
 	}
 

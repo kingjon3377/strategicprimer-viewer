@@ -236,14 +236,14 @@ public class Ver2TileDrawHelper implements TileDrawHelper {
 					dimensions.x(), dimensions.y());
 		}
 		for (final River river : map.getRivers(location)) {
-			// TODO: Do something to avoid String.format(), which is probably slow
-			drawIcon(pen, String.format("river%d.png", river.ordinal()),
-					coordinates, dimensions);
+			// TODO: Do something to avoid String::formatted(), which is probably slow
+			drawIcon(pen, "river%d.png".formatted(river.ordinal()),
+                    coordinates, dimensions);
 		}
 		for (final Map.Entry<Direction, Integer> entry : map.getRoads(location).entrySet()) {
-			// TODO: Do something to avoid String.format(), which is probably slow
-			drawIcon(pen, String.format("road%d.png", entry.getKey().ordinal()),
-					coordinates, dimensions);
+			// TODO: Do something to avoid String::formatted(), which is probably slow
+			drawIcon(pen, "road%d.png".formatted(entry.getKey().ordinal()),
+                    coordinates, dimensions);
 		}
 		final TileFixture top = getTopFixture(map, location);
 		if (!Objects.isNull(top)) {

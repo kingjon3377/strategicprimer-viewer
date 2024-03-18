@@ -49,7 +49,7 @@ import legacy.map.fixtures.mobile.IUnit;
 
 	@Override
 	public String toString() { // TODO: cache?
-		return String.format("UnitMemberTransferable conveying %d unit(s)", payload.size());
+        return "UnitMemberTransferable conveying %d unit(s)".formatted(payload.size());
 	}
 
 	@Override

@@ -125,6 +125,6 @@ import drivers.gui.common.MenuBroker;
 	}
 
 	private static JLabel html(final String string) {
-		return new JLabel(String.format("<html><p align=\"left\">%s</p></html>", string));
+		return new JLabel("<html><p align=\"left\">%s</p></html>".formatted(string));
 	}
 }

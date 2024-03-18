@@ -372,8 +372,7 @@ import java.util.function.Predicate;
 				return;
 			}
 		}
-		throw new IllegalStateException(String.format(
-				"After checking %d readers, don't know how to write a(n) %s",
+		throw new IllegalStateException("After checking %d readers, don't know how to write a(n) %s".formatted(
 				readers.size(), cls.getName()));
 	}
 

@@ -27,7 +27,7 @@ import org.jetbrains.annotations.Nullable;
 
 	public static @Nullable FoodType askFoodType(final ICLIHelper cli, final String foodKind) {
 		for (final FoodType type : values()) {
-			final Boolean resp = cli.inputBooleanInSeries(String.format("Is \"%s\" %s?", foodKind, type),
+			final Boolean resp = cli.inputBooleanInSeries("Is \"%s\" %s?".formatted(foodKind, type),
 					foodKind + type);
 			if (Objects.isNull(resp)) {
 				return null; // EOF

@@ -140,9 +140,9 @@ public class MineralVein implements HarvestableFixture, MineralFixture {
 	@Override
 	public String toString() {
 		if (exposed) {
-			return String.format("A %s deposit, exposed, DC %d", kind, dc);
+			return "A %s deposit, exposed, DC %d".formatted(kind, dc);
 		} else {
-			return String.format("A %s deposit, not exposed, DC %d", kind, dc);
+			return "A %s deposit, not exposed, DC %d".formatted(kind, dc);
 		}
 	}
 

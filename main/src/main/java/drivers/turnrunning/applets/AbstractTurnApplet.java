@@ -73,7 +73,7 @@ public abstract class AbstractTurnApplet implements TurnApplet {
 		final Point selectedLocation = model.getSelectedUnitLocation();
 		if (selectedLocation.isValid()) {
 			final Boolean confirmation = cli.inputBoolean(
-					String.format("%s is %.1f away. Is that right?", retval,
+					"%s is %.1f away. Is that right?".formatted(retval,
 							model.getMapDimensions().distance(retval, selectedLocation)));
 			if (Boolean.TRUE.equals(confirmation)) {
 				return retval;
@@ -98,8 +98,7 @@ public abstract class AbstractTurnApplet implements TurnApplet {
 			final Point point, final T fixture, final String plural, final IFixture.CopyBehavior zero) {
 		// TODO: make nullable and return null on EOF?
 		final int count = Math.min(
-				Optional.ofNullable(cli.inputNumber(String.format(
-						"How many %s to remove: ", plural))).orElse(0), fixture.getPopulation());
+				Optional.ofNullable(cli.inputNumber("How many %s to remove: ".formatted(plural))).orElse(0), fixture.getPopulation());
 		model.reducePopulation(point, fixture, zero, count);
 	}
 

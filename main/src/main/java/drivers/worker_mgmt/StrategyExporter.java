@@ -58,7 +58,7 @@ import legacy.map.fixtures.mobile.worker.IJob;
 	}
 
 	private static String jobString(final IJob job) {
-		return String.format("%s %d", job.getName(), job.getLevel());
+		return "%s %d".formatted(job.getName(), job.getLevel());
 	}
 
 	private void writeMember(final Writer writer, final @Nullable UnitMember member) throws IOException {
@@ -95,7 +95,7 @@ import legacy.map.fixtures.mobile.worker.IJob;
 			}
 		} else if (member instanceof final Animal animal) {
 			if (animal.getPopulation() > 1) {
-				writer.write(String.format("%d ", animal.getPopulation()));
+				writer.write("%d ".formatted(animal.getPopulation()));
 			}
 			if (!"domesticated".equals(animal.getStatus())) {
 				writer.write(animal.getStatus());
@@ -107,7 +107,7 @@ import legacy.map.fixtures.mobile.worker.IJob;
 				writer.write(animal.getKind());
 			}
 			if (animal.getBorn() >= 0) {
-				writer.write(String.format(" (born turn %d)", animal.getBorn()));
+				writer.write(" (born turn %d)".formatted(animal.getBorn()));
 			}
 		} else if (!Objects.isNull(member)) {
 			writer.write(member.toString());
@@ -137,8 +137,7 @@ import legacy.map.fixtures.mobile.worker.IJob;
 			} else {
 				writeMember(writer, unleveledWorkers.getFirst());
 				if (unleveledWorkers.size() > 1) {
-					writer.write(String.format(", %d other unleveled workers",
-							unleveledWorkers.size() - 1));
+					writer.write(", %d other unleveled workers".formatted(unleveledWorkers.size() - 1));
 				}
 				needComma = true;
 			}
@@ -154,8 +153,7 @@ import legacy.map.fixtures.mobile.worker.IJob;
 				writeMember(writer, worker);
 			}
 			if (!unleveledWorkers.isEmpty()) {
-				writer.write(String.format(", %d unleveled workers",
-						unleveledWorkers.size()));
+				writer.write(", %d unleveled workers".formatted(unleveledWorkers.size()));
 			}
 		}
 		for (final UnitMember member : nonWorkers) {
@@ -204,7 +202,7 @@ import legacy.map.fixtures.mobile.worker.IJob;
 				if (unitOrders.equals(unit.getOrders(turn)) || ordersTurn < 0) {
 					orders.put(unit, unitOrders);
 				} else {
-					orders.put(unit, String.format("(From turn #%d) %s", ordersTurn,
+					orders.put(unit, "(From turn #%d) %s".formatted(ordersTurn,
 							unitOrders));
 				}
 			}
@@ -217,7 +215,7 @@ import legacy.map.fixtures.mobile.worker.IJob;
 				writer.write(currentPlayer.getCountry());
 				writer.newLine();
 			}
-			writer.write(String.format("Turn %d]", turn));
+			writer.write("Turn %d]".formatted(turn));
 			writer.newLine();
 			writer.newLine();
 			writer.write("## Inventions:");

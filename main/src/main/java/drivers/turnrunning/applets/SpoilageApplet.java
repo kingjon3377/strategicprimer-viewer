@@ -82,7 +82,7 @@ public class SpoilageApplet extends AbstractTurnApplet {
 					LovelaceLogger.warning("Non-numeric spoilage amount");
 					return null;
 				}
-				buffer.append(String.format("%.2f pounds of %s spoiled.%n%n", spoilage.doubleValue(),
+				buffer.append("%.2f pounds of %s spoiled.%n%n".formatted(spoilage.doubleValue(),
 						food));
 				model.reduceResourceBy(food, spoilage, owner);
 			}

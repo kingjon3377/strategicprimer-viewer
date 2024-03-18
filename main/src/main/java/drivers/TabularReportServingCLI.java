@@ -131,11 +131,10 @@ import org.takes.http.Exit;
 
 		// [file, table]->builder
 		final Stream<Fork> endpoints = builders.entrySet().stream()
-				.map(entry -> new FkRegex(String.format("/%s.%s.csv", entry.getKey().getValue0(),
+				.map(entry -> new FkRegex("/%s.%s.csv".formatted(entry.getKey().getValue0(),
 						entry.getKey().getValue1()),
 						new RsWithType(new RsWithHeader(new RsText(entry.getValue().toString()),
-								"Content-Disposition", String.format(
-								"attachment; filename=\"%s.csv\"", entry.getValue())),
+                                "Content-Disposition", "attachment; filename=\"%s.csv\"".formatted(entry.getValue())),
 								"text/csv")));
 
 		final Function<String, String> tocHtml = path -> {
@@ -167,7 +166,7 @@ import org.takes.http.Exit;
 		final List<Fork> tocs = mapping.keySet().stream()
 				.map(key -> SuffixHelper.shortestSuffix(mapping.keySet(), key))
 				.flatMap(path -> Stream.of(new FkRegex("/" + path, new RsHtml(tocHtml.apply(path))),
-						new FkRegex(String.format("/%s/", path), new RsHtml(tocHtml.apply(path)))))
+						new FkRegex("/%s/".formatted(path), new RsHtml(tocHtml.apply(path)))))
 				.map(Fork.class::cast).toList();
 
 		final StringBuilder rootDocument = new StringBuilder();

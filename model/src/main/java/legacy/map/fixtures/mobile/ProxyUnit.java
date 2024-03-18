@@ -147,11 +147,11 @@ public class ProxyUnit implements IUnit, ProxyFor<IUnit> {
 	public String getShortDescription() {
 		if (parallel || proxiedList.size() == 1) {
 			if (owner().isCurrent()) {
-				return String.format("a(n) %s unit belonging to you", getKind());
+                return "a(n) %s unit belonging to you".formatted(getKind());
 			} else if (owner().isIndependent()) {
-				return String.format("an independent %s unit", getKind());
+                return "an independent %s unit".formatted(getKind());
 			} else {
-				return String.format("a(n) %s unit belonging to %s", getKind(),
+				return "a(n) %s unit belonging to %s".formatted(getKind(),
 						owner());
 			}
 		} else {

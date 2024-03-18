@@ -63,8 +63,8 @@ public class ResourceAddingCLIHelper {
 	private @Nullable String getResourceContents(final String kind) {
 		final List<String> list = resourceContents.getOrDefault(kind, new ArrayList<>());
 		final String one = cli.chooseStringFromList(list,
-				String.format("Possible resources in the %s category:", kind),
-				"No resources entered yet", "Choose resource: ", ICLIHelper.ListChoiceBehavior.ALWAYS_PROMPT).getValue1();
+                "Possible resources in the %s category:".formatted(kind),
+                "No resources entered yet", "Choose resource: ", ICLIHelper.ListChoiceBehavior.ALWAYS_PROMPT).getValue1();
 		if (!Objects.isNull(one)) {
 			return one;
 		}
@@ -84,8 +84,8 @@ public class ResourceAddingCLIHelper {
 		if (resourceUnits.containsKey(resource)) {
 			final String unit = resourceUnits.get(resource);
 			final Boolean resp = cli.inputBooleanInSeries(
-					String.format("Is %s the correct unit for %s", unit, resource),
-					String.format("correct;%s;%s", unit, resource));
+					"Is %s the correct unit for %s".formatted(unit, resource),
+					"correct;%s;%s".formatted(unit, resource));
 			if (Objects.isNull(resp)) {
 				return null;
 			} else if (resp) {
@@ -93,7 +93,7 @@ public class ResourceAddingCLIHelper {
 			}
 		}
 		// N.B. ICLIHelper trims input before returning
-		final String retval = cli.inputString(String.format("Unit to use for %s: ", resource));
+		final String retval = cli.inputString("Unit to use for %s: ".formatted(resource));
 		if (Objects.isNull(retval) || retval.isEmpty()) {
 			return null;
 		}
@@ -132,7 +132,7 @@ public class ResourceAddingCLIHelper {
 		} else {
 			contents = origContents;
 		}
-		final BigDecimal quantity = cli.inputDecimal(String.format("Quantity in %s?", units));
+		final BigDecimal quantity = cli.inputDecimal("Quantity in %s?".formatted(units));
 		if (Objects.isNull(quantity) || quantity.signum() < 0) {
 			return null;
 		}

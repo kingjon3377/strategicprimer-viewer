@@ -18,8 +18,8 @@ public final class UnsupportedTagException extends SPFormatException {
 	private final QName tag;
 
 	private UnsupportedTagException(final String format, final StartElement tag) {
-		super(String.format(format, tag.getName().getLocalPart()),
-				tag.getLocation());
+		super(format.formatted(tag.getName().getLocalPart()),
+                tag.getLocation());
 		this.tag = tag.getName();
 	}
 

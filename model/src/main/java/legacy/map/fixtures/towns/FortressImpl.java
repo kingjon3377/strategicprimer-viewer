@@ -288,22 +288,22 @@ public class FortressImpl implements IMutableFortress {
 			final Map<Integer, FortressMember> ours = members.stream()
 					.collect(Collectors.toMap(FortressMember::getId, Function.identity()));
 			boolean retval = true;
-			final Consumer<String> localFormat = s -> report.accept(String.format(
-					"In fortress %s (ID #%d):\t%s", name, id, s));
+			final Consumer<String> localFormat = s -> report.accept(
+					"In fortress %s (ID #%d):\t%s".formatted(name, id, s));
 			for (final FortressMember member : fort) {
 				if (ours.containsKey(member.getId())) {
 					if (!ours.get(member.getId()).isSubset(member, localFormat)) {
 						retval = false;
 					}
 				} else {
-					localFormat.accept(String.format("Extra member:\t%s, ID #%d",
+					localFormat.accept("Extra member:\t%s, ID #%d".formatted(
 							member, member.getId()));
 					retval = false;
 				}
 			}
 			return retval;
 		} else {
-			report.accept(String.format("In fortress (ID #%d): Names don't match", id));
+			report.accept("In fortress (ID #%d): Names don't match".formatted(id));
 			return false;
 		}
 	}

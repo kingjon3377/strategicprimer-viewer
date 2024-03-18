@@ -25,7 +25,7 @@ public class DirectionTest {
 	private static DirectionAssertion directionAssert(final IExplorationModel model, final Direction direction) {
 		return (source, destination, extraMessage) ->
 				assertEquals(destination, model.getDestination(source, direction),
-						String.format("%s of %s%s is %s", direction, source,
+						"%s of %s%s is %s".formatted(direction, source,
 								extraMessage, destination));
 	}
 

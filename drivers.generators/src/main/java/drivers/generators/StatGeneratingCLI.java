@@ -163,8 +163,8 @@ import legacy.map.fixtures.towns.Village;
 		if (excludedVillages.containsKey(village)) {
 			return excludedVillages.get(village);
 		} else {
-			final Boolean retval = cli.inputBoolean(String.format(
-					"Has a newcomer come from %s in the last 7 turns?", village.getName()));
+			final Boolean retval = cli.inputBoolean(
+					"Has a newcomer come from %s in the last 7 turns?".formatted(village.getName()));
 			if (Objects.isNull(retval)) {
 				return false;
 			}
@@ -225,8 +225,8 @@ import legacy.map.fixtures.towns.Village;
 			} else {
 				final int chosenBonus = cli.chooseStringFromList(Arrays.asList("Strength",
 								"Dexterity", "Constitution", "Intelligence", "Wisdom", "Charisma",
-								"Lowest", "Always Choose Lowest"), String.format(
-								"Character is a %s; which stat should get a +2 bonus?", race),
+								"Lowest", "Always Choose Lowest"),
+								"Character is a %s; which stat should get a +2 bonus?".formatted(race),
 						"", "Stat for bonus:", ICLIHelper.ListChoiceBehavior.ALWAYS_PROMPT).getValue0();
 				if (chosenBonus < 6) {
 					bonusStat = chosenBonus;
@@ -271,12 +271,12 @@ import legacy.map.fixtures.towns.Village;
 	 */
 	private Worker generateWorkerFrom(final Village village, final String name, final IDRegistrar idf) {
 		final Worker worker = new Worker(name, village.getRace(), idf.createID());
-		worker.setNote(village.owner(), String.format("From %s.", village.getName()));
+		worker.setNote(village.owner(), "From %s.".formatted(village.getName()));
 		if (Objects.isNull(village.getPopulation())) {
 			cli.println("No population details, so no levels.");
 			final WorkerStats stats = createWorkerStats(village.getRace(), 0);
 			worker.setStats(stats);
-			cli.println(String.format("%s is a %s from %s. Stats:", name, village.getRace(),
+			cli.println("%s is a %s from %s. Stats:".formatted(name, village.getRace(),
 					village.getName()));
 			cli.println(stats.getPrintable());
 			final boolean woolen = cli.inputBooleanInSeries("Is the worker's tunic woolen rather than linen?");
@@ -320,11 +320,10 @@ import legacy.map.fixtures.towns.Village;
 				}
 			}
 			if (candidates.isEmpty()) {
-				cli.println(String.format("No training available in %s.",
-						village.getName()));
+				cli.println("No training available in %s.".formatted(village.getName()));
 				final WorkerStats stats = createWorkerStats(village.getRace(), 0);
 				worker.setStats(stats);
-				cli.println(String.format("%s is a %s from %s. Stats:", name,
+				cli.println("%s is a %s from %s. Stats:".formatted(name,
 						village.getRace(), village.getName()));
 				cli.println(stats.getPrintable());
 				final boolean woolen = cli.inputBooleanInSeries("Is the worker's tunic woolen rather than linen?");
@@ -344,13 +343,12 @@ import legacy.map.fixtures.towns.Village;
 					final WorkerStats stats = createWorkerStats(village.getRace(),
 							training.getLevel());
 					if (iterations > 100) {
-						cli.println(String.format("Bypassing automated sanity check after %d iterations", iterations));
+						cli.println("Bypassing automated sanity check after %d iterations".formatted(iterations));
 					} else if (!suitable.test(stats)) {
 						LovelaceLogger.trace("Skipping stats deemed unsuitable: %s", stats.getPrintable());
 						continue;
 					}
-					cli.println(String.format(
-							"%s, a %s, is a level-%d %s from %s. Proposed stats:",
+					cli.println("%s, a %s, is a level-%d %s from %s. Proposed stats:".formatted(
 							name, village.getRace(), training.getLevel(),
 							training.getName(), village.getName()));
 					cli.println(stats.getPrintable());
@@ -429,7 +427,7 @@ import legacy.map.fixtures.towns.Village;
 		for (int i = 0; i < count; i++) {
 			final String race = RaceFactory.randomRace();
 			final Worker worker;
-			final String name = cli.inputString(String.format("Work is a %s. Worker name: ", race));
+			final String name = cli.inputString("Work is a %s. Worker name: ".formatted(race));
 			if (Objects.isNull(name)) {
 				break;
 			}
@@ -439,7 +437,7 @@ import legacy.map.fixtures.towns.Village;
 			if (levels == 1) {
 				cli.println("Worker has 1 Job level.");
 			} else if (levels > 1) {
-				cli.println(String.format("Worker has %d Job levels.", levels));
+				cli.println("Worker has %d Job levels.".formatted(levels));
 			}
 			final WorkerStats stats = createWorkerStats(race, levels);
 			worker.setStats(stats);
@@ -558,7 +556,7 @@ import legacy.map.fixtures.towns.Village;
 			final Worker worker;
 			if (Objects.isNull(home)) {
 				final String race = RaceFactory.randomRace();
-				cli.println(String.format("Worker %s is a %s", name, race));
+				cli.println("Worker %s is a %s".formatted(name, race));
 				worker = new Worker(name, race, idf.createID());
 				final int levels = (int) SingletonRandom.SINGLETON_RANDOM.ints(3, 0, 20)
 						.filter(n -> n == 0)
@@ -566,7 +564,7 @@ import legacy.map.fixtures.towns.Village;
 				if (levels == 1) {
 					cli.println("Worker has 1 Job level.");
 				} else if (levels > 1) {
-					cli.println(String.format("Worker has %d Job levels.", levels));
+					cli.println("Worker has %d Job levels.".formatted(levels));
 				}
 				final WorkerStats stats = createWorkerStats(race, levels);
 				worker.setStats(stats);
@@ -576,7 +574,7 @@ import legacy.map.fixtures.towns.Village;
 				}
 				model.addWorkerToUnit(unit, worker);
 				enterWorkerJobs(unit, worker, levels);
-				cli.println(String.format("%s is a %s. Stats:", name, race));
+				cli.println("%s is a %s. Stats:".formatted(name, race));
 				cli.println(stats.getPrintable());
 			} else {
 				worker = generateWorkerFrom(home, name, idf);

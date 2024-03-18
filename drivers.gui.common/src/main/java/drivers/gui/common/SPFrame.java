@@ -148,7 +148,7 @@ public class SPFrame extends JFrame implements ISPWindow {
 		if (driver instanceof final ModelDriver md &&
 				!Objects.isNull(md.getModel().getMap().getFilename())) {
 			final ILegacyMap map = md.getModel().getMap();
-			return String.format("%s%s | %s", map.isModified() ? "*" : "",
+			return "%s%s | %s".formatted(map.isModified() ? "*" : "",
 					map.getFilename(), windowTitle);
 		} else {
 			return windowTitle;

@@ -97,8 +97,8 @@ public class PopulationGeneratingCLI implements CLIDriver {
 		Collections.shuffle(locations);
 		final int count = locations.size();
 		final String key = (talking) ? "talking " + kind : kind;
-		final int total = Optional.ofNullable(cli.inputNumber(String.format(
-				"There are %d groups of %s in the world; what should their total population be?",
+		final int total = Optional.ofNullable(cli.inputNumber(
+				"There are %d groups of %s in the world; what should their total population be?".formatted(
 				count, key))).orElse(0);
 		int remainingTotal = total;
 		int remainingCount = count;
@@ -106,10 +106,10 @@ public class PopulationGeneratingCLI implements CLIDriver {
 		for (final Point location : locations) {
 			final int temp = (remainingCount * 2) + 2;
 			if (remainingTotal <= temp) {
-				cli.println(String.format(
-						"With %d groups left, there is only %d left, not enough for 2 or more each",
+				cli.println(
+						"With %d groups left, there is only %d left, not enough for 2 or more each".formatted(
 						remainingCount, remainingTotal));
-				cli.println(String.format("Adjusting up by %d", remainingCount * 3));
+				cli.println("Adjusting up by %d".formatted(remainingCount * 3));
 				remainingTotal += remainingCount * 3;
 			}
 			final int nextPopulation;
@@ -145,15 +145,15 @@ public class PopulationGeneratingCLI implements CLIDriver {
 		}
 		Collections.shuffle(locations);
 		final int count = locations.size();
-		final int total = Optional.ofNullable(cli.inputNumber(String.format(
-				"There are %d groves or orchards of %s in the world; what should their total population be? ",
+		final int total = Optional.ofNullable(cli.inputNumber(
+				"There are %d groves or orchards of %s in the world; what should their total population be? ".formatted(
 				count, kind))).orElse(0);
 		int remainingTotal = total;
 		int remainingCount = count;
 		final Random rng = SingletonRandom.SINGLETON_RANDOM;
 		for (final Point location : locations) {
 			if (remainingTotal < remainingCount) {
-				cli.println(String.format("With %d groups left, there is only %s left",
+				cli.println("With %d groups left, there is only %s left".formatted(
 						remainingCount, remainingTotal)); // TODO: adjust instead?
 				return;
 			}
@@ -182,15 +182,15 @@ public class PopulationGeneratingCLI implements CLIDriver {
 		}
 		Collections.shuffle(locations);
 		final int count = locations.size();
-		final int total = Optional.ofNullable(cli.inputNumber(String.format(
-				"There are %d populations of %s in the world; what should their total population be? ",
+		final int total = Optional.ofNullable(cli.inputNumber(
+				"There are %d populations of %s in the world; what should their total population be? ".formatted(
 				count, kind))).orElse(0);
 		int remainingTotal = total;
 		int remainingCount = count;
 		final Random rng = SingletonRandom.SINGLETON_RANDOM;
 		for (final Point location : locations) {
 			if (remainingTotal < remainingCount) {
-				cli.println(String.format("With %d groups left, there is only %s left",
+				cli.println("With %d groups left, there is only %s left".formatted(
 						remainingCount, remainingTotal)); // TODO: adjust instead?
 				return;
 			}
@@ -280,7 +280,7 @@ public class PopulationGeneratingCLI implements CLIDriver {
 							() -> new IllegalStateException("Not found despite double-checking"));
 			BigDecimal reserved = BigDecimal.ZERO;
 			if (primaryForest.getAcres().doubleValue() > 0.0) {
-				cli.println(String.format("First forest at %s had acreage set already.",
+				cli.println("First forest at %s had acreage set already.".formatted(
 						location));
 				reserved = map.getFixtures(location).stream()
 						.filter(isForest).map(forestCast)

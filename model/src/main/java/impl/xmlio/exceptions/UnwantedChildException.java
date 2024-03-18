@@ -32,7 +32,7 @@ public class UnwantedChildException extends SPFormatException {
 	private final @Nullable Location location;
 
 	private UnwantedChildException(final QName parent, final QName child, final Location location, final Throwable cause) {
-		super(String.format("Unexpected child %s in tag %s", child.getLocalPart(),
+		super("Unexpected child %s in tag %s".formatted(child.getLocalPart(),
 				parent.getLocalPart()), location);
 		tag = parent;
 		this.child = child;
@@ -57,7 +57,7 @@ public class UnwantedChildException extends SPFormatException {
 	 * @param cause  Another exception that caused this one
 	 */
 	public UnwantedChildException(final QName parent, final StartElement child, final Throwable cause) {
-		super(String.format("Unexpected child %s in tag %s", child.getName().getLocalPart(),
+		super("Unexpected child %s in tag %s".formatted(child.getName().getLocalPart(),
 				parent.getLocalPart()), child.getLocation(), cause);
 		tag = parent;
 		this.child = child.getName();
@@ -69,7 +69,7 @@ public class UnwantedChildException extends SPFormatException {
 	 * @param child  The unwanted child
 	 */
 	public UnwantedChildException(final QName parent, final StartElement child) {
-		super(String.format("Unexpected child %s in tag %s", child.getName().getLocalPart(),
+		super("Unexpected child %s in tag %s".formatted(child.getName().getLocalPart(),
 				parent.getLocalPart()), child.getLocation());
 		tag = parent;
 		this.child = child.getName();
@@ -80,7 +80,7 @@ public class UnwantedChildException extends SPFormatException {
 	 * Copy-constructor-with-replacement, for cases where the original thrower didn't know the parent tag.
 	 */
 	public UnwantedChildException(final QName parent, final UnwantedChildException except) {
-		super(String.format("Unexpected child %s in tag %s", except.getChild().getLocalPart(),
+		super("Unexpected child %s in tag %s".formatted(except.getChild().getLocalPart(),
 				parent.getLocalPart()), except.location);
 		tag = parent;
 		child = except.getChild();
@@ -91,7 +91,7 @@ public class UnwantedChildException extends SPFormatException {
 	 * Where the caller asserted that a tag was one of a specified list.
 	 */
 	private UnwantedChildException(final QName parent, final StartElement child, final String[] expected) {
-		super(String.format("Unexpected child %s in tag %s, expecting one of the following: %s",
+		super("Unexpected child %s in tag %s, expecting one of the following: %s".formatted(
 						child.getName().getLocalPart(), parent.getLocalPart(),
 						String.join(", ", expected)),
 				child.getLocation());
@@ -104,7 +104,7 @@ public class UnwantedChildException extends SPFormatException {
 	 * Where the caller asserted that a tag was one of a specified list.
 	 */
 	private UnwantedChildException(final QName parent, final StartElement child, final Collection<String> expected) {
-		super(String.format("Unexpected child %s in tag %s, expecting one of the following: %s",
+		super("Unexpected child %s in tag %s, expecting one of the following: %s".formatted(
 						child.getName().getLocalPart(), parent.getLocalPart(),
 						String.join(", ", expected)),
 				child.getLocation());
@@ -145,7 +145,7 @@ public class UnwantedChildException extends SPFormatException {
 	 * @param child  the unwanted child
 	 */
 	private UnwantedChildException(final StartElement child, final QName parent) {
-		super(String.format("Unexpected child, from unknown namespace, %s:%s in tag %s",
+		super("Unexpected child, from unknown namespace, %s:%s in tag %s".formatted(
 						child.getName().getPrefix(), child.getName().getLocalPart(),
 						parent.getLocalPart()),
 				child.getLocation().getLineNumber(), child.getLocation().getColumnNumber());
@@ -172,7 +172,7 @@ public class UnwantedChildException extends SPFormatException {
 	 * @param message the additional message
 	 */
 	public UnwantedChildException(final QName parent, final StartElement child, final String message) {
-		super(String.format("Unexpected child %s in tag %s: %s",
+		super("Unexpected child %s in tag %s: %s".formatted(
 						child.getName().getLocalPart(), parent.getLocalPart(), message),
 				child.getLocation().getLineNumber(), child.getLocation().getColumnNumber());
 		tag = parent;

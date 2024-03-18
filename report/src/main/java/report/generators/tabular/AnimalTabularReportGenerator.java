@@ -88,7 +88,7 @@ public class AnimalTabularReportGenerator implements ITableGenerator<AnimalOrTra
 				population = "---";
 			}
 			case final Animal animal when animal.getBorn() >= 0 -> {
-				kind = String.format("%s %s", animal.getStatus(), item.getKind());
+				kind = "%s %s".formatted(animal.getStatus(), item.getKind());
 				population = Integer.toString(animal.getPopulation());
 				final String lkey = animal.getKind();
 				if (animal.getBorn() > currentTurn) {
@@ -100,11 +100,11 @@ public class AnimalTabularReportGenerator implements ITableGenerator<AnimalOrTra
 								(currentTurn - animal.getBorn())) {
 					age = "adult";
 				} else {
-					age = String.format("%d turns", currentTurn - animal.getBorn());
+                    age = "%d turns".formatted(currentTurn - animal.getBorn());
 				}
 			}
 			case final Animal animal -> {
-				kind = String.format("%s %s", animal.getStatus(), item.getKind());
+				kind = "%s %s".formatted(animal.getStatus(), item.getKind());
 				population = Integer.toString(animal.getPopulation());
 				age = "adult";
 			}

@@ -47,9 +47,9 @@ public class TableDebugger implements UtilityDriver {
 								  final Collection<EncounterTable> set)
 			throws IOException, MissingTableException {
 		if (set.contains(table)) {
-			ostream.accept(String.format("table %s is already on the stack, skipping ...",
+			ostream.accept("table %s is already on the stack, skipping ...".formatted(
 					tableName));
-			ostream.accept(String.format("The cause was: %s#%s#%s", before, tableName, after));
+			ostream.accept("The cause was: %s#%s#%s".formatted(before, tableName, after));
 			return;
 		}
 		final Collection<EncounterTable> innerState = Stream.concat(set.stream(),
@@ -57,12 +57,12 @@ public class TableDebugger implements UtilityDriver {
 		for (final String item : table.getAllEvents()) {
 			if (item.contains("#")) {
 				final String[] parsed = item.split("#", 3);
-				debugSingleTable(runner, String.format("%s%s", before, parsed[0]),
-						(parsed.length >= 3) ? String.format("%s%s", parsed[2], after) :
+				debugSingleTable(runner, "%s%s".formatted(before, parsed[0]),
+						(parsed.length >= 3) ? "%s%s".formatted(parsed[2], after) :
 								after,
 						runner.getTable(parsed[1]), parsed[1], innerState);
 			} else {
-				ostream.accept(String.format("%s%s%s", before, item, after));
+				ostream.accept("%s%s%s".formatted(before, item, after));
 			}
 		}
 	}

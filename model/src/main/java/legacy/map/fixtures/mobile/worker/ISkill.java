@@ -50,7 +50,7 @@ public interface ISkill extends HasName, Subsettable<ISkill> {
 				return true;
 			}
 		} else {
-			report.accept(String.format("Called with non-corresponding skill, %s (this is %s)",
+			report.accept("Called with non-corresponding skill, %s (this is %s)".formatted(
 					obj.getName(), getName()));
 			return false;
 		}

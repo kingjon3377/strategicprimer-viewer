@@ -159,11 +159,11 @@ public abstract /* sealed */ class SimpleImmortal
 					si.getKind().equals(kind)) {
 				return true;
 			} else {
-				report.accept(String.format("For ID #%d, different kinds of members", id));
+				report.accept("For ID #%d, different kinds of members".formatted(id));
 				return false;
 			}
 		} else {
-			report.accept(String.format("Called with different IDs, #%d and %d", id,
+			report.accept("Called with different IDs, #%d and %d".formatted(id,
 					obj.getId()));
 			return false;
 		}

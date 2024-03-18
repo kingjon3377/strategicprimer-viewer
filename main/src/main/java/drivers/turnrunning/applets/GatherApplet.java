@@ -54,7 +54,7 @@ import org.jetbrains.annotations.Nullable;
 	 */
 	private static String meadowStatus(final Object argument) {
 		if (argument instanceof final Meadow m) {
-			return String.format("(%s)", m.getStatus());
+            return "(%s)".formatted(m.getStatus());
 		} else {
 			return "";
 		}
@@ -89,7 +89,7 @@ import org.jetbrains.annotations.Nullable;
 					cli.println(inHours(noResultsTime));
 					noResultsTime = 0;
 				}
-				final Boolean resp = cli.inputBooleanInSeries(String.format("Gather from %s%s",
+				final Boolean resp = cli.inputBooleanInSeries("Gather from %s%s".formatted(
 						find.getShortDescription(), meadowStatus(find)), ((HasKind) find).getKind());
 				if (Objects.isNull(resp)) {
 					return null;

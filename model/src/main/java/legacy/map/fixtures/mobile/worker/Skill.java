@@ -90,6 +90,6 @@ public final class Skill implements IMutableSkill {
 
 	@Override
 	public String toString() {
-		return String.format("%s (%d)", name, skillLevel);
+		return "%s (%d)".formatted(name, skillLevel);
 	}
 }

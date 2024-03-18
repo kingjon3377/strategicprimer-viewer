@@ -51,7 +51,7 @@ public final class NewForestDialog extends SPDialog implements NewFixtureSource 
 				Pair.<String, JComponent>with("Kind of Forest", kindField),
 				Pair.<String, JComponent>with("Rows?", rowsField))) {
 			final JComponent field = pair.getValue1();
-			add(new JLabel(String.format("<html><b>%s</b></html>", pair.getValue0())));
+			add(new JLabel("<html><b>%s</b></html>".formatted(pair.getValue0())));
 			if (field instanceof final JTextField tf) {
 				setupField(tf);
 			} else {

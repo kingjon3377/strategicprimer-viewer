@@ -118,7 +118,7 @@ public class AdvancementCLIHelper implements LevelGainSource {
 			if (skill.getLevel() != oldLevel) {
 				final String count = (skill.getLevel() - oldLevel == 1) ? "a level"
 						: (skill.getLevel() - oldLevel) + " levels";
-				cli.println(String.format("%s gained %s in %s", worker.getName(), count, skill.getName()));
+				cli.println("%s gained %s in %s".formatted(worker.getName(), count, skill.getName()));
 				fireLevelEvent(worker.getName(), job.getName(), skill.getName(), skill.getLevel() - oldLevel,
 						skill.getLevel());
 			}
@@ -186,8 +186,8 @@ public class AdvancementCLIHelper implements LevelGainSource {
 					SingletonRandom.SINGLETON_RANDOM.nextInt(100));
 			if (skill.getLevel() != oldLevel) {
 				if (oldLevel == 0 && "miscellaneous".equals(skill.getName())) {
-					final Boolean chooseAnother = cli.inputBooleanInSeries(String.format(
-							"%s gained %d level(s) in miscellaneous, choose another skill?",
+					final Boolean chooseAnother = cli.inputBooleanInSeries(
+							"%s gained %d level(s) in miscellaneous, choose another skill?".formatted(
 							worker.getName(), skill.getLevel()), "misc-replacement");
 					if (Objects.isNull(chooseAnother)) {
 						return;
@@ -226,17 +226,17 @@ public class AdvancementCLIHelper implements LevelGainSource {
 						final String name = entry.getKey();
 						final long count = entry.getValue();
 						if (count == 1L) {
-							cli.println(String.format("%s gained a level in %s",
+							cli.println("%s gained a level in %s".formatted(
 									worker.getName(), name));
 						} else {
-							cli.println(String.format("%s gained %d levels in %s",
+							cli.println("%s gained %d levels in %s".formatted(
 									worker.getName(), count, name));
 						}
 						fireLevelEvent(worker.getName(), job.getName(), name, (int) count,
 								job.getSkill(name).getLevel());
 					}
 				} else {
-					cli.println(String.format("%s gained a level in %s", worker.getName(),
+					cli.println("%s gained a level in %s".formatted(worker.getName(),
 							skill.getName()));
 					fireLevelEvent(worker.getName(), job.getName(), skill.getName(),
 							skill.getLevel() - oldLevel, skill.getLevel());

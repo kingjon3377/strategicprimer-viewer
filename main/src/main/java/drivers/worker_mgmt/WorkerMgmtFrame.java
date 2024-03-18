@@ -86,8 +86,7 @@ import drivers.worker_mgmt.orderspanel.OrdersPanel;
 				JComponent.WHEN_IN_FOCUSED_WINDOW,
 				KeyStroke.getKeyStroke(KeyEvent.VK_U, keyMask));
 
-		playerLabel = new FormattedLabel(String.format("Units belonging to %%s: (%sU)",
-				Platform.SHORTCUT_DESCRIPTION), model.getCurrentPlayer().getName());
+		playerLabel = new FormattedLabel("Units belonging to %%s: (%sU)".formatted(Platform.SHORTCUT_DESCRIPTION), model.getCurrentPlayer().getName());
 		ordersPanelObj = new OrdersPanel("Orders", mainMap.getCurrentTurn(),
 				model.getCurrentPlayer(), model::getUnits, IUnit::getLatestOrders,
 				model::setUnitOrders, WorkerMgmtFrame::isCurrent); // TODO: inline isCurrent?
@@ -112,8 +111,7 @@ import drivers.worker_mgmt.orderspanel.OrdersPanel;
 		final MemberDetailPanel mdp = new MemberDetailPanel(resultsPanel, notesPanelInstance);
 		tree.addUnitMemberListener(mdp);
 
-		final JButton jumpButton = new ListenedButton(String.format("Jump to Next Blank (%sJ)",
-				Platform.SHORTCUT_DESCRIPTION), ignored -> SwingUtilities.invokeLater(this::jumpNext));
+		final JButton jumpButton = new ListenedButton("Jump to Next Blank (%sJ)".formatted(Platform.SHORTCUT_DESCRIPTION), ignored -> SwingUtilities.invokeLater(this::jumpNext));
 
 		strategyExporter = new StrategyExporter(model, options);
 

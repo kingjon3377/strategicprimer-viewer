@@ -72,7 +72,7 @@ import org.jetbrains.annotations.Nullable;
 	}
 
 	private static String pixelString(final int pixel) {
-		return String.format("(%d, %d, %d)", (pixel >> 16) & 0xFF, (pixel >> 8) & 0xFF, pixel & 0xFF);
+		return "(%d, %d, %d)".formatted((pixel >> 16) & 0xFF, (pixel >> 8) & 0xFF, pixel & 0xFF);
 	}
 
 	private final ICLIHelper cli;

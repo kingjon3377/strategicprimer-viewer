@@ -24,8 +24,7 @@ public enum TownSize {
 			case "small" -> Small;
 			case "medium" -> Medium;
 			case "large" -> Large;
-			default -> throw new IllegalArgumentException(String.format(
-					"Failed to parse TownSize from '%s'", size));
+			default -> throw new IllegalArgumentException("Failed to parse TownSize from '%s'".formatted(size));
 		};
 	}
 }

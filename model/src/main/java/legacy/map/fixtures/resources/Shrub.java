@@ -143,7 +143,7 @@ public class Shrub implements HarvestableFixture, HasPopulation<Shrub> {
 		if (population < 1) {
 			return kind;
 		} else {
-			return String.format("%d %s", population, kind);
+			return "%d %s".formatted(population, kind);
 		}
 	}
 
@@ -154,10 +154,10 @@ public class Shrub implements HarvestableFixture, HasPopulation<Shrub> {
 			return false;
 		} else if (other instanceof final Shrub it) {
 			if (!it.getKind().equals(kind)) {
-				report.accept(String.format("In shrub with ID #%d:\tKinds differ", id));
+				report.accept("In shrub with ID #%d:\tKinds differ".formatted(id));
 				return false;
 			} else if (it.getPopulation() > population) {
-				report.accept(String.format("In shrub %s (#%d):\tHas higher count than we do", kind, id));
+				report.accept("In shrub %s (#%d):\tHas higher count than we do".formatted(kind, id));
 				return false;
 			} else {
 				return true;

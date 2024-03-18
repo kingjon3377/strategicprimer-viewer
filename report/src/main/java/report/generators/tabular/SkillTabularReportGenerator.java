@@ -57,14 +57,14 @@ public class SkillTabularReportGenerator implements ITableGenerator<IWorker> {
 				if (!skill.isEmpty()) {
 					any = true;
 					retval.add(Arrays.asList(item.getName(),
-							String.format("%s %d", job.getName(), job.getLevel()),
-							String.format("%s %d", skill.getName(), skill.getLevel()),
+							"%s %d".formatted(job.getName(), job.getLevel()),
+							"%s %d".formatted(skill.getName(), skill.getLevel()),
 							unitId));
 				}
 			}
 			if (!any && job.getLevel() > 0) {
 				retval.add(Arrays.asList(item.getName(),
-						String.format("%s %d", job.getName(), job.getLevel()),
+						"%s %d".formatted(job.getName(), job.getLevel()),
 						"---", unitId));
 			}
 		}

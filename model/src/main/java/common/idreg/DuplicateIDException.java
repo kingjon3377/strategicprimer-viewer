@@ -17,6 +17,6 @@ public class DuplicateIDException extends Exception {
 
 	// TODO: Should probably take filename as well. Note getting this from call-sites requires heavy refactoring.
 	public DuplicateIDException(final EntityIdentifier id, final int line, final int column) {
-		super(String.format("Duplicate ID #%s at line %d, column %d", id.getIdentifierString(), line, column));
+		super("Duplicate ID #%s at line %d, column %d".formatted(id.getIdentifierString(), line, column));
 	}
 }

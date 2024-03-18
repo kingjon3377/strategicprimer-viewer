@@ -134,12 +134,12 @@ public class Ground implements MineralFixture, HasMutableImage {
 
 	@Override
 	public @NotNull String getShortDescription() {
-		return String.format("%s %s ground", (exposed) ? "Exposed" : "Unexposed", kind);
+		return "%s %s ground".formatted((exposed) ? "Exposed" : "Unexposed", kind);
 	}
 
 	@Override
 	public String toString() {
-		return String.format("%s, ID #%d", getShortDescription(), id);
+		return "%s, ID #%d".formatted(getShortDescription(), id);
 	}
 
 	/**

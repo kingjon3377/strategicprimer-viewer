@@ -86,9 +86,9 @@ public final class SubsetTest {
 	 */
 	private static void requireMatching(final IFortress one, final IFortress two, final String what) {
 		assertNotSubset(one, two,
-				String.format("Subset requires %s, first test", what));
+                "Subset requires %s, first test".formatted(what));
 		assertNotSubset(two, one,
-				String.format("Subset requires %s, second test", what));
+                "Subset requires %s, second test".formatted(what));
 	}
 
 	/**

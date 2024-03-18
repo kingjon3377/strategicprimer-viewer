@@ -117,7 +117,7 @@ import legacy.map.Point;
 			case Valid -> "";
 			case NonNumeric -> "must be a whole number. ";
 			case Negative -> "must be positive. ";
-			case Overflow -> String.format("must be less than %d.", bound);
+			case Overflow -> "must be less than %d.".formatted(bound);
 		};
 	}
 

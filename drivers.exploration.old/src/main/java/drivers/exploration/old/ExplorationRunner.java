@@ -91,7 +91,7 @@ public final class ExplorationRunner {
 		if (result.contains("#")) {
 			final List<String> broken = new LinkedList<>(splitOnHash(result));
 			if (broken.size() < 2) {
-				throw new IllegalStateException(String.format("Unexpected result of split: '%s' -> %s", result,
+				throw new IllegalStateException("Unexpected result of split: '%s' -> %s".formatted(result,
 						broken));
 			}
 			final String before = broken.removeFirst();
@@ -275,12 +275,11 @@ public final class ExplorationRunner {
 			throws MissingTableException {
 		if (StreamSupport.stream(fixtures.spliterator(), true).anyMatch(Forest.class::isInstance)
 				&& (terrain == TileType.Steppe || terrain == TileType.Plains)) {
-			return String.format(
-					"The primary rock type here is %s.%nThe main kind of tree here is %s.%n",
+			return "The primary rock type here is %s.%nThe main kind of tree here is %s.%n".formatted(
 					getPrimaryRock(location, terrain, mountainous, fixtures, mapDimensions),
 					getPrimaryTree(location, terrain, mountainous, fixtures, mapDimensions));
 		} else {
-			return String.format("The primary rock type here is %s.",
+			return "The primary rock type here is %s.".formatted(
 					getPrimaryRock(location, terrain, mountainous, fixtures, mapDimensions));
 		}
 	}
@@ -387,8 +386,8 @@ public final class ExplorationRunner {
 					loadTable(name, new TerrainTable(listT.toArray(Pair[]::new)));
 					break;
 				default:
-					throw new IllegalArgumentException(String.format(
-							"unknown table type '%s' in file %s", line, name));
+					throw new IllegalArgumentException(
+							"unknown table type '%s' in file %s".formatted(line, name));
 			}
 		} else {
 			throw new IllegalArgumentException(

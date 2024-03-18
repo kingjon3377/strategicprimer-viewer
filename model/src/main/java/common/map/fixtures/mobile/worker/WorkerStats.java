@@ -208,14 +208,13 @@ public final class WorkerStats {
 	@SuppressWarnings("HardcodedFileSeparator")
 	@Override
 	public String toString() {
-		return String.format("HP: %d / %d%nStr: %d%nDex: %d%nCon: %d%nInt: %d%nWis: %d%nCha: %d%n",
+		return "HP: %d / %d%nStr: %d%nDex: %d%nCon: %d%nInt: %d%nWis: %d%nCha: %d%n".formatted(
 				hitPoints, maxHitPoints, strength, dexterity, constitution, intelligence,
 				wisdom, charisma);
 	}
 
 	public String getPrintable() {
-		return String.format(
-				"Str: %+d, Dex %+d, Con %+d, Int %+d, Wis %+d, Cha %+d",
+		return "Str: %+d, Dex %+d, Con %+d, Int %+d, Wis %+d, Cha %+d".formatted(
 				getModifier(strength), getModifier(dexterity),
 				getModifier(constitution), getModifier(intelligence),
 				getModifier(wisdom), getModifier(charisma));

@@ -109,8 +109,7 @@ public final class SPDatabaseWriter implements SPWriter {
 				return;
 			}
 		}
-		throw new IllegalStateException(String.format("No writer for %s found",
-				obj.getClass().getName()));
+		throw new IllegalStateException("No writer for %s found".formatted(obj.getClass().getName()));
 	}
 
 	@Override

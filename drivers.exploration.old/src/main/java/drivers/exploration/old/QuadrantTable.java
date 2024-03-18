@@ -118,6 +118,6 @@ class QuadrantTable implements EncounterTable {
 
 	@Override
 	public String toString() {
-		return String.format("QuadrantTable in %d rows of quadrants", quadrantRows);
+		return "QuadrantTable in %d rows of quadrants".formatted(quadrantRows);
 	}
 }

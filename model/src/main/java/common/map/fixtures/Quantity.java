@@ -40,7 +40,7 @@ public record Quantity(Number number, String units) implements Comparable<Quanti
 
 	@Override
 	public String toString() {
-		return String.format("%s %s", number, units);
+		return "%s %s".formatted(number, units);
 	}
 
 	@Override

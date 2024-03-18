@@ -69,7 +69,7 @@ import exploration.common.SimpleMovementModel;
  */
 public class UtilityDriverModel extends SimpleMultiMapModel {
 	private static <Desired, Provided> Consumer<Provided> ifApplicable(final Consumer<Desired> func,
-																	   final Class<Desired> cls) {
+	                                                                   final Class<Desired> cls) {
 		return (item) -> {
 			if (cls.isInstance(item)) {
 				func.accept((Desired) item);
@@ -168,14 +168,14 @@ public class UtilityDriverModel extends SimpleMultiMapModel {
 						tf.getShortDescription() : fixture.toString();
 				if (fixture instanceof final IMutableUnit u) {
 					retval.addAll(coalesceImpl(
-							String.format("%sIn %s: ", context, shortDesc),
+							"%sIn %s: ".formatted(context, shortDesc),
 							u,
 							ifApplicable(u::addMember, UnitMember.class),
 							ifApplicable(u::removeMember, UnitMember.class),
 							setModFlag, handlers));
 				} else if (fixture instanceof final IMutableFortress f) {
 					retval.addAll(coalesceImpl(
-							String.format("%sIn %s: ", context, shortDesc),
+							"%sIn %s: ".formatted(context, shortDesc),
 							(IMutableFortress) fixture,
 							ifApplicable(f::addMember, FortressMember.class),
 							ifApplicable(f::removeMember, FortressMember.class),
@@ -223,12 +223,12 @@ public class UtilityDriverModel extends SimpleMultiMapModel {
 	 */
 	public Collection<Quartet<Runnable, String, String, Collection<? extends IFixture>>>
 	conditionallyCoalesceResources(final Point location,
-								   final Map<Class<? extends IFixture>,
-										   CoalescedHolder<? extends IFixture, ?>> handlers) {
+	                               final Map<Class<? extends IFixture>,
+			                               CoalescedHolder<? extends IFixture, ?>> handlers) {
 		final List<Quartet<Runnable, String, String, Collection<? extends IFixture>>> retval = new ArrayList<>();
 		for (final IMutableLegacyMap map : getRestrictedAllMaps()) {
 			retval.addAll(coalesceImpl(
-					String.format("In %s: At %s: ",
+					"In %s: At %s: ".formatted(
 							Optional.ofNullable(map.getFilename())
 									.map(Path::toString).orElse("a new file"),
 							location),
@@ -291,9 +291,8 @@ public class UtilityDriverModel extends SimpleMultiMapModel {
 
 	public void fixForestsAndGround(final Consumer<String> ostream) {
 		for (final ILegacyMap map : getSubordinateMaps()) {
-			ostream.accept(String.format("Starting %s",
-					Optional.ofNullable(map.getFilename())
-							.map(Path::toString).orElse("a map with no associated path")));
+			ostream.accept("Starting %s".formatted(Optional.ofNullable(map.getFilename())
+					.map(Path::toString).orElse("a map with no associated path")));
 
 			for (final Point location : map.getLocations()) {
 				final List<Forest> mainForests = extractForests(getMap(), location);
@@ -305,7 +304,7 @@ public class UtilityDriverModel extends SimpleMultiMapModel {
 					final Forest matching = mainForests.stream()
 							.filter(forest::equalsIgnoringID).findAny().orElse(null);
 					if (Objects.isNull(matching)) {
-						ostream.accept(String.format("Unmatched forest in %s: %s",
+						ostream.accept("Unmatched forest in %s: %s".formatted(
 								location, forest));
 						getRestrictedMap().addFixture(location, forest.copy(IFixture.CopyBehavior.KEEP));
 						setMapModified(true);
@@ -324,7 +323,7 @@ public class UtilityDriverModel extends SimpleMultiMapModel {
 					final Ground matching = mainGround.stream()
 							.filter(ground::equalsIgnoringID).findAny().orElse(null);
 					if (Objects.isNull(matching)) {
-						ostream.accept(String.format("Unmatched ground in %s: %s",
+						ostream.accept("Unmatched ground in %s: %s".formatted(
 								location, ground));
 						getRestrictedMap().addFixture(location, ground.copy(IFixture.CopyBehavior.KEEP));
 						setMapModified(true);

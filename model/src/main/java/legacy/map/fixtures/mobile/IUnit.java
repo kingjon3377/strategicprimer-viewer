@@ -117,7 +117,7 @@ public interface IUnit extends MobileFixture, HasImage, HasKind, HasName,
 		if (obj.getId() == getId()) {
 			if (obj instanceof final IUnit that) {
 				final Consumer<String> localSimpleReport =
-						s -> report.accept(String.format("In Unit of ID #%d:\t%s",
+						s -> report.accept("In Unit of ID #%d:\t%s".formatted(
 								getId(), s));
 				if (owner().getPlayerId() != that.owner().getPlayerId()) {
 					localSimpleReport.accept("Owners differ");
@@ -133,7 +133,7 @@ public interface IUnit extends MobileFixture, HasImage, HasKind, HasName,
 						stream().collect(Collectors.toMap(IFixture::getId, Function.identity()));
 				boolean retval = true;
 				final Consumer<String> localReport =
-						s -> report.accept(String.format("In unit of %s (%s) (ID #%d):\t%s",
+						s -> report.accept("In unit of %s (%s) (ID #%d):\t%s".formatted(
 								getName(), getKind(), getId(), s));
 				for (final UnitMember member : that) {
 					if (ours.containsKey(member.getId())) {
@@ -141,7 +141,7 @@ public interface IUnit extends MobileFixture, HasImage, HasKind, HasName,
 							retval = false;
 						}
 					} else {
-						localReport.accept(String.format("Extra member: %s, ID #%d",
+						localReport.accept("Extra member: %s, ID #%d".formatted(
 								member, member.getId()));
 						retval = false;
 					}

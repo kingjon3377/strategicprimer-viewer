@@ -272,16 +272,16 @@ public final class Unit implements IMutableUnit {
 	@Override
 	public String toString() {
 		if (owner.isIndependent()) {
-			return String.format("Independent unit of type %s, named %s", kind, name);
+			return "Independent unit of type %s, named %s".formatted(kind, name);
 		} else {
-			return String.format("Unit of type %s, belonging to %s, named %s",
+			return "Unit of type %s, belonging to %s, named %s".formatted(
 					kind, owner, name);
 		}
 	}
 
 	@Override
 	public String getVerbose() {
-		return String.format("%s, consisting of:%n%s", this,
+		return "%s, consisting of:%n%s".formatted(this,
 				String.join(System.lineSeparator(),
 						members.stream().map(Object::toString).toArray(String[]::new)));
 	}
@@ -373,11 +373,11 @@ public final class Unit implements IMutableUnit {
 	@Override
 	public String getShortDescription() {
 		if (owner.isCurrent()) {
-			return String.format("a(n) %s unit belonging to you", kind);
+            return "a(n) %s unit belonging to you".formatted(kind);
 		} else if (owner.isIndependent()) {
 			return name + ", an independent unit";
 		} else {
-			return String.format("a(n) %s unit belonging to %s", kind, owner.getName());
+			return "a(n) %s unit belonging to %s".formatted(kind, owner.getName());
 		}
 	}
 

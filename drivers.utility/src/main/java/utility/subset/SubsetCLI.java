@@ -38,7 +38,7 @@ public class SubsetCLI implements ReadOnlyDriver {
 	}
 
 	private Consumer<String> report(final String filename) {
-		return string -> cli.println(String.format("In %s: %s", filename, string));
+		return string -> cli.println("In %s: %s".formatted(filename, string));
 	}
 
 	@Override

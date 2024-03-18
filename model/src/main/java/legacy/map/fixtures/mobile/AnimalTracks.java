@@ -112,13 +112,12 @@ public class AnimalTracks implements HasMutableImage, MobileFixture,
 				return true;
 			}
 			case final AnimalTracks at -> {
-				report.accept(String.format(
-						"Comparing tracks from different kinds of animals: %s and %s",
+				report.accept("Comparing tracks from different kinds of animals: %s and %s".formatted(
 						at.getKind(), kind));
 				return false;
 			}
 			case final Animal a when a.getKind().equals(kind) -> {
-				report.accept(String.format("Has full %s animal where we have only tracks", kind));
+				report.accept("Has full %s animal where we have only tracks".formatted(kind));
 				return false;
 			}
 			default -> {

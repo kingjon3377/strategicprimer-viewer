@@ -50,6 +50,6 @@ class RandomTable implements EncounterTable {
 
 	@Override
 	public String toString() {
-		return String.format("RandomTable of %d items", table.size());
+		return "RandomTable of %d items".formatted(table.size());
 	}
 }

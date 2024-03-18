@@ -51,9 +51,9 @@ public class HarvestableReportGenerator extends AbstractReportGenerator<Harvesta
 		if (item.getPopulation() <= 0) {
 			return "";
 		} else if (item.getPopulation() == 1) {
-			return String.format(" (1 %s)", singular);
+            return " (1 %s)".formatted(singular);
 		} else {
-			return String.format(" (%d %s)", item.getPopulation(), plural);
+			return " (%d %s)".formatted(item.getPopulation(), plural);
 		}
 	}
 
@@ -67,7 +67,7 @@ public class HarvestableReportGenerator extends AbstractReportGenerator<Harvesta
 
 	private static String acreageString(final HasExtent<?> item) {
 		if (item.getAcres().doubleValue() > 0.0) {
-			return String.format(" (%s acres)", NUM_FORMAT.format(item.getAcres()));
+            return " (%s acres)".formatted(NUM_FORMAT.format(item.getAcres()));
 		} else {
 			return "";
 		}
@@ -87,7 +87,7 @@ public class HarvestableReportGenerator extends AbstractReportGenerator<Harvesta
 	private static HeadedList<String> mapToList(final Map<String, List<Point>> map, final String heading) {
 		return map.entrySet().stream()
 				.filter(e -> !e.getValue().isEmpty())
-				.map(e -> String.format("%s: at %s", e.getKey(), commaSeparatedList(e.getValue())))
+				.map(e -> "%s: at %s".formatted(e.getKey(), commaSeparatedList(e.getValue())))
 				.sorted().collect(Collectors.toCollection(
 						() -> new HtmlList(heading, Collections.emptyList())));
 	}

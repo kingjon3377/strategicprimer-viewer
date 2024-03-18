@@ -26,8 +26,7 @@ public enum TownStatus {
 			case "abandoned" -> Abandoned;
 			case "burned" -> Burned;
 			case "ruined" -> Ruined;
-			default -> throw new IllegalArgumentException(String.format(
-					"Failed to parse TownStatus from '%s'", status));
+			default -> throw new IllegalArgumentException("Failed to parse TownStatus from '%s'".formatted(status));
 		};
 	}
 }

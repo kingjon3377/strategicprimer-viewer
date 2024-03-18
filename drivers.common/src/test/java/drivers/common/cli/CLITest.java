@@ -63,25 +63,25 @@ public final class CLITest {
 	public void testChooseFromList() {
 		assertCLI(cli -> cli.<Player>chooseFromList(Arrays.asList(new PlayerImpl(1, "one"),
 						new PlayerImpl(2, "two")), "test desc", "none present", "prompt", ICLIHelper.ListChoiceBehavior.ALWAYS_PROMPT),
-				Collections.singletonList("0"), String.format("test desc%n0: one%n1: two%nprompt "),
+				Collections.singletonList("0"), "test desc%n0: one%n1: two%nprompt ".formatted(),
 				Pair.with(0, new PlayerImpl(1, "one")),
 				"chooseFromList chooses the one specified by the user",
 				"chooseFromList prompted the user");
 		assertCLI(cli -> cli.<Player>chooseFromList(Arrays.asList(new PlayerImpl(1, "one"),
 						new PlayerImpl(2, "two")), "test desc", "none present", "prompt", ICLIHelper.ListChoiceBehavior.AUTO_CHOOSE_ONLY),
-				Collections.singletonList("1"), String.format("test desc%n0: one%n1: two%nprompt "),
+				Collections.singletonList("1"), "test desc%n0: one%n1: two%nprompt ".formatted(),
 				Pair.with(1, new PlayerImpl(2, "two")),
 				"chooseFromList chooses the one specified by the user",
 				"chooseFromList prompted the user");
 		assertCLI(cli -> cli.<Player>chooseFromList(Collections.singletonList(new PlayerImpl(1, "one")),
 						"test desc", "none present", "prompt", ICLIHelper.ListChoiceBehavior.AUTO_CHOOSE_ONLY), Collections.emptyList(),
-				String.format("test desc%nAutomatically choosing only item, one.%n"),
+				"test desc%nAutomatically choosing only item, one.%n".formatted(),
 				Pair.with(0, new PlayerImpl(1, "one")),
 				"chooseFromList chooses only choice when this is specified",
 				"chooseFromList automatically chose only choice");
 		assertCLI(cli -> cli.<Player>chooseFromList(Collections.singletonList(new PlayerImpl(1, "one")),
 						"test desc", "none present", "prompt", ICLIHelper.ListChoiceBehavior.ALWAYS_PROMPT),
-				Collections.singletonList("0"), String.format("test desc%n0: one%nprompt "),
+				Collections.singletonList("0"), "test desc%n0: one%nprompt ".formatted(),
 				Pair.with(0, new PlayerImpl(1, "one")),
 				"chooseFromList doesn't always auto-choose only choice",
 				"chooseFromList didn't automatically choose only choice");
@@ -94,24 +94,24 @@ public final class CLITest {
 	public void testChooseFromListMore() {
 		assertCLI(cli -> cli.<Player>chooseFromList(Arrays.asList(new PlayerImpl(1, "one"),
 						new PlayerImpl(2, "two")), "test desc", "none present", "prompt ", ICLIHelper.ListChoiceBehavior.ALWAYS_PROMPT),
-				Arrays.asList("-1", "0"), String.format("test desc%n0: one%n1: two%nprompt prompt "),
+				Arrays.asList("-1", "0"), "test desc%n0: one%n1: two%nprompt prompt ".formatted(),
 				Pair.with(0, new PlayerImpl(1, "one")),
 				"chooseFromList prompts again when negative index given",
 				"chooseFromList prompts again when negative index given");
 		assertCLI(cli -> cli.<Player>chooseFromList(Arrays.asList(new PlayerImpl(1, "one"),
 						new PlayerImpl(2, "two")), "test desc", "none present", "prompt", ICLIHelper.ListChoiceBehavior.ALWAYS_PROMPT),
-				Collections.singletonList("3"), String.format("test desc%n0: one%n1: two%nprompt "),
+				Collections.singletonList("3"), "test desc%n0: one%n1: two%nprompt ".formatted(),
 				Pair.with(3, null), "chooseFromList allows too-large choice",
 				"chooseFromList allows too-large choice");
 		assertCLI(cli -> cli.<Player>chooseFromList(Arrays.asList(new PlayerImpl(1, "one"),
 						new PlayerImpl(2, "two")), "test desc", "none present", "prompt", ICLIHelper.ListChoiceBehavior.AUTO_CHOOSE_ONLY),
-				Collections.singletonList("0"), String.format("test desc%n0: one%n1: two%nprompt "),
+				Collections.singletonList("0"), "test desc%n0: one%n1: two%nprompt ".formatted(),
 				Pair.with(0, new PlayerImpl(1, "one")),
 				"chooseFromList asks even if 'auto' when multiple items",
 				"chooseFromList prompted the user");
 		assertCLI(cli -> cli.<Player>chooseFromList(Collections.emptyList(), "test desc",
 						"none present", "prompt", ICLIHelper.ListChoiceBehavior.ALWAYS_PROMPT), Collections.emptyList(),
-				String.format("none present%n"), Pair.with(-1, null),
+				"none present%n".formatted(), Pair.with(-1, null),
 				"chooseFromList handles no-item case", "chooseFromList didn't prompt the user");
 	}
 
@@ -153,7 +153,7 @@ public final class CLITest {
 				"inputDecimal asks again on negative input",
 				"inputDecimal asks again on negative input");
 		assertCLI(cli -> cli.inputDecimal("test prompt four "), Arrays.asList("non-number", ".1"),
-				String.format("test prompt four Invalid number.%ntest prompt four "),
+				"test prompt four Invalid number.%ntest prompt four ".formatted(),
 				BigDecimal.ONE.divide(BigDecimal.TEN),
 				"inputDecimal asks again on non-numerc input",
 				"inputDecimal asks again on non-numeric input");
@@ -213,9 +213,8 @@ public final class CLITest {
 	@Test
 	public void testInputBooleanInvalidInput() {
 		assertCLI(cli -> cli.inputBoolean("prompt three "), Arrays.asList("yoo-hoo", "no"),
-				String.format(
 						"prompt three Please enter \"yes\", \"no\", \"true\", or \"false\",%n" +
-								"or the first character of any of those.%nprompt three "), false,
+								"or the first character of any of those.%nprompt three ".formatted(), false,
 				"inputBoolean rejects other input", "inputBoolean gives message on invalid input");
 	}
 
@@ -227,7 +226,7 @@ public final class CLITest {
 	public void testInputBooleanInSeriesSimpleTrue(final String arg) {
 		assertCLI(cli -> cli.inputBooleanInSeries("bool prompt"), Collections.singletonList(arg),
 				"bool prompt ", true,
-				String.format("inputBooleanInSeries returns true on '%s'", arg),
+				"inputBooleanInSeries returns true on '%s'".formatted(arg),
 				"inputBooleanInSeries displays prompt");
 	}
 
@@ -250,11 +249,10 @@ public final class CLITest {
 	@Test
 	public void testInputBooleanInSeriesAll() {
 		assertCLI(cli -> cli.inputBooleanInSeries("prompt three "), Arrays.asList("nothing", "true"),
-				String.format(
 						"prompt three Please enter \"yes\", \"no\", \"true\", or \"false\", " +
 								"the first%ncharacter of any of those, or \"all\", \"none\", \"always\", " +
 								"or%n\"never\" to use the same answer for all further questions.%nprompt " +
-								"three "),
+								"three ".formatted(),
 				true, "inputBoolean rejects other input",
 				"inputBoolean gives message on invalid input");
 		final StringBuilder ostream = new StringBuilder();
@@ -264,7 +262,7 @@ public final class CLITest {
 				"inputBooleanInSeries allows yes-to-all");
 		assertEquals(true, cli.inputBooleanInSeries("prompt four "),
 				"inputBooleanInSeries honors yes-to-all when prompt is the same");
-		assertEquals(String.format("prompt four prompt four yes%n"), ostream.toString(),
+		assertEquals("prompt four prompt four yes%n".formatted(), ostream.toString(),
 				"inputBooleanInSeries shows automatic yes");
 		// TODO: Should we assert that [() -> cli.inputBooleanInSeries("other prompt")] throws
 		// IOException? We had an assertion of that commented out in the Ceylon version of this test,
@@ -285,7 +283,7 @@ public final class CLITest {
 				"inputBooleanInSeries allows no-to-all");
 		assertEquals(false, cli.inputBooleanInSeries("prompt five "),
 				"inputBooleanInSeries honors no-to-all when prompt is the same");
-		assertEquals(String.format("prompt five prompt five no%n"), ostream.toString(),
+		assertEquals("prompt five prompt five no%n".formatted(), ostream.toString(),
 				"inputBooleanInSeries shows automatic no");
 		// TODO: Should we assert that [() -> cli.inputBooleanInSeries("other prompt")] throws
 		// IOException? (See above.)
@@ -305,7 +303,7 @@ public final class CLITest {
 				"inputBooleanInSeries allows yes-to-all");
 		assertEquals(true, cli.inputBooleanInSeries("prompt seven ", "key"),
 				"inputBooleanInSeries honors yes-to-all if prompt differs, same key");
-		assertEquals(String.format("prompt six prompt seven yes%n"), ostream.toString(),
+		assertEquals("prompt six prompt seven yes%n".formatted(), ostream.toString(),
 				"inputBooleanInSeries shows automatic yes");
 	}
 
@@ -323,7 +321,7 @@ public final class CLITest {
 				"inputBooleanInSeries allows no-to-all");
 		assertEquals(false, cli.inputBooleanInSeries("prompt nine ", "secondKey"),
 				"inputBooleanInSeries honors no-to-all if prompt differs, same key");
-		assertEquals(String.format("prompt eight prompt nine no%n"), ostream.toString(),
+		assertEquals("prompt eight prompt nine no%n".formatted(), ostream.toString(),
 				"inputBooleanInSeries shows automatic no");
 	}
 
@@ -344,8 +342,8 @@ public final class CLITest {
 				"inputBooleanInSeries then honors yes-to-all");
 		assertEquals(false, cli.inputBooleanInSeries("prompt thirteen ", "fourthKey"),
 				"inputBooleanInSeries then honors no-to-all");
-		assertEquals(String.format("prompt ten prompt eleven prompt twelve yes%nprompt " +
-				"thirteen no%n"), ostream.toString(), "inputBooleanInSeries shows prompts");
+		assertEquals("prompt ten prompt eleven prompt twelve yes%nprompt " +
+				"thirteen no%n".formatted(), ostream.toString(), "inputBooleanInSeries shows prompts");
 	}
 
 	/**
@@ -355,23 +353,23 @@ public final class CLITest {
 	public void testChooseStringFromList() {
 		assertCLI(cli -> cli.chooseStringFromList(Arrays.asList("one", "two"),
 						"test desc", "none present", "prompt", ICLIHelper.ListChoiceBehavior.ALWAYS_PROMPT),
-				Collections.singletonList("0"), String.format("test desc%n0: one%n1: two%nprompt "),
+				Collections.singletonList("0"), "test desc%n0: one%n1: two%nprompt ".formatted(),
 				Pair.with(0, "one"), "chooseStringFromList chooses the one specified by the user",
 				"chooseStringFromList prompts the user");
 		assertCLI(cli -> cli.chooseStringFromList(Arrays.asList("one", "two", "three"),
 						"test desc", "none present", "prompt two", ICLIHelper.ListChoiceBehavior.AUTO_CHOOSE_ONLY),
-				Collections.singletonList("1"), String.format("test desc%n0: one%n1: two%n2: three%nprompt two "),
+				Collections.singletonList("1"), "test desc%n0: one%n1: two%n2: three%nprompt two ".formatted(),
 				Pair.with(1, "two"), "chooseStringFromList chooses the one specified by the user",
 				"chooseStringFromList prompts the user");
 		assertCLI(cli -> cli.chooseStringFromList(Collections.singletonList("one"), "test desc",
 						"none present", "prompt", ICLIHelper.ListChoiceBehavior.AUTO_CHOOSE_ONLY), Collections.emptyList(),
-				String.format("test desc%nAutomatically choosing only item, one.%n"),
+				"test desc%nAutomatically choosing only item, one.%n".formatted(),
 				Pair.with(0, "one"),
 				"chooseStringFromList automatically chooses only choice when told to",
 				"chooseStringFromList automatically chose only choice");
 		assertCLI(cli -> cli.chooseStringFromList(Collections.singletonList("one"), "test desc",
 						"none present", "prompt", ICLIHelper.ListChoiceBehavior.ALWAYS_PROMPT), Collections.singletonList("0"),
-				String.format("test desc%n0: one%nprompt "), Pair.with(0, "one"),
+				"test desc%n0: one%nprompt ".formatted(), Pair.with(0, "one"),
 				"chooseStringFromList doesn't always auto-choose",
 				"chooseStringFromList didn't automatically choose only choice");
 	}
@@ -383,22 +381,22 @@ public final class CLITest {
 	public void testChooseStringFromListMore() {
 		assertCLI(cli -> cli.chooseStringFromList(Arrays.asList("zero", "one", "two"),
 						"test desc", "none present", "prompt", ICLIHelper.ListChoiceBehavior.AUTO_CHOOSE_ONLY),
-				Collections.singletonList("1"), String.format("test desc%n0: zero%n1: one%n2: two%nprompt "), Pair.with(1, "one"),
+				Collections.singletonList("1"), "test desc%n0: zero%n1: one%n2: two%nprompt ".formatted(), Pair.with(1, "one"),
 				"chooseStringFromList doesn't auto-choose when more than one item",
 				"chooseStringFromList doesn't auto-choose when more than one item");
 		assertCLI(cli -> cli.chooseStringFromList(Arrays.asList("one", "two"),
 						"test desc", "none present", "prompt", ICLIHelper.ListChoiceBehavior.ALWAYS_PROMPT), Arrays.asList("-1", "0"),
-				String.format("test desc%n0: one%n1: two%nprompt prompt "), Pair.with(0, "one"),
+				"test desc%n0: one%n1: two%nprompt prompt ".formatted(), Pair.with(0, "one"),
 				"chooseStringFromList prompts again when negative index given",
 				"chooseStringFromList prompts again when negative index given");
 		assertCLI(cli -> cli.chooseStringFromList(Arrays.asList("one", "two"), "test desc",
 						"none present", "prompt", ICLIHelper.ListChoiceBehavior.ALWAYS_PROMPT), Collections.singletonList("3"),
-				String.format("test desc%n0: one%n1: two%nprompt "), Pair.with(3, null),
+				"test desc%n0: one%n1: two%nprompt ".formatted(), Pair.with(3, null),
 				"chooseStringFromList allows too-large choice",
 				"chooseStringFromList allows too-large choice");
 		assertCLI(cli -> cli.chooseStringFromList(Collections.emptyList(), "test desc",
 						"none present", "prompt", ICLIHelper.ListChoiceBehavior.ALWAYS_PROMPT), Collections.emptyList(),
-				String.format("none present%n"), Pair.with(-1, null),
+				"none present%n".formatted(), Pair.with(-1, null),
 				"chooseStringFromList handles empty list",
 				"chooseStringFromList handles empty list");
 	}
@@ -413,7 +411,7 @@ public final class CLITest {
 		assertEquals("test string", ostream.toString(), "print() prints string");
 		ostream.setLength(0);
 		new CLIHelper(new LinkedList<String>()::pollFirst, ostream::append, NOOP).println("test two");
-		assertEquals(String.format("test two%n"), ostream.toString(), "println() adds newline");
+		assertEquals("test two%n".formatted(), ostream.toString(), "println() adds newline");
 		ostream.setLength(0);
 		new CLIHelper(new LinkedList<String>()::pollFirst, ostream::append, NOOP)
 				.print("test three ", "test four");

@@ -185,7 +185,7 @@ public class AdventureFixture implements ExplorableFixture, HasMutableOwner, Sub
 		if (obj.getId() == id) {
 			if (obj instanceof final AdventureFixture af) {
 				final Consumer<String> localReport =
-						(str) -> report.accept(String.format("In adventure with ID #%d: %s", id, str));
+						(str) -> report.accept("In adventure with ID #%d: %s".formatted(id, str));
 				if (!briefDescription.equals(af.getBriefDescription())) {
 					localReport.accept("Brief descriptions differ");
 					return false;

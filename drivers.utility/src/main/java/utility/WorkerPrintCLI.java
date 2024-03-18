@@ -32,7 +32,7 @@ import exploration.common.IExplorationModel;
 	private static final List<String> statLabelArray = List.of("Str", "Dex", "Con", "Int", "Wis", "Cha");
 
 	private static String jobString(final IJob job) {
-		return String.format("%s %d", job.getName(), job.getLevel());
+		return "%s %d".formatted(job.getName(), job.getLevel());
 	}
 
 	private final ICLIHelper cli;

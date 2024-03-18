@@ -53,8 +53,8 @@ public class AdvancementCLI implements CLIDriver {
 				.filter(u -> u.stream().anyMatch(IWorker.class::isInstance)).collect(Collectors.toList());
 		while (!units.isEmpty()) {
 			final IUnit chosen = cli.chooseFromList((List<? extends IUnit>) units,
-					String.format("%s's units:", player.getName()), "No unadvanced units remain.", "Chosen unit:",
-					ICLIHelper.ListChoiceBehavior.ALWAYS_PROMPT).getValue1();
+                    "%s's units:".formatted(player.getName()), "No unadvanced units remain.", "Chosen unit:",
+                    ICLIHelper.ListChoiceBehavior.ALWAYS_PROMPT).getValue1();
 			if (Objects.isNull(chosen)) {
 				break;
 			}

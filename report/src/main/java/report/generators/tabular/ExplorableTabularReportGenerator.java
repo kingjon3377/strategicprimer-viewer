@@ -86,7 +86,7 @@ public class ExplorableTabularReportGenerator
 		final String longDesc;
 		switch (item) {
 			case final TextFixture tf when tf.getTurn() >= 0 -> {
-				brief = String.format("Text Note (%d)", tf.getTurn());
+                brief = "Text Note (%d)".formatted(tf.getTurn());
 				owner = "---";
 				longDesc = tf.getText();
 			}

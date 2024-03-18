@@ -95,7 +95,7 @@ import legacy.map.fixtures.mobile.AnimalTracks;
 
 	private static <Key, Count extends Number> String
 	parameterizedCountSpaceKey(final Pair<Key, Count> entry) {
-		return String.format("- %s %s", entry.getValue1(), entry.getValue0());
+		return "- %s %s".formatted(entry.getValue1(), entry.getValue0());
 	}
 
 	private <Base, Key, Count extends Number & Comparable<Count>> void printSummary(
@@ -162,7 +162,7 @@ import legacy.map.fixtures.mobile.AnimalTracks;
 	}
 
 	private static String reportForestTotal(final BigDecimal total) {
-		return String.format("There are %s acres of forest, including:", total);
+		return "There are %s acres of forest, including:".formatted(total);
 	}
 
 	private static boolean hasLake(final Collection<River> iter) {
@@ -176,23 +176,23 @@ import legacy.map.fixtures.mobile.AnimalTracks;
 	private static String countOfKind(final Pair<String, ? extends Number> pair) {
 		final String key = pair.getValue0();
 		final Number item = pair.getValue1();
-		return String.format("- %s of %s", item, key);
+		return "- %s of %s".formatted(item, key);
 	}
 
 	private static String countTilesWithKind(final Pair<String, Integer> entry) {
-		return String.format("- %s tiles with %s", entry.getValue1(), entry.getValue0());
+		return "- %s tiles with %s".formatted(entry.getValue1(), entry.getValue0());
 	}
 
 	private static String kindColonCount(final Pair<String, Integer> entry) {
-		return String.format("- %s: %s", entry.getValue0(), entry.getValue1());
+		return "- %s: %s".formatted(entry.getValue0(), entry.getValue1());
 	}
 
 	private static String countSpaceKind(final Pair<String, Integer> entry) {
-		return String.format("  - %s %s", entry.getValue1(), entry.getValue0());
+		return "  - %s %s".formatted(entry.getValue1(), entry.getValue0());
 	}
 
 	private static String townSummary(final AbstractTown t) {
-		return String.format("%s %s %s", t.getStatus(), t.getTownSize(), t.getKind());
+		return "%s %s %s".formatted(t.getStatus(), t.getTownSize(), t.getKind());
 	}
 
 	private static <T> Predicate<T> negate(final Predicate<T> pred) {
@@ -240,8 +240,7 @@ import legacy.map.fixtures.mobile.AnimalTracks;
 	@Override
 	public void startDriver() { // TODO: Reduce duplication
 		final ILegacyMap map = model.getMap();
-		cli.println(String.format("There are %d tiles in all.",
-				map.getDimensions().rows() * map.getDimensions().columns()));
+		cli.println("There are %d tiles in all.".formatted(map.getDimensions().rows() * map.getDimensions().columns()));
 		final EnumCounter<TileType> tileTypeCounts = new EnumCounter<>();
 		tileTypeCounts.countMany(map.streamLocations()
 				.map(map::getBaseTerrain).filter(Objects::nonNull).toArray(TileType[]::new));
@@ -249,7 +248,7 @@ import legacy.map.fixtures.mobile.AnimalTracks;
 		tileTypeCounts.streamAllCounts()
 				.sorted(Comparator.comparing(Pair::getValue1,
 						Comparator.reverseOrder()))
-				.map(entry -> String.format("- %d are %s", entry.getValue1(), entry.getValue0()))
+				.map(entry -> "- %d are %s".formatted(entry.getValue1(), entry.getValue0()))
 				.forEach(cli::println);
 		cli.println();
 		final List<IFixture> allFixtures = map.streamAllFixtures().flatMap(CountingCLI::flatten)
@@ -264,20 +263,17 @@ import legacy.map.fixtures.mobile.AnimalTracks;
 		cli.println("Terrain fixtures:");
 		cli.println();
 		final List<Collection<TileFixture>> separateTiles = map.streamLocations().map(map::getFixtures).toList();
-		cli.println(String.format("- %d hilly tiles",
-				separateTiles.stream().filter(c -> c.stream().anyMatch(Hill.class::isInstance))
-						.count()));
-		cli.println(String.format("- %d mountainous tiles", map.streamLocations()
+		cli.println("- %d hilly tiles".formatted(separateTiles.stream().filter(c -> c.stream().anyMatch(Hill.class::isInstance))
+				.count()));
+		cli.println("- %d mountainous tiles".formatted(map.streamLocations()
 				.filter(map::isMountainous).count()));
-		cli.println(String.format("- %d at least partly forested tiles",
-				separateTiles.stream().filter(c -> c.stream().anyMatch(Forest.class::isInstance))
-						.count()));
-		cli.println(String.format("- %d oases", separateTiles.stream()
+		cli.println("- %d at least partly forested tiles".formatted(separateTiles.stream().filter(c -> c.stream().anyMatch(Forest.class::isInstance))
+				.count()));
+		cli.println("- %d oases".formatted(separateTiles.stream()
 				.filter(c -> c.stream().anyMatch(Oasis.class::isInstance)).count()));
 		final List<Collection<River>> tilesRivers = map.streamLocations().map(map::getRivers).toList();
-		cli.println(String.format("- %d lakes",
-				tilesRivers.stream().filter(CountingCLI::hasLake).count()));
-		cli.println(String.format("- %d tiles with rivers", tilesRivers.stream()
+		cli.println("- %d lakes".formatted(tilesRivers.stream().filter(CountingCLI::hasLake).count()));
+		cli.println("- %d tiles with rivers".formatted(tilesRivers.stream()
 				.filter(CountingCLI::withNonLake).count()));
 		// TODO: Count tiles with roads of each type
 		cli.println();
@@ -313,12 +309,10 @@ import legacy.map.fixtures.mobile.AnimalTracks;
 		// TODO: We'd like to count active towns' populations.
 		cli.println("Active Communities:");
 		cli.println();
-		cli.println(String.format("- %d fortresses",
-				allFixtures.stream().filter(IFortress.class::isInstance).count()));
-		cli.println(String.format("- %d active towns, cities, or fortifications of any size",
-				allFixtures.stream().filter(AbstractTown.class::isInstance)
-						.map(AbstractTown.class::cast)
-						.filter(t -> TownStatus.Active == t.getStatus()).count()));
+		cli.println("- %d fortresses".formatted(allFixtures.stream().filter(IFortress.class::isInstance).count()));
+		cli.println("- %d active towns, cities, or fortifications of any size".formatted(allFixtures.stream().filter(AbstractTown.class::isInstance)
+				.map(AbstractTown.class::cast)
+				.filter(t -> TownStatus.Active == t.getStatus()).count()));
 
 		final MappedCounter<Village, String, Integer> villages = simpleCounter(Village::getRace);
 		allFixtures.stream().filter(Village.class::isInstance).map(Village.class::cast)
@@ -399,9 +393,9 @@ import legacy.map.fixtures.mobile.AnimalTracks;
 			for (final IFixture fixture : remaining) {
 				if (fixture instanceof final TileFixture tf) {
 					// TODO: Move getShortDescription up to IFixture?
-					cli.println(String.format("- %s", tf.getShortDescription()));
+					cli.println("- %s".formatted(tf.getShortDescription()));
 				} else {
-					cli.println(String.format("- %s", fixture.toString()));
+					cli.println("- %s".formatted(fixture.toString()));
 				}
 			}
 		}

@@ -180,11 +180,11 @@ public abstract class AbstractTown implements HasMutableImage,
 			report.accept("Town name differs");
 			return false;
 		} else if (!getKind().equals(other.getKind())) {
-			report.accept(String.format("In %s, ID #%d:\tTown kind differs", name, getId()));
+			report.accept("In %s, ID #%d:\tTown kind differs".formatted(name, getId()));
 			return false;
 		}
-		final Consumer<String> localReport = s -> report.accept(String.format(
-				"In %s %s, ID #%d:\t%s", getKind(), name, getId(), s));
+		final Consumer<String> localReport = s -> report.accept(
+				"In %s %s, ID #%d:\t%s".formatted(getKind(), name, getId(), s));
 		boolean retval = true;
 		if (status != other.getStatus()) {
 			localReport.accept("Town status differs");
@@ -248,13 +248,13 @@ public abstract class AbstractTown implements HasMutableImage,
 	@Override
 	public String toString() {
 		if (owner.isIndependent()) {
-			// TODO: Split into if/else rather than having the conditional inside format() call
-			return String.format("An independent %s %s %s of DC %s %s",
+			// TODO: Split into if/else rather than having the conditional inside formatted() call
+			return "An independent %s %s %s of DC %s %s".formatted(
 					townSize, status, getKind(), dc,
 					name.isEmpty() ? "with no name" : "named " + name);
 		} else {
-			// TODO: Split into if/else rather than having the conditional inside format() call
-			return String.format("A %s %s %s of DC %d %s, owned by %s",
+			// TODO: Split into if/else rather than having the conditional inside formatted() call
+			return "A %s %s %s of DC %d %s, owned by %s".formatted(
 					townSize, status, getKind(), dc,
 					name.isEmpty() ? "with no name" : "named " + name,
 					owner.isCurrent() ? "you" : owner.getName());
@@ -264,13 +264,13 @@ public abstract class AbstractTown implements HasMutableImage,
 	@Override
 	public String getShortDescription() {
 		if (owner.isIndependent()) {
-			// TODO: Split into if/else rather than having the conditional inside format() call
-			return String.format("An independent %s %s %s %s", townSize,
+			// TODO: Split into if/else rather than having the conditional inside formatted() call
+			return "An independent %s %s %s %s".formatted(townSize,
 					status, getKind(),
 					name.isEmpty() ? "with no name" : "named " + name);
 		} else {
-			// TODO: Split into if/else rather than having the conditional inside format() call
-			return String.format("A %s %s %s %s, owned by %s", townSize,
+			// TODO: Split into if/else rather than having the conditional inside formatted() call
+			return "A %s %s %s %s, owned by %s".formatted(townSize,
 					status, getKind(),
 					name.isEmpty() ? "with no name" : "named " + name,
 					owner.isCurrent() ? "you" : owner.getName());

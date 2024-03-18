@@ -16,7 +16,7 @@ public class MapVersionException extends SPFormatException {
 		if (minimum == maximum) {
 			return ": must be " + minimum;
 		} else {
-			return String.format(": must be between %d and %d", minimum, maximum);
+			return ": must be between %d and %d".formatted(minimum, maximum);
 		}
 	}
 
@@ -27,7 +27,7 @@ public class MapVersionException extends SPFormatException {
 	 * @param maximum the highest version the code supports
 	 */
 	public MapVersionException(final StartElement context, final int version, final int minimum, final int maximum) {
-		super(String.format("Unsupported map version %d in tag %s%s", version,
+		super("Unsupported map version %d in tag %s%s".formatted(version,
 						context.getName().getLocalPart(), messageFragment(minimum, maximum)),
 				context.getLocation());
 	}
@@ -38,7 +38,7 @@ public class MapVersionException extends SPFormatException {
 	 * @param maximum the highest version the code supports
 	 */
 	private MapVersionException(final int version, final int minimum, final int maximum) {
-		super(String.format("Unsupported SP map version %d%s", version,
+		super("Unsupported SP map version %d%s".formatted(version,
 				messageFragment(minimum, maximum)), -1, -1);
 	}
 

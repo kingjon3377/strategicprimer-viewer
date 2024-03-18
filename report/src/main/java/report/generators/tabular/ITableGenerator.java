@@ -144,7 +144,7 @@ public interface ITableGenerator<T extends IFixture> {
 	default String distanceString(final @Nullable Point first, final @Nullable Point second,
 								  final MapDimensions dimensions) {
 		if (!Objects.isNull(first) && !Objects.isNull(second) && first.isValid() && second.isValid()) {
-			return String.format("%1.1f", Math.sqrt(distance(first, second, dimensions)));
+            return "%1.1f".formatted(Math.sqrt(distance(first, second, dimensions)));
 		} else {
 			return "unknown";
 		}
@@ -217,7 +217,7 @@ public interface ITableGenerator<T extends IFixture> {
 			if (quotesQuoted.contains(Character.toString(getFieldDelimiter())) ||
 					quotesQuoted.contains(getRowDelimiter()) ||
 					quotesQuoted.contains(" ")) {
-				ostream.accept(String.format("\"%s\"", quotesQuoted));
+				ostream.accept("\"%s\"".formatted(quotesQuoted));
 			} else {
 				ostream.accept(quotesQuoted);
 			}

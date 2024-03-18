@@ -63,8 +63,8 @@ import static lovelace.util.Decimalize.decimalize;
 		final Consumer<IResourcePile> addResource = resources::add;
 		while (true) {
 			final IResourcePile chosen =
-					chooseFromList(resources, String.format("Resources in %s:", fortress.getName()), "No resources in fortress.",
-							"Resource to take (from):", ICLIHelper.ListChoiceBehavior.ALWAYS_PROMPT);
+					chooseFromList(resources, "Resources in %s:".formatted(fortress.getName()), "No resources in fortress.",
+                            "Resource to take (from):", ICLIHelper.ListChoiceBehavior.ALWAYS_PROMPT);
 			if (Objects.isNull(chosen)) {
 				break;
 			}
@@ -76,8 +76,7 @@ import static lovelace.util.Decimalize.decimalize;
 						createID);
 				resources.remove(chosen);
 			} else {
-				final BigDecimal amount = cli.inputDecimal(String.format("Amount to take (in %s):",
-						chosen.getQuantity().units()));
+				final BigDecimal amount = cli.inputDecimal("Amount to take (in %s):".formatted(chosen.getQuantity().units()));
 				if (!Objects.isNull(amount) && amount.signum() > 0) {
 					model.transferResource(chosen, unit, amount, createID);
 					resources.clear();

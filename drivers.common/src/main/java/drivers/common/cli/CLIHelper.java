@@ -156,7 +156,7 @@ public final class CLIHelper implements ICLIHelper {
 	private <Element> void printList(final List<? extends Element> list, final Function<Element, String> func) {
 		int index = 0;
 		for (final Element item : list) {
-			println(String.format("%d: %s", index, func.apply(item)));
+			println("%d: %s".formatted(index, func.apply(item)));
 			index++;
 		}
 	}
@@ -176,7 +176,7 @@ public final class CLIHelper implements ICLIHelper {
 		println(description);
 		if (behavior == ListChoiceBehavior.AUTO_CHOOSE_ONLY && items.size() == 1) {
 			final Element first = items.getFirst();
-			println(String.format("Automatically choosing only item, %s.", func.apply(first)));
+			println("Automatically choosing only item, %s.".formatted(func.apply(first)));
 			return Pair.with(0, first);
 		} else {
 			printList(items, func);

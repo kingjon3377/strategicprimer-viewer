@@ -146,8 +146,7 @@ public class MapTradeCLI implements CLIDriver {
 	}
 
 	private void askAbout(final FixtureMatcher matcher, final String key) {
-		final Boolean retval = cli.inputBooleanInSeries(String.format("Include %s items?",
-				matcher.getDescription()), key);
+		final Boolean retval = cli.inputBooleanInSeries("Include %s items?".formatted(matcher.getDescription()), key);
 		if (Objects.isNull(retval)) {
 			throw new IllegalStateException("EOF in fixture-matcher query");
 		}

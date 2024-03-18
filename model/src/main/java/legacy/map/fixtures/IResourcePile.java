@@ -55,7 +55,7 @@ public interface IResourcePile extends UnitMember, FortressMember, HasKind, HasI
 			if (obj instanceof final IResourcePile rp) {
 				boolean retval = true;
 				final Consumer<String> localReport =
-						(str) -> report.accept(String.format("In Resource Pile, ID #%d: %s", getId(), str));
+						(str) -> report.accept("In Resource Pile, ID #%d: %s".formatted(getId(), str));
 				if (!getKind().equals(rp.getKind())) {
 					localReport.accept("Kinds differ");
 					retval = false;

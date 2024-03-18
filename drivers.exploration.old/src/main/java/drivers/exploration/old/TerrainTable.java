@@ -74,6 +74,6 @@ class TerrainTable implements EncounterTable {
 
 	@Override
 	public String toString() {
-		return String.format("TerrainTable covering %d terrain types", mapping.size());
+		return "TerrainTable covering %d terrain types".formatted(mapping.size());
 	}
 }

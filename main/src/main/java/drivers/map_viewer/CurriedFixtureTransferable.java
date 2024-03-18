@@ -45,8 +45,7 @@ import java.util.stream.Stream;
 
 	@Override
 	public String toString() {
-		return String.format("CurriedFixtureTransferable with payload containing %d elements",
-				payload.size());
+        return "CurriedFixtureTransferable with payload containing %d elements".formatted(payload.size());
 	}
 
 	@Override

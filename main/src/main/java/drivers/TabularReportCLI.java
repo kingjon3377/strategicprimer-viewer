@@ -60,7 +60,7 @@ public class TabularReportCLI implements ReadOnlyDriver {
 			final Path base) {
 		final String baseName = base.getFileName().toString();
 		return tableName -> {
-			final String key = String.format("%s.%s.csv", baseName, tableName);
+			final String key = "%s.%s.csv".formatted(baseName, tableName);
 			if (writers.containsKey(key)) {
 				return writers.get(key)::write;
 			} else {

@@ -105,7 +105,7 @@ public class MapCheckerCLI implements UtilityDriver {
 		 * @return true iff at least one warning was reported.
 		 */
 		boolean check(@Nullable TileType terrain, Point location, boolean mtn, Warning warner,
-					  Collection<? extends IFixture> fixtures);
+		              Collection<? extends IFixture> fixtures);
 	}
 
 	private static class SPContentWarning extends Exception {
@@ -113,7 +113,7 @@ public class MapCheckerCLI implements UtilityDriver {
 		private static final long serialVersionUID = 1L;
 
 		public SPContentWarning(final Point context, final String message) {
-			super(String.format("At %s: %s", context, message));
+			super("At %s: %s".formatted(context, message));
 		}
 	}
 
@@ -128,21 +128,18 @@ public class MapCheckerCLI implements UtilityDriver {
 	private record OwnerChecker(ILegacyMap map) {
 
 		public boolean check(final TileType terrain, final Point context, final IFixture fixture,
-							 final Warning warner) {
+		                     final Warning warner) {
 			boolean retval = false;
 			if (fixture instanceof final HasOwner owned) {
 				if (owned.owner().getName().isBlank()) {
 					warner.handle(new SPContentWarning(context,
-							String.format("Fixture owned by %s, who has no name",
-									owned.owner())));
+							"Fixture owned by %s, who has no name".formatted(owned.owner())));
 					retval = true;
 				}
 				if (StreamSupport.stream(map.getPlayers().spliterator(), true)
 						.mapToInt(Player::getPlayerId)
 						.noneMatch(n -> owned.owner().getPlayerId() == n)) {
-					warner.handle(new SPContentWarning(context, String.format(
-							"Fixture owned by %s, not known by the map",
-							owned.owner())));
+					warner.handle(new SPContentWarning(context, "Fixture owned by %s, not known by the map".formatted(owned.owner())));
 					retval = true;
 				}
 			}
@@ -151,7 +148,7 @@ public class MapCheckerCLI implements UtilityDriver {
 	}
 
 	private static boolean lateriteChecker(final TileType terrain, final Point context, final IFixture fixture,
-										   final Warning warner) {
+	                                       final Warning warner) {
 		if (fixture instanceof final StoneDeposit sd && StoneKind.Laterite == sd.getStone() &&
 				TileType.Jungle != terrain) {
 			warner.handle(new SPContentWarning(context, "Laterite stone in non-jungle"));
@@ -162,7 +159,7 @@ public class MapCheckerCLI implements UtilityDriver {
 	}
 
 	private static boolean oasisChecker(final TileType terrain, final Point context, final IFixture fixture,
-										final Warning warner) {
+	                                    final Warning warner) {
 		if (fixture instanceof Oasis && TileType.Desert != terrain) {
 			warner.handle(new SPContentWarning(context, "Oasis in non-desert"));
 			return true;
@@ -172,7 +169,7 @@ public class MapCheckerCLI implements UtilityDriver {
 	}
 
 	private static boolean animalTracksChecker(final @Nullable TileType terrain, final Point context,
-											   final IFixture fixture, final Warning warner) {
+	                                           final IFixture fixture, final Warning warner) {
 		if (fixture instanceof AnimalTracks) {
 			warner.handle(new SPContentWarning(context,
 					"Animal tracks in map suspected to be main"));
@@ -183,7 +180,7 @@ public class MapCheckerCLI implements UtilityDriver {
 	}
 
 	private static boolean aquaticVillageChecker(final TileType terrain, final Point context,
-												 final IFixture fixture, final Warning warner) {
+	                                             final IFixture fixture, final Warning warner) {
 		if (fixture instanceof final Village v &&
 				LandRaces.LAND_RACES.contains(v.getRace()) &&
 				TileType.Ocean == terrain) {
@@ -204,7 +201,7 @@ public class MapCheckerCLI implements UtilityDriver {
 	}
 
 	private static boolean suspiciousSkillCheck(final TileType terrain, final Point context, final IFixture fixture,
-												final Warning warner) {
+	                                            final Warning warner) {
 		boolean retval = false;
 		if (fixture instanceof final IWorker w) {
 			if (StreamSupport.stream(w.spliterator(), true)
@@ -230,7 +227,7 @@ public class MapCheckerCLI implements UtilityDriver {
 	}
 
 	private static boolean personalEquipmentCheck(final TileType terrain, final Point context, final IFixture fixture,
-												  final Warning warner) {
+	                                              final Warning warner) {
 		if (fixture instanceof final IFortress f) {
 			final String matching = f.stream().filter(Implement.class::isInstance)
 					.map(Implement.class::cast).map(Implement::getKind).filter(PERSONAL_EQUIPMENT::contains)
@@ -239,7 +236,7 @@ public class MapCheckerCLI implements UtilityDriver {
 				return false;
 			} else {
 				warner.handle(new SPContentWarning(context,
-						String.format("'Personal equipment' (%s) directly in fortress", matching)));
+						"'Personal equipment' (%s) directly in fortress".formatted(matching)));
 				return true;
 			}
 		} else {
@@ -252,22 +249,21 @@ public class MapCheckerCLI implements UtilityDriver {
 	private static final List<String> PLACEHOLDER_UNITS = List.of("unit", "units");
 
 	private static boolean resourcePlaceholderChecker(final TileType terrain, final Point context,
-													  final IFixture fixture, final Warning warner) {
+	                                                  final IFixture fixture, final Warning warner) {
 		if (fixture instanceof final IResourcePile rp) {
 			if (PLACEHOLDER_KINDS.contains(rp.getKind())) {
-				warner.handle(new SPContentWarning(context, String.format(
-						"Resource pile, ID #%d, has placeholder kind: %s",
-						fixture.getId(), rp.getKind())));
+				warner.handle(new SPContentWarning(context,
+						"Resource pile, ID #%d, has placeholder kind: %s".formatted(
+								fixture.getId(), rp.getKind())));
 			} else if (PLACEHOLDER_KINDS.contains(rp.getContents())) {
-				warner.handle(new SPContentWarning(context, String.format(
-						"Resource pile, ID #%d, has placeholder contents: %s",
-						fixture.getId(), rp.getContents())));
+				warner.handle(new SPContentWarning(context,
+						"Resource pile, ID #%d, has placeholder contents: %s".formatted(
+								fixture.getId(), rp.getContents())));
 			} else if (PLACEHOLDER_UNITS.contains(rp.getQuantity().units())) {
-				warner.handle(new SPContentWarning(context, String.format(
-						"Resource pile, ID #%d, has placeholder units", fixture.getId())));
+				warner.handle(new SPContentWarning(context,
+						"Resource pile, ID #%d, has placeholder units".formatted(fixture.getId())));
 			} else if (((IResourcePile) fixture).getContents().contains("#")) {
-				warner.handle(new SPContentWarning(context, String.format(
-						"Resource pile, ID #%d, has suspicous contents: %s",
+				warner.handle(new SPContentWarning(context, "Resource pile, ID #%d, has suspicous contents: %s".formatted(
 						fixture.getId(), rp.getContents())));
 			} else {
 				return false;
@@ -291,14 +287,13 @@ public class MapCheckerCLI implements UtilityDriver {
 	}
 
 	private static boolean noResultsCheck(final TileType terrain, final Point context, final IFixture fixture,
-										  final Warning warner) {
+	                                      final Warning warner) {
 		if (fixture instanceof final IUnit unit && !unit.isEmpty()) {
 			final OptionalInt turn = unit.getAllOrders().keySet().stream().mapToInt(Integer::intValue).max();
 			final String results = turn.stream().mapToObj(unit::getResults).map(String::toLowerCase).findAny()
 					.orElse("");
 			if (results.isEmpty() || results.contains("todo") || results.contains("fixme")) {
-				warner.handle(new SPContentWarning(context, String.format(
-						"Unit %s [%s] (ID #%d) has orders but no results for turn %d", unit.getName(), unit.getKind(),
+				warner.handle(new SPContentWarning(context, "Unit %s [%s] (ID #%d) has orders but no results for turn %d".formatted(unit.getName(), unit.getKind(),
 						unit.getId(), turn.orElse(-1))));
 				return true;
 			}
@@ -319,13 +314,12 @@ public class MapCheckerCLI implements UtilityDriver {
 	}
 
 	private static boolean acreageChecker(final TileType terrain, final Point context, final boolean mtn,
-										  final Warning warner, final Collection<? extends IFixture> fixtures) {
+	                                      final Warning warner, final Collection<? extends IFixture> fixtures) {
 		final boolean retval = false;
 		double total = fixtures.stream().filter(HasExtent.class::isInstance).map(HasExtent.class::cast)
 				.filter(MapCheckerCLI::positiveAcres).map(HasExtent::getAcres).mapToDouble(Number::doubleValue).sum();
 		if (total > 160.0) {
-			warner.handle(new SPContentWarning(context, String.format(
-					"More explicit acres (%.1f) than tile should allow", total)));
+			warner.handle(new SPContentWarning(context, "More explicit acres (%.1f) than tile should allow".formatted(total)));
 			return true;
 		}
 		total += fixtures.stream().filter(ITownFixture.class::isInstance).map(ITownFixture.class::cast)
@@ -334,9 +328,7 @@ public class MapCheckerCLI implements UtilityDriver {
 				.filter(Grove.class::isInstance).map(Grove.class::cast)
 				.mapToInt(Grove::getPopulation).filter(p -> p > 0).sum() / 500.0);
 		if (total > 160.0) {
-			warner.handle(new SPContentWarning(context, String.format(
-					"Counting towns and groves, more acres (%.1f) used than tile should allow",
-					total)));
+			warner.handle(new SPContentWarning(context, "Counting towns and groves, more acres (%.1f) used than tile should allow".formatted(total)));
 			return true;
 		} else {
 			return retval;
@@ -344,7 +336,7 @@ public class MapCheckerCLI implements UtilityDriver {
 	}
 
 	private static boolean hillInMountainCheck(final TileType terrain, final Point context, final boolean mtn,
-											   final Warning warner, final Collection<? extends IFixture> fixtures) {
+	                                           final Warning warner, final Collection<? extends IFixture> fixtures) {
 		if (mtn && fixtures.stream().anyMatch(Hill.class::isInstance)) {
 			warner.handle(new SPContentWarning(context, "Hill in mountainous tile"));
 			return true;
@@ -354,14 +346,14 @@ public class MapCheckerCLI implements UtilityDriver {
 	}
 
 	private static boolean pointlessTracksCheck(final TileType terrain, final Point context, final boolean mtn,
-												final Warning warner, final Collection<? extends IFixture> fixtures) {
+	                                            final Warning warner, final Collection<? extends IFixture> fixtures) {
 		final Predicate<IFixture> isAnimal = Animal.class::isInstance;
 		final Function<IFixture, Animal> castToAnimal = Animal.class::cast;
 		for (final IFixture fixture : fixtures) {
 			if (fixture instanceof final AnimalTracks at && fixtures.stream().filter(isAnimal).map(castToAnimal)
 					.map(Animal::getKind).anyMatch(Predicate.isEqual(at.getKind()))) {
 				warner.handle(new SPContentWarning(context,
-						String.format("Tracks of %s as well as the animal population", at.getKind())));
+						"Tracks of %s as well as the animal population".formatted(at.getKind())));
 				return true;
 			}
 		}
@@ -369,9 +361,9 @@ public class MapCheckerCLI implements UtilityDriver {
 	}
 
 	private static boolean hillInOceanCheck(final TileType terrain, final Point context, final IFixture fixture,
-											final Warning warner) {
+	                                        final Warning warner) {
 		if (terrain == TileType.Ocean && fixture instanceof Hill) {
-			warner.handle(new SPContentWarning(context, String.format("Hill in ocean, ID #%d", fixture.getId())));
+			warner.handle(new SPContentWarning(context, "Hill in ocean, ID #%d".formatted(fixture.getId())));
 			return true;
 		} else {
 			return false;
@@ -379,9 +371,9 @@ public class MapCheckerCLI implements UtilityDriver {
 	}
 
 	private static boolean unnamedCheck(final TileType terrain, final Point context, final IFixture fixture,
-										final Warning warner) {
+	                                    final Warning warner) {
 		if (fixture instanceof final HasName hn && "unnamed".equalsIgnoreCase(hn.getName())) {
-			warner.handle(new SPContentWarning(context, String.format("'Unnamed' %s, ID #%d",
+			warner.handle(new SPContentWarning(context, "'Unnamed' %s, ID #%d".formatted(
 					fixture.getClass().getName(), fixture.getId())));
 			return true;
 		} else {
@@ -390,10 +382,10 @@ public class MapCheckerCLI implements UtilityDriver {
 	}
 
 	private static boolean nonPoundsFoodCheck(final TileType terrain, final Point context, final IFixture fixture,
-											  final Warning warner) {
+	                                          final Warning warner) {
 		if (fixture instanceof final IResourcePile rp && "food".equals(rp.getKind()) &&
 				!"pounds".equals(rp.getQuantity().units())) {
-			warner.handle(new SPContentWarning(context, String.format("Non-pounds units '%s' in food, ID #%d",
+			warner.handle(new SPContentWarning(context, "Non-pounds units '%s' in food, ID #%d".formatted(
 					rp.getQuantity().units(), fixture.getId())));
 			return true;
 		} else {
@@ -412,7 +404,7 @@ public class MapCheckerCLI implements UtilityDriver {
 			MapCheckerCLI::hillInMountainCheck, MapCheckerCLI::pointlessTracksCheck);
 
 	private static boolean contentCheck(final Checker checker, final @Nullable TileType terrain, final Point context,
-										final Warning warner, final Iterable<? extends IFixture> list) {
+	                                    final Warning warner, final Iterable<? extends IFixture> list) {
 		boolean retval = false;
 		for (final IFixture fixture : list) {
 			if (fixture instanceof final FixtureIterable<?> iter) {

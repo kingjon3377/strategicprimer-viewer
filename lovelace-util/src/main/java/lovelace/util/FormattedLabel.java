@@ -17,7 +17,7 @@ public class FormattedLabel extends JLabel {
 	 *                         to produce the label's initial text.
 	 */
 	public FormattedLabel(final String formatString, final Object... defaultArguments) {
-		super(String.format(formatString, defaultArguments));
+		super(formatString.formatted(defaultArguments));
 		this.formatString = formatString;
 	}
 
@@ -25,6 +25,6 @@ public class FormattedLabel extends JLabel {
 	 * Change the arguments and regenerate the label's text.
 	 */
 	public void setArguments(final Object... arguments) {
-		setText(String.format(formatString, arguments));
+		setText(formatString.formatted(arguments));
 	}
 }

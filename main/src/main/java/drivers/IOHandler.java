@@ -82,9 +82,9 @@ public class IOHandler implements ActionListener {
 			} else {
 				prompt = "Save changes to map before %s?";
 			}
-			final int answer = JOptionPane.showConfirmDialog(window, String.format(prompt, verb),
-					"Save Changes?", JOptionPane.YES_NO_CANCEL_OPTION,
-					JOptionPane.QUESTION_MESSAGE);
+			final int answer = JOptionPane.showConfirmDialog(window, prompt.formatted(verb),
+                    "Save Changes?", JOptionPane.YES_NO_CANCEL_OPTION,
+                    JOptionPane.QUESTION_MESSAGE);
 			if (answer == JOptionPane.CANCEL_OPTION) {
 				LovelaceLogger.trace("User selected 'Cancel'");
 				return;
@@ -103,9 +103,8 @@ public class IOHandler implements ActionListener {
 				.anyMatch(ILegacyMap::isModified)) {
 			LovelaceLogger.trace("Subordinate map(s) modified.");
 			final int answer = JOptionPane.showConfirmDialog(window,
-					String.format("Subordinate map(s) have unsaved changes. Save all before %s?",
-							verb), "Save Changes?", JOptionPane.YES_NO_CANCEL_OPTION,
-					JOptionPane.QUESTION_MESSAGE);
+                    "Subordinate map(s) have unsaved changes. Save all before %s?".formatted(verb), "Save Changes?", JOptionPane.YES_NO_CANCEL_OPTION,
+                    JOptionPane.QUESTION_MESSAGE);
 			if (answer == JOptionPane.CANCEL_OPTION) {
 				LovelaceLogger.trace("User selected 'Cancel' rather than save-all.");
 				return;
@@ -130,9 +129,9 @@ public class IOHandler implements ActionListener {
 		if (except instanceof XMLStreamException) {
 			message = "Malformed XML in " + filename;
 		} else if (except instanceof FileNotFoundException || except instanceof NoSuchFileException) {
-			message = String.format("File %s not found", filename);
+            message = "File %s not found".formatted(filename);
 		} else if (except instanceof IOException) {
-			message = String.format("I/O error %s file %s", verb, filename);
+			message = "I/O error %s file %s".formatted(verb, filename);
 		} else if (except instanceof SPFormatException) {
 			message = "SP map format error in " + filename;
 		} else {
@@ -335,8 +334,8 @@ public class IOHandler implements ActionListener {
 								LovelaceLogger.error(Objects.requireNonNullElse(except.getCause(), except),
 										"Error thrown from viewer driver");
 								JOptionPane.showMessageDialog(null,
-										String.format("Error starting map viewer:%n%s", except.getMessage()),
-										"Strategic Primer Assistive Programs", JOptionPane.ERROR_MESSAGE);
+                                        "Error starting map viewer:%n%s".formatted(except.getMessage()),
+                                        "Strategic Primer Assistive Programs", JOptionPane.ERROR_MESSAGE);
 							}
 						});
 					}

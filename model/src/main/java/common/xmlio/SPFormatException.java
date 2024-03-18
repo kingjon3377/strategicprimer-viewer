@@ -28,7 +28,7 @@ public abstract class SPFormatException extends Exception {
 	 */
 	@Deprecated
 	protected SPFormatException(final String errorMessage, final int line, final int column) {
-		super(String.format("Incorrect SP XML at line %d, column %d: %s", line, column, errorMessage));
+		super("Incorrect SP XML at line %d, column %d: %s".formatted(line, column, errorMessage));
 		this.line = line;
 		this.column = column;
 	}
@@ -38,14 +38,14 @@ public abstract class SPFormatException extends Exception {
 	 * @param location     The line and column of the XML file where the mistake begins.
 	 */
 	protected SPFormatException(final String errorMessage, final Location location) {
-		super(String.format("Incorrect SP XML at line %d, column %d: %s", location.getLineNumber(),
+		super("Incorrect SP XML at line %d, column %d: %s".formatted(location.getLineNumber(),
 				location.getColumnNumber(), errorMessage));
 		line = location.getLineNumber();
 		column = location.getColumnNumber();
 	}
 
 	protected SPFormatException(final String errorMessage, final Location location, final Throwable errorCause) {
-		super(String.format("Incorrect SP XML at line %d, column %d: %s", location.getLineNumber(),
+		super("Incorrect SP XML at line %d, column %d: %s".formatted(location.getLineNumber(),
 				location.getColumnNumber(), errorMessage), errorCause);
 		line = location.getLineNumber();
 		column = location.getColumnNumber();

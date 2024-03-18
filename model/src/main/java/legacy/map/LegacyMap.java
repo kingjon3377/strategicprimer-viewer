@@ -634,7 +634,7 @@ public class LegacyMap implements IMutableLegacyMap {
 				} else {
 					idStr = "";
 				}
-				ostream.accept(String.format("%s%s apparently moved from our %s to %s",
+				ostream.accept("%s%s apparently moved from our %s to %s".formatted(
 						match, idStr, matchPoint, location));
 				retval = false;
 			}
@@ -645,9 +645,7 @@ public class LegacyMap implements IMutableLegacyMap {
 			retval = false;
 			ostream.accept("Extra fixture:\t" + desideratum);
 		} else if (unmatched) {
-			ostream.accept(String.format(
-					"Fixture with ID #%d didn't match any of the subsettable fixtures sharing that ID",
-					desideratum.getId()));
+			ostream.accept("Fixture with ID #%d didn't match any of the subsettable fixtures sharing that ID".formatted(desideratum.getId()));
 			retval = false;
 		}
 		return retval;
@@ -717,7 +715,7 @@ public class LegacyMap implements IMutableLegacyMap {
 			final BiPredicate<Point, TileFixture> movedFrom = (point, fixture) -> {
 				final Point tPoint = ourLocations.get(fixture);
 				if (!Objects.isNull(tPoint) && !tPoint.equals(point)) {
-					report.accept(String.format("%s moved from our %s to %s",
+					report.accept("%s moved from our %s to %s".formatted(
 							fixture, tPoint,
 							point));
 					return true;
@@ -728,8 +726,7 @@ public class LegacyMap implements IMutableLegacyMap {
 
 			for (final Point point : getLocations()) {
 				final Consumer<String> localReport =
-						str -> report.accept(String.format(
-								"At %s:\t%s", point.toString(), str));
+						str -> report.accept("At %s:\t%s".formatted(point.toString(), str));
 				final TileType theirTerrain = obj.getBaseTerrain(point);
 				final TileType ourTerrain = terrain.get(point);
 				if (!Objects.isNull(theirTerrain)) {

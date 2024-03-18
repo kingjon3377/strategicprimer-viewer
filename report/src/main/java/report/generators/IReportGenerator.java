@@ -88,7 +88,7 @@ public interface IReportGenerator<T extends IFixture> {
 												 final TriConsumer<? super Key, Point, Consumer<String>> lambda,
 												 final Comparator<Pair<? super Key, Point>> sorter) {
 		if (!map.isEmpty()) {
-			ostream.accept(String.format("%s%n<ul>%n", map.getHeader()));
+			ostream.accept("%s%n<ul>%n".formatted(map.getHeader()));
 			final List<Pair<Key, Point>> sorted = map.entrySet().stream()
 					.map((e) -> Pair.<Key, Point>with(e.getKey(), e.getValue()))
 					.sorted(sorter).toList();
@@ -112,7 +112,7 @@ public interface IReportGenerator<T extends IFixture> {
 												 final HeadedMap<? extends Key, Point> map,
 												 final TriConsumer<? super Key, Point, Consumer<String>> lambda) {
 		if (!map.isEmpty()) {
-			ostream.accept(String.format("%s%n<ul>%n", map.getHeader()));
+			ostream.accept("%s%n<ul>%n".formatted(map.getHeader()));
 			final List<Pair<Key, Point>> sorted = map.entrySet().stream()
 					.map((e) -> Pair.<Key, Point>with(e.getKey(), e.getValue())).toList();
 			for (final Pair<Key, Point> pair : sorted) {

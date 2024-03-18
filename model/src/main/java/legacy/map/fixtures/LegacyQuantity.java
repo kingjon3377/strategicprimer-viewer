@@ -44,7 +44,7 @@ public record LegacyQuantity(Number number, String units)
 
 	@Override
 	public String toString() {
-		return String.format("%s %s", number, units);
+		return "%s %s".formatted(number, units);
 	}
 
 	/**

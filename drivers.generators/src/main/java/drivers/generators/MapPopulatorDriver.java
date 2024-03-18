@@ -75,7 +75,7 @@ public class MapPopulatorDriver implements CLIDriver {
 	@Override
 	public void startDriver() {
 		populate(model);
-		cli.println(String.format("%d/%d suitable locations were changed", // TODO: add printf() to ICLIHelper
+		cli.println("%d/%d suitable locations were changed".formatted( // TODO: add printf() to ICLIHelper
 				changedCount, suitableCount));
 		if (changedCount > 0) {
 			model.setMapModified(true);

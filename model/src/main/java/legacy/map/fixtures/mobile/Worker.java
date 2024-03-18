@@ -235,7 +235,7 @@ public class Worker implements IMutableWorker {
 	 */
 	@Override
 	public String toString() {
-		return ("human".equals(race)) ? name : String.format("%s, a %s", name, race);
+		return ("human".equals(race)) ? name : "%s, a %s".formatted(name, race);
 	}
 
 	/**
@@ -258,7 +258,7 @@ public class Worker implements IMutableWorker {
 		if (obj.getId() == id) {
 			if (obj instanceof final IWorker that) {
 				final Consumer<String> localReport =
-						s -> report.accept(String.format("In worker %s (ID #%d):\t%s",
+						s -> report.accept("In worker %s (ID #%d):\t%s".formatted(
 								name, id, s));
 				if (!name.equals(that.getName())) {
 					localReport.accept("Names differ");
@@ -302,11 +302,11 @@ public class Worker implements IMutableWorker {
 				}
 				return retval;
 			} else {
-				report.accept(String.format("For ID #%d, different kinds of members", id));
+				report.accept("For ID #%d, different kinds of members".formatted(id));
 				return false;
 			}
 		} else {
-			report.accept(String.format("Called with different IDs, #%d and #%d",
+			report.accept("Called with different IDs, #%d and #%d".formatted(
 					id, obj.getId()));
 			return false;
 		}

@@ -157,15 +157,15 @@ public class Forest implements TerrainFixture, HasMutableImage, HasKind, HasExte
 	public String getShortDescription() {
 		if (HasExtent.isPositive(acres)) {
 			if (rows) {
-				return String.format("Rows of %s trees for %s acres", kind, acres);
+				return "Rows of %s trees for %s acres".formatted(kind, acres);
 			} else {
-				return String.format("A %s-acre %s forest", acres, kind);
+				return "A %s-acre %s forest".formatted(acres, kind);
 			}
 		} else {
 			if (rows) {
-				return String.format("Rows of %s trees", kind);
+                return "Rows of %s trees".formatted(kind);
 			} else {
-				return String.format("A %s forest", kind);
+                return "A %s forest".formatted(kind);
 			}
 		}
 	}
@@ -182,12 +182,12 @@ public class Forest implements TerrainFixture, HasMutableImage, HasKind, HasExte
 			return false;
 		} else if (other instanceof final Forest it) {
 			if (!it.getKind().equals(kind)) {
-				report.accept(String.format("In forest with ID #%d: Kinds differ", id));
+				report.accept("In forest with ID #%d: Kinds differ".formatted(id));
 				return false;
 			}
 			boolean retval = true;
 			final Consumer<String> localReport = s -> report.accept(
-					String.format("In %s forest (ID #%d):\t%s", kind, id, s));
+					"In %s forest (ID #%d):\t%s".formatted(kind, id, s));
 			if (it.isRows() && !rows) {
 				localReport.accept("In rows when we aren't");
 				retval = false;
@@ -198,7 +198,7 @@ public class Forest implements TerrainFixture, HasMutableImage, HasKind, HasExte
 			}
 			return retval;
 		} else {
-			report.accept(String.format("Different types for ID #%d", id));
+			report.accept("Different types for ID #%d".formatted(id));
 			return false;
 		}
 	}

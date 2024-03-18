@@ -103,7 +103,7 @@ public class CacheFixture implements HarvestableFixture {
 
 	@Override
 	public String toString() {
-		return String.format("a cache of %s containing %s", kind, contents);
+		return "a cache of %s containing %s".formatted(kind, contents);
 	}
 
 	@Override

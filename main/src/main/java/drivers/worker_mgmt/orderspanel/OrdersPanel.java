@@ -95,8 +95,7 @@ public class OrdersPanel extends BorderedPanel implements OrdersContainer {
 
 		final String topLabel;
 		if ("Orders".equals(description)) {
-			topLabel = String.format("Orders for current selection, if a unit: (%sD)",
-					Platform.SHORTCUT_DESCRIPTION);
+            topLabel = "Orders for current selection, if a unit: (%sD)".formatted(Platform.SHORTCUT_DESCRIPTION);
 		} else {
 			topLabel = description + " for current selection, if a unit:";
 		}

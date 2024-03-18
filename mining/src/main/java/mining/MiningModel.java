@@ -123,7 +123,7 @@ import java.util.stream.Collectors;
 			final Pair<Integer, Integer> point = queue.getFirst();
 			counter++;
 			if (counter % 100000L == 0L) {
-				cli.println(String.format("(%d,%d)", point.getValue0(), point.getValue1()));
+				cli.println("(%d,%d)".formatted(point.getValue0(), point.getValue1()));
 			} else if (counter % 1000L == 0L) {
 				cli.print(".");
 				cli.flush();
@@ -138,7 +138,7 @@ import java.util.stream.Collectors;
 		}
 		cli.println();
 		// TODO: printf() instead of println(format()) once added to interface
-		cli.println(String.format("Pruned %d branches beyond our boundaries", pruneCounter));
+		cli.println("Pruned %d branches beyond our boundaries".formatted(pruneCounter));
 
 		// FIXME: What is this procedure (by-row and by-column)
 		// supposed to do? On porting back to Java it looks like it's

@@ -89,19 +89,19 @@ import org.jetbrains.annotations.Nullable;
 			return null;
 		}
 		int treeCount = totalHours / 100;
-		cli.print(String.format("With unskilled workers, that would be %d trees", treeCount));
+		cli.print("With unskilled workers, that would be %d trees".formatted(treeCount));
 		if (totalHours % 100 == 0) {
 			cli.println(".");
 		} else {
-			cli.println(String.format(" and %d into the next.", totalHours % 100));
+			cli.println(" and %d into the next.".formatted(totalHours % 100));
 		}
 		final Boolean tCorrect = cli.inputBoolean("Is that correct?");
 		if (Objects.isNull(tCorrect)) {
 			return null;
 		} else if (tCorrect) {
-			builder.append(String.format("The %d workers cut down and process %d trees", workers, treeCount));
+			builder.append("The %d workers cut down and process %d trees".formatted(workers, treeCount));
 			if (totalHours % 100 != 0) {
-				cli.println(String.format(" and get %d into the next", totalHours % 100));
+				cli.println(" and get %d into the next".formatted(totalHours % 100));
 			}
 		} else {
 			final String str = cli.inputMultilineString("Description of trees cut:");
@@ -118,11 +118,11 @@ import org.jetbrains.annotations.Nullable;
 			}
 		}
 		int footage = treeCount * 300;
-		final Boolean fCorrect = cli.inputBoolean(String.format("Is %d cubic feet correct?", footage));
+		final Boolean fCorrect = cli.inputBoolean("Is %d cubic feet correct?".formatted(footage));
 		if (Objects.isNull(fCorrect)) {
 			return null;
 		} else if (fCorrect) {
-			builder.append(String.format(", producing %d cubic feet of wood", footage));
+			builder.append(", producing %d cubic feet of wood".formatted(footage));
 		} else {
 			final String str = cli.inputMultilineString("Description of production:");
 			if (Objects.isNull(str)) {
@@ -156,13 +156,13 @@ import org.jetbrains.annotations.Nullable;
 				BigDecimal acres = decimalize(treeCount * 10 / 72)
 						.divide(decimalize(100), RoundingMode.HALF_EVEN)
 						.min(decimalize(forest.getAcres()));
-				final Boolean aCorrect = cli.inputBoolean(String.format(
-						"Is %.2f (of %.2f) cleared correct?", acres.doubleValue(),
+				final Boolean aCorrect = cli.inputBoolean("Is %.2f (of %.2f) cleared correct?".formatted(
+						acres.doubleValue(),
 						forest.getAcres().doubleValue()));
 				if (Objects.isNull(aCorrect)) {
 					return null;
 				} else if (aCorrect) {
-					builder.append(String.format(", clearing %.2f acres (~ %d sq ft) of land.",
+					builder.append(", clearing %.2f acres (~ %d sq ft) of land.".formatted(
 							acres, acres.multiply(decimalize(43560)).intValue())); // TODO: Make Decimal constant static final
 				} else {
 					final String str = cli.inputMultilineString("Description of cleared land:");

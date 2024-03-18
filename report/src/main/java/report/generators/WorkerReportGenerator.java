@@ -56,7 +56,7 @@ import legacy.map.fixtures.mobile.worker.IJob;
 	 * TODO: Take Consumer instead of returning String
 	 */
 	private static String statsString(final WorkerStats stats) {
-		return String.format("He or she has the following stats: %d / %d Hit Points, Strength %s, Dexterity %s, Constitution %s, Intelligence %s, Wisdom %s, Charisma %s",
+		return "He or she has the following stats: %d / %d Hit Points, Strength %s, Dexterity %s, Constitution %s, Intelligence %s, Wisdom %s, Charisma %s".formatted(
 				stats.getHitPoints(), stats.getMaxHitPoints(), mod(stats.getStrength()),
 				mod(stats.getDexterity()), mod(stats.getConstitution()),
 				mod(stats.getIntelligence()), mod(stats.getWisdom()),

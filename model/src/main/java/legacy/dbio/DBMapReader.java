@@ -238,7 +238,7 @@ public final class DBMapReader {
 						!Objects.isNull(p.getPopulation())) { // TODO: combine with earlier AbstractTown case?
 					throw new IllegalStateException("Community stats already set");
 				} else {
-					throw new IllegalStateException(String.format("DB parent-child type invariants not met (parent %s, child %s)",
+					throw new IllegalStateException("DB parent-child type invariants not met (parent %s, child %s)".formatted(
 							parent.getClass().getSimpleName(), member.getClass().getSimpleName()));
 				}
 			}

@@ -114,9 +114,8 @@ public class PointIterable implements Iterable<Point> {
 		 */
 		@Override
 		public String toString() {
-			return String.format(
-					"PointIterator: Started at (%d, %d), currently at (%d, %d), searching %sly %swards and no farther than (%d, %d)",
-					startRow, startColumn, row, column, (horizontal) ? "horizontal" : "vertical",
+			return "PointIterator: Started at (%d, %d), currently at (%d, %d), searching %sly %swards and no farther than (%d, %d)"
+					.formatted(startRow, startColumn, row, column, (horizontal) ? "horizontal" : "vertical",
 					(forwards) ? "for" : "back", maxRow, maxColumn);
 		}
 

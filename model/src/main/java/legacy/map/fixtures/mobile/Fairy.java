@@ -119,11 +119,11 @@ public class Fairy implements Immortal, HasMutableImage, HasKind {
 					return false;
 				}
 			} else {
-				report.accept(String.format("\tFor ID #%d, different kinds of members", id));
+				report.accept("\tFor ID #%d, different kinds of members".formatted(id));
 				return false;
 			}
 		} else {
-			report.accept(String.format("\tCalled with different IDs, #%d and %d",
+			report.accept("\tCalled with different IDs, #%d and %d".formatted(
 					id, obj.getId()));
 			return false;
 		}

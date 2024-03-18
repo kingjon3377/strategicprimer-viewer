@@ -166,7 +166,7 @@ public class Portal implements ExplorableFixture, SubsettableFixture {
 		if (obj.getId() == id) {
 			if (obj instanceof final Portal p) {
 				final Consumer<String> localReport =
-						(str) -> report.accept(String.format("In portal with ID #%d: %s", id, str));
+						(str) -> report.accept("In portal with ID #%d: %s".formatted(id, str));
 				if (!destinationWorld.equals(p.getDestinationWorld()) &&
 						!"unknown".equals(p.getDestinationWorld())) {
 					localReport.accept("Different destination world");

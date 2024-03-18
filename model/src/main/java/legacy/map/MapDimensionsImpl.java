@@ -58,6 +58,6 @@ public record MapDimensionsImpl(int rows, int columns, int version) implements M
 
 	@Override
 	public String toString() {
-		return String.format("Map dimensions: %d rows x %d columns; map version %d", rows, columns, version);
+		return "Map dimensions: %d rows x %d columns; map version %d".formatted(rows, columns, version);
 	}
 }

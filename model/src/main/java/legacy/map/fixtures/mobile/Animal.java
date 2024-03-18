@@ -38,9 +38,9 @@ public interface Animal extends AnimalOrTracks, MobileFixture, HasImage,
 		} else {
 			final String popString = (getPopulation() == 1) ? "" : getPopulation() + " ";
 			if (getBorn() >= 0) {
-				return String.format("%s%s (born %d)", popString, getKind(), getBorn());
+				return "%s%s (born %d)".formatted(popString, getKind(), getBorn());
 			} else {
-				return String.format("%s%s %s", popString, getStatus(), getKind());
+				return "%s%s %s".formatted(popString, getStatus(), getKind());
 			}
 		}
 	}
@@ -93,7 +93,7 @@ public interface Animal extends AnimalOrTracks, MobileFixture, HasImage,
 					return false;
 				}
 				case final Animal a when !isTalking() && a.isTalking() -> {
-					report.accept(String.format("In animal ID #%d:\tSubmap's is talking and master's isn't", getId()));
+					report.accept("In animal ID #%d:\tSubmap's is talking and master's isn't".formatted(getId()));
 					return false;
 				}
 				case final Animal a when !getStatus().equals(a.getStatus()) -> {
@@ -101,11 +101,11 @@ public interface Animal extends AnimalOrTracks, MobileFixture, HasImage,
 					return false;
 				}
 				case final Animal a when a.getPopulation() > getPopulation() -> {
-					report.accept(String.format("In animal #%d: Submap has greater population than master", getId()));
+					report.accept("In animal #%d: Submap has greater population than master".formatted(getId()));
 					return false;
 				}
 				case final Animal a when a.getBorn() < getBorn() -> {
-					report.accept(String.format("In animal #%d: Submap has greater age than master", getId()));
+					report.accept("In animal #%d: Submap has greater age than master".formatted(getId()));
 					return false;
 				}
 				case final Animal ignored -> {
@@ -115,12 +115,12 @@ public interface Animal extends AnimalOrTracks, MobileFixture, HasImage,
 					return true;
 				}
 				default -> {
-					report.accept(String.format("For ID #%d, different kinds of members", getId()));
+					report.accept("For ID #%d, different kinds of members".formatted(getId()));
 					return false;
 				}
 			}
 		} else {
-			report.accept(String.format("Called with different IDs, #%d and #%d", getId(), obj.getId()));
+			report.accept("Called with different IDs, #%d and #%d".formatted(getId(), obj.getId()));
 			return false;
 		}
 	}

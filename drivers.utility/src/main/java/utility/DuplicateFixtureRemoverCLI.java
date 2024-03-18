@@ -151,11 +151,10 @@ public class DuplicateFixtureRemoverCLI implements CLIDriver {
 			final String fCls = fixture.getClass().getName();
 			final String mCls = matching.getClass().getName();
 			return cli.inputBooleanInSeries(
-					String.format(
-							"At %s: Remove '%s', of class '%s', ID #%d, which matches '%s', of class '%s', ID #%d?",
+							"At %s: Remove '%s', of class '%s', ID #%d, which matches '%s', of class '%s', ID #%d?".formatted(
 							location, fixture.getShortDescription(), fCls, fixture.getId(),
 							matching.getShortDescription(), mCls, matching.getId()),
-					String.format("duplicate%s%s", fCls, mCls));
+					"duplicate%s%s".formatted(fCls, mCls));
 		}
 	}
 
@@ -226,7 +225,7 @@ public class DuplicateFixtureRemoverCLI implements CLIDriver {
 			final String plural = q.getValue2();
 			final Collection<? extends IFixture> fixtures = q.getValue3();
 			cli.print(context);
-			cli.println(String.format("The following %s can be combined:", plural));
+			cli.println("The following %s can be combined:".formatted(plural));
 			fixtures.stream().map(Object::toString).forEach(println);
 			final Boolean resp = cli.inputBooleanInSeries("Combine them? ",
 					memberKind(fixtures.iterator().next()));

@@ -120,15 +120,15 @@ public class Implement implements UnitMember, FortressMember, HasKind, HasMutabl
 					if (that.getCount() <= count) {
 						return true;
 					} else {
-						report.accept(String.format("In Implement ID #%d:\tHas higher count than we do", id));
+						report.accept("In Implement ID #%d:\tHas higher count than we do".formatted(id));
 						return false;
 					}
 				} else {
-					report.accept(String.format("In Implement ID #%d:\tKinds differ", id));
+					report.accept("In Implement ID #%d:\tKinds differ".formatted(id));
 					return false;
 				}
 			} else {
-				report.accept(String.format("Different fixture types given for ID #%d", id));
+				report.accept("Different fixture types given for ID #%d".formatted(id));
 				return false;
 			}
 		} else {
@@ -179,7 +179,7 @@ public class Implement implements UnitMember, FortressMember, HasKind, HasMutabl
 		if (count == 1) {
 			return "An implement of kind " + kind;
 		} else {
-			return String.format("A group of %d implements of kind %s", count, kind);
+			return "A group of %d implements of kind %s".formatted(count, kind);
 		}
 	}
 }

@@ -121,14 +121,14 @@ import java.io.FileNotFoundException;
 
 		private static void logAddition(final StreamingLabel logLabel, final Player currentPlayer,
 										final String addend) {
-			logLabel.append(String.format("<p style=\"%s\">Added %s for %s</p>", CSS,
+			logLabel.append("<p style=\"%s\">Added %s for %s</p>".formatted(CSS,
 					addend, currentPlayer.getName()));
 		}
 
 		private static final String ERROR_CSS = "color:red; margin-bottom: 0.5em; margin-top: 0.5em;";
 
 		private static Consumer<String> logError(final StreamingLabel logLabel) {
-			return message -> logLabel.append(String.format("<p style=\"%s\">%s</p>",
+			return message -> logLabel.append("<p style=\"%s\">%s</p>".formatted(
 					ERROR_CSS, message));
 		}
 
@@ -293,7 +293,7 @@ import java.io.FileNotFoundException;
 			}
 			final int quantity = implementQuantityModel.getNumber().intValue();
 			model.addResource(new Implement(kind, idf.createID(), quantity), currentPlayer);
-			logAddition(logLabel, currentPlayer, String.format("%d x %s", quantity, kind));
+			logAddition(logLabel, currentPlayer, "%d x %s".formatted(quantity, kind));
 			implementQuantityModel.setValue(1);
 			implementKindBox.checkAndClear();
 			implementQuantityField.requestFocusInWindow();
@@ -314,13 +314,13 @@ import java.io.FileNotFoundException;
 				logError(logLabel).accept("SP map format error: " + except.getLocalizedMessage());
 				LovelaceLogger.error(except, "SP map format error");
 			} catch (final NoSuchFileException | FileNotFoundException except) {
-				logError(logLabel).accept(String.format("Dropped file %s couldn't be found", file));
+				logError(logLabel).accept("Dropped file %s couldn't be found".formatted(file));
 				LovelaceLogger.error(except, "Dropped file couldn't be found");
 			} catch (final IOException except) {
 				logError(logLabel).accept("I/O error while reading dropped file: " + except.getLocalizedMessage());
 				LovelaceLogger.error(except, "I/O error reading map file");
 			} catch (final XMLStreamException except) {
-				logError(logLabel).accept(String.format("Dropped file %s contained malformed XML", file));
+				logError(logLabel).accept("Dropped file %s contained malformed XML".formatted(file));
 				LovelaceLogger.error(except, "Dropped file contained malformed XML");
 			}
 		}

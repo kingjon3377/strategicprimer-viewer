@@ -81,7 +81,7 @@ import java.util.function.Consumer;
 				point.column() < mapDimensions.columns()) {
 			final String mountainString = (model.getMap().isMountainous(point)) ?
 					", mountainous" : "";
-			return String.format("<html><body>%s: %s%s<br />%s</body></html>", point,
+			return "<html><body>%s: %s%s<br />%s</body></html>".formatted(point,
 					Optional.ofNullable(model.getMap().getBaseTerrain(point))
 							.map(TileType::toString).orElse("not visible"),
 					mountainString, terrainFixturesAndTop(point));

@@ -74,7 +74,7 @@ import drivers.common.ISPDriver;
 	}
 
 	private void printParagraph(final String paragraph, final LabelTextColor color) {
-		label.append(String.format("<p style=\"color:%s\">%s</p>", color, paragraph));
+		label.append("<p style=\"color:%s\">%s</p>".formatted(color, paragraph));
 	}
 
 	private ILegacyMap mainMap = new LegacyMap(new MapDimensionsImpl(0, 0, 2), new LegacyPlayerCollection(), -1);
@@ -99,7 +99,7 @@ import drivers.common.ISPDriver;
 		} else {
 			filename = file.toString();
 		}
-		printParagraph(String.format("Testing %s ...", filename));
+		printParagraph("Testing %s ...".formatted(filename));
 		if (mainMap.isSubset(map, new HtmlWriter(filename)::write)) {
 			printParagraph("OK", LabelTextColor.GREEN);
 		} else {
@@ -111,17 +111,16 @@ import drivers.common.ISPDriver;
 		try {
 			mainMap = MapIOHelper.readMap(arg, Warning.IGNORE);
 		} catch (final NoSuchFileException | FileNotFoundException except) {
-			printParagraph(String.format("File %s not found", arg), LabelTextColor.RED);
-			throw new DriverFailedException(except, String.format("File %s not found", arg));
+			printParagraph("File %s not found".formatted(arg), LabelTextColor.RED);
+			throw new DriverFailedException(except, "File %s not found".formatted(arg));
 		} catch (final XMLStreamException except) {
-			printParagraph(String.format(
-							"ERROR: Malformed XML in %s; see following error message for details", arg),
-					LabelTextColor.RED);
+			printParagraph("ERROR: Malformed XML in %s; see following error message for details".formatted(arg),
+                    LabelTextColor.RED);
 			printParagraph(except.getMessage(), LabelTextColor.RED);
 			throw new DriverFailedException(except, "Malformed XML in main map " + arg);
 		} catch (final SPFormatException except) {
-			printParagraph(String.format(
-							"ERROR: SP map format error at line %d in file %s; see following error message for details",
+			printParagraph(
+					"ERROR: SP map format error at line %d in file %s; see following error message for details".formatted(
 							except.getLine(), arg),
 					LabelTextColor.RED);
 			printParagraph(except.getMessage(), LabelTextColor.RED);
@@ -142,7 +141,7 @@ import drivers.common.ISPDriver;
 	 * errors in reading the file.
 	 */
 	public void testFile(final Path path) {
-		printParagraph(String.format("Testing %s ...", path));
+		printParagraph("Testing %s ...".formatted(path));
 		final ILegacyMap map;
 		try {
 			map = MapIOHelper.readMap(path, Warning.IGNORE);
@@ -161,10 +160,8 @@ import drivers.common.ISPDriver;
 			LovelaceLogger.error(except, "Malformed XML in file %s", path);
 			return;
 		} catch (final SPFormatException except) {
-			printParagraph(String.format(
-							"FAIL: SP map format error at line %d; see following error message for details",
-							except.getLine()),
-					LabelTextColor.RED);
+			printParagraph("FAIL: SP map format error at line %d; see following error message for details".formatted(except.getLine()),
+                    LabelTextColor.RED);
 			printParagraph(except.getMessage(), LabelTextColor.RED);
 			LovelaceLogger.error(except, "SP map format error reading %s", path);
 			return;

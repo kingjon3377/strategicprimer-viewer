@@ -73,7 +73,7 @@ public final class TextFixture implements TileFixture, HasMutableImage {
 
 	@Override
 	public @NotNull String getShortDescription() {
-		return (turn == -1) ? text : String.format("%s (turn %d)", text, turn);
+		return (turn == -1) ? text : "%s (turn %d)".formatted(text, turn);
 	}
 
 	@Override
