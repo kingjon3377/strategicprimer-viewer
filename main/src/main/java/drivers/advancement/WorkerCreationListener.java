@@ -190,8 +190,7 @@ import java.util.function.Consumer;
 					if (val < 0) {
 						LovelaceLogger.debug(
 								"Worker not created because non-positive %s provided", stat);
-						// TODO: Use %n instead of System.lineSeparator()
-						builder.append("%s must be a non-negative number.".formatted(stat)).append(System.lineSeparator());
+						builder.append("%s must be a non-negative number.%n".formatted(stat));
 					}
 				}
 				final @Nullable Component parent = getParent();
