@@ -214,9 +214,6 @@ public final class FixtureList extends JList<TileFixture>
 					for (final Transferable t : curried) {
 						handleDrop(t);
 					}
-				} else {
-					// FIXME: Just skip!
-					throw new UnsupportedFlavorException(flavor);
 				}
 			}
 			if (flavors.length == 0) {
