@@ -225,7 +225,7 @@ public class DuplicateFixtureRemoverCLI implements CLIDriver {
 			final String plural = q.getValue2();
 			final Collection<? extends IFixture> fixtures = q.getValue3();
 			cli.print(context);
-			cli.println("The following %s can be combined:".formatted(plural));
+			cli.printf("The following %s can be combined:%n", plural);
 			fixtures.stream().map(Object::toString).forEach(println);
 			final Boolean resp = cli.inputBooleanInSeries("Combine them? ",
 					memberKind(fixtures.iterator().next()));

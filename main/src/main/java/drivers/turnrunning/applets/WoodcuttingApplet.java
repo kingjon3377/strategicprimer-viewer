@@ -89,11 +89,11 @@ import org.jetbrains.annotations.Nullable;
 			return null;
 		}
 		int treeCount = totalHours / 100;
-		cli.print("With unskilled workers, that would be %d trees".formatted(treeCount));
+		cli.printf("With unskilled workers, that would be %d trees%n", treeCount);
 		if (totalHours % 100 == 0) {
 			cli.println(".");
 		} else {
-			cli.println(" and %d into the next.".formatted(totalHours % 100));
+			cli.printf(" and %d into the next.%n", totalHours % 100);
 		}
 		final Boolean tCorrect = cli.inputBoolean("Is that correct?");
 		if (Objects.isNull(tCorrect)) {
@@ -101,7 +101,7 @@ import org.jetbrains.annotations.Nullable;
 		} else if (tCorrect) {
 			builder.append("The %d workers cut down and process %d trees".formatted(workers, treeCount));
 			if (totalHours % 100 != 0) {
-				cli.println(" and get %d into the next".formatted(totalHours % 100));
+				cli.printf(" and get %d into the next%n", totalHours % 100);
 			}
 		} else {
 			final String str = cli.inputMultilineString("Description of trees cut:");

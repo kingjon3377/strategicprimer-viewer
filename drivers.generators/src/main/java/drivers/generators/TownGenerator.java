@@ -615,8 +615,7 @@ import java.math.BigDecimal;
 		for (final Pair<Point, ITownFixture> pair : list) {
 			final Point location = pair.getValue0();
 			final ITownFixture town = pair.getValue1();
-			cli.println("Next town is %s, at %s. ".formatted(
-					town.getShortDescription(), location));
+			cli.printf("Next town is %s, at %s.%n", town.getShortDescription(), location);
 			final CommunityStats stats;
 			final Boolean resp = cli.inputBooleanInSeries(
 					"Enter stats rather than generating them?", "enter stats");

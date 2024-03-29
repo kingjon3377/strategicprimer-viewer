@@ -173,7 +173,7 @@ import org.jetbrains.annotations.Nullable;
 		if (Objects.isNull(matchingCondition)) {
 			return false;
 		} else {
-			cli.println("There is %s here, so the explorer stops.".formatted(matchingCondition.explain()));
+			cli.printf("There is %s here, so the explorer stops.%n", matchingCondition.explain());
 			return true;
 		}
 	}

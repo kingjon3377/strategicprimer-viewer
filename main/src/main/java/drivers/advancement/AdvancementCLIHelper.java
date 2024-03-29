@@ -118,7 +118,7 @@ public class AdvancementCLIHelper implements LevelGainSource {
 			if (skill.getLevel() != oldLevel) {
 				final String count = (skill.getLevel() - oldLevel == 1) ? "a level"
 						: (skill.getLevel() - oldLevel) + " levels";
-				cli.println("%s gained %s in %s".formatted(worker.getName(), count, skill.getName()));
+				cli.printf("%s gained %s in %s%n", worker.getName(), count, skill.getName());
 				fireLevelEvent(worker.getName(), job.getName(), skill.getName(), skill.getLevel() - oldLevel,
 						skill.getLevel());
 			}
@@ -226,18 +226,15 @@ public class AdvancementCLIHelper implements LevelGainSource {
 						final String name = entry.getKey();
 						final long count = entry.getValue();
 						if (count == 1L) {
-							cli.println("%s gained a level in %s".formatted(
-									worker.getName(), name));
+							cli.printf("%s gained a level in %s%n", worker.getName(), name);
 						} else {
-							cli.println("%s gained %d levels in %s".formatted(
-									worker.getName(), count, name));
+							cli.printf("%s gained %d levels in %s%n", worker.getName(), count, name);
 						}
 						fireLevelEvent(worker.getName(), job.getName(), name, (int) count,
 								job.getSkill(name).getLevel());
 					}
 				} else {
-					cli.println("%s gained a level in %s".formatted(worker.getName(),
-							skill.getName()));
+					cli.printf("%s gained a level in %s%n", worker.getName(), skill.getName());
 					fireLevelEvent(worker.getName(), job.getName(), skill.getName(),
 							skill.getLevel() - oldLevel, skill.getLevel());
 				}

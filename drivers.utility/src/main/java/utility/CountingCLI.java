@@ -240,7 +240,7 @@ import legacy.map.fixtures.mobile.AnimalTracks;
 	@Override
 	public void startDriver() { // TODO: Reduce duplication
 		final ILegacyMap map = model.getMap();
-		cli.println("There are %d tiles in all.".formatted(map.getDimensions().rows() * map.getDimensions().columns()));
+		cli.printf("There are %d tiles in all.%n", map.getDimensions().rows() * map.getDimensions().columns());
 		final EnumCounter<TileType> tileTypeCounts = new EnumCounter<>();
 		tileTypeCounts.countMany(map.streamLocations()
 				.map(map::getBaseTerrain).filter(Objects::nonNull).toArray(TileType[]::new));
@@ -263,18 +263,17 @@ import legacy.map.fixtures.mobile.AnimalTracks;
 		cli.println("Terrain fixtures:");
 		cli.println();
 		final List<Collection<TileFixture>> separateTiles = map.streamLocations().map(map::getFixtures).toList();
-		cli.println("- %d hilly tiles".formatted(separateTiles.stream().filter(c -> c.stream().anyMatch(Hill.class::isInstance))
-				.count()));
-		cli.println("- %d mountainous tiles".formatted(map.streamLocations()
-				.filter(map::isMountainous).count()));
-		cli.println("- %d at least partly forested tiles".formatted(separateTiles.stream().filter(c -> c.stream().anyMatch(Forest.class::isInstance))
-				.count()));
-		cli.println("- %d oases".formatted(separateTiles.stream()
-				.filter(c -> c.stream().anyMatch(Oasis.class::isInstance)).count()));
+		cli.printf("- %d hilly tiles%n", separateTiles.stream().filter(c -> c.stream().anyMatch(Hill.class::isInstance))
+				.count());
+		cli.printf("- %d mountainous tiles%n", map.streamLocations().filter(map::isMountainous).count());
+		cli.printf("- %d at least partly forested tiles%n",
+				separateTiles.stream().filter(c -> c.stream().anyMatch(Forest.class::isInstance)).count());
+		cli.printf("- %d oases%n", separateTiles.stream()
+				.filter(c -> c.stream().anyMatch(Oasis.class::isInstance)).count());
 		final List<Collection<River>> tilesRivers = map.streamLocations().map(map::getRivers).toList();
-		cli.println("- %d lakes".formatted(tilesRivers.stream().filter(CountingCLI::hasLake).count()));
-		cli.println("- %d tiles with rivers".formatted(tilesRivers.stream()
-				.filter(CountingCLI::withNonLake).count()));
+		cli.printf("- %d lakes%n", tilesRivers.stream().filter(CountingCLI::hasLake).count());
+		cli.printf("- %d tiles with rivers%n", tilesRivers.stream()
+				.filter(CountingCLI::withNonLake).count());
 		// TODO: Count tiles with roads of each type
 		cli.println();
 
@@ -309,10 +308,11 @@ import legacy.map.fixtures.mobile.AnimalTracks;
 		// TODO: We'd like to count active towns' populations.
 		cli.println("Active Communities:");
 		cli.println();
-		cli.println("- %d fortresses".formatted(allFixtures.stream().filter(IFortress.class::isInstance).count()));
-		cli.println("- %d active towns, cities, or fortifications of any size".formatted(allFixtures.stream().filter(AbstractTown.class::isInstance)
+		cli.printf("- %d fortresses%n", allFixtures.stream().filter(IFortress.class::isInstance).count());
+		cli.printf("- %d active towns, cities, or fortifications of any size%n",
+				allFixtures.stream().filter(AbstractTown.class::isInstance)
 				.map(AbstractTown.class::cast)
-				.filter(t -> TownStatus.Active == t.getStatus()).count()));
+				.filter(t -> TownStatus.Active == t.getStatus()).count());
 
 		final MappedCounter<Village, String, Integer> villages = simpleCounter(Village::getRace);
 		allFixtures.stream().filter(Village.class::isInstance).map(Village.class::cast)
@@ -393,9 +393,9 @@ import legacy.map.fixtures.mobile.AnimalTracks;
 			for (final IFixture fixture : remaining) {
 				if (fixture instanceof final TileFixture tf) {
 					// TODO: Move getShortDescription up to IFixture?
-					cli.println("- %s".formatted(tf.getShortDescription()));
+					cli.printf("- %s%n", tf.getShortDescription());
 				} else {
-					cli.println("- %s".formatted(fixture.toString()));
+					cli.printf("- %s%n", fixture.toString());
 				}
 			}
 		}

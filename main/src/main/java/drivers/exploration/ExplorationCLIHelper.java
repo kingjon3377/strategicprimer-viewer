@@ -174,8 +174,8 @@ public class ExplorationCLIHelper implements MovementCostListener, SelectionChan
 			final Direction direction;
 			final Point proposedDestination = proposedPath.pollFirst();
 			if (Objects.isNull(proposedDestination)) {
-				cli.println("%d/%d MP remaining. Current speed: %s.".formatted(
-						runningTotal.intValue(), totalMP, speed.getShortName()));
+				cli.printf("%d/%d MP remaining. Current speed: %s.%n",
+						runningTotal.intValue(), totalMP, speed.getShortName());
 				cli.printlnAtInterval(usage);
 				final int directionNum = Optional.ofNullable(cli.inputNumber("Direction to move: ")).orElse(-1);
 				switch (directionNum) {
@@ -223,12 +223,11 @@ public class ExplorationCLIHelper implements MovementCostListener, SelectionChan
 				if (proposedDestination.equals(point)) {
 					return;
 				} else if (Direction.Nowhere == direction) {
-					cli.println("Next step %s isn't adjacent to %s".formatted(
-							proposedDestination, point));
+					cli.printf("Next step %s isn't adjacent to %s%n", proposedDestination, point);
 					return;
 				}
-				cli.println("%d/%d MP remaining. Current speed: %s.".formatted(
-						runningTotal.intValue(), totalMP, speed.getShortName()));
+				cli.printf("%d/%d MP remaining. Current speed: %s.%n",
+						runningTotal.intValue(), totalMP, speed.getShortName());
 			}
 
 			final Point destPoint = model.getDestination(point, direction);
@@ -304,9 +303,9 @@ public class ExplorationCLIHelper implements MovementCostListener, SelectionChan
 			}
 			model.copyTerrainToSubMaps(destPoint);
 
-			cli.print("The explorer comes to %s, a %s%s tile".formatted(destPoint, mtn,
+			cli.printf("The explorer comes to %s, a %s%s tile", destPoint, mtn,
 					Optional.ofNullable(map.getBaseTerrain(destPoint)).map(TileType::toString)
-							.orElse("unknown-terrain")));
+							.orElse("unknown-terrain"));
 			final Collection<River> rivers = map.getRivers(destPoint);
 			final boolean anyRivers;
 			if (rivers.contains(River.Lake)) {

@@ -136,7 +136,7 @@ public class QueryCLI implements ReadOnlyDriver {
 		if (!Objects.isNull(player)) {
 			final int count = countWorkersInIterable(player, map.streamAllFixtures()
 					.collect(Collectors.toList()));
-			cli.println("%s has %d workers".formatted(player.getName(), count));
+			cli.printf("%s has %d workers%n", player.getName(), count);
 		}
 	}
 
@@ -163,8 +163,8 @@ public class QueryCLI implements ReadOnlyDriver {
 				final String expert = entry.getKey();
 				final int level = entry.getValue();
 				if (expert.toLowerCase().contains(skill.toLowerCase())) {
-					cli.print("- At ", town.getName(), ", at ", loc.toString(), " (", "%.1f".formatted(delta),
-							" tiles away), a level-", Integer.toString(level), " ");
+					cli.printf("- At %s, at %s, (%.1f tiles away), a level-%d ", town.getName(), loc.toString(), delta,
+							level);
 					cli.println(expert);
 				}
 			}
@@ -187,8 +187,7 @@ public class QueryCLI implements ReadOnlyDriver {
 						.getValue0()));
 			} else {
 				cli.print("Distance (as the crow files, in tiles):\t");
-				cli.println("%.0f".formatted(distance(start, end,
-						map.getDimensions())));
+				cli.printf("%.0f%n", distance(start, end, map.getDimensions()));
 			}
 		}
 	}
@@ -201,8 +200,8 @@ public class QueryCLI implements ReadOnlyDriver {
 	 */
 	private void fortressInfo(final @Nullable Point location) {
 		if (!Objects.isNull(location)) {
-			cli.println("Terrain is %s".formatted(Optional.ofNullable(map.getBaseTerrain(location))
-					.map(TileType::toString).orElse("unknown")));
+			cli.printf("Terrain is %s%n", Optional.ofNullable(map.getBaseTerrain(location))
+					.map(TileType::toString).orElse("unknown"));
 			final List<Ground> ground = map.getFixtures(location).stream()
 					.filter(Ground.class::isInstance).map(Ground.class::cast).toList();
 			final List<Forest> forests = map.getFixtures(location).stream()
@@ -315,8 +314,8 @@ public class QueryCLI implements ReadOnlyDriver {
 				cli.println("No unexplored tiles found.");
 			} else {
 				final double distanceTo = distance(base, unexplored, map.getDimensions());
-				cli.println("Nearest unexplored tile is %s, %s tiles away".formatted(
-						unexplored, ONE_PLACE_FORMAT.format(distanceTo)));
+				cli.printf("Nearest unexplored tile is %s, %s tiles away%n",
+						unexplored, ONE_PLACE_FORMAT.format(distanceTo));
 			}
 		}
 	}

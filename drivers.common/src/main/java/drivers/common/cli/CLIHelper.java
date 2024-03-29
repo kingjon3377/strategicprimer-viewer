@@ -98,6 +98,11 @@ public final class CLIHelper implements ICLIHelper {
 		}
 	}
 
+	@Override
+	public void printf(final String format, final Object... arguments) {
+		print(format.formatted(arguments));
+	}
+
 	/**
 	 * Flush the output stream, if a means to do so has been provided.
 	 */
@@ -156,7 +161,7 @@ public final class CLIHelper implements ICLIHelper {
 	private <Element> void printList(final List<? extends Element> list, final Function<Element, String> func) {
 		int index = 0;
 		for (final Element item : list) {
-			println("%d: %s".formatted(index, func.apply(item)));
+			printf("%d: %s%n", index, func.apply(item));
 			index++;
 		}
 	}
@@ -176,7 +181,7 @@ public final class CLIHelper implements ICLIHelper {
 		println(description);
 		if (behavior == ListChoiceBehavior.AUTO_CHOOSE_ONLY && items.size() == 1) {
 			final Element first = items.getFirst();
-			println("Automatically choosing only item, %s.".formatted(func.apply(first)));
+			printf("Automatically choosing only item, %s.%n", func.apply(first));
 			return Pair.with(0, first);
 		} else {
 			printList(items, func);

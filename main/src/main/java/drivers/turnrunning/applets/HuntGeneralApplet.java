@@ -162,13 +162,13 @@ import org.jetbrains.annotations.Nullable;
 			/*Animal|AnimalTracks|HuntingModel.NothingFound*/ final TileFixture find) {
 		switch (find) {
 			case final HuntingModel.NothingFound nothingFound -> {
-				cli.println("Found nothing for the next %d minutes.".formatted(NO_RESULT_COST));
+				cli.printf("Found nothing for the next %d minutes.%n", NO_RESULT_COST);
 				return NO_RESULT_COST;
 			}
 			case final AnimalTracks at -> {
 				model.copyToSubMaps(loc, find, IFixture.CopyBehavior.ZERO);
-				cli.println("Found only tracks or traces from %s for the next %d minutes.".formatted(
-						at.getKind(), NO_RESULT_COST));
+				cli.printf("Found only tracks or traces from %s for the next %d minutes.%n",
+						at.getKind(), NO_RESULT_COST);
 				return NO_RESULT_COST;
 			}
 			case final Animal a -> {

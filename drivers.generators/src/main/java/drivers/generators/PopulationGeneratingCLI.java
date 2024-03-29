@@ -106,10 +106,10 @@ public class PopulationGeneratingCLI implements CLIDriver {
 		for (final Point location : locations) {
 			final int temp = (remainingCount * 2) + 2;
 			if (remainingTotal <= temp) {
-				cli.println(
-						"With %d groups left, there is only %d left, not enough for 2 or more each".formatted(
-						remainingCount, remainingTotal));
-				cli.println("Adjusting up by %d".formatted(remainingCount * 3));
+				cli.printf(
+						"With %d groups left, there is only %d left, not enough for 2 or more each%n",
+						remainingCount, remainingTotal);
+				cli.printf("Adjusting up by %d%n", remainingCount * 3);
 				remainingTotal += remainingCount * 3;
 			}
 			final int nextPopulation;
@@ -153,8 +153,8 @@ public class PopulationGeneratingCLI implements CLIDriver {
 		final Random rng = SingletonRandom.SINGLETON_RANDOM;
 		for (final Point location : locations) {
 			if (remainingTotal < remainingCount) {
-				cli.println("With %d groups left, there is only %s left".formatted(
-						remainingCount, remainingTotal)); // TODO: adjust instead?
+				cli.printf("With %d groups left, there is only %s left%n",
+						remainingCount, remainingTotal); // TODO: adjust instead?
 				return;
 			}
 			final int nextPopulation = (remainingCount == 1) ? remainingTotal :
@@ -190,8 +190,8 @@ public class PopulationGeneratingCLI implements CLIDriver {
 		final Random rng = SingletonRandom.SINGLETON_RANDOM;
 		for (final Point location : locations) {
 			if (remainingTotal < remainingCount) {
-				cli.println("With %d groups left, there is only %s left".formatted(
-						remainingCount, remainingTotal)); // TODO: adjust instead?
+				cli.printf("With %d groups left, there is only %s left%n",
+						remainingCount, remainingTotal); // TODO: adjust instead?
 				return;
 			}
 			final int nextPopulation = (remainingCount == 1) ? remainingTotal :
@@ -280,8 +280,7 @@ public class PopulationGeneratingCLI implements CLIDriver {
 							() -> new IllegalStateException("Not found despite double-checking"));
 			BigDecimal reserved = BigDecimal.ZERO;
 			if (primaryForest.getAcres().doubleValue() > 0.0) {
-				cli.println("First forest at %s had acreage set already.".formatted(
-						location));
+				cli.printf("First forest at %s had acreage set already.%n", location);
 				reserved = map.getFixtures(location).stream()
 						.filter(isForest).map(forestCast)
 						.map(Forest::getAcres).filter(n -> n.doubleValue() > 0.0)

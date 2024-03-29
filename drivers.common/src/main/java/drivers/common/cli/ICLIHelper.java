@@ -14,8 +14,6 @@ import java.util.Objects;
  * An interface for the "CLI helper," which encapsulates input and output
  * streams, allowing automated testing of command-line apps and graphical
  * wrappers around them.
- *
- * TODO: Add printf(), wrapping String::formatted() (to reduce caller verbosity)
  */
 public interface ICLIHelper {
 	// TODO: Split up methods instead of using this boolean-replacement enum?
@@ -184,6 +182,11 @@ public interface ICLIHelper {
 	 * @param text The strings to print.
 	 */
 	void print(String... text);
+
+	/**
+	 * Print the result of applying the specified format string to the specified inputs.
+	 */
+	void printf(String format, Object... arguments);
 
 	/**
 	 * Flush the output stream, if this is an operation that makes sense.

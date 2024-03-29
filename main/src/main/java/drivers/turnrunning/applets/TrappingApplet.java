@@ -45,7 +45,7 @@ import org.jetbrains.annotations.Nullable;
 
 	private @Nullable Integer handleFound(final Point center, final Point loc, final Animal item) {
 		int cost;
-		cli.println("Found either %s or evidence of it escaping.".formatted(item.getKind()));
+		cli.printf("Found either %s or evidence of it escaping.%n", item.getKind());
 		final Integer num = cli.inputNumber("How long to check and deal with the animal? ");
 		if (Objects.isNull(num)) {
 			return null;
@@ -132,7 +132,7 @@ import org.jetbrains.annotations.Nullable;
 						time -= nothingCost;
 						break;
 					} else if (item instanceof final AnimalTracks at) {
-						cli.println("Found evidence of %s escaping".formatted(at.getKind()));
+						cli.printf("Found evidence of %s escaping%n", at.getKind());
 						model.copyToSubMaps(center, item, IFixture.CopyBehavior.ZERO);
 						time -= nothingCost;
 						break;
