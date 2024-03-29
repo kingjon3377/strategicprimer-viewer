@@ -295,11 +295,11 @@ public class PopulationGeneratingCLI implements CLIDriver {
 			final int adjacentCount = countAdjacentForests(location, primaryForest.getKind());
 			for (final ITownFixture town : map.getFixtures(location).stream()
 					.filter(ITownFixture.class::isInstance).map(ITownFixture.class::cast).toList()) {
-				reserved = switch (town.getTownSize()) { // TODO: Pull the reserved.add() to outside the expression
-					case Small -> reserved.add(fifteen);
-					case Medium -> reserved.add(forty);
-					case Large -> reserved.add(eighty);
-				};
+				reserved = reserved.add(switch (town.getTownSize()) {
+					case Small -> fifteen;
+					case Medium -> forty;
+					case Large -> eighty;
+				});
 			}
 			reserved = reserved.add(new BigDecimal(map.getFixtures(location).stream()
 					.filter(isGrove).map(groveCast)
