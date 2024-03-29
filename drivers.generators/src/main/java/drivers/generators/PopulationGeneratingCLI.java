@@ -270,7 +270,7 @@ public class PopulationGeneratingCLI implements CLIDriver {
 		final BigDecimal eighty = new BigDecimal(80);
 		final BigDecimal oneSixty = new BigDecimal(160);
 		final BigDecimal fiveHundred = new BigDecimal(500);
-		final BigDecimal two = new BigDecimal(2); // TODO: Use BigDecimal.TWO once Java lang version bump
+		final BigDecimal two = BigDecimal.TWO;
 		final BigDecimal four = new BigDecimal(4);
 		final BigDecimal five = new BigDecimal(5);
 		for (final Point location : locations) {
