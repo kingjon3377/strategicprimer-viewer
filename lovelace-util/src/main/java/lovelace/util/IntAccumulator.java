@@ -19,4 +19,9 @@ public class IntAccumulator implements Accumulator<Integer> {
 	public Integer getSum() {
 		return count;
 	}
+
+	@Override
+	public String toString() {
+		return "IntAccumulator{" + count + '}';
+	}
 }

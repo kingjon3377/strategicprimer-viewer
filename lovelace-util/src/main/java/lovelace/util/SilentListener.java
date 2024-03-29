@@ -16,4 +16,9 @@ public class SilentListener<Type> implements Consumer<Type> {
 	public void accept(final Type item) {
 		method.run();
 	}
+
+	@Override
+	public String toString() {
+		return "SilentListener{method=" + method + '}';
+	}
 }

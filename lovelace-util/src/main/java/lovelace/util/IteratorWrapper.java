@@ -19,4 +19,9 @@ public final class IteratorWrapper<Element> implements Iterable<Element> {
 	public Iterator<Element> iterator() {
 		return wrapped;
 	}
+
+	@Override
+	public String toString() {
+		return "IteratorWrapper{wrapped=" + wrapped + '}';
+	}
 }

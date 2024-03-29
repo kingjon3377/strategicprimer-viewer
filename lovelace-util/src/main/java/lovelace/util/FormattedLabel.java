@@ -27,4 +27,9 @@ public class FormattedLabel extends JLabel {
 	public void setArguments(final Object... arguments) {
 		setText(formatString.formatted(arguments));
 	}
+
+	@Override
+	public String toString() {
+		return "FormattedLabel with formatString='" + formatString + "'}";
+	}
 }

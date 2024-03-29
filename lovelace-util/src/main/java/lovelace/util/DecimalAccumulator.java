@@ -21,4 +21,9 @@ public class DecimalAccumulator implements Accumulator<BigDecimal> {
 	public BigDecimal getSum() {
 		return count;
 	}
+
+	@Override
+	public String toString() {
+		return "DecimalAccumulator{count=" + count + '}';
+	}
 }

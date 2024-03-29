@@ -56,4 +56,9 @@ public class EnumCounter<Type> {
 	public Stream<Pair<Type, Integer>> streamAllCounts() {
 		return counts.entrySet().stream().map(e -> Pair.with(e.getKey(), e.getValue().getSum()));
 	}
+
+	@Override
+	public String toString() {
+		return "EnumCounter with " + counts.size() + " counts";
+	}
 }

@@ -33,6 +33,11 @@ public final class MenuUtils {
 		HotKeyModifier(final int mask) {
 			this.mask = mask;
 		}
+
+		@Override
+		public String toString() {
+			return name().toLowerCase();
+		}
 	}
 
 	/**

@@ -91,4 +91,9 @@ public class MemoizedComboBox extends ImprovedComboBox<String> {
 			logger.accept("Editor wasn't a text field, but a " + inner.getClass().getName());
 		}
 	}
+
+	@Override
+	public String toString() {
+		return "MemoizedComboBox with " + values.size() + "values";
+	}
 }

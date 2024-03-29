@@ -97,4 +97,9 @@ public class IntMap<Item> extends AbstractMap<Integer, Item> implements DelayedR
 		return backing.entrySet().stream().filter(entry -> !toRemove.contains(entry.getKey()))
 				.collect(Collectors.toUnmodifiableSet());
 	}
+
+	@Override
+	public String toString() {
+		return "IntMap with " + size() + " mappings";
+	}
 }

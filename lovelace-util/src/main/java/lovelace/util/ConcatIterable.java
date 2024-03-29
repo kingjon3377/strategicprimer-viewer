@@ -26,6 +26,11 @@ public final class ConcatIterable<T> implements Iterable<T> {
 		return new ConcatIterator<>(wrapped);
 	}
 
+	@Override
+	public String toString() {
+		return "ConcatIterable wrapping " + wrapped.size() + " iterables";
+	}
+
 	private static class ConcatIterator<T> implements Iterator<T> {
 		private final Deque<Iterator<? extends T>> wrapped = new LinkedList<>();
 
@@ -51,6 +56,11 @@ public final class ConcatIterable<T> implements Iterable<T> {
 				}
 			}
 			throw new NoSuchElementException("All iterators exhausted.");
+		}
+
+		@Override
+		public String toString() {
+			return "ConcatIterator wrapping " + wrapped.size() + " iterators";
 		}
 	}
 }

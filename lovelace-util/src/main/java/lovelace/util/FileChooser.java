@@ -341,4 +341,9 @@ public class FileChooser {
 			LovelaceLogger.info(exception, "Choice interrupted or user failed to choose");
 		}
 	}
+
+	@Override
+	public String toString() {
+		return "FileChooser with " + storedFile.size() + " stored files";
+	}
 }

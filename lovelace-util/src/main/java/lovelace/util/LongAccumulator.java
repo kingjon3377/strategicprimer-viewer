@@ -19,4 +19,9 @@ public class LongAccumulator implements Accumulator<Long> {
 	public Long getSum() {
 		return count;
 	}
+
+	@Override
+	public String toString() {
+		return "LongAccumulator{" + count + '}';
+	}
 }

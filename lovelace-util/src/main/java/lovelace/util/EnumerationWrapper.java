@@ -29,4 +29,9 @@ public final class EnumerationWrapper<Element> implements Iterator<Element> {
 	public Element next() {
 		return (Element) wrapped.nextElement();
 	}
+
+	@Override
+	public String toString() {
+		return "EnumerationWrapper{wrapped=" + wrapped + '}';
+	}
 }
