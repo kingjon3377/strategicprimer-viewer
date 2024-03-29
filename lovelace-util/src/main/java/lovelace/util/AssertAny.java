@@ -74,6 +74,6 @@ public final class AssertAny {
 			}
 		}
 		throw new MultipleFailureException(failures,
-                "%d assertions failed".formatted(failures.size()));
+				"%d assertions failed".formatted(failures.size()));
 	}
 }
