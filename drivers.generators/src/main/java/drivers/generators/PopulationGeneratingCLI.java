@@ -1,5 +1,6 @@
 package drivers.generators;
 
+import lovelace.util.Decimalize;
 import org.javatuples.Pair;
 import drivers.common.CLIDriver;
 import drivers.common.EmptyOptions;
@@ -284,13 +285,8 @@ public class PopulationGeneratingCLI implements CLIDriver {
 				reserved = map.getFixtures(location).stream()
 						.filter(isForest).map(forestCast)
 						.map(Forest::getAcres).filter(n -> n.doubleValue() > 0.0)
-						.map(n -> {// FIXME: Use lovelace.util.Decimalize
-							if (n instanceof BigDecimal) {
-								return (BigDecimal) n;
-							} else {
-								return new BigDecimal(n.doubleValue());
-							}
-						}).reduce(reserved, BigDecimal::add);
+						.map(Decimalize::decimalize)
+						.reduce(reserved, BigDecimal::add);
 			}
 			final List<Forest> otherForests = map.getFixtures(location).stream()
 					.filter(isForest).map(forestCast)
@@ -312,13 +308,8 @@ public class PopulationGeneratingCLI implements CLIDriver {
 			reserved = map.getFixtures(location).stream().filter(hasExtent)
 					.filter(f -> !(f instanceof Forest)) // already counted above
 					.map(heCast).map(HasExtent::getAcres)
-					.filter(n -> n.doubleValue() > 0.0).map(n -> {// FIXME: lovelace.util.Decimalize
-						if (n instanceof BigDecimal) {
-							return (BigDecimal) n;
-						} else {
-							return new BigDecimal(n.doubleValue());
-						}
-					}).reduce(reserved, BigDecimal::add);
+					.filter(n -> n.doubleValue() > 0.0).map(Decimalize::decimalize)
+					.reduce(reserved, BigDecimal::add);
 			final BigDecimal fullTile = oneSixty;
 			if (reserved.compareTo(fullTile) >= 0) {
 				cli.println("The whole tile or more was reserved, despite forests, at " + location);
