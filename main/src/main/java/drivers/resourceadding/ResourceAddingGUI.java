@@ -4,6 +4,7 @@ import drivers.common.DriverFailedException;
 
 import javax.xml.stream.XMLStreamException;
 
+import lovelace.util.Decimalize;
 import lovelace.util.LovelaceLogger;
 import org.jetbrains.annotations.Nullable;
 
@@ -266,14 +267,7 @@ import java.io.FileNotFoundException;
 				return;
 			}
 
-			final BigDecimal qty;
-			try {
-				// TODO: Can't we pass the number to BigDecimal directly?
-				qty = new BigDecimal(resourceQuantityModel.getNumber().toString());
-			} catch (final NumberFormatException except) {
-				logLabel.appendLine("Failed to convert quantity into the form we need.");
-				return;
-			}
+            final BigDecimal qty = Decimalize.decimalize(resourceQuantityModel.getNumber());
 			final IResourcePile pile = model.addResourcePile(currentPlayer, idf.createID(),
 					kind, resource, qty, units, resourceCreatedModel.getNumber().intValue());
 			logAddition(logLabel, currentPlayer, pile.toString());
