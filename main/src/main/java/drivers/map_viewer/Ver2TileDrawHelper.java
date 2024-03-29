@@ -274,7 +274,7 @@ public class Ver2TileDrawHelper implements TileDrawHelper {
 	}
 
 	/**
-	 * Whether there is a "terrain fixture" at the gtiven location.
+	 * Whether there is a "terrain fixture" at the given location.
 	 */
 	private boolean hasTerrainFixture(final ILegacyMap map, final Point location) {
 		// TODO: Should we really return true if there is exactly one drawable fixture that happens to be a terrain fixture?
