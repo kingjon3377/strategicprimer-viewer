@@ -18,7 +18,7 @@ public class NumberComparator implements Comparator<Number>, Serializable {
 	 * built-in comparison function; if not, convert both to doubles and
 	 * return the result of comparing those.
 	 */
-	@SuppressWarnings("ChainOfInstanceofChecks")
+	@SuppressWarnings({"ChainOfInstanceofChecks", "QuestionableName"})
 	public static int compareNumbers(final Number one, final Number two) {
 		if ((one instanceof Integer || one instanceof Long) &&
 				(two instanceof Integer || two instanceof Long)) {
@@ -40,6 +40,7 @@ public class NumberComparator implements Comparator<Number>, Serializable {
 	 * built-in comparison function; if not, convert both to doubles and
 	 * return the result of comparing those.
 	 */
+	@SuppressWarnings("QuestionableName")
 	@Override
 	public final int compare(final Number one, final Number two) {
 		return compareNumbers(one, two);
