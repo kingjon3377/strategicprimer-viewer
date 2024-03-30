@@ -45,7 +45,7 @@ public final class MenuUtils {
 	 */
 	public static KeyStroke createAccelerator(final int key, final HotKeyModifier... modifiers) {
 		return KeyStroke.getKeyStroke(key, Stream.of(modifiers).mapToInt(HotKeyModifier::getMask)
-				.reduce(Toolkit.getDefaultToolkit().getMenuShortcutKeyMask(), (a, b) -> a | b));
+				.reduce(Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx(), (a, b) -> a | b));
 	}
 
 	/**
