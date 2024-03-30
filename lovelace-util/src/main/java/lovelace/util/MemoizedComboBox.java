@@ -94,6 +94,6 @@ public class MemoizedComboBox extends ImprovedComboBox<String> {
 
 	@Override
 	public String toString() {
-		return "MemoizedComboBox with " + values.size() + "values";
+		return "MemoizedComboBox with " + values.size() + " values";
 	}
 }
