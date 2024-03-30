@@ -221,7 +221,8 @@ public class FileChooser {
 		return new FileChooser(ChooserMode.Save, fileChooser, null);
 	}
 
-	public static FileChooser custom(final JFileChooser fileChooser, final String approveText, final @Nullable Path loc) {
+	public static FileChooser custom(final JFileChooser fileChooser, final String approveText,
+									 final @Nullable Path loc) {
 		return new FileChooser(ChooserMode.Custom, fileChooser, approveText, loc);
 	}
 
