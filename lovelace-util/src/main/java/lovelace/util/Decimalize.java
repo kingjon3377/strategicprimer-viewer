@@ -24,7 +24,7 @@ public final class Decimalize {
 			return BigDecimal.valueOf(number.longValue());
 		} else {
 			// Most likely float or double
-			return new BigDecimal(number.doubleValue());
+			return BigDecimal.valueOf(number.doubleValue());
 		}
 	}
 }
