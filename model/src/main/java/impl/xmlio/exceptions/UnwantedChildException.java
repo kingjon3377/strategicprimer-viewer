@@ -145,11 +145,9 @@ public class UnwantedChildException extends SPFormatException {
 	 * @param child  the unwanted child
 	 */
 	private UnwantedChildException(final StartElement child, final QName parent) {
-		// TODO: Use constructor taking Location instead of splitting Location here
 		super("Unexpected child, from unknown namespace, %s:%s in tag %s".formatted(
 						child.getName().getPrefix(), child.getName().getLocalPart(),
-						parent.getLocalPart()),
-				child.getLocation().getLineNumber(), child.getLocation().getColumnNumber());
+						parent.getLocalPart()), child.getLocation());
 		tag = parent;
 		this.child = child.getName();
 		location = child.getLocation();
@@ -173,10 +171,8 @@ public class UnwantedChildException extends SPFormatException {
 	 * @param message the additional message
 	 */
 	public UnwantedChildException(final QName parent, final StartElement child, final String message) {
-		// TODO: Use constructor taking Location instead of splitting Location here
 		super("Unexpected child %s in tag %s: %s".formatted(
-						child.getName().getLocalPart(), parent.getLocalPart(), message),
-				child.getLocation().getLineNumber(), child.getLocation().getColumnNumber());
+						child.getName().getLocalPart(), parent.getLocalPart(), message), child.getLocation());
 		tag = parent;
 		this.child = child.getName();
 		location = child.getLocation();
