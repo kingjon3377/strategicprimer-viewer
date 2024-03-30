@@ -2,6 +2,9 @@ package lovelace.util;
 
 import java.awt.Container;
 import java.awt.CardLayout;
+import java.io.NotSerializableException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.Serial;
 
 /**
@@ -28,5 +31,15 @@ public class SimpleCardLayout extends CardLayout {
 
 	public void goPrevious() {
 		previous(container);
+	}
+
+	@Serial
+	private void readObject(final ObjectInputStream in) throws ClassNotFoundException, NotSerializableException {
+		throw new NotSerializableException("lovelace.util.SimpleCardLayout");
+	}
+
+	@Serial
+	private void writeObject(final ObjectOutputStream out) throws NotSerializableException {
+		throw new NotSerializableException("lovelace.util.SimpleCardLayout");
 	}
 }
