@@ -273,7 +273,7 @@ public class FileChooser {
 			} else {
 				LovelaceLogger.info("Chooser function returned %s", status);
 			}
-		} else {
+		} else if (chooser.fromRight().isPresent()) {
 			final FileDialog fd = chooser.fromRight().get();
 			final List<Path> retval = Stream.of(fd.getFiles()).filter(Objects::nonNull)
 					.map(File::toPath).collect(Collectors.toList());
@@ -290,6 +290,8 @@ public class FileChooser {
 						retval.getClass());
 				storedFile = Collections.emptyList();
 			}
+		} else {
+			throw new IllegalStateException("Neither side of Either was present");
 		}
 	}
 
