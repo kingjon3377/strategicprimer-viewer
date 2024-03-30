@@ -13,18 +13,23 @@ public class NumberComparator implements Comparator<Number>, Serializable {
 	@Serial
 	private static final long serialVersionUID = 0L;
 
+	private static boolean isIntegral(final Number number) {
+		return number instanceof Integer || number instanceof Long;
+	}
+
+	private static boolean isFloatingPoint(final Number number) {
+		return number instanceof Float || number instanceof Double;
+	}
 	/**
 	 * Compare two numbers. If they are the same type, delegate to their
 	 * built-in comparison function; if not, convert both to doubles and
 	 * return the result of comparing those.
 	 */
-	@SuppressWarnings({"ChainOfInstanceofChecks", "QuestionableName"})
+	@SuppressWarnings({"QuestionableName"})
 	public static int compareNumbers(final Number one, final Number two) {
-		if ((one instanceof Integer || one instanceof Long) &&
-				(two instanceof Integer || two instanceof Long)) {
+		if (isIntegral(one) && isIntegral(two)) {
 			return Long.compare(one.longValue(), two.longValue());
-		} else if ((one instanceof Float || one instanceof Double) &&
-				(two instanceof Float || two instanceof Double)) {
+		} else if (isFloatingPoint(one) && isFloatingPoint(two)) {
 			return Double.compare(one.doubleValue(), two.doubleValue());
 		} else if (one instanceof BigDecimal && two instanceof BigDecimal) {
 			return ((BigDecimal) one).compareTo((BigDecimal) two);
