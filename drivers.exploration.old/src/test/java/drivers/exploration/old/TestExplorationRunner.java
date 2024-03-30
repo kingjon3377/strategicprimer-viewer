@@ -127,13 +127,13 @@ public class TestExplorationRunner {
 		assertEquals("The primary rock type here is test_rock.",
 				runner.defaultResults(point, TileType.Tundra, false, Collections.emptyList(),
 						dimensions), "defaultResults in non-forest");
-		assertEquals("The primary rock type here is test_rock.%n" +
-						"The main kind of tree here is boreal_tree.%n".formatted(),
+		assertEquals(
+				"The primary rock type here is test_rock.%nThe main kind of tree here is boreal_tree.%n".formatted(),
 				runner.defaultResults(point, TileType.Steppe, false, Collections.singletonList(
 						new Forest("boreal_tree", false, 1)), dimensions),
 				"defaultResults in boreal forest");
-		assertEquals("The primary rock type here is test_rock.%n" +
-						"The main kind of tree here is temperate_tree.%n".formatted(),
+		assertEquals(
+				"The primary rock type here is test_rock.%nThe main kind of tree here is temperate_tree.%n".formatted(),
 				runner.defaultResults(point, TileType.Plains, false, Collections.singletonList(
 						new Forest("temperate_tree", false, 2)), dimensions),
 				"defaultResults in temperate forest");

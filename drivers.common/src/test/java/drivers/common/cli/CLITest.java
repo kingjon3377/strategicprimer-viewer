@@ -213,8 +213,8 @@ public final class CLITest {
 	@Test
 	public void testInputBooleanInvalidInput() {
 		assertCLI(cli -> cli.inputBoolean("prompt three "), Arrays.asList("yoo-hoo", "no"),
-						"prompt three Please enter \"yes\", \"no\", \"true\", or \"false\",%n" +
-								"or the first character of any of those.%nprompt three ".formatted(), false,
+				("prompt three Please enter \"yes\", \"no\", \"true\", or \"false\",%n" +
+								"or the first character of any of those.%nprompt three ").formatted(), false,
 				"inputBoolean rejects other input", "inputBoolean gives message on invalid input");
 	}
 
@@ -249,10 +249,10 @@ public final class CLITest {
 	@Test
 	public void testInputBooleanInSeriesAll() {
 		assertCLI(cli -> cli.inputBooleanInSeries("prompt three "), Arrays.asList("nothing", "true"),
-						"prompt three Please enter \"yes\", \"no\", \"true\", or \"false\", " +
+				("prompt three Please enter \"yes\", \"no\", \"true\", or \"false\", " +
 								"the first%ncharacter of any of those, or \"all\", \"none\", \"always\", " +
 								"or%n\"never\" to use the same answer for all further questions.%nprompt " +
-								"three ".formatted(),
+								"three ").formatted(),
 				true, "inputBoolean rejects other input",
 				"inputBoolean gives message on invalid input");
 		final StringBuilder ostream = new StringBuilder();
@@ -342,8 +342,8 @@ public final class CLITest {
 				"inputBooleanInSeries then honors yes-to-all");
 		assertEquals(false, cli.inputBooleanInSeries("prompt thirteen ", "fourthKey"),
 				"inputBooleanInSeries then honors no-to-all");
-		assertEquals("prompt ten prompt eleven prompt twelve yes%nprompt " +
-				"thirteen no%n".formatted(), ostream.toString(), "inputBooleanInSeries shows prompts");
+		assertEquals("prompt ten prompt eleven prompt twelve yes%nprompt thirteen no%n".formatted(),
+				ostream.toString(), "inputBooleanInSeries shows prompts");
 	}
 
 	/**
