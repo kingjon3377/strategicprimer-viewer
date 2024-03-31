@@ -31,7 +31,7 @@ public final class ConcatIterable<T> implements Iterable<T> {
 		return "ConcatIterable wrapping " + wrapped.size() + " iterables";
 	}
 
-	private static class ConcatIterator<T> implements Iterator<T> {
+	private static final class ConcatIterator<T> implements Iterator<T> {
 		private final Deque<Iterator<? extends T>> wrapped = new LinkedList<>();
 
 		public ConcatIterator(final List<Iterable<? extends T>> wrapped) {

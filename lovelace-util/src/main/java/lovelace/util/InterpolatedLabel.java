@@ -14,7 +14,7 @@ import org.jetbrains.annotations.Nullable;
  * @deprecated Generally prefer {@link FormattedLabel}, right?
  */
 @Deprecated
-public class InterpolatedLabel<T> extends JLabel {
+public final class InterpolatedLabel<T> extends JLabel {
 	@Serial
 	private static final long serialVersionUID = 1;
 	private final Function<? super T, String> function;

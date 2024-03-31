@@ -250,7 +250,7 @@ public class FileChooser {
 	/**
 	 * Show the dialog to the user and update {@link #storedFile} with his or her choice(s).
 	 */
-	void haveUserChooseFiles() {
+	final void haveUserChooseFiles() {
 		LovelaceLogger.debug("In FileChooser.haveUserChooseFiles");
 		final int status = chooserFunction.applyAsInt(null);
 		LovelaceLogger.debug("FileChooser: The AWT or Swing chooser returned");
@@ -306,7 +306,7 @@ public class FileChooser {
 	 * TODO: Just return the empty list when user declines to choose (when
 	 * we didn't catch an exception interrupting the choice)?
 	 */
-	public List<Path> getFiles() throws ChoiceInterruptedException {
+	public final List<Path> getFiles() throws ChoiceInterruptedException {
 		if (!storedFile.isEmpty()) {
 			LovelaceLogger.debug("FileChooser.files: A file was stored, so returning it");
 			return storedFile;
@@ -328,7 +328,7 @@ public class FileChooser {
 	/**
 	 * Set the stored file(s) to the given Iterable.
 	 */
-	public void setFiles(final Collection<Path> files) {
+	public final void setFiles(final Collection<Path> files) {
 		storedFile = new ArrayList<>(files);
 	}
 
@@ -337,7 +337,7 @@ public class FileChooser {
 	 * each file to the given consumer. If the operation is canceled, do
 	 * nothing.
 	 */
-	public void call(final Consumer<Path> consumer) {
+	public final void call(final Consumer<Path> consumer) {
 		try {
 			getFiles().forEach(consumer);
 		} catch (final ChoiceInterruptedException exception) {
@@ -346,7 +346,7 @@ public class FileChooser {
 	}
 
 	@Override
-	public String toString() {
+	public final String toString() {
 		return "FileChooser with " + storedFile.size() + " stored files";
 	}
 }

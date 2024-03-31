@@ -3,7 +3,7 @@ package lovelace.util;
 /**
  * An implementation of {@link Accumulator} for integers.
  */
-public class IntAccumulator implements Accumulator<Integer> {
+public final class IntAccumulator implements Accumulator<Integer> {
 	private int count;
 
 	public IntAccumulator(final int count) {

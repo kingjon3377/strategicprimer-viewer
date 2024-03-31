@@ -24,12 +24,12 @@ public class ActionWrapper extends AbstractAction {
 	}
 
 	@Override
-	public void actionPerformed(final ActionEvent event) {
+	public final void actionPerformed(final ActionEvent event) {
 		wrapped.actionPerformed(event);
 	}
 
 	@Override
-	public String toString() {
+	public final String toString() {
 		return "ActionWrapper wrapping " + wrapped;
 	}
 

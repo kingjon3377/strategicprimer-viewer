@@ -24,12 +24,12 @@ public class FormattedLabel extends JLabel {
 	/**
 	 * Change the arguments and regenerate the label's text.
 	 */
-	public void setArguments(final Object... arguments) {
+	public final void setArguments(final Object... arguments) {
 		setText(formatString.formatted(arguments));
 	}
 
 	@Override
-	public String toString() {
+	public final String toString() {
 		return "FormattedLabel with formatString='" + formatString + "'}";
 	}
 }

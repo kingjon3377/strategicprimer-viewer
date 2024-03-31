@@ -3,7 +3,7 @@ package lovelace.util;
 /**
  * An implementation of {@link Accumulator} for long integers.
  */
-public class LongAccumulator implements Accumulator<Long> {
+public final class LongAccumulator implements Accumulator<Long> {
 	private long count;
 
 	public LongAccumulator(final long count) {

@@ -44,7 +44,7 @@ public class ResourceInputStream extends InputStream {
 	 * Read a single byte from the wrapped stream.
 	 */
 	@Override
-	public int read() throws IOException {
+	public final int read() throws IOException {
 		return wrapped.read();
 	}
 
@@ -52,7 +52,7 @@ public class ResourceInputStream extends InputStream {
 	 * Read from the wrapped stream into a provided buffer.
 	 */
 	@Override
-	public int read(final byte[] buf) throws IOException {
+	public final int read(final byte[] buf) throws IOException {
 		return wrapped.read(buf);
 	}
 
@@ -60,7 +60,7 @@ public class ResourceInputStream extends InputStream {
 	 * Read from the wrapped stream into a provided buffer at some offset.
 	 */
 	@Override
-	public int read(final byte[] buf, final int off, final int len) throws IOException {
+	public final int read(final byte[] buf, final int off, final int len) throws IOException {
 		return wrapped.read(buf, off, len);
 	}
 
@@ -68,7 +68,7 @@ public class ResourceInputStream extends InputStream {
 	 * Skip some bytes in the wrapped stream.
 	 */
 	@Override
-	public long skip(final long num) throws IOException {
+	public final long skip(final long num) throws IOException {
 		return wrapped.skip(num);
 	}
 
@@ -76,7 +76,7 @@ public class ResourceInputStream extends InputStream {
 	 * How many bytes are estimated to be available in the wrapped stream.
 	 */
 	@Override
-	public int available() throws IOException {
+	public final int available() throws IOException {
 		return wrapped.available();
 	}
 
@@ -84,12 +84,12 @@ public class ResourceInputStream extends InputStream {
 	 * Close the wrapped stream.
 	 */
 	@Override
-	public void close() throws IOException {
+	public final void close() throws IOException {
 		wrapped.close();
 	}
 
 	@Override
-	public String toString() {
+	public final String toString() {
 		return "ResourceInputStream for: " + filename;
 	}
 }

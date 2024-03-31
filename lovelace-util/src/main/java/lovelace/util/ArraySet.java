@@ -26,19 +26,19 @@ public class ArraySet<Element> extends AbstractSet<Element> {
 
 	/* The size of the set. */
 	@Override
-	public int size() {
+	public final int size() {
 		return impl.size();
 	}
 
 	/* Delegate the iterator to the backing list. */
 	@Override
-	public Iterator<Element> iterator() {
+	public final Iterator<Element> iterator() {
 		return impl.iterator();
 	}
 
 	/* Add an element, and return true, only if it is not already in the set. */
 	@Override
-	public boolean add(final Element element) {
+	public final boolean add(final Element element) {
 		if (impl.contains(element)) {
 			return false;
 		} else {
@@ -49,23 +49,23 @@ public class ArraySet<Element> extends AbstractSet<Element> {
 
 	/* Remove an element. Returns true if it was actually in the set. */
 	@Override
-	public boolean remove(final Object element) {
+	public final boolean remove(final Object element) {
 		return impl.remove(element);
 	}
 
 	/* Remove all items from the set. */
 	@Override
-	public void clear() {
+	public final void clear() {
 		impl.clear();
 	}
 
 	/* Sort the underlying array by {@link the given comparison function|comparing} */
-	public void sort(final Comparator<Element> comparing) {
+	public final void sort(final Comparator<Element> comparing) {
 		impl.sort(comparing);
 	}
 
 	@Override
-	public String toString() {
+	public final String toString() {
 		return impl.stream().map(Object::toString).collect(Collectors.joining(",", "{", "}"));
 	}
 }

@@ -5,7 +5,7 @@ import java.math.BigDecimal;
 /**
  * An implementation of {@link Accumulator} for arbitrary-precision decimal numbers.
  */
-public class DecimalAccumulator implements Accumulator<BigDecimal> {
+public final class DecimalAccumulator implements Accumulator<BigDecimal> {
 	private BigDecimal count;
 
 	public DecimalAccumulator(final BigDecimal count) {

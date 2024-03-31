@@ -15,7 +15,7 @@ import java.util.Optional;
  * object ever passed to {@link #count} (or {@link #countMany}), it keeps a
  * running total of the number of times it has been passed that object.
  */
-public class EnumCounter<Type> {
+public final class EnumCounter<Type> {
 	private final Map<Type, Accumulator<Integer>> counts = new HashMap<>();
 
 	private void count(final Type item) {

@@ -99,7 +99,7 @@ public class IntMap<Item> extends AbstractMap<Integer, Item> implements DelayedR
 	}
 
 	@Override
-	public String toString() {
+	public final String toString() {
 		return "IntMap with " + size() + " mappings";
 	}
 }

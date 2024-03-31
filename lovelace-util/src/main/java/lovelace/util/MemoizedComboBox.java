@@ -38,7 +38,7 @@ public class MemoizedComboBox extends ImprovedComboBox<String> {
 	 * Clear the combo box, but if its value was one we haven't had
 	 * previously, add it to the drop-down list.
 	 */
-	public void checkAndClear() {
+	public final void checkAndClear() {
 		final String selectedItem = getSelectedItem();
 		if (Objects.nonNull(selectedItem)) {
 			final String item = selectedItem.strip();
@@ -51,7 +51,7 @@ public class MemoizedComboBox extends ImprovedComboBox<String> {
 	}
 
 	@Override
-	public @Nullable String getSelectedItem() {
+	public final @Nullable String getSelectedItem() {
 		final Object retval = super.getSelectedItem();
 		if (Objects.isNull(retval)) {
 			return null;
@@ -63,7 +63,7 @@ public class MemoizedComboBox extends ImprovedComboBox<String> {
 	}
 
 	@Override
-	public void setSelectedItem(final @Nullable Object selectedItem) {
+	public final void setSelectedItem(final @Nullable Object selectedItem) {
 		if (selectedItem instanceof String || Objects.isNull(selectedItem)) {
 			super.setSelectedItem(selectedItem);
 		} else {
@@ -71,7 +71,7 @@ public class MemoizedComboBox extends ImprovedComboBox<String> {
 		}
 	}
 
-	public @Nullable String getSelectedString() {
+	public final @Nullable String getSelectedString() {
 		final Object inner = getEditor().getEditorComponent();
 		if (inner instanceof final JTextField tf) {
 			final String text = tf.getText().strip();
@@ -83,7 +83,7 @@ public class MemoizedComboBox extends ImprovedComboBox<String> {
 		return getSelectedItem();
 	}
 
-	public void addSubmitListener(final ActionListener listener) {
+	public final void addSubmitListener(final ActionListener listener) {
 		final Object inner = getEditor().getEditorComponent();
 		if (inner instanceof final JTextField tf) {
 			tf.addActionListener(listener);
@@ -93,7 +93,7 @@ public class MemoizedComboBox extends ImprovedComboBox<String> {
 	}
 
 	@Override
-	public String toString() {
+	public final String toString() {
 		return "MemoizedComboBox with " + values.size() + " values";
 	}
 }

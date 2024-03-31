@@ -31,7 +31,7 @@ public record Range(int lowerBound, int upperBound) implements Iterable<Integer>
 		return new RangeIterator(this);
 	}
 
-	private static class RangeIterator implements Iterator<Integer> {
+	private static final class RangeIterator implements Iterator<Integer> {
 		private int current;
 		private final int upperBound;
 
