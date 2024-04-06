@@ -23,7 +23,7 @@ public final class FileSplitter {
 	/**
 	 * Split a line on its first tab.
 	 */
-	static String[] splitOnFirstTab(final String line) {
+	private static String[] splitOnFirstTab(final String line) {
 		return line.split("\t", 2);
 	}
 
@@ -32,7 +32,7 @@ public final class FileSplitter {
 	 * first field as the key and passing the second (presumed only) field
 	 * through the provided method to get the item.
 	 */
-	static <Type> Pair<String, Type> lineToEntry(final String[] line, final Function<String, Type> factory) {
+	private static <Type> Pair<String, Type> lineToEntry(final String[] line, final Function<String, Type> factory) {
 		if (line.length == 0) {
 			throw new IllegalArgumentException("Empty line");
 		}
