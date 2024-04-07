@@ -12,6 +12,7 @@ import java.util.Objects;
  * A {@link JPanel panel} laid out by a {@link BorderLayout}, with helper
  * methods/attributes to assign components to its different sectors.
  */
+@SuppressWarnings("ClassWithTooManyConstructors")
 public class BorderedPanel extends JPanel {
 	@Serial
 	private static final long serialVersionUID = 1L;

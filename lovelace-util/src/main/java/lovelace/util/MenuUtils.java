@@ -20,6 +20,7 @@ public final class MenuUtils {
 	/**
 	 * An enumeration of possible modifiers to hot-keys.
 	 */
+	@SuppressWarnings({"FieldNamingConvention", "StaticMethodOnlyUsedInOneClass"})
 	public enum HotKeyModifier {
 		Shift(InputEvent.SHIFT_DOWN_MASK),
 		Ctrl(InputEvent.CTRL_DOWN_MASK),
@@ -44,6 +45,7 @@ public final class MenuUtils {
 	 * Create a keystroke representing a hot-key accelerator.
 	 */
 	public static KeyStroke createAccelerator(final int key, final HotKeyModifier... modifiers) {
+		//noinspection MagicConstant Warning message contradicted by method documentation
 		return KeyStroke.getKeyStroke(key, Stream.of(modifiers).mapToInt(HotKeyModifier::getMask)
 				.reduce(Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx(), (a, b) -> a | b));
 	}

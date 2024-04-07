@@ -25,7 +25,7 @@ public class NumberComparator implements Comparator<Number>, Serializable {
 	 * built-in comparison function; if not, convert both to doubles and
 	 * return the result of comparing those.
 	 */
-	@SuppressWarnings({"QuestionableName"})
+	@SuppressWarnings({"QuestionableName", "MethodWithMultipleReturnPoints"})
 	public static int compareNumbers(final Number one, final Number two) {
 		if (isIntegral(one) && isIntegral(two)) {
 			return Long.compare(one.longValue(), two.longValue());

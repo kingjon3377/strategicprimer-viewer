@@ -22,6 +22,7 @@ public final class FileContentsReader {
 				.orElseThrow(() -> new NoSuchFileException(filename));
 	}
 
+	@SuppressWarnings("OverlyBroadThrowsClause")
 	public static Iterable<String> readFileContents(final Class<?> cls, final Path path) throws IOException {
 		if (Files.isReadable(path)) {
 			return Files.readAllLines(path, StandardCharsets.UTF_8);

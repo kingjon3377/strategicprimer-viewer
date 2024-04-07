@@ -15,6 +15,7 @@ public final class StreamingLabel extends JEditorPane {
 	/**
 	 * Possible colors for use by text in a {@link StreamingLabel}.
 	 */
+	@SuppressWarnings("StaticMethodOnlyUsedInOneClass")
 	public enum LabelTextColor {
 		YELLOW("yellow"), WHITE("white"), RED("red"), GREEN("green"), BLACK("black");
 		private final String colorName;

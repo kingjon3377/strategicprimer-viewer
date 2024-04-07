@@ -26,11 +26,13 @@ public final class LovelaceLogger {
 
 	private static Level level = Level.INFO;
 
+	@SuppressWarnings("StaticMethodOnlyUsedInOneClass")
 	public static void setLevel(final @NotNull Level newLevel) {
 		level = newLevel;
 	}
 
 	// TODO: We'd like some sort of "tagging" mechanism ("we want messages about X but not Y"), separate from priority
+	@SuppressWarnings("TypeMayBeWeakened")
 	private static void log(final @NotNull Level messageLevel, final @NotNull String format, final Object... args) {
 		if (messageLevel.compareTo(level) >= 0) {
 			writer.print(messageLevel);
@@ -41,6 +43,7 @@ public final class LovelaceLogger {
 	}
 
 	// TODO: We'd like a way of saying "log this, but *don't* show a stack trace", while still passing in the exception
+	@SuppressWarnings("TypeMayBeWeakened")
 	private static void log(final @NotNull Throwable exception, final @NotNull Level messageLevel,
 							final @NotNull String format, final Object... args) {
 		if (messageLevel.compareTo(level) >= 0) {

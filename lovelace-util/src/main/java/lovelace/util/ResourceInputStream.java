@@ -26,10 +26,12 @@ public class ResourceInputStream extends InputStream {
 	public ResourceInputStream(final String filename, final Class<?> sourceClass) throws NoSuchFileException {
 		this.filename = filename;
 		InputStream temp;
+		//noinspection RedundantSuppression The warning appears if not suppressed, but is 'redundant' when suppressed?
 		try {
 			// N.B. we don't use Files::newInputStream because we'd have to either catch or throw IOException.
 			temp = new BufferedInputStream(new FileInputStream(filename));
 		} catch (final FileNotFoundException except) {
+			//noinspection HardcodedFileSeparator getResourceAsStream() takes a '/'-delimited path.
 			temp = sourceClass.getResourceAsStream("/" + filename);
 			if (Objects.isNull(temp)) {
 				final NoSuchFileException wrapped = new NoSuchFileException(filename);

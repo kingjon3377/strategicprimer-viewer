@@ -27,6 +27,7 @@ import java.nio.charset.MalformedInputException;
  */
 public final class TypesafeXMLEventReader implements Iterator<XMLEvent>, AutoCloseable {
 	private final XMLEventReader wrapped;
+	@SuppressWarnings("TypeMayBeWeakened")
 	private final Queue<Closeable> closeHandles = new LinkedList<>();
 	private boolean closed = false;
 
@@ -68,6 +69,7 @@ public final class TypesafeXMLEventReader implements Iterator<XMLEvent>, AutoClo
 	/**
 	 * @throws XMLStreamException on malformed XML
 	 */
+	@SuppressWarnings("IteratorNextCanNotThrowNoSuchElementException") // spurious, obviously incorrect warning
 	@Override
 	public final XMLEvent next() throws NoSuchElementException {
 		if (closed) {

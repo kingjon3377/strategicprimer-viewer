@@ -9,6 +9,7 @@ import org.jetbrains.annotations.NotNull;
  * A class encapsulating a range of integers, to fluently test whether other
  * integers are in the range. (Replacement for Ceylon's {@code Range<Integer>}.)
  */
+@SuppressWarnings("NewClassNamingConvention")
 public record Range(int lowerBound, int upperBound) implements Iterable<Integer> {
 	public Range {
 		if (upperBound < lowerBound) {

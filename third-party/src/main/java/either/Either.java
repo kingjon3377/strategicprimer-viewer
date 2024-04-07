@@ -9,6 +9,7 @@ import java.util.function.Function;
  *
  * @author https://stackoverflow.com/users/464306/gdejohn (CC BY-SA 3.0)
  */
+@SuppressWarnings({"NewClassNamingConvention", "ClassNamePrefixedWithPackageName"})
 public abstract class Either<A, B> {
 	private Either() {
 	}

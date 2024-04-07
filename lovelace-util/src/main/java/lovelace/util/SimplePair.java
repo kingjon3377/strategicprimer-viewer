@@ -42,6 +42,7 @@ public final class SimplePair<Type> {
 		return hash;
 	}
 
+	@SuppressWarnings({"StaticMethodOnlyUsedInOneClass", "UseOfConcreteClass"})
 	public static <Type> SimplePair<Type> of(final Type first, final Type second) {
 		return new SimplePair<>(first, second);
 	}

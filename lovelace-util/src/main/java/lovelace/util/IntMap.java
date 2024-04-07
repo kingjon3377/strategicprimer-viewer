@@ -19,6 +19,7 @@ import java.util.stream.Collectors;
 public class IntMap<Item> extends AbstractMap<Integer, Item> implements DelayedRemovalMap<Integer, Item> {
 	private final Map<Integer, Item> backing = new HashMap<>();
 	// TODO: Use a bitmap?
+	@SuppressWarnings("TypeMayBeWeakened")
 	private final Set<Integer> toRemove = new HashSet<>();
 
 	/**
@@ -43,6 +44,7 @@ public class IntMap<Item> extends AbstractMap<Integer, Item> implements DelayedR
 	 */
 	@Override
 	public final boolean containsKey(final Object key) {
+		//noinspection SuspiciousMethodCalls This "suspicious" idiom is the point of this class
 		return backing.containsKey(key) && !toRemove.contains(key);
 	}
 
@@ -52,6 +54,7 @@ public class IntMap<Item> extends AbstractMap<Integer, Item> implements DelayedR
 	 */
 	@Override
 	public final @Nullable Item get(final Object key) {
+		//noinspection SuspiciousMethodCalls This "suspicious" idiom is the point of this class
 		if (toRemove.contains(key)) {
 			return null;
 		} else {
@@ -82,6 +85,7 @@ public class IntMap<Item> extends AbstractMap<Integer, Item> implements DelayedR
 	 */
 	@Override
 	public final @Nullable Item remove(final Object key) {
+		//noinspection SuspiciousMethodCalls This "suspicious" idiom is the point of this class
 		if (toRemove.contains(key)) {
 			return null;
 		} else if (key instanceof final Integer k && backing.containsKey(key)) {
