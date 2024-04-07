@@ -29,16 +29,16 @@ public record Range(int lowerBound, int upperBound) implements Iterable<Integer>
 
 	@Override
 	public @NotNull Iterator<Integer> iterator() {
-		return new RangeIterator(this);
+		return new RangeIterator(lowerBound, upperBound);
 	}
 
 	private static final class RangeIterator implements Iterator<Integer> {
 		private int current;
 		private final int upperBound;
 
-		public RangeIterator(final Range range) {
-			current = range.lowerBound - 1;
-			upperBound = range.upperBound;
+		public RangeIterator(final int lowerBound, final int upperBound) {
+			current = lowerBound - 1;
+			this.upperBound = upperBound;
 		}
 
 		@Override
