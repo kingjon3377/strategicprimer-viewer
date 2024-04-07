@@ -34,9 +34,9 @@ public class ResourceInputStream extends InputStream {
 			//noinspection HardcodedFileSeparator getResourceAsStream() takes a '/'-delimited path.
 			temp = sourceClass.getResourceAsStream("/" + filename);
 			if (Objects.isNull(temp)) {
-				final NoSuchFileException wrapped = new NoSuchFileException(filename);
-				wrapped.initCause(except);
-				throw wrapped;
+				final NoSuchFileException wrappedException = new NoSuchFileException(filename);
+				wrappedException.initCause(except);
+				throw wrappedException;
 			}
 		}
 		wrapped = temp;
