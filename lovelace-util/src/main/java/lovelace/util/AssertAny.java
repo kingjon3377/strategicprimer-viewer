@@ -41,7 +41,7 @@ public final class AssertAny {
 	 * @param assertions the group of assertions
 	 */
 	public static void assertAny(final String message, final Runnable... assertions) {
-		final List<AssertionFailedError> failures = new ArrayList<>();
+		final List<AssertionFailedError> failures = new ArrayList<>(assertions.length);
 		for (final Runnable assertion : assertions) {
 			try {
 				assertion.run();
@@ -64,7 +64,7 @@ public final class AssertAny {
 	 * @param assertions the group of assertions
 	 */
 	public static void assertAny(final Runnable... assertions) {
-		final List<AssertionFailedError> failures = new ArrayList<>();
+		final List<AssertionFailedError> failures = new ArrayList<>(assertions.length);
 		for (final Runnable assertion : assertions) {
 			try {
 				assertion.run();
