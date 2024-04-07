@@ -135,7 +135,7 @@ public final class CLIHelper {
 		try (final Scanner scanner = new Scanner(SystemIn.STDIN)) {
 			while (retval < 0) {
 				writePrompt(prompt);
-				Integer temp = inputNumberImpl(scanner);
+				final Integer temp = inputNumberImpl(scanner);
 				if (temp == null) {
 					return null;
 				} else {
