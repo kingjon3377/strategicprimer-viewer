@@ -17,6 +17,7 @@ import java.io.Serial;
 public class ActionWrapper extends AbstractAction {
 	@Serial
 	private static final long serialVersionUID = 1L;
+	private static final String CLASS_NAME = "lovelace.util.ActionWrapper";
 	private final ActionListener wrapped;
 
 	public ActionWrapper(final ActionListener wrappedListener) {
@@ -35,11 +36,11 @@ public class ActionWrapper extends AbstractAction {
 
 	@Serial
 	private void readObject(final ObjectInputStream in) throws ClassNotFoundException, NotSerializableException {
-		throw new NotSerializableException("lovelace.util.ActionWrapper");
+		throw new NotSerializableException(CLASS_NAME);
 	}
 
 	@Serial
 	private void writeObject(final ObjectOutputStream out) throws NotSerializableException {
-		throw new NotSerializableException("lovelace.util.ActionWrapper");
+		throw new NotSerializableException(CLASS_NAME);
 	}
 }
