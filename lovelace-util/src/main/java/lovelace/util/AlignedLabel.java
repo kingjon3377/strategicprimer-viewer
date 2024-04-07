@@ -6,7 +6,7 @@ import java.io.Serial;
 /**
  * A {@link JLabel} that takes its alignment configuration as initializer parameters.
  */
-public class AlignedLabel extends JLabel {
+public final class AlignedLabel extends JLabel {
 	@Serial
 	private static final long serialVersionUID = 1L;
 
