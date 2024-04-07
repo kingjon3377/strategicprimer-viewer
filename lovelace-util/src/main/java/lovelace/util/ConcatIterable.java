@@ -32,7 +32,7 @@ public final class ConcatIterable<T> implements Iterable<T> {
 	private static final class ConcatIterator<T> implements Iterator<T> {
 		private final Deque<Iterator<? extends T>> wrapped = new LinkedList<>();
 
-		public ConcatIterator(final List<Iterable<? extends T>> wrapped) {
+		public ConcatIterator(final Iterable<? extends Iterable<? extends T>> wrapped) {
 			for (final Iterable<? extends T> it : wrapped) {
 				this.wrapped.addLast(it.iterator());
 			}
