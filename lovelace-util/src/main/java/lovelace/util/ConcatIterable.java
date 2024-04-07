@@ -16,9 +16,7 @@ public final class ConcatIterable<T> implements Iterable<T> {
 
 	@SafeVarargs
 	public ConcatIterable(final Iterable<? extends T>... iterables) {
-		final List<Iterable<? extends T>> temp = new ArrayList<>();
-		Collections.addAll(temp, iterables);
-		wrapped = Collections.unmodifiableList(temp);
+		wrapped = List.of(iterables);
 	}
 
 	@Override
