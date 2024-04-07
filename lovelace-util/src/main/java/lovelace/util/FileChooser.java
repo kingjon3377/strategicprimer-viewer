@@ -68,7 +68,17 @@ public class FileChooser {
 	/**
 	 * The file(s) either passed in to the constructor or chosen by the user.
 	 */
-	private List<Path> storedFile;
+	private List<Path> storedFile = Collections.emptyList();
+
+	private void setStoredFile(final @Nullable  Path file) {
+		if (Objects.isNull(file)) {
+			LovelaceLogger.debug("No file was passed in");
+			storedFile = Collections.emptyList();
+		} else {
+			LovelaceLogger.debug("A file was passed in");
+			storedFile = Collections.singletonList(file);
+		}
+	}
 
 	/**
 	 * The file-chooser widget that will actually ask the user to choose a file or files.
@@ -105,13 +115,7 @@ public class FileChooser {
 				LovelaceLogger.debug("FileChooser invoked for a custom dialog with Swing JFileChooser");
 				chooser = Either.left(fileChooser);
 				chooserFunction = (component) -> fileChooser.showDialog(component, approveText);
-				if (Objects.isNull(loc)) {
-					LovelaceLogger.debug("No file was passed in");
-					storedFile = Collections.emptyList();
-				} else {
-					LovelaceLogger.debug("A file was passed in");
-					storedFile = Collections.singletonList(loc);
-				}
+				setStoredFile(loc);
 			}
 			default -> throw new IllegalStateException("Exhaustive switch wasn't");
 		}
@@ -124,25 +128,13 @@ public class FileChooser {
 				chooser = Either.left(fileChooser);
 				chooserFunction = fileChooser::showOpenDialog;
 				fileChooser.setMultiSelectionEnabled(true);
-				if (Objects.isNull(loc)) {
-					LovelaceLogger.debug("No file was passed in");
-					storedFile = Collections.emptyList();
-				} else {
-					LovelaceLogger.debug("A file was passed in");
-					storedFile = Collections.singletonList(loc);
-				}
+				setStoredFile(loc);
 			}
 			case Save -> {
 				LovelaceLogger.debug("FileChooser invoked for Save dialog using Swing JFileChooser");
 				chooserFunction = fileChooser::showSaveDialog;
 				chooser = Either.left(fileChooser);
-				if (Objects.isNull(loc)) {
-					LovelaceLogger.debug("No file was passed in");
-					storedFile = Collections.emptyList();
-				} else {
-					LovelaceLogger.debug("A file was passed in");
-					storedFile = Collections.singletonList(loc);
-				}
+				setStoredFile(loc);
 			}
 			case Custom -> throw new IllegalArgumentException("Approval text required for custom dialog");
 			default -> throw new IllegalStateException("Exhaustive switch wasn't");
@@ -160,13 +152,7 @@ public class FileChooser {
 					return 0;
 				};
 				fileChooser.setMultipleMode(true);
-				if (Objects.isNull(loc)) {
-					LovelaceLogger.debug("No file was passed in");
-					storedFile = Collections.emptyList();
-				} else {
-					LovelaceLogger.debug("A file was passed in");
-					storedFile = Collections.singletonList(loc);
-				}
+				setStoredFile(loc);
 			}
 			case Save -> {
 				LovelaceLogger.debug("FileChooser invoked for Save dialog using AWT FileDialog");
@@ -176,13 +162,7 @@ public class FileChooser {
 					fileChooser.setVisible(true);
 					return 0;
 				};
-				if (Objects.isNull(loc)) {
-					LovelaceLogger.debug("No file was passed in");
-					storedFile = Collections.emptyList();
-				} else {
-					LovelaceLogger.debug("A file was passed in");
-					storedFile = Collections.singletonList(loc);
-				}
+				setStoredFile(loc);
 			}
 			case Custom -> throw new IllegalArgumentException("Custom dialog not supported in AWT");
 			default -> throw new IllegalStateException("Exhaustive switch wasn't");
