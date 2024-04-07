@@ -64,7 +64,6 @@ public final class CLIHelper {
 	 *
 	 * @param header  The header to print before the list. If null, no header is printed.
 	 * @param prompt  The prompt to print to ask the user for his or her choice.
-	 * @param auto    If true, and there is only one item in the list, return it without prompting the user.
 	 * @param choices The list for the user to choose from, defined as tuples of user-friendly descriptions and the
 	 *                objects themselves.
 	 */
