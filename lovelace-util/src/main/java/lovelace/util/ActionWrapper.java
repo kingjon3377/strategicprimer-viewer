@@ -43,4 +43,9 @@ public class ActionWrapper extends AbstractAction {
 	private void writeObject(final ObjectOutputStream out) throws NotSerializableException {
 		throw new NotSerializableException(CLASS_NAME);
 	}
+
+	@Override
+	public final Object clone() throws CloneNotSupportedException {
+		throw new CloneNotSupportedException(CLASS_NAME);
+	}
 }
