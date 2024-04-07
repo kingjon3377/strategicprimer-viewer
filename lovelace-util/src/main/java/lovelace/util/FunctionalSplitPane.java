@@ -15,6 +15,8 @@ public final class FunctionalSplitPane extends JSplitPane {
 	@Serial
 	private static final long serialVersionUID = 1L;
 
+	private static final double ONE_HALF = 0.5;
+
 	private FunctionalSplitPane(final int orientation, final Component left, final Component right,
 								final double dividerLocation, final double resizeWeight) {
 		super(orientation, true, left, right);
@@ -47,7 +49,7 @@ public final class FunctionalSplitPane extends JSplitPane {
 	}
 
 	public static FunctionalSplitPane verticalSplit(final Component left, final Component right) {
-		return verticalSplit(left, right, 0.5);
+		return verticalSplit(left, right, ONE_HALF);
 	}
 
 }
