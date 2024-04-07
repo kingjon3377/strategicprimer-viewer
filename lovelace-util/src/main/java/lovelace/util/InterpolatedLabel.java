@@ -33,4 +33,9 @@ public final class InterpolatedLabel<T> extends JLabel {
 	public void setArgument(final @Nullable T argument) {
 		setText(function.apply(argument));
 	}
+
+	@Override
+	public String toString() {
+		return "InterpolatedLabel currently showing " + getText();
+	}
 }
