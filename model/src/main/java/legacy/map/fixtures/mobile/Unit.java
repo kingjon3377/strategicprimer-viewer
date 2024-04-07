@@ -373,7 +373,7 @@ public final class Unit implements IMutableUnit {
 	@Override
 	public String getShortDescription() {
 		if (owner.isCurrent()) {
-            return "a(n) %s unit belonging to you".formatted(kind);
+			return "a(n) %s unit belonging to you".formatted(kind);
 		} else if (owner.isIndependent()) {
 			return name + ", an independent unit";
 		} else {

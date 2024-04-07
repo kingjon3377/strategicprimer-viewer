@@ -45,7 +45,7 @@ public final class LovelaceLogger {
 	// TODO: We'd like a way of saying "log this, but *don't* show a stack trace", while still passing in the exception
 	@SuppressWarnings("TypeMayBeWeakened")
 	private static void log(final @NotNull Throwable exception, final @NotNull Level messageLevel,
-							final @NotNull String format, final Object... args) {
+	                        final @NotNull String format, final Object... args) {
 		if (messageLevel.compareTo(level) >= 0) {
 			writer.print(messageLevel);
 			writer.print(": ");

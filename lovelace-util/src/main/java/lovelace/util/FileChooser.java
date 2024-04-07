@@ -108,7 +108,7 @@ public class FileChooser {
 	// We don't provide a constructor taking FileDialog and approveText, as it's (unfortunately)
 	// not possible to use a "custom" action with the AWT interface.
 	protected FileChooser(final ChooserMode mode, final JFileChooser fileChooser, final String approveText,
-						  final @Nullable Path loc) {
+	                      final @Nullable Path loc) {
 		switch (mode) {
 			case Open, Save -> throw new IllegalArgumentException("Approve text only supported for custom dialog");
 			case Custom -> {
