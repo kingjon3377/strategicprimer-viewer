@@ -10,7 +10,7 @@ import javax.swing.JButton;
  */
 public final class ListenedButton extends JButton {
 	@Serial
-	private static final long serialVersionUID = 1;
+	private static final long serialVersionUID = 1L;
 
 	/**
 	 * @param text The text to put on the button

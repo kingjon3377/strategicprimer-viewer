@@ -13,7 +13,7 @@ import java.io.Serial;
  */
 public final class FunctionalSplitPane extends JSplitPane {
 	@Serial
-	private static final long serialVersionUID = 1;
+	private static final long serialVersionUID = 1L;
 
 	private FunctionalSplitPane(final int orientation, final Component left, final Component right,
 								final double dividerLocation, final double resizeWeight) {

@@ -14,7 +14,7 @@ import java.io.Serial;
 @SuppressWarnings("ClassHasNoToStringMethod") // CardLayout toString suffices
 public final class SimpleCardLayout extends CardLayout {
 	@Serial
-	private static final long serialVersionUID = 1;
+	private static final long serialVersionUID = 1L;
 	private final Container container;
 
 	public SimpleCardLayout(final Container container) {

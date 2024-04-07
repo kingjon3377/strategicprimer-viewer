@@ -14,7 +14,7 @@ import javax.swing.ComboBoxModel;
  */
 public class ImprovedComboBox<Element> extends JComboBox<Element> {
 	@Serial
-	private static final long serialVersionUID = 1;
+	private static final long serialVersionUID = 1L;
 
 	public ImprovedComboBox() {
 		setEditable(true);

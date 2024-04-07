@@ -10,7 +10,7 @@ import java.io.Serial;
  */
 public final class ReorderableListModel<Element> extends DefaultListModel<Element> implements Reorderable {
 	@Serial
-	private static final long serialVersionUID = 1;
+	private static final long serialVersionUID = 1L;
 
 	@SafeVarargs
 	public ReorderableListModel(final Element... initialElements) {

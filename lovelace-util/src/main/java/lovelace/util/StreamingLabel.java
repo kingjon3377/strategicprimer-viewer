@@ -10,7 +10,7 @@ import java.io.Serial;
  */
 public final class StreamingLabel extends JEditorPane {
 	@Serial
-	private static final long serialVersionUID = 1;
+	private static final long serialVersionUID = 1L;
 
 	/**
 	 * Possible colors for use by text in a {@link StreamingLabel}.

@@ -9,7 +9,7 @@ import java.io.Serial;
  */
 public final class FunctionalPopupMenu extends JPopupMenu {
 	@Serial
-	private static final long serialVersionUID = 1;
+	private static final long serialVersionUID = 1L;
 
 	public FunctionalPopupMenu(final JMenuItem... items) {
 		for (final JMenuItem item : items) {
