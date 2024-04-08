@@ -41,6 +41,7 @@ public final class FunctionalGroupLayout extends GroupLayout {
 	 * {@link Component} or {@link GroupLayout.Group} instances, even though this
 	 * cannot be expressed in the function signature in Java.
 	 */
+	@SuppressWarnings("ReturnOfInnerClass")
 	public ParallelGroup parallelGroupOf(final Object... components) {
 		return initializeGroup(createParallelGroup(), components);
 	}
@@ -50,6 +51,7 @@ public final class FunctionalGroupLayout extends GroupLayout {
 	 * {@link Component} or {@link GroupLayout.Group} instances, even though this
 	 * cannot be expressed in the function signature in Java.
 	 */
+	@SuppressWarnings("ReturnOfInnerClass")
 	public SequentialGroup sequentialGroupOf(final Object... components) {
 		return initializeGroup(createSequentialGroup(), components);
 	}
