@@ -2,8 +2,6 @@ package lovelace.util;
 
 import java.util.Iterator;
 import java.util.List;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Deque;
 import java.util.LinkedList;
 import java.util.NoSuchElementException;
