@@ -9,7 +9,7 @@ import java.io.Serial;
 /**
  * A custom exception for when a tag requires a child but the child is not present.
  */
-public class MissingChildException extends SPFormatException {
+public final class MissingChildException extends SPFormatException {
 	@Serial
 	private static final long serialVersionUID = 1L;
 	/**

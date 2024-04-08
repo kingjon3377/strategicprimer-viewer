@@ -9,7 +9,7 @@ import java.io.Serial;
 /**
  * A custom exception for cases where one property is deprecated in favor of another.
  */
-public class DeprecatedPropertyException extends SPFormatException {
+public final class DeprecatedPropertyException extends SPFormatException {
 	@Serial
 	private static final long serialVersionUID = 1L;
 	/**

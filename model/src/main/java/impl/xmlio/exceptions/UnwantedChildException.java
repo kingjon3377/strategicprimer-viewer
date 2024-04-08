@@ -13,7 +13,7 @@ import org.jetbrains.annotations.Nullable;
 /**
  * A custom exception for when a tag has a child tag it can't handle.
  */
-public class UnwantedChildException extends SPFormatException {
+public final class UnwantedChildException extends SPFormatException {
 	@Serial
 	private static final long serialVersionUID = 1L;
 	/**

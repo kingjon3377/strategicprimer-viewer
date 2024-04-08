@@ -9,7 +9,7 @@ import java.io.Serial;
 /**
  * An exception for cases where a parameter is required (or, if this is merely logged, recommended) but missing.
  */
-public class MissingPropertyException extends SPFormatException {
+public final class MissingPropertyException extends SPFormatException {
 	@Serial
 	private static final long serialVersionUID = 1L;
 	/**
