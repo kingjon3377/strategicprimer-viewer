@@ -22,6 +22,7 @@ public abstract class AbstractDatabaseWriter<Item, Context> implements DatabaseW
 	private final Class<Item> itemClass;
 	private final Class<Context> contextClass;
 
+	@SuppressWarnings("DesignForExtension")
 	@Override
 	public boolean canWrite(final Object obj, final Object context) {
 		return itemClass.isInstance(obj) && contextClass.isInstance(context);
