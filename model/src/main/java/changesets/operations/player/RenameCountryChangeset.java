@@ -17,7 +17,8 @@ public final class RenameCountryChangeset implements Changeset {
 	private final @NotNull String oldCountry;
 	private final @NotNull String newCountry;
 
-	public RenameCountryChangeset(final int playerId, final @NotNull String oldCountry, final @NotNull String newCountry) {
+	public RenameCountryChangeset(final int playerId, final @NotNull String oldCountry,
+	                              final @NotNull String newCountry) {
 		this.playerId = playerId;
 		this.oldCountry = oldCountry;
 		this.newCountry = newCountry;

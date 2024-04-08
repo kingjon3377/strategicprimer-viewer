@@ -19,7 +19,7 @@ public class MissingChildException extends SPFormatException {
 
 	public MissingChildException(final StartElement context) {
 		super("Tag %s missing a child".formatted(context.getName().getLocalPart()),
-                context.getLocation());
+				context.getLocation());
 		tag = context.getName();
 	}
 

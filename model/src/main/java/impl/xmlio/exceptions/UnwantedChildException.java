@@ -31,7 +31,8 @@ public class UnwantedChildException extends SPFormatException {
 	 */
 	private final @Nullable Location location;
 
-	private UnwantedChildException(final QName parent, final QName child, final Location location, final Throwable cause) {
+	private UnwantedChildException(final QName parent, final QName child, final Location location,
+	                               final Throwable cause) {
 		super("Unexpected child %s in tag %s".formatted(child.getLocalPart(),
 				parent.getLocalPart()), location);
 		tag = parent;
@@ -40,14 +41,16 @@ public class UnwantedChildException extends SPFormatException {
 	}
 
 	/**
-	 * For when the unwanted child isn't an unwanted *tag* at all. (The one current use of this is for arbitrary text outside a tile.)
+	 * For when the unwanted child isn't an unwanted *tag* at all. (The one current use of this is for arbitrary
+	 * text outside a tile.)
 	 *
 	 * @param parent   the current tag
 	 * @param child    the unwanted child
 	 * @param location where this occurred
 	 * @param cause    why this occurred
 	 */
-	public static UnwantedChildException childInTag(final QName parent, final QName child, final Location location, final Throwable cause) {
+	public static UnwantedChildException childInTag(final QName parent, final QName child, final Location location,
+	                                                final Throwable cause) {
 		return new UnwantedChildException(parent, child, location, cause);
 	}
 
@@ -120,7 +123,8 @@ public class UnwantedChildException extends SPFormatException {
 	 * @param child    the unwanted child
 	 * @param expected what could have appeared here without triggering the error
 	 */
-	public static UnwantedChildException listingExpectedTags(final QName parent, final StartElement child, final String... expected) {
+	public static UnwantedChildException listingExpectedTags(final QName parent, final StartElement child,
+	                                                         final String... expected) {
 		return new UnwantedChildException(parent, child, expected);
 	}
 
@@ -131,7 +135,8 @@ public class UnwantedChildException extends SPFormatException {
 	 * @param child    the unwanted child
 	 * @param expected what could have appeared here without triggering the error
 	 */
-	public static UnwantedChildException listingExpectedTags(final QName parent, final StartElement child, final Collection<String> expected) {
+	public static UnwantedChildException listingExpectedTags(final QName parent, final StartElement child,
+	                                                         final Collection<String> expected) {
 		return new UnwantedChildException(parent, child, expected);
 	}
 

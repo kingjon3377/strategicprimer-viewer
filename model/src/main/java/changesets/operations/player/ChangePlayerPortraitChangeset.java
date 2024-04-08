@@ -35,7 +35,8 @@ public final class ChangePlayerPortraitChangeset implements Changeset {
 				if (Objects.requireNonNullElse(item.portrait(), "").equals(oldPortrait)) {
 					return;
 				} else {
-					throw new PreconditionFailureException("Cannot change player's portrait if old portrait doesn't match");
+					throw new PreconditionFailureException(
+							"Cannot change player's portrait if old portrait doesn't match");
 				}
 			}
 		}

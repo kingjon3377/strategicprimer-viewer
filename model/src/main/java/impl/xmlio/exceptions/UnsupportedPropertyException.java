@@ -39,7 +39,8 @@ public class UnsupportedPropertyException extends SPFormatException {
 	/**
 	 * A variation for when a property is *conditionally* supported.
 	 */
-	public static UnsupportedPropertyException inContext(final StartElement tag, final String param, final String context) {
+	public static UnsupportedPropertyException inContext(final StartElement tag, final String param,
+	                                                     final String context) {
 		return new UnsupportedPropertyException(tag, param, context);
 	}
 

@@ -53,7 +53,8 @@ public final class ChangeEntityPropertyChangeset<FromType, ToType> implements Ch
 		} else {
 			final EntityProperty<FromType> oldProperty = new EntityProperty<>(propertyName, oldValue);
 			final IMutableEntity entity = new Entity(matching.getId(), matching.getLocation(), matching.getType());
-			matching.getAllProperties().stream().filter(Predicate.not(oldProperty::equals)).forEach(entity::setProperty);
+			matching.getAllProperties().stream().filter(Predicate.not(oldProperty::equals))
+					.forEach(entity::setProperty);
 			entity.setProperty(property);
 			map.replaceEntity(matching, entity);
 		}
