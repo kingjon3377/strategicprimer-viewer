@@ -27,7 +27,7 @@ public interface DatabaseWriter<Item, Context> {
 
 	/**
 	 * Write the given object, when the caller knows the object is the
-	 * right type but the typechecker doesn't. This will probably crash the
+	 * right type but the type-checker doesn't. This will probably crash the
 	 * program if the types don't in fact match.
 	 */
 	default void writeRaw(final Transactional db, final Object obj, final Object context) throws SQLException {
