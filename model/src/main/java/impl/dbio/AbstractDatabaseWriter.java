@@ -39,7 +39,7 @@ public abstract class AbstractDatabaseWriter<Item, Context> implements DatabaseW
 	private final Set<Transactional> connections = new HashSet<>();
 
 	@Override
-	public void initialize(final Transactional sql) throws SQLException {
+	public final void initialize(final Transactional sql) throws SQLException {
 		if (!connections.contains(sql)) {
 			sql.transaction().accept(db -> {
 				for (final Query initializer : getInitializers()) {
