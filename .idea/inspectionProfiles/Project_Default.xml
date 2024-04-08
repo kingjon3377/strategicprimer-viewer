@@ -135,7 +135,7 @@
       <option name="excludeException" value="true" />
       <option name="excludeDeprecated" value="true" />
       <option name="excludeEnum" value="false" />
-      <option name="excludeAbstract" value="false" />
+      <option name="excludeAbstract" value="true" />
       <option name="excludeTestCode" value="true" />
       <option name="excludeInnerClasses" value="false" />
     </inspection_tool>
