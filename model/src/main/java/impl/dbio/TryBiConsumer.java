@@ -37,6 +37,7 @@ public interface TryBiConsumer<T1, T2, E extends Throwable> {
 //		return (T1 t1) -> accept(t1, t2);
 //	}
 //
+	@SuppressWarnings("OverlyBroadCatchBlock") // cannot catch type parameters
 	default Consumer<T1> wrappedPartial(final T2 t2) {
 		return (final T1 t1) -> {
 			try {
