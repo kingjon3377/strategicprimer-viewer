@@ -34,7 +34,7 @@ public final class ChangeEntityPropertyChangeset<FromType, ToType> implements Ch
 		return new ChangeEntityPropertyChangeset<>(id, propertyName, newValue, oldValue);
 	}
 
-	private void checkPreconditions(final @NotNull IMap map) throws ChangesetFailureException {
+	private void checkPreconditions(final @NotNull IMap map) throws PreconditionFailureException {
 		final IEntity entity = map.getEntity(id);
 		if (Objects.isNull(entity)) {
 			throw new PreconditionFailureException("Cannot change property of non-existent entity");

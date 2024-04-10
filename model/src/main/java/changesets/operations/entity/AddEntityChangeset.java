@@ -25,7 +25,7 @@ public final class AddEntityChangeset implements Changeset {
 		return new RemoveEntityChangeset(entity);
 	}
 
-	private void checkPrecondition(final @NotNull IMap map) throws ChangesetFailureException {
+	private void checkPrecondition(final @NotNull IMap map) throws PreconditionFailureException {
 		for (final IEntity item : map.getAllEntities()) {
 			if (Objects.equals(item.getId(), entity.getId())) {
 				throw new PreconditionFailureException("Cannot add entity if another exists with same ID");

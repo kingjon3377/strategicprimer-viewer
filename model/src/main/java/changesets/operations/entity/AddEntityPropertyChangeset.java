@@ -31,7 +31,7 @@ public final class AddEntityPropertyChangeset<PropertyType> implements Changeset
 		return new RemoveEntityPropertyChangeset<>(id, propertyName, propertyValue);
 	}
 
-	private void checkPreconditions(final @NotNull IMap map) throws ChangesetFailureException {
+	private void checkPreconditions(final @NotNull IMap map) throws PreconditionFailureException {
 		final IEntity entity = map.getEntity(id);
 		if (Objects.isNull(entity)) {
 			throw new PreconditionFailureException("Cannot add property to entity that does not exist in the map");

@@ -26,7 +26,7 @@ public final class AddRegionChangeset implements Changeset {
 		return new RemoveRegionChangeset(region);
 	}
 
-	private void checkPrecondition(final @NotNull IMap map) throws ChangesetFailureException {
+	private void checkPrecondition(final @NotNull IMap map) throws PreconditionFailureException {
 		final Collection<MapRegion> regions = new ArrayList<>(map.getRegions());
 		regions.add(region);
 		if (!IMap.areRegionsValid(regions)) {

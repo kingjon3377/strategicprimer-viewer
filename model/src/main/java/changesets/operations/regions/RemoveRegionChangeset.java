@@ -23,7 +23,7 @@ public final class RemoveRegionChangeset implements Changeset {
 		return new AddRegionChangeset(region);
 	}
 
-	private void checkPrecondition(final @NotNull IMap map) throws ChangesetFailureException {
+	private void checkPrecondition(final @NotNull IMap map) throws PreconditionFailureException {
 		if (map.getRegions().stream().noneMatch(region::equals)) {
 			throw new PreconditionFailureException("Cannot remove region that does not exist in the map");
 		}

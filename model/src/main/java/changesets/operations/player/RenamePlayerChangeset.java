@@ -28,7 +28,7 @@ public final class RenamePlayerChangeset implements Changeset {
 		return new RenamePlayerChangeset(playerId, newName, oldName);
 	}
 
-	private void checkPrecondition(final @NotNull IMap map) throws ChangesetFailureException {
+	private void checkPrecondition(final @NotNull IMap map) throws PreconditionFailureException {
 		final IPlayerCollection players = map.getPlayers();
 		for (final Player item : players) {
 			if (item.playerId() == playerId) {

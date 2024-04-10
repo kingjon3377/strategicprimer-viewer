@@ -25,7 +25,7 @@ public final class ReplaceRegionChangeset implements Changeset {
 		return new ReplaceRegionChangeset(toAdd, toRemove);
 	}
 
-	private void checkPrecondition(final @NotNull IMap map) throws ChangesetFailureException {
+	private void checkPrecondition(final @NotNull IMap map) throws PreconditionFailureException {
 		final Collection<MapRegion> regions = new ArrayList<>(map.getRegions());
 		if (!regions.remove(toRemove)) {
 			throw new PreconditionFailureException("Region to remove must exist in the map");

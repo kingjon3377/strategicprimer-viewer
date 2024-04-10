@@ -27,7 +27,7 @@ public final class ReplaceEntityChangeset implements Changeset {
 		return new ReplaceEntityChangeset(toAdd, toRemove);
 	}
 
-	private void checkPrecondition(final @NotNull IMap map) throws ChangesetFailureException {
+	private void checkPrecondition(final @NotNull IMap map) throws PreconditionFailureException {
 		boolean met = false;
 		for (final IEntity item : map.getAllEntities()) {
 			if (item.equals(toRemove)) {

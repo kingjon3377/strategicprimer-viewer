@@ -28,7 +28,7 @@ public final class ChangePlayerPortraitChangeset implements Changeset {
 		return new RenameCountryChangeset(playerId, newPortrait, oldPortrait);
 	}
 
-	private void checkPrecondition(final @NotNull IMap map) throws ChangesetFailureException {
+	private void checkPrecondition(final @NotNull IMap map) throws PreconditionFailureException {
 		final IPlayerCollection players = map.getPlayers();
 		for (final Player item : players) {
 			if (item.playerId() == playerId) {

@@ -35,7 +35,7 @@ public final class ChangeEntityLocationChangeset implements Changeset {
 		return new ChangeEntityLocationChangeset(id, toLocation, fromLocation);
 	}
 
-	private void checkPreconditions(final @NotNull IMap map) throws ChangesetFailureException {
+	private void checkPreconditions(final @NotNull IMap map) throws PreconditionFailureException {
 		final IEntity matching = map.getEntity(id);
 		if (Objects.isNull(matching)) {
 			throw new PreconditionFailureException("Entity to move must exist in the map");

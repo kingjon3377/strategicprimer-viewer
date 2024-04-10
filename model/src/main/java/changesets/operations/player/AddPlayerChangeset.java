@@ -23,7 +23,7 @@ public final class AddPlayerChangeset implements Changeset {
 		return new RemovePlayerChangeset(player);
 	}
 
-	private void checkPrecondition(final @NotNull IMap map) throws ChangesetFailureException {
+	private void checkPrecondition(final @NotNull IMap map) throws PreconditionFailureException {
 		final IPlayerCollection players = map.getPlayers();
 		for (final Player item : players) {
 			if (item.playerId() == player.playerId()) {

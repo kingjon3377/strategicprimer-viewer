@@ -29,7 +29,7 @@ public final class SetCurrentPlayerChangeset implements Changeset {
 		return new SetCurrentPlayerChangeset(newCurrent, oldCurrent);
 	}
 
-	private void checkPreconditions(final IMap map) throws ChangesetFailureException {
+	private void checkPreconditions(final IMap map) throws PreconditionFailureException {
 		Player matchingOld = null;
 		Player matchingNew = null;
 		for (final Player player : map.getPlayers()) {

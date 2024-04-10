@@ -19,7 +19,7 @@ public final class RemoveEntityChangeset implements Changeset {
 		return new AddEntityChangeset(entity);
 	}
 
-	private void checkPrecondition(final @NotNull IMap map) throws ChangesetFailureException {
+	private void checkPrecondition(final @NotNull IMap map) throws PreconditionFailureException {
 		if (map.getAllEntities().stream().noneMatch(entity::equals)) {
 			throw new PreconditionFailureException("Cannot remove entity if not present in the map");
 		}
