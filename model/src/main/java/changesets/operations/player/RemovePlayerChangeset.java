@@ -43,4 +43,9 @@ public final class RemovePlayerChangeset implements Changeset {
 		retval.removePlayer(player);
 		return retval;
 	}
+
+	@Override
+	public String toString() {
+		return "RemovePlayerChangeset{player=%s}".formatted(player);
+	}
 }

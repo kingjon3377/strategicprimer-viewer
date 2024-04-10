@@ -42,4 +42,9 @@ public final class RemoveRegionChangeset implements Changeset {
 		retval.removeMapRegion(region);
 		return retval;
 	}
+
+	@Override
+	public String toString() {
+		return "RemoveRegionChangeset{region=%d}".formatted(region.getRegionId());
+	}
 }

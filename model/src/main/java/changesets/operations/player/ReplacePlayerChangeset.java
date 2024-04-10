@@ -54,4 +54,9 @@ public final class ReplacePlayerChangeset implements Changeset {
 		retval.replacePlayer(toRemove, toAdd);
 		return retval;
 	}
+
+	@Override
+	public String toString() {
+		return "ReplacePlayerChangeset{toRemove=%s, toAdd=%s}".formatted(toRemove, toAdd);
+	}
 }

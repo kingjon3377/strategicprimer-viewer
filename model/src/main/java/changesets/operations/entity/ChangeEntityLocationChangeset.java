@@ -69,4 +69,10 @@ public final class ChangeEntityLocationChangeset implements Changeset {
 		retval.replaceEntity(matching, replacement);
 		return retval;
 	}
+
+	@Override
+	public String toString() {
+		return "ChangeEntityLocationChangeset{id=%s, fromLocation=%s, toLocation=%s}".formatted(id, fromLocation,
+				toLocation);
+	}
 }

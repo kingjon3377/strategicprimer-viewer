@@ -50,4 +50,9 @@ public final class ReplaceRegionChangeset implements Changeset {
 		retval.replaceMapRegion(toRemove, toAdd);
 		return retval;
 	}
+
+	@Override
+	public String toString() {
+		return "ReplaceRegionChangeset{toRemove=%d, toAdd=%d}".formatted(toRemove.getRegionId(), toAdd.getRegionId());
+	}
 }

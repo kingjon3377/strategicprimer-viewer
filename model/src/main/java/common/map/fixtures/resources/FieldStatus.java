@@ -50,6 +50,11 @@ public enum FieldStatus {
 			}
 			return cache;
 		}
+
+		@Override
+		public String toString() {
+			return "FieldStatus cache";
+		}
 	}
 
 	private static final Supplier<List<FieldStatus>> FS_CACHE = new Cache();

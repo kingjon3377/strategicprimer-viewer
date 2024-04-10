@@ -78,5 +78,10 @@ public final class Warning {
 	private static void die(final Throwable warning) {
 		throw new RuntimeException(warning);
 	}
+
+	@Override
+	public String toString() {
+		return "Warning";
+	}
 }
 

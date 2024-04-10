@@ -62,4 +62,10 @@ public final class ChangePlayerPortraitChangeset implements Changeset {
 		retval.replacePlayer(oldPlayer, alteredCopy(oldPlayer));
 		return retval;
 	}
+
+	@Override
+	public String toString() {
+		return "ChangePlayerPortraitChangeset{playerId=%d, oldPortrait='%s', newPortrait='%s'}".formatted(playerId,
+				oldPortrait, newPortrait);
+	}
 }

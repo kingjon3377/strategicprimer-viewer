@@ -66,4 +66,10 @@ public final class RemoveEntityPropertyChangeset<PropertyType> implements Change
 		retval.replaceEntity(matching, entity);
 		return retval;
 	}
+
+	@Override
+	public String toString() {
+		return "RemoveEntityPropertyChangeset{id=%s, propertyName='%s', propertyValue=%s}".formatted(id, propertyName,
+				propertyValue);
+	}
 }

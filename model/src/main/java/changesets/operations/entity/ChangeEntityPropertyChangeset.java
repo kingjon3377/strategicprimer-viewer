@@ -73,4 +73,10 @@ public final class ChangeEntityPropertyChangeset<FromType, ToType> implements Ch
 		retval.replaceEntity(matching, entity);
 		return retval;
 	}
+
+	@Override
+	public String toString() {
+		return "ChangeEntityPropertyChangeset{id=%s, propertyName='%s', oldValue=%s, newValue=%s}".formatted(id,
+				propertyName, oldValue, newValue);
+	}
 }

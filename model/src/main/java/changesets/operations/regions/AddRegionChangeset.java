@@ -47,4 +47,9 @@ public final class AddRegionChangeset implements Changeset {
 		retval.addMapRegion(region);
 		return retval;
 	}
+
+	@Override
+	public String toString() {
+		return "AddRegionChangeset{region=%d}".formatted(region.getRegionId());
+	}
 }

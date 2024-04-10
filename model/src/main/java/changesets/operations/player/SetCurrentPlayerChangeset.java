@@ -79,4 +79,9 @@ public final class SetCurrentPlayerChangeset implements Changeset {
 		applyInPlace(retval);
 		return retval;
 	}
+
+	@Override
+	public String toString() {
+		return "SetCurrentPlayerChangeset{oldCurrent=%s, newCurrent=%s}".formatted(oldCurrent, newCurrent);
+	}
 }

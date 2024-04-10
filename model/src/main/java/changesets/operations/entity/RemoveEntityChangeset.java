@@ -38,4 +38,9 @@ public final class RemoveEntityChangeset implements Changeset {
 		retval.removeEntity(entity);
 		return retval;
 	}
+
+	@Override
+	public String toString() {
+		return "RemoveEntityChangeset{entity=%s}".formatted(entity.getId());
+	}
 }

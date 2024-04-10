@@ -75,4 +75,9 @@ public class Entity implements IMutableEntity {
 	public final @NotNull Collection<EntityProperty<?>> getAllProperties() {
 		return Collections.unmodifiableCollection(properties.values());
 	}
+
+	@Override
+	public String toString() {
+		return "Entity{type='%s', id=%s, location=%s}".formatted(type, id, location);
+	}
 }

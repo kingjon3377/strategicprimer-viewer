@@ -54,4 +54,9 @@ public final class ReplaceEntityChangeset implements Changeset {
 		retval.replaceEntity(toRemove, toAdd);
 		return retval;
 	}
+
+	@Override
+	public String toString() {
+		return "ReplaceEntityChangeset{toRemove=%s, toAdd=%s}".formatted(toRemove, toAdd);
+	}
 }

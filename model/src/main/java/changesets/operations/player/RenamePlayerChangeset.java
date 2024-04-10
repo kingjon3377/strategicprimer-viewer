@@ -61,4 +61,9 @@ public final class RenamePlayerChangeset implements Changeset {
 		retval.replacePlayer(oldPlayer, alteredCopy(oldPlayer));
 		return retval;
 	}
+
+	@Override
+	public String toString() {
+		return "RenamePlayerChangeset{playerId=%d, oldName='%s', newName='%s'}".formatted(playerId, oldName, newName);
+	}
 }

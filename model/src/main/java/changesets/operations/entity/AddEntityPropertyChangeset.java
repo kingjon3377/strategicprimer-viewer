@@ -67,4 +67,10 @@ public final class AddEntityPropertyChangeset<PropertyType> implements Changeset
 		retval.replaceEntity(matching, entity);
 		return retval;
 	}
+
+	@Override
+	public String toString() {
+		return "AddEntityPropertyChangeset{id=%s, propertyName='%s', propertyValue=%s}".formatted(id, propertyName,
+				propertyValue);
+	}
 }

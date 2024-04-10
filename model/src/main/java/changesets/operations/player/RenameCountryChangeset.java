@@ -61,4 +61,10 @@ public final class RenameCountryChangeset implements Changeset {
 		retval.replacePlayer(oldPlayer, alteredCopy(oldPlayer));
 		return retval;
 	}
+
+	@Override
+	public String toString() {
+		return "RenameCountryChangeset{playerId=%d, oldCountry='%s', newCountry='%s'}".formatted(playerId, oldCountry,
+				newCountry);
+	}
 }

@@ -45,4 +45,9 @@ public final class AddPlayerChangeset implements Changeset {
 		retval.addPlayer(player);
 		return retval;
 	}
+
+	@Override
+	public String toString() {
+		return "AddPlayerChangeset{player=%s}".formatted(player);
+	}
 }

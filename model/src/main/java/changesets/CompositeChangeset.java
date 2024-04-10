@@ -64,4 +64,9 @@ public final class CompositeChangeset implements Changeset {
 		}
 		return retval;
 	}
+
+	@Override
+	public String toString() {
+		return "CompositeChangeset with " + changesets.size() + " changesets";
+	}
 }
