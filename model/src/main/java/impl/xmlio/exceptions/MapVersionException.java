@@ -1,7 +1,9 @@
 package impl.xmlio.exceptions;
 
 import common.xmlio.SPFormatException;
+import org.jetbrains.annotations.Nullable;
 
+import javax.xml.stream.Location;
 import javax.xml.stream.events.StartElement;
 import java.io.Serial;
 
@@ -11,6 +13,33 @@ import java.io.Serial;
 public class MapVersionException extends SPFormatException {
 	@Serial
 	private static final long serialVersionUID = 1L;
+
+	private static final class DummyLocation implements Location {
+		@Override
+		public int getLineNumber() {
+			return -1;
+		}
+
+		@Override
+		public int getColumnNumber() {
+			return -1;
+		}
+
+		@Override
+		public int getCharacterOffset() {
+			return -1;
+		}
+
+		@Override
+		public @Nullable String getPublicId() {
+			return null;
+		}
+
+		@Override
+		public @Nullable String getSystemId() {
+			return null;
+		}
+	}
 
 	private static String messageFragment(final int minimum, final int maximum) {
 		if (minimum == maximum) {
@@ -39,7 +68,7 @@ public class MapVersionException extends SPFormatException {
 	 */
 	private MapVersionException(final int version, final int minimum, final int maximum) {
 		super("Unsupported SP map version %d%s".formatted(version,
-				messageFragment(minimum, maximum)), -1, -1);
+				messageFragment(minimum, maximum)), new DummyLocation());
 	}
 
 	/**
