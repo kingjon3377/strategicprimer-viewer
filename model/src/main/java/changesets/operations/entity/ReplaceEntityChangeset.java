@@ -1,7 +1,6 @@
 package changesets.operations.entity;
 
 import changesets.Changeset;
-import changesets.ChangesetFailureException;
 import changesets.PreconditionFailureException;
 import common.entity.IEntity;
 import common.map.IMap;
@@ -28,15 +27,15 @@ public final class ReplaceEntityChangeset implements Changeset {
 	}
 
 	private void checkPrecondition(final @NotNull IMap map) throws PreconditionFailureException {
-		boolean met = false;
+		boolean neverMet = true;
 		for (final IEntity item : map.getAllEntities()) {
 			if (item.equals(toRemove)) {
-				met = true;
+				neverMet = false;
 			} else if (Objects.equals(item.getId(), toAdd.getId())) {
 				throw new PreconditionFailureException("Cannot add entity with non-unique ID");
 			}
 		}
-		if (!met) {
+		if (neverMet) {
 			throw new PreconditionFailureException("Cannot remove entity if not present in the map");
 		}
 	}

@@ -1,7 +1,6 @@
 package changesets.operations.player;
 
 import changesets.Changeset;
-import changesets.ChangesetFailureException;
 import changesets.PreconditionFailureException;
 import common.map.IMap;
 import common.map.IMutableMap;
@@ -28,15 +27,15 @@ public final class ReplacePlayerChangeset implements Changeset {
 
 	private void checkPrecondition(final @NotNull IMap map) throws PreconditionFailureException {
 		final IPlayerCollection players = map.getPlayers();
-		boolean met = false;
+		boolean neverMet = true;
 		for (final Player item : players) {
 			if (item.equals(toRemove)) {
-				met = true;
+				neverMet = false;
 			} else if (item.playerId() == toAdd.playerId()) {
 				throw new PreconditionFailureException("Cannot add player with non-unique ID");
 			}
 		}
-		if (!met) {
+		if (neverMet) {
 			throw new PreconditionFailureException("Cannot remove player if not present in the map");
 		}
 	}
