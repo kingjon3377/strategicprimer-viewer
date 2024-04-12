@@ -26,11 +26,11 @@ public final class AssertAny {
 
 		public MultipleFailureException(final List<AssertionFailedError> list, final String message) {
 			super(message, list.getFirst());
-			failures = list;
+			failures = Collections.unmodifiableList(list);
 		}
 
 		public List<AssertionFailedError> getFailures() {
-			return Collections.unmodifiableList(failures);
+			return failures;
 		}
 	}
 
