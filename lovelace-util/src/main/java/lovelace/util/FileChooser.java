@@ -289,7 +289,7 @@ public class FileChooser {
 	public final List<Path> getFiles() throws ChoiceInterruptedException {
 		if (!storedFile.isEmpty()) {
 			LovelaceLogger.debug("FileChooser.files: A file was stored, so returning it");
-			return storedFile;
+			return Collections.unmodifiableList(storedFile);
 		} else if (SwingUtilities.isEventDispatchThread()) {
 			LovelaceLogger.debug("FileChooser.files: Have to ask the user; on EDT");
 			haveUserChooseFiles();
@@ -301,7 +301,7 @@ public class FileChooser {
 			//noinspection NewExceptionWithoutArguments
 			throw new ChoiceInterruptedException();
 		} else {
-			return storedFile;
+			return Collections.unmodifiableList(storedFile);
 		}
 	}
 
