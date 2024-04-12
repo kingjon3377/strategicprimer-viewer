@@ -42,13 +42,13 @@ public final class ReplacePlayerChangeset implements Changeset {
 	}
 
 	@Override
-	public void applyInPlace(final @NotNull IMutableMap map) throws ChangesetFailureException {
+	public void applyInPlace(final @NotNull IMutableMap map) throws PreconditionFailureException {
 		checkPrecondition(map);
 		map.replacePlayer(toRemove, toAdd);
 	}
 
 	@Override
-	public @NotNull IMap apply(final @NotNull IMap map) throws ChangesetFailureException {
+	public @NotNull IMap apply(final @NotNull IMap map) throws PreconditionFailureException {
 		checkPrecondition(map);
 		final IMutableMap retval = (IMutableMap) map.copy();
 		retval.replacePlayer(toRemove, toAdd);

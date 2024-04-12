@@ -41,7 +41,7 @@ public final class AddEntityPropertyChangeset<PropertyType> implements Changeset
 	}
 
 	@Override
-	public void applyInPlace(final @NotNull IMutableMap map) throws ChangesetFailureException {
+	public void applyInPlace(final @NotNull IMutableMap map) throws PreconditionFailureException {
 		checkPreconditions(map);
 		final IEntity matching = Objects.requireNonNull(map.getEntity(id));
 		final EntityProperty<PropertyType> property = new EntityProperty<>(propertyName, propertyValue);
@@ -56,7 +56,7 @@ public final class AddEntityPropertyChangeset<PropertyType> implements Changeset
 	}
 
 	@Override
-	public @NotNull IMap apply(final @NotNull IMap map) throws ChangesetFailureException {
+	public @NotNull IMap apply(final @NotNull IMap map) throws PreconditionFailureException {
 		checkPreconditions(map);
 		final IMutableMap retval = (IMutableMap) map.copy();
 		final IEntity matching = Objects.requireNonNull(map.getEntity(id));

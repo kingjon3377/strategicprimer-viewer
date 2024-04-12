@@ -38,13 +38,13 @@ public final class ReplaceRegionChangeset implements Changeset {
 	}
 
 	@Override
-	public void applyInPlace(final @NotNull IMutableMap map) throws ChangesetFailureException {
+	public void applyInPlace(final @NotNull IMutableMap map) throws PreconditionFailureException {
 		checkPrecondition(map);
 		map.replaceMapRegion(toRemove, toAdd);
 	}
 
 	@Override
-	public @NotNull IMap apply(final @NotNull IMap map) throws ChangesetFailureException {
+	public @NotNull IMap apply(final @NotNull IMap map) throws PreconditionFailureException {
 		checkPrecondition(map);
 		final IMutableMap retval = (IMutableMap) map.copy();
 		retval.replaceMapRegion(toRemove, toAdd);

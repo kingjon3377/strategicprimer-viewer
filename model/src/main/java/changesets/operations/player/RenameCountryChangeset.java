@@ -43,7 +43,7 @@ public final class RenameCountryChangeset implements Changeset {
 	}
 
 	@Override
-	public void applyInPlace(final @NotNull IMutableMap map) throws ChangesetFailureException {
+	public void applyInPlace(final @NotNull IMutableMap map) throws PreconditionFailureException {
 		checkPrecondition(map);
 		final Player oldPlayer = map.getPlayers().getPlayer(playerId);
 		map.replacePlayer(oldPlayer, alteredCopy(oldPlayer));
@@ -54,7 +54,7 @@ public final class RenameCountryChangeset implements Changeset {
 	}
 
 	@Override
-	public @NotNull IMap apply(final @NotNull IMap map) throws ChangesetFailureException {
+	public @NotNull IMap apply(final @NotNull IMap map) throws PreconditionFailureException {
 		checkPrecondition(map);
 		final IMutableMap retval = (IMutableMap) map.copy();
 		final Player oldPlayer = map.getPlayers().getPlayer(playerId);
