@@ -57,6 +57,7 @@ public final class Warning {
 		this.impl = impl;
 	}
 
+	@SuppressWarnings("BooleanParameter") // Dummy parameter to distinguish signatures
 	public Warning(final Consumer<String> handler, final boolean ignored) {
 		impl = t -> {
 			if (t instanceof SPFormatException) {
