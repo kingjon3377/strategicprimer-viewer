@@ -31,7 +31,7 @@ public final class ReplaceRegionChangeset implements Changeset {
 			throw new PreconditionFailureException("Region to remove must exist in the map");
 		}
 		regions.add(toAdd);
-		if (!IMap.areRegionsValid(regions)) {
+		if (!MapRegion.areRegionsValid(regions)) {
 			throw new PreconditionFailureException(
 					"Region to add must have unique ID and not overlap any existing region");
 		}

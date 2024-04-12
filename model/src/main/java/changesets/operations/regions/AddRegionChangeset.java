@@ -29,7 +29,7 @@ public final class AddRegionChangeset implements Changeset {
 	private void checkPrecondition(final @NotNull IMap map) throws PreconditionFailureException {
 		final Collection<MapRegion> regions = new ArrayList<>(map.getRegions());
 		regions.add(region);
-		if (!IMap.areRegionsValid(regions)) {
+		if (!MapRegion.areRegionsValid(regions)) {
 			throw new PreconditionFailureException("Regions must have unique IDs and cannot overlap");
 		}
 	}

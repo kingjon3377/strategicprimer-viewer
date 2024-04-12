@@ -40,7 +40,7 @@ public class SPMap implements IMutableMap {
 	public final void addMapRegion(final MapRegion region) {
 		final List<MapRegion> temp = new ArrayList<>(regionMap.values());
 		temp.add(region);
-		if (IMap.areRegionsValid(temp)) {
+		if (MapRegion.areRegionsValid(temp)) {
 			regionMap.put(region.getRegionId(), region);
 		} else {
 			throw new IllegalArgumentException("Added region must have unique ID and not overlap existing regions");
@@ -64,7 +64,7 @@ public class SPMap implements IMutableMap {
 			throw new IllegalArgumentException("Region to remove must exist in the map");
 		}
 		temp.add(toAdd);
-		if (IMap.areRegionsValid(temp)) {
+		if (MapRegion.areRegionsValid(temp)) {
 			if (toRemove.getRegionId() == toAdd.getRegionId()) {
 				regionMap.replace(toRemove.getRegionId(), toRemove, toAdd);
 			} else {

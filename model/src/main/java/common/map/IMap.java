@@ -5,7 +5,6 @@ import common.entity.IEntity;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.awt.geom.Area;
 import java.util.Collection;
 
 /**
@@ -21,24 +20,6 @@ public interface IMap {
 	 * fine), and no two regions have the same ID number.
 	 */
 	@NotNull Collection<MapRegion> getRegions();
-
-	static boolean areRegionsValid(final @NotNull Collection<? extends MapRegion> regions) {
-		for (final MapRegion first : regions) {
-			for (final MapRegion second : regions) {
-				if (first == second) {
-					continue;
-				} else if (first.getRegionId() == second.getRegionId()) {
-					return false;
-				}
-				final Area area = new Area(first.getArea());
-				area.intersect(second.getArea());
-				if (!area.isEmpty()) {
-					return false;
-				}
-			}
-		}
-		return true;
-	}
 
 	/**
 	 * The players in the map.
