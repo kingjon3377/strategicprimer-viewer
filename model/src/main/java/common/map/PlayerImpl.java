@@ -16,7 +16,7 @@ public record PlayerImpl(int playerId, String name, String country, boolean curr
 	 * The player's number.
 	 */
 	@Override
-	public final int playerId() {
+	public int playerId() {
 		return playerId;
 	}
 

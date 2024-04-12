@@ -71,7 +71,7 @@ public final class TypesafeXMLEventReader implements Iterator<XMLEvent>, AutoClo
 	 */
 	@SuppressWarnings("IteratorNextCanNotThrowNoSuchElementException") // spurious, obviously incorrect warning
 	@Override
-	public final XMLEvent next() throws NoSuchElementException {
+	public XMLEvent next() throws NoSuchElementException {
 		if (closed) {
 			throw new NoSuchElementException("Reader is closed");
 		} else {
