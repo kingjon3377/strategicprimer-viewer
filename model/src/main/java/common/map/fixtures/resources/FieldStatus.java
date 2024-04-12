@@ -1,11 +1,10 @@
 package common.map.fixtures.resources;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.Random;
 import java.util.function.Supplier;
 
-import org.jetbrains.annotations.Nullable;
+import lovelace.util.EnumCache;
 
 /**
  * Possible status of fields (and meadows, and orchards ...) Fields should
@@ -41,23 +40,7 @@ public enum FieldStatus {
 		return string;
 	}
 
-	private static final class Cache implements Supplier<List<FieldStatus>> {
-		private @Nullable List<FieldStatus> cache;
-
-		public List<FieldStatus> get() {
-			if (Objects.isNull(cache)) {
-				cache = List.of(values());
-			}
-			return cache;
-		}
-
-		@Override
-		public String toString() {
-			return "FieldStatus cache";
-		}
-	}
-
-	private static final Supplier<List<FieldStatus>> FS_CACHE = new Cache();
+	private static final Supplier<List<FieldStatus>> FS_CACHE = new EnumCache(FieldStatus.class);
 
 	public static FieldStatus random(final long seed) {
 		final List<FieldStatus> statuses = FS_CACHE.get();
