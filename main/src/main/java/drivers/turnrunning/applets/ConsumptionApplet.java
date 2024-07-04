@@ -130,11 +130,9 @@ public class ConsumptionApplet extends AbstractTurnApplet {
 				} else if (amountToConsume.compareTo(remainingConsumption) > 0) {
 					model.reduceResourceBy(food, remainingConsumption, localUnit.owner());
 					remainingConsumption = decimalize(0);
-					continue;
 				} else {
 					model.reduceResourceBy(food, amountToConsume, localUnit.owner());
 					remainingConsumption = remainingConsumption.subtract(amountToConsume);
-					continue;
 				}
 			}
 		}

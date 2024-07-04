@@ -540,7 +540,6 @@ import legacy.map.fixtures.towns.Village;
 				final Village village = triplet.getValue2();
 				if (hasLeviedRecently(village)) {
 					villagesToRemove.add(triplet);
-					continue;
 				} else if (SingletonRandom.SINGLETON_RANDOM.nextDouble() <
 						villageChance((int) (Math.min((double) (mpDistance) / mpPerDay,
 								tileDistance / 12.0)) + 1)) {

@@ -429,16 +429,15 @@ import worker.common.IFixtureEditHelper;
 				if (fixture instanceof FakeFixture) {
 					// Skip it! It'll corrupt the output XML!
 					continue;
-				} else {
-					final IFixture.CopyBehavior zero = switch (fixture) {
-						case final Village village -> IFixture.CopyBehavior.ZERO;
-						case final HasOwner owned when !player.equals(owned.owner()) -> IFixture.CopyBehavior.ZERO;
-						case final HasPopulation hasPopulation -> IFixture.CopyBehavior.ZERO;
-						case final HasExtent hasExtent -> IFixture.CopyBehavior.ZERO;
-						default -> IFixture.CopyBehavior.KEEP;
-					};
-					driverModel.copyToSubMaps(destPoint, fixture, zero);
 				}
+				final IFixture.CopyBehavior zero = switch (fixture) {
+					case final Village village -> IFixture.CopyBehavior.ZERO;
+					case final HasOwner owned when !player.equals(owned.owner()) -> IFixture.CopyBehavior.ZERO;
+					case final HasPopulation hasPopulation -> IFixture.CopyBehavior.ZERO;
+					case final HasExtent hasExtent -> IFixture.CopyBehavior.ZERO;
+					default -> IFixture.CopyBehavior.KEEP;
+				};
+				driverModel.copyToSubMaps(destPoint, fixture, zero);
 			}
 		}
 

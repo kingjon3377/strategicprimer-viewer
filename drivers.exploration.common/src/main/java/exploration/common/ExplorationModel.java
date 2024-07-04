@@ -1035,7 +1035,6 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 			if (matching.isPresent()) {
 				matching.get().addMember(member.copy(IFixture.CopyBehavior.KEEP));
 				map.setModified(true);
-				continue;
 			}
 		}
 	}

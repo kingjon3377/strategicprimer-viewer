@@ -131,7 +131,6 @@ import java.util.stream.Collectors;
 			// Limit the size of the output spreadsheet.
 			if (Math.abs(point.getValue0()) > 200 || Math.abs(point.getValue1()) > 100) {
 				pruneCounter++;
-				continue;
 			} else {
 				modelPoint(point.getValue0(), point.getValue1());
 			}

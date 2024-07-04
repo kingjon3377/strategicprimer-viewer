@@ -113,12 +113,11 @@ import query.SmallAnimalModel;
 				continue;
 			}
 			final Boolean cont = cli.inputBoolean("No model for %s. Really skip?".formatted(group.getKind()));
-			if (Boolean.TRUE.equals(cont)) {
-				continue;
-			} else {
+			if (!Boolean.TRUE.equals(cont)) {
 				cli.println("Aborting ...");
 				return null;
 			}
+
 		}
 		long workerCount = unit.stream().filter(IWorker.class::isInstance).map(IWorker.class::cast).count();
 		final Integer addendum = cli.inputNumber("%d workers in this unit. Any additional workers to account for:".formatted(workerCount));

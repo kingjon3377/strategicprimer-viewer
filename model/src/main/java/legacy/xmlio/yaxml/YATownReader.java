@@ -288,7 +288,6 @@ import java.util.function.Consumer;
 					// transition, we *now* warn, instead of aborting, if the tags we
 					// expect to use for this appear in this position in the XML.
 					warner.handle(new UnwantedChildException(element.getName(), se));
-					continue;
 				} else {
 					throw new UnwantedChildException(element.getName(), se);
 				}

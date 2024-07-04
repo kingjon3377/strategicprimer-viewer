@@ -190,21 +190,19 @@ public final class DBMapReader {
 			bStream.forEach(p -> retval.addBookmark(p.getValue0(), players.getPlayer(p.getValue1())));
 		}
 		for (final MapContentsReader reader : readers) {
+			// Ignore no-such-table exceptions, but propagate all others
 			try {
 				reader.readMapContents(conn, retval, containers, containees, warner);
 			} catch (final RuntimeException | SQLException exception) {
-				if (exception.getMessage().contains("no such table")) {
-					continue;
-				} else {
+				if (!exception.getMessage().contains("no such table")) {
 					throw exception;
 				}
 			} catch (final Exception exception) {
-				if (exception.getMessage().contains("no such table")) {
-					continue;
-				} else {
+				if (!exception.getMessage().contains("no such table")) {
 					// TODO: declare checked exception instead?
 					throw new RuntimeException(exception);
 				}
+
 			}
 		}
 		LovelaceLogger.debug("Finished reading the map except adding members to parents");

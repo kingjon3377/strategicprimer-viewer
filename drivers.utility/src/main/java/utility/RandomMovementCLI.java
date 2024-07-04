@@ -49,7 +49,7 @@ import java.util.Random;
 				try {
 					model.move(directions[rng.nextInt(directions.length)], Speed.Normal);
 				} catch (final TraversalImpossibleException except) {
-					continue;
+					// ignore ... normal control flow
 				}
 			}
 		}

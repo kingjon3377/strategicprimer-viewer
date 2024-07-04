@@ -88,9 +88,7 @@ public class MapTradeModel extends SimpleMultiMapModel {
 					final Direction direction = entry.getKey();
 					final int quality = entry.getValue();
 					final int existingRoad = existingRoads.getOrDefault(direction, 0);
-					if (existingRoad >= quality) {
-						continue;
-					} else {
+					if (existingRoad < quality) {
 						second.setRoadLevel(location, direction, quality);
 						setGlobalModifiedFlag();
 					}

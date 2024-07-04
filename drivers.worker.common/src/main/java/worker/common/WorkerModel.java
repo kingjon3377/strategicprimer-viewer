@@ -522,7 +522,6 @@ public class WorkerModel extends SimpleMultiMapModel implements IWorkerModel {
 			if (!Objects.isNull(matching)) {
 				matching.addMember(member.copy(IFixture.CopyBehavior.KEEP));
 				map.setModified(true);
-				continue;
 			}
 		}
 	}

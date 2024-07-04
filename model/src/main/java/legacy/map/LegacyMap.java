@@ -761,10 +761,8 @@ public class LegacyMap implements IMutableLegacyMap {
 					// FIXME: Should add to ourUnits, ourTowns, etc, if of the right type and not in those, right?
 					switch (fixture) {
 						case final IUnit unitMembers when ourUnits.containsKey(idNum) -> {
-							continue;
 						}
 						case final AbstractTown abstractTown when ourTowns.containsKey(idNum) -> {
-							continue;
 						}
 						default ->  // FIXME: Also check ourSubsettables, right?
 								ourFixtures.add(fixture);
@@ -809,9 +807,7 @@ public class LegacyMap implements IMutableLegacyMap {
 				final Map<Direction, Integer> ourRoads = getRoads(point);
 				// TODO: Extract road-subset method
 				for (final Map.Entry<Direction, Integer> entry : theirRoads.entrySet()) {
-					if (ourRoads.getOrDefault(entry.getKey(), 0) >= entry.getValue()) {
-						continue;
-					} else {
+					if (ourRoads.getOrDefault(entry.getKey(), 0) < entry.getValue()) {
 						localReport.accept("Has road information we don't");
 						retval = false;
 						break;
