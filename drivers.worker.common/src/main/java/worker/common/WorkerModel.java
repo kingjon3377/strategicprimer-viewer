@@ -530,111 +530,119 @@ public class WorkerModel extends SimpleMultiMapModel implements IWorkerModel {
 	@Override
 	public boolean renameItem(final HasName item, final String newName) {
 		boolean any = false;
-		if (item instanceof final IUnit unit) {
-			final Predicate<IUnit> matchingName = u -> u.getName().equals(item.getName());
-			final Predicate<IUnit> matchingKind = u -> u.getKind().equals(unit.getKind());
-			final Predicate<IUnit> matchingId = u -> u.getId() == unit.getId();
-			for (final IMutableLegacyMap map : getRestrictedAllMaps()) {
-				final IUnit matching =
-						getUnitsImpl(map.streamAllFixtures()
-										.collect(Collectors.toList()),
-								unit.owner()).stream()
-								.filter(matchingName)
-								.filter(matchingKind)
-								.filter(matchingId)
-								.findAny().orElse(null);
-				if (matching instanceof final HasMutableName matchNamed) {
-					any = true;
-					matchNamed.setName(newName);
-					map.setModified(true);
+		switch (item) {
+			case final IUnit unit -> {
+				final Predicate<IUnit> matchingName = u -> u.getName().equals(item.getName());
+				final Predicate<IUnit> matchingKind = u -> u.getKind().equals(unit.getKind());
+				final Predicate<IUnit> matchingId = u -> u.getId() == unit.getId();
+				for (final IMutableLegacyMap map : getRestrictedAllMaps()) {
+					final IUnit matching =
+							getUnitsImpl(map.streamAllFixtures()
+											.collect(Collectors.toList()),
+									unit.owner()).stream()
+									.filter(matchingName)
+									.filter(matchingKind)
+									.filter(matchingId)
+									.findAny().orElse(null);
+					if (matching instanceof final HasMutableName matchNamed) {
+						any = true;
+						matchNamed.setName(newName);
+						map.setModified(true);
+					}
 				}
-			}
-			if (!any) {
-				LovelaceLogger.warning("Unable to find unit to rename");
-			}
-			return any;
-		} else if (item instanceof final UnitMember memberItem) {
-			final Predicate<Object> isNamed = HasMutableName.class::isInstance;
-			final Predicate<UnitMember> matchingId = m -> m.getId() == memberItem.getId();
-			final Predicate<UnitMember> matchingName =
-					m -> ((HasMutableName) m).getName().equals(item.getName());
-			for (final IMutableLegacyMap map : getRestrictedAllMaps()) {
-				final UnitMember matching =
-						getUnitsImpl(map.streamAllFixtures()
-								.collect(Collectors.toList()), getCurrentPlayer())
-								.stream().flatMap(FixtureIterable::stream)
-								.filter(isNamed)
-								.filter(matchingId)
-								.filter(matchingName)
-								.findAny().orElse(null); // FIXME: We should have a firmer identification than just name and ID
-				if (!Objects.isNull(matching)) {
-					any = true;
-					((HasMutableName) matching).setName(newName);
-					map.setModified(true);
+				if (!any) {
+					LovelaceLogger.warning("Unable to find unit to rename");
 				}
+				return any;
 			}
-			if (!any) {
-				LovelaceLogger.warning("Unable to find unit member to rename");
+			case final UnitMember memberItem -> {
+				final Predicate<Object> isNamed = HasMutableName.class::isInstance;
+				final Predicate<UnitMember> matchingId = m -> m.getId() == memberItem.getId();
+				final Predicate<UnitMember> matchingName =
+						m -> ((HasMutableName) m).getName().equals(item.getName());
+				for (final IMutableLegacyMap map : getRestrictedAllMaps()) {
+					final UnitMember matching =
+							getUnitsImpl(map.streamAllFixtures()
+									.collect(Collectors.toList()), getCurrentPlayer())
+									.stream().flatMap(FixtureIterable::stream)
+									.filter(isNamed)
+									.filter(matchingId)
+									.filter(matchingName)
+									.findAny().orElse(null); // FIXME: We should have a firmer identification than just name and ID
+					if (!Objects.isNull(matching)) {
+						any = true;
+						((HasMutableName) matching).setName(newName);
+						map.setModified(true);
+					}
+				}
+				if (!any) {
+					LovelaceLogger.warning("Unable to find unit member to rename");
+				}
+				return any;
 			}
-			return any;
-		} else {
-			LovelaceLogger.warning("Unable to find item to rename");
-			return false;
+			default -> {
+				LovelaceLogger.warning("Unable to find item to rename");
+				return false;
+			}
 		}
 	}
 
 	@Override
 	public boolean changeKind(final HasKind item, final String newKind) {
 		boolean any = false;
-		if (item instanceof final IUnit unit) {
-			final Predicate<IUnit> matchingName = u -> u.getName().equals(unit.getName());
-			final Predicate<IUnit> matchingKind = u -> u.getKind().equals(item.getKind());
-			final Predicate<IUnit> matchingId = u -> u.getId() == unit.getId();
-			for (final IMutableLegacyMap map : getRestrictedAllMaps()) {
-				final IUnit matching = getUnitsImpl(map.streamAllFixtures()
-								.collect(Collectors.toList()),
-						unit.owner()).stream()
-						.filter(matchingName)
-						.filter(matchingKind)
-						.filter(matchingId)
-						.findAny().orElse(null);
-				if (matching instanceof final HasMutableKind kinded) {
-					any = true;
-					kinded.setKind(newKind);
-					map.setModified(true);
+		switch (item) {
+			case final IUnit unit -> {
+				final Predicate<IUnit> matchingName = u -> u.getName().equals(unit.getName());
+				final Predicate<IUnit> matchingKind = u -> u.getKind().equals(item.getKind());
+				final Predicate<IUnit> matchingId = u -> u.getId() == unit.getId();
+				for (final IMutableLegacyMap map : getRestrictedAllMaps()) {
+					final IUnit matching = getUnitsImpl(map.streamAllFixtures()
+									.collect(Collectors.toList()),
+							unit.owner()).stream()
+							.filter(matchingName)
+							.filter(matchingKind)
+							.filter(matchingId)
+							.findAny().orElse(null);
+					if (matching instanceof final HasMutableKind kinded) {
+						any = true;
+						kinded.setKind(newKind);
+						map.setModified(true);
+					}
 				}
-			}
-			if (!any) {
-				LovelaceLogger.warning("Unable to find unit to change kind");
-			}
-			return any;
-		} else if (item instanceof final UnitMember member) {
-			final Predicate<UnitMember> matchingId = m -> m.getId() == member.getId();
-			final Predicate<UnitMember> hasMutableKind = HasMutableKind.class::isInstance;
-			final Function<Object, HasMutableKind> hmkCast = HasMutableKind.class::cast;
-			final Predicate<HasMutableKind> matchingKind = m -> m.getKind().equals(item.getKind());
-			for (final IMutableLegacyMap map : getRestrictedAllMaps()) {
-				final HasMutableKind matching = getUnitsImpl(map.streamAllFixtures()
-						.collect(Collectors.toList()), getCurrentPlayer())
-						.stream().flatMap(FixtureIterable::stream)
-						.filter(matchingId)
-						.filter(hasMutableKind)
-						.map(hmkCast)
-						.filter(matchingKind)
-						.findAny().orElse(null); // FIXME: We should have a firmer identification than just kind and ID
-				if (!Objects.isNull(matching)) {
-					any = true;
-					matching.setKind(newKind);
-					map.setModified(true);
+				if (!any) {
+					LovelaceLogger.warning("Unable to find unit to change kind");
 				}
+				return any;
 			}
-			if (!any) {
-				LovelaceLogger.warning("Unable to find unit member to change kind");
+			case final UnitMember member -> {
+				final Predicate<UnitMember> matchingId = m -> m.getId() == member.getId();
+				final Predicate<UnitMember> hasMutableKind = HasMutableKind.class::isInstance;
+				final Function<Object, HasMutableKind> hmkCast = HasMutableKind.class::cast;
+				final Predicate<HasMutableKind> matchingKind = m -> m.getKind().equals(item.getKind());
+				for (final IMutableLegacyMap map : getRestrictedAllMaps()) {
+					final HasMutableKind matching = getUnitsImpl(map.streamAllFixtures()
+							.collect(Collectors.toList()), getCurrentPlayer())
+							.stream().flatMap(FixtureIterable::stream)
+							.filter(matchingId)
+							.filter(hasMutableKind)
+							.map(hmkCast)
+							.filter(matchingKind)
+							.findAny().orElse(null); // FIXME: We should have a firmer identification than just kind and ID
+					if (!Objects.isNull(matching)) {
+						any = true;
+						matching.setKind(newKind);
+						map.setModified(true);
+					}
+				}
+				if (!any) {
+					LovelaceLogger.warning("Unable to find unit member to change kind");
+				}
+				return any;
 			}
-			return any;
-		} else {
-			LovelaceLogger.warning("Unable to find item to change kind");
-			return false;
+			default -> {
+				LovelaceLogger.warning("Unable to find item to change kind");
+				return false;
+			}
 		}
 	}
 

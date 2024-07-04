@@ -92,35 +92,41 @@ public final class DBAnimalHandler extends AbstractDatabaseWriter<AnimalOrTracks
 
 	@Override
 	public void write(final Transactional db, final AnimalOrTracks obj, final Object context) throws SQLException {
+		// TODO: Extract a helper taking the context & any number of Class args to assert it is instanceof one of them
 		if (!((context instanceof Point) || (context instanceof IUnit) || (context instanceof IWorker))) {
 			throw new IllegalArgumentException("context must be a point, a unit, or a worker");
 		}
-		if (obj instanceof AnimalTracks) {
-			if (context instanceof IUnit || context instanceof IWorker) { // TODO: Invert test to use type-inferring instanceof
-				throw new IllegalArgumentException("Animal tracks can't occur inside a unit or worker");
+		switch (obj) {
+			case AnimalTracks animalTracks -> {
+				if (context instanceof IUnit || context instanceof IWorker) { // TODO: Invert test to use type-inferring instanceof
+					throw new IllegalArgumentException("Animal tracks can't occur inside a unit or worker");
+				}
+				INSERT_TRACKS.on(value("row", ((Point) context).row()), value("column", ((Point) context).column()),
+								value("kind", obj.getKind()), value("image", animalTracks.getImage()))
+						.execute(db.connection());
 			}
-			INSERT_TRACKS.on(value("row", ((Point) context).row()), value("column", ((Point) context).column()),
-							value("kind", obj.getKind()), value("image", ((AnimalTracks) obj).getImage()))
-					.execute(db.connection());
-		} else if (obj instanceof final Animal a) {
-			final List<Param> params = new ArrayList<>();
-			if (context instanceof final Point p) {
-				params.add(value("row", p.row()));
-				params.add(value("column", p.column()));
-			} else {
-				params.add(value("parent", ((IFixture) context).getId()));
+			case final Animal a -> {
+				final List<Param> params = new ArrayList<>();
+				if (context instanceof final Point p) {
+					params.add(value("row", p.row()));
+					params.add(value("column", p.column()));
+				} else {
+					params.add(value("parent", ((IFixture) context).getId()));
+				}
+				params.add(value("kind", obj.getKind()));
+				params.add(value("talking", a.isTalking()));
+				params.add(value("status", a.getStatus()));
+				final OptionalInt born = born(a);
+				if (born.isPresent()) {
+					params.add(value("born", born.getAsInt()));
+				}
+				params.add(value("count", a.getPopulation()));
+				params.add(value("id", obj.getId()));
+				params.add(value("image", a.getImage()));
+				INSERT_ANIMAL.on(params).execute(db.connection());
 			}
-			params.add(value("kind", obj.getKind()));
-			params.add(value("talking", a.isTalking()));
-			params.add(value("status", a.getStatus()));
-			final OptionalInt born = born(a);
-			if (born.isPresent()) {
-				params.add(value("born", born.getAsInt()));
+			default -> {
 			}
-			params.add(value("count", a.getPopulation()));
-			params.add(value("id", obj.getId()));
-			params.add(value("image", a.getImage()));
-			INSERT_ANIMAL.on(params).execute(db.connection());
 		}
 	}
 

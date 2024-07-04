@@ -61,16 +61,21 @@ import java.util.Objects;
 						key, mapping.get(key), val);
 			}
 			mapping.put(key, val);
-			if (fixture instanceof final FixtureIterable<?> fi) {
-				for (final IFixture inner : fi) {
-					addToMap(location, inner, idf, mapping);
+			switch (fixture) {
+				case final FixtureIterable<?> fi -> {
+					for (final IFixture inner : fi) {
+						addToMap(location, inner, idf, mapping);
+					}
 				}
-			} else if (fixture instanceof final IWorker w) {
-				if (!Objects.isNull(w.getMount())) {
-					addToMap(location, w.getMount(), idf, mapping);
+				case final IWorker w -> {
+					if (!Objects.isNull(w.getMount())) {
+						addToMap(location, w.getMount(), idf, mapping);
+					}
+					for (final Implement inner : w.getEquipment()) {
+						addToMap(location, inner, idf, mapping);
+					}
 				}
-				for (final Implement inner : w.getEquipment()) {
-					addToMap(location, inner, idf, mapping);
+				default -> {
 				}
 			}
 		}

@@ -110,15 +110,13 @@ public class ResourceTabularReportGenerator
 			/*Implement|CacheFixture|IResourcePile*/final IFixture second) {
 		switch (first) {
 			case final Implement one -> {
-				if (second instanceof final Implement two) {
-					return Comparator.comparing(Implement::getKind)
+				return switch (second) {
+					case final Implement two -> Comparator.comparing(Implement::getKind)
 							.thenComparing(Implement::getCount, Comparator.reverseOrder())
 							.compare(one, two);
-				} else if (second instanceof IResourcePile) {
-					return 1;
-				} else {
-					return -1;
-				}
+					case IResourcePile iResourcePile -> 1;
+					default -> -1;
+				};
 			}
 			case final CacheFixture one -> {
 				if (second instanceof final CacheFixture two) {

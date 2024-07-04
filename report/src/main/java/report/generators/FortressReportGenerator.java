@@ -66,17 +66,24 @@ public class FortressReportGenerator extends AbstractReportGenerator<IFortress> 
 			ostream.accept(", mountainous");
 		}
 		for (final TileFixture fixture : map.getFixtures(point)) {
-			if (unforested && fixture instanceof final Forest f) {
-				unforested = false;
-				ostream.accept(", forested with ");
-				ostream.accept(f.getKind());
-				fixtures.remove(fixture.getId());
-			} else if (fixture instanceof Hill) {
-				ostream.accept(", hilly");
-				fixtures.remove(fixture.getId());
-			} else if (fixture instanceof Oasis) {
-				ostream.accept(", with a nearby oasis");
-				fixtures.remove(fixture.getId());
+			final boolean previouslyUnforested = unforested;
+			switch (fixture) {
+				case final Forest f when previouslyUnforested -> {
+					unforested = false;
+					ostream.accept(", forested with ");
+					ostream.accept(f.getKind());
+					fixtures.remove(fixture.getId());
+				}
+				case Hill hill -> {
+					ostream.accept(", hilly");
+					fixtures.remove(fixture.getId());
+				}
+				case Oasis oasis -> {
+					ostream.accept(", with a nearby oasis");
+					fixtures.remove(fixture.getId());
+				}
+				case null, default -> {
+				}
 			}
 		}
 	}

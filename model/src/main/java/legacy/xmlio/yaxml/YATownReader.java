@@ -97,81 +97,86 @@ import java.util.function.Consumer;
 		final Deque<StartElement> stack = new LinkedList<>();
 		stack.addFirst(element);
 		for (final XMLEvent event : stream) {
-			if (event instanceof final EndElement ee && ee.getName().equals(element.getName())) {
-				break;
-			} else if (event instanceof final StartElement se && isSupportedNamespace(se.getName())) {
-				switch (se.getName().getLocalPart().toLowerCase()) {
-					case "expertise":
-						if (Objects.isNull(current)) {
-							expectAttributes(se, "skill", "level");
-							retval.setSkillLevel(getParameter(se, "skill"),
-									getIntegerParameter(se, "level"));
-							stack.addFirst(se);
-							current = se.getName().getLocalPart();
-						} else {
-							throw UnwantedChildException.listingExpectedTags(
-									stack.peekFirst().getName(), se,
-									expectedCommunityStatsTags(current).toArray(String[]::new));
-						}
-						break;
-					case "claim":
-						if (Objects.isNull(current)) {
-							expectAttributes(se, "resource");
-							retval.addWorkedField(getIntegerParameter(
-									se, "resource"));
-							stack.addFirst(se);
-							current = se.getName().getLocalPart();
-						} else {
-							throw UnwantedChildException.listingExpectedTags(
-									stack.peekFirst().getName(), se,
-									expectedCommunityStatsTags(current).toArray(String[]::new));
-						}
-						break;
-					case "production":
-					case "consumption":
-						if (Objects.isNull(current)) {
-							expectAttributes(se);
-							stack.addFirst(se);
-							current = se.getName().getLocalPart();
-						} else {
-							throw UnwantedChildException.listingExpectedTags(
-									stack.peekFirst().getName(), se,
-									expectedCommunityStatsTags(current).toArray(String[]::new));
-						}
-						break;
-					case "resource":
-						final Consumer<IResourcePile> lambda;
-						if ("production".equals(current)) {
-							lambda = addProductionLambda;
-						} else if ("consumption".equals(current)) {
-							lambda = addConsumptionLambda;
-						} else {
-							throw UnwantedChildException.listingExpectedTags(
-									stack.peekFirst().getName(), se,
-									expectedCommunityStatsTags(Objects.requireNonNullElse(current, "population")).toArray(String[]::new));
-						}
-						lambda.accept(resourceReader.read(se,
-								stack.peekFirst().getName(), stream));
-						break;
-					default:
-						throw UnwantedChildException.listingExpectedTags(
-								stack.isEmpty() ? element.getName() :
-										stack.peekFirst().getName(),
-								se, expectedCommunityStatsTags(Objects.requireNonNullElse(current, "population")).toArray(String[]::new));
+			switch (event) {
+				case final EndElement ee when ee.getName().equals(element.getName()) -> {
+					return retval;
 				}
-			} else if (event instanceof final EndElement ee && !stack.isEmpty() &&
-					ee.getName().equals(stack.peekFirst().getName())) {
-				final StartElement top = stack.removeFirst();
-				if (top.equals(element)) {
-					break;
-				} else if (!Objects.isNull(current) &&
-						top.getName().getLocalPart().equals(current)) {
-					if ("population".equals(stack.peekFirst().getName()
-							.getLocalPart())) {
-						current = null;
-					} else {
-						current = stack.peekFirst().getName().getLocalPart();
+				case final StartElement se when isSupportedNamespace(se.getName()) -> {
+					switch (se.getName().getLocalPart().toLowerCase()) {
+						case "expertise":
+							if (Objects.isNull(current)) {
+								expectAttributes(se, "skill", "level");
+								retval.setSkillLevel(getParameter(se, "skill"),
+										getIntegerParameter(se, "level"));
+								stack.addFirst(se);
+								current = se.getName().getLocalPart();
+							} else {
+								throw UnwantedChildException.listingExpectedTags(
+										stack.peekFirst().getName(), se,
+										expectedCommunityStatsTags(current).toArray(String[]::new));
+							}
+							break;
+						case "claim":
+							if (Objects.isNull(current)) {
+								expectAttributes(se, "resource");
+								retval.addWorkedField(getIntegerParameter(
+										se, "resource"));
+								stack.addFirst(se);
+								current = se.getName().getLocalPart();
+							} else {
+								throw UnwantedChildException.listingExpectedTags(
+										stack.peekFirst().getName(), se,
+										expectedCommunityStatsTags(current).toArray(String[]::new));
+							}
+							break;
+						case "production":
+						case "consumption":
+							if (Objects.isNull(current)) {
+								expectAttributes(se);
+								stack.addFirst(se);
+								current = se.getName().getLocalPart();
+							} else {
+								throw UnwantedChildException.listingExpectedTags(
+										stack.peekFirst().getName(), se,
+										expectedCommunityStatsTags(current).toArray(String[]::new));
+							}
+							break;
+						case "resource":
+							final Consumer<IResourcePile> lambda;
+							if ("production".equals(current)) {
+								lambda = addProductionLambda;
+							} else if ("consumption".equals(current)) {
+								lambda = addConsumptionLambda;
+							} else {
+								throw UnwantedChildException.listingExpectedTags(
+										stack.peekFirst().getName(), se,
+										expectedCommunityStatsTags(Objects.requireNonNullElse(current, "population")).toArray(String[]::new));
+							}
+							lambda.accept(resourceReader.read(se,
+									stack.peekFirst().getName(), stream));
+							break;
+						default:
+							throw UnwantedChildException.listingExpectedTags(
+									stack.isEmpty() ? element.getName() :
+											stack.peekFirst().getName(),
+									se, expectedCommunityStatsTags(Objects.requireNonNullElse(current, "population")).toArray(String[]::new));
 					}
+				}
+				case final EndElement ee when !stack.isEmpty() && ee.getName().equals(stack.peekFirst().getName()) -> {
+					final StartElement top = stack.removeFirst();
+					if (top.equals(element)) {
+						return retval;
+					} else if (!Objects.isNull(current) &&
+							top.getName().getLocalPart().equals(current)) {
+						if ("population".equals(stack.peekFirst().getName()
+								.getLocalPart())) {
+							current = null;
+						} else {
+							current = stack.peekFirst().getName().getLocalPart();
+						}
+					}
+				}
+				default -> {
 				}
 			}
 		}
@@ -371,54 +376,55 @@ import java.util.function.Consumer;
 
 	@Override
 	public void write(final ThrowingConsumer<String, IOException> ostream, final ITownFixture obj, final int tabs) throws IOException {
-		if (obj instanceof final AbstractTown at) {
-			writeAbstractTown(ostream, at, tabs);
-		} else if (obj instanceof final Village v) {
-			writeTag(ostream, "village", tabs);
-			writeProperty(ostream, "status", obj.getStatus().toString());
-			writeNonemptyProperty(ostream, "name", obj.getName());
-			writeProperty(ostream, "id", obj.getId());
-			writeProperty(ostream, "owner", obj.owner().getPlayerId());
-			writeProperty(ostream, "race", v.getRace());
-			writeImageXML(ostream, v);
-			writeNonemptyProperty(ostream, "portrait", obj.getPortrait());
-			if (Objects.isNull(obj.getPopulation())) {
-				closeLeafTag(ostream);
-			} else {
-				finishParentTag(ostream);
-				writeCommunityStats(ostream, obj.getPopulation(), tabs + 1);
-				closeTag(ostream, tabs, "village");
-			}
-		} else if (obj instanceof final IFortress f) {
-			writeTag(ostream, "fortress", tabs);
-			writeProperty(ostream, "owner", obj.owner().getPlayerId());
-			writeNonemptyProperty(ostream, "name", obj.getName());
-			if (TownSize.Small != obj.getTownSize()) {
-				writeProperty(ostream, "size", obj.getTownSize().toString());
-			}
-			writeProperty(ostream, "id", obj.getId());
-			writeImageXML(ostream, f);
-			writeNonemptyProperty(ostream, "portrait", obj.getPortrait());
-			ostream.accept(">");
-			if (f.iterator().hasNext()) {
-				ostream.accept(System.lineSeparator());
-				for (final FortressMember member : f) {
-					final Optional<YAReader<? extends FortressMember, ? extends FortressMember>>
-							reader = memberReaders.stream()
-							.filter(yar -> yar.canWrite(member)).findAny();
-					if (reader.isPresent()) {
-						reader.get().writeRaw(ostream, member, tabs + 1);
-					} else {
-						LovelaceLogger.error("Unhandled FortressMember type %s",
-								member.getClass().getName());
-					}
+		switch (obj) {
+			case final AbstractTown at -> writeAbstractTown(ostream, at, tabs);
+			case final Village v -> {
+				writeTag(ostream, "village", tabs);
+				writeProperty(ostream, "status", obj.getStatus().toString());
+				writeNonemptyProperty(ostream, "name", obj.getName());
+				writeProperty(ostream, "id", obj.getId());
+				writeProperty(ostream, "owner", obj.owner().getPlayerId());
+				writeProperty(ostream, "race", v.getRace());
+				writeImageXML(ostream, v);
+				writeNonemptyProperty(ostream, "portrait", obj.getPortrait());
+				if (Objects.isNull(obj.getPopulation())) {
+					closeLeafTag(ostream);
+				} else {
+					finishParentTag(ostream);
+					writeCommunityStats(ostream, obj.getPopulation(), tabs + 1);
+					closeTag(ostream, tabs, "village");
 				}
-				indent(ostream, tabs);
 			}
-			ostream.accept("</fortress>");
-			ostream.accept(System.lineSeparator());
-		} else {
-			throw new IllegalArgumentException("Unhandled town type");
+			case final IFortress f -> {
+				writeTag(ostream, "fortress", tabs);
+				writeProperty(ostream, "owner", obj.owner().getPlayerId());
+				writeNonemptyProperty(ostream, "name", obj.getName());
+				if (TownSize.Small != obj.getTownSize()) {
+					writeProperty(ostream, "size", obj.getTownSize().toString());
+				}
+				writeProperty(ostream, "id", obj.getId());
+				writeImageXML(ostream, f);
+				writeNonemptyProperty(ostream, "portrait", obj.getPortrait());
+				ostream.accept(">");
+				if (f.iterator().hasNext()) {
+					ostream.accept(System.lineSeparator());
+					for (final FortressMember member : f) {
+						final Optional<YAReader<? extends FortressMember, ? extends FortressMember>>
+								reader = memberReaders.stream()
+								.filter(yar -> yar.canWrite(member)).findAny();
+						if (reader.isPresent()) {
+							reader.get().writeRaw(ostream, member, tabs + 1);
+						} else {
+							LovelaceLogger.error("Unhandled FortressMember type %s",
+									member.getClass().getName());
+						}
+					}
+					indent(ostream, tabs);
+				}
+				ostream.accept("</fortress>");
+				ostream.accept(System.lineSeparator());
+			}
+			default -> throw new IllegalArgumentException("Unhandled town type");
 		}
 	}
 

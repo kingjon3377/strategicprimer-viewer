@@ -675,39 +675,45 @@ public class LegacyMap implements IMutableLegacyMap {
 			for (final Map.Entry<TileFixture, Point> entry : ourLocations.entrySet()) {
 				final Point point = entry.getValue();
 				final TileFixture fixture = entry.getKey();
-				if (fixture instanceof final IUnit unit) {
-					final List<Pair<IUnit, Point>> list;
-					final List<Pair<IUnit, Point>> temp =
-							ourUnits.get(fixture.getId());
-					if (Objects.isNull(temp)) {
-						list = new ArrayList<>();
-					} else {
-						list = temp;
+				switch (fixture) {
+					case final IUnit unit -> {
+						final List<Pair<IUnit, Point>> list;
+						final List<Pair<IUnit, Point>> temp =
+								ourUnits.get(fixture.getId());
+						if (Objects.isNull(temp)) {
+							list = new ArrayList<>();
+						} else {
+							list = temp;
+						}
+						list.add(Pair.with(unit, point));
+						ourUnits.put(fixture.getId(), list);
 					}
-					list.add(Pair.with(unit, point));
-					ourUnits.put(fixture.getId(), list);
-				} else if (fixture instanceof final AbstractTown town) {
-					final List<Pair<AbstractTown, Point>> list;
-					final List<Pair<AbstractTown, Point>> temp =
-							ourTowns.get(fixture.getId());
-					if (Objects.isNull(temp)) {
-						list = new ArrayList<>();
-					} else {
-						list = temp;
+					case final AbstractTown town -> {
+						final List<Pair<AbstractTown, Point>> list;
+						final List<Pair<AbstractTown, Point>> temp =
+								ourTowns.get(fixture.getId());
+						if (Objects.isNull(temp)) {
+							list = new ArrayList<>();
+						} else {
+							list = temp;
+						}
+						list.add(Pair.with(town, point));
+						ourTowns.put(fixture.getId(), list);
 					}
-					list.add(Pair.with(town, point));
-					ourTowns.put(fixture.getId(), list);
-				} else if (fixture instanceof Subsettable) {
-					final List<Pair<Subsettable<IFixture>, Point>> list;
-					final List<Pair<Subsettable<IFixture>, Point>> temp =
-							ourSubsettables.get(fixture.getId());
-					if (Objects.isNull(temp)) {
-						list = new ArrayList<>();
-					} else {
-						list = temp;
+					case final Subsettable subsettable -> {
+						final List<Pair<Subsettable<IFixture>, Point>> list;
+						final List<Pair<Subsettable<IFixture>, Point>> temp =
+								ourSubsettables.get(fixture.getId());
+						if (Objects.isNull(temp)) {
+							list = new ArrayList<>();
+						} else {
+							list = temp;
+						}
+						list.add(Pair.with((Subsettable<IFixture>) fixture, point));
+						ourSubsettables.put(fixture.getId(), list);
 					}
-					list.add(Pair.with((Subsettable<IFixture>) fixture, point));
-					ourSubsettables.put(fixture.getId(), list);
+					default -> {
+					}
 				}
 			}
 
@@ -753,13 +759,15 @@ public class LegacyMap implements IMutableLegacyMap {
 				for (final TileFixture fixture : getFixtures(point)) {
 					final int idNum = fixture.getId();
 					// FIXME: Should add to ourUnits, ourTowns, etc, if of the right type and not in those, right?
-					if (fixture instanceof IUnit && ourUnits.containsKey(idNum)) {
-						continue;
-					} else if (fixture instanceof AbstractTown &&
-							ourTowns.containsKey(idNum)) {
-						continue;
-					} else { // FIXME: Also check ourSubsettables, right?
-						ourFixtures.add(fixture);
+					switch (fixture) {
+						case final IUnit unitMembers when ourUnits.containsKey(idNum) -> {
+							continue;
+						}
+						case final AbstractTown abstractTown when ourTowns.containsKey(idNum) -> {
+							continue;
+						}
+						default ->  // FIXME: Also check ourSubsettables, right?
+								ourFixtures.add(fixture);
 					}
 				}
 				final Collection<TileFixture> theirFixtures = obj.getFixtures(point);
@@ -769,25 +777,27 @@ public class LegacyMap implements IMutableLegacyMap {
 					final List<Pair<Subsettable<IFixture>, Point>> subsetLocs = ourSubsettables.get(fixture.getId());
 					if (ourFixtures.contains(fixture) || fixture.subsetShouldSkip()) {
 						continue;
-					} else if (fixture instanceof IUnit &&
-							!Objects.isNull(unitLocs)) {
-						retval = testAgainstList(fixture, point,
-								unitLocs, localReport, movedFrom) && retval;
-					} else if (fixture instanceof final AbstractTown town &&
-							!Objects.isNull(townLocs)) {
-						retval = testAgainstList(town, point,
-								townLocs, localReport, movedFrom)
-								&& retval;
-					} else if (fixture instanceof Subsettable &&
-							!Objects.isNull(subsetLocs)) {
-						retval = testAgainstList(fixture, point,
-								subsetLocs,
-								localReport, movedFrom) && retval;
-					} else if (movedFrom.test(point, fixture)) {
-						retval = false; // return false;
-					} else {
-						localReport.accept("Extra fixture:\t" + fixture);
-						retval = false; // return false;
+					}
+					switch (fixture) {
+						case final IUnit unitMembers when !Objects.isNull(unitLocs) ->
+								retval = testAgainstList(unitMembers, point,
+										unitLocs, localReport, movedFrom) && retval;
+						case final AbstractTown town when !Objects.isNull(townLocs) ->
+								retval = testAgainstList(town, point,
+										townLocs, localReport, movedFrom)
+										&& retval;
+						case final Subsettable subsettable when !Objects.isNull(subsetLocs) ->
+								retval = testAgainstList(fixture, point,
+										subsetLocs,
+										localReport, movedFrom) && retval;
+						default -> {
+							if (movedFrom.test(point, fixture)) {
+								retval = false; // return false;
+							} else {
+								localReport.accept("Extra fixture:\t" + fixture);
+								retval = false; // return false;
+							}
+						}
 					}
 				}
 				if (!getRivers(point).containsAll(obj.getRivers(point))) {

@@ -188,38 +188,47 @@ public class HarvestableReportGenerator extends AbstractReportGenerator<Harvesta
 			final Point point = pair.getValue0();
 			final HarvestableFixture item = pair.getValue1();
 			// TODO: Use a Map by type
-			if (item instanceof final CacheFixture c) {
-				caches.put(c, point);
-				fixtures.remove(item.getId());
-			} else if (item instanceof final Grove g) {
-				groves.put(g, point);
-				fixtures.remove(item.getId());
-			} else if (item instanceof final Meadow m) {
-				meadows.put(m, point);
-				fixtures.remove(item.getId());
-			} else if (item instanceof final Mine m) {
-				mines.put(m, point);
-				fixtures.remove(item.getId());
-			} else if (item instanceof MineralVein) {
-				final List<Point> list = Optional.ofNullable(minerals.get(
-						item.getShortDescription())).orElseGet(ArrayList::new);
-				list.add(point);
-				minerals.put(item.getShortDescription(), list);
-				fixtures.remove(item.getId());
-			} else if (item instanceof Shrub) {
-				final List<Point> list = Optional.ofNullable(shrubs.get(
-						item.getKind())).orElseGet(ArrayList::new);
-				list.add(point);
-				shrubs.put(item.getKind(), list);
-				fixtures.remove(item.getId());
-			} else if (item instanceof StoneDeposit) {
-				final List<Point> list = Optional.ofNullable(stone.get(
-						item.getKind())).orElseGet(ArrayList::new);
-				list.add(point);
-				stone.put(item.getKind(), list);
-				fixtures.remove(item.getId());
-			} else {
-				return;
+			switch (item) {
+				case final CacheFixture c -> {
+					caches.put(c, point);
+					fixtures.remove(item.getId());
+				}
+				case final Grove g -> {
+					groves.put(g, point);
+					fixtures.remove(item.getId());
+				}
+				case final Meadow m -> {
+					meadows.put(m, point);
+					fixtures.remove(item.getId());
+				}
+				case final Mine m -> {
+					mines.put(m, point);
+					fixtures.remove(item.getId());
+				}
+				case MineralVein mineralVein -> {
+					final List<Point> list = Optional.ofNullable(minerals.get(
+							item.getShortDescription())).orElseGet(ArrayList::new);
+					list.add(point);
+					minerals.put(item.getShortDescription(), list);
+					fixtures.remove(item.getId());
+				}
+				case Shrub shrub -> {
+					final List<Point> list = Optional.ofNullable(shrubs.get(
+							item.getKind())).orElseGet(ArrayList::new);
+					list.add(point);
+					shrubs.put(item.getKind(), list);
+					fixtures.remove(item.getId());
+				}
+				case StoneDeposit stoneDeposit -> {
+					final List<Point> list = Optional.ofNullable(stone.get(
+							item.getKind())).orElseGet(ArrayList::new);
+					list.add(point);
+					stone.put(item.getKind(), list);
+					fixtures.remove(item.getId());
+				}
+				default -> {
+					return;
+				}
 			}
 		}
 		final List<HeadedList<String>> all = Arrays.asList(

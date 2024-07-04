@@ -15,6 +15,7 @@ import lovelace.util.ThrowingConsumer;
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.Characters;
+import javax.xml.stream.events.EndElement;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 import java.io.IOException;
@@ -63,12 +64,15 @@ import java.util.Map;
 		final int turn = getIntegerParameter(element, "turn", -1);
 		final StringBuilder builder = new StringBuilder();
 		for (final XMLEvent event : stream) {
-			if (event instanceof final Characters c) {
-				builder.append(c.getData());
-			} else if (event instanceof final StartElement se) {
-				throw new UnwantedChildException(element.getName(), se);
-			} else if (isMatchingEnd(element.getName(), event)) {
-				break;
+			switch (event) {
+				case final Characters c -> builder.append(c.getData());
+				case final StartElement se -> throw new UnwantedChildException(element.getName(), se);
+				case EndElement end when isMatchingEnd(element.getName(), end) -> {
+					unit.setOrders(turn, builder.toString().strip());
+					return;
+				}
+				default -> {
+				}
 			}
 		}
 		unit.setOrders(turn, builder.toString().strip());
@@ -83,12 +87,15 @@ import java.util.Map;
 		final int turn = getIntegerParameter(element, "turn", -1);
 		final StringBuilder builder = new StringBuilder();
 		for (final XMLEvent event : stream) {
-			if (event instanceof final Characters c) {
-				builder.append(c.getData());
-			} else if (event instanceof final StartElement se) {
-				throw new UnwantedChildException(element.getName(), se);
-			} else if (isMatchingEnd(element.getName(), event)) {
-				break;
+			switch (event) {
+				case final Characters c -> builder.append(c.getData());
+				case final StartElement se -> throw new UnwantedChildException(element.getName(), se);
+				case EndElement end when isMatchingEnd(element.getName(), end) -> {
+					unit.setResults(turn, builder.toString().strip());
+					return;
+				}
+				default -> {
+				}
 			}
 		}
 		unit.setResults(turn, builder.toString().strip());
@@ -126,19 +133,23 @@ import java.util.Map;
 		retval.setPortrait(getParameter(element, "portrait", ""));
 		final StringBuilder orders = new StringBuilder();
 		for (final XMLEvent event : stream) {
-			if (event instanceof final StartElement se &&
-					isSupportedNamespace(se.getName())) {
-				if ("orders".equalsIgnoreCase(se.getName().getLocalPart())) {
-					parseOrders(se, retval, stream);
-				} else if ("results".equalsIgnoreCase(se.getName().getLocalPart())) {
-					parseResults(se, retval, stream);
-				} else {
-					retval.addMember(parseChild(se, element.getName(), stream));
+			switch (event) {
+				case final StartElement se when isSupportedNamespace(se.getName()) -> {
+					// TODO: merge with case condition?
+					if ("orders".equalsIgnoreCase(se.getName().getLocalPart())) {
+						parseOrders(se, retval, stream);
+					} else if ("results".equalsIgnoreCase(se.getName().getLocalPart())) {
+						parseResults(se, retval, stream);
+					} else {
+						retval.addMember(parseChild(se, element.getName(), stream));
+					}
 				}
-			} else if (event instanceof final Characters c) {
-				orders.append(c.getData());
-			} else if (isMatchingEnd(element.getName(), event)) {
-				break;
+				case final Characters c -> orders.append(c.getData());
+				case EndElement end when isMatchingEnd(element.getName(), end) -> {
+					return retval;
+				}
+				default -> {
+				}
 			}
 			final String tempOrders = orders.toString().strip();
 			if (!tempOrders.isEmpty()) {

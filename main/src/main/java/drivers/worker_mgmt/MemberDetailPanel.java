@@ -192,95 +192,102 @@ public class MemberDetailPanel extends BorderedPanel implements UnitMemberListen
 	private void recache() {
 		final UnitMember local = current;
 		jobsPanel.removeAll();
-		if (local instanceof final IWorker worker) {
-			typeLabel.setText("Worker");
-			nameLabel.setText(worker.getName());
-			kindLabel.setText(worker.getKind());
-			final WorkerStats stats = worker.getStats();
-			for (final InterpolatedLabel<@Nullable WorkerStats> label : statLabels) {
-				label.setArgument(stats);
-			}
-			if (!Objects.isNull(worker.getMount())) {
-				jobsPanel.add(new JLabel("Mounted on " + worker.getMount().getKind()));
-			}
-			for (final IJob job : worker) {
-				if (job.isEmpty()) {
-					continue;
+		switch (local) {
+			case final IWorker worker -> {
+				typeLabel.setText("Worker");
+				nameLabel.setText(worker.getName());
+				kindLabel.setText(worker.getKind());
+				final WorkerStats stats = worker.getStats();
+				for (final InterpolatedLabel<@Nullable WorkerStats> label : statLabels) {
+					label.setArgument(stats);
 				}
-				final JLabel label = new JLabel("%s %d".formatted(job.getName(),
-						job.getLevel()));
-				if (job.iterator().hasNext()) {
-					label.setToolTipText(StreamSupport.stream(job.spliterator(), false)
-							.map(MemberDetailPanel::skillString)
-							.collect(Collectors.joining(", ", "Skills: ", "")));
+				if (!Objects.isNull(worker.getMount())) {
+					jobsPanel.add(new JLabel("Mounted on " + worker.getMount().getKind()));
 				}
-				jobsPanel.add(label);
+				for (final IJob job : worker) {
+					if (job.isEmpty()) {
+						continue;
+					}
+					final JLabel label = new JLabel("%s %d".formatted(job.getName(),
+							job.getLevel()));
+					if (job.iterator().hasNext()) {
+						label.setToolTipText(StreamSupport.stream(job.spliterator(), false)
+								.map(MemberDetailPanel::skillString)
+								.collect(Collectors.joining(", ", "Skills: ", "")));
+					}
+					jobsPanel.add(label);
+				}
+				// TODO: Make a separate panel?
+				for (final Implement item : worker.getEquipment()) {
+					jobsPanel.add(new JLabel(item.toString()));
+				}
 			}
-			// TODO: Make a separate panel?
-			for (final Implement item : worker.getEquipment()) {
-				jobsPanel.add(new JLabel(item.toString()));
-			}
-		} else if (local instanceof final Animal animal) {
-			final String plural = AnimalPlurals.get(animal.getKind());
-			final Map<String, Integer> maturityAges = MaturityModel.getMaturityAges();
-			if (animal.getBorn() >= 0 && MaturityModel.getCurrentTurn() >= 0 &&
-					maturityAges.containsKey(animal.getKind()) &&
-					MaturityModel.getCurrentTurn() - animal.getBorn() <
-							maturityAges.get(animal.getKind())) {
-				if (animal.getPopulation() > 1) {
-					typeLabel.setText("Young Animals");
-					kindLabel.setText("%d young %s".formatted(
-							animal.getPopulation(), plural));
+			case final Animal animal -> {
+				final String plural = AnimalPlurals.get(animal.getKind());
+				final Map<String, Integer> maturityAges = MaturityModel.getMaturityAges();
+				if (animal.getBorn() >= 0 && MaturityModel.getCurrentTurn() >= 0 &&
+						maturityAges.containsKey(animal.getKind()) &&
+						MaturityModel.getCurrentTurn() - animal.getBorn() <
+								maturityAges.get(animal.getKind())) {
+					if (animal.getPopulation() > 1) {
+						typeLabel.setText("Young Animals");
+						kindLabel.setText("%d young %s".formatted(
+								animal.getPopulation(), plural));
+					} else {
+						typeLabel.setText("Young Animal");
+						kindLabel.setText("Young " + animal.getKind());
+					}
 				} else {
-					typeLabel.setText("Young Animal");
-					kindLabel.setText("Young " + animal.getKind());
+					if (animal.getPopulation() > 1) {
+						typeLabel.setText("Animals");
+						kindLabel.setText("%d %s".formatted(animal.getPopulation(),
+								plural));
+					} else {
+						typeLabel.setText("Animal");
+						kindLabel.setText(animal.getKind());
+					}
 				}
-			} else {
-				if (animal.getPopulation() > 1) {
-					typeLabel.setText("Animals");
-					kindLabel.setText("%d %s".formatted(animal.getPopulation(),
-							plural));
+				nameLabel.setText("");
+				for (final InterpolatedLabel<@Nullable WorkerStats> label : statLabels) {
+					label.setArgument(null);
+				}
+			}
+			case final Implement eq -> {
+				typeLabel.setText("Equipment");
+				nameLabel.setText("");
+				if (eq.getCount() > 1) {
+					kindLabel.setText("%d x %s".formatted(eq.getCount(), eq.getKind()));
 				} else {
-					typeLabel.setText("Animal");
-					kindLabel.setText(animal.getKind());
+					kindLabel.setText(eq.getKind());
+				}
+				for (final InterpolatedLabel<@Nullable WorkerStats> label : statLabels) {
+					label.setArgument(null);
 				}
 			}
-			nameLabel.setText("");
-			for (final InterpolatedLabel<@Nullable WorkerStats> label : statLabels) {
-				label.setArgument(null);
+			case final IResourcePile rp -> {
+				typeLabel.setText("Resource");
+				nameLabel.setText("");
+				kindLabel.setText("%s %s (%s)".formatted(rp.getQuantity(), rp.getContents(),
+						rp.getKind()));
+				for (final InterpolatedLabel<@Nullable WorkerStats> label : statLabels) {
+					label.setArgument(null);
+				}
 			}
-		} else if (local instanceof final Implement eq) {
-			typeLabel.setText("Equipment");
-			nameLabel.setText("");
-			if (eq.getCount() > 1) {
-				kindLabel.setText("%d x %s".formatted(eq.getCount(), eq.getKind()));
-			} else {
-				kindLabel.setText(eq.getKind());
+			case null -> {
+				typeLabel.setText("");
+				nameLabel.setText("");
+				kindLabel.setText("");
+				for (final InterpolatedLabel<@Nullable WorkerStats> label : statLabels) {
+					label.setArgument(null);
+				}
 			}
-			for (final InterpolatedLabel<@Nullable WorkerStats> label : statLabels) {
-				label.setArgument(null);
-			}
-		} else if (local instanceof final IResourcePile rp) {
-			typeLabel.setText("Resource");
-			nameLabel.setText("");
-			kindLabel.setText("%s %s (%s)".formatted(rp.getQuantity(), rp.getContents(),
-					rp.getKind()));
-			for (final InterpolatedLabel<@Nullable WorkerStats> label : statLabels) {
-				label.setArgument(null);
-			}
-		} else if (Objects.isNull(local)) {
-			typeLabel.setText("");
-			nameLabel.setText("");
-			kindLabel.setText("");
-			for (final InterpolatedLabel<@Nullable WorkerStats> label : statLabels) {
-				label.setArgument(null);
-			}
-		} else {
-			typeLabel.setText("Unknown");
-			nameLabel.setText("");
-			kindLabel.setText(local.getClass().getName());
-			for (final InterpolatedLabel<@Nullable WorkerStats> label : statLabels) {
-				label.setArgument(null);
+			default -> {
+				typeLabel.setText("Unknown");
+				nameLabel.setText("");
+				kindLabel.setText(local.getClass().getName());
+				for (final InterpolatedLabel<@Nullable WorkerStats> label : statLabels) {
+					label.setArgument(null);
+				}
 			}
 		}
 		portraitComponent.setPortrait(null);

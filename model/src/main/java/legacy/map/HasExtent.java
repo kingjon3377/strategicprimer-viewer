@@ -14,13 +14,13 @@ public interface HasExtent<Self extends HasExtent<Self>> extends SubsettableFixt
 	 */
 	static boolean isPositive(final Number number) {
 		return switch (number) {
-			case final Integer i -> number.intValue() > 0;
-			case final Long l -> number.longValue() > 0L;
-			case final Float v -> number.floatValue() > 0.0f;
-			case final Double v -> number.doubleValue() > 0.0;
-			case final BigInteger bigInteger -> bigInteger.signum() > 0;
-			case final BigDecimal bigDecimal -> bigDecimal.signum() > 0;
-			default -> number.doubleValue() > 0.0;
+			case final Integer i -> 0 < number.intValue();
+			case final Long l -> 0L < number.longValue();
+			case final Float v -> 0.0f < number.floatValue();
+			case final Double v -> 0.0 < number.doubleValue();
+			case final BigInteger bigInteger -> 0 < bigInteger.signum();
+			case final BigDecimal bigDecimal -> 0 < bigDecimal.signum();
+			default -> 0.0 < number.doubleValue();
 		};
 	}
 
@@ -91,19 +91,15 @@ public interface HasExtent<Self extends HasExtent<Self>> extends SubsettableFixt
 	 * @return the additive inverse of that number
 	 */
 	static Number negate(final Number num) {
-		if (num instanceof Integer) {
-			return -(Integer) num;
-		} else if (num instanceof Long) {
-			return -(Long) num;
-		} else if (num instanceof BigInteger) {
-			return ((BigInteger) num).negate();
-		} else if (num instanceof Float || num instanceof Double) {
-			return 0.0 - num.doubleValue();
-		} else if (num instanceof BigDecimal) {
-			return ((BigDecimal) num).negate();
-		} else {
-			throw new IllegalStateException("Unhandled Number subclass");
-		}
+		return switch (num) {
+			case final Integer i -> -i;
+			case final Long l -> -l;
+			case final BigInteger bigInteger -> bigInteger.negate();
+			case final Float v -> 0.0 - num.doubleValue();
+			case final Double v -> 0.0 - num.doubleValue();
+			case final BigDecimal bigDecimal -> bigDecimal.negate();
+			default -> throw new IllegalStateException("Unhandled Number subclass");
+		};
 	}
 
 	/**

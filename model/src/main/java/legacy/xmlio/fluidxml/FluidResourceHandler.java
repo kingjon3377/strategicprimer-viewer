@@ -73,6 +73,8 @@ import javax.xml.stream.events.XMLEvent;
 		// step, future-proof *this* version of the suite by only firing a warning if
 		// such children are detected, instead of aborting.
 		for (final XMLEvent event : stream) {
+			// switch would require break-to-label
+			//noinspection IfCanBeSwitch
 			if (event instanceof final StartElement se && isSPStartElement(event)) {
 				if ("resource".equalsIgnoreCase(se.getName().getLocalPart()) ||
 						"implement".equalsIgnoreCase(se.getName().getLocalPart())) {

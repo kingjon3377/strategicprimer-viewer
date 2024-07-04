@@ -1352,18 +1352,18 @@ public final class TestXMLIO {
 							<player number="1" code_name="playerOne" /><row index="0">
 							<tile row="0" column="0" kind="steppe" /></row></map>""", null,
 					Exception.class, (except) -> {
-						if (except instanceof final UnwantedChildException uce) {
-							assertEquals("root", uce.getTag().getLocalPart(),
-									"'Tag' with the unexpected child was what we expected");
-							assertEquals(new QName("xyzzy", "map"),
-									((UnwantedChildException) except).getChild(),
-									"Unwanted child was the one we expected");
-						} else if (except instanceof XMLStreamException) {
-							assertEquals(
+						switch (except) {
+							case final UnwantedChildException uce -> {
+								assertEquals("root", uce.getTag().getLocalPart(),
+										"'Tag' with the unexpected child was what we expected");
+								assertEquals(new QName("xyzzy", "map"),
+										((UnwantedChildException) except).getChild(),
+										"Unwanted child was the one we expected");
+							}
+							case XMLStreamException xmlStreamException -> assertEquals(
 									"XML stream didn't contain a start element",
 									except.getMessage(), "Exception message matches");
-						} else {
-							fail("Unexpected exception type");
+							default -> fail("Unexpected exception type");
 						}
 					});
 			TestXMLIO.<AdventureFixture, Exception>assertFormatIssue(reader, """

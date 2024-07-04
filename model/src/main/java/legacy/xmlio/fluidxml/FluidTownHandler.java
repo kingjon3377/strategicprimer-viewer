@@ -65,6 +65,8 @@ import java.util.function.Consumer;
 				getPlayerOrIndependent(element, warner, players));
 		fix.setPortrait(getAttribute(element, "portrait", ""));
 		for (final XMLEvent event : stream) {
+			// switch would require break-to-label
+			//noinspection IfCanBeSwitch
 			if (event instanceof final StartElement se && isSPStartElement(event)) {
 				if (Objects.isNull(fix.getPopulation())) {
 					fix.setPopulation(readCommunityStats(se,
@@ -105,6 +107,8 @@ import java.util.function.Consumer;
 				getPlayerOrIndependent(element, warner, players));
 		fix.setPortrait(getAttribute(element, "portrait", ""));
 		for (final XMLEvent event : stream) {
+			// switch statement would require break-to-label
+			//noinspection IfCanBeSwitch
 			if (event instanceof final StartElement se && isSPStartElement(event)) {
 				if (Objects.isNull(fix.getPopulation())) {
 					fix.setPopulation(readCommunityStats(se,
@@ -146,6 +150,8 @@ import java.util.function.Consumer;
 				getPlayerOrIndependent(element, warner, players));
 		fix.setPortrait(getAttribute(element, "portrait", ""));
 		for (final XMLEvent event : stream) {
+			// switch would require break-to-label
+			//noinspection IfCanBeSwitch
 			if (event instanceof final StartElement se && isSPStartElement(event)) {
 				if (Objects.isNull(fix.getPopulation())) {
 					fix.setPopulation(readCommunityStats(se,
@@ -181,6 +187,8 @@ import java.util.function.Consumer;
 						RaceFactory.randomRace(new Random(idNum))));
 		retval.setPortrait(getAttribute(element, "portrait", ""));
 		for (final XMLEvent event : stream) {
+			// switch would require break-to-label
+			//noinspection IfCanBeSwitch
 			if (event instanceof final StartElement se && isSPStartElement(event)) {
 				if (Objects.isNull(retval.getPopulation())) {
 					retval.setPopulation(readCommunityStats(se,
@@ -208,6 +216,8 @@ import java.util.function.Consumer;
 		final Consumer<IMutableResourcePile> addProduction = retval.getYearlyProduction()::add;
 		final Consumer<IMutableResourcePile> addConsumption = retval.getYearlyConsumption()::add;
 		for (final XMLEvent event : stream) {
+			// switch would require break-to-label
+			//noinspection IfCanBeSwitch
 			if (event instanceof final EndElement ee && ee.getName().equals(element.getName())) {
 				break;
 			} else if (event instanceof final StartElement se && isSPStartElement(event)) {
@@ -238,16 +248,13 @@ import java.util.function.Consumer;
 						break;
 					case "resource":
 						final StartElement top = stack.peekFirst();
-						final Consumer<IMutableResourcePile> lambda;
-						if ("production".equals(current)) {
-							lambda = addProduction;
-						} else if ("consumption".equals(current)) {
-							lambda = addConsumption;
-						} else {
-							throw UnwantedChildException.listingExpectedTags(
+						final Consumer<IMutableResourcePile> lambda = switch (current) {
+							case "production" -> addProduction;
+							case "consumption" -> addConsumption;
+							case null, default -> throw UnwantedChildException.listingExpectedTags(
 									Optional.ofNullable(top).map(StartElement::getName).orElse(NULL_QNAME), se,
 									"production", "consumption");
-						}
+						};
 						lambda.accept(FluidResourceHandler.readResource(se,
 								Optional.ofNullable(top).map(StartElement::getName).orElse(NULL_QNAME),
 								stream, players, warner, idFactory));

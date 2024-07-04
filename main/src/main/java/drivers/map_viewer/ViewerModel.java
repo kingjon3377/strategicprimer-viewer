@@ -578,94 +578,104 @@ public class ViewerModel extends SimpleDriverModel implements IViewerModel {
 
 	@Override
 	public boolean renameItem(final HasName item, final String newName) {
-		if (item instanceof final IUnit unit) {
-			final IUnit matching = getMap().streamAllFixtures()
-					.flatMap(ViewerModel::unflattenNonFortresses)
-					.filter(IUnit.class::isInstance).map(IUnit.class::cast)
-					.filter(u -> u.owner().equals(unit.owner()))
-					.filter(u -> u.getName().equals(item.getName()))
-					.filter(u -> u.getKind().equals(unit.getKind()))
-					.filter(u -> u.getId() == unit.getId())
-					.findAny().orElse(null);
-			if (matching instanceof final HasMutableName hmn) {
-				hmn.setName(newName);
-				getRestrictedMap().setModified(true);
-				return true;
-			} else {
-				LovelaceLogger.warning("Unable to find unit to rename");
-				return false;
+		switch (item) {
+			case final IUnit unit -> {
+				final IUnit matching = getMap().streamAllFixtures()
+						.flatMap(ViewerModel::unflattenNonFortresses)
+						.filter(IUnit.class::isInstance).map(IUnit.class::cast)
+						.filter(u -> u.owner().equals(unit.owner()))
+						.filter(u -> u.getName().equals(item.getName()))
+						.filter(u -> u.getKind().equals(unit.getKind()))
+						.filter(u -> u.getId() == unit.getId())
+						.findAny().orElse(null);
+				if (matching instanceof final HasMutableName hmn) {
+					hmn.setName(newName);
+					getRestrictedMap().setModified(true);
+					return true;
+				} else {
+					LovelaceLogger.warning("Unable to find unit to rename");
+					return false;
+				}
 			}
-		} else if (item instanceof final UnitMember um) {
-			final HasMutableName matching = getMap().streamAllFixtures()
-					.flatMap(ViewerModel::unflattenNonFortresses)
-					.filter(IUnit.class::isInstance).map(IUnit.class::cast)
-					.filter(u -> getMap().getPlayers().getCurrentPlayer()
-							.equals(u.owner()))
-					.flatMap(FixtureIterable::stream)
-					.filter(m -> m.getId() == um.getId())
-					.filter(HasMutableName.class::isInstance)
-					.map(HasMutableName.class::cast)
-					.filter(m -> m.getName().equals(item.getName()))
-					.findAny().orElse(null); // FIXME: We should have a firmer identification than just name and ID
-			if (Objects.isNull(matching)) {
-				LovelaceLogger.warning("Unable to find unit member to rename");
-				return false;
-			} else {
-				matching.setName(newName);
-				getRestrictedMap().setModified(true);
-				return true;
+			case final UnitMember um -> {
+				final HasMutableName matching = getMap().streamAllFixtures()
+						.flatMap(ViewerModel::unflattenNonFortresses)
+						.filter(IUnit.class::isInstance).map(IUnit.class::cast)
+						.filter(u -> getMap().getPlayers().getCurrentPlayer()
+								.equals(u.owner()))
+						.flatMap(FixtureIterable::stream)
+						.filter(m -> m.getId() == um.getId())
+						.filter(HasMutableName.class::isInstance)
+						.map(HasMutableName.class::cast)
+						.filter(m -> m.getName().equals(item.getName()))
+						.findAny().orElse(null); // FIXME: We should have a firmer identification than just name and ID
+
+				if (Objects.isNull(matching)) {
+					LovelaceLogger.warning("Unable to find unit member to rename");
+					return false;
+				} else {
+					matching.setName(newName);
+					getRestrictedMap().setModified(true);
+					return true;
+				}
 			}
-		} else { // FIXME: Fortresses are the obvious case here ...
-			LovelaceLogger.warning("Unable to find item to rename");
-			return false;
+			default -> {
+				LovelaceLogger.warning("Unable to find item to rename");
+				return false;  // FIXME: Fortresses are the obvious case here ...
+			}
 		}
 	}
 
 	@Override
 	public boolean changeKind(final HasKind item, final String newKind) {
-		if (item instanceof final IUnit unit) {
-			// TODO: Extract this pipeline to a method
-			final IUnit matching = getMap().streamAllFixtures()
-					.flatMap(ViewerModel::unflattenNonFortresses)
-					.filter(IUnit.class::isInstance).map(IUnit.class::cast)
-					.filter(u -> u.owner().equals(unit.owner()))
-					.filter(u -> u.getName().equals(unit.getName()))
-					.filter(u -> u.getKind().equals(item.getKind()))
-					.filter(u -> u.getId() == unit.getId())
-					.findAny().orElse(null);
-			if (matching instanceof final HasMutableKind hmk) {
-				hmk.setKind(newKind);
-				getRestrictedMap().setModified(true);
-				return true;
-			} else {
-				LovelaceLogger.warning("Unable to find unit to change kind");
-				return false;
+		switch (item) {
+			case final IUnit unit -> {
+				// TODO: Extract this pipeline to a method
+				final IUnit matching = getMap().streamAllFixtures()
+						.flatMap(ViewerModel::unflattenNonFortresses)
+						.filter(IUnit.class::isInstance).map(IUnit.class::cast)
+						.filter(u -> u.owner().equals(unit.owner()))
+						.filter(u -> u.getName().equals(unit.getName()))
+						.filter(u -> u.getKind().equals(item.getKind()))
+						.filter(u -> u.getId() == unit.getId())
+						.findAny().orElse(null);
+				if (matching instanceof final HasMutableKind hmk) {
+					hmk.setKind(newKind);
+					getRestrictedMap().setModified(true);
+					return true;
+				} else {
+					LovelaceLogger.warning("Unable to find unit to change kind");
+					return false;
+				}
 			}
-		} else if (item instanceof final UnitMember um) {
-			// TODO: Extract parts of this pipeline to a method, passing in the class to narrow
-			// to and relevant predicate(s).
-			final HasMutableKind matching = getMap().streamAllFixtures()
-					.flatMap(ViewerModel::unflattenNonFortresses)
-					.filter(IUnit.class::isInstance).map(IUnit.class::cast)
-					.filter(u -> getMap().getPlayers().getCurrentPlayer()
-							.equals(u.owner()))
-					.flatMap(FixtureIterable::stream)
-					.filter(m -> m.getId() == um.getId())
-					.filter(HasMutableKind.class::isInstance)
-					.map(HasMutableKind.class::cast)
-					.filter(m -> m.getKind().equals(item.getKind()))
-					.findAny().orElse(null); // FIXME: We should have a firmer identification than just kind and ID
-			if (Objects.isNull(matching)) {
-				LovelaceLogger.warning("Unable to find unit member to change kind");
-				return false;
-			} else {
-				matching.setKind(newKind);
-				getRestrictedMap().setModified(true);
-				return true;
+			case final UnitMember um -> {
+				// TODO: Extract parts of this pipeline to a method, passing in the class to narrow
+				// to and relevant predicate(s).
+				final HasMutableKind matching = getMap().streamAllFixtures()
+						.flatMap(ViewerModel::unflattenNonFortresses)
+						.filter(IUnit.class::isInstance).map(IUnit.class::cast)
+						.filter(u -> getMap().getPlayers().getCurrentPlayer()
+								.equals(u.owner()))
+						.flatMap(FixtureIterable::stream)
+						.filter(m -> m.getId() == um.getId())
+						.filter(HasMutableKind.class::isInstance)
+						.map(HasMutableKind.class::cast)
+						.filter(m -> m.getKind().equals(item.getKind()))
+						.findAny().orElse(null); // FIXME: We should have a firmer identification than just kind and ID
+
+				if (Objects.isNull(matching)) {
+					LovelaceLogger.warning("Unable to find unit member to change kind");
+					return false;
+				} else {
+					matching.setKind(newKind);
+					getRestrictedMap().setModified(true);
+					return true;
+				}
 			}
-		} else { // FIXME: Fortresses are the obvious type
-			LovelaceLogger.warning("Unable to find item to change kind");
-			return false;
+			default -> {
+				LovelaceLogger.warning("Unable to find item to change kind");
+				return false;  // FIXME: Fortresses are the obvious type
+			}
 		}
 	}
 

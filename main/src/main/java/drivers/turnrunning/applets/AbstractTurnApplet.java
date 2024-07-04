@@ -122,40 +122,51 @@ public abstract class AbstractTurnApplet implements TurnApplet {
 		final ILegacyMap map = model.getMap();
 		for (final Point loc : map.getLocations()) {
 			for (final TileFixture fix : map.getFixtures(loc)) {
-				if (fix instanceof final IFortress fort) {
-					for (final FortressMember member : fort) {
-						if (member instanceof final IResourcePile pile && fort.owner().equals(player)) {
-							if ("food".equals(pile.getKind()) &&
-									"pounds".equals(pile.getQuantity()
-											.units()) &&
-									pile.getCreated() <= turn) {
-								retval.add(pile);
-							}
-						} else if (member instanceof final IUnit unit && unit.owner().equals(player)) {
-							for (final UnitMember inner : unit) {
-								if (inner instanceof final IResourcePile pile) {
+				switch (fix) {
+					case final IFortress fort -> {
+						for (final FortressMember member : fort) {
+							switch (member) {
+								case final IResourcePile pile when fort.owner().equals(player) -> {
 									if ("food".equals(pile.getKind()) &&
-											"pounds".equals(
-													pile.getQuantity()
-															.units()) &&
-											pile.getCreated()
-													<= turn) {
+											"pounds".equals(pile.getQuantity()
+													.units()) &&
+											pile.getCreated() <= turn) {
 										retval.add(pile);
 									}
+								}
+								case final IUnit unit when unit.owner().equals(player) -> {
+									for (final UnitMember inner : unit) {
+										if (inner instanceof final IResourcePile pile) {
+											if ("food".equals(pile.getKind()) &&
+													"pounds".equals(
+															pile.getQuantity()
+																	.units()) &&
+													pile.getCreated()
+															<= turn) {
+												retval.add(pile);
+											}
+										}
+									}
+								}
+								case null, default -> {
 								}
 							}
 						}
 					}
-				} else if (fix instanceof final IUnit unit && unit.owner().equals(player)) {
-					for (final UnitMember inner : unit) {
-						if (inner instanceof final IResourcePile pile) {
-							if ("food".equals(pile.getKind()) &&
-									"pounds".equals(pile.getQuantity()
-											.units()) &&
-									pile.getCreated() <= turn) {
-								retval.add(pile);
+					case final IUnit unit when unit.owner().equals(player) -> {
+						for (final UnitMember inner : unit) {
+							if (inner instanceof final IResourcePile pile) {
+								// TODO: Combine if statements
+								if ("food".equals(pile.getKind()) &&
+										"pounds".equals(pile.getQuantity()
+												.units()) &&
+										pile.getCreated() <= turn) {
+									retval.add(pile);
+								}
 							}
 						}
+					}
+					case null, default -> {
 					}
 				}
 			}

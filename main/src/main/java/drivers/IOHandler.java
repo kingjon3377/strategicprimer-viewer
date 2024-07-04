@@ -85,15 +85,17 @@ public class IOHandler implements ActionListener {
 			final int answer = JOptionPane.showConfirmDialog(window, prompt.formatted(verb),
                     "Save Changes?", JOptionPane.YES_NO_CANCEL_OPTION,
                     JOptionPane.QUESTION_MESSAGE);
-			if (answer == JOptionPane.CANCEL_OPTION) {
-				LovelaceLogger.trace("User selected 'Cancel'");
-				return;
-			} else if (answer == JOptionPane.YES_OPTION) {
-				LovelaceLogger.trace("User selected 'Yes'; invoking 'Save' menu ...");
-				actionPerformed(new ActionEvent(source, ActionEvent.ACTION_FIRST, "save"));
-				LovelaceLogger.trace("Finished saving main map");
-			} else {
-				LovelaceLogger.trace("User said not to save main map");
+			switch (answer) {
+				case JOptionPane.CANCEL_OPTION -> {
+					LovelaceLogger.trace("User selected 'Cancel'");
+					return;
+				}
+				case JOptionPane.YES_OPTION -> {
+					LovelaceLogger.trace("User selected 'Yes'; invoking 'Save' menu ...");
+					actionPerformed(new ActionEvent(source, ActionEvent.ACTION_FIRST, "save"));
+					LovelaceLogger.trace("Finished saving main map");
+				}
+				default -> LovelaceLogger.trace("User said not to save main map");
 			}
 		} else {
 			LovelaceLogger.trace("main map was not modified");
@@ -105,16 +107,18 @@ public class IOHandler implements ActionListener {
 			final int answer = JOptionPane.showConfirmDialog(window,
                     "Subordinate map(s) have unsaved changes. Save all before %s?".formatted(verb), "Save Changes?", JOptionPane.YES_NO_CANCEL_OPTION,
                     JOptionPane.QUESTION_MESSAGE);
-			if (answer == JOptionPane.CANCEL_OPTION) {
-				LovelaceLogger.trace("User selected 'Cancel' rather than save-all.");
-				return;
-			} else if (answer == JOptionPane.YES_OPTION) {
-				LovelaceLogger.trace("User selected 'Yes'; invoking 'Save All' menu ...");
-				actionPerformed(new ActionEvent(source, ActionEvent.ACTION_FIRST,
-						"save all"));
-				LovelaceLogger.trace("Finished saving");
-			} else {
-				LovelaceLogger.trace("User said not to save subordinate maps");
+			switch (answer) {
+				case JOptionPane.CANCEL_OPTION -> {
+					LovelaceLogger.trace("User selected 'Cancel' rather than save-all.");
+					return;
+				}
+				case JOptionPane.YES_OPTION -> {
+					LovelaceLogger.trace("User selected 'Yes'; invoking 'Save All' menu ...");
+					actionPerformed(new ActionEvent(source, ActionEvent.ACTION_FIRST,
+							"save all"));
+					LovelaceLogger.trace("Finished saving");
+				}
+				default -> LovelaceLogger.trace("User said not to save subordinate maps");
 			}
 		} else {
 			LovelaceLogger.trace("No subordinate maps modified");
@@ -125,18 +129,14 @@ public class IOHandler implements ActionListener {
 
 	private static void handleError(final Exception except, final String filename, final @Nullable Component source,
 									final String errorTitle, final String verb) {
-		final String message;
-		if (except instanceof XMLStreamException) {
-			message = "Malformed XML in " + filename;
-		} else if (except instanceof FileNotFoundException || except instanceof NoSuchFileException) {
-            message = "File %s not found".formatted(filename);
-		} else if (except instanceof IOException) {
-			message = "I/O error %s file %s".formatted(verb, filename);
-		} else if (except instanceof SPFormatException) {
-			message = "SP map format error in " + filename;
-		} else {
-			message = except.getMessage();
-		}
+		final String message = switch (except) {
+			case final XMLStreamException xse -> "Malformed XML in " + filename;
+			case final FileNotFoundException fnfe -> "File %s not found".formatted(filename);
+			case final NoSuchFileException nsfe -> "File %s not found".formatted(filename);
+			case final IOException ioe -> "I/O error %s file %s".formatted(verb, filename);
+			case final SPFormatException spfe -> "SP map format error in " + filename;
+			default -> except.getMessage();
+		};
 		LovelaceLogger.error(except, message);
 		JOptionPane.showMessageDialog(source, message, errorTitle, JOptionPane.ERROR_MESSAGE);
 	}
@@ -153,13 +153,11 @@ public class IOHandler implements ActionListener {
 	}
 
 	private void loadHandler(final @Nullable Component source, final String errorTitle) {
-		if (driver instanceof final GUIDriver gd) {
-			SPFileChooser.open((Path) null)
+		switch (driver) {
+			case final GUIDriver gd -> SPFileChooser.open((Path) null)
 					.call(loadHandlerImpl(gd::open, source, errorTitle));
-		} else if (driver instanceof final UtilityGUI ug) {
-			SPFileChooser.open((Path) null).call(ug::open);
-		} else {
-			LovelaceLogger.error("IOHandler asked to 'load' in app that doesn't support that");
+			case final UtilityGUI ug -> SPFileChooser.open((Path) null).call(ug::open);
+			default -> LovelaceLogger.error("IOHandler asked to 'load' in app that doesn't support that");
 		}
 	}
 
@@ -223,13 +221,11 @@ public class IOHandler implements ActionListener {
 		switch (event.getActionCommand().toLowerCase()) {
 			case "load":
 				// TODO: Open in another window if 'modified' instead of prompting before overwriting
-				if (driver instanceof ModelDriver) {
-					maybeSave("loading another map", parentWindow, source,
+				switch (driver) {
+					case final ModelDriver modelDriver -> maybeSave("loading another map", parentWindow, source,
 							() -> loadHandler(source, errorTitle));
-				} else if (driver instanceof UtilityGUI) {
-					loadHandler(source, errorTitle);
-				} else {
-					LovelaceLogger.error("IOHandler asked to 'load' in unsupported app");
+					case final UtilityGUI utilityGUI -> loadHandler(source, errorTitle);
+					default -> LovelaceLogger.error("IOHandler asked to 'load' in unsupported app");
 				}
 				break;
 
@@ -292,25 +288,25 @@ public class IOHandler implements ActionListener {
 				break;
 
 			case "save all":
-				if (driver instanceof final MultiMapGUIDriver mmgd) {
-					for (final ILegacyMap map : mmgd.getModel().getAllMaps()) {
-						// FIXME: Doesn't MapIOHelper have a method for this?
-						final Path file = map.getFilename();
-						if (!Objects.isNull(file)) {
-							try {
-								MapIOHelper.writeMap(file, map);
-								mmgd.getModel().clearModifiedFlag(map);
-							} catch (final IOException | XMLStreamException except) {
-								handleError(except, file.toString(), source,
-										errorTitle, "writing to");
+				switch (driver) {
+					case final MultiMapGUIDriver mmgd -> {
+						for (final ILegacyMap map : mmgd.getModel().getAllMaps()) {
+							// FIXME: Doesn't MapIOHelper have a method for this?
+							final Path file = map.getFilename();
+							if (!Objects.isNull(file)) {
+								try {
+									MapIOHelper.writeMap(file, map);
+									mmgd.getModel().clearModifiedFlag(map);
+								} catch (final IOException | XMLStreamException except) {
+									handleError(except, file.toString(), source,
+											errorTitle, "writing to");
+								}
 							}
 						}
 					}
-				} else if (driver instanceof ModelDriver) {
-					actionPerformed(new ActionEvent(event.getSource(), event.getID(),
+					case final ModelDriver modelDriver -> actionPerformed(new ActionEvent(event.getSource(), event.getID(),
 							"save", event.getWhen(), event.getModifiers()));
-				} else {
-					LovelaceLogger.error("IOHandler asked to 'save all' in driver it can't do that for");
+					default -> LovelaceLogger.error("IOHandler asked to 'save all' in driver it can't do that for");
 				}
 				break;
 
@@ -368,25 +364,26 @@ public class IOHandler implements ActionListener {
 					LovelaceLogger.debug("Source: %s", source);
 					LovelaceLogger.trace(new Exception("Stack trace"), "Stack trace:");
 				} else {
-					if (driver instanceof ModelDriver) {
-						LovelaceLogger.trace("This operates on a model, maybe we should save ...");
-						maybeSave("closing", parentWindow, source, parentWindow::dispose);
-					} else if (driver instanceof UtilityGUI) {
-						LovelaceLogger.trace("This is a utility GUI, so we just dispose the window.");
-						parentWindow.dispose();
-					} else {
-						LovelaceLogger.error("IOHandler asked to close in unsupported app");
+					switch (driver) {
+						case final ModelDriver modelDriver -> {
+							LovelaceLogger.trace("This operates on a model, maybe we should save ...");
+							maybeSave("closing", parentWindow, source, parentWindow::dispose);
+						}
+						case final UtilityGUI utilityGUI -> {
+							LovelaceLogger.trace("This is a utility GUI, so we just dispose the window.");
+							parentWindow.dispose();
+						}
+						default -> LovelaceLogger.error("IOHandler asked to close in unsupported app");
 					}
 				}
 				break;
 
 			case "quit":
-				if (driver instanceof ModelDriver) {
-					maybeSave("quitting", parentWindow, source, SPMenu.getDefaultQuit());
-				} else if (driver instanceof UtilityGUI) {
-					SPMenu.getDefaultQuit().run();
-				} else {
-					LovelaceLogger.error("IOHandler asked to quit in unsupported app");
+				switch (driver) {
+					case final ModelDriver modelDriver ->
+							maybeSave("quitting", parentWindow, source, SPMenu.getDefaultQuit());
+					case final UtilityGUI utilityGUI -> SPMenu.getDefaultQuit().run();
+					default -> LovelaceLogger.error("IOHandler asked to quit in unsupported app");
 				}
 				break;
 

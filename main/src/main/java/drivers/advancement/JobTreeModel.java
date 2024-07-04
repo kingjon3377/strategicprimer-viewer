@@ -68,13 +68,11 @@ import java.util.stream.StreamSupport;
 		final Function<Iterable<? extends HasName>, HasName> impl =
 				par -> StreamSupport.stream(par.spliterator(), false).skip(index - 1).findFirst()
 						.orElseThrow(() -> new ArrayIndexOutOfBoundsException("Parent does not have that child"));
-		if (index >= 0 && parent instanceof final IWorker w) {
-			return impl.apply(w);
-		} else if (index >= 0 && parent instanceof final IJob j) {
-			return impl.apply(j);
-		} else {
-			throw new ArrayIndexOutOfBoundsException("Parent does not have that child");
-		}
+		return switch (parent) {
+			case final IWorker w when index >= 0 -> impl.apply(w);
+			case final IJob j when index >= 0 -> impl.apply(j);
+			default -> throw new ArrayIndexOutOfBoundsException("Parent does not have that child");
+		};
 	}
 
 	@Override

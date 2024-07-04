@@ -194,30 +194,35 @@ import java.util.stream.Collectors;
 		final TreePath path;
 		final int[] indices;
 		final Object[] children;
-		if (item instanceof final IUnit unit) {
-			path = new TreePath(new Object[]{player, unit.getKind()});
-			indices = new int[]{getIndexOfChild(unit.getKind(), item)};
-			children = new Object[]{item};
-		} else if (item instanceof final UnitMember member) {
-			final IUnit parent = model.getUnits(player).stream()
-					.filter(containingItem(member)).findAny().orElse(null);
-			if (Objects.isNull(parent)) {
-				LovelaceLogger.warning(
-						"In WorkerTreeModel.renameItem(), unit member belonged to no unit");
+		switch (item) {
+			case final IUnit unit -> {
+				path = new TreePath(new Object[]{player, unit.getKind()});
+				indices = new int[]{getIndexOfChild(unit.getKind(), item)};
+				children = new Object[]{item};
+			}
+			case final UnitMember member -> {
+				final IUnit parent = model.getUnits(player).stream()
+						.filter(containingItem(member)).findAny().orElse(null);
+				if (Objects.isNull(parent)) {
+					LovelaceLogger.warning(
+							"In WorkerTreeModel.renameItem(), unit member belonged to no unit");
+					return;
+				}
+				path = new TreePath(new Object[]{player, parent.getKind(), parent});
+				indices = new int[]{getIndexOfChild(parent, item)};
+				children = new Object[]{item};
+			}
+			case Player player1 -> {
+				// ignore
 				return;
 			}
-			path = new TreePath(new Object[]{player, parent.getKind(), parent});
-			indices = new int[]{getIndexOfChild(parent, item)};
-			children = new Object[]{item};
-		} else if (item instanceof Player) {
-			// ignore
-			return;
-		} else {
-			LovelaceLogger.warning(
-					"In WorkerTreeModel.renameItem(), item was neither unit nor unit member");
-			// Ignore, as it's something we don't know how to handle.
-			// If we see log messages, revisit.
-			return;
+			default -> {
+				LovelaceLogger.warning(
+						"In WorkerTreeModel.renameItem(), item was neither unit nor unit member");
+				// Ignore, as it's something we don't know how to handle.
+				// If we see log messages, revisit.
+				return;
+			}
 		}
 		if (model.renameItem(item, newName)) {
 			final TreeModelEvent event = new TreeModelEvent(this, path, indices, children);
@@ -232,26 +237,30 @@ import java.util.stream.Collectors;
 		final TreePath path;
 		final int[] indices;
 		final Object[] children;
-		if (item instanceof IUnit) {
-			// TODO: should probably fire removal and addition events instead
-			path = new TreePath(new Object[]{player});
-			indices = new int[]{getIndexOfChild(player, item.getKind()),
-					getIndexOfChild(player, newKind)};
-			children = new Object[]{item.getKind(), newKind};
-		} else if (item instanceof final UnitMember um) {
-			final IUnit parent = model.getUnits(player).stream()
-					.filter(containingItem(um)).findAny().orElse(null);
-			if (Objects.isNull(parent)) {
-				LovelaceLogger.warning(
-						"In WorkerTreeModel.changeKind(), unit member belonged to no unit");
+		switch (item) {
+			case IUnit unitMembers -> {
+				// TODO: should probably fire removal and addition events instead
+				path = new TreePath(new Object[]{player});
+				indices = new int[]{getIndexOfChild(player, item.getKind()),
+						getIndexOfChild(player, newKind)};
+				children = new Object[]{item.getKind(), newKind};
+			}
+			case final UnitMember um -> {
+				final IUnit parent = model.getUnits(player).stream()
+						.filter(containingItem(um)).findAny().orElse(null);
+				if (Objects.isNull(parent)) {
+					LovelaceLogger.warning(
+							"In WorkerTreeModel.changeKind(), unit member belonged to no unit");
+					return;
+				}
+				path = new TreePath(new Object[]{player, parent.getKind(), parent});
+				indices = new int[]{getIndexOfChild(parent, item)};
+				children = new Object[]{item};
+			}
+			default -> {
+				// Impossible at present, so ignore. TODO: log
 				return;
 			}
-			path = new TreePath(new Object[]{player, parent.getKind(), parent});
-			indices = new int[]{getIndexOfChild(parent, item)};
-			children = new Object[]{item};
-		} else {
-			// Impossible at present, so ignore. TODO: log
-			return;
 		}
 		model.changeKind(item, newKind);
 		final TreeModelEvent event = new TreeModelEvent(this, path, indices, children);
@@ -416,39 +425,44 @@ import java.util.stream.Collectors;
 
 	@Override
 	public void changeOwner(final HasOwner item, final Player newOwner) {
-		if (item instanceof final IUnit unit && item.owner().equals(player)) {
-			// TODO: What if it's the only unit with this kind?
-			final TreeModelEvent event = new TreeModelEvent(this,
-					new TreePath(new Object[]{player, unit.getKind()}),
-					new int[]{getIndexOfChild(unit.getKind(), item)},
-					new Object[]{item});
-			if (model.changeOwner(item, newOwner)) {
-				for (final TreeModelListener listener : listeners) {
-					listener.treeNodesRemoved(event);
+		switch (item) {
+			case final IUnit unit when item.owner().equals(player) -> {
+				// TODO: What if it's the only unit with this kind?
+				final TreeModelEvent event = new TreeModelEvent(this,
+						new TreePath(new Object[]{player, unit.getKind()}),
+						new int[]{getIndexOfChild(unit.getKind(), item)},
+						new Object[]{item});
+				if (model.changeOwner(item, newOwner)) {
+					for (final TreeModelListener listener : listeners) {
+						listener.treeNodesRemoved(event);
+					}
 				}
 			}
-		} else if (item instanceof final IUnit unit && newOwner.equals(player)) {
-			final TreeModelEvent event;
-			final String kind = unit.getKind();
-			// TODO: Make getUnitKinds() return Collection
-			final boolean existingKind = StreamSupport.stream(model.getUnitKinds(player).spliterator(), false)
-					.anyMatch(kind::equals);
-			if (!model.changeOwner(item, newOwner)) {
-				return;
-			}
-			// TODO: double-check I passed the parameters a nodes-inserted listener expects
-			if (existingKind) {
-				event = new TreeModelEvent(this, new TreePath(new Object[]{player}),
-						new int[]{getIndexOfChild(player, kind)},
-						new Object[]{kind});
-			} else {
-				event = new TreeModelEvent(this, new TreePath(new Object[]{player, kind}),
-						new int[]{getIndexOfChild(kind, item)}, new Object[]{item});
-			}
-			if (model.changeOwner(item, newOwner)) {
-				for (final TreeModelListener listener : listeners) {
-					listener.treeNodesInserted(event);
+			case final IUnit unit when newOwner.equals(player) -> {
+				final TreeModelEvent event;
+				final String kind = unit.getKind();
+				// TODO: Make getUnitKinds() return Collection
+				final boolean existingKind = StreamSupport.stream(model.getUnitKinds(player).spliterator(), false)
+						.anyMatch(kind::equals);
+				if (!model.changeOwner(item, newOwner)) {
+					return;
 				}
+				// TODO: double-check I passed the parameters a nodes-inserted listener expects
+				if (existingKind) {
+					event = new TreeModelEvent(this, new TreePath(new Object[]{player}),
+							new int[]{getIndexOfChild(player, kind)},
+							new Object[]{kind});
+				} else {
+					event = new TreeModelEvent(this, new TreePath(new Object[]{player, kind}),
+							new int[]{getIndexOfChild(kind, item)}, new Object[]{item});
+				}
+				if (model.changeOwner(item, newOwner)) {
+					for (final TreeModelListener listener : listeners) {
+						listener.treeNodesInserted(event);
+					}
+				}
+			}
+			default -> {
 			}
 		}
 	}

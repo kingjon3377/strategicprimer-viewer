@@ -261,10 +261,11 @@ import java.util.function.Predicate;
 	}
 
 	private void populate(final Object fixture) {
-		if (fixture instanceof final TileFixture tf) {
-			filterList.shouldDisplay(tf);
-		} else if (fixture instanceof Iterable) {
-			((Iterable<?>) fixture).forEach(this::populate);
+		switch (fixture) {
+			case final TileFixture tf -> filterList.shouldDisplay(tf);
+			case final Iterable<?> iterable -> iterable.forEach(this::populate);
+			default -> {
+			}
 		}
 	}
 

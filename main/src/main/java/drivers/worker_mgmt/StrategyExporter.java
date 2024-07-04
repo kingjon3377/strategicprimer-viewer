@@ -62,55 +62,59 @@ import legacy.map.fixtures.mobile.worker.IJob;
 	}
 
 	private void writeMember(final Writer writer, final @Nullable UnitMember member) throws IOException {
-		if (member instanceof final IWorker worker) {
-			writer.write(worker.getName());
-			final List<IJob> jobs;
-			if (options.hasOption("--include-unleveled-jobs")) {
-				jobs = StreamSupport.stream(worker.spliterator(), false)
-						.filter(j -> !j.isEmpty())
-						.collect(Collectors.toList());
-			} else {
-				jobs = StreamSupport.stream(worker.spliterator(), false)
-						.filter(j -> j.getLevel() > 0)
-						.collect(Collectors.toList());
-			}
-			boolean needsClosingParen = false;
-			if (!Objects.isNull(((IWorker) member).getMount())) {
-				writer.write(" (on ");
-				writer.write(((IWorker) member).getMount().getKind());
-				needsClosingParen = true;
-			}
-			if (!jobs.isEmpty()) {
-				if (needsClosingParen) {
-					writer.write("; ");
+		switch (member) {
+			case final IWorker worker -> {
+				writer.write(worker.getName());
+				final List<IJob> jobs;
+				if (options.hasOption("--include-unleveled-jobs")) {
+					jobs = StreamSupport.stream(worker.spliterator(), false)
+							.filter(j -> !j.isEmpty())
+							.collect(Collectors.toList());
 				} else {
-					writer.write(" (");
+					jobs = StreamSupport.stream(worker.spliterator(), false)
+							.filter(j -> j.getLevel() > 0)
+							.collect(Collectors.toList());
 				}
-				writer.write(jobs.stream().map(StrategyExporter::jobString)
-						.collect(Collectors.joining(", ")));
-				needsClosingParen = true;
+				boolean needsClosingParen = false;
+				if (!Objects.isNull(((IWorker) member).getMount())) {
+					writer.write(" (on ");
+					writer.write(((IWorker) member).getMount().getKind());
+					needsClosingParen = true;
+				}
+				if (!jobs.isEmpty()) {
+					if (needsClosingParen) {
+						writer.write("; ");
+					} else {
+						writer.write(" (");
+					}
+					writer.write(jobs.stream().map(StrategyExporter::jobString)
+							.collect(Collectors.joining(", ")));
+					needsClosingParen = true;
+				}
+				if (needsClosingParen) {
+					writer.write(")");
+				}
 			}
-			if (needsClosingParen) {
-				writer.write(")");
+			case final Animal animal -> {
+				if (animal.getPopulation() > 1) {
+					writer.write("%d ".formatted(animal.getPopulation()));
+				}
+				if (!"domesticated".equals(animal.getStatus())) {
+					writer.write(animal.getStatus());
+					writer.write(' ');
+				}
+				if (animal.getPopulation() > 1) {
+					writer.write(AnimalPlurals.get(animal.getKind()));
+				} else {
+					writer.write(animal.getKind());
+				}
+				if (animal.getBorn() >= 0) {
+					writer.write(" (born turn %d)".formatted(animal.getBorn()));
+				}
 			}
-		} else if (member instanceof final Animal animal) {
-			if (animal.getPopulation() > 1) {
-				writer.write("%d ".formatted(animal.getPopulation()));
+			case null -> {
 			}
-			if (!"domesticated".equals(animal.getStatus())) {
-				writer.write(animal.getStatus());
-				writer.write(' ');
-			}
-			if (animal.getPopulation() > 1) {
-				writer.write(AnimalPlurals.get(animal.getKind()));
-			} else {
-				writer.write(animal.getKind());
-			}
-			if (animal.getBorn() >= 0) {
-				writer.write(" (born turn %d)".formatted(animal.getBorn()));
-			}
-		} else if (!Objects.isNull(member)) {
-			writer.write(member.toString());
+			default -> writer.write(member.toString());
 		}
 	}
 

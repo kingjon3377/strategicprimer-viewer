@@ -98,15 +98,13 @@ public class ExplorationCLIHelper implements MovementCostListener, SelectionChan
 			} else {
 				cli.println(fixture.getShortDescription());
 			}
-			final IFixture.CopyBehavior zero;
-			if (fixture instanceof final HasOwner owned && (!owned.owner().equals(mover.owner())
-					|| fixture instanceof Village)) {
-				zero = IFixture.CopyBehavior.ZERO;
-			} else if (fixture instanceof HasPopulation || fixture instanceof HasExtent)
-				zero = IFixture.CopyBehavior.ZERO;
-			else {
-				zero = IFixture.CopyBehavior.KEEP;
-			}
+			final IFixture.CopyBehavior zero = switch (fixture) {
+				case final Village village -> IFixture.CopyBehavior.ZERO;
+				case final HasOwner owned when !owned.owner().equals(mover.owner()) -> IFixture.CopyBehavior.ZERO;
+				case final HasPopulation hasPopulation -> IFixture.CopyBehavior.ZERO;
+				case final HasExtent hasExtent -> IFixture.CopyBehavior.ZERO;
+				default -> IFixture.CopyBehavior.KEEP;
+			};
 			model.copyToSubMaps(destPoint, fixture, zero);
 		}
 	}
@@ -262,10 +260,11 @@ public class ExplorationCLIHelper implements MovementCostListener, SelectionChan
 				tracksAnimal = huntingModel.hunt(destPoint).iterator().next().getValue1();
 			}
 
-			if (tracksAnimal instanceof final Animal a) {
-				allFixtures.add(new AnimalTracks(a.getKind()));
-			} else if (tracksAnimal instanceof AnimalTracks) {
-				allFixtures.add(tracksAnimal.copy(IFixture.CopyBehavior.KEEP));
+			switch (tracksAnimal) {
+				case final Animal a -> allFixtures.add(new AnimalTracks(a.getKind()));
+				case final AnimalTracks tracks -> allFixtures.add(tracks.copy(IFixture.CopyBehavior.KEEP));
+				case null, default -> {
+				}
 			}
 
 			if (Direction.Nowhere == direction) {

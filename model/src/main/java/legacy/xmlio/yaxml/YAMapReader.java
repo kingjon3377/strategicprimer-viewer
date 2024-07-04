@@ -222,6 +222,8 @@ import java.util.function.Predicate;
 		final Predicate<Object> isFortress = IFortress.class::isInstance;
 		final Function<Object, IFortress> fortressCast = IFortress.class::cast;
 		for (final XMLEvent event : stream) {
+			// switch would require break-to-label
+			//noinspection IfCanBeSwitch
 			if (event instanceof final StartElement se && isSupportedNamespace(se.getName())) {
 				final String type = se.getName().getLocalPart().toLowerCase();
 				if ("player".equals(type)) {

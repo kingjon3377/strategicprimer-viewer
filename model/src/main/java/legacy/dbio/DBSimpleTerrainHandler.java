@@ -58,14 +58,11 @@ public final class DBSimpleTerrainHandler extends AbstractDatabaseWriter<Terrain
 
 	@Override
 	public void write(final Transactional db, final TerrainFixture obj, final Point context) throws SQLException {
-		final String type;
-		if (obj instanceof Hill) {
-			type = "hill";
-		} else if (obj instanceof Oasis) {
-			type = "oasis";
-		} else {
-			throw new IllegalArgumentException("Unhandled terrain fixture type");
-		}
+		final String type = switch (obj) {
+			case Hill hill -> "hill";
+			case Oasis oasis -> "oasis";
+			default -> throw new IllegalArgumentException("Unhandled terrain fixture type");
+		};
 		INSERT.on(value("row", context.row()), value("column", context.column()), value("type", type),
 				value("id", obj.getId()), value("image", ((HasImage) obj).getImage())).execute(db.connection());
 	}

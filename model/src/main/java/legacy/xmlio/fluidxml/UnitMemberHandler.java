@@ -53,34 +53,39 @@ import java.util.stream.StreamSupport;
 				element, warner);
 		retval.setPortrait(getAttribute(element, "portrait", ""));
 		for (final XMLEvent event : stream) {
-			if (event instanceof final StartElement se && isSPStartElement(event)) {
-				switch (se.getName().getLocalPart().toLowerCase()) {
-					case "job" -> retval.addJob(readJob(se, element.getName(),
-							stream, players, warner, idFactory));
-					case "stats" -> retval.setStats(readStats(se, element.getName(),
-							stream, players, warner, idFactory));
-					case "note" -> retval.setNote(
-							players.getPlayer(getIntegerAttribute(se, "player")),
-							readNote(se, element.getName(), stream, warner));
-					case "animal" -> {
-						if (Objects.isNull(retval.getMount())) {
-							final AnimalOrTracks animal = readAnimal(se, element.getName(), stream, players,
-									warner, idFactory);
-							if (animal instanceof final Animal a) {
-								retval.setMount(a);
-								break;
+			switch (event) {
+				case final StartElement se when isSPStartElement(event) -> {
+					switch (se.getName().getLocalPart().toLowerCase()) {
+						case "job" -> retval.addJob(readJob(se, element.getName(),
+								stream, players, warner, idFactory));
+						case "stats" -> retval.setStats(readStats(se, element.getName(),
+								stream, players, warner, idFactory));
+						case "note" -> retval.setNote(
+								players.getPlayer(getIntegerAttribute(se, "player")),
+								readNote(se, element.getName(), stream, warner));
+						case "animal" -> {
+							if (Objects.isNull(retval.getMount())) {
+								final AnimalOrTracks animal = readAnimal(se, element.getName(), stream, players,
+										warner, idFactory);
+								if (animal instanceof final Animal a) {
+									retval.setMount(a);
+									break;
+								}
 							}
+							throw new UnwantedChildException(se.getName(), element);
 						}
-						throw new UnwantedChildException(se.getName(), element);
+						case "implement" -> retval.addEquipment(FluidResourceHandler.readImplement(se, element.getName()
+								, stream,
+								players, warner, idFactory));
+						default -> throw UnwantedChildException.listingExpectedTags(element.getName(),
+								se, "job", "stats", "note", "animal", "implement");
 					}
-					case "implement" -> retval.addEquipment(FluidResourceHandler.readImplement(se, element.getName()
-							, stream,
-							players, warner, idFactory));
-					default -> throw UnwantedChildException.listingExpectedTags(element.getName(),
-							se, "job", "stats", "note", "animal", "implement");
 				}
-			} else if (event instanceof final EndElement ee && element.getName().equals(ee.getName())) {
-				break;
+				case final EndElement ee when element.getName().equals(ee.getName()) -> {
+					return retval;
+				}
+				case null, default -> {
+				}
 			}
 		}
 		return retval;
@@ -92,12 +97,15 @@ import java.util.stream.StreamSupport;
 		expectAttributes(element, warner, "player");
 		final StringBuilder retval = new StringBuilder();
 		for (final XMLEvent event : stream) {
-			if (event instanceof final StartElement se && isSPStartElement(event)) {
-				throw new UnwantedChildException(element.getName(), se);
-			} else if (event instanceof final EndElement ee && element.getName().equals(ee.getName())) {
-				break;
-			} else if (event instanceof final Characters c) {
-				retval.append(c.getData());
+			switch (event) {
+				case final StartElement se when isSPStartElement(event) ->
+						throw new UnwantedChildException(element.getName(), se);
+				case final EndElement ee when element.getName().equals(ee.getName()) -> {
+					return retval.toString().strip();
+				}
+				case final Characters c -> retval.append(c.getData());
+				default -> {
+				}
 			}
 		}
 		return retval.toString().strip();
@@ -111,15 +119,17 @@ import java.util.stream.StreamSupport;
 		final IMutableJob retval = new Job(getAttribute(element, "name"),
 				getIntegerAttribute(element, "level"));
 		for (final XMLEvent event : stream) {
-			if (event instanceof final StartElement se && isSPStartElement(event)) {
-				if ("skill".equalsIgnoreCase(se.getName().getLocalPart())) {
-					retval.addSkill(readSkill(se, element.getName(),
-							stream, players, warner, idFactory));
-				} else {
-					throw UnwantedChildException.listingExpectedTags(element.getName(), se, "skill");
+			switch (event) {
+				case final StartElement se when isSPStartElement(event) &&
+							"skill".equalsIgnoreCase(se.getName().getLocalPart()) ->
+						retval.addSkill(readSkill(se, element.getName(), stream, players, warner, idFactory));
+				case final StartElement se when isSPStartElement(event) ->
+						throw UnwantedChildException.listingExpectedTags(element.getName(), se, "skill");
+				case final EndElement ee when element.getName().equals(ee.getName()) -> {
+					return retval;
 				}
-			} else if (event instanceof final EndElement ee && element.getName().equals(ee.getName())) {
-				break;
+				default -> {
+				}
 			}
 		}
 		return retval;

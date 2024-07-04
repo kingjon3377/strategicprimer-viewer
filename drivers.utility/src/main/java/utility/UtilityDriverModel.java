@@ -131,16 +131,21 @@ public class UtilityDriverModel extends SimpleMultiMapModel {
 		for (final IMutableLegacyMap map : getRestrictedAllMaps()) {
 			for (final TileFixture fixture : map.getFixtures(location)) {
 				checked.add(fixture);
-				if (fixture instanceof final IUnit u && u.getKind().contains("TODO")) {
-					continue;
-				} else if (fixture instanceof CacheFixture) {
-					continue;
-				} else if (fixture instanceof final HasPopulation hp &&
-						hp.getPopulation() > 0) {
-					continue;
-				} else if (fixture instanceof final HasExtent he &&
-						he.getAcres().doubleValue() > 0.0) {
-					continue;
+				switch (fixture) {
+					case final IUnit u when u.getKind().contains("TODO") -> {
+						continue;
+					}
+					case final CacheFixture cacheFixture -> {
+						continue;
+					}
+					case final HasPopulation hp when hp.getPopulation() > 0 -> {
+						continue;
+					}
+					case final HasExtent he when he.getAcres().doubleValue() > 0.0 -> {
+						continue;
+					}
+					default -> {
+					}
 				}
 				final List<TileFixture> matching = map.getFixtures(location).stream()
 						.filter(noneMatch)
@@ -163,39 +168,37 @@ public class UtilityDriverModel extends SimpleMultiMapModel {
 		final List<Quartet<Runnable, String, String, Collection<? extends IFixture>>> retval =
 				new ArrayList<>();
 		for (final IFixture fixture : stream) {
-			if (fixture instanceof FixtureIterable) {
-				final String shortDesc = (fixture instanceof final TileFixture tf) ?
-						tf.getShortDescription() : fixture.toString();
-				if (fixture instanceof final IMutableUnit u) {
-					retval.addAll(coalesceImpl(
-							"%sIn %s: ".formatted(context, shortDesc),
-							u,
-							ifApplicable(u::addMember, UnitMember.class),
-							ifApplicable(u::removeMember, UnitMember.class),
-							setModFlag, handlers));
-				} else if (fixture instanceof final IMutableFortress f) {
-					retval.addAll(coalesceImpl(
-							"%sIn %s: ".formatted(context, shortDesc),
-							(IMutableFortress) fixture,
-							ifApplicable(f::addMember, FortressMember.class),
-							ifApplicable(f::removeMember, FortressMember.class),
-							setModFlag, handlers));
-				} else {
-					LovelaceLogger.warning("Unhandled fixture in coalesceImpl()");
+			switch (fixture) {
+				case final FixtureIterable fixtureIterable -> {
+					final String shortDesc = (fixture instanceof final TileFixture tf) ?
+							tf.getShortDescription() : fixture.toString();
+					switch (fixture) {
+						case final IMutableUnit u -> retval.addAll(coalesceImpl(
+								"%sIn %s: ".formatted(context, shortDesc),
+								u,
+								ifApplicable(u::addMember, UnitMember.class),
+								ifApplicable(u::removeMember, UnitMember.class),
+								setModFlag, handlers));
+						case final IMutableFortress f -> retval.addAll(coalesceImpl(
+								"%sIn %s: ".formatted(context, shortDesc),
+								(IMutableFortress) fixture,
+								ifApplicable(f::addMember, FortressMember.class),
+								ifApplicable(f::removeMember, FortressMember.class),
+								setModFlag, handlers));
+						default -> LovelaceLogger.warning("Unhandled fixture in coalesceImpl()");
+					}
 				}
-			} else if (fixture instanceof final Animal a) {
-				if (a.isTalking()) {
-					continue;
+				case final Animal a when !a.isTalking() && handlers.containsKey(Animal.class) ->
+						handlers.get(Animal.class).addIfType(fixture);
+				case final HasPopulation hp when 0 > hp.getPopulation() -> {
 				}
-				if (handlers.containsKey(Animal.class)) {
-					handlers.get(Animal.class).addIfType(fixture);
+				case final HasExtent he when 0.0 >= he.getAcres().doubleValue() -> {
 				}
-			} else if (fixture instanceof final HasPopulation hp && hp.getPopulation() < 0) {
-				continue;
-			} else if (fixture instanceof final HasExtent he && he.getAcres().doubleValue() <= 0.0) {
-				continue;
-			} else if (handlers.containsKey(fixture.getClass())) {
-				handlers.get(fixture.getClass()).addIfType(fixture);
+				default -> {
+					if (handlers.containsKey(fixture.getClass())) {
+						handlers.get(fixture.getClass()).addIfType(fixture);
+					}
+				}
 			}
 		}
 

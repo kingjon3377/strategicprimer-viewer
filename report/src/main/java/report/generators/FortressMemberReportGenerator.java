@@ -114,26 +114,31 @@ public class FortressMemberReportGenerator extends AbstractReportGenerator<Fortr
 				.map(p -> Pair.with(p.getValue0(), (FortressMember) p.getValue1())).toList()) {
 			final Point loc = pair.getValue0();
 			final FortressMember item = pair.getValue1();
-			if (item instanceof final IResourcePile resource) {
-				final HeadedMap<IResourcePile, Point> pileMap;
-				if (resources.containsKey(resource.getKind())) {
-					pileMap = resources.get(resource.getKind());
-				} else {
-					pileMap = new HeadedMapImpl<>(resource.getKind() + ":",
-							Comparator.comparing(IResourcePile::getKind)
-									.thenComparing(IResourcePile::getContents)
-									.thenComparing(IResourcePile::getQuantity,
-											Comparator.reverseOrder())
-									.thenComparing(IResourcePile::getCreated)
-									.thenComparing(IResourcePile::getId));
-					resources.put(resource.getKind(), pileMap);
+			switch (item) {
+				case final IResourcePile resource -> {
+					final HeadedMap<IResourcePile, Point> pileMap;
+					if (resources.containsKey(resource.getKind())) {
+						pileMap = resources.get(resource.getKind());
+					} else {
+						pileMap = new HeadedMapImpl<>(resource.getKind() + ":",
+								Comparator.comparing(IResourcePile::getKind)
+										.thenComparing(IResourcePile::getContents)
+										.thenComparing(IResourcePile::getQuantity,
+												Comparator.reverseOrder())
+										.thenComparing(IResourcePile::getCreated)
+										.thenComparing(IResourcePile::getId));
+						resources.put(resource.getKind(), pileMap);
+					}
+					pileMap.put(resource, loc);
+					fixtures.remove(resource.getId());
 				}
-				pileMap.put(resource, loc);
-				fixtures.remove(resource.getId());
-			} else if (item instanceof final Implement implement) {
-				// TODO: Ensure it's not displacing anything (i.e. no duplicate equipment fixtures)
-				equipment.put(implement, loc);
-				fixtures.remove(implement.getId());
+				case final Implement implement -> {
+					// TODO: Ensure it's not displacing anything (i.e. no duplicate equipment fixtures)
+					equipment.put(implement, loc);
+					fixtures.remove(implement.getId());
+				}
+				default -> {
+				}
 			}
 		}
 		if (!equipment.isEmpty() || !resources.isEmpty()) {

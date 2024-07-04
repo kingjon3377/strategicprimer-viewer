@@ -216,16 +216,16 @@ import legacy.map.fixtures.mobile.AnimalTracks;
 
 	private static Stream<?> flatten(final @Nullable Object item) {
 		// Note that workers are counted separately; while we include their equipment and mounts we don't include them.
-		if (item instanceof final IWorker w) {
-			return Stream.concat(Stream.concat(StreamSupport.stream(w.spliterator(), false),
+		return switch (item) {
+			case final IWorker w -> Stream.concat(Stream.concat(StreamSupport.stream(w.spliterator(), false),
 							w.getEquipment().stream()), Stream.of(w.getMount()))
 					.filter(Objects::nonNull);
-		} else if (item instanceof Iterable) { // TODO: FixtureIterable?
-			return Stream.concat(StreamSupport.stream(((Iterable<?>) item).spliterator(), false)
-					.flatMap(CountingCLI::flatten), Stream.of(item));
-		} else {
-			return Stream.ofNullable(item); // TODO: Why is it @Nullable?
-		}
+			case final Iterable iterable ->  // TODO: FixtureIterable?
+					Stream.concat(StreamSupport.stream(iterable.spliterator(), false)
+							.flatMap(CountingCLI::flatten), Stream.of(item));
+			case null, default -> Stream.ofNullable(item); // TODO: Why is it @Nullable?
+
+		};
 	}
 
 	private static String resourcePileKeyExtractor(final IResourcePile pile) {

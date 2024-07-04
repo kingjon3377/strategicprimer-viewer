@@ -105,12 +105,13 @@ import lovelace.util.LovelaceLogger;
 
 	public void startCatchingErrors(final ICLIHelper cli, final SPOptions options, final String... args) {
 		try {
-			if (factory instanceof final UtilityDriverFactory udf) {
-				checkArguments(args);
-				udf.createDriver(cli, options).startDriver(args);
-			} else if (factory instanceof final ModelDriverFactory mdf) { // TODO: refactor to avoid successive instanceof tests
-				if (mdf instanceof GUIDriverFactory) {
-					if (ParamCount.One == factory.getUsage().getParamsWanted() && args.length > 1) {
+			switch (factory) {
+				case final UtilityDriverFactory udf -> {
+					checkArguments(args);
+					udf.createDriver(cli, options).startDriver(args);
+				}
+				case final GUIDriverFactory gdf -> {
+					if (ParamCount.One == gdf.getUsage().getParamsWanted() && args.length > 1) {
 						for (final String arg : args) {
 							startCatchingErrors(cli, options, arg);
 						}
@@ -121,9 +122,10 @@ import lovelace.util.LovelaceLogger;
 						final IMultiMapModel model = MapReaderAdapter.readMultiMapModel(Warning.WARN,
 								files.getFirst(), files.stream().skip(1).toArray(Path[]::new));
 						fixCurrentTurn(options, model);
-						mdf.createDriver(cli, options, model).startDriver();
+						gdf.createDriver(cli, options, model).startDriver();
 					}
-				} else {
+				}
+				case final ModelDriverFactory mdf -> {
 					checkArguments(args);
 					// FIXME: What if a model driver had paramsWanted as None or Any, and args is empty?
 					// In Ceylon we asserted args was nonempty, but didn't address this case
@@ -135,10 +137,9 @@ import lovelace.util.LovelaceLogger;
 					driver.startDriver();
 					if (driver instanceof CLIDriver) {
 						MapReaderAdapter.writeModel(model);
-					}
+					}  // TODO: refactor to avoid successive instanceof tests
 				}
-			} else {
-				throw new DriverFailedException(new IllegalStateException("Unhandled driver class"));
+				default -> throw new DriverFailedException(new IllegalStateException("Unhandled driver class"));
 			}
 		} catch (final IncorrectUsageException except) {
 			cli.println(AppChooserState.usageMessage(except.getCorrectUsage(),

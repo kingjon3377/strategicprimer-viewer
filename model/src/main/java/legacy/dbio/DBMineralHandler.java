@@ -63,14 +63,16 @@ public final class DBMineralHandler extends AbstractDatabaseWriter<MineralFixtur
 	public void write(final Transactional db, final MineralFixture obj, final Point context) throws SQLException {
 		final String type;
 		final boolean exposed;
-		if (obj instanceof final MineralVein m) {
-			type = "mineral";
-			exposed = m.isExposed();
-		} else if (obj instanceof StoneDeposit) {
-			type = "stone";
-			exposed = true;
-		} else {
-			throw new IllegalArgumentException("Unhandled mineral fixture type");
+		switch (obj) {
+			case final MineralVein m -> {
+				type = "mineral";
+				exposed = m.isExposed();
+			}
+			case StoneDeposit stoneDeposit -> {
+				type = "stone";
+				exposed = true;
+			}
+			default -> throw new IllegalArgumentException("Unhandled mineral fixture type");
 		}
 		INSERT_SQL.on(value("row", context.row()), value("column", context.column()),
 				value("type", type), value("id", obj.getId()), value("kind", obj.getKind()),

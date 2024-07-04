@@ -172,37 +172,52 @@ public final class WorkerTree extends JTree implements UnitMemberSelectionSource
 	private void treeSelectionChanged(final TreeSelectionEvent event) {
 		final Object sel = Optional.ofNullable(event.getNewLeadSelectionPath())
 				.map(TreePath::getLastPathComponent).map(wtModel::getModelObject).orElse(null);
-		if (sel instanceof final IUnit u) {
-			LovelaceLogger.debug("Selection in workerTree is an IUnit");
-			for (final UnitSelectionListener listener : selectionListeners) {
-				listener.selectUnit(u);
+		switch (sel) {
+			case final IUnit u -> {
+				LovelaceLogger.debug("Selection in workerTree is an IUnit");
+				for (final UnitSelectionListener listener : selectionListeners) {
+					listener.selectUnit(u);
+				}
+				final IWorker proxy = new ProxyWorker(u);
+				for (final UnitMemberListener listener : memberListeners) {
+					listener.memberSelected(null, proxy);
+				}
 			}
-			final IWorker proxy = new ProxyWorker(u);
-			for (final UnitMemberListener listener : memberListeners) {
-				listener.memberSelected(null, proxy);
+			case final UnitMember um -> {
+				LovelaceLogger.debug("workerTree selection is a UnitMember, but not an IUnit");
+				for (final UnitSelectionListener listener : selectionListeners) {
+					listener.selectUnit(null);
+				}
+				for (final UnitMemberListener listener : memberListeners) {
+					listener.memberSelected(null, um);
+				}
 			}
-		} else if (sel instanceof final UnitMember um) {
-			LovelaceLogger.debug("workerTree selection is a UnitMember, but not an IUnit");
-			for (final UnitSelectionListener listener : selectionListeners) {
-				listener.selectUnit(null);
-			}
-			for (final UnitMemberListener listener : memberListeners) {
-				listener.memberSelected(null, um);
-			}
-		} else {
-			if (sel instanceof String) {
-				LovelaceLogger.debug("workerTree selection is a String, i.e. a unit-kind node");
-			} else if (Objects.isNull(sel)) {
+			case null -> {
 				LovelaceLogger.debug("Selection in workerTree is null");
-			} else {
-				LovelaceLogger.warning("Unexpected type of selection in workerTree: %s",
-						sel.getClass());
+				for (final UnitSelectionListener listener : selectionListeners) {
+					listener.selectUnit(null);
+				}
+				for (final UnitMemberListener listener : memberListeners) {
+					listener.memberSelected(null, null);
+				}
 			}
-			for (final UnitSelectionListener listener : selectionListeners) {
-				listener.selectUnit(null);
+			case final String s -> {
+				LovelaceLogger.debug("workerTree selection is a String, i.e. a unit-kind node");
+				for (final UnitSelectionListener listener : selectionListeners) {
+					listener.selectUnit(null);
+				}
+				for (final UnitMemberListener listener : memberListeners) {
+					listener.memberSelected(null, null);
+				}
 			}
-			for (final UnitMemberListener listener : memberListeners) {
-				listener.memberSelected(null, null);
+			default -> {
+				LovelaceLogger.warning("Unexpected type of selection in workerTree: %s", sel.getClass());
+				for (final UnitSelectionListener listener : selectionListeners) {
+					listener.selectUnit(null);
+				}
+				for (final UnitMemberListener listener : memberListeners) {
+					listener.memberSelected(null, null);
+				}
 			}
 		}
 	}
@@ -328,32 +343,34 @@ public final class WorkerTree extends JTree implements UnitMemberSelectionSource
 				final Transferable trans = support.getTransferable();
 				final boolean shouldBeExpanded = isExpanded.test(targetPath);
 				try {
-					if (tempTarget instanceof final IUnit unit &&
-							trans.isDataFlavorSupported(
-									UnitMemberTransferable.FLAVOR)) {
-						final List<Pair<UnitMember, IUnit>> list =
-								(List<Pair<UnitMember, IUnit>>)
-										trans.getTransferData(
-												UnitMemberTransferable.FLAVOR);
-						for (final Pair<UnitMember, IUnit> pair : list) {
-							wtModel.moveMember(pair.getValue0(),
-									pair.getValue1(), unit);
+					switch (tempTarget) {
+						case final IUnit unit when trans.isDataFlavorSupported(
+								UnitMemberTransferable.FLAVOR) -> {
+							final List<Pair<UnitMember, IUnit>> list =
+									(List<Pair<UnitMember, IUnit>>)
+											trans.getTransferData(
+													UnitMemberTransferable.FLAVOR);
+							for (final Pair<UnitMember, IUnit> pair : list) {
+								wtModel.moveMember(pair.getValue0(),
+										pair.getValue1(), unit);
+							}
+							if (!shouldBeExpanded) {
+								collapsePath.accept(targetPath);
+							}
+							return true;
 						}
-						if (!shouldBeExpanded) {
-							collapsePath.accept(targetPath);
+						case final String str when trans.isDataFlavorSupported(
+								UnitTransferable.FLAVOR) -> {
+							final List<IUnit> list = (List<IUnit>)
+									trans.getTransferData(UnitTransferable.FLAVOR);
+							for (final IUnit unit : list) {
+								wtModel.changeKind(unit, str);
+							}
+							return true;
 						}
-						return true;
-					} else if (tempTarget instanceof final String str &&
-							trans.isDataFlavorSupported(
-									UnitTransferable.FLAVOR)) {
-						final List<IUnit> list = (List<IUnit>)
-								trans.getTransferData(UnitTransferable.FLAVOR);
-						for (final IUnit unit : list) {
-							wtModel.changeKind(unit, str);
+						default -> {
+							return false;
 						}
-						return true;
-					} else {
-						return false;
 					}
 				} catch (final UnsupportedFlavorException except) {
 					LovelaceLogger.error(except, "Impossible unsupported data flavor");
@@ -523,46 +540,57 @@ public final class WorkerTree extends JTree implements UnitMemberSelectionSource
 				label.setIcon(getIcon(hi));
 			}
 			BackgroundState background = BackgroundState.NONE;
-			if (internal instanceof final IWorker worker && component instanceof final JLabel label) {
-				if ("human".equals(worker.getRace())) {
+			switch (internal) {
+				case final IWorker worker when component instanceof final JLabel label &&
+						"human".equals(worker.getRace()) -> {
 					label.setText("<html><p>%s%s</p></html>".formatted(
 							worker.getName(), jobCSL(worker)));
-				} else {
+				}
+				case final IWorker worker when component instanceof final JLabel label -> {
 					label.setText("<html><p>%s, a %s%s</p></html>".formatted(worker.getName(),
 							worker.getRace(), jobCSL(worker)));
 				}
-			} else if (internal instanceof final Animal animal && component instanceof final JLabel label) {
-				final Map<String, Integer> maturityAges = MaturityModel.getMaturityAges();
-				if (animal.getBorn() >= 0 && MaturityModel.getCurrentTurn() >= 0 &&
-						maturityAges.containsKey(animal.getKind()) &&
-						MaturityModel.getCurrentTurn() - animal.getBorn() <
-								maturityAges.get(animal.getKind())) {
-					final int age = MaturityModel.getCurrentTurn() - animal.getBorn();
-					if (animal.getPopulation() > 1) {
-						label.setText("%d %d-turn-old %s".formatted(animal.getPopulation(), age,
+				case final Animal animal when component instanceof final JLabel label -> {
+					final Map<String, Integer> maturityAges = MaturityModel.getMaturityAges();
+					// TODO: Extract a method for this so we can split the switch-case
+					if (animal.getBorn() >= 0 && MaturityModel.getCurrentTurn() >= 0 &&
+							maturityAges.containsKey(animal.getKind()) &&
+							MaturityModel.getCurrentTurn() - animal.getBorn() <
+									maturityAges.get(animal.getKind())) {
+						final int age = MaturityModel.getCurrentTurn() - animal.getBorn();
+						if (animal.getPopulation() > 1) {
+							label.setText("%d %d-turn-old %s".formatted(animal.getPopulation(), age,
+									AnimalPlurals.get(animal.getKind())));
+						} else {
+							((JLabel) component).setText("%d-turn-old %s".formatted(age, animal.getKind()));
+						}
+					} else if (animal.getPopulation() > 1) {
+						((JLabel) component).setText("%d %s".formatted(
+								animal.getPopulation(),
 								AnimalPlurals.get(animal.getKind())));
-					} else {
-						((JLabel) component).setText("%d-turn-old %s".formatted(age, animal.getKind()));
-					}
-				} else if (animal.getPopulation() > 1) {
-					((JLabel) component).setText("%d %s".formatted(
-							animal.getPopulation(),
-							AnimalPlurals.get(animal.getKind())));
-				} // else leave the default of animal.toString()
-			} else if (internal instanceof final IUnit unit &&
-					component instanceof final DefaultTreeCellRenderer dtcr) {
-				if (expanded || unit.isEmpty()) {
+					} // else leave the default of animal.toString()
+				}
+				case final IUnit unit when component instanceof final DefaultTreeCellRenderer dtcr &&
+						(expanded || unit.isEmpty()) -> {
 					dtcr.setText(unit.getName());
-				} else {
+					final BackgroundState result = shouldChangeBackground(unit);
+					background = BackgroundState.larger(background, result);
+				}
+				case final IUnit unit when component instanceof final DefaultTreeCellRenderer dtcr -> {
 					dtcr.setText("%s (%d workers)".formatted(unit.getName(),
 							unit.stream().filter(IWorker.class::isInstance).count()));
+					final BackgroundState result = shouldChangeBackground(unit);
+					background = BackgroundState.larger(background, result);
 				}
-				final BackgroundState result = shouldChangeBackground(unit);
-				background = BackgroundState.larger(background, result);
-			} else if (orderCheck && internal instanceof final String kind) {
-				final BackgroundState result = shouldChangeBackground(kind);
-				background = BackgroundState.larger(background, result);
+				case final String kind when orderCheck -> {
+					final BackgroundState result = shouldChangeBackground(kind);
+					background = BackgroundState.larger(background, result);
+				}
+				default -> {
+				}
 			}
+			// This is a single if-instanceof, with no 'else'
+			//noinspection IfCanBeSwitch
 			if (component instanceof final DefaultTreeCellRenderer comp) {
 				final @Nullable Color backgroundColor = background.getColor();
 				if (Objects.isNull(backgroundColor)) {

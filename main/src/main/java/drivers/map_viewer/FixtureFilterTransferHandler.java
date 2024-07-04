@@ -49,13 +49,11 @@ import drivers.common.FixtureMatcher;
 	 */
 	@Override
 	public Transferable createTransferable(final JComponent component) {
-		if (component instanceof final JList l) {
-			return new IntTransferable(FLAVOR, l.getSelectedIndex());
-		} else if (component instanceof final JTable t) {
-			return new IntTransferable(FLAVOR, t.getSelectedRow());
-		} else {
-			throw new IllegalArgumentException("component must be a JList or a JTable");
-		}
+		return switch (component) {
+			case final JList<?> l -> new IntTransferable(FLAVOR, l.getSelectedIndex());
+			case final JTable t -> new IntTransferable(FLAVOR, t.getSelectedRow());
+			default -> throw new IllegalArgumentException("component must be a JList or a JTable");
+		};
 	}
 
 	/**
@@ -84,24 +82,26 @@ import drivers.common.FixtureMatcher;
 			LovelaceLogger.debug(except, "Transfer failure");
 			return false;
 		}
-		if (component instanceof final JList l && l.getModel() instanceof final Reorderable model
-				&& dropLocation instanceof final JList.DropLocation dl) {
-			final int index = dl.getIndex();
-			model.reorder(payload, index);
-			return true;
-		} else if (component instanceof final JTable t && t.getModel() instanceof final Reorderable model &&
-				dropLocation instanceof final JTable.DropLocation dl) {
-			final int index = dl.getRow();
-			final int selection = t.getSelectedRow();
-			model.reorder(payload, index);
-			if (selection == payload) {
-				t.setRowSelectionInterval(index, index);
-			} else if (selection > index && selection < payload) {
-				t.setRowSelectionInterval(selection - 1, selection - 1);
+		switch (component) {
+			case final JList l when l.getModel() instanceof final Reorderable model && dropLocation instanceof final JList.DropLocation dl -> {
+				final int index = dl.getIndex();
+				model.reorder(payload, index);
+				return true;
 			}
-			return true;
-		} else {
-			return false;
+			case final JTable t when t.getModel() instanceof final Reorderable model && dropLocation instanceof final JTable.DropLocation dl -> {
+				final int index = dl.getRow();
+				final int selection = t.getSelectedRow();
+				model.reorder(payload, index);
+				if (selection == payload) {
+					t.setRowSelectionInterval(index, index);
+				} else if (selection > index && selection < payload) {
+					t.setRowSelectionInterval(selection - 1, selection - 1);
+				}
+				return true;
+			}
+			case null, default -> {
+				return false;
+			}
 		}
 	}
 }

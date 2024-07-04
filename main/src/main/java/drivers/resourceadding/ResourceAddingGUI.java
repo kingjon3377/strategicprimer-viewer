@@ -135,13 +135,13 @@ import java.io.FileNotFoundException;
 
 		private static void addListenerToField(final JSpinner field, final ActionListener listener,
 											   final StreamingLabel logLabel) {
-			if (field.getEditor() instanceof final JTextField tf) {
-				tf.addActionListener(listener);
-			} else if (field.getEditor() instanceof final JSpinner.DefaultEditor ed) {
-				ed.getTextField().addActionListener(listener);
-			} else {
-				logLabel.append("Spinner's editor wasn't a text field, but a ");
-				logLabel.appendLine(field.getEditor().getClass().getName());
+			switch (field.getEditor()) {
+				case final JTextField tf -> tf.addActionListener(listener);
+				case final JSpinner.DefaultEditor ed -> ed.getTextField().addActionListener(listener);
+				case null, default -> {
+					logLabel.append("Spinner's editor wasn't a text field, but a ");
+					logLabel.appendLine(field.getEditor().getClass().getName());
+				}
 			}
 		}
 

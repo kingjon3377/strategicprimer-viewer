@@ -62,14 +62,11 @@ public final class DBExplorableHandler extends AbstractDatabaseWriter<Explorable
 
 	@Override
 	public void write(final Transactional db, final ExplorableFixture obj, final Point context) throws SQLException {
-		final Query sql;
-		if (obj instanceof Cave) {
-			sql = CAVE_INSERT;
-		} else if (obj instanceof Battlefield) {
-			sql = BATTLEFIELD_INSERT;
-		} else {
-			throw new IllegalArgumentException("Only supports caves and battlefields");
-		}
+		final Query sql = switch (obj) {
+			case final Cave cave -> CAVE_INSERT;
+			case final Battlefield battlefield -> BATTLEFIELD_INSERT;
+			default -> throw new IllegalArgumentException("Only supports caves and battlefields");
+		};
 		sql.on(value("row", context.row()), value("column", context.column()), value("id", obj.getId()),
 				value("dc", obj.getDC()), value("image", obj.getImage())).execute(db.connection());
 	}

@@ -262,14 +262,19 @@ public class WorkerTreeModelAlt extends DefaultTreeModel implements IWorkerTreeM
 	 * Get the node in the subtree under the given node that represents the given object.
 	 */
 	private static @Nullable MutableTreeNode getNode(final TreeNode node, final Object obj) {
-		if (node instanceof MutableTreeNode && areTreeObjectsEqual(node, obj)) {
-			return (MutableTreeNode) node;
-		} else if (node instanceof WorkerTreeNode && node.getAllowsChildren()) {
-			for (final TreeNode child : (WorkerTreeNode<?>) node) {
-				final MutableTreeNode result = getNode(child, obj);
-				if (!Objects.isNull(result)) {
-					return result;
+		switch (node) {
+			case final MutableTreeNode mutableTreeNode when areTreeObjectsEqual(node, obj) -> {
+				return mutableTreeNode;
+			}
+			case final WorkerTreeNode<?> workerTreeNode when node.getAllowsChildren() -> {
+				for (final TreeNode child : workerTreeNode) {
+					final MutableTreeNode result = getNode(child, obj);
+					if (!Objects.isNull(result)) {
+						return result;
+					}
 				}
+			}
+			default -> {
 			}
 		}
 		return null;
@@ -438,62 +443,67 @@ public class WorkerTreeModelAlt extends DefaultTreeModel implements IWorkerTreeM
 	@Override
 	public void changeKind(final HasKind item, final String newKind) {
 		final PlayerNode temp = (PlayerNode) getRoot();
-		if (item instanceof UnitMember) {
-			final MutableTreeNode node = getNode(temp, item);
-			if (!Objects.isNull(node)) {
-				final TreeNode[] path = getPathToRoot(node);
-				final int index = getIndexOfChild(path[path.length - 1], node);
-				if (model.changeKind(item, newKind)) {
-					// fireNodesChanged() is *correct*: a
-					// change in a unit member's kind does
-					// *not* mean any node should move.
-					fireTreeNodesChanged(this, path, new int[]{index},
-							new Object[]{node});
+		switch (item) {
+			case final UnitMember unitMember -> {
+				final MutableTreeNode node = getNode(temp, item);
+				if (!Objects.isNull(node)) {
+					final TreeNode[] path = getPathToRoot(node);
+					final int index = getIndexOfChild(path[path.length - 1], node);
+					if (model.changeKind(item, newKind)) {
+						// fireNodesChanged() is *correct*: a
+						// change in a unit member's kind does
+						// *not* mean any node should move.
+						fireTreeNodesChanged(this, path, new int[]{index},
+								new Object[]{node});
+					}
 				}
 			}
-		} else if (item instanceof IUnit) {
-			final MutableTreeNode node = getNode(temp, item);
-			if (Objects.isNull(node)) {
-				LovelaceLogger.debug("changeKind() called for unit not in the tree");
-				return;
+			case final IUnit unitMembers -> {
+				final MutableTreeNode node = getNode(temp, item);
+				if (Objects.isNull(node)) {
+					LovelaceLogger.debug("changeKind() called for unit not in the tree");
+					return;
+				}
+				final TreeNode[] pathOne = getPathToRoot(node);
+				final int indexOne = getIndexOfChild(pathOne[pathOne.length - 2], node);
+				final KindNode nodeTwo = temp.stream().filter(KindNode.class::isInstance)
+						.map(KindNode.class::cast)
+						.filter(n -> item.getKind().equals(n.getUserObject()))
+						.findAny().orElse(null);
+				final MutableTreeNode end = (MutableTreeNode) pathOne[pathOne.length - 1];
+				end.removeFromParent();
+				final Object[] pathSubset;
+				final TreeNode lastParent = pathOne[pathOne.length - 2];
+				if (lastParent instanceof final MutableTreeNode mtn &&
+						0 == lastParent.getChildCount()) {
+					final TreeNode lastParentParent = pathOne[pathOne.length - 3];
+					final int parentIndex = lastParentParent.getIndex(lastParent);
+					pathSubset = Arrays.copyOf(pathOne, pathOne.length - 2,
+							Object[].class);
+					mtn.removeFromParent();
+					fireTreeNodesRemoved(this, pathSubset, new int[]{parentIndex},
+							new Object[]{lastParent});
+				} else {
+					pathSubset = Arrays.copyOf(pathOne, pathOne.length - 1,
+							Object[].class);
+					fireTreeNodesRemoved(this, pathSubset, new int[]{indexOne},
+							new Object[]{node});
+				}
+				model.changeKind(item, newKind);
+				if (Objects.isNull(nodeTwo)) {
+					final MutableTreeNode kindNode = new KindNode(newKind, (IUnit) item);
+					temp.add(kindNode);
+					fireTreeNodesInserted(this, new Object[]{temp},
+							new int[]{getIndexOfChild(temp, kindNode)},
+							new Object[]{kindNode});
+				} else {
+					final int indexTwo = nodeTwo.getChildCount();
+					nodeTwo.insert(node, indexTwo);
+					fireTreeNodesInserted(this, new Object[]{root, nodeTwo},
+							new int[]{indexTwo}, new Object[]{node});
+				}
 			}
-			final TreeNode[] pathOne = getPathToRoot(node);
-			final int indexOne = getIndexOfChild(pathOne[pathOne.length - 2], node);
-			final KindNode nodeTwo = temp.stream().filter(KindNode.class::isInstance)
-					.map(KindNode.class::cast)
-					.filter(n -> item.getKind().equals(n.getUserObject()))
-					.findAny().orElse(null);
-			final MutableTreeNode end = (MutableTreeNode) pathOne[pathOne.length - 1];
-			end.removeFromParent();
-			final Object[] pathSubset;
-			final TreeNode lastParent = pathOne[pathOne.length - 2];
-			if (lastParent instanceof final MutableTreeNode mtn &&
-					lastParent.getChildCount() == 0) {
-				final TreeNode lastParentParent = pathOne[pathOne.length - 3];
-				final int parentIndex = lastParentParent.getIndex(lastParent);
-				pathSubset = Arrays.copyOf(pathOne, pathOne.length - 2,
-						Object[].class);
-				mtn.removeFromParent();
-				fireTreeNodesRemoved(this, pathSubset, new int[]{parentIndex},
-						new Object[]{lastParent});
-			} else {
-				pathSubset = Arrays.copyOf(pathOne, pathOne.length - 1,
-						Object[].class);
-				fireTreeNodesRemoved(this, pathSubset, new int[]{indexOne},
-						new Object[]{node});
-			}
-			model.changeKind(item, newKind);
-			if (Objects.isNull(nodeTwo)) {
-				final MutableTreeNode kindNode = new KindNode(newKind, (IUnit) item);
-				temp.add(kindNode);
-				fireTreeNodesInserted(this, new Object[]{temp},
-						new int[]{getIndexOfChild(temp, kindNode)},
-						new Object[]{kindNode});
-			} else {
-				final int indexTwo = nodeTwo.getChildCount();
-				nodeTwo.insert(node, indexTwo);
-				fireTreeNodesInserted(this, new Object[]{root, nodeTwo},
-						new int[]{indexTwo}, new Object[]{node});
+			default -> {
 			}
 		}
 	}

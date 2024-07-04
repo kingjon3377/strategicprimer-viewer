@@ -223,21 +223,33 @@ import java.math.BigDecimal;
 	 * uncultivated grove or orchard, an abandoned mine, or a cache is not claimable.
 	 */
 	private static boolean isReallyClaimable(final HarvestableFixture fix) {
-		if (fix instanceof final MineralVein mv) {
-			return mv.isExposed();
-		} else if (fix instanceof final Meadow m) {
-			return m.isCultivated();
-		} else if (fix instanceof final Grove g) {
-			return g.isCultivated();
-		} else if (fix instanceof final Mine m) {
-			return TownStatus.Active == m.getStatus();
-		} else if (fix instanceof CacheFixture) {
-			return false;
-		} else if (fix instanceof Shrub || fix instanceof StoneDeposit) {
-			return true;
-		} else {
-			LovelaceLogger.error("Unhandled harvestable type");
-			return false;
+		switch (fix) {
+			case final MineralVein mv -> {
+				return mv.isExposed();
+			}
+			case final Meadow m -> {
+				return m.isCultivated();
+			}
+			case final Grove g -> {
+				return g.isCultivated();
+			}
+			case final Mine m -> {
+				return TownStatus.Active == m.getStatus();
+			}
+			case final CacheFixture cacheFixture -> {
+				return false;
+			}
+			case final Shrub shrub -> {
+				return true;
+			}
+			case final StoneDeposit stoneDeposit -> {
+				return true;
+			}
+			default -> {
+				// TODO: Make a helper method that logs and then returns, so we can 'return switch'
+				LovelaceLogger.error("Unhandled harvestable type");
+				return false;
+			}
 		}
 	}
 
@@ -442,39 +454,39 @@ import java.math.BigDecimal;
 		final int skillCount;
 		final IntSupplier skillLevelSource;
 		final int resourceCount;
-		if (town instanceof Village) {
-			if (TownSize.Small != town.getTownSize()) {
-				throw new IllegalStateException(
-						"Don't know how to handle non-small villages");
+		switch (town) {
+			case final Village village when TownSize.Small == village.getTownSize() -> {
+				population = repeatedlyRoll.repeatedlyRoll(3, 8, 3);
+				skillCount = repeatedlyRoll.repeatedlyRoll(2, 4);
+				skillLevelSource = () -> repeatedlyRoll.repeatedlyRoll(4, 3, -3);
+				resourceCount = repeatedlyRoll.repeatedlyRoll(2, 3);
 			}
-			population = repeatedlyRoll.repeatedlyRoll(3, 8, 3);
-			skillCount = repeatedlyRoll.repeatedlyRoll(2, 4);
-			skillLevelSource = () -> repeatedlyRoll.repeatedlyRoll(4, 3, -3);
-			resourceCount = repeatedlyRoll.repeatedlyRoll(2, 3);
-		} else if (town instanceof AbstractTown) {
-			switch (town.getTownSize()) {
-				case Small -> {
-					population = repeatedlyRoll.repeatedlyRoll(4, 10, 5);
-					skillCount = repeatedlyRoll.repeatedlyRoll(3, 4);
-					skillLevelSource = () -> repeatedlyRoll.repeatedlyRoll(2, 6);
-					resourceCount = repeatedlyRoll.repeatedlyRoll(2, 3);
+			case final Village ignored -> throw new IllegalStateException(
+					"Don't know how to handle non-small villages");
+			case final AbstractTown abstractTown -> { // TODO: Merge nested switch statements?
+				switch (town.getTownSize()) {
+					case Small -> {
+						population = repeatedlyRoll.repeatedlyRoll(4, 10, 5);
+						skillCount = repeatedlyRoll.repeatedlyRoll(3, 4);
+						skillLevelSource = () -> repeatedlyRoll.repeatedlyRoll(2, 6);
+						resourceCount = repeatedlyRoll.repeatedlyRoll(2, 3);
+					}
+					case Medium -> {
+						population = repeatedlyRoll.repeatedlyRoll(20, 20, 50);
+						skillCount = repeatedlyRoll.repeatedlyRoll(4, 6);
+						skillLevelSource = () -> repeatedlyRoll.repeatedlyRoll(3, 6);
+						resourceCount = repeatedlyRoll.repeatedlyRoll(2, 6);
+					}
+					case Large -> {
+						population = repeatedlyRoll.repeatedlyRoll(23, 100, 200);
+						skillCount = repeatedlyRoll.repeatedlyRoll(6, 8);
+						skillLevelSource = () -> repeatedlyRoll.repeatedlyRoll(3, 8);
+						resourceCount = repeatedlyRoll.repeatedlyRoll(4, 6);
+					}
+					default -> throw new IllegalStateException("Non-exhaustive switch");
 				}
-				case Medium -> {
-					population = repeatedlyRoll.repeatedlyRoll(20, 20, 50);
-					skillCount = repeatedlyRoll.repeatedlyRoll(4, 6);
-					skillLevelSource = () -> repeatedlyRoll.repeatedlyRoll(3, 6);
-					resourceCount = repeatedlyRoll.repeatedlyRoll(2, 6);
-				}
-				case Large -> {
-					population = repeatedlyRoll.repeatedlyRoll(23, 100, 200);
-					skillCount = repeatedlyRoll.repeatedlyRoll(6, 8);
-					skillLevelSource = () -> repeatedlyRoll.repeatedlyRoll(3, 8);
-					resourceCount = repeatedlyRoll.repeatedlyRoll(4, 6);
-				}
-				default -> throw new IllegalStateException("Non-exhaustive switch");
 			}
-		} else {
-			throw new IllegalStateException("Unhandled town type");
+			default -> throw new IllegalStateException("Unhandled town type");
 		}
 
 		final CommunityStats retval = new CommunityStats(population);

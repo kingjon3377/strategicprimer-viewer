@@ -71,11 +71,12 @@ public class QueryCLI implements ReadOnlyDriver {
 	private static int countWorkersInIterable(final Player player, final Iterable<? extends IFixture> fixtures) {
 		int retval = 0;
 		for (final IFixture fixture : fixtures) {
-			if (fixture instanceof IWorker && fixtures instanceof final HasOwner owned &&
-					player.equals(owned.owner())) {
-				retval++;
-			} else if (fixture instanceof final FixtureIterable<?> iter) {
-				retval += countWorkersInIterable(player, iter);
+			switch (fixture) {
+				case final IWorker ignored when fixtures instanceof final HasOwner owned && player.equals(owned.owner()) ->
+						retval++;
+				case final FixtureIterable<?> iter -> retval += countWorkersInIterable(player, iter);
+				case null, default -> {
+				}
 			}
 		}
 		return retval;

@@ -51,12 +51,10 @@ import lovelace.util.ThrowingConsumer;
 	@Override
 	public void write(final ThrowingConsumer<String, IOException> ostream, final ExplorableFixture obj, final int indent)
 			throws IOException {
-		if (obj instanceof Battlefield) {
-			writeTag(ostream, "battlefield", indent);
-		} else if (obj instanceof Cave) {
-			writeTag(ostream, "cave", indent);
-		} else {
-			throw new IllegalArgumentException("Only supports Battlefields and Caves");
+		switch (obj) {
+			case final Battlefield battlefield -> writeTag(ostream, "battlefield", indent);
+			case final Cave cave -> writeTag(ostream, "cave", indent);
+			default -> throw new IllegalArgumentException("Only supports Battlefields and Caves");
 		}
 		writeProperty(ostream, "dc", obj.getDC());
 		writeProperty(ostream, "id", obj.getId());

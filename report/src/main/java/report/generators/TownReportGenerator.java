@@ -76,24 +76,32 @@ public class TownReportGenerator extends AbstractReportGenerator<ITownFixture> {
 	@Override
 	public void produceSingle(final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
 							  final ILegacyMap map, final Consumer<String> ostream, final ITownFixture item, final Point loc) {
-		if (item instanceof final Village v) {
-			new VillageReportGenerator(currentPlayer, dimensions, hq)
+		switch (item) {
+			case final Village v -> new VillageReportGenerator(currentPlayer, dimensions, hq)
 					.produceSingle(fixtures, map, ostream, v, loc);
-		} else if (item instanceof AbstractTown) {
-			fixtures.remove(item.getId());
-			ostream.accept("At ");
-			ostream.accept(loc.toString());
-			ostream.accept(": ");
-			ostream.accept(item.getName());
-			ostream.accept(", ");
-			if (item.owner().isIndependent()) {
+			case AbstractTown abstractTown when item.owner().isIndependent() -> {
+				fixtures.remove(item.getId());
+				ostream.accept("At ");
+				ostream.accept(loc.toString());
+				ostream.accept(": ");
+				ostream.accept(item.getName());
+				ostream.accept(", ");
 				ostream.accept("an independent ");
 				ostream.accept(item.getTownSize().toString());
 				ostream.accept(" ");
 				ostream.accept(item.getStatus().toString());
 				ostream.accept(" ");
 				ostream.accept(item.getKind());
-			} else {
+				ostream.accept(" ");
+				ostream.accept(distanceString.apply(loc));
+			}
+			case AbstractTown abstractTown when !item.owner().isIndependent() -> {
+				fixtures.remove(item.getId());
+				ostream.accept("At ");
+				ostream.accept(loc.toString());
+				ostream.accept(": ");
+				ostream.accept(item.getName());
+				ostream.accept(", ");
 				ostream.accept("a ");
 				ostream.accept(item.getTownSize().toString());
 				ostream.accept(" ");
@@ -103,12 +111,13 @@ public class TownReportGenerator extends AbstractReportGenerator<ITownFixture> {
 				} else {
 					ostream.accept(item.owner().toString());
 				}
+				ostream.accept(" ");
+				ostream.accept(distanceString.apply(loc));
 			}
-			ostream.accept(" ");
-			ostream.accept(distanceString.apply(loc));
-		} else if (item instanceof final IFortress f) {
-			new FortressReportGenerator(currentPlayer, dimensions, currentTurn, hq)
+			case final IFortress f -> new FortressReportGenerator(currentPlayer, dimensions, currentTurn, hq)
 					.produceSingle(fixtures, map, ostream, f, loc);
+			default -> {
+			}
 		}
 	}
 

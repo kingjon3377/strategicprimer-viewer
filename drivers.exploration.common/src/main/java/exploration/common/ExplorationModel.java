@@ -196,12 +196,17 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 	 */
 	private static boolean doesStreamContainUnit(final Iterable<? extends IFixture> stream, final IUnit unit) {
 		for (final IFixture member : stream) {
-			if (member.getId() == unit.getId() && member instanceof final IUnit memUnit &&
-					memUnit.owner().equals(unit.owner()) && memUnit.getKind().equals(unit.getKind()) &&
-					memUnit.getName().equals(unit.getName())) {
-				return true;
-			} else if (member instanceof final FixtureIterable iter && doesStreamContainUnit(iter, unit)) {
-				return true;
+			switch (member) {
+				case final IUnit memUnit when memUnit.getId() == unit.getId() &&
+						memUnit.owner().equals(unit.owner()) && memUnit.getKind().equals(unit.getKind()) &&
+						memUnit.getName().equals(unit.getName()) -> {
+					return true;
+				}
+				case final FixtureIterable iter when doesStreamContainUnit(iter, unit) -> {
+					return true;
+				}
+				case null, default -> {
+				}
 			}
 		}
 		return false;
@@ -212,11 +217,16 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 	 */
 	private static boolean doesStreamContainFortress(final Iterable<? extends IFixture> stream, final IFortress fort) {
 		for (final IFixture member : stream) {
-			if (member.getId() == fort.getId() && member instanceof final IFortress memFort &&
-					memFort.owner().equals(fort.owner()) && memFort.getName().equals(fort.getName())) {
-				return true;
-			} else if (member instanceof final FixtureIterable iter && doesStreamContainFortress(iter, fort)) {
-				return true;
+			switch (member) {
+				case final IFortress memFort when memFort.getId() == fort.getId() &&
+						memFort.owner().equals(fort.owner()) && memFort.getName().equals(fort.getName()) -> {
+					return true;
+				}
+				case final FixtureIterable iter when doesStreamContainFortress(iter, fort) -> {
+					return true;
+				}
+				case null, default -> {
+				}
 			}
 		}
 		return false;
@@ -226,13 +236,11 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 	 * Whether the given fixture is at the given location in the given map.
 	 */
 	private static boolean doesLocationHaveFixture(final ILegacyMap map, final Point point, final TileFixture fixture) {
-		if (fixture instanceof final IUnit unit) {
-			return doesStreamContainUnit(map.getFixtures(point), unit);
-		} else if (fixture instanceof final IFortress fort) {
-			return doesStreamContainFortress(map.getFixtures(point), fort);
-		} else {
-			return doesStreamContainFixture(map.getFixtures(point), fixture);
-		}
+		return switch (fixture) {
+			case final IUnit unit -> doesStreamContainUnit(map.getFixtures(point), unit);
+			case final IFortress fort -> doesStreamContainFortress(map.getFixtures(point), fort);
+			default -> doesStreamContainFixture(map.getFixtures(point), fixture);
+		};
 	}
 
 	/**
@@ -710,10 +718,11 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 			final TileFixture oldFixture = diggables.getFirst();
 			final TileFixture newFixture = oldFixture.copy(IFixture.CopyBehavior.KEEP);
 			// TODO: Extract an interface for 'exposed' so we only have to do one test
-			if (newFixture instanceof final Ground g) {
-				g.setExposed(true);
-			} else if (newFixture instanceof final MineralVein mv) {
-				mv.setExposed(true);
+			switch (newFixture) {
+				case final Ground g -> g.setExposed(true);
+				case final MineralVein mv -> mv.setExposed(true);
+				default -> {
+				}
 			}
 			final BiConsumer<IMutableLegacyMap, IFixture.CopyBehavior> addToMap = (map, condition) -> {
 				if (map.getFixtures(currentPoint).stream()
@@ -755,13 +764,12 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 	public boolean copyToSubMaps(final Point location, final TileFixture fixture, final IFixture.CopyBehavior zero) {
 		final @Nullable TileFixture matching;
 		boolean retval = false;
-		if (fixture instanceof FakeFixture) {
-			// Skip it! It'll corrupt the output XML!
-			return false;
-		} else if (fixture instanceof AnimalTracks) {
-			matching = fixture;
-		} else {
-			matching = getMap().getFixtures(location).stream()
+		switch (fixture) {
+			case final FakeFixture fake -> { // must be a block, won't compile if inlined
+				return false; // Skip it! It'll corrupt the output XML!
+			}
+			case AnimalTracks tracks -> matching = fixture;
+			default -> matching = getMap().getFixtures(location).stream()
 					.filter(f -> f.getId() == fixture.getId()).findAny().orElse(null);
 		}
 		if (Objects.isNull(matching)) {
@@ -1051,58 +1059,62 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 		final Predicate<Object> hasMutableName = HasMutableName.class::isInstance;
 		final Function<Object, IUnit> unitCast = IUnit.class::cast;
 		final Function<Object, HasMutableName> hmnCast = HasMutableName.class::cast;
-		if (item instanceof final IUnit unit) {
-			final Predicate<IUnit> matchingOwner = u -> u.owner().equals(unit.owner());
-			final Predicate<IUnit> matchingName = u -> u.getName().equals(unit.getName());
-			final Predicate<IUnit> matchingKind = u -> u.getKind().equals(unit.getKind());
-			final Predicate<IUnit> matchingId = u -> u.getId() == unit.getId();
-			for (final IMutableLegacyMap map : getRestrictedAllMaps()) {
-				final Optional<HasMutableName> matching = map.streamAllFixtures()
-						.flatMap(ExplorationModel::unflattenNonFortresses)
-						.filter(isUnit)
-						.filter(hasMutableName)
-						.map(unitCast)
-						.filter(matchingOwner)
-						.filter(matchingName)
-						.filter(matchingKind)
-						.filter(matchingId)
-						.map(hmnCast).findAny();
-				if (matching.isPresent()) {
-					any = true;
-					matching.get().setName(newName);
-					map.setModified(true);
+		switch (item) {
+			case final IUnit unit -> {
+				final Predicate<IUnit> matchingOwner = u -> u.owner().equals(unit.owner());
+				final Predicate<IUnit> matchingName = u -> u.getName().equals(unit.getName());
+				final Predicate<IUnit> matchingKind = u -> u.getKind().equals(unit.getKind());
+				final Predicate<IUnit> matchingId = u -> u.getId() == unit.getId();
+				for (final IMutableLegacyMap map : getRestrictedAllMaps()) {
+					final Optional<HasMutableName> matching = map.streamAllFixtures()
+							.flatMap(ExplorationModel::unflattenNonFortresses)
+							.filter(isUnit)
+							.filter(hasMutableName)
+							.map(unitCast)
+							.filter(matchingOwner)
+							.filter(matchingName)
+							.filter(matchingKind)
+							.filter(matchingId)
+							.map(hmnCast).findAny();
+					if (matching.isPresent()) {
+						any = true;
+						matching.get().setName(newName);
+						map.setModified(true);
+					}
 				}
-			}
-			if (!any) {
-				LovelaceLogger.warning("Unable to find unit to rename");
-			}
-			return any;
-		} else if (item instanceof final UnitMember member) {
-			final Predicate<HasMutableName> matchingName = u -> u.getName().equals(item.getName());
-			final Predicate<IFixture> matchingId = u -> u.getId() == member.getId();
-			for (final IMutableLegacyMap map : getRestrictedAllMaps()) {
-				final Optional<HasMutableName> matching = map.streamAllFixtures()
-						.flatMap(ExplorationModel::unflattenNonFortresses)
-						.filter(isUnit).map(unitCast)
-						.filter(this::matchingPlayer).flatMap(FixtureIterable::stream)
-						.filter(matchingId)
-						.filter(hasMutableName)
-						.map(hmnCast)
-						.filter(matchingName)
-						.findAny();
-				if (matching.isPresent()) {
-					any = true;
-					matching.get().setName(newName);
-					map.setModified(true);
+				if (!any) {
+					LovelaceLogger.warning("Unable to find unit to rename");
 				}
+				return any;
 			}
-			if (!any) {
-				LovelaceLogger.warning("Unable to find unit member to rename");
+			case final UnitMember member -> {
+				final Predicate<HasMutableName> matchingName = u -> u.getName().equals(item.getName());
+				final Predicate<IFixture> matchingId = u -> u.getId() == member.getId();
+				for (final IMutableLegacyMap map : getRestrictedAllMaps()) {
+					final Optional<HasMutableName> matching = map.streamAllFixtures()
+							.flatMap(ExplorationModel::unflattenNonFortresses)
+							.filter(isUnit).map(unitCast)
+							.filter(this::matchingPlayer).flatMap(FixtureIterable::stream)
+							.filter(matchingId)
+							.filter(hasMutableName)
+							.map(hmnCast)
+							.filter(matchingName)
+							.findAny();
+					if (matching.isPresent()) {
+						any = true;
+						matching.get().setName(newName);
+						map.setModified(true);
+					}
+				}
+				if (!any) {
+					LovelaceLogger.warning("Unable to find unit member to rename");
+				}
+				return any;
 			}
-			return any;
-		} else {
-			LovelaceLogger.warning("Unable to find item to rename");
-			return false;
+			default -> {
+				LovelaceLogger.warning("Unable to find item to rename");
+				return false;
+			}
 		}
 	}
 
@@ -1113,57 +1125,61 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 		final Function<Object, IUnit> unitCast = IUnit.class::cast;
 		final Predicate<Object> hasMutableKind = HasMutableKind.class::isInstance;
 		final Function<Object, HasMutableKind> hmkCast = HasMutableKind.class::cast;
-		if (item instanceof final IUnit unit) {
-			final Predicate<IUnit> matchingOwner = u -> u.owner().equals(unit.owner());
-			final Predicate<IUnit> matchingName = u -> u.getName().equals(unit.getName());
-			final Predicate<IUnit> matchingKind = u -> u.getKind().equals(unit.getKind());
-			final Predicate<IUnit> matchingId = u -> u.getId() == unit.getId();
-			for (final IMutableLegacyMap map : getRestrictedAllMaps()) {
-				final Optional<HasMutableKind> matching = map.streamAllFixtures()
-						.flatMap(ExplorationModel::unflattenNonFortresses)
-						.filter(isUnit).map(unitCast)
-						.filter(matchingOwner)
-						.filter(matchingName)
-						.filter(matchingKind)
-						.filter(matchingId)
-						.map(hmkCast).findAny();
-				if (matching.isPresent()) {
-					any = true;
-					matching.get().setKind(newKind);
-					map.setModified(true);
+		switch (item) {
+			case final IUnit unit -> {
+				final Predicate<IUnit> matchingOwner = u -> u.owner().equals(unit.owner());
+				final Predicate<IUnit> matchingName = u -> u.getName().equals(unit.getName());
+				final Predicate<IUnit> matchingKind = u -> u.getKind().equals(unit.getKind());
+				final Predicate<IUnit> matchingId = u -> u.getId() == unit.getId();
+				for (final IMutableLegacyMap map : getRestrictedAllMaps()) {
+					final Optional<HasMutableKind> matching = map.streamAllFixtures()
+							.flatMap(ExplorationModel::unflattenNonFortresses)
+							.filter(isUnit).map(unitCast)
+							.filter(matchingOwner)
+							.filter(matchingName)
+							.filter(matchingKind)
+							.filter(matchingId)
+							.map(hmkCast).findAny();
+					if (matching.isPresent()) {
+						any = true;
+						matching.get().setKind(newKind);
+						map.setModified(true);
+					}
 				}
-			}
-			if (!any) {
-				LovelaceLogger.warning("Unable to find unit to change kind");
-			}
-			return any;
-		} else if (item instanceof final UnitMember member) {
-			final Predicate<HasMutableKind> matchingKind = m -> m.getKind().equals(item.getKind());
-			final Predicate<HasMutableKind> matchingId = m -> ((IFixture) m).getId() == member.getId();
-			for (final IMutableLegacyMap map : getRestrictedAllMaps()) {
-				final Optional<HasMutableKind> matching = map.streamAllFixtures()
-						.flatMap(ExplorationModel::unflattenNonFortresses)
-						.filter(isUnit).map(unitCast)
-						.filter(this::matchingPlayer)
-						.flatMap(FixtureIterable::stream)
-						.filter(hasMutableKind)
-						.map(hmkCast)
-						.filter(matchingKind)
-						.filter(matchingId) // TODO: move above cast so we can drop cast in lambda
-						.findAny();
-				if (matching.isPresent()) {
-					any = true;
-					matching.get().setKind(newKind);
-					map.setModified(true);
+				if (!any) {
+					LovelaceLogger.warning("Unable to find unit to change kind");
 				}
+				return any;
 			}
-			if (!any) {
-				LovelaceLogger.warning("Unable to find unit member to change kind");
+			case final UnitMember member -> {
+				final Predicate<HasMutableKind> matchingKind = m -> m.getKind().equals(item.getKind());
+				final Predicate<HasMutableKind> matchingId = m -> ((IFixture) m).getId() == member.getId();
+				for (final IMutableLegacyMap map : getRestrictedAllMaps()) {
+					final Optional<HasMutableKind> matching = map.streamAllFixtures()
+							.flatMap(ExplorationModel::unflattenNonFortresses)
+							.filter(isUnit).map(unitCast)
+							.filter(this::matchingPlayer)
+							.flatMap(FixtureIterable::stream)
+							.filter(hasMutableKind)
+							.map(hmkCast)
+							.filter(matchingKind)
+							.filter(matchingId) // TODO: move above cast so we can drop cast in lambda
+							.findAny();
+					if (matching.isPresent()) {
+						any = true;
+						matching.get().setKind(newKind);
+						map.setModified(true);
+					}
+				}
+				if (!any) {
+					LovelaceLogger.warning("Unable to find unit member to change kind");
+				}
+				return any;
 			}
-			return any;
-		} else {
-			LovelaceLogger.warning("Unable to find item to change kind");
-			return false;
+			default -> {
+				LovelaceLogger.warning("Unable to find item to change kind");
+				return false;
+			}
 		}
 	}
 

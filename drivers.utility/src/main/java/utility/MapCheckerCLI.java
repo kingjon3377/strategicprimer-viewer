@@ -250,39 +250,43 @@ public class MapCheckerCLI implements UtilityDriver {
 
 	private static boolean resourcePlaceholderChecker(final TileType terrain, final Point context,
 	                                                  final IFixture fixture, final Warning warner) {
-		if (fixture instanceof final IResourcePile rp) {
-			if (PLACEHOLDER_KINDS.contains(rp.getKind())) {
-				warner.handle(new SPContentWarning(context,
-						"Resource pile, ID #%d, has placeholder kind: %s".formatted(
-								fixture.getId(), rp.getKind())));
-			} else if (PLACEHOLDER_KINDS.contains(rp.getContents())) {
-				warner.handle(new SPContentWarning(context,
-						"Resource pile, ID #%d, has placeholder contents: %s".formatted(
-								fixture.getId(), rp.getContents())));
-			} else if (PLACEHOLDER_UNITS.contains(rp.getQuantity().units())) {
-				warner.handle(new SPContentWarning(context,
-						"Resource pile, ID #%d, has placeholder units".formatted(fixture.getId())));
-			} else if (((IResourcePile) fixture).getContents().contains("#")) {
-				warner.handle(new SPContentWarning(context, "Resource pile, ID #%d, has suspicous contents: %s".formatted(
-						fixture.getId(), rp.getContents())));
-			} else {
+		switch (fixture) {
+			case final IResourcePile rp -> {
+				if (PLACEHOLDER_KINDS.contains(rp.getKind())) {
+					warner.handle(new SPContentWarning(context,
+							"Resource pile, ID #%d, has placeholder kind: %s".formatted(
+									fixture.getId(), rp.getKind())));
+				} else if (PLACEHOLDER_KINDS.contains(rp.getContents())) {
+					warner.handle(new SPContentWarning(context,
+							"Resource pile, ID #%d, has placeholder contents: %s".formatted(
+									fixture.getId(), rp.getContents())));
+				} else if (PLACEHOLDER_UNITS.contains(rp.getQuantity().units())) {
+					warner.handle(new SPContentWarning(context,
+							"Resource pile, ID #%d, has placeholder units".formatted(fixture.getId())));
+				} else if (((IResourcePile) fixture).getContents().contains("#")) {
+					warner.handle(new SPContentWarning(context, "Resource pile, ID #%d, has suspicous contents: %s".formatted(
+							fixture.getId(), rp.getContents())));
+				} else {
+					return false;
+				}
+				return true;
+			}
+			case final ITownFixture t when !Objects.isNull(t.getPopulation()) -> {
+				final CommunityStats stats = t.getPopulation();
+				boolean retval = false;
+				for (final IResourcePile resource : stats.getYearlyConsumption()) {
+					retval = resourcePlaceholderChecker(terrain, context, resource, warner)
+							|| retval;
+				}
+				for (final IResourcePile resource : stats.getYearlyProduction()) {
+					retval = resourcePlaceholderChecker(terrain, context, resource, warner)
+							|| retval;
+				}
+				return retval;
+			}
+			default -> {
 				return false;
 			}
-			return true;
-		} else if (fixture instanceof final ITownFixture t && !Objects.isNull(t.getPopulation())) {
-			final CommunityStats stats = t.getPopulation();
-			boolean retval = false;
-			for (final IResourcePile resource : stats.getYearlyConsumption()) {
-				retval = resourcePlaceholderChecker(terrain, context, resource, warner)
-						|| retval;
-			}
-			for (final IResourcePile resource : stats.getYearlyProduction()) {
-				retval = resourcePlaceholderChecker(terrain, context, resource, warner)
-						|| retval;
-			}
-			return retval;
-		} else {
-			return false;
 		}
 	}
 

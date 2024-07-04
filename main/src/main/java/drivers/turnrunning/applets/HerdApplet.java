@@ -153,56 +153,61 @@ import query.SmallAnimalModel;
 			final LegacyQuantity production = herdModel.scaledProduction(combinedAnimal.getPopulation());
 			final double pounds = herdModel.scaledPoundsProduction(combinedAnimal.getPopulation());
 			final String resourceProduced;
-			if (herdModel instanceof final PoultryModel pm) {
-				resourceProduced = combinedAnimal.getKind() + " eggs";
-				final Boolean cleaningDay = cli.inputBoolean("Is this the one turn in every %d to clean up after birds?".formatted(pm.getExtraChoresInterval() + 1));
-				addLineToOrders.accept("Gathering %s eggs took the %d workers %d min".formatted(
-						combinedAnimal, workerCount, pm.dailyTime((int) flockPerHerder)));
-				minutesSpent += pm.getDailyTimePerHead() * flockPerHerder;
-				if (Objects.isNull(cleaningDay)) {
+			switch (herdModel) {
+				case final PoultryModel pm -> {
+					resourceProduced = combinedAnimal.getKind() + " eggs";
+					final Boolean cleaningDay = cli.inputBoolean("Is this the one turn in every %d to clean up after birds?".formatted(pm.getExtraChoresInterval() + 1));
+					addLineToOrders.accept("Gathering %s eggs took the %d workers %d min".formatted(
+							combinedAnimal, workerCount, pm.dailyTime((int) flockPerHerder)));
+					minutesSpent += pm.getDailyTimePerHead() * flockPerHerder;
+					if (Objects.isNull(cleaningDay)) {
+						return null;
+					} else if (cleaningDay) {
+						addLineToOrders.accept("Cleaning up after them takes %.1f hours.".formatted(PoultryModel.dailyExtraTime((int) flockPerHerder) / 60.0));
+						minutesSpent += PoultryModel.getExtraTimePerHead() * flockPerHerder;
+					}
+				}
+				case MammalModel mammalModel -> {
+					resourceProduced = "milk";
+					addToOrders.accept("Between two milkings, tending the ");
+					addToOrders.accept(AnimalPlurals.get(combinedAnimal.getKind()));
+					final long baseCost;
+					if (experts) {
+						baseCost = flockPerHerder * (herdModel.getDailyTimePerHead() - 10); // TODO: That's a sub-optimal formula
+					} else {
+						baseCost = flockPerHerder * herdModel.getDailyTimePerHead();
+					}
+					addLineToOrders.accept(" took %d min, plus %s min to gather them".formatted(
+							baseCost, MammalModel.getDailyTimeFloor()));
+					minutesSpent += baseCost;
+					minutesSpent += MammalModel.getDailyTimeFloor();
+				}
+				case final SmallAnimalModel smm -> {
+					addToOrders.accept("Tending the ");
+					addToOrders.accept(AnimalPlurals.get(combinedAnimal.getKind()));
+					final long baseCost;
+					if (experts) {
+						baseCost = (int) ((flockPerHerder * herdModel.getDailyTimePerHead() +
+								SmallAnimalModel.getDailyTimeFloor()) * 0.9);
+					} else {
+						baseCost = flockPerHerder * herdModel.getDailyTimePerHead() +
+								SmallAnimalModel.getDailyTimeFloor();
+					}
+					minutesSpent += baseCost;
+					addLineToOrders.accept(" took the %d workers %d min.".formatted(workerCount, baseCost));
+					final Boolean extra = cli.inputBoolean("Is this the one turn in every %d to clean up after the animals?".formatted(smm.getExtraChoresInterval() + 1));
+					if (Objects.isNull(extra)) {
+						return null;
+					} else {
+						addLineToOrders.accept("Cleaning up after them took %d minutes.".formatted(SmallAnimalModel.getExtraTimePerHead() * flockPerHerder));
+						minutesSpent += SmallAnimalModel.getExtraTimePerHead() * flockPerHerder;
+					}
+					continue;
+				}
+				default -> {
+					LovelaceLogger.error("Unhandled animal type");
 					return null;
-				} else if (cleaningDay) {
-					addLineToOrders.accept("Cleaning up after them takes %.1f hours.".formatted(PoultryModel.dailyExtraTime((int) flockPerHerder) / 60.0));
-					minutesSpent += PoultryModel.getExtraTimePerHead() * flockPerHerder;
 				}
-			} else if (herdModel instanceof MammalModel) {
-				resourceProduced = "milk";
-				addToOrders.accept("Between two milkings, tending the ");
-				addToOrders.accept(AnimalPlurals.get(combinedAnimal.getKind()));
-				final long baseCost;
-				if (experts) {
-					baseCost = flockPerHerder * (herdModel.getDailyTimePerHead() - 10); // TODO: That's a sub-optimal formula
-				} else {
-					baseCost = flockPerHerder * herdModel.getDailyTimePerHead();
-				}
-				addLineToOrders.accept(" took %d min, plus %s min to gather them".formatted(
-						baseCost, MammalModel.getDailyTimeFloor()));
-				minutesSpent += baseCost;
-				minutesSpent += MammalModel.getDailyTimeFloor();
-			} else if (herdModel instanceof final SmallAnimalModel smm) {
-				addToOrders.accept("Tending the ");
-				addToOrders.accept(AnimalPlurals.get(combinedAnimal.getKind()));
-				final long baseCost;
-				if (experts) {
-					baseCost = (int) ((flockPerHerder * herdModel.getDailyTimePerHead() +
-							SmallAnimalModel.getDailyTimeFloor()) * 0.9);
-				} else {
-					baseCost = flockPerHerder * herdModel.getDailyTimePerHead() +
-							SmallAnimalModel.getDailyTimeFloor();
-				}
-				minutesSpent += baseCost;
-				addLineToOrders.accept(" took the %d workers %d min.".formatted(workerCount, baseCost));
-				final Boolean extra = cli.inputBoolean("Is this the one turn in every %d to clean up after the animals?".formatted(smm.getExtraChoresInterval() + 1));
-				if (Objects.isNull(extra)) {
-					return null;
-				} else {
-					addLineToOrders.accept("Cleaning up after them took %d minutes.".formatted(SmallAnimalModel.getExtraTimePerHead() * flockPerHerder));
-					minutesSpent += SmallAnimalModel.getExtraTimePerHead() * flockPerHerder;
-				}
-				continue;
-			} else {
-				LovelaceLogger.error("Unhandled animal type");
-				return null;
 			}
 			addLineToOrders.accept("This produced %.1f %s, %.1f lbs, of %s.".formatted(
 					production.number().doubleValue(), production.units(), pounds, resourceProduced));

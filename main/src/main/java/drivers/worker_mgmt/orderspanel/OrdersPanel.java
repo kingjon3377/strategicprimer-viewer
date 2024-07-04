@@ -126,20 +126,20 @@ public class OrdersPanel extends BorderedPanel implements OrdersContainer {
 	private @Nullable Object selection = null;
 
 	private void fixColor() {
-		if (selection instanceof final IUnit sel && !isCurrent.isCurrent(sel,
-				spinnerModel.getNumber().intValue())) {
-			area.setBackground(LIGHT_BLUE);
-		} else if (selection instanceof final String sel) {
-			final int turn = spinnerModel.getNumber().intValue();
-			for (final IUnit unit : playerUnits.apply(currentPlayer, sel)) {
-				if (!isCurrent.isCurrent(unit, turn)) {
-					area.setBackground(LIGHT_BLUE);
-					return;
+		switch (selection) {
+			case final IUnit sel when !isCurrent.isCurrent(sel,
+					spinnerModel.getNumber().intValue()) -> area.setBackground(LIGHT_BLUE);
+			case final String sel -> {
+				final int turn = spinnerModel.getNumber().intValue();
+				for (final IUnit unit : playerUnits.apply(currentPlayer, sel)) {
+					if (!isCurrent.isCurrent(unit, turn)) {
+						area.setBackground(LIGHT_BLUE);
+						return;
+					}
 				}
+				area.setBackground(defaultColor);
 			}
-			area.setBackground(defaultColor);
-		} else {
-			area.setBackground(defaultColor);
+			case null, default -> area.setBackground(defaultColor);
 		}
 	}
 
@@ -148,23 +148,28 @@ public class OrdersPanel extends BorderedPanel implements OrdersContainer {
 	 */
 	@Override
 	public void apply() {
-		if (selection instanceof final IUnit sel) {
-			if (!Objects.isNull(ordersConsumer)) {
-				ordersConsumer.accept(sel,
-						spinnerModel.getNumber().intValue(),
-						area.getText());
-			}
-			fixColor();
-			getParent().getParent().repaint();
-		} else if (selection instanceof final String sel) {
-			if (!Objects.isNull(ordersConsumer)) {
-				final int turn = spinnerModel.getNumber().intValue();
-				for (final IUnit unit : playerUnits.apply(currentPlayer, sel)) {
-					ordersConsumer.accept(unit, turn, area.getText());
+		switch (selection) {
+			case final IUnit sel -> {
+				if (!Objects.isNull(ordersConsumer)) {
+					ordersConsumer.accept(sel,
+							spinnerModel.getNumber().intValue(),
+							area.getText());
 				}
+				fixColor();
+				getParent().getParent().repaint();
 			}
-			fixColor();
-			getParent().getParent().repaint();
+			case final String sel -> {
+				if (!Objects.isNull(ordersConsumer)) {
+					final int turn = spinnerModel.getNumber().intValue();
+					for (final IUnit unit : playerUnits.apply(currentPlayer, sel)) {
+						ordersConsumer.accept(unit, turn, area.getText());
+					}
+				}
+				fixColor();
+				getParent().getParent().repaint();
+			}
+			case null, default -> {
+			}
 		}
 	}
 
@@ -174,27 +179,31 @@ public class OrdersPanel extends BorderedPanel implements OrdersContainer {
 	 */
 	@Override
 	public void revert() {
-		if (selection instanceof final IUnit sel) {
-			area.setEnabled(true);
-			area.setText(ordersSupplier.getOrders(sel,
-					spinnerModel.getNumber().intValue()));
-		} else if (selection instanceof final String sel) {
-			area.setEnabled(true);
-			@Nullable String orders = null;
-			final int turn = spinnerModel.getNumber().intValue();
-			for (final IUnit unit : playerUnits.apply(currentPlayer, sel)) {
-				if (Objects.isNull(orders)) {
-					orders = ordersSupplier.getOrders(unit, turn);
-				} else if (!orders.equals(ordersSupplier.getOrders(unit, turn))) {
-					area.setText("");
-					fixColor();
-					return;
-				}
+		switch (selection) {
+			case final IUnit sel -> {
+				area.setEnabled(true);
+				area.setText(ordersSupplier.getOrders(sel,
+						spinnerModel.getNumber().intValue()));
 			}
-			area.setText(Optional.ofNullable(orders).orElse(""));
-		} else {
-			area.setEnabled(false);
-			area.setText("");
+			case final String sel -> {
+				area.setEnabled(true);
+				@Nullable String orders = null;
+				final int turn = spinnerModel.getNumber().intValue();
+				for (final IUnit unit : playerUnits.apply(currentPlayer, sel)) {
+					if (Objects.isNull(orders)) {
+						orders = ordersSupplier.getOrders(unit, turn);
+					} else if (!orders.equals(ordersSupplier.getOrders(unit, turn))) {
+						area.setText("");
+						fixColor();
+						return;
+					}
+				}
+				area.setText(Optional.ofNullable(orders).orElse(""));
+			}
+			case null, default -> {
+				area.setEnabled(false);
+				area.setText("");
+			}
 		}
 		fixColor();
 	}

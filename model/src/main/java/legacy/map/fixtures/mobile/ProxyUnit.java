@@ -215,29 +215,29 @@ public class ProxyUnit implements IUnit, ProxyFor<IUnit> {
 					final int memberID = member.getId();
 					if (map.containsKey(memberID)) {
 						proxy = map.get(memberID);
-						if (proxy instanceof final WorkerProxy wp) {
-							if (member instanceof final IWorker w) {
-								wp.addProxied(w);
-							} else {
-								LovelaceLogger.warning("ProxyWorker matched non-worker");
+						switch (proxy) {
+							case final WorkerProxy wp -> {
+								if (member instanceof final IWorker w) {
+									wp.addProxied(w);
+								} else {
+									LovelaceLogger.warning("ProxyWorker matched non-worker");
+								}
 							}
-						} else if (proxy instanceof final AnimalProxy ap) {
-							if (member instanceof final Animal a) {
-								ap.addProxied(a);
-							} else {
-								LovelaceLogger.warning("ProxyAnimal matched non-animal");
+							case final AnimalProxy ap -> {
+								if (member instanceof final Animal a) {
+									ap.addProxied(a);
+								} else {
+									LovelaceLogger.warning("ProxyAnimal matched non-animal");
+								}
 							}
-						} else {
-							((UnitMemberProxy<UnitMember>) proxy).addProxied(member);
+							case null, default -> ((UnitMemberProxy<UnitMember>) proxy).addProxied(member);
 						}
 					} else {
-						if (member instanceof final IWorker w) {
-							proxy = new ProxyWorker(w);
-						} else if (member instanceof final Animal a) {
-							proxy = new ProxyAnimal(a);
-						} else {
-							proxy = new ProxyMember(member);
-						}
+						proxy = switch (member) {
+							case final IWorker w -> new ProxyWorker(w);
+							case final Animal a -> new ProxyAnimal(a);
+							default -> new ProxyMember(member);
+						};
 						map.put(memberID, proxy);
 					}
 				}

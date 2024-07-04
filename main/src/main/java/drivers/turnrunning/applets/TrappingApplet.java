@@ -118,7 +118,7 @@ import org.jetbrains.annotations.Nullable;
 			}
 			boolean out = false;
 			switch (command) {
-				case Check:
+				case Check -> {
 					if (!encounters.hasNext()) {
 						out = true;
 						cli.println("Ran out of results!");
@@ -127,46 +127,44 @@ import org.jetbrains.annotations.Nullable;
 					final Pair<Point, TileFixture> find = encounters.next();
 					final Point loc = find.getValue0();
 					final TileFixture item = find.getValue1();
-					if (item instanceof HuntingModel.NothingFound) {
-						cli.println("Nothing in the trap");
-						time -= nothingCost;
-						break;
-					} else if (item instanceof final AnimalTracks at) {
-						cli.printf("Found evidence of %s escaping%n", at.getKind());
-						model.copyToSubMaps(center, item, IFixture.CopyBehavior.ZERO);
-						time -= nothingCost;
-						break;
-					} else if (!(item instanceof Animal)) {
-						throw new IllegalStateException("Unhandled case from HuntingModel");
+					switch (item) {
+						case final HuntingModel.NothingFound nothingFound -> {
+							cli.println("Nothing in the trap");
+							time -= nothingCost;
+						}
+						case final AnimalTracks at -> {
+							cli.printf("Found evidence of %s escaping%n", at.getKind());
+							model.copyToSubMaps(center, item, IFixture.CopyBehavior.ZERO);
+							time -= nothingCost;
+						}
+						case final Animal animal -> {
+							final Integer cost = handleFound(center, loc, animal);
+							if (Objects.isNull(cost)) {
+								return null;
+							}
+							time -= cost;
+						}
+						default -> throw new IllegalStateException("Unhandled case from HuntingModel");
 					}
-					final Integer cost = handleFound(center, loc, (Animal) item);
-					if (Objects.isNull(cost)) {
-						return null;
-					}
-					time -= cost;
-					break;
-				case EasyReset:
+				}
+				case EasyReset -> {
 					if (fishing) {
 						time -= 20;
 					} else {
 						time -= 5;
 					}
-					break;
-				case Move:
-					time -= 2;
-					break;
-//			case Quit:
-//				time = 0;
-//				break;
-				case SetTrap:
+				}
+				case Move -> time -= 2;
+
+//			case Quit -> time = 0;
+				case SetTrap -> {
 					if (fishing) {
 						time -= 30;
 					} else {
 						time -= 45;
 					}
-					break;
-				default:
-					throw new IllegalStateException("Exhaustive switch wasn't");
+				}
+				default -> throw new IllegalStateException("Exhaustive switch wasn't");
 			}
 			if (out) {
 				break;

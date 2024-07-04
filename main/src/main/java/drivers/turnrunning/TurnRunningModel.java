@@ -480,12 +480,10 @@ public class TurnRunningModel extends ExplorationModel implements ITurnRunningMo
 									resource.getContents().equals(item.getContents()) && resource.getId() == item.getId())) {
 						final BigDecimal qty = decimalize(item.getQuantity().number());
 						if (qty.compareTo(amount) <= 0) {
-							if (container instanceof final IMutableUnit unit) {
-								unit.removeMember(item);
-							} else if (container instanceof final IMutableFortress fort) {
-								fort.removeMember(item);
-							} else {
-								throw new IllegalStateException(
+							switch (container) {
+								case final IMutableUnit unit -> unit.removeMember(item);
+								case final IMutableFortress fort -> fort.removeMember(item);
+								default -> throw new IllegalStateException(
 										"Unexpected fixture container type");
 							}
 						} else {
@@ -531,12 +529,10 @@ public class TurnRunningModel extends ExplorationModel implements ITurnRunningMo
 						.map(IMutableResourcePile.class::cast).toList()) {
 					if (resource.isSubset(item, x -> {
 					})) { // TODO: is that the right way around?
-						if (container instanceof final IMutableUnit unit) {
-							unit.removeMember(item);
-						} else if (container instanceof final IMutableFortress fort) {
-							fort.removeMember(item);
-						} else {
-							throw new IllegalStateException(
+						switch (container) {
+							case final IMutableUnit unit -> unit.removeMember(item);
+							case final IMutableFortress fort -> fort.removeMember(item);
+							default -> throw new IllegalStateException(
 									"Unexpected fixture container type");
 						}
 						map.setModified(true);
@@ -827,12 +823,10 @@ public class TurnRunningModel extends ExplorationModel implements ITurnRunningMo
 				if (!Objects.isNull(matching) && !Objects.isNull(destination)) {
 					map.setModified(true);
 					if (quantity.doubleValue() >= matching.getQuantity().number().doubleValue()) {
-						if (container instanceof final IMutableFortress fort) { // TODO: Combine with other block when a supertype is added for this method
-							fort.removeMember(matching);
-						} else if (container instanceof final IMutableUnit unit) {
-							unit.removeMember(matching);
-						} else {
-							throw new IllegalStateException("Unexpected fixture-container type");
+						switch (container) { // TODO: Combine unit and fortress cases once supertype added for removeMember()
+							case final IMutableFortress fort -> fort.removeMember(matching);
+							case final IMutableUnit unit -> unit.removeMember(matching);
+							default -> throw new IllegalStateException("Unexpected fixture-container type");
 						}
 						destination.addMember(matching);
 					} else {
@@ -899,12 +893,10 @@ public class TurnRunningModel extends ExplorationModel implements ITurnRunningMo
 				if (!Objects.isNull(matching) && !Objects.isNull(destination)) {
 					map.setModified(true);
 					if (quantity.doubleValue() >= matching.getQuantity().number().doubleValue()) {
-						if (container instanceof final IMutableFortress fort) { // TODO: Combine with other block when a supertype is added for this method
-							fort.removeMember(matching);
-						} else if (container instanceof final IMutableUnit unit) {
-							unit.removeMember(matching);
-						} else {
-							throw new IllegalStateException("Unexpected fixture-container type");
+						switch (container) { // TODO: Combine cases when a supertype is added for removeMember()
+							case final IMutableFortress fort -> fort.removeMember(matching);
+							case final IMutableUnit unit -> unit.removeMember(matching);
+							default -> throw new IllegalStateException("Unexpected fixture-container type");
 						}
 						destination.addMember(matching);
 					} else {

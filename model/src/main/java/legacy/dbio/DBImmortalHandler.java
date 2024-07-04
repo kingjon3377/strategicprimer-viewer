@@ -118,17 +118,15 @@ public final class DBImmortalHandler extends AbstractDatabaseWriter<Immortal, /*
 	public void write(final Transactional db, final Immortal obj, final Object context) throws SQLException {
 		if (obj instanceof SimpleImmortal || obj instanceof ImmortalAnimal) {
 			try {
-				if (context instanceof final Point p) {
-					INSERT_SIMPLE.on(value("row", p.row()),
+				switch (context) {
+					case final Point p -> INSERT_SIMPLE.on(value("row", p.row()),
 							value("column", p.column()),
 							value("type", ((HasKind) obj).getKind()), value("id", obj.getId()),
 							value("image", ((HasImage) obj).getImage())).executeUpdate(db.connection());
-				} else if (context instanceof final IUnit u) {
-					INSERT_SIMPLE.on(
+					case final IUnit u -> INSERT_SIMPLE.on(
 							value("parent", u.getId()), value("type", ((HasKind) obj).getKind()),
 							value("id", obj.getId()), value("image", ((HasImage) obj).getImage())).execute(db.connection());
-				} else {
-					throw new IllegalArgumentException("context must be Point or IUnit");
+					default -> throw new IllegalArgumentException("context must be Point or IUnit");
 				}
 			} catch (final SQLException except) {
 				if (except.getMessage().contains("constraint failed: simple_immortals)")) {
@@ -150,18 +148,16 @@ public final class DBImmortalHandler extends AbstractDatabaseWriter<Immortal, /*
 				case final Giant giant -> "giant";
 				default -> throw new IllegalArgumentException("Unexpected immortal type");
 			};
-			if (context instanceof final Point p) {
-				INSERT_KINDED.on(value("row", p.row()),
+			switch (context) {
+				case final Point p -> INSERT_KINDED.on(value("row", p.row()),
 						value("column", p.column()),
 						value("type", type), value("kind", ((HasKind) obj).getKind()),
 						value("id", obj.getId()), value("image", ((HasImage) obj).getImage())).execute(db.connection());
-			} else if (context instanceof final IUnit u) {
-				INSERT_KINDED.on(
+				case final IUnit u -> INSERT_KINDED.on(
 						value("parent", u.getId()), value("type", type),
 						value("kind", ((HasKind) obj).getKind()), value("id", obj.getId()),
 						value("image", ((HasImage) obj).getImage())).execute(db.connection());
-			} else {
-				throw new IllegalArgumentException("context must be Point or IUnit");
+				default -> throw new IllegalArgumentException("context must be Point or IUnit");
 			}
 		}
 	}

@@ -55,12 +55,12 @@ public class PlayerChangeMenuListener implements ActionListener, PlayerChangeSou
 	private static @Nullable Frame getContainingFrame(final @Nullable Component component) {
 		Component temp = component;
 		while (!Objects.isNull(temp)) {
-			if (temp instanceof final Frame f) {
-				return f;
-			} else if (temp instanceof final JPopupMenu menu) {
-				temp = menu.getInvoker();
-			} else {
-				temp = temp.getParent();
+			switch (temp) {
+				case final Frame f -> {
+					return f;
+				}
+				case final JPopupMenu menu -> temp = menu.getInvoker();
+				default -> temp = temp.getParent();
 			}
 		}
 		return null;

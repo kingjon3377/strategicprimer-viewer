@@ -234,11 +234,13 @@ import static impl.xmlio.ISPReader.SP_NAMESPACE;
 	protected static void spinUntilEnd(final QName tag, final Iterable<XMLEvent> reader)
 			throws SPFormatException {
 		for (final XMLEvent event : reader) {
-			if (event instanceof final StartElement se && isSPStartElement(event)) {
-				throw new UnwantedChildException(tag, se);
-			} else if (event instanceof final EndElement ee &&
-					tag.equals(ee.getName())) {
-				break;
+			switch (event) {
+				case final StartElement se when isSPStartElement(event) -> throw new UnwantedChildException(tag, se);
+				case final EndElement ee when tag.equals(ee.getName()) -> {
+					return;
+				}
+				default -> {
+				}
 			}
 		}
 	}
@@ -640,12 +642,14 @@ import static impl.xmlio.ISPReader.SP_NAMESPACE;
 			throws SPFormatException {
 		final StringBuilder builder = new StringBuilder();
 		for (final XMLEvent event : stream) {
-			if (event instanceof final StartElement se && isSPStartElement(event)) {
-				throw new UnwantedChildException(tag, se);
-			} else if (event instanceof final Characters c) {
-				builder.append(c.getData());
-			} else if (event instanceof final EndElement ee && tag.equals(ee.getName())) {
-				break;
+			switch (event) {
+				case final StartElement se when isSPStartElement(event) -> throw new UnwantedChildException(tag, se);
+				case final Characters c -> builder.append(c.getData());
+				case final EndElement ee when tag.equals(ee.getName()) -> {
+					return builder.toString().strip();
+				}
+				default -> {
+				}
 			}
 		}
 		return builder.toString().strip();

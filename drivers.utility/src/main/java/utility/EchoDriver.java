@@ -86,10 +86,11 @@ public class EchoDriver implements UtilityDriver {
 									location.column()));
 				}
 				for (final TileFixture fixture : map.getFixtures(location)) {
-					if (fixture instanceof final Forest f && fixture.getId() < 0) {
-						f.setId(idFactory.createID());
-					} else if (fixture instanceof final Ground g && fixture.getId() < 0) {
-						g.setId(idFactory.createID());
+					switch (fixture) {
+						case final Forest f when fixture.getId() < 0 -> f.setId(idFactory.createID());
+						case final Ground g when fixture.getId() < 0 -> g.setId(idFactory.createID());
+						case null, default -> {
+						}
 					}
 				}
 			}
