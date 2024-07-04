@@ -67,31 +67,26 @@ public final class WindowList {
 				if (e.getID() == WindowEvent.WINDOW_ACTIVATED) {
 					final Window window = (Window) (e.getSource());
 
-					updateWindowList:
-					{
-						for (final Reference<Window> r : windowList) {
-							if (r.get() == window) {
-								break updateWindowList;
-							}
-						}
+					if (windowList.stream().noneMatch(r -> r.get() == window)) {
 						windowList.add(new WeakReference<>(window));
 						changed = true;
 					}
 
-					updateWindowLayerList:
-					{
-						int a = 0;
-						while (a < windowLayerList.size()) {
-							final Reference<Window> r = windowLayerList.get(a);
-							if (r.get() == window) {
-								if (a == windowLayerList.size() - 1) {
-									break updateWindowLayerList;
-								}
-								windowLayerList.remove(a);
-							} else {
-								a++;
+					int a = 0;
+					boolean found = false;
+					while (a < windowLayerList.size()) {
+						final Reference<Window> r = windowLayerList.get(a);
+						if (r.get() == window) {
+							if (a == windowLayerList.size() - 1) {
+								found = true;
+								break;
 							}
+							windowLayerList.remove(a);
+						} else {
+							a++;
 						}
+					}
+					if (found) {
 						windowLayerList.add(new WeakReference<>(window));
 						changed = true;
 					}
