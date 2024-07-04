@@ -28,6 +28,7 @@ import impl.xmlio.exceptions.UnwantedChildException;
 		return "text".equalsIgnoreCase(tag);
 	}
 
+	@SuppressWarnings("ChainOfInstanceofChecks")
 	@Override
 	public TextFixture read(final StartElement element, final QName parent, final Iterable<XMLEvent> stream)
 			throws SPFormatException, XMLStreamException {

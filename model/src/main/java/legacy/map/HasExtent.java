@@ -29,6 +29,7 @@ public interface HasExtent<Self extends HasExtent<Self>> extends SubsettableFixt
 	 * implementations of this interface, if one and only one is negative,
 	 * it is treated as zero.
 	 */
+	@SuppressWarnings("ChainOfInstanceofChecks")
 	static Number sum(final Number one, final Number two) {
 		if (isPositive(one) && !isPositive(two)) {
 			return one;

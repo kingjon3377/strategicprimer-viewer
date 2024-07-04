@@ -289,6 +289,7 @@ public class SPFluidReader implements IMapReader, ISPReader {
 		}
 	}
 
+	@SuppressWarnings("ChainOfInstanceofChecks")
 	private IMutableLegacyMap readMapOrViewTag(final StartElement element, final QName parent,
 											   final Iterable<XMLEvent> stream,
 											   final IMutableLegacyPlayerCollection players, final Warning warner,
@@ -387,6 +388,7 @@ public class SPFluidReader implements IMapReader, ISPReader {
 		return retval;
 	}
 
+	@SuppressWarnings("ChainOfInstanceofChecks")
 	private static Player readPlayer(final StartElement element, final QName parent, final Iterable<XMLEvent> stream,
 									 final IMutableLegacyPlayerCollection players, final Warning warner,
 									 final IDRegistrar idFactory)
@@ -442,6 +444,7 @@ public class SPFluidReader implements IMapReader, ISPReader {
 		unit.setResults(turn, getTextUntil(element.getName(), stream));
 	}
 
+	@SuppressWarnings("ChainOfInstanceofChecks")
 	private IUnit readUnit(final StartElement element, final QName parent, final Iterable<XMLEvent> stream,
 						   final IMutableLegacyPlayerCollection players, final Warning warner, final IDRegistrar idFactory)
 			throws SPFormatException {
@@ -497,6 +500,7 @@ public class SPFluidReader implements IMapReader, ISPReader {
 		return retval;
 	}
 
+	@SuppressWarnings("ChainOfInstanceofChecks")
 	private IFortress readFortress(final StartElement element, final QName parent, final Iterable<XMLEvent> stream,
 								   final IMutableLegacyPlayerCollection players, final Warning warner,
 								   final IDRegistrar idFactory)

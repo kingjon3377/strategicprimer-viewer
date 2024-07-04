@@ -391,6 +391,7 @@ public final class Unit implements IMutableUnit {
 				IntStream.of(25 - members.size())).min().orElse(25 - members.size());
 	}
 
+	@SuppressWarnings("ChainOfInstanceofChecks")
 	private static int memberComparison(final UnitMember one, final UnitMember two) {
 		if (one instanceof final IWorker first) {
 			if (two instanceof final IWorker second) {

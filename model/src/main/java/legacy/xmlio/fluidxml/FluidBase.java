@@ -566,6 +566,7 @@ import static impl.xmlio.ISPReader.SP_NAMESPACE;
 	 *                   Only supports String, boolean, and numeric attributes.
 	 * @throws XMLStreamException on I/O error
 	 */
+	@SuppressWarnings("ChainOfInstanceofChecks")
 	@SafeVarargs
 	protected static void writeAttributes(final XMLStreamWriter ostream, final Pair<String, ?>... attributes)
 			throws XMLStreamException {

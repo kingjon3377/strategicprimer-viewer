@@ -179,6 +179,7 @@ import java.util.function.Predicate;
 	/**
 	 * Read a map from XML.
 	 */
+	@SuppressWarnings("ChainOfInstanceofChecks")
 	@Override
 	public IMutableLegacyMap read(final StartElement element, final QName parent, final Iterable<XMLEvent> stream)
 			throws SPFormatException, XMLStreamException {

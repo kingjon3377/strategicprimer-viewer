@@ -40,6 +40,7 @@ import java.util.function.Consumer;
 	// FIXME: Extract a common readAbstractTown() method taking the
 	// expected tag and a constructor reference, since readTown(),
 	// readFortification(), and readCity() are very nearly identical
+	@SuppressWarnings("ChainOfInstanceofChecks")
 	public static Town readTown(final StartElement element, final QName parent, final Iterable<XMLEvent> stream,
 								final ILegacyPlayerCollection players, final Warning warner, final IDRegistrar idFactory)
 			throws SPFormatException {
@@ -81,6 +82,7 @@ import java.util.function.Consumer;
 		return setImage(fix, element, warner);
 	}
 
+	@SuppressWarnings("ChainOfInstanceofChecks")
 	public static Fortification readFortification(final StartElement element, final QName parent,
 												  final Iterable<XMLEvent> stream, final ILegacyPlayerCollection players, final Warning warner,
 												  final IDRegistrar idFactory) throws SPFormatException {
@@ -125,6 +127,7 @@ import java.util.function.Consumer;
 		return setImage(fix, element, warner);
 	}
 
+	@SuppressWarnings("ChainOfInstanceofChecks")
 	public static City readCity(final StartElement element, final QName parent, final Iterable<XMLEvent> stream,
 								final ILegacyPlayerCollection players, final Warning warner, final IDRegistrar idFactory)
 			throws SPFormatException {
@@ -167,6 +170,7 @@ import java.util.function.Consumer;
 		return setImage(fix, element, warner);
 	}
 
+	@SuppressWarnings("ChainOfInstanceofChecks")
 	public static Village readVillage(final StartElement element, final QName parent, final Iterable<XMLEvent> stream,
 									  final ILegacyPlayerCollection players, final Warning warner, final IDRegistrar idFactory)
 			throws SPFormatException {
@@ -203,6 +207,7 @@ import java.util.function.Consumer;
 		return setImage(retval, element, warner);
 	}
 
+	@SuppressWarnings("ChainOfInstanceofChecks")
 	public static CommunityStats readCommunityStats(final StartElement element, final QName parent,
 													final Iterable<XMLEvent> stream, final ILegacyPlayerCollection players, final Warning warner,
 													final IDRegistrar idFactory) throws SPFormatException {

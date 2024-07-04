@@ -203,6 +203,7 @@ import legacy.map.fixtures.mobile.AnimalTracks;
 		return negate(cls::isInstance);
 	}
 
+	@SuppressWarnings("ChainOfInstanceofChecks")
 	private static BigDecimal decimalize(final Number number) {
 		if (number instanceof Integer || number instanceof Long
 				|| number instanceof Short || number instanceof Byte) {

@@ -40,6 +40,7 @@ public final class IDFactoryFiller {
 		}
 	}
 
+	@SuppressWarnings("ChainOfInstanceofChecks")
 	static void recursiveRegister(final IDRegistrar factory, final Iterable<? extends IFixture> arg) {
 		for (final IFixture fixture : arg) {
 			final int id = fixture.getId();

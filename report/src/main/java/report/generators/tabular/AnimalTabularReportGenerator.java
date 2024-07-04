@@ -123,6 +123,7 @@ public class AnimalTabularReportGenerator implements ITableGenerator<AnimalOrTra
 		return this::comparePairsImpl;
 	}
 
+	@SuppressWarnings("ChainOfInstanceofChecks")
 	private int comparePairsImpl(final Pair<Point, AnimalOrTracks> one, final Pair<Point, AnimalOrTracks> two) {
 		final int cmp;
 		if (Objects.isNull(hq)) {

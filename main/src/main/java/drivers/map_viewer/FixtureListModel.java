@@ -217,6 +217,7 @@ public class FixtureListModel implements ListModel<TileFixture>, SelectionChange
 	 * TODO: Provide a way of pre-rejecting operations, so drag-and-drop
 	 * failures can be warned about before the drop
 	 */
+	@SuppressWarnings("ChainOfInstanceofChecks")
 	public boolean addFixture(final TileFixture fixture) {
 		if (fixture instanceof final TileTypeFixture ttf) {
 			final TileType existingTerrain = terrainSource.apply(point);
@@ -307,6 +308,7 @@ public class FixtureListModel implements ListModel<TileFixture>, SelectionChange
 	/**
 	 * Remove the specified items from the tile and the list.
 	 */
+	@SuppressWarnings("ChainOfInstanceofChecks")
 	public boolean removeAll(final Collection<? extends TileFixture> fixtures) {
 		boolean retval = true;
 		final Range zeroRange = new Range(0, 0);

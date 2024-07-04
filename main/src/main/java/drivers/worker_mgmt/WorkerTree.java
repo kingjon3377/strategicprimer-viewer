@@ -257,6 +257,7 @@ public final class WorkerTree extends JTree implements UnitMemberSelectionSource
 		 * the interface this is implementing) we declare it here as
 		 * the supertype Transferable.
 		 */
+		@SuppressWarnings("ChainOfInstanceofChecks")
 		@Override
 		public @Nullable Transferable createTransferable(final JComponent component) {
 			final TreePath[] paths = selectionModel.getSelectionPaths();
@@ -298,6 +299,7 @@ public final class WorkerTree extends JTree implements UnitMemberSelectionSource
 		/**
 		 * Whether a drag here is possible.
 		 */
+		@SuppressWarnings("ChainOfInstanceofChecks")
 		@Override
 		public boolean canImport(final TransferSupport support) {
 			if (support.isDataFlavorSupported(UnitMemberTransferable.FLAVOR) &&

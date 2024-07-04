@@ -23,6 +23,7 @@ public final class TownComparators {
 	 * what kind of town they are, putting fortresses before cities before
 	 * towns before fortifications before villages.
 	 */
+	@SuppressWarnings("ChainOfInstanceofChecks")
 	public static int compareTownKind(final ITownFixture one, final ITownFixture two) {
 		if (one instanceof IFortress) {
 			if (two instanceof IFortress) {

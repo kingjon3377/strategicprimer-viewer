@@ -64,6 +64,7 @@ import javax.xml.stream.events.XMLEvent;
 				getIntegerAttribute(element, "count", 1, warner)), element, warner);
 	}
 
+	@SuppressWarnings("ChainOfInstanceofChecks")
 	public static CacheFixture readCache(final StartElement element, final QName parent,
 										 final Iterable<XMLEvent> stream, final ILegacyPlayerCollection players,
 										 final Warning warner, final IDRegistrar idFactory) throws SPFormatException {
