@@ -2,6 +2,7 @@ package legacy.dbio;
 
 import static lovelace.util.SingletonRandom.SINGLETON_RANDOM;
 
+import legacy.map.HasNotes;
 import legacy.map.LegacyPlayerCollection;
 import legacy.map.fixtures.LegacyQuantity;
 import legacy.map.fixtures.mobile.IMutableWorker;
@@ -943,7 +944,7 @@ public final class TestDBIO {
 		final Unit unit = new Unit(playerObj, "unitKind", "unitName", id + 1);
 		unit.addMember(worker);
 		final IUnit deserializedUnit = assertFixtureSerialization(unit);
-		assertEquals(note, ((IWorker) deserializedUnit.iterator().next()).getNote(playerObj),
+		assertEquals(note, ((HasNotes) deserializedUnit.iterator().next()).getNote(playerObj),
 				"Note was deserialized");
 	}
 

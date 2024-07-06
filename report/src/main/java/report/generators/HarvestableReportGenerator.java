@@ -122,7 +122,7 @@ public class HarvestableReportGenerator extends AbstractReportGenerator<Harvesta
 				ostream.accept(g.isCultivated() ? "cultivated " : "wild ");
 				ostream.accept(item.getKind());
 				ostream.accept(g.isOrchard() ? " orchard " : " grove ");
-				ostream.accept(populationCountString(((Grove) item), "tree"));
+				ostream.accept(populationCountString(g, "tree"));
 			}
 			case final Meadow m -> {
 				ostream.accept(m.getStatus().toString());

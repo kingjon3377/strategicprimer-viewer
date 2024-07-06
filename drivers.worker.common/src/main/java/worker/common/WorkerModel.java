@@ -564,7 +564,7 @@ public class WorkerModel extends SimpleMultiMapModel implements IWorkerModel {
 				final Predicate<Object> isNamed = HasMutableName.class::isInstance;
 				final Predicate<UnitMember> matchingId = m -> m.getId() == memberItem.getId();
 				final Predicate<UnitMember> matchingName =
-						m -> ((HasMutableName) m).getName().equals(item.getName());
+						m -> ((HasName) m).getName().equals(item.getName());
 				for (final IMutableLegacyMap map : getRestrictedAllMaps()) {
 					// FIXME: We should have a firmer identification than just name and ID
 					final UnitMember matching =

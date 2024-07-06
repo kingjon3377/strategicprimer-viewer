@@ -393,7 +393,8 @@ public class WorkerTreeModelAlt extends DefaultTreeModel implements IWorkerTreeM
 	 */
 	@Override
 	public void addUnitMember(final IUnit unit, final UnitMember member) {
-		final KindNode kindNode = ((PlayerNode) getRoot()).stream()
+		// Our choices are an "overly strong" cast or an "unchecked" (because of generics) cast
+		@SuppressWarnings("OverlyStrongTypeCast") final KindNode kindNode = ((PlayerNode) getRoot()).stream()
 				.filter(KindNode.class::isInstance).map(KindNode.class::cast)
 				.filter(n -> unit.getKind().equals(n.getUserObject()))
 				.findAny().orElse(null);
@@ -598,7 +599,9 @@ public class WorkerTreeModelAlt extends DefaultTreeModel implements IWorkerTreeM
 			} else if (!((UnitNode) node).getUserObject().iterator().hasNext()) {
 				continue;
 			}
-			final String orders = ((UnitNode) node).getUserObject().getOrders(turn).toLowerCase().strip();
+			// Our choices are an "overly strong" cast or an "unchecked" (because of generics) one
+			@SuppressWarnings("OverlyStrongTypeCast") final String orders = ((UnitNode) node).getUserObject()
+					.getOrders(turn).toLowerCase().strip();
 			if (orders.isEmpty() || orders.contains("todo") || orders.contains("fixme") ||
 					orders.contains("xxx")) {
 				if (orders.isEmpty()) {

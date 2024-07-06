@@ -232,7 +232,7 @@ public class ProxyUnit implements IUnit, ProxyFor<IUnit> {
 							}
 							// unchecked warning is unavoidable in the absence of reified generics
 							case null, default -> //noinspection unchecked
-									((UnitMemberProxy<UnitMember>) proxy).addProxied(member);
+									((ProxyFor<UnitMember>) proxy).addProxied(member);
 						}
 					} else {
 						proxy = switch (member) {

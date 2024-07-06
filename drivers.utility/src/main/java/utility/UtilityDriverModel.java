@@ -181,8 +181,7 @@ public class UtilityDriverModel extends SimpleMultiMapModel {
 								ifApplicable(u::removeMember, UnitMember.class),
 								setModFlag, handlers));
 						case final IMutableFortress f -> retval.addAll(coalesceImpl(
-								"%sIn %s: ".formatted(context, shortDesc),
-								(IMutableFortress) fixture,
+								"%sIn %s: ".formatted(context, shortDesc), f,
 								ifApplicable(f::addMember, FortressMember.class),
 								ifApplicable(f::removeMember, FortressMember.class),
 								setModFlag, handlers));

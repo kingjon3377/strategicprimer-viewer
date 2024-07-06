@@ -217,8 +217,7 @@ public class MapCheckerCLI implements UtilityDriver {
 					if ("miscellaneous".equals(skill.getName()) &&
 							skill.getLevel() > 0) {
 						warner.handle(new SPContentWarning(context,
-								((IWorker) fixture).getName() +
-										" has a level in 'miscellaneous'"));
+								w.getName() + " has a level in 'miscellaneous'"));
 						return true;
 					}
 				}
