@@ -235,7 +235,7 @@ import java.util.function.Predicate;
 			if (event instanceof final StartElement se && isSupportedNamespace(se.getName())) {
 				final String type = se.getName().getLocalPart().toLowerCase();
 				if ("player".equals(type)) {
-					retval.addPlayer(playerReader.read(se, tagStack.peekFirst(), stream));
+					retval.addPlayer(playerReader.read(se, Objects.requireNonNull(tagStack.peekFirst()), stream));
 				} else if ("row".equals(type)) {
 					expectAttributes(se, "index");
 					tagStack.addFirst(se.getName());
@@ -243,7 +243,7 @@ import java.util.function.Predicate;
 					continue;
 				} else if ("tile".equals(type)) {
 					if (!Objects.isNull(point)) {
-						throw new UnwantedChildException(tagStack.peekFirst(), se);
+						throw new UnwantedChildException(Objects.requireNonNull(tagStack.peekFirst()), se);
 					}
 					expectAttributes(se, "row", "column", "kind",
 							"type", "mountain");
@@ -269,7 +269,7 @@ import java.util.function.Predicate;
 					}
 				} else if ("elsewhere".equals(type)) {
 					if (!Objects.isNull(point)) {
-						throw new UnwantedChildException(tagStack.peekFirst(), se);
+						throw new UnwantedChildException(Objects.requireNonNull(tagStack.peekFirst()), se);
 					}
 					expectAttributes(se);
 					tagStack.addFirst(se.getName());
@@ -284,7 +284,7 @@ import java.util.function.Predicate;
 					switch (type) {
 						case "lake", "river" -> {
 							retval.addRivers(point,
-									parseRiver(se, tagStack.peekFirst()));
+									parseRiver(se, Objects.requireNonNull(tagStack.peekFirst())));
 							spinUntilEnd(se.getName(), stream);
 						}
 						case "mountain" -> {
@@ -309,11 +309,14 @@ import java.util.function.Predicate;
 							} catch (final IllegalArgumentException except) {
 								throw new MissingPropertyException(se, "direction", except);
 							}
+							if (direction == null) {
+								throw new MissingPropertyException(se, "direction");
+							}
 							retval.setRoadLevel(point, direction,
 									getIntegerParameter(se, "quality"));
 						}
 						default -> {
-							final QName top = tagStack.peekFirst();
+							final QName top = Objects.requireNonNull(tagStack.peekFirst());
 							final TileFixture child = parseFixture(se, top, stream);
 							if (child instanceof final IFortress f &&
 									retval.getFixtures(point).stream()
@@ -330,7 +333,7 @@ import java.util.function.Predicate;
 				} else {
 					// fixture outside tile
 					throw UnwantedChildException.listingExpectedTags(
-							tagStack.peekFirst(), se, "tile",
+							Objects.requireNonNull(tagStack.peekFirst()), se, "tile",
 							"elsewhere");
 				}
 			} else if (event instanceof final EndElement ee) {

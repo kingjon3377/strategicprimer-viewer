@@ -272,10 +272,10 @@ import java.math.BigDecimal;
 	}
 
 	/**
-	 * Have the user enter expertise levels and claimed resources for a town.
+	 * Have the user enter expertise levels and claimed resources for a town. Returns null on EOF.
 	 */
-	private static CommunityStats enterStats(final ICLIHelper cli, final IDRegistrar idf, final ILegacyMap map,
-	                                         final Point location,
+	private static @Nullable CommunityStats enterStats(final ICLIHelper cli, final IDRegistrar idf,
+	                                                   final ILegacyMap map, final Point location,
 			/*ModifiableTown*/ final ITownFixture town) {
 		final CommunityStats retval = new CommunityStats(Optional.ofNullable(
 				cli.inputNumber("Population: ")).orElse(0));
@@ -329,7 +329,10 @@ import java.math.BigDecimal;
 								"That would be an ocean resource worked by a town on land.");
 					}
 					// TODO: Handle EOF (here and elsewhere) more gracefully
-					if (!cli.inputBooleanInSeries("Are you sure? ", "aquatic")) {
+					final @Nullable Boolean confirmation = cli.inputBooleanInSeries("Are you sure? ", "aquatic");
+					if (Objects.isNull(confirmation)) {
+						return null;
+					} else if (!confirmation) {
 						continue;
 					}
 				}
@@ -606,10 +609,16 @@ import java.math.BigDecimal;
 					cli.println("No matching town found.");
 				} else {
 					final CommunityStats stats;
-					if (cli.inputBooleanInSeries("Enter stats rather than generating them? ")) {
+					@Nullable final Boolean enterResult = cli.inputBooleanInSeries("Enter stats rather than generating them? ");
+					if (Objects.isNull(enterResult)) {
+						return;
+					} else if (enterResult) {
 						stats = enterStats(cli, idf, model.getMap(), location, town);
 					} else {
 						stats = generateStats(idf, location, town, model.getMap());
+					}
+					if (Objects.isNull(stats)) {
+						return;
 					}
 					model.assignTownStats(location, town.getId(), town.getName(), stats);
 				}
@@ -641,6 +650,9 @@ import java.math.BigDecimal;
 					stats = enterStats(cli, idf, model.getMap(), location, town);
 				} else {
 					stats = generateStats(idf, location, town, model.getMap());
+				}
+				if (Objects.isNull(stats)) {
+					return;
 				}
 				model.setMapModified(true);
 				model.assignTownStats(location, town.getId(), town.getName(), stats);

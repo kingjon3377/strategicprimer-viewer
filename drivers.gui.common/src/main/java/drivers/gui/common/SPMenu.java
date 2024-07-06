@@ -280,7 +280,7 @@ public final class SPMenu extends JMenuBar {
 	private SPMenu(final boolean ignored, final Component component, final JMenu... menus) {
 		this(menus);
 		add(new WindowMenu(new ComponentParentStream(component).stream().filter(JFrame.class::isInstance)
-				.map(JFrame.class::cast).findAny().orElse(null)));
+				.map(JFrame.class::cast).findAny().orElseThrow()));
 	}
 
 	public static SPMenu forWindowContaining(final Component component, final JMenu... menus) {

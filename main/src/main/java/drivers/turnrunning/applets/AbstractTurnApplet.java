@@ -149,7 +149,7 @@ public abstract class AbstractTurnApplet implements TurnApplet {
 										}
 									}
 								}
-								case null, default -> {
+								default -> {
 								}
 							}
 						}
@@ -167,7 +167,7 @@ public abstract class AbstractTurnApplet implements TurnApplet {
 							}
 						}
 					}
-					case null, default -> {
+					default -> {
 					}
 				}
 			}

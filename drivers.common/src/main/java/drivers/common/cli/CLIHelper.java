@@ -196,6 +196,15 @@ public final class CLIHelper implements ICLIHelper {
 		}
 	}
 
+	// A helper method to appease the compiler's "may produce NPE" warning in chooseFromList()
+	private static String getElementName(final @Nullable HasName item) {
+		if (item == null) {
+			return "null";
+		} else {
+			return item.getName();
+		}
+	}
+
 	/**
 	 * Have the user choose an item from a list.
 	 */
@@ -203,7 +212,7 @@ public final class CLIHelper implements ICLIHelper {
 	public <Element extends HasName> Pair<Integer, @Nullable Element> chooseFromList(
 			final List<@NonNull ? extends Element> list, final String description, final String none,
 			final String prompt, final ListChoiceBehavior behavior) {
-		return chooseFromListImpl(list, description, none, prompt, behavior, HasName::getName);
+		return chooseFromListImpl(list, description, none, prompt, behavior, CLIHelper::getElementName);
 	}
 
 	/**

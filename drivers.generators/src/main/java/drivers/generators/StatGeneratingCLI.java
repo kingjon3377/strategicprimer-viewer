@@ -267,9 +267,9 @@ import legacy.map.fixtures.towns.Village;
 	}
 
 	/**
-	 * Generate a worker with race and Job levels based on the population of the given village.
+	 * Generate a worker with race and Job levels based on the population of the given village. Returns null on EOF
 	 */
-	private Worker generateWorkerFrom(final Village village, final String name, final IDRegistrar idf) {
+	private @Nullable Worker generateWorkerFrom(final Village village, final String name, final IDRegistrar idf) {
 		final Worker worker = new Worker(name, village.getRace(), idf.createID());
 		worker.setNote(village.owner(), "From %s.".formatted(village.getName()));
 		if (Objects.isNull(village.getPopulation())) {
@@ -278,7 +278,10 @@ import legacy.map.fixtures.towns.Village;
 			worker.setStats(stats);
 			cli.printf("%s is a %s from %s. Stats:%n", name, village.getRace(), village.getName());
 			cli.println(stats.getPrintable());
-			final boolean woolen = cli.inputBooleanInSeries("Is the worker's tunic woolen rather than linen?");
+			final Boolean woolen = cli.inputBooleanInSeries("Is the worker's tunic woolen rather than linen?");
+			if (Objects.isNull(woolen)) {
+				return null;
+			}
 			worker.addEquipment(new Implement(woolen ? "woolen tunic" : "linen tunic", idf.createID()));
 			maybeAddEquipment(idf, worker, "woolen cloak", 0.9);
 			maybeAddEquipment(idf, worker, "pair leather boots", 0.8);
@@ -324,7 +327,10 @@ import legacy.map.fixtures.towns.Village;
 				worker.setStats(stats);
 				cli.printf("%s is a %s from %s. Stats:%n", name, village.getRace(), village.getName());
 				cli.println(stats.getPrintable());
-				final boolean woolen = cli.inputBooleanInSeries("Is the worker's tunic woolen rather than linen?");
+				final Boolean woolen = cli.inputBooleanInSeries("Is the worker's tunic woolen rather than linen?");
+				if (Objects.isNull(woolen)) {
+					return null;
+				}
 				worker.addEquipment(new Implement(woolen ? "woolen tunic" : "linen tunic", idf.createID()));
 				maybeAddEquipment(idf, worker, "woolen cloak", 0.9);
 				maybeAddEquipment(idf, worker, "pair leather boots", 0.8);
@@ -351,18 +357,21 @@ import legacy.map.fixtures.towns.Village;
 							name, village.getRace(), training.getLevel(),
 							training.getName(), village.getName());
 					cli.println(stats.getPrintable());
-					final boolean acceptance = cli.inputBoolean( // TODO: handle EOF
-							"Do those stats fit that profile?");
-					if (acceptance) {
+					final Boolean acceptance = cli.inputBoolean("Do those stats fit that profile?");
+					if (Objects.isNull(acceptance)) {
+						return null;
+					} else if (acceptance) {
 						worker.setStats(stats);
 						break;
 					}
 				}
-				final boolean hasMount = cli.inputBooleanInSeries("Is the worker mounted?",
+				final Boolean hasMount = cli.inputBooleanInSeries("Is the worker mounted?",
 						"mounted-" + training.getName());
-				if (hasMount) {
+				if (Objects.isNull(hasMount)) {
+					return null;
+				} else if (hasMount) {
 					final String mountKind = cli.inputString("Kind of mount: ");
-					if (!Objects.isNull(mountKind) && !mountKind.isEmpty()) {
+					if (!Objects.isNull(mountKind) && !mountKind.isEmpty()) { // TODO: return on EOF?
 						worker.setMount(new AnimalImpl(mountKind, false, "tame", idf.createID()));
 					}
 				}
@@ -376,7 +385,7 @@ import legacy.map.fixtures.towns.Village;
 					worker.addEquipment(new Implement(item, idf.createID()));
 				}
 				String equipmentPrompt = "Does the worker have any equipment?";
-				Predicate<String> equipmentQuery = cli::inputBooleanInSeries;
+				Function<String, @Nullable Boolean> equipmentQuery = cli::inputBooleanInSeries;
 				final BiConsumer<String, String> addIfStdOmits = (key, arg) -> {
 					if (standardEquipment.stream().map(String::toLowerCase).noneMatch(s -> s.contains(key))) {
 						worker.addEquipment(new Implement(arg, idf.createID()));
@@ -385,8 +394,11 @@ import legacy.map.fixtures.towns.Village;
 				final Predicate<String> stdOmits = arg -> standardEquipment.stream().map(String::toLowerCase)
 						.noneMatch(s -> s.contains(arg));
 				if (stdOmits.test("tunic")) {
-					final boolean woolen = cli.inputBooleanInSeries("Is the worker's tunic woolen rather than linen?",
+					final Boolean woolen = cli.inputBooleanInSeries("Is the worker's tunic woolen rather than linen?",
 							"tunic-" + training.getName());
+					if (Objects.isNull(woolen)) {
+						return null;
+					}
 					addIfStdOmits.accept("tunic",
 							woolen ? "woolen tunic" : "linen tunic");
 				}
@@ -404,8 +416,14 @@ import legacy.map.fixtures.towns.Village;
 				maybeAdd.accept("satchel", "leather satchel", 0.75);
 				maybeAdd.accept("waterskin", "leather waterskin", 0.75);
 				// TODO: Accept strings until empty line instead of boolean-prompting every time
-				final Predicate<String> notInSeries = cli::inputBoolean;
-				while (equipmentQuery.test(equipmentPrompt)) {
+				final Function<String, @Nullable Boolean> notInSeries = cli::inputBoolean;
+				while (true) {
+					final Boolean continueFlag = equipmentQuery.apply(equipmentPrompt);
+					if (Objects.isNull(continueFlag)) {
+						return null;
+					} else if (!continueFlag) {
+						break;
+					}
 					final String equipment = cli.inputString("Kind of equipment: ");
 					if (Objects.isNull(equipment) || equipment.isEmpty()) {
 						break;
@@ -577,6 +595,9 @@ import legacy.map.fixtures.towns.Village;
 				cli.println(stats.getPrintable());
 			} else {
 				worker = generateWorkerFrom(home, name, idf);
+				if (Objects.isNull(worker)) {
+					return;
+				}
 				model.addWorkerToUnit(unit, worker);
 			}
 		}

@@ -82,7 +82,7 @@ public class FortressReportGenerator extends AbstractReportGenerator<IFortress> 
 					ostream.accept(", with a nearby oasis");
 					fixtures.remove(fixture.getId());
 				}
-				case null, default -> {
+				default -> {
 				}
 			}
 		}

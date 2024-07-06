@@ -354,7 +354,8 @@ public class SPFluidReader implements IMapReader, ISPReader {
 					parseElsewhere(retval, se, stream, players, warner, idFactory);
 					continue;
 				}
-				final Object player = readSPObject(se, stackTop, stream, players, warner, idFactory);
+				final Object player = readSPObject(se, Objects.requireNonNull(stackTop), stream, players, warner,
+						idFactory);
 				if (player instanceof final Player p) {
 					retval.addPlayer(p);
 				} else {
@@ -368,7 +369,7 @@ public class SPFluidReader implements IMapReader, ISPReader {
 					break;
 				}
 			} else if (event instanceof final Characters c && !c.getData().isBlank()) {
-				warner.handle(UnwantedChildException.childInTag(stackTop,
+				warner.handle(UnwantedChildException.childInTag(Objects.requireNonNull(stackTop),
 						new QName(XMLConstants.NULL_NS_URI, "text"),
 						event.getLocation(),
 						new IllegalStateException("Random text outside any tile")));

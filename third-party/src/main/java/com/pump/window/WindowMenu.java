@@ -101,7 +101,7 @@ public class WindowMenu extends JMenu {
 
 	private final JFrame myFrame;
 
-	private final JMenuItem @Nullable [] customItems;
+	private final @Nullable JMenuItem [] customItems;
 
 	/**
 	 * Creates a new WindowMenu for a specific JFrame.

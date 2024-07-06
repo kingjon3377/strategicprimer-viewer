@@ -89,7 +89,7 @@ public class EchoDriver implements UtilityDriver {
 					switch (fixture) {
 						case final Forest f when fixture.getId() < 0 -> f.setId(idFactory.createID());
 						case final Ground g when fixture.getId() < 0 -> g.setId(idFactory.createID());
-						case null, default -> {
+						default -> {
 						}
 					}
 				}

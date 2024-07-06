@@ -299,7 +299,8 @@ public class WorkerTreeModelAlt extends DefaultTreeModel implements IWorkerTreeM
 		if (!Objects.isNull(newNode) && !Objects.isNull(node)) {
 			final int oldIndex = (Objects.isNull(oldNode)) ? -1 : oldNode.getIndex(node);
 			fireTreeNodesRemoved(this,
-					new Object[]{playerNode, getNode(playerNode, old.getKind()), oldNode},
+					Stream.of(playerNode, getNode(playerNode, old.getKind()), oldNode)
+							.filter(Objects::nonNull).toArray(),
 					new int[]{oldIndex}, new Object[]{node});
 			if (!Objects.isNull(oldNode)) {
 				oldNode.remove(node);
@@ -307,7 +308,7 @@ public class WorkerTreeModelAlt extends DefaultTreeModel implements IWorkerTreeM
 			model.moveMember(member, old, newOwner);
 			newNode.insert(node, newNode.getChildCount());
 			fireTreeNodesInserted(this,
-					new Object[]{playerNode, getNode(playerNode, newOwner.getKind()), newNode},
+					new Object[]{playerNode, Objects.requireNonNull(getNode(playerNode, newOwner.getKind())), newNode},
 					new int[]{newNode.getIndex(node)},
 					new Object[]{node});
 		}

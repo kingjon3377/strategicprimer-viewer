@@ -1,7 +1,11 @@
 package common.xmlio;
 
+import org.jetbrains.annotations.Nullable;
+
 import javax.xml.stream.Location;
 import java.io.Serial;
+import java.util.Objects;
+import java.util.function.ToIntFunction;
 
 /**
  * A custom exception for XML format errors.
@@ -33,15 +37,28 @@ public abstract class SPFormatException extends Exception {
 		this.column = column;
 	}
 
+	private static <Type> int nullSafeCall(final @Nullable Type obj, final ToIntFunction<Type> func) {
+		if (Objects.isNull(obj)) {
+			return -1;
+		} else {
+			return func.applyAsInt(obj);
+		}
+	}
+
 	/**
 	 * @param errorMessage The exception message to possibly show to the user.
 	 * @param location     The line and column of the XML file where the mistake begins.
 	 */
-	protected SPFormatException(final String errorMessage, final Location location) {
-		super("Incorrect SP XML at line %d, column %d: %s".formatted(location.getLineNumber(),
-				location.getColumnNumber(), errorMessage));
-		line = location.getLineNumber();
-		column = location.getColumnNumber();
+	protected SPFormatException(final String errorMessage, final @Nullable Location location) {
+		super("Incorrect SP XML at line %d, column %d: %s".formatted(nullSafeCall(location, Location::getLineNumber),
+				nullSafeCall(location, Location::getColumnNumber), errorMessage));
+		if (Objects.isNull(location)) {
+			line = -1;
+			column = -1;
+		} else {
+			line = location.getLineNumber();
+			column = location.getColumnNumber();
+		}
 	}
 
 	protected SPFormatException(final String errorMessage, final Location location, final Throwable errorCause) {

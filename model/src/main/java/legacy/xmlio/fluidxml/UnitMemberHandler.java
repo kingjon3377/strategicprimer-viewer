@@ -84,7 +84,7 @@ import java.util.stream.StreamSupport;
 				case final EndElement ee when element.getName().equals(ee.getName()) -> {
 					return retval;
 				}
-				case null, default -> {
+				default -> {
 				}
 			}
 		}

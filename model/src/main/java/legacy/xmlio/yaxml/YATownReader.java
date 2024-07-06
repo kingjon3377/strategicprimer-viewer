@@ -113,7 +113,7 @@ import java.util.function.Consumer;
 								current = se.getName().getLocalPart();
 							} else {
 								throw UnwantedChildException.listingExpectedTags(
-										stack.peekFirst().getName(), se,
+										Objects.requireNonNull(stack.peekFirst()).getName(), se,
 										expectedCommunityStatsTags(current).toArray(String[]::new));
 							}
 							break;
@@ -126,7 +126,7 @@ import java.util.function.Consumer;
 								current = se.getName().getLocalPart();
 							} else {
 								throw UnwantedChildException.listingExpectedTags(
-										stack.peekFirst().getName(), se,
+										Objects.requireNonNull(stack.peekFirst()).getName(), se,
 										expectedCommunityStatsTags(current).toArray(String[]::new));
 							}
 							break;
@@ -138,7 +138,7 @@ import java.util.function.Consumer;
 								current = se.getName().getLocalPart();
 							} else {
 								throw UnwantedChildException.listingExpectedTags(
-										stack.peekFirst().getName(), se,
+										Objects.requireNonNull(stack.peekFirst()).getName(), se,
 										expectedCommunityStatsTags(current).toArray(String[]::new));
 							}
 							break;
@@ -150,12 +150,12 @@ import java.util.function.Consumer;
 								lambda = addConsumptionLambda;
 							} else {
 								throw UnwantedChildException.listingExpectedTags(
-										stack.peekFirst().getName(), se,
+										Objects.requireNonNull(stack.peekFirst()).getName(), se,
 										expectedCommunityStatsTags(Objects.requireNonNullElse(current, "population"))
 												.toArray(String[]::new));
 							}
 							lambda.accept(resourceReader.read(se,
-									stack.peekFirst().getName(), stream));
+									Objects.requireNonNull(stack.peekFirst()).getName(), stream));
 							break;
 						default:
 							throw UnwantedChildException.listingExpectedTags(
@@ -165,17 +165,18 @@ import java.util.function.Consumer;
 											.toArray(String[]::new));
 					}
 				}
-				case final EndElement ee when !stack.isEmpty() && ee.getName().equals(stack.peekFirst().getName()) -> {
+				case final EndElement ee when !stack.isEmpty() &&
+						ee.getName().equals(Objects.requireNonNull(stack.peekFirst()).getName()) -> {
 					final StartElement top = stack.removeFirst();
+					final StartElement nextTop = Objects.requireNonNull(stack.peekFirst());
 					if (top.equals(element)) {
 						return retval;
 					} else if (!Objects.isNull(current) &&
 							top.getName().getLocalPart().equals(current)) {
-						if ("population".equals(stack.peekFirst().getName()
-								.getLocalPart())) {
+						if ("population".equals(nextTop.getName().getLocalPart())) {
 							current = null;
 						} else {
-							current = stack.peekFirst().getName().getLocalPart();
+							current = nextTop.getName().getLocalPart();
 						}
 					}
 				}

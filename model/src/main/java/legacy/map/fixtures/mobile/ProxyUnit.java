@@ -231,7 +231,7 @@ public class ProxyUnit implements IUnit, ProxyFor<IUnit> {
 								}
 							}
 							// unchecked warning is unavoidable in the absence of reified generics
-							case null, default -> //noinspection unchecked
+							default -> //noinspection unchecked
 									((ProxyFor<UnitMember>) proxy).addProxied(member);
 						}
 					} else {

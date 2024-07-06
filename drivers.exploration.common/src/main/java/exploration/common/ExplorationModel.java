@@ -206,7 +206,7 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 				case final FixtureIterable<?> iter when doesStreamContainUnit(iter, unit) -> {
 					return true;
 				}
-				case null, default -> {
+				default -> {
 				}
 			}
 		}
@@ -226,7 +226,7 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 				case final FixtureIterable<?> iter when doesStreamContainFortress(iter, fort) -> {
 					return true;
 				}
-				case null, default -> {
+				default -> {
 				}
 			}
 		}
@@ -487,7 +487,7 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 			} else {
 				if (SimpleMovementModel.landMovementPossible(terrain) &&
 						TileType.Ocean == startingTerrain) {
-					LovelaceLogger.debug("Starting in ocean, trying to get to %s", terrain);
+					LovelaceLogger.debug("Starting in ocean, trying to get to %s", Objects.requireNonNull(terrain));
 				} else if (TileType.Ocean == startingTerrain && TileType.Ocean != terrain) {
 					LovelaceLogger.debug("Land movement not possible from ocean to %s",
 							Objects.requireNonNullElse(terrain, "unexplored"));

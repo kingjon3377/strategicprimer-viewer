@@ -2240,7 +2240,7 @@ public final class TestXMLIO {
 				assertSerialization("Hill serialization", item);
 				assertMissingProperty("<oasis />", "id", new Oasis(0));
 			}
-			case null, default -> fail("Unhandled type");
+			default -> fail("Unhandled type");
 		}
 	}
 
