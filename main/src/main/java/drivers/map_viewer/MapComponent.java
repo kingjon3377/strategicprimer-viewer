@@ -1,5 +1,6 @@
 package drivers.map_viewer;
 
+import drivers.common.IterableComparator;
 import lovelace.util.LovelaceLogger;
 import org.jetbrains.annotations.Nullable;
 
@@ -83,13 +84,10 @@ import java.awt.image.BufferedImage;
 		this.backgroundImage = backgroundImage;
 	}
 
-	// FIXME: Create an interface extending both Iterable and Comparator, and make FixtureFixtureTableModel,
-	//  FixtureFilterListModel, etc., implement it, and take it here instead of taking Iterable and
-	//  casting to Comparator
 	public MapComponent(final IViewerModel model, final Predicate<TileFixture> zof,
-						final Iterable<FixtureMatcher> matchers) {
+						final IterableComparator<FixtureMatcher, TileFixture> matchers) {
 		mapModel = model;
-		cml = new ComponentMouseListener(model, zof, (Comparator<TileFixture>) matchers);
+		cml = new ComponentMouseListener(model, zof, matchers);
 		final DirectionSelectionChanger dsl = new DirectionSelectionChanger(model);
 		zOrderFilter = zof;
 		this.matchers = matchers;

@@ -9,6 +9,7 @@ import java.util.List;
 import javax.swing.table.AbstractTableModel;
 import java.util.Comparator;
 
+import drivers.common.IterableComparator;
 import lovelace.util.Reorderable;
 
 import legacy.map.TileFixture;
@@ -64,7 +65,7 @@ import drivers.common.FixtureMatcher;
  * so dynamically controlled by the user).
  */
 public class FixtureFilterTableModel extends AbstractTableModel
-		implements Reorderable, ZOrderFilter, Iterable<FixtureMatcher>, Comparator<TileFixture> {
+		implements Reorderable, ZOrderFilter, IterableComparator<FixtureMatcher, TileFixture> {
 	@Serial
 	private static final long serialVersionUID = 1L;
 	private final List<FixtureMatcher> matchers = new ArrayList<>();
