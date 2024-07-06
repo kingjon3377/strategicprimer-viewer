@@ -75,7 +75,7 @@ public class WindowMenu extends JMenu {
 	private final JMenuItem minimizeItem = new JMenuItem("Minimize");
 
 	/**
-	 * The "Bright All to Front" menu item. TODO: this is implemented hackish-ly
+	 * The "Bring All to Front" menu item. TODO: this is implemented hackish-ly
 	 * and causes windows to flicker over one another. I'm not sure it's worth
 	 * keeping; for now the lines that add it to the menu are commented out.
 	 */
