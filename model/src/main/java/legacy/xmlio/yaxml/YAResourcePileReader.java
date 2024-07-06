@@ -25,7 +25,7 @@ import common.xmlio.Warning;
 
 	@Override
 	public IMutableResourcePile read(final StartElement element, final QName parent, final Iterable<XMLEvent> stream)
-			throws SPFormatException, XMLStreamException {
+			throws SPFormatException {
 		requireTag(element, parent, "resource");
 		expectAttributes(element, "quantity", "kind", "contents", "unit", "created", "id", "image");
 		final IMutableResourcePile retval = new ResourcePileImpl(getOrGenerateID(element),

@@ -34,7 +34,7 @@ import lovelace.util.ThrowingConsumer;
 
 	@Override
 	public ExplorableFixture read(final StartElement element, final QName parent, final Iterable<XMLEvent> stream)
-			throws SPFormatException, XMLStreamException {
+			throws SPFormatException {
 		requireTag(element, parent, "battlefield", "cave");
 		expectAttributes(element, "id", "dc", "image");
 		final int idNum = getOrGenerateID(element);

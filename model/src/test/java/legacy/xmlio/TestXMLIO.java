@@ -340,7 +340,7 @@ public final class TestXMLIO {
 	 * @param deprecated Whether to use the deprecated i.e. one-generation-back writer
 	 */
 	private static String createSerializedForm(final Object obj, final boolean deprecated)
-			throws SPFormatException, XMLStreamException, IOException {
+			throws XMLStreamException, IOException {
 		final StringBuilder writer = new StringBuilder();
 		if (deprecated) {
 			TestReaderFactory.getOldWriter().writeSPObject(writer::append, obj);

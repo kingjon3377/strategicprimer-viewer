@@ -375,12 +375,8 @@ import static impl.xmlio.ISPReader.SP_NAMESPACE;
 	 * @param tag          The tag to get the parameter from
 	 * @param parameter    The name of the desired parameter
 	 * @param defaultValue The number to return if the parameter doesn't exist
-	 * @throws SPFormatException if the tag doesn't have that parameter and
-	 *                           no default given, or if its value is non-numeric or otherwise
-	 *                           malformed
 	 */
-	public static int getIntegerAttribute(final StartElement tag, final String parameter, final int defaultValue)
-			throws SPFormatException {
+	public static int getIntegerAttribute(final StartElement tag, final String parameter, final int defaultValue) {
 		return getIntegerAttribute(tag, parameter, defaultValue, Warning.WARN);
 	}
 

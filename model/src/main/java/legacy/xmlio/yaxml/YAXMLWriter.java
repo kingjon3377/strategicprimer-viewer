@@ -42,7 +42,7 @@ public class YAXMLWriter implements SPWriter {
 	 */
 	@Override
 	public void writeSPObject(final ThrowingConsumer<String, IOException> arg, final Object obj)
-			throws XMLStreamException, IOException {
+			throws IOException {
 		wrapped.write(arg, obj, 0);
 	}
 

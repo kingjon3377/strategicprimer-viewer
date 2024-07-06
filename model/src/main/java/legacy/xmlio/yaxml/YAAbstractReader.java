@@ -473,7 +473,7 @@ abstract class YAAbstractReader<Item, Value> implements YAReader<Item, Value> {
 	 * Read a parameter from XML whose value must be a boolean.
 	 */
 	protected boolean getBooleanParameter(final StartElement element, final String parameter,
-	                                      final boolean defaultValue) throws SPFormatException {
+	                                      final boolean defaultValue) {
 		final Attribute attr = getAttributeByName(element, parameter);
 		if (!Objects.isNull(attr)) {
 			final String val = attr.getValue();

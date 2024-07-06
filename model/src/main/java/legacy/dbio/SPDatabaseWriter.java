@@ -113,7 +113,7 @@ public final class SPDatabaseWriter implements SPWriter {
 	}
 
 	@Override
-	public void writeSPObject(final Path arg, final Object obj) throws XMLStreamException, IOException {
+	public void writeSPObject(final Path arg, final Object obj) throws IOException {
 		final Transactional db = getDB(arg);
 		try {
 			writeSPObjectInContext(db, obj, obj);
@@ -123,8 +123,7 @@ public final class SPDatabaseWriter implements SPWriter {
 	}
 
 	@Override
-	public void writeSPObject(final ThrowingConsumer<String, IOException> arg, final Object obj)
-			throws XMLStreamException, IOException {
+	public void writeSPObject(final ThrowingConsumer<String, IOException> arg, final Object obj) {
 		throw new UnsupportedOperationException(
 				"SPDatabaseWriter can only write to a database file, not to a stream");
 	}

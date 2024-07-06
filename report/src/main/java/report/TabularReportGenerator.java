@@ -169,7 +169,7 @@ public final class TabularReportGenerator {
 	 * @param hq       the point to count distances from
 	 */
 	public static void createGUITabularReports(final BiConsumer<String, Component> consumer,
-											   final ILegacyMap map, final @Nullable Point hq) throws IOException {
+											   final ILegacyMap map, final @Nullable Point hq) {
 		final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures =
 				ReportGeneratorHelper.getFixtures(map);
 		final Map<Integer, Integer> parentMap = ReportGeneratorHelper.getParentMap(map);

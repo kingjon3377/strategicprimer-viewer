@@ -46,7 +46,7 @@ public final class ReportGenerator {
 	private static void createSubReports(final StringBuilder builder,
 										 final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
 										 final ILegacyMap map, final Player player,
-										 final IReportGenerator<?>... generators) throws IOException {
+										 final IReportGenerator<?>... generators) {
 		final Consumer<String> lambda = builder::append;
 		for (final IReportGenerator<?> generator : generators) {
 			generator.produce(fixtures, map, lambda);

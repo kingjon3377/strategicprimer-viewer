@@ -23,7 +23,7 @@ import common.xmlio.Warning;
 
 	@Override
 	public Ground read(final StartElement element, final QName parent, final Iterable<XMLEvent> stream)
-			throws SPFormatException, XMLStreamException {
+			throws SPFormatException {
 		requireTag(element, parent, "ground");
 		expectAttributes(element, "kind", "ground", "exposed", "id", "image");
 		final String kind = getParamWithDeprecatedForm(element, "kind", "ground");

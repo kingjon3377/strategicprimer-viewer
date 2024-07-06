@@ -49,7 +49,7 @@ public class SPDatabaseReader implements IMapReader {
 
 	@Override
 	public IMutableLegacyMap readMap(final Path file, final Warning warner)
-			throws SPFormatException, XMLStreamException, IOException {
+			throws IOException {
 		final Transactional db = getDB(file);
 		try {
 			return dbMapReader.readMap(db, warner);
@@ -59,8 +59,7 @@ public class SPDatabaseReader implements IMapReader {
 	}
 
 	@Override
-	public IMutableLegacyMap readMapFromStream(final Path file, final Reader istream, final Warning warner)
-			throws SPFormatException, XMLStreamException, IOException {
+	public IMutableLegacyMap readMapFromStream(final Path file, final Reader istream, final Warning warner) {
 		throw new UnsupportedOperationException("Can't read a database from a stream");
 	}
 

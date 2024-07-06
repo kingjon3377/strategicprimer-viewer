@@ -23,7 +23,7 @@ import common.xmlio.Warning;
 
 	@Override
 	public Implement read(final StartElement element, final QName parent, final Iterable<XMLEvent> stream)
-			throws SPFormatException, XMLStreamException {
+			throws SPFormatException {
 		requireTag(element, parent, "implement");
 		expectAttributes(element, "kind", "id", "image");
 		final Implement retval = new Implement(getParameter(element, "kind"),

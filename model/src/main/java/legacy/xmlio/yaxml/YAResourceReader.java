@@ -87,7 +87,7 @@ import java.util.Set;
 
 	@Override
 	public HarvestableFixture read(final StartElement element, final QName parent, final Iterable<XMLEvent> stream)
-			throws SPFormatException, XMLStreamException {
+			throws SPFormatException {
 		requireTag(element, parent, SUPPORTED_TAGS);
 		final int idNum = getOrGenerateID(element);
 		final HarvestableFixture retval;

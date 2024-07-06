@@ -31,7 +31,7 @@ import impl.xmlio.exceptions.UnwantedChildException;
 	@SuppressWarnings("ChainOfInstanceofChecks")
 	@Override
 	public TextFixture read(final StartElement element, final QName parent, final Iterable<XMLEvent> stream)
-			throws SPFormatException, XMLStreamException {
+			throws SPFormatException {
 		requireTag(element, parent, "text");
 		expectAttributes(element, "turn", "image");
 		final StringBuilder builder = new StringBuilder();

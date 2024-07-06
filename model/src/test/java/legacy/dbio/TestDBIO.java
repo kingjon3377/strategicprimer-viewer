@@ -204,7 +204,7 @@ public final class TestDBIO {
 		}
 
 		@Override
-		public void close() throws SQLException {
+		public void close() {
 			// Deliberate noop
 		}
 
@@ -491,12 +491,12 @@ public final class TestDBIO {
 	private @Nullable Connection connection;
 
 	@BeforeEach
-	public void setUp() throws SQLException, IOException {
+	public void setUp() {
 		db = new TestDatabase();
 	}
 
 	@AfterEach
-	public void tearDown() throws SQLException, IOException {
+	public void tearDown() throws SQLException {
 		db.tearDown();
 	}
 

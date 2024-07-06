@@ -30,7 +30,7 @@ import java.io.IOException;
 	 */
 	@Override
 	public AdventureFixture read(final StartElement element, final QName parent, final Iterable<XMLEvent> stream)
-			throws SPFormatException, XMLStreamException {
+			throws SPFormatException {
 		requireTag(element, parent, "adventure");
 		expectAttributes(element, "owner", "brief", "full", "image", "id");
 		final Player player;

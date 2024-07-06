@@ -294,8 +294,7 @@ public final class ExplorationRunner {
 	/**
 	 * Load a table from a data stream into the runner.
 	 */
-	/* package */ void loadTableFromDataStream(final Iterator<String> source, final String name)
-			throws IOException {
+	/* package */ void loadTableFromDataStream(final Iterator<String> source, final String name) {
 		if (source.hasNext()) {
 			final String line = source.next();
 			if (line.isEmpty()) {

@@ -60,7 +60,7 @@ public class TestExplorationRunner {
 	 * Test that {@link ExplorationRunner#getPrimaryTree} objects to being called on non-forested tiles.
 	 */
 	@Test
-	public void testIllegalGetPrimaryTree() throws MissingTableException {
+	public void testIllegalGetPrimaryTree() {
 		assertThrows(IllegalArgumentException.class,
 				() -> new ExplorationRunner().getPrimaryTree(new Point(0, 0), TileType.Tundra,
 						false, Collections.emptyList(), new MapDimensionsImpl(69, 88, 2)),
@@ -144,7 +144,7 @@ public class TestExplorationRunner {
 	 * table in question, or one it references, does <em>not</em> exist.
 	 */
 	@Test
-	public void testRecursiveCheck() throws MissingTableException {
+	public void testRecursiveCheck() {
 		final ExplorationRunner runner = new ExplorationRunner();
 		runner.loadTable("existent_table", new ConstantTable("exists"));
 		assertTrue(runner.recursiveCheck("non-existent-table"),
@@ -168,7 +168,7 @@ public class TestExplorationRunner {
 	 * <em>false</em> if the graph is self-complete.
 	 */
 	@Test
-	public void testGlobalRecursiveCheck() throws MissingTableException {
+	public void testGlobalRecursiveCheck() {
 		final ExplorationRunner runner = new ExplorationRunner();
 		assertFalse(runner.globalRecursiveCheck(), "recursive check with no tables");
 		runner.loadTable("existent", new ConstantTable("true_table"));
@@ -289,7 +289,7 @@ public class TestExplorationRunner {
 	 * Test that the table-loading code correctly rejects invalid input.
 	 */
 	@Test
-	public void testTableLoadingInvalidInput() throws MissingTableException {
+	public void testTableLoadingInvalidInput() {
 		final ExplorationRunner runner = new ExplorationRunner();
 		// no data
 		assertThrows(IllegalArgumentException.class,

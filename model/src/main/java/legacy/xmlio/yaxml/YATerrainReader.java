@@ -39,7 +39,7 @@ import java.util.Set;
 
 	@Override
 	public TerrainFixture read(final StartElement element, final QName parent, final Iterable<XMLEvent> stream)
-			throws SPFormatException, XMLStreamException {
+			throws SPFormatException {
 		requireTag(element, parent, SUPPORTED_TAGS);
 		final TerrainFixture retval;
 		switch (element.getName().getLocalPart().toLowerCase()) {

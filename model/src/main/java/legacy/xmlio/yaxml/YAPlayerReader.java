@@ -26,7 +26,7 @@ class YAPlayerReader extends YAAbstractReader<Player, Player> {
 
 	@Override
 	public Player read(final StartElement element, final QName parent, final Iterable<XMLEvent> stream)
-			throws SPFormatException, XMLStreamException {
+			throws SPFormatException {
 		requireTag(element, parent, "player");
 		expectAttributes(element, "number", "code_name", "portrait", "country");
 		requireNonEmptyParameter(element, "number", true);

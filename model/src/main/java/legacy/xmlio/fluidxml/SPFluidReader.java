@@ -618,7 +618,7 @@ public class SPFluidReader implements IMapReader, ISPReader {
 
 	@Override
 	public <Type> Type readXML(final Path file, final Reader istream, final Warning warner)
-			throws SPFormatException, XMLStreamException, IOException {
+			throws SPFormatException, XMLStreamException {
 		try (final TypesafeXMLEventReader reader = new TypesafeXMLEventReader(istream)) {
 			final Iterable<XMLEvent> eventReader = new IteratorWrapper<>(reader);
 			final IMutableLegacyPlayerCollection players = new LegacyPlayerCollection();

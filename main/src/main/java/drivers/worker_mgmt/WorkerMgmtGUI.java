@@ -52,8 +52,7 @@ public class WorkerMgmtGUI implements MultiMapGUIDriver, WorkerGUI {
 		return model;
 	}
 
-	private void createWindow(final MenuBroker menuHandler, final PlayerChangeMenuListener pcml)
-			throws DriverFailedException {
+	private void createWindow(final MenuBroker menuHandler, final PlayerChangeMenuListener pcml) {
 		LovelaceLogger.trace("Inside GUI creation lambda");
 		final WorkerMgmtFrame frame = new WorkerMgmtFrame(options, model, menuHandler, this);
 		LovelaceLogger.trace("Created worker mgmt frame");
@@ -89,11 +88,7 @@ public class WorkerMgmtGUI implements MultiMapGUIDriver, WorkerGUI {
 		menuHandler.register(pcml, "change current player");
 		try {
 			SwingUtilities.invokeLater(() -> {
-				try {
-					createWindow(menuHandler, pcml);
-				} catch (final DriverFailedException except) {
-					throw new RuntimeException(except);
-				}
+				createWindow(menuHandler, pcml);
 			});
 		} catch (final RuntimeException except) {
 			if (except.getCause() instanceof final DriverFailedException dfe) {
