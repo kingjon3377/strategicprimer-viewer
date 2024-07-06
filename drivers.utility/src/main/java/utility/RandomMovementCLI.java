@@ -40,10 +40,11 @@ import java.util.Random;
 	@Override
 	public void startDriver() {
 		final Direction[] directions = Direction.values();
+		final Random rng = new Random();
 		for (final IUnit unit : model.getPlayerChoices().stream()
 				.filter(Player::isIndependent).flatMap(p -> model.getUnits(p).stream()).toList()) {
 			// TODO: Pull out of loop and call setSeed() on it here instead.
-			final Random rng = new Random(unit.getId() << 8 + model.getMap().getCurrentTurn());
+			rng.setSeed(unit.getId() << 8 + model.getMap().getCurrentTurn());
 			final int steps = rng.nextInt(3) + rng.nextInt(3);
 			model.setSelectedUnit(unit);
 			for (int i = 0; i < steps; i++) {
