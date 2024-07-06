@@ -47,7 +47,7 @@ public interface IReportGenerator<T extends IFixture> {
 	 * @param ostream  The stream to write to
 	 */
 	void produce(DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-				 ILegacyMap map, Consumer<String> ostream);
+	             ILegacyMap map, Consumer<String> ostream);
 
 	/**
 	 * Write a (sub-)report on a single item to a stream.
@@ -61,7 +61,7 @@ public interface IReportGenerator<T extends IFixture> {
 	 * @param loc      Its location
 	 */
 	void produceSingle(DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-					   ILegacyMap map, Consumer<String> ostream, T item, Point loc);
+	                   ILegacyMap map, Consumer<String> ostream, T item, Point loc);
 
 	/**
 	 * A factory for a default formatter for {@link #writeMap}.
@@ -84,9 +84,9 @@ public interface IReportGenerator<T extends IFixture> {
 	 * @param sorter  A sorting method to run the map through before printing.
 	 */
 	default <Key extends IFixture> void writeMap(final Consumer<String> ostream,
-												 final HeadedMap<? extends Key, Point> map,
-												 final TriConsumer<? super Key, Point, Consumer<String>> lambda,
-												 final Comparator<Pair<? super Key, Point>> sorter) {
+	                                             final HeadedMap<? extends Key, Point> map,
+	                                             final TriConsumer<? super Key, Point, Consumer<String>> lambda,
+	                                             final Comparator<Pair<? super Key, Point>> sorter) {
 		if (!map.isEmpty()) {
 			ostream.accept("%s%n<ul>%n".formatted(map.getHeader()));
 			final List<Pair<Key, Point>> sorted = map.entrySet().stream()
@@ -109,8 +109,8 @@ public interface IReportGenerator<T extends IFixture> {
 	 * @param lambda  The method to write each item.
 	 */
 	default <Key extends IFixture> void writeMap(final Consumer<String> ostream,
-												 final HeadedMap<? extends Key, Point> map,
-												 final TriConsumer<? super Key, Point, Consumer<String>> lambda) {
+	                                             final HeadedMap<? extends Key, Point> map,
+	                                             final TriConsumer<? super Key, Point, Consumer<String>> lambda) {
 		if (!map.isEmpty()) {
 			ostream.accept("%s%n<ul>%n".formatted(map.getHeader()));
 			final List<Pair<Key, Point>> sorted = map.entrySet().stream()

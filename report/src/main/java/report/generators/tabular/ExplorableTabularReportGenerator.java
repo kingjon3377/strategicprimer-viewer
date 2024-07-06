@@ -39,7 +39,7 @@ public class ExplorableTabularReportGenerator
 	}
 
 	public ExplorableTabularReportGenerator(final Player player, final @Nullable Point hq,
-											final MapDimensions dimensions) {
+	                                        final MapDimensions dimensions) {
 		this.player = player;
 		this.hq = hq;
 		this.dimensions = dimensions;
@@ -86,7 +86,7 @@ public class ExplorableTabularReportGenerator
 		final String longDesc;
 		switch (item) {
 			case final TextFixture tf when tf.getTurn() >= 0 -> {
-                brief = "Text Note (%d)".formatted(tf.getTurn());
+				brief = "Text Note (%d)".formatted(tf.getTurn());
 				owner = "---";
 				longDesc = tf.getText();
 			}

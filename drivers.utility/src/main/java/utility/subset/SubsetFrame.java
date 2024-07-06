@@ -115,7 +115,7 @@ import drivers.common.ISPDriver;
 			throw new DriverFailedException(except, "File %s not found".formatted(arg));
 		} catch (final XMLStreamException except) {
 			printParagraph("ERROR: Malformed XML in %s; see following error message for details".formatted(arg),
-                    LabelTextColor.RED);
+					LabelTextColor.RED);
 			printParagraph(except.getMessage(), LabelTextColor.RED);
 			throw new DriverFailedException(except, "Malformed XML in main map " + arg);
 		} catch (final SPFormatException except) {
@@ -160,7 +160,7 @@ import drivers.common.ISPDriver;
 			return;
 		} catch (final SPFormatException except) {
 			printParagraph("FAIL: SP map format error at line %d; see following error message for details"
-							.formatted(except.getLine()), LabelTextColor.RED);
+					.formatted(except.getLine()), LabelTextColor.RED);
 			printParagraph(except.getMessage(), LabelTextColor.RED);
 			LovelaceLogger.error(except, "SP map format error reading %s", path);
 			return;

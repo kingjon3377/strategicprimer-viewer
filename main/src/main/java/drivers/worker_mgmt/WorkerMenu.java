@@ -23,7 +23,7 @@ public final class WorkerMenu {
 	 * @param driver    The current driver
 	 */
 	public static JMenuBar workerMenu(final ActionListener handler, final Component component,
-									  final ISPDriver driver) {
+	                                  final ISPDriver driver) {
 		return SPMenu.forWindowContaining(component, SPMenu.createFileMenu(handler, driver),
 				SPMenu.disabledMenu(SPMenu.createMapMenu(handler, driver)),
 				SPMenu.createViewMenu(handler, driver));

@@ -71,9 +71,9 @@ public class OrdersPanel extends BorderedPanel implements OrdersContainer {
 	private final JTextArea area = new JTextArea();
 
 	public OrdersPanel(final String description, final int currentTurn, final Player currentPlayer,
-					   final BiFunction<Player, String, Collection<IUnit>> playerUnits,
-					   final IOrdersSupplier ordersSupplier, final @Nullable IOrdersConsumer ordersConsumer,
-					   final IIsCurrent isCurrent) {
+	                   final BiFunction<Player, String, Collection<IUnit>> playerUnits,
+	                   final IOrdersSupplier ordersSupplier, final @Nullable IOrdersConsumer ordersConsumer,
+	                   final IIsCurrent isCurrent) {
 		this.currentPlayer = currentPlayer;
 		this.playerUnits = playerUnits;
 		this.ordersSupplier = ordersSupplier;
@@ -95,7 +95,7 @@ public class OrdersPanel extends BorderedPanel implements OrdersContainer {
 
 		final String topLabel;
 		if ("Orders".equals(description)) {
-            topLabel = "Orders for current selection, if a unit: (%sD)".formatted(Platform.SHORTCUT_DESCRIPTION);
+			topLabel = "Orders for current selection, if a unit: (%sD)".formatted(Platform.SHORTCUT_DESCRIPTION);
 		} else {
 			topLabel = description + " for current selection, if a unit:";
 		}

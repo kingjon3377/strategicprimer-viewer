@@ -45,7 +45,8 @@ public interface IWorkerModel extends IMultiMapModel, IAdvancementModel, IFixtur
 	/**
 	 * Get a unit by ID number.
 	 */
-	@Nullable IUnit getUnitByID(Player owner, int id);
+	@Nullable
+	IUnit getUnitByID(Player owner, int id);
 
 	/**
 	 * The player that the UI seems to be concerned with.

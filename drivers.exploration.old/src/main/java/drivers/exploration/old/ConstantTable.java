@@ -21,7 +21,7 @@ class ConstantTable implements EncounterTable {
 
 	@Override
 	public String generateEvent(final Point point, final @Nullable TileType terrain, final boolean mountainous,
-								final Iterable<TileFixture> fixtures, final MapDimensions dimensions) {
+	                            final Iterable<TileFixture> fixtures, final MapDimensions dimensions) {
 		return constant;
 	}
 

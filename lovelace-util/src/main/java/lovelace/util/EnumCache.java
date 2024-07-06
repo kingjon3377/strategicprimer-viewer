@@ -13,6 +13,7 @@ import java.util.function.Supplier;
 public class EnumCache<T extends Enum<T>> implements Supplier<List<T>> {
 	private final Class<T> classType;
 	private @Nullable List<T> cache = null;
+
 	public EnumCache(final Class<T> classType) {
 		this.classType = classType;
 	}

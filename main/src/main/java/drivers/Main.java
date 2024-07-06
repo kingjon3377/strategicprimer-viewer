@@ -29,7 +29,7 @@ public final class Main {
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		} catch (final ClassNotFoundException | InstantiationException | IllegalAccessException |
-					   UnsupportedLookAndFeelException e) {
+		               UnsupportedLookAndFeelException e) {
 			System.err.println("ERROR: Unexpected low-level exception while setting the Java look-and-feel.");
 			System.err.println("ERROR: Most likely something is very seriously broken in your Java installation.");
 		}

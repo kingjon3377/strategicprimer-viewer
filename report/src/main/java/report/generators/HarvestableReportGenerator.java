@@ -47,11 +47,11 @@ public class HarvestableReportGenerator extends AbstractReportGenerator<Harvesta
 	}
 
 	private static String populationCountString(final HasPopulation<?> item, final String singular,
-												final String plural) {
+	                                            final String plural) {
 		if (item.getPopulation() <= 0) {
 			return "";
 		} else if (item.getPopulation() == 1) {
-            return " (1 %s)".formatted(singular);
+			return " (1 %s)".formatted(singular);
 		} else {
 			return " (%d %s)".formatted(item.getPopulation(), plural);
 		}
@@ -67,7 +67,7 @@ public class HarvestableReportGenerator extends AbstractReportGenerator<Harvesta
 
 	private static String acreageString(final HasExtent<?> item) {
 		if (item.getAcres().doubleValue() > 0.0) {
-            return " (%s acres)".formatted(NUM_FORMAT.format(item.getAcres()));
+			return " (%s acres)".formatted(NUM_FORMAT.format(item.getAcres()));
 		} else {
 			return "";
 		}
@@ -101,8 +101,8 @@ public class HarvestableReportGenerator extends AbstractReportGenerator<Harvesta
 	 */
 	@Override
 	public void produceSingle(final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-							  final ILegacyMap map, final Consumer<String> ostream, final HarvestableFixture item,
-							  final Point loc) {
+	                          final ILegacyMap map, final Consumer<String> ostream, final HarvestableFixture item,
+	                          final Point loc) {
 		if (!(item instanceof CacheFixture || item instanceof Grove || item instanceof Meadow
 				|| item instanceof Mine || item instanceof MineralVein
 				|| item instanceof Shrub || item instanceof StoneDeposit)) {
@@ -164,7 +164,7 @@ public class HarvestableReportGenerator extends AbstractReportGenerator<Harvesta
 	 */
 	@Override
 	public void produce(final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-						final ILegacyMap map, final Consumer<String> ostream) {
+	                    final ILegacyMap map, final Consumer<String> ostream) {
 		final Map<String, List<Point>> stone = new HashMap<>();
 		final Map<String, List<Point>> shrubs = new HashMap<>();
 		final Map<String, List<Point>> minerals = new HashMap<>();

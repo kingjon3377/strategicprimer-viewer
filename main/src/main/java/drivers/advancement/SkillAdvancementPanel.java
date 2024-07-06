@@ -107,7 +107,7 @@ import drivers.common.IAdvancementModel;
 
 	// We'd like to combine the two constructors, but that's far from trivial.
 	private SkillAdvancementPanel(final IAdvancementModel model, final JTextField hours, final JButton okButton,
-								  final JButton cancelButton) {
+	                              final JButton cancelButton) {
 		super(null, new FlowPanel(new JLabel("Add "), hours, new JLabel(" hours to skill?")),
 				secondPanelFactory(okButton, cancelButton));
 		this.model = model;
@@ -150,7 +150,7 @@ import drivers.common.IAdvancementModel;
 
 	@Override
 	public void memberSelected(final @Nullable UnitMember previousSelection,
-							   final @Nullable UnitMember selected) {
+	                           final @Nullable UnitMember selected) {
 		if (selected instanceof final IWorker w) {
 			worker = w;
 		} else {

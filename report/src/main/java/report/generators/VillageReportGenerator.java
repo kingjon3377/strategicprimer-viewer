@@ -40,7 +40,7 @@ public class VillageReportGenerator extends AbstractReportGenerator<Village> {
 	 * Produce the report on all known villages.
 	 */
 	public void produce(final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-						final ILegacyMap map, final Consumer<String> ostream) {
+	                    final ILegacyMap map, final Consumer<String> ostream) {
 		final Comparator<Village> villageComparator = Comparator.comparing(Village::getName)
 				.thenComparing(Village::getRace)
 				.thenComparing(Village::getId);
@@ -91,8 +91,8 @@ public class VillageReportGenerator extends AbstractReportGenerator<Village> {
 	 */
 	@Override
 	public void produceSingle(final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-							  final ILegacyMap map, final Consumer<String> ostream, final Village item,
-							  final Point loc) {
+	                          final ILegacyMap map, final Consumer<String> ostream, final Village item,
+	                          final Point loc) {
 		fixtures.remove(item.getId());
 		ostream.accept("At ");
 		ostream.accept(loc.toString());

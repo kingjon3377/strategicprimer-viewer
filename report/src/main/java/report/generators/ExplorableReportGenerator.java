@@ -37,8 +37,8 @@ public class ExplorableReportGenerator extends AbstractReportGenerator<Explorabl
 	 */
 	@Override
 	public void produceSingle(final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-							  final ILegacyMap map, final Consumer<String> ostream, final ExplorableFixture item,
-							  final Point loc) {
+	                          final ILegacyMap map, final Consumer<String> ostream, final ExplorableFixture item,
+	                          final Point loc) {
 		switch (item) {
 			case final Cave cave -> ostream.accept("Caves beneath ");
 			case final Battlefield battlefield -> ostream.accept("Signs of a long-ago battle on ");
@@ -62,7 +62,7 @@ public class ExplorableReportGenerator extends AbstractReportGenerator<Explorabl
 	 */
 	@Override
 	public void produce(final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-						final ILegacyMap map, final Consumer<String> ostream) {
+	                    final ILegacyMap map, final Consumer<String> ostream) {
 		final List<Point> portals = new PointList("Portals to other worlds: ");
 		final List<Point> battles = new PointList("Signs of long-ago battles on the following tiles:");
 		final List<Point> caves = new PointList("Caves beneath the following tiles: ");

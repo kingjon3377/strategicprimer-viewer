@@ -59,7 +59,7 @@ public final class SPMenu extends JMenuBar {
 	 */
 	@SafeVarargs
 	private static JMenuItem enabledForDriver(final JMenuItem item, final ISPDriver driver,
-											  final Class<? extends ISPDriver>... types) {
+	                                          final Class<? extends ISPDriver>... types) {
 		boolean any = false;
 		for (final Class<?> type : types) {
 			if (type.isInstance(driver)) {
@@ -79,7 +79,7 @@ public final class SPMenu extends JMenuBar {
 	 */
 	@SafeVarargs
 	private static JMenuItem disabledForDriver(final JMenuItem item, final ISPDriver driver,
-											   final Class<? extends ISPDriver>... types) {
+	                                           final Class<? extends ISPDriver>... types) {
 		boolean any = false;
 		for (final Class<?> type : types) {
 			if (type.isInstance(driver)) {

@@ -14,7 +14,8 @@ public interface Changeset {
 	/**
 	 * The inverse of this set of operations.
 	 */
-	@NotNull Changeset invert();
+	@NotNull
+	Changeset invert();
 
 	/**
 	 * Apply the changeset to a map, changing it in place.
@@ -30,5 +31,6 @@ public interface Changeset {
 	 *
 	 * TODO: Consider making all IMutableMap methods return a modified IMap instead of actually mutating in place?
 	 */
-	@NotNull IMap apply(@NotNull IMap map) throws ChangesetFailureException;
+	@NotNull
+	IMap apply(@NotNull IMap map) throws ChangesetFailureException;
 }

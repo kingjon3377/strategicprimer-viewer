@@ -61,5 +61,6 @@ public interface IMutableMap extends IMap {
 	void replacePlayer(@NotNull Player toRemove, @NotNull Player toAdd);
 
 	@Override
-	@NotNull IMutableMap copy();
+	@NotNull
+	IMutableMap copy();
 }

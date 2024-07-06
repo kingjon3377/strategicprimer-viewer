@@ -100,7 +100,7 @@ public class AnimalTabularReportGenerator implements ITableGenerator<AnimalOrTra
 								(currentTurn - animal.getBorn())) {
 					age = "adult";
 				} else {
-                    age = "%d turns".formatted(currentTurn - animal.getBorn());
+					age = "%d turns".formatted(currentTurn - animal.getBorn());
 				}
 			}
 			case final Animal animal -> {

@@ -71,7 +71,7 @@ public class IOHandler implements ActionListener {
 	 */
 	// TODO: Use the possibly-throwing interface from j.u.concurrent instead of Runnable?
 	private void maybeSave(final String verb, final @Nullable Frame window, final Component source,
-						   final Runnable ifNotCanceled) {
+	                       final Runnable ifNotCanceled) {
 		final ModelDriver md = (ModelDriver) driver;
 		LovelaceLogger.trace("Checking if we need to save ...");
 		if (md.getModel().isMapModified()) {
@@ -83,8 +83,8 @@ public class IOHandler implements ActionListener {
 				prompt = "Save changes to map before %s?";
 			}
 			final int answer = JOptionPane.showConfirmDialog(window, prompt.formatted(verb),
-                    "Save Changes?", JOptionPane.YES_NO_CANCEL_OPTION,
-                    JOptionPane.QUESTION_MESSAGE);
+					"Save Changes?", JOptionPane.YES_NO_CANCEL_OPTION,
+					JOptionPane.QUESTION_MESSAGE);
 			switch (answer) {
 				case JOptionPane.CANCEL_OPTION -> {
 					LovelaceLogger.trace("User selected 'Cancel'");
@@ -105,7 +105,7 @@ public class IOHandler implements ActionListener {
 				.anyMatch(ILegacyMap::isModified)) {
 			LovelaceLogger.trace("Subordinate map(s) modified.");
 			final int answer = JOptionPane.showConfirmDialog(window,
-                    "Subordinate map(s) have unsaved changes. Save all before %s?".formatted(verb), "Save Changes?",
+					"Subordinate map(s) have unsaved changes. Save all before %s?".formatted(verb), "Save Changes?",
 					JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
 			switch (answer) {
 				case JOptionPane.CANCEL_OPTION -> {
@@ -128,7 +128,7 @@ public class IOHandler implements ActionListener {
 	}
 
 	private static void handleError(final Exception except, final String filename, final @Nullable Component source,
-									final String errorTitle, final String verb) {
+	                                final String errorTitle, final String verb) {
 		final String message = switch (except) {
 			case final XMLStreamException xse -> "Malformed XML in " + filename;
 			case final FileNotFoundException fnfe -> "File %s not found".formatted(filename);
@@ -142,7 +142,7 @@ public class IOHandler implements ActionListener {
 	}
 
 	private static Consumer<Path> loadHandlerImpl(final Consumer<IMutableLegacyMap> handler,
-												  final @Nullable Component source, final String errorTitle) {
+	                                              final @Nullable Component source, final String errorTitle) {
 		return path -> {
 			try {
 				handler.accept(MapIOHelper.readMap(path, Warning.getDefaultHandler()));
@@ -330,8 +330,8 @@ public class IOHandler implements ActionListener {
 								LovelaceLogger.error(Objects.requireNonNullElse(except.getCause(), except),
 										"Error thrown from viewer driver");
 								JOptionPane.showMessageDialog(null,
-                                        "Error starting map viewer:%n%s".formatted(except.getMessage()),
-                                        "Strategic Primer Assistive Programs", JOptionPane.ERROR_MESSAGE);
+										"Error starting map viewer:%n%s".formatted(except.getMessage()),
+										"Strategic Primer Assistive Programs", JOptionPane.ERROR_MESSAGE);
 							}
 						});
 					}

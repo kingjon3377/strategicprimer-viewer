@@ -163,9 +163,9 @@ public class Forest implements TerrainFixture, HasMutableImage, HasKind, HasExte
 			}
 		} else {
 			if (rows) {
-                return "Rows of %s trees".formatted(kind);
+				return "Rows of %s trees".formatted(kind);
 			} else {
-                return "A %s forest".formatted(kind);
+				return "A %s forest".formatted(kind);
 			}
 		}
 	}

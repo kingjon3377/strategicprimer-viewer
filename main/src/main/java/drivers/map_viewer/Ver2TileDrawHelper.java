@@ -63,7 +63,7 @@ public class Ver2TileDrawHelper implements TileDrawHelper {
 	private final List<FixtureMatcher> matchers;
 
 	public Ver2TileDrawHelper(final ImageObserver observer, final Predicate<TileFixture> filter,
-							  final FixtureMatcher... matchers) {
+	                          final FixtureMatcher... matchers) {
 		this.observer = observer;
 		this.filter = filter;
 		this.matchers = List.of(matchers);
@@ -79,7 +79,7 @@ public class Ver2TileDrawHelper implements TileDrawHelper {
 	}
 
 	public Ver2TileDrawHelper(final ImageObserver observer, final Predicate<TileFixture> filter,
-							  final Iterable<FixtureMatcher> matchers) {
+	                          final Iterable<FixtureMatcher> matchers) {
 		this.observer = observer;
 		this.filter = filter;
 		final List<FixtureMatcher> temp = new ArrayList<>();
@@ -224,7 +224,7 @@ public class Ver2TileDrawHelper implements TileDrawHelper {
 	 */
 	@Override
 	public void drawTile(final Graphics pen, final ILegacyMap map, final Point location,
-						 final Coordinate coordinates, final Coordinate dimensions) {
+	                     final Coordinate coordinates, final Coordinate dimensions) {
 		final Color localColor;
 		if (needsFixtureColor(map, location)) {
 			localColor = getFixtureColor(map, location);
@@ -240,12 +240,12 @@ public class Ver2TileDrawHelper implements TileDrawHelper {
 		for (final River river : map.getRivers(location)) {
 			// TODO: Do something to avoid String::formatted(), which is probably slow
 			drawIcon(pen, "river%d.png".formatted(river.ordinal()),
-                    coordinates, dimensions);
+					coordinates, dimensions);
 		}
 		for (final Map.Entry<Direction, Integer> entry : map.getRoads(location).entrySet()) {
 			// TODO: Do something to avoid String::formatted(), which is probably slow
 			drawIcon(pen, "road%d.png".formatted(entry.getKey().ordinal()),
-                    coordinates, dimensions);
+					coordinates, dimensions);
 		}
 		final TileFixture top = getTopFixture(map, location);
 		if (!Objects.isNull(top)) {

@@ -42,7 +42,8 @@ public interface IViewerModel extends SelectionChangeSource, GraphicalParamsSour
 	 * equivalent) on a tile, and unset at the end of the operation
 	 * handling that click.
 	 */
-	@Nullable Point getInteraction();
+	@Nullable
+	Point getInteraction();
 
 	/**
 	 * Set the coordinates of the tile the user is currently interacting with,

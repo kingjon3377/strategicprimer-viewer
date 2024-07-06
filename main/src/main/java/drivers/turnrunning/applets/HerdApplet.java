@@ -63,9 +63,9 @@ import query.SmallAnimalModel;
 
 	private @Nullable HerdModel chooseHerdModel(final String animal) {
 		return cli.chooseFromList(Stream.concat(Stream.of(MammalModel.values()), Stream.concat(
-                                Stream.of(PoultryModel.values()), Stream.of(SmallAnimalModel.values())))
-                        .collect(Collectors.toList()), "What kind of animal(s) is/are %s?".formatted(animal),
-                "No animal kinds found", "Kind of animal:", ICLIHelper.ListChoiceBehavior.ALWAYS_PROMPT).getValue1();
+								Stream.of(PoultryModel.values()), Stream.of(SmallAnimalModel.values())))
+						.collect(Collectors.toList()), "What kind of animal(s) is/are %s?".formatted(animal),
+				"No animal kinds found", "Kind of animal:", ICLIHelper.ListChoiceBehavior.ALWAYS_PROMPT).getValue1();
 	}
 
 	@Override

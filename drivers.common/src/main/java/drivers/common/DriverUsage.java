@@ -122,15 +122,15 @@ public class DriverUsage implements IDriverUsage {
 	}
 
 	public DriverUsage(final boolean graphical, final String invocation, final ParamCount paramsWanted,
-					   final String shortDescription, final String longDescription, final boolean includeInCLIList,
-					   final boolean includeInGUIList) {
+	                   final String shortDescription, final String longDescription, final boolean includeInCLIList,
+	                   final boolean includeInGUIList) {
 		this(graphical, invocation, paramsWanted, shortDescription, longDescription,
 				includeInCLIList, includeInGUIList, "filename.xml");
 	}
 
 	public DriverUsage(final boolean graphical, final String invocation, final ParamCount paramsWanted,
-					   final String shortDescription, final String longDescription, final boolean includeInCLIList,
-					   final boolean includeInGUIList, final String firstParamDescription) {
+	                   final String shortDescription, final String longDescription, final boolean includeInCLIList,
+	                   final boolean includeInGUIList, final String firstParamDescription) {
 		this(graphical, invocation, paramsWanted, shortDescription, longDescription,
 				includeInCLIList, includeInGUIList, firstParamDescription, "filename.xml");
 	}
@@ -151,9 +151,9 @@ public class DriverUsage implements IDriverUsage {
 	 * @param supportedOptions           The options this driver supports.
 	 */
 	public DriverUsage(final boolean graphical, final String invocation, final ParamCount paramsWanted,
-					   final String shortDescription, final String longDescription, final boolean includeInCLIList,
-					   final boolean includeInGUIList, final String firstParamDescription,
-					   final String subsequentParamDescription, final String... supportedOptions) {
+	                   final String shortDescription, final String longDescription, final boolean includeInCLIList,
+	                   final boolean includeInGUIList, final String firstParamDescription,
+	                   final String subsequentParamDescription, final String... supportedOptions) {
 		this.graphical = graphical;
 		this.invocation = invocation;
 		this.paramsWanted = paramsWanted;

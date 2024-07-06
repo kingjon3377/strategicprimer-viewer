@@ -20,6 +20,7 @@ public class NumberComparator implements Comparator<Number>, Serializable {
 	private static boolean isFloatingPoint(final Number number) {
 		return number instanceof Float || number instanceof Double;
 	}
+
 	/**
 	 * Compare two numbers. If they are the same type, delegate to their
 	 * built-in comparison function; if not, convert both to doubles and

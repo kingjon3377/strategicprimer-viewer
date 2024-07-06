@@ -85,8 +85,8 @@ public class SPFrame extends JFrame implements ISPWindow {
 	 * @param windowName           The name of the window, for use in customizing the About dialog
 	 */
 	public SPFrame(final String windowTitle, final ISPDriver driver, final @Nullable Dimension minSize,
-				   final boolean supportsDroppedFiles, final IDroppedFileHandler droppedFileHandler,
-				   final String windowName) {
+	               final boolean supportsDroppedFiles, final IDroppedFileHandler droppedFileHandler,
+	               final String windowName) {
 		super(windowTitle);
 		this.windowTitle = windowTitle;
 		this.driver = driver;
@@ -126,12 +126,12 @@ public class SPFrame extends JFrame implements ISPWindow {
 	}
 
 	public SPFrame(final String windowTitle, final ISPDriver driver, final @Nullable Dimension minSize,
-				   final boolean supportsDroppedFiles, final IDroppedFileHandler droppedFileHandler) {
+	               final boolean supportsDroppedFiles, final IDroppedFileHandler droppedFileHandler) {
 		this(windowTitle, driver, minSize, supportsDroppedFiles, droppedFileHandler, windowTitle);
 	}
 
 	public SPFrame(final String windowTitle, final ISPDriver driver, final @Nullable Dimension minSize,
-				   final boolean supportsDroppedFiles) {
+	               final boolean supportsDroppedFiles) {
 		this(windowTitle, driver, minSize, supportsDroppedFiles, p -> {
 		});
 	}

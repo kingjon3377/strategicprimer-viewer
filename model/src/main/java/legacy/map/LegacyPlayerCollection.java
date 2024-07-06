@@ -59,7 +59,7 @@ public class LegacyPlayerCollection implements IMutableLegacyPlayerCollection {
 
 	@Override
 	public String toString() {
-        return "Player collection with %d players".formatted(players.size());
+		return "Player collection with %d players".formatted(players.size());
 	}
 
 	private Player current = new PlayerImpl(-1, "");

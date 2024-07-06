@@ -60,7 +60,7 @@ public enum River {
 			return retval.get();
 		} else { // TODO: orElseThrow()
 			throw new ParseException(
-                    "Failed to parse River from '%s'".formatted(description), -1);
+					"Failed to parse River from '%s'".formatted(description), -1);
 		}
 	}
 }

@@ -151,7 +151,7 @@ import legacy.map.fixtures.mobile.AnimalTracks;
 	}
 
 	private <Type> void countSimply(final Class<Type> cls, final Collection<?> stream, final String title,
-									final Function<Type, String> extractor) {
+	                                final Function<Type, String> extractor) {
 		final MappedCounter<Type, String, Integer> counter = simpleCounter(extractor);
 		stream.stream().filter(cls::isInstance).map(cls::cast).forEach(counter::add);
 		printSummary(counter, title);
@@ -312,8 +312,8 @@ import legacy.map.fixtures.mobile.AnimalTracks;
 		cli.printf("- %d fortresses%n", allFixtures.stream().filter(IFortress.class::isInstance).count());
 		cli.printf("- %d active towns, cities, or fortifications of any size%n",
 				allFixtures.stream().filter(AbstractTown.class::isInstance)
-				.map(AbstractTown.class::cast)
-				.filter(t -> TownStatus.Active == t.getStatus()).count());
+						.map(AbstractTown.class::cast)
+						.filter(t -> TownStatus.Active == t.getStatus()).count());
 
 		final MappedCounter<Village, String, Integer> villages = simpleCounter(Village::getRace);
 		allFixtures.stream().filter(Village.class::isInstance).map(Village.class::cast)

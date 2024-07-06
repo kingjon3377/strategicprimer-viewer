@@ -9,5 +9,6 @@ import org.jetbrains.annotations.NotNull;
  * TODO: What should the interface contain?
  */
 public interface EntityIdentifier {
-	@NotNull String getIdentifierString();
+	@NotNull
+	String getIdentifierString();
 }

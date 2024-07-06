@@ -54,7 +54,7 @@ import org.jetbrains.annotations.Nullable;
 	 */
 	private static String meadowStatus(final Object argument) {
 		if (argument instanceof final Meadow m) {
-            return "(%s)".formatted(m.getStatus());
+			return "(%s)".formatted(m.getStatus());
 		} else {
 			return "";
 		}

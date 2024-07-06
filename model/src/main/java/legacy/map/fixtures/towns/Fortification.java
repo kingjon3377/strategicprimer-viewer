@@ -21,7 +21,7 @@ public class Fortification extends AbstractTown {
 	 * @param player     The owner of the fortification
 	 */
 	public Fortification(final TownStatus townStatus, final TownSize size, final int discoverDC,
-						 final String townName, final int id, final Player player) {
+	                     final String townName, final int id, final Player player) {
 		super(townStatus, size, townName, player, discoverDC);
 		this.id = id;
 	}

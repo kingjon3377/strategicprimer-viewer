@@ -161,8 +161,8 @@ public class ResourceTabularReportGenerator
 	 */
 	@Override
 	public void produceTable(final ThrowingConsumer<String, IOException> ostream,
-							 final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-							 final Map<Integer, Integer> parentMap) throws IOException {
+	                         final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
+	                         final Map<Integer, Integer> parentMap) throws IOException {
 		final Iterable<Triplet<Integer, Point, IFixture>> values = fixtures.entrySet().stream()
 				.filter(e -> e.getValue().getValue1() instanceof CacheFixture ||
 						e.getValue().getValue1() instanceof Implement ||

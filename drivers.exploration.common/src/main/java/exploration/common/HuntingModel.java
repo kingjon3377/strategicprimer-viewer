@@ -122,7 +122,7 @@ public class HuntingModel {
 	 */
 	private static class ResultIterator<Type> implements Iterator<Type> {
 		public ResultIterator(final Collection<Type> stream, final double nothingProportion, final Type nothingValue,
-							  final ToIntFunction<Type> dcGetter) {
+		                      final ToIntFunction<Type> dcGetter) {
 			this.stream = new ArrayList<>(stream);
 			this.nothingProportion = nothingProportion;
 			this.nothingValue = nothingValue;
@@ -168,7 +168,7 @@ public class HuntingModel {
 	}
 
 	private record ResultStream<Type>(Collection<Type> stream, double nothingProportion, Type nothingValue,
-									  ToIntFunction<Type> dcGetter) implements Iterable<Type> {
+	                                  ToIntFunction<Type> dcGetter) implements Iterable<Type> {
 		@Override
 		public Iterator<Type> iterator() {
 			return new ResultIterator<>(stream, nothingProportion, nothingValue, dcGetter);
@@ -188,7 +188,7 @@ public class HuntingModel {
 		private boolean switched = false;
 
 		public FiniteResultIterator(final Iterable<Type> stream, final double nothingProportion,
-									final Type nothingValue) {
+		                            final Type nothingValue) {
 			wrapped = stream.iterator();
 			this.nothingProportion = nothingProportion;
 			this.nothingValue = nothingValue;
@@ -220,7 +220,7 @@ public class HuntingModel {
 	}
 
 	private record FiniteResultStream<Type>(Iterable<Type> stream, double nothingProportion,
-											Type nothingValue) implements Iterable<Type> {
+	                                        Type nothingValue) implements Iterable<Type> {
 
 		@Override
 		public Iterator<Type> iterator() {
@@ -324,7 +324,7 @@ public class HuntingModel {
 	 * @param chosenMap Filter/provider to use to find the animals.
 	 */
 	private Iterable<Pair<Point, TileFixture>> chooseFromMap(final Point point,
-															 final Function<Point, Collection<TileFixture>> chosenMap) {
+	                                                         final Function<Point, Collection<TileFixture>> chosenMap) {
 		return new ResultStream<>(
 				new SurroundingPointIterable(point, dimensions).stream()
 						.map(chooseFromMapImpl(chosenMap)).flatMap(Collection::stream)

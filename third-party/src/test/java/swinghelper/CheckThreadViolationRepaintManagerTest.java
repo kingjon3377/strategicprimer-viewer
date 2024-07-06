@@ -34,7 +34,8 @@ public class CheckThreadViolationRepaintManagerTest {
 		// frame.dispose(); // ???
 	}
 
-	@Nullable JButton test = null;
+	@Nullable
+	JButton test = null;
 
 	void repaintTest() {
 		try {

@@ -28,7 +28,7 @@ class QuadrantTable implements EncounterTable {
 
 	// TODO: static?
 	private Map<Point, String> valuesFor(final MapDimensions dimensions, final List<String> possResults,
-										 final int quadrantRowCount) {
+	                                     final int quadrantRowCount) {
 		// Instance variables passed in because we want to call this from the
 		// second constructor.
 		if (quadrants.containsKey(dimensions)) {
@@ -45,7 +45,7 @@ class QuadrantTable implements EncounterTable {
 			final int rowStep = mapRows / quadrantRowCount;
 			for (int row = 0; row < (mapRows - rowRemainder); row += rowStep) {
 				for (int column = 0; column < (mapColumns - columnRemainder);
-					 column += columnStep) {
+				     column += columnStep) {
 					retval.put(new Point(row, column), possResults.get(i));
 					i++;
 				}
@@ -78,7 +78,7 @@ class QuadrantTable implements EncounterTable {
 	}
 
 	public static QuadrantTable forDimensions(final int mapRows, final int mapColumns, final int rows,
-											  final String... items) {
+	                                          final String... items) {
 		return new QuadrantTable(mapRows, mapColumns, rows, items);
 	}
 
@@ -107,7 +107,7 @@ class QuadrantTable implements EncounterTable {
 
 	@Override
 	public String generateEvent(final Point point, final @Nullable TileType terrain, final boolean mountainous,
-								final Iterable<TileFixture> fixtures, final MapDimensions mapDimensions) {
+	                            final Iterable<TileFixture> fixtures, final MapDimensions mapDimensions) {
 		return getQuadrantValue(point.row(), point.column(), mapDimensions);
 	}
 

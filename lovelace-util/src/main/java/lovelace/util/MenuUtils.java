@@ -60,7 +60,7 @@ public final class MenuUtils {
 	 * @param keys      the keys to use as hot-keys.
 	 */
 	public static void createHotKey(final JComponent component, final String action, final ActionListener handler,
-									final int condition, final KeyStroke... keys) {
+	                                final int condition, final KeyStroke... keys) {
 		createHotKey(component, action, new ActionWrapper(handler), condition, keys);
 	}
 
@@ -74,7 +74,7 @@ public final class MenuUtils {
 	 * @param keys      the keys to use as hot-keys.
 	 */
 	public static void createHotKey(final JComponent component, final String action, final Action handler,
-									final int condition, final KeyStroke... keys) {
+	                                final int condition, final KeyStroke... keys) {
 		final InputMap inputMap = component.getInputMap(condition);
 		for (final KeyStroke key : keys) {
 			inputMap.put(key, action);
@@ -94,7 +94,7 @@ public final class MenuUtils {
 	 * Only the first accelerator is shown in the menu, but all are listened for.
 	 */
 	public static JMenuItem createMenuItem(final String item, final int mnemonic, final String description,
-										   final Runnable listener, final KeyStroke... accelerators) {
+	                                       final Runnable listener, final KeyStroke... accelerators) {
 		return createMenuItem(item, mnemonic, description, (event) -> listener.run(), accelerators);
 	}
 
@@ -110,7 +110,7 @@ public final class MenuUtils {
 	 * Only the first accelerator is shown in the menu, but all are listened for.
 	 */
 	public static JMenuItem createMenuItem(final String item, final int mnemonic, final String description,
-										   final ActionListener listener, final KeyStroke... accelerators) {
+	                                       final ActionListener listener, final KeyStroke... accelerators) {
 		final JMenuItem menuItem = new JMenuItem(item, mnemonic);
 		if (accelerators.length > 0) {
 			menuItem.setAccelerator(accelerators[0]);

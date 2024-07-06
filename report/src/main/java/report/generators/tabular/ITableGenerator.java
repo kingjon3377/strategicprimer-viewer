@@ -73,7 +73,7 @@ public interface ITableGenerator<T extends IFixture> {
 	 * fixtures covered in the table from the collection.
 	 */
 	default TableModel produceTableModel(final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-										 final Map<Integer, Integer> parentMap) {
+	                                     final Map<Integer, Integer> parentMap) {
 		final Iterable<Triplet<Integer, Point, T>> values = fixtures.entrySet().stream()
 				.filter(e -> canHandle(e.getValue().getValue1()))
 				.map(e -> Triplet.with(e.getKey(), e.getValue().getValue0(),
@@ -109,7 +109,7 @@ public interface ITableGenerator<T extends IFixture> {
 	 * @param parentMap The mapping from children's to parents' IDs
 	 */
 	List<List<String>> produce(DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-							   T item, int key, Point loc, Map<Integer, Integer> parentMap);
+	                           T item, int key, Point loc, Map<Integer, Integer> parentMap);
 
 	/**
 	 * Given two points, return a number sufficiently proportional to the
@@ -142,9 +142,9 @@ public interface ITableGenerator<T extends IFixture> {
 	 * unless one or both of the points is null or invalid, in which case it prints "unknown" instead.
 	 */
 	default String distanceString(final @Nullable Point first, final @Nullable Point second,
-								  final MapDimensions dimensions) {
+	                              final MapDimensions dimensions) {
 		if (!Objects.isNull(first) && !Objects.isNull(second) && first.isValid() && second.isValid()) {
-            return "%1.1f".formatted(Math.sqrt(distance(first, second, dimensions)));
+			return "%1.1f".formatted(Math.sqrt(distance(first, second, dimensions)));
 		} else {
 			return "unknown";
 		}

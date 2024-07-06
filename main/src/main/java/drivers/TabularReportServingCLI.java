@@ -135,7 +135,7 @@ import org.takes.http.Exit;
 				.map(entry -> new FkRegex("/%s.%s.csv".formatted(entry.getKey().getValue0(),
 						entry.getKey().getValue1()),
 						new RsWithType(new RsWithHeader(new RsText(entry.getValue().toString()),
-                                "Content-Disposition", "attachment; filename=\"%s.csv\"".formatted(entry.getValue())),
+								"Content-Disposition", "attachment; filename=\"%s.csv\"".formatted(entry.getValue())),
 								"text/csv")));
 
 		final Function<String, String> tocHtml = path -> {

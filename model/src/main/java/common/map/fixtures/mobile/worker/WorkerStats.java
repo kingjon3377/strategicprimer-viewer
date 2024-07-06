@@ -129,7 +129,7 @@ public final class WorkerStats {
 	 * Main constructor, taking all the stats.
 	 */
 	public WorkerStats(final int hp, final int maxHP, final int str, final int dex, final int con,
-					   final int intel, final int wis, final int cha) {
+	                   final int intel, final int wis, final int cha) {
 		hitPoints = hp;
 		maxHitPoints = maxHP;
 		strength = str;
@@ -144,7 +144,7 @@ public final class WorkerStats {
 	 * Constructor for making a stat-adjustments version, so omitting HP.
 	 */
 	public static WorkerStats factory(final int str, final int dex, final int con,
-									  final int intel, final int wis, final int cha) {
+	                                  final int intel, final int wis, final int cha) {
 		return new WorkerStats(0, 0, str, dex, con, intel, wis, cha);
 	}
 

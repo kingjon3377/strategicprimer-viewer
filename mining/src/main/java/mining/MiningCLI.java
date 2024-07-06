@@ -85,7 +85,7 @@ public final class MiningCLI implements UtilityDriver {
 		final Path path = Paths.get(filename);
 		if (Files.exists(path)) {
 			throw new DriverFailedException(new Exception(
-                    "Output file %s already exists".formatted(filename)));
+					"Output file %s already exists".formatted(filename)));
 		}
 		try (final BufferedWriter writer = Files.newBufferedWriter(path, StandardCharsets.UTF_8)) {
 			for (int row = 0; row <= lowerRightRow; row++) {

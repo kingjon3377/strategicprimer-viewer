@@ -60,7 +60,8 @@ public interface IWorker extends UnitMember, Iterable<IJob>, HasName, HasKind, H
 	/**
 	 * The animal, if any, this worker is personally mounted on.
 	 */
-	@Nullable Animal getMount();
+	@Nullable
+	Animal getMount();
 
 	/**
 	 * Any equipment associated with this worker personally. (Generally not much more than clothing.)

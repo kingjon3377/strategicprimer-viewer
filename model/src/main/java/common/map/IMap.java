@@ -11,15 +11,18 @@ import java.util.Collection;
  * A game-world within the game. TODO: terrain information, etc. TODO: Add nullness annotations
  */
 public interface IMap {
-	@Nullable IEntity getEntity(@NotNull EntityIdentifier id);
+	@Nullable
+	IEntity getEntity(@NotNull EntityIdentifier id);
 
-	@NotNull Collection<IEntity> getAllEntities();
+	@NotNull
+	Collection<IEntity> getAllEntities();
 
 	/**
 	 * Map regions' geometry should be scaled uniformly. Invariant: No region overlaps another (sharing an edge is
 	 * fine), and no two regions have the same ID number.
 	 */
-	@NotNull Collection<MapRegion> getRegions();
+	@NotNull
+	Collection<MapRegion> getRegions();
 
 	/**
 	 * The players in the map.
@@ -27,12 +30,14 @@ public interface IMap {
 	 * TODO: Move the specialized functionality up to IMap etc., so users can't determine the player collection is
 	 * mutable and modify it in place?
 	 */
-	@NotNull IPlayerCollection getPlayers();
+	@NotNull
+	IPlayerCollection getPlayers();
 
 	/**
 	 * TODO: Do we want to have some notion of "copy for whom" in this version of the API?
 	 *
 	 * @return a deep copy of the map
 	 */
-	@NotNull IMap copy();
+	@NotNull
+	IMap copy();
 }

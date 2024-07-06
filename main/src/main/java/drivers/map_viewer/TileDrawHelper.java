@@ -20,5 +20,5 @@ public interface TileDrawHelper {
 	 * @param dimensions  The width ('x') and height ('y') to draw the tile within.
 	 */
 	void drawTile(Graphics pen, ILegacyMap map, Point location, Coordinate coordinates,
-				  Coordinate dimensions);
+	              Coordinate dimensions);
 }

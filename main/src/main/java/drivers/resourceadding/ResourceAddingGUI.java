@@ -121,7 +121,7 @@ import java.io.FileNotFoundException;
 		private static final String CSS = "color:black; margin-bottom: 0.5em; margin-top: 0.5em;";
 
 		private static void logAddition(final StreamingLabel logLabel, final Player currentPlayer,
-										final String addend) {
+		                                final String addend) {
 			logLabel.append("<p style=\"%s\">Added %s for %s</p>".formatted(CSS,
 					addend, currentPlayer.getName()));
 		}
@@ -134,7 +134,7 @@ import java.io.FileNotFoundException;
 		}
 
 		private static void addListenerToField(final JSpinner field, final ActionListener listener,
-											   final StreamingLabel logLabel) {
+		                                       final StreamingLabel logLabel) {
 			switch (field.getEditor()) {
 				case final JTextField tf -> tf.addActionListener(listener);
 				case final JSpinner.DefaultEditor ed -> ed.getTextField().addActionListener(listener);
@@ -267,7 +267,7 @@ import java.io.FileNotFoundException;
 				return;
 			}
 
-            final BigDecimal qty = Decimalize.decimalize(resourceQuantityModel.getNumber());
+			final BigDecimal qty = Decimalize.decimalize(resourceQuantityModel.getNumber());
 			final IResourcePile pile = model.addResourcePile(currentPlayer, idf.createID(),
 					kind, resource, qty, units, resourceCreatedModel.getNumber().intValue());
 			logAddition(logLabel, currentPlayer, pile.toString());

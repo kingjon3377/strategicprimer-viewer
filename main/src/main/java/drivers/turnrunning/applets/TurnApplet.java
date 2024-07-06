@@ -13,7 +13,8 @@ public interface TurnApplet extends Applet {
 	@Override
 	String getDescription();
 
-	@Nullable String run();
+	@Nullable
+	String run();
 
 	@Override
 	default void invoke() {
@@ -28,11 +29,11 @@ public interface TurnApplet extends Applet {
 		} else if (minutes == 1) {
 			return "1 minute";
 		} else if (minutes < 60) {
-            return "%d minutes".formatted(minutes);
+			return "%d minutes".formatted(minutes);
 		} else if (minutes < 120) {
 			return "1 hour, " + inHours(minutes % 60);
 		} else if (minutes % 60 == 0) {
-            return "%d hours".formatted(minutes / 60);
+			return "%d hours".formatted(minutes / 60);
 		} else {
 			return "%d hours, %s".formatted(minutes / 60, inHours(minutes % 60));
 		}

@@ -38,7 +38,7 @@ public class FixtureEditMenu extends JPopupMenu {
 	 * @param handler Listeners to notify when something is renamed or changes kind.
 	 */
 	public FixtureEditMenu(final IFixture fixture, final Iterable<Player> players, final IDRegistrar idf,
-						   final IFixtureEditHelper handler) {
+	                       final IFixtureEditHelper handler) {
 		this.fixture = fixture;
 		this.players = players;
 		this.idf = idf;
@@ -121,8 +121,8 @@ public class FixtureEditMenu extends JPopupMenu {
 		final String name = Optional.of(fix).filter(HasName.class::isInstance).map(HasName.class::cast)
 				.map(HasName::getName).orElse("this " + fix);
 		final int reply = JOptionPane.showConfirmDialog(getParent(),
-                "Are you sure you want to dismiss %s?".formatted(name), "Confirm Dismissal",
-                JOptionPane.YES_NO_OPTION);
+				"Are you sure you want to dismiss %s?".formatted(name), "Confirm Dismissal",
+				JOptionPane.YES_NO_OPTION);
 		if (reply == JOptionPane.YES_OPTION) {
 			handler.dismissUnitMember(fix);
 		}

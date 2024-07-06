@@ -76,7 +76,7 @@ public final class DistanceComparator implements Comparator<Point> {
 		if (dist < 0) {
 			throw new IllegalStateException("Negative distance");
 		} else if (dist == 0) {
-            return " (at %s)".formatted(name);
+			return " (at %s)".formatted(name);
 		} else {
 			return " (%.1f tiles from %s)".formatted(Math.sqrt(dist), name);
 		}

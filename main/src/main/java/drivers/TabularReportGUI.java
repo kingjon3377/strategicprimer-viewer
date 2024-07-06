@@ -96,8 +96,8 @@ public class TabularReportGUI implements GUIDriver {
 					}
 				} catch (final IOException except) {
 					JOptionPane.showMessageDialog(window,
-                            "I/O error while generating reports:%n%s".formatted(except.getLocalizedMessage()),
-                            "Strategic Primer Tabular Reports", JOptionPane.ERROR_MESSAGE);
+							"I/O error while generating reports:%n%s".formatted(except.getLocalizedMessage()),
+							"Strategic Primer Tabular Reports", JOptionPane.ERROR_MESSAGE);
 					LovelaceLogger.error(except, "I/O error while generating tabular reports");
 				}
 			}

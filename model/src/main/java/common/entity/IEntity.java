@@ -14,17 +14,22 @@ import java.util.Collection;
  * its orders next.
  */
 public interface IEntity {
-	@NotNull Location getLocation();
+	@NotNull
+	Location getLocation();
 
-	@NotNull EntityIdentifier getId();
+	@NotNull
+	EntityIdentifier getId();
 
-	@NotNull String getType();
+	@NotNull
+	String getType();
 
 	boolean hasProperty(@NotNull String propertyName);
 
-	@Nullable EntityProperty<?> getProperty(@NotNull String propertyName);
+	@Nullable
+	EntityProperty<?> getProperty(@NotNull String propertyName);
 
-	@NotNull Collection<EntityProperty<?>> getAllProperties();
+	@NotNull
+	Collection<EntityProperty<?>> getAllProperties();
 
 	IEntity copy();
 }

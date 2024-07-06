@@ -42,8 +42,8 @@ import java.util.stream.StreamSupport;
 
 /* package */ class UnitMemberHandler extends FluidBase {
 	public static Worker readWorker(final StartElement element, final QName parent, final Iterable<XMLEvent> stream,
-									final ILegacyPlayerCollection players, final Warning warner,
-									final IDRegistrar idFactory) throws SPFormatException {
+	                                final ILegacyPlayerCollection players, final Warning warner,
+	                                final IDRegistrar idFactory) throws SPFormatException {
 		requireTag(element, parent, "worker");
 		expectAttributes(element, warner, "name", "race", "portrait", "id", "image");
 		final Worker retval = setImage(
@@ -92,7 +92,7 @@ import java.util.stream.StreamSupport;
 	}
 
 	private static String readNote(final StartElement element, final QName parent, final Iterable<XMLEvent> stream,
-								   final Warning warner) throws SPFormatException {
+	                               final Warning warner) throws SPFormatException {
 		requireTag(element, parent, "note");
 		expectAttributes(element, warner, "player");
 		final StringBuilder retval = new StringBuilder();
@@ -112,7 +112,7 @@ import java.util.stream.StreamSupport;
 	}
 
 	public static IJob readJob(final StartElement element, final QName parent, final Iterable<XMLEvent> stream,
-							   final ILegacyPlayerCollection players, final Warning warner, final IDRegistrar idFactory)
+	                           final ILegacyPlayerCollection players, final Warning warner, final IDRegistrar idFactory)
 			throws SPFormatException {
 		requireTag(element, parent, "job");
 		expectAttributes(element, warner, "name", "level");
@@ -121,7 +121,7 @@ import java.util.stream.StreamSupport;
 		for (final XMLEvent event : stream) {
 			switch (event) {
 				case final StartElement se when isSPStartElement(event) &&
-							"skill".equalsIgnoreCase(se.getName().getLocalPart()) ->
+						"skill".equalsIgnoreCase(se.getName().getLocalPart()) ->
 						retval.addSkill(readSkill(se, element.getName(), stream, players, warner, idFactory));
 				case final StartElement se when isSPStartElement(event) ->
 						throw UnwantedChildException.listingExpectedTags(element.getName(), se, "skill");
@@ -136,8 +136,8 @@ import java.util.stream.StreamSupport;
 	}
 
 	public static ISkill readSkill(final StartElement element, final QName parent, final Iterable<XMLEvent> stream,
-								   final ILegacyPlayerCollection players, final Warning warner,
-								   final IDRegistrar idFactory) throws SPFormatException {
+	                               final ILegacyPlayerCollection players, final Warning warner,
+	                               final IDRegistrar idFactory) throws SPFormatException {
 		requireTag(element, parent, "skill");
 		expectAttributes(element, warner, "name", "level", "hours");
 		requireNonEmptyAttribute(element, "name", true, warner);
@@ -148,8 +148,8 @@ import java.util.stream.StreamSupport;
 	}
 
 	public static WorkerStats readStats(final StartElement element, final QName parent, final Iterable<XMLEvent> stream,
-										final ILegacyPlayerCollection players, final Warning warner,
-										final IDRegistrar idFactory) throws SPFormatException {
+	                                    final ILegacyPlayerCollection players, final Warning warner,
+	                                    final IDRegistrar idFactory) throws SPFormatException {
 		requireTag(element, parent, "stats");
 		expectAttributes(element, warner, "hp", "max", "str", "dex", "con", "int",
 				"wis", "cha");
@@ -248,8 +248,8 @@ import java.util.stream.StreamSupport;
 
 	// TODO: split into Animal and Tracks methods, if at all possible
 	public static AnimalOrTracks readAnimal(final StartElement element, final QName parent,
-											final Iterable<XMLEvent> stream, final ILegacyPlayerCollection players,
-											final Warning warner, final IDRegistrar idFactory)
+	                                        final Iterable<XMLEvent> stream, final ILegacyPlayerCollection players,
+	                                        final Warning warner, final IDRegistrar idFactory)
 			throws SPFormatException {
 		requireTag(element, parent, "animal");
 		final String tag = element.getName().getLocalPart().toLowerCase();
@@ -307,7 +307,7 @@ import java.util.stream.StreamSupport;
 	}
 
 	public static void writeAnimalTracks(final XMLStreamWriter ostream, final AnimalTracks obj,
-										 final int indentation) throws XMLStreamException {
+	                                     final int indentation) throws XMLStreamException {
 		writeTag(ostream, "animal", indentation, true);
 		writeAttributes(ostream, Pair.with("kind", obj.getKind()), Pair.with("traces", true));
 		writeImage(ostream, obj);

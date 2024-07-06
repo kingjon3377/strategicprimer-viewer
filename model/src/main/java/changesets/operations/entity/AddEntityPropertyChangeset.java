@@ -20,7 +20,7 @@ public final class AddEntityPropertyChangeset<PropertyType> implements Changeset
 	private final PropertyType propertyValue;
 
 	public AddEntityPropertyChangeset(final @NotNull EntityIdentifier id, final @NotNull String propertyName,
-									  final @NotNull PropertyType propertyValue) {
+	                                  final @NotNull PropertyType propertyValue) {
 		this.id = id;
 		this.propertyName = propertyName;
 		this.propertyValue = propertyValue;

@@ -18,19 +18,19 @@ public final class FunctionalSplitPane extends JSplitPane {
 	private static final double ONE_HALF = 0.5;
 
 	private FunctionalSplitPane(final int orientation, final Component left, final Component right,
-								final double dividerLocation, final double resizeWeight) {
+	                            final double dividerLocation, final double resizeWeight) {
 		super(orientation, true, left, right);
 		setDividerLocation(dividerLocation);
 		setResizeWeight(resizeWeight);
 	}
 
 	public static FunctionalSplitPane horizontalSplit(final Component left, final Component right,
-													  final double dividerLocation, final double resizeWeight) {
+	                                                  final double dividerLocation, final double resizeWeight) {
 		return new FunctionalSplitPane(HORIZONTAL_SPLIT, left, right, dividerLocation, resizeWeight);
 	}
 
 	public static FunctionalSplitPane horizontalSplit(final Component left, final Component right,
-													  final double dividerLocation) {
+	                                                  final double dividerLocation) {
 		return horizontalSplit(left, right, dividerLocation, dividerLocation);
 	}
 
@@ -39,12 +39,12 @@ public final class FunctionalSplitPane extends JSplitPane {
 	}
 
 	public static FunctionalSplitPane verticalSplit(final Component left, final Component right,
-													final double dividerLocation, final double resizeWeight) {
+	                                                final double dividerLocation, final double resizeWeight) {
 		return new FunctionalSplitPane(VERTICAL_SPLIT, left, right, dividerLocation, resizeWeight);
 	}
 
 	public static FunctionalSplitPane verticalSplit(final Component left, final Component right,
-													final double dividerLocation) {
+	                                                final double dividerLocation) {
 		return verticalSplit(left, right, dividerLocation, dividerLocation);
 	}
 

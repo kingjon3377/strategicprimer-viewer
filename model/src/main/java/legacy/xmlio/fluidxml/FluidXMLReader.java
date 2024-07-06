@@ -15,6 +15,6 @@ import legacy.map.IMutableLegacyPlayerCollection;
 public interface FluidXMLReader<Return> {
 	// FIXME: What does this need to be declared as throwing?
 	Return read(StartElement element, QName parent, Iterable<XMLEvent> stream,
-				IMutableLegacyPlayerCollection players, Warning warner, IDRegistrar factory)
+	            IMutableLegacyPlayerCollection players, Warning warner, IDRegistrar factory)
 			throws SPFormatException;
 }

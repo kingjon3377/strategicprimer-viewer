@@ -37,7 +37,7 @@ public class AdventureReportGenerator extends AbstractReportGenerator<AdventureF
 	 */
 	@Override
 	public void produce(final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures, final ILegacyMap map,
-						final Consumer<String> ostream) {
+	                    final Consumer<String> ostream) {
 		writeMap(ostream, fixtures.values().stream()
 						.filter(p -> p.getValue1() instanceof AdventureFixture)
 						.sorted(pairComparator)
@@ -55,8 +55,8 @@ public class AdventureReportGenerator extends AbstractReportGenerator<AdventureF
 	 */
 	@Override
 	public void produceSingle(final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-							  final ILegacyMap map, final Consumer<String> ostream, final AdventureFixture item,
-							  final Point loc) {
+	                          final ILegacyMap map, final Consumer<String> ostream, final AdventureFixture item,
+	                          final Point loc) {
 		fixtures.remove(item.getId());
 		ostream.accept(item.getBriefDescription());
 		ostream.accept(" at ");
