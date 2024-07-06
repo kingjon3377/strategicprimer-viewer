@@ -97,9 +97,11 @@ import org.jetbrains.annotations.Nullable;
 					final IUnit unit = model.getSelectedUnit();
 					if (!Objects.isNull(unit)) {
 						cli.println("Enter details of harvest (any empty string aborts):");
-						IMutableResourcePile resource;
-						while (!Objects.isNull((resource = resourceAddingHelper.enterResource()))) {
-							if ("food".equals(resource.getKind())) {
+						while (true) {
+							IMutableResourcePile resource = resourceAddingHelper.enterResource();
+							if (Objects.isNull(resource)) {
+								break;
+							} else if ("food".equals(resource.getKind())) {
 								resource.setCreated(model.getMap().getCurrentTurn());
 							}
 							if (!model.addExistingResource(resource, unit.owner())) {

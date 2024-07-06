@@ -40,7 +40,8 @@ public class CheckThreadViolationRepaintManagerTest {
 	void repaintTest() {
 		try {
 			SwingUtilities.invokeAndWait(() -> {
-				final JButton localTest = test = new JButton();
+				final JButton localTest = new JButton();
+				test = localTest;
 				localTest.setSize(100, 100);
 			});
 		} catch (final Exception except) {
