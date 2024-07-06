@@ -22,6 +22,7 @@ import io.jenetics.facilejdbc.Transactional;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -107,7 +108,7 @@ public final class DBAnimalHandler extends AbstractDatabaseWriter<AnimalOrTracks
 						.execute(db.connection());
 			}
 			case final Animal a -> {
-				final List<Param> params = new ArrayList<>();
+				final Collection<Param> params = new ArrayList<>();
 				if (context instanceof final Point p) {
 					params.add(value("row", p.row()));
 					params.add(value("column", p.column()));

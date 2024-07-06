@@ -52,7 +52,7 @@ public class LegacyMap implements IMutableLegacyMap {
 	 * If either of the provided fixtures is a subset of the other, return
 	 * true; otherwise return false.
 	 */
-	private static boolean subsetCheck(final TileFixture one, final TileFixture two) {
+	private static boolean subsetCheck(final IFixture one, final IFixture two) {
 		if (one instanceof final SubsettableFixture sf && sf.isSubset(two, x -> {
 		})) {
 			return true;
@@ -605,8 +605,8 @@ public class LegacyMap implements IMutableLegacyMap {
 	// FIXME: Remove 'movedFrom' once that's converted to a member function
 	private static <Target extends IFixture, SubsetType extends Subsettable<Target>>
 	boolean testAgainstList(final Target desideratum, final Point location,
-							final Collection<Pair<SubsetType, Point>> list, final Consumer<String> ostream,
-							final BiPredicate<Point, TileFixture> movedFrom) {
+	                        final Iterable<Pair<SubsetType, Point>> list, final Consumer<String> ostream,
+	                        final BiPredicate<Point, TileFixture> movedFrom) {
 		int count = 0;
 		boolean unmatched = true;
 		@Nullable SubsetType match = null;
@@ -661,7 +661,7 @@ public class LegacyMap implements IMutableLegacyMap {
 		if (getDimensions().equals(obj.getDimensions())) {
 			boolean retval = playerCollection.isSubset(obj.getPlayers(), report);
 			// Declared here to avoid object allocations in the loop.
-			final List<TileFixture> ourFixtures = new ArrayList<>();
+			final Collection<TileFixture> ourFixtures = new ArrayList<>();
 			// TODO: Use Guava Multimap for this
 			final Map<Integer, List<Pair<Subsettable<IFixture>, Point>>> ourSubsettables =
 					new HashMap<>(50, 0.4f);
@@ -865,7 +865,7 @@ public class LegacyMap implements IMutableLegacyMap {
 		if (getFixtures(location).contains(replacement) && !original.equals(replacement)) {
 			removeFixture(location, original);
 		} else {
-			final List<TileFixture> existing = new ArrayList<>(getFixtures(location));
+			final Iterable<TileFixture> existing = new ArrayList<>(getFixtures(location));
 			int index = 0;
 			boolean replaced = false;
 			for (final TileFixture item : existing) {

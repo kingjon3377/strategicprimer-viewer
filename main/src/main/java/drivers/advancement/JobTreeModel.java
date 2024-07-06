@@ -1,5 +1,6 @@
 package drivers.advancement;
 
+import java.util.Collection;
 import java.util.function.Function;
 import java.util.function.ToIntFunction;
 import javax.swing.tree.DefaultTreeSelectionModel;
@@ -43,7 +44,7 @@ import java.util.stream.StreamSupport;
 
 	private final IAdvancementModel driverModel;
 
-	private final List<TreeModelListener> listeners = new ArrayList<>();
+	private final Collection<TreeModelListener> listeners = new ArrayList<>();
 
 	/**
 	 * The worker whom the Jobs and Skills describe.

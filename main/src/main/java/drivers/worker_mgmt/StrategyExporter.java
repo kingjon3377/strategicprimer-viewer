@@ -118,9 +118,9 @@ import legacy.map.fixtures.mobile.worker.IJob;
 		}
 	}
 
-	private void summarizeUnitMembers(final Writer writer, final IUnit unit) throws IOException {
-		final List<IWorker> leveledWorkers = new ArrayList<>();
-		final List<UnitMember> nonWorkers = new ArrayList<>();
+	private void summarizeUnitMembers(final Writer writer, final Iterable<UnitMember> unit) throws IOException {
+		final Collection<IWorker> leveledWorkers = new ArrayList<>();
+		final Collection<UnitMember> nonWorkers = new ArrayList<>();
 		final List<IWorker> unleveledWorkers = new ArrayList<>();
 		for (final UnitMember member : unit) {
 			if (member instanceof final IWorker w) {

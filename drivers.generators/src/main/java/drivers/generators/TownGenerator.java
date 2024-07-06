@@ -8,12 +8,14 @@ import java.nio.file.Paths;
 import java.util.Optional;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.random.RandomGenerator;
 import java.util.stream.Collectors;
 import java.util.Objects;
 import java.util.function.IntSupplier;
 
 import drivers.common.cli.ICLIHelper;
 
+import legacy.map.HasKind;
 import legacy.map.fixtures.LegacyQuantity;
 import legacy.map.fixtures.towns.ITownFixture;
 import common.map.fixtures.towns.TownStatus;
@@ -414,7 +416,7 @@ import java.math.BigDecimal;
 	/**
 	 * What specific resource the given harvestable fixture will produce.
 	 */
-	private static String getHarvestedProduct(final HarvestableFixture fixture) {
+	private static String getHarvestedProduct(final HasKind fixture) {
 		return fixture.getKind();
 	}
 
@@ -443,7 +445,7 @@ import java.math.BigDecimal;
 	 */
 	private CommunityStats generateStats(final IDRegistrar idf, final Point location, final ITownFixture town,
 										 final ILegacyMap map) throws MissingTableException {
-		final Random rng = new Random(town.getId());
+		final RandomGenerator rng = new Random(town.getId());
 		// A die roll using our pre-seeded RNG.
 		final IntToIntFunction roll = (die) -> rng.nextInt(die) + 1;
 

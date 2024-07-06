@@ -38,7 +38,7 @@ public class SPMap implements IMutableMap {
 
 	@Override
 	public final void addMapRegion(final MapRegion region) {
-		final List<MapRegion> temp = new ArrayList<>(regionMap.values());
+		final Collection<MapRegion> temp = new ArrayList<>(regionMap.values());
 		temp.add(region);
 		if (MapRegion.areRegionsValid(temp)) {
 			regionMap.put(region.getRegionId(), region);
@@ -59,7 +59,7 @@ public class SPMap implements IMutableMap {
 
 	@Override
 	public final void replaceMapRegion(final MapRegion toRemove, final MapRegion toAdd) {
-		final List<MapRegion> temp = new ArrayList<>(regionMap.values());
+		final Collection<MapRegion> temp = new ArrayList<>(regionMap.values());
 		if (!temp.remove(toRemove)) {
 			throw new IllegalArgumentException("Region to remove must exist in the map");
 		}

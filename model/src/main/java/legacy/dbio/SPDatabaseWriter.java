@@ -6,6 +6,7 @@ import io.jenetics.facilejdbc.Query;
 import io.jenetics.facilejdbc.Transactional;
 
 import java.sql.SQLException;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -76,7 +77,7 @@ public final class SPDatabaseWriter implements SPWriter {
 
 	// FIXME: Make an AbstractDatabaseWriter/MapContentsReader for this so
 	// we don't have to keep this parallel set of DB objects here
-	private final Set<Transactional> notesInitialized = new HashSet<>();
+	private final Collection<Transactional> notesInitialized = new HashSet<>();
 
 	private static final Query INSERT_NOTE =
 			Query.of("INSERT INTO notes (fixture, player, note) VALUES(:fixture, :player, :note)");

@@ -11,6 +11,7 @@ import io.jenetics.facilejdbc.Transactional;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -55,7 +56,7 @@ public final class DBPortalHandler extends AbstractDatabaseWriter<Portal, Point>
 
 	@Override
 	public void write(final Transactional db, final Portal obj, final Point context) throws SQLException {
-		final List<Param> params = new ArrayList<>();
+		final Collection<Param> params = new ArrayList<>();
 		params.add(value("row", context.row()));
 		params.add(value("column", context.column()));
 		params.add(value("id", obj.getId()));

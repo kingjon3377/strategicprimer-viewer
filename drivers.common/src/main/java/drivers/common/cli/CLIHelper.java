@@ -155,10 +155,8 @@ public final class CLIHelper implements ICLIHelper {
 
 	/**
 	 * Print a list of things by name and number.
-	 *
-	 * TODO: Take Iterable instead of List?
 	 */
-	private <Element> void printList(final List<? extends Element> list, final Function<Element, String> func) {
+	private <Element> void printList(final Iterable<? extends Element> list, final Function<Element, String> func) {
 		int index = 0;
 		for (final Element item : list) {
 			printf("%d: %s%n", index, func.apply(item));

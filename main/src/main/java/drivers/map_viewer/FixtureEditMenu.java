@@ -10,8 +10,10 @@ import javax.swing.JOptionPane;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 
+import legacy.map.HasKind;
 import legacy.map.HasMutableKind;
 import legacy.map.HasMutableName;
+import legacy.map.HasOwner;
 import legacy.map.IFixture;
 import common.map.HasName;
 import legacy.map.Player;
@@ -80,7 +82,7 @@ public class FixtureEditMenu extends JPopupMenu {
 	}
 
 	private void renameHandler() {
-		final HasMutableName fix = (HasMutableName) fixture;
+		final HasName fix = (HasName) fixture;
 		final String originalName = fix.getName();
 		final Object result = JOptionPane.showInputDialog(getParent(), "Fixture's new name:",
 				"Rename Fixture", JOptionPane.PLAIN_MESSAGE, null, null, originalName);
@@ -93,7 +95,7 @@ public class FixtureEditMenu extends JPopupMenu {
 	}
 
 	private void changeKindHandler() {
-		final HasMutableKind fix = (HasMutableKind) fixture;
+		final HasKind fix = (HasKind) fixture;
 		final String originalKind = fix.getKind();
 		final Object result = JOptionPane.showInputDialog(getParent(), "Fixture's new kind:",
 				"Change Fixture Kind", JOptionPane.PLAIN_MESSAGE, null, null, originalKind);
@@ -106,7 +108,7 @@ public class FixtureEditMenu extends JPopupMenu {
 	}
 
 	private void changeOwnerHandler() {
-		final HasMutableOwner fix = (HasMutableOwner) fixture;
+		final HasOwner fix = (HasOwner) fixture;
 		final Object player = JOptionPane.showInputDialog(getParent(), "Fixture's new owner:",
 				"Change Fixture Owner", JOptionPane.PLAIN_MESSAGE, null,
 				StreamSupport.stream(players.spliterator(), false).toArray(Player[]::new),

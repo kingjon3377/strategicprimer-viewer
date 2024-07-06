@@ -14,6 +14,7 @@ import legacy.map.fixtures.FixtureIterable;
 
 import java.util.function.Function;
 import java.util.function.Predicate;
+import java.util.random.RandomGenerator;
 import java.util.stream.Stream;
 
 import legacy.map.fixtures.mobile.worker.IJob;
@@ -311,7 +312,7 @@ public class WorkerModel extends SimpleMultiMapModel implements IWorkerModel {
 	@Override
 	public boolean removeUnit(final IUnit unit) {
 		LovelaceLogger.debug("In WorkerModel.removeUnit()");
-		final List<Pair<IMutableLegacyMap, Pair<Point, IUnit>>> delenda = new ArrayList<>();
+		final Collection<Pair<IMutableLegacyMap, Pair<Point, IUnit>>> delenda = new ArrayList<>();
 		final Predicate<Pair<Point, IFixture>> testPair =
 				p -> unitMatching(unit).test(p.getValue0(), p.getValue1());
 		for (final IMutableLegacyMap map : getRestrictedAllMaps()) {
@@ -801,7 +802,7 @@ public class WorkerModel extends SimpleMultiMapModel implements IWorkerModel {
 						.filter(matchingJob).findAny().orElse(null);
 				if (Objects.isNull(job)) {
 					map.setModified(true);
-					final Job newJob = new Job(jobName, 0);
+					final IMutableJob newJob = new Job(jobName, 0);
 					newJob.addSkill(new Skill(skillName, 0, 0));
 					matching.addJob(newJob);
 				} else if (StreamSupport.stream(job.spliterator(), false).map(ISkill::getName)
@@ -919,7 +920,7 @@ public class WorkerModel extends SimpleMultiMapModel implements IWorkerModel {
 	public boolean addHoursToSkillInAll(final IUnit unit, final String jobName, final String skillName,
 										final int hours, final int contextValue) {
 		boolean any = false;
-		final Random rng = new Random(contextValue);
+		final RandomGenerator rng = new Random(contextValue);
 		for (final UnitMember member : unit) {
 			if (member instanceof final IWorker w && addHoursToSkill(w, jobName, skillName, hours,
 					rng.nextInt(100))) {

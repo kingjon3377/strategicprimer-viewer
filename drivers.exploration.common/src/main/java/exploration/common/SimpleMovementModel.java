@@ -1,5 +1,7 @@
 package exploration.common;
 
+import legacy.map.fixtures.FixtureIterable;
+import legacy.map.fixtures.UnitMember;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -146,7 +148,7 @@ public final class SimpleMovementModel {
 	 *
 	 * TODO: This does not properly handle the unusual case of a very unobservant unit
 	 */
-	private static int highestPerception(final IUnit unit) {
+	private static int highestPerception(final FixtureIterable<UnitMember> unit) {
 		return unit.stream().filter(IWorker.class::isInstance)
 				.map(IWorker.class::cast).mapToInt(SimpleMovementModel::getPerception)
 				.max().orElse(0);
@@ -185,9 +187,10 @@ public final class SimpleMovementModel {
 	 * instead of TileFixtures, we take a function for getting the fixtures
 	 * out of the list.
 	 */
+	@SuppressWarnings("TypeMayBeWeakened") // Let's not change the public ApI
 	public static <Element> Iterable<Element> selectNoticed(final List<Element> possibilities,
-															final Function<Element, TileFixture> getter,
-															final IUnit mover, final Speed speed) {
+	                                                        final Function<Element, TileFixture> getter,
+	                                                        final IUnit mover, final Speed speed) {
 		final List<Element> local = new ArrayList<>(possibilities);
 		Collections.shuffle(local);
 		int perception = highestPerception(mover) + speed.getPerceptionModifier();

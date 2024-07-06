@@ -2,6 +2,7 @@ package drivers.common;
 
 import java.nio.file.Path;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Objects;
@@ -22,12 +23,12 @@ public class SimpleDriverModel implements IDriverModel {
 	/**
 	 * The list of map-change listeners.
 	 */
-	private final List<MapChangeListener> mcListeners = new ArrayList<>();
+	private final Collection<MapChangeListener> mcListeners = new ArrayList<>();
 
 	/**
 	 * The list of version change listeners.
 	 */
-	private final List<VersionChangeListener> vcListeners = new ArrayList<>();
+	private final Collection<VersionChangeListener> vcListeners = new ArrayList<>();
 
 	/**
 	 * The dimensions of the map.

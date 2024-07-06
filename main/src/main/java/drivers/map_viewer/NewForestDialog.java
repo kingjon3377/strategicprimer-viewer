@@ -1,8 +1,10 @@
 package drivers.map_viewer;
 
 import java.io.Serial;
+import java.util.Collection;
 import java.util.OptionalInt;
 
+import legacy.map.TileFixture;
 import lovelace.util.LovelaceLogger;
 import org.javatuples.Pair;
 
@@ -77,7 +79,7 @@ public final class NewForestDialog extends SPDialog implements NewFixtureSource 
 
 	private final IDRegistrar idf;
 
-	private final List<NewFixtureListener> listeners = new ArrayList<>();
+	private final Collection<NewFixtureListener> listeners = new ArrayList<>();
 
 	@Override
 	public void addNewFixtureListener(final NewFixtureListener listener) {
@@ -130,7 +132,7 @@ public final class NewForestDialog extends SPDialog implements NewFixtureSource 
 			} catch (final NumberFormatException except) {
 				acres = new BigDecimal(-1);
 			}
-			final Forest forest = new Forest(kind, rowsField.getModel().isSelected(), idNum, acres);
+			final TileFixture forest = new Forest(kind, rowsField.getModel().isSelected(), idNum, acres);
 			for (final NewFixtureListener listener : listeners) {
 				listener.addNewFixture(forest);
 			}

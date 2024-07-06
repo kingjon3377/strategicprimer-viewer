@@ -2,6 +2,7 @@ package drivers.map_viewer;
 
 import java.nio.file.NoSuchFileException;
 
+import java.util.Collection;
 import java.util.Objects;
 import java.util.stream.Stream;
 
@@ -118,7 +119,7 @@ public class Ver2TileDrawHelper implements TileDrawHelper {
 	/**
 	 * Images we've already determined aren't there.
 	 */
-	private final Set<String> missingFiles = new HashSet<>();
+	private final Collection<String> missingFiles = new HashSet<>();
 
 	/**
 	 * Create the fallback image---made a method so the object reference can be immutable

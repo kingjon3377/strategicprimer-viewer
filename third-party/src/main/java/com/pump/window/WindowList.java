@@ -19,6 +19,7 @@ import java.awt.event.WindowEvent;
 import java.lang.ref.Reference;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 
@@ -50,7 +51,7 @@ import javax.swing.event.ChangeListener;
  */
 public final class WindowList {
 
-	private static final ArrayList<ChangeListener> changeListeners = new ArrayList<>();
+	private static final Collection<ChangeListener> changeListeners = new ArrayList<>();
 
 	private static final AWTEventListener windowListener = new AWTEventListener() {
 		WeakReference<?>[] visibleWindows = new WeakReference<?>[0];
@@ -196,7 +197,7 @@ public final class WindowList {
 									  final boolean includeInvisible) {
 		final ArrayList<WeakReference<Window>> list = sortByLayer ? windowLayerList
 				: windowList;
-		final List<Window> returnValue = new ArrayList<>();
+		final Collection<Window> returnValue = new ArrayList<>();
 		int a = 0;
 		while (a < list.size()) {
 			final WeakReference<Window> r = list.get(a);
@@ -234,7 +235,7 @@ public final class WindowList {
 									final boolean includeInvisible, final boolean includeIconified) {
 		final ArrayList<WeakReference<Window>> list = sortByLayer ? windowLayerList
 				: windowList;
-		final List<Frame> returnValue = new ArrayList<>();
+		final Collection<Frame> returnValue = new ArrayList<>();
 		int a = 0;
 		while (a < list.size()) {
 			final WeakReference<Window> r = list.get(a);

@@ -2,6 +2,7 @@ package drivers;
 
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Collection;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.StreamSupport;
@@ -34,7 +35,7 @@ public class PlayerChangeMenuListener implements ActionListener, PlayerChangeSou
 
 	private final IDriverModel model;
 
-	private final List<PlayerChangeListener> listeners = new ArrayList<>();
+	private final Collection<PlayerChangeListener> listeners = new ArrayList<>();
 
 	@Override
 	public void addPlayerChangeListener(final PlayerChangeListener listener) {

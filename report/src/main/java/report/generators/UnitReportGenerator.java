@@ -1,5 +1,6 @@
 package report.generators;
 
+import java.util.Collection;
 import java.util.Objects;
 import java.util.function.Consumer;
 
@@ -92,7 +93,7 @@ public class UnitReportGenerator extends AbstractReportGenerator<IUnit> {
 		}
 	}
 
-	private static <T> @Nullable T findAndRemoveFirst(final List<T> list, final Predicate<T> predicate) {
+	private static <T> @Nullable T findAndRemoveFirst(final Collection<T> list, final Predicate<T> predicate) {
 		for (final T item : list) {
 			if (predicate.test(item)) {
 				list.remove(item);
@@ -104,7 +105,7 @@ public class UnitReportGenerator extends AbstractReportGenerator<IUnit> {
 
 	private <Member extends UnitMember> void produceInner(
 			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-			final Consumer<String> ostream, final String heading, final List<Member> collection,
+			final Consumer<String> ostream, final String heading, final Collection<Member> collection,
 			final Consumer<Member> generator) {
 		if (!collection.isEmpty()) {
 			ostream.accept("<li>");
@@ -147,11 +148,11 @@ public class UnitReportGenerator extends AbstractReportGenerator<IUnit> {
 			ostream.accept(item.owner().toString());
 		}
 		if (!item.isEmpty()) {
-			final List<IWorker> workers = new ArrayList<>();
-			final List<Implement> equipment = new ArrayList<>();
+			final Collection<IWorker> workers = new ArrayList<>();
+			final Collection<Implement> equipment = new ArrayList<>();
 			final Map<String, List<IResourcePile>> resources = new HashMap<>();
-			final List<Animal> animals = new ArrayList<>();
-			final List<UnitMember> others = new ArrayList<>();
+			final Collection<Animal> animals = new ArrayList<>();
+			final Collection<UnitMember> others = new ArrayList<>();
 			for (final UnitMember member : item) {
 				switch (member) {
 					case final IWorker w -> workers.add(w);

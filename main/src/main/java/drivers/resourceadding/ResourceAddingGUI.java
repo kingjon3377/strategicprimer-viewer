@@ -1,9 +1,12 @@
 package drivers.resourceadding;
 
+import common.map.HasName;
 import drivers.common.DriverFailedException;
 
 import javax.xml.stream.XMLStreamException;
 
+import drivers.common.ISPDriver;
+import drivers.exploration.PlayerChangeSource;
 import lovelace.util.Decimalize;
 import lovelace.util.LovelaceLogger;
 import org.jetbrains.annotations.Nullable;
@@ -120,7 +123,7 @@ import java.io.FileNotFoundException;
 
 		private static final String CSS = "color:black; margin-bottom: 0.5em; margin-top: 0.5em;";
 
-		private static void logAddition(final StreamingLabel logLabel, final Player currentPlayer,
+		private static void logAddition(final StreamingLabel logLabel, final HasName currentPlayer,
 		                                final String addend) {
 			logLabel.append("<p style=\"%s\">Added %s for %s</p>".formatted(CSS,
 					addend, currentPlayer.getName()));
@@ -170,7 +173,7 @@ import java.io.FileNotFoundException;
 
 		private final JSpinner implementQuantityField;
 
-		public ResourceAddingFrame(final ActionListener menuHandler, final MultiMapGUIDriver outer) {
+		public ResourceAddingFrame(final ActionListener menuHandler, final ISPDriver outer) {
 			super("Resource Entry", outer, null, true);
 			this.menuHandler = menuHandler;
 			idf = IDFactoryFiller.createIDFactory(model.streamAllMaps()
@@ -320,7 +323,7 @@ import java.io.FileNotFoundException;
 		}
 	}
 
-	private void startDriverImpl(final PlayerChangeMenuListener pcml, final MenuBroker menuHandler) {
+	private void startDriverImpl(final PlayerChangeSource pcml, final MenuBroker menuHandler) {
 		final ResourceAddingFrame frame = new ResourceAddingFrame(menuHandler, this);
 		frame.addWindowListener(new WindowCloseListener(menuHandler));
 		try {

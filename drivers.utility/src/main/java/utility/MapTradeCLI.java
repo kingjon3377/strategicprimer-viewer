@@ -4,6 +4,7 @@ import legacy.map.IFixture;
 import drivers.common.DriverFailedException;
 import drivers.common.IncorrectUsageException;
 
+import java.util.Collection;
 import java.util.Collections;
 
 import legacy.map.Point;
@@ -139,7 +140,7 @@ public class MapTradeCLI implements CLIDriver {
 		this.model = model;
 	}
 
-	private final List<FixtureMatcher> matchers = new ArrayList<>(initializeMatchers());
+	private final Collection<FixtureMatcher> matchers = new ArrayList<>(initializeMatchers());
 
 	void askAbout(final FixtureMatcher matcher) {
 		askAbout(matcher, "include");

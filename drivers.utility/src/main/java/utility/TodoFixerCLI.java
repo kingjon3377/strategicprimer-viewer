@@ -46,6 +46,7 @@ import org.javatuples.Pair;
 import java.util.Objects;
 import java.util.function.Function;
 import java.util.function.Predicate;
+import java.util.random.RandomGenerator;
 
 import org.jetbrains.annotations.Nullable;
 
@@ -212,7 +213,7 @@ public class TodoFixerCLI implements CLIDriver {
 				if (raceMap.containsKey(village.getId())) {
 					village.setRace(raceMap.get(village.getId()));
 				} else {
-					final Random rng = new Random(village.getId());
+					final RandomGenerator rng = new Random(village.getId());
 					final String race = raceList.get(rng.nextInt(raceList.size()));
 					village.setRace(race);
 					raceMap.put(village.getId(), race);
@@ -289,7 +290,7 @@ public class TodoFixerCLI implements CLIDriver {
 	 * Fix a stubbed-out kind for a unit.
 	 */
 	private void fixUnit(final IMutableUnit unit, final SimpleTerrain terrain) {
-		final Random rng = new Random(unit.getId());
+		final RandomGenerator rng = new Random(unit.getId());
 		count++;
 		final List<String> jobList;
 		final String description;

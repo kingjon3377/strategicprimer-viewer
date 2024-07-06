@@ -3,6 +3,7 @@ package drivers.generators;
 import legacy.map.fixtures.Implement;
 import legacy.map.fixtures.mobile.AnimalImpl;
 
+import java.util.Collection;
 import java.util.Comparator;
 import java.util.Objects;
 import java.util.function.Predicate;
@@ -553,7 +554,7 @@ import legacy.map.fixtures.towns.Village;
 				name = names.removeFirst().strip();
 			}
 			Village home = null;
-			final List<Triplet<Integer, Double, Village>> villagesToRemove = new ArrayList<>();
+			final Collection<Triplet<Integer, Double, Village>> villagesToRemove = new ArrayList<>();
 			for (final Triplet<Integer, Double, Village> triplet : villages) {
 				final int mpDistance = triplet.getValue0();
 				final double tileDistance = triplet.getValue1();

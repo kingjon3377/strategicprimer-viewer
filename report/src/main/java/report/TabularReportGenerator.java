@@ -5,6 +5,7 @@ import lovelace.util.ThrowingFunction;
 import org.jetbrains.annotations.Nullable;
 import org.javatuples.Pair;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.ArrayList;
 
@@ -213,7 +214,7 @@ public final class TabularReportGenerator {
 			consumer.accept(generator.getTableName(), new JScrollPane(table, vertControl,
 					horizControl));
 		}
-		final List<String> unhandled = new ArrayList<>();
+		final Collection<String> unhandled = new ArrayList<>();
 		for (final Pair<Point, IFixture> pair : fixtures.values()) {
 			final IFixture fixture = pair.getValue1();
 			if (fixture instanceof TerrainFixture) {

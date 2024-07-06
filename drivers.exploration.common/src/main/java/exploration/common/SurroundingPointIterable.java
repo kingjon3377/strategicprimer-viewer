@@ -1,5 +1,6 @@
 package exploration.common;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -52,7 +53,7 @@ public class SurroundingPointIterable implements Iterable<Point> {
 		}
 	}
 
-	private final List<Point> points = new ArrayList<>();
+	private final Collection<Point> points = new ArrayList<>();
 
 	@Override
 	public Iterator<Point> iterator() {

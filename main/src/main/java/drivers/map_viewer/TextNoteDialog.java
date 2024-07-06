@@ -7,11 +7,13 @@ import drivers.common.NewFixtureListener;
 
 import java.io.Serial;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import javax.swing.JTextArea;
 import javax.swing.JButton;
 
+import legacy.map.TileFixture;
 import legacy.map.fixtures.TextFixture;
 
 import lovelace.util.ListenedButton;
@@ -53,7 +55,7 @@ public final class TextNoteDialog extends SPDialog implements NewFixtureSource {
 		pack();
 	}
 
-	private final List<NewFixtureListener> listeners = new ArrayList<>();
+	private final Collection<NewFixtureListener> listeners = new ArrayList<>();
 
 	@Override
 	public void addNewFixtureListener(final NewFixtureListener listener) {
@@ -72,7 +74,7 @@ public final class TextNoteDialog extends SPDialog implements NewFixtureSource {
 		if (text.isEmpty()) {
 			noteField.requestFocusInWindow();
 		} else {
-			final TextFixture fixture = new TextFixture(text, currentTurn.getAsInt());
+			final TileFixture fixture = new TextFixture(text, currentTurn.getAsInt());
 			for (final NewFixtureListener listener : listeners) {
 				listener.addNewFixture(fixture);
 			}

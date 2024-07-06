@@ -124,9 +124,9 @@ public class UtilityDriverModel extends SimpleMultiMapModel {
 	 */
 	public Iterable<Quartet<Consumer<TileFixture>, @Nullable Path, TileFixture, Iterable<? extends TileFixture>>>
 	conditionallyRemoveDuplicates(final Point location) {
-		final List<Quartet<Consumer<TileFixture>, @Nullable Path, TileFixture, Iterable<? extends TileFixture>>>
+		final Collection<Quartet<Consumer<TileFixture>, @Nullable Path, TileFixture, Iterable<? extends TileFixture>>>
 				duplicatesList = new ArrayList<>();
-		final List<TileFixture> checked = new ArrayList<>();
+		final Collection<TileFixture> checked = new ArrayList<>();
 		final Predicate<TileFixture> noneMatch =
 				item -> checked.stream().noneMatch(inner -> item == inner);
 		for (final IMutableLegacyMap map : getRestrictedAllMaps()) {
@@ -228,7 +228,7 @@ public class UtilityDriverModel extends SimpleMultiMapModel {
 	conditionallyCoalesceResources(final Point location,
 	                               final Map<Class<? extends IFixture>,
 			                               CoalescedHolder<? extends IFixture, ?>> handlers) {
-		final List<Quartet<Runnable, String, String, Collection<? extends IFixture>>> retval = new ArrayList<>();
+		final Collection<Quartet<Runnable, String, String, Collection<? extends IFixture>>> retval = new ArrayList<>();
 		for (final IMutableLegacyMap map : getRestrictedAllMaps()) {
 			retval.addAll(coalesceImpl(
 					"In %s: At %s: ".formatted(
@@ -269,7 +269,7 @@ public class UtilityDriverModel extends SimpleMultiMapModel {
 			if (map.isMountainous(location)) {
 				subMap.setMountainous(location, false);
 			}
-			final List<TileFixture> toRemove = new ArrayList<>();
+			final Collection<TileFixture> toRemove = new ArrayList<>();
 			for (final TileFixture fixture : subMap.getFixtures(location)) {
 				if (map.getFixtures(location).stream()
 						.anyMatch(item -> isSubset(item, fixture))) {
@@ -373,7 +373,7 @@ public class UtilityDriverModel extends SimpleMultiMapModel {
 	}
 
 	public void expandAroundPoint(final Point center, final Player currentPlayer) {
-		final Mock mock = new Mock(currentPlayer);
+		final HasOwner mock = new Mock(currentPlayer);
 		final ILegacyMap map = getMap();
 		final long seed = SingletonRandom.SINGLETON_RANDOM.nextLong();
 		for (final IMutableLegacyMap subMap : getRestrictedSubordinateMaps()) {

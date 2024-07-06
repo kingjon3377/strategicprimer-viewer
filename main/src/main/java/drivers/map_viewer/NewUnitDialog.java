@@ -1,6 +1,7 @@
 package drivers.map_viewer;
 
 import java.io.Serial;
+import java.util.Collection;
 import java.util.OptionalInt;
 import java.util.ArrayList;
 import java.util.List;
@@ -69,7 +70,7 @@ public final class NewUnitDialog extends SPDialog implements NewUnitSource, Play
 	private Player player;
 	private final IDRegistrar idf;
 
-	private final List<NewUnitListener> listeners = new ArrayList<>();
+	private final Collection<NewUnitListener> listeners = new ArrayList<>();
 
 	private final JTextField nameField = new JTextField(10);
 	private final JTextField kindField = new JTextField(10);

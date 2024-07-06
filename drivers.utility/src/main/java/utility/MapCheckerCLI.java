@@ -192,7 +192,7 @@ public class MapCheckerCLI implements UtilityDriver {
 		}
 	}
 
-	private static boolean suspiciousSkill(final IJob job) {
+	private static boolean suspiciousSkill(final Iterable<ISkill> job) {
 		if (StreamSupport.stream(job.spliterator(), false).count() > 1) {
 			return false;
 		} else {

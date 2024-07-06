@@ -53,7 +53,7 @@ import exploration.common.IExplorationModel;
 		this.model = model;
 	}
 
-	private void printWorkers(final IUnit unit) {
+	private void printWorkers(final Iterable<UnitMember> unit) {
 		for (final UnitMember member : unit) {
 			final IWorker worker;
 			if (member instanceof IWorker) {

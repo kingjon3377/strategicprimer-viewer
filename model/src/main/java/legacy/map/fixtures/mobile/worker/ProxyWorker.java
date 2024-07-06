@@ -87,6 +87,7 @@ public class ProxyWorker implements WorkerProxy {
 		statsCache = null;
 	}
 
+	@SuppressWarnings("TypeMayBeWeakened") // don't want to allow nonsensical uses
 	public ProxyWorker(final IUnit unit) {
 		this(false);
 		final Consumer<String> addJobName = jobNames::add;

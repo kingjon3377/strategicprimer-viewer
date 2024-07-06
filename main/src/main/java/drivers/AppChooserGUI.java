@@ -12,11 +12,13 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.GridLayout;
+import java.awt.MenuContainer;
 import java.awt.font.FontRenderContext;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.ServiceLoader;
 import java.util.function.Consumer;
@@ -44,7 +46,7 @@ import lovelace.util.ListenedButton;
 		return options;
 	}
 
-	private final List<String> additionalFiles = new ArrayList<>();
+	private final Collection<String> additionalFiles = new ArrayList<>();
 
 	private static boolean includeInGUIList(final DriverFactory driver) {
 		return driver.getUsage().includeInList(true);
@@ -52,7 +54,7 @@ import lovelace.util.ListenedButton;
 
 	@Override
 	public void startDriver(final String... args) {
-		final JEditorPane tempComponent = new JEditorPane();
+		final MenuContainer tempComponent = new JEditorPane();
 		final Font font = tempComponent.getFont();
 		final Graphics2D pen = new BufferedImage(1, 1, BufferedImage.TYPE_INT_RGB).createGraphics();
 		final FontRenderContext context = pen.getFontRenderContext();

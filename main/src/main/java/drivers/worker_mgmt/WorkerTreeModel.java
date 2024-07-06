@@ -47,7 +47,7 @@ import java.util.stream.Collectors;
 		this.model = model;
 	}
 
-	private final List<TreeModelListener> listeners = new ArrayList<>();
+	private final Collection<TreeModelListener> listeners = new ArrayList<>();
 
 	@Override
 	public Player getRoot() {

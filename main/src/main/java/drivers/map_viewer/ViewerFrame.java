@@ -3,6 +3,7 @@ package drivers.map_viewer;
 import java.io.Serial;
 import java.util.function.Function;
 
+import drivers.common.ISPDriver;
 import drivers.common.ViewerDriver;
 import drivers.common.IDriverModel;
 import drivers.common.DriverFailedException;
@@ -83,7 +84,7 @@ public final class ViewerFrame extends SPFrame implements MapGUI {
 
 	private final Function<IDriverModel, ViewerDriver> driverFactory;
 
-	public ViewerFrame(final IViewerModel model, final ActionListener menuListener, final ViewerDriver driver,
+	public ViewerFrame(final IViewerModel model, final ActionListener menuListener, final ISPDriver driver,
 					   final Function<IDriverModel, ViewerDriver> driverFactory) {
 		super("Map Viewer", driver);
 		mapModel = model;

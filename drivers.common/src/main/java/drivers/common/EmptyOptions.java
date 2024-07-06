@@ -11,7 +11,7 @@ public final class EmptyOptions implements SPOptions {
 	private EmptyOptions() {
 	}
 
-	public static final EmptyOptions EMPTY_OPTIONS = new EmptyOptions();
+	public static final SPOptions EMPTY_OPTIONS = new EmptyOptions();
 
 	@Override
 	public SPOptions copy() {

@@ -94,7 +94,7 @@ public class FixtureListModel implements ListModel<TileFixture>, SelectionChange
 	 */
 	private final List<AnimalTracks> currentTracks = new ArrayList<>();
 
-	private final List<ListDataListener> listDataListeners = new ArrayList<>();
+	private final Collection<ListDataListener> listDataListeners = new ArrayList<>();
 
 	@Override
 	public void addListDataListener(final ListDataListener listener) {
@@ -310,7 +310,7 @@ public class FixtureListModel implements ListModel<TileFixture>, SelectionChange
 	 * Remove the specified items from the tile and the list.
 	 */
 	@SuppressWarnings("ChainOfInstanceofChecks")
-	public boolean removeAll(final Collection<? extends TileFixture> fixtures) {
+	public boolean removeAll(final Iterable<? extends TileFixture> fixtures) {
 		boolean retval = true;
 		final Range zeroRange = new Range(0, 0);
 		for (final TileFixture fixture : fixtures) {

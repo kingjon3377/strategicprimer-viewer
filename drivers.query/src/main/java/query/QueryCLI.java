@@ -3,6 +3,7 @@ package query;
 import legacy.map.fixtures.IResourcePile;
 import legacy.map.fixtures.towns.CommunityStats;
 
+import java.util.Collection;
 import java.util.Comparator;
 import java.util.Map;
 import java.util.Objects;
@@ -225,8 +226,8 @@ public class QueryCLI implements ReadOnlyDriver {
 		final Deque<Point> queue = new LinkedList<>();
 		queue.addLast(base);
 		final MapDimensions dimensions = map.getDimensions();
-		final Set<Point> considered = new HashSet<>();
-		final List<Point> retval = new ArrayList<>();
+		final Collection<Point> considered = new HashSet<>();
+		final Collection<Point> retval = new ArrayList<>();
 		while (!queue.isEmpty()) {
 			final Point current = queue.removeFirst();
 			final TileType currentTerrain = map.getBaseTerrain(current);

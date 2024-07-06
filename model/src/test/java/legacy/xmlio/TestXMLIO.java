@@ -3,6 +3,7 @@ package legacy.xmlio;
 import static lovelace.util.SingletonRandom.SINGLETON_RANDOM;
 
 import legacy.map.LegacyPlayerCollection;
+import legacy.map.TileFixture;
 import legacy.map.fixtures.LegacyQuantity;
 import legacy.map.fixtures.UnitMember;
 import common.map.fixtures.mobile.MaturityModel;
@@ -1579,7 +1580,7 @@ public final class TestXMLIO {
 	public void testTextSerialization(final int baseTurn, final String text)
 			throws SPFormatException, XMLStreamException, IOException {
 		final int turn = baseTurn - 2; // Make sure negative turns occasionally get checked.
-		final TextFixture testee = new TextFixture(text, turn);
+		final HasMutableImage testee = new TextFixture(text, turn);
 		assertSerialization("Test of TextFixture serialization", testee);
 		this.<TextFixture>assertUnwantedChild("""
 				<text turn="%d"><troll></text>""".formatted(turn), null);
@@ -1764,7 +1765,7 @@ public final class TestXMLIO {
 	@MethodSource("testQuoting")
 	public void testUnitPortraitSerialization(final int id)
 			throws SPFormatException, XMLStreamException, IOException {
-		final Unit unit = new Unit(new PlayerImpl(1, ""), "kind", "name", id);
+		final HasMutablePortrait unit = new Unit(new PlayerImpl(1, ""), "kind", "name", id);
 		unit.setPortrait("portraitFile");
 		assertSerialization("Portrait doesn't mess up serialization", unit);
 		assertSerializedFormContains(unit, "portraitFile", "Serialized form contains portrait");
@@ -1784,7 +1785,7 @@ public final class TestXMLIO {
 	public void testAdventureSerialization(final int idOne, final int idTwo)
 			throws SPFormatException, XMLStreamException, IOException {
 		final Player independent = new PlayerImpl(1, "independent");
-		final AdventureFixture first = new AdventureFixture(independent, "first hook brief",
+		final TileFixture first = new AdventureFixture(independent, "first hook brief",
 				"first hook full", idOne);
 		final AdventureFixture second = new AdventureFixture(new PlayerImpl(2, "player"),
 				"second hook brief", "second hook full", idTwo);
@@ -1799,7 +1800,7 @@ public final class TestXMLIO {
 				new AdventureFixture(new PlayerImpl(3, "third"), "", "", idOne));
 		// TODO: split portals into separate test method
 		final Portal third = new Portal("portal dest", new Point(1, 2), idOne);
-		final Portal fourth = new Portal("portal dest two", new Point(2, 1), idTwo);
+		final TileFixture fourth = new Portal("portal dest two", new Point(2, 1), idTwo);
 		assertNotEquals(third, fourth, "Two different portals are not equal");
 		wrapper.addFixture(new Point(0, 0), fourth);
 		assertSerialization("First Portal serialization test", wrapper);
@@ -1952,7 +1953,7 @@ public final class TestXMLIO {
 	@MethodSource
 	public void testCacheSerialization(final int id, final String kind, final String contents)
 			throws SPFormatException, XMLStreamException, IOException {
-		final CacheFixture testee = new CacheFixture(kind, contents, id);
+		final HasMutableImage testee = new CacheFixture(kind, contents, id);
 		assertSerialization("Test of Cache serialization", testee);
 		this.<CacheFixture>assertUnwantedChild("""
 				<cache kind="%s" contents="%s"><troll /></cache>""".formatted(kind, contents), null);
@@ -1979,7 +1980,7 @@ public final class TestXMLIO {
 	@MethodSource
 	public void testCentaurSerialization(final int id, final String kind)
 			throws SPFormatException, XMLStreamException, IOException {
-		final Centaur testee = new Centaur(kind, id);
+		final HasMutableImage testee = new Centaur(kind, id);
 		assertSerialization("Test of Centaur serialization", testee);
 		this.<Centaur>assertUnwantedChild("""
 				<centaur kind="%s"><troll /></centaur>""".formatted(kind), null);
@@ -1997,7 +1998,7 @@ public final class TestXMLIO {
 	@MethodSource("testCentaurSerialization")
 	public void testDragonSerialization(final int id, final String kind)
 			throws SPFormatException, XMLStreamException, IOException {
-		final Dragon testee = new Dragon(kind, id);
+		final HasMutableImage testee = new Dragon(kind, id);
 		assertSerialization("Test of Dragon serialization", testee);
 		assertSerialization("Dragon with no kind (de-)serialization", new Dragon("", id));
 		this.<Dragon>assertUnwantedChild("""
@@ -2016,7 +2017,7 @@ public final class TestXMLIO {
 	@MethodSource("testCentaurSerialization")
 	public void testFairySerialization(final int id, final String kind)
 			throws SPFormatException, XMLStreamException, IOException {
-		final Fairy testee = new Fairy(kind, id);
+		final HasMutableImage testee = new Fairy(kind, id);
 		assertSerialization("Test of Fairy serialization", testee);
 		this.<Fairy>assertUnwantedChild("""
 						<fairy kind="%s"><hill /></fairy>""".formatted(kind),
@@ -2043,7 +2044,7 @@ public final class TestXMLIO {
 	@MethodSource
 	public void testForestSerialization(final int id, final String kind, final boolean rows)
 			throws SPFormatException, XMLStreamException, IOException {
-		final Forest testee = new Forest(kind, rows, id);
+		final HasMutableImage testee = new Forest(kind, rows, id);
 		assertSerialization("Test of Forest serialization", testee);
 		this.<Forest>assertUnwantedChild("""
 				<forest kind="%s"><hill /></forest>""".formatted(kind), null);
@@ -2115,7 +2116,7 @@ public final class TestXMLIO {
 	@MethodSource("testCentaurSerialization")
 	public void testGiantSerialization(final int id, final String kind)
 			throws SPFormatException, XMLStreamException, IOException {
-		final Giant testee = new Giant(kind, id);
+		final HasMutableImage testee = new Giant(kind, id);
 		assertSerialization("Test of Giant serialization", testee);
 		this.<Giant>assertUnwantedChild("""
 				<giant kind="%s"><hill /></giant>""".formatted(kind), null);

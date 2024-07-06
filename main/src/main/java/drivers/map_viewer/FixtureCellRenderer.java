@@ -27,6 +27,7 @@ import java.awt.Dimension;
 
 import java.io.IOException;
 
+import java.util.Collection;
 import java.util.Set;
 import java.util.HashSet;
 
@@ -38,7 +39,7 @@ import lovelace.util.LovelaceLogger;
 /* package */ class FixtureCellRenderer implements ListCellRenderer<TileFixture> {
 	private static final DefaultListCellRenderer DEFAULT_RENDERER = new DefaultListCellRenderer();
 
-	private static final Set<String> MISSING_FILENAMES = new HashSet<>();
+	private static final Collection<String> MISSING_FILENAMES = new HashSet<>();
 
 	// Image size is 24, margin is 15%.
 	private static Icon createDefaultFixtureIcon() {

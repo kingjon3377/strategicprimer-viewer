@@ -155,10 +155,10 @@ public class FortressReportGenerator extends AbstractReportGenerator<IFortress> 
 			// TODO: Report what kinds of roads they are
 			println(ostream, "</li>");
 		}
-		final List<IUnit> units = new ArrayList<>();
-		final List<Implement> equipment = new ArrayList<>();
+		final Collection<IUnit> units = new ArrayList<>();
+		final Collection<Implement> equipment = new ArrayList<>();
 		final Map<String, List<IResourcePile>> resources = new HashMap<>(); // TODO: Use a multimap
-		final List<FortressMember> contents = new ArrayList<>();
+		final Collection<FortressMember> contents = new ArrayList<>();
 		for (final FortressMember member : item) {
 			switch (member) {
 				case final IUnit u -> units.add(u);

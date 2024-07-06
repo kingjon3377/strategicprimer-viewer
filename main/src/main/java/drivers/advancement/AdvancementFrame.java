@@ -1,5 +1,6 @@
 package drivers.advancement;
 
+import drivers.common.ISPDriver;
 import drivers.common.cli.ICLIHelper;
 import org.jetbrains.annotations.Nullable;
 
@@ -50,7 +51,7 @@ import drivers.gui.common.MenuBroker;
 	private final FormattedLabel playerLabel;
 	private final IWorkerTreeModel treeModel;
 
-	public AdvancementFrame(final IWorkerModel model, final MenuBroker menuHandler, final ModelDriver driver,
+	public AdvancementFrame(final IWorkerModel model, final MenuBroker menuHandler, final ISPDriver driver,
 							final ICLIHelper cli) {
 		super("Worker Advancement", driver, new Dimension(640, 480), true,
 				(file) -> model.addSubordinateMap(MapIOHelper.readMap(file)));

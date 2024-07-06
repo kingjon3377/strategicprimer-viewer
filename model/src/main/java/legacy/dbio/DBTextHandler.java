@@ -11,6 +11,7 @@ import io.jenetics.facilejdbc.Transactional;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -48,7 +49,7 @@ public final class DBTextHandler extends AbstractDatabaseWriter<TextFixture, Poi
 
 	@Override
 	public void write(final Transactional db, final TextFixture obj, final Point context) throws SQLException {
-		final List<Param> params = new ArrayList<>();
+		final Collection<Param> params = new ArrayList<>();
 		params.add(value("row", context.row()));
 		params.add(value("column", context.column()));
 		if (obj.getTurn() >= 0) {

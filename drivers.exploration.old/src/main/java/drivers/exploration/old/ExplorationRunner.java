@@ -4,6 +4,7 @@ import lovelace.util.LovelaceLogger;
 import org.jetbrains.annotations.Nullable;
 import org.javatuples.Pair;
 
+import java.util.Collection;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.HashMap;
@@ -313,7 +314,7 @@ public final class ExplorationRunner {
 							throw new IllegalArgumentException(
 									"File doesn't start with number of rows of quadrants", except);
 						}
-						final List<String> items = new LinkedList<>();
+						final Collection<String> items = new LinkedList<>();
 						while (source.hasNext()) {
 							items.add(source.next());
 						}
@@ -325,7 +326,7 @@ public final class ExplorationRunner {
 					}
 					break;
 				case 'r':
-					final List<Pair<Integer, String>> listR = new ArrayList<>();
+					final Collection<Pair<Integer, String>> listR = new ArrayList<>();
 					while (source.hasNext()) {
 						final String tableLine = source.next();
 						final String[] splitted = tableLine.split(" ");
@@ -362,7 +363,7 @@ public final class ExplorationRunner {
 					}
 					break;
 				case 't':
-					final List<Pair<String, String>> listT = new ArrayList<>();
+					final Collection<Pair<String, String>> listT = new ArrayList<>();
 					while (source.hasNext()) {
 						final String tableLine = source.next();
 						final String[] splitted = tableLine.split(" ");

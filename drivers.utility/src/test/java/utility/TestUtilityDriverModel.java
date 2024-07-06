@@ -10,6 +10,7 @@ import legacy.map.LegacyPlayerCollection;
 import legacy.map.MapDimensions;
 import legacy.map.MapDimensionsImpl;
 import legacy.map.Point;
+import legacy.map.TileFixture;
 import legacy.map.TileType;
 import legacy.map.fixtures.towns.Village;
 import org.junit.jupiter.api.Test;
@@ -47,9 +48,9 @@ public class TestUtilityDriverModel {
 			master.setBaseTerrain(point, TileType.Plains);
 			subMap.setBaseTerrain(point, TileType.Plains);
 		}
-		final Village villageOne = new Village(TownStatus.Active, "one", 0, subMap.getCurrentPlayer(), "human");
+		final TileFixture villageOne = new Village(TownStatus.Active, "one", 0, subMap.getCurrentPlayer(), "human");
 		final Village villageTwo = new Village(TownStatus.Active, "two", 1, master.getPlayers().getPlayer(1), "human");
-		final Village villageThree = new Village(TownStatus.Active, "two", 1, master.getCurrentPlayer(), "human");
+		final TileFixture villageThree = new Village(TownStatus.Active, "two", 1, master.getCurrentPlayer(), "human");
 		assertTrue(villageTwo.isSubset(villageThree, TestUtilityDriverModel::noop),
 				"Independent village is subset of village with owner");
 		final Point pointOne = new Point(0, 0);

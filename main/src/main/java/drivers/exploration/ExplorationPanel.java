@@ -387,7 +387,7 @@ import worker.common.IFixtureEditHelper;
 		private final SelectionChangeListener outer;
 		private final MovementCostListener movementDeductionTracker;
 
-		private final List<SelectionChangeListener> selectionListeners = new ArrayList<>();
+		private final Collection<SelectionChangeListener> selectionListeners = new ArrayList<>();
 
 		@Override
 		public void addSelectionChangeListener(final SelectionChangeListener listener) {

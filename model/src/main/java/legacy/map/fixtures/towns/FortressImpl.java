@@ -1,6 +1,7 @@
 package legacy.map.fixtures.towns;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -115,7 +116,7 @@ public class FortressImpl implements IMutableFortress {
 	 *
 	 * TODO: Should this perhaps be a Set?
 	 */
-	private final List<FortressMember> members = new ArrayList<>();
+	private final Collection<FortressMember> members = new ArrayList<>();
 
 	/**
 	 * A Fortress's contents aren't handled like those of other towns.

@@ -1,5 +1,6 @@
 package legacy.dbio;
 
+import impl.dbio.DatabaseWriter;
 import legacy.map.IFixture;
 import impl.dbio.AbstractDatabaseWriter;
 import impl.dbio.MapContentsReader;
@@ -11,6 +12,7 @@ import io.jenetics.facilejdbc.Transactional;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -68,12 +70,12 @@ public final class DBTownHandler extends AbstractDatabaseWriter<AbstractTown, Po
 					VALUES(:row, :column, :id, :kind, :status, :size, :dc, :name, :owner, :image,
 						:portrait, :population);""");
 
-	private static final AbstractDatabaseWriter<CommunityStats, ITownFixture> CS_WRITER =
+	private static final DatabaseWriter<CommunityStats, ITownFixture> CS_WRITER =
 			new DBCommunityStatsHandler();
 
 	@Override
 	public void write(final Transactional db, final AbstractTown obj, final Point context) throws SQLException {
-		final List<Param> params = new ArrayList<>();
+		final Collection<Param> params = new ArrayList<>();
 		params.add(value("row", context.row()));
 		params.add(value("column", context.column()));
 		params.add(value("id", obj.getId()));

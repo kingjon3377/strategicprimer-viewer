@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
 	/**
 	 * Get the last "count" path elements in the given path.
 	 */
-	private static String suffix(final Path file, final int count) {
+	private static String suffix(final Iterable<Path> file, final int count) {
 		final Deque<Path> list = StreamSupport.stream(file.spliterator(), false)
 				.collect(Collectors.toCollection(LinkedList::new));
 		while (list.size() > count) {
@@ -38,7 +38,7 @@ import java.util.stream.Collectors;
 	 */
 	public static String shortestSuffix(final Collection<Path> all, final Path file) {
 		final int longestPath = all.stream().mapToInt(Path::getNameCount).max().orElse(1);
-		final Set<String> localCache = new HashSet<>();
+		final Collection<String> localCache = new HashSet<>();
 		for (int num = 1; num <= longestPath; num++) {
 			boolean found = false;
 			for (final Path key : all) {

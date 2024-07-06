@@ -4,6 +4,7 @@ import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
+import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
 import java.util.HashSet;
@@ -69,7 +70,7 @@ import common.xmlio.Warning;
 				Map.entry(Unicorn.class, "unicorn"), Map.entry(Kraken.class, "kraken"));
 	}
 
-	private static final Set<String> SUPPORTED_TAGS = new HashSet<>(TAG_MAP.values());
+	private static final Collection<String> SUPPORTED_TAGS = new HashSet<>(TAG_MAP.values());
 
 	private static final Map<String, IntFunction<? extends Immortal>> SIMPLES = initSimples();
 

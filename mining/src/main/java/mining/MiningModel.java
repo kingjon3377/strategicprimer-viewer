@@ -156,7 +156,7 @@ import java.util.stream.Collectors;
 			}
 		}
 
-		final SortedMap<Integer, List<Pair<Integer, Integer>>> byColumnIncreasing =
+		final Map<Integer, List<Pair<Integer, Integer>>> byColumnIncreasing =
 				new TreeMap<>(unnormalized.keySet().stream()
 						.collect(Collectors.groupingBy(Pair::getValue1)));
 		for (final Map.Entry<Integer, List<Pair<Integer, Integer>>> entry : byColumnIncreasing.entrySet()) {

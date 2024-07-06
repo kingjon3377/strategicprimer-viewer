@@ -212,8 +212,8 @@ public final class FixtureList extends JList<TileFixture>
 					// Suppression is reasonable: this can only break in the face of
 					// an actively hostile caller, as this flavor supposedly indicates
 					// this is the type.
-					@SuppressWarnings("unchecked") final List<Transferable> curried =
-							(List<Transferable>) trans.getTransferData(flavor);
+					@SuppressWarnings("unchecked") final Iterable<Transferable> curried =
+							(Iterable<Transferable>) trans.getTransferData(flavor);
 					for (final Transferable t : curried) {
 						handleDrop(t);
 					}

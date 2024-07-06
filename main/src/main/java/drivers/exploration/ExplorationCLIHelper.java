@@ -237,7 +237,7 @@ public class ExplorationCLIHelper implements MovementCostListener, SelectionChan
 				return;
 			}
 
-			final List<TileFixture> constants = new ArrayList<>();
+			final Collection<TileFixture> constants = new ArrayList<>();
 			final ILegacyMap map = model.getMap();
 			final List<TileFixture> allFixtures = new ArrayList<>();
 

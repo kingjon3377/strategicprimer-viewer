@@ -1,5 +1,6 @@
 package drivers.exploration.old;
 
+import java.util.Collection;
 import java.util.Deque;
 import java.util.LinkedList;
 
@@ -183,7 +184,7 @@ public class TestExplorationRunner {
 	@Test
 	public void testLoadQuadrantTable() throws MissingTableException, IOException {
 		final ExplorationRunner runner = new ExplorationRunner();
-		final Deque<String> data = new LinkedList<>(Arrays.asList("quadrant", "2", "one", "two", "three",
+		final Iterable<String> data = new LinkedList<>(Arrays.asList("quadrant", "2", "one", "two", "three",
 				"four", "five", "six"));
 		final String table = "testLoadQuadrantTable().result";
 		runner.loadTableFromDataStream(data.iterator(), table);

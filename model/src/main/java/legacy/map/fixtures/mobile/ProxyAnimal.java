@@ -99,7 +99,7 @@ import org.jetbrains.annotations.NotNull;
 	@Override
 	public Animal combined(final Animal addend) {
 		if (addend instanceof final AnimalProxy ap && ap.isParallel()) {
-			final List<Animal> interim = new ArrayList<>();
+			final Collection<Animal> interim = new ArrayList<>();
 			final Iterator<Animal> ours = getProxied().iterator();
 			final Iterator<Animal> theirs = ap.getProxied().iterator();
 			while (ours.hasNext() && theirs.hasNext()) {

@@ -66,6 +66,7 @@ import java.util.function.Consumer;
 	 */
 	private @Nullable IUnit selectedUnit = null;
 
+	@SuppressWarnings("TypeMayBeWeakened") // Don't change public API
 	public void addNewWorker(final IWorker worker) {
 		if (Objects.isNull(selectedUnit)) {
 			LovelaceLogger.warning("New worker created when no unit selected");

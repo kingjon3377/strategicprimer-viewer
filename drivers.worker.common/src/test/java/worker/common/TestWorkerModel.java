@@ -1,5 +1,6 @@
 package worker.common;
 
+import java.util.Collection;
 import java.util.Set;
 import java.util.stream.StreamSupport;
 import java.util.stream.Collectors;
@@ -45,7 +46,7 @@ public class TestWorkerModel {
 	 * Helper method: Flatten any proxies in the list by replacing them with what they are proxies for.
 	 */
 	private static <T> Iterable<T> filterProxies(final Iterable<T> list, final Class<? extends ProxyFor<?>> cls) {
-		final List<T> retval = new ArrayList<>();
+		final Collection<T> retval = new ArrayList<>();
 		for (final T item : list) {
 			if (cls.isInstance(item)) {
 				// unchecked warning is unavoidable in the absence of reified generics
@@ -103,7 +104,7 @@ public class TestWorkerModel {
 		final IMutableFortress fort = new FortressImpl(playerFour, "fort", 4, TownSize.Small);
 		final IUnit unit = new Unit(playerThree, "three", "unitThree", 5);
 		fort.addMember(unit);
-		final List<IUnit> listThree = new ArrayList<>();
+		final Collection<IUnit> listThree = new ArrayList<>();
 		listThree.add(unit);
 		fixtures.add(fort);
 		fixtures.add(new Forest("forest", false, 10));

@@ -4,6 +4,7 @@ import io.jenetics.facilejdbc.Query;
 import io.jenetics.facilejdbc.Transactional;
 
 import java.sql.SQLException;
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 import java.util.HashSet;
@@ -37,7 +38,7 @@ public abstract class AbstractDatabaseWriter<Item, Context> implements DatabaseW
 	 * Database connections that we've been initialized for.
 	 * TODO: Is this really best practice in the jdbc-fn library?
 	 */
-	private final Set<Transactional> connections = new HashSet<>();
+	private final Collection<Transactional> connections = new HashSet<>();
 
 	@Override
 	public final void initialize(final Transactional sql) throws SQLException {

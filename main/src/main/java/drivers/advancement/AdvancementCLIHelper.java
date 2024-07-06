@@ -3,6 +3,7 @@ package drivers.advancement;
 import drivers.common.cli.ICLIHelper;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import java.util.Map;
@@ -39,7 +40,7 @@ public class AdvancementCLIHelper implements LevelGainSource {
 	private final IAdvancementModel model;
 	private final ICLIHelper cli;
 
-	private final List<LevelGainListener> levelListeners = new ArrayList<>();
+	private final Collection<LevelGainListener> levelListeners = new ArrayList<>();
 
 	@Override
 	public void addLevelGainListener(final LevelGainListener listener) {
@@ -194,7 +195,7 @@ public class AdvancementCLIHelper implements LevelGainSource {
 					} else if (!chooseAnother) {
 						continue;
 					}
-					final List<String> gains = new ArrayList<>();
+					final Collection<String> gains = new ArrayList<>();
 					for (int i = 0; i < skill.getLevel(); i++) {
 						final ISkill replacement;
 						final Pair<Integer, @Nullable ISkill> choice = cli.chooseFromList(

@@ -12,6 +12,7 @@ import javax.swing.tree.TreePath;
 
 import java.io.Serial;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -72,7 +73,7 @@ import legacy.map.fixtures.mobile.worker.IJob;
 		});
 	}
 
-	private final List<SkillSelectionListener> listeners = new ArrayList<>();
+	private final Collection<SkillSelectionListener> listeners = new ArrayList<>();
 
 	@Override
 	public void addSkillSelectionListener(final SkillSelectionListener listener) {

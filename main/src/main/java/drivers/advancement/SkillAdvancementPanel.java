@@ -5,6 +5,7 @@ import org.jetbrains.annotations.Nullable;
 import java.awt.Dimension;
 import java.io.Serial;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import java.awt.event.ActionEvent;
@@ -62,7 +63,7 @@ import drivers.common.IAdvancementModel;
 
 	private @Nullable IWorker worker = null;
 
-	private final List<LevelGainListener> listeners = new ArrayList<>();
+	private final Collection<LevelGainListener> listeners = new ArrayList<>();
 
 	private void okListener(final ActionEvent event) {
 		// TODO: In Ceylon we assigned all of these to local variables, as the typechecker

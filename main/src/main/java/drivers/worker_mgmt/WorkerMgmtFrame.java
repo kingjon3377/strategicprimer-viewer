@@ -4,6 +4,7 @@ import java.io.Serial;
 import java.nio.file.Paths;
 import java.io.IOException;
 
+import drivers.common.ISPDriver;
 import drivers.gui.common.SPFileChooser;
 
 import javax.swing.JButton;
@@ -67,7 +68,7 @@ import drivers.worker_mgmt.orderspanel.OrdersPanel;
 	private final WorkerTree tree;
 
 	public WorkerMgmtFrame(final SPOptions options, final IWorkerModel model, final MenuBroker menuHandler,
-						   final WorkerMgmtGUI driver) {
+						   final ISPDriver driver) {
 		super("Worker Management", driver, new Dimension(640, 480), true,
 				(file) -> model.addSubordinateMap(MapIOHelper.readMap(file)));
 		this.model = model;

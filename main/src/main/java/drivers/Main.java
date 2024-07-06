@@ -9,6 +9,7 @@ import javax.swing.UIManager;
 
 import javax.swing.UnsupportedLookAndFeelException;
 
+import drivers.common.SPOptions;
 import lovelace.util.LovelaceLogger;
 import lovelace.util.Platform;
 
@@ -42,7 +43,7 @@ public final class Main {
 		}
 		LovelaceLogger.debug("If you can see this, debug-level log messages are enabled.");
 		LovelaceLogger.trace("If you can see this, trace-level log messages are enabled.");
-		final SPOptionsImpl options = new SPOptionsImpl();
+		final SPOptions options = new SPOptionsImpl();
 		if (Platform.SYSTEM_IS_MAC) {
 			Desktop.getDesktop().setOpenFileHandler(AppChooserState::handleDroppedFiles);
 		}

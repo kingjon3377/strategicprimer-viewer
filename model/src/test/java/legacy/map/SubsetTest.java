@@ -202,7 +202,7 @@ public final class SubsetTest {
 		for (final Point point : testMap.getLocations()) {
 			testMap.setBaseTerrain(point, TileType.Plains);
 		}
-		final Forest forest = new Forest("elm", false, 1);
+		final TileFixture forest = new Forest("elm", false, 1);
 		final TileFixture animal = new AnimalImpl("skunk", false, "wild", 2);
 		for (final Point point : testMap.getLocations()) {
 			assertIsSubset(baseMap, testMap,

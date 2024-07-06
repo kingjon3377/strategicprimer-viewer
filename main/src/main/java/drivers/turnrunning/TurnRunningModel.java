@@ -40,6 +40,7 @@ import java.util.function.Function;
 import java.util.function.IntPredicate;
 import java.util.function.IntSupplier;
 import java.util.function.Predicate;
+import java.util.random.RandomGenerator;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
@@ -54,7 +55,7 @@ public class TurnRunningModel extends ExplorationModel implements ITurnRunningMo
 	 * of its contents; otherwise, return stream containing only it. This
 	 * is intended to be used in {@link Stream#flatMap}.
 	 */
-	private static Stream<IFixture> unflattenNonFortresses(final TileFixture fixture) {
+	private static Stream<IFixture> unflattenNonFortresses(final IFixture fixture) {
 		if (fixture instanceof final IFortress f) {
 			return f.stream().map(IFixture.class::cast);
 		} else {
@@ -282,7 +283,7 @@ public class TurnRunningModel extends ExplorationModel implements ITurnRunningMo
 						.filter(matchingJob).findAny().orElse(null);
 				if (Objects.isNull(job)) {
 					map.setModified(true);
-					final Job newJob = new Job(jobName, 0);
+					final IMutableJob newJob = new Job(jobName, 0);
 					newJob.addSkill(new Skill(skillName, 0, 0));
 					matching.addJob(newJob);
 				} else if (StreamSupport.stream(job.spliterator(), false).map(ISkill::getName)
@@ -334,7 +335,7 @@ public class TurnRunningModel extends ExplorationModel implements ITurnRunningMo
 	public boolean addHoursToSkillInAll(final IUnit unit, final String jobName, final String skillName,
 										final int hours, final int contextValue) {
 		boolean any = false;
-		final Random rng = new Random(contextValue);
+		final RandomGenerator rng = new Random(contextValue);
 		for (final UnitMember member : unit) {
 			if (member instanceof final IWorker w && addHoursToSkill(w, jobName, skillName, hours,
 					rng.nextInt(100))) {
@@ -629,7 +630,7 @@ public class TurnRunningModel extends ExplorationModel implements ITurnRunningMo
 	public boolean addResource(final IUnit container, final int id, final String kind, final String contents,
 	                           final LegacyQuantity quantity) {
 		boolean any = false;
-		final IMutableResourcePile resource = new ResourcePileImpl(id, kind, contents, quantity);
+		final UnitMember resource = new ResourcePileImpl(id, kind, contents, quantity);
 		final Predicate<Object> isUnit = IMutableUnit.class::isInstance;
 		final Function<Object, IMutableUnit> unitCast = IMutableUnit.class::cast;
 //		final Predicate<IMutableUnit> matchingOwner = u -> u.owner().equals(container.owner());
@@ -663,7 +664,7 @@ public class TurnRunningModel extends ExplorationModel implements ITurnRunningMo
 	public boolean addResource(final IFortress container, final int id, final String kind, final String contents,
 	                           final LegacyQuantity quantity) {
 		boolean any = false;
-		final IMutableResourcePile resource = new ResourcePileImpl(id, kind, contents, quantity);
+		final FortressMember resource = new ResourcePileImpl(id, kind, contents, quantity);
 		final Predicate<Object> isFortress = IMutableFortress.class::isInstance;
 		final Function<Object, IMutableFortress> fortressCast = IMutableFortress.class::cast;
 		final Predicate<IMutableFortress> matchingName = f -> f.getName().equals(container.getName());
@@ -764,7 +765,7 @@ public class TurnRunningModel extends ExplorationModel implements ITurnRunningMo
 		if (population <= 0) {
 			return false;
 		}
-		final Animal animal = new AnimalImpl(kind, false, status, id, born, population);
+		final UnitMember animal = new AnimalImpl(kind, false, status, id, born, population);
 		boolean any = false;
 		final Predicate<Object> isUnit = IMutableUnit.class::isInstance;
 		final Function<Object, IMutableUnit> unitCast = IMutableUnit.class::cast;

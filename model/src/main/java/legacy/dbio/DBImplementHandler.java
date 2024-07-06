@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+import legacy.map.HasMutableImage;
 import legacy.map.IMutableLegacyMap;
 import legacy.map.fixtures.Implement;
 import legacy.map.fixtures.mobile.IUnit;
@@ -66,7 +67,7 @@ public final class DBImplementHandler extends AbstractDatabaseWriter<Implement, 
 			final String kind = (String) dbRow.get("kind");
 			final int count = (Integer) dbRow.get("count");
 			final String image = (String) dbRow.get("image");
-			final Implement implement = new Implement(kind, id, count);
+			final HasMutableImage implement = new Implement(kind, id, count);
 			if (!Objects.isNull(image)) {
 				implement.setImage(image);
 			}

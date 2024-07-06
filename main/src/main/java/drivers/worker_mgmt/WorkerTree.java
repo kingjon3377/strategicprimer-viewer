@@ -1,6 +1,7 @@
 package drivers.worker_mgmt;
 
 import java.io.Serial;
+import java.util.Collection;
 import java.util.Comparator;
 
 import lovelace.util.LovelaceLogger;
@@ -148,8 +149,8 @@ public final class WorkerTree extends JTree implements UnitMemberSelectionSource
 		}
 	}
 
-	private final List<UnitSelectionListener> selectionListeners = new ArrayList<>();
-	private final List<UnitMemberListener> memberListeners = new ArrayList<>();
+	private final Collection<UnitSelectionListener> selectionListeners = new ArrayList<>();
+	private final Collection<UnitMemberListener> memberListeners = new ArrayList<>();
 
 	@Override
 	public void addUnitMemberListener(final UnitMemberListener listener) {
@@ -180,7 +181,7 @@ public final class WorkerTree extends JTree implements UnitMemberSelectionSource
 				for (final UnitSelectionListener listener : selectionListeners) {
 					listener.selectUnit(u);
 				}
-				final IWorker proxy = new ProxyWorker(u);
+				final UnitMember proxy = new ProxyWorker(u);
 				for (final UnitMemberListener listener : memberListeners) {
 					listener.memberSelected(null, proxy);
 				}
@@ -263,8 +264,8 @@ public final class WorkerTree extends JTree implements UnitMemberSelectionSource
 		@Override
 		public @Nullable Transferable createTransferable(final JComponent component) {
 			final TreePath[] paths = selectionModel.getSelectionPaths();
-			final List<Pair<UnitMember, IUnit>> membersToTransfer = new ArrayList<>();
-			final List<IUnit> unitsToTransfer = new ArrayList<>();
+			final Collection<Pair<UnitMember, IUnit>> membersToTransfer = new ArrayList<>();
+			final Collection<IUnit> unitsToTransfer = new ArrayList<>();
 
 			for (final TreePath path : paths) {
 				final Object last = path.getLastPathComponent();
@@ -354,10 +355,9 @@ public final class WorkerTree extends JTree implements UnitMemberSelectionSource
 								UnitMemberTransferable.FLAVOR) -> {
 							// unchecked-cast warning is unavoidable without reified generics
 							//noinspection unchecked
-							final List<Pair<UnitMember, IUnit>> list =
-									(List<Pair<UnitMember, IUnit>>)
-											trans.getTransferData(
-													UnitMemberTransferable.FLAVOR);
+							final Iterable<Pair<UnitMember, IUnit>> list =
+									(Iterable<Pair<UnitMember, IUnit>>) trans.getTransferData(
+											UnitMemberTransferable.FLAVOR);
 							for (final Pair<UnitMember, IUnit> pair : list) {
 								wtModel.moveMember(pair.getValue0(),
 										pair.getValue1(), unit);
@@ -370,8 +370,8 @@ public final class WorkerTree extends JTree implements UnitMemberSelectionSource
 						case final String str when trans.isDataFlavorSupported(
 								UnitTransferable.FLAVOR) -> {
 							// unchecked-cast warning is unavoidable without reified generics
-							@SuppressWarnings("unchecked") final List<IUnit> list = (List<IUnit>)
-									trans.getTransferData(UnitTransferable.FLAVOR);
+							@SuppressWarnings("unchecked") final Iterable<IUnit> list =
+									(Iterable<IUnit>) trans.getTransferData(UnitTransferable.FLAVOR);
 							for (final IUnit unit : list) {
 								wtModel.changeKind(unit, str);
 							}
@@ -454,7 +454,7 @@ public final class WorkerTree extends JTree implements UnitMemberSelectionSource
 			return "%s %d".formatted(job.getName(), job.getLevel());
 		}
 
-		private static String jobCSL(final IWorker worker) {
+		private static String jobCSL(final Iterable<IJob> worker) {
 			if (StreamSupport.stream(worker.spliterator(), true).allMatch(IJob::isEmpty)) {
 				return "";
 			} else {

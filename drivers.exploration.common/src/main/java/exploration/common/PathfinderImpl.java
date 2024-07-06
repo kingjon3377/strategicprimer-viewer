@@ -7,6 +7,7 @@ import lovelace.util.SimplePair;
 import org.jetbrains.annotations.Nullable;
 import org.javatuples.Pair;
 
+import java.util.Collection;
 import java.util.Objects;
 import java.util.Set;
 import java.util.Map;
@@ -38,12 +39,12 @@ import java.util.Optional;
 	private final int size;
 
 	private static Predicate<Map.Entry<SimplePair<Point>, Integer>> forUs(final Point base,
-																		  final Set<Point> unvisited) {
+																		  final Collection<Point> unvisited) {
 		return entry -> entry.getKey().getFirst().equals(base) &&
 				unvisited.contains(entry.getKey().getSecond());
 	}
 
-	private @Nullable Point nextUnvisited(final Point base, final Set<Point> unvisited) {
+	private @Nullable Point nextUnvisited(final Point base, final Collection<Point> unvisited) {
 		return tentativeDistances.entrySet().stream().filter(forUs(base, unvisited)).min(Map.Entry.comparingByValue())
 				.map(Map.Entry::getKey).map(SimplePair::getSecond).orElse(null);
 	}
@@ -94,7 +95,7 @@ import java.util.Optional;
 	 */
 	@Override
 	public Pair<Integer, Iterable<Point>> getTravelDistance(final Point start, final Point end) {
-		final Set<Point> unvisited = new HashSet<>(size);
+		final Collection<Point> unvisited = new HashSet<>(size);
 		for (final Point point : map.getLocations()) {
 			unvisited.add(point);
 			if (!tentativeDistances.containsKey(SimplePair.of(start, point))) {

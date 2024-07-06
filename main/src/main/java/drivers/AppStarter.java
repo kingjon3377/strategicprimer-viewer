@@ -1,6 +1,7 @@
 package drivers;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -44,7 +45,7 @@ import org.jetbrains.annotations.Nullable;
 		if (!currentOptions.hasOption("--gui")) {
 			currentOptions.addOption("--gui", Boolean.toString(gui));
 		}
-		final List<String> others = new ArrayList<>();
+		final Collection<String> others = new ArrayList<>();
 
 		// TODO: Try to make an instance method
 		final BiConsumer<DriverFactory, SPOptions> startChosenDriver = (driver, currentOptionsTyped) -> {

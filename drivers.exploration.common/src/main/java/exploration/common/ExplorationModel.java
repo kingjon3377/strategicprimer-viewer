@@ -143,7 +143,7 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 	/**
 	 * Remove a unit from a location, even if it's in a fortress.
 	 */
-	private static void removeImpl(final IMutableLegacyMap map, final Point point, final IUnit unit) {
+	private static void removeImpl(final IMutableLegacyMap map, final Point point, final TileFixture unit) {
 		boolean outside = false;
 		for (final TileFixture fixture : map.getFixtures(point)) {
 			if (Objects.equals(unit, fixture)) {
@@ -268,7 +268,7 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 	 * The intersection of two sets; here so it can be passed as a method
 	 * reference rather than a lambda in {@link #getPlayerChoices}.
 	 */
-	private static <T> Set<T> intersection(final Set<T> one, final Set<T> two) {
+	private static <T> Set<T> intersection(final Set<T> one, final Collection<T> two) {
 		final Set<T> retval = new HashSet<>(one);
 		retval.retainAll(two);
 		return retval;
@@ -279,7 +279,7 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 	 * otherwise, return a stream containing only it. This is intended to
 	 * be used in {@link Stream#flatMap}.
 	 */
-	private static Stream<IFixture> unflattenNonFortresses(final TileFixture fixture) {
+	private static Stream<IFixture> unflattenNonFortresses(final IFixture fixture) {
 		if (fixture instanceof final IFortress fort) {
 			return fort.stream().map(IFixture.class::cast);
 		} else {
@@ -288,8 +288,8 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 	}
 
 	private final Set<UnitMember> dismissedMembers = new HashSet<>();
-	private final List<MovementCostListener> mcListeners = new ArrayList<>();
-	private final List<SelectionChangeListener> scListeners = new ArrayList<>();
+	private final Collection<MovementCostListener> mcListeners = new ArrayList<>();
+	private final Collection<SelectionChangeListener> scListeners = new ArrayList<>();
 
 	/**
 	 * The currently selected unit and its location.
@@ -523,7 +523,7 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 		return Point.INVALID_POINT;
 	}
 
-	private boolean mapsAgreeOnLocation(final IUnit unit) {
+	private boolean mapsAgreeOnLocation(final TileFixture unit) {
 		if (unit instanceof final ProxyUnit proxy) {
 			if (proxy.getProxied().isEmpty()) {
 				return false;
@@ -963,7 +963,7 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 	@Override
 	public boolean removeUnit(final IUnit unit) {
 		LovelaceLogger.debug("In ExplorationModel.removeUnit()");
-		final List<Pair<IMutableLegacyMap, Pair<Point, IUnit>>> delenda = new ArrayList<>();
+		final Collection<Pair<IMutableLegacyMap, Pair<Point, IUnit>>> delenda = new ArrayList<>();
 		for (final IMutableLegacyMap map : getRestrictedAllMaps()) {
 			final Optional<Pair<Point, TileFixture>> pair = map.streamLocations()
 					.flatMap(l -> map.getFixtures(l).stream().map(f -> Pair.with(l, f)))

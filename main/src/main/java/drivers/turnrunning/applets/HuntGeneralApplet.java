@@ -1,5 +1,6 @@
 package drivers.turnrunning.applets;
 
+import legacy.map.HasKind;
 import legacy.map.IFixture;
 import legacy.map.Player;
 import legacy.map.Point;
@@ -66,7 +67,7 @@ import org.jetbrains.annotations.Nullable;
 		return "%s (%s)".formatted(unit.getName(), unit.getKind());
 	}
 
-	protected @Nullable Boolean handleCapture(final Animal find) {
+	protected @Nullable Boolean handleCapture(final HasKind find) {
 		final IUnit unit = chooseFromList(model.getUnits(Optional.ofNullable(model.getSelectedUnit())
 						.map(IUnit::owner).orElse(model.getMap().getCurrentPlayer())),
 				"Available units:", "No units", "Unit to add animals to:", ICLIHelper.ListChoiceBehavior.ALWAYS_PROMPT,

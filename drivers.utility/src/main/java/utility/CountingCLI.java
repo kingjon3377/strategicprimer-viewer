@@ -10,6 +10,7 @@ import java.util.Objects;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
+import legacy.map.fixtures.towns.ITownFixture;
 import org.eclipse.jdt.annotation.Nullable;
 import org.javatuples.Pair;
 
@@ -191,7 +192,7 @@ import legacy.map.fixtures.mobile.AnimalTracks;
 		return "  - %s %s".formatted(entry.getValue1(), entry.getValue0());
 	}
 
-	private static String townSummary(final AbstractTown t) {
+	private static String townSummary(final ITownFixture t) {
 		return "%s %s %s".formatted(t.getStatus(), t.getTownSize(), t.getKind());
 	}
 

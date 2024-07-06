@@ -2,6 +2,8 @@ package report.generators.tabular;
 
 import java.util.List;
 
+import common.map.HasName;
+import legacy.map.HasOwner;
 import org.javatuples.Pair;
 import org.jetbrains.annotations.Nullable;
 
@@ -85,7 +87,7 @@ public class FortressTabularReportGenerator implements ITableGenerator<IFortress
 	 * Compare two fortresses based on whether they are owned by the player
 	 * for whom the report is being produced.
 	 */
-	private int compareOwners(final IFortress one, final IFortress two) {
+	private int compareOwners(final HasOwner one, final HasOwner two) {
 		if (player.equals(one.owner()) && !player.equals(two.owner())) {
 			return -1;
 		} else if (player.equals(two.owner()) && !player.equals(one.owner())) {
@@ -98,7 +100,7 @@ public class FortressTabularReportGenerator implements ITableGenerator<IFortress
 	/**
 	 * Compare two fortresses' names, with a special case so HQ goes at the top.
 	 */
-	private static int compareNames(final IFortress one, final IFortress two) {
+	private static int compareNames(final HasName one, final HasName two) {
 		if ("HQ".equals(one.getName()) && !"HQ".equals(two.getName())) {
 			return -1;
 		} else if ("HQ".equals(two.getName()) && !"HQ".equals(one.getName())) {

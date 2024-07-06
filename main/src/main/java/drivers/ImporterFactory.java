@@ -17,7 +17,7 @@ import com.google.auto.service.AutoService;
  */
 @AutoService(DriverFactory.class)
 public class ImporterFactory implements UtilityDriverFactory {
-	private static final DriverUsage USAGE = new DriverUsage(false, "import",
+	private static final IDriverUsage USAGE = new DriverUsage(false, "import",
 			ParamCount.AtLeastOne, "Import terrain data from a raster image",
 			"Import terrain data from a raster image", false, false, "/path/to/image.png",
 			"/path/to/image.png", "--size=NN");

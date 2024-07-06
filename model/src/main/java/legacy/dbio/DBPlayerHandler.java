@@ -10,6 +10,7 @@ import io.jenetics.facilejdbc.Transactional;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -53,7 +54,7 @@ public final class DBPlayerHandler extends AbstractDatabaseWriter<Player, ILegac
 
 	@Override
 	public void write(final Transactional db, final Player obj, final ILegacyMap context) throws SQLException {
-		final List<Param> params = new ArrayList<>();
+		final Collection<Param> params = new ArrayList<>();
 		params.add(value("id", obj.getPlayerId()));
 		params.add(value("codename", obj.getName()));
 		params.add(value("current", obj.isCurrent()));

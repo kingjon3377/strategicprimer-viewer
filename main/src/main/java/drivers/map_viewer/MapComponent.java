@@ -112,8 +112,8 @@ import java.awt.image.BufferedImage;
 						.map(Component.class::cast).orElse(null));
 			}
 		});
-		final MapSizeListener mapSizeListener = new MapSizeListener(model, this, this::getTileSize);
-		addComponentListener(mapSizeListener);
+		final ComponentListener mapSizeListener = new MapSizeListener(model, this, this::getTileSize);
+		addComponentListener(mapSizeListener); // TODO:inline
 
 		setToolTipText("");
 		addMouseMotionListener(new MouseMotionAdapter() {

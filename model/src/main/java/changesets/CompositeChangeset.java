@@ -14,6 +14,7 @@ import java.util.List;
 public final class CompositeChangeset implements Changeset {
 	private final List<Changeset> changesets;
 
+	@SuppressWarnings("TypeMayBeWeakened") // Order matters.
 	public CompositeChangeset(final @NotNull List<Changeset> changesets) {
 		if (changesets.isEmpty()) {
 			throw new IllegalArgumentException("Cannot have an empty composite changeset");

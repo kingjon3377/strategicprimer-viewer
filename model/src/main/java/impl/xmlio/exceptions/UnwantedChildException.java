@@ -106,7 +106,7 @@ public final class UnwantedChildException extends SPFormatException {
 	/**
 	 * Where the caller asserted that a tag was one of a specified list.
 	 */
-	private UnwantedChildException(final QName parent, final StartElement child, final Collection<String> expected) {
+	private UnwantedChildException(final QName parent, final StartElement child, final Iterable<String> expected) {
 		super("Unexpected child %s in tag %s, expecting one of the following: %s".formatted(
 						child.getName().getLocalPart(), parent.getLocalPart(),
 						String.join(", ", expected)),

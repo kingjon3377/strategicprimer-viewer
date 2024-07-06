@@ -958,7 +958,7 @@ public final class TestDBIO {
 		assertEquals(0, map.getAllBookmarks(new Point(0, 0)).size(),
 				"Map by default has no bookmarks");
 		map.addBookmark(new Point(0, 0));
-		final IMutableLegacyMap deserialized = (IMutableLegacyMap) assertDatabaseSerialization(map);
+		final ILegacyMap deserialized = assertDatabaseSerialization(map);
 		assertNotSame(map, deserialized, "Deserialization doesn't just return the input");
 		assertTrue(deserialized.getBookmarks().contains(new Point(0, 0)),
 				"Deserialized map has the bookmark we saved");

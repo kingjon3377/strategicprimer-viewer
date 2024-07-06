@@ -137,7 +137,7 @@ public class ResourceAddingCLIHelper {
 		if (Objects.isNull(quantity) || quantity.signum() < 0) {
 			return null;
 		}
-		final ResourcePileImpl retval = new ResourcePileImpl(idf.createID(), kind, contents,
+		final IMutableResourcePile retval = new ResourcePileImpl(idf.createID(), kind, contents,
 				new LegacyQuantity(quantity, units));
 		final Boolean setCreated = cli.inputBooleanInSeries("Set created date?", "created" + origContents);
 		if (Objects.isNull(setCreated)) {

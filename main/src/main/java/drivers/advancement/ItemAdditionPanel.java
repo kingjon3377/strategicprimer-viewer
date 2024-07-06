@@ -8,6 +8,7 @@ import javax.swing.JPanel;
 
 import java.io.Serial;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import lovelace.util.Platform;
@@ -76,7 +77,7 @@ import lovelace.util.SimpleCardLayout;
 
 	private final String what;
 
-	private final List<AddRemoveListener> listeners = new ArrayList<>();
+	private final Collection<AddRemoveListener> listeners = new ArrayList<>();
 
 	private final JTextField field = new JTextField(10);
 

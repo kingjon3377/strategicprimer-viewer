@@ -340,6 +340,7 @@ import java.util.stream.StreamSupport;
 		writeImage(ostream, obj);
 	}
 
+	@SuppressWarnings("TypeMayBeWeakened") // This would break the method reference
 	public static void writeSimpleImmortal(final XMLStreamWriter ostream, final Immortal obj, final int indentation)
 			throws XMLStreamException {
 		// TODO: split this method so we can get this back in the type system

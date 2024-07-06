@@ -1,6 +1,7 @@
 package legacy.dbio;
 
 import common.entity.LegacyIdentifier;
+import impl.dbio.DatabaseWriter;
 import legacy.map.IFixture;
 import legacy.map.fixtures.Implement;
 import impl.dbio.AbstractDatabaseWriter;
@@ -19,6 +20,7 @@ import java.util.Objects;
 import common.idreg.DuplicateIDException;
 import legacy.map.ILegacyMap;
 import legacy.map.IMutableLegacyMap;
+import legacy.map.fixtures.mobile.AnimalOrTracks;
 import legacy.map.fixtures.mobile.IUnit;
 import legacy.map.fixtures.mobile.IWorker;
 import legacy.map.fixtures.mobile.Worker;
@@ -40,9 +42,9 @@ public final class DBWorkerHandler extends AbstractDatabaseWriter<IWorker, IUnit
 	// TODO: Add a getInstance() method, taking the class to write, to MapContentsReader (or add a cache elsewhere) so
 	//  we don't have to have multiple instances
 
-	private final DBAnimalHandler animalHandler = new DBAnimalHandler();
+	private final DatabaseWriter<AnimalOrTracks, Object> animalHandler = new DBAnimalHandler();
 
-	private final DBImplementHandler equipmentHandler = new DBImplementHandler();
+	private final DatabaseWriter<Implement, IFixture> equipmentHandler = new DBImplementHandler();
 
 	private static final List<Query> INITIALIZERS = List.of(
 			Query.of("CREATE TABLE IF NOT EXISTS workers (" +

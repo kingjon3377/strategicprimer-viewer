@@ -3,6 +3,7 @@ package drivers.map_viewer;
 import common.map.HasName;
 import legacy.map.HasOwner;
 
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Objects;
@@ -97,7 +98,7 @@ public class ViewerModel extends SimpleDriverModel implements IViewerModel {
 	 * return a Singleton containing it. This is intended to be used in
 	 * {@link Stream#flatMap}.
 	 */
-	private static Stream<IFixture> unflattenNonFortresses(final TileFixture fixture) {
+	private static Stream<IFixture> unflattenNonFortresses(final IFixture fixture) {
 		if (fixture instanceof final IFortress f) {
 			return f.stream().map(IFixture.class::cast);
 		} else {
@@ -108,7 +109,7 @@ public class ViewerModel extends SimpleDriverModel implements IViewerModel {
 	/**
 	 * The list of graphical-parameter listeners.
 	 */
-	private final List<GraphicalParamsListener> gpListeners = new ArrayList<>();
+	private final Collection<GraphicalParamsListener> gpListeners = new ArrayList<>();
 
 	/**
 	 * The object to handle notifying selection-change listeners.

@@ -5,6 +5,7 @@ import lovelace.util.SingletonRandom;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
+import java.util.random.RandomGenerator;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -26,7 +27,7 @@ public final class RaceFactory {
 	 *
 	 * @param random The RNG to use to determine the result.
 	 */
-	public static String randomRace(final Random random) {
+	public static String randomRace(final RandomGenerator random) {
 		return RACES.get(random.nextInt(RACES.size()));
 	}
 

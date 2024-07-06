@@ -1,5 +1,6 @@
 package drivers.generators;
 
+import legacy.map.TileFixture;
 import lovelace.util.LovelaceLogger;
 import drivers.common.IDriverModel;
 import drivers.common.SimpleMultiMapModel;
@@ -32,6 +33,7 @@ import legacy.map.fixtures.mobile.worker.IJob;
 import legacy.map.fixtures.mobile.worker.IMutableJob;
 import legacy.map.fixtures.mobile.worker.Job;
 
+import java.util.Collection;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
@@ -51,7 +53,7 @@ public class PopulationGeneratingModel extends SimpleMultiMapModel { // TODO: Ex
 	 * TODO: Move * to lovelace.util? Or is there some equivalent
 	 * method-reference logic with curry() or uncurry() or some such?
 	 */
-	private static <T> Set<T> intersection(final Set<T> one, final Set<T> two) {
+	private static <T> Set<T> intersection(final Set<T> one, final Collection<T> two) {
 		final Set<T> retval = new HashSet<>(one);
 		retval.retainAll(two);
 		return retval;
@@ -172,7 +174,7 @@ public class PopulationGeneratingModel extends SimpleMultiMapModel { // TODO: Ex
 					.filter(sameId)
 					.findAny(); // TODO: only match without an existing extent?
 			if (existing.isPresent()) {
-				final Meadow replacement = new Meadow(field.getKind(), field.isField(),
+				final TileFixture replacement = new Meadow(field.getKind(), field.isField(),
 						field.isCultivated(), field.getId(), field.getStatus(), acres);
 				map.replace(location, existing.get(), replacement);
 				retval = true;
@@ -202,7 +204,7 @@ public class PopulationGeneratingModel extends SimpleMultiMapModel { // TODO: Ex
 					.filter(sameId)
 					.findAny();
 			if (existing.isPresent()) {
-				final Forest replacement = new Forest(forest.getKind(), forest.isRows(),
+				final TileFixture replacement = new Forest(forest.getKind(), forest.isRows(),
 						forest.getId(), acres);
 				getRestrictedMap().replace(location, existing.get(), replacement);
 				retval = true;
@@ -342,6 +344,7 @@ public class PopulationGeneratingModel extends SimpleMultiMapModel { // TODO: Ex
 	 *
 	 * TODO: If more than one map, return a proxy for the units; otherwise, return the unit
 	 */
+	@SuppressWarnings("TypeMayBeWeakened") // Let's not change the public API
 	public void addUnitAtLocation(final IUnit unit, final Point location) {
 		for (final IMutableLegacyMap indivMap : getRestrictedAllMaps()) {
 			indivMap.addFixture(location, unit); // FIXME: Check for existing matching unit there already
@@ -355,6 +358,7 @@ public class PopulationGeneratingModel extends SimpleMultiMapModel { // TODO: Ex
 	 * found, or created in a matching mutable worker, in at least one map,
 	 * false otherwise.
 	 */
+	@SuppressWarnings("TypeMayBeWeakened") // weakening could only work as an artifact of our find-the-matching approach
 	public boolean addJobLevel(final IUnit unit, final IWorker worker, final String jobName) {
 		boolean any = false;
 		final Predicate<Object> isWorker = IWorker.class::isInstance;

@@ -6,6 +6,7 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.DefaultListModel;
 import javax.swing.DefaultListCellRenderer;
+import javax.swing.ListCellRenderer;
 import javax.swing.ListSelectionModel;
 import javax.swing.DropMode;
 
@@ -74,7 +75,7 @@ import java.util.function.Predicate;
 		}
 	}
 
-	private static final DefaultListCellRenderer DEFAULT_RENDERER = new DefaultListCellRenderer();
+	private static final ListCellRenderer<Object> DEFAULT_RENDERER = new DefaultListCellRenderer();
 
 	private static Component renderCell(final JList<? extends FixtureMatcher> list, final FixtureMatcher item,
 										final int index, final boolean isSelected, final boolean cellHasFocus) {

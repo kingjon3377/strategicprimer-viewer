@@ -338,7 +338,7 @@ public class WorkerTreeModelAlt extends DefaultTreeModel implements IWorkerTreeM
 				}
 			}
 			if (!any) {
-				final KindNode kindNode = new KindNode(kind, matchingUnit);
+				final MutableTreeNode kindNode = new KindNode(kind, matchingUnit);
 				temp.add(kindNode);
 				fireTreeNodesInserted(this, getPathToRoot(kindNode),
 						new int[]{temp.getChildCount() - 1}, new Object[]{kindNode});
@@ -419,7 +419,7 @@ public class WorkerTreeModelAlt extends DefaultTreeModel implements IWorkerTreeM
 	 */
 	@Override
 	public void renameItem(final HasName item, final String newName) {
-		final PlayerNode temp = (PlayerNode) getRoot();
+		final TreeNode temp = (TreeNode) getRoot();
 		final MutableTreeNode node = getNode(temp, item);
 		if (!Objects.isNull(node) && model.renameItem(item, newName)) {
 			final TreeNode[] path = getPathToRoot(node);
@@ -537,7 +537,7 @@ public class WorkerTreeModelAlt extends DefaultTreeModel implements IWorkerTreeM
 	 */
 	@Override
 	public void addSibling(final UnitMember base, final UnitMember sibling) {
-		final UnitMemberNode childNode = new UnitMemberNode(sibling);
+		final MutableTreeNode childNode = new UnitMemberNode(sibling);
 		// FIXME: Log and/or give UI feedback on failure of some of these conditions
 		final TreeNode temp = (TreeNode) getRoot();
 		final TreeNode node = getNode(temp, base);
@@ -632,7 +632,7 @@ public class WorkerTreeModelAlt extends DefaultTreeModel implements IWorkerTreeM
 
 	@Override
 	public Iterable<Object> childrenOf(final Object obj) {
-		final PlayerNode temp = (PlayerNode) getRoot();
+		final TreeNode temp = (TreeNode) getRoot();
 		if (obj instanceof WorkerTreeNode) {
 			// uncheecked-cast warning is unavoidable without reified generics
 			//noinspection unchecked
@@ -648,7 +648,7 @@ public class WorkerTreeModelAlt extends DefaultTreeModel implements IWorkerTreeM
 
 	@Override
 	public void refreshChildren(final IUnit parent) {
-		final PlayerNode playerNode = (PlayerNode) getRoot();
+		final TreeNode playerNode = (TreeNode) getRoot();
 		final TreeNode kindNode = getNode(playerNode, parent.getKind());
 		final TreeNode parentNode = getNode(playerNode, parent);
 		if (kindNode instanceof KindNode && parentNode instanceof final UnitNode un) {
@@ -663,7 +663,7 @@ public class WorkerTreeModelAlt extends DefaultTreeModel implements IWorkerTreeM
 	@Override
 	public void removeUnit(final IUnit unit) {
 		LovelaceLogger.trace("In WorkerTreeModelAlt.removeUnit");
-		final PlayerNode playerNode = (PlayerNode) getRoot();
+		final TreeNode playerNode = (TreeNode) getRoot();
 		final TreeNode kindNode = getNode(playerNode, unit.getKind());
 		final TreeNode node = Optional.ofNullable(kindNode).map(n -> getNode(n, unit)).orElse(null);
 		if (kindNode instanceof final KindNode kn && node instanceof UnitNode) {
@@ -686,7 +686,7 @@ public class WorkerTreeModelAlt extends DefaultTreeModel implements IWorkerTreeM
 
 	@Override
 	public void changeOwner(final HasOwner item, final Player newOwner) {
-		final PlayerNode playerNode = (PlayerNode) getRoot();
+		final TreeNode playerNode = (TreeNode) getRoot();
 		if (item instanceof final IUnit unit && item.owner().equals(model.getCurrentPlayer())) {
 			final TreeNode kindNode = getNode(playerNode, unit.getKind());
 			final TreeNode node = Optional.ofNullable(kindNode).map(n -> getNode(n, item))
