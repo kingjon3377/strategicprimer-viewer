@@ -100,6 +100,8 @@ public final class DBMapWriter extends AbstractDatabaseWriter<IMutableLegacyMap,
 				value("rows", obj.getDimensions().rows()),
 				value("columns", obj.getDimensions().columns()),
 				value("turn", obj.getCurrentTurn())).execute(conn);
+		// Assignment to static field is deliberate
+		//noinspection AssignmentToStaticFieldFromInstanceMethod
 		currentTurn = obj.getCurrentTurn(); // TODO: move up to reuse it in previous insertion query
 		playerWriter.initialize(db);
 		for (final Player player : obj.getPlayers()) {
