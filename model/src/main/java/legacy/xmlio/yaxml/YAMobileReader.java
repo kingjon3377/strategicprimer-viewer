@@ -58,7 +58,15 @@ import common.xmlio.Warning;
 	private static final Map<Class<? extends MobileFixture>, String> TAG_MAP = initTagMap();
 
 	private static Map<Class<? extends MobileFixture>, String> initTagMap() {
-		return Map.ofEntries(Map.entry(Animal.class, "animal"), Map.entry(Centaur.class, "centaur"), Map.entry(Dragon.class, "dragon"), Map.entry(Fairy.class, "fairy"), Map.entry(Giant.class, "giant"), Map.entry(Sphinx.class, "sphinx"), Map.entry(Djinn.class, "djinn"), Map.entry(Griffin.class, "griffin"), Map.entry(Minotaur.class, "minotaur"), Map.entry(Ogre.class, "ogre"), Map.entry(Phoenix.class, "phoenix"), Map.entry(Simurgh.class, "simurgh"), Map.entry(Troll.class, "troll"), Map.entry(Snowbird.class, "snowbird"), Map.entry(Thunderbird.class, "thunderbird"), Map.entry(Pegasus.class, "pegasus"), Map.entry(Unicorn.class, "unicorn"), Map.entry(Kraken.class, "kraken"));
+		return Map.ofEntries(Map.entry(Animal.class, "animal"), Map.entry(Centaur.class, "centaur"),
+				Map.entry(Dragon.class, "dragon"), Map.entry(Fairy.class, "fairy"),
+				Map.entry(Giant.class, "giant"), Map.entry(Sphinx.class, "sphinx"),
+				Map.entry(Djinn.class, "djinn"), Map.entry(Griffin.class, "griffin"),
+				Map.entry(Minotaur.class, "minotaur"), Map.entry(Ogre.class, "ogre"),
+				Map.entry(Phoenix.class, "phoenix"), Map.entry(Simurgh.class, "simurgh"),
+				Map.entry(Troll.class, "troll"), Map.entry(Snowbird.class, "snowbird"),
+				Map.entry(Thunderbird.class, "thunderbird"), Map.entry(Pegasus.class, "pegasus"),
+				Map.entry(Unicorn.class, "unicorn"), Map.entry(Kraken.class, "kraken"));
 	}
 
 	private static final Set<String> SUPPORTED_TAGS = new HashSet<>(TAG_MAP.values());
@@ -66,7 +74,13 @@ import common.xmlio.Warning;
 	private static final Map<String, IntFunction<? extends Immortal>> SIMPLES = initSimples();
 
 	private static Map<String, IntFunction<? extends Immortal>> initSimples() {
-		return Map.ofEntries(Map.entry("sphinx", Sphinx::new), Map.entry("snowbird", Snowbird::new), Map.entry("thunderbird", Thunderbird::new), Map.entry("djinn", Djinn::new), Map.entry("griffin", Griffin::new), Map.entry("minotaur", Minotaur::new), Map.entry("ogre", Ogre::new), Map.entry("phoenix", Phoenix::new), Map.entry("simurgh", Simurgh::new), Map.entry("troll", Troll::new), Map.entry("pegasus", Pegasus::new), Map.entry("unicorn", Unicorn::new), Map.entry("kraken", Kraken::new));
+		return Map.ofEntries(Map.entry("sphinx", Sphinx::new), Map.entry("snowbird", Snowbird::new),
+				Map.entry("thunderbird", Thunderbird::new), Map.entry("djinn", Djinn::new),
+				Map.entry("griffin", Griffin::new), Map.entry("minotaur", Minotaur::new),
+				Map.entry("ogre", Ogre::new), Map.entry("phoenix", Phoenix::new),
+				Map.entry("simurgh", Simurgh::new), Map.entry("troll", Troll::new),
+				Map.entry("pegasus", Pegasus::new), Map.entry("unicorn", Unicorn::new),
+				Map.entry("kraken", Kraken::new));
 	}
 
 	private MobileFixture createAnimal(final StartElement element) throws SPFormatException {
@@ -159,7 +173,8 @@ import common.xmlio.Warning;
 	}
 
 	@Override
-	public void write(final ThrowingConsumer<String, IOException> ostream, final MobileFixture obj, final int indent) throws IOException {
+	public void write(final ThrowingConsumer<String, IOException> ostream, final MobileFixture obj, final int indent)
+			throws IOException {
 		switch (obj) {
 			case final IUnit unitMembers -> throw new IllegalArgumentException("Unit handled elsewhere");
 			case final AnimalTracks at -> {

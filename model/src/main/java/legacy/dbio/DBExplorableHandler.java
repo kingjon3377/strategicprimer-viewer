@@ -86,7 +86,8 @@ public final class DBExplorableHandler extends AbstractDatabaseWriter<Explorable
 		};
 	}
 
-	private static TryBiConsumer<Map<String, Object>, Warning, SQLException> readBattlefield(final IMutableLegacyMap map) {
+	private static TryBiConsumer<Map<String, Object>, Warning, SQLException> readBattlefield(
+			final IMutableLegacyMap map) {
 		return (dbRow, warner) -> {
 			final int row = (Integer) dbRow.get("row");
 			final int column = (Integer) dbRow.get("column");
@@ -105,8 +106,9 @@ public final class DBExplorableHandler extends AbstractDatabaseWriter<Explorable
 	private static final Query SELECT_BATTLES = Query.of("SELECT * FROM battlefields");
 
 	@Override
-	public void readMapContents(final Connection db, final IMutableLegacyMap map, final Map<Integer, IFixture> containers,
-								final Map<Integer, List<Object>> containees, final Warning warner) throws SQLException {
+	public void readMapContents(final Connection db, final IMutableLegacyMap map,
+	                            final Map<Integer, IFixture> containers, final Map<Integer, List<Object>> containees,
+	                            final Warning warner) throws SQLException {
 		handleQueryResults(db, warner, "caves", readCave(map), SELECT_CAVES);
 		handleQueryResults(db, warner, "battlefields", readBattlefield(map), SELECT_BATTLES);
 	}

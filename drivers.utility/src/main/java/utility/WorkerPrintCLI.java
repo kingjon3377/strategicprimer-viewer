@@ -101,9 +101,13 @@ import exploration.common.IExplorationModel;
 
 	@Override
 	public void startDriver() {
-		final Player player = cli.chooseFromList((List<? extends Player>) new ArrayList<>(model.getPlayerChoices()), "Players in the map:", "No players", "Player owning the unit:", ICLIHelper.ListChoiceBehavior.ALWAYS_PROMPT).getValue1();
+		final Player player = cli.chooseFromList((List<? extends Player>) new ArrayList<>(model.getPlayerChoices()),
+				"Players in the map:", "No players", "Player owning the unit:",
+				ICLIHelper.ListChoiceBehavior.ALWAYS_PROMPT).getValue1();
 		if (!Objects.isNull(player)) {
-			final IUnit unit = cli.chooseFromList((List<? extends IUnit>) model.getUnits(player), "Units of that player:", "No units", "Unit to print:", ICLIHelper.ListChoiceBehavior.ALWAYS_PROMPT).getValue1();
+			final IUnit unit = cli.chooseFromList((List<? extends IUnit>) model.getUnits(player),
+					"Units of that player:", "No units", "Unit to print:",
+					ICLIHelper.ListChoiceBehavior.ALWAYS_PROMPT).getValue1();
 			if (!Objects.isNull(unit)) {
 				printWorkers(unit);
 			}

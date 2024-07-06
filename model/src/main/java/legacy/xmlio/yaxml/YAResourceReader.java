@@ -38,7 +38,8 @@ import java.util.Set;
 
 	private final Warning warner;
 
-	private static final Set<String> SUPPORTED_TAGS = Set.of("cache", "grove", "orchard", "field", "meadow", "mine", "mineral", "shrub", "stone");
+	private static final Set<String> SUPPORTED_TAGS = Set.of("cache", "grove", "orchard", "field", "meadow", "mine",
+			"mineral", "shrub", "stone");
 
 	private HarvestableFixture createMeadow(final StartElement element, final boolean field, final int idNum)
 			throws SPFormatException {
@@ -146,8 +147,8 @@ import java.util.Set;
 	}
 
 	@Override
-	public void write(final ThrowingConsumer<String, IOException> ostream, final HarvestableFixture obj, final int indent)
-			throws IOException {
+	public void write(final ThrowingConsumer<String, IOException> ostream, final HarvestableFixture obj,
+	                  final int indent) throws IOException {
 		switch (obj) {
 			case final CacheFixture c -> {
 				writeTag(ostream, "cache", indent);

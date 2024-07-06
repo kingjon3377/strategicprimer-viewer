@@ -139,7 +139,8 @@ public class MapCheckerCLI implements UtilityDriver {
 				if (StreamSupport.stream(map.getPlayers().spliterator(), true)
 						.mapToInt(Player::getPlayerId)
 						.noneMatch(n -> owned.owner().getPlayerId() == n)) {
-					warner.handle(new SPContentWarning(context, "Fixture owned by %s, not known by the map".formatted(owned.owner())));
+					warner.handle(new SPContentWarning(context, "Fixture owned by %s, not known by the map"
+							.formatted(owned.owner())));
 					retval = true;
 				}
 			}
@@ -264,8 +265,8 @@ public class MapCheckerCLI implements UtilityDriver {
 					warner.handle(new SPContentWarning(context,
 							"Resource pile, ID #%d, has placeholder units".formatted(fixture.getId())));
 				} else if (((IResourcePile) fixture).getContents().contains("#")) {
-					warner.handle(new SPContentWarning(context, "Resource pile, ID #%d, has suspicous contents: %s".formatted(
-							fixture.getId(), rp.getContents())));
+					warner.handle(new SPContentWarning(context, "Resource pile, ID #%d, has suspicous contents: %s"
+							.formatted(fixture.getId(), rp.getContents())));
 				} else {
 					return false;
 				}
@@ -297,8 +298,9 @@ public class MapCheckerCLI implements UtilityDriver {
 			final String results = turn.stream().mapToObj(unit::getResults).map(String::toLowerCase).findAny()
 					.orElse("");
 			if (results.isEmpty() || results.contains("todo") || results.contains("fixme")) {
-				warner.handle(new SPContentWarning(context, "Unit %s [%s] (ID #%d) has orders but no results for turn %d".formatted(unit.getName(), unit.getKind(),
-						unit.getId(), turn.orElse(-1))));
+				warner.handle(new SPContentWarning(context,
+						"Unit %s [%s] (ID #%d) has orders but no results for turn %d".formatted(unit.getName(),
+								unit.getKind(), unit.getId(), turn.orElse(-1))));
 				return true;
 			}
 		}
@@ -323,7 +325,8 @@ public class MapCheckerCLI implements UtilityDriver {
 		double total = fixtures.stream().filter(HasExtent.class::isInstance).map(HasExtent.class::cast)
 				.filter(MapCheckerCLI::positiveAcres).map(HasExtent::getAcres).mapToDouble(Number::doubleValue).sum();
 		if (total > 160.0) {
-			warner.handle(new SPContentWarning(context, "More explicit acres (%.1f) than tile should allow".formatted(total)));
+			warner.handle(new SPContentWarning(context, "More explicit acres (%.1f) than tile should allow"
+					.formatted(total)));
 			return true;
 		}
 		total += fixtures.stream().filter(ITownFixture.class::isInstance).map(ITownFixture.class::cast)
@@ -332,7 +335,8 @@ public class MapCheckerCLI implements UtilityDriver {
 				.filter(Grove.class::isInstance).map(Grove.class::cast)
 				.mapToInt(Grove::getPopulation).filter(p -> p > 0).sum() / 500.0);
 		if (total > 160.0) {
-			warner.handle(new SPContentWarning(context, "Counting towns and groves, more acres (%.1f) used than tile should allow".formatted(total)));
+			warner.handle(new SPContentWarning(context,
+					"Counting towns and groves, more acres (%.1f) used than tile should allow".formatted(total)));
 			return true;
 		} else {
 			return retval;

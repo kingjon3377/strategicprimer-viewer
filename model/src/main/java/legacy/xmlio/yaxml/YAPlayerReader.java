@@ -56,7 +56,8 @@ class YAPlayerReader extends YAAbstractReader<Player, Player> {
 	}
 
 	@Override
-	public void write(final ThrowingConsumer<String, IOException> ostream, final Player obj, final int indent) throws IOException {
+	public void write(final ThrowingConsumer<String, IOException> ostream, final Player obj, final int indent)
+			throws IOException {
 		if (!obj.getName().isEmpty()) {
 			writeTag(ostream, "player", indent);
 			writeProperty(ostream, "number", obj.getPlayerId());

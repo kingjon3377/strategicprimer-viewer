@@ -62,7 +62,8 @@ public class SpoilageApplet extends AbstractTurnApplet {
 	public @Nullable String run() {
 		final StringBuilder buffer = new StringBuilder();
 		for (final IResourcePile food : getFoodFor(owner, turn)) {
-			if (food.getCreated() < 0 || turn < 0) { // rations whose spoilage isn't tracked or the current turn isn't set
+			if (food.getCreated() < 0 || turn < 0) {
+				// rations whose spoilage isn't tracked or the current turn isn't set
 				continue;
 			}
 			cli.print("Food is ");

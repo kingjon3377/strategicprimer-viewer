@@ -30,7 +30,8 @@ import java.util.Map;
 		super(warner, idRegistrar);
 		this.players = players;
 		this.warner = warner;
-		readers = List.of(new YAMobileReader(warner, idRegistrar), new YAWorkerReader(warner, idRegistrar, players), new YAResourcePileReader(warner, idRegistrar), new YAImplementReader(warner, idRegistrar));
+		readers = List.of(new YAMobileReader(warner, idRegistrar), new YAWorkerReader(warner, idRegistrar, players),
+				new YAResourcePileReader(warner, idRegistrar), new YAImplementReader(warner, idRegistrar));
 	}
 
 	private final ILegacyPlayerCollection players;
@@ -164,8 +165,8 @@ import java.util.Map;
 		return "unit".equalsIgnoreCase(tag);
 	}
 
-	public static void writeOrders(final ThrowingConsumer<String, IOException> ostream, final String tag, final int turn, final String orders,
-								   final int indent) throws IOException {
+	public static void writeOrders(final ThrowingConsumer<String, IOException> ostream, final String tag,
+	                               final int turn, final String orders, final int indent) throws IOException {
 		if (orders.isEmpty()) {
 			return;
 		}
@@ -178,8 +179,8 @@ import java.util.Map;
 		closeTag(ostream, 0, tag);
 	}
 
-	private void writeChild(final ThrowingConsumer<String, IOException> ostream, final UnitMember child, final Integer indent)
-			throws IOException {
+	private void writeChild(final ThrowingConsumer<String, IOException> ostream, final UnitMember child,
+	                        final Integer indent) throws IOException {
 		for (final YAReader<?, ?> reader : readers) {
 			if (reader.canWrite(child)) {
 				reader.writeRaw(ostream, child, indent);
@@ -191,7 +192,8 @@ import java.util.Map;
 	}
 
 	@Override
-	public void write(final ThrowingConsumer<String, IOException> ostream, final IUnit obj, final int indent) throws IOException {
+	public void write(final ThrowingConsumer<String, IOException> ostream, final IUnit obj, final int indent)
+			throws IOException {
 		writeTag(ostream, "unit", indent);
 		writeProperty(ostream, "owner", obj.owner().getPlayerId());
 		writeNonemptyProperty(ostream, "kind", obj.getKind());

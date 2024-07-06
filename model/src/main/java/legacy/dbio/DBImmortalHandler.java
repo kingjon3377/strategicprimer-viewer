@@ -100,7 +100,8 @@ public final class DBImmortalHandler extends AbstractDatabaseWriter<Immortal, /*
 			Collections.singletonList(Query.of(SIMPLE_IMMORTAL_REFRESH_PATTERN.matcher(SIMPLE_IMMORTALS_SCHEMA)
 					.replaceAll("simple_immortals_replacement ") +
 					"INSERT INTO simple_immortals_replacement SELECT * FROM simple_immortals;" +
-					"DROP TABLE simple_immortals;" + "ALTER TABLE simple_immortals_replacement RENAME TO simple_immortals;"));
+					"DROP TABLE simple_immortals;" +
+					"ALTER TABLE simple_immortals_replacement RENAME TO simple_immortals;"));
 
 	private static List<Query> refreshSimpleSchema() {
 		return SIMPLE_IMMORTAL_REFRESH;
@@ -124,8 +125,9 @@ public final class DBImmortalHandler extends AbstractDatabaseWriter<Immortal, /*
 							value("type", ((HasKind) obj).getKind()), value("id", obj.getId()),
 							value("image", ((HasImage) obj).getImage())).executeUpdate(db.connection());
 					case final IUnit u -> INSERT_SIMPLE.on(
-							value("parent", u.getId()), value("type", ((HasKind) obj).getKind()),
-							value("id", obj.getId()), value("image", ((HasImage) obj).getImage())).execute(db.connection());
+								value("parent", u.getId()), value("type", ((HasKind) obj).getKind()),
+								value("id", obj.getId()), value("image", ((HasImage) obj).getImage()))
+							.execute(db.connection());
 					default -> throw new IllegalArgumentException("context must be Point or IUnit");
 				}
 			} catch (final SQLException except) {
@@ -225,8 +227,9 @@ public final class DBImmortalHandler extends AbstractDatabaseWriter<Immortal, /*
 	private static final Query KINDED_SELECT = Query.of("SELECT * FROM kinded_immortals");
 
 	@Override
-	public void readMapContents(final Connection db, final IMutableLegacyMap map, final Map<Integer, IFixture> containers,
-								final Map<Integer, List<Object>> containees, final Warning warner) throws SQLException {
+	public void readMapContents(final Connection db, final IMutableLegacyMap map,
+	                            final Map<Integer, IFixture> containers, final Map<Integer, List<Object>> containees,
+	                            final Warning warner) throws SQLException {
 		handleQueryResults(db, warner, "simple immortals", readSimpleImmortal(map, containees),
 				SIMPLE_SELECT);
 		handleQueryResults(db, warner, "immortals with kinds", readKindedImmortal(map, containees),

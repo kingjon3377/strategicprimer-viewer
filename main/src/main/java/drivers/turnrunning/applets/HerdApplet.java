@@ -120,7 +120,8 @@ import query.SmallAnimalModel;
 
 		}
 		long workerCount = unit.stream().filter(IWorker.class::isInstance).map(IWorker.class::cast).count();
-		final Integer addendum = cli.inputNumber("%d workers in this unit. Any additional workers to account for:".formatted(workerCount));
+		final Integer addendum = cli.inputNumber("%d workers in this unit. Any additional workers to account for:"
+				.formatted(workerCount));
 		if (!Objects.isNull(addendum) && addendum >= 0) {
 			workerCount += addendum;
 		} else {
@@ -155,14 +156,17 @@ import query.SmallAnimalModel;
 			switch (herdModel) {
 				case final PoultryModel pm -> {
 					resourceProduced = combinedAnimal.getKind() + " eggs";
-					final Boolean cleaningDay = cli.inputBoolean("Is this the one turn in every %d to clean up after birds?".formatted(pm.getExtraChoresInterval() + 1));
+					final Boolean cleaningDay = cli.inputBoolean(
+							"Is this the one turn in every %d to clean up after birds?"
+									.formatted(pm.getExtraChoresInterval() + 1));
 					addLineToOrders.accept("Gathering %s eggs took the %d workers %d min".formatted(
 							combinedAnimal, workerCount, pm.dailyTime((int) flockPerHerder)));
 					minutesSpent += pm.getDailyTimePerHead() * flockPerHerder;
 					if (Objects.isNull(cleaningDay)) {
 						return null;
 					} else if (cleaningDay) {
-						addLineToOrders.accept("Cleaning up after them takes %.1f hours.".formatted(PoultryModel.dailyExtraTime((int) flockPerHerder) / 60.0));
+						addLineToOrders.accept("Cleaning up after them takes %.1f hours."
+								.formatted(PoultryModel.dailyExtraTime((int) flockPerHerder) / 60.0));
 						minutesSpent += PoultryModel.getExtraTimePerHead() * flockPerHerder;
 					}
 				}
@@ -172,7 +176,8 @@ import query.SmallAnimalModel;
 					addToOrders.accept(AnimalPlurals.get(combinedAnimal.getKind()));
 					final long baseCost;
 					if (experts) {
-						baseCost = flockPerHerder * (herdModel.getDailyTimePerHead() - 10); // TODO: That's a sub-optimal formula
+						// TODO: This is a sub-optimal formula
+						baseCost = flockPerHerder * (herdModel.getDailyTimePerHead() - 10);
 					} else {
 						baseCost = flockPerHerder * herdModel.getDailyTimePerHead();
 					}
@@ -194,11 +199,14 @@ import query.SmallAnimalModel;
 					}
 					minutesSpent += baseCost;
 					addLineToOrders.accept(" took the %d workers %d min.".formatted(workerCount, baseCost));
-					final Boolean extra = cli.inputBoolean("Is this the one turn in every %d to clean up after the animals?".formatted(smm.getExtraChoresInterval() + 1));
+					final Boolean extra = cli.inputBoolean(
+							"Is this the one turn in every %d to clean up after the animals?"
+									.formatted(smm.getExtraChoresInterval() + 1));
 					if (Objects.isNull(extra)) {
 						return null;
 					} else {
-						addLineToOrders.accept("Cleaning up after them took %d minutes.".formatted(SmallAnimalModel.getExtraTimePerHead() * flockPerHerder));
+						addLineToOrders.accept("Cleaning up after them took %d minutes."
+								.formatted(SmallAnimalModel.getExtraTimePerHead() * flockPerHerder));
 						minutesSpent += SmallAnimalModel.getExtraTimePerHead() * flockPerHerder;
 					}
 					continue;

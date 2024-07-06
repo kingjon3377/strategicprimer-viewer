@@ -67,7 +67,8 @@ import org.jetbrains.annotations.Nullable;
 			}
 			cost += processingTime;
 		}
-		final Boolean reduce = cli.inputBooleanInSeries("Reduce animal group population of %d?".formatted(item.getPopulation()));
+		final Boolean reduce = cli.inputBooleanInSeries("Reduce animal group population of %d?"
+				.formatted(item.getPopulation()));
 		if (Objects.isNull(reduce)) {
 			return null;
 		} else if (reduce) {

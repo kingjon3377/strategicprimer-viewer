@@ -51,7 +51,8 @@ import impl.xmlio.exceptions.UnwantedChildException;
 	}
 
 	@Override
-	public void write(final ThrowingConsumer<String, IOException> ostream, final TextFixture obj, final int indent) throws IOException {
+	public void write(final ThrowingConsumer<String, IOException> ostream, final TextFixture obj, final int indent)
+			throws IOException {
 		writeTag(ostream, "text", indent);
 		if (obj.getTurn() != -1) {
 			writeProperty(ostream, "turn", obj.getTurn());

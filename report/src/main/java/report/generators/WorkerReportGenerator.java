@@ -56,7 +56,9 @@ import legacy.map.fixtures.mobile.worker.IJob;
 	 * TODO: Take Consumer instead of returning String
 	 */
 	private static String statsString(final WorkerStats stats) {
-		return "He or she has the following stats: %d / %d Hit Points, Strength %s, Dexterity %s, Constitution %s, Intelligence %s, Wisdom %s, Charisma %s".formatted(
+		return """
+				He or she has the following stats: %d / %d Hit Points, Strength %s, Dexterity %s, Constitution %s, \
+				Intelligence %s, Wisdom %s, Charisma %s""".formatted(
 				stats.getHitPoints(), stats.getMaxHitPoints(), mod(stats.getStrength()),
 				mod(stats.getDexterity()), mod(stats.getConstitution()),
 				mod(stats.getIntelligence()), mod(stats.getWisdom()),
@@ -84,7 +86,8 @@ import legacy.map.fixtures.mobile.worker.IJob;
 	 */
 	@Override
 	public void produceSingle(final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-							  final ILegacyMap map, final Consumer<String> ostream, final IWorker worker, final Point loc) {
+							  final ILegacyMap map, final Consumer<String> ostream, final IWorker worker,
+							  final Point loc) {
 		if (details && !Objects.isNull(worker.getStats())) {
 			ostream.accept("""
 

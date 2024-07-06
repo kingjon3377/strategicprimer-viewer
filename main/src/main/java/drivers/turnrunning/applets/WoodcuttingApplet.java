@@ -53,7 +53,7 @@ import org.jetbrains.annotations.Nullable;
 		return "cut down trees for wood or to clear land";
 	}
 
-	// TODO: To simplify our lives in the crippled type-system of Java, make HasPopulation and HasExtent extend TileFixture
+	// TODO: To simplify our lives in Java's crippled type-system, make HasPopulation and HasExtent extend TileFixture
 	private <T extends HasExtent<? extends TileFixture> & TileFixture> void
 	reduceExtent(final Point point, final T fixture, final BigDecimal acres) {
 		model.reduceExtent(point, fixture, IFixture.CopyBehavior.ZERO, acres);
@@ -151,7 +151,8 @@ import org.jetbrains.annotations.Nullable;
 			final Forest forest = chooseFromList(model.getMap().getFixtures(loc).stream()
 							.filter(Forest.class::isInstance).map(Forest.class::cast)
 							.collect(Collectors.toList()),
-					"Forests on tile:", "No forests on tile", "Forest being cleared: ", ICLIHelper.ListChoiceBehavior.ALWAYS_PROMPT);
+					"Forests on tile:", "No forests on tile", "Forest being cleared: ",
+					ICLIHelper.ListChoiceBehavior.ALWAYS_PROMPT);
 			if (!Objects.isNull(forest) && forest.getAcres().doubleValue() > 0.0) {
 				BigDecimal acres = decimalize(treeCount * 10 / 72)
 						.divide(decimalize(100), RoundingMode.HALF_EVEN)
@@ -162,8 +163,9 @@ import org.jetbrains.annotations.Nullable;
 				if (Objects.isNull(aCorrect)) {
 					return null;
 				} else if (aCorrect) {
+					// TODO: Make the Decimal constant a static-final field
 					builder.append(", clearing %.2f acres (~ %d sq ft) of land.".formatted(
-							acres, acres.multiply(decimalize(43560)).intValue())); // TODO: Make Decimal constant static final
+							acres, acres.multiply(decimalize(43560)).intValue()));
 				} else {
 					final String str = cli.inputMultilineString("Description of cleared land:");
 					if (Objects.isNull(str)) {

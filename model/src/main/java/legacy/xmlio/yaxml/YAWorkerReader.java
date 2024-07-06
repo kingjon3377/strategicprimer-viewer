@@ -31,8 +31,8 @@ import java.util.Objects;
  * A reader for workers.
  */
 /* package */ class YAWorkerReader extends YAAbstractReader<IWorker, IWorker> {
-	public static void writeSkill(final ThrowingConsumer<String, IOException> ostream, final ISkill obj, final int indent)
-			throws IOException {
+	public static void writeSkill(final ThrowingConsumer<String, IOException> ostream, final ISkill obj,
+	                              final int indent) throws IOException {
 		if (!obj.isEmpty()) {
 			writeTag(ostream, "skill", indent);
 			writeProperty(ostream, "name", obj.getName());
@@ -61,8 +61,8 @@ import java.util.Objects;
 		}
 	}
 
-	private static void writeNote(final ThrowingConsumer<String, IOException> ostream, final int player, final String note, final int indent)
-			throws IOException {
+	private static void writeNote(final ThrowingConsumer<String, IOException> ostream, final int player,
+	                              final String note, final int indent) throws IOException {
 		writeTag(ostream, "note", indent);
 		writeProperty(ostream, "player", player);
 		ostream.accept(">"); // We don't use finishParentTag() because we don't want a newline yet
@@ -71,7 +71,8 @@ import java.util.Objects;
 	}
 
 	private final ILegacyPlayerCollection players;
-	// TODO: Figure out some way to inject these without having to have our own copies (or provide them as constructor parameters)
+	// TODO: Figure out some way to inject these without having to have our own copies (or provide them as
+	//  constructor parameters)
 	private final YAMobileReader mobileReader;
 	private final YAImplementReader implementReader;
 
@@ -146,8 +147,8 @@ import java.util.Objects;
 		return retval;
 	}
 
-	private static void writeStats(final ThrowingConsumer<String, IOException> ostream, final @Nullable WorkerStats stats, final int indent)
-			throws IOException {
+	private static void writeStats(final ThrowingConsumer<String, IOException> ostream,
+	                               final @Nullable WorkerStats stats, final int indent) throws IOException {
 		if (!Objects.isNull(stats)) {
 			writeTag(ostream, "stats", indent);
 			writeProperty(ostream, "hp", stats.getHitPoints());
@@ -181,7 +182,8 @@ import java.util.Objects;
 					retval.setNote(
 							players.getPlayer(getIntegerParameter(se, "player")),
 							readNote(se, element.getName(), stream));
-				} else if ("animal".equalsIgnoreCase(se.getName().getLocalPart()) && Objects.isNull(retval.getMount())) {
+				} else if ("animal".equalsIgnoreCase(se.getName().getLocalPart()) &&
+						Objects.isNull(retval.getMount())) {
 					final MobileFixture animal = mobileReader.read(se, element.getName(), stream);
 					if (animal instanceof final Animal a) {
 						retval.setMount(a);
@@ -202,7 +204,8 @@ import java.util.Objects;
 	}
 
 	@Override
-	public void write(final ThrowingConsumer<String, IOException> ostream, final IWorker obj, final int indent) throws IOException {
+	public void write(final ThrowingConsumer<String, IOException> ostream, final IWorker obj, final int indent)
+			throws IOException {
 		writeTag(ostream, "worker", indent);
 		writeProperty(ostream, "name", obj.getName());
 		if (!"human".equals(obj.getRace())) {

@@ -39,7 +39,8 @@ import common.xmlio.Warning;
 	}
 
 	@Override
-	public void write(final ThrowingConsumer<String, IOException> ostream, final Implement obj, final int indent) throws IOException {
+	public void write(final ThrowingConsumer<String, IOException> ostream, final Implement obj, final int indent)
+			throws IOException {
 		writeTag(ostream, "implement", indent);
 		writeProperty(ostream, "kind", obj.getKind());
 		writeProperty(ostream, "id", obj.getId());

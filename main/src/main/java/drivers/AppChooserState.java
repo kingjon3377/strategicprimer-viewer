@@ -115,7 +115,8 @@ import org.jetbrains.annotations.Nullable;
 		String mainInvocation;
 		builder.append("Usage: ");
 		try {
-			final File clsSource = new File(AppChooserState.class.getProtectionDomain().getCodeSource().getLocation().toURI());
+			final File clsSource = new File(AppChooserState.class.getProtectionDomain().getCodeSource()
+					.getLocation().toURI());
 			final String clsPath = clsSource.toString();
 			if (clsPath.endsWith(".exe")) {
 				mainInvocation = Paths.get(".").toAbsolutePath().relativize(clsSource.toPath()).toString();
@@ -125,7 +126,8 @@ import org.jetbrains.annotations.Nullable;
 					if (Objects.isNull(containingApp)) {
 						mainInvocation = "java -jar " + Paths.get(".").toAbsolutePath().relativize(clsSource.toPath());
 					} else {
-						mainInvocation = "open " + Paths.get(".").toAbsolutePath().relativize(containingApp) + " --args";
+						mainInvocation = "open " + Paths.get(".").toAbsolutePath().relativize(containingApp) +
+								" --args";
 					}
 				} else {
 					mainInvocation = "java -jar " + Paths.get(".").toAbsolutePath().relativize(clsSource.toPath());
@@ -200,7 +202,8 @@ import org.jetbrains.annotations.Nullable;
 							JOptionPane.ERROR_MESSAGE);
 					LovelaceLogger.error(except, "Dropped file not found");
 				} catch (final IOException except) {
-					JOptionPane.showMessageDialog(topWindow, except.getMessage(), "I/O Error", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(topWindow, except.getMessage(), "I/O Error",
+							JOptionPane.ERROR_MESSAGE);
 					LovelaceLogger.error("I/O error reading dropped file: %s", except.getMessage());
 				} catch (final XMLStreamException except) {
 					JOptionPane.showMessageDialog(topWindow, except.getMessage(), "Strategic Primer Map Format Error",

@@ -385,7 +385,8 @@ import legacy.map.fixtures.mobile.AnimalTracks;
 				.filter(notA(MineralVein.class)).filter(notA(StoneDeposit.class))
 				.filter(notA(Ground.class)).filter(notA(Forest.class)).filter(notA(Hill.class))
 				.filter(notA(Oasis.class)).filter(notA(AnimalTracks.class)).filter(notA(Cave.class))
-				.filter(notA(Battlefield.class)).filter(notA(Implement.class)).filter(notA(IResourcePile.class)).toList();
+				.filter(notA(Battlefield.class)).filter(notA(Implement.class))
+				.filter(notA(IResourcePile.class)).toList();
 
 		if (!remaining.isEmpty()) {
 			cli.println();

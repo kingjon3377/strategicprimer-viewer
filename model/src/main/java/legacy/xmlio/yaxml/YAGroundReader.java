@@ -44,7 +44,8 @@ import common.xmlio.Warning;
 	}
 
 	@Override
-	public void write(final ThrowingConsumer<String, IOException> ostream, final Ground obj, final int indent) throws IOException {
+	public void write(final ThrowingConsumer<String, IOException> ostream, final Ground obj, final int indent)
+			throws IOException {
 		writeTag(ostream, "ground", indent);
 		writeProperty(ostream, "kind", obj.getKind());
 		writeProperty(ostream, "exposed", Boolean.toString(obj.isExposed()));

@@ -413,7 +413,8 @@ public class ViewerModel extends SimpleDriverModel implements IViewerModel {
 	 */
 	@Override
 	public void removeMatchingFixtures(final Point location, final Predicate<TileFixture> condition) {
-		for (final TileFixture fixture : getMap().getFixtures(location).stream().filter(condition).toList()) { // TODO: try to avoid collector step (forEach(lambda))
+		// TODO: try to avoid collector step (using forEach(lambda))
+		for (final TileFixture fixture : getMap().getFixtures(location).stream().filter(condition).toList()) {
 			getRestrictedMap().removeFixture(location, fixture);
 		}
 		setMapModified(true); // TODO: Only set the flag if this was a change?
@@ -483,8 +484,9 @@ public class ViewerModel extends SimpleDriverModel implements IViewerModel {
 				.filter(u -> newOwner.getKind().equals(u.getKind()))
 				.filter(u -> newOwner.getName().equals(u.getName()))
 				.filter(u -> newOwner.getId() == u.getId()).findAny().orElse(null);
-		final UnitMember matchingMember = Optional.ofNullable(matchingOld).map(FixtureIterable::stream).orElse(Stream.empty())
-				.filter(member::equals).findAny().orElse(null); // TODO: equals() isn't ideal for finding a matching member ...
+		// TODO: equals() isn't ideal for finding a matching member ...
+		final UnitMember matchingMember = Optional.ofNullable(matchingOld).map(FixtureIterable::stream)
+				.orElse(Stream.empty()).filter(member::equals).findAny().orElse(null);
 		if (!Objects.isNull(matchingOld) && !Objects.isNull(matchingMember) && !Objects.isNull(matchingNew)) {
 			matchingOld.removeMember(matchingMember);
 			matchingNew.addMember(matchingMember);
@@ -685,8 +687,8 @@ public class ViewerModel extends SimpleDriverModel implements IViewerModel {
 				.flatMap(ViewerModel::unflattenNonFortresses)
 				.filter(IMutableUnit.class::isInstance).map(IMutableUnit.class::cast)
 				.filter(u -> getMap().getPlayers().getCurrentPlayer().equals(u.owner())).toList()) {
-			final UnitMember matching = unit.stream().filter(Predicate.isEqual(member)) // FIXME: equals() will really not do here ...
-					.findAny().orElse(null);
+			// FIXME: equals() will really not do here ...
+			final UnitMember matching = unit.stream().filter(Predicate.isEqual(member)).findAny().orElse(null);
 			if (!Objects.isNull(matching)) {
 				unit.removeMember(matching);
 				dismissedMembers.add(member);
@@ -707,7 +709,8 @@ public class ViewerModel extends SimpleDriverModel implements IViewerModel {
 				.flatMap(ViewerModel::unflattenNonFortresses)
 				.filter(IMutableUnit.class::isInstance).map(IMutableUnit.class::cast)
 				.filter(u -> getMap().getPlayers().getCurrentPlayer().equals(u.owner())).toList()) {
-			if (unit.stream().anyMatch(Predicate.isEqual(existing))) { // TODO: look beyond equals() for matching-in-existing?
+			// TODO: look beyond equals() for matching-in-existing?
+			if (unit.stream().anyMatch(Predicate.isEqual(existing))) {
 				unit.addMember(sibling.copy(IFixture.CopyBehavior.KEEP));
 				getRestrictedMap().setModified(true);
 				return true;

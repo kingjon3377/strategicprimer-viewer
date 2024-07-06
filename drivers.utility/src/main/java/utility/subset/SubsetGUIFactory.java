@@ -20,7 +20,9 @@ import com.google.auto.service.AutoService;
 public class SubsetGUIFactory implements UtilityDriverFactory {
 	public static final IDriverUsage USAGE = new DriverUsage(true, "subset", ParamCount.AtLeastOne,
 			"Check players' maps against master",
-			"Check that subordinate maps are subsets of the main map, containing nothing that it does not contain in the same place.",
+			"""
+					Check that subordinate maps are subsets of the main map, containing nothing that it does not \
+					contain in the same place.""",
 			false, true);
 
 	@Override

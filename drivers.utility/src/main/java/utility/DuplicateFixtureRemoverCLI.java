@@ -151,9 +151,9 @@ public class DuplicateFixtureRemoverCLI implements CLIDriver {
 			final String fCls = fixture.getClass().getName();
 			final String mCls = matching.getClass().getName();
 			return cli.inputBooleanInSeries(
-							"At %s: Remove '%s', of class '%s', ID #%d, which matches '%s', of class '%s', ID #%d?".formatted(
-							location, fixture.getShortDescription(), fCls, fixture.getId(),
-							matching.getShortDescription(), mCls, matching.getId()),
+							"At %s: Remove '%s', of class '%s', ID #%d, which matches '%s', of class '%s', ID #%d?"
+									.formatted(location, fixture.getShortDescription(), fCls, fixture.getId(),
+											matching.getShortDescription(), mCls, matching.getId()),
 					"duplicate%s%s".formatted(fCls, mCls));
 		}
 	}

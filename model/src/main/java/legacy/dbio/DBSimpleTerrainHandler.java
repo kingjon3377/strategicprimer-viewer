@@ -95,8 +95,9 @@ public final class DBSimpleTerrainHandler extends AbstractDatabaseWriter<Terrain
 	private static final Query SELECT = Query.of("SELECT * FROM simple_terrain");
 
 	@Override
-	public void readMapContents(final Connection db, final IMutableLegacyMap map, final Map<Integer, IFixture> containers,
-								final Map<Integer, List<Object>> containees, final Warning warner) throws SQLException {
+	public void readMapContents(final Connection db, final IMutableLegacyMap map,
+	                            final Map<Integer, IFixture> containers, final Map<Integer, List<Object>> containees,
+	                            final Warning warner) throws SQLException {
 		handleQueryResults(db, warner, "simple terrain fixtures", readSimpleTerrain(map), SELECT);
 	}
 }

@@ -142,8 +142,9 @@ import legacy.map.fixtures.TerrainFixture;
  */
 public final class TestDBIO {
 	private static final Collection<IntFunction<Immortal>> simpleImmortalConstructors =
-			java.util.List.of(Sphinx::new, Djinn::new, Griffin::new, Minotaur::new, Ogre::new, Phoenix::new, Simurgh::new,
-					Troll::new, Snowbird::new, Thunderbird::new, Pegasus::new, Unicorn::new, Kraken::new);
+			java.util.List.of(Sphinx::new, Djinn::new, Griffin::new, Minotaur::new, Ogre::new, Phoenix::new,
+					Simurgh::new, Troll::new, Snowbird::new, Thunderbird::new, Pegasus::new, Unicorn::new,
+					Kraken::new);
 
 
 	@FunctionalInterface
@@ -322,7 +323,8 @@ public final class TestDBIO {
 
 		@Override
 		public PreparedStatement prepareStatement(final String sql, final int resultSetType,
-												  final int resultSetConcurrency, final int resultSetHoldability) throws SQLException {
+												  final int resultSetConcurrency, final int resultSetHoldability)
+				throws SQLException {
 			return wrapped.prepareStatement(sql, resultSetType, resultSetConcurrency, resultSetHoldability);
 		}
 
@@ -547,7 +549,8 @@ public final class TestDBIO {
 
 	@ParameterizedTest
 	@MethodSource
-	public void testPortalSerialization(final int id, final int row, final int column) throws SQLException, IOException {
+	public void testPortalSerialization(final int id, final int row, final int column)
+			throws SQLException, IOException {
 		assumeTrue((row == -1 && column == -1) || (row >= 0 && column >= 0),
 				"Destination row and column must be either both -1 or both nonnegative");
 		assertFixtureSerialization(new Portal("portal dest", new Point(row, column), id));
@@ -694,7 +697,8 @@ public final class TestDBIO {
 	@ParameterizedTest
 	@MethodSource("testMeadowSerialization")
 	public void testFractionalMeadowSerialization(final boolean field, final boolean cultivated, final int id,
-												  final FieldStatus status, final int acres) throws SQLException, IOException {
+												  final FieldStatus status, final int acres)
+			throws SQLException, IOException {
 		assertFixtureSerialization(new Meadow("kind", field, cultivated, id, status,
 				new BigDecimal(acres).add(BigDecimal.ONE.divide(new BigDecimal(2)))));
 	}
@@ -842,7 +846,8 @@ public final class TestDBIO {
 
 	@ParameterizedTest
 	@MethodSource
-	public void testStoneSerialization(final StoneKind kind, final int dc, final int id) throws SQLException, IOException {
+	public void testStoneSerialization(final StoneKind kind, final int dc, final int id)
+			throws SQLException, IOException {
 		assertFixtureSerialization(new StoneDeposit(kind, dc, id));
 	}
 
@@ -855,7 +860,8 @@ public final class TestDBIO {
 
 	@ParameterizedTest
 	@MethodSource
-	public void testShrubSerialization(final int id, final int count, final String kind) throws SQLException, IOException {
+	public void testShrubSerialization(final int id, final int count, final String kind)
+			throws SQLException, IOException {
 		assertFixtureSerialization(new Shrub(kind, id, count));
 	}
 

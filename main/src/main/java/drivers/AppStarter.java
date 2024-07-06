@@ -159,8 +159,9 @@ import org.jetbrains.annotations.Nullable;
 			} else {
 				final DriverFactory chosenDriver = cli.chooseFromList(driverCache.values().stream()
 								.flatMap(i -> StreamSupport.stream(i.spliterator(), false))
-								.filter(AppStarter::includeInCLIList).collect(Collectors.toList()), "CLI apps available:",
-						"No applications available", "App to start: ", ICLIHelper.ListChoiceBehavior.AUTO_CHOOSE_ONLY).getValue1();
+								.filter(AppStarter::includeInCLIList).collect(Collectors.toList()),
+						"CLI apps available:", "No applications available", "App to start: ",
+						ICLIHelper.ListChoiceBehavior.AUTO_CHOOSE_ONLY).getValue1();
 				if (!Objects.isNull(chosenDriver)) {
 					new DriverWrapper(chosenDriver).startCatchingErrors(cli, options,
 							others.toArray(String[]::new));

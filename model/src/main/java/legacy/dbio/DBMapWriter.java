@@ -93,7 +93,8 @@ public final class DBMapWriter extends AbstractDatabaseWriter<IMutableLegacyMap,
 			"INSERT INTO metadata (version, rows, columns, current_turn) VALUES(:version, :rows, :columns, :turn);");
 
 	@Override
-	public void write(final Transactional db, final IMutableLegacyMap obj, final ILegacyMap context) throws SQLException {
+	public void write(final Transactional db, final IMutableLegacyMap obj, final ILegacyMap context)
+			throws SQLException {
 		final Connection conn = db.connection(); // TODO: work inside a transaction instead, surely?
 		INSERT_METADATA.on(value("version", obj.getDimensions().version()),
 				value("rows", obj.getDimensions().rows()),

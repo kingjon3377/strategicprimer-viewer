@@ -77,8 +77,9 @@ public final class DBTextHandler extends AbstractDatabaseWriter<TextFixture, Poi
 	private static final Query SELECT = Query.of("SELECT * FROM text_notes");
 
 	@Override
-	public void readMapContents(final Connection db, final IMutableLegacyMap map, final Map<Integer, IFixture> containers,
-								final Map<Integer, List<Object>> containees, final Warning warner) throws SQLException {
+	public void readMapContents(final Connection db, final IMutableLegacyMap map,
+	                            final Map<Integer, IFixture> containers, final Map<Integer, List<Object>> containees,
+	                            final Warning warner) throws SQLException {
 		handleQueryResults(db, warner, "text notes", readTextNote(map), SELECT);
 	}
 }

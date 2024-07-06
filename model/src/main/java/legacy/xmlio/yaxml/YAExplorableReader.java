@@ -49,8 +49,8 @@ import lovelace.util.ThrowingConsumer;
 	}
 
 	@Override
-	public void write(final ThrowingConsumer<String, IOException> ostream, final ExplorableFixture obj, final int indent)
-			throws IOException {
+	public void write(final ThrowingConsumer<String, IOException> ostream, final ExplorableFixture obj,
+	                  final int indent) throws IOException {
 		switch (obj) {
 			case final Battlefield battlefield -> writeTag(ostream, "battlefield", indent);
 			case final Cave cave -> writeTag(ostream, "cave", indent);

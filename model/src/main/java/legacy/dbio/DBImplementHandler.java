@@ -77,8 +77,9 @@ public final class DBImplementHandler extends AbstractDatabaseWriter<Implement, 
 	private static final Query SELECT = Query.of("SELECT * FROM implements");
 
 	@Override
-	public void readMapContents(final Connection db, final IMutableLegacyMap map, final Map<Integer, IFixture> containers,
-								final Map<Integer, List<Object>> containees, final Warning warner) throws SQLException {
+	public void readMapContents(final Connection db, final IMutableLegacyMap map,
+	                            final Map<Integer, IFixture> containers, final Map<Integer, List<Object>> containees,
+	                            final Warning warner) throws SQLException {
 		handleQueryResults(db, warner, "pieces of equipment", readImplement(map, containees), SELECT);
 	}
 }

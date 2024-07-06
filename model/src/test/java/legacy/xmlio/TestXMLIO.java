@@ -154,7 +154,8 @@ import legacy.map.HasKind;
 public final class TestXMLIO {
 	private static final Set<String> races = Set.copyOf(RaceFactory.RACES);
 	private static final List<String> animalStatuses = List.of("wild", "semi-domesticated", "domesticated", "tame");
-	private static final List<String> treeTypes = List.of("oak", "larch", "terebinth", "elm", "skybroom", "silver maple");
+	private static final List<String> treeTypes =
+			List.of("oak", "larch", "terebinth", "elm", "skybroom", "silver maple");
 	private static final List<String> fieldTypes = List.of("wheat", "amaranth", "bluegrass", "corn", "winter wheat");
 	private static final List<String> minerals = List.of("coal", "platinum", "oil", "diamonds", "natural gas");
 
@@ -303,7 +304,8 @@ public final class TestXMLIO {
 	private <Type> void assertDeprecatedProperty(final String xml, final String deprecated, final String preferred,
 												 final String tag, final @Nullable Type desideratum)
 			throws SPFormatException, XMLStreamException, IOException {
-		final Consumer<DeprecatedPropertyException> assertion = (except) -> { // FIXME: assertFormatIssue takes assertions as varargs, so split
+		// FIXME: assertFormatIssue takes assertions as varargs, so split
+		final Consumer<DeprecatedPropertyException> assertion = (except) -> {
 			assertEquals(deprecated, except.getOld(),
 					"Missing property should be the one we're expecting");
 			assertEquals(tag, except.getTag().getLocalPart(),
@@ -471,7 +473,8 @@ public final class TestXMLIO {
 		assertForwardDeserialization(message, xml, assertion, Warning.DIE);
 	}
 
-	private <Type> void assertForwardDeserializationEquality(final String message, final String xml, final Type expected)
+	private <Type> void assertForwardDeserializationEquality(final String message, final String xml,
+	                                                         final Type expected)
 			throws SPFormatException, XMLStreamException, IOException {
 		assertForwardDeserializationEquality(message, xml, expected, Warning.DIE);
 	}
@@ -489,7 +492,8 @@ public final class TestXMLIO {
 	 * @param warner   The warning level to use for this assertion
 	 */
 	private <Type> void assertForwardDeserializationEquality(final String message, final String xml,
-															 final Type expected, final Warning warner) throws SPFormatException, XMLStreamException, IOException {
+															 final Type expected, final Warning warner)
+			throws SPFormatException, XMLStreamException, IOException {
 		for (final ISPReader reader : spReaders) {
 			try (final StringReader stringReader = new StringReader(xml)) {
 				assertEquals(expected, reader.readXML(FAKE_FILENAME, stringReader, warner), message);
@@ -529,7 +533,8 @@ public final class TestXMLIO {
 	 * @param warningLevel The warning level to use
 	 */
 	private void assertEquivalentForms(final String message, final String firstForm, final String secondForm,
-									   final Warning warningLevel) throws SPFormatException, XMLStreamException, IOException {
+									   final Warning warningLevel)
+			throws SPFormatException, XMLStreamException, IOException {
 		for (final ISPReader reader : spReaders) {
 			try (final StringReader firstReader = new StringReader(firstForm);
 				 final StringReader secondReader = new StringReader(secondForm)) {
@@ -590,11 +595,12 @@ public final class TestXMLIO {
 	private void assertInvalid(final String xml)
 			throws SPFormatException, XMLStreamException, IOException {
 		final Consumer<Exception> assertion = // TODO: Extract 'assert instance of any' helper method (in lovelace-util)
+				// TODO: NSFE not needed anymore with no 'import', right?
 				except -> assertAny("Exception is of an expected type: was %s".formatted(except.getClass().getName()),
 						() -> assertInstanceOf(NoSuchElementException.class, except),
 						() -> assertInstanceOf(IllegalArgumentException.class, except),
 						() -> assertInstanceOf(XMLStreamException.class, except),
-						() -> assertInstanceOf(NoSuchFileException.class, except) // TODO: NSFE not needed anymore with no 'import', right?
+						() -> assertInstanceOf(NoSuchFileException.class, except)
 				);
 		for (final ISPReader reader : spReaders) {
 			assertFormatIssue(reader, xml, null, Exception.class,
@@ -634,7 +640,8 @@ public final class TestXMLIO {
 	 */
 	@ParameterizedTest
 	@MethodSource
-	public void testVillageWantsName(final TownStatus status, final int id, final String race, final boolean deprecatedWriter)
+	public void testVillageWantsName(final TownStatus status, final int id, final String race,
+	                                 final boolean deprecatedWriter)
 			throws SPFormatException, XMLStreamException, IOException {
 		final Village village = new Village(status, "", id, new PlayerImpl(-1, ""), race);
 		assertMissingProperty(createSerializedForm(village, deprecatedWriter), "name", village);
@@ -653,8 +660,8 @@ public final class TestXMLIO {
 	 */
 	@ParameterizedTest
 	@MethodSource
-	public void testBasicVillageSerialization(final String name, final TownStatus status, final String race, final int id)
-			throws SPFormatException, XMLStreamException, IOException {
+	public void testBasicVillageSerialization(final String name, final TownStatus status, final String race,
+	                                          final int id) throws SPFormatException, XMLStreamException, IOException {
 		final Player owner = new PlayerImpl(-1, "");
 		final Village village = new Village(status, name, id, owner, race);
 		assertSerialization("Basic Village serialization",
@@ -700,7 +707,8 @@ public final class TestXMLIO {
 	@ParameterizedTest
 	@MethodSource
 	public void testVillagePopulationSerialization(final TownStatus status, final String race, final int id,
-												   final int populationSize, final int workedField, final int producedId, final int producedQty,
+												   final int populationSize, final int workedField,
+												   final int producedId, final int producedQty,
 												   final int consumedId, final int consumedQty)
 			throws SPFormatException, XMLStreamException, IOException {
 		assumeTrue(populationSize >= 0, "Population can't be negative");
@@ -760,17 +768,17 @@ public final class TestXMLIO {
 	 */
 	@ParameterizedTest
 	@MethodSource
-	public void testCitySerialization(final TownSize size, final TownStatus status, final int id, final int dc, final String name)
-			throws SPFormatException, XMLStreamException, IOException {
+	public void testCitySerialization(final TownSize size, final TownStatus status, final int id, final int dc,
+	                                  final String name) throws SPFormatException, XMLStreamException, IOException {
 		final Player owner = new PlayerImpl(-1, "");
 		assertSerialization("City serialization", new City(status, size, dc, name, id, owner));
 		final City city = new City(status, size, dc, "", id, owner);
 		this.<City>assertUnwantedChild("""
-						<city status="%s" size="%s" name="%s" dc="%d"><troll /></city>""".formatted(status, size, name, dc),
-				null);
+						<city status="%s" size="%s" name="%s" dc="%d"><troll /></city>"""
+						.formatted(status, size, name, dc), null);
 		assertMissingProperty("""
-						<city status="%s" size="%s" name="%s" dc="%d" id="%d" />""".formatted(status, size, name, dc, id),
-				"owner",
+						<city status="%s" size="%s" name="%s" dc="%d" id="%d" />"""
+						.formatted(status, size, name, dc, id), "owner",
 				new City(status, size, dc, name, id, new PlayerImpl(-1, "Independent")));
 		assertImageSerialization("City image property is preserved", city);
 		assertPortraitSerialization("City portrait property is preserved", city);
@@ -792,8 +800,9 @@ public final class TestXMLIO {
 	@ParameterizedTest
 	@MethodSource
 	public void testCityPopulationSerialization(final String name, final TownSize size, final TownStatus status,
-												final String race, final int id, final int dc, final int populationSize, final int workedField,
-												final int skillLevel, final int producedId, final int producedQty)
+												final String race, final int id, final int dc, final int populationSize,
+												final int workedField, final int skillLevel, final int producedId,
+												final int producedQty)
 			throws SPFormatException, XMLStreamException, IOException {
 		assumeTrue(populationSize >= 0, "Population can't be negative");
 		assumeTrue(workedField >= 0, "Field ID won't ever be negative");
@@ -831,14 +840,15 @@ public final class TestXMLIO {
 	@ParameterizedTest
 	@MethodSource("testCitySerialization")
 	public void testFortificationSerialization(final TownSize size, final TownStatus status, final int id, final int dc,
-											   final String name) throws SPFormatException, XMLStreamException, IOException {
+											   final String name)
+			throws SPFormatException, XMLStreamException, IOException {
 		final Player owner = new PlayerImpl(-1, "");
 		assertSerialization("Fortification serialization",
 				new Fortification(status, size, dc, name, id, owner));
 		final Fortification fort = new Fortification(status, size, 30, "", 3, owner);
 		this.<Fortification>assertUnwantedChild("""
-						<fortification status="%s" size="%s" name="%s" dc="%s"><troll /><fortification>""".formatted(status, size, name, dc),
-				null);
+						<fortification status="%s" size="%s" name="%s" dc="%s"><troll /><fortification>"""
+						.formatted(status, size, name, dc), null);
 		assertMissingProperty("""
 						<fortification status="%s" size="%s" name="%s" dc="%s" id="%d" />""".formatted(
 						status, size, name, dc, id), "owner",
@@ -853,9 +863,11 @@ public final class TestXMLIO {
 	 */
 	@ParameterizedTest
 	@MethodSource("testCityPopulationSerialization")
-	public void testFortificationPopulationSerialization(final String name, final TownSize size, final TownStatus status,
-														 final String race, final int id, final int dc, final int populationSize, final int workedField,
-														 final int skillLevel, final int producedId, final int producedQty)
+	public void testFortificationPopulationSerialization(final String name, final TownSize size,
+	                                                     final TownStatus status, final String race, final int id,
+	                                                     final int dc, final int populationSize, final int workedField,
+														 final int skillLevel, final int producedId,
+														 final int producedQty)
 			throws SPFormatException, XMLStreamException, IOException {
 		assumeTrue(populationSize >= 0, "Population can't be negative");
 		assumeTrue(workedField >= 0, "Field ID won't ever be negative");
@@ -893,8 +905,8 @@ public final class TestXMLIO {
 	 */
 	@ParameterizedTest
 	@MethodSource("testCitySerialization")
-	public void testTownSerialization(final TownSize size, final TownStatus status, final int id, final int dc, final String name)
-			throws SPFormatException, XMLStreamException, IOException {
+	public void testTownSerialization(final TownSize size, final TownStatus status, final int id, final int dc,
+	                                  final String name) throws SPFormatException, XMLStreamException, IOException {
 		final Player owner = new PlayerImpl(-1, "");
 		assertSerialization("Town serialization test", new Town(status, size, dc, name, id, owner));
 		final Town town = new Town(status, size, dc, name, id, owner);
@@ -1328,7 +1340,8 @@ public final class TestXMLIO {
 				"""
 						<map xmlns="%s" version="2" rows="1" columns="1" current_player="1">
 						<player number="1" code_name="playerOne" />
-						<row index="0"><tile row="0" column="0" kind="steppe" /></row></map>""".formatted(SP_NAMESPACE));
+						<row index="0"><tile row="0" column="0" kind="steppe" /></row></map>"""
+						.formatted(SP_NAMESPACE));
 		assertMapDeserialization(
 				"Proper deserialization of map if another namespace is declared default",
 				firstMap, """
@@ -1339,7 +1352,8 @@ public final class TestXMLIO {
 				"""
 						<map xmlns="%s" version="2" rows="1" columns="1" current_player="1" xmlns:xy="xyzzy">
 						<player number="1" code_name="playerOne" /><xy:xyzzy><row index="0">
-						<tile row="0" column="0" kind="steppe"><xy:hill id="0" /></tile></row></xy:xyzzy></map>""".formatted(SP_NAMESPACE));
+						<tile row="0" column="0" kind="steppe"><xy:hill id="0" /></tile></row></xy:xyzzy></map>"""
+						.formatted(SP_NAMESPACE));
 		final Consumer<Exception> adventureAssertion =
 				except -> assertAny("Exception is of expected type: was %s".formatted(except.getClass().getName()),
 						() -> assertInstanceOf(UnwantedChildException.class, except),
@@ -1882,7 +1896,8 @@ public final class TestXMLIO {
 				new AnimalImpl(kind, talking, status, id));
 		this.<Animal>assertForwardDeserializationEquality("Namespaced attribute",
 				"""
-						<animal xmlns:sp="%s" sp:kind="%s" sp:talking="%b" sp:traces="false" sp:status="%s" sp:id="%d" />"""
+						<animal xmlns:sp="%s" sp:kind="%s" sp:talking="%b" sp:traces="false" sp:status="%s" \
+						sp:id="%d" />"""
 						.formatted(SP_NAMESPACE, kind, talking, status, id),
 				new AnimalImpl(kind, talking, status, id));
 		assertEquivalentForms("""
@@ -2075,7 +2090,8 @@ public final class TestXMLIO {
 		final Player firstPlayer = new PlayerImpl(1, "");
 		assertSerialization("First test of %s Fortress serialization".formatted(size),
                 new FortressImpl(firstPlayer, "one", id, size));
-		assertSerialization("Second test of %s Fortress serialization".formatted(size), new FortressImpl(firstPlayer, "two", id, size));
+		assertSerialization("Second test of %s Fortress serialization".formatted(size), new FortressImpl(firstPlayer,
+				"two", id, size));
 		final Player secondPlayer = new PlayerImpl(2, "");
 		final IMutableFortress five = new FortressImpl(secondPlayer, "five", id, TownSize.Small);
 		five.addMember(new Unit(secondPlayer, "unitOne", "unitTwo", 1));

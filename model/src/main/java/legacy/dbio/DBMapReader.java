@@ -104,7 +104,8 @@ public final class DBMapReader {
 
 	private static final Query ROAD_SELECT = Query.of("SELECT * FROM roads");
 
-	private static Triplet<Point, Direction, Integer> parseRoads(final Row row, final Connection sql) throws SQLException {
+	private static Triplet<Point, Direction, Integer> parseRoads(final Row row, final Connection sql)
+			throws SQLException {
 		return Triplet.with(new Point(row.getInt("row"), row.getInt("column")),
 				Objects.requireNonNull(Direction.parse(row.getString("direction"))), row.getInt("quality"));
 	}
@@ -181,12 +182,14 @@ public final class DBMapReader {
 			});
 		}
 		try (final Stream<Triplet<Point, Direction, Integer>> rStream =
-					 ROAD_SELECT.as(((RowParser<Triplet<Point, Direction, Integer>>) DBMapReader::parseRoads).stream(), conn)) {
+					 ROAD_SELECT.as(((RowParser<Triplet<Point, Direction, Integer>>) DBMapReader::parseRoads).stream(),
+							 conn)) {
 			rStream.forEach(t -> retval.setRoadLevel(t.getValue0(), t.getValue1(), t.getValue2()));
 		}
 		LovelaceLogger.debug("Finished reading terrain");
 		try (final Stream<Pair<Point, Integer>> bStream =
-					 BOOKMARK_SELECT.as(((RowParser<Pair<Point, Integer>>) DBMapReader::parseBookmark).stream(), conn)) {
+					 BOOKMARK_SELECT.as(((RowParser<Pair<Point, Integer>>) DBMapReader::parseBookmark).stream(),
+							 conn)) {
 			bStream.forEach(p -> retval.addBookmark(p.getValue0(), players.getPlayer(p.getValue1())));
 		}
 		for (final MapContentsReader reader : readers) {
@@ -236,8 +239,8 @@ public final class DBMapReader {
 						!Objects.isNull(p.getPopulation())) { // TODO: combine with earlier AbstractTown case?
 					throw new IllegalStateException("Community stats already set");
 				} else {
-					throw new IllegalStateException("DB parent-child type invariants not met (parent %s, child %s)".formatted(
-							parent.getClass().getSimpleName(), member.getClass().getSimpleName()));
+					throw new IllegalStateException("DB parent-child type invariants not met (parent %s, child %s)"
+							.formatted(parent.getClass().getSimpleName(), member.getClass().getSimpleName()));
 				}
 			}
 		}

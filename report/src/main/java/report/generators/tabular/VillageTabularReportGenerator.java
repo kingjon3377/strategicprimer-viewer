@@ -29,7 +29,8 @@ public class VillageTabularReportGenerator implements ITableGenerator<Village> {
 		return fixture instanceof Village;
 	}
 
-	public VillageTabularReportGenerator(final Player player, final @Nullable Point hq, final MapDimensions dimensions) {
+	public VillageTabularReportGenerator(final Player player, final @Nullable Point hq,
+	                                     final MapDimensions dimensions) {
 		this.player = player;
 		this.hq = hq;
 		this.dimensions = dimensions;

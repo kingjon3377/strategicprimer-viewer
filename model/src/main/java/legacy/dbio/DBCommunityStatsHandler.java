@@ -82,7 +82,8 @@ public final class DBCommunityStatsHandler extends AbstractDatabaseWriter<Commun
 					"VALUES(:town, :id, :kind, :contents, :quantity, :units, :created);");
 
 	@Override
-	public void write(final Transactional db, final CommunityStats obj, final ITownFixture context) throws SQLException {
+	public void write(final Transactional db, final CommunityStats obj, final ITownFixture context)
+			throws SQLException {
 		db.transaction().accept(sql -> {
 			// TODO: Use batch mode
 			for (final Map.Entry<String, Integer> entry :
@@ -115,7 +116,8 @@ public final class DBCommunityStatsHandler extends AbstractDatabaseWriter<Commun
 		return (dbRow, warner) -> {
 			final int id = (Integer) dbRow.get("id");
 			final int population = (Integer) dbRow.get("population");
-			if (!containees.containsKey(id) || containees.get(id).stream().noneMatch(CommunityStats.class::isInstance)) {
+			if (!containees.containsKey(id) || containees.get(id).stream()
+					.noneMatch(CommunityStats.class::isInstance)) {
 				multimapPut(containees, id, new CommunityStats(population));
 			}
 		};
@@ -209,8 +211,9 @@ public final class DBCommunityStatsHandler extends AbstractDatabaseWriter<Commun
 	private static final Query SELECT_CONSUMPTION = Query.of("SELECT * FROM town_consumption");
 
 	@Override
-	public void readMapContents(final Connection db, final IMutableLegacyMap map, final Map<Integer, IFixture> containers,
-								final Map<Integer, List<Object>> containees, final Warning warner) throws SQLException {
+	public void readMapContents(final Connection db, final IMutableLegacyMap map,
+	                            final Map<Integer, IFixture> containers, final Map<Integer, List<Object>> containees,
+	                            final Warning warner) throws SQLException {
 		handleQueryResults(db, warner, "town expertise levels",
 				readTownExpertise(map, containees), SELECT_EXPERTISE);
 		handleQueryResults(db, warner, "town worked resources",

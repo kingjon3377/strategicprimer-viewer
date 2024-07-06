@@ -212,8 +212,8 @@ import worker.common.IFixtureEditHelper;
 			tilesPanel.add(dtb);
 			LovelaceLogger.trace("ExplorationPanel: Added button for %s", direction);
 
-			final ExplorationClickListener ecl = new ExplorationClickListener(driverModel, this, this::movementDeductionTracker,
-					direction, mainList);
+			final ExplorationClickListener ecl = new ExplorationClickListener(driverModel, this,
+					this::movementDeductionTracker, direction, mainList);
 			if (Direction.Nowhere == direction) {
 				dtb.setComponentPopupMenu(ecl.getExplorerActionsMenu());
 			}
@@ -262,7 +262,9 @@ import worker.common.IFixtureEditHelper;
 	}
 
 	private final FormattedLabel locLabel = new FormattedLabel(
-			"<html><body>Currently exploring %s; click a tile to explore it. Selected fixtures in its left-hand list will be 'discovered'.</body></html>",
+			"""
+					<html><body>Currently exploring %s; click a tile to explore it. Selected fixtures in its left-hand \
+					list will be 'discovered'.</body></html>""",
 			Point.INVALID_POINT);
 
 	private final Map<Direction, SelectionChangeListener> mains = new EnumMap<>(Direction.class);

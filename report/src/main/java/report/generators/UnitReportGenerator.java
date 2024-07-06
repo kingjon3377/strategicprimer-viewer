@@ -39,7 +39,8 @@ public class UnitReportGenerator extends AbstractReportGenerator<IUnit> {
 		this(currentPlayer, dimensions, currentTurn, null);
 	}
 
-	public UnitReportGenerator(final Player currentPlayer, final MapDimensions dimensions, final int currentTurn, final @Nullable Point hq) {
+	public UnitReportGenerator(final Player currentPlayer, final MapDimensions dimensions, final int currentTurn,
+	                           final @Nullable Point hq) {
 		super(dimensions, hq);
 		memberReportGenerator = new FortressMemberReportGenerator(currentPlayer, dimensions,
 				currentTurn, hq);
@@ -214,7 +215,8 @@ public class UnitReportGenerator extends AbstractReportGenerator<IUnit> {
 	}
 
 	private void unitFormatter(final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-							   final ILegacyMap map, final IUnit unit, final Point loc, final Consumer<String> formatter) {
+							   final ILegacyMap map, final IUnit unit, final Point loc,
+							   final Consumer<String> formatter) {
 		formatter.accept("At ");
 		formatter.accept(loc.toString());
 		formatter.accept(distanceString.apply(loc));

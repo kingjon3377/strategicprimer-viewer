@@ -105,8 +105,8 @@ public class IOHandler implements ActionListener {
 				.anyMatch(ILegacyMap::isModified)) {
 			LovelaceLogger.trace("Subordinate map(s) modified.");
 			final int answer = JOptionPane.showConfirmDialog(window,
-                    "Subordinate map(s) have unsaved changes. Save all before %s?".formatted(verb), "Save Changes?", JOptionPane.YES_NO_CANCEL_OPTION,
-                    JOptionPane.QUESTION_MESSAGE);
+                    "Subordinate map(s) have unsaved changes. Save all before %s?".formatted(verb), "Save Changes?",
+					JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
 			switch (answer) {
 				case JOptionPane.CANCEL_OPTION -> {
 					LovelaceLogger.trace("User selected 'Cancel' rather than save-all.");
@@ -304,8 +304,8 @@ public class IOHandler implements ActionListener {
 							}
 						}
 					}
-					case final ModelDriver modelDriver -> actionPerformed(new ActionEvent(event.getSource(), event.getID(),
-							"save", event.getWhen(), event.getModifiers()));
+					case final ModelDriver modelDriver -> actionPerformed(new ActionEvent(event.getSource(),
+							event.getID(), "save", event.getWhen(), event.getModifiers()));
 					default -> LovelaceLogger.error("IOHandler asked to 'save all' in driver it can't do that for");
 				}
 				break;

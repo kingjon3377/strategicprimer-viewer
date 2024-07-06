@@ -50,7 +50,8 @@ public class FixtureListModel implements ListModel<TileFixture>, SelectionChange
 
 	public FixtureListModel(final Function<Point, Collection<TileFixture>> fixturesSource,
 							final Function<Point, @Nullable TileType> terrainSource,
-							final Function<Point, Collection<River>> riversSource, final Predicate<Point> mountainSource,
+							final Function<Point, Collection<River>> riversSource,
+							final Predicate<Point> mountainSource,
 							final Function<Point, @Nullable AnimalTracks> tracksSource,
 							final @Nullable BiConsumer<Point, TileType> terrainSink,
 							final @Nullable BiConsumer<Point, River[]> addRivers,

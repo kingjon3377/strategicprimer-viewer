@@ -452,7 +452,8 @@ public class WorkerModel extends SimpleMultiMapModel implements IWorkerModel {
 					.filter(matchingOldName).filter(matchingOldId)
 					.findAny().orElse(null);
 			if (!Objects.isNull(matchingOld)) {
-				final UnitMember matchingMember = matchingOld.stream().filter(Predicate.isEqual(member)) // TODO: equals() isn't ideal for finding a matching member ...
+				// TODO: equals() isn't ideal for finding a matching member ...
+				final UnitMember matchingMember = matchingOld.stream().filter(Predicate.isEqual(member))
 						.findAny().orElse(null);
 				final IMutableUnit matchingNew = getUnitsImpl(map.streamAllFixtures()
 						.collect(Collectors.toList()), newOwner.owner())
@@ -479,7 +480,8 @@ public class WorkerModel extends SimpleMultiMapModel implements IWorkerModel {
 					getCurrentPlayer()).stream()
 					.filter(IMutableUnit.class::isInstance)
 					.map(IMutableUnit.class::cast).toList()) {
-				final UnitMember matching = unit.stream().filter(Predicate.isEqual(member)) // FIXME: equals() will really not do here ...
+				// FIXME: matching by equals() will really not do here ...
+				final UnitMember matching = unit.stream().filter(Predicate.isEqual(member))
 						.findAny().orElse(null);
 				if (!Objects.isNull(matching)) {
 					any = true;
@@ -560,6 +562,7 @@ public class WorkerModel extends SimpleMultiMapModel implements IWorkerModel {
 				final Predicate<UnitMember> matchingName =
 						m -> ((HasMutableName) m).getName().equals(item.getName());
 				for (final IMutableLegacyMap map : getRestrictedAllMaps()) {
+					// FIXME: We should have a firmer identification than just name and ID
 					final UnitMember matching =
 							getUnitsImpl(map.streamAllFixtures()
 									.collect(Collectors.toList()), getCurrentPlayer())
@@ -567,7 +570,7 @@ public class WorkerModel extends SimpleMultiMapModel implements IWorkerModel {
 									.filter(isNamed)
 									.filter(matchingId)
 									.filter(matchingName)
-									.findAny().orElse(null); // FIXME: We should have a firmer identification than just name and ID
+									.findAny().orElse(null);
 					if (!Objects.isNull(matching)) {
 						any = true;
 						((HasMutableName) matching).setName(newName);
@@ -619,6 +622,7 @@ public class WorkerModel extends SimpleMultiMapModel implements IWorkerModel {
 				final Function<Object, HasMutableKind> hmkCast = HasMutableKind.class::cast;
 				final Predicate<HasMutableKind> matchingKind = m -> m.getKind().equals(item.getKind());
 				for (final IMutableLegacyMap map : getRestrictedAllMaps()) {
+					// FIXME: We should have a firmer identification than just kind and ID
 					final HasMutableKind matching = getUnitsImpl(map.streamAllFixtures()
 							.collect(Collectors.toList()), getCurrentPlayer())
 							.stream().flatMap(FixtureIterable::stream)
@@ -626,7 +630,7 @@ public class WorkerModel extends SimpleMultiMapModel implements IWorkerModel {
 							.filter(hasMutableKind)
 							.map(hmkCast)
 							.filter(matchingKind)
-							.findAny().orElse(null); // FIXME: We should have a firmer identification than just kind and ID
+							.findAny().orElse(null);
 					if (!Objects.isNull(matching)) {
 						any = true;
 						matching.setKind(newKind);
@@ -796,7 +800,8 @@ public class WorkerModel extends SimpleMultiMapModel implements IWorkerModel {
 					final Job newJob = new Job(jobName, 0);
 					newJob.addSkill(new Skill(skillName, 0, 0));
 					matching.addJob(newJob);
-				} else if (StreamSupport.stream(job.spliterator(), false).map(ISkill::getName).noneMatch(Predicate.isEqual(skillName))) {
+				} else if (StreamSupport.stream(job.spliterator(), false).map(ISkill::getName)
+						.noneMatch(Predicate.isEqual(skillName))) {
 					map.setModified(true);
 					job.addSkill(new Skill(skillName, 0, 0));
 				}
@@ -869,7 +874,8 @@ public class WorkerModel extends SimpleMultiMapModel implements IWorkerModel {
 						.filter(matchingJob).findAny().orElse(null);
 				if (Objects.isNull(temp)) {
 					job = new Job(jobName, 0);
-					matching.addJob(job); // FIXME: The IWorker API doc explicitly says the Job object can't be assumed to have been preserved
+					// FIXME: The addJob() API doc explicitly says the Job can't be assumed to have been preserved
+					matching.addJob(job);
 				} else {
 					job = temp;
 				}

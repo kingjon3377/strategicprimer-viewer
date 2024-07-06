@@ -88,6 +88,7 @@ import org.takes.http.Exit;
 
 		final Map<Pair<String, String>, StringBuilder> builders = new HashMap<>();
 
+		// TODO: Make local 'IOThrowingFunction' and 'IOThrowingConsumer' interfaces to condense this signature
 		final ThrowingFunction<Path, ThrowingFunction<String, ThrowingConsumer<String, IOException>, IOException>, IOException> filenameFunction =
 				base -> {
 					final String baseName = SuffixHelper.shortestSuffix(mapping.keySet(), base);

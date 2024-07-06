@@ -342,7 +342,7 @@ import legacy.map.fixtures.mobile.worker.IJob;
 						writer.newLine();
 						for (final Implement item : equipment) { // TODO: move out of if?
 							writer.write("  - ");
-							writer.write(item.toString()); // FIXME: This is egregiously verbose ("An implement of kind ...")
+							writer.write(item.toString()); // FIXME: Egregiously verbose ("An implement of kind ...")
 							writer.newLine();
 						}
 					}

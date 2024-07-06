@@ -295,7 +295,8 @@ public class Worker implements IMutableWorker {
 					}
 				}
 				for (final Implement item : that.getEquipment()) {
-					if (!equipmentImpl.contains(item)) { // TODO: Subset: a worker with 1 axe should be a subset of one with 2
+					// TODO: Subset: a worker with 1 axe should be a subset of one with 2
+					if (!equipmentImpl.contains(item)) {
 						localReport.accept("Extra equipment: " + item);
 						retval = false;
 					}
@@ -335,7 +336,8 @@ public class Worker implements IMutableWorker {
 			for (final Implement item : equipmentImpl) {
 				retval.addEquipment(item);
 			}
-			retval.notesImpl.putAll(notesImpl); // TODO: add setNote() overload taking int, so we don't have to violate encapsulation
+			// TODO: add setNote() overload taking int, so we don't have to violate encapsulation
+			retval.notesImpl.putAll(notesImpl);
 		}
 		return retval;
 	}

@@ -34,7 +34,8 @@ import lovelace.util.ThrowingConsumer;
 	}
 
 	@Override
-	public void write(final ThrowingConsumer<String, IOException> ostream, final Portal obj, final int indent) throws IOException {
+	public void write(final ThrowingConsumer<String, IOException> ostream, final Portal obj, final int indent)
+			throws IOException {
 		writeTag(ostream, "portal", indent);
 		writeProperty(ostream, "world", obj.getDestinationWorld());
 		writeProperty(ostream, "row", obj.getDestinationCoordinates().row());

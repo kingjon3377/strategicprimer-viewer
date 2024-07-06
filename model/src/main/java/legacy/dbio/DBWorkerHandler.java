@@ -88,9 +88,11 @@ public final class DBWorkerHandler extends AbstractDatabaseWriter<IWorker, IUnit
 	}
 
 	private static final Query WORKER_SQL =
-			Query.of("INSERT INTO workers (unit, id, name, race, image, portrait, hp, max_hp, " +
-					"    str, dex, con, int, wis, cha) " +
-					"VALUES(:unit, :id, :name, :race, :image, :portrait, :hp, :max_hp, :str, :dex, :con, :int, :wis, :cha);");
+			Query.of("""
+					INSERT INTO workers (unit, id, name, race, image, portrait, hp, max_hp
+					    str, dex, con, int, wis, cha)
+					VALUES(:unit, :id, :name, :race, :image, :portrait, :hp, :max_hp, :str, :dex, :con,
+						:int, :wis, :cha);""");
 
 	private static final Query JOB_SQL =
 			Query.of("INSERT INTO worker_job_levels (worker, job, level) VALUES(:worker, :job, :level);");
@@ -138,8 +140,9 @@ public final class DBWorkerHandler extends AbstractDatabaseWriter<IWorker, IUnit
 		});
 	}
 
-	private TryBiConsumer<Map<String, Object>, Warning, SQLException> readWorkerStats(final IMutableLegacyMap map,
-																					  final Map<Integer, Worker> workers, final Map<Integer, List<Object>> containees) {
+	private TryBiConsumer<Map<String, Object>, Warning, SQLException> readWorkerStats(
+			final IMutableLegacyMap map,
+			final Map<Integer, Worker> workers, final Map<Integer, List<Object>> containees) {
 		return (dbRow, warner) -> {
 			final int unitId = (Integer) dbRow.get("unit");
 			final int id = (Integer) dbRow.get("id");
@@ -216,8 +219,9 @@ public final class DBWorkerHandler extends AbstractDatabaseWriter<IWorker, IUnit
 	private static final Query NOTE_SELECT = Query.of("SELECT * FROM notes");
 
 	@Override
-	public void readMapContents(final Connection db, final IMutableLegacyMap map, final Map<Integer, IFixture> containers,
-								final Map<Integer, List<Object>> containees, final Warning warner) throws SQLException {
+	public void readMapContents(final Connection db, final IMutableLegacyMap map,
+	                            final Map<Integer, IFixture> containers, final Map<Integer, List<Object>> containees,
+	                            final Warning warner) throws SQLException {
 		final Map<Integer, Worker> workers = new HashMap<>();
 		handleQueryResults(db, warner, "worker stats", readWorkerStats(map, workers, containees), WORKER_SELECT);
 		handleQueryResults(db, warner, "Job levels", readJobLevel(map, workers), JOB_SELECT);

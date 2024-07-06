@@ -42,8 +42,8 @@ import java.util.function.Consumer;
 	// readFortification(), and readCity() are very nearly identical
 	@SuppressWarnings("ChainOfInstanceofChecks")
 	public static Town readTown(final StartElement element, final QName parent, final Iterable<XMLEvent> stream,
-								final ILegacyPlayerCollection players, final Warning warner, final IDRegistrar idFactory)
-			throws SPFormatException {
+								final ILegacyPlayerCollection players, final Warning warner,
+								final IDRegistrar idFactory) throws SPFormatException {
 		requireTag(element, parent, "town");
 		expectAttributes(element, warner, "name", "size", "status", "dc", "id",
 				"portrait", "image", "owner");
@@ -84,7 +84,8 @@ import java.util.function.Consumer;
 
 	@SuppressWarnings("ChainOfInstanceofChecks")
 	public static Fortification readFortification(final StartElement element, final QName parent,
-												  final Iterable<XMLEvent> stream, final ILegacyPlayerCollection players, final Warning warner,
+												  final Iterable<XMLEvent> stream,
+												  final ILegacyPlayerCollection players, final Warning warner,
 												  final IDRegistrar idFactory) throws SPFormatException {
 		requireTag(element, parent, "fortification");
 		expectAttributes(element, warner, "name", "size", "status", "dc", "id",
@@ -129,8 +130,8 @@ import java.util.function.Consumer;
 
 	@SuppressWarnings("ChainOfInstanceofChecks")
 	public static City readCity(final StartElement element, final QName parent, final Iterable<XMLEvent> stream,
-								final ILegacyPlayerCollection players, final Warning warner, final IDRegistrar idFactory)
-			throws SPFormatException {
+								final ILegacyPlayerCollection players, final Warning warner,
+								final IDRegistrar idFactory) throws SPFormatException {
 		requireTag(element, parent, "city");
 		expectAttributes(element, warner, "name", "size", "status", "dc", "id",
 				"portrait", "image", "owner");
@@ -172,8 +173,8 @@ import java.util.function.Consumer;
 
 	@SuppressWarnings("ChainOfInstanceofChecks")
 	public static Village readVillage(final StartElement element, final QName parent, final Iterable<XMLEvent> stream,
-									  final ILegacyPlayerCollection players, final Warning warner, final IDRegistrar idFactory)
-			throws SPFormatException {
+									  final ILegacyPlayerCollection players, final Warning warner,
+									  final IDRegistrar idFactory) throws SPFormatException {
 		requireTag(element, parent, "village");
 		expectAttributes(element, warner, "status", "race", "owner", "id", "image",
 				"portrait", "name");
@@ -209,7 +210,8 @@ import java.util.function.Consumer;
 
 	@SuppressWarnings("ChainOfInstanceofChecks")
 	public static CommunityStats readCommunityStats(final StartElement element, final QName parent,
-													final Iterable<XMLEvent> stream, final ILegacyPlayerCollection players, final Warning warner,
+													final Iterable<XMLEvent> stream,
+													final ILegacyPlayerCollection players, final Warning warner,
 													final IDRegistrar idFactory) throws SPFormatException {
 		requireTag(element, parent, "population");
 		expectAttributes(element, warner, "size");
@@ -247,8 +249,8 @@ import java.util.function.Consumer;
 							stack.addFirst(se);
 						} else {
 							throw new UnwantedChildException(
-									Optional.ofNullable(stack.peekFirst()).map(StartElement::getName).orElse(NULL_QNAME),
-									se);
+									Optional.ofNullable(stack.peekFirst()).map(StartElement::getName)
+											.orElse(NULL_QNAME), se);
 						}
 						break;
 					case "resource":

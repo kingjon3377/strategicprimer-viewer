@@ -98,7 +98,8 @@ public abstract class AbstractTurnApplet implements TurnApplet {
 			final Point point, final T fixture, final String plural, final IFixture.CopyBehavior zero) {
 		// TODO: make nullable and return null on EOF?
 		final int count = Math.min(
-				Optional.ofNullable(cli.inputNumber("How many %s to remove: ".formatted(plural))).orElse(0), fixture.getPopulation());
+				Optional.ofNullable(cli.inputNumber("How many %s to remove: ".formatted(plural))).orElse(0),
+				fixture.getPopulation());
 		model.reducePopulation(point, fixture, zero, count);
 	}
 

@@ -201,7 +201,8 @@ public class Ver2TileDrawHelper implements TileDrawHelper {
 	/**
 	 * Draw an icon at the specified coordinates.
 	 */
-	private void drawIcon(final Graphics pen, final String icon, final Coordinate coordinates, final Coordinate dimensions) {
+	private void drawIcon(final Graphics pen, final String icon, final Coordinate coordinates,
+	                      final Coordinate dimensions) {
 		final Image image = getImage(icon);
 		pen.drawImage(image, coordinates.x(), coordinates.y(),
 				dimensions.x(), dimensions.y(), observer);
@@ -210,7 +211,8 @@ public class Ver2TileDrawHelper implements TileDrawHelper {
 	/**
 	 * Draw an icon at the specified coordinates.
 	 */
-	private void drawIcon(final Graphics pen, final Image icon, final Coordinate coordinates, final Coordinate dimensions) {
+	private void drawIcon(final Graphics pen, final Image icon, final Coordinate coordinates,
+	                      final Coordinate dimensions) {
 		pen.drawImage(icon, coordinates.x(), coordinates.y(),
 				dimensions.x(), dimensions.y(), observer);
 	}
@@ -277,7 +279,8 @@ public class Ver2TileDrawHelper implements TileDrawHelper {
 	 * Whether there is a "terrain fixture" at the given location.
 	 */
 	private boolean hasTerrainFixture(final ILegacyMap map, final Point location) {
-		// TODO: Should we really return true if there is exactly one drawable fixture that happens to be a terrain fixture?
+		// TODO: Should we really return true if there is exactly one drawable fixture, that happens to be a terrain
+		//  fixture?
 		if (getDrawableFixtures(map, location).anyMatch(TerrainFixture.class::isInstance)) {
 			return true;
 		} else {

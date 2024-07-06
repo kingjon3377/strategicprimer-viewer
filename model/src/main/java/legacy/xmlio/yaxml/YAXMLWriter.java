@@ -41,7 +41,8 @@ public class YAXMLWriter implements SPWriter {
 	 * @throws IOException on I/O error
 	 */
 	@Override
-	public void writeSPObject(final ThrowingConsumer<String, IOException> arg, final Object obj) throws XMLStreamException, IOException {
+	public void writeSPObject(final ThrowingConsumer<String, IOException> arg, final Object obj)
+			throws XMLStreamException, IOException {
 		wrapped.write(arg, obj, 0);
 	}
 

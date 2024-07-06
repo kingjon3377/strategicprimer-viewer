@@ -39,7 +39,8 @@ public class TextReportGenerator extends AbstractReportGenerator<TextFixture> {
 	 */
 	@Override
 	public void produceSingle(final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-							  final ILegacyMap map, final Consumer<String> ostream, final TextFixture item, final Point loc) {
+							  final ILegacyMap map, final Consumer<String> ostream, final TextFixture item,
+							  final Point loc) {
 		ostream.accept("At ");
 		ostream.accept(loc.toString());
 		ostream.accept(" ");

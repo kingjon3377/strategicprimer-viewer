@@ -106,7 +106,8 @@ public interface ICLIHelper {
 
 	/**
 	 * Ask the user a yes-or-no question. Returns null on EOF or if the
-	 * user enters "quit".
+	 * user enters "quit". TODO: Define an enum (Yes, No, Quit, EOF) instead of using a Boolean.
+	 * TODO: Or make a parameterized version taking the values to return on "yes", "no", "quit", and "EOF".
 	 *
 	 * @param prompt The prompt to prompt the user with.
 	 */

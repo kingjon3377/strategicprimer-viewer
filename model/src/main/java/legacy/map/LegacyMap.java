@@ -645,7 +645,8 @@ public class LegacyMap implements IMutableLegacyMap {
 			retval = false;
 			ostream.accept("Extra fixture:\t" + desideratum);
 		} else if (unmatched) {
-			ostream.accept("Fixture with ID #%d didn't match any of the subsettable fixtures sharing that ID".formatted(desideratum.getId()));
+			ostream.accept("Fixture with ID #%d didn't match any of the subsettable fixtures sharing that ID"
+					.formatted(desideratum.getId()));
 			retval = false;
 		}
 		return retval;

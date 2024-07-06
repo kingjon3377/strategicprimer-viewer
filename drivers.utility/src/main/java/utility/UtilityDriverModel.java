@@ -93,7 +93,8 @@ public class UtilityDriverModel extends SimpleMultiMapModel {
 		super(map);
 	}
 
-	public UtilityDriverModel(final IDriverModel model) { // TODO: Make protected/private and provide static copyConstructor() instead?
+	// TODO: Make protected/private and provide static copyConstructor() instead?
+	public UtilityDriverModel(final IDriverModel model) {
 		super(model);
 	}
 
@@ -339,7 +340,8 @@ public class UtilityDriverModel extends SimpleMultiMapModel {
 		}
 	}
 
-	private static void safeAdd(final IMutableLegacyMap map, final Player currentPlayer, final Point point, final TileFixture fixture) {
+	private static void safeAdd(final IMutableLegacyMap map, final Player currentPlayer, final Point point,
+	                            final TileFixture fixture) {
 		final Predicate<TileFixture> equality = fixture::equals;
 		final Consumer<String> noop = x -> {
 		};

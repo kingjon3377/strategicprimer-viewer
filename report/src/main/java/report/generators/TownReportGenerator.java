@@ -75,7 +75,8 @@ public class TownReportGenerator extends AbstractReportGenerator<ITownFixture> {
 	 */
 	@Override
 	public void produceSingle(final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-							  final ILegacyMap map, final Consumer<String> ostream, final ITownFixture item, final Point loc) {
+							  final ILegacyMap map, final Consumer<String> ostream, final ITownFixture item,
+							  final Point loc) {
 		switch (item) {
 			case final Village v -> new VillageReportGenerator(currentPlayer, dimensions, hq)
 					.produceSingle(fixtures, map, ostream, v, loc);

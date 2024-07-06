@@ -62,7 +62,8 @@ abstract class YAAbstractReader<Item, Value> implements YAReader<Item, Value> {
 	 * Patterns to match XML metacharacters, and their quoted forms.
 	 */
 	protected static final List<Pair<Pattern, String>> QUOTING =
-			List.of(Pair.with(Pattern.compile("&"), "&amp;"), Pair.with(Pattern.compile("<"), "&lt;"), Pair.with(Pattern.compile(">"), "&gt;"));
+			List.of(Pair.with(Pattern.compile("&"), "&amp;"), Pair.with(Pattern.compile("<"), "&lt;"),
+					Pair.with(Pattern.compile(">"), "&gt;"));
 
 	protected static final Pair<Pattern, String> QUOTE_DOUBLE_QUOTE =
 			Pair.with(Pattern.compile("\""), "&quot;");
@@ -174,7 +175,8 @@ abstract class YAAbstractReader<Item, Value> implements YAReader<Item, Value> {
 	/**
 	 * Append the given number of tabs to the stream.
 	 */
-	protected static void indent(final ThrowingConsumer<String, IOException> ostream, final int tabs) throws IOException {
+	protected static void indent(final ThrowingConsumer<String, IOException> ostream, final int tabs)
+			throws IOException {
 		ostream.accept(String.join("", Collections.nCopies(tabs, "\t")));
 	}
 
@@ -214,7 +216,8 @@ abstract class YAAbstractReader<Item, Value> implements YAReader<Item, Value> {
 	/**
 	 * Write a property to XML.
 	 */
-	protected static void writeProperty(final ThrowingConsumer<String, IOException> ostream, final String name, final String val)
+	protected static void writeProperty(final ThrowingConsumer<String, IOException> ostream, final String name,
+	                                    final String val)
 			throws IOException {
 		ostream.accept(" %s=\"%s\"".formatted(simpleQuote(name, '='), simpleQuote(val, '"')));
 	}
@@ -222,7 +225,8 @@ abstract class YAAbstractReader<Item, Value> implements YAReader<Item, Value> {
 	/**
 	 * Write a property to XML.
 	 */
-	protected static void writeProperty(final ThrowingConsumer<String, IOException> ostream, final String name, final int val)
+	protected static void writeProperty(final ThrowingConsumer<String, IOException> ostream, final String name,
+	                                    final int val)
 			throws IOException {
 		writeProperty(ostream, name, Integer.toString(val));
 	}
@@ -230,7 +234,8 @@ abstract class YAAbstractReader<Item, Value> implements YAReader<Item, Value> {
 	/**
 	 * Write a property to XML only if its value is nonempty.
 	 */
-	protected static void writeNonemptyProperty(final ThrowingConsumer<String, IOException> ostream, final String name, final String val)
+	protected static void writeNonemptyProperty(final ThrowingConsumer<String, IOException> ostream, final String name,
+	                                            final String val)
 			throws IOException {
 		if (!val.isEmpty()) {
 			writeProperty(ostream, name, val);
@@ -357,7 +362,8 @@ abstract class YAAbstractReader<Item, Value> implements YAReader<Item, Value> {
 	 * write the right-bracket to close the tag. If `tabs` is 0, emit a
 	 * namespace declaration as well.
 	 */
-	protected static void writeTag(final ThrowingConsumer<String, IOException> ostream, final String tag, final int tabs)
+	protected static void writeTag(final ThrowingConsumer<String, IOException> ostream, final String tag,
+	                               final int tabs)
 			throws IOException {
 		indent(ostream, tabs);
 		ostream.accept("<%s".formatted(simpleQuote(tag, '>')));
@@ -383,8 +389,8 @@ abstract class YAAbstractReader<Item, Value> implements YAReader<Item, Value> {
 	/**
 	 * Write a closing tag to the stream, optionally indented, and followed by a newline.
 	 */
-	protected static void closeTag(final ThrowingConsumer<String, IOException> ostream, final int tabs, final String tag)
-			throws IOException {
+	protected static void closeTag(final ThrowingConsumer<String, IOException> ostream, final int tabs,
+	                               final String tag) throws IOException {
 		if (tabs > 0) {
 			indent(ostream, tabs);
 		}
@@ -466,8 +472,8 @@ abstract class YAAbstractReader<Item, Value> implements YAReader<Item, Value> {
 	/**
 	 * Read a parameter from XML whose value must be a boolean.
 	 */
-	protected boolean getBooleanParameter(final StartElement element, final String parameter, final boolean defaultValue)
-			throws SPFormatException {
+	protected boolean getBooleanParameter(final StartElement element, final String parameter,
+	                                      final boolean defaultValue) throws SPFormatException {
 		final Attribute attr = getAttributeByName(element, parameter);
 		if (!Objects.isNull(attr)) {
 			final String val = attr.getValue();

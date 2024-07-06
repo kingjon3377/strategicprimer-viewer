@@ -42,8 +42,8 @@ import java.util.stream.StreamSupport;
 
 /* package */ class UnitMemberHandler extends FluidBase {
 	public static Worker readWorker(final StartElement element, final QName parent, final Iterable<XMLEvent> stream,
-									final ILegacyPlayerCollection players, final Warning warner, final IDRegistrar idFactory)
-			throws SPFormatException {
+									final ILegacyPlayerCollection players, final Warning warner,
+									final IDRegistrar idFactory) throws SPFormatException {
 		requireTag(element, parent, "worker");
 		expectAttributes(element, warner, "name", "race", "portrait", "id", "image");
 		final Worker retval = setImage(
@@ -136,8 +136,8 @@ import java.util.stream.StreamSupport;
 	}
 
 	public static ISkill readSkill(final StartElement element, final QName parent, final Iterable<XMLEvent> stream,
-								   final ILegacyPlayerCollection players, final Warning warner, final IDRegistrar idFactory)
-			throws SPFormatException {
+								   final ILegacyPlayerCollection players, final Warning warner,
+								   final IDRegistrar idFactory) throws SPFormatException {
 		requireTag(element, parent, "skill");
 		expectAttributes(element, warner, "name", "level", "hours");
 		requireNonEmptyAttribute(element, "name", true, warner);
@@ -148,8 +148,8 @@ import java.util.stream.StreamSupport;
 	}
 
 	public static WorkerStats readStats(final StartElement element, final QName parent, final Iterable<XMLEvent> stream,
-										final ILegacyPlayerCollection players, final Warning warner, final IDRegistrar idFactory)
-			throws SPFormatException {
+										final ILegacyPlayerCollection players, final Warning warner,
+										final IDRegistrar idFactory) throws SPFormatException {
 		requireTag(element, parent, "stats");
 		expectAttributes(element, warner, "hp", "max", "str", "dex", "con", "int",
 				"wis", "cha");
@@ -201,8 +201,8 @@ import java.util.stream.StreamSupport;
 		}
 	}
 
-	private static void writeNote(final XMLStreamWriter ostream, final int player, final String note, final int indentation)
-			throws XMLStreamException {
+	private static void writeNote(final XMLStreamWriter ostream, final int player, final String note,
+	                              final int indentation) throws XMLStreamException {
 		writeTag(ostream, "note", indentation, false);
 		writeAttributes(ostream, Pair.with("player", player));
 		ostream.writeCharacters(note);
@@ -248,8 +248,9 @@ import java.util.stream.StreamSupport;
 
 	// TODO: split into Animal and Tracks methods, if at all possible
 	public static AnimalOrTracks readAnimal(final StartElement element, final QName parent,
-											final Iterable<XMLEvent> stream, final ILegacyPlayerCollection players, final Warning warner,
-											final IDRegistrar idFactory) throws SPFormatException {
+											final Iterable<XMLEvent> stream, final ILegacyPlayerCollection players,
+											final Warning warner, final IDRegistrar idFactory)
+			throws SPFormatException {
 		requireTag(element, parent, "animal");
 		final String tag = element.getName().getLocalPart().toLowerCase();
 		final String kind;
@@ -328,7 +329,8 @@ import java.util.stream.StreamSupport;
 			// turn than this kind of animal's age of maturity.
 			if (MaturityModel.getCurrentTurn() < 0 ||
 					!MaturityModel.getMaturityAges().containsKey(obj.getKind()) ||
-					MaturityModel.getMaturityAges().get(obj.getKind()) > (MaturityModel.getCurrentTurn() - obj.getBorn())) {
+					MaturityModel.getMaturityAges()
+							.get(obj.getKind()) > (MaturityModel.getCurrentTurn() - obj.getBorn())) {
 				writeAttributes(ostream, Pair.with("born", obj.getBorn()));
 			}
 		}

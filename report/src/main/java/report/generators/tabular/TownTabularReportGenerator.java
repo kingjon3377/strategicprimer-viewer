@@ -85,7 +85,8 @@ public class TownTabularReportGenerator implements ITableGenerator<AbstractTown>
 	 */
 	@Override
 	public Comparator<Pair<Point, AbstractTown>> comparePairs() {
-		return Comparator.<Pair<Point, AbstractTown>, AbstractTown>comparing(Pair::getValue1, TownComparators::compareTownKind)
+		return Comparator.<Pair<Point, AbstractTown>, AbstractTown>comparing(Pair::getValue1,
+						TownComparators::compareTownKind)
 				.thenComparing(Pair::getValue0, distanceComparator)
 				.thenComparing(Pair::getValue1, Comparator.comparing(AbstractTown::getTownSize)
 						.thenComparing(AbstractTown::getStatus)

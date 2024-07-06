@@ -62,7 +62,8 @@ public abstract class AbstractReportGenerator<Type extends IFixture> implements 
 	 *                       calculations. Usually the location of the headquarters of the player
 	 *                       for whom the report is being prepared.
 	 */
-	protected AbstractReportGenerator(final @Nullable MapDimensions mapDimensions, final @Nullable Point referencePoint) {
+	protected AbstractReportGenerator(final @Nullable MapDimensions mapDimensions,
+	                                  final @Nullable Point referencePoint) {
 		if (Objects.isNull(referencePoint)) {
 			distComparator = (one, two) -> 0;
 			distanceString = (ignored) -> "unknown";

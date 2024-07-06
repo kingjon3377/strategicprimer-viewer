@@ -77,8 +77,8 @@ public class ExplorationCLIHelper implements MovementCostListener, SelectionChan
 	 * Let the user change the explorer's speed
 	 */
 	private void changeSpeed() {
-		final Speed temp = cli.chooseFromList(SPEED_CHOICES, "Possible Speeds:", "No speeds available", "Chosen Speed: ",
-				ICLIHelper.ListChoiceBehavior.AUTO_CHOOSE_ONLY).getValue1();
+		final Speed temp = cli.chooseFromList(SPEED_CHOICES, "Possible Speeds:", "No speeds available",
+				"Chosen Speed: ", ICLIHelper.ListChoiceBehavior.AUTO_CHOOSE_ONLY).getValue1();
 		if (!Objects.isNull(temp)) {
 			speed = temp;
 		}
@@ -87,10 +87,10 @@ public class ExplorationCLIHelper implements MovementCostListener, SelectionChan
 	/**
 	 * Copy the given fixture to subordinate maps and print it to the output stream.
 	 */
-	private void printAndTransferFixture(final Point destPoint, final @Nullable TileFixture fixture, final HasOwner mover,
-										 final boolean automatic) {
+	private void printAndTransferFixture(final Point destPoint, final @Nullable TileFixture fixture,
+	                                     final HasOwner mover, final boolean automatic) {
 		if (!Objects.isNull(fixture)) {
-			// TODO: Print a description of the form that will be copied (omitting acreage, etc.) unless already in sub-map(s).
+			// TODO: Print a description of the form to be copied (omitting acreage, etc.) unless already in sub-map(s).
 			cli.print("- ");
 			if (automatic) {
 				cli.print(fixture.getShortDescription());
@@ -125,8 +125,8 @@ public class ExplorationCLIHelper implements MovementCostListener, SelectionChan
 
 	private ExplorationAutomationConfig automationConfig;
 
-	private static final List<String> COMMANDS = List.of("Set Speed", "SW", "S", "SE", "W", "Linger", "E", "NW", "N", "NE",
-			"Toward Point", "Quit");
+	private static final List<String> COMMANDS = List.of("Set Speed", "SW", "S", "SE", "W", "Linger", "E", "NW", "N",
+			"NE", "Toward Point", "Quit");
 
 	private final String usage = IntStream.range(0, COMMANDS.size())
 			.mapToObj(i -> i + ": " + COMMANDS.get(i)).collect(Collectors.joining(", "));

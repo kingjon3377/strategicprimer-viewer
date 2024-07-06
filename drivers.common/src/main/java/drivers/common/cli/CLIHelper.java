@@ -201,8 +201,8 @@ public final class CLIHelper implements ICLIHelper {
 	 */
 	@Override
 	public <Element extends HasName> Pair<Integer, @Nullable Element> chooseFromList(
-			final List<@NonNull ? extends Element> list, final String description, final String none, final String prompt,
-			final ListChoiceBehavior behavior) {
+			final List<@NonNull ? extends Element> list, final String description, final String none,
+			final String prompt, final ListChoiceBehavior behavior) {
 		return chooseFromListImpl(list, description, none, prompt, behavior, HasName::getName);
 	}
 
@@ -329,9 +329,9 @@ public final class CLIHelper implements ICLIHelper {
 	 * Have the user choose an item from a list.
 	 */
 	@Override
-	public Pair<Integer, @Nullable String> chooseStringFromList(final List<String> items,
-																final String description, final String none,
-																final String prompt, final ListChoiceBehavior behavior) {
+	public Pair<Integer, @Nullable String> chooseStringFromList(final List<String> items, final String description,
+	                                                            final String none, final String prompt,
+	                                                            final ListChoiceBehavior behavior) {
 		return chooseFromListImpl(items, description, none, prompt, behavior, Function.identity());
 	}
 

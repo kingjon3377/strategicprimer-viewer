@@ -67,8 +67,8 @@ public class AdvancementCLIHelper implements LevelGainSource {
 		final List<ISkill> skills = StreamSupport.stream(job.spliterator(), false).collect(Collectors.toList());
 		final Consumer<ISkill> addToList = skills::add;
 		while (true) {
-			final Pair<Integer, @Nullable ISkill> chosen = cli.chooseFromList(skills, "Skills in Job:", "No existing Skills.",
-					"Skill to advance: ", ICLIHelper.ListChoiceBehavior.ALWAYS_PROMPT);
+			final Pair<Integer, @Nullable ISkill> chosen = cli.chooseFromList(skills, "Skills in Job:",
+					"No existing Skills.", "Skill to advance: ", ICLIHelper.ListChoiceBehavior.ALWAYS_PROMPT);
 			final ISkill skill;
 			if (!Objects.isNull(chosen.getValue1())) {
 				skill = chosen.getValue1();
@@ -136,8 +136,8 @@ public class AdvancementCLIHelper implements LevelGainSource {
 		final List<IJob> jobs = StreamSupport.stream(worker.spliterator(), false).collect(Collectors.toList());
 		final Consumer<IJob> addToList = jobs::add;
 		while (true) {
-			final Pair<Integer, @Nullable IJob> chosen = cli.chooseFromList(jobs, "Jobs in worker:", "No existing Jobs.",
-					"Job to advance: ", ICLIHelper.ListChoiceBehavior.ALWAYS_PROMPT);
+			final Pair<Integer, @Nullable IJob> chosen = cli.chooseFromList(jobs, "Jobs in worker:",
+					"No existing Jobs.", "Job to advance: ", ICLIHelper.ListChoiceBehavior.ALWAYS_PROMPT);
 			final IJob job;
 			if (!Objects.isNull(chosen.getValue1())) {
 				job = chosen.getValue1();
@@ -295,7 +295,8 @@ public class AdvancementCLIHelper implements LevelGainSource {
 		} else if (individualAdvancement) {
 			while (!workers.isEmpty()) {
 				final IWorker chosen = cli.chooseFromList((List<? extends IWorker>) workers, "Workers in unit:",
-						"No unadvanced workers remain.", "Chosen worker: ", ICLIHelper.ListChoiceBehavior.ALWAYS_PROMPT).getValue1();
+						"No unadvanced workers remain.", "Chosen worker: ",
+						ICLIHelper.ListChoiceBehavior.ALWAYS_PROMPT).getValue1();
 				if (Objects.isNull(chosen)) {
 					break;
 				}
@@ -334,7 +335,8 @@ public class AdvancementCLIHelper implements LevelGainSource {
 					jobs.clear();
 					job = jobName;
 					unit.stream().filter(isWorker).map(workerCast)
-							.flatMap(w -> StreamSupport.stream(w.spliterator(), false)).map(IJob::getName).distinct().forEach(addJob);
+							.flatMap(w -> StreamSupport.stream(w.spliterator(), false)).map(IJob::getName)
+							.distinct().forEach(addJob);
 				}
 				advanceWorkersInJob(job, unit);
 				final Boolean continuation = cli.inputBoolean("Select another Job in these workers?");

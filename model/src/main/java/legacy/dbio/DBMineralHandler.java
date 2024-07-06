@@ -120,8 +120,9 @@ public final class DBMineralHandler extends AbstractDatabaseWriter<MineralFixtur
 			Query.of("SELECT row, column, id, kind, exposed, dc, image FROM minerals WHERE type = 'mineral'");
 
 	@Override
-	public void readMapContents(final Connection db, final IMutableLegacyMap map, final Map<Integer, IFixture> containers,
-								final Map<Integer, List<Object>> containees, final Warning warner) throws SQLException {
+	public void readMapContents(final Connection db, final IMutableLegacyMap map,
+	                            final Map<Integer, IFixture> containers, final Map<Integer, List<Object>> containees,
+	                            final Warning warner) throws SQLException {
 		handleQueryResults(db, warner, "stone deposits", readStoneDeposit(map), SELECT_STONE);
 		handleQueryResults(db, warner, "mineral veins", readMineralVein(map), SELECT_MINERAL);
 	}

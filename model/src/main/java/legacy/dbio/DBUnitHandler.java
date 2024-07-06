@@ -169,8 +169,9 @@ public final class DBUnitHandler extends AbstractDatabaseWriter<IUnit, Object> i
 	private static final Query SELECT_UNITS = Query.of("SELECT * FROM units");
 
 	@Override
-	public void readMapContents(final Connection db, final IMutableLegacyMap map, final Map<Integer, IFixture> containers,
-								final Map<Integer, List<Object>> containees, final Warning warner) throws SQLException {
+	public void readMapContents(final Connection db, final IMutableLegacyMap map,
+	                            final Map<Integer, IFixture> containers, final Map<Integer, List<Object>> containees,
+	                            final Warning warner) throws SQLException {
 		// FIXME: Move orders and results handling to here so we don't have to pass DB to the row-handler
 		handleQueryResults(db, warner, "units", readUnit(map, db, containers, containees), SELECT_UNITS);
 	}

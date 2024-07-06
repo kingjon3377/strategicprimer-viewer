@@ -46,7 +46,8 @@ import common.xmlio.Warning;
 	}
 
 	@Override
-	public void write(final ThrowingConsumer<String, IOException> ostream, final IResourcePile obj, final int indent) throws IOException {
+	public void write(final ThrowingConsumer<String, IOException> ostream, final IResourcePile obj, final int indent)
+			throws IOException {
 		writeTag(ostream, "resource", indent);
 		writeProperty(ostream, "id", obj.getId());
 		writeProperty(ostream, "kind", obj.getKind());

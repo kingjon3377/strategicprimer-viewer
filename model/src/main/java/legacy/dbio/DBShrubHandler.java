@@ -43,7 +43,9 @@ public final class DBShrubHandler extends AbstractDatabaseWriter<Shrub, Point> i
 	}
 
 	private static final Query INSERT_SQL = Query.of(
-			"INSERT INTO shrubs (row, column, id, kind, count, image) VALUES(:row, :column, :id, :kind, :count, :image);");
+			"""
+					INSERT INTO shrubs (row, column, id, kind, count, image)
+					VALUES(:row, :column, :id, :kind, :count, :image);""");
 
 	@Override
 	public void write(final Transactional db, final Shrub obj, final Point context) throws SQLException {
@@ -72,8 +74,9 @@ public final class DBShrubHandler extends AbstractDatabaseWriter<Shrub, Point> i
 	private static final Query SELECT = Query.of("SELECT * FROM shrubs");
 
 	@Override
-	public void readMapContents(final Connection db, final IMutableLegacyMap map, final Map<Integer, IFixture> containers,
-								final Map<Integer, List<Object>> containees, final Warning warner) throws SQLException {
+	public void readMapContents(final Connection db, final IMutableLegacyMap map,
+	                            final Map<Integer, IFixture> containers, final Map<Integer, List<Object>> containees,
+	                            final Warning warner) throws SQLException {
 		handleQueryResults(db, warner, "shrubs", readShrub(map), SELECT);
 	}
 }

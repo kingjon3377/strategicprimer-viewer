@@ -63,10 +63,15 @@ import java.util.function.Predicate;
 	 * @param idRegistrar The factory for ID numbers
 	 * @param players     The map's collection of players
 	 */
-	public YAMapReader(final Warning warner, final IDRegistrar idRegistrar, final IMutableLegacyPlayerCollection players) {
+	public YAMapReader(final Warning warner, final IDRegistrar idRegistrar,
+	                   final IMutableLegacyPlayerCollection players) {
 		super(warner, idRegistrar);
 		playerReader = new YAPlayerReader(warner, idRegistrar);
-		readers = List.of(new YAMobileReader(warner, idRegistrar), new YAResourceReader(warner, idRegistrar), new YATerrainReader(warner, idRegistrar), new YATextReader(warner, idRegistrar), new YATownReader(warner, idRegistrar, players), new YAGroundReader(warner, idRegistrar), new YAAdventureReader(warner, idRegistrar, players), new YAPortalReader(warner, idRegistrar), new YAExplorableReader(warner, idRegistrar), new YAUnitReader(warner, idRegistrar, players));
+		readers = List.of(new YAMobileReader(warner, idRegistrar), new YAResourceReader(warner, idRegistrar),
+				new YATerrainReader(warner, idRegistrar), new YATextReader(warner, idRegistrar),
+				new YATownReader(warner, idRegistrar, players), new YAGroundReader(warner, idRegistrar),
+				new YAAdventureReader(warner, idRegistrar, players), new YAPortalReader(warner, idRegistrar),
+				new YAExplorableReader(warner, idRegistrar), new YAUnitReader(warner, idRegistrar, players));
 		this.warner = warner;
 		this.players = players;
 	}
@@ -108,7 +113,8 @@ import java.util.function.Predicate;
 	/**
 	 * Write a newline if needed.
 	 */
-	private static void eolIfNeeded(final boolean needEol, final ThrowingConsumer<String, IOException> writer) throws IOException {
+	private static void eolIfNeeded(final boolean needEol, final ThrowingConsumer<String, IOException> writer)
+			throws IOException {
 		if (needEol) {
 			writer.accept(System.lineSeparator());
 		}
@@ -136,7 +142,8 @@ import java.util.function.Predicate;
 	/**
 	 * Write a river.
 	 */
-	public static void writeRiver(final ThrowingConsumer<String, IOException> ostream, final River obj, final int indent) throws IOException {
+	public static void writeRiver(final ThrowingConsumer<String, IOException> ostream, final River obj,
+	                              final int indent) throws IOException {
 		if (River.Lake == obj) {
 			writeTag(ostream, "lake", indent);
 		} else {
@@ -361,8 +368,8 @@ import java.util.function.Predicate;
 	/**
 	 * Write a child object
 	 */
-	private void writeChild(final ThrowingConsumer<String, IOException> ostream, final TileFixture child, final int tabs)
-			throws IOException {
+	private void writeChild(final ThrowingConsumer<String, IOException> ostream, final TileFixture child,
+	                        final int tabs) throws IOException {
 		final Class<? extends TileFixture> cls = child.getClass();
 		if (writerCache.containsKey(cls)) {
 			writerCache.get(cls).writeRaw(ostream, child, tabs);
@@ -383,7 +390,8 @@ import java.util.function.Predicate;
 	 * Write a map.
 	 */
 	@Override
-	public void write(final ThrowingConsumer<String, IOException> ostream, final ILegacyMap obj, final int tabs) throws IOException {
+	public void write(final ThrowingConsumer<String, IOException> ostream, final ILegacyMap obj, final int tabs)
+			throws IOException {
 		writeTag(ostream, "view", tabs);
 		writeProperty(ostream, "current_player", obj.getCurrentPlayer().getPlayerId());
 		writeProperty(ostream, "current_turn", obj.getCurrentTurn());
@@ -451,9 +459,10 @@ import java.util.function.Predicate;
 						writeProperty(ostream, "quality", entry.getValue());
 						closeLeafTag(ostream);
 					}
-					// TODO: Instead of special-casing ground and forest, and to minimize future churn with exploration, sort fixtures in some way.
+					// TODO: Instead of special-casing ground and forest, and to minimize
+					// future churn with exploration, sort fixtures in some way.
 					// To avoid breaking map-format-conversion tests, and to
-					// avoid churn in existing maps, put the first Ground and Forest
+					// avoid churn in existing maps, we put the first Ground and Forest
 					// before other fixtures.
 					final Ground ground = obj.getFixtures(loc).stream()
 							.filter(isGround).map(groundCast)

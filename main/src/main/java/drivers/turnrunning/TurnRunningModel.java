@@ -105,7 +105,8 @@ public class TurnRunningModel extends ExplorationModel implements ITurnRunningMo
 	 */
 	@Override
 	public <T extends HasPopulation<? extends TileFixture> & TileFixture>
-	void reducePopulation(final Point location, final T fixture, final IFixture.CopyBehavior zero, final int reduction) {
+	void reducePopulation(final Point location, final T fixture, final IFixture.CopyBehavior zero,
+	                      final int reduction) {
 		if (reduction > 0) {
 			boolean first = false;
 			boolean all = false;
@@ -161,7 +162,8 @@ public class TurnRunningModel extends ExplorationModel implements ITurnRunningMo
 	 */
 	@Override
 	public <T extends HasExtent<? extends TileFixture> & TileFixture>
-	void reduceExtent(final Point location, final T fixture, final IFixture.CopyBehavior zero, final BigDecimal reduction) {
+	void reduceExtent(final Point location, final T fixture, final IFixture.CopyBehavior zero,
+	                  final BigDecimal reduction) {
 		if (reduction.signum() > 0) {
 			boolean first = false;
 			boolean all = false;
@@ -280,7 +282,8 @@ public class TurnRunningModel extends ExplorationModel implements ITurnRunningMo
 					final Job newJob = new Job(jobName, 0);
 					newJob.addSkill(new Skill(skillName, 0, 0));
 					matching.addJob(newJob);
-				} else if (StreamSupport.stream(job.spliterator(), false).map(ISkill::getName).noneMatch(Predicate.isEqual(skillName))) {
+				} else if (StreamSupport.stream(job.spliterator(), false).map(ISkill::getName)
+						.noneMatch(Predicate.isEqual(skillName))) {
 					map.setModified(true);
 					job.addSkill(new Skill(skillName, 0, 0));
 				}
@@ -349,7 +352,8 @@ public class TurnRunningModel extends ExplorationModel implements ITurnRunningMo
 	 * be a random number between 0 and 99.
 	 */
 	@Override
-	public boolean addHoursToSkill(final IWorker worker, final String jobName, final String skillName, final int hours, final int contextValue) {
+	public boolean addHoursToSkill(final IWorker worker, final String jobName, final String skillName, final int hours,
+	                               final int contextValue) {
 		boolean any = false;
 		final Predicate<Object> isUnit = IUnit.class::isInstance;
 		final Predicate<Object> isWorker = IMutableWorker.class::isInstance;
@@ -411,7 +415,8 @@ public class TurnRunningModel extends ExplorationModel implements ITurnRunningMo
 	 * out in any of the maps, false otherwise.
 	 */
 	@Override
-	public boolean replaceSkillInJob(final IWorker worker, final String jobName, final ISkill delenda, final ISkill replacement) {
+	public boolean replaceSkillInJob(final IWorker worker, final String jobName, final ISkill delenda,
+	                                 final ISkill replacement) {
 		boolean any = false;
 		final Predicate<Object> isUnit = IUnit.class::isInstance;
 		final Predicate<Object> isWorker = IMutableWorker.class::isInstance;
@@ -477,7 +482,8 @@ public class TurnRunningModel extends ExplorationModel implements ITurnRunningMo
 					if (resource.isSubset(item, x -> {
 					}) || // TODO: is that the right way around?
 							(resource.getKind().equals(item.getKind()) &&
-									resource.getContents().equals(item.getContents()) && resource.getId() == item.getId())) {
+									resource.getContents().equals(item.getContents()) &&
+									resource.getId() == item.getId())) {
 						final BigDecimal qty = decimalize(item.getQuantity().number());
 						if (qty.compareTo(amount) <= 0) {
 							switch (container) {
@@ -617,7 +623,8 @@ public class TurnRunningModel extends ExplorationModel implements ITurnRunningMo
 	 * mutable) unit was found in at least one map, false otherwise.
 	 */
 	@Override
-	public boolean addResource(final IUnit container, final int id, final String kind, final String contents, final LegacyQuantity quantity) {
+	public boolean addResource(final IUnit container, final int id, final String kind, final String contents,
+	                           final LegacyQuantity quantity) {
 		boolean any = false;
 		final IMutableResourcePile resource = new ResourcePileImpl(id, kind, contents, quantity);
 		final Predicate<Object> isUnit = IMutableUnit.class::isInstance;
@@ -650,7 +657,8 @@ public class TurnRunningModel extends ExplorationModel implements ITurnRunningMo
 	 * mutable) fortress was found in at least one map, false otherwise.
 	 */
 	@Override
-	public boolean addResource(final IFortress container, final int id, final String kind, final String contents, final LegacyQuantity quantity) {
+	public boolean addResource(final IFortress container, final int id, final String kind, final String contents,
+	                           final LegacyQuantity quantity) {
 		boolean any = false;
 		final IMutableResourcePile resource = new ResourcePileImpl(id, kind, contents, quantity);
 		final Predicate<Object> isFortress = IMutableFortress.class::isInstance;
@@ -679,8 +687,8 @@ public class TurnRunningModel extends ExplorationModel implements ITurnRunningMo
 	 * otherwise.
 	 */
 	@Override
-	public boolean addResource(final IUnit container, final int id, final String kind, final String contents, final LegacyQuantity quantity,
-							   final int createdDate) {
+	public boolean addResource(final IUnit container, final int id, final String kind, final String contents,
+	                           final LegacyQuantity quantity, final int createdDate) {
 		boolean any = false;
 		final IMutableResourcePile resource = new ResourcePileImpl(id, kind, contents, quantity);
 		resource.setCreated(createdDate);
@@ -715,8 +723,8 @@ public class TurnRunningModel extends ExplorationModel implements ITurnRunningMo
 	 * otherwise.
 	 */
 	@Override
-	public boolean addResource(final IFortress container, final int id, final String kind, final String contents, final LegacyQuantity quantity,
-							   final int createdDate) {
+	public boolean addResource(final IFortress container, final int id, final String kind, final String contents,
+	                           final LegacyQuantity quantity, final int createdDate) {
 		boolean any = false;
 		final IMutableResourcePile resource = new ResourcePileImpl(id, kind, contents, quantity);
 		resource.setCreated(createdDate);
@@ -748,7 +756,8 @@ public class TurnRunningModel extends ExplorationModel implements ITurnRunningMo
 	 * legacy.map.fixtures.mobile.AnimalImpl} constructor, to better fit the needs of <em>our</em> callers.
 	 */
 	@Override
-	public boolean addAnimal(final IUnit container, final String kind, final String status, final int id, final int population, final int born) {
+	public boolean addAnimal(final IUnit container, final String kind, final String status, final int id,
+	                         final int population, final int born) {
 		if (population <= 0) {
 			return false;
 		}
@@ -787,7 +796,8 @@ public class TurnRunningModel extends ExplorationModel implements ITurnRunningMo
 	 * the transfer occurs) in any map, false otherwise.
 	 */
 	@Override
-	public boolean transferResource(final IResourcePile from, final IUnit to, final BigDecimal quantity, final IntSupplier idFactory) {
+	public boolean transferResource(final IResourcePile from, final IUnit to, final BigDecimal quantity,
+	                                final IntSupplier idFactory) {
 		boolean any = false;
 		final IntSupplier id = new GenerateOnce(idFactory);
 		final Predicate<Object> isResource = IMutableResourcePile.class::isInstance;
@@ -795,7 +805,8 @@ public class TurnRunningModel extends ExplorationModel implements ITurnRunningMo
 		final Predicate<IMutableResourcePile> matchingPileKind = r -> r.getKind().equals(from.getKind());
 		final Predicate<IMutableResourcePile> matchingPileContents = r -> r.getContents().equals(from.getContents());
 		final Predicate<IMutableResourcePile> matchingPileAge = r -> r.getCreated() == from.getCreated();
-		final Predicate<IMutableResourcePile> matchingPileUnits = r -> r.getQuantity().units().equals(from.getQuantity().units());
+		final Predicate<IMutableResourcePile> matchingPileUnits =
+				r -> r.getQuantity().units().equals(from.getQuantity().units());
 		final Predicate<IMutableResourcePile> matchingPileId = r -> r.getId() == from.getId();
 		final Predicate<Object> isUnit = IMutableUnit.class::isInstance;
 		final Function<Object, IMutableUnit> unitCast = IMutableUnit.class::cast;
@@ -823,7 +834,8 @@ public class TurnRunningModel extends ExplorationModel implements ITurnRunningMo
 				if (!Objects.isNull(matching) && !Objects.isNull(destination)) {
 					map.setModified(true);
 					if (quantity.doubleValue() >= matching.getQuantity().number().doubleValue()) {
-						switch (container) { // TODO: Combine unit and fortress cases once supertype added for removeMember()
+						switch (container) {
+							// TODO: Combine unit and fortress cases once supertype added for removeMember()
 							case final IMutableFortress fort -> fort.removeMember(matching);
 							case final IMutableUnit unit -> unit.removeMember(matching);
 							default -> throw new IllegalStateException("Unexpected fixture-container type");
@@ -855,7 +867,8 @@ public class TurnRunningModel extends ExplorationModel implements ITurnRunningMo
 	 * transfer occurs) in any map, false otherwise.
 	 */
 	@Override
-	public boolean transferResource(final IResourcePile from, final IFortress to, final BigDecimal quantity, final IntSupplier idFactory) {
+	public boolean transferResource(final IResourcePile from, final IFortress to, final BigDecimal quantity,
+	                                final IntSupplier idFactory) {
 		boolean any = false;
 		final IntSupplier id = new GenerateOnce(idFactory);
 		final Predicate<Object> isResource = IMutableResourcePile.class::isInstance;
@@ -863,7 +876,8 @@ public class TurnRunningModel extends ExplorationModel implements ITurnRunningMo
 		final Predicate<IMutableResourcePile> matchingPileKind = r -> r.getKind().equals(from.getKind());
 		final Predicate<IMutableResourcePile> matchingPileContents = r -> r.getContents().equals(from.getContents());
 		final Predicate<IMutableResourcePile> matchingPileAge = r -> r.getCreated() == from.getCreated();
-		final Predicate<IMutableResourcePile> matchingPileUnits = r -> r.getQuantity().units().equals(from.getQuantity().units());
+		final Predicate<IMutableResourcePile> matchingPileUnits =
+				r -> r.getQuantity().units().equals(from.getQuantity().units());
 		final Predicate<IMutableResourcePile> matchingPileId = r -> r.getId() == from.getId();
 		final Predicate<Object> isFortress = IMutableFortress.class::isInstance;
 		final Function<Object, IMutableFortress> fortressCast = IMutableFortress.class::cast;

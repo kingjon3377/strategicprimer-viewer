@@ -30,7 +30,8 @@ public class VillageReportGenerator extends AbstractReportGenerator<Village> {
 		this(currentPlayer, dimensions, null);
 	}
 
-	public VillageReportGenerator(final Player currentPlayer, final MapDimensions dimensions, final @Nullable Point hq) {
+	public VillageReportGenerator(final Player currentPlayer, final MapDimensions dimensions,
+	                              final @Nullable Point hq) {
 		super(dimensions, hq);
 		this.currentPlayer = currentPlayer;
 	}
@@ -63,8 +64,8 @@ public class VillageReportGenerator extends AbstractReportGenerator<Village> {
 				if (others.containsKey(village.owner())) {
 					mapping = others.get(village.owner());
 				} else {
-					mapping = new HeadedMapImpl<>("<h5>Villages sworn to %s</h5>%n".formatted(village.owner().getName()),
-                            villageComparator);
+					mapping = new HeadedMapImpl<>("<h5>Villages sworn to %s</h5>%n"
+							.formatted(village.owner().getName()), villageComparator);
 					others.put(village.owner(), mapping);
 				}
 				mapping.put(village, loc);
@@ -90,7 +91,8 @@ public class VillageReportGenerator extends AbstractReportGenerator<Village> {
 	 */
 	@Override
 	public void produceSingle(final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-							  final ILegacyMap map, final Consumer<String> ostream, final Village item, final Point loc) {
+							  final ILegacyMap map, final Consumer<String> ostream, final Village item,
+							  final Point loc) {
 		fixtures.remove(item.getId());
 		ostream.accept("At ");
 		ostream.accept(loc.toString());

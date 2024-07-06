@@ -24,7 +24,8 @@ public class AdventureReportGenerator extends AbstractReportGenerator<AdventureF
 		this(currentPlayer, dimensions, null);
 	}
 
-	public AdventureReportGenerator(final Player currentPlayer, final MapDimensions dimensions, final @Nullable Point hq) {
+	public AdventureReportGenerator(final Player currentPlayer, final MapDimensions dimensions,
+	                                final @Nullable Point hq) {
 		super(dimensions, hq);
 		this.currentPlayer = currentPlayer;
 	}

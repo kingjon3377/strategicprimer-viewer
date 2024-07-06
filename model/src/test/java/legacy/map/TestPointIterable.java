@@ -63,7 +63,8 @@ public final class TestPointIterable {
 	public void testVerticalReverse() {
 		assertIterableEquals(Arrays.asList(new Point(2, 2), new Point(1, 2), new Point(0, 2),
 						new Point(2, 1), new Point(1, 1), new Point(0, 1), new Point(2, 0),
-						new Point(1, 0), new Point(0, 0)), new PointIterable(new MapDimensionsImpl(3, 3, 1), false, false),
+						new Point(1, 0), new Point(0, 0)), new PointIterable(new MapDimensionsImpl(3, 3, 1),
+						false, false),
 				"Iterator should produce points in the expected order when iterating backwards vertically.");
 	}
 }

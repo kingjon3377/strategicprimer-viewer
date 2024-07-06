@@ -108,7 +108,8 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 	 */
 	private static boolean areDiggablesEqual(final IFixture firstFixture, final IFixture secondFixture) {
 		return Objects.equals(firstFixture, secondFixture) ||
-				Objects.equals(firstFixture.copy(IFixture.CopyBehavior.ZERO), secondFixture.copy(IFixture.CopyBehavior.ZERO));
+				Objects.equals(firstFixture.copy(IFixture.CopyBehavior.ZERO),
+						secondFixture.copy(IFixture.CopyBehavior.ZERO));
 	}
 
 	/**
@@ -1216,7 +1217,8 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 					.filter(IMutableUnit.class::isInstance)
 					.map(IMutableUnit.class::cast)
 					.filter(this::matchingPlayer).toList()) {
-				if (unit.stream().anyMatch(Predicate.isEqual(existing))) { // TODO: look beyond equals() for matching-in-existing?
+				// TODO: look beyond equals() for matching-in-existing?
+				if (unit.stream().anyMatch(Predicate.isEqual(existing))) {
 					unit.addMember(sibling.copy(IFixture.CopyBehavior.KEEP));
 					any = true;
 					map.setModified(true);

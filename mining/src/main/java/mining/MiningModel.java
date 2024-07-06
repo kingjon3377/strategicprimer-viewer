@@ -143,7 +143,8 @@ import java.util.stream.Collectors;
 		// guaranteed to break on the first iteration in all three loops ...
 		final SortedMap<Integer, List<Pair<Integer, Integer>>> byRow =
 				treeMap(unnormalized.keySet()
-								.stream().collect(Collectors.<Pair<Integer, Integer>, Integer>groupingBy(Pair::getValue0)),
+								.stream().collect(
+										Collectors.<Pair<Integer, Integer>, Integer>groupingBy(Pair::getValue0)),
 						Comparator.reverseOrder());
 		final Predicate<? super Pair<Integer, Integer>> containsKey = unnormalized::containsKey;
 		final Consumer<? super Pair<Integer, Integer>> removePoint = unnormalized::remove;

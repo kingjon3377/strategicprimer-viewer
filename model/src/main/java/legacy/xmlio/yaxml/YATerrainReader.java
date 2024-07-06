@@ -71,7 +71,8 @@ import java.util.Set;
 	}
 
 	@Override
-	public void write(final ThrowingConsumer<String, IOException> ostream, final TerrainFixture obj, final int indent) throws IOException {
+	public void write(final ThrowingConsumer<String, IOException> ostream, final TerrainFixture obj, final int indent)
+			throws IOException {
 		switch (obj) {
 			case final Forest f -> {
 				writeTag(ostream, "forest", indent);

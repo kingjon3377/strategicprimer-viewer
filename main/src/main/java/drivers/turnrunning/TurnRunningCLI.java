@@ -223,13 +223,18 @@ import org.jetbrains.annotations.Nullable;
 	@Override
 	public void startDriver() {
 		final int currentTurn = model.getMap().getCurrentTurn();
-		final Player player = cli.chooseFromList((List<? extends Player>) new ArrayList<>(model.getPlayerChoices()), "Players in the maps:", "No players found", "Player to run:", ICLIHelper.ListChoiceBehavior.ALWAYS_PROMPT).getValue1();
+		final Player player = cli.chooseFromList((List<? extends Player>) new ArrayList<>(model.getPlayerChoices()),
+				"Players in the maps:", "No players found", "Player to run:",
+				ICLIHelper.ListChoiceBehavior.ALWAYS_PROMPT).getValue1();
 		if (Objects.isNull(player)) {
 			return;
 		}
 		final List<IUnit> units = getUnits(player).filter(unfinishedResults(currentTurn)).collect(Collectors.toList());
 		while (true) {
-			final Pair<Integer, @Nullable IUnit> pair = cli.chooseFromList(units, "Units belonging to %s:".formatted(player), "Player has no units without apparently-final results", "Unit to run:", ICLIHelper.ListChoiceBehavior.ALWAYS_PROMPT);
+			final Pair<Integer, @Nullable IUnit> pair =
+					cli.chooseFromList(units, "Units belonging to %s:".formatted(player),
+							"Player has no units without apparently-final results", "Unit to run:",
+							ICLIHelper.ListChoiceBehavior.ALWAYS_PROMPT);
 			final int index = pair.getValue0();
 			final IUnit unit = pair.getValue1();
 			if (Objects.isNull(unit)) {

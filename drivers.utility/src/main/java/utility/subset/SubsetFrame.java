@@ -120,9 +120,8 @@ import drivers.common.ISPDriver;
 			throw new DriverFailedException(except, "Malformed XML in main map " + arg);
 		} catch (final SPFormatException except) {
 			printParagraph(
-					"ERROR: SP map format error at line %d in file %s; see following error message for details".formatted(
-							except.getLine(), arg),
-					LabelTextColor.RED);
+					"ERROR: SP map format error at line %d in file %s; see following error message for details"
+							.formatted(except.getLine(), arg), LabelTextColor.RED);
 			printParagraph(except.getMessage(), LabelTextColor.RED);
 			throw new DriverFailedException(except, "Invalid SP XML in main  map " + arg);
 		} catch (final IOException except) {
@@ -160,8 +159,8 @@ import drivers.common.ISPDriver;
 			LovelaceLogger.error(except, "Malformed XML in file %s", path);
 			return;
 		} catch (final SPFormatException except) {
-			printParagraph("FAIL: SP map format error at line %d; see following error message for details".formatted(except.getLine()),
-                    LabelTextColor.RED);
+			printParagraph("FAIL: SP map format error at line %d; see following error message for details"
+							.formatted(except.getLine()), LabelTextColor.RED);
 			printParagraph(except.getMessage(), LabelTextColor.RED);
 			LovelaceLogger.error(except, "SP map format error reading %s", path);
 			return;

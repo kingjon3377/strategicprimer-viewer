@@ -135,8 +135,8 @@ import static impl.xmlio.ISPReader.SP_NAMESPACE;
 	 * @param element      The current tag.
 	 * @param param        The parameter we want to get
 	 * @param defaultValue The value to return if the tag doesn't have that parameter
-	 * @param warner       The {@link Warning} instance to use if the attribute was present but non-Boolean but a default
-	 *                     was provided
+	 * @param warner       The {@link Warning} instance to use if the attribute was present but non-Boolean but a
+	 *                     default was provided
 	 */
 	protected static boolean getBooleanAttribute(final StartElement element, final String param,
 												 final boolean defaultValue, final Warning warner) {
@@ -468,7 +468,8 @@ import static impl.xmlio.ISPReader.SP_NAMESPACE;
 	 *                           otherwise malformed
 	 */
 	protected static Number getNumericAttribute(final StartElement tag, final String parameter,
-												final Number defaultValue, final Warning warner) throws SPFormatException {
+												final Number defaultValue, final Warning warner)
+			throws SPFormatException {
 		final Attribute attr = getAttributeByName(tag, parameter);
 		if (Objects.isNull(attr)) {
 			return defaultValue;

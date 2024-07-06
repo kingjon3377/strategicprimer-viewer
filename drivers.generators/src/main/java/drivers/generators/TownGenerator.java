@@ -274,7 +274,8 @@ import java.math.BigDecimal;
 	/**
 	 * Have the user enter expertise levels and claimed resources for a town.
 	 */
-	private static CommunityStats enterStats(final ICLIHelper cli, final IDRegistrar idf, final ILegacyMap map, final Point location,
+	private static CommunityStats enterStats(final ICLIHelper cli, final IDRegistrar idf, final ILegacyMap map,
+	                                         final Point location,
 			/*ModifiableTown*/ final ITownFixture town) {
 		final CommunityStats retval = new CommunityStats(Optional.ofNullable(
 				cli.inputNumber("Population: ")).orElse(0));
@@ -312,7 +313,9 @@ import java.math.BigDecimal;
 				cli.println("Invalid input");
 				continue;
 			}
-			final Point fieldLoc = findLocById(map, field); // TODO: This wasn't initialized until isClaimedField() check in Ceylon, but a variable can't be declared in an if statement in Java
+			// TODO: This wasn't initialized until isClaimedField() check in Ceylon, but a variable can't be declared in
+			//  an if statement in Java. So move into 'else'
+			final Point fieldLoc = findLocById(map, field);
 			if (isClaimedField(map, field)) {
 				cli.println("That field is already worked by another town");
 			} else if (!Objects.isNull(fieldLoc)) {

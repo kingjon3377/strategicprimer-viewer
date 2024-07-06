@@ -334,7 +334,8 @@ import legacy.map.fixtures.towns.Village;
 			} else {
 				final IJob training = candidates.get(SingletonRandom.SINGLETON_RANDOM.nextInt(candidates.size()));
 				worker.addJob(training);
-				final Predicate<WorkerStats> suitable = MinimumStats.suitableFor(training.getName(), training.getLevel());
+				final Predicate<WorkerStats> suitable = MinimumStats.suitableFor(training.getName(),
+						training.getLevel());
 				int iterations = 0;
 				while (true) {
 					iterations++;
@@ -357,7 +358,8 @@ import legacy.map.fixtures.towns.Village;
 						break;
 					}
 				}
-				final boolean hasMount = cli.inputBooleanInSeries("Is the worker mounted?", "mounted-" + training.getName());
+				final boolean hasMount = cli.inputBooleanInSeries("Is the worker mounted?",
+						"mounted-" + training.getName());
 				if (hasMount) {
 					final String mountKind = cli.inputString("Kind of mount: ");
 					if (!Objects.isNull(mountKind) && !mountKind.isEmpty()) {
@@ -635,7 +637,8 @@ import legacy.map.fixtures.towns.Village;
 		final List<Player> players = StreamSupport.stream(
 				model.getPlayerChoices().spliterator(), false).collect(Collectors.toList());
 		while (!players.isEmpty()) {
-			final Player chosen = cli.chooseFromList((List<? extends Player>) players, "Which player owns the new worker(s)?",
+			final Player chosen = cli.chooseFromList((List<? extends Player>) players,
+					"Which player owns the new worker(s)?",
 					"There are no players shared by all the maps.", "Player selection: ",
 					ICLIHelper.ListChoiceBehavior.ALWAYS_PROMPT).getValue1();
 			if (Objects.isNull(chosen)) {

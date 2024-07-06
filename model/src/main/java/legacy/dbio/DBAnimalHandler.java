@@ -98,7 +98,8 @@ public final class DBAnimalHandler extends AbstractDatabaseWriter<AnimalOrTracks
 		}
 		switch (obj) {
 			case AnimalTracks animalTracks -> {
-				if (context instanceof IUnit || context instanceof IWorker) { // TODO: Invert test to use type-inferring instanceof
+				// TODO: Invert test to use type-inferring instanceof
+				if (context instanceof IUnit || context instanceof IWorker) {
 					throw new IllegalArgumentException("Animal tracks can't occur inside a unit or worker");
 				}
 				INSERT_TRACKS.on(value("row", ((Point) context).row()), value("column", ((Point) context).column()),
@@ -175,8 +176,9 @@ public final class DBAnimalHandler extends AbstractDatabaseWriter<AnimalOrTracks
 	private static final Query SELECT_TRACKS = Query.of("SELECT * FROM tracks");
 
 	@Override
-	public void readMapContents(final Connection db, final IMutableLegacyMap map, final Map<Integer, IFixture> containers,
-								final Map<Integer, List<Object>> containees, final Warning warner) throws SQLException {
+	public void readMapContents(final Connection db, final IMutableLegacyMap map,
+	                            final Map<Integer, IFixture> containers, final Map<Integer, List<Object>> containees,
+	                            final Warning warner) throws SQLException {
 		handleQueryResults(db, warner, "animal populations", readAnimal(map, containees),
 				SELECT_ANIMALS);
 		handleQueryResults(db, warner, "animal tracks", readTracks(map),

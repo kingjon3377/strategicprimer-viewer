@@ -64,7 +64,8 @@ import java.util.Objects;
 				newMaxColumn = newValue;
 				newMinColumn = newValue - oldDimensions.getWidth() + 1;
 			} else {
-				LovelaceLogger.debug("No cached horizontal coordinate and new value within previous visible area, skipping ...");
+				LovelaceLogger.debug(
+						"No cached horizontal coordinate and new value within previous visible area, skipping ...");
 				oldColumn = newValue;
 				return;
 			}
@@ -164,7 +165,8 @@ import java.util.Objects;
 				newMaxRow = newValue;
 				newMinRow = newValue - oldDimensions.getHeight() + 1;
 			} else {
-				LovelaceLogger.debug("No cached vertical coordinate and new value within previous visible area, skipping ...");
+				LovelaceLogger.debug(
+						"No cached vertical coordinate and new value within previous visible area, skipping ...");
 				oldRow = newValue;
 				return;
 			}

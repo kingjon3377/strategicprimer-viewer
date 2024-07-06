@@ -42,7 +42,9 @@ public final class DBGroundHandler extends AbstractDatabaseWriter<Ground, Point>
 	}
 
 	private static final Query INSERT_SQL = Query.of(
-			"INSERT INTO ground (row, column, id, kind, exposed, image) VALUES(:row, :column, :id, :kind, :exposed, :image);");
+			"""
+					INSERT INTO ground (row, column, id, kind, exposed, image)
+					VALUES(:row, :column, :id, :kind, :exposed, :image);""");
 
 	@Override
 	public void write(final Transactional db, final Ground obj, final Point context) throws SQLException {
@@ -70,8 +72,9 @@ public final class DBGroundHandler extends AbstractDatabaseWriter<Ground, Point>
 	private static final Query SELECT = Query.of("SELECT * FROM ground");
 
 	@Override
-	public void readMapContents(final Connection db, final IMutableLegacyMap map, final Map<Integer, IFixture> containers,
-								final Map<Integer, List<Object>> containees, final Warning warner) throws SQLException {
+	public void readMapContents(final Connection db, final IMutableLegacyMap map,
+	                            final Map<Integer, IFixture> containers, final Map<Integer, List<Object>> containees,
+	                            final Warning warner) throws SQLException {
 		handleQueryResults(db, warner, "ground", readGround(map), SELECT);
 	}
 }

@@ -82,7 +82,9 @@ public final class WorkerTree extends JTree implements UnitMemberSelectionSource
 	// TODO: Move into the inner class that uses this
 	private static final DefaultTreeCellRenderer DEFAULT_STORER = new DefaultTreeCellRenderer();
 	private final List<Pair<String, ToIntFunction<WorkerStats>>> statReferencesList =
-			List.of(Pair.with("Str", WorkerStats::getStrength), Pair.with("Dex", WorkerStats::getDexterity), Pair.with("Con", WorkerStats::getConstitution), Pair.with("Int", WorkerStats::getIntelligence), Pair.with("Wis", WorkerStats::getWisdom), Pair.with("Cha", WorkerStats::getCharisma));
+			List.of(Pair.with("Str", WorkerStats::getStrength), Pair.with("Dex", WorkerStats::getDexterity),
+					Pair.with("Con", WorkerStats::getConstitution), Pair.with("Int", WorkerStats::getIntelligence),
+					Pair.with("Wis", WorkerStats::getWisdom), Pair.with("Cha", WorkerStats::getCharisma));
 
 	private final IWorkerTreeModel wtModel;
 
@@ -532,7 +534,8 @@ public final class WorkerTree extends JTree implements UnitMemberSelectionSource
 		// of the method was to assert both are non-null.
 		@Override
 		public Component getTreeCellRendererComponent(final JTree tree, final Object item, final boolean selected,
-													  final boolean expanded, final boolean leaf, final int row, final boolean hasFocus) {
+													  final boolean expanded, final boolean leaf, final int row,
+													  final boolean hasFocus) {
 			final Component component = super.getTreeCellRendererComponent(tree, item,
 					selected, expanded, leaf, row, hasFocus);
 			final Object internal = Optional.of(item).filter(DefaultMutableTreeNode.class::isInstance)

@@ -87,7 +87,8 @@ import java.util.function.Consumer;
 	}
 
 	public CommunityStats parseCommunityStats(final StartElement element, final QName parent,
-											  final Iterable<XMLEvent> stream) throws SPFormatException, XMLStreamException {
+											  final Iterable<XMLEvent> stream)
+			throws SPFormatException, XMLStreamException {
 		requireTag(element, parent, "population");
 		expectAttributes(element, "size");
 		final CommunityStats retval = new CommunityStats(getIntegerParameter(element, "size"));
@@ -150,7 +151,8 @@ import java.util.function.Consumer;
 							} else {
 								throw UnwantedChildException.listingExpectedTags(
 										stack.peekFirst().getName(), se,
-										expectedCommunityStatsTags(Objects.requireNonNullElse(current, "population")).toArray(String[]::new));
+										expectedCommunityStatsTags(Objects.requireNonNullElse(current, "population"))
+												.toArray(String[]::new));
 							}
 							lambda.accept(resourceReader.read(se,
 									stack.peekFirst().getName(), stream));
@@ -159,7 +161,8 @@ import java.util.function.Consumer;
 							throw UnwantedChildException.listingExpectedTags(
 									stack.isEmpty() ? element.getName() :
 											stack.peekFirst().getName(),
-									se, expectedCommunityStatsTags(Objects.requireNonNullElse(current, "population")).toArray(String[]::new));
+									se, expectedCommunityStatsTags(Objects.requireNonNullElse(current, "population"))
+											.toArray(String[]::new));
 					}
 				}
 				case final EndElement ee when !stack.isEmpty() && ee.getName().equals(stack.peekFirst().getName()) -> {
@@ -300,8 +303,8 @@ import java.util.function.Consumer;
 		return retval;
 	}
 
-	private void writeAbstractTown(final ThrowingConsumer<String, IOException> ostream, final AbstractTown obj, final int tabs)
-			throws IOException {
+	private void writeAbstractTown(final ThrowingConsumer<String, IOException> ostream, final AbstractTown obj,
+	                               final int tabs) throws IOException {
 		writeTag(ostream, obj.getKind(), tabs);
 		writeProperty(ostream, "status", obj.getStatus().toString());
 		writeProperty(ostream, "size", obj.getTownSize().toString());
@@ -320,8 +323,8 @@ import java.util.function.Consumer;
 		}
 	}
 
-	public void writeCommunityStats(final ThrowingConsumer<String, IOException> ostream, final CommunityStats obj, final int tabs)
-			throws IOException {
+	public void writeCommunityStats(final ThrowingConsumer<String, IOException> ostream, final CommunityStats obj,
+	                                final int tabs) throws IOException {
 		writeTag(ostream, "population", tabs);
 		writeProperty(ostream, "size", obj.getPopulation());
 		finishParentTag(ostream);
@@ -374,7 +377,8 @@ import java.util.function.Consumer;
 	}
 
 	@Override
-	public void write(final ThrowingConsumer<String, IOException> ostream, final ITownFixture obj, final int tabs) throws IOException {
+	public void write(final ThrowingConsumer<String, IOException> ostream, final ITownFixture obj, final int tabs)
+			throws IOException {
 		switch (obj) {
 			case final AbstractTown at -> writeAbstractTown(ostream, at, tabs);
 			case final Village v -> {

@@ -95,7 +95,8 @@ public class ConsumptionApplet extends AbstractTurnApplet {
 				return null;
 			}
 			if (food.getQuantity().number().doubleValue() <= remainingConsumption.doubleValue()) {
-				final Boolean resp = cli.inputBooleanInSeries("Consume all of the %s?".formatted(food.getContents()), "consume-all-of");
+				final Boolean resp = cli.inputBooleanInSeries("Consume all of the %s?".formatted(food.getContents()),
+						"consume-all-of");
 				if (Objects.isNull(resp)) {
 					return null;
 				} else if (resp) {
@@ -105,7 +106,8 @@ public class ConsumptionApplet extends AbstractTurnApplet {
 							decimalize(food.getQuantity().number()));
 					continue;
 				} else { // TODO: extract this as a function?
-					final BigDecimal amountToConsume = cli.inputDecimal("How many pounds of the %s to consume:".formatted(food.getContents()));
+					final BigDecimal amountToConsume =
+							cli.inputDecimal("How many pounds of the %s to consume:".formatted(food.getContents()));
 					if (Objects.isNull(amountToConsume)) {
 						return null;
 					}
@@ -124,7 +126,8 @@ public class ConsumptionApplet extends AbstractTurnApplet {
 				model.reduceResourceBy(food, remainingConsumption, localUnit.owner());
 				remainingConsumption = decimalize(0);
 			} else { // TODO: extract this as a function?
-				final BigDecimal amountToConsume = cli.inputDecimal("How many pounds of the %s to consume:".formatted(food.getContents()));
+				final BigDecimal amountToConsume =
+						cli.inputDecimal("How many pounds of the %s to consume:".formatted(food.getContents()));
 				if (Objects.isNull(amountToConsume)) {
 					return null;
 				} else if (amountToConsume.compareTo(remainingConsumption) > 0) {

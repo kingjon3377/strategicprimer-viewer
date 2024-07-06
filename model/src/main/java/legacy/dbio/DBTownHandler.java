@@ -62,9 +62,11 @@ public final class DBTownHandler extends AbstractDatabaseWriter<AbstractTown, Po
 	}
 
 	private static final Query INSERT_SQL =
-			Query.of("INSERT INTO towns (row, column, id, kind, status, size, dc, name, " +
-					"    owner, image, portrait, population) " +
-					"VALUES(:row, :column, :id, :kind, :status, :size, :dc, :name, :owner, :image, :portrait, :population);");
+			Query.of("""
+					INSERT INTO towns (row, column, id, kind, status, size, dc, name,
+					    owner, image, portrait, population)
+					VALUES(:row, :column, :id, :kind, :status, :size, :dc, :name, :owner, :image,
+						:portrait, :population);""");
 
 	private static final AbstractDatabaseWriter<CommunityStats, ITownFixture> CS_WRITER =
 			new DBCommunityStatsHandler();
@@ -138,8 +140,9 @@ public final class DBTownHandler extends AbstractDatabaseWriter<AbstractTown, Po
 	private static final Query SELECT = Query.of("SELECT * FROM towns");
 
 	@Override
-	public void readMapContents(final Connection db, final IMutableLegacyMap map, final Map<Integer, IFixture> containers,
-								final Map<Integer, List<Object>> containees, final Warning warner) throws SQLException {
+	public void readMapContents(final Connection db, final IMutableLegacyMap map,
+	                            final Map<Integer, IFixture> containers, final Map<Integer, List<Object>> containees,
+	                            final Warning warner) throws SQLException {
 		handleQueryResults(db, warner, "towns", readTown(map, containers, containees), SELECT);
 	}
 }

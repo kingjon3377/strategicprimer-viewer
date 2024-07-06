@@ -90,8 +90,9 @@ public final class DBPortalHandler extends AbstractDatabaseWriter<Portal, Point>
 	private static final Query SELECT = Query.of("SELECT * FROM portals");
 
 	@Override
-	public void readMapContents(final Connection db, final IMutableLegacyMap map, final Map<Integer, IFixture> containers,
-								final Map<Integer, List<Object>> containees, final Warning warner) throws SQLException {
+	public void readMapContents(final Connection db, final IMutableLegacyMap map,
+	                            final Map<Integer, IFixture> containers, final Map<Integer, List<Object>> containees,
+	                            final Warning warner) throws SQLException {
 		handleQueryResults(db, warner, "portals", readPortal(map), SELECT);
 	}
 }

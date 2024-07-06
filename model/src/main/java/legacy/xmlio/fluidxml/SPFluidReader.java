@@ -115,8 +115,8 @@ public class SPFluidReader implements IMapReader, ISPReader {
 	private record SimpleFixtureReader(String tag, IntFunction<Object> factory) {
 
 		public Object reader(final StartElement element, final QName parent, final Iterable<XMLEvent> stream,
-							 final IMutableLegacyPlayerCollection players, final Warning warner, final IDRegistrar idFactory)
-				throws SPFormatException {
+							 final IMutableLegacyPlayerCollection players, final Warning warner,
+							 final IDRegistrar idFactory) throws SPFormatException {
 			requireTag(element, parent, tag);
 			expectAttributes(element, warner, "id", "image");
 			spinUntilEnd(element.getName(), stream);
@@ -137,8 +137,8 @@ public class SPFluidReader implements IMapReader, ISPReader {
 	private record SimpleHasKindReader(String tag, HasKindFactory factory) {
 
 		public Object reader(final StartElement element, final QName parent, final Iterable<XMLEvent> stream,
-							 final IMutableLegacyPlayerCollection players, final Warning warner, final IDRegistrar idFactory)
-				throws SPFormatException {
+							 final IMutableLegacyPlayerCollection players, final Warning warner,
+							 final IDRegistrar idFactory) throws SPFormatException {
 			requireTag(element, parent, tag);
 			expectAttributes(element, warner, "id", "kind", "image");
 			spinUntilEnd(element.getName(), stream);
@@ -224,8 +224,8 @@ public class SPFluidReader implements IMapReader, ISPReader {
 	}
 
 	private void parseTile(final IMutableLegacyMap map, final StartElement element, final Iterable<XMLEvent> stream,
-						   final IMutableLegacyPlayerCollection players, final Warning warner, final IDRegistrar idFactory)
-			throws SPFormatException {
+						   final IMutableLegacyPlayerCollection players, final Warning warner,
+						   final IDRegistrar idFactory) throws SPFormatException {
 		expectAttributes(element, warner, "row", "column", "kind", "type", "mountain");
 		final Point loc = new Point(getIntegerAttribute(element, "row"),
 				getIntegerAttribute(element, "column"));
@@ -266,8 +266,7 @@ public class SPFluidReader implements IMapReader, ISPReader {
 
 	private void parseElsewhere(final IMutableLegacyMap map, final StartElement element, final Iterable<XMLEvent> stream,
 								final IMutableLegacyPlayerCollection players, final Warning warner,
-								final IDRegistrar idFactory)
-			throws SPFormatException {
+								final IDRegistrar idFactory) throws SPFormatException {
 		expectAttributes(element, warner);
 		final Point loc = Point.INVALID_POINT;
 		for (final XMLEvent event : stream) {
@@ -430,15 +429,15 @@ public class SPFluidReader implements IMapReader, ISPReader {
 		return retval;
 	}
 
-	private static void parseOrders(final StartElement element, final IMutableUnit unit, final Iterable<XMLEvent> stream,
-									final Warning warner) throws SPFormatException {
+	private static void parseOrders(final StartElement element, final IMutableUnit unit,
+	                                final Iterable<XMLEvent> stream, final Warning warner) throws SPFormatException {
 		expectAttributes(element, warner, "turn");
 		final int turn = getIntegerAttribute(element, "turn", -1, warner);
 		unit.setOrders(turn, getTextUntil(element.getName(), stream));
 	}
 
-	private static void parseResults(final StartElement element, final IMutableUnit unit, final Iterable<XMLEvent> stream,
-									 final Warning warner) throws SPFormatException {
+	private static void parseResults(final StartElement element, final IMutableUnit unit,
+	                                 final Iterable<XMLEvent> stream, final Warning warner) throws SPFormatException {
 		expectAttributes(element, warner, "turn");
 		final int turn = getIntegerAttribute(element, "turn", -1, warner);
 		unit.setResults(turn, getTextUntil(element.getName(), stream));
@@ -446,8 +445,8 @@ public class SPFluidReader implements IMapReader, ISPReader {
 
 	@SuppressWarnings("ChainOfInstanceofChecks")
 	private IUnit readUnit(final StartElement element, final QName parent, final Iterable<XMLEvent> stream,
-						   final IMutableLegacyPlayerCollection players, final Warning warner, final IDRegistrar idFactory)
-			throws SPFormatException {
+						   final IMutableLegacyPlayerCollection players, final Warning warner,
+						   final IDRegistrar idFactory) throws SPFormatException {
 		requireTag(element, parent, "unit");
 		requireNonEmptyAttribute(element, "name", false, warner);
 		requireNonEmptyAttribute(element, "owner", false, warner);

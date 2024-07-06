@@ -50,7 +50,13 @@ import java.util.List;
 		final IMutableLegacyPlayerCollection players = new LegacyPlayerCollection();
 		mapReader = new YAMapReader(warning, idFactory, players);
 		townReader = new YATownReader(warning, idFactory, players);
-		readers = List.of(new YAAdventureReader(warning, idFactory, players), new YAExplorableReader(warning, idFactory), new YAGroundReader(warning, idFactory), new YAImplementReader(warning, idFactory), mapReader, new YAMobileReader(warning, idFactory), new YAPlayerReader(warning, idFactory), new YAPortalReader(warning, idFactory), new YAResourcePileReader(warning, idFactory), new YAResourceReader(warning, idFactory), new YATerrainReader(warning, idFactory), new YATextReader(warning, idFactory), townReader, new YAUnitReader(warning, idFactory, players), new YAWorkerReader(warning, idFactory, players));
+		readers = List.of(new YAAdventureReader(warning, idFactory, players),
+				new YAExplorableReader(warning, idFactory), new YAGroundReader(warning, idFactory),
+				new YAImplementReader(warning, idFactory), mapReader, new YAMobileReader(warning, idFactory),
+				new YAPlayerReader(warning, idFactory), new YAPortalReader(warning, idFactory),
+				new YAResourcePileReader(warning, idFactory), new YAResourceReader(warning, idFactory),
+				new YATerrainReader(warning, idFactory), new YATextReader(warning, idFactory), townReader,
+				new YAUnitReader(warning, idFactory, players), new YAWorkerReader(warning, idFactory, players));
 	}
 
 	/**
@@ -109,7 +115,8 @@ import java.util.List;
 	 *
 	 * @throws IOException on I/O error
 	 */
-	private static void writeAllRivers(final ThrowingConsumer<String, IOException> ostream, final Collection<River> rivers, final int indent)
+	private static void writeAllRivers(final ThrowingConsumer<String, IOException> ostream,
+	                                   final Collection<River> rivers, final int indent)
 			throws IOException {
 		for (final River river : rivers.stream().sorted().toList()) {
 			YAMapReader.writeRiver(ostream, river, indent);
@@ -126,7 +133,8 @@ import java.util.List;
 	 * @param indent  The current indentation level
 	 * @throws IOException on I/O error
 	 */
-	public void write(final ThrowingConsumer<String, IOException> ostream, final Object obj, final int indent) throws IOException {
+	public void write(final ThrowingConsumer<String, IOException> ostream, final Object obj, final int indent)
+			throws IOException {
 		final Class<?> cls = obj.getClass();
 		switch (obj) {
 			case final River r -> YAMapReader.writeRiver(ostream, r, indent);
