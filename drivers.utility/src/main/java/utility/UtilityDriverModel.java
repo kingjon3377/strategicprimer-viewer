@@ -173,7 +173,7 @@ public class UtilityDriverModel extends SimpleMultiMapModel {
 				case final FixtureIterable<?> fixtureIterable -> {
 					final String shortDesc = (fixture instanceof final TileFixture tf) ?
 							tf.getShortDescription() : fixture.toString();
-					switch (fixture) {
+					switch (fixtureIterable) {
 						case final IMutableUnit u -> retval.addAll(coalesceImpl(
 								"%sIn %s: ".formatted(context, shortDesc),
 								u,
