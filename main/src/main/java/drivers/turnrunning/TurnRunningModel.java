@@ -108,7 +108,7 @@ public class TurnRunningModel extends ExplorationModel implements ITurnRunningMo
 	void reducePopulation(final Point location, final T fixture, final IFixture.CopyBehavior zero,
 	                      final int reduction) {
 		if (reduction > 0) {
-			boolean first = false; // FIXME: Should start as 'true', right?
+			boolean first = true;
 			boolean all = false;
 			final Predicate<Object> isInstance = fixture.getClass()::isInstance;
 			final Function<Object, ? extends HasPopulation<?>> cast = fixture.getClass()::cast;
@@ -166,7 +166,7 @@ public class TurnRunningModel extends ExplorationModel implements ITurnRunningMo
 	void reduceExtent(final Point location, final T fixture, final IFixture.CopyBehavior zero,
 	                  final BigDecimal reduction) {
 		if (reduction.signum() > 0) {
-			boolean first = false;
+			boolean first = true;
 			boolean all = false;
 			final Predicate<Object> isInstance = fixture.getClass()::isInstance;
 			final Function<Object, ? extends HasExtent<?>> cast = fixture.getClass()::cast;
