@@ -218,8 +218,10 @@ public final class CLITest {
 	@Test
 	public void testInputBooleanInvalidInput() {
 		assertCLI(cli -> cli.inputBoolean("prompt three "), Arrays.asList("yoo-hoo", "no"),
-				("prompt three Please enter \"yes\", \"no\", \"true\", or \"false\",%n" +
-								"or the first character of any of those.%nprompt three ").formatted(), false,
+				("""
+						prompt three Please enter "yes", "no", "true", or "false",
+						or the first character of any of those.
+						prompt three\s""").formatted(), false,
 				"inputBoolean rejects other input", "inputBoolean gives message on invalid input");
 	}
 
