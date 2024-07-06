@@ -139,10 +139,10 @@ public class UtilityDriverModel extends SimpleMultiMapModel {
 					case final CacheFixture cacheFixture -> {
 						continue;
 					}
-					case final HasPopulation hp when hp.getPopulation() > 0 -> {
+					case final HasPopulation<?> hp when hp.getPopulation() > 0 -> {
 						continue;
 					}
-					case final HasExtent he when he.getAcres().doubleValue() > 0.0 -> {
+					case final HasExtent<?> he when he.getAcres().doubleValue() > 0.0 -> {
 						continue;
 					}
 					default -> {
@@ -170,7 +170,7 @@ public class UtilityDriverModel extends SimpleMultiMapModel {
 				new ArrayList<>();
 		for (final IFixture fixture : stream) {
 			switch (fixture) {
-				case final FixtureIterable fixtureIterable -> {
+				case final FixtureIterable<?> fixtureIterable -> {
 					final String shortDesc = (fixture instanceof final TileFixture tf) ?
 							tf.getShortDescription() : fixture.toString();
 					switch (fixture) {
@@ -191,9 +191,9 @@ public class UtilityDriverModel extends SimpleMultiMapModel {
 				}
 				case final Animal a when !a.isTalking() && handlers.containsKey(Animal.class) ->
 						handlers.get(Animal.class).addIfType(fixture);
-				case final HasPopulation hp when 0 > hp.getPopulation() -> {
+				case final HasPopulation<?> hp when 0 > hp.getPopulation() -> {
 				}
-				case final HasExtent he when 0.0 >= he.getAcres().doubleValue() -> {
+				case final HasExtent<?> he when 0.0 >= he.getAcres().doubleValue() -> {
 				}
 				default -> {
 					if (handlers.containsKey(fixture.getClass())) {

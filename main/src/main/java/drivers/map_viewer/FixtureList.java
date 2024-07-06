@@ -113,7 +113,7 @@ public final class FixtureList extends JList<TileFixture>
 
 	@Override
 	public boolean equals(final Object that) {
-		if (that instanceof final JList l) {
+		if (that instanceof final JList<?> l) {
 			return getModel().equals(l.getModel());
 		} else {
 			return false;

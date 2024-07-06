@@ -221,7 +221,7 @@ import legacy.map.fixtures.mobile.AnimalTracks;
 			case final IWorker w -> Stream.concat(Stream.concat(StreamSupport.stream(w.spliterator(), false),
 							w.getEquipment().stream()), Stream.of(w.getMount()))
 					.filter(Objects::nonNull);
-			case final Iterable iterable ->  // TODO: FixtureIterable?
+			case final Iterable<?> iterable ->  // TODO: FixtureIterable?
 					Stream.concat(StreamSupport.stream(iterable.spliterator(), false)
 							.flatMap(CountingCLI::flatten), Stream.of(item));
 			case null, default -> Stream.ofNullable(item); // TODO: Why is it @Nullable?

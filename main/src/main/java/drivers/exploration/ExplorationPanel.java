@@ -435,8 +435,8 @@ import worker.common.IFixtureEditHelper;
 				final IFixture.CopyBehavior zero = switch (fixture) {
 					case final Village village -> IFixture.CopyBehavior.ZERO;
 					case final HasOwner owned when !player.equals(owned.owner()) -> IFixture.CopyBehavior.ZERO;
-					case final HasPopulation hasPopulation -> IFixture.CopyBehavior.ZERO;
-					case final HasExtent hasExtent -> IFixture.CopyBehavior.ZERO;
+					case final HasPopulation<?> hasPopulation -> IFixture.CopyBehavior.ZERO;
+					case final HasExtent<?> hasExtent -> IFixture.CopyBehavior.ZERO;
 					default -> IFixture.CopyBehavior.KEEP;
 				};
 				driverModel.copyToSubMaps(destPoint, fixture, zero);

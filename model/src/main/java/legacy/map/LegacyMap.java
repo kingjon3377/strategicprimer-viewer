@@ -701,7 +701,7 @@ public class LegacyMap implements IMutableLegacyMap {
 						list.add(Pair.with(town, point));
 						ourTowns.put(fixture.getId(), list);
 					}
-					case final Subsettable subsettable -> {
+					case final Subsettable<?> subsettable -> {
 						final List<Pair<Subsettable<IFixture>, Point>> list;
 						final List<Pair<Subsettable<IFixture>, Point>> temp =
 								ourSubsettables.get(fixture.getId());
@@ -785,7 +785,7 @@ public class LegacyMap implements IMutableLegacyMap {
 								retval = testAgainstList(town, point,
 										townLocs, localReport, movedFrom)
 										&& retval;
-						case final Subsettable subsettable when !Objects.isNull(subsetLocs) ->
+						case final Subsettable<?> subsettable when !Objects.isNull(subsetLocs) ->
 								retval = testAgainstList(fixture, point,
 										subsetLocs,
 										localReport, movedFrom) && retval;

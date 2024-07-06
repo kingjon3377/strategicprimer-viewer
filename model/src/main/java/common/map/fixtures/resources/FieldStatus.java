@@ -40,7 +40,7 @@ public enum FieldStatus {
 		return string;
 	}
 
-	private static final Supplier<List<FieldStatus>> FS_CACHE = new EnumCache(FieldStatus.class);
+	private static final Supplier<List<FieldStatus>> FS_CACHE = new EnumCache<>(FieldStatus.class);
 
 	public static FieldStatus random(final long seed) {
 		final List<FieldStatus> statuses = FS_CACHE.get();

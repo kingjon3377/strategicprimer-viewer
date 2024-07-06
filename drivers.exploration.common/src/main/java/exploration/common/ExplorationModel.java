@@ -203,7 +203,7 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 						memUnit.getName().equals(unit.getName()) -> {
 					return true;
 				}
-				case final FixtureIterable iter when doesStreamContainUnit(iter, unit) -> {
+				case final FixtureIterable<?> iter when doesStreamContainUnit(iter, unit) -> {
 					return true;
 				}
 				case null, default -> {
@@ -223,7 +223,7 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 						memFort.owner().equals(fort.owner()) && memFort.getName().equals(fort.getName()) -> {
 					return true;
 				}
-				case final FixtureIterable iter when doesStreamContainFortress(iter, fort) -> {
+				case final FixtureIterable<?> iter when doesStreamContainFortress(iter, fort) -> {
 					return true;
 				}
 				case null, default -> {

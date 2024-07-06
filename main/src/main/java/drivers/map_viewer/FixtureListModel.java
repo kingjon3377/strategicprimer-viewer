@@ -203,7 +203,7 @@ public class FixtureListModel implements ListModel<TileFixture>, SelectionChange
 	}
 
 	private static <U, T extends U> int indexOf(final Collection<U> collection, final T item) {
-		if (collection instanceof final List l) {
+		if (collection instanceof final List<?> l) {
 			return l.indexOf(item);
 		} else {
 			return new ArrayList<>(collection).indexOf(item);

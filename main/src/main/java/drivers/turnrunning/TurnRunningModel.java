@@ -111,7 +111,7 @@ public class TurnRunningModel extends ExplorationModel implements ITurnRunningMo
 			boolean first = false;
 			boolean all = false;
 			final Predicate<Object> isInstance = fixture.getClass()::isInstance;
-			final Function<Object, ? extends HasPopulation> cast = fixture.getClass()::cast;
+			final Function<Object, ? extends HasPopulation<?>> cast = fixture.getClass()::cast;
 			for (final IMutableLegacyMap map : getRestrictedAllMaps()) {
 				final T matching = (T) map.getFixtures(location).stream()
 						.filter(isInstance).map(cast)
@@ -168,7 +168,7 @@ public class TurnRunningModel extends ExplorationModel implements ITurnRunningMo
 			boolean first = false;
 			boolean all = false;
 			final Predicate<Object> isInstance = fixture.getClass()::isInstance;
-			final Function<Object, ? extends HasExtent> cast = fixture.getClass()::cast;
+			final Function<Object, ? extends HasExtent<?>> cast = fixture.getClass()::cast;
 			for (final IMutableLegacyMap map : getRestrictedAllMaps()) {
 				final T matching = (T) map.getFixtures(location).stream()
 						.filter(isInstance).map(cast).filter(f -> fixture.isSubset(f, x -> {

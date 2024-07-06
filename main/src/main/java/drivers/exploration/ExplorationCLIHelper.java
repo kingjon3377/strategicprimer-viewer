@@ -101,8 +101,8 @@ public class ExplorationCLIHelper implements MovementCostListener, SelectionChan
 			final IFixture.CopyBehavior zero = switch (fixture) {
 				case final Village village -> IFixture.CopyBehavior.ZERO;
 				case final HasOwner owned when !owned.owner().equals(mover.owner()) -> IFixture.CopyBehavior.ZERO;
-				case final HasPopulation hasPopulation -> IFixture.CopyBehavior.ZERO;
-				case final HasExtent hasExtent -> IFixture.CopyBehavior.ZERO;
+				case final HasPopulation<?> hasPopulation -> IFixture.CopyBehavior.ZERO;
+				case final HasExtent<?> hasExtent -> IFixture.CopyBehavior.ZERO;
 				default -> IFixture.CopyBehavior.KEEP;
 			};
 			model.copyToSubMaps(destPoint, fixture, zero);

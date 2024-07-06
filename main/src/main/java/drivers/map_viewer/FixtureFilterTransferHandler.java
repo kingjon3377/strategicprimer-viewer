@@ -83,7 +83,7 @@ import drivers.common.FixtureMatcher;
 			return false;
 		}
 		switch (component) {
-			case final JList l when l.getModel() instanceof final Reorderable model &&
+			case final JList<?> l when l.getModel() instanceof final Reorderable model &&
 					dropLocation instanceof final JList.DropLocation dl -> {
 				final int index = dl.getIndex();
 				model.reorder(payload, index);

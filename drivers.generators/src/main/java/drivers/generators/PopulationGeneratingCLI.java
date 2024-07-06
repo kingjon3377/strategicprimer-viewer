@@ -265,7 +265,7 @@ public class PopulationGeneratingCLI implements CLIDriver {
 		final Predicate<Object> isGrove = Grove.class::isInstance;
 		final Function<Object, Grove> groveCast = Grove.class::cast;
 		final Predicate<Object> hasExtent = HasExtent.class::isInstance;
-		final Function<Object, HasExtent> heCast = HasExtent.class::cast;
+		final Function<Object, HasExtent<?>> heCast = HasExtent.class::cast;
 		final BigDecimal fifteen = new BigDecimal(15);
 		final BigDecimal forty = new BigDecimal(40);
 		final BigDecimal eighty = new BigDecimal(80);

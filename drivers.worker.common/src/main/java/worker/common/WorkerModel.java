@@ -433,6 +433,10 @@ public class WorkerModel extends SimpleMultiMapModel implements IWorkerModel {
 	 */
 	@Override
 	public void moveMember(final UnitMember member, final IUnit old, final IUnit newOwner) {
+		// Adding either <?> or <? extends UnitMember> to the first 'ProxyFor' will not compile;
+		// the compiler insists that 'UnitMember' and 'ProxyFor<UnitMember>' are entirely disjoint,
+		// despite proof to the contrary.
+		//noinspection rawtypes
 		if (member instanceof final ProxyFor proxyMember && old instanceof final ProxyUnit proxyOld &&
 				newOwner instanceof final ProxyUnit proxyNew && moveProxied(proxyMember, proxyOld, proxyNew)) {
 			return;
