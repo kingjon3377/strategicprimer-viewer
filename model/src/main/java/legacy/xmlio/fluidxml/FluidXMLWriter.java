@@ -8,6 +8,7 @@ public interface FluidXMLWriter<Type> {
 	// FIXME: What does this need to be declared as throwing?
 	void write(XMLStreamWriter writer, Type obj, int indent) throws XMLStreamException;
 
+	@SuppressWarnings("unchecked") // unavoidable; caller calls at own risk
 	default void writeCasting(final XMLStreamWriter writer, final Object obj, final int indent)
 			throws XMLStreamException {
 		write(writer, (Type) obj, indent);

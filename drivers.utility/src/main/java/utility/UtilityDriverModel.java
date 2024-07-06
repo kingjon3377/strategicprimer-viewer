@@ -72,7 +72,7 @@ public class UtilityDriverModel extends SimpleMultiMapModel {
 	                                                                   final Class<Desired> cls) {
 		return (item) -> {
 			if (cls.isInstance(item)) {
-				func.accept((Desired) item);
+				func.accept(cls.cast(item));
 			}
 		};
 	}

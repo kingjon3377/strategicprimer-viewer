@@ -53,6 +53,7 @@ public interface YAReader<Item, Value> {
 	 * right type but the typechecker doesn't. This will probably cause a
 	 * ClassCastException if the types don't in fact match.
 	 */
+	@SuppressWarnings("unchecked") // unavoidable without a Class<Value> object
 	default void writeRaw(final ThrowingConsumer<String, IOException> ostream, final Object obj, final int indentation)
 			throws IOException {
 		write(ostream, (Value) obj, indentation);

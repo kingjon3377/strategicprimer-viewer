@@ -164,6 +164,7 @@ public class ProxyWorker implements WorkerProxy {
 		}
 	}
 
+	@SuppressWarnings("unchecked") // Unavoidble without reified generics
 	@Override
 	public Iterator<IJob> iterator() {
 		return (Iterator<IJob>) (Iterator<? extends IJob>) proxyJobs.iterator();

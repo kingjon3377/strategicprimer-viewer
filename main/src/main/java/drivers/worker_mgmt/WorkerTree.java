@@ -294,6 +294,8 @@ public final class WorkerTree extends JTree implements UnitMemberSelectionSource
 				if (!unitsToTransfer.isEmpty()) { // TODO: combine with containing else?
 					LovelaceLogger.warning("Selection included both units and unit members");
 				}
+				// unchecked-cast warning is unavoidable without reified generics
+				//noinspection unchecked
 				return new UnitMemberTransferable(membersToTransfer.toArray(Pair[]::new));
 			}
 		}
@@ -350,6 +352,8 @@ public final class WorkerTree extends JTree implements UnitMemberSelectionSource
 					switch (tempTarget) {
 						case final IUnit unit when trans.isDataFlavorSupported(
 								UnitMemberTransferable.FLAVOR) -> {
+							// unchecked-cast warning is unavoidable without reified generics
+							//noinspection unchecked
 							final List<Pair<UnitMember, IUnit>> list =
 									(List<Pair<UnitMember, IUnit>>)
 											trans.getTransferData(
@@ -365,7 +369,8 @@ public final class WorkerTree extends JTree implements UnitMemberSelectionSource
 						}
 						case final String str when trans.isDataFlavorSupported(
 								UnitTransferable.FLAVOR) -> {
-							final List<IUnit> list = (List<IUnit>)
+							// unchecked-cast warning is unavoidable without reified generics
+							@SuppressWarnings("unchecked") final List<IUnit> list = (List<IUnit>)
 									trans.getTransferData(UnitTransferable.FLAVOR);
 							for (final IUnit unit : list) {
 								wtModel.changeKind(unit, str);

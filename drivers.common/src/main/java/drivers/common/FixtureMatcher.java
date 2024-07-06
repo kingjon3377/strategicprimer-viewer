@@ -30,7 +30,7 @@ public class FixtureMatcher {
 	public static <FixtureType extends TileFixture> FixtureMatcher simpleMatcher(
 			final Class<FixtureType> type, final Predicate<FixtureType> method, final String description) {
 		final Predicate<TileFixture> predicate = (fixture) ->
-				type.isInstance(fixture) && method.test((FixtureType) fixture);
+				type.isInstance(fixture) && method.test(type.cast(fixture));
 		return new FixtureMatcher(predicate, description);
 	}
 

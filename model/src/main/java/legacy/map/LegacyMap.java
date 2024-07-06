@@ -710,6 +710,8 @@ public class LegacyMap implements IMutableLegacyMap {
 						} else {
 							list = temp;
 						}
+						// Unchecked cast is unavoiddable without reified generics
+						//noinspection unchecked
 						list.add(Pair.with((Subsettable<IFixture>) fixture, point));
 						ourSubsettables.put(fixture.getId(), list);
 					}

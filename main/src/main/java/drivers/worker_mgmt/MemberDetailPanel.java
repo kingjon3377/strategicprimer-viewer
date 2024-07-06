@@ -308,7 +308,8 @@ public class MemberDetailPanel extends BorderedPanel implements UnitMemberListen
 	public void memberSelected(final @Nullable UnitMember old, final @Nullable UnitMember selected) {
 		if (selected instanceof final ProxyFor<?> p) {
 			if (p.isParallel()) {
-				final Iterator<? extends UnitMember> proxied =
+				// unchecked-cast warning is unavoidable without reified generics
+				@SuppressWarnings("unchecked") final Iterator<? extends UnitMember> proxied =
 						((ProxyFor<? extends UnitMember>) selected).getProxied().iterator();
 				if (proxied.hasNext()) {
 					memberSelected(old, proxied.next());

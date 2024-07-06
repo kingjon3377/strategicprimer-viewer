@@ -200,12 +200,12 @@ public final class TestXMLIO {
 				final Throwable cause = except.getCause();
 				assertInstanceOf(exceptionClass, cause, "Exception should be of the right type");
 				for (final Consumer<Expectation> check : checks) {
-					check.accept((Expectation) cause);
+					check.accept(exceptionClass.cast(cause));
 				}
 			} catch (final Exception except) {
 				assertInstanceOf(exceptionClass, except, "Exception should be of the right type");
 				for (final Consumer<Expectation> check : checks) {
-					check.accept((Expectation) except);
+					check.accept(exceptionClass.cast(except));
 				}
 			}
 		} else {
@@ -222,12 +222,12 @@ public final class TestXMLIO {
 				final Throwable cause = except.getCause();
 				assertInstanceOf(exceptionClass, cause, "Exception should be of the right type");
 				for (final Consumer<Expectation> check : checks) {
-					check.accept((Expectation) cause);
+					check.accept(exceptionClass.cast(cause));
 				}
 			} catch (final Throwable except) {
 				assertInstanceOf(exceptionClass, except, "Exception should be of the right type");
 				for (final Consumer<Expectation> check : checks) {
-					check.accept((Expectation) except);
+					check.accept(exceptionClass.cast(except));
 				}
 			}
 		}

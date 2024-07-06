@@ -113,7 +113,8 @@ public class TurnRunningModel extends ExplorationModel implements ITurnRunningMo
 			final Predicate<Object> isInstance = fixture.getClass()::isInstance;
 			final Function<Object, ? extends HasPopulation<?>> cast = fixture.getClass()::cast;
 			for (final IMutableLegacyMap map : getRestrictedAllMaps()) {
-				final T matching = (T) map.getFixtures(location).stream()
+				// unchecked-cast warning is unavoidable unless we take a Class<T> parameter
+				@SuppressWarnings("unchecked") final T matching = (T) map.getFixtures(location).stream()
 						.filter(isInstance).map(cast)
 						.filter(f -> fixture.isSubset(f, x -> {
 						})) // n.b. can't extract, non-denotable type
@@ -170,7 +171,8 @@ public class TurnRunningModel extends ExplorationModel implements ITurnRunningMo
 			final Predicate<Object> isInstance = fixture.getClass()::isInstance;
 			final Function<Object, ? extends HasExtent<?>> cast = fixture.getClass()::cast;
 			for (final IMutableLegacyMap map : getRestrictedAllMaps()) {
-				final T matching = (T) map.getFixtures(location).stream()
+				// unchecked-cast warning is unavoidable unless we take a Class<T> parameter
+				@SuppressWarnings("unchecked") final T matching = (T) map.getFixtures(location).stream()
 						.filter(isInstance).map(cast).filter(f -> fixture.isSubset(f, x -> {
 						}))
 						.findAny().orElse(null);
@@ -186,7 +188,8 @@ public class TurnRunningModel extends ExplorationModel implements ITurnRunningMo
 					} else if (matching.getAcres().doubleValue() > 0.0) {
 						// Precision isn't essential here
 						if (matching.getAcres().doubleValue() > reduction.doubleValue()) {
-							final T addend = (T)
+							// unchecked-cast warning is unavoidable unless we take a Class<T> parameter
+							@SuppressWarnings("unchecked") final T addend = (T)
 									matching.reduced(reduction).copy(cb);
 							map.replace(location, matching, addend);
 							first = false;

@@ -51,7 +51,8 @@ public interface ITableGenerator<T extends IFixture> {
 	default void produceTable(final ThrowingConsumer<String, IOException> ostream, final DelayedRemovalMap<Integer,
 			Pair<Point, IFixture>> fixtures, final Map<Integer, Integer> parentMap)
 			throws IOException {
-		final Iterable<Triplet<Integer, Point, T>> values = fixtures.entrySet().stream()
+		// TODO: Add a method returning Class<T> to the interface so we can use Class::cast to avoid this warning
+		@SuppressWarnings("unchecked") final Iterable<Triplet<Integer, Point, T>> values = fixtures.entrySet().stream()
 				.filter(e -> canHandle(e.getValue().getValue1()))
 				.map(e -> Triplet.with(e.getKey(), e.getValue().getValue0(),
 						(T) e.getValue().getValue1()))
@@ -74,7 +75,8 @@ public interface ITableGenerator<T extends IFixture> {
 	 */
 	default TableModel produceTableModel(final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
 	                                     final Map<Integer, Integer> parentMap) {
-		final Iterable<Triplet<Integer, Point, T>> values = fixtures.entrySet().stream()
+		// Unchecked cast is unavoidable without a Class object to call isInstance() on
+		@SuppressWarnings("unchecked") final Iterable<Triplet<Integer, Point, T>> values = fixtures.entrySet().stream()
 				.filter(e -> canHandle(e.getValue().getValue1()))
 				.map(e -> Triplet.with(e.getKey(), e.getValue().getValue0(),
 						(T) e.getValue().getValue1()))

@@ -385,6 +385,7 @@ import java.util.stream.Collectors;
 	public void mapMetadataChanged() {
 	}
 
+	@SuppressWarnings("unchecked") // unavoidable in working around lack of reified generics
 	@Override
 	public Iterable<Object> childrenOf(final Object obj) {
 		return switch (obj) {

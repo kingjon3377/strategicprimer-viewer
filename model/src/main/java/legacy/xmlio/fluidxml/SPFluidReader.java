@@ -626,6 +626,8 @@ public class SPFluidReader implements IMapReader, ISPReader {
 			for (final XMLEvent event : eventReader) {
 				if (event instanceof final StartElement se &&
 						isSPStartElement(event)) {
+					// unchecked cast is unavoidable unless we take a Class<Type> parameter
+					//noinspection unchecked
 					return (Type) readSPObject(se, new QName("root"), eventReader, players, warner, idFactory);
 				}
 			}

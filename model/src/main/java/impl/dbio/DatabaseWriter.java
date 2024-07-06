@@ -30,6 +30,7 @@ public interface DatabaseWriter<Item, Context> {
 	 * right type but the type-checker doesn't. This will probably crash the
 	 * program if the types don't in fact match.
 	 */
+	@SuppressWarnings("unchecked") // Unavoidable; caller calls at own risk
 	default void writeRaw(final Transactional db, final Object obj, final Object context) throws SQLException {
 		write(db, (Item) obj, (Context) context);
 	}

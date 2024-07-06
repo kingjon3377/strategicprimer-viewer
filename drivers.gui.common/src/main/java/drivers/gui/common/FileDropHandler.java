@@ -40,6 +40,8 @@ import lovelace.util.LovelaceLogger;
 		}
 		final List<File> payload;
 		try {
+			// this is in fact checked in canImport() ... at least that it is a List<?>.
+			//noinspection unchecked
 			payload = (List<File>) support.getTransferable().getTransferData(
 					DataFlavor.javaFileListFlavor);
 		} catch (final Exception except) {

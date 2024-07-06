@@ -48,6 +48,8 @@ public class TestWorkerModel {
 		final List<T> retval = new ArrayList<>();
 		for (final T item : list) {
 			if (cls.isInstance(item)) {
+				// unchecked warning is unavoidable in the absence of reified generics
+				//noinspection unchecked
 				retval.addAll(((ProxyFor<? extends T>) item).getProxied());
 			} else {
 				retval.add(item);

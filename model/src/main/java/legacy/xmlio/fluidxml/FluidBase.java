@@ -662,7 +662,7 @@ import static impl.xmlio.ISPReader.SP_NAMESPACE;
 			if (!cls.isInstance(obj)) {
 				throw new IllegalArgumentException("Can only write " + cls.getName());
 			}
-			wrapped.write(writer, (Type) obj, indent);
+			wrapped.write(writer, cls.cast(obj), indent);
 		};
 	}
 

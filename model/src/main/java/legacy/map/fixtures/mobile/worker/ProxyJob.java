@@ -124,6 +124,7 @@ public final class ProxyJob implements IJob, ProxyFor<IJob> {
 		return retval;
 	}
 
+	@SuppressWarnings("unchecked") // These "unchecked" casts are working around unfixable bugs in the Java type-checker
 	@Override
 	public Iterator<ISkill> iterator() {
 		return (Iterator<ISkill>) (Iterator<? extends ISkill>) proxiedSkills.iterator();

@@ -510,6 +510,7 @@ public final class TestDBIO {
 		return deserialized;
 	}
 
+	@SuppressWarnings("unchecked") // this is test code anyway
 	private <FixtureType extends TileFixture> FixtureType
 	assertFixtureSerialization(final FixtureType fixture) throws SQLException, IOException {
 		final MapDimensions dimensions = new MapDimensionsImpl(2, 2, 2);

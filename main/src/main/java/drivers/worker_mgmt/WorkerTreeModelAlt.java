@@ -89,7 +89,7 @@ public class WorkerTreeModelAlt extends DefaultTreeModel implements IWorkerTreeM
 		 */
 		@Override
 		public final NodeObject getUserObject() {
-			return (NodeObject) super.getUserObject();
+			return cls.cast(super.getUserObject());
 		}
 
 		/**
@@ -630,6 +630,8 @@ public class WorkerTreeModelAlt extends DefaultTreeModel implements IWorkerTreeM
 	public Iterable<Object> childrenOf(final Object obj) {
 		final PlayerNode temp = (PlayerNode) getRoot();
 		if (obj instanceof WorkerTreeNode) {
+			// uncheecked-cast warning is unavoidable without reified generics
+			//noinspection unchecked
 			return (Iterable<Object>) obj;
 		}
 		final TreeNode node = getNode(temp, obj);

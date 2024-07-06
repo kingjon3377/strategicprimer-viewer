@@ -84,6 +84,7 @@ class MappedCounter<Base, Key, Count extends Number & Comparable<Count>> impleme
 				.sorted(Comparator.comparing(Pair::getValue1, Comparator.reverseOrder()));
 	}
 
+	@SuppressWarnings("unchecked") // TODO: Take a Class<Count> field to do the cast without triggering the warning
 	private Count plus(final Count one, final Count two) {
 		return switch (one) {
 			case final Integer i -> (Count) Integer.valueOf(i + (Integer) two);

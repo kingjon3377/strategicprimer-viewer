@@ -118,12 +118,13 @@ import org.jetbrains.annotations.Nullable;
 
 		private boolean allConditions(final TileFixture fixture) {
 			if (cls.isInstance(fixture)) {
+				Type typed = cls.cast(fixture);
 				for (final Predicate<Type> condition : conditions) {
-					if (!condition.test((Type) fixture)) {
+					if (!condition.test(typed)) {
 						return false;
 					}
 				}
-				matched = (Type) fixture;
+				matched = typed;
 				return true;
 			} else {
 				return false;

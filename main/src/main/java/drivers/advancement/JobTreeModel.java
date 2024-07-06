@@ -106,7 +106,7 @@ import java.util.stream.StreamSupport;
 	public int getIndexOfChild(final Object parent, final Object child) {
 		if (parent instanceof IWorker || parent instanceof IJob) {
 			int i = 0;
-			for (final Object ch : (Iterable<? extends HasName>) parent) {
+			for (final Object ch : (Iterable<?>) parent) {
 				if (Objects.equals(ch, child)) {
 					return i;
 				}

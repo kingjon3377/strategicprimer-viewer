@@ -230,7 +230,9 @@ public class ProxyUnit implements IUnit, ProxyFor<IUnit> {
 									LovelaceLogger.warning("ProxyAnimal matched non-animal");
 								}
 							}
-							case null, default -> ((UnitMemberProxy<UnitMember>) proxy).addProxied(member);
+							// unchecked warning is unavoidable in the absence of reified generics
+							case null, default -> //noinspection unchecked
+									((UnitMemberProxy<UnitMember>) proxy).addProxied(member);
 						}
 					} else {
 						proxy = switch (member) {
@@ -243,6 +245,8 @@ public class ProxyUnit implements IUnit, ProxyFor<IUnit> {
 				}
 			}
 			// FIXME: Make sure this doesn't result in ClassCastExceptions
+			// If this indeed works, it's a necessary workaround for the lack of reified generics
+			//noinspection unchecked
 			cachedIterable = ((Map<Integer, UnitMember>) ((Map<Integer, ? extends UnitMember>) map)).values();
 			return cachedIterable.iterator();
 		}

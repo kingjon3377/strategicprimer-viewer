@@ -74,7 +74,8 @@ public class CoalescedHolder<Type extends IFixture, Key> implements Iterable<Lis
 
 	public void addIfType(final Object item) {
 		if (cls.isInstance(item)) {
-			get((Type) item).add((Type) item);
+			final Type typed = cls.cast(item);
+			get(typed).add(typed);
 		}
 	}
 

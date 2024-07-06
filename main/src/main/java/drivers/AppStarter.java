@@ -39,7 +39,7 @@ import org.jetbrains.annotations.Nullable;
 			throws DriverFailedException {
 		LovelaceLogger.trace("Inside AppStarter#startDriver()");
 		boolean gui = !GraphicsEnvironment.isHeadless();
-		final SPOptionsImpl currentOptions = new SPOptionsImpl(StreamSupport.stream(options.spliterator(), false)
+		@SuppressWarnings("unchecked") final SPOptionsImpl currentOptions = new SPOptionsImpl(StreamSupport.stream(options.spliterator(), false)
 				.toArray(Map.Entry[]::new));
 		if (!currentOptions.hasOption("--gui")) {
 			currentOptions.addOption("--gui", Boolean.toString(gui));

@@ -50,6 +50,8 @@ public class YAXMLReader implements IMapReader, ISPReader {
 			final IDRegistrar idFactory = new IDFactory();
 			for (final XMLEvent event : eventReader) {
 				if (event instanceof final StartElement se) { // TODO: Check namespace, surely?
+					// Unchecked-cast warning is unavoidable without reified generics or a Class<Element> object
+					//noinspection unchecked
 					return (Element) new YAReaderAdapter(warner, idFactory)
 							.parse(se, new QName("root"), eventReader);
 				}
