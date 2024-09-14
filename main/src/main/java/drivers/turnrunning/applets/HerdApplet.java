@@ -119,7 +119,7 @@ import query.SmallAnimalModel;
 			}
 
 		}
-		long workerCount = unit.stream().filter(IWorker.class::isInstance).map(IWorker.class::cast).count();
+		long workerCount = unit.stream().filter(IWorker.class::isInstance).count();
 		final Integer addendum = cli.inputNumber("%d workers in this unit. Any additional workers to account for:"
 				.formatted(workerCount));
 		if (!Objects.isNull(addendum) && addendum >= 0) {
