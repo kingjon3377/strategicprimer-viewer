@@ -18,7 +18,6 @@ import java.awt.event.ActionEvent;
 
 import drivers.exploration.PlayerChangeSource;
 
-import java.util.List;
 import java.util.ArrayList;
 import java.awt.Frame;
 import java.awt.Component;

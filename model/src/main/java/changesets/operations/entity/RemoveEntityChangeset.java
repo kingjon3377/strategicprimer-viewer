@@ -1,7 +1,6 @@
 package changesets.operations.entity;
 
 import changesets.Changeset;
-import changesets.ChangesetFailureException;
 import changesets.PreconditionFailureException;
 import common.entity.IEntity;
 import common.map.IMap;

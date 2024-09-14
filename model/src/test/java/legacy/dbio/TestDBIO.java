@@ -78,7 +78,6 @@ import legacy.map.fixtures.mobile.Snowbird;
 import legacy.map.fixtures.mobile.Thunderbird;
 import legacy.map.fixtures.mobile.Pegasus;
 import legacy.map.fixtures.mobile.Unicorn;
-import legacy.map.fixtures.mobile.IWorker;
 import legacy.map.fixtures.mobile.IUnit;
 import legacy.map.fixtures.mobile.Kraken;
 import common.map.fixtures.mobile.worker.RaceFactory;

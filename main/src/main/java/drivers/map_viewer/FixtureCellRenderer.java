@@ -28,7 +28,6 @@ import java.awt.Dimension;
 import java.io.IOException;
 
 import java.util.Collection;
-import java.util.Set;
 import java.util.HashSet;
 
 import lovelace.util.LovelaceLogger;

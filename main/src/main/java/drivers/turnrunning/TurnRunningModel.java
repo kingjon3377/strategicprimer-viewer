@@ -15,7 +15,6 @@ import legacy.map.fixtures.IResourcePile;
 import legacy.map.fixtures.LegacyQuantity;
 import legacy.map.fixtures.ResourcePileImpl;
 import legacy.map.fixtures.UnitMember;
-import legacy.map.fixtures.mobile.Animal;
 import legacy.map.fixtures.mobile.AnimalImpl;
 import legacy.map.fixtures.mobile.IMutableUnit;
 import legacy.map.fixtures.mobile.IMutableWorker;

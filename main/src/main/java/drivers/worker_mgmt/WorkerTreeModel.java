@@ -17,7 +17,6 @@ import legacy.map.fixtures.UnitMember;
 import javax.swing.tree.TreePath;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import legacy.map.fixtures.mobile.IUnit;
 import legacy.map.Player;

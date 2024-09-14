@@ -19,7 +19,6 @@ import java.awt.image.BufferedImage;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 import java.util.ServiceLoader;
 import java.util.function.Consumer;
 import java.util.stream.Stream;

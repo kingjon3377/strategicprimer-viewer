@@ -9,7 +9,6 @@ import javax.swing.JPanel;
 import java.io.Serial;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 import lovelace.util.Platform;
 

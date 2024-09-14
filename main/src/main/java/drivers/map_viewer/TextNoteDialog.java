@@ -8,7 +8,6 @@ import drivers.common.NewFixtureListener;
 import java.io.Serial;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 import javax.swing.JTextArea;
 import javax.swing.JButton;

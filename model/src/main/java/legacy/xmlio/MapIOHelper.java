@@ -1,6 +1,5 @@
 package legacy.xmlio;
 
-import java.nio.file.NoSuchFileException;
 import java.util.List;
 
 import java.nio.file.Paths;

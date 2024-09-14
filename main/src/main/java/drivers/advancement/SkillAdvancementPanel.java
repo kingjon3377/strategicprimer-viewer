@@ -6,7 +6,6 @@ import java.awt.Dimension;
 import java.io.Serial;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 import java.awt.event.ActionEvent;
 import java.util.Objects;

@@ -15,7 +15,6 @@ import java.util.Optional;
 
 import static drivers.map_viewer.TileViewSize.scaleZoom;
 
-import java.util.Comparator;
 import java.util.function.Predicate;
 
 import org.javatuples.Pair;

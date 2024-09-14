@@ -16,7 +16,6 @@ import drivers.gui.common.SPDialog;
 import drivers.common.NewFixtureSource;
 import drivers.common.NewFixtureListener;
 
-import java.util.List;
 import java.util.ArrayList;
 import javax.swing.JTextField;
 import javax.swing.JFormattedTextField;

@@ -27,7 +27,6 @@ import legacy.map.MapDimensions;
 import legacy.map.Point;
 import legacy.map.ILegacyMap;
 
-import java.util.Set;
 import java.util.LinkedList;
 import java.util.ArrayList;
 import java.util.List;

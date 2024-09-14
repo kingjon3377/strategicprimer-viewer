@@ -1,7 +1,6 @@
 package changesets.operations.regions;
 
 import changesets.Changeset;
-import changesets.ChangesetFailureException;
 import changesets.PreconditionFailureException;
 import common.map.IMap;
 import common.map.IMutableMap;

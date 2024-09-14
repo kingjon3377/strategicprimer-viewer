@@ -4,7 +4,6 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 import legacy.map.Point;
 import drivers.common.SelectionChangeListener;

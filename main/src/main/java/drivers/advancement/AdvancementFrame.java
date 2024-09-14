@@ -34,7 +34,6 @@ import drivers.worker_mgmt.WorkerTree;
 import worker.common.IWorkerTreeModel;
 
 import drivers.common.PlayerChangeListener;
-import drivers.common.ModelDriver;
 import drivers.common.IWorkerModel;
 
 import legacy.xmlio.MapIOHelper;

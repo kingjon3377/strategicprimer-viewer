@@ -24,7 +24,6 @@ import javax.swing.tree.TreeSelectionModel;
 import javax.swing.tree.TreeModel;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 import legacy.map.fixtures.mobile.worker.IJob;

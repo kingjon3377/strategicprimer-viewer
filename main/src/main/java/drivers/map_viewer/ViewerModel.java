@@ -24,7 +24,6 @@ import java.util.function.Predicate;
 
 import org.javatuples.Pair;
 
-import java.util.List;
 import java.util.ArrayList;
 
 import drivers.common.SimpleDriverModel;

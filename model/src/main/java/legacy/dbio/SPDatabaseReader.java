@@ -1,6 +1,5 @@
 package legacy.dbio;
 
-import common.xmlio.SPFormatException;
 import legacy.xmlio.IMapReader;
 import common.xmlio.Warning;
 import legacy.map.IMutableLegacyMap;
@@ -8,9 +7,7 @@ import io.jenetics.facilejdbc.Transactional;
 
 import java.io.IOException;
 import java.io.Reader;
-import java.nio.file.NoSuchFileException;
 import java.sql.SQLException;
-import javax.xml.stream.XMLStreamException;
 
 import lovelace.util.LovelaceLogger;
 import org.sqlite.SQLiteDataSource;

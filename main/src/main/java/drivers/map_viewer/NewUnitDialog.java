@@ -4,7 +4,6 @@ import java.io.Serial;
 import java.util.Collection;
 import java.util.OptionalInt;
 import java.util.ArrayList;
-import java.util.List;
 
 import java.awt.Dimension;
 import java.awt.GridLayout;

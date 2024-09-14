@@ -1,12 +1,10 @@
 package legacy.xmlio.yaxml;
 
 import javax.xml.namespace.QName;
-import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 import java.util.Collection;
 import java.util.Map;
-import java.util.Set;
 import java.util.HashSet;
 import java.util.function.IntFunction;
 import java.io.IOException;

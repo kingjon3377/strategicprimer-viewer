@@ -1,7 +1,6 @@
 package drivers.gui.common;
 
 import java.io.Serial;
-import java.nio.file.NoSuchFileException;
 import javax.swing.TransferHandler;
 import javax.xml.stream.XMLStreamException;
 
