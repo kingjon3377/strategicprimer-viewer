@@ -87,9 +87,7 @@ public class WorkerMgmtGUI implements MultiMapGUIDriver, WorkerGUI {
 		final PlayerChangeMenuListener pcml = new PlayerChangeMenuListener(model);
 		menuHandler.register(pcml, "change current player");
 		try {
-			SwingUtilities.invokeLater(() -> {
-				createWindow(menuHandler, pcml);
-			});
+			SwingUtilities.invokeLater(() -> createWindow(menuHandler, pcml));
 		} catch (final RuntimeException except) {
 			if (except.getCause() instanceof final DriverFailedException dfe) {
 				throw dfe;
