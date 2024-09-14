@@ -44,17 +44,17 @@
     <dependency>
       <groupId>org.roaringbitmap</groupId>
       <artifactId>RoaringBitmap</artifactId>
-      <version>1.0.0</version>
+      <version>1.2.1</version>
     </dependency>
     <dependency>
       <groupId>org.xerial</groupId>
       <artifactId>sqlite-jdbc</artifactId>
-      <version>3.42.0.1</version> <!-- 3.43.0.0 breaks facile-jdbc prepared INSERTs -->
+      <version>3.46.1.0</version>
     </dependency>
     <dependency>
       <groupId>io.jenetics</groupId>
       <artifactId>facilejdbc</artifactId>
-      <version>2.0.0</version>
+      <version>2.1.0</version>
     </dependency>
   </dependencies>
 </project>
