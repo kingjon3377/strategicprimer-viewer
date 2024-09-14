@@ -31,6 +31,11 @@ public final class LovelaceLogger {
 		level = newLevel;
 	}
 
+	// For the sake of being able to change it temporarily, then put it back.
+	public static @NotNull Level getLevel() {
+		return level;
+	}
+
 	// TODO: We'd like some sort of "tagging" mechanism ("we want messages about X but not Y"), separate from priority
 	@SuppressWarnings("TypeMayBeWeakened")
 	private static void log(final @NotNull Level messageLevel, final @NotNull String format, final Object... args) {
