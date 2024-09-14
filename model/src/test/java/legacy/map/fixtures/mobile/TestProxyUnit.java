@@ -35,6 +35,6 @@ public class TestProxyUnit {
 		}
 		assertEquals(2, (int) proxy.stream().count(), "Proxy contains two objects");
 		assertEquals(2, (int) proxy.stream()
-				.filter(IWorker.class::isInstance).map(IWorker.class::cast).count(), "Proxy unit contains two workers");
+				.filter(IWorker.class::isInstance).count(), "Proxy unit contains two workers");
 	}
 }
