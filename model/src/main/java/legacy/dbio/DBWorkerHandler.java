@@ -91,7 +91,7 @@ public final class DBWorkerHandler extends AbstractDatabaseWriter<IWorker, IUnit
 
 	private static final Query WORKER_SQL =
 			Query.of("""
-					INSERT INTO workers (unit, id, name, race, image, portrait, hp, max_hp
+					INSERT INTO workers (unit, id, name, race, image, portrait, hp, max_hp,
 					    str, dex, con, int, wis, cha)
 					VALUES(:unit, :id, :name, :race, :image, :portrait, :hp, :max_hp, :str, :dex, :con,
 						:int, :wis, :cha);""");
