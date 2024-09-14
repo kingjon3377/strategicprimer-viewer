@@ -45,6 +45,7 @@ enum LodeStatus {
 	 *
 	 * TODO: Throw instead of returning null?
 	 */
+	@SuppressWarnings("DuplicateBranchesInSwitch") // TODO: log in 'default' case?
 	public static @Nullable LodeStatus parse(final String str) {
 		return switch (str.toLowerCase()) {
 			case "none" -> null;

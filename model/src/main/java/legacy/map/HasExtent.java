@@ -12,6 +12,7 @@ public interface HasExtent<Self extends HasExtent<Self>> extends SubsettableFixt
 	/**
 	 * Determine whether the given number is positive.
 	 */
+	@SuppressWarnings("DuplicateBranchesInSwitch") // TODO: log in 'default' case
 	static boolean isPositive(final Number number) {
 		return switch (number) {
 			case final Integer i -> 0 < number.intValue();
