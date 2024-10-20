@@ -43,9 +43,9 @@ enum LodeStatus {
 	 * Given a String, if it is the name of a {@link LodeStatus}, return
 	 * that value; otherwise, return null.
 	 *
-	 * TODO: Throw instead of returning null?
+	 * TODO: Throw instead of returning null? Or log in default case?
 	 */
-	@SuppressWarnings("DuplicateBranchesInSwitch") // TODO: log in 'default' case?
+	@SuppressWarnings({"DuplicateBranchesInSwitch", "SwitchStatementWithTooManyBranches"})
 	public static @Nullable LodeStatus parse(final String str) {
 		return switch (str.toLowerCase()) {
 			case "none" -> null;

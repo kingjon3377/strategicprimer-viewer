@@ -300,6 +300,7 @@ public final class CLIHelper implements ICLIHelper {
 			if (Objects.isNull(input) || Objects.isNull(quitResultFactory.test(input))) {
 				return null;
 			}
+			//noinspection SwitchStatementWithTooManyBranches
 			switch (input) {
 				case "all", "ya", "ta", "always" -> {
 					seriesState.put(key, true);

@@ -176,6 +176,7 @@ public class ExplorationCLIHelper implements MovementCostListener, SelectionChan
 						runningTotal.intValue(), totalMP, speed.getShortName());
 				cli.printlnAtInterval(usage);
 				final int directionNum = Optional.ofNullable(cli.inputNumber("Direction to move: ")).orElse(-1);
+				//noinspection SwitchStatementWithTooManyBranches
 				switch (directionNum) {
 					case 0 -> {
 						changeSpeed();
