@@ -61,7 +61,7 @@ public final class IDFactoryFiller {
 				if (!Objects.isNull(w.getMount())) {
 					recursiveRegister(factory, Collections.singleton(w.getMount()));
 				}
-				recursiveRegister(factory, ((IWorker) fixture).getEquipment());
+				recursiveRegister(factory, w.getEquipment());
 			}
 		}
 	}
