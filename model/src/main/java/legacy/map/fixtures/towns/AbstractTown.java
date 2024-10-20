@@ -247,32 +247,34 @@ public abstract class AbstractTown implements HasMutableImage,
 
 	@Override
 	public String toString() {
+		final String displayName = name.isEmpty() ? "with no name" : "named " + name;
 		if (owner.isIndependent()) {
 			// TODO: Split into if/else rather than having the conditional inside formatted() call
 			return "An independent %s %s %s of DC %s %s".formatted(
 					townSize, status, getKind(), dc,
-					name.isEmpty() ? "with no name" : "named " + name);
+					displayName);
 		} else {
 			// TODO: Split into if/else rather than having the conditional inside formatted() call
 			return "A %s %s %s of DC %d %s, owned by %s".formatted(
 					townSize, status, getKind(), dc,
-					name.isEmpty() ? "with no name" : "named " + name,
+					displayName,
 					owner.isCurrent() ? "you" : owner.getName());
 		}
 	}
 
 	@Override
 	public String getShortDescription() {
+		final String displayName = name.isEmpty() ? "with no name" : "named " + name;
 		if (owner.isIndependent()) {
 			// TODO: Split into if/else rather than having the conditional inside formatted() call
 			return "An independent %s %s %s %s".formatted(townSize,
 					status, getKind(),
-					name.isEmpty() ? "with no name" : "named " + name);
+					displayName);
 		} else {
 			// TODO: Split into if/else rather than having the conditional inside formatted() call
 			return "A %s %s %s %s, owned by %s".formatted(townSize,
 					status, getKind(),
-					name.isEmpty() ? "with no name" : "named " + name,
+					displayName,
 					owner.isCurrent() ? "you" : owner.getName());
 		}
 	}
