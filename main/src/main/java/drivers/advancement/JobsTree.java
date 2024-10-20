@@ -43,33 +43,7 @@ import legacy.map.fixtures.mobile.worker.IJob;
 		setShowsRootHandles(true);
 		selectionModel.addTreeSelectionListener(this::handleTreeSelectionChange);
 
-		jtModel.addTreeModelListener(new TreeModelListener() {
-			@Override
-			public void treeStructureChanged(final TreeModelEvent event) {
-				Optional.ofNullable(event.getTreePath())
-						.map(TreePath::getParentPath)
-						.ifPresent(path -> expandPath(path));
-				// FIXME: Why this loop here?
-				for (int i = 0; i < getRowCount(); i++) {
-					expandRow(i);
-				}
-			}
-
-			@Override
-			public void treeNodesRemoved(final TreeModelEvent event) {
-			}
-
-			@Override
-			public void treeNodesInserted(final TreeModelEvent event) {
-				expandPath(event.getTreePath());
-				expandPath(event.getTreePath().getParentPath());
-			}
-
-			@Override
-			public void treeNodesChanged(final TreeModelEvent event) {
-				expandPath(event.getTreePath().getParentPath());
-			}
-		});
+		jtModel.addTreeModelListener(new ExpansionModelListener());
 	}
 
 	private final Collection<SkillSelectionListener> listeners = new ArrayList<>();
@@ -104,6 +78,34 @@ import legacy.map.fixtures.mobile.worker.IJob;
 		for (final SkillSelectionListener listener : listeners) {
 			listener.selectJob(job);
 			listener.selectSkill(retval);
+		}
+	}
+
+	private class ExpansionModelListener implements TreeModelListener {
+		@Override
+		public void treeStructureChanged(final TreeModelEvent event) {
+			Optional.ofNullable(event.getTreePath())
+					.map(TreePath::getParentPath)
+					.ifPresent(path -> expandPath(path));
+			// FIXME: Why this loop here?
+			for (int i = 0; i < getRowCount(); i++) {
+				expandRow(i);
+			}
+		}
+
+		@Override
+		public void treeNodesRemoved(final TreeModelEvent event) {
+		}
+
+		@Override
+		public void treeNodesInserted(final TreeModelEvent event) {
+			expandPath(event.getTreePath());
+			expandPath(event.getTreePath().getParentPath());
+		}
+
+		@Override
+		public void treeNodesChanged(final TreeModelEvent event) {
+			expandPath(event.getTreePath().getParentPath());
 		}
 	}
 }
