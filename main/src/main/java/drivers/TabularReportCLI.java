@@ -72,6 +72,7 @@ public class TabularReportCLI implements ReadOnlyDriver {
 		};
 	}
 
+	@SuppressWarnings("ErrorNotRethrown") // It's IOError, and is rethrown wrapped
 	private void createReports(final ILegacyMap map, final @Nullable Path mapFile) throws DriverFailedException {
 		try {
 			if (Objects.isNull(mapFile)) {

@@ -104,6 +104,7 @@ import org.takes.http.Exit;
 					};
 				};
 
+		@SuppressWarnings("ErrorNotRethrown") // It's IOError, and is rethrown wrapped
 		final ThrowingBiConsumer<ILegacyMap, @Nullable Path, DriverFailedException> createReports =
 				(map, mapFile) -> {
 					try {
