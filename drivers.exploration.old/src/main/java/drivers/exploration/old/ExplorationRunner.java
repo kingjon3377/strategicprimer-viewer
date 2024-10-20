@@ -404,12 +404,15 @@ public final class ExplorationRunner {
 		if (Files.exists(file)) {
 			final List<String> lines = Files.readAllLines(file, StandardCharsets.UTF_8);
 			loadTableFromDataStream(lines.iterator(), file.getFileName().toString());
-		} else if (Files.exists(Paths.get("tables").resolve(file))) {
-			final List<String> lines = Files.readAllLines(Paths.get("tables").resolve(file),
-					StandardCharsets.UTF_8);
-			loadTableFromDataStream(lines.iterator(), file.getFileName().toString());
 		} else {
-			throw new NoSuchFileException(file.toString());
+			final Path tableFile = Paths.get("tables").resolve(file);
+			if (Files.exists(tableFile)) {
+				final List<String> lines = Files.readAllLines(tableFile,
+						StandardCharsets.UTF_8);
+				loadTableFromDataStream(lines.iterator(), file.getFileName().toString());
+			} else {
+				throw new NoSuchFileException(file.toString());
+			}
 		}
 	}
 
