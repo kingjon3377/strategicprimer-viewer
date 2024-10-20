@@ -34,8 +34,7 @@ public final class DBUnitHandler extends AbstractDatabaseWriter<IUnit, Object> i
 	/**
 	 * What we use to write members. Called "parent" because *it* actually owns *this* object.
 	 */
-	@Nullable
-	private final SPDatabaseWriter parent;
+	private final @Nullable SPDatabaseWriter parent;
 
 	@Override
 	public boolean canWrite(final Object obj, final Object context) {

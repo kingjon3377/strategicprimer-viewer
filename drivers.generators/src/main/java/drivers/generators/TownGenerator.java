@@ -611,7 +611,7 @@ import java.math.BigDecimal;
 					cli.println("No matching town found.");
 				} else {
 					final CommunityStats stats;
-					@Nullable final Boolean enterResult = cli.inputBooleanInSeries("Enter stats rather than generating them? ");
+					final @Nullable Boolean enterResult = cli.inputBooleanInSeries("Enter stats rather than generating them? ");
 					if (Objects.isNull(enterResult)) {
 						return;
 					} else if (enterResult) {
