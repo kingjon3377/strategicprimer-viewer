@@ -118,19 +118,20 @@ import org.jetbrains.annotations.Nullable;
 			final File clsSource = new File(AppChooserState.class.getProtectionDomain().getCodeSource()
 					.getLocation().toURI());
 			final String clsPath = clsSource.toString();
+			final Path currentDir = Paths.get(".").toAbsolutePath();
 			if (clsPath.endsWith(".exe")) {
-				mainInvocation = Paths.get(".").toAbsolutePath().relativize(clsSource.toPath()).toString();
+				mainInvocation = currentDir.relativize(clsSource.toPath()).toString();
 			} else if (clsPath.endsWith(".jar")) {
 				if (Platform.SYSTEM_IS_MAC && clsPath.contains(".app/")) {
 					final Path containingApp = getContainingApp(clsSource.toPath());
 					if (Objects.isNull(containingApp)) {
-						mainInvocation = "java -jar " + Paths.get(".").toAbsolutePath().relativize(clsSource.toPath());
+						mainInvocation = "java -jar " + currentDir.relativize(clsSource.toPath());
 					} else {
-						mainInvocation = "open " + Paths.get(".").toAbsolutePath().relativize(containingApp) +
+						mainInvocation = "open " + currentDir.relativize(containingApp) +
 								" --args";
 					}
 				} else {
-					mainInvocation = "java -jar " + Paths.get(".").toAbsolutePath().relativize(clsSource.toPath());
+					mainInvocation = "java -jar " + currentDir.relativize(clsSource.toPath());
 				}
 			} else {
 				mainInvocation = "java -cp CLASSPATH " + Main.class.getName();
