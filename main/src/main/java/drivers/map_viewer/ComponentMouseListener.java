@@ -137,13 +137,4 @@ import java.util.function.Consumer;
 		final Pair<Integer, Integer> pair = screenPointFor(model.getSelection());
 		menu.show(parent, pair.getValue0(), pair.getValue1());
 	}
-
-//	@Override
-//	public void addSelectionChangeListener(SelectionChangeListener listener) {
-//		menu.addSelectionChangeListener(listener);
-//	}
-//	@Override
-//	public void removeSelectionChangeListener(SelectionChangeListener listener) {
-//		menu.removeSelectionChangeListener(listener);
-//	}
 }
