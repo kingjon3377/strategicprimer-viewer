@@ -301,33 +301,25 @@ public final class CLIHelper implements ICLIHelper {
 				return null;
 			}
 			switch (input) {
-				case "all":
-				case "ya":
-				case "ta":
-				case "always":
+				case "all", "ya", "ta", "always" -> {
 					seriesState.put(key, true);
 					return true;
-				case "none":
-				case "na":
-				case "fa":
-				case "never":
+				}
+				case "none", "na", "fa", "never" -> {
 					seriesState.put(key, false);
 					return false;
-				case "yes":
-				case "true":
-				case "y":
-				case "t":
+				}
+				case "yes", "true", "y", "t" -> {
 					return true;
-				case "no":
-				case "false":
-				case "n":
-				case "f":
+				}
+				case "no", "false", "n", "f" -> {
 					return false;
-				default:
+				}
+				default -> {
 					println("Please enter \"yes\", \"no\", \"true\", or \"false\", the first");
 					println("character of any of those, or \"all\", \"none\", \"always\", or");
 					println("\"never\" to use the same answer for all further questions.");
-					break;
+				}
 			}
 		}
 	}
