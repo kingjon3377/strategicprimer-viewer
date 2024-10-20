@@ -28,6 +28,7 @@ public class TestTownComparators {
 	/**
 	 * Test that the town-comparison algorithms work as expected.
 	 */
+	@SuppressWarnings("ValueOfIncrementOrDecrementUsed")
 	@Test
 	public void testComparison() {
 		// TODO: How can we condense this initialization?
