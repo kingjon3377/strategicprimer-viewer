@@ -578,6 +578,8 @@ public class WorkerModel extends SimpleMultiMapModel implements IWorkerModel {
 									.findAny().orElse(null);
 					if (!Objects.isNull(matching)) {
 						any = true;
+						// checked in 'isNamed' step in stream.
+						//noinspection CastToIncompatibleInterface
 						((HasMutableName) matching).setName(newName);
 						map.setModified(true);
 					}
