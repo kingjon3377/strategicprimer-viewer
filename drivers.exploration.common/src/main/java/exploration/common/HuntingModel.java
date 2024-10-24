@@ -40,7 +40,7 @@ public class HuntingModel {
 	 *
 	 * In Ceylon this was a class unconnected to any other type, but in
 	 * Java we can't easily say "this type <em>or</em> this other type ..."
-	 * so I make it implement TileFixture.
+	 * so I make it implement TileFixture. TODO: Could use Optional instead?
 	 *
 	 * TODO: Log when most of these methods (and {@link
 	 * TileFixture#compareTo}) are called
@@ -101,6 +101,7 @@ public class HuntingModel {
 	 * of the points, and better than a cubic trend curve for all but the
 	 * origin.
 	 */
+	@SuppressWarnings("MagicNumber")
 	public static double processingTime(final int weight) {
 		return 0.855 + 0.0239 * weight - 0.000000872 * weight * weight;
 	}
