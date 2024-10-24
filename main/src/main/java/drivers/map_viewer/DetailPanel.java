@@ -61,6 +61,10 @@ import worker.common.IFixtureEditHelper;
 /* package */ final class DetailPanel extends JSplitPane implements VersionChangeListener, SelectionChangeListener {
 	@Serial
 	private static final long serialVersionUID = 1L;
+	/**
+	 * Give 90% of horizontal space to the left panel.
+	 */
+	private static final double DIVIDER_RATIO = 0.9;
 
 	private final KeyPanel keyPanel;
 	private final FormattedLabel header = new FormattedLabel(
@@ -88,13 +92,15 @@ import worker.common.IFixtureEditHelper;
 				null);
 		setLeftComponent(horizontalSplit(listPanel, portrait));
 		setRightComponent(keyPanel);
-		setResizeWeight(0.9);
-		setDividerLocation(0.9);
+		setResizeWeight(DIVIDER_RATIO);
+		setDividerLocation(DIVIDER_RATIO);
 	}
 
 	private static final class KeyPanel extends JPanel implements VersionChangeListener {
 		@Serial
 		private static final long serialVersionUID = 1L;
+		private static final int MIN_HORIZ_MARGIN = 14;
+		private static final int MIN_VERTICAL_MARGIN = 16;
 
 		public KeyPanel(final int version) {
 			super(new GridLayout(0, 4));
@@ -131,8 +137,8 @@ import worker.common.IFixtureEditHelper;
 			retval.add(panel);
 			retval.addRigidArea(7);
 			retval.addGlue();
-			retval.setMinimumSize(new Dimension(Math.max(4, (int) label.getMinimumSize().getWidth()) + 14,
-					16 + (int) label.getMinimumSize().getHeight()));
+			retval.setMinimumSize(new Dimension(Math.max(4, (int) label.getMinimumSize().getWidth()) + MIN_HORIZ_MARGIN,
+					MIN_VERTICAL_MARGIN + (int) label.getMinimumSize().getHeight()));
 			return retval;
 		}
 	}

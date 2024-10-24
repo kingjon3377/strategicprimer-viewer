@@ -47,6 +47,14 @@ import drivers.gui.common.MenuBroker;
 /* package */ final class AdvancementFrame extends SPFrame implements PlayerChangeListener {
 	@Serial
 	private static final long serialVersionUID = 1L;
+	/**
+	 * Start with the frame's width equally divided between the two panels.
+	 */
+	private static final double DIVIDER_LOCATION = 0.5;
+	/**
+	 * As the user resizes the frame horizontally, give most of the weight to the right panel(?).
+	 */
+	private static final double RESIZE_WEIGHT = 0.3;
 	private final FormattedLabel playerLabel;
 	private final IWorkerTreeModel treeModel;
 
@@ -106,7 +114,7 @@ import drivers.gui.common.MenuBroker;
 										BorderedPanel.verticalPanel(
 												html("Add a Skill to the selected Job:"),
 												null, skillAdditionPanel)),
-								hoursAdditionPanel), 0.5, 0.3)));
+								hoursAdditionPanel), DIVIDER_LOCATION, RESIZE_WEIGHT)));
 
 		playerChanged(null, model.getCurrentPlayer());
 		setJMenuBar(workerMenu(menuHandler, this, driver));

@@ -33,6 +33,9 @@ import java.util.stream.Collectors;
  * FIXME: Refactor so the "model" isn't the *code* that *does* the generation ...
  */
 /* package */ final class MiningModel {
+	private static final long FULL_LOG_INTERVAL = 100000L;
+	private static final long LOG_DOT_INTERVAL = 1000L;
+	private static final int MAX_ROW = 200;
 	/**
 	 * The points we have generated so far and the lode-status of those points.
 	 */
@@ -122,14 +125,14 @@ import java.util.stream.Collectors;
 		while (!queue.isEmpty()) {
 			final Pair<Integer, Integer> point = queue.getFirst();
 			counter++;
-			if (counter % 100000L == 0L) {
+			if (counter % FULL_LOG_INTERVAL == 0L) {
 				cli.printf("(%d,%d)%n", point.getValue0(), point.getValue1());
-			} else if (counter % 1000L == 0L) {
+			} else if (counter % LOG_DOT_INTERVAL == 0L) {
 				cli.print(".");
 				cli.flush();
 			}
 			// Limit the size of the output spreadsheet.
-			if (Math.abs(point.getValue0()) > 200 || Math.abs(point.getValue1()) > 100) {
+			if (Math.abs(point.getValue0()) > MAX_ROW || Math.abs(point.getValue1()) > 100) {
 				pruneCounter++;
 			} else {
 				modelPoint(point.getValue0(), point.getValue1());

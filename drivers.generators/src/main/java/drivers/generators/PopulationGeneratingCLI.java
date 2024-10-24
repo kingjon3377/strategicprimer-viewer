@@ -45,6 +45,8 @@ import java.math.RoundingMode;
  * grove sizes, and forest acreages.
  */
 public class PopulationGeneratingCLI implements CLIDriver {
+	private static final int ACRES_PER_TILE = 160;
+
 	/**
 	 * Whether the given number is positive.
 	 */
@@ -242,7 +244,7 @@ public class PopulationGeneratingCLI implements CLIDriver {
 	}
 
 	private static BigDecimal perForestAcreage(final BigDecimal reserved, final int otherForests) {
-		return new BigDecimal(160).subtract(reserved)
+		return new BigDecimal(ACRES_PER_TILE).subtract(reserved)
 				.divide(new BigDecimal(otherForests), RoundingMode.HALF_EVEN);
 	}
 
@@ -269,7 +271,7 @@ public class PopulationGeneratingCLI implements CLIDriver {
 		final BigDecimal fifteen = new BigDecimal(15);
 		final BigDecimal forty = new BigDecimal(40);
 		final BigDecimal eighty = new BigDecimal(80);
-		final BigDecimal oneSixty = new BigDecimal(160);
+		final BigDecimal oneSixty = new BigDecimal(ACRES_PER_TILE);
 		final BigDecimal fiveHundred = new BigDecimal(500);
 		final BigDecimal two = BigDecimal.TWO;
 		final BigDecimal four = new BigDecimal(4);

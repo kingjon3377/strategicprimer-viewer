@@ -13,8 +13,11 @@ import java.util.function.Consumer;
  * TODO: Implement that effect
  */
 public class Meadow implements HarvestableFixture, HasExtent<Meadow> {
+	private static final double BASE_DC = 20;
+	private static final double DC_MOD_PER_ACRE = 3.0 / 40.0;
+
 	public Meadow(final String kind, final boolean field, final boolean cultivated, final int id,
-				  final FieldStatus status, final Number acres) {
+	              final FieldStatus status, final Number acres) {
 		this.kind = kind;
 		this.field = field;
 		this.cultivated = cultivated;
@@ -250,7 +253,7 @@ public class Meadow implements HarvestableFixture, HasExtent<Meadow> {
 	 */
 	@Override
 	public int getDC() {
-		return (int) (20 - 3.0 / 40.0 * acres.doubleValue());
+		return (int) (BASE_DC - DC_MOD_PER_ACRE * acres.doubleValue());
 	}
 
 	@Override

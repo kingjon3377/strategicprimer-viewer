@@ -24,6 +24,8 @@ import lovelace.util.LovelaceLogger;
 import static io.jenetics.facilejdbc.Param.value;
 
 public final class DBMapWriter extends AbstractDatabaseWriter<IMutableLegacyMap, ILegacyMap> {
+	private static final int FIXTURE_WRITE_LOG_INTERVAL = 25;
+
 	public DBMapWriter(final SPDatabaseWriter parent, final AbstractDatabaseWriter<Player, ILegacyMap> playerWriter) {
 		super(IMutableLegacyMap.class, ILegacyMap.class);
 		this.parent = parent;
@@ -134,7 +136,7 @@ public final class DBMapWriter extends AbstractDatabaseWriter<IMutableLegacyMap,
 						value("quality", entry.getValue())).execute(conn);
 			}
 			count++;
-			if (count % 25 == 0) {
+			if (count % FIXTURE_WRITE_LOG_INTERVAL == 0) {
 				LovelaceLogger.debug("Wrote %d points with %d fixtures so far",
 						count, fixtureCount);
 			}

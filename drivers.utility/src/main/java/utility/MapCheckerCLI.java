@@ -74,6 +74,9 @@ import org.jetbrains.annotations.Nullable;
  * A driver to check every map file in a list for errors.
  */
 public class MapCheckerCLI implements UtilityDriver {
+	private static final double MAX_ACRES = 160.0;
+	private static final double GROVES_PER_ACRE = 500.0;
+
 	/**
 	 * An interface for checks of a map's <em>contents</em> that we don't want the
 	 * XML-<em>reading</em> code to do. Checkers should return true iff they
@@ -323,7 +326,7 @@ public class MapCheckerCLI implements UtilityDriver {
 		final boolean retval = false;
 		double total = fixtures.stream().filter(HasExtent.class::isInstance).map(HasExtent.class::cast)
 				.filter(MapCheckerCLI::positiveAcres).map(HasExtent::getAcres).mapToDouble(Number::doubleValue).sum();
-		if (total > 160.0) {
+		if (total > MAX_ACRES) {
 			warner.handle(new SPContentWarning(context, "More explicit acres (%.1f) than tile should allow"
 					.formatted(total)));
 			return true;
@@ -332,8 +335,8 @@ public class MapCheckerCLI implements UtilityDriver {
 				.map(ITownFixture::getTownSize).mapToDouble(MapCheckerCLI::townAcreage).sum();
 		total += (fixtures.stream()
 				.filter(Grove.class::isInstance).map(Grove.class::cast)
-				.mapToInt(Grove::getPopulation).filter(p -> p > 0).sum() / 500.0);
-		if (total > 160.0) {
+				.mapToInt(Grove::getPopulation).filter(p -> p > 0).sum() / GROVES_PER_ACRE);
+		if (total > MAX_ACRES) {
 			warner.handle(new SPContentWarning(context,
 					"Counting towns and groves, more acres (%.1f) used than tile should allow".formatted(total)));
 			return true;

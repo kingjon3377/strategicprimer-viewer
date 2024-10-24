@@ -37,6 +37,9 @@ import org.jetbrains.annotations.Nullable;
  * A class to represent a game-world map and its contents.
  */
 public class LegacyMap implements IMutableLegacyMap {
+	private static final int HASHMAP_MIN_SIZE = 16;
+	private static final int HASHMAP_SMALL_SIZE = 20;
+
 	/**
 	 * Whether the given fixture should be zeroed out if the map is for the given player.
 	 */
@@ -167,11 +170,11 @@ public class LegacyMap implements IMutableLegacyMap {
 	private final Map<Point, Set<Player>> bookmarksImpl;
 
 	private static int reduceLarge(final int num) {
-		if (num < 16) {
-			return 16;
+		if (num < HASHMAP_MIN_SIZE) {
+			return HASHMAP_MIN_SIZE;
 		}
 		final int retval = num >> 1;
-		if (retval < 20) {
+		if (retval < HASHMAP_SMALL_SIZE) {
 			return num;
 		} else {
 			return retval;
@@ -179,11 +182,11 @@ public class LegacyMap implements IMutableLegacyMap {
 	}
 
 	private static int reduceMore(final int num) {
-		if (num < 16) {
-			return 16;
+		if (num < HASHMAP_MIN_SIZE) {
+			return HASHMAP_MIN_SIZE;
 		}
 		final int retval = num >> 2;
-		if (retval < 20) {
+		if (retval < HASHMAP_SMALL_SIZE) {
 			return num;
 		} else {
 			return retval;

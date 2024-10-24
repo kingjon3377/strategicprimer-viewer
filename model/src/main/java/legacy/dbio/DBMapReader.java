@@ -49,6 +49,7 @@ import java.util.Objects;
 import java.util.stream.Stream;
 
 public final class DBMapReader {
+	private static final int TERRAIN_LOG_INTERVAL = 50;
 	// FIXME: Passing null when we don't want to construct the parent object is a *really* bad idea!
 	private final List<MapContentsReader> readers = List.of(new DBPlayerHandler(), new DBCacheHandler(),
 			new DBExplorableHandler(), new DBFieldHandler(), new DBFortressHandler(null), new DBUnitHandler(null),
@@ -175,7 +176,7 @@ public final class DBMapReader {
 					retval.addRivers(location, River.Lake);
 				}
 				count.add(1);
-				if (count.getSum() % 50 == 0) {
+				if (count.getSum() % TERRAIN_LOG_INTERVAL == 0) {
 					LovelaceLogger.debug("Read terrain for %d tiles",
 							count.getSum());
 				}

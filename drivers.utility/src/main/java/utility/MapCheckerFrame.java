@@ -35,6 +35,8 @@ import drivers.gui.common.SPFrame;
 	private static final long serialVersionUID = 1L;
 
 	private static final class AutoDisposeExecutor extends WindowAdapter {
+		private static final long TERMINATION_DELAY_MS = 800L;
+
 		public AutoDisposeExecutor() {
 			executor = Executors.newSingleThreadExecutor();
 			valid = true;
@@ -46,7 +48,7 @@ import drivers.gui.common.SPFrame;
 		@Override
 		public void windowClosed(final WindowEvent event) {
 			try {
-				if (!executor.awaitTermination(800, TimeUnit.MILLISECONDS)) {
+				if (!executor.awaitTermination(TERMINATION_DELAY_MS, TimeUnit.MILLISECONDS)) {
 					executor.shutdownNow();
 				}
 			} catch (final InterruptedException except) {

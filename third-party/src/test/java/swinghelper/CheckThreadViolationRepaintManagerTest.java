@@ -13,6 +13,10 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.Objects;
 
 public class CheckThreadViolationRepaintManagerTest {
+
+	private static final int TEST_WIDTH = 300;
+	private static final int TEST_HEIGHT = 200;
+
 	static void simpleTest() {
 		final JFrame frame = new JFrame("Am I on EDT?");
 		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -29,7 +33,7 @@ public class CheckThreadViolationRepaintManagerTest {
 		frame.setContentPane(editor);
 		editor.setContentType("text/html");
 		editor.setText("<html><img src=\"file:\\\\lala.png\"></html>");
-		frame.setSize(300, 200);
+		frame.setSize(TEST_WIDTH, TEST_HEIGHT);
 		frame.setVisible(true);
 		// frame.dispose(); // ???
 	}

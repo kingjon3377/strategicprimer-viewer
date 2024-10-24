@@ -54,6 +54,8 @@ import org.jetbrains.annotations.Nullable;
  * An app to let the user create a map from an image.
  */
 /* package */ class ImporterDriver implements UtilityDriver {
+	private static final int MAX_BYTE = 0xFF;
+
 	private enum ImportableTerrain implements HasName {
 		Mountain("mountain"),
 		BorealForest("boreal forest"),
@@ -72,7 +74,7 @@ import org.jetbrains.annotations.Nullable;
 	}
 
 	private static String pixelString(final int pixel) {
-		return "(%d, %d, %d)".formatted((pixel >> 16) & 0xFF, (pixel >> 8) & 0xFF, pixel & 0xFF);
+		return "(%d, %d, %d)".formatted((pixel >> 16) & MAX_BYTE, (pixel >> 8) & MAX_BYTE, pixel & MAX_BYTE);
 	}
 
 	private final ICLIHelper cli;

@@ -27,6 +27,8 @@ import lovelace.util.IntAccumulator;
  * An interface for code to read map contents from an SQL database.
  */
 public interface MapContentsReader {
+	int READ_LOG_INTERVAL = 50;
+
 	/**
 	 * Read map contents---that is, anything directly at a location on the map.
 	 *
@@ -63,7 +65,7 @@ public interface MapContentsReader {
 				.as(((RowParser<Map<String, Object>>) MapContentsReader::parseToMap).stream(), db)) {
 			stream.forEach(handler.andThen((m, w) -> {
 				count.add(1);
-				if (count.getSum() % 50 == 0) {
+				if (count.getSum() % READ_LOG_INTERVAL == 0) {
 					LovelaceLogger.debug("Finished reading %d %s", count.getSum(), description);
 				}
 			}).wrappedPartial(warner));

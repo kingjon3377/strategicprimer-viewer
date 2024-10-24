@@ -30,6 +30,17 @@ import drivers.common.SPOptions;
  * are disabled.)
  */
 public class EchoDriver implements UtilityDriver {
+	/**
+	 * If a Forest doesn't have an ID in the input map, assign it one based on its
+	 * location, starting from this number.
+	 */
+	private static final int FOREST_ID_SEED = 1147200;
+	/**
+	 * If a Ground doesn't have an ID in the input map, assign it one based on its
+	 * location, starting from this number.
+	 */
+	private static final int GROUND_ID_SEED = 1171484;
+
 	public EchoDriver(final SPOptions options) {
 		this.options = options;
 	}
@@ -74,7 +85,7 @@ public class EchoDriver implements UtilityDriver {
 						.findFirst().orElse(null);
 				if (!Objects.isNull(mainForest) && mainForest.getId() < 0) {
 					mainForest.setId(idFactory.register(
-							1147200 + location.row() * columnCount +
+							FOREST_ID_SEED + location.row() * columnCount +
 									location.column()));
 				}
 				final Ground mainGround = map.getFixtures(location).stream()
@@ -82,7 +93,7 @@ public class EchoDriver implements UtilityDriver {
 						.findFirst().orElse(null);
 				if (!Objects.isNull(mainGround) && mainGround.getId() < 0) {
 					mainGround.setId(idFactory.register(
-							1171484 + location.row() * columnCount +
+							GROUND_ID_SEED + location.row() * columnCount +
 									location.column()));
 				}
 				for (final TileFixture fixture : map.getFixtures(location)) {

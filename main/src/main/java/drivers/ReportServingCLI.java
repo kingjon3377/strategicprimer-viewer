@@ -47,6 +47,8 @@ import org.takes.http.Exit;
  * A driver to "serve" a report on the contents of a map on an embedded HTTP server.
  */
 /* package */ class ReportServingCLI implements ReadOnlyDriver {
+	private static final int PORT = 8080;
+
 	public ReportServingCLI(final SPOptions options, final IDriverModel model, final ICLIHelper cli) {
 		this.options = options;
 		this.model = model;
@@ -150,7 +152,7 @@ import org.takes.http.Exit;
 				LovelaceLogger.warning("Port must be a number");
 				LovelaceLogger.trace(except, "Stack trace of port parse failure");
 			}
-			port = 8080;
+			port = PORT;
 		}
 		Player player;
 		try {
