@@ -169,9 +169,10 @@ public final class ImageLoader {
 		/**
 		 * A map from map versions to maps from tile-types to colors.
 		 */
-		private static final Map<Integer, Map<TileType, Color>> COLORS;
+		private static final Map<Integer, Map<TileType, Color>> COLORS = Map.of(2, verTwoColors());;
 
-		static {
+		@SuppressWarnings("MagicNumber")
+		private static Map<TileType, Color> verTwoColors() {
 			final Map<TileType, Color> verTwo = new EnumMap<>(TileType.class);
 			verTwo.put(TileType.Desert, new Color(249, 233, 28));
 			verTwo.put(TileType.Jungle, new Color(229, 46, 46));
@@ -181,7 +182,7 @@ public final class ImageLoader {
 			verTwo.put(TileType.Steppe, new Color(72, 100, 72));
 			verTwo.put(TileType.Swamp, new Color(231, 41, 138));
 			// TODO: Somehow check that all types in a version are covered?
-			COLORS = Map.of(2, Collections.unmodifiableMap(verTwo));
+			return Collections.unmodifiableMap(verTwo);
 		}
 
 		public static boolean supportsType(final int version, final TileType type) {
