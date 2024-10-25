@@ -68,6 +68,7 @@ public enum SmallAnimalModel implements HerdModel {
 	/**
 	 * How much time, in minutes, must be spent per head on "extra chores" days.
 	 */
+	@SuppressWarnings("MagicNumber")
 	public static int getExtraTimePerHead() {
 		return 30;
 	}
@@ -77,6 +78,7 @@ public enum SmallAnimalModel implements HerdModel {
 	 * each turn, regardless of its size, in addition to each herder's time
 	 * with individual animals.
 	 */
+	@SuppressWarnings("MagicNumber")
 	public static int getDailyTimeFloor() {
 		return 20;
 	}

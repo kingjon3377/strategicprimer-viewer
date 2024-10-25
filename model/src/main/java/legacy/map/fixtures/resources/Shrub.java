@@ -173,6 +173,7 @@ public class Shrub implements HarvestableFixture, HasPopulation<Shrub> {
 	 *
 	 * TODO: Should this vary, either loading from XML or by kind?
 	 */
+	@SuppressWarnings("MagicNumber")
 	@Override
 	public int getDC() {
 		return 15;

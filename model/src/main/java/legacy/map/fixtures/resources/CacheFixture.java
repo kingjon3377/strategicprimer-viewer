@@ -145,6 +145,7 @@ public class CacheFixture implements HarvestableFixture {
 	/**
 	 * TODO: Make variable (loaded from XML) or otherwise more granular?
 	 */
+	@SuppressWarnings("MagicNumber")
 	@Override
 	public int getDC() {
 		return 25;

@@ -311,6 +311,7 @@ public class FortressImpl implements IMutableFortress {
 	/**
 	 * The required Perception check for an explorer to find the fortress.
 	 */
+	@SuppressWarnings("MagicNumber")
 	@Override
 	public int getDC() {
 		return members.stream().filter(TileFixture.class::isInstance).map(TileFixture.class::cast)

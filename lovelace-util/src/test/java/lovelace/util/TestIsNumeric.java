@@ -17,7 +17,7 @@ public final class TestIsNumeric {
 		assertTrue(isNumeric("1,000"), "A number with commas is numeric");
 	}
 
-	@SuppressWarnings("NewExceptionWithoutArguments")
+	@SuppressWarnings({"NewExceptionWithoutArguments", "MagicNumber"})
 	@Test
 	public void testParseInt() {
 		assertEquals(-5127, parseInt("-5,127").orElseThrow(IllegalStateException::new),

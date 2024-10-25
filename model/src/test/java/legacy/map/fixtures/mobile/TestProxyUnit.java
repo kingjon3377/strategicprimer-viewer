@@ -11,6 +11,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  * advancement feature.
  */
 public class TestProxyUnit {
+	@SuppressWarnings("MagicNumber")
 	private static IUnit createUnitForFirstTest(final Player owner) {
 		final IMutableUnit retval = new Unit(owner, "unitKind", "unitName", 99);
 		retval.addMember(new Worker("workerOne", "human", 52));

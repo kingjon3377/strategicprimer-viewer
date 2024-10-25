@@ -82,6 +82,7 @@ import org.jetbrains.annotations.Nullable;
 		return cost;
 	}
 
+	@SuppressWarnings("MagicNumber")
 	@Override
 	public @Nullable String run() {
 		final StringBuilder buffer = new StringBuilder();

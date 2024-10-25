@@ -98,10 +98,12 @@ enum LodeStatus {
 		return notHigherProbability;
 	}
 
+	@SuppressWarnings("MagicNumber")
 	LodeStatus(final int qty) {
 		this(qty, 0.5);
 	}
 
+	@SuppressWarnings("MagicNumber")
 	LodeStatus(final int qty, final double lowerChance) {
 		this(qty, lowerChance, 0.8);
 	}

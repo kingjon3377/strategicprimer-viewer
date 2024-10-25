@@ -28,6 +28,7 @@ public class TestExplorationRunner {
 	/**
 	 * Test of the {@link ExplorationRunner#getPrimaryRock} method.
 	 */
+	@SuppressWarnings("MagicNumber")
 	@Test
 	public void testGetPrimaryRock() throws MissingTableException {
 		final ExplorationRunner runner = new ExplorationRunner();
@@ -58,6 +59,7 @@ public class TestExplorationRunner {
 	/**
 	 * Test that {@link ExplorationRunner#getPrimaryTree} objects to being called on non-forested tiles.
 	 */
+	@SuppressWarnings("MagicNumber")
 	@Test
 	public void testIllegalGetPrimaryTree() {
 		assertThrows(IllegalArgumentException.class,
@@ -179,6 +181,7 @@ public class TestExplorationRunner {
 	/**
 	 * Test loading {@link QuadrantTable quadrant-based tables}.
 	 */
+	@SuppressWarnings("MagicNumber")
 	@Test
 	public void testLoadQuadrantTable() throws MissingTableException, IOException {
 		final ExplorationRunner runner = new ExplorationRunner();

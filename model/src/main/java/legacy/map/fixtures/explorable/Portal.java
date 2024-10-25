@@ -193,6 +193,7 @@ public class Portal implements ExplorableFixture, SubsettableFixture {
 	 *
 	 * TODO: This should probably be variable, i.e. read from XML
 	 */
+	@SuppressWarnings("MagicNumber")
 	@Override
 	public int getDC() {
 		return 35;

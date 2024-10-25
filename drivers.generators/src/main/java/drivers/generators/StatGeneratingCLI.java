@@ -112,6 +112,7 @@ import legacy.map.fixtures.towns.Village;
 	 * The chance that someone from a village located a "days"-day
 	 * journey away will come as a volunteer.
 	 */
+	@SuppressWarnings("MagicNumber")
 	private static double villageChance(final int days) {
 		return Math.pow(0.4, days);
 	}
@@ -270,6 +271,7 @@ import legacy.map.fixtures.towns.Village;
 	/**
 	 * Generate a worker with race and Job levels based on the population of the given village. Returns null on EOF
 	 */
+	@SuppressWarnings("MagicNumber")
 	private @Nullable Worker generateWorkerFrom(final Village village, final String name, final IDRegistrar idf) {
 		final Worker worker = new Worker(name, village.getRace(), idf.createID());
 		worker.setNote(village.owner(), "From %s.".formatted(village.getName()));

@@ -138,6 +138,7 @@ public class Centaur implements Immortal, HasMutableImage, HasKind {
 		return "Centaurs";
 	}
 
+	@SuppressWarnings("MagicNumber")
 	@Override
 	public int getDC() {
 		return 20;

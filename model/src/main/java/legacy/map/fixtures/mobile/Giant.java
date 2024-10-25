@@ -139,6 +139,7 @@ public class Giant implements Immortal, HasMutableImage, HasKind {
 	 *
 	 * TODO: Should this vary with kind?
 	 */
+	@SuppressWarnings("MagicNumber")
 	@Override
 	public int getDC() {
 		return 28;

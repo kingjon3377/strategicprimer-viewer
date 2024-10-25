@@ -3,6 +3,7 @@ package legacy.map.fixtures.mobile;
 import org.jetbrains.annotations.NotNull;
 
 public class Kraken extends ImmortalAnimal {
+	@SuppressWarnings("MagicNumber")
 	public Kraken(final int id) {
 		super("kraken", "Krakens", 30, id);
 	}

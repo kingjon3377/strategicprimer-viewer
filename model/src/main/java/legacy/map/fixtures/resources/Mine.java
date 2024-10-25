@@ -137,6 +137,7 @@ public class Mine implements HarvestableFixture, MineralFixture {
 	 *
 	 * TODO: Should perhaps be variable and loaded from XML
 	 */
+	@SuppressWarnings("MagicNumber")
 	@Override
 	public int getDC() {
 		return (TownStatus.Active == status) ? 15 : 25;

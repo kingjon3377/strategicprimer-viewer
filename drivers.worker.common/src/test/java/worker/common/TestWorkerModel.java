@@ -88,6 +88,7 @@ public class TestWorkerModel {
 	/**
 	 * Test of the {@link IWorkerModel#getUnits} method.
 	 */
+	@SuppressWarnings("MagicNumber")
 	@Test
 	public void testGetUnits() {
 		final List<TileFixture> fixtures = new ArrayList<>();

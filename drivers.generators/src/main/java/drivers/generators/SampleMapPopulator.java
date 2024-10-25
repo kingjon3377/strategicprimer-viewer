@@ -27,6 +27,7 @@ import java.util.Objects;
 				map.getFixtures(location).stream().noneMatch(Forest.class::isInstance);
 	}
 
+	@SuppressWarnings("MagicNumber")
 	@Override
 	public double getChance() {
 		return 0.05;

@@ -34,6 +34,7 @@ public final class AnimalDiscoveryDCs {
 
 	private static final Map<String, Integer> DCS = initDcs();
 
+	@SuppressWarnings("MagicNumber")
 	public static int get(final String key) {
 		return DCS.getOrDefault(key, 22);
 	}

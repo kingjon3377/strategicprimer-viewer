@@ -137,6 +137,7 @@ public class Dragon implements Immortal, HasMutableImage, HasKind {
 		return "Dragons";
 	}
 
+	@SuppressWarnings("MagicNumber")
 	@Override
 	public int getDC() {
 		return 20;

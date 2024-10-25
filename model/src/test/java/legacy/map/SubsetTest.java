@@ -233,6 +233,7 @@ public final class SubsetTest {
 	/**
 	 * Test interaction between isSubset() and copy().
 	 */
+	@SuppressWarnings("MagicNumber")
 	@Test
 	public void testSubsetsAndCopy() {
 		final IMutableLegacyMap firstMap = new LegacyMap(new MapDimensionsImpl(2, 2, 2),
@@ -279,6 +280,7 @@ public final class SubsetTest {
 	/**
 	 * Test {@link AbstractTown} subset calculations, specifically in the {@link Town} instantiation.
 	 */
+	@SuppressWarnings("MagicNumber")
 	@ParameterizedTest
 	@MethodSource("townParameters")
 	public void testTownSubsets(final TownSize size, final TownStatus status) {
@@ -347,6 +349,7 @@ public final class SubsetTest {
 	/**
 	 * Test {@link AbstractTown} subset calculations, specifically in the {@link City} instantiation.
 	 */
+	@SuppressWarnings("MagicNumber")
 	@ParameterizedTest
 	@MethodSource("townParameters")
 	public void testCitySubsets(final TownSize size, final TownStatus status) {
@@ -416,6 +419,7 @@ public final class SubsetTest {
 	 * Test {@link AbstractTown} subset calculations, specifically in the
 	 * {@link Fortification} instantiation.
 	 */
+	@SuppressWarnings("MagicNumber")
 	@ParameterizedTest
 	@MethodSource("townParameters")
 	public void testFortificationSubsets(final TownSize size, final TownStatus status) {

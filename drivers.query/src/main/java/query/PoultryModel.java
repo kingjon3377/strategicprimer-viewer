@@ -75,6 +75,7 @@ public enum PoultryModel implements HerdModel {
 	/**
 	 * How much time, in minutes, must be spent per head on "extra chores" days.
 	 */
+	@SuppressWarnings("MagicNumber")
 	public static int getExtraTimePerHead() {
 		return 30;
 	}

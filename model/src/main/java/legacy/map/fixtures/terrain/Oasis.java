@@ -92,6 +92,7 @@ public class Oasis implements TerrainFixture, HasMutableImage {
 		return retval;
 	}
 
+	@SuppressWarnings("MagicNumber")
 	@Override
 	public int getDC() {
 		return 15;

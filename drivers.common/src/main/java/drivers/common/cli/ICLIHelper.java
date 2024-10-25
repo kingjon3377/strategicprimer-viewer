@@ -201,6 +201,7 @@ public interface ICLIHelper {
 	 *
 	 * @param line The line to print
 	 */
+	@SuppressWarnings("MagicNumber")
 	default void printlnAtInterval(final String line) {
 		printlnAtInterval(line, 30);
 	}

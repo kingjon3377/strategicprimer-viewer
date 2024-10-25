@@ -106,6 +106,7 @@ public class HuntingModel {
 		return 0.855 + 0.0239 * weight - 0.000000872 * weight * weight;
 	}
 
+	@SuppressWarnings("MagicNumber")
 	private static int dcIfFound(final TileFixture/*|NothingFound*/ item) {
 		if (item instanceof NothingFound) {
 			return 60;

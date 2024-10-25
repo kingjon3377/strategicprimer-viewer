@@ -175,6 +175,7 @@ public class AdventureFixture implements ExplorableFixture, HasMutableOwner, Sub
 	 *
 	 * TODO: Should probably be variable, i.e. read from XML
 	 */
+	@SuppressWarnings("MagicNumber")
 	@Override
 	public int getDC() {
 		return 30;

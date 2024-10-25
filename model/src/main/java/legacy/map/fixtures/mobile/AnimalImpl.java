@@ -168,6 +168,7 @@ public class AnimalImpl implements Animal, HasMutableImage {
 	 *
 	 * TODO: Should be based on population size as well as animal kind
 	 */
+	@SuppressWarnings("MagicNumber")
 	@Override
 	public int getDC() {
 		final int retval = AnimalDiscoveryDCs.get(kind);

@@ -313,6 +313,7 @@ public class MapCheckerCLI implements UtilityDriver {
 		return item.getAcres().doubleValue() > 0.0;
 	}
 
+	@SuppressWarnings("MagicNumber")
 	private static double townAcreage(final TownSize size) {
 		return switch (size) {
 			case Small -> 15.0;

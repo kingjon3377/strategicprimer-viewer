@@ -232,6 +232,7 @@ public class Grove implements HarvestableFixture, HasPopulation<Grove> {
 		return "Groves and orchards";
 	}
 
+	@SuppressWarnings("MagicNumber")
 	@Override
 	public int getDC() {
 		return 18;

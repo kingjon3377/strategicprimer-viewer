@@ -169,6 +169,7 @@ public class Ground implements MineralFixture, HasMutableImage {
 	 * The required Perception check result for an explorer to find the
 	 * fixture. This does not cover digging to deliberately uncover it.
 	 */
+	@SuppressWarnings("MagicNumber")
 	@Override
 	public int getDC() {
 		return (exposed) ? 10 : 40;

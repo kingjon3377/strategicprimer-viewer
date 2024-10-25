@@ -139,6 +139,7 @@ public class Fairy implements Immortal, HasMutableImage, HasKind {
 	 *
 	 * TODO: Should vary, either defined in XML or computed from kind
 	 */
+	@SuppressWarnings("MagicNumber")
 	@Override
 	public int getDC() {
 		return 28;

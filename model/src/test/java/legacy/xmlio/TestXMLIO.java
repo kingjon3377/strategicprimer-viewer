@@ -862,6 +862,7 @@ public final class TestXMLIO {
 	 * Test (de)serialization of {@link Fortification fortifications'}
 	 * {@link CommunityStats population details}.
 	 */
+	@SuppressWarnings("MagicNumber")
 	@ParameterizedTest
 	@MethodSource("testCityPopulationSerialization")
 	public void testFortificationPopulationSerialization(final String name, final TownSize size,
@@ -904,6 +905,7 @@ public final class TestXMLIO {
 	 *
 	 * TODO: Split and further randomize this and further tests
 	 */
+	@SuppressWarnings("MagicNumber")
 	@ParameterizedTest
 	@MethodSource("testCitySerialization")
 	public void testTownSerialization(final TownSize size, final TownStatus status, final int id, final int dc,
@@ -936,6 +938,7 @@ public final class TestXMLIO {
 	/**
 	 * Test {@link StoneDeposit} (de)serialization.
 	 */
+	@SuppressWarnings("MagicNumber")
 	@ParameterizedTest
 	@EnumSource(StoneKind.class)
 	public void testStoneSerialization(final StoneKind kind)
@@ -1223,6 +1226,7 @@ public final class TestXMLIO {
 	/**
 	 * Another test of serialization within a single tile.
 	 */
+	@SuppressWarnings("MagicNumber")
 	@ParameterizedTest
 	@MethodSource
 	public void testTileSerializationThree(final boolean deprecatedWriter)
@@ -1657,6 +1661,7 @@ public final class TestXMLIO {
 	/**
 	 * Test (de)serialization of {@link UnitMember members} of {@link IUnit units}.
 	 */
+	@SuppressWarnings("MagicNumber")
 	@Test
 	public void testUnitMemberSerialization()
 			throws SPFormatException, XMLStreamException, IOException {
@@ -1871,6 +1876,7 @@ public final class TestXMLIO {
 	/**
 	 * Test {@link Animal} (de)serialization.
 	 */
+	@SuppressWarnings("MagicNumber")
 	@ParameterizedTest
 	@MethodSource
 	public void testAnimalSerialization(final int id, final String status, final String kind, final boolean talking)

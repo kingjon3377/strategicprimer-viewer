@@ -73,6 +73,7 @@ import org.jetbrains.annotations.Nullable;
 		}
 	}
 
+	@SuppressWarnings("MagicNumber")
 	private static String pixelString(final int pixel) {
 		return "(%d, %d, %d)".formatted((pixel >> 16) & MAX_BYTE, (pixel >> 8) & MAX_BYTE, pixel & MAX_BYTE);
 	}

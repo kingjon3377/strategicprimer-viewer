@@ -52,6 +52,7 @@ public enum MammalModel implements HerdModel {
 	/**
 	 * The number of pounds per gallon.
 	 */
+	@SuppressWarnings("MagicNumber")
 	@Override
 	public double getPoundsCoefficient() {
 		return 8.6;
@@ -62,6 +63,7 @@ public enum MammalModel implements HerdModel {
 	 * each turn, regardless of its size, in addition to each herder's time
 	 * with individual animals.
 	 */
+	@SuppressWarnings("MagicNumber")
 	public static int getDailyTimeFloor() {
 		return 60;
 	}

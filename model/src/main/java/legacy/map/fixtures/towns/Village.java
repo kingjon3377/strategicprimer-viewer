@@ -307,6 +307,7 @@ public class Village implements IMutableTownFixture, HasMutableImage,
 	/**
 	 * The required Perception check to find the village.
 	 */
+	@SuppressWarnings("MagicNumber")
 	@Override
 	public int getDC() {
 		if (TownStatus.Active == status) {

@@ -123,6 +123,7 @@ import org.jetbrains.annotations.NotNull;
 		return Boolean.TRUE.equals(retval);
 	}
 
+	@SuppressWarnings("MagicNumber")
 	@Override
 	public int getDC() {
 		final Integer retval = getConsensus(Animal::getDC);

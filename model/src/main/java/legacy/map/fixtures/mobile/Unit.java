@@ -384,6 +384,7 @@ public final class Unit implements IMutableUnit {
 	/**
 	 * The required Perception check result for an explorer to notice the unit.
 	 */
+	@SuppressWarnings("MagicNumber")
 	@Override
 	public int getDC() {
 		return IntStream.concat(members.stream().filter(TileFixture.class::isInstance)

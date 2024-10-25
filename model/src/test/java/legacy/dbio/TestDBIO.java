@@ -611,6 +611,7 @@ public final class TestDBIO {
 								Arguments.of(a, b, c, SINGLETON_RANDOM.nextInt(Integer.MAX_VALUE)))));
 	}
 
+	@SuppressWarnings("MagicNumber")
 	@ParameterizedTest
 	@MethodSource("testCitySerialization")
 	public void testFortificationSerialization(final int id, final TownStatus status, final TownSize size, final int dc)
@@ -634,6 +635,7 @@ public final class TestDBIO {
 		assertFixtureSerialization(town);
 	}
 
+	@SuppressWarnings("MagicNumber")
 	@ParameterizedTest
 	@MethodSource
 	public void testCitySerialization(final int id, final TownStatus status, final TownSize size, final int dc)
@@ -657,6 +659,7 @@ public final class TestDBIO {
 		assertFixtureSerialization(town);
 	}
 
+	@SuppressWarnings("MagicNumber")
 	@ParameterizedTest
 	@MethodSource("testCitySerialization")
 	public void testTownSerialization(final int id, final TownStatus status, final TownSize size, final int dc)

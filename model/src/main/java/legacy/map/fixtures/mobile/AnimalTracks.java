@@ -78,6 +78,7 @@ public class AnimalTracks implements HasMutableImage, MobileFixture,
 	/**
 	 * TODO: Allow user to customize via XML?
 	 */
+	@SuppressWarnings("MagicNumber")
 	@Override
 	public int getDC() {
 		return 12;

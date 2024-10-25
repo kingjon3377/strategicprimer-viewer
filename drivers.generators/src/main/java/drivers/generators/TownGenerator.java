@@ -443,6 +443,7 @@ import java.math.BigDecimal;
 	 * To ensure consistency between runs of this algorithm, we seed the
 	 * random number generator with the town's ID.
 	 */
+	@SuppressWarnings("MagicNumber")
 	private CommunityStats generateStats(final IDRegistrar idf, final Point location, final ITownFixture town,
 										 final ILegacyMap map) throws MissingTableException {
 		final RandomGenerator rng = new Random(town.getId());
