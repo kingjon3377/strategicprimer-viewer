@@ -49,7 +49,7 @@ public final class ChangeEntityLocationChangeset implements Changeset {
 		final IEntity matching = map.getEntity(id);
 		if (matching instanceof final IMutableEntity entity) {
 			entity.setLocation(toLocation);
-		} else {
+		} else if (Objects.nonNull(matching)) {
 			// TODO: Take properties in Entity constructor?
 			final IMutableEntity replacement = new Entity(id, toLocation, matching.getType());
 			matching.getAllProperties().forEach(replacement::setProperty);
