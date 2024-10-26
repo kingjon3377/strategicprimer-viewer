@@ -1,19 +1,11 @@
 package drivers.turnrunning.applets;
 
-import java.util.List;
-
 import drivers.common.cli.Applet;
 
 import org.jetbrains.annotations.Nullable;
 
 public interface TurnApplet extends Applet {
 	int MINS_PER_HOUR = 60;
-
-	@Override
-	List<String> getCommands();
-
-	@Override
-	String getDescription();
 
 	@Nullable
 	String run();
