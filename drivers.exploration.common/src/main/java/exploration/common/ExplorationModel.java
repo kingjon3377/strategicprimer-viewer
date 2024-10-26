@@ -1040,16 +1040,9 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 		}
 	}
 
-	boolean matchingPlayer(final HasOwner fixture) {
-		// TODO: Ceylon used "value", so may have been wrong here
-		final Pair<Point, @Nullable IUnit> selection = this.selection;
-		final IUnit unit = selection.getValue1();
-		final Player currentPlayer = Optional.ofNullable(unit).map(IUnit::owner).orElse(null);
-		if (Objects.isNull(currentPlayer)) {
-			return false;
-		} else {
-			return fixture.owner().equals(currentPlayer);
-		}
+	private boolean matchingPlayer(final HasOwner fixture) {
+		return Optional.ofNullable(selection.getValue1()).map(IUnit::owner)
+				.filter(fixture.owner()::equals).isPresent();
 	}
 
 	@Override
