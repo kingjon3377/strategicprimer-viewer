@@ -70,6 +70,7 @@ public class OrdersPanel extends BorderedPanel implements OrdersContainer {
 	private final Color defaultColor;
 	private final JTextArea area = new JTextArea();
 
+	@SuppressWarnings("MagicConstant")
 	public OrdersPanel(final String description, final int currentTurn, final Player currentPlayer,
 	                   final BiFunction<Player, String, Collection<IUnit>> playerUnits,
 	                   final IOrdersSupplier ordersSupplier, final @Nullable IOrdersConsumer ordersConsumer,

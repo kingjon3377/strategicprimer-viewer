@@ -101,6 +101,7 @@ import java.util.Arrays;
 		}
 	}
 
+	@SuppressWarnings("MagicConstant")
 	public static void setUpArrowListeners(final DirectionSelectionChanger selListener,
 										   final InputMap inputMap, final ActionMap actionMap) {
 		final int fiveMask =

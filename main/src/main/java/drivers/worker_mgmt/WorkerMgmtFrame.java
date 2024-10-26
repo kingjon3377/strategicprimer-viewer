@@ -68,6 +68,7 @@ import drivers.worker_mgmt.orderspanel.OrdersPanel;
 	private final IWorkerModel model;
 	private final WorkerTree tree;
 
+	@SuppressWarnings("MagicConstant")
 	public WorkerMgmtFrame(final SPOptions options, final IWorkerModel model, final IMenuBroker menuHandler,
 						   final ISPDriver driver) {
 		super("Worker Management", driver, new Dimension(640, 480), true,
