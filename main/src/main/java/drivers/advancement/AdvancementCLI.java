@@ -48,7 +48,7 @@ public class AdvancementCLI implements CLIDriver {
 	/**
 	 * Let the user add experience to a player's workers.
 	 */
-	private void advanceWorkers(final IWorkerModel model, final Player player, final boolean allowExpertMentoring) {
+	private void advanceWorkers(final Player player, final boolean allowExpertMentoring) {
 		final List<IUnit> units = model.getUnits(player).stream()
 				.filter(u -> u.stream().anyMatch(IWorker.class::isInstance)).collect(Collectors.toList());
 		while (!units.isEmpty()) {
@@ -81,7 +81,7 @@ public class AdvancementCLI implements CLIDriver {
 				break;
 			}
 			playerList.remove(chosen);
-			advanceWorkers(model, chosen, options.hasOption("--allow-expert-mentoring"));
+			advanceWorkers(chosen, options.hasOption("--allow-expert-mentoring"));
 			final Boolean continuation = cli.inputBoolean("Select another player?");
 			if (!Boolean.TRUE.equals(continuation)) {
 				break;

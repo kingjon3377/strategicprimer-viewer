@@ -57,7 +57,7 @@ public class MapPopulatorDriver implements CLIDriver {
 	/**
 	 * Populate the map. You shouldn't need to customize this.
 	 */
-	private void populate(final IPopulatorDriverModel model) {
+	private void populate() {
 		final IDRegistrar idf = IDFactoryFiller.createIDFactory(model.getMap());
 		final List<Point> locations = model.getMap().streamLocations().collect(Collectors.toList());
 		Collections.shuffle(locations);
@@ -74,7 +74,7 @@ public class MapPopulatorDriver implements CLIDriver {
 
 	@Override
 	public void startDriver() {
-		populate(model);
+		populate();
 		cli.printf("%d/%d suitable locations were changed%n", changedCount, suitableCount);
 		if (changedCount > 0) {
 			model.setMapModified(true);
