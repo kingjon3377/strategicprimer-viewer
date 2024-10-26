@@ -742,7 +742,11 @@ public class LegacyMap implements IMutableLegacyMap {
 				final TileType theirTerrain = obj.getBaseTerrain(point);
 				final TileType ourTerrain = terrain.get(point);
 				if (!Objects.isNull(theirTerrain)) {
-					if (!Objects.isNull(ourTerrain)) {
+					if (Objects.isNull(ourTerrain)) {
+						localReport.accept("Has terrain information we don't");
+						retval = false;
+						continue;
+					} else {
 						if (ourTerrain != theirTerrain) {
 							localReport.accept("Base terrain differs");
 							retval = false;
@@ -751,10 +755,6 @@ public class LegacyMap implements IMutableLegacyMap {
 								obj.getRivers(point).isEmpty()) {
 							localReport.accept("Has terrain but not our rivers");
 						}
-					} else {
-						localReport.accept("Has terrain information we don't");
-						retval = false;
-						continue;
 					}
 				}
 				if (obj.isMountainous(point) && !isMountainous(point)) {
