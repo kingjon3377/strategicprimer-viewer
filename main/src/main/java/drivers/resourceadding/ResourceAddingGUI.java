@@ -117,6 +117,10 @@ import java.io.FileNotFoundException;
 	 * TODO: Make dependencies explicit to make this static.
 	 */
 	private final class ResourceAddingFrame extends SPFrame implements PlayerChangeListener {
+		private static final double DIVIDER_LOCATION = 0.2;
+		private static final double RESIZE_WEIGHT = 0.1;
+		private static final int HORIZ_LOG_PADDING = 20;
+
 		private static JPanel pairPanel(final Component first, final Component second) {
 			return BorderedPanel.verticalPanel(first, null, second);
 		}
@@ -233,10 +237,10 @@ import java.io.FileNotFoundException;
 			final JScrollPane scrolledLog = new JScrollPane(logLabel);
 			scrolledLog.setMinimumSize(logLabel.getMinimumSize());
 
-			add(verticalSplit(mainPanel, scrolledLog, 0.2, 0.1));
+			add(verticalSplit(mainPanel, scrolledLog, DIVIDER_LOCATION, RESIZE_WEIGHT));
 			setJMenuBar(WorkerMenu.workerMenu(menuHandler, mainPanel, outer));
 			pack();
-			logLabel.setMinimumSize(new Dimension(getWidth() - 20, 50));
+			logLabel.setMinimumSize(new Dimension(getWidth() - HORIZ_LOG_PADDING, 50));
 			logLabel.setPreferredSize(new Dimension(getWidth(), 100));
 
 			final int maximum = Short.MAX_VALUE; // TODO: Get whatever runtime.maxArraySize was in Ceylon?

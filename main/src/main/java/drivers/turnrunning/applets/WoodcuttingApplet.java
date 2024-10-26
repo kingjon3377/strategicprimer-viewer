@@ -30,6 +30,12 @@ import java.util.stream.Collectors;
 import org.jetbrains.annotations.Nullable;
 
 /* package */ class WoodcuttingApplet extends AbstractTurnApplet {
+	private static final int CU_FT_PER_TREE = 300;
+	// In our model, to convert from tree-count to acreage, we multiply the count
+	// by 10 and divide by 72 (I forget why, and the stat I have is "700 trees per
+	// acre"), then divide by 100 and round.
+	private static final int FOREST_ACRES_DIVISOR = 72;
+	private static final int SQ_FT_PER_ACRE = 43560;
 	private final ITurnRunningModel model;
 	private final ICLIHelper cli;
 	private final IDRegistrar idf;
@@ -117,7 +123,7 @@ import org.jetbrains.annotations.Nullable;
 				return null;
 			}
 		}
-		int footage = treeCount * 300;
+		int footage = treeCount * CU_FT_PER_TREE;
 		final Boolean fCorrect = cli.inputBoolean("Is %d cubic feet correct?".formatted(footage));
 		if (Objects.isNull(fCorrect)) {
 			return null;
@@ -154,7 +160,7 @@ import org.jetbrains.annotations.Nullable;
 					"Forests on tile:", "No forests on tile", "Forest being cleared: ",
 					ICLIHelper.ListChoiceBehavior.ALWAYS_PROMPT);
 			if (!Objects.isNull(forest) && forest.getAcres().doubleValue() > 0.0) {
-				BigDecimal acres = decimalize(treeCount * 10 / 72)
+				BigDecimal acres = decimalize(treeCount * 10 / FOREST_ACRES_DIVISOR)
 						.divide(decimalize(100), RoundingMode.HALF_EVEN)
 						.min(decimalize(forest.getAcres()));
 				final Boolean aCorrect = cli.inputBoolean("Is %.2f (of %.2f) cleared correct?".formatted(
@@ -165,7 +171,7 @@ import org.jetbrains.annotations.Nullable;
 				} else if (aCorrect) {
 					// TODO: Make the Decimal constant a static-final field
 					builder.append(", clearing %.2f acres (~ %d sq ft) of land.".formatted(
-							acres, acres.multiply(decimalize(43560)).intValue()));
+							acres, acres.multiply(decimalize(SQ_FT_PER_ACRE)).intValue()));
 				} else {
 					final String str = cli.inputMultilineString("Description of cleared land:");
 					if (Objects.isNull(str)) {

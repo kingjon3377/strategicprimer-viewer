@@ -64,6 +64,7 @@ import drivers.worker_mgmt.orderspanel.OrdersPanel;
 /* package */ final class WorkerMgmtFrame extends SPFrame implements PlayerChangeListener {
 	@Serial
 	private static final long serialVersionUID = 1L;
+	private static final double DIVIDER_LOCATION = 2.0 / 3.0;
 	private final IWorkerModel model;
 	private final WorkerTree tree;
 
@@ -126,7 +127,7 @@ import drivers.worker_mgmt.orderspanel.OrdersPanel;
 				BorderedPanel.verticalPanel(
 						BorderedPanel.horizontalPanel(playerLabel, null, jumpButton),
 						new JScrollPane(tree), null),
-				lowerLeft, 2.0 / 3.0), mdp));
+				lowerLeft, DIVIDER_LOCATION), mdp));
 
 		createHotKey(jumpButton, "jumpToNext", ignored -> SwingUtilities.invokeLater(this::jumpNext),
 				JComponent.WHEN_IN_FOCUSED_WINDOW, createAccelerator(KeyEvent.VK_J));

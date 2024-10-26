@@ -28,6 +28,8 @@ import query.PoultryModel;
 import query.SmallAnimalModel;
 
 /* package */ class HerdApplet extends AbstractTurnApplet {
+	private static final double MINS_PER_HOUR = 60.0;
+
 	public HerdApplet(final ITurnRunningModel model, final ICLIHelper cli, final IDRegistrar idf) {
 		super(model, cli);
 		this.model = model;
@@ -166,7 +168,7 @@ import query.SmallAnimalModel;
 						return null;
 					} else if (cleaningDay) {
 						addLineToOrders.accept("Cleaning up after them takes %.1f hours."
-								.formatted(PoultryModel.dailyExtraTime((int) flockPerHerder) / 60.0));
+								.formatted(PoultryModel.dailyExtraTime((int) flockPerHerder) / MINS_PER_HOUR));
 						minutesSpent += PoultryModel.getExtraTimePerHead() * flockPerHerder;
 					}
 				}

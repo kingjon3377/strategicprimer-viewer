@@ -138,6 +138,9 @@ import java.util.stream.StreamSupport;
 		}
 	}
 
+	// A value to pass to addHours() 'context value' parameter that is guaranteed to *not* trigger a level-up.
+	private static final int PREVENT_LEVEL_UP = 200;
+
 	/**
 	 * Add a new Job or Skill.
 	 *
@@ -175,7 +178,7 @@ import java.util.stream.StreamSupport;
 					selectionPath.getLastPathComponent() instanceof final IJob job) {
 				final int childCount = getChildCount(job);
 				if (driverModel.addHoursToSkill(currentRoot, job.getName(), addendum,
-						0, 200)) {
+						0, PREVENT_LEVEL_UP)) {
 					final ISkill skill = StreamSupport.stream(job.spliterator(), false)
 							.filter(s -> addendum.equals(s.getName()))
 							.findAny().orElse(null);

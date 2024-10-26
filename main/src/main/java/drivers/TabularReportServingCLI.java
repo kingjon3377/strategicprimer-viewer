@@ -52,6 +52,8 @@ import org.takes.http.FtBasic;
 import org.takes.http.Exit;
 
 /* package */ class TabularReportServingCLI implements ReadOnlyDriver {
+	private static final int PORT = 8080;
+
 	public TabularReportServingCLI(final ICLIHelper cli, final SPOptions options, final IDriverModel model) {
 		this.cli = cli;
 		this.options = options;
@@ -213,7 +215,7 @@ import org.takes.http.Exit;
 				LovelaceLogger.warning("Port must be a number");
 				LovelaceLogger.trace(except, "Stack trace of port parse failure");
 			}
-			port = 8080;
+			port = PORT;
 		}
 		serveReports(port);
 	}

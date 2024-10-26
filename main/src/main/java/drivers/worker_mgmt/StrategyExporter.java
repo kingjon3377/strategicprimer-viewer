@@ -41,6 +41,8 @@ import legacy.map.fixtures.mobile.worker.IJob;
  * A class to write a proto-strategy to file.
  */
 /* package */ class StrategyExporter implements PlayerChangeListener {
+	private static final long LARGE_UNIT_THRESHOLD = 4L;
+
 	public StrategyExporter(final IWorkerModel model, final SPOptions options) {
 		this.model = model;
 		this.options = options;
@@ -274,7 +276,7 @@ import legacy.map.fixtures.mobile.worker.IJob;
 					writer.newLine();
 					if (unit.iterator().hasNext() && !alreadyWroteMembers) {
 						writer.write("- Members: ");
-						if (unit.stream().count() > 4L &&
+						if (unit.stream().count() > LARGE_UNIT_THRESHOLD &&
 								"true".equals(options
 										.getArgument(
 												"--summarize-large-units"))) {

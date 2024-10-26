@@ -288,6 +288,12 @@ import java.awt.image.BufferedImage;
 		}
 	}
 
+	// In the Ceylon implementation, I used these to guarantee that something (I think
+	// the grid) would get drawn no matter where floating-point rounding happened to fall.
+	// I'm not sure if they're still needed anymore.
+	private static final double LOWER_FP_FUDGE = 0.1;
+	private static final double HIGHER_FP_FUDGE = 1.1;
+
 	@Override
 	public void paint(final Graphics pen) {
 		super.paint(pen);
@@ -302,11 +308,11 @@ import java.awt.image.BufferedImage;
 			// TODO: We used halfEven() around the division
 			// operations for rounding in Ceylon; does casting to
 			// int do the same? Do we still need the added tenth in Java?
-			drawMapPortion(context, tileSize, (int) ((bounds.getMinX() / tileSize) + 0.1),
-					(int) ((bounds.getMinY() / tileSize) + 0.1),
-					Math.min((int) ((bounds.getMaxX() / tileSize) + 1.1),
+			drawMapPortion(context, tileSize, (int) ((bounds.getMinX() / tileSize) + LOWER_FP_FUDGE),
+					(int) ((bounds.getMinY() / tileSize) + LOWER_FP_FUDGE),
+					Math.min((int) ((bounds.getMaxX() / tileSize) + HIGHER_FP_FUDGE),
 							mapDimensions.columns()),
-					Math.min((int) ((bounds.getMaxY() / tileSize) + 1.1),
+					Math.min((int) ((bounds.getMaxY() / tileSize) + HIGHER_FP_FUDGE),
 							mapDimensions.rows()));
 		} finally {
 			context.dispose();

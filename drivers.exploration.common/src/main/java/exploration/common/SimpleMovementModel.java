@@ -52,6 +52,11 @@ import java.util.function.Predicate;
  * </ul>
  */
 public final class SimpleMovementModel {
+	// Added to the unit's perception score as modified by its speed to determine whether
+	// the unit should *sometimes* notice something.
+	private static final int SOMETIMES_PERC_BONUS = 15;
+	private static final int PERCEPTION_DIE_SIZE = 20;
+
 	private SimpleMovementModel() {
 	}
 
@@ -138,7 +143,7 @@ public final class SimpleMovementModel {
 			} else {
 				perception = 0;
 			}
-			return (perception + speed.getPerceptionModifier() + 15) >= fixture.getDC();
+			return (perception + speed.getPerceptionModifier() + SOMETIMES_PERC_BONUS) >= fixture.getDC();
 		}
 	}
 
@@ -196,7 +201,7 @@ public final class SimpleMovementModel {
 		final List<Element> retval = new ArrayList<>();
 		for (final Element item : local) {
 			final int dc = getter.apply(item).getDC();
-			if (SingletonRandom.SINGLETON_RANDOM.nextInt(20) + 1 + perception >= dc) {
+			if (SingletonRandom.SINGLETON_RANDOM.nextInt(PERCEPTION_DIE_SIZE) + 1 + perception >= dc) {
 				retval.add(item);
 				perception -= 5;
 			}

@@ -59,6 +59,12 @@ import java.awt.image.BufferedImage;
 public final class ViewerFrame extends SPFrame implements MapGUI {
 	@Serial
 	private static final long serialVersionUID = 1L;
+	private static final double FILTER_DIVIDER_LOCATION = 0.95;
+	private static final double DETAIL_DIVIDER_LOCATION = 0.9;
+	private static final int MIN_WIDTH = 800;
+	private static final int MIN_HEIGHT = 600;
+	private static final int FILTER_CHK_MIN_WIDTH = 30;
+	private static final int FILTER_CHK_MAX_WIDTH = 50;
 
 	private static JFrame containingWindow(final Component component) {
 		if (component instanceof final JFrame f) {
@@ -102,10 +108,10 @@ public final class ViewerFrame extends SPFrame implements MapGUI {
 		mapModel.addSelectionChangeListener(detailPane);
 
 		setContentPane(verticalSplit(horizontalSplit(new MapScrollPanel(mapModel, mapPanel),
-				createFilterPanel(), 0.95), detailPane, 0.9));
-		setPreferredSize(new Dimension(800, 600));
-		setSize(800, 600);
-		setMinimumSize(new Dimension(800, 600));
+				createFilterPanel(), FILTER_DIVIDER_LOCATION), detailPane, DETAIL_DIVIDER_LOCATION));
+		setPreferredSize(new Dimension(MIN_WIDTH, MIN_HEIGHT));
+		setSize(MIN_WIDTH, MIN_HEIGHT);
+		setMinimumSize(new Dimension(MIN_WIDTH, MIN_HEIGHT));
 		pack();
 
 		mapPanel.requestFocusInWindow();
@@ -201,8 +207,8 @@ public final class ViewerFrame extends SPFrame implements MapGUI {
 		table.setTransferHandler(new FixtureFilterTransferHandler());
 		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		final TableColumn firstColumn = table.getColumnModel().getColumn(0);
-		firstColumn.setMinWidth(30);
-		firstColumn.setMaxWidth(50);
+		firstColumn.setMinWidth(FILTER_CHK_MIN_WIDTH);
+		firstColumn.setMaxWidth(FILTER_CHK_MAX_WIDTH);
 		table.setPreferredScrollableViewportSize(table.getPreferredSize());
 		table.setFillsViewportHeight(true);
 		table.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);

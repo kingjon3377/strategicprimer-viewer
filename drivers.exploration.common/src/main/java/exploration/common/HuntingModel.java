@@ -319,6 +319,8 @@ public class HuntingModel {
 				.collect(Collectors.toList());
 	}
 
+	private static final double NOTHING_PROPORTION = 0.5;
+
 	/**
 	 * A helper method for hunting or fishing.
 	 *
@@ -330,7 +332,7 @@ public class HuntingModel {
 		return new ResultStream<>(
 				new SurroundingPointIterable(point, dimensions).stream()
 						.map(chooseFromMapImpl(chosenMap)).flatMap(Collection::stream)
-						.collect(Collectors.toList()), 0.5,
+						.collect(Collectors.toList()), NOTHING_PROPORTION,
 				Pair.with(point, NothingFound.INSTANCE), p -> dcIfFound(p.getValue1()));
 	}
 

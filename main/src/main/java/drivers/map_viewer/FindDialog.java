@@ -54,6 +54,7 @@ import java.util.function.Predicate;
 /* package */ final class FindDialog extends SPDialog {
 	@Serial
 	private static final long serialVersionUID = 1L;
+	private static final double DIVIDER_LOCATION = 0.6;
 
 	public FindDialog(final Frame parent, final IViewerModel model) {
 		super(parent, "Find");
@@ -99,7 +100,7 @@ import java.util.function.Predicate;
 		}
 
 		setContentPane(horizontalSplit(contentPanel,
-				BorderedPanel.verticalPanel(new JLabel("Find only ..."), scrollPane, null), 0.6));
+				BorderedPanel.verticalPanel(new JLabel("Find only ..."), scrollPane, null), DIVIDER_LOCATION));
 		pack();
 	}
 

@@ -7,6 +7,8 @@ import drivers.common.cli.Applet;
 import org.jetbrains.annotations.Nullable;
 
 public interface TurnApplet extends Applet {
+	int MINS_PER_HOUR = 60;
+
 	@Override
 	List<String> getCommands();
 
@@ -28,14 +30,14 @@ public interface TurnApplet extends Applet {
 			return "no time";
 		} else if (minutes == 1) {
 			return "1 minute";
-		} else if (minutes < 60) {
+		} else if (minutes < MINS_PER_HOUR) {
 			return "%d minutes".formatted(minutes);
-		} else if (minutes < 120) {
-			return "1 hour, " + inHours(minutes % 60);
-		} else if (minutes % 60 == 0) {
-			return "%d hours".formatted(minutes / 60);
+		} else if (minutes < (2 * MINS_PER_HOUR)) {
+			return "1 hour, " + inHours(minutes % MINS_PER_HOUR);
+		} else if (minutes % MINS_PER_HOUR == 0) {
+			return "%d hours".formatted(minutes / MINS_PER_HOUR);
 		} else {
-			return "%d hours, %s".formatted(minutes / 60, inHours(minutes % 60));
+			return "%d hours, %s".formatted(minutes / MINS_PER_HOUR, inHours(minutes % MINS_PER_HOUR));
 		}
 	}
 }

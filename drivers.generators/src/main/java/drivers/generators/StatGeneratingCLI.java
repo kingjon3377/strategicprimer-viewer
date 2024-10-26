@@ -77,6 +77,8 @@ import legacy.map.fixtures.towns.Village;
  * FIXME: Write stat-generating GUI
  */
 /* package */ class StatGeneratingCLI implements CLIDriver {
+	private static final double TILE_DISTANCE_FACTOR = 12.0;
+
 	/**
 	 * Get the index of the lowest value in an array.
 	 */
@@ -565,7 +567,7 @@ import legacy.map.fixtures.towns.Village;
 					villagesToRemove.add(triplet);
 				} else if (SingletonRandom.SINGLETON_RANDOM.nextDouble() <
 						villageChance((int) (Math.min((double) (mpDistance) / mpPerDay,
-								tileDistance / 12.0)) + 1)) {
+								tileDistance / TILE_DISTANCE_FACTOR)) + 1)) {
 					excludedVillages.put(village, true);
 					villagesToRemove.add(triplet);
 					home = village;
