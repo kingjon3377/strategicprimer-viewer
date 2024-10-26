@@ -5,6 +5,7 @@ import legacy.map.Point;
 
 import org.jetbrains.annotations.Nullable;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -13,6 +14,8 @@ import java.util.Objects;
  * point (such as a player's HQ).
  */
 public final class DistanceComparatorImpl implements DistanceComparator, Serializable {
+	@Serial
+	private static final long serialVersionUID = 1L;
 	public DistanceComparatorImpl(final Point base, final @Nullable MapDimensions dimensions) {
 		this.base = base;
 		this.dimensions = dimensions;
