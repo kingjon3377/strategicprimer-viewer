@@ -139,7 +139,8 @@ import lovelace.util.LovelaceLogger;
 						MapReaderAdapter.writeModel(model);
 					}  // TODO: refactor to avoid successive instanceof tests
 				}
-				default -> throw new DriverFailedException(new IllegalStateException("Unhandled driver class"));
+				default -> LovelaceLogger.error("Unhandled driver class",
+						new IllegalStateException("Unhandled driver class"));
 			}
 		} catch (final IncorrectUsageException except) {
 			cli.println(AppChooserState.usageMessage(except.getCorrectUsage(),
