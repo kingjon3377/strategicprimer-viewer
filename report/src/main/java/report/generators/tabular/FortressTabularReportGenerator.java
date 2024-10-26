@@ -3,13 +3,13 @@ package report.generators.tabular;
 import java.util.List;
 
 import common.map.HasName;
+import legacy.DistanceComparatorImpl;
 import legacy.map.HasOwner;
 import org.javatuples.Pair;
 import org.jetbrains.annotations.Nullable;
 
 import lovelace.util.DelayedRemovalMap;
 
-import legacy.DistanceComparator;
 import legacy.map.Player;
 import legacy.map.IFixture;
 import legacy.map.MapDimensions;
@@ -43,7 +43,7 @@ public class FortressTabularReportGenerator implements ITableGenerator<IFortress
 		if (Objects.isNull(hq)) {
 			distanceComparator = (one, two) -> 0;
 		} else {
-			distanceComparator = new DistanceComparator(hq, dimensions);
+			distanceComparator = new DistanceComparatorImpl(hq, dimensions);
 		}
 	}
 

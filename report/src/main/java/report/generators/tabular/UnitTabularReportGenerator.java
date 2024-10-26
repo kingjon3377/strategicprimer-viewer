@@ -2,12 +2,12 @@ package report.generators.tabular;
 
 import java.util.List;
 
+import legacy.DistanceComparatorImpl;
 import org.javatuples.Pair;
 import org.jetbrains.annotations.Nullable;
 
 import lovelace.util.DelayedRemovalMap;
 
-import legacy.DistanceComparator;
 import legacy.map.Player;
 import legacy.map.IFixture;
 import legacy.map.MapDimensions;
@@ -43,7 +43,7 @@ public class UnitTabularReportGenerator implements ITableGenerator<IUnit> {
 		if (Objects.isNull(hq)) {
 			distanceComparator = (one, two) -> 0;
 		} else {
-			distanceComparator = new DistanceComparator(hq, dimensions);
+			distanceComparator = new DistanceComparatorImpl(hq, dimensions);
 		}
 	}
 

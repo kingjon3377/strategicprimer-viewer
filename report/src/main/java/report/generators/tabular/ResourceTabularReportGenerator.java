@@ -3,6 +3,7 @@ package report.generators.tabular;
 import java.io.IOException;
 import java.util.List;
 
+import legacy.DistanceComparatorImpl;
 import org.javatuples.Pair;
 import org.javatuples.Triplet;
 import org.jetbrains.annotations.Nullable;
@@ -13,8 +14,6 @@ import java.util.Comparator;
 
 import lovelace.util.DelayedRemovalMap;
 import lovelace.util.ThrowingConsumer;
-
-import legacy.DistanceComparator;
 
 import legacy.map.MapDimensions;
 import legacy.map.IFixture;
@@ -45,7 +44,7 @@ public class ResourceTabularReportGenerator
 		if (Objects.isNull(hq)) {
 			distanceComparator = (one, two) -> 0;
 		} else {
-			distanceComparator = new DistanceComparator(hq, dimensions);
+			distanceComparator = new DistanceComparatorImpl(hq, dimensions);
 		}
 	}
 

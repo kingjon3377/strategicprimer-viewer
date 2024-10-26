@@ -2,6 +2,7 @@ package report.generators.tabular;
 
 import java.util.List;
 
+import legacy.DistanceComparatorImpl;
 import legacy.map.HasExtent;
 import legacy.map.HasPopulation;
 import org.javatuples.Pair;
@@ -9,7 +10,6 @@ import org.jetbrains.annotations.Nullable;
 
 import lovelace.util.DelayedRemovalMap;
 
-import legacy.DistanceComparator;
 import legacy.map.IFixture;
 import legacy.map.TileFixture;
 import legacy.map.MapDimensions;
@@ -62,7 +62,7 @@ public class CropTabularReportGenerator implements ITableGenerator</*Forest|Shru
 		if (Objects.isNull(hq)) {
 			distanceComparator = (one, two) -> 0;
 		} else {
-			distanceComparator = new DistanceComparator(hq, dimensions);
+			distanceComparator = new DistanceComparatorImpl(hq, dimensions);
 		}
 	}
 

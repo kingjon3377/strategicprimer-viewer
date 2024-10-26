@@ -1,5 +1,6 @@
 package report.generators;
 
+import legacy.DistanceComparatorImpl;
 import org.jetbrains.annotations.Nullable;
 import org.javatuples.Pair;
 
@@ -70,11 +71,11 @@ public abstract class AbstractReportGenerator<Type extends IFixture> implements 
 			pairComparator = pairComparator((one, two) -> 0,
 					Comparator.comparing(IFixture::hashCode));
 		} else {
-			final DistanceComparator distCalculator = new DistanceComparator(referencePoint,
+			final DistanceComparator distCalculator = new DistanceComparatorImpl(referencePoint,
 					mapDimensions);
 			distComparator = distCalculator;
 			distanceString = distCalculator::distanceString;
-			pairComparator = pairComparator(new DistanceComparator(referencePoint, mapDimensions),
+			pairComparator = pairComparator(new DistanceComparatorImpl(referencePoint, mapDimensions),
 					Comparator.comparing(IFixture::hashCode));
 		}
 	}

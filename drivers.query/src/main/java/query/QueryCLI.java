@@ -1,5 +1,6 @@
 package query;
 
+import legacy.DistanceComparatorImpl;
 import legacy.map.fixtures.IResourcePile;
 import legacy.map.fixtures.towns.CommunityStats;
 
@@ -247,7 +248,7 @@ public class QueryCLI implements ReadOnlyDriver {
 			}
 			considered.add(current);
 		}
-		return retval.stream().min(new DistanceComparator(base, dimensions)).orElse(null);
+		return retval.stream().min(new DistanceComparatorImpl(base, dimensions)).orElse(null);
 	}
 
 	/**
@@ -255,7 +256,7 @@ public class QueryCLI implements ReadOnlyDriver {
 	 * base that produce any resources, and what resources they produce.
 	 */
 	private void suggestTrade(final Point base, final int distance) {
-		final DistanceComparator comparator = new DistanceComparator(base, map.getDimensions());
+		final DistanceComparator comparator = new DistanceComparatorImpl(base, map.getDimensions());
 		for (final Point location : new SurroundingPointIterable(base,
 				map.getDimensions(), distance).stream().distinct()
 				.sorted(comparator).toList()) { // TODO: can we combine loops?

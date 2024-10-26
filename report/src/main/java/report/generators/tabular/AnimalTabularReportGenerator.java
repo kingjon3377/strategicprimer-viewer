@@ -2,10 +2,10 @@ package report.generators.tabular;
 
 import java.util.List;
 
+import legacy.DistanceComparatorImpl;
 import org.javatuples.Pair;
 import lovelace.util.DelayedRemovalMap;
 
-import legacy.DistanceComparator;
 import legacy.map.IFixture;
 import legacy.map.MapDimensions;
 import legacy.map.Point;
@@ -129,7 +129,7 @@ public class AnimalTabularReportGenerator implements ITableGenerator<AnimalOrTra
 		if (Objects.isNull(hq)) {
 			cmp = 0;
 		} else {
-			cmp = new DistanceComparator(hq, dimensions).compare(one.getValue0(),
+			cmp = new DistanceComparatorImpl(hq, dimensions).compare(one.getValue0(),
 					two.getValue0());
 		}
 		if (cmp == 0) {

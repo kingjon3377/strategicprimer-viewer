@@ -1,5 +1,6 @@
 package report.generators.tabular;
 
+import legacy.DistanceComparatorImpl;
 import legacy.map.fixtures.explorable.ExplorableFixture;
 
 import java.util.List;
@@ -9,7 +10,6 @@ import org.jetbrains.annotations.Nullable;
 
 import lovelace.util.DelayedRemovalMap;
 
-import legacy.DistanceComparator;
 import legacy.map.Player;
 import legacy.map.IFixture;
 import legacy.map.MapDimensions;
@@ -46,7 +46,7 @@ public class ExplorableTabularReportGenerator
 		if (Objects.isNull(hq)) {
 			distanceComparator = (one, two) -> 0;
 		} else {
-			distanceComparator = new DistanceComparator(hq, dimensions);
+			distanceComparator = new DistanceComparatorImpl(hq, dimensions);
 		}
 	}
 

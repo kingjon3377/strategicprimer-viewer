@@ -2,6 +2,7 @@ package report.generators.tabular;
 
 import java.util.List;
 
+import legacy.DistanceComparatorImpl;
 import org.javatuples.Pair;
 import org.jetbrains.annotations.Nullable;
 
@@ -14,7 +15,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Objects;
 
-import legacy.DistanceComparator;
 import legacy.map.IFixture;
 import legacy.map.MapDimensions;
 import legacy.map.Point;
@@ -35,7 +35,7 @@ public class ImmortalsTabularReportGenerator implements ITableGenerator<Immortal
 		if (Objects.isNull(hq)) {
 			distanceComparator = (one, two) -> 0;
 		} else {
-			distanceComparator = new DistanceComparator(hq, dimensions);
+			distanceComparator = new DistanceComparatorImpl(hq, dimensions);
 		}
 	}
 
