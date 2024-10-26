@@ -97,7 +97,7 @@ public final class DBAnimalHandler extends AbstractDatabaseWriter<AnimalOrTracks
 			throw new IllegalArgumentException("context must be a point, a unit, or a worker");
 		}
 		switch (obj) {
-			case AnimalTracks animalTracks -> {
+			case final AnimalTracks animalTracks -> {
 				// TODO: Invert test to use type-inferring instanceof
 				if (context instanceof IUnit || context instanceof IWorker) {
 					throw new IllegalArgumentException("Animal tracks can't occur inside a unit or worker");

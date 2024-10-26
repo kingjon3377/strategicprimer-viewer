@@ -113,7 +113,7 @@ public class ResourceTabularReportGenerator
 					case final Implement two -> Comparator.comparing(Implement::getKind)
 							.thenComparing(Implement::getCount, Comparator.reverseOrder())
 							.compare(one, two);
-					case IResourcePile iResourcePile -> 1;
+					case final IResourcePile iResourcePile -> 1;
 					default -> -1;
 				};
 			}

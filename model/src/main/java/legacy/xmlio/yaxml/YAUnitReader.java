@@ -68,7 +68,7 @@ import java.util.Map;
 			switch (event) {
 				case final Characters c -> builder.append(c.getData());
 				case final StartElement se -> throw new UnwantedChildException(element.getName(), se);
-				case EndElement end when isMatchingEnd(element.getName(), end) -> {
+				case final EndElement end when isMatchingEnd(element.getName(), end) -> {
 					unit.setOrders(turn, builder.toString().strip());
 					return;
 				}
@@ -91,7 +91,7 @@ import java.util.Map;
 			switch (event) {
 				case final Characters c -> builder.append(c.getData());
 				case final StartElement se -> throw new UnwantedChildException(element.getName(), se);
-				case EndElement end when isMatchingEnd(element.getName(), end) -> {
+				case final EndElement end when isMatchingEnd(element.getName(), end) -> {
 					unit.setResults(turn, builder.toString().strip());
 					return;
 				}
@@ -146,7 +146,7 @@ import java.util.Map;
 					}
 				}
 				case final Characters c -> orders.append(c.getData());
-				case EndElement end when isMatchingEnd(element.getName(), end) -> {
+				case final EndElement end when isMatchingEnd(element.getName(), end) -> {
 					return retval;
 				}
 				default -> {

@@ -205,21 +205,21 @@ public class HarvestableReportGenerator extends AbstractReportGenerator<Harvesta
 					mines.put(m, point);
 					fixtures.remove(item.getId());
 				}
-				case MineralVein mineralVein -> {
+				case final MineralVein mineralVein -> {
 					final List<Point> list = Optional.ofNullable(minerals.get(
 							item.getShortDescription())).orElseGet(ArrayList::new);
 					list.add(point);
 					minerals.put(item.getShortDescription(), list);
 					fixtures.remove(item.getId());
 				}
-				case Shrub shrub -> {
+				case final Shrub shrub -> {
 					final List<Point> list = Optional.ofNullable(shrubs.get(
 							item.getKind())).orElseGet(ArrayList::new);
 					list.add(point);
 					shrubs.put(item.getKind(), list);
 					fixtures.remove(item.getId());
 				}
-				case StoneDeposit stoneDeposit -> {
+				case final StoneDeposit stoneDeposit -> {
 					final List<Point> list = Optional.ofNullable(stone.get(
 							item.getKind())).orElseGet(ArrayList::new);
 					list.add(point);

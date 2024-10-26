@@ -172,7 +172,7 @@ import query.SmallAnimalModel;
 						minutesSpent += PoultryModel.getExtraTimePerHead() * flockPerHerder;
 					}
 				}
-				case MammalModel mammalModel -> {
+				case final MammalModel mammalModel -> {
 					resourceProduced = "milk";
 					addToOrders.accept("Between two milkings, tending the ");
 					addToOrders.accept(AnimalPlurals.get(combinedAnimal.getKind()));

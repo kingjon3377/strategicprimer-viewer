@@ -74,11 +74,11 @@ public class FortressReportGenerator extends AbstractReportGenerator<IFortress> 
 					ostream.accept(f.getKind());
 					fixtures.remove(fixture.getId());
 				}
-				case Hill hill -> {
+				case final Hill hill -> {
 					ostream.accept(", hilly");
 					fixtures.remove(fixture.getId());
 				}
-				case Oasis oasis -> {
+				case final Oasis oasis -> {
 					ostream.accept(", with a nearby oasis");
 					fixtures.remove(fixture.getId());
 				}

@@ -98,7 +98,7 @@ import org.jetbrains.annotations.Nullable;
 					if (!Objects.isNull(unit)) {
 						cli.println("Enter details of harvest (any empty string aborts):");
 						while (true) {
-							IMutableResourcePile resource = resourceAddingHelper.enterResource();
+							final IMutableResourcePile resource = resourceAddingHelper.enterResource();
 							if (Objects.isNull(resource)) {
 								break;
 							} else if ("food".equals(resource.getKind())) {

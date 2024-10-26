@@ -1379,7 +1379,7 @@ public final class TestXMLIO {
 										((UnwantedChildException) except).getChild(),
 										"Unwanted child was the one we expected");
 							}
-							case XMLStreamException xmlStreamException -> assertEquals(
+							case final XMLStreamException xmlStreamException -> assertEquals(
 									"XML stream didn't contain a start element",
 									except.getMessage(), "Exception message matches");
 							default -> fail("Unexpected exception type");

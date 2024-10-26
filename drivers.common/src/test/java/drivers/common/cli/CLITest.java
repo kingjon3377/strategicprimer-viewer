@@ -263,7 +263,7 @@ public final class CLITest {
 				true, "inputBoolean rejects other input",
 				"inputBoolean gives message on invalid input");
 		final StringBuilder ostream = new StringBuilder();
-		ICLIHelper cli = new CLIHelper(new LinkedList<>(Collections.singletonList("all"))::pollFirst,
+		final ICLIHelper cli = new CLIHelper(new LinkedList<>(Collections.singletonList("all"))::pollFirst,
 				ostream::append, NOOP);
 		assertEquals(true, cli.inputBooleanInSeries("prompt four "),
 				"inputBooleanInSeries allows yes-to-all");
@@ -285,7 +285,7 @@ public final class CLITest {
 	@Test
 	public void testInputBooleanInSeriesNone() {
 		final StringBuilder ostream = new StringBuilder();
-		ICLIHelper cli = new CLIHelper(new LinkedList<>(Collections.singletonList("none"))::pollFirst,
+		final ICLIHelper cli = new CLIHelper(new LinkedList<>(Collections.singletonList("none"))::pollFirst,
 				ostream::append, NOOP);
 		assertEquals(false, cli.inputBooleanInSeries("prompt five "),
 				"inputBooleanInSeries allows no-to-all");
@@ -305,7 +305,7 @@ public final class CLITest {
 	@Test
 	public void testInputBooleanInSeriesAlways() {
 		final StringBuilder ostream = new StringBuilder();
-		ICLIHelper cli = new CLIHelper(new LinkedList<>(Collections.singletonList("always"))::pollFirst,
+		final ICLIHelper cli = new CLIHelper(new LinkedList<>(Collections.singletonList("always"))::pollFirst,
 				ostream::append, NOOP);
 		assertEquals(true, cli.inputBooleanInSeries("prompt six ", "key"),
 				"inputBooleanInSeries allows yes-to-all");
@@ -323,7 +323,7 @@ public final class CLITest {
 	@Test
 	public void testInputBooleanInSeriesNever() {
 		final StringBuilder ostream = new StringBuilder();
-		ICLIHelper cli = new CLIHelper(new LinkedList<>(Collections.singletonList("never"))::pollFirst,
+		final ICLIHelper cli = new CLIHelper(new LinkedList<>(Collections.singletonList("never"))::pollFirst,
 				ostream::append, NOOP);
 		assertEquals(false, cli.inputBooleanInSeries("prompt eight ", "secondKey"),
 				"inputBooleanInSeries allows no-to-all");
@@ -341,7 +341,7 @@ public final class CLITest {
 	@Test
 	public void testInputBooleanInSeriesSeparateKeys() {
 		final StringBuilder ostream = new StringBuilder();
-		ICLIHelper cli = new CLIHelper(new LinkedList<>(Arrays.asList("all", "none"))::pollFirst,
+		final ICLIHelper cli = new CLIHelper(new LinkedList<>(Arrays.asList("all", "none"))::pollFirst,
 				ostream::append, NOOP);
 		assertEquals(true, cli.inputBooleanInSeries("prompt ten ", "thirdKey"),
 				"inputBooleanInSeries allows yes-to-all with one key");

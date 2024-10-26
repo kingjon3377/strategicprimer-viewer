@@ -68,7 +68,7 @@ public final class DBMineralHandler extends AbstractDatabaseWriter<MineralFixtur
 				type = "mineral";
 				exposed = m.isExposed();
 			}
-			case StoneDeposit stoneDeposit -> {
+			case final StoneDeposit stoneDeposit -> {
 				type = "stone";
 				exposed = true;
 			}

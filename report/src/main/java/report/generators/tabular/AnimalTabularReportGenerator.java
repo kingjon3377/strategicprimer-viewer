@@ -72,7 +72,7 @@ public class AnimalTabularReportGenerator implements ITableGenerator<AnimalOrTra
 		final String age;
 		final String population;
 		switch (item) {
-			case AnimalTracks animalTracks -> {
+			case final AnimalTracks animalTracks -> {
 				kind = "tracks or traces of " + item.getKind();
 				age = "---";
 				population = "---";

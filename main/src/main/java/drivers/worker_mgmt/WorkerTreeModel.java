@@ -211,7 +211,7 @@ import java.util.stream.Collectors;
 				indices = new int[]{getIndexOfChild(parent, item)};
 				children = new Object[]{item};
 			}
-			case Player player1 -> {
+			case final Player player1 -> {
 				// ignore
 				return;
 			}
@@ -237,7 +237,7 @@ import java.util.stream.Collectors;
 		final int[] indices;
 		final Object[] children;
 		switch (item) {
-			case IUnit unitMembers -> {
+			case final IUnit unitMembers -> {
 				// TODO: should probably fire removal and addition events instead
 				path = new TreePath(new Object[]{player});
 				indices = new int[]{getIndexOfChild(player, item.getKind()),

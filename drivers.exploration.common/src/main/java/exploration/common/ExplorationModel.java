@@ -769,7 +769,7 @@ public class ExplorationModel extends SimpleMultiMapModel implements IExploratio
 			case final FakeFixture fake -> { // must be a block, won't compile if inlined
 				return false; // Skip it! It'll corrupt the output XML!
 			}
-			case AnimalTracks tracks -> matching = fixture;
+			case final AnimalTracks tracks -> matching = fixture;
 			default -> matching = getMap().getFixtures(location).stream()
 					.filter(f -> f.getId() == fixture.getId()).findAny().orElse(null);
 		}

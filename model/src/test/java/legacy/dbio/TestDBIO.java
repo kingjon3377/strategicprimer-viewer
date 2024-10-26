@@ -458,7 +458,7 @@ public final class TestDBIO {
 
 		@Override
 		public Connection connection() throws SQLException {
-			SQLiteDataSource existingSource = source;
+			final SQLiteDataSource existingSource = source;
 			if (Objects.isNull(existingSource)) {
 				final SQLiteDataSource ds = new SQLiteDataSource();
 				ds.setSharedCache(true);
