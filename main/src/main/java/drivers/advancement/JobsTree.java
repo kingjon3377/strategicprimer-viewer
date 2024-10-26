@@ -86,7 +86,7 @@ import legacy.map.fixtures.mobile.worker.IJob;
 		public void treeStructureChanged(final TreeModelEvent event) {
 			Optional.ofNullable(event.getTreePath())
 					.map(TreePath::getParentPath)
-					.ifPresent(path -> expandPath(path));
+					.ifPresent(JobsTree.this::expandPath);
 			// FIXME: Why this loop here?
 			for (int i = 0; i < getRowCount(); i++) {
 				expandRow(i);
