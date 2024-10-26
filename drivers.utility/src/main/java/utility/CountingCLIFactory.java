@@ -34,9 +34,4 @@ public class CountingCLIFactory implements ModelDriverFactory {
 	public ModelDriver createDriver(final ICLIHelper cli, final SPOptions options, final IDriverModel model) {
 		return new CountingCLI(cli, model);
 	}
-
-	@Override
-	public IDriverModel createModel(final IMutableLegacyMap map) {
-		return new SimpleDriverModel(map);
-	}
 }
