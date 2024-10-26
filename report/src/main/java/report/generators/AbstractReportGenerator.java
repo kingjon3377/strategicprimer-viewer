@@ -167,7 +167,7 @@ public abstract class AbstractReportGenerator<Type extends IFixture> implements 
 		}
 		final StringBuilder builder = new StringBuilder();
 		for (int i = 0; i < list.length; i++) {
-			builder.append(list[i].toString());
+			builder.append(list[i]);
 			if (i == list.length - 2) {
 				builder.append(", and ");
 			} else if (i != list.length - 1) {
