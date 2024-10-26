@@ -6,6 +6,7 @@ import org.jetbrains.annotations.Nullable;
 import java.io.Serial;
 import java.util.Objects;
 import java.util.function.Predicate;
+import java.util.function.ToIntFunction;
 import java.util.stream.Stream;
 import java.util.Optional;
 import java.util.List;
@@ -75,11 +76,11 @@ public final class FixtureList extends JList<TileFixture>
 		this.players = players;
 		setCellRenderer(new FixtureCellRenderer());
 		setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
-		addMouseListener(new FixtureMouseListener());
+		addMouseListener(new FixtureMouseListener(listModel, this::locationToIndex, players, feh, idf));
 		DragSource.getDefaultDragSource().createDefaultDragGestureRecognizer(this,
 				DnDConstants.ACTION_COPY, this);
 
-		setDropTarget(new DropTarget(this, new DropListener()));
+		setDropTarget(new DropTarget(this, new DropListener(parentComponent, listModel)));
 
 		createHotKey(this, "delete",
 				event -> listModel.removeAll(getSelectedValuesList()),
@@ -135,11 +136,24 @@ public final class FixtureList extends JList<TileFixture>
 		SwingUtilities.invokeLater(listModel::interactionPointChanged);
 	}
 
-	// TODO: Try to make static, taking necessary dependencies as parameters
-	private final class FixtureMouseListener extends MouseAdapter {
+	private static final class FixtureMouseListener extends MouseAdapter {
+		private final FixtureListModel listModel;
+		private final ToIntFunction<? super java.awt.Point> locationToIndex;
+		private final Iterable<Player> players;
+		private final IFixtureEditHelper feh;
+		private final IDRegistrar idf;
+		FixtureMouseListener(final FixtureListModel listModel,
+		                     final ToIntFunction<? super java.awt.Point> locationToIndex,
+		                     final Iterable<Player> players, final IFixtureEditHelper feh, final IDRegistrar idf) {
+			this.listModel = listModel;
+			this.locationToIndex = locationToIndex;
+			this.players = players;
+			this.feh = feh;
+			this.idf = idf;
+		}
 		private void handleMouseEvent(final MouseEvent event) {
 			if (event.isPopupTrigger() && event.getClickCount() == 1) {
-				final int index = locationToIndex(event.getPoint());
+				final int index = locationToIndex.applyAsInt(event.getPoint());
 				if (index >= 0 && index < listModel.getSize()) {
 					new FixtureEditMenu(listModel.getElementAt(index), players,
 							idf, feh)
@@ -164,8 +178,13 @@ public final class FixtureList extends JList<TileFixture>
 		}
 	}
 
-	// TODO: Try to make static, taking necessary dependencies as parameters
-	private class DropListener extends DropTargetAdapter {
+	private static final class DropListener extends DropTargetAdapter {
+		private final JComponent parentComponent;
+		private final FixtureListModel listModel;
+		DropListener(final JComponent parentComponent, final FixtureListModel listModel) {
+			this.parentComponent = parentComponent;
+			this.listModel = listModel;
+		}
 		// TODO: Figure out how to skip all this (return true) on non-local drags
 		private boolean isXfrFromOutside(final DropTargetEvent dtde) {
 			return !(dtde.getSource() instanceof final Component c) || !parentComponent.isAncestorOf(c);
