@@ -50,17 +50,31 @@ public class PointIterable implements Iterable<Point> {
 		selection = null;
 	}
 
-	// TODO: convert to static class
-	private class PointIteratorImpl implements Iterator<Point> {
+	private static final class PointIteratorImpl implements Iterator<Point> {
+		/**
+		 * Whether we should search forwards (if true) or backwards (if false).
+		 */
+		private final boolean forwards;
+
+		/**
+		 * Whether we should search horizontally (if true) or vertically (if false)
+		 */
+		private final boolean horizontal;
+
+		/**
+		 * The selected point; we start from (just before) (0, 0) if omitted.
+		 */
+		private final @Nullable Point selection;
+
 		/**
 		 * The maximum row in the map.
 		 */
-		private final int maxRow = dimensions.rows() - 1;
+		private final int maxRow;
 
 		/**
 		 * The maximum column in the map.
 		 */
-		private final int maxColumn = dimensions.columns() - 1;
+		private final int maxColumn;
 
 		/**
 		 * The row where we started.
@@ -79,7 +93,13 @@ public class PointIterable implements Iterable<Point> {
 			return (item < 0) ? wrap : item;
 		}
 
-		public PointIteratorImpl() {
+		public PointIteratorImpl(final MapDimensions dimensions, final @Nullable Point selection,
+		                         final boolean forwards, final boolean horizontal) {
+			maxRow = dimensions.rows() - 1;
+			maxColumn = dimensions.columns() - 1;
+			this.selection = selection;
+			this.forwards = forwards;
+			this.horizontal = horizontal;
 			if (!Objects.isNull(selection)) {
 				startRow = wrap(selection.row(), maxRow);
 				startColumn = wrap(selection.column(), maxColumn);
@@ -180,7 +200,7 @@ public class PointIterable implements Iterable<Point> {
 
 	@Override
 	public Iterator<Point> iterator() {
-		return new PointIteratorImpl();
+		return new PointIteratorImpl(dimensions, selection, forwards, horizontal);
 	}
 }
 
