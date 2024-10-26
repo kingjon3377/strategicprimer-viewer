@@ -7,7 +7,7 @@ import java.util.Objects;
 /**
  * A class to handle "expand all," "collapse all," etc.
  */
-public class TreeExpansionHandler implements TreeExpansionOrderListener {
+public final class TreeExpansionHandler implements TreeExpansionOrderListener {
 	public TreeExpansionHandler(final JTree tree) {
 		this.tree = tree;
 	}

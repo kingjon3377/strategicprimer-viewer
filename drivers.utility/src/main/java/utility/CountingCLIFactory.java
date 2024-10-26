@@ -17,7 +17,7 @@ import com.google.auto.service.AutoService;
  * A factory for an app to report statistics on the contents of the map.
  */
 @AutoService(DriverFactory.class)
-public class CountingCLIFactory implements ModelDriverFactory {
+public final class CountingCLIFactory implements ModelDriverFactory {
 	private static final IDriverUsage USAGE = new DriverUsage(false, "count", ParamCount.One,
 			"Calculate statistics of map contents", "Print statistical report of map contents.",
 			false, false);

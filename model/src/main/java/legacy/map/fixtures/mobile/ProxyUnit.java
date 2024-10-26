@@ -39,7 +39,7 @@ import org.jetbrains.annotations.Nullable;
  * driver model methods.
  */
 @Deprecated
-public class ProxyUnit implements IUnit, ProxyFor<IUnit> {
+public final class ProxyUnit implements IUnit, ProxyFor<IUnit> {
 	/**
 	 * If true, we are proxying parallel units in different maps; if false,
 	 * multiple units of the same kind owned by one player.

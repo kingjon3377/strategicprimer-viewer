@@ -46,7 +46,7 @@ import org.takes.http.Exit;
 /**
  * A driver to "serve" a report on the contents of a map on an embedded HTTP server.
  */
-/* package */ class ReportServingCLI implements ReadOnlyDriver {
+/* package */ final class ReportServingCLI implements ReadOnlyDriver {
 	private static final int PORT = 8080;
 
 	public ReportServingCLI(final SPOptions options, final IDriverModel model, final ICLIHelper cli) {

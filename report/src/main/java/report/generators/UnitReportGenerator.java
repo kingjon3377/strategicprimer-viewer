@@ -34,7 +34,7 @@ import legacy.map.fixtures.mobile.AnimalOrTracks;
 /**
  * A report generator for units.
  */
-public class UnitReportGenerator extends AbstractReportGenerator<IUnit> {
+public final class UnitReportGenerator extends AbstractReportGenerator<IUnit> {
 
 	public UnitReportGenerator(final Player currentPlayer, final MapDimensions dimensions, final int currentTurn) {
 		this(currentPlayer, dimensions, currentTurn, null);

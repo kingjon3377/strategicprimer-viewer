@@ -12,7 +12,7 @@ import java.util.function.Consumer;
 /**
  * A forest on a tile.
  */
-public class Forest implements TerrainFixture, HasMutableImage, HasKind, HasExtent<Forest> {
+public final class Forest implements TerrainFixture, HasMutableImage, HasKind, HasExtent<Forest> {
 	public Forest(final String kind, final boolean rows, final int id, final Number acres) {
 		this.kind = kind;
 		this.rows = rows;

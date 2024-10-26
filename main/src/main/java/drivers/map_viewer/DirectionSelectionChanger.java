@@ -15,7 +15,7 @@ import legacy.map.Point;
  *
  * TODO: Add withRow() and withColumn() methods to Point to condense the below slightly?
  */
-/* package */ class DirectionSelectionChanger implements MouseWheelListener {
+/* package */ final class DirectionSelectionChanger implements MouseWheelListener {
 	public DirectionSelectionChanger(final IViewerModel model) {
 		this.model = model;
 	}

@@ -34,7 +34,7 @@ import java.util.function.Predicate;
 /**
  * A class to facilitate a better hunting/fishing driver.
  */
-public class HuntingModel {
+public final class HuntingModel {
 	/**
 	 * A class and object for "nothing found".
 	 *
@@ -122,7 +122,7 @@ public class HuntingModel {
 	 *
 	 * TODO: Migrate callers to use Supplier instead?
 	 */
-	private static class ResultIterator<Type> implements Iterator<Type> {
+	private static final class ResultIterator<Type> implements Iterator<Type> {
 		public ResultIterator(final Collection<Type> stream, final double nothingProportion, final Type nothingValue,
 		                      final ToIntFunction<Type> dcGetter) {
 			this.stream = new ArrayList<>(stream);
@@ -182,7 +182,7 @@ public class HuntingModel {
 	 * desired proportion, but should be more efficient than appending a
 	 * Singleton cycled to the desired length.
 	 */
-	private static class FiniteResultIterator<Type> implements Iterator<Type> {
+	private static final class FiniteResultIterator<Type> implements Iterator<Type> {
 		private final Iterator<Type> wrapped;
 		private final double nothingProportion;
 		private final Type nothingValue;

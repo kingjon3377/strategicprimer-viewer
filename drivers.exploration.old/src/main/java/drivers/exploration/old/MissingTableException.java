@@ -5,7 +5,7 @@ import java.io.Serial;
 /**
  * An exception to throw when a table is missing.
  */
-public class MissingTableException extends Exception {
+public final class MissingTableException extends Exception {
 	@Serial
 	private static final long serialVersionUID = 1L;
 	/**

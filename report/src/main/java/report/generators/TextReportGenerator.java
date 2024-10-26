@@ -21,7 +21,7 @@ import legacy.map.fixtures.TextFixture;
 /**
  * A report generator for arbitrary-text notes.
  */
-public class TextReportGenerator extends AbstractReportGenerator<TextFixture> {
+public final class TextReportGenerator extends AbstractReportGenerator<TextFixture> {
 
 	public TextReportGenerator(final MapDimensions dimensions) {
 		this(dimensions, null);

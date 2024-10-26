@@ -33,7 +33,7 @@ import java.util.List;
 /**
  * A class to hide the complexity of YAXML from callers.
  */
-/* protected */ class YAReaderAdapter {
+/* protected */ final class YAReaderAdapter {
 	public YAReaderAdapter() {
 		this(Warning.getDefaultHandler());
 	}

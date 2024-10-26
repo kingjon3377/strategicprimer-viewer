@@ -15,7 +15,7 @@ import java.util.Arrays;
 
 // FIXME: What interface should this implement? Or should it just be dropped? In Ceylon this
 // satisfied NonNullCorrespondence
-public class CoalescedHolder<Type extends IFixture, Key> implements Iterable<List<Type>> {
+public final class CoalescedHolder<Type extends IFixture, Key> implements Iterable<List<Type>> {
 	public interface Combiner<Type> {
 		Type combine(Type[] args);
 	}

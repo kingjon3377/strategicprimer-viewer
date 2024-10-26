@@ -21,7 +21,7 @@ import com.google.auto.service.AutoService;
  * A factory for a driver to produce tabular (CSV) reports of the contents of a player's map.
  */
 @AutoService(DriverFactory.class)
-public class TabularReportCLIFactory implements ModelDriverFactory {
+public final class TabularReportCLIFactory implements ModelDriverFactory {
 	private static final IDriverUsage USAGE = new DriverUsage(false, "tabular-report",
 			ParamCount.AtLeastOne, "Tabular Report Generator",
 			"Produce CSV reports of the contents of a map.", true, false, "--serve[=8080]");

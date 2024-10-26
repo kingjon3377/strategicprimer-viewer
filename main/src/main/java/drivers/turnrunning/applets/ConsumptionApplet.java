@@ -22,7 +22,7 @@ import org.jetbrains.annotations.Nullable;
 /**
  * We <em>deliberately</em> do not make a factory annotated for service discovery.
  */
-public class ConsumptionApplet extends AbstractTurnApplet {
+public final class ConsumptionApplet extends AbstractTurnApplet {
 	private final ITurnRunningModel model;
 	private final ICLIHelper cli;
 

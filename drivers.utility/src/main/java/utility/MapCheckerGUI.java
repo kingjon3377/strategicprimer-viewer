@@ -19,7 +19,7 @@ import org.jetbrains.annotations.Nullable;
 /**
  * A driver to check every map file in a list for errors and report the results in a window.
  */
-public class MapCheckerGUI implements UtilityGUI {
+public final class MapCheckerGUI implements UtilityGUI {
 	public MapCheckerGUI() {
 		window = new MapCheckerFrame(this);
 		window.setJMenuBar(SPMenu.forWindow(window,

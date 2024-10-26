@@ -11,7 +11,7 @@ import javax.swing.event.ChangeEvent;
 import java.util.Objects;
 
 // FIXME: Listen to some events so we can reset on map or selected point change
-/* package */ class ScrollAdjustmentListener {
+/* package */ final class ScrollAdjustmentListener {
 	private final IViewerModel model;
 
 	public ScrollAdjustmentListener(final IViewerModel model) {

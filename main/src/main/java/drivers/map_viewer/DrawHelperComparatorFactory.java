@@ -16,7 +16,7 @@ import drivers.common.cli.ICLIHelper;
  * A factory for a driver to compare the performance of TileDrawHelpers.
  */
 @AutoService(DriverFactory.class)
-public class DrawHelperComparatorFactory implements UtilityDriverFactory {
+public final class DrawHelperComparatorFactory implements UtilityDriverFactory {
 	public static final IDriverUsage USAGE = new DriverUsage(true, "drawing-performance", ParamCount.AtLeastOne,
 			"Test drawing performance.",
 			"Test the performance of map-rendering implementations using a variety of automated tests.",

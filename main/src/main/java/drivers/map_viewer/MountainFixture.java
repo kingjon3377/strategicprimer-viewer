@@ -7,7 +7,7 @@ import lovelace.util.LovelaceLogger;
  * A fake "TileFixture" to represent the mountain(s) on a mountainous tile, so
  * it/they can appear in the list of the tile's contents.
  */
-/* package */ class MountainFixture implements FakeFixture {
+/* package */ final class MountainFixture implements FakeFixture {
 	/**
 	 * Clone the object.
 	 *

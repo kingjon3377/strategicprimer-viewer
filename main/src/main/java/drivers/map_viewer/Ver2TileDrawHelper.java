@@ -46,7 +46,7 @@ import legacy.map.Direction;
 /**
  * A {@link TileDrawHelper} for version-2 maps.
  */
-public class Ver2TileDrawHelper implements TileDrawHelper {
+public final class Ver2TileDrawHelper implements TileDrawHelper {
 	/**
 	 * The object to arrange to be notified as images finish drawing.
 	 */

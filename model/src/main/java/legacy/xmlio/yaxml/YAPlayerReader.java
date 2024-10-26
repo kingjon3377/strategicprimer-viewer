@@ -18,7 +18,7 @@ import lovelace.util.ThrowingConsumer;
  * A reader for {@link Player}s."
  * /* package
  */
-class YAPlayerReader extends YAAbstractReader<Player, Player> {
+final class YAPlayerReader extends YAAbstractReader<Player, Player> {
 	public YAPlayerReader(final Warning warning, final IDRegistrar idRegistrar) {
 		super(warning, idRegistrar);
 	}

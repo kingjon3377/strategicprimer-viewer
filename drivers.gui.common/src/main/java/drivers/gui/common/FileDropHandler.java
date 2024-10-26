@@ -17,7 +17,7 @@ import lovelace.util.LovelaceLogger;
 /**
  * A {@link TransferHandler} to allow SP apps to accept dropped files.
  */
-/* package */ class FileDropHandler extends TransferHandler {
+/* package */ final class FileDropHandler extends TransferHandler {
 	@Serial
 	private static final long serialVersionUID = 1L;
 

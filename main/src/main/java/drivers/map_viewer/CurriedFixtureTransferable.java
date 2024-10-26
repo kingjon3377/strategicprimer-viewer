@@ -14,7 +14,7 @@ import java.util.stream.Stream;
  *
  * TODO: Generalize, rename to CurriedTransferable, move to lovelace.util
  */
-/* package */ class CurriedFixtureTransferable implements Transferable {
+/* package */ final class CurriedFixtureTransferable implements Transferable {
 	public static final DataFlavor FLAVOR =
 			new DataFlavor(CurriedFixtureTransferable.class, "CurriedTransferable");
 

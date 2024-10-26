@@ -20,7 +20,7 @@ import org.jetbrains.annotations.NotNull;
  * driver model methods.
  */
 @Deprecated
-class ProxyMember implements UnitMemberProxy<UnitMember> {
+final class ProxyMember implements UnitMemberProxy<UnitMember> {
 	private final List<UnitMember> proxiedMembers = new ArrayList<>();
 
 	private ProxyMember() {

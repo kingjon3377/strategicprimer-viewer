@@ -19,7 +19,7 @@ import com.google.auto.service.AutoService;
  * A factory for a driver to fix ID mismatches between forests and Ground in the main and player maps.
  */
 @AutoService(DriverFactory.class)
-public class ForestFixerFactory implements ModelDriverFactory {
+public final class ForestFixerFactory implements ModelDriverFactory {
 	private static final IDriverUsage USAGE = new DriverUsage(false, "fix-forests",
 			ParamCount.AtLeastTwo, "Fix forest IDs",
 			"Make sure that forest IDs in submaps match the main map", false, false);

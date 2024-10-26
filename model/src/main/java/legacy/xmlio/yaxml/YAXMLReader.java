@@ -28,7 +28,7 @@ import java.nio.charset.StandardCharsets;
 /**
  * Sixth-generation SP XML reader.
  */
-public class YAXMLReader implements IMapReader, ISPReader {
+public final class YAXMLReader implements IMapReader, ISPReader {
 	/**
 	 * Read an object from XML.
 	 *

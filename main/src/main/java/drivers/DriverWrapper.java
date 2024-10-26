@@ -25,7 +25,7 @@ import java.util.Objects;
 
 import lovelace.util.LovelaceLogger;
 
-/* package */ class DriverWrapper {
+/* package */ final class DriverWrapper {
 	private final DriverFactory factory;
 
 	public DriverWrapper(final DriverFactory factory) {

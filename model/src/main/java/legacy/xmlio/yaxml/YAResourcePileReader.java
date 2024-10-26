@@ -17,7 +17,7 @@ import common.xmlio.Warning;
 /**
  * A reader for resource piles.
  */
-/* package */ class YAResourcePileReader extends YAAbstractReader<IResourcePile, IResourcePile> {
+/* package */ final class YAResourcePileReader extends YAAbstractReader<IResourcePile, IResourcePile> {
 	public YAResourcePileReader(final Warning warning, final IDRegistrar idRegistrar) {
 		super(warning, idRegistrar);
 	}

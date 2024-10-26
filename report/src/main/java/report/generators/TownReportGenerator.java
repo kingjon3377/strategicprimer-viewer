@@ -32,7 +32,7 @@ import legacy.map.fixtures.towns.AbstractTown;
  *
  * TODO: Use "notes" for that?
  */
-public class TownReportGenerator extends AbstractReportGenerator<ITownFixture> {
+public final class TownReportGenerator extends AbstractReportGenerator<ITownFixture> {
 
 	private final Player currentPlayer;
 	private final int currentTurn;

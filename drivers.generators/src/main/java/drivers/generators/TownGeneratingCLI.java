@@ -20,7 +20,7 @@ import legacy.idreg.IDFactoryFiller;
  *
  * TODO: Write GUI to allow user to generate or enter town contents
  */
-public class TownGeneratingCLI implements CLIDriver {
+public final class TownGeneratingCLI implements CLIDriver {
 	public TownGeneratingCLI(final ICLIHelper cli, final PopulationGeneratingModel model) {
 		this.cli = cli;
 		this.model = model;

@@ -36,7 +36,7 @@ import org.jetbrains.annotations.Nullable;
  * driver model methods.
  */
 @Deprecated
-public class ProxyWorker implements WorkerProxy {
+public final class ProxyWorker implements WorkerProxy {
 	/**
 	 * If false, this is representing all the workers in a single unit; if
 	 * true, it is representing the corresponding workers in corresponding

@@ -91,7 +91,7 @@ import static legacy.xmlio.fluidxml.FluidBase.*;
 /**
  * The main reader-from-XML class in the 'fluid XML' implementation.
  */
-public class SPFluidReader implements IMapReader, ISPReader {
+public final class SPFluidReader implements IMapReader, ISPReader {
 	private Object readSPObject(final StartElement element, final QName parent,
 								final Iterable<XMLEvent> stream, final IMutableLegacyPlayerCollection players,
 								final Warning warner, final IDRegistrar idFactory) throws SPFormatException {

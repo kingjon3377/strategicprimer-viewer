@@ -12,7 +12,7 @@ import legacy.map.HasMutableImage;
  *
  * TODO: Convert to a boolean property of the tile instead of a fixture, like mountains. Start by removing ID.
  */
-public class Hill implements TerrainFixture, HasMutableImage {
+public final class Hill implements TerrainFixture, HasMutableImage {
 	public Hill(final int id) {
 		this.id = id;
 	}

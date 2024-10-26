@@ -96,7 +96,7 @@ import worker.common.IFixtureEditHelper;
 /**
  * TODO: try to split controller-functionality from presentation
  */
-/* package */ class ExplorationPanel extends BorderedPanel implements SelectionChangeListener {
+/* package */ final class ExplorationPanel extends BorderedPanel implements SelectionChangeListener {
 	@Serial
 	private static final long serialVersionUID = 1L;
 
@@ -271,7 +271,7 @@ import worker.common.IFixtureEditHelper;
 	private final Map<Direction, SelectionChangeListener> seconds = new EnumMap<>(Direction.class);
 	private final Map<Direction, DualTileButton> buttons = new EnumMap<>(Direction.class);
 
-	private static class SpeedChangeListener implements ListDataListener {
+	private static final class SpeedChangeListener implements ListDataListener {
 		public SpeedChangeListener(final SelectionChangeListener scs) {
 			this.scs = scs;
 		}
@@ -361,7 +361,7 @@ import worker.common.IFixtureEditHelper;
 		};
 	}
 
-	private static class ExplorationClickListener implements SelectionChangeSource, ActionListener {
+	private static final class ExplorationClickListener implements SelectionChangeSource, ActionListener {
 		public ExplorationClickListener(final IExplorationModel driverModel, final SelectionChangeListener outer,
 										final MovementCostListener movementDeductionTracker, final Direction direction,
 										final FixtureList mainList, final Supplier<Speed> speedSource) {

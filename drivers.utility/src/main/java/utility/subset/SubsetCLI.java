@@ -17,7 +17,7 @@ import java.util.Optional;
 /**
  * A driver to check whether player maps are subsets of the main map.
  */
-public class SubsetCLI implements ReadOnlyDriver {
+public final class SubsetCLI implements ReadOnlyDriver {
 	public SubsetCLI(final ICLIHelper cli, final IMultiMapModel model) {
 		this.model = model;
 		this.cli = cli;

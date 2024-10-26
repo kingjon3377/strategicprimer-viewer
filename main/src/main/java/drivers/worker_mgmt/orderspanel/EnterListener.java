@@ -5,7 +5,7 @@ import java.awt.event.KeyEvent;
 
 import lovelace.util.Platform;
 
-/* package */ class EnterListener extends KeyAdapter {
+/* package */ final class EnterListener extends KeyAdapter {
 	public EnterListener(final Runnable delegate) {
 		this.delegate = delegate;
 	}

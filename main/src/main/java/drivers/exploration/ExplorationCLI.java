@@ -21,7 +21,7 @@ import legacy.map.fixtures.mobile.IUnit;
 /**
  * A CLI to help running exploration.
  */
-/* package */ class ExplorationCLI implements CLIDriver {
+/* package */ final class ExplorationCLI implements CLIDriver {
 	public ExplorationCLI(final ICLIHelper cli, final IExplorationModel model) {
 		this.cli = cli;
 		this.model = model;

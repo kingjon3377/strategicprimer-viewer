@@ -94,7 +94,7 @@ import java.util.Arrays;
 /**
  * The main writer-to-XML class in the "fluid XML" implementation.
  */
-public class SPFluidWriter implements SPWriter {
+public final class SPFluidWriter implements SPWriter {
 	// Note Ceylon regex was 'global', matching all rather than just the first
 	private static final Pattern SNUG_END_TAG = Pattern.compile("([^ ])/>");
 

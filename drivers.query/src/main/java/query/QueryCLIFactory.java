@@ -17,7 +17,7 @@ import com.google.auto.service.AutoService;
  * A factory for the driver to "query" the driver model about various things.
  */
 @AutoService(DriverFactory.class)
-public class QueryCLIFactory implements ModelDriverFactory {
+public final class QueryCLIFactory implements ModelDriverFactory {
 	private static final IDriverUsage USAGE = new DriverUsage(false, "query",
 			ParamCount.One, "Answer questions about a map.",
 			"Answer questions about a map, such as counting workers or calculating distances.",

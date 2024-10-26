@@ -9,7 +9,7 @@ import drivers.common.cli.ICLIHelper;
 /**
  * A driver to fix ID mismatches between forests and Ground in the main and player maps.
  */
-public class ForestFixerDriver implements CLIDriver {
+public final class ForestFixerDriver implements CLIDriver {
 	public ForestFixerDriver(final ICLIHelper cli, final UtilityDriverModel model) {
 		this.cli = cli;
 		this.model = model;

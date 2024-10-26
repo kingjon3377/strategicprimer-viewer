@@ -8,7 +8,7 @@ import legacy.map.fixtures.MineralFixture;
  *
  * TODO: Support non-exposed deposits
  */
-public class StoneDeposit implements HarvestableFixture, MineralFixture {
+public final class StoneDeposit implements HarvestableFixture, MineralFixture {
 	public StoneDeposit(final StoneKind stone, final int dc, final int id) {
 		this.stone = stone;
 		this.dc = dc;

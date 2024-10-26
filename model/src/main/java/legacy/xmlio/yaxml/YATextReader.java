@@ -17,7 +17,7 @@ import impl.xmlio.exceptions.UnwantedChildException;
 /**
  * A reader for arbitrary-text notes.
  */
-/* package */ class YATextReader extends YAAbstractReader<TextFixture, TextFixture> {
+/* package */ final class YATextReader extends YAAbstractReader<TextFixture, TextFixture> {
 	public YATextReader(final Warning warning, final IDRegistrar idRegistrar) {
 		super(warning, idRegistrar);
 	}

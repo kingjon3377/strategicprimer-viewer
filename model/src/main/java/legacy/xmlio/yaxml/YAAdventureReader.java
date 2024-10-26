@@ -16,7 +16,7 @@ import java.io.IOException;
 /**
  * A reader for adventure hooks.
  */
-/* package */ class YAAdventureReader extends YAAbstractReader<AdventureFixture, AdventureFixture> {
+/* package */ final class YAAdventureReader extends YAAbstractReader<AdventureFixture, AdventureFixture> {
 	private final ILegacyPlayerCollection players;
 
 	public YAAdventureReader(final Warning warner, final IDRegistrar idFactory, final ILegacyPlayerCollection players) {

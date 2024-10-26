@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.jetbrains.annotations.Nullable;
 
-/* package */ class OtherApplet implements TurnApplet {
+/* package */ final class OtherApplet implements TurnApplet {
 	private static final List<String> COMMANDS = Collections.singletonList("other");
 
 	@Override

@@ -39,7 +39,7 @@ import org.javatuples.Pair;
 import org.jetbrains.annotations.Nullable;
 
 // TODO: Tests
-/* package */ class TurnRunningCLI implements CLIDriver {
+/* package */ final class TurnRunningCLI implements CLIDriver {
 	public TurnRunningCLI(final ICLIHelper cli, final ITurnRunningModel model) {
 		this.cli = cli;
 		this.model = model;

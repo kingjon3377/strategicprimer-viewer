@@ -12,7 +12,7 @@ import java.util.Set;
 /**
  * An {@link EncounterTable} that always returns the same value.
  */
-class ConstantTable implements EncounterTable {
+final class ConstantTable implements EncounterTable {
 	private final String constant;
 
 	public ConstantTable(final String constant) {

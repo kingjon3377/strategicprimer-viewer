@@ -23,7 +23,7 @@ import java.util.Objects;
  * @author Alexander Potochkin
  * @author https://swinghelper.dev.java.net/
  */
-public class CheckThreadViolationRepaintManager extends RepaintManager {
+public final class CheckThreadViolationRepaintManager extends RepaintManager {
 	/**
 	 * Report a violation
 	 *

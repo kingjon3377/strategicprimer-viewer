@@ -53,7 +53,7 @@ import org.jetbrains.annotations.Nullable;
 /**
  * An app to let the user create a map from an image.
  */
-/* package */ class ImporterDriver implements UtilityDriver {
+/* package */ final class ImporterDriver implements UtilityDriver {
 	private static final int MAX_BYTE = 0xFF;
 
 	private enum ImportableTerrain implements HasName {

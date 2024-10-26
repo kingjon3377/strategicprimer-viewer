@@ -24,7 +24,7 @@ import java.util.function.Predicate;
 import java.util.Collections;
 import java.util.Optional;
 
-/* package */ class PathfinderImpl implements Pathfinder {
+/* package */ final class PathfinderImpl implements Pathfinder {
 	public PathfinderImpl(final ILegacyMap map) {
 		this.map = map;
 		final MapDimensions dims = map.getDimensions();

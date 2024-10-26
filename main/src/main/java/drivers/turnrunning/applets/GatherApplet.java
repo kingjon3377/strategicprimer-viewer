@@ -23,7 +23,7 @@ import java.util.function.Supplier;
 import org.javatuples.Pair;
 import org.jetbrains.annotations.Nullable;
 
-/* package */ class GatherApplet extends AbstractTurnApplet {
+/* package */ final class GatherApplet extends AbstractTurnApplet {
 	public GatherApplet(final ITurnRunningModel model, final ICLIHelper cli, final IDRegistrar idf) {
 		super(model, cli);
 		this.model = model;

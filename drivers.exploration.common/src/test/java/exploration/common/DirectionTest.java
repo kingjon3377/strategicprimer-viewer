@@ -14,7 +14,7 @@ import legacy.map.LegacyMap;
  * Tests that the movement code gets its most basic functionality, namely
  * finding adjacent tiles, right.
  */
-public class DirectionTest {
+public final class DirectionTest {
 	private interface DirectionAssertion {
 		void call(Point source, Point destination, String extraMessage);
 	}

@@ -10,7 +10,7 @@ import java.util.function.Consumer;
 /**
  * A centaur.
  */
-public class Centaur implements Immortal, HasMutableImage, HasKind {
+public final class Centaur implements Immortal, HasMutableImage, HasKind {
 	/**
 	 * @param kind what kind of centaur
 	 * @param id   ID number

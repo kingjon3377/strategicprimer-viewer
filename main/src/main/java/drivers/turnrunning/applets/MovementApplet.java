@@ -24,7 +24,7 @@ import org.jetbrains.annotations.Nullable;
 
 import static lovelace.util.Decimalize.decimalize;
 
-/* package */ class MovementApplet extends AbstractTurnApplet {
+/* package */ final class MovementApplet extends AbstractTurnApplet {
 	public MovementApplet(final ITurnRunningModel model, final ICLIHelper cli, final IDRegistrar idf) {
 		super(model, cli);
 		this.model = model;

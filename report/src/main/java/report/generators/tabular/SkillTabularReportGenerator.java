@@ -23,7 +23,7 @@ import java.util.Map;
  * Because {@link WorkerTabularReportGenerator} handles workers, we don't remove
  * anything from the {@link DelayedRemovalMap} we are passed.
  */
-public class SkillTabularReportGenerator implements ITableGenerator<IWorker> {
+public final class SkillTabularReportGenerator implements ITableGenerator<IWorker> {
 	@Override
 	public boolean canHandle(final IFixture fixture) {
 		return fixture instanceof IWorker;

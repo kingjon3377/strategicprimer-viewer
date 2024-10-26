@@ -33,7 +33,7 @@ import lovelace.util.LovelaceLogger;
 /**
  * An object to start the exploration GUI.
  */
-/* package */ class ExplorationGUI implements IExplorationGUI {
+/* package */ final class ExplorationGUI implements IExplorationGUI {
 	public ExplorationGUI(final ICLIHelper cli, final SPOptions options, final IExplorationModel model) {
 		this.cli = cli;
 		this.options = options;

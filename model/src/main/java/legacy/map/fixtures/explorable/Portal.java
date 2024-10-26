@@ -10,7 +10,7 @@ import legacy.map.Point;
 /**
  * A fixture representing a portal to another world.
  */
-public class Portal implements ExplorableFixture, SubsettableFixture {
+public final class Portal implements ExplorableFixture, SubsettableFixture {
 
 	public Portal(final String destinationWorld, final Point destinationCoordinates, final int id) {
 		this.destinationWorld = destinationWorld;

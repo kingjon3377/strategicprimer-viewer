@@ -26,7 +26,7 @@ import java.util.Collections;
 /**
  * A tabular report generator for units.
  */
-public class UnitTabularReportGenerator implements ITableGenerator<IUnit> {
+public final class UnitTabularReportGenerator implements ITableGenerator<IUnit> {
 	@Override
 	public boolean canHandle(final IFixture fixture) {
 		return fixture instanceof IUnit;

@@ -21,7 +21,7 @@ import lovelace.util.ThrowingConsumer;
  * FIXME: Extract interface for these two classes so we don't have to pass
  * the too-general ExplorableFixture as the type parameter here.
  */
-/* package */ class YAExplorableReader extends YAAbstractReader<ExplorableFixture, ExplorableFixture> {
+/* package */ final class YAExplorableReader extends YAAbstractReader<ExplorableFixture, ExplorableFixture> {
 	public YAExplorableReader(final Warning warning, final IDRegistrar idRegistrar) {
 		super(warning, idRegistrar);
 	}

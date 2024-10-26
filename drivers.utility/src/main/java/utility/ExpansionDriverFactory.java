@@ -20,7 +20,7 @@ import com.google.auto.service.AutoService;
  * distance around allied villages.
  */
 @AutoService(DriverFactory.class)
-public class ExpansionDriverFactory implements ModelDriverFactory {
+public final class ExpansionDriverFactory implements ModelDriverFactory {
 	private static final IDriverUsage USAGE = new DriverUsage(false, "expand", ParamCount.AtLeastTwo,
 			"Expand a player's map.",
 			"Ensure a player's map covers all terrain allied villages can see.", true,

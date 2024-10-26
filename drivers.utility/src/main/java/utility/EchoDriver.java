@@ -29,7 +29,7 @@ import drivers.common.SPOptions;
  * useful for correcting deprecated syntax. (Because of that usage, warnings
  * are disabled.)
  */
-public class EchoDriver implements UtilityDriver {
+public final class EchoDriver implements UtilityDriver {
 	/**
 	 * If a Forest doesn't have an ID in the input map, assign it one based on its
 	 * location, starting from this number.

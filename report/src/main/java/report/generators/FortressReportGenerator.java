@@ -37,7 +37,7 @@ import legacy.map.fixtures.towns.IFortress;
 /**
  * A report generator for fortresses.
  */
-public class FortressReportGenerator extends AbstractReportGenerator<IFortress> {
+public final class FortressReportGenerator extends AbstractReportGenerator<IFortress> {
 	public FortressReportGenerator(final Player currentPlayer, final MapDimensions dimensions, final int currentTurn) {
 		this(currentPlayer, dimensions, currentTurn, null);
 	}

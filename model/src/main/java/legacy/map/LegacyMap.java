@@ -36,7 +36,7 @@ import org.jetbrains.annotations.Nullable;
 /**
  * A class to represent a game-world map and its contents.
  */
-public class LegacyMap implements IMutableLegacyMap {
+public final class LegacyMap implements IMutableLegacyMap {
 	private static final int HASHMAP_MIN_SIZE = 16;
 	private static final int HASHMAP_SMALL_SIZE = 20;
 

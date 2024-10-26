@@ -2,7 +2,7 @@ package legacy.map.fixtures.mobile;
 
 import org.jetbrains.annotations.NotNull;
 
-public class Simurgh extends SimpleImmortal {
+public final class Simurgh extends SimpleImmortal {
 	@SuppressWarnings("MagicNumber")
 	public Simurgh(final int id) {
 		super("simurgh", "Simurghs", 35, id);

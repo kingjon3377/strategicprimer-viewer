@@ -18,7 +18,7 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class TestUtilityDriverModel {
+public final class TestUtilityDriverModel {
 	private static IMutableLegacyPlayerCollection playerCollection(final String current, final String... players) {
 		final IMutableLegacyPlayerCollection retval = new LegacyPlayerCollection();
 		int i = 0;

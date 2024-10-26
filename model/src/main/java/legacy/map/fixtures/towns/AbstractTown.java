@@ -222,7 +222,7 @@ public abstract class AbstractTown implements HasMutableImage,
 	}
 
 	@Override
-	public boolean equals(final Object obj) {
+	public final boolean equals(final Object obj) {
 		if (obj instanceof final AbstractTown it) {
 			return getId() == it.getId() && equalsContents(it);
 		} else {
@@ -232,7 +232,7 @@ public abstract class AbstractTown implements HasMutableImage,
 
 	// TODO: Make this final? Or make this final and merge it with equalsContents()?
 	@Override
-	public boolean equalsIgnoringID(final IFixture fixture) {
+	public final boolean equalsIgnoringID(final IFixture fixture) {
 		if (fixture instanceof final AbstractTown it) {
 			return equalsContents(it);
 		} else {
@@ -241,12 +241,12 @@ public abstract class AbstractTown implements HasMutableImage,
 	}
 
 	@Override
-	public int hashCode() {
+	public final int hashCode() {
 		return getId();
 	}
 
 	@Override
-	public String toString() {
+	public final String toString() {
 		final String displayName = name.isEmpty() ? "with no name" : "named " + name;
 		if (owner.isIndependent()) {
 			// TODO: Split into if/else rather than having the conditional inside formatted() call
@@ -263,7 +263,7 @@ public abstract class AbstractTown implements HasMutableImage,
 	}
 
 	@Override
-	public String getShortDescription() {
+	public final String getShortDescription() {
 		final String displayName = name.isEmpty() ? "with no name" : "named " + name;
 		if (owner.isIndependent()) {
 			// TODO: Split into if/else rather than having the conditional inside formatted() call

@@ -9,7 +9,7 @@ import java.util.Objects;
  *
  * TODO: Tests
  */
-public class VisibleDimensions {
+public final class VisibleDimensions {
 	public VisibleDimensions(final int minimumRow, final int maximumRow, final int minimumColumn,
 	                         final int maximumColumn) {
 		this.minimumRow = minimumRow;

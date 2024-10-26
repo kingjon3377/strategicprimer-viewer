@@ -48,7 +48,7 @@ import org.jetbrains.annotations.Nullable;
 
 import static lovelace.util.Decimalize.decimalize;
 
-public class TurnRunningModel extends ExplorationModel implements ITurnRunningModel {
+public final class TurnRunningModel extends ExplorationModel implements ITurnRunningModel {
 	/**
 	 * If "fixture" is a {@link IFortress fortress}, return a stream
 	 * of its contents; otherwise, return stream containing only it. This
@@ -962,7 +962,7 @@ public class TurnRunningModel extends ExplorationModel implements ITurnRunningMo
 		return any;
 	}
 
-	private static class GenerateOnce implements IntSupplier {
+	private static final class GenerateOnce implements IntSupplier {
 		private final IntSupplier idFactory;
 		private @Nullable Integer generatedId;
 

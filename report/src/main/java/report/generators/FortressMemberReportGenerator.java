@@ -25,7 +25,7 @@ import legacy.map.fixtures.mobile.IUnit;
 /**
  * A report generator for equipment and resources.
  */
-public class FortressMemberReportGenerator extends AbstractReportGenerator<FortressMember> {
+public final class FortressMemberReportGenerator extends AbstractReportGenerator<FortressMember> {
 
 	private final Player currentPlayer;
 	private final MapDimensions dimensions;

@@ -30,7 +30,7 @@ import java.util.function.Consumer;
 /**
  * A mouse listener for the map panel, to show the terrain-changing menu as needed.
  */
-/* package */ class ComponentMouseListener extends MouseAdapter implements ToolTipSource {
+/* package */ final class ComponentMouseListener extends MouseAdapter implements ToolTipSource {
 	public ComponentMouseListener(final IViewerModel model, final Predicate<TileFixture> zof,
 								  final Comparator<TileFixture> comparator) {
 		this.model = model;

@@ -23,7 +23,7 @@ import java.util.Set;
 /**
  * A reader for {@link TerrainFixture}s.
  */
-/* package */ class YATerrainReader extends YAAbstractReader<TerrainFixture, TerrainFixture> {
+/* package */ final class YATerrainReader extends YAAbstractReader<TerrainFixture, TerrainFixture> {
 	public YATerrainReader(final Warning warning, final IDRegistrar idRegistrar) {
 		super(warning, idRegistrar);
 	}

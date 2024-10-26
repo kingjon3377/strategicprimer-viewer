@@ -15,7 +15,7 @@ import java.util.Objects;
 /**
  * A sample map-populator.
  */
-/* package */ class SampleMapPopulator implements MapPopulator {
+/* package */ final class SampleMapPopulator implements MapPopulator {
 	/**
 	 * Hares won't appear in mountains, forests, or ocean.
 	 */

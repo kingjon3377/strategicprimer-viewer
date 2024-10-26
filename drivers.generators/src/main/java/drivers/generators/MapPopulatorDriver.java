@@ -22,7 +22,7 @@ import java.util.Collections;
  * Customize the {@link #populator} field before each use.
  */
 // TODO: Write GUI equivalent of Map Populator Driver
-public class MapPopulatorDriver implements CLIDriver {
+public final class MapPopulatorDriver implements CLIDriver {
 	public MapPopulatorDriver(final ICLIHelper cli, final SPOptions options, final IPopulatorDriverModel model) {
 		this.cli = cli;
 		this.options = options;

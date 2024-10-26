@@ -21,7 +21,7 @@ import org.jetbrains.annotations.Nullable;
  * members (directly or in {@link CommunityStats}) to represent villagers that
  * players have been informed about by name.
  */
-public class Village implements IMutableTownFixture, HasMutableImage,
+public final class Village implements IMutableTownFixture, HasMutableImage,
 		SubsettableFixture {
 	public Village(final TownStatus status, final String name, final int id, final Player owner, final String race) {
 		this.status = status;

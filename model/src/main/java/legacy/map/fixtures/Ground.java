@@ -7,7 +7,7 @@ import org.jetbrains.annotations.NotNull;
 /**
  * A TileFixture to represent the basic rock beneath the tile, possibly exposed.
  */
-public class Ground implements MineralFixture, HasMutableImage {
+public final class Ground implements MineralFixture, HasMutableImage {
 	public Ground(final int id, final String kind, final boolean exposed) {
 		this.id = id;
 		this.kind = kind;

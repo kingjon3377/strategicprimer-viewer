@@ -22,7 +22,7 @@ import legacy.map.fixtures.mobile.IUnit;
 /**
  * A class to change the visible area of the map based on the user's use of the scrollbars.
  */
-/* package */ class ScrollListener implements MapChangeListener, SelectionChangeListener,
+/* package */ final class ScrollListener implements MapChangeListener, SelectionChangeListener,
 		GraphicalParamsListener {
 	private static int constrainToRange(final int val, final int min, final int max) {
 		if (val < min) {

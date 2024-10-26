@@ -85,7 +85,7 @@ public abstract class AbstractReportGenerator<Type extends IFixture> implements 
 	 *
 	 * Assuming this is supposed to be static ...
 	 */
-	protected static class HtmlList extends ArrayList<String> implements HeadedList<String> {
+	protected static final class HtmlList extends ArrayList<String> implements HeadedList<String> {
 		@Serial
 		private static final long serialVersionUID = 1L;
 		private final String header;
@@ -180,7 +180,7 @@ public abstract class AbstractReportGenerator<Type extends IFixture> implements 
 	/**
 	 * A list of Points that produces a comma-separated list in its {@link #toString} and has a "header".
 	 */
-	protected static class PointList extends ArrayList<Point> implements HeadedList<Point> {
+	protected static final class PointList extends ArrayList<Point> implements HeadedList<Point> {
 		@Serial
 		private static final long serialVersionUID = 1L;
 		private final String header;
@@ -213,7 +213,7 @@ public abstract class AbstractReportGenerator<Type extends IFixture> implements 
 	/**
 	 * An implementation of {@link HeadedMap}.
 	 */
-	protected static class HeadedMapImpl<Key, Value> implements HeadedMap<Key, Value> {
+	protected static final class HeadedMapImpl<Key, Value> implements HeadedMap<Key, Value> {
 		private final String header;
 
 		@Override

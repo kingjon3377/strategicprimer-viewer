@@ -8,7 +8,7 @@ import legacy.map.TileFixture;
 /**
  * A wrapper around {@code Predicate<TileFixture>}, used to determine Z-order of fixtures.
  */
-public class FixtureMatcher {
+public final class FixtureMatcher {
 	/**
 	 * Factory method for a matcher that matches every tile fixture of the given type.
 	 */

@@ -24,7 +24,7 @@ import com.google.auto.service.AutoService;
  * TODO: We'd like a GUI for this, perhaps adding customization or limiting the area or something
  */
 @AutoService(DriverFactory.class)
-public class RandomMovementFactory implements ModelDriverFactory {
+public final class RandomMovementFactory implements ModelDriverFactory {
 	private static final IDriverUsage USAGE = new DriverUsage(false, "random-move", ParamCount.One,
 			"Move independent units at random", "Move independent units randomly around the map.",
 			true, false);

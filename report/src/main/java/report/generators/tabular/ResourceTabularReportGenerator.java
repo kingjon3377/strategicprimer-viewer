@@ -31,7 +31,7 @@ import java.util.stream.Collectors;
  * A tabular report generator for resources, including {@link CacheFixture
  * caches}, {@link IResourcePile resource piles}, and {@link Implement equipment}.
  */
-public class ResourceTabularReportGenerator
+public final class ResourceTabularReportGenerator
 		implements ITableGenerator</*Implement|CacheFixture|IResourcePile*/IFixture> {
 	@Override
 	public boolean canHandle(final IFixture fixture) {

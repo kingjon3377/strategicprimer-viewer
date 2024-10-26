@@ -54,7 +54,7 @@ import legacy.map.fixtures.terrain.Forest;
  * the size it takes up on disk and the memory and CPU it takes to deal with
  * it).
  */
-public class DuplicateFixtureRemoverCLI implements CLIDriver {
+public final class DuplicateFixtureRemoverCLI implements CLIDriver {
 	private static String memberKind(final @Nullable IFixture member) {
 		if (member instanceof AnimalImpl || member instanceof Implement ||
 				member instanceof Forest || member instanceof Grove ||

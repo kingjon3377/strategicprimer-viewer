@@ -2,7 +2,7 @@ package legacy.map.fixtures.mobile;
 
 import org.jetbrains.annotations.NotNull;
 
-public class Sphinx extends SimpleImmortal {
+public final class Sphinx extends SimpleImmortal {
 	@SuppressWarnings("MagicNumber")
 	public Sphinx(final int id) {
 		super("sphinx", "Sphinxes", 35, id);

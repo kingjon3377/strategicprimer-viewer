@@ -12,7 +12,7 @@ import org.jetbrains.annotations.NotNull;
  * TODO: We'd prefer this to not be MobileFixture, but changing that would
  * require serious refactoring of XML I/O code.
  */
-public class AnimalTracks implements HasMutableImage, MobileFixture,
+public final class AnimalTracks implements HasMutableImage, MobileFixture,
 		AnimalOrTracks {
 	public AnimalTracks(final String kind) {
 		this.kind = kind;

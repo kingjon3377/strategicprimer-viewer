@@ -52,7 +52,7 @@ import java.util.Iterator;
 /**
  * A panel to show the details of the currently selected unit-member.
  */
-public class MemberDetailPanel extends BorderedPanel implements UnitMemberListener {
+public final class MemberDetailPanel extends BorderedPanel implements UnitMemberListener {
 	@Serial
 	private static final long serialVersionUID = 1L;
 
@@ -164,7 +164,7 @@ public class MemberDetailPanel extends BorderedPanel implements UnitMemberListen
 		return new JLabel("<html><b>" + string + ":</b></html>");
 	}
 
-	private static class PortraitComponent extends JComponent {
+	private static final class PortraitComponent extends JComponent {
 		@Serial
 		private static final long serialVersionUID = 1L;
 		private @Nullable Image portrait = null;

@@ -28,7 +28,7 @@ import org.jetbrains.annotations.Nullable;
 /**
  * A list-data-listener to select a random but suitable set of fixtures to be "discovered" if the tile is explored.
  */
-/* package */ class RandomDiscoverySelector implements SelectionChangeListener {
+/* package */ final class RandomDiscoverySelector implements SelectionChangeListener {
 	private boolean outsideCritical = true;
 
 	public RandomDiscoverySelector(final IExplorationModel driverModel, final FixtureList mainList,

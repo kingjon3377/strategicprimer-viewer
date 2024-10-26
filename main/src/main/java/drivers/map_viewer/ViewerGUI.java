@@ -35,7 +35,7 @@ import java.util.Objects;
 /**
  * A driver to start the map viewer.
  */
-public class ViewerGUI implements ViewerDriver {
+public final class ViewerGUI implements ViewerDriver {
 	private final ICLIHelper cli;
 
 	public ViewerGUI(final IViewerModel model, final SPOptions options, final ICLIHelper cli) {

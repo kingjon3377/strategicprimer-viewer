@@ -33,7 +33,7 @@ import java.util.stream.Collectors;
 /**
  * A TreeModel implementation for a player's units and workers.
  */
-/* package */ class WorkerTreeModel implements IWorkerTreeModel {
+/* package */ final class WorkerTreeModel implements IWorkerTreeModel {
 	private static Predicate<IUnit> containingItem(final UnitMember item) {
 		return unit -> unit.stream().anyMatch(item::equals);
 	}

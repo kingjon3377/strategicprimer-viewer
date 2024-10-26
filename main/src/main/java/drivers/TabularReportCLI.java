@@ -33,7 +33,7 @@ import java.util.Objects;
 /**
  * A driver to produce tabular (CSV) reports of the contents of a player's map.
  */
-public class TabularReportCLI implements ReadOnlyDriver {
+public final class TabularReportCLI implements ReadOnlyDriver {
 	public TabularReportCLI(final ICLIHelper cli, final SPOptions options, final IDriverModel model) {
 		this.cli = cli;
 		this.options = options;

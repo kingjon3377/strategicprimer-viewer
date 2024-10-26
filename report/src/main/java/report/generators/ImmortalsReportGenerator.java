@@ -44,7 +44,7 @@ import legacy.map.fixtures.mobile.Pegasus;
 /**
  * A report generator for {@link Immortal "immortals"}---dragons, fairies, centaurs, and such.
  */
-public class ImmortalsReportGenerator extends AbstractReportGenerator<Immortal> {
+public final class ImmortalsReportGenerator extends AbstractReportGenerator<Immortal> {
 
 	public ImmortalsReportGenerator(final MapDimensions dimensions) {
 		this(dimensions, null);

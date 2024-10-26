@@ -39,7 +39,7 @@ import java.nio.file.Path;
  *
  * TODO: Does this really need to be public?
  */
-public class AdvancementGUI implements MultiMapGUIDriver, WorkerGUI {
+public final class AdvancementGUI implements MultiMapGUIDriver, WorkerGUI {
 	public AdvancementGUI(final ICLIHelper cli, final SPOptions options, final IWorkerModel model) {
 		this.cli = cli;
 		this.options = options;

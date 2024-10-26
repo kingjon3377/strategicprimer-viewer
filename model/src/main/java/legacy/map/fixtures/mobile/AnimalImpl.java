@@ -7,7 +7,7 @@ import org.jetbrains.annotations.NotNull;
 /**
  * An animal or population of animals in the map.
  */
-public class AnimalImpl implements Animal, HasMutableImage {
+public final class AnimalImpl implements Animal, HasMutableImage {
 	public AnimalImpl(final String kind, final boolean talking, final String status, final int id, final int born,
 					  final int population) {
 		this.kind = kind;

@@ -20,7 +20,7 @@ import com.google.auto.service.AutoService;
  * A factory for a command-line program to export a proto-strategy for a player from orders in a map.
  */
 @AutoService(DriverFactory.class)
-public class StrategyExportFactory implements ModelDriverFactory {
+public final class StrategyExportFactory implements ModelDriverFactory {
 	private static final IDriverUsage USAGE = new DriverUsage(false, "export-strategy", ParamCount.One,
 			"Export a proto-strategy", "Create a proto-strategy using orders stored in the map",
 			true, false, "--current-turn=NN", "--print-empty", "--export=filename.txt",

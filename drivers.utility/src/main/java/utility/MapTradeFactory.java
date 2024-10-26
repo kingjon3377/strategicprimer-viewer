@@ -19,7 +19,7 @@ import com.google.auto.service.AutoService;
  * A driver for an app to copy selected contents from one map to another.
  */
 @AutoService(DriverFactory.class)
-public class MapTradeFactory implements ModelDriverFactory {
+public final class MapTradeFactory implements ModelDriverFactory {
 	public static final IDriverUsage USAGE = new DriverUsage(false, "trade-maps", ParamCount.Two,
 			"Trade maps", "Copy contents from one map to another.", true, false, "source.xml",
 			"destination.xml");

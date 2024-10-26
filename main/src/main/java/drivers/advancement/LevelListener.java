@@ -17,7 +17,7 @@ import java.util.Objects;
 /**
  * A listener to print a line whenever a worker gains a level.
  */
-/* package */ class LevelListener implements LevelGainListener, UnitMemberListener, SkillSelectionListener {
+/* package */ final class LevelListener implements LevelGainListener, UnitMemberListener, SkillSelectionListener {
 	private final ICLIHelper cli;
 
 	/**

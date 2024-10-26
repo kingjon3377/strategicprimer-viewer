@@ -27,7 +27,7 @@ import legacy.map.Player;
 /**
  * A class to respond to "change current player" menu items.
  */
-public class PlayerChangeMenuListener implements ActionListener, PlayerChangeSource {
+public final class PlayerChangeMenuListener implements ActionListener, PlayerChangeSource {
 	public PlayerChangeMenuListener(final IDriverModel model) {
 		this.model = model;
 	}

@@ -2,7 +2,7 @@ package legacy.map.fixtures.mobile;
 
 import org.jetbrains.annotations.NotNull;
 
-public class Thunderbird extends ImmortalAnimal {
+public final class Thunderbird extends ImmortalAnimal {
 	@SuppressWarnings("MagicNumber")
 	public Thunderbird(final int id) {
 		super("thunderbird", "Thunderbirds", 29, id);

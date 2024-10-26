@@ -30,7 +30,7 @@ import java.util.HashMap;
  * N.B. in Ceylon the type bound for Count was that it satisfy
  * {@code Summable<Count>&Comparable<Count>}
  */
-class MappedCounter<Base, Key, Count extends Number & Comparable<Count>> implements Iterable<Pair<Key, Count>> {
+final class MappedCounter<Base, Key, Count extends Number & Comparable<Count>> implements Iterable<Pair<Key, Count>> {
 	/**
 	 * @param keyExtractor   An accessor method to get the key to use for each object that is to be counted.
 	 * @param countExtractor An accessor method to get the quantity to

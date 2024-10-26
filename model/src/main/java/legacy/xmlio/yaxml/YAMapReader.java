@@ -56,7 +56,7 @@ import java.util.function.Predicate;
 /**
  * A reader for Strategic Primer maps.
  */
-/* package */ class YAMapReader extends YAAbstractReader<ILegacyMap, ILegacyMap> {
+/* package */ final class YAMapReader extends YAAbstractReader<ILegacyMap, ILegacyMap> {
 
 	/**
 	 * @param warner      The Warning instance to use

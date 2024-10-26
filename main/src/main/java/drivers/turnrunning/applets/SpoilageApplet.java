@@ -14,7 +14,7 @@ import lovelace.util.LovelaceLogger;
 import org.jetbrains.annotations.Nullable;
 
 // Note we *deliberately* do not make a factory for service-discovery to find a way to build an instance of this class.
-public class SpoilageApplet extends AbstractTurnApplet {
+public final class SpoilageApplet extends AbstractTurnApplet {
 	public SpoilageApplet(final ITurnRunningModel model, final ICLIHelper cli) {
 		super(model, cli);
 		this.model = model;

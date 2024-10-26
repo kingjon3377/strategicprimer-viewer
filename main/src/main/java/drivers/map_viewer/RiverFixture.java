@@ -17,7 +17,7 @@ import lovelace.util.LovelaceLogger;
  * A fake "TileFixture" to represent the rivers on a tile, so they can appear
  * in the list of the tile's contents.
  */
-/* package */ class RiverFixture implements FakeFixture {
+/* package */ final class RiverFixture implements FakeFixture {
 	@Override
 	public String getDefaultImage() {
 		return "river.png";

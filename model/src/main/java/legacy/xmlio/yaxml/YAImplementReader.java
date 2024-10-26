@@ -15,7 +15,7 @@ import common.xmlio.Warning;
 /**
  * A reader for {@link Implement}s.
  */
-/* package */ class YAImplementReader extends YAAbstractReader<Implement, Implement> {
+/* package */ final class YAImplementReader extends YAAbstractReader<Implement, Implement> {
 	public YAImplementReader(final Warning warning, final IDRegistrar idRegistrar) {
 		super(warning, idRegistrar);
 	}

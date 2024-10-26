@@ -18,7 +18,7 @@ import legacy.map.HasMutableKind;
  *
  * TODO: Extract an interface to handle the commonly-duplicated flavor-bookkeeping aspect
  */
-/* package */ class UnitTransferable implements Transferable {
+/* package */ final class UnitTransferable implements Transferable {
 	public static final DataFlavor FLAVOR = new DataFlavor(List.class, "List<IUnit>");
 	private final List<IUnit> payload;
 

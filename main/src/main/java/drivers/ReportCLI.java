@@ -30,7 +30,7 @@ import report.ReportGenerator;
 /**
  * A driver to produce a report of the contents of a map.
  */
-public class ReportCLI implements ReadOnlyDriver {
+public final class ReportCLI implements ReadOnlyDriver {
 	public ReportCLI(final SPOptions options, final IDriverModel model, final ICLIHelper cli) {
 		this.options = options;
 		this.model = model;

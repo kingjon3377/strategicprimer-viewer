@@ -34,7 +34,7 @@ import java.util.Collections;
 /**
  * A model for the list-based representation of the contents of a tile.
  */
-public class FixtureListModel implements ListModel<TileFixture>, SelectionChangeListener {
+public final class FixtureListModel implements ListModel<TileFixture>, SelectionChangeListener {
 	private final Function<Point, Collection<TileFixture>> fixturesSource;
 	private final Function<Point, @Nullable TileType> terrainSource;
 	private final Function<Point, Collection<River>> riversSource;

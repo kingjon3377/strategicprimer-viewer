@@ -17,7 +17,7 @@ import com.google.auto.service.AutoService;
  * map and display the results graphically.
  */
 @AutoService(DriverFactory.class)
-public class SubsetGUIFactory implements UtilityDriverFactory {
+public final class SubsetGUIFactory implements UtilityDriverFactory {
 	public static final IDriverUsage USAGE = new DriverUsage(true, "subset", ParamCount.AtLeastOne,
 			"Check players' maps against master",
 			"""

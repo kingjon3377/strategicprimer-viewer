@@ -22,7 +22,7 @@ import com.google.auto.service.AutoService;
  * A factory for the worker-advancement CLI driver.
  */
 @AutoService(DriverFactory.class)
-public class AdvancementCLIFactory implements ModelDriverFactory {
+public final class AdvancementCLIFactory implements ModelDriverFactory {
 	private static final IDriverUsage USAGE = new DriverUsage(false, "advance", ParamCount.AtLeastOne,
 			"View a player's workers and manage their advancement",
 			"View a player's units, workers in those units, each worker's Jobs, and Skill levels in each Job.",

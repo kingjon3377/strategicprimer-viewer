@@ -22,7 +22,7 @@ import legacy.map.fixtures.towns.Village;
 /**
  * A report generator for Villages.
  */
-public class VillageReportGenerator extends AbstractReportGenerator<Village> {
+public final class VillageReportGenerator extends AbstractReportGenerator<Village> {
 
 	private final Player currentPlayer;
 

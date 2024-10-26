@@ -29,7 +29,7 @@ import java.util.Set;
 /**
  * A reader for resource-bearing {@link legacy.map.TileFixture}s.
  */
-/* package */ class YAResourceReader extends YAAbstractReader<HarvestableFixture, HarvestableFixture> {
+/* package */ final class YAResourceReader extends YAAbstractReader<HarvestableFixture, HarvestableFixture> {
 	public YAResourceReader(final Warning warner, final IDRegistrar idRegistrar) {
 		super(warner, idRegistrar);
 		this.warner = warner;

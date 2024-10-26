@@ -39,7 +39,7 @@ import lovelace.util.FileChooser;
 /**
  * A driver to show tabular reports of the contents of a player's map in a GUI.
  */
-public class TabularReportGUI implements GUIDriver {
+public final class TabularReportGUI implements GUIDriver {
 	public TabularReportGUI(final ICLIHelper cli, final SPOptions options, final IDriverModel model) {
 		this.cli = cli;
 		this.options = options;

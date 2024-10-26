@@ -12,7 +12,7 @@ import java.util.function.Consumer;
  *
  * TODO: Implement that effect
  */
-public class Meadow implements HarvestableFixture, HasExtent<Meadow> {
+public final class Meadow implements HarvestableFixture, HasExtent<Meadow> {
 	private static final double BASE_DC = 20;
 	private static final double DC_MOD_PER_ACRE = 3.0 / 40.0;
 

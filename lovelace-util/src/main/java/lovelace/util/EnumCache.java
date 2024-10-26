@@ -10,7 +10,7 @@ import java.util.function.Supplier;
  * A lazily-initialized cache of an enum's values.
  * @param <T> the enum type
  */
-public class EnumCache<T extends Enum<T>> implements Supplier<List<T>> {
+public final class EnumCache<T extends Enum<T>> implements Supplier<List<T>> {
 	private final Class<T> classType;
 	private @Nullable List<T> cache = null;
 

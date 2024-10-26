@@ -14,7 +14,7 @@ import java.util.stream.StreamSupport;
 
 import org.jetbrains.annotations.Nullable;
 
-/* package */class RepeatApplet implements TurnApplet {
+/* package */ final class RepeatApplet implements TurnApplet {
 	public RepeatApplet(final ITurnRunningModel model, final ICLIHelper cli, final IDRegistrar idf) {
 		this.model = model;
 		this.cli = cli;

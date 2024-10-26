@@ -20,7 +20,7 @@ import com.google.auto.service.AutoService;
  * populations, meadow and grove sizes, and forest acreages.
  */
 @AutoService(DriverFactory.class)
-public class PopulationGeneratingCLIFactory implements ModelDriverFactory {
+public final class PopulationGeneratingCLIFactory implements ModelDriverFactory {
 	private static final IDriverUsage USAGE = new DriverUsage(false, "generate-populations",
 			ParamCount.One, "Generate animal populations, etc.",
 			"Generate animal and shrub populations, meadow and grove sizes, and forest acreages.", true,

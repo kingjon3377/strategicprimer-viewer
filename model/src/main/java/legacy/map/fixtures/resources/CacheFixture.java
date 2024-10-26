@@ -5,7 +5,7 @@ import legacy.map.IFixture;
 /**
  * A cache (of vegetables, or a hidden treasure, or ...) on a tile.
  */
-public class CacheFixture implements HarvestableFixture {
+public final class CacheFixture implements HarvestableFixture {
 	public CacheFixture(final String kind, final String contents, final int id) {
 		this.kind = kind;
 		this.contents = contents;

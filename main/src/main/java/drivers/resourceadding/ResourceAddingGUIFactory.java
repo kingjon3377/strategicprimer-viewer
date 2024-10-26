@@ -29,7 +29,7 @@ import com.google.auto.service.AutoService;
  * A factory for the resource-adding GUI app.
  */
 @AutoService(DriverFactory.class)
-public class ResourceAddingGUIFactory implements GUIDriverFactory {
+public final class ResourceAddingGUIFactory implements GUIDriverFactory {
 	private static final IDriverUsage USAGE = new DriverUsage(true, "add-resource",
 			ParamCount.AtLeastOne, "Add resources to maps", "Add resources for players to maps",
 			false, true, "--current-turn=NN");

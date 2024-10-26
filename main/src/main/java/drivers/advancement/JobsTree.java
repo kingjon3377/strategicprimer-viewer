@@ -81,7 +81,7 @@ import legacy.map.fixtures.mobile.worker.IJob;
 		}
 	}
 
-	private class ExpansionModelListener implements TreeModelListener {
+	private final class ExpansionModelListener implements TreeModelListener {
 		@Override
 		public void treeStructureChanged(final TreeModelEvent event) {
 			Optional.ofNullable(event.getTreePath())

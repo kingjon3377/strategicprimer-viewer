@@ -74,7 +74,7 @@ import legacy.map.fixtures.mobile.AnimalTracks;
 /**
  * An app to report statistics on the contents of the map.
  */
-/* package */ class CountingCLI implements ReadOnlyDriver {
+/* package */ final class CountingCLI implements ReadOnlyDriver {
 	public CountingCLI(final ICLIHelper cli, final IDriverModel model) {
 		this.cli = cli;
 		this.model = model;

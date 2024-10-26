@@ -16,7 +16,7 @@ import com.google.auto.service.AutoService;
  * A factory for a driver to check every map file in a list for errors and report the results in a window.
  */
 @AutoService(DriverFactory.class)
-public class MapCheckerGUIFactory implements UtilityDriverFactory {
+public final class MapCheckerGUIFactory implements UtilityDriverFactory {
 	private static final IDriverUsage USAGE = new DriverUsage(true, "check", ParamCount.AnyNumber,
 			"Check map for errors", "Check a map file for errors, deprecated syntax, etc.", false, true);
 

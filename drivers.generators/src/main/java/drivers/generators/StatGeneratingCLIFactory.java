@@ -19,7 +19,7 @@ import com.google.auto.service.AutoService;
  * A factory for a driver to generate new workers.
  */
 @AutoService(DriverFactory.class)
-public class StatGeneratingCLIFactory implements ModelDriverFactory {
+public final class StatGeneratingCLIFactory implements ModelDriverFactory {
 	private static final IDriverUsage USAGE = new DriverUsage(false, "generate-stats",
 			ParamCount.AtLeastOne, "Generate new workers.",
 			"Generate new workers with random stats and experience.", true, false, "--current-turn=NN");

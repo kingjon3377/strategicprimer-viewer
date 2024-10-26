@@ -32,7 +32,7 @@ import com.google.auto.service.AutoService;
  * A factory for the worker-advancemnt GUI app.
  */
 @AutoService(DriverFactory.class)
-public class AdvancementGUIFactory implements GUIDriverFactory {
+public final class AdvancementGUIFactory implements GUIDriverFactory {
 	private static final IDriverUsage USAGE = new DriverUsage(true, "advance", ParamCount.AtLeastOne,
 			"Worker Skill Advancement",
 			"View a player's units, workers in those units, each worker's Jobs, and Skill levels in each Job.",

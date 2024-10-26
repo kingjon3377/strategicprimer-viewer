@@ -9,7 +9,7 @@ import drivers.common.SPOptions;
  * an explorer has found. This modifies non-main maps in place; only run on
  * copies or under version control!
  */
-public class SubtractCLI implements CLIDriver {
+public final class SubtractCLI implements CLIDriver {
 	public SubtractCLI(final UtilityDriverModel model) {
 		this.model = model;
 	}

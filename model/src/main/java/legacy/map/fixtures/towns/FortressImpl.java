@@ -27,7 +27,7 @@ import java.util.function.Consumer;
  *
  * FIXME: We need something about buildings yet
  */
-public class FortressImpl implements IMutableFortress {
+public final class FortressImpl implements IMutableFortress {
 	public FortressImpl(final Player owner, final String name, final int id, final TownSize townSize) {
 		this.owner = owner;
 		this.name = name;

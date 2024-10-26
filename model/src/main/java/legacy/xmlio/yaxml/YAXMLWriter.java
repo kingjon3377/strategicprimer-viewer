@@ -16,7 +16,7 @@ import lovelace.util.ThrowingConsumer;
 /**
  * Sixth generation SP XML writer.
  */
-public class YAXMLWriter implements SPWriter {
+public final class YAXMLWriter implements SPWriter {
 	private final YAReaderAdapter wrapped = new YAReaderAdapter();
 
 	/**

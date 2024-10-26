@@ -23,7 +23,7 @@ import java.util.Objects;
 /**
  * A tabular report generator for villages.
  */
-public class VillageTabularReportGenerator implements ITableGenerator<Village> {
+public final class VillageTabularReportGenerator implements ITableGenerator<Village> {
 	@Override
 	public boolean canHandle(final IFixture fixture) {
 		return fixture instanceof Village;

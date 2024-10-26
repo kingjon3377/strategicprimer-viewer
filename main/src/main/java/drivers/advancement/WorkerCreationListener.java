@@ -53,7 +53,7 @@ import java.util.function.Consumer;
  * A listener to keep track of the currently selected unit and listen for
  * new-worker notifications, then pass this information on to the tree model.
  */
-/* package */ class WorkerCreationListener implements ActionListener, UnitSelectionListener {
+/* package */ final class WorkerCreationListener implements ActionListener, UnitSelectionListener {
 	public WorkerCreationListener(final IWorkerTreeModel model, final IDRegistrar factory) {
 		this.model = model;
 		workerCreationFrame = new WorkerCreationFrame(factory, this::addNewWorker);

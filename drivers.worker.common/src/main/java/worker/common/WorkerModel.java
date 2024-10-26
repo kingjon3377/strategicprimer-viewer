@@ -65,7 +65,7 @@ import legacy.map.fixtures.mobile.worker.Skill;
 /**
  * A model to underlie the advancement GUI, etc.
  */
-public class WorkerModel extends SimpleMultiMapModel implements IWorkerModel {
+public final class WorkerModel extends SimpleMultiMapModel implements IWorkerModel {
 	/**
 	 * If the argument is a {@link IFortress fortress},
 	 * return a stream of its members; otherwise, return a stream

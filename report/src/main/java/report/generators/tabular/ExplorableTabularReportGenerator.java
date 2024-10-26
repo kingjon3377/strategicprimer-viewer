@@ -31,7 +31,7 @@ import java.util.Objects;
  * A tabular report generator for things that can be explored and are not
  * covered elsewhere: caves, battlefields, adventure hooks, and portals.
  */
-public class ExplorableTabularReportGenerator
+public final class ExplorableTabularReportGenerator
 		implements ITableGenerator</*ExplorableFixture|TextFixture*/TileFixture> {
 	@Override
 	public boolean canHandle(final IFixture fixture) {

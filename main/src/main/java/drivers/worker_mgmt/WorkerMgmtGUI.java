@@ -30,7 +30,7 @@ import drivers.gui.common.SPFileChooser;
 /**
  * A driver to start the worker management GUI.
  */
-public class WorkerMgmtGUI implements MultiMapGUIDriver, WorkerGUI {
+public final class WorkerMgmtGUI implements MultiMapGUIDriver, WorkerGUI {
 	public WorkerMgmtGUI(final ICLIHelper cli, final SPOptions options, final IWorkerModel model) {
 		this.cli = cli;
 		this.options = options;

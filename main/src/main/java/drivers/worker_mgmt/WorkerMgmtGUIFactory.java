@@ -26,7 +26,7 @@ import com.google.auto.service.AutoService;
  * A factory for the worker management GUI.
  */
 @AutoService(DriverFactory.class)
-public class WorkerMgmtGUIFactory implements GUIDriverFactory {
+public final class WorkerMgmtGUIFactory implements GUIDriverFactory {
 	private static final IDriverUsage USAGE = new DriverUsage(true, "worker-mgmt", ParamCount.AtLeastOne,
 			"Unit Orders and Worker Management", "Organize the members of a player's units.", false,
 			true, "--current-turn=NN", "--print-empty", "--include-unleveled-jobs",

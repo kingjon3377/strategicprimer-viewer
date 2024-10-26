@@ -6,7 +6,7 @@ import drivers.common.cli.ICLIHelper;
 import drivers.turnrunning.ITurnRunningModel;
 
 @AutoService(TurnAppletFactory.class)
-public class HerdAppletFactory implements TurnAppletFactory {
+public final class HerdAppletFactory implements TurnAppletFactory {
 	@Override
 	public TurnApplet create(final ITurnRunningModel model, final ICLIHelper cli, final IDRegistrar idf) {
 		return new HerdApplet(model, cli, idf);

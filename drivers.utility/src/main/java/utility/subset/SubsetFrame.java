@@ -48,7 +48,7 @@ import drivers.common.ISPDriver;
 
 	private final StreamingLabel label;
 
-	private class HtmlWriter {
+	private final class HtmlWriter {
 		private final String filename;
 
 		public HtmlWriter(final String filename) {

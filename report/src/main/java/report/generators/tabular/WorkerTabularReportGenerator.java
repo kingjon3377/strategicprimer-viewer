@@ -29,7 +29,7 @@ import java.util.stream.Collectors;
  *
  * TODO: Should probably include something about mount and/or equipment
  */
-public class WorkerTabularReportGenerator implements ITableGenerator<IWorker> {
+public final class WorkerTabularReportGenerator implements ITableGenerator<IWorker> {
 	@Override
 	public boolean canHandle(final IFixture fixture) {
 		return fixture instanceof IWorker;

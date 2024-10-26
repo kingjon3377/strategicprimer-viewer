@@ -169,7 +169,7 @@ import worker.common.IFixtureEditHelper;
 	public void cursorPointChanged(final @Nullable Point old, final Point newCursor) {
 	}
 
-	private static class PortraitComponent extends JComponent implements ListSelectionListener {
+	private static final class PortraitComponent extends JComponent implements ListSelectionListener {
 		@Serial
 		private static final long serialVersionUID = 1L;
 		private final JList<TileFixture> fixtureListObject;

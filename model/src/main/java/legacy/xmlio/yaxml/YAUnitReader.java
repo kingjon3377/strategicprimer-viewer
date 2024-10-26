@@ -25,7 +25,7 @@ import java.util.Map;
 /**
  * A reader for units.
  */
-/* package */ class YAUnitReader extends YAAbstractReader<IUnit, IUnit> {
+/* package */ final class YAUnitReader extends YAAbstractReader<IUnit, IUnit> {
 	public YAUnitReader(final Warning warner, final IDRegistrar idRegistrar, final ILegacyPlayerCollection players) {
 		super(warner, idRegistrar);
 		this.players = players;

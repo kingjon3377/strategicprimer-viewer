@@ -24,7 +24,7 @@ import java.util.Arrays;
 /**
  * Test for {@link TownComparators}.
  */
-public class TestTownComparators {
+public final class TestTownComparators {
 	/**
 	 * Test that the town-comparison algorithms work as expected.
 	 */

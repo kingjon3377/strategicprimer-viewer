@@ -327,7 +327,7 @@ import java.awt.image.BufferedImage;
 	public void selectedUnitChanged(final @Nullable IUnit old, final @Nullable IUnit newUnit) {
 	}
 
-	private static class MapSizeListener extends ComponentAdapter {
+	private static final class MapSizeListener extends ComponentAdapter {
 		private final IViewerModel mapModel;
 		private final JComponent outer;
 		private final IntSupplier tileSizeFactory;

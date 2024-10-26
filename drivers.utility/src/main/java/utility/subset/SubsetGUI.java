@@ -22,7 +22,7 @@ import org.jetbrains.annotations.Nullable;
  *
  * TODO: Unify with {@link SubsetCLI}, like the map-checker GUI
  */
-public class SubsetGUI implements UtilityGUI {
+public final class SubsetGUI implements UtilityGUI {
 	public SubsetGUI(final SPOptions options) {
 		this.options = options;
 		frame = new SubsetFrame(this);

@@ -22,7 +22,7 @@ import lovelace.util.LovelaceLogger;
  * A factory for a driver to check whether player maps are subsets of the main map.
  */
 @AutoService(DriverFactory.class)
-public class SubsetCLIFactory implements ModelDriverFactory {
+public final class SubsetCLIFactory implements ModelDriverFactory {
 	private static final IDriverUsage USAGE = new DriverUsage(false, "subset", ParamCount.AtLeastTwo,
 			"Check players' maps against master",
 			"""

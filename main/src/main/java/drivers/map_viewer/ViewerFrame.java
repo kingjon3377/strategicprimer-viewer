@@ -227,7 +227,7 @@ public final class ViewerFrame extends SPFrame implements MapGUI {
 	 * listener that is listening for <em>resize</em> events to adjust the number
 	 * of tiles displayed properly.
 	 */
-	private static class WindowSizeListener extends WindowAdapter {
+	private static final class WindowSizeListener extends WindowAdapter {
 		private final JComponent mapPanel;
 
 		public WindowSizeListener(final JComponent mapPanel) {

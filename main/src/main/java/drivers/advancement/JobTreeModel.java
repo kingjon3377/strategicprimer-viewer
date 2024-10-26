@@ -36,7 +36,7 @@ import java.util.stream.StreamSupport;
 /**
  * A model for a tree of a worker's Jobs and Skills.
  */
-/* package */ class JobTreeModel implements TreeModel, UnitMemberListener, AddRemoveListener {
+/* package */ final class JobTreeModel implements TreeModel, UnitMemberListener, AddRemoveListener {
 	public JobTreeModel(final IAdvancementModel driverModel) {
 		this.driverModel = driverModel;
 	}

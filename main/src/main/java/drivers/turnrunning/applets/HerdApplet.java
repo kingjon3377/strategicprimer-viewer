@@ -27,7 +27,7 @@ import query.MammalModel;
 import query.PoultryModel;
 import query.SmallAnimalModel;
 
-/* package */ class HerdApplet extends AbstractTurnApplet {
+/* package */ final class HerdApplet extends AbstractTurnApplet {
 	private static final double MINS_PER_HOUR = 60.0;
 
 	public HerdApplet(final ITurnRunningModel model, final ICLIHelper cli, final IDRegistrar idf) {

@@ -28,7 +28,7 @@ import lovelace.util.LovelaceLogger;
  * A factory for a driver to start the map viewer.
  */
 @AutoService({DriverFactory.class, ViewerDriverFactory.class})
-public class ViewerGUIFactory implements ViewerDriverFactory {
+public final class ViewerGUIFactory implements ViewerDriverFactory {
 	private static final IDriverUsage USAGE = new DriverUsage(true, "view-map", ParamCount.One,
 			"Map viewer", "Look at the map visually. This is probably the app you want.",
 			false, true, "--current-turn=NN", "--background=image.png",

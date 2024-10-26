@@ -55,7 +55,7 @@ import lovelace.util.Range;
  *
  * TODO: Tests
  */
-public class ViewerModel extends SimpleDriverModel implements IViewerModel {
+public final class ViewerModel extends SimpleDriverModel implements IViewerModel {
 	/**
 	 * The starting zoom level.
 	 */

@@ -45,7 +45,7 @@ import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 import java.util.stream.Collectors;
 
-public class PopulationGeneratingModel extends SimpleMultiMapModel { // TODO: Extract interface
+public final class PopulationGeneratingModel extends SimpleMultiMapModel { // TODO: Extract interface
 	/**
 	 * The intersection of two sets; here so it can be passed as a method
 	 * reference rather than a lambda in {@link #getPlayerChoices}.

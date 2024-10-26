@@ -10,7 +10,7 @@ import java.util.function.Consumer;
 /**
  * A giant.
  */
-public class Giant implements Immortal, HasMutableImage, HasKind {
+public final class Giant implements Immortal, HasMutableImage, HasKind {
 	public Giant(final String kind, final int id) {
 		this.kind = kind;
 		this.id = id;

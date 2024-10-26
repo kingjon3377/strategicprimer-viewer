@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
  * An {@link EncounterTable} that gives its result based on the terrain type of
  * the tile in question.
  */
-class TerrainTable implements EncounterTable {
+final class TerrainTable implements EncounterTable {
 	private final Map<String, String> mapping = new HashMap<>();
 
 	@SafeVarargs

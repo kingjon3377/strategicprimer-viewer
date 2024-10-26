@@ -21,7 +21,7 @@ import com.google.auto.service.AutoService;
  * races.
  */
 @AutoService(DriverFactory.class)
-public class TodoFixerFactory implements ModelDriverFactory {
+public final class TodoFixerFactory implements ModelDriverFactory {
 	private final IDriverUsage USAGE = new DriverUsage(false, "fix-todos", ParamCount.AtLeastOne,
 			"Fix TODOs in maps", "Fix TODOs in unit kinds and aquatic villages with non-aquatic races",
 			false, false);

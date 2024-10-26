@@ -26,7 +26,7 @@ import legacy.map.fixtures.mobile.worker.IJob;
 /**
  * A report generator for Workers.
  */
-/* package */ class WorkerReportGenerator extends AbstractReportGenerator<IWorker> {
+/* package */ final class WorkerReportGenerator extends AbstractReportGenerator<IWorker> {
 
 	private final boolean details;
 	private final Player currentPlayer;

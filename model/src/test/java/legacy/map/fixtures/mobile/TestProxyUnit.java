@@ -10,7 +10,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  * Tests that proxy-units work properly, initially to aid in debugging an issue with (the port to Java of) the
  * advancement feature.
  */
-public class TestProxyUnit {
+public final class TestProxyUnit {
 	@SuppressWarnings("MagicNumber")
 	private static IUnit createUnitForFirstTest(final Player owner) {
 		final IMutableUnit retval = new Unit(owner, "unitKind", "unitName", 99);

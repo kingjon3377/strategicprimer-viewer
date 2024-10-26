@@ -226,7 +226,7 @@ public final class WorkerTree extends JTree implements UnitMemberSelectionSource
 	}
 
 	// TODO: Move this class to its own file?
-	private static class WorkerTreeTransferHandler extends TransferHandler {
+	private static final class WorkerTreeTransferHandler extends TransferHandler {
 		@Serial
 		private static final long serialVersionUID = 1L;
 		private final IWorkerTreeModel wtModel;
@@ -395,7 +395,7 @@ public final class WorkerTree extends JTree implements UnitMemberSelectionSource
 	}
 
 	// TODO: Move this class to its own file?
-	private static class UnitMemberCellRenderer extends DefaultTreeCellRenderer {
+	private static final class UnitMemberCellRenderer extends DefaultTreeCellRenderer {
 		@Serial
 		private static final long serialVersionUID = 1L;
 
@@ -669,7 +669,7 @@ public final class WorkerTree extends JTree implements UnitMemberSelectionSource
 		}
 	}
 
-	private static class TreeMouseListener extends MouseAdapter {
+	private static final class TreeMouseListener extends MouseAdapter {
 		public TreeMouseListener(final JTree tree, final Iterable<Player> players, final IWorkerTreeModel wtModel,
 								 final IDRegistrar idf) {
 			this.tree = tree;

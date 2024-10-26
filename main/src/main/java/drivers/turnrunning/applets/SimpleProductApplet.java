@@ -17,7 +17,7 @@ import java.util.Optional;
 
 import org.jetbrains.annotations.Nullable;
 
-/* package */ class SimpleProductApplet extends AbstractTurnApplet {
+/* package */ final class SimpleProductApplet extends AbstractTurnApplet {
 	private final String name;
 	private final List<String> commands;
 	private final String description;

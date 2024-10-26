@@ -10,7 +10,7 @@ import java.util.function.Consumer;
 /**
  * A dragon.
  */
-public class Dragon implements Immortal, HasMutableImage, HasKind {
+public final class Dragon implements Immortal, HasMutableImage, HasKind {
 	public Dragon(final String kind, final int id) {
 		this.kind = kind;
 		this.id = id;

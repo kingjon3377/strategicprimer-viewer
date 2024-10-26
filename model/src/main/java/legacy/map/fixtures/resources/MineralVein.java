@@ -6,7 +6,7 @@ import legacy.map.fixtures.MineralFixture;
 /**
  * A vein of a mineral.
  */
-public class MineralVein implements HarvestableFixture, MineralFixture {
+public final class MineralVein implements HarvestableFixture, MineralFixture {
 	public MineralVein(final String kind, final boolean exposed, final int dc, final int id) {
 		this.kind = kind;
 		this.exposed = exposed;

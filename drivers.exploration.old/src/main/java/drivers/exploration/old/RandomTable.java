@@ -17,7 +17,7 @@ import java.util.Set;
 /**
  * An {@link EncounterTable} where the event is selected at random.
  */
-class RandomTable implements EncounterTable {
+final class RandomTable implements EncounterTable {
 	private final List<Pair<Integer, String>> table;
 
 	@SafeVarargs

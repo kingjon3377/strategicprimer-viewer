@@ -24,7 +24,7 @@ import java.util.Arrays;
 /**
  * Tests of the {@link ExplorationRunner}.
  */
-public class TestExplorationRunner {
+public final class TestExplorationRunner {
 	/**
 	 * Test of the {@link ExplorationRunner#getPrimaryRock} method.
 	 */

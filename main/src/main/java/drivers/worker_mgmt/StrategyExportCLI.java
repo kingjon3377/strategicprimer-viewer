@@ -12,7 +12,7 @@ import drivers.common.IWorkerModel;
 /**
  * A command-line program to export a proto-strategy for a player from orders in a map.
  */
-public class StrategyExportCLI implements ReadOnlyDriver {
+public final class StrategyExportCLI implements ReadOnlyDriver {
 	public StrategyExportCLI(final SPOptions options, final IWorkerModel model) {
 		this.options = options;
 		this.model = model;

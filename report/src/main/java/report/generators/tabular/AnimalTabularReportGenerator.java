@@ -26,7 +26,7 @@ import java.util.Objects;
  * A report generator for {@link Animal animal populations} and {@link
  * AnimalTracks sightings of animals}.
  */
-public class AnimalTabularReportGenerator implements ITableGenerator<AnimalOrTracks> {
+public final class AnimalTabularReportGenerator implements ITableGenerator<AnimalOrTracks> {
 	@Override
 	public boolean canHandle(final IFixture fixture) {
 		return fixture instanceof AnimalOrTracks;

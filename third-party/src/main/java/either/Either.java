@@ -37,11 +37,11 @@ public abstract class Either<A, B> {
 		};
 	}
 
-	public Optional<A> fromLeft() {
+	public final Optional<A> fromLeft() {
 		return either(Optional::of, value -> Optional.empty());
 	}
 
-	public Optional<B> fromRight() {
+	public final Optional<B> fromRight() {
 		return either(value -> Optional.empty(), Optional::of);
 	}
 }

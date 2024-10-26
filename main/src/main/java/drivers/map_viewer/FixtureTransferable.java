@@ -9,7 +9,7 @@ import legacy.map.TileFixture;
 /**
  * A class to transfer a TileFixture by drag-and-drop.
  */
-/* package */ class FixtureTransferable implements Transferable {
+/* package */ final class FixtureTransferable implements Transferable {
 	public static final DataFlavor FLAVOR = new DataFlavor(TileFixture.class, "TileFixture");
 
 	private final TileFixture payload;

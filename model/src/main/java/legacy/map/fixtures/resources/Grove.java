@@ -10,7 +10,7 @@ import java.util.function.Consumer;
  *
  * TODO: Convert Boolean fields to enums.
  */
-public class Grove implements HarvestableFixture, HasPopulation<Grove> {
+public final class Grove implements HarvestableFixture, HasPopulation<Grove> {
 	public Grove(final boolean orchard, final boolean cultivated, final String kind, final int id,
 				 final int population) {
 		this.orchard = orchard;

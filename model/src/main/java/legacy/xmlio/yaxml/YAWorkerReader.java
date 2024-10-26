@@ -30,7 +30,7 @@ import java.util.Objects;
 /**
  * A reader for workers.
  */
-/* package */ class YAWorkerReader extends YAAbstractReader<IWorker, IWorker> {
+/* package */ final class YAWorkerReader extends YAAbstractReader<IWorker, IWorker> {
 	public static void writeSkill(final ThrowingConsumer<String, IOException> ostream, final ISkill obj,
 	                              final int indent) throws IOException {
 		if (!obj.isEmpty()) {

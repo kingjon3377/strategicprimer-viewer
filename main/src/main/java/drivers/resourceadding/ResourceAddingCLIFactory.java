@@ -19,7 +19,7 @@ import com.google.auto.service.AutoService;
  * A factory for a driver to let the user enter a player's resources and equipment.
  */
 @AutoService(DriverFactory.class)
-public class ResourceAddingCLIFactory implements ModelDriverFactory {
+public final class ResourceAddingCLIFactory implements ModelDriverFactory {
 	private static final IDriverUsage USAGE = new DriverUsage(false, "add-resource",
 			ParamCount.AtLeastOne, "Add resources to maps", "Add resources for players to maps.",
 			true, false, "--current-turn=NN");

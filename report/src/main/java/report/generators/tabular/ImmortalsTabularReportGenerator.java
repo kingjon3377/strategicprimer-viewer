@@ -23,7 +23,7 @@ import legacy.map.fixtures.mobile.Immortal;
 /**
  * A tabular report generator for {@link Immortal "immortals."}
  */
-public class ImmortalsTabularReportGenerator implements ITableGenerator<Immortal> {
+public final class ImmortalsTabularReportGenerator implements ITableGenerator<Immortal> {
 	@Override
 	public boolean canHandle(final IFixture fixture) {
 		return fixture instanceof Immortal;

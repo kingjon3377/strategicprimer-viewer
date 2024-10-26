@@ -20,7 +20,7 @@ import legacy.map.MapDimensionsImpl;
 /**
  * An {@link EncounterTable} where results are by quadrant of the map.
  */
-class QuadrantTable implements EncounterTable {
+final class QuadrantTable implements EncounterTable {
 	/**
 	 * The collection of collections of results.
 	 */

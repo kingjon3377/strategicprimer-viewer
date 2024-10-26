@@ -17,7 +17,7 @@ import legacy.map.fixtures.mobile.IUnit;
 /**
  * A class to transfer a UnitMember via drag-and-drop.
  */
-/* package */ class UnitMemberTransferable implements Transferable {
+/* package */ final class UnitMemberTransferable implements Transferable {
 	public static final DataFlavor FLAVOR = new DataFlavor(List.class, "List<UnitMember>");
 
 	private final List<Pair<UnitMember, IUnit>> payload;

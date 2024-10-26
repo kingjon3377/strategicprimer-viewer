@@ -87,7 +87,7 @@ import common.xmlio.SPFormatException;
 import java.io.IOException;
 import java.io.FileNotFoundException;
 
-/* package */ class ResourceAddingGUI implements MultiMapGUIDriver {
+/* package */ final class ResourceAddingGUI implements MultiMapGUIDriver {
 
 	private final ResourceManagementDriverModel model;
 

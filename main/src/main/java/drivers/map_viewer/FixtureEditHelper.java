@@ -15,7 +15,7 @@ import worker.common.IFixtureEditHelper;
 
 import drivers.common.IFixtureEditingModel;
 
-public class FixtureEditHelper implements IFixtureEditHelper {
+public final class FixtureEditHelper implements IFixtureEditHelper {
 	public FixtureEditHelper(final IFixtureEditingModel model) {
 		this.model = model;
 	}

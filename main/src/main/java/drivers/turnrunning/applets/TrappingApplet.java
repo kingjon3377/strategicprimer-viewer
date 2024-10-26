@@ -23,7 +23,7 @@ import java.util.Objects;
 import org.javatuples.Pair;
 import org.jetbrains.annotations.Nullable;
 
-/* package */ class TrappingApplet extends HuntGeneralApplet {
+/* package */ final class TrappingApplet extends HuntGeneralApplet {
 	public TrappingApplet(final ITurnRunningModel model, final ICLIHelper cli, final IDRegistrar idf) {
 		super("trap", model, cli, idf);
 	}

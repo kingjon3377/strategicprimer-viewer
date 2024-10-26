@@ -18,7 +18,7 @@ import drivers.common.CLIDriver;
  *
  * FIXME: Write GUI for map-expanding driver
  */
-public class ExpansionDriver implements CLIDriver {
+public final class ExpansionDriver implements CLIDriver {
 	public ExpansionDriver(final SPOptions options, final UtilityDriverModel model) {
 		this.options = options;
 		this.model = model;

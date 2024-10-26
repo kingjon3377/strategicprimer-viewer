@@ -31,7 +31,7 @@ import org.jetbrains.annotations.Nullable;
 /**
  * Logic extracted from the advancement CLI to also use in the turn-running CLI as well.
  */
-public class AdvancementCLIHelperImpl implements AdvancementCLIHelper {
+public final class AdvancementCLIHelperImpl implements AdvancementCLIHelper {
 	public AdvancementCLIHelperImpl(final IAdvancementModel model, final ICLIHelper cli) {
 		this.cli = cli;
 		this.model = model;

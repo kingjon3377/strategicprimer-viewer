@@ -12,7 +12,7 @@ import drivers.common.SelectionChangeSource;
 /**
  * A helper class to proxy selection-changing calls.
  */
-public class SelectionChangeSupport implements SelectionChangeSource {
+public final class SelectionChangeSupport implements SelectionChangeSource {
 	/**
 	 * The list of listeners to notify.
 	 */

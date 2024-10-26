@@ -27,7 +27,7 @@ import com.google.auto.service.AutoService;
  * A factory for a driver to show tabular reports of the contents of a player's map in a GUI.
  */
 @AutoService(DriverFactory.class)
-public class TabularReportGUIFactory implements GUIDriverFactory {
+public final class TabularReportGUIFactory implements GUIDriverFactory {
 	private static final IDriverUsage USAGE = new DriverUsage(true, "tabular-report",
 			ParamCount.One, "Tabular Report Viewer", "Show the contents of a map in tabular form",
 			false, true, "--hq-row=NN --hq-col=NN");

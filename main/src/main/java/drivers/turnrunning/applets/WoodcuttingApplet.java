@@ -29,7 +29,7 @@ import java.util.stream.Collectors;
 
 import org.jetbrains.annotations.Nullable;
 
-/* package */ class WoodcuttingApplet extends AbstractTurnApplet {
+/* package */ final class WoodcuttingApplet extends AbstractTurnApplet {
 	private static final int CU_FT_PER_TREE = 300;
 	// In our model, to convert from tree-count to acreage, we multiply the count
 	// by 10 and divide by 72 (I forget why, and the stat I have is "700 trees per

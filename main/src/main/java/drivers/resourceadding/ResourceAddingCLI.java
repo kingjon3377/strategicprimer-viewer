@@ -22,7 +22,7 @@ import legacy.map.fixtures.Implement;
 /**
  * A driver to let the user enter a player's resources and equipment.
  */
-/* package */ class ResourceAddingCLI implements CLIDriver {
+/* package */ final class ResourceAddingCLI implements CLIDriver {
 	public ResourceAddingCLI(final ICLIHelper cli, final SPOptions options, final ResourceManagementDriverModel model) {
 		this.cli = cli;
 		this.options = options;

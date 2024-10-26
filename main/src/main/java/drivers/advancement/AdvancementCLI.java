@@ -20,7 +20,7 @@ import java.util.List;
 /**
  * The worker-advancement CLI driver.
  */
-public class AdvancementCLI implements CLIDriver {
+public final class AdvancementCLI implements CLIDriver {
 	public AdvancementCLI(final ICLIHelper cli, final SPOptions options, final IWorkerModel model) {
 		this.cli = cli;
 		this.options = options;

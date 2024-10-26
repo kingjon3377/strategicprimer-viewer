@@ -63,7 +63,7 @@ import drivers.common.FixtureMatcher;
  * A class to allow the Z-order of fixtures to be represented as a table (and
  * so dynamically controlled by the user).
  */
-public class FixtureFilterTableModel extends AbstractTableModel
+public final class FixtureFilterTableModel extends AbstractTableModel
 		implements Reorderable, ZOrderFilter, IterableComparator<FixtureMatcher, TileFixture> {
 	@Serial
 	private static final long serialVersionUID = 1L;

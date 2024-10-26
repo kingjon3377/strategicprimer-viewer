@@ -19,7 +19,7 @@ import com.google.auto.service.AutoService;
  * A factory for a driver to let the user enter or generate 'stats' for towns.
  */
 @AutoService(DriverFactory.class)
-public class TownGeneratingCLIFactory implements ModelDriverFactory {
+public final class TownGeneratingCLIFactory implements ModelDriverFactory {
 	private static final IDriverUsage USAGE = new DriverUsage(false, "generate-towns",
 			ParamCount.AtLeastOne,
 			"Enter or generate stats and contents for towns and villages",

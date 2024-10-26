@@ -35,7 +35,7 @@ import lovelace.util.LovelaceLogger;
 /**
  * A cell renderer for tile-details GUIs.
  */
-/* package */ class FixtureCellRenderer implements ListCellRenderer<TileFixture> {
+/* package */ final class FixtureCellRenderer implements ListCellRenderer<TileFixture> {
 	private static final DefaultListCellRenderer DEFAULT_RENDERER = new DefaultListCellRenderer();
 
 	private static final Collection<String> MISSING_FILENAMES = new HashSet<>();

@@ -12,7 +12,7 @@ import java.util.Objects;
 
 import org.jetbrains.annotations.Nullable;
 
-/* package */ class UnitCellRenderer implements ListCellRenderer<IUnit> {
+/* package */ final class UnitCellRenderer implements ListCellRenderer<IUnit> {
 	private static final ListCellRenderer<Object> DEFAULT_RENDERER = new DefaultListCellRenderer();
 
 	@Override

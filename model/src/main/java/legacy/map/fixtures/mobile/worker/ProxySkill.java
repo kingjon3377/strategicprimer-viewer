@@ -20,7 +20,7 @@ import legacy.map.fixtures.mobile.ProxyFor;
  * driver model methods.
  */
 @Deprecated
-		/* package */ class ProxySkill implements ISkill, ProxyFor<IJob> {
+/* package */ final class ProxySkill implements ISkill, ProxyFor<IJob> {
 	public ProxySkill(final String name, final boolean parallel, final IJob... proxiedJobs) {
 		this.parallel = parallel;
 		this.proxiedJobs = new ArrayList<>(Arrays.asList(proxiedJobs));

@@ -12,7 +12,7 @@ import java.util.function.Consumer;
  * A collection of players. Using a simple List doesn't work when -1 is the
  * default index if one isn't given in the XML.
  */
-public class LegacyPlayerCollection implements IMutableLegacyPlayerCollection {
+public final class LegacyPlayerCollection implements IMutableLegacyPlayerCollection {
 	public LegacyPlayerCollection() {
 	}
 

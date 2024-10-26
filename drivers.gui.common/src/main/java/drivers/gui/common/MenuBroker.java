@@ -15,7 +15,7 @@ import lovelace.util.LovelaceLogger;
  * that at most one listener will be notified of any given action-command;
  * subsequent registrations override previous ones.
  */
-public class MenuBroker implements IMenuBroker {
+public final class MenuBroker implements IMenuBroker {
 	/**
 	 * The mapping from "actions" to listeners to handle them.
 	 */

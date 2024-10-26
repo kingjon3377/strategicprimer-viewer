@@ -46,7 +46,7 @@ import java.util.function.Consumer;
 /**
  * A reader for fortresses, villages, and other towns.
  */
-/* package */ class YATownReader extends YAAbstractReader<ITownFixture, ITownFixture> {
+/* package */ final class YATownReader extends YAAbstractReader<ITownFixture, ITownFixture> {
 	public YATownReader(final Warning warner, final IDRegistrar idRegistrar, final ILegacyPlayerCollection players) {
 		super(warner, idRegistrar);
 		resourceReader = new YAResourcePileReader(warner, idRegistrar);

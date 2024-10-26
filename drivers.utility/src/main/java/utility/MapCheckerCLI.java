@@ -73,7 +73,7 @@ import org.jetbrains.annotations.Nullable;
 /**
  * A driver to check every map file in a list for errors.
  */
-public class MapCheckerCLI implements UtilityDriver {
+public final class MapCheckerCLI implements UtilityDriver {
 	private static final double MAX_ACRES = 160.0;
 	private static final double GROVES_PER_ACRE = 500.0;
 

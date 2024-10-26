@@ -24,7 +24,7 @@ import java.util.HashMap;
 /**
  * Logic extracted from {@link ResourceAddingCLI} that's also useful in the turn-running app.
  */
-public class ResourceAddingCLIHelper {
+public final class ResourceAddingCLIHelper {
 	public ResourceAddingCLIHelper(final ICLIHelper cli, final IDRegistrar idf) {
 		this.cli = cli;
 		this.idf = idf;

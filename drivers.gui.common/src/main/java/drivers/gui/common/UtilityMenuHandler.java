@@ -17,7 +17,7 @@ import java.io.IOException;
  * A class to handle menu items for utility apps that only have "Open",
  * "Close", "About", and "Quit" menu items enabled.
  */
-public class UtilityMenuHandler {
+public final class UtilityMenuHandler {
 	public UtilityMenuHandler(final UtilityGUI driver, final SPFrame window) {
 		this.driver = driver;
 		this.window = window;

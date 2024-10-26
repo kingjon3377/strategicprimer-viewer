@@ -44,7 +44,7 @@ import java.math.RoundingMode;
  * A driver to let the user generate animal and shrub populations, meadow and
  * grove sizes, and forest acreages.
  */
-public class PopulationGeneratingCLI implements CLIDriver {
+public final class PopulationGeneratingCLI implements CLIDriver {
 	private static final int ACRES_PER_TILE = 160;
 
 	/**

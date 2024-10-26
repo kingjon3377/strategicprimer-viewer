@@ -15,7 +15,7 @@ import lovelace.util.ThrowingConsumer;
 /**
  * A reader for portals.
  */
-/* package */ class YAPortalReader extends YAAbstractReader<Portal, Portal> {
+/* package */ final class YAPortalReader extends YAAbstractReader<Portal, Portal> {
 	public YAPortalReader(final Warning warning, final IDRegistrar idRegistrar) {
 		super(warning, idRegistrar);
 	}

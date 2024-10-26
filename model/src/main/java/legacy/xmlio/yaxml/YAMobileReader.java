@@ -49,7 +49,7 @@ import common.xmlio.Warning;
 /**
  * A reader for "mobile fixtures"
  */
-/* package */ class YAMobileReader extends YAAbstractReader<MobileFixture, MobileFixture> {
+/* package */ final class YAMobileReader extends YAAbstractReader<MobileFixture, MobileFixture> {
 	public YAMobileReader(final Warning warning, final IDRegistrar idRegistrar) {
 		super(warning, idRegistrar);
 	}

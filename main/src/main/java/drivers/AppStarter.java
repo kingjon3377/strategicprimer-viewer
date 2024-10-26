@@ -28,7 +28,7 @@ import drivers.common.cli.ICLIHelper;
 import lovelace.util.LovelaceLogger;
 import org.jetbrains.annotations.Nullable;
 
-/* package */ class AppStarter {
+/* package */ final class AppStarter {
 	private final Map<String, Iterable<DriverFactory>> driverCache =
 			AppChooserState.createCache(); // TODO: Can we, and should we, inline that into here?
 

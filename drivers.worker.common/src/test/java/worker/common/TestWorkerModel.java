@@ -41,7 +41,7 @@ import drivers.common.IWorkerModel;
 /**
  * Test of the worker model.
  */
-public class TestWorkerModel {
+public final class TestWorkerModel {
 	/**
 	 * Helper method: Flatten any proxies in the list by replacing them with what they are proxies for.
 	 */

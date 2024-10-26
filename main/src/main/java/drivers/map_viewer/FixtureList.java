@@ -136,7 +136,7 @@ public final class FixtureList extends JList<TileFixture>
 	}
 
 	// TODO: Try to make static, taking necessary dependencies as parameters
-	private class FixtureMouseListener extends MouseAdapter {
+	private final class FixtureMouseListener extends MouseAdapter {
 		private void handleMouseEvent(final MouseEvent event) {
 			if (event.isPopupTrigger() && event.getClickCount() == 1) {
 				final int index = locationToIndex(event.getPoint());

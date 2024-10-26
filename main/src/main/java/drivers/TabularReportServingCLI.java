@@ -51,7 +51,7 @@ import org.takes.rs.RsText;
 import org.takes.http.FtBasic;
 import org.takes.http.Exit;
 
-/* package */ class TabularReportServingCLI implements ReadOnlyDriver {
+/* package */ final class TabularReportServingCLI implements ReadOnlyDriver {
 	private static final int PORT = 8080;
 
 	public TabularReportServingCLI(final ICLIHelper cli, final SPOptions options, final IDriverModel model) {

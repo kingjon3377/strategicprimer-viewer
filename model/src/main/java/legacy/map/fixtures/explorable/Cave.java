@@ -5,7 +5,7 @@ import legacy.map.IFixture;
 /**
  * "There are extensive caves beneath this tile".
  */
-public class Cave implements ExplorableFixture {
+public final class Cave implements ExplorableFixture {
 	public Cave(final int dc, final int id) {
 		this.dc = dc;
 		this.id = id;

@@ -16,7 +16,7 @@ import java.util.Random;
 /**
  * An app to move independent units around at random.
  */
-/* package */ class RandomMovementCLI implements CLIDriver {
+/* package */ final class RandomMovementCLI implements CLIDriver {
 	public RandomMovementCLI(final SPOptions options, final IExplorationModel model) {
 		// TODO Add listener to report movement players would notice
 		this.options = options;

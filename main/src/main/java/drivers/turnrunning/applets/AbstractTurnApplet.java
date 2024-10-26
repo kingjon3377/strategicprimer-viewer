@@ -44,13 +44,13 @@ public abstract class AbstractTurnApplet implements TurnApplet {
 	private final ICLIHelper cli;
 
 	// This was "shared" in Ceylon, but I expect only subclasses will be able to use it.
-	protected <Type> @Nullable Type chooseFromList(final List<Type> items, final String description, final String none,
+	protected final <Type> @Nullable Type chooseFromList(final List<Type> items, final String description, final String none,
 												   final String prompt, final ICLIHelper.ListChoiceBehavior behavior) {
 		return chooseFromList(items, description, none, prompt, behavior, Object::toString);
 	}
 
 	// This was "shared" in Ceylon, but I expect only subclasses will be able to use it.
-	protected <Type> @Nullable Type chooseFromList(final List<Type> items, final String description, final String none,
+	protected final <Type> @Nullable Type chooseFromList(final List<Type> items, final String description, final String none,
 												   final String prompt, final ICLIHelper.ListChoiceBehavior behavior,
 												   final Function<? super Type, String> converter) {
 		final Pair<Integer, @Nullable String> entry = cli.chooseStringFromList(
@@ -65,7 +65,7 @@ public abstract class AbstractTurnApplet implements TurnApplet {
 	}
 
 	// This was "shared" in Ceylon, but I expect only subclasses will be able to use it.
-	protected @Nullable Point confirmPoint(final String prompt) {
+	protected final @Nullable Point confirmPoint(final String prompt) {
 		final Point retval = cli.inputPoint(prompt);
 		if (Objects.isNull(retval)) {
 			return null;
@@ -87,14 +87,14 @@ public abstract class AbstractTurnApplet implements TurnApplet {
 	}
 
 	// TODO: These should be configurable, either by callers or the user's SPOptions
-	protected static final int ENCOUNTERS_PER_HOUR = 4;
+	private static final int ENCOUNTERS_PER_HOUR = 4;
 	protected static final int NO_RESULT_COST = 60 / ENCOUNTERS_PER_HOUR;
 
 	/**
 	 * Reduce the population of a group of plants, animals, etc., and copy
 	 * the reduced form into all subordinate maps.
 	 */
-	protected <T extends HasPopulation<? extends TileFixture> & TileFixture> void reducePopulation(
+	protected final <T extends HasPopulation<? extends TileFixture> & TileFixture> void reducePopulation(
 			final Point point, final T fixture, final String plural, final IFixture.CopyBehavior zero) {
 		// TODO: make nullable and return null on EOF?
 		final int count = Math.min(
@@ -106,7 +106,7 @@ public abstract class AbstractTurnApplet implements TurnApplet {
 	// FIXME: Should only look at a particular unit's location
 	// TODO: Move into the model?
 	// FIXME: Stream-based version doesn't count food inside units inside fortresses
-	protected List<IResourcePile> getFoodFor(final Player player, final int turn) {
+	protected final List<IResourcePile> getFoodFor(final Player player, final int turn) {
 /*		return model.getMap().streamAllFixtures()
 			.filter(f -> f instanceof IFortress || f instanceof IUnit)
 			.filter(f -> player.equals(((HasOwner) f).getOwner()))

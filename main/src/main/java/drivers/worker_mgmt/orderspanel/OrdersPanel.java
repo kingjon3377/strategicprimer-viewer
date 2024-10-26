@@ -36,7 +36,7 @@ import java.awt.event.KeyEvent;
 import java.awt.Color;
 import java.util.function.BiFunction;
 
-public class OrdersPanel extends BorderedPanel implements OrdersContainer {
+public final class OrdersPanel extends BorderedPanel implements OrdersContainer {
 	@Serial
 	private static final long serialVersionUID = 1L;
 	private static final Color LIGHT_BLUE = new Color(135, 206, 250);

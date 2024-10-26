@@ -37,7 +37,7 @@ import org.jetbrains.annotations.Nullable;
  *
  * TODO: Convert some other {@link MobileFixture}s similarly?
  */
-public class Worker implements IMutableWorker {
+public final class Worker implements IMutableWorker {
 	/**
 	 * Whether neither of two collections of Jobs contains a nonempty Job the other does not.
 	 *

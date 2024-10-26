@@ -7,7 +7,7 @@ import legacy.map.HasMutableImage;
 /**
  * An oasis on the map.
  */
-public class Oasis implements TerrainFixture, HasMutableImage {
+public final class Oasis implements TerrainFixture, HasMutableImage {
 	public Oasis(final int id) {
 		this.id = id;
 	}

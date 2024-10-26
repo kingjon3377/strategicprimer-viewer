@@ -76,7 +76,7 @@ import legacy.map.fixtures.towns.Village;
  *
  * FIXME: Write stat-generating GUI
  */
-/* package */ class StatGeneratingCLI implements CLIDriver {
+/* package */ final class StatGeneratingCLI implements CLIDriver {
 	private static final double TILE_DISTANCE_FACTOR = 12.0;
 
 	/**

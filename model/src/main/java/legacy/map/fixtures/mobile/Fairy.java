@@ -10,7 +10,7 @@ import java.util.function.Consumer;
 /**
  * A fairy.
  */
-public class Fairy implements Immortal, HasMutableImage, HasKind {
+public final class Fairy implements Immortal, HasMutableImage, HasKind {
 	public Fairy(final String kind, final int id) {
 		this.kind = kind;
 		this.id = id;

@@ -17,7 +17,7 @@ import java.util.stream.Stream;
 /**
  * A test that {@link ProxyAnimal#reduced} works properly.
  */
-public class TestProxyAnimal {
+public final class TestProxyAnimal {
 	/**
 	 * Test that the basic {@link Animal#reduced} works the way we expect.
 	 */
@@ -43,7 +43,7 @@ public class TestProxyAnimal {
 	 * @author J. Dimeo https://stackoverflow.com/a/49032736
 	 * @author Jonathan Lovelace (adapting to Arguments of ints)
 	 */
-	private static class PairCollater implements Function<Integer, Stream<Arguments>> {
+	private static final class PairCollater implements Function<Integer, Stream<Arguments>> {
 		@Nullable
 		Integer prev;
 

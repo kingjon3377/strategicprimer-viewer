@@ -56,7 +56,7 @@ import lovelace.util.ComponentParentStream;
  *
  * TODO: Further splitting up
  */
-public class IOHandler implements ActionListener {
+public final class IOHandler implements ActionListener {
 	private final ISPDriver driver;
 	private final ICLIHelper cli;
 

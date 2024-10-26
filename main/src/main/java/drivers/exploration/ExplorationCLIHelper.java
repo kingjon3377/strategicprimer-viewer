@@ -49,7 +49,7 @@ import static lovelace.util.Decimalize.decimalize;
 /**
  * The logic split out of {@link ExplorationCLI}, some also used in {@link drivers.turnrunning.TurnRunningCLI}
  */
-public class ExplorationCLIHelper implements MovementCostListener, SelectionChangeListener {
+public final class ExplorationCLIHelper implements MovementCostListener, SelectionChangeListener {
 	private final IExplorationModel model;
 	private final ICLIHelper cli;
 	private final HuntingModel huntingModel;

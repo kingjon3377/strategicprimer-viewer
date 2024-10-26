@@ -22,7 +22,7 @@ import java.util.function.Predicate;
 
 import org.jetbrains.annotations.Nullable;
 
-/* package */ class ExplorationAutomationConfig {
+/* package */ final class ExplorationAutomationConfig {
 	public ExplorationAutomationConfig(final Player player) {
 		this.player = player;
 		conditions = List.of(new Condition<>("at others' fortresses",
@@ -54,7 +54,7 @@ import org.jetbrains.annotations.Nullable;
 		return player;
 	}
 
-	private static class Condition<Type extends TileFixture> {
+	private static final class Condition<Type extends TileFixture> {
 		/**
 		 * @param configExplanation A description to use in the question asking whether to stop for this condition.
 		 * @param stopExplanation   A description to use when stopping because of this condition.

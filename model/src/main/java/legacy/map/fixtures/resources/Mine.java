@@ -7,7 +7,7 @@ import common.map.fixtures.towns.TownStatus;
 /**
  * A mine---a source of mineral resources.
  */
-public class Mine implements HarvestableFixture, MineralFixture {
+public final class Mine implements HarvestableFixture, MineralFixture {
 	public Mine(final String kind, final TownStatus status, final int id) {
 		this.kind = kind;
 		this.status = status;

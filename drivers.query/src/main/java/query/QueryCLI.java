@@ -65,7 +65,7 @@ import either.Either;
  *
  * FIXME: Write GUI equivalent of query CLI
  */
-public class QueryCLI implements ReadOnlyDriver {
+public final class QueryCLI implements ReadOnlyDriver {
 	/**
 	 * Count the workers in an Iterable belonging to a player.
 	 */

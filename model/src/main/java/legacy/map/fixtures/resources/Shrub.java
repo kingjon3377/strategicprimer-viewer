@@ -9,7 +9,7 @@ import java.util.function.Consumer;
  * A {@link legacy.map.TileFixture} to represent shrubs,
  * or their aquatic equivalents, on a tile.
  */
-public class Shrub implements HarvestableFixture, HasPopulation<Shrub> {
+public final class Shrub implements HarvestableFixture, HasPopulation<Shrub> {
 	public Shrub(final String kind, final int id, final int population) {
 		this.kind = kind;
 		this.id = id;

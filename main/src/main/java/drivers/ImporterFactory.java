@@ -16,7 +16,7 @@ import com.google.auto.service.AutoService;
  * A factory for an app to let the user create a map from an image.
  */
 @AutoService(DriverFactory.class)
-public class ImporterFactory implements UtilityDriverFactory {
+public final class ImporterFactory implements UtilityDriverFactory {
 	private static final IDriverUsage USAGE = new DriverUsage(false, "import",
 			ParamCount.AtLeastOne, "Import terrain data from a raster image",
 			"Import terrain data from a raster image", false, false, "/path/to/image.png",

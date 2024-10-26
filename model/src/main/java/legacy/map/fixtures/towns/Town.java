@@ -7,7 +7,7 @@ import common.map.fixtures.towns.TownStatus;
 /**
  * An abandoned, ruined, or burned-out (or active) town.
  */
-public class Town extends AbstractTown {
+public final class Town extends AbstractTown {
 	/**
 	 * @param townStatus The status of the town
 	 * @param size       The size of the town

@@ -13,7 +13,7 @@ import java.util.function.Consumer;
  *
  * TODO: More members?
  */
-public class Implement implements UnitMember, FortressMember, HasKind, HasMutableImage,
+public final class Implement implements UnitMember, FortressMember, HasKind, HasMutableImage,
 		HasPopulation<@NotNull Implement> {
 	public Implement(final String kind, final int id, final int count) {
 		this.kind = kind;

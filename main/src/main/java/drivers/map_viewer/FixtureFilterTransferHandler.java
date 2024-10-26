@@ -22,7 +22,7 @@ import drivers.common.FixtureMatcher;
 /**
  * A transfer-handler to let the user drag items in the list to control Z-order.
  */
-/* package */ class FixtureFilterTransferHandler extends TransferHandler {
+/* package */ final class FixtureFilterTransferHandler extends TransferHandler {
 	private static final DataFlavor FLAVOR = new DataFlavor(FixtureMatcher.class, "FixtureMatcher");
 	@Serial
 	private static final long serialVersionUID = 1L;

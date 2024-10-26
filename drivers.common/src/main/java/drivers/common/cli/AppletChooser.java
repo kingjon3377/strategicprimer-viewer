@@ -16,7 +16,7 @@ import org.jetbrains.annotations.Nullable;
 /**
  * A class to allow CLI drivers to present a menu of applets to the user.
  */
-public class AppletChooser<AppletClass extends Applet> {
+public final class AppletChooser<AppletClass extends Applet> {
 	@SafeVarargs
 	public AppletChooser(final ICLIHelper cli, final AppletClass... applets) {
 		this.cli = cli;

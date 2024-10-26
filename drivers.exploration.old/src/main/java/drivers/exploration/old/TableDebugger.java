@@ -20,7 +20,7 @@ import java.util.Collections;
  * A driver to help debug "exploration tables", which were the second
  * "exploration results" framework I implemented.
  */
-public class TableDebugger implements UtilityDriver {
+public final class TableDebugger implements UtilityDriver {
 	private final ThrowingConsumer<String, IOException> ostream;
 
 	public TableDebugger(final ThrowingConsumer<String, IOException> ostream) {

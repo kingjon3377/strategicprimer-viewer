@@ -14,7 +14,7 @@ import java.util.stream.Stream;
  * A stream of the points in a square surrounding a point, with points that are
  * closer appearing multiple times. The default radius is 2.
  */
-public class SurroundingPointIterable implements Iterable<Point> {
+public final class SurroundingPointIterable implements Iterable<Point> {
 	public SurroundingPointIterable(final Point startingPoint, final MapDimensions dimensions) {
 		this(startingPoint, dimensions, 2);
 	}

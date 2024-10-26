@@ -25,7 +25,7 @@ import java.util.Objects;
 /**
  * A tabular report generator for fortresses.
  */
-public class FortressTabularReportGenerator implements ITableGenerator<IFortress> {
+public final class FortressTabularReportGenerator implements ITableGenerator<IFortress> {
 	@Override
 	public boolean canHandle(final IFixture fixture) {
 		return fixture instanceof IFortress;

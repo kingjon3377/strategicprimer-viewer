@@ -11,7 +11,7 @@ import common.map.fixtures.towns.TownStatus;
  * active Fortification is a Fortress, and a non-active Fortress is a
  * Fortification?
  */
-public class Fortification extends AbstractTown {
+public final class Fortification extends AbstractTown {
 	/**
 	 * @param townStatus The status of the fortification
 	 * @param size       The size of the fortification

@@ -71,7 +71,7 @@ import lovelace.util.LovelaceLogger;
 /**
  * An app to copy selected contents from one map to another.
  */
-public class MapTradeCLI implements CLIDriver {
+public final class MapTradeCLI implements CLIDriver {
 	private static List<FixtureMatcher> initializeMatchers() {
 		final List<FixtureMatcher> retval = new ArrayList<>();
 		FixtureMatcher.complements(IUnit.class, u -> !u.owner().isIndependent(),

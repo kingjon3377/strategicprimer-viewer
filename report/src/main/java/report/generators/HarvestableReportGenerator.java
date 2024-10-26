@@ -41,7 +41,7 @@ import java.text.NumberFormat;
  * A report generator for harvestable fixtures (other than caves and
  * battlefields, which aren't really).
  */
-public class HarvestableReportGenerator extends AbstractReportGenerator<HarvestableFixture> {
+public final class HarvestableReportGenerator extends AbstractReportGenerator<HarvestableFixture> {
 	private static String populationCountString(final HasPopulation<?> item, final String singular) {
 		return populationCountString(item, singular, singular + "s");
 	}

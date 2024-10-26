@@ -17,7 +17,7 @@ import java.util.HashMap;
 import javax.sql.DataSource;
 import java.nio.file.Path;
 
-public class SPDatabaseReader implements IMapReader {
+public final class SPDatabaseReader implements IMapReader {
 	private final Map<Path, Transactional> connections = new HashMap<>();
 
 	private static DataSource getBaseConnection(final Path path) {

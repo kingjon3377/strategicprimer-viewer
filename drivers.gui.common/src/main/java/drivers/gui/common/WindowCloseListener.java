@@ -12,7 +12,7 @@ import lovelace.util.LovelaceLogger;
  * "Close" window-decoration button, since we now set windows to "do nothing on
  * close".
  */
-public class WindowCloseListener extends WindowAdapter {
+public final class WindowCloseListener extends WindowAdapter {
 	public WindowCloseListener(final ActionListener menuListener) {
 		this.menuListener = menuListener;
 	}

@@ -7,7 +7,7 @@ import legacy.map.IMutableLegacyMap;
 import legacy.map.Point;
 import legacy.map.TileFixture;
 
-public class PopulatorDriverModel extends SimpleDriverModel implements IPopulatorDriverModel {
+public final class PopulatorDriverModel extends SimpleDriverModel implements IPopulatorDriverModel {
 	public PopulatorDriverModel(final IMutableLegacyMap map) {
 		super(map);
 	}

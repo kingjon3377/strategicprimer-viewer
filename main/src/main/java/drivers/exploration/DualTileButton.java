@@ -19,7 +19,7 @@ import drivers.common.FixtureMatcher;
 /**
  * A button (visually) representing a tile in two maps.
  */
-/* package */ class DualTileButton extends JButton {
+/* package */ final class DualTileButton extends JButton {
 	@Serial
 	private static final long serialVersionUID = 1L;
 	private static final int MARGIN = 2;

@@ -71,7 +71,7 @@ import java.math.BigDecimal;
 /**
  * A command-line app to generate population details for villages.
  */
-/* package */ class TownGenerator {
+/* package */ final class TownGenerator {
 	public TownGenerator(final ICLIHelper cli) throws MissingTableException, IOException {
 		this.cli = cli;
 		runner = initProduction(); // TODO: pull its contents up?

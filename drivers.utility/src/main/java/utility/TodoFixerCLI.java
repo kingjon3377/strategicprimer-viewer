@@ -58,7 +58,7 @@ import org.jetbrains.annotations.Nullable;
  *
  * FIXME: Move mutation operations into a driver model
  */
-public class TodoFixerCLI implements CLIDriver {
+public final class TodoFixerCLI implements CLIDriver {
 	public TodoFixerCLI(final ICLIHelper cli, final UtilityDriverModel model) {
 		this.cli = cli;
 		this.model = model;

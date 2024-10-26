@@ -18,7 +18,7 @@ import legacy.map.IMutableLegacyMap;
 import legacy.map.Point;
 import legacy.map.TileFixture;
 
-public class MapTradeModel extends SimpleMultiMapModel {
+public final class MapTradeModel extends SimpleMultiMapModel {
 	public MapTradeModel(final IMutableLegacyMap map) {
 		super(map);
 	}

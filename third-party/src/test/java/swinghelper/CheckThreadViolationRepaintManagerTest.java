@@ -12,7 +12,7 @@ import javax.swing.SwingUtilities;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Objects;
 
-public class CheckThreadViolationRepaintManagerTest {
+public final class CheckThreadViolationRepaintManagerTest {
 
 	private static final int TEST_WIDTH = 300;
 	private static final int TEST_HEIGHT = 200;

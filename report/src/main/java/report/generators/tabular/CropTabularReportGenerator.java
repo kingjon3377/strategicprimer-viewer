@@ -31,7 +31,7 @@ import java.util.Objects;
  * A tabular report generator for crops---forests, groves, orchards, fields,
  * meadows, and shrubs.
  */
-public class CropTabularReportGenerator implements ITableGenerator</*Forest|Shrub|Meadow|Grove*/TileFixture> {
+public final class CropTabularReportGenerator implements ITableGenerator</*Forest|Shrub|Meadow|Grove*/TileFixture> {
 	@Override
 	public boolean canHandle(final IFixture fixture) {
 		return fixture instanceof Forest || fixture instanceof Shrub || fixture instanceof Meadow ||

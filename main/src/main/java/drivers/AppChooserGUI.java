@@ -31,7 +31,7 @@ import javax.swing.SwingUtilities;
 import lovelace.util.BorderedPanel;
 import lovelace.util.ListenedButton;
 
-/* package */ class AppChooserGUI implements UtilityGUI {
+/* package */ final class AppChooserGUI implements UtilityGUI {
 	public AppChooserGUI(final ICLIHelper cli, final SPOptions options) {
 		this.cli = cli;
 		this.options = options;

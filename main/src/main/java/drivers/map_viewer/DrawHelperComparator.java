@@ -51,7 +51,7 @@ import static drivers.map_viewer.TileViewSize.scaleZoom;
 /**
  * A driver to compare the performance of TileDrawHelpers.
  */
-public class DrawHelperComparator implements UtilityDriver {
+public final class DrawHelperComparator implements UtilityDriver {
 	/**
 	 * The first test: Basic drawing.
 	 */

@@ -5,7 +5,7 @@ import legacy.map.IFixture;
 /**
  * "There are the signs of a long-ago battle here"
  */
-public class Battlefield implements ExplorableFixture {
+public final class Battlefield implements ExplorableFixture {
 	public Battlefield(final int dc, final int id) {
 		this.dc = dc;
 		this.id = id;

@@ -16,7 +16,7 @@ import com.google.auto.service.AutoService;
  * test the map-reading logic and to correct deprecated syntax.
  */
 @AutoService(DriverFactory.class)
-public class EchoDriverFactory implements UtilityDriverFactory {
+public final class EchoDriverFactory implements UtilityDriverFactory {
 	public static final IDriverUsage USAGE = new DriverUsage(false, "echo", ParamCount.Two,
 			"Read, then write a map.", "Read and write a map, correcting deprecated syntax.",
 			true, false, "input.xml", "output.xml", "--current-turn=NN");

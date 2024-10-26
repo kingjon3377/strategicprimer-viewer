@@ -27,7 +27,7 @@ import java.util.Objects;
  * A tabular report generator for resources that can be mined---mines, mineral
  * veins, stone deposits, and Ground.
  */
-public class DiggableTabularReportGenerator implements ITableGenerator<MineralFixture> {
+public final class DiggableTabularReportGenerator implements ITableGenerator<MineralFixture> {
 	@Override
 	public boolean canHandle(final IFixture fixture) {
 		return fixture instanceof MineralFixture;

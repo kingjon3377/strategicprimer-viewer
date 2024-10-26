@@ -13,7 +13,7 @@ import legacy.map.Player;
  * players shouldn't know when another player completes an adventure on the far
  * side of the world.
  */
-public class AdventureFixture implements ExplorableFixture, HasMutableOwner, SubsettableFixture {
+public final class AdventureFixture implements ExplorableFixture, HasMutableOwner, SubsettableFixture {
 	public AdventureFixture(final Player owner, final String briefDescription, final String fullDescription,
 							final int id) {
 		this.owner = owner;

@@ -26,7 +26,7 @@ import legacy.map.fixtures.mobile.AnimalOrTracks;
 /**
  * A report generator for sightings of animals.
  */
-public class AnimalReportGenerator extends AbstractReportGenerator</*Animal|AnimalTracks*/AnimalOrTracks> {
+public final class AnimalReportGenerator extends AbstractReportGenerator</*Animal|AnimalTracks*/AnimalOrTracks> {
 	public AnimalReportGenerator(final MapDimensions dimensions, final int currentTurn) {
 		this(dimensions, currentTurn, null);
 	}

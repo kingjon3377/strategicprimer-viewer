@@ -33,7 +33,7 @@ import legacy.map.fixtures.terrain.Hill;
 /**
  * A popup menu to let the user change a tile's terrain type, or add a unit.
  */
-/* package */ class TerrainChangingMenu extends JPopupMenu
+/* package */ final class TerrainChangingMenu extends JPopupMenu
 		implements VersionChangeListener, SelectionChangeListener {
 	@Serial
 	private static final long serialVersionUID = 1L;

@@ -18,7 +18,7 @@ import legacy.map.fixtures.explorable.AdventureFixture;
 /**
  * A report generator for adventure hooks.
  */
-public class AdventureReportGenerator extends AbstractReportGenerator<AdventureFixture> {
+public final class AdventureReportGenerator extends AbstractReportGenerator<AdventureFixture> {
 
 	public AdventureReportGenerator(final Player currentPlayer, final MapDimensions dimensions) {
 		this(currentPlayer, dimensions, null);

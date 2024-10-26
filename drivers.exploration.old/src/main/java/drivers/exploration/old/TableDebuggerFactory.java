@@ -17,7 +17,7 @@ import com.google.auto.service.AutoService;
  * second "exploration results" framework I implemented.
  */
 @AutoService(DriverFactory.class)
-public class TableDebuggerFactory implements UtilityDriverFactory {
+public final class TableDebuggerFactory implements UtilityDriverFactory {
 	public static final IDriverUsage USAGE = new DriverUsage(false, "table-debug",
 			ParamCount.None, "Debug old-model encounter tables",
 			"See whether old-model encounter tables refer to a nonexistent table", false, false);

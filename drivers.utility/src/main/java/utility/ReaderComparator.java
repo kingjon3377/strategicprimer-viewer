@@ -30,7 +30,7 @@ import javax.xml.stream.XMLStreamException;
 /**
  * A driver for comparing map readers.
  */
-public class ReaderComparator implements UtilityDriver {
+public final class ReaderComparator implements UtilityDriver {
 	private static String readAll(final Path path) throws IOException {
 		return String.join(System.lineSeparator(), Files.readAllLines(path, StandardCharsets.UTF_8));
 	}

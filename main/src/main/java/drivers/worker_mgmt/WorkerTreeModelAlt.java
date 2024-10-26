@@ -43,7 +43,7 @@ import drivers.common.IWorkerModel;
  *
  * TODO: We want a way for the user to manage 'personal equipment'
  */
-public class WorkerTreeModelAlt extends DefaultTreeModel implements IWorkerTreeModel {
+public final class WorkerTreeModelAlt extends DefaultTreeModel implements IWorkerTreeModel {
 	@Serial
 	private static final long serialVersionUID = 1L;
 

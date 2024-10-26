@@ -444,7 +444,7 @@ public final class TestDBIO {
 		}
 	}
 
-	private static class TestDatabase implements Transactional {
+	private static final class TestDatabase implements Transactional {
 		private @Nullable SQLiteDataSource source;
 		private @Nullable PersistentConnection connection;
 

@@ -17,7 +17,7 @@ import legacy.map.MapDimensions;
  * ExplorationRunner, to produce the events the tests want in the order they
  * want, and guarantee that the runner never calls {@link #getAllEvents}.
  */
-class MockTable implements EncounterTable {
+final class MockTable implements EncounterTable {
 	private final Deque<String> queue = new LinkedList<>();
 
 	public MockTable(final String... values) {

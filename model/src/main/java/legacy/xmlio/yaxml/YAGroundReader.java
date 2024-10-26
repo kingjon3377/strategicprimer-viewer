@@ -15,7 +15,7 @@ import common.xmlio.Warning;
 /**
  * A reader for {@link Ground}.
  */
-/* package */ class YAGroundReader extends YAAbstractReader<Ground, Ground> {
+/* package */ final class YAGroundReader extends YAAbstractReader<Ground, Ground> {
 	public YAGroundReader(final Warning warning, final IDRegistrar idRegistrar) {
 		super(warning, idRegistrar);
 	}
