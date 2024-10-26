@@ -213,7 +213,7 @@ import worker.common.IFixtureEditHelper;
 			LovelaceLogger.trace("ExplorationPanel: Added button for %s", direction);
 
 			final ExplorationClickListener ecl = new ExplorationClickListener(driverModel, this,
-					this::movementDeductionTracker, direction, mainList);
+					this::movementDeductionTracker, direction, mainList, speedSource);
 			if (Direction.Nowhere == direction) {
 				dtb.setComponentPopupMenu(ecl.getExplorerActionsMenu());
 			}
@@ -361,16 +361,16 @@ import worker.common.IFixtureEditHelper;
 		};
 	}
 
-	// TODO: Try to make this static
-	private class ExplorationClickListener implements SelectionChangeSource, ActionListener {
+	private static class ExplorationClickListener implements SelectionChangeSource, ActionListener {
 		public ExplorationClickListener(final IExplorationModel driverModel, final SelectionChangeListener outer,
 										final MovementCostListener movementDeductionTracker, final Direction direction,
-										final FixtureList mainList) {
+										final FixtureList mainList, final Supplier<Speed> speedSource) {
 			this.direction = direction;
 			this.mainList = mainList;
 			this.driverModel = driverModel;
 			this.outer = outer;
 			this.movementDeductionTracker = movementDeductionTracker;
+			this.speedSource = speedSource;
 			explorerActionsMenu = new FunctionalPopupMenu(
 					createMenuItem("Swear any villages", KeyEvent.VK_V,
 							"Swear any independent villages on this tile to the player's service",
@@ -386,6 +386,7 @@ import worker.common.IFixtureEditHelper;
 		private final FixtureList mainList;
 		private final SelectionChangeListener outer;
 		private final MovementCostListener movementDeductionTracker;
+		private final Supplier<Speed> speedSource;
 
 		private final Collection<SelectionChangeListener> selectionListeners = new ArrayList<>();
 
