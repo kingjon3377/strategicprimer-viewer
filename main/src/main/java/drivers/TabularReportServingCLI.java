@@ -74,6 +74,7 @@ import org.takes.http.Exit;
 		return model;
 	}
 
+	@SuppressWarnings("ErrorNotRethrown")
 	private void serveReports(final int port) throws DriverFailedException {
 		final Map<Path, ILegacyMap> mapping;
 		if (model instanceof final IMultiMapModel mmm) {
