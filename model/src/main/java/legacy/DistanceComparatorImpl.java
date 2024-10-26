@@ -5,13 +5,14 @@ import legacy.map.Point;
 
 import org.jetbrains.annotations.Nullable;
 
+import java.io.Serializable;
 import java.util.Objects;
 
 /**
  * A class to compare {@link Point}s based on their distance to a specified
  * point (such as a player's HQ).
  */
-public final class DistanceComparatorImpl implements DistanceComparator {
+public final class DistanceComparatorImpl implements DistanceComparator, Serializable {
 	public DistanceComparatorImpl(final Point base, final @Nullable MapDimensions dimensions) {
 		this.base = base;
 		this.dimensions = dimensions;

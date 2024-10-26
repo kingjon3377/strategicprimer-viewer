@@ -1,5 +1,6 @@
 package drivers.common;
 
+import java.io.Serializable;
 import java.util.Comparator;
 
 /**
@@ -8,5 +9,5 @@ import java.util.Comparator;
  * @param <ComparisonType>
  */
 public interface IterableComparator<IterationType, ComparisonType>
-		extends Iterable<IterationType>, Comparator<ComparisonType> {
+        extends Iterable<IterationType>, Comparator<ComparisonType>, Serializable {
 }

@@ -2,6 +2,7 @@ package legacy;
 
 import legacy.map.Point;
 
+import java.io.Serializable;
 import java.util.Comparator;
 
 /**
@@ -9,7 +10,7 @@ import java.util.Comparator;
  *
  * @author Jonathan Lovelace
  */
-public interface DistanceComparator extends Comparator<Point> {
+public interface DistanceComparator extends Comparator<Point>, Serializable {
 	/**
 	 * Returns a String describing how far a point is from "HQ", which the
 	 * base point is presumed to be.
