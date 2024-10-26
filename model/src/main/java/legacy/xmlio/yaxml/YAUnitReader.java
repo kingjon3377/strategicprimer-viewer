@@ -126,7 +126,7 @@ import java.util.Map;
 		expectAttributes(element, "name", "owner", "image", "portrait", "kind", "id", "type");
 		requireNonEmptyParameter(element, "name", false);
 		requireNonEmptyParameter(element, "owner", false);
-		final Unit retval = new Unit(
+		final IMutableUnit retval = new Unit(
 				players.getPlayer(getIntegerParameter(element, "owner", -1)),
 				parseKind(element), getParameter(element, "name", ""),
 				getOrGenerateID(element));
