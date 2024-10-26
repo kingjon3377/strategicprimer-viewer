@@ -12,6 +12,7 @@ import drivers.common.SPOptions;
 
 import drivers.common.cli.ICLIHelper;
 
+import drivers.gui.common.IMenuBroker;
 import drivers.gui.common.about.AboutDialog;
 
 import drivers.IOHandler;
@@ -54,7 +55,7 @@ import lovelace.util.LovelaceLogger;
 		return options;
 	}
 
-	private void createWindow(final MenuBroker menuHandler) {
+	private void createWindow(final IMenuBroker menuHandler) {
 		// FIXME: Try to remove the use of 'this' here
 		final SPFrame frame = new ExplorationFrame(this, menuHandler);
 		frame.addWindowListener(new WindowCloseListener(menuHandler));
@@ -70,7 +71,7 @@ import lovelace.util.LovelaceLogger;
 
 	@Override
 	public void startDriver() {
-		final MenuBroker menuHandler = new MenuBroker();
+		final IMenuBroker menuHandler = new MenuBroker();
 		menuHandler.register(new IOHandler(this, cli),
 				"load", "save", "save as", "new", "load secondary", "save all",
 				"open in map viewer", "open secondary map in map viewer", "close", "quit");

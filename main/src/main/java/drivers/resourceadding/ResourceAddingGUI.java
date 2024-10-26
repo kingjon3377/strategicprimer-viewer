@@ -7,6 +7,7 @@ import javax.xml.stream.XMLStreamException;
 
 import drivers.common.ISPDriver;
 import drivers.exploration.PlayerChangeSource;
+import drivers.gui.common.IMenuBroker;
 import lovelace.util.Decimalize;
 import lovelace.util.LovelaceLogger;
 import org.jetbrains.annotations.Nullable;
@@ -327,7 +328,7 @@ import java.io.FileNotFoundException;
 		}
 	}
 
-	private void startDriverImpl(final PlayerChangeSource pcml, final MenuBroker menuHandler) {
+	private void startDriverImpl(final PlayerChangeSource pcml, final IMenuBroker menuHandler) {
 		final ResourceAddingFrame frame = new ResourceAddingFrame(menuHandler, this);
 		frame.addWindowListener(new WindowCloseListener(menuHandler));
 		try {
@@ -344,7 +345,7 @@ import java.io.FileNotFoundException;
 	@Override
 	public void startDriver() {
 		final PlayerChangeMenuListener pcml = new PlayerChangeMenuListener(model);
-		final MenuBroker menuHandler = new MenuBroker();
+		final IMenuBroker menuHandler = new MenuBroker();
 		menuHandler.register(new IOHandler(this, cli),
 				"load", "save", "save as", "new", "load secondary", "save all",
 				"open in map viewer", "open secondary map in map viewer", "close", "quit");

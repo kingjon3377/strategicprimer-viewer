@@ -2,6 +2,7 @@ package drivers.advancement;
 
 import drivers.common.ISPDriver;
 import drivers.common.cli.ICLIHelper;
+import drivers.gui.common.IMenuBroker;
 import org.jetbrains.annotations.Nullable;
 
 import java.awt.Dimension;
@@ -39,7 +40,6 @@ import drivers.common.IWorkerModel;
 import legacy.xmlio.MapIOHelper;
 
 import drivers.gui.common.SPFrame;
-import drivers.gui.common.MenuBroker;
 
 /**
  * A GUI to let a user manage workers.
@@ -58,8 +58,8 @@ import drivers.gui.common.MenuBroker;
 	private final FormattedLabel playerLabel;
 	private final IWorkerTreeModel treeModel;
 
-	public AdvancementFrame(final IWorkerModel model, final MenuBroker menuHandler, final ISPDriver driver,
-							final ICLIHelper cli) {
+	public AdvancementFrame(final IWorkerModel model, final IMenuBroker menuHandler, final ISPDriver driver,
+	                        final ICLIHelper cli) {
 		super("Worker Advancement", driver, new Dimension(640, 480), true,
 				(file) -> model.addSubordinateMap(MapIOHelper.readMap(file)));
 		final ILegacyMap map = model.getMap();

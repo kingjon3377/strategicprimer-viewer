@@ -1,6 +1,7 @@
 package drivers.map_viewer;
 
 import drivers.common.DriverFailedException;
+import drivers.gui.common.IMenuBroker;
 import lovelace.util.LovelaceLogger;
 import org.jetbrains.annotations.Nullable;
 
@@ -129,7 +130,7 @@ public class ViewerGUI implements ViewerDriver {
 		return new ViewerGUI(new ViewerModel(model), options.copy(), cli);
 	}
 
-	private void createWindow(final MenuBroker menuHandler) {
+	private void createWindow(final IMenuBroker menuHandler) {
 		final ViewerFrame frame = new ViewerFrame(model, menuHandler, this, this::factory);
 		final String backgroundFile = options.getArgument("--background");
 		if (!backgroundFile.isEmpty() && !"false".equals(backgroundFile)) {
@@ -197,7 +198,7 @@ public class ViewerGUI implements ViewerDriver {
 	@Override
 	public void startDriver() {
 		LovelaceLogger.trace("In ViewerGUI.startDriver()");
-		final MenuBroker menuHandler = new MenuBroker();
+		final IMenuBroker menuHandler = new MenuBroker();
 		menuHandler.register(new IOHandler(this, cli), "load", "save",
 				"save as", "new", "load secondary", "save all", "open in map viewer",
 				"open secondary map in map viewer", "close", "quit");

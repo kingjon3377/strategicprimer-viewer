@@ -15,7 +15,7 @@ import lovelace.util.LovelaceLogger;
  * that at most one listener will be notified of any given action-command;
  * subsequent registrations override previous ones.
  */
-public class MenuBroker implements ActionListener {
+public class MenuBroker implements IMenuBroker {
 	/**
 	 * The mapping from "actions" to listeners to handle them.
 	 */
@@ -24,6 +24,7 @@ public class MenuBroker implements ActionListener {
 	/**
 	 * Rgister a listener for a series of action commands.
 	 */
+	@Override
 	public void register(final ActionListener listener, final String... actions) {
 		for (final String action : actions) {
 			mapping.put(action.toLowerCase(), listener);
@@ -33,6 +34,7 @@ public class MenuBroker implements ActionListener {
 	/**
 	 * Register a listener for an action command that shows the given window.
 	 */
+	@Override
 	public void registerWindowShower(final Window window, final String... actions) {
 		register((event) -> window.setVisible(true), actions);
 	}
@@ -40,6 +42,7 @@ public class MenuBroker implements ActionListener {
 	/**
 	 * Register a listener for an action command that shows the given window.
 	 */
+	@Override
 	public void registerWindowShower(final Supplier<Window> window, final String... actions) {
 		register((event) -> window.get().setVisible(true), actions);
 	}

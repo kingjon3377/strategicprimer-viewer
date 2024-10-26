@@ -13,6 +13,7 @@ import drivers.common.WorkerGUI;
 
 import drivers.common.cli.ICLIHelper;
 
+import drivers.gui.common.IMenuBroker;
 import lovelace.util.LovelaceLogger;
 import worker.common.WorkerModel;
 
@@ -64,7 +65,7 @@ public class AdvancementGUI implements MultiMapGUIDriver, WorkerGUI {
 		frame.playerChanged(model.getCurrentPlayer(), model.getCurrentPlayer());
 	}
 
-	private void createWindow(final MenuBroker menuHandler, final PlayerChangeMenuListener pcml) {
+	private void createWindow(final IMenuBroker menuHandler, final PlayerChangeMenuListener pcml) {
 		final AdvancementFrame frame = new AdvancementFrame(model, menuHandler, this, cli);
 		frame.addWindowListener(new WindowCloseListener(menuHandler));
 		pcml.addPlayerChangeListener(frame);
@@ -84,7 +85,7 @@ public class AdvancementGUI implements MultiMapGUIDriver, WorkerGUI {
 
 	@Override
 	public void startDriver() {
-		final MenuBroker menuHandler = new MenuBroker();
+		final IMenuBroker menuHandler = new MenuBroker();
 		menuHandler.register(new IOHandler(this, cli), "load", "save", "save as", "new",
 				"load secondary", "save all", "open in map viewer",
 				"open secondary map in map viewer", "close", "quit");

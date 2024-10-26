@@ -7,6 +7,7 @@ import java.nio.file.Path;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
+import drivers.gui.common.IMenuBroker;
 import drivers.gui.common.about.AboutDialog;
 import drivers.PlayerChangeMenuListener;
 import drivers.IOHandler;
@@ -52,7 +53,7 @@ public class WorkerMgmtGUI implements MultiMapGUIDriver, WorkerGUI {
 		return model;
 	}
 
-	private void createWindow(final MenuBroker menuHandler, final PlayerChangeMenuListener pcml) {
+	private void createWindow(final IMenuBroker menuHandler, final PlayerChangeMenuListener pcml) {
 		LovelaceLogger.trace("Inside GUI creation lambda");
 		final WorkerMgmtFrame frame = new WorkerMgmtFrame(options, model, menuHandler, this);
 		LovelaceLogger.trace("Created worker mgmt frame");
@@ -80,7 +81,7 @@ public class WorkerMgmtGUI implements MultiMapGUIDriver, WorkerGUI {
 
 	@Override
 	public void startDriver() throws DriverFailedException {
-		final MenuBroker menuHandler = new MenuBroker();
+		final IMenuBroker menuHandler = new MenuBroker();
 		menuHandler.register(new IOHandler(this, cli), "load",
 				"save", "save as", "new", "load secondary", "save all", "open in map viewer",
 				"open secondary map in map viewer", "close", "quit");

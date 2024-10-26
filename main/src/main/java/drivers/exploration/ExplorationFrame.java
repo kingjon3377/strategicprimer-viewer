@@ -25,6 +25,7 @@ import static lovelace.util.FunctionalSplitPane.horizontalSplit;
 
 import javax.xml.stream.XMLStreamException;
 
+import drivers.gui.common.IMenuBroker;
 import lovelace.util.BorderedPanel;
 import lovelace.util.ListenedButton;
 import goldberg.ImprovedComboBox;
@@ -38,7 +39,6 @@ import legacy.map.fixtures.mobile.IUnit;
 
 import drivers.gui.common.SPFrame;
 import drivers.gui.common.SPMenu;
-import drivers.gui.common.MenuBroker;
 
 import exploration.common.Speed;
 
@@ -57,7 +57,7 @@ import org.eclipse.jdt.annotation.Nullable;
 	private final UnitListModel unitListModel;
 	private final JList<IUnit> unitList;
 
-	public ExplorationFrame(final IExplorationGUI driver, final MenuBroker menuHandler) {
+	public ExplorationFrame(final IExplorationGUI driver, final IMenuBroker menuHandler) {
 		super("Exploration", driver, new Dimension(768, 48), true);
 		this.driver = driver;
 
