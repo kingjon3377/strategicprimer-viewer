@@ -369,7 +369,7 @@ import java.math.BigDecimal;
 			}
 			final IResourcePile pile = new ResourcePileImpl(idf.createID(), kind, contents,
 					new LegacyQuantity(quantity, units));
-			retval.getYearlyProduction().add(pile);
+			retval.addYearlyProduction(pile);
 		}
 
 		cli.println("Now add resources consumed each year. (Empty to end.)");
@@ -391,7 +391,7 @@ import java.math.BigDecimal;
 			if (Objects.isNull(units)) { // TODO: What about empty units?
 				break;
 			}
-			retval.getYearlyConsumption().add(new ResourcePileImpl(idf.createID(), kind,
+			retval.addYearlyConsumption(new ResourcePileImpl(idf.createID(), kind,
 					contents, new LegacyQuantity(quantity, units)));
 		}
 
@@ -534,7 +534,7 @@ import java.math.BigDecimal;
 				.limit(resourceCount).toList();
 		for (final HarvestableFixture field : workedFields) {
 			retval.addWorkedField(field.getId());
-			retval.getYearlyProduction().add(new ResourcePileImpl(idf.createID(),
+			retval.addYearlyProduction(new ResourcePileImpl(idf.createID(),
 					getHarvestableKind(field), getHarvestedProduct(field),
 					new LegacyQuantity(1, "unit")));
 		}
@@ -545,7 +545,7 @@ import java.math.BigDecimal;
 			final String tableName = skill + "_production";
 			if (runner.hasTable(tableName)) {
 				try {
-					retval.getYearlyProduction().add(new ResourcePileImpl(
+					retval.addYearlyProduction(new ResourcePileImpl(
 							idf.createID(), "unknown",
 							runner.consultTable(tableName, location,
 									map.getBaseTerrain(location), map.isMountainous(location),
@@ -554,12 +554,12 @@ import java.math.BigDecimal;
 									(level == 1) ? "unit" : "units")));
 				} catch (final MissingTableException except) {
 					LovelaceLogger.warning(except, "Missing table");
-					retval.getYearlyProduction().add(new ResourcePileImpl(
+					retval.addYearlyProduction(new ResourcePileImpl(
 							idf.createID(), "unknown", "product of " + skill,
 							new LegacyQuantity(1, "unit")));
 				}
 			} else {
-				retval.getYearlyProduction().add(new ResourcePileImpl(idf.createID(),
+				retval.addYearlyProduction(new ResourcePileImpl(idf.createID(),
 						"unknown", "product of " + skill, new LegacyQuantity(1, "unit")));
 			}
 		}
@@ -570,11 +570,11 @@ import java.math.BigDecimal;
 		final List<Triplet<LegacyQuantity, String, String>> consumptionTable =
 				consumption.get(consumptionTableName);
 		for (final Triplet<LegacyQuantity, String, String> triplet : consumptionTable) {
-			retval.getYearlyConsumption().add(new ResourcePileImpl(idf.createID(),
+			retval.addYearlyConsumption(new ResourcePileImpl(idf.createID(),
 					triplet.getValue1(), triplet.getValue2(), triplet.getValue0()));
 		}
 
-		retval.getYearlyConsumption().add(new ResourcePileImpl(idf.createID(), "food", "various",
+		retval.addYearlyConsumption(new ResourcePileImpl(idf.createID(), "food", "various",
 				new LegacyQuantity(4 * 14 * population, "pounds")));
 		return retval;
 	}

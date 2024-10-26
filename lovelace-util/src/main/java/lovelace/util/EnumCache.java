@@ -18,6 +18,7 @@ public class EnumCache<T extends Enum<T>> implements Supplier<List<T>> {
 		this.classType = classType;
 	}
 
+	@SuppressWarnings("AssignmentOrReturnOfFieldWithMutableType") // List.of() is immutable
 	@Override
 	public List<T> get() {
 		if (Objects.isNull(cache)) {

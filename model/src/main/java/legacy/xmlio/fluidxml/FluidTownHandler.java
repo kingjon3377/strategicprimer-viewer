@@ -219,9 +219,8 @@ import java.util.function.Consumer;
 		@Nullable String current = null;
 		final Deque<StartElement> stack = new LinkedList<>();
 		stack.addFirst(element);
-		// TODO: Should really be doing the getYearlyProduction() call at call-time, not here ...
-		final Consumer<IMutableResourcePile> addProduction = retval.getYearlyProduction()::add;
-		final Consumer<IMutableResourcePile> addConsumption = retval.getYearlyConsumption()::add;
+		final Consumer<IMutableResourcePile> addProduction = retval::addYearlyProduction;
+		final Consumer<IMutableResourcePile> addConsumption = retval::addYearlyConsumption;
 		for (final XMLEvent event : stream) {
 			// switch would require break-to-label
 			//noinspection IfCanBeSwitch

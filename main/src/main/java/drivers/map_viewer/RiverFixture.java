@@ -26,7 +26,7 @@ import lovelace.util.LovelaceLogger;
 	private final Set<River> rivers;
 
 	public Collection<River> getRivers() {
-		return rivers;
+		return Collections.unmodifiableSet(rivers);
 	}
 
 	public RiverFixture(final River... rivers) {

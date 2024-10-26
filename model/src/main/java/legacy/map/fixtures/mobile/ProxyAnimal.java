@@ -2,6 +2,7 @@ package legacy.map.fixtures.mobile;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.Optional;
@@ -88,7 +89,7 @@ import org.jetbrains.annotations.NotNull;
 
 	@Override
 	public Collection<Animal> getProxied() {
-		return animals;
+		return Collections.unmodifiableList(animals);
 	}
 
 	@Override

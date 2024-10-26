@@ -130,8 +130,11 @@ public final class CommunityStats implements Subsettable<@Nullable CommunityStat
 	 * The set of resources produced each year.
 	 */
 	public Set<IResourcePile> getYearlyProduction() {
-//		return Collections.unmodifiableSet(yearlyProduction);
-		return yearlyProduction;
+		return Collections.unmodifiableSet(yearlyProduction);
+	}
+
+	public void addYearlyProduction(final IResourcePile resource) {
+		yearlyProduction.add(resource);
 	}
 
 	/**
@@ -147,8 +150,11 @@ public final class CommunityStats implements Subsettable<@Nullable CommunityStat
 	 * like resources are to be expected.)
 	 */
 	public Set<IResourcePile> getYearlyConsumption() {
-//		return Collections.unmodifiableSet(yearlyConsumption);
-		return yearlyConsumption;
+		return Collections.unmodifiableSet(yearlyConsumption);
+	}
+
+	public void addYearlyConsumption(final IResourcePile resource) {
+		yearlyConsumption.add(resource);
 	}
 
 	@Override

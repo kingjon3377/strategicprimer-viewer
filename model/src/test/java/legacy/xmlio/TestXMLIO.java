@@ -728,9 +728,9 @@ public final class TestXMLIO {
 		pop.addWorkedField(workedField);
 		// TODO: Here and below, randomize strings in production, consumption, and skills
 		// TODO: We'd like to randomize number of skills, number of worked fields, etc.
-		pop.getYearlyProduction().add(new ResourcePileImpl(producedId, "prodKind", "production",
+		pop.addYearlyProduction(new ResourcePileImpl(producedId, "prodKind", "production",
 				new LegacyQuantity(producedQty, "single units")));
-		pop.getYearlyConsumption().add(new ResourcePileImpl(consumedId, "consKind", "consumption",
+		pop.addYearlyConsumption(new ResourcePileImpl(consumedId, "consKind", "consumption",
 				new LegacyQuantity(consumedQty, "double units")));
 		assertSerialization("Village stats can have both production and consumption",
 				village);
@@ -815,7 +815,7 @@ public final class TestXMLIO {
 		final CommunityStats population = new CommunityStats(populationSize);
 		population.addWorkedField(workedField);
 		population.setSkillLevel("citySkill", skillLevel);
-		population.getYearlyConsumption().add(new ResourcePileImpl(producedId, "cityResource",
+		population.addYearlyConsumption(new ResourcePileImpl(producedId, "cityResource",
 				"citySpecific", new LegacyQuantity(producedQty, "cityUnit")));
 		city.setPopulation(population);
 		assertSerialization("Community-stats can be serialized", population);
@@ -882,7 +882,7 @@ public final class TestXMLIO {
 		population.addWorkedField(workedField);
 		population.addWorkedField((workedField * 13) % 31);
 		population.setSkillLevel("fortSkill", skillLevel);
-		population.getYearlyProduction().add(new ResourcePileImpl(producedId, "fortResource",
+		population.addYearlyProduction(new ResourcePileImpl(producedId, "fortResource",
 				"fortSpecific", new LegacyQuantity(1, "fortUnit")));
 		fort.setPopulation(population);
 		assertSerialization("Fortification can have community-stats", fort);
@@ -927,9 +927,9 @@ public final class TestXMLIO {
 		population.addWorkedField(23);
 		population.setSkillLevel("townSkill", 3);
 		population.setSkillLevel("secondSkill", 5);
-		population.getYearlyProduction().add(new ResourcePileImpl(5, "townResource", "townSpecific",
+		population.addYearlyProduction(new ResourcePileImpl(5, "townResource", "townSpecific",
 				new LegacyQuantity(1, "TownUnit")));
-		population.getYearlyProduction().add(new ResourcePileImpl(8, "townResource", "secondSpecific",
+		population.addYearlyProduction(new ResourcePileImpl(8, "townResource", "secondSpecific",
 				new LegacyQuantity(2, "townUnit")));
 		town.setPopulation(population);
 		assertSerialization("Fortification can have community-stats", town);

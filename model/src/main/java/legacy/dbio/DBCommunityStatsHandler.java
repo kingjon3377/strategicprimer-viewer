@@ -172,7 +172,7 @@ public final class DBCommunityStatsHandler extends AbstractDatabaseWriter<Commun
 			if (!Objects.isNull(created)) {
 				pile.setCreated(created);
 			}
-			population.getYearlyProduction().add(pile);
+			population.addYearlyProduction(pile);
 		};
 	}
 
@@ -201,7 +201,7 @@ public final class DBCommunityStatsHandler extends AbstractDatabaseWriter<Commun
 			if (!Objects.isNull(created)) {
 				pile.setCreated(created);
 			}
-			population.getYearlyConsumption().add(pile);
+			population.addYearlyConsumption(pile);
 		};
 	}
 

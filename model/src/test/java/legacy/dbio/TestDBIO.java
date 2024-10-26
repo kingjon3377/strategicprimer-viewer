@@ -623,13 +623,13 @@ public final class TestDBIO {
 		stats.addWorkedField(13);
 		stats.setSkillLevel("skillOne", 2);
 		stats.setSkillLevel("skillTwo", 5);
-		stats.getYearlyProduction().add(new ResourcePileImpl(1, "first", "first detail",
+		stats.addYearlyProduction(new ResourcePileImpl(1, "first", "first detail",
 				new LegacyQuantity(5, "pounds")));
-		stats.getYearlyProduction().add(new ResourcePileImpl(2, "second", "second detail",
+		stats.addYearlyProduction(new ResourcePileImpl(2, "second", "second detail",
 				new LegacyQuantity(BigDecimal.ONE.divide(new BigDecimal(2)), "quarts")));
-		stats.getYearlyConsumption().add(new ResourcePileImpl(3, "third", "third detail",
+		stats.addYearlyConsumption(new ResourcePileImpl(3, "third", "third detail",
 				new LegacyQuantity(8, "pecks")));
-		stats.getYearlyConsumption().add(new ResourcePileImpl(4, "fourth", "fourth detail",
+		stats.addYearlyConsumption(new ResourcePileImpl(4, "fourth", "fourth detail",
 				new LegacyQuantity(new BigDecimal(5).divide(new BigDecimal(4)), "square feet")));
 		town.setPopulation(stats);
 		assertFixtureSerialization(town);
@@ -647,13 +647,13 @@ public final class TestDBIO {
 		stats.addWorkedField(13);
 		stats.setSkillLevel("skillOne", 2);
 		stats.setSkillLevel("skillTwo", 5);
-		stats.getYearlyProduction().add(new ResourcePileImpl(1, "first", "first detail",
+		stats.addYearlyProduction(new ResourcePileImpl(1, "first", "first detail",
 				new LegacyQuantity(5, "pounds")));
-		stats.getYearlyProduction().add(new ResourcePileImpl(2, "second", "second detail",
+		stats.addYearlyProduction(new ResourcePileImpl(2, "second", "second detail",
 				new LegacyQuantity(BigDecimal.ONE.divide(new BigDecimal(2)), "quarts")));
-		stats.getYearlyConsumption().add(new ResourcePileImpl(3, "third", "third detail",
+		stats.addYearlyConsumption(new ResourcePileImpl(3, "third", "third detail",
 				new LegacyQuantity(8, "pecks")));
-		stats.getYearlyConsumption().add(new ResourcePileImpl(4, "fourth", "fourth detail",
+		stats.addYearlyConsumption(new ResourcePileImpl(4, "fourth", "fourth detail",
 				new LegacyQuantity(new BigDecimal(5).divide(new BigDecimal(4)), "square feet")));
 		town.setPopulation(stats);
 		assertFixtureSerialization(town);
@@ -671,13 +671,13 @@ public final class TestDBIO {
 		stats.addWorkedField(13);
 		stats.setSkillLevel("skillOne", 2);
 		stats.setSkillLevel("skillTwo", 5);
-		stats.getYearlyProduction().add(new ResourcePileImpl(1, "first", "first detail",
+		stats.addYearlyProduction(new ResourcePileImpl(1, "first", "first detail",
 				new LegacyQuantity(5, "pounds")));
-		stats.getYearlyProduction().add(new ResourcePileImpl(2, "second", "second detail",
+		stats.addYearlyProduction(new ResourcePileImpl(2, "second", "second detail",
 				new LegacyQuantity(BigDecimal.ONE.divide(new BigDecimal(2)), "quarts")));
-		stats.getYearlyConsumption().add(new ResourcePileImpl(3, "third", "third detail",
+		stats.addYearlyConsumption(new ResourcePileImpl(3, "third", "third detail",
 				new LegacyQuantity(8, "pecks")));
-		stats.getYearlyConsumption().add(new ResourcePileImpl(4, "fourth", "fourth detail",
+		stats.addYearlyConsumption(new ResourcePileImpl(4, "fourth", "fourth detail",
 				new LegacyQuantity(new BigDecimal(5).divide(new BigDecimal(4)), "square feet")));
 		town.setPopulation(stats);
 		assertFixtureSerialization(town);
