@@ -14,11 +14,8 @@ import drivers.common.DriverUsage;
 import drivers.common.GUIDriver;
 import drivers.common.DriverFactory;
 import drivers.common.GUIDriverFactory;
-import drivers.common.SimpleDriverModel;
 
 import drivers.common.cli.ICLIHelper;
-
-import legacy.map.IMutableLegacyMap;
 
 import drivers.gui.common.SPFileChooser;
 

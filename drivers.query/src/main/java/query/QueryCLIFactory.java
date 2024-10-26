@@ -1,7 +1,5 @@
 package query;
 
-import legacy.map.IMutableLegacyMap;
-
 import drivers.common.SPOptions;
 import drivers.common.ParamCount;
 import drivers.common.IDriverUsage;
@@ -10,7 +8,6 @@ import drivers.common.IDriverModel;
 import drivers.common.ModelDriverFactory;
 import drivers.common.DriverFactory;
 import drivers.common.ModelDriver;
-import drivers.common.SimpleDriverModel;
 
 import drivers.common.cli.ICLIHelper;
 
