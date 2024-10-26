@@ -1,5 +1,6 @@
 package drivers.turnrunning;
 
+import drivers.advancement.AdvancementCLIHelperImpl;
 import legacy.idreg.IDFactoryFiller;
 import legacy.idreg.IDRegistrar;
 import legacy.map.IFixture;
@@ -43,7 +44,7 @@ import org.jetbrains.annotations.Nullable;
 		this.cli = cli;
 		this.model = model;
 		idf = IDFactoryFiller.createIDFactory(model.streamAllMaps().toArray(ILegacyMap[]::new));
-		advancementCLI = new AdvancementCLIHelper(model, cli);
+		advancementCLI = new AdvancementCLIHelperImpl(model, cli);
 		appletChooser = new AppletChooser<>(cli,
 				StreamSupport.stream(ServiceLoader.load(TurnAppletFactory.class).spliterator(), false)
 						.map(factory -> factory.create(model, cli, idf)).toArray(TurnApplet[]::new));

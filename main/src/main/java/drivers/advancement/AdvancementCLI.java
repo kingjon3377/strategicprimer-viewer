@@ -25,7 +25,7 @@ public class AdvancementCLI implements CLIDriver {
 		this.cli = cli;
 		this.options = options;
 		this.model = model;
-		helper = new AdvancementCLIHelper(model, cli);
+		helper = new AdvancementCLIHelperImpl(model, cli);
 	}
 
 	private final ICLIHelper cli;
