@@ -169,7 +169,7 @@ public final class ImageLoader {
 		/**
 		 * A map from map versions to maps from tile-types to colors.
 		 */
-		private static final Map<Integer, Map<TileType, Color>> COLORS = Map.of(2, verTwoColors());;
+		private static final Map<Integer, Map<TileType, Color>> COLORS = Map.of(2, verTwoColors());
 
 		@SuppressWarnings("MagicNumber")
 		private static Map<TileType, Color> verTwoColors() {
