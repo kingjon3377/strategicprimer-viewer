@@ -9,7 +9,7 @@ import org.jetbrains.annotations.Nullable;
 /**
  * A view of locations on the map in order, starting at a given point.
  */
-public class PointIterable implements Iterable<Point> {
+public final class PointIterable implements Iterable<Point> {
 
 	/**
 	 * The dimensions of the map we're a view of.
