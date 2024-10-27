@@ -29,11 +29,6 @@ public abstract class AbstractDatabaseWriter<Item, Context> implements DatabaseW
 	}
 
 	/**
-	 * SQL to run to initialize the needed tables.
-	 */
-	public abstract List<Query> getInitializers();
-
-	/**
 	 * Database connections that we've been initialized for.
 	 * TODO: Is this really best practice in the jdbc-fn library?
 	 */

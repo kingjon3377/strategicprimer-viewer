@@ -1,11 +1,17 @@
 package impl.dbio;
 
+import io.jenetics.facilejdbc.Query;
 import io.jenetics.facilejdbc.Transactional;
 
 import java.sql.SQLException;
+import java.util.List;
 
 // TODO: Can we get rid of the Context parameter? Is it ever not a subtype of IFixture?
 public interface DatabaseWriter<Item, Context> {
+	/**
+	 * SQL to run to initialize the needed tables.
+	 */
+	List<Query> getInitializers();
 	/**
 	 * Set up the tables that this writer uses on the given connection.
 	 * Should be a no-op if called with the same Sql again.
