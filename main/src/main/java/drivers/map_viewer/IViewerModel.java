@@ -122,4 +122,11 @@ public interface IViewerModel extends SelectionChangeSource, GraphicalParamsSour
 	 * Set the map's terrain type at the given point.
 	 */
 	void setBaseTerrain(Point location, @Nullable TileType terrain);
+	/**
+	 * Clear the selection.
+	 */
+	default void clearSelection() {
+		setSelection(Point.INVALID_POINT);
+		setInteraction(null);
+	}
 }

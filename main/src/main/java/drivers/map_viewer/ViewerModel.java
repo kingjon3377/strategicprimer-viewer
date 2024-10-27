@@ -343,14 +343,6 @@ public final class ViewerModel extends SimpleDriverModel implements IViewerModel
 		scs.fireInteraction();
 	}
 
-	/**
-	 * Clear the selection.
-	 */
-	public void clearSelection() {
-		setSelection(Point.INVALID_POINT);
-		setInteraction(null);
-	}
-
 	@Override
 	public void addSelectionChangeListener(final SelectionChangeListener listener) {
 		scs.addSelectionChangeListener(listener);
