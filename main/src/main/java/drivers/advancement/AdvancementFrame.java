@@ -55,6 +55,7 @@ import drivers.gui.common.SPFrame;
 	 * As the user resizes the frame horizontally, give most of the weight to the right panel(?).
 	 */
 	private static final double RESIZE_WEIGHT = 0.3;
+	@SuppressWarnings("UseOfConcreteClass") // needs to be JLabel & [extracted interface]
 	private final FormattedLabel playerLabel;
 	private final IWorkerTreeModel treeModel;
 
@@ -67,7 +68,8 @@ import drivers.gui.common.SPFrame;
 		final IDRegistrar idf = IDFactoryFiller.createIDFactory(map);
 
 		// TODO: replace lambda with (model::getMap).andThen(IMapNG::getCurrentTurn)?
-		final WorkerTree tree = new WorkerTree(treeModel, model.getPlayers(),
+		// UseOfConcreteClass: Needs to be JTree & UnitMemberSelectionSource & UnitSelectionSource & ...
+		@SuppressWarnings("UseOfConcreteClass") final WorkerTree tree = new WorkerTree(treeModel, model.getPlayers(),
 				() -> model.getMap().getCurrentTurn(), false, idf);
 
 		final WorkerCreationListener newWorkerListener = new WorkerCreationListener(treeModel, idf);

@@ -17,6 +17,7 @@ public class DriverFailedException extends Exception {
 		this(cause, "The app could not start because of an exception:");
 	}
 
+	@SuppressWarnings("UseOfConcreteClass")
 	public static DriverFailedException illegalState(final String message) {
 		return new DriverFailedException(new IllegalStateException(message), message);
 	}
