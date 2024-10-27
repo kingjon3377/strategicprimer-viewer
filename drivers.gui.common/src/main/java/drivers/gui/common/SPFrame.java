@@ -159,6 +159,7 @@ public class SPFrame extends JFrame implements ISPWindow {
 	/**
 	 * Handle a dropped file.
 	 */
+	@Override
 	@SuppressWarnings("DesignForExtension")
 	public void acceptDroppedFile(final Path file)
 			throws SPFormatException, IOException, XMLStreamException {
