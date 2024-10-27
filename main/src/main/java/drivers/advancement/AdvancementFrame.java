@@ -72,7 +72,7 @@ import drivers.gui.common.SPFrame;
 		@SuppressWarnings("UseOfConcreteClass") final WorkerTree tree = new WorkerTree(treeModel, model.getPlayers(),
 				() -> model.getMap().getCurrentTurn(), false, idf);
 
-		final WorkerCreationListener newWorkerListener = new WorkerCreationListener(treeModel, idf);
+		final IWorkerCreationListener newWorkerListener = new WorkerCreationListener(treeModel, idf);
 
 		tree.addUnitSelectionListener(newWorkerListener);
 

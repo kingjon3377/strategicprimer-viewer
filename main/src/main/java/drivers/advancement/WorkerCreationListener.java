@@ -53,7 +53,7 @@ import java.util.function.Consumer;
  * A listener to keep track of the currently selected unit and listen for
  * new-worker notifications, then pass this information on to the tree model.
  */
-/* package */ final class WorkerCreationListener implements ActionListener, UnitSelectionListener {
+/* package */ final class WorkerCreationListener implements IWorkerCreationListener {
 	public WorkerCreationListener(final IWorkerTreeModel model, final IDRegistrar factory) {
 		this.model = model;
 		workerCreationFrame = new WorkerCreationFrame(factory, this::addNewWorker);
@@ -67,6 +67,7 @@ import java.util.function.Consumer;
 	private @Nullable IUnit selectedUnit = null;
 
 	@SuppressWarnings("TypeMayBeWeakened") // Don't change public API
+	@Override
 	public void addNewWorker(final IWorker worker) {
 		if (Objects.isNull(selectedUnit)) {
 			LovelaceLogger.warning("New worker created when no unit selected");
