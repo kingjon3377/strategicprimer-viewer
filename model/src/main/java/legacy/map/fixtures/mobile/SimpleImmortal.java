@@ -64,6 +64,7 @@ public abstract /* sealed */ class SimpleImmortal
 	 * A short description of the fixture. Expected to be overridden by
 	 * subclasses which take "an" instead of "a".
 	 */
+	@SuppressWarnings("DesignForExtension")
 	@Override
 	public String getShortDescription() {
 		return "a " + kind;

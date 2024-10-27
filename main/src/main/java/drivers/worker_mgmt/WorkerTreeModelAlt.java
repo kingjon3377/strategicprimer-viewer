@@ -123,6 +123,7 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements IWorke
 		 * we log this (at the info level) but otherwise ignore the
 		 * request instead of adding it.
 		 */
+		@SuppressWarnings("DesignForExtension")
 		@Override
 		public void add(final MutableTreeNode child) {
 			if (child instanceof WorkerTreeNode) {

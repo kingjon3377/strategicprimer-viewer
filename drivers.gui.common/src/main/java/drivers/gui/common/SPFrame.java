@@ -42,6 +42,7 @@ public class SPFrame extends JFrame implements ISPWindow {
 	private final IDroppedFileHandler droppedFileHandler;
 	private final String windowName;
 
+	@SuppressWarnings("DesignForExtension") // TODO: Why doesn't one subclass pass it to constructor?
 	@Override
 	public String getWindowName() {
 		return windowName;
@@ -120,6 +121,7 @@ public class SPFrame extends JFrame implements ISPWindow {
 		setTransferHandler(new FileDropHandler(this));
 	}
 
+	@SuppressWarnings("DesignForExtension") // TODO: Why doesn't one subclass pass it to constructor?
 	public boolean supportsDroppedFiles() {
 		return supportsDroppedFiles;
 	}
@@ -157,6 +159,7 @@ public class SPFrame extends JFrame implements ISPWindow {
 	/**
 	 * Handle a dropped file.
 	 */
+	@SuppressWarnings("DesignForExtension")
 	public void acceptDroppedFile(final Path file)
 			throws SPFormatException, IOException, XMLStreamException {
 		// TODO: Wrap XMLStreamException in SPFormatException (subclass) in MapIOHelper or elsewhere, to reduce

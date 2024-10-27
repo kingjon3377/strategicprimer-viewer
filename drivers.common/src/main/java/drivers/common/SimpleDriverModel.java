@@ -18,6 +18,7 @@ import lovelace.util.LovelaceLogger;
 /**
  * A superclass for driver-models, to handle the common details.
  */
+@SuppressWarnings("DesignForExtension")
 public class SimpleDriverModel implements IDriverModel {
 	/**
 	 * The list of map-change listeners.
