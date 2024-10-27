@@ -183,7 +183,7 @@ public final class TestExplorationRunner {
 	 */
 	@SuppressWarnings("MagicNumber")
 	@Test
-	public void testLoadQuadrantTable() throws MissingTableException, IOException {
+	public void testLoadQuadrantTable() throws MissingTableException {
 		final ExplorationRunner runner = new ExplorationRunner();
 		final Iterable<String> data = new LinkedList<>(Arrays.asList("quadrant", "2", "one", "two", "three",
 				"four", "five", "six"));
@@ -239,7 +239,7 @@ public final class TestExplorationRunner {
 	 * Test loading {@link RandomTable random-number-based tables}.
 	 */
 	@Test
-	public void testLoadRandomTable() throws MissingTableException, IOException {
+	public void testLoadRandomTable() throws MissingTableException {
 		final ExplorationRunner runner = new ExplorationRunner();
 		final String table = "testLoadRandomTable()";
 		runner.loadTableFromDataStream(
@@ -253,7 +253,7 @@ public final class TestExplorationRunner {
 	 * Test loading {@link TerrainTable terrain-based tables}.
 	 */
 	@Test
-	public void testLoadTerrainTable() throws MissingTableException, IOException {
+	public void testLoadTerrainTable() throws MissingTableException {
 		final ExplorationRunner runner = new ExplorationRunner();
 		final String table = "testLoadTerrainTable()";
 		runner.loadTableFromDataStream(new LinkedList<>(Arrays.asList("terrain", "tundra one",
@@ -278,7 +278,7 @@ public final class TestExplorationRunner {
 	 * Test loading {@link ConstantTable constant "tables"}
 	 */
 	@Test
-	public void testLoadConstantTable() throws MissingTableException, IOException {
+	public void testLoadConstantTable() throws MissingTableException {
 		final ExplorationRunner runner = new ExplorationRunner();
 		final String table = "testLoadConstantTable()";
 		runner.loadTableFromDataStream(

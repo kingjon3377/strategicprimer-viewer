@@ -643,16 +643,12 @@ public final class SPFluidReader implements IMapReader, ISPReader {
 			throws SPFormatException, XMLStreamException, IOException {
 		try (final BufferedReader istream = Files.newBufferedReader(file, StandardCharsets.UTF_8)) {
 			return readMapFromStream(file, istream, warner);
-		} catch (final FileNotFoundException except) {
-			final NoSuchFileException wrapper = new NoSuchFileException(file.toString());
-			wrapper.initCause(except);
-			throw wrapper;
 		}
 	}
 
 	@Override
 	public IMutableLegacyMap readMapFromStream(final Path file, final Reader istream, final Warning warner)
-			throws SPFormatException, XMLStreamException, IOException {
+			throws SPFormatException, XMLStreamException {
 		return readXML(file, istream, warner);
 	}
 }

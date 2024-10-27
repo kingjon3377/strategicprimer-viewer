@@ -88,17 +88,10 @@ public final class TabularReportGUI implements GUIDriver {
 			@Override
 			public void mapChanged() {
 				frame.removeAll();
-				try {
-					if (Objects.isNull(hq)) {
-						TabularReportGenerator.createGUITabularReports(frame::addTab, model.getMap());
-					} else {
-						TabularReportGenerator.createGUITabularReports(frame::addTab, model.getMap(), hq);
-					}
-				} catch (final IOException except) {
-					JOptionPane.showMessageDialog(window,
-							"I/O error while generating reports:%n%s".formatted(except.getLocalizedMessage()),
-							"Strategic Primer Tabular Reports", JOptionPane.ERROR_MESSAGE);
-					LovelaceLogger.error(except, "I/O error while generating tabular reports");
+				if (Objects.isNull(hq)) {
+					TabularReportGenerator.createGUITabularReports(frame::addTab, model.getMap());
+				} else {
+					TabularReportGenerator.createGUITabularReports(frame::addTab, model.getMap(), hq);
 				}
 			}
 

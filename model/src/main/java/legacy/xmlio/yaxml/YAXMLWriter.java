@@ -27,7 +27,7 @@ public final class YAXMLWriter implements SPWriter {
 	 * @throws IOException on I/O error
 	 */
 	@Override
-	public void writeSPObject(final Path arg, final Object obj) throws XMLStreamException, IOException {
+	public void writeSPObject(final Path arg, final Object obj) throws IOException {
 		try (final BufferedWriter writer = Files.newBufferedWriter(arg, StandardCharsets.UTF_8)) {
 			writeSPObject(writer::write, obj);
 		}
@@ -67,7 +67,7 @@ public final class YAXMLWriter implements SPWriter {
 	 */
 	@Override
 	public void write(final ThrowingConsumer<String, IOException> arg, final ILegacyMap map)
-			throws XMLStreamException, IOException {
+			throws IOException {
 		writeSPObject(arg, map);
 	}
 }

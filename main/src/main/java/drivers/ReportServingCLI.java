@@ -79,21 +79,13 @@ import org.takes.http.Exit;
 					continue;
 				}
 				if (!cache.containsKey(file)) {
-					try {
-						cache.put(file, ReportGenerator.createReport(map, cli,
-								Optional.ofNullable(currentPlayer).orElse(map.getCurrentPlayer())));
-					} catch (final IOException except) {
-						throw new DriverFailedException(except, "I/O error while creating report(s)");
-					}
+					cache.put(file, ReportGenerator.createReport(map, cli,
+							Optional.ofNullable(currentPlayer).orElse(map.getCurrentPlayer())));
 				}
 			}
 		} else if (!Objects.isNull(model.getMap().getFilename())) {
-			try {
-				cache.put(model.getMap().getFilename(), ReportGenerator.createReport(model.getMap(), cli,
-						Optional.ofNullable(currentPlayer).orElse(model.getMap().getCurrentPlayer())));
-			} catch (final IOException except) {
-				throw new DriverFailedException(except, "I/O error while creating report(s)");
-			}
+			cache.put(model.getMap().getFilename(), ReportGenerator.createReport(model.getMap(), cli,
+					Optional.ofNullable(currentPlayer).orElse(model.getMap().getCurrentPlayer())));
 		}
 		if (cache.isEmpty()) {
 			return;

@@ -155,8 +155,7 @@ public final class TabularReportGenerator {
 	 * @param consumer The way to add the tables to the GUI
 	 * @param map      The map to base the reports on
 	 */
-	public static void createGUITabularReports(final BiConsumer<String, Component> consumer, final ILegacyMap map)
-			throws IOException {
+	public static void createGUITabularReports(final BiConsumer<String, Component> consumer, final ILegacyMap map) {
 		final Player player = map.getCurrentPlayer();
 		final @Nullable Point hq = ReportGeneratorHelper.findHQ(map, player);
 		createGUITabularReports(consumer, map, hq);

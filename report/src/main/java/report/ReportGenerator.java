@@ -68,8 +68,7 @@ public final class ReportGenerator {
 	 * TODO: Consider generating Markdown instead of HTML. OTOH, we'd have
 	 * to keep a list nesting level parameter or something.
 	 */
-	public static String createReport(final ILegacyMap map, final ICLIHelper cli, final Player player)
-			throws IOException {
+	public static String createReport(final ILegacyMap map, final ICLIHelper cli, final Player player) {
 		final MapDimensions dimensions = map.getDimensions();
 		final StringBuilder builder = new StringBuilder();
 		builder.append("""

@@ -129,13 +129,12 @@ public final class SPDatabaseWriter implements SPWriter {
 	}
 
 	@Override
-	public void write(final Path arg, final ILegacyMap map) throws XMLStreamException, IOException {
+	public void write(final Path arg, final ILegacyMap map) throws IOException {
 		writeSPObject(arg, map);
 	}
 
 	@Override
-	public void write(final ThrowingConsumer<String, IOException> arg, final ILegacyMap map) throws XMLStreamException,
-			IOException {
+	public void write(final ThrowingConsumer<String, IOException> arg, final ILegacyMap map) {
 		writeSPObject(arg, map);
 	}
 

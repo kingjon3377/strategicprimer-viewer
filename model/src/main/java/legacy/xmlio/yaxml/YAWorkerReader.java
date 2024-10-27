@@ -165,7 +165,7 @@ import java.util.Objects;
 
 	@Override
 	public IWorker read(final StartElement element, final QName parent, final Iterable<XMLEvent> stream)
-			throws SPFormatException, XMLStreamException {
+			throws SPFormatException {
 		requireTag(element, parent, "worker");
 		expectAttributes(element, "name", "race", "image", "portrait", "id");
 		final Worker retval = new Worker(getParameter(element, "name"),

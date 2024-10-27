@@ -383,7 +383,7 @@ public final class TestXMLIO {
 	 * writers, will contain the given string.
 	 */
 	private static void assertSerializedFormContains(final Object obj, final String expected, final String message)
-			throws SPFormatException, XMLStreamException, IOException {
+			throws XMLStreamException, IOException {
 		// TODO: Is there a JUnit assertContains() or similar?
 		assertTrue(createSerializedForm(obj, false).contains(expected), message);
 		assertTrue(createSerializedForm(obj, true).contains(expected), message);
