@@ -64,7 +64,7 @@ public final class AdvancementCLIHelperImpl implements AdvancementCLIHelper {
 	 *
 	 * TODO: Avoid Boolean parameters
 	 */
-	private void advanceJob(final IWorker worker, final IJob job, final boolean allowExpertMentoring) {
+	private void advanceJob(final IWorker worker, final IJob job, final ExperienceConfig experienceConfig) {
 		final List<ISkill> skills = StreamSupport.stream(job.spliterator(), false).collect(Collectors.toList());
 		final Consumer<ISkill> addToList = skills::add;
 		while (true) {
@@ -95,25 +95,28 @@ public final class AdvancementCLIHelperImpl implements AdvancementCLIHelper {
 			}
 			final int oldLevel = skill.getLevel();
 			final int hours = Optional.ofNullable(cli.inputNumber("Hours of experience to add: ")).orElse(0);
-			if (allowExpertMentoring) {
-				final int hoursPerHour = Optional.ofNullable(cli.inputNumber("'Hours' between hourly checks: "))
-						.orElse(0);
-				int remaining;
-				if (hoursPerHour > 0) {
-					remaining = hours;
-				} else {
-					remaining = 0;
+			switch (experienceConfig) {
+				case SelfTeaching -> {
+					for (int hour = 0; hour < hours; hour++) {
+						model.addHoursToSkill(worker, job.getName(), skill.getName(), 1,
+								SingletonRandom.SINGLETON_RANDOM.nextInt(100));
+					}
 				}
-				while (remaining > 0) {
-					model.addHoursToSkill(worker, job.getName(), skill.getName(),
-							Math.max(remaining, hoursPerHour),
-							SingletonRandom.SINGLETON_RANDOM.nextInt(100));
-					remaining -= hoursPerHour;
-				}
-			} else {
-				for (int hour = 0; hour < hours; hour++) {
-					model.addHoursToSkill(worker, job.getName(), skill.getName(), 1,
-							SingletonRandom.SINGLETON_RANDOM.nextInt(100));
+				case ExpertMentoring -> {
+					final int hoursPerHour = Optional.ofNullable(cli.inputNumber("'Hours' between hourly checks: "))
+							.orElse(0);
+					int remaining;
+					if (hoursPerHour > 0) {
+						remaining = hours;
+					} else {
+						remaining = 0;
+					}
+					while (remaining > 0) {
+						model.addHoursToSkill(worker, job.getName(), skill.getName(),
+								Math.max(remaining, hoursPerHour),
+								SingletonRandom.SINGLETON_RANDOM.nextInt(100));
+						remaining -= hoursPerHour;
+					}
 				}
 			}
 			if (skill.getLevel() != oldLevel) {
@@ -133,7 +136,7 @@ public final class AdvancementCLIHelperImpl implements AdvancementCLIHelper {
 	/**
 	 * Let the user add experience to a worker.
 	 */
-	private void advanceSingleWorker(final IWorker worker, final boolean allowExpertMentoring) {
+	private void advanceSingleWorker(final IWorker worker, final ExperienceConfig experienceConfig) {
 		final List<IJob> jobs = StreamSupport.stream(worker.spliterator(), false).collect(Collectors.toList());
 		final Consumer<IJob> addToList = jobs::add;
 		while (true) {
@@ -161,7 +164,7 @@ public final class AdvancementCLIHelperImpl implements AdvancementCLIHelper {
 			} else {
 				break;
 			}
-			advanceJob(worker, job, allowExpertMentoring);
+			advanceJob(worker, job, experienceConfig);
 			final Boolean continuation = cli.inputBoolean("Select another Job in this worker?");
 			if (!Boolean.TRUE.equals(continuation)) {
 				break;
@@ -286,7 +289,7 @@ public final class AdvancementCLIHelperImpl implements AdvancementCLIHelper {
 	 * Let the user add experience to a worker or workers in a unit.
 	 */
 	@Override
-	public void advanceWorkersInUnit(final IUnit unit, final boolean allowExpertMentoring) {
+	public void advanceWorkersInUnit(final IUnit unit, final ExperienceConfig experienceConfig) {
 		final List<IWorker> workers = unit.stream()
 				.filter(IWorker.class::isInstance).map(IWorker.class::cast).collect(Collectors.toList());
 		final Boolean individualAdvancement = cli.inputBooleanInSeries("Add experience to workers individually? ");
@@ -303,7 +306,7 @@ public final class AdvancementCLIHelperImpl implements AdvancementCLIHelper {
 					break;
 				}
 				workers.remove(chosen);
-				advanceSingleWorker(chosen, allowExpertMentoring);
+				advanceSingleWorker(chosen, experienceConfig);
 				final Boolean continuation = cli.inputBoolean("Choose another worker?");
 				if (!Boolean.TRUE.equals(continuation)) {
 					break;

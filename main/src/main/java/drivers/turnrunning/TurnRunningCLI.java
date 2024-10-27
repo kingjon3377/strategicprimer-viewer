@@ -185,7 +185,9 @@ import org.jetbrains.annotations.Nullable;
 							buffer.append(". ");
 						};
 				advancementCLI.addLevelGainListener(levelListener);
-				advancementCLI.advanceWorkersInUnit(unit, expertMentoring);
+				advancementCLI.advanceWorkersInUnit(unit, expertMentoring ?
+						AdvancementCLIHelper.ExperienceConfig.ExpertMentoring :
+						AdvancementCLIHelper.ExperienceConfig.SelfTeaching);
 				advancementCLI.removeLevelGainListener(levelListener);
 			}
 		}
