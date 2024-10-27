@@ -144,7 +144,8 @@ import lovelace.util.LovelaceLogger;
 			}
 		} catch (final IncorrectUsageException except) {
 			cli.println(AppChooserState.usageMessage(except.getCorrectUsage(),
-					"true".equals(options.getArgument("--verbose"))));
+					"true".equals(options.getArgument("--verbose")) ? AppChooserState.UsageVerbosity.Verbose :
+							AppChooserState.UsageVerbosity.Terse));
 		} catch (final DriverFailedException except) {
 			final Throwable cause = except.getCause();
 			if (cause instanceof SPFormatException) {

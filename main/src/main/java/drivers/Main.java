@@ -52,7 +52,8 @@ public final class Main {
 			appStarter.startDriverOnArguments(new CLIHelper(), options, args);
 		} catch (final IncorrectUsageException except) {
 			final IDriverUsage usage = except.getCorrectUsage();
-			System.err.println(AppChooserState.usageMessage(usage, options.hasOption("--verbose")));
+			System.err.println(AppChooserState.usageMessage(usage, options.hasOption("--verbose") ?
+					AppChooserState.UsageVerbosity.Verbose : AppChooserState.UsageVerbosity.Terse));
 			System.exit(1);
 		} catch (final DriverFailedException except) {
 			LovelaceLogger.error(Objects.requireNonNullElse(except.getCause(), except), except.getMessage());

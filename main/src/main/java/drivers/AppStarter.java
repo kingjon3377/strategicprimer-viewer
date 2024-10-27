@@ -128,8 +128,10 @@ import org.jetbrains.annotations.Nullable;
 				for (final DriverFactory driver : driverCache.values().stream()
 						.flatMap(l -> StreamSupport.stream(l.spliterator(), false)).collect(Collectors.toSet())) {
 					// TODO: in Java 11+ use String.lines()
-					final String[] lines = AppChooserState.usageMessage(driver.getUsage(), "true".equals(
-							options.getArgument("--verbose"))).split(System.lineSeparator());
+					final String[] lines = AppChooserState.usageMessage(driver.getUsage(),
+							"true".equals(options.getArgument("--verbose")) ?
+									AppChooserState.UsageVerbosity.Verbose : AppChooserState.UsageVerbosity.Terse)
+							.split(System.lineSeparator());
 					final String invocationExample = lines[0].replace("Usage: ", "");
 					final String description = lines.length > 1 ? lines[1].replace(".", "") : "An unknown app";
 					System.out.printf("%s: %s%n", description, invocationExample);
@@ -139,7 +141,8 @@ import org.jetbrains.annotations.Nullable;
 				LovelaceLogger.trace("Giving usage information for selected driver");
 				// TODO: Can we and should we move the usageMessage() method into this class?
 				System.out.println(AppChooserState.usageMessage(currentUsage,
-						"true".equals(options.getArgument("--verbose"))));
+						"true".equals(options.getArgument("--verbose")) ? AppChooserState.UsageVerbosity.Verbose :
+								AppChooserState.UsageVerbosity.Terse));
 			}
 		} else if (!Objects.isNull(currentDriver)) {
 			LovelaceLogger.trace("Starting chosen app.");

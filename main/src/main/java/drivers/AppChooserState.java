@@ -19,6 +19,7 @@ import java.util.ServiceLoader;
 
 import java.io.IOException;
 
+import java.util.function.Function;
 import java.util.stream.Stream;
 
 import javax.swing.JOptionPane;
@@ -105,12 +106,23 @@ import org.jetbrains.annotations.Nullable;
 		}
 	}
 
+	public enum UsageVerbosity {
+		Verbose(IDriverUsage::getLongDescription), Terse(IDriverUsage::getShortDescription);
+		private final Function<IDriverUsage, String> impl;
+		private UsageVerbosity(Function<IDriverUsage, String> impl) {
+			this.impl = impl;
+		}
+		public String getUsageMessage(IDriverUsage usage) {
+			return impl.apply(usage);
+		}
+	}
+
 	/**
 	 * Create the usage message for a particular driver.
 	 *
 	 * FIXME: Cache "invocation" contents or equivalent.
 	 */
-	public static String usageMessage(final IDriverUsage usage, final boolean verbose) {
+	public static String usageMessage(final IDriverUsage usage, final UsageVerbosity verbosity) {
 		final StringBuilder builder = new StringBuilder();
 		String mainInvocation;
 		builder.append("Usage: ");
@@ -178,11 +190,7 @@ import org.jetbrains.annotations.Nullable;
 				throw new IllegalStateException("Exhaustive switch wasn't");
 		}
 		builder.append(System.lineSeparator());
-		if (verbose) {
-			builder.append(usage.getLongDescription());
-		} else {
-			builder.append(usage.getShortDescription());
-		}
+		builder.append(verbosity.getUsageMessage(usage));
 		builder.append(System.lineSeparator());
 		return builder.toString();
 	}
