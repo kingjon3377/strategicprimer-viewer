@@ -102,7 +102,7 @@ public class UtilityDriverModel extends SimpleMultiMapModel {
 	 * Copy rivers at the given location missing from subordinate
 	 * maps, where they have other terrain information, from the main map.
 	 */
-	public void copyRiversAt(final Point location) {
+	public final void copyRiversAt(final Point location) {
 		final ILegacyMap map = getMap();
 		for (final IMutableLegacyMap subordinateMap : getRestrictedSubordinateMaps()) {
 			final TileType mainTerrain = map.getBaseTerrain(location);
@@ -122,7 +122,7 @@ public class UtilityDriverModel extends SimpleMultiMapModel {
 	 * that would be removed and a callback to do the removal; the initial
 	 * caller of this method asks the user for approval.
 	 */
-	public Iterable<Quartet<Consumer<TileFixture>, @Nullable Path, TileFixture, Iterable<? extends TileFixture>>>
+	public final Iterable<Quartet<Consumer<TileFixture>, @Nullable Path, TileFixture, Iterable<? extends TileFixture>>>
 	conditionallyRemoveDuplicates(final Point location) {
 		final Collection<Quartet<Consumer<TileFixture>, @Nullable Path, TileFixture, Iterable<? extends TileFixture>>>
 				duplicatesList = new ArrayList<>();
@@ -224,7 +224,7 @@ public class UtilityDriverModel extends SimpleMultiMapModel {
 	 * of resources that would be combined and a callback to do the
 	 * operation; the initial caller of this ask the user for approval.
 	 */
-	public Collection<Quartet<Runnable, String, String, Collection<? extends IFixture>>>
+	public final Collection<Quartet<Runnable, String, String, Collection<? extends IFixture>>>
 	conditionallyCoalesceResources(final Point location,
 	                               final Map<Class<? extends IFixture>,
 			                               CoalescedHolder<? extends IFixture, ?>> handlers) {
@@ -246,7 +246,7 @@ public class UtilityDriverModel extends SimpleMultiMapModel {
 	/**
 	 * Remove information in the main map from subordinate maps.
 	 */
-	public void subtractAtPoint(final Point location) {
+	public final void subtractAtPoint(final Point location) {
 		final ILegacyMap map = getMap();
 		for (final IMutableLegacyMap subMap : getRestrictedSubordinateMaps()) {
 			subMap.setModified(true);
@@ -292,7 +292,7 @@ public class UtilityDriverModel extends SimpleMultiMapModel {
 				.map(Ground.class::cast).collect(Collectors.toList());
 	}
 
-	public void fixForestsAndGround(final Consumer<String> ostream) {
+	public final void fixForestsAndGround(final Consumer<String> ostream) {
 		for (final ILegacyMap map : getSubordinateMaps()) {
 			ostream.accept("Starting %s".formatted(Optional.ofNullable(map.getFilename())
 					.map(Path::toString).orElse("a map with no associated path")));
@@ -372,7 +372,7 @@ public class UtilityDriverModel extends SimpleMultiMapModel {
 		}
 	}
 
-	public void expandAroundPoint(final Point center, final Player currentPlayer) {
+	public final void expandAroundPoint(final Point center, final Player currentPlayer) {
 		final HasOwner mock = new Mock(currentPlayer);
 		final ILegacyMap map = getMap();
 		final long seed = SingletonRandom.SINGLETON_RANDOM.nextLong();

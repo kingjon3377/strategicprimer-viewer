@@ -40,7 +40,7 @@ public class SPDialog extends JDialog {
 	/**
 	 * Show the dialog.
 	 */
-	public void showWindow() {
+	public final void showWindow() {
 		setVisible(true);
 	}
 

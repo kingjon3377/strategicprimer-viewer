@@ -22,7 +22,7 @@ public class IncorrectUsageException extends DriverFailedException {
 	/**
 	 * The "usage object" for the driver, describing its correct usage.
 	 */
-	public IDriverUsage getCorrectUsage() {
+	public final IDriverUsage getCorrectUsage() {
 		return correctUsage;
 	}
 }

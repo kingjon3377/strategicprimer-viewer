@@ -67,7 +67,7 @@ import org.jetbrains.annotations.Nullable;
 		return "%s (%s)".formatted(unit.getName(), unit.getKind());
 	}
 
-	protected @Nullable Boolean handleCapture(final HasKind find) {
+	protected @Nullable final Boolean handleCapture(final HasKind find) {
 		final IUnit unit = chooseFromList(model.getUnits(Optional.ofNullable(model.getSelectedUnit())
 						.map(IUnit::owner).orElse(model.getMap().getCurrentPlayer())),
 				"Available units:", "No units", "Unit to add animals to:", ICLIHelper.ListChoiceBehavior.ALWAYS_PROMPT,
@@ -84,7 +84,7 @@ import org.jetbrains.annotations.Nullable;
 		}
 	}
 
-	protected @Nullable Integer processMeat() {
+	protected @Nullable final Integer processMeat() {
 		int cost = 0;
 		// TODO: somehow handle processing-in-parallel case
 		final Integer iterations = cli.inputNumber("How many carcasses?");
@@ -105,7 +105,7 @@ import org.jetbrains.annotations.Nullable;
 		return cost;
 	}
 
-	protected void resourceEntry(final Player owner) {
+	protected final void resourceEntry(final Player owner) {
 		cli.println("Enter resources produced (any empty string aborts):");
 		while (true) {
 			final IMutableResourcePile resource = resourceAddingHelper.enterResource();
@@ -195,7 +195,7 @@ import org.jetbrains.annotations.Nullable;
 	// TODO: Distinguish hunting from fishing in no-result time cost (encounters / hour)?
 	// Note that the intended return type of encounterSrc::apply is Pair<Point, Animal|AnimalTracks|NothingFound>,
 	// but Java doesn't offer union types.
-	protected @Nullable String impl(final String command,
+	protected final @Nullable String impl(final String command,
 									final Function<Point, Iterable<Pair<Point, TileFixture>>> encounterSrc) {
 		final StringBuilder buffer = new StringBuilder();
 		final Point center = confirmPoint("Location to search around: ");

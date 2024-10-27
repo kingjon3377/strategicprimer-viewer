@@ -40,7 +40,7 @@ public class ImprovedComboBox<Element> extends JComboBox<Element> {
 	 * @author Joshua Goldberg http://stackoverflow.com/a/24336768
 	 */
 	@Override
-	public void processKeyEvent(final KeyEvent event) {
+	public final void processKeyEvent(final KeyEvent event) {
 		if (event.getID() != KeyEvent.KEY_PRESSED || event.getKeyCode() != KeyEvent.VK_TAB) {
 			super.processKeyEvent(event);
 			return;

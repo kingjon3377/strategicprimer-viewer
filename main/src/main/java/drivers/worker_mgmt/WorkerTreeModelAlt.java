@@ -79,7 +79,7 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements IWorke
 		/**
 		 * Stream the node's child nodes.
 		 */
-		public Stream<TreeNode> stream() {
+		public final Stream<TreeNode> stream() {
 			return StreamSupport.stream(spliterator(), false);
 		}
 

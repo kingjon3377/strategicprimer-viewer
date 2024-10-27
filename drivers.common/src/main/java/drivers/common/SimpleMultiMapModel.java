@@ -32,7 +32,7 @@ public class SimpleMultiMapModel extends SimpleDriverModel implements IMultiMapM
 	 * Subordinate maps, as a stream.
 	 */
 	@Override
-	public Stream<ILegacyMap> streamSubordinateMaps() {
+	public final Stream<ILegacyMap> streamSubordinateMaps() {
 		return subordinateMapsList.stream().map(ILegacyMap.class::cast);
 	}
 

@@ -422,7 +422,7 @@ abstract class YAAbstractReader<Item, Value> implements YAReader<Item, Value> {
 	/**
 	 * Warn about a not-yet-(fully-)supported tag.
 	 */
-	protected void warnFutureTag(final StartElement tag) {
+	protected final void warnFutureTag(final StartElement tag) {
 		warner.handle(UnsupportedTagException.future(tag));
 	}
 
@@ -430,7 +430,7 @@ abstract class YAAbstractReader<Item, Value> implements YAReader<Item, Value> {
 	 * Advance the stream until we hit an end element matching the given
 	 * name, but object to any start elements.
 	 */
-	protected void spinUntilEnd(final QName tag, final Iterable<XMLEvent> reader, final String... futureTags)
+	protected final void spinUntilEnd(final QName tag, final Iterable<XMLEvent> reader, final String... futureTags)
 			throws SPFormatException {
 		for (final XMLEvent event : reader) {
 			if (event instanceof final StartElement se && isSupportedNamespace(se.getName())) {
@@ -472,8 +472,8 @@ abstract class YAAbstractReader<Item, Value> implements YAReader<Item, Value> {
 	/**
 	 * Read a parameter from XML whose value must be a boolean.
 	 */
-	protected boolean getBooleanParameter(final StartElement element, final String parameter,
-	                                      final boolean defaultValue) {
+	protected final boolean getBooleanParameter(final StartElement element, final String parameter,
+	                                            final boolean defaultValue) {
 		final Attribute attr = getAttributeByName(element, parameter);
 		if (!Objects.isNull(attr)) {
 			final String val = attr.getValue();
@@ -497,8 +497,8 @@ abstract class YAAbstractReader<Item, Value> implements YAReader<Item, Value> {
 	 *
 	 * TODO: Try to avoid Boolean parameters
 	 */
-	protected void requireNonEmptyParameter(final StartElement element, final String parameter,
-											final boolean mandatory) throws SPFormatException {
+	protected final void requireNonEmptyParameter(final StartElement element, final String parameter,
+	                                              final boolean mandatory) throws SPFormatException {
 		if (getParameter(element, parameter, "").isEmpty()) {
 			final SPFormatException except = new MissingPropertyException(element, parameter);
 			if (mandatory) {
@@ -513,7 +513,7 @@ abstract class YAAbstractReader<Item, Value> implements YAReader<Item, Value> {
 	 * Register the specified ID number, noting that it came from the
 	 * specified location, and return it.
 	 */
-	protected int registerID(final Integer id, final Location location) {
+	protected final int registerID(final Integer id, final Location location) {
 		return idf.register(id, warner, location);
 	}
 
@@ -521,7 +521,7 @@ abstract class YAAbstractReader<Item, Value> implements YAReader<Item, Value> {
 	 * If the specified tag has an ID as a property, return it; otherwise,
 	 * warn about its absence and generate one.
 	 */
-	protected int getOrGenerateID(final StartElement element) throws SPFormatException {
+	protected final int getOrGenerateID(final StartElement element) throws SPFormatException {
 		if (hasParameter(element, "id")) {
 			return registerID(getIntegerParameter(element, "id"), element.getLocation());
 		} else {
@@ -534,8 +534,8 @@ abstract class YAAbstractReader<Item, Value> implements YAReader<Item, Value> {
 	 * Get a parameter from an element in its preferred form, if present,
 	 * or in a deprecated form, in which case fire a warning.
 	 */
-	protected String getParamWithDeprecatedForm(final StartElement element, final String preferred,
-												final String deprecated) throws SPFormatException {
+	protected final String getParamWithDeprecatedForm(final StartElement element, final String preferred,
+	                                                  final String deprecated) throws SPFormatException {
 		final Attribute preferredProperty = getAttributeByName(element, preferred);
 		if (!Objects.isNull(preferredProperty)) {
 			final String retval = preferredProperty.getValue();
@@ -558,7 +558,7 @@ abstract class YAAbstractReader<Item, Value> implements YAReader<Item, Value> {
 	/**
 	 * Warn if any unsupported attribute is on this tag.
 	 */
-	protected void expectAttributes(final StartElement element, final String... attributes) {
+	protected final void expectAttributes(final StartElement element, final String... attributes) {
 		final Set<String> local = Stream.of(attributes).map(String::toLowerCase)
 				.collect(Collectors.toSet());
 		for (final String attribute : StreamSupport.stream(

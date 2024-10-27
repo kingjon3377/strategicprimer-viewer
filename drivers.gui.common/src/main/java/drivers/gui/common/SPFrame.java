@@ -164,7 +164,7 @@ public class SPFrame extends JFrame implements ISPWindow {
 		droppedFileHandler.accept(file);
 	}
 
-	public void showWindow() {
+	public final void showWindow() {
 		setVisible(true);
 	}
 }
