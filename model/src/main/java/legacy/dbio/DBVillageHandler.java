@@ -21,6 +21,7 @@ import java.util.Objects;
 import legacy.map.Point;
 import legacy.map.IMutableLegacyMap;
 
+import legacy.map.fixtures.towns.CommunityStatsImpl;
 import legacy.map.fixtures.towns.Village;
 import common.map.fixtures.towns.TownStatus;
 import legacy.map.fixtures.towns.CommunityStats;
@@ -106,7 +107,7 @@ public final class DBVillageHandler extends AbstractDatabaseWriter<Village, Poin
 				village.setPortrait(portrait);
 			}
 			if (!Objects.isNull(population)) {
-				village.setPopulation(new CommunityStats(population));
+				village.setPopulation(new CommunityStatsImpl(population));
 			}
 			map.addFixture(new Point(row, column), village);
 		};

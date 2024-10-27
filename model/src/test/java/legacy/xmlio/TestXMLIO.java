@@ -112,6 +112,7 @@ import legacy.map.fixtures.towns.FortressImpl;
 import legacy.map.fixtures.towns.IFortress;
 import legacy.map.fixtures.towns.IMutableFortress;
 import legacy.map.fixtures.towns.CommunityStats;
+import legacy.map.fixtures.towns.CommunityStatsImpl;
 
 import static impl.xmlio.ISPReader.SP_NAMESPACE;
 
@@ -719,7 +720,7 @@ public final class TestXMLIO {
 		assumeTrue(consumedId >= 0, "Consumption ID won't ever be negative");
 		assumeTrue(consumedQty >= 0, "Quantity can't be negative");
 		final Village village = new Village(status, "villageName", id, new PlayerImpl(-1, ""), race);
-		final CommunityStats pop = new CommunityStats(populationSize);
+		final CommunityStats pop = new CommunityStatsImpl(populationSize);
 		village.setPopulation(pop);
 		assertSerialization("Village can have community stats", village);
 		// FIXME: That doesn't guarantee that Village#equals checks
@@ -812,7 +813,7 @@ public final class TestXMLIO {
 		assumeTrue(producedQty >= 0, "Quantity can't be negative");
 		final Player owner = new PlayerImpl(-1, "");
 		final City city = new City(status, size, dc, name, id, owner);
-		final CommunityStats population = new CommunityStats(populationSize);
+		final CommunityStats population = new CommunityStatsImpl(populationSize);
 		population.addWorkedField(workedField);
 		population.setSkillLevel("citySkill", skillLevel);
 		population.addYearlyConsumption(new ResourcePileImpl(producedId, "cityResource",
@@ -878,7 +879,7 @@ public final class TestXMLIO {
 		assumeTrue(producedQty >= 0, "Quantity can't be negative");
 		final Player owner = new PlayerImpl(-1, "");
 		final Fortification fort = new Fortification(status, size, dc, name, id, owner);
-		final CommunityStats population = new CommunityStats(populationSize);
+		final CommunityStats population = new CommunityStatsImpl(populationSize);
 		population.addWorkedField(workedField);
 		population.addWorkedField((workedField * 13) % 31);
 		population.setSkillLevel("fortSkill", skillLevel);
@@ -922,7 +923,7 @@ public final class TestXMLIO {
 				new Town(status, size, dc, name, id, new PlayerImpl(-1, "Independent")));
 		assertImageSerialization("Town image property is preserved", town);
 		assertPortraitSerialization("Town portrait property is preserved", town);
-		final CommunityStats population = new CommunityStats(3);
+		final CommunityStats population = new CommunityStatsImpl(3);
 		population.addWorkedField(9);
 		population.addWorkedField(23);
 		population.setSkillLevel("townSkill", 3);

@@ -14,6 +14,7 @@ import legacy.map.fixtures.IResourcePile;
 import legacy.map.fixtures.towns.AbstractTown;
 import legacy.map.fixtures.towns.City;
 import legacy.map.fixtures.towns.CommunityStats;
+import legacy.map.fixtures.towns.CommunityStatsImpl;
 import legacy.map.fixtures.towns.Fortification;
 import legacy.map.fixtures.towns.Town;
 import legacy.map.fixtures.towns.Village;
@@ -215,7 +216,7 @@ import java.util.function.Consumer;
 													final IDRegistrar idFactory) throws SPFormatException {
 		requireTag(element, parent, "population");
 		expectAttributes(element, warner, "size");
-		final CommunityStats retval = new CommunityStats(getIntegerAttribute(element, "size"));
+		final CommunityStats retval = new CommunityStatsImpl(getIntegerAttribute(element, "size"));
 		@Nullable String current = null;
 		final Deque<StartElement> stack = new LinkedList<>();
 		stack.addFirst(element);

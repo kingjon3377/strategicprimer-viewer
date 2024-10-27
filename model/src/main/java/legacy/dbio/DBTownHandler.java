@@ -30,6 +30,7 @@ import legacy.map.fixtures.towns.Fortification;
 import legacy.map.fixtures.towns.City;
 import legacy.map.fixtures.towns.Town;
 import legacy.map.fixtures.towns.CommunityStats;
+import legacy.map.fixtures.towns.CommunityStatsImpl;
 import common.xmlio.Warning;
 
 import static io.jenetics.facilejdbc.Param.value;
@@ -132,7 +133,7 @@ public final class DBTownHandler extends AbstractDatabaseWriter<AbstractTown, Po
 				// Don't add it directly because it's also read in the
 				// CommunityStats handler, which needs to get it out of the
 				// containees to avoid conflicts.
-				multimapPut(containees, id, new CommunityStats(population));
+				multimapPut(containees, id, new CommunityStatsImpl(population));
 			}
 			containers.put(town.getId(), town);
 			map.addFixture(new Point(row, column), town);

@@ -20,6 +20,7 @@ import legacy.map.fixtures.LegacyQuantity;
 import legacy.map.fixtures.towns.ITownFixture;
 import common.map.fixtures.towns.TownStatus;
 import legacy.map.fixtures.towns.CommunityStats;
+import legacy.map.fixtures.towns.CommunityStatsImpl;
 import legacy.map.fixtures.towns.AbstractTown;
 import legacy.map.fixtures.towns.Village;
 import common.map.fixtures.towns.TownSize;
@@ -279,7 +280,7 @@ import java.math.BigDecimal;
 	private static @Nullable CommunityStats enterStats(final ICLIHelper cli, final IDRegistrar idf,
 	                                                   final ILegacyMap map, final Point location,
 			/*ModifiableTown*/ final ITownFixture town) {
-		final CommunityStats retval = new CommunityStats(Optional.ofNullable(
+		final CommunityStats retval = new CommunityStatsImpl(Optional.ofNullable(
 				cli.inputNumber("Population: ")).orElse(0));
 		cli.println("Now enter Skill levels, the highest in the community for each Job.");
 		cli.println("(Empty to end.)");
@@ -498,7 +499,7 @@ import java.math.BigDecimal;
 			default -> throw new IllegalStateException("Unhandled town type");
 		}
 
-		final CommunityStats retval = new CommunityStats(population);
+		final CommunityStats retval = new CommunityStatsImpl(population);
 		final String skillTable;
 		final String consumptionTableName;
 		final TileType terrain = map.getBaseTerrain(location);

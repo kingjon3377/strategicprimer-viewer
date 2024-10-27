@@ -12,7 +12,7 @@ import legacy.map.fixtures.resources.CacheFixture;
 import legacy.map.fixtures.terrain.Forest;
 import legacy.map.fixtures.towns.AbstractTown;
 import legacy.map.fixtures.towns.City;
-import legacy.map.fixtures.towns.CommunityStats;
+import legacy.map.fixtures.towns.CommunityStatsImpl;
 import legacy.map.fixtures.towns.Fortification;
 import legacy.map.fixtures.towns.FortressImpl;
 import legacy.map.fixtures.towns.IFortress;
@@ -337,11 +337,11 @@ public final class SubsetTest {
 				"Owned is not a subset of independently owned");
 		final Town first = new Town(status, size, -1, "townName", 12, playerOne);
 		final Town second = new Town(status, size, -1, "townName", 12, playerOne);
-		first.setPopulation(new CommunityStats(8));
+		first.setPopulation(new CommunityStatsImpl(8));
 		assertIsSubset(first, second, "Missing population detils doesn't break subset");
 		assertNotSubset(second, first,
 				"Having population details when we don't does break subset");
-		second.setPopulation(new CommunityStats(10));
+		second.setPopulation(new CommunityStatsImpl(10));
 		assertNotSubset(first, second,
 				"Having non-subset population details breaks subset");
 	}
@@ -406,11 +406,11 @@ public final class SubsetTest {
 				"Owned is not a subset of independently owned");
 		final City first = new City(status, size, -1, "townName", 12, playerOne);
 		final City second = new City(status, size, -1, "townName", 12, playerOne);
-		first.setPopulation(new CommunityStats(8));
+		first.setPopulation(new CommunityStatsImpl(8));
 		assertIsSubset(first, second, "Missing population detils doesn't break subset");
 		assertNotSubset(second, first,
 				"Having population details when we don't does break subset");
-		second.setPopulation(new CommunityStats(10));
+		second.setPopulation(new CommunityStatsImpl(10));
 		assertNotSubset(first, second,
 				"Having non-subset population details breaks subset");
 	}
@@ -476,11 +476,11 @@ public final class SubsetTest {
 				"Owned is not a subset of independently owned");
 		final Fortification first = new Fortification(status, size, -1, "townName", 12, playerOne);
 		final Fortification second = new Fortification(status, size, -1, "townName", 12, playerOne);
-		first.setPopulation(new CommunityStats(8));
+		first.setPopulation(new CommunityStatsImpl(8));
 		assertIsSubset(first, second, "Missing population detils doesn't break subset");
 		assertNotSubset(second, first,
 				"Having population details when we don't does break subset");
-		second.setPopulation(new CommunityStats(10));
+		second.setPopulation(new CommunityStatsImpl(10));
 		assertNotSubset(first, second,
 				"Having non-subset population details breaks subset");
 	}

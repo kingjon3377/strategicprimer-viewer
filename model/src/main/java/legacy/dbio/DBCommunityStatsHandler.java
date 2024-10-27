@@ -20,6 +20,7 @@ import legacy.map.fixtures.ResourcePileImpl;
 import legacy.map.fixtures.IResourcePile;
 import legacy.map.fixtures.IMutableResourcePile;
 import legacy.map.fixtures.towns.CommunityStats;
+import legacy.map.fixtures.towns.CommunityStatsImpl;
 import legacy.map.fixtures.towns.ITownFixture;
 import common.xmlio.Warning;
 
@@ -118,7 +119,7 @@ public final class DBCommunityStatsHandler extends AbstractDatabaseWriter<Commun
 			final int population = (Integer) dbRow.get("population");
 			if (!containees.containsKey(id) || containees.get(id).stream()
 					.noneMatch(CommunityStats.class::isInstance)) {
-				multimapPut(containees, id, new CommunityStats(population));
+				multimapPut(containees, id, new CommunityStatsImpl(population));
 			}
 		};
 	}

@@ -15,6 +15,7 @@ import legacy.map.fixtures.IResourcePile;
 import legacy.map.fixtures.towns.AbstractTown;
 import legacy.map.fixtures.towns.City;
 import legacy.map.fixtures.towns.CommunityStats;
+import legacy.map.fixtures.towns.CommunityStatsImpl;
 import legacy.map.fixtures.towns.Fortification;
 import legacy.map.fixtures.towns.FortressImpl;
 import legacy.map.fixtures.towns.IFortress;
@@ -91,7 +92,7 @@ import java.util.function.Consumer;
 			throws SPFormatException, XMLStreamException {
 		requireTag(element, parent, "population");
 		expectAttributes(element, "size");
-		final CommunityStats retval = new CommunityStats(getIntegerParameter(element, "size"));
+		final CommunityStats retval = new CommunityStatsImpl(getIntegerParameter(element, "size"));
 		final Consumer<IResourcePile> addProductionLambda = retval::addYearlyProduction;
 		final Consumer<IResourcePile> addConsumptionLambda = retval::addYearlyConsumption;
 		String current = null;

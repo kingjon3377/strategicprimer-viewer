@@ -99,6 +99,7 @@ import common.map.fixtures.towns.TownStatus;
 import legacy.map.fixtures.towns.Fortification;
 import common.map.fixtures.towns.TownSize;
 import legacy.map.fixtures.towns.CommunityStats;
+import legacy.map.fixtures.towns.CommunityStatsImpl;
 import legacy.map.fixtures.towns.City;
 import legacy.map.fixtures.towns.Town;
 import legacy.map.fixtures.towns.FortressImpl;
@@ -618,7 +619,7 @@ public final class TestDBIO {
 			throws SQLException, IOException {
 		// TODO: We want more of the state to be random
 		final Fortification town = new Fortification(status, size, dc, "name", id, new PlayerImpl(0, ""));
-		final CommunityStats stats = new CommunityStats(5);
+		final CommunityStats stats = new CommunityStatsImpl(5);
 		stats.addWorkedField(8);
 		stats.addWorkedField(13);
 		stats.setSkillLevel("skillOne", 2);
@@ -642,7 +643,7 @@ public final class TestDBIO {
 			throws SQLException, IOException {
 		// TODO: We want more of the state to be random
 		final City town = new City(status, size, dc, "name", id, new PlayerImpl(0, ""));
-		final CommunityStats stats = new CommunityStats(5);
+		final CommunityStats stats = new CommunityStatsImpl(5);
 		stats.addWorkedField(8);
 		stats.addWorkedField(13);
 		stats.setSkillLevel("skillOne", 2);
@@ -666,7 +667,7 @@ public final class TestDBIO {
 			throws SQLException, IOException {
 		// TODO: We want more of the state to be random
 		final Town town = new Town(status, size, dc, "name", id, new PlayerImpl(0, ""));
-		final CommunityStats stats = new CommunityStats(5);
+		final CommunityStats stats = new CommunityStatsImpl(5);
 		stats.addWorkedField(8);
 		stats.addWorkedField(13);
 		stats.setSkillLevel("skillOne", 2);
