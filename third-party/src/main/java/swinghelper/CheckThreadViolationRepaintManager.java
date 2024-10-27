@@ -40,10 +40,17 @@ public final class CheckThreadViolationRepaintManager extends RepaintManager {
 		}
 	}
 
+	public enum CheckType {
+		Complete, Partial;
+		public boolean isComplete() {
+			return Complete == this;
+		}
+	}
+
 	/**
 	 * Whether to run the complete check.
 	 */
-	private final boolean completeCheck;
+	private final CheckType checkType;
 
 	/**
 	 * The last(-referenced?) component.
@@ -53,20 +60,20 @@ public final class CheckThreadViolationRepaintManager extends RepaintManager {
 	/**
 	 * @param shouldCompleteCheck Whether to run the complete check (recommended)
 	 */
-	public CheckThreadViolationRepaintManager(final boolean shouldCompleteCheck) {
-		completeCheck = shouldCompleteCheck;
+	public CheckThreadViolationRepaintManager(final CheckType checkType) {
+		this.checkType = checkType;
 		lastComponent = null;
 	}
 
 	public CheckThreadViolationRepaintManager() {
-		this(true);
+		this(CheckType.Complete);
 	}
 
 	/**
 	 * Check thread violations for a component.
 	 */
 	void checkThreadViolations(final JComponent c) {
-		if (!SwingUtilities.isEventDispatchThread() && (completeCheck || c.isShowing())) {
+		if (!SwingUtilities.isEventDispatchThread() && (checkType.isComplete() || c.isShowing())) {
 			boolean repaint = false;
 			boolean fromSwing = false;
 			boolean imageUpdate = false;
