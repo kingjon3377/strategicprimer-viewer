@@ -17,8 +17,8 @@ import com.google.auto.service.AutoService;
  */
 @AutoService(DriverFactory.class)
 public final class ReaderComparatorFactory implements UtilityDriverFactory {
-	private final IDriverUsage USAGE = new DriverUsage(false, "compare-readers", ParamCount.AtLeastOne,
-			"Test map readers",
+	private final IDriverUsage USAGE = new DriverUsage(IDriverUsage.DriverMode.CommandLine, "compare-readers",
+			ParamCount.AtLeastOne, "Test map readers",
 			"Test map-reading implementations by comparing their results on the same file.",
 			true, false);
 

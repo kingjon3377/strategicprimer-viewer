@@ -17,8 +17,8 @@ import com.google.auto.service.AutoService;
  */
 @AutoService(DriverFactory.class)
 public final class EchoDriverFactory implements UtilityDriverFactory {
-	public static final IDriverUsage USAGE = new DriverUsage(false, "echo", ParamCount.Two,
-			"Read, then write a map.", "Read and write a map, correcting deprecated syntax.",
+	public static final IDriverUsage USAGE = new DriverUsage(IDriverUsage.DriverMode.CommandLine, "echo",
+			ParamCount.Two, "Read, then write a map.", "Read and write a map, correcting deprecated syntax.",
 			true, false, "input.xml", "output.xml", "--current-turn=NN");
 
 	@Override

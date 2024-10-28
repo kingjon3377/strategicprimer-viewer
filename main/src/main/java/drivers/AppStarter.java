@@ -39,22 +39,23 @@ import org.jetbrains.annotations.Nullable;
 	public void startDriverOnArguments(final ICLIHelper cli, final SPOptions options, final String... args)
 			throws DriverFailedException {
 		LovelaceLogger.trace("Inside AppStarter#startDriver()");
-		boolean gui = !GraphicsEnvironment.isHeadless();
+		IDriverUsage.DriverMode mode = GraphicsEnvironment.isHeadless() ? IDriverUsage.DriverMode.CommandLine :
+				IDriverUsage.DriverMode.Graphical;
 		@SuppressWarnings("unchecked") final SPOptionsImpl currentOptions = new SPOptionsImpl(StreamSupport.stream(options.spliterator(), false)
 				.toArray(Map.Entry[]::new));
 		if (!currentOptions.hasOption("--gui")) {
-			currentOptions.addOption("--gui", Boolean.toString(gui));
+			currentOptions.addOption("--gui", Boolean.toString(IDriverUsage.DriverMode.Graphical == mode));
 		}
 		final Collection<String> others = new ArrayList<>();
 
 		// TODO: Try to make an instance method
 		final BiConsumer<DriverFactory, SPOptions> startChosenDriver = (driver, currentOptionsTyped) -> {
-			if (driver.getUsage().isGraphical()) {
-				SwingUtilities.invokeLater(() -> new DriverWrapper(driver).startCatchingErrors(cli,
+			switch (driver.getUsage().getMode()) {
+				case Graphical -> SwingUtilities.invokeLater(() -> new DriverWrapper(driver).startCatchingErrors(cli,
 						currentOptionsTyped, others.stream().skip(1).toArray(String[]::new)));
-			} else {
-				new DriverWrapper(driver).startCatchingErrors(cli, currentOptionsTyped,
+				case CommandLine -> new DriverWrapper(driver).startCatchingErrors(cli, currentOptionsTyped,
 						others.stream().skip(1).toArray(String[]::new));
+				default -> throw new IllegalStateException("Exhaustive switch wasn't");
 			}
 		};
 
@@ -64,18 +65,18 @@ import org.jetbrains.annotations.Nullable;
 			} else if ("-g".equals(arg) || "--gui".equals(arg)) {
 				LovelaceLogger.trace("User specified either -g or --gui");
 				currentOptions.addOption("--gui");
-				gui = true;
+				mode = IDriverUsage.DriverMode.Graphical;
 			} else if ("-c".equals(arg) || "--cli".equals(arg)) {
 				LovelaceLogger.trace("User specified either -c or --cli");
 				currentOptions.addOption("--gui", "false");
-				gui = false;
+				mode = IDriverUsage.DriverMode.CommandLine;
 			} else if (arg.startsWith("--gui=")) {
 				final String tempString = arg.substring(6);
 				LovelaceLogger.trace("User specified --gui=%s", tempString);
 				if ("true".equalsIgnoreCase(tempString)) {
-					gui = true;
+					mode = IDriverUsage.DriverMode.Graphical;
 				} else if ("false".equalsIgnoreCase(tempString)) {
-					gui = false;
+					mode = IDriverUsage.DriverMode.CommandLine;
 				} else {
 					throw new DriverFailedException(new IllegalArgumentException("--gui=nonBoolean"));
 				}
@@ -110,10 +111,10 @@ import org.jetbrains.annotations.Nullable;
 				LovelaceLogger.trace("Only one driver registered for that command");
 				currentDriver = first;
 			} else {
-				final boolean localGui = gui;
+				final IDriverUsage.DriverMode localMode = mode;
 				LovelaceLogger.trace("Multiple drivers registered; filtering by interface");
 				currentDriver = drivers.stream()
-						.filter(d -> d.getUsage().isGraphical() == localGui).findAny().orElse(null);
+						.filter(d -> d.getUsage().getMode() == localMode).findAny().orElse(null);
 			}
 		} else {
 			LovelaceLogger.trace("No matching driver found");
@@ -150,25 +151,27 @@ import org.jetbrains.annotations.Nullable;
 		} else {
 			LovelaceLogger.trace("Starting app-chooser.");
 			final SPOptions currentOptionsTyped = currentOptions.copy();
-			if (gui) {
+			switch (mode) {
+				case Graphical ->
 //				try {
-				SwingUtilities.invokeLater(
-						() -> new AppChooserGUI(cli, currentOptionsTyped)
-								.startDriver(others.toArray(String[]::new)));
+					SwingUtilities.invokeLater(
+							() -> new AppChooserGUI(cli, currentOptionsTyped)
+									.startDriver(others.toArray(String[]::new)));
 //				} catch (DriverFailedException except) {
 //					LovelaceLogger.error(except, except.getMessage());
 //					SwingUtilities.invokeLater(() -> showErrorDialog(null,
 //						"Strategic Primer Assistive Programs", except.getMessage()));
 //				}
-			} else {
-				final DriverFactory chosenDriver = cli.chooseFromList(driverCache.values().stream()
-								.flatMap(i -> StreamSupport.stream(i.spliterator(), false))
-								.filter(AppStarter::includeInCLIList).collect(Collectors.toList()),
-						"CLI apps available:", "No applications available", "App to start: ",
-						ICLIHelper.ListChoiceBehavior.AUTO_CHOOSE_ONLY).getValue1();
-				if (!Objects.isNull(chosenDriver)) {
-					new DriverWrapper(chosenDriver).startCatchingErrors(cli, options,
-							others.toArray(String[]::new));
+				case CommandLine -> {
+					final DriverFactory chosenDriver = cli.chooseFromList(driverCache.values().stream()
+									.flatMap(i -> StreamSupport.stream(i.spliterator(), false))
+									.filter(AppStarter::includeInCLIList).collect(Collectors.toList()),
+							"CLI apps available:", "No applications available", "App to start: ",
+							ICLIHelper.ListChoiceBehavior.AUTO_CHOOSE_ONLY).getValue1();
+					if (!Objects.isNull(chosenDriver)) {
+						new DriverWrapper(chosenDriver).startCatchingErrors(cli, options,
+								others.toArray(String[]::new));
+					}
 				}
 			}
 		}

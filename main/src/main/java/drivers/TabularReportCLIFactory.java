@@ -22,7 +22,7 @@ import com.google.auto.service.AutoService;
  */
 @AutoService(DriverFactory.class)
 public final class TabularReportCLIFactory implements ModelDriverFactory {
-	private static final IDriverUsage USAGE = new DriverUsage(false, "tabular-report",
+	private static final IDriverUsage USAGE = new DriverUsage(IDriverUsage.DriverMode.CommandLine, "tabular-report",
 			ParamCount.AtLeastOne, "Tabular Report Generator",
 			"Produce CSV reports of the contents of a map.", true, false, "--serve[=8080]");
 

@@ -28,7 +28,7 @@ import com.google.auto.service.AutoService;
  */
 @AutoService(DriverFactory.class)
 public final class TabularReportGUIFactory implements GUIDriverFactory {
-	private static final IDriverUsage USAGE = new DriverUsage(true, "tabular-report",
+	private static final IDriverUsage USAGE = new DriverUsage(IDriverUsage.DriverMode.Graphical, "tabular-report",
 			ParamCount.One, "Tabular Report Viewer", "Show the contents of a map in tabular form",
 			false, true, "--hq-row=NN --hq-col=NN");
 

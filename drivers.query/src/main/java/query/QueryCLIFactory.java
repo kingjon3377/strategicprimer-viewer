@@ -18,7 +18,7 @@ import com.google.auto.service.AutoService;
  */
 @AutoService(DriverFactory.class)
 public final class QueryCLIFactory implements ModelDriverFactory {
-	private static final IDriverUsage USAGE = new DriverUsage(false, "query",
+	private static final IDriverUsage USAGE = new DriverUsage(IDriverUsage.DriverMode.CommandLine, "query",
 			ParamCount.One, "Answer questions about a map.",
 			"Answer questions about a map, such as counting workers or calculating distances.",
 			true, false);

@@ -22,7 +22,7 @@ import com.google.auto.service.AutoService;
  */
 @AutoService(DriverFactory.class)
 public final class DuplicateFixtureRemoverFactory implements ModelDriverFactory {
-	private static final IDriverUsage USAGE = new DriverUsage(false, "remove-duplicates",
+	private static final IDriverUsage USAGE = new DriverUsage(IDriverUsage.DriverMode.CommandLine, "remove-duplicates",
 			ParamCount.AtLeastOne, "Remove duplicate fixtures",
 			"Remove duplicate fixtures (identical except ID# and on the same tile) from a map.",
 			true, false, "--current-turn=NN");

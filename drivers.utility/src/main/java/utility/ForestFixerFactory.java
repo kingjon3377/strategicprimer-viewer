@@ -20,7 +20,7 @@ import com.google.auto.service.AutoService;
  */
 @AutoService(DriverFactory.class)
 public final class ForestFixerFactory implements ModelDriverFactory {
-	private static final IDriverUsage USAGE = new DriverUsage(false, "fix-forests",
+	private static final IDriverUsage USAGE = new DriverUsage(IDriverUsage.DriverMode.CommandLine, "fix-forests",
 			ParamCount.AtLeastTwo, "Fix forest IDs",
 			"Make sure that forest IDs in submaps match the main map", false, false);
 

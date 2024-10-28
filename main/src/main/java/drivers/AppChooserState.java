@@ -63,11 +63,11 @@ import org.jetbrains.annotations.Nullable;
 						factory.getUsage().getShortDescription());
 				conflicts.get(command).add(factory);
 			} else if (cache.containsKey(command) &&
-					cache.get(command).stream().anyMatch(f -> f.getUsage().isGraphical() ==
-							factory.getUsage().isGraphical())) {
+					cache.get(command).stream().anyMatch(f -> f.getUsage().getMode() ==
+							factory.getUsage().getMode())) {
 				final DriverFactory existing = cache.get(command).stream()
-						.filter(f -> f.getUsage().isGraphical() ==
-								factory.getUsage().isGraphical()).findAny().orElse(null);
+						.filter(f -> f.getUsage().getMode() ==
+								factory.getUsage().getMode()).findAny().orElse(null);
 				LovelaceLogger.warning("Invocation command conflict for %s between %s and %s",
 						command, factory.getUsage().getShortDescription(),
 						Optional.ofNullable(existing).map(DriverFactory::getUsage)
@@ -154,10 +154,9 @@ import org.jetbrains.annotations.Nullable;
 			mainInvocation = "java -jar viewer-VERSION.jar";
 		}
 		builder.append(mainInvocation);
-		if (usage.isGraphical()) {
-			builder.append(" [-g|--gui] ");
-		} else {
-			builder.append(" -c|--cli "); // FIXME For apps with no GUI counterpart this is actually optional
+		switch (usage.getMode()) {
+			case Graphical -> builder.append(" [-g|--gui] ");
+			case CommandLine -> builder.append(" -c|--cli "); // FIXME For apps with no GUI counterpart this is actually optional
 		}
 		builder.append(usage.getInvocation());
 		for (final String option : usage.getSupportedOptions()) {

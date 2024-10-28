@@ -23,8 +23,8 @@ import lovelace.util.LovelaceLogger;
  */
 @AutoService(DriverFactory.class)
 public final class SubsetCLIFactory implements ModelDriverFactory {
-	private static final IDriverUsage USAGE = new DriverUsage(false, "subset", ParamCount.AtLeastTwo,
-			"Check players' maps against master",
+	private static final IDriverUsage USAGE = new DriverUsage(IDriverUsage.DriverMode.CommandLine, "subset",
+			ParamCount.AtLeastTwo, "Check players' maps against master",
 			"""
 					Check that subordinate maps are subsets of the main map, containing nothing that it does not \
 					contain in the same place.""",

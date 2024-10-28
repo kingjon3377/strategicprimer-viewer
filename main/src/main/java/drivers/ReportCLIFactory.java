@@ -23,7 +23,7 @@ import com.google.auto.service.AutoService;
  */
 @AutoService(DriverFactory.class)
 public final class ReportCLIFactory implements ModelDriverFactory {
-	private static final IDriverUsage USAGE = new DriverUsage(false, "create-report",
+	private static final IDriverUsage USAGE = new DriverUsage(IDriverUsage.DriverMode.CommandLine, "create-report",
 			ParamCount.AtLeastOne, "Report Generator", "Produce HTML report of the contents of a map",
 			true, false,
 			('\\' == File.separatorChar) ? "--out=C:\\path\\to\\output.html"

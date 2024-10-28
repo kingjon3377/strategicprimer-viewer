@@ -18,7 +18,7 @@ import com.google.auto.service.AutoService;
  */
 @AutoService(DriverFactory.class)
 public final class TableDebuggerFactory implements UtilityDriverFactory {
-	public static final IDriverUsage USAGE = new DriverUsage(false, "table-debug",
+	public static final IDriverUsage USAGE = new DriverUsage(IDriverUsage.DriverMode.CommandLine, "table-debug",
 			ParamCount.None, "Debug old-model encounter tables",
 			"See whether old-model encounter tables refer to a nonexistent table", false, false);
 

@@ -20,7 +20,7 @@ import com.google.auto.service.AutoService;
  */
 @AutoService(DriverFactory.class)
 public final class TownGeneratingCLIFactory implements ModelDriverFactory {
-	private static final IDriverUsage USAGE = new DriverUsage(false, "generate-towns",
+	private static final IDriverUsage USAGE = new DriverUsage(IDriverUsage.DriverMode.CommandLine, "generate-towns",
 			ParamCount.AtLeastOne,
 			"Enter or generate stats and contents for towns and villages",
 			"Enter or generate stats and contents for towns and villages", true, false);

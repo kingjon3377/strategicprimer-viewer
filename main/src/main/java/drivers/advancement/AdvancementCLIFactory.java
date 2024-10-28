@@ -23,8 +23,8 @@ import com.google.auto.service.AutoService;
  */
 @AutoService(DriverFactory.class)
 public final class AdvancementCLIFactory implements ModelDriverFactory {
-	private static final IDriverUsage USAGE = new DriverUsage(false, "advance", ParamCount.AtLeastOne,
-			"View a player's workers and manage their advancement",
+	private static final IDriverUsage USAGE = new DriverUsage(IDriverUsage.DriverMode.CommandLine, "advance",
+			ParamCount.AtLeastOne, "View a player's workers and manage their advancement",
 			"View a player's units, workers in those units, each worker's Jobs, and Skill levels in each Job.",
 			true, false, "--current-turn=NN", "--allow-expert-mentoring");
 

@@ -25,8 +25,8 @@ import com.google.auto.service.AutoService;
  */
 @AutoService(DriverFactory.class)
 public final class RandomMovementFactory implements ModelDriverFactory {
-	private static final IDriverUsage USAGE = new DriverUsage(false, "random-move", ParamCount.One,
-			"Move independent units at random", "Move independent units randomly around the map.",
+	private static final IDriverUsage USAGE = new DriverUsage(IDriverUsage.DriverMode.CommandLine, "random-move",
+			ParamCount.One, "Move independent units at random", "Move independent units randomly around the map.",
 			true, false);
 
 	@Override

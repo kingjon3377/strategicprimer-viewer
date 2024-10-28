@@ -18,8 +18,8 @@ import com.google.auto.service.AutoService;
  */
 @AutoService(DriverFactory.class)
 public final class SubsetGUIFactory implements UtilityDriverFactory {
-	public static final IDriverUsage USAGE = new DriverUsage(true, "subset", ParamCount.AtLeastOne,
-			"Check players' maps against master",
+	public static final IDriverUsage USAGE = new DriverUsage(IDriverUsage.DriverMode.Graphical, "subset",
+			ParamCount.AtLeastOne, "Check players' maps against master",
 			"""
 					Check that subordinate maps are subsets of the main map, containing nothing that it does not \
 					contain in the same place.""",

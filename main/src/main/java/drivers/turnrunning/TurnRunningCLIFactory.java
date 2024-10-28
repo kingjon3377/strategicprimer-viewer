@@ -20,9 +20,9 @@ import com.google.auto.service.AutoService;
  */
 @AutoService(DriverFactory.class)
 public final class TurnRunningCLIFactory implements ModelDriverFactory {
-	private static final IDriverUsage USAGE = new DriverUsage(false, "run-turn", ParamCount.AtLeastTwo,
-			"Run a turn's orders and enter results", "Run a player's orders for a turn and enter results.",
-			true, false, "--current-turn=NN");
+	private static final IDriverUsage USAGE = new DriverUsage(IDriverUsage.DriverMode.CommandLine, "run-turn",
+			ParamCount.AtLeastTwo, "Run a turn's orders and enter results",
+			"Run a player's orders for a turn and enter results.", true, false, "--current-turn=NN");
 
 	@Override
 	public IDriverUsage getUsage() {

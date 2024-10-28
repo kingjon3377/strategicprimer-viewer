@@ -27,9 +27,9 @@ import com.google.auto.service.AutoService;
  */
 @AutoService(DriverFactory.class)
 public final class WorkerMgmtGUIFactory implements GUIDriverFactory {
-	private static final IDriverUsage USAGE = new DriverUsage(true, "worker-mgmt", ParamCount.AtLeastOne,
-			"Unit Orders and Worker Management", "Organize the members of a player's units.", false,
-			true, "--current-turn=NN", "--print-empty", "--include-unleveled-jobs",
+	private static final IDriverUsage USAGE = new DriverUsage(IDriverUsage.DriverMode.Graphical, "worker-mgmt",
+			ParamCount.AtLeastOne, "Unit Orders and Worker Management", "Organize the members of a player's units.",
+			false, true, "--current-turn=NN", "--print-empty", "--include-unleveled-jobs",
 			"--summarize-large-units", "--edit-results");
 
 	@Override

@@ -33,8 +33,8 @@ import com.google.auto.service.AutoService;
  */
 @AutoService(DriverFactory.class)
 public final class AdvancementGUIFactory implements GUIDriverFactory {
-	private static final IDriverUsage USAGE = new DriverUsage(true, "advance", ParamCount.AtLeastOne,
-			"Worker Skill Advancement",
+	private static final IDriverUsage USAGE = new DriverUsage(IDriverUsage.DriverMode.Graphical, "advance",
+			ParamCount.AtLeastOne, "Worker Skill Advancement",
 			"View a player's units, workers in those units, each worker's Jobs, and Skill levels in each Job.",
 			false, true, "--current-turn=NN");
 

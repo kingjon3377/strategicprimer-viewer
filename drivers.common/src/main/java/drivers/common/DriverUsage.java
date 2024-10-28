@@ -6,14 +6,14 @@ public class DriverUsage implements IDriverUsage {
 	/**
 	 * Whether this driver is graphical or not.
 	 */
-	private final boolean graphical;
+	private final DriverMode mode;
 
 	/**
 	 * Whether this driver is graphical or not.
 	 */
 	@Override
-	public final boolean isGraphical() {
-		return graphical;
+	public final DriverMode getMode() {
+		return mode;
 	}
 
 	/**
@@ -121,22 +121,22 @@ public class DriverUsage implements IDriverUsage {
 		return supportedOptions;
 	}
 
-	public DriverUsage(final boolean graphical, final String invocation, final ParamCount paramsWanted,
+	public DriverUsage(final DriverMode mode, final String invocation, final ParamCount paramsWanted,
 	                   final String shortDescription, final String longDescription, final boolean includeInCLIList,
 	                   final boolean includeInGUIList) {
-		this(graphical, invocation, paramsWanted, shortDescription, longDescription,
+		this(mode, invocation, paramsWanted, shortDescription, longDescription,
 				includeInCLIList, includeInGUIList, "filename.xml");
 	}
 
-	public DriverUsage(final boolean graphical, final String invocation, final ParamCount paramsWanted,
+	public DriverUsage(final DriverMode mode, final String invocation, final ParamCount paramsWanted,
 	                   final String shortDescription, final String longDescription, final boolean includeInCLIList,
 	                   final boolean includeInGUIList, final String firstParamDescription) {
-		this(graphical, invocation, paramsWanted, shortDescription, longDescription,
+		this(mode, invocation, paramsWanted, shortDescription, longDescription,
 				includeInCLIList, includeInGUIList, firstParamDescription, "filename.xml");
 	}
 
 	/**
-	 * @param graphical                  Whether this driver is graphical or not.
+	 * @param mode                       The mode of this driver (graphical or CLI)
 	 * @param invocation                 Subcommand with which one can invoke this driver.
 	 * @param paramsWanted               How many parameters this driver wants.
 	 * @param shortDescription           A short description of the driver
@@ -150,11 +150,11 @@ public class DriverUsage implements IDriverUsage {
 	 *                                   parameters after the first should be described similarly.)
 	 * @param supportedOptions           The options this driver supports.
 	 */
-	public DriverUsage(final boolean graphical, final String invocation, final ParamCount paramsWanted,
+	public DriverUsage(final DriverMode mode, final String invocation, final ParamCount paramsWanted,
 	                   final String shortDescription, final String longDescription, final boolean includeInCLIList,
 	                   final boolean includeInGUIList, final String firstParamDescription,
 	                   final String subsequentParamDescription, final String... supportedOptions) {
-		this.graphical = graphical;
+		this.mode = mode;
 		this.invocation = invocation;
 		this.paramsWanted = paramsWanted;
 		this.shortDescription = shortDescription;

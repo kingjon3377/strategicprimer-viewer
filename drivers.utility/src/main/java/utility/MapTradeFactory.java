@@ -20,8 +20,8 @@ import com.google.auto.service.AutoService;
  */
 @AutoService(DriverFactory.class)
 public final class MapTradeFactory implements ModelDriverFactory {
-	public static final IDriverUsage USAGE = new DriverUsage(false, "trade-maps", ParamCount.Two,
-			"Trade maps", "Copy contents from one map to another.", true, false, "source.xml",
+	public static final IDriverUsage USAGE = new DriverUsage(IDriverUsage.DriverMode.CommandLine, "trade-maps",
+			ParamCount.Two, "Trade maps", "Copy contents from one map to another.", true, false, "source.xml",
 			"destination.xml");
 
 	@Override

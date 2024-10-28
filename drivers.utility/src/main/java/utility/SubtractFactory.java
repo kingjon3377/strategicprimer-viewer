@@ -20,8 +20,8 @@ import com.google.auto.service.AutoService;
  */
 @AutoService(DriverFactory.class)
 public final class SubtractFactory implements ModelDriverFactory {
-	private static final IDriverUsage USAGE = new DriverUsage(false, "subtract", ParamCount.AtLeastTwo,
-			"Subtract one map from another",
+	private static final IDriverUsage USAGE = new DriverUsage(IDriverUsage.DriverMode.CommandLine, "subtract",
+			ParamCount.AtLeastTwo, "Subtract one map from another",
 			"Remove everything known in a base map from submaps for easier comparison", false, false,
 			"baseMap.xml", "operand.xml");
 

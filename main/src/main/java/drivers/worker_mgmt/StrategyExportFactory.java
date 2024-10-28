@@ -21,8 +21,8 @@ import com.google.auto.service.AutoService;
  */
 @AutoService(DriverFactory.class)
 public final class StrategyExportFactory implements ModelDriverFactory {
-	private static final IDriverUsage USAGE = new DriverUsage(false, "export-strategy", ParamCount.One,
-			"Export a proto-strategy", "Create a proto-strategy using orders stored in the map",
+	private static final IDriverUsage USAGE = new DriverUsage(IDriverUsage.DriverMode.CommandLine, "export-strategy",
+			ParamCount.One, "Export a proto-strategy", "Create a proto-strategy using orders stored in the map",
 			true, false, "--current-turn=NN", "--print-empty", "--export=filename.txt",
 			"--include-unleveled-jobs", "--summarize-large-units", "--results");
 

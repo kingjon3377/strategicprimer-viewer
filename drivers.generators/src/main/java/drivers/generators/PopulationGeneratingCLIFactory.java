@@ -21,8 +21,8 @@ import com.google.auto.service.AutoService;
  */
 @AutoService(DriverFactory.class)
 public final class PopulationGeneratingCLIFactory implements ModelDriverFactory {
-	private static final IDriverUsage USAGE = new DriverUsage(false, "generate-populations",
-			ParamCount.One, "Generate animal populations, etc.",
+	private static final IDriverUsage USAGE = new DriverUsage(IDriverUsage.DriverMode.CommandLine,
+			"generate-populations", ParamCount.One, "Generate animal populations, etc.",
 			"Generate animal and shrub populations, meadow and grove sizes, and forest acreages.", true,
 			false); // TODO: We'd like a GUI equivalent
 

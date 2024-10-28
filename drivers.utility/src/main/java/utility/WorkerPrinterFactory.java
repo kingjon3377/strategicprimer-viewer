@@ -24,8 +24,8 @@ import com.google.auto.service.AutoService;
  */
 @AutoService(DriverFactory.class)
 public final class WorkerPrinterFactory implements ModelDriverFactory {
-	private static final IDriverUsage USAGE = new DriverUsage(false, "print-stats", ParamCount.One,
-			"Print stats of workers", "Print stats of workers in a unit in a brief list.", true,
+	private static final IDriverUsage USAGE = new DriverUsage(IDriverUsage.DriverMode.CommandLine, "print-stats",
+			ParamCount.One, "Print stats of workers", "Print stats of workers in a unit in a brief list.", true,
 			false);
 
 	@Override

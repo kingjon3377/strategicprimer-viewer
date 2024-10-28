@@ -18,8 +18,8 @@ import com.google.auto.service.AutoService;
  */
 @AutoService(DriverFactory.class)
 public final class CountingCLIFactory implements ModelDriverFactory {
-	private static final IDriverUsage USAGE = new DriverUsage(false, "count", ParamCount.One,
-			"Calculate statistics of map contents", "Print statistical report of map contents.",
+	private static final IDriverUsage USAGE = new DriverUsage(IDriverUsage.DriverMode.CommandLine, "count",
+			ParamCount.One, "Calculate statistics of map contents", "Print statistical report of map contents.",
 			false, false);
 
 	@Override

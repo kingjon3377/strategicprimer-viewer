@@ -22,9 +22,9 @@ import com.google.auto.service.AutoService;
  */
 @AutoService(DriverFactory.class)
 public final class TodoFixerFactory implements ModelDriverFactory {
-	private final IDriverUsage USAGE = new DriverUsage(false, "fix-todos", ParamCount.AtLeastOne,
-			"Fix TODOs in maps", "Fix TODOs in unit kinds and aquatic villages with non-aquatic races",
-			false, false);
+	private final IDriverUsage USAGE = new DriverUsage(IDriverUsage.DriverMode.CommandLine, "fix-todos",
+			ParamCount.AtLeastOne, "Fix TODOs in maps",
+			"Fix TODOs in unit kinds and aquatic villages with non-aquatic races", false, false);
 
 	@Override
 	public IDriverUsage getUsage() {

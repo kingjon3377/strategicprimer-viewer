@@ -5,13 +5,16 @@ package drivers.common;
  * in the app starter and in help text.
  */
 public interface IDriverUsage {
+	public enum DriverMode {
+		Graphical, CommandLine
+	}
 	/**
-	 * Whether the driver is a GUI.
+	 * The mode of the driver.
 	 * <p>
 	 * TODO: We'd like to get rid of this as a general thing, and make it
 	 * instead an option that the most important drivers respect.
 	 */
-	boolean isGraphical();
+	DriverMode getMode();
 
 	/**
 	 * The subcomand with which the user can select this driver.

@@ -20,8 +20,8 @@ import com.google.auto.service.AutoService;
  */
 @AutoService(DriverFactory.class)
 public final class MapPopulatorFactory implements ModelDriverFactory {
-	private static final IDriverUsage USAGE = new DriverUsage(false, "populate-map", ParamCount.One,
-			"Add missing fixtures to a map",
+	private static final IDriverUsage USAGE = new DriverUsage(IDriverUsage.DriverMode.CommandLine, "populate-map",
+			ParamCount.One, "Add missing fixtures to a map",
 			"Add specified kinds of fixtures to suitable points throughout a map", true, false,
 			"--current-turn=NN");
 

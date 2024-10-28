@@ -20,7 +20,7 @@ import com.google.auto.service.AutoService;
  */
 @AutoService(DriverFactory.class)
 public final class ResourceAddingCLIFactory implements ModelDriverFactory {
-	private static final IDriverUsage USAGE = new DriverUsage(false, "add-resource",
+	private static final IDriverUsage USAGE = new DriverUsage(IDriverUsage.DriverMode.CommandLine, "add-resource",
 			ParamCount.AtLeastOne, "Add resources to maps", "Add resources for players to maps.",
 			true, false, "--current-turn=NN");
 
