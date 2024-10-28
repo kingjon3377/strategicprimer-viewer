@@ -2,6 +2,7 @@ package legacy.xmlio;
 
 import static lovelace.util.SingletonRandom.SINGLETON_RANDOM;
 
+import impl.xmlio.SPWriter;
 import legacy.map.LegacyPlayerCollection;
 import legacy.map.TileFixture;
 import legacy.map.fixtures.LegacyQuantity;
@@ -176,7 +177,7 @@ public final class TestXMLIO {
 	 */
 	private final List<ISPReader> spReaders = List.of(TestReaderFactory.getOldSPReader(),
 			TestReaderFactory.getNewSPReader());
-	private final List<IMapReader> mapReaders = List.of(TestReaderFactory.getOldMapReader(),
+	private static final List<IMapReader> MAP_READERS = List.of(TestReaderFactory.getOldMapReader(),
 			TestReaderFactory.getNewMapReader());
 
 	/**
@@ -329,8 +330,15 @@ public final class TestXMLIO {
 
 	private static final List<Boolean> BOOLS = List.of(true, false);
 
+	private static final List<SPWriter> WRITERS = List.of(TestReaderFactory.getOldWriter(),
+			TestReaderFactory.getNewWriter());
+
 	private static Stream<Boolean> bools() {
 		return BOOLS.stream();
+	}
+
+	private static Stream<SPWriter> writers() {
+		return Stream.of(TestReaderFactory.getOldWriter(), TestReaderFactory.getNewWriter());
 	}
 
 	/**
@@ -341,14 +349,10 @@ public final class TestXMLIO {
 	 * @param obj        The object to serialize
 	 * @param deprecated Whether to use the deprecated i.e. one-generation-back writer
 	 */
-	private static String createSerializedForm(final Object obj, final boolean deprecated)
+	private static String createSerializedForm(final Object obj, final SPWriter spWriter)
 			throws XMLStreamException, IOException {
 		final StringBuilder writer = new StringBuilder();
-		if (deprecated) {
-			TestReaderFactory.getOldWriter().writeSPObject(writer::append, obj);
-		} else {
-			TestReaderFactory.getNewWriter().writeSPObject(writer::append, obj);
-		}
+		spWriter.writeSPObject(writer::append, obj);
 		return writer.toString();
 	}
 
@@ -366,15 +370,12 @@ public final class TestXMLIO {
 	private void assertSerialization(final String message, final Object obj, final Warning warner)
 			throws SPFormatException, XMLStreamException, IOException {
 		for (final ISPReader reader : spReaders) {
-			try (final StringReader stringReader =
-					     new StringReader(createSerializedForm(obj, false))) {
-				assertEquals(obj, reader.readXML(FAKE_FILENAME, stringReader,
-						warner), message);
-			}
-			try (final StringReader stringReader =
-					     new StringReader(createSerializedForm(obj, true))) {
-				assertEquals(obj, reader.readXML(FAKE_FILENAME, stringReader,
-						warner), message);
+			for (final SPWriter writer : WRITERS) {
+				try (final StringReader stringReader =
+						     new StringReader(createSerializedForm(obj, writer))) {
+					assertEquals(obj, reader.readXML(FAKE_FILENAME, stringReader,
+							warner), message);
+				}
 			}
 		}
 	}
@@ -385,9 +386,10 @@ public final class TestXMLIO {
 	 */
 	private static void assertSerializedFormContains(final Object obj, final String expected, final String message)
 			throws XMLStreamException, IOException {
-		// TODO: Is there a JUnit assertContains() or similar?
-		assertTrue(createSerializedForm(obj, false).contains(expected), message);
-		assertTrue(createSerializedForm(obj, true).contains(expected), message);
+		for (final SPWriter writer : WRITERS) {
+			// TODO: Is there a JUnit assertContains() or similar?
+			assertTrue(createSerializedForm(obj, writer).contains(expected), message);
+		}
 	}
 
 	/**
@@ -399,19 +401,19 @@ public final class TestXMLIO {
 			throws SPFormatException, XMLStreamException, IOException {
 		final String oldImage = obj.getImage();
 		for (final ISPReader reader : spReaders) {
-			for (final Boolean deprecated : BOOLS) {
+			for (final SPWriter writer : WRITERS) {
 				obj.setImage("xyzzy"); // TODO: Should randomly generate a string
 				try (final StringReader stringReader =
-						     new StringReader(createSerializedForm(obj, deprecated))) {
+						     new StringReader(createSerializedForm(obj, writer))) {
 					assertEquals(obj.getImage(), reader.<HasMutableImage>readXML(
 									FAKE_FILENAME, stringReader, Warning.IGNORE).getImage(),
 							message);
 				}
 				obj.setImage(obj.getDefaultImage());
-				assertFalse(createSerializedForm(obj, deprecated).contains("image="),
+				assertFalse(createSerializedForm(obj, writer).contains("image="),
 						"Default image should not be written");
 				obj.setImage("");
-				assertFalse(createSerializedForm(obj, deprecated).contains("image="),
+				assertFalse(createSerializedForm(obj, writer).contains("image="),
 						"Empty image should not be written");
 			}
 		}
@@ -426,9 +428,9 @@ public final class TestXMLIO {
 	private void assertNotesSerialization(final String message, final HasNotes obj)
 			throws SPFormatException, XMLStreamException, IOException {
 		for (final ISPReader reader : spReaders) {
-			for (final Boolean deprecated : BOOLS) {
+			for (final SPWriter writer : WRITERS) {
 				try (final StringReader stringReader =
-						     new StringReader(createSerializedForm(obj, deprecated))) {
+						     new StringReader(createSerializedForm(obj, writer))) {
 					final HasNotes read = reader.readXML(FAKE_FILENAME,
 							stringReader, Warning.IGNORE);
 					for (final Integer player : obj.getNotesPlayers()) {
@@ -453,16 +455,16 @@ public final class TestXMLIO {
 			throws SPFormatException, XMLStreamException, IOException {
 		final String oldPortrait = obj.getPortrait();
 		for (final ISPReader reader : spReaders) {
-			for (final Boolean deprecated : BOOLS) {
+			for (final SPWriter writer : WRITERS) {
 				obj.setPortrait("xyzzy");
 				try (final StringReader stringReader =
-						     new StringReader(createSerializedForm(obj, deprecated))) {
+						     new StringReader(createSerializedForm(obj, writer))) {
 					assertEquals(obj.getPortrait(), reader.<HasPortrait>readXML(
 									FAKE_FILENAME, stringReader, Warning.IGNORE).getPortrait(),
 							message);
 				}
 				obj.setPortrait("");
-				assertFalse(createSerializedForm(obj, deprecated).contains("portrait="),
+				assertFalse(createSerializedForm(obj, writer).contains("portrait="),
 						"Empty portrait should not be written");
 			}
 		}
@@ -552,7 +554,7 @@ public final class TestXMLIO {
 	 */
 	private void assertMapDeserialization(final String message, final ILegacyMap expected, final String xml)
 			throws SPFormatException, XMLStreamException, IOException {
-		for (final IMapReader reader : mapReaders) {
+		for (final IMapReader reader : MAP_READERS) {
 			try (final StringReader stringReader = new StringReader(xml)) {
 				assertEquals(expected, reader.readMapFromStream(FAKE_FILENAME, stringReader,
 						Warning.DIE), message);
@@ -631,7 +633,7 @@ public final class TestXMLIO {
 		return Stream.of(TownStatus.values()).flatMap(a ->
 				integers(2).flatMap(b ->
 						races.stream().collect(toShuffledStream()).limit(3).flatMap(c ->
-								bools().map(d -> Arguments.of(a, b, c, d)))));
+								writers().map(d -> Arguments.of(a, b, c, d)))));
 	}
 
 	/**
@@ -643,10 +645,10 @@ public final class TestXMLIO {
 	@ParameterizedTest
 	@MethodSource
 	public void testVillageWantsName(final TownStatus status, final int id, final String race,
-	                                 final boolean deprecatedWriter)
+	                                 final SPWriter writer)
 			throws SPFormatException, XMLStreamException, IOException {
 		final Village village = new Village(status, "", id, new PlayerImpl(-1, ""), race);
-		assertMissingProperty(createSerializedForm(village, deprecatedWriter), "name", village);
+		assertMissingProperty(createSerializedForm(village, writer), "name", village);
 	}
 
 	private static Stream<Arguments> testBasicVillageSerialization() {
@@ -742,7 +744,7 @@ public final class TestXMLIO {
 		return Stream.of(TownSize.values()).flatMap(a -> Stream.of(TownStatus.values()).flatMap(b ->
 				integers(2).flatMap(c ->
 						integers(2).flatMap(d ->
-								bools().map(e -> Arguments.of(a, b, c, d, e))))));
+								writers().map(e -> Arguments.of(a, b, c, d, e))))));
 	}
 
 	/**
@@ -751,10 +753,10 @@ public final class TestXMLIO {
 	@ParameterizedTest
 	@MethodSource
 	public void testCityWantsName(final TownSize size, final TownStatus status, final int id, final int dc,
-	                              final boolean deprecatedWriter)
+	                              final SPWriter writer)
 			throws SPFormatException, XMLStreamException, IOException {
 		final City city = new City(status, size, dc, "", id, new PlayerImpl(-1, ""));
-		assertMissingProperty(createSerializedForm(city, deprecatedWriter), "name", city);
+		assertMissingProperty(createSerializedForm(city, writer), "name", city);
 	}
 
 	// TODO: reformat
@@ -830,10 +832,10 @@ public final class TestXMLIO {
 	@ParameterizedTest
 	@MethodSource("testCityWantsName")
 	public void testFortificationWantsName(final TownSize size, final TownStatus status, final int id, final int dc,
-	                                       final boolean deprecatedWriter)
+	                                       final SPWriter writer)
 			throws SPFormatException, XMLStreamException, IOException {
 		final Fortification fort = new Fortification(status, size, dc, "", id, new PlayerImpl(-1, ""));
-		assertMissingProperty(createSerializedForm(fort, deprecatedWriter), "name", fort);
+		assertMissingProperty(createSerializedForm(fort, writer), "name", fort);
 	}
 
 	/**
@@ -895,10 +897,10 @@ public final class TestXMLIO {
 	@ParameterizedTest
 	@MethodSource("testCityWantsName")
 	public void testTownWantsName(final TownSize size, final TownStatus status, final int id, final int dc,
-	                              final boolean deprecatedWriter)
+	                              final SPWriter writer)
 			throws SPFormatException, XMLStreamException, IOException {
 		final Town town = new Town(status, size, dc, "", id, new PlayerImpl(-1, ""));
-		assertMissingProperty(createSerializedForm(town, deprecatedWriter), "name", town);
+		assertMissingProperty(createSerializedForm(town, writer), "name", town);
 	}
 
 	/**
@@ -950,7 +952,7 @@ public final class TestXMLIO {
 	}
 
 	private static Stream<Arguments> testOldStoneIdiom() {
-		return Stream.of(StoneKind.values()).flatMap(a -> bools().map(b ->
+		return Stream.of(StoneKind.values()).flatMap(a -> writers().map(b ->
 				Arguments.of(a, b)));
 	}
 
@@ -959,12 +961,11 @@ public final class TestXMLIO {
 	 */
 	@ParameterizedTest
 	@MethodSource
-	public void testOldStoneIdiom(final StoneKind kind, final boolean deprecatedWriter)
+	public void testOldStoneIdiom(final StoneKind kind, final SPWriter writer)
 			throws SPFormatException, XMLStreamException, IOException {
 		final StoneDeposit thirdDeposit = new StoneDeposit(kind, 10, 3);
-		assertDeprecatedProperty(
-				createSerializedForm(thirdDeposit, deprecatedWriter)
-						.replace("kind", "stone"), "stone", "kind", "stone", thirdDeposit);
+		assertDeprecatedProperty(createSerializedForm(thirdDeposit, writer)
+				.replace("kind", "stone"), "stone", "kind", "stone", thirdDeposit);
 	}
 
 	/**
@@ -1123,7 +1124,7 @@ public final class TestXMLIO {
 	}
 
 	private static Stream<Arguments> testTileDeprecatedIdiom() {
-		return Stream.of(TileType.values()).flatMap(a -> bools().map(b ->
+		return Stream.of(TileType.values()).flatMap(a -> writers().map(b ->
 				Arguments.of(a, b)));
 	}
 
@@ -1132,10 +1133,10 @@ public final class TestXMLIO {
 	 */
 	@ParameterizedTest
 	@MethodSource
-	public void testTileDeprecatedIdiom(final TileType terrain, final boolean deprecatedWriter)
+	public void testTileDeprecatedIdiom(final TileType terrain, final SPWriter writer)
 			throws SPFormatException, XMLStreamException, IOException {
 		final ILegacyMap map = createSimpleMap(new Point(5, 5), Pair.with(new Point(4, 4), terrain));
-		assertDeprecatedProperty(createSerializedForm(map, deprecatedWriter)
+		assertDeprecatedProperty(createSerializedForm(map, writer)
 				.replace("kind", "type"), "type", "kind", "tile", map);
 	}
 
@@ -1166,7 +1167,7 @@ public final class TestXMLIO {
 				\t</map>
 				</view>
 				""".formatted(SP_NAMESPACE);
-		assertEquals(createSerializedForm(five, true), xmlTwoLogical, "Multiple units");
+		assertEquals(createSerializedForm(five, TestReaderFactory.getOldWriter()), xmlTwoLogical, "Multiple units");
 		final String xmlTwoAlphabetical = """
 				<view current_player="-1" current_turn="-1" xmlns="%s">
 				\t<map columns="4" rows="3" version="2">
@@ -1180,7 +1181,7 @@ public final class TestXMLIO {
 				\t</map>
 				</view>
 				""".formatted(SP_NAMESPACE);
-		final String serializedForm = createSerializedForm(five, false);
+		final String serializedForm = createSerializedForm(five, TestReaderFactory.getNewWriter());
 		assertAny("Multiple units", () -> assertEquals(xmlTwoLogical, serializedForm, "Logical form matches"),
 				() -> assertEquals(xmlTwoAlphabetical, serializedForm, "Alphabetical form matches"),
 				() -> assertEquals(SPACED_SELF_CLOSING_TAG.matcher(xmlTwoLogical).replaceAll("\"/>"), serializedForm,
@@ -1191,9 +1192,10 @@ public final class TestXMLIO {
 						\t</map>
 						</view>
 						""".formatted(SP_NAMESPACE),
-				createSerializedForm(createSimpleMap(new Point(1, 1)), true),
+				createSerializedForm(createSimpleMap(new Point(1, 1)), TestReaderFactory.getOldWriter()),
 				"Shouldn't print empty not-visible tiles");
-		final String emptySerializedForm = createSerializedForm(createSimpleMap(new Point(1, 1)), false);
+		final String emptySerializedForm = createSerializedForm(createSimpleMap(new Point(1, 1)),
+				TestReaderFactory.getNewWriter());
 		final String firstPossibility = """
 				<view xmlns="%s" current_player="-1" current_turn="-1">
 				\t<map version="2" rows="1" columns="1">
@@ -1221,7 +1223,7 @@ public final class TestXMLIO {
 	}
 
 	private static Stream<Arguments> testTileSerializationThree() {
-		return Stream.of(Arguments.of(true), Arguments.of(false));
+		return writers().map(Arguments::of);
 	}
 
 	/**
@@ -1230,7 +1232,7 @@ public final class TestXMLIO {
 	@SuppressWarnings("MagicNumber")
 	@ParameterizedTest
 	@MethodSource
-	public void testTileSerializationThree(final boolean deprecatedWriter)
+	public void testTileSerializationThree(final SPWriter writer)
 			throws SPFormatException, XMLStreamException, IOException {
 		final IMutableLegacyMap six = new LegacyMap(new MapDimensionsImpl(2, 2, 2),
 				new LegacyPlayerCollection(), 5);
@@ -1238,7 +1240,7 @@ public final class TestXMLIO {
 		six.addFixture(new Point(0, 1), new Ground(22, "basalt", false));
 		six.addFixture(new Point(1, 0), new Forest("pine", false, 19));
 		six.addFixture(new Point(1, 1), new AnimalImpl("beaver", false, "wild", 18));
-		assertMissingProperty(createSerializedForm(six, deprecatedWriter), "kind", six);
+		assertMissingProperty(createSerializedForm(six, writer), "kind", six);
 	}
 
 	/**
@@ -1295,12 +1297,12 @@ public final class TestXMLIO {
 				<map version="2" columns="1" />""", "rows", null);
 		this.<ILegacyMap>assertMissingProperty("""
 				<map version="2" rows="1" />""", "columns", null);
-		final String originalFormOne = createSerializedForm(firstMap, false);
-		final String originalFormTwo = createSerializedForm(firstMap, true);
+		final String originalFormOne = createSerializedForm(firstMap, TestReaderFactory.getOldWriter());
+		final String originalFormTwo = createSerializedForm(firstMap, TestReaderFactory.getNewWriter());
 		firstMap.setBaseTerrain(new Point(1, 1), null);
-		assertEquals(originalFormOne, createSerializedForm(firstMap, false),
+		assertEquals(originalFormOne, createSerializedForm(firstMap, TestReaderFactory.getOldWriter()),
 				"Explicitly not visible tile is not serialized");
-		assertEquals(originalFormTwo, createSerializedForm(firstMap, true),
+		assertEquals(originalFormTwo, createSerializedForm(firstMap, TestReaderFactory.getNewWriter()),
 				"Explicitly not visible tile is not serialized");
 		firstMap.setMountainous(loc, true);
 		assertSerialization("Map with a mountainous point", firstMap);
@@ -1514,7 +1516,7 @@ public final class TestXMLIO {
 		return integers(2).flatMap(a ->
 				minerals.stream().collect(toShuffledStream()).limit(2).flatMap(b ->
 						Stream.of(TownStatus.values()).flatMap(c ->
-								bools().map(d ->
+								writers().map(d ->
 										Arguments.of(a, b, c, d)))));
 	}
 
@@ -1524,12 +1526,12 @@ public final class TestXMLIO {
 	@ParameterizedTest
 	@MethodSource
 	public void testMineSerialization(final int id, final String kind, final TownStatus status,
-	                                  final boolean deprecatedWriter)
+	                                  final SPWriter writer)
 			throws SPFormatException, XMLStreamException, IOException {
 		final Mine mine = new Mine(kind, status, id);
 		assertSerialization("Test of Mine serialization", mine);
 		assertDeprecatedProperty(
-				KIND_EQUALS_PATTERN.matcher(createSerializedForm(mine, deprecatedWriter)).replaceAll("product="),
+				KIND_EQUALS_PATTERN.matcher(createSerializedForm(mine, writer)).replaceAll("product="),
 				"product", "kind", "mine", mine);
 		this.<Mine>assertUnwantedChild("""
 				<mine kind="%s" status="%s"><troll /></mine>""".formatted(kind, status), null);
@@ -1547,7 +1549,7 @@ public final class TestXMLIO {
 	private static Stream<Arguments> testShrubSerialization() {
 		return integers(2).flatMap(a ->
 				fieldTypes.stream().collect(toShuffledStream()).limit(2).flatMap(b ->
-						bools().map(c -> Arguments.of(a, b, c))));
+						writers().map(c -> Arguments.of(a, b, c))));
 	}
 
 	/**
@@ -1555,12 +1557,11 @@ public final class TestXMLIO {
 	 */
 	@ParameterizedTest
 	@MethodSource
-	public void testShrubSerialization(final int id, final String kind, final boolean deprecatedWriter)
+	public void testShrubSerialization(final int id, final String kind, final SPWriter writer)
 			throws SPFormatException, XMLStreamException, IOException {
 		final Shrub shrub = new Shrub(kind, id);
 		assertSerialization("First test of Shrub serialization", shrub);
-		assertDeprecatedProperty(
-				createSerializedForm(shrub, deprecatedWriter).replace("kind", "shrub"),
+		assertDeprecatedProperty(createSerializedForm(shrub, writer).replace("kind", "shrub"),
 				"shrub", "kind", "shrub", shrub);
 		this.<Shrub>assertUnwantedChild("""
 				<shrub kind="%s"><troll /></shrub>""".formatted(kind), null);
@@ -1619,7 +1620,7 @@ public final class TestXMLIO {
 	}
 
 	private static Stream<Arguments> testUnitWarnings() {
-		return bools().flatMap(a ->
+		return writers().flatMap(a ->
 				integers(2).flatMap(b ->
 						treeTypes.stream().collect(toShuffledStream()).limit(2).flatMap(c ->
 								fieldTypes.stream().collect(toShuffledStream()).limit(2).map(d ->
@@ -1632,13 +1633,12 @@ public final class TestXMLIO {
 	 */
 	@ParameterizedTest
 	@MethodSource
-	public void testUnitWarnings(final boolean deprecatedWriter, final int id, final String name, final String kind)
+	public void testUnitWarnings(final SPWriter writer, final int id, final String name, final String kind)
 			throws SPFormatException, XMLStreamException, IOException {
 		// TODO: should probably test spaces in name and kind
 		this.<IUnit>assertUnwantedChild("<unit><unit /></unit>", null);
 		final IUnit firstUnit = new Unit(new PlayerImpl(1, ""), kind, name, id);
-		assertDeprecatedProperty(
-				createSerializedForm(firstUnit, deprecatedWriter).replace("kind", "type"),
+		assertDeprecatedProperty(createSerializedForm(firstUnit, writer).replace("kind", "type"),
 				"type", "kind", "unit", firstUnit);
 		this.<IUnit>assertMissingProperty("""
 						<unit owner="2" kind="unit" />""", "name",
@@ -1649,7 +1649,7 @@ public final class TestXMLIO {
 						<unit kind="kind" name="unitThree" id="3" />""", "owner",
 				new Unit(new PlayerImpl(-1, ""), "kind", "unitThree", 3));
 		final IUnit fourthUnit = new Unit(new PlayerImpl(4, ""), kind, "", id);
-		assertMissingProperty(createSerializedForm(fourthUnit, deprecatedWriter), "name",
+		assertMissingProperty(createSerializedForm(fourthUnit, writer), "name",
 				fourthUnit);
 		assertMissingProperty("""
 						<unit owner="4" kind="%s" name="" id="%d" />""".formatted(kind, id), "name",
@@ -2280,7 +2280,7 @@ public final class TestXMLIO {
 				integers(2).flatMap(b ->
 						minerals.stream().collect(toShuffledStream()).flatMap(c ->
 								bools().flatMap(d ->
-										bools().map(e ->
+										writers().map(e ->
 												Arguments.of(a, b, c, d, e))))));
 	}
 
@@ -2290,12 +2290,12 @@ public final class TestXMLIO {
 	@ParameterizedTest
 	@MethodSource
 	public void testMineralSerialization(final int dc, final int id, final String kind, final boolean exposed,
-	                                     final boolean deprecatedWriter)
+	                                     final SPWriter writer)
 			throws SPFormatException, XMLStreamException, IOException {
 		final MineralVein secondVein = new MineralVein(kind, exposed, dc, id);
 		assertSerialization("MineralVein serialization", secondVein);
 		assertDeprecatedProperty(
-				createSerializedForm(secondVein, deprecatedWriter).replace("kind", "mineral"),
+				createSerializedForm(secondVein, writer).replace("kind", "mineral"),
 				"mineral", "kind", "mineral", secondVein);
 		this.<MineralVein>assertUnwantedChild("""
 						<mineral kind="%s" exposed="%b" dc="%d"><hill /></mineral>""".formatted(kind, exposed, dc),
@@ -2376,7 +2376,7 @@ public final class TestXMLIO {
 	}
 
 	private static Stream<Arguments> testBookmarkSerialization() {
-		return bools().flatMap(a -> bools().map(b ->
+		return MAP_READERS.stream().flatMap(a -> writers().map(b ->
 				Arguments.of(a, b)));
 	}
 
@@ -2385,7 +2385,7 @@ public final class TestXMLIO {
 	 */
 	@ParameterizedTest
 	@MethodSource
-	public void testBookmarkSerialization(final boolean deprecatedReader, final boolean deprecatedWriter)
+	public void testBookmarkSerialization(final IMapReader reader, final SPWriter writer)
 			throws SPFormatException, XMLStreamException, IOException {
 		final IMutableLegacyMap map = new LegacyMap(new MapDimensionsImpl(1, 1, 2), new LegacyPlayerCollection(), 1);
 		final Player player = map.getPlayers().getPlayer(1);
@@ -2395,10 +2395,9 @@ public final class TestXMLIO {
 		assertTrue(map.getBookmarks().isEmpty(), "Map by default has no bookmarks");
 		map.setBaseTerrain(new Point(0, 0), TileType.Plains);
 		map.addBookmark(new Point(0, 0));
-		final IMapReader reader = mapReaders.get((deprecatedReader) ? 0 : 1);
 		final ILegacyMap deserialized;
 		try (final StringReader stringReader =
-				     new StringReader(createSerializedForm(map, deprecatedWriter))) {
+				     new StringReader(createSerializedForm(map, writer))) {
 			deserialized = reader.readMapFromStream(FAKE_FILENAME, stringReader, Warning.DIE);
 		}
 		assertNotSame(map, deserialized, "Deserialization doesn't just return the input");
