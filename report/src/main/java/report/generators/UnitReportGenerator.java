@@ -46,9 +46,9 @@ public final class UnitReportGenerator extends AbstractReportGenerator<IUnit> {
 		memberReportGenerator = new FortressMemberReportGenerator(currentPlayer, dimensions,
 				currentTurn, hq);
 		animalReportGenerator = new AnimalReportGenerator(dimensions, currentTurn, hq);
-		ourWorkerReportGenerator = new WorkerReportGenerator(true, dimensions,
+		ourWorkerReportGenerator = new WorkerReportGenerator(WorkerReportGenerator.Verbosity.Detailed, dimensions,
 				currentPlayer, currentTurn, hq);
-		otherWorkerReportGenerator = new WorkerReportGenerator(false, dimensions,
+		otherWorkerReportGenerator = new WorkerReportGenerator(WorkerReportGenerator.Verbosity.Concise, dimensions,
 				currentPlayer, currentTurn, hq);
 		this.currentPlayer = currentPlayer;
 	}

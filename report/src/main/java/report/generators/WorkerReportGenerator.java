@@ -27,21 +27,23 @@ import legacy.map.fixtures.mobile.worker.IJob;
  * A report generator for Workers.
  */
 /* package */ final class WorkerReportGenerator extends AbstractReportGenerator<IWorker> {
-
-	private final boolean details;
+	public enum Verbosity {
+		Detailed, Concise
+	}
+	private final Verbosity verbosity;
 	private final Player currentPlayer;
 	private final AnimalReportGenerator animalReportGenerator;
 	private final FortressMemberReportGenerator equipmentReportGenerator;
 
-	public WorkerReportGenerator(final boolean details, final MapDimensions dimensions, final Player currentPlayer,
+	public WorkerReportGenerator(final Verbosity verbosity, final MapDimensions dimensions, final Player currentPlayer,
 								 final int currentTurn) {
-		this(details, dimensions, currentPlayer, currentTurn, null);
+		this(verbosity, dimensions, currentPlayer, currentTurn, null);
 	}
 
-	public WorkerReportGenerator(final boolean details, final MapDimensions dimensions, final Player currentPlayer,
+	public WorkerReportGenerator(final Verbosity verbosity, final MapDimensions dimensions, final Player currentPlayer,
 								 final int currentTurn, final @Nullable Point hq) {
 		super(dimensions, hq);
-		this.details = details;
+		this.verbosity = verbosity;
 		this.currentPlayer = currentPlayer;
 		animalReportGenerator = new AnimalReportGenerator(dimensions, currentTurn, hq);
 		equipmentReportGenerator = new FortressMemberReportGenerator(currentPlayer, dimensions, currentTurn, hq);
@@ -88,6 +90,7 @@ import legacy.map.fixtures.mobile.worker.IJob;
 	public void produceSingle(final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
 							  final ILegacyMap map, final Consumer<String> ostream, final IWorker worker,
 							  final Point loc) {
+		final boolean details = Verbosity.Detailed == verbosity;
 		if (details && !Objects.isNull(worker.getStats())) {
 			ostream.accept("""
 
