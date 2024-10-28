@@ -20,7 +20,9 @@ import java.lang.ref.Reference;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.EnumSet;
 import java.util.Objects;
+import java.util.Set;
 
 import javax.swing.SwingUtilities;
 import javax.swing.event.ChangeEvent;
@@ -110,11 +112,11 @@ public final class WindowList {
 		final Runnable proofRunnable = () -> {
 			boolean changed = false;
 
-			Window[] newVisibleWindows = getWindows(WindowSorting.Origin, false);
-			Window[] newInvisibleWindows = getWindows(WindowSorting.Origin, true);
-			Frame[] newVisibleFrames = getFrames(WindowSorting.Origin, false, false);
-			Frame[] newInvisibleFrames = getFrames(WindowSorting.Origin, true, false);
-			Frame[] newIconifiedFrames = getFrames(WindowSorting.Origin, false, true);
+			Window[] newVisibleWindows = getWindows(WindowSorting.Origin, EnumSet.noneOf(WindowFiltering.class));
+			Window[] newInvisibleWindows = getWindows(WindowSorting.Origin, EnumSet.of(WindowFiltering.Invisible));
+			Frame[] newVisibleFrames = getFrames(WindowSorting.Origin, EnumSet.noneOf(WindowFiltering.class));
+			Frame[] newInvisibleFrames = getFrames(WindowSorting.Origin, EnumSet.of(WindowFiltering.Invisible));
+			Frame[] newIconifiedFrames = getFrames(WindowSorting.Origin, EnumSet.of(WindowFiltering.Iconified));
 
 			if (!arrayEquals(newVisibleWindows, visibleWindows))
 				changed = true;
@@ -191,22 +193,34 @@ public final class WindowList {
 		Origin
 	}
 
+	public enum WindowFiltering {
+		/**
+		 * Include even not-visible windows/frames.
+		 */
+		Invisible,
+		/**
+		 * Include windows/frames that have been iconified.
+		 */
+		Iconified
+	}
+
 	/**
 	 * Returns a list of windows.
 	 *
 	 * @param sorting
 	 *            how to sort: by layer (furthest behind to highest) or origin (first window activated to most recently
 	 *            activated).
-	 * @param includeInvisible
-	 *            if this is false then only visible Windows will be returned.
-	 *            Otherwise, all Windows will be returned.
+	 * @param filtering
+	 *            what not-obviously-visible windows to include, if any. Only invisible windows are supported by this
+	 *            method.
 	 */
 	public static Window[] getWindows(final WindowSorting sorting,
-									  final boolean includeInvisible) {
+									  final Set<WindowFiltering> filtering) {
 		final ArrayList<WeakReference<Window>> list = switch (sorting) {
 			case Layer -> windowLayerList;
 			case Origin -> windowList;
 		};
+		final boolean includeInvisible = filtering.contains(WindowFiltering.Invisible);
 		final Collection<Window> returnValue = new ArrayList<>();
 		int a = 0;
 		while (a < list.size()) {
@@ -230,6 +244,7 @@ public final class WindowList {
 	 * @param sorting
 	 *            how to sort: by layer or origin (furthest behind to highest) or origin (first frame activated to most
 	 *            recent).
+	 * @param filtering Which not-obviously-visible frames to include, if any
 	 * @param includeInvisible
 	 *            if this is false then visible Frames will be returned. If this
 	 *            is true then all Frames will be returned, so the next argument
@@ -237,12 +252,13 @@ public final class WindowList {
 	 * @param includeIconified
 	 *            if this is true then iconified Frames will be returned.
 	 */
-	public static Frame[] getFrames(final WindowSorting sorting,
-									final boolean includeInvisible, final boolean includeIconified) {
+	public static Frame[] getFrames(final WindowSorting sorting, final Set<WindowFiltering> filtering) {
 		final ArrayList<WeakReference<Window>> list = switch (sorting) {
 			case Layer -> windowLayerList;
 			case Origin -> windowList;
 		};
+		final boolean includeInvisible = filtering.contains(WindowFiltering.Invisible);
+		final boolean includeIconified = filtering.contains(WindowFiltering.Iconified);
 		final Collection<Frame> returnValue = new ArrayList<>();
 		int a = 0;
 		while (a < list.size()) {

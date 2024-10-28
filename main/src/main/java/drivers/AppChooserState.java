@@ -9,6 +9,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
 
@@ -195,7 +196,8 @@ import org.jetbrains.annotations.Nullable;
 	}
 
 	public static void handleDroppedFiles(final OpenFilesEvent openFilesEvent) {
-		final SPFrame topWindow = Stream.of(WindowList.getWindows(WindowList.WindowSorting.Layer, false))
+		final SPFrame topWindow = Stream.of(WindowList.getWindows(WindowList.WindowSorting.Layer,
+						EnumSet.noneOf(WindowList.WindowFiltering.class)))
 				.filter(SPFrame.class::isInstance).map(SPFrame.class::cast).reduce((first, second) -> second)
 				.orElse(null);
 		if (!Objects.isNull(topWindow)) {

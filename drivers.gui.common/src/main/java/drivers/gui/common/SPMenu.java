@@ -31,6 +31,7 @@ import lovelace.util.ComponentParentStream;
 
 import java.awt.event.ActionListener;
 import java.io.Serial;
+import java.util.EnumSet;
 import java.util.Objects;
 import java.util.stream.Stream;
 
@@ -157,13 +158,15 @@ public final class SPMenu extends JMenuBar {
 		if (Platform.SYSTEM_IS_MAC) {
 			Desktop.getDesktop().setAboutHandler(
 					(event) -> handler.actionPerformed(new ActionEvent(Stream.<Object>of(
-									WindowList.getWindows(WindowList.WindowSorting.Layer, false))
+									WindowList.getWindows(WindowList.WindowSorting.Layer,
+											EnumSet.noneOf(WindowList.WindowFiltering.class)))
 							.filter(Objects::nonNull).reduce((first, second) -> second).orElse(event),
 							ActionEvent.ACTION_FIRST, "About")));
 			Desktop.getDesktop().setQuitHandler((event, quitResponse) -> {
 				localDefaultQuit = quitResponse::performQuit;
 				handler.actionPerformed(new ActionEvent(
-						Stream.<Object>of(WindowList.getWindows(WindowList.WindowSorting.Layer, false))
+						Stream.<Object>of(WindowList.getWindows(WindowList.WindowSorting.Layer,
+										EnumSet.noneOf(WindowList.WindowFiltering.class)))
 								.filter(Objects::nonNull).reduce((first, second) -> second)
 								.orElse(event), ActionEvent.ACTION_FIRST, "Quit"));
 			});
